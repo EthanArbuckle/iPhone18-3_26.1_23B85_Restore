@@ -1,29 +1,29 @@
 @interface CLSSurvey
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 + (id)hashableColumnNames;
-+ (id)payloadsForDeletedSurvey:(id)a3 classIDs:(id)a4 database:(id)a5;
-+ (id)payloadsForObject:(id)a3 withSyncItem:(id)a4 database:(id)a5;
-- (BOOL)canCopyToDatabase:(id)a3;
-- (CLSSurvey)initWithCKRecord:(id)a3;
-- (CLSSurvey)initWithDatabaseRow:(id)a3;
-- (id)payloadsWithClassIDs:(id)a3 dependencies:(id)a4;
-- (int64_t)syncBackend:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
-- (void)willBeDeletedFromDatabase:(id)a3;
++ (id)payloadsForDeletedSurvey:(id)survey classIDs:(id)ds database:(id)database;
++ (id)payloadsForObject:(id)object withSyncItem:(id)item database:(id)database;
+- (BOOL)canCopyToDatabase:(id)database;
+- (CLSSurvey)initWithCKRecord:(id)record;
+- (CLSSurvey)initWithDatabaseRow:(id)row;
+- (id)payloadsWithClassIDs:(id)ds dependencies:(id)dependencies;
+- (int64_t)syncBackend:(id)backend;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
+- (void)willBeDeletedFromDatabase:(id)database;
 @end
 
 @implementation CLSSurvey
 
-- (BOOL)canCopyToDatabase:(id)a3
+- (BOOL)canCopyToDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_opt_class();
-  v6 = [(CLSSurvey *)self parentObjectID];
-  v7 = [v4 select:v5 identity:v6];
+  parentObjectID = [(CLSSurvey *)self parentObjectID];
+  v7 = [databaseCopy select:v5 identity:parentObjectID];
 
-  LOBYTE(v6) = [v7 canCopyToDatabase:v4];
-  return v6;
+  LOBYTE(parentObjectID) = [v7 canCopyToDatabase:databaseCopy];
+  return parentObjectID;
 }
 
 + (id)hashableColumnNames
@@ -36,104 +36,104 @@
   return v2;
 }
 
-- (CLSSurvey)initWithDatabaseRow:(id)a3
+- (CLSSurvey)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSSurvey *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSSurvey *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"parentObjectID");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"parentObjectID");
     [v6 setParentObjectID:v7];
 
-    v8 = sub_10016D778(v4, @"type");
+    v8 = sub_10016D778(rowCopy, @"type");
     [v6 setType:{objc_msgSend(v8, "intValue")}];
 
-    v9 = sub_10016D778(v4, @"title");
+    v9 = sub_10016D778(rowCopy, @"title");
     [v6 setTitle:v9];
 
-    v10 = sub_10016D778(v4, @"authorID");
+    v10 = sub_10016D778(rowCopy, @"authorID");
     [v6 setAuthorID:v10];
 
-    v11 = sub_10016D6F0(v4, @"studentFirstSubmissionDate");
+    v11 = sub_10016D6F0(rowCopy, @"studentFirstSubmissionDate");
     [v6 setStudentFirstSubmissionDate:v11];
 
-    v12 = sub_10016D6F0(v4, @"teacherLastModifiedDate");
+    v12 = sub_10016D6F0(rowCopy, @"teacherLastModifiedDate");
     [v6 setTeacherLastModifiedDate:v12];
 
-    v13 = sub_10016D778(v4, @"serverETag");
+    v13 = sub_10016D778(rowCopy, @"serverETag");
     [v6 setServerETag:v13];
 
-    v14 = sub_10016D778(v4, @"surveyUpdateStatus");
+    v14 = sub_10016D778(rowCopy, @"surveyUpdateStatus");
     [v6 setSurveyUpdateStatus:{objc_msgSend(v14, "integerValue")}];
   }
 
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v14.receiver = self;
   v14.super_class = CLSSurvey;
-  v4 = a3;
-  [(CLSSurvey *)&v14 bindTo:v4];
+  toCopy = to;
+  [(CLSSurvey *)&v14 bindTo:toCopy];
   v15 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v15 count:1, v14.receiver, v14.super_class];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSSurvey *)self parentObjectID];
-  sub_1000982FC(v4, v6, @"parentObjectID");
+  parentObjectID = [(CLSSurvey *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, @"parentObjectID");
 
   v7 = [NSNumber numberWithInteger:[(CLSSurvey *)self type]];
-  sub_1000982FC(v4, v7, @"type");
+  sub_1000982FC(toCopy, v7, @"type");
 
-  v8 = [(CLSSurvey *)self title];
-  sub_1000982FC(v4, v8, @"title");
+  title = [(CLSSurvey *)self title];
+  sub_1000982FC(toCopy, title, @"title");
 
-  v9 = [(CLSSurvey *)self authorID];
-  sub_1000982FC(v4, v9, @"authorID");
+  authorID = [(CLSSurvey *)self authorID];
+  sub_1000982FC(toCopy, authorID, @"authorID");
 
-  v10 = [(CLSSurvey *)self serverETag];
-  sub_1000982FC(v4, v10, @"serverETag");
+  serverETag = [(CLSSurvey *)self serverETag];
+  sub_1000982FC(toCopy, serverETag, @"serverETag");
 
-  v11 = [(CLSSurvey *)self teacherLastModifiedDate];
-  sub_1000982FC(v4, v11, @"teacherLastModifiedDate");
+  teacherLastModifiedDate = [(CLSSurvey *)self teacherLastModifiedDate];
+  sub_1000982FC(toCopy, teacherLastModifiedDate, @"teacherLastModifiedDate");
 
-  v12 = [(CLSSurvey *)self studentFirstSubmissionDate];
-  sub_1000982FC(v4, v12, @"studentFirstSubmissionDate");
+  studentFirstSubmissionDate = [(CLSSurvey *)self studentFirstSubmissionDate];
+  sub_1000982FC(toCopy, studentFirstSubmissionDate, @"studentFirstSubmissionDate");
 
   v13 = [NSNumber numberWithInteger:[(CLSSurvey *)self surveyUpdateStatus]];
-  sub_1000982FC(v4, v13, @"surveyUpdateStatus");
+  sub_1000982FC(toCopy, v13, @"surveyUpdateStatus");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table CLSSurvey (\n    objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    title             text not null,\n    authorID          text not null,\n    type              integer,\n    serverETag        text,\n    teacherLastModifiedDate     real,\n    studentFirstSubmissionDate  real,\n    surveyUpdateStatus  integer,\n    foreign key (parentObjectID) references CLSHandoutAttachment(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSSurvey_objectID on CLSSurvey (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSSurvey_parentObjectID on CLSSurvey (parentObjectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSSurvey (\n    objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    title             text not null,\n    authorID          text not null,\n    type              integer,\n    serverETag        text,\n    teacherLastModifiedDate     real,\n    studentFirstSubmissionDate  real,\n    surveyUpdateStatus  integer,\n    foreign key (parentObjectID) references CLSHandoutAttachment(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSSurvey_objectID on CLSSurvey (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSSurvey_parentObjectID on CLSSurvey (parentObjectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_8;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_8:
 
   return v9;
 }
 
-- (void)willBeDeletedFromDatabase:(id)a3
+- (void)willBeDeletedFromDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSSurvey *)self objectID];
-  v6 = [v4 select:objc_opt_class() identity:v5];
+  databaseCopy = database;
+  objectID = [(CLSSurvey *)self objectID];
+  v6 = [databaseCopy select:objc_opt_class() identity:objectID];
   v7 = objc_opt_new();
   if (v6)
   {
@@ -147,26 +147,26 @@ LABEL_8:
     v6 = v9;
     if (v9)
     {
-      objc_setProperty_nonatomic_copy(v9, v10, v5, 8);
+      objc_setProperty_nonatomic_copy(v9, v10, objectID, 8);
     }
   }
 
-  v11 = sub_1000C8950(v4, v5);
+  v11 = sub_1000C8950(databaseCopy, objectID);
   [v7 addObjectsFromArray:v11];
 
-  v12 = [v7 allObjects];
-  sub_10008121C(v6, v12);
+  allObjects = [v7 allObjects];
+  sub_10008121C(v6, allObjects);
 
-  if ([v4 insertOrUpdateObject:v6])
+  if ([databaseCopy insertOrUpdateObject:v6])
   {
-    v23 = v5;
+    v23 = objectID;
     v13 = [NSArray arrayWithObjects:&v23 count:1];
     v14 = objc_opt_new();
     v15 = objc_opt_new();
     v17 = v15;
     if (v15)
     {
-      objc_setProperty_nonatomic_copy(v15, v16, v5, 8);
+      objc_setProperty_nonatomic_copy(v15, v16, objectID, 8);
     }
 
     v18 = objc_opt_class();
@@ -176,75 +176,75 @@ LABEL_8:
     v21[3] = &unk_100203888;
     v22 = v14;
     v19 = v14;
-    [v4 selectAll:v18 where:@"parentObjectID = ?" bindings:v13 block:v21];
-    v20 = [v19 allObjects];
-    sub_10008121C(v17, v20);
+    [databaseCopy selectAll:v18 where:@"parentObjectID = ?" bindings:v13 block:v21];
+    allObjects2 = [v19 allObjects];
+    sub_10008121C(v17, allObjects2);
 
-    [v4 insertOrUpdateObject:v17];
-    [v4 deleteAllWithoutTracking:objc_opt_class() where:@"parentObjectID = ?" bindings:v13];
+    [databaseCopy insertOrUpdateObject:v17];
+    [databaseCopy deleteAllWithoutTracking:objc_opt_class() where:@"parentObjectID = ?" bindings:v13];
   }
 }
 
-- (CLSSurvey)initWithCKRecord:(id)a3
+- (CLSSurvey)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"type"];
+  recordCopy = record;
+  v5 = [recordCopy objectForKeyedSubscript:@"type"];
   if (v5)
   {
     v6 = CLSSurveyTypeFromString();
-    v7 = [v4 objectForKeyedSubscript:@"authorID"];
+    v7 = [recordCopy objectForKeyedSubscript:@"authorID"];
     v8 = [(CLSSurvey *)self initWithType:v6 authorID:v7];
     v9 = v8;
     if (v8)
     {
-      [(CLSSurvey *)v8 _initCommonPropsWithRecord:v4];
-      v10 = [v4 objectForKeyedSubscript:@"title"];
+      [(CLSSurvey *)v8 _initCommonPropsWithRecord:recordCopy];
+      v10 = [recordCopy objectForKeyedSubscript:@"title"];
       [(CLSSurvey *)v9 setTitle:v10];
     }
 
     self = v9;
 
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
   v8.receiver = self;
   v8.super_class = CLSSurvey;
-  v4 = a3;
-  [(CLSSurvey *)&v8 populate:v4];
+  populateCopy = populate;
+  [(CLSSurvey *)&v8 populate:populateCopy];
   v5 = [(CLSSurvey *)self authorID:v8.receiver];
-  [v4 setObject:v5 forKeyedSubscript:@"authorID"];
+  [populateCopy setObject:v5 forKeyedSubscript:@"authorID"];
 
   [(CLSSurvey *)self type];
   v6 = NSStringFromSurveyType();
-  [v4 setObject:v6 forKeyedSubscript:@"type"];
+  [populateCopy setObject:v6 forKeyedSubscript:@"type"];
 
-  v7 = [(CLSSurvey *)self title];
-  [v4 setObject:v7 forKeyedSubscript:@"title"];
+  title = [(CLSSurvey *)self title];
+  [populateCopy setObject:title forKeyedSubscript:@"title"];
 
-  [(CLSSurvey *)self updateParentReferencesForRecord:v4];
+  [(CLSSurvey *)self updateParentReferencesForRecord:populateCopy];
 }
 
-- (int64_t)syncBackend:(id)a3
+- (int64_t)syncBackend:(id)backend
 {
-  v4 = a3;
-  v5 = [(CLSSurvey *)self parentObjectID];
-  if (v5)
+  backendCopy = backend;
+  parentObjectID = [(CLSSurvey *)self parentObjectID];
+  if (parentObjectID)
   {
-    v6 = [v4 select:objc_opt_class() identity:v5];
+    v6 = [backendCopy select:objc_opt_class() identity:parentObjectID];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 syncBackend:v4];
+      v8 = [v6 syncBackend:backendCopy];
     }
 
     else
@@ -261,16 +261,16 @@ LABEL_8:
   return v8;
 }
 
-+ (id)payloadsForDeletedSurvey:(id)a3 classIDs:(id)a4 database:(id)a5
++ (id)payloadsForDeletedSurvey:(id)survey classIDs:(id)ds database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 select:objc_opt_class() identity:v7];
+  surveyCopy = survey;
+  dsCopy = ds;
+  databaseCopy = database;
+  v10 = [databaseCopy select:objc_opt_class() identity:surveyCopy];
   if (v10)
   {
-    v26 = v9;
-    v27 = v7;
+    v26 = databaseCopy;
+    v27 = surveyCopy;
     v11 = objc_opt_new();
     v25 = v10;
     v12 = v10[2];
@@ -301,12 +301,12 @@ LABEL_8:
           v20 = objc_opt_new();
           [(PDDPPayload *)v19 setSurveyStep:v20];
 
-          v21 = [(PDDPPayload *)v19 surveyStep];
-          [v21 setObjectId:v17];
+          surveyStep = [(PDDPPayload *)v19 surveyStep];
+          [surveyStep setObjectId:v17];
 
-          v22 = [v8 mutableCopy];
-          v23 = [(PDDPPayload *)v19 surveyStep];
-          [v23 setClassIds:v22];
+          v22 = [dsCopy mutableCopy];
+          surveyStep2 = [(PDDPPayload *)v19 surveyStep];
+          [surveyStep2 setClassIds:v22];
 
           [v11 addObject:v19];
           objc_autoreleasePoolPop(v18);
@@ -318,8 +318,8 @@ LABEL_8:
       while (v14);
     }
 
-    v9 = v26;
-    v7 = v27;
+    databaseCopy = v26;
+    surveyCopy = v27;
     v10 = v25;
   }
 
@@ -331,14 +331,14 @@ LABEL_8:
   return v11;
 }
 
-+ (id)payloadsForObject:(id)a3 withSyncItem:(id)a4 database:(id)a5
++ (id)payloadsForObject:(id)object withSyncItem:(id)item database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  itemCopy = item;
+  databaseCopy = database;
   v10 = objc_alloc_init(PDDPPayload);
   [(PDDPPayload *)v10 setType:25];
-  v11 = [v8 state] - 1;
+  v11 = [itemCopy state] - 1;
   if (v11 < 3)
   {
     v12 = (v11 + 1);
@@ -350,16 +350,16 @@ LABEL_8:
   }
 
   [(PDDPPayload *)v10 setAction:v12];
-  if ([v8 state] == 3)
+  if ([itemCopy state] == 3)
   {
     v13 = objc_opt_new();
     [(PDDPPayload *)v10 setSurvey:v13];
 
-    v14 = [v8 entityIdentity];
-    v15 = [(PDDPPayload *)v10 survey];
-    [v15 setObjectId:v14];
+    entityIdentity = [itemCopy entityIdentity];
+    survey = [(PDDPPayload *)v10 survey];
+    [survey setObjectId:entityIdentity];
 
-    v16 = [v9 select:objc_opt_class() identity:v14];
+    v16 = [databaseCopy select:objc_opt_class() identity:entityIdentity];
     v17 = v16;
     if (v16)
     {
@@ -373,8 +373,8 @@ LABEL_8:
 
     v19 = v18;
     v20 = [v19 mutableCopy];
-    v21 = [(PDDPPayload *)v10 survey];
-    [v21 setClassIds:v20];
+    survey2 = [(PDDPPayload *)v10 survey];
+    [survey2 setClassIds:v20];
 
     if (v17)
     {
@@ -387,7 +387,7 @@ LABEL_8:
     }
 
     v23 = v22;
-    v24 = [CLSSurvey payloadsForDeletedSurvey:v14 classIDs:v23 database:v9];
+    v24 = [CLSSurvey payloadsForDeletedSurvey:entityIdentity classIDs:v23 database:databaseCopy];
 
     if (v24)
     {
@@ -401,23 +401,23 @@ LABEL_8:
 
   else
   {
-    v27 = sub_10001ABBC(v7);
+    v27 = sub_10001ABBC(objectCopy);
     [(PDDPPayload *)v10 setSurvey:v27];
 
-    v28 = [v7 objectID];
-    v14 = sub_1000C8950(v9, v28);
+    objectID = [objectCopy objectID];
+    entityIdentity = sub_1000C8950(databaseCopy, objectID);
 
-    v17 = [v14 mutableCopy];
-    v29 = [(PDDPPayload *)v10 survey];
-    [v29 setClassIds:v17];
+    v17 = [entityIdentity mutableCopy];
+    survey3 = [(PDDPPayload *)v10 survey];
+    [survey3 setClassIds:v17];
   }
 
-  if (v7)
+  if (objectCopy)
   {
-    v30 = [v7 objectID];
-    v34 = v30;
+    objectID2 = [objectCopy objectID];
+    v34 = objectID2;
     v31 = [NSArray arrayWithObjects:&v34 count:1];
-    sub_1000C8DF8(v9, v31, 1);
+    sub_1000C8DF8(databaseCopy, v31, 1);
   }
 
   v33 = v10;
@@ -427,17 +427,17 @@ LABEL_15:
   return v26;
 }
 
-- (id)payloadsWithClassIDs:(id)a3 dependencies:(id)a4
+- (id)payloadsWithClassIDs:(id)ds dependencies:(id)dependencies
 {
-  v5 = a3;
+  dsCopy = ds;
   v6 = objc_alloc_init(PDDPPayload);
   [(PDDPPayload *)v6 setType:25];
   v7 = sub_10001ABBC(self);
   [(PDDPPayload *)v6 setSurvey:v7];
 
-  v8 = [v5 mutableCopy];
-  v9 = [(PDDPPayload *)v6 survey];
-  [v9 setClassIds:v8];
+  v8 = [dsCopy mutableCopy];
+  survey = [(PDDPPayload *)v6 survey];
+  [survey setClassIds:v8];
 
   v12 = v6;
   v10 = [NSArray arrayWithObjects:&v12 count:1];

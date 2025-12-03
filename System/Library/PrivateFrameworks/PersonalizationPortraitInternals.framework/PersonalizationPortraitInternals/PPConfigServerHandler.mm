@@ -1,14 +1,14 @@
 @interface PPConfigServerHandler
-- (void)assetVersionWithCompletion:(id)a3;
-- (void)readableTrialTreatmentsMappingWithCompletion:(id)a3;
-- (void)variantNameWithCompletion:(id)a3;
+- (void)assetVersionWithCompletion:(id)completion;
+- (void)readableTrialTreatmentsMappingWithCompletion:(id)completion;
+- (void)variantNameWithCompletion:(id)completion;
 @end
 
 @implementation PPConfigServerHandler
 
-- (void)readableTrialTreatmentsMappingWithCompletion:(id)a3
+- (void)readableTrialTreatmentsMappingWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = pp_default_signpost_handle();
   v5 = os_signpost_id_generate(v4);
 
@@ -28,7 +28,7 @@
   }
 
   v9 = +[PPTrialWrapper sharedInstance];
-  v10 = [v9 readableTreatmentsMapping];
+  readableTreatmentsMapping = [v9 readableTreatmentsMapping];
 
   v11 = pp_default_signpost_handle();
   v12 = v11;
@@ -38,12 +38,12 @@
     _os_signpost_emit_with_name_impl(&dword_23224A000, v12, OS_SIGNPOST_INTERVAL_END, v5, "PPConfigServer.readableTrialTreatmentsMapping", "", v13, 2u);
   }
 
-  v3[2](v3, v10, 0);
+  completionCopy[2](completionCopy, readableTreatmentsMapping, 0);
 }
 
-- (void)variantNameWithCompletion:(id)a3
+- (void)variantNameWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = pp_default_signpost_handle();
   v5 = os_signpost_id_generate(v4);
 
@@ -63,7 +63,7 @@
   }
 
   v9 = +[PPConfiguration sharedInstance];
-  v10 = [v9 portraitVariantName];
+  portraitVariantName = [v9 portraitVariantName];
 
   v11 = pp_default_signpost_handle();
   v12 = v11;
@@ -73,12 +73,12 @@
     _os_signpost_emit_with_name_impl(&dword_23224A000, v12, OS_SIGNPOST_INTERVAL_END, v5, "PPConfigServer.variantName", "", v13, 2u);
   }
 
-  v3[2](v3, v10, 0);
+  completionCopy[2](completionCopy, portraitVariantName, 0);
 }
 
-- (void)assetVersionWithCompletion:(id)a3
+- (void)assetVersionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = pp_default_signpost_handle();
   v5 = os_signpost_id_generate(v4);
 
@@ -105,7 +105,7 @@
     _os_signpost_emit_with_name_impl(&dword_23224A000, v10, OS_SIGNPOST_INTERVAL_END, v5, "PPConfigServer.assetVersion", "", v11, 2u);
   }
 
-  (*(v3 + 2))(v3, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 }
 
 @end

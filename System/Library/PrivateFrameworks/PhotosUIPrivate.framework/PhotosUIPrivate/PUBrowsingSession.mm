@@ -1,49 +1,49 @@
 @interface PUBrowsingSession
 - (PUBrowsingSession)init;
-- (PUBrowsingSession)initWithDataSourceManager:(id)a3 actionManager:(id)a4 mediaProvider:(id)a5 photosDetailsContext:(id)a6 lowMemoryMode:(BOOL)a7 importStatusManager:(id)a8 privacyController:(id)a9;
+- (PUBrowsingSession)initWithDataSourceManager:(id)manager actionManager:(id)actionManager mediaProvider:(id)provider photosDetailsContext:(id)context lowMemoryMode:(BOOL)mode importStatusManager:(id)statusManager privacyController:(id)controller;
 - (PUTileAnimator)tileAnimator;
-- (id)assetActionManagerCurrentAssetsDataSource:(id)a3;
-- (id)assetsDataSourceManagerInterestingAssetReferences:(id)a3;
-- (void)assetEditOperationManager:(id)a3 didChangeEditOperationStatusForAsset:(id)a4 context:(void *)a5;
-- (void)assetEditOperationManager:(id)a3 didChangeEditOperationsPerformedOnAsset:(id)a4 context:(void *)a5;
-- (void)assetsDataSourceManager:(id)a3 didChangeAssetsDataSource:(id)a4;
-- (void)configureTilingView:(id)a3;
-- (void)loadingStatusManager:(id)a3 didUpdateLoadingStatus:(id)a4 forItemIdentifier:(id)a5;
+- (id)assetActionManagerCurrentAssetsDataSource:(id)source;
+- (id)assetsDataSourceManagerInterestingAssetReferences:(id)references;
+- (void)assetEditOperationManager:(id)manager didChangeEditOperationStatusForAsset:(id)asset context:(void *)context;
+- (void)assetEditOperationManager:(id)manager didChangeEditOperationsPerformedOnAsset:(id)asset context:(void *)context;
+- (void)assetsDataSourceManager:(id)manager didChangeAssetsDataSource:(id)source;
+- (void)configureTilingView:(id)view;
+- (void)loadingStatusManager:(id)manager didUpdateLoadingStatus:(id)status forItemIdentifier:(id)identifier;
 @end
 
 @implementation PUBrowsingSession
 
-- (void)configureTilingView:(id)a3
+- (void)configureTilingView:(id)view
 {
-  v4 = a3;
-  v5 = [(PUBrowsingSession *)self tileAnimator];
-  [v4 setTileAnimator:v5];
+  viewCopy = view;
+  tileAnimator = [(PUBrowsingSession *)self tileAnimator];
+  [viewCopy setTileAnimator:tileAnimator];
 
-  v6 = [(PUBrowsingSession *)self contentTileProvider];
-  [v6 registerTileControllerClassesWithTilingView:v4];
+  contentTileProvider = [(PUBrowsingSession *)self contentTileProvider];
+  [contentTileProvider registerTileControllerClassesWithTilingView:viewCopy];
 
   v7 = [(PUBrowsingSession *)self description];
-  [v4 registerPostLayoutBlock:&__block_literal_global_15213 forIdentifier:v7];
+  [viewCopy registerPostLayoutBlock:&__block_literal_global_15213 forIdentifier:v7];
 }
 
-- (void)assetEditOperationManager:(id)a3 didChangeEditOperationStatusForAsset:(id)a4 context:(void *)a5
+- (void)assetEditOperationManager:(id)manager didChangeEditOperationStatusForAsset:(id)asset context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  if (PUEditOperationManagerObservationContext != a5)
+  managerCopy = manager;
+  assetCopy = asset;
+  if (PUEditOperationManagerObservationContext != context)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUBrowsingSession.m" lineNumber:224 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingSession.m" lineNumber:224 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v11 = v10;
-  if ([v10 conformsToProtocol:&unk_1F2BDF190])
+  v11 = assetCopy;
+  if ([assetCopy conformsToProtocol:&unk_1F2BDF190])
   {
-    v12 = [v9 editOperationStatusForAsset:v11];
-    v13 = [(PUBrowsingSession *)self viewModel];
-    v14 = [v13 assetSharedViewModelForAsset:v11];
+    v12 = [managerCopy editOperationStatusForAsset:v11];
+    viewModel = [(PUBrowsingSession *)self viewModel];
+    v14 = [viewModel assetSharedViewModelForAsset:v11];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -72,20 +72,20 @@ uint64_t __92__PUBrowsingSession_assetEditOperationManager_didChangeEditOperatio
   return [*(a1 + 32) setSaveState:v2];
 }
 
-- (void)assetEditOperationManager:(id)a3 didChangeEditOperationsPerformedOnAsset:(id)a4 context:(void *)a5
+- (void)assetEditOperationManager:(id)manager didChangeEditOperationsPerformedOnAsset:(id)asset context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  if (PUEditOperationManagerObservationContext != a5)
+  managerCopy = manager;
+  assetCopy = asset;
+  if (PUEditOperationManagerObservationContext != context)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUBrowsingSession.m" lineNumber:193 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingSession.m" lineNumber:193 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v11 = v10;
-  if ([v10 conformsToProtocol:&unk_1F2BDF190])
+  v11 = assetCopy;
+  if ([assetCopy conformsToProtocol:&unk_1F2BDF190])
   {
     v20[0] = 0;
     v20[1] = v20;
@@ -98,9 +98,9 @@ uint64_t __92__PUBrowsingSession_assetEditOperationManager_didChangeEditOperatio
     v19[2] = __95__PUBrowsingSession_assetEditOperationManager_didChangeEditOperationsPerformedOnAsset_context___block_invoke;
     v19[3] = &unk_1E7B75CE0;
     v19[4] = v20;
-    [v9 enumerateEditOperationsPerformedOnAsset:v11 usingBlock:v19];
-    v12 = [(PUBrowsingSession *)self viewModel];
-    v13 = [v12 assetSharedViewModelForAsset:v11];
+    [managerCopy enumerateEditOperationsPerformedOnAsset:v11 usingBlock:v19];
+    viewModel = [(PUBrowsingSession *)self viewModel];
+    v13 = [viewModel assetSharedViewModelForAsset:v11];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -125,58 +125,58 @@ void __95__PUBrowsingSession_assetEditOperationManager_didChangeEditOperationsPe
   }
 }
 
-- (void)loadingStatusManager:(id)a3 didUpdateLoadingStatus:(id)a4 forItemIdentifier:(id)a5
+- (void)loadingStatusManager:(id)manager didUpdateLoadingStatus:(id)status forItemIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(PUBrowsingSession *)self viewModel];
-  v10 = [v9 assetSharedViewModelForAssetUUID:v8];
+  statusCopy = status;
+  identifierCopy = identifier;
+  viewModel = [(PUBrowsingSession *)self viewModel];
+  v10 = [viewModel assetSharedViewModelForAssetUUID:identifierCopy];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__PUBrowsingSession_loadingStatusManager_didUpdateLoadingStatus_forItemIdentifier___block_invoke;
   v13[3] = &unk_1E7B80C38;
   v14 = v10;
-  v15 = v7;
-  v11 = v7;
+  v15 = statusCopy;
+  v11 = statusCopy;
   v12 = v10;
   [v12 performChanges:v13];
 }
 
-- (id)assetActionManagerCurrentAssetsDataSource:(id)a3
+- (id)assetActionManagerCurrentAssetsDataSource:(id)source
 {
-  v3 = [(PUBrowsingSession *)self viewModel];
-  v4 = [v3 assetsDataSource];
+  viewModel = [(PUBrowsingSession *)self viewModel];
+  assetsDataSource = [viewModel assetsDataSource];
 
-  return v4;
+  return assetsDataSource;
 }
 
-- (id)assetsDataSourceManagerInterestingAssetReferences:(id)a3
+- (id)assetsDataSourceManagerInterestingAssetReferences:(id)references
 {
-  v3 = [(PUBrowsingSession *)self viewModel];
-  v4 = [v3 activeAssetReferences];
+  viewModel = [(PUBrowsingSession *)self viewModel];
+  activeAssetReferences = [viewModel activeAssetReferences];
 
-  return v4;
+  return activeAssetReferences;
 }
 
-- (void)assetsDataSourceManager:(id)a3 didChangeAssetsDataSource:(id)a4
+- (void)assetsDataSourceManager:(id)manager didChangeAssetsDataSource:(id)source
 {
-  v6 = [a3 assetsDataSource];
-  if (!v6)
+  assetsDataSource = [manager assetsDataSource];
+  if (!assetsDataSource)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUBrowsingSession.m" lineNumber:142 description:@"Data source must never be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingSession.m" lineNumber:142 description:@"Data source must never be nil"];
   }
 
-  v7 = [(PUBrowsingSession *)self viewModel];
+  viewModel = [(PUBrowsingSession *)self viewModel];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__PUBrowsingSession_assetsDataSourceManager_didChangeAssetsDataSource___block_invoke;
   v11[3] = &unk_1E7B80C38;
-  v12 = v7;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v12 = viewModel;
+  v13 = assetsDataSource;
+  v8 = assetsDataSource;
+  v9 = viewModel;
   [v9 performChanges:v11];
 }
 
@@ -195,81 +195,81 @@ void __95__PUBrowsingSession_assetEditOperationManager_didChangeEditOperationsPe
   return tileAnimator;
 }
 
-- (PUBrowsingSession)initWithDataSourceManager:(id)a3 actionManager:(id)a4 mediaProvider:(id)a5 photosDetailsContext:(id)a6 lowMemoryMode:(BOOL)a7 importStatusManager:(id)a8 privacyController:(id)a9
+- (PUBrowsingSession)initWithDataSourceManager:(id)manager actionManager:(id)actionManager mediaProvider:(id)provider photosDetailsContext:(id)context lowMemoryMode:(BOOL)mode importStatusManager:(id)statusManager privacyController:(id)controller
 {
-  v10 = a7;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v43 = a6;
-  v45 = a6;
-  obj = a8;
-  v19 = a8;
-  v20 = a9;
+  modeCopy = mode;
+  managerCopy = manager;
+  actionManagerCopy = actionManager;
+  providerCopy = provider;
+  contextCopy = context;
+  contextCopy2 = context;
+  obj = statusManager;
+  statusManagerCopy = statusManager;
+  controllerCopy = controller;
   v52.receiver = self;
   v52.super_class = PUBrowsingSession;
   v21 = [(PUBrowsingSession *)&v52 init];
   if (v21)
   {
-    v44 = v18;
-    v22 = [v16 assetsDataSource];
+    v44 = providerCopy;
+    assetsDataSource = [managerCopy assetsDataSource];
 
-    if (!v22)
+    if (!assetsDataSource)
     {
-      v39 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v39 handleFailureInMethod:a2 object:v21 file:@"PUBrowsingSession.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"[dataSourceManager assetsDataSource] != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v21 file:@"PUBrowsingSession.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"[dataSourceManager assetsDataSource] != nil"}];
     }
 
     if (!v44)
     {
-      v40 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v40 handleFailureInMethod:a2 object:v21 file:@"PUBrowsingSession.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider != nil"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v21 file:@"PUBrowsingSession.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider != nil"}];
     }
 
-    v23 = [[PUBrowsingViewModel alloc] initWithLowMemoryMode:v10];
+    v23 = [[PUBrowsingViewModel alloc] initWithLowMemoryMode:modeCopy];
     objc_storeStrong(&v21->_viewModel, v23);
-    objc_storeStrong(&v21->_mediaProvider, a5);
+    objc_storeStrong(&v21->_mediaProvider, provider);
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (v25 = v16, [v25 underlyingDataSourceManager], v26 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v25, LOBYTE(v25) = objc_opt_isKindOfClass(), v26, (v25))
+    if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && (v25 = managerCopy, [v25 underlyingDataSourceManager], v26 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v25, LOBYTE(v25) = objc_opt_isKindOfClass(), v26, (v25))
     {
-      if (v17)
+      if (actionManagerCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v24 = objc_alloc_init(PUPhotoKitAssetActionManager);
-          [(PUPhotoKitAssetActionManager *)v24 setDataSourceManager:v16];
-          [(PUPhotoKitAssetActionManager *)v17 setFallbackActionManager:v24];
+          [(PUPhotoKitAssetActionManager *)v24 setDataSourceManager:managerCopy];
+          [(PUPhotoKitAssetActionManager *)actionManagerCopy setFallbackActionManager:v24];
         }
       }
 
       else
       {
-        v17 = objc_alloc_init(PUPhotoKitAssetActionManager);
-        [(PUPhotoKitAssetActionManager *)v17 setDataSourceManager:v16];
+        actionManagerCopy = objc_alloc_init(PUPhotoKitAssetActionManager);
+        [(PUPhotoKitAssetActionManager *)actionManagerCopy setDataSourceManager:managerCopy];
       }
     }
 
-    [(PUBrowsingViewModel *)v23 setActionManager:v17];
-    v27 = [MEMORY[0x1E69C3360] sharedManager];
+    [(PUBrowsingViewModel *)v23 setActionManager:actionManagerCopy];
+    mEMORY[0x1E69C3360] = [MEMORY[0x1E69C3360] sharedManager];
     editOperationManager = v21->_editOperationManager;
-    v21->_editOperationManager = v27;
+    v21->_editOperationManager = mEMORY[0x1E69C3360];
 
     [(PXAssetEditOperationManager *)v21->_editOperationManager registerObserver:v21 context:PUEditOperationManagerObservationContext];
-    objc_storeStrong(&v21->_actionManager, v17);
+    objc_storeStrong(&v21->_actionManager, actionManagerCopy);
     [(PUAssetActionManager *)v21->_actionManager setDelegate:v21];
     v29 = [[PUOneUpContentTileProvider alloc] initWithMediaProvider:v21->_mediaProvider];
     contentTileProvider = v21->_contentTileProvider;
     v21->_contentTileProvider = v29;
 
-    objc_storeStrong(&v21->_dataSourceManager, a3);
+    objc_storeStrong(&v21->_dataSourceManager, manager);
     [(PUAssetsDataSourceManager *)v21->_dataSourceManager setDelegate:v21];
     objc_storeStrong(&v21->_importStatusManager, obj);
-    objc_storeStrong(&v21->_privacyController, a9);
+    objc_storeStrong(&v21->_privacyController, controller);
     v31 = +[PUOneUpSettings sharedInstance];
-    v32 = [v31 shouldMergeOverlappingLivePhotos];
+    shouldMergeOverlappingLivePhotos = [v31 shouldMergeOverlappingLivePhotos];
 
-    if (v32)
+    if (shouldMergeOverlappingLivePhotos)
     {
       v33 = [[PUOneUpMergedVideoProvider alloc] initWithBrowsingViewModel:v23];
       mergedVideoProvider = v21->_mergedVideoProvider;
@@ -281,11 +281,11 @@ void __95__PUBrowsingSession_assetEditOperationManager_didChangeEditOperationsPe
     v46[2] = __148__PUBrowsingSession_initWithDataSourceManager_actionManager_mediaProvider_photosDetailsContext_lowMemoryMode_importStatusManager_privacyController___block_invoke;
     v46[3] = &unk_1E7B7EA98;
     v47 = v23;
-    v18 = v44;
+    providerCopy = v44;
     v48 = v44;
-    v49 = v16;
-    v50 = v19;
-    v51 = v20;
+    v49 = managerCopy;
+    v50 = statusManagerCopy;
+    v51 = controllerCopy;
     v35 = v23;
     [(PUViewModel *)v35 performChanges:v46];
     v36 = objc_alloc_init(MEMORY[0x1E69C4558]);
@@ -294,7 +294,7 @@ void __95__PUBrowsingSession_assetEditOperationManager_didChangeEditOperationsPe
 
     [(PXLoadingStatusManager *)v21->_loadingStatusManager registerObserver:v21];
     [(PUMediaProvider *)v21->_mediaProvider setLoadingStatusManager:v21->_loadingStatusManager];
-    objc_storeStrong(&v21->_photosDetailsContext, v43);
+    objc_storeStrong(&v21->_photosDetailsContext, contextCopy);
   }
 
   return v21;
@@ -316,8 +316,8 @@ uint64_t __148__PUBrowsingSession_initWithDataSourceManager_actionManager_mediaP
 
 - (PUBrowsingSession)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUBrowsingSession.m" lineNumber:49 description:{@"%s is not available as initializer", "-[PUBrowsingSession init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingSession.m" lineNumber:49 description:{@"%s is not available as initializer", "-[PUBrowsingSession init]"}];
 
   abort();
 }

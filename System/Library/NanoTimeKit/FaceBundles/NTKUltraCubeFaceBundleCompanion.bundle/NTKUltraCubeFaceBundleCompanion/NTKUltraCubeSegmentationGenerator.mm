@@ -1,27 +1,27 @@
 @interface NTKUltraCubeSegmentationGenerator
-+ (id)segmentationFromImageSource:(id)a3 faceRects:(id)a4 orientation:(unsigned int)a5;
++ (id)segmentationFromImageSource:(id)source faceRects:(id)rects orientation:(unsigned int)orientation;
 - (NTKUltraCubeSegmentationGenerator)init;
 - (id)_classifyImage;
 - (id)_computeSegmentationAuxiliaryDictionary;
-- (id)_computeSegmentationForImageRequestHandler:(id)a3 ofQuality:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 releaseCachedResources:(BOOL)a7;
+- (id)_computeSegmentationForImageRequestHandler:(id)handler ofQuality:(unint64_t)quality width:(unint64_t)width height:(unint64_t)height releaseCachedResources:(BOOL)resources;
 - (id)_computeThresholdAuxiliaryDictionaryIfEnabled;
-- (id)_createThresholdSegmentationFromDisparityData:(id)a3;
+- (id)_createThresholdSegmentationFromDisparityData:(id)data;
 - (id)_extractDisparityData;
 - (id)_extractPortraitEffectsMatteIfSupported;
 - (id)_retrieveAuxiliaryDictionary;
-- (id)segmentationFromImageSource:(id)a3 faceRects:(id)a4 orientation:(unsigned int)a5;
+- (id)segmentationFromImageSource:(id)source faceRects:(id)rects orientation:(unsigned int)orientation;
 - (unint64_t)_identifySegmentationType;
 @end
 
 @implementation NTKUltraCubeSegmentationGenerator
 
-+ (id)segmentationFromImageSource:(id)a3 faceRects:(id)a4 orientation:(unsigned int)a5
++ (id)segmentationFromImageSource:(id)source faceRects:(id)rects orientation:(unsigned int)orientation
 {
-  v5 = *&a5;
-  v7 = a4;
-  v8 = a3;
+  v5 = *&orientation;
+  rectsCopy = rects;
+  sourceCopy = source;
   v9 = objc_alloc_init(NTKUltraCubeSegmentationGenerator);
-  v10 = [(NTKUltraCubeSegmentationGenerator *)v9 segmentationFromImageSource:v8 faceRects:v7 orientation:v5];
+  v10 = [(NTKUltraCubeSegmentationGenerator *)v9 segmentationFromImageSource:sourceCopy faceRects:rectsCopy orientation:v5];
 
   return v10;
 }
@@ -53,16 +53,16 @@
   return v2;
 }
 
-- (id)segmentationFromImageSource:(id)a3 faceRects:(id)a4 orientation:(unsigned int)a5
+- (id)segmentationFromImageSource:(id)source faceRects:(id)rects orientation:(unsigned int)orientation
 {
-  v9 = a3;
-  v10 = a4;
-  objc_storeStrong(&self->_imageSource, a3);
-  objc_storeStrong(&self->_faceRects, a4);
-  self->_orientation = a5;
+  sourceCopy = source;
+  rectsCopy = rects;
+  objc_storeStrong(&self->_imageSource, source);
+  objc_storeStrong(&self->_faceRects, rects);
+  self->_orientation = orientation;
   self->_identifiedType = [(NTKUltraCubeSegmentationGenerator *)self _identifySegmentationType];
   v11 = objc_autoreleasePoolPush();
-  v12 = [(NTKUltraCubeSegmentationGenerator *)self _retrieveAuxiliaryDictionary];
+  _retrieveAuxiliaryDictionary = [(NTKUltraCubeSegmentationGenerator *)self _retrieveAuxiliaryDictionary];
   faceRects = self->_faceRects;
   self->_faceRects = 0;
 
@@ -71,7 +71,7 @@
   [v14 releaseCachedResources];
 
   objc_autoreleasePoolPop(v11);
-  v15 = [[NTKUltraCubeSegmentation alloc] initWithType:self->_identifiedType dictionary:v12];
+  v15 = [[NTKUltraCubeSegmentation alloc] initWithType:self->_identifiedType dictionary:_retrieveAuxiliaryDictionary];
 
   return v15;
 }
@@ -90,12 +90,12 @@
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%s: check if data contains portrait effects matte", &v15, 0xCu);
     }
 
-    v6 = [(NTKUltraCubeSegmentationGenerator *)self _extractPortraitEffectsMatteIfSupported];
-    v4 = v6;
-    if (v6)
+    _extractPortraitEffectsMatteIfSupported = [(NTKUltraCubeSegmentationGenerator *)self _extractPortraitEffectsMatteIfSupported];
+    v4 = _extractPortraitEffectsMatteIfSupported;
+    if (_extractPortraitEffectsMatteIfSupported)
     {
       self->_identifiedType = 1;
-      v4 = v6;
+      v4 = _extractPortraitEffectsMatteIfSupported;
       v7 = v4;
     }
 
@@ -109,10 +109,10 @@
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%s: no existing matte data; try to compute our own segmentation data", &v15, 0xCu);
       }
 
-      v9 = [(NTKUltraCubeSegmentationGenerator *)self _computeSegmentationAuxiliaryDictionary];
+      _computeSegmentationAuxiliaryDictionary = [(NTKUltraCubeSegmentationGenerator *)self _computeSegmentationAuxiliaryDictionary];
       v10 = _NTKLoggingObjectForDomain();
       v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-      if (v9)
+      if (_computeSegmentationAuxiliaryDictionary)
       {
         if (v11)
         {
@@ -121,7 +121,7 @@
           _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%s: successfully computed segmentation data", &v15, 0xCu);
         }
 
-        v7 = v9;
+        v7 = _computeSegmentationAuxiliaryDictionary;
       }
 
       else
@@ -133,11 +133,11 @@
           _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%s: failed to compute segmentation data; try computing threshold segmentation, if enabled", &v15, 0xCu);
         }
 
-        v12 = [(NTKUltraCubeSegmentationGenerator *)self _computeThresholdAuxiliaryDictionaryIfEnabled];
-        v7 = v12;
-        if (v12)
+        _computeThresholdAuxiliaryDictionaryIfEnabled = [(NTKUltraCubeSegmentationGenerator *)self _computeThresholdAuxiliaryDictionaryIfEnabled];
+        v7 = _computeThresholdAuxiliaryDictionaryIfEnabled;
+        if (_computeThresholdAuxiliaryDictionaryIfEnabled)
         {
-          v13 = v12;
+          v13 = _computeThresholdAuxiliaryDictionaryIfEnabled;
         }
       }
     }
@@ -173,18 +173,18 @@
     return 1;
   }
 
-  v5 = [(NTKUltraCubeSegmentationGenerator *)self _classifyImage];
-  if ([v5 hasPeople])
+  _classifyImage = [(NTKUltraCubeSegmentationGenerator *)self _classifyImage];
+  if ([_classifyImage hasPeople])
   {
     v4 = 1;
   }
 
-  else if ([v5 hasAnimal])
+  else if ([_classifyImage hasAnimal])
   {
     v4 = 2;
   }
 
-  else if (([v5 hasCityscape] & 1) != 0 || objc_msgSend(v5, "hasNature"))
+  else if (([_classifyImage hasCityscape] & 1) != 0 || objc_msgSend(_classifyImage, "hasNature"))
   {
     v4 = 3;
   }
@@ -241,11 +241,11 @@
       {
         v43 = v8;
         v44 = v4;
-        v19 = [v9 results];
+        results = [v9 results];
         v20 = _NTKLoggingObjectForDomain();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [v19 count];
+          v21 = [results count];
           *buf = 136315394;
           v52 = "[NTKUltraCubeSegmentationGenerator _classifyImage]";
           v53 = 2048;
@@ -257,7 +257,7 @@
         v48 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v13 = v19;
+        v13 = results;
         v22 = [v13 countByEnumeratingWithState:&v45 objects:v50 count:16];
         if (v22)
         {
@@ -288,8 +288,8 @@
               }
 
               personIdentifiers = self->_personIdentifiers;
-              v29 = [v26 identifier];
-              LODWORD(personIdentifiers) = [(NSSet *)personIdentifiers containsObject:v29];
+              identifier = [v26 identifier];
+              LODWORD(personIdentifiers) = [(NSSet *)personIdentifiers containsObject:identifier];
 
               if (personIdentifiers)
               {
@@ -307,8 +307,8 @@
               else
               {
                 animalIdentifiers = self->_animalIdentifiers;
-                v32 = [v26 identifier];
-                LODWORD(animalIdentifiers) = [(NSSet *)animalIdentifiers containsObject:v32];
+                identifier2 = [v26 identifier];
+                LODWORD(animalIdentifiers) = [(NSSet *)animalIdentifiers containsObject:identifier2];
 
                 if (animalIdentifiers)
                 {
@@ -326,8 +326,8 @@
                 else
                 {
                   cityscapeIdentifiers = self->_cityscapeIdentifiers;
-                  v35 = [v26 identifier];
-                  LODWORD(cityscapeIdentifiers) = [(NSSet *)cityscapeIdentifiers containsObject:v35];
+                  identifier3 = [v26 identifier];
+                  LODWORD(cityscapeIdentifiers) = [(NSSet *)cityscapeIdentifiers containsObject:identifier3];
 
                   if (cityscapeIdentifiers)
                   {
@@ -345,8 +345,8 @@
                   else
                   {
                     landscapeIdentifiers = self->_landscapeIdentifiers;
-                    v38 = [v26 identifier];
-                    LODWORD(landscapeIdentifiers) = [(NSSet *)landscapeIdentifiers containsObject:v38];
+                    identifier4 = [v26 identifier];
+                    LODWORD(landscapeIdentifiers) = [(NSSet *)landscapeIdentifiers containsObject:identifier4];
 
                     if (landscapeIdentifiers)
                     {
@@ -511,11 +511,11 @@ LABEL_46:
   return v10;
 }
 
-- (id)_computeSegmentationForImageRequestHandler:(id)a3 ofQuality:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 releaseCachedResources:(BOOL)a7
+- (id)_computeSegmentationForImageRequestHandler:(id)handler ofQuality:(unint64_t)quality width:(unint64_t)width height:(unint64_t)height releaseCachedResources:(BOOL)resources
 {
   v45 = 0;
   v44 = 0;
-  v12 = a3;
+  handlerCopy = handler;
   v13 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -530,7 +530,7 @@ LABEL_46:
   identifiedType = self->_identifiedType;
   orientation = self->_orientation;
   v43 = 0;
-  v17 = NTKUltraCubeComputeSegmentation(v12, identifiedType, a4, a5, a6, orientation, &v43, &v45 + 1, &v45, &v44, a7);
+  v17 = NTKUltraCubeComputeSegmentation(handlerCopy, identifiedType, quality, width, height, orientation, &v43, &v45 + 1, &v45, &v44, resources);
 
   v18 = v43;
   v19 = v18;
@@ -622,15 +622,15 @@ LABEL_46:
 - (id)_computeThresholdAuxiliaryDictionaryIfEnabled
 {
   v3 = _os_feature_enabled_impl();
-  v4 = _NTKLoggingObjectForDomain();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
+  _extractDisparityData = _NTKLoggingObjectForDomain();
+  v5 = os_log_type_enabled(_extractDisparityData, OS_LOG_TYPE_DEFAULT);
   if (!v3)
   {
     if (v5)
     {
       v10 = 136315138;
       v11 = "[NTKUltraCubeSegmentationGenerator _computeThresholdAuxiliaryDictionaryIfEnabled]";
-      _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%s: compute threshold segmentation disabled; aborting", &v10, 0xCu);
+      _os_log_impl(&dword_0, _extractDisparityData, OS_LOG_TYPE_DEFAULT, "%s: compute threshold segmentation disabled; aborting", &v10, 0xCu);
     }
 
     goto LABEL_13;
@@ -639,13 +639,13 @@ LABEL_46:
   if (v5)
   {
     LOWORD(v10) = 0;
-    _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "compute threshold segmentation enabled; look for disparity data", &v10, 2u);
+    _os_log_impl(&dword_0, _extractDisparityData, OS_LOG_TYPE_DEFAULT, "compute threshold segmentation enabled; look for disparity data", &v10, 2u);
   }
 
-  v4 = [(NTKUltraCubeSegmentationGenerator *)self _extractDisparityData];
+  _extractDisparityData = [(NTKUltraCubeSegmentationGenerator *)self _extractDisparityData];
   v6 = _NTKLoggingObjectForDomain();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (!v4)
+  if (!_extractDisparityData)
   {
     if (v7)
     {
@@ -666,15 +666,15 @@ LABEL_13:
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%s: yes disparity data; compute threshold enabled; attempt to compute threshold segmentation", &v10, 0xCu);
   }
 
-  v8 = [(NTKUltraCubeSegmentationGenerator *)self _createThresholdSegmentationFromDisparityData:v4];
+  v8 = [(NTKUltraCubeSegmentationGenerator *)self _createThresholdSegmentationFromDisparityData:_extractDisparityData];
 LABEL_14:
 
   return v8;
 }
 
-- (id)_createThresholdSegmentationFromDisparityData:(id)a3
+- (id)_createThresholdSegmentationFromDisparityData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(NTKImageSource *)self->_imageSource CreateCGImageWithSubsampleFactor:1];
   if (v5)
   {
@@ -691,7 +691,7 @@ LABEL_14:
 
     orientation = self->_orientation;
     v19 = 0;
-    v9 = NTKUltraCubeComputeThresholdSegmentation(v6, orientation, v4, &v19, &v21 + 1, &v21, &v20);
+    v9 = NTKUltraCubeComputeThresholdSegmentation(v6, orientation, dataCopy, &v19, &v21 + 1, &v21, &v20);
     v10 = v19;
     v11 = _NTKLoggingObjectForDomain();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);

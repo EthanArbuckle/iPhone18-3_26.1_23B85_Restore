@@ -1,6 +1,6 @@
 @interface HUPreloadedTransitionController
 - (HUPreloadedTransitionController)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation HUPreloadedTransitionController
@@ -20,12 +20,12 @@
   return v2;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
-  v6 = [v4 containerView];
-  v7 = [(HUPreloadedTransitionController *)self completionFuture];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  containerView = [transitionCopy containerView];
+  completionFuture = [(HUPreloadedTransitionController *)self completionFuture];
   if ([v5 conformsToProtocol:&unk_28249D748])
   {
     v8 = _HUPreloadViewController(v5, 0, &__block_literal_global_39);
@@ -33,20 +33,20 @@
     v11[1] = 3221225472;
     v11[2] = __53__HUPreloadedTransitionController_animateTransition___block_invoke_2;
     v11[3] = &unk_277DB7E40;
-    v12 = v6;
+    v12 = containerView;
     v13 = v5;
-    v14 = v4;
-    v15 = v7;
+    v14 = transitionCopy;
+    v15 = completionFuture;
     v9 = [v8 addCompletionBlock:v11];
   }
 
   else
   {
-    v10 = [v5 view];
-    [v6 addSubview:v10];
+    view = [v5 view];
+    [containerView addSubview:view];
 
-    [v4 completeTransition:1];
-    [v7 finishWithNoResult];
+    [transitionCopy completeTransition:1];
+    [completionFuture finishWithNoResult];
   }
 }
 

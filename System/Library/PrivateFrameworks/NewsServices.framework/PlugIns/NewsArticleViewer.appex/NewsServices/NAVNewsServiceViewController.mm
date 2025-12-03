@@ -1,5 +1,5 @@
 @interface NAVNewsServiceViewController
-- (void)articleViewServiceProviderShouldLoadArticlesForArticleIDs:(id)a3;
+- (void)articleViewServiceProviderShouldLoadArticlesForArticleIDs:(id)ds;
 - (void)dealloc;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -12,43 +12,43 @@
   v15.receiver = self;
   v15.super_class = NAVNewsServiceViewController;
   [(NAVNewsServiceViewController *)&v15 viewDidLoad];
-  v3 = [(NAVNewsServiceViewController *)self view];
+  view = [(NAVNewsServiceViewController *)self view];
   v4 = +[UIColor whiteColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
-  v5 = [(NAVNewsServiceViewController *)self extensionContext];
-  v6 = [NAVContainer sharedContainerForExtension:v5 hostViewController:self];
-  v7 = [v6 resolver];
+  extensionContext = [(NAVNewsServiceViewController *)self extensionContext];
+  v6 = [NAVContainer sharedContainerForExtension:extensionContext hostViewController:self];
+  resolver = [v6 resolver];
 
-  v8 = [v7 resolveClass:objc_opt_class()];
+  v8 = [resolver resolveClass:objc_opt_class()];
   [(NAVNewsServiceViewController *)self setArticleContainerViewController:v8];
 
-  v9 = [(NAVNewsServiceViewController *)self articleContainerViewController];
-  [v9 setDelegate:self];
+  articleContainerViewController = [(NAVNewsServiceViewController *)self articleContainerViewController];
+  [articleContainerViewController setDelegate:self];
 
-  v10 = [(NAVNewsServiceViewController *)self articleContainerViewController];
-  [(NAVNewsServiceViewController *)self addChildViewController:v10];
+  articleContainerViewController2 = [(NAVNewsServiceViewController *)self articleContainerViewController];
+  [(NAVNewsServiceViewController *)self addChildViewController:articleContainerViewController2];
 
-  v11 = [(NAVNewsServiceViewController *)self view];
-  v12 = [(NAVNewsServiceViewController *)self articleContainerViewController];
-  v13 = [v12 view];
-  [v11 addSubview:v13];
+  view2 = [(NAVNewsServiceViewController *)self view];
+  articleContainerViewController3 = [(NAVNewsServiceViewController *)self articleContainerViewController];
+  view3 = [articleContainerViewController3 view];
+  [view2 addSubview:view3];
 
-  v14 = [(NAVNewsServiceViewController *)self articleContainerViewController];
-  [v14 didMoveToParentViewController:self];
+  articleContainerViewController4 = [(NAVNewsServiceViewController *)self articleContainerViewController];
+  [articleContainerViewController4 didMoveToParentViewController:self];
 }
 
 - (void)dealloc
 {
-  v3 = [(NAVNewsServiceViewController *)self articleContainerViewController];
-  [v3 willMoveToParentViewController:0];
+  articleContainerViewController = [(NAVNewsServiceViewController *)self articleContainerViewController];
+  [articleContainerViewController willMoveToParentViewController:0];
 
-  v4 = [(NAVNewsServiceViewController *)self articleContainerViewController];
-  v5 = [v4 view];
-  [v5 removeFromSuperview];
+  articleContainerViewController2 = [(NAVNewsServiceViewController *)self articleContainerViewController];
+  view = [articleContainerViewController2 view];
+  [view removeFromSuperview];
 
-  v6 = [(NAVNewsServiceViewController *)self articleContainerViewController];
-  [v6 removeFromParentViewController];
+  articleContainerViewController3 = [(NAVNewsServiceViewController *)self articleContainerViewController];
+  [articleContainerViewController3 removeFromParentViewController];
 
   v7.receiver = self;
   v7.super_class = NAVNewsServiceViewController;
@@ -60,22 +60,22 @@
   v14.receiver = self;
   v14.super_class = NAVNewsServiceViewController;
   [(NAVNewsServiceViewController *)&v14 viewDidLayoutSubviews];
-  v3 = [(NAVNewsServiceViewController *)self view];
-  [v3 bounds];
+  view = [(NAVNewsServiceViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NAVNewsServiceViewController *)self articleContainerViewController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  articleContainerViewController = [(NAVNewsServiceViewController *)self articleContainerViewController];
+  view2 = [articleContainerViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)articleViewServiceProviderShouldLoadArticlesForArticleIDs:(id)a3
+- (void)articleViewServiceProviderShouldLoadArticlesForArticleIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(NAVNewsServiceViewController *)self articleContainerViewController];
-  [v5 loadWithArticleIDs:v4];
+  dsCopy = ds;
+  articleContainerViewController = [(NAVNewsServiceViewController *)self articleContainerViewController];
+  [articleContainerViewController loadWithArticleIDs:dsCopy];
 }
 
 @end

@@ -15,8 +15,8 @@
 
 - (id)delegate
 {
-  v3 = [(PLImageAccessibilityElement *)self accessibilityContainer];
-  if (!v3)
+  accessibilityContainer = [(PLImageAccessibilityElement *)self accessibilityContainer];
+  if (!accessibilityContainer)
   {
     goto LABEL_5;
   }
@@ -30,16 +30,16 @@
   NSClassFromString(&cfstr_Uitableviewcel_0.isa);
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 safeValueForKey:@"tableViewCell"];
+    v4 = [accessibilityContainer safeValueForKey:@"tableViewCell"];
 
-    v3 = v4;
+    accessibilityContainer = v4;
 LABEL_5:
-    v5 = v3;
-    v3 = v5;
+    v5 = accessibilityContainer;
+    accessibilityContainer = v5;
     goto LABEL_6;
   }
 
-  NSLog(&cfstr_AxWhatWasTheCo.isa, self, v3);
+  NSLog(&cfstr_AxWhatWasTheCo.isa, self, accessibilityContainer);
   v5 = 0;
 LABEL_6:
 
@@ -48,8 +48,8 @@ LABEL_6:
 
 - (id)dataSource
 {
-  v2 = [(PLImageAccessibilityElement *)self delegate];
-  v3 = [v2 _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Plalbumview.isa)];
+  delegate = [(PLImageAccessibilityElement *)self delegate];
+  v3 = [delegate _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Plalbumview.isa)];
 
   v4 = [v3 safeValueForKey:@"dataSource"];
 
@@ -58,9 +58,9 @@ LABEL_6:
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(PLImageAccessibilityElement *)self delegate];
-  [v3 bounds];
-  v4 = [v3 safeValueForKey:@"cellPhotoSize"];
+  delegate = [(PLImageAccessibilityElement *)self delegate];
+  [delegate bounds];
+  v4 = [delegate safeValueForKey:@"cellPhotoSize"];
   [v4 sizeValue];
 
   [(PLImageAccessibilityElement *)self index];
@@ -83,32 +83,32 @@ LABEL_6:
 
 - (int64_t)_albumPhotoIndex
 {
-  v3 = [(PLImageAccessibilityElement *)self delegate];
-  v4 = [(PLImageAccessibilityElement *)self delegate];
-  v5 = [v4 _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Plalbumview.isa)];
+  delegate = [(PLImageAccessibilityElement *)self delegate];
+  delegate2 = [(PLImageAccessibilityElement *)self delegate];
+  v5 = [delegate2 _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Plalbumview.isa)];
 
-  v6 = [v3 _accessibilityAncestorIsKindOf:objc_opt_class()];
-  v7 = [v6 indexPathForCell:v3];
+  v6 = [delegate _accessibilityAncestorIsKindOf:objc_opt_class()];
+  v7 = [v6 indexPathForCell:delegate];
   v8 = [v7 row];
   v9 = [v5 safeValueForKey:@"currentPickerSession"];
   v10 = v9 != 0;
 
   v11 = v8 - v10;
   v12 = [v5 safeValueForKey:@"_columnsPerRow"];
-  v13 = [v12 integerValue];
+  integerValue = [v12 integerValue];
 
-  v14 = v13 * v11 + [(PLImageAccessibilityElement *)self index];
+  v14 = integerValue * v11 + [(PLImageAccessibilityElement *)self index];
   return v14;
 }
 
 - (id)_axMainAssetURL
 {
-  v3 = [(PLImageAccessibilityElement *)self _albumPhotoIndex];
-  v4 = [(PLImageAccessibilityElement *)self dataSource];
+  _albumPhotoIndex = [(PLImageAccessibilityElement *)self _albumPhotoIndex];
+  dataSource = [(PLImageAccessibilityElement *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(PLImageAccessibilityElement *)self albumView];
-    v6 = [v4 albumView:v5 accessibilityPhotoURL:v3];
+    albumView = [(PLImageAccessibilityElement *)self albumView];
+    v6 = [dataSource albumView:albumView accessibilityPhotoURL:_albumPhotoIndex];
   }
 
   else
@@ -121,12 +121,12 @@ LABEL_6:
 
 - (id)_accessibilityPhotoDescription
 {
-  v3 = [(PLImageAccessibilityElement *)self _albumPhotoIndex];
-  v4 = [(PLImageAccessibilityElement *)self dataSource];
+  _albumPhotoIndex = [(PLImageAccessibilityElement *)self _albumPhotoIndex];
+  dataSource = [(PLImageAccessibilityElement *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(PLImageAccessibilityElement *)self albumView];
-    v6 = [v4 albumView:v5 accessibilityPhotoDescription:v3];
+    albumView = [(PLImageAccessibilityElement *)self albumView];
+    v6 = [dataSource albumView:albumView accessibilityPhotoDescription:_albumPhotoIndex];
   }
 
   else
@@ -139,7 +139,7 @@ LABEL_6:
 
 - (id)_accessibilityElementStoredUserLabel
 {
-  v2 = [(PLImageAccessibilityElement *)self _axMainAssetURL];
+  _axMainAssetURL = [(PLImageAccessibilityElement *)self _axMainAssetURL];
   v3 = UIAccessibilityMetadataDescriptionForImage();
 
   if (v3)
@@ -157,28 +157,28 @@ LABEL_6:
 
 - (id)albumView
 {
-  v2 = [(PLImageAccessibilityElement *)self delegate];
-  v3 = [v2 _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Plalbumview.isa)];
+  delegate = [(PLImageAccessibilityElement *)self delegate];
+  v3 = [delegate _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Plalbumview.isa)];
 
   return v3;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(PLImageAccessibilityElement *)self _albumPhotoIndex];
-  v4 = [(PLImageAccessibilityElement *)self dataSource];
+  _albumPhotoIndex = [(PLImageAccessibilityElement *)self _albumPhotoIndex];
+  dataSource = [(PLImageAccessibilityElement *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(PLImageAccessibilityElement *)self albumView];
-    v6 = [v4 albumView:v5 accessibilityLabelForPhotoAtIndex:v3];
+    albumView = [(PLImageAccessibilityElement *)self albumView];
+    v6 = [dataSource albumView:albumView accessibilityLabelForPhotoAtIndex:_albumPhotoIndex];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (v4)
+  if (dataSource)
   {
-    v5 = NSStringFromSelector(sel_albumView_accessibilityLabelForPhotoAtIndex_);
+    albumView = NSStringFromSelector(sel_albumView_accessibilityLabelForPhotoAtIndex_);
     _AXAssert();
     v6 = 0;
     goto LABEL_5;
@@ -192,17 +192,17 @@ LABEL_6:
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(PLImageAccessibilityElement *)self _albumPhotoIndex];
-  v4 = [(PLImageAccessibilityElement *)self dataSource];
+  _albumPhotoIndex = [(PLImageAccessibilityElement *)self _albumPhotoIndex];
+  dataSource = [(PLImageAccessibilityElement *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(PLImageAccessibilityElement *)self albumView];
-    v6 = [v4 albumView:v5 accessibilityTraitsForPhotoAtIndex:v3];
+    albumView = [(PLImageAccessibilityElement *)self albumView];
+    v6 = [dataSource albumView:albumView accessibilityTraitsForPhotoAtIndex:_albumPhotoIndex];
   }
 
   else
   {
-    if (v4)
+    if (dataSource)
     {
       v8 = NSStringFromSelector(sel_albumView_accessibilityTraitsForPhotoAtIndex_);
       _AXAssert();

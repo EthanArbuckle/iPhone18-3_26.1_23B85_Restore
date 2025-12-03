@@ -1,16 +1,16 @@
 @interface EDBIMIManager
 - (BOOL)_shouldScheduleAnotherVerificationBatch;
-- (EDBIMIManager)initWithMessagePersistence:(id)a3 urlSession:(id)a4;
-- (id)processBIMIHeadersForMessages:(id)a3 evidenceAndMessagesNeedingVerification:(id *)a4;
-- (uint64_t)_analyticsValueForResultString:(char)a3 isBIMIStatementResult:;
-- (uint64_t)_bimiPassedWithAuthenticationResults:(void *)a3 authenticationServiceIdentifier:(void *)a4 bimiStatement:;
+- (EDBIMIManager)initWithMessagePersistence:(id)persistence urlSession:(id)session;
+- (id)processBIMIHeadersForMessages:(id)messages evidenceAndMessagesNeedingVerification:(id *)verification;
+- (uint64_t)_analyticsValueForResultString:(char)string isBIMIStatementResult:;
+- (uint64_t)_bimiPassedWithAuthenticationResults:(void *)results authenticationServiceIdentifier:(void *)identifier bimiStatement:;
 - (uint64_t)_downloadAndVerifyIndicators;
-- (uint64_t)_indicatorIsValid:(void *)a3 forBIMIData:;
-- (uint64_t)_isRecoverableError:(uint64_t)a1;
-- (uint64_t)_vmcWasVerifiedWithBIMIStatement:(uint64_t)a1;
+- (uint64_t)_indicatorIsValid:(void *)valid forBIMIData:;
+- (uint64_t)_isRecoverableError:(uint64_t)error;
+- (uint64_t)_vmcWasVerifiedWithBIMIStatement:(uint64_t)statement;
 - (void)_downloadAndVerifyIndicators;
-- (void)_downloadUndownloadedIndicators:(unsigned int)a3 failingOpen:(void *)a4 indicatorHandler:;
-- (void)_verifyIndicator:(uint64_t)a3 failingOpen:;
+- (void)_downloadUndownloadedIndicators:(unsigned int)indicators failingOpen:(void *)open indicatorHandler:;
+- (void)_verifyIndicator:(uint64_t)indicator failingOpen:;
 - (void)dealloc;
 - (void)downloadAndVerifyIndicatorsIfNeeded;
 - (void)test_tearDown;
@@ -25,18 +25,18 @@ void ___ef_log_EDBIMIManager_block_invoke()
   _ef_log_EDBIMIManager_log = v0;
 }
 
-- (EDBIMIManager)initWithMessagePersistence:(id)a3 urlSession:(id)a4
+- (EDBIMIManager)initWithMessagePersistence:(id)persistence urlSession:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  persistenceCopy = persistence;
+  sessionCopy = session;
   v22.receiver = self;
   v22.super_class = EDBIMIManager;
   v9 = [(EDBIMIManager *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_messagePersistence, a3);
-    objc_storeStrong(&v10->_urlSession, a4);
+    objc_storeStrong(&v9->_messagePersistence, persistence);
+    objc_storeStrong(&v10->_urlSession, session);
     v11 = objc_alloc_init(EDMarkCertificateVerifier);
     markCertificateVerifier = v10->_markCertificateVerifier;
     v10->_markCertificateVerifier = v11;
@@ -73,18 +73,18 @@ void ___ef_log_EDBIMIManager_block_invoke()
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"EDBIMIManager.m" lineNumber:83 description:{@"%s can only be called from unit tests", "-[EDBIMIManager test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDBIMIManager.m" lineNumber:83 description:{@"%s can only be called from unit tests", "-[EDBIMIManager test_tearDown]"}];
   }
 
-  v4 = [(EDBIMIManager *)self verificationScheduler];
-  [v4 performSyncBlock:&__block_literal_global_44];
+  verificationScheduler = [(EDBIMIManager *)self verificationScheduler];
+  [verificationScheduler performSyncBlock:&__block_literal_global_44];
 }
 
-- (id)processBIMIHeadersForMessages:(id)a3 evidenceAndMessagesNeedingVerification:(id *)a4
+- (id)processBIMIHeadersForMessages:(id)messages evidenceAndMessagesNeedingVerification:(id *)verification
 {
   v83 = *MEMORY[0x1E69E9840];
-  v42 = a3;
+  messagesCopy = messages;
   v46 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v44 = objc_alloc_init(MEMORY[0x1E695DF90]);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -98,7 +98,7 @@ void ___ef_log_EDBIMIManager_block_invoke()
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v42;
+  obj = messagesCopy;
   v4 = [obj countByEnumeratingWithState:&v69 objects:v82 count:16];
   if (v4)
   {
@@ -114,8 +114,8 @@ void ___ef_log_EDBIMIManager_block_invoke()
         }
 
         v6 = *(*(&v69 + 1) + 8 * i);
-        v7 = [v6 headers];
-        v8 = [MEMORY[0x1E699B290] authenticationResultsForHeaders:v7];
+        headers = [v6 headers];
+        v8 = [MEMORY[0x1E699B290] authenticationResultsForHeaders:headers];
         v67 = 0;
         v68 = 0;
         v9 = [(EDBIMIManager *)self _bimiPassedWithAuthenticationResults:v8 authenticationServiceIdentifier:&v68 bimiStatement:&v67];
@@ -127,31 +127,31 @@ void ___ef_log_EDBIMIManager_block_invoke()
           goto LABEL_35;
         }
 
-        v60 = [MEMORY[0x1E699B210] bimiInfoForHeaders:v7];
+        v60 = [MEMORY[0x1E699B210] bimiInfoForHeaders:headers];
         if (v48)
         {
           goto LABEL_10;
         }
 
         v12 = MEMORY[0x1E695DFF8];
-        v13 = [v6 account];
-        v14 = [v13 hostname];
-        v15 = [v12 ef_urlWithString:v14];
-        v16 = [v15 ef_highLevelDomain];
+        account = [v6 account];
+        hostname = [account hostname];
+        v15 = [v12 ef_urlWithString:hostname];
+        ef_highLevelDomain = [v15 ef_highLevelDomain];
 
         if (EMBIMIIncomingServerHighLevelDomainIsAllowlisted())
         {
 
 LABEL_10:
-          v16 = [v60 location];
-          v17 = [v60 evidenceLocation];
-          v54 = v17;
-          if (v16 && v17)
+          ef_highLevelDomain = [v60 location];
+          evidenceLocation = [v60 evidenceLocation];
+          v54 = evidenceLocation;
+          if (ef_highLevelDomain && evidenceLocation)
           {
-            v55 = [MEMORY[0x1E699B848] pairWithFirst:v16 second:v17];
-            v53 = [v60 indicator];
+            v55 = [MEMORY[0x1E699B848] pairWithFirst:ef_highLevelDomain second:evidenceLocation];
+            indicator = [v60 indicator];
             v47 = [v46 objectForKeyedSubscript:v55];
-            if (!v47 || v53 && ([v47 indicator], v18 = objc_claimAutoreleasedReturnValue(), v19 = v18 == 0, v18, v19))
+            if (!v47 || indicator && ([v47 indicator], v18 = objc_claimAutoreleasedReturnValue(), v19 = v18 == 0, v18, v19))
             {
               [v46 setObject:v60 forKeyedSubscript:v55];
             }
@@ -174,43 +174,43 @@ LABEL_10:
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
               log = v21;
-              v51 = v16;
+              v51 = ef_highLevelDomain;
               if ([MEMORY[0x1E699ACE8] preferenceEnabled:10])
               {
-                v22 = [v51 absoluteString];
+                absoluteString = [v51 absoluteString];
               }
 
               else
               {
                 v23 = MEMORY[0x1E699B858];
-                v24 = [v51 absoluteString];
-                v22 = [v23 fullyRedactedStringForString:v24];
+                absoluteString2 = [v51 absoluteString];
+                absoluteString = [v23 fullyRedactedStringForString:absoluteString2];
               }
 
-              v52 = v22;
+              v52 = absoluteString;
               v25 = v54;
               if ([MEMORY[0x1E699ACE8] preferenceEnabled:10])
               {
-                v26 = [v25 absoluteString];
+                absoluteString3 = [v25 absoluteString];
               }
 
               else
               {
                 v27 = MEMORY[0x1E699B858];
-                v28 = [v25 absoluteString];
-                v26 = [v27 fullyRedactedStringForString:v28];
+                absoluteString4 = [v25 absoluteString];
+                absoluteString3 = [v27 fullyRedactedStringForString:absoluteString4];
               }
 
               *buf = 138544130;
               v29 = @", and indicator";
-              if (!v53)
+              if (!indicator)
               {
                 v29 = &stru_1F45B4608;
               }
 
               v75 = v52;
               v76 = 2114;
-              v77 = v26;
+              v77 = absoluteString3;
               v78 = 2112;
               v79 = v29;
               v80 = 2114;
@@ -258,10 +258,10 @@ LABEL_35:
   v35 = v30;
   v65 = v35;
   [v46 enumerateKeysAndObjectsUsingBlock:v61];
-  if (a4)
+  if (verification)
   {
     v36 = v34;
-    *a4 = v34;
+    *verification = v34;
   }
 
   v37 = v65;
@@ -358,11 +358,11 @@ id __86__EDBIMIManager_processBIMIHeadersForMessages_evidenceAndMessagesNeedingV
   return v20;
 }
 
-- (uint64_t)_analyticsValueForResultString:(char)a3 isBIMIStatementResult:
+- (uint64_t)_analyticsValueForResultString:(char)string isBIMIStatementResult:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if ([v5 isEqualToString:@"pass"])
     {
@@ -372,7 +372,7 @@ id __86__EDBIMIManager_processBIMIHeadersForMessages_evidenceAndMessagesNeedingV
     else
     {
       v8 = [v6 isEqualToString:@"fail"];
-      v9 = v8 | a3 ^ 1;
+      v9 = v8 | string ^ 1;
       if (v8)
       {
         v7 = 2;
@@ -416,12 +416,12 @@ id __86__EDBIMIManager_processBIMIHeadersForMessages_evidenceAndMessagesNeedingV
   return v7;
 }
 
-- (uint64_t)_bimiPassedWithAuthenticationResults:(void *)a3 authenticationServiceIdentifier:(void *)a4 bimiStatement:
+- (uint64_t)_bimiPassedWithAuthenticationResults:(void *)results authenticationServiceIdentifier:(void *)identifier bimiStatement:
 {
   v29 = *MEMORY[0x1E69E9840];
   v7 = a2;
   v8 = v7;
-  if (a1)
+  if (self)
   {
     v26 = 0u;
     v27 = 0u;
@@ -431,9 +431,9 @@ id __86__EDBIMIManager_processBIMIHeadersForMessages_evidenceAndMessagesNeedingV
     v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v10)
     {
-      v23 = a3;
+      resultsCopy = results;
       v11 = v8;
-      v12 = a4;
+      identifierCopy = identifier;
       v13 = *v25;
       while (2)
       {
@@ -449,9 +449,9 @@ id __86__EDBIMIManager_processBIMIHeadersForMessages_evidenceAndMessagesNeedingV
           if (v16)
           {
             [v15 authenticationServiceIdentifier];
-            a4 = v12;
+            identifier = identifierCopy;
             v8 = v11;
-            v17 = a3 = v23;
+            v17 = results = resultsCopy;
             goto LABEL_13;
           }
         }
@@ -467,9 +467,9 @@ id __86__EDBIMIManager_processBIMIHeadersForMessages_evidenceAndMessagesNeedingV
 
       v17 = 0;
       v16 = 0;
-      a4 = v12;
+      identifier = identifierCopy;
       v8 = v11;
-      a3 = v23;
+      results = resultsCopy;
     }
 
     else
@@ -480,32 +480,32 @@ id __86__EDBIMIManager_processBIMIHeadersForMessages_evidenceAndMessagesNeedingV
 
 LABEL_13:
 
-    v18 = [v16 result];
-    if ([v18 isEqualToString:@"pass"])
+    result = [v16 result];
+    if ([result isEqualToString:@"pass"])
     {
-      a1 = [(EDBIMIManager *)a1 _vmcWasVerifiedWithBIMIStatement:v16];
+      self = [(EDBIMIManager *)self _vmcWasVerifiedWithBIMIStatement:v16];
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
 
-    if (a3)
+    if (results)
     {
       v19 = v17;
-      *a3 = v17;
+      *results = v17;
     }
 
-    if (a4)
+    if (identifier)
     {
       v20 = v16;
-      *a4 = v16;
+      *identifier = v16;
     }
   }
 
   v21 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 void __86__EDBIMIManager_processBIMIHeadersForMessages_evidenceAndMessagesNeedingVerification___block_invoke_95(uint64_t a1, void *a2, void *a3)
@@ -827,11 +827,11 @@ uint64_t __86__EDBIMIManager_processBIMIHeadersForMessages_evidenceAndMessagesNe
   return v7;
 }
 
-- (uint64_t)_vmcWasVerifiedWithBIMIStatement:(uint64_t)a1
+- (uint64_t)_vmcWasVerifiedWithBIMIStatement:(uint64_t)statement
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (statement)
   {
     v5 = [v3 valueForPropertyType:*MEMORY[0x1E699B060] property:@"authority"];
     v6 = [v5 isEqualToString:@"pass"];
@@ -848,11 +848,11 @@ uint64_t __86__EDBIMIManager_processBIMIHeadersForMessages_evidenceAndMessagesNe
 - (void)downloadAndVerifyIndicatorsIfNeeded
 {
   [(NSConditionLock *)self->_verificationRunningLock lock];
-  v3 = [(NSConditionLock *)self->_verificationRunningLock condition];
+  condition = [(NSConditionLock *)self->_verificationRunningLock condition];
   [(NSConditionLock *)self->_verificationRunningLock unlockWithCondition:1];
   v4 = _ef_log_EDBIMIManager();
   v5 = v4;
-  if (v3)
+  if (condition)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -875,14 +875,14 @@ uint64_t __86__EDBIMIManager_processBIMIHeadersForMessages_evidenceAndMessagesNe
 
 - (void)_downloadAndVerifyIndicators
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E699B828] external];
-    v3 = [v2 isAvailable];
+    external = [MEMORY[0x1E699B828] external];
+    isAvailable = [external isAvailable];
 
-    if (v3)
+    if (isAvailable)
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       objc_copyWeak(&v4, &location);
       EMPrivacyProxyIsDisabledForNetwork();
       objc_destroyWeak(&v4);
@@ -891,7 +891,7 @@ uint64_t __86__EDBIMIManager_processBIMIHeadersForMessages_evidenceAndMessagesNe
 
     else
     {
-      [(EDBIMIManager *)a1 _downloadAndVerifyIndicators];
+      [(EDBIMIManager *)self _downloadAndVerifyIndicators];
     }
   }
 }
@@ -1027,42 +1027,42 @@ BOOL __45__EDBIMIManager__downloadAndVerifyIndicators__block_invoke_2(uint64_t a
   return v3;
 }
 
-- (void)_verifyIndicator:(uint64_t)a3 failingOpen:
+- (void)_verifyIndicator:(uint64_t)indicator failingOpen:
 {
   v36 = *MEMORY[0x1E69E9840];
   v25 = a2;
-  if (a1)
+  if (self)
   {
-    v5 = [a1 messagePersistence];
-    v23 = [a1 markCertificateVerifier];
-    v24 = [a1 urlSession];
-    v6 = [v25 bimiInfo];
-    v7 = [v6 location];
+    messagePersistence = [self messagePersistence];
+    markCertificateVerifier = [self markCertificateVerifier];
+    urlSession = [self urlSession];
+    bimiInfo = [v25 bimiInfo];
+    location = [bimiInfo location];
 
-    v8 = [v25 bimiInfo];
-    v9 = [v8 evidenceLocation];
+    bimiInfo2 = [v25 bimiInfo];
+    evidenceLocation = [bimiInfo2 evidenceLocation];
 
-    v10 = [MEMORY[0x1E696AF68] requestWithURL:v9];
+    v10 = [MEMORY[0x1E696AF68] requestWithURL:evidenceLocation];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __46__EDBIMIManager__verifyIndicator_failingOpen___block_invoke;
     v26[3] = &unk_1E8250A68;
-    v11 = v5;
+    v11 = messagePersistence;
     v27 = v11;
     v28 = v25;
-    v12 = v7;
+    v12 = location;
     v29 = v12;
-    v13 = v23;
+    v13 = markCertificateVerifier;
     v30 = v13;
-    v14 = v9;
+    v14 = evidenceLocation;
     v31 = v14;
-    v32 = a1;
+    selfCopy = self;
     v15 = v10;
     v33 = v15;
-    v16 = [v24 syntheticDataTaskWithRequest:v15 failOpen:a3 background:1 completionHandler:v26];
-    [a1[2] lock];
-    [a1[1] setObject:v16 forKeyedSubscript:v15];
-    [a1[2] unlockWithCondition:{objc_msgSend(a1[1], "count")}];
+    v16 = [urlSession syntheticDataTaskWithRequest:v15 failOpen:indicator background:1 completionHandler:v26];
+    [self[2] lock];
+    [self[1] setObject:v16 forKeyedSubscript:v15];
+    [self[2] unlockWithCondition:{objc_msgSend(self[1], "count")}];
     [v16 resume];
     v17 = _ef_log_EDBIMIManager();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1070,18 +1070,18 @@ BOOL __45__EDBIMIManager__downloadAndVerifyIndicators__block_invoke_2(uint64_t a
       v18 = v12;
       if ([MEMORY[0x1E699ACE8] preferenceEnabled:10])
       {
-        v19 = [v18 absoluteString];
+        absoluteString = [v18 absoluteString];
       }
 
       else
       {
         v20 = MEMORY[0x1E699B858];
-        v21 = [v18 absoluteString];
-        v19 = [v20 fullyRedactedStringForString:v21];
+        absoluteString2 = [v18 absoluteString];
+        absoluteString = [v20 fullyRedactedStringForString:absoluteString2];
       }
 
       *buf = 138543362;
-      v35 = v19;
+      v35 = absoluteString;
       _os_log_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_DEFAULT, "Requesting mark certificate data for URL: %{public}@", buf, 0xCu);
     }
   }
@@ -1089,15 +1089,15 @@ BOOL __45__EDBIMIManager__downloadAndVerifyIndicators__block_invoke_2(uint64_t a
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_downloadUndownloadedIndicators:(unsigned int)a3 failingOpen:(void *)a4 indicatorHandler:
+- (void)_downloadUndownloadedIndicators:(unsigned int)indicators failingOpen:(void *)open indicatorHandler:
 {
   v41 = *MEMORY[0x1E69E9840];
   v21 = a2;
-  v25 = a4;
-  if (a1)
+  openCopy = open;
+  if (self)
   {
-    v26 = [a1 messagePersistence];
-    v27 = [a1 urlSession];
+    messagePersistence = [self messagePersistence];
+    urlSession = [self urlSession];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -1118,26 +1118,26 @@ BOOL __45__EDBIMIManager__downloadAndVerifyIndicators__block_invoke_2(uint64_t a
           }
 
           v8 = *(*(&v34 + 1) + 8 * i);
-          v9 = [v8 bimiInfo];
-          v10 = [v9 location];
+          bimiInfo = [v8 bimiInfo];
+          location = [bimiInfo location];
 
-          v11 = [MEMORY[0x1E696AF68] requestWithURL:v10];
+          v11 = [MEMORY[0x1E696AF68] requestWithURL:location];
           v29[0] = MEMORY[0x1E69E9820];
           v29[1] = 3221225472;
           v29[2] = __78__EDBIMIManager__downloadUndownloadedIndicators_failingOpen_indicatorHandler___block_invoke;
           v29[3] = &unk_1E8250A18;
-          v29[4] = a1;
+          v29[4] = self;
           v29[5] = v8;
-          v30 = v26;
-          v12 = v10;
+          v30 = messagePersistence;
+          v12 = location;
           v31 = v12;
-          v33 = v25;
+          v33 = openCopy;
           v13 = v11;
           v32 = v13;
-          v14 = [v27 syntheticDataTaskWithRequest:v13 failOpen:a3 background:1 completionHandler:v29];
-          [a1[2] lock];
-          [a1[1] setObject:v14 forKeyedSubscript:v13];
-          [a1[2] unlockWithCondition:{objc_msgSend(a1[1], "count")}];
+          v14 = [urlSession syntheticDataTaskWithRequest:v13 failOpen:indicators background:1 completionHandler:v29];
+          [self[2] lock];
+          [self[1] setObject:v14 forKeyedSubscript:v13];
+          [self[2] unlockWithCondition:{objc_msgSend(self[1], "count")}];
           [v14 resume];
           v15 = _ef_log_EDBIMIManager();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1145,18 +1145,18 @@ BOOL __45__EDBIMIManager__downloadAndVerifyIndicators__block_invoke_2(uint64_t a
             v16 = v12;
             if ([MEMORY[0x1E699ACE8] preferenceEnabled:10])
             {
-              v17 = [v16 absoluteString];
+              absoluteString = [v16 absoluteString];
             }
 
             else
             {
               v18 = MEMORY[0x1E699B858];
-              v19 = [v16 absoluteString];
-              v17 = [v18 fullyRedactedStringForString:v19];
+              absoluteString2 = [v16 absoluteString];
+              absoluteString = [v18 fullyRedactedStringForString:absoluteString2];
             }
 
             *buf = 138543362;
-            v39 = v17;
+            v39 = absoluteString;
             _os_log_impl(&dword_1C61EF000, v15, OS_LOG_TYPE_DEFAULT, "Requesting indicator data for URL: %{public}@", buf, 0xCu);
           }
         }
@@ -1173,13 +1173,13 @@ BOOL __45__EDBIMIManager__downloadAndVerifyIndicators__block_invoke_2(uint64_t a
 
 - (BOOL)_shouldScheduleAnotherVerificationBatch
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 messagePersistence];
-  v2 = [v1 unverifiedBrandIndicatorsWithLimit:1];
+  messagePersistence = [self messagePersistence];
+  v2 = [messagePersistence unverifiedBrandIndicatorsWithLimit:1];
   v3 = [v2 count] != 0;
 
   return v3;
@@ -1360,21 +1360,21 @@ id __78__EDBIMIManager__downloadUndownloadedIndicators_failingOpen_indicatorHand
   return v5;
 }
 
-- (uint64_t)_indicatorIsValid:(void *)a3 forBIMIData:
+- (uint64_t)_indicatorIsValid:(void *)valid forBIMIData:
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (!a1)
+  validCopy = valid;
+  v7 = validCopy;
+  if (!self)
   {
 LABEL_11:
     v14 = 0;
     goto LABEL_12;
   }
 
-  v8 = [v6 hashAlgorithm];
-  v9 = [v8 isEqualToString:@"sha256"];
+  hashAlgorithm = [validCopy hashAlgorithm];
+  v9 = [hashAlgorithm isEqualToString:@"sha256"];
 
   if (!v9)
   {
@@ -1394,8 +1394,8 @@ LABEL_11:
   CC_SHA256([v5 bytes], objc_msgSend(v5, "length"), v19);
   v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v19 length:32];
   v12 = [v11 base64EncodedStringWithOptions:0];
-  v13 = [v7 indicatorHash];
-  v14 = [v12 isEqualToString:v13];
+  indicatorHash = [v7 indicatorHash];
+  v14 = [v12 isEqualToString:indicatorHash];
 
   if ((v14 & 1) == 0)
   {
@@ -1411,14 +1411,14 @@ LABEL_12:
   return v14;
 }
 
-- (uint64_t)_isRecoverableError:(uint64_t)a1
+- (uint64_t)_isRecoverableError:(uint64_t)error
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (error)
   {
-    v5 = [v3 domain];
-    v6 = [v5 isEqualToString:*MEMORY[0x1E696A978]];
+    domain = [v3 domain];
+    v6 = [domain isEqualToString:*MEMORY[0x1E696A978]];
 
     if (!v6)
     {
@@ -1434,8 +1434,8 @@ LABEL_12:
       }
 
 LABEL_11:
-      v8 = [MEMORY[0x1E699B828] external];
-      a1 = [v8 isAvailable] ^ 1;
+      external = [MEMORY[0x1E699B828] external];
+      error = [external isAvailable] ^ 1;
 
       goto LABEL_12;
     }
@@ -1448,16 +1448,16 @@ LABEL_11:
     if (v7 != 5)
     {
 LABEL_10:
-      a1 = 0;
+      error = 0;
       goto LABEL_12;
     }
 
-    a1 = 1;
+    error = 1;
   }
 
 LABEL_12:
 
-  return a1;
+  return error;
 }
 
 void __46__EDBIMIManager__verifyIndicator_failingOpen___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -1688,8 +1688,8 @@ uint64_t __46__EDBIMIManager__verifyIndicator_failingOpen___block_invoke_134(uin
     _os_log_impl(&dword_1C61EF000, v2, OS_LOG_TYPE_DEFAULT, "Network not available, stopping download and verification.", v4, 2u);
   }
 
-  [*(a1 + 24) lock];
-  return [*(a1 + 24) unlockWithCondition:0];
+  [*(self + 24) lock];
+  return [*(self + 24) unlockWithCondition:0];
 }
 
 void __78__EDBIMIManager__downloadUndownloadedIndicators_failingOpen_indicatorHandler___block_invoke_cold_1()

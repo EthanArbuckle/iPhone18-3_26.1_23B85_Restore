@@ -1,26 +1,26 @@
 @interface ZWTouchTrapView
 - (BOOL)accessibilityActivate;
 - (BOOL)enabled;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (ZWTouchTrapViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setEnabled:(BOOL)enabled;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation ZWTouchTrapView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(ZWTouchTrapView *)self delegate];
-  if (v8 && (v9 = v8, -[ZWTouchTrapView delegate](self, "delegate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 touchTrapView:self shouldReportSelfInHitTestAtLocation:{x, y}], v10, v9, v11))
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  delegate = [(ZWTouchTrapView *)self delegate];
+  if (delegate && (v9 = delegate, -[ZWTouchTrapView delegate](self, "delegate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 touchTrapView:self shouldReportSelfInHitTestAtLocation:{x, y}], v10, v9, v11))
   {
     v14.receiver = self;
     v14.super_class = ZWTouchTrapView;
-    v12 = [(ZWTouchTrapView *)&v14 pointInside:v7 withEvent:x, y];
+    v12 = [(ZWTouchTrapView *)&v14 pointInside:eventCopy withEvent:x, y];
   }
 
   else
@@ -31,27 +31,27 @@
   return v12;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(ZWTouchTrapView *)self delegate];
-  if (v8 && (v9 = v8, -[ZWTouchTrapView delegate](self, "delegate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 touchTrapView:self shouldReportSelfInHitTestAtLocation:{x, y}], v10, v9, v11))
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  delegate = [(ZWTouchTrapView *)self delegate];
+  if (delegate && (v9 = delegate, -[ZWTouchTrapView delegate](self, "delegate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 touchTrapView:self shouldReportSelfInHitTestAtLocation:{x, y}], v10, v9, v11))
   {
-    if ([(ZWTouchTrapView *)self pointInside:v7 withEvent:x, y])
+    if ([(ZWTouchTrapView *)self pointInside:eventCopy withEvent:x, y])
     {
-      v12 = self;
+      selfCopy = self;
     }
 
     else
     {
       v15.receiver = self;
       v15.super_class = ZWTouchTrapView;
-      v12 = [(ZWTouchTrapView *)&v15 hitTest:v7 withEvent:x, y];
+      selfCopy = [(ZWTouchTrapView *)&v15 hitTest:eventCopy withEvent:x, y];
     }
 
-    v13 = v12;
+    v13 = selfCopy;
   }
 
   else
@@ -62,40 +62,40 @@
   return v13;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ZWTouchTrapView *)self delegate];
-  [v8 touchTrapView:self didTrapTouches:v7 withEvent:v6];
+  eventCopy = event;
+  beganCopy = began;
+  delegate = [(ZWTouchTrapView *)self delegate];
+  [delegate touchTrapView:self didTrapTouches:beganCopy withEvent:eventCopy];
 }
 
 - (BOOL)enabled
 {
-  v2 = [(ZWTouchTrapView *)self layer];
-  v3 = [v2 hitTestsAsOpaque];
+  layer = [(ZWTouchTrapView *)self layer];
+  hitTestsAsOpaque = [layer hitTestsAsOpaque];
 
-  return v3;
+  return hitTestsAsOpaque;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(ZWTouchTrapView *)self layer];
-  [v4 setHitTestsAsOpaque:v3];
+  enabledCopy = enabled;
+  layer = [(ZWTouchTrapView *)self layer];
+  [layer setHitTestsAsOpaque:enabledCopy];
 }
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(ZWTouchTrapView *)self delegate];
+  delegate = [(ZWTouchTrapView *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(ZWTouchTrapView *)self delegate];
-    [v4 touchTrapViewActivated:self];
+    delegate2 = [(ZWTouchTrapView *)self delegate];
+    [delegate2 touchTrapViewActivated:self];
   }
 
-  return v3 != 0;
+  return delegate != 0;
 }
 
 - (ZWTouchTrapViewDelegate)delegate

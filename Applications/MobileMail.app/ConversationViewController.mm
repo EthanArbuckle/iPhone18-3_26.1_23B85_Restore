@@ -1,302 +1,302 @@
 @interface ConversationViewController
 + (OS_os_log)log;
-- (BOOL)_bannerView:(id)a3 hasBannerType:(int64_t)a4;
-- (BOOL)_canChangePageZoom:(BOOL)a3 fromStep:(unint64_t)a4;
-- (BOOL)_headerView:(id)a3 hasBannerType:(int64_t)a4;
-- (BOOL)_isItemInitiallyUnreadAtIndexPath:(id)a3;
-- (BOOL)_isMessageInOutbox:(id)a3;
-- (BOOL)_isQuickReplyMessageAtIndexPath:(id)a3;
-- (BOOL)_isUndoSendMessageAtIndexPath:(id)a3;
+- (BOOL)_bannerView:(id)view hasBannerType:(int64_t)type;
+- (BOOL)_canChangePageZoom:(BOOL)zoom fromStep:(unint64_t)step;
+- (BOOL)_headerView:(id)view hasBannerType:(int64_t)type;
+- (BOOL)_isItemInitiallyUnreadAtIndexPath:(id)path;
+- (BOOL)_isMessageInOutbox:(id)outbox;
+- (BOOL)_isQuickReplyMessageAtIndexPath:(id)path;
+- (BOOL)_isUndoSendMessageAtIndexPath:(id)path;
 - (BOOL)_shouldArchiveByDefault;
-- (BOOL)_shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:(id)a3;
-- (BOOL)_shouldAutomaticallyMarkAsReadMessage:(id)a3;
+- (BOOL)_shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:(id)path;
+- (BOOL)_shouldAutomaticallyMarkAsReadMessage:(id)message;
 - (BOOL)_shouldReloadEmptyMessageList;
-- (BOOL)_shouldRemoveBannerBlock:(id)a3 forHeaderViewModel:(id)a4;
-- (BOOL)_shouldShowMailboxForMessage:(id)a3;
-- (BOOL)_shouldShowTimeSensitiveForMessage:(id)a3;
-- (BOOL)_userIsSenderAtIndexPath:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)containsMessage:(id)a3;
-- (BOOL)conversationSearchHandler:(id)a3 shouldConsiderQuotedContentForItemID:(id)a4;
+- (BOOL)_shouldRemoveBannerBlock:(id)block forHeaderViewModel:(id)model;
+- (BOOL)_shouldShowMailboxForMessage:(id)message;
+- (BOOL)_shouldShowTimeSensitiveForMessage:(id)message;
+- (BOOL)_userIsSenderAtIndexPath:(id)path;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)containsMessage:(id)message;
+- (BOOL)conversationSearchHandler:(id)handler shouldConsiderQuotedContentForItemID:(id)d;
 - (BOOL)isBucketSelected;
-- (BOOL)isCategorizationActionAllowedForMessageViewController:(id)a3;
+- (BOOL)isCategorizationActionAllowedForMessageViewController:(id)controller;
 - (BOOL)isMessageListUnfiltered;
-- (BOOL)swipableCollectionViewLayout:(id)a3 shouldAnimateAppearingItemAtIndexPath:(id)a4;
+- (BOOL)swipableCollectionViewLayout:(id)layout shouldAnimateAppearingItemAtIndexPath:(id)path;
 - (CGRect)_quickReplyViewFrame;
-- (ConversationViewController)initWithScene:(id)a3 contactStore:(id)a4 avatarGenerator:(id)a5;
+- (ConversationViewController)initWithScene:(id)scene contactStore:(id)store avatarGenerator:(id)generator;
 - (ConversationViewControllerSelectionDataSource)selectionDataSource;
 - (DraftGestureHelper)draftGestureHelper;
 - (EMQuery)referenceMessageListQuery;
 - (MFGeneratedSummaryCollectionItemID)previousInlineSummaryItemID;
 - (MFGeneratedSummaryCollectionItemID)previousTopSummaryItemID;
 - (MessageTriageInteractionHelper)messageTriageInteractionHelper;
-- (double)stickySubjectViewFirstBaselineForConversationHeaderView:(id)a3;
-- (double)stickySubjectViewMaxYForConversationHeaderView:(id)a3;
-- (id)_actionsViewControllerWithMessage:(id)a3 contentRequest:(id)a4 predictedMailbox:(id)a5 button:(id)a6 didDismissHandler:(id)a7;
-- (id)_adjustedExistingItemIDForInlineSummaryItem:(id)a3 snapshot:(id)a4;
+- (double)stickySubjectViewFirstBaselineForConversationHeaderView:(id)view;
+- (double)stickySubjectViewMaxYForConversationHeaderView:(id)view;
+- (id)_actionsViewControllerWithMessage:(id)message contentRequest:(id)request predictedMailbox:(id)mailbox button:(id)button didDismissHandler:(id)handler;
+- (id)_adjustedExistingItemIDForInlineSummaryItem:(id)item snapshot:(id)snapshot;
 - (id)_allMessages;
-- (id)_archiveActionForMessageListItemSelection:(id)a3 menuOwner:(id)a4;
-- (id)_bannerBlockToInsertForHeaderView:(id)a3 message:(id)a4;
-- (id)_cellForMessageItemIDIfExpanded:(id)a3;
-- (id)_completionForFooterViewCardActionsForMailActionsViewController:(id)a3;
-- (id)_completionForSwipeCardActionsForMailActionsViewController:(id)a3 messageListItem:(id)a4;
-- (id)_contentRequestForMessageWithItemID:(id)a3;
-- (id)_conversationViewQueryIncludeRelated:(BOOL)a3;
+- (id)_archiveActionForMessageListItemSelection:(id)selection menuOwner:(id)owner;
+- (id)_bannerBlockToInsertForHeaderView:(id)view message:(id)message;
+- (id)_cellForMessageItemIDIfExpanded:(id)expanded;
+- (id)_completionForFooterViewCardActionsForMailActionsViewController:(id)controller;
+- (id)_completionForSwipeCardActionsForMailActionsViewController:(id)controller messageListItem:(id)item;
+- (id)_contentRequestForMessageWithItemID:(id)d;
+- (id)_conversationViewQueryIncludeRelated:(BOOL)related;
 - (id)_createMailActionViewHeader;
 - (id)_currentlyVisibleIndexPath;
 - (id)_customReturnToGroupSenderList;
-- (id)_deleteActionForMessageListItemSelection:(id)a3 menuOwner:(id)a4;
-- (id)_displayObjectIDForPreCacheWithPredicate:(id)a3;
-- (id)_dragItemsForItemAtIndexPath:(id)a3;
+- (id)_deleteActionForMessageListItemSelection:(id)selection menuOwner:(id)owner;
+- (id)_displayObjectIDForPreCacheWithPredicate:(id)predicate;
+- (id)_dragItemsForItemAtIndexPath:(id)path;
 - (id)_excludedMailboxes;
 - (id)_focusedMessageItemID;
-- (id)_fullComposeViewControllerForQuickReply:(id)a3 userActivity:(id)a4;
-- (id)_generateContentRequestForMessageWithItemID:(id)a3;
-- (id)_getCurrentlySelectedMessageContentForMessageItemID:(id)a3;
-- (id)_groupedSenderActionMenuItemsWithMenuOwner:(id)a3;
+- (id)_fullComposeViewControllerForQuickReply:(id)reply userActivity:(id)activity;
+- (id)_generateContentRequestForMessageWithItemID:(id)d;
+- (id)_getCurrentlySelectedMessageContentForMessageItemID:(id)d;
+- (id)_groupedSenderActionMenuItemsWithMenuOwner:(id)owner;
 - (id)_indexPathForReferenceMessage;
-- (id)_indexPathOfMessageViewControllerMessage:(id)a3;
-- (id)_itemIDBeforeItemID:(id)a3 snapshot:(id)a4;
-- (id)_itemIDsForReloadAfterInsertingObjectsAfterItemID:(id)a3 snapshot:(id)a4;
-- (id)_itemsForMessage:(id)a3 changeAction:(int64_t)a4;
+- (id)_indexPathOfMessageViewControllerMessage:(id)message;
+- (id)_itemIDBeforeItemID:(id)d snapshot:(id)snapshot;
+- (id)_itemIDsForReloadAfterInsertingObjectsAfterItemID:(id)d snapshot:(id)snapshot;
+- (id)_itemsForMessage:(id)message changeAction:(int64_t)action;
 - (id)_lastIndexPath;
-- (id)_mailActionsViewControllerFromPresentedViewController:(id)a3;
-- (id)_mailActionsViewDataSourceForMailActionsViewController:(id)a3 message:(id)a4 predictedMailbox:(id)a5 preparation:(id)a6 completion:(id)a7;
+- (id)_mailActionsViewControllerFromPresentedViewController:(id)controller;
+- (id)_mailActionsViewDataSourceForMailActionsViewController:(id)controller message:(id)message predictedMailbox:(id)mailbox preparation:(id)preparation completion:(id)completion;
 - (id)_mailboxExclusionPredicate;
-- (id)_manualSummaryViewModelForItemID:(id)a3;
-- (id)_messageAtIndexPath:(id)a3;
-- (id)_messageContentViewForMessageItemID:(id)a3;
-- (id)_messageDeletionCompletionHandlerForMenuOwner:(id)a3;
+- (id)_manualSummaryViewModelForItemID:(id)d;
+- (id)_messageAtIndexPath:(id)path;
+- (id)_messageContentViewForMessageItemID:(id)d;
+- (id)_messageDeletionCompletionHandlerForMenuOwner:(id)owner;
 - (id)_messageFutureForConversationSubject;
-- (id)_messageFutureForItemID:(id)a3;
-- (id)_messageItemIDsFromSnapshot:(id)a3;
+- (id)_messageFutureForItemID:(id)d;
+- (id)_messageItemIDsFromSnapshot:(id)snapshot;
 - (id)_messageListItemsForBarButtonTriage;
-- (id)_messageReadCompletionHandlerForSelectionDataSource:(id)a3;
-- (id)_messagesForTriageInteraction:(id)a3;
-- (id)_persistentIDForEMMessageObjectID:(id)a3;
-- (id)_preparationForFooterViewCardActionsForMailActionsViewController:(id)a3;
-- (id)_presentationStringForMessageListItem:(id)a3;
-- (id)_priorityLoadingComparatorForPinnedItemID:(id)a3;
-- (id)_queryForConversationViewIncludeRelated:(BOOL)a3;
+- (id)_messageReadCompletionHandlerForSelectionDataSource:(id)source;
+- (id)_messagesForTriageInteraction:(id)interaction;
+- (id)_persistentIDForEMMessageObjectID:(id)d;
+- (id)_preparationForFooterViewCardActionsForMailActionsViewController:(id)controller;
+- (id)_presentationStringForMessageListItem:(id)item;
+- (id)_priorityLoadingComparatorForPinnedItemID:(id)d;
+- (id)_queryForConversationViewIncludeRelated:(BOOL)related;
 - (id)_quickReplyCompositionContext;
 - (id)_quickReplyView;
-- (id)_readActionForMessageListItemSelection:(id)a3;
+- (id)_readActionForMessageListItemSelection:(id)selection;
 - (id)_readLaterTriageInteractionIfAvailable;
 - (id)_readTriageInteraction;
 - (id)_recategorizationMenu;
-- (id)_recategorizationTriageInteraction:(id)a3;
+- (id)_recategorizationTriageInteraction:(id)interaction;
 - (id)_referenceDisplayMessage;
-- (id)_referenceMessageListItemIDIfMatchingNotification:(id)a3;
+- (id)_referenceMessageListItemIDIfMatchingNotification:(id)notification;
 - (id)_referenceMessageListMailboxScope;
-- (id)_senderBasedQueryPredicateForReferenceMessageListQueryPredicate:(id)a3 shouldExcludeReadMessages:(BOOL)a4;
-- (id)_sheetPresentationControllerViewForTouchContinuation:(id)a3;
-- (id)_shouldRecalculateStickySubjectBeforeDeletedItemIDs:(id)a3;
-- (id)_summarizableMessageItemIDsForSummaryItemID:(id)a3;
-- (id)_swipeActionForTriageInteraction:(id)a3;
-- (id)_targetMessageOrItemIDForBarButtonTriage:(BOOL)a3;
+- (id)_senderBasedQueryPredicateForReferenceMessageListQueryPredicate:(id)predicate shouldExcludeReadMessages:(BOOL)messages;
+- (id)_sheetPresentationControllerViewForTouchContinuation:(id)continuation;
+- (id)_shouldRecalculateStickySubjectBeforeDeletedItemIDs:(id)ds;
+- (id)_summarizableMessageItemIDsForSummaryItemID:(id)d;
+- (id)_swipeActionForTriageInteraction:(id)interaction;
+- (id)_targetMessageOrItemIDForBarButtonTriage:(BOOL)triage;
 - (id)_updateQueue;
-- (id)_visibleIndexPathForMessageViewController:(id)a3;
-- (id)actionViewHeaderForCategorizationInteraction:(id)a3 messageListItem:(id)a4;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)animationControllerForTransition:(BOOL)a3;
+- (id)_visibleIndexPathForMessageViewController:(id)controller;
+- (id)actionViewHeaderForCategorizationInteraction:(id)interaction messageListItem:(id)item;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)animationControllerForTransition:(BOOL)transition;
 - (id)captureRestorationState;
-- (id)cellConfigurator:(id)a3 messageItemIDAtIndexPath:(id)a4;
-- (id)conversationSearchHandler:(id)a3 contentRepresentationRequestForItemID:(id)a4;
-- (id)conversationSearchMessageListForConversationSearchHandler:(id)a3;
-- (id)deleteButtonMenuForConversationNavigationBarItemsManager:(id)a3 menuOwner:(id)a4;
-- (id)displayNameForAddresses:(id)a3;
-- (id)findInteraction:(id)a3 sessionForView:(id)a4;
+- (id)cellConfigurator:(id)configurator messageItemIDAtIndexPath:(id)path;
+- (id)conversationSearchHandler:(id)handler contentRepresentationRequestForItemID:(id)d;
+- (id)conversationSearchMessageListForConversationSearchHandler:(id)handler;
+- (id)deleteButtonMenuForConversationNavigationBarItemsManager:(id)manager menuOwner:(id)owner;
+- (id)displayNameForAddresses:(id)addresses;
+- (id)findInteraction:(id)interaction sessionForView:(id)view;
 - (id)focusedMessage;
-- (id)groupedSenderActionMenuForConversationNavigationBarItemsManager:(id)a3 menuOwner:(id)a4;
-- (id)mailComposeViewForQuickReplyView:(id)a3;
-- (id)messageContentRepresentationRequestForMessageTriageInteractionHelper:(id)a3 message:(id)a4;
+- (id)groupedSenderActionMenuForConversationNavigationBarItemsManager:(id)manager menuOwner:(id)owner;
+- (id)mailComposeViewForQuickReplyView:(id)view;
+- (id)messageContentRepresentationRequestForMessageTriageInteractionHelper:(id)helper message:(id)message;
 - (id)messageCountHint;
-- (id)messageForItemID:(id)a3;
-- (id)messageItemIDAtIndexPath:(id)a3;
-- (id)messageListItemsForDiagnosticsHelper:(id)a3;
-- (id)messageRepositoryForTriageInteraction:(id)a3;
-- (id)messageSourceMailboxObjectIDForMessageViewController:(id)a3;
-- (id)messageTriageInteractionHelper:(id)a3 senderRepositoryForMessageListItems:(id)a4;
-- (id)messageViewControllerMessageListMailboxScope:(id)a3;
-- (id)moreTriageInteraction:(id)a3 actionsViewControllerWithInteractionTarget:(id)a4 didDismissHandler:(id)a5;
+- (id)messageForItemID:(id)d;
+- (id)messageItemIDAtIndexPath:(id)path;
+- (id)messageListItemsForDiagnosticsHelper:(id)helper;
+- (id)messageRepositoryForTriageInteraction:(id)interaction;
+- (id)messageSourceMailboxObjectIDForMessageViewController:(id)controller;
+- (id)messageTriageInteractionHelper:(id)helper senderRepositoryForMessageListItems:(id)items;
+- (id)messageViewControllerMessageListMailboxScope:(id)scope;
+- (id)moreTriageInteraction:(id)interaction actionsViewControllerWithInteractionTarget:(id)target didDismissHandler:(id)handler;
 - (id)newBackgroundMonitor;
 - (id)pinnedIndexPathProvider;
-- (id)presentingViewControllerForTriageInteraction:(id)a3;
-- (id)swipableCollectionViewLayout:(id)a3 leadingSwipeActionsConfigurationForItemAtIndexPath:(id)a4;
-- (id)swipableCollectionViewLayout:(id)a3 trailingSwipeActionsConfigurationForItemAtIndexPath:(id)a4;
+- (id)presentingViewControllerForTriageInteraction:(id)interaction;
+- (id)swipableCollectionViewLayout:(id)layout leadingSwipeActionsConfigurationForItemAtIndexPath:(id)path;
+- (id)swipableCollectionViewLayout:(id)layout trailingSwipeActionsConfigurationForItemAtIndexPath:(id)path;
 - (id)targetMessageForBarButtonTriage;
 - (id)targetMessageItemIDForBarButtonTriage;
-- (id)transferStackViewController:(id)a3 displayMessageForMessageListItemWithItemID:(id)a4;
+- (id)transferStackViewController:(id)controller displayMessageForMessageListItemWithItemID:(id)d;
 - (id)undoManager;
-- (int64_t)_dataOwnerForDragSessionAtIndexPath:(id)a3;
-- (int64_t)_headerDisplayOptionsForCell:(id)a3 displayedAsSingleMessage:(BOOL)a4;
+- (int64_t)_dataOwnerForDragSessionAtIndexPath:(id)path;
+- (int64_t)_headerDisplayOptionsForCell:(id)cell displayedAsSingleMessage:(BOOL)message;
 - (int64_t)_messageListItemCount;
-- (int64_t)compareFoundRange:(id)a3 toRange:(id)a4 inDocument:(id)a5;
-- (int64_t)compareOrderFromDocument:(id)a3 toDocument:(id)a4;
+- (int64_t)compareFoundRange:(id)range toRange:(id)toRange inDocument:(id)document;
+- (int64_t)compareOrderFromDocument:(id)document toDocument:(id)toDocument;
 - (int64_t)countOfMessages;
 - (int64_t)countOfSummaries;
 - (unint64_t)_defaultZoomStep;
-- (unint64_t)_summarizableMessageCountForItemID:(id)a3;
-- (unint64_t)_zoomStepForViewScale:(double)a3;
-- (void)_allMessageIDsWithCompletion:(id)a3;
-- (void)_appIntentDidDeleteReminder:(id)a3;
-- (void)_appIntentDidRemoveFollowUp:(id)a3;
-- (void)_appIntentDidSetReminder:(id)a3;
-- (void)_appIntentDidSummarize:(id)a3;
+- (unint64_t)_summarizableMessageCountForItemID:(id)d;
+- (unint64_t)_zoomStepForViewScale:(double)scale;
+- (void)_allMessageIDsWithCompletion:(id)completion;
+- (void)_appIntentDidDeleteReminder:(id)reminder;
+- (void)_appIntentDidRemoveFollowUp:(id)up;
+- (void)_appIntentDidSetReminder:(id)reminder;
+- (void)_appIntentDidSummarize:(id)summarize;
 - (void)_autoReloadDataSourceForEmptyAddIfNeeded;
-- (void)_categorizeCommandInvoked:(id)a3;
-- (void)_changeZoomStep:(BOOL)a3;
-- (void)_clearSelectedMessageContentForMessageItemID:(id)a3;
-- (void)_clearTimeSensitiveCommandInvoked:(id)a3;
-- (void)_configureCollapsedCell:(id)a3 atIndexPath:(id)a4 viewModel:(id)a5;
-- (void)_configureExpandedCell:(id)a3 atIndexPath:(id)a4 viewModel:(id)a5 collapseQuotedContent:(BOOL)a6;
-- (void)_configureGeneratedSummaryCell:(id)a3 atIndexPath:(id)a4 viewModel:(id)a5;
-- (void)_contentSizeCategoryDidChange:(id)a3;
-- (void)_decorateFoundRanges:(id)a3 inExpandedCell:(id)a4;
-- (void)_deleteItemsWithIDs:(id)a3 fromCollection:(id)a4 completionHandler:(id)a5;
-- (void)_deleteMessageListItemsForMoveOrDestructiveInteraction:(id)a3 completion:(id)a4;
-- (void)_didChangeHorizontalPadding:(double)a3;
-- (void)_didTapRevealActionsButton:(id)a3 message:(id)a4 predictedMailbox:(id)a5 contentRequest:(id)a6 didDismissHandler:(id)a7;
-- (void)_didTapUndoSendButton:(id)a3 message:(id)a4 predictedMailbox:(id)a5 contentRequest:(id)a6 didDismissHandler:(id)a7;
+- (void)_categorizeCommandInvoked:(id)invoked;
+- (void)_changeZoomStep:(BOOL)step;
+- (void)_clearSelectedMessageContentForMessageItemID:(id)d;
+- (void)_clearTimeSensitiveCommandInvoked:(id)invoked;
+- (void)_configureCollapsedCell:(id)cell atIndexPath:(id)path viewModel:(id)model;
+- (void)_configureExpandedCell:(id)cell atIndexPath:(id)path viewModel:(id)model collapseQuotedContent:(BOOL)content;
+- (void)_configureGeneratedSummaryCell:(id)cell atIndexPath:(id)path viewModel:(id)model;
+- (void)_contentSizeCategoryDidChange:(id)change;
+- (void)_decorateFoundRanges:(id)ranges inExpandedCell:(id)cell;
+- (void)_deleteItemsWithIDs:(id)ds fromCollection:(id)collection completionHandler:(id)handler;
+- (void)_deleteMessageListItemsForMoveOrDestructiveInteraction:(id)interaction completion:(id)completion;
+- (void)_didChangeHorizontalPadding:(double)padding;
+- (void)_didTapRevealActionsButton:(id)button message:(id)message predictedMailbox:(id)mailbox contentRequest:(id)request didDismissHandler:(id)handler;
+- (void)_didTapUndoSendButton:(id)button message:(id)message predictedMailbox:(id)mailbox contentRequest:(id)request didDismissHandler:(id)handler;
 - (void)_dismissKeyboardIfNecessary;
-- (void)_doDeleteSelectedMessagesAskingConfirmation:(BOOL)a3 presentationSourceButtonItem:(id)a4 forceArchive:(BOOL)a5;
-- (void)_ensureSubjectViewLayoutIfNeededAtIndexPath:(id)a3;
-- (void)_fetchConversationAttachmentDataWithCompletion:(id)a3;
-- (void)_fetchConversationRichLinkDataWithCompletion:(id)a3;
-- (void)_forwardCommandInvoked:(id)a3;
-- (void)_generativeModelsAvailabilityDidChange:(id)a3;
-- (void)_groupedSenderMessageCountForQuery:(id)a3 completionHandler:(id)a4;
-- (void)_headerView:(id)a3 displayWithBannerForViewModel:(id)a4 message:(id)a5;
-- (void)_hideSeeMoreButtonForCell:(id)a3;
-- (void)_markAsJunkCommandInvoked:(id)a3;
-- (void)_markAsReadCommandInvoked:(id)a3;
+- (void)_doDeleteSelectedMessagesAskingConfirmation:(BOOL)confirmation presentationSourceButtonItem:(id)item forceArchive:(BOOL)archive;
+- (void)_ensureSubjectViewLayoutIfNeededAtIndexPath:(id)path;
+- (void)_fetchConversationAttachmentDataWithCompletion:(id)completion;
+- (void)_fetchConversationRichLinkDataWithCompletion:(id)completion;
+- (void)_forwardCommandInvoked:(id)invoked;
+- (void)_generativeModelsAvailabilityDidChange:(id)change;
+- (void)_groupedSenderMessageCountForQuery:(id)query completionHandler:(id)handler;
+- (void)_headerView:(id)view displayWithBannerForViewModel:(id)model message:(id)message;
+- (void)_hideSeeMoreButtonForCell:(id)cell;
+- (void)_markAsJunkCommandInvoked:(id)invoked;
+- (void)_markAsReadCommandInvoked:(id)invoked;
 - (void)_messageSearchEnded;
-- (void)_messageViewControllerDidDisplayContent:(id)a3;
-- (void)_muteCommandInvoked:(id)a3;
-- (void)_nts_performDataSourceUpdateAnimated:(BOOL)a3 collection:(id)a4 update:(id)a5 completion:(id)a6;
-- (void)_performDataSourceUpdateAnimated:(BOOL)a3 collection:(id)a4 update:(id)a5 completion:(id)a6;
-- (void)_performFlagChangeClearOnly:(BOOL)a3;
-- (void)_presentMailActionsViewControllerFromBarButtonItem:(id)a3 dataSourceClass:(id)a4 includeMessageContentRequest:(BOOL)a5 completionHandler:(id)a6;
-- (void)_printCommandInvoked:(id)a3;
-- (void)_recalculateStickySubjectForDeletedIndexPath:(id)a3;
-- (void)_reloadCellsAtIndexPaths:(id)a3 animated:(BOOL)a4;
+- (void)_messageViewControllerDidDisplayContent:(id)content;
+- (void)_muteCommandInvoked:(id)invoked;
+- (void)_nts_performDataSourceUpdateAnimated:(BOOL)animated collection:(id)collection update:(id)update completion:(id)completion;
+- (void)_performDataSourceUpdateAnimated:(BOOL)animated collection:(id)collection update:(id)update completion:(id)completion;
+- (void)_performFlagChangeClearOnly:(BOOL)only;
+- (void)_presentMailActionsViewControllerFromBarButtonItem:(id)item dataSourceClass:(id)class includeMessageContentRequest:(BOOL)request completionHandler:(id)handler;
+- (void)_printCommandInvoked:(id)invoked;
+- (void)_recalculateStickySubjectForDeletedIndexPath:(id)path;
+- (void)_reloadCellsAtIndexPaths:(id)paths animated:(BOOL)animated;
 - (void)_reloadDataSource;
-- (void)_reloadDataSourceWithMessageList:(id)a3;
+- (void)_reloadDataSourceWithMessageList:(id)list;
 - (void)_reloadTopSummaryIfNecessary;
-- (void)_remindMeCommandInvoked:(id)a3;
+- (void)_remindMeCommandInvoked:(id)invoked;
 - (void)_resetContentRequest;
 - (void)_resetManualSummaryItemIDs;
-- (void)_resetQuickReplyViewControllerWithReason:(int64_t)a3 resetCompose:(BOOL)a4 override:(BOOL)a5;
-- (void)_runAlongsideAnimationsForTransition:(BOOL)a3;
+- (void)_resetQuickReplyViewControllerWithReason:(int64_t)reason resetCompose:(BOOL)compose override:(BOOL)override;
+- (void)_runAlongsideAnimationsForTransition:(BOOL)transition;
 - (void)_scrollToInitialPosition;
-- (void)_scrollToRect:(CGRect)a3 forMessageContentView:(id)a4;
+- (void)_scrollToRect:(CGRect)rect forMessageContentView:(id)view;
 - (void)_scrolledToEndOfSingleMessage;
-- (void)_sendCommandInvoked:(id)a3;
-- (void)_setFlagColorCommandInvoked:(id)a3;
+- (void)_sendCommandInvoked:(id)invoked;
+- (void)_setFlagColorCommandInvoked:(id)invoked;
 - (void)_setupQuickReplySupplementaryViewProvider;
-- (void)_showSingleMessage:(id)a3 animationOffset:(CGPoint)a4 initialScrollOffset:(CGPoint)a5;
+- (void)_showSingleMessage:(id)message animationOffset:(CGPoint)offset initialScrollOffset:(CGPoint)scrollOffset;
 - (void)_startObservingSelectedBucketChangeNotification;
 - (void)_stopTextFindingIfNecessary;
 - (void)_testReplyForSelectedMessage;
 - (void)_updateBarButtonsEnabled;
-- (void)_updateFooterToShowUndoSendForCell:(id)a3;
-- (void)_updateFooterViewFrameForCell:(id)a3;
-- (void)_updateFooterViewFrameForCell:(id)a3 atIndexPath:(id)a4;
+- (void)_updateFooterToShowUndoSendForCell:(id)cell;
+- (void)_updateFooterViewFrameForCell:(id)cell;
+- (void)_updateFooterViewFrameForCell:(id)cell atIndexPath:(id)path;
 - (void)_updateFooterViewFrameForVisibleCells;
-- (void)_updateForDataSourceChanges:(BOOL)a3;
-- (void)_updateGestureForMessageListItem:(id)a3;
+- (void)_updateForDataSourceChanges:(BOOL)changes;
+- (void)_updateGestureForMessageListItem:(id)item;
 - (void)_updateGroupedSenderMessageCountQueries;
-- (void)_updateHandoffWithMessageAtIndexPath:(id)a3;
-- (void)_updateInitiallyUnreadItemIDs:(id)a3;
-- (void)_updateManualSummaryUIForScroll:(id)a3;
+- (void)_updateHandoffWithMessageAtIndexPath:(id)path;
+- (void)_updateInitiallyUnreadItemIDs:(id)ds;
+- (void)_updateManualSummaryUIForScroll:(id)scroll;
 - (void)_updatePredictedMailboxForConversation;
 - (void)_updateQuickReplyLabelIfNeeded;
-- (void)_updateQuickReplyLabelIfNeeded:(id)a3;
-- (void)_updateQuickReplySendButtonOffset:(id)a3;
+- (void)_updateQuickReplyLabelIfNeeded:(id)needed;
+- (void)_updateQuickReplySendButtonOffset:(id)offset;
 - (void)_updateQuickReplyState;
-- (void)_updateStickySubjectForItemID:(id)a3 cell:(id)a4 indexPath:(id)a5;
+- (void)_updateStickySubjectForItemID:(id)d cell:(id)cell indexPath:(id)path;
 - (void)_updateSubject;
 - (void)_updateTimeSensitiveBanners;
-- (void)bannerViewDidSelectEditButton:(id)a3 itemID:(id)a4;
-- (void)cancelAutomaticMarkAsReadForCellViewModel:(id)a3;
-- (void)categorizationButtonTapped:(id)a3;
+- (void)bannerViewDidSelectEditButton:(id)button itemID:(id)d;
+- (void)cancelAutomaticMarkAsReadForCellViewModel:(id)model;
+- (void)categorizationButtonTapped:(id)tapped;
 - (void)clearAllDecoratedFoundText;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 after:(id)a5;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 before:(id)a5;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 toThreadWithItemID:(id)a5 after:(id)a6 unreadItemIDs:(id)a7 isLastObserver:(BOOL)a8;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 toThreadWithItemID:(id)a5 before:(id)a6 unreadItemIDs:(id)a7 isLastObserver:(BOOL)a8;
-- (void)collection:(id)a3 changedItemIDs:(id)a4;
-- (void)collection:(id)a3 movedItemIDs:(id)a4 after:(id)a5;
-- (void)collection:(id)a3 movedItemIDs:(id)a4 before:(id)a5;
-- (void)collection:(id)a3 replacedExistingItemID:(id)a4 withNewItemID:(id)a5;
-- (void)collectionDidFinishInitialLoad:(id)a3;
-- (void)configurePredictedMailboxForCell:(id)a3 forMessage:(id)a4;
-- (void)conversationNavigationBarItemsManager:(id)a3 validateBarButtonItem:(id)a4 ofType:(int64_t)a5;
-- (void)customBackButtonTapped:(id)a3;
-- (void)datePickerViewController:(id)a3 didSelectDate:(id)a4;
-- (void)datePickerViewControllerDidDeleteDate:(id)a3;
+- (void)collection:(id)collection addedItemIDs:(id)ds after:(id)after;
+- (void)collection:(id)collection addedItemIDs:(id)ds before:(id)before;
+- (void)collection:(id)collection addedItemIDs:(id)ds toThreadWithItemID:(id)d after:(id)after unreadItemIDs:(id)iDs isLastObserver:(BOOL)observer;
+- (void)collection:(id)collection addedItemIDs:(id)ds toThreadWithItemID:(id)d before:(id)before unreadItemIDs:(id)iDs isLastObserver:(BOOL)observer;
+- (void)collection:(id)collection changedItemIDs:(id)ds;
+- (void)collection:(id)collection movedItemIDs:(id)ds after:(id)after;
+- (void)collection:(id)collection movedItemIDs:(id)ds before:(id)before;
+- (void)collection:(id)collection replacedExistingItemID:(id)d withNewItemID:(id)iD;
+- (void)collectionDidFinishInitialLoad:(id)load;
+- (void)configurePredictedMailboxForCell:(id)cell forMessage:(id)message;
+- (void)conversationNavigationBarItemsManager:(id)manager validateBarButtonItem:(id)item ofType:(int64_t)type;
+- (void)customBackButtonTapped:(id)tapped;
+- (void)datePickerViewController:(id)controller didSelectDate:(id)date;
+- (void)datePickerViewControllerDidDeleteDate:(id)date;
 - (void)dealloc;
-- (void)decorateFoundTextRange:(id)a3 inDocument:(id)a4 usingStyle:(int64_t)a5;
-- (void)disableAutomaticMarkAsReadForMessages:(id)a3;
-- (void)dismissBannerForUnsubscribeAndDeleteTriageInteraction:(id)a3;
-- (void)find:(id)a3;
-- (void)groupedSenderMessageCountForDestructiveTriageInteraction:(id)a3 completionHandler:(id)a4;
+- (void)decorateFoundTextRange:(id)range inDocument:(id)document usingStyle:(int64_t)style;
+- (void)disableAutomaticMarkAsReadForMessages:(id)messages;
+- (void)dismissBannerForUnsubscribeAndDeleteTriageInteraction:(id)interaction;
+- (void)find:(id)find;
+- (void)groupedSenderMessageCountForDestructiveTriageInteraction:(id)interaction completionHandler:(id)handler;
 - (void)invalidateAutomaticMarkAsReadForAllMessages;
-- (void)laterButtonTapped:(id)a3;
+- (void)laterButtonTapped:(id)tapped;
 - (void)loadView;
-- (void)mailComposeController:(id)a3 composeBodyIsEmpty:(BOOL)a4;
-- (void)mailComposeController:(id)a3 didChangeQuickReplyWebViewHeight:(double)a4;
-- (void)mailComposeController:(id)a3 isSending:(BOOL)a4;
-- (void)mailComposeController:(id)a3 migrateToFullCompose:(id)a4;
-- (void)mailComposeController:(id)a3 willMigrateToFullComposeWithReason:(int64_t)a4;
-- (void)mailComposeViewSnapshotForQuickReplyView:(id)a3 :(id)a4;
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5;
-- (void)messageViewController:(id)a3 didStartDownloadForContentItemWithProgress:(id)a4;
-- (void)messageViewController:(id)a3 didTapRevealActionsButton:(id)a4;
-- (void)messageViewController:(id)a3 didTapShowMoreAtCollapsedOffset:(CGPoint)a4 expandedOffset:(CGPoint)a5;
-- (void)messageViewController:(id)a3 didTapUndoSendButton:(id)a4;
-- (void)messageViewController:(id)a3 scrollToRect:(CGRect)a4;
-- (void)moveButtonTapped:(id)a3;
-- (void)performTextSearchWithQueryString:(id)a3 usingOptions:(id)a4 resultAggregator:(id)a5;
+- (void)mailComposeController:(id)controller composeBodyIsEmpty:(BOOL)empty;
+- (void)mailComposeController:(id)controller didChangeQuickReplyWebViewHeight:(double)height;
+- (void)mailComposeController:(id)controller isSending:(BOOL)sending;
+- (void)mailComposeController:(id)controller migrateToFullCompose:(id)compose;
+- (void)mailComposeController:(id)controller willMigrateToFullComposeWithReason:(int64_t)reason;
+- (void)mailComposeViewSnapshotForQuickReplyView:(id)view :(id)a4;
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change;
+- (void)messageViewController:(id)controller didStartDownloadForContentItemWithProgress:(id)progress;
+- (void)messageViewController:(id)controller didTapRevealActionsButton:(id)button;
+- (void)messageViewController:(id)controller didTapShowMoreAtCollapsedOffset:(CGPoint)offset expandedOffset:(CGPoint)expandedOffset;
+- (void)messageViewController:(id)controller didTapUndoSendButton:(id)button;
+- (void)messageViewController:(id)controller scrollToRect:(CGRect)rect;
+- (void)moveButtonTapped:(id)tapped;
+- (void)performTextSearchWithQueryString:(id)string usingOptions:(id)options resultAggregator:(id)aggregator;
 - (void)pinCurrentItem;
-- (void)pinItemAtIndexPath:(id)a3 dynamicOffset:(id)a4;
-- (void)populateSummaryItemForSnapshot:(id)a3;
-- (void)presentTransferUIWithMoveInteraction:(id)a3 prediction:(id)a4 fromViewController:(id)a5 didDismissHandler:(id)a6;
-- (void)presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4;
+- (void)pinItemAtIndexPath:(id)path dynamicOffset:(id)offset;
+- (void)populateSummaryItemForSnapshot:(id)snapshot;
+- (void)presentTransferUIWithMoveInteraction:(id)interaction prediction:(id)prediction fromViewController:(id)controller didDismissHandler:(id)handler;
+- (void)presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController;
 - (void)prewarmContent;
-- (void)quickReplyView:(id)a3 didTapExpandButton:(id)a4;
-- (void)quickReplyView:(id)a3 didTapSendButton:(id)a4 animationContext:(id)a5;
+- (void)quickReplyView:(id)view didTapExpandButton:(id)button;
+- (void)quickReplyView:(id)view didTapSendButton:(id)button animationContext:(id)context;
 - (void)reenableAutomaticMarkAsReadForAllMessages;
-- (void)restoreState:(id)a3;
-- (void)revealActionsButtonTapped:(id)a3;
-- (void)scheduleAutomaticMarkAsReadForMessage:(id)a3;
+- (void)restoreState:(id)state;
+- (void)revealActionsButtonTapped:(id)tapped;
+- (void)scheduleAutomaticMarkAsReadForMessage:(id)message;
 - (void)scheduleAutomaticMarkAsReadForReferenceMessage;
-- (void)scheduleAutomaticMarkAsReadForViewModel:(id)a3;
-- (void)scrollRangeToVisible:(id)a3 inDocument:(id)a4;
-- (void)scrollToMessageIfPossible:(id)a3 animated:(BOOL)a4 pin:(BOOL)a5;
-- (void)scrollToMessageItemIDIfPossible:(id)a3 animated:(BOOL)a4 pin:(BOOL)a5;
-- (void)searchMessages:(id)a3;
-- (void)setBeingPreviewed:(BOOL)a3;
-- (void)setConversationSortOrder:(unint64_t)a3;
-- (void)setDiagnosticsHelper:(id)a3;
-- (void)setDisplayMetrics:(id)a3;
-- (void)setPinnedItem:(id)a3;
-- (void)setReferenceMessageListItem:(id)a3 referenceMessageList:(id)a4 showAsConversation:(BOOL)a5 animated:(BOOL)a6;
-- (void)showAllMessagesForConversationSenderHeaderView:(id)a3;
-- (void)showCategoryMessagesForConversationSenderHeaderView:(id)a3;
-- (void)summaryCell:(id)a3 withItemID:(id)a4 didLayoutWithHeight:(double)a5;
-- (void)swipableCollectionViewLayout:(id)a3 willBeginSwipeAtIndexPath:(id)a4;
-- (void)swipableCollectionViewLayout:(void *)a1 willEndSwipeForItemAtIndexPath:;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateAvatarViewControllerForTriageInteraction:(id)a3 alertController:(id)a4;
-- (void)validateCommand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scheduleAutomaticMarkAsReadForViewModel:(id)model;
+- (void)scrollRangeToVisible:(id)visible inDocument:(id)document;
+- (void)scrollToMessageIfPossible:(id)possible animated:(BOOL)animated pin:(BOOL)pin;
+- (void)scrollToMessageItemIDIfPossible:(id)possible animated:(BOOL)animated pin:(BOOL)pin;
+- (void)searchMessages:(id)messages;
+- (void)setBeingPreviewed:(BOOL)previewed;
+- (void)setConversationSortOrder:(unint64_t)order;
+- (void)setDiagnosticsHelper:(id)helper;
+- (void)setDisplayMetrics:(id)metrics;
+- (void)setPinnedItem:(id)item;
+- (void)setReferenceMessageListItem:(id)item referenceMessageList:(id)list showAsConversation:(BOOL)conversation animated:(BOOL)animated;
+- (void)showAllMessagesForConversationSenderHeaderView:(id)view;
+- (void)showCategoryMessagesForConversationSenderHeaderView:(id)view;
+- (void)summaryCell:(id)cell withItemID:(id)d didLayoutWithHeight:(double)height;
+- (void)swipableCollectionViewLayout:(id)layout willBeginSwipeAtIndexPath:(id)path;
+- (void)swipableCollectionViewLayout:(void *)layout willEndSwipeForItemAtIndexPath:;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateAvatarViewControllerForTriageInteraction:(id)interaction alertController:(id)controller;
+- (void)validateCommand:(id)command;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ConversationViewController
@@ -307,7 +307,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000E6A4;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DCE10 != -1)
   {
     dispatch_once(&qword_1006DCE10, block);
@@ -328,14 +328,14 @@
   }
 
   v4 = +[NSNotificationCenter defaultCenter];
-  v5 = [(ConversationViewControllerBase *)self delegate];
-  [v4 addObserver:self selector:"_updateTimeSensitiveBanners" name:SelectedBucketDidChangeNotification object:v5];
+  delegate = [(ConversationViewControllerBase *)self delegate];
+  [v4 addObserver:self selector:"_updateTimeSensitiveBanners" name:SelectedBucketDidChangeNotification object:delegate];
 }
 
 - (void)_updateTimeSensitiveBanners
 {
-  v2 = [(ConversationViewControllerBase *)self cellConfigurator];
-  [v2 enumerateExpandedCellsWithBlock:&stru_10064CAE8];
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+  [cellConfigurator enumerateExpandedCellsWithBlock:&stru_10064CAE8];
 }
 
 - (void)loadView
@@ -360,8 +360,8 @@
     [(ConversationViewController *)self _setupQuickReplySupplementaryViewProvider];
   }
 
-  v7 = [(ConversationViewControllerBase *)self conversationLayout];
-  [v7 setSwipeDelegate:self];
+  conversationLayout = [(ConversationViewControllerBase *)self conversationLayout];
+  [conversationLayout setSwipeDelegate:self];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -374,25 +374,25 @@
   [(ConversationViewController *)&v2 viewDidLoad];
 }
 
-- (ConversationViewController)initWithScene:(id)a3 contactStore:(id)a4 avatarGenerator:(id)a5
+- (ConversationViewController)initWithScene:(id)scene contactStore:(id)store avatarGenerator:(id)generator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  storeCopy = store;
+  generatorCopy = generator;
   v55.receiver = self;
   v55.super_class = ConversationViewController;
-  v11 = [(ConversationViewControllerBase *)&v55 initWithScene:v8 contactStore:v9 avatarGenerator:v10];
+  v11 = [(ConversationViewControllerBase *)&v55 initWithScene:sceneCopy contactStore:storeCopy avatarGenerator:generatorCopy];
   if (v11)
   {
-    v12 = [v8 daemonInterface];
-    v13 = [v12 messageRepository];
+    daemonInterface = [sceneCopy daemonInterface];
+    messageRepository = [daemonInterface messageRepository];
     v14 = *(v11 + 524);
-    *(v11 + 524) = v13;
+    *(v11 + 524) = messageRepository;
 
-    v15 = [v8 daemonInterface];
-    v16 = [v15 mailboxRepository];
+    daemonInterface2 = [sceneCopy daemonInterface];
+    mailboxRepository = [daemonInterface2 mailboxRepository];
     v17 = *(v11 + 532);
-    *(v11 + 532) = v16;
+    *(v11 + 532) = mailboxRepository;
 
     v18 = [[MessageListCollectionHelper alloc] initWithLoggableClient:v11 updateQueueName:@"com.apple.mobilemail.ConversationViewController.collectionViewUpdate" section:0];
     v19 = *(v11 + 556);
@@ -487,56 +487,56 @@
 
 - (void)dealloc
 {
-  v3 = [(ConversationViewController *)self contentItemsCancelable];
-  [v3 cancel];
+  contentItemsCancelable = [(ConversationViewController *)self contentItemsCancelable];
+  [contentItemsCancelable cancel];
 
-  v4 = [(ConversationViewController *)self predictedMailboxForConversation];
-  [v4 cancel];
+  predictedMailboxForConversation = [(ConversationViewController *)self predictedMailboxForConversation];
+  [predictedMailboxForConversation cancel];
 
-  v5 = [(ConversationViewController *)self diagnosticsHelperToken];
-  [v5 cancel];
+  diagnosticsHelperToken = [(ConversationViewController *)self diagnosticsHelperToken];
+  [diagnosticsHelperToken cancel];
 
-  v6 = [(ConversationViewController *)self groupedSenderUnreadCountToken];
-  [v6 cancel];
+  groupedSenderUnreadCountToken = [(ConversationViewController *)self groupedSenderUnreadCountToken];
+  [groupedSenderUnreadCountToken cancel];
 
   v7.receiver = self;
   v7.super_class = ConversationViewController;
   [(ConversationViewControllerBase *)&v7 dealloc];
 }
 
-- (void)setConversationSortOrder:(unint64_t)a3
+- (void)setConversationSortOrder:(unint64_t)order
 {
   v4.receiver = self;
   v4.super_class = ConversationViewController;
-  [(ConversationViewControllerBase *)&v4 setConversationSortOrder:a3];
+  [(ConversationViewControllerBase *)&v4 setConversationSortOrder:order];
   [(ConversationViewController *)self _reloadDataSource];
   [(ConversationViewController *)self _updateQuickReplyState];
 }
 
 - (EMQuery)referenceMessageListQuery
 {
-  v2 = [(ConversationViewController *)self referenceMessageList];
-  v3 = [v2 query];
+  referenceMessageList = [(ConversationViewController *)self referenceMessageList];
+  query = [referenceMessageList query];
 
-  return v3;
+  return query;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = ConversationViewController;
-  [(ConversationViewControllerBase *)&v9 viewWillAppear:a3];
-  v4 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v5 = [v4 sendLaterDate];
-  if (v5 || ([v4 readLater], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  [(ConversationViewControllerBase *)&v9 viewWillAppear:appear];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  sendLaterDate = [referenceMessageListItem sendLaterDate];
+  if (sendLaterDate || ([referenceMessageListItem readLater], (sendLaterDate = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v8 = [v4 followUp];
+    followUp = [referenceMessageListItem followUp];
 
-    if (!v8)
+    if (!followUp)
     {
       goto LABEL_5;
     }
@@ -544,46 +544,46 @@
 
   [(ConversationViewController *)self _reloadDataSource];
 LABEL_5:
-  v6 = [(ConversationViewControllerBase *)self shouldHideStickyFooterView];
-  v7 = [(ConversationViewController *)self navigationController];
-  [v7 setToolbarHidden:v6 ^ 1];
+  shouldHideStickyFooterView = [(ConversationViewControllerBase *)self shouldHideStickyFooterView];
+  navigationController = [(ConversationViewController *)self navigationController];
+  [navigationController setToolbarHidden:shouldHideStickyFooterView ^ 1];
 
-  if (!v4 && [(ConversationViewControllerBase *)self shouldShowNoMessageSelectedView])
+  if (!referenceMessageListItem && [(ConversationViewControllerBase *)self shouldShowNoMessageSelectedView])
   {
     sub_100057584(self);
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ConversationViewController;
-  [(ConversationViewControllerBase *)&v4 viewDidAppear:a3];
+  [(ConversationViewControllerBase *)&v4 viewDidAppear:appear];
   [(ConversationViewController *)self _reloadTopSummaryIfNecessary];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ConversationViewController;
-  [(ConversationViewControllerBase *)&v4 viewWillDisappear:a3];
+  [(ConversationViewControllerBase *)&v4 viewWillDisappear:disappear];
   [ConversationViewController swipableCollectionViewLayout:willEndSwipeForItemAtIndexPath:]_0(self);
 }
 
-- (void)swipableCollectionViewLayout:(void *)a1 willEndSwipeForItemAtIndexPath:
+- (void)swipableCollectionViewLayout:(void *)layout willEndSwipeForItemAtIndexPath:
 {
-  if (a1)
+  if (layout)
   {
-    v2 = sub_100063EB0(a1);
-    v3 = [v2 presentedViewController];
-    v4 = sub_100063D98(a1, v3);
+    v2 = sub_100063EB0(layout);
+    presentedViewController = [v2 presentedViewController];
+    v4 = sub_100063D98(layout, presentedViewController);
 
     v5 = +[ConversationViewController log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = NSStringFromSelector("_dismissPresentedViewController");
       v7 = 134218754;
-      v8 = a1;
+      layoutCopy = layout;
       v9 = 2112;
       v10 = v6;
       v11 = 1024;
@@ -600,39 +600,39 @@ LABEL_5:
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ConversationViewController;
-  [(ConversationViewControllerBase *)&v4 viewDidDisappear:a3];
+  [(ConversationViewControllerBase *)&v4 viewDidDisappear:disappear];
   [(ConversationViewController *)self reenableAutomaticMarkAsReadForAllMessages];
 }
 
 - (id)undoManager
 {
-  v2 = [(ConversationViewControllerBase *)self scene];
-  v3 = [v2 undoManager];
+  scene = [(ConversationViewControllerBase *)self scene];
+  undoManager = [scene undoManager];
 
-  return v3;
+  return undoManager;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self presentedViewController];
-  v6 = [(ConversationViewController *)self _mailActionsViewControllerFromPresentedViewController:v5];
+  changeCopy = change;
+  presentedViewController = [(ConversationViewController *)self presentedViewController];
+  v6 = [(ConversationViewController *)self _mailActionsViewControllerFromPresentedViewController:presentedViewController];
 
-  v7 = [(ConversationViewController *)self presentedViewController];
+  presentedViewController2 = [(ConversationViewController *)self presentedViewController];
 
-  if (v7)
+  if (presentedViewController2)
   {
     if (v6)
     {
-      v8 = [(ConversationViewControllerBase *)self _shouldHideStickyFooterViewForTraitCollection:v4];
-      v9 = [(ConversationViewController *)self traitCollection];
-      v10 = [(ConversationViewControllerBase *)self _shouldHideStickyFooterViewForTraitCollection:v9];
+      v8 = [(ConversationViewControllerBase *)self _shouldHideStickyFooterViewForTraitCollection:changeCopy];
+      traitCollection = [(ConversationViewController *)self traitCollection];
+      v10 = [(ConversationViewControllerBase *)self _shouldHideStickyFooterViewForTraitCollection:traitCollection];
 
-      if (v8 != v10 || [v6 useActionSheetStyleCard] && (-[ConversationViewController traitCollection](self, "traitCollection"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "preferredContentSizeCategory"), v12 = objc_claimAutoreleasedReturnValue(), IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12), v12, v11, objc_msgSend(v4, "preferredContentSizeCategory"), v14 = objc_claimAutoreleasedReturnValue(), LODWORD(v12) = UIContentSizeCategoryIsAccessibilityCategory(v14), v14, IsAccessibilityCategory != v12))
+      if (v8 != v10 || [v6 useActionSheetStyleCard] && (-[ConversationViewController traitCollection](self, "traitCollection"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "preferredContentSizeCategory"), v12 = objc_claimAutoreleasedReturnValue(), IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12), v12, v11, objc_msgSend(changeCopy, "preferredContentSizeCategory"), v14 = objc_claimAutoreleasedReturnValue(), LODWORD(v12) = UIContentSizeCategoryIsAccessibilityCategory(v14), v14, IsAccessibilityCategory != v12))
       {
         [(ConversationViewController *)self dismissViewControllerAnimated:1 completion:0];
       }
@@ -641,57 +641,57 @@ LABEL_5:
 
   v15.receiver = self;
   v15.super_class = ConversationViewController;
-  [(ConversationViewControllerBase *)&v15 traitCollectionDidChange:v4];
+  [(ConversationViewControllerBase *)&v15 traitCollectionDidChange:changeCopy];
 }
 
 - (BOOL)isBucketSelected
 {
-  v2 = [(ConversationViewController *)self messageList];
-  v3 = [v2 query];
-  v4 = [v3 predicate];
-  v5 = [v4 ef_containsKeyPath:EMMessageListItemKeyPathCategoryType];
+  messageList = [(ConversationViewController *)self messageList];
+  query = [messageList query];
+  predicate = [query predicate];
+  v5 = [predicate ef_containsKeyPath:EMMessageListItemKeyPathCategoryType];
 
   return v5;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = ConversationViewController;
-  [(ConversationViewControllerBase *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(ConversationViewControllerBase *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100057C58;
   v8[3] = &unk_10064CC00;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (void)setReferenceMessageListItem:(id)a3 referenceMessageList:(id)a4 showAsConversation:(BOOL)a5 animated:(BOOL)a6
+- (void)setReferenceMessageListItem:(id)item referenceMessageList:(id)list showAsConversation:(BOOL)conversation animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  conversationCopy = conversation;
+  itemCopy = item;
+  listCopy = list;
   v12 = MFMessageSelectionLifecycleSignpostLog();
-  v13 = [v10 itemID];
-  v14 = os_signpost_id_make_with_pointer(v12, v13);
+  itemID = [itemCopy itemID];
+  v14 = os_signpost_id_make_with_pointer(v12, itemID);
 
   v15 = MFMessageSelectionLifecycleSignpostLog();
   v16 = v15;
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
-    v17 = [v10 itemID];
+    itemID2 = [itemCopy itemID];
     *buf = 138543362;
-    v60 = v17;
+    selfCopy2 = itemID2;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_EVENT, v14, "Message selection lifecycle", "Setting reference item for message with itemID: %{public}@", buf, 0xCu);
   }
 
-  v18 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v19 = [v18 isEqual:v10];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  v19 = [referenceMessageListItem isEqual:itemCopy];
 
   v20 = _os_activity_create(&_mh_execute_header, "loading messages for the conversation view", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -707,23 +707,23 @@ LABEL_13:
     [(ConversationViewControllerBase *)self setDidCompleteFirstPaint:0];
     [(ConversationViewControllerBase *)self setInitialSenderHeaderExpansionStatus:1];
     [(ConversationViewController *)self _resetManualSummaryItemIDs];
-    v25 = [(ConversationViewControllerBase *)self restorationFuture];
+    restorationFuture = [(ConversationViewControllerBase *)self restorationFuture];
 
-    if (v25)
+    if (restorationFuture)
     {
-      v26 = [(ConversationViewControllerBase *)self restorationFuture];
-      v27 = [v26 resultIfAvailable];
-      v28 = [v27 referenceMessageListItem];
+      restorationFuture2 = [(ConversationViewControllerBase *)self restorationFuture];
+      resultIfAvailable = [restorationFuture2 resultIfAvailable];
+      referenceMessageListItem2 = [resultIfAvailable referenceMessageListItem];
 
-      if (v10 && v28 == v10)
+      if (itemCopy && referenceMessageListItem2 == itemCopy)
       {
-        v29 = +[ConversationViewController log];
-        if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+        restorationFuture3 = +[ConversationViewController log];
+        if (os_log_type_enabled(restorationFuture3, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [v10 ef_publicDescription];
+          ef_publicDescription = [itemCopy ef_publicDescription];
           *buf = 138412290;
-          v60 = v30;
-          _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Conversation reference item successfully restored: %@", buf, 0xCu);
+          selfCopy2 = ef_publicDescription;
+          _os_log_impl(&_mh_execute_header, restorationFuture3, OS_LOG_TYPE_DEFAULT, "Conversation reference item successfully restored: %@", buf, 0xCu);
         }
       }
 
@@ -732,34 +732,34 @@ LABEL_13:
         v31 = +[ConversationViewController log];
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [v10 itemID];
+          itemID3 = [itemCopy itemID];
           *buf = 138412290;
-          v60 = v32;
+          selfCopy2 = itemID3;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "setReferenceMessageListItem (itemID=%@): called before state restoration was complete. Cancelling restoration future.", buf, 0xCu);
         }
 
-        v29 = [(ConversationViewControllerBase *)self restorationFuture];
-        [v29 tryCancel];
+        restorationFuture3 = [(ConversationViewControllerBase *)self restorationFuture];
+        [restorationFuture3 tryCancel];
       }
 
       [(ConversationViewControllerBase *)self setRestorationFuture:0];
     }
 
     [(ConversationViewControllerBase *)self shouldShowNoMessageSelectedView];
-    if (v10)
+    if (itemCopy)
     {
-      v33 = [(ConversationViewController *)self blankConversationTailspinToken];
-      [v33 cancel];
+      blankConversationTailspinToken = [(ConversationViewController *)self blankConversationTailspinToken];
+      [blankConversationTailspinToken cancel];
 
       v34 = +[EFScheduler globalAsyncScheduler];
       v52 = _NSConcreteStackBlock;
       v53 = 3221225472;
       v54 = sub_100058634;
       v55 = &unk_10064C660;
-      v56 = self;
-      v57 = v10;
+      selfCopy = self;
+      v57 = itemCopy;
       v35 = [v34 afterDelay:&v52 performBlock:1.5];
-      [(ConversationViewController *)self setBlankConversationTailspinToken:v35, v52, v53, v54, v55, v56];
+      [(ConversationViewController *)self setBlankConversationTailspinToken:v35, v52, v53, v54, v55, selfCopy];
     }
 
     else
@@ -768,57 +768,57 @@ LABEL_13:
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v60 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%p: No message list item. Showing No Message Selected", buf, 0xCu);
       }
     }
 
-    [(ConversationViewControllerBase *)self setShouldShowNoMessageSelectedView:v10 == 0];
+    [(ConversationViewControllerBase *)self setShouldShowNoMessageSelectedView:itemCopy == 0];
     v37 = +[ConversationViewController log];
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [v10 ef_publicDescription];
+      ef_publicDescription2 = [itemCopy ef_publicDescription];
       *buf = 138413314;
-      v60 = v38;
+      selfCopy2 = ef_publicDescription2;
       v61 = 2112;
-      v62 = v11;
+      v62 = listCopy;
       v63 = 1024;
-      *v64 = v7;
+      *v64 = conversationCopy;
       *&v64[4] = 1024;
-      *&v64[6] = v10 == 0;
+      *&v64[6] = itemCopy == 0;
       v65 = 1024;
-      v66 = v6;
+      v66 = animatedCopy;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Setting referenceMessageListItem:%@\nreferenceMessageList:%@\nshowAsConversation:%{BOOL}d, shouldShowNoMessageSelectedView:%{BOOL}d, animated: %{BOOL}d", buf, 0x28u);
     }
 
-    v39 = [(ConversationViewControllerBase *)self messageViewControllerReuseQueue];
-    [v39 drain];
+    messageViewControllerReuseQueue = [(ConversationViewControllerBase *)self messageViewControllerReuseQueue];
+    [messageViewControllerReuseQueue drain];
 
-    v40 = [(ConversationViewControllerBase *)self cellHeightCache];
-    [v40 removeAllObjects];
+    cellHeightCache = [(ConversationViewControllerBase *)self cellHeightCache];
+    [cellHeightCache removeAllObjects];
 
-    v41 = [(ConversationViewControllerBase *)self cellConfigurator];
-    [v41 resetCaches];
+    cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+    [cellConfigurator resetCaches];
 
     v42 = +[NSMutableSet set];
     [(ConversationViewController *)self setInitiallyUnreadItemIDs:v42];
 
     [(ConversationViewController *)self _stopTextFindingIfNecessary];
-    [(ConversationViewControllerBase *)self _updateAllowQuickReplyForMessageListItem:v10];
-    if (v10)
+    [(ConversationViewControllerBase *)self _updateAllowQuickReplyForMessageListItem:itemCopy];
+    if (itemCopy)
     {
       v43 = +[ConversationViewController log];
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
-        v44 = [v10 itemID];
-        v45 = [v10 displayMessageItemID];
-        v46 = [v10 conversationID];
+        itemID4 = [itemCopy itemID];
+        displayMessageItemID = [itemCopy displayMessageItemID];
+        conversationID = [itemCopy conversationID];
         *buf = 138543874;
-        v60 = v44;
+        selfCopy2 = itemID4;
         v61 = 2114;
-        v62 = v45;
+        v62 = displayMessageItemID;
         v63 = 2048;
-        *v64 = v46;
+        *v64 = conversationID;
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Setting referenceMessageListItem: itemID=%{public}@ displayMessageItemID=%{public}@ conversationID=%lld", buf, 0x20u);
       }
     }
@@ -833,34 +833,34 @@ LABEL_13:
       }
     }
 
-    [(ConversationViewControllerBase *)self setReferenceMessageListItem:v10];
-    [(ConversationViewController *)self setReferenceMessageList:v11];
-    [(ConversationViewControllerBase *)self setShownAsConversation:v7];
+    [(ConversationViewControllerBase *)self setReferenceMessageListItem:itemCopy];
+    [(ConversationViewController *)self setReferenceMessageList:listCopy];
+    [(ConversationViewControllerBase *)self setShownAsConversation:conversationCopy];
     [(ConversationViewController *)self _reloadDataSource];
     if ((*&self->super._flags & 0x10) != 0)
     {
-      [(ConversationViewControllerBase *)self _updateBarButtonsAnimated:v6 force:1];
+      [(ConversationViewControllerBase *)self _updateBarButtonsAnimated:animatedCopy force:1];
       [(ConversationViewControllerBase *)self updateArrowControlsView];
     }
 
-    v47 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v48 = v47 == 0;
+    referenceMessageListItem3 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    v48 = referenceMessageListItem3 == 0;
 
     if (!v48)
     {
-      v49 = [(ConversationViewControllerBase *)self previewState];
-      [v49 transitionAfterChangingSources];
+      previewState = [(ConversationViewControllerBase *)self previewState];
+      [previewState transitionAfterChangingSources];
     }
 
-    [(ConversationViewController *)self _updateGestureForMessageListItem:v10];
+    [(ConversationViewController *)self _updateGestureForMessageListItem:itemCopy];
     [(ConversationViewController *)self _resetQuickReplyViewControllerWithReason:0 resetCompose:1 override:0];
     [(ConversationViewControllerBase *)self updateNavigationItemChromelessConfiguration];
     goto LABEL_39;
   }
 
-  v21 = [(ConversationViewController *)self contentRequestCache];
-  v22 = [v10 displayMessageItemID];
-  v23 = [v21 objectForKey:v22];
+  contentRequestCache = [(ConversationViewController *)self contentRequestCache];
+  displayMessageItemID2 = [itemCopy displayMessageItemID];
+  v23 = [contentRequestCache objectForKey:displayMessageItemID2];
 
   if ([(ConversationViewController *)self _shouldReloadEmptyMessageList])
   {
@@ -868,7 +868,7 @@ LABEL_13:
     v24 = +[ConversationViewController log];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      [v10 itemID];
+      [itemCopy itemID];
       objc_claimAutoreleasedReturnValue();
       sub_10048405C();
     }
@@ -886,9 +886,9 @@ LABEL_12:
   v50 = +[ConversationViewController log];
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
   {
-    v51 = [v10 ef_publicDescription];
+    ef_publicDescription3 = [itemCopy ef_publicDescription];
     *buf = 138412290;
-    v60 = v51;
+    selfCopy2 = ef_publicDescription3;
     _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "setReferenceMessageListItem: Skip setting the same message list item: %@", buf, 0xCu);
   }
 
@@ -896,32 +896,32 @@ LABEL_39:
   os_activity_scope_leave(&state);
 }
 
-- (void)_resetQuickReplyViewControllerWithReason:(int64_t)a3 resetCompose:(BOOL)a4 override:(BOOL)a5
+- (void)_resetQuickReplyViewControllerWithReason:(int64_t)reason resetCompose:(BOOL)compose override:(BOOL)override
 {
-  v5 = a5;
-  v6 = a4;
-  if ([(ConversationViewControllerBase *)self allowQuickReply]|| v5)
+  overrideCopy = override;
+  composeCopy = compose;
+  if ([(ConversationViewControllerBase *)self allowQuickReply]|| overrideCopy)
   {
     [(ConversationViewControllerBase *)self setIsPerformingQuickReplySendAnimation:0];
     +[_TtC10MobileMail14QuickReplyView defaultHeight];
     [(ConversationViewControllerBase *)self setQuickReplyHeight:?];
     [(ConversationViewController *)self setQuickReplyHasContent:0];
-    v14 = [(ConversationViewController *)self _quickReplyView];
-    [v14 resetWithReason:a3];
-    [v14 setHidden:0];
-    v9 = [(ConversationViewController *)self quickReplyMailComposeController];
-    [(ConversationViewController *)self mailComposeController:v9 didChangeQuickReplyWebViewHeight:0.0];
+    _quickReplyView = [(ConversationViewController *)self _quickReplyView];
+    [_quickReplyView resetWithReason:reason];
+    [_quickReplyView setHidden:0];
+    quickReplyMailComposeController = [(ConversationViewController *)self quickReplyMailComposeController];
+    [(ConversationViewController *)self mailComposeController:quickReplyMailComposeController didChangeQuickReplyWebViewHeight:0.0];
 
     [(ConversationViewController *)self _updateQuickReplyLabelIfNeeded];
-    v10 = [(ConversationViewControllerBase *)self quickReplyAnimationContext];
+    quickReplyAnimationContext = [(ConversationViewControllerBase *)self quickReplyAnimationContext];
     v11 = +[NSNull null];
-    [v10 setObject:v11];
+    [quickReplyAnimationContext setObject:v11];
 
-    if (v6)
+    if (composeCopy)
     {
-      v12 = [(ConversationViewController *)self quickReplyMailComposeController];
-      v13 = [v12 view];
-      [v13 removeFromSuperview];
+      quickReplyMailComposeController2 = [(ConversationViewController *)self quickReplyMailComposeController];
+      view = [quickReplyMailComposeController2 view];
+      [view removeFromSuperview];
 
       [(ConversationViewController *)self setQuickReplyMailComposeController:0];
     }
@@ -943,48 +943,48 @@ LABEL_39:
 
 - (id)focusedMessage
 {
-  v2 = [(ConversationViewControllerBase *)self handoffCoordinator];
-  v3 = [v2 handoffMessageRequest];
-  v4 = [v3 message];
+  handoffCoordinator = [(ConversationViewControllerBase *)self handoffCoordinator];
+  handoffMessageRequest = [handoffCoordinator handoffMessageRequest];
+  message = [handoffMessageRequest message];
 
-  return v4;
+  return message;
 }
 
 - (id)_focusedMessageItemID
 {
-  v2 = [(ConversationViewControllerBase *)self handoffCoordinator];
-  v3 = [v2 handoffMessageRequest];
-  v4 = [v3 itemID];
+  handoffCoordinator = [(ConversationViewControllerBase *)self handoffCoordinator];
+  handoffMessageRequest = [handoffCoordinator handoffMessageRequest];
+  itemID = [handoffMessageRequest itemID];
 
-  return v4;
+  return itemID;
 }
 
-- (BOOL)containsMessage:(id)a3
+- (BOOL)containsMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self collectionViewDataSource];
-  v6 = [v4 displayMessageItemID];
-  v7 = [v5 indexPathForItemIdentifier:v6];
+  messageCopy = message;
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  displayMessageItemID = [messageCopy displayMessageItemID];
+  v7 = [collectionViewDataSource indexPathForItemIdentifier:displayMessageItemID];
   v8 = v7 != 0;
 
   return v8;
 }
 
-- (void)scrollToMessageIfPossible:(id)a3 animated:(BOOL)a4 pin:(BOOL)a5
+- (void)scrollToMessageIfPossible:(id)possible animated:(BOOL)animated pin:(BOOL)pin
 {
-  v6 = [a3 displayMessageItemID];
+  displayMessageItemID = [possible displayMessageItemID];
   [ConversationViewController scrollToMessageItemIDIfPossible:"scrollToMessageItemIDIfPossible:animated:pin:" animated:? pin:?];
 }
 
-- (void)scrollToMessageItemIDIfPossible:(id)a3 animated:(BOOL)a4 pin:(BOOL)a5
+- (void)scrollToMessageItemIDIfPossible:(id)possible animated:(BOOL)animated pin:(BOOL)pin
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (!v5 || (-[ConversationViewControllerBase pinnedItem](self, "pinnedItem"), v9 = objc_claimAutoreleasedReturnValue(), [v9 itemID], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqual:", v8), v10, v9, (v11 & 1) == 0))
+  pinCopy = pin;
+  animatedCopy = animated;
+  possibleCopy = possible;
+  if (!pinCopy || (-[ConversationViewControllerBase pinnedItem](self, "pinnedItem"), v9 = objc_claimAutoreleasedReturnValue(), [v9 itemID], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqual:", possibleCopy), v10, v9, (v11 & 1) == 0))
   {
-    v12 = [(ConversationViewController *)self collectionViewDataSource];
-    v13 = [v12 indexPathForItemIdentifier:v8];
+    collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+    v13 = [collectionViewDataSource indexPathForItemIdentifier:possibleCopy];
 
     if (v13)
     {
@@ -995,15 +995,15 @@ LABEL_39:
       v18[4] = self;
       v14 = v13;
       v19 = v14;
-      v20 = v8;
-      [(ConversationViewControllerBase *)self _scrollToItemAtIndexPath:v14 dynamicOffset:0 shouldAdjustToShowPreviousMessage:1 animated:v6 pin:v5 completion:v18];
-      v15 = [(ConversationViewControllerBase *)self cellConfigurator];
-      v16 = [v15 messageAtIndexPathIsExpanded:v14];
+      v20 = possibleCopy;
+      [(ConversationViewControllerBase *)self _scrollToItemAtIndexPath:v14 dynamicOffset:0 shouldAdjustToShowPreviousMessage:1 animated:animatedCopy pin:pinCopy completion:v18];
+      cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+      v16 = [cellConfigurator messageAtIndexPathIsExpanded:v14];
 
       if ((v16 & 1) == 0)
       {
-        v17 = [(ConversationViewControllerBase *)self cellConfigurator];
-        [v17 expandCellAtIndexPath:v14 animated:v6 highlightFirst:0];
+        cellConfigurator2 = [(ConversationViewControllerBase *)self cellConfigurator];
+        [cellConfigurator2 expandCellAtIndexPath:v14 animated:animatedCopy highlightFirst:0];
       }
     }
   }
@@ -1011,40 +1011,40 @@ LABEL_39:
 
 - (id)messageCountHint
 {
-  v3 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v4 = v3;
-  if (v3)
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  v4 = referenceMessageListItem;
+  if (referenceMessageListItem)
   {
-    v5 = [v3 count];
+    v5 = [referenceMessageListItem count];
     if (v5 <= 1 && (*&self->super._flags & 0x20) != 0)
     {
       v8 = +[EFPromise promise];
       v9 = [(ConversationViewController *)self _conversationViewQueryIncludeRelated:1];
-      v10 = [(ConversationViewController *)self messageRepository];
+      messageRepository = [(ConversationViewController *)self messageRepository];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_100059188;
       v13[3] = &unk_10064CC28;
       v11 = v8;
       v14 = v11;
-      [v10 performCountQuery:v9 completionHandler:v13];
+      [messageRepository performCountQuery:v9 completionHandler:v13];
 
-      v7 = [v11 future];
+      future = [v11 future];
     }
 
     else
     {
       v6 = [NSNumber numberWithUnsignedInteger:v5];
-      v7 = [EFFuture futureWithResult:v6];
+      future = [EFFuture futureWithResult:v6];
     }
   }
 
   else
   {
-    v7 = 0;
+    future = 0;
   }
 
-  return v7;
+  return future;
 }
 
 - (void)_reloadDataSource
@@ -1053,49 +1053,49 @@ LABEL_39:
   [(ConversationViewController *)self setMessageList:0];
   [(ConversationViewController *)self setDisplaySubjectItemID:0];
   [(ConversationViewControllerBase *)self setLastExpandedCellIndexPath:0];
-  v4 = [(ConversationViewController *)self messageRepository];
-  if (v4 && ([(ConversationViewControllerBase *)self referenceMessageListItem], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  messageRepository = [(ConversationViewController *)self messageRepository];
+  if (messageRepository && ([(ConversationViewControllerBase *)self referenceMessageListItem], v5 = objc_claimAutoreleasedReturnValue(), v5, messageRepository, v5))
   {
     if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
     {
-      v6 = [(ConversationViewController *)self referenceMessageList];
-      v7 = [v6 unfilteredMessageList];
-      v8 = [v7 query];
-      v9 = [v8 predicate];
-      v10 = [(ConversationViewController *)self _senderBasedQueryPredicateForReferenceMessageListQueryPredicate:v9 shouldExcludeReadMessages:0];
+      referenceMessageList = [(ConversationViewController *)self referenceMessageList];
+      unfilteredMessageList = [referenceMessageList unfilteredMessageList];
+      query = [unfilteredMessageList query];
+      predicate = [query predicate];
+      v10 = [(ConversationViewController *)self _senderBasedQueryPredicateForReferenceMessageListQueryPredicate:predicate shouldExcludeReadMessages:0];
 
       v11 = [EMMessageList alloc];
-      v12 = [(ConversationViewController *)self messageRepository];
-      v13 = [v11 initWithQuery:v10 repository:v12];
+      messageRepository2 = [(ConversationViewController *)self messageRepository];
+      v13 = [v11 initWithQuery:v10 repository:messageRepository2];
 
-      v14 = [(ConversationViewController *)self referenceMessageList];
-      v15 = [v14 filterPredicate];
+      referenceMessageList2 = [(ConversationViewController *)self referenceMessageList];
+      filterPredicate = [referenceMessageList2 filterPredicate];
 
-      if (!v15)
+      if (!filterPredicate)
       {
         v22 = +[NSAssertionHandler currentHandler];
         [v22 handleFailureInMethod:a2 object:self file:@"ConversationViewController.m" lineNumber:655 description:@"The messageList from Message List View Controller should always have a category filter when we show the Hybrid Conversation View"];
       }
 
-      v16 = [(ConversationViewController *)self referenceMessageList];
-      v17 = [v16 filterPredicate];
-      v18 = [v13 filteredMessageListWithPredicate:v17 userFiltered:0];
+      referenceMessageList3 = [(ConversationViewController *)self referenceMessageList];
+      filterPredicate2 = [referenceMessageList3 filterPredicate];
+      v18 = [v13 filteredMessageListWithPredicate:filterPredicate2 userFiltered:0];
     }
 
     else
     {
       v10 = [(ConversationViewController *)self _conversationViewQueryIncludeRelated:(*&self->super._flags >> 5) & 1];
       v19 = [EMMessageList alloc];
-      v16 = [(ConversationViewController *)self messageRepository];
-      v18 = [v19 initWithQuery:v10 repository:v16];
+      referenceMessageList3 = [(ConversationViewController *)self messageRepository];
+      v18 = [v19 initWithQuery:v10 repository:referenceMessageList3];
     }
 
     v20 = +[ConversationViewController log];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v18 query];
+      query2 = [v18 query];
       v23 = 138412290;
-      v24 = v21;
+      v24 = query2;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Loading messages for conversation view query: %@", &v23, 0xCu);
     }
   }
@@ -1110,44 +1110,44 @@ LABEL_39:
   [(ConversationViewController *)self setPredictedMailboxForConversation:0];
 }
 
-- (void)_reloadDataSourceWithMessageList:(id)a3
+- (void)_reloadDataSourceWithMessageList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   if (pthread_main_np() != 1)
   {
     v13 = +[NSAssertionHandler currentHandler];
     [v13 handleFailureInMethod:a2 object:self file:@"ConversationViewController.m" lineNumber:670 description:@"Current thread must be main"];
   }
 
-  v6 = [(ConversationViewController *)self messageList];
+  messageList = [(ConversationViewController *)self messageList];
   v7 = +[ConversationViewController log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 ef_publicDescription];
-    v9 = [v5 ef_publicDescription];
+    ef_publicDescription = [messageList ef_publicDescription];
+    ef_publicDescription2 = [listCopy ef_publicDescription];
     *buf = 138412802;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2112;
-    v22 = v8;
+    v22 = ef_publicDescription;
     v23 = 2112;
-    v24 = v9;
+    v24 = ef_publicDescription2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@: Reloading messageList old:%@\nnew:%@", buf, 0x20u);
   }
 
-  if (v6)
+  if (messageList)
   {
-    [v6 stopObserving:self];
+    [messageList stopObserving:self];
   }
 
-  [(ConversationViewController *)self setMessageList:v5];
-  if (v5)
+  [(ConversationViewController *)self setMessageList:listCopy];
+  if (listCopy)
   {
     [(ConversationViewController *)self setDidFinishInitialLoad:0];
     [(ConversationViewController *)self setSwappingMessageList:1];
     [(ConversationViewController *)self setNextUpdateShouldAvoidAnimation:1];
     [(ConversationViewController *)self setLastSeenDate:0];
     [(ConversationViewController *)self setLastSeenDisplayDate:0];
-    [v5 beginObserving:self];
+    [listCopy beginObserving:self];
     objc_initWeak(buf, self);
     v10 = +[EFScheduler mainThreadScheduler];
     v16[0] = _NSConcreteStackBlock;
@@ -1155,7 +1155,7 @@ LABEL_39:
     v16[2] = sub_100059984;
     v16[3] = &unk_10064CC78;
     objc_copyWeak(&v18, buf);
-    v17 = v5;
+    v17 = listCopy;
     v11 = [v10 afterDelay:v16 performBlock:0.1];
 
     objc_destroyWeak(&v18);
@@ -1181,7 +1181,7 @@ LABEL_39:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v20 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Reloading: %@", buf, 0xCu);
   }
 
@@ -1194,65 +1194,65 @@ LABEL_39:
 - (void)_updateGroupedSenderMessageCountQueries
 {
   [(ConversationViewController *)self setGroupedSenderUnreadCountQuery:0];
-  v3 = [(ConversationViewController *)self groupedSenderUnreadCountToken];
-  [v3 cancel];
+  groupedSenderUnreadCountToken = [(ConversationViewController *)self groupedSenderUnreadCountToken];
+  [groupedSenderUnreadCountToken cancel];
 
   [(ConversationViewController *)self setGroupedSenderUnreadCount:0];
   [(ConversationViewController *)self setTotalUnfilteredMessageCountQuery:0];
-  v4 = [(ConversationViewController *)self totalUnfilteredMessageCountToken];
-  [v4 cancel];
+  totalUnfilteredMessageCountToken = [(ConversationViewController *)self totalUnfilteredMessageCountToken];
+  [totalUnfilteredMessageCountToken cancel];
 
   [(ConversationViewController *)self setTotalUnfilteredMessageCountToken:0];
   [(ConversationViewControllerBase *)self setTotalUnfilteredMessageCount:0];
   if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
   {
-    v5 = [(ConversationViewController *)self messageList];
-    v6 = [v5 query];
-    v7 = [v6 predicate];
-    v23[0] = v7;
+    messageList = [(ConversationViewController *)self messageList];
+    query = [messageList query];
+    predicate = [query predicate];
+    v23[0] = predicate;
     v8 = +[EMMessageListItemPredicates predicateForUnreadMessages];
     v23[1] = v8;
     v9 = [NSArray arrayWithObjects:v23 count:2];
     v10 = [NSCompoundPredicate andPredicateWithSubpredicates:v9];
 
-    v11 = [(ConversationViewController *)self messageList];
-    v12 = [v11 query];
-    v13 = [v12 queryWithPredicate:v10];
+    messageList2 = [(ConversationViewController *)self messageList];
+    query2 = [messageList2 query];
+    v13 = [query2 queryWithPredicate:v10];
     [(ConversationViewController *)self setGroupedSenderUnreadCountQuery:v13];
 
-    v14 = [(ConversationViewController *)self messageRepository];
-    v15 = [(ConversationViewController *)self groupedSenderUnreadCountQuery];
-    v16 = [v14 startCountingQuery:v15 includingServerCountsForMailboxScope:0 withObserver:self];
+    messageRepository = [(ConversationViewController *)self messageRepository];
+    groupedSenderUnreadCountQuery = [(ConversationViewController *)self groupedSenderUnreadCountQuery];
+    v16 = [messageRepository startCountingQuery:groupedSenderUnreadCountQuery includingServerCountsForMailboxScope:0 withObserver:self];
     [(ConversationViewController *)self setGroupedSenderUnreadCountToken:v16];
 
-    v17 = [(ConversationViewController *)self messageList];
-    v18 = [v17 unfilteredMessageList];
-    v19 = [v18 query];
-    [(ConversationViewController *)self setTotalUnfilteredMessageCountQuery:v19];
+    messageList3 = [(ConversationViewController *)self messageList];
+    unfilteredMessageList = [messageList3 unfilteredMessageList];
+    query3 = [unfilteredMessageList query];
+    [(ConversationViewController *)self setTotalUnfilteredMessageCountQuery:query3];
 
-    v20 = [(ConversationViewController *)self messageRepository];
-    v21 = [(ConversationViewController *)self totalUnfilteredMessageCountQuery];
-    v22 = [v20 startCountingQuery:v21 includingServerCountsForMailboxScope:0 withObserver:self];
+    messageRepository2 = [(ConversationViewController *)self messageRepository];
+    totalUnfilteredMessageCountQuery = [(ConversationViewController *)self totalUnfilteredMessageCountQuery];
+    v22 = [messageRepository2 startCountingQuery:totalUnfilteredMessageCountQuery includingServerCountsForMailboxScope:0 withObserver:self];
     [(ConversationViewController *)self setTotalUnfilteredMessageCountToken:v22];
   }
 }
 
-- (void)_performDataSourceUpdateAnimated:(BOOL)a3 collection:(id)a4 update:(id)a5 completion:(id)a6
+- (void)_performDataSourceUpdateAnimated:(BOOL)animated collection:(id)collection update:(id)update completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  collectionCopy = collection;
+  updateCopy = update;
+  completionCopy = completion;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10005A1C0;
   v17[3] = &unk_10064CCC8;
   v17[4] = self;
-  v13 = v10;
+  v13 = collectionCopy;
   v18 = v13;
-  v21 = a3;
-  v14 = v11;
+  animatedCopy = animated;
+  v14 = updateCopy;
   v19 = v14;
-  v15 = v12;
+  v15 = completionCopy;
   v20 = v15;
   v16 = +[EFScheduler mainThreadScheduler];
   [v16 performBlock:v17];
@@ -1260,60 +1260,60 @@ LABEL_39:
 
 - (id)_updateQueue
 {
-  v2 = [(ConversationViewController *)self messageListCollectionHelper];
-  v3 = [v2 updateQueue];
+  messageListCollectionHelper = [(ConversationViewController *)self messageListCollectionHelper];
+  updateQueue = [messageListCollectionHelper updateQueue];
 
-  return v3;
+  return updateQueue;
 }
 
-- (void)_nts_performDataSourceUpdateAnimated:(BOOL)a3 collection:(id)a4 update:(id)a5 completion:(id)a6
+- (void)_nts_performDataSourceUpdateAnimated:(BOOL)animated collection:(id)collection update:(id)update completion:(id)completion
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  collectionCopy = collection;
+  updateCopy = update;
+  completionCopy = completion;
   if (pthread_main_np() != 1)
   {
     v24 = +[NSAssertionHandler currentHandler];
     [v24 handleFailureInMethod:a2 object:self file:@"ConversationViewController.m" lineNumber:764 description:@"Current thread must be main"];
   }
 
-  v14 = [(ConversationViewController *)self messageList];
+  messageList = [(ConversationViewController *)self messageList];
 
-  if (v14 == v11)
+  if (messageList == collectionCopy)
   {
     [(ConversationViewController *)self setIsPerformingDataSourceUpdate:1];
-    v16 = [(ConversationViewController *)self isSwappingMessageList];
-    v17 = [(ConversationViewController *)self nextUpdateShouldAvoidAnimation];
+    isSwappingMessageList = [(ConversationViewController *)self isSwappingMessageList];
+    nextUpdateShouldAvoidAnimation = [(ConversationViewController *)self nextUpdateShouldAvoidAnimation];
     [(ConversationViewController *)self setSwappingMessageList:0];
     [(ConversationViewController *)self setNextUpdateShouldAvoidAnimation:0];
-    v25 = [(ConversationViewController *)self collectionViewDataSource];
-    v18 = [(ConversationViewController *)self messageListCollectionHelper];
-    v19 = [v18 section];
-    v20 = [(ConversationViewController *)self _updateQueue];
+    collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+    messageListCollectionHelper = [(ConversationViewController *)self messageListCollectionHelper];
+    section = [messageListCollectionHelper section];
+    _updateQueue = [(ConversationViewController *)self _updateQueue];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_10005A7C8;
     v28[3] = &unk_10064CCF0;
-    v34 = a3;
-    v35 = v17;
-    v36 = v16;
-    v15 = v25;
+    animatedCopy = animated;
+    v35 = nextUpdateShouldAvoidAnimation;
+    v36 = isSwappingMessageList;
+    v15 = collectionViewDataSource;
     v29 = v15;
-    v21 = v19;
+    v21 = section;
     v30 = v21;
-    v31 = self;
-    v32 = v12;
-    v33 = v13;
+    selfCopy = self;
+    v32 = updateCopy;
+    v33 = completionCopy;
     v22 = objc_retainBlock(v28);
     v23 = v22;
-    if (v20)
+    if (_updateQueue)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10005AA20;
       block[3] = &unk_10064C598;
       v27 = v22;
-      dispatch_async(v20, block);
+      dispatch_async(_updateQueue, block);
     }
 
     else
@@ -1329,7 +1329,7 @@ LABEL_39:
     v15 = +[ConversationViewController log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [v11 ef_publicDescription];
+      [collectionCopy ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
       sub_1004840A0();
     }
@@ -1344,54 +1344,54 @@ LABEL_39:
     v17 = 138412546;
     v18 = objc_opt_class();
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "<%@: %p> Resetting content request", &v17, 0x16u);
   }
 
-  v4 = [(ConversationViewController *)self contentItemsCancelable];
-  [v4 cancel];
+  contentItemsCancelable = [(ConversationViewController *)self contentItemsCancelable];
+  [contentItemsCancelable cancel];
 
   v5 = objc_alloc_init(EFManualCancelationToken);
   [(ConversationViewController *)self setContentItemsCancelable:v5];
 
-  v6 = [(ConversationViewController *)self contentRequestQueue];
-  v7 = [v6 drain];
+  contentRequestQueue = [(ConversationViewController *)self contentRequestQueue];
+  drain = [contentRequestQueue drain];
 
-  v8 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
 
-  v9 = v8 == 0;
-  v10 = [(ConversationViewController *)self contentRequestCache];
-  v11 = v10;
+  v9 = referenceMessageListItem == 0;
+  contentRequestCache = [(ConversationViewController *)self contentRequestCache];
+  displayMessageItemID = contentRequestCache;
   if (v9)
   {
-    [v10 removeAllObjects];
+    [contentRequestCache removeAllObjects];
   }
 
   else
   {
-    [v10 removeAllObjects];
+    [contentRequestCache removeAllObjects];
 
-    v12 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v11 = [v12 displayMessageItemID];
+    referenceMessageListItem2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    displayMessageItemID = [referenceMessageListItem2 displayMessageItemID];
 
-    if (v11)
+    if (displayMessageItemID)
     {
-      v13 = [(ConversationViewController *)self _priorityLoadingComparatorForPinnedItemID:v11];
-      v14 = [(ConversationViewController *)self contentRequestQueue];
-      [v14 setComparator:v13];
+      v13 = [(ConversationViewController *)self _priorityLoadingComparatorForPinnedItemID:displayMessageItemID];
+      contentRequestQueue2 = [(ConversationViewController *)self contentRequestQueue];
+      [contentRequestQueue2 setComparator:v13];
 
-      v15 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:v11];
-      v16 = [(ConversationViewController *)self contentRequestQueue];
-      [v16 immediatelyProcessQueue];
+      v15 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:displayMessageItemID];
+      contentRequestQueue3 = [(ConversationViewController *)self contentRequestQueue];
+      [contentRequestQueue3 immediatelyProcessQueue];
     }
   }
 }
 
-- (id)_contentRequestForMessageWithItemID:(id)a3
+- (id)_contentRequestForMessageWithItemID:(id)d
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self contentRequestCache];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  contentRequestCache = [(ConversationViewController *)self contentRequestCache];
+  v6 = [contentRequestCache objectForKey:dCopy];
 
   if (!v6)
   {
@@ -1401,15 +1401,15 @@ LABEL_39:
       v14 = 138412802;
       v15 = objc_opt_class();
       v16 = 2048;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2114;
-      v19 = v4;
+      v19 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<%@: %p> Content request cache miss. Generating content request for itemID: %{public}@ ", &v14, 0x20u);
     }
 
-    v8 = [(ConversationViewController *)self _generateContentRequestForMessageWithItemID:v4];
-    v9 = [(ConversationViewController *)self contentRequestCache];
-    [v9 addObject:v8 forKey:v4];
+    v8 = [(ConversationViewController *)self _generateContentRequestForMessageWithItemID:dCopy];
+    contentRequestCache2 = [(ConversationViewController *)self contentRequestCache];
+    [contentRequestCache2 addObject:v8 forKey:dCopy];
 
     v6 = v8;
   }
@@ -1423,37 +1423,37 @@ LABEL_39:
       v14 = 138412802;
       v15 = v11;
       v16 = 2048;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2114;
-      v19 = v4;
+      v19 = dCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "<%@: %p> Enqueueing content request for itemID: %{public}@", &v14, 0x20u);
     }
 
-    v12 = [(ConversationViewController *)self contentRequestQueue];
-    [v12 enqueue:v6];
+    contentRequestQueue = [(ConversationViewController *)self contentRequestQueue];
+    [contentRequestQueue enqueue:v6];
   }
 
   return v6;
 }
 
-- (id)_generateContentRequestForMessageWithItemID:(id)a3
+- (id)_generateContentRequestForMessageWithItemID:(id)d
 {
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_10005B5B0;
   v42[3] = &unk_10064CD18;
-  v4 = a3;
-  v43 = v4;
+  dCopy = d;
+  v43 = dCopy;
   v5 = objc_retainBlock(v42);
-  v6 = [(ConversationViewController *)self contentRequestQueue];
-  v7 = [v6 allObjects];
+  contentRequestQueue = [(ConversationViewController *)self contentRequestQueue];
+  allObjects = [contentRequestQueue allObjects];
 
-  v8 = [v7 indexOfObjectPassingTest:v5];
+  v8 = [allObjects indexOfObjectPassingTest:v5];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [v7 objectAtIndex:v8];
-    v10 = [(ConversationViewController *)self contentRequestQueue];
-    [v10 dequeueObject:v9];
+    v9 = [allObjects objectAtIndex:v8];
+    contentRequestQueue2 = [(ConversationViewController *)self contentRequestQueue];
+    [contentRequestQueue2 dequeueObject:v9];
 
     v11 = v9;
     if (v9)
@@ -1462,18 +1462,18 @@ LABEL_39:
     }
   }
 
-  v12 = [(ConversationViewControllerBase *)self collectionView];
-  v13 = [(ConversationViewController *)self collectionViewDataSource];
-  v14 = [v13 indexPathForItemIdentifier:v4];
-  v15 = [v12 cellForItemAtIndexPath:v14];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  v14 = [collectionViewDataSource indexPathForItemIdentifier:dCopy];
+  v15 = [collectionView cellForItemAtIndexPath:v14];
 
-  v16 = [v15 viewModel];
-  v17 = [v16 messageContentRequest];
+  viewModel = [v15 viewModel];
+  messageContentRequest = [viewModel messageContentRequest];
 
-  if (v17)
+  if (messageContentRequest)
   {
-    v18 = [v17 itemID];
-    v19 = [v18 isEqual:v4];
+    itemID = [messageContentRequest itemID];
+    v19 = [itemID isEqual:dCopy];
 
     if (v19)
     {
@@ -1484,15 +1484,15 @@ LABEL_39:
         *buf = 138413058;
         v45 = v21;
         v46 = 2048;
-        v47 = self;
+        selfCopy4 = self;
         v48 = 2048;
         v49 = v15;
         v50 = 2114;
-        v51 = v4;
+        v51 = dCopy;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "<%@: %p> found existing content request from cell(%p) itemID: %{public}@.", buf, 0x2Au);
       }
 
-      v11 = v17;
+      v11 = messageContentRequest;
 LABEL_8:
       if ([v11 state] != 3)
       {
@@ -1506,15 +1506,15 @@ LABEL_8:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = objc_opt_class();
-      v24 = [v17 itemID];
+      itemID2 = [messageContentRequest itemID];
       *buf = 138413058;
       v45 = v23;
       v46 = 2048;
-      v47 = self;
+      selfCopy4 = self;
       v48 = 2114;
-      v49 = v24;
+      v49 = itemID2;
       v50 = 2114;
-      v51 = v4;
+      v51 = dCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "<%@: %p> contentRequest.itemID: %{public}@ does not match requested itemID: %{public}@.", buf, 0x2Au);
     }
   }
@@ -1528,20 +1528,20 @@ LABEL_14:
     *buf = 138412802;
     v45 = v26;
     v46 = 2048;
-    v47 = self;
+    selfCopy4 = self;
     v48 = 2114;
-    v49 = v4;
+    v49 = dCopy;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "<%@: %p> Could not find an appropriate context for itemID: %{public}@. Creating a new one", buf, 0x20u);
   }
 
   v27 = [MessageContentRepresentationRequest alloc];
-  v28 = [(ConversationViewController *)self messageList];
-  v29 = [v27 initWithMessageList:v28 itemIdentifier:v4 includeSuggestions:1];
+  messageList = [(ConversationViewController *)self messageList];
+  v29 = [v27 initWithMessageList:messageList itemIdentifier:dCopy includeSuggestions:1];
 
-  v30 = [(ConversationViewController *)self contentItemsCancelable];
-  [v30 addCancelable:v29];
+  contentItemsCancelable = [(ConversationViewController *)self contentItemsCancelable];
+  [contentItemsCancelable addCancelable:v29];
 
-  v31 = [(ConversationViewControllerBase *)self handoffCoordinator];
+  handoffCoordinator = [(ConversationViewControllerBase *)self handoffCoordinator];
   objc_initWeak(buf, v29);
   v32 = +[EFScheduler mainThreadScheduler];
   v39[0] = _NSConcreteStackBlock;
@@ -1549,7 +1549,7 @@ LABEL_14:
   v39[2] = sub_10005B604;
   v39[3] = &unk_10064CD40;
   objc_copyWeak(&v41, buf);
-  v33 = v31;
+  v33 = handoffCoordinator;
   v40 = v33;
   v34 = [v29 onScheduler:v32 addLoadObserver:v39];
 
@@ -1565,11 +1565,11 @@ LABEL_17:
     *buf = 138413058;
     v45 = v36;
     v46 = 2048;
-    v47 = self;
+    selfCopy4 = self;
     v48 = 2048;
     v49 = v11;
     v50 = 2114;
-    v51 = v4;
+    v51 = dCopy;
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "<%@: %p> Generated content request %p for itemID: %{public}@", buf, 0x2Au);
   }
 
@@ -1577,9 +1577,9 @@ LABEL_17:
   return v11;
 }
 
-- (id)_priorityLoadingComparatorForPinnedItemID:(id)a3
+- (id)_priorityLoadingComparatorForPinnedItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(ConversationViewController *)self collectionViewDataSource];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -1588,14 +1588,14 @@ LABEL_17:
   v21 = v5;
   v6 = objc_retainBlock(v20);
   v7 = v6;
-  if (v4)
+  if (dCopy)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10005B940;
     v17[3] = &unk_10064CD90;
     v19 = v6;
-    v18 = v4;
+    v18 = dCopy;
     v8 = [EFFuture lazyFutureWithBlock:v17];
   }
 
@@ -1618,14 +1618,14 @@ LABEL_17:
   return v12;
 }
 
-- (void)_updateForDataSourceChanges:(BOOL)a3
+- (void)_updateForDataSourceChanges:(BOOL)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v5 = +[ConversationViewController log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v3;
+    v8[1] = changesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "_updateForDataSourceChanges:%{BOOL}d", v8, 8u);
   }
 
@@ -1633,11 +1633,11 @@ LABEL_17:
   [(ConversationViewControllerBase *)self _updateLayout];
   [(ConversationViewControllerBase *)self _updateCells];
   [(ConversationViewController *)self _updateQuickReplyLabelIfNeeded];
-  if (v3 && ![(ConversationViewControllerBase *)self isPerformingQuickReplySendAnimation])
+  if (changesCopy && ![(ConversationViewControllerBase *)self isPerformingQuickReplySendAnimation])
   {
     [(ConversationViewControllerBase *)self _resetBottomPaddingIfDisplayingSingleMessage];
-    v6 = [(ConversationViewControllerBase *)self collectionView];
-    if (([v6 isTracking] & 1) != 0 || (objc_msgSend(v6, "isDecelerating") & 1) != 0 || objc_msgSend(v6, "isDragging"))
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    if (([collectionView isTracking] & 1) != 0 || (objc_msgSend(collectionView, "isDecelerating") & 1) != 0 || objc_msgSend(collectionView, "isDragging"))
     {
       v7 = +[ConversationViewController log];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1663,8 +1663,8 @@ LABEL_17:
   v14[3] = &unk_10064CDE0;
   objc_copyWeak(&v15, &location);
   v3 = objc_retainBlock(v14);
-  v4 = [(ConversationViewController *)self _messageFutureForConversationSubject];
-  if (!v4)
+  _messageFutureForConversationSubject = [(ConversationViewController *)self _messageFutureForConversationSubject];
+  if (!_messageFutureForConversationSubject)
   {
     v5 = +[ConversationViewController log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1680,7 +1680,7 @@ LABEL_17:
   v12[3] = &unk_10064CE08;
   v7 = v3;
   v13 = v7;
-  [v4 onScheduler:v6 addSuccessBlock:v12];
+  [_messageFutureForConversationSubject onScheduler:v6 addSuccessBlock:v12];
 
   v8 = +[EFScheduler mainThreadScheduler];
   v10[0] = _NSConcreteStackBlock;
@@ -1689,7 +1689,7 @@ LABEL_17:
   v10[3] = &unk_10064C478;
   v9 = v7;
   v11 = v9;
-  [v4 onScheduler:v8 addFailureBlock:v10];
+  [_messageFutureForConversationSubject onScheduler:v8 addFailureBlock:v10];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1697,14 +1697,14 @@ LABEL_17:
 
 - (id)_messageFutureForConversationSubject
 {
-  v3 = [(ConversationViewController *)self countOfMessages];
-  if (v3)
+  countOfMessages = [(ConversationViewController *)self countOfMessages];
+  if (countOfMessages)
   {
-    v4 = v3;
+    v4 = countOfMessages;
     if (_os_feature_enabled_impl() && EMIsGreymatterAvailable())
     {
-      v5 = [(ConversationViewController *)self topSummaryItemID];
-      v6 = v5 != 0;
+      topSummaryItemID = [(ConversationViewController *)self topSummaryItemID];
+      v6 = topSummaryItemID != 0;
     }
 
     else
@@ -1723,8 +1723,8 @@ LABEL_17:
     }
 
     v8 = [NSIndexPath indexPathForItem:v7 inSection:0];
-    v9 = [(ConversationViewController *)self collectionViewDataSource];
-    v10 = [v9 itemIdentifierForIndexPath:v8];
+    collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+    v10 = [collectionViewDataSource itemIdentifierForIndexPath:v8];
 
     v11 = [(ConversationViewController *)self _messageFutureForItemID:v10];
   }
@@ -1737,40 +1737,40 @@ LABEL_17:
   return v11;
 }
 
-- (id)_conversationViewQueryIncludeRelated:(BOOL)a3
+- (id)_conversationViewQueryIncludeRelated:(BOOL)related
 {
-  v3 = a3;
+  relatedCopy = related;
   if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
   {
-    v5 = [(ConversationViewController *)self messageList];
-    v6 = [v5 query];
+    messageList = [(ConversationViewController *)self messageList];
+    query = [messageList query];
   }
 
   else
   {
-    v6 = [(ConversationViewController *)self _queryForConversationViewIncludeRelated:v3];
+    query = [(ConversationViewController *)self _queryForConversationViewIncludeRelated:relatedCopy];
   }
 
-  return v6;
+  return query;
 }
 
-- (id)_senderBasedQueryPredicateForReferenceMessageListQueryPredicate:(id)a3 shouldExcludeReadMessages:(BOOL)a4
+- (id)_senderBasedQueryPredicateForReferenceMessageListQueryPredicate:(id)predicate shouldExcludeReadMessages:(BOOL)messages
 {
-  v4 = a4;
-  v21 = a3;
-  v6 = [(ConversationViewController *)self _mailboxExclusionPredicate];
+  messagesCopy = messages;
+  predicateCopy = predicate;
+  _mailboxExclusionPredicate = [(ConversationViewController *)self _mailboxExclusionPredicate];
   v7 = [EMMessageListItemPredicates sortDescriptorForDateAscending:[(ConversationViewControllerBase *)self conversationSortOrder]== 0];
   v25 = v7;
   v8 = [NSArray arrayWithObjects:&v25 count:1];
 
-  v9 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v10 = +[EMMessageListItemPredicates predicateForMessagesForBusinessID:](EMMessageListItemPredicates, "predicateForMessagesForBusinessID:", [v9 businessID]);
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  v10 = +[EMMessageListItemPredicates predicateForMessagesForBusinessID:](EMMessageListItemPredicates, "predicateForMessagesForBusinessID:", [referenceMessageListItem businessID]);
 
-  v11 = [NSCompoundPredicate ef_andCompoundPredicateForOptionalPredicate:v10 second:v21];
+  v11 = [NSCompoundPredicate ef_andCompoundPredicateForOptionalPredicate:v10 second:predicateCopy];
 
-  v12 = [NSCompoundPredicate ef_andCompoundPredicateForOptionalPredicate:v11 second:v6];
+  v12 = [NSCompoundPredicate ef_andCompoundPredicateForOptionalPredicate:v11 second:_mailboxExclusionPredicate];
 
-  if (v4)
+  if (messagesCopy)
   {
     v13 = +[EMMessageListItemPredicates predicateForUnreadMessages];
     v24[0] = v12;
@@ -1798,49 +1798,49 @@ LABEL_17:
   return v19;
 }
 
-- (id)_queryForConversationViewIncludeRelated:(BOOL)a3
+- (id)_queryForConversationViewIncludeRelated:(BOOL)related
 {
-  v5 = [(ConversationViewController *)self _mailboxExclusionPredicate];
+  _mailboxExclusionPredicate = [(ConversationViewController *)self _mailboxExclusionPredicate];
   v6 = [EMMessageListItemPredicates sortDescriptorForDateAscending:[(ConversationViewControllerBase *)self conversationSortOrder]== 0];
   v26 = v6;
   v7 = [NSArray arrayWithObjects:&v26 count:1];
 
-  v21 = [(ConversationViewController *)self referenceMessageListQuery];
+  referenceMessageListQuery = [(ConversationViewController *)self referenceMessageListQuery];
   if ([(ConversationViewControllerBase *)self shownAsConversation])
   {
-    v8 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v9 = +[EMMessageListItemPredicates predicateForMessagesInConversation:](EMMessageListItemPredicates, "predicateForMessagesInConversation:", [v8 conversationID]);
+    referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    v9 = +[EMMessageListItemPredicates predicateForMessagesInConversation:](EMMessageListItemPredicates, "predicateForMessagesInConversation:", [referenceMessageListItem conversationID]);
 
-    if (a3)
+    if (related)
     {
       goto LABEL_12;
     }
 
-    if (([v21 queryOptions] & 0x20) != 0)
+    if (([referenceMessageListQuery queryOptions] & 0x20) != 0)
     {
-      v13 = [(ConversationViewController *)self _referenceMessageListMailboxScope];
-      v10 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v13];
+      _referenceMessageListMailboxScope = [(ConversationViewController *)self _referenceMessageListMailboxScope];
+      predicate = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:_referenceMessageListMailboxScope];
     }
 
     else
     {
-      v10 = [v21 predicate];
+      predicate = [referenceMessageListQuery predicate];
     }
 
-    if (v10)
+    if (predicate)
     {
       v25[0] = v9;
-      v25[1] = v10;
-      v11 = [NSArray arrayWithObjects:v25 count:2];
-      v14 = [NSCompoundPredicate andPredicateWithSubpredicates:v11];
+      v25[1] = predicate;
+      displayMessageItemID = [NSArray arrayWithObjects:v25 count:2];
+      v14 = [NSCompoundPredicate andPredicateWithSubpredicates:displayMessageItemID];
 
       v9 = v14;
     }
 
     else
     {
-      v11 = +[ConversationViewController log];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      displayMessageItemID = +[ConversationViewController log];
+      if (os_log_type_enabled(displayMessageItemID, OS_LOG_TYPE_ERROR))
       {
         sub_100484164();
       }
@@ -1849,17 +1849,17 @@ LABEL_17:
 
   else
   {
-    v10 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v11 = [v10 displayMessageItemID];
-    v12 = [(ConversationViewController *)self mailboxRepository];
-    v9 = [EMMessage predicateForMessageWithItemID:v11 mailboxPredicate:v5 mailboxTypeResolver:v12];
+    predicate = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    displayMessageItemID = [predicate displayMessageItemID];
+    mailboxRepository = [(ConversationViewController *)self mailboxRepository];
+    v9 = [EMMessage predicateForMessageWithItemID:displayMessageItemID mailboxPredicate:_mailboxExclusionPredicate mailboxTypeResolver:mailboxRepository];
   }
 
 LABEL_12:
-  if (v5)
+  if (_mailboxExclusionPredicate)
   {
     v24[0] = v9;
-    v24[1] = v5;
+    v24[1] = _mailboxExclusionPredicate;
     v15 = [NSArray arrayWithObjects:v24 count:2];
     v16 = [NSCompoundPredicate andPredicateWithSubpredicates:v15];
   }
@@ -1879,11 +1879,11 @@ LABEL_12:
   return v19;
 }
 
-- (id)_displayObjectIDForPreCacheWithPredicate:(id)a3
+- (id)_displayObjectIDForPreCacheWithPredicate:(id)predicate
 {
-  v5 = a3;
-  v6 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v7 = [v6 displayMessageItemID];
+  predicateCopy = predicate;
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  displayMessageItemID = [referenceMessageListItem displayMessageItemID];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1895,33 +1895,33 @@ LABEL_12:
   v8 = +[ConversationViewController log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    referenceMessageListItem2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
     v15 = 138543618;
-    v16 = v7;
+    v16 = displayMessageItemID;
     v17 = 2048;
-    v18 = [v9 conversationID];
+    conversationID = [referenceMessageListItem2 conversationID];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Creating query with referenceMessageListItem displayMessageItemID: %{public}@ (conversation: %lld)", &v15, 0x16u);
   }
 
   v10 = [EMMessageObjectID alloc];
-  v11 = [(ConversationViewController *)self mailboxRepository];
-  v12 = [v10 initWithCollectionItemID:v7 predicate:v5 mailboxTypeResolver:v11];
+  mailboxRepository = [(ConversationViewController *)self mailboxRepository];
+  v12 = [v10 initWithCollectionItemID:displayMessageItemID predicate:predicateCopy mailboxTypeResolver:mailboxRepository];
 
   return v12;
 }
 
 - (id)_mailboxExclusionPredicate
 {
-  v2 = [(ConversationViewController *)self _excludedMailboxes];
-  v3 = [EMMessageListItemPredicates predicateForExcludingMessagesInMailboxes:v2];
+  _excludedMailboxes = [(ConversationViewController *)self _excludedMailboxes];
+  v3 = [EMMessageListItemPredicates predicateForExcludingMessagesInMailboxes:_excludedMailboxes];
 
   return v3;
 }
 
 - (id)_excludedMailboxes
 {
-  v3 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v4 = [v3 mailboxObjectIDs];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  mailboxObjectIDs = [referenceMessageListItem mailboxObjectIDs];
 
   v5 = objc_opt_new();
   if (_os_feature_enabled_impl() && sub_10005D23C(self))
@@ -1939,26 +1939,26 @@ LABEL_12:
   v11[1] = 3221225472;
   v11[2] = sub_10005D2DC;
   v11[3] = &unk_10064CEC0;
-  v8 = v4;
+  v8 = mailboxObjectIDs;
   v12 = v8;
   v9 = [v7 ef_filter:v11];
 
   return v9;
 }
 
-- (id)_messageFutureForItemID:(id)a3
+- (id)_messageFutureForItemID:(id)d
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self messageList];
-  v6 = [v5 messageListItemForItemID:v4];
+  dCopy = d;
+  messageList = [(ConversationViewController *)self messageList];
+  v6 = [messageList messageListItemForItemID:dCopy];
 
   if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
   {
-    v7 = [(ConversationViewController *)self messageList];
+    messageList2 = [(ConversationViewController *)self messageList];
     if ([(ConversationViewController *)self isBucketSelected])
     {
-      v8 = [(ConversationViewControllerBase *)self delegate];
-      [v8 currentlySelectedBucketForConversationViewController:self];
+      delegate = [(ConversationViewControllerBase *)self delegate];
+      [delegate currentlySelectedBucketForConversationViewController:self];
 
       v9 = [NSNumber numberWithUnsignedInteger:EMCategoryTypeForBucket()];
     }
@@ -1972,9 +1972,9 @@ LABEL_12:
     v13[1] = 3221225472;
     v13[2] = sub_10005D514;
     v13[3] = &unk_10064CEE8;
-    v10 = v7;
+    v10 = messageList2;
     v14 = v10;
-    v15 = self;
+    selfCopy = self;
     v16 = v9;
     v11 = v9;
     [v6 addSuccessBlock:v13];
@@ -1983,31 +1983,31 @@ LABEL_12:
   return v6;
 }
 
-- (id)messageForItemID:(id)a3
+- (id)messageForItemID:(id)d
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self _messageFutureForItemID:v4];
+  dCopy = d;
+  v5 = [(ConversationViewController *)self _messageFutureForItemID:dCopy];
   if (([v5 isFinished] & 1) == 0)
   {
     v6 = +[ConversationViewController log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = v4;
+      v10 = dCopy;
       v11 = 2112;
       v12 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Waiting for item %@ future %@", &v9, 0x16u);
     }
   }
 
-  v7 = [v5 result];
+  result = [v5 result];
 
-  return v7;
+  return result;
 }
 
-- (id)_messageAtIndexPath:(id)a3
+- (id)_messageAtIndexPath:(id)path
 {
-  v4 = [(ConversationViewController *)self messageItemIDAtIndexPath:a3];
+  v4 = [(ConversationViewController *)self messageItemIDAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2022,37 +2022,37 @@ LABEL_12:
   return v5;
 }
 
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10005DA24;
   v9[3] = &unk_10064CF10;
-  v7 = a4;
-  v10 = v7;
-  v11 = self;
-  v12 = a5;
+  queryCopy = query;
+  v10 = queryCopy;
+  selfCopy = self;
+  changeCopy = change;
   v8 = +[EFScheduler mainThreadScheduler];
   [v8 performBlock:v9];
 }
 
-- (void)collectionDidFinishInitialLoad:(id)a3
+- (void)collectionDidFinishInitialLoad:(id)load
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self messageList];
+  loadCopy = load;
+  messageList = [(ConversationViewController *)self messageList];
 
-  if (v5 == v4)
+  if (messageList == loadCopy)
   {
     v7 = +[ConversationViewController log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [v4 ef_publicDescription];
+      [loadCopy ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
       sub_100484218();
     }
 
-    v8 = [(ConversationViewControllerBase *)self blankConversationController];
-    [v8 conversationViewDidLoadMessageSuccessfully];
+    blankConversationController = [(ConversationViewControllerBase *)self blankConversationController];
+    [blankConversationController conversationViewDidLoadMessageSuccessfully];
 
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -2064,32 +2064,32 @@ LABEL_12:
 
     if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
     {
-      v10 = [(ConversationViewController *)self lastSeenDate];
-      v11 = [(ConversationViewController *)self lastSeenDisplayDate];
-      if (v10 | v11)
+      lastSeenDate = [(ConversationViewController *)self lastSeenDate];
+      lastSeenDisplayDate = [(ConversationViewController *)self lastSeenDisplayDate];
+      if (lastSeenDate | lastSeenDisplayDate)
       {
-        v12 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-        v13 = [v12 senderList];
-        v14 = [v13 firstObject];
+        referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+        senderList = [referenceMessageListItem senderList];
+        firstObject = [senderList firstObject];
 
-        v15 = [v4 unfilteredMessageList];
-        LOBYTE(v12) = v15 == v4;
+        unfilteredMessageList = [loadCopy unfilteredMessageList];
+        LOBYTE(referenceMessageListItem) = unfilteredMessageList == loadCopy;
 
-        if (v12)
+        if (referenceMessageListItem)
         {
           v17 = 0;
         }
 
         else
         {
-          v16 = [(ConversationViewControllerBase *)self delegate];
-          [v16 currentlySelectedBucketForConversationViewController:self];
+          delegate = [(ConversationViewControllerBase *)self delegate];
+          [delegate currentlySelectedBucketForConversationViewController:self];
 
           v17 = [NSNumber numberWithUnsignedInteger:EMCategoryTypeForBucket()];
         }
 
-        v18 = [(ConversationViewController *)self messageRepository];
-        [v18 updateLastSeenDate:v10 andDisplayDate:v11 forBusinessWithEmailAddress:v14 category:v17];
+        messageRepository = [(ConversationViewController *)self messageRepository];
+        [messageRepository updateLastSeenDate:lastSeenDate andDisplayDate:lastSeenDisplayDate forBusinessWithEmailAddress:firstObject category:v17];
       }
     }
   }
@@ -2099,16 +2099,16 @@ LABEL_12:
     v6 = +[ConversationViewController log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [v4 ef_publicDescription];
+      [loadCopy ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
       sub_1004841D4();
     }
   }
 }
 
-- (void)_updateInitiallyUnreadItemIDs:(id)a3
+- (void)_updateInitiallyUnreadItemIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v6 = +[ConversationViewController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -2116,71 +2116,71 @@ LABEL_12:
     v9 = 138543618;
     v10 = v7;
     v11 = 2114;
-    v12 = v5;
+    v12 = dsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ unreadItemIDs:%{public}@", &v9, 0x16u);
   }
 
-  v8 = [(ConversationViewController *)self initiallyUnreadItemIDs];
-  [v8 addObjectsFromArray:v5];
+  initiallyUnreadItemIDs = [(ConversationViewController *)self initiallyUnreadItemIDs];
+  [initiallyUnreadItemIDs addObjectsFromArray:dsCopy];
 }
 
-- (void)populateSummaryItemForSnapshot:(id)a3
+- (void)populateSummaryItemForSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   if (![(ConversationViewControllerBase *)self beingPreviewed]&& ![(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
   {
     if (_os_feature_enabled_impl())
     {
       if (EMIsGreymatterAvailable())
       {
-        v5 = [(ConversationViewController *)self topSummaryItemID];
-        if (!v5 || ([(ConversationViewController *)self inlineSummaryItemID], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
+        topSummaryItemID = [(ConversationViewController *)self topSummaryItemID];
+        if (!topSummaryItemID || ([(ConversationViewController *)self inlineSummaryItemID], v6 = objc_claimAutoreleasedReturnValue(), v6, topSummaryItemID, !v6))
         {
           if ((+[MUIManagedDeviceRestrictions isManualSummaryRestricted]& 1) == 0)
           {
-            v7 = [(ConversationViewController *)self _messageItemIDsFromSnapshot:v4];
-            v8 = [v7 firstObject];
-            v9 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-            v10 = [v9 displayMessageItemID];
+            v7 = [(ConversationViewController *)self _messageItemIDsFromSnapshot:snapshotCopy];
+            firstObject = [v7 firstObject];
+            referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+            displayMessageItemID = [referenceMessageListItem displayMessageItemID];
 
-            if (v8)
+            if (firstObject)
             {
-              if (v10)
+              if (displayMessageItemID)
               {
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v11 = [(ConversationViewController *)self topSummaryItemID];
+                  topSummaryItemID2 = [(ConversationViewController *)self topSummaryItemID];
 
-                  if (!v11)
+                  if (!topSummaryItemID2)
                   {
-                    v12 = [[MFGeneratedSummaryCollectionItemID alloc] initWithAnchorMessageItemID:v8];
+                    v12 = [[MFGeneratedSummaryCollectionItemID alloc] initWithAnchorMessageItemID:firstObject];
                     [(ConversationViewController *)self setTopSummaryItemID:v12];
                     [(ConversationViewController *)self setPreviousTopSummaryItemID:v12];
                   }
 
-                  v13 = [(ConversationViewController *)self topSummaryItemID];
-                  if (v13)
+                  topSummaryItemID3 = [(ConversationViewController *)self topSummaryItemID];
+                  if (topSummaryItemID3)
                   {
-                    v14 = [(ConversationViewController *)self topSummaryItemID];
-                    v15 = [v4 indexOfItemIdentifier:v14];
+                    topSummaryItemID4 = [(ConversationViewController *)self topSummaryItemID];
+                    v15 = [snapshotCopy indexOfItemIdentifier:topSummaryItemID4];
 
                     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
                     {
-                      v16 = [(ConversationViewController *)self topSummaryItemID];
-                      v29 = v16;
+                      topSummaryItemID5 = [(ConversationViewController *)self topSummaryItemID];
+                      v29 = topSummaryItemID5;
                       v17 = [NSArray arrayWithObjects:&v29 count:1];
-                      [v4 insertItemsWithIdentifiers:v17 beforeItemWithIdentifier:v8];
+                      [snapshotCopy insertItemsWithIdentifiers:v17 beforeItemWithIdentifier:firstObject];
                     }
                   }
 
                   v18 = 0;
-                  if ([v7 count] >= 2 && v8 != v10)
+                  if ([v7 count] >= 2 && firstObject != displayMessageItemID)
                   {
-                    if ([v7 containsObject:v10])
+                    if ([v7 containsObject:displayMessageItemID])
                     {
-                      v19 = [(ConversationViewController *)self initiallyUnreadItemIDs];
-                      v18 = [v19 containsObject:v10];
+                      initiallyUnreadItemIDs = [(ConversationViewController *)self initiallyUnreadItemIDs];
+                      v18 = [initiallyUnreadItemIDs containsObject:displayMessageItemID];
                     }
 
                     else
@@ -2189,28 +2189,28 @@ LABEL_12:
                     }
                   }
 
-                  v20 = [(ConversationViewController *)self inlineSummaryItemID];
-                  v21 = v20 == 0;
+                  inlineSummaryItemID = [(ConversationViewController *)self inlineSummaryItemID];
+                  v21 = inlineSummaryItemID == 0;
 
                   if ((v21 & v18) != 0)
                   {
-                    v22 = [[MFGeneratedSummaryCollectionItemID alloc] initWithAnchorMessageItemID:v10];
+                    v22 = [[MFGeneratedSummaryCollectionItemID alloc] initWithAnchorMessageItemID:displayMessageItemID];
                     [(ConversationViewController *)self setInlineSummaryItemID:v22];
                     [(ConversationViewController *)self setPreviousInlineSummaryItemID:v22];
                   }
 
-                  v23 = [(ConversationViewController *)self inlineSummaryItemID];
-                  if (v23)
+                  inlineSummaryItemID2 = [(ConversationViewController *)self inlineSummaryItemID];
+                  if (inlineSummaryItemID2)
                   {
-                    v24 = [(ConversationViewController *)self inlineSummaryItemID];
-                    v25 = [v4 indexOfItemIdentifier:v24] == 0x7FFFFFFFFFFFFFFFLL;
+                    inlineSummaryItemID3 = [(ConversationViewController *)self inlineSummaryItemID];
+                    v25 = [snapshotCopy indexOfItemIdentifier:inlineSummaryItemID3] == 0x7FFFFFFFFFFFFFFFLL;
 
                     if (v25)
                     {
-                      v26 = [(ConversationViewController *)self inlineSummaryItemID];
-                      v28 = v26;
+                      inlineSummaryItemID4 = [(ConversationViewController *)self inlineSummaryItemID];
+                      v28 = inlineSummaryItemID4;
                       v27 = [NSArray arrayWithObjects:&v28 count:1];
-                      [v4 insertItemsWithIdentifiers:v27 beforeItemWithIdentifier:v10];
+                      [snapshotCopy insertItemsWithIdentifiers:v27 beforeItemWithIdentifier:displayMessageItemID];
                     }
                   }
                 }
@@ -2223,93 +2223,93 @@ LABEL_12:
   }
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 toThreadWithItemID:(id)a5 before:(id)a6 unreadItemIDs:(id)a7 isLastObserver:(BOOL)a8
+- (void)collection:(id)collection addedItemIDs:(id)ds toThreadWithItemID:(id)d before:(id)before unreadItemIDs:(id)iDs isLastObserver:(BOOL)observer
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  collectionCopy = collection;
+  dsCopy = ds;
+  beforeCopy = before;
+  iDsCopy = iDs;
   v17 = +[ConversationViewController log];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     sub_100484264();
   }
 
-  if (![v14 count])
+  if (![dsCopy count])
   {
     sub_100057584(self);
   }
 
-  v24 = self;
-  v18 = v13;
+  selfCopy = self;
+  v18 = collectionCopy;
   v25 = v18;
-  v19 = v16;
+  v19 = iDsCopy;
   v26 = v19;
-  v20 = v15;
+  v20 = beforeCopy;
   v27 = v20;
-  v21 = v14;
+  v21 = dsCopy;
   v28 = v21;
   v29 = a2;
   v22 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v22 performBlock:&v23];
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 toThreadWithItemID:(id)a5 after:(id)a6 unreadItemIDs:(id)a7 isLastObserver:(BOOL)a8
+- (void)collection:(id)collection addedItemIDs:(id)ds toThreadWithItemID:(id)d after:(id)after unreadItemIDs:(id)iDs isLastObserver:(BOOL)observer
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  collectionCopy = collection;
+  dsCopy = ds;
+  afterCopy = after;
+  iDsCopy = iDs;
   v17 = +[ConversationViewController log];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     sub_10048431C();
   }
 
-  v24 = self;
-  v18 = v13;
+  selfCopy = self;
+  v18 = collectionCopy;
   v25 = v18;
-  v19 = v16;
+  v19 = iDsCopy;
   v26 = v19;
-  v20 = v15;
+  v20 = afterCopy;
   v27 = v20;
-  v21 = v14;
+  v21 = dsCopy;
   v28 = v21;
   v29 = a2;
   v22 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v22 performBlock:&v23];
 }
 
-- (void)collection:(id)a3 movedItemIDs:(id)a4 before:(id)a5
+- (void)collection:(id)collection movedItemIDs:(id)ds before:(id)before
 {
-  v8 = a4;
+  dsCopy = ds;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10005F108;
   v11[3] = &unk_10064CF88;
   v11[4] = self;
-  v12 = a5;
-  v13 = v8;
-  v9 = v8;
-  v10 = v12;
-  [(ConversationViewController *)self _performDataSourceUpdateAnimated:1 collection:a3 update:v11];
+  beforeCopy = before;
+  v13 = dsCopy;
+  v9 = dsCopy;
+  v10 = beforeCopy;
+  [(ConversationViewController *)self _performDataSourceUpdateAnimated:1 collection:collection update:v11];
 }
 
-- (void)collection:(id)a3 movedItemIDs:(id)a4 after:(id)a5
+- (void)collection:(id)collection movedItemIDs:(id)ds after:(id)after
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10005F398;
   v10[3] = &unk_10064CF88;
-  v11 = a4;
-  v12 = self;
-  v13 = a5;
-  v8 = v13;
-  v9 = v11;
-  [(ConversationViewController *)self _performDataSourceUpdateAnimated:1 collection:a3 update:v10];
+  dsCopy = ds;
+  selfCopy = self;
+  afterCopy = after;
+  v8 = afterCopy;
+  v9 = dsCopy;
+  [(ConversationViewController *)self _performDataSourceUpdateAnimated:1 collection:collection update:v10];
 }
 
-- (void)collection:(id)a3 changedItemIDs:(id)a4
+- (void)collection:(id)collection changedItemIDs:(id)ds
 {
   v11[0] = 0;
   v11[1] = v11;
@@ -2321,7 +2321,7 @@ LABEL_12:
   v8[1] = 3221225472;
   v8[2] = sub_10005F68C;
   v8[3] = &unk_10064CFB0;
-  v9 = a4;
+  dsCopy = ds;
   v10 = v11;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -2329,35 +2329,35 @@ LABEL_12:
   v7[3] = &unk_10064CA60;
   v7[4] = self;
   v7[5] = v11;
-  v6 = v9;
-  [(ConversationViewController *)self _performDataSourceUpdateAnimated:1 collection:a3 update:v8 completion:v7];
+  v6 = dsCopy;
+  [(ConversationViewController *)self _performDataSourceUpdateAnimated:1 collection:collection update:v8 completion:v7];
 
   _Block_object_dispose(v11, 8);
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 before:(id)a5
+- (void)collection:(id)collection addedItemIDs:(id)ds before:(id)before
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  collectionCopy = collection;
+  dsCopy = ds;
+  beforeCopy = before;
   [(ConversationViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewController collection:addedItemIDs:before:]", "ConversationViewController.m", 1489, "0");
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 after:(id)a5
+- (void)collection:(id)collection addedItemIDs:(id)ds after:(id)after
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  collectionCopy = collection;
+  dsCopy = ds;
+  afterCopy = after;
   [(ConversationViewController *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ConversationViewController collection:addedItemIDs:after:]", "ConversationViewController.m", 1493, "0");
 }
 
-- (void)_deleteItemsWithIDs:(id)a3 fromCollection:(id)a4 completionHandler:(id)a5
+- (void)_deleteItemsWithIDs:(id)ds fromCollection:(id)collection completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  collectionCopy = collection;
+  handlerCopy = handler;
   v11 = +[ConversationViewController log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -2376,12 +2376,12 @@ LABEL_12:
   v27[3] = sub_10005F674;
   v27[4] = sub_10005F684;
   v28 = 0;
-  v12 = [(ConversationViewControllerBase *)self pinnedItem];
-  if (v12)
+  pinnedItem = [(ConversationViewControllerBase *)self pinnedItem];
+  if (pinnedItem)
   {
-    v13 = [(ConversationViewControllerBase *)self pinnedItem];
-    v14 = [v13 itemID];
-    v15 = [v8 containsObject:v14];
+    pinnedItem2 = [(ConversationViewControllerBase *)self pinnedItem];
+    itemID = [pinnedItem2 itemID];
+    v15 = [dsCopy containsObject:itemID];
 
     if (v15)
     {
@@ -2394,9 +2394,9 @@ LABEL_12:
   v22[2] = sub_100060410;
   v22[3] = &unk_10064D050;
   v25 = v29;
-  v16 = v8;
+  v16 = dsCopy;
   v23 = v16;
-  v24 = self;
+  selfCopy = self;
   v26 = v27;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -2405,23 +2405,23 @@ LABEL_12:
   v20 = v29;
   v21 = v27;
   v18[4] = self;
-  v17 = v10;
+  v17 = handlerCopy;
   v19 = v17;
-  [(ConversationViewController *)self _performDataSourceUpdateAnimated:1 collection:v9 update:v22 completion:v18];
+  [(ConversationViewController *)self _performDataSourceUpdateAnimated:1 collection:collectionCopy update:v22 completion:v18];
 
   _Block_object_dispose(v27, 8);
   _Block_object_dispose(v29, 8);
 }
 
-- (id)_itemIDsForReloadAfterInsertingObjectsAfterItemID:(id)a3 snapshot:(id)a4
+- (id)_itemIDsForReloadAfterInsertingObjectsAfterItemID:(id)d snapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  snapshotCopy = snapshot;
   v8 = objc_alloc_init(NSMutableArray);
-  [v8 addObject:v6];
-  v9 = [(ConversationViewController *)self _itemIDBeforeItemID:v6 snapshot:v7];
+  [v8 addObject:dCopy];
+  v9 = [(ConversationViewController *)self _itemIDBeforeItemID:dCopy snapshot:snapshotCopy];
   v10 = v9;
-  if (v9 && ([v9 isEqual:v6] & 1) == 0)
+  if (v9 && ([v9 isEqual:dCopy] & 1) == 0)
   {
     [v8 addObject:v10];
   }
@@ -2429,11 +2429,11 @@ LABEL_12:
   return v8;
 }
 
-- (id)_itemIDBeforeItemID:(id)a3 snapshot:(id)a4
+- (id)_itemIDBeforeItemID:(id)d snapshot:(id)snapshot
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 indexOfItemIdentifier:v5];
+  dCopy = d;
+  snapshotCopy = snapshot;
+  v7 = [snapshotCopy indexOfItemIdentifier:dCopy];
   v8 = v7;
   if (v7)
   {
@@ -2444,45 +2444,45 @@ LABEL_12:
 
     else
     {
-      v10 = [v6 itemIdentifiers];
-      v9 = [v10 objectAtIndexedSubscript:v8 - 1];
+      itemIdentifiers = [snapshotCopy itemIdentifiers];
+      v9 = [itemIdentifiers objectAtIndexedSubscript:v8 - 1];
     }
   }
 
   else
   {
-    v9 = v5;
+    v9 = dCopy;
   }
 
   return v9;
 }
 
-- (id)_messageItemIDsFromSnapshot:(id)a3
+- (id)_messageItemIDsFromSnapshot:(id)snapshot
 {
-  v3 = [a3 itemIdentifiers];
-  v4 = [v3 ef_filter:&stru_10064D0B8];
+  itemIdentifiers = [snapshot itemIdentifiers];
+  v4 = [itemIdentifiers ef_filter:&stru_10064D0B8];
 
   return v4;
 }
 
-- (id)_adjustedExistingItemIDForInlineSummaryItem:(id)a3 snapshot:(id)a4
+- (id)_adjustedExistingItemIDForInlineSummaryItem:(id)item snapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  itemCopy = item;
+  snapshotCopy = snapshot;
+  if (itemCopy)
   {
-    v8 = v6;
-    v9 = [(ConversationViewController *)self _itemIDBeforeItemID:v8 snapshot:v7];
+    v8 = itemCopy;
+    v9 = [(ConversationViewController *)self _itemIDBeforeItemID:v8 snapshot:snapshotCopy];
     if (v9)
     {
-      v10 = [(ConversationViewController *)self inlineSummaryItemID];
-      v11 = [v9 isEqual:v10];
+      inlineSummaryItemID = [(ConversationViewController *)self inlineSummaryItemID];
+      v11 = [v9 isEqual:inlineSummaryItemID];
 
       if (v11)
       {
-        v12 = [(ConversationViewController *)self inlineSummaryItemID];
+        inlineSummaryItemID2 = [(ConversationViewController *)self inlineSummaryItemID];
 
-        v8 = v12;
+        v8 = inlineSummaryItemID2;
       }
     }
   }
@@ -2495,12 +2495,12 @@ LABEL_12:
   return v8;
 }
 
-- (void)collection:(id)a3 replacedExistingItemID:(id)a4 withNewItemID:(id)a5
+- (void)collection:(id)collection replacedExistingItemID:(id)d withNewItemID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqual:v10])
+  collectionCopy = collection;
+  dCopy = d;
+  iDCopy = iD;
+  if ([dCopy isEqual:iDCopy])
   {
     v11 = +[ConversationViewController log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -2526,26 +2526,26 @@ LABEL_12:
     v12 = +[ConversationViewController log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-      v14 = [v13 itemID];
+      referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+      itemID = [referenceMessageListItem itemID];
       LODWORD(__b[0]) = 138543874;
-      *(__b + 4) = v9;
+      *(__b + 4) = dCopy;
       WORD2(__b[1]) = 2114;
-      *(&__b[1] + 6) = v10;
+      *(&__b[1] + 6) = iDCopy;
       HIWORD(__b[2]) = 2114;
-      __b[3] = v14;
+      __b[3] = itemID;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Collection replacement: %{public}@ → %{public}@ (referenceMessageListItem.itemID: %{public}@)", __b, 0x20u);
     }
 
-    v15 = [(ConversationViewControllerBase *)self pinnedItem];
-    v16 = [v15 itemID];
-    v17 = [v9 isEqual:v16];
+    pinnedItem = [(ConversationViewControllerBase *)self pinnedItem];
+    itemID2 = [pinnedItem itemID];
+    v17 = [dCopy isEqual:itemID2];
 
     if (v17)
     {
-      v18 = [v15 dynamicOffset];
-      v19 = [(ConversationViewController *)self pinnedIndexPathProvider];
-      v20 = [PinnedConversationItem pinnedItemWithID:v10 dynamicOffset:v18 indexPathProvider:v19];
+      dynamicOffset = [pinnedItem dynamicOffset];
+      pinnedIndexPathProvider = [(ConversationViewController *)self pinnedIndexPathProvider];
+      v20 = [PinnedConversationItem pinnedItemWithID:iDCopy dynamicOffset:dynamicOffset indexPathProvider:pinnedIndexPathProvider];
       [(ConversationViewController *)self setPinnedItem:v20];
     }
 
@@ -2553,58 +2553,58 @@ LABEL_12:
     v22[1] = 3221225472;
     v22[2] = sub_1000612B8;
     v22[3] = &unk_10064CF88;
-    v23 = v9;
-    v24 = self;
-    v25 = v10;
+    v23 = dCopy;
+    selfCopy = self;
+    v25 = iDCopy;
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100061558;
     v21[3] = &unk_10064C7E8;
     v21[4] = self;
-    [(ConversationViewController *)self _performDataSourceUpdateAnimated:0 collection:v8 update:v22 completion:v21];
+    [(ConversationViewController *)self _performDataSourceUpdateAnimated:0 collection:collectionCopy update:v22 completion:v21];
   }
 }
 
-- (id)cellConfigurator:(id)a3 messageItemIDAtIndexPath:(id)a4
+- (id)cellConfigurator:(id)configurator messageItemIDAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ConversationViewController *)self collectionViewDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  v7 = [collectionViewDataSource itemIdentifierForIndexPath:pathCopy];
 
   return v7;
 }
 
-- (void)messageViewController:(id)a3 didStartDownloadForContentItemWithProgress:(id)a4
+- (void)messageViewController:(id)controller didStartDownloadForContentItemWithProgress:(id)progress
 {
-  v6 = a4;
-  v5 = [(ConversationViewController *)self contentItemsCancelable];
-  [v5 addCancelable:v6];
+  progressCopy = progress;
+  contentItemsCancelable = [(ConversationViewController *)self contentItemsCancelable];
+  [contentItemsCancelable addCancelable:progressCopy];
 }
 
-- (void)messageViewController:(id)a3 didTapShowMoreAtCollapsedOffset:(CGPoint)a4 expandedOffset:(CGPoint)a5
+- (void)messageViewController:(id)controller didTapShowMoreAtCollapsedOffset:(CGPoint)offset expandedOffset:(CGPoint)expandedOffset
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v10 = a3;
-  v11 = [v10 contentRequest];
-  v12 = [v11 itemID];
+  y = expandedOffset.y;
+  x = expandedOffset.x;
+  v7 = offset.y;
+  v8 = offset.x;
+  controllerCopy = controller;
+  contentRequest = [controllerCopy contentRequest];
+  itemID = [contentRequest itemID];
 
-  v13 = [(ConversationViewControllerBase *)self cellConfigurator];
-  v14 = [v13 expansionTracker];
-  v15 = [v14 expansionStatusForCellWithItemID:v12];
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+  expansionTracker = [cellConfigurator expansionTracker];
+  v15 = [expansionTracker expansionStatusForCellWithItemID:itemID];
 
   if (v15 == 2)
   {
-    v16 = [(ConversationViewController *)self collectionViewDataSource];
-    v17 = [v16 indexPathForItemIdentifier:v12];
+    collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+    v17 = [collectionViewDataSource indexPathForItemIdentifier:itemID];
 
     if (v17)
     {
       [(ConversationViewController *)self setPinnedItem:0];
-      v18 = [(ConversationViewControllerBase *)self cellConfigurator];
-      [v18 expandCellAtIndexPath:v17 animated:0 highlightFirst:0 expansionStatus:3];
+      cellConfigurator2 = [(ConversationViewControllerBase *)self cellConfigurator];
+      [cellConfigurator2 expandCellAtIndexPath:v17 animated:0 highlightFirst:0 expansionStatus:3];
     }
   }
 
@@ -2612,45 +2612,45 @@ LABEL_12:
   {
     v19.receiver = self;
     v19.super_class = ConversationViewController;
-    [(ConversationViewControllerBase *)&v19 messageViewController:v10 didTapShowMoreAtCollapsedOffset:v8 expandedOffset:v7, x, y];
+    [(ConversationViewControllerBase *)&v19 messageViewController:controllerCopy didTapShowMoreAtCollapsedOffset:v8 expandedOffset:v7, x, y];
   }
 }
 
-- (void)messageViewController:(id)a3 didTapRevealActionsButton:(id)a4
+- (void)messageViewController:(id)controller didTapRevealActionsButton:(id)button
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 contentRequest];
-  v8 = [v7 message];
-  v9 = [v11 predictedMailbox];
-  v10 = [v11 contentRequest];
-  [(ConversationViewController *)self _didTapRevealActionsButton:v6 message:v8 predictedMailbox:v9 contentRequest:v10 didDismissHandler:0];
+  controllerCopy = controller;
+  buttonCopy = button;
+  contentRequest = [controllerCopy contentRequest];
+  message = [contentRequest message];
+  predictedMailbox = [controllerCopy predictedMailbox];
+  contentRequest2 = [controllerCopy contentRequest];
+  [(ConversationViewController *)self _didTapRevealActionsButton:buttonCopy message:message predictedMailbox:predictedMailbox contentRequest:contentRequest2 didDismissHandler:0];
 }
 
-- (void)messageViewController:(id)a3 didTapUndoSendButton:(id)a4
+- (void)messageViewController:(id)controller didTapUndoSendButton:(id)button
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 contentRequest];
-  v8 = [v7 message];
-  v9 = [v11 predictedMailbox];
-  v10 = [v11 contentRequest];
-  [(ConversationViewController *)self _didTapUndoSendButton:v6 message:v8 predictedMailbox:v9 contentRequest:v10 didDismissHandler:0];
+  controllerCopy = controller;
+  buttonCopy = button;
+  contentRequest = [controllerCopy contentRequest];
+  message = [contentRequest message];
+  predictedMailbox = [controllerCopy predictedMailbox];
+  contentRequest2 = [controllerCopy contentRequest];
+  [(ConversationViewController *)self _didTapUndoSendButton:buttonCopy message:message predictedMailbox:predictedMailbox contentRequest:contentRequest2 didDismissHandler:0];
 }
 
-- (void)_messageViewControllerDidDisplayContent:(id)a3
+- (void)_messageViewControllerDidDisplayContent:(id)content
 {
-  v11 = a3;
+  contentCopy = content;
   if (sub_1004852F8(self))
   {
-    v4 = [v11 contentRequest];
-    v5 = [v4 itemID];
+    contentRequest = [contentCopy contentRequest];
+    itemID = [contentRequest itemID];
 
     v6 = sub_1004852D0(self);
     v7 = sub_100055F94(v6);
-    v8 = [v7 objectForKeyedSubscript:v5];
+    v8 = [v7 objectForKeyedSubscript:itemID];
 
-    v9 = sub_100061BD0(self, v5);
+    v9 = sub_100061BD0(self, itemID);
     if (v9)
     {
       if ([v8 count])
@@ -2660,30 +2660,30 @@ LABEL_12:
 
       else
       {
-        v10 = [v11 messageContentView];
-        [v10 didBeginTextSearch];
+        messageContentView = [contentCopy messageContentView];
+        [messageContentView didBeginTextSearch];
       }
     }
   }
 }
 
-- (void)_didTapRevealActionsButton:(id)a3 message:(id)a4 predictedMailbox:(id)a5 contentRequest:(id)a6 didDismissHandler:(id)a7
+- (void)_didTapRevealActionsButton:(id)button message:(id)message predictedMailbox:(id)mailbox contentRequest:(id)request didDismissHandler:(id)handler
 {
-  v9 = a4;
+  messageCopy = message;
   v8 = [ConversationViewController _actionsViewControllerWithMessage:"_actionsViewControllerWithMessage:contentRequest:predictedMailbox:button:didDismissHandler:" contentRequest:? predictedMailbox:? button:? didDismissHandler:?];
-  [(ConversationViewController *)self setSelectedMessage:v9];
+  [(ConversationViewController *)self setSelectedMessage:messageCopy];
   if (v8)
   {
     [(ConversationViewControllerBase *)self presentViewController:v8 animated:1 completion:0];
   }
 }
 
-- (void)_didTapUndoSendButton:(id)a3 message:(id)a4 predictedMailbox:(id)a5 contentRequest:(id)a6 didDismissHandler:(id)a7
+- (void)_didTapUndoSendButton:(id)button message:(id)message predictedMailbox:(id)mailbox contentRequest:(id)request didDismissHandler:(id)handler
 {
-  v8 = a4;
-  v9 = [(ConversationViewControllerBase *)self scene];
-  v10 = [v9 daemonInterface];
-  v11 = [v10 outgoingMessageRepository];
+  messageCopy = message;
+  scene = [(ConversationViewControllerBase *)self scene];
+  daemonInterface = [scene daemonInterface];
+  outgoingMessageRepository = [daemonInterface outgoingMessageRepository];
 
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
@@ -2691,36 +2691,36 @@ LABEL_12:
   v13[2] = sub_100061F08;
   v13[3] = &unk_10064D0E0;
   objc_copyWeak(&v15, &location);
-  v12 = v8;
+  v12 = messageCopy;
   v14 = v12;
-  [v11 cancelLastDelayedMessage:v13];
+  [outgoingMessageRepository cancelLastDelayedMessage:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (id)_actionsViewControllerWithMessage:(id)a3 contentRequest:(id)a4 predictedMailbox:(id)a5 button:(id)a6 didDismissHandler:(id)a7
+- (id)_actionsViewControllerWithMessage:(id)message contentRequest:(id)request predictedMailbox:(id)mailbox button:(id)button didDismissHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v44 = a5;
-  v45 = a6;
-  v15 = a7;
-  v43 = v14;
-  if (v13)
+  messageCopy = message;
+  requestCopy = request;
+  mailboxCopy = mailbox;
+  buttonCopy = button;
+  handlerCopy = handler;
+  v43 = requestCopy;
+  if (messageCopy)
   {
-    v42 = [(ConversationViewControllerBase *)self displayMetrics];
-    [MailActionViewHeader defaultHeightWithDisplayMetrics:v42];
+    displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
+    [MailActionViewHeader defaultHeightWithDisplayMetrics:displayMetrics];
     v17 = v16;
-    v18 = [(ConversationViewController *)self view];
-    [v18 frame];
+    view = [(ConversationViewController *)self view];
+    [view frame];
     Width = CGRectGetWidth(v55);
 
     v20 = [[MailActionViewHeader alloc] initWithFrame:0.0, 0.0, Width, v17];
-    v21 = [(ConversationViewControllerBase *)self contactStore];
-    [(MFMessageConversationViewCell *)v20 setContactStore:v21];
+    contactStore = [(ConversationViewControllerBase *)self contactStore];
+    [(MFMessageConversationViewCell *)v20 setContactStore:contactStore];
 
-    v22 = [MFMessageDisplayMetrics mf_actionCardMetricsFromDisplayMetrics:v42];
+    v22 = [MFMessageDisplayMetrics mf_actionCardMetricsFromDisplayMetrics:displayMetrics];
     [(MFConversationViewCell *)v20 setDisplayMetrics:v22];
 
     v23 = [ConversationCellViewModel alloc];
@@ -2728,10 +2728,10 @@ LABEL_12:
     v49[1] = 3221225472;
     v49[2] = sub_100062724;
     v49[3] = &unk_10064D108;
-    v50 = v14;
-    v24 = v13;
+    v50 = requestCopy;
+    v24 = messageCopy;
     v51 = v24;
-    v52 = self;
+    selfCopy = self;
     v25 = [(ConversationCellViewModel *)v23 initWithBuilder:v49];
     [(MFCollapsedMessageCell *)v20 setViewModel:v25];
 
@@ -2742,22 +2742,22 @@ LABEL_12:
     v46[2] = sub_10006284C;
     v46[3] = &unk_10064D130;
     objc_copyWeak(&v48, location);
-    v47 = v15;
+    v47 = handlerCopy;
     v27 = [(MailActionsViewController *)v26 initWithDelegate:self messageHeaderView:v20 didDismissHandler:v46];
     v28 = [[UINavigationController alloc] initWithRootViewController:v27];
     [v28 setModalPresentationStyle:7];
-    v29 = [v28 presentationController];
-    [v29 setDelegate:self];
+    presentationController = [v28 presentationController];
+    [presentationController setDelegate:self];
 
-    v30 = [v28 popoverPresentationController];
-    [v30 setSourceItem:v45];
+    popoverPresentationController = [v28 popoverPresentationController];
+    [popoverPresentationController setSourceItem:buttonCopy];
 
     if (+[UIDevice mf_isPadIdiom])
     {
-      [v42 mailActionCardPreferredHeightForPad];
-      v31 = [(ConversationViewController *)self traitCollection];
-      v32 = [v31 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v32);
+      [displayMetrics mailActionCardPreferredHeightForPad];
+      traitCollection = [(ConversationViewController *)self traitCollection];
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
       if (IsAccessibilityCategory)
       {
@@ -2768,10 +2768,10 @@ LABEL_12:
       [v28 setPreferredContentSize:?];
     }
 
-    if (v15)
+    if (handlerCopy)
     {
-      v34 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-      v35 = [(ConversationViewController *)self _completionForSwipeCardActionsForMailActionsViewController:v27 messageListItem:v34];
+      referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+      v35 = [(ConversationViewController *)self _completionForSwipeCardActionsForMailActionsViewController:v27 messageListItem:referenceMessageListItem];
       v36 = objc_retainBlock(v35);
 
       v37 = 0;
@@ -2782,11 +2782,11 @@ LABEL_12:
       v39 = [(ConversationViewController *)self _preparationForFooterViewCardActionsForMailActionsViewController:v27];
       v37 = objc_retainBlock(v39);
 
-      v34 = [(ConversationViewController *)self _completionForFooterViewCardActionsForMailActionsViewController:v27];
-      v36 = objc_retainBlock(v34);
+      referenceMessageListItem = [(ConversationViewController *)self _completionForFooterViewCardActionsForMailActionsViewController:v27];
+      v36 = objc_retainBlock(referenceMessageListItem);
     }
 
-    v40 = [(ConversationViewController *)self _mailActionsViewDataSourceForMailActionsViewController:v27 message:v24 predictedMailbox:v44 preparation:v37 completion:v36];
+    v40 = [(ConversationViewController *)self _mailActionsViewDataSourceForMailActionsViewController:v27 message:v24 predictedMailbox:mailboxCopy preparation:v37 completion:v36];
     [(MailActionsViewController *)v27 setDataSource:v40];
 
     objc_destroyWeak(&v48);
@@ -2803,80 +2803,80 @@ LABEL_12:
       sub_1004844F8();
     }
 
-    v15[2](v15);
+    handlerCopy[2](handlerCopy);
     v28 = 0;
   }
 
   return v28;
 }
 
-- (void)messageViewController:(id)a3 scrollToRect:(CGRect)a4
+- (void)messageViewController:(id)controller scrollToRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [a3 messageContentView];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  messageContentView = [controller messageContentView];
   [(ConversationViewController *)self _scrollToRect:x forMessageContentView:y, width, height];
 }
 
-- (id)messageViewControllerMessageListMailboxScope:(id)a3
+- (id)messageViewControllerMessageListMailboxScope:(id)scope
 {
-  v3 = [(ConversationViewController *)self _referenceMessageListMailboxScope];
+  _referenceMessageListMailboxScope = [(ConversationViewController *)self _referenceMessageListMailboxScope];
 
-  return v3;
+  return _referenceMessageListMailboxScope;
 }
 
-- (id)messageSourceMailboxObjectIDForMessageViewController:(id)a3
+- (id)messageSourceMailboxObjectIDForMessageViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 contentRequest];
-  v6 = [v5 message];
+  controllerCopy = controller;
+  contentRequest = [controllerCopy contentRequest];
+  message = [contentRequest message];
 
   if ([(ConversationViewController *)self _isDisplayingSingleMessage])
   {
-    v7 = [v6 mailboxObjectIDs];
-    v8 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v9 = [v8 mailboxObjectIDs];
-    v10 = [v7 firstObjectCommonWithArray:v9];
+    mailboxObjectIDs = [message mailboxObjectIDs];
+    referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    mailboxObjectIDs2 = [referenceMessageListItem mailboxObjectIDs];
+    v10 = [mailboxObjectIDs firstObjectCommonWithArray:mailboxObjectIDs2];
   }
 
   else
   {
-    v7 = [(ConversationViewController *)self _visibleIndexPathForMessageViewController:v4];
-    v8 = [(ConversationViewController *)self _messageAtIndexPath:v7];
-    v9 = [v6 mailboxObjectIDs];
-    v11 = [v8 mailboxObjectIDs];
-    v10 = [v9 firstObjectCommonWithArray:v11];
+    mailboxObjectIDs = [(ConversationViewController *)self _visibleIndexPathForMessageViewController:controllerCopy];
+    referenceMessageListItem = [(ConversationViewController *)self _messageAtIndexPath:mailboxObjectIDs];
+    mailboxObjectIDs2 = [message mailboxObjectIDs];
+    mailboxObjectIDs3 = [referenceMessageListItem mailboxObjectIDs];
+    v10 = [mailboxObjectIDs2 firstObjectCommonWithArray:mailboxObjectIDs3];
   }
 
   return v10;
 }
 
-- (BOOL)isCategorizationActionAllowedForMessageViewController:(id)a3
+- (BOOL)isCategorizationActionAllowedForMessageViewController:(id)controller
 {
-  v3 = self;
-  v4 = [(ConversationViewControllerBase *)self delegate];
-  LOBYTE(v3) = [v4 conversationViewControllerAllowsCategorizationAction:v3];
+  selfCopy = self;
+  delegate = [(ConversationViewControllerBase *)self delegate];
+  LOBYTE(selfCopy) = [delegate conversationViewControllerAllowsCategorizationAction:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4
+- (void)presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  presentationControllerCopy = presentationController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 presentedViewController];
-    v9 = [(ConversationViewController *)self _mailActionsViewControllerFromPresentedViewController:v8];
+    presentedViewController = [controllerCopy presentedViewController];
+    v9 = [(ConversationViewController *)self _mailActionsViewControllerFromPresentedViewController:presentedViewController];
 
     if (v9)
     {
-      v21 = v7;
+      v21 = presentationControllerCopy;
       [v21 _setShouldDismissWhenTappedOutside:1];
-      v20 = [(ConversationViewControllerBase *)self displayMetrics];
+      displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
       [v9 approximateHeightForActionSheetStyleCard];
       v11 = v10;
       v12 = v10 > 0.0;
@@ -2884,7 +2884,7 @@ LABEL_12:
       v22[1] = 3221225472;
       v22[2] = sub_100062EDC;
       v22[3] = &unk_10064D158;
-      v13 = v20;
+      v13 = displayMetrics;
       v23 = v13;
       v26 = v12;
       v24 = v9;
@@ -2894,16 +2894,16 @@ LABEL_12:
       if (v11 <= 0.0)
       {
         v29[0] = v14;
-        v16 = +[UISheetPresentationControllerDetent largeDetent];
-        v29[1] = v16;
+        traitCollection = +[UISheetPresentationControllerDetent largeDetent];
+        v29[1] = traitCollection;
         v19 = [NSArray arrayWithObjects:v29 count:2];
       }
 
       else
       {
-        v16 = [(ConversationViewController *)self traitCollection];
-        v17 = [v16 preferredContentSizeCategory];
-        if (UIContentSizeCategoryIsAccessibilityCategory(v17))
+        traitCollection = [(ConversationViewController *)self traitCollection];
+        preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+        if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
         {
           v18 = +[UISheetPresentationControllerDetent largeDetent];
           v28 = v18;
@@ -2922,79 +2922,79 @@ LABEL_12:
   }
 }
 
-- (id)_mailActionsViewDataSourceForMailActionsViewController:(id)a3 message:(id)a4 predictedMailbox:(id)a5 preparation:(id)a6 completion:(id)a7
+- (id)_mailActionsViewDataSourceForMailActionsViewController:(id)controller message:(id)message predictedMailbox:(id)mailbox preparation:(id)preparation completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v33 = a7;
-  v16 = [v13 itemID];
-  v35 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:v16];
+  controllerCopy = controller;
+  messageCopy = message;
+  mailboxCopy = mailbox;
+  preparationCopy = preparation;
+  completionCopy = completion;
+  itemID = [messageCopy itemID];
+  v35 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:itemID];
 
-  v17 = [v13 itemID];
-  v34 = [(ConversationViewController *)self _getCurrentlySelectedMessageContentForMessageItemID:v17];
+  itemID2 = [messageCopy itemID];
+  v34 = [(ConversationViewController *)self _getCurrentlySelectedMessageContentForMessageItemID:itemID2];
 
   v18 = [MFTriageInteractionTarget alloc];
-  v19 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v20 = [v13 displayMessage];
-  v21 = [v20 result];
-  v32 = [(MFTriageInteractionTarget *)v18 initWithMessageListItem:v19 primaryMessage:v21 selectedMessageContent:v34 primaryMessageContentRequest:v35 targetPreference:0 preferQuickCompositionalActions:0];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  displayMessage = [messageCopy displayMessage];
+  result = [displayMessage result];
+  v32 = [(MFTriageInteractionTarget *)v18 initWithMessageListItem:referenceMessageListItem primaryMessage:result selectedMessageContent:v34 primaryMessageContentRequest:v35 targetPreference:0 preferQuickCompositionalActions:0];
 
-  v31 = [(ConversationViewControllerBase *)self delegate];
+  delegate = [(ConversationViewControllerBase *)self delegate];
   v22 = [MailActionsViewDataSource alloc];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_100063374;
   v36[3] = &unk_10064D180;
   v36[4] = self;
-  v23 = v12;
+  v23 = controllerCopy;
   v37 = v23;
   v24 = v32;
   v38 = v24;
-  v25 = v15;
+  v25 = preparationCopy;
   v41 = v25;
-  v26 = v33;
+  v26 = completionCopy;
   v42 = v26;
-  v27 = v14;
+  v27 = mailboxCopy;
   v39 = v27;
-  v28 = v31;
+  v28 = delegate;
   v40 = v28;
   v29 = [(MailActionsViewDataSource *)v22 initWithBuilderBlock:v36];
 
   return v29;
 }
 
-- (id)_preparationForFooterViewCardActionsForMailActionsViewController:(id)a3
+- (id)_preparationForFooterViewCardActionsForMailActionsViewController:(id)controller
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000635CC;
   v7[3] = &unk_10064D1A8;
   v7[4] = self;
-  v8 = a3;
-  v3 = v8;
+  controllerCopy = controller;
+  v3 = controllerCopy;
   v4 = objc_retainBlock(v7);
   v5 = objc_retainBlock(v4);
 
   return v5;
 }
 
-- (id)_completionForFooterViewCardActionsForMailActionsViewController:(id)a3
+- (id)_completionForFooterViewCardActionsForMailActionsViewController:(id)controller
 {
-  v4 = [(ConversationViewController *)self selectedMessage];
-  v5 = v4;
-  if (v4)
+  selectedMessage = [(ConversationViewController *)self selectedMessage];
+  v5 = selectedMessage;
+  if (selectedMessage)
   {
-    v6 = v4;
+    targetMessageForBarButtonTriage = selectedMessage;
   }
 
   else
   {
-    v6 = [(ConversationViewController *)self targetMessageForBarButtonTriage];
+    targetMessageForBarButtonTriage = [(ConversationViewController *)self targetMessageForBarButtonTriage];
   }
 
-  v7 = v6;
+  v7 = targetMessageForBarButtonTriage;
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -3009,24 +3009,24 @@ LABEL_12:
   return v10;
 }
 
-- (id)_completionForSwipeCardActionsForMailActionsViewController:(id)a3 messageListItem:(id)a4
+- (id)_completionForSwipeCardActionsForMailActionsViewController:(id)controller messageListItem:(id)item
 {
-  v5 = a3;
-  v6 = [(ConversationViewController *)self selectedMessage];
-  v7 = v6;
-  if (v6)
+  controllerCopy = controller;
+  selectedMessage = [(ConversationViewController *)self selectedMessage];
+  v7 = selectedMessage;
+  if (selectedMessage)
   {
-    v8 = v6;
+    targetMessageForBarButtonTriage = selectedMessage;
   }
 
   else
   {
-    v8 = [(ConversationViewController *)self targetMessageForBarButtonTriage];
+    targetMessageForBarButtonTriage = [(ConversationViewController *)self targetMessageForBarButtonTriage];
   }
 
-  v9 = v8;
+  v9 = targetMessageForBarButtonTriage;
 
-  objc_initWeak(&location, v5);
+  objc_initWeak(&location, controllerCopy);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100063A4C;
@@ -3044,13 +3044,13 @@ LABEL_12:
   return v12;
 }
 
-- (id)_mailActionsViewControllerFromPresentedViewController:(id)a3
+- (id)_mailActionsViewControllerFromPresentedViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 topViewController];
+    topViewController = [controllerCopy topViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3063,50 +3063,50 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      topViewController = controllerCopy;
       goto LABEL_7;
     }
   }
 
-  v4 = 0;
+  topViewController = 0;
 LABEL_7:
 
-  return v4;
+  return topViewController;
 }
 
 - (BOOL)_shouldArchiveByDefault
 {
-  v2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v3 = [v2 shouldArchiveByDefault];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  shouldArchiveByDefault = [referenceMessageListItem shouldArchiveByDefault];
 
-  return v3;
+  return shouldArchiveByDefault;
 }
 
-- (id)messageItemIDAtIndexPath:(id)a3
+- (id)messageItemIDAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self collectionViewDataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  v6 = [collectionViewDataSource itemIdentifierForIndexPath:pathCopy];
 
   return v6;
 }
 
 - (int64_t)countOfMessages
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
-  v4 = [(ConversationViewController *)self collectionViewDataSource];
-  if ([v4 numberOfSectionsInCollectionView:v3] < 1)
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  if ([collectionViewDataSource numberOfSectionsInCollectionView:collectionView] < 1)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 collectionView:v3 numberOfItemsInSection:0];
+    v5 = [collectionViewDataSource collectionView:collectionView numberOfItemsInSection:0];
   }
 
-  v6 = [(ConversationViewController *)self countOfSummaries];
-  v7 = (v5 - v6) & ~((v5 - v6) >> 63);
+  countOfSummaries = [(ConversationViewController *)self countOfSummaries];
+  v7 = (v5 - countOfSummaries) & ~((v5 - countOfSummaries) >> 63);
 
   return v7;
 }
@@ -3118,38 +3118,38 @@ LABEL_7:
     return 0;
   }
 
-  v5 = [(ConversationViewController *)self topSummaryItemID];
+  topSummaryItemID = [(ConversationViewController *)self topSummaryItemID];
 
-  v6 = [(ConversationViewController *)self inlineSummaryItemID];
+  inlineSummaryItemID = [(ConversationViewController *)self inlineSummaryItemID];
 
-  v7 = [(ConversationViewController *)self previousTopSummaryItemID];
-  v8 = [(ConversationViewController *)self previousInlineSummaryItemID];
-  v9 = v8;
+  previousTopSummaryItemID = [(ConversationViewController *)self previousTopSummaryItemID];
+  previousInlineSummaryItemID = [(ConversationViewController *)self previousInlineSummaryItemID];
+  v9 = previousInlineSummaryItemID;
   v10 = 1;
-  if (v5)
+  if (topSummaryItemID)
   {
     v10 = 2;
   }
 
-  if (v6)
+  if (inlineSummaryItemID)
   {
     v3 = v10;
   }
 
   else
   {
-    v3 = v5 != 0;
+    v3 = topSummaryItemID != 0;
   }
 
   if (!v3)
   {
-    if (v7 | v8)
+    if (previousTopSummaryItemID | previousInlineSummaryItemID)
     {
-      v11 = [(ConversationViewController *)self collectionViewDataSource];
-      v12 = v11;
-      if (v7)
+      collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+      v12 = collectionViewDataSource;
+      if (previousTopSummaryItemID)
       {
-        v13 = [v11 indexPathForItemIdentifier:v7];
+        v13 = [collectionViewDataSource indexPathForItemIdentifier:previousTopSummaryItemID];
         v3 = v13 != 0;
       }
 
@@ -3177,13 +3177,13 @@ LABEL_7:
   return v3;
 }
 
-- (void)_showSingleMessage:(id)a3 animationOffset:(CGPoint)a4 initialScrollOffset:(CGPoint)a5
+- (void)_showSingleMessage:(id)message animationOffset:(CGPoint)offset initialScrollOffset:(CGPoint)scrollOffset
 {
-  v6 = [a3 contentRequest];
-  v17 = [v6 message];
+  contentRequest = [message contentRequest];
+  message = [contentRequest message];
 
-  v7 = [v17 itemID];
-  v8 = [(ConversationViewController *)self _cellForMessageItemIDIfExpanded:v7];
+  itemID = [message itemID];
+  v8 = [(ConversationViewController *)self _cellForMessageItemIDIfExpanded:itemID];
 
   if (v8)
   {
@@ -3198,64 +3198,64 @@ LABEL_7:
       }
 
       [(ConversationViewController *)self setPinnedItem:0];
-      v11 = [v8 messageViewController];
-      v12 = [v11 messageContentView];
+      messageViewController = [v8 messageViewController];
+      messageContentView = [messageViewController messageContentView];
 
-      v13 = [(ConversationViewController *)self expandedContentItemIDs];
-      v14 = [v17 itemID];
-      [v13 addObject:v14];
+      expandedContentItemIDs = [(ConversationViewController *)self expandedContentItemIDs];
+      itemID2 = [message itemID];
+      [expandedContentItemIDs addObject:itemID2];
 
-      v15 = [v8 messageViewController];
-      [v15 setAutomaticallyCollapseQuotedContent:0];
+      messageViewController2 = [v8 messageViewController];
+      [messageViewController2 setAutomaticallyCollapseQuotedContent:0];
 
-      v16 = [v12 footerView];
-      [v16 setBlockquotesAreExpanded:1];
+      footerView = [messageContentView footerView];
+      [footerView setBlockquotesAreExpanded:1];
 
-      [v12 reload];
+      [messageContentView reload];
     }
   }
 }
 
-- (BOOL)_shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:(id)a3
+- (BOOL)_shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = ConversationViewController;
-  v5 = [(ConversationViewControllerBase *)&v10 _shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:v4];
-  v6 = [(ConversationViewController *)self collectionViewDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v4];
+  v5 = [(ConversationViewControllerBase *)&v10 _shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:pathCopy];
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  v7 = [collectionViewDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v8 = [(ConversationViewController *)self expandedContentItemIDs];
-  LOBYTE(v6) = [v8 containsObject:v7];
+  expandedContentItemIDs = [(ConversationViewController *)self expandedContentItemIDs];
+  LOBYTE(collectionViewDataSource) = [expandedContentItemIDs containsObject:v7];
 
-  return v5 & (v6 ^ 1);
+  return v5 & (collectionViewDataSource ^ 1);
 }
 
-- (void)_reloadCellsAtIndexPaths:(id)a3 animated:(BOOL)a4
+- (void)_reloadCellsAtIndexPaths:(id)paths animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ConversationViewController *)self messageList];
+  animatedCopy = animated;
+  pathsCopy = paths;
+  messageList = [(ConversationViewController *)self messageList];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100064648;
   v9[3] = &unk_10064CCA0;
-  v8 = v6;
+  v8 = pathsCopy;
   v10 = v8;
-  [(ConversationViewController *)self _performDataSourceUpdateAnimated:v4 collection:v7 update:v9];
+  [(ConversationViewController *)self _performDataSourceUpdateAnimated:animatedCopy collection:messageList update:v9];
 }
 
-- (int64_t)_headerDisplayOptionsForCell:(id)a3 displayedAsSingleMessage:(BOOL)a4
+- (int64_t)_headerDisplayOptionsForCell:(id)cell displayedAsSingleMessage:(BOOL)message
 {
-  v5 = [(ConversationViewControllerBase *)self beingPreviewed:a3];
-  v6 = [(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList];
+  v5 = [(ConversationViewControllerBase *)self beingPreviewed:cell];
+  isShowingGroupedSenderMessageList = [(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList];
   v7 = 2;
   if (v5)
   {
     v7 = 18;
   }
 
-  if (v6)
+  if (isShowingGroupedSenderMessageList)
   {
     return v7 | 0x20;
   }
@@ -3268,9 +3268,9 @@ LABEL_7:
 
 - (void)_updateBarButtonsEnabled
 {
-  v4 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v3 = [(ConversationViewControllerBase *)self barItemsManager];
-  [v3 updateEnabledStatesForMessage:v4];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+  [barItemsManager updateEnabledStatesForMessage:referenceMessageListItem];
 }
 
 - (void)_scrollToInitialPosition
@@ -3286,30 +3286,30 @@ LABEL_7:
   v8 = v5;
   if (v6 == CGPointZero.x && v5 == CGPointZero.y)
   {
-    v12 = [(ConversationViewControllerBase *)self pinnedItem];
-    if (!v12)
+    pinnedItem = [(ConversationViewControllerBase *)self pinnedItem];
+    if (!pinnedItem)
     {
-      v18 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-      v19 = [v18 displayMessageItemID];
-      v20 = [(ConversationViewController *)self topSummaryItemID];
-      v21 = [v20 anchorMessageItemID];
-      v22 = v19 == v21;
+      referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+      displayMessageItemID = [referenceMessageListItem displayMessageItemID];
+      topSummaryItemID = [(ConversationViewController *)self topSummaryItemID];
+      anchorMessageItemID = [topSummaryItemID anchorMessageItemID];
+      v22 = displayMessageItemID == anchorMessageItemID;
 
       if (v22)
       {
-        if ([(ConversationViewController *)self _shouldShowSummarizeControls:v19])
+        if ([(ConversationViewController *)self _shouldShowSummarizeControls:displayMessageItemID])
         {
           v31 = +[ConversationViewController log];
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
-            v32 = [v18 ef_publicDescription];
+            ef_publicDescription = [referenceMessageListItem ef_publicDescription];
             *buf = 138412290;
-            v39 = *&v32;
+            v39 = *&ef_publicDescription;
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Scroll to top summary item: %@", buf, 0xCu);
           }
 
-          v28 = [(ConversationViewController *)self topSummaryItemID];
-          (v4[2])(v4, v28, 0, 0);
+          topSummaryItemID2 = [(ConversationViewController *)self topSummaryItemID];
+          (v4[2])(v4, topSummaryItemID2, 0, 0);
         }
 
         else
@@ -3317,36 +3317,36 @@ LABEL_7:
           v35 = +[ConversationViewController log];
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
           {
-            v36 = [v18 ef_publicDescription];
+            ef_publicDescription2 = [referenceMessageListItem ef_publicDescription];
             *buf = 138412290;
-            v39 = *&v36;
+            v39 = *&ef_publicDescription2;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Scroll to reference message list item: %@", buf, 0xCu);
           }
 
-          v28 = [v18 displayMessageItemID];
-          (v4[2])(v4, v28, 0, 0);
+          topSummaryItemID2 = [referenceMessageListItem displayMessageItemID];
+          (v4[2])(v4, topSummaryItemID2, 0, 0);
         }
       }
 
       else
       {
-        v23 = [(ConversationViewController *)self inlineSummaryItemID];
-        v24 = [v23 anchorMessageItemID];
-        v25 = v19 == v24;
+        inlineSummaryItemID = [(ConversationViewController *)self inlineSummaryItemID];
+        anchorMessageItemID2 = [inlineSummaryItemID anchorMessageItemID];
+        v25 = displayMessageItemID == anchorMessageItemID2;
 
         if (v25)
         {
           v33 = +[ConversationViewController log];
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
-            v34 = [v18 ef_publicDescription];
+            ef_publicDescription3 = [referenceMessageListItem ef_publicDescription];
             *buf = 138412290;
-            v39 = *&v34;
+            v39 = *&ef_publicDescription3;
             _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Scroll to inline summary item: %@", buf, 0xCu);
           }
 
-          v28 = [(ConversationViewController *)self inlineSummaryItemID];
-          (v4[2])(v4, v28, 0, 1);
+          topSummaryItemID2 = [(ConversationViewController *)self inlineSummaryItemID];
+          (v4[2])(v4, topSummaryItemID2, 0, 1);
         }
 
         else
@@ -3354,14 +3354,14 @@ LABEL_7:
           v26 = +[ConversationViewController log];
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [v18 ef_publicDescription];
+            ef_publicDescription4 = [referenceMessageListItem ef_publicDescription];
             *buf = 138412290;
-            v39 = *&v27;
+            v39 = *&ef_publicDescription4;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Scroll to reference message list item: %@", buf, 0xCu);
           }
 
-          v28 = [v18 displayMessageItemID];
-          (v4[2])(v4, v28, 0, 1);
+          topSummaryItemID2 = [referenceMessageListItem displayMessageItemID];
+          (v4[2])(v4, topSummaryItemID2, 0, 1);
         }
       }
 
@@ -3371,46 +3371,46 @@ LABEL_7:
     v13 = +[ConversationViewController log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v2 = [v12 ef_publicDescription];
-      v14 = [v12 dynamicOffset];
-      v15 = [v14 ef_publicDescription];
+      ef_publicDescription5 = [pinnedItem ef_publicDescription];
+      dynamicOffset = [pinnedItem dynamicOffset];
+      ef_publicDescription6 = [dynamicOffset ef_publicDescription];
       *buf = 138412546;
-      v39 = *&v2;
+      v39 = *&ef_publicDescription5;
       v40 = 2112;
-      v41 = v15;
+      v41 = ef_publicDescription6;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Scroll to pinned item: %@, dynamicOffset: %@", buf, 0x16u);
     }
 
-    v16 = [(ConversationViewController *)self topSummaryItemID];
-    if (v16 && ([v12 indexPath], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "item") == 1))
+    topSummaryItemID3 = [(ConversationViewController *)self topSummaryItemID];
+    if (topSummaryItemID3 && ([pinnedItem indexPath], ef_publicDescription5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(ef_publicDescription5, "item") == 1))
     {
       v17 = 1;
     }
 
     else
     {
-      v29 = [(ConversationViewController *)self topSummaryItemID];
-      if (v29)
+      topSummaryItemID4 = [(ConversationViewController *)self topSummaryItemID];
+      if (topSummaryItemID4)
       {
         v17 = 0;
       }
 
       else
       {
-        v30 = [v12 indexPath];
-        v17 = [v30 item] == 0;
+        indexPath = [pinnedItem indexPath];
+        v17 = [indexPath item] == 0;
       }
 
-      if (!v16)
+      if (!topSummaryItemID3)
       {
         goto LABEL_24;
       }
     }
 
 LABEL_24:
-    v18 = [v12 itemID];
-    v19 = [v12 dynamicOffset];
-    (v4[2])(v4, v18, v19, !v17);
+    referenceMessageListItem = [pinnedItem itemID];
+    displayMessageItemID = [pinnedItem dynamicOffset];
+    (v4[2])(v4, referenceMessageListItem, displayMessageItemID, !v17);
 LABEL_36:
 
     goto LABEL_37;
@@ -3424,17 +3424,17 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Scroll to initial scroll offset: %.2f", buf, 0xCu);
   }
 
-  v11 = [(ConversationViewControllerBase *)self collectionView];
-  [v11 setContentOffset:0 animated:{v7, v8}];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView setContentOffset:0 animated:{v7, v8}];
 
-  v12 = [(ConversationViewControllerBase *)self previewState];
-  [v12 transitionAfterScrollingToReferenceMessage];
+  pinnedItem = [(ConversationViewControllerBase *)self previewState];
+  [pinnedItem transitionAfterScrollingToReferenceMessage];
 LABEL_37:
 }
 
-- (BOOL)_isItemInitiallyUnreadAtIndexPath:(id)a3
+- (BOOL)_isItemInitiallyUnreadAtIndexPath:(id)path
 {
-  v4 = [(ConversationViewController *)self messageItemIDAtIndexPath:a3];
+  v4 = [(ConversationViewController *)self messageItemIDAtIndexPath:path];
   if (v4)
   {
     v5 = [*(&self->_initiallyUnreadItemIDs + 4) containsObject:v4];
@@ -3448,83 +3448,83 @@ LABEL_37:
   return v5;
 }
 
-- (void)_fetchConversationAttachmentDataWithCompletion:(id)a3
+- (void)_fetchConversationAttachmentDataWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100065340;
   v4[3] = &unk_10064D2C0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ConversationViewController *)v5 _allMessageIDsWithCompletion:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(ConversationViewController *)selfCopy _allMessageIDsWithCompletion:v4];
 }
 
-- (void)_fetchConversationRichLinkDataWithCompletion:(id)a3
+- (void)_fetchConversationRichLinkDataWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100065618;
   v4[3] = &unk_10064D2C0;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(ConversationViewController *)v5 _allMessageIDsWithCompletion:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(ConversationViewController *)selfCopy _allMessageIDsWithCompletion:v4];
 }
 
-- (void)setBeingPreviewed:(BOOL)a3
+- (void)setBeingPreviewed:(BOOL)previewed
 {
   v8.receiver = self;
   v8.super_class = ConversationViewController;
   [(ConversationViewControllerBase *)&v8 setBeingPreviewed:?];
-  v5 = [(ConversationViewControllerBase *)self cellConfigurator];
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006590C;
   v6[3] = &unk_10064D328;
-  v7 = a3;
+  previewedCopy = previewed;
   v6[4] = self;
-  [v5 enumerateExpandedCellsWithBlock:v6];
+  [cellConfigurator enumerateExpandedCellsWithBlock:v6];
 }
 
-- (void)_configureExpandedCell:(id)a3 atIndexPath:(id)a4 viewModel:(id)a5 collapseQuotedContent:(BOOL)a6
+- (void)_configureExpandedCell:(id)cell atIndexPath:(id)path viewModel:(id)model collapseQuotedContent:(BOOL)content
 {
-  v81 = a6;
-  v9 = a3;
-  v89 = a4;
-  v86 = a5;
-  v10 = [(ConversationViewController *)self blankConversationTailspinToken];
-  [v10 cancel];
+  contentCopy = content;
+  cellCopy = cell;
+  pathCopy = path;
+  modelCopy = model;
+  blankConversationTailspinToken = [(ConversationViewController *)self blankConversationTailspinToken];
+  [blankConversationTailspinToken cancel];
 
-  v11 = [(ConversationViewController *)self _isDisplayingSingleMessage];
-  v88 = [v86 messageContentRequest];
-  v12 = [v9 messageViewController];
+  _isDisplayingSingleMessage = [(ConversationViewController *)self _isDisplayingSingleMessage];
+  messageContentRequest = [modelCopy messageContentRequest];
+  messageViewController = [cellCopy messageViewController];
 
-  if (!v12)
+  if (!messageViewController)
   {
-    v13 = [(ConversationViewControllerBase *)self messageViewControllerReuseQueue];
-    v14 = [v13 dequeueMessageViewControllerForContentRequest:v88];
+    messageViewControllerReuseQueue = [(ConversationViewControllerBase *)self messageViewControllerReuseQueue];
+    v14 = [messageViewControllerReuseQueue dequeueMessageViewControllerForContentRequest:messageContentRequest];
 
-    v15 = [(ConversationViewControllerBase *)self avatarGenerator];
-    [v14 setAvatarGenerator:v15];
+    avatarGenerator = [(ConversationViewControllerBase *)self avatarGenerator];
+    [v14 setAvatarGenerator:avatarGenerator];
 
-    [v9 setMessageViewController:v14];
+    [cellCopy setMessageViewController:v14];
   }
 
-  v16 = [v9 messageViewController];
-  [v16 setDelegate:self];
-  v17 = [(ConversationViewControllerBase *)self contactStore];
-  [v16 setContactStore:v17];
+  messageViewController2 = [cellCopy messageViewController];
+  [messageViewController2 setDelegate:self];
+  contactStore = [(ConversationViewControllerBase *)self contactStore];
+  [messageViewController2 setContactStore:contactStore];
 
-  v18 = [(ConversationViewControllerBase *)self avatarGenerator];
-  [v16 setAvatarGenerator:v18];
+  avatarGenerator2 = [(ConversationViewControllerBase *)self avatarGenerator];
+  [messageViewController2 setAvatarGenerator:avatarGenerator2];
 
-  v91 = [v16 messageContentView];
-  v19 = [(ConversationViewControllerBase *)self cellConfigurator];
-  v20 = [v19 expansionStatusForMessageAtIndexPath:v89];
+  messageContentView = [messageViewController2 messageContentView];
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+  v20 = [cellConfigurator expansionStatusForMessageAtIndexPath:pathCopy];
 
   v87 = v20;
-  v82 = !v11;
+  v82 = !_isDisplayingSingleMessage;
   if (v20 == 2)
   {
     v21 = 1;
@@ -3532,52 +3532,52 @@ LABEL_37:
 
   else
   {
-    v21 = v11 ^ 1;
+    v21 = _isDisplayingSingleMessage ^ 1;
   }
 
-  [v91 setSuppressScrolling:v21];
-  v22 = [(ConversationViewControllerBase *)self contactStore];
-  [v91 setContactStore:v22];
+  [messageContentView setSuppressScrolling:v21];
+  contactStore2 = [(ConversationViewControllerBase *)self contactStore];
+  [messageContentView setContactStore:contactStore2];
 
-  v23 = [v91 webView];
-  [v23 setUserInteractionEnabled:v20 != 2];
+  webView = [messageContentView webView];
+  [webView setUserInteractionEnabled:v20 != 2];
 
   if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
   {
-    [v91 setHideSenderSpecificBanners:{objc_msgSend(v89, "row") > 0}];
+    [messageContentView setHideSenderSpecificBanners:{objc_msgSend(pathCopy, "row") > 0}];
   }
 
   v24 = +[ConversationViewController log];
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [v86 messageContentRequest];
-    v26 = [v25 itemID];
+    messageContentRequest2 = [modelCopy messageContentRequest];
+    itemID = [messageContentRequest2 itemID];
     *buf = 134218754;
-    *v113 = v9;
+    *v113 = cellCopy;
     *&v113[8] = 2112;
-    v114 = v89;
+    v114 = pathCopy;
     *v115 = 2114;
-    *&v115[2] = v26;
+    *&v115[2] = itemID;
     v116 = 2048;
-    v117 = v91;
+    v117 = messageContentView;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Configuring expanded cell(%p) at indexPath: %@ with itemID: %{public}@, contentView:%p", buf, 0x2Au);
   }
 
-  v90 = [v88 message];
-  [v9 setShouldArchiveByDefault:{objc_msgSend(v90, "shouldArchiveByDefault")}];
-  v27 = [v16 contentRequest];
-  v28 = [v27 isEqual:v88];
+  message = [messageContentRequest message];
+  [cellCopy setShouldArchiveByDefault:{objc_msgSend(message, "shouldArchiveByDefault")}];
+  contentRequest = [messageViewController2 contentRequest];
+  v28 = [contentRequest isEqual:messageContentRequest];
 
-  v29 = [v9 isConfiguredForSingleMessageDisplay];
-  v30 = [v16 isConfiguredForGroupedSenderMessageListDisplay];
-  v31 = [(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList];
+  isConfiguredForSingleMessageDisplay = [cellCopy isConfiguredForSingleMessageDisplay];
+  isConfiguredForGroupedSenderMessageListDisplay = [messageViewController2 isConfiguredForGroupedSenderMessageListDisplay];
+  isShowingGroupedSenderMessageList = [(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList];
   v32 = +[ConversationViewController log];
-  v33 = v11 ^ v29;
-  v83 = v30 ^ v31;
+  v33 = _isDisplayingSingleMessage ^ isConfiguredForSingleMessageDisplay;
+  v83 = isConfiguredForGroupedSenderMessageListDisplay ^ isShowingGroupedSenderMessageList;
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
-    v34 = [v86 messageContentRequest];
-    v35 = [v34 itemID];
+    messageContentRequest3 = [modelCopy messageContentRequest];
+    itemID2 = [messageContentRequest3 itemID];
     *buf = 67109890;
     *v113 = v28 ^ 1;
     *&v113[4] = 1024;
@@ -3585,38 +3585,38 @@ LABEL_37:
     LOWORD(v114) = 1024;
     *(&v114 + 2) = v83;
     HIWORD(v114) = 2114;
-    *v115 = v35;
+    *v115 = itemID2;
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Content requests differs %{BOOL}d, singleMessageConfigurationDiffers %{BOOL}d, messageListConfigurationDiffers %{BOOL}d for cell with itemID: %{public}@", buf, 0x1Eu);
   }
 
-  v36 = [v90 readLater];
-  if (v36)
+  readLater = [message readLater];
+  if (readLater)
   {
   }
 
   else
   {
-    v37 = [v90 sendLaterDate];
-    if (v37)
+    sendLaterDate = [message sendLaterDate];
+    if (sendLaterDate)
     {
       v38 = 1;
     }
 
     else
     {
-      v39 = [v90 followUp];
-      v38 = v39 != 0;
+      followUp = [message followUp];
+      v38 = followUp != 0;
     }
 
     if (((v28 ^ 1 | v33 | v83 | v38) & 1) == 0)
     {
-      [v9 setConfiguredForSingleMessageDisplay:v11];
-      [v16 setAutomaticallyCollapseQuotedContent:v81 reloadIfNeeded:1];
+      [cellCopy setConfiguredForSingleMessageDisplay:_isDisplayingSingleMessage];
+      [messageViewController2 setAutomaticallyCollapseQuotedContent:contentCopy reloadIfNeeded:1];
       goto LABEL_43;
     }
   }
 
-  val = [v91 headerView];
+  val = [messageContentView headerView];
   if (_os_feature_enabled_impl() && EMIsGreymatterAvailable())
   {
     v40 = +[MUIManagedDeviceRestrictions isManualSummaryRestricted];
@@ -3631,12 +3631,12 @@ LABEL_37:
   v41 = objc_alloc_init(NSMutableArray);
   if (MUISolariumFeatureEnabled())
   {
-    v42 = sub_100066B90(self, v90, v89);
+    v42 = sub_100066B90(self, message, pathCopy);
     [v41 ef_addOptionalObject:v42];
   }
 
-  objc_initWeak(buf, v16);
-  objc_initWeak(&location, v9);
+  objc_initWeak(buf, messageViewController2);
+  objc_initWeak(&location, cellCopy);
   objc_initWeak(&from, self);
   v105[0] = _NSConcreteStackBlock;
   v105[1] = 3221225472;
@@ -3645,7 +3645,7 @@ LABEL_37:
   objc_copyWeak(&v106, &from);
   objc_copyWeak(&v107, buf);
   objc_copyWeak(&v108, &location);
-  v109 = v11;
+  v109 = _isDisplayingSingleMessage;
   v84 = objc_retainBlock(v105);
   if (v87 == 2)
   {
@@ -3670,10 +3670,10 @@ LABEL_37:
     [v41 addObject:v45];
   }
 
-  v46 = [(ConversationViewController *)self _shouldShowMailboxForMessage:v90];
+  v46 = [(ConversationViewController *)self _shouldShowMailboxForMessage:message];
   if ((MUISolariumFeatureEnabled() & 1) == 0)
   {
-    v47 = sub_100066B90(self, v90, v89);
+    v47 = sub_100066B90(self, message, pathCopy);
     [v41 ef_addOptionalObject:v47];
   }
 
@@ -3681,7 +3681,7 @@ LABEL_37:
   {
     v48 = [[MessageHeaderSubjectBlock alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     [v41 addObject:v48];
-    [v91 setHeaderViewSubjectBlock:v48];
+    [messageContentView setHeaderViewSubjectBlock:v48];
     [(MessageHeaderSubjectBlock *)v48 setHidden:v82];
   }
 
@@ -3689,8 +3689,8 @@ LABEL_37:
   {
     v49 = [MFMessageSashHeaderBlock alloc];
     v50 = +[UIApplication sharedApplication];
-    v51 = [v50 accountsProvider];
-    v52 = [v49 initWithFrame:v51 accountsProvider:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    accountsProvider = [v50 accountsProvider];
+    v52 = [v49 initWithFrame:accountsProvider accountsProvider:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
 
     [v52 setShouldShowMailbox:1];
     [v41 insertObject:v52 atIndex:0];
@@ -3718,7 +3718,7 @@ LABEL_36:
 LABEL_33:
   if (v83)
   {
-    v53 = [val headerBlocks];
+    headerBlocks = [val headerBlocks];
     v99[0] = _NSConcreteStackBlock;
     v99[1] = 3221225472;
     v99[2] = sub_100067148;
@@ -3726,34 +3726,34 @@ LABEL_33:
     v99[4] = self;
     v54 = v41;
     v100 = v54;
-    v55 = [v53 ef_filter:v99];
+    v55 = [headerBlocks ef_filter:v99];
 
     v56 = [v55 arrayByAddingObjectsFromArray:v54];
     [val setHeaderBlocks:v56];
   }
 
 LABEL_38:
-  [v9 setConfiguredForSingleMessageDisplay:v11];
-  [v16 setAutomaticallyCollapseQuotedContent:v81 reloadIfNeeded:v28];
-  [v16 setContentRequest:v88];
-  v57 = [(ConversationViewController *)self predictedMailboxForConversation];
-  v58 = v57 == 0;
+  [cellCopy setConfiguredForSingleMessageDisplay:_isDisplayingSingleMessage];
+  [messageViewController2 setAutomaticallyCollapseQuotedContent:contentCopy reloadIfNeeded:v28];
+  [messageViewController2 setContentRequest:messageContentRequest];
+  predictedMailboxForConversation = [(ConversationViewController *)self predictedMailboxForConversation];
+  v58 = predictedMailboxForConversation == 0;
 
   if (v58)
   {
     [(ConversationViewController *)self _updatePredictedMailboxForConversation];
   }
 
-  v59 = [v9 predictedMailbox];
-  v60 = v59 == 0;
+  predictedMailbox = [cellCopy predictedMailbox];
+  v60 = predictedMailbox == 0;
 
   if (v60)
   {
-    [(ConversationViewController *)self configurePredictedMailboxForCell:v9 forMessage:v90];
+    [(ConversationViewController *)self configurePredictedMailboxForCell:cellCopy forMessage:message];
   }
 
-  v61 = [v90 itemID];
-  [(ConversationViewController *)self _updateStickySubjectForItemID:v61 cell:v9 indexPath:v89];
+  itemID3 = [message itemID];
+  [(ConversationViewController *)self _updateStickySubjectForItemID:itemID3 cell:cellCopy indexPath:pathCopy];
 
   objc_destroyWeak(&v108);
   objc_destroyWeak(&v107);
@@ -3766,42 +3766,42 @@ LABEL_43:
   v62 = +[ConversationViewController log];
   if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
   {
-    v63 = [v91 headerView];
-    v64 = [v63 headerBlocks];
-    v65 = [v86 messageContentRequest];
-    v66 = [v65 itemID];
+    headerView = [messageContentView headerView];
+    headerBlocks2 = [headerView headerBlocks];
+    messageContentRequest4 = [modelCopy messageContentRequest];
+    itemID4 = [messageContentRequest4 itemID];
     *buf = 138544130;
-    *v113 = v64;
+    *v113 = headerBlocks2;
     *&v113[8] = 2112;
-    v114 = v89;
+    v114 = pathCopy;
     *v115 = 2114;
-    *&v115[2] = v66;
+    *&v115[2] = itemID4;
     v116 = 2048;
-    v117 = v91;
+    v117 = messageContentView;
     _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "Header blocks %{public}@ for expanded cell at indexPath: %@ with itemID: %{public}@, contentView:%p", buf, 0x2Au);
   }
 
   if (![(ConversationViewControllerBase *)self didCompleteFirstPaint])
   {
-    -[ConversationViewControllerBase setDidCompleteFirstPaint:](self, "setDidCompleteFirstPaint:", [v16 didCompleteFirstPaint]);
+    -[ConversationViewControllerBase setDidCompleteFirstPaint:](self, "setDidCompleteFirstPaint:", [messageViewController2 didCompleteFirstPaint]);
   }
 
-  v67 = [(ConversationViewControllerBase *)self allowQuickReply];
-  v68 = v90;
+  allowQuickReply = [(ConversationViewControllerBase *)self allowQuickReply];
+  v68 = message;
   v69 = _os_feature_enabled_impl();
-  if ((v67 & [(ConversationViewController *)self _isQuickReplyMessageAtIndexPath:v89]) == 1)
+  if ((allowQuickReply & [(ConversationViewController *)self _isQuickReplyMessageAtIndexPath:pathCopy]) == 1)
   {
-    v70 = [(ConversationViewControllerBase *)self quickReplyAnimationContext];
-    v71 = [v70 getObject];
+    quickReplyAnimationContext = [(ConversationViewControllerBase *)self quickReplyAnimationContext];
+    getObject = [quickReplyAnimationContext getObject];
 
-    if ((*(EFIsNull + 16))(EFIsNull, v71))
+    if ((*(EFIsNull + 16))(EFIsNull, getObject))
     {
       v72 = 0;
     }
 
     else
     {
-      v72 = v71;
+      v72 = getObject;
     }
 
     v73 = v72;
@@ -3817,61 +3817,61 @@ LABEL_43:
       }
     }
 
-    [v9 prepareForQuickReplyAnimationWithContext:v73];
-    v76 = [(ConversationViewController *)self _quickReplyView];
-    [v76 setHidden:1];
+    [cellCopy prepareForQuickReplyAnimationWithContext:v73];
+    _quickReplyView = [(ConversationViewController *)self _quickReplyView];
+    [_quickReplyView setHidden:1];
 
     +[_TtC10MobileMail14QuickReplyView defaultHeight];
     [(ConversationViewControllerBase *)self setQuickReplyHeight:?];
 
-    v68 = v90;
+    v68 = message;
   }
 
   if ([(ConversationViewControllerBase *)self beingPreviewed])
   {
-    [v91 setShowMessageFooter:0];
+    [messageContentView setShowMessageFooter:0];
   }
 
-  v77 = [v91 footerView];
-  [v77 setIsSemiExpanded:v87 == 2];
+  footerView = [messageContentView footerView];
+  [footerView setIsSemiExpanded:v87 == 2];
   if (v69)
   {
-    [v77 setUndoSendButtonHidden:{-[ConversationViewController _isMessageInOutbox:](self, "_isMessageInOutbox:", v68) ^ 1}];
+    [footerView setUndoSendButtonHidden:{-[ConversationViewController _isMessageInOutbox:](self, "_isMessageInOutbox:", v68) ^ 1}];
   }
 
   else
   {
-    v78 = [v9 itemID];
+    itemID5 = [cellCopy itemID];
     objc_initWeak(&location, self);
-    v79 = [(ConversationViewController *)self messageLoadingScheduler];
+    messageLoadingScheduler = [(ConversationViewController *)self messageLoadingScheduler];
     v92[0] = _NSConcreteStackBlock;
     v92[1] = 3221225472;
     v92[2] = sub_1000671F4;
     v92[3] = &unk_10064D3F0;
-    v93 = v90;
+    v93 = message;
     objc_copyWeak(&v98, &location);
-    v94 = v9;
-    v80 = v78;
+    v94 = cellCopy;
+    v80 = itemID5;
     v95 = v80;
-    v96 = v77;
-    v97 = v89;
-    [v79 performBlock:v92];
+    v96 = footerView;
+    v97 = pathCopy;
+    [messageLoadingScheduler performBlock:v92];
 
     objc_destroyWeak(&v98);
     objc_destroyWeak(&location);
   }
 }
 
-- (id)_bannerBlockToInsertForHeaderView:(id)a3 message:(id)a4
+- (id)_bannerBlockToInsertForHeaderView:(id)view message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ConversationViewController *)self collectionViewDataSource];
-  v9 = [v7 itemID];
-  v10 = [v8 indexPathForItemIdentifier:v9];
+  viewCopy = view;
+  messageCopy = message;
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  itemID = [messageCopy itemID];
+  v10 = [collectionViewDataSource indexPathForItemIdentifier:itemID];
 
-  v11 = sub_100066B90(self, v7, v10);
-  if (-[ConversationViewController _headerView:hasBannerType:](self, "_headerView:hasBannerType:", v6, [v11 type]))
+  v11 = sub_100066B90(self, messageCopy, v10);
+  if (-[ConversationViewController _headerView:hasBannerType:](self, "_headerView:hasBannerType:", viewCopy, [v11 type]))
   {
     v12 = 0;
   }
@@ -3884,48 +3884,48 @@ LABEL_43:
   return v12;
 }
 
-- (BOOL)_bannerView:(id)a3 hasBannerType:(int64_t)a4
+- (BOOL)_bannerView:(id)view hasBannerType:(int64_t)type
 {
-  v5 = a3;
-  v6 = (objc_opt_respondsToSelector() & 1) != 0 && [v5 type] == a4;
+  viewCopy = view;
+  v6 = (objc_opt_respondsToSelector() & 1) != 0 && [viewCopy type] == type;
 
   return v6;
 }
 
-- (BOOL)_headerView:(id)a3 hasBannerType:(int64_t)a4
+- (BOOL)_headerView:(id)view hasBannerType:(int64_t)type
 {
-  v6 = [a3 headerBlocks];
+  headerBlocks = [view headerBlocks];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100067678;
   v9[3] = &unk_10064D418;
   v9[4] = self;
-  v9[5] = a4;
-  v7 = [v6 ef_firstObjectPassingTest:v9];
-  LOBYTE(a4) = v7 != 0;
+  v9[5] = type;
+  v7 = [headerBlocks ef_firstObjectPassingTest:v9];
+  LOBYTE(type) = v7 != 0;
 
-  return a4;
+  return type;
 }
 
-- (BOOL)_shouldRemoveBannerBlock:(id)a3 forHeaderViewModel:(id)a4
+- (BOOL)_shouldRemoveBannerBlock:(id)block forHeaderViewModel:(id)model
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 type];
-  if (!v8)
+  blockCopy = block;
+  modelCopy = model;
+  type = [blockCopy type];
+  if (!type)
   {
-    v9 = [v7 sendLaterDate];
-    LOBYTE(self) = v9 == 0;
+    sendLaterDate = [modelCopy sendLaterDate];
+    LOBYTE(self) = sendLaterDate == 0;
     goto LABEL_11;
   }
 
-  if (v8 == 1)
+  if (type == 1)
   {
-    v9 = [v7 readLaterDate];
-    if (v9)
+    sendLaterDate = [modelCopy readLaterDate];
+    if (sendLaterDate)
     {
-      v10 = [(ConversationViewControllerBase *)self delegate];
-      LODWORD(self) = [v10 conversationViewControllerAllowsRemindMeAction:self] ^ 1;
+      delegate = [(ConversationViewControllerBase *)self delegate];
+      LODWORD(self) = [delegate conversationViewControllerAllowsRemindMeAction:self] ^ 1;
 
       goto LABEL_11;
     }
@@ -3935,10 +3935,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v8 == 2)
+  if (type == 2)
   {
-    v9 = [v7 followUp];
-    if (v9)
+    sendLaterDate = [modelCopy followUp];
+    if (sendLaterDate)
     {
       LOBYTE(self) = [(ConversationViewController *)self shouldHideFollowUp];
 LABEL_11:
@@ -3955,140 +3955,140 @@ LABEL_12:
   return self;
 }
 
-- (void)configurePredictedMailboxForCell:(id)a3 forMessage:(id)a4
+- (void)configurePredictedMailboxForCell:(id)cell forMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  messageCopy = message;
   v8 = +[EFPromise promise];
-  v9 = [v8 future];
-  [v6 setPredictedMailbox:v9];
+  future = [v8 future];
+  [cellCopy setPredictedMailbox:future];
 
-  v10 = [(ConversationViewController *)self mailboxPredictionScheduler];
+  mailboxPredictionScheduler = [(ConversationViewController *)self mailboxPredictionScheduler];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100067908;
   v13[3] = &unk_10064C660;
   v11 = v8;
   v14 = v11;
-  v12 = v7;
+  v12 = messageCopy;
   v15 = v12;
-  [v10 performBlock:v13];
+  [mailboxPredictionScheduler performBlock:v13];
 }
 
-- (void)_configureCollapsedCell:(id)a3 atIndexPath:(id)a4 viewModel:(id)a5
+- (void)_configureCollapsedCell:(id)cell atIndexPath:(id)path viewModel:(id)model
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ConversationViewController *)self blankConversationTailspinToken];
-  [v11 cancel];
+  cellCopy = cell;
+  pathCopy = path;
+  modelCopy = model;
+  blankConversationTailspinToken = [(ConversationViewController *)self blankConversationTailspinToken];
+  [blankConversationTailspinToken cancel];
 
   v12 = +[ConversationViewController log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 messageContentRequest];
-    v14 = [v13 itemID];
+    messageContentRequest = [modelCopy messageContentRequest];
+    itemID = [messageContentRequest itemID];
     v15 = 138412546;
-    v16 = v9;
+    v16 = pathCopy;
     v17 = 2114;
-    v18 = v14;
+    v18 = itemID;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Configuring collapsed cell at indexPath: %@ with itemID: %{public}@", &v15, 0x16u);
   }
 
   if (sub_1004852F8(self))
   {
-    [v8 addConversationSearchOverlay];
+    [cellCopy addConversationSearchOverlay];
   }
 }
 
-- (void)_configureGeneratedSummaryCell:(id)a3 atIndexPath:(id)a4 viewModel:(id)a5
+- (void)_configureGeneratedSummaryCell:(id)cell atIndexPath:(id)path viewModel:(id)model
 {
-  v8 = a3;
-  v6 = [(ConversationViewController *)self summaryCellPromiseForAppIntent];
+  cellCopy = cell;
+  summaryCellPromiseForAppIntent = [(ConversationViewController *)self summaryCellPromiseForAppIntent];
 
-  if (v6)
+  if (summaryCellPromiseForAppIntent)
   {
-    v7 = [(ConversationViewController *)self summaryCellPromiseForAppIntent];
-    [v7 finishWithResult:v8];
+    summaryCellPromiseForAppIntent2 = [(ConversationViewController *)self summaryCellPromiseForAppIntent];
+    [summaryCellPromiseForAppIntent2 finishWithResult:cellCopy];
   }
 }
 
 - (id)_currentlyVisibleIndexPath
 {
-  v3 = [(ConversationViewController *)self collectionViewDataSource];
-  v4 = [(ConversationViewController *)self _focusedMessageItemID];
-  v5 = [v3 indexPathForItemIdentifier:v4];
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  _focusedMessageItemID = [(ConversationViewController *)self _focusedMessageItemID];
+  v5 = [collectionViewDataSource indexPathForItemIdentifier:_focusedMessageItemID];
 
   return v5;
 }
 
 - (id)_indexPathForReferenceMessage
 {
-  v3 = [(ConversationViewController *)self collectionViewDataSource];
-  v4 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v5 = [v4 displayMessageItemID];
-  v6 = [v3 indexPathForItemIdentifier:v5];
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  displayMessageItemID = [referenceMessageListItem displayMessageItemID];
+  v6 = [collectionViewDataSource indexPathForItemIdentifier:displayMessageItemID];
 
   return v6;
 }
 
-- (id)_indexPathOfMessageViewControllerMessage:(id)a3
+- (id)_indexPathOfMessageViewControllerMessage:(id)message
 {
-  v4 = [a3 contentRequest];
-  v5 = [v4 message];
+  contentRequest = [message contentRequest];
+  message = [contentRequest message];
 
-  v6 = [(ConversationViewController *)self collectionViewDataSource];
-  v7 = [v5 itemID];
-  v8 = [v6 indexPathForItemIdentifier:v7];
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  itemID = [message itemID];
+  v8 = [collectionViewDataSource indexPathForItemIdentifier:itemID];
 
   return v8;
 }
 
-- (id)_visibleIndexPathForMessageViewController:(id)a3
+- (id)_visibleIndexPathForMessageViewController:(id)controller
 {
-  v3 = [(ConversationViewController *)self _indexPathOfMessageViewControllerMessage:a3];
+  v3 = [(ConversationViewController *)self _indexPathOfMessageViewControllerMessage:controller];
 
   return v3;
 }
 
-- (id)_targetMessageOrItemIDForBarButtonTriage:(BOOL)a3
+- (id)_targetMessageOrItemIDForBarButtonTriage:(BOOL)triage
 {
-  v3 = a3;
-  v5 = [(ConversationViewController *)self collectionViewDataSource];
-  v6 = [v5 snapshot];
+  triageCopy = triage;
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  snapshot = [collectionViewDataSource snapshot];
 
-  v7 = [(ConversationViewController *)self _messageItemIDsFromSnapshot:v6];
+  v7 = [(ConversationViewController *)self _messageItemIDsFromSnapshot:snapshot];
   if (![v7 count])
   {
     v17 = 0;
     goto LABEL_22;
   }
 
-  v8 = [(ConversationViewController *)self _isDisplayingSingleMessage];
+  _isDisplayingSingleMessage = [(ConversationViewController *)self _isDisplayingSingleMessage];
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
   v36 = sub_10005F674;
   v37 = sub_10005F684;
   v38 = 0;
-  v9 = [(ConversationViewControllerBase *)self cellConfigurator];
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1000682A0;
   v27[3] = &unk_10064D4C0;
-  v31 = v8;
-  v32 = v3;
+  v31 = _isDisplayingSingleMessage;
+  v32 = triageCopy;
   v28 = &stru_10064D458;
   v29 = &stru_10064D498;
   v30 = &v33;
-  [v9 enumerateExpandedCellsWithBlock:v27];
+  [cellConfigurator enumerateExpandedCellsWithBlock:v27];
 
   v10 = v34[5];
   if (!v10)
   {
-    v11 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v12 = [v11 displayMessageItemID];
-    v13 = [v7 indexOfObject:v12];
+    referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    displayMessageItemID = [referenceMessageListItem displayMessageItemID];
+    v13 = [v7 indexOfObject:displayMessageItemID];
 
     if (v13 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -4098,8 +4098,8 @@ LABEL_12:
         sub_1004845B4();
       }
 
-      v15 = [(ConversationViewController *)self _referenceDisplayMessage];
-      v16 = [EFPair pairWithFirst:0 second:v15];
+      _referenceDisplayMessage = [(ConversationViewController *)self _referenceDisplayMessage];
+      v16 = [EFPair pairWithFirst:0 second:_referenceDisplayMessage];
     }
 
     else
@@ -4133,13 +4133,13 @@ LABEL_12:
         }
       }
 
-      v15 = [v7 objectAtIndexedSubscript:v19];
-      if (v3)
+      _referenceDisplayMessage = [v7 objectAtIndexedSubscript:v19];
+      if (triageCopy)
       {
-        v21 = [(ConversationViewController *)self messageForItemID:v15];
-        v22 = [v21 displayMessage];
-        v23 = [v22 result];
-        v24 = [EFPair pairWithFirst:0 second:v23];
+        v21 = [(ConversationViewController *)self messageForItemID:_referenceDisplayMessage];
+        displayMessage = [v21 displayMessage];
+        result = [displayMessage result];
+        v24 = [EFPair pairWithFirst:0 second:result];
         v25 = v34[5];
         v34[5] = v24;
 
@@ -4148,7 +4148,7 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v16 = [EFPair pairWithFirst:v15 second:0];
+      v16 = [EFPair pairWithFirst:_referenceDisplayMessage second:0];
     }
 
     v21 = v34[5];
@@ -4168,24 +4168,24 @@ LABEL_22:
 - (id)targetMessageItemIDForBarButtonTriage
 {
   v2 = [(ConversationViewController *)self _targetMessageOrItemIDForBarButtonTriage:0];
-  v3 = [v2 first];
+  first = [v2 first];
 
-  return v3;
+  return first;
 }
 
 - (id)targetMessageForBarButtonTriage
 {
   v2 = [(ConversationViewController *)self _targetMessageOrItemIDForBarButtonTriage:1];
-  v3 = [v2 second];
+  second = [v2 second];
 
-  return v3;
+  return second;
 }
 
-- (void)_updateHandoffWithMessageAtIndexPath:(id)a3
+- (void)_updateHandoffWithMessageAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self collectionViewDataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  v6 = [collectionViewDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -4198,15 +4198,15 @@ LABEL_22:
 
 LABEL_7:
     v12 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:v9];
-    v13 = [(ConversationViewControllerBase *)self handoffCoordinator];
-    [v13 setHandoffMessageRequest:v12];
+    handoffCoordinator = [(ConversationViewControllerBase *)self handoffCoordinator];
+    [handoffCoordinator setHandoffMessageRequest:v12];
 
     goto LABEL_8;
   }
 
-  v7 = [(ConversationViewController *)self collectionViewDataSource];
-  v8 = [v4 mui_nextIndexPath];
-  v9 = [v7 itemIdentifierForIndexPath:v8];
+  collectionViewDataSource2 = [(ConversationViewController *)self collectionViewDataSource];
+  mui_nextIndexPath = [pathCopy mui_nextIndexPath];
+  v9 = [collectionViewDataSource2 itemIdentifierForIndexPath:mui_nextIndexPath];
 
   if (v9)
   {
@@ -4214,8 +4214,8 @@ LABEL_7:
   }
 
 LABEL_3:
-  v10 = [(ConversationViewControllerBase *)self handoffCoordinator];
-  [v10 setHandoffMessageRequest:0];
+  handoffCoordinator2 = [(ConversationViewControllerBase *)self handoffCoordinator];
+  [handoffCoordinator2 setHandoffMessageRequest:0];
 
   v11 = +[ConversationViewController log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -4228,15 +4228,15 @@ LABEL_8:
 
 - (BOOL)_shouldReloadEmptyMessageList
 {
-  v3 = [(ConversationViewController *)self messageList];
-  v4 = [v3 allItemIDs];
-  v5 = [v4 resultIfAvailable];
+  messageList = [(ConversationViewController *)self messageList];
+  allItemIDs = [messageList allItemIDs];
+  resultIfAvailable = [allItemIDs resultIfAvailable];
 
-  v6 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
   v7 = 0;
-  if ([v6 count] && v5)
+  if ([referenceMessageListItem count] && resultIfAvailable)
   {
-    v7 = [v5 count] == 0;
+    v7 = [resultIfAvailable count] == 0;
   }
 
   return v7;
@@ -4259,33 +4259,33 @@ LABEL_8:
   }
 }
 
-- (id)_persistentIDForEMMessageObjectID:(id)a3
+- (id)_persistentIDForEMMessageObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self messageRepository];
-  v6 = [v5 persistentIDForMessageObjectID:v4];
+  dCopy = d;
+  messageRepository = [(ConversationViewController *)self messageRepository];
+  v6 = [messageRepository persistentIDForMessageObjectID:dCopy];
 
   return v6;
 }
 
-- (BOOL)_isMessageInOutbox:(id)a3
+- (BOOL)_isMessageInOutbox:(id)outbox
 {
-  v3 = a3;
-  v4 = [v3 mailboxes];
-  v5 = [v4 ef_any:&stru_10064D500];
+  outboxCopy = outbox;
+  mailboxes = [outboxCopy mailboxes];
+  v5 = [mailboxes ef_any:&stru_10064D500];
 
-  v6 = [v3 mailboxes];
-  v7 = [v6 ef_any:&stru_10064D520];
+  mailboxes2 = [outboxCopy mailboxes];
+  v7 = [mailboxes2 ef_any:&stru_10064D520];
 
   return v5 & (v7 ^ 1);
 }
 
 - (BOOL)isMessageListUnfiltered
 {
-  v3 = [(ConversationViewController *)self messageList];
-  v4 = [(ConversationViewController *)self messageList];
-  v5 = [v4 unfilteredMessageList];
-  v6 = v3 == v5;
+  messageList = [(ConversationViewController *)self messageList];
+  messageList2 = [(ConversationViewController *)self messageList];
+  unfilteredMessageList = [messageList2 unfilteredMessageList];
+  v6 = messageList == unfilteredMessageList;
 
   return v6;
 }
@@ -4315,24 +4315,24 @@ LABEL_8:
   return v6;
 }
 
-- (void)setPinnedItem:(id)a3
+- (void)setPinnedItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = ConversationViewController;
-  [(ConversationViewControllerBase *)&v8 setPinnedItem:v4];
-  if (v4)
+  [(ConversationViewControllerBase *)&v8 setPinnedItem:itemCopy];
+  if (itemCopy)
   {
-    v5 = [v4 itemID];
-    v6 = [(ConversationViewController *)self _priorityLoadingComparatorForPinnedItemID:v5];
-    v7 = [(ConversationViewController *)self contentRequestQueue];
-    [v7 setComparator:v6];
+    itemID = [itemCopy itemID];
+    v6 = [(ConversationViewController *)self _priorityLoadingComparatorForPinnedItemID:itemID];
+    contentRequestQueue = [(ConversationViewController *)self contentRequestQueue];
+    [contentRequestQueue setComparator:v6];
   }
 }
 
 - (void)pinCurrentItem
 {
-  v13 = [(ConversationViewControllerBase *)self displayMetrics];
+  displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
   [MFCollapsedMessageCell defaultHeightWithDisplayMetrics:?];
   v4 = v3;
 
@@ -4346,55 +4346,55 @@ LABEL_8:
     v5 = 4;
   }
 
-  v6 = [(ConversationViewControllerBase *)self collectionView];
-  v14 = [v6 mf_mostVisibleCellNearestEdge:v5 preferredMinimumHeight:v4];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  v14 = [collectionView mf_mostVisibleCellNearestEdge:v5 preferredMinimumHeight:v4];
 
   if (v14)
   {
-    v7 = [v14 itemID];
+    itemID = [v14 itemID];
 
-    if (v7)
+    if (itemID)
     {
-      v8 = [(ConversationViewControllerBase *)self collectionView];
-      v9 = [v8 mf_dynamicOffsetForVisibleCell:v14];
+      collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+      v9 = [collectionView2 mf_dynamicOffsetForVisibleCell:v14];
 
-      v10 = [v14 itemID];
-      v11 = [(ConversationViewController *)self pinnedIndexPathProvider];
-      v12 = [PinnedConversationItem pinnedItemWithID:v10 dynamicOffset:v9 indexPathProvider:v11];
+      itemID2 = [v14 itemID];
+      pinnedIndexPathProvider = [(ConversationViewController *)self pinnedIndexPathProvider];
+      v12 = [PinnedConversationItem pinnedItemWithID:itemID2 dynamicOffset:v9 indexPathProvider:pinnedIndexPathProvider];
 
       [(ConversationViewController *)self setPinnedItem:v12];
     }
   }
 }
 
-- (void)pinItemAtIndexPath:(id)a3 dynamicOffset:(id)a4
+- (void)pinItemAtIndexPath:(id)path dynamicOffset:(id)offset
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(ConversationViewController *)self collectionViewDataSource];
-  v8 = [v7 itemIdentifierForIndexPath:v11];
+  pathCopy = path;
+  offsetCopy = offset;
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  v8 = [collectionViewDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v9 = [(ConversationViewController *)self pinnedIndexPathProvider];
-  v10 = [PinnedConversationItem pinnedItemWithID:v8 dynamicOffset:v6 indexPathProvider:v9];
+  pinnedIndexPathProvider = [(ConversationViewController *)self pinnedIndexPathProvider];
+  v10 = [PinnedConversationItem pinnedItemWithID:v8 dynamicOffset:offsetCopy indexPathProvider:pinnedIndexPathProvider];
   [(ConversationViewController *)self setPinnedItem:v10];
 }
 
 - (id)_referenceMessageListMailboxScope
 {
-  v3 = [(ConversationViewController *)self referenceMessageListQuery];
-  v4 = [v3 predicate];
-  v5 = [(ConversationViewController *)self messageRepository];
-  v6 = [v5 mailboxRepository];
-  v7 = [EMMessageListItemPredicates mailboxScopeForPredicate:v4 withMailboxTypeResolver:v6];
+  referenceMessageListQuery = [(ConversationViewController *)self referenceMessageListQuery];
+  predicate = [referenceMessageListQuery predicate];
+  messageRepository = [(ConversationViewController *)self messageRepository];
+  mailboxRepository = [messageRepository mailboxRepository];
+  v7 = [EMMessageListItemPredicates mailboxScopeForPredicate:predicate withMailboxTypeResolver:mailboxRepository];
 
   return v7;
 }
 
-- (int64_t)_dataOwnerForDragSessionAtIndexPath:(id)a3
+- (int64_t)_dataOwnerForDragSessionAtIndexPath:(id)path
 {
-  v4 = [(ConversationViewController *)self _messageAtIndexPath:a3];
-  v5 = [(ConversationViewController *)self _referenceMessageListMailboxScope];
-  if ([v4 isInManagedAccountWithSourceMailboxScope:v5])
+  v4 = [(ConversationViewController *)self _messageAtIndexPath:path];
+  _referenceMessageListMailboxScope = [(ConversationViewController *)self _referenceMessageListMailboxScope];
+  if ([v4 isInManagedAccountWithSourceMailboxScope:_referenceMessageListMailboxScope])
   {
     v6 = 2;
   }
@@ -4407,27 +4407,27 @@ LABEL_8:
   return v6;
 }
 
-- (id)_dragItemsForItemAtIndexPath:(id)a3
+- (id)_dragItemsForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[ConversationViewController log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v19 = [v4 row];
+    v19 = [pathCopy row];
     v20 = 2048;
-    v21 = [v4 section];
+    section = [pathCopy section];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#DragAndDrop Conversation view drag source items requested for indexPath {%ld, %ld}", buf, 0x16u);
   }
 
-  v6 = [(ConversationViewController *)self _messageAtIndexPath:v4];
+  v6 = [(ConversationViewController *)self _messageAtIndexPath:pathCopy];
   if (!v6)
   {
-    v10 = +[ConversationViewController log];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    dragItem = +[ConversationViewController log];
+    if (os_log_type_enabled(dragItem, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "#DragAndDrop No items found for indexPath", buf, 2u);
+      _os_log_impl(&_mh_execute_header, dragItem, OS_LOG_TYPE_INFO, "#DragAndDrop No items found for indexPath", buf, 2u);
     }
 
     v14 = 0;
@@ -4441,19 +4441,19 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "#DragAndDrop Will begin dragging message", buf, 2u);
   }
 
-  v8 = [(ConversationViewController *)self messageList];
-  v9 = [MessageListItemDragContext withItem:v6 messageList:v8];
+  messageList = [(ConversationViewController *)self messageList];
+  v9 = [MessageListItemDragContext withItem:v6 messageList:messageList];
 
-  v10 = [v9 dragItem];
+  dragItem = [v9 dragItem];
   v17 = v6;
   v11 = [NSArray arrayWithObjects:&v17 count:1];
-  v12 = [(ConversationViewController *)self undoManager];
-  v13 = [(MFTriageInteraction *)MFMoveMessageTriageInteraction interactionWithMessageListItems:v11 undoManager:v12 origin:3 actor:2];
+  undoManager = [(ConversationViewController *)self undoManager];
+  v13 = [(MFTriageInteraction *)MFMoveMessageTriageInteraction interactionWithMessageListItems:v11 undoManager:undoManager origin:3 actor:2];
 
-  [v10 setLocalObject:v13];
-  if (v10)
+  [dragItem setLocalObject:v13];
+  if (dragItem)
   {
-    v16 = v10;
+    v16 = dragItem;
     v14 = [NSArray arrayWithObjects:&v16 count:1];
 LABEL_11:
 
@@ -4466,31 +4466,31 @@ LABEL_13:
   return v14;
 }
 
-- (id)_messageContentViewForMessageItemID:(id)a3
+- (id)_messageContentViewForMessageItemID:(id)d
 {
-  v3 = [(ConversationViewController *)self _cellForMessageItemIDIfExpanded:a3];
+  v3 = [(ConversationViewController *)self _cellForMessageItemIDIfExpanded:d];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v3 expanded])
   {
-    v4 = [v3 messageViewController];
-    v5 = [v4 messageContentView];
+    messageViewController = [v3 messageViewController];
+    messageContentView = [messageViewController messageContentView];
   }
 
   else
   {
-    v5 = 0;
+    messageContentView = 0;
   }
 
-  return v5;
+  return messageContentView;
 }
 
-- (id)_getCurrentlySelectedMessageContentForMessageItemID:(id)a3
+- (id)_getCurrentlySelectedMessageContentForMessageItemID:(id)d
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self _messageContentViewForMessageItemID:v4];
-  v6 = [v5 selectedHTML];
-  if ([v6 length])
+  dCopy = d;
+  v5 = [(ConversationViewController *)self _messageContentViewForMessageItemID:dCopy];
+  selectedHTML = [v5 selectedHTML];
+  if ([selectedHTML length])
   {
-    v9 = v6;
+    v9 = selectedHTML;
     v7 = [NSArray arrayWithObjects:&v9 count:1];
   }
 
@@ -4502,39 +4502,39 @@ LABEL_13:
   return v7;
 }
 
-- (void)_clearSelectedMessageContentForMessageItemID:(id)a3
+- (void)_clearSelectedMessageContentForMessageItemID:(id)d
 {
-  v3 = [(ConversationViewController *)self _messageContentViewForMessageItemID:a3];
+  v3 = [(ConversationViewController *)self _messageContentViewForMessageItemID:d];
   [v3 clearSelectedHTML];
 }
 
-- (void)_allMessageIDsWithCompletion:(id)a3
+- (void)_allMessageIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self messageList];
-  v6 = [v5 allItemIDs];
+  completionCopy = completion;
+  messageList = [(ConversationViewController *)self messageList];
+  allItemIDs = [messageList allItemIDs];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000697D4;
   v8[3] = &unk_10064D298;
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
-  [v6 addSuccessBlock:v8];
-  [v6 addFailureBlock:&stru_10064D5C8];
+  [allItemIDs addSuccessBlock:v8];
+  [allItemIDs addFailureBlock:&stru_10064D5C8];
 }
 
 - (id)_allMessages
 {
   v3 = [(ConversationViewController *)self _conversationViewQueryIncludeRelated:0];
   v4 = +[EFPromise promise];
-  v5 = [(ConversationViewController *)self messageRepository];
-  v6 = [(ConversationViewController *)self countOfMessages];
-  v7 = [v4 completionHandlerAdapter];
-  [v5 performQuery:v3 limit:v6 completionHandler:v7];
+  messageRepository = [(ConversationViewController *)self messageRepository];
+  countOfMessages = [(ConversationViewController *)self countOfMessages];
+  completionHandlerAdapter = [v4 completionHandlerAdapter];
+  [messageRepository performQuery:v3 limit:countOfMessages completionHandler:completionHandlerAdapter];
 
-  v8 = [v4 future];
-  v9 = [v8 result:0];
+  future = [v4 future];
+  v9 = [future result:0];
 
   if (v9)
   {
@@ -4553,37 +4553,37 @@ LABEL_13:
 
 - (id)_messageListItemsForBarButtonTriage
 {
-  v3 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
 
-  if (v3)
+  if (referenceMessageListItem)
   {
-    v4 = [(ConversationViewControllerBase *)self delegate];
+    delegate = [(ConversationViewControllerBase *)self delegate];
     if ([(ConversationViewControllerBase *)self shownAsConversation])
     {
       if ([(ConversationViewControllerBase *)self shownAsConversation]&& ([(ConversationViewControllerBase *)self referenceMessageListItem], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v6 = objc_opt_isKindOfClass(), v5, (v6 & 1) != 0))
       {
-        v7 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-        v18 = v7;
+        referenceMessageListItem2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+        v18 = referenceMessageListItem2;
         v8 = [NSArray arrayWithObjects:&v18 count:1];
       }
 
       else
       {
-        v11 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+        referenceMessageListItem3 = [(ConversationViewControllerBase *)self referenceMessageListItem];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v13 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-          v17 = v13;
+          referenceMessageListItem4 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+          v17 = referenceMessageListItem4;
           v8 = [NSArray arrayWithObjects:&v17 count:1];
         }
 
         else if (objc_opt_respondsToSelector())
         {
-          v16 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-          v8 = [v4 conversationViewController:self messagesToActOnForReferenceMessage:v16];
+          referenceMessageListItem5 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+          v8 = [delegate conversationViewController:self messagesToActOnForReferenceMessage:referenceMessageListItem5];
         }
 
         else
@@ -4595,11 +4595,11 @@ LABEL_13:
 
     else
     {
-      v9 = [(ConversationViewController *)self _referenceDisplayMessage];
-      v10 = v9;
-      if (v9)
+      _referenceDisplayMessage = [(ConversationViewController *)self _referenceDisplayMessage];
+      v10 = _referenceDisplayMessage;
+      if (_referenceDisplayMessage)
       {
-        v19 = v9;
+        v19 = _referenceDisplayMessage;
         v8 = [NSArray arrayWithObjects:&v19 count:1];
       }
 
@@ -4611,9 +4611,9 @@ LABEL_13:
 
     if (![v8 count])
     {
-      v14 = [(ConversationViewController *)self _allMessages];
+      _allMessages = [(ConversationViewController *)self _allMessages];
 
-      v8 = v14;
+      v8 = _allMessages;
     }
   }
 
@@ -4627,10 +4627,10 @@ LABEL_13:
 
 - (int64_t)_messageListItemCount
 {
-  v3 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v4 = [v3 displayMessageItemID];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  displayMessageItemID = [referenceMessageListItem displayMessageItemID];
 
-  if (!v4)
+  if (!displayMessageItemID)
   {
     return 0;
   }
@@ -4640,25 +4640,25 @@ LABEL_13:
     return 1;
   }
 
-  v5 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v6 = [v5 count];
+  referenceMessageListItem2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  v6 = [referenceMessageListItem2 count];
 
   return v6;
 }
 
 - (id)_referenceDisplayMessage
 {
-  v4 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
   if ([(ConversationViewControllerBase *)self shownAsConversation]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v8 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v9 = [v8 displayMessageItemID];
+    referenceMessageListItem2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    displayMessageItemID = [referenceMessageListItem2 displayMessageItemID];
 
-    v10 = [(ConversationViewController *)self contentRequestCache];
-    v11 = [v10 objectForKey:v9];
+    contentRequestCache = [(ConversationViewController *)self contentRequestCache];
+    v11 = [contentRequestCache objectForKey:displayMessageItemID];
 
-    v7 = [v11 message];
-    if (!v7)
+    message = [v11 message];
+    if (!message)
     {
       v12 = +[ConversationViewController log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -4672,38 +4672,38 @@ LABEL_13:
 
   else
   {
-    v5 = [v4 displayMessageItemID];
-    v6 = [v4 itemID];
+    displayMessageItemID2 = [referenceMessageListItem displayMessageItemID];
+    itemID = [referenceMessageListItem itemID];
 
-    if (v5 != v6)
+    if (displayMessageItemID2 != itemID)
     {
       v14 = +[NSAssertionHandler currentHandler];
       [v14 handleFailureInMethod:a2 object:self file:@"ConversationViewController.m" lineNumber:2862 description:@"When threading is off displayMessageItemID should always equal itemID"];
     }
 
-    v7 = v4;
+    message = referenceMessageListItem;
   }
 
-  return v7;
+  return message;
 }
 
-- (id)_messagesForTriageInteraction:(id)a3
+- (id)_messagesForTriageInteraction:(id)interaction
 {
-  v4 = [a3 messageListItemSelection];
-  v5 = [v4 messageListItems];
+  messageListItemSelection = [interaction messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
 
-  v6 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  if ([v6 count] == 1 && objc_msgSend(v5, "count") == 1)
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  if ([referenceMessageListItem count] == 1 && objc_msgSend(messageListItems, "count") == 1)
   {
-    v7 = [v5 firstObject];
-    v8 = [v7 conversationID];
-    v9 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v10 = [v9 conversationID];
+    firstObject = [messageListItems firstObject];
+    conversationID = [firstObject conversationID];
+    referenceMessageListItem2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    conversationID2 = [referenceMessageListItem2 conversationID];
 
-    if (v8 == v10)
+    if (conversationID == conversationID2)
     {
-      v11 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-      v17 = v11;
+      referenceMessageListItem3 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+      v17 = referenceMessageListItem3;
       v12 = [NSArray arrayWithObjects:&v17 count:1];
 
       v13 = +[ConversationViewController log];
@@ -4714,7 +4714,7 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "_messagesForTriageInteraction - using referenceMessageListItem.itemID:%@", &v15, 0xCu);
       }
 
-      v5 = v12;
+      messageListItems = v12;
     }
   }
 
@@ -4722,44 +4722,44 @@ LABEL_13:
   {
   }
 
-  return v5;
+  return messageListItems;
 }
 
 - (void)_updatePredictedMailboxForConversation
 {
-  v3 = [(ConversationViewController *)self mailboxPredictionScheduler];
+  mailboxPredictionScheduler = [(ConversationViewController *)self mailboxPredictionScheduler];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10006A34C;
   v4[3] = &unk_10064C7E8;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [mailboxPredictionScheduler performBlock:v4];
 }
 
-- (void)_deleteMessageListItemsForMoveOrDestructiveInteraction:(id)a3 completion:(id)a4
+- (void)_deleteMessageListItemsForMoveOrDestructiveInteraction:(id)interaction completion:(id)completion
 {
-  v10 = a4;
-  v6 = [a3 messageListItemSelection];
-  v7 = [v6 messageListItems];
-  v8 = [v7 ef_compactMap:&stru_10064D608];
+  completionCopy = completion;
+  messageListItemSelection = [interaction messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  v8 = [messageListItems ef_compactMap:&stru_10064D608];
 
-  v9 = [(ConversationViewController *)self messageList];
-  [(ConversationViewController *)self _deleteItemsWithIDs:v8 fromCollection:v9 completionHandler:v10];
+  messageList = [(ConversationViewController *)self messageList];
+  [(ConversationViewController *)self _deleteItemsWithIDs:v8 fromCollection:messageList completionHandler:completionCopy];
 }
 
-- (void)_scrollToRect:(CGRect)a3 forMessageContentView:(id)a4
+- (void)_scrollToRect:(CGRect)rect forMessageContentView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(ConversationViewControllerBase *)self collectionView];
-  [v10 convertRect:v9 fromView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView convertRect:viewCopy fromView:{x, y, width, height}];
   v12 = v11;
 
-  v13 = [(ConversationViewControllerBase *)self collectionView];
-  [v13 adjustedContentInset];
+  collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView2 adjustedContentInset];
   v15 = v14;
 
   v16 = +[ConversationViewController log];
@@ -4769,53 +4769,53 @@ LABEL_13:
     v28.x = 0.0;
     v28.y = v17;
     v18 = NSStringFromPoint(v28);
-    v19 = [v9 contentRequest];
-    v20 = [v19 messageFuture];
-    v21 = [v20 resultIfAvailable];
-    v22 = [v21 ef_publicDescription];
+    contentRequest = [viewCopy contentRequest];
+    messageFuture = [contentRequest messageFuture];
+    resultIfAvailable = [messageFuture resultIfAvailable];
+    ef_publicDescription = [resultIfAvailable ef_publicDescription];
     v24 = 138412546;
     v25 = v18;
     v26 = 2112;
-    v27 = v22;
+    v27 = ef_publicDescription;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Scroll to point (%@) for message: %@", &v24, 0x16u);
   }
 
-  v23 = [(ConversationViewControllerBase *)self collectionView];
-  [v23 setContentOffset:1 animated:{0.0, v17}];
+  collectionView3 = [(ConversationViewControllerBase *)self collectionView];
+  [collectionView3 setContentOffset:1 animated:{0.0, v17}];
 }
 
-- (id)_presentationStringForMessageListItem:(id)a3
+- (id)_presentationStringForMessageListItem:(id)item
 {
-  v3 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v4 = [v3 senderList];
-  v5 = [v4 firstObject];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  senderList = [referenceMessageListItem senderList];
+  firstObject = [senderList firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = v5;
-    v7 = [v6 emailAddressValue];
-    v8 = [v7 em_displayableString];
-    v9 = v8;
-    if (v8)
+    v6 = firstObject;
+    emailAddressValue = [v6 emailAddressValue];
+    em_displayableString = [emailAddressValue em_displayableString];
+    v9 = em_displayableString;
+    if (em_displayableString)
     {
-      v10 = v8;
+      v10 = em_displayableString;
     }
 
     else
     {
-      v11 = [v7 simpleAddress];
-      v12 = v11;
-      if (v11)
+      simpleAddress = [emailAddressValue simpleAddress];
+      v12 = simpleAddress;
+      if (simpleAddress)
       {
-        v13 = v11;
+        stringValue = simpleAddress;
       }
 
       else
       {
-        v13 = [v6 stringValue];
+        stringValue = [v6 stringValue];
       }
 
-      v10 = v13;
+      v10 = stringValue;
     }
   }
 
@@ -4827,17 +4827,17 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("delete:" == a3)
+  senderCopy = sender;
+  if ("delete:" == action)
   {
     v8 = objc_opt_self();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 mail_isDeleteMessageCommand])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [senderCopy mail_isDeleteMessageCommand])
     {
       v11.receiver = self;
       v11.super_class = ConversationViewController;
-      v7 = [(ConversationViewControllerBase *)&v11 canPerformAction:a3 withSender:v6];
+      v7 = [(ConversationViewControllerBase *)&v11 canPerformAction:action withSender:senderCopy];
     }
 
     else
@@ -4850,24 +4850,24 @@ LABEL_13:
   {
     v10.receiver = self;
     v10.super_class = ConversationViewController;
-    v7 = [(ConversationViewControllerBase *)&v10 canPerformAction:a3 withSender:v6];
+    v7 = [(ConversationViewControllerBase *)&v10 canPerformAction:action withSender:senderCopy];
   }
 
   return v7;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v46.receiver = self;
   v46.super_class = ConversationViewController;
-  [(ConversationViewController *)&v46 validateCommand:v4];
-  v5 = [(ConversationViewControllerBase *)self delegate];
-  v6 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v7 = [v6 flags];
+  [(ConversationViewController *)&v46 validateCommand:commandCopy];
+  delegate = [(ConversationViewControllerBase *)self delegate];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  flags = [referenceMessageListItem flags];
 
-  v8 = [v4 action];
-  if (v8 == "_markAsJunkCommandInvoked:")
+  action = [commandCopy action];
+  if (action == "_markAsJunkCommandInvoked:")
   {
     v11 = sub_100069A50(self);
     v12 = [MSJunkTriageAction hasNonJunkMessagesInSelection:v11];
@@ -4883,7 +4883,7 @@ LABEL_13:
       [v13 localizedStringForKey:@"OPERATION_NOT_JUNK_DESC" value:&stru_100662A88 table:@"Main"];
     }
     v15 = ;
-    [v4 setTitle:v15];
+    [commandCopy setTitle:v15];
 
     v16 = &MFImageGlyphMenuBarMarkAsNotJunk;
     if (v12)
@@ -4894,9 +4894,9 @@ LABEL_13:
     goto LABEL_25;
   }
 
-  if (v8 == "_markAsReadCommandInvoked:")
+  if (action == "_markAsReadCommandInvoked:")
   {
-    if ([v7 read])
+    if ([flags read])
     {
       v14 = +[NSBundle mainBundle];
       [v14 localizedStringForKey:@"MARK_EMAIL_UNREAD" value:&stru_100662A88 table:@"Main"];
@@ -4908,11 +4908,11 @@ LABEL_13:
       [v14 localizedStringForKey:@"MARK_EMAIL_READ" value:&stru_100662A88 table:@"Main"];
     }
     v17 = ;
-    [v4 setTitle:v17];
+    [commandCopy setTitle:v17];
 
-    v18 = [v7 read];
+    read = [flags read];
     v16 = &MFImageGlyphMenuBarMarkUnread;
-    if (!v18)
+    if (!read)
     {
       v16 = &MFImageGlyphMenuBarMarkRead;
     }
@@ -4920,26 +4920,26 @@ LABEL_13:
     goto LABEL_25;
   }
 
-  if (v8 == "delete:")
+  if (action == "delete:")
   {
     if ([(ConversationViewController *)self _messageListItemCount]== 1)
     {
-      v10 = +[NSBundle mainBundle];
-      [v10 localizedStringForKey:@"DELETE_EMAIL" value:&stru_100662A88 table:@"Main"];
+      propertyList2 = +[NSBundle mainBundle];
+      [propertyList2 localizedStringForKey:@"DELETE_EMAIL" value:&stru_100662A88 table:@"Main"];
     }
 
     else
     {
-      v10 = +[NSBundle mainBundle];
-      [v10 localizedStringForKey:@"DELETE_EMAIL_PLURAL" value:&stru_100662A88 table:@"Main"];
+      propertyList2 = +[NSBundle mainBundle];
+      [propertyList2 localizedStringForKey:@"DELETE_EMAIL_PLURAL" value:&stru_100662A88 table:@"Main"];
     }
     v20 = ;
-    [v4 setTitle:v20];
+    [commandCopy setTitle:v20];
     v21 = v20;
     goto LABEL_30;
   }
 
-  if (v8 == "_archiveShortcutInvoked:")
+  if (action == "_archiveShortcutInvoked:")
   {
     if ([(ConversationViewController *)self _messageListItemCount]== 1)
     {
@@ -4953,13 +4953,13 @@ LABEL_13:
       [v19 localizedStringForKey:@"ARCHIVE_EMAIL_PLURAL" value:&stru_100662A88 table:@"Main"];
     }
     v24 = ;
-    [v4 setTitle:v24];
+    [commandCopy setTitle:v24];
 
     v25 = sub_100069A50(self);
-    v26 = [(ConversationViewController *)self undoManager];
-    v10 = [(MFDestructiveTriageInteraction *)MFArchiveTriageInteraction interactionWithMessageListItemSelection:v25 undoManager:v26 origin:3 actor:2];
+    undoManager = [(ConversationViewController *)self undoManager];
+    propertyList2 = [(MFDestructiveTriageInteraction *)MFArchiveTriageInteraction interactionWithMessageListItemSelection:v25 undoManager:undoManager origin:3 actor:2];
 
-    if (![v10 isMessageListItemSelectionSourceArchive])
+    if (![propertyList2 isMessageListItemSelectionSourceArchive])
     {
       goto LABEL_38;
     }
@@ -4967,13 +4967,13 @@ LABEL_13:
     goto LABEL_37;
   }
 
-  if (v8 == "_clearTimeSensitiveCommandInvoked:")
+  if (action == "_clearTimeSensitiveCommandInvoked:")
   {
     v22 = sub_100069A50(self);
-    v23 = [(ConversationViewController *)self undoManager];
-    v10 = [(MFDestructiveTriageInteraction *)MFRemoveHighImpactTriageInteraction interactionWithMessageListItemSelection:v22 undoManager:v23 origin:3 actor:2];
+    undoManager2 = [(ConversationViewController *)self undoManager];
+    propertyList2 = [(MFDestructiveTriageInteraction *)MFRemoveHighImpactTriageInteraction interactionWithMessageListItemSelection:v22 undoManager:undoManager2 origin:3 actor:2];
 
-    if (!-[ConversationViewControllerBase isShowingGroupedSenderMessageList](self, "isShowingGroupedSenderMessageList") && [v5 currentlySelectedBucketForConversationViewController:self] == 1 && (objc_msgSend(v10, "isPermitted") & 1) != 0)
+    if (!-[ConversationViewControllerBase isShowingGroupedSenderMessageList](self, "isShowingGroupedSenderMessageList") && [delegate currentlySelectedBucketForConversationViewController:self] == 1 && (objc_msgSend(propertyList2, "isPermitted") & 1) != 0)
     {
       goto LABEL_38;
     }
@@ -4981,14 +4981,14 @@ LABEL_13:
     goto LABEL_37;
   }
 
-  if (v8 == "_remindMeCommandInvoked:")
+  if (action == "_remindMeCommandInvoked:")
   {
     if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
     {
       goto LABEL_54;
     }
 
-    v27 = [v4 propertyList];
+    propertyList = [commandCopy propertyList];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4997,19 +4997,19 @@ LABEL_13:
       goto LABEL_54;
     }
 
-    v10 = [v4 propertyList];
-    v21 = [v10 objectForKeyedSubscript:@"MailKBRemindMePlistKey"];
+    propertyList2 = [commandCopy propertyList];
+    v21 = [propertyList2 objectForKeyedSubscript:@"MailKBRemindMePlistKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v29 = [(ConversationViewController *)self _readLaterTriageInteractionIfAvailable];
-      if (v29)
+      _readLaterTriageInteractionIfAvailable = [(ConversationViewController *)self _readLaterTriageInteractionIfAvailable];
+      if (_readLaterTriageInteractionIfAvailable)
       {
-        v30 = [v21 integerValue];
-        v31 = [v29 messagesHaveReadLaterSet];
-        if (v30 == 5)
+        integerValue = [v21 integerValue];
+        messagesHaveReadLaterSet = [_readLaterTriageInteractionIfAvailable messagesHaveReadLaterSet];
+        if (integerValue == 5)
         {
-          v32 = v31;
+          v32 = messagesHaveReadLaterSet;
         }
 
         else
@@ -5019,7 +5019,7 @@ LABEL_13:
 
         if ((v32 & 1) == 0)
         {
-          [v4 setAttributes:1];
+          [commandCopy setAttributes:1];
         }
       }
 
@@ -5034,7 +5034,7 @@ LABEL_13:
           sub_100484868();
         }
 
-        [v4 setAttributes:1];
+        [commandCopy setAttributes:1];
       }
     }
 
@@ -5043,20 +5043,20 @@ LABEL_13:
       v42 = +[ConversationViewController log];
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
-        [v4 propertyList];
+        [commandCopy propertyList];
         objc_claimAutoreleasedReturnValue();
         sub_100484824();
       }
 
-      [v4 setAttributes:1];
+      [commandCopy setAttributes:1];
     }
 
     goto LABEL_30;
   }
 
-  if (v8 == "_categorizeCommandInvoked:")
+  if (action == "_categorizeCommandInvoked:")
   {
-    v33 = [v4 propertyList];
+    propertyList3 = [commandCopy propertyList];
     objc_opt_class();
     v34 = objc_opt_isKindOfClass();
 
@@ -5065,18 +5065,18 @@ LABEL_13:
       goto LABEL_54;
     }
 
-    v10 = [v4 propertyList];
-    v21 = [v10 objectForKeyedSubscript:@"MailKBCategorizationPlistKey"];
+    propertyList2 = [commandCopy propertyList];
+    v21 = [propertyList2 objectForKeyedSubscript:@"MailKBCategorizationPlistKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v35 = [v21 integerValue];
-      v36 = [(ConversationViewController *)self targetMessageForBarButtonTriage];
-      v37 = [v36 category];
+      integerValue2 = [v21 integerValue];
+      targetMessageForBarButtonTriage = [(ConversationViewController *)self targetMessageForBarButtonTriage];
+      category = [targetMessageForBarButtonTriage category];
 
-      if ([v37 state] == 3)
+      if ([category state] == 3)
       {
-        [v37 type];
+        [category type];
         v38 = MUIBucketFromEMCategoryType();
       }
 
@@ -5085,22 +5085,22 @@ LABEL_13:
         v38 = 0;
       }
 
-      if (v35 == v38)
+      if (integerValue2 == v38)
       {
-        [v4 setState:1];
-        [v4 setAttributes:1];
+        [commandCopy setState:1];
+        [commandCopy setAttributes:1];
       }
 
-      v44 = [(ConversationViewController *)self selectionDataSource];
-      if (([v44 shouldUseSelectionDataSourceForConversationViewController:self] & 1) != 0 || (objc_msgSend(v5, "conversationViewControllerAllowsCategorizationAction:", self) & 1) == 0)
+      selectionDataSource = [(ConversationViewController *)self selectionDataSource];
+      if (([selectionDataSource shouldUseSelectionDataSourceForConversationViewController:self] & 1) != 0 || (objc_msgSend(delegate, "conversationViewControllerAllowsCategorizationAction:", self) & 1) == 0)
       {
-        [v4 setAttributes:1];
+        [commandCopy setAttributes:1];
       }
     }
 
     else
     {
-      [v4 setAttributes:1];
+      [commandCopy setAttributes:1];
     }
 
 LABEL_30:
@@ -5108,20 +5108,20 @@ LABEL_30:
     goto LABEL_38;
   }
 
-  if (v8 == "_muteCommandInvoked:")
+  if (action == "_muteCommandInvoked:")
   {
     if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
     {
 LABEL_54:
-      [v4 setAttributes:1];
+      [commandCopy setAttributes:1];
       goto LABEL_39;
     }
 
-    v39 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v40 = [v39 conversationNotificationLevel];
+    referenceMessageListItem2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    conversationNotificationLevel = [referenceMessageListItem2 conversationNotificationLevel];
 
     v41 = +[NSBundle mainBundle];
-    if (v40 == 1)
+    if (conversationNotificationLevel == 1)
     {
       [v41 localizedStringForKey:@"UNMUTE" value:&stru_100662A88 table:@"Main"];
     }
@@ -5131,29 +5131,29 @@ LABEL_54:
       [v41 localizedStringForKey:@"MUTE" value:&stru_100662A88 table:@"Main"];
     }
     v43 = ;
-    [v4 setTitle:v43];
+    [commandCopy setTitle:v43];
 
     v16 = &MFImageGlyphMenuBarMute;
-    if (v40 == 1)
+    if (conversationNotificationLevel == 1)
     {
       v16 = &MFImageGlyphMenuBarUnmute;
     }
 
 LABEL_25:
-    v10 = [UIImage systemImageNamed:*v16];
-    [v4 setImage:v10];
+    propertyList2 = [UIImage systemImageNamed:*v16];
+    [commandCopy setImage:propertyList2];
     goto LABEL_38;
   }
 
-  if (v8 == "_sendCommandInvoked:")
+  if (action == "_sendCommandInvoked:")
   {
     v9 = sub_100069A50(self);
-    v10 = [(MFTriageInteraction *)MFSendAgainTriageInteraction interactionWithMessageListItemSelection:v9 undoManager:0 origin:3 actor:2];
+    propertyList2 = [(MFTriageInteraction *)MFSendAgainTriageInteraction interactionWithMessageListItemSelection:v9 undoManager:0 origin:3 actor:2];
 
-    if (([v10 isPermitted] & 1) == 0)
+    if (([propertyList2 isPermitted] & 1) == 0)
     {
 LABEL_37:
-      [v4 setAttributes:1];
+      [commandCopy setAttributes:1];
     }
 
 LABEL_38:
@@ -5162,16 +5162,16 @@ LABEL_38:
 LABEL_39:
 }
 
-- (BOOL)_canChangePageZoom:(BOOL)a3 fromStep:(unint64_t)a4
+- (BOOL)_canChangePageZoom:(BOOL)zoom fromStep:(unint64_t)step
 {
-  if (a3)
+  if (zoom)
   {
-    return [&off_100674E80 count] - 1 > a4;
+    return [&off_100674E80 count] - 1 > step;
   }
 
   else
   {
-    return a4 != 0;
+    return step != 0;
   }
 }
 
@@ -5186,42 +5186,42 @@ LABEL_39:
   return [&off_100674E80 indexOfObject:&off_100673D78];
 }
 
-- (unint64_t)_zoomStepForViewScale:(double)a3
+- (unint64_t)_zoomStepForViewScale:(double)scale
 {
-  v4 = [NSNumber numberWithDouble:a3];
-  v5 = [&off_100674E80 indexOfObject:v4];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  v4 = [NSNumber numberWithDouble:scale];
+  _defaultZoomStep = [&off_100674E80 indexOfObject:v4];
+  if (_defaultZoomStep == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(ConversationViewController *)self _defaultZoomStep];
+    _defaultZoomStep = [(ConversationViewController *)self _defaultZoomStep];
   }
 
-  return v5;
+  return _defaultZoomStep;
 }
 
-- (void)_changeZoomStep:(BOOL)a3
+- (void)_changeZoomStep:(BOOL)step
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10006B974;
   v3[3] = &unk_10064D630;
   v3[4] = self;
-  v4 = a3;
+  stepCopy = step;
   [(ConversationViewControllerBase *)self _enumerateExpandedCellMessageContentViewsWithBlock:v3];
 }
 
-- (void)_sendCommandInvoked:(id)a3
+- (void)_sendCommandInvoked:(id)invoked
 {
-  v5 = [(ConversationViewController *)self targetMessageForBarButtonTriage];
-  v6 = [v5 itemID];
-  if (v6)
+  targetMessageForBarButtonTriage = [(ConversationViewController *)self targetMessageForBarButtonTriage];
+  itemID = [targetMessageForBarButtonTriage itemID];
+  if (itemID)
   {
-    v7 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:v6];
-    v8 = [(ConversationViewControllerBase *)self scene];
-    v9 = [(MFMessageCompositionTriageInteraction *)MFSendAgainTriageInteraction interactionWithContentRequest:v7 scene:v8];
+    v7 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:itemID];
+    scene = [(ConversationViewControllerBase *)self scene];
+    v9 = [(MFMessageCompositionTriageInteraction *)MFSendAgainTriageInteraction interactionWithContentRequest:v7 scene:scene];
 
     [v9 setDelegate:self];
-    v10 = [v5 mailboxes];
-    [v9 setMessageSourceMailboxes:v10];
+    mailboxes = [targetMessageForBarButtonTriage mailboxes];
+    [v9 setMessageSourceMailboxes:mailboxes];
 
     [v9 setShouldPromptToLoadRestOfMessage:0];
     if ([v9 isPermitted])
@@ -5234,7 +5234,7 @@ LABEL_39:
       v11 = +[ConversationViewController log];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [v5 ef_publicDescription];
+        [targetMessageForBarButtonTriage ef_publicDescription];
         objc_claimAutoreleasedReturnValue();
         NSStringFromSelector(a2);
         objc_claimAutoreleasedReturnValue();
@@ -5248,7 +5248,7 @@ LABEL_39:
     v7 = +[ConversationViewController log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [v5 ef_publicDescription];
+      [targetMessageForBarButtonTriage ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
       NSStringFromSelector(a2);
       objc_claimAutoreleasedReturnValue();
@@ -5257,9 +5257,9 @@ LABEL_39:
   }
 }
 
-- (void)_printCommandInvoked:(id)a3
+- (void)_printCommandInvoked:(id)invoked
 {
-  v4 = a3;
+  invokedCopy = invoked;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006C3F0;
@@ -5267,22 +5267,22 @@ LABEL_39:
   v7[4] = self;
   v5 = objc_retainBlock(v7);
   v6 = objc_opt_class();
-  sub_10006BBC8(&self->super.super.super.super.isa, v6, v4, 0, v5, 0);
+  sub_10006BBC8(&self->super.super.super.super.isa, v6, invokedCopy, 0, v5, 0);
 }
 
-- (void)_forwardCommandInvoked:(id)a3
+- (void)_forwardCommandInvoked:(id)invoked
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self targetMessageForBarButtonTriage];
-  v6 = [v5 itemID];
-  v7 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:v6];
-  v8 = [(ConversationViewController *)self _getCurrentlySelectedMessageContentForMessageItemID:v6];
+  invokedCopy = invoked;
+  targetMessageForBarButtonTriage = [(ConversationViewController *)self targetMessageForBarButtonTriage];
+  itemID = [targetMessageForBarButtonTriage itemID];
+  v7 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:itemID];
+  v8 = [(ConversationViewController *)self _getCurrentlySelectedMessageContentForMessageItemID:itemID];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_10006C654;
   v18 = &unk_10064D1D0;
-  v19 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = itemID;
   v20 = v9;
   v10 = objc_retainBlock(&v15);
   v11 = [(ConversationViewControllerBase *)self scene:v15];
@@ -5294,14 +5294,14 @@ LABEL_39:
   }
 
   [v12 setDelegate:self];
-  v13 = [v5 mailboxes];
-  [v12 setMessageSourceMailboxes:v13];
+  mailboxes = [targetMessageForBarButtonTriage mailboxes];
+  [v12 setMessageSourceMailboxes:mailboxes];
 
   [v12 setShouldPromptToLoadRestOfMessage:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v12 setPresentationSource:v4];
+    [v12 setPresentationSource:invokedCopy];
   }
 
   else
@@ -5313,16 +5313,16 @@ LABEL_39:
   [v12 performInteraction];
 }
 
-- (void)_markAsJunkCommandInvoked:(id)a3
+- (void)_markAsJunkCommandInvoked:(id)invoked
 {
   v4 = sub_100069A50(self);
-  v5 = [(ConversationViewController *)self undoManager];
-  v6 = [(MFFlagChangeTriageInteraction *)MFJunkTriageInteraction interactionWithMessageListItemSelection:v4 undoManager:v5 origin:3 actor:2 reason:4];
+  undoManager = [(ConversationViewController *)self undoManager];
+  v6 = [(MFFlagChangeTriageInteraction *)MFJunkTriageInteraction interactionWithMessageListItemSelection:v4 undoManager:undoManager origin:3 actor:2 reason:4];
 
-  v7 = [(ConversationViewController *)self selectionDataSource];
-  if ([v7 shouldUseSelectionDataSourceForConversationViewController:self])
+  selectionDataSource = [(ConversationViewController *)self selectionDataSource];
+  if ([selectionDataSource shouldUseSelectionDataSourceForConversationViewController:self])
   {
-    v8 = [v7 messageTriageInteractionHelperForConversationViewController:self];
+    v8 = [selectionDataSource messageTriageInteractionHelperForConversationViewController:self];
     [v6 setDelegate:v8];
   }
 
@@ -5332,7 +5332,7 @@ LABEL_39:
   v10[2] = sub_10006C81C;
   v10[3] = &unk_10064D6D0;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = selectionDataSource;
   v11 = v9;
   [v6 performInteractionWithCompletion:v10];
 
@@ -5340,16 +5340,16 @@ LABEL_39:
   objc_destroyWeak(&location);
 }
 
-- (void)_clearTimeSensitiveCommandInvoked:(id)a3
+- (void)_clearTimeSensitiveCommandInvoked:(id)invoked
 {
   v5 = sub_100069A50(self);
-  v6 = [(ConversationViewController *)self undoManager];
-  v7 = [(MFDestructiveTriageInteraction *)MFRemoveHighImpactTriageInteraction interactionWithMessageListItemSelection:v5 undoManager:v6 origin:3 actor:2];
+  undoManager = [(ConversationViewController *)self undoManager];
+  v7 = [(MFDestructiveTriageInteraction *)MFRemoveHighImpactTriageInteraction interactionWithMessageListItemSelection:v5 undoManager:undoManager origin:3 actor:2];
 
-  v8 = [(ConversationViewController *)self selectionDataSource];
-  if ([v8 shouldUseSelectionDataSourceForConversationViewController:self])
+  selectionDataSource = [(ConversationViewController *)self selectionDataSource];
+  if ([selectionDataSource shouldUseSelectionDataSourceForConversationViewController:self])
   {
-    v9 = [v8 messageTriageInteractionHelperForConversationViewController:self];
+    v9 = [selectionDataSource messageTriageInteractionHelperForConversationViewController:self];
     [v7 setDelegate:v9];
   }
 
@@ -5373,11 +5373,11 @@ LABEL_39:
 
   else
   {
-    v10 = [(ConversationViewController *)self targetMessageForBarButtonTriage];
+    targetMessageForBarButtonTriage = [(ConversationViewController *)self targetMessageForBarButtonTriage];
     v11 = +[ConversationViewController log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [v10 ef_publicDescription];
+      [targetMessageForBarButtonTriage ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
       NSStringFromSelector(a2);
       objc_claimAutoreleasedReturnValue();
@@ -5402,14 +5402,14 @@ LABEL_39:
 
   else
   {
-    v6 = [(ConversationViewController *)self undoManager];
-    v5 = [MFReadLaterTriageInteraction interactionWithMessageListItemSelection:v3 undoManager:v6 origin:2 actor:2];
+    undoManager = [(ConversationViewController *)self undoManager];
+    v5 = [MFReadLaterTriageInteraction interactionWithMessageListItemSelection:v3 undoManager:undoManager origin:2 actor:2];
 
     [v5 setDatePickerPresentationStyle:2];
-    v7 = [(ConversationViewController *)self selectionDataSource];
-    if ([v7 shouldUseSelectionDataSourceForConversationViewController:self])
+    selectionDataSource = [(ConversationViewController *)self selectionDataSource];
+    if ([selectionDataSource shouldUseSelectionDataSourceForConversationViewController:self])
     {
-      v8 = [v7 messageTriageInteractionHelperForConversationViewController:self];
+      v8 = [selectionDataSource messageTriageInteractionHelperForConversationViewController:self];
       [v5 setDelegate:v8];
     }
 
@@ -5422,34 +5422,34 @@ LABEL_39:
   return v5;
 }
 
-- (void)_remindMeCommandInvoked:(id)a3
+- (void)_remindMeCommandInvoked:(id)invoked
 {
-  v5 = a3;
-  v6 = [v5 propertyList];
+  invokedCopy = invoked;
+  propertyList = [invokedCopy propertyList];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v5 propertyList];
-    v9 = [v8 objectForKeyedSubscript:@"MailKBRemindMePlistKey"];
+    propertyList2 = [invokedCopy propertyList];
+    v9 = [propertyList2 objectForKeyedSubscript:@"MailKBRemindMePlistKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 integerValue];
-      v11 = [(ConversationViewController *)self _readLaterTriageInteractionIfAvailable];
+      integerValue = [v9 integerValue];
+      _readLaterTriageInteractionIfAvailable = [(ConversationViewController *)self _readLaterTriageInteractionIfAvailable];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_10006CF94;
       v12[3] = &unk_10064D720;
       v12[4] = self;
-      [v11 performReadLaterAction:v10 preparation:0 completion:v12];
+      [_readLaterTriageInteractionIfAvailable performReadLaterAction:integerValue preparation:0 completion:v12];
     }
 
     else
     {
-      v11 = +[ConversationViewController log];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      _readLaterTriageInteractionIfAvailable = +[ConversationViewController log];
+      if (os_log_type_enabled(_readLaterTriageInteractionIfAvailable, OS_LOG_TYPE_ERROR))
       {
         sub_100484A9C();
       }
@@ -5458,8 +5458,8 @@ LABEL_39:
 
   else
   {
-    v8 = +[ConversationViewController log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    propertyList2 = +[ConversationViewController log];
+    if (os_log_type_enabled(propertyList2, OS_LOG_TYPE_ERROR))
     {
       NSStringFromSelector(a2);
       objc_claimAutoreleasedReturnValue();
@@ -5468,60 +5468,60 @@ LABEL_39:
   }
 }
 
-- (void)_categorizeCommandInvoked:(id)a3
+- (void)_categorizeCommandInvoked:(id)invoked
 {
-  v5 = a3;
-  v6 = [v5 propertyList];
+  invokedCopy = invoked;
+  propertyList = [invokedCopy propertyList];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v5 propertyList];
-    v9 = [v8 objectForKeyedSubscript:@"MailKBCategorizationPlistKey"];
+    propertyList2 = [invokedCopy propertyList];
+    v9 = [propertyList2 objectForKeyedSubscript:@"MailKBCategorizationPlistKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 integerValue];
+      integerValue = [v9 integerValue];
       v11 = sub_100069A50(self);
-      v12 = [v11 messageListItems];
-      v13 = [v12 firstObject];
+      messageListItems = [v11 messageListItems];
+      firstObject = [messageListItems firstObject];
 
-      v33 = v13;
-      v14 = [v13 senderList];
-      v15 = [v14 firstObject];
+      v33 = firstObject;
+      senderList = [firstObject senderList];
+      firstObject2 = [senderList firstObject];
 
-      v32 = v15;
+      v32 = firstObject2;
       v30 = v9;
-      v16 = [v15 emailAddressValue];
-      v31 = [v16 simpleAddress];
+      emailAddressValue = [firstObject2 emailAddressValue];
+      simpleAddress = [emailAddressValue simpleAddress];
 
-      if (v15)
+      if (firstObject2)
       {
-        v17 = v15;
-        v18 = [v17 emailAddressValue];
-        v19 = [v18 em_displayableString];
-        v20 = v19;
-        if (v19)
+        v17 = firstObject2;
+        emailAddressValue2 = [v17 emailAddressValue];
+        em_displayableString = [emailAddressValue2 em_displayableString];
+        v20 = em_displayableString;
+        if (em_displayableString)
         {
-          v21 = v19;
+          v21 = em_displayableString;
         }
 
         else
         {
-          v22 = [v18 simpleAddress];
-          v23 = v22;
-          if (v22)
+          simpleAddress2 = [emailAddressValue2 simpleAddress];
+          v23 = simpleAddress2;
+          if (simpleAddress2)
           {
-            v24 = v22;
+            stringValue = simpleAddress2;
           }
 
           else
           {
-            v24 = [v17 stringValue];
+            stringValue = [v17 stringValue];
           }
 
-          v21 = v24;
+          v21 = stringValue;
         }
       }
 
@@ -5531,10 +5531,10 @@ LABEL_39:
       }
 
       v25 = +[UIApplication sharedApplication];
-      v26 = [v25 avatarGenerator];
+      avatarGenerator = [v25 avatarGenerator];
       LOBYTE(v29) = 0;
       LOBYTE(v28) = [v33 isAuthenticated];
-      v27 = [MFCategorizationTriageInteraction interactionWithMessageListItemSelection:v11 sender:v31 groupedSenderDisplayName:v21 origin:3 actor:2 bucket:v10 avatarGenerator:v26 isAuthenticated:v28 changeOptions:2 * (v10 == 0) showMenuWithOptions:v29];
+      v27 = [MFCategorizationTriageInteraction interactionWithMessageListItemSelection:v11 sender:simpleAddress groupedSenderDisplayName:v21 origin:3 actor:2 bucket:integerValue avatarGenerator:avatarGenerator isAuthenticated:v28 changeOptions:2 * (integerValue == 0) showMenuWithOptions:v29];
 
       [v27 setDelegate:self];
       [v27 setShouldAskForConfirmation:1];
@@ -5559,8 +5559,8 @@ LABEL_39:
 
   else
   {
-    v8 = +[ConversationViewController log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    propertyList2 = +[ConversationViewController log];
+    if (os_log_type_enabled(propertyList2, OS_LOG_TYPE_ERROR))
     {
       NSStringFromSelector(a2);
       objc_claimAutoreleasedReturnValue();
@@ -5569,11 +5569,11 @@ LABEL_39:
   }
 }
 
-- (void)_muteCommandInvoked:(id)a3
+- (void)_muteCommandInvoked:(id)invoked
 {
   v5 = sub_100069A50(self);
-  v6 = [(ConversationViewController *)self undoManager];
-  v7 = [(MFFlagChangeTriageInteraction *)MFMuteTriageInteraction interactionWithMessageListItemSelection:v5 undoManager:v6 origin:3 actor:2 reason:4];
+  undoManager = [(ConversationViewController *)self undoManager];
+  v7 = [(MFFlagChangeTriageInteraction *)MFMuteTriageInteraction interactionWithMessageListItemSelection:v5 undoManager:undoManager origin:3 actor:2 reason:4];
 
   if ([v7 isPermitted])
   {
@@ -5590,11 +5590,11 @@ LABEL_39:
 
   else
   {
-    v8 = [(ConversationViewController *)self targetMessageForBarButtonTriage];
+    targetMessageForBarButtonTriage = [(ConversationViewController *)self targetMessageForBarButtonTriage];
     v9 = +[ConversationViewController log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [v8 ef_publicDescription];
+      [targetMessageForBarButtonTriage ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
       NSStringFromSelector(a2);
       objc_claimAutoreleasedReturnValue();
@@ -5607,10 +5607,10 @@ LABEL_39:
 {
   if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
   {
-    v3 = [(ConversationViewController *)self messageList];
-    v4 = [v3 query];
-    v5 = [(ConversationViewController *)self undoManager];
-    v6 = [(MFFlagChangeTriageInteraction *)MFReadTriageInteraction interactionWithQuery:v4 undoManager:v5 origin:3 actor:2 reason:4];
+    messageList = [(ConversationViewController *)self messageList];
+    query = [messageList query];
+    undoManager = [(ConversationViewController *)self undoManager];
+    v6 = [(MFFlagChangeTriageInteraction *)MFReadTriageInteraction interactionWithQuery:query undoManager:undoManager origin:3 actor:2 reason:4];
 
     [v6 setTitleIncludesAllMessages:1];
     [v6 setTitleIncludesCount:0];
@@ -5620,31 +5620,31 @@ LABEL_39:
   else
   {
     v7 = sub_100069A50(self);
-    v8 = [(ConversationViewController *)self undoManager];
-    v6 = [(MFFlagChangeTriageInteraction *)MFReadTriageInteraction interactionWithMessageListItemSelection:v7 undoManager:v8 origin:3 actor:2 reason:4];
+    undoManager2 = [(ConversationViewController *)self undoManager];
+    v6 = [(MFFlagChangeTriageInteraction *)MFReadTriageInteraction interactionWithMessageListItemSelection:v7 undoManager:undoManager2 origin:3 actor:2 reason:4];
   }
 
-  v9 = [(ConversationViewController *)self selectionDataSource];
-  if ([v9 shouldUseSelectionDataSourceForConversationViewController:self])
+  selectionDataSource = [(ConversationViewController *)self selectionDataSource];
+  if ([selectionDataSource shouldUseSelectionDataSourceForConversationViewController:self])
   {
-    v10 = [v9 messageTriageInteractionHelperForConversationViewController:self];
+    v10 = [selectionDataSource messageTriageInteractionHelperForConversationViewController:self];
     [v6 setDelegate:v10];
   }
 
   return v6;
 }
 
-- (id)_messageReadCompletionHandlerForSelectionDataSource:(id)a3
+- (id)_messageReadCompletionHandlerForSelectionDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10006DC34;
   v9[3] = &unk_10064D6D0;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v5 = v4;
+  v10 = sourceCopy;
+  v5 = sourceCopy;
   v6 = objc_retainBlock(v9);
   v7 = objc_retainBlock(v6);
 
@@ -5654,37 +5654,37 @@ LABEL_39:
   return v7;
 }
 
-- (id)_readActionForMessageListItemSelection:(id)a3
+- (id)_readActionForMessageListItemSelection:(id)selection
 {
-  v4 = [(ConversationViewController *)self _readTriageInteraction];
-  v5 = [(ConversationViewController *)self selectionDataSource];
-  v6 = [(ConversationViewController *)self _messageReadCompletionHandlerForSelectionDataSource:v5];
-  v7 = [v4 menuActionWithPreparation:0 completion:v6];
+  _readTriageInteraction = [(ConversationViewController *)self _readTriageInteraction];
+  selectionDataSource = [(ConversationViewController *)self selectionDataSource];
+  v6 = [(ConversationViewController *)self _messageReadCompletionHandlerForSelectionDataSource:selectionDataSource];
+  v7 = [_readTriageInteraction menuActionWithPreparation:0 completion:v6];
 
   return v7;
 }
 
-- (void)_markAsReadCommandInvoked:(id)a3
+- (void)_markAsReadCommandInvoked:(id)invoked
 {
-  v6 = [(ConversationViewController *)self _readTriageInteraction];
-  v4 = [(ConversationViewController *)self selectionDataSource];
-  v5 = [(ConversationViewController *)self _messageReadCompletionHandlerForSelectionDataSource:v4];
-  [v6 performInteractionWithCompletion:v5];
+  _readTriageInteraction = [(ConversationViewController *)self _readTriageInteraction];
+  selectionDataSource = [(ConversationViewController *)self selectionDataSource];
+  v5 = [(ConversationViewController *)self _messageReadCompletionHandlerForSelectionDataSource:selectionDataSource];
+  [_readTriageInteraction performInteractionWithCompletion:v5];
 }
 
-- (void)_performFlagChangeClearOnly:(BOOL)a3
+- (void)_performFlagChangeClearOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v5 = sub_100069A50(self);
-  v6 = [(ConversationViewController *)self undoManager];
-  v7 = [(MFFlagChangeTriageInteraction *)MFFlagTriageInteraction interactionWithMessageListItemSelection:v5 undoManager:v6 origin:3 actor:2 reason:4];
+  undoManager = [(ConversationViewController *)self undoManager];
+  v7 = [(MFFlagChangeTriageInteraction *)MFFlagTriageInteraction interactionWithMessageListItemSelection:v5 undoManager:undoManager origin:3 actor:2 reason:4];
 
-  if (!v3 || ([v7 flagState] & 1) != 0)
+  if (!onlyCopy || ([v7 flagState] & 1) != 0)
   {
-    v8 = [(ConversationViewController *)self selectionDataSource];
-    if ([v8 shouldUseSelectionDataSourceForConversationViewController:self])
+    selectionDataSource = [(ConversationViewController *)self selectionDataSource];
+    if ([selectionDataSource shouldUseSelectionDataSourceForConversationViewController:self])
     {
-      v9 = [v8 messageTriageInteractionHelperForConversationViewController:self];
+      v9 = [selectionDataSource messageTriageInteractionHelperForConversationViewController:self];
       [v7 setDelegate:v9];
     }
 
@@ -5694,7 +5694,7 @@ LABEL_39:
     v11[2] = sub_10006E2BC;
     v11[3] = &unk_10064D6D0;
     objc_copyWeak(&v13, &location);
-    v10 = v8;
+    v10 = selectionDataSource;
     v12 = v10;
     [v7 performInteractionWithCompletion:v11];
 
@@ -5703,33 +5703,33 @@ LABEL_39:
   }
 }
 
-- (void)_setFlagColorCommandInvoked:(id)a3
+- (void)_setFlagColorCommandInvoked:(id)invoked
 {
-  v5 = a3;
-  v6 = [v5 propertyList];
+  invokedCopy = invoked;
+  propertyList = [invokedCopy propertyList];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v5 propertyList];
-    v9 = [v8 objectForKeyedSubscript:@"MailKBFlagColorPlistKey"];
+    propertyList2 = [invokedCopy propertyList];
+    v9 = [propertyList2 objectForKeyedSubscript:@"MailKBFlagColorPlistKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 integerValue];
-      [MFFlagTriageInteraction setDefaultColor:v10];
+      integerValue = [v9 integerValue];
+      [MFFlagTriageInteraction setDefaultColor:integerValue];
       v11 = sub_100069A50(self);
-      v12 = [(ConversationViewController *)self undoManager];
-      v13 = [(MFFlagChangeTriageInteraction *)MFFlagColorTriageInteraction interactionWithMessageListItemSelection:v11 undoManager:v12 origin:3 actor:2 reason:4];
+      undoManager = [(ConversationViewController *)self undoManager];
+      v13 = [(MFFlagChangeTriageInteraction *)MFFlagColorTriageInteraction interactionWithMessageListItemSelection:v11 undoManager:undoManager origin:3 actor:2 reason:4];
 
-      v14 = [NSNumber numberWithUnsignedInteger:v10];
+      v14 = [NSNumber numberWithUnsignedInteger:integerValue];
       [v13 setFlagColor:v14];
 
-      v15 = [(ConversationViewController *)self selectionDataSource];
-      if ([v15 shouldUseSelectionDataSourceForConversationViewController:self])
+      selectionDataSource = [(ConversationViewController *)self selectionDataSource];
+      if ([selectionDataSource shouldUseSelectionDataSourceForConversationViewController:self])
       {
-        v16 = [v15 messageTriageInteractionHelperForConversationViewController:self];
+        v16 = [selectionDataSource messageTriageInteractionHelperForConversationViewController:self];
         [v13 setDelegate:v16];
       }
 
@@ -5738,7 +5738,7 @@ LABEL_39:
       v18[2] = sub_10006E8B4;
       v18[3] = &unk_10064D1D0;
       v18[4] = self;
-      v17 = v15;
+      v17 = selectionDataSource;
       v19 = v17;
       [v13 performInteractionWithCompletion:v18];
     }
@@ -5755,8 +5755,8 @@ LABEL_39:
 
   else
   {
-    v8 = +[ConversationViewController log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    propertyList2 = +[ConversationViewController log];
+    if (os_log_type_enabled(propertyList2, OS_LOG_TYPE_ERROR))
     {
       NSStringFromSelector(a2);
       objc_claimAutoreleasedReturnValue();
@@ -5765,9 +5765,9 @@ LABEL_39:
   }
 }
 
-- (unint64_t)_summarizableMessageCountForItemID:(id)a3
+- (unint64_t)_summarizableMessageCountForItemID:(id)d
 {
-  v3 = [(ConversationViewController *)self _summarizableMessageItemIDsForSummaryItemID:a3];
+  v3 = [(ConversationViewController *)self _summarizableMessageItemIDsForSummaryItemID:d];
   v4 = v3;
   if (v3)
   {
@@ -5782,29 +5782,29 @@ LABEL_39:
   return v5;
 }
 
-- (id)_summarizableMessageItemIDsForSummaryItemID:(id)a3
+- (id)_summarizableMessageItemIDsForSummaryItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ConversationViewController *)self collectionViewDataSource];
-    v6 = [v5 snapshot];
-    v7 = [v6 itemIdentifiers];
+    collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+    snapshot = [collectionViewDataSource snapshot];
+    itemIdentifiers = [snapshot itemIdentifiers];
 
-    v8 = [v7 indexOfObject:v4];
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL || [v7 count] < 2)
+    v8 = [itemIdentifiers indexOfObject:dCopy];
+    if (v8 == 0x7FFFFFFFFFFFFFFFLL || [itemIdentifiers count] < 2)
     {
       v9 = 0;
     }
 
     else
     {
-      v10 = [(ConversationViewController *)self topSummaryItemID];
+      topSummaryItemID = [(ConversationViewController *)self topSummaryItemID];
 
-      if (v10 == v4)
+      if (topSummaryItemID == dCopy)
       {
-        v12 = v7;
+        v12 = itemIdentifiers;
       }
 
       else
@@ -5817,10 +5817,10 @@ LABEL_39:
 
         else
         {
-          v11 = ([v7 count] - v8);
+          v11 = ([itemIdentifiers count] - v8);
         }
 
-        v12 = [v7 subarrayWithRange:{v8, v11}];
+        v12 = [itemIdentifiers subarrayWithRange:{v8, v11}];
       }
 
       v13 = v12;
@@ -5836,18 +5836,18 @@ LABEL_39:
   return v9;
 }
 
-- (id)_manualSummaryViewModelForItemID:(id)a3
+- (id)_manualSummaryViewModelForItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ConversationViewController *)self _summarizableMessageCountForItemID:v4];
-    v6 = [(ConversationViewController *)self inlineSummaryItemID];
+    v5 = [(ConversationViewController *)self _summarizableMessageCountForItemID:dCopy];
+    inlineSummaryItemID = [(ConversationViewController *)self inlineSummaryItemID];
 
-    v7 = v4;
-    v8 = [(ConversationViewController *)self summaryViewModelByItemID];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    v7 = dCopy;
+    summaryViewModelByItemID = [(ConversationViewController *)self summaryViewModelByItemID];
+    v9 = [summaryViewModelByItemID objectForKeyedSubscript:v7];
 
     if (v9)
     {
@@ -5867,9 +5867,9 @@ LABEL_39:
       v20 = v11;
       v12 = [EFFuture lazyFutureWithBlock:&v16];
       v13 = [MUIManualSummaryViewModel alloc];
-      v10 = [v13 initWithState:0 summary:0 error:0 summarizableMessageCount:v5 isInlineSummary:v6 == v4 isExternalSummary:0 summaryControllerFuture:{v12, v16, v17, v18, v19}];
-      v14 = [(ConversationViewController *)self summaryViewModelByItemID];
-      [v14 setObject:v10 forKeyedSubscript:v11];
+      v10 = [v13 initWithState:0 summary:0 error:0 summarizableMessageCount:v5 isInlineSummary:inlineSummaryItemID == dCopy isExternalSummary:0 summaryControllerFuture:{v12, v16, v17, v18, v19}];
+      summaryViewModelByItemID2 = [(ConversationViewController *)self summaryViewModelByItemID];
+      [summaryViewModelByItemID2 setObject:v10 forKeyedSubscript:v11];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
@@ -5886,16 +5886,16 @@ LABEL_39:
 
 - (void)_reloadTopSummaryIfNecessary
 {
-  v3 = [(ConversationViewController *)self topSummaryItemID];
-  if (v3)
+  topSummaryItemID = [(ConversationViewController *)self topSummaryItemID];
+  if (topSummaryItemID)
   {
-    v4 = [(ConversationViewController *)self collectionViewDataSource];
-    v5 = [v4 indexPathForItemIdentifier:v3];
+    collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+    v5 = [collectionViewDataSource indexPathForItemIdentifier:topSummaryItemID];
 
     if (v5)
     {
-      v6 = [(ConversationViewControllerBase *)self collectionView];
-      v7 = [v6 mui_isIndexPathVisible:v5];
+      collectionView = [(ConversationViewControllerBase *)self collectionView];
+      v7 = [collectionView mui_isIndexPathVisible:v5];
 
       if (v7)
       {
@@ -5917,12 +5917,12 @@ LABEL_39:
 
   else if (_os_feature_enabled_impl())
   {
-    v3 = [(ConversationViewController *)self collectionViewDataSource];
-    [v3 setSupplementaryViewProvider:0];
+    collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+    [collectionViewDataSource setSupplementaryViewProvider:0];
 
     [(ConversationViewController *)self _resetQuickReplyViewControllerWithReason:2 resetCompose:1 override:1];
-    v4 = [(ConversationViewControllerBase *)self conversationLayout];
-    [v4 invalidateLayout];
+    conversationLayout = [(ConversationViewControllerBase *)self conversationLayout];
+    [conversationLayout invalidateLayout];
 
     [(ConversationViewController *)self _reloadDataSource];
   }
@@ -5930,23 +5930,23 @@ LABEL_39:
 
 - (void)_updateQuickReplyLabelIfNeeded
 {
-  v3 = [(ConversationViewController *)self _quickReplyView];
+  _quickReplyView = [(ConversationViewController *)self _quickReplyView];
   [(ConversationViewController *)self _updateQuickReplyLabelIfNeeded:?];
 }
 
-- (void)_updateQuickReplyLabelIfNeeded:(id)a3
+- (void)_updateQuickReplyLabelIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  neededCopy = needed;
+  v5 = neededCopy;
+  if (neededCopy)
   {
-    v9 = v4;
-    v6 = [v4 isComposing];
+    v9 = neededCopy;
+    isComposing = [neededCopy isComposing];
     v5 = v9;
-    if ((v6 & 1) == 0)
+    if ((isComposing & 1) == 0)
     {
-      v7 = [(ConversationViewController *)self targetMessageForBarButtonTriage];
-      v8 = [MFComposeMailMessage legacyMessageWithMessage:v7 mailboxUid:0 skipAttachmentDownload:1];
+      targetMessageForBarButtonTriage = [(ConversationViewController *)self targetMessageForBarButtonTriage];
+      v8 = [MFComposeMailMessage legacyMessageWithMessage:targetMessageForBarButtonTriage mailboxUid:0 skipAttachmentDownload:1];
       [v9 updatePlaceholderWithMessage:v8];
 
       v5 = v9;
@@ -5956,21 +5956,21 @@ LABEL_39:
 
 - (id)_quickReplyCompositionContext
 {
-  v4 = [(ConversationViewController *)self targetMessageForBarButtonTriage];
-  v5 = [v4 itemID];
-  if (v5)
+  targetMessageForBarButtonTriage = [(ConversationViewController *)self targetMessageForBarButtonTriage];
+  itemID = [targetMessageForBarButtonTriage itemID];
+  if (itemID)
   {
-    v6 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:v5];
+    v6 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:itemID];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 message];
+      message = [v6 message];
       v9 = +[UIApplication sharedApplication];
-      v10 = [v9 mailboxProvider];
+      mailboxProvider = [v9 mailboxProvider];
 
-      v11 = [v8 mailboxObjectIDs];
-      v12 = [v11 firstObject];
-      v13 = [v10 legacyMailboxForObjectID:v12];
+      mailboxObjectIDs = [message mailboxObjectIDs];
+      firstObject = [mailboxObjectIDs firstObject];
+      v13 = [mailboxProvider legacyMailboxForObjectID:firstObject];
 
       if (!v13)
       {
@@ -5981,9 +5981,9 @@ LABEL_39:
         }
       }
 
-      v15 = [MFComposeMailMessage legacyMessageWithMessage:v8 mailboxUid:v13 skipAttachmentDownload:1];
-      v16 = [(ConversationViewController *)self _getCurrentlySelectedMessageContentForMessageItemID:v5];
-      v17 = [[_MFMailCompositionContext alloc] initReplyAllToMessage:v8 legacyMessage:v15 isEML:0];
+      v15 = [MFComposeMailMessage legacyMessageWithMessage:message mailboxUid:v13 skipAttachmentDownload:1];
+      v16 = [(ConversationViewController *)self _getCurrentlySelectedMessageContentForMessageItemID:itemID];
+      v17 = [[_MFMailCompositionContext alloc] initReplyAllToMessage:message legacyMessage:v15 isEML:0];
       [v17 setQuickReply:1];
       [v17 setShowKeyboardImmediately:1];
       [v17 setOriginalContent:v16];
@@ -5991,8 +5991,8 @@ LABEL_39:
 
     else
     {
-      v8 = +[ConversationViewController log];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      message = +[ConversationViewController log];
+      if (os_log_type_enabled(message, OS_LOG_TYPE_ERROR))
       {
         NSStringFromSelector(a2);
         objc_claimAutoreleasedReturnValue();
@@ -6008,7 +6008,7 @@ LABEL_39:
     v7 = +[ConversationViewController log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [v4 ef_publicDescription];
+      [targetMessageForBarButtonTriage ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
       NSStringFromSelector(a2);
       objc_claimAutoreleasedReturnValue();
@@ -6021,36 +6021,36 @@ LABEL_39:
   return v17;
 }
 
-- (BOOL)_isQuickReplyMessageAtIndexPath:(id)a3
+- (BOOL)_isQuickReplyMessageAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(ConversationViewControllerBase *)self allowQuickReply])
   {
-    v5 = [(ConversationViewControllerBase *)self collectionView];
-    v6 = [v5 numberOfSections];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    numberOfSections = [collectionView numberOfSections];
 
-    v7 = [(ConversationViewControllerBase *)self collectionView];
-    v8 = [v7 numberOfItemsInSection:--v6] - 1;
+    collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+    v8 = [collectionView2 numberOfItemsInSection:--numberOfSections] - 1;
 
-    v9 = [NSIndexPath indexPathForItem:v8 inSection:v6];
+    v9 = [NSIndexPath indexPathForItem:v8 inSection:numberOfSections];
     v10 = [NSIndexPath indexPathForItem:0 inSection:0];
     if ([(ConversationViewController *)self _showQuickReplyBelowConversation])
     {
-      v11 = [v4 isEqual:v9];
+      v11 = [pathCopy isEqual:v9];
     }
 
     else
     {
-      v11 = [v4 isEqual:v10];
+      v11 = [pathCopy isEqual:v10];
     }
 
     v13 = v11;
-    v14 = [(ConversationViewControllerBase *)self quickReplyAnimationContext];
-    v15 = [v14 getObject];
+    quickReplyAnimationContext = [(ConversationViewControllerBase *)self quickReplyAnimationContext];
+    getObject = [quickReplyAnimationContext getObject];
 
-    if ((v13 & (*(EFIsNotNull + 16))(EFIsNotNull, v15)) == 1)
+    if ((v13 & (*(EFIsNotNull + 16))(EFIsNotNull, getObject)) == 1)
     {
-      v12 = [(ConversationViewController *)self _userIsSenderAtIndexPath:v4];
+      v12 = [(ConversationViewController *)self _userIsSenderAtIndexPath:pathCopy];
     }
 
     else
@@ -6067,12 +6067,12 @@ LABEL_39:
   return v12;
 }
 
-- (BOOL)_isUndoSendMessageAtIndexPath:(id)a3
+- (BOOL)_isUndoSendMessageAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(ConversationViewController *)self _messageAtIndexPath:v4];
+    v5 = [(ConversationViewController *)self _messageAtIndexPath:pathCopy];
     if (v5)
     {
       if ([(ConversationViewController *)self _isMessageInOutbox:v5])
@@ -6089,9 +6089,9 @@ LABEL_11:
         v11 = 138412802;
         v12 = objc_opt_class();
         v13 = 2048;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2112;
-        v16 = v4;
+        v16 = pathCopy;
         v10 = v12;
         _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "<%@: %p> Message at indexPath=%@ is not in outbox, don't expand to show Undo Send", &v11, 0x20u);
       }
@@ -6105,9 +6105,9 @@ LABEL_11:
         v11 = 138412802;
         v12 = objc_opt_class();
         v13 = 2048;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2112;
-        v16 = v4;
+        v16 = pathCopy;
         v8 = v12;
         _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "<%@: %p> No message found for indexPath=%@", &v11, 0x20u);
       }
@@ -6123,19 +6123,19 @@ LABEL_12:
   return v6;
 }
 
-- (void)_didChangeHorizontalPadding:(double)a3
+- (void)_didChangeHorizontalPadding:(double)padding
 {
-  v4 = [(ConversationViewController *)self _quickReplyView];
-  [v4 setHorizontalInset:a3];
+  _quickReplyView = [(ConversationViewController *)self _quickReplyView];
+  [_quickReplyView setHorizontalInset:padding];
 }
 
 - (CGRect)_quickReplyViewFrame
 {
-  v2 = [(ConversationViewController *)self _quickReplyView];
-  v3 = v2;
-  if (v2)
+  _quickReplyView = [(ConversationViewController *)self _quickReplyView];
+  v3 = _quickReplyView;
+  if (_quickReplyView)
   {
-    [v2 frame];
+    [_quickReplyView frame];
     x = v4;
     y = v6;
     width = v8;
@@ -6161,28 +6161,28 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)_userIsSenderAtIndexPath:(id)a3
+- (BOOL)_userIsSenderAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self _messageAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(ConversationViewController *)self _messageAtIndexPath:pathCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 senderList];
-    v8 = [v7 firstObject];
-    v9 = [v8 emailAddressValue];
+    senderList = [v5 senderList];
+    firstObject = [senderList firstObject];
+    emailAddressValue = [firstObject emailAddressValue];
 
-    v10 = [v9 simpleAddress];
-    v11 = [v10 lowercaseString];
+    simpleAddress = [emailAddressValue simpleAddress];
+    lowercaseString = [simpleAddress lowercaseString];
 
     v12 = +[UIApplication sharedApplication];
-    v13 = [v12 accountsProvider];
-    v14 = [v13 displayedAccounts];
-    v15 = [v14 allObjects];
-    v16 = [v15 ef_flatMap:&stru_10064D7A8];
+    accountsProvider = [v12 accountsProvider];
+    displayedAccounts = [accountsProvider displayedAccounts];
+    allObjects = [displayedAccounts allObjects];
+    v16 = [allObjects ef_flatMap:&stru_10064D7A8];
     v17 = [v16 ef_mapSelector:"lowercaseString"];
 
-    v18 = [v17 containsObject:v11];
+    v18 = [v17 containsObject:lowercaseString];
   }
 
   else
@@ -6193,9 +6193,9 @@ LABEL_12:
       *buf = 138412802;
       v23 = objc_opt_class();
       v24 = 2048;
-      v25 = self;
+      selfCopy = self;
       v26 = 2112;
-      v27 = v4;
+      v27 = pathCopy;
       v21 = v23;
       _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "<%@: %p> [Quick Reply] No message found for indexPath=%@", buf, 0x20u);
     }
@@ -6210,21 +6210,21 @@ LABEL_12:
 {
   if ([(ConversationViewControllerBase *)self allowQuickReply])
   {
-    v3 = [(ConversationViewControllerBase *)self collectionView];
-    v4 = [(ConversationViewControllerBase *)self conversationSortOrder];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    conversationSortOrder = [(ConversationViewControllerBase *)self conversationSortOrder];
     v5 = &UICollectionElementKindSectionFooter;
-    if (v4)
+    if (conversationSortOrder)
     {
       v5 = &UICollectionElementKindSectionHeader;
     }
 
     v6 = *v5;
-    v7 = [v3 indexPathsForVisibleSupplementaryElementsOfKind:v6];
+    v7 = [collectionView indexPathsForVisibleSupplementaryElementsOfKind:v6];
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_100070078;
     v16 = &unk_10064D7D0;
-    v8 = v3;
+    v8 = collectionView;
     v17 = v8;
     v9 = v6;
     v18 = v9;
@@ -6240,13 +6240,13 @@ LABEL_12:
   return v11;
 }
 
-- (void)_updateQuickReplySendButtonOffset:(id)a3
+- (void)_updateQuickReplySendButtonOffset:(id)offset
 {
-  v15 = a3;
-  v4 = [(ConversationViewController *)self _quickReplyView];
-  v5 = [(ConversationViewController *)self quickReplyMailComposeController];
-  v6 = v5;
-  if (v4 && v5)
+  offsetCopy = offset;
+  _quickReplyView = [(ConversationViewController *)self _quickReplyView];
+  quickReplyMailComposeController = [(ConversationViewController *)self quickReplyMailComposeController];
+  v6 = quickReplyMailComposeController;
+  if (_quickReplyView && quickReplyMailComposeController)
   {
     v7 = 0.0;
     if ([(ConversationViewController *)self _showQuickReplyBelowConversation])
@@ -6255,22 +6255,22 @@ LABEL_12:
       v7 = v8;
     }
 
-    [v15 contentInset];
+    [offsetCopy contentInset];
     v10 = v9;
-    [v15 contentOffset];
+    [offsetCopy contentOffset];
     v12 = v11;
-    [v4 frame];
+    [_quickReplyView frame];
     v14 = v7 + v13;
     if (v10 + v12 >= v14)
     {
-      [v4 updateQuickReplySendButtonTopOffset:v10 + v12 - v14];
+      [_quickReplyView updateQuickReplySendButtonTopOffset:v10 + v12 - v14];
     }
   }
 }
 
-- (void)_updateManualSummaryUIForScroll:(id)a3
+- (void)_updateManualSummaryUIForScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   if (MUISolariumFeatureEnabled())
   {
     objc_initWeak(&location, self);
@@ -6279,13 +6279,13 @@ LABEL_12:
     v8[2] = sub_100070394;
     v8[3] = &unk_10064D838;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = scrollCopy;
     v5 = objc_retainBlock(v8);
-    v6 = [(ConversationViewController *)self topSummaryItemID];
-    (v5[2])(v5, v6);
+    topSummaryItemID = [(ConversationViewController *)self topSummaryItemID];
+    (v5[2])(v5, topSummaryItemID);
 
-    v7 = [(ConversationViewController *)self inlineSummaryItemID];
-    (v5[2])(v5, v7);
+    inlineSummaryItemID = [(ConversationViewController *)self inlineSummaryItemID];
+    (v5[2])(v5, inlineSummaryItemID);
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -6294,11 +6294,11 @@ LABEL_12:
 
 - (id)_lastIndexPath
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
-  v4 = [(ConversationViewController *)self collectionViewDataSource];
-  v5 = [v4 numberOfSectionsInCollectionView:v3];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  v5 = [collectionViewDataSource numberOfSectionsInCollectionView:collectionView];
   v6 = v5 - 1;
-  if (v5 < 1 || (v7 = [v4 collectionView:v3 numberOfItemsInSection:v6], v7 < 1))
+  if (v5 < 1 || (v7 = [collectionViewDataSource collectionView:collectionView numberOfItemsInSection:v6], v7 < 1))
   {
     v8 = 0;
   }
@@ -6311,114 +6311,114 @@ LABEL_12:
   return v8;
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   if ([(ConversationViewControllerBase *)self allowQuickReply])
   {
-    v4 = [(ConversationViewController *)self quickReplyMailComposeController];
+    quickReplyMailComposeController = [(ConversationViewController *)self quickReplyMailComposeController];
 
-    if (!v4)
+    if (!quickReplyMailComposeController)
     {
       +[_TtC10MobileMail14QuickReplyView defaultHeight];
       [(ConversationViewControllerBase *)self setQuickReplyHeight:?];
-      v6 = [(ConversationViewControllerBase *)self collectionView];
-      v5 = [v6 collectionViewLayout];
-      [v5 invalidateLayout];
+      collectionView = [(ConversationViewControllerBase *)self collectionView];
+      collectionViewLayout = [collectionView collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
     }
   }
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v5 = [(ConversationViewController *)self animationControllerForTransition:1, a4, a5];
+  sourceController = [(ConversationViewController *)self animationControllerForTransition:1, presentingController, sourceController];
 
-  return v5;
+  return sourceController;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v3 = [(ConversationViewController *)self animationControllerForTransition:0];
 
   return v3;
 }
 
-- (id)animationControllerForTransition:(BOOL)a3
+- (id)animationControllerForTransition:(BOOL)transition
 {
-  v3 = a3;
-  v4 = [(ConversationViewController *)self _quickReplyView];
+  transitionCopy = transition;
+  _quickReplyView = [(ConversationViewController *)self _quickReplyView];
   v5 = 0;
-  if (v4 && v3)
+  if (_quickReplyView && transitionCopy)
   {
     v5 = objc_alloc_init(_UISheetAnimationController);
     [v5 setIsReversed:0];
-    v6 = [v4 animationSourceView];
-    [v5 setSourceView:v6];
+    animationSourceView = [_quickReplyView animationSourceView];
+    [v5 setSourceView:animationSourceView];
   }
 
   return v5;
 }
 
-- (id)_fullComposeViewControllerForQuickReply:(id)a3 userActivity:(id)a4
+- (id)_fullComposeViewControllerForQuickReply:(id)reply userActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  replyCopy = reply;
+  activityCopy = activity;
   v8 = [ComposeNavigationController alloc];
-  v9 = [(ConversationViewControllerBase *)self scene];
-  v10 = [(ComposeNavigationController *)v8 initWithUserActivity:v7 scene:v9];
+  scene = [(ConversationViewControllerBase *)self scene];
+  v10 = [(ComposeNavigationController *)v8 initWithUserActivity:activityCopy scene:scene];
 
   [(ComposeNavigationController *)v10 setTransitioningDelegate:self];
   [(ComposeNavigationController *)v10 setModalPresentationStyle:2];
-  v11 = [(ConversationViewControllerBase *)self scene];
-  v12 = [v11 composeViewDelegateHandler];
-  [(ComposeNavigationController *)v10 setMailComposeDelegate:v12];
+  scene2 = [(ConversationViewControllerBase *)self scene];
+  composeViewDelegateHandler = [scene2 composeViewDelegateHandler];
+  [(ComposeNavigationController *)v10 setMailComposeDelegate:composeViewDelegateHandler];
 
   v13 = [MFActiveDraft alloc];
-  v14 = [(ComposeNavigationController *)v10 autosaveIdentifier];
-  v15 = [(ComposeNavigationController *)v10 originalMessageObjectID];
-  v16 = [(MFActiveDraft *)v13 initWithIdentifier:v14 andOriginalMessageIdentifier:v15];
-  v17 = [v11 session];
-  [v17 mf_setActiveDraft:v16];
+  autosaveIdentifier = [(ComposeNavigationController *)v10 autosaveIdentifier];
+  originalMessageObjectID = [(ComposeNavigationController *)v10 originalMessageObjectID];
+  v16 = [(MFActiveDraft *)v13 initWithIdentifier:autosaveIdentifier andOriginalMessageIdentifier:originalMessageObjectID];
+  session = [scene2 session];
+  [session mf_setActiveDraft:v16];
 
-  v18 = [(ComposeNavigationController *)v10 presentationController];
+  presentationController = [(ComposeNavigationController *)v10 presentationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = v18;
-    v20 = [v6 animationSourceView];
-    [v19 setSourceView:v20];
+    v19 = presentationController;
+    animationSourceView = [replyCopy animationSourceView];
+    [v19 setSourceView:animationSourceView];
 
     +[_TtC10MobileMail14QuickReplyView cornerRadius];
     [v19 _setCornerRadiusForPresentationAndDismissal:?];
     [v19 _setShouldDismissWhenTappedOutside:1];
   }
 
-  [v18 setDelegate:self];
+  [presentationController setDelegate:self];
 
   return v10;
 }
 
-- (void)_runAlongsideAnimationsForTransition:(BOOL)a3
+- (void)_runAlongsideAnimationsForTransition:(BOOL)transition
 {
-  v3 = a3;
-  v5 = [(ConversationViewController *)self transitionCoordinator];
+  transitionCopy = transition;
+  transitionCoordinator = [(ConversationViewController *)self transitionCoordinator];
 
-  if (v5)
+  if (transitionCoordinator)
   {
     objc_initWeak(&location, self);
-    v6 = [(ConversationViewController *)self transitionCoordinator];
+    transitionCoordinator2 = [(ConversationViewController *)self transitionCoordinator];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100070C0C;
     v11[3] = &unk_10064D860;
     objc_copyWeak(&v12, &location);
-    v13 = v3;
+    v13 = transitionCopy;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100070C9C;
     v8[3] = &unk_10064D860;
     objc_copyWeak(&v9, &location);
-    v10 = v3;
-    [v6 animateAlongsideTransition:v11 completion:v8];
+    v10 = transitionCopy;
+    [transitionCoordinator2 animateAlongsideTransition:v11 completion:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&v12);
@@ -6427,16 +6427,16 @@ LABEL_12:
 
   else
   {
-    v7 = [(ConversationViewController *)self _quickReplyView];
-    [v7 setHidden:v3];
+    _quickReplyView = [(ConversationViewController *)self _quickReplyView];
+    [_quickReplyView setHidden:transitionCopy];
   }
 }
 
 - (void)_setupQuickReplySupplementaryViewProvider
 {
   objc_initWeak(&location, self);
-  v3 = [(ConversationViewController *)self quickReplyHeaderSupplementaryRegistration];
-  if (!v3 || ([(ConversationViewController *)self quickReplyFooterSupplementaryRegistration], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, !v4))
+  quickReplyHeaderSupplementaryRegistration = [(ConversationViewController *)self quickReplyHeaderSupplementaryRegistration];
+  if (!quickReplyHeaderSupplementaryRegistration || ([(ConversationViewController *)self quickReplyFooterSupplementaryRegistration], v4 = objc_claimAutoreleasedReturnValue(), v4, quickReplyHeaderSupplementaryRegistration, !v4))
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -6453,18 +6453,18 @@ LABEL_12:
     objc_destroyWeak(&v14);
   }
 
-  v8 = [(ConversationViewController *)self collectionViewDataSource];
-  v9 = [v8 supplementaryViewProvider];
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  supplementaryViewProvider = [collectionViewDataSource supplementaryViewProvider];
 
-  if (!v9)
+  if (!supplementaryViewProvider)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000711C4;
     v11[3] = &unk_10064D8B0;
     objc_copyWeak(&v12, &location);
-    v10 = [(ConversationViewController *)self collectionViewDataSource];
-    [v10 setSupplementaryViewProvider:v11];
+    collectionViewDataSource2 = [(ConversationViewController *)self collectionViewDataSource];
+    [collectionViewDataSource2 setSupplementaryViewProvider:v11];
 
     objc_destroyWeak(&v12);
   }
@@ -6474,58 +6474,58 @@ LABEL_12:
 
 - (void)_dismissKeyboardIfNecessary
 {
-  v3 = [(ConversationViewController *)self view];
-  v2 = [v3 window];
-  [v2 endEditing:1];
+  view = [(ConversationViewController *)self view];
+  window = [view window];
+  [window endEditing:1];
 }
 
-- (id)mailComposeViewForQuickReplyView:(id)a3
+- (id)mailComposeViewForQuickReplyView:(id)view
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self quickReplyMailComposeController];
-  [v5 removeFromParentViewController];
+  viewCopy = view;
+  quickReplyMailComposeController = [(ConversationViewController *)self quickReplyMailComposeController];
+  [quickReplyMailComposeController removeFromParentViewController];
 
-  v6 = [(ConversationViewController *)self quickReplyMailComposeController];
-  v7 = [v6 view];
-  [v7 removeFromSuperview];
+  quickReplyMailComposeController2 = [(ConversationViewController *)self quickReplyMailComposeController];
+  view = [quickReplyMailComposeController2 view];
+  [view removeFromSuperview];
 
-  v8 = [(ConversationViewControllerBase *)self scene];
-  v9 = [(ConversationViewController *)self _quickReplyCompositionContext];
-  v10 = [[MFMailComposeController alloc] initWithCompositionContext:v9 options:0];
+  scene = [(ConversationViewControllerBase *)self scene];
+  _quickReplyCompositionContext = [(ConversationViewController *)self _quickReplyCompositionContext];
+  v10 = [[MFMailComposeController alloc] initWithCompositionContext:_quickReplyCompositionContext options:0];
   [(ConversationViewController *)self setQuickReplyMailComposeController:v10];
-  v11 = [v8 composeViewDelegate];
-  [v10 setDelegate:v11];
+  composeViewDelegate = [scene composeViewDelegate];
+  [v10 setDelegate:composeViewDelegate];
 
   [v10 setQuickReplyDelegate:self];
-  [v10 setQuickReplyActionButtonProvider:v4];
+  [v10 setQuickReplyActionButtonProvider:viewCopy];
   [(ConversationViewController *)self addChildViewController:v10];
-  v12 = [v10 view];
+  view2 = [v10 view];
 
-  return v12;
+  return view2;
 }
 
-- (void)mailComposeViewSnapshotForQuickReplyView:(id)a3 :(id)a4
+- (void)mailComposeViewSnapshotForQuickReplyView:(id)view :(id)a4
 {
   v5 = a4;
-  v6 = [(ConversationViewController *)self quickReplyMailComposeController];
+  quickReplyMailComposeController = [(ConversationViewController *)self quickReplyMailComposeController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000716CC;
   v8[3] = &unk_10064D8D8;
   v7 = v5;
   v9 = v7;
-  [v6 takeSnapshotWithCompletionHandler:v8];
+  [quickReplyMailComposeController takeSnapshotWithCompletionHandler:v8];
 }
 
-- (id)displayNameForAddresses:(id)a3
+- (id)displayNameForAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   v5 = objc_alloc_init(NSMutableArray);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = addressesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -6540,8 +6540,8 @@ LABEL_12:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [(ConversationViewControllerBase *)self contactStore];
-        v12 = [v11 displayNameForEmailAddress:v10];
+        contactStore = [(ConversationViewControllerBase *)self contactStore];
+        v12 = [contactStore displayNameForEmailAddress:v10];
         [v5 addObject:v12];
       }
 
@@ -6556,26 +6556,26 @@ LABEL_12:
   return v13;
 }
 
-- (void)quickReplyView:(id)a3 didTapExpandButton:(id)a4
+- (void)quickReplyView:(id)view didTapExpandButton:(id)button
 {
-  v5 = [(ConversationViewController *)self quickReplyMailComposeController:a3];
-  v6 = [v5 composeWebView];
-  v7 = [v6 getCaretPosition];
+  v5 = [(ConversationViewController *)self quickReplyMailComposeController:view];
+  composeWebView = [v5 composeWebView];
+  getCaretPosition = [composeWebView getCaretPosition];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100071A10;
   v8[3] = &unk_10064D900;
   v8[4] = self;
-  [v7 addSuccessBlock:v8];
+  [getCaretPosition addSuccessBlock:v8];
 }
 
-- (void)quickReplyView:(id)a3 didTapSendButton:(id)a4 animationContext:(id)a5
+- (void)quickReplyView:(id)view didTapSendButton:(id)button animationContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  viewCopy = view;
+  buttonCopy = button;
+  contextCopy = context;
+  if (contextCopy)
   {
     objc_initWeak(&location, self);
     v17 = _NSConcreteStackBlock;
@@ -6583,9 +6583,9 @@ LABEL_12:
     v19 = sub_100071DE4;
     v20 = &unk_10064C838;
     objc_copyWeak(&v21, &location);
-    [v10 setCompletionBlock:&v17];
+    [contextCopy setCompletionBlock:&v17];
     v11 = [(ConversationViewControllerBase *)self quickReplyAnimationContext:v17];
-    [v11 setObject:v10];
+    [v11 setObject:contextCopy];
 
     v12 = +[ConversationViewController log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -6594,9 +6594,9 @@ LABEL_12:
       *buf = 138412802;
       v24 = v13;
       v25 = 2048;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
-      v28 = v10;
+      v28 = contextCopy;
       v14 = v13;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "<%@: %p> [Quick Reply][Send Animation] Did prepare quick-reply send animation with context: %@", buf, 0x20u);
     }
@@ -6613,11 +6613,11 @@ LABEL_12:
   }
 
   [(ConversationViewControllerBase *)self setIsPerformingQuickReplySendAnimation:1];
-  v16 = [(ConversationViewController *)self quickReplyMailComposeController];
-  [v16 performSend];
+  quickReplyMailComposeController = [(ConversationViewController *)self quickReplyMailComposeController];
+  [quickReplyMailComposeController performSend];
 }
 
-- (void)mailComposeController:(id)a3 didChangeQuickReplyWebViewHeight:(double)a4
+- (void)mailComposeController:(id)controller didChangeQuickReplyWebViewHeight:(double)height
 {
   v6 = +[ConversationViewController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -6627,9 +6627,9 @@ LABEL_12:
     *buf = 138413058;
     v65 = v59;
     v66 = 2048;
-    v67 = self;
+    selfCopy2 = self;
     v68 = 2048;
-    v69 = a4;
+    heightCopy = height;
     v70 = 2048;
     v71 = v60;
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "<%@: %p> [Quick Reply] Wants to change height to: %f, current height: %f", buf, 0x2Au);
@@ -6639,12 +6639,12 @@ LABEL_12:
   v8 = v7;
   +[_TtC10MobileMail14QuickReplyView innerVerticalPadding];
   v10 = v9;
-  v11 = [(ConversationViewControllerBase *)self collectionView];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
   +[_TtC10MobileMail14QuickReplyView defaultHeight];
-  v13 = v8 + a4 + v10;
+  v13 = v8 + height + v10;
   if (v13 >= v12)
   {
-    v14 = v8 + a4 + v10;
+    v14 = v8 + height + v10;
   }
 
   else
@@ -6671,35 +6671,35 @@ LABEL_12:
       *buf = 138413058;
       v65 = v20;
       v66 = 2048;
-      v67 = self;
+      selfCopy2 = self;
       v68 = 2048;
-      v69 = v14;
+      heightCopy = v14;
       v70 = 2048;
       v71 = v14 - v18;
       v21 = v20;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "<%@: %p> [Quick Reply] Did change height to: %f, delta: %f", buf, 0x2Au);
     }
 
-    v22 = [(ConversationViewController *)self _quickReplyView];
-    if (v22)
+    _quickReplyView = [(ConversationViewController *)self _quickReplyView];
+    if (_quickReplyView)
     {
       if ([(ConversationViewController *)self _showQuickReplyBelowConversation])
       {
         [(ConversationViewControllerBase *)self _itemSpacing];
         v24 = v23;
-        [v11 mf_visibleFrame];
+        [collectionView mf_visibleFrame];
         v62 = v26;
         v63 = v25;
         rect = v27;
         v29 = v28;
-        [v22 frame];
+        [_quickReplyView frame];
         v31 = v30;
         v33 = v32;
         v35 = v34;
         v37 = v36;
-        v38 = [(ConversationViewController *)self view];
-        v39 = [(ConversationViewControllerBase *)self collectionView];
-        [v38 convertRect:v39 fromView:{v31, v24 + v33, v35, v37 - v24}];
+        view = [(ConversationViewController *)self view];
+        collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+        [view convertRect:collectionView2 fromView:{v31, v24 + v33, v35, v37 - v24}];
         v41 = v40;
         v43 = v42;
         v45 = v44;
@@ -6720,47 +6720,47 @@ LABEL_12:
         v75.origin.x = v63;
         v75.size.width = rect;
         v72.x = MinX;
-        LOBYTE(v38) = CGRectContainsPoint(v75, v72);
-        [v11 contentSize];
+        LOBYTE(view) = CGRectContainsPoint(v75, v72);
+        [collectionView contentSize];
         v50 = v49;
-        [v11 contentInset];
+        [collectionView contentInset];
         v52 = v51;
-        [v11 contentInset];
+        [collectionView contentInset];
         v54 = v53;
-        [v11 frame];
+        [collectionView frame];
         v56 = v55;
-        v57 = [v11 collectionViewLayout];
-        [v57 invalidateLayout];
+        collectionViewLayout = [collectionView collectionViewLayout];
+        [collectionViewLayout invalidateLayout];
 
-        if ((v38 & (v13 + v50 + v52 + v54 >= v56)) == 1)
+        if ((view & (v13 + v50 + v52 + v54 >= v56)) == 1)
         {
-          [v11 contentOffset];
-          [v11 setContentOffset:0 animated:?];
+          [collectionView contentOffset];
+          [collectionView setContentOffset:0 animated:?];
         }
       }
 
       else
       {
-        v58 = [v11 collectionViewLayout];
-        [v58 invalidateLayout];
+        collectionViewLayout2 = [collectionView collectionViewLayout];
+        [collectionViewLayout2 invalidateLayout];
       }
     }
 
-    [(ConversationViewController *)self _updateQuickReplySendButtonOffset:v11];
+    [(ConversationViewController *)self _updateQuickReplySendButtonOffset:collectionView];
   }
 }
 
-- (void)mailComposeController:(id)a3 composeBodyIsEmpty:(BOOL)a4
+- (void)mailComposeController:(id)controller composeBodyIsEmpty:(BOOL)empty
 {
-  v4 = a4;
-  [(ConversationViewController *)self setQuickReplyHasContent:!a4];
-  v6 = [(ConversationViewController *)self _quickReplyView];
-  [v6 setQuickReplyPlaceholderLabelState:v4];
+  emptyCopy = empty;
+  [(ConversationViewController *)self setQuickReplyHasContent:!empty];
+  _quickReplyView = [(ConversationViewController *)self _quickReplyView];
+  [_quickReplyView setQuickReplyPlaceholderLabelState:emptyCopy];
 }
 
-- (void)mailComposeController:(id)a3 willMigrateToFullComposeWithReason:(int64_t)a4
+- (void)mailComposeController:(id)controller willMigrateToFullComposeWithReason:(int64_t)reason
 {
-  if (!a4)
+  if (!reason)
   {
     v5 = +[ConversationViewController log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -6768,68 +6768,68 @@ LABEL_12:
       v8 = 138412546;
       v9 = objc_opt_class();
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v6 = v9;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<%@: %p> [Quick Reply] Will add attachment, applying snapshot to view hierarchy", &v8, 0x16u);
     }
 
-    v7 = [(ConversationViewController *)self _quickReplyView];
-    [v7 showSnapshot];
+    _quickReplyView = [(ConversationViewController *)self _quickReplyView];
+    [_quickReplyView showSnapshot];
   }
 }
 
-- (void)mailComposeController:(id)a3 migrateToFullCompose:(id)a4
+- (void)mailComposeController:(id)controller migrateToFullCompose:(id)compose
 {
-  v5 = a4;
+  composeCopy = compose;
   if (+[UIDevice mf_isPadIdiom])
   {
-    v6 = [(ConversationViewControllerBase *)self scene];
+    scene = [(ConversationViewControllerBase *)self scene];
     objc_initWeak(&location, self);
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1000728EC;
     v22[3] = &unk_10064D928;
     objc_copyWeak(&v23, &location);
-    [v6 showComposeWithUserActivity:v5 completion:v22];
+    [scene showComposeWithUserActivity:composeCopy completion:v22];
     objc_destroyWeak(&v23);
     objc_destroyWeak(&location);
   }
 
   else
   {
-    v6 = [(ConversationViewController *)self _quickReplyView];
-    v7 = [(ConversationViewController *)self _fullComposeViewControllerForQuickReply:v6 userActivity:v5];
-    v8 = [v7 autosaveIdentifier];
-    v16 = [v7 originalMessageObjectID];
-    if (v8)
+    scene = [(ConversationViewController *)self _quickReplyView];
+    v7 = [(ConversationViewController *)self _fullComposeViewControllerForQuickReply:scene userActivity:composeCopy];
+    autosaveIdentifier = [v7 autosaveIdentifier];
+    originalMessageObjectID = [v7 originalMessageObjectID];
+    if (autosaveIdentifier)
     {
       v9 = +[UIApplication sharedApplication];
-      v10 = [v9 dockPersistence];
-      [v10 removeDockedStateWithIdentifier:v8 sender:0];
+      dockPersistence = [v9 dockPersistence];
+      [dockPersistence removeDockedStateWithIdentifier:autosaveIdentifier sender:0];
     }
 
-    v11 = [(ConversationViewControllerBase *)self scene];
-    v12 = [v11 dockContainer];
+    scene2 = [(ConversationViewControllerBase *)self scene];
+    dockContainer = [scene2 dockContainer];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100072964;
     v18[3] = &unk_10064C6B0;
-    v13 = v11;
+    v13 = scene2;
     v19 = v13;
-    v14 = v8;
+    v14 = autosaveIdentifier;
     v20 = v14;
     v15 = v17;
     v21 = v15;
-    [v12 presentViewController:v7 animated:1 completion:v18];
+    [dockContainer presentViewController:v7 animated:1 completion:v18];
 
     [(ConversationViewController *)self _runAlongsideAnimationsForTransition:1];
   }
 }
 
-- (void)mailComposeController:(id)a3 isSending:(BOOL)a4
+- (void)mailComposeController:(id)controller isSending:(BOOL)sending
 {
-  v6 = a3;
-  if (!a4 && [(ConversationViewControllerBase *)self isPerformingQuickReplySendAnimation])
+  controllerCopy = controller;
+  if (!sending && [(ConversationViewControllerBase *)self isPerformingQuickReplySendAnimation])
   {
     v7 = +[ConversationViewController log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -6837,38 +6837,38 @@ LABEL_12:
       v11 = 138412546;
       v12 = objc_opt_class();
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v8 = v12;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<%@: %p> [Quick Reply][Send Animation] Aborting send animation", &v11, 0x16u);
     }
 
     [(ConversationViewControllerBase *)self setIsPerformingQuickReplySendAnimation:0];
-    v9 = [(ConversationViewControllerBase *)self quickReplyAnimationContext];
+    quickReplyAnimationContext = [(ConversationViewControllerBase *)self quickReplyAnimationContext];
     v10 = +[NSNull null];
-    [v9 setObject:v10];
+    [quickReplyAnimationContext setObject:v10];
   }
 }
 
-- (id)_sheetPresentationControllerViewForTouchContinuation:(id)a3
+- (id)_sheetPresentationControllerViewForTouchContinuation:(id)continuation
 {
-  v3 = [a3 presentedViewController];
+  presentedViewController = [continuation presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 view];
+    view = [presentedViewController view];
   }
 
   else
   {
-    v4 = 0;
+    view = 0;
   }
 
-  return v4;
+  return view;
 }
 
-- (void)disableAutomaticMarkAsReadForMessages:(id)a3
+- (void)disableAutomaticMarkAsReadForMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   if (!*(&self->_disabledMarkAsReadMessageItemIDs + 4))
   {
     v5 = objc_alloc_init(NSMutableSet);
@@ -6876,18 +6876,18 @@ LABEL_12:
     *(&self->_disabledMarkAsReadMessageItemIDs + 4) = v5;
   }
 
-  v7 = [v4 firstObject];
+  firstObject = [messagesCopy firstObject];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 count] == 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [messagesCopy count] == 1)
   {
-    v8 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v9 = [v4 firstObject];
+    referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    firstObject2 = [messagesCopy firstObject];
 
-    if (v8 == v9)
+    if (referenceMessageListItem == firstObject2)
     {
-      v10 = [(ConversationViewController *)self collectionViewDataSource];
-      v11 = [v10 snapshot];
-      v12 = [v11 itemIdentifiers];
+      collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+      snapshot = [collectionViewDataSource snapshot];
+      itemIdentifiers = [snapshot itemIdentifiers];
 
       goto LABEL_9;
     }
@@ -6897,17 +6897,17 @@ LABEL_12:
   {
   }
 
-  v12 = [v4 ef_mapSelector:"itemID"];
+  itemIdentifiers = [messagesCopy ef_mapSelector:"itemID"];
 LABEL_9:
   v13 = +[ConversationViewController log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v12;
+    v15 = itemIdentifiers;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Disable auto-mark-as-read for itemIDs: %@", &v14, 0xCu);
   }
 
-  [*(&self->_disabledMarkAsReadMessageItemIDs + 4) addObjectsFromArray:v12];
+  [*(&self->_disabledMarkAsReadMessageItemIDs + 4) addObjectsFromArray:itemIdentifiers];
 }
 
 - (void)reenableAutomaticMarkAsReadForAllMessages
@@ -6926,18 +6926,18 @@ LABEL_9:
   }
 }
 
-- (void)scheduleAutomaticMarkAsReadForViewModel:(id)a3
+- (void)scheduleAutomaticMarkAsReadForViewModel:(id)model
 {
-  v4 = [a3 messageContentRequest];
-  v5 = [v4 message];
+  messageContentRequest = [model messageContentRequest];
+  message = [messageContentRequest message];
 
-  [(ConversationViewController *)self scheduleAutomaticMarkAsReadForMessage:v5];
+  [(ConversationViewController *)self scheduleAutomaticMarkAsReadForMessage:message];
 }
 
-- (void)scheduleAutomaticMarkAsReadForMessage:(id)a3
+- (void)scheduleAutomaticMarkAsReadForMessage:(id)message
 {
-  v4 = a3;
-  if ([(ConversationViewController *)self _shouldAutomaticallyMarkAsReadMessage:v4])
+  messageCopy = message;
+  if ([(ConversationViewController *)self _shouldAutomaticallyMarkAsReadMessage:messageCopy])
   {
     if (!*(&self->_delayedReadCancelables + 4))
     {
@@ -6947,9 +6947,9 @@ LABEL_9:
     }
 
     objc_initWeak(&location, self);
-    v7 = [(ConversationViewController *)self markAsReadBehavior];
+    markAsReadBehavior = [(ConversationViewController *)self markAsReadBehavior];
     v8 = 0.0;
-    if (v7 <= 3 && v7 != 1)
+    if (markAsReadBehavior <= 3 && markAsReadBehavior != 1)
     {
       v8 = 0.66;
     }
@@ -6960,14 +6960,14 @@ LABEL_9:
     v16 = sub_10007313C;
     v17 = &unk_10064C8B0;
     objc_copyWeak(v19, &location);
-    v10 = v4;
+    v10 = messageCopy;
     v18 = v10;
     v19[1] = *&v8;
     v11 = [v9 afterDelay:&v14 performBlock:v8];
 
     v12 = *(&self->_delayedReadCancelables + 4);
-    v13 = [v10 itemID];
-    [v12 setObject:v11 forKey:v13];
+    itemID = [v10 itemID];
+    [v12 setObject:v11 forKey:itemID];
 
     objc_destroyWeak(v19);
     objc_destroyWeak(&location);
@@ -6976,20 +6976,20 @@ LABEL_9:
 
 - (void)scheduleAutomaticMarkAsReadForReferenceMessage
 {
-  v3 = [(ConversationViewController *)self _indexPathForReferenceMessage];
-  if (v3)
+  _indexPathForReferenceMessage = [(ConversationViewController *)self _indexPathForReferenceMessage];
+  if (_indexPathForReferenceMessage)
   {
-    v4 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v5 = [v4 displayMessageItemID];
-    v6 = [(ConversationViewController *)self _messageFutureForItemID:v5];
+    referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    displayMessageItemID = [referenceMessageListItem displayMessageItemID];
+    v6 = [(ConversationViewController *)self _messageFutureForItemID:displayMessageItemID];
 
     objc_initWeak(&location, self);
     v7 = +[ConversationViewController log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 displayMessageItemID];
+      displayMessageItemID2 = [referenceMessageListItem displayMessageItemID];
       *buf = 138412290;
-      v19 = v8;
+      v19 = displayMessageItemID2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ - Scheduling auto-mark-as-read for reference message", buf, 0xCu);
     }
 
@@ -7005,7 +7005,7 @@ LABEL_9:
     v13[1] = 3221225472;
     v13[2] = sub_1000739DC;
     v13[3] = &unk_10064D028;
-    v10 = v4;
+    v10 = referenceMessageListItem;
     v14 = v10;
     [v6 addFailureBlock:v13];
 
@@ -7018,50 +7018,50 @@ LABEL_9:
     v10 = +[ConversationViewController log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-      v12 = [v11 itemID];
+      referenceMessageListItem2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+      itemID = [referenceMessageListItem2 itemID];
       *buf = 138412290;
-      v19 = v12;
+      v19 = itemID;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ - Do not auto-mark-as-read because indexPath for referenceMessage is nil", buf, 0xCu);
     }
   }
 }
 
-- (void)cancelAutomaticMarkAsReadForCellViewModel:(id)a3
+- (void)cancelAutomaticMarkAsReadForCellViewModel:(id)model
 {
-  v4 = [a3 messageContentRequest];
-  v10 = [v4 message];
+  messageContentRequest = [model messageContentRequest];
+  message = [messageContentRequest message];
 
   v5 = *(&self->_delayedReadCancelables + 4);
-  v6 = [v10 itemID];
-  v7 = [v5 objectForKey:v6];
+  itemID = [message itemID];
+  v7 = [v5 objectForKey:itemID];
   [v7 cancel];
 
   v8 = *(&self->_delayedReadCancelables + 4);
-  v9 = [v10 itemID];
-  [v8 removeObjectForKey:v9];
+  itemID2 = [message itemID];
+  [v8 removeObjectForKey:itemID2];
 }
 
 - (void)invalidateAutomaticMarkAsReadForAllMessages
 {
-  v3 = [*(&self->_delayedReadCancelables + 4) objectEnumerator];
-  v4 = [v3 allObjects];
-  [v4 makeObjectsPerformSelector:"cancel"];
+  objectEnumerator = [*(&self->_delayedReadCancelables + 4) objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  [allObjects makeObjectsPerformSelector:"cancel"];
 
   v5 = *(&self->_delayedReadCancelables + 4);
 
   [v5 removeAllObjects];
 }
 
-- (BOOL)_shouldAutomaticallyMarkAsReadMessage:(id)a3
+- (BOOL)_shouldAutomaticallyMarkAsReadMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 flags];
-  v6 = [v5 read];
+  messageCopy = message;
+  flags = [messageCopy flags];
+  read = [flags read];
 
-  if ((v4 == 0) | v6 & 1)
+  if ((messageCopy == 0) | read & 1)
   {
-    if (!v4)
+    if (!messageCopy)
     {
       v7 = +[ConversationViewController log];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -7076,45 +7076,45 @@ LABEL_9:
   if ([(ConversationViewController *)self markAsReadBehavior]!= 2)
   {
     v9 = *(&self->_delayedReadCancelables + 4);
-    v10 = [v4 itemID];
-    v11 = [v9 objectForKey:v10];
+    itemID = [messageCopy itemID];
+    v11 = [v9 objectForKey:itemID];
 
     if (v11)
     {
       v8 = +[ConversationViewController log];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v4 itemID];
+        itemID2 = [messageCopy itemID];
         LODWORD(buf.origin.x) = 138412290;
-        *(&buf.origin.x + 4) = v12;
+        *(&buf.origin.x + 4) = itemID2;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ - Do not auto-mark-as-read because it is already set up", &buf, 0xCu);
       }
 
       goto LABEL_13;
     }
 
-    v15 = [(ConversationViewController *)self collectionViewDataSource];
-    v16 = [v4 itemID];
-    v17 = [v15 indexPathForItemIdentifier:v16];
+    collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+    itemID3 = [messageCopy itemID];
+    v17 = [collectionViewDataSource indexPathForItemIdentifier:itemID3];
 
     if (v17)
     {
-      v18 = [(ConversationViewControllerBase *)self previewState];
-      if ([v18 shouldScheduleMarkMessageAsRead])
+      previewState = [(ConversationViewControllerBase *)self previewState];
+      if ([previewState shouldScheduleMarkMessageAsRead])
       {
-        v19 = [(ConversationViewControllerBase *)self cellConfigurator];
-        v20 = [v19 messageAtIndexPathIsExpandedOrSemiExpanded:v17];
+        cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+        v20 = [cellConfigurator messageAtIndexPathIsExpandedOrSemiExpanded:v17];
 
         if (v20)
         {
           v21 = *(&self->_disabledMarkAsReadMessageItemIDs + 4);
-          v22 = [v4 itemID];
-          LOBYTE(v21) = [v21 containsObject:v22];
+          itemID4 = [messageCopy itemID];
+          LOBYTE(v21) = [v21 containsObject:itemID4];
 
           if ((v21 & 1) == 0)
           {
-            v23 = [(ConversationViewControllerBase *)self collectionView];
-            [v23 mf_visibleBounds];
+            collectionView = [(ConversationViewControllerBase *)self collectionView];
+            [collectionView mf_visibleBounds];
             v30 = v29;
             v32 = v31;
             v34 = v33;
@@ -7131,7 +7131,7 @@ LABEL_9:
             v80.size.height = v36;
             if (CGRectIntersectsRect(v80, v84))
             {
-              v42 = [v23 cellForItemAtIndexPath:v17];
+              v42 = [collectionView cellForItemAtIndexPath:v17];
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
@@ -7139,15 +7139,15 @@ LABEL_9:
                 goto LABEL_14;
               }
 
-              v43 = [v42 messageViewController];
-              v44 = [v43 messageContentView];
+              messageViewController = [v42 messageViewController];
+              messageContentView = [messageViewController messageContentView];
 
-              v45 = [v44 headerView];
+              headerView = [messageContentView headerView];
               v72 = v36;
               v73 = v34;
               v74 = v32;
               v75 = v30;
-              [v45 frame];
+              [headerView frame];
               v47 = v46;
               v49 = v48;
               v51 = v50;
@@ -7159,7 +7159,7 @@ LABEL_9:
               buf.size = v54;
               remainder.origin = v54;
               remainder.size = v54;
-              [v44 bounds];
+              [messageContentView bounds];
               v56 = v55;
               v58 = v57;
               v60 = v59;
@@ -7174,7 +7174,7 @@ LABEL_9:
               v82.size.width = v60;
               v82.size.height = v62;
               CGRectDivide(v82, &buf, &remainder, Height, CGRectMinYEdge);
-              [v23 convertRect:v44 fromView:remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height];
+              [collectionView convertRect:messageContentView fromView:remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height];
 
               v64 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
               [v64 lineHeight];
@@ -7194,9 +7194,9 @@ LABEL_9:
                 v69 = +[ConversationViewController log];
                 if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
                 {
-                  v70 = [v4 itemID];
+                  itemID5 = [messageCopy itemID];
                   LODWORD(buf.origin.x) = 138412290;
-                  *(&buf.origin.x + 4) = v70;
+                  *(&buf.origin.x + 4) = itemID5;
                   _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "%@ - Do not auto-mark-as-read because not enough of it is visible", &buf, 0xCu);
                 }
               }
@@ -7207,9 +7207,9 @@ LABEL_9:
               v42 = +[ConversationViewController log];
               if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
               {
-                v71 = [v4 itemID];
+                itemID6 = [messageCopy itemID];
                 LODWORD(buf.origin.x) = 138412290;
-                *(&buf.origin.x + 4) = v71;
+                *(&buf.origin.x + 4) = itemID6;
                 _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "%@ - Do not auto-mark-as-read because it is not yet visible", &buf, 0xCu);
               }
 
@@ -7220,15 +7220,15 @@ LABEL_36:
             goto LABEL_15;
           }
 
-          v23 = +[ConversationViewController log];
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+          collectionView = +[ConversationViewController log];
+          if (os_log_type_enabled(collectionView, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v4 itemID];
+            itemID7 = [messageCopy itemID];
             LODWORD(buf.origin.x) = 138412546;
-            *(&buf.origin.x + 4) = v24;
+            *(&buf.origin.x + 4) = itemID7;
             WORD2(buf.origin.y) = 2080;
             *(&buf.origin.y + 6) = "was explicitly marked unread";
-            _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%@ - Do not auto-mark-as-read because it %s", &buf, 0x16u);
+            _os_log_impl(&_mh_execute_header, collectionView, OS_LOG_TYPE_DEFAULT, "%@ - Do not auto-mark-as-read because it %s", &buf, 0x16u);
           }
 
 LABEL_35:
@@ -7242,10 +7242,10 @@ LABEL_35:
       }
     }
 
-    v23 = +[ConversationViewController log];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    collectionView = +[ConversationViewController log];
+    if (os_log_type_enabled(collectionView, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v4 itemID];
+      itemID8 = [messageCopy itemID];
       if (v17)
       {
         v26 = "NO";
@@ -7256,7 +7256,7 @@ LABEL_35:
         v26 = "YES";
       }
 
-      v27 = [(ConversationViewControllerBase *)self previewState];
+      previewState2 = [(ConversationViewControllerBase *)self previewState];
       if (v17)
       {
         self = [(ConversationViewControllerBase *)self cellConfigurator];
@@ -7277,14 +7277,14 @@ LABEL_35:
       }
 
       LODWORD(buf.origin.x) = 138413058;
-      *(&buf.origin.x + 4) = v25;
+      *(&buf.origin.x + 4) = itemID8;
       WORD2(buf.origin.y) = 2080;
       *(&buf.origin.y + 6) = v26;
       HIWORD(buf.size.width) = 2112;
-      *&buf.size.height = v27;
+      *&buf.size.height = previewState2;
       v78 = 2080;
       v79 = v28;
-      _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%@ - Do not auto-mark-as-read for reasons: indexPath-is-nil: %s, previewState: %@, message-is-expanded: %s", &buf, 0x2Au);
+      _os_log_impl(&_mh_execute_header, collectionView, OS_LOG_TYPE_DEFAULT, "%@ - Do not auto-mark-as-read for reasons: indexPath-is-nil: %s, previewState: %@, message-is-expanded: %s", &buf, 0x2Au);
       if (v17)
       {
       }
@@ -7309,16 +7309,16 @@ LABEL_15:
   return v13;
 }
 
-- (id)_cellForMessageItemIDIfExpanded:(id)a3
+- (id)_cellForMessageItemIDIfExpanded:(id)expanded
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self collectionViewDataSource];
-  v6 = [v5 indexPathForItemIdentifier:v4];
+  expandedCopy = expanded;
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  v6 = [collectionViewDataSource indexPathForItemIdentifier:expandedCopy];
 
   if (v6 && (-[ConversationViewControllerBase cellConfigurator](self, "cellConfigurator"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 messageAtIndexPathIsExpanded:v6], v7, v8))
   {
-    v9 = [(ConversationViewControllerBase *)self collectionView];
-    v10 = [v9 cellForItemAtIndexPath:v6];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    v10 = [collectionView cellForItemAtIndexPath:v6];
   }
 
   else
@@ -7329,9 +7329,9 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)_shouldShowMailboxForMessage:(id)a3
+- (BOOL)_shouldShowMailboxForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if ([(ConversationViewControllerBase *)self messagesShowSourceMailbox])
   {
     v5 = 1;
@@ -7344,30 +7344,30 @@ LABEL_15:
 
   else
   {
-    v6 = [v4 mailboxObjectIDs];
-    v7 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v8 = [v7 mailboxObjectIDs];
+    mailboxObjectIDs = [messageCopy mailboxObjectIDs];
+    referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    mailboxObjectIDs2 = [referenceMessageListItem mailboxObjectIDs];
 
-    v9 = [v6 firstObjectCommonWithArray:v8];
+    v9 = [mailboxObjectIDs firstObjectCommonWithArray:mailboxObjectIDs2];
     v5 = v9 == 0;
   }
 
   return v5;
 }
 
-- (BOOL)_shouldShowTimeSensitiveForMessage:(id)a3
+- (BOOL)_shouldShowTimeSensitiveForMessage:(id)message
 {
-  v4 = a3;
-  if (!-[ConversationViewController _shouldShowMailboxForMessage:](self, "_shouldShowMailboxForMessage:", v4) && EMBlackPearlIsFeatureEnabled() && ([v4 category], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isHighImpact"), v5, (v6 & 1) != 0) && (objc_msgSend(v4, "category"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "type"), v7, v8) && (-[ConversationViewControllerBase delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "currentlySelectedBucketForConversationViewController:", self), v9, v10 == 1))
+  messageCopy = message;
+  if (!-[ConversationViewController _shouldShowMailboxForMessage:](self, "_shouldShowMailboxForMessage:", messageCopy) && EMBlackPearlIsFeatureEnabled() && ([messageCopy category], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isHighImpact"), v5, (v6 & 1) != 0) && (objc_msgSend(messageCopy, "category"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "type"), v7, v8) && (-[ConversationViewControllerBase delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "currentlySelectedBucketForConversationViewController:", self), v9, v10 == 1))
   {
     v11 = +[ConversationViewController log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v4 ef_publicDescription];
+      ef_publicDescription = [messageCopy ef_publicDescription];
       v15 = 134218242;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v12;
+      v18 = ef_publicDescription;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%p: Show time sensitive banner for message: %{public}@", &v15, 0x16u);
     }
 
@@ -7382,41 +7382,41 @@ LABEL_15:
   return v13;
 }
 
-- (void)swipableCollectionViewLayout:(id)a3 willBeginSwipeAtIndexPath:(id)a4
+- (void)swipableCollectionViewLayout:(id)layout willBeginSwipeAtIndexPath:(id)path
 {
-  v4 = [(ConversationViewControllerBase *)self cellExpansionRecognizer:a3];
+  v4 = [(ConversationViewControllerBase *)self cellExpansionRecognizer:layout];
   [v4 cancel];
 }
 
-- (id)_itemsForMessage:(id)a3 changeAction:(int64_t)a4
+- (id)_itemsForMessage:(id)message changeAction:(int64_t)action
 {
-  v6 = a3;
-  v7 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  if ([v7 count] == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && +[MessageStatusIndicatorManager doesUpdateForChangeAction:](MessageStatusIndicatorManager, "doesUpdateForChangeAction:", a4))
+  messageCopy = message;
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  if ([referenceMessageListItem count] == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && +[MessageStatusIndicatorManager doesUpdateForChangeAction:](MessageStatusIndicatorManager, "doesUpdateForChangeAction:", action))
   {
     v8 = +[ConversationViewController log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 objectID];
-      v10 = [v6 objectID];
+      objectID = [referenceMessageListItem objectID];
+      objectID2 = [messageCopy objectID];
       *buf = 134218498;
-      v18 = a4;
+      actionCopy = action;
       v19 = 2114;
-      v20 = v9;
+      v20 = objectID;
       v21 = 2114;
-      v22 = v10;
+      v22 = objectID2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "For changeAction:%ld, include both itemID:%{public}@ displayMessage:%{public}@", buf, 0x20u);
     }
 
-    v16[0] = v7;
-    v16[1] = v6;
+    v16[0] = referenceMessageListItem;
+    v16[1] = messageCopy;
     v11 = v16;
     v12 = 2;
   }
 
   else
   {
-    v15 = v6;
+    v15 = messageCopy;
     v11 = &v15;
     v12 = 1;
   }
@@ -7426,21 +7426,21 @@ LABEL_15:
   return v13;
 }
 
-- (id)swipableCollectionViewLayout:(id)a3 leadingSwipeActionsConfigurationForItemAtIndexPath:(id)a4
+- (id)swipableCollectionViewLayout:(id)layout leadingSwipeActionsConfigurationForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ConversationViewController *)self _messageAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [(ConversationViewController *)self _messageAtIndexPath:pathCopy];
   v7 = v6;
   if (v6 && ([v6 isEditable] & 1) == 0)
   {
     v9 = sub_10024BB48(0);
     v10 = [MFTriageActionUtilities triageActionForActionKey:v9];
 
-    v11 = [(ConversationViewController *)self messageTriageInteractionHelper];
+    messageTriageInteractionHelper = [(ConversationViewController *)self messageTriageInteractionHelper];
     v12 = [(ConversationViewController *)self _itemsForMessage:v7 changeAction:v10];
-    v13 = [(ConversationViewControllerBase *)self collectionView];
-    v14 = [v13 cellForItemAtIndexPath:v5];
-    v15 = [v11 triageInteractionForTriageAction:v10 withMessageListItems:v12 presentationSource:v14 presentingViewController:self moveInteractionDelegate:self forPreview:0 origin:3];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    v14 = [collectionView cellForItemAtIndexPath:pathCopy];
+    v15 = [messageTriageInteractionHelper triageInteractionForTriageAction:v10 withMessageListItems:v12 presentationSource:v14 presentingViewController:self moveInteractionDelegate:self forPreview:0 origin:3];
 
     v16 = [(ConversationViewController *)self _swipeActionForTriageInteraction:v15];
     v17 = v16;
@@ -7467,22 +7467,22 @@ LABEL_15:
   return v8;
 }
 
-- (id)swipableCollectionViewLayout:(id)a3 trailingSwipeActionsConfigurationForItemAtIndexPath:(id)a4
+- (id)swipableCollectionViewLayout:(id)layout trailingSwipeActionsConfigurationForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ConversationViewController *)self _messageAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [(ConversationViewController *)self _messageAtIndexPath:pathCopy];
   if (v6)
   {
-    v7 = [(ConversationViewControllerBase *)self collectionView];
-    v31 = [v7 cellForItemAtIndexPath:v5];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    v31 = [collectionView cellForItemAtIndexPath:pathCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v8 = v31;
-      v9 = [v8 predictedMailbox];
+      predictedMailbox = [v8 predictedMailbox];
 
-      if (!v9)
+      if (!predictedMailbox)
       {
         v33 = v6;
         v10 = [NSArray arrayWithObjects:&v33 count:1];
@@ -7491,34 +7491,34 @@ LABEL_15:
       }
     }
 
-    v12 = [v6 isEditable];
+    isEditable = [v6 isEditable];
     v32 = v6;
     v30 = [NSArray arrayWithObjects:&v32 count:1];
     v13 = objc_alloc_init(NSMutableArray);
-    if ((v12 & 1) != 0 || ![v6 shouldArchiveByDefault])
+    if ((isEditable & 1) != 0 || ![v6 shouldArchiveByDefault])
     {
-      v14 = [(ConversationViewController *)self undoManager];
-      v29 = [(MFDestructiveTriageInteraction *)MFDeleteTriageInteraction interactionWithMessageListItems:v30 undoManager:v14 origin:3 actor:2];
+      undoManager = [(ConversationViewController *)self undoManager];
+      v29 = [(MFDestructiveTriageInteraction *)MFDeleteTriageInteraction interactionWithMessageListItems:v30 undoManager:undoManager origin:3 actor:2];
     }
 
     else
     {
-      v14 = [(ConversationViewController *)self undoManager];
-      v29 = [(MFDestructiveTriageInteraction *)MFArchiveTriageInteraction interactionWithMessageListItems:v30 undoManager:v14 origin:3 actor:2];
+      undoManager = [(ConversationViewController *)self undoManager];
+      v29 = [(MFDestructiveTriageInteraction *)MFArchiveTriageInteraction interactionWithMessageListItems:v30 undoManager:undoManager origin:3 actor:2];
     }
 
     v15 = [v29 swipeActionWithPreparation:0 completion:0];
     [v13 addObject:v15];
-    if ((v12 & 1) == 0)
+    if ((isEditable & 1) == 0)
     {
       v16 = sub_10024BC14(0);
       v17 = [MFTriageActionUtilities triageActionForActionKey:v16];
 
-      v18 = [(ConversationViewController *)self messageTriageInteractionHelper];
+      messageTriageInteractionHelper = [(ConversationViewController *)self messageTriageInteractionHelper];
       v19 = [(ConversationViewController *)self _itemsForMessage:v6 changeAction:v17];
-      v20 = [(ConversationViewControllerBase *)self collectionView];
-      v21 = [v20 cellForItemAtIndexPath:v5];
-      v22 = [v18 triageInteractionForTriageAction:v17 withMessageListItems:v19 presentationSource:v21 presentingViewController:self moveInteractionDelegate:self forPreview:0 origin:3];
+      collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+      v21 = [collectionView2 cellForItemAtIndexPath:pathCopy];
+      v22 = [messageTriageInteractionHelper triageInteractionForTriageAction:v17 withMessageListItems:v19 presentationSource:v21 presentingViewController:self moveInteractionDelegate:self forPreview:0 origin:3];
 
       v23 = [(ConversationViewController *)self _swipeActionForTriageInteraction:v22];
       if (v23)
@@ -7526,12 +7526,12 @@ LABEL_15:
         [v13 addObject:v23];
       }
 
-      v24 = [(ConversationViewController *)self undoManager];
-      v25 = [MFMoreTriageInteraction interactionWithMessageListItems:v30 undoManager:v24 origin:3 actor:2 interactionStyle:1];
+      undoManager2 = [(ConversationViewController *)self undoManager];
+      v25 = [MFMoreTriageInteraction interactionWithMessageListItems:v30 undoManager:undoManager2 origin:3 actor:2 interactionStyle:1];
 
       [v25 setDelegate:self];
-      v26 = [v25 swipeAction];
-      [v13 addObject:v26];
+      swipeAction = [v25 swipeAction];
+      [v13 addObject:swipeAction];
     }
 
     v27 = [UISwipeActionsConfiguration configurationWithActions:v13];
@@ -7546,10 +7546,10 @@ LABEL_15:
   return v27;
 }
 
-- (BOOL)swipableCollectionViewLayout:(id)a3 shouldAnimateAppearingItemAtIndexPath:(id)a4
+- (BOOL)swipableCollectionViewLayout:(id)layout shouldAnimateAppearingItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(ConversationViewControllerBase *)self allowQuickReply]&& [(ConversationViewController *)self _isQuickReplyMessageAtIndexPath:v5])
+  pathCopy = path;
+  if ([(ConversationViewControllerBase *)self allowQuickReply]&& [(ConversationViewController *)self _isQuickReplyMessageAtIndexPath:pathCopy])
   {
     v6 = +[ConversationViewController log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -7559,9 +7559,9 @@ LABEL_15:
       v11 = 138412802;
       v12 = v8;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v5;
+      v16 = pathCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "<%@: %p> Should animate appearing item at indexPath=%@)", &v11, 0x20u);
     }
 
@@ -7576,9 +7576,9 @@ LABEL_15:
   return v9;
 }
 
-- (id)_swipeActionForTriageInteraction:(id)a3
+- (id)_swipeActionForTriageInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -7587,22 +7587,22 @@ LABEL_15:
     v8[2] = sub_1000754A4;
     v8[3] = &unk_10064D720;
     v8[4] = self;
-    v5 = [v4 swipeActionWithPreparation:0 completion:v8];
+    swipeAction = [interactionCopy swipeActionWithPreparation:0 completion:v8];
   }
 
   else
   {
-    v5 = [v4 swipeAction];
+    swipeAction = [interactionCopy swipeAction];
   }
 
-  v6 = v5;
+  v6 = swipeAction;
 
   return v6;
 }
 
-- (void)laterButtonTapped:(id)a3
+- (void)laterButtonTapped:(id)tapped
 {
-  v4 = sub_1000756FC(self, a3, 2);
+  v4 = sub_1000756FC(self, tapped, 2);
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -7614,20 +7614,20 @@ LABEL_15:
   objc_destroyWeak(&location);
 }
 
-- (void)customBackButtonTapped:(id)a3
+- (void)customBackButtonTapped:(id)tapped
 {
-  v3 = [(ConversationViewController *)self splitViewController];
-  [v3 showMessageListViewController:1 animated:1 completion:0];
+  splitViewController = [(ConversationViewController *)self splitViewController];
+  [splitViewController showMessageListViewController:1 animated:1 completion:0];
 }
 
-- (void)conversationNavigationBarItemsManager:(id)a3 validateBarButtonItem:(id)a4 ofType:(int64_t)a5
+- (void)conversationNavigationBarItemsManager:(id)manager validateBarButtonItem:(id)item ofType:(int64_t)type
 {
-  v7 = a4;
-  v8 = [(ConversationViewController *)self selectionDataSource];
-  v9 = [v8 shouldUseSelectionDataSourceForConversationViewController:self];
+  itemCopy = item;
+  selectionDataSource = [(ConversationViewController *)self selectionDataSource];
+  v9 = [selectionDataSource shouldUseSelectionDataSourceForConversationViewController:self];
   if (v9)
   {
-    v10 = [v8 messageListItemSelectionForConversationViewController:self];
+    v10 = [selectionDataSource messageListItemSelectionForConversationViewController:self];
   }
 
   else
@@ -7637,13 +7637,13 @@ LABEL_15:
 
   if ([v10 isSelectAll])
   {
-    v11 = 1;
+    delegate = 1;
   }
 
   else
   {
-    v12 = [v10 messageListItems];
-    v11 = [v12 count] != 0;
+    messageListItems = [v10 messageListItems];
+    delegate = [messageListItems count] != 0;
   }
 
   v46[0] = _NSConcreteStackBlock;
@@ -7651,10 +7651,10 @@ LABEL_15:
   v46[2] = sub_100076780;
   v46[3] = &unk_10064D9B0;
   v46[4] = self;
-  v13 = v7;
+  v13 = itemCopy;
   v47 = v13;
   v14 = objc_retainBlock(v46);
-  switch(a5)
+  switch(type)
   {
     case 0:
     case 1:
@@ -7665,7 +7665,7 @@ LABEL_15:
     case 5:
     case 12:
     case 13:
-      v11 = v9 ^ 1;
+      delegate = v9 ^ 1;
       goto LABEL_20;
     case 6:
       v38[0] = _NSConcreteStackBlock;
@@ -7676,7 +7676,7 @@ LABEL_15:
       v41 = v9;
       v39 = v10;
       v40 = v13;
-      v42 = v11;
+      v42 = delegate;
       (v14[2])(v14, v38);
 
       v15 = v39;
@@ -7703,19 +7703,19 @@ LABEL_16:
       if (v9)
       {
         v28 = v16;
-        v22 = [v8 messageTriageInteractionHelperForConversationViewController:self];
-        v23 = [v10 messageListItems];
-        v24 = [v22 flagStateForTriageAction:2 messageListItems:v23 isSelectAll:objc_msgSend(v10 supportsSelectAll:{"isSelectAll"), 1}];
+        referenceMessageListItem = [selectionDataSource messageTriageInteractionHelperForConversationViewController:self];
+        messageListItems2 = [v10 messageListItems];
+        v24 = [referenceMessageListItem flagStateForTriageAction:2 messageListItems:messageListItems2 isSelectAll:objc_msgSend(v10 supportsSelectAll:{"isSelectAll"), 1}];
 
-        sub_10006E008(self, v19, v28, v24, v11);
+        sub_10006E008(self, v19, v28, v24, delegate);
         v16 = v28;
       }
 
       else
       {
-        v22 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-        v27 = [v22 flags];
-        sub_10006E008(self, v19, v16, [v27 read], v22 != 0);
+        referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+        flags = [referenceMessageListItem flags];
+        sub_10006E008(self, v19, v16, [flags read], referenceMessageListItem != 0);
       }
 
       break;
@@ -7730,7 +7730,7 @@ LABEL_19:
       if (v9)
       {
 LABEL_20:
-        [v13 setEnabled:v11];
+        [v13 setEnabled:delegate];
       }
 
       break;
@@ -7754,7 +7754,7 @@ LABEL_20:
       v33[3] = &unk_10064DA28;
       v37 = v9;
       v34 = v10;
-      v35 = self;
+      selfCopy = self;
       v36 = v13;
       (v14[2])(v14, v33);
 
@@ -7780,8 +7780,8 @@ LABEL_22:
 
       else
       {
-        v11 = [(ConversationViewControllerBase *)self delegate];
-        v20 = [v11 conversationViewControllerAllowsCategorizationAction:self];
+        delegate = [(ConversationViewControllerBase *)self delegate];
+        v20 = [delegate conversationViewControllerAllowsCategorizationAction:self];
       }
 
       [v13 setEnabled:v20];
@@ -7797,42 +7797,42 @@ LABEL_22:
 
 - (void)prewarmContent
 {
-  v2 = [(ConversationViewControllerBase *)self barItemsManager];
-  [v2 prewarmContent];
+  barItemsManager = [(ConversationViewControllerBase *)self barItemsManager];
+  [barItemsManager prewarmContent];
 }
 
-- (void)revealActionsButtonTapped:(id)a3
+- (void)revealActionsButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = objc_opt_class();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100076CA0;
   v7[3] = &unk_10064DA78;
   v7[4] = self;
-  v6 = v4;
+  v6 = tappedCopy;
   v8 = v6;
   [(ConversationViewController *)self _presentMailActionsViewControllerFromBarButtonItem:v6 dataSourceClass:v5 includeMessageContentRequest:1 completionHandler:v7];
 }
 
-- (void)_doDeleteSelectedMessagesAskingConfirmation:(BOOL)a3 presentationSourceButtonItem:(id)a4 forceArchive:(BOOL)a5
+- (void)_doDeleteSelectedMessagesAskingConfirmation:(BOOL)confirmation presentationSourceButtonItem:(id)item forceArchive:(BOOL)archive
 {
-  v6 = a3;
-  v9 = a4;
+  confirmationCopy = confirmation;
+  itemCopy = item;
   v10 = sub_100069A50(self);
   if (v10)
   {
-    if (a5 || [(ConversationViewController *)self _shouldArchiveByDefault])
+    if (archive || [(ConversationViewController *)self _shouldArchiveByDefault])
     {
-      v11 = [(ConversationViewController *)self undoManager];
-      v12 = [(MFDestructiveTriageInteraction *)MFArchiveTriageInteraction interactionWithMessageListItemSelection:v10 undoManager:v11 origin:3 actor:2];
+      undoManager = [(ConversationViewController *)self undoManager];
+      v12 = [(MFDestructiveTriageInteraction *)MFArchiveTriageInteraction interactionWithMessageListItemSelection:v10 undoManager:undoManager origin:3 actor:2];
       v13 = 1;
     }
 
     else
     {
-      v11 = [(ConversationViewController *)self undoManager];
-      v12 = [(MFDestructiveTriageInteraction *)MFDeleteTriageInteraction interactionWithMessageListItemSelection:v10 undoManager:v11 origin:3 actor:2];
+      undoManager = [(ConversationViewController *)self undoManager];
+      v12 = [(MFDestructiveTriageInteraction *)MFDeleteTriageInteraction interactionWithMessageListItemSelection:v10 undoManager:undoManager origin:3 actor:2];
       v13 = 0;
     }
 
@@ -7841,7 +7841,7 @@ LABEL_22:
     {
       v16 = @"Delete";
       *buf = 134218498;
-      v37 = self;
+      selfCopy = self;
       if (v13)
       {
         v16 = @"Archive";
@@ -7850,17 +7850,17 @@ LABEL_22:
       v38 = 2112;
       v39 = v16;
       v40 = 1024;
-      v41 = v6;
+      v41 = confirmationCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "<%p> %@ selected messages. Ask for confirmation? %{BOOL}d", buf, 0x1Cu);
     }
 
     v26 = v13;
 
-    v17 = [(ConversationViewController *)self selectionDataSource];
-    v18 = [v17 shouldUseSelectionDataSourceForConversationViewController:self];
+    selectionDataSource = [(ConversationViewController *)self selectionDataSource];
+    v18 = [selectionDataSource shouldUseSelectionDataSourceForConversationViewController:self];
     if (v18)
     {
-      v19 = [v17 messageTriageInteractionHelperForConversationViewController:self];
+      v19 = [selectionDataSource messageTriageInteractionHelperForConversationViewController:self];
       [v12 setDelegate:v19];
     }
 
@@ -7869,9 +7869,9 @@ LABEL_22:
       [v12 setDelegate:self];
     }
 
-    [v12 setShouldAskForConfirmation:v6];
-    [v12 setPresentationSource:v9];
-    [v9 setEnabled:0];
+    [v12 setShouldAskForConfirmation:confirmationCopy];
+    [v12 setPresentationSource:itemCopy];
+    [itemCopy setEnabled:0];
     objc_initWeak(&location, self);
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
@@ -7882,18 +7882,18 @@ LABEL_22:
     v21 = +[ConversationViewController log];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v10 messageListItems];
-      v23 = v22;
-      v24 = @"selection data source";
+      messageListItems = [v10 messageListItems];
+      v23 = messageListItems;
+      selfCopy2 = @"selection data source";
       if (!v18)
       {
-        v24 = self;
+        selfCopy2 = self;
       }
 
       *buf = 138412546;
-      v37 = v24;
+      selfCopy = selfCopy2;
       v38 = 2112;
-      v39 = v22;
+      v39 = messageListItems;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Performing triage interaction with delegate from %@ and selection: %@", buf, 0x16u);
     }
 
@@ -7903,7 +7903,7 @@ LABEL_22:
     v27[3] = &unk_10064DAA0;
     objc_copyWeak(&v31, &location);
     v32 = v26;
-    v28 = v9;
+    v28 = itemCopy;
     v25 = v20;
     v30 = v25;
     v14 = v12;
@@ -7927,7 +7927,7 @@ LABEL_22:
   }
 }
 
-- (void)searchMessages:(id)a3
+- (void)searchMessages:(id)messages
 {
   v3 = sub_1004852A4(self);
   [v3 presentFindNavigatorShowingReplace:0];
@@ -7952,27 +7952,27 @@ LABEL_22:
   return v4;
 }
 
-- (id)_groupedSenderActionMenuItemsWithMenuOwner:(id)a3
+- (id)_groupedSenderActionMenuItemsWithMenuOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   objc_initWeak(&location, self);
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_100077EAC;
   v16 = &unk_10064DAF0;
   objc_copyWeak(&v18, &location);
-  v5 = v4;
+  v5 = ownerCopy;
   v17 = v5;
   v6 = [UIDeferredMenuElement elementWithUncachedProvider:&v13];
   v21 = v6;
   v7 = [NSArray arrayWithObjects:&v21 count:1, v13, v14, v15, v16];
   v8 = [UIMenu menuWithTitle:&stru_100662A88 image:0 identifier:0 options:1 children:v7];
 
-  v9 = [(ConversationViewController *)self _customReturnToGroupSenderList];
-  v10 = [(ConversationViewController *)self _recategorizationMenu];
-  v20[0] = v9;
+  _customReturnToGroupSenderList = [(ConversationViewController *)self _customReturnToGroupSenderList];
+  _recategorizationMenu = [(ConversationViewController *)self _recategorizationMenu];
+  v20[0] = _customReturnToGroupSenderList;
   v20[1] = v8;
-  v20[2] = v10;
+  v20[2] = _recategorizationMenu;
   v11 = [NSArray arrayWithObjects:v20 count:3];
 
   objc_destroyWeak(&v18);
@@ -7981,9 +7981,9 @@ LABEL_22:
   return v11;
 }
 
-- (id)groupedSenderActionMenuForConversationNavigationBarItemsManager:(id)a3 menuOwner:(id)a4
+- (id)groupedSenderActionMenuForConversationNavigationBarItemsManager:(id)manager menuOwner:(id)owner
 {
-  v4 = [(ConversationViewController *)self _groupedSenderActionMenuItemsWithMenuOwner:a4];
+  v4 = [(ConversationViewController *)self _groupedSenderActionMenuItemsWithMenuOwner:owner];
   v5 = [UIMenu menuWithTitle:&stru_100662A88 children:v4];
 
   [v5 setAccessibilityIdentifier:MSAccessibilityIdentifierGroupedSenderActionMenu];
@@ -8003,49 +8003,49 @@ LABEL_22:
   return v2;
 }
 
-- (void)_groupedSenderMessageCountForQuery:(id)a3 completionHandler:(id)a4
+- (void)_groupedSenderMessageCountForQuery:(id)query completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handlerCopy = handler;
   v8 = +[EFPromise promise];
-  v9 = [(ConversationViewController *)self messageRepository];
-  v10 = [v8 completionHandlerAdapter];
-  [v9 performCountQuery:v6 completionHandler:v10];
+  messageRepository = [(ConversationViewController *)self messageRepository];
+  completionHandlerAdapter = [v8 completionHandlerAdapter];
+  [messageRepository performCountQuery:queryCopy completionHandler:completionHandlerAdapter];
 
   v11 = +[EFScheduler mainThreadScheduler];
-  v12 = [v8 future];
+  future = [v8 future];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000789B4;
   v20[3] = &unk_10064DB68;
-  v13 = v7;
+  v13 = handlerCopy;
   v21 = v13;
-  [v12 onScheduler:v11 addSuccessBlock:v20];
+  [future onScheduler:v11 addSuccessBlock:v20];
 
-  v14 = [v8 future];
+  future2 = [v8 future];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100078A28;
   v17[3] = &unk_10064DB90;
-  v15 = v6;
+  v15 = queryCopy;
   v18 = v15;
   v16 = v13;
   v19 = v16;
-  [v14 onScheduler:v11 addFailureBlock:v17];
+  [future2 onScheduler:v11 addFailureBlock:v17];
 }
 
-- (id)_messageDeletionCompletionHandlerForMenuOwner:(id)a3
+- (id)_messageDeletionCompletionHandlerForMenuOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100078BFC;
   v9[3] = &unk_10064D1F8;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
-  v11 = self;
-  v5 = v4;
+  v10 = ownerCopy;
+  selfCopy = self;
+  v5 = ownerCopy;
   v6 = objc_retainBlock(v9);
   v7 = objc_retainBlock(v6);
 
@@ -8055,67 +8055,67 @@ LABEL_22:
   return v7;
 }
 
-- (id)_deleteActionForMessageListItemSelection:(id)a3 menuOwner:(id)a4
+- (id)_deleteActionForMessageListItemSelection:(id)selection menuOwner:(id)owner
 {
-  v6 = a3;
-  v7 = a4;
+  selectionCopy = selection;
+  ownerCopy = owner;
   if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
   {
-    v8 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v9 = [(ConversationViewController *)self _presentationStringForMessageListItem:v8];
+    referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    v9 = [(ConversationViewController *)self _presentationStringForMessageListItem:referenceMessageListItem];
 
-    v10 = [(ConversationViewControllerBase *)self delegate];
-    v11 = [v10 currentlySelectedBucketForConversationViewController:self];
+    delegate = [(ConversationViewControllerBase *)self delegate];
+    v11 = [delegate currentlySelectedBucketForConversationViewController:self];
 
-    v12 = [(ConversationViewController *)self messageList];
-    v13 = [v12 query];
-    v14 = [(ConversationViewController *)self undoManager];
-    v15 = [(MFGroupedSenderDestructiveTriageInteraction *)MFGroupedSenderDeleteTriageInteraction interactionWithQuery:v13 groupedSenderDisplayName:v9 selectedBucket:v11 undoManager:v14 origin:3 actor:2];
+    messageList = [(ConversationViewController *)self messageList];
+    query = [messageList query];
+    undoManager = [(ConversationViewController *)self undoManager];
+    v15 = [(MFGroupedSenderDestructiveTriageInteraction *)MFGroupedSenderDeleteTriageInteraction interactionWithQuery:query groupedSenderDisplayName:v9 selectedBucket:v11 undoManager:undoManager origin:3 actor:2];
 
     [v15 setTitleIncludesCount:0];
-    v16 = [(ConversationViewController *)self view];
-    [v15 setPresentationSource:v16];
+    view = [(ConversationViewController *)self view];
+    [v15 setPresentationSource:view];
 
     [v15 setShouldAskForConfirmation:1];
     [v15 setType:2];
     [v15 setDelegate:self];
-    v17 = [(ConversationViewController *)self _messageDeletionCompletionHandlerForMenuOwner:v7];
+    v17 = [(ConversationViewController *)self _messageDeletionCompletionHandlerForMenuOwner:ownerCopy];
     v18 = [v15 menuActionWithPreparation:0 completion:v17];
   }
 
   else
   {
-    v19 = [(ConversationViewController *)self undoManager];
-    v9 = [(MFDestructiveTriageInteraction *)MFDeleteTriageInteraction interactionWithMessageListItemSelection:v6 undoManager:v19 origin:3 actor:2];
+    undoManager2 = [(ConversationViewController *)self undoManager];
+    v9 = [(MFDestructiveTriageInteraction *)MFDeleteTriageInteraction interactionWithMessageListItemSelection:selectionCopy undoManager:undoManager2 origin:3 actor:2];
 
     [v9 setDelegate:self];
-    v15 = [(ConversationViewController *)self _messageDeletionCompletionHandlerForMenuOwner:v7];
+    v15 = [(ConversationViewController *)self _messageDeletionCompletionHandlerForMenuOwner:ownerCopy];
     v18 = [v9 menuActionWithPreparation:0 completion:v15];
   }
 
   return v18;
 }
 
-- (id)_archiveActionForMessageListItemSelection:(id)a3 menuOwner:(id)a4
+- (id)_archiveActionForMessageListItemSelection:(id)selection menuOwner:(id)owner
 {
-  v6 = a3;
-  v7 = a4;
+  selectionCopy = selection;
+  ownerCopy = owner;
   if ([(ConversationViewControllerBase *)self isShowingGroupedSenderMessageList])
   {
-    v8 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v9 = [(ConversationViewController *)self _presentationStringForMessageListItem:v8];
+    referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    v9 = [(ConversationViewController *)self _presentationStringForMessageListItem:referenceMessageListItem];
 
-    v10 = [(ConversationViewControllerBase *)self delegate];
-    v11 = [v10 currentlySelectedBucketForConversationViewController:self];
+    delegate = [(ConversationViewControllerBase *)self delegate];
+    v11 = [delegate currentlySelectedBucketForConversationViewController:self];
 
-    v12 = [(ConversationViewController *)self messageList];
-    v13 = [v12 query];
-    v14 = [(ConversationViewController *)self undoManager];
-    v15 = [(MFGroupedSenderDestructiveTriageInteraction *)MFGroupedSenderArchiveTriageInteraction interactionWithQuery:v13 groupedSenderDisplayName:v9 selectedBucket:v11 undoManager:v14 origin:3 actor:2];
+    messageList = [(ConversationViewController *)self messageList];
+    query = [messageList query];
+    undoManager = [(ConversationViewController *)self undoManager];
+    v15 = [(MFGroupedSenderDestructiveTriageInteraction *)MFGroupedSenderArchiveTriageInteraction interactionWithQuery:query groupedSenderDisplayName:v9 selectedBucket:v11 undoManager:undoManager origin:3 actor:2];
 
     [v15 setTitleIncludesCount:0];
-    v16 = [(ConversationViewController *)self view];
-    [v15 setPresentationSource:v16];
+    view = [(ConversationViewController *)self view];
+    [v15 setPresentationSource:view];
 
     [v15 setShouldAskForConfirmation:1];
     [v15 setType:2];
@@ -8124,13 +8124,13 @@ LABEL_22:
 
   else
   {
-    v17 = [(ConversationViewController *)self undoManager];
-    v15 = [(MFDestructiveTriageInteraction *)MFArchiveTriageInteraction interactionWithMessageListItemSelection:v6 undoManager:v17 origin:3 actor:2];
+    undoManager2 = [(ConversationViewController *)self undoManager];
+    v15 = [(MFDestructiveTriageInteraction *)MFArchiveTriageInteraction interactionWithMessageListItemSelection:selectionCopy undoManager:undoManager2 origin:3 actor:2];
 
     [v15 setDelegate:self];
   }
 
-  v18 = [(ConversationViewController *)self _messageDeletionCompletionHandlerForMenuOwner:v7];
+  v18 = [(ConversationViewController *)self _messageDeletionCompletionHandlerForMenuOwner:ownerCopy];
   v19 = [v15 menuActionWithPreparation:0 completion:v18];
 
   [v19 setAttributes:{objc_msgSend(v19, "attributes") ^ 2}];
@@ -8138,12 +8138,12 @@ LABEL_22:
   return v19;
 }
 
-- (id)deleteButtonMenuForConversationNavigationBarItemsManager:(id)a3 menuOwner:(id)a4
+- (id)deleteButtonMenuForConversationNavigationBarItemsManager:(id)manager menuOwner:(id)owner
 {
-  v5 = a4;
+  ownerCopy = owner;
   v6 = sub_100069A50(self);
-  v7 = [(ConversationViewController *)self _deleteActionForMessageListItemSelection:v6 menuOwner:v5];
-  v8 = [(ConversationViewController *)self _archiveActionForMessageListItemSelection:v6 menuOwner:v5];
+  v7 = [(ConversationViewController *)self _deleteActionForMessageListItemSelection:v6 menuOwner:ownerCopy];
+  v8 = [(ConversationViewController *)self _archiveActionForMessageListItemSelection:v6 menuOwner:ownerCopy];
   v12[0] = v8;
   v12[1] = v7;
   v9 = [NSArray arrayWithObjects:v12 count:2];
@@ -8152,31 +8152,31 @@ LABEL_22:
   return v10;
 }
 
-- (void)moveButtonTapped:(id)a3
+- (void)moveButtonTapped:(id)tapped
 {
-  v5 = a3;
+  tappedCopy = tapped;
   v6 = sub_100069A50(self);
   if (v6)
   {
-    v7 = [(ConversationViewController *)self selectionDataSource];
-    if ([v7 shouldUseSelectionDataSourceForConversationViewController:self])
+    selectionDataSource = [(ConversationViewController *)self selectionDataSource];
+    if ([selectionDataSource shouldUseSelectionDataSourceForConversationViewController:self])
     {
-      [v7 conversationViewController:self performTriageAction:7 presentationSource:v5];
+      [selectionDataSource conversationViewController:self performTriageAction:7 presentationSource:tappedCopy];
     }
 
     else
     {
-      v8 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-      v9 = v8;
-      if (v8 && ([v8 displayMessage], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "result"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+      referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+      v9 = referenceMessageListItem;
+      if (referenceMessageListItem && ([referenceMessageListItem displayMessage], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "result"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
       {
-        v12 = [(ConversationViewController *)self predictedMailboxForConversation];
-        v13 = [v12 resultIfAvailable];
+        predictedMailboxForConversation = [(ConversationViewController *)self predictedMailboxForConversation];
+        resultIfAvailable = [predictedMailboxForConversation resultIfAvailable];
 
-        v14 = [(ConversationViewControllerBase *)self shouldHideStickyFooterView];
-        if (v13)
+        shouldHideStickyFooterView = [(ConversationViewControllerBase *)self shouldHideStickyFooterView];
+        if (resultIfAvailable)
         {
-          v15 = v14;
+          v15 = shouldHideStickyFooterView;
         }
 
         else
@@ -8192,22 +8192,22 @@ LABEL_22:
           v24[2] = sub_1000797F0;
           v24[3] = &unk_10064DA78;
           v24[4] = self;
-          v25 = v5;
+          v25 = tappedCopy;
           [(ConversationViewController *)self _presentMailActionsViewControllerFromBarButtonItem:v25 dataSourceClass:v16 includeMessageContentRequest:0 completionHandler:v24];
         }
 
         else
         {
-          v17 = [v6 messageListItems];
-          v18 = [(ConversationViewController *)self undoManager];
-          v19 = [MFMoveToPredictionTriageInteraction interactionWithMessageListItems:v17 undoManager:v18 origin:3 actor:2 presentationSource:v5 delegate:self presentingViewController:self predictedMailbox:v13];
+          messageListItems = [v6 messageListItems];
+          undoManager = [(ConversationViewController *)self undoManager];
+          v19 = [MFMoveToPredictionTriageInteraction interactionWithMessageListItems:messageListItems undoManager:undoManager origin:3 actor:2 presentationSource:tappedCopy delegate:self presentingViewController:self predictedMailbox:resultIfAvailable];
 
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
           v21[2] = sub_100079968;
           v21[3] = &unk_10064DBB8;
           v21[4] = self;
-          v22 = v5;
+          v22 = tappedCopy;
           v23 = v19;
           v20 = v19;
           [v20 performInteractionWithCompletion:v21];
@@ -8216,8 +8216,8 @@ LABEL_22:
 
       else
       {
-        v13 = +[ConversationViewController log];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        resultIfAvailable = +[ConversationViewController log];
+        if (os_log_type_enabled(resultIfAvailable, OS_LOG_TYPE_ERROR))
         {
           sub_100484E48();
         }
@@ -8227,8 +8227,8 @@ LABEL_22:
 
   else
   {
-    v7 = +[ConversationViewController log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    selectionDataSource = +[ConversationViewController log];
+    if (os_log_type_enabled(selectionDataSource, OS_LOG_TYPE_ERROR))
     {
       NSStringFromSelector(a2);
       objc_claimAutoreleasedReturnValue();
@@ -8239,47 +8239,47 @@ LABEL_22:
 
 - (id)_createMailActionViewHeader
 {
-  v3 = [(ConversationViewControllerBase *)self displayMetrics];
-  [MailActionViewHeader defaultHeightWithDisplayMetrics:v3];
+  displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
+  [MailActionViewHeader defaultHeightWithDisplayMetrics:displayMetrics];
   v5 = v4;
-  v6 = [(ConversationViewController *)self view];
-  [v6 frame];
+  view = [(ConversationViewController *)self view];
+  [view frame];
   Width = CGRectGetWidth(v13);
 
   v8 = [[MailActionViewHeader alloc] initWithFrame:0.0, 0.0, Width, v5];
-  v9 = [(ConversationViewControllerBase *)self contactStore];
-  [(MFMessageConversationViewCell *)v8 setContactStore:v9];
+  contactStore = [(ConversationViewControllerBase *)self contactStore];
+  [(MFMessageConversationViewCell *)v8 setContactStore:contactStore];
 
-  v10 = [MFMessageDisplayMetrics mf_actionCardMetricsFromDisplayMetrics:v3];
+  v10 = [MFMessageDisplayMetrics mf_actionCardMetricsFromDisplayMetrics:displayMetrics];
   [(MFConversationViewCell *)v8 setDisplayMetrics:v10];
 
   return v8;
 }
 
-- (void)_presentMailActionsViewControllerFromBarButtonItem:(id)a3 dataSourceClass:(id)a4 includeMessageContentRequest:(BOOL)a5 completionHandler:(id)a6
+- (void)_presentMailActionsViewControllerFromBarButtonItem:(id)item dataSourceClass:(id)class includeMessageContentRequest:(BOOL)request completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(ConversationViewController *)self targetMessageForBarButtonTriage];
-  if (v13)
+  requestCopy = request;
+  itemCopy = item;
+  classCopy = class;
+  handlerCopy = handler;
+  targetMessageForBarButtonTriage = [(ConversationViewController *)self targetMessageForBarButtonTriage];
+  if (targetMessageForBarButtonTriage)
   {
-    [(ConversationViewController *)self setSelectedMessage:v13];
-    v14 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v15 = v14;
-    if (v14 && ([v14 displayMessage], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
+    [(ConversationViewController *)self setSelectedMessage:targetMessageForBarButtonTriage];
+    referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    v15 = referenceMessageListItem;
+    if (referenceMessageListItem && ([referenceMessageListItem displayMessage], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
     {
-      v50 = v10;
-      v45 = v11;
-      v48 = v12;
-      if (v7)
+      v50 = itemCopy;
+      v45 = classCopy;
+      v48 = handlerCopy;
+      if (requestCopy)
       {
-        v17 = [v13 itemID];
-        v18 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:v17];
+        itemID = [targetMessageForBarButtonTriage itemID];
+        v18 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:itemID];
 
-        v19 = [v13 itemID];
-        v46 = [(ConversationViewController *)self _getCurrentlySelectedMessageContentForMessageItemID:v19];
+        itemID2 = [targetMessageForBarButtonTriage itemID];
+        v46 = [(ConversationViewController *)self _getCurrentlySelectedMessageContentForMessageItemID:itemID2];
       }
 
       else
@@ -8289,18 +8289,18 @@ LABEL_22:
       }
 
       v47 = v18;
-      v49 = [(ConversationViewController *)self _createMailActionViewHeader];
-      if ([(ConversationViewController *)self _isDisplayingSingleMessage]|| v7)
+      _createMailActionViewHeader = [(ConversationViewController *)self _createMailActionViewHeader];
+      if ([(ConversationViewController *)self _isDisplayingSingleMessage]|| requestCopy)
       {
         v21 = [ConversationCellViewModel alloc];
         v59[0] = _NSConcreteStackBlock;
         v59[1] = 3221225472;
         v59[2] = sub_10007A320;
         v59[3] = &unk_10064CFD8;
-        v60 = v13;
-        v61 = self;
+        v60 = targetMessageForBarButtonTriage;
+        selfCopy = self;
         v22 = [(ConversationCellViewModel *)v21 initWithBuilder:v59];
-        [v49 setViewModel:v22];
+        [_createMailActionViewHeader setViewModel:v22];
       }
 
       else
@@ -8309,10 +8309,10 @@ LABEL_22:
         v24 = [v23 localizedStringForKey:@"MESSAGE_COUNT_FORMAT%1$lu" value:&stru_100662A88 table:@"Main"];
         v25 = [NSString localizedStringWithFormat:v24, [v15 count]];
 
-        v26 = [(ConversationViewControllerBase *)self conversationSubject];
-        v27 = [ECSubjectFormatter subjectStringForDisplayForSubject:v26 style:1];
+        conversationSubject = [(ConversationViewControllerBase *)self conversationSubject];
+        v27 = [ECSubjectFormatter subjectStringForDisplayForSubject:conversationSubject style:1];
 
-        [v49 updateTitle:v25 subject:v27];
+        [_createMailActionViewHeader updateTitle:v25 subject:v27];
       }
 
       objc_initWeak(&location, self);
@@ -8322,24 +8322,24 @@ LABEL_22:
       v56[2] = sub_10007A43C;
       v56[3] = &unk_10064C838;
       objc_copyWeak(&v57, &location);
-      v29 = [(MailActionsViewController *)v28 initWithDelegate:self messageHeaderView:v49 didDismissHandler:v56];
+      v29 = [(MailActionsViewController *)v28 initWithDelegate:self messageHeaderView:_createMailActionViewHeader didDismissHandler:v56];
       v30 = [[UINavigationController alloc] initWithRootViewController:v29];
       [v30 setModalPresentationStyle:7];
-      v31 = [v30 presentationController];
-      [v31 setDelegate:self];
+      presentationController = [v30 presentationController];
+      [presentationController setDelegate:self];
 
-      v32 = [v30 popoverPresentationController];
-      [v32 setSourceItem:v50];
+      popoverPresentationController = [v30 popoverPresentationController];
+      [popoverPresentationController setSourceItem:v50];
 
       v44 = v48[2](v48, v29);
       v33 = [v15 count]!= 1;
       v34 = [MFTriageInteractionTarget alloc];
-      v35 = [v15 displayMessage];
-      v36 = [v35 result];
-      v37 = [(MFTriageInteractionTarget *)v34 initWithMessageListItem:v15 primaryMessage:v36 selectedMessageContent:v46 primaryMessageContentRequest:v47 targetPreference:v33 preferQuickCompositionalActions:0];
+      displayMessage = [v15 displayMessage];
+      result = [displayMessage result];
+      v37 = [(MFTriageInteractionTarget *)v34 initWithMessageListItem:v15 primaryMessage:result selectedMessageContent:v46 primaryMessageContentRequest:v47 targetPreference:v33 preferQuickCompositionalActions:0];
 
-      v38 = [(ConversationViewControllerBase *)self delegate];
-      v39 = [v11 alloc];
+      delegate = [(ConversationViewControllerBase *)self delegate];
+      v39 = [classCopy alloc];
       v51[0] = _NSConcreteStackBlock;
       v51[1] = 3221225472;
       v51[2] = sub_10007A49C;
@@ -8350,7 +8350,7 @@ LABEL_22:
       v53 = v40;
       v41 = v44;
       v55 = v41;
-      v42 = v38;
+      v42 = delegate;
       v54 = v42;
       v43 = [v39 initWithBuilderBlock:v51];
       [(MailActionsViewController *)v29 setDataSource:v43];
@@ -8359,10 +8359,10 @@ LABEL_22:
       objc_destroyWeak(&v57);
       objc_destroyWeak(&location);
 
-      v10 = v50;
-      v11 = v45;
+      itemCopy = v50;
+      classCopy = v45;
       v20 = v47;
-      v12 = v48;
+      handlerCopy = v48;
     }
 
     else
@@ -8385,26 +8385,26 @@ LABEL_22:
   }
 }
 
-- (void)presentTransferUIWithMoveInteraction:(id)a3 prediction:(id)a4 fromViewController:(id)a5 didDismissHandler:(id)a6
+- (void)presentTransferUIWithMoveInteraction:(id)interaction prediction:(id)prediction fromViewController:(id)controller didDismissHandler:(id)handler
 {
-  v10 = a3;
-  v23 = a4;
-  v11 = a5;
-  v12 = a6;
+  interactionCopy = interaction;
+  predictionCopy = prediction;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v25 = _NSConcreteStackBlock;
   v26 = 3221225472;
   v27 = sub_10007A7E0;
   v28 = &unk_10064DC08;
-  v13 = v10;
+  v13 = interactionCopy;
   v29 = v13;
   v14 = objc_retainBlock(&v25);
-  v15 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  if (v15)
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  if (referenceMessageListItem)
   {
-    v16 = [v13 messageListItemSelection];
-    v17 = [v16 messageListItems];
-    v18 = [v17 em_messageListItemTotalCount];
-    v19 = v18 == [v15 count];
+    messageListItemSelection = [v13 messageListItemSelection];
+    messageListItems = [messageListItemSelection messageListItems];
+    em_messageListItemTotalCount = [messageListItems em_messageListItemTotalCount];
+    v19 = em_messageListItemTotalCount == [referenceMessageListItem count];
   }
 
   else
@@ -8412,40 +8412,40 @@ LABEL_22:
     v19 = 1;
   }
 
-  v20 = [v13 messageListItemSelection];
-  v21 = [v20 messageListItems];
-  v22 = [v13 presentationSource];
-  sub_10007A7EC(self, v21, v24, v11, v22, v19, v14, v12);
+  messageListItemSelection2 = [v13 messageListItemSelection];
+  messageListItems2 = [messageListItemSelection2 messageListItems];
+  presentationSource = [v13 presentationSource];
+  sub_10007A7EC(self, messageListItems2, v24, controllerCopy, presentationSource, v19, v14, handlerCopy);
 }
 
-- (id)moreTriageInteraction:(id)a3 actionsViewControllerWithInteractionTarget:(id)a4 didDismissHandler:(id)a5
+- (id)moreTriageInteraction:(id)interaction actionsViewControllerWithInteractionTarget:(id)target didDismissHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 messageListItem];
-  v12 = [v11 itemID];
+  interactionCopy = interaction;
+  targetCopy = target;
+  handlerCopy = handler;
+  messageListItem = [targetCopy messageListItem];
+  itemID = [messageListItem itemID];
 
-  v13 = [(ConversationViewController *)self collectionViewDataSource];
-  v14 = [v13 indexPathForItemIdentifier:v12];
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  v14 = [collectionViewDataSource indexPathForItemIdentifier:itemID];
 
-  v15 = [(ConversationViewControllerBase *)self collectionView];
-  v16 = [v15 cellForItemAtIndexPath:v14];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  v16 = [collectionView cellForItemAtIndexPath:v14];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = v10;
+    v25 = handlerCopy;
     v17 = v16;
-    v24 = v8;
-    v18 = [v9 primaryMessage];
-    v19 = [v9 primaryMessageContentRequest];
-    v20 = [v17 predictedMailbox];
-    v21 = [v8 presentationSource];
-    v22 = [(ConversationViewController *)self _actionsViewControllerWithMessage:v18 contentRequest:v19 predictedMailbox:v20 button:v21 didDismissHandler:v25];
+    v24 = interactionCopy;
+    primaryMessage = [targetCopy primaryMessage];
+    primaryMessageContentRequest = [targetCopy primaryMessageContentRequest];
+    predictedMailbox = [v17 predictedMailbox];
+    presentationSource = [interactionCopy presentationSource];
+    v22 = [(ConversationViewController *)self _actionsViewControllerWithMessage:primaryMessage contentRequest:primaryMessageContentRequest predictedMailbox:predictedMailbox button:presentationSource didDismissHandler:v25];
 
-    v8 = v24;
-    v10 = v25;
+    interactionCopy = v24;
+    handlerCopy = v25;
   }
 
   else
@@ -8456,41 +8456,41 @@ LABEL_22:
   return v22;
 }
 
-- (void)dismissBannerForUnsubscribeAndDeleteTriageInteraction:(id)a3
+- (void)dismissBannerForUnsubscribeAndDeleteTriageInteraction:(id)interaction
 {
-  v4 = [(ConversationViewController *)self displaySubjectItemID];
-  v6 = [(ConversationViewController *)self _cellForMessageItemIDIfExpanded:v4];
+  displaySubjectItemID = [(ConversationViewController *)self displaySubjectItemID];
+  v6 = [(ConversationViewController *)self _cellForMessageItemIDIfExpanded:displaySubjectItemID];
 
-  v5 = [v6 messageViewController];
-  [v5 clearSuggestionsBannerAnimated:1];
+  messageViewController = [v6 messageViewController];
+  [messageViewController clearSuggestionsBannerAnimated:1];
 }
 
-- (void)updateAvatarViewControllerForTriageInteraction:(id)a3 alertController:(id)a4
+- (void)updateAvatarViewControllerForTriageInteraction:(id)interaction alertController:(id)controller
 {
-  v7 = a4;
-  v5 = [(ConversationViewControllerBase *)self avatarGenerator];
-  v6 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  [v7 mf_addAvatarWithAvatarGenerator:v5 messageListItem:v6];
+  controllerCopy = controller;
+  avatarGenerator = [(ConversationViewControllerBase *)self avatarGenerator];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  [controllerCopy mf_addAvatarWithAvatarGenerator:avatarGenerator messageListItem:referenceMessageListItem];
 }
 
-- (void)groupedSenderMessageCountForDestructiveTriageInteraction:(id)a3 completionHandler:(id)a4
+- (void)groupedSenderMessageCountForDestructiveTriageInteraction:(id)interaction completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = +[EFPromise promise];
-  v7 = [(ConversationViewController *)self messageList];
-  v8 = [v7 unfilteredMessageList];
-  v9 = [v8 query];
+  messageList = [(ConversationViewController *)self messageList];
+  unfilteredMessageList = [messageList unfilteredMessageList];
+  query = [unfilteredMessageList query];
 
-  v10 = [(ConversationViewController *)self messageRepository];
-  v11 = [v6 completionHandlerAdapter];
-  [v10 performCountQuery:v9 completionHandler:v11];
+  messageRepository = [(ConversationViewController *)self messageRepository];
+  completionHandlerAdapter = [v6 completionHandlerAdapter];
+  [messageRepository performCountQuery:query completionHandler:completionHandlerAdapter];
 
   v12 = +[EFPromise promise];
-  v13 = [(ConversationViewController *)self messageRepository];
-  v14 = [(ConversationViewController *)self messageList];
-  v15 = [v14 query];
-  v16 = [v12 completionHandlerAdapter];
-  [v13 performCountQuery:v15 completionHandler:v16];
+  messageRepository2 = [(ConversationViewController *)self messageRepository];
+  messageList2 = [(ConversationViewController *)self messageList];
+  query2 = [messageList2 query];
+  completionHandlerAdapter2 = [v12 completionHandlerAdapter];
+  [messageRepository2 performCountQuery:query2 completionHandler:completionHandlerAdapter2];
 
   v26[0] = v6;
   v26[1] = v12;
@@ -8502,7 +8502,7 @@ LABEL_22:
   v24[1] = 3221225472;
   v24[2] = sub_10007BA60;
   v24[3] = &unk_10064D298;
-  v20 = v5;
+  v20 = handlerCopy;
   v25 = v20;
   [v18 onScheduler:v19 addSuccessBlock:v24];
   v22[0] = _NSConcreteStackBlock;
@@ -8514,10 +8514,10 @@ LABEL_22:
   [v18 onScheduler:v19 addFailureBlock:v22];
 }
 
-- (id)actionViewHeaderForCategorizationInteraction:(id)a3 messageListItem:(id)a4
+- (id)actionViewHeaderForCategorizationInteraction:(id)interaction messageListItem:(id)item
 {
-  v5 = a4;
-  v6 = [(ConversationViewController *)self _createMailActionViewHeader];
+  itemCopy = item;
+  _createMailActionViewHeader = [(ConversationViewController *)self _createMailActionViewHeader];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"MESSAGE_COUNT_FORMAT%1$lu" value:&stru_100662A88 table:@"Main"];
   v9 = [NSString localizedStringWithFormat:v8, [(ConversationViewController *)self countOfMessages]];
@@ -8527,20 +8527,20 @@ LABEL_22:
   v15[1] = 3221225472;
   v15[2] = sub_10007BDEC;
   v15[3] = &unk_10064D108;
-  v11 = v5;
+  v11 = itemCopy;
   v16 = v11;
   v12 = v9;
   v17 = v12;
-  v18 = self;
+  selfCopy = self;
   v13 = [(ConversationCellViewModel *)v10 initWithBuilder:v15];
-  [v6 setViewModel:v13];
+  [_createMailActionViewHeader setViewModel:v13];
 
-  return v6;
+  return _createMailActionViewHeader;
 }
 
-- (void)categorizationButtonTapped:(id)a3
+- (void)categorizationButtonTapped:(id)tapped
 {
-  v4 = [(ConversationViewController *)self _recategorizationTriageInteraction:a3];
+  v4 = [(ConversationViewController *)self _recategorizationTriageInteraction:tapped];
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -8552,104 +8552,104 @@ LABEL_22:
   objc_destroyWeak(&location);
 }
 
-- (id)_recategorizationTriageInteraction:(id)a3
+- (id)_recategorizationTriageInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   v5 = [MSMessageListItemSelection alloc];
-  v6 = [(ConversationViewController *)self _messageListItemsForBarButtonTriage];
-  v7 = [v5 initWithMessageListItems:v6];
+  _messageListItemsForBarButtonTriage = [(ConversationViewController *)self _messageListItemsForBarButtonTriage];
+  v7 = [v5 initWithMessageListItems:_messageListItemsForBarButtonTriage];
 
-  v8 = [(ConversationViewController *)self undoManager];
-  v9 = [(MFTriageInteraction *)MFCategorizationMenuTriageInteraction interactionWithMessageListItemSelection:v7 undoManager:v8 origin:3 actor:2];
+  undoManager = [(ConversationViewController *)self undoManager];
+  v9 = [(MFTriageInteraction *)MFCategorizationMenuTriageInteraction interactionWithMessageListItemSelection:v7 undoManager:undoManager origin:3 actor:2];
 
   [v9 setDelegate:self];
-  [v9 setPresentationSource:v4];
+  [v9 setPresentationSource:interactionCopy];
 
   return v9;
 }
 
-- (id)messageRepositoryForTriageInteraction:(id)a3
+- (id)messageRepositoryForTriageInteraction:(id)interaction
 {
-  v3 = [(ConversationViewController *)self messageRepository];
+  messageRepository = [(ConversationViewController *)self messageRepository];
 
-  return v3;
+  return messageRepository;
 }
 
-- (id)transferStackViewController:(id)a3 displayMessageForMessageListItemWithItemID:(id)a4
+- (id)transferStackViewController:(id)controller displayMessageForMessageListItemWithItemID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v8 = [v7 itemID];
-    v9 = [v8 isEqual:v6];
+    referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    itemID = [referenceMessageListItem itemID];
+    v9 = [itemID isEqual:dCopy];
 
     if ((v9 & 1) == 0)
     {
       v14 = +[NSAssertionHandler currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"ConversationViewController.m" lineNumber:5402 description:{@"we're displaying something other than referenceMessageListItem for itemID:%@", v6}];
+      [v14 handleFailureInMethod:a2 object:self file:@"ConversationViewController.m" lineNumber:5402 description:{@"we're displaying something other than referenceMessageListItem for itemID:%@", dCopy}];
     }
 
-    v10 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v11 = [v10 displayMessage];
+    referenceMessageListItem2 = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    displayMessage = [referenceMessageListItem2 displayMessage];
   }
 
   else
   {
-    v10 = [(ConversationViewController *)self messageList];
-    v11 = [v10 messageListItemForItemID:v6];
+    referenceMessageListItem2 = [(ConversationViewController *)self messageList];
+    displayMessage = [referenceMessageListItem2 messageListItemForItemID:dCopy];
   }
 
-  v12 = v11;
+  v12 = displayMessage;
 
   return v12;
 }
 
-- (void)showAllMessagesForConversationSenderHeaderView:(id)a3
+- (void)showAllMessagesForConversationSenderHeaderView:(id)view
 {
-  v8 = [(ConversationViewController *)self messageList];
-  v5 = [v8 filterPredicate];
+  messageList = [(ConversationViewController *)self messageList];
+  filterPredicate = [messageList filterPredicate];
 
-  if (!v5)
+  if (!filterPredicate)
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"ConversationViewController.m" lineNumber:5416 description:@"There needs to be a valid predicate"];
   }
 
-  v9 = [(ConversationViewController *)self messageList];
-  v6 = [v9 filterPredicate];
-  [(ConversationViewController *)self setCategoryPredicate:v6];
+  messageList2 = [(ConversationViewController *)self messageList];
+  filterPredicate2 = [messageList2 filterPredicate];
+  [(ConversationViewController *)self setCategoryPredicate:filterPredicate2];
 
-  v10 = [(ConversationViewController *)self messageList];
-  v7 = [v10 unfilteredMessageList];
-  [(ConversationViewController *)self _reloadDataSourceWithMessageList:v7];
+  messageList3 = [(ConversationViewController *)self messageList];
+  unfilteredMessageList = [messageList3 unfilteredMessageList];
+  [(ConversationViewController *)self _reloadDataSourceWithMessageList:unfilteredMessageList];
 }
 
-- (void)showCategoryMessagesForConversationSenderHeaderView:(id)a3
+- (void)showCategoryMessagesForConversationSenderHeaderView:(id)view
 {
-  v4 = [(ConversationViewController *)self messageList];
-  v5 = [(ConversationViewController *)self categoryPredicate];
-  v6 = [v4 filteredMessageListWithPredicate:v5 userFiltered:1];
+  messageList = [(ConversationViewController *)self messageList];
+  categoryPredicate = [(ConversationViewController *)self categoryPredicate];
+  v6 = [messageList filteredMessageListWithPredicate:categoryPredicate userFiltered:1];
 
   [(ConversationViewController *)self _reloadDataSourceWithMessageList:v6];
 }
 
-- (void)datePickerViewController:(id)a3 didSelectDate:(id)a4
+- (void)datePickerViewController:(id)controller didSelectDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 type];
-  if (!v8)
+  controllerCopy = controller;
+  dateCopy = date;
+  type = [controllerCopy type];
+  if (!type)
   {
-    v12 = [v6 message];
-    sub_10007C684(self, v7, v12);
+    message = [controllerCopy message];
+    sub_10007C684(self, dateCopy, message);
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (v8 == 1)
+  if (type == 1)
   {
     v9 = +[ConversationViewController log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -8658,47 +8658,47 @@ LABEL_7:
     }
 
     v10 = [NSArray alloc];
-    v11 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-    v12 = [v10 initWithObjects:{v11, 0}];
+    referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+    message = [v10 initWithObjects:{referenceMessageListItem, 0}];
 
-    v13 = [[EMMessageReadLaterAction alloc] initWithMessageListItems:v12 origin:3 actor:2 readLaterDate:v7];
-    v14 = [(ConversationViewController *)self messageRepository];
-    [v14 performMessageChangeAction:v13];
+    v13 = [[EMMessageReadLaterAction alloc] initWithMessageListItems:message origin:3 actor:2 readLaterDate:dateCopy];
+    messageRepository = [(ConversationViewController *)self messageRepository];
+    [messageRepository performMessageChangeAction:v13];
 
     goto LABEL_7;
   }
 
 LABEL_8:
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
   [(ConversationViewController *)self _reloadDataSource];
 }
 
-- (void)datePickerViewControllerDidDeleteDate:(id)a3
+- (void)datePickerViewControllerDidDeleteDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [NSArray alloc];
-  v6 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v7 = [v5 initWithObjects:{v6, 0}];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  v7 = [v5 initWithObjects:{referenceMessageListItem, 0}];
 
-  v8 = [v4 message];
-  v9 = [v8 sendLaterDate];
+  message = [dateCopy message];
+  sendLaterDate = [message sendLaterDate];
 
-  if (v9)
+  if (sendLaterDate)
   {
-    sub_10007C684(self, 0, v8);
+    sub_10007C684(self, 0, message);
   }
 
   else
   {
-    v10 = [v8 readLater];
+    readLater = [message readLater];
 
-    if (v10)
+    if (readLater)
     {
       v11 = [[EMMessageReadLaterAction alloc] initWithMessageListItems:v7 origin:3 actor:2 readLaterDate:0];
-      v12 = [(ConversationViewController *)self messageRepository];
-      [v12 performMessageChangeAction:v11];
+      messageRepository = [(ConversationViewController *)self messageRepository];
+      [messageRepository performMessageChangeAction:v11];
 
-      sub_10007CCA0(self, v8, &stru_10064DD30);
+      sub_10007CCA0(self, message, &stru_10064DD30);
     }
 
     else
@@ -8706,7 +8706,7 @@ LABEL_8:
       v13 = +[ConversationViewController log];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [v8 ef_publicDescription];
+        [message ef_publicDescription];
         objc_claimAutoreleasedReturnValue();
         sub_1004850F8();
       }
@@ -8716,18 +8716,18 @@ LABEL_8:
   [(ConversationViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_headerView:(id)a3 displayWithBannerForViewModel:(id)a4 message:(id)a5
+- (void)_headerView:(id)view displayWithBannerForViewModel:(id)model message:(id)message
 {
-  v8 = a3;
-  v9 = a5;
-  [v8 displayMessageUsingViewModel:a4];
-  v10 = [v8 headerBlocks];
-  v11 = [v10 ef_firstObjectPassingTest:&stru_10064DDC0];
+  viewCopy = view;
+  messageCopy = message;
+  [viewCopy displayMessageUsingViewModel:model];
+  headerBlocks = [viewCopy headerBlocks];
+  v11 = [headerBlocks ef_firstObjectPassingTest:&stru_10064DDC0];
 
   if (v11)
   {
-    v12 = [v8 viewModel];
-    v13 = [(ConversationViewController *)self _shouldRemoveBannerBlock:v11 forHeaderViewModel:v12];
+    viewModel = [viewCopy viewModel];
+    v13 = [(ConversationViewController *)self _shouldRemoveBannerBlock:v11 forHeaderViewModel:viewModel];
 
     if (v13)
     {
@@ -8736,25 +8736,25 @@ LABEL_8:
       {
         [v11 type];
         v15 = MFBannerViewTypeDescription();
-        v16 = [v8 viewModel];
-        v17 = [v16 itemID];
+        viewModel2 = [viewCopy viewModel];
+        itemID = [viewModel2 itemID];
         v25 = 134218498;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2114;
         v28 = v15;
         v29 = 2114;
-        v30 = v17;
+        v30 = itemID;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%p: Remove %{public}@ banner for message with itemID: %{public}@", &v25, 0x20u);
       }
 
-      [v8 removeHeaderBlock:v11 animated:1];
+      [viewCopy removeHeaderBlock:v11 animated:1];
     }
   }
 
-  v18 = [v8 headerBlocks];
-  v19 = [v18 ef_firstObjectPassingTest:&stru_10064DDE0];
+  headerBlocks2 = [viewCopy headerBlocks];
+  v19 = [headerBlocks2 ef_firstObjectPassingTest:&stru_10064DDE0];
 
-  v20 = [(ConversationViewController *)self _bannerBlockToInsertForHeaderView:v8 message:v9];
+  v20 = [(ConversationViewController *)self _bannerBlockToInsertForHeaderView:viewCopy message:messageCopy];
   if (v20)
   {
     v21 = +[ConversationViewController log];
@@ -8762,96 +8762,96 @@ LABEL_8:
     {
       [v20 type];
       v22 = MFBannerViewTypeDescription();
-      v23 = [v8 viewModel];
-      v24 = [v23 itemID];
+      viewModel3 = [viewCopy viewModel];
+      itemID2 = [viewModel3 itemID];
       v25 = 134218498;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
       v28 = v22;
       v29 = 2114;
-      v30 = v24;
+      v30 = itemID2;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%p: Add %{public}@ banner for message with itemID: %{public}@", &v25, 0x20u);
     }
 
     if (v19)
     {
-      [v8 insertHeaderBlock:v20 before:v19 animated:1];
+      [viewCopy insertHeaderBlock:v20 before:v19 animated:1];
     }
 
     else
     {
-      [v8 addHeaderBlock:v20 animated:1];
+      [viewCopy addHeaderBlock:v20 animated:1];
     }
   }
 }
 
-- (id)presentingViewControllerForTriageInteraction:(id)a3
+- (id)presentingViewControllerForTriageInteraction:(id)interaction
 {
-  v4 = [(ConversationViewController *)self presentingViewController];
+  presentingViewController = [(ConversationViewController *)self presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
     goto LABEL_2;
   }
 
-  v8 = [(ConversationViewController *)self presentedViewController];
+  presentedViewController = [(ConversationViewController *)self presentedViewController];
 
-  if (v8)
+  if (presentedViewController)
   {
-    v9 = [(ConversationViewController *)self presentedViewController];
-    v10 = [v9 isBeingDismissed];
+    presentedViewController2 = [(ConversationViewController *)self presentedViewController];
+    isBeingDismissed = [presentedViewController2 isBeingDismissed];
 
-    if (!v10)
+    if (!isBeingDismissed)
     {
-      v5 = [(ConversationViewController *)self presentedViewController];
+      selfCopy = [(ConversationViewController *)self presentedViewController];
       goto LABEL_3;
     }
 
 LABEL_2:
-    v5 = self;
+    selfCopy = self;
 LABEL_3:
-    v6 = v5;
+    mf_rootViewController = selfCopy;
     goto LABEL_4;
   }
 
-  v11 = [(ConversationViewControllerBase *)self scene];
-  v6 = [v11 mf_rootViewController];
+  scene = [(ConversationViewControllerBase *)self scene];
+  mf_rootViewController = [scene mf_rootViewController];
 
 LABEL_4:
 
-  return v6;
+  return mf_rootViewController;
 }
 
-- (void)setDisplayMetrics:(id)a3
+- (void)setDisplayMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(ConversationViewControllerBase *)self displayMetrics];
-  v6 = [v5 isEqual:v4];
+  metricsCopy = metrics;
+  displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
+  v6 = [displayMetrics isEqual:metricsCopy];
 
   v9.receiver = self;
   v9.super_class = ConversationViewController;
-  [(ConversationViewControllerBase *)&v9 setDisplayMetrics:v4];
+  [(ConversationViewControllerBase *)&v9 setDisplayMetrics:metricsCopy];
   if ((v6 & 1) == 0)
   {
-    v7 = [(ConversationViewController *)self presentedViewController];
-    v8 = [(ConversationViewController *)self _mailActionsViewControllerFromPresentedViewController:v7];
+    presentedViewController = [(ConversationViewController *)self presentedViewController];
+    v8 = [(ConversationViewController *)self _mailActionsViewControllerFromPresentedViewController:presentedViewController];
 
-    [v8 updateHeaderDisplayMetrics:v4];
+    [v8 updateHeaderDisplayMetrics:metricsCopy];
   }
 }
 
 - (void)_testReplyForSelectedMessage
 {
-  v9 = [(ConversationViewController *)self targetMessageForBarButtonTriage];
-  v3 = [v9 itemID];
-  v4 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:v3];
+  targetMessageForBarButtonTriage = [(ConversationViewController *)self targetMessageForBarButtonTriage];
+  itemID = [targetMessageForBarButtonTriage itemID];
+  v4 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:itemID];
 
-  v5 = [(ConversationViewControllerBase *)self scene];
-  v6 = [(MFMessageCompositionTriageInteraction *)MFReplyTriageInteraction interactionWithContentRequest:v4 scene:v5];
+  scene = [(ConversationViewControllerBase *)self scene];
+  v6 = [(MFMessageCompositionTriageInteraction *)MFReplyTriageInteraction interactionWithContentRequest:v4 scene:scene];
 
-  v7 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v8 = [v7 mailboxes];
-  [v6 setMessageSourceMailboxes:v8];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  mailboxes = [referenceMessageListItem mailboxes];
+  [v6 setMessageSourceMailboxes:mailboxes];
 
   [v6 setShouldPromptToLoadRestOfMessage:0];
   [v6 performInteraction];
@@ -8863,8 +8863,8 @@ LABEL_4:
   if (!v3)
   {
     v4 = [MessageTriageInteractionHelper alloc];
-    v5 = [(ConversationViewControllerBase *)self scene];
-    v6 = [(MessageTriageInteractionHelper *)v4 initWithDataSource:self triageInteractionDelegate:self scene:v5];
+    scene = [(ConversationViewControllerBase *)self scene];
+    v6 = [(MessageTriageInteractionHelper *)v4 initWithDataSource:self triageInteractionDelegate:self scene:scene];
     v7 = *(&self->_messageTriageInteractionHelper + 4);
     *(&self->_messageTriageInteractionHelper + 4) = v6;
 
@@ -8874,32 +8874,32 @@ LABEL_4:
   return v3;
 }
 
-- (id)messageContentRepresentationRequestForMessageTriageInteractionHelper:(id)a3 message:(id)a4
+- (id)messageContentRepresentationRequestForMessageTriageInteractionHelper:(id)helper message:(id)message
 {
-  v5 = [a4 itemID];
-  v6 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:v5];
+  itemID = [message itemID];
+  v6 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:itemID];
 
   return v6;
 }
 
-- (id)messageTriageInteractionHelper:(id)a3 senderRepositoryForMessageListItems:(id)a4
+- (id)messageTriageInteractionHelper:(id)helper senderRepositoryForMessageListItems:(id)items
 {
-  v4 = [(ConversationViewControllerBase *)self scene:a3];
-  v5 = [v4 daemonInterface];
-  v6 = [v5 senderRepository];
+  v4 = [(ConversationViewControllerBase *)self scene:helper];
+  daemonInterface = [v4 daemonInterface];
+  senderRepository = [daemonInterface senderRepository];
 
-  return v6;
+  return senderRepository;
 }
 
 - (void)_scrolledToEndOfSingleMessage
 {
-  v3 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v4 = [v3 displayMessageItemID];
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  displayMessageItemID = [referenceMessageListItem displayMessageItemID];
 
-  if (v4)
+  if (displayMessageItemID)
   {
     objc_initWeak(&location, self);
-    v5 = [(ConversationViewController *)self _messageFutureForItemID:v4];
+    v5 = [(ConversationViewController *)self _messageFutureForItemID:displayMessageItemID];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10007DA1C;
@@ -8912,56 +8912,56 @@ LABEL_4:
   }
 }
 
-- (void)_updateFooterViewFrameForCell:(id)a3
+- (void)_updateFooterViewFrameForCell:(id)cell
 {
-  v6 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ![(ConversationViewControllerBase *)self shouldHideStickyFooterView])
   {
-    v4 = [(ConversationViewControllerBase *)self collectionView];
-    v5 = [v4 indexPathForCell:v6];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    v5 = [collectionView indexPathForCell:cellCopy];
 
-    [(ConversationViewController *)self _updateFooterViewFrameForCell:v6 atIndexPath:v5];
+    [(ConversationViewController *)self _updateFooterViewFrameForCell:cellCopy atIndexPath:v5];
   }
 }
 
-- (void)_updateFooterToShowUndoSendForCell:(id)a3
+- (void)_updateFooterToShowUndoSendForCell:(id)cell
 {
-  v15 = a3;
+  cellCopy = cell;
   if (_os_feature_enabled_impl())
   {
-    v4 = [(ConversationViewControllerBase *)self collectionView];
-    v5 = [v4 indexPathForCell:v15];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    v5 = [collectionView indexPathForCell:cellCopy];
 
     if (v5)
     {
-      v6 = [v15 messageViewController];
-      v7 = [v6 messageContentView];
-      v8 = [v7 showMessageFooter];
+      messageViewController = [cellCopy messageViewController];
+      messageContentView = [messageViewController messageContentView];
+      showMessageFooter = [messageContentView showMessageFooter];
 
-      if (v8)
+      if (showMessageFooter)
       {
-        v9 = [v15 messageViewController];
-        v10 = [v9 messageContentView];
-        v11 = [v10 footerView];
+        messageViewController2 = [cellCopy messageViewController];
+        messageContentView2 = [messageViewController2 messageContentView];
+        footerView = [messageContentView2 footerView];
 
-        v12 = [v15 messageViewController];
-        v13 = [v12 contentRequest];
-        v14 = [v13 message];
-        [v11 setUndoSendButtonHidden:{-[ConversationViewController _isMessageInOutbox:](self, "_isMessageInOutbox:", v14) ^ 1}];
+        messageViewController3 = [cellCopy messageViewController];
+        contentRequest = [messageViewController3 contentRequest];
+        message = [contentRequest message];
+        [footerView setUndoSendButtonHidden:{-[ConversationViewController _isMessageInOutbox:](self, "_isMessageInOutbox:", message) ^ 1}];
       }
     }
   }
 }
 
-- (void)_updateFooterViewFrameForCell:(id)a3 atIndexPath:(id)a4
+- (void)_updateFooterViewFrameForCell:(id)cell atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ConversationViewControllerBase *)self shouldHideStickyFooterView];
-  if (v7)
+  cellCopy = cell;
+  pathCopy = path;
+  shouldHideStickyFooterView = [(ConversationViewControllerBase *)self shouldHideStickyFooterView];
+  if (pathCopy)
   {
-    v9 = v8;
+    v9 = shouldHideStickyFooterView;
   }
 
   else
@@ -8971,38 +8971,38 @@ LABEL_4:
 
   if ((v9 & 1) == 0)
   {
-    if ([v6 expanded])
+    if ([cellCopy expanded])
     {
-      v10 = [v6 messageViewController];
-      v11 = [v10 messageContentView];
-      v12 = [v11 showMessageFooter];
+      messageViewController = [cellCopy messageViewController];
+      messageContentView = [messageViewController messageContentView];
+      showMessageFooter = [messageContentView showMessageFooter];
 
-      if (v12)
+      if (showMessageFooter)
       {
-        v87 = [(ConversationViewControllerBase *)self displayMetrics];
-        v13 = [(ConversationViewControllerBase *)self collectionView];
-        v86 = [(ConversationViewControllerBase *)self _layoutAttributesForItemAtIndexPath:v7];
-        v14 = [v6 messageViewController];
-        v15 = [v14 messageContentView];
+        displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
+        collectionView = [(ConversationViewControllerBase *)self collectionView];
+        v86 = [(ConversationViewControllerBase *)self _layoutAttributesForItemAtIndexPath:pathCopy];
+        messageViewController2 = [cellCopy messageViewController];
+        messageContentView2 = [messageViewController2 messageContentView];
 
-        v16 = [v15 footerView];
-        [v16 frame];
+        footerView = [messageContentView2 footerView];
+        [footerView frame];
         v83 = v17;
         v84 = v18;
         rect1 = v19;
-        [v87 estimatedFooterViewHeight];
+        [displayMetrics estimatedFooterViewHeight];
         v82 = v20;
-        [v13 frame];
+        [collectionView frame];
         MaxY = CGRectGetMaxY(v94);
-        [v87 cellHeightToStartScroll];
+        [displayMetrics cellHeightToStartScroll];
         v23 = v22;
         [v86 frame];
         v25 = v24;
         v27 = v26;
         v29 = v28;
         v31 = v30;
-        v32 = [(ConversationViewController *)self view];
-        [v13 convertRect:v32 toView:{v25, v27, v29, v31}];
+        view = [(ConversationViewController *)self view];
+        [collectionView convertRect:view toView:{v25, v27, v29, v31}];
         v34 = v33;
         v36 = v35;
         v38 = v37;
@@ -9018,15 +9018,15 @@ LABEL_4:
         v96.size.width = v38;
         v96.size.height = v40;
         Height = CGRectGetHeight(v96);
-        [v6 frame];
+        [cellCopy frame];
         v42 = MaxY - v82;
         v43 = fmax(Height, CGRectGetHeight(v97)) - v82;
         if (v43 >= v23)
         {
-          [v13 bounds];
+          [collectionView bounds];
           v44 = CGRectGetHeight(v98);
-          v45 = [v13 superview];
-          [v6 convertPoint:v45 fromView:{0.0, v42}];
+          superview = [collectionView superview];
+          [cellCopy convertPoint:superview fromView:{0.0, v42}];
           v42 = v46;
 
           if (MinY >= v44 - v23)
@@ -9042,7 +9042,7 @@ LABEL_4:
 
         UIRoundToViewScale();
         v48 = v47;
-        [v16 frame];
+        [footerView frame];
         v104.origin.x = v49;
         v104.origin.y = v50;
         v104.size.width = v51;
@@ -9053,12 +9053,12 @@ LABEL_4:
         v99.size.width = rect1;
         if (!CGRectEqualToRect(v99, v104))
         {
-          [v16 setFrame:{v83, v48, rect1, v84}];
+          [footerView setFrame:{v83, v48, rect1, v84}];
         }
 
-        [v87 footerViewButtonsAnimationOffset];
+        [displayMetrics footerViewButtonsAnimationOffset];
         v54 = v53;
-        [v13 frame];
+        [collectionView frame];
         v55 = CGRectGetMaxY(v100);
         v101.origin.x = v34;
         v101.origin.y = v36;
@@ -9080,12 +9080,12 @@ LABEL_4:
           v56 = v57;
         }
 
-        [v16 moveOriginYByOffset:v56];
-        v59 = [v15 scrollView];
-        [v59 contentSize];
+        [footerView moveOriginYByOffset:v56];
+        scrollView = [messageContentView2 scrollView];
+        [scrollView contentSize];
         v61 = v60;
-        v62 = [v15 scrollView];
-        [v62 contentInset];
+        scrollView2 = [messageContentView2 scrollView];
+        [scrollView2 contentInset];
         v64 = v63;
         v102.origin.x = v34;
         v102.origin.y = v36;
@@ -9095,8 +9095,8 @@ LABEL_4:
 
         if (v43 >= v42)
         {
-          v68 = [(ConversationViewControllerBase *)self collectionView];
-          [v68 frame];
+          collectionView2 = [(ConversationViewControllerBase *)self collectionView];
+          [collectionView2 frame];
           v69 = CGRectGetMaxY(v103);
           v70 = v82 + v61 + v64 + v65;
 
@@ -9118,8 +9118,8 @@ LABEL_4:
           v67 = 0.0;
         }
 
-        v71 = [v16 backgroundView];
-        [v71 alpha];
+        backgroundView = [footerView backgroundView];
+        [backgroundView alpha];
         v73 = v72;
 
         if (v73 != v67)
@@ -9128,14 +9128,14 @@ LABEL_4:
           v91[1] = 3221225472;
           v91[2] = sub_10007E47C;
           v91[3] = &unk_10064DE08;
-          v92 = v16;
+          v92 = footerView;
           v93 = v67;
           [UIView animateWithDuration:v91 animations:0.2];
         }
 
         if (_os_feature_enabled_impl())
         {
-          v74 = [v16 isUndoSendButtonHidden] ^ 1;
+          v74 = [footerView isUndoSendButtonHidden] ^ 1;
         }
 
         else
@@ -9143,8 +9143,8 @@ LABEL_4:
           LOBYTE(v74) = 0;
         }
 
-        v75 = [(ConversationViewControllerBase *)self cellConfigurator];
-        v76 = [v75 expansionStatusForMessageAtIndexPath:v7];
+        cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+        v76 = [cellConfigurator expansionStatusForMessageAtIndexPath:pathCopy];
 
         if (v76 == 2)
         {
@@ -9158,15 +9158,15 @@ LABEL_4:
 
         else
         {
-          v77 = [v15 automaticallyCollapseQuotedContent] ^ 1 | v74;
+          v77 = [messageContentView2 automaticallyCollapseQuotedContent] ^ 1 | v74;
         }
 
-        [v16 setIsSemiExpanded:v76 == 2];
-        [v16 setSeeMoreButtonHidden:v77 & 1];
+        [footerView setIsSemiExpanded:v76 == 2];
+        [footerView setSeeMoreButtonHidden:v77 & 1];
         v78 = 0.0;
         if (!v66)
         {
-          [v16 seeMoreButtonHeight];
+          [footerView seeMoreButtonHeight];
           if (v43 <= v42 + v79)
           {
             v78 = 1.0;
@@ -9178,52 +9178,52 @@ LABEL_4:
           }
         }
 
-        if (([v16 isSeeMoreButtonHidden] & 1) == 0)
+        if (([footerView isSeeMoreButtonHidden] & 1) == 0)
         {
-          [v16 seeMoreButtonAlpha];
+          [footerView seeMoreButtonAlpha];
           if (v80 != v78)
           {
             v88[0] = _NSConcreteStackBlock;
             v88[1] = 3221225472;
             v88[2] = sub_10007E4EC;
             v88[3] = &unk_10064DE08;
-            v89 = v16;
+            v89 = footerView;
             v90 = v78;
             [UIView animateWithDuration:v88 animations:0.2];
           }
         }
 
-        [v16 setAllowsPointerSnapping:v66];
+        [footerView setAllowsPointerSnapping:v66];
       }
     }
   }
 }
 
-- (void)_hideSeeMoreButtonForCell:(id)a3
+- (void)_hideSeeMoreButtonForCell:(id)cell
 {
-  v3 = [a3 messageViewController];
-  v5 = [v3 messageContentView];
+  messageViewController = [cell messageViewController];
+  messageContentView = [messageViewController messageContentView];
 
-  v4 = [v5 footerView];
-  [v4 setIsSemiExpanded:0];
+  footerView = [messageContentView footerView];
+  [footerView setIsSemiExpanded:0];
 }
 
 - (void)_updateFooterViewFrameForVisibleCells
 {
-  v3 = [(ConversationViewControllerBase *)self collectionView];
-  v4 = [v3 visibleCells];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  visibleCells = [collectionView visibleCells];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10007E650;
   v5[3] = &unk_10064DE30;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [visibleCells enumerateObjectsUsingBlock:v5];
 }
 
 - (id)captureRestorationState
 {
-  v3 = [(ConversationViewControllerBase *)self delegate];
-  v4 = [v3 conversationViewControllerIsResultOfSearch:self];
+  delegate = [(ConversationViewControllerBase *)self delegate];
+  v4 = [delegate conversationViewControllerIsResultOfSearch:self];
 
   if (v4)
   {
@@ -9244,18 +9244,18 @@ LABEL_4:
   return v5;
 }
 
-- (void)restoreState:(id)a3
+- (void)restoreState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = +[ConversationViewController log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v4 != 0;
+    HIDWORD(buf) = stateCopy != 0;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Restore state? %{BOOL}d", &buf, 8u);
   }
 
-  [(ConversationViewControllerBase *)self setRestorationFuture:v4];
+  [(ConversationViewControllerBase *)self setRestorationFuture:stateCopy];
   objc_initWeak(&buf, self);
   v6 = +[EFScheduler mainThreadScheduler];
   v10[0] = _NSConcreteStackBlock;
@@ -9263,7 +9263,7 @@ LABEL_4:
   v10[2] = sub_10007EBF8;
   v10[3] = &unk_10064DE80;
   objc_copyWeak(&v11, &buf);
-  [v4 onScheduler:v6 addSuccessBlock:v10];
+  [stateCopy onScheduler:v6 addSuccessBlock:v10];
 
   v7 = +[EFScheduler mainThreadScheduler];
   v8[0] = _NSConcreteStackBlock;
@@ -9271,7 +9271,7 @@ LABEL_4:
   v8[2] = sub_10007F078;
   v8[3] = &unk_10064DEA8;
   objc_copyWeak(&v9, &buf);
-  [v4 onScheduler:v7 addFailureBlock:v8];
+  [stateCopy onScheduler:v7 addFailureBlock:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
@@ -9280,20 +9280,20 @@ LABEL_4:
 
 - (id)newBackgroundMonitor
 {
-  v3 = [(ConversationViewController *)self messageList];
-  if (v3)
+  messageList = [(ConversationViewController *)self messageList];
+  if (messageList)
   {
-    v4 = [(ConversationViewControllerBase *)self collectionView];
-    v5 = [v4 visibleCells];
-    v6 = [v5 ef_compactMap:&stru_10064DEE8];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    visibleCells = [collectionView visibleCells];
+    v6 = [visibleCells ef_compactMap:&stru_10064DEE8];
 
     if ([v6 count])
     {
       v7 = [MailSceneBackgroundQueryMonitor alloc];
-      v8 = [(ConversationViewControllerBase *)self scene];
-      v9 = [v8 daemonInterface];
-      v10 = [v9 messageRepository];
-      v11 = [(MailSceneBackgroundQueryMonitor *)v7 initWithMessageListItems:v6 messageList:v3 messageRepository:v10 changeTypes:8];
+      scene = [(ConversationViewControllerBase *)self scene];
+      daemonInterface = [scene daemonInterface];
+      messageRepository = [daemonInterface messageRepository];
+      v11 = [(MailSceneBackgroundQueryMonitor *)v7 initWithMessageListItems:v6 messageList:messageList messageRepository:messageRepository changeTypes:8];
     }
 
     else
@@ -9310,22 +9310,22 @@ LABEL_4:
   return v11;
 }
 
-- (void)_updateStickySubjectForItemID:(id)a3 cell:(id)a4 indexPath:(id)a5
+- (void)_updateStickySubjectForItemID:(id)d cell:(id)cell indexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  cellCopy = cell;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = +[ConversationViewController log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    _indexPathForReferenceMessage = +[ConversationViewController log];
+    if (os_log_type_enabled(_indexPathForReferenceMessage, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v42 = v8;
+      v42 = dCopy;
       v43 = 2114;
-      v44 = v10;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Will not update sticky subject for itemID:%{public}@ at indexPath:%{public}@", buf, 0x16u);
+      v44 = pathCopy;
+      _os_log_impl(&_mh_execute_header, _indexPathForReferenceMessage, OS_LOG_TYPE_DEFAULT, "Will not update sticky subject for itemID:%{public}@ at indexPath:%{public}@", buf, 0x16u);
     }
 
 LABEL_29:
@@ -9335,54 +9335,54 @@ LABEL_29:
 
   if (-[ConversationViewController _isDisplayingSingleMessage](self, "_isDisplayingSingleMessage") && (-[ConversationViewControllerBase referenceMessageListItem](self, "referenceMessageListItem"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 count], v12, v13 == 1))
   {
-    [(ConversationViewController *)self setDisplaySubjectItemID:v8];
+    [(ConversationViewController *)self setDisplaySubjectItemID:dCopy];
   }
 
-  else if (!v9 || [v9 expanded])
+  else if (!cellCopy || [cellCopy expanded])
   {
-    v11 = [(ConversationViewController *)self _indexPathForReferenceMessage];
-    v14 = [(ConversationViewController *)self displaySubjectItemID];
-    if (v14)
+    _indexPathForReferenceMessage = [(ConversationViewController *)self _indexPathForReferenceMessage];
+    displaySubjectItemID = [(ConversationViewController *)self displaySubjectItemID];
+    if (displaySubjectItemID)
     {
     }
 
     else
     {
-      v15 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-      v16 = [v15 displayMessageItemID];
-      v17 = [v8 isEqual:v16];
+      referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+      displayMessageItemID = [referenceMessageListItem displayMessageItemID];
+      v17 = [dCopy isEqual:displayMessageItemID];
 
       if (v17)
       {
-        [(ConversationViewController *)self setDisplaySubjectItemID:v8];
-        [(ConversationViewControllerBase *)self setLastExpandedCellIndexPath:v11];
+        [(ConversationViewController *)self setDisplaySubjectItemID:dCopy];
+        [(ConversationViewControllerBase *)self setLastExpandedCellIndexPath:_indexPathForReferenceMessage];
       }
     }
 
-    v18 = [(ConversationViewController *)self collectionViewDataSource];
-    v19 = [(ConversationViewController *)self displaySubjectItemID];
-    v20 = [v18 indexPathForItemIdentifier:v19];
+    collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+    displaySubjectItemID2 = [(ConversationViewController *)self displaySubjectItemID];
+    v20 = [collectionViewDataSource indexPathForItemIdentifier:displaySubjectItemID2];
 
     if (v20)
     {
-      v21 = [v9 messageViewController];
-      v22 = [v21 messageContentView];
-      v23 = [v22 headerViewSubjectBlock];
+      messageViewController = [cellCopy messageViewController];
+      messageContentView = [messageViewController messageContentView];
+      headerViewSubjectBlock = [messageContentView headerViewSubjectBlock];
 
-      v24 = [v10 item];
-      if (v24 == [v20 item] || (v25 = objc_msgSend(v10, "item"), -[ConversationViewControllerBase lastExpandedCellIndexPath](self, "lastExpandedCellIndexPath"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "item"), v26, v25 == v27))
+      item = [pathCopy item];
+      if (item == [v20 item] || (v25 = objc_msgSend(pathCopy, "item"), -[ConversationViewControllerBase lastExpandedCellIndexPath](self, "lastExpandedCellIndexPath"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "item"), v26, v25 == v27))
       {
         v28 = [v20 copy];
         if (v28)
         {
-          v29 = [v10 item];
-          if (v29 <= [v28 item])
+          item2 = [pathCopy item];
+          if (item2 <= [v28 item])
           {
-            if ([v23 isHidden])
+            if ([headerViewSubjectBlock isHidden])
             {
-              [(ConversationViewController *)self setDisplaySubjectItemID:v8];
-              [v23 setHidden:0];
-              v30 = v10;
+              [(ConversationViewController *)self setDisplaySubjectItemID:dCopy];
+              [headerViewSubjectBlock setHidden:0];
+              v30 = pathCopy;
 
               v20 = v30;
             }
@@ -9391,8 +9391,8 @@ LABEL_29:
 
         if (([v28 isEqual:v20] & 1) == 0)
         {
-          v31 = [(ConversationViewControllerBase *)self collectionView];
-          v32 = [v31 cellForItemAtIndexPath:v28];
+          collectionView = [(ConversationViewControllerBase *)self collectionView];
+          v32 = [collectionView cellForItemAtIndexPath:v28];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -9401,10 +9401,10 @@ LABEL_29:
             v34 = v33;
             if (v33 && [v33 expanded])
             {
-              v39 = [v34 messageViewController];
-              v38 = [v39 messageContentView];
-              v37 = [v38 headerViewSubjectBlock];
-              [v37 setHidden:1];
+              messageViewController2 = [v34 messageViewController];
+              messageContentView2 = [messageViewController2 messageContentView];
+              headerViewSubjectBlock2 = [messageContentView2 headerViewSubjectBlock];
+              [headerViewSubjectBlock2 setHidden:1];
             }
           }
 
@@ -9418,9 +9418,9 @@ LABEL_29:
         }
       }
 
-      else if (([v23 isHidden] & 1) == 0)
+      else if (([headerViewSubjectBlock isHidden] & 1) == 0)
       {
-        [v23 setHidden:1];
+        [headerViewSubjectBlock setHidden:1];
       }
     }
 
@@ -9430,33 +9430,33 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)_ensureSubjectViewLayoutIfNeededAtIndexPath:(id)a3
+- (void)_ensureSubjectViewLayoutIfNeededAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ConversationViewControllerBase *)self collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v4];
+  pathCopy = path;
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  v6 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 expanded])
   {
-    v7 = [(ConversationViewController *)self collectionViewDataSource];
-    v8 = [v7 itemIdentifierForIndexPath:v4];
-    [(ConversationViewController *)self _updateStickySubjectForItemID:v8 cell:v6 indexPath:v4];
+    collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+    v8 = [collectionViewDataSource itemIdentifierForIndexPath:pathCopy];
+    [(ConversationViewController *)self _updateStickySubjectForItemID:v8 cell:v6 indexPath:pathCopy];
   }
 
   v9.receiver = self;
   v9.super_class = ConversationViewController;
-  [(ConversationViewControllerBase *)&v9 _ensureSubjectViewLayoutIfNeededAtIndexPath:v4];
+  [(ConversationViewControllerBase *)&v9 _ensureSubjectViewLayoutIfNeededAtIndexPath:pathCopy];
 }
 
-- (id)_shouldRecalculateStickySubjectBeforeDeletedItemIDs:(id)a3
+- (id)_shouldRecalculateStickySubjectBeforeDeletedItemIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(ConversationViewController *)self displaySubjectItemID];
-  if (v5 && [v4 containsObject:v5])
+  dsCopy = ds;
+  displaySubjectItemID = [(ConversationViewController *)self displaySubjectItemID];
+  if (displaySubjectItemID && [dsCopy containsObject:displaySubjectItemID])
   {
-    v6 = [(ConversationViewController *)self collectionViewDataSource];
-    v7 = [v6 indexPathForItemIdentifier:v5];
+    collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+    v7 = [collectionViewDataSource indexPathForItemIdentifier:displaySubjectItemID];
   }
 
   else
@@ -9467,19 +9467,19 @@ LABEL_30:
   return v7;
 }
 
-- (void)_recalculateStickySubjectForDeletedIndexPath:(id)a3
+- (void)_recalculateStickySubjectForDeletedIndexPath:(id)path
 {
-  v4 = [a3 item];
-  v5 = [(ConversationViewController *)self countOfMessages];
-  v6 = v5;
-  if (v5 - 1 >= v4)
+  item = [path item];
+  countOfMessages = [(ConversationViewController *)self countOfMessages];
+  v6 = countOfMessages;
+  if (countOfMessages - 1 >= item)
   {
-    v7 = v4;
+    v7 = item;
   }
 
   else
   {
-    v7 = v5 - 1;
+    v7 = countOfMessages - 1;
   }
 
   v22 = 0;
@@ -9536,70 +9536,70 @@ LABEL_30:
 
   if (v12)
   {
-    v16 = [(ConversationViewControllerBase *)self collectionView];
-    v17 = [v16 cellForItemAtIndexPath:v23[5]];
+    collectionView = [(ConversationViewControllerBase *)self collectionView];
+    v17 = [collectionView cellForItemAtIndexPath:v23[5]];
 
-    v18 = [(ConversationViewController *)self collectionViewDataSource];
-    v19 = [v18 itemIdentifierForIndexPath:v23[5]];
+    collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+    v19 = [collectionViewDataSource itemIdentifierForIndexPath:v23[5]];
     [(ConversationViewController *)self setDisplaySubjectItemID:v19];
 
     [(ConversationViewControllerBase *)self setLastExpandedCellIndexPath:v23[5]];
-    v20 = [(ConversationViewController *)self displaySubjectItemID];
-    [(ConversationViewController *)self _updateStickySubjectForItemID:v20 cell:v17 indexPath:v23[5]];
+    displaySubjectItemID = [(ConversationViewController *)self displaySubjectItemID];
+    [(ConversationViewController *)self _updateStickySubjectForItemID:displaySubjectItemID cell:v17 indexPath:v23[5]];
   }
 
   _Block_object_dispose(&v22, 8);
 }
 
-- (double)stickySubjectViewMaxYForConversationHeaderView:(id)a3
+- (double)stickySubjectViewMaxYForConversationHeaderView:(id)view
 {
-  v4 = [(ConversationViewController *)self collectionViewDataSource];
-  v5 = [(ConversationViewController *)self displaySubjectItemID];
-  v6 = [v4 indexPathForItemIdentifier:v5];
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  displaySubjectItemID = [(ConversationViewController *)self displaySubjectItemID];
+  v6 = [collectionViewDataSource indexPathForItemIdentifier:displaySubjectItemID];
 
-  v7 = [(ConversationViewControllerBase *)self collectionView];
-  v8 = [v7 cellForItemAtIndexPath:v6];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  v8 = [collectionView cellForItemAtIndexPath:v6];
 
   v9 = 0.0;
   if (v8 && [v8 expanded])
   {
     [v8 frame];
     MinY = CGRectGetMinY(v15);
-    v11 = [v8 messageViewController];
-    v12 = [v11 messageContentView];
-    v13 = [v12 headerViewSubjectBlock];
-    [v13 frame];
+    messageViewController = [v8 messageViewController];
+    messageContentView = [messageViewController messageContentView];
+    headerViewSubjectBlock = [messageContentView headerViewSubjectBlock];
+    [headerViewSubjectBlock frame];
     v9 = MinY + 0.0 + CGRectGetMaxY(v16);
   }
 
   return v9;
 }
 
-- (double)stickySubjectViewFirstBaselineForConversationHeaderView:(id)a3
+- (double)stickySubjectViewFirstBaselineForConversationHeaderView:(id)view
 {
-  v4 = [(ConversationViewController *)self collectionViewDataSource];
-  v5 = [(ConversationViewController *)self displaySubjectItemID];
-  v6 = [v4 indexPathForItemIdentifier:v5];
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  displaySubjectItemID = [(ConversationViewController *)self displaySubjectItemID];
+  v6 = [collectionViewDataSource indexPathForItemIdentifier:displaySubjectItemID];
 
-  v7 = [(ConversationViewControllerBase *)self collectionView];
-  v8 = [v7 cellForItemAtIndexPath:v6];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  v8 = [collectionView cellForItemAtIndexPath:v6];
 
   v9 = 0.0;
   if (v8 && [v8 expanded])
   {
     [v8 frame];
     MinY = CGRectGetMinY(v20);
-    v11 = [v8 messageViewController];
-    v12 = [v11 messageContentView];
-    v13 = [v12 headerViewSubjectBlock];
-    [v13 frame];
+    messageViewController = [v8 messageViewController];
+    messageContentView = [messageViewController messageContentView];
+    headerViewSubjectBlock = [messageContentView headerViewSubjectBlock];
+    [headerViewSubjectBlock frame];
     v14 = CGRectGetMinY(v21);
-    v15 = [(ConversationViewControllerBase *)self displayMetrics];
-    [v15 firstSeparatorToSubjectBaseline];
+    displayMetrics = [(ConversationViewControllerBase *)self displayMetrics];
+    [displayMetrics firstSeparatorToSubjectBaseline];
     v17 = v16;
 
-    v18 = [(ConversationViewController *)self view];
-    [v18 bounds];
+    view = [(ConversationViewController *)self view];
+    [view bounds];
     v9 = MinY + v14 + v17 + 0.0 - CGRectGetHeight(v22);
   }
 
@@ -9612,8 +9612,8 @@ LABEL_30:
   if (!v3)
   {
     v4 = [DraftGestureHelper alloc];
-    v5 = [(ConversationViewControllerBase *)self scene];
-    v6 = [(DraftGestureHelper *)v4 initWithConversationViewController:self scene:v5];
+    scene = [(ConversationViewControllerBase *)self scene];
+    v6 = [(DraftGestureHelper *)v4 initWithConversationViewController:self scene:scene];
     v7 = *(&self->_draftGestureHelper + 4);
     *(&self->_draftGestureHelper + 4) = v6;
 
@@ -9623,64 +9623,64 @@ LABEL_30:
   return v3;
 }
 
-- (void)_updateGestureForMessageListItem:(id)a3
+- (void)_updateGestureForMessageListItem:(id)item
 {
-  v7 = a3;
-  v4 = [v7 mailboxes];
-  v5 = [v4 ef_any:&stru_10064DF30];
+  itemCopy = item;
+  mailboxes = [itemCopy mailboxes];
+  v5 = [mailboxes ef_any:&stru_10064DF30];
 
   if ((v5 & 1) != 0 || *(&self->_draftGestureHelper + 4))
   {
-    v6 = [(ConversationViewController *)self draftGestureHelper];
-    [v6 enableGesture:v5];
+    draftGestureHelper = [(ConversationViewController *)self draftGestureHelper];
+    [draftGestureHelper enableGesture:v5];
   }
 }
 
-- (void)setDiagnosticsHelper:(id)a3
+- (void)setDiagnosticsHelper:(id)helper
 {
-  v7 = a3;
-  if (*(&self->_diagnosticsHelper + 4) != v7)
+  helperCopy = helper;
+  if (*(&self->_diagnosticsHelper + 4) != helperCopy)
   {
-    v5 = [(ConversationViewController *)self diagnosticsHelperToken];
-    [v5 cancel];
+    diagnosticsHelperToken = [(ConversationViewController *)self diagnosticsHelperToken];
+    [diagnosticsHelperToken cancel];
 
-    objc_storeStrong((&self->_diagnosticsHelper + 4), a3);
-    v6 = [v7 registerDiagnosticFileProvider:self];
+    objc_storeStrong((&self->_diagnosticsHelper + 4), helper);
+    v6 = [helperCopy registerDiagnosticFileProvider:self];
     [(ConversationViewController *)self setDiagnosticsHelperToken:v6];
   }
 }
 
-- (id)messageListItemsForDiagnosticsHelper:(id)a3
+- (id)messageListItemsForDiagnosticsHelper:(id)helper
 {
-  v4 = a3;
-  if ([v4 source])
+  helperCopy = helper;
+  if ([helperCopy source])
   {
-    v5 = +[ConversationViewController log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    focusedMessage = +[ConversationViewController log];
+    if (os_log_type_enabled(focusedMessage, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v12 = [v4 source];
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Not providing diagnostics because source is %lu", buf, 0xCu);
+      source = [helperCopy source];
+      _os_log_impl(&_mh_execute_header, focusedMessage, OS_LOG_TYPE_DEFAULT, "Not providing diagnostics because source is %lu", buf, 0xCu);
     }
   }
 
   else
   {
-    v5 = [(ConversationViewController *)self focusedMessage];
+    focusedMessage = [(ConversationViewController *)self focusedMessage];
     v6 = +[ConversationViewController log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 ef_publicDescription];
+      ef_publicDescription = [focusedMessage ef_publicDescription];
       *buf = 138543618;
-      v12 = v7;
+      source = ef_publicDescription;
       v13 = 2112;
-      v14 = v4;
+      v14 = helperCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Providing focusedMessage %{public}@ to %@", buf, 0x16u);
     }
 
-    if (v5)
+    if (focusedMessage)
     {
-      v10 = v5;
+      v10 = focusedMessage;
       v8 = [NSArray arrayWithObjects:&v10 count:1];
       goto LABEL_9;
     }
@@ -9692,14 +9692,14 @@ LABEL_9:
   return v8;
 }
 
-- (id)findInteraction:(id)a3 sessionForView:(id)a4
+- (id)findInteraction:(id)interaction sessionForView:(id)view
 {
   v4 = [[UITextSearchingFindSession alloc] initWithSearchableObject:self];
 
   return v4;
 }
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
   v3 = sub_1004852A4(self);
   [v3 presentFindNavigatorShowingReplace:0];
@@ -9707,14 +9707,14 @@ LABEL_9:
 
 - (void)clearAllDecoratedFoundText
 {
-  v2 = [(ConversationViewControllerBase *)self cellConfigurator];
-  [v2 enumerateExpandedCellsWithBlock:&stru_10064DF50];
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+  [cellConfigurator enumerateExpandedCellsWithBlock:&stru_10064DF50];
 }
 
-- (void)decorateFoundTextRange:(id)a3 inDocument:(id)a4 usingStyle:(int64_t)a5
+- (void)decorateFoundTextRange:(id)range inDocument:(id)document usingStyle:(int64_t)style
 {
-  v9 = a3;
-  v10 = a4;
+  rangeCopy = range;
+  documentCopy = document;
   if (([objc_opt_class() conformsToProtocol:&OBJC_PROTOCOL___EMCollectionItemID] & 1) == 0)
   {
     v19 = +[NSAssertionHandler currentHandler];
@@ -9728,97 +9728,97 @@ LABEL_9:
     [v20 handleFailureInMethod:a2 object:self file:@"ConversationViewController.m" lineNumber:6092 description:{@"Expected ConversationSearchTextRange, got %@", objc_opt_class()}];
   }
 
-  v21 = v9;
-  if (a5 == 2)
+  v21 = rangeCopy;
+  if (style == 2)
   {
     v11 = sub_1004852D0(self);
     sub_100483458(v11, v21);
   }
 
-  v12 = [(ConversationViewController *)self collectionViewDataSource];
-  v13 = [v12 indexPathForItemIdentifier:v10];
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  v13 = [collectionViewDataSource indexPathForItemIdentifier:documentCopy];
 
-  v14 = [(ConversationViewControllerBase *)self collectionView];
-  v15 = [v14 cellForItemAtIndexPath:v13];
+  collectionView = [(ConversationViewControllerBase *)self collectionView];
+  v15 = [collectionView cellForItemAtIndexPath:v13];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v15 messageViewController];
-    v17 = [v16 messageContentView];
+    messageViewController = [v15 messageViewController];
+    messageContentView = [messageViewController messageContentView];
 
-    [v17 didBeginTextSearch];
+    [messageContentView didBeginTextSearch];
     v18 = sub_100483FD0(v21);
-    [v17 showSearchResultsAtRange:v18 usingStyle:a5];
+    [messageContentView showSearchResultsAtRange:v18 usingStyle:style];
   }
 }
 
-- (int64_t)compareFoundRange:(id)a3 toRange:(id)a4 inDocument:(id)a5
+- (int64_t)compareFoundRange:(id)range toRange:(id)toRange inDocument:(id)document
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  rangeCopy = range;
+  toRangeCopy = toRange;
+  documentCopy = document;
   v11 = sub_1004852D0(self);
-  v12 = sub_100056248(v11, v8, v9);
+  v12 = sub_100056248(v11, rangeCopy, toRangeCopy);
 
   return v12;
 }
 
-- (void)performTextSearchWithQueryString:(id)a3 usingOptions:(id)a4 resultAggregator:(id)a5
+- (void)performTextSearchWithQueryString:(id)string usingOptions:(id)options resultAggregator:(id)aggregator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  optionsCopy = options;
+  aggregatorCopy = aggregator;
   v11 = +[ConversationViewController log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412802;
-    v14 = v8;
+    v14 = stringCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = optionsCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = aggregatorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Beginning search with string %@, options: %@, aggregator: %@", &v13, 0x20u);
   }
 
-  [(ConversationViewController *)self setSearchAggregator:v10];
+  [(ConversationViewController *)self setSearchAggregator:aggregatorCopy];
   v12 = sub_1004852D0(self);
-  sub_1000547D8(v12, v8, v9, v10);
+  sub_1000547D8(v12, stringCopy, optionsCopy, aggregatorCopy);
 
   sub_100080CC4(self, 1);
 }
 
-- (int64_t)compareOrderFromDocument:(id)a3 toDocument:(id)a4
+- (int64_t)compareOrderFromDocument:(id)document toDocument:(id)toDocument
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
-  v10 = [(ConversationViewController *)self collectionViewDataSource];
-  v11 = [v10 indexPathForItemIdentifier:v8];
-  v12 = [v10 indexPathForItemIdentifier:v9];
+  documentCopy = document;
+  toDocumentCopy = toDocument;
+  v8 = documentCopy;
+  v9 = toDocumentCopy;
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  v11 = [collectionViewDataSource indexPathForItemIdentifier:v8];
+  v12 = [collectionViewDataSource indexPathForItemIdentifier:v9];
   v13 = [v11 compare:v12];
 
   return v13;
 }
 
-- (void)scrollRangeToVisible:(id)a3 inDocument:(id)a4
+- (void)scrollRangeToVisible:(id)visible inDocument:(id)document
 {
-  v7 = a3;
-  v8 = a4;
+  visibleCopy = visible;
+  documentCopy = document;
   v9 = +[ConversationViewController log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v26 = "[ConversationViewController scrollRangeToVisible:inDocument:]";
     v27 = 2112;
-    v28 = v7;
+    v28 = visibleCopy;
     v29 = 2112;
-    v30 = v8;
+    v30 = documentCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: range: %@, document: %@", buf, 0x20u);
   }
 
-  v10 = v8;
+  v10 = documentCopy;
   if (([objc_opt_class() conformsToProtocol:&OBJC_PROTOCOL___EMCollectionItemID] & 1) == 0)
   {
     v18 = +[NSAssertionHandler currentHandler];
@@ -9832,13 +9832,13 @@ LABEL_9:
     [v19 handleFailureInMethod:a2 object:self file:@"ConversationViewController.m" lineNumber:6150 description:{@"Expected ConversationSearchTextRange, got %@", objc_opt_class()}];
   }
 
-  v11 = v7;
+  v11 = visibleCopy;
   v12 = sub_100061BD0(self, v10);
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 messageViewController];
-    v15 = [v14 messageContentView];
+    messageViewController = [v12 messageViewController];
+    messageContentView = [messageViewController messageContentView];
 
     v16 = sub_100483FD0(v11);
     v20[0] = _NSConcreteStackBlock;
@@ -9847,8 +9847,8 @@ LABEL_9:
     v20[3] = &unk_10064DF78;
     v21 = v11;
     v22 = v10;
-    v23 = self;
-    v17 = v15;
+    selfCopy = self;
+    v17 = messageContentView;
     v24 = v17;
     [v17 requestRectForFoundTextRange:v16 completionHandler:v20];
   }
@@ -9867,26 +9867,26 @@ LABEL_9:
   v3 = sub_1004852A4(self);
   [v3 setSearchText:&stru_100662A88];
 
-  v4 = [(ConversationViewController *)self searchAggregator];
-  [v4 invalidate];
+  searchAggregator = [(ConversationViewController *)self searchAggregator];
+  [searchAggregator invalidate];
 
   [(ConversationViewController *)self setSearchAggregator:0];
   sub_100080CC4(self, 0);
 }
 
-- (void)_decorateFoundRanges:(id)a3 inExpandedCell:(id)a4
+- (void)_decorateFoundRanges:(id)ranges inExpandedCell:(id)cell
 {
-  v18 = a3;
-  v6 = [a4 messageViewController];
-  v7 = [v6 messageContentView];
+  rangesCopy = ranges;
+  messageViewController = [cell messageViewController];
+  messageContentView = [messageViewController messageContentView];
 
-  v20 = v7;
-  [v7 didBeginTextSearch];
+  v20 = messageContentView;
+  [messageContentView didBeginTextSearch];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v18;
+  obj = rangesCopy;
   v8 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -9940,9 +9940,9 @@ LABEL_11:
   if (v3)
   {
     v5 = sub_1004852A4(self);
-    v4 = [v5 isFindNavigatorVisible];
+    isFindNavigatorVisible = [v5 isFindNavigatorVisible];
 
-    if (v4)
+    if (isFindNavigatorVisible)
     {
       v6 = sub_1004852A4(self);
       [v6 setSearchText:&stru_100662A88];
@@ -9953,61 +9953,61 @@ LABEL_11:
   }
 }
 
-- (id)conversationSearchMessageListForConversationSearchHandler:(id)a3
+- (id)conversationSearchMessageListForConversationSearchHandler:(id)handler
 {
-  v3 = [(ConversationViewController *)self messageList];
+  messageList = [(ConversationViewController *)self messageList];
 
-  return v3;
+  return messageList;
 }
 
-- (id)conversationSearchHandler:(id)a3 contentRepresentationRequestForItemID:(id)a4
+- (id)conversationSearchHandler:(id)handler contentRepresentationRequestForItemID:(id)d
 {
-  v4 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:a4];
+  v4 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:d];
 
   return v4;
 }
 
-- (BOOL)conversationSearchHandler:(id)a3 shouldConsiderQuotedContentForItemID:(id)a4
+- (BOOL)conversationSearchHandler:(id)handler shouldConsiderQuotedContentForItemID:(id)d
 {
-  v5 = a4;
-  v6 = [(ConversationViewController *)self collectionViewDataSource];
-  v7 = [v6 indexPathForItemIdentifier:v5];
+  dCopy = d;
+  collectionViewDataSource = [(ConversationViewController *)self collectionViewDataSource];
+  v7 = [collectionViewDataSource indexPathForItemIdentifier:dCopy];
 
   LOBYTE(self) = [(ConversationViewController *)self _shouldAutomaticallyCollapseQuotedContentForCellAtIndexPath:v7];
   return self ^ 1;
 }
 
-- (void)bannerViewDidSelectEditButton:(id)a3 itemID:(id)a4
+- (void)bannerViewDidSelectEditButton:(id)button itemID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:v7];
-  v9 = [v6 type];
-  if (!v9)
+  buttonCopy = button;
+  dCopy = d;
+  v8 = [(ConversationViewController *)self _contentRequestForMessageWithItemID:dCopy];
+  type = [buttonCopy type];
+  if (!type)
   {
-    v19 = [v8 message];
-    v11 = [MFDatePickerViewController datePickerViewControllerWithType:0 message:v19];
+    message = [v8 message];
+    v11 = [MFDatePickerViewController datePickerViewControllerWithType:0 message:message];
 
     [v11 setDelegate:self];
     v20 = [[UINavigationController alloc] initWithRootViewController:v11];
     [v20 setModalPresentationStyle:7];
-    v21 = [v20 popoverPresentationController];
-    [v21 setSourceItem:v6];
+    popoverPresentationController = [v20 popoverPresentationController];
+    [popoverPresentationController setSourceItem:buttonCopy];
 
     [(ConversationViewControllerBase *)self presentViewController:v20 animated:1 completion:0];
     goto LABEL_7;
   }
 
-  if (v9 == 1)
+  if (type == 1)
   {
-    v14 = [v8 message];
-    v27 = v14;
+    message2 = [v8 message];
+    v27 = message2;
     v15 = [NSArray arrayWithObjects:&v27 count:1];
-    v16 = [(ConversationViewController *)self undoManager];
-    v17 = [MFReadLaterTriageInteraction interactionWithMessageListItems:v15 undoManager:v16 origin:3 actor:2];
+    undoManager = [(ConversationViewController *)self undoManager];
+    v17 = [MFReadLaterTriageInteraction interactionWithMessageListItems:v15 undoManager:undoManager origin:3 actor:2];
 
     [v17 setDelegate:self];
-    [v17 setPresentationSource:v6];
+    [v17 setPresentationSource:buttonCopy];
     [v17 setDatePickerPresentationStyle:7];
     objc_initWeak(&location, self);
     v22[0] = _NSConcreteStackBlock;
@@ -10024,99 +10024,99 @@ LABEL_11:
     objc_destroyWeak(&location);
   }
 
-  else if (v9 == 2)
+  else if (type == 2)
   {
-    v10 = [(ConversationViewControllerBase *)self scene];
-    v11 = [(MFMessageCompositionTriageInteraction *)MFReplyAllTriageInteraction interactionWithContentRequest:v8 scene:v10];
+    scene = [(ConversationViewControllerBase *)self scene];
+    v11 = [(MFMessageCompositionTriageInteraction *)MFReplyAllTriageInteraction interactionWithContentRequest:v8 scene:scene];
 
-    v12 = [v8 message];
-    v13 = [v12 mailboxes];
-    [v11 setMessageSourceMailboxes:v13];
+    message3 = [v8 message];
+    mailboxes = [message3 mailboxes];
+    [v11 setMessageSourceMailboxes:mailboxes];
 
     [v11 setShouldPromptToLoadRestOfMessage:0];
     [v11 setDelegate:self];
-    [v11 setPresentationSource:v6];
+    [v11 setPresentationSource:buttonCopy];
     [v11 performInteraction];
 LABEL_7:
   }
 }
 
-- (void)summaryCell:(id)a3 withItemID:(id)a4 didLayoutWithHeight:(double)a5
+- (void)summaryCell:(id)cell withItemID:(id)d didLayoutWithHeight:(double)height
 {
-  v8 = a3;
-  v9 = a4;
-  [v8 bounds];
+  cellCopy = cell;
+  dCopy = d;
+  [cellCopy bounds];
   v11 = v10;
-  v12 = [(ConversationViewControllerBase *)self cellConfigurator];
-  v13 = [v12 sizeTracker];
-  [v13 intrinsicSizeForCellWithItemID:v9];
+  cellConfigurator = [(ConversationViewControllerBase *)self cellConfigurator];
+  sizeTracker = [cellConfigurator sizeTracker];
+  [sizeTracker intrinsicSizeForCellWithItemID:dCopy];
   v15 = v14;
   v17 = v16;
 
-  if (v15 != v11 || v17 != a5)
+  if (v15 != v11 || v17 != height)
   {
-    v20 = v9;
+    v20 = dCopy;
     v21 = v15;
     v22 = v17;
     v23 = v11;
-    v24 = a5;
+    heightCopy = height;
     v18 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
     [v18 performBlock:&v19];
   }
 }
 
-- (void)_generativeModelsAvailabilityDidChange:(id)a3
+- (void)_generativeModelsAvailabilityDidChange:(id)change
 {
   [(ConversationViewController *)self _resetManualSummaryItemIDs];
 
   [(ConversationViewController *)self _reloadDataSource];
 }
 
-- (void)_appIntentDidSummarize:(id)a3
+- (void)_appIntentDidSummarize:(id)summarize
 {
-  v4 = a3;
-  v7 = v4;
-  v8 = self;
+  summarizeCopy = summarize;
+  v7 = summarizeCopy;
+  selfCopy = self;
   v5 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v5 performBlock:&v6];
 }
 
-- (void)_appIntentDidSetReminder:(id)a3
+- (void)_appIntentDidSetReminder:(id)reminder
 {
-  v6 = self;
-  v3 = a3;
-  v7 = v3;
+  selfCopy = self;
+  reminderCopy = reminder;
+  v7 = reminderCopy;
   v4 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v4 performBlock:&v5];
 }
 
-- (void)_appIntentDidDeleteReminder:(id)a3
+- (void)_appIntentDidDeleteReminder:(id)reminder
 {
-  v6 = self;
-  v3 = a3;
-  v7 = v3;
+  selfCopy = self;
+  reminderCopy = reminder;
+  v7 = reminderCopy;
   v4 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v4 performBlock:&v5];
 }
 
-- (void)_appIntentDidRemoveFollowUp:(id)a3
+- (void)_appIntentDidRemoveFollowUp:(id)up
 {
-  v6 = self;
-  v3 = a3;
-  v7 = v3;
+  selfCopy = self;
+  upCopy = up;
+  v7 = upCopy;
   v4 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v4 performBlock:&v5];
 }
 
-- (id)_referenceMessageListItemIDIfMatchingNotification:(id)a3
+- (id)_referenceMessageListItemIDIfMatchingNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"mailMessageIDs"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"mailMessageIDs"];
 
-  v7 = [(ConversationViewControllerBase *)self referenceMessageListItem];
-  v8 = [v7 displayMessageObjectID];
-  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", [v8 globalMessageID]);
+  referenceMessageListItem = [(ConversationViewControllerBase *)self referenceMessageListItem];
+  displayMessageObjectID = [referenceMessageListItem displayMessageObjectID];
+  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", [displayMessageObjectID globalMessageID]);
   if ([v6 containsObjectIdenticalTo:v9])
   {
     v10 = v9;

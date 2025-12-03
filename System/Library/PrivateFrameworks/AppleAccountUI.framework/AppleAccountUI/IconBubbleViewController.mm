@@ -1,9 +1,9 @@
 @interface IconBubbleViewController
 - (CGSize)preferredContentSize;
-- (_TtC14AppleAccountUI24IconBubbleViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)AAUIMicaPlayerDidChangePlaybackTime:(id)a3;
+- (_TtC14AppleAccountUI24IconBubbleViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)AAUIMicaPlayerDidChangePlaybackTime:(id)time;
 - (void)loadView;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)setPreferredContentSize:(CGSize)size;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -37,10 +37,10 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
   MEMORY[0x1E69E5928](self);
-  sub_1C5529FF0(a3.width, a3.height);
+  sub_1C5529FF0(size.width, size.height);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -51,15 +51,15 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (_TtC14AppleAccountUI24IconBubbleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14AppleAccountUI24IconBubbleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  if (a3)
+  MEMORY[0x1E69E5928](name);
+  MEMORY[0x1E69E5928](bundle);
+  if (name)
   {
     sub_1C5596574();
     v6 = v4;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](name);
     v5 = v6;
   }
 
@@ -71,13 +71,13 @@
   sub_1C552D7B4(v5);
 }
 
-- (void)AAUIMicaPlayerDidChangePlaybackTime:(id)a3
+- (void)AAUIMicaPlayerDidChangePlaybackTime:(id)time
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](time);
   MEMORY[0x1E69E5928](self);
-  sub_1C552DA40(a3);
+  sub_1C552DA40(time);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](time);
 }
 
 @end

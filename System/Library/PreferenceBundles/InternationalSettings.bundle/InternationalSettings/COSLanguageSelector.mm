@@ -1,24 +1,24 @@
 @interface COSLanguageSelector
 - (COSInternationalController)internationalController;
-- (COSLanguageSelector)initWithInternationalController:(id)a3;
+- (COSLanguageSelector)initWithInternationalController:(id)controller;
 - (id)appleLanguages;
 - (id)deviceLanguageIdentifier;
 - (id)systemLanguages;
-- (void)setLanguages:(id)a3;
+- (void)setLanguages:(id)languages;
 @end
 
 @implementation COSLanguageSelector
 
-- (COSLanguageSelector)initWithInternationalController:(id)a3
+- (COSLanguageSelector)initWithInternationalController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = COSLanguageSelector;
   v5 = [(COSLanguageSelector *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_internationalController, v4);
+    objc_storeWeak(&v5->_internationalController, controllerCopy);
     v7 = [[NPSDomainAccessor alloc] initWithDomain:@".GlobalPreferences"];
     gizmoGlobalDomain = v6->_gizmoGlobalDomain;
     v6->_gizmoGlobalDomain = v7;
@@ -33,11 +33,11 @@
 
 - (id)appleLanguages
 {
-  v3 = [(COSLanguageSelector *)self gizmoGlobalDomain];
-  v4 = [v3 synchronize];
+  gizmoGlobalDomain = [(COSLanguageSelector *)self gizmoGlobalDomain];
+  synchronize = [gizmoGlobalDomain synchronize];
 
-  v5 = [(COSLanguageSelector *)self gizmoGlobalDomain];
-  v6 = [v5 objectForKey:@"AppleLanguages"];
+  gizmoGlobalDomain2 = [(COSLanguageSelector *)self gizmoGlobalDomain];
+  v6 = [gizmoGlobalDomain2 objectForKey:@"AppleLanguages"];
 
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -48,20 +48,20 @@
   return v6;
 }
 
-- (void)setLanguages:(id)a3
+- (void)setLanguages:(id)languages
 {
-  v4 = a3;
-  v5 = [(COSLanguageSelector *)self gizmoGlobalDomain];
-  [v5 setObject:v4 forKey:@"AppleLanguages"];
+  languagesCopy = languages;
+  gizmoGlobalDomain = [(COSLanguageSelector *)self gizmoGlobalDomain];
+  [gizmoGlobalDomain setObject:languagesCopy forKey:@"AppleLanguages"];
 
-  v6 = [(COSLanguageSelector *)self gizmoGlobalDomain];
-  v7 = [v6 synchronize];
+  gizmoGlobalDomain2 = [(COSLanguageSelector *)self gizmoGlobalDomain];
+  synchronize = [gizmoGlobalDomain2 synchronize];
 
-  v8 = [(COSLanguageSelector *)self syncManager];
-  v9 = [(COSLanguageSelector *)self gizmoGlobalDomain];
-  v10 = [v9 domain];
+  syncManager = [(COSLanguageSelector *)self syncManager];
+  gizmoGlobalDomain3 = [(COSLanguageSelector *)self gizmoGlobalDomain];
+  domain = [gizmoGlobalDomain3 domain];
   v11 = [NSSet setWithObject:@"AppleLanguages"];
-  [v8 synchronizeNanoDomain:v10 keys:v11];
+  [syncManager synchronizeNanoDomain:domain keys:v11];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
@@ -71,19 +71,19 @@
 - (id)systemLanguages
 {
   WeakRetained = objc_loadWeakRetained(&self->_internationalController);
-  v3 = [WeakRetained systemLanguages];
+  systemLanguages = [WeakRetained systemLanguages];
 
-  return v3;
+  return systemLanguages;
 }
 
 - (id)deviceLanguageIdentifier
 {
-  v3 = [(COSLanguageSelector *)self systemLanguages];
-  v4 = [(COSLanguageSelector *)self appleLanguages];
-  v5 = [NSBundle preferredLocalizationsFromArray:v3 forPreferences:v4];
-  v6 = [v5 firstObject];
+  systemLanguages = [(COSLanguageSelector *)self systemLanguages];
+  appleLanguages = [(COSLanguageSelector *)self appleLanguages];
+  v5 = [NSBundle preferredLocalizationsFromArray:systemLanguages forPreferences:appleLanguages];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
 - (COSInternationalController)internationalController

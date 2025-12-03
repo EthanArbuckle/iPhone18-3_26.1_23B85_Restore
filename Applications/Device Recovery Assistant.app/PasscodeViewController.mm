@@ -7,9 +7,9 @@
 - (void)disable;
 - (void)enable;
 - (void)loadView;
-- (void)nextButtonPressed:(id)a3;
-- (void)passcodeInput:(id)a3 enteredPasscode:(id)a4;
-- (void)passcodeInput:(id)a3 willChangeContents:(id)a4;
+- (void)nextButtonPressed:(id)pressed;
+- (void)passcodeInput:(id)input enteredPasscode:(id)passcode;
+- (void)passcodeInput:(id)input willChangeContents:(id)contents;
 - (void)viewDidLoad;
 @end
 
@@ -28,9 +28,9 @@
 
 - (void)disable
 {
-  v3 = [(PasscodeViewController *)self spinnerItem];
-  v4 = [(PasscodeViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  spinnerItem = [(PasscodeViewController *)self spinnerItem];
+  navigationItem = [(PasscodeViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:spinnerItem];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -40,51 +40,51 @@
   v5 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v8 block:0.5];
   [(PasscodeViewController *)self setActivityTimer:v5];
 
-  v6 = [(PasscodeViewController *)self passcodeInputView];
-  [v6 resignFirstResponder];
+  passcodeInputView = [(PasscodeViewController *)self passcodeInputView];
+  [passcodeInputView resignFirstResponder];
 
-  v7 = [(PasscodeViewController *)self navigationItem];
-  [v7 setHidesBackButton:1 animated:1];
+  navigationItem2 = [(PasscodeViewController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:1 animated:1];
 }
 
 - (void)enable
 {
-  v3 = [(PasscodeViewController *)self nextItem];
-  if (v3)
+  nextItem = [(PasscodeViewController *)self nextItem];
+  if (nextItem)
   {
-    v4 = [(PasscodeViewController *)self nextItem];
+    nextItem2 = [(PasscodeViewController *)self nextItem];
   }
 
   else
   {
-    v4 = 0;
+    nextItem2 = 0;
   }
 
-  v5 = [(PasscodeViewController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [(PasscodeViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:nextItem2];
 
-  if (v3)
+  if (nextItem)
   {
   }
 
-  v6 = [(PasscodeViewController *)self navigationItem];
-  [v6 setHidesBackButton:0 animated:1];
+  navigationItem2 = [(PasscodeViewController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:0 animated:1];
 
-  v7 = [(PasscodeViewController *)self nextItem];
-  [v7 setEnabled:0];
+  nextItem3 = [(PasscodeViewController *)self nextItem];
+  [nextItem3 setEnabled:0];
 
-  v8 = [(PasscodeViewController *)self activityTimer];
-  [v8 invalidate];
+  activityTimer = [(PasscodeViewController *)self activityTimer];
+  [activityTimer invalidate];
 
   [(PasscodeViewController *)self setActivityTimer:0];
-  v9 = [(PasscodeViewController *)self activityView];
-  [v9 stopAnimating];
+  activityView = [(PasscodeViewController *)self activityView];
+  [activityView stopAnimating];
 
-  v10 = [(PasscodeViewController *)self passcodeInputView];
-  [v10 setPasscode:&stru_100028E90];
+  passcodeInputView = [(PasscodeViewController *)self passcodeInputView];
+  [passcodeInputView setPasscode:&stru_100028E90];
 
-  v11 = [(PasscodeViewController *)self passcodeInputView];
-  [v11 becomeFirstResponder];
+  passcodeInputView2 = [(PasscodeViewController *)self passcodeInputView];
+  [passcodeInputView2 becomeFirstResponder];
 }
 
 - (void)loadView
@@ -94,18 +94,18 @@
   [(PasscodeViewController *)&v42 loadView];
   if ([(PasscodeViewController *)self deviceHasSimplePasscode])
   {
-    v3 = [[BFFSimplePasscodeInputView alloc] initWithFrame:-[PasscodeViewController numberOfCharactersInSimpleDevicePasscode](self numberOfEntryFields:{"numberOfCharactersInSimpleDevicePasscode"), CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    [(PasscodeViewController *)self setPasscodeInputView:v3];
+    nextItem2 = [[BFFSimplePasscodeInputView alloc] initWithFrame:-[PasscodeViewController numberOfCharactersInSimpleDevicePasscode](self numberOfEntryFields:{"numberOfCharactersInSimpleDevicePasscode"), CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    [(PasscodeViewController *)self setPasscodeInputView:nextItem2];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v4 = [(PasscodeViewController *)self deviceHasComplexNumericPasscode];
-  v5 = [[BFFComplexPasscodeInputView alloc] initWithFrame:v4 numericOnly:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+  deviceHasComplexNumericPasscode = [(PasscodeViewController *)self deviceHasComplexNumericPasscode];
+  v5 = [[BFFComplexPasscodeInputView alloc] initWithFrame:deviceHasComplexNumericPasscode numericOnly:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(PasscodeViewController *)self setPasscodeInputView:v5];
 
-  if (v4)
+  if (deviceHasComplexNumericPasscode)
   {
     v6 = [UIBarButtonItem alloc];
     v7 = +[NSBundle mainBundle];
@@ -113,50 +113,50 @@ LABEL_5:
     v9 = [v6 initWithTitle:v8 image:0 target:self action:"nextButtonPressed:" menu:0];
     [(PasscodeViewController *)self setNextItem:v9];
 
-    v10 = [(PasscodeViewController *)self nextItem];
-    [v10 setEnabled:0];
+    nextItem = [(PasscodeViewController *)self nextItem];
+    [nextItem setEnabled:0];
 
-    v3 = [(PasscodeViewController *)self nextItem];
-    v11 = [(PasscodeViewController *)self navigationItem];
-    [v11 setRightBarButtonItem:v3];
+    nextItem2 = [(PasscodeViewController *)self nextItem];
+    navigationItem = [(PasscodeViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:nextItem2];
 
     goto LABEL_5;
   }
 
 LABEL_6:
-  v12 = [(PasscodeViewController *)self passcodeInputView];
-  [v12 setDelegate:self];
+  passcodeInputView = [(PasscodeViewController *)self passcodeInputView];
+  [passcodeInputView setDelegate:self];
 
-  v13 = [(PasscodeViewController *)self contentView];
-  v14 = [(PasscodeViewController *)self passcodeInputView];
-  [v13 addSubview:v14];
+  contentView = [(PasscodeViewController *)self contentView];
+  passcodeInputView2 = [(PasscodeViewController *)self passcodeInputView];
+  [contentView addSubview:passcodeInputView2];
 
-  v15 = [(PasscodeViewController *)self passcodeInputView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  passcodeInputView3 = [(PasscodeViewController *)self passcodeInputView];
+  [passcodeInputView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v41 = [(PasscodeViewController *)self passcodeInputView];
-  v39 = [v41 topAnchor];
-  v40 = [(PasscodeViewController *)self contentView];
-  v38 = [v40 topAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  passcodeInputView4 = [(PasscodeViewController *)self passcodeInputView];
+  topAnchor = [passcodeInputView4 topAnchor];
+  contentView2 = [(PasscodeViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v43[0] = v37;
-  v36 = [(PasscodeViewController *)self passcodeInputView];
-  v34 = [v36 leftAnchor];
-  v35 = [(PasscodeViewController *)self contentView];
-  v33 = [v35 leftAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  passcodeInputView5 = [(PasscodeViewController *)self passcodeInputView];
+  leftAnchor = [passcodeInputView5 leftAnchor];
+  contentView3 = [(PasscodeViewController *)self contentView];
+  leftAnchor2 = [contentView3 leftAnchor];
+  v32 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v43[1] = v32;
-  v31 = [(PasscodeViewController *)self passcodeInputView];
-  v30 = [v31 rightAnchor];
-  v16 = [(PasscodeViewController *)self contentView];
-  v17 = [v16 rightAnchor];
-  v18 = [v30 constraintEqualToAnchor:v17];
+  passcodeInputView6 = [(PasscodeViewController *)self passcodeInputView];
+  rightAnchor = [passcodeInputView6 rightAnchor];
+  contentView4 = [(PasscodeViewController *)self contentView];
+  rightAnchor2 = [contentView4 rightAnchor];
+  v18 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v43[2] = v18;
-  v19 = [(PasscodeViewController *)self passcodeInputView];
-  v20 = [v19 bottomAnchor];
-  v21 = [(PasscodeViewController *)self contentView];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  passcodeInputView7 = [(PasscodeViewController *)self passcodeInputView];
+  bottomAnchor = [passcodeInputView7 bottomAnchor];
+  contentView5 = [(PasscodeViewController *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v43[3] = v23;
   v24 = [NSArray arrayWithObjects:v43 count:4];
   [NSLayoutConstraint activateConstraints:v24];
@@ -164,12 +164,12 @@ LABEL_6:
   v25 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   [(PasscodeViewController *)self setActivityView:v25];
 
-  v26 = [(PasscodeViewController *)self activityView];
-  [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+  activityView = [(PasscodeViewController *)self activityView];
+  [activityView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v27 = [UIBarButtonItem alloc];
-  v28 = [(PasscodeViewController *)self activityView];
-  v29 = [v27 initWithCustomView:v28];
+  activityView2 = [(PasscodeViewController *)self activityView];
+  v29 = [v27 initWithCustomView:activityView2];
   [(PasscodeViewController *)self setSpinnerItem:v29];
 }
 
@@ -199,9 +199,9 @@ LABEL_6:
 - (unint64_t)numberOfCharactersInSimpleDevicePasscode
 {
   v2 = +[DeviceRecoveryController sharedController];
-  v3 = [v2 simplePasscodeType];
+  simplePasscodeType = [v2 simplePasscodeType];
 
-  if (v3 == -1)
+  if (simplePasscodeType == -1)
   {
     v6 = sub_100012608();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -224,9 +224,9 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if (v3 != 1)
+  if (simplePasscodeType != 1)
   {
-    if (!v3)
+    if (!simplePasscodeType)
     {
       v4 = sub_100012608();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -257,11 +257,11 @@ LABEL_16:
   return v5;
 }
 
-- (void)nextButtonPressed:(id)a3
+- (void)nextButtonPressed:(id)pressed
 {
-  v4 = [(PasscodeViewController *)self delegate];
+  delegate = [(PasscodeViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
     v5 = sub_100012608();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -271,19 +271,19 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Next button pressed. Calling didAuthenticate on delegate.", &v9, 0xCu);
     }
 
-    v6 = [(PasscodeViewController *)self delegate];
-    v7 = [(PasscodeViewController *)self passcodeInputView];
-    v8 = [v7 passcode];
-    [v6 passcodeViewController:self didEnterPasscode:v8];
+    delegate2 = [(PasscodeViewController *)self delegate];
+    passcodeInputView = [(PasscodeViewController *)self passcodeInputView];
+    passcode = [passcodeInputView passcode];
+    [delegate2 passcodeViewController:self didEnterPasscode:passcode];
   }
 }
 
-- (void)passcodeInput:(id)a3 enteredPasscode:(id)a4
+- (void)passcodeInput:(id)input enteredPasscode:(id)passcode
 {
-  v5 = a4;
-  v6 = [(PasscodeViewController *)self delegate];
+  passcodeCopy = passcode;
+  delegate = [(PasscodeViewController *)self delegate];
 
-  if (v6)
+  if (delegate)
   {
     v7 = sub_100012608();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -293,21 +293,21 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s: Calling didAuthenticate on delegate.", &v9, 0xCu);
     }
 
-    v8 = [(PasscodeViewController *)self delegate];
-    [v8 passcodeViewController:self didEnterPasscode:v5];
+    delegate2 = [(PasscodeViewController *)self delegate];
+    [delegate2 passcodeViewController:self didEnterPasscode:passcodeCopy];
   }
 }
 
-- (void)passcodeInput:(id)a3 willChangeContents:(id)a4
+- (void)passcodeInput:(id)input willChangeContents:(id)contents
 {
-  v8 = a4;
-  v5 = [(PasscodeViewController *)self nextItem];
+  contentsCopy = contents;
+  nextItem = [(PasscodeViewController *)self nextItem];
 
-  if (v5)
+  if (nextItem)
   {
-    v6 = [v8 length] != 0;
-    v7 = [(PasscodeViewController *)self nextItem];
-    [v7 setEnabled:v6];
+    v6 = [contentsCopy length] != 0;
+    nextItem2 = [(PasscodeViewController *)self nextItem];
+    [nextItem2 setEnabled:v6];
   }
 }
 

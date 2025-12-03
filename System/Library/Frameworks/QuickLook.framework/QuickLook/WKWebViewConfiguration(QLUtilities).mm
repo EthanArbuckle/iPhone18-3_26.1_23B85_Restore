@@ -10,7 +10,7 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 _sharedDataStoreForBundleIdentifier:v4];
+    v5 = [self _sharedDataStoreForBundleIdentifier:v4];
   }
 
   else
@@ -20,7 +20,7 @@
     v5 = [v6 _initWithConfiguration:v7];
   }
 
-  v8 = [a1 init];
+  v8 = [self init];
   v9 = v8;
   if (v8)
   {

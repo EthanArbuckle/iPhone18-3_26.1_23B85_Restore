@@ -1,33 +1,33 @@
 @interface VUIVideoAdvisoryInfoDictionaryBuilder
-+ (id)advisoryInfoDictionaryWithRatingImage:(id)a3 photoSensitivityImage:(id)a4 highMotionWarningImage:(id)a5 andMediaItem:(id)a6;
++ (id)advisoryInfoDictionaryWithRatingImage:(id)image photoSensitivityImage:(id)sensitivityImage highMotionWarningImage:(id)warningImage andMediaItem:(id)item;
 @end
 
 @implementation VUIVideoAdvisoryInfoDictionaryBuilder
 
-+ (id)advisoryInfoDictionaryWithRatingImage:(id)a3 photoSensitivityImage:(id)a4 highMotionWarningImage:(id)a5 andMediaItem:(id)a6
++ (id)advisoryInfoDictionaryWithRatingImage:(id)image photoSensitivityImage:(id)sensitivityImage highMotionWarningImage:(id)warningImage andMediaItem:(id)item
 {
   v63 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  imageCopy = image;
+  sensitivityImageCopy = sensitivityImage;
+  warningImageCopy = warningImage;
+  itemCopy = item;
   v13 = objc_opt_new();
   v14 = v13;
-  if (v9)
+  if (imageCopy)
   {
-    [v13 setObject:v9 forKeyedSubscript:@"VUIAdvisoryViewLogoImageKey"];
+    [v13 setObject:imageCopy forKeyedSubscript:@"VUIAdvisoryViewLogoImageKey"];
   }
 
-  if (v12)
+  if (itemCopy)
   {
-    v52 = v11;
-    v49 = v9;
-    v50 = [v12 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AA0]];
+    v52 = warningImageCopy;
+    v49 = imageCopy;
+    v50 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5AA0]];
     v51 = v14;
     if ([v50 count])
     {
-      v47 = v12;
-      v48 = v10;
+      v47 = itemCopy;
+      v48 = sensitivityImageCopy;
       v15 = objc_opt_new();
       v54 = 0u;
       v55 = 0u;
@@ -50,22 +50,22 @@
 
             v20 = *(*(&v54 + 1) + 8 * i);
             v21 = objc_opt_new();
-            v22 = [v20 ratingName];
-            v23 = [v22 length];
+            ratingName = [v20 ratingName];
+            v23 = [ratingName length];
 
             if (v23)
             {
-              v24 = [v20 ratingName];
-              [v21 setObject:v24 forKeyedSubscript:@"VUIAdvisoryViewLegendNameKey"];
+              ratingName2 = [v20 ratingName];
+              [v21 setObject:ratingName2 forKeyedSubscript:@"VUIAdvisoryViewLegendNameKey"];
             }
 
-            v25 = [v20 ratingDescription];
-            v26 = [v25 length];
+            ratingDescription = [v20 ratingDescription];
+            v26 = [ratingDescription length];
 
             if (v26)
             {
-              v27 = [v20 ratingDescription];
-              [v21 setObject:v27 forKeyedSubscript:@"VUIAdvisoryViewLegendDescriptionKey"];
+              ratingDescription2 = [v20 ratingDescription];
+              [v21 setObject:ratingDescription2 forKeyedSubscript:@"VUIAdvisoryViewLegendDescriptionKey"];
             }
 
             if ([v21 count])
@@ -81,27 +81,27 @@
       }
 
       [v14 setObject:v15 forKeyedSubscript:@"VUIAdvisoryViewLegendsKey"];
-      v12 = v47;
-      v10 = v48;
+      itemCopy = v47;
+      sensitivityImageCopy = v48;
     }
 
-    v28 = [v12 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB8]];
-    v29 = [v28 localizedInfoString];
-    v30 = [v29 length];
+    v28 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB8]];
+    localizedInfoString = [v28 localizedInfoString];
+    v30 = [localizedInfoString length];
 
     if (v30)
     {
-      v31 = [v28 localizedInfoString];
-      [v14 setObject:v31 forKeyedSubscript:@"VUIAdvisoryViewBlockDescriptionKey"];
+      localizedInfoString2 = [v28 localizedInfoString];
+      [v14 setObject:localizedInfoString2 forKeyedSubscript:@"VUIAdvisoryViewBlockDescriptionKey"];
     }
 
     v32 = objc_opt_new();
-    v33 = [v12 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C90]];
-    v34 = [v12 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C88]];
+    v33 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C90]];
+    v34 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C88]];
     if (v33)
     {
       [v33 floatValue];
-      if (v10)
+      if (sensitivityImageCopy)
       {
         if (v35 > 0.0 && v34)
         {
@@ -110,9 +110,9 @@
           v61[0] = v33;
           v61[1] = v34;
           v60[2] = @"VUIAdditionalAdvisoryInfoViewImageKey";
-          v61[2] = v10;
+          v61[2] = sensitivityImageCopy;
           v36 = MEMORY[0x1E695DF20];
-          v37 = v10;
+          v37 = sensitivityImageCopy;
           v38 = [v36 dictionaryWithObjects:v61 forKeys:v60 count:3];
 
           [v32 addObject:v38];
@@ -120,8 +120,8 @@
       }
     }
 
-    v39 = [v12 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C28]];
-    v40 = [v12 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C20]];
+    v39 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C28]];
+    v40 = [itemCopy mediaItemMetadataForProperty:*MEMORY[0x1E69D5C20]];
     if (v39)
     {
       [v39 floatValue];
@@ -147,8 +147,8 @@
     [v51 setObject:v32 forKeyedSubscript:@"VUIAdvisoryViewAdditionalViewsDictionaryKey"];
 
     v14 = v51;
-    v9 = v49;
-    v11 = v52;
+    imageCopy = v49;
+    warningImageCopy = v52;
   }
 
   v45 = [v14 copy];

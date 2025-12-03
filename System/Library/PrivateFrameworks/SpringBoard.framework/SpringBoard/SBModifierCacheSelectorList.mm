@@ -1,16 +1,16 @@
 @interface SBModifierCacheSelectorList
-- (SBModifierCacheSelectorList)initWithSelectors:(SEL *)a3 count:(int64_t)a4;
+- (SBModifierCacheSelectorList)initWithSelectors:(SEL *)selectors count:(int64_t)count;
 @end
 
 @implementation SBModifierCacheSelectorList
 
-- (SBModifierCacheSelectorList)initWithSelectors:(SEL *)a3 count:(int64_t)a4
+- (SBModifierCacheSelectorList)initWithSelectors:(SEL *)selectors count:(int64_t)count
 {
   v7.receiver = self;
   v7.super_class = SBModifierCacheSelectorList;
   result = [(SBModifierCacheSelectorList *)&v7 init];
-  result->selCount = a4;
-  result->sels = a3;
+  result->selCount = count;
+  result->sels = selectors;
   return result;
 }
 

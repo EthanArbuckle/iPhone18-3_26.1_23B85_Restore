@@ -1,16 +1,16 @@
 @interface PPSentiment
 + (id)sharedInstance;
 - (PPSentiment)init;
-- (float)sentimentScoreForText:(id)a3;
+- (float)sentimentScoreForText:(id)text;
 @end
 
 @implementation PPSentiment
 
-- (float)sentimentScoreForText:(id)a3
+- (float)sentimentScoreForText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -21,8 +21,8 @@
     v9[1] = 3221225472;
     v9[2] = __37__PPSentiment_sentimentScoreForText___block_invoke;
     v9[3] = &unk_278974660;
-    v10 = v4;
-    v11 = self;
+    v10 = textCopy;
+    selfCopy = self;
     v12 = &v13;
     [(_PASLock *)lock runWithLockAcquired:v9];
     v7 = 2.0 / (exp(-v14[6]) + 1.0) + -1.0;

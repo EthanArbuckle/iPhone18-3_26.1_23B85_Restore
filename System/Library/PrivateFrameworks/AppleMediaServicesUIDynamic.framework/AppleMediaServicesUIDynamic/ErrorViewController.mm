@@ -1,7 +1,7 @@
 @interface ErrorViewController
 - (UINavigationItem)navigationItem;
-- (_TtC27AppleMediaServicesUIDynamic19ErrorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)airplaneModeInquiryDidObserveChange:(id)a3;
+- (_TtC27AppleMediaServicesUIDynamic19ErrorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)airplaneModeInquiryDidObserveChange:(id)change;
 - (void)loadView;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -11,7 +11,7 @@
 
 - (UINavigationItem)navigationItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA154FEC();
 
   return v3;
@@ -19,37 +19,37 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA1550C4();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA15592C();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA1559B0();
 }
 
-- (_TtC27AppleMediaServicesUIDynamic19ErrorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC27AppleMediaServicesUIDynamic19ErrorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1CA19C118();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1CA1575F0();
 }
 
-- (void)airplaneModeInquiryDidObserveChange:(id)a3
+- (void)airplaneModeInquiryDidObserveChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_1CA15766C();
 }
 

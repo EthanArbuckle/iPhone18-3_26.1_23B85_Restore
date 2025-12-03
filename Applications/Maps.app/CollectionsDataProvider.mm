@@ -1,16 +1,16 @@
 @interface CollectionsDataProvider
-- (CollectionsDataProvider)initWithContext:(int64_t)a3 observeInfo:(BOOL)a4 observeContents:(BOOL)a5;
+- (CollectionsDataProvider)initWithContext:(int64_t)context observeInfo:(BOOL)info observeContents:(BOOL)contents;
 - (GEOObserverHashTable)observers;
-- (void)_startObservingCollection:(id)a3;
-- (void)_stopObservingCollection:(id)a3;
-- (void)_updateCollectionsAndNotifyObservers:(BOOL)a3;
-- (void)_updateContentsOfCollection:(id)a3 notifyObservers:(BOOL)a4;
-- (void)_updateInfoOfCollection:(id)a3 notifyObservers:(BOOL)a4;
-- (void)_updateObservedCollectionsWithCollections:(id)a3;
-- (void)collectionHandlerContentUpdated:(id)a3;
-- (void)collectionHandlerInfoUpdated:(id)a3;
-- (void)collectionManager:(id)a3 contentDidChange:(id)a4;
-- (void)setActive:(BOOL)a3;
+- (void)_startObservingCollection:(id)collection;
+- (void)_stopObservingCollection:(id)collection;
+- (void)_updateCollectionsAndNotifyObservers:(BOOL)observers;
+- (void)_updateContentsOfCollection:(id)collection notifyObservers:(BOOL)observers;
+- (void)_updateInfoOfCollection:(id)collection notifyObservers:(BOOL)observers;
+- (void)_updateObservedCollectionsWithCollections:(id)collections;
+- (void)collectionHandlerContentUpdated:(id)updated;
+- (void)collectionHandlerInfoUpdated:(id)updated;
+- (void)collectionManager:(id)manager contentDidChange:(id)change;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation CollectionsDataProvider
@@ -30,9 +30,9 @@
   return observers;
 }
 
-- (void)_stopObservingCollection:(id)a3
+- (void)_stopObservingCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v6 = sub_1000410AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -44,16 +44,16 @@
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v5;
+    v15 = collectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ %@: %@", &v10, 0x20u);
   }
 
-  [v5 removeObserver:self];
+  [collectionCopy removeObserver:self];
 }
 
-- (void)_startObservingCollection:(id)a3
+- (void)_startObservingCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v6 = sub_1000410AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -65,24 +65,24 @@
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v5;
+    v15 = collectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ %@: %@", &v10, 0x20u);
   }
 
-  [v5 addObserver:self];
+  [collectionCopy addObserver:self];
 }
 
-- (void)_updateObservedCollectionsWithCollections:(id)a3
+- (void)_updateObservedCollectionsWithCollections:(id)collections
 {
-  v4 = a3;
-  v5 = v4;
+  collectionsCopy = collections;
+  v5 = collectionsCopy;
   if (self->_observeInfo || self->_observeContents)
   {
-    v6 = [v4 allKeys];
-    v7 = [NSSet setWithArray:v6];
+    allKeys = [collectionsCopy allKeys];
+    v7 = [NSSet setWithArray:allKeys];
 
-    v8 = [(NSDictionary *)self->_observedCollectionsByIdentifier allKeys];
-    v9 = [NSSet setWithArray:v8];
+    allKeys2 = [(NSDictionary *)self->_observedCollectionsByIdentifier allKeys];
+    v9 = [NSSet setWithArray:allKeys2];
 
     v10 = [NSMutableSet setWithSet:v7];
     [v10 minusSet:v9];
@@ -160,9 +160,9 @@
   }
 }
 
-- (void)collectionHandlerContentUpdated:(id)a3
+- (void)collectionHandlerContentUpdated:(id)updated
 {
-  v5 = a3;
+  updatedCopy = updated;
   v6 = sub_1000410AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -174,16 +174,16 @@
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v5;
+    v15 = updatedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ %@: %@", &v10, 0x20u);
   }
 
-  [(CollectionsDataProvider *)self _updateContentsOfCollection:v5 notifyObservers:1];
+  [(CollectionsDataProvider *)self _updateContentsOfCollection:updatedCopy notifyObservers:1];
 }
 
-- (void)collectionHandlerInfoUpdated:(id)a3
+- (void)collectionHandlerInfoUpdated:(id)updated
 {
-  v5 = a3;
+  updatedCopy = updated;
   v6 = sub_1000410AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -195,16 +195,16 @@
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v5;
+    v15 = updatedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ %@: %@", &v10, 0x20u);
   }
 
-  [(CollectionsDataProvider *)self _updateInfoOfCollection:v5 notifyObservers:1];
+  [(CollectionsDataProvider *)self _updateInfoOfCollection:updatedCopy notifyObservers:1];
 }
 
-- (void)collectionManager:(id)a3 contentDidChange:(id)a4
+- (void)collectionManager:(id)manager contentDidChange:(id)change
 {
-  v6 = a4;
+  changeCopy = change;
   v7 = sub_1000410AC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -216,23 +216,23 @@
     v13 = 2112;
     v14 = v10;
     v15 = 2112;
-    v16 = v6;
+    v16 = changeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%@ %@ %@", &v11, 0x20u);
   }
 
   [(CollectionsDataProvider *)self _updateCollectionsAndNotifyObservers:1];
 }
 
-- (void)_updateContentsOfCollection:(id)a3 notifyObservers:(BOOL)a4
+- (void)_updateContentsOfCollection:(id)collection notifyObservers:(BOOL)observers
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = v7;
+  observersCopy = observers;
+  collectionCopy = collection;
+  v8 = collectionCopy;
   if (self->_active && self->_observeContents)
   {
     contentsByIdentifier = self->_contentsByIdentifier;
-    v10 = [v7 identifier];
-    v11 = [(NSDictionary *)contentsByIdentifier objectForKeyedSubscript:v10];
+    identifier = [collectionCopy identifier];
+    v11 = [(NSDictionary *)contentsByIdentifier objectForKeyedSubscript:identifier];
     v12 = v11;
     if (v11)
     {
@@ -246,11 +246,11 @@
 
     v14 = v13;
 
-    v15 = [v8 content];
-    v16 = v15;
-    if (v15)
+    content = [v8 content];
+    v16 = content;
+    if (content)
     {
-      v17 = v15;
+      v17 = content;
     }
 
     else
@@ -264,8 +264,8 @@
     if ((v19 & 1) == 0)
     {
       v20 = [NSMutableDictionary dictionaryWithDictionary:self->_contentsByIdentifier];
-      v21 = [v8 identifier];
-      [v20 setObject:v18 forKeyedSubscript:v21];
+      identifier2 = [v8 identifier];
+      [v20 setObject:v18 forKeyedSubscript:identifier2];
 
       v22 = [v20 copy];
       v23 = self->_contentsByIdentifier;
@@ -291,7 +291,7 @@
 
       v33 = v14;
       v29 = v28;
-      if (v4)
+      if (observersCopy)
       {
         v30 = @"YES";
       }
@@ -318,17 +318,17 @@
       v14 = v33;
     }
 
-    if (((v19 | !v4) & 1) == 0)
+    if (((v19 | !observersCopy) & 1) == 0)
     {
       [(GEOObserverHashTable *)self->_observers homeDataProvidingObjectDidUpdate:self];
     }
   }
 }
 
-- (void)_updateInfoOfCollection:(id)a3 notifyObservers:(BOOL)a4
+- (void)_updateInfoOfCollection:(id)collection notifyObservers:(BOOL)observers
 {
-  v4 = a4;
-  v7 = a3;
+  observersCopy = observers;
+  collectionCopy = collection;
   if (self->_active && self->_observeInfo)
   {
     v8 = sub_1000410AC();
@@ -338,7 +338,7 @@
       v10 = NSStringFromClass(v9);
       v11 = NSStringFromSelector(a2);
       v12 = @"NO";
-      if (v4)
+      if (observersCopy)
       {
         v12 = @"YES";
       }
@@ -349,27 +349,27 @@
       v16 = 2112;
       v17 = v11;
       v18 = 2112;
-      v19 = v7;
+      v19 = collectionCopy;
       v20 = 2112;
       v21 = v13;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@ %@, collection = %@, notifyObservers = %@", &v14, 0x2Au);
     }
 
-    if (v4)
+    if (observersCopy)
     {
       [(GEOObserverHashTable *)self->_observers homeDataProvidingObjectDidUpdate:self];
     }
   }
 }
 
-- (void)_updateCollectionsAndNotifyObservers:(BOOL)a3
+- (void)_updateCollectionsAndNotifyObservers:(BOOL)observers
 {
   if (!self->_active)
   {
     return;
   }
 
-  v3 = a3;
+  observersCopy = observers;
   v5 = +[CollectionManager sharedManager];
   if ([v5 hasInitialCollections])
   {
@@ -391,22 +391,22 @@
 LABEL_7:
   v7 = 0;
   context = self->_context;
-  v59 = v3;
+  v59 = observersCopy;
   if (context > 2)
   {
     switch(context)
     {
       case 3:
         v9 = +[CollectionManager sharedManager];
-        v10 = [v9 currentCollectionsForWatchHome];
+        currentCollectionsForWatchHome = [v9 currentCollectionsForWatchHome];
         break;
       case 4:
         v9 = +[CollectionManager sharedManager];
-        v10 = [v9 currentCollectionsForCarPlay];
+        currentCollectionsForWatchHome = [v9 currentCollectionsForCarPlay];
         break;
       case 5:
         v9 = +[CollectionManager sharedManager];
-        v10 = [v9 currentCollectionsForPicker];
+        currentCollectionsForWatchHome = [v9 currentCollectionsForPicker];
         break;
       default:
         goto LABEL_21;
@@ -418,7 +418,7 @@ LABEL_7:
     if (context == 1)
     {
       v9 = +[CollectionManager sharedManager];
-      v10 = [v9 currentCollectionsForMacHome];
+      currentCollectionsForWatchHome = [v9 currentCollectionsForMacHome];
     }
 
     else
@@ -429,17 +429,17 @@ LABEL_7:
       }
 
       v9 = +[CollectionManager sharedManager];
-      v10 = [v9 currentCollectionsForiOSHome];
+      currentCollectionsForWatchHome = [v9 currentCollectionsForiOSHome];
     }
   }
 
   else
   {
     v9 = +[CollectionManager sharedManager];
-    v10 = [v9 currentCollections];
+    currentCollectionsForWatchHome = [v9 currentCollections];
   }
 
-  v7 = v10;
+  v7 = currentCollectionsForWatchHome;
 
 LABEL_21:
   collections = self->_collections;
@@ -471,8 +471,8 @@ LABEL_27:
           }
 
           v28 = *(*(&v66 + 1) + 8 * i);
-          v29 = [v28 identifier];
-          [v22 setObject:v28 forKeyedSubscript:v29];
+          identifier = [v28 identifier];
+          [v22 setObject:v28 forKeyedSubscript:identifier];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v66 objects:v83 count:16];
@@ -500,10 +500,10 @@ LABEL_27:
     do
     {
       v16 = [v12 objectAtIndexedSubscript:v15];
-      v17 = [v16 identifier];
+      identifier2 = [v16 identifier];
       v18 = [(NSArray *)v13 objectAtIndexedSubscript:v15];
-      v19 = [v18 identifier];
-      v20 = [v17 isEqualToString:v19];
+      identifier3 = [v18 identifier];
+      v20 = [identifier2 isEqualToString:identifier3];
 
       if ((v20 & 1) == 0)
       {
@@ -540,9 +540,9 @@ LABEL_35:
           }
 
           v40 = *(*(&v62 + 1) + 8 * j);
-          v41 = [v40 content];
-          v42 = [v40 identifier];
-          [v34 setObject:v41 forKeyedSubscript:v42];
+          content = [v40 content];
+          identifier4 = [v40 identifier];
+          [v34 setObject:content forKeyedSubscript:identifier4];
         }
 
         v37 = [v35 countByEnumeratingWithState:&v62 objects:v82 count:16];
@@ -631,15 +631,15 @@ LABEL_35:
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     v5 = +[CollectionManager sharedManager];
     v6 = v5;
-    if (v3)
+    if (activeCopy)
     {
       [v5 addObserver:self];
 
@@ -657,7 +657,7 @@ LABEL_35:
   }
 }
 
-- (CollectionsDataProvider)initWithContext:(int64_t)a3 observeInfo:(BOOL)a4 observeContents:(BOOL)a5
+- (CollectionsDataProvider)initWithContext:(int64_t)context observeInfo:(BOOL)info observeContents:(BOOL)contents
 {
   v12.receiver = self;
   v12.super_class = CollectionsDataProvider;
@@ -665,10 +665,10 @@ LABEL_35:
   v9 = v8;
   if (v8)
   {
-    v8->_observeInfo = a4;
-    v8->_observeContents = a5;
+    v8->_observeInfo = info;
+    v8->_observeContents = contents;
     collections = v8->_collections;
-    v8->_context = a3;
+    v8->_context = context;
     v8->_collections = &__NSArray0__struct;
   }
 

@@ -1,10 +1,10 @@
 @interface FCNotificationPool
-- (BOOL)isEqual:(id)a3;
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)writeToURL:(id)l error:(id *)error;
 - (FCNotificationPool)init;
-- (FCNotificationPool)initWithItems:(id)a3;
-- (FCNotificationPool)initWithItems:(id)a3 creationDate:(id)a4;
-- (FCNotificationPool)initWithURL:(id)a3 error:(id *)a4;
+- (FCNotificationPool)initWithItems:(id)items;
+- (FCNotificationPool)initWithItems:(id)items creationDate:(id)date;
+- (FCNotificationPool)initWithURL:(id)l error:(id *)error;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -37,53 +37,53 @@
   objc_exception_throw(v6);
 }
 
-- (FCNotificationPool)initWithItems:(id)a3 creationDate:(id)a4
+- (FCNotificationPool)initWithItems:(id)items creationDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = FCNotificationPool;
   v9 = [(FCNotificationPool *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_items, a3);
-    if (v8)
+    objc_storeStrong(&v9->_items, items);
+    if (dateCopy)
     {
-      v11 = v8;
+      date = dateCopy;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
     creationDate = v10->_creationDate;
-    v10->_creationDate = v11;
+    v10->_creationDate = date;
   }
 
   return v10;
 }
 
-- (FCNotificationPool)initWithItems:(id)a3
+- (FCNotificationPool)initWithItems:(id)items
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = [(FCNotificationPool *)self initWithItems:v5 creationDate:v6];
+  itemsCopy = items;
+  date = [v4 date];
+  v7 = [(FCNotificationPool *)self initWithItems:itemsCopy creationDate:date];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -102,11 +102,11 @@
   if (v6)
   {
     v7 = MEMORY[0x1E695DFD8];
-    v8 = [(FCNotificationPool *)self items];
-    v9 = [v7 setWithArray:v8];
+    items = [(FCNotificationPool *)self items];
+    v9 = [v7 setWithArray:items];
     v10 = MEMORY[0x1E695DFD8];
-    v11 = [v6 items];
-    v12 = [v10 setWithArray:v11];
+    items2 = [v6 items];
+    v12 = [v10 setWithArray:items2];
     v13 = [v9 isEqualToSet:v12];
   }
 
@@ -121,8 +121,8 @@
 - (unint64_t)hash
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(FCNotificationPool *)self items];
-  v4 = [v2 setWithArray:v3];
+  items = [(FCNotificationPool *)self items];
+  v4 = [v2 setWithArray:items];
   v5 = [v4 hash];
 
   return v5;
@@ -132,22 +132,22 @@
 {
   v3 = [[FCDescription alloc] initWithObject:self];
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(FCNotificationPool *)self items];
-  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+  items = [(FCNotificationPool *)self items];
+  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(items, "count")}];
   [(FCDescription *)v3 addField:@"items" object:v6];
 
-  v7 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v7;
+  return descriptionString;
 }
 
-- (FCNotificationPool)initWithURL:(id)a3 error:(id *)a4
+- (FCNotificationPool)initWithURL:(id)l error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
+  lCopy = l;
+  array = [MEMORY[0x1E695DF70] array];
   value = 0;
-  if (getxattr([v6 fileSystemRepresentation], "com.apple.news.notification_pool_version", &value, 2uLL, 0, 0) == -1)
+  if (getxattr([lCopy fileSystemRepresentation], "com.apple.news.notification_pool_version", &value, 2uLL, 0, 0) == -1)
   {
     v15 = MEMORY[0x1E696ABC0];
     v27 = @"errno";
@@ -158,7 +158,7 @@
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v18 = @"Failed to read notification pool version";
 LABEL_10:
-    v14 = [v15 fc_errorWithCode:16 description:v18 additionalUserInfo:v9];
+    streamError2 = [v15 fc_errorWithCode:16 description:v18 additionalUserInfo:v9];
     goto LABEL_11;
   }
 
@@ -173,88 +173,88 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v8 = [MEMORY[0x1E695DF48] inputStreamWithURL:v6];
+  v8 = [MEMORY[0x1E695DF48] inputStreamWithURL:lCopy];
   [v8 open];
   v9 = [objc_alloc(MEMORY[0x1E69C65C8]) initWithStream:v8];
   [v9 setClassOfNextMessage:objc_opt_class()];
   v10 = objc_autoreleasePoolPush();
-  v11 = [v9 nextMessage];
-  if (v11)
+  nextMessage = [v9 nextMessage];
+  if (nextMessage)
   {
-    v12 = v11;
+    nextMessage2 = nextMessage;
     do
     {
-      [v7 addObject:v12];
+      [array addObject:nextMessage2];
 
       objc_autoreleasePoolPop(v10);
       v10 = objc_autoreleasePoolPush();
-      v12 = [v9 nextMessage];
+      nextMessage2 = [v9 nextMessage];
     }
 
-    while (v12);
+    while (nextMessage2);
   }
 
   objc_autoreleasePoolPop(v10);
   [v8 close];
-  v13 = [v8 streamError];
+  streamError = [v8 streamError];
 
-  if (!v13)
+  if (!streamError)
   {
 
     v23 = 0;
-    [v6 getResourceValue:&v23 forKey:*MEMORY[0x1E695DAA8] error:0];
-    self = [(FCNotificationPool *)self initWithItems:v7 creationDate:v23];
-    v20 = self;
+    [lCopy getResourceValue:&v23 forKey:*MEMORY[0x1E695DAA8] error:0];
+    self = [(FCNotificationPool *)self initWithItems:array creationDate:v23];
+    selfCopy = self;
     goto LABEL_15;
   }
 
-  v14 = [v8 streamError];
+  streamError2 = [v8 streamError];
 LABEL_11:
-  v13 = v14;
+  streamError = streamError2;
 
-  if (a4)
+  if (error)
   {
-    v19 = v13;
-    v20 = 0;
-    *a4 = v13;
+    v19 = streamError;
+    selfCopy = 0;
+    *error = streamError;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
 LABEL_15:
 
   v21 = *MEMORY[0x1E69E9840];
-  return v20;
+  return selfCopy;
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DFC0] outputStreamWithURL:v6 append:0];
+  lCopy = l;
+  v7 = [MEMORY[0x1E695DFC0] outputStreamWithURL:lCopy append:0];
   v8 = v7;
   if (!v7)
   {
     v17 = MEMORY[0x1E696ABC0];
     v28 = @"URL";
-    v9 = [v6 absoluteString];
-    v29[0] = v9;
+    absoluteString = [lCopy absoluteString];
+    v29[0] = absoluteString;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-    v16 = [v17 fc_errorWithCode:16 description:@"Failed to create output stream for notification pool" additionalUserInfo:v11];
+    streamError2 = [v17 fc_errorWithCode:16 description:@"Failed to create output stream for notification pool" additionalUserInfo:v11];
     goto LABEL_15;
   }
 
   [v7 open];
-  v9 = [objc_alloc(MEMORY[0x1E69C65D0]) initWithOutputStream:v8];
+  absoluteString = [objc_alloc(MEMORY[0x1E69C65D0]) initWithOutputStream:v8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [(FCNotificationPool *)self items];
-  v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  items = [(FCNotificationPool *)self items];
+  v11 = [items countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
     v12 = *v24;
@@ -264,10 +264,10 @@ LABEL_15:
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(items);
         }
 
-        if (([v9 writeMessage:*(*(&v23 + 1) + 8 * i)] & 1) == 0)
+        if (([absoluteString writeMessage:*(*(&v23 + 1) + 8 * i)] & 1) == 0)
         {
           v11 = [MEMORY[0x1E696ABC0] fc_errorWithCode:16 description:@"Failed to write feed item protobuf message"];
           v14 = 0;
@@ -275,7 +275,7 @@ LABEL_15:
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [items countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v11)
       {
         continue;
@@ -289,28 +289,28 @@ LABEL_15:
 LABEL_12:
 
   [v8 close];
-  v15 = [v8 streamError];
+  streamError = [v8 streamError];
 
-  if (v15)
+  if (streamError)
   {
-    v16 = [v8 streamError];
+    streamError2 = [v8 streamError];
 LABEL_15:
-    v18 = v16;
+    v18 = streamError2;
 
     v14 = 0;
     v11 = v18;
   }
 
-  if (a4 && v11)
+  if (error && v11)
   {
     v19 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   if (v14)
   {
     value = 769;
-    setxattr([v6 fileSystemRepresentation], "com.apple.news.notification_pool_version", &value, 2uLL, 0, 0);
+    setxattr([lCopy fileSystemRepresentation], "com.apple.news.notification_pool_version", &value, 2uLL, 0, 0);
   }
 
   v20 = *MEMORY[0x1E69E9840];

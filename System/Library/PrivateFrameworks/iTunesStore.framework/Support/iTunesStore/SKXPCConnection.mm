@@ -1,14 +1,14 @@
 @interface SKXPCConnection
-- (SKXPCConnection)initWithServiceName:(id)a3;
-- (SKXPCConnection)initWithXPCConnection:(id)a3;
+- (SKXPCConnection)initWithServiceName:(id)name;
+- (SKXPCConnection)initWithXPCConnection:(id)connection;
 - (id)_initSKXPCConnection;
 - (id)disconnectBlock;
 - (id)messageBlock;
 - (void)_reloadEventHandler;
-- (void)sendMessage:(id)a3 withReply:(id)a4;
-- (void)sendSynchronousMessage:(id)a3 withReply:(id)a4;
-- (void)setDisconnectBlock:(id)a3;
-- (void)setMessageBlock:(id)a3;
+- (void)sendMessage:(id)message withReply:(id)reply;
+- (void)sendSynchronousMessage:(id)message withReply:(id)reply;
+- (void)setDisconnectBlock:(id)block;
+- (void)setMessageBlock:(id)block;
 @end
 
 @implementation SKXPCConnection
@@ -28,33 +28,33 @@
   return v2;
 }
 
-- (SKXPCConnection)initWithServiceName:(id)a3
+- (SKXPCConnection)initWithServiceName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v4 = [a3 UTF8String];
+    uTF8String = [name UTF8String];
   }
 
   else
   {
-    v4 = 0;
+    uTF8String = 0;
   }
 
-  v5 = xpc_connection_create(v4, 0);
+  v5 = xpc_connection_create(uTF8String, 0);
   xpc_connection_set_legacy();
   v6 = [(SKXPCConnection *)self initWithXPCConnection:v5];
 
   return v6;
 }
 
-- (SKXPCConnection)initWithXPCConnection:(id)a3
+- (SKXPCConnection)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
-  v6 = [(SKXPCConnection *)self _initSKXPCConnection];
-  v7 = v6;
-  if (v6)
+  connectionCopy = connection;
+  _initSKXPCConnection = [(SKXPCConnection *)self _initSKXPCConnection];
+  v7 = _initSKXPCConnection;
+  if (_initSKXPCConnection)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_initSKXPCConnection + 1, connection);
     [(SKXPCConnection *)v7 _reloadEventHandler];
     xpc_connection_resume(v7->_connection);
   }
@@ -106,55 +106,55 @@
   return v3;
 }
 
-- (void)sendMessage:(id)a3 withReply:(id)a4
+- (void)sendMessage:(id)message withReply:(id)reply
 {
   connection = self->_connection;
   v7 = dispatch_get_global_queue(0, 0);
-  xpc_connection_send_message_with_reply(connection, a3, v7, a4);
+  xpc_connection_send_message_with_reply(connection, message, v7, reply);
 }
 
-- (void)sendSynchronousMessage:(id)a3 withReply:(id)a4
+- (void)sendSynchronousMessage:(id)message withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  messageCopy = message;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100233E94;
   v10[3] = &unk_10032CEE8;
   v11 = dispatch_semaphore_create(0);
-  v12 = v6;
+  v12 = replyCopy;
   v8 = v11;
-  v9 = v6;
-  [(SKXPCConnection *)self sendMessage:v7 withReply:v10];
+  v9 = replyCopy;
+  [(SKXPCConnection *)self sendMessage:messageCopy withReply:v10];
 
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)setDisconnectBlock:(id)a3
+- (void)setDisconnectBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100233F70;
   v7[3] = &unk_1003271C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
-- (void)setMessageBlock:(id)a3
+- (void)setMessageBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10023406C;
   v7[3] = &unk_1003271C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 

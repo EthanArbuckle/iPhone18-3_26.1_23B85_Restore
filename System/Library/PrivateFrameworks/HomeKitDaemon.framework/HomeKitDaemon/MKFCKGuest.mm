@@ -1,37 +1,37 @@
 @interface MKFCKGuest
-+ (BOOL)_importWeekDayScheduleRulesIntoLocalModel:(id)a3 fromCloudModel:(id)a4 localRelationship:(id)a5 cloudAttributeName:(id)a6 parentRelationshipName:(id)a7 context:(id)a8;
-+ (BOOL)_importYearDayScheduleRulesIntoLocalModel:(id)a3 fromCloudModel:(id)a4 localRelationship:(id)a5 cloudAttributeName:(id)a6 parentRelationshipName:(id)a7 context:(id)a8;
-+ (id)_dictionaryRepresentationFromWeekDayScheduleRules:(id)a3 cloudWeekDayScheduleRulesDictionary:(id)a4;
-+ (id)_dictionaryRepresentationFromYearDayScheduleRules:(id)a3 cloudYearDayScheduleRulesDictionary:(id)a4;
-- (BOOL)_exportGuestAccessCodeFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_exportWeekDaySchedulesFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_exportYearDaySchedulesFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importGuestAccessCodeIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importWeekDayScheduleRulesIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)_importYearDayScheduleRulesIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
++ (BOOL)_importWeekDayScheduleRulesIntoLocalModel:(id)model fromCloudModel:(id)cloudModel localRelationship:(id)relationship cloudAttributeName:(id)name parentRelationshipName:(id)relationshipName context:(id)context;
++ (BOOL)_importYearDayScheduleRulesIntoLocalModel:(id)model fromCloudModel:(id)cloudModel localRelationship:(id)relationship cloudAttributeName:(id)name parentRelationshipName:(id)relationshipName context:(id)context;
++ (id)_dictionaryRepresentationFromWeekDayScheduleRules:(id)rules cloudWeekDayScheduleRulesDictionary:(id)dictionary;
++ (id)_dictionaryRepresentationFromYearDayScheduleRules:(id)rules cloudYearDayScheduleRulesDictionary:(id)dictionary;
+- (BOOL)_exportGuestAccessCodeFromLocalModel:(id)model context:(id)context;
+- (BOOL)_exportWeekDaySchedulesFromLocalModel:(id)model context:(id)context;
+- (BOOL)_exportYearDaySchedulesFromLocalModel:(id)model context:(id)context;
+- (BOOL)_importGuestAccessCodeIntoLocalModel:(id)model context:(id)context;
+- (BOOL)_importWeekDayScheduleRulesIntoLocalModel:(id)model context:(id)context;
+- (BOOL)_importYearDayScheduleRulesIntoLocalModel:(id)model context:(id)context;
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
 @end
 
 @implementation MKFCKGuest
 
-+ (id)_dictionaryRepresentationFromYearDayScheduleRules:(id)a3 cloudYearDayScheduleRulesDictionary:(id)a4
++ (id)_dictionaryRepresentationFromYearDayScheduleRules:(id)rules cloudYearDayScheduleRulesDictionary:(id)dictionary
 {
   v5 = MEMORY[0x277CBEB58];
-  v6 = a3;
-  v7 = [v5 setWithCapacity:{objc_msgSend(v6, "count")}];
+  rulesCopy = rules;
+  v7 = [v5 setWithCapacity:{objc_msgSend(rulesCopy, "count")}];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __100__MKFCKGuest__dictionaryRepresentationFromYearDayScheduleRules_cloudYearDayScheduleRulesDictionary___block_invoke;
   v14 = &unk_278670EA8;
   v15 = v7;
-  v16 = a1;
+  selfCopy = self;
   v8 = v7;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:&v11];
+  [rulesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:&v11];
 
-  v9 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v9;
+  return allObjects;
 }
 
 void __100__MKFCKGuest__dictionaryRepresentationFromYearDayScheduleRules_cloudYearDayScheduleRulesDictionary___block_invoke(uint64_t a1, void *a2)
@@ -69,23 +69,23 @@ void __100__MKFCKGuest__dictionaryRepresentationFromYearDayScheduleRules_cloudYe
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_dictionaryRepresentationFromWeekDayScheduleRules:(id)a3 cloudWeekDayScheduleRulesDictionary:(id)a4
++ (id)_dictionaryRepresentationFromWeekDayScheduleRules:(id)rules cloudWeekDayScheduleRulesDictionary:(id)dictionary
 {
   v5 = MEMORY[0x277CBEB58];
-  v6 = a3;
-  v7 = [v5 setWithCapacity:{objc_msgSend(v6, "count")}];
+  rulesCopy = rules;
+  v7 = [v5 setWithCapacity:{objc_msgSend(rulesCopy, "count")}];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __100__MKFCKGuest__dictionaryRepresentationFromWeekDayScheduleRules_cloudWeekDayScheduleRulesDictionary___block_invoke;
   v14 = &unk_278670E80;
   v15 = v7;
-  v16 = a1;
+  selfCopy = self;
   v8 = v7;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:&v11];
+  [rulesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:&v11];
 
-  v9 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v9;
+  return allObjects;
 }
 
 void __100__MKFCKGuest__dictionaryRepresentationFromWeekDayScheduleRules_cloudWeekDayScheduleRulesDictionary___block_invoke(uint64_t a1, void *a2)
@@ -123,16 +123,16 @@ void __100__MKFCKGuest__dictionaryRepresentationFromWeekDayScheduleRules_cloudWe
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_importYearDayScheduleRulesIntoLocalModel:(id)a3 fromCloudModel:(id)a4 localRelationship:(id)a5 cloudAttributeName:(id)a6 parentRelationshipName:(id)a7 context:(id)a8
++ (BOOL)_importYearDayScheduleRulesIntoLocalModel:(id)model fromCloudModel:(id)cloudModel localRelationship:(id)relationship cloudAttributeName:(id)name parentRelationshipName:(id)relationshipName context:(id)context
 {
-  v13 = a3;
-  v14 = a7;
-  v15 = a8;
-  v16 = a5;
-  v17 = [a4 valueForKey:a6];
-  v18 = [v16 name];
+  modelCopy = model;
+  relationshipNameCopy = relationshipName;
+  contextCopy = context;
+  relationshipCopy = relationship;
+  v17 = [cloudModel valueForKey:name];
+  name = [relationshipCopy name];
 
-  v19 = [v13 valueForKey:v18];
+  v19 = [modelCopy valueForKey:name];
 
   v20 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v17, "count")}];
   v21 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v19, "count")}];
@@ -148,14 +148,14 @@ void __100__MKFCKGuest__dictionaryRepresentationFromWeekDayScheduleRules_cloudWe
   v34[2] = __139__MKFCKGuest__importYearDayScheduleRulesIntoLocalModel_fromCloudModel_localRelationship_cloudAttributeName_parentRelationshipName_context___block_invoke_2;
   v34[3] = &unk_278671EC0;
   v35 = v22;
-  v23 = v15;
+  v23 = contextCopy;
   v36 = v23;
-  v37 = v13;
-  v38 = v14;
+  v37 = modelCopy;
+  v38 = relationshipNameCopy;
   v24 = v20;
   v39 = v24;
-  v25 = v14;
-  v26 = v13;
+  v25 = relationshipNameCopy;
+  v26 = modelCopy;
   v27 = v22;
   [v17 hmf_enumerateWithAutoreleasePoolUsingBlock:v34];
   v31[0] = MEMORY[0x277D85DD0];
@@ -202,16 +202,16 @@ void __139__MKFCKGuest__importYearDayScheduleRulesIntoLocalModel_fromCloudModel_
   }
 }
 
-+ (BOOL)_importWeekDayScheduleRulesIntoLocalModel:(id)a3 fromCloudModel:(id)a4 localRelationship:(id)a5 cloudAttributeName:(id)a6 parentRelationshipName:(id)a7 context:(id)a8
++ (BOOL)_importWeekDayScheduleRulesIntoLocalModel:(id)model fromCloudModel:(id)cloudModel localRelationship:(id)relationship cloudAttributeName:(id)name parentRelationshipName:(id)relationshipName context:(id)context
 {
-  v13 = a3;
-  v14 = a7;
-  v15 = a8;
-  v16 = a5;
-  v17 = [a4 valueForKey:a6];
-  v18 = [v16 name];
+  modelCopy = model;
+  relationshipNameCopy = relationshipName;
+  contextCopy = context;
+  relationshipCopy = relationship;
+  v17 = [cloudModel valueForKey:name];
+  name = [relationshipCopy name];
 
-  v19 = [v13 valueForKey:v18];
+  v19 = [modelCopy valueForKey:name];
 
   v20 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v17, "count")}];
   v21 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v19, "count")}];
@@ -227,14 +227,14 @@ void __139__MKFCKGuest__importYearDayScheduleRulesIntoLocalModel_fromCloudModel_
   v34[2] = __139__MKFCKGuest__importWeekDayScheduleRulesIntoLocalModel_fromCloudModel_localRelationship_cloudAttributeName_parentRelationshipName_context___block_invoke_2;
   v34[3] = &unk_278671EC0;
   v35 = v22;
-  v23 = v15;
+  v23 = contextCopy;
   v36 = v23;
-  v37 = v13;
-  v38 = v14;
+  v37 = modelCopy;
+  v38 = relationshipNameCopy;
   v24 = v20;
   v39 = v24;
-  v25 = v14;
-  v26 = v13;
+  v25 = relationshipNameCopy;
+  v26 = modelCopy;
   v27 = v22;
   [v17 hmf_enumerateWithAutoreleasePoolUsingBlock:v34];
   v31[0] = MEMORY[0x277D85DD0];
@@ -281,16 +281,16 @@ void __139__MKFCKGuest__importWeekDayScheduleRulesIntoLocalModel_fromCloudModel_
   }
 }
 
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(MKFCKModel *)self copyPropertiesFromLocalModel:v8 context:v10]&& [(MKFCKGuest *)self _exportAllowedAccessoriesRelationshipFromGuestLocalModel:v8 context:v10]&& [(MKFCKGuest *)self _exportGuestAccessCodeFromLocalModel:v8 context:v10]&& (![(MKFCKModel *)self shouldExportUpdatedPropertyInSet:v9 name:@"weekDayScheduleRules_"]|| [(MKFCKGuest *)self _exportWeekDaySchedulesFromLocalModel:v8 context:v10]))
+  modelCopy = model;
+  propertiesCopy = properties;
+  contextCopy = context;
+  if ([(MKFCKModel *)self copyPropertiesFromLocalModel:modelCopy context:contextCopy]&& [(MKFCKGuest *)self _exportAllowedAccessoriesRelationshipFromGuestLocalModel:modelCopy context:contextCopy]&& [(MKFCKGuest *)self _exportGuestAccessCodeFromLocalModel:modelCopy context:contextCopy]&& (![(MKFCKModel *)self shouldExportUpdatedPropertyInSet:propertiesCopy name:@"weekDayScheduleRules_"]|| [(MKFCKGuest *)self _exportWeekDaySchedulesFromLocalModel:modelCopy context:contextCopy]))
   {
-    if ([(MKFCKModel *)self shouldExportUpdatedPropertyInSet:v9 name:@"yearDayScheduleRules_"])
+    if ([(MKFCKModel *)self shouldExportUpdatedPropertyInSet:propertiesCopy name:@"yearDayScheduleRules_"])
     {
-      v11 = [(MKFCKGuest *)self _exportYearDaySchedulesFromLocalModel:v8 context:v10];
+      v11 = [(MKFCKGuest *)self _exportYearDaySchedulesFromLocalModel:modelCopy context:contextCopy];
     }
 
     else
@@ -307,32 +307,32 @@ void __139__MKFCKGuest__importWeekDayScheduleRulesIntoLocalModel_fromCloudModel_
   return v11;
 }
 
-- (BOOL)_exportGuestAccessCodeFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)_exportGuestAccessCodeFromLocalModel:(id)model context:(id)context
 {
-  v5 = [a3 accessCode];
-  v6 = v5;
-  if (v5)
+  accessCode = [model accessCode];
+  v6 = accessCode;
+  if (accessCode)
   {
-    v7 = [v5 accessCode];
-    [(MKFCKGuest *)self setHomeAccessCode:v7];
+    v5AccessCode = [accessCode accessCode];
+    [(MKFCKGuest *)self setHomeAccessCode:v5AccessCode];
   }
 
   return 1;
 }
 
-- (BOOL)_exportYearDaySchedulesFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)_exportYearDaySchedulesFromLocalModel:(id)model context:(id)context
 {
-  v5 = a3;
+  modelCopy = model;
   v6 = objc_opt_class();
-  v7 = [v5 yearDayScheduleRules];
+  yearDayScheduleRules = [modelCopy yearDayScheduleRules];
 
-  v8 = [(MKFCKGuest *)self yearDayScheduleRules];
-  v9 = [v6 _dictionaryRepresentationFromYearDayScheduleRules:v7 cloudYearDayScheduleRulesDictionary:v8];
+  yearDayScheduleRules2 = [(MKFCKGuest *)self yearDayScheduleRules];
+  v9 = [v6 _dictionaryRepresentationFromYearDayScheduleRules:yearDayScheduleRules cloudYearDayScheduleRulesDictionary:yearDayScheduleRules2];
 
-  v10 = [(MKFCKGuest *)self yearDayScheduleRules];
-  LOBYTE(v7) = HMFEqualObjects();
+  yearDayScheduleRules3 = [(MKFCKGuest *)self yearDayScheduleRules];
+  LOBYTE(yearDayScheduleRules) = HMFEqualObjects();
 
-  if ((v7 & 1) == 0)
+  if ((yearDayScheduleRules & 1) == 0)
   {
     [(MKFCKGuest *)self setYearDayScheduleRules:v9];
   }
@@ -340,19 +340,19 @@ void __139__MKFCKGuest__importWeekDayScheduleRulesIntoLocalModel_fromCloudModel_
   return 1;
 }
 
-- (BOOL)_exportWeekDaySchedulesFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)_exportWeekDaySchedulesFromLocalModel:(id)model context:(id)context
 {
-  v5 = a3;
+  modelCopy = model;
   v6 = objc_opt_class();
-  v7 = [v5 weekDayScheduleRules];
+  weekDayScheduleRules = [modelCopy weekDayScheduleRules];
 
-  v8 = [(MKFCKGuest *)self weekDayScheduleRules];
-  v9 = [v6 _dictionaryRepresentationFromWeekDayScheduleRules:v7 cloudWeekDayScheduleRulesDictionary:v8];
+  weekDayScheduleRules2 = [(MKFCKGuest *)self weekDayScheduleRules];
+  v9 = [v6 _dictionaryRepresentationFromWeekDayScheduleRules:weekDayScheduleRules cloudWeekDayScheduleRulesDictionary:weekDayScheduleRules2];
 
-  v10 = [(MKFCKGuest *)self weekDayScheduleRules];
-  LOBYTE(v7) = HMFEqualObjects();
+  weekDayScheduleRules3 = [(MKFCKGuest *)self weekDayScheduleRules];
+  LOBYTE(weekDayScheduleRules) = HMFEqualObjects();
 
-  if ((v7 & 1) == 0)
+  if ((weekDayScheduleRules & 1) == 0)
   {
     [(MKFCKGuest *)self setWeekDayScheduleRules:v9];
   }
@@ -360,59 +360,59 @@ void __139__MKFCKGuest__importWeekDayScheduleRulesIntoLocalModel_fromCloudModel_
   return 1;
 }
 
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(MKFCKModel *)self copyPropertiesIntoLocalModel:v7 context:v8]&& [(MKFCKGuest *)self _importAllowedAccessoriesRelationshipIntoLocalModel:v7 context:v8]&& [(MKFCKGuest *)self _importGuestAccessCodeIntoLocalModel:v7 context:v8]&& [(MKFCKGuest *)self _importWeekDayScheduleRulesIntoLocalModel:v7 context:v8]&& [(MKFCKGuest *)self _importYearDayScheduleRulesIntoLocalModel:v7 context:v8];
+  modelCopy = model;
+  contextCopy = context;
+  v9 = [(MKFCKModel *)self copyPropertiesIntoLocalModel:modelCopy context:contextCopy]&& [(MKFCKGuest *)self _importAllowedAccessoriesRelationshipIntoLocalModel:modelCopy context:contextCopy]&& [(MKFCKGuest *)self _importGuestAccessCodeIntoLocalModel:modelCopy context:contextCopy]&& [(MKFCKGuest *)self _importWeekDayScheduleRulesIntoLocalModel:modelCopy context:contextCopy]&& [(MKFCKGuest *)self _importYearDayScheduleRulesIntoLocalModel:modelCopy context:contextCopy];
 
   return v9;
 }
 
-- (BOOL)_importGuestAccessCodeIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importGuestAccessCodeIntoLocalModel:(id)model context:(id)context
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MKFCKGuest *)self homeAccessCode];
-  v9 = [v8 length];
+  modelCopy = model;
+  contextCopy = context;
+  homeAccessCode = [(MKFCKGuest *)self homeAccessCode];
+  v9 = [homeAccessCode length];
 
-  v10 = [v6 accessCode];
-  v11 = v10;
+  accessCode = [modelCopy accessCode];
+  accessCode5 = accessCode;
   if (v9)
   {
-    if (!v10)
+    if (!accessCode)
     {
-      v11 = [[_MKFUserAccessCode alloc] initWithContext:v7];
-      v12 = [(MKFCKGuest *)self modelID];
-      v13 = [HMDUserAccessCodeModel modelUUIDWithUUID:v12];
-      [(_MKFUserAccessCode *)v11 setModelID:v13];
+      accessCode5 = [[_MKFUserAccessCode alloc] initWithContext:contextCopy];
+      modelID = [(MKFCKGuest *)self modelID];
+      v13 = [HMDUserAccessCodeModel modelUUIDWithUUID:modelID];
+      [(_MKFUserAccessCode *)accessCode5 setModelID:v13];
     }
 
-    v14 = [(_MKFUserAccessCode *)v11 accessCode];
-    v15 = [(MKFCKGuest *)self homeAccessCode];
+    accessCode2 = [(_MKFUserAccessCode *)accessCode5 accessCode];
+    homeAccessCode2 = [(MKFCKGuest *)self homeAccessCode];
     v16 = HMFEqualObjects();
 
     if ((v16 & 1) == 0)
     {
-      v17 = [(MKFCKGuest *)self homeAccessCode];
-      [(_MKFUserAccessCode *)v11 setAccessCode:v17];
+      homeAccessCode3 = [(MKFCKGuest *)self homeAccessCode];
+      [(_MKFUserAccessCode *)accessCode5 setAccessCode:homeAccessCode3];
     }
 
-    v18 = [(_MKFUserAccessCode *)v11 guest];
+    guest = [(_MKFUserAccessCode *)accessCode5 guest];
     v19 = HMFEqualObjects();
 
     if ((v19 & 1) == 0)
     {
-      [(_MKFUserAccessCode *)v11 setGuest:v6];
+      [(_MKFUserAccessCode *)accessCode5 setGuest:modelCopy];
     }
 
-    v20 = [v6 accessCode];
+    accessCode3 = [modelCopy accessCode];
     v21 = HMFEqualObjects();
 
     if ((v21 & 1) == 0)
     {
-      [v6 setAccessCode:v11];
+      [modelCopy setAccessCode:accessCode5];
     }
 
 LABEL_14:
@@ -420,28 +420,28 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v11)
+  if (accessCode5)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v6 accessCode];
-      v27 = [v6 debugDescription];
+      accessCode4 = [modelCopy accessCode];
+      v27 = [modelCopy debugDescription];
       v30 = 138543874;
       v31 = v25;
       v32 = 2112;
-      v33 = v26;
+      v33 = accessCode4;
       v34 = 2112;
       v35 = v27;
       _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_INFO, "%{public}@Deleting the MKFUserAccessCode %@ for Guest %@", &v30, 0x20u);
     }
 
     objc_autoreleasePoolPop(v22);
-    v11 = [v6 accessCode];
-    [v7 deleteObject:v11];
+    accessCode5 = [modelCopy accessCode];
+    [contextCopy deleteObject:accessCode5];
     goto LABEL_14;
   }
 
@@ -451,28 +451,28 @@ LABEL_15:
   return 1;
 }
 
-- (BOOL)_importYearDayScheduleRulesIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importYearDayScheduleRulesIntoLocalModel:(id)model context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  modelCopy = model;
   v8 = objc_opt_class();
-  v9 = [v7 entity];
-  v10 = [v9 relationshipsByName];
-  v11 = [v10 objectForKeyedSubscript:@"yearDayScheduleRules_"];
-  LOBYTE(self) = [v8 _importYearDayScheduleRulesIntoLocalModel:v7 fromCloudModel:self localRelationship:v11 cloudAttributeName:@"yearDayScheduleRules" parentRelationshipName:@"guest" context:v6];
+  entity = [modelCopy entity];
+  relationshipsByName = [entity relationshipsByName];
+  v11 = [relationshipsByName objectForKeyedSubscript:@"yearDayScheduleRules_"];
+  LOBYTE(self) = [v8 _importYearDayScheduleRulesIntoLocalModel:modelCopy fromCloudModel:self localRelationship:v11 cloudAttributeName:@"yearDayScheduleRules" parentRelationshipName:@"guest" context:contextCopy];
 
   return self;
 }
 
-- (BOOL)_importWeekDayScheduleRulesIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)_importWeekDayScheduleRulesIntoLocalModel:(id)model context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  modelCopy = model;
   v8 = objc_opt_class();
-  v9 = [v7 entity];
-  v10 = [v9 relationshipsByName];
-  v11 = [v10 objectForKeyedSubscript:@"weekDayScheduleRules_"];
-  LOBYTE(self) = [v8 _importWeekDayScheduleRulesIntoLocalModel:v7 fromCloudModel:self localRelationship:v11 cloudAttributeName:@"weekDayScheduleRules" parentRelationshipName:@"guest" context:v6];
+  entity = [modelCopy entity];
+  relationshipsByName = [entity relationshipsByName];
+  v11 = [relationshipsByName objectForKeyedSubscript:@"weekDayScheduleRules_"];
+  LOBYTE(self) = [v8 _importWeekDayScheduleRulesIntoLocalModel:modelCopy fromCloudModel:self localRelationship:v11 cloudAttributeName:@"weekDayScheduleRules" parentRelationshipName:@"guest" context:contextCopy];
 
   return self;
 }

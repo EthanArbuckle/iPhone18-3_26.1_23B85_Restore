@@ -4,19 +4,19 @@
 - (UIView)loadingTitleLabel;
 - (UIView)spinnerContainer;
 - (_TVImageView)backgroundImageView;
-- (_TVLoadingView)initWithFrame:(CGRect)a3;
+- (_TVLoadingView)initWithFrame:(CGRect)frame;
 - (void)_showSpinner;
 - (void)layoutSubviews;
-- (void)setLoadingTitleLabel:(id)a3;
+- (void)setLoadingTitleLabel:(id)label;
 @end
 
 @implementation _TVLoadingView
 
-- (_TVLoadingView)initWithFrame:(CGRect)a3
+- (_TVLoadingView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _TVLoadingView;
-  v3 = [(_TVLoadingView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVLoadingView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,11 +26,11 @@
     objc_storeWeak(&v4->_spinnerView, v5);
     objc_storeWeak(&v4->_spinnerContainer, v5);
     [v5 setAlpha:0.0];
-    v6 = [v5 layer];
-    [v6 setAllowsGroupOpacity:0];
+    layer = [v5 layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v7 = [v5 layer];
-    [v7 setAllowsGroupOpacity:0];
+    layer2 = [v5 layer];
+    [layer2 setAllowsGroupOpacity:0];
   }
 
   return v4;
@@ -46,28 +46,28 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_TVLoadingView *)self backgroundImageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backgroundImageView = [(_TVLoadingView *)self backgroundImageView];
+  [backgroundImageView setFrame:{v4, v6, v8, v10}];
 
   [MEMORY[0x277D750E8] defaultSizeForStyle:100];
-  v12 = [(_TVLoadingView *)self spinnerContainer];
+  spinnerContainer = [(_TVLoadingView *)self spinnerContainer];
   UIRectCenteredIntegralRect();
-  [v12 setFrame:?];
+  [spinnerContainer setFrame:?];
 
-  v13 = [(_TVLoadingView *)self labelContainer];
-  [v13 sizeToFit];
+  labelContainer = [(_TVLoadingView *)self labelContainer];
+  [labelContainer sizeToFit];
 
   v30.origin.x = v4;
   v30.origin.y = v6;
   v30.size.width = v8;
   v30.size.height = v10;
   v14 = CGRectGetWidth(v30) + -40.0;
-  v15 = [(_TVLoadingView *)self labelContainer];
-  [v15 sizeThatFits:{v14, 0.0}];
+  labelContainer2 = [(_TVLoadingView *)self labelContainer];
+  [labelContainer2 sizeThatFits:{v14, 0.0}];
   v17 = v16;
 
-  v18 = [(_TVLoadingView *)self spinnerContainer];
-  [v18 frame];
+  spinnerContainer2 = [(_TVLoadingView *)self spinnerContainer];
+  [spinnerContainer2 frame];
   CGRectGetMaxY(v31);
 
   UIRectCenteredIntegralRect();
@@ -75,16 +75,16 @@
   v22 = v21;
   v24 = v23;
   v26 = v17 + v25 + 10.0;
-  v27 = [(_TVLoadingView *)self labelContainer];
-  [v27 setFrame:{v20, v26, v22, v24}];
+  labelContainer3 = [(_TVLoadingView *)self labelContainer];
+  [labelContainer3 setFrame:{v20, v26, v22, v24}];
 
-  v28 = [(_TVLoadingView *)self labelContainer];
-  [v28 setAutoresizingMask:37];
+  labelContainer4 = [(_TVLoadingView *)self labelContainer];
+  [labelContainer4 setAutoresizingMask:37];
 }
 
-- (void)setLoadingTitleLabel:(id)a3
+- (void)setLoadingTitleLabel:(id)label
 {
-  obj = a3;
+  obj = label;
   WeakRetained = objc_loadWeakRetained(&self->_loadingTitleLabel);
 
   if (WeakRetained != obj)
@@ -101,25 +101,25 @@
 
 - (void)_showSpinner
 {
-  v10 = [(_TVLoadingView *)self spinnerView];
-  v3 = [v10 window];
-  if (v3)
+  spinnerView = [(_TVLoadingView *)self spinnerView];
+  window = [spinnerView window];
+  if (window)
   {
     shouldShowSpinner = self->_shouldShowSpinner;
 
     if (shouldShowSpinner)
     {
-      v5 = [(_TVLoadingView *)self loadingTitleLabel];
-      v6 = [(_TVLoadingView *)self spinnerView];
+      loadingTitleLabel = [(_TVLoadingView *)self loadingTitleLabel];
+      spinnerView2 = [(_TVLoadingView *)self spinnerView];
       v7 = MEMORY[0x277D75D18];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __30___TVLoadingView__showSpinner__block_invoke;
       v11[3] = &unk_279D6E2F8;
-      v12 = v5;
-      v13 = v6;
-      v8 = v6;
-      v9 = v5;
+      v12 = loadingTitleLabel;
+      v13 = spinnerView2;
+      v8 = spinnerView2;
+      v9 = loadingTitleLabel;
       [v7 animateWithDuration:v11 animations:0.4];
     }
   }

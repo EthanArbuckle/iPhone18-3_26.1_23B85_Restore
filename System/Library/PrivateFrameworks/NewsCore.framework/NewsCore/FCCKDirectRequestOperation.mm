@@ -1,22 +1,22 @@
 @interface FCCKDirectRequestOperation
-- (BOOL)areNetworkRequirementsSatisfiedWithReachability:(id)a3 offlineReason:(int64_t *)a4;
+- (BOOL)areNetworkRequirementsSatisfiedWithReachability:(id)reachability offlineReason:(int64_t *)reason;
 - (BOOL)validateOperation;
-- (FCCKDirectRequestOperation)initWithNetworkReachability:(id)a3;
+- (FCCKDirectRequestOperation)initWithNetworkReachability:(id)reachability;
 - (double)preferredTimeoutIntervalForRequest;
 - (id)_bundleIDToReport;
 - (id)_requestBodyData;
 - (id)throttleGroup;
 - (uint64_t)_isDebugOperation;
-- (void)URLSession:(id)a3 didCreateTask:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)_finishWithResponsePayload:(void *)a1;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)URLSession:(id)session didCreateTask:(id)task;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)_finishWithResponsePayload:(void *)payload;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)resetForRetry;
-- (void)setNetworkBehaviorMonitor:(uint64_t)a1;
-- (void)setResultError:(uint64_t)a1;
-- (void)setResultErrorsByRequestID:(uint64_t)a1;
-- (void)setResultResponseOperations:(uint64_t)a1;
+- (void)setNetworkBehaviorMonitor:(uint64_t)monitor;
+- (void)setResultError:(uint64_t)error;
+- (void)setResultErrorsByRequestID:(uint64_t)d;
+- (void)setResultResponseOperations:(uint64_t)operations;
 @end
 
 @implementation FCCKDirectRequestOperation
@@ -46,20 +46,20 @@
 
 - (uint64_t)_isDebugOperation
 {
-  if (!a1 || !NFInternalBuild())
+  if (!self || !NFInternalBuild())
   {
     return 0;
   }
 
-  v2 = [a1 purpose];
-  v3 = [v2 isEqualToString:@"debugging"];
+  purpose = [self purpose];
+  v3 = [purpose isEqualToString:@"debugging"];
 
   return v3;
 }
 
 - (void)performOperation
 {
-  v2 = self;
+  selfCopy = self;
   v116 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -75,25 +75,25 @@
     }
 
     v89 = qword_1EDB269A8;
-    if (!v2)
+    if (!selfCopy)
     {
       v9 = 0;
       goto LABEL_57;
     }
 
-    v8 = v2->_baseURL;
+    v8 = selfCopy->_baseURL;
     v9 = objc_opt_new();
-    FCOperationFlagsApplyToURLRequest([(FCOperation *)v2 flags], v9);
-    [(FCCKDirectRequestOperation *)v2 preferredTimeoutIntervalForRequest];
+    FCOperationFlagsApplyToURLRequest([(FCOperation *)selfCopy flags], v9);
+    [(FCCKDirectRequestOperation *)selfCopy preferredTimeoutIntervalForRequest];
     [v9 setTimeoutInterval:?];
     v10 = v8;
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    v12 = [(NSURL *)v10 port];
-    if (v12)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    port = [(NSURL *)v10 port];
+    if (port)
     {
       v13 = MEMORY[0x1E696AEC0];
-      v14 = [(NSURL *)v10 port];
-      v15 = [v13 stringWithFormat:@":%@", v14];
+      port2 = [(NSURL *)v10 port];
+      v15 = [v13 stringWithFormat:@":%@", port2];
     }
 
     else
@@ -101,27 +101,27 @@
       v15 = &stru_1F2DC7DC0;
     }
 
-    [v11 setObject:v2->_requestUUID forKeyedSubscript:@"X-Apple-Request-UUID"];
+    [dictionary setObject:selfCopy->_requestUUID forKeyedSubscript:@"X-Apple-Request-UUID"];
     v16 = FCClientInfoHeaderValue();
-    [v11 setObject:v16 forKeyedSubscript:@"X-MMe-Client-Info"];
+    [dictionary setObject:v16 forKeyedSubscript:@"X-MMe-Client-Info"];
 
     v17 = FCUserAgentHeaderValue();
-    [v11 setObject:v17 forKeyedSubscript:@"User-Agent"];
+    [dictionary setObject:v17 forKeyedSubscript:@"User-Agent"];
 
-    [v11 setObject:v2->_containerName forKeyedSubscript:@"X-CloudKit-ContainerId"];
+    [dictionary setObject:selfCopy->_containerName forKeyedSubscript:@"X-CloudKit-ContainerId"];
     v18 = MEMORY[0x1E696AEC0];
-    v19 = [(NSURL *)v10 scheme];
-    v20 = [(NSURL *)v10 host];
-    v21 = [v18 stringWithFormat:@"%@ desc=%@://%@%@/static/protobuf/CloudDB/CloudDBClient.desc; messageType=RequestOperation; delimited=true", @"application/x-protobuf", v19, v20, v15];;
-    [v11 setObject:v21 forKeyedSubscript:@"Content-Type"];
+    scheme = [(NSURL *)v10 scheme];
+    host = [(NSURL *)v10 host];
+    v21 = [v18 stringWithFormat:@"%@ desc=%@://%@%@/static/protobuf/CloudDB/CloudDBClient.desc; messageType=RequestOperation; delimited=true", @"application/x-protobuf", scheme, host, v15];;
+    [dictionary setObject:v21 forKeyedSubscript:@"Content-Type"];
 
-    [v11 setObject:@"client=1;comments=1;device=1;presence=1;records=1;sharing=1;subscriptions=1;users=1;" forKeyedSubscript:@"X-CloudKit-ProtocolVersion"];
-    [v11 setObject:@"application/x-protobuf" forKeyedSubscript:@"Accept"];
-    v22 = [FCCKDirectRequestOperation _bundleIDToReport];
-    [v11 setObject:v22 forKeyedSubscript:@"X-CloudKit-BundleId"];
-    [v11 setObject:@"Public" forKeyedSubscript:@"X-CloudKit-DatabaseScope"];
-    [v11 setObject:@"gzip" forKeyedSubscript:@"Content-Encoding"];
-    [v11 setObject:@"no-transform" forKeyedSubscript:@"Cache-Control"];
+    [dictionary setObject:@"client=1;comments=1;device=1;presence=1;records=1;sharing=1;subscriptions=1;users=1;" forKeyedSubscript:@"X-CloudKit-ProtocolVersion"];
+    [dictionary setObject:@"application/x-protobuf" forKeyedSubscript:@"Accept"];
+    _bundleIDToReport = [FCCKDirectRequestOperation _bundleIDToReport];
+    [dictionary setObject:_bundleIDToReport forKeyedSubscript:@"X-CloudKit-BundleId"];
+    [dictionary setObject:@"Public" forKeyedSubscript:@"X-CloudKit-DatabaseScope"];
+    [dictionary setObject:@"gzip" forKeyedSubscript:@"Content-Encoding"];
+    [dictionary setObject:@"no-transform" forKeyedSubscript:@"Cache-Control"];
     objc_opt_self();
     if (qword_1EDB269B8 != -1)
     {
@@ -130,7 +130,7 @@
 
     if (_MergedGlobals_7 == 1)
     {
-      [v11 setObject:@"DEBUG" forKeyedSubscript:@"X-Apple-Request-Log-Level"];
+      [dictionary setObject:@"DEBUG" forKeyedSubscript:@"X-Apple-Request-Log-Level"];
     }
 
     v23 = NewsCoreUserDefaults();
@@ -138,59 +138,59 @@
 
     if ([v24 length])
     {
-      [v11 setObject:v24 forKeyedSubscript:@"X-Requested-Partition"];
+      [dictionary setObject:v24 forKeyedSubscript:@"X-Requested-Partition"];
     }
 
     if (NFInternalBuild())
     {
-      [v11 setObject:@"true" forKeyedSubscript:@"X-Apple-Internal-News"];
+      [dictionary setObject:@"true" forKeyedSubscript:@"X-Apple-Internal-News"];
     }
 
-    [v11 setObject:@"true" forKeyedSubscript:@"X-Apple-News-Feature-NewTodayFeed"];
-    [v11 setObject:@"true" forKeyedSubscript:@"X-Apple-News-Feature-NewTagFeed"];
-    if (v2->_additionalRequestHTTPHeaders)
+    [dictionary setObject:@"true" forKeyedSubscript:@"X-Apple-News-Feature-NewTodayFeed"];
+    [dictionary setObject:@"true" forKeyedSubscript:@"X-Apple-News-Feature-NewTagFeed"];
+    if (selfCopy->_additionalRequestHTTPHeaders)
     {
-      [v11 addEntriesFromDictionary:?];
+      [dictionary addEntriesFromDictionary:?];
     }
 
-    [v9 setAllHTTPHeaderFields:v11];
-    if (!v2->_edgeCacheHint)
+    [v9 setAllHTTPHeaderFields:dictionary];
+    if (!selfCopy->_edgeCacheHint)
     {
       [v9 setURL:v10];
       [v9 setHTTPMethod:@"POST"];
-      v28 = [(FCCKDirectRequestOperation *)v2 _requestBodyData];
-      [v9 setHTTPBody:v28];
+      _requestBodyData = [(FCCKDirectRequestOperation *)selfCopy _requestBodyData];
+      [v9 setHTTPBody:_requestBodyData];
 
       [v9 setCachePolicy:1];
       goto LABEL_45;
     }
 
-    v25 = v2->_requests;
+    v25 = selfCopy->_requests;
     if ([(NSArray *)v25 count]== 1)
     {
-      v26 = [(NSArray *)v2->_requests firstObject];
-      v27 = [v26 queryRetrieveRequest];
+      firstObject = [(NSArray *)selfCopy->_requests firstObject];
+      queryRetrieveRequest = [firstObject queryRetrieveRequest];
 
-      if (v27)
+      if (queryRetrieveRequest)
       {
 LABEL_33:
         [v9 setHTTPMethod:@"GET"];
-        v29 = [(FCCKDirectRequestOperation *)v2 _requestBodyData];
-        v30 = [v29 base64EncodedStringWithOptions:0];
+        _requestBodyData2 = [(FCCKDirectRequestOperation *)selfCopy _requestBodyData];
+        v30 = [_requestBodyData2 base64EncodedStringWithOptions:0];
         [v9 addValue:v30 forHTTPHeaderField:@"X-Apple-CloudKit-Request-Body"];
 
         [v9 setValue:0 forHTTPHeaderField:@"Cache-Control"];
         v31 = MEMORY[0x1E696AEC0];
-        v32 = v2->_edgeCacheHint;
-        v33 = [(FCEdgeCacheHint *)v32 groupName];
-        v34 = [(FCEdgeCacheHint *)v2->_edgeCacheHint cacheControlKey];
-        v88 = [v31 stringWithFormat:@"%@/%@", v33, v34];
+        v32 = selfCopy->_edgeCacheHint;
+        groupName = [(FCEdgeCacheHint *)v32 groupName];
+        cacheControlKey = [(FCEdgeCacheHint *)selfCopy->_edgeCacheHint cacheControlKey];
+        v88 = [v31 stringWithFormat:@"%@/%@", groupName, cacheControlKey];
 
-        v35 = [MEMORY[0x1E695DF88] data];
-        v36 = [(NSArray *)v2->_requests firstObject];
-        v37 = [v36 queryRetrieveRequest];
-        v38 = [v37 data];
-        [v35 appendData:v38];
+        data = [MEMORY[0x1E695DF88] data];
+        firstObject2 = [(NSArray *)selfCopy->_requests firstObject];
+        queryRetrieveRequest2 = [firstObject2 queryRetrieveRequest];
+        data2 = [queryRetrieveRequest2 data];
+        [data appendData:data2];
 
         v102 = 0u;
         v103 = 0u;
@@ -217,13 +217,13 @@ LABEL_33:
               }
 
               v43 = *(*(&v100 + 1) + 8 * i);
-              v44 = [v9 allHTTPHeaderFields];
-              v45 = [v44 objectForKey:v43];
+              allHTTPHeaderFields = [v9 allHTTPHeaderFields];
+              v45 = [allHTTPHeaderFields objectForKey:v43];
 
               if (v45)
               {
                 v46 = [v45 dataUsingEncoding:4];
-                [v35 appendData:v46];
+                [data appendData:v46];
               }
             }
 
@@ -233,24 +233,24 @@ LABEL_33:
           while (v40);
         }
 
-        v47 = [v35 fc_sha256];
-        v48 = [v47 fc_URLSafeBase64EncodedStringWithOptions:0];
+        fc_sha256 = [data fc_sha256];
+        v48 = [fc_sha256 fc_URLSafeBase64EncodedStringWithOptions:0];
         v49 = [v88 stringByAppendingPathComponent:v48];
         v50 = [(NSURL *)v10 URLByAppendingPathComponent:v49];
         [v9 setURL:v50];
 
         [v9 setCachePolicy:1];
 LABEL_45:
-        if (v2->_edgeCacheHint)
+        if (selfCopy->_edgeCacheHint)
         {
           v51 = FCOperationLog;
           if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
           {
             v52 = v51;
-            v53 = [(FCOperation *)v2 shortOperationDescription];
+            shortOperationDescription = [(FCOperation *)selfCopy shortOperationDescription];
             v54 = [v9 URL];
             *buf = 138543618;
-            *&buf[4] = v53;
+            *&buf[4] = shortOperationDescription;
             *&buf[12] = 2114;
             *&buf[14] = v54;
             _os_log_impl(&dword_1B63EF000, v52, OS_LOG_TYPE_DEFAULT, "%{public}@ will issue request to CK-at-Edge with URL %{public}@", buf, 0x16u);
@@ -260,7 +260,7 @@ LABEL_45:
           v97[1] = 3221225472;
           v97[2] = __46__FCCKDirectRequestOperation_performOperation__block_invoke;
           v97[3] = &unk_1E7C40070;
-          v97[4] = v2;
+          v97[4] = selfCopy;
           v98 = v89;
           v9 = v9;
           v99 = v9;
@@ -268,8 +268,8 @@ LABEL_45:
 
           if (v55)
           {
-            v56 = [v55 response];
-            [v56 _calculatedExpiration];
+            response = [v55 response];
+            [response _calculatedExpiration];
             v58 = v57;
             [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
             if (v58 > v59)
@@ -280,14 +280,14 @@ LABEL_52:
               if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
               {
                 v63 = v62;
-                v64 = [(FCOperation *)v2 shortOperationDescription];
+                shortOperationDescription2 = [(FCOperation *)selfCopy shortOperationDescription];
                 v65 = MEMORY[0x1E695DF00];
-                v66 = [v55 response];
-                [v66 _calculatedExpiration];
+                response2 = [v55 response];
+                [response2 _calculatedExpiration];
                 v67 = [v65 dateWithTimeIntervalSinceReferenceDate:?];
                 v68 = [v9 URL];
                 *buf = 138543874;
-                *&buf[4] = v64;
+                *&buf[4] = shortOperationDescription2;
                 *&buf[12] = 2112;
                 *&buf[14] = v67;
                 *&buf[22] = 2114;
@@ -296,10 +296,10 @@ LABEL_52:
               }
 
               v69 = [FCURLResponsePayload alloc];
-              v70 = [v55 data];
-              v71 = [(FCURLResponsePayload *)v69 initWithData:v70];
+              data3 = [v55 data];
+              v71 = [(FCURLResponsePayload *)v69 initWithData:data3];
 
-              [(FCCKDirectRequestOperation *)v2 _finishWithResponsePayload:v71];
+              [(FCCKDirectRequestOperation *)selfCopy _finishWithResponsePayload:v71];
 LABEL_70:
 
               v87 = *MEMORY[0x1E69E9840];
@@ -330,7 +330,7 @@ LABEL_58:
           aBlock[2] = __46__FCCKDirectRequestOperation_performOperation__block_invoke_37;
           aBlock[3] = &unk_1E7C40098;
           v95 = buf;
-          aBlock[4] = v2;
+          aBlock[4] = selfCopy;
           v73 = v89;
           v93 = v73;
           v9 = v9;
@@ -338,34 +338,34 @@ LABEL_58:
           v96 = &v100;
           v74 = _Block_copy(aBlock);
           v75 = v74;
-          if (v2 && (optimizationPolicy = v2->_optimizationPolicy) != 0)
+          if (selfCopy && (optimizationPolicy = selfCopy->_optimizationPolicy) != 0)
           {
             if (optimizationPolicy != 1)
             {
 LABEL_64:
-              [(FCOperation *)v2 associateChildOperation:*(*&buf[8] + 40)];
+              [(FCOperation *)selfCopy associateChildOperation:*(*&buf[8] + 40)];
               v80 = FCOperationLog;
               if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
               {
-                v81 = [*(*&buf[8] + 40) longOperationDescription];
+                longOperationDescription = [*(*&buf[8] + 40) longOperationDescription];
                 *v108 = 138543362;
-                v109 = v81;
+                v109 = longOperationDescription;
                 _os_log_impl(&dword_1B63EF000, v80, OS_LOG_TYPE_DEFAULT, "%{public}@ started", v108, 0xCu);
               }
 
-              if (v2)
+              if (selfCopy)
               {
-                networkActivityBlock = v2->_networkActivityBlock;
+                networkActivityBlock = selfCopy->_networkActivityBlock;
                 if (networkActivityBlock)
                 {
                   v83 = networkActivityBlock;
                   v84 = v83[2]();
-                  objc_storeStrong(&v2->_networkActivity, v84);
+                  objc_storeStrong(&selfCopy->_networkActivity, v84);
 
-                  v85 = v2->_networkActivity;
+                  v85 = selfCopy->_networkActivity;
                   [(FCNetworkActivity *)v85 attachActivityToTask:*(*&buf[8] + 40)];
 
-                  [*(*&buf[8] + 40) setDelegate:v2];
+                  [*(*&buf[8] + 40) setDelegate:selfCopy];
                 }
               }
 
@@ -432,13 +432,13 @@ LABEL_57:
   }
 
   v3 = MEMORY[0x1E695B978];
-  if (v2)
+  if (selfCopy)
   {
-    v4 = v2->_requests;
+    v4 = selfCopy->_requests;
     v5 = [v3 errorWithCode:1020 format:{@"Your request contains %ld items which is more than the maximum number of items in a single request (%ld)", -[NSArray count](v4, "count"), 400}];
-    objc_storeStrong(&v2->_resultError, v5);
+    objc_storeStrong(&selfCopy->_resultError, v5);
 
-    resultError = v2->_resultError;
+    resultError = selfCopy->_resultError;
   }
 
   else
@@ -450,7 +450,7 @@ LABEL_57:
 
   v7 = *MEMORY[0x1E69E9840];
 
-  [(FCOperation *)v2 finishedPerformingOperationWithError:resultError];
+  [(FCOperation *)selfCopy finishedPerformingOperationWithError:resultError];
 }
 
 void __40__FCCKDirectRequestOperation_URLSession__block_invoke()
@@ -526,8 +526,8 @@ void __40__FCCKDirectRequestOperation_URLSession__block_invoke()
     if (networkEventType == 14)
     {
       v5 = objc_opt_class();
-      v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v7 = [v6 objectForKey:@"news.modules.today_feed.last_offline_refresh_date"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v7 = [standardUserDefaults objectForKey:@"news.modules.today_feed.last_offline_refresh_date"];
       v8 = FCCheckedDynamicCast(v5, v7);
 
       [v8 doubleValue];
@@ -539,17 +539,17 @@ void __40__FCCKDirectRequestOperation_URLSession__block_invoke()
         return result;
       }
 
-      v13 = self;
-      v11 = &v13;
+      selfCopy = self;
+      v11 = &selfCopy;
       goto LABEL_9;
     }
 
 LABEL_8:
-    v12 = self;
-    v11 = &v12;
+    selfCopy2 = self;
+    v11 = &selfCopy2;
 LABEL_9:
     v11[1] = FCCKDirectRequestOperation;
-    objc_msgSendSuper2(v11, sel_preferredTimeoutIntervalForRequest, result, v12);
+    objc_msgSendSuper2(v11, sel_preferredTimeoutIntervalForRequest, result, selfCopy2);
     return result;
   }
 
@@ -585,20 +585,20 @@ void __50__FCCKDirectRequestOperation__enableDebugLogLevel__block_invoke()
 - (id)_requestBodyData
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = [*(a1 + 384) firstObject];
+  firstObject = [*(self + 384) firstObject];
   v4 = objc_opt_new();
-  [v3 setHeader:v4];
+  [firstObject setHeader:v4];
 
-  v5 = [FCCKDirectRequestOperation _bundleIDToReport];
-  v6 = [v3 header];
-  v50 = v5;
-  [v6 setApplicationBundle:v5];
+  _bundleIDToReport = [FCCKDirectRequestOperation _bundleIDToReport];
+  header = [firstObject header];
+  v50 = _bundleIDToReport;
+  [header setApplicationBundle:_bundleIDToReport];
 
-  v7 = *(a1 + 400);
-  v8 = [v3 header];
-  [v8 setApplicationContainer:v7];
+  v7 = *(self + 400);
+  header2 = [firstObject header];
+  [header2 setApplicationContainer:v7];
 
-  if (*(a1 + 376))
+  if (*(self + 376))
   {
     v9 = 1;
   }
@@ -608,80 +608,80 @@ void __50__FCCKDirectRequestOperation__enableDebugLogLevel__block_invoke()
     v9 = 2;
   }
 
-  v10 = [v3 header];
-  [v10 setApplicationContainerEnvironment:v9];
+  header3 = [firstObject header];
+  [header3 setApplicationContainerEnvironment:v9];
 
-  v11 = [v3 header];
-  [v11 setTargetDatabase:2];
+  header4 = [firstObject header];
+  [header4 setTargetDatabase:2];
 
   v12 = CKProductType();
-  v13 = [v3 header];
-  [v13 setDeviceHardwareVersion:v12];
+  header5 = [firstObject header];
+  [header5 setDeviceHardwareVersion:v12];
 
   v14 = CKProductVersion();
-  v15 = [v3 header];
-  [v15 setDeviceSoftwareVersion:v14];
+  header6 = [firstObject header];
+  [header6 setDeviceSoftwareVersion:v14];
 
   v16 = NFInternalBuild();
-  v17 = [v3 header];
-  [v17 setDeviceSoftwareIsAppleInternal:v16];
+  header7 = [firstObject header];
+  [header7 setDeviceSoftwareIsAppleInternal:v16];
 
   v49 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v18 = [v49 infoDictionary];
-  v19 = [v18 objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
-  v20 = [v3 header];
-  [v20 setDeviceLibraryName:v19];
+  infoDictionary = [v49 infoDictionary];
+  v19 = [infoDictionary objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
+  header8 = [firstObject header];
+  [header8 setDeviceLibraryName:v19];
 
-  v21 = [v18 objectForKeyedSubscript:*MEMORY[0x1E695E148]];
-  v22 = [v3 header];
-  [v22 setDeviceLibraryVersion:v21];
+  v21 = [infoDictionary objectForKeyedSubscript:*MEMORY[0x1E695E148]];
+  header9 = [firstObject header];
+  [header9 setDeviceLibraryVersion:v21];
 
   v23 = objc_opt_new();
-  v24 = [v3 header];
-  [v24 setLocale:v23];
+  header10 = [firstObject header];
+  [header10 setLocale:v23];
 
-  v25 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v26 = [v25 firstObject];
-  v27 = v26;
-  if (!v26)
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  firstObject2 = [preferredLanguages firstObject];
+  v27 = firstObject2;
+  if (!firstObject2)
   {
-    v1 = [MEMORY[0x1E695DF58] currentLocale];
-    v27 = [v1 objectForKey:*MEMORY[0x1E695D9B0]];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    v27 = [currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
   }
 
-  v28 = [v3 header];
-  v29 = [v28 locale];
-  [v29 setLanguageCode:v27];
+  header11 = [firstObject header];
+  locale = [header11 locale];
+  [locale setLanguageCode:v27];
 
-  if (!v26)
+  if (!firstObject2)
   {
   }
 
-  v30 = [MEMORY[0x1E695DF58] currentLocale];
-  v31 = [v30 objectForKey:*MEMORY[0x1E695D978]];
-  v32 = [v3 header];
-  v33 = [v32 locale];
-  [v33 setRegionCode:v31];
+  currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+  v31 = [currentLocale2 objectForKey:*MEMORY[0x1E695D978]];
+  header12 = [firstObject header];
+  locale2 = [header12 locale];
+  [locale2 setRegionCode:v31];
 
-  v34 = [a1 purpose];
+  purpose = [self purpose];
 
-  if (v34 != @"unknown")
+  if (purpose != @"unknown")
   {
-    v35 = [a1 purpose];
-    v36 = [v3 header];
-    [v36 setOperationGroupName:v35];
+    purpose2 = [self purpose];
+    header13 = [firstObject header];
+    [header13 setOperationGroupName:purpose2];
   }
 
-  v37 = [*(a1 + 384) lastObject];
-  v38 = [v37 request];
-  [v38 setLast:1];
+  lastObject = [*(self + 384) lastObject];
+  request = [lastObject request];
+  [request setLast:1];
 
-  v39 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v40 = *(a1 + 384);
+  v40 = *(self + 384);
   v41 = [v40 countByEnumeratingWithState:&v51 objects:v57 count:16];
   if (v41)
   {
@@ -696,12 +696,12 @@ void __50__FCCKDirectRequestOperation__enableDebugLogLevel__block_invoke()
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v51 + 1) + 8 * i) data];
+        data2 = [*(*(&v51 + 1) + 8 * i) data];
         v56 = 0;
         v55 = 0;
-        [v45 length];
-        [v39 appendBytes:&v55 length:PBDataWriterWriteBareVarint()];
-        [v39 appendData:v45];
+        [data2 length];
+        [data appendBytes:&v55 length:PBDataWriterWriteBareVarint()];
+        [data appendData:data2];
       }
 
       v42 = [v40 countByEnumeratingWithState:&v51 objects:v57 count:16];
@@ -710,27 +710,27 @@ void __50__FCCKDirectRequestOperation__enableDebugLogLevel__block_invoke()
     while (v42);
   }
 
-  v46 = [v39 fc_gzipDeflate];
+  fc_gzipDeflate = [data fc_gzipDeflate];
 
   v47 = *MEMORY[0x1E69E9840];
 
-  return v46;
+  return fc_gzipDeflate;
 }
 
-- (FCCKDirectRequestOperation)initWithNetworkReachability:(id)a3
+- (FCCKDirectRequestOperation)initWithNetworkReachability:(id)reachability
 {
   v9.receiver = self;
   v9.super_class = FCCKDirectRequestOperation;
-  v3 = [(FCNetworkOperation *)&v9 initWithNetworkReachability:a3];
+  v3 = [(FCNetworkOperation *)&v9 initWithNetworkReachability:reachability];
   v4 = v3;
   if (v3)
   {
     v3->_optimizationPolicy = 1;
     v3->_requestType = 0;
-    v5 = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [v5 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     requestUUID = v4->_requestUUID;
-    v4->_requestUUID = v6;
+    v4->_requestUUID = uUIDString;
 
     v4->_networkEventType = 0;
   }
@@ -740,7 +740,7 @@ void __50__FCCKDirectRequestOperation__enableDebugLogLevel__block_invoke()
 
 - (BOOL)validateOperation
 {
-  v2 = self;
+  selfCopy = self;
   v24 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -761,7 +761,7 @@ void __50__FCCKDirectRequestOperation__enableDebugLogLevel__block_invoke()
     v23 = v5;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v16, 0x26u);
 
-    if (!v2)
+    if (!selfCopy)
     {
 LABEL_9:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -779,7 +779,7 @@ LABEL_9:
       }
 
       v4 = 0;
-      if (!v2)
+      if (!selfCopy)
       {
         goto LABEL_14;
       }
@@ -788,19 +788,19 @@ LABEL_9:
     }
   }
 
-  else if (!v2)
+  else if (!selfCopy)
   {
     goto LABEL_9;
   }
 
-  if (!v2->_baseURL)
+  if (!selfCopy->_baseURL)
   {
     goto LABEL_9;
   }
 
   v4 = 1;
 LABEL_12:
-  if (v2->_containerName)
+  if (selfCopy->_containerName)
   {
     v6 = 1;
     goto LABEL_17;
@@ -822,7 +822,7 @@ LABEL_14:
   }
 
   v6 = 0;
-  if (!v2)
+  if (!selfCopy)
   {
 LABEL_19:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -840,7 +840,7 @@ LABEL_19:
     }
 
     v7 = 0;
-    if (!v2)
+    if (!selfCopy)
     {
       goto LABEL_24;
     }
@@ -849,14 +849,14 @@ LABEL_19:
   }
 
 LABEL_17:
-  if (!v2->_requestType)
+  if (!selfCopy->_requestType)
   {
     goto LABEL_19;
   }
 
   v7 = 1;
 LABEL_22:
-  if (v2->_networkEventType)
+  if (selfCopy->_networkEventType)
   {
     v8 = 1;
     goto LABEL_27;
@@ -894,11 +894,11 @@ LABEL_27:
   return result;
 }
 
-- (void)setResultError:(uint64_t)a1
+- (void)setResultError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    objc_storeStrong((a1 + 520), a2);
+    objc_storeStrong((error + 520), a2);
   }
 }
 
@@ -943,31 +943,31 @@ uint64_t __46__FCCKDirectRequestOperation_performOperation__block_invoke_2(uint6
   return 0;
 }
 
-- (void)_finishWithResponsePayload:(void *)a1
+- (void)_finishWithResponsePayload:(void *)payload
 {
   v33 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (payload)
   {
     if (v3)
     {
-      v5 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v6 = FCOperationLog;
       if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
       {
         v7 = v6;
-        v8 = [a1 shortOperationDescription];
+        shortOperationDescription = [payload shortOperationDescription];
         v9 = [MEMORY[0x1E696AAF0] stringFromByteCount:objc_msgSend(v4 countStyle:{"size"), 0}];
         *buf = 138543618;
-        *&buf[4] = v8;
+        *&buf[4] = shortOperationDescription;
         *&buf[12] = 2114;
         *&buf[14] = v9;
         _os_log_impl(&dword_1B63EF000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ will parse CK response payload, size=%{public}@", buf, 0x16u);
       }
 
-      v10 = [MEMORY[0x1E695DF70] array];
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      array = [MEMORY[0x1E695DF70] array];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
@@ -976,22 +976,22 @@ uint64_t __46__FCCKDirectRequestOperation_performOperation__block_invoke_2(uint6
       v22[1] = 3221225472;
       v22[2] = __57__FCCKDirectRequestOperation__finishWithResponsePayload___block_invoke_80;
       v22[3] = &unk_1E7C40110;
-      v23 = v10;
-      v24 = a1;
-      v25 = v11;
+      v23 = array;
+      payloadCopy = payload;
+      v25 = dictionary;
       v20 = buf;
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __57__FCCKDirectRequestOperation__finishWithResponsePayload___block_invoke_2;
       v21[3] = &unk_1E7C40138;
-      v21[4] = a1;
+      v21[4] = payload;
       v21[5] = buf;
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __57__FCCKDirectRequestOperation__finishWithResponsePayload___block_invoke_3;
       v16[3] = &unk_1E7C40160;
-      v16[4] = a1;
-      v12 = v5;
+      v16[4] = payload;
+      v12 = date;
       v17 = v12;
       v13 = v23;
       v18 = v13;
@@ -1008,8 +1008,8 @@ uint64_t __46__FCCKDirectRequestOperation_performOperation__block_invoke_2(uint6
       v27 = 3221225472;
       v28 = __57__FCCKDirectRequestOperation__finishWithResponsePayload___block_invoke;
       v29 = &unk_1E7C36EA0;
-      v30 = a1;
-      [a1 finishedPerformingOperationWithError:a1[65]];
+      payloadCopy2 = payload;
+      [payload finishedPerformingOperationWithError:payload[65]];
     }
   }
 
@@ -1279,16 +1279,16 @@ void __46__FCCKDirectRequestOperation_performOperation__block_invoke_2_63(uint64
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 domain];
-  if ([v5 isEqualToString:*MEMORY[0x1E695B778]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E695B778]])
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
 
-    if (v6 != 1005)
+    if (code != 1005)
     {
       goto LABEL_6;
     }
@@ -1299,26 +1299,26 @@ void __46__FCCKDirectRequestOperation_performOperation__block_invoke_2_63(uint64
       goto LABEL_6;
     }
 
-    v5 = v7;
-    v8 = [v4 localizedDescription];
+    domain = v7;
+    localizedDescription = [errorCopy localizedDescription];
     v16 = 138543362;
-    v17 = v8;
-    _os_log_fault_impl(&dword_1B63EF000, v5, OS_LOG_TYPE_FAULT, "Failed to parse CloudKit response with error: %{public}@", &v16, 0xCu);
+    v17 = localizedDescription;
+    _os_log_fault_impl(&dword_1B63EF000, domain, OS_LOG_TYPE_FAULT, "Failed to parse CloudKit response with error: %{public}@", &v16, 0xCu);
   }
 
 LABEL_6:
-  v9 = [v4 domain];
-  if ([v9 isEqualToString:@"FCErrorDomain"])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:@"FCErrorDomain"])
   {
-    v10 = v4;
+    cKClientSuitableError = errorCopy;
   }
 
   else
   {
-    v10 = [v4 CKClientSuitableError];
+    cKClientSuitableError = [errorCopy CKClientSuitableError];
   }
 
-  v11 = v10;
+  v11 = cKClientSuitableError;
 
   if (self)
   {
@@ -1334,36 +1334,36 @@ LABEL_6:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)areNetworkRequirementsSatisfiedWithReachability:(id)a3 offlineReason:(int64_t *)a4
+- (BOOL)areNetworkRequirementsSatisfiedWithReachability:(id)reachability offlineReason:(int64_t *)reason
 {
-  v6 = a3;
+  reachabilityCopy = reachability;
   if ([(FCCKDirectRequestOperation *)self _isDebugOperation])
   {
     v7 = +[FCNetworkReachability sharedNetworkReachability];
-    v8 = [v7 isCloudKitAccessAllowed];
+    isCloudKitAccessAllowed = [v7 isCloudKitAccessAllowed];
   }
 
-  else if ([v6 isCloudKitReachable])
+  else if ([reachabilityCopy isCloudKitReachable])
   {
-    v8 = 1;
+    isCloudKitAccessAllowed = 1;
   }
 
   else
   {
-    v8 = 0;
-    *a4 = [v6 offlineReason];
+    isCloudKitAccessAllowed = 0;
+    *reason = [reachabilityCopy offlineReason];
   }
 
-  return v8;
+  return isCloudKitAccessAllowed;
 }
 
 - (void)resetForRetry
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [v3 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   if (self)
   {
-    objc_setProperty_nonatomic_copy(self, v4, v5, 472);
+    objc_setProperty_nonatomic_copy(self, v4, uUIDString, 472);
   }
 
   [(FCCKDirectRequestOperation *)self setResultResponseOperations:?];
@@ -1372,19 +1372,19 @@ LABEL_6:
   [(FCCKDirectRequestOperation *)self setResultError:?];
 }
 
-- (void)setResultResponseOperations:(uint64_t)a1
+- (void)setResultResponseOperations:(uint64_t)operations
 {
-  if (a1)
+  if (operations)
   {
-    objc_storeStrong((a1 + 504), a2);
+    objc_storeStrong((operations + 504), a2);
   }
 }
 
-- (void)setResultErrorsByRequestID:(uint64_t)a1
+- (void)setResultErrorsByRequestID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    objc_storeStrong((a1 + 512), a2);
+    objc_storeStrong((d + 512), a2);
   }
 }
 
@@ -1910,17 +1910,17 @@ void __56__FCCKDirectRequestOperation__headersImpactingEdgeCache__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
+  taskCopy = task;
+  v7 = taskCopy;
   if (self && self->_networkActivity)
   {
-    v8 = [v6 error];
+    error = [taskCopy error];
 
     networkActivity = self->_networkActivity;
-    if (v8)
+    if (error)
     {
       [(FCNetworkActivity *)networkActivity completeActivityWithSuccess:0];
       v10 = FCOperationLog;
@@ -1929,7 +1929,7 @@ void __56__FCCKDirectRequestOperation__headersImpactingEdgeCache__block_invoke()
         v11 = self->_networkActivity;
         v12 = v10;
         v16 = 67109120;
-        v17 = [(FCNetworkActivity *)v11 label];
+        label = [(FCNetworkActivity *)v11 label];
         v13 = "Did finish network activity with success=NO (label=%d)";
 LABEL_8:
         _os_log_impl(&dword_1B63EF000, v12, OS_LOG_TYPE_DEFAULT, v13, &v16, 8u);
@@ -1945,7 +1945,7 @@ LABEL_8:
         v11 = self->_networkActivity;
         v12 = v14;
         v16 = 67109120;
-        v17 = [(FCNetworkActivity *)v11 label];
+        label = [(FCNetworkActivity *)v11 label];
         v13 = "Did finish network activity with success=YES (label=%d)";
         goto LABEL_8;
       }
@@ -1955,22 +1955,22 @@ LABEL_8:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 didCreateTask:(id)a4
+- (void)URLSession:(id)session didCreateTask:(id)task
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  taskCopy = task;
   if (self)
   {
     networkActivity = self->_networkActivity;
     if (networkActivity)
     {
-      [(FCNetworkActivity *)networkActivity attachActivityToTask:v5];
+      [(FCNetworkActivity *)networkActivity attachActivityToTask:taskCopy];
       v7 = FCOperationLog;
       if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
       {
         v8 = v7;
-        v9 = [v5 originalRequest];
-        v10 = [v9 URL];
+        originalRequest = [taskCopy originalRequest];
+        v10 = [originalRequest URL];
         v12 = 138543362;
         v13 = v10;
         _os_log_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_DEFAULT, "Did assign network activity to task (%{public}@)", &v12, 0xCu);
@@ -1981,11 +1981,11 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setNetworkBehaviorMonitor:(uint64_t)a1
+- (void)setNetworkBehaviorMonitor:(uint64_t)monitor
 {
-  if (a1)
+  if (monitor)
   {
-    objc_storeStrong((a1 + 424), a2);
+    objc_storeStrong((monitor + 424), a2);
   }
 }
 

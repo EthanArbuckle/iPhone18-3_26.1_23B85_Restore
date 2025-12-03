@@ -6,14 +6,14 @@
 - (UILabel)fauxDataLabel;
 - (UIView)cutoutView;
 - (UIView)fauxScanView;
-- (void)_setFauxCardData:(id)a3;
-- (void)addNewRemotePlanWithCardData:(id)a3 confirmationCode:(id)a4;
-- (void)bypassFauxCard:(id)a3;
-- (void)cancelAction:(id)a3;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5;
-- (void)captureSession:(id)a3 isRunning:(BOOL)a4;
-- (void)cellularConfirmationCodeViewController:(id)a3 confirmedWithCode:(id)a4;
-- (void)enterFauxCardDataManually:(id)a3;
+- (void)_setFauxCardData:(id)data;
+- (void)addNewRemotePlanWithCardData:(id)data confirmationCode:(id)code;
+- (void)bypassFauxCard:(id)card;
+- (void)cancelAction:(id)action;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection;
+- (void)captureSession:(id)session isRunning:(BOOL)running;
+- (void)cellularConfirmationCodeViewController:(id)controller confirmedWithCode:(id)code;
+- (void)enterFauxCardDataManually:(id)manually;
 - (void)presentConfirmationCodeRequest;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -61,46 +61,46 @@
     v12 = objc_loadWeakRetained(&self->_fauxScanView);
     [v12 addSubview:self->_scannerView];
 
-    v13 = [MEMORY[0x277CD9F90] layer];
+    layer = [MEMORY[0x277CD9F90] layer];
     fillWithHoleLayer = self->_fillWithHoleLayer;
-    self->_fillWithHoleLayer = v13;
+    self->_fillWithHoleLayer = layer;
 
     [(CAShapeLayer *)self->_fillWithHoleLayer setFillRule:*MEMORY[0x277CDA248]];
-    v15 = [MEMORY[0x277D75348] blackColor];
-    v16 = [v15 colorWithAlphaComponent:0.5];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v16 = [blackColor colorWithAlphaComponent:0.5];
     -[CAShapeLayer setFillColor:](self->_fillWithHoleLayer, "setFillColor:", [v16 CGColor]);
 
     v17 = *MEMORY[0x277CDA6E0];
     [(CAShapeLayer *)self->_fillWithHoleLayer setContentsGravity:*MEMORY[0x277CDA6E0]];
     v18 = objc_loadWeakRetained(&self->_cutoutView);
-    v19 = [v18 layer];
-    [v19 addSublayer:self->_fillWithHoleLayer];
+    layer2 = [v18 layer];
+    [layer2 addSublayer:self->_fillWithHoleLayer];
 
-    v20 = [MEMORY[0x277CD9F90] layer];
+    layer3 = [MEMORY[0x277CD9F90] layer];
     holeOutlineLayer = self->_holeOutlineLayer;
-    self->_holeOutlineLayer = v20;
+    self->_holeOutlineLayer = layer3;
 
-    v22 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](self->_holeOutlineLayer, "setFillColor:", [v22 CGColor]);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](self->_holeOutlineLayer, "setFillColor:", [clearColor CGColor]);
 
-    v23 = [MEMORY[0x277D75348] whiteColor];
-    -[CAShapeLayer setStrokeColor:](self->_holeOutlineLayer, "setStrokeColor:", [v23 CGColor]);
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    -[CAShapeLayer setStrokeColor:](self->_holeOutlineLayer, "setStrokeColor:", [whiteColor CGColor]);
 
     [(CAShapeLayer *)self->_holeOutlineLayer setContentsGravity:v17];
     v24 = objc_loadWeakRetained(&self->_cutoutView);
-    v25 = [v24 layer];
-    [v25 addSublayer:self->_holeOutlineLayer];
+    layer4 = [v24 layer];
+    [layer4 addSublayer:self->_holeOutlineLayer];
 
     v26 = objc_loadWeakRetained(&self->_cutoutView);
     [v26 setAlpha:0.0];
   }
 
   v27 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelAction_];
-  v28 = [(NPHBSCellularFauxCardViewController *)self navigationItem];
-  [v28 setLeftBarButtonItem:v27];
+  navigationItem = [(NPHBSCellularFauxCardViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v27];
 
-  v29 = [(NPHBSCellularFauxCardViewController *)self navigationController];
-  [v29 setDelegate:self];
+  navigationController = [(NPHBSCellularFauxCardViewController *)self navigationController];
+  [navigationController setDelegate:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -143,74 +143,74 @@
   -[CAShapeLayer setPath:](self->_holeOutlineLayer, "setPath:", [v20 CGPath]);
 }
 
-- (void)bypassFauxCard:(id)a3
+- (void)bypassFauxCard:(id)card
 {
-  v4 = [(NPHBSCellularFauxCardViewController *)self presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(NPHBSCellularFauxCardViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
-  v5 = [(NPHBSCellularFauxCardViewController *)self codelessActivationBlock];
-  v5[2]();
+  codelessActivationBlock = [(NPHBSCellularFauxCardViewController *)self codelessActivationBlock];
+  codelessActivationBlock[2]();
 }
 
-- (void)cancelAction:(id)a3
+- (void)cancelAction:(id)action
 {
-  v4 = [(NPHBSCellularFauxCardViewController *)self presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(NPHBSCellularFauxCardViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
-  v5 = [(NPHBSCellularFauxCardViewController *)self completion];
+  completion = [(NPHBSCellularFauxCardViewController *)self completion];
 
-  if (v5)
+  if (completion)
   {
-    v6 = [(NPHBSCellularFauxCardViewController *)self completion];
-    v6[2](v6, 0);
+    completion2 = [(NPHBSCellularFauxCardViewController *)self completion];
+    completion2[2](completion2, 0);
   }
 }
 
-- (void)enterFauxCardDataManually:(id)a3
+- (void)enterFauxCardDataManually:(id)manually
 {
   v7 = objc_alloc_init(NPHBSCellularFauxCardInfoViewController);
-  v4 = [(NPHBSCellularFauxCardViewController *)self completion];
-  [(NPHBSCellularFauxCardInfoViewController *)v7 setCompletion:v4];
+  completion = [(NPHBSCellularFauxCardViewController *)self completion];
+  [(NPHBSCellularFauxCardInfoViewController *)v7 setCompletion:completion];
 
-  v5 = [(NPHBSCellularFauxCardViewController *)self subscriptionContext];
-  [(NPHBSCellularFauxCardInfoViewController *)v7 setSubscriptionContext:v5];
+  subscriptionContext = [(NPHBSCellularFauxCardViewController *)self subscriptionContext];
+  [(NPHBSCellularFauxCardInfoViewController *)v7 setSubscriptionContext:subscriptionContext];
 
-  v6 = [(NPHBSCellularFauxCardViewController *)self navigationController];
-  [v6 pushViewController:v7 animated:1];
+  navigationController = [(NPHBSCellularFauxCardViewController *)self navigationController];
+  [navigationController pushViewController:v7 animated:1];
 }
 
-- (void)captureSession:(id)a3 isRunning:(BOOL)a4
+- (void)captureSession:(id)session isRunning:(BOOL)running
 {
-  v4 = a4;
+  runningCopy = running;
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  sessionCopy = session;
   v6 = nph_general_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315650;
     v9 = "[NPHBSCellularFauxCardViewController captureSession:isRunning:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = sessionCopy;
     v12 = 1024;
-    v13 = v4;
+    v13 = runningCopy;
     _os_log_impl(&dword_243333000, v6, OS_LOG_TYPE_DEFAULT, "%s captureSession: %@ isRunning: %d", &v8, 0x1Cu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  outputCopy = output;
+  objectsCopy = objects;
   v9 = nph_general_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v20 = "[NPHBSCellularFauxCardViewController captureOutput:didOutputMetadataObjects:fromConnection:]";
     v21 = 2112;
-    v22 = v7;
+    v22 = outputCopy;
     _os_log_impl(&dword_243333000, v9, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -225,9 +225,9 @@
     block[1] = 3221225472;
     block[2] = __93__NPHBSCellularFauxCardViewController_captureOutput_didOutputMetadataObjects_fromConnection___block_invoke;
     block[3] = &unk_278DAC9F0;
-    v16 = v8;
+    v16 = objectsCopy;
     objc_copyWeak(&v18, buf);
-    v17 = self;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
     objc_destroyWeak(&v18);
 
@@ -308,11 +308,11 @@ void __93__NPHBSCellularFauxCardViewController_captureOutput_didOutputMetadataOb
   [v1 addNewRemotePlanWithCardData:v2 confirmationCode:0];
 }
 
-- (void)addNewRemotePlanWithCardData:(id)a3 confirmationCode:(id)a4
+- (void)addNewRemotePlanWithCardData:(id)data confirmationCode:(id)code
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  codeCopy = code;
   v8 = nph_general_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -322,10 +322,10 @@ void __93__NPHBSCellularFauxCardViewController_captureOutput_didOutputMetadataOb
   }
 
   objc_initWeak(buf, self);
-  v9 = [MEMORY[0x277CF96D8] sharedManager];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
   v10 = IsCurrentDevicePairing();
   v11 = +[NPHCellularBridgeUIManager sharedInstance];
-  v12 = [v11 _currentDeviceCSN];
+  _currentDeviceCSN = [v11 _currentDeviceCSN];
   subscriptionContext = self->_subscriptionContext;
   userConsentResponse = self->_userConsentResponse;
   v16[0] = MEMORY[0x277D85DD0];
@@ -334,7 +334,7 @@ void __93__NPHBSCellularFauxCardViewController_captureOutput_didOutputMetadataOb
   v16[3] = &unk_278DACA18;
   objc_copyWeak(&v17, buf);
   v16[4] = self;
-  [v9 addNewRemotePlanWithCardData:v6 confirmationCode:v7 isPairing:v10 withCSN:v12 withContext:subscriptionContext userConsent:userConsentResponse completion:v16];
+  [mEMORY[0x277CF96D8] addNewRemotePlanWithCardData:dataCopy confirmationCode:codeCopy isPairing:v10 withCSN:_currentDeviceCSN withContext:subscriptionContext userConsent:userConsentResponse completion:v16];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -454,16 +454,16 @@ LABEL_12:
 
   v4 = objc_alloc_init(NPHBSCellularConfirmationCodeViewController);
   [(NPHBSCellularConfirmationCodeViewController *)v4 setDelegate:self];
-  v5 = [(NPHBSCellularFauxCardViewController *)self navigationController];
-  [v5 pushViewController:v4 animated:0];
+  navigationController = [(NPHBSCellularFauxCardViewController *)self navigationController];
+  [navigationController pushViewController:v4 animated:0];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cellularConfirmationCodeViewController:(id)a3 confirmedWithCode:(id)a4
+- (void)cellularConfirmationCodeViewController:(id)controller confirmedWithCode:(id)code
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  codeCopy = code;
   v6 = nph_general_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -472,15 +472,15 @@ LABEL_12:
     _os_log_impl(&dword_243333000, v6, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  v7 = [(NPHBSCellularFauxCardViewController *)self _getFauxCardData];
-  [(NPHBSCellularFauxCardViewController *)self addNewRemotePlanWithCardData:v7 confirmationCode:v5];
+  _getFauxCardData = [(NPHBSCellularFauxCardViewController *)self _getFauxCardData];
+  [(NPHBSCellularFauxCardViewController *)self addNewRemotePlanWithCardData:_getFauxCardData confirmationCode:codeCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setFauxCardData:(id)a3
+- (void)_setFauxCardData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   fauxCardData = self->_fauxCardData;
   self->_fauxCardData = v4;
 

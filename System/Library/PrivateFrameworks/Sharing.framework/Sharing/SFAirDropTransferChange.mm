@@ -1,57 +1,57 @@
 @interface SFAirDropTransferChange
 - (NSString)description;
-- (SFAirDropTransferChange)initWithBSXPCCoder:(id)a3;
-- (SFAirDropTransferChange)initWithCoder:(id)a3;
-- (SFAirDropTransferChange)initWithState:(int64_t)a3 progress:(double)a4 proxyIdentifier:(id)a5 displayName:(id)a6 status:(id)a7;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFAirDropTransferChange)initWithBSXPCCoder:(id)coder;
+- (SFAirDropTransferChange)initWithCoder:(id)coder;
+- (SFAirDropTransferChange)initWithState:(int64_t)state progress:(double)progress proxyIdentifier:(id)identifier displayName:(id)name status:(id)status;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAirDropTransferChange
 
-- (SFAirDropTransferChange)initWithCoder:(id)a3
+- (SFAirDropTransferChange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyIdentifier"];
-  [v4 decodeFloatForKey:@"progress"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyIdentifier"];
+  [coderCopy decodeFloatForKey:@"progress"];
   v7 = v6;
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
-  v10 = [v4 decodeIntegerForKey:@"state"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+  v10 = [coderCopy decodeIntegerForKey:@"state"];
 
   v11 = [(SFAirDropTransferChange *)self initWithState:v10 progress:v5 proxyIdentifier:v8 displayName:v9 status:v7];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   proxyIdentifier = self->_proxyIdentifier;
-  v6 = a3;
-  [v6 encodeObject:proxyIdentifier forKey:@"proxyIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:proxyIdentifier forKey:@"proxyIdentifier"];
   progress = self->_progress;
   *&progress = progress;
-  [v6 encodeFloat:@"progress" forKey:progress];
-  [v6 encodeObject:self->_displayName forKey:@"displayName"];
-  [v6 encodeObject:self->_status forKey:@"status"];
-  [v6 encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeFloat:@"progress" forKey:progress];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_status forKey:@"status"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
 }
 
-- (SFAirDropTransferChange)initWithState:(int64_t)a3 progress:(double)a4 proxyIdentifier:(id)a5 displayName:(id)a6 status:(id)a7
+- (SFAirDropTransferChange)initWithState:(int64_t)state progress:(double)progress proxyIdentifier:(id)identifier displayName:(id)name status:(id)status
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  statusCopy = status;
   v19.receiver = self;
   v19.super_class = SFAirDropTransferChange;
   v16 = [(SFAirDropTransferChange *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_state = a3;
-    v16->_progress = a4;
-    objc_storeStrong(&v16->_proxyIdentifier, a5);
-    objc_storeStrong(&v17->_displayName, a6);
-    objc_storeStrong(&v17->_status, a7);
+    v16->_state = state;
+    v16->_progress = progress;
+    objc_storeStrong(&v16->_proxyIdentifier, identifier);
+    objc_storeStrong(&v17->_displayName, name);
+    objc_storeStrong(&v17->_status, status);
   }
 
   return v17;
@@ -69,29 +69,29 @@
   return v6;
 }
 
-- (SFAirDropTransferChange)initWithBSXPCCoder:(id)a3
+- (SFAirDropTransferChange)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyIdentifier"];
-  [v4 decodeDoubleForKey:@"progress"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyIdentifier"];
+  [coderCopy decodeDoubleForKey:@"progress"];
   v7 = v6;
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
-  v10 = [v4 decodeInt64ForKey:@"state"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+  v10 = [coderCopy decodeInt64ForKey:@"state"];
 
   v11 = [(SFAirDropTransferChange *)self initWithState:v10 progress:v5 proxyIdentifier:v8 displayName:v9 status:v7];
   return v11;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   proxyIdentifier = self->_proxyIdentifier;
-  v5 = a3;
-  [v5 encodeObject:proxyIdentifier forKey:@"proxyIdentifier"];
-  [v5 encodeDouble:@"progress" forKey:self->_progress];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_status forKey:@"status"];
-  [v5 encodeInt64:self->_state forKey:@"state"];
+  coderCopy = coder;
+  [coderCopy encodeObject:proxyIdentifier forKey:@"proxyIdentifier"];
+  [coderCopy encodeDouble:@"progress" forKey:self->_progress];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_status forKey:@"status"];
+  [coderCopy encodeInt64:self->_state forKey:@"state"];
 }
 
 @end

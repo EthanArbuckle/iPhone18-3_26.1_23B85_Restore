@@ -1,31 +1,31 @@
 @interface WLURLSessionController
-- (WLURLSessionController)initWithAuthentication:(id)a3;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (WLURLSessionController)initWithAuthentication:(id)authentication;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation WLURLSessionController
 
-- (WLURLSessionController)initWithAuthentication:(id)a3
+- (WLURLSessionController)initWithAuthentication:(id)authentication
 {
-  v5 = a3;
+  authenticationCopy = authentication;
   v15.receiver = self;
   v15.super_class = WLURLSessionController;
   v6 = [(WLURLSessionController *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_auth, a3);
-    v8 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    [v8 setTLSMinimumSupportedProtocolVersion:771];
-    [v8 setTLSMaximumSupportedProtocolVersion:772];
-    [v8 setHTTPMaximumConnectionsPerHost:1];
+    objc_storeStrong(&v6->_auth, authentication);
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    [defaultSessionConfiguration setTLSMinimumSupportedProtocolVersion:771];
+    [defaultSessionConfiguration setTLSMaximumSupportedProtocolVersion:772];
+    [defaultSessionConfiguration setHTTPMaximumConnectionsPerHost:1];
     v9 = objc_alloc_init(MEMORY[0x277CCABD8]);
     delegateOperationQueue = v7->_delegateOperationQueue;
     v7->_delegateOperationQueue = v9;
 
-    v11 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v8 delegate:v7 delegateQueue:v7->_delegateOperationQueue];
+    v11 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration delegate:v7 delegateQueue:v7->_delegateOperationQueue];
     urlSession = v7->_urlSession;
     v7->_urlSession = v11;
 
@@ -57,29 +57,29 @@
   self->_urlSession = 0;
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 protectionSpace];
-  v36 = [v11 authenticationMethod];
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
   _WLLog();
 
-  if ([v9 previousFailureCount])
+  if ([challengeCopy previousFailureCount])
   {
-    v35 = [v9 failureResponse];
+    failureResponse = [challengeCopy failureResponse];
     _WLLog();
 
 LABEL_3:
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_14;
   }
 
-  v12 = [v9 protectionSpace];
-  v13 = [v12 authenticationMethod];
-  v14 = [v13 isEqualToString:*MEMORY[0x277CCA700]];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  authenticationMethod2 = [protectionSpace2 authenticationMethod];
+  v14 = [authenticationMethod2 isEqualToString:*MEMORY[0x277CCA700]];
 
   if (v14)
   {
@@ -95,13 +95,13 @@ LABEL_3:
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
     v21 = [v19 credentialWithIdentity:v18 certificates:v20 persistence:2];
 
-    (v10)[2](v10, 0, v21);
+    (handlerCopy)[2](handlerCopy, 0, v21);
     goto LABEL_14;
   }
 
-  v22 = [v9 protectionSpace];
-  v23 = [v22 authenticationMethod];
-  v24 = [v23 isEqualToString:*MEMORY[0x277CCA720]];
+  protectionSpace3 = [challengeCopy protectionSpace];
+  authenticationMethod3 = [protectionSpace3 authenticationMethod];
+  v24 = [authenticationMethod3 isEqualToString:*MEMORY[0x277CCA720]];
 
   if (!v24)
   {
@@ -113,8 +113,8 @@ LABEL_3:
 
   [v26 remoteCertificate];
   v27 = SecCertificateCopySHA256Digest();
-  v28 = [v9 protectionSpace];
-  v29 = SecTrustCopyCertificateChain([v28 serverTrust]);
+  protectionSpace4 = [challengeCopy protectionSpace];
+  v29 = SecTrustCopyCertificateChain([protectionSpace4 serverTrust]);
 
   if (CFArrayGetCount(v29))
   {
@@ -123,22 +123,22 @@ LABEL_3:
     if ([v27 isEqualToData:v30])
     {
       v31 = MEMORY[0x277CCACF0];
-      v32 = [v9 protectionSpace];
-      v33 = [v31 credentialForTrust:{objc_msgSend(v32, "serverTrust")}];
-      (v10)[2](v10, 0, v33);
+      protectionSpace5 = [challengeCopy protectionSpace];
+      v33 = [v31 credentialForTrust:{objc_msgSend(protectionSpace5, "serverTrust")}];
+      (handlerCopy)[2](handlerCopy, 0, v33);
     }
 
     else
     {
       _WLLog();
-      v10[2](v10, 3, 0);
+      handlerCopy[2](handlerCopy, 3, 0);
     }
   }
 
   else
   {
     _WLLog();
-    v10[2](v10, 3, 0);
+    handlerCopy[2](handlerCopy, 3, 0);
   }
 
 LABEL_14:

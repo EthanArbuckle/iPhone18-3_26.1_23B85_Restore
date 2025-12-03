@@ -1,9 +1,9 @@
 @interface JSMetricsIdentifiersObject
 - (NSString)currentTopic;
 - (_TtC12GameStoreKit26JSMetricsIdentifiersObject)init;
-- (id)getIdentifierForContext:(id)a3;
-- (id)getIdentifierForContextSync:(id)a3;
-- (id)getMetricsFieldsForContexts:(id)a3;
+- (id)getIdentifierForContext:(id)context;
+- (id)getIdentifierForContextSync:(id)sync;
+- (id)getMetricsFieldsForContexts:(id)contexts;
 @end
 
 @implementation JSMetricsIdentifiersObject
@@ -16,31 +16,31 @@
   return v2;
 }
 
-- (id)getIdentifierForContext:(id)a3
+- (id)getIdentifierForContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_24EA31548(v4, "MetricIdentifierPromise", "MetricIdentifier", sub_24EA33090);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_24EA31548(contextCopy, "MetricIdentifierPromise", "MetricIdentifier", sub_24EA33090);
 
   return v6;
 }
 
-- (id)getIdentifierForContextSync:(id)a3
+- (id)getIdentifierForContextSync:(id)sync
 {
   sub_24E69A5C4(0, &qword_27F21C8C8);
-  v5 = a3;
-  v6 = self;
+  syncCopy = sync;
+  selfCopy = self;
   v7 = sub_24F92C448();
   v8 = sub_24F92C458();
 
   return v8;
 }
 
-- (id)getMetricsFieldsForContexts:(id)a3
+- (id)getMetricsFieldsForContexts:(id)contexts
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_24EA31548(v4, "MetricFieldsPromise", "MetricFields", sub_24EA32D64);
+  contextsCopy = contexts;
+  selfCopy = self;
+  v6 = sub_24EA31548(contextsCopy, "MetricFieldsPromise", "MetricFields", sub_24EA32D64);
 
   return v6;
 }

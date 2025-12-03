@@ -1,22 +1,22 @@
 @interface ICASEnabledFiltersArrayData
-- (ICASEnabledFiltersArrayData)initWithFilterType:(id)a3 filterValue:(id)a4;
+- (ICASEnabledFiltersArrayData)initWithFilterType:(id)type filterValue:(id)value;
 - (id)toDict;
 @end
 
 @implementation ICASEnabledFiltersArrayData
 
-- (ICASEnabledFiltersArrayData)initWithFilterType:(id)a3 filterValue:(id)a4
+- (ICASEnabledFiltersArrayData)initWithFilterType:(id)type filterValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = ICASEnabledFiltersArrayData;
   v9 = [(ICASEnabledFiltersArrayData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_filterType, a3);
-    objc_storeStrong(&v10->_filterValue, a4);
+    objc_storeStrong(&v9->_filterType, type);
+    objc_storeStrong(&v10->_filterValue, value);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"filterType";
-  v3 = [(ICASEnabledFiltersArrayData *)self filterType];
-  if (v3)
+  filterType = [(ICASEnabledFiltersArrayData *)self filterType];
+  if (filterType)
   {
-    v4 = [(ICASEnabledFiltersArrayData *)self filterType];
+    filterType2 = [(ICASEnabledFiltersArrayData *)self filterType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    filterType2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = filterType2;
   v12[1] = @"filterValue";
-  v13[0] = v4;
-  v6 = [(ICASEnabledFiltersArrayData *)self filterValue];
-  if (v6)
+  v13[0] = filterType2;
+  filterValue = [(ICASEnabledFiltersArrayData *)self filterValue];
+  if (filterValue)
   {
-    v7 = [(ICASEnabledFiltersArrayData *)self filterValue];
+    filterValue2 = [(ICASEnabledFiltersArrayData *)self filterValue];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    filterValue2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = filterValue2;
+  v13[1] = filterValue2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

@@ -1,11 +1,11 @@
 @interface VenueFloorCardViewController
-- (VenueFloorCardViewController)initWithVenuesManager:(id)a3;
+- (VenueFloorCardViewController)initWithVenuesManager:(id)manager;
 - (VenuesManager)venuesManager;
-- (double)heightForLabel:(id)a3;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLabel:(id)label;
+- (double)heightForLayout:(unint64_t)layout;
 - (id)keyCommands;
-- (id)nameForFloorWithOrdinal:(signed __int16)a3 inBuilding:(id)a4;
-- (id)nameForFloorWithOrdinal:(signed __int16)a3 inBuildings:(id)a4;
+- (id)nameForFloorWithOrdinal:(signed __int16)ordinal inBuilding:(id)building;
+- (id)nameForFloorWithOrdinal:(signed __int16)ordinal inBuildings:(id)buildings;
 - (void)handleCloseButtonTap;
 - (void)updateContents;
 - (void)viewDidLoad;
@@ -22,39 +22,39 @@
 
 - (void)updateContents
 {
-  v4 = [(VenueFloorCardViewController *)self venuesManager];
-  v18 = [v4 venueWithFocus];
+  venuesManager = [(VenueFloorCardViewController *)self venuesManager];
+  venueWithFocus = [venuesManager venueWithFocus];
 
-  v5 = [(VenueFloorCardViewController *)self venuesManager];
-  v6 = [v5 displayedFloorOrdinalForBuildingsInVenue:v18];
+  venuesManager2 = [(VenueFloorCardViewController *)self venuesManager];
+  v6 = [venuesManager2 displayedFloorOrdinalForBuildingsInVenue:venueWithFocus];
 
-  v7 = [v18 name];
-  v8 = [(VenueFloorCardViewController *)self venueNameLabel];
-  [v8 setText:v7];
+  name = [venueWithFocus name];
+  venueNameLabel = [(VenueFloorCardViewController *)self venueNameLabel];
+  [venueNameLabel setText:name];
 
-  v9 = [(VenueFloorCardViewController *)self venuesManager];
-  v10 = [v9 venueBuildingWithFocus];
-  v11 = [(VenueFloorCardViewController *)self nameForFloorWithOrdinal:v6 inBuilding:v10];
+  venuesManager3 = [(VenueFloorCardViewController *)self venuesManager];
+  venueBuildingWithFocus = [venuesManager3 venueBuildingWithFocus];
+  v11 = [(VenueFloorCardViewController *)self nameForFloorWithOrdinal:v6 inBuilding:venueBuildingWithFocus];
   v12 = v11;
   if (!v11)
   {
-    v2 = [v18 buildings];
-    v12 = [(VenueFloorCardViewController *)self nameForFloorWithOrdinal:v6 inBuildings:v2];
+    buildings = [venueWithFocus buildings];
+    v12 = [(VenueFloorCardViewController *)self nameForFloorWithOrdinal:v6 inBuildings:buildings];
   }
 
-  v13 = [(VenueFloorCardViewController *)self floorNameLabel];
-  [v13 setText:v12];
+  floorNameLabel = [(VenueFloorCardViewController *)self floorNameLabel];
+  [floorNameLabel setText:v12];
 
   if (!v11)
   {
   }
 
-  v14 = [(VenueFloorCardViewController *)self venuesManager];
-  v15 = [v14 userLocationFloorOrdinal];
+  venuesManager4 = [(VenueFloorCardViewController *)self venuesManager];
+  userLocationFloorOrdinal = [venuesManager4 userLocationFloorOrdinal];
 
-  if (v15)
+  if (userLocationFloorOrdinal)
   {
-    v16 = [v15 shortValue] == v6;
+    v16 = [userLocationFloorOrdinal shortValue] == v6;
   }
 
   else
@@ -63,33 +63,33 @@
   }
 
   [(VenueFloorCardViewController *)self setIsUserLocation:v16];
-  v17 = [(VenueFloorCardViewController *)self floorNameLabel];
-  [v17 updateTheme];
+  floorNameLabel2 = [(VenueFloorCardViewController *)self floorNameLabel];
+  [floorNameLabel2 updateTheme];
 }
 
-- (double)heightForLabel:(id)a3
+- (double)heightForLabel:(id)label
 {
-  v3 = a3;
-  v4 = [v3 font];
-  [v4 ascender];
+  labelCopy = label;
+  font = [labelCopy font];
+  [font ascender];
   v6 = v5;
-  v7 = [v3 font];
+  font2 = [labelCopy font];
 
-  [v7 descender];
+  [font2 descender];
   v9 = v6 - v8;
 
   return v9;
 }
 
-- (id)nameForFloorWithOrdinal:(signed __int16)a3 inBuildings:(id)a4
+- (id)nameForFloorWithOrdinal:(signed __int16)ordinal inBuildings:(id)buildings
 {
-  v4 = a3;
+  ordinalCopy = ordinal;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  buildingsCopy = buildings;
+  v7 = [buildingsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -100,10 +100,10 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(buildingsCopy);
         }
 
-        v11 = [(VenueFloorCardViewController *)self nameForFloorWithOrdinal:v4 inBuilding:*(*(&v14 + 1) + 8 * i), v14];
+        v11 = [(VenueFloorCardViewController *)self nameForFloorWithOrdinal:ordinalCopy inBuilding:*(*(&v14 + 1) + 8 * i), v14];
         if (v11)
         {
           v12 = v11;
@@ -111,7 +111,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [buildingsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -127,29 +127,29 @@ LABEL_11:
   return v12;
 }
 
-- (id)nameForFloorWithOrdinal:(signed __int16)a3 inBuilding:(id)a4
+- (id)nameForFloorWithOrdinal:(signed __int16)ordinal inBuilding:(id)building
 {
-  v4 = a3;
-  v5 = [a4 floorNames];
-  v6 = [NSNumber numberWithShort:v4];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  ordinalCopy = ordinal;
+  floorNames = [building floorNames];
+  v6 = [NSNumber numberWithShort:ordinalCopy];
+  v7 = [floorNames objectForKeyedSubscript:v6];
 
   return v7;
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   v3 = -1.0;
-  if (a3 == 5)
+  if (layout == 5)
   {
-    v5 = [(VenueFloorCardViewController *)self venueNameLabel];
-    [(VenueFloorCardViewController *)self heightForLabel:v5];
+    venueNameLabel = [(VenueFloorCardViewController *)self venueNameLabel];
+    [(VenueFloorCardViewController *)self heightForLabel:venueNameLabel];
     v7 = v6;
-    v8 = [(VenueFloorCardViewController *)self floorNameLabel];
-    [(VenueFloorCardViewController *)self heightForLabel:v8];
+    floorNameLabel = [(VenueFloorCardViewController *)self floorNameLabel];
+    [(VenueFloorCardViewController *)self heightForLabel:floorNameLabel];
     v10 = v9;
-    v11 = [(ContaineeViewController *)self cardPresentationController];
-    [v11 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     v3 = v7 + 36.0 + v10 + v12;
   }
 
@@ -161,7 +161,7 @@ LABEL_11:
   v36.receiver = self;
   v36.super_class = VenueFloorCardViewController;
   [(ContaineeViewController *)&v36 viewDidLoad];
-  v32 = [(ContaineeViewController *)self headerView];
+  headerView = [(ContaineeViewController *)self headerView];
   v2 = objc_opt_new();
   [v2 setTranslatesAutoresizingMaskIntoConstraints:0];
   v3 = +[UIColor clearColor];
@@ -178,7 +178,7 @@ LABEL_11:
   [v2 setAdjustsFontSizeToFitWidth:1];
   [v2 setMinimumScaleFactor:0.5];
   [(VenueFloorCardViewController *)self setFloorNameLabel:v2];
-  [v32 addSubview:v2];
+  [headerView addSubview:v2];
   v4 = objc_opt_new();
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = +[UIColor clearColor];
@@ -191,43 +191,43 @@ LABEL_11:
   [v4 setAdjustsFontSizeToFitWidth:1];
   [v4 setMinimumScaleFactor:0.5];
   [(VenueFloorCardViewController *)self setVenueNameLabel:v4];
-  [v32 addSubview:v4];
-  v30 = [v2 topAnchor];
-  v29 = [v32 topAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29 constant:17.0];
+  [headerView addSubview:v4];
+  topAnchor = [v2 topAnchor];
+  topAnchor2 = [headerView topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:17.0];
   v37[0] = v28;
-  v27 = [v2 leadingAnchor];
-  v26 = [v32 leadingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26 constant:20.0];
+  leadingAnchor = [v2 leadingAnchor];
+  leadingAnchor2 = [headerView leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   v37[1] = v25;
-  v24 = [v2 trailingAnchor];
-  v23 = [v32 trailingAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:-20.0];
+  trailingAnchor = [v2 trailingAnchor];
+  trailingAnchor2 = [headerView trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   v37[2] = v22;
-  v21 = [v4 topAnchor];
-  v20 = [v2 bottomAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20 constant:2.0];
+  topAnchor3 = [v4 topAnchor];
+  bottomAnchor = [v2 bottomAnchor];
+  v19 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:2.0];
   v37[3] = v19;
-  v18 = [v4 leadingAnchor];
-  v17 = [v32 leadingAnchor];
-  v7 = [v18 constraintEqualToAnchor:v17 constant:20.0];
+  leadingAnchor3 = [v4 leadingAnchor];
+  leadingAnchor4 = [headerView leadingAnchor];
+  v7 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:20.0];
   v37[4] = v7;
-  v8 = [v4 trailingAnchor];
-  v9 = [v32 trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9 constant:-20.0];
+  trailingAnchor3 = [v4 trailingAnchor];
+  trailingAnchor4 = [headerView trailingAnchor];
+  v10 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-20.0];
   v37[5] = v10;
-  v11 = [v4 bottomAnchor];
-  v12 = [v32 bottomAnchor];
-  v13 = [v11 constraintLessThanOrEqualToAnchor:v12 constant:-17.0];
+  bottomAnchor2 = [v4 bottomAnchor];
+  bottomAnchor3 = [headerView bottomAnchor];
+  v13 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3 constant:-17.0];
   v37[6] = v13;
   v14 = [NSArray arrayWithObjects:v37 count:7];
   [NSLayoutConstraint activateConstraints:v14];
 
-  v15 = [(VenueFloorCardViewController *)self view];
-  [v15 setNeedsLayout];
+  view = [(VenueFloorCardViewController *)self view];
+  [view setNeedsLayout];
 
-  v16 = [(VenueFloorCardViewController *)self view];
-  [v16 layoutIfNeeded];
+  view2 = [(VenueFloorCardViewController *)self view];
+  [view2 layoutIfNeeded];
 
   [(VenueFloorCardViewController *)self updateContents];
   objc_destroyWeak(&v34);
@@ -245,29 +245,29 @@ LABEL_11:
 
 - (void)handleCloseButtonTap
 {
-  v3 = [(VenueFloorCardViewController *)self venuesManager];
-  v2 = [v3 venueFloorViewController];
-  [v2 setOpen:0];
+  venuesManager = [(VenueFloorCardViewController *)self venuesManager];
+  venueFloorViewController = [venuesManager venueFloorViewController];
+  [venueFloorViewController setOpen:0];
 }
 
-- (VenueFloorCardViewController)initWithVenuesManager:(id)a3
+- (VenueFloorCardViewController)initWithVenuesManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = VenueFloorCardViewController;
   v5 = [(VenueFloorCardViewController *)&v11 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_venuesManager, v4);
-    v7 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v7 setPresentedModally:1];
+    objc_storeWeak(&v5->_venuesManager, managerCopy);
+    cardPresentationController = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v8 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v8 setAllowsSwipeToDismiss:0];
+    cardPresentationController2 = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController2 setAllowsSwipeToDismiss:0];
 
-    v9 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v9 setShouldHidePreviousCards:1];
+    cardPresentationController3 = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController3 setShouldHidePreviousCards:1];
   }
 
   return v6;

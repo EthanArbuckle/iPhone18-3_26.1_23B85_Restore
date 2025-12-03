@@ -1,14 +1,14 @@
 @interface VSBinder
 - (VSBinder)init;
-- (VSBinder)initWithBoundObject:(id)a3;
-- (id)_infoForBinding:(id)a3;
+- (VSBinder)initWithBoundObject:(id)object;
+- (id)_infoForBinding:(id)binding;
 - (id)boundObject;
-- (id)valueForBinding:(id)a3;
+- (id)valueForBinding:(id)binding;
 - (void)dealloc;
-- (void)establishBinding:(id)a3 withInfo:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setValue:(id)a3 forBinding:(id)a4;
-- (void)tearDownBinding:(id)a3;
+- (void)establishBinding:(id)binding withInfo:(id)info;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setValue:(id)value forBinding:(id)binding;
+- (void)tearDownBinding:(id)binding;
 @end
 
 @implementation VSBinder
@@ -23,10 +23,10 @@
   return 0;
 }
 
-- (VSBinder)initWithBoundObject:(id)a3
+- (VSBinder)initWithBoundObject:(id)object
 {
-  v4 = a3;
-  if (!v4)
+  objectCopy = object;
+  if (!objectCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The boundObject parameter must not be nil."];
   }
@@ -44,7 +44,7 @@
     establishedBindings = v5->_establishedBindings;
     v5->_establishedBindings = v8;
 
-    objc_storeWeak(&v5->_boundObject, v4);
+    objc_storeWeak(&v5->_boundObject, objectCopy);
   }
 
   return v5;
@@ -53,13 +53,13 @@
 - (void)dealloc
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_establishmentProhibited = 1;
-  v3 = [(NSMutableDictionary *)v2->_establishedBindings allKeys];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_establishmentProhibited = 1;
+  allKeys = [(NSMutableDictionary *)selfCopy->_establishedBindings allKeys];
+  v4 = [allKeys copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -79,7 +79,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [(VSBinder *)v2 tearDownBinding:*(*(&v10 + 1) + 8 * v8++)];
+        [(VSBinder *)selfCopy tearDownBinding:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
@@ -89,33 +89,33 @@
     while (v6);
   }
 
-  v9.receiver = v2;
+  v9.receiver = selfCopy;
   v9.super_class = VSBinder;
   [(VSBinder *)&v9 dealloc];
 }
 
-- (id)_infoForBinding:(id)a3
+- (id)_infoForBinding:(id)binding
 {
-  v4 = a3;
-  if (!v4)
+  bindingCopy = binding;
+  if (!bindingCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The binding parameter must not be nil."];
   }
 
-  v5 = [(VSBinder *)self establishedBindings];
-  v6 = [v5 objectForKey:v4];
+  establishedBindings = [(VSBinder *)self establishedBindings];
+  v6 = [establishedBindings objectForKey:bindingCopy];
   v7 = [VSOptional optionalWithObject:v6];
 
   return v7;
 }
 
-- (void)establishBinding:(id)a3 withInfo:(id)a4
+- (void)establishBinding:(id)binding withInfo:(id)info
 {
-  v15 = a3;
-  v6 = a4;
-  if (v15)
+  bindingCopy = binding;
+  infoCopy = info;
+  if (bindingCopy)
   {
-    if (v6)
+    if (infoCopy)
     {
       goto LABEL_3;
     }
@@ -124,7 +124,7 @@
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The binding parameter must not be nil."];
-    if (v6)
+    if (infoCopy)
     {
       goto LABEL_3;
     }
@@ -132,63 +132,63 @@
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The bindingInfo parameter must not be nil."];
 LABEL_3:
-  [v6 requireExpectedConcurrency];
-  v7 = self;
-  objc_sync_enter(v7);
-  if (![(VSBinder *)v7 isEstablishmentProhibited])
+  [infoCopy requireExpectedConcurrency];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(VSBinder *)selfCopy isEstablishmentProhibited])
   {
-    v8 = [(VSBinder *)v7 _infoForBinding:v15];
-    v9 = [v8 object];
+    v8 = [(VSBinder *)selfCopy _infoForBinding:bindingCopy];
+    object = [v8 object];
 
-    if (v9)
+    if (object)
     {
-      [(VSBinder *)v7 tearDownBinding:v15];
+      [(VSBinder *)selfCopy tearDownBinding:bindingCopy];
     }
 
-    v10 = [(VSBinder *)v7 establishedBindings];
-    [v10 setObject:v6 forKey:v15];
+    establishedBindings = [(VSBinder *)selfCopy establishedBindings];
+    [establishedBindings setObject:infoCopy forKey:bindingCopy];
     v11 = objc_autoreleasePoolPush();
-    v12 = [v6 weakObservedObject];
-    if (v12)
+    weakObservedObject = [infoCopy weakObservedObject];
+    if (weakObservedObject)
     {
-      v13 = [v6 keyPath];
-      [v12 addObserver:v7 forKeyPath:v13 options:12 context:v15];
-      v14 = [v12 vs_unbinderCreatingIfNeeded:1];
-      [v14 binder:v7 didEstablishBinding:v15];
+      keyPath = [infoCopy keyPath];
+      [weakObservedObject addObserver:selfCopy forKeyPath:keyPath options:12 context:bindingCopy];
+      v14 = [weakObservedObject vs_unbinderCreatingIfNeeded:1];
+      [v14 binder:selfCopy didEstablishBinding:bindingCopy];
     }
 
     else
     {
-      [v10 removeObjectForKey:v15];
+      [establishedBindings removeObjectForKey:bindingCopy];
     }
 
     objc_autoreleasePoolPop(v11);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)tearDownBinding:(id)a3
+- (void)tearDownBinding:(id)binding
 {
-  v4 = a3;
-  if (!v4)
+  bindingCopy = binding;
+  if (!bindingCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The binding parameter must not be nil."];
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(VSBinder *)v5 _infoForBinding:v4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(VSBinder *)selfCopy _infoForBinding:bindingCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __28__VSBinder_tearDownBinding___block_invoke;
   v8[3] = &unk_278B74340;
-  v8[4] = v5;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v7 = bindingCopy;
   v9 = v7;
   [v6 conditionallyUnwrapObject:v8 otherwise:&__block_literal_global_27];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __28__VSBinder_tearDownBinding___block_invoke(uint64_t a1, void *a2)
@@ -246,10 +246,10 @@ void __28__VSBinder_tearDownBinding___block_invoke(uint64_t a1, void *a2)
   objc_autoreleasePoolPop(v15);
 }
 
-- (id)valueForBinding:(id)a3
+- (id)valueForBinding:(id)binding
 {
-  v4 = a3;
-  if (!v4)
+  bindingCopy = binding;
+  if (!bindingCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The binding parameter must not be nil."];
   }
@@ -260,9 +260,9 @@ void __28__VSBinder_tearDownBinding___block_invoke(uint64_t a1, void *a2)
   v13 = __Block_byref_object_copy__7;
   v14 = __Block_byref_object_dispose__7;
   v15 = 0;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(VSBinder *)v5 _infoForBinding:v4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(VSBinder *)selfCopy _infoForBinding:bindingCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __28__VSBinder_valueForBinding___block_invoke;
@@ -270,7 +270,7 @@ void __28__VSBinder_tearDownBinding___block_invoke(uint64_t a1, void *a2)
   v9[4] = &v10;
   [v6 conditionallyUnwrapObject:v9];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -284,41 +284,41 @@ uint64_t __28__VSBinder_valueForBinding___block_invoke(uint64_t a1, void *a2)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setValue:(id)a3 forBinding:(id)a4
+- (void)setValue:(id)value forBinding:(id)binding
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  valueCopy = value;
+  bindingCopy = binding;
+  if (!bindingCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The binding parameter must not be nil."];
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(VSBinder *)v8 currentlyChangingBindings];
-  [v9 addObject:v7];
-  v10 = [(VSBinder *)v8 _infoForBinding:v7];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  currentlyChangingBindings = [(VSBinder *)selfCopy currentlyChangingBindings];
+  [currentlyChangingBindings addObject:bindingCopy];
+  v10 = [(VSBinder *)selfCopy _infoForBinding:bindingCopy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __32__VSBinder_setValue_forBinding___block_invoke;
   v12[3] = &unk_278B74390;
-  v11 = v6;
+  v11 = valueCopy;
   v13 = v11;
   [v10 conditionallyUnwrapObject:v12];
 
-  [v9 removeObject:v7];
-  objc_sync_exit(v8);
+  [currentlyChangingBindings removeObject:bindingCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v31 = a4;
-  v30 = a5;
-  if (v10)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (pathCopy)
   {
-    if (a6)
+    if (context)
     {
       goto LABEL_3;
     }
@@ -327,7 +327,7 @@ uint64_t __28__VSBinder_valueForBinding___block_invoke(uint64_t a1, void *a2)
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The keyPathOrNil parameter must not be nil."];
-    if (a6)
+    if (context)
     {
       goto LABEL_3;
     }
@@ -335,27 +335,27 @@ uint64_t __28__VSBinder_valueForBinding___block_invoke(uint64_t a1, void *a2)
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The context parameter must not be nil."];
 LABEL_3:
-  v11 = a6;
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = [(VSBinder *)v12 _infoForBinding:v11];
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v13 = [(VSBinder *)selfCopy _infoForBinding:contextCopy];
   [v13 conditionallyUnwrapObject:&__block_literal_global_24];
-  v29 = v10;
+  v29 = pathCopy;
 
-  objc_sync_exit(v12);
-  v14 = [v30 objectForKey:*MEMORY[0x277CCA2F8]];
-  v15 = [v14 BOOLValue];
+  objc_sync_exit(selfCopy);
+  v14 = [changeCopy objectForKey:*MEMORY[0x277CCA2F8]];
+  bOOLValue = [v14 BOOLValue];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  if (!v10)
+  if (!pathCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The keyPathOrNil parameter must not be nil."];
   }
 
-  v16 = intermediaryKeyPathsForKeyPath(v10);
+  v16 = intermediaryKeyPathsForKeyPath(pathCopy);
   v17 = [v16 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v17)
   {
@@ -369,18 +369,18 @@ LABEL_3:
           objc_enumerationMutation(v16);
         }
 
-        v20 = [v31 valueForKeyPath:*(*(&v32 + 1) + 8 * i)];
+        v20 = [objectCopy valueForKeyPath:*(*(&v32 + 1) + 8 * i)];
         v21 = objc_autoreleasePoolPush();
-        v22 = [v20 vs_unbinderCreatingIfNeeded:v15 ^ 1u];
+        v22 = [v20 vs_unbinderCreatingIfNeeded:bOOLValue ^ 1u];
         v23 = v22;
-        if (v15)
+        if (bOOLValue)
         {
-          [v22 binder:v12 didTearDownBinding:v11];
+          [v22 binder:selfCopy didTearDownBinding:contextCopy];
         }
 
         else
         {
-          [v22 binder:v12 didEstablishBinding:v11];
+          [v22 binder:selfCopy didEstablishBinding:contextCopy];
         }
 
         objc_autoreleasePoolPop(v21);
@@ -392,16 +392,16 @@ LABEL_3:
     while (v17);
   }
 
-  v24 = v12;
+  v24 = selfCopy;
   objc_sync_enter(v24);
-  v25 = [(VSBinder *)v24 currentlyChangingBindings];
-  v26 = [v25 containsObject:v11];
+  currentlyChangingBindings = [(VSBinder *)v24 currentlyChangingBindings];
+  v26 = [currentlyChangingBindings containsObject:contextCopy];
 
-  if (((v26 | v15) & 1) == 0)
+  if (((v26 | bOOLValue) & 1) == 0)
   {
-    v27 = [(VSBinder *)v24 valueForBinding:v11];
-    v28 = [(VSBinder *)v24 boundObject];
-    [v28 setValue:v27 forKey:v11];
+    v27 = [(VSBinder *)v24 valueForBinding:contextCopy];
+    boundObject = [(VSBinder *)v24 boundObject];
+    [boundObject setValue:v27 forKey:contextCopy];
   }
 
   objc_sync_exit(v24);

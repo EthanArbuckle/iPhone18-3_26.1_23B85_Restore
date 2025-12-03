@@ -1,17 +1,17 @@
 @interface BrightnessSystemClientInternal
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (BOOL)setSyncProperty:(id)a3 forKey:(id)a4;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (BOOL)setSyncProperty:(id)property forKey:(id)key;
 - (BrightnessSystemClientInternal)init;
-- (id)copyPropertyForKey:(id)a3;
-- (void)addKeyToClientProperties:(id)a3;
-- (void)addPropertiesForNotification:(id)a3;
-- (void)addPropertyForNotification:(id)a3;
+- (id)copyPropertyForKey:(id)key;
+- (void)addKeyToClientProperties:(id)properties;
+- (void)addPropertiesForNotification:(id)notification;
+- (void)addPropertyForNotification:(id)notification;
 - (void)dealloc;
-- (void)registerNotificationBlock:(id)a3;
-- (void)registerNotificationBlock:(id)a3 forProperties:(id)a4;
-- (void)removeKeyFromClientProperties:(id)a3;
-- (void)removePropertiesFromNotification:(id)a3;
-- (void)removePropertyFromNotification:(id)a3;
+- (void)registerNotificationBlock:(id)block;
+- (void)registerNotificationBlock:(id)block forProperties:(id)properties;
+- (void)removeKeyFromClientProperties:(id)properties;
+- (void)removePropertiesFromNotification:(id)notification;
+- (void)removePropertyFromNotification:(id)notification;
 - (void)stopXpcService;
 @end
 
@@ -19,19 +19,19 @@
 
 - (BrightnessSystemClientInternal)init
 {
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
   v21.receiver = self;
   v21.super_class = BrightnessSystemClientInternal;
-  v23 = [(BrightnessSystemClientInternal *)&v21 init];
-  if (!v23)
+  selfCopy = [(BrightnessSystemClientInternal *)&v21 init];
+  if (!selfCopy)
   {
-    return v23;
+    return selfCopy;
   }
 
   v2 = os_log_create("com.apple.CoreBrightness.BSCI", "default");
-  v23->_logHandle = v2;
-  if (!v23->_logHandle)
+  selfCopy->_logHandle = v2;
+  if (!selfCopy->_logHandle)
   {
     v16 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
     v20 = v16;
@@ -46,72 +46,72 @@
   }
 
   v3 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.backlightd" options:0];
-  v23->_connection = v3;
+  selfCopy->_connection = v3;
   v4 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
   v17 = dispatch_queue_create("com.apple.CoreBrightness.BSCI NSXPC", v4);
   if (v17)
   {
-    [(NSXPCConnection *)v23->_connection _setQueue:v17];
+    [(NSXPCConnection *)selfCopy->_connection _setQueue:v17];
     dispatch_release(v17);
   }
 
-  v23->copyPropertyForKeyCompleted = 0;
+  selfCopy->copyPropertyForKeyCompleted = 0;
   v5 = objc_alloc_init(MEMORY[0x1E696AB30]);
-  v23->copyPropertyForKeyWaitCondition = v5;
-  v23->_useSynchronousRemote = 0;
+  selfCopy->copyPropertyForKeyWaitCondition = v5;
+  selfCopy->_useSynchronousRemote = 0;
   if (_os_feature_enabled_impl())
   {
-    v23->_useSynchronousRemote = 1;
+    selfCopy->_useSynchronousRemote = 1;
   }
 
-  if (!v23->_connection)
+  if (!selfCopy->_connection)
   {
     goto LABEL_22;
   }
 
   v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F59CF618];
-  [(NSXPCConnection *)v23->_connection setRemoteObjectInterface:v6];
-  [(NSXPCConnection *)v23->_connection setInvalidationHandler:?];
-  [(NSXPCConnection *)v23->_connection setInterruptionHandler:?];
-  if (!v23->_useSynchronousRemote)
+  [(NSXPCConnection *)selfCopy->_connection setRemoteObjectInterface:v6];
+  [(NSXPCConnection *)selfCopy->_connection setInvalidationHandler:?];
+  [(NSXPCConnection *)selfCopy->_connection setInterruptionHandler:?];
+  if (!selfCopy->_useSynchronousRemote)
   {
-    v10 = [(NSXPCConnection *)v23->_connection remoteObjectProxyWithErrorHandler:?];
-    v23->_remote = v10;
+    v10 = [(NSXPCConnection *)selfCopy->_connection remoteObjectProxyWithErrorHandler:?];
+    selfCopy->_remote = v10;
     goto LABEL_17;
   }
 
   v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
   v8 = dispatch_queue_create("com.apple.CoreBrightness.BSCI serial", v7);
-  v23->_serialQueue = v8;
-  if (!v23->_serialQueue)
+  selfCopy->_serialQueue = v8;
+  if (!selfCopy->_serialQueue)
   {
 LABEL_22:
-    MEMORY[0x1E69E5920](v23);
+    MEMORY[0x1E69E5920](selfCopy);
     return 0;
   }
 
-  v9 = [(NSXPCConnection *)v23->_connection synchronousRemoteObjectProxyWithErrorHandler:?];
-  v23->_remote = v9;
+  v9 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:?];
+  selfCopy->_remote = v9;
 LABEL_17:
-  if (!v23->_remote)
+  if (!selfCopy->_remote)
   {
     goto LABEL_22;
   }
 
-  MEMORY[0x1E69E5928](v23->_remote);
+  MEMORY[0x1E69E5928](selfCopy->_remote);
   v11 = objc_alloc_init(BrightnessSystemClientExportedObj);
-  v23->exportedObj = v11;
-  if (!v23->exportedObj)
+  selfCopy->exportedObj = v11;
+  if (!selfCopy->exportedObj)
   {
     goto LABEL_22;
   }
 
-  [(BrightnessSystemClientExportedObj *)v23->exportedObj setTarget:v23];
+  [(BrightnessSystemClientExportedObj *)selfCopy->exportedObj setTarget:selfCopy];
   v12 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F59CD4D8];
-  [(NSXPCConnection *)v23->_connection setExportedInterface:v12];
-  [(NSXPCConnection *)v23->_connection setExportedObject:v23->exportedObj];
-  [(NSXPCConnection *)v23->_connection resume];
-  return v23;
+  [(NSXPCConnection *)selfCopy->_connection setExportedInterface:v12];
+  [(NSXPCConnection *)selfCopy->_connection setExportedObject:selfCopy->exportedObj];
+  [(NSXPCConnection *)selfCopy->_connection resume];
+  return selfCopy;
 }
 
 - (void)stopXpcService
@@ -127,11 +127,11 @@ LABEL_17:
 
 - (void)dealloc
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   if (self->_logHandle)
   {
-    logHandle = v13->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -159,40 +159,40 @@ LABEL_17:
     _os_log_debug_impl(&dword_1DE8E5000, log, type, "BSCI dealloc", v9, 2u);
   }
 
-  if (v13->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    MEMORY[0x1E69E5920](v13->_logHandle);
-    v13->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  obj = v13;
-  objc_sync_enter(v13);
-  [(BrightnessSystemClientInternal *)v13 registerNotificationBlock:0];
-  if (v13->_clientProperties)
+  obj = selfCopy;
+  objc_sync_enter(selfCopy);
+  [(BrightnessSystemClientInternal *)selfCopy registerNotificationBlock:0];
+  if (selfCopy->_clientProperties)
   {
-    MEMORY[0x1E69E5920](v13->_clientProperties);
-    v13->_clientProperties = 0;
+    MEMORY[0x1E69E5920](selfCopy->_clientProperties);
+    selfCopy->_clientProperties = 0;
   }
 
-  if (v13->_connection)
+  if (selfCopy->_connection)
   {
-    MEMORY[0x1E69E5920](v13->_connection);
+    MEMORY[0x1E69E5920](selfCopy->_connection);
   }
 
-  if (v13->exportedObj)
+  if (selfCopy->exportedObj)
   {
-    MEMORY[0x1E69E5920](v13->exportedObj);
-    v13->exportedObj = 0;
+    MEMORY[0x1E69E5920](selfCopy->exportedObj);
+    selfCopy->exportedObj = 0;
   }
 
-  if (v13->_useSynchronousRemote)
+  if (selfCopy->_useSynchronousRemote)
   {
-    MEMORY[0x1E69E5920](v13->_serialQueue);
+    MEMORY[0x1E69E5920](selfCopy->_serialQueue);
   }
 
   objc_sync_exit(obj);
-  *&v2 = MEMORY[0x1E69E5920](v13->copyPropertyForKeyWaitCondition).n128_u64[0];
-  v8.receiver = v13;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->copyPropertyForKeyWaitCondition).n128_u64[0];
+  v8.receiver = selfCopy;
   v8.super_class = BrightnessSystemClientInternal;
   [(BrightnessSystemClientInternal *)&v8 dealloc];
 }
@@ -373,23 +373,23 @@ void __38__BrightnessSystemClientInternal_init__block_invoke_70(uint64_t a1, uin
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v28 = *MEMORY[0x1E69E9840];
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
-  v22 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   objc_sync_enter(self);
-  if (v25->_remote)
+  if (selfCopy->_remote)
   {
-    v20 = [v22 copy];
-    v19 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v23, 0}];
-    if ([v22 isEqual:@"DisplayMode"])
+    v20 = [keyCopy copy];
+    v19 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{propertyCopy, 0}];
+    if ([keyCopy isEqual:@"DisplayMode"])
     {
-      if (v25->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        logHandle = v25->_logHandle;
+        logHandle = selfCopy->_logHandle;
       }
 
       else
@@ -402,23 +402,23 @@ void __38__BrightnessSystemClientInternal_init__block_invoke_70(uint64_t a1, uin
       v17 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_2_1_8_64(v27, v23);
+        __os_log_helper_16_2_1_8_64(v27, propertyCopy);
         _os_log_impl(&dword_1DE8E5000, v18, v17, "[Display Mode] %@", v27, 0xCu);
       }
     }
 
-    if (v25->_useSynchronousRemote)
+    if (selfCopy->_useSynchronousRemote)
     {
       block = MEMORY[0x1E69E9820];
       v9 = -1073741824;
       v10 = 0;
       v11 = __53__BrightnessSystemClientInternal_setProperty_forKey___block_invoke;
       v12 = &unk_1E867B750;
-      v13 = v25;
+      v13 = selfCopy;
       v14 = v20;
       v15 = v19;
       v16 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, &block);
-      dispatch_sync(v25->_serialQueue, v16);
+      dispatch_sync(selfCopy->_serialQueue, v16);
       if (v16)
       {
         _Block_release(v16);
@@ -427,7 +427,7 @@ void __38__BrightnessSystemClientInternal_init__block_invoke_70(uint64_t a1, uin
 
     else
     {
-      [v25->_remote clientSetPropertyWithKey:v20 property:v19];
+      [selfCopy->_remote clientSetPropertyWithKey:v20 property:v19];
     }
 
     MEMORY[0x1E69E5920](v20);
@@ -451,14 +451,14 @@ void __38__BrightnessSystemClientInternal_init__block_invoke_70(uint64_t a1, uin
   return v26 & 1;
 }
 
-- (BOOL)setSyncProperty:(id)a3 forKey:(id)a4
+- (BOOL)setSyncProperty:(id)property forKey:(id)key
 {
   v21 = &v39;
   v53 = *MEMORY[0x1E69E9840];
-  v50 = self;
+  selfCopy = self;
   v49 = a2;
-  v48 = a3;
-  v47 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   v46 = 0;
   v40[0] = 0;
   v40[1] = v40;
@@ -469,7 +469,7 @@ void __38__BrightnessSystemClientInternal_init__block_invoke_70(uint64_t a1, uin
   v45 = 0;
   obj = self;
   objc_sync_enter(self);
-  if (v50->_remote)
+  if (selfCopy->_remote)
   {
     v19 = [*(v21 + 60) copy];
     v38 = v19;
@@ -536,8 +536,8 @@ void __38__BrightnessSystemClientInternal_init__block_invoke_70(uint64_t a1, uin
       isKindOfClass = objc_opt_isKindOfClass();
       if (isKindOfClass)
       {
-        v10 = [*(*(v21 + 12) + 40) BOOLValue];
-        v46 = v10;
+        bOOLValue = [*(*(v21 + 12) + 40) BOOLValue];
+        v46 = bOOLValue;
         MEMORY[0x1E69E5920](*(*(v21 + 12) + 40));
       }
 
@@ -595,12 +595,12 @@ uint64_t __57__BrightnessSystemClientInternal_setSyncProperty_forKey___block_inv
   return result;
 }
 
-- (id)copyPropertyForKey:(id)a3
+- (id)copyPropertyForKey:(id)key
 {
   v50 = *MEMORY[0x1E69E9840];
-  v47 = self;
+  selfCopy = self;
   v46 = a2;
-  v45 = a3;
+  keyCopy = key;
   v38 = 0;
   v39 = &v38;
   v40 = 1375731712;
@@ -609,21 +609,21 @@ uint64_t __57__BrightnessSystemClientInternal_setSyncProperty_forKey___block_inv
   v43 = __Block_byref_object_dispose__1;
   v44 = 0;
   objc_sync_enter(self);
-  if (v47->_remote)
+  if (selfCopy->_remote)
   {
-    v36 = [v45 copy];
-    if (v47->_useSynchronousRemote)
+    v36 = [keyCopy copy];
+    if (selfCopy->_useSynchronousRemote)
     {
       block = MEMORY[0x1E69E9820];
       v28 = -1073741824;
       v29 = 0;
       v30 = __53__BrightnessSystemClientInternal_copyPropertyForKey___block_invoke;
       v31 = &unk_1E867B7A0;
-      v32 = v47;
+      v32 = selfCopy;
       v33 = v36;
       v34 = &v38;
       v35 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, &block);
-      dispatch_sync(v47->_serialQueue, v35);
+      dispatch_sync(selfCopy->_serialQueue, v35);
       if (v35)
       {
         _Block_release(v35);
@@ -632,29 +632,29 @@ uint64_t __57__BrightnessSystemClientInternal_setSyncProperty_forKey___block_inv
 
     else
     {
-      [(NSCondition *)v47->copyPropertyForKeyWaitCondition lock];
-      v47->copyPropertyForKeyCompleted = 0;
-      [(NSCondition *)v47->copyPropertyForKeyWaitCondition unlock];
-      remote = v47->_remote;
+      [(NSCondition *)selfCopy->copyPropertyForKeyWaitCondition lock];
+      selfCopy->copyPropertyForKeyCompleted = 0;
+      [(NSCondition *)selfCopy->copyPropertyForKeyWaitCondition unlock];
+      remote = selfCopy->_remote;
       v20 = MEMORY[0x1E69E9820];
       v21 = -1073741824;
       v22 = 0;
       v23 = __53__BrightnessSystemClientInternal_copyPropertyForKey___block_invoke_3;
       v24 = &unk_1E867B7C8;
       v26 = &v38;
-      v25 = v47;
+      v25 = selfCopy;
       [remote clientCopyPropertyWithKey:v36 reply:?];
-      [(NSCondition *)v47->copyPropertyForKeyWaitCondition lock];
-      while (!v47->copyPropertyForKeyCompleted)
+      [(NSCondition *)selfCopy->copyPropertyForKeyWaitCondition lock];
+      while (!selfCopy->copyPropertyForKeyCompleted)
       {
         v19 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceNow:10.0];
-        v18 = ![(NSCondition *)v47->copyPropertyForKeyWaitCondition waitUntilDate:v19];
+        v18 = ![(NSCondition *)selfCopy->copyPropertyForKeyWaitCondition waitUntilDate:v19];
         MEMORY[0x1E69E5920](v19);
         if (v18)
         {
-          if (v47->_logHandle)
+          if (selfCopy->_logHandle)
           {
-            logHandle = v47->_logHandle;
+            logHandle = selfCopy->_logHandle;
           }
 
           else
@@ -686,8 +686,8 @@ uint64_t __57__BrightnessSystemClientInternal_setSyncProperty_forKey___block_inv
         }
       }
 
-      v47->copyPropertyForKeyCompleted = 0;
-      [(NSCondition *)v47->copyPropertyForKeyWaitCondition unlock];
+      selfCopy->copyPropertyForKeyCompleted = 0;
+      [(NSCondition *)selfCopy->copyPropertyForKeyWaitCondition unlock];
     }
 
     MEMORY[0x1E69E5920](v36);
@@ -703,15 +703,15 @@ uint64_t __57__BrightnessSystemClientInternal_setSyncProperty_forKey___block_inv
   objc_sync_exit(self);
   if (!v37)
   {
-    if ([v45 isEqual:@"DisplayBrightness"])
+    if ([keyCopy isEqual:@"DisplayBrightness"])
     {
       v9 = v39[5];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v47->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v8 = v47->_logHandle;
+          v8 = selfCopy->_logHandle;
         }
 
         else
@@ -807,11 +807,11 @@ uint64_t __53__BrightnessSystemClientInternal_copyPropertyForKey___block_invoke_
   return [*(*(a1 + 32) + 40) unlock];
 }
 
-- (void)registerNotificationBlock:(id)a3
+- (void)registerNotificationBlock:(id)block
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  blockCopy = block;
   if (_COREBRIGHTNESS_LOG_DEFAULT)
   {
     inited = _COREBRIGHTNESS_LOG_DEFAULT;
@@ -832,13 +832,13 @@ uint64_t __53__BrightnessSystemClientInternal_copyPropertyForKey___block_invoke_
     _os_log_debug_impl(&dword_1DE8E5000, log, type, "A client registered for a notification block", v7, 2u);
   }
 
-  obj = v12;
-  objc_sync_enter(v12);
-  [(BrightnessSystemClientExportedObj *)v12->exportedObj registerNotificationBlock:v10];
+  obj = selfCopy;
+  objc_sync_enter(selfCopy);
+  [(BrightnessSystemClientExportedObj *)selfCopy->exportedObj registerNotificationBlock:blockCopy];
   objc_sync_exit(obj);
 }
 
-- (void)registerNotificationBlock:(id)a3 forProperties:(id)a4
+- (void)registerNotificationBlock:(id)block forProperties:(id)properties
 {
   objc_sync_enter(self);
   if (self->_remote)
@@ -850,9 +850,9 @@ uint64_t __53__BrightnessSystemClientInternal_copyPropertyForKey___block_invoke_
       self->_clientProperties = 0;
     }
 
-    if (a4)
+    if (properties)
     {
-      self->_clientProperties = [a4 mutableCopy];
+      self->_clientProperties = [properties mutableCopy];
     }
 
     if (self->_clientProperties)
@@ -867,29 +867,29 @@ uint64_t __53__BrightnessSystemClientInternal_copyPropertyForKey___block_invoke_
       MEMORY[0x1E69E5920](v4);
     }
 
-    [(BrightnessSystemClientInternal *)self registerNotificationBlock:a3, v4];
+    [(BrightnessSystemClientInternal *)self registerNotificationBlock:block, v4];
   }
 
   objc_sync_exit(self);
 }
 
-- (void)addPropertiesForNotification:(id)a3
+- (void)addPropertiesForNotification:(id)notification
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  if (a3)
+  notificationCopy = notification;
+  if (notification)
   {
-    obj = v12;
-    objc_sync_enter(v12);
+    obj = selfCopy;
+    objc_sync_enter(selfCopy);
     v4 = MEMORY[0x1E69E9820];
     v5 = -1073741824;
     v6 = 0;
     v7 = __63__BrightnessSystemClientInternal_addPropertiesForNotification___block_invoke;
     v8 = &unk_1E867B668;
-    v9 = v12;
-    [v10 enumerateObjectsUsingBlock:?];
-    [v12->_remote registerNotificationForProperties:v12->_clientProperties];
+    v9 = selfCopy;
+    [notificationCopy enumerateObjectsUsingBlock:?];
+    [selfCopy->_remote registerNotificationForProperties:selfCopy->_clientProperties];
     objc_sync_exit(obj);
   }
 }
@@ -904,23 +904,23 @@ uint64_t __63__BrightnessSystemClientInternal_addPropertiesForNotification___blo
   return result;
 }
 
-- (void)removePropertiesFromNotification:(id)a3
+- (void)removePropertiesFromNotification:(id)notification
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  if (a3)
+  notificationCopy = notification;
+  if (notification)
   {
-    obj = v12;
-    objc_sync_enter(v12);
+    obj = selfCopy;
+    objc_sync_enter(selfCopy);
     v4 = MEMORY[0x1E69E9820];
     v5 = -1073741824;
     v6 = 0;
     v7 = __67__BrightnessSystemClientInternal_removePropertiesFromNotification___block_invoke;
     v8 = &unk_1E867B668;
-    v9 = v12;
-    [v10 enumerateObjectsUsingBlock:?];
-    [v12->_remote registerNotificationForProperties:v12->_clientProperties];
+    v9 = selfCopy;
+    [notificationCopy enumerateObjectsUsingBlock:?];
+    [selfCopy->_remote registerNotificationForProperties:selfCopy->_clientProperties];
     objc_sync_exit(obj);
   }
 }
@@ -935,29 +935,29 @@ uint64_t __67__BrightnessSystemClientInternal_removePropertiesFromNotification__
   return result;
 }
 
-- (void)addPropertyForNotification:(id)a3
+- (void)addPropertyForNotification:(id)notification
 {
-  if (a3)
+  if (notification)
   {
     objc_sync_enter(self);
-    [(BrightnessSystemClientInternal *)self addKeyToClientProperties:a3];
+    [(BrightnessSystemClientInternal *)self addKeyToClientProperties:notification];
     [self->_remote registerNotificationForProperties:self->_clientProperties];
     objc_sync_exit(self);
   }
 }
 
-- (void)removePropertyFromNotification:(id)a3
+- (void)removePropertyFromNotification:(id)notification
 {
-  if (a3)
+  if (notification)
   {
     objc_sync_enter(self);
-    [(BrightnessSystemClientInternal *)self removeKeyFromClientProperties:a3];
+    [(BrightnessSystemClientInternal *)self removeKeyFromClientProperties:notification];
     [self->_remote registerNotificationForProperties:self->_clientProperties];
     objc_sync_exit(self);
   }
 }
 
-- (void)addKeyToClientProperties:(id)a3
+- (void)addKeyToClientProperties:(id)properties
 {
   objc_sync_enter(self);
   if (!self->_clientProperties)
@@ -965,20 +965,20 @@ uint64_t __67__BrightnessSystemClientInternal_removePropertiesFromNotification__
     self->_clientProperties = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  if (([(NSMutableArray *)self->_clientProperties containsObject:a3]& 1) == 0)
+  if (([(NSMutableArray *)self->_clientProperties containsObject:properties]& 1) == 0)
   {
-    [(NSMutableArray *)self->_clientProperties addObject:a3];
+    [(NSMutableArray *)self->_clientProperties addObject:properties];
   }
 
   objc_sync_exit(self);
 }
 
-- (void)removeKeyFromClientProperties:(id)a3
+- (void)removeKeyFromClientProperties:(id)properties
 {
   objc_sync_enter(self);
-  if (([(NSMutableArray *)self->_clientProperties containsObject:a3]& 1) != 0)
+  if (([(NSMutableArray *)self->_clientProperties containsObject:properties]& 1) != 0)
   {
-    [(NSMutableArray *)self->_clientProperties removeObject:a3];
+    [(NSMutableArray *)self->_clientProperties removeObject:properties];
   }
 
   objc_sync_exit(self);

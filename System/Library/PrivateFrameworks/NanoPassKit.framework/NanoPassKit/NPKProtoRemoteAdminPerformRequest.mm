@@ -1,12 +1,12 @@
 @interface NPKProtoRemoteAdminPerformRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoRemoteAdminPerformRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoRemoteAdminPerformRequest;
   v4 = [(NPKProtoRemoteAdminPerformRequest *)&v8 description];
-  v5 = [(NPKProtoRemoteAdminPerformRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoRemoteAdminPerformRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   url = self->_url;
   if (url)
   {
-    [v3 setObject:url forKey:@"url"];
+    [dictionary setObject:url forKey:@"url"];
   }
 
   seid = self->_seid;
@@ -54,9 +54,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_url)
   {
     [NPKProtoRemoteAdminPerformRequest writeTo:];
@@ -81,47 +81,47 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setUrl:self->_url];
-  [v4 setSeid:self->_seid];
-  [v4 setCommand:self->_command];
+  toCopy = to;
+  [toCopy setUrl:self->_url];
+  [toCopy setSeid:self->_seid];
+  [toCopy setCommand:self->_command];
   if (self->_infoDictionary)
   {
-    [v4 setInfoDictionary:?];
+    [toCopy setInfoDictionary:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_url copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_url copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_seid copyWithZone:a3];
+  v8 = [(NSString *)self->_seid copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_command copyWithZone:a3];
+  v10 = [(NSString *)self->_command copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(NSData *)self->_infoDictionary copyWithZone:a3];
+  v12 = [(NSData *)self->_infoDictionary copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((url = self->_url, !(url | v4[4])) || -[NSData isEqual:](url, "isEqual:")) && ((seid = self->_seid, !(seid | v4[3])) || -[NSString isEqual:](seid, "isEqual:")) && ((command = self->_command, !(command | v4[1])) || -[NSString isEqual:](command, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((url = self->_url, !(url | equalCopy[4])) || -[NSData isEqual:](url, "isEqual:")) && ((seid = self->_seid, !(seid | equalCopy[3])) || -[NSString isEqual:](seid, "isEqual:")) && ((command = self->_command, !(command | equalCopy[1])) || -[NSString isEqual:](command, "isEqual:")))
   {
     infoDictionary = self->_infoDictionary;
-    if (infoDictionary | v4[2])
+    if (infoDictionary | equalCopy[2])
     {
       v9 = [(NSData *)infoDictionary isEqual:?];
     }
@@ -148,25 +148,25 @@
   return v4 ^ v5 ^ [(NSData *)self->_infoDictionary hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[4])
+  fromCopy = from;
+  if (fromCopy[4])
   {
     [(NPKProtoRemoteAdminPerformRequest *)self setUrl:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NPKProtoRemoteAdminPerformRequest *)self setSeid:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKProtoRemoteAdminPerformRequest *)self setCommand:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoRemoteAdminPerformRequest *)self setInfoDictionary:?];
   }

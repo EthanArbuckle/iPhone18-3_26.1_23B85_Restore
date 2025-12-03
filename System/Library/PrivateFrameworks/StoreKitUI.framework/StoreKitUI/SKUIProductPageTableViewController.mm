@@ -1,38 +1,38 @@
 @interface SKUIProductPageTableViewController
 - (SKUIProductPageChildViewController)delegateSender;
 - (SKUIProductPageChildViewControllerDelegate)delegate;
-- (SKUIProductPageTableViewController)initWithInAppPurchases:(id)a3 clientContext:(id)a4;
-- (SKUIProductPageTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (SKUIProductPageTableViewController)initWithReleaseNotes:(id)a3 clientContext:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (SKUIProductPageTableViewController)initWithInAppPurchases:(id)purchases clientContext:(id)context;
+- (SKUIProductPageTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (SKUIProductPageTableViewController)initWithReleaseNotes:(id)notes clientContext:(id)context;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_tableView;
-- (id)_textLayoutRequestWithText:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_textLayoutRequestWithText:(id)text;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addHeaderView;
 - (void)dealloc;
 - (void)loadView;
-- (void)scrollToView:(id)a3 animated:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHeaderViewController:(id)a3;
-- (void)setSections:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)scrollToView:(id)view animated:(BOOL)animated;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setColorScheme:(id)scheme;
+- (void)setDelegate:(id)delegate;
+- (void)setHeaderViewController:(id)controller;
+- (void)setSections:(id)sections;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SKUIProductPageTableViewController
 
-- (SKUIProductPageTableViewController)initWithInAppPurchases:(id)a3 clientContext:(id)a4
+- (SKUIProductPageTableViewController)initWithInAppPurchases:(id)purchases clientContext:(id)context
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  purchasesCopy = purchases;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -51,7 +51,7 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_clientContext, a4);
+    objc_storeStrong(&v16->_clientContext, context);
     clientContext = v17->_clientContext;
     if (clientContext)
     {
@@ -65,7 +65,7 @@
     v19 = ;
     [(SKUIProductPageTableViewController *)v17 setTitle:v19];
 
-    v20 = [[SKUIProductPageTableInAppPurchasesSection alloc] initWithInAppPurchases:v6 clientContext:v7];
+    v20 = [[SKUIProductPageTableInAppPurchasesSection alloc] initWithInAppPurchases:purchasesCopy clientContext:contextCopy];
     [(SKUIProductPageTableInAppPurchasesSection *)v20 setExpanded:1];
     [(SKUITableViewSection *)v20 setHidesHeaderView:1];
     v24[0] = v20;
@@ -76,11 +76,11 @@
   return v17;
 }
 
-- (SKUIProductPageTableViewController)initWithReleaseNotes:(id)a3 clientContext:(id)a4
+- (SKUIProductPageTableViewController)initWithReleaseNotes:(id)notes clientContext:(id)context
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  notesCopy = notes;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -98,9 +98,9 @@
   v16 = [(SKUIProductPageTableViewController *)&v40 init];
   if (v16)
   {
-    if ([v6 count])
+    if ([notesCopy count])
     {
-      objc_storeStrong(&v16->_clientContext, a4);
+      objc_storeStrong(&v16->_clientContext, context);
       clientContext = v16->_clientContext;
       if (clientContext)
       {
@@ -112,19 +112,19 @@
         [SKUIClientContext localizedStringForKey:@"PRODUCT_PAGE_UPDATE_HISTORY_TITLE" inBundles:0 inTable:@"ProductPage"];
       }
       v19 = ;
-      [(SKUIProductPageTableViewController *)v16 setTitle:v19, v7];
+      [(SKUIProductPageTableViewController *)v16 setTitle:v19, contextCopy];
 
       v18 = [[SKUIProductPageTableUpdateHistorySection alloc] initWithClientContext:v16->_clientContext];
       [(SKUIProductPageTableUpdateHistorySection *)v18 setExpanded:1];
       [(SKUITableViewSection *)v18 setHidesHeaderView:1];
-      [(SKUIProductPageTableUpdateHistorySection *)v18 setReleaseNotes:v6];
+      [(SKUIProductPageTableUpdateHistorySection *)v18 setReleaseNotes:notesCopy];
       v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v35 = v6;
-      v21 = v6;
+      v35 = notesCopy;
+      v21 = notesCopy;
       v22 = [v21 countByEnumeratingWithState:&v36 objects:v42 count:16];
       if (v22)
       {
@@ -139,11 +139,11 @@
               objc_enumerationMutation(v21);
             }
 
-            v26 = [*(*(&v36 + 1) + 8 * i) changeNotes];
-            v27 = v26;
-            if (v26)
+            changeNotes = [*(*(&v36 + 1) + 8 * i) changeNotes];
+            v27 = changeNotes;
+            if (changeNotes)
             {
-              v28 = v26;
+              v28 = changeNotes;
             }
 
             else
@@ -172,8 +172,8 @@
       v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v41 count:1];
       [(SKUIProductPageTableViewController *)v16 setSections:v32];
 
-      v7 = v34;
-      v6 = v35;
+      contextCopy = v34;
+      notesCopy = v35;
     }
 
     else
@@ -186,10 +186,10 @@
   return v16;
 }
 
-- (SKUIProductPageTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKUIProductPageTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -204,7 +204,7 @@
 
   v20.receiver = self;
   v20.super_class = SKUIProductPageTableViewController;
-  v16 = [(SKUIProductPageTableViewController *)&v20 initWithNibName:v6 bundle:v7];
+  v16 = [(SKUIProductPageTableViewController *)&v20 initWithNibName:nameCopy bundle:bundleCopy];
   if (v16)
   {
     v17 = [MEMORY[0x277D75348] colorWithWhite:0.97254902 alpha:1.0];
@@ -224,10 +224,10 @@
   [(SKUIProductPageTableViewController *)&v3 dealloc];
 }
 
-- (void)scrollToView:(id)a3 animated:(BOOL)a4
+- (void)scrollToView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v13 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -237,36 +237,36 @@
     v9 = v8;
     v11 = v10;
 
-    [v13 bounds];
-    [v13 convertPoint:self->_tableView toView:?];
-    [(SKUIProductPageTableView *)self->_tableView setContentOffset:v4 animated:v9, v11 + v12];
+    [viewCopy bounds];
+    [viewCopy convertPoint:self->_tableView toView:?];
+    [(SKUIProductPageTableView *)self->_tableView setContentOffset:animatedCopy animated:v9, v11 + v12];
   }
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
-    v6 = [(SKUIColorScheme *)self->_colorScheme backgroundColor];
-    v7 = v6;
-    if (!v6)
+    v11 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
+    backgroundColor = [(SKUIColorScheme *)self->_colorScheme backgroundColor];
+    v7 = backgroundColor;
+    if (!backgroundColor)
     {
       v7 = [MEMORY[0x277D75348] colorWithWhite:0.97254902 alpha:1.0];
     }
 
     objc_storeStrong(&self->_color, v7);
-    if (!v6)
+    if (!backgroundColor)
     {
     }
 
     tableView = self->_tableView;
-    v9 = [(SKUIColorScheme *)self->_colorScheme backgroundColor];
-    if (v9)
+    backgroundColor2 = [(SKUIColorScheme *)self->_colorScheme backgroundColor];
+    if (backgroundColor2)
     {
-      [(SKUIProductPageTableView *)tableView setBackgroundColor:v9];
+      [(SKUIProductPageTableView *)tableView setBackgroundColor:backgroundColor2];
     }
 
     else
@@ -275,13 +275,13 @@
       [(SKUIProductPageTableView *)tableView setBackgroundColor:v10];
     }
 
-    v5 = v11;
+    schemeCopy = v11;
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -300,17 +300,17 @@
   }
 }
 
-- (void)setHeaderViewController:(id)a3
+- (void)setHeaderViewController:(id)controller
 {
-  v6 = a3;
-  if (self->_headerViewController != v6)
+  controllerCopy = controller;
+  if (self->_headerViewController != controllerCopy)
   {
     [(SKUIProductPageTableView *)self->_tableView setProductPageHeaderView:0];
-    v5 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
-    [v5 removeFromSuperview];
+    view = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
+    [view removeFromSuperview];
 
     [(SKUIProductPageHeaderViewController *)self->_headerViewController removeFromParentViewController];
-    objc_storeStrong(&self->_headerViewController, a3);
+    objc_storeStrong(&self->_headerViewController, controller);
     if (self->_headerViewController)
     {
       [(SKUIProductPageTableViewController *)self addChildViewController:?];
@@ -322,12 +322,12 @@
   }
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_sections != a3)
+  if (self->_sections != sections)
   {
-    v4 = [a3 copy];
+    v4 = [sections copy];
     sections = self->_sections;
     self->_sections = v4;
 
@@ -365,70 +365,70 @@
 
 - (void)loadView
 {
-  v3 = [(SKUIProductPageTableViewController *)self _tableView];
-  [(SKUIProductPageTableViewController *)self setView:v3];
+  _tableView = [(SKUIProductPageTableViewController *)self _tableView];
+  [(SKUIProductPageTableViewController *)self setView:_tableView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SKUIProductPageTableView *)self->_tableView indexPathForSelectedRow];
-  if (v5)
+  appearCopy = appear;
+  indexPathForSelectedRow = [(SKUIProductPageTableView *)self->_tableView indexPathForSelectedRow];
+  if (indexPathForSelectedRow)
   {
-    [(SKUIProductPageTableView *)self->_tableView deselectRowAtIndexPath:v5 animated:v3];
+    [(SKUIProductPageTableView *)self->_tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:appearCopy];
   }
 
   v6.receiver = self;
   v6.super_class = SKUIProductPageTableViewController;
-  [(SKUIProductPageTableViewController *)&v6 viewWillAppear:v3];
+  [(SKUIProductPageTableViewController *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v4 = objc_loadWeakRetained(&self->_delegateSender);
   [WeakRetained productPageChildViewControllerDidScroll:v4];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v6 = a4;
-  v7 = a3;
-  v8 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [v6 section]);
-  v9 = [v8 tableViewCellForTableView:v7 indexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  v9 = [v8 tableViewCellForTableView:viewCopy indexPath:pathCopy];
 
   return v9;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 numberOfRowsInSection];
+  v4 = [(NSArray *)self->_sections objectAtIndex:section];
+  numberOfRowsInSection = [v4 numberOfRowsInSection];
 
-  return v5;
+  return numberOfRowsInSection;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSArray objectAtIndex:](self->_sections, "objectAtIndex:", [v7 section]);
-  v9 = [v8 selectionActionForTableView:v6 indexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSArray objectAtIndex:](self->_sections, "objectAtIndex:", [pathCopy section]);
+  v9 = [v8 selectionActionForTableView:viewCopy indexPath:pathCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 actionType];
-    if (v11 > 2)
+    actionType = [v9 actionType];
+    if (actionType > 2)
     {
-      if (v11 == 3)
+      if (actionType == 3)
       {
-        v12 = [(SKUIProductPageTableViewController *)self navigationController];
-        if (v12)
+        navigationController = [(SKUIProductPageTableViewController *)self navigationController];
+        if (navigationController)
         {
-          v15 = [v10 viewController];
-          [v12 pushViewController:v15 animated:1];
+          viewController = [v10 viewController];
+          [navigationController pushViewController:viewController animated:1];
 LABEL_19:
 
           goto LABEL_20;
@@ -440,25 +440,25 @@ LABEL_19:
         if ((v23 & 1) == 0)
         {
 LABEL_20:
-          [v6 deselectRowAtIndexPath:v7 animated:1];
+          [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
           goto LABEL_21;
         }
 
-        v15 = objc_loadWeakRetained(&self->_delegate);
-        v16 = [v10 viewControllerBlock];
-        v17 = v15;
+        viewController = objc_loadWeakRetained(&self->_delegate);
+        viewControllerBlock = [v10 viewControllerBlock];
+        v17 = viewController;
         v18 = 0;
 LABEL_18:
-        [v17 productPageChildOpenURL:v18 viewControllerBlock:v16];
+        [v17 productPageChildOpenURL:v18 viewControllerBlock:viewControllerBlock];
 
         goto LABEL_19;
       }
 
-      if (v11 == 4)
+      if (actionType == 4)
       {
-        v12 = [v10 item];
-        if (!v12)
+        navigationController = [v10 item];
+        if (!navigationController)
         {
           goto LABEL_20;
         }
@@ -471,18 +471,18 @@ LABEL_18:
           goto LABEL_20;
         }
 
-        v15 = objc_loadWeakRetained(&self->_delegate);
-        [v15 productPageChildOpenItem:v12];
+        viewController = objc_loadWeakRetained(&self->_delegate);
+        [viewController productPageChildOpenItem:navigationController];
         goto LABEL_19;
       }
     }
 
     else
     {
-      if ((v11 - 1) < 2)
+      if ((actionType - 1) < 2)
       {
-        v12 = [v10 URL];
-        if (!v12)
+        navigationController = [v10 URL];
+        if (!navigationController)
         {
           goto LABEL_20;
         }
@@ -495,18 +495,18 @@ LABEL_18:
           goto LABEL_20;
         }
 
-        v15 = objc_loadWeakRetained(&self->_delegate);
-        v16 = [v10 viewControllerBlock];
-        v17 = v15;
-        v18 = v12;
+        viewController = objc_loadWeakRetained(&self->_delegate);
+        viewControllerBlock = [v10 viewControllerBlock];
+        v17 = viewController;
+        v18 = navigationController;
         goto LABEL_18;
       }
 
-      if (!v11)
+      if (!actionType)
       {
-        v24[0] = v7;
+        v24[0] = pathCopy;
         v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-        [v6 reloadRowsAtIndexPaths:v21 withRowAnimation:100];
+        [viewCopy reloadRowsAtIndexPaths:v21 withRowAnimation:100];
       }
     }
   }
@@ -514,12 +514,12 @@ LABEL_18:
 LABEL_21:
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   sections = self->_sections;
-  v6 = a3;
-  v7 = [(NSArray *)sections objectAtIndex:a4];
-  v8 = [v7 footerViewForTableView:v6];
+  viewCopy = view;
+  v7 = [(NSArray *)sections objectAtIndex:section];
+  v8 = [v7 footerViewForTableView:viewCopy];
 
   if (v8)
   {
@@ -535,12 +535,12 @@ LABEL_21:
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   sections = self->_sections;
-  v6 = a3;
-  v7 = [(NSArray *)sections objectAtIndex:a4];
-  v8 = [v7 headerViewForTableView:v6];
+  viewCopy = view;
+  v7 = [(NSArray *)sections objectAtIndex:section];
+  v8 = [v7 headerViewForTableView:viewCopy];
 
   if (v8)
   {
@@ -556,24 +556,24 @@ LABEL_21:
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v6 = a4;
-  v7 = a3;
-  v8 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [v6 section]);
-  [v8 heightForCellInTableView:v7 indexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  [v8 heightForCellInTableView:viewCopy indexPath:pathCopy];
   v10 = v9;
 
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   sections = self->_sections;
-  v7 = a3;
-  v8 = [(NSArray *)sections objectAtIndex:a4];
-  v9 = [v8 footerViewForTableView:v7];
+  viewCopy = view;
+  v8 = [(NSArray *)sections objectAtIndex:section];
+  v9 = [v8 footerViewForTableView:viewCopy];
 
   if (v9)
   {
@@ -583,12 +583,12 @@ LABEL_21:
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   sections = self->_sections;
-  v7 = a3;
-  v8 = [(NSArray *)sections objectAtIndex:a4];
-  v9 = [v8 headerViewForTableView:v7];
+  viewCopy = view;
+  v8 = [(NSArray *)sections objectAtIndex:section];
+  v9 = [v8 headerViewForTableView:viewCopy];
 
   if (v9)
   {
@@ -600,20 +600,20 @@ LABEL_21:
 
 - (void)_addHeaderView
 {
-  v8 = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
-  [v8 setAutoresizingMask:2];
-  [v8 frame];
+  view = [(SKUIProductPageHeaderViewController *)self->_headerViewController view];
+  [view setAutoresizingMask:2];
+  [view frame];
   v4 = v3;
   [(SKUIProductPageTableView *)self->_tableView bounds];
-  [v8 setFrame:{0.0, v4}];
-  [(SKUIProductPageTableView *)self->_tableView _addContentSubview:v8 atBack:0];
-  v5 = [(SKUIProductPageHeaderViewController *)self->_headerViewController floatingView];
-  [v5 setAutoresizingMask:2];
-  [v5 frame];
+  [view setFrame:{0.0, v4}];
+  [(SKUIProductPageTableView *)self->_tableView _addContentSubview:view atBack:0];
+  floatingView = [(SKUIProductPageHeaderViewController *)self->_headerViewController floatingView];
+  [floatingView setAutoresizingMask:2];
+  [floatingView frame];
   v7 = v6;
   [(SKUIProductPageTableView *)self->_tableView bounds];
-  [v5 setFrame:{0.0, v7}];
-  [(SKUIProductPageTableView *)self->_tableView setProductPageHeaderView:v5];
+  [floatingView setFrame:{0.0, v7}];
+  [(SKUIProductPageTableView *)self->_tableView setProductPageHeaderView:floatingView];
 }
 
 - (id)_tableView
@@ -626,10 +626,10 @@ LABEL_21:
     self->_tableView = v4;
 
     v6 = self->_tableView;
-    v7 = [(SKUIColorScheme *)self->_colorScheme backgroundColor];
-    if (v7)
+    backgroundColor = [(SKUIColorScheme *)self->_colorScheme backgroundColor];
+    if (backgroundColor)
     {
-      [(SKUIProductPageTableView *)v6 setBackgroundColor:v7];
+      [(SKUIProductPageTableView *)v6 setBackgroundColor:backgroundColor];
     }
 
     else
@@ -657,12 +657,12 @@ LABEL_21:
   return tableView;
 }
 
-- (id)_textLayoutRequestWithText:(id)a3
+- (id)_textLayoutRequestWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(SKUITextLayoutRequest);
   [(SKUITextLayoutRequest *)v5 setNumberOfLines:5];
-  [(SKUITextLayoutRequest *)v5 setText:v4];
+  [(SKUITextLayoutRequest *)v5 setText:textCopy];
 
   [SKUIProductPageDetailsViewController defaultPageWidthForUserInterfaceIdiom:SKUIUserInterfaceIdiom(self->_clientContext)];
   [(SKUITextLayoutRequest *)v5 setWidth:v6 + -30.0];

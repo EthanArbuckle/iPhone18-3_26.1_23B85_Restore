@@ -1,15 +1,15 @@
 @interface PUWallpaperShuffleTransitionController
-- (CGAffineTransform)_inactiveTransformForViewModel:(SEL)a3;
-- (PUWallpaperShuffleTransitionController)initWithRenderer:(id)a3;
-- (double)_visibilityAmountForFadeIn:(BOOL)a3 useCrossfade:(BOOL)a4;
+- (CGAffineTransform)_inactiveTransformForViewModel:(SEL)model;
+- (PUWallpaperShuffleTransitionController)initWithRenderer:(id)renderer;
+- (double)_visibilityAmountForFadeIn:(BOOL)in useCrossfade:(BOOL)crossfade;
 - (void)_invalidateAdditionalViewTitleHeightPresentationValue;
 - (void)_invalidateAnimators;
 - (void)_invalidateFilters;
 - (void)_invalidateIsAnimating;
 - (void)_invalidateViewHierarchy;
 - (void)_invalidateViewProperties;
-- (void)_performChangesWithDefaultDurationForAnimator:(id)a3 changes:(id)a4;
-- (void)_performFadeInAnimationUsingCrossfade:(BOOL)a3;
+- (void)_performChangesWithDefaultDurationForAnimator:(id)animator changes:(id)changes;
+- (void)_performFadeInAnimationUsingCrossfade:(BOOL)crossfade;
 - (void)_removeFromViewModelFromViewHierarchy;
 - (void)_updateAdditionalViewTitleHeightPresentationValue;
 - (void)_updateAnimators;
@@ -18,24 +18,24 @@
 - (void)_updateViewProperties;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)performTransitionFromViewModel:(id)a3 toViewModel:(id)a4 usingCrossfade:(BOOL)a5;
-- (void)setFadeInAnimator:(id)a3;
-- (void)setFadeOutAnimator:(id)a3;
-- (void)setFromViewModel:(id)a3;
-- (void)setIsAnimating:(BOOL)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)performTransitionFromViewModel:(id)model toViewModel:(id)viewModel usingCrossfade:(BOOL)crossfade;
+- (void)setFadeInAnimator:(id)animator;
+- (void)setFadeOutAnimator:(id)animator;
+- (void)setFromViewModel:(id)model;
+- (void)setIsAnimating:(BOOL)animating;
 @end
 
 @implementation PUWallpaperShuffleTransitionController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (AdditionalViewTitleHeightAnimatorObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (AdditionalViewTitleHeightAnimatorObservationContext == context)
   {
-    if ((v6 & 4) != 0)
+    if ((changeCopy & 4) != 0)
     {
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
@@ -45,7 +45,7 @@
       [(PUWallpaperShuffleTransitionController *)self performChanges:v18];
     }
 
-    if ((v6 & 2) != 0)
+    if ((changeCopy & 2) != 0)
     {
       v11 = v17;
       v17[0] = MEMORY[0x1E69E9820];
@@ -59,22 +59,22 @@ LABEL_21:
     }
   }
 
-  else if (FadeOutAnimatorObservationContext == a5 || FadeInAnimatorObservationContext == a5)
+  else if (FadeOutAnimatorObservationContext == context || FadeInAnimatorObservationContext == context)
   {
-    if ((v6 & 4) != 0)
+    if ((changeCopy & 4) != 0)
     {
-      if (FadeOutAnimatorObservationContext == a5 && ![(PUWallpaperShuffleTransitionController *)self useCrossfade])
+      if (FadeOutAnimatorObservationContext == context && ![(PUWallpaperShuffleTransitionController *)self useCrossfade])
       {
-        v10 = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
-        if ([v10 isAnimating])
+        fadeOutAnimator = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
+        if ([fadeOutAnimator isAnimating])
         {
         }
 
         else
         {
-          v13 = [(PUWallpaperShuffleTransitionController *)self isAnimating];
+          isAnimating = [(PUWallpaperShuffleTransitionController *)self isAnimating];
 
-          if (v13)
+          if (isAnimating)
           {
             [(PUWallpaperShuffleTransitionController *)self _performFadeInAnimationUsingCrossfade:0];
           }
@@ -89,7 +89,7 @@ LABEL_21:
       [(PUWallpaperShuffleTransitionController *)self performChanges:v16];
     }
 
-    if ((v6 & 2) != 0)
+    if ((changeCopy & 2) != 0)
     {
       v11 = &v14;
       v14 = MEMORY[0x1E69E9820];
@@ -100,15 +100,15 @@ LABEL_21:
   }
 }
 
-- (void)performTransitionFromViewModel:(id)a3 toViewModel:(id)a4 usingCrossfade:(BOOL)a5
+- (void)performTransitionFromViewModel:(id)model toViewModel:(id)viewModel usingCrossfade:(BOOL)crossfade
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  crossfadeCopy = crossfade;
+  modelCopy = model;
+  viewModelCopy = viewModel;
+  v11 = viewModelCopy;
+  if (modelCopy)
   {
-    if (v10)
+    if (viewModelCopy)
     {
       goto LABEL_3;
     }
@@ -116,8 +116,8 @@ LABEL_21:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleTransitionController.m" lineNumber:357 description:{@"Invalid parameter not satisfying: %@", @"fromViewModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleTransitionController.m" lineNumber:357 description:{@"Invalid parameter not satisfying: %@", @"fromViewModel"}];
 
     if (v11)
     {
@@ -125,12 +125,12 @@ LABEL_21:
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleTransitionController.m" lineNumber:358 description:{@"Invalid parameter not satisfying: %@", @"toViewModel"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleTransitionController.m" lineNumber:358 description:{@"Invalid parameter not satisfying: %@", @"toViewModel"}];
 
 LABEL_3:
   v12 = 5;
-  if (v5)
+  if (crossfadeCopy)
   {
     v12 = 1;
   }
@@ -141,10 +141,10 @@ LABEL_3:
   aBlock[3] = &__block_descriptor_40_e39_v16__0__PUParallaxLayerStackViewModel_8l;
   aBlock[4] = v12;
   v13 = _Block_copy(aBlock);
-  v13[2](v13, v9);
+  v13[2](v13, modelCopy);
   v13[2](v13, v11);
-  [(PUWallpaperShuffleTransitionController *)self setUseCrossfade:v5];
-  [(PUWallpaperShuffleTransitionController *)self setFromViewModel:v9];
+  [(PUWallpaperShuffleTransitionController *)self setUseCrossfade:crossfadeCopy];
+  [(PUWallpaperShuffleTransitionController *)self setFromViewModel:modelCopy];
   [(PUWallpaperShuffleTransitionController *)self setToViewModel:v11];
   [(PUWallpaperShuffleTransitionController *)self _invalidateAnimators];
   if ([(PUWallpaperShuffleTransitionController *)self isAnimating])
@@ -163,7 +163,7 @@ uint64_t __100__PUWallpaperShuffleTransitionController_performTransitionFromView
   return [a2 performChanges:v3];
 }
 
-- (CGAffineTransform)_inactiveTransformForViewModel:(SEL)a3
+- (CGAffineTransform)_inactiveTransformForViewModel:(SEL)model
 {
   v5 = a4;
   [v5 inactiveFrame];
@@ -219,28 +219,28 @@ uint64_t __100__PUWallpaperShuffleTransitionController_performTransitionFromView
   return result;
 }
 
-- (void)_performFadeInAnimationUsingCrossfade:(BOOL)a3
+- (void)_performFadeInAnimationUsingCrossfade:(BOOL)crossfade
 {
-  if (!a3)
+  if (!crossfade)
   {
     [(PUWallpaperShuffleTransitionController *)self _visibilityAmountForFadeIn:0 useCrossfade:0];
     v5 = v4;
-    v6 = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
+    fadeInAnimator = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __80__PUWallpaperShuffleTransitionController__performFadeInAnimationUsingCrossfade___block_invoke;
     v9[3] = &__block_descriptor_40_e35_v16__0___PXMutableNumberAnimator__8l;
     v9[4] = v5;
-    [v6 performChangesWithoutAnimation:v9];
+    [fadeInAnimator performChangesWithoutAnimation:v9];
   }
 
-  v7 = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
+  fadeInAnimator2 = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __80__PUWallpaperShuffleTransitionController__performFadeInAnimationUsingCrossfade___block_invoke_2;
   v8[3] = &unk_1E7B78010;
   v8[4] = self;
-  [(PUWallpaperShuffleTransitionController *)self _performChangesWithDefaultDurationForAnimator:v7 changes:v8];
+  [(PUWallpaperShuffleTransitionController *)self _performChangesWithDefaultDurationForAnimator:fadeInAnimator2 changes:v8];
 }
 
 void __80__PUWallpaperShuffleTransitionController__performFadeInAnimationUsingCrossfade___block_invoke_2(uint64_t a1, void *a2)
@@ -253,45 +253,45 @@ void __80__PUWallpaperShuffleTransitionController__performFadeInAnimationUsingCr
 
 - (void)_removeFromViewModelFromViewHierarchy
 {
-  v2 = [(PUWallpaperShuffleTransitionController *)self fromViewModel];
-  v3 = [v2 viewManager];
+  fromViewModel = [(PUWallpaperShuffleTransitionController *)self fromViewModel];
+  viewManager = [fromViewModel viewManager];
 
-  PUParallaxLayerStackViewManagerPerformChangesInAllLayerViews(v3, &__block_literal_global_9419);
+  PUParallaxLayerStackViewManagerPerformChangesInAllLayerViews(viewManager, &__block_literal_global_9419);
 }
 
-- (void)setFromViewModel:(id)a3
+- (void)setFromViewModel:(id)model
 {
-  v10 = a3;
+  modelCopy = model;
   v4 = self->_fromViewModel;
   fromViewModel = v4;
-  if (v4 != v10)
+  if (v4 != modelCopy)
   {
-    v6 = [(PUParallaxLayerStackViewModel *)v4 isEqual:v10];
+    v6 = [(PUParallaxLayerStackViewModel *)v4 isEqual:modelCopy];
 
-    v8 = v10;
+    v8 = modelCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
     [(PUWallpaperShuffleTransitionController *)self _removeFromViewModelFromViewHierarchy];
-    v9 = v10;
+    v9 = modelCopy;
     fromViewModel = self->_fromViewModel;
     self->_fromViewModel = v9;
   }
 
-  v8 = v10;
+  v8 = modelCopy;
 LABEL_5:
 
   MEMORY[0x1EEE66BB8](v7, v8);
 }
 
-- (void)setFadeInAnimator:(id)a3
+- (void)setFadeInAnimator:(id)animator
 {
-  v8 = a3;
+  animatorCopy = animator;
   v5 = self->_fadeInAnimator;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == animatorCopy)
   {
   }
 
@@ -302,7 +302,7 @@ LABEL_5:
     if ((v7 & 1) == 0)
     {
       [(PXNumberAnimator *)self->_fadeInAnimator unregisterChangeObserver:self context:FadeInAnimatorObservationContext];
-      objc_storeStrong(&self->_fadeInAnimator, a3);
+      objc_storeStrong(&self->_fadeInAnimator, animator);
       [(PXNumberAnimator *)self->_fadeInAnimator registerChangeObserver:self context:FadeInAnimatorObservationContext];
       [(PUWallpaperShuffleTransitionController *)self _invalidateIsAnimating];
       [(PUWallpaperShuffleTransitionController *)self _invalidateViewProperties];
@@ -310,12 +310,12 @@ LABEL_5:
   }
 }
 
-- (void)setFadeOutAnimator:(id)a3
+- (void)setFadeOutAnimator:(id)animator
 {
-  v8 = a3;
+  animatorCopy = animator;
   v5 = self->_fadeOutAnimator;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == animatorCopy)
   {
   }
 
@@ -326,7 +326,7 @@ LABEL_5:
     if ((v7 & 1) == 0)
     {
       [(PXNumberAnimator *)self->_fadeOutAnimator unregisterChangeObserver:self context:FadeOutAnimatorObservationContext];
-      objc_storeStrong(&self->_fadeOutAnimator, a3);
+      objc_storeStrong(&self->_fadeOutAnimator, animator);
       [(PXNumberAnimator *)self->_fadeOutAnimator registerChangeObserver:self context:FadeOutAnimatorObservationContext];
       [(PUWallpaperShuffleTransitionController *)self _invalidateIsAnimating];
       [(PUWallpaperShuffleTransitionController *)self _invalidateViewProperties];
@@ -334,20 +334,20 @@ LABEL_5:
   }
 }
 
-- (void)setIsAnimating:(BOOL)a3
+- (void)setIsAnimating:(BOOL)animating
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_isAnimating != a3)
+  if (self->_isAnimating != animating)
   {
-    v3 = a3;
-    self->_isAnimating = a3;
+    animatingCopy = animating;
+    self->_isAnimating = animating;
     [(PUWallpaperShuffleTransitionController *)self _invalidateViewHierarchy];
     [(PUWallpaperShuffleTransitionController *)self signalChange:1];
     v5 = PLWallpaperGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = objc_opt_class();
-      v7 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v7 = [MEMORY[0x1E696AD98] numberWithBool:animatingCopy];
       v8 = 138412546;
       v9 = v6;
       v10 = 2112;
@@ -357,11 +357,11 @@ LABEL_5:
   }
 }
 
-- (double)_visibilityAmountForFadeIn:(BOOL)a3 useCrossfade:(BOOL)a4
+- (double)_visibilityAmountForFadeIn:(BOOL)in useCrossfade:(BOOL)crossfade
 {
   result = 0.0;
   v5 = 1.0;
-  if (a3)
+  if (in)
   {
     result = 1.0;
   }
@@ -371,7 +371,7 @@ LABEL_5:
     v5 = 0.300000012;
   }
 
-  if (!a4)
+  if (!crossfade)
   {
     return v5;
   }
@@ -379,10 +379,10 @@ LABEL_5:
   return result;
 }
 
-- (void)_performChangesWithDefaultDurationForAnimator:(id)a3 changes:(id)a4
+- (void)_performChangesWithDefaultDurationForAnimator:(id)animator changes:(id)changes
 {
-  v14 = a3;
-  v6 = a4;
+  animatorCopy = animator;
+  changesCopy = changes;
   if ([(PUWallpaperShuffleTransitionController *)self useCrossfade])
   {
     LODWORD(v7) = 1058642330;
@@ -391,9 +391,9 @@ LABEL_5:
 
   else
   {
-    v11 = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
+    fadeOutAnimator = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
 
-    if (v11 == v14)
+    if (fadeOutAnimator == animatorCopy)
     {
       v9 = 0.416999996;
       LODWORD(v7) = 1059481190;
@@ -401,9 +401,9 @@ LABEL_5:
       goto LABEL_9;
     }
 
-    v12 = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
+    fadeInAnimator = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
 
-    if (v12 == v14)
+    if (fadeInAnimator == animatorCopy)
     {
       v9 = 1.0;
       v7 = 0.0;
@@ -411,9 +411,9 @@ LABEL_5:
 
     else
     {
-      v13 = [(PUWallpaperShuffleTransitionController *)self additionalViewTitleHeightAnimator];
+      additionalViewTitleHeightAnimator = [(PUWallpaperShuffleTransitionController *)self additionalViewTitleHeightAnimator];
 
-      if (v13 != v14)
+      if (additionalViewTitleHeightAnimator != animatorCopy)
       {
         goto LABEL_10;
       }
@@ -426,14 +426,14 @@ LABEL_5:
   v10 = 0.0;
 LABEL_9:
   LODWORD(v8) = 1.0;
-  [v14 performChangesUsingBezierCurveWithDuration:v6 controlPoints:v9 :v7 :0.0 :v10 changes:v8];
+  [animatorCopy performChangesUsingBezierCurveWithDuration:changesCopy controlPoints:v9 :v7 :0.0 :v10 changes:v8];
 LABEL_10:
 }
 
 - (void)_updateAdditionalViewTitleHeightPresentationValue
 {
-  v3 = [(PUWallpaperShuffleTransitionController *)self additionalViewTitleHeightAnimator];
-  [v3 presentationValue];
+  additionalViewTitleHeightAnimator = [(PUWallpaperShuffleTransitionController *)self additionalViewTitleHeightAnimator];
+  [additionalViewTitleHeightAnimator presentationValue];
   [(PUWallpaperShuffleTransitionController *)self setAdditionalViewTitleHeightPresentationValue:?];
 
   [(PUWallpaperShuffleTransitionController *)self signalChange:2];
@@ -441,37 +441,37 @@ LABEL_10:
 
 - (void)_invalidateAdditionalViewTitleHeightPresentationValue
 {
-  v2 = [(PUWallpaperShuffleTransitionController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAdditionalViewTitleHeightPresentationValue];
+  updater = [(PUWallpaperShuffleTransitionController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAdditionalViewTitleHeightPresentationValue];
 }
 
 - (void)_invalidateFilters
 {
-  v2 = [(PUWallpaperShuffleTransitionController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFilters];
+  updater = [(PUWallpaperShuffleTransitionController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFilters];
 }
 
 - (void)_updateViewProperties
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperShuffleTransitionController *)self fromViewModel];
-  v4 = [v3 viewManager];
-  v5 = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
+  fromViewModel = [(PUWallpaperShuffleTransitionController *)self fromViewModel];
+  viewManager = [fromViewModel viewManager];
+  fadeOutAnimator = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __63__PUWallpaperShuffleTransitionController__updateViewProperties__block_invoke;
   v33[3] = &unk_1E7B80328;
-  v6 = v5;
+  v6 = fadeOutAnimator;
   v34 = v6;
-  [v3 performChanges:v33];
-  v7 = [v6 isAnimating];
+  [fromViewModel performChanges:v33];
+  isAnimating = [v6 isAnimating];
   memset(&v32, 0, sizeof(v32));
-  [(PUWallpaperShuffleTransitionController *)self _inactiveTransformForViewModel:v3];
+  [(PUWallpaperShuffleTransitionController *)self _inactiveTransformForViewModel:fromViewModel];
   memset(&v31, 0, sizeof(v31));
   [v6 presentationValue];
   v35 = v32;
   PUAffineTransformByLinearlyInterpolatingBetweenTransforms();
-  PUPosterAdditionalTransformForDeviceOrientation([v3 deviceOrientation], &t2);
+  PUPosterAdditionalTransformForDeviceOrientation([fromViewModel deviceOrientation], &t2);
   t1 = v31;
   CGAffineTransformConcat(&v35, &t1, &t2);
   v31 = v35;
@@ -479,9 +479,9 @@ LABEL_10:
   v26[1] = 3221225472;
   v26[2] = __63__PUWallpaperShuffleTransitionController__updateViewProperties__block_invoke_2;
   v26[3] = &__block_descriptor_81_e29_v16__0__PUParallaxLayerView_8l;
-  v28 = v7;
+  v28 = isAnimating;
   v27 = v35;
-  PUParallaxLayerStackViewManagerPerformChangesInAllLayerViews(v4, v26);
+  PUParallaxLayerStackViewManagerPerformChangesInAllLayerViews(viewManager, v26);
   v8 = PLWallpaperGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -494,27 +494,27 @@ LABEL_10:
     _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEFAULT, "[%@] Fade out to: %.2f", &v35, 0x16u);
   }
 
-  v11 = [(PUWallpaperShuffleTransitionController *)self toViewModel];
-  v12 = [v11 viewManager];
-  v13 = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
+  toViewModel = [(PUWallpaperShuffleTransitionController *)self toViewModel];
+  viewManager2 = [toViewModel viewManager];
+  fadeInAnimator = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __63__PUWallpaperShuffleTransitionController__updateViewProperties__block_invoke_233;
   v24[3] = &unk_1E7B80328;
-  v14 = v13;
+  v14 = fadeInAnimator;
   v25 = v14;
-  [v11 performChanges:v24];
-  v15 = [v14 isAnimating];
-  v16 = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
-  v17 = [v16 isAnimating];
+  [toViewModel performChanges:v24];
+  isAnimating2 = [v14 isAnimating];
+  fadeOutAnimator2 = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
+  isAnimating3 = [fadeOutAnimator2 isAnimating];
 
   memset(&v32, 0, sizeof(v32));
-  [(PUWallpaperShuffleTransitionController *)self _inactiveTransformForViewModel:v11];
+  [(PUWallpaperShuffleTransitionController *)self _inactiveTransformForViewModel:toViewModel];
   memset(&v31, 0, sizeof(v31));
   [v14 presentationValue];
   v35 = v32;
   PUAffineTransformByLinearlyInterpolatingBetweenTransforms();
-  PUPosterAdditionalTransformForDeviceOrientation([v11 deviceOrientation], &t2);
+  PUPosterAdditionalTransformForDeviceOrientation([toViewModel deviceOrientation], &t2);
   t1 = v31;
   CGAffineTransformConcat(&v35, &t1, &t2);
   v31 = v35;
@@ -522,9 +522,9 @@ LABEL_10:
   v21[1] = 3221225472;
   v21[2] = __63__PUWallpaperShuffleTransitionController__updateViewProperties__block_invoke_2_234;
   v21[3] = &__block_descriptor_81_e29_v16__0__PUParallaxLayerView_8l;
-  v23 = (v15 ^ 1) & v17;
+  v23 = (isAnimating2 ^ 1) & isAnimating3;
   v22 = v35;
-  PUParallaxLayerStackViewManagerPerformChangesInAllLayerViews(v12, v21);
+  PUParallaxLayerStackViewManagerPerformChangesInAllLayerViews(viewManager2, v21);
   v18 = PLWallpaperGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
@@ -580,74 +580,74 @@ void __63__PUWallpaperShuffleTransitionController__updateViewProperties__block_i
 
 - (void)_invalidateViewProperties
 {
-  v2 = [(PUWallpaperShuffleTransitionController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateViewProperties];
+  updater = [(PUWallpaperShuffleTransitionController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateViewProperties];
 }
 
 - (void)_updateViewHierarchy
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperShuffleTransitionController *)self fromViewModel];
-  v4 = [v3 viewManager];
-  v5 = [v3 currentLayerStack];
-  v6 = [v5 backgroundLayer];
-  v7 = [v4 viewForLayer:v6];
+  fromViewModel = [(PUWallpaperShuffleTransitionController *)self fromViewModel];
+  viewManager = [fromViewModel viewManager];
+  currentLayerStack = [fromViewModel currentLayerStack];
+  backgroundLayer = [currentLayerStack backgroundLayer];
+  v7 = [viewManager viewForLayer:backgroundLayer];
 
-  v8 = [v5 foregroundLayer];
-  v9 = [v4 viewForLayer:v8];
+  foregroundLayer = [currentLayerStack foregroundLayer];
+  v9 = [viewManager viewForLayer:foregroundLayer];
 
-  v10 = [v5 inactiveForegroundLayer];
-  v29 = [v4 viewForLayer:v10];
+  inactiveForegroundLayer = [currentLayerStack inactiveForegroundLayer];
+  v29 = [viewManager viewForLayer:inactiveForegroundLayer];
 
-  v11 = [v5 inactiveBackgroundLayer];
-  v28 = [v4 viewForLayer:v11];
+  inactiveBackgroundLayer = [currentLayerStack inactiveBackgroundLayer];
+  v28 = [viewManager viewForLayer:inactiveBackgroundLayer];
 
-  v12 = [v5 spatialPhotoForegroundLayer];
-  v13 = [v4 viewForLayer:v12];
+  spatialPhotoForegroundLayer = [currentLayerStack spatialPhotoForegroundLayer];
+  v13 = [viewManager viewForLayer:spatialPhotoForegroundLayer];
 
-  v14 = [v4 spatialPhotoBackgroundLayerView];
-  v15 = [v3 clockAppearsAboveForeground];
+  spatialPhotoBackgroundLayerView = [viewManager spatialPhotoBackgroundLayerView];
+  clockAppearsAboveForeground = [fromViewModel clockAppearsAboveForeground];
   v30 = v9;
-  v16 = [v9 layer];
-  [v16 setCompositingFilter:0];
+  layer = [v9 layer];
+  [layer setCompositingFilter:0];
 
-  v17 = [v7 layer];
-  [v17 setCompositingFilter:0];
+  layer2 = [v7 layer];
+  [layer2 setCompositingFilter:0];
 
-  v18 = [v13 layer];
-  [v18 setCompositingFilter:0];
+  layer3 = [v13 layer];
+  [layer3 setCompositingFilter:0];
 
-  v19 = [v14 layer];
-  [v19 setCompositingFilter:0];
+  layer4 = [spatialPhotoBackgroundLayerView layer];
+  [layer4 setCompositingFilter:0];
 
-  [v14 setEnableOcclusion:0];
+  [spatialPhotoBackgroundLayerView setEnableOcclusion:0];
   if ([(PUWallpaperShuffleTransitionController *)self isAnimating])
   {
     v27 = v7;
-    v20 = [(PUWallpaperShuffleTransitionController *)self renderer];
-    v21 = [v20 backgroundView];
-    v26 = [v20 foregroundView];
-    v22 = [v20 floatingView];
-    v23 = v21;
-    if (v14)
+    renderer = [(PUWallpaperShuffleTransitionController *)self renderer];
+    backgroundView = [renderer backgroundView];
+    foregroundView = [renderer foregroundView];
+    floatingView = [renderer floatingView];
+    v23 = backgroundView;
+    if (spatialPhotoBackgroundLayerView)
     {
-      v24 = v14;
+      v24 = spatialPhotoBackgroundLayerView;
     }
 
     else
     {
-      [v21 addSubview:v28];
-      [v21 addSubview:v27];
-      if (v15)
+      [backgroundView addSubview:v28];
+      [backgroundView addSubview:v27];
+      if (clockAppearsAboveForeground)
       {
-        [v26 addSubview:v29];
-        v23 = v26;
+        [foregroundView addSubview:v29];
+        v23 = foregroundView;
       }
 
       else
       {
-        [v22 addSubview:v29];
-        v23 = v22;
+        [floatingView addSubview:v29];
+        v23 = floatingView;
       }
 
       v24 = v30;
@@ -668,57 +668,57 @@ void __63__PUWallpaperShuffleTransitionController__updateViewProperties__block_i
   else
   {
     [(PUWallpaperShuffleTransitionController *)self setFromViewModel:0];
-    v20 = PLWallpaperGetLog();
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    renderer = PLWallpaperGetLog();
+    if (os_log_type_enabled(renderer, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v32 = objc_opt_class();
-      _os_log_impl(&dword_1B36F3000, v20, OS_LOG_TYPE_DEFAULT, "[%@] Remove 'from' views to the hierarchy", buf, 0xCu);
+      _os_log_impl(&dword_1B36F3000, renderer, OS_LOG_TYPE_DEFAULT, "[%@] Remove 'from' views to the hierarchy", buf, 0xCu);
     }
   }
 }
 
 - (void)_invalidateViewHierarchy
 {
-  v2 = [(PUWallpaperShuffleTransitionController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateViewHierarchy];
+  updater = [(PUWallpaperShuffleTransitionController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateViewHierarchy];
 }
 
 - (void)_updateIsAnimating
 {
-  v5 = [(PUWallpaperShuffleTransitionController *)self additionalViewTitleHeightAnimator];
-  if ([v5 isAnimating])
+  additionalViewTitleHeightAnimator = [(PUWallpaperShuffleTransitionController *)self additionalViewTitleHeightAnimator];
+  if ([additionalViewTitleHeightAnimator isAnimating])
   {
     [(PUWallpaperShuffleTransitionController *)self setIsAnimating:1];
   }
 
   else
   {
-    v3 = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
-    if ([v3 isAnimating])
+    fadeOutAnimator = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
+    if ([fadeOutAnimator isAnimating])
     {
       [(PUWallpaperShuffleTransitionController *)self setIsAnimating:1];
     }
 
     else
     {
-      v4 = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
-      -[PUWallpaperShuffleTransitionController setIsAnimating:](self, "setIsAnimating:", [v4 isAnimating]);
+      fadeInAnimator = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
+      -[PUWallpaperShuffleTransitionController setIsAnimating:](self, "setIsAnimating:", [fadeInAnimator isAnimating]);
     }
   }
 }
 
 - (void)_invalidateIsAnimating
 {
-  v2 = [(PUWallpaperShuffleTransitionController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateIsAnimating];
+  updater = [(PUWallpaperShuffleTransitionController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateIsAnimating];
 }
 
 - (void)_updateAnimators
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperShuffleTransitionController *)self additionalViewTitleHeightAnimator];
-  [v3 value];
+  additionalViewTitleHeightAnimator = [(PUWallpaperShuffleTransitionController *)self additionalViewTitleHeightAnimator];
+  [additionalViewTitleHeightAnimator value];
   if (PXFloatApproximatelyEqualToFloat())
   {
     v19[0] = MEMORY[0x1E69E9820];
@@ -726,7 +726,7 @@ void __63__PUWallpaperShuffleTransitionController__updateViewProperties__block_i
     v19[2] = __58__PUWallpaperShuffleTransitionController__updateAnimators__block_invoke;
     v19[3] = &unk_1E7B78010;
     v19[4] = self;
-    [v3 performChangesWithoutAnimation:v19];
+    [additionalViewTitleHeightAnimator performChangesWithoutAnimation:v19];
   }
 
   v18[0] = MEMORY[0x1E69E9820];
@@ -734,12 +734,12 @@ void __63__PUWallpaperShuffleTransitionController__updateViewProperties__block_i
   v18[2] = __58__PUWallpaperShuffleTransitionController__updateAnimators__block_invoke_2;
   v18[3] = &unk_1E7B78010;
   v18[4] = self;
-  [(PUWallpaperShuffleTransitionController *)self _performChangesWithDefaultDurationForAnimator:v3 changes:v18];
-  v4 = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
-  if ([v4 isAnimating])
+  [(PUWallpaperShuffleTransitionController *)self _performChangesWithDefaultDurationForAnimator:additionalViewTitleHeightAnimator changes:v18];
+  fadeInAnimator = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
+  if ([fadeInAnimator isAnimating])
   {
-    v5 = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
-    [v5 presentationValue];
+    fadeInAnimator2 = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
+    [fadeInAnimator2 presentationValue];
     v7 = v6;
   }
 
@@ -752,22 +752,22 @@ void __63__PUWallpaperShuffleTransitionController__updateViewProperties__block_i
   v9 = [objc_alloc(MEMORY[0x1E69C4588]) initWithValue:v7];
   [(PUWallpaperShuffleTransitionController *)self setFadeOutAnimator:v9];
 
-  v10 = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
-  [v10 setHighFrameRateReason:2228230];
+  fadeOutAnimator = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
+  [fadeOutAnimator setHighFrameRateReason:2228230];
 
-  v11 = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
+  fadeOutAnimator2 = [(PUWallpaperShuffleTransitionController *)self fadeOutAnimator];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __58__PUWallpaperShuffleTransitionController__updateAnimators__block_invoke_3;
   v17[3] = &unk_1E7B78010;
   v17[4] = self;
-  [(PUWallpaperShuffleTransitionController *)self _performChangesWithDefaultDurationForAnimator:v11 changes:v17];
+  [(PUWallpaperShuffleTransitionController *)self _performChangesWithDefaultDurationForAnimator:fadeOutAnimator2 changes:v17];
 
   v12 = [objc_alloc(MEMORY[0x1E69C4588]) initWithValue:0.0];
   [(PUWallpaperShuffleTransitionController *)self setFadeInAnimator:v12];
 
-  v13 = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
-  [v13 setHighFrameRateReason:2228230];
+  fadeInAnimator3 = [(PUWallpaperShuffleTransitionController *)self fadeInAnimator];
+  [fadeInAnimator3 setHighFrameRateReason:2228230];
 
   if ([(PUWallpaperShuffleTransitionController *)self useCrossfade])
   {
@@ -813,8 +813,8 @@ void __58__PUWallpaperShuffleTransitionController__updateAnimators__block_invoke
 
 - (void)_invalidateAnimators
 {
-  v2 = [(PUWallpaperShuffleTransitionController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAnimators];
+  updater = [(PUWallpaperShuffleTransitionController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAnimators];
 }
 
 - (void)didPerformChanges
@@ -822,15 +822,15 @@ void __58__PUWallpaperShuffleTransitionController__updateAnimators__block_invoke
   v4.receiver = self;
   v4.super_class = PUWallpaperShuffleTransitionController;
   [(PUWallpaperShuffleTransitionController *)&v4 didPerformChanges];
-  v3 = [(PUWallpaperShuffleTransitionController *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PUWallpaperShuffleTransitionController *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PUWallpaperShuffleTransitionController;
-  [(PUWallpaperShuffleTransitionController *)&v3 performChanges:a3];
+  [(PUWallpaperShuffleTransitionController *)&v3 performChanges:changes];
 }
 
 - (void)dealloc
@@ -841,16 +841,16 @@ void __58__PUWallpaperShuffleTransitionController__updateAnimators__block_invoke
   [(PUWallpaperShuffleTransitionController *)&v3 dealloc];
 }
 
-- (PUWallpaperShuffleTransitionController)initWithRenderer:(id)a3
+- (PUWallpaperShuffleTransitionController)initWithRenderer:(id)renderer
 {
-  v5 = a3;
+  rendererCopy = renderer;
   v13.receiver = self;
   v13.super_class = PUWallpaperShuffleTransitionController;
   v6 = [(PUWallpaperShuffleTransitionController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_renderer, a3);
+    objc_storeStrong(&v6->_renderer, renderer);
     v8 = [objc_alloc(MEMORY[0x1E69C4588]) initWithValue:0.0];
     additionalViewTitleHeightAnimator = v7->_additionalViewTitleHeightAnimator;
     v7->_additionalViewTitleHeightAnimator = v8;

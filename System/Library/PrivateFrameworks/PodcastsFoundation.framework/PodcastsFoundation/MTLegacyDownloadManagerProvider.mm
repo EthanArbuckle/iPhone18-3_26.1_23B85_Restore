@@ -1,14 +1,14 @@
 @interface MTLegacyDownloadManagerProvider
-- (void)setupWith:(id)a3 downloadsNotifier:(id)a4;
+- (void)setupWith:(id)with downloadsNotifier:(id)notifier;
 @end
 
 @implementation MTLegacyDownloadManagerProvider
 
-- (void)setupWith:(id)a3 downloadsNotifier:(id)a4
+- (void)setupWith:(id)with downloadsNotifier:(id)notifier
 {
-  v6 = a4;
-  [(MTLegacyDownloadManagerProvider *)self setDownloads:a3];
-  [(MTLegacyDownloadManagerProvider *)self setNotifier:v6];
+  notifierCopy = notifier;
+  [(MTLegacyDownloadManagerProvider *)self setDownloads:with];
+  [(MTLegacyDownloadManagerProvider *)self setNotifier:notifierCopy];
 }
 
 @end

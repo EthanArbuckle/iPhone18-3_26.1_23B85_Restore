@@ -1,10 +1,10 @@
 @interface CLReductiveFilterOptions
-- (CLReductiveFilterOptions)initWithBeaconType:(unint64_t)a3 transmitPower:(double)a4;
+- (CLReductiveFilterOptions)initWithBeaconType:(unint64_t)type transmitPower:(double)power;
 @end
 
 @implementation CLReductiveFilterOptions
 
-- (CLReductiveFilterOptions)initWithBeaconType:(unint64_t)a3 transmitPower:(double)a4
+- (CLReductiveFilterOptions)initWithBeaconType:(unint64_t)type transmitPower:(double)power
 {
   v25 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -13,9 +13,9 @@
   v7 = v6;
   if (v6)
   {
-    *(v6 + 1) = a3;
+    *(v6 + 1) = type;
     *(v6 + 24) = xmmword_19BA8CE50;
-    if (a4 < 4.0 || a4 > 20.0)
+    if (power < 4.0 || power > 20.0)
     {
       if (qword_1EAFE4768 != -1)
       {
@@ -30,7 +30,7 @@
         v17 = 2082;
         v18 = "";
         v19 = 2050;
-        v20 = a4;
+        powerCopy2 = power;
         v21 = 2050;
         v22 = 0x4010000000000000;
         v23 = 2050;
@@ -50,7 +50,7 @@
         v17 = 2082;
         v18 = "";
         v19 = 2050;
-        v20 = a4;
+        powerCopy2 = power;
         v21 = 2050;
         v22 = 0x4010000000000000;
         v23 = 2050;
@@ -58,16 +58,16 @@
         _os_signpost_emit_with_name_impl(&dword_19B873000, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "transmitPower: invalid range of transmit power", "{msg%{public}.0s:transmitPower: invalid range of transmit power, transmitPower_dBm:%{public}.6f, min.TransmitPower_dBm:%{public}.6f, max.TransmitPower_dBm:%{public}.6f}", buf, 0x30u);
       }
 
-      v11 = 4.0;
-      if (a4 >= 4.0)
+      powerCopy3 = 4.0;
+      if (power >= 4.0)
       {
-        v11 = a4;
+        powerCopy3 = power;
       }
 
-      a4 = fmin(v11, 20.0);
+      power = fmin(powerCopy3, 20.0);
     }
 
-    v7->_transmitPower = a4;
+    v7->_transmitPower = power;
   }
 
   v12 = *MEMORY[0x1E69E9840];

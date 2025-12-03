@@ -1,17 +1,17 @@
 @interface HMRestrictedGuestHomeAccessSettings
-+ (BOOL)doesAccessoryHaveRestrictedGuestCapableServiceTypes:(id)a3;
++ (BOOL)doesAccessoryHaveRestrictedGuestCapableServiceTypes:(id)types;
 + (id)secureClassServices;
 + (id)shortDescription;
-- (BOOL)doAllAccessoriesBelongToHome:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMRestrictedGuestHomeAccessSettings)initWithCoder:(id)a3;
+- (BOOL)doAllAccessoriesBelongToHome:(id)home;
+- (BOOL)isEqual:(id)equal;
+- (HMRestrictedGuestHomeAccessSettings)initWithCoder:(id)coder;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)locksWithReducedFunctionalityDueToSchedule;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)fixupAccessoriesForHome:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)fixupAccessoriesForHome:(id)home;
 @end
 
 @implementation HMRestrictedGuestHomeAccessSettings
@@ -20,12 +20,12 @@
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
-  v5 = [v3 initWithName:@"allowedAccessories" value:v4];
+  accessAllowedToAccessories = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
+  v5 = [v3 initWithName:@"allowedAccessories" value:accessAllowedToAccessories];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
-  v8 = [v6 initWithName:@"schedule" value:v7];
+  guestAccessSchedule = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
+  v8 = [v6 initWithName:@"schedule" value:guestAccessSchedule];
   v12[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
 
@@ -41,34 +41,34 @@
   return [v2 shortDescription];
 }
 
-- (void)fixupAccessoriesForHome:(id)a3
+- (void)fixupAccessoriesForHome:(id)home
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMRestrictedGuestHomeAccessSettings *)self identifiersOfAccessAllowedToAccessories];
+  homeCopy = home;
+  identifiersOfAccessAllowedToAccessories = [(HMRestrictedGuestHomeAccessSettings *)self identifiersOfAccessAllowedToAccessories];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__HMRestrictedGuestHomeAccessSettings_fixupAccessoriesForHome___block_invoke;
   v15[3] = &unk_1E754AD90;
-  v6 = v4;
+  v6 = homeCopy;
   v16 = v6;
-  v7 = [v5 na_map:v15];
+  v7 = [identifiersOfAccessAllowedToAccessories na_map:v15];
   [(HMRestrictedGuestHomeAccessSettings *)self setAccessAllowedToAccessories:v7];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [(HMRestrictedGuestHomeAccessSettings *)v9 accessAllowedToAccessories];
-    v13 = [(HMRestrictedGuestHomeAccessSettings *)v9 guestAccessSchedule];
+    accessAllowedToAccessories = [(HMRestrictedGuestHomeAccessSettings *)selfCopy accessAllowedToAccessories];
+    guestAccessSchedule = [(HMRestrictedGuestHomeAccessSettings *)selfCopy guestAccessSchedule];
     *buf = 138543874;
     v18 = v11;
     v19 = 2112;
-    v20 = v12;
+    v20 = accessAllowedToAccessories;
     v21 = 2112;
-    v22 = v13;
+    v22 = guestAccessSchedule;
     _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_DEBUG, "%{public}@AllowedAccessories: %@, AccessSchedules: %@", buf, 0x20u);
   }
 
@@ -76,9 +76,9 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (HMRestrictedGuestHomeAccessSettings)initWithCoder:(id)a3
+- (HMRestrictedGuestHomeAccessSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HMRestrictedGuestHomeAccessSettings;
   v5 = [(HMRestrictedGuestHomeAccessSettings *)&v13 init];
@@ -87,24 +87,24 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"HM.RG.Allowed.Accessory.Identifiers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"HM.RG.Allowed.Accessory.Identifiers"];
 
     v10 = [MEMORY[0x1E695DFD8] setWithArray:v9];
     [(HMRestrictedGuestHomeAccessSettings *)v5 setIdentifiersOfAccessAllowedToAccessories:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.RG.Schedule"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.RG.Schedule"];
     [(HMRestrictedGuestHomeAccessSettings *)v5 setGuestAccessSchedule:v11];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
+  coderCopy = coder;
+  accessAllowedToAccessories = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
 
-  if (v5)
+  if (accessAllowedToAccessories)
   {
     v13 = 0;
     v14 = &v13;
@@ -112,29 +112,29 @@
     v16 = __Block_byref_object_copy__35562;
     v17 = __Block_byref_object_dispose__35563;
     v6 = MEMORY[0x1E695DF70];
-    v7 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
-    v18 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    accessAllowedToAccessories2 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
+    v18 = [v6 arrayWithCapacity:{objc_msgSend(accessAllowedToAccessories2, "count")}];
 
-    v8 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
+    accessAllowedToAccessories3 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __55__HMRestrictedGuestHomeAccessSettings_encodeWithCoder___block_invoke;
     v12[3] = &unk_1E754AD68;
     v12[4] = &v13;
-    [v8 hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
+    [accessAllowedToAccessories3 hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
 
     v9 = [v14[5] copy];
-    [v4 encodeObject:v9 forKey:@"HM.RG.Allowed.Accessory.Identifiers"];
+    [coderCopy encodeObject:v9 forKey:@"HM.RG.Allowed.Accessory.Identifiers"];
 
     _Block_object_dispose(&v13, 8);
   }
 
-  v10 = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
+  guestAccessSchedule = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
 
-  if (v10)
+  if (guestAccessSchedule)
   {
-    v11 = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
-    [v4 encodeObject:v11 forKey:@"HM.RG.Schedule"];
+    guestAccessSchedule2 = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
+    [coderCopy encodeObject:guestAccessSchedule2 forKey:@"HM.RG.Schedule"];
   }
 }
 
@@ -145,25 +145,25 @@ void __55__HMRestrictedGuestHomeAccessSettings_encodeWithCoder___block_invoke(ui
   [v2 addObject:v3];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[HMRestrictedGuestHomeAccessSettings allocWithZone:?]];
-  v5 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
-  [(HMRestrictedGuestHomeAccessSettings *)v4 setAccessAllowedToAccessories:v5];
+  accessAllowedToAccessories = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
+  [(HMRestrictedGuestHomeAccessSettings *)v4 setAccessAllowedToAccessories:accessAllowedToAccessories];
 
-  v6 = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
-  [(HMRestrictedGuestHomeAccessSettings *)v4 setGuestAccessSchedule:v6];
+  guestAccessSchedule = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
+  [(HMRestrictedGuestHomeAccessSettings *)v4 setGuestAccessSchedule:guestAccessSchedule];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v4 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
-  if (v4)
+  accessAllowedToAccessories = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
+  if (accessAllowedToAccessories)
   {
-    v2 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
-    v5 = [v2 hash];
+    accessAllowedToAccessories2 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
+    v5 = [accessAllowedToAccessories2 hash];
   }
 
   else
@@ -171,11 +171,11 @@ void __55__HMRestrictedGuestHomeAccessSettings_encodeWithCoder___block_invoke(ui
     v5 = 0;
   }
 
-  v6 = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
-  if (v6)
+  guestAccessSchedule = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
+  if (guestAccessSchedule)
   {
-    v7 = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
-    v8 = [v7 hash];
+    guestAccessSchedule2 = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
+    v8 = [guestAccessSchedule2 hash];
   }
 
   else
@@ -183,20 +183,20 @@ void __55__HMRestrictedGuestHomeAccessSettings_encodeWithCoder___block_invoke(ui
     v8 = 0;
   }
 
-  if (v4)
+  if (accessAllowedToAccessories)
   {
   }
 
   return v8 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -207,8 +207,8 @@ void __55__HMRestrictedGuestHomeAccessSettings_encodeWithCoder___block_invoke(ui
   v6 = v5;
   if (v6 && (-[HMRestrictedGuestHomeAccessSettings accessAllowedToAccessories](self, "accessAllowedToAccessories"), v7 = objc_claimAutoreleasedReturnValue(), [v6 accessAllowedToAccessories], v8 = objc_claimAutoreleasedReturnValue(), v9 = HMFEqualObjects(), v8, v7, v9))
   {
-    v10 = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
-    v11 = [v6 guestAccessSchedule];
+    guestAccessSchedule = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
+    guestAccessSchedule2 = [v6 guestAccessSchedule];
     v12 = HMFEqualObjects();
   }
 
@@ -223,23 +223,23 @@ void __55__HMRestrictedGuestHomeAccessSettings_encodeWithCoder___block_invoke(ui
 - (id)locksWithReducedFunctionalityDueToSchedule
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
+  guestAccessSchedule = [(HMRestrictedGuestHomeAccessSettings *)self guestAccessSchedule];
 
-  if (v3)
+  if (guestAccessSchedule)
   {
-    v4 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
+    accessAllowedToAccessories = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __81__HMRestrictedGuestHomeAccessSettings_locksWithReducedFunctionalityDueToSchedule__block_invoke;
     v12[3] = &unk_1E754AD00;
     v12[4] = self;
-    v5 = [v4 na_filter:v12];
+    v5 = [accessAllowedToAccessories na_filter:v12];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -348,19 +348,19 @@ BOOL __81__HMRestrictedGuestHomeAccessSettings_locksWithReducedFunctionalityDueT
   return v22;
 }
 
-- (BOOL)doAllAccessoriesBelongToHome:(id)a3
+- (BOOL)doAllAccessoriesBelongToHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
-  if (v5 && (v6 = v5, -[HMRestrictedGuestHomeAccessSettings accessAllowedToAccessories](self, "accessAllowedToAccessories"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v6, v8))
+  homeCopy = home;
+  accessAllowedToAccessories = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
+  if (accessAllowedToAccessories && (v6 = accessAllowedToAccessories, -[HMRestrictedGuestHomeAccessSettings accessAllowedToAccessories](self, "accessAllowedToAccessories"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v6, v8))
   {
-    v9 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
+    accessAllowedToAccessories2 = [(HMRestrictedGuestHomeAccessSettings *)self accessAllowedToAccessories];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __68__HMRestrictedGuestHomeAccessSettings_doAllAccessoriesBelongToHome___block_invoke;
     v12[3] = &unk_1E754AD00;
-    v13 = v4;
-    v10 = [v9 na_allObjectsPassTest:v12];
+    v13 = homeCopy;
+    v10 = [accessAllowedToAccessories2 na_allObjectsPassTest:v12];
   }
 
   else
@@ -416,14 +416,14 @@ void __58__HMRestrictedGuestHomeAccessSettings_secureClassServices__block_invoke
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)doesAccessoryHaveRestrictedGuestCapableServiceTypes:(id)a3
++ (BOOL)doesAccessoryHaveRestrictedGuestCapableServiceTypes:(id)types
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __91__HMRestrictedGuestHomeAccessSettings_doesAccessoryHaveRestrictedGuestCapableServiceTypes___block_invoke;
   v4[3] = &__block_descriptor_40_e18_B16__0__NSString_8l;
-  v4[4] = a1;
-  return [a3 na_any:v4];
+  v4[4] = self;
+  return [types na_any:v4];
 }
 
 uint64_t __91__HMRestrictedGuestHomeAccessSettings_doesAccessoryHaveRestrictedGuestCapableServiceTypes___block_invoke(uint64_t a1, void *a2)

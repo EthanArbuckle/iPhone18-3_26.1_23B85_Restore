@@ -1,8 +1,8 @@
 @interface FLTCDMCATISwiftBloomFilter
 - (FLTCDMCATISwiftBitVector)bit_vector;
-- (FLTCDMCATISwiftBloomFilter)initWithFlatbuffData:(id)a3 root:(const CDMCATISwiftBloomFilter *)a4 verify:(BOOL)a5;
+- (FLTCDMCATISwiftBloomFilter)initWithFlatbuffData:(id)data root:(const CDMCATISwiftBloomFilter *)root verify:(BOOL)verify;
 - (NSString)name;
-- (Offset<CDMCATISwiftBloomFilter>)addObjectToBuffer:(void *)a3;
+- (Offset<CDMCATISwiftBloomFilter>)addObjectToBuffer:(void *)buffer;
 - (double)false_positive_rate;
 - (id)flatbuffData;
 - (unint64_t)number_of_bits;
@@ -44,72 +44,72 @@ apple::aiml::flatbuffers2::DetachedBuffer *__42__FLTCDMCATISwiftBloomFilter_flat
   return result;
 }
 
-- (Offset<CDMCATISwiftBloomFilter>)addObjectToBuffer:(void *)a3
+- (Offset<CDMCATISwiftBloomFilter>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FLTCDMCATISwiftBloomFilter *)self bit_vector];
-  v6 = [v5 addObjectToBuffer:a3];
+  bit_vector = [(FLTCDMCATISwiftBloomFilter *)self bit_vector];
+  v6 = [bit_vector addObjectToBuffer:buffer];
 
-  v7 = [(FLTCDMCATISwiftBloomFilter *)self number_of_bits];
-  v8 = [(FLTCDMCATISwiftBloomFilter *)self number_of_hashes];
-  v9 = [(FLTCDMCATISwiftBloomFilter *)self seed];
-  v10 = [(FLTCDMCATISwiftBloomFilter *)self expected_number_of_items];
+  number_of_bits = [(FLTCDMCATISwiftBloomFilter *)self number_of_bits];
+  number_of_hashes = [(FLTCDMCATISwiftBloomFilter *)self number_of_hashes];
+  seed = [(FLTCDMCATISwiftBloomFilter *)self seed];
+  expected_number_of_items = [(FLTCDMCATISwiftBloomFilter *)self expected_number_of_items];
   [(FLTCDMCATISwiftBloomFilter *)self false_positive_rate];
   v12 = v11;
-  v13 = [(FLTCDMCATISwiftBloomFilter *)self name];
-  v14 = v13;
-  if (!v13)
+  name = [(FLTCDMCATISwiftBloomFilter *)self name];
+  v14 = name;
+  if (!name)
   {
-    v13 = &stru_1F487A568;
+    name = &stru_1F487A568;
   }
 
-  v15 = [(__CFString *)v13 UTF8String];
-  v16 = strlen(v15);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v15, v16);
+  uTF8String = [(__CFString *)name UTF8String];
+  v16 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v16);
 
-  v17 = [(FLTCDMCATISwiftBloomFilter *)self number_of_items];
-  v26 = [(FLTCDMCATISwiftBloomFilter *)self expected_items_buffer];
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v19 = *(a3 + 5);
-  v18 = *(a3 + 6);
-  v20 = *(a3 + 4);
+  number_of_items = [(FLTCDMCATISwiftBloomFilter *)self number_of_items];
+  expected_items_buffer = [(FLTCDMCATISwiftBloomFilter *)self expected_items_buffer];
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v19 = *(buffer + 5);
+  v18 = *(buffer + 6);
+  v20 = *(buffer + 4);
   if (v6)
   {
-    v21 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(a3, v6);
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v21, 0);
+    v21 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(buffer, v6);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, v21, 0);
   }
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(a3, 6, v7);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(a3, 8, v8);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(a3, 10, v9);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 12, v10, 0);
-  if (v12 != 0.0 || *(a3 + 80) == 1)
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 6, number_of_bits);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 8, number_of_hashes);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 10, seed);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 12, expected_number_of_items, 0);
+  if (v12 != 0.0 || *(buffer + 80) == 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::Align(a3, 8uLL);
-    apple::aiml::flatbuffers2::vector_downward::ensure_space(a3, 8uLL);
-    v22 = *(a3 + 6);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::Align(buffer, 8uLL);
+    apple::aiml::flatbuffers2::vector_downward::ensure_space(buffer, 8uLL);
+    v22 = *(buffer + 6);
     *(v22 - 8) = v12;
     v22 -= 8;
-    *(a3 + 6) = v22;
-    v23 = (*(a3 + 8) - v22 + *(a3 + 10));
-    apple::aiml::flatbuffers2::vector_downward::ensure_space(a3, 8uLL);
-    **(a3 + 7) = v23 | 0xE00000000;
-    *(a3 + 7) += 8;
-    ++*(a3 + 16);
-    v24 = *(a3 + 34);
+    *(buffer + 6) = v22;
+    v23 = (*(buffer + 8) - v22 + *(buffer + 10));
+    apple::aiml::flatbuffers2::vector_downward::ensure_space(buffer, 8uLL);
+    **(buffer + 7) = v23 | 0xE00000000;
+    *(buffer + 7) += 8;
+    ++*(buffer + 16);
+    v24 = *(buffer + 34);
     if (v24 <= 0xE)
     {
       LOWORD(v24) = 14;
     }
 
-    *(a3 + 34) = v24;
+    *(buffer + 34) = v24;
   }
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 16, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 18, v17, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 20, v26, 1234);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 16, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 18, number_of_items, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 20, expected_items_buffer, 1234);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v20 - v18 + v19);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v20 - v18 + v19);
 }
 
 - (unsigned)expected_items_buffer
@@ -267,10 +267,10 @@ apple::aiml::flatbuffers2::DetachedBuffer *__42__FLTCDMCATISwiftBloomFilter_flat
   return v3;
 }
 
-- (FLTCDMCATISwiftBloomFilter)initWithFlatbuffData:(id)a3 root:(const CDMCATISwiftBloomFilter *)a4 verify:(BOOL)a5
+- (FLTCDMCATISwiftBloomFilter)initWithFlatbuffData:(id)data root:(const CDMCATISwiftBloomFilter *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FLTCDMCATISwiftBloomFilter;
   v10 = [(FLTCDMCATISwiftBloomFilter *)&v25 init];
@@ -279,35 +279,35 @@ apple::aiml::flatbuffers2::DetachedBuffer *__42__FLTCDMCATISwiftBloomFilter_flat
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1C8C15D50;
   v23 = 0;

@@ -30,7 +30,7 @@
 
 - (NSDictionary)messageBody
 {
-  v2 = self;
+  selfCopy = self;
   KeyPackage = QueryKeyPackageMessage.messageBody.getter();
 
   if (KeyPackage)

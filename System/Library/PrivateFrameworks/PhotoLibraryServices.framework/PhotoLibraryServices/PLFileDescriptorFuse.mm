@@ -8,7 +8,7 @@
 + (void)logRecentOpenFiles
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (MEMORY[0x19EAEE230](a1, a2))
+  if (MEMORY[0x19EAEE230](self, a2))
   {
     v11.rlim_cur = 0;
     v11.rlim_max = 0;
@@ -92,7 +92,7 @@
         _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_ERROR, "File descriptor fuse blown", v5, 2u);
       }
 
-      [a1 logRecentOpenFiles];
+      [self logRecentOpenFiles];
       qword_1EAFF9EC8 = "File descriptor fuse blown";
       __break(1u);
     }

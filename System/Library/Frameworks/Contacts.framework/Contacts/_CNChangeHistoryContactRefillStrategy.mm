@@ -1,56 +1,56 @@
 @interface _CNChangeHistoryContactRefillStrategy
-- (id)initWithKeysToFetch:(char)a3 unifyResults:(void *)a4 contactStore:;
-- (id)objectsRepresentedByBatch:(id)a3;
-- (id)updateChanges:(void *)a3 withFetchedContacts:;
-- (void)fetchContactsWithIdentifiers:(void *)a1;
+- (id)initWithKeysToFetch:(char)fetch unifyResults:(void *)results contactStore:;
+- (id)objectsRepresentedByBatch:(id)batch;
+- (id)updateChanges:(void *)changes withFetchedContacts:;
+- (void)fetchContactsWithIdentifiers:(void *)identifiers;
 @end
 
 @implementation _CNChangeHistoryContactRefillStrategy
 
-- (id)objectsRepresentedByBatch:(id)a3
+- (id)objectsRepresentedByBatch:(id)batch
 {
-  v4 = a3;
-  v5 = [v4 _cn_map:&__block_literal_global_40_1];
+  batchCopy = batch;
+  v5 = [batchCopy _cn_map:&__block_literal_global_40_1];
   v6 = [v5 _cn_filter:*MEMORY[0x1E6996570]];
-  v7 = [v6 _cn_distinctObjects];
+  _cn_distinctObjects = [v6 _cn_distinctObjects];
 
-  v8 = [(_CNChangeHistoryContactRefillStrategy *)self fetchContactsWithIdentifiers:v7];
-  v9 = [(_CNChangeHistoryContactRefillStrategy *)self updateChanges:v4 withFetchedContacts:v8];
+  v8 = [(_CNChangeHistoryContactRefillStrategy *)self fetchContactsWithIdentifiers:_cn_distinctObjects];
+  v9 = [(_CNChangeHistoryContactRefillStrategy *)self updateChanges:batchCopy withFetchedContacts:v8];
 
   return v9;
 }
 
-- (id)initWithKeysToFetch:(char)a3 unifyResults:(void *)a4 contactStore:
+- (id)initWithKeysToFetch:(char)fetch unifyResults:(void *)results contactStore:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  resultsCopy = results;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = _CNChangeHistoryContactRefillStrategy;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
       v9 = [v7 copy];
-      v10 = a1[2];
-      a1[2] = v9;
+      v10 = self[2];
+      self[2] = v9;
 
-      *(a1 + 8) = a3;
-      objc_storeStrong(a1 + 3, a4);
+      *(self + 8) = fetch;
+      objc_storeStrong(self + 3, results);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)fetchContactsWithIdentifiers:(void *)a1
+- (void)fetchContactsWithIdentifiers:(void *)identifiers
 {
   v3 = a2;
-  if (a1)
+  if (identifiers)
   {
     if ((*(*MEMORY[0x1E6996530] + 16))())
     {
-      a1 = MEMORY[0x1E695E0F8];
+      identifiers = MEMORY[0x1E695E0F8];
     }
 
     else
@@ -63,12 +63,12 @@
       v5 = v4;
       v16 = v5;
       v6 = _Block_copy(aBlock);
-      v7 = [[CNContactFetchRequest alloc] initWithKeysToFetch:a1[2]];
+      v7 = [[CNContactFetchRequest alloc] initWithKeysToFetch:identifiers[2]];
       v8 = [CNContact predicateForContactsWithIdentifiers:v3];
       [(CNContactFetchRequest *)v7 setPredicate:v8];
 
-      [(CNContactFetchRequest *)v7 setUnifyResults:*(a1 + 8)];
-      v9 = a1[3];
+      [(CNContactFetchRequest *)v7 setUnifyResults:*(identifiers + 8)];
+      v9 = identifiers[3];
       v14 = 0;
       v10 = v9;
       v11 = [v10 enumerateContactsWithFetchRequest:v7 error:&v14 usingBlock:v6];
@@ -76,28 +76,28 @@
 
       if (v11)
       {
-        a1 = v5;
+        identifiers = v5;
       }
 
       else
       {
         NSLog(&cfstr_FailedToFetchC.isa, v12);
-        a1 = 0;
+        identifiers = 0;
       }
     }
   }
 
-  return a1;
+  return identifiers;
 }
 
-- (id)updateChanges:(void *)a3 withFetchedContacts:
+- (id)updateChanges:(void *)changes withFetchedContacts:
 {
   v5 = a2;
-  v6 = a3;
-  v8 = v6;
-  if (a1)
+  changesCopy = changes;
+  v8 = changesCopy;
+  if (self)
   {
-    v9 = OUTLINED_FUNCTION_0_13(v6, v7);
+    v9 = OUTLINED_FUNCTION_0_13(changesCopy, v7);
     if (v9)
     {
       v10 = v9;
@@ -117,22 +117,22 @@
           v9 = sIsChangeDelete_block_invoke(v9, v14);
           if ((v9 & 1) == 0)
           {
-            v16 = [v14 contactIdentifier];
-            v17 = (*(v12 + 16))(v12, v16);
+            contactIdentifier = [v14 contactIdentifier];
+            v17 = (*(v12 + 16))(v12, contactIdentifier);
 
             if (v17)
             {
-              v18 = [v14 contactIdentifier];
-              v19 = [v8 objectForKeyedSubscript:v18];
+              contactIdentifier2 = [v14 contactIdentifier];
+              v19 = [v8 objectForKeyedSubscript:contactIdentifier2];
               [v14 setContact:v19];
 
-              v20 = [v14 contact];
+              contact = [v14 contact];
 
-              if (!v20)
+              if (!contact)
               {
                 v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v14, "changeType")}];
-                v22 = [v14 contactIdentifier];
-                NSLog(&cfstr_CouldNotFetchC.isa, v21, v22);
+                contactIdentifier3 = [v14 contactIdentifier];
+                NSLog(&cfstr_CouldNotFetchC.isa, v21, contactIdentifier3);
 
                 v9 = [v14 setChangeType:2];
               }
@@ -150,10 +150,10 @@
       while (v9);
     }
 
-    a1 = v5;
+    self = v5;
   }
 
-  return a1;
+  return self;
 }
 
 @end

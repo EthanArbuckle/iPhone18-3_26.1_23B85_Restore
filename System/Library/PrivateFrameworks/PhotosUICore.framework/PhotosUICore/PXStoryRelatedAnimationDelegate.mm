@@ -1,22 +1,22 @@
 @interface PXStoryRelatedAnimationDelegate
 - (PXStoryRelatedAnimationDelegate)init;
-- (PXStoryRelatedAnimationDelegate)initWithSelectedRelatedLayout:(id)a3;
-- (id)animation:(id)a3 doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes:(id)a4 rootLayout:(id)a5 presentedGeometries:(id *)a6 styles:(id *)a7 infos:(id *)a8;
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)a7;
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)a7;
-- (void)animation:(id)a3 prepareWithRootLayout:(id)a4 viewportShift:(CGPoint)a5;
+- (PXStoryRelatedAnimationDelegate)initWithSelectedRelatedLayout:(id)layout;
+- (id)animation:(id)animation doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes:(id)indexes rootLayout:(id)layout presentedGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos;
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)range;
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)range;
+- (void)animation:(id)animation prepareWithRootLayout:(id)layout viewportShift:(CGPoint)shift;
 @end
 
 @implementation PXStoryRelatedAnimationDelegate
 
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)a7
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)range
 {
-  v23 = a3;
-  v12 = HIDWORD(*&a7);
+  animationCopy = animation;
+  v12 = HIDWORD(*&range);
   if (v12)
   {
-    v13 = a6 + 1;
-    p_var2 = &a4->var0.var2;
+    v13 = infos + 1;
+    p_var2 = &geometries->var0.var2;
     do
     {
       v16 = *&v13->var0;
@@ -24,7 +24,7 @@
       v15 = v16;
       if ((v16 & 0x20000) != 0)
       {
-        a5->var0 = -a5->var0;
+        styles->var0 = -styles->var0;
       }
 
       else
@@ -51,7 +51,7 @@
         *p_var2 = *p_var2 + 2.0;
       }
 
-      a5 = (a5 + 160);
+      styles = (styles + 160);
       p_var2 += 4;
       --v12;
     }
@@ -60,20 +60,20 @@
   }
 }
 
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)a7
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)range
 {
-  v22 = a3;
-  v12 = HIDWORD(*&a7);
+  animationCopy = animation;
+  v12 = HIDWORD(*&range);
   if (v12)
   {
-    v13 = a6 + 1;
-    p_var2 = &a4->var0.var2;
+    v13 = infos + 1;
+    p_var2 = &geometries->var0.var2;
     do
     {
       if ((*(&v13->var1 + 1) & 3) != 0)
       {
-        v15 = a5->var0 * -9999.00025;
-        a5->var0 = v15;
+        v15 = styles->var0 * -9999.00025;
+        styles->var0 = v15;
       }
 
       else
@@ -96,7 +96,7 @@
       }
 
       v13 = (v13 + 40);
-      a5 = (a5 + 160);
+      styles = (styles + 160);
       p_var2 += 4;
       --v12;
     }
@@ -105,36 +105,36 @@
   }
 }
 
-- (void)animation:(id)a3 prepareWithRootLayout:(id)a4 viewportShift:(CGPoint)a5
+- (void)animation:(id)animation prepareWithRootLayout:(id)layout viewportShift:(CGPoint)shift
 {
-  v7 = a4;
+  layoutCopy = layout;
   WeakRetained = objc_loadWeakRetained(&self->_rootLayout);
 
-  if (WeakRetained != v7)
+  if (WeakRetained != layoutCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedAnimation.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"rootLayout == _rootLayout"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedAnimation.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"rootLayout == _rootLayout"}];
   }
 
   PXPointAdd();
 }
 
-- (id)animation:(id)a3 doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes:(id)a4 rootLayout:(id)a5 presentedGeometries:(id *)a6 styles:(id *)a7 infos:(id *)a8
+- (id)animation:(id)animation doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes:(id)indexes rootLayout:(id)layout presentedGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos
 {
-  v10 = a4;
-  v11 = a5;
-  if ([v10 count])
+  indexesCopy = indexes;
+  layoutCopy = layout;
+  if ([indexesCopy count])
   {
-    v12 = [v10 firstIndex];
-    v13 = [v10 lastIndex];
+    firstIndex = [indexesCopy firstIndex];
+    lastIndex = [indexesCopy lastIndex];
     v14 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    [v11 visibleRect];
-    if (v12 <= v13)
+    [layoutCopy visibleRect];
+    if (firstIndex <= lastIndex)
     {
       do
       {
-        v15 = v12;
-        v16 = *(&a8[1].var0 + 5 * v12);
+        v15 = firstIndex;
+        v16 = *(&infos[1].var0 + 5 * firstIndex);
         if ((v16 & 0x10000) != 0)
         {
           PXRectApproximatelyEqualToRect();
@@ -145,10 +145,10 @@
           [v14 addIndex:v15];
         }
 
-        v12 = v15 + 1;
+        firstIndex = v15 + 1;
       }
 
-      while (v15 + 1 <= v13);
+      while (v15 + 1 <= lastIndex);
     }
 
     v17 = [v14 copy];
@@ -162,13 +162,13 @@
   return v17;
 }
 
-- (PXStoryRelatedAnimationDelegate)initWithSelectedRelatedLayout:(id)a3
+- (PXStoryRelatedAnimationDelegate)initWithSelectedRelatedLayout:(id)layout
 {
-  v5 = a3;
-  if (!v5)
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedAnimation.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"selectedRelatedLayout != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedAnimation.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"selectedRelatedLayout != nil"}];
   }
 
   v10.receiver = self;
@@ -176,11 +176,11 @@
   v6 = [(PXStoryRelatedAnimationDelegate *)&v10 init];
   if (v6)
   {
-    v7 = [v5 rootLayout];
-    objc_storeWeak(&v6->_rootLayout, v7);
+    rootLayout = [layoutCopy rootLayout];
+    objc_storeWeak(&v6->_rootLayout, rootLayout);
 
     objc_loadWeakRetained(&v6->_rootLayout);
-    [v5 contentSize];
+    [layoutCopy contentSize];
     PXRectWithOriginAndSize();
   }
 
@@ -189,8 +189,8 @@
 
 - (PXStoryRelatedAnimationDelegate)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedAnimation.m" lineNumber:48 description:{@"%s is not available as initializer", "-[PXStoryRelatedAnimationDelegate init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedAnimation.m" lineNumber:48 description:{@"%s is not available as initializer", "-[PXStoryRelatedAnimationDelegate init]"}];
 
   abort();
 }

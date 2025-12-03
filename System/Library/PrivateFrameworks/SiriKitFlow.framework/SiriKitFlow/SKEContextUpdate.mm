@@ -1,14 +1,14 @@
 @interface SKEContextUpdate
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKEContextUpdate
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DCCC6644(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1DCCC6644(coderCopy);
 }
 
 @end

@@ -13,7 +13,7 @@
     if (result)
     {
 
-      return [a1 setValue:a3 forHTTPHeaderField:@"Referer"];
+      return [self setValue:a3 forHTTPHeaderField:@"Referer"];
     }
   }
 

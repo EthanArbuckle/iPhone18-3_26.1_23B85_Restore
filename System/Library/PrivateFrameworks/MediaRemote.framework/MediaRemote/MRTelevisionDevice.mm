@@ -6,16 +6,16 @@
 
 - (id)currentClientUpdatesConfigMessage
 {
-  v3 = [(MRTelevisionDevice *)self textInputCallback];
-  if (v3)
+  textInputCallback = [(MRTelevisionDevice *)self textInputCallback];
+  if (textInputCallback)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MRTelevisionDevice *)self rtiCallback];
-    v4 = v5 != 0;
+    rtiCallback = [(MRTelevisionDevice *)self rtiCallback];
+    v4 = rtiCallback != 0;
   }
 
   v6 = [[MRClientUpdatesConfigMessage alloc] initWithNowPlayingUpdates:[(MRExternalDevice *)self wantsNowPlayingNotifications] artworkUpdates:[(MRExternalDevice *)self wantsNowPlayingArtworkNotifications] volumeUpdates:[(MRExternalDevice *)self wantsVolumeNotifications] keyboardUpdates:v4 outputDeviceUpdates:[(MRExternalDevice *)self wantsOutputDeviceNotifications] systemEndpointUpdates:[(MRExternalDevice *)self wantsSystemEndpointNotifications] subscribedPlayerPaths:0];

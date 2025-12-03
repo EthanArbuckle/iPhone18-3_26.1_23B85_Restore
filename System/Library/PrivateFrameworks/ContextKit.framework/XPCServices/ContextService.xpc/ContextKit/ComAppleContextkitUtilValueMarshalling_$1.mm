@@ -1,30 +1,30 @@
 @interface ComAppleContextkitUtilValueMarshalling_$1
-- (id)readValueWithOrgApacheLuceneStoreIndexInput:(id)a3;
-- (void)writeValueWithId:(id)a3 withOrgApacheLuceneStoreIndexOutput:(id)a4;
+- (id)readValueWithOrgApacheLuceneStoreIndexInput:(id)input;
+- (void)writeValueWithId:(id)id withOrgApacheLuceneStoreIndexOutput:(id)output;
 @end
 
 @implementation ComAppleContextkitUtilValueMarshalling_$1
 
-- (void)writeValueWithId:(id)a3 withOrgApacheLuceneStoreIndexOutput:(id)a4
+- (void)writeValueWithId:(id)id withOrgApacheLuceneStoreIndexOutput:(id)output
 {
-  if (!a4 || !a3)
+  if (!output || !id)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 description];
+  v5 = [id description];
 
-  [a4 writeStringWithNSString:v5];
+  [output writeStringWithNSString:v5];
 }
 
-- (id)readValueWithOrgApacheLuceneStoreIndexInput:(id)a3
+- (id)readValueWithOrgApacheLuceneStoreIndexInput:(id)input
 {
-  if (!a3)
+  if (!input)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 readString];
+  return [input readString];
 }
 
 @end

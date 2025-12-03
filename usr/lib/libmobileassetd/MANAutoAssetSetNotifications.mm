@@ -1,9 +1,9 @@
 @interface MANAutoAssetSetNotifications
 - (MANAutoAssetSetNotifications)init;
-- (MANAutoAssetSetNotifications)initWithCoder:(id)a3;
+- (MANAutoAssetSetNotifications)initWithCoder:(id)coder;
 - (id)copy;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MANAutoAssetSetNotifications
@@ -22,40 +22,40 @@
   return result;
 }
 
-- (MANAutoAssetSetNotifications)initWithCoder:(id)a3
+- (MANAutoAssetSetNotifications)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MANAutoAssetSetNotifications;
   v5 = [(MANAutoAssetSetNotifications *)&v7 init];
   if (v5)
   {
-    v5->_atomicInstanceDiscovered = [v4 decodeBoolForKey:@"atomicInstanceDiscovered"];
-    v5->_atomicInstanceAvailableForUse = [v4 decodeBoolForKey:@"atomicInstanceAvailableForUse"];
-    v5->_lockUsageCheck = [v4 decodeBoolForKey:@"lockUsageCheck"];
-    v5->_filesystemSpaceCritical = [v4 decodeBoolForKey:@"filesystemSpaceCritical"];
-    v5->_atomicInstancePurged = [v4 decodeBoolForKey:@"atomicInstancePurged"];
-    v5->_downloadPending = [v4 decodeBoolForKey:@"downloadPending"];
-    v5->_downloadProgress = [v4 decodeBoolForKey:@"downloadProgress"];
-    v5->_downloadAbandoned = [v4 decodeBoolForKey:@"downloadAbandoned"];
-    v5->_downloadedBecameIncomplete = [v4 decodeBoolForKey:@"downloadedBecameIncomplete"];
+    v5->_atomicInstanceDiscovered = [coderCopy decodeBoolForKey:@"atomicInstanceDiscovered"];
+    v5->_atomicInstanceAvailableForUse = [coderCopy decodeBoolForKey:@"atomicInstanceAvailableForUse"];
+    v5->_lockUsageCheck = [coderCopy decodeBoolForKey:@"lockUsageCheck"];
+    v5->_filesystemSpaceCritical = [coderCopy decodeBoolForKey:@"filesystemSpaceCritical"];
+    v5->_atomicInstancePurged = [coderCopy decodeBoolForKey:@"atomicInstancePurged"];
+    v5->_downloadPending = [coderCopy decodeBoolForKey:@"downloadPending"];
+    v5->_downloadProgress = [coderCopy decodeBoolForKey:@"downloadProgress"];
+    v5->_downloadAbandoned = [coderCopy decodeBoolForKey:@"downloadAbandoned"];
+    v5->_downloadedBecameIncomplete = [coderCopy decodeBoolForKey:@"downloadedBecameIncomplete"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[MANAutoAssetSetNotifications atomicInstanceDiscovered](self forKey:{"atomicInstanceDiscovered"), @"atomicInstanceDiscovered"}];
-  [v4 encodeBool:-[MANAutoAssetSetNotifications atomicInstanceAvailableForUse](self forKey:{"atomicInstanceAvailableForUse"), @"atomicInstanceAvailableForUse"}];
-  [v4 encodeBool:-[MANAutoAssetSetNotifications lockUsageCheck](self forKey:{"lockUsageCheck"), @"lockUsageCheck"}];
-  [v4 encodeBool:-[MANAutoAssetSetNotifications filesystemSpaceCritical](self forKey:{"filesystemSpaceCritical"), @"filesystemSpaceCritical"}];
-  [v4 encodeBool:-[MANAutoAssetSetNotifications atomicInstancePurged](self forKey:{"atomicInstancePurged"), @"atomicInstancePurged"}];
-  [v4 encodeBool:-[MANAutoAssetSetNotifications downloadPending](self forKey:{"downloadPending"), @"downloadPending"}];
-  [v4 encodeBool:-[MANAutoAssetSetNotifications downloadProgress](self forKey:{"downloadProgress"), @"downloadProgress"}];
-  [v4 encodeBool:-[MANAutoAssetSetNotifications downloadAbandoned](self forKey:{"downloadAbandoned"), @"downloadAbandoned"}];
-  [v4 encodeBool:-[MANAutoAssetSetNotifications downloadedBecameIncomplete](self forKey:{"downloadedBecameIncomplete"), @"downloadedBecameIncomplete"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[MANAutoAssetSetNotifications atomicInstanceDiscovered](self forKey:{"atomicInstanceDiscovered"), @"atomicInstanceDiscovered"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetNotifications atomicInstanceAvailableForUse](self forKey:{"atomicInstanceAvailableForUse"), @"atomicInstanceAvailableForUse"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetNotifications lockUsageCheck](self forKey:{"lockUsageCheck"), @"lockUsageCheck"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetNotifications filesystemSpaceCritical](self forKey:{"filesystemSpaceCritical"), @"filesystemSpaceCritical"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetNotifications atomicInstancePurged](self forKey:{"atomicInstancePurged"), @"atomicInstancePurged"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetNotifications downloadPending](self forKey:{"downloadPending"), @"downloadPending"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetNotifications downloadProgress](self forKey:{"downloadProgress"), @"downloadProgress"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetNotifications downloadAbandoned](self forKey:{"downloadAbandoned"), @"downloadAbandoned"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetNotifications downloadedBecameIncomplete](self forKey:{"downloadedBecameIncomplete"), @"downloadedBecameIncomplete"}];
 }
 
 - (id)copy

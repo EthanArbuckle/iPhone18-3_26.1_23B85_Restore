@@ -1,5 +1,5 @@
 @interface HMDCameraRecordingLogEvent
-- (HMDCameraRecordingLogEvent)initWithSessionID:(id)a3 cameraID:(id)a4 sequenceNumber:(unint64_t)a5;
+- (HMDCameraRecordingLogEvent)initWithSessionID:(id)d cameraID:(id)iD sequenceNumber:(unint64_t)number;
 - (NSUUID)ephemeralCameraID;
 - (id)attributeDescriptions;
 @end
@@ -10,11 +10,11 @@
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDCameraRecordingLogEvent *)self cameraID];
-  v5 = [v3 initWithName:@"cameraID" value:v4];
+  cameraID = [(HMDCameraRecordingLogEvent *)self cameraID];
+  v5 = [v3 initWithName:@"cameraID" value:cameraID];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDCameraRecordingLogEvent *)self sessionID];
-  v8 = [v6 initWithName:@"sessionID" value:v7];
+  sessionID = [(HMDCameraRecordingLogEvent *)self sessionID];
+  v8 = [v6 initWithName:@"sessionID" value:sessionID];
   v15[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDCameraRecordingLogEvent sequenceNumber](self, "sequenceNumber")}];
@@ -29,25 +29,25 @@
 
 - (NSUUID)ephemeralCameraID
 {
-  v2 = [(HMDCameraRecordingLogEvent *)self cameraID];
-  v3 = [HMDCameraRecordingMetricUUIDUtilities currentEphemeralUUIDWithUUID:v2 rotationScheduleDays:1];
+  cameraID = [(HMDCameraRecordingLogEvent *)self cameraID];
+  v3 = [HMDCameraRecordingMetricUUIDUtilities currentEphemeralUUIDWithUUID:cameraID rotationScheduleDays:1];
 
   return v3;
 }
 
-- (HMDCameraRecordingLogEvent)initWithSessionID:(id)a3 cameraID:(id)a4 sequenceNumber:(unint64_t)a5
+- (HMDCameraRecordingLogEvent)initWithSessionID:(id)d cameraID:(id)iD sequenceNumber:(unint64_t)number
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = HMDCameraRecordingLogEvent;
   v11 = [(HMMLogEvent *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sessionID, a3);
-    objc_storeStrong(&v12->_cameraID, a4);
-    v12->_sequenceNumber = a5;
+    objc_storeStrong(&v11->_sessionID, d);
+    objc_storeStrong(&v12->_cameraID, iD);
+    v12->_sequenceNumber = number;
   }
 
   return v12;

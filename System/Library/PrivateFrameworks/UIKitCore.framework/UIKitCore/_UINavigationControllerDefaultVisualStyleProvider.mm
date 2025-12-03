@@ -1,12 +1,12 @@
 @interface _UINavigationControllerDefaultVisualStyleProvider
-- (id)styleForNavigationController:(id)a3;
+- (id)styleForNavigationController:(id)controller;
 @end
 
 @implementation _UINavigationControllerDefaultVisualStyleProvider
 
-- (id)styleForNavigationController:(id)a3
+- (id)styleForNavigationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (self)
   {
     if (_MergedGlobals_983 != -1)
@@ -18,8 +18,8 @@
   }
 
   v5 = MEMORY[0x1E696AD98];
-  v6 = [v4 traitCollection];
-  v7 = [v5 numberWithInteger:{objc_msgSend(v6, "userInterfaceIdiom")}];
+  traitCollection = [controllerCopy traitCollection];
+  v7 = [v5 numberWithInteger:{objc_msgSend(traitCollection, "userInterfaceIdiom")}];
   v8 = [(_UINavigationControllerDefaultVisualStyleProvider *)self objectForKeyedSubscript:v7];
 
   if (!v8)
@@ -27,7 +27,7 @@
     v8 = objc_opt_class();
   }
 
-  v9 = [[v8 alloc] initWithNavigationController:v4];
+  v9 = [[v8 alloc] initWithNavigationController:controllerCopy];
 
   return v9;
 }

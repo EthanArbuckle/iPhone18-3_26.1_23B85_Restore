@@ -1,27 +1,27 @@
 @interface SiriAnalyticsTimePeriodBuffer
-- (SiriAnalyticsTimePeriodBuffer)initWithInterval:(double)a3 queue:(id)a4;
+- (SiriAnalyticsTimePeriodBuffer)initWithInterval:(double)interval queue:(id)queue;
 - (void)_startProducing;
 - (void)_stopProducing;
 - (void)_timerElapsed;
-- (void)enqueueMessages:(id)a3;
-- (void)onMessagesProduced:(id)a3;
+- (void)enqueueMessages:(id)messages;
+- (void)onMessagesProduced:(id)produced;
 @end
 
 @implementation SiriAnalyticsTimePeriodBuffer
 
-- (void)onMessagesProduced:(id)a3
+- (void)onMessagesProduced:(id)produced
 {
-  v4 = [a3 copy];
+  v4 = [produced copy];
   onMessagesProduced = self->_onMessagesProduced;
   self->_onMessagesProduced = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)enqueueMessages:(id)a3
+- (void)enqueueMessages:(id)messages
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messagesCopy = messages;
   if (SiriAnalyticsLoggingInit_once != -1)
   {
     dispatch_once(&SiriAnalyticsLoggingInit_once, &__block_literal_global_701);
@@ -34,12 +34,12 @@
     v10 = 136315394;
     v11 = "[SiriAnalyticsTimePeriodBuffer enqueueMessages:]";
     v12 = 2048;
-    v13 = [v4 count];
+    v13 = [messagesCopy count];
     _os_log_debug_impl(&dword_1D9863000, v9, OS_LOG_TYPE_DEBUG, "%s Enqueueing %lu messages", &v10, 0x16u);
   }
 
   bufferedMessages = self->_bufferedMessages;
-  v7 = [MEMORY[0x1E695DFD8] setWithArray:v4];
+  v7 = [MEMORY[0x1E695DFD8] setWithArray:messagesCopy];
   [(NSMutableSet *)bufferedMessages unionSet:v7];
 
   [(SiriAnalyticsTimePeriodBuffer *)self _startProducing];
@@ -76,8 +76,8 @@
     onMessagesProduced = self->_onMessagesProduced;
     if (onMessagesProduced)
     {
-      v8 = [(NSMutableSet *)v3 allObjects];
-      onMessagesProduced[2](onMessagesProduced, v8);
+      allObjects = [(NSMutableSet *)v3 allObjects];
+      onMessagesProduced[2](onMessagesProduced, allObjects);
     }
   }
 
@@ -133,17 +133,17 @@ void __48__SiriAnalyticsTimePeriodBuffer__startProducing__block_invoke(uint64_t 
   objc_autoreleasePoolPop(v2);
 }
 
-- (SiriAnalyticsTimePeriodBuffer)initWithInterval:(double)a3 queue:(id)a4
+- (SiriAnalyticsTimePeriodBuffer)initWithInterval:(double)interval queue:(id)queue
 {
-  v7 = a4;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = SiriAnalyticsTimePeriodBuffer;
   v8 = [(SiriAnalyticsTimePeriodBuffer *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a4);
-    v9->_bufferInterval = a3;
+    objc_storeStrong(&v8->_queue, queue);
+    v9->_bufferInterval = interval;
     v9->_leeway = 1.0;
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     bufferedMessages = v9->_bufferedMessages;

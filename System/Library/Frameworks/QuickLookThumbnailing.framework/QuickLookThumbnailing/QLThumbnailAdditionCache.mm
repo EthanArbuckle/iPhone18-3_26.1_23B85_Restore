@@ -1,9 +1,9 @@
 @interface QLThumbnailAdditionCache
 + (id)sharedInstance;
 - (QLThumbnailAdditionCache)init;
-- (id)thumbnailAdditionForItemAtURL:(id)a3 error:(id *)a4;
-- (void)cacheAddition:(id)a3 forDocumentID:(id)a4;
-- (void)purgeCachedAdditionForItemAtURL:(id)a3;
+- (id)thumbnailAdditionForItemAtURL:(id)l error:(id *)error;
+- (void)cacheAddition:(id)addition forDocumentID:(id)d;
+- (void)purgeCachedAdditionForItemAtURL:(id)l;
 @end
 
 @implementation QLThumbnailAdditionCache
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __42__QLThumbnailAdditionCache_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, block);
@@ -50,14 +50,14 @@ uint64_t __42__QLThumbnailAdditionCache_sharedInstance__block_invoke(uint64_t a1
   return v2;
 }
 
-- (id)thumbnailAdditionForItemAtURL:(id)a3 error:(id *)a4
+- (id)thumbnailAdditionForItemAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v21 = 0;
-  v7 = [v6 getResourceValue:&v21 forKey:*MEMORY[0x1E695DAB8] error:a4];
+  v7 = [lCopy getResourceValue:&v21 forKey:*MEMORY[0x1E695DAB8] error:error];
   v8 = v21;
   v9 = v8;
-  v10 = 0;
+  addition = 0;
   if (v7)
   {
     v11 = v8 == 0;
@@ -83,7 +83,7 @@ uint64_t __42__QLThumbnailAdditionCache_sharedInstance__block_invoke(uint64_t a1
         [QLThumbnailAdditionCache thumbnailAdditionForItemAtURL:error:];
       }
 
-      v10 = [v13 addition];
+      addition = [v13 addition];
     }
 
     else
@@ -103,34 +103,34 @@ uint64_t __42__QLThumbnailAdditionCache_sharedInstance__block_invoke(uint64_t a1
         [QLThumbnailAdditionCache thumbnailAdditionForItemAtURL:error:];
       }
 
-      v17 = [MEMORY[0x1E69A07C0] manager];
-      v18 = [v17 permanentStorageForItemAtURL:v6 allocateIfNone:0 error:a4];
+      manager = [MEMORY[0x1E69A07C0] manager];
+      v18 = [manager permanentStorageForItemAtURL:lCopy allocateIfNone:0 error:error];
       if (v18)
       {
         v19 = [MEMORY[0x1E69A07B0] makeNameForUser:getuid() name:@"QLThumbnailAdditionName"];
-        v10 = [v18 additionWithName:v19 inNameSpace:@"com.apple.thumbnails" error:a4];
+        addition = [v18 additionWithName:v19 inNameSpace:@"com.apple.thumbnails" error:error];
 
-        if (v10)
+        if (addition)
         {
-          [(QLThumbnailAdditionCache *)self cacheAddition:v10 forDocumentID:v9];
+          [(QLThumbnailAdditionCache *)self cacheAddition:addition forDocumentID:v9];
         }
       }
 
       else
       {
-        v10 = 0;
+        addition = 0;
       }
     }
   }
 
-  return v10;
+  return addition;
 }
 
-- (void)purgeCachedAdditionForItemAtURL:(id)a3
+- (void)purgeCachedAdditionForItemAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11 = 0;
-  v5 = [v4 getResourceValue:&v11 forKey:*MEMORY[0x1E695DAB8] error:0];
+  v5 = [lCopy getResourceValue:&v11 forKey:*MEMORY[0x1E695DAB8] error:0];
   v6 = v11;
   if (v5)
   {
@@ -149,12 +149,12 @@ uint64_t __42__QLThumbnailAdditionCache_sharedInstance__block_invoke(uint64_t a1
   }
 }
 
-- (void)cacheAddition:(id)a3 forDocumentID:(id)a4
+- (void)cacheAddition:(id)addition forDocumentID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[QLThumbnailCachedAddition alloc] initWithAddition:v6];
+  additionCopy = addition;
+  dCopy = d;
+  v8 = [[QLThumbnailCachedAddition alloc] initWithAddition:additionCopy];
   if (v8)
   {
     v9 = self->_additionsCache;
@@ -163,19 +163,19 @@ uint64_t __42__QLThumbnailAdditionCache_sharedInstance__block_invoke(uint64_t a1
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       additionsCache = self->_additionsCache;
-      v13 = [v6 userInfo];
+      userInfo = [additionCopy userInfo];
       v14 = 138413058;
-      v15 = v6;
+      v15 = additionCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = dCopy;
       v18 = 2112;
       v19 = additionsCache;
       v20 = 2112;
-      v21 = v13;
+      v21 = userInfo;
       _os_log_debug_impl(&dword_1CA1E7000, v10, OS_LOG_TYPE_DEBUG, "Storing addition %@ for docID %@ in cache %@, user info %@", &v14, 0x2Au);
     }
 
-    [(NSCache *)self->_additionsCache setObject:v8 forKey:v7];
+    [(NSCache *)self->_additionsCache setObject:v8 forKey:dCopy];
     objc_sync_exit(v9);
   }
 

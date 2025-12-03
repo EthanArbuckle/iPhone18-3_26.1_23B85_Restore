@@ -1,31 +1,31 @@
 @interface PKCloudStoreContainerDiagnosticSnapshot
-- (PKCloudStoreContainerDiagnosticSnapshot)initWithCoder:(id)a3;
-- (PKCloudStoreContainerDiagnosticSnapshot)initWithRecordIDs:(id)a3 localRecordIDs:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (PKCloudStoreContainerDiagnosticSnapshot)initWithCoder:(id)coder;
+- (PKCloudStoreContainerDiagnosticSnapshot)initWithRecordIDs:(id)ds localRecordIDs:(id)iDs;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudStoreContainerDiagnosticSnapshot
 
-- (PKCloudStoreContainerDiagnosticSnapshot)initWithRecordIDs:(id)a3 localRecordIDs:(id)a4
+- (PKCloudStoreContainerDiagnosticSnapshot)initWithRecordIDs:(id)ds localRecordIDs:(id)iDs
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v12.receiver = self;
   v12.super_class = PKCloudStoreContainerDiagnosticSnapshot;
   v9 = [(PKCloudStoreContainerDiagnosticSnapshot *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_recordIDs, a3);
-    objc_storeStrong(&v10->_localRecordIDs, a4);
+    objc_storeStrong(&v9->_recordIDs, ds);
+    objc_storeStrong(&v10->_localRecordIDs, iDs);
   }
 
   return v10;
 }
 
-- (PKCloudStoreContainerDiagnosticSnapshot)initWithCoder:(id)a3
+- (PKCloudStoreContainerDiagnosticSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKCloudStoreContainerDiagnosticSnapshot;
   v5 = [(PKCloudStoreContainerDiagnosticSnapshot *)&v19 init];
@@ -35,7 +35,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"recordIDs"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"recordIDs"];
     recordIDs = v5->_recordIDs;
     v5->_recordIDs = v10;
 
@@ -43,7 +43,7 @@
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v12 setWithObjects:{v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"localRecordIDs"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"localRecordIDs"];
     localRecordIDs = v5->_localRecordIDs;
     v5->_localRecordIDs = v16;
   }
@@ -51,12 +51,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   recordIDs = self->_recordIDs;
-  v5 = a3;
-  [v5 encodeObject:recordIDs forKey:@"recordIDs"];
-  [v5 encodeObject:self->_localRecordIDs forKey:@"localRecordIDs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:recordIDs forKey:@"recordIDs"];
+  [coderCopy encodeObject:self->_localRecordIDs forKey:@"localRecordIDs"];
 }
 
 @end

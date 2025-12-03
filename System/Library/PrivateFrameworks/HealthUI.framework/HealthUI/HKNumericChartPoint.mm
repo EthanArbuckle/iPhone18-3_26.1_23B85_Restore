@@ -1,24 +1,24 @@
 @interface HKNumericChartPoint
-- (HKNumericChartPoint)initWithXValue:(id)a3 yValue:(id)a4 userInfo:(id)a5;
+- (HKNumericChartPoint)initWithXValue:(id)value yValue:(id)yValue userInfo:(id)info;
 - (id)allYValues;
 @end
 
 @implementation HKNumericChartPoint
 
-- (HKNumericChartPoint)initWithXValue:(id)a3 yValue:(id)a4 userInfo:(id)a5
+- (HKNumericChartPoint)initWithXValue:(id)value yValue:(id)yValue userInfo:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  valueCopy = value;
+  yValueCopy = yValue;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = HKNumericChartPoint;
   v12 = [(HKNumericChartPoint *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_xValue, a3);
-    objc_storeStrong(&v13->_yValue, a4);
-    objc_storeStrong(&v13->_userInfo, a5);
+    objc_storeStrong(&v12->_xValue, value);
+    objc_storeStrong(&v13->_yValue, yValue);
+    objc_storeStrong(&v13->_userInfo, info);
   }
 
   return v13;

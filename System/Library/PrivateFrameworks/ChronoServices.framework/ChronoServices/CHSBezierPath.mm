@@ -1,22 +1,22 @@
 @interface CHSBezierPath
-- (BOOL)isEqual:(id)a3;
-- (CHSBezierPath)initWithBSXPCCoder:(id)a3;
-- (CHSBezierPath)initWithCGPath:(CGPath *)a3;
-- (CHSBezierPath)initWithCoder:(id)a3;
-- (id)_initWithCGPathNoCopy:(CGPath *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHSBezierPath)initWithBSXPCCoder:(id)coder;
+- (CHSBezierPath)initWithCGPath:(CGPath *)path;
+- (CHSBezierPath)initWithCoder:(id)coder;
+- (id)_initWithCGPathNoCopy:(CGPath *)copy;
 - (void)dealloc;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSBezierPath
 
-- (CHSBezierPath)initWithCGPath:(CGPath *)a3
+- (CHSBezierPath)initWithCGPath:(CGPath *)path
 {
-  if (!a3)
+  if (!path)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"CHSBezierPath.m" lineNumber:147 description:@"CHSBezierPath created with a nil path reference. path is non-optional!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CHSBezierPath.m" lineNumber:147 description:@"CHSBezierPath created with a nil path reference. path is non-optional!"];
   }
 
   Mutable = CGPathCreateMutable();
@@ -25,20 +25,20 @@
   block[2] = ____copyPathByApplying_block_invoke;
   block[3] = &__block_descriptor_40_e36_v16__0r__CGPathElement_i__CGPoint__8l;
   block[4] = Mutable;
-  CGPathApplyWithBlock(a3, block);
+  CGPathApplyWithBlock(path, block);
   v6 = MEMORY[0x19A8C4D50](Mutable);
   CGPathRelease(Mutable);
   return [(CHSBezierPath *)self _initWithCGPathNoCopy:v6];
 }
 
-- (id)_initWithCGPathNoCopy:(CGPath *)a3
+- (id)_initWithCGPathNoCopy:(CGPath *)copy
 {
   v5.receiver = self;
   v5.super_class = CHSBezierPath;
   result = [(CHSBezierPath *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = copy;
   }
 
   return result;
@@ -52,18 +52,18 @@
   [(CHSBezierPath *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && CGPathEqualToPath(self->_path, v4[1]);
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && CGPathEqualToPath(self->_path, equalCopy[1]);
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = __encodePathIntoData(self->_path);
   if (!v5)
   {
@@ -74,13 +74,13 @@
     }
   }
 
-  [v4 encodeObject:v5 forKey:@"data"];
+  [coderCopy encodeObject:v5 forKey:@"data"];
 }
 
-- (CHSBezierPath)initWithCoder:(id)a3
+- (CHSBezierPath)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   if (!v5)
   {
     v6 = CHSLogChronoServices();
@@ -105,9 +105,9 @@
   return v9;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = __encodePathIntoData(self->_path);
   if (!v5)
   {
@@ -118,13 +118,13 @@
     }
   }
 
-  [v4 encodeObject:v5 forKey:@"data"];
+  [coderCopy encodeObject:v5 forKey:@"data"];
 }
 
-- (CHSBezierPath)initWithBSXPCCoder:(id)a3
+- (CHSBezierPath)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   if (!v5)
   {
     v6 = CHSLogChronoServices();

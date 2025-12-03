@@ -1,26 +1,26 @@
 @interface NTKRingsQuad
-- (BOOL)prepareForTime:(double)a3;
-- (NTKRingsQuad)initWithRingGroups:(id)a3 renderer:(id)a4;
+- (BOOL)prepareForTime:(double)time;
+- (NTKRingsQuad)initWithRingGroups:(id)groups renderer:(id)renderer;
 - (NTKRingsQuadDelegate)delegate;
 - (id)_allRings;
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4;
-- (void)ringGroupHasUpdated:(id)a3;
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor;
+- (void)ringGroupHasUpdated:(id)updated;
 @end
 
 @implementation NTKRingsQuad
 
-- (NTKRingsQuad)initWithRingGroups:(id)a3 renderer:(id)a4
+- (NTKRingsQuad)initWithRingGroups:(id)groups renderer:(id)renderer
 {
-  v7 = a3;
-  v8 = a4;
+  groupsCopy = groups;
+  rendererCopy = renderer;
   v23.receiver = self;
   v23.super_class = NTKRingsQuad;
   v9 = [(NTKRingsQuad *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_ringGroups, a3);
-    objc_storeStrong(&v10->_renderer, a4);
+    objc_storeStrong(&v9->_ringGroups, groups);
+    objc_storeStrong(&v10->_renderer, renderer);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -60,7 +60,7 @@
   return v10;
 }
 
-- (BOOL)prepareForTime:(double)a3
+- (BOOL)prepareForTime:(double)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_quadView);
   v5 = WeakRetained;
@@ -99,8 +99,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) rings];
-        [v3 addObjectsFromArray:v9];
+        rings = [*(*(&v11 + 1) + 8 * i) rings];
+        [v3 addObjectsFromArray:rings];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -112,18 +112,18 @@
   return v3;
 }
 
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
   renderer = self->_renderer;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NTKRingsQuad *)self _allRings];
-  [(ARUIRenderer *)renderer _renderRings:v9 passDescriptor:v7 commandBuffer:v8 withContext:self->_context];
+  descriptorCopy = descriptor;
+  bufferCopy = buffer;
+  _allRings = [(NTKRingsQuad *)self _allRings];
+  [(ARUIRenderer *)renderer _renderRings:_allRings passDescriptor:descriptorCopy commandBuffer:bufferCopy withContext:self->_context];
 }
 
-- (void)ringGroupHasUpdated:(id)a3
+- (void)ringGroupHasUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   if (!self->_animating)
   {
     self->_animating = 1;

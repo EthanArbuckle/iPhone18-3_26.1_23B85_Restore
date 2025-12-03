@@ -1,7 +1,7 @@
 @interface HUQuickControlTVInputSourceViewController
 + (id)controlItemPredicate;
-- (BOOL)_shouldWriteInputValue:(id)a3;
-- (id)_toPickerViewItems:(id)a3;
+- (BOOL)_shouldWriteInputValue:(id)value;
+- (id)_toPickerViewItems:(id)items;
 - (id)controlToViewValueTransformer;
 - (id)createInteractionCoordinator;
 - (id)createViewProfile;
@@ -19,8 +19,8 @@
 - (id)createInteractionCoordinator
 {
   v3 = [HUQuickControlWheelPickerView alloc];
-  v4 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-  v5 = [(HUQuickControlWheelPickerView *)v3 initWithProfile:v4];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  v5 = [(HUQuickControlWheelPickerView *)v3 initWithProfile:viewProfile];
 
   v6 = [[HUQuickControlSimpleInteractionCoordinator alloc] initWithControlView:v5 delegate:self];
 
@@ -30,22 +30,22 @@
 - (id)createViewProfile
 {
   v3 = objc_alloc_init(HUQuickControlWheelPickerViewProfile);
-  v4 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v5 = [v4 valueSource];
-  v6 = [v5 allCharacteristicsForCharacteristicType:*MEMORY[0x277CCF748]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  valueSource = [controlItem valueSource];
+  v6 = [valueSource allCharacteristicsForCharacteristicType:*MEMORY[0x277CCF748]];
   v7 = [v6 na_firstObjectPassingTest:&__block_literal_global_109];
 
-  v8 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v9 = [v8 valueSource];
-  v10 = [v9 valueSource];
-  v11 = [v10 cachedValueForCharacteristic:v7];
-  v12 = [v11 BOOLValue];
+  controlItem2 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  valueSource2 = [controlItem2 valueSource];
+  v9ValueSource = [valueSource2 valueSource];
+  v11 = [v9ValueSource cachedValueForCharacteristic:v7];
+  bOOLValue = [v11 BOOLValue];
 
-  v13 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v14 = [v13 latestResults];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+  controlItem3 = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem3 latestResults];
+  v15 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13818]];
 
-  if (v12)
+  if (bOOLValue)
   {
     v16 = [v15 na_all:&__block_literal_global_7_0];
   }
@@ -141,19 +141,19 @@ id __74__HUQuickControlTVInputSourceViewController_controlToViewValueTransformer
   return v3;
 }
 
-- (BOOL)_shouldWriteInputValue:(id)a3
+- (BOOL)_shouldWriteInputValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v6 = [v5 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+  valueCopy = value;
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  latestResults = [controlItem latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13818]];
 
   if (v7)
   {
     v8 = [v7 na_firstObjectPassingTest:&__block_literal_global_15_1];
-    v9 = [v8 identifier];
-    v10 = [v4 identifier];
-    v11 = [v9 isEqualToNumber:v10] ^ 1;
+    identifier = [v8 identifier];
+    identifier2 = [valueCopy identifier];
+    v11 = [identifier isEqualToNumber:identifier2] ^ 1;
   }
 
   else
@@ -204,16 +204,16 @@ BOOL __64__HUQuickControlTVInputSourceViewController__filterInputValues___block_
   return v6;
 }
 
-- (id)_toPickerViewItems:(id)a3
+- (id)_toPickerViewItems:(id)items
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

@@ -3,19 +3,19 @@
 - (BOOL)_isInFaceTimeCall;
 - (BOOL)_isInPhoneOrFaceTimeCall;
 - (BOOL)_isInternalInstall;
-- (BOOL)_playSoundAtPath:(id)a3;
+- (BOOL)_playSoundAtPath:(id)path;
 - (BOOL)flashLEDIfAppropriate;
 - (BOOL)flashLights;
 - (BOOL)playFindLocallySound;
 - (BOOL)playSoundAndFlash;
 - (NFMPlayCommands)init;
 - (void)beginObservingTUChanges;
-- (void)cancelAllAlerts:(id)a3;
+- (void)cancelAllAlerts:(id)alerts;
 - (void)dealloc;
 - (void)flashLED;
 - (void)playNearbySound;
-- (void)playbackStateChanged:(id)a3;
-- (void)setFlashEnabled:(BOOL)a3;
+- (void)playbackStateChanged:(id)changed;
+- (void)setFlashEnabled:(BOOL)enabled;
 - (void)updateFlashState;
 @end
 
@@ -46,13 +46,13 @@
 
 - (void)beginObservingTUChanges
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_cancelAllAlerts_ name:*MEMORY[0x277D6EFF0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_cancelAllAlerts_ name:*MEMORY[0x277D6EFF0] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_cancelAllAlerts_ name:*MEMORY[0x277D6F038] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_cancelAllAlerts_ name:*MEMORY[0x277D6F038] object:0];
 
-  v5 = [MEMORY[0x277D6EDF8] sharedInstance];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
 }
 
 - (BOOL)_isInternalInstall
@@ -77,8 +77,8 @@
     CFNotificationCenterRemoveObserver(v5, self, @"7e6e-6f4c-e43b-89f6-6a8c-af04", 0);
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = NFMPlayCommands;
@@ -101,17 +101,17 @@ uint64_t __37__NFMPlayCommands__isInternalInstall__block_invoke()
   return self;
 }
 
-- (BOOL)_playSoundAtPath:(id)a3
+- (BOOL)_playSoundAtPath:(id)path
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v4 isDirectory:0];
+  pathCopy = path;
+  v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:pathCopy isDirectory:0];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CEFC98]) initAuxiliarySession];
+    initAuxiliarySession = [objc_alloc(MEMORY[0x277CEFC98]) initAuxiliarySession];
     v7 = *MEMORY[0x277CEFC70];
     v40 = 0;
-    [v6 setCategory:v7 error:&v40];
+    [initAuxiliarySession setCategory:v7 error:&v40];
     v8 = v40;
     if (v8)
     {
@@ -129,18 +129,18 @@ uint64_t __37__NFMPlayCommands__isInternalInstall__block_invoke()
       avQueuePlayer = self->_avQueuePlayer;
       if (avQueuePlayer)
       {
-        v12 = [(AVQueuePlayer *)avQueuePlayer items];
-        v13 = [(AVQueuePlayer *)self->_avQueuePlayer items];
-        v14 = [v13 count];
+        items = [(AVQueuePlayer *)avQueuePlayer items];
+        items2 = [(AVQueuePlayer *)self->_avQueuePlayer items];
+        v14 = [items2 count];
 
         if (v14)
         {
-          v35 = v12;
+          v35 = items;
           v38 = 0u;
           v39 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v15 = v12;
+          v15 = items;
           v16 = [v15 countByEnumeratingWithState:&v36 objects:v43 count:16];
           if (v16)
           {
@@ -155,8 +155,8 @@ uint64_t __37__NFMPlayCommands__isInternalInstall__block_invoke()
                   objc_enumerationMutation(v15);
                 }
 
-                v20 = [*(*(&v36 + 1) + 8 * i) asset];
-                v21 = [v20 URL];
+                asset = [*(*(&v36 + 1) + 8 * i) asset];
+                v21 = [asset URL];
 
                 if ([v21 isEqual:v5])
                 {
@@ -184,7 +184,7 @@ uint64_t __37__NFMPlayCommands__isInternalInstall__block_invoke()
             }
           }
 
-          v12 = v35;
+          items = v35;
           v8 = 0;
         }
 
@@ -203,7 +203,7 @@ uint64_t __37__NFMPlayCommands__isInternalInstall__block_invoke()
       else
       {
         v25 = [objc_alloc(MEMORY[0x277CE65F8]) initWithURL:v5];
-        v12 = self->_avQueuePlayer;
+        items = self->_avQueuePlayer;
         self->_avQueuePlayer = v25;
       }
 
@@ -211,7 +211,7 @@ uint64_t __37__NFMPlayCommands__isInternalInstall__block_invoke()
       LODWORD(v26) = 1.0;
       [(AVQueuePlayer *)self->_avQueuePlayer setVolume:v26];
       [(AVQueuePlayer *)self->_avQueuePlayer _setClientName:@"LocatePhone"];
-      [(AVQueuePlayer *)self->_avQueuePlayer setAudioSession:v6];
+      [(AVQueuePlayer *)self->_avQueuePlayer setAudioSession:initAuxiliarySession];
       if ([(NFMPlayCommands *)self _isInFaceTimeCall])
       {
         v27 = nfm_log();
@@ -230,14 +230,14 @@ uint64_t __37__NFMPlayCommands__isInternalInstall__block_invoke()
       }
 
       [(AVQueuePlayer *)self->_avQueuePlayer _setClientPriority:v28, v35];
-      v29 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v29 addObserver:self selector:sel_playbackStateChanged_ name:*MEMORY[0x277CE60C0] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_playbackStateChanged_ name:*MEMORY[0x277CE60C0] object:0];
 
-      v30 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v30 addObserver:self selector:sel_playbackStateChanged_ name:*MEMORY[0x277CE60D0] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_playbackStateChanged_ name:*MEMORY[0x277CE60D0] object:0];
 
-      v31 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v31 addObserver:self selector:sel_playbackStateChanged_ name:*MEMORY[0x277CE6150] object:0];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter3 addObserver:self selector:sel_playbackStateChanged_ name:*MEMORY[0x277CE6150] object:0];
 
       [(AVQueuePlayer *)self->_avQueuePlayer play];
       v10 = 1;
@@ -257,10 +257,10 @@ LABEL_31:
 
 - (BOOL)playSoundAndFlash
 {
-  v3 = [(NFMPlayCommands *)self playFindLocallySound];
+  playFindLocallySound = [(NFMPlayCommands *)self playFindLocallySound];
   v4 = nfm_log();
   v5 = v4;
-  if (v3)
+  if (playFindLocallySound)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -275,14 +275,14 @@ LABEL_31:
   }
 
   [(NFMPlayCommands *)self flashLights];
-  return v3;
+  return playFindLocallySound;
 }
 
 - (BOOL)flashLights
 {
-  v2 = [(NFMPlayCommands *)self flashLEDIfAppropriate];
+  flashLEDIfAppropriate = [(NFMPlayCommands *)self flashLEDIfAppropriate];
   system("/System/Library/PrivateFrameworks/NanoLeash.framework/findme");
-  return v2;
+  return flashLEDIfAppropriate;
 }
 
 - (void)playNearbySound
@@ -333,7 +333,7 @@ LABEL_31:
   return result;
 }
 
-- (void)cancelAllAlerts:(id)a3
+- (void)cancelAllAlerts:(id)alerts
 {
   [(AVQueuePlayer *)self->_avQueuePlayer pause];
   avQueuePlayer = self->_avQueuePlayer;
@@ -349,22 +349,22 @@ LABEL_31:
   [(NFMPlayCommands *)self setFlashEnabled:0];
 }
 
-- (void)playbackStateChanged:(id)a3
+- (void)playbackStateChanged:(id)changed
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = nfm_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [changedCopy name];
     v15 = 138412290;
-    v16 = v6;
+    v16 = name;
     _os_log_impl(&dword_25B17F000, v5, OS_LOG_TYPE_DEFAULT, "Playback state changed: %@", &v15, 0xCu);
   }
 
-  v7 = [v4 name];
+  name2 = [changedCopy name];
   v8 = *MEMORY[0x277CE6150];
-  v9 = [v7 isEqualToString:*MEMORY[0x277CE6150]];
+  v9 = [name2 isEqualToString:*MEMORY[0x277CE6150]];
 
   if (v9)
   {
@@ -374,14 +374,14 @@ LABEL_31:
   avQueuePlayer = self->_avQueuePlayer;
   self->_avQueuePlayer = 0;
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 removeObserver:self name:*MEMORY[0x277CE60C0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CE60C0] object:0];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 removeObserver:self name:*MEMORY[0x277CE60D0] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277CE60D0] object:0];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 removeObserver:self name:v8 object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 removeObserver:self name:v8 object:0];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -400,30 +400,30 @@ LABEL_31:
   if (!flashScheduler)
   {
     v5 = objc_alloc(MEMORY[0x277CBEBB8]);
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [v6 dateByAddingTimeInterval:0.2];
+    date = [MEMORY[0x277CBEAA8] date];
+    v7 = [date dateByAddingTimeInterval:0.2];
     v8 = [v5 initWithFireDate:v7 interval:self target:sel_updateFlashState selector:0 userInfo:1 repeats:0.2];
     v9 = self->_flashScheduler;
     self->_flashScheduler = v8;
 
-    v10 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v10 addTimer:self->_flashScheduler forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:self->_flashScheduler forMode:*MEMORY[0x277CBE738]];
 
-    v11 = [MEMORY[0x277CBEB88] currentRunLoop];
+    currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
     v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.2];
-    [v11 runUntilDate:v12];
+    [currentRunLoop2 runUntilDate:v12];
   }
 }
 
-- (void)setFlashEnabled:(BOOL)a3
+- (void)setFlashEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x277D85DE8];
   v4 = nfm_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v11 = v3;
+    v11 = enabledCopy;
     _os_log_impl(&dword_25B17F000, v4, OS_LOG_TYPE_DEFAULT, "########### setFlashEnabled: %d", buf, 8u);
   }
 
@@ -433,7 +433,7 @@ LABEL_31:
     v9 = 0;
     [v5 lockForConfiguration:&v9];
     v6 = v9;
-    [v5 setTorchMode:v3];
+    [v5 setTorchMode:enabledCopy];
     [v5 unlockForConfiguration];
     if (v6)
     {
@@ -499,9 +499,9 @@ LABEL_31:
   v20 = [MEMORY[0x277CBEB98] setWithArray:&unk_286C65908];
   v2 = [MEMORY[0x277D46FA0] predicateMatchingBundleIdentifiers:?];
   v3 = MEMORY[0x277D46FA8];
-  v4 = [MEMORY[0x277D46FB0] descriptor];
+  descriptor = [MEMORY[0x277D46FB0] descriptor];
   v19 = v2;
-  v5 = [v3 statesForPredicate:v2 withDescriptor:v4 error:0];
+  v5 = [v3 statesForPredicate:v2 withDescriptor:descriptor error:0];
 
   v24 = 0u;
   v25 = 0u;
@@ -527,12 +527,12 @@ LABEL_31:
         v12 = nfm_log();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v11 process];
-          v14 = [v13 bundle];
-          v15 = [v14 identifier];
+          process = [v11 process];
+          bundle = [process bundle];
+          identifier = [bundle identifier];
           v16 = [v11 description];
           *buf = 138412546;
-          v27 = v15;
+          v27 = identifier;
           v28 = 2112;
           v29 = v16;
           _os_log_impl(&dword_25B17F000, v12, OS_LOG_TYPE_DEFAULT, "########### Application state: %@, %@", buf, 0x16u);
@@ -558,27 +558,27 @@ LABEL_31:
 
 - (BOOL)_isInFaceTimeCall
 {
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 currentVideoCallCount] != 0;
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  v3 = [mEMORY[0x277D6EDF8] currentVideoCallCount] != 0;
 
   return v3;
 }
 
 - (BOOL)_isInPhoneOrFaceTimeCall
 {
-  v3 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v4 = [v3 currentCalls];
-  if (v4)
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  currentCalls = [mEMORY[0x277D6EDF8] currentCalls];
+  if (currentCalls)
   {
-    v5 = 1;
+    _isInFaceTimeCall = 1;
   }
 
   else
   {
-    v5 = [(NFMPlayCommands *)self _isInFaceTimeCall];
+    _isInFaceTimeCall = [(NFMPlayCommands *)self _isInFaceTimeCall];
   }
 
-  return v5;
+  return _isInFaceTimeCall;
 }
 
 - (void)setFlashEnabled:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

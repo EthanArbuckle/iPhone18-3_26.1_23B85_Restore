@@ -1,28 +1,28 @@
 @interface CLBScenePresentationManagerSpecification
-+ (id)specificationWithSessionRole:(id)a3;
-- (CLBScenePresentationManagerSpecification)initWithSessionRole:(id)a3;
++ (id)specificationWithSessionRole:(id)role;
+- (CLBScenePresentationManagerSpecification)initWithSessionRole:(id)role;
 @end
 
 @implementation CLBScenePresentationManagerSpecification
 
-+ (id)specificationWithSessionRole:(id)a3
++ (id)specificationWithSessionRole:(id)role
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSessionRole:v4];
+  roleCopy = role;
+  v5 = [[self alloc] initWithSessionRole:roleCopy];
 
   return v5;
 }
 
-- (CLBScenePresentationManagerSpecification)initWithSessionRole:(id)a3
+- (CLBScenePresentationManagerSpecification)initWithSessionRole:(id)role
 {
-  v5 = a3;
+  roleCopy = role;
   v9.receiver = self;
   v9.super_class = CLBScenePresentationManagerSpecification;
   v6 = [(CLBScenePresentationManagerSpecification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionRole, a3);
+    objc_storeStrong(&v6->_sessionRole, role);
   }
 
   return v7;

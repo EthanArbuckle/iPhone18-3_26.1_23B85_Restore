@@ -1,43 +1,43 @@
 @interface BKDisplayAnnotationContainedSubnodeRenderer
-- (CGSize)_getFrames:(CGRect *)a3 ofAnnotations:(id)a4 fixSuperlayer:(id)a5 scale:(double)a6;
-- (void)layoutAnnotationStack:(id)a3;
+- (CGSize)_getFrames:(CGRect *)frames ofAnnotations:(id)annotations fixSuperlayer:(id)superlayer scale:(double)scale;
+- (void)layoutAnnotationStack:(id)stack;
 - (void)regenerateLayerTree;
 - (void)styleSheetDidChange;
 @end
 
 @implementation BKDisplayAnnotationContainedSubnodeRenderer
 
-- (void)layoutAnnotationStack:(id)a3
+- (void)layoutAnnotationStack:(id)stack
 {
-  v4 = a3;
-  v100 = [(BKDisplayAnnotationRenderer *)self annotation];
-  v5 = [v100 annotationController];
-  v6 = [v5 rootLayer];
-  v104 = v5;
-  v7 = [v5 transformLayer];
-  v99 = v6;
-  [v6 rasterizationScale];
+  stackCopy = stack;
+  annotation = [(BKDisplayAnnotationRenderer *)self annotation];
+  annotationController = [annotation annotationController];
+  rootLayer = [annotationController rootLayer];
+  v104 = annotationController;
+  transformLayer = [annotationController transformLayer];
+  v99 = rootLayer;
+  [rootLayer rasterizationScale];
   v9 = v8;
-  v98 = v7;
-  [v7 bounds];
+  v98 = transformLayer;
+  [transformLayer bounds];
   v11 = v10;
   v102 = v12;
   v96 = v13;
   v15 = v14;
-  v105 = self;
-  v101 = [(BKDisplayAnnotationRenderer *)self layer];
-  [v101 frame];
+  selfCopy = self;
+  layer = [(BKDisplayAnnotationRenderer *)self layer];
+  [layer frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [v4 count]);
+  v24 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [stackCopy count]);
   v107 = +[NSMutableDictionary dictionary];
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
-  v25 = v4;
+  v25 = stackCopy;
   v26 = [v25 countByEnumeratingWithState:&v116 objects:v122 count:16];
   if (v26)
   {
@@ -53,10 +53,10 @@
         }
 
         v30 = *(*(&v116 + 1) + 8 * i);
-        v31 = [v30 section];
-        if (v31)
+        section = [v30 section];
+        if (section)
         {
-          v32 = v31;
+          v32 = section;
         }
 
         else
@@ -88,7 +88,7 @@
   v115 = 0u;
   v35 = v24;
   v36 = [v35 countByEnumeratingWithState:&v112 objects:v121 count:16];
-  p_isa = &v105->super.super.isa;
+  p_isa = &selfCopy->super.super.isa;
   v103 = v35;
   if (v36)
   {
@@ -110,12 +110,12 @@
           if (!v41)
           {
             v42 = v25;
-            v43 = v105;
-            if (!v105->_sectionTitleAnnotations)
+            v43 = selfCopy;
+            if (!selfCopy->_sectionTitleAnnotations)
             {
               v44 = +[NSMutableDictionary dictionary];
-              sectionTitleAnnotations = v105->_sectionTitleAnnotations;
-              v105->_sectionTitleAnnotations = v44;
+              sectionTitleAnnotations = selfCopy->_sectionTitleAnnotations;
+              selfCopy->_sectionTitleAnnotations = v44;
             }
 
             v41 = [BKDisplayAnnotation annotationWithString:v40];
@@ -130,7 +130,7 @@
 
           [v34 addObject:v41];
 
-          p_isa = &v105->super.super.isa;
+          p_isa = &selfCopy->super.super.isa;
         }
 
         v47 = [v107 objectForKey:v40];
@@ -145,13 +145,13 @@
 
   v48 = &v92 - 4 * __chkstk_darwin([v34 count]);
   v95 = v9;
-  [p_isa _getFrames:v48 ofAnnotations:v34 fixSuperlayer:v101 scale:*&v9];
+  [p_isa _getFrames:v48 ofAnnotations:v34 fixSuperlayer:layer scale:*&v9];
   v106 = v49;
   v51 = v50;
-  v52 = v100;
-  v53 = [v100 subnodeScreenEdgeTreatment];
+  v52 = annotation;
+  subnodeScreenEdgeTreatment = [annotation subnodeScreenEdgeTreatment];
   v97 = &v92;
-  if (v53 == 2)
+  if (subnodeScreenEdgeTreatment == 2)
   {
     v123.origin.x = v11;
     v94 = v11;
@@ -193,7 +193,7 @@
 
   else
   {
-    v63 = v53;
+    v63 = subnodeScreenEdgeTreatment;
     v127.origin.x = v17;
     v127.origin.y = v19;
     v127.size.width = v21;
@@ -263,7 +263,7 @@
   v78 = 0.0;
   [v73 setAnchorPoint:{v61, 0.0}];
   [v73 setPosition:{v59, v62}];
-  [v101 insertSublayer:v73 atIndex:0];
+  [layer insertSublayer:v73 atIndex:0];
   objc_storeStrong(p_isa + 4, v73);
   v110 = 0u;
   v111 = 0u;
@@ -291,12 +291,12 @@
           objc_enumerationMutation(v79);
         }
 
-        v88 = [*(*(&v108 + 1) + 8 * v86) renderer];
-        v89 = [v88 layer];
+        renderer = [*(*(&v108 + 1) + 8 * v86) renderer];
+        layer2 = [renderer layer];
 
-        [v73 addSublayer:v89];
-        [v89 setAnchorPoint:{CGPointZero.x, y}];
-        [v89 setPosition:{0.0, v78}];
+        [v73 addSublayer:layer2];
+        [layer2 setAnchorPoint:{CGPointZero.x, y}];
+        [layer2 setPosition:{0.0, v78}];
         v130 = *(v87 - 16);
         v87 += 32;
         v78 = v78 + CGRectGetMaxY(v130);
@@ -312,28 +312,28 @@
     while (v81);
   }
 
-  subannotations = v105->_subannotations;
-  v105->_subannotations = v79;
+  subannotations = selfCopy->_subannotations;
+  selfCopy->_subannotations = v79;
   v91 = v79;
 }
 
-- (CGSize)_getFrames:(CGRect *)a3 ofAnnotations:(id)a4 fixSuperlayer:(id)a5 scale:(double)a6
+- (CGSize)_getFrames:(CGRect *)frames ofAnnotations:(id)annotations fixSuperlayer:(id)superlayer scale:(double)scale
 {
-  v9 = a4;
-  v10 = a5;
+  annotationsCopy = annotations;
+  superlayerCopy = superlayer;
   width = CGSizeZero.width;
   height = CGSizeZero.height;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v13 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  v13 = [annotationsCopy countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = 0;
     v16 = *v32;
-    p_size = &a3->size;
+    p_size = &frames->size;
     do
     {
       v17 = 0;
@@ -343,25 +343,25 @@
       {
         if (*v32 != v16)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(annotationsCopy);
         }
 
         v19 = *(*(&v31 + 1) + 8 * v17);
-        v20 = [v19 renderer];
-        v21 = [v20 layer];
+        renderer = [v19 renderer];
+        layer = [renderer layer];
 
-        v22 = [v21 superlayer];
+        superlayer = [layer superlayer];
 
-        if (v22 != v10)
+        if (superlayer != superlayerCopy)
         {
-          [v21 removeFromSuperlayer];
-          [v10 addSublayer:v21];
+          [layer removeFromSuperlayer];
+          [superlayerCopy addSublayer:layer];
         }
 
-        v23 = [v19 renderer];
-        [v23 sizeLayerToFitAtScale:a6];
+        renderer2 = [v19 renderer];
+        [renderer2 sizeLayerToFitAtScale:scale];
 
-        [v21 frame];
+        [layer frame];
         *(p_width - 2) = v26;
         *(p_width - 1) = v27;
         *p_width = v24;
@@ -378,7 +378,7 @@
       }
 
       while (v14 != v17);
-      v14 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v14 = [annotationsCopy countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v14);
@@ -396,15 +396,15 @@
   v8.receiver = self;
   v8.super_class = BKDisplayAnnotationContainedSubnodeRenderer;
   [(BKDisplayAnnotationRenderer *)&v8 regenerateLayerTree];
-  v3 = [(BKDisplayAnnotationRenderer *)self annotation];
-  v4 = [v3 namespaceNode];
+  annotation = [(BKDisplayAnnotationRenderer *)self annotation];
+  namespaceNode = [annotation namespaceNode];
   +[NSMutableArray array];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006F69C;
   v5 = v6[3] = &unk_1000FC118;
   v7 = v5;
-  [v4 enumerateNodesWithOptions:1 usingBlock:v6];
+  [namespaceNode enumerateNodesWithOptions:1 usingBlock:v6];
   if ([v5 count])
   {
     [(BKDisplayAnnotationContainedSubnodeRenderer *)self layoutAnnotationStack:v5];
@@ -416,11 +416,11 @@
   v20.receiver = self;
   v20.super_class = BKDisplayAnnotationContainedSubnodeRenderer;
   [(BKDisplayAnnotationRenderer *)&v20 styleSheetDidChange];
-  v3 = [(BKDisplayAnnotationRenderer *)self annotation];
-  v4 = [v3 styleSheet];
+  annotation = [(BKDisplayAnnotationRenderer *)self annotation];
+  styleSheet = [annotation styleSheet];
   backgroundLayer = self->_backgroundLayer;
   v6 = [BKDisplayAnnotationStringContent contentWithString:&stru_1001013E0];
-  [v4 applyToLayer:backgroundLayer forContent:v6];
+  [styleSheet applyToLayer:backgroundLayer forContent:v6];
 
   v18 = 0u;
   v19 = 0u;
@@ -442,12 +442,12 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 styleSheet];
-        v14 = [v4 subnodeStyleModifier];
-        [v13 setStyleModifier:v14];
+        styleSheet2 = [v12 styleSheet];
+        subnodeStyleModifier = [styleSheet subnodeStyleModifier];
+        [styleSheet2 setStyleModifier:subnodeStyleModifier];
 
-        v15 = [v12 renderer];
-        [v15 styleSheetDidChange];
+        renderer = [v12 renderer];
+        [renderer styleSheetDidChange];
       }
 
       v9 = [(NSArray *)v7 countByEnumeratingWithState:&v16 objects:v21 count:16];

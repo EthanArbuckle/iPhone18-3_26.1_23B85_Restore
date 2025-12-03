@@ -1,25 +1,25 @@
 @interface LogFileWriter
-- (BOOL)_log:(id)a3;
-- (id)initFor:(id)a3 fileLabel:(id)a4;
+- (BOOL)_log:(id)_log;
+- (id)initFor:(id)for fileLabel:(id)label;
 - (void)_flush;
 - (void)createFilePath;
 - (void)dealloc;
 - (void)flush;
-- (void)log:(id)a3;
-- (void)log:(id)a3 data:(id)a4;
-- (void)log:(id)a3 data:(id)a4 limit:(unint64_t)a5;
-- (void)logRawData:(id)a3;
+- (void)log:(id)log;
+- (void)log:(id)log data:(id)data;
+- (void)log:(id)log data:(id)data limit:(unint64_t)limit;
+- (void)logRawData:(id)data;
 - (void)scheduleFlush;
-- (void)timerFlush:(id)a3;
+- (void)timerFlush:(id)flush;
 - (void)unscheduleFlush;
 @end
 
 @implementation LogFileWriter
 
-- (id)initFor:(id)a3 fileLabel:(id)a4
+- (id)initFor:(id)for fileLabel:(id)label
 {
-  v7 = a3;
-  v8 = a4;
+  forCopy = for;
+  labelCopy = label;
   v15.receiver = self;
   v15.super_class = LogFileWriter;
   v9 = [(LogFileWriter *)&v15 init];
@@ -33,8 +33,8 @@
     logQueue = v9->_logQueue;
     v9->_logQueue = v12;
 
-    objc_storeStrong(&v9->_filenamePrefix, a3);
-    objc_storeStrong(&v9->_fileLabel, a4);
+    objc_storeStrong(&v9->_filenamePrefix, for);
+    objc_storeStrong(&v9->_fileLabel, label);
   }
 
   return v9;
@@ -63,9 +63,9 @@
   [(LogFileWriter *)&v8 dealloc];
 }
 
-- (void)logRawData:(id)a3
+- (void)logRawData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -76,7 +76,7 @@
   block[2] = __28__LogFileWriter_logRawData___block_invoke;
   block[3] = &unk_100225990;
   block[4] = self;
-  v6 = v4;
+  v6 = dataCopy;
   v8 = v6;
   v9 = &v10;
   dispatch_sync(logQueue, block);
@@ -101,9 +101,9 @@ id __28__LogFileWriter_logRawData___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_log:(id)a3
+- (BOOL)_log:(id)_log
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [_log dataUsingEncoding:4];
   v5 = v4;
   if (v4)
   {
@@ -121,9 +121,9 @@ id __28__LogFileWriter_logRawData___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -133,7 +133,7 @@ id __28__LogFileWriter_logRawData___block_invoke(uint64_t a1)
   v6 = +[NSDate date];
   v7 = [v5 stringFromDate:v6];
 
-  v8 = [NSString stringWithFormat:@"%@ %@\n", v7, v4];
+  logCopy = [NSString stringWithFormat:@"%@ %@\n", v7, logCopy];
 
   logQueue = self->_logQueue;
   block[0] = _NSConcreteStackBlock;
@@ -142,7 +142,7 @@ id __28__LogFileWriter_logRawData___block_invoke(uint64_t a1)
   block[3] = &unk_1002259B8;
   v13 = &v14;
   block[4] = self;
-  v10 = v8;
+  v10 = logCopy;
   v12 = v10;
   dispatch_sync(logQueue, block);
   if (*(v15 + 24) == 1)
@@ -165,17 +165,17 @@ id __21__LogFileWriter_log___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)log:(id)a3 data:(id)a4
+- (void)log:(id)log data:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  -[LogFileWriter log:data:limit:](self, "log:data:limit:", v7, v6, [v6 length]);
+  dataCopy = data;
+  logCopy = log;
+  -[LogFileWriter log:data:limit:](self, "log:data:limit:", logCopy, dataCopy, [dataCopy length]);
 }
 
-- (void)log:(id)a3 data:(id)a4 limit:(unint64_t)a5
+- (void)log:(id)log data:(id)data limit:(unint64_t)limit
 {
-  v8 = a3;
-  v9 = a4;
+  logCopy = log;
+  dataCopy = data;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -192,13 +192,13 @@ id __21__LogFileWriter_log___block_invoke(uint64_t a1)
   v20 = &unk_1002259E0;
   v14 = v12;
   v21 = v14;
-  v15 = v8;
+  v15 = logCopy;
   v25 = &v27;
   v22 = v15;
-  v23 = self;
-  v16 = v9;
+  selfCopy = self;
+  v16 = dataCopy;
   v24 = v16;
-  v26 = a5;
+  limitCopy = limit;
   dispatch_sync(logQueue, &v17);
   if (*(v28 + 24) == 1)
   {
@@ -429,17 +429,17 @@ void __32__LogFileWriter_unscheduleFlush__block_invoke(uint64_t a1)
   }
 }
 
-- (void)timerFlush:(id)a3
+- (void)timerFlush:(id)flush
 {
-  v4 = a3;
+  flushCopy = flush;
   logQueue = self->_logQueue;
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = __28__LogFileWriter_timerFlush___block_invoke;
   v10 = &unk_100225A08;
-  v11 = v4;
-  v12 = self;
-  v6 = v4;
+  v11 = flushCopy;
+  selfCopy = self;
+  v6 = flushCopy;
   dispatch_sync(logQueue, &v7);
   [(LogFileWriter *)self performSelectorInBackground:"_flush" withObject:0, v7, v8, v9, v10];
 }

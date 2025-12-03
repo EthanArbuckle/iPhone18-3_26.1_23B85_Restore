@@ -1,32 +1,32 @@
 @interface WFTakeScreenshotAction
 - (id)disabledOnPlatforms;
 - (id)parameterSummary;
-- (id)screenshotDisplay:(id)a3 error:(id *)a4;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
+- (id)screenshotDisplay:(id)display error:(id *)error;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
 - (void)cancel;
-- (void)notifyVisibleScenesOfScreenshot:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)notifyVisibleScenesOfScreenshot:(id)screenshot;
+- (void)runAsynchronouslyWithInput:(id)input;
 - (void)takeScreenshot;
 @end
 
 @implementation WFTakeScreenshotAction
 
-- (void)notifyVisibleScenesOfScreenshot:(id)a3
+- (void)notifyVisibleScenesOfScreenshot:(id)screenshot
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
-  v6 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+  screenshotCopy = screenshot;
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__WFTakeScreenshotAction_notifyVisibleScenesOfScreenshot___block_invoke;
   v10[3] = &unk_278C1A900;
-  v11 = v5;
-  v12 = self;
-  v13 = v4;
-  v7 = v4;
-  v8 = v5;
-  [v6 setTransitionHandler:v10];
-  v9 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v6];
+  v11 = serviceWithDefaultShellEndpoint;
+  selfCopy = self;
+  v13 = screenshotCopy;
+  v7 = screenshotCopy;
+  v8 = serviceWithDefaultShellEndpoint;
+  [configurationForDefaultMainDisplayMonitor setTransitionHandler:v10];
+  v9 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
   [(WFTakeScreenshotAction *)self setDisplayLayoutMonitor:v9];
 }
 
@@ -93,15 +93,15 @@ void __58__WFTakeScreenshotAction_notifyVisibleScenesOfScreenshot___block_invoke
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)screenshotDisplay:(id)a3 error:(id *)a4
+- (id)screenshotDisplay:(id)display error:(id *)error
 {
   v70[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  displayCopy = display;
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   v64 = *MEMORY[0x277CBF3A0];
   v65 = v5;
-  v60 = v4;
-  [v4 displayId];
+  v60 = displayCopy;
+  [displayCopy displayId];
   if (CARenderServerGetDisplayLogicalBounds())
   {
     height = v65.height;
@@ -154,8 +154,8 @@ void __58__WFTakeScreenshotAction_notifyVisibleScenesOfScreenshot___block_invoke
     v68[0] = v21;
     v68[1] = v19;
     v67[2] = *MEMORY[0x277CDA888];
-    v23 = [v60 name];
-    v68[2] = v23;
+    name = [v60 name];
+    v68[2] = name;
     v67[3] = *MEMORY[0x277CDA8F0];
     v24 = [MEMORY[0x277CCABB0] numberWithInt:*&v64];
     v68[3] = v24;
@@ -193,7 +193,7 @@ void __58__WFTakeScreenshotAction_notifyVisibleScenesOfScreenshot___block_invoke
         _os_log_impl(&dword_23DE30000, v33, OS_LOG_TYPE_ERROR, "%s Failed to create new data provider.", &buf, 0xCu);
       }
 
-      v37 = 0;
+      image = 0;
       goto LABEL_24;
     }
 
@@ -211,7 +211,7 @@ void __58__WFTakeScreenshotAction_notifyVisibleScenesOfScreenshot___block_invoke
     v62[4] = DeviceRGB;
     v35 = _Block_copy(v62);
     v36 = CGImageCreate(v58, height, 8uLL, 0x20uLL, v14, DeviceRGB, 0x2002u, v32, 0, 1, kCGRenderingIntentDefault);
-    v37 = v36;
+    image = v36;
     if (!v36)
     {
 LABEL_23:
@@ -229,8 +229,8 @@ LABEL_24:
     v61[3] = &__block_descriptor_40_e5_v8__0l;
     v61[4] = v36;
     v38 = _Block_copy(v61);
-    v39 = [v60 currentOrientation];
-    v40 = [v39 isEqualToString:*MEMORY[0x277CDA198]];
+    currentOrientation = [v60 currentOrientation];
+    v40 = [currentOrientation isEqualToString:*MEMORY[0x277CDA198]];
 
     if (v40)
     {
@@ -239,8 +239,8 @@ LABEL_24:
 
     else
     {
-      v42 = [v60 currentOrientation];
-      v43 = [v42 isEqualToString:*MEMORY[0x277CDA190]];
+      currentOrientation2 = [v60 currentOrientation];
+      v43 = [currentOrientation2 isEqualToString:*MEMORY[0x277CDA190]];
 
       if (v43)
       {
@@ -249,12 +249,12 @@ LABEL_24:
 
       else
       {
-        v44 = [v60 currentOrientation];
-        v45 = [v44 isEqualToString:*MEMORY[0x277CDA188]];
+        currentOrientation3 = [v60 currentOrientation];
+        v45 = [currentOrientation3 isEqualToString:*MEMORY[0x277CDA188]];
 
         if ((v45 & 1) == 0)
         {
-          v37 = [objc_alloc(MEMORY[0x277D79FC8]) initWithCGImage:v37 scale:1 orientation:1.0];
+          image = [objc_alloc(MEMORY[0x277D79FC8]) initWithCGImage:image scale:1 orientation:1.0];
           goto LABEL_22;
         }
 
@@ -278,12 +278,12 @@ LABEL_24:
     v52 = v49;
     CGContextScaleCTM([v49 CGContext], 1.0, -1.0);
     v53 = v49;
-    v54 = [v49 CGContext];
+    cGContext = [v49 CGContext];
     v74.size = v65;
     v74.origin.x = ceil(v65.width * -0.5);
     v74.origin.y = ceil(v65.height * -0.5);
-    CGContextDrawImage(v54, v74, v37);
-    v37 = [v49 image];
+    CGContextDrawImage(cGContext, v74, image);
+    image = [v49 image];
 
 LABEL_22:
     v38[2](v38);
@@ -299,12 +299,12 @@ LABEL_22:
     _os_log_impl(&dword_23DE30000, v28, OS_LOG_TYPE_ERROR, "%s Failed to create IOSurface.", &buf, 0xCu);
   }
 
-  v37 = 0;
+  image = 0;
 LABEL_25:
 
   v55 = *MEMORY[0x277D85DE8];
 
-  return v37;
+  return image;
 }
 
 - (void)takeScreenshot
@@ -314,8 +314,8 @@ LABEL_25:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [MEMORY[0x277CD9E40] displays];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  displays = [MEMORY[0x277CD9E40] displays];
+  v4 = [displays countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -327,7 +327,7 @@ LABEL_25:
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(displays);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
@@ -358,17 +358,17 @@ LABEL_25:
           {
             [MEMORY[0x277CFC3F8] log:v7];
             v14 = MEMORY[0x277CFC410];
-            v15 = [MEMORY[0x277CFC318] screenshotLocation];
-            v16 = [v14 itemWithObject:v10 origin:v15 disclosureLevel:1];
+            screenshotLocation = [MEMORY[0x277CFC318] screenshotLocation];
+            v16 = [v14 itemWithObject:v10 origin:screenshotLocation disclosureLevel:1];
 
             [v16 setIsScreenshot:1];
-            v17 = [(WFTakeScreenshotAction *)self output];
-            [v17 addItem:v16];
+            output = [(WFTakeScreenshotAction *)self output];
+            [output addItem:v16];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v5 = [displays countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v5);
@@ -386,14 +386,14 @@ LABEL_18:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a5;
+  nameCopy = name;
   v7 = WFLocalizedString(@"Allow “%1$@” to take a screenshot?");
-  v8 = [v5 localizedStringWithFormat:v7, v6];
+  nameCopy = [v5 localizedStringWithFormat:v7, nameCopy];
 
-  return v8;
+  return nameCopy;
 }
 
 - (id)parameterSummary
@@ -412,19 +412,19 @@ LABEL_18:
   [(WFTakeScreenshotAction *)&v2 cancel];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CFC450] defaultProfile];
-  v5 = [v4 isScreenShotAllowed];
+  defaultProfile = [MEMORY[0x277CFC450] defaultProfile];
+  isScreenShotAllowed = [defaultProfile isScreenShotAllowed];
 
-  if (v5)
+  if (isScreenShotAllowed)
   {
-    v6 = [(WFTakeScreenshotAction *)self variableSource];
-    v7 = [v6 workflowStartDate];
+    variableSource = [(WFTakeScreenshotAction *)self variableSource];
+    workflowStartDate = [variableSource workflowStartDate];
 
-    v8 = [(WFTakeScreenshotAction *)self variableSource];
-    v9 = [v8 contentForPrivateVariableKey:@"WFTakeScreenshotActionConfirmed"];
+    variableSource2 = [(WFTakeScreenshotAction *)self variableSource];
+    v9 = [variableSource2 contentForPrivateVariableKey:@"WFTakeScreenshotActionConfirmed"];
 
     if (v9)
     {
@@ -447,37 +447,37 @@ LABEL_18:
 
     v15 = v10;
 
-    v16 = [v15 BOOLValue];
-    if (v7 && (v16 & 1) == 0)
+    bOOLValue = [v15 BOOLValue];
+    if (workflowStartDate && (bOOLValue & 1) == 0)
     {
-      v17 = [MEMORY[0x277CBEA80] currentCalendar];
-      v18 = [v17 dateByAddingUnit:64 value:10 toDate:v7 options:0];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v18 = [currentCalendar dateByAddingUnit:64 value:10 toDate:workflowStartDate options:0];
 
-      v19 = [MEMORY[0x277CBEAA8] date];
-      v20 = [v19 compare:v18];
+      date = [MEMORY[0x277CBEAA8] date];
+      v20 = [date compare:v18];
 
       if (v20 == 1)
       {
-        v21 = [(WFTakeScreenshotAction *)self workflow];
-        if ([v21 hiddenFromLibraryAndSync])
+        workflow = [(WFTakeScreenshotAction *)self workflow];
+        if ([workflow hiddenFromLibraryAndSync])
         {
         }
 
         else
         {
-          v22 = [(WFTakeScreenshotAction *)self workflow];
-          v23 = [v22 name];
+          workflow2 = [(WFTakeScreenshotAction *)self workflow];
+          name = [workflow2 name];
 
-          if (v23)
+          if (name)
           {
             v24 = MEMORY[0x277CCACA8];
             v25 = WFLocalizedString(@"The shortcut “%@” wants to take a screenshot. Do you want to allow it?");
-            v26 = [v24 localizedStringWithFormat:v25, v23];
+            v26 = [v24 localizedStringWithFormat:v25, name];
 
 LABEL_18:
             v27 = [MEMORY[0x277CFC218] alertWithPreferredStyle:0];
-            v28 = [(WFTakeScreenshotAction *)self localizedName];
-            [v27 setTitle:v28];
+            localizedName = [(WFTakeScreenshotAction *)self localizedName];
+            [v27 setTitle:localizedName];
 
             [v27 setMessage:v26];
             v29 = MEMORY[0x277CFC220];
@@ -500,8 +500,8 @@ LABEL_18:
             v34 = [v32 buttonWithTitle:v33 style:0 preferred:1 handler:v37];
             [v27 addButton:v34];
 
-            v35 = [(WFTakeScreenshotAction *)self userInterface];
-            [v35 presentAlert:v27];
+            userInterface = [(WFTakeScreenshotAction *)self userInterface];
+            [userInterface presentAlert:v27];
 
             goto LABEL_19;
           }
@@ -520,8 +520,8 @@ LABEL_18:
     v11 = MEMORY[0x277CCA9B8];
     v12 = *MEMORY[0x277D7CB30];
     v39 = *MEMORY[0x277CCA450];
-    v7 = WFLocalizedString(@"Your administrator doesn't allow taking screenshots.");
-    v40[0] = v7;
+    workflowStartDate = WFLocalizedString(@"Your administrator doesn't allow taking screenshots.");
+    v40[0] = workflowStartDate;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
     v14 = [v11 errorWithDomain:v12 code:8 userInfo:v13];
     [(WFTakeScreenshotAction *)self finishRunningWithError:v14];
@@ -553,8 +553,8 @@ uint64_t __53__WFTakeScreenshotAction_runAsynchronouslyWithInput___block_invoke_
 {
   v5.receiver = self;
   v5.super_class = WFTakeScreenshotAction;
-  v2 = [(WFTakeScreenshotAction *)&v5 disabledOnPlatforms];
-  v3 = [v2 arrayByAddingObject:*MEMORY[0x277D7CC80]];
+  disabledOnPlatforms = [(WFTakeScreenshotAction *)&v5 disabledOnPlatforms];
+  v3 = [disabledOnPlatforms arrayByAddingObject:*MEMORY[0x277D7CC80]];
 
   return v3;
 }

@@ -1,7 +1,7 @@
 @interface MFMailMessageLibraryAddBrandIDColumnUpgradeStep
 + (id)_businessesTableSchema;
 + (id)log;
-+ (int)runWithConnection:(id)a3 databaseName:(id)a4;
++ (int)runWithConnection:(id)connection databaseName:(id)name;
 @end
 
 @implementation MFMailMessageLibraryAddBrandIDColumnUpgradeStep
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __54__MFMailMessageLibraryAddBrandIDColumnUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_15 != -1)
   {
     dispatch_once(&log_onceToken_15, block);
@@ -31,20 +31,20 @@ void __54__MFMailMessageLibraryAddBrandIDColumnUpgradeStep_log__block_invoke(uin
   log_log_15 = v1;
 }
 
-+ (int)runWithConnection:(id)a3 databaseName:(id)a4
++ (int)runWithConnection:(id)connection databaseName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 tableExists:@"businesses" inDatabase:@"protected"];
+  connectionCopy = connection;
+  nameCopy = name;
+  v8 = [connectionCopy tableExists:@"businesses" inDatabase:@"protected"];
   if (!v8)
   {
     goto LABEL_10;
   }
 
-  if (![v6 columnExists:@"brand_id" inTable:@"businesses" type:0])
+  if (![connectionCopy columnExists:@"brand_id" inTable:@"businesses" type:0])
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@.%@ RENAME TO old_businesses", v7, @"businesses"];;
-    v10 = sqlite3_exec([v6 sqlDB], -[NSObject UTF8String](v9, "UTF8String"), 0, 0, 0);
+    _businessesTableSchema = [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE %@.%@ RENAME TO old_businesses", nameCopy, @"businesses"];;
+    v10 = sqlite3_exec([connectionCopy sqlDB], -[NSObject UTF8String](_businessesTableSchema, "UTF8String"), 0, 0, 0);
     if (v10)
     {
       v11 = +[MFMailMessageLibraryAddBrandIDColumnUpgradeStep log];
@@ -57,9 +57,9 @@ void __54__MFMailMessageLibraryAddBrandIDColumnUpgradeStep_log__block_invoke(uin
     }
 
 LABEL_10:
-    v9 = [a1 _businessesTableSchema];
-    v11 = [v9 definitionWithDatabaseName:v7];
-    v10 = sqlite3_exec([v6 sqlDB], -[NSObject UTF8String](v11, "UTF8String"), 0, 0, 0);
+    _businessesTableSchema = [self _businessesTableSchema];
+    v11 = [_businessesTableSchema definitionWithDatabaseName:nameCopy];
+    v10 = sqlite3_exec([connectionCopy sqlDB], -[NSObject UTF8String](v11, "UTF8String"), 0, 0, 0);
     if (v10)
     {
       v12 = +[MFMailMessageLibraryAddBrandIDColumnUpgradeStep log];
@@ -77,7 +77,7 @@ LABEL_10:
         goto LABEL_14;
       }
 
-      v10 = sqlite3_exec([v6 sqlDB], "INSERT INTO businesses (ROWID, domain, address_comment) SELECT ROWID, domain, address_comment FROM old_businesses;", 0, 0, 0);
+      v10 = sqlite3_exec([connectionCopy sqlDB], "INSERT INTO businesses (ROWID, domain, address_comment) SELECT ROWID, domain, address_comment FROM old_businesses;", 0, 0, 0);
       if (v10)
       {
         v12 = +[MFMailMessageLibraryAddBrandIDColumnUpgradeStep log];
@@ -89,7 +89,7 @@ LABEL_10:
 
       else
       {
-        v10 = sqlite3_exec([v6 sqlDB], "DROP TABLE old_businesses", 0, 0, 0);
+        v10 = sqlite3_exec([connectionCopy sqlDB], "DROP TABLE old_businesses", 0, 0, 0);
         if (!v10)
         {
           goto LABEL_14;
@@ -107,11 +107,11 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = +[MFMailMessageLibraryAddBrandIDColumnUpgradeStep log];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  _businessesTableSchema = +[MFMailMessageLibraryAddBrandIDColumnUpgradeStep log];
+  if (os_log_type_enabled(_businessesTableSchema, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1B0389000, v9, OS_LOG_TYPE_DEFAULT, "Brand ID column already exists, skipping upgrade step.", buf, 2u);
+    _os_log_impl(&dword_1B0389000, _businessesTableSchema, OS_LOG_TYPE_DEFAULT, "Brand ID column already exists, skipping upgrade step.", buf, 2u);
   }
 
   v10 = 0;
@@ -143,22 +143,22 @@ LABEL_15:
   [v5 addUniquenessConstraintForColumns:v7 conflictResolution:1];
 
   v8 = objc_alloc(MEMORY[0x1E699B898]);
-  v9 = [v28 columnExpression];
-  v10 = [v9 isNotNull];
-  v31[0] = v10;
-  v11 = [v27 columnExpression];
-  v12 = [v11 isNull];
-  v31[1] = v12;
+  columnExpression = [v28 columnExpression];
+  isNotNull = [columnExpression isNotNull];
+  v31[0] = isNotNull;
+  columnExpression2 = [v27 columnExpression];
+  isNull = [columnExpression2 isNull];
+  v31[1] = isNull;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
   v14 = [v8 initWithExpressions:v13];
 
   v15 = objc_alloc(MEMORY[0x1E699B898]);
-  v16 = [v28 columnExpression];
-  v17 = [v16 isNull];
-  v30[0] = v17;
-  v18 = [v27 columnExpression];
-  v19 = [v18 isNotNull];
-  v30[1] = v19;
+  columnExpression3 = [v28 columnExpression];
+  isNull2 = [columnExpression3 isNull];
+  v30[0] = isNull2;
+  columnExpression4 = [v27 columnExpression];
+  isNotNull2 = [columnExpression4 isNotNull];
+  v30[1] = isNotNull2;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
   v21 = [v15 initWithExpressions:v20];
 

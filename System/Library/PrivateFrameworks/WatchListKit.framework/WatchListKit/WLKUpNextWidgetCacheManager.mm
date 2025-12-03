@@ -9,8 +9,8 @@
 + (BOOL)consumePendingInvalidation
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.WatchListKit"];
   v4 = [v3 objectForKey:@"UpNextWidgetPendingInvalidation"];
   if (v4)
@@ -26,15 +26,15 @@
     [v3 removeObjectForKey:@"UpNextWidgetPendingInvalidation"];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v6 = *MEMORY[0x277D85DE8];
   return v4 != 0;
 }
 
 + (void)requestInvalidation
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = WLKNetworkingLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -43,20 +43,20 @@
   }
 
   v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.WatchListKit"];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v4 setObject:v5 forKey:@"UpNextWidgetPendingInvalidation"];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v4 setObject:date forKey:@"UpNextWidgetPendingInvalidation"];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 + (void)requestReload
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [requestReload__sTimelineController extensionBundleIdentifier];
+  extensionBundleIdentifier = [requestReload__sTimelineController extensionBundleIdentifier];
   v6 = 138412546;
-  v7 = v4;
+  v7 = extensionBundleIdentifier;
   v8 = 2112;
-  v9 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_272A0F000, a2, OS_LOG_TYPE_ERROR, "WLKUpNextWidgetCacheManager - An error occured reloading timeline: [%@] %@", &v6, 0x16u);
 
   v5 = *MEMORY[0x277D85DE8];

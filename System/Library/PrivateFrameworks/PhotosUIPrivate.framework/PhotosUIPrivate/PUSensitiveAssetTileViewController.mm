@@ -1,31 +1,31 @@
 @interface PUSensitiveAssetTileViewController
-- (void)_handleAssetViewModelChange:(id)a3;
-- (void)applyLayoutInfo:(id)a3;
+- (void)_handleAssetViewModelChange:(id)change;
+- (void)applyLayoutInfo:(id)info;
 - (void)assetDidChange;
-- (void)assetViewModelDidChange:(id)a3;
+- (void)assetViewModelDidChange:(id)change;
 - (void)displayedImageRequestResultDidChange;
 - (void)updateImage;
 - (void)updateWithPrivacyOverlay;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUSensitiveAssetTileViewController
 
-- (void)_handleAssetViewModelChange:(id)a3
+- (void)_handleAssetViewModelChange:(id)change
 {
-  if ([a3 isPresentedForPreviewChanged])
+  if ([change isPresentedForPreviewChanged])
   {
 
     [(PUSensitiveAssetTileViewController *)self updateWithPrivacyOverlay];
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v6 = a4;
+  changeCopy = change;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v6;
+    v5 = changeCopy;
 
     if (v5)
     {
@@ -56,30 +56,30 @@
   [(PUSensitiveAssetTileViewController *)self updateWithPrivacyOverlay];
 }
 
-- (void)assetViewModelDidChange:(id)a3
+- (void)assetViewModelDidChange:(id)change
 {
   v3.receiver = self;
   v3.super_class = PUSensitiveAssetTileViewController;
-  [(PUOneUpImageTileViewController *)&v3 assetViewModelDidChange:a3];
+  [(PUOneUpImageTileViewController *)&v3 assetViewModelDidChange:change];
 }
 
-- (void)applyLayoutInfo:(id)a3
+- (void)applyLayoutInfo:(id)info
 {
   v3.receiver = self;
   v3.super_class = PUSensitiveAssetTileViewController;
-  [(PUOneUpImageTileViewController *)&v3 applyLayoutInfo:a3];
+  [(PUOneUpImageTileViewController *)&v3 applyLayoutInfo:info];
 }
 
 - (void)updateImage
 {
-  v3 = [(PUSensitiveAssetTileViewController *)self overlayView];
+  overlayView = [(PUSensitiveAssetTileViewController *)self overlayView];
 
-  if (v3)
+  if (overlayView)
   {
-    v6 = [(PUImageTileViewController *)self displayedImageRequestResult];
-    v4 = [v6 image];
-    v5 = [(PUImageTileViewController *)self imageView];
-    [v5 setImage:v4];
+    displayedImageRequestResult = [(PUImageTileViewController *)self displayedImageRequestResult];
+    image = [displayedImageRequestResult image];
+    imageView = [(PUImageTileViewController *)self imageView];
+    [imageView setImage:image];
   }
 }
 
@@ -88,30 +88,30 @@
   v21 = *MEMORY[0x1E69E9840];
   if ([(PUTileViewController *)self isViewLoaded])
   {
-    v3 = [(PUImageTileViewController *)self assetViewModel];
-    v4 = [v3 asset];
+    assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+    asset = [assetViewModel asset];
 
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v5 = v4;
+      v5 = asset;
 
       if (v5)
       {
-        v6 = [(PUImageTileViewController *)self assetViewModel];
-        v7 = [v6 isPresentedForPreview];
+        assetViewModel2 = [(PUImageTileViewController *)self assetViewModel];
+        isPresentedForPreview = [assetViewModel2 isPresentedForPreview];
 
-        v8 = v7;
+        v8 = isPresentedForPreview;
         v9 = objc_alloc(MEMORY[0x1E69C39C0]);
-        v10 = [(PUTileViewController *)self view];
-        [v10 bounds];
+        view = [(PUTileViewController *)self view];
+        [view bounds];
         v11 = [v9 initWithAsset:v5 frame:v8 overlayKind:?];
 
         if (v11)
         {
           [v11 setClipsToBounds:1];
           [v11 setAutoresizingMask:18];
-          v12 = [(PUTileViewController *)self view];
-          [v12 addSubview:v11];
+          view2 = [(PUTileViewController *)self view];
+          [view2 addSubview:v11];
 
           [(PXSensitivityUIOverlayView *)self->_overlayView removeFromSuperview];
           objc_storeStrong(&self->_overlayView, v11);
@@ -119,8 +119,8 @@
 
         else
         {
-          v13 = [(PUImageTileViewController *)self imageView];
-          [v13 setImage:0];
+          imageView = [(PUImageTileViewController *)self imageView];
+          [imageView setImage:0];
 
           overlayView = self->_overlayView;
           self->_overlayView = 0;
@@ -128,11 +128,11 @@
           v15 = PLOneUpGetLog();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v16 = [v5 uuid];
+            uuid = [v5 uuid];
             v17 = 138412546;
-            v18 = self;
+            selfCopy = self;
             v19 = 2112;
-            v20 = v16;
+            v20 = uuid;
             _os_log_impl(&dword_1B36F3000, v15, OS_LOG_TYPE_DEBUG, "[CivicSafety] %@ Couldn't create an sensitivity overlay for asset %@", &v17, 0x16u);
           }
         }

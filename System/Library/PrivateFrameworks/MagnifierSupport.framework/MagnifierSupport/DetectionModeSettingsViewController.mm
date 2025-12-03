@@ -1,55 +1,55 @@
 @interface DetectionModeSettingsViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
-- (_TtC16MagnifierSupport35DetectionModeSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)didToggleDetectLanguagesSwitch:(id)a3;
-- (void)didToggleDetectionSwitch:(id)a3;
-- (void)didToggleFeedbackSwitch:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (_TtC16MagnifierSupport35DetectionModeSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)didToggleDetectLanguagesSwitch:(id)switch;
+- (void)didToggleDetectionSwitch:(id)switch;
+- (void)didToggleFeedbackSwitch:(id)switch;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DetectionModeSettingsViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_257CACA5C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_257C5F9C8(a3);
+  selfCopy = self;
+  sub_257C5F9C8(appear);
 }
 
-- (void)didToggleDetectionSwitch:(id)a3
+- (void)didToggleDetectionSwitch:(id)switch
 {
-  v4 = a3;
-  v5 = self;
-  sub_257CAE1AC(v4);
+  switchCopy = switch;
+  selfCopy = self;
+  sub_257CAE1AC(switchCopy);
 }
 
-- (void)didToggleFeedbackSwitch:(id)a3
+- (void)didToggleFeedbackSwitch:(id)switch
 {
-  v4 = a3;
-  v5 = self;
-  sub_257CAE694(v4);
+  switchCopy = switch;
+  selfCopy = self;
+  sub_257CAE694(switchCopy);
 }
 
-- (void)didToggleDetectLanguagesSwitch:(id)a3
+- (void)didToggleDetectLanguagesSwitch:(id)switch
 {
-  v4 = a3;
-  v5 = self;
-  sub_257CAEA74(v4);
+  switchCopy = switch;
+  selfCopy = self;
+  sub_257CAEA74(switchCopy);
 }
 
-- (_TtC16MagnifierSupport35DetectionModeSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MagnifierSupport35DetectionModeSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_257ECF500();
     v7 = v6;
@@ -61,21 +61,21 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_257CAD110(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_257CAD110(v5, v7, bundle);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v4 = self;
+    selfCopy = self;
     sub_257D3AC80();
     swift_unknownObjectRelease();
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v4 = sub_257ECCEB0();
   v5 = *(v4 - 8);
@@ -86,7 +86,7 @@
   return 1;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
   v4 = sub_257ECCEB0();
   v5 = *(v4 - 8);
@@ -97,7 +97,7 @@
   return 0;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
   v4 = sub_257ECCEB0();
   v5 = *(v4 - 8);
@@ -108,16 +108,16 @@
   return 0;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_257ECCEB0();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_257ECCE40();
-  v10 = a3;
-  v11 = self;
-  sub_257CAD984(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_257CAD984(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }

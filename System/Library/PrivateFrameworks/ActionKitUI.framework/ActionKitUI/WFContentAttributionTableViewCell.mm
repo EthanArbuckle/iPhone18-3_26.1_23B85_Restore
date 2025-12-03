@@ -1,63 +1,63 @@
 @interface WFContentAttributionTableViewCell
-- (WFContentAttributionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)updateCellWithContentAttribution:(id)a3;
+- (WFContentAttributionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)updateCellWithContentAttribution:(id)attribution;
 @end
 
 @implementation WFContentAttributionTableViewCell
 
-- (void)updateCellWithContentAttribution:(id)a3
+- (void)updateCellWithContentAttribution:(id)attribution
 {
-  v5 = a3;
-  v6 = [v5 origin];
+  attributionCopy = attribution;
+  origin = [attributionCopy origin];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v6 appDescriptor], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "bundleIdentifier"), v46 = objc_claimAutoreleasedReturnValue(), v7, v46))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([origin appDescriptor], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "bundleIdentifier"), v46 = objc_claimAutoreleasedReturnValue(), v7, v46))
   {
     v3 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v46 allowPlaceholder:0 error:0];
-    v8 = [v3 localizedShortName];
+    localizedShortName = [v3 localizedShortName];
     v9 = 0;
   }
 
   else
   {
     v46 = 0;
-    v8 = 0;
+    localizedShortName = 0;
     v9 = 1;
   }
 
-  v10 = [(WFContentAttributionTableViewCell *)self bundleNameLabel];
-  [v10 setText:v8];
+  bundleNameLabel = [(WFContentAttributionTableViewCell *)self bundleNameLabel];
+  [bundleNameLabel setText:localizedShortName];
 
   if ((v9 & 1) == 0)
   {
   }
 
-  v11 = [(WFContentAttributionTableViewCell *)self bundleNameLabel];
-  v12 = [v11 text];
-  v13 = [v12 length] == 0;
-  v14 = [(WFContentAttributionTableViewCell *)self bundleNameLabel];
-  [v14 setHidden:v13];
+  bundleNameLabel2 = [(WFContentAttributionTableViewCell *)self bundleNameLabel];
+  text = [bundleNameLabel2 text];
+  v13 = [text length] == 0;
+  bundleNameLabel3 = [(WFContentAttributionTableViewCell *)self bundleNameLabel];
+  [bundleNameLabel3 setHidden:v13];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v6 accountIdentifier];
+    accountIdentifier = [origin accountIdentifier];
   }
 
   else
   {
-    v15 = 0;
+    accountIdentifier = 0;
   }
 
-  v16 = [(WFContentAttributionTableViewCell *)self accountIdentifierLabel];
-  [v16 setText:v15];
+  accountIdentifierLabel = [(WFContentAttributionTableViewCell *)self accountIdentifierLabel];
+  [accountIdentifierLabel setText:accountIdentifier];
 
-  v17 = [(WFContentAttributionTableViewCell *)self accountIdentifierLabel];
-  v18 = [v17 text];
-  v19 = [v18 length] == 0;
-  v20 = [(WFContentAttributionTableViewCell *)self accountIdentifierLabel];
-  [v20 setHidden:v19];
+  accountIdentifierLabel2 = [(WFContentAttributionTableViewCell *)self accountIdentifierLabel];
+  text2 = [accountIdentifierLabel2 text];
+  v19 = [text2 length] == 0;
+  accountIdentifierLabel3 = [(WFContentAttributionTableViewCell *)self accountIdentifierLabel];
+  [accountIdentifierLabel3 setHidden:v19];
 
-  v21 = [v6 managedLevel] - 1;
+  v21 = [origin managedLevel] - 1;
   if (v21 > 2)
   {
     v22 = @"None";
@@ -68,23 +68,23 @@
     v22 = off_278C36980[v21];
   }
 
-  v23 = [(WFContentAttributionTableViewCell *)self managedLevelLabel];
-  [v23 setText:v22];
+  managedLevelLabel = [(WFContentAttributionTableViewCell *)self managedLevelLabel];
+  [managedLevelLabel setText:v22];
 
-  v24 = [(WFContentAttributionTableViewCell *)self managedLevelLabel];
-  v25 = [v24 text];
-  v26 = [v25 length] == 0;
-  v27 = [(WFContentAttributionTableViewCell *)self managedLevelLabel];
-  [v27 setHidden:v26];
+  managedLevelLabel2 = [(WFContentAttributionTableViewCell *)self managedLevelLabel];
+  text3 = [managedLevelLabel2 text];
+  v26 = [text3 length] == 0;
+  managedLevelLabel3 = [(WFContentAttributionTableViewCell *)self managedLevelLabel];
+  [managedLevelLabel3 setHidden:v26];
 
   v28 = MEMORY[0x277CCACA8];
-  v29 = [v5 privateItemIdentifiers];
-  v30 = [v28 stringWithFormat:@"%d privateItemIdentifiers", objc_msgSend(v29, "count")];
-  v31 = [(WFContentAttributionTableViewCell *)self contentItemsCountLabel];
-  [v31 setText:v30];
+  privateItemIdentifiers = [attributionCopy privateItemIdentifiers];
+  v30 = [v28 stringWithFormat:@"%d privateItemIdentifiers", objc_msgSend(privateItemIdentifiers, "count")];
+  contentItemsCountLabel = [(WFContentAttributionTableViewCell *)self contentItemsCountLabel];
+  [contentItemsCountLabel setText:v30];
 
-  v32 = [v5 disclosureLevel];
-  if (v32 == 1)
+  disclosureLevel = [attributionCopy disclosureLevel];
+  if (disclosureLevel == 1)
   {
     v33 = @"Private";
   }
@@ -94,19 +94,19 @@
     v33 = @"Public";
   }
 
-  v34 = [(WFContentAttributionTableViewCell *)self disclosureLevelLabel];
-  [v34 setText:v33];
+  disclosureLevelLabel = [(WFContentAttributionTableViewCell *)self disclosureLevelLabel];
+  [disclosureLevelLabel setText:v33];
 
-  v35 = [(WFContentAttributionTableViewCell *)self disclosureLevelLabel];
-  v36 = [v35 text];
-  v37 = [v36 length] == 0;
-  v38 = [(WFContentAttributionTableViewCell *)self disclosureLevelLabel];
-  [v38 setHidden:v37];
+  disclosureLevelLabel2 = [(WFContentAttributionTableViewCell *)self disclosureLevelLabel];
+  text4 = [disclosureLevelLabel2 text];
+  v37 = [text4 length] == 0;
+  disclosureLevelLabel3 = [(WFContentAttributionTableViewCell *)self disclosureLevelLabel];
+  [disclosureLevelLabel3 setHidden:v37];
 
-  v39 = [(WFContentAttributionTableViewCell *)self accountIdentifierLabel];
-  LODWORD(v36) = [v39 isHidden];
+  accountIdentifierLabel4 = [(WFContentAttributionTableViewCell *)self accountIdentifierLabel];
+  LODWORD(text4) = [accountIdentifierLabel4 isHidden];
 
-  if (v36)
+  if (text4)
   {
     v40 = 3;
   }
@@ -116,26 +116,26 @@
     v40 = 0;
   }
 
-  v41 = [(WFContentAttributionTableViewCell *)self contentStackView];
-  [v41 setAlignment:v40];
+  contentStackView = [(WFContentAttributionTableViewCell *)self contentStackView];
+  [contentStackView setAlignment:v40];
 
-  v42 = [(WFContentAttributionTableViewCell *)self accountIdentifierLabel];
-  LODWORD(v41) = [v42 isHidden];
-  v43 = [(WFContentAttributionTableViewCell *)self firstLineBaseLineConstaint];
-  [v43 setActive:v41 ^ 1];
+  accountIdentifierLabel5 = [(WFContentAttributionTableViewCell *)self accountIdentifierLabel];
+  LODWORD(contentStackView) = [accountIdentifierLabel5 isHidden];
+  firstLineBaseLineConstaint = [(WFContentAttributionTableViewCell *)self firstLineBaseLineConstaint];
+  [firstLineBaseLineConstaint setActive:contentStackView ^ 1];
 
-  v44 = [(WFContentAttributionTableViewCell *)self accountIdentifierLabel];
-  LODWORD(v41) = [v44 isHidden];
-  v45 = [(WFContentAttributionTableViewCell *)self secondLineBaseLineConstaint];
-  [v45 setActive:v41 ^ 1];
+  accountIdentifierLabel6 = [(WFContentAttributionTableViewCell *)self accountIdentifierLabel];
+  LODWORD(contentStackView) = [accountIdentifierLabel6 isHidden];
+  secondLineBaseLineConstaint = [(WFContentAttributionTableViewCell *)self secondLineBaseLineConstaint];
+  [secondLineBaseLineConstaint setActive:contentStackView ^ 1];
 }
 
-- (WFContentAttributionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFContentAttributionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v86[3] = *MEMORY[0x277D85DE8];
   v82.receiver = self;
   v82.super_class = WFContentAttributionTableViewCell;
-  v4 = [(WFContentAttributionTableViewCell *)&v82 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WFContentAttributionTableViewCell *)&v82 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -214,67 +214,67 @@
     v32 = [v30 initWithArrangedSubviews:v31];
     [(WFContentAttributionTableViewCell *)v4 setContentStackView:v32];
 
-    v33 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
-    [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentStackView = [(WFContentAttributionTableViewCell *)v4 contentStackView];
+    [contentStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v34 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
-    [v34 setAxis:0];
+    contentStackView2 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
+    [contentStackView2 setAxis:0];
 
-    v35 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
-    [v35 setSpacing:8.0];
+    contentStackView3 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
+    [contentStackView3 setSpacing:8.0];
 
-    v36 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
-    [v36 setAlignment:2];
+    contentStackView4 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
+    [contentStackView4 setAlignment:2];
 
-    v37 = [(WFContentAttributionTableViewCell *)v4 contentView];
-    v38 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
-    [v37 addSubview:v38];
+    contentView = [(WFContentAttributionTableViewCell *)v4 contentView];
+    contentStackView5 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
+    [contentView addSubview:contentStackView5];
 
     v67 = MEMORY[0x277CCAAD0];
-    v79 = [(WFContentAttributionTableViewCell *)v4 contentView];
-    v78 = [v79 layoutMarginsGuide];
-    v76 = [v78 topAnchor];
-    v77 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
-    v75 = [v77 layoutMarginsGuide];
-    v74 = [v75 topAnchor];
-    v73 = [v76 constraintEqualToAnchor:v74];
+    contentView2 = [(WFContentAttributionTableViewCell *)v4 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    topAnchor = [layoutMarginsGuide topAnchor];
+    contentStackView6 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
+    layoutMarginsGuide2 = [contentStackView6 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide2 topAnchor];
+    v73 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v83[0] = v73;
-    v72 = [(WFContentAttributionTableViewCell *)v4 contentView];
-    v71 = [v72 layoutMarginsGuide];
-    v69 = [v71 bottomAnchor];
-    v70 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
-    v68 = [v70 layoutMarginsGuide];
-    v66 = [v68 bottomAnchor];
-    v65 = [v69 constraintEqualToAnchor:v66];
+    contentView3 = [(WFContentAttributionTableViewCell *)v4 contentView];
+    layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+    bottomAnchor = [layoutMarginsGuide3 bottomAnchor];
+    contentStackView7 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
+    layoutMarginsGuide4 = [contentStackView7 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v65 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v83[1] = v65;
-    v64 = [(WFContentAttributionTableViewCell *)v4 contentView];
-    v63 = [v64 layoutMarginsGuide];
-    v61 = [v63 leadingAnchor];
-    v62 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
-    v60 = [v62 layoutMarginsGuide];
-    v59 = [v60 leadingAnchor];
-    v39 = [v61 constraintEqualToAnchor:v59];
+    contentView4 = [(WFContentAttributionTableViewCell *)v4 contentView];
+    layoutMarginsGuide5 = [contentView4 layoutMarginsGuide];
+    leadingAnchor = [layoutMarginsGuide5 leadingAnchor];
+    contentStackView8 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
+    layoutMarginsGuide6 = [contentStackView8 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide6 leadingAnchor];
+    v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v83[2] = v39;
-    v40 = [(WFContentAttributionTableViewCell *)v4 contentView];
-    v41 = [v40 layoutMarginsGuide];
-    v42 = [v41 trailingAnchor];
-    v43 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
-    v44 = [v43 layoutMarginsGuide];
-    v45 = [v44 trailingAnchor];
-    v46 = [v42 constraintEqualToAnchor:v45];
+    contentView5 = [(WFContentAttributionTableViewCell *)v4 contentView];
+    layoutMarginsGuide7 = [contentView5 layoutMarginsGuide];
+    trailingAnchor = [layoutMarginsGuide7 trailingAnchor];
+    contentStackView9 = [(WFContentAttributionTableViewCell *)v4 contentStackView];
+    layoutMarginsGuide8 = [contentStackView9 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide8 trailingAnchor];
+    v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v83[3] = v46;
     v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:4];
     [v67 activateConstraints:v47];
 
-    v48 = [(UILabel *)v4->_bundleNameLabel firstBaselineAnchor];
-    v49 = [(UILabel *)v4->_disclosureLevelLabel firstBaselineAnchor];
-    v50 = [v48 constraintEqualToAnchor:v49];
+    firstBaselineAnchor = [(UILabel *)v4->_bundleNameLabel firstBaselineAnchor];
+    firstBaselineAnchor2 = [(UILabel *)v4->_disclosureLevelLabel firstBaselineAnchor];
+    v50 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
     firstLineBaseLineConstaint = v4->_firstLineBaseLineConstaint;
     v4->_firstLineBaseLineConstaint = v50;
 
-    v52 = [(UILabel *)v4->_accountIdentifierLabel firstBaselineAnchor];
-    v53 = [(UILabel *)v4->_managedLevelLabel firstBaselineAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53];
+    firstBaselineAnchor3 = [(UILabel *)v4->_accountIdentifierLabel firstBaselineAnchor];
+    firstBaselineAnchor4 = [(UILabel *)v4->_managedLevelLabel firstBaselineAnchor];
+    v54 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4];
     secondLineBaseLineConstaint = v4->_secondLineBaseLineConstaint;
     v4->_secondLineBaseLineConstaint = v54;
 

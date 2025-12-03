@@ -1,19 +1,19 @@
 @interface CTBGeoPushLocationWrapper
-- (CTBGeoPushLocationWrapper)initWithWrapped:(optional<ctb::GeoPushLocation> *)a3;
+- (CTBGeoPushLocationWrapper)initWithWrapped:(optional<ctb::GeoPushLocation> *)wrapped;
 - (id).cxx_construct;
 @end
 
 @implementation CTBGeoPushLocationWrapper
 
-- (CTBGeoPushLocationWrapper)initWithWrapped:(optional<ctb::GeoPushLocation> *)a3
+- (CTBGeoPushLocationWrapper)initWithWrapped:(optional<ctb::GeoPushLocation> *)wrapped
 {
   v6.receiver = self;
   v6.super_class = CTBGeoPushLocationWrapper;
   result = [(CTBGeoPushLocationWrapper *)&v6 init];
   if (result)
   {
-    var0 = a3->var0;
-    result->_wrapped.__engaged_ = a3->__engaged_;
+    var0 = wrapped->var0;
+    result->_wrapped.__engaged_ = wrapped->__engaged_;
     result->_wrapped.var0 = var0;
   }
 

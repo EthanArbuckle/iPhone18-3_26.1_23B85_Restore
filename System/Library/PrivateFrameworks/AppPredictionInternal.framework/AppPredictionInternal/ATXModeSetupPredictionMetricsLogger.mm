@@ -1,10 +1,10 @@
 @interface ATXModeSetupPredictionMetricsLogger
 - (ATXModeSetupPredictionMetricsLogger)init;
-- (id)appSessionInterruptionsCalculatorSinceDate:(id)a3 andForModeSemanticTypes:(id)a4;
-- (id)fetchAllRelevantModeSemanticTypesInLastSevenDays:(id)a3;
-- (id)getRecommendedAndCandidateAppsInAllowListForSemanticTypes:(id)a3;
-- (id)getRecommendedAndCandidateAppsInDenyListForSemanticTypes:(id)a3;
-- (id)globalAppSessionInterruptionsCalculatorSinceDate:(id)a3;
+- (id)appSessionInterruptionsCalculatorSinceDate:(id)date andForModeSemanticTypes:(id)types;
+- (id)fetchAllRelevantModeSemanticTypesInLastSevenDays:(id)days;
+- (id)getRecommendedAndCandidateAppsInAllowListForSemanticTypes:(id)types;
+- (id)getRecommendedAndCandidateAppsInDenyListForSemanticTypes:(id)types;
+- (id)globalAppSessionInterruptionsCalculatorSinceDate:(id)date;
 - (void)logMetrics;
 @end
 
@@ -17,18 +17,18 @@
   return [(ATXModeSetupPredictionMetricsLogger *)&v3 init];
 }
 
-- (id)globalAppSessionInterruptionsCalculatorSinceDate:(id)a3
+- (id)globalAppSessionInterruptionsCalculatorSinceDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_opt_new();
   v5 = MEMORY[0x277CBEAA8];
-  [v3 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v6 = [v5 dateWithTimeIntervalSinceReferenceDate:?];
   v7 = [v4 appLaunchesSinceDate:v6];
 
   v8 = objc_opt_new();
   v9 = objc_opt_new();
-  [v3 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v10 = [v9 publisherFromStartTime:?];
   v11 = [v8 stripStoreEvent:v10];
 
@@ -99,26 +99,26 @@ void __88__ATXModeSetupPredictionMetricsLogger_globalAppSessionInterruptionsCalc
   }
 }
 
-- (id)appSessionInterruptionsCalculatorSinceDate:(id)a3 andForModeSemanticTypes:(id)a4
+- (id)appSessionInterruptionsCalculatorSinceDate:(id)date andForModeSemanticTypes:(id)types
 {
   v47[2] = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v5 = a4;
+  dateCopy = date;
+  typesCopy = types;
   v6 = BiomeLibrary();
-  v7 = [v6 UserFocus];
-  v32 = [v7 InferredMode];
+  userFocus = [v6 UserFocus];
+  inferredMode = [userFocus InferredMode];
 
-  v28 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v33 endDate:0 maxEvents:0 lastN:0 reversed:0];
-  v31 = [v32 publisherWithUseCase:*MEMORY[0x277CEBB48] options:?];
+  v28 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:dateCopy endDate:0 maxEvents:0 lastN:0 reversed:0];
+  v31 = [inferredMode publisherWithUseCase:*MEMORY[0x277CEBB48] options:?];
   v8 = objc_opt_new();
   v9 = MEMORY[0x277CBEAA8];
-  [v33 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v10 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
   v30 = [v8 appLaunchesSinceDate:v10];
 
   v11 = objc_opt_new();
   v12 = objc_opt_new();
-  [v33 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v13 = [v12 publisherFromStartTime:?];
   v29 = [v11 stripStoreEvent:v13];
 
@@ -144,7 +144,7 @@ void __88__ATXModeSetupPredictionMetricsLogger_globalAppSessionInterruptionsCalc
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v17 = v5;
+  v17 = typesCopy;
   v18 = [v17 countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v18)
   {
@@ -158,9 +158,9 @@ void __88__ATXModeSetupPredictionMetricsLogger_globalAppSessionInterruptionsCalc
           objc_enumerationMutation(v17);
         }
 
-        v21 = [*(*(&v38 + 1) + 8 * i) integerValue];
+        integerValue = [*(*(&v38 + 1) + 8 * i) integerValue];
         v22 = objc_opt_new();
-        v23 = [MEMORY[0x277CCABB0] numberWithInteger:v21];
+        v23 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
         [v16 setObject:v22 forKeyedSubscript:v23];
       }
 
@@ -306,17 +306,17 @@ LABEL_18:
 LABEL_20:
 }
 
-- (id)getRecommendedAndCandidateAppsInAllowListForSemanticTypes:(id)a3
+- (id)getRecommendedAndCandidateAppsInAllowListForSemanticTypes:(id)types
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typesCopy = types;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = typesCopy;
   v6 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
@@ -331,7 +331,7 @@ LABEL_20:
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v27 + 1) + 8 * i) integerValue];
+        integerValue = [*(*(&v27 + 1) + 8 * i) integerValue];
         v11 = objc_opt_new();
         v12 = DNDModeSemanticTypeToString();
         [v4 setObject:v11 forKeyedSubscript:v12];
@@ -346,9 +346,9 @@ LABEL_20:
         v23 = v15;
         v24 = v13;
         v25 = v4;
-        v26 = v10;
+        v26 = integerValue;
         v16 = v13;
-        [v5 recommendedAndCandidateAllowedAppsForDNDModeSemanticType:v10 reply:v22];
+        [v5 recommendedAndCandidateAllowedAppsForDNDModeSemanticType:integerValue reply:v22];
         v17 = v15;
         v18 = dispatch_time(0, 5000000000);
         dispatch_semaphore_wait(v17, v18);
@@ -442,17 +442,17 @@ void __97__ATXModeSetupPredictionMetricsLogger_getRecommendedAndCandidateAppsInA
   }
 }
 
-- (id)getRecommendedAndCandidateAppsInDenyListForSemanticTypes:(id)a3
+- (id)getRecommendedAndCandidateAppsInDenyListForSemanticTypes:(id)types
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typesCopy = types;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = typesCopy;
   v6 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
@@ -467,7 +467,7 @@ void __97__ATXModeSetupPredictionMetricsLogger_getRecommendedAndCandidateAppsInA
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v27 + 1) + 8 * i) integerValue];
+        integerValue = [*(*(&v27 + 1) + 8 * i) integerValue];
         v11 = objc_opt_new();
         v12 = DNDModeSemanticTypeToString();
         [v4 setObject:v11 forKeyedSubscript:v12];
@@ -482,9 +482,9 @@ void __97__ATXModeSetupPredictionMetricsLogger_getRecommendedAndCandidateAppsInA
         v23 = v15;
         v24 = v13;
         v25 = v4;
-        v26 = v10;
+        v26 = integerValue;
         v16 = v13;
-        [v5 recommendedAndCandidateDeniedAppsForDNDModeSemanticType:v10 reply:v22];
+        [v5 recommendedAndCandidateDeniedAppsForDNDModeSemanticType:integerValue reply:v22];
         v17 = v15;
         v18 = dispatch_time(0, 5000000000);
         dispatch_semaphore_wait(v17, v18);
@@ -578,10 +578,10 @@ void __96__ATXModeSetupPredictionMetricsLogger_getRecommendedAndCandidateAppsInD
   }
 }
 
-- (id)fetchAllRelevantModeSemanticTypesInLastSevenDays:(id)a3
+- (id)fetchAllRelevantModeSemanticTypesInLastSevenDays:(id)days
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CEB440] sharedInstance];
+  daysCopy = days;
+  mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
   v5 = objc_opt_new();
   v31 = 0;
   v32[0] = &v31;
@@ -590,18 +590,18 @@ void __96__ATXModeSetupPredictionMetricsLogger_getRecommendedAndCandidateAppsInD
   v32[3] = __Block_byref_object_dispose__4;
   v33 = 0;
   v6 = BiomeLibrary();
-  v7 = [v6 UserFocus];
-  v8 = [v7 InferredMode];
+  userFocus = [v6 UserFocus];
+  inferredMode = [userFocus InferredMode];
 
   v9 = BiomeLibrary();
-  v10 = [v9 UserFocus];
-  v11 = [v10 ComputedMode];
+  userFocus2 = [v9 UserFocus];
+  computedMode = [userFocus2 ComputedMode];
 
-  v12 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v3 endDate:0 maxEvents:0 lastN:0 reversed:0];
-  v25 = v3;
+  v12 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:daysCopy endDate:0 maxEvents:0 lastN:0 reversed:0];
+  v25 = daysCopy;
   v13 = *MEMORY[0x277CEBB48];
-  v14 = [v8 publisherWithUseCase:*MEMORY[0x277CEBB48] options:v12];
-  v15 = [v11 publisherWithUseCase:v13 options:v12];
+  v14 = [inferredMode publisherWithUseCase:*MEMORY[0x277CEBB48] options:v12];
+  v15 = [computedMode publisherWithUseCase:v13 options:v12];
   v16 = [v14 orderedMergeWithOther:v15 comparator:&__block_literal_global_46];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -624,14 +624,14 @@ void __96__ATXModeSetupPredictionMetricsLogger_getRecommendedAndCandidateAppsInD
     }
   }
 
-  v20 = [v4 getAllModeConfigurationsWithoutCache];
+  getAllModeConfigurationsWithoutCache = [mEMORY[0x277CEB440] getAllModeConfigurationsWithoutCache];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __88__ATXModeSetupPredictionMetricsLogger_fetchAllRelevantModeSemanticTypesInLastSevenDays___block_invoke_50;
   v26[3] = &unk_278597608;
   v21 = v17;
   v27 = v21;
-  [v20 enumerateKeysAndObjectsUsingBlock:v26];
+  [getAllModeConfigurationsWithoutCache enumerateKeysAndObjectsUsingBlock:v26];
   v22 = v27;
   v23 = v21;
 
@@ -745,7 +745,7 @@ void __88__ATXModeSetupPredictionMetricsLogger_fetchAllRelevantModeSemanticTypes
 
 - (void)logMetrics
 {
-  OUTLINED_FUNCTION_1_6(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_1_6(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_0(&dword_2263AA000, v1, v2, "ATXModeSetupPredictionMetricsLogger: could not fetch app launch stream with error: %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];

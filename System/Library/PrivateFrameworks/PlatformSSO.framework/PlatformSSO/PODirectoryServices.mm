@@ -1,13 +1,13 @@
 @interface PODirectoryServices
-- (id)uniqueIdentifierForUserName:(id)a3;
+- (id)uniqueIdentifierForUserName:(id)name;
 @end
 
 @implementation PODirectoryServices
 
-- (id)uniqueIdentifierForUserName:(id)a3
+- (id)uniqueIdentifierForUserName:(id)name
 {
-  v3 = [MEMORY[0x277D77BF8] sharedManager];
-  v4 = [v3 currentUser];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  currentUser = [mEMORY[0x277D77BF8] currentUser];
 
   if (PO_LOG_PODirectoryServices_once != -1)
   {
@@ -17,12 +17,12 @@
   v5 = PO_LOG_PODirectoryServices_log;
   if (os_log_type_enabled(PO_LOG_PODirectoryServices_log, OS_LOG_TYPE_DEBUG))
   {
-    [(PODirectoryServices *)v5 uniqueIdentifierForUserName:v4];
+    [(PODirectoryServices *)v5 uniqueIdentifierForUserName:currentUser];
   }
 
-  v6 = [v4 alternateDSID];
+  alternateDSID = [currentUser alternateDSID];
 
-  return v6;
+  return alternateDSID;
 }
 
 - (void)uniqueIdentifierForUserName:(void *)a1 .cold.2(void *a1, void *a2)

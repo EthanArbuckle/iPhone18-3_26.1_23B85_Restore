@@ -1,7 +1,7 @@
 @interface ToolbarIssueCoverButton
 - (BOOL)isHighlighted;
-- (_TtC12NewsArticles23ToolbarIssueCoverButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC12NewsArticles23ToolbarIssueCoverButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation ToolbarIssueCoverButton
@@ -13,13 +13,13 @@
   return [(ToolbarIssueCoverButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
   v4 = v9.receiver;
-  [(ToolbarIssueCoverButton *)&v9 setHighlighted:v3];
+  [(ToolbarIssueCoverButton *)&v9 setHighlighted:highlightedCopy];
   v5 = objc_opt_self();
   v6 = swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -35,7 +35,7 @@
   _Block_release(v7);
 }
 
-- (_TtC12NewsArticles23ToolbarIssueCoverButton)initWithFrame:(CGRect)a3
+- (_TtC12NewsArticles23ToolbarIssueCoverButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

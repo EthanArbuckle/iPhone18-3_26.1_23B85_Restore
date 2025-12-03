@@ -1,49 +1,49 @@
 @interface EMFStringUtilities
-+ (BOOL)_genderEmojiBaseStringNeedVariantSelector:(id)a3;
-+ (BOOL)_hasSkinToneVariantsForString:(id)a3;
-+ (id)_baseFirstCharacterString:(id)a3;
-+ (id)_baseStringForEmojiString:(id)a3;
-+ (id)_coupleSkinToneChooserVariantsForString:(id)a3;
-+ (id)_coupleStringWithLeftPerson:(id)a3 leftVariant:(id)a4 joiningString:(id)a5 rightPerson:(id)a6 rightVariant:(id)a7;
-+ (id)_joiningStringForCoupleString:(id)a3;
-+ (id)_multiPersonStringForString:(id)a3 skinToneVariantSpecifier:(id)a4;
-+ (id)_normalizeMultiPersonGroupToLongFormEncoding:(id)a3;
-+ (id)_normalizeMultiPersonGroupToShortFormEncoding:(id)a3;
-+ (id)_preferenceIndexString:(id)a3;
-+ (id)_skinToneChooserArraysForCoupleType:(int64_t)a3 joiner:(id)a4;
-+ (id)_skinToneChooserVariantsForHandHoldingCoupleType:(int64_t)a3;
-+ (id)_skinToneChooserVariantsForString:(id)a3;
-+ (id)_skinToneChooserVariantsForString:(id)a3 usesSilhouetteSpecifiers:(BOOL)a4;
-+ (id)_skinToneSpecifiersForString:(id)a3;
-+ (id)_skinToneSuffixFromSpecifierType:(id)a3;
-+ (id)_skinToneVariantsForCouple:(int64_t)a3 joiner:(id)a4;
-+ (id)_skinToneVariantsForMultiPersonType:(int64_t)a3;
-+ (id)_skinToneVariantsForString:(id)a3;
-+ (id)_stringWithUnichar:(unsigned int)a3;
-+ (id)_tokenizedHandshakeFromString:(id)a3;
-+ (id)_tokenizedMultiPersonFromString:(id)a3;
-+ (id)professionSkinToneEmojiBaseKey:(id)a3;
-+ (id)skinToneSpecifierTypeFromEmojiFitzpatrickModifier:(int)a3;
-+ (int)_skinToneForString:(id)a3;
-+ (int)_skinToneModifierFromSpecifierType:(id)a3;
-+ (int64_t)multiPersonTypeForString:(id)a3;
-+ (unsigned)_firstLongCharacterOfString:(id)a3;
++ (BOOL)_genderEmojiBaseStringNeedVariantSelector:(id)selector;
++ (BOOL)_hasSkinToneVariantsForString:(id)string;
++ (id)_baseFirstCharacterString:(id)string;
++ (id)_baseStringForEmojiString:(id)string;
++ (id)_coupleSkinToneChooserVariantsForString:(id)string;
++ (id)_coupleStringWithLeftPerson:(id)person leftVariant:(id)variant joiningString:(id)string rightPerson:(id)rightPerson rightVariant:(id)rightVariant;
++ (id)_joiningStringForCoupleString:(id)string;
++ (id)_multiPersonStringForString:(id)string skinToneVariantSpecifier:(id)specifier;
++ (id)_normalizeMultiPersonGroupToLongFormEncoding:(id)encoding;
++ (id)_normalizeMultiPersonGroupToShortFormEncoding:(id)encoding;
++ (id)_preferenceIndexString:(id)string;
++ (id)_skinToneChooserArraysForCoupleType:(int64_t)type joiner:(id)joiner;
++ (id)_skinToneChooserVariantsForHandHoldingCoupleType:(int64_t)type;
++ (id)_skinToneChooserVariantsForString:(id)string;
++ (id)_skinToneChooserVariantsForString:(id)string usesSilhouetteSpecifiers:(BOOL)specifiers;
++ (id)_skinToneSpecifiersForString:(id)string;
++ (id)_skinToneSuffixFromSpecifierType:(id)type;
++ (id)_skinToneVariantsForCouple:(int64_t)couple joiner:(id)joiner;
++ (id)_skinToneVariantsForMultiPersonType:(int64_t)type;
++ (id)_skinToneVariantsForString:(id)string;
++ (id)_stringWithUnichar:(unsigned int)unichar;
++ (id)_tokenizedHandshakeFromString:(id)string;
++ (id)_tokenizedMultiPersonFromString:(id)string;
++ (id)professionSkinToneEmojiBaseKey:(id)key;
++ (id)skinToneSpecifierTypeFromEmojiFitzpatrickModifier:(int)modifier;
++ (int)_skinToneForString:(id)string;
++ (int)_skinToneModifierFromSpecifierType:(id)type;
++ (int64_t)multiPersonTypeForString:(id)string;
++ (unsigned)_firstLongCharacterOfString:(id)string;
 @end
 
 @implementation EMFStringUtilities
 
-+ (id)_stringWithUnichar:(unsigned int)a3
++ (id)_stringWithUnichar:(unsigned int)unichar
 {
-  if ((a3 - 0x10000) >> 20)
+  if ((unichar - 0x10000) >> 20)
   {
     v4 = 1;
-    LOWORD(v3) = a3;
+    LOWORD(v3) = unichar;
   }
 
   else
   {
-    v3 = (a3 >> 10) - 10304;
-    v7[1] = a3 & 0x3FF | 0xDC00;
+    v3 = (unichar >> 10) - 10304;
+    v7[1] = unichar & 0x3FF | 0xDC00;
     v4 = 2;
   }
 
@@ -53,17 +53,17 @@
   return v5;
 }
 
-+ (id)_preferenceIndexString:(id)a3
++ (id)_preferenceIndexString:(id)string
 {
-  v3 = a3;
-  if ([v3 length] == 1 && +[EMFEmojiCategory _isDingbatsVariantEmoji:](EMFEmojiCategory, "_isDingbatsVariantEmoji:", v3))
+  stringCopy = string;
+  if ([stringCopy length] == 1 && +[EMFEmojiCategory _isDingbatsVariantEmoji:](EMFEmojiCategory, "_isDingbatsVariantEmoji:", stringCopy))
   {
-    v4 = [v3 stringByAppendingString:@"️"];
+    v4 = [stringCopy stringByAppendingString:@"️"];
   }
 
   else
   {
-    v4 = v3;
+    v4 = stringCopy;
   }
 
   v5 = v4;
@@ -71,15 +71,15 @@
   return v5;
 }
 
-+ (unsigned)_firstLongCharacterOfString:(id)a3
++ (unsigned)_firstLongCharacterOfString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [v3 characterAtIndex:0];
-    if ((v4 & 0xFC00) == 0xD800 && [v3 length] >= 2)
+    v4 = [stringCopy characterAtIndex:0];
+    if ((v4 & 0xFC00) == 0xD800 && [stringCopy length] >= 2)
     {
-      v5 = [v3 characterAtIndex:1];
+      v5 = [stringCopy characterAtIndex:1];
       if ((v5 & 0xFC00) == 0xDC00)
       {
         v4 = v5 + (v4 << 10) - 56613888;
@@ -95,94 +95,94 @@
   return v4;
 }
 
-+ (id)_baseFirstCharacterString:(id)a3
++ (id)_baseFirstCharacterString:(id)string
 {
-  v4 = [a1 _firstLongCharacterOfString:a3];
+  v4 = [self _firstLongCharacterOfString:string];
 
-  return [a1 _stringWithUnichar:v4];
+  return [self _stringWithUnichar:v4];
 }
 
-+ (BOOL)_genderEmojiBaseStringNeedVariantSelector:(id)a3
++ (BOOL)_genderEmojiBaseStringNeedVariantSelector:(id)selector
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"⛹"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"🏋") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"🏌"))
+  selectorCopy = selector;
+  if ([selectorCopy isEqualToString:@"⛹"] & 1) != 0 || (objc_msgSend(selectorCopy, "isEqualToString:", @"🏋") & 1) != 0 || (objc_msgSend(selectorCopy, "isEqualToString:", @"🏌"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"🕵"];
+    v4 = [selectorCopy isEqualToString:@"🕵"];
   }
 
   return v4;
 }
 
-+ (id)professionSkinToneEmojiBaseKey:(id)a3
++ (id)professionSkinToneEmojiBaseKey:(id)key
 {
-  v4 = a3;
-  if ([a1 _emojiString:v4 containsSubstring:@"🏻"])
+  keyCopy = key;
+  if ([self _emojiString:keyCopy containsSubstring:@"🏻"])
   {
-    v5 = [v4 length];
+    v5 = [keyCopy length];
     v6 = @"🏻";
 LABEL_11:
-    v7 = [v4 stringByReplacingOccurrencesOfString:v6 withString:&stru_1F24C94E8 options:2 range:{0, v5}];
+    v7 = [keyCopy stringByReplacingOccurrencesOfString:v6 withString:&stru_1F24C94E8 options:2 range:{0, v5}];
     goto LABEL_12;
   }
 
-  if ([a1 _emojiString:v4 containsSubstring:@"🏼"])
+  if ([self _emojiString:keyCopy containsSubstring:@"🏼"])
   {
-    v5 = [v4 length];
+    v5 = [keyCopy length];
     v6 = @"🏼";
     goto LABEL_11;
   }
 
-  if ([a1 _emojiString:v4 containsSubstring:@"🏽"])
+  if ([self _emojiString:keyCopy containsSubstring:@"🏽"])
   {
-    v5 = [v4 length];
+    v5 = [keyCopy length];
     v6 = @"🏽";
     goto LABEL_11;
   }
 
-  if ([a1 _emojiString:v4 containsSubstring:@"🏾"])
+  if ([self _emojiString:keyCopy containsSubstring:@"🏾"])
   {
-    v5 = [v4 length];
+    v5 = [keyCopy length];
     v6 = @"🏾";
     goto LABEL_11;
   }
 
-  if ([a1 _emojiString:v4 containsSubstring:@"🏿"])
+  if ([self _emojiString:keyCopy containsSubstring:@"🏿"])
   {
-    v5 = [v4 length];
+    v5 = [keyCopy length];
     v6 = @"🏿";
     goto LABEL_11;
   }
 
-  v7 = v4;
+  v7 = keyCopy;
 LABEL_12:
   v8 = v7;
 
   return v8;
 }
 
-+ (id)_baseStringForEmojiString:(id)a3
++ (id)_baseStringForEmojiString:(id)string
 {
-  v4 = a3;
-  if ([EMFEmojiCategory _isProfessionEmoji:v4]|| [EMFEmojiCategory _isFlagEmoji:v4]|| [EMFEmojiCategory _isMultiPersonFamilySkinToneEmoji:v4]|| [EMFEmojiCategory _isCoupleMultiSkinToneEmoji:v4]&& ![EMFEmojiCategory _isBaseHandshakeOrHandshakeWithSkintonesEmoji:v4])
+  stringCopy = string;
+  if ([EMFEmojiCategory _isProfessionEmoji:stringCopy]|| [EMFEmojiCategory _isFlagEmoji:stringCopy]|| [EMFEmojiCategory _isMultiPersonFamilySkinToneEmoji:stringCopy]|| [EMFEmojiCategory _isCoupleMultiSkinToneEmoji:stringCopy]&& ![EMFEmojiCategory _isBaseHandshakeOrHandshakeWithSkintonesEmoji:stringCopy])
   {
-    v5 = v4;
+    v5 = stringCopy;
     goto LABEL_5;
   }
 
-  v7 = [objc_opt_class() multiPersonTypeForString:v4];
+  v7 = [objc_opt_class() multiPersonTypeForString:stringCopy];
   if (!v7)
   {
     goto LABEL_17;
   }
 
   v8 = v7;
-  v9 = [a1 _joiningStringForCoupleString:v4];
-  if (v9 && ![EMFEmojiCategory _isHandholdingCoupleEmoji:v4]&& ![EMFEmojiCategory _isBaseHandshakeOrHandshakeWithSkintonesEmoji:v4])
+  v9 = [self _joiningStringForCoupleString:stringCopy];
+  if (v9 && ![EMFEmojiCategory _isHandholdingCoupleEmoji:stringCopy]&& ![EMFEmojiCategory _isBaseHandshakeOrHandshakeWithSkintonesEmoji:stringCopy])
   {
     if (v8 == 4)
     {
@@ -199,10 +199,10 @@ LABEL_12:
       }
     }
 
-    v13 = [a1 _tokenizedMultiPersonFromString:v4];
-    v18 = [(__CFString *)v13 firstObject];
-    v19 = [(__CFString *)v13 lastObject];
-    v5 = [a1 _coupleStringWithLeftPerson:v18 leftVariant:0 joiningString:v9 rightPerson:v19 rightVariant:0];
+    v13 = [self _tokenizedMultiPersonFromString:stringCopy];
+    firstObject = [(__CFString *)v13 firstObject];
+    lastObject = [(__CFString *)v13 lastObject];
+    v5 = [self _coupleStringWithLeftPerson:firstObject leftVariant:0 joiningString:v9 rightPerson:lastObject rightVariant:0];
 
     goto LABEL_39;
   }
@@ -211,16 +211,16 @@ LABEL_12:
   {
 
 LABEL_17:
-    v9 = [a1 professionSkinToneEmojiBaseKey:v4];
+    v9 = [self professionSkinToneEmojiBaseKey:stringCopy];
     if ([EMFEmojiCategory _isProfessionEmoji:v9])
     {
       v5 = v9;
       goto LABEL_40;
     }
 
-    if (([a1 _emojiString:v4 containsSubstring:@"♀"] & 1) == 0 && !objc_msgSend(a1, "_emojiString:containsSubstring:", v4, @"♂"))
+    if (([self _emojiString:stringCopy containsSubstring:@"♀"] & 1) == 0 && !objc_msgSend(self, "_emojiString:containsSubstring:", stringCopy, @"♂"))
     {
-      v5 = [a1 _baseFirstCharacterString:v4];
+      v5 = [self _baseFirstCharacterString:stringCopy];
       if (([(__CFString *)v5 isEqualToString:@"☝"]& 1) != 0 || ([(__CFString *)v5 isEqualToString:@"✌"]& 1) != 0 || [(__CFString *)v5 isEqualToString:@"✍"])
       {
         v17 = [(__CFString *)v5 stringByAppendingString:@"️"];
@@ -231,8 +231,8 @@ LABEL_17:
       goto LABEL_40;
     }
 
-    v10 = [a1 _baseFirstCharacterString:v4];
-    v11 = [a1 _genderEmojiBaseStringNeedVariantSelector:v10];
+    v10 = [self _baseFirstCharacterString:stringCopy];
+    v11 = [self _genderEmojiBaseStringNeedVariantSelector:v10];
     v12 = &stru_1F24C94E8;
     if (v11)
     {
@@ -241,14 +241,14 @@ LABEL_17:
 
     v13 = v12;
 
-    if ([a1 _emojiString:v4 containsSubstring:@"♀"])
+    if ([self _emojiString:stringCopy containsSubstring:@"♀"])
     {
       v14 = @"‍♀️";
     }
 
     else
     {
-      if (![a1 _emojiString:v4 containsSubstring:@"♂"])
+      if (![self _emojiString:stringCopy containsSubstring:@"♂"])
       {
         v5 = 0;
         goto LABEL_39;
@@ -258,7 +258,7 @@ LABEL_17:
     }
 
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [a1 _baseFirstCharacterString:v4];
+    v16 = [self _baseFirstCharacterString:stringCopy];
     v5 = [v15 stringWithFormat:@"%@%@%@", v16, v13, v14];
 
 LABEL_39:
@@ -273,65 +273,65 @@ LABEL_5:
   return v5;
 }
 
-+ (BOOL)_hasSkinToneVariantsForString:(id)a3
++ (BOOL)_hasSkinToneVariantsForString:(id)string
 {
-  v4 = a3;
-  if ([EMFEmojiCategory _isMultiPersonFamilySkinToneEmoji:v4])
+  stringCopy = string;
+  if ([EMFEmojiCategory _isMultiPersonFamilySkinToneEmoji:stringCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [a1 _baseFirstCharacterString:v4];
+    v6 = [self _baseFirstCharacterString:stringCopy];
     v5 = [EMFEmojiCategory _isSkinToneEmoji:v6]|| [EMFEmojiCategory _isCoupleMultiSkinToneEmoji:v6];
   }
 
   return v5;
 }
 
-+ (id)skinToneSpecifierTypeFromEmojiFitzpatrickModifier:(int)a3
++ (id)skinToneSpecifierTypeFromEmojiFitzpatrickModifier:(int)modifier
 {
-  if ((a3 - 1) > 5)
+  if ((modifier - 1) > 5)
   {
     return @"EMFSkinToneSpecifierTypeFitzpatrickNone";
   }
 
   else
   {
-    return off_1E7A5F478[a3 - 1];
+    return off_1E7A5F478[modifier - 1];
   }
 }
 
-+ (int)_skinToneModifierFromSpecifierType:(id)a3
++ (int)_skinToneModifierFromSpecifierType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrickNone"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrickNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick1_2"])
+  else if ([typeCopy isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick1_2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick3"])
+  else if ([typeCopy isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick3"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick4"])
+  else if ([typeCopy isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick4"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick5"])
+  else if ([typeCopy isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick5"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick6"])
+  else if ([typeCopy isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick6"])
   {
     v4 = 6;
   }
@@ -344,33 +344,33 @@ LABEL_5:
   return v4;
 }
 
-+ (id)_skinToneSuffixFromSpecifierType:(id)a3
++ (id)_skinToneSuffixFromSpecifierType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = &stru_1F24C94E8;
-  if (([v3 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrickNone"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrickNone"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick1_2"])
+    if ([typeCopy isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick1_2"])
     {
       v4 = @"🏻";
     }
 
-    else if ([v3 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick3"])
+    else if ([typeCopy isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick3"])
     {
       v4 = @"🏼";
     }
 
-    else if ([v3 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick4"])
+    else if ([typeCopy isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick4"])
     {
       v4 = @"🏽";
     }
 
-    else if ([v3 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick5"])
+    else if ([typeCopy isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick5"])
     {
       v4 = @"🏾";
     }
 
-    else if ([v3 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick6"])
+    else if ([typeCopy isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrick6"])
     {
       v4 = @"🏿";
     }
@@ -379,10 +379,10 @@ LABEL_5:
   return v4;
 }
 
-+ (int)_skinToneForString:(id)a3
++ (int)_skinToneForString:(id)string
 {
   v17[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   v16[0] = &unk_1F24DF328;
   v16[1] = &unk_1F24DF340;
   v17[0] = @"🏻";
@@ -402,15 +402,15 @@ LABEL_5:
   v8[1] = 3221225472;
   v8[2] = __41__EMFStringUtilities__skinToneForString___block_invoke;
   v8[3] = &unk_1E7A5F430;
-  v11 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = stringCopy;
   v9 = v6;
   v10 = &v12;
   [v5 enumerateKeysAndObjectsUsingBlock:v8];
-  LODWORD(v4) = *(v13 + 6);
+  LODWORD(stringCopy) = *(v13 + 6);
 
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return stringCopy;
 }
 
 void __41__EMFStringUtilities__skinToneForString___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -423,34 +423,34 @@ void __41__EMFStringUtilities__skinToneForString___block_invoke(uint64_t a1, voi
   }
 }
 
-+ (id)_tokenizedMultiPersonFromString:(id)a3
++ (id)_tokenizedMultiPersonFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-  v5 = [v3 rangeOfString:@"‍🤝‍" options:2];
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL || (v5 = [v3 rangeOfString:@"‍❤️‍💋‍" options:2], v5 != 0x7FFFFFFFFFFFFFFFLL) || (v5 = objc_msgSend(v3, "rangeOfString:options:", @"‍❤️‍", 2), v5 != 0x7FFFFFFFFFFFFFFFLL))
+  v5 = [stringCopy rangeOfString:@"‍🤝‍" options:2];
+  if (v5 != 0x7FFFFFFFFFFFFFFFLL || (v5 = [stringCopy rangeOfString:@"‍❤️‍💋‍" options:2], v5 != 0x7FFFFFFFFFFFFFFFLL) || (v5 = objc_msgSend(stringCopy, "rangeOfString:options:", @"‍❤️‍", 2), v5 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v7 = v5;
     v8 = v6;
-    v9 = [v3 substringToIndex:v5];
+    v9 = [stringCopy substringToIndex:v5];
     [v4 addObject:v9];
-    v10 = [v3 substringFromIndex:v8 + v7];
+    v10 = [stringCopy substringFromIndex:v8 + v7];
     [v4 addObject:v10];
   }
 
   return v4;
 }
 
-+ (id)_tokenizedHandshakeFromString:(id)a3
++ (id)_tokenizedHandshakeFromString:(id)string
 {
   v3 = _tokenizedHandshakeFromString__onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     +[EMFStringUtilities _tokenizedHandshakeFromString:];
   }
 
-  v5 = [v4 componentsSeparatedByCharactersInSet:_tokenizedHandshakeFromString__zwjCharacterSet];
+  v5 = [stringCopy componentsSeparatedByCharactersInSet:_tokenizedHandshakeFromString__zwjCharacterSet];
 
   return v5;
 }
@@ -463,11 +463,11 @@ void __52__EMFStringUtilities__tokenizedHandshakeFromString___block_invoke()
   _tokenizedHandshakeFromString__zwjCharacterSet = v0;
 }
 
-+ (id)_skinToneSpecifiersForString:(id)a3
++ (id)_skinToneSpecifiersForString:(id)string
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([EMFEmojiCategory _isCoupleMultiSkinToneEmoji:v4]&& ![EMFEmojiCategory _isBaseHandshakeOrHandshakeWithSkintonesEmoji:v4])
+  stringCopy = string;
+  if ([EMFEmojiCategory _isCoupleMultiSkinToneEmoji:stringCopy]&& ![EMFEmojiCategory _isBaseHandshakeOrHandshakeWithSkintonesEmoji:stringCopy])
   {
     v47[0] = @"EMFSkinToneSpecifierTypeFitzpatrickNone";
     v13 = MEMORY[0x1E695DEC8];
@@ -477,19 +477,19 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v5 = [a1 _baseFirstCharacterString:v4];
+  v5 = [self _baseFirstCharacterString:stringCopy];
   if ([v5 isEqualToString:@"👫"])
   {
     goto LABEL_6;
   }
 
-  v6 = [a1 _baseFirstCharacterString:v4];
+  v6 = [self _baseFirstCharacterString:stringCopy];
   if ([v6 isEqualToString:@"👬"])
   {
 
 LABEL_6:
 LABEL_7:
-    v7 = [objc_opt_class() _skinToneForString:v4];
+    v7 = [objc_opt_class() _skinToneForString:stringCopy];
     if (v7)
     {
       v8 = [objc_opt_class() skinToneSpecifierTypeFromEmojiFitzpatrickModifier:v7];
@@ -510,7 +510,7 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v16 = [a1 _baseFirstCharacterString:v4];
+  v16 = [self _baseFirstCharacterString:stringCopy];
   v17 = [v16 isEqualToString:@"👭"];
 
   if (v17)
@@ -518,9 +518,9 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  if ([EMFEmojiCategory _isComposedCoupleMultiSkinToneEmoji:v4])
+  if ([EMFEmojiCategory _isComposedCoupleMultiSkinToneEmoji:stringCopy])
   {
-    v18 = [objc_opt_class() _tokenizedMultiPersonFromString:v4];
+    v18 = [objc_opt_class() _tokenizedMultiPersonFromString:stringCopy];
     v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v18, "count")}];
     v38 = 0u;
     v39 = 0u;
@@ -558,9 +558,9 @@ LABEL_9:
 
   else
   {
-    if (![EMFEmojiCategory _isBaseHandshakeOrHandshakeWithSkintonesEmoji:v4])
+    if (![EMFEmojiCategory _isBaseHandshakeOrHandshakeWithSkintonesEmoji:stringCopy])
     {
-      v33 = [objc_opt_class() _skinToneForString:v4];
+      v33 = [objc_opt_class() _skinToneForString:stringCopy];
       v8 = [objc_opt_class() skinToneSpecifierTypeFromEmojiFitzpatrickModifier:v33];
       v42 = v8;
       v9 = MEMORY[0x1E695DEC8];
@@ -569,7 +569,7 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v26 = [a1 _tokenizedHandshakeFromString:v4];
+    v26 = [self _tokenizedHandshakeFromString:stringCopy];
     v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
     v34 = 0u;
     v35 = 0u;
@@ -610,31 +610,31 @@ LABEL_13:
   return v12;
 }
 
-+ (int64_t)multiPersonTypeForString:(id)a3
++ (int64_t)multiPersonTypeForString:(id)string
 {
-  v4 = a3;
-  if ([EMFEmojiCategory _isBaseHandshakeOrHandshakeWithSkintonesEmoji:v4])
+  stringCopy = string;
+  if ([EMFEmojiCategory _isBaseHandshakeOrHandshakeWithSkintonesEmoji:stringCopy])
   {
     v5 = 5;
     goto LABEL_25;
   }
 
-  v6 = [a1 _baseFirstCharacterString:v4];
+  v6 = [self _baseFirstCharacterString:stringCopy];
   v7 = [EMFEmojiCategory _isCoupleMultiSkinToneEmoji:v6];
 
   if (!v7)
   {
-    if (v4 && ([EMFEmojiCategory _isComposedCoupleMultiSkinToneEmoji:v4]|| [EMFEmojiCategory _supportsCoupleSkinToneSelection:v4]))
+    if (stringCopy && ([EMFEmojiCategory _isComposedCoupleMultiSkinToneEmoji:stringCopy]|| [EMFEmojiCategory _supportsCoupleSkinToneSelection:stringCopy]))
     {
-      v10 = [objc_opt_class() _tokenizedMultiPersonFromString:v4];
+      v10 = [objc_opt_class() _tokenizedMultiPersonFromString:stringCopy];
       v11 = [v10 objectAtIndex:0];
-      v12 = [a1 _baseFirstCharacterString:v11];
+      v12 = [self _baseFirstCharacterString:v11];
       v13 = [v12 isEqualToString:@"👩"];
 
       if (v13)
       {
         v14 = [v10 objectAtIndex:1];
-        v15 = [a1 _baseFirstCharacterString:v14];
+        v15 = [self _baseFirstCharacterString:v14];
         v16 = [v15 isEqualToString:@"👩"];
 
         if (v16)
@@ -647,7 +647,7 @@ LABEL_24:
 
         v5 = 1;
         v27 = [v10 objectAtIndex:1];
-        v28 = [a1 _baseFirstCharacterString:v27];
+        v28 = [self _baseFirstCharacterString:v27];
         v29 = [v28 isEqualToString:@"👨"];
 
         if (v29)
@@ -659,7 +659,7 @@ LABEL_24:
       else
       {
         v21 = [v10 objectAtIndex:0];
-        v22 = [a1 _baseFirstCharacterString:v21];
+        v22 = [self _baseFirstCharacterString:v21];
         v23 = [v22 isEqualToString:@"👨"];
 
         if (!v23)
@@ -669,7 +669,7 @@ LABEL_24:
         }
 
         v24 = [v10 objectAtIndex:1];
-        v25 = [a1 _baseFirstCharacterString:v24];
+        v25 = [self _baseFirstCharacterString:v24];
         v26 = [v25 isEqualToString:@"👨"];
 
         if (v26)
@@ -684,7 +684,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v8 = [a1 _baseFirstCharacterString:v4];
+  v8 = [self _baseFirstCharacterString:stringCopy];
   v9 = [v8 isEqualToString:@"👫"];
 
   if (v9)
@@ -694,7 +694,7 @@ LABEL_24:
 
   else
   {
-    v17 = [a1 _baseFirstCharacterString:v4];
+    v17 = [self _baseFirstCharacterString:stringCopy];
     v18 = [v17 isEqualToString:@"👭"];
 
     if (v18)
@@ -704,7 +704,7 @@ LABEL_24:
 
     else
     {
-      v19 = [a1 _baseFirstCharacterString:v4];
+      v19 = [self _baseFirstCharacterString:stringCopy];
       v20 = [v19 isEqualToString:@"👬"];
 
       if (v20)
@@ -724,19 +724,19 @@ LABEL_25:
   return v5;
 }
 
-+ (id)_joiningStringForCoupleString:(id)a3
++ (id)_joiningStringForCoupleString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = @"‍🤝‍";
-  if ([v3 rangeOfString:@"‍🤝‍" options:2] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([stringCopy rangeOfString:@"‍🤝‍" options:2] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = @"‍❤️‍💋‍";
-    if ([v3 rangeOfString:@"‍❤️‍💋‍" options:2] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v3, "rangeOfString:options:", @"💏", 2) == 0x7FFFFFFFFFFFFFFFLL)
+    if ([stringCopy rangeOfString:@"‍❤️‍💋‍" options:2] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(stringCopy, "rangeOfString:options:", @"💏", 2) == 0x7FFFFFFFFFFFFFFFLL)
     {
       v4 = @"‍❤️‍";
-      if ([v3 rangeOfString:@"‍❤️‍" options:2] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v3, "rangeOfString:options:", @"💑", 2) == 0x7FFFFFFFFFFFFFFFLL)
+      if ([stringCopy rangeOfString:@"‍❤️‍" options:2] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(stringCopy, "rangeOfString:options:", @"💑", 2) == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if ([v3 isEqualToString:@"🤝"])
+        if ([stringCopy isEqualToString:@"🤝"])
         {
           v4 = @"‍";
         }
@@ -752,7 +752,7 @@ LABEL_25:
   return v4;
 }
 
-+ (id)_skinToneChooserVariantsForHandHoldingCoupleType:(int64_t)a3
++ (id)_skinToneChooserVariantsForHandHoldingCoupleType:(int64_t)type
 {
   v77[5] = *MEMORY[0x1E69E9840];
   v77[0] = @"🏻";
@@ -763,9 +763,9 @@ LABEL_25:
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v77 count:5];
   v5 = v4;
   v6 = MEMORY[0x1E695E0F0];
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v52 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
       v48 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
@@ -813,7 +813,7 @@ LABEL_25:
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_41;
       }
@@ -865,7 +865,7 @@ LABEL_25:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         v51 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
@@ -971,10 +971,10 @@ LABEL_41:
   return v6;
 }
 
-+ (id)_skinToneChooserArraysForCoupleType:(int64_t)a3 joiner:(id)a4
++ (id)_skinToneChooserArraysForCoupleType:(int64_t)type joiner:(id)joiner
 {
   v30[5] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  joinerCopy = joiner;
   v30[0] = @"🏻";
   v30[1] = @"🏼";
   v30[2] = @"🏽";
@@ -982,8 +982,8 @@ LABEL_41:
   v30[4] = @"🏿";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:5];
   v7 = v6;
-  v8 = a3 - 1;
-  if ((a3 - 1) > 4)
+  v8 = type - 1;
+  if ((type - 1) > 4)
   {
     v9 = 0;
     v10 = 0;
@@ -1019,9 +1019,9 @@ LABEL_41:
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
-        if (v5)
+        if (joinerCopy)
         {
-          [a1 _coupleStringWithLeftPerson:v10 leftVariant:v18 joiningString:v5 rightPerson:v9 rightVariant:*(*(&v24 + 1) + 8 * i)];
+          [self _coupleStringWithLeftPerson:v10 leftVariant:v18 joiningString:joinerCopy rightPerson:v9 rightVariant:*(*(&v24 + 1) + 8 * i)];
         }
 
         else
@@ -1046,23 +1046,23 @@ LABEL_41:
   return v20;
 }
 
-+ (id)_skinToneChooserVariantsForString:(id)a3 usesSilhouetteSpecifiers:(BOOL)a4
++ (id)_skinToneChooserVariantsForString:(id)string usesSilhouetteSpecifiers:(BOOL)specifiers
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [objc_opt_class() multiPersonTypeForString:v5];
+  specifiersCopy = specifiers;
+  stringCopy = string;
+  v6 = [objc_opt_class() multiPersonTypeForString:stringCopy];
   if (v6)
   {
     v7 = v6;
     v8 = objc_opt_class();
-    if (v4)
+    if (specifiersCopy)
     {
       v9 = [v8 _skinToneChooserVariantsForHandHoldingCoupleType:v7];
     }
 
     else
     {
-      v10 = [v8 _joiningStringForCoupleString:v5];
+      v10 = [v8 _joiningStringForCoupleString:stringCopy];
       if (v10)
       {
         v11 = v10;
@@ -1085,14 +1085,14 @@ LABEL_41:
   return v9;
 }
 
-+ (id)_coupleSkinToneChooserVariantsForString:(id)a3
++ (id)_coupleSkinToneChooserVariantsForString:(id)string
 {
-  v3 = a3;
-  v4 = [objc_opt_class() multiPersonTypeForString:v3];
+  stringCopy = string;
+  v4 = [objc_opt_class() multiPersonTypeForString:stringCopy];
   if (v4)
   {
     v5 = v4;
-    v6 = [objc_opt_class() _joiningStringForCoupleString:v3];
+    v6 = [objc_opt_class() _joiningStringForCoupleString:stringCopy];
     if (v6)
     {
       v7 = v6;
@@ -1114,12 +1114,12 @@ LABEL_41:
   return v8;
 }
 
-+ (id)_skinToneChooserVariantsForString:(id)a3
++ (id)_skinToneChooserVariantsForString:(id)string
 {
-  v3 = a3;
-  if ([objc_opt_class() multiPersonTypeForString:v3])
+  stringCopy = string;
+  if ([objc_opt_class() multiPersonTypeForString:stringCopy])
   {
-    v4 = [objc_opt_class() _skinToneChooserVariantsForString:v3 usesSilhouetteSpecifiers:1];
+    v4 = [objc_opt_class() _skinToneChooserVariantsForString:stringCopy usesSilhouetteSpecifiers:1];
   }
 
   else
@@ -1130,22 +1130,22 @@ LABEL_41:
   return v4;
 }
 
-+ (id)_coupleStringWithLeftPerson:(id)a3 leftVariant:(id)a4 joiningString:(id)a5 rightPerson:(id)a6 rightVariant:(id)a7
++ (id)_coupleStringWithLeftPerson:(id)person leftVariant:(id)variant joiningString:(id)string rightPerson:(id)rightPerson rightVariant:(id)rightVariant
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v12 && [(__CFString *)v12 length])
+  personCopy = person;
+  variantCopy = variant;
+  stringCopy = string;
+  rightPersonCopy = rightPerson;
+  rightVariantCopy = rightVariant;
+  if (variantCopy && [(__CFString *)variantCopy length])
   {
-    if (!v15)
+    if (!rightVariantCopy)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
-    if ([(__CFString *)v15 length])
+    if ([(__CFString *)rightVariantCopy length])
     {
       goto LABEL_8;
     }
@@ -1153,27 +1153,27 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v16 = [objc_opt_class() _baseStringForEmojiString:v11];
+  v16 = [objc_opt_class() _baseStringForEmojiString:personCopy];
 
-  v12 = &stru_1F24C94E8;
-  v11 = v16;
-  if (v15)
+  variantCopy = &stru_1F24C94E8;
+  personCopy = v16;
+  if (rightVariantCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
-  v17 = [objc_opt_class() _baseStringForEmojiString:v14];
+  v17 = [objc_opt_class() _baseStringForEmojiString:rightPersonCopy];
 
-  v15 = &stru_1F24C94E8;
-  v14 = v17;
+  rightVariantCopy = &stru_1F24C94E8;
+  rightPersonCopy = v17;
 LABEL_8:
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@%@%@", v11, v12, v13, v14, v15];
+  rightVariantCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@%@%@", personCopy, variantCopy, stringCopy, rightPersonCopy, rightVariantCopy];
 
-  return v18;
+  return rightVariantCopy;
 }
 
-+ (id)_skinToneVariantsForMultiPersonType:(int64_t)a3
++ (id)_skinToneVariantsForMultiPersonType:(int64_t)type
 {
   v102[5] = *MEMORY[0x1E69E9840];
   v102[0] = @"🏻";
@@ -1182,10 +1182,10 @@ LABEL_8:
   v102[3] = @"🏾";
   v102[4] = @"🏿";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:5];
-  v5 = [MEMORY[0x1E695DF70] array];
-  if (a3 <= 2)
+  array = [MEMORY[0x1E695DF70] array];
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v92 = 0u;
       v93 = 0u;
@@ -1240,7 +1240,7 @@ LABEL_8:
                     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@%@%@", @"👩", v34, @"‍🤝‍", @"👨", v39];
                   }
                   v40 = ;
-                  [v5 addObject:v40];
+                  [array addObject:v40];
                 }
 
                 v36 = [v9 countByEnumeratingWithState:&v86 objects:v100 count:16];
@@ -1266,7 +1266,7 @@ LABEL_81:
       goto LABEL_82;
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_83;
     }
@@ -1324,7 +1324,7 @@ LABEL_81:
                   [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@%@%@", @"👩", v18, @"‍🤝‍", @"👩", v23];
                 }
                 v24 = ;
-                [v5 addObject:v24];
+                [array addObject:v24];
               }
 
               v20 = [v9 countByEnumeratingWithState:&v78 objects:v98 count:16];
@@ -1348,7 +1348,7 @@ LABEL_81:
     goto LABEL_80;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     v76 = 0u;
     v77 = 0u;
@@ -1403,7 +1403,7 @@ LABEL_81:
                   [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@%@%@", @"👨", v26, @"‍🤝‍", @"👨", v31];
                 }
                 v32 = ;
-                [v5 addObject:v32];
+                [array addObject:v32];
               }
 
               v28 = [v9 countByEnumeratingWithState:&v70 objects:v96 count:16];
@@ -1429,9 +1429,9 @@ LABEL_80:
     goto LABEL_82;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
-    if (a3 != 5)
+    if (type != 5)
     {
       goto LABEL_83;
     }
@@ -1489,7 +1489,7 @@ LABEL_80:
                   [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@%@%@", @"🫱", v8, @"‍", @"🫲", v14];
                 }
                 v15 = ;
-                [v5 addObject:v15];
+                [array addObject:v15];
               }
 
               v11 = [v9 countByEnumeratingWithState:&v62 objects:v94 count:16];
@@ -1515,27 +1515,27 @@ LABEL_80:
 
   v45 = v4;
   v9 = [objc_opt_class() _skinToneVariantsForCouple:4 joiner:@"‍🤝‍"];
-  [v5 addObjectsFromArray:v9];
+  [array addObjectsFromArray:v9];
 LABEL_82:
 
   v4 = v45;
 LABEL_83:
 
-  return v5;
+  return array;
 }
 
-+ (id)_skinToneVariantsForCouple:(int64_t)a3 joiner:(id)a4
++ (id)_skinToneVariantsForCouple:(int64_t)couple joiner:(id)joiner
 {
   v34[5] = *MEMORY[0x1E69E9840];
-  v23 = a4;
+  joinerCopy = joiner;
   v34[0] = @"🏻";
   v34[1] = @"🏼";
   v34[2] = @"🏽";
   v34[3] = @"🏾";
   v34[4] = @"🏿";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:5];
-  v6 = a3 - 1;
-  if ((a3 - 1) > 3)
+  v6 = couple - 1;
+  if ((couple - 1) > 3)
   {
     v7 = 0;
     v8 = 0;
@@ -1588,7 +1588,7 @@ LABEL_83:
                 objc_enumerationMutation(v12);
               }
 
-              v17 = [objc_opt_class() _coupleStringWithLeftPerson:v8 leftVariant:v11 joiningString:v23 rightPerson:v7 rightVariant:*(*(&v24 + 1) + 8 * i)];
+              v17 = [objc_opt_class() _coupleStringWithLeftPerson:v8 leftVariant:v11 joiningString:joinerCopy rightPerson:v7 rightVariant:*(*(&v24 + 1) + 8 * i)];
               [v9 addObject:v17];
             }
 
@@ -1611,23 +1611,23 @@ LABEL_83:
   return v9;
 }
 
-+ (id)_skinToneVariantsForString:(id)a3
++ (id)_skinToneVariantsForString:(id)string
 {
   v34[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() multiPersonTypeForString:v4];
+  stringCopy = string;
+  v5 = [objc_opt_class() multiPersonTypeForString:stringCopy];
   if (!v5)
   {
-    v8 = [a1 _baseFirstCharacterString:v4];
+    v8 = [self _baseFirstCharacterString:stringCopy];
     v9 = 0x1E7A4C000uLL;
     if (![EMFEmojiCategory _isSkinToneEmoji:v8])
     {
-      v7 = 0;
+      array = 0;
       goto LABEL_39;
     }
 
-    v10 = [a1 _baseStringForEmojiString:v4];
-    v7 = [MEMORY[0x1E695DF70] array];
+    v10 = [self _baseStringForEmojiString:stringCopy];
+    array = [MEMORY[0x1E695DF70] array];
     v34[0] = @"🏻";
     v34[1] = @"🏼";
     v34[2] = @"🏽";
@@ -1677,7 +1677,7 @@ LABEL_27:
 
       v9 = 0x1E7A4C000;
 LABEL_29:
-      [v7 addObject:v19];
+      [array addObject:v19];
 
       if (++v11 == 5)
       {
@@ -1687,9 +1687,9 @@ LABEL_29:
     }
 
     v12 = @"‍♀️";
-    if (([a1 _emojiString:v4 containsSubstring:@"♀"] & 1) == 0)
+    if (([self _emojiString:stringCopy containsSubstring:@"♀"] & 1) == 0)
     {
-      if ([a1 _emojiString:v4 containsSubstring:@"♂"])
+      if ([self _emojiString:stringCopy containsSubstring:@"♂"])
       {
         v12 = @"‍♂️";
       }
@@ -1700,7 +1700,7 @@ LABEL_29:
       }
     }
 
-    v13 = [a1 _genderEmojiBaseStringNeedVariantSelector:v8];
+    v13 = [self _genderEmojiBaseStringNeedVariantSelector:v8];
     v14 = &stru_1F24C94E8;
     if (v13)
     {
@@ -1721,7 +1721,7 @@ LABEL_29:
       v19 = [v17 stringWithFormat:@"%@%@%@", v8, v18, v12];
     }
 
-    if ([v4 hasSuffix:@"‍➡️"])
+    if ([stringCopy hasSuffix:@"‍➡️"])
     {
       v27 = [v19 stringByAppendingString:@"‍➡️"];
 
@@ -1737,11 +1737,11 @@ LABEL_24:
   v6 = v5;
   if (v5 == 5)
   {
-    v7 = [objc_opt_class() _skinToneVariantsForMultiPersonType:5];
+    array = [objc_opt_class() _skinToneVariantsForMultiPersonType:5];
     goto LABEL_40;
   }
 
-  v29 = [objc_opt_class() _joiningStringForCoupleString:v4];
+  v29 = [objc_opt_class() _joiningStringForCoupleString:stringCopy];
   if (v29)
   {
     v8 = v29;
@@ -1752,7 +1752,7 @@ LABEL_24:
     v8 = @"‍🤝‍";
   }
 
-  v30 = [EMFEmojiCategory _isHandholdingCoupleEmoji:v4];
+  v30 = [EMFEmojiCategory _isHandholdingCoupleEmoji:stringCopy];
   v31 = objc_opt_class();
   if (v30)
   {
@@ -1763,20 +1763,20 @@ LABEL_24:
   {
     [v31 _skinToneVariantsForCouple:v6 joiner:v8];
   }
-  v7 = ;
+  array = ;
 LABEL_39:
 
 LABEL_40:
 
-  return v7;
+  return array;
 }
 
-+ (id)_multiPersonStringForString:(id)a3 skinToneVariantSpecifier:(id)a4
++ (id)_multiPersonStringForString:(id)string skinToneVariantSpecifier:(id)specifier
 {
   v50[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() multiPersonTypeForString:v6];
+  stringCopy = string;
+  specifierCopy = specifier;
+  v8 = [objc_opt_class() multiPersonTypeForString:stringCopy];
   if (!v8)
   {
     v17 = 0;
@@ -1784,17 +1784,17 @@ LABEL_40:
   }
 
   v9 = v8;
-  v10 = [objc_opt_class() _joiningStringForCoupleString:v6];
-  v11 = [v7 containsObject:@"EMFSkinToneSpecifierTypeFitzpatrickSilhouette"];
+  v10 = [objc_opt_class() _joiningStringForCoupleString:stringCopy];
+  v11 = [specifierCopy containsObject:@"EMFSkinToneSpecifierTypeFitzpatrickSilhouette"];
   if (v11)
   {
-    v12 = [v7 firstObject];
-    v13 = [v12 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrickSilhouette"];
+    firstObject = [specifierCopy firstObject];
+    v13 = [firstObject isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrickSilhouette"];
 
     if (v13)
     {
-      v14 = [v7 lastObject];
-      v15 = [v14 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrickSilhouette"];
+      lastObject = [specifierCopy lastObject];
+      v15 = [lastObject isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrickSilhouette"];
 
       if (v15)
       {
@@ -1809,20 +1809,20 @@ LABEL_11:
         v50[1] = v16;
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
 
-        v7 = v19;
+        specifierCopy = v19;
         goto LABEL_12;
       }
 
-      v18 = [v7 lastObject];
+      lastObject2 = [specifierCopy lastObject];
     }
 
     else
     {
-      v18 = [v7 firstObject];
+      lastObject2 = [specifierCopy firstObject];
     }
 
-    v16 = v18;
-    if (!v18)
+    v16 = lastObject2;
+    if (!lastObject2)
     {
       goto LABEL_12;
     }
@@ -1832,14 +1832,14 @@ LABEL_11:
 
 LABEL_12:
   v20 = objc_opt_class();
-  v21 = [v7 firstObject];
-  v22 = [v20 _skinToneSuffixFromSpecifierType:v21];
+  firstObject2 = [specifierCopy firstObject];
+  v22 = [v20 _skinToneSuffixFromSpecifierType:firstObject2];
 
-  if ([v7 count] == 2)
+  if ([specifierCopy count] == 2)
   {
     v23 = objc_opt_class();
-    v24 = [v7 lastObject];
-    v25 = [v23 _skinToneSuffixFromSpecifierType:v24];
+    lastObject3 = [specifierCopy lastObject];
+    v25 = [v23 _skinToneSuffixFromSpecifierType:lastObject3];
 
     if (!v10)
     {
@@ -1863,7 +1863,7 @@ LABEL_12:
     v28 = objc_opt_class();
     if (v9 == 4 || v27)
     {
-      v35 = [v28 _tokenizedMultiPersonFromString:v6];
+      v35 = [v28 _tokenizedMultiPersonFromString:stringCopy];
       if ([v35 count] <= 1)
       {
 
@@ -1871,16 +1871,16 @@ LABEL_12:
       }
 
       v48 = objc_opt_class();
-      v49 = [v35 firstObject];
-      v36 = [a1 _baseStringForEmojiString:v49];
-      v37 = [v35 lastObject];
-      v38 = [a1 _baseStringForEmojiString:v37];
+      firstObject3 = [v35 firstObject];
+      v36 = [self _baseStringForEmojiString:firstObject3];
+      lastObject4 = [v35 lastObject];
+      v38 = [self _baseStringForEmojiString:lastObject4];
       v30 = [v48 _coupleStringWithLeftPerson:v36 leftVariant:v22 joiningString:v10 rightPerson:v38 rightVariant:v25];
 
       goto LABEL_50;
     }
 
-    v29 = [v28 _baseStringForEmojiString:v6];
+    v29 = [v28 _baseStringForEmojiString:stringCopy];
     goto LABEL_49;
   }
 
@@ -1996,14 +1996,14 @@ LABEL_51:
   return v17;
 }
 
-+ (id)_normalizeMultiPersonGroupToShortFormEncoding:(id)a3
++ (id)_normalizeMultiPersonGroupToShortFormEncoding:(id)encoding
 {
-  v4 = a3;
+  encodingCopy = encoding;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 multiPersonTypeForString:v4];
-  if (!v6 || (v7 = v6, [v4 length] < 3) || objc_msgSend(v4, "rangeOfString:options:", @"‍❤️‍", 2) != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v4, "rangeOfString:options:", @"‍❤️‍💋‍", 2) != 0x7FFFFFFFFFFFFFFFLL)
+  v6 = [self multiPersonTypeForString:encodingCopy];
+  if (!v6 || (v7 = v6, [encodingCopy length] < 3) || objc_msgSend(encodingCopy, "rangeOfString:options:", @"‍❤️‍", 2) != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(encodingCopy, "rangeOfString:options:", @"‍❤️‍💋‍", 2) != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = v4;
+    v14 = encodingCopy;
     goto LABEL_11;
   }
 
@@ -2012,22 +2012,22 @@ LABEL_51:
   if (v7 < 6 && ((0x17u >> (v7 - 1)) & 1) != 0)
   {
     [v8 appendString:off_1E7A5F560[v7 - 1]];
-    v10 = [a1 _skinToneSpecifiersForString:v4];
+    v10 = [self _skinToneSpecifiersForString:encodingCopy];
     if ([v10 count])
     {
-      v11 = [v10 firstObject];
-      v12 = [v11 isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrickNone"];
+      firstObject = [v10 firstObject];
+      v12 = [firstObject isEqualToString:@"EMFSkinToneSpecifierTypeFitzpatrickNone"];
 
       if (!v12)
       {
         if ([v10 count] != 2 || (objc_msgSend(v10, "objectAtIndexedSubscript:", 0), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectAtIndexedSubscript:", 1), v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v16 != v17))
         {
-          v13 = v4;
+          v13 = encodingCopy;
           goto LABEL_18;
         }
 
         v18 = [v10 objectAtIndexedSubscript:0];
-        v19 = [a1 _skinToneSuffixFromSpecifierType:v18];
+        v19 = [self _skinToneSuffixFromSpecifierType:v18];
         [v9 appendString:v19];
       }
     }
@@ -2039,7 +2039,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v14 = v4;
+  v14 = encodingCopy;
 LABEL_19:
 
 LABEL_11:
@@ -2048,15 +2048,15 @@ LABEL_11:
   return v14;
 }
 
-+ (id)_normalizeMultiPersonGroupToLongFormEncoding:(id)a3
++ (id)_normalizeMultiPersonGroupToLongFormEncoding:(id)encoding
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  encodingCopy = encoding;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 multiPersonTypeForString:v4];
-  if (!v6 || (v7 = v6, [v4 length] > 4) || objc_msgSend(v4, "rangeOfString:options:", @"‍❤️‍", 2) != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v4, "rangeOfString:options:", @"‍❤️‍💋‍", 2) != 0x7FFFFFFFFFFFFFFFLL)
+  v6 = [self multiPersonTypeForString:encodingCopy];
+  if (!v6 || (v7 = v6, [encodingCopy length] > 4) || objc_msgSend(encodingCopy, "rangeOfString:options:", @"‍❤️‍", 2) != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(encodingCopy, "rangeOfString:options:", @"‍❤️‍💋‍", 2) != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v13 = v4;
+    v13 = encodingCopy;
     goto LABEL_11;
   }
 
@@ -2065,7 +2065,7 @@ LABEL_11:
   if (v7 < 6 && ((0x17u >> (v7 - 1)) & 1) != 0)
   {
     [v8 appendString:off_1E7A5F588[v7 - 1]];
-    v10 = [a1 _skinToneSpecifiersForString:v4];
+    v10 = [self _skinToneSpecifiersForString:encodingCopy];
     if (![v10 count] || (objc_msgSend(v10, "firstObject"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"EMFSkinToneSpecifierTypeFitzpatrickNone"), v11, v12))
     {
       v13 = [v9 copy];
@@ -2077,7 +2077,7 @@ LABEL_29:
     if ([v10 count] == 1)
     {
       v15 = [v10 objectAtIndexedSubscript:0];
-      v16 = [a1 _skinToneSuffixFromSpecifierType:v15];
+      v16 = [self _skinToneSuffixFromSpecifierType:v15];
 
       v27[0] = v16;
       v27[1] = v16;
@@ -2093,10 +2093,10 @@ LABEL_29:
       }
 
       v16 = [v10 objectAtIndexedSubscript:0];
-      v18 = [a1 _skinToneSuffixFromSpecifierType:v16];
+      v18 = [self _skinToneSuffixFromSpecifierType:v16];
       v26[0] = v18;
       v19 = [v10 objectAtIndexedSubscript:1];
-      v20 = [a1 _skinToneSuffixFromSpecifierType:v19];
+      v20 = [self _skinToneSuffixFromSpecifierType:v19];
       v26[1] = v20;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
     }
@@ -2133,7 +2133,7 @@ LABEL_21:
     goto LABEL_29;
   }
 
-  v13 = v4;
+  v13 = encodingCopy;
 LABEL_30:
 
 LABEL_11:

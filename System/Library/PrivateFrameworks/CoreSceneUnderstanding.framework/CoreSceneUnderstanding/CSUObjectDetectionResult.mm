@@ -1,17 +1,17 @@
 @interface CSUObjectDetectionResult
 - (CGRect)box;
-- (CSUObjectDetectionResult)initWithCGRect:(CGRect)a3 score:(float)a4 label:(id)a5;
+- (CSUObjectDetectionResult)initWithCGRect:(CGRect)rect score:(float)score label:(id)label;
 @end
 
 @implementation CSUObjectDetectionResult
 
-- (CSUObjectDetectionResult)initWithCGRect:(CGRect)a3 score:(float)a4 label:(id)a5
+- (CSUObjectDetectionResult)initWithCGRect:(CGRect)rect score:(float)score label:(id)label
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  labelCopy = label;
   v17.receiver = self;
   v17.super_class = CSUObjectDetectionResult;
   v13 = [(CSUObjectDetectionResult *)&v17 init];
@@ -22,8 +22,8 @@
     v13->_box.origin.y = y;
     v13->_box.size.width = width;
     v13->_box.size.height = height;
-    v13->_score = a4;
-    objc_storeStrong(&v13->_label, a5);
+    v13->_score = score;
+    objc_storeStrong(&v13->_label, label);
     v15 = v14;
   }
 

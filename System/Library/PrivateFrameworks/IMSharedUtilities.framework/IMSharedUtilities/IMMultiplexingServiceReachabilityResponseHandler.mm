@@ -1,36 +1,36 @@
 @interface IMMultiplexingServiceReachabilityResponseHandler
-- (IMMultiplexingServiceReachabilityResponseHandler)initWithResponseHandlers:(id)a3;
-- (void)reachabilityRequest:(id)a3 updatedWithResult:(id)a4;
+- (IMMultiplexingServiceReachabilityResponseHandler)initWithResponseHandlers:(id)handlers;
+- (void)reachabilityRequest:(id)request updatedWithResult:(id)result;
 @end
 
 @implementation IMMultiplexingServiceReachabilityResponseHandler
 
-- (IMMultiplexingServiceReachabilityResponseHandler)initWithResponseHandlers:(id)a3
+- (IMMultiplexingServiceReachabilityResponseHandler)initWithResponseHandlers:(id)handlers
 {
-  v5 = a3;
+  handlersCopy = handlers;
   v9.receiver = self;
   v9.super_class = IMMultiplexingServiceReachabilityResponseHandler;
   v6 = [(IMMultiplexingServiceReachabilityResponseHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_responseHandlers, a3);
+    objc_storeStrong(&v6->_responseHandlers, handlers);
   }
 
   return v7;
 }
 
-- (void)reachabilityRequest:(id)a3 updatedWithResult:(id)a4
+- (void)reachabilityRequest:(id)request updatedWithResult:(id)result
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  resultCopy = result;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(IMMultiplexingServiceReachabilityResponseHandler *)self responseHandlers];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  responseHandlers = [(IMMultiplexingServiceReachabilityResponseHandler *)self responseHandlers];
+  v9 = [responseHandlers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -42,14 +42,14 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(responseHandlers);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) reachabilityRequest:v6 updatedWithResult:v7];
+        [*(*(&v13 + 1) + 8 * v12++) reachabilityRequest:requestCopy updatedWithResult:resultCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [responseHandlers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);

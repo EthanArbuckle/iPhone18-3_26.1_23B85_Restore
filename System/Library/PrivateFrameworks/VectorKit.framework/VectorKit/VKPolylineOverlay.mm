@@ -1,23 +1,23 @@
 @interface VKPolylineOverlay
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
-- (BOOL)_meetsMinimumPathLengthBetweenStart:(unsigned int)a3 end:(unsigned int)a4;
+- (BOOL)_meetsMinimumPathLengthBetweenStart:(unsigned int)start end:(unsigned int)end;
 - (BOOL)isSnappingForSceneTiles;
 - (DebugTreeNode)createDebugNode;
-- (VKPolylineOverlay)initWithComposedRoute:(id)a3 traffic:(id)a4;
+- (VKPolylineOverlay)initWithComposedRoute:(id)route traffic:(id)traffic;
 - (VKPolylineOverlayRouteRibbonObserver)routeRibbonObserver;
 - (VKRouteLine)routeRibbon;
 - (_NSRange)sectionRangeForBounds:()Box<double;
 - (id).cxx_construct;
-- (id)getPathsForRenderRegion:(id)a3 shouldSnapToRoads:(BOOL)a4 shouldGenerateSnapPath:(BOOL)a5 verifySnapping:(BOOL)a6 isGradientTraffic:(BOOL)a7 observer:(id)a8 elevationSource:(void *)a9 elevationSourceContext:(void *)a10;
+- (id)getPathsForRenderRegion:(id)region shouldSnapToRoads:(BOOL)roads shouldGenerateSnapPath:(BOOL)path verifySnapping:(BOOL)snapping isGradientTraffic:(BOOL)traffic observer:(id)observer elevationSource:(void *)source elevationSourceContext:(void *)self0;
 - (void)_setNeedsLayout;
-- (void)addObserver:(id)a3;
-- (void)composedRoute:(id)a3 selectedSections:(id)a4 deselectedSections:(id)a5;
-- (void)createMatchedSegmentAndAddToPaths:(id)a3 section:(id)a4 pathStartIndex:(unsigned int)a5 pathEndIndex:(unsigned int)a6 shouldGenerateSnapPath:(BOOL)a7 elevationSource:(void *)a8 elevationSourceContext:(void *)a9;
+- (void)addObserver:(id)observer;
+- (void)composedRoute:(id)route selectedSections:(id)sections deselectedSections:(id)deselectedSections;
+- (void)createMatchedSegmentAndAddToPaths:(id)paths section:(id)section pathStartIndex:(unsigned int)index pathEndIndex:(unsigned int)endIndex shouldGenerateSnapPath:(BOOL)path elevationSource:(void *)source elevationSourceContext:(void *)context;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)setRouteRibbon:(id)a3;
-- (void)setSplitSections:(void *)a3;
-- (void)updateTraffic:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setRouteRibbon:(id)ribbon;
+- (void)setSplitSections:(void *)sections;
+- (void)updateTraffic:(id)traffic;
 @end
 
 @implementation VKPolylineOverlay
@@ -84,14 +84,14 @@
   return self;
 }
 
-- (void)setSplitSections:(void *)a3
+- (void)setSplitSections:(void *)sections
 {
   p_splitSections = &self->_splitSections;
-  if (&self->_splitSections != a3)
+  if (&self->_splitSections != sections)
   {
-    v5 = *a3;
-    v6 = *(a3 + 1);
-    v7 = &v6[-*a3];
+    v5 = *sections;
+    v6 = *(sections + 1);
+    v7 = &v6[-*sections];
     cap = self->_splitSections.__cap_;
     begin = self->_splitSections.__begin_;
     if (cap - begin < v7)
@@ -174,11 +174,11 @@
   return WeakRetained;
 }
 
-- (void)composedRoute:(id)a3 selectedSections:(id)a4 deselectedSections:(id)a5
+- (void)composedRoute:(id)route selectedSections:(id)sections deselectedSections:(id)deselectedSections
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  sectionsCopy = sections;
+  deselectedSectionsCopy = deselectedSections;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -198,7 +198,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) polyline:self selectedSections:v7 deselectedSections:{v8, v13}];
+        [*(*(&v13 + 1) + 8 * v12++) polyline:self selectedSections:sectionsCopy deselectedSections:{deselectedSectionsCopy, v13}];
       }
 
       while (v10 != v12);
@@ -330,28 +330,28 @@ LABEL_32:
   return result;
 }
 
-- (id)getPathsForRenderRegion:(id)a3 shouldSnapToRoads:(BOOL)a4 shouldGenerateSnapPath:(BOOL)a5 verifySnapping:(BOOL)a6 isGradientTraffic:(BOOL)a7 observer:(id)a8 elevationSource:(void *)a9 elevationSourceContext:(void *)a10
+- (id)getPathsForRenderRegion:(id)region shouldSnapToRoads:(BOOL)roads shouldGenerateSnapPath:(BOOL)path verifySnapping:(BOOL)snapping isGradientTraffic:(BOOL)traffic observer:(id)observer elevationSource:(void *)source elevationSourceContext:(void *)self0
 {
-  v156 = a7;
-  v11 = a6;
-  v151 = a5;
-  v12 = a4;
+  trafficCopy = traffic;
+  snappingCopy = snapping;
+  pathCopy = path;
+  roadsCopy = roads;
   v198 = *MEMORY[0x1E69E9840];
-  v165 = a3;
-  v150 = a8;
+  regionCopy = region;
+  observerCopy = observer;
   v162 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v157 = v12;
-  self->_isReadyForSnapping = v12;
-  v167 = self;
+  v157 = roadsCopy;
+  self->_isReadyForSnapping = roadsCopy;
+  selfCopy = self;
   if ([(VKPolylineOverlay *)self containsTransit])
   {
-    [(GEOComposedRoute *)self->_composedRoute clearSnappedPathsForObserver:v150];
+    [(GEOComposedRoute *)self->_composedRoute clearSnappedPathsForObserver:observerCopy];
     v191 = 0u;
     v192 = 0u;
     v189 = 0u;
     v190 = 0u;
-    v14 = [(GEOComposedRoute *)self->_composedRoute sections];
-    v15 = [v14 countByEnumeratingWithState:&v189 objects:v197 count:16];
+    sections = [(GEOComposedRoute *)self->_composedRoute sections];
+    v15 = [sections countByEnumeratingWithState:&v189 objects:v197 count:16];
     if (v15)
     {
       v16 = *v190;
@@ -361,20 +361,20 @@ LABEL_32:
         {
           if (*v190 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(sections);
           }
 
           v18 = *(*(&v189 + 1) + 8 * i);
-          v19 = [v18 pathsForRenderRegion:v165 inOverlay:self shouldSnapToTransit:1 verifySnapping:v11 elevationSource:a9 elevationSourceContext:a10];
-          if (v19 || ([v18 pathsForRenderRegion:v165 inOverlay:self elevationSource:a9 elevationSourceContext:a10], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+          v19 = [v18 pathsForRenderRegion:regionCopy inOverlay:self shouldSnapToTransit:1 verifySnapping:snappingCopy elevationSource:source elevationSourceContext:context];
+          if (v19 || ([v18 pathsForRenderRegion:regionCopy inOverlay:self elevationSource:source elevationSourceContext:context], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             [v162 addObjectsFromArray:v19];
           }
 
-          self = v167;
+          self = selfCopy;
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v189 objects:v197 count:16];
+        v15 = [sections countByEnumeratingWithState:&v189 objects:v197 count:16];
       }
 
       while (v15);
@@ -386,12 +386,12 @@ LABEL_13:
     goto LABEL_145;
   }
 
-  if (v12)
+  if (roadsCopy)
   {
-    v21 = [v165 snappingRegion];
-    v22 = v21 + 1;
-    v23 = *v21;
-    if (*v21 == v21 + 1)
+    snappingRegion = [regionCopy snappingRegion];
+    v22 = snappingRegion + 1;
+    v23 = *snappingRegion;
+    if (*snappingRegion == snappingRegion + 1)
     {
       v163 = 0;
     }
@@ -460,32 +460,32 @@ LABEL_13:
       while (*&v34 != v22);
     }
 
-    [v165 visibleRect];
-    v41 = v167;
-    WeakRetained = objc_loadWeakRetained(&v167->_routeRibbon);
+    [regionCopy visibleRect];
+    v41 = selfCopy;
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_routeRibbon);
     [WeakRetained _clearMatchedSegments];
 
-    v43 = objc_loadWeakRetained(&v167->_routeRibbon);
+    v43 = objc_loadWeakRetained(&selfCopy->_routeRibbon);
     if (v43)
     {
       v44 = v43;
-      v45 = objc_loadWeakRetained(&v167->_routeRibbon);
-      v46 = [v45 pathMatcher];
+      v45 = objc_loadWeakRetained(&selfCopy->_routeRibbon);
+      pathMatcher = [v45 pathMatcher];
 
-      if (v46)
+      if (pathMatcher)
       {
-        v47 = objc_loadWeakRetained(&v167->_routeRibbon);
+        v47 = objc_loadWeakRetained(&selfCopy->_routeRibbon);
         [v47 setMatchingEndIndex:0];
 
-        v48 = [(GEOComposedRoute *)v167->_composedRoute pointCount]- 1;
-        v49 = objc_loadWeakRetained(&v167->_routeRibbon);
+        v48 = [(GEOComposedRoute *)selfCopy->_composedRoute pointCount]- 1;
+        v49 = objc_loadWeakRetained(&selfCopy->_routeRibbon);
         [v49 setMatchingStartIndex:v48];
 
         v187 = 0u;
         v188 = 0u;
         v185 = 0u;
         v186 = 0u;
-        obj = [(GEOComposedRoute *)v167->_composedRoute sections];
+        obj = [(GEOComposedRoute *)selfCopy->_composedRoute sections];
         v50 = [obj countByEnumeratingWithState:&v185 objects:v196 count:16];
         if (v50)
         {
@@ -610,66 +610,66 @@ LABEL_160:
                 while (v63 != v163);
                 if (v62)
                 {
-                  v79 = [v57 startPointIndex];
-                  v80 = objc_loadWeakRetained(&v167->_routeRibbon);
-                  v81 = [v80 matchingStartIndex];
-                  if (v79 >= v81)
+                  startPointIndex = [v57 startPointIndex];
+                  v80 = objc_loadWeakRetained(&selfCopy->_routeRibbon);
+                  matchingStartIndex = [v80 matchingStartIndex];
+                  if (startPointIndex >= matchingStartIndex)
                   {
-                    v153 = objc_loadWeakRetained(&v167->_routeRibbon);
-                    v82 = [v153 matchingStartIndex];
+                    v153 = objc_loadWeakRetained(&selfCopy->_routeRibbon);
+                    matchingStartIndex2 = [v153 matchingStartIndex];
                   }
 
                   else
                   {
-                    v82 = [v57 startPointIndex];
+                    matchingStartIndex2 = [v57 startPointIndex];
                   }
 
-                  v83 = v82;
-                  v84 = objc_loadWeakRetained(&v167->_routeRibbon);
+                  v83 = matchingStartIndex2;
+                  v84 = objc_loadWeakRetained(&selfCopy->_routeRibbon);
                   [v84 setMatchingStartIndex:v83];
 
-                  if (v79 >= v81)
+                  if (startPointIndex >= matchingStartIndex)
                   {
                   }
 
-                  v85 = [v57 endPointIndex];
-                  v86 = objc_loadWeakRetained(&v167->_routeRibbon);
-                  v87 = [v86 matchingEndIndex];
-                  if (v85 <= v87)
+                  endPointIndex = [v57 endPointIndex];
+                  v86 = objc_loadWeakRetained(&selfCopy->_routeRibbon);
+                  matchingEndIndex = [v86 matchingEndIndex];
+                  if (endPointIndex <= matchingEndIndex)
                   {
-                    v152 = objc_loadWeakRetained(&v167->_routeRibbon);
-                    v88 = [v152 matchingEndIndex];
+                    v152 = objc_loadWeakRetained(&selfCopy->_routeRibbon);
+                    matchingEndIndex2 = [v152 matchingEndIndex];
                   }
 
                   else
                   {
-                    v88 = [v57 endPointIndex];
+                    matchingEndIndex2 = [v57 endPointIndex];
                   }
 
-                  v89 = v88;
-                  v90 = objc_loadWeakRetained(&v167->_routeRibbon);
+                  v89 = matchingEndIndex2;
+                  v90 = objc_loadWeakRetained(&selfCopy->_routeRibbon);
                   [v90 setMatchingEndIndex:v89];
 
-                  if (v85 <= v87)
+                  if (endPointIndex <= matchingEndIndex)
                   {
                   }
 
-                  v91 = [v57 points];
-                  v92 = [v57 startPointIndex];
+                  points = [v57 points];
+                  startPointIndex2 = [v57 startPointIndex];
                   v93 = 0;
-                  v94 = 0xFFFFFFFFLL;
+                  endPointIndex2 = 0xFFFFFFFFLL;
 LABEL_76:
                   while (2)
                   {
                     if (v93 >= [v57 pointCount] - 1)
                     {
-                      v95 = v92;
+                      v95 = startPointIndex2;
                     }
 
                     else
                     {
                       v95 = [v57 startPointIndex] + v93;
-                      v96 = (v91 + 12 * v93++);
+                      v96 = (points + 12 * v93++);
                       v97.i64[0] = *v96;
                       v97.i64[1] = *v96;
                       v98.i32[0] = vmovn_s32(vcgtq_f32(xmmword_1B33B0730, v97)).u32[0];
@@ -699,11 +699,11 @@ LABEL_78:
                             goto LABEL_78;
                           }
 
-                          if (v94 == v95)
+                          if (endPointIndex2 == v95)
                           {
-                            if ([(VKPolylineOverlay *)v167 _meetsMinimumPathLengthBetweenStart:v92 end:v94, *v103.i64])
+                            if ([(VKPolylineOverlay *)selfCopy _meetsMinimumPathLengthBetweenStart:startPointIndex2 end:endPointIndex2, *v103.i64])
                             {
-                              [(VKPolylineOverlay *)v167 createMatchedSegmentAndAddToPaths:v162 section:v57 pathStartIndex:v92 pathEndIndex:v94 shouldGenerateSnapPath:v151 elevationSource:a9 elevationSourceContext:a10];
+                              [(VKPolylineOverlay *)selfCopy createMatchedSegmentAndAddToPaths:v162 section:v57 pathStartIndex:startPointIndex2 pathEndIndex:endPointIndex2 shouldGenerateSnapPath:pathCopy elevationSource:source elevationSourceContext:context];
                               goto LABEL_76;
                             }
 
@@ -720,29 +720,29 @@ LABEL_78:
                       }
 
                       while ((v108 & 1) != 0);
-                      if (v94 == v95)
+                      if (endPointIndex2 == v95)
                       {
 LABEL_88:
-                        v94 = (v94 + 1);
+                        endPointIndex2 = (endPointIndex2 + 1);
                         continue;
                       }
 
-                      if (-[VKPolylineOverlay _meetsMinimumPathLengthBetweenStart:end:](v167, "_meetsMinimumPathLengthBetweenStart:end:", v95, [v57 endPointIndex]))
+                      if (-[VKPolylineOverlay _meetsMinimumPathLengthBetweenStart:end:](selfCopy, "_meetsMinimumPathLengthBetweenStart:end:", v95, [v57 endPointIndex]))
                       {
-                        v94 = (v95 + 1);
-                        v92 = v95;
+                        endPointIndex2 = (v95 + 1);
+                        startPointIndex2 = v95;
                         continue;
                       }
 
-                      v94 = [v57 endPointIndex];
+                      endPointIndex2 = [v57 endPointIndex];
                     }
 
                     break;
                   }
 
-                  if (v94 == [v57 endPointIndex])
+                  if (endPointIndex2 == [v57 endPointIndex])
                   {
-                    [(VKPolylineOverlay *)v167 createMatchedSegmentAndAddToPaths:v162 section:v57 pathStartIndex:v95 pathEndIndex:v94 shouldGenerateSnapPath:v151 elevationSource:a9 elevationSourceContext:a10];
+                    [(VKPolylineOverlay *)selfCopy createMatchedSegmentAndAddToPaths:v162 section:v57 pathStartIndex:v95 pathEndIndex:endPointIndex2 shouldGenerateSnapPath:pathCopy elevationSource:source elevationSourceContext:context];
                   }
                 }
               }
@@ -757,7 +757,7 @@ LABEL_88:
           while (v50);
         }
 
-        v41 = v167;
+        v41 = selfCopy;
       }
     }
 
@@ -766,9 +766,9 @@ LABEL_88:
     v183 = 0;
     if (v162 && [v162 count])
     {
-      v109 = 0;
+      routeEnd = 0;
       v110 = 0;
-      v111 = -1;
+      routeStart = -1;
       while (1)
       {
         v112 = v110;
@@ -779,15 +779,15 @@ LABEL_88:
 
         v113 = [v162 objectAtIndex:v110];
         v114 = v113;
-        if (v111 > v109)
+        if (routeStart > routeEnd)
         {
-          v111 = [v113 routeStart];
-          v109 = [v114 routeEnd];
+          routeStart = [v113 routeStart];
+          routeEnd = [v114 routeEnd];
         }
 
-        if (v109 >= [v114 routeStart])
+        if (routeEnd >= [v114 routeStart])
         {
-          v109 = [v114 routeEnd];
+          routeEnd = [v114 routeEnd];
         }
 
         else
@@ -827,8 +827,8 @@ LABEL_88:
 
             v123 = (__p[1] - __p[0]) >> 3;
             v124 = (8 * v119);
-            *v124 = v111;
-            v124[1] = v109;
+            *v124 = routeStart;
+            v124[1] = routeEnd;
             v116 = (8 * v119 + 8);
             v125 = (8 * v119 - 8 * v123);
             memcpy(&v124[-2 * v123], v117, v118);
@@ -844,18 +844,18 @@ LABEL_88:
 
           else
           {
-            *__p[1] = v111;
-            v115[1] = v109;
+            *__p[1] = routeStart;
+            v115[1] = routeEnd;
             v116 = v115 + 2;
           }
 
           __p[1] = v116;
-          v111 = [v114 routeStart];
-          v109 = [v114 routeEnd];
+          routeStart = [v114 routeStart];
+          routeEnd = [v114 routeEnd];
         }
 
         v110 = v112 + 1;
-        v41 = v167;
+        v41 = selfCopy;
       }
 
       v127 = __p[1];
@@ -894,8 +894,8 @@ LABEL_162:
 
         v135 = (__p[1] - __p[0]) >> 3;
         v136 = (8 * v131);
-        *v136 = v111;
-        v136[1] = v109;
+        *v136 = routeStart;
+        v136[1] = routeEnd;
         v128 = (8 * v131 + 8);
         v137 = (8 * v131 - 8 * v135);
         memcpy(&v136[-2 * v135], v129, v130);
@@ -911,8 +911,8 @@ LABEL_162:
 
       else
       {
-        *__p[1] = v111;
-        v127[1] = v109;
+        *__p[1] = routeStart;
+        v127[1] = routeEnd;
         v128 = v127 + 2;
       }
 
@@ -923,8 +923,8 @@ LABEL_162:
     v181 = 0u;
     v178 = 0u;
     v179 = 0u;
-    v139 = [(GEOComposedRoute *)v41->_composedRoute sections];
-    v140 = [v139 countByEnumeratingWithState:&v178 objects:v195 count:16];
+    sections2 = [(GEOComposedRoute *)v41->_composedRoute sections];
+    v140 = [sections2 countByEnumeratingWithState:&v178 objects:v195 count:16];
     if (v140)
     {
       v141 = *v179;
@@ -934,23 +934,23 @@ LABEL_162:
         {
           if (*v179 != v141)
           {
-            objc_enumerationMutation(v139);
+            objc_enumerationMutation(sections2);
           }
 
-          v143 = [*(*(&v178 + 1) + 8 * j) pathsForRenderRegion:v165 inOverlay:v41 excludedSegments:__p elevationSource:a9 elevationSourceContext:a10];
+          v143 = [*(*(&v178 + 1) + 8 * j) pathsForRenderRegion:regionCopy inOverlay:v41 excludedSegments:__p elevationSource:source elevationSourceContext:context];
           [v162 addObjectsFromArray:v143];
 
-          v41 = v167;
+          v41 = selfCopy;
         }
 
-        v140 = [v139 countByEnumeratingWithState:&v178 objects:v195 count:16];
+        v140 = [sections2 countByEnumeratingWithState:&v178 objects:v195 count:16];
       }
 
       while (v140);
     }
 
     [v162 sortUsingComparator:&__block_literal_global_24222];
-    v40 = v167;
+    v40 = selfCopy;
     if (__p[0])
     {
       __p[1] = __p[0];
@@ -960,13 +960,13 @@ LABEL_162:
 
   else
   {
-    [(GEOComposedRoute *)self->_composedRoute clearSnappedPathsForObserver:v150];
+    [(GEOComposedRoute *)self->_composedRoute clearSnappedPathsForObserver:observerCopy];
     v176 = 0u;
     v177 = 0u;
     v174 = 0u;
     v175 = 0u;
-    v35 = [(GEOComposedRoute *)self->_composedRoute sections];
-    v36 = [v35 countByEnumeratingWithState:&v174 objects:v194 count:16];
+    sections3 = [(GEOComposedRoute *)self->_composedRoute sections];
+    v36 = [sections3 countByEnumeratingWithState:&v174 objects:v194 count:16];
     if (v36)
     {
       v37 = *v175;
@@ -976,22 +976,22 @@ LABEL_162:
         {
           if (*v175 != v37)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(sections3);
           }
 
-          v39 = [*(*(&v174 + 1) + 8 * k) pathsForRenderRegion:v165 inOverlay:self elevationSource:a9 elevationSourceContext:a10];
+          v39 = [*(*(&v174 + 1) + 8 * k) pathsForRenderRegion:regionCopy inOverlay:self elevationSource:source elevationSourceContext:context];
           [v162 addObjectsFromArray:v39];
 
-          self = v167;
+          self = selfCopy;
         }
 
-        v36 = [v35 countByEnumeratingWithState:&v174 objects:v194 count:16];
+        v36 = [sections3 countByEnumeratingWithState:&v174 objects:v194 count:16];
       }
 
       while (v36);
     }
 
-    v40 = v167;
+    v40 = selfCopy;
   }
 
   if (v40->_traffic && ![(GEOComposedRoute *)v40->_composedRoute transportType])
@@ -1001,8 +1001,8 @@ LABEL_162:
     v173 = 0u;
     v170 = 0u;
     v171 = 0u;
-    v14 = v162;
-    v145 = [v14 countByEnumeratingWithState:&v170 objects:v193 count:16];
+    sections = v162;
+    v145 = [sections countByEnumeratingWithState:&v170 objects:v193 count:16];
     if (v145)
     {
       v146 = *v171;
@@ -1012,7 +1012,7 @@ LABEL_162:
         {
           if (*v171 != v146)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(sections);
           }
 
           v148 = *(*(&v170 + 1) + 8 * m);
@@ -1020,9 +1020,9 @@ LABEL_162:
           if (objc_opt_isKindOfClass())
           {
             v149 = v148;
-            [v149 splitTrafficSegmentationAndAddTo:v20 with:v40->_trafficSegments.__ptr_ shouldSnap:v157 isGradientTraffic:v156];
+            [v149 splitTrafficSegmentationAndAddTo:v20 with:v40->_trafficSegments.__ptr_ shouldSnap:v157 isGradientTraffic:trafficCopy];
 
-            v40 = v167;
+            v40 = selfCopy;
           }
 
           else
@@ -1031,7 +1031,7 @@ LABEL_162:
           }
         }
 
-        v145 = [v14 countByEnumeratingWithState:&v170 objects:v193 count:16];
+        v145 = [sections countByEnumeratingWithState:&v170 objects:v193 count:16];
       }
 
       while (v145);
@@ -1070,29 +1070,29 @@ uint64_t __167__VKPolylineOverlay_getPathsForRenderRegion_shouldSnapToRoads_shou
   return v11;
 }
 
-- (void)createMatchedSegmentAndAddToPaths:(id)a3 section:(id)a4 pathStartIndex:(unsigned int)a5 pathEndIndex:(unsigned int)a6 shouldGenerateSnapPath:(BOOL)a7 elevationSource:(void *)a8 elevationSourceContext:(void *)a9
+- (void)createMatchedSegmentAndAddToPaths:(id)paths section:(id)section pathStartIndex:(unsigned int)index pathEndIndex:(unsigned int)endIndex shouldGenerateSnapPath:(BOOL)path elevationSource:(void *)source elevationSourceContext:(void *)context
 {
-  v10 = *&a6;
-  v11 = *&a5;
-  v14 = a3;
-  v15 = a4;
+  v10 = *&endIndex;
+  v11 = *&index;
+  pathsCopy = paths;
+  sectionCopy = section;
   WeakRetained = objc_loadWeakRetained(&self->_routeRibbon);
   [WeakRetained setNumPathsMatching:{(objc_msgSend(WeakRetained, "numPathsMatching") + 1)}];
 
   v17 = objc_loadWeakRetained(&self->_routeRibbon);
-  v18 = [v17 pathMatcher];
+  pathMatcher = [v17 pathMatcher];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStartIndex_pathEndIndex_shouldGenerateSnapPath_elevationSource_elevationSourceContext___block_invoke;
   v29[3] = &unk_1E7B38E88;
   v29[4] = self;
-  [v18 matchRouteFromStart:v11 toEnd:v10 finishedHandler:v29];
+  [pathMatcher matchRouteFromStart:v11 toEnd:v10 finishedHandler:v29];
 
-  if (a7)
+  if (path)
   {
     v19 = objc_loadWeakRetained(&self->_routeRibbon);
-    v20 = [v19 pathMatcher];
-    v21 = [v20 matchedSegmentsFromStart:v11 toEnd:v10];
+    pathMatcher2 = [v19 pathMatcher];
+    v21 = [pathMatcher2 matchedSegmentsFromStart:v11 toEnd:v10];
 
     if (!v21 || ![v21 count])
     {
@@ -1104,24 +1104,24 @@ uint64_t __167__VKPolylineOverlay_getPathsForRenderRegion_shouldSnapToRoads_shou
     if ([v23 startRouteCoordinate] == v11)
     {
       v24 = [v21 objectAtIndexedSubscript:v22 - 1];
-      v25 = [v24 endRouteCoordinate];
+      endRouteCoordinate = [v24 endRouteCoordinate];
 
-      if (v25 != v10)
+      if (endRouteCoordinate != v10)
       {
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      v26 = [(GEOComposedRoute *)self->_composedRoute transportType];
+      transportType = [(GEOComposedRoute *)self->_composedRoute transportType];
       v27 = off_1E7B2EB88;
-      if (v26)
+      if (transportType)
       {
         v27 = off_1E7B2EC58;
       }
 
-      v23 = [objc_alloc(*v27) initWithOverlay:self section:v15 routeStartIndex:v11 routeEndIndex:v10 matchedPathSegments:v21 elevationSource:a8 elevationSourceContext:a9];
-      [v14 addObject:v23];
+      v23 = [objc_alloc(*v27) initWithOverlay:self section:sectionCopy routeStartIndex:v11 routeEndIndex:v10 matchedPathSegments:v21 elevationSource:source elevationSourceContext:context];
+      [pathsCopy addObject:v23];
       [(VKPolylineOverlay *)self _setNeedsLayout];
     }
 
@@ -1142,15 +1142,15 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
   [v6 setNumPathsMatching:{(objc_msgSend(v6, "numPathsMatching") - 1)}];
 }
 
-- (BOOL)_meetsMinimumPathLengthBetweenStart:(unsigned int)a3 end:(unsigned int)a4
+- (BOOL)_meetsMinimumPathLengthBetweenStart:(unsigned int)start end:(unsigned int)end
 {
-  [(GEOComposedRoute *)self->_composedRoute pointAt:a3];
-  v7 = a3 + 1;
+  [(GEOComposedRoute *)self->_composedRoute pointAt:start];
+  v7 = start + 1;
   v8 = 0.0;
   do
   {
     v9 = v7;
-    if (v7 > a4)
+    if (v7 > end)
     {
       break;
     }
@@ -1162,13 +1162,13 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
   }
 
   while (v8 < 100.0);
-  return v9 <= a4;
+  return v9 <= end;
 }
 
-- (void)updateTraffic:(id)a3
+- (void)updateTraffic:(id)traffic
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  trafficCopy = traffic;
   if (GEOGetVectorKitRouteLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitRouteLog_onceToken, &__block_literal_global_37_15545);
@@ -1178,43 +1178,43 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v18 = 134218242;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v5;
+    v21 = trafficCopy;
     _os_log_impl(&dword_1B2754000, v6, OS_LOG_TYPE_INFO, "VKPolylineOverlay %p updateTraffic: %@", &v18, 0x16u);
   }
 
-  if (self->_traffic != v5)
+  if (self->_traffic != trafficCopy)
   {
-    objc_storeStrong(&self->_traffic, a3);
+    objc_storeStrong(&self->_traffic, traffic);
   }
 
   if (![(VKPolylineOverlay *)self containsTransit])
   {
     *(self->_trafficSegments.__ptr_ + 1) = *self->_trafficSegments.__ptr_;
-    if (v5)
+    if (trafficCopy)
     {
-      v7 = [(GEOComposedRouteTraffic *)v5 trafficColorOffsetsCount];
-      v8 = [(GEOComposedRouteTraffic *)v5 trafficColorsCount];
-      if (v8 >= v7)
+      trafficColorOffsetsCount = [(GEOComposedRouteTraffic *)trafficCopy trafficColorOffsetsCount];
+      trafficColorsCount = [(GEOComposedRouteTraffic *)trafficCopy trafficColorsCount];
+      if (trafficColorsCount >= trafficColorOffsetsCount)
       {
-        v9 = v7;
+        v9 = trafficColorOffsetsCount;
       }
 
       else
       {
-        v9 = v8;
+        v9 = trafficColorsCount;
       }
 
       if (v9)
       {
-        v10 = [(GEOComposedRouteTraffic *)v5 trafficColors];
-        v11 = [(GEOComposedRouteTraffic *)v5 trafficColorOffsets];
+        trafficColors = [(GEOComposedRouteTraffic *)trafficCopy trafficColors];
+        trafficColorOffsets = [(GEOComposedRouteTraffic *)trafficCopy trafficColorOffsets];
         v12 = v9 - 1;
         if (v9 != 1)
         {
-          v13 = (v11 + 4);
-          v14 = v10;
+          v13 = (trafficColorOffsets + 4);
+          v14 = trafficColors;
           do
           {
             v16 = *v13++;
@@ -1228,7 +1228,7 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
           while (v12);
         }
 
-        md::TrafficSegmentsAlongRoute::addSegmentAt(self->_trafficSegments.__ptr_, 0xFFFFFFFF, *(v10 + 4 * v9 - 4));
+        md::TrafficSegmentsAlongRoute::addSegmentAt(self->_trafficSegments.__ptr_, 0xFFFFFFFF, *(trafficColors + 4 * v9 - 4));
       }
 
       else
@@ -1246,15 +1246,15 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
 {
   v35 = *MEMORY[0x1E69E9840];
   v33 = a3;
-  v4 = [(GEOComposedRoute *)self->_composedRoute sections];
-  v5 = [v4 count];
+  sections = [(GEOComposedRoute *)self->_composedRoute sections];
+  v5 = [sections count];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [(GEOComposedRoute *)self->_composedRoute sections];
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  sections2 = [(GEOComposedRoute *)self->_composedRoute sections];
+  v7 = [sections2 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
     LODWORD(v24) = 0;
@@ -1269,7 +1269,7 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sections2);
         }
 
         [*(*(&v29 + 1) + 8 * v9) vkBounds];
@@ -1317,7 +1317,7 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
       }
 
       while (v9 != v7);
-      v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:{16, v19}];
+      v7 = [sections2 countByEnumeratingWithState:&v29 objects:v34 count:{16, v19}];
     }
 
     while (v7);
@@ -1338,14 +1338,14 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate
 {
-  v2 = [(GEOComposedRoute *)self->_composedRoute boundingMapRegion];
-  [v2 southLat];
+  boundingMapRegion = [(GEOComposedRoute *)self->_composedRoute boundingMapRegion];
+  [boundingMapRegion southLat];
   v4 = v3;
-  [v2 northLat];
+  [boundingMapRegion northLat];
   v6 = v5;
-  [v2 westLng];
+  [boundingMapRegion westLng];
   v8 = v7;
-  [v2 eastLng];
+  [boundingMapRegion eastLng];
   v9 = (v6 + v4) * 0.5;
   v11 = (v10 + v8) * 0.5;
 
@@ -1356,9 +1356,9 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
   return result;
 }
 
-- (void)setRouteRibbon:(id)a3
+- (void)setRouteRibbon:(id)ribbon
 {
-  obj = a3;
+  obj = ribbon;
   WeakRetained = objc_loadWeakRetained(&self->_routeRibbon);
 
   v5 = obj;
@@ -1373,9 +1373,9 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  value = a3;
+  value = observer;
   observers = self->_observers;
   if (observers)
   {
@@ -1385,9 +1385,9 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
   [(GEOComposedRoute *)self->_composedRoute clearSnappedPathsForObserver:value];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
   if (!observers)
   {
@@ -1396,13 +1396,13 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
     self->_observers = observers;
   }
 
-  CFSetAddValue(observers, v4);
+  CFSetAddValue(observers, observerCopy);
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   objc_storeWeak(&self->_routeRibbon, 0);
   [(GEOComposedRoute *)self->_composedRoute unregisterObserver:self];
@@ -1417,10 +1417,10 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
   [(VKPolylineOverlay *)&v5 dealloc];
 }
 
-- (VKPolylineOverlay)initWithComposedRoute:(id)a3 traffic:(id)a4
+- (VKPolylineOverlay)initWithComposedRoute:(id)route traffic:(id)traffic
 {
-  v7 = a3;
-  v8 = a4;
+  routeCopy = route;
+  trafficCopy = traffic;
   v14.receiver = self;
   v14.super_class = VKPolylineOverlay;
   v9 = [(VKPolylineOverlay *)&v14 init];
@@ -1428,11 +1428,11 @@ void __153__VKPolylineOverlay_createMatchedSegmentAndAddToPaths_section_pathStar
   v11 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_composedRoute, a3);
+    objc_storeStrong(&v9->_composedRoute, route);
     [(GEOComposedRoute *)v11->_composedRoute registerObserver:v11];
     if (![(VKPolylineOverlay *)v11 containsTransit])
     {
-      objc_storeStrong(&v10->_traffic, a4);
+      objc_storeStrong(&v10->_traffic, traffic);
       operator new();
     }
 

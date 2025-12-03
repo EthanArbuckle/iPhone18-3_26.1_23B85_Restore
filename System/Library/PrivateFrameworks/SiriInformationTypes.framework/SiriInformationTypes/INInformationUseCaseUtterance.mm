@@ -1,13 +1,13 @@
 @interface INInformationUseCaseUtterance
-- (INInformationUseCaseUtterance)initWithCoder:(id)a3;
-- (INInformationUseCaseUtterance)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (INInformationUseCaseUtterance)initWithCoder:(id)coder;
+- (INInformationUseCaseUtterance)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation INInformationUseCaseUtterance
 
-- (INInformationUseCaseUtterance)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (INInformationUseCaseUtterance)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -21,7 +21,7 @@
 
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (a5)
+  if (hint)
   {
     v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = v13;
@@ -36,12 +36,12 @@
   return INInformationUseCaseUtterance.init(identifier:display:pronunciationHint:)(v6, v8, v9, v11, v12, v14);
 }
 
-- (INInformationUseCaseUtterance)initWithCoder:(id)a3
+- (INInformationUseCaseUtterance)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for INInformationUseCaseUtterance();
-  v4 = a3;
-  v5 = [(INInformationUseCaseUtterance *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(INInformationUseCaseUtterance *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,6 +1,6 @@
 @interface CNACTStewieFacade
 + (BOOL)isMessagesApp;
-+ (double)ageOfMemo:(id)a3;
++ (double)ageOfMemo:(id)memo;
 + (id)localizedAvocetPhrases;
 + (id)localizedEmergencyPhrases;
 - (BOOL)isAvocetEnabled;
@@ -8,7 +8,7 @@
 - (BOOL)withLock_isAvocetEnabled;
 - (BOOL)withLock_isEmergencyEnabled;
 - (CNACTStewieFacade)init;
-- (CNACTStewieFacade)initWithCoreTelephonyClient:(id)a3 stateMonitor:(id)a4;
+- (CNACTStewieFacade)initWithCoreTelephonyClient:(id)client stateMonitor:(id)monitor;
 - (NSArray)avocetTerms;
 - (NSArray)emergencyTerms;
 - (NSString)description;
@@ -17,7 +17,7 @@
 - (void)emergencyTerms;
 - (void)numbers;
 - (void)startMonitoring;
-- (void)stateChanged:(id)a3;
+- (void)stateChanged:(id)changed;
 @end
 
 @implementation CNACTStewieFacade
@@ -34,11 +34,11 @@
   return v7;
 }
 
-- (CNACTStewieFacade)initWithCoreTelephonyClient:(id)a3 stateMonitor:(id)a4
+- (CNACTStewieFacade)initWithCoreTelephonyClient:(id)client stateMonitor:(id)monitor
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  clientCopy = client;
+  monitorCopy = monitor;
+  if (!monitorCopy)
   {
     if (CNGuardOSLog_cn_once_token_0 != -1)
     {
@@ -58,8 +58,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_coreTelephonyClient, a3);
-    objc_storeStrong(&v11->_stateMonitor, a4);
+    objc_storeStrong(&v10->_coreTelephonyClient, client);
+    objc_storeStrong(&v11->_stateMonitor, monitor);
     v12 = v11;
   }
 
@@ -71,17 +71,17 @@
   v3 = [MEMORY[0x277CFBDF0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"Stewie terms" object:self->_emergencyMemo];
   v5 = [v3 appendName:@"Avocet terms" object:self->_avocetMemo];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (void)startMonitoring
 {
-  v2 = [(CTStewieStateMonitor *)self->_stateMonitor start];
+  start = [(CTStewieStateMonitor *)self->_stateMonitor start];
   v3 = contactSearchLog();
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG);
-  if (v2)
+  if (start)
   {
     if (v4)
     {
@@ -95,20 +95,20 @@
   }
 }
 
-+ (double)ageOfMemo:(id)a3
++ (double)ageOfMemo:(id)memo
 {
-  if (!a3)
+  if (!memo)
   {
     return 978307200.0;
   }
 
   v3 = MEMORY[0x277CFBE10];
-  v4 = a3;
-  v5 = [v3 currentEnvironment];
-  v6 = [v5 timeProvider];
-  [v6 timestamp];
+  memoCopy = memo;
+  currentEnvironment = [v3 currentEnvironment];
+  timeProvider = [currentEnvironment timeProvider];
+  [timeProvider timestamp];
   v8 = v7;
-  [v4 timestamp];
+  [memoCopy timestamp];
   v10 = v9;
 
   v11 = v8 - v10;
@@ -118,24 +118,24 @@
 - (NSArray)emergencyTerms
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(CNACTStewieFacade *)v2 withLock_isEmergencyEnabled])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(CNACTStewieFacade *)selfCopy withLock_isEmergencyEnabled])
   {
-    if ([objc_opt_class() isMemoValid:v2->_emergencyMemo])
+    if ([objc_opt_class() isMemoValid:selfCopy->_emergencyMemo])
     {
-      v3 = [(CNTimestamped *)v2->_emergencyMemo value];
+      value = [(CNTimestamped *)selfCopy->_emergencyMemo value];
     }
 
     else
     {
-      v4 = [objc_opt_class() localizedEmergencyPhrases];
-      v5 = [(CNACTStewieFacade *)v2 numbers];
-      v17[0] = v4;
-      v17[1] = v5;
+      localizedEmergencyPhrases = [objc_opt_class() localizedEmergencyPhrases];
+      numbers = [(CNACTStewieFacade *)selfCopy numbers];
+      v17[0] = localizedEmergencyPhrases;
+      v17[1] = numbers;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-      v7 = [v6 _cn_flatten];
-      v8 = [v7 _cn_distinctObjects];
+      _cn_flatten = [v6 _cn_flatten];
+      _cn_distinctObjects = [_cn_flatten _cn_distinctObjects];
 
       v9 = contactSearchLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -144,68 +144,68 @@
       }
 
       v10 = MEMORY[0x277CFBED8];
-      v11 = [MEMORY[0x277CFBE10] currentEnvironment];
-      v12 = [v11 timeProvider];
-      [v12 timestamp];
-      v13 = [v10 timestampedWithValue:v8 timestamp:?];
-      emergencyMemo = v2->_emergencyMemo;
-      v2->_emergencyMemo = v13;
+      currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+      timeProvider = [currentEnvironment timeProvider];
+      [timeProvider timestamp];
+      v13 = [v10 timestampedWithValue:_cn_distinctObjects timestamp:?];
+      emergencyMemo = selfCopy->_emergencyMemo;
+      selfCopy->_emergencyMemo = v13;
 
-      v3 = [(CNTimestamped *)v2->_emergencyMemo value];
+      value = [(CNTimestamped *)selfCopy->_emergencyMemo value];
     }
   }
 
   else
   {
-    v3 = MEMORY[0x277CBEBF8];
+    value = MEMORY[0x277CBEBF8];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return value;
 }
 
 - (BOOL)isEmergencyEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CNACTStewieFacade *)v2 withLock_isEmergencyEnabled];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  withLock_isEmergencyEnabled = [(CNACTStewieFacade *)selfCopy withLock_isEmergencyEnabled];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return withLock_isEmergencyEnabled;
 }
 
 - (BOOL)withLock_isEmergencyEnabled
 {
-  v3 = [objc_opt_class() isMessagesApp];
-  if (v3)
+  isMessagesApp = [objc_opt_class() isMessagesApp];
+  if (isMessagesApp)
   {
-    v4 = [(CTStewieStateMonitor *)self->_stateMonitor getState];
-    v5 = [v4 isAllowedService:1];
+    getState = [(CTStewieStateMonitor *)self->_stateMonitor getState];
+    v5 = [getState isAllowedService:1];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isMessagesApp) = v5;
   }
 
-  return v3;
+  return isMessagesApp;
 }
 
 - (NSArray)avocetTerms
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(CNACTStewieFacade *)v2 withLock_isAvocetEnabled])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(CNACTStewieFacade *)selfCopy withLock_isAvocetEnabled])
   {
-    if ([objc_opt_class() isMemoValid:v2->_avocetMemo])
+    if ([objc_opt_class() isMemoValid:selfCopy->_avocetMemo])
     {
-      v3 = [(CNTimestamped *)v2->_avocetMemo value];
+      value = [(CNTimestamped *)selfCopy->_avocetMemo value];
     }
 
     else
     {
-      v4 = [objc_opt_class() localizedAvocetPhrases];
-      v5 = [v4 _cn_distinctObjects];
+      localizedAvocetPhrases = [objc_opt_class() localizedAvocetPhrases];
+      _cn_distinctObjects = [localizedAvocetPhrases _cn_distinctObjects];
       v6 = contactSearchLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
@@ -213,65 +213,65 @@
       }
 
       v7 = MEMORY[0x277CFBED8];
-      v8 = [MEMORY[0x277CFBE10] currentEnvironment];
-      v9 = [v8 timeProvider];
-      [v9 timestamp];
-      v10 = [v7 timestampedWithValue:v5 timestamp:?];
-      avocetMemo = v2->_avocetMemo;
-      v2->_avocetMemo = v10;
+      currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+      timeProvider = [currentEnvironment timeProvider];
+      [timeProvider timestamp];
+      v10 = [v7 timestampedWithValue:_cn_distinctObjects timestamp:?];
+      avocetMemo = selfCopy->_avocetMemo;
+      selfCopy->_avocetMemo = v10;
 
-      v3 = [(CNTimestamped *)v2->_avocetMemo value];
+      value = [(CNTimestamped *)selfCopy->_avocetMemo value];
     }
   }
 
   else
   {
-    v3 = MEMORY[0x277CBEBF8];
+    value = MEMORY[0x277CBEBF8];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return value;
 }
 
 - (BOOL)isAvocetEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CNACTStewieFacade *)v2 withLock_isAvocetEnabled];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  withLock_isAvocetEnabled = [(CNACTStewieFacade *)selfCopy withLock_isAvocetEnabled];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return withLock_isAvocetEnabled;
 }
 
 - (BOOL)withLock_isAvocetEnabled
 {
-  v3 = [objc_opt_class() isMessagesApp];
-  if (v3)
+  isMessagesApp = [objc_opt_class() isMessagesApp];
+  if (isMessagesApp)
   {
-    v4 = [(CTStewieStateMonitor *)self->_stateMonitor getState];
-    v5 = [v4 isAllowedService:8];
+    getState = [(CTStewieStateMonitor *)self->_stateMonitor getState];
+    v5 = [getState isAllowedService:8];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isMessagesApp) = v5;
   }
 
-  return v3;
+  return isMessagesApp;
 }
 
 + (BOOL)isMessagesApp
 {
-  v2 = [MEMORY[0x277CFBE10] currentEnvironment];
-  v3 = [v2 mainBundleIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x277CBCF60]];
+  currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+  mainBundleIdentifier = [currentEnvironment mainBundleIdentifier];
+  v4 = [mainBundleIdentifier isEqualToString:*MEMORY[0x277CBCF60]];
 
   return v4;
 }
 
 + (id)localizedEmergencyPhrases
 {
-  v2 = [MEMORY[0x277CFBE10] currentEnvironment];
-  v3 = [v2 localizationServices];
-  v4 = [v3 localizedStringForKey:@"STEWIE_SEARCH_PHRASES" value:&stru_282787720 table:@"Localized-Stewie" bundleForClass:objc_opt_class() comment:0];
+  currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+  localizationServices = [currentEnvironment localizationServices];
+  v4 = [localizationServices localizedStringForKey:@"STEWIE_SEARCH_PHRASES" value:&stru_282787720 table:@"Localized-Stewie" bundleForClass:objc_opt_class() comment:0];
   v5 = [v4 componentsSeparatedByString:@"|"];
 
   return v5;
@@ -279,9 +279,9 @@
 
 + (id)localizedAvocetPhrases
 {
-  v2 = [MEMORY[0x277CFBE10] currentEnvironment];
-  v3 = [v2 localizationServices];
-  v4 = [v3 localizedStringForKey:@"AVOCET_SEARCH_PHRASES" value:&stru_282787720 table:@"Localized-Avocet" bundleForClass:objc_opt_class() comment:0];
+  currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+  localizationServices = [currentEnvironment localizationServices];
+  v4 = [localizationServices localizedStringForKey:@"AVOCET_SEARCH_PHRASES" value:&stru_282787720 table:@"Localized-Avocet" bundleForClass:objc_opt_class() comment:0];
   v5 = [v4 componentsSeparatedByString:@"|"];
 
   return v5;
@@ -309,24 +309,24 @@
   return v6;
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  changedCopy = changed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = contactSearchLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [CNACTStewieFacade stateChanged:];
   }
 
-  emergencyMemo = v5->_emergencyMemo;
-  v5->_emergencyMemo = 0;
+  emergencyMemo = selfCopy->_emergencyMemo;
+  selfCopy->_emergencyMemo = 0;
 
-  avocetMemo = v5->_avocetMemo;
-  v5->_avocetMemo = 0;
+  avocetMemo = selfCopy->_avocetMemo;
+  selfCopy->_avocetMemo = 0;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)emergencyTerms

@@ -11,19 +11,19 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = CFCopyCString(a1, &v8);
-    if (v5)
+    uTF8String = CFCopyCString(self, &v8);
+    if (uTF8String)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
-      free(v5);
+      v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:uTF8String];
+      free(uTF8String);
       if (!v6)
       {
-        v5 = 0;
+        uTF8String = 0;
         goto LABEL_16;
       }
 
-      v5 = [v6 UTF8String];
-      if (v5)
+      uTF8String = [v6 UTF8String];
+      if (uTF8String)
       {
         v8 = 0;
       }
@@ -42,8 +42,8 @@
     goto LABEL_11;
   }
 
-  v5 = [(__CFString *)a1 UTF8String];
-  if (v5)
+  uTF8String = [(__CFString *)self UTF8String];
+  if (uTF8String)
   {
     v8 = 0;
     if (!a3)
@@ -64,9 +64,9 @@ LABEL_16:
   }
 
 LABEL_12:
-  if (v5)
+  if (uTF8String)
   {
-    return v5;
+    return uTF8String;
   }
 
   else
@@ -81,8 +81,8 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = a1;
-    if (v5)
+    selfCopy = self;
+    if (selfCopy)
     {
 LABEL_3:
       v11 = 0;
@@ -92,13 +92,13 @@ LABEL_3:
     goto LABEL_13;
   }
 
-  v9 = CFCopyCString(a1, &v11);
+  v9 = CFCopyCString(self, &v11);
   if (v9)
   {
     v10 = v9;
-    v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
+    selfCopy = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
     free(v10);
-    if (v5)
+    if (selfCopy)
     {
       goto LABEL_3;
     }
@@ -108,7 +108,7 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  v5 = 0;
+  selfCopy = 0;
 LABEL_4:
   if (a3)
   {
@@ -116,9 +116,9 @@ LABEL_4:
   }
 
   v6 = &stru_1F068B090;
-  if (v5)
+  if (selfCopy)
   {
-    v6 = v5;
+    v6 = selfCopy;
   }
 
   v7 = v6;

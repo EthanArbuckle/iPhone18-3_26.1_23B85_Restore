@@ -1,21 +1,21 @@
 @interface CKConversationSearchResultCell
 + (Class)conversationListCellClass;
 + (id)reuseIdentifier;
-- (CKConversationSearchResultCell)initWithFrame:(CGRect)a3;
+- (CKConversationSearchResultCell)initWithFrame:(CGRect)frame;
 - (CKConversationSearchResultCellDelegate)delegate;
 - (NSString)resultIdentifier;
 - (UIEdgeInsets)marginInsets;
 - (double)widthForDeterminingAvatarVisibility;
 - (id)configurationState;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5;
-- (void)forwardStateToEmbeddedCell:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode;
+- (void)forwardStateToEmbeddedCell:(id)cell;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshForSearchTextIfNeeded:(id)a3;
-- (void)setCellLayout:(id)a3;
-- (void)setMarginInsets:(UIEdgeInsets)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)refreshForSearchTextIfNeeded:(id)needed;
+- (void)setCellLayout:(id)layout;
+- (void)setMarginInsets:(UIEdgeInsets)insets;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation CKConversationSearchResultCell
@@ -39,92 +39,92 @@
 
 - (NSString)resultIdentifier
 {
-  v2 = [(CKConversationSearchResultCell *)self result];
-  v3 = [v2 identifier];
+  result = [(CKConversationSearchResultCell *)self result];
+  identifier = [result identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode
 {
-  v7 = a4;
-  v8 = a3;
-  [(CKConversationSearchResultCell *)self setSearchText:v7];
-  [(CKConversationSearchResultCell *)self setResult:v8];
-  v9 = [(CKConversationSearchResultCell *)self searchCell];
-  [v9 configureWithQueryResult:v8 searchText:v7];
+  textCopy = text;
+  resultCopy = result;
+  [(CKConversationSearchResultCell *)self setSearchText:textCopy];
+  [(CKConversationSearchResultCell *)self setResult:resultCopy];
+  searchCell = [(CKConversationSearchResultCell *)self searchCell];
+  [searchCell configureWithQueryResult:resultCopy searchText:textCopy];
 }
 
-- (void)refreshForSearchTextIfNeeded:(id)a3
+- (void)refreshForSearchTextIfNeeded:(id)needed
 {
-  v11 = a3;
-  v4 = [(CKConversationSearchResultCell *)self searchText];
-  v5 = [v4 isEqualToString:v11];
+  neededCopy = needed;
+  searchText = [(CKConversationSearchResultCell *)self searchText];
+  v5 = [searchText isEqualToString:neededCopy];
 
-  v6 = v11;
+  v6 = neededCopy;
   if ((v5 & 1) == 0)
   {
-    [(CKConversationSearchResultCell *)self setSearchText:v11];
-    v7 = [(CKConversationSearchResultCell *)self searchText];
-    if ([v7 length])
+    [(CKConversationSearchResultCell *)self setSearchText:neededCopy];
+    searchText2 = [(CKConversationSearchResultCell *)self searchText];
+    if ([searchText2 length])
     {
-      v8 = [(CKConversationSearchResultCell *)self result];
+      result = [(CKConversationSearchResultCell *)self result];
 
-      v6 = v11;
-      if (!v8)
+      v6 = neededCopy;
+      if (!result)
       {
         goto LABEL_6;
       }
 
-      v7 = [(CKConversationSearchResultCell *)self searchCell];
-      v9 = [(CKConversationSearchResultCell *)self result];
-      v10 = [(CKConversationSearchResultCell *)self searchText];
-      [v7 configureWithQueryResult:v9 searchText:v10];
+      searchText2 = [(CKConversationSearchResultCell *)self searchCell];
+      result2 = [(CKConversationSearchResultCell *)self result];
+      searchText3 = [(CKConversationSearchResultCell *)self searchText];
+      [searchText2 configureWithQueryResult:result2 searchText:searchText3];
     }
 
-    v6 = v11;
+    v6 = neededCopy;
   }
 
 LABEL_6:
 }
 
-- (void)setCellLayout:(id)a3
+- (void)setCellLayout:(id)layout
 {
-  v11 = a3;
-  objc_storeStrong(&self->_cellLayout, a3);
-  v6 = [(CKConversationSearchResultCell *)self searchCell];
+  layoutCopy = layout;
+  objc_storeStrong(&self->_cellLayout, layout);
+  searchCell = [(CKConversationSearchResultCell *)self searchCell];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CKConversationSearchResultCell *)self cellLayout];
+    cellLayout = [(CKConversationSearchResultCell *)self cellLayout];
 
-    if (!v8)
+    if (!cellLayout)
     {
       [(CKConversationSearchResultCell *)self setCellLayout:a2];
     }
 
-    v9 = [(CKConversationSearchResultCell *)self cellLayout];
-    v10 = [(CKConversationSearchResultCell *)self searchCell];
-    [v10 setCellLayout:v9];
+    cellLayout2 = [(CKConversationSearchResultCell *)self cellLayout];
+    searchCell2 = [(CKConversationSearchResultCell *)self searchCell];
+    [searchCell2 setCellLayout:cellLayout2];
   }
 }
 
 - (double)widthForDeterminingAvatarVisibility
 {
-  v2 = [(CKConversationSearchResultCell *)self delegate];
-  [v2 widthForDeterminingAvatarVisibility];
+  delegate = [(CKConversationSearchResultCell *)self delegate];
+  [delegate widthForDeterminingAvatarVisibility];
   v4 = v3;
 
   return v4;
 }
 
-- (CKConversationSearchResultCell)initWithFrame:(CGRect)a3
+- (CKConversationSearchResultCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = CKConversationSearchResultCell;
   v7 = [(CKConversationSearchResultCell *)&v11 initWithFrame:?];
@@ -133,8 +133,8 @@ LABEL_6:
     v8 = [objc_alloc(objc_msgSend(objc_opt_class() "conversationListCellClass"))];
     [v8 setDelegate:v7];
     [(CKConversationSearchResultCell *)v7 setSearchCell:v8];
-    v9 = [(CKConversationSearchResultCell *)v7 contentView];
-    [v9 addSubview:v8];
+    contentView = [(CKConversationSearchResultCell *)v7 contentView];
+    [contentView addSubview:v8];
   }
 
   return v7;
@@ -145,19 +145,19 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = CKConversationSearchResultCell;
   [(CKConversationSearchResultCell *)&v4 prepareForReuse];
-  v3 = [(CKConversationSearchResultCell *)self searchCell];
-  [v3 prepareForReuse];
+  searchCell = [(CKConversationSearchResultCell *)self searchCell];
+  [searchCell prepareForReuse];
 
   [(CKConversationSearchResultCell *)self setSearchText:0];
   [(CKConversationSearchResultCell *)self setResult:0];
 }
 
-- (void)setMarginInsets:(UIEdgeInsets)a3
+- (void)setMarginInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(CKConversationSearchResultCell *)self marginInsets];
   if (left != v11 || top != v8 || right != v10 || bottom != v9)
   {
@@ -175,68 +175,68 @@ LABEL_6:
   v15.receiver = self;
   v15.super_class = CKConversationSearchResultCell;
   [(CKConversationSearchResultCell *)&v15 layoutSubviews];
-  v3 = [(CKConversationSearchResultCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKConversationSearchResultCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKConversationSearchResultCell *)self searchCell];
+  searchCell = [(CKConversationSearchResultCell *)self searchCell];
   [(CKConversationSearchResultCell *)self marginInsets];
-  [v12 setMarginInsets:?];
+  [searchCell setMarginInsets:?];
 
-  v13 = [(CKConversationSearchResultCell *)self searchCell];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  searchCell2 = [(CKConversationSearchResultCell *)self searchCell];
+  [searchCell2 setFrame:{v5, v7, v9, v11}];
 
-  v14 = [(CKConversationSearchResultCell *)self searchCell];
-  [v14 layoutIfNeeded];
+  searchCell3 = [(CKConversationSearchResultCell *)self searchCell];
+  [searchCell3 layoutIfNeeded];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  [v4 frame];
+  attributesCopy = attributes;
+  [attributesCopy frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v11 = +[CKUIBehavior sharedBehaviors];
-  v12 = [v11 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v11 isAccessibilityPreferredContentSizeCategory];
 
-  if (v12)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
-    v13 = [(CKConversationSearchResultCell *)self searchCell];
-    [v13 layoutIfNeeded];
+    searchCell = [(CKConversationSearchResultCell *)self searchCell];
+    [searchCell layoutIfNeeded];
 
-    v14 = [(CKConversationSearchResultCell *)self searchCell];
-    [v14 sizeThatFits:{v10, 1.79769313e308}];
+    searchCell2 = [(CKConversationSearchResultCell *)self searchCell];
+    [searchCell2 sizeThatFits:{v10, 1.79769313e308}];
     v16 = v15;
   }
 
   else
   {
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [(CKConversationSearchResultCell *)self traitCollection];
-    [v18 displayScale];
+    traitCollection = [(CKConversationSearchResultCell *)self traitCollection];
+    [traitCollection displayScale];
     [v17 searchMessageCellHeightForDisplayScale:?];
     v16 = v19;
   }
 
-  [v4 setFrame:{v6, v8, v10, v16}];
+  [attributesCopy setFrame:{v6, v8, v10, v16}];
 
-  return v4;
+  return attributesCopy;
 }
 
-- (void)forwardStateToEmbeddedCell:(id)a3
+- (void)forwardStateToEmbeddedCell:(id)cell
 {
-  v7 = a3;
-  v4 = [(CKConversationSearchResultCell *)self searchCell];
+  cellCopy = cell;
+  searchCell = [(CKConversationSearchResultCell *)self searchCell];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKConversationSearchResultCell *)self searchCell];
-    [v6 updateWithForwardedConfigurationState:v7];
+    searchCell2 = [(CKConversationSearchResultCell *)self searchCell];
+    [searchCell2 updateWithForwardedConfigurationState:cellCopy];
   }
 }
 
@@ -244,18 +244,18 @@ LABEL_6:
 {
   v4.receiver = self;
   v4.super_class = CKConversationSearchResultCell;
-  v2 = [(CKConversationSearchResultCell *)&v4 configurationState];
-  if (CKIsRunningInMacCatalyst() && [v2 isSelected])
+  configurationState = [(CKConversationSearchResultCell *)&v4 configurationState];
+  if (CKIsRunningInMacCatalyst() && [configurationState isSelected])
   {
-    [v2 setFocused:1];
+    [configurationState setFocused:1];
   }
 
-  return v2;
+  return configurationState;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v15 = a3;
+  stateCopy = state;
   [(CKConversationSearchResultCell *)self forwardStateToEmbeddedCell:?];
   if ([(CKConversationSearchResultCell *)self shouldInsetResults])
   {
@@ -268,28 +268,28 @@ LABEL_6:
   }
   v4 = ;
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [(CKConversationSearchResultCell *)self traitCollection];
-  v7 = [v5 useSelectedAppearanceForConversationCellState:v15 traitCollection:v6];
+  traitCollection = [(CKConversationSearchResultCell *)self traitCollection];
+  v7 = [v5 useSelectedAppearanceForConversationCellState:stateCopy traitCollection:traitCollection];
 
-  if (CKIsRunningInMacCatalyst() && [v15 isSelected])
+  if (CKIsRunningInMacCatalyst() && [stateCopy isSelected])
   {
-    [v15 setFocused:1];
+    [stateCopy setFocused:1];
   }
 
-  v8 = [v4 updatedConfigurationForState:v15];
+  v8 = [v4 updatedConfigurationForState:stateCopy];
 
   if (v7)
   {
     v9 = +[CKUIBehavior sharedBehaviors];
-    v10 = [v9 theme];
-    v11 = [v10 conversationListSelectedCellColor];
+    theme = [v9 theme];
+    conversationListSelectedCellColor = [theme conversationListSelectedCellColor];
 
-    if (v11)
+    if (conversationListSelectedCellColor)
     {
       v12 = +[CKUIBehavior sharedBehaviors];
-      v13 = [v12 theme];
-      v14 = [v13 conversationListSelectedCellColor];
-      [v8 setBackgroundColor:v14];
+      theme2 = [v12 theme];
+      conversationListSelectedCellColor2 = [theme2 conversationListSelectedCellColor];
+      [v8 setBackgroundColor:conversationListSelectedCellColor2];
     }
   }
 

@@ -1,20 +1,20 @@
 @interface ICASNoteCreateData
-- (ICASNoteCreateData)initWithNoteCreateApproach:(id)a3;
+- (ICASNoteCreateData)initWithNoteCreateApproach:(id)approach;
 - (id)toDict;
 @end
 
 @implementation ICASNoteCreateData
 
-- (ICASNoteCreateData)initWithNoteCreateApproach:(id)a3
+- (ICASNoteCreateData)initWithNoteCreateApproach:(id)approach
 {
-  v5 = a3;
+  approachCopy = approach;
   v9.receiver = self;
   v9.super_class = ICASNoteCreateData;
   v6 = [(ICASNoteCreateData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_noteCreateApproach, a3);
+    objc_storeStrong(&v6->_noteCreateApproach, approach);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"noteCreateApproach";
-  v3 = [(ICASNoteCreateData *)self noteCreateApproach];
-  if (v3)
+  noteCreateApproach = [(ICASNoteCreateData *)self noteCreateApproach];
+  if (noteCreateApproach)
   {
-    v4 = [(ICASNoteCreateData *)self noteCreateApproach];
+    noteCreateApproach2 = [(ICASNoteCreateData *)self noteCreateApproach];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    noteCreateApproach2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = noteCreateApproach2;
+  v10[0] = noteCreateApproach2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

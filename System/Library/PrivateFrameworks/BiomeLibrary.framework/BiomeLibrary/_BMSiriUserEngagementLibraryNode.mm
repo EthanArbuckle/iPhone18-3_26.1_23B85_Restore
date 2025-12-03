@@ -2,25 +2,25 @@
 + (id)UserEngagementStatistics;
 + (id)configurationForUserEngagementStatistics;
 + (id)storeConfigurationForUserEngagementStatistics;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMSiriUserEngagementLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"UserEngagementStatistics"])
+  if ([name isEqualToString:@"UserEngagementStatistics"])
   {
-    v4 = [a1 UserEngagementStatistics];
+    userEngagementStatistics = [self UserEngagementStatistics];
   }
 
   else
   {
-    v4 = 0;
+    userEngagementStatistics = 0;
   }
 
-  return v4;
+  return userEngagementStatistics;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForUserEngagementStatistics
 {
-  v3 = [a1 storeConfigurationForUserEngagementStatistics];
-  v4 = [a1 syncPolicyForUserEngagementStatistics];
+  storeConfigurationForUserEngagementStatistics = [self storeConfigurationForUserEngagementStatistics];
+  syncPolicyForUserEngagementStatistics = [self syncPolicyForUserEngagementStatistics];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"764F1097-31D4-4854-9B60-B71CB138085B"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.UserEngagement.UserEngagementStatistics" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.UserEngagement.UserEngagementStatistics" eventClass:objc_opt_class() storeConfig:storeConfigurationForUserEngagementStatistics syncPolicy:syncPolicyForUserEngagementStatistics legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)UserEngagementStatistics
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForUserEngagementStatistics];
+  configurationForUserEngagementStatistics = [self configurationForUserEngagementStatistics];
   v3 = +[BMSiriUserEngagementStatistics columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.UserEngagement.UserEngagementStatistics" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.UserEngagement.UserEngagementStatistics" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.UserEngagement.UserEngagementStatistics" schema:v9 configuration:configurationForUserEngagementStatistics];
 
   v11 = *MEMORY[0x1E69E9840];
 

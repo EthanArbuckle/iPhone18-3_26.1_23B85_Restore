@@ -1,12 +1,12 @@
 @interface OFNSOperation
-+ (id)blockOperationWithExecutionBlock:(id)a3;
-+ (id)blockOperationWithExecutionBlock:(id)a3 finishBlock:(id)a4 andFinishDelegate:(id)a5;
-+ (id)nullOperationWithFinishBlock:(id)a3 andFinishDelegate:(id)a4;
-+ (id)operationWithBlock:(id)a3 progressBlock:(id)a4 cancelBlock:(id)a5 completionHandler:(id)a6;
-+ (id)operationWithFinishBlock:(id)a3 andFinishDelegate:(id)a4;
-- (BOOL)_finish:(BOOL)a3;
-- (BOOL)performSubOperationSynchronously:(id)a3 progressBlock:(id)a4 timeout:(unint64_t)a5;
-- (BOOL)performSynchronously:(id)a3 timeout:(unint64_t)a4;
++ (id)blockOperationWithExecutionBlock:(id)block;
++ (id)blockOperationWithExecutionBlock:(id)block finishBlock:(id)finishBlock andFinishDelegate:(id)delegate;
++ (id)nullOperationWithFinishBlock:(id)block andFinishDelegate:(id)delegate;
++ (id)operationWithBlock:(id)block progressBlock:(id)progressBlock cancelBlock:(id)cancelBlock completionHandler:(id)handler;
++ (id)operationWithFinishBlock:(id)block andFinishDelegate:(id)delegate;
+- (BOOL)_finish:(BOOL)_finish;
+- (BOOL)performSubOperationSynchronously:(id)synchronously progressBlock:(id)block timeout:(unint64_t)timeout;
+- (BOOL)performSynchronously:(id)synchronously timeout:(unint64_t)timeout;
 - (OFNSOperation)init;
 - (double)elapsedTime;
 - (unint64_t)launchOperation;
@@ -18,8 +18,8 @@
 - (void)dealloc;
 - (void)finish;
 - (void)finishOperation;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performAsynchronously:(id)a3 progressBlock:(id)a4 timeout:(unint64_t)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performAsynchronously:(id)asynchronously progressBlock:(id)block timeout:(unint64_t)timeout;
 - (void)start;
 @end
 
@@ -149,23 +149,23 @@ dispatch_queue_t __21__OFNSOperation_init__block_invoke()
   [(OFNSOperation *)&v13 dealloc];
 }
 
-+ (id)operationWithFinishBlock:(id)a3 andFinishDelegate:(id)a4
++ (id)operationWithFinishBlock:(id)block andFinishDelegate:(id)delegate
 {
-  v6 = objc_alloc_init(a1);
-  [v6 setFinishBlock:a3];
-  [v6 setFinishDelegate:a4];
+  v6 = objc_alloc_init(self);
+  [v6 setFinishBlock:block];
+  [v6 setFinishDelegate:delegate];
 
   return v6;
 }
 
-+ (id)blockOperationWithExecutionBlock:(id)a3 finishBlock:(id)a4 andFinishDelegate:(id)a5
++ (id)blockOperationWithExecutionBlock:(id)block finishBlock:(id)finishBlock andFinishDelegate:(id)delegate
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v10 = objc_alloc_init(OFNSOperation);
-    [(OFNSOperation *)v10 setExecutionBlock:a3];
-    [(OFNSOperation *)v10 setFinishBlock:a4];
-    [(OFNSOperation *)v10 setFinishDelegate:a5];
+    [(OFNSOperation *)v10 setExecutionBlock:block];
+    [(OFNSOperation *)v10 setFinishBlock:finishBlock];
+    [(OFNSOperation *)v10 setFinishDelegate:delegate];
 
     return v10;
   }
@@ -174,26 +174,26 @@ dispatch_queue_t __21__OFNSOperation_init__block_invoke()
   {
     if (OFLoggerLevel >= 2)
     {
-      [OFLogger logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Operations/OFNSOperation.m" line:199 andFormat:@"This method cannot be called from %@ but only from OFNSOperation class.", a1];
+      [OFLogger logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Operations/OFNSOperation.m" line:199 andFormat:@"This method cannot be called from %@ but only from OFNSOperation class.", self];
     }
 
     return 0;
   }
 }
 
-+ (id)blockOperationWithExecutionBlock:(id)a3
++ (id)blockOperationWithExecutionBlock:(id)block
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v5 = objc_alloc_init(OFNSOperation);
-    [(OFNSOperation *)v5 setExecutionBlock:a3];
+    [(OFNSOperation *)v5 setExecutionBlock:block];
   }
 
   else
   {
     if (OFLoggerLevel >= 2)
     {
-      [OFLogger logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Operations/OFNSOperation.m" line:217 andFormat:@"This method cannot be called from %@ but only from MONSOperation class.", a1];
+      [OFLogger logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Operations/OFNSOperation.m" line:217 andFormat:@"This method cannot be called from %@ but only from MONSOperation class.", self];
     }
 
     return 0;
@@ -202,14 +202,14 @@ dispatch_queue_t __21__OFNSOperation_init__block_invoke()
   return v5;
 }
 
-+ (id)nullOperationWithFinishBlock:(id)a3 andFinishDelegate:(id)a4
++ (id)nullOperationWithFinishBlock:(id)block andFinishDelegate:(id)delegate
 {
   v6 = objc_opt_class();
 
-  return [v6 blockOperationWithExecutionBlock:&__block_literal_global_17 finishBlock:a3 andFinishDelegate:a4];
+  return [v6 blockOperationWithExecutionBlock:&__block_literal_global_17 finishBlock:block andFinishDelegate:delegate];
 }
 
-+ (id)operationWithBlock:(id)a3 progressBlock:(id)a4 cancelBlock:(id)a5 completionHandler:(id)a6
++ (id)operationWithBlock:(id)block progressBlock:(id)progressBlock cancelBlock:(id)cancelBlock completionHandler:(id)handler
 {
   v12[0] = 0;
   v12[1] = v12;
@@ -221,17 +221,17 @@ dispatch_queue_t __21__OFNSOperation_init__block_invoke()
   v11[1] = 3221225472;
   v11[2] = __80__OFNSOperation_operationWithBlock_progressBlock_cancelBlock_completionHandler___block_invoke;
   v11[3] = &unk_279C89F68;
-  v11[4] = a3;
+  v11[4] = block;
   v11[5] = v12;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__OFNSOperation_operationWithBlock_progressBlock_cancelBlock_completionHandler___block_invoke_3;
   v10[3] = &unk_279C89F68;
-  v10[4] = a6;
+  v10[4] = handler;
   v10[5] = v12;
   v8 = [OFNSOperation blockOperationWithExecutionBlock:v11 finishBlock:v10 andFinishDelegate:0];
-  [v8 setCancelBlock:a5];
-  [v8 setProgressBlock:a4];
+  [v8 setCancelBlock:cancelBlock];
+  [v8 setProgressBlock:progressBlock];
   _Block_object_dispose(v12, 8);
   return v8;
 }
@@ -429,8 +429,8 @@ id __32__OFNSOperation_cancelOperation__block_invoke()
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [(OFNSOperation *)self dependencies];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  dependencies = [(OFNSOperation *)self dependencies];
+  v9 = [dependencies countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -441,13 +441,13 @@ id __32__OFNSOperation_cancelOperation__block_invoke()
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(dependencies);
         }
 
         [(OFNSOperation *)self removeDependency:*(*(&v13 + 1) + 8 * i)];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [dependencies countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
@@ -530,7 +530,7 @@ id __32__OFNSOperation_cancelOperation__block_invoke()
   return result;
 }
 
-- (BOOL)_finish:(BOOL)a3
+- (BOOL)_finish:(BOOL)_finish
 {
   if ([(OFNSOperation *)self isFinished])
   {
@@ -544,7 +544,7 @@ id __32__OFNSOperation_cancelOperation__block_invoke()
     finishBlock[2](finishBlock, self);
   }
 
-  if (!self->_needsToRetry || a3 || ([(OFNSOperation *)self isCancelled]& 1) != 0)
+  if (!self->_needsToRetry || _finish || ([(OFNSOperation *)self isCancelled]& 1) != 0)
   {
     if ([(OFNSOperation *)self isCancelled])
     {
@@ -560,11 +560,11 @@ id __32__OFNSOperation_cancelOperation__block_invoke()
 
     else
     {
-      v6 = [(OFNSOperation *)self error];
-      v7 = [(OFNSOperation *)self finishDelegate];
-      if (v6)
+      error = [(OFNSOperation *)self error];
+      finishDelegate = [(OFNSOperation *)self finishDelegate];
+      if (error)
       {
-        if (v7)
+        if (finishDelegate)
         {
           [(OFNSOperation *)self finishDelegate];
           if (objc_opt_respondsToSelector())
@@ -574,7 +574,7 @@ id __32__OFNSOperation_cancelOperation__block_invoke()
         }
       }
 
-      else if (v7)
+      else if (finishDelegate)
       {
         [(OFNSOperation *)self finishDelegate];
         if (objc_opt_respondsToSelector())
@@ -668,9 +668,9 @@ uint64_t __23__OFNSOperation_finish__block_invoke(uint64_t a1)
   objc_sync_exit(self);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:@"progress"])
+  if ([path isEqualToString:@"progress"])
   {
 
     [(OFNSOperation *)self _updateProgressBlock];
@@ -680,40 +680,40 @@ uint64_t __23__OFNSOperation_finish__block_invoke(uint64_t a1)
   {
     v11.receiver = self;
     v11.super_class = OFNSOperation;
-    [(OFNSOperation *)&v11 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+    [(OFNSOperation *)&v11 observeValueForKeyPath:path ofObject:object change:change context:context];
   }
 }
 
-- (BOOL)performSubOperationSynchronously:(id)a3 progressBlock:(id)a4 timeout:(unint64_t)a5
+- (BOOL)performSubOperationSynchronously:(id)synchronously progressBlock:(id)block timeout:(unint64_t)timeout
 {
-  if (!a3)
+  if (!synchronously)
   {
     return 0;
   }
 
-  [a3 setMainOperation:self];
+  [synchronously setMainOperation:self];
   subOperations = self->_subOperations;
   objc_sync_enter(subOperations);
-  [(NSMutableArray *)self->_subOperations addObject:a3];
+  [(NSMutableArray *)self->_subOperations addObject:synchronously];
   objc_sync_exit(subOperations);
-  [a3 setQualityOfService:{-[OFNSOperation qualityOfService](self, "qualityOfService")}];
-  v10 = [a3 performSynchronously:a4 timeout:a5];
+  [synchronously setQualityOfService:{-[OFNSOperation qualityOfService](self, "qualityOfService")}];
+  v10 = [synchronously performSynchronously:block timeout:timeout];
   v11 = self->_subOperations;
   objc_sync_enter(v11);
-  [(NSMutableArray *)self->_subOperations removeObject:a3];
+  [(NSMutableArray *)self->_subOperations removeObject:synchronously];
   objc_sync_exit(v11);
   [(OFNSOperation *)self _updateProgressBlock];
   return v10;
 }
 
-- (BOOL)performSynchronously:(id)a3 timeout:(unint64_t)a4
+- (BOOL)performSynchronously:(id)synchronously timeout:(unint64_t)timeout
 {
-  [(OFNSOperation *)self setProgressBlock:a3];
-  if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  [(OFNSOperation *)self setProgressBlock:synchronously];
+  if (timeout - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     global_queue = dispatch_get_global_queue(0, 0);
     v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, global_queue);
-    dispatch_source_set_timer(v7, a4, 0xFFFFFFFFFFFFFFFFLL, 0);
+    dispatch_source_set_timer(v7, timeout, 0xFFFFFFFFFFFFFFFFLL, 0);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __46__OFNSOperation_performSynchronously_timeout___block_invoke;
@@ -747,16 +747,16 @@ void __46__OFNSOperation_performSynchronously_timeout___block_invoke(uint64_t a1
   }
 }
 
-- (void)performAsynchronously:(id)a3 progressBlock:(id)a4 timeout:(unint64_t)a5
+- (void)performAsynchronously:(id)asynchronously progressBlock:(id)block timeout:(unint64_t)timeout
 {
-  [(OFNSOperation *)self setProgressBlock:a4];
+  [(OFNSOperation *)self setProgressBlock:block];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__OFNSOperation_performAsynchronously_progressBlock_timeout___block_invoke;
   v8[3] = &unk_279C89EF0;
   v8[4] = self;
-  v8[5] = a5;
-  [self performBlock:v8 usingQueue:a3];
+  v8[5] = timeout;
+  [self performBlock:v8 usingQueue:asynchronously];
 }
 
 uint64_t __61__OFNSOperation_performAsynchronously_progressBlock_timeout___block_invoke(uint64_t a1)

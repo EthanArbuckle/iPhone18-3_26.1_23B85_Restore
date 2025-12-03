@@ -1,10 +1,10 @@
 @interface BigramInfo
 + (void)initialize;
-- (BigramInfo)initWithTerm:(id)a3 bigramTokenA:(id)a4 tokenB:(id)a5 type:(unint64_t)a6 weight:(float)a7 docId:(int)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BigramInfo)initWithTerm:(id)term bigramTokenA:(id)a tokenB:(id)b type:(unint64_t)type weight:(float)weight docId:(int)id;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)termSequence;
 - (id)tokenSequence;
-- (int64_t)isTermResultWithPrimary:(BOOL)a3 config:(id)a4;
+- (int64_t)isTermResultWithPrimary:(BOOL)primary config:(id)config;
 - (void)adjustCounts;
 - (void)incrementCount;
 @end
@@ -13,7 +13,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [[BigramInfo alloc] initWithTerm:0 bigramTokenA:0 tokenB:0 type:1 weight:0xFFFFFFFFLL docId:0.0];
     v3 = qword_100557128;
@@ -25,29 +25,29 @@
   }
 }
 
-- (BigramInfo)initWithTerm:(id)a3 bigramTokenA:(id)a4 tokenB:(id)a5 type:(unint64_t)a6 weight:(float)a7 docId:(int)a8
+- (BigramInfo)initWithTerm:(id)term bigramTokenA:(id)a tokenB:(id)b type:(unint64_t)type weight:(float)weight docId:(int)id
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  termCopy = term;
+  aCopy = a;
+  bCopy = b;
   v21.receiver = self;
   v21.super_class = BigramInfo;
   v18 = [(BigramInfo *)&v21 init];
   if (v18)
   {
-    v19 = [v16 valid];
-    if (v19)
+    valid = [aCopy valid];
+    if (valid)
     {
-      LOBYTE(v19) = [v17 valid];
+      LOBYTE(valid) = [bCopy valid];
     }
 
-    v18->_valid = v19;
-    objc_storeStrong(&v18->_term, a3);
-    objc_storeStrong(&v18->_tokenA, a4);
-    objc_storeStrong(&v18->_tokenB, a5);
-    v18->_weight = a7;
-    v18->_docId = a8;
-    v18->_type = a6;
+    v18->_valid = valid;
+    objc_storeStrong(&v18->_term, term);
+    objc_storeStrong(&v18->_tokenA, a);
+    objc_storeStrong(&v18->_tokenB, b);
+    v18->_weight = weight;
+    v18->_docId = id;
+    v18->_type = type;
   }
 
   return v18;
@@ -71,7 +71,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (qword_100557128 == self || qword_100557130 == self)
   {
@@ -81,7 +81,7 @@
 
   else
   {
-    v6 = [BigramInfo allocWithZone:a3];
+    v6 = [BigramInfo allocWithZone:zone];
     type = self->_type;
     *&v7 = self->_weight;
     docId = self->_docId;
@@ -92,29 +92,29 @@
 
 - (id)tokenSequence
 {
-  v3 = [(TokenInfo *)self->_tokenA token];
-  v4 = [(TokenInfo *)self->_tokenB token];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  token = [(TokenInfo *)self->_tokenA token];
+  token2 = [(TokenInfo *)self->_tokenB token];
+  v5 = [NSString stringWithFormat:@"%@ %@", token, token2];
 
   return v5;
 }
 
 - (id)termSequence
 {
-  v3 = [(TokenInfo *)self->_tokenA term];
-  v4 = [v3 text];
-  v5 = [(TokenInfo *)self->_tokenB term];
-  v6 = [v5 text];
-  v7 = [NSString stringWithFormat:@"%@ %@", v4, v6];
+  term = [(TokenInfo *)self->_tokenA term];
+  text = [term text];
+  term2 = [(TokenInfo *)self->_tokenB term];
+  text2 = [term2 text];
+  v7 = [NSString stringWithFormat:@"%@ %@", text, text2];
 
   return v7;
 }
 
-- (int64_t)isTermResultWithPrimary:(BOOL)a3 config:(id)a4
+- (int64_t)isTermResultWithPrimary:(BOOL)primary config:(id)config
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
+  primaryCopy = primary;
+  configCopy = config;
+  v7 = configCopy;
   if (self->_type == 3)
   {
     v8 = &OBJC_IVAR___ContextConfiguration__luceneTermResultMinCountRegularKeyword;
@@ -125,7 +125,7 @@
     v8 = &OBJC_IVAR___ContextConfiguration__luceneTermResultMinCount;
   }
 
-  v9 = *(v6 + *v8);
+  v9 = *(configCopy + *v8);
   if (v9 <= self->_count)
   {
     v10 = 1;
@@ -162,7 +162,7 @@
     }
 
 LABEL_25:
-    v13 = !v10 || !v4;
+    v13 = !v10 || !primaryCopy;
     goto LABEL_26;
   }
 
@@ -173,7 +173,7 @@ LABEL_25:
 
   if (type == 3 && self->_continuous)
   {
-    if (v10 && v4)
+    if (v10 && primaryCopy)
     {
       v13 = 0;
     }

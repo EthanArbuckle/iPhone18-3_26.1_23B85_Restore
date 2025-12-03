@@ -1,23 +1,23 @@
 @interface _BKDisplayRenderOverlayPersistenceData
 + (id)classesRequiredToDecode;
-- (_BKDisplayRenderOverlayPersistenceData)initWithCoder:(id)a3;
-- (id)_initWithDescriptor:(id)a3 overlayType:(int64_t)a4 imageData:(id)a5 level:(float)a6 frozen:(BOOL)a7;
+- (_BKDisplayRenderOverlayPersistenceData)initWithCoder:(id)coder;
+- (id)_initWithDescriptor:(id)descriptor overlayType:(int64_t)type imageData:(id)data level:(float)level frozen:(BOOL)frozen;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setImage:(CGImage *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setImage:(CGImage *)image;
 @end
 
 @implementation _BKDisplayRenderOverlayPersistenceData
 
-- (_BKDisplayRenderOverlayPersistenceData)initWithCoder:(id)a3
+- (_BKDisplayRenderOverlayPersistenceData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"overlayType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
-  [v4 decodeFloatForKey:@"level"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"overlayType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
+  [coderCopy decodeFloatForKey:@"level"];
   v8 = v7;
-  v9 = [v4 decodeBoolForKey:@"frozen"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData2"];
+  v9 = [coderCopy decodeBoolForKey:@"frozen"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData2"];
 
   if (v6)
   {
@@ -31,28 +31,28 @@
 
   if (v12)
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     LODWORD(v11) = v8;
     self = [(_BKDisplayRenderOverlayPersistenceData *)self _initWithDescriptor:v6 overlayType:v5 imageData:v10 level:v9 frozen:v11];
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
+  coderCopy = coder;
   *&v4 = self->_level;
-  [v11 encodeFloat:@"level" forKey:v4];
-  [v11 encodeInteger:self->_overlayType forKey:@"overlayType"];
-  [v11 encodeBool:self->_frozen forKey:@"frozen"];
-  [v11 encodeObject:self->_descriptor forKey:@"descriptor"];
-  v5 = v11;
+  [coderCopy encodeFloat:@"level" forKey:v4];
+  [coderCopy encodeInteger:self->_overlayType forKey:@"overlayType"];
+  [coderCopy encodeBool:self->_frozen forKey:@"frozen"];
+  [coderCopy encodeObject:self->_descriptor forKey:@"descriptor"];
+  v5 = coderCopy;
   imageData = self->_imageData;
   if (imageData)
   {
@@ -76,20 +76,20 @@
     self->_imageData = v8;
 
     imageData = self->_imageData;
-    v5 = v11;
+    v5 = coderCopy;
     if (imageData)
     {
 LABEL_2:
-      [v11 encodeObject:imageData forKey:@"imageData2"];
-      v5 = v11;
+      [coderCopy encodeObject:imageData forKey:@"imageData2"];
+      v5 = coderCopy;
     }
   }
 }
 
-- (void)setImage:(CGImage *)a3
+- (void)setImage:(CGImage *)image
 {
   image = self->_image;
-  if (image != a3)
+  if (image != image)
   {
     if (image)
     {
@@ -98,7 +98,7 @@ LABEL_2:
       self->_imageData = 0;
     }
 
-    self->_image = CGImageRetain(a3);
+    self->_image = CGImageRetain(image);
   }
 }
 
@@ -116,27 +116,27 @@ LABEL_2:
   [(_BKDisplayRenderOverlayPersistenceData *)&v4 dealloc];
 }
 
-- (id)_initWithDescriptor:(id)a3 overlayType:(int64_t)a4 imageData:(id)a5 level:(float)a6 frozen:(BOOL)a7
+- (id)_initWithDescriptor:(id)descriptor overlayType:(int64_t)type imageData:(id)data level:(float)level frozen:(BOOL)frozen
 {
-  v13 = a3;
-  v14 = a5;
+  descriptorCopy = descriptor;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = _BKDisplayRenderOverlayPersistenceData;
   v15 = [(_BKDisplayRenderOverlayPersistenceData *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    v15->_level = a6;
-    v15->_overlayType = a4;
-    objc_storeStrong(&v15->_descriptor, a3);
-    v17 = CGDataProviderCreateWithCFData(v14);
+    v15->_level = level;
+    v15->_overlayType = type;
+    objc_storeStrong(&v15->_descriptor, descriptor);
+    v17 = CGDataProviderCreateWithCFData(dataCopy);
     v18 = CGImageCreateWithPNGDataProvider(v17, 0, 0, kCGRenderingIntentDefault);
     CGDataProviderRelease(v17);
     CFAutorelease(v18);
     v16->_image = v18;
     CFRetain(v18);
-    objc_storeStrong(&v16->_imageData, a5);
-    v16->_frozen = a7;
+    objc_storeStrong(&v16->_imageData, data);
+    v16->_frozen = frozen;
   }
 
   return v16;

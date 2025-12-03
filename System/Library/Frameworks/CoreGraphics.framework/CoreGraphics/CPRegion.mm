@@ -2,20 +2,20 @@
 - (BOOL)isGraphicalRegion;
 - (BOOL)isIndivisible;
 - (BOOL)isRowRegion;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setNextRegion:(id)a3;
+- (void)setNextRegion:(id)region;
 @end
 
 @implementation CPRegion
 
-- (void)setNextRegion:(id)a3
+- (void)setNextRegion:(id)region
 {
   nextRegion = self->nextRegion;
-  if (nextRegion != a3)
+  if (nextRegion != region)
   {
 
-    self->nextRegion = a3;
+    self->nextRegion = region;
   }
 }
 
@@ -23,20 +23,20 @@
 {
   if ([(CPRegion *)self isImageRegion]|| [(CPRegion *)self isShapeRegion]|| [(CPRegion *)self isRowRegion]|| [(CPRegion *)self isTableCellRegion])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isBoxRegion) = 1;
   }
 
   else
   {
-    v3 = [(CPRegion *)self isBoxRegion];
-    if (v3)
+    isBoxRegion = [(CPRegion *)self isBoxRegion];
+    if (isBoxRegion)
     {
 
-      LOBYTE(v3) = [(CPRegion *)self isRotated];
+      LOBYTE(isBoxRegion) = [(CPRegion *)self isRotated];
     }
   }
 
-  return v3;
+  return isBoxRegion;
 }
 
 - (BOOL)isGraphicalRegion
@@ -46,9 +46,9 @@
     goto LABEL_7;
   }
 
-  v3 = [(CPRegion *)self isBoxRegion];
+  isBoxRegion = [(CPRegion *)self isBoxRegion];
   [(CPObject *)self firstChild];
-  if (!v3)
+  if (!isBoxRegion)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -63,9 +63,9 @@ LABEL_7:
     return isKindOfClass & 1;
   }
 
-  v4 = [(CPObject *)self firstChild];
+  firstChild = [(CPObject *)self firstChild];
 
-  return [v4 isGraphicalRegion];
+  return [firstChild isGraphicalRegion];
 }
 
 - (BOOL)isRowRegion
@@ -75,11 +75,11 @@ LABEL_7:
   return [v2 isEqualToString:@"row"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CPRegion;
-  v3 = [(CPChunk *)&v7 copyWithZone:a3];
+  v3 = [(CPChunk *)&v7 copyWithZone:zone];
   v4 = v3;
   if (v3)
   {

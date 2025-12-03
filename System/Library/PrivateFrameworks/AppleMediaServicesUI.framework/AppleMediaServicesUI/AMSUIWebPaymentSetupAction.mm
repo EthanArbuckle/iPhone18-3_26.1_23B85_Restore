@@ -1,19 +1,19 @@
 @interface AMSUIWebPaymentSetupAction
-- (AMSUIWebPaymentSetupAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebPaymentSetupAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebPaymentSetupAction
 
-- (AMSUIWebPaymentSetupAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebPaymentSetupAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = AMSUIWebPaymentSetupAction;
-  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"referrerIdentifier"];
+    v8 = [objectCopy objectForKeyedSubscript:@"referrerIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,15 +37,15 @@
   v39 = *MEMORY[0x1E69E9840];
   v34.receiver = self;
   v34.super_class = AMSUIWebPaymentSetupAction;
-  v3 = [(AMSUIWebAction *)&v34 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v34 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -53,29 +53,29 @@
     v36 = v6;
     v37 = 2114;
     v38 = v7;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Started running.", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Started running.", buf, 0x16u);
   }
 
-  v8 = [(AMSUIWebAction *)self context];
-  v9 = [v8 bag];
+  context = [(AMSUIWebAction *)self context];
+  v9 = [context bag];
 
   if ([MEMORY[0x1E698C830] shouldUseUpsellEnrollmentWithBag:v9])
   {
-    v10 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v11 = [v10 ams_isActiveAccountCombined];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    ams_isActiveAccountCombined = [ams_sharedAccountStore ams_isActiveAccountCombined];
 
-    if (v11)
+    if (ams_isActiveAccountCombined)
     {
       v12 = objc_alloc_init(MEMORY[0x1E698CAD0]);
-      v13 = [(AMSUIWebAction *)self context];
-      v14 = [v13 flowController];
-      v15 = [v14 currentContainer];
+      context2 = [(AMSUIWebAction *)self context];
+      flowController = [context2 flowController];
+      currentContainer = [flowController currentContainer];
 
       v16 = [AMSUIPaymentSetupTask alloc];
-      v17 = [(AMSUIWebPaymentSetupAction *)self referrerIdentifier];
-      v18 = [(AMSUIPaymentSetupTask *)v16 initWithReferrerIdentifier:v17 presentingViewController:v15];
+      referrerIdentifier = [(AMSUIWebPaymentSetupAction *)self referrerIdentifier];
+      v18 = [(AMSUIPaymentSetupTask *)v16 initWithReferrerIdentifier:referrerIdentifier presentingViewController:currentContainer];
 
-      v19 = [(AMSUIPaymentSetupTask *)v18 present];
+      present = [(AMSUIPaymentSetupTask *)v18 present];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __39__AMSUIWebPaymentSetupAction_runAction__block_invoke;
@@ -83,21 +83,21 @@
       v32[4] = self;
       v20 = v12;
       v33 = v20;
-      [v19 addFinishBlock:v32];
+      [present addFinishBlock:v32];
       v21 = v33;
       v22 = v20;
 
       goto LABEL_18;
     }
 
-    v23 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v23)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v23 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v24 = [v23 OSLogObject];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v27 = objc_opt_class();
       v28 = AMSLogKey();
@@ -105,20 +105,20 @@
       v36 = v27;
       v37 = 2114;
       v38 = v28;
-      _os_log_impl(&dword_1BB036000, v24, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed for no combined account.", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed for no combined account.", buf, 0x16u);
     }
   }
 
   else
   {
-    v23 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v23)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v23 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v24 = [v23 OSLogObject];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v25 = objc_opt_class();
       v26 = AMSLogKey();
@@ -126,13 +126,13 @@
       v36 = v25;
       v37 = 2114;
       v38 = v26;
-      _os_log_impl(&dword_1BB036000, v24, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed for feature not enabled.", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed for feature not enabled.", buf, 0x16u);
     }
   }
 
   v29 = MEMORY[0x1E698CAD0];
-  v15 = AMSError();
-  v22 = [v29 promiseWithError:v15];
+  currentContainer = AMSError();
+  v22 = [v29 promiseWithError:currentContainer];
 LABEL_18:
 
   v30 = *MEMORY[0x1E69E9840];

@@ -2,9 +2,9 @@
 - (SUUIMoreNavigationControllerDelegate)storeKitDelegate;
 - (id)displayedViewController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setDisplayedViewController:(id)a3;
+- (void)didShowViewController:(id)controller animated:(BOOL)animated;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setDisplayedViewController:(id)controller;
 @end
 
 @implementation SUUIMoreNavigationController
@@ -14,71 +14,71 @@
   displayedViewController = self->_displayedViewController;
   if (displayedViewController)
   {
-    v3 = displayedViewController;
+    displayedViewController = displayedViewController;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUUIMoreNavigationController;
-    v3 = [(UIMoreNavigationController *)&v5 displayedViewController];
+    displayedViewController = [(UIMoreNavigationController *)&v5 displayedViewController];
   }
 
-  return v3;
+  return displayedViewController;
 }
 
-- (void)setDisplayedViewController:(id)a3
+- (void)setDisplayedViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SUUIMoreNavigationController *)self displayedViewController];
+  controllerCopy = controller;
+  displayedViewController = [(SUUIMoreNavigationController *)self displayedViewController];
 
-  if (v5 != v4)
+  if (displayedViewController != controllerCopy)
   {
     displayedViewController = self->_displayedViewController;
     self->_displayedViewController = 0;
 
-    v4 = v4;
+    controllerCopy = controllerCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(UINavigationController *)v4 viewControllers];
-      v8 = [v7 count];
+      viewControllers = [(UINavigationController *)controllerCopy viewControllers];
+      v8 = [viewControllers count];
 
       if (v8)
       {
 LABEL_7:
         v11.receiver = self;
         v11.super_class = SUUIMoreNavigationController;
-        [(UIMoreNavigationController *)&v11 setDisplayedViewController:v4];
+        [(UIMoreNavigationController *)&v11 setDisplayedViewController:controllerCopy];
         goto LABEL_8;
       }
 
       v9 = 0;
       v10 = self->_displayedViewController;
-      self->_displayedViewController = v4;
-      v4 = v10;
+      self->_displayedViewController = controllerCopy;
+      controllerCopy = v10;
     }
 
     else
     {
-      v9 = v4;
+      v9 = controllerCopy;
     }
 
-    v4 = v9;
+    controllerCopy = v9;
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4
+- (void)didShowViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(UIMoreNavigationController *)self moreListController];
+  controllerCopy = controller;
+  moreListController = [(UIMoreNavigationController *)self moreListController];
 
-  if (v7 == v6)
+  if (moreListController == controllerCopy)
   {
     if (self->_firstActualViewController)
     {
@@ -97,17 +97,17 @@ LABEL_8:
 
   v12.receiver = self;
   v12.super_class = SUUIMoreNavigationController;
-  [(UIMoreNavigationController *)&v12 didShowViewController:v6 animated:v4];
+  [(UIMoreNavigationController *)&v12 didShowViewController:controllerCopy animated:animatedCopy];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v6 viewControllers], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, !v8))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([controllerCopy viewControllers], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, !v8))
   {
-    [(SUUIMoreNavigationController *)self setDisplayedViewController:v6];
+    [(SUUIMoreNavigationController *)self setDisplayedViewController:controllerCopy];
   }
 
   else
@@ -117,57 +117,57 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v6 viewControllers];
-        v10 = [v9 firstObject];
+        viewControllers = [controllerCopy viewControllers];
+        firstObject = [viewControllers firstObject];
         firstActualViewController = self->_firstActualViewController;
-        self->_firstActualViewController = v10;
+        self->_firstActualViewController = firstObject;
       }
 
       else
       {
-        v12 = v6;
-        v9 = self->_firstActualViewController;
+        v12 = controllerCopy;
+        viewControllers = self->_firstActualViewController;
         self->_firstActualViewController = v12;
       }
     }
 
     v13.receiver = self;
     v13.super_class = SUUIMoreNavigationController;
-    [(UIMoreNavigationController *)&v13 pushViewController:v6 animated:v4];
+    [(UIMoreNavigationController *)&v13 pushViewController:controllerCopy animated:animatedCopy];
   }
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(SUUIMoreNavigationController *)self topViewController];
-  v3 = v2;
-  if (v2)
+  topViewController = [(SUUIMoreNavigationController *)self topViewController];
+  v3 = topViewController;
+  if (topViewController)
   {
-    v4 = [v2 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [topViewController supportedInterfaceOrientations];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v6 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v4 = 30;
+      supportedInterfaceOrientations = 30;
     }
 
     else if (SUUIAllowsLandscapePhone())
     {
-      v4 = 26;
+      supportedInterfaceOrientations = 26;
     }
 
     else
     {
-      v4 = 2;
+      supportedInterfaceOrientations = 2;
     }
   }
 
-  return v4;
+  return supportedInterfaceOrientations;
 }
 
 - (SUUIMoreNavigationControllerDelegate)storeKitDelegate

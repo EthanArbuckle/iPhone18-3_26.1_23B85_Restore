@@ -1,11 +1,11 @@
 @interface FCResource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOnDisk;
 - (FCContentArchive)contentArchive;
 - (FCContentManifest)contentManifest;
-- (FCResource)initWithPermanentURLForResourceID:(id)a3 cacheLifetimeHint:(int64_t)a4 contentContext:(id)a5;
-- (FCResource)initWithRecord:(id)a3 interestToken:(id)a4 assetManager:(id)a5;
-- (FCResource)initWithResourceID:(id)a3 assetHandle:(id)a4 fetchDate:(id)a5;
+- (FCResource)initWithPermanentURLForResourceID:(id)d cacheLifetimeHint:(int64_t)hint contentContext:(id)context;
+- (FCResource)initWithRecord:(id)record interestToken:(id)token assetManager:(id)manager;
+- (FCResource)initWithResourceID:(id)d assetHandle:(id)handle fetchDate:(id)date;
 - (NSURL)fileURL;
 - (unint64_t)hash;
 @end
@@ -14,19 +14,19 @@
 
 - (NSURL)fileURL
 {
-  v2 = [(FCResource *)self assetHandle];
-  v3 = [v2 fileURL];
+  assetHandle = [(FCResource *)self assetHandle];
+  fileURL = [assetHandle fileURL];
 
-  return v3;
+  return fileURL;
 }
 
-- (FCResource)initWithResourceID:(id)a3 assetHandle:(id)a4 fetchDate:(id)a5
+- (FCResource)initWithResourceID:(id)d assetHandle:(id)handle fetchDate:(id)date
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  handleCopy = handle;
+  dateCopy = date;
+  if (!handleCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "assetHandle != nil"];
     *buf = 136315906;
@@ -46,40 +46,40 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_resourceID, a3);
-    objc_storeStrong(&v13->_assetHandle, a4);
-    objc_storeStrong(&v13->_fetchDate, a5);
+    objc_storeStrong(&v12->_resourceID, d);
+    objc_storeStrong(&v13->_assetHandle, handle);
+    objc_storeStrong(&v13->_fetchDate, date);
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (FCResource)initWithRecord:(id)a3 interestToken:(id)a4 assetManager:(id)a5
+- (FCResource)initWithRecord:(id)record interestToken:(id)token assetManager:(id)manager
 {
-  v24 = self;
-  v8 = a3;
-  v26 = a4;
-  v9 = a5;
-  v10 = [v8 base];
-  v11 = [v10 identifier];
+  selfCopy = self;
+  recordCopy = record;
+  tokenCopy = token;
+  managerCopy = manager;
+  base = [recordCopy base];
+  identifier = [base identifier];
 
-  v12 = [v8 url];
+  v12 = [recordCopy url];
   if (v12)
   {
-    v13 = [v8 base];
-    v14 = [v13 cacheLifetimeHint];
-    if (v14 == 2)
+    base2 = [recordCopy base];
+    cacheLifetimeHint = [base2 cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v15 = 2;
     }
 
     else
     {
-      v15 = v14 == 1;
+      v15 = cacheLifetimeHint == 1;
     }
 
-    v16 = [v9 assetHandleForCKAssetURLString:v12 lifetimeHint:{v15, v24, v26}];
+    v16 = [managerCopy assetHandleForCKAssetURLString:v12 lifetimeHint:{v15, selfCopy, tokenCopy}];
   }
 
   else
@@ -88,44 +88,44 @@
   }
 
   v17 = MEMORY[0x1E695DF00];
-  v18 = [v8 base];
-  v19 = [v18 fetchDate];
-  v20 = [v17 dateWithPBDate:v19];
+  base3 = [recordCopy base];
+  fetchDate = [base3 fetchDate];
+  v20 = [v17 dateWithPBDate:fetchDate];
 
-  v21 = [v25 initWithResourceID:v11 assetHandle:v16 fetchDate:v20];
+  v21 = [v25 initWithResourceID:identifier assetHandle:v16 fetchDate:v20];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong((v21 + 32), a3);
-    objc_storeStrong(&v22->_interestToken, a4);
+    objc_storeStrong((v21 + 32), record);
+    objc_storeStrong(&v22->_interestToken, token);
   }
 
   return v22;
 }
 
-- (FCResource)initWithPermanentURLForResourceID:(id)a3 cacheLifetimeHint:(int64_t)a4 contentContext:(id)a5
+- (FCResource)initWithPermanentURLForResourceID:(id)d cacheLifetimeHint:(int64_t)hint contentContext:(id)context
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 assetManager];
-  v11 = [v8 internalContentContext];
+  contextCopy = context;
+  dCopy = d;
+  assetManager = [contextCopy assetManager];
+  internalContentContext = [contextCopy internalContentContext];
 
-  v12 = [v11 contentDatabase];
-  v13 = [v10 assetHandleForRecordID:v9 field:3 lifetimeHint:a4 contentDatabase:v12];
+  contentDatabase = [internalContentContext contentDatabase];
+  v13 = [assetManager assetHandleForRecordID:dCopy field:3 lifetimeHint:hint contentDatabase:contentDatabase];
 
-  v14 = [(FCResource *)self initWithResourceID:v9 assetHandle:v13 fetchDate:0];
+  v14 = [(FCResource *)self initWithResourceID:dCopy assetHandle:v13 fetchDate:0];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -143,9 +143,9 @@
 
   if (v6)
   {
-    v7 = [(FCResource *)self resourceID];
-    v8 = [v6 resourceID];
-    v9 = [v7 isEqualToString:v8];
+    resourceID = [(FCResource *)self resourceID];
+    resourceID2 = [v6 resourceID];
+    v9 = [resourceID isEqualToString:resourceID2];
   }
 
   else
@@ -158,17 +158,17 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FCResource *)self resourceID];
-  v3 = [v2 hash];
+  resourceID = [(FCResource *)self resourceID];
+  v3 = [resourceID hash];
 
   return v3;
 }
 
 - (BOOL)isOnDisk
 {
-  v2 = [(FCResource *)self assetHandle];
-  v3 = [v2 dataProvider];
-  v4 = v3 != 0;
+  assetHandle = [(FCResource *)self assetHandle];
+  dataProvider = [assetHandle dataProvider];
+  v4 = dataProvider != 0;
 
   return v4;
 }

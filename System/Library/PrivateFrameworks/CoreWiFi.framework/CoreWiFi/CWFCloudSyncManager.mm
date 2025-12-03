@@ -1,21 +1,21 @@
 @interface CWFCloudSyncManager
-- (BOOL)__calloutToCheckForKeychainPasswordWithNetworkProfile:(id)a3 error:(id *)a4;
-- (BOOL)__calloutToCheckIfNetworkIsSyncable:(id)a3;
-- (BOOL)__updateCloudNetwork:(id)a3 error:(id *)a4;
-- (BOOL)forgetCloudNetwork:(id)a3 error:(id *)a4;
-- (BOOL)rememberCloudNetwork:(id)a3 error:(id *)a4;
+- (BOOL)__calloutToCheckForKeychainPasswordWithNetworkProfile:(id)profile error:(id *)error;
+- (BOOL)__calloutToCheckIfNetworkIsSyncable:(id)syncable;
+- (BOOL)__updateCloudNetwork:(id)network error:(id *)error;
+- (BOOL)forgetCloudNetwork:(id)network error:(id *)error;
+- (BOOL)rememberCloudNetwork:(id)network error:(id *)error;
 - (CWFCloudSyncManager)init;
 - (NSArray)cloudNetworks;
 - (NSDictionary)cloudKVS;
-- (id)__calloutToFetchAllLocalNetworksAndReturnError:(id *)a3;
-- (id)__cloudKeyForNetworkProfile:(id)a3;
+- (id)__calloutToFetchAllLocalNetworksAndReturnError:(id *)error;
+- (id)__cloudKeyForNetworkProfile:(id)profile;
 - (id)__cloudNetworkProfiles;
 - (id)__localDeviceModel;
 - (id)__localDeviceVersionDescription;
 - (unsigned)__isCloudKeychainEnabled;
 - (void)__checkCloudKeychainSyncState;
 - (void)__checkWaitingForKeychainPasswordList;
-- (void)__handleCloudKVSChangedKeys:(id)a3;
+- (void)__handleCloudKVSChangedKeys:(id)keys;
 - (void)__handleKeychainChangeEvent;
 - (void)__resetCheckKeychainCounterForRecentlyJoinedNetworks;
 - (void)__startMonitoringCloudKeychainSyncStateEvents;
@@ -264,42 +264,42 @@ LABEL_10:
   v3 = [v2 objectForKeyedSubscript:@"ProductBuildVersion"];
   v4 = [v3 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F5B8FC80];
   v5 = [v4 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
-  v20 = [v5 lowercaseString];
+  lowercaseString = [v5 lowercaseString];
 
   v6 = [v2 objectForKeyedSubscript:@"ProductVersion"];
   v7 = [v6 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F5B8FC80];
   v8 = [v7 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
-  v9 = [v8 lowercaseString];
+  lowercaseString2 = [v8 lowercaseString];
 
   v10 = [v2 objectForKeyedSubscript:@"ProductName"];
   v11 = [v10 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F5B8FC80];
   v12 = [v11 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
-  v13 = [v12 lowercaseString];
+  lowercaseString3 = [v12 lowercaseString];
 
-  v14 = [(CWFCloudSyncManager *)self __localDeviceModel];
-  v15 = [v14 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F5B8FC80];
+  __localDeviceModel = [(CWFCloudSyncManager *)self __localDeviceModel];
+  v15 = [__localDeviceModel stringByReplacingOccurrencesOfString:@" " withString:&stru_1F5B8FC80];
   v16 = [v15 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
-  v17 = [v16 lowercaseString];
+  lowercaseString4 = [v16 lowercaseString];
 
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@.%@.%@", v13, v9, v20, v17];
+  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@.%@.%@", lowercaseString3, lowercaseString2, lowercaseString, lowercaseString4];
 
   return v18;
 }
 
-- (id)__cloudKeyForNetworkProfile:(id)a3
+- (id)__cloudKeyForNetworkProfile:(id)profile
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 networkName];
-  v5 = [v3 stringWithFormat:@"%@%@", @"network.", v4];
+  networkName = [profile networkName];
+  v5 = [v3 stringWithFormat:@"%@%@", @"network.", networkName];
 
   return v5;
 }
 
-- (BOOL)__updateCloudNetwork:(id)a3 error:(id *)a4
+- (BOOL)__updateCloudNetwork:(id)network error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  networkCopy = network;
+  if (!networkCopy)
   {
     v22 = CWFGetOSLog();
     if (v22)
@@ -358,7 +358,7 @@ LABEL_37:
     goto LABEL_14;
   }
 
-  if (([v5 isCloudSyncable] & 1) == 0)
+  if (([networkCopy isCloudSyncable] & 1) == 0)
   {
     v26 = CWFGetOSLog();
     if (v26)
@@ -380,7 +380,7 @@ LABEL_37:
     goto LABEL_35;
   }
 
-  if (![(CWFCloudSyncManager *)self __calloutToCheckIfNetworkIsSyncable:v5])
+  if (![(CWFCloudSyncManager *)self __calloutToCheckIfNetworkIsSyncable:networkCopy])
   {
     v27 = CWFGetOSLog();
     if (v27)
@@ -402,9 +402,9 @@ LABEL_37:
     goto LABEL_35;
   }
 
-  v6 = [v5 copy];
-  v7 = [(CWFCloudSyncManager *)self __localDeviceVersionDescription];
-  [v6 setAddedByVersion:v7];
+  v6 = [networkCopy copy];
+  __localDeviceVersionDescription = [(CWFCloudSyncManager *)self __localDeviceVersionDescription];
+  [v6 setAddedByVersion:__localDeviceVersionDescription];
 
   v8 = [(CWFCloudSyncManager *)self __cloudKeyForNetworkProfile:v6];
   v9 = [(CWFKeyValueStore *)self->_cloudKVS objectForKey:v8];
@@ -412,15 +412,15 @@ LABEL_37:
   v11 = v10;
   if (v10)
   {
-    v12 = [(CWFNetworkProfile *)v10 cloudSyncExternalForm];
+    cloudSyncExternalForm = [(CWFNetworkProfile *)v10 cloudSyncExternalForm];
     [v6 mergeWithCloudNetworkProfile:v11];
-    v13 = [v6 cloudSyncExternalForm];
-    v14 = v13;
-    if (v12 != v13 && (!v12 || !v13 || ([v12 isEqual:v13] & 1) == 0))
+    cloudSyncExternalForm2 = [v6 cloudSyncExternalForm];
+    v14 = cloudSyncExternalForm2;
+    if (cloudSyncExternalForm != cloudSyncExternalForm2 && (!cloudSyncExternalForm || !cloudSyncExternalForm2 || ([cloudSyncExternalForm isEqual:cloudSyncExternalForm2] & 1) == 0))
     {
       v15 = [v9 mutableCopy];
-      v16 = [v12 allKeys];
-      [v15 removeObjectsForKeys:v16];
+      allKeys = [cloudSyncExternalForm allKeys];
+      [v15 removeObjectsForKeys:allKeys];
 
       [v15 addEntriesFromDictionary:v14];
       [(CWFKeyValueStore *)self->_cloudKVS setObject:v15 forKey:v8];
@@ -431,8 +431,8 @@ LABEL_37:
   else
   {
     cloudKVS = self->_cloudKVS;
-    v18 = [v6 cloudSyncExternalForm];
-    [(CWFKeyValueStore *)cloudKVS setObject:v18 forKey:v8];
+    cloudSyncExternalForm3 = [v6 cloudSyncExternalForm];
+    [(CWFKeyValueStore *)cloudKVS setObject:cloudSyncExternalForm3 forKey:v8];
 
     [(CWFKeyValueStore *)self->_cloudKVS synchronize];
   }
@@ -444,9 +444,9 @@ LABEL_14:
   return v19 == 0;
 }
 
-- (BOOL)rememberCloudNetwork:(id)a3 error:(id *)a4
+- (BOOL)rememberCloudNetwork:(id)network error:(id *)error
 {
-  v6 = a3;
+  networkCopy = network;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -470,7 +470,7 @@ LABEL_14:
   v16[3] = &unk_1E86E8C88;
   v19 = &v30;
   v16[4] = self;
-  v10 = v6;
+  v10 = networkCopy;
   v17 = v10;
   v20 = &v24;
   v21 = v22;
@@ -480,12 +480,12 @@ LABEL_14:
   dispatch_async(internalQueue, v12);
 
   dispatch_block_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
     v13 = v25[5];
     if (v13)
     {
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -498,15 +498,15 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)forgetCloudNetwork:(id)a3 error:(id *)a4
+- (BOOL)forgetCloudNetwork:(id)network error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 copy];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v7 setRemovedAt:v8];
+  networkCopy = network;
+  v7 = [networkCopy copy];
+  date = [MEMORY[0x1E695DF00] date];
+  [v7 setRemovedAt:date];
 
-  v9 = [(CWFCloudSyncManager *)self __localDeviceVersionDescription];
-  [v7 setRemovedByVersion:v9];
+  __localDeviceVersionDescription = [(CWFCloudSyncManager *)self __localDeviceVersionDescription];
+  [v7 setRemovedByVersion:__localDeviceVersionDescription];
 
   v33 = 0;
   v34 = &v33;
@@ -541,12 +541,12 @@ LABEL_14:
   dispatch_async(internalQueue, v15);
 
   dispatch_block_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
     v16 = v28[5];
     if (v16)
     {
-      *a4 = v16;
+      *error = v16;
     }
   }
 
@@ -653,14 +653,14 @@ LABEL_7:
 
 - (void)__checkCloudKeychainSyncState
 {
-  v3 = [(CWFCloudSyncManager *)self cloudKeychainEnabled];
-  v4 = [(CWFCloudSyncManager *)self __isCloudKeychainEnabled];
-  if (v4)
+  cloudKeychainEnabled = [(CWFCloudSyncManager *)self cloudKeychainEnabled];
+  __isCloudKeychainEnabled = [(CWFCloudSyncManager *)self __isCloudKeychainEnabled];
+  if (__isCloudKeychainEnabled)
   {
-    v5 = v4;
-    if (v4 != v3)
+    v5 = __isCloudKeychainEnabled;
+    if (__isCloudKeychainEnabled != cloudKeychainEnabled)
     {
-      [(CWFCloudSyncManager *)self setCloudKeychainEnabled:v4];
+      [(CWFCloudSyncManager *)self setCloudKeychainEnabled:__isCloudKeychainEnabled];
       v6 = CWFGetOSLog();
       v7 = v6;
       if (v5 == 2)
@@ -768,13 +768,13 @@ LABEL_7:
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(CWFKeyValueStore *)self->_cloudKVS dictionaryRepresentation];
+  dictionaryRepresentation = [(CWFKeyValueStore *)self->_cloudKVS dictionaryRepresentation];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [dictionaryRepresentation allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -785,13 +785,13 @@ LABEL_7:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         if ([v10 hasPrefix:@"network."])
         {
-          v11 = [v4 objectForKeyedSubscript:v10];
+          v11 = [dictionaryRepresentation objectForKeyedSubscript:v10];
           v12 = [[CWFNetworkProfile alloc] initWithCloudSyncExternalForm:v11];
           if (v12)
           {
@@ -800,7 +800,7 @@ LABEL_7:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -812,9 +812,9 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)__calloutToCheckForKeychainPasswordWithNetworkProfile:(id)a3 error:(id *)a4
+- (BOOL)__calloutToCheckForKeychainPasswordWithNetworkProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -837,7 +837,7 @@ LABEL_7:
   v16[2] = sub_1E0CDAEF8;
   v16[3] = &unk_1E86E7A60;
   v16[4] = self;
-  v10 = v6;
+  v10 = profileCopy;
   v17 = v10;
   v19 = &v24;
   v20 = &v30;
@@ -848,12 +848,12 @@ LABEL_7:
   dispatch_async(targetQueue, v12);
 
   dispatch_block_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
     v13 = v25[5];
     if (v13)
     {
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -898,13 +898,13 @@ LABEL_7:
     v63[4] = self;
     v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:0 ascending:1 comparator:v63];
     v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:0 ascending:0 comparator:&unk_1F5B892F0];
-    v8 = [(NSMutableDictionary *)self->_waitingForKeychainNetworkMap allValues];
+    allValues = [(NSMutableDictionary *)self->_waitingForKeychainNetworkMap allValues];
     v59 = v7;
     v60 = v6;
     v66[0] = v6;
     v66[1] = v7;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:2];
-    v10 = [v8 sortedArrayUsingDescriptors:v9];
+    v10 = [allValues sortedArrayUsingDescriptors:v9];
 
     v11 = CWFGetOSLog();
     if (v11)
@@ -949,14 +949,14 @@ LABEL_7:
 
       v18 = [v10 objectAtIndexedSubscript:v15];
       waitingForKeychainCounterMap = self->_waitingForKeychainCounterMap;
-      v20 = [v18 identifier];
-      v21 = [(NSMutableDictionary *)waitingForKeychainCounterMap objectForKeyedSubscript:v20];
-      v22 = [v21 unsignedIntegerValue];
+      identifier = [v18 identifier];
+      v21 = [(NSMutableDictionary *)waitingForKeychainCounterMap objectForKeyedSubscript:identifier];
+      unsignedIntegerValue = [v21 unsignedIntegerValue];
       keychainChangeCounter = self->_keychainChangeCounter;
 
       v24 = CWFGetOSLog();
       v25 = v24;
-      if (v22 == keychainChangeCounter)
+      if (unsignedIntegerValue == keychainChangeCounter)
       {
         if (v24)
         {
@@ -994,9 +994,9 @@ LABEL_7:
 
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v18 identifier];
+        identifier2 = [v18 identifier];
         v64 = 138412290;
-        v65 = v28;
+        v65 = identifier2;
         LODWORD(v58) = 12;
         v57 = &v64;
         _os_log_send_and_compose_impl();
@@ -1020,27 +1020,27 @@ LABEL_7:
 
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v35 = [v18 identifier];
+          identifier3 = [v18 identifier];
           v64 = 138412290;
-          v65 = v35;
+          v65 = identifier3;
           LODWORD(v58) = 12;
           v57 = &v64;
           _os_log_send_and_compose_impl();
         }
 
         v36 = self->_waitingForKeychainCounterMap;
-        v37 = [v18 identifier];
-        [(NSMutableDictionary *)v36 setObject:0 forKeyedSubscript:v37];
+        identifier4 = [v18 identifier];
+        [(NSMutableDictionary *)v36 setObject:0 forKeyedSubscript:identifier4];
 
         targetQueue = self->_targetQueue;
-        LODWORD(v37) = qos_class_self();
+        LODWORD(identifier4) = qos_class_self();
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = sub_1E0CDBA10;
         block[3] = &unk_1E86E6420;
         block[4] = self;
         v62 = v18;
-        v39 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v37, 0, block);
+        v39 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, identifier4, 0, block);
         dispatch_async(targetQueue, v39);
       }
 
@@ -1059,9 +1059,9 @@ LABEL_7:
 
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
-          v41 = [v18 identifier];
+          identifier5 = [v18 identifier];
           v64 = 138412290;
-          v65 = v41;
+          v65 = identifier5;
           LODWORD(v58) = 12;
           v57 = &v64;
           _os_log_send_and_compose_impl();
@@ -1069,8 +1069,8 @@ LABEL_7:
 
         v42 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_keychainChangeCounter];
         v43 = self->_waitingForKeychainCounterMap;
-        v44 = [v18 identifier];
-        [(NSMutableDictionary *)v43 setObject:v42 forKeyedSubscript:v44];
+        identifier6 = [v18 identifier];
+        [(NSMutableDictionary *)v43 setObject:v42 forKeyedSubscript:identifier6];
       }
 
       self->_checkKeychainTimestamp = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
@@ -1158,10 +1158,10 @@ LABEL_7:
   }
 
   v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:0 ascending:0 comparator:&unk_1F5B8AEA0];
-  v7 = [(NSMutableDictionary *)self->_waitingForKeychainNetworkMap allValues];
+  allValues = [(NSMutableDictionary *)self->_waitingForKeychainNetworkMap allValues];
   v19[0] = v6;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-  v9 = [v7 sortedArrayUsingDescriptors:v8];
+  v9 = [allValues sortedArrayUsingDescriptors:v8];
 
   for (i = 0; ; ++i)
   {
@@ -1173,8 +1173,8 @@ LABEL_7:
 
     waitingForKeychainCounterMap = self->_waitingForKeychainCounterMap;
     v13 = [v9 objectAtIndexedSubscript:i];
-    v14 = [v13 identifier];
-    [(NSMutableDictionary *)waitingForKeychainCounterMap setObject:0 forKeyedSubscript:v14];
+    identifier = [v13 identifier];
+    [(NSMutableDictionary *)waitingForKeychainCounterMap setObject:0 forKeyedSubscript:identifier];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -1241,9 +1241,9 @@ LABEL_7:
   }
 }
 
-- (BOOL)__calloutToCheckIfNetworkIsSyncable:(id)a3
+- (BOOL)__calloutToCheckIfNetworkIsSyncable:(id)syncable
 {
-  v4 = a3;
+  syncableCopy = syncable;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -1260,12 +1260,12 @@ LABEL_7:
   block[2] = sub_1E0CDC15C;
   block[3] = &unk_1E86E7A10;
   block[4] = self;
-  v13 = v4;
+  v13 = syncableCopy;
   v15 = &v19;
   v16 = v17;
   v14 = v5;
   v8 = v5;
-  v9 = v4;
+  v9 = syncableCopy;
   v10 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v7, 0, block);
   dispatch_async(targetQueue, v10);
 
@@ -1277,7 +1277,7 @@ LABEL_7:
   return targetQueue;
 }
 
-- (id)__calloutToFetchAllLocalNetworksAndReturnError:(id *)a3
+- (id)__calloutToFetchAllLocalNetworksAndReturnError:(id *)error
 {
   v26 = 0;
   v27 = &v26;
@@ -1312,12 +1312,12 @@ LABEL_7:
   dispatch_async(targetQueue, v9);
 
   dispatch_block_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
     v10 = v21[5];
     if (v10)
     {
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -1355,9 +1355,9 @@ LABEL_7:
   }
 
   v6 = MEMORY[0x1E695DFA8];
-  v7 = [(CWFKeyValueStore *)self->_cloudKVS dictionaryRepresentation];
-  v8 = [v7 allKeys];
-  v54 = [v6 setWithArray:v8];
+  dictionaryRepresentation = [(CWFKeyValueStore *)self->_cloudKVS dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
+  v54 = [v6 setWithArray:allKeys];
 
   [(CWFCloudSyncManager *)self __calloutToFetchAllLocalNetworksAndReturnError:0];
   v57 = 0u;
@@ -1368,7 +1368,7 @@ LABEL_7:
   if (v56)
   {
     v55 = *v58;
-    v52 = self;
+    selfCopy = self;
     do
     {
       v9 = 0;
@@ -1394,9 +1394,9 @@ LABEL_7:
 
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v10 identifier];
+          identifier = [v10 identifier];
           v61 = 138412290;
-          v62 = v14;
+          v62 = identifier;
           LODWORD(v51) = 12;
           v50 = &v61;
           _os_log_send_and_compose_impl();
@@ -1424,19 +1424,19 @@ LABEL_7:
 
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v10 identifier];
+              identifier2 = [v10 identifier];
               v61 = 138412290;
-              v62 = v23;
+              v62 = identifier2;
               LODWORD(v51) = 12;
               v50 = &v61;
               _os_log_send_and_compose_impl();
             }
 
-            v24 = [(CWFNetworkProfile *)v17 cloudSyncExternalForm];
+            cloudSyncExternalForm = [(CWFNetworkProfile *)v17 cloudSyncExternalForm];
             [v10 mergeWithCloudNetworkProfile:v17];
-            v25 = [v10 cloudSyncExternalForm];
-            v26 = v25;
-            if (v24 == v25 || v24 && v25 && ([v24 isEqual:v25] & 1) != 0)
+            cloudSyncExternalForm2 = [v10 cloudSyncExternalForm];
+            v26 = cloudSyncExternalForm2;
+            if (cloudSyncExternalForm == cloudSyncExternalForm2 || cloudSyncExternalForm && cloudSyncExternalForm2 && ([cloudSyncExternalForm isEqual:cloudSyncExternalForm2] & 1) != 0)
             {
               v27 = CWFGetOSLog();
               if (v27)
@@ -1452,9 +1452,9 @@ LABEL_7:
 
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
               {
-                v38 = [v10 identifier];
+                identifier3 = [v10 identifier];
                 v61 = 138412290;
-                v62 = v38;
+                v62 = identifier3;
                 LODWORD(v51) = 12;
                 v50 = &v61;
                 _os_log_send_and_compose_impl();
@@ -1466,8 +1466,8 @@ LABEL_7:
             else
             {
               v29 = [v16 mutableCopy];
-              v30 = [v24 allKeys];
-              [v29 removeObjectsForKeys:v30];
+              allKeys2 = [cloudSyncExternalForm allKeys];
+              [v29 removeObjectsForKeys:allKeys2];
 
               [v29 addEntriesFromDictionary:v26];
               v31 = CWFGetOSLog();
@@ -1484,9 +1484,9 @@ LABEL_7:
 
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
               {
-                v40 = [v10 identifier];
+                identifier4 = [v10 identifier];
                 v61 = 138412290;
-                v62 = v40;
+                v62 = identifier4;
                 LODWORD(v51) = 12;
                 v50 = &v61;
                 _os_log_send_and_compose_impl();
@@ -1515,8 +1515,8 @@ LABEL_7:
                 _os_log_send_and_compose_impl();
               }
 
-              self = v52;
-              [(CWFKeyValueStore *)v52->_cloudKVS setObject:v29 forKey:v15];
+              self = selfCopy;
+              [(CWFKeyValueStore *)selfCopy->_cloudKVS setObject:v29 forKey:v15];
             }
           }
 
@@ -1535,17 +1535,17 @@ LABEL_7:
 
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
-              v34 = [v10 identifier];
+              identifier5 = [v10 identifier];
               v61 = 138412290;
-              v62 = v34;
+              v62 = identifier5;
               LODWORD(v51) = 12;
               v50 = &v61;
               _os_log_send_and_compose_impl();
             }
 
             cloudKVS = self->_cloudKVS;
-            v36 = [v10 cloudSyncExternalForm];
-            [(CWFKeyValueStore *)cloudKVS setObject:v36 forKey:v15];
+            cloudSyncExternalForm3 = [v10 cloudSyncExternalForm];
+            [(CWFKeyValueStore *)cloudKVS setObject:cloudSyncExternalForm3 forKey:v15];
 
             [v54 removeObject:v15];
           }
@@ -1567,9 +1567,9 @@ LABEL_7:
 
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v46 = [v10 identifier];
+            identifier6 = [v10 identifier];
             v61 = 138412290;
-            v62 = v46;
+            v62 = identifier6;
             LODWORD(v51) = 12;
             v50 = &v61;
             _os_log_send_and_compose_impl();
@@ -1588,28 +1588,28 @@ LABEL_7:
   }
 
   [(CWFKeyValueStore *)self->_cloudKVS synchronize:v50];
-  v48 = [v54 allObjects];
-  [(CWFCloudSyncManager *)self __handleCloudKVSChangedKeys:v48];
+  allObjects = [v54 allObjects];
+  [(CWFCloudSyncManager *)self __handleCloudKVSChangedKeys:allObjects];
 
   v49 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__handleCloudKVSChangedKeys:(id)a3
+- (void)__handleCloudKVSChangedKeys:(id)keys
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   if ([(CWFCloudSyncManager *)self cloudKeychainEnabled]== 2)
   {
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v5 = v4;
+    v5 = keysCopy;
     v6 = [v5 countByEnumeratingWithState:&v51 objects:v55 count:16];
     if (v6)
     {
       v7 = v6;
-      v46 = v4;
+      v46 = keysCopy;
       v47 = 0;
       v8 = *v52;
       v9 = @"network.";
@@ -1631,10 +1631,10 @@ LABEL_7:
             if ([v12 isCloudSyncableExternalForm])
             {
               v13 = [[CWFNetworkProfile alloc] initWithCloudSyncExternalForm:v12];
-              v14 = [(CWFNetworkProfile *)v13 wasMoreRecentlyAdded];
+              wasMoreRecentlyAdded = [(CWFNetworkProfile *)v13 wasMoreRecentlyAdded];
               v15 = CWFGetOSLog();
               v16 = v15;
-              if (v14)
+              if (wasMoreRecentlyAdded)
               {
                 if (v15)
                 {
@@ -1651,23 +1651,23 @@ LABEL_7:
 
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
                 {
-                  v21 = [(CWFNetworkProfile *)v13 identifier];
+                  identifier = [(CWFNetworkProfile *)v13 identifier];
                   v56 = 138412290;
-                  v57 = v21;
+                  v57 = identifier;
                   LODWORD(v45) = 12;
                   v44 = &v56;
                   _os_log_send_and_compose_impl();
                 }
 
-                v22 = [(NSMutableDictionary *)self->_waitingForKeychainCounterMap allKeys];
-                v23 = [(CWFNetworkProfile *)v13 identifier];
-                v24 = [v22 containsObject:v23];
+                allKeys = [(NSMutableDictionary *)self->_waitingForKeychainCounterMap allKeys];
+                identifier2 = [(CWFNetworkProfile *)v13 identifier];
+                v24 = [allKeys containsObject:identifier2];
 
                 if ((v24 & 1) == 0)
                 {
                   waitingForKeychainCounterMap = self->_waitingForKeychainCounterMap;
-                  v26 = [(CWFNetworkProfile *)v13 identifier];
-                  [(NSMutableDictionary *)waitingForKeychainCounterMap setObject:&unk_1F5BBCB98 forKeyedSubscript:v26];
+                  identifier3 = [(CWFNetworkProfile *)v13 identifier];
+                  [(NSMutableDictionary *)waitingForKeychainCounterMap setObject:&unk_1F5BBCB98 forKeyedSubscript:identifier3];
 
                   v47 = 1;
                 }
@@ -1695,24 +1695,24 @@ LABEL_7:
 
                 if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
                 {
-                  v30 = [(CWFNetworkProfile *)v13 identifier];
+                  identifier4 = [(CWFNetworkProfile *)v13 identifier];
                   v56 = 138412290;
-                  v57 = v30;
+                  v57 = identifier4;
                   LODWORD(v45) = 12;
                   v44 = &v56;
                   _os_log_send_and_compose_impl();
                 }
 
                 v31 = self->_waitingForKeychainCounterMap;
-                v32 = [(CWFNetworkProfile *)v13 identifier];
-                [(NSMutableDictionary *)v31 setObject:0 forKeyedSubscript:v32];
+                identifier5 = [(CWFNetworkProfile *)v13 identifier];
+                [(NSMutableDictionary *)v31 setObject:0 forKeyedSubscript:identifier5];
 
                 v33 = self->_waitingForKeychainNetworkMap;
-                v34 = [(CWFNetworkProfile *)v13 identifier];
-                [(NSMutableDictionary *)v33 setObject:0 forKeyedSubscript:v34];
+                identifier6 = [(CWFNetworkProfile *)v13 identifier];
+                [(NSMutableDictionary *)v33 setObject:0 forKeyedSubscript:identifier6];
 
                 targetQueue = self->_targetQueue;
-                LODWORD(v34) = qos_class_self();
+                LODWORD(identifier6) = qos_class_self();
                 block[0] = MEMORY[0x1E69E9820];
                 block[1] = 3221225472;
                 block[2] = sub_1E0CDD478;
@@ -1720,7 +1720,7 @@ LABEL_7:
                 block[4] = self;
                 v13 = v13;
                 v50 = v13;
-                v36 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v34, 0, block);
+                v36 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, identifier6, 0, block);
                 dispatch_async(targetQueue, v36);
               }
             }
@@ -1760,7 +1760,7 @@ LABEL_7:
 
       while (v39);
 
-      v4 = v46;
+      keysCopy = v46;
       if (v47)
       {
         [(CWFCloudSyncManager *)self __resetCheckKeychainCounterForRecentlyJoinedNetworks];

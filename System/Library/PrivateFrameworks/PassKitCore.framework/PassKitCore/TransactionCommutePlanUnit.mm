@@ -1,34 +1,34 @@
 @interface TransactionCommutePlanUnit
-+ (id)_predicateForPaymentTransactionPID:(int64_t)a3;
++ (id)_predicateForPaymentTransactionPID:(int64_t)d;
 + (id)_propertySettersForCommutePlanUnit;
-+ (id)anyInDatabase:(id)a3 forPaymentTransactionPID:(int64_t)a4;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)insertCommutePlanUnit:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)insertCommutePlanUnits:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)pk_transactionCommutePlanUnitsInDatabase:(id)a3 forPaymentTransactionPID:(int64_t)a4;
-+ (id)transactionCommutePlanUnitsInDatabase:(id)a3 forPaymentTransactionPID:(int64_t)a4;
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4;
-+ (void)deleteEntitiesForPaymentTransactionPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)updateWithCommutePlanUnits:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5;
-- (TransactionCommutePlanUnit)initWithCommutePlanUnit:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5;
-- (id)_valuesDictionaryForCommutePlanUnit:(id)a3 forPaymentTransactionPID:(int64_t)a4;
++ (id)anyInDatabase:(id)database forPaymentTransactionPID:(int64_t)d;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)insertCommutePlanUnit:(id)unit forPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
++ (id)insertCommutePlanUnits:(id)units forPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
++ (id)pk_transactionCommutePlanUnitsInDatabase:(id)database forPaymentTransactionPID:(int64_t)d;
++ (id)transactionCommutePlanUnitsInDatabase:(id)database forPaymentTransactionPID:(int64_t)d;
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins;
++ (void)deleteEntitiesForPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
++ (void)updateWithCommutePlanUnits:(id)units forPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
+- (TransactionCommutePlanUnit)initWithCommutePlanUnit:(id)unit forPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
+- (id)_valuesDictionaryForCommutePlanUnit:(id)unit forPaymentTransactionPID:(int64_t)d;
 - (id)transactionCommutePlanUnit;
 @end
 
 @implementation TransactionCommutePlanUnit
 
-- (TransactionCommutePlanUnit)initWithCommutePlanUnit:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5
+- (TransactionCommutePlanUnit)initWithCommutePlanUnit:(id)unit forPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [(TransactionCommutePlanUnit *)self _valuesDictionaryForCommutePlanUnit:a3 forPaymentTransactionPID:a4];
-  v10 = [(SQLiteEntity *)self initWithPropertyValues:v9 inDatabase:v8];
+  databaseCopy = database;
+  v9 = [(TransactionCommutePlanUnit *)self _valuesDictionaryForCommutePlanUnit:unit forPaymentTransactionPID:d];
+  v10 = [(SQLiteEntity *)self initWithPropertyValues:v9 inDatabase:databaseCopy];
 
   return v10;
 }
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"a";
   }
@@ -39,34 +39,34 @@
   }
 }
 
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"payment_transaction.pid"])
+  joinsCopy = joins;
+  if ([property isEqualToString:@"payment_transaction.pid"])
   {
-    [v5 addObject:@"JOIN payment_transaction ON payment_transaction.pid = ice_cream_banana.a"];
+    [joinsCopy addObject:@"JOIN payment_transaction ON payment_transaction.pid = ice_cream_banana.a"];
   }
 }
 
-+ (id)insertCommutePlanUnit:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5
++ (id)insertCommutePlanUnit:(id)unit forPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithCommutePlanUnit:v9 forPaymentTransactionPID:a4 inDatabase:v8];
+  databaseCopy = database;
+  unitCopy = unit;
+  v10 = [[self alloc] initWithCommutePlanUnit:unitCopy forPaymentTransactionPID:d inDatabase:databaseCopy];
 
   return v10;
 }
 
-+ (id)insertCommutePlanUnits:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5
++ (id)insertCommutePlanUnits:(id)units forPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v7 = a3;
-  v8 = a5;
+  unitsCopy = units;
+  databaseCopy = database;
   v9 = objc_alloc_init(NSMutableArray);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = v7;
+  v10 = unitsCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -81,7 +81,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [TransactionCommutePlanUnit insertCommutePlanUnit:*(*(&v18 + 1) + 8 * i) forPaymentTransactionPID:a4 inDatabase:v8, v18];
+        v15 = [TransactionCommutePlanUnit insertCommutePlanUnit:*(*(&v18 + 1) + 8 * i) forPaymentTransactionPID:d inDatabase:databaseCopy, v18];
         [v9 safelyAddObject:v15];
       }
 
@@ -96,30 +96,30 @@
   return v16;
 }
 
-+ (void)deleteEntitiesForPaymentTransactionPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForPaymentTransactionPID:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForPaymentTransactionPID:d];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)anyInDatabase:(id)a3 forPaymentTransactionPID:(int64_t)a4
++ (id)anyInDatabase:(id)database forPaymentTransactionPID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [a1 _predicateForPaymentTransactionPID:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPaymentTransactionPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)transactionCommutePlanUnitsInDatabase:(id)a3 forPaymentTransactionPID:(int64_t)a4
++ (id)transactionCommutePlanUnitsInDatabase:(id)database forPaymentTransactionPID:(int64_t)d
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [a1 _predicateForPaymentTransactionPID:a4];
-  v9 = [(SQLiteEntity *)TransactionCommutePlanUnit queryWithDatabase:v6 predicate:v8];
+  v8 = [self _predicateForPaymentTransactionPID:d];
+  v9 = [(SQLiteEntity *)TransactionCommutePlanUnit queryWithDatabase:databaseCopy predicate:v8];
   v22[0] = @"a";
   v22[1] = @"payment_transaction.pid";
   v10 = [NSArray arrayWithObjects:v22 count:2];
@@ -128,10 +128,10 @@
   v17 = sub_100178690;
   v18 = &unk_10083C998;
   v20 = v7;
-  v21 = a1;
-  v19 = v6;
+  selfCopy = self;
+  v19 = databaseCopy;
   v11 = v7;
-  v12 = v6;
+  v12 = databaseCopy;
   [v9 enumeratePersistentIDsAndProperties:v10 usingBlock:&v15];
 
   v13 = [v11 copy];
@@ -139,9 +139,9 @@
   return v13;
 }
 
-+ (id)pk_transactionCommutePlanUnitsInDatabase:(id)a3 forPaymentTransactionPID:(int64_t)a4
++ (id)pk_transactionCommutePlanUnitsInDatabase:(id)database forPaymentTransactionPID:(int64_t)d
 {
-  v4 = [a1 transactionCommutePlanUnitsInDatabase:a3 forPaymentTransactionPID:a4];
+  v4 = [self transactionCommutePlanUnitsInDatabase:database forPaymentTransactionPID:d];
   v5 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
   v15 = 0u;
@@ -162,8 +162,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) transactionCommutePlanUnit];
-        [v5 safelyAddObject:v11];
+        transactionCommutePlanUnit = [*(*(&v14 + 1) + 8 * i) transactionCommutePlanUnit];
+        [v5 safelyAddObject:transactionCommutePlanUnit];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -185,14 +185,14 @@
   return v12;
 }
 
-+ (void)updateWithCommutePlanUnits:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5
++ (void)updateWithCommutePlanUnits:(id)units forPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v9 = a3;
-  v7 = a5;
-  if (v9 && [v9 count])
+  unitsCopy = units;
+  databaseCopy = database;
+  if (unitsCopy && [unitsCopy count])
   {
-    [TransactionCommutePlanUnit deleteEntitiesForPaymentTransactionPID:a4 inDatabase:v7];
-    v8 = [TransactionCommutePlanUnit insertCommutePlanUnits:v9 forPaymentTransactionPID:a4 inDatabase:v7];
+    [TransactionCommutePlanUnit deleteEntitiesForPaymentTransactionPID:d inDatabase:databaseCopy];
+    v8 = [TransactionCommutePlanUnit insertCommutePlanUnits:unitsCopy forPaymentTransactionPID:d inDatabase:databaseCopy];
   }
 }
 
@@ -200,7 +200,7 @@
 {
   v3 = objc_alloc_init(TransientUnit);
   v4 = +[TransactionCommutePlanUnit _propertySettersForCommutePlanUnit];
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_1001789FC;
@@ -209,34 +209,34 @@
   v15 = v3;
   v6 = v3;
   v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:&v10];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:&v10];
 
   v8 = [(TransientUnit *)v6 commutePlanUnit:v10];
 
   return v8;
 }
 
-- (id)_valuesDictionaryForCommutePlanUnit:(id)a3 forPaymentTransactionPID:(int64_t)a4
+- (id)_valuesDictionaryForCommutePlanUnit:(id)unit forPaymentTransactionPID:(int64_t)d
 {
-  v5 = a3;
+  unitCopy = unit;
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [NSNumber numberWithLongLong:a4];
+  v7 = [NSNumber numberWithLongLong:d];
   [v6 setObjectOrNull:v7 forKey:@"a"];
 
-  v8 = [v5 valueCount];
-  v9 = [v8 currency];
-  [v6 setObjectOrNull:v9 forKey:@"d"];
+  valueCount = [unitCopy valueCount];
+  currency = [valueCount currency];
+  [v6 setObjectOrNull:currency forKey:@"d"];
 
-  v10 = [v5 label];
-  [v6 setObjectOrNull:v10 forKey:@"c"];
+  label = [unitCopy label];
+  [v6 setObjectOrNull:label forKey:@"c"];
 
-  v11 = [v5 identifier];
-  [v6 setObjectOrNull:v11 forKey:@"b"];
+  identifier = [unitCopy identifier];
+  [v6 setObjectOrNull:identifier forKey:@"b"];
 
-  [v6 setInteger:objc_msgSend(v5 forKey:{"planType"), @"f"}];
-  v12 = [v5 valueCount];
+  [v6 setInteger:objc_msgSend(unitCopy forKey:{"planType"), @"f"}];
+  valueCount2 = [unitCopy valueCount];
 
-  v13 = [v12 amount];
+  amount = [valueCount2 amount];
   v14 = PKCurrencyDecimalToStorageNumber();
   [v6 setObjectOrNull:v14 forKey:@"e"];
 
@@ -245,9 +245,9 @@
   return v15;
 }
 
-+ (id)_predicateForPaymentTransactionPID:(int64_t)a3
++ (id)_predicateForPaymentTransactionPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;

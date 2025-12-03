@@ -1,10 +1,10 @@
 @interface TCCDBundle
-+ (TCCDBundle)bundleWithIdentifier:(id)a3;
-+ (TCCDBundle)bundleWithURL:(id)a3;
++ (TCCDBundle)bundleWithIdentifier:(id)identifier;
++ (TCCDBundle)bundleWithURL:(id)l;
 - (BOOL)isASKCapable;
 - (BOOL)isLSUIElement;
-- (BOOL)isPathContainedWithin:(id)a3;
-- (BOOL)isPathTheMainExecutable:(id)a3;
+- (BOOL)isPathContainedWithin:(id)within;
+- (BOOL)isPathTheMainExecutable:(id)executable;
 - (BOOL)isRunsIndependentlyOfCompanionApp;
 - (BOOL)isWatchKitApp;
 - (BOOL)isWatchOnly;
@@ -14,10 +14,10 @@
 - (NSString)extensionPointIdentifier;
 - (NSURL)bundleURL;
 - (NSURL)executableURL;
-- (TCCDBundle)initWithIdentifier:(id)a3;
-- (TCCDBundle)initWithURL:(id)a3;
+- (TCCDBundle)initWithIdentifier:(id)identifier;
+- (TCCDBundle)initWithURL:(id)l;
 - (id)description;
-- (id)localizedUsageDescriptionForKey:(id)a3;
+- (id)localizedUsageDescriptionForKey:(id)key;
 - (void)dealloc;
 @end
 
@@ -46,18 +46,18 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(TCCDBundle *)self bundleIdentifier];
-  v5 = [(TCCDBundle *)self bundleVersion];
-  v6 = [(TCCDBundle *)self bundlePath];
-  v7 = [NSString stringWithFormat:@"<%@: bundleID=%@, version=%@, path=%@>", v3, v4, v5, v6];
+  bundleIdentifier = [(TCCDBundle *)self bundleIdentifier];
+  bundleVersion = [(TCCDBundle *)self bundleVersion];
+  bundlePath = [(TCCDBundle *)self bundlePath];
+  v7 = [NSString stringWithFormat:@"<%@: bundleID=%@, version=%@, path=%@>", v3, bundleIdentifier, bundleVersion, bundlePath];
 
   return v7;
 }
 
 - (NSString)bundleVersion
 {
-  v2 = [(TCCDBundle *)self infoDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"CFBundleVersion"];
+  infoDictionary = [(TCCDBundle *)self infoDictionary];
+  v3 = [infoDictionary objectForKeyedSubscript:@"CFBundleVersion"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -77,16 +77,16 @@
 
 - (NSString)bundlePath
 {
-  v2 = [(TCCDBundle *)self bundleURL];
-  v3 = [v2 path];
+  bundleURL = [(TCCDBundle *)self bundleURL];
+  path = [bundleURL path];
 
-  return v3;
+  return path;
 }
 
 - (NSString)extensionPointIdentifier
 {
-  v3 = [(TCCDBundle *)self infoDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"EXAppExtensionAttributes"];
+  infoDictionary = [(TCCDBundle *)self infoDictionary];
+  v4 = [infoDictionary objectForKeyedSubscript:@"EXAppExtensionAttributes"];
 
   if (v4)
   {
@@ -95,8 +95,8 @@
 
   else
   {
-    v6 = [(TCCDBundle *)self infoDictionary];
-    v4 = [v6 objectForKeyedSubscript:@"NSExtension"];
+    infoDictionary2 = [(TCCDBundle *)self infoDictionary];
+    v4 = [infoDictionary2 objectForKeyedSubscript:@"NSExtension"];
 
     v5 = @"NSExtensionPointIdentifier";
   }
@@ -117,7 +117,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v11 = 138543874;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v5;
       v15 = 2114;
@@ -141,9 +141,9 @@ LABEL_13:
   return v8;
 }
 
-- (TCCDBundle)initWithURL:(id)a3
+- (TCCDBundle)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = TCCDBundle;
   v5 = [(TCCDBundle *)&v10 init];
@@ -152,7 +152,7 @@ LABEL_13:
     v8 = tcc_access_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_100035430(v4, v8);
+      sub_100035430(lCopy, v8);
     }
 
     v7 = 0;
@@ -166,11 +166,11 @@ LABEL_13:
   return v7;
 }
 
-- (TCCDBundle)initWithIdentifier:(id)a3
+- (TCCDBundle)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10 = 0;
-  v5 = [LSBundleRecord bundleRecordWithBundleIdentifier:v4 allowPlaceholder:0 error:&v10];
+  v5 = [LSBundleRecord bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v10];
   v6 = v10;
   if (v6)
   {
@@ -180,41 +180,41 @@ LABEL_13:
       sub_1000354A8();
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v7 = [v5 URL];
     self = [(TCCDBundle *)self initWithURL:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-+ (TCCDBundle)bundleWithURL:(id)a3
++ (TCCDBundle)bundleWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [[TCCDBundle alloc] initWithURL:v3];
+  lCopy = l;
+  v4 = [[TCCDBundle alloc] initWithURL:lCopy];
 
   return v4;
 }
 
-+ (TCCDBundle)bundleWithIdentifier:(id)a3
++ (TCCDBundle)bundleWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[TCCDBundle alloc] initWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[TCCDBundle alloc] initWithIdentifier:identifierCopy];
 
   return v4;
 }
 
 - (NSString)executablePath
 {
-  v2 = [(TCCDBundle *)self executableURL];
-  v3 = [v2 path];
+  executableURL = [(TCCDBundle *)self executableURL];
+  path = [executableURL path];
 
-  return v3;
+  return path;
 }
 
 - (NSURL)executableURL
@@ -226,26 +226,26 @@ LABEL_13:
 
 - (BOOL)isLSUIElement
 {
-  v2 = [(TCCDBundle *)self infoDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"LSUIElement"];
+  infoDictionary = [(TCCDBundle *)self infoDictionary];
+  v3 = [infoDictionary objectForKeyedSubscript:@"LSUIElement"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)localizedUsageDescriptionForKey:(id)a3
+- (id)localizedUsageDescriptionForKey:(id)key
 {
-  ValueForInfoDictionaryKey = CFBundleGetValueForInfoDictionaryKey(self->_cfBundle, a3);
+  ValueForInfoDictionaryKey = CFBundleGetValueForInfoDictionaryKey(self->_cfBundle, key);
   if (ValueForInfoDictionaryKey)
   {
     v4 = ValueForInfoDictionaryKey;
@@ -266,65 +266,65 @@ LABEL_13:
 
 - (BOOL)isWatchKitApp
 {
-  v2 = [(TCCDBundle *)self infoDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"WKApplication"];
+  infoDictionary = [(TCCDBundle *)self infoDictionary];
+  v3 = [infoDictionary objectForKeyedSubscript:@"WKApplication"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isWatchOnly
 {
-  v2 = [(TCCDBundle *)self infoDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"WKWatchOnly"];
+  infoDictionary = [(TCCDBundle *)self infoDictionary];
+  v3 = [infoDictionary objectForKeyedSubscript:@"WKWatchOnly"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isRunsIndependentlyOfCompanionApp
 {
-  v2 = [(TCCDBundle *)self infoDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"WKRunsIndependentlyOfCompanionApp"];
+  infoDictionary = [(TCCDBundle *)self infoDictionary];
+  v3 = [infoDictionary objectForKeyedSubscript:@"WKRunsIndependentlyOfCompanionApp"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isASKCapable
 {
-  v2 = [(TCCDBundle *)self infoDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"NSAccessorySetupKitSupports"];
+  infoDictionary = [(TCCDBundle *)self infoDictionary];
+  v3 = [infoDictionary objectForKeyedSubscript:@"NSAccessorySetupKitSupports"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -340,17 +340,17 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)isPathTheMainExecutable:(id)a3
+- (BOOL)isPathTheMainExecutable:(id)executable
 {
-  v4 = a3;
-  v5 = [(TCCDBundle *)self executablePath];
+  executableCopy = executable;
+  executablePath = [(TCCDBundle *)self executablePath];
   v11 = 0;
-  v6 = [v5 stringByResolvingRealPathWithError:&v11];
+  v6 = [executablePath stringByResolvingRealPathWithError:&v11];
   v7 = v11;
 
   if (v6)
   {
-    v8 = [v6 isEqualToString:v4];
+    v8 = [v6 isEqualToString:executableCopy];
   }
 
   else
@@ -367,17 +367,17 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)isPathContainedWithin:(id)a3
+- (BOOL)isPathContainedWithin:(id)within
 {
-  v4 = a3;
-  v5 = [(TCCDBundle *)self bundlePath];
+  withinCopy = within;
+  bundlePath = [(TCCDBundle *)self bundlePath];
   v11 = 0;
-  v6 = [v5 stringByResolvingRealPathWithError:&v11];
+  v6 = [bundlePath stringByResolvingRealPathWithError:&v11];
   v7 = v11;
 
   if (v6)
   {
-    v8 = [v4 hasPrefix:v6];
+    v8 = [withinCopy hasPrefix:v6];
   }
 
   else

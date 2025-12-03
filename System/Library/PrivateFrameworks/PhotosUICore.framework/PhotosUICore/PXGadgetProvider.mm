@@ -1,25 +1,25 @@
 @interface PXGadgetProvider
-- (BOOL)gadget:(id)a3 transitionToViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (BOOL)gadget:(id)gadget transitionToViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (PXGadgetDelegate)nextGadgetResponder;
 - (PXGadgetProvider)init;
-- (PXGadgetProvider)initWithIdentifier:(id)a3;
+- (PXGadgetProvider)initWithIdentifier:(id)identifier;
 - (PXGadgetProviderDelegate)delegate;
-- (id)gadgetViewControllerHostingGadget:(id)a3;
-- (id)presentationEnvironmentForGadget:(id)a3;
+- (id)gadgetViewControllerHostingGadget:(id)gadget;
+- (id)presentationEnvironmentForGadget:(id)gadget;
 - (unint64_t)estimatedNumberOfGadgets;
-- (void)_teardownGadget:(id)a3;
+- (void)_teardownGadget:(id)gadget;
 - (void)_updateIfNeeded;
-- (void)addGadgets:(id)a3;
-- (void)dismissGadgetViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)gadget:(id)a3 animateChanges:(id)a4;
-- (void)gadget:(id)a3 didChange:(unint64_t)a4;
+- (void)addGadgets:(id)gadgets;
+- (void)dismissGadgetViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)gadget:(id)gadget animateChanges:(id)changes;
+- (void)gadget:(id)gadget didChange:(unint64_t)change;
 - (void)generateGadgets;
-- (void)insertGadgets:(id)a3 atIndexes:(id)a4;
-- (void)performChanges:(id)a3;
-- (void)presentGadgetViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)insertGadgets:(id)gadgets atIndexes:(id)indexes;
+- (void)performChanges:(id)changes;
+- (void)presentGadgetViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)removeAllGadgets;
-- (void)removeGadgets:(id)a3;
-- (void)removeGadgetsAtIndexes:(id)a3;
+- (void)removeGadgets:(id)gadgets;
+- (void)removeGadgetsAtIndexes:(id)indexes;
 @end
 
 @implementation PXGadgetProvider
@@ -38,44 +38,44 @@
   return WeakRetained;
 }
 
-- (id)presentationEnvironmentForGadget:(id)a3
+- (id)presentationEnvironmentForGadget:(id)gadget
 {
-  v4 = a3;
-  v5 = [(PXGadgetProvider *)self nextGadgetResponder];
-  v6 = [v5 presentationEnvironmentForGadget:v4];
+  gadgetCopy = gadget;
+  nextGadgetResponder = [(PXGadgetProvider *)self nextGadgetResponder];
+  v6 = [nextGadgetResponder presentationEnvironmentForGadget:gadgetCopy];
 
   return v6;
 }
 
-- (void)dismissGadgetViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissGadgetViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXGadgetProvider *)self nextGadgetResponder];
-  [v10 dismissGadgetViewController:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  nextGadgetResponder = [(PXGadgetProvider *)self nextGadgetResponder];
+  [nextGadgetResponder dismissGadgetViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)presentGadgetViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentGadgetViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXGadgetProvider *)self nextGadgetResponder];
-  [v10 presentGadgetViewController:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  nextGadgetResponder = [(PXGadgetProvider *)self nextGadgetResponder];
+  [nextGadgetResponder presentGadgetViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (BOOL)gadget:(id)a3 transitionToViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (BOOL)gadget:(id)gadget transitionToViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(PXGadgetProvider *)self nextGadgetResponder];
-  v14 = v13;
-  if (v13)
+  animatedCopy = animated;
+  gadgetCopy = gadget;
+  controllerCopy = controller;
+  completionCopy = completion;
+  nextGadgetResponder = [(PXGadgetProvider *)self nextGadgetResponder];
+  v14 = nextGadgetResponder;
+  if (nextGadgetResponder)
   {
-    v15 = [v13 gadget:v10 transitionToViewController:v11 animated:v7 completion:v12];
+    v15 = [nextGadgetResponder gadget:gadgetCopy transitionToViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 
   else
@@ -86,31 +86,31 @@
   return v15;
 }
 
-- (void)gadget:(id)a3 didChange:(unint64_t)a4
+- (void)gadget:(id)gadget didChange:(unint64_t)change
 {
-  v6 = a3;
-  v7 = v6;
-  if ((a4 & 0x20) != 0)
+  gadgetCopy = gadget;
+  v7 = gadgetCopy;
+  if ((change & 0x20) != 0)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __37__PXGadgetProvider_gadget_didChange___block_invoke;
     v13[3] = &unk_1E773EAE0;
-    v14 = v6;
+    v14 = gadgetCopy;
     [(PXGadgetProvider *)self performChanges:v13];
   }
 
-  v8 = [(PXGadgetProvider *)self nextGadgetResponder];
-  if (v8)
+  nextGadgetResponder = [(PXGadgetProvider *)self nextGadgetResponder];
+  if (nextGadgetResponder)
   {
-    v9 = v8;
-    v10 = [(PXGadgetProvider *)self nextGadgetResponder];
+    v9 = nextGadgetResponder;
+    nextGadgetResponder2 = [(PXGadgetProvider *)self nextGadgetResponder];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(PXGadgetProvider *)self nextGadgetResponder];
-      [v12 gadget:v7 didChange:a4];
+      nextGadgetResponder3 = [(PXGadgetProvider *)self nextGadgetResponder];
+      [nextGadgetResponder3 gadget:v7 didChange:change];
     }
   }
 }
@@ -125,33 +125,33 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
   [v3 removeGadgets:{v4, v5, v6}];
 }
 
-- (void)gadget:(id)a3 animateChanges:(id)a4
+- (void)gadget:(id)gadget animateChanges:(id)changes
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(PXGadgetProvider *)self nextGadgetResponder];
-  if (v7)
+  gadgetCopy = gadget;
+  changesCopy = changes;
+  nextGadgetResponder = [(PXGadgetProvider *)self nextGadgetResponder];
+  if (nextGadgetResponder)
   {
-    v8 = v7;
-    v9 = [(PXGadgetProvider *)self nextGadgetResponder];
+    v8 = nextGadgetResponder;
+    nextGadgetResponder2 = [(PXGadgetProvider *)self nextGadgetResponder];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(PXGadgetProvider *)self nextGadgetResponder];
-      [v11 gadget:v12 animateChanges:v6];
+      nextGadgetResponder3 = [(PXGadgetProvider *)self nextGadgetResponder];
+      [nextGadgetResponder3 gadget:gadgetCopy animateChanges:changesCopy];
     }
   }
 }
 
-- (id)gadgetViewControllerHostingGadget:(id)a3
+- (id)gadgetViewControllerHostingGadget:(id)gadget
 {
-  v4 = a3;
-  v5 = [(PXGadgetProvider *)self nextGadgetResponder];
-  if (v5 && (v6 = v5, [(PXGadgetProvider *)self nextGadgetResponder], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  gadgetCopy = gadget;
+  nextGadgetResponder = [(PXGadgetProvider *)self nextGadgetResponder];
+  if (nextGadgetResponder && (v6 = nextGadgetResponder, [(PXGadgetProvider *)self nextGadgetResponder], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(PXGadgetProvider *)self nextGadgetResponder];
-    v10 = [v9 gadgetViewControllerHostingGadget:v4];
+    nextGadgetResponder2 = [(PXGadgetProvider *)self nextGadgetResponder];
+    v10 = [nextGadgetResponder2 gadgetViewControllerHostingGadget:gadgetCopy];
   }
 
   else
@@ -162,13 +162,13 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
   return v10;
 }
 
-- (void)_teardownGadget:(id)a3
+- (void)_teardownGadget:(id)gadget
 {
-  v3 = a3;
-  [v3 setDelegate:0];
+  gadgetCopy = gadget;
+  [gadgetCopy setDelegate:0];
   if (objc_opt_respondsToSelector())
   {
-    [v3 gadgetWasDismissed];
+    [gadgetCopy gadgetWasDismissed];
   }
 }
 
@@ -176,17 +176,17 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
 {
   if ([(PXGadgetProvider *)self invalidGadgets])
   {
-    v3 = [(PXGadgetProvider *)self delegate];
-    if (v3)
+    delegate = [(PXGadgetProvider *)self delegate];
+    if (delegate)
     {
-      v4 = v3;
-      v5 = [(PXGadgetProvider *)self delegate];
+      v4 = delegate;
+      delegate2 = [(PXGadgetProvider *)self delegate];
       v6 = objc_opt_respondsToSelector();
 
       if (v6)
       {
-        v7 = [(PXGadgetProvider *)self delegate];
-        [v7 invalidateGadgets];
+        delegate3 = [(PXGadgetProvider *)self delegate];
+        [delegate3 invalidateGadgets];
       }
     }
 
@@ -199,9 +199,9 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
   v27 = *MEMORY[0x1E69E9840];
   if (![(PXGadgetProvider *)self isPerformingChanges])
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = NSStringFromSelector(a2);
-    [v16 handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:206 description:{@"[%@] %@ must be called from a performChanges block.", self, v17}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:206 description:{@"[%@] %@ must be called from a performChanges block.", self, v17}];
   }
 
   v4 = PLUIGetLog();
@@ -213,14 +213,14 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
     _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEBUG, "%@: Removing all gadgets", buf, 0xCu);
   }
 
-  v6 = [(PXGadgetProvider *)self gadgets];
-  if ([v6 count])
+  gadgets = [(PXGadgetProvider *)self gadgets];
+  if ([gadgets count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v6;
+    v7 = gadgets;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v8)
     {
@@ -274,18 +274,18 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)removeGadgetsAtIndexes:(id)a3
+- (void)removeGadgetsAtIndexes:(id)indexes
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  indexesCopy = indexes;
   if (![(PXGadgetProvider *)self isPerformingChanges])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = NSStringFromSelector(a2);
-    [v14 handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:186 description:{@"[%@] %@ must be called from a performChanges block.", self, v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:186 description:{@"[%@] %@ must be called from a performChanges block.", self, v15}];
   }
 
-  v6 = [v5 count];
+  v6 = [indexesCopy count];
   v7 = PLUIGetLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
   if (v6)
@@ -296,20 +296,20 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
       *buf = 138412546;
       v18 = v9;
       v19 = 2112;
-      v20 = v5;
+      v20 = indexesCopy;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEBUG, "%@: Removing gadgets at indexes %@", buf, 0x16u);
     }
 
-    v10 = [(PXGadgetProvider *)self gadgets];
-    v7 = [v10 mutableCopy];
+    gadgets = [(PXGadgetProvider *)self gadgets];
+    v7 = [gadgets mutableCopy];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __43__PXGadgetProvider_removeGadgetsAtIndexes___block_invoke;
     v16[3] = &unk_1E772DE20;
     v16[4] = self;
-    [v7 enumerateObjectsAtIndexes:v5 options:0 usingBlock:v16];
-    [v7 removeObjectsAtIndexes:v5];
+    [v7 enumerateObjectsAtIndexes:indexesCopy options:0 usingBlock:v16];
+    [v7 removeObjectsAtIndexes:indexesCopy];
     [(PXGadgetProvider *)self setGadgets:v7];
     v11 = PLUIGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -318,7 +318,7 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
       *buf = 138412546;
       v18 = v12;
       v19 = 2112;
-      v20 = v5;
+      v20 = indexesCopy;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEBUG, "%@: Removed gadgets at indexes %@", buf, 0x16u);
     }
 
@@ -334,18 +334,18 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)removeGadgets:(id)a3
+- (void)removeGadgets:(id)gadgets
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  gadgetsCopy = gadgets;
   if (![(PXGadgetProvider *)self isPerformingChanges])
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = NSStringFromSelector(a2);
-    [v23 handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:155 description:{@"[%@] %@ must be called from a performChanges block.", self, v24}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:155 description:{@"[%@] %@ must be called from a performChanges block.", self, v24}];
   }
 
-  v6 = [v5 count];
+  v6 = [gadgetsCopy count];
   v7 = PLUIGetLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
   if (v6)
@@ -356,17 +356,17 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
       *buf = 138412546;
       v31 = v9;
       v32 = 2112;
-      v33 = v5;
+      v33 = gadgetsCopy;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEBUG, "%@: Removing gadgets %@", buf, 0x16u);
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSObject count](v5, "count")}];
-    v10 = [(PXGadgetProvider *)self gadgets];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSObject count](gadgetsCopy, "count")}];
+    gadgets = [(PXGadgetProvider *)self gadgets];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v11 = v5;
+    v11 = gadgetsCopy;
     v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v12)
     {
@@ -382,7 +382,7 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
           }
 
           v16 = *(*(&v25 + 1) + 8 * i);
-          if ([v10 containsObject:v16])
+          if ([gadgets containsObject:v16])
           {
             [v7 addObject:v16];
             [(PXGadgetProvider *)self _teardownGadget:v16];
@@ -397,8 +397,8 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
 
     if ([v7 count])
     {
-      v17 = [(PXGadgetProvider *)self gadgets];
-      v18 = [v17 mutableCopy];
+      gadgets2 = [(PXGadgetProvider *)self gadgets];
+      v18 = [gadgets2 mutableCopy];
 
       [v18 removeObjectsInArray:v7];
       [(PXGadgetProvider *)self setGadgets:v18];
@@ -438,25 +438,25 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)insertGadgets:(id)a3 atIndexes:(id)a4
+- (void)insertGadgets:(id)gadgets atIndexes:(id)indexes
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  gadgetsCopy = gadgets;
+  indexesCopy = indexes;
   if (![(PXGadgetProvider *)self isPerformingChanges])
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v26 = NSStringFromSelector(a2);
-    [v25 handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:116 description:{@"[%@] %@ must be called from a performChanges block.", self, v26}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:116 description:{@"[%@] %@ must be called from a performChanges block.", self, v26}];
   }
 
-  v9 = [v7 count];
-  if ([v7 count])
+  v9 = [gadgetsCopy count];
+  if ([gadgetsCopy count])
   {
-    if (v9 != [v8 count])
+    if (v9 != [indexesCopy count])
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"gadgetCount == indexes.count"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"gadgetCount == indexes.count"}];
     }
 
     v10 = PLUIGetLog();
@@ -466,41 +466,41 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
       *buf = 138412802;
       v31 = v11;
       v32 = 2112;
-      v33 = v7;
+      v33 = gadgetsCopy;
       v34 = 2112;
-      v35 = v8;
+      v35 = indexesCopy;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEBUG, "%@: Inserting Gadgets %@ at indexes %@", buf, 0x20u);
     }
 
     aSelector = a2;
 
-    v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSObject count](v7, "count")}];
-    v13 = [v8 firstIndex];
+    v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSObject count](gadgetsCopy, "count")}];
+    firstIndex = [indexesCopy firstIndex];
     v14 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    v15 = [(PXGadgetProvider *)self gadgets];
-    v16 = [v15 mutableCopy];
+    gadgets = [(PXGadgetProvider *)self gadgets];
+    v16 = [gadgets mutableCopy];
 
     if (v9)
     {
       for (i = 0; i != v9; ++i)
       {
-        v18 = [v7 objectAtIndexedSubscript:i];
+        v18 = [gadgetsCopy objectAtIndexedSubscript:i];
         if (([v16 containsObject:v18] & 1) == 0)
         {
           [v12 addObject:v18];
-          [v14 addIndex:v13];
+          [v14 addIndex:firstIndex];
           [v18 setDelegate:self];
         }
 
-        v13 = [v8 indexGreaterThanIndex:v13];
+        firstIndex = [indexesCopy indexGreaterThanIndex:firstIndex];
       }
     }
 
     v19 = [v12 count];
     if (v19 != [v14 count])
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:aSelector object:self file:@"PXGadgetProvider.m" lineNumber:142 description:@"number of gadgets to insert does not match the number of indexes specified"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:aSelector object:self file:@"PXGadgetProvider.m" lineNumber:142 description:@"number of gadgets to insert does not match the number of indexes specified"];
     }
 
     if ([v12 count])
@@ -549,18 +549,18 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)addGadgets:(id)a3
+- (void)addGadgets:(id)gadgets
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  gadgetsCopy = gadgets;
   if (![(PXGadgetProvider *)self isPerformingChanges])
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = NSStringFromSelector(a2);
-    [v24 handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:87 description:{@"[%@] %@ must be called from a performChanges block.", self, v25}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:87 description:{@"[%@] %@ must be called from a performChanges block.", self, v25}];
   }
 
-  v6 = [v5 count];
+  v6 = [gadgetsCopy count];
   v7 = PLUIGetLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
   if (v6)
@@ -571,17 +571,17 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
       *buf = 138412546;
       v32 = v9;
       v33 = 2112;
-      v34 = v5;
+      v34 = gadgetsCopy;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEBUG, "%@: Adding Gadgets %@", buf, 0x16u);
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSObject count](v5, "count")}];
-    v10 = [(PXGadgetProvider *)self gadgets];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSObject count](gadgetsCopy, "count")}];
+    gadgets = [(PXGadgetProvider *)self gadgets];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = v5;
+    v11 = gadgetsCopy;
     v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v12)
     {
@@ -597,7 +597,7 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
           }
 
           v16 = *(*(&v26 + 1) + 8 * i);
-          if (([v10 containsObject:v16] & 1) == 0)
+          if (([gadgets containsObject:v16] & 1) == 0)
           {
             [v7 addObject:v16];
             [v16 setDelegate:self];
@@ -612,8 +612,8 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
 
     if ([v7 count])
     {
-      v17 = [(PXGadgetProvider *)self gadgets];
-      v18 = [v17 arrayByAddingObjectsFromArray:v7];
+      gadgets2 = [(PXGadgetProvider *)self gadgets];
+      v18 = [gadgets2 arrayByAddingObjectsFromArray:v7];
       [(PXGadgetProvider *)self setGadgets:v18];
 
       v19 = PLUIGetLog();
@@ -652,17 +652,17 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v5 = a3;
-  v4 = [(PXGadgetProvider *)self isPerformingChanges];
+  changesCopy = changes;
+  isPerformingChanges = [(PXGadgetProvider *)self isPerformingChanges];
   [(PXGadgetProvider *)self setIsPerformingChanges:1];
-  if (v5)
+  if (changesCopy)
   {
-    v5[2](v5, self);
+    changesCopy[2](changesCopy, self);
   }
 
-  [(PXGadgetProvider *)self setIsPerformingChanges:v4];
+  [(PXGadgetProvider *)self setIsPerformingChanges:isPerformingChanges];
   if (![(PXGadgetProvider *)self isPerformingChanges])
   {
     [(PXGadgetProvider *)self _updateIfNeeded];
@@ -671,31 +671,31 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
 
 - (void)generateGadgets
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:70 description:{@"Method %s is a responsibility of subclass %@", "-[PXGadgetProvider generateGadgets]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:70 description:{@"Method %s is a responsibility of subclass %@", "-[PXGadgetProvider generateGadgets]", v6}];
 
   abort();
 }
 
 - (unint64_t)estimatedNumberOfGadgets
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:66 description:{@"Method %s is a responsibility of subclass %@", "-[PXGadgetProvider estimatedNumberOfGadgets]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:66 description:{@"Method %s is a responsibility of subclass %@", "-[PXGadgetProvider estimatedNumberOfGadgets]", v6}];
 
   abort();
 }
 
-- (PXGadgetProvider)initWithIdentifier:(id)a3
+- (PXGadgetProvider)initWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetProvider.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v13.receiver = self;
@@ -704,7 +704,7 @@ void __37__PXGadgetProvider_gadget_didChange___block_invoke(uint64_t a1, void *a
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_identifier, a3);
+    objc_storeStrong(&v7->_identifier, identifier);
     v9 = objc_alloc_init(MEMORY[0x1E695DEC8]);
     gadgets = v8->_gadgets;
     v8->_gadgets = v9;

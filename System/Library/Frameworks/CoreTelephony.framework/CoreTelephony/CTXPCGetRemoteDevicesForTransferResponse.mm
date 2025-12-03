@@ -1,20 +1,20 @@
 @interface CTXPCGetRemoteDevicesForTransferResponse
 + (id)allowedClassesForArguments;
 - (CTRemoteDeviceList)devices;
-- (CTXPCGetRemoteDevicesForTransferResponse)initWithDevices:(id)a3;
+- (CTXPCGetRemoteDevicesForTransferResponse)initWithDevices:(id)devices;
 @end
 
 @implementation CTXPCGetRemoteDevicesForTransferResponse
 
-- (CTXPCGetRemoteDevicesForTransferResponse)initWithDevices:(id)a3
+- (CTXPCGetRemoteDevicesForTransferResponse)initWithDevices:(id)devices
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  devicesCopy = devices;
+  v5 = devicesCopy;
+  if (devicesCopy)
   {
     v12 = @"devices";
-    v13[0] = v4;
+    v13[0] = devicesCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v10.receiver = self;
     v10.super_class = CTXPCGetRemoteDevicesForTransferResponse;
@@ -34,8 +34,8 @@
 
 - (CTRemoteDeviceList)devices
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"devices"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"devices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -52,7 +52,7 @@
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCGetRemoteDevicesForTransferResponse;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];

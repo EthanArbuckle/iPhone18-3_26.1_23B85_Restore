@@ -1,13 +1,13 @@
 @interface OfficeImportCompatibility
-+ (id)searchableAttributesForOfficeFile:(id)a3;
++ (id)searchableAttributesForOfficeFile:(id)file;
 @end
 
 @implementation OfficeImportCompatibility
 
-+ (id)searchableAttributesForOfficeFile:(id)a3
++ (id)searchableAttributesForOfficeFile:(id)file
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  fileCopy = file;
   if (!sub_232CE5334())
   {
 LABEL_11:
@@ -47,12 +47,12 @@ LABEL_11:
   }
 
   v14 = 0;
-  v10 = objc_msgSend_searchableAttributesForOfficeFileAtURL_error_(v6, v7, v3, &v14, v8);
+  v10 = objc_msgSend_searchableAttributesForOfficeFileAtURL_error_(v6, v7, fileCopy, &v14, v8);
   v11 = v14;
   if (!v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    *&buf[4] = v3;
+    *&buf[4] = fileCopy;
     *&buf[12] = 2112;
     *&buf[14] = v11;
     _os_log_error_impl(&dword_232B02000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Could not extract metadata from %@: error %@", buf, 0x16u);

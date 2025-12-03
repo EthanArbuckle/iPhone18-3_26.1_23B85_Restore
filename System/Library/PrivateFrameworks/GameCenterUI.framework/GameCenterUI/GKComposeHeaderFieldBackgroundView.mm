@@ -2,7 +2,7 @@
 - (GKComposeHeaderFieldBackgroundView)init;
 - (void)layoutSubviews;
 - (void)resetBackgroundImage;
-- (void)setLocation:(unsigned int)a3;
+- (void)setLocation:(unsigned int)location;
 @end
 
 @implementation GKComposeHeaderFieldBackgroundView
@@ -26,18 +26,18 @@
 
 - (void)resetBackgroundImage
 {
-  v3 = [MEMORY[0x277D0C868] sharedPalette];
-  v4 = [v3 viewBackgroundColor];
-  [(GKComposeHeaderFieldBackgroundView *)self setBackgroundColor:v4];
+  mEMORY[0x277D0C868] = [MEMORY[0x277D0C868] sharedPalette];
+  viewBackgroundColor = [mEMORY[0x277D0C868] viewBackgroundColor];
+  [(GKComposeHeaderFieldBackgroundView *)self setBackgroundColor:viewBackgroundColor];
 
   [(GKComposeHeaderFieldBackgroundView *)self setImage:0];
 }
 
-- (void)setLocation:(unsigned int)a3
+- (void)setLocation:(unsigned int)location
 {
-  if (self->_location != a3)
+  if (self->_location != location)
   {
-    self->_location = a3;
+    self->_location = location;
     [(GKComposeHeaderFieldBackgroundView *)self setImage:0];
 
     [(GKComposeHeaderFieldBackgroundView *)self setNeedsLayout];
@@ -49,9 +49,9 @@
   v4.receiver = self;
   v4.super_class = GKComposeHeaderFieldBackgroundView;
   [(GKComposeHeaderFieldBackgroundView *)&v4 layoutSubviews];
-  v3 = [(GKComposeHeaderFieldBackgroundView *)self image];
+  image = [(GKComposeHeaderFieldBackgroundView *)self image];
 
-  if (!v3)
+  if (!image)
   {
     [(GKComposeHeaderFieldBackgroundView *)self resetBackgroundImage];
   }

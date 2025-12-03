@@ -1,31 +1,31 @@
 @interface SBHSelectedApplicationDataSource
 + (id)homeScreenService;
 - (SBHSelectedApplicationDataSource)init;
-- (id)applicationPlaceholderWithBundleIdentifier:(id)a3;
-- (id)applicationWithBundleIdentifier:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)applicationPlaceholderWithBundleIdentifier:(id)identifier;
+- (id)applicationWithBundleIdentifier:(id)identifier;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_lock_beginObservingInstallProgress:(id)a3 forBundleIdentifier:(id)a4;
-- (void)_lock_endObservingInstallProgress:(id)a3;
-- (void)addApplicationInfoProviderObserver:(id)a3;
-- (void)addApplicationsForBundleIdentifiers:(id)a3 forcePlaceholders:(BOOL)a4;
-- (void)addIconModelApplicationDataSourceObserver:(id)a3;
-- (void)applicationInstallsDidChange:(id)a3;
-- (void)applicationInstallsDidStart:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)beginTrackingApplicationsWithBundleIdentifiers:(id)a3;
+- (void)_lock_beginObservingInstallProgress:(id)progress forBundleIdentifier:(id)identifier;
+- (void)_lock_endObservingInstallProgress:(id)progress;
+- (void)addApplicationInfoProviderObserver:(id)observer;
+- (void)addApplicationsForBundleIdentifiers:(id)identifiers forcePlaceholders:(BOOL)placeholders;
+- (void)addIconModelApplicationDataSourceObserver:(id)observer;
+- (void)applicationInstallsDidChange:(id)change;
+- (void)applicationInstallsDidStart:(id)start;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)beginTrackingApplicationsWithBundleIdentifiers:(id)identifiers;
 - (void)dealloc;
 - (void)endTrackingAllApplications;
-- (void)endTrackingApplicationsWithBundleIdentifiers:(id)a3;
-- (void)homeScreenService:(id)a3 applicationIconInfoChangedForBundleIdentifiers:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeApplicationsForBundleIdentifiers:(id)a3;
-- (void)uninstallApplicationWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)uninstallApplicationWithBundleIdentifier:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)updateStateOfPlaceholder:(id)a3 fromProgress:(id)a4;
-- (void)updateStateOfPlaceholder:(id)a3 withInstallState:(unint64_t)a4 installPhase:(unint64_t)a5 installProgress:(double)a6;
+- (void)endTrackingApplicationsWithBundleIdentifiers:(id)identifiers;
+- (void)homeScreenService:(id)service applicationIconInfoChangedForBundleIdentifiers:(id)identifiers;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeApplicationsForBundleIdentifiers:(id)identifiers;
+- (void)uninstallApplicationWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)uninstallApplicationWithBundleIdentifier:(id)identifier options:(unint64_t)options completion:(id)completion;
+- (void)updateStateOfPlaceholder:(id)placeholder fromProgress:(id)progress;
+- (void)updateStateOfPlaceholder:(id)placeholder withInstallState:(unint64_t)state installPhase:(unint64_t)phase installProgress:(double)progress;
 @end
 
 @implementation SBHSelectedApplicationDataSource
@@ -49,9 +49,9 @@
     applicationPlaceholders = v2->_applicationPlaceholders;
     v2->_applicationPlaceholders = v7;
 
-    v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     installProgressBundleIdentifiers = v2->_installProgressBundleIdentifiers;
-    v2->_installProgressBundleIdentifiers = v9;
+    v2->_installProgressBundleIdentifiers = strongToStrongObjectsMapTable;
 
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     bundleIdentifierToInstallProgresses = v2->_bundleIdentifierToInstallProgresses;
@@ -131,31 +131,31 @@ uint64_t __53__SBHSelectedApplicationDataSource_homeScreenService__block_invoke(
 
   os_unfair_lock_unlock(&self->_installProgressBundleIdentifiersLock);
   [(BSInvalidatable *)self->_appInfoObserverAssertion invalidate];
-  v11 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v11 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v12.receiver = self;
   v12.super_class = SBHSelectedApplicationDataSource;
   [(SBHSelectedApplicationDataSource *)&v12 dealloc];
 }
 
-- (void)beginTrackingApplicationsWithBundleIdentifiers:(id)a3
+- (void)beginTrackingApplicationsWithBundleIdentifiers:(id)identifiers
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = SBLogSelectedApplicationDataSource();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = identifiersCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "Begin tracking %@", buf, 0xCu);
   }
 
   BSDispatchQueueAssertMain();
   v6 = [(NSMutableSet *)self->_trackedApplicationBundleIdentifiers count];
-  v7 = [v4 mutableCopy];
-  v8 = [(NSMutableSet *)self->_trackedApplicationBundleIdentifiers allObjects];
-  [v7 removeObjectsInArray:v8];
+  v7 = [identifiersCopy mutableCopy];
+  allObjects = [(NSMutableSet *)self->_trackedApplicationBundleIdentifiers allObjects];
+  [v7 removeObjectsInArray:allObjects];
 
   v20 = 0u;
   v21 = 0u;
@@ -190,41 +190,41 @@ uint64_t __53__SBHSelectedApplicationDataSource_homeScreenService__block_invoke(
   [(SBHSelectedApplicationDataSource *)self addApplicationsForBundleIdentifiers:v9 forcePlaceholders:0];
   if (!v6)
   {
-    v14 = [MEMORY[0x1E6963608] defaultWorkspace];
-    [v14 addObserver:self];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    [defaultWorkspace addObserver:self];
 
-    v15 = [(SBHSelectedApplicationDataSource *)self appInfoObserverAssertion];
+    appInfoObserverAssertion = [(SBHSelectedApplicationDataSource *)self appInfoObserverAssertion];
 
-    if (!v15)
+    if (!appInfoObserverAssertion)
     {
-      v16 = [objc_opt_class() homeScreenService];
-      v17 = [v16 addIconBadgeValueObserver:self];
+      homeScreenService = [objc_opt_class() homeScreenService];
+      v17 = [homeScreenService addIconBadgeValueObserver:self];
 
       [(SBHSelectedApplicationDataSource *)self setAppInfoObserverAssertion:v17];
     }
   }
 }
 
-- (void)endTrackingApplicationsWithBundleIdentifiers:(id)a3
+- (void)endTrackingApplicationsWithBundleIdentifiers:(id)identifiers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = SBLogSelectedApplicationDataSource();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v4;
+    v20 = identifiersCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "End tracking %@", buf, 0xCu);
   }
 
   BSDispatchQueueAssertMain();
   v6 = [(NSMutableSet *)self->_trackedApplicationBundleIdentifiers count];
-  [(SBHSelectedApplicationDataSource *)self removeApplicationsForBundleIdentifiers:v4];
+  [(SBHSelectedApplicationDataSource *)self removeApplicationsForBundleIdentifiers:identifiersCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v4;
+  v7 = identifiersCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -252,11 +252,11 @@ uint64_t __53__SBHSelectedApplicationDataSource_homeScreenService__block_invoke(
 
   if (v6 && ![(NSMutableSet *)self->_trackedApplicationBundleIdentifiers count])
   {
-    v12 = [MEMORY[0x1E6963608] defaultWorkspace];
-    [v12 removeObserver:self];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    [defaultWorkspace removeObserver:self];
 
-    v13 = [(SBHSelectedApplicationDataSource *)self appInfoObserverAssertion];
-    [v13 invalidate];
+    appInfoObserverAssertion = [(SBHSelectedApplicationDataSource *)self appInfoObserverAssertion];
+    [appInfoObserverAssertion invalidate];
 
     [(SBHSelectedApplicationDataSource *)self setAppInfoObserverAssertion:0];
   }
@@ -265,41 +265,41 @@ uint64_t __53__SBHSelectedApplicationDataSource_homeScreenService__block_invoke(
 - (void)endTrackingAllApplications
 {
   BSDispatchQueueAssertMain();
-  v3 = [(NSMutableSet *)self->_trackedApplicationBundleIdentifiers allObjects];
-  [(SBHSelectedApplicationDataSource *)self endTrackingApplicationsWithBundleIdentifiers:v3];
+  allObjects = [(NSMutableSet *)self->_trackedApplicationBundleIdentifiers allObjects];
+  [(SBHSelectedApplicationDataSource *)self endTrackingApplicationsWithBundleIdentifiers:allObjects];
 }
 
-- (id)applicationWithBundleIdentifier:(id)a3
+- (id)applicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   BSDispatchQueueAssertMain();
-  v5 = [(NSMutableDictionary *)self->_applications objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_applications objectForKey:identifierCopy];
 
   return v5;
 }
 
-- (id)applicationPlaceholderWithBundleIdentifier:(id)a3
+- (id)applicationPlaceholderWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   BSDispatchQueueAssertMain();
-  v5 = [(NSMutableDictionary *)self->_applicationPlaceholders objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_applicationPlaceholders objectForKey:identifierCopy];
 
   return v5;
 }
 
-- (void)uninstallApplicationWithBundleIdentifier:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)uninstallApplicationWithBundleIdentifier:(id)identifier options:(unint64_t)options completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  if (([(NSMutableSet *)self->_trackedApplicationBundleIdentifiers containsObject:v8]& 1) != 0)
+  if (([(NSMutableSet *)self->_trackedApplicationBundleIdentifiers containsObject:identifierCopy]& 1) != 0)
   {
     v10 = SBLogSelectedApplicationDataSource();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = identifierCopy;
       _os_log_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_DEFAULT, "Requesting uninstallation of %@", &buf, 0xCu);
     }
 
@@ -322,9 +322,9 @@ uint64_t __53__SBHSelectedApplicationDataSource_homeScreenService__block_invoke(
     v12 = v11;
     _Block_object_dispose(&v19, 8);
     v13 = objc_alloc_init(v11);
-    [v13 setRequestUserConfirmation:a4 & 1];
-    [v13 setShowArchiveOption:(a4 >> 1) & 1];
-    [v13 setShowDemotionOption:(a4 >> 2) & 1];
+    [v13 setRequestUserConfirmation:options & 1];
+    [v13 setShowArchiveOption:(options >> 1) & 1];
+    [v13 setShowDemotionOption:(options >> 2) & 1];
     v19 = 0;
     v20 = &v19;
     v21 = 0x2050000000;
@@ -347,14 +347,14 @@ uint64_t __53__SBHSelectedApplicationDataSource_homeScreenService__block_invoke(
     v16[1] = 3221225472;
     v16[2] = __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleIdentifier_options_completion___block_invoke;
     v16[3] = &unk_1E808E6A0;
-    v17 = v8;
-    v18 = v9;
+    v17 = identifierCopy;
+    v18 = completionCopy;
     [v14 uninstallAppWithBundleID:v17 options:v13 completion:v16];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, 3, 0);
+    (*(completionCopy + 2))(completionCopy, 3, 0);
   }
 }
 
@@ -414,16 +414,16 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
   return result;
 }
 
-- (void)addApplicationsForBundleIdentifiers:(id)a3 forcePlaceholders:(BOOL)a4
+- (void)addApplicationsForBundleIdentifiers:(id)identifiers forcePlaceholders:(BOOL)placeholders
 {
-  obj = a4;
+  obj = placeholders;
   v64 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = SBLogSelectedApplicationDataSource();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v60 = v5;
+    v60 = identifiersCopy;
     v61 = 1024;
     LODWORD(v62) = obj;
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "Will add applications for %@, force placeholders: %{BOOL}u", buf, 0x12u);
@@ -434,7 +434,7 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v7 = v5;
+  v7 = identifiersCopy;
   v8 = [(SBHSimpleApplication *)v7 countByEnumeratingWithState:&v53 objects:v63 count:16];
   if (v8)
   {
@@ -507,11 +507,11 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
               }
 
               v22 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v15];
-              v23 = [v22 installProgress];
-              if (v23)
+              installProgress = [v22 installProgress];
+              if (installProgress)
               {
                 os_unfair_lock_lock(&self->_installProgressBundleIdentifiersLock);
-                [(SBHSelectedApplicationDataSource *)self _lock_beginObservingInstallProgress:v23 forBundleIdentifier:v15];
+                [(SBHSelectedApplicationDataSource *)self _lock_beginObservingInstallProgress:installProgress forBundleIdentifier:v15];
                 os_unfair_lock_unlock(&self->_installProgressBundleIdentifiersLock);
               }
 
@@ -679,15 +679,15 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
   }
 }
 
-- (void)removeApplicationsForBundleIdentifiers:(id)a3
+- (void)removeApplicationsForBundleIdentifiers:(id)identifiers
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = SBLogSelectedApplicationDataSource();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v46 = v4;
+    v46 = identifiersCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "Will remove applications for %@", buf, 0xCu);
   }
 
@@ -696,7 +696,7 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v4;
+  obj = identifiersCopy;
   v6 = [obj countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v6)
   {
@@ -842,16 +842,16 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
   }
 }
 
-- (void)_lock_beginObservingInstallProgress:(id)a3 forBundleIdentifier:(id)a4
+- (void)_lock_beginObservingInstallProgress:(id)progress forBundleIdentifier:(id)identifier
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  progressCopy = progress;
+  identifierCopy = identifier;
   BSDispatchQueueAssertMain();
   installProgressBundleIdentifiers = self->_installProgressBundleIdentifiers;
   if (installProgressBundleIdentifiers)
   {
-    v9 = [(NSMapTable *)installProgressBundleIdentifiers objectForKey:v6];
+    v9 = [(NSMapTable *)installProgressBundleIdentifiers objectForKey:progressCopy];
 
     if (!v9)
     {
@@ -859,8 +859,8 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v10 = [objc_opt_class() keyPathsForObservingInstallProgress];
-      v11 = [v10 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      keyPathsForObservingInstallProgress = [objc_opt_class() keyPathsForObservingInstallProgress];
+      v11 = [keyPathsForObservingInstallProgress countByEnumeratingWithState:&v33 objects:v39 count:16];
       if (v11)
       {
         v12 = v11;
@@ -872,14 +872,14 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
           {
             if (*v34 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(keyPathsForObservingInstallProgress);
             }
 
-            [v6 addObserver:self forKeyPath:*(*(&v33 + 1) + 8 * v14++) options:0 context:305926858];
+            [progressCopy addObserver:self forKeyPath:*(*(&v33 + 1) + 8 * v14++) options:0 context:305926858];
           }
 
           while (v12 != v14);
-          v12 = [v10 countByEnumeratingWithState:&v33 objects:v39 count:16];
+          v12 = [keyPathsForObservingInstallProgress countByEnumeratingWithState:&v33 objects:v39 count:16];
         }
 
         while (v12);
@@ -889,8 +889,8 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v15 = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallState];
-      v16 = [v15 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      keyPathsForValuesAffectingInstallState = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallState];
+      v16 = [keyPathsForValuesAffectingInstallState countByEnumeratingWithState:&v29 objects:v38 count:16];
       if (v16)
       {
         v17 = v16;
@@ -902,14 +902,14 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
           {
             if (*v30 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(keyPathsForValuesAffectingInstallState);
             }
 
-            [v6 addObserver:self forKeyPath:*(*(&v29 + 1) + 8 * v19++) options:0 context:305926858];
+            [progressCopy addObserver:self forKeyPath:*(*(&v29 + 1) + 8 * v19++) options:0 context:305926858];
           }
 
           while (v17 != v19);
-          v17 = [v15 countByEnumeratingWithState:&v29 objects:v38 count:16];
+          v17 = [keyPathsForValuesAffectingInstallState countByEnumeratingWithState:&v29 objects:v38 count:16];
         }
 
         while (v17);
@@ -919,8 +919,8 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v20 = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallPhase];
-      v21 = [v20 countByEnumeratingWithState:&v25 objects:v37 count:16];
+      keyPathsForValuesAffectingInstallPhase = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallPhase];
+      v21 = [keyPathsForValuesAffectingInstallPhase countByEnumeratingWithState:&v25 objects:v37 count:16];
       if (v21)
       {
         v22 = v21;
@@ -932,35 +932,35 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
           {
             if (*v26 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(keyPathsForValuesAffectingInstallPhase);
             }
 
-            [v6 addObserver:self forKeyPath:*(*(&v25 + 1) + 8 * v24++) options:0 context:305926858];
+            [progressCopy addObserver:self forKeyPath:*(*(&v25 + 1) + 8 * v24++) options:0 context:305926858];
           }
 
           while (v22 != v24);
-          v22 = [v20 countByEnumeratingWithState:&v25 objects:v37 count:16];
+          v22 = [keyPathsForValuesAffectingInstallPhase countByEnumeratingWithState:&v25 objects:v37 count:16];
         }
 
         while (v22);
       }
 
-      [(NSMapTable *)self->_installProgressBundleIdentifiers setObject:v7 forKey:v6];
-      [(NSMutableDictionary *)self->_bundleIdentifierToInstallProgresses setObject:v6 forKey:v7];
+      [(NSMapTable *)self->_installProgressBundleIdentifiers setObject:identifierCopy forKey:progressCopy];
+      [(NSMutableDictionary *)self->_bundleIdentifierToInstallProgresses setObject:progressCopy forKey:identifierCopy];
     }
   }
 }
 
-- (void)_lock_endObservingInstallProgress:(id)a3
+- (void)_lock_endObservingInstallProgress:(id)progress
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  progressCopy = progress;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [objc_opt_class() keyPathsForObservingInstallProgress];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
+  keyPathsForObservingInstallProgress = [objc_opt_class() keyPathsForObservingInstallProgress];
+  v6 = [keyPathsForObservingInstallProgress countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v6)
   {
     v7 = v6;
@@ -972,14 +972,14 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyPathsForObservingInstallProgress);
         }
 
-        [v4 removeObserver:self forKeyPath:*(*(&v29 + 1) + 8 * v9++) context:305926858];
+        [progressCopy removeObserver:self forKeyPath:*(*(&v29 + 1) + 8 * v9++) context:305926858];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
+      v7 = [keyPathsForObservingInstallProgress countByEnumeratingWithState:&v29 objects:v35 count:16];
     }
 
     while (v7);
@@ -989,8 +989,8 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallState];
-  v11 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
+  keyPathsForValuesAffectingInstallState = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallState];
+  v11 = [keyPathsForValuesAffectingInstallState countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1002,14 +1002,14 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
       {
         if (*v26 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(keyPathsForValuesAffectingInstallState);
         }
 
-        [v4 removeObserver:self forKeyPath:*(*(&v25 + 1) + 8 * v14++) context:305926858];
+        [progressCopy removeObserver:self forKeyPath:*(*(&v25 + 1) + 8 * v14++) context:305926858];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      v12 = [keyPathsForValuesAffectingInstallState countByEnumeratingWithState:&v25 objects:v34 count:16];
     }
 
     while (v12);
@@ -1019,8 +1019,8 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallPhase];
-  v16 = [v15 countByEnumeratingWithState:&v21 objects:v33 count:16];
+  keyPathsForValuesAffectingInstallPhase = [MEMORY[0x1E696AE38] keyPathsForValuesAffectingInstallPhase];
+  v16 = [keyPathsForValuesAffectingInstallPhase countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1032,58 +1032,58 @@ uint64_t __96__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
       {
         if (*v22 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(keyPathsForValuesAffectingInstallPhase);
         }
 
-        [v4 removeObserver:self forKeyPath:*(*(&v21 + 1) + 8 * v19++) context:305926858];
+        [progressCopy removeObserver:self forKeyPath:*(*(&v21 + 1) + 8 * v19++) context:305926858];
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v21 objects:v33 count:16];
+      v17 = [keyPathsForValuesAffectingInstallPhase countByEnumeratingWithState:&v21 objects:v33 count:16];
     }
 
     while (v17);
   }
 
-  v20 = [(NSMapTable *)self->_installProgressBundleIdentifiers objectForKey:v4];
+  v20 = [(NSMapTable *)self->_installProgressBundleIdentifiers objectForKey:progressCopy];
   if (v20)
   {
     [(NSMutableDictionary *)self->_bundleIdentifierToInstallProgresses removeObjectForKey:v20];
   }
 
-  [(NSMapTable *)self->_installProgressBundleIdentifiers removeObjectForKey:v4];
+  [(NSMapTable *)self->_installProgressBundleIdentifiers removeObjectForKey:progressCopy];
 }
 
-- (void)updateStateOfPlaceholder:(id)a3 fromProgress:(id)a4
+- (void)updateStateOfPlaceholder:(id)placeholder fromProgress:(id)progress
 {
-  v6 = a4;
-  v11 = a3;
-  v7 = [v6 installState];
-  v8 = [v6 installPhase];
-  [v6 fractionCompleted];
+  progressCopy = progress;
+  placeholderCopy = placeholder;
+  installState = [progressCopy installState];
+  installPhase = [progressCopy installPhase];
+  [progressCopy fractionCompleted];
   v10 = v9;
 
-  [(SBHSelectedApplicationDataSource *)self updateStateOfPlaceholder:v11 withInstallState:v7 installPhase:v8 installProgress:v10];
+  [(SBHSelectedApplicationDataSource *)self updateStateOfPlaceholder:placeholderCopy withInstallState:installState installPhase:installPhase installProgress:v10];
 }
 
-- (void)updateStateOfPlaceholder:(id)a3 withInstallState:(unint64_t)a4 installPhase:(unint64_t)a5 installProgress:(double)a6
+- (void)updateStateOfPlaceholder:(id)placeholder withInstallState:(unint64_t)state installPhase:(unint64_t)phase installProgress:(double)progress
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (a4 - 3 >= 2)
+  placeholderCopy = placeholder;
+  if (state - 3 >= 2)
   {
-    if (a4 != 2)
+    if (state != 2)
     {
-      if (a4 == 5 && (BSFloatIsOne() & 1) != 0)
+      if (state == 5 && (BSFloatIsOne() & 1) != 0)
       {
         v10 = 0;
         v11 = 0;
       }
 
-      else if ((a5 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+      else if ((phase & 0xFFFFFFFFFFFFFFFBLL) != 0)
       {
-        v12 = a5 - 1;
-        v13 = a5 == 3;
+        v12 = phase - 1;
+        v13 = phase == 3;
         v10 = 0;
         if (v12 >= 2)
         {
@@ -1126,32 +1126,32 @@ LABEL_13:
   v14 = SBLogSelectedApplicationDataSource();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v9 bundleIdentifier];
+    bundleIdentifier = [placeholderCopy bundleIdentifier];
     v16 = 138413058;
-    v17 = v15;
+    v17 = bundleIdentifier;
     v18 = 2048;
     v19 = v11;
     v20 = 2048;
-    v21 = a6;
+    progressCopy = progress;
     v22 = 1024;
     v23 = v10;
     _os_log_impl(&dword_1BEB18000, v14, OS_LOG_TYPE_DEFAULT, "Updating install progress for %@: state: %li, progress: %f, paused: %{BOOL}u", &v16, 0x26u);
   }
 
-  [v9 updateProgressState:v11 progressPercent:v10 progressPaused:a6];
+  [placeholderCopy updateProgressState:v11 progressPercent:v10 progressPaused:progress];
 }
 
-- (void)applicationInstallsDidStart:(id)a3
+- (void)applicationInstallsDidStart:(id)start
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  startCopy = start;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v3;
+  v6 = startCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -1167,14 +1167,14 @@ LABEL_13:
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 bundleIdentifier];
-        v13 = [v12 copy];
+        bundleIdentifier = [v11 bundleIdentifier];
+        v13 = [bundleIdentifier copy];
 
-        v14 = [v11 installProgress];
-        v15 = v14;
+        installProgress = [v11 installProgress];
+        v15 = installProgress;
         if (v13)
         {
-          v16 = v14 == 0;
+          v16 = installProgress == 0;
         }
 
         else
@@ -1237,10 +1237,10 @@ void __64__SBHSelectedApplicationDataSource_applicationInstallsDidStart___block_
   }
 }
 
-- (void)applicationInstallsDidChange:(id)a3
+- (void)applicationInstallsDidChange:(id)change
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = SBLogSelectedApplicationDataSource();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1248,11 +1248,11 @@ void __64__SBHSelectedApplicationDataSource_applicationInstallsDidStart___block_
     *buf = 138543618;
     v9 = v6;
     v10 = 2112;
-    v11 = v4;
+    v11 = changeCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@:%@", buf, 0x16u);
   }
 
-  v7 = v4;
+  v7 = changeCopy;
   BSDispatchMain();
 }
 
@@ -1298,16 +1298,16 @@ void __65__SBHSelectedApplicationDataSource_applicationInstallsDidChange___block
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  installCopy = install;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = installCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v6)
   {
@@ -1322,10 +1322,10 @@ void __65__SBHSelectedApplicationDataSource_applicationInstallsDidChange___block
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
-        if (v10)
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
+        if (bundleIdentifier)
         {
-          [v4 addObject:v10];
+          [v4 addObject:bundleIdentifier];
         }
       }
 
@@ -1394,16 +1394,16 @@ uint64_t __59__SBHSelectedApplicationDataSource_applicationsDidInstall___block_i
   return [*(a1 + 32) addApplicationsForBundleIdentifiers:*(a1 + 40) forcePlaceholders:0];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  uninstallCopy = uninstall;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = uninstallCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1418,10 +1418,10 @@ uint64_t __59__SBHSelectedApplicationDataSource_applicationsDidInstall___block_i
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
-        if (v10)
+        bundleIdentifier = [*(*(&v12 + 1) + 8 * i) bundleIdentifier];
+        if (bundleIdentifier)
         {
-          [v4 addObject:v10];
+          [v4 addObject:bundleIdentifier];
         }
       }
 
@@ -1453,11 +1453,11 @@ uint64_t __61__SBHSelectedApplicationDataSource_applicationsDidUninstall___block
   return [*(a1 + 40) removeApplicationsForBundleIdentifiers:*(a1 + 32)];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  pathCopy = path;
+  objectCopy = object;
   v11 = SBLogSelectedApplicationDataSource();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1465,13 +1465,13 @@ uint64_t __61__SBHSelectedApplicationDataSource_applicationsDidUninstall___block
     *buf = 138543618;
     v17 = v12;
     v18 = 2112;
-    v19 = v9;
+    v19 = pathCopy;
     _os_log_impl(&dword_1BEB18000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@:%@", buf, 0x16u);
   }
 
-  if (a6 == 305926858)
+  if (context == 305926858)
   {
-    v13 = v10;
+    v13 = objectCopy;
     v14 = SBLogSelectedApplicationDataSource();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -1507,10 +1507,10 @@ uint64_t __83__SBHSelectedApplicationDataSource_observeValueForKeyPath_ofObject_
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (void)homeScreenService:(id)a3 applicationIconInfoChangedForBundleIdentifiers:(id)a4
+- (void)homeScreenService:(id)service applicationIconInfoChangedForBundleIdentifiers:(id)identifiers
 {
-  v5 = a4;
-  v4 = v5;
+  identifiersCopy = identifiers;
+  v4 = identifiersCopy;
   BSDispatchMain();
 }
 
@@ -1551,52 +1551,52 @@ void __101__SBHSelectedApplicationDataSource_homeScreenService_applicationIconIn
   }
 }
 
-- (void)addApplicationInfoProviderObserver:(id)a3
+- (void)addApplicationInfoProviderObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)addIconModelApplicationDataSourceObserver:(id)a3
+- (void)addIconModelApplicationDataSourceObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   oldObservers = self->_oldObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!oldObservers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_oldObservers;
-    self->_oldObservers = v6;
+    self->_oldObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     oldObservers = self->_oldObservers;
   }
 
-  [(NSHashTable *)oldObservers addObject:v4];
+  [(NSHashTable *)oldObservers addObject:observerCopy];
 }
 
-- (void)uninstallApplicationWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)uninstallApplicationWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __88__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleIdentifier_completion___block_invoke;
   v8[3] = &unk_1E808E6F0;
-  v9 = v6;
-  v7 = v6;
-  [(SBHSelectedApplicationDataSource *)self uninstallApplicationWithBundleIdentifier:a3 options:1 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(SBHSelectedApplicationDataSource *)self uninstallApplicationWithBundleIdentifier:identifier options:1 completion:v8];
 }
 
 uint64_t __88__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1610,15 +1610,15 @@ uint64_t __88__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
   return result;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHSelectedApplicationDataSource *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHSelectedApplicationDataSource *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
   v5 = [v4 appendObject:self->_trackedApplicationBundleIdentifiers withName:@"trackedApplicationBundleIdentifiers"];
@@ -1628,10 +1628,10 @@ uint64_t __88__SBHSelectedApplicationDataSource_uninstallApplicationWithBundleId
 
 - (id)succinctDescription
 {
-  v2 = [(SBHSelectedApplicationDataSource *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHSelectedApplicationDataSource *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

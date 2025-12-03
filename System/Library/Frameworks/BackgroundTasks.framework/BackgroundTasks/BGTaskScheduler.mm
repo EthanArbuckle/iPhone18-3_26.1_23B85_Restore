@@ -6,60 +6,60 @@
 + (id)_log;
 + (id)_sharedSchedulerIfExists;
 + (int64_t)supportedResources;
-+ (void)_applicationDidFinishLaunching:(id)a3;
++ (void)_applicationDidFinishLaunching:(id)launching;
 + (void)initialize;
 + (void)load;
 - (BGTaskScheduler)init;
-- (BOOL)_isRunningTaskOfClass:(Class)a3;
-- (BOOL)_unsafe_registerForTaskWithIdentifier:(id)a3 usingQueue:(id)a4 launchHandler:(id)a5;
-- (BOOL)_unsafe_submitTaskRequest:(id)a3 error:(id *)a4;
+- (BOOL)_isRunningTaskOfClass:(Class)class;
+- (BOOL)_unsafe_registerForTaskWithIdentifier:(id)identifier usingQueue:(id)queue launchHandler:(id)handler;
+- (BOOL)_unsafe_submitTaskRequest:(id)request error:(id *)error;
 - (BOOL)registerForTaskWithIdentifier:(NSString *)identifier usingQueue:(dispatch_queue_t)queue launchHandler:(void *)launchHandler;
 - (BOOL)submitTaskRequest:(BGTaskRequest *)taskRequest error:(NSError *)error;
 - (_BGTaskIdentifierRegistry)_identifierRegistry;
 - (id)_init;
-- (id)_queueForRegistration:(id)a3;
+- (id)_queueForRegistration:(id)registration;
 - (id)_runningTasks;
-- (id)_unsafe_createExpirationRequestsForActivities:(id)a3;
-- (id)_unsafe_registrationForIdentifier:(id)a3;
-- (id)_unsafe_taskForActivity:(id)a3;
-- (void)_callExpirationHandlersForActivities:(id)a3 shouldQueue:(BOOL)a4;
-- (void)_callRegisteredHandlersForActivities:(id)a3;
+- (id)_unsafe_createExpirationRequestsForActivities:(id)activities;
+- (id)_unsafe_registrationForIdentifier:(id)identifier;
+- (id)_unsafe_taskForActivity:(id)activity;
+- (void)_callExpirationHandlersForActivities:(id)activities shouldQueue:(BOOL)queue;
+- (void)_callRegisteredHandlersForActivities:(id)activities;
 - (void)_handleAppLaunch;
-- (void)_handleSubmissionWithoutRegistrationForTaskRequest:(id)a3 error:(id *)a4;
-- (void)_runTask:(id)a3 registration:(id)a4;
-- (void)_simulateExpirationForTaskWithIdentifier:(id)a3;
-- (void)_simulateLaunchForTaskWithIdentifier:(id)a3;
+- (void)_handleSubmissionWithoutRegistrationForTaskRequest:(id)request error:(id *)error;
+- (void)_runTask:(id)task registration:(id)registration;
+- (void)_simulateExpirationForTaskWithIdentifier:(id)identifier;
+- (void)_simulateLaunchForTaskWithIdentifier:(id)identifier;
 - (void)cancelAllTaskRequests;
 - (void)cancelTaskRequestWithIdentifier:(NSString *)identifier;
 - (void)getPendingTaskRequestsWithCompletionHandler:(void *)completionHandler;
-- (void)scheduler:(id)a3 handleLaunchForActivities:(id)a4;
-- (void)scheduler:(id)a3 willExpireActivities:(id)a4;
+- (void)scheduler:(id)scheduler handleLaunchForActivities:(id)activities;
+- (void)scheduler:(id)scheduler willExpireActivities:(id)activities;
 @end
 
 @implementation BGTaskScheduler
 
 + (void)load
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:a1 selector:sel__applicationDidFinishLaunching_ name:@"UIApplicationDidFinishLaunchingNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationDidFinishLaunching_ name:@"UIApplicationDidFinishLaunchingNotification" object:0];
 }
 
 + (void)initialize
 {
-  if ([a1 _isNotApplication])
+  if ([self _isNotApplication])
   {
     atomic_store(1u, appHasLaunched);
-    v3 = [a1 _sharedSchedulerIfExists];
-    [v3 _handleAppLaunch];
+    _sharedSchedulerIfExists = [self _sharedSchedulerIfExists];
+    [_sharedSchedulerIfExists _handleAppLaunch];
   }
 }
 
 + (BOOL)_isNotApplication
 {
-  v2 = [MEMORY[0x1E69C75D0] currentProcess];
-  v3 = [v2 isApplication];
+  currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+  isApplication = [currentProcess isApplication];
 
-  return v3 ^ 1;
+  return isApplication ^ 1;
 }
 
 + (id)_log
@@ -115,15 +115,15 @@ void __40__BGTaskScheduler__isRunningInExtension__block_invoke()
   v3 = atomic_load(sharedSchedulerCreated);
   if (v3)
   {
-    v4 = [a1 sharedScheduler];
+    sharedScheduler = [self sharedScheduler];
   }
 
   else
   {
-    v4 = 0;
+    sharedScheduler = 0;
   }
 
-  return v4;
+  return sharedScheduler;
 }
 
 uint64_t __34__BGTaskScheduler_sharedScheduler__block_invoke(uint64_t a1)
@@ -146,7 +146,7 @@ uint64_t __34__BGTaskScheduler_sharedScheduler__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __34__BGTaskScheduler_sharedScheduler__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedScheduler_onceToken != -1)
   {
     dispatch_once(&sharedScheduler_onceToken, block);
@@ -170,13 +170,13 @@ uint64_t __34__BGTaskScheduler_sharedScheduler__block_invoke(uint64_t a1)
     registrations = v3->__registrations;
     v3->__registrations = v4;
 
-    v6 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     runningTasksMap = v3->__runningTasksMap;
-    v3->__runningTasksMap = v6;
+    v3->__runningTasksMap = strongToWeakObjectsMapTable;
 
-    v8 = [MEMORY[0x1E699A4B8] sharedScheduler];
+    mEMORY[0x1E699A4B8] = [MEMORY[0x1E699A4B8] sharedScheduler];
     scheduler = v3->__scheduler;
-    v3->__scheduler = v8;
+    v3->__scheduler = mEMORY[0x1E699A4B8];
   }
 
   return v3;
@@ -208,8 +208,8 @@ uint64_t __34__BGTaskScheduler_sharedScheduler__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1AC80E000, v3, OS_LOG_TYPE_DEFAULT, "cancelAllTaskRequests", v5, 2u);
   }
 
-  v4 = [(BGTaskScheduler *)self _scheduler];
-  [v4 cancelAllTaskRequests];
+  _scheduler = [(BGTaskScheduler *)self _scheduler];
+  [_scheduler cancelAllTaskRequests];
 }
 
 - (void)_handleAppLaunch
@@ -222,13 +222,13 @@ uint64_t __34__BGTaskScheduler_sharedScheduler__block_invoke(uint64_t a1)
   }
 
   os_unfair_lock_lock(&self->__lock);
-  v4 = [(BGTaskScheduler *)self _queuedLaunchActivities];
-  v5 = [v4 count];
+  _queuedLaunchActivities = [(BGTaskScheduler *)self _queuedLaunchActivities];
+  v5 = [_queuedLaunchActivities count];
 
   if (v5)
   {
-    v6 = [(BGTaskScheduler *)self _queuedLaunchActivities];
-    v7 = [v6 copy];
+    _queuedLaunchActivities2 = [(BGTaskScheduler *)self _queuedLaunchActivities];
+    v7 = [_queuedLaunchActivities2 copy];
 
     [(BGTaskScheduler *)self _setQueuedLaunchActivities:0];
   }
@@ -238,13 +238,13 @@ uint64_t __34__BGTaskScheduler_sharedScheduler__block_invoke(uint64_t a1)
     v7 = 0;
   }
 
-  v8 = [(BGTaskScheduler *)self _queuedExpiredLaunchActivities];
-  v9 = [v8 count];
+  _queuedExpiredLaunchActivities = [(BGTaskScheduler *)self _queuedExpiredLaunchActivities];
+  v9 = [_queuedExpiredLaunchActivities count];
 
   if (v9)
   {
-    v10 = [(BGTaskScheduler *)self _queuedExpiredLaunchActivities];
-    v11 = [v10 copy];
+    _queuedExpiredLaunchActivities2 = [(BGTaskScheduler *)self _queuedExpiredLaunchActivities];
+    v11 = [_queuedExpiredLaunchActivities2 copy];
 
     [(BGTaskScheduler *)self _setQueuedExpiredLaunchActivities:0];
   }
@@ -267,7 +267,7 @@ uint64_t __34__BGTaskScheduler_sharedScheduler__block_invoke(uint64_t a1)
   }
 }
 
-+ (void)_applicationDidFinishLaunching:(id)a3
++ (void)_applicationDidFinishLaunching:(id)launching
 {
   v4 = +[BGTaskScheduler _log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -275,10 +275,10 @@ uint64_t __34__BGTaskScheduler_sharedScheduler__block_invoke(uint64_t a1)
     [BGTaskScheduler _applicationDidFinishLaunching:v4];
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:a1];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  if (([a1 _isRunningInExtension] & 1) == 0)
+  if (([self _isRunningInExtension] & 1) == 0)
   {
     v6 = atomic_load(appHasLaunched);
     if ((v6 & 1) == 0)
@@ -287,7 +287,7 @@ uint64_t __34__BGTaskScheduler_sharedScheduler__block_invoke(uint64_t a1)
       block[1] = 3221225472;
       block[2] = __50__BGTaskScheduler__applicationDidFinishLaunching___block_invoke;
       block[3] = &__block_descriptor_40_e5_v8__0l;
-      block[4] = a1;
+      block[4] = self;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
   }
@@ -332,8 +332,8 @@ void __56__BGTaskScheduler__isRunningInNonExtensionOrApplication__block_invoke()
 
 - (BGTaskScheduler)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BGTaskScheduler.m" lineNumber:243 description:@"Do not directly instantiate; use the shared scheduler instead"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BGTaskScheduler.m" lineNumber:243 description:@"Do not directly instantiate; use the shared scheduler instead"];
 
   return 0;
 }
@@ -372,15 +372,15 @@ void __37__BGTaskScheduler_supportedResources__block_invoke()
   return v12;
 }
 
-- (BOOL)_unsafe_registerForTaskWithIdentifier:(id)a3 usingQueue:(id)a4 launchHandler:(id)a5
+- (BOOL)_unsafe_registerForTaskWithIdentifier:(id)identifier usingQueue:(id)queue launchHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (([objc_opt_class() _isNotApplication] & 1) == 0)
   {
-    v12 = [(BGTaskScheduler *)self _identifierRegistry];
-    v13 = [v12 isPermissibleFullyComposedIdentifier:v9];
+    _identifierRegistry = [(BGTaskScheduler *)self _identifierRegistry];
+    v13 = [_identifierRegistry isPermissibleFullyComposedIdentifier:identifierCopy];
 
     if ((v13 & 1) == 0)
     {
@@ -394,31 +394,31 @@ void __37__BGTaskScheduler_supportedResources__block_invoke()
     }
   }
 
-  v14 = [(BGTaskScheduler *)self _registrations];
-  v15 = [v14 objectForKeyedSubscript:v9];
+  _registrations = [(BGTaskScheduler *)self _registrations];
+  v15 = [_registrations objectForKeyedSubscript:identifierCopy];
 
   if (v15)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"BGTaskScheduler.m" lineNumber:335 description:{@"Launch handler for task with identifier %@ has already been registered", v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BGTaskScheduler.m" lineNumber:335 description:{@"Launch handler for task with identifier %@ has already been registered", identifierCopy}];
 
 LABEL_11:
     v22 = 0;
     goto LABEL_12;
   }
 
-  v17 = [(BGTaskScheduler *)self _registrations];
-  v18 = [v17 count];
+  _registrations2 = [(BGTaskScheduler *)self _registrations];
+  v18 = [_registrations2 count];
 
   if (!v18)
   {
-    v19 = [(BGTaskScheduler *)self _scheduler];
-    [v19 setBackgroundTasksSchedulerDelegate:self];
+    _scheduler = [(BGTaskScheduler *)self _scheduler];
+    [_scheduler setBackgroundTasksSchedulerDelegate:self];
   }
 
-  v20 = [[_BGTaskSchedulerRegistration alloc] initWithIdentifier:v9 queue:v10 launchHandler:v11];
-  v21 = [(BGTaskScheduler *)self _registrations];
-  [v21 setObject:v20 forKeyedSubscript:v9];
+  v20 = [[_BGTaskSchedulerRegistration alloc] initWithIdentifier:identifierCopy queue:queueCopy launchHandler:handlerCopy];
+  _registrations3 = [(BGTaskScheduler *)self _registrations];
+  [_registrations3 setObject:v20 forKeyedSubscript:identifierCopy];
 
   v22 = 1;
 LABEL_12:
@@ -446,19 +446,19 @@ LABEL_12:
   return v8;
 }
 
-- (void)_handleSubmissionWithoutRegistrationForTaskRequest:(id)a3 error:(id *)a4
+- (void)_handleSubmissionWithoutRegistrationForTaskRequest:(id)request error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(BGTaskScheduler *)self _identifierRegistry];
-  v9 = [v7 identifier];
-  v10 = [v8 isPermissibleFullyComposedIdentifier:v9];
+  requestCopy = request;
+  _identifierRegistry = [(BGTaskScheduler *)self _identifierRegistry];
+  identifier = [requestCopy identifier];
+  v10 = [_identifierRegistry isPermissibleFullyComposedIdentifier:identifier];
 
   if (v10)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    v12 = [v7 identifier];
-    [v11 handleFailureInMethod:a2 object:self file:@"BGTaskScheduler.m" lineNumber:379 description:{@"No launch handler registered for task with identifier %@", v12}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    identifier2 = [requestCopy identifier];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BGTaskScheduler.m" lineNumber:379 description:{@"No launch handler registered for task with identifier %@", identifier2}];
   }
 
   else
@@ -466,25 +466,25 @@ LABEL_12:
     v13 = +[BGTaskScheduler _log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [BGTaskScheduler _handleSubmissionWithoutRegistrationForTaskRequest:v7 error:v13];
+      [BGTaskScheduler _handleSubmissionWithoutRegistrationForTaskRequest:requestCopy error:v13];
     }
 
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x1E696ABC0];
       v19 = @"Unrecognized Identifier";
-      v15 = [v7 identifier];
-      v16 = v15;
-      if (!v15)
+      identifier3 = [requestCopy identifier];
+      null = identifier3;
+      if (!identifier3)
       {
-        v16 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      v20[0] = v16;
+      v20[0] = null;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-      *a4 = [v14 errorWithDomain:@"BGTaskSchedulerErrorDomain" code:3 userInfo:v17];
+      *error = [v14 errorWithDomain:@"BGTaskSchedulerErrorDomain" code:3 userInfo:v17];
 
-      if (!v15)
+      if (!identifier3)
       {
       }
     }
@@ -493,10 +493,10 @@ LABEL_12:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_unsafe_submitTaskRequest:(id)a3 error:(id *)a4
+- (BOOL)_unsafe_submitTaskRequest:(id)request error:(id *)error
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestCopy = request;
   if (![objc_opt_class() _correspondingTaskClass])
   {
     goto LABEL_20;
@@ -504,8 +504,8 @@ LABEL_12:
 
   if (([objc_opt_class() _isRunningInExtension] & 1) == 0)
   {
-    v7 = [v6 identifier];
-    v8 = [(BGTaskScheduler *)self _unsafe_registrationForIdentifier:v7];
+    identifier = [requestCopy identifier];
+    v8 = [(BGTaskScheduler *)self _unsafe_registrationForIdentifier:identifier];
 
     if (v8)
     {
@@ -513,7 +513,7 @@ LABEL_12:
       goto LABEL_5;
     }
 
-    [(BGTaskScheduler *)self _handleSubmissionWithoutRegistrationForTaskRequest:v6 error:a4];
+    [(BGTaskScheduler *)self _handleSubmissionWithoutRegistrationForTaskRequest:requestCopy error:error];
 LABEL_20:
     v21 = 0;
     goto LABEL_25;
@@ -524,12 +524,12 @@ LABEL_5:
   if (objc_opt_isKindOfClass())
   {
     v9 = +[BGTaskScheduler supportedResources];
-    v10 = [v6 requiredResources];
-    if ((v10 & ~v9) != 0)
+    requiredResources = [requestCopy requiredResources];
+    if ((requiredResources & ~v9) != 0)
     {
       v11 = MEMORY[0x1E696ABC0];
       v33[0] = @"requestedResources";
-      v12 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
+      v12 = [MEMORY[0x1E696AD98] numberWithInteger:requiredResources];
       v33[1] = @"supportedResources";
       v34[0] = v12;
       v13 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
@@ -543,10 +543,10 @@ LABEL_5:
         [BGTaskScheduler _unsafe_submitTaskRequest:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v17 = v15;
-        *a4 = v15;
+        *error = v15;
       }
 
       goto LABEL_20;
@@ -554,8 +554,8 @@ LABEL_5:
   }
 
   scheduler = self->__scheduler;
-  v19 = [v6 _activity];
-  v20 = [(_DASActivityBackgroundTasksScheduler *)scheduler submitTaskRequest:v19];
+  _activity = [requestCopy _activity];
+  v20 = [(_DASActivityBackgroundTasksScheduler *)scheduler submitTaskRequest:_activity];
 
   v21 = v20 == 0;
   if (v20)
@@ -564,28 +564,28 @@ LABEL_5:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v29 = 138543618;
-      v30 = v6;
+      v30 = requestCopy;
       v31 = 2114;
       v32 = v20;
       _os_log_impl(&dword_1AC80E000, v22, OS_LOG_TYPE_DEFAULT, "Error submitting task request: %{public}@, error: %{public}@", &v29, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
-      v23 = [v20 domain];
-      v24 = [v23 isEqualToString:*MEMORY[0x1E699A4F8]];
+      domain = [v20 domain];
+      v24 = [domain isEqualToString:*MEMORY[0x1E699A4F8]];
 
       if (v24)
       {
-        v25 = [v20 code];
-        if (v25 > 9)
+        code = [v20 code];
+        if (code > 9)
         {
           v26 = 3;
         }
 
         else
         {
-          v26 = qword_1AC819CC8[v25];
+          v26 = qword_1AC819CC8[code];
         }
       }
 
@@ -594,7 +594,7 @@ LABEL_5:
         v26 = 1;
       }
 
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGTaskSchedulerErrorDomain" code:v26 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"BGTaskSchedulerErrorDomain" code:v26 userInfo:0];
     }
   }
 
@@ -603,31 +603,31 @@ LABEL_25:
   return v21;
 }
 
-- (id)_unsafe_registrationForIdentifier:(id)a3
+- (id)_unsafe_registrationForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BGTaskScheduler *)self _registrations];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _registrations = [(BGTaskScheduler *)self _registrations];
+  v6 = [_registrations objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (id)_queueForRegistration:(id)a3
+- (id)_queueForRegistration:(id)registration
 {
-  v3 = a3;
-  v4 = [v3 queue];
-  if (!v4)
+  registrationCopy = registration;
+  queue = [registrationCopy queue];
+  if (!queue)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [v3 identifier];
-    v7 = [v5 stringWithFormat:@"com.apple.BGTaskScheduler (%@)", v6];
+    identifier = [registrationCopy identifier];
+    v7 = [v5 stringWithFormat:@"com.apple.BGTaskScheduler (%@)", identifier];
     v8 = [v7 cStringUsingEncoding:4];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_BACKGROUND, 0);
-    v4 = dispatch_queue_create(v8, v10);
+    queue = dispatch_queue_create(v8, v10);
   }
 
-  return v4;
+  return queue;
 }
 
 - (void)cancelTaskRequestWithIdentifier:(NSString *)identifier
@@ -642,8 +642,8 @@ LABEL_25:
     _os_log_impl(&dword_1AC80E000, v5, OS_LOG_TYPE_DEFAULT, "cancelTaskRequestWithIdentifier: %{public}@", &v8, 0xCu);
   }
 
-  v6 = [(BGTaskScheduler *)self _scheduler];
-  [v6 cancelTaskRequestWithIdentifier:v4];
+  _scheduler = [(BGTaskScheduler *)self _scheduler];
+  [_scheduler cancelTaskRequestWithIdentifier:v4];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -658,14 +658,14 @@ LABEL_25:
     _os_log_impl(&dword_1AC80E000, v5, OS_LOG_TYPE_DEFAULT, "Getting pending task requests", buf, 2u);
   }
 
-  v6 = [(BGTaskScheduler *)self _scheduler];
+  _scheduler = [(BGTaskScheduler *)self _scheduler];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__BGTaskScheduler_getPendingTaskRequestsWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7980690;
   v9 = v4;
   v7 = v4;
-  [v6 getPendingTaskRequestsWithCompletionHandler:v8];
+  [_scheduler getPendingTaskRequestsWithCompletionHandler:v8];
 }
 
 void __63__BGTaskScheduler_getPendingTaskRequestsWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -750,10 +750,10 @@ void __63__BGTaskScheduler_getPendingTaskRequestsWithCompletionHandler___block_i
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(BGTaskScheduler *)self _runningTasksMap];
-  v5 = [v4 keyEnumerator];
+  _runningTasksMap = [(BGTaskScheduler *)self _runningTasksMap];
+  keyEnumerator = [_runningTasksMap keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -764,16 +764,16 @@ void __63__BGTaskScheduler_getPendingTaskRequestsWithCompletionHandler___block_i
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(BGTaskScheduler *)self _runningTasksMap];
-        v12 = [v11 objectForKey:v10];
+        _runningTasksMap2 = [(BGTaskScheduler *)self _runningTasksMap];
+        v12 = [_runningTasksMap2 objectForKey:v10];
         [v3 addObject:v12];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -787,7 +787,7 @@ void __63__BGTaskScheduler_getPendingTaskRequestsWithCompletionHandler___block_i
   return v13;
 }
 
-- (BOOL)_isRunningTaskOfClass:(Class)a3
+- (BOOL)_isRunningTaskOfClass:(Class)class
 {
   v22 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->__lock);
@@ -795,10 +795,10 @@ void __63__BGTaskScheduler_getPendingTaskRequestsWithCompletionHandler___block_i
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(BGTaskScheduler *)self _runningTasksMap];
-  v5 = [v4 keyEnumerator];
+  _runningTasksMap = [(BGTaskScheduler *)self _runningTasksMap];
+  keyEnumerator = [_runningTasksMap keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -809,12 +809,12 @@ void __63__BGTaskScheduler_getPendingTaskRequestsWithCompletionHandler___block_i
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [(BGTaskScheduler *)self _runningTasksMap];
-        v12 = [v11 objectForKey:v10];
+        _runningTasksMap2 = [(BGTaskScheduler *)self _runningTasksMap];
+        v12 = [_runningTasksMap2 objectForKey:v10];
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
@@ -824,7 +824,7 @@ void __63__BGTaskScheduler_getPendingTaskRequestsWithCompletionHandler___block_i
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -842,49 +842,49 @@ LABEL_11:
   return v14;
 }
 
-- (void)_runTask:(id)a3 registration:(id)a4
+- (void)_runTask:(id)task registration:(id)registration
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  registrationCopy = registration;
   v8 = +[BGTaskScheduler _log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v42 = v6;
+    v42 = taskCopy;
     _os_log_impl(&dword_1AC80E000, v8, OS_LOG_TYPE_DEFAULT, "Running task: %{public}@", buf, 0xCu);
   }
 
-  v9 = [(BGTaskScheduler *)self _queueForRegistration:v7];
-  [v6 _setHandlerQueue:v9];
+  v9 = [(BGTaskScheduler *)self _queueForRegistration:registrationCopy];
+  [taskCopy _setHandlerQueue:v9];
 
-  v10 = [v6 _activity];
-  v11 = [v6 identifier];
+  _activity = [taskCopy _activity];
+  identifier = [taskCopy identifier];
   os_unfair_lock_lock(&self->__lock);
-  v12 = [(BGTaskScheduler *)self _runningTasksMap];
-  v13 = [v6 identifier];
-  [v12 setObject:v6 forKey:v13];
+  _runningTasksMap = [(BGTaskScheduler *)self _runningTasksMap];
+  identifier2 = [taskCopy identifier];
+  [_runningTasksMap setObject:taskCopy forKey:identifier2];
 
   os_unfair_lock_unlock(&self->__lock);
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 postNotificationName:@"_BGTaskSchedulerRunningTasksDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_BGTaskSchedulerRunningTasksDidChangeNotification" object:self];
 
-  objc_initWeak(buf, v6);
+  objc_initWeak(buf, taskCopy);
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __41__BGTaskScheduler__runTask_registration___block_invoke;
   v36[3] = &unk_1E79806B8;
   objc_copyWeak(&v40, buf);
-  v15 = v10;
+  v15 = _activity;
   v37 = v15;
-  v38 = self;
-  v16 = v11;
+  selfCopy = self;
+  v16 = identifier;
   v39 = v16;
-  [v6 _setCompletionHandler:v36];
+  [taskCopy _setCompletionHandler:v36];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = v6;
+    v17 = taskCopy;
     v18 = v35;
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
@@ -910,7 +910,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = v6;
+    v21 = taskCopy;
     v18 = v33;
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
@@ -932,18 +932,18 @@ LABEL_7:
   }
 
 LABEL_8:
-  v23 = [v6 _handlerQueue];
+  _handlerQueue = [taskCopy _handlerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__BGTaskScheduler__runTask_registration___block_invoke_5;
   block[3] = &unk_1E7980730;
   v29 = v15;
-  v30 = v6;
-  v31 = v7;
-  v24 = v7;
-  v25 = v6;
+  v30 = taskCopy;
+  v31 = registrationCopy;
+  v24 = registrationCopy;
+  v25 = taskCopy;
   v26 = v15;
-  dispatch_async(v23, block);
+  dispatch_async(_handlerQueue, block);
 
   objc_destroyWeak(&v40);
   objc_destroyWeak(buf);
@@ -1077,15 +1077,15 @@ LABEL_6:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)scheduler:(id)a3 handleLaunchForActivities:(id)a4
+- (void)scheduler:(id)scheduler handleLaunchForActivities:(id)activities
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  activitiesCopy = activities;
   v6 = +[BGTaskScheduler _log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v5;
+    v13 = activitiesCopy;
     _os_log_impl(&dword_1AC80E000, v6, OS_LOG_TYPE_DEFAULT, "Application launched for activities: %{public}@", &v12, 0xCu);
   }
 
@@ -1094,21 +1094,21 @@ LABEL_6:
   if (v7)
   {
     os_unfair_lock_unlock(&self->__lock);
-    [(BGTaskScheduler *)self _callRegisteredHandlersForActivities:v5];
+    [(BGTaskScheduler *)self _callRegisteredHandlersForActivities:activitiesCopy];
   }
 
   else
   {
-    v8 = [(BGTaskScheduler *)self _queuedLaunchActivities];
+    _queuedLaunchActivities = [(BGTaskScheduler *)self _queuedLaunchActivities];
 
-    if (!v8)
+    if (!_queuedLaunchActivities)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       [(BGTaskScheduler *)self _setQueuedLaunchActivities:v9];
     }
 
-    v10 = [(BGTaskScheduler *)self _queuedLaunchActivities];
-    [v10 unionSet:v5];
+    _queuedLaunchActivities2 = [(BGTaskScheduler *)self _queuedLaunchActivities];
+    [_queuedLaunchActivities2 unionSet:activitiesCopy];
 
     os_unfair_lock_unlock(&self->__lock);
   }
@@ -1116,15 +1116,15 @@ LABEL_6:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_callRegisteredHandlersForActivities:(id)a3
+- (void)_callRegisteredHandlersForActivities:(id)activities
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activitiesCopy = activities;
   v5 = +[BGTaskScheduler _log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v40 = v4;
+    v40 = activitiesCopy;
     _os_log_impl(&dword_1AC80E000, v5, OS_LOG_TYPE_DEFAULT, "Calling handlers for activities: %{public}@", buf, 0xCu);
   }
 
@@ -1132,7 +1132,7 @@ LABEL_6:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v4;
+  obj = activitiesCopy;
   v6 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v6)
   {
@@ -1153,19 +1153,19 @@ LABEL_6:
         }
 
         v11 = *(*(&v34 + 1) + 8 * i);
-        v12 = [v11 clientProvidedIdentifier];
+        clientProvidedIdentifier = [v11 clientProvidedIdentifier];
         os_unfair_lock_lock(&self->__lock);
-        v13 = [(BGTaskScheduler *)self _unsafe_registrationForIdentifier:v12];
+        v13 = [(BGTaskScheduler *)self _unsafe_registrationForIdentifier:clientProvidedIdentifier];
         os_unfair_lock_unlock(&self->__lock);
         if (!v13)
         {
-          v26 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v26 handleFailureInMethod:a2 object:self file:@"BGTaskScheduler.m" lineNumber:697 description:{@"No launch handler registered for task with identifier %@", v12}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"BGTaskScheduler.m" lineNumber:697 description:{@"No launch handler registered for task with identifier %@", clientProvidedIdentifier}];
           goto LABEL_17;
         }
 
-        v14 = [v11 launchReason];
-        v15 = [v14 isEqualToString:v9];
+        launchReason = [v11 launchReason];
+        v15 = [launchReason isEqualToString:v9];
 
         v16 = off_1E79803F8;
         if (v15)
@@ -1173,8 +1173,8 @@ LABEL_6:
           goto LABEL_23;
         }
 
-        v17 = [v11 launchReason];
-        v18 = [v17 isEqualToString:v31];
+        launchReason2 = [v11 launchReason];
+        v18 = [launchReason2 isEqualToString:v31];
 
         v16 = off_1E79803E8;
         if (v18)
@@ -1182,8 +1182,8 @@ LABEL_6:
           goto LABEL_23;
         }
 
-        v19 = [v11 launchReason];
-        v20 = [v19 isEqualToString:v30];
+        launchReason3 = [v11 launchReason];
+        v20 = [launchReason3 isEqualToString:v30];
 
         v16 = off_1E79803D8;
         if (v20)
@@ -1191,17 +1191,17 @@ LABEL_6:
           goto LABEL_23;
         }
 
-        v21 = [v11 launchReason];
-        v22 = [v21 isEqualToString:v29];
+        launchReason4 = [v11 launchReason];
+        v22 = [launchReason4 isEqualToString:v29];
 
         v16 = off_1E7980418;
         if ((v22 & 1) != 0 || ([v11 launchReason], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "isEqualToString:", v28), v23, v16 = off_1E79803C8, v24))
         {
 LABEL_23:
-          v25 = [objc_alloc(*v16) _initWithIdentifier:v12 activity:v11];
+          v25 = [objc_alloc(*v16) _initWithIdentifier:clientProvidedIdentifier activity:v11];
           if (v25)
           {
-            v26 = v25;
+            currentHandler = v25;
             [(BGTaskScheduler *)self _runTask:v25 registration:v13];
 LABEL_17:
           }
@@ -1217,18 +1217,18 @@ LABEL_17:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_unsafe_taskForActivity:(id)a3
+- (id)_unsafe_taskForActivity:(id)activity
 {
   v25 = *MEMORY[0x1E69E9840];
-  v19 = a3;
+  activityCopy = activity;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(BGTaskScheduler *)self _runningTasksMap];
-  v5 = [v4 keyEnumerator];
+  _runningTasksMap = [(BGTaskScheduler *)self _runningTasksMap];
+  keyEnumerator = [_runningTasksMap keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1239,19 +1239,19 @@ LABEL_3:
     {
       if (*v21 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v10 = *(*(&v20 + 1) + 8 * v9);
-      v11 = [(BGTaskScheduler *)self _runningTasksMap];
-      v12 = [v11 objectForKey:v10];
+      _runningTasksMap2 = [(BGTaskScheduler *)self _runningTasksMap];
+      v12 = [_runningTasksMap2 objectForKey:v10];
 
       if (v12)
       {
-        v13 = [v19 uuid];
-        v14 = [v12 _activity];
-        v15 = [v14 uuid];
-        v16 = [v13 isEqual:v15];
+        uuid = [activityCopy uuid];
+        _activity = [v12 _activity];
+        uuid2 = [_activity uuid];
+        v16 = [uuid isEqual:uuid2];
 
         if (v16)
         {
@@ -1261,7 +1261,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v7 = [keyEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1283,16 +1283,16 @@ LABEL_10:
   return v12;
 }
 
-- (id)_unsafe_createExpirationRequestsForActivities:(id)a3
+- (id)_unsafe_createExpirationRequestsForActivities:(id)activities
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
+  activitiesCopy = activities;
+  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(activitiesCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = activitiesCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -1325,23 +1325,23 @@ LABEL_10:
   return v14;
 }
 
-- (void)_callExpirationHandlersForActivities:(id)a3 shouldQueue:(BOOL)a4
+- (void)_callExpirationHandlersForActivities:(id)activities shouldQueue:(BOOL)queue
 {
-  v4 = a4;
+  queueCopy = queue;
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  activitiesCopy = activities;
   v7 = +[BGTaskScheduler _log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v46 = v6;
+    v46 = activitiesCopy;
     _os_log_impl(&dword_1AC80E000, v7, OS_LOG_TYPE_DEFAULT, "Calling expiration handlers for activities: %{public}@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&self->__lock);
-  v8 = [(BGTaskScheduler *)self _unsafe_createExpirationRequestsForActivities:v6];
+  v8 = [(BGTaskScheduler *)self _unsafe_createExpirationRequestsForActivities:activitiesCopy];
   v9 = v8;
-  if (v4)
+  if (queueCopy)
   {
     v10 = atomic_load(appHasLaunched);
     if ((v10 & 1) == 0)
@@ -1365,19 +1365,19 @@ LABEL_10:
             }
 
             v15 = *(*(&v39 + 1) + 8 * i);
-            v16 = [v15 task];
+            task = [v15 task];
 
-            if (!v16)
+            if (!task)
             {
-              v17 = [(BGTaskScheduler *)self _queuedExpiredLaunchActivities];
-              if (!v17)
+              _queuedExpiredLaunchActivities = [(BGTaskScheduler *)self _queuedExpiredLaunchActivities];
+              if (!_queuedExpiredLaunchActivities)
               {
                 [MEMORY[0x1E695DFA8] set];
               }
 
-              v18 = [(BGTaskScheduler *)self _queuedExpiredLaunchActivities];
-              v19 = [v15 schedulerActivity];
-              [v18 addObject:v19];
+              _queuedExpiredLaunchActivities2 = [(BGTaskScheduler *)self _queuedExpiredLaunchActivities];
+              schedulerActivity = [v15 schedulerActivity];
+              [_queuedExpiredLaunchActivities2 addObject:schedulerActivity];
             }
           }
 
@@ -1387,17 +1387,17 @@ LABEL_10:
         while (v12);
       }
 
-      v20 = [(BGTaskScheduler *)self _queuedExpiredLaunchActivities];
-      v21 = [v20 count];
+      _queuedExpiredLaunchActivities3 = [(BGTaskScheduler *)self _queuedExpiredLaunchActivities];
+      v21 = [_queuedExpiredLaunchActivities3 count];
 
       if (v21)
       {
         v22 = +[BGTaskScheduler _log];
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [(BGTaskScheduler *)self _queuedExpiredLaunchActivities];
+          _queuedExpiredLaunchActivities4 = [(BGTaskScheduler *)self _queuedExpiredLaunchActivities];
           *buf = 138543362;
-          v46 = v23;
+          v46 = _queuedExpiredLaunchActivities4;
           _os_log_impl(&dword_1AC80E000, v22, OS_LOG_TYPE_DEFAULT, "Queued activities for expiration: %{public}@", buf, 0xCu);
         }
       }
@@ -1433,9 +1433,9 @@ LABEL_10:
         }
 
         v30 = *(*(&v35 + 1) + 8 * j);
-        v31 = [v30 task];
+        task2 = [v30 task];
 
-        if (v31)
+        if (task2)
         {
           v32 = dispatch_get_global_queue(-32768, 0);
           block[0] = MEMORY[0x1E69E9820];
@@ -1474,31 +1474,31 @@ void __68__BGTaskScheduler__callExpirationHandlersForActivities_shouldQueue___bl
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)scheduler:(id)a3 willExpireActivities:(id)a4
+- (void)scheduler:(id)scheduler willExpireActivities:(id)activities
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  activitiesCopy = activities;
   v6 = +[BGTaskScheduler _log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v5;
+    v9 = activitiesCopy;
     _os_log_impl(&dword_1AC80E000, v6, OS_LOG_TYPE_DEFAULT, "Will expire activities: %{public}@", &v8, 0xCu);
   }
 
-  [(BGTaskScheduler *)self _callExpirationHandlersForActivities:v5 shouldQueue:1];
+  [(BGTaskScheduler *)self _callExpirationHandlersForActivities:activitiesCopy shouldQueue:1];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_simulateLaunchForTaskWithIdentifier:(id)a3
+- (void)_simulateLaunchForTaskWithIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = +[BGTaskScheduler _log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = v5;
+    v14 = identifierCopy;
     _os_log_impl(&dword_1AC80E000, v6, OS_LOG_TYPE_DEFAULT, "Simulating launch for task with identifier %{public}@", buf, 0xCu);
   }
 
@@ -1506,10 +1506,10 @@ void __68__BGTaskScheduler__callExpirationHandlersForActivities_shouldQueue___bl
   v9[1] = 3221225472;
   v9[2] = __56__BGTaskScheduler__simulateLaunchForTaskWithIdentifier___block_invoke;
   v9[3] = &unk_1E7980780;
-  v10 = v5;
-  v11 = self;
+  v10 = identifierCopy;
+  selfCopy = self;
   v12 = a2;
-  v7 = v5;
+  v7 = identifierCopy;
   [(BGTaskScheduler *)self getPendingTaskRequestsWithCompletionHandler:v9];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -1619,21 +1619,21 @@ LABEL_23:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_simulateExpirationForTaskWithIdentifier:(id)a3
+- (void)_simulateExpirationForTaskWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[BGTaskScheduler _log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v4;
+    v15 = identifierCopy;
     _os_log_impl(&dword_1AC80E000, v5, OS_LOG_TYPE_DEFAULT, "Simulating expiration for task with identifier %{public}@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&self->__lock);
-  v6 = [(BGTaskScheduler *)self _runningTasksMap];
-  v7 = [v6 objectForKey:v4];
+  _runningTasksMap = [(BGTaskScheduler *)self _runningTasksMap];
+  v7 = [_runningTasksMap objectForKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->__lock);
   if (v7 && ([v7 _activity], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))

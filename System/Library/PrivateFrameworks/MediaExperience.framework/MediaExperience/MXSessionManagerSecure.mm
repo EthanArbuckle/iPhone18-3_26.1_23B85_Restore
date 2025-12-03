@@ -1,14 +1,14 @@
 @interface MXSessionManagerSecure
 + (id)sharedInstance;
-- (BOOL)isSessionWithAudioModeActive:(id)a3;
+- (BOOL)isSessionWithAudioModeActive:(id)active;
 - (MXSessionManagerSecure)init;
 - (id)copyActiveSessionsInfoForAdditiveRouting;
 - (id)copyMXCoreSessionSecureList;
-- (id)copySessionWithAudioSessionID:(unsigned int)a3;
-- (int)_beginInterruption:(id)a3 withSecTask:(__SecTask *)a4 andFlags:(unint64_t)a5;
-- (int)_endInterruption:(id)a3 withSecTask:(__SecTask *)a4 andStatus:(id)a5;
-- (unint64_t)addMXCoreSessionSecure:(id)a3;
-- (unint64_t)removeMXCoreSessionSecure:(id)a3;
+- (id)copySessionWithAudioSessionID:(unsigned int)d;
+- (int)_beginInterruption:(id)interruption withSecTask:(__SecTask *)task andFlags:(unint64_t)flags;
+- (int)_endInterruption:(id)interruption withSecTask:(__SecTask *)task andStatus:(id)status;
+- (unint64_t)addMXCoreSessionSecure:(id)secure;
+- (unint64_t)removeMXCoreSessionSecure:(id)secure;
 - (void)dealloc;
 - (void)dumpDebugInfo;
 @end
@@ -70,9 +70,9 @@ MXSessionManagerSecure *__40__MXSessionManagerSecure_sharedInstance__block_invok
   [(MXSessionManagerSecure *)&v3 dealloc];
 }
 
-- (unint64_t)addMXCoreSessionSecure:(id)a3
+- (unint64_t)addMXCoreSessionSecure:(id)secure
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, secure);
   [(NSLock *)self->mMXCoreSessionSecureListLock lock];
   [(NSPointerArray *)self->mMXCoreSessionSecureList addPointer:objc_loadWeak(&location)];
   [(NSPointerArray *)self->mMXCoreSessionSecureList compact];
@@ -82,9 +82,9 @@ MXSessionManagerSecure *__40__MXSessionManagerSecure_sharedInstance__block_invok
   return v4;
 }
 
-- (unint64_t)removeMXCoreSessionSecure:(id)a3
+- (unint64_t)removeMXCoreSessionSecure:(id)secure
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, secure);
   [(NSLock *)self->mMXCoreSessionSecureListLock lock];
   for (i = 0; i < [(NSPointerArray *)self->mMXCoreSessionSecureList count]; ++i)
   {
@@ -106,16 +106,16 @@ MXSessionManagerSecure *__40__MXSessionManagerSecure_sharedInstance__block_invok
 {
   [(NSLock *)self->mMXCoreSessionSecureListLock lock];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(NSPointerArray *)self->mMXCoreSessionSecureList allObjects];
+  allObjects = [(NSPointerArray *)self->mMXCoreSessionSecureList allObjects];
   objc_autoreleasePoolPop(v3);
   [(NSLock *)self->mMXCoreSessionSecureListLock unlock];
-  return v4;
+  return allObjects;
 }
 
-- (int)_beginInterruption:(id)a3 withSecTask:(__SecTask *)a4 andFlags:(unint64_t)a5
+- (int)_beginInterruption:(id)interruption withSecTask:(__SecTask *)task andFlags:(unint64_t)flags
 {
   v9 = *MEMORY[0x1E69E9840];
-  [a3 setIsActive:{1, a4, a5}];
+  [interruption setIsActive:{1, task, flags}];
   if (dword_1EB75DE40)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -123,16 +123,16 @@ MXSessionManagerSecure *__40__MXSessionManagerSecure_sharedInstance__block_invok
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  CMSUtility_CreateReporterIDIfNeeded(a3);
-  result = [a3 sendSessionConfigurationInfoToVA];
+  CMSUtility_CreateReporterIDIfNeeded(interruption);
+  result = [interruption sendSessionConfigurationInfoToVA];
   v8 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (int)_endInterruption:(id)a3 withSecTask:(__SecTask *)a4 andStatus:(id)a5
+- (int)_endInterruption:(id)interruption withSecTask:(__SecTask *)task andStatus:(id)status
 {
   v11 = *MEMORY[0x1E69E9840];
-  [a3 setIsActive:{0, a4, a5}];
+  [interruption setIsActive:{0, task, status}];
   if (dword_1EB75DE40)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -140,20 +140,20 @@ MXSessionManagerSecure *__40__MXSessionManagerSecure_sharedInstance__block_invok
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  result = [a3 sendSessionConfigurationInfoToVA];
+  result = [interruption sendSessionConfigurationInfoToVA];
   v8 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (id)copySessionWithAudioSessionID:(unsigned int)a3
+- (id)copySessionWithAudioSessionID:(unsigned int)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(MXSessionManagerSecure *)self copyMXCoreSessionSecureList];
+  copyMXCoreSessionSecureList = [(MXSessionManagerSecure *)self copyMXCoreSessionSecureList];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [copyMXCoreSessionSecureList countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -164,18 +164,18 @@ MXSessionManagerSecure *__40__MXSessionManagerSecure_sharedInstance__block_invok
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(copyMXCoreSessionSecureList);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 audioSessionID] == a3)
+        if ([v9 audioSessionID] == d)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [copyMXCoreSessionSecureList countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -196,12 +196,12 @@ LABEL_11:
 {
   v21 = *MEMORY[0x1E69E9840];
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [(MXSessionManagerSecure *)self copyMXCoreSessionSecureList];
+  copyMXCoreSessionSecureList = [(MXSessionManagerSecure *)self copyMXCoreSessionSecureList];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [copyMXCoreSessionSecureList countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -212,16 +212,16 @@ LABEL_11:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(copyMXCoreSessionSecureList);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
         if ([v8 isActive])
         {
-          v9 = [v8 additiveRoutingInfo];
-          if (v9)
+          additiveRoutingInfo = [v8 additiveRoutingInfo];
+          if (additiveRoutingInfo)
           {
-            [v15 addObject:v9];
+            [v15 addObject:additiveRoutingInfo];
           }
 
           else
@@ -233,7 +233,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [copyMXCoreSessionSecureList countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -243,15 +243,15 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)isSessionWithAudioModeActive:(id)a3
+- (BOOL)isSessionWithAudioModeActive:(id)active
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(MXSessionManagerSecure *)self copyMXCoreSessionSecureList];
+  copyMXCoreSessionSecureList = [(MXSessionManagerSecure *)self copyMXCoreSessionSecureList];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [copyMXCoreSessionSecureList countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -262,18 +262,18 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(copyMXCoreSessionSecureList);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 isActive] && (objc_msgSend(v9, "hasAudioMode:", a3) & 1) != 0)
+        if ([v9 isActive] && (objc_msgSend(v9, "hasAudioMode:", active) & 1) != 0)
         {
           v10 = 1;
           goto LABEL_12;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [copyMXCoreSessionSecureList countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;

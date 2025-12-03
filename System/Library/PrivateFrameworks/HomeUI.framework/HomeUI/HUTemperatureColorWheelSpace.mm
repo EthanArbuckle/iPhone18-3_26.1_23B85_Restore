@@ -1,11 +1,11 @@
 @interface HUTemperatureColorWheelSpace
 + ($F24F406B2B787EFB06265DBA3D28CBD5)defaultTemperatureRange;
 + ($F24F406B2B787EFB06265DBA3D28CBD5)largestAllowableTemperatureRange;
-- ($01BB1521EC52D44A8E7628F5261DCEC8)colorForCoordinate:(id)a3;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateForColor:(id)a3 isValid:(BOOL *)a4;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)colorForCoordinate:(id)coordinate;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateForColor:(id)color isValid:(BOOL *)valid;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)supportedRange;
 - (HUTemperatureColorWheelSpace)init;
-- (HUTemperatureColorWheelSpace)initWithSupportedRange:(id)a3;
+- (HUTemperatureColorWheelSpace)initWithSupportedRange:(id)range;
 @end
 
 @implementation HUTemperatureColorWheelSpace
@@ -28,10 +28,10 @@
   return result;
 }
 
-- (HUTemperatureColorWheelSpace)initWithSupportedRange:(id)a3
+- (HUTemperatureColorWheelSpace)initWithSupportedRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v7.receiver = self;
   v7.super_class = HUTemperatureColorWheelSpace;
   result = [(HUTemperatureColorWheelSpace *)&v7 init];
@@ -57,12 +57,12 @@
   return [(HUTemperatureColorWheelSpace *)self initWithSupportedRange:?];
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)colorForCoordinate:(id)a3
+- ($01BB1521EC52D44A8E7628F5261DCEC8)colorForCoordinate:(id)coordinate
 {
-  var0 = a3.var0;
-  if (a3.var0 < 0.0 || a3.var0 > 1.0)
+  var0 = coordinate.var0;
+  if (coordinate.var0 < 0.0 || coordinate.var0 > 1.0)
   {
-    NSLog(&cfstr_InputCoordinat.isa, a2, *&a3.var0);
+    NSLog(&cfstr_InputCoordinat.isa, a2, *&coordinate.var0);
   }
 
     ;
@@ -109,20 +109,20 @@
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateForColor:(id)a3 isValid:(BOOL *)a4
+- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateForColor:(id)color isValid:(BOOL *)valid
 {
-  if (a3.var3 == 1.79769313e308)
+  if (color.var3 == 1.79769313e308)
   {
-    if (a4)
+    if (valid)
     {
-      *a4 = 0;
+      *valid = 0;
     }
 
     v4 = 1.79769313e308;
     goto LABEL_18;
   }
 
-  var3 = a3.var3;
+  var3 = color.var3;
   [(HUTemperatureColorWheelSpace *)self supportedRange];
   v8 = fmax(var3, v7);
   [(HUTemperatureColorWheelSpace *)self supportedRange];

@@ -6,7 +6,7 @@
 
 - (void)submitReport
 {
-  v2 = self;
+  selfCopy = self;
   sub_100342B10();
 }
 

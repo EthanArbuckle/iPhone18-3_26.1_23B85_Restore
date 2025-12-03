@@ -10,9 +10,9 @@
 
 - (id)_syRelatedUniqueIdentifier
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = [v1 _payloadForIdentifier:@"com.apple.synapse.relatedUniqueIdentifier"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = [selfCopy _payloadForIdentifier:@"com.apple.synapse.relatedUniqueIdentifier"];
   if (v2)
   {
     v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v2 encoding:4];
@@ -23,7 +23,7 @@
     v3 = 0;
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -31,24 +31,24 @@
 - (void)set_syRelatedUniqueIdentifier:()SYDocumentWorkflows
 {
   v6 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = [v6 dataUsingEncoding:4];
-  [v4 _setPayload:v5 object:0 identifier:@"com.apple.synapse.relatedUniqueIdentifier"];
+  [selfCopy _setPayload:v5 object:0 identifier:@"com.apple.synapse.relatedUniqueIdentifier"];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)_syDocumentProvider
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = [v1 _payloadForIdentifier:@"com.apple.synapse.document"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = [selfCopy _payloadForIdentifier:@"com.apple.synapse.document"];
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
   if (v2)
   {
-    v3 = v1;
+    v3 = selfCopy;
   }
 
   else
@@ -62,24 +62,24 @@
 - (uint64_t)_syShouldCreateNewMessage
 {
   v5 = 0;
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = [v1 _payloadForIdentifier:@"com.apple.synapse.shouldCreateNewMessage"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = [selfCopy _payloadForIdentifier:@"com.apple.synapse.shouldCreateNewMessage"];
   v3 = v2;
   if (v2)
   {
     [v2 getBytes:&v5 length:1];
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
   return v5;
 }
 
 - (id)_syOriginalUserActivity
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = [v1 _payloadForIdentifier:@"com.apple.synapse.originalUserActivity"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = [selfCopy _payloadForIdentifier:@"com.apple.synapse.originalUserActivity"];
   if (v2)
   {
     v3 = [objc_alloc(MEMORY[0x277CC1EF0]) _initWithUserActivityData:v2];
@@ -90,7 +90,7 @@
     v3 = 0;
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

@@ -1,12 +1,12 @@
 @interface UserAlertPresenterInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
 @end
 
 @implementation UserAlertPresenterInputs
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     v4 = sub_100002C54();
   }
@@ -16,7 +16,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1000011D0(v4);
 
   return v6 & 1;

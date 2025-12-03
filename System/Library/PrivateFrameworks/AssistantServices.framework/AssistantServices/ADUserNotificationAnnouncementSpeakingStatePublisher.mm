@@ -1,22 +1,22 @@
 @interface ADUserNotificationAnnouncementSpeakingStatePublisher
-+ (BOOL)supportsPublishingArrivalForAceObject:(id)a3;
-+ (id)_notificationIdentifiersForObject:(id)a3;
++ (BOOL)supportsPublishingArrivalForAceObject:(id)object;
++ (id)_notificationIdentifiersForObject:(id)object;
 + (id)sharedPublisher;
-- (BOOL)_publishStateChanged:(int64_t)a3 forIdentifiers:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_initWithQueue:(id)a3;
+- (BOOL)_publishStateChanged:(int64_t)changed forIdentifiers:(id)identifiers;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_initWithQueue:(id)queue;
 - (void)_invalidateConnection;
-- (void)_publishCancelAndRemoveAllObjectsForReason:(id)a3;
-- (void)_publishFinishedAndRemoveAllObjectsForReason:(id)a3;
-- (void)_publishObjectHasArrived:(id)a3;
+- (void)_publishCancelAndRemoveAllObjectsForReason:(id)reason;
+- (void)_publishFinishedAndRemoveAllObjectsForReason:(id)reason;
+- (void)_publishObjectHasArrived:(id)arrived;
 - (void)beginObserving;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
 - (void)dealloc;
-- (void)publishObjectHasArrived:(id)a3;
-- (void)requestLifecycleObserver:(id)a3 requestDidEndWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6;
-- (void)requestLifecycleObserver:(id)a3 requestWasCancelledWithInfo:(id)a4 forReason:(int64_t)a5 origin:(int64_t)a6 client:(id)a7 successorInfo:(id)a8;
-- (void)requestLifecycleObserver:(id)a3 requestWillBeginWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6;
+- (void)publishObjectHasArrived:(id)arrived;
+- (void)requestLifecycleObserver:(id)observer requestDidEndWithInfo:(id)info origin:(int64_t)origin client:(id)client;
+- (void)requestLifecycleObserver:(id)observer requestWasCancelledWithInfo:(id)info forReason:(int64_t)reason origin:(int64_t)origin client:(id)client successorInfo:(id)successorInfo;
+- (void)requestLifecycleObserver:(id)observer requestWillBeginWithInfo:(id)info origin:(int64_t)origin client:(id)client;
 @end
 
 @implementation ADUserNotificationAnnouncementSpeakingStatePublisher
@@ -78,9 +78,9 @@
   }
 }
 
-- (void)_publishFinishedAndRemoveAllObjectsForReason:(id)a3
+- (void)_publishFinishedAndRemoveAllObjectsForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if ([(NSArray *)self->_currentlyAnnouncingNotificationIdentifiers count])
   {
     v5 = AFSiriLogContextDaemon;
@@ -89,7 +89,7 @@
       v7 = 136315394;
       v8 = "[ADUserNotificationAnnouncementSpeakingStatePublisher _publishFinishedAndRemoveAllObjectsForReason:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Request ended for reason %@. Sending finished speaking state.", &v7, 0x16u);
     }
 
@@ -99,9 +99,9 @@
   }
 }
 
-- (void)_publishCancelAndRemoveAllObjectsForReason:(id)a3
+- (void)_publishCancelAndRemoveAllObjectsForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if ([(NSArray *)self->_currentlyAnnouncingNotificationIdentifiers count])
   {
     v5 = AFSiriLogContextDaemon;
@@ -110,7 +110,7 @@
       v7 = 136315394;
       v8 = "[ADUserNotificationAnnouncementSpeakingStatePublisher _publishCancelAndRemoveAllObjectsForReason:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Request cancelled for reason %@. Sending cancelled speaking state.", &v7, 0x16u);
     }
 
@@ -120,10 +120,10 @@
   }
 }
 
-- (BOOL)_publishStateChanged:(int64_t)a3 forIdentifiers:(id)a4
+- (BOOL)_publishStateChanged:(int64_t)changed forIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  if (![v6 count])
+  identifiersCopy = identifiers;
+  if (![identifiersCopy count])
   {
     v13 = AFSiriLogContextDaemon;
     if (!os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -155,7 +155,7 @@ LABEL_12:
     v18 = 136315394;
     v19 = "[ADUserNotificationAnnouncementSpeakingStatePublisher _publishStateChanged:forIdentifiers:]";
     v20 = 2048;
-    v21 = a3;
+    changedCopy = changed;
     v14 = "%s Cannot publish notification, invalid state %li";
     v15 = v8;
     v16 = 22;
@@ -169,13 +169,13 @@ LABEL_12:
     v18 = 136315650;
     v19 = "[ADUserNotificationAnnouncementSpeakingStatePublisher _publishStateChanged:forIdentifiers:]";
     v20 = 2112;
-    v21 = v10;
+    changedCopy = v10;
     v22 = 2112;
-    v23 = v6;
+    v23 = identifiersCopy;
   }
 
-  v11 = [(ADUserNotificationAnnouncementSpeakingStatePublisher *)self connectionProxy];
-  [v11 speakingStateDidChange:a3 forIdentifiers:v6];
+  connectionProxy = [(ADUserNotificationAnnouncementSpeakingStatePublisher *)self connectionProxy];
+  [connectionProxy speakingStateDidChange:changed forIdentifiers:identifiersCopy];
 
   v12 = 1;
 LABEL_10:
@@ -183,10 +183,10 @@ LABEL_10:
   return v12;
 }
 
-- (void)_publishObjectHasArrived:(id)a3
+- (void)_publishObjectHasArrived:(id)arrived
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _notificationIdentifiersForObject:v4];
+  arrivedCopy = arrived;
+  v5 = [objc_opt_class() _notificationIdentifiersForObject:arrivedCopy];
   if ([v5 count])
   {
     if (![(NSArray *)self->_currentlyAnnouncingNotificationIdentifiers isEqualToArray:v5]&& [(NSArray *)self->_currentlyAnnouncingNotificationIdentifiers count])
@@ -255,11 +255,11 @@ LABEL_8:
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
     {
       v17 = v16;
-      v18 = [v4 aceId];
+      aceId = [arrivedCopy aceId];
       *buf = 136315394;
       v25 = "[ADUserNotificationAnnouncementSpeakingStatePublisher _publishObjectHasArrived:]";
       v26 = 2112;
-      v27 = v18;
+      v27 = aceId;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s Not publishing arrival, no identifiers exist for %@. Ignoring.", buf, 0x16u);
     }
   }
@@ -267,9 +267,9 @@ LABEL_8:
 LABEL_18:
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   HasEntitlement = AFConnectionHasEntitlement();
   if (HasEntitlement)
   {
@@ -279,7 +279,7 @@ LABEL_18:
     v10[2] = sub_10009DE64;
     v10[3] = &unk_10051E010;
     v10[4] = self;
-    v11 = v5;
+    v11 = connectionCopy;
     dispatch_async(queue, v10);
   }
 
@@ -291,7 +291,7 @@ LABEL_18:
       *buf = 136315394;
       v13 = "[ADUserNotificationAnnouncementSpeakingStatePublisher listener:shouldAcceptNewConnection:]";
       v14 = 2112;
-      v15 = v5;
+      v15 = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s %@ Announcement Speaking State connection does not have required entitlements.", buf, 0x16u);
     }
   }
@@ -299,7 +299,7 @@ LABEL_18:
   return HasEntitlement;
 }
 
-- (void)requestLifecycleObserver:(id)a3 requestWasCancelledWithInfo:(id)a4 forReason:(int64_t)a5 origin:(int64_t)a6 client:(id)a7 successorInfo:(id)a8
+- (void)requestLifecycleObserver:(id)observer requestWasCancelledWithInfo:(id)info forReason:(int64_t)reason origin:(int64_t)origin client:(id)client successorInfo:(id)successorInfo
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -310,7 +310,7 @@ LABEL_18:
   dispatch_async(queue, block);
 }
 
-- (void)requestLifecycleObserver:(id)a3 requestDidEndWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6
+- (void)requestLifecycleObserver:(id)observer requestDidEndWithInfo:(id)info origin:(int64_t)origin client:(id)client
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -321,7 +321,7 @@ LABEL_18:
   dispatch_async(queue, block);
 }
 
-- (void)requestLifecycleObserver:(id)a3 requestWillBeginWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6
+- (void)requestLifecycleObserver:(id)observer requestWillBeginWithInfo:(id)info origin:(int64_t)origin client:(id)client
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -332,17 +332,17 @@ LABEL_18:
   dispatch_async(queue, block);
 }
 
-- (void)publishObjectHasArrived:(id)a3
+- (void)publishObjectHasArrived:(id)arrived
 {
-  v4 = a3;
+  arrivedCopy = arrived;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009E370;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrivedCopy;
+  v6 = arrivedCopy;
   dispatch_async(queue, v7);
 }
 
@@ -355,16 +355,16 @@ LABEL_18:
   [(ADUserNotificationAnnouncementSpeakingStatePublisher *)&v3 dealloc];
 }
 
-- (id)_initWithQueue:(id)a3
+- (id)_initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = ADUserNotificationAnnouncementSpeakingStatePublisher;
   v6 = [(ADUserNotificationAnnouncementSpeakingStatePublisher *)&v13 init];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = +[ADRequestLifecycleObserver sharedObserver];
     [v8 addListener:p_isa];
 
@@ -380,13 +380,13 @@ LABEL_18:
   return p_isa;
 }
 
-+ (id)_notificationIdentifiersForObject:(id)a3
++ (id)_notificationIdentifiersForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [v3 context];
+    context = [objectCopy context];
   }
 
   else
@@ -394,29 +394,29 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v3 configuration];
-      v4 = [v13 context];
+      configuration = [objectCopy configuration];
+      context = [configuration context];
     }
 
     else
     {
-      v4 = 0;
+      context = 0;
     }
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [v5 scheme];
+    identifier = [context identifier];
+    scheme = [identifier scheme];
     v7 = AFSiriUserNotificationAnnounceScheme;
-    v8 = [v6 isEqualToString:AFSiriUserNotificationAnnounceScheme];
+    v8 = [scheme isEqualToString:AFSiriUserNotificationAnnounceScheme];
 
     if (v8)
     {
-      v9 = [v5 absoluteString];
+      absoluteString = [identifier absoluteString];
       v10 = [NSString stringWithFormat:@"%@://", v7];
-      v11 = [v9 substringFromIndex:{objc_msgSend(v10, "length")}];
+      v11 = [absoluteString substringFromIndex:{objc_msgSend(v10, "length")}];
       v12 = [v11 componentsSeparatedByString:@"&"];
     }
 
@@ -434,13 +434,13 @@ LABEL_18:
   return v12;
 }
 
-+ (BOOL)supportsPublishingArrivalForAceObject:(id)a3
++ (BOOL)supportsPublishingArrivalForAceObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 aceId];
-  if ([v5 length])
+  objectCopy = object;
+  aceId = [objectCopy aceId];
+  if ([aceId length])
   {
-    v6 = [a1 _notificationIdentifiersForObject:v4];
+    v6 = [self _notificationIdentifiersForObject:objectCopy];
     v7 = [v6 count] != 0;
   }
 

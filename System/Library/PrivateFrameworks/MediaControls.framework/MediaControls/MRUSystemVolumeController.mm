@@ -1,15 +1,15 @@
 @interface MRUSystemVolumeController
-+ (id)packageStateForVolumeValue:(float)a3;
-- (MRUSystemVolumeController)initWithOutputDeviceRouteController:(id)a3;
++ (id)packageStateForVolumeValue:(float)value;
+- (MRUSystemVolumeController)initWithOutputDeviceRouteController:(id)controller;
 - (MRUSystemVolumeControllerDelegate)delegate;
-- (float)volumeValueForType:(int64_t)a3;
-- (id)volumeControllerForType:(int64_t)a3;
-- (int64_t)typeForVolumeController:(id)a3;
-- (unsigned)volumeCapabilitiesForType:(int64_t)a3;
-- (void)setVolumeValue:(float)a3 forType:(int64_t)a4;
+- (float)volumeValueForType:(int64_t)type;
+- (id)volumeControllerForType:(int64_t)type;
+- (int64_t)typeForVolumeController:(id)controller;
+- (unsigned)volumeCapabilitiesForType:(int64_t)type;
+- (void)setVolumeValue:(float)value forType:(int64_t)type;
 - (void)updateVolumeControllers;
-- (void)volumeController:(id)a3 volumeControlCapabilitiesDidChange:(unsigned int)a4;
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4;
+- (void)volumeController:(id)controller volumeControlCapabilitiesDidChange:(unsigned int)change;
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change;
 @end
 
 @implementation MRUSystemVolumeController
@@ -19,9 +19,9 @@
   if ([(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController isSplitRoute])
   {
     v3 = objc_alloc(MEMORY[0x1E6970A20]);
-    v4 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController systemRoute];
-    v5 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
-    v16 = [v3 initWithGroupRoute:v4 outputDeviceRoute:v5];
+    systemRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController systemRoute];
+    primaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
+    v16 = [v3 initWithGroupRoute:systemRoute outputDeviceRoute:primaryOutputDeviceRoute];
 
     v6 = [objc_alloc(MEMORY[0x1E6970A18]) initWithDataSource:v16];
     primaryVolumeController = self->_primaryVolumeController;
@@ -29,9 +29,9 @@
 
     [(MPVolumeController *)self->_primaryVolumeController setDelegate:self];
     v8 = objc_alloc(MEMORY[0x1E6970A20]);
-    v9 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController systemRoute];
-    v10 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController secondaryOutputDeviceRoute];
-    v11 = [v8 initWithGroupRoute:v9 outputDeviceRoute:v10];
+    systemRoute2 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController systemRoute];
+    secondaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController secondaryOutputDeviceRoute];
+    v11 = [v8 initWithGroupRoute:systemRoute2 outputDeviceRoute:secondaryOutputDeviceRoute];
 
     v12 = [objc_alloc(MEMORY[0x1E6970A18]) initWithDataSource:v11];
     secondaryVolumeController = self->_secondaryVolumeController;
@@ -53,16 +53,16 @@
   }
 }
 
-- (MRUSystemVolumeController)initWithOutputDeviceRouteController:(id)a3
+- (MRUSystemVolumeController)initWithOutputDeviceRouteController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = MRUSystemVolumeController;
   v6 = [(MRUSystemVolumeController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputDeviceRouteController, a3);
+    objc_storeStrong(&v6->_outputDeviceRouteController, controller);
     [(MRUSystemOutputDeviceRouteController *)v7->_outputDeviceRouteController add:v7];
     v8 = [MEMORY[0x1E695DFD8] setWithObjects:{@"Audio/Video", @"MediaPlayback", @"Alarm", @"Ringtone", @"PhoneCall", @"VoiceCommand", 0}];
     v9 = [objc_alloc(MEMORY[0x1E6970A28]) initWithVolumeAudioCategories:v8];
@@ -77,12 +77,12 @@
   return v7;
 }
 
-- (float)volumeValueForType:(int64_t)a3
+- (float)volumeValueForType:(int64_t)type
 {
-  v3 = [(MRUSystemVolumeController *)self volumeControllerForType:a3];
-  v4 = [v3 volumeCapabilities];
+  v3 = [(MRUSystemVolumeController *)self volumeControllerForType:type];
+  volumeCapabilities = [v3 volumeCapabilities];
   [v3 volumeValue];
-  if ((v4 & 2) != 0)
+  if ((volumeCapabilities & 2) != 0)
   {
     v6 = v5;
   }
@@ -95,35 +95,35 @@
   return v6;
 }
 
-- (unsigned)volumeCapabilitiesForType:(int64_t)a3
+- (unsigned)volumeCapabilitiesForType:(int64_t)type
 {
-  v3 = [(MRUSystemVolumeController *)self volumeControllerForType:a3];
-  v4 = [v3 volumeCapabilities];
+  v3 = [(MRUSystemVolumeController *)self volumeControllerForType:type];
+  volumeCapabilities = [v3 volumeCapabilities];
 
-  return v4;
+  return volumeCapabilities;
 }
 
-- (void)setVolumeValue:(float)a3 forType:(int64_t)a4
+- (void)setVolumeValue:(float)value forType:(int64_t)type
 {
-  v7 = [(MRUSystemVolumeController *)self volumeControllerForType:a4];
+  v7 = [(MRUSystemVolumeController *)self volumeControllerForType:type];
   LODWORD(v5) = 1036831949;
-  *&v6 = a3;
+  *&v6 = value;
   [v7 setVolume:v6 withNotificationDelay:v5];
 }
 
-+ (id)packageStateForVolumeValue:(float)a3
++ (id)packageStateForVolumeValue:(float)value
 {
-  if (a3 <= 0.00000011921)
+  if (value <= 0.00000011921)
   {
     return @"mute";
   }
 
-  if (a3 < 0.33)
+  if (value < 0.33)
   {
     return @"min";
   }
 
-  if (a3 >= 1.0)
+  if (value >= 1.0)
   {
     v4 = @"max";
   }
@@ -133,7 +133,7 @@
     v4 = @"full";
   }
 
-  if (a3 >= 0.66)
+  if (value >= 0.66)
   {
     return v4;
   }
@@ -144,26 +144,26 @@
   }
 }
 
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change
 {
-  v6 = a3;
-  v7 = [(MRUSystemVolumeController *)self typeForVolumeController:v6];
+  controllerCopy = controller;
+  v7 = [(MRUSystemVolumeController *)self typeForVolumeController:controllerCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [v6 volumeCapabilities];
+  volumeCapabilities = [controllerCopy volumeCapabilities];
 
-  *&v9 = a4;
-  [WeakRetained systemVolumeController:self didChangeVolumeControlCapabilities:v8 effectiveVolumeValue:v7 forType:v9];
+  *&v9 = change;
+  [WeakRetained systemVolumeController:self didChangeVolumeControlCapabilities:volumeCapabilities effectiveVolumeValue:v7 forType:v9];
 }
 
-- (void)volumeController:(id)a3 volumeControlCapabilitiesDidChange:(unsigned int)a4
+- (void)volumeController:(id)controller volumeControlCapabilitiesDidChange:(unsigned int)change
 {
-  v4 = *&a4;
-  v11 = a3;
+  v4 = *&change;
+  controllerCopy = controller;
   v6 = [(MRUSystemVolumeController *)self typeForVolumeController:?];
   v7 = 1.0;
   if ((v4 & 2) != 0)
   {
-    [v11 volumeValue];
+    [controllerCopy volumeValue];
     v7 = v8;
   }
 
@@ -172,24 +172,24 @@
   [WeakRetained systemVolumeController:self didChangeVolumeControlCapabilities:v4 effectiveVolumeValue:v6 forType:v10];
 }
 
-- (int64_t)typeForVolumeController:(id)a3
+- (int64_t)typeForVolumeController:(id)controller
 {
-  if (self->_primaryVolumeController == a3)
+  if (self->_primaryVolumeController == controller)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (self->_secondaryVolumeController == a3);
+    return 2 * (self->_secondaryVolumeController == controller);
   }
 }
 
-- (id)volumeControllerForType:(int64_t)a3
+- (id)volumeControllerForType:(int64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    self = *(&self->_systemVolumeController + a3);
+    self = *(&self->_systemVolumeController + type);
   }
 
   return self;

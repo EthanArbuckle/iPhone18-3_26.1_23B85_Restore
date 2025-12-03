@@ -1,48 +1,48 @@
 @interface PKAccountPaymentFundingDetailsBankAccount
-- (BOOL)isEqual:(id)a3;
-- (PKAccountPaymentFundingDetailsBankAccount)initWithCoder:(id)a3;
-- (PKAccountPaymentFundingDetailsBankAccount)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountPaymentFundingDetailsBankAccount)initWithCoder:(id)coder;
+- (PKAccountPaymentFundingDetailsBankAccount)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)fundingDetailsUnencryptedDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccountNumber:(id)a3;
-- (void)setRoutingNumber:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccountNumber:(id)number;
+- (void)setRoutingNumber:(id)number;
 @end
 
 @implementation PKAccountPaymentFundingDetailsBankAccount
 
-- (PKAccountPaymentFundingDetailsBankAccount)initWithDictionary:(id)a3
+- (PKAccountPaymentFundingDetailsBankAccount)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = PKAccountPaymentFundingDetailsBankAccount;
-  v5 = [(PKAccountPaymentFundingDetails *)&v21 initWithDictionary:v4];
+  v5 = [(PKAccountPaymentFundingDetails *)&v21 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"accountId"];
+    v6 = [dictionaryCopy PKStringForKey:@"accountId"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v6;
 
-    v8 = [v4 PKStringForKey:@"accountNumber"];
-    v9 = [v8 pk_zString];
+    v8 = [dictionaryCopy PKStringForKey:@"accountNumber"];
+    pk_zString = [v8 pk_zString];
     accountNumber = v5->_accountNumber;
-    v5->_accountNumber = v9;
+    v5->_accountNumber = pk_zString;
 
-    v11 = [v4 PKStringForKey:@"routingNumber"];
-    v12 = [v11 pk_zString];
+    v11 = [dictionaryCopy PKStringForKey:@"routingNumber"];
+    pk_zString2 = [v11 pk_zString];
     routingNumber = v5->_routingNumber;
-    v5->_routingNumber = v12;
+    v5->_routingNumber = pk_zString2;
 
-    v14 = [v4 PKStringForKey:@"name"];
+    v14 = [dictionaryCopy PKStringForKey:@"name"];
     name = v5->_name;
     v5->_name = v14;
 
-    v16 = [v4 PKStringForKey:@"status"];
+    v16 = [dictionaryCopy PKStringForKey:@"status"];
     v5->_status = PKAccountPaymentFundingSourceStatusFromString(v16);
 
-    v17 = [v4 PKDictionaryForKey:@"verification"];
+    v17 = [dictionaryCopy PKDictionaryForKey:@"verification"];
     if ([v17 count])
     {
       v18 = [[PKAccountFundingSourceVerification alloc] initWithDictionary:v17];
@@ -54,27 +54,27 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKAccountPaymentFundingDetailsBankAccount allocWithZone:](PKAccountPaymentFundingDetailsBankAccount init];
-  v6 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   accountIdentifier = v5->_accountIdentifier;
   v5->_accountIdentifier = v6;
 
-  v8 = [(NSString *)self->_accountNumber copyWithZone:a3];
+  v8 = [(NSString *)self->_accountNumber copyWithZone:zone];
   accountNumber = v5->_accountNumber;
   v5->_accountNumber = v8;
 
-  v10 = [(NSString *)self->_routingNumber copyWithZone:a3];
+  v10 = [(NSString *)self->_routingNumber copyWithZone:zone];
   routingNumber = v5->_routingNumber;
   v5->_routingNumber = v10;
 
-  v12 = [(NSString *)self->_name copyWithZone:a3];
+  v12 = [(NSString *)self->_name copyWithZone:zone];
   name = v5->_name;
   v5->_name = v12;
 
   v5->_status = self->_status;
-  v14 = [(PKAccountFundingSourceVerification *)self->_verificationDetails copyWithZone:a3];
+  v14 = [(PKAccountFundingSourceVerification *)self->_verificationDetails copyWithZone:zone];
   verificationDetails = v5->_verificationDetails;
   v5->_verificationDetails = v14;
 
@@ -83,51 +83,51 @@
 
 - (id)fundingDetailsUnencryptedDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_accountIdentifier forKeyedSubscript:@"accountId"];
-  v4 = [(NSString *)self->_accountNumber pk_zString];
-  [v3 setObject:v4 forKeyedSubscript:@"accountNumber"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_accountIdentifier forKeyedSubscript:@"accountId"];
+  pk_zString = [(NSString *)self->_accountNumber pk_zString];
+  [dictionary setObject:pk_zString forKeyedSubscript:@"accountNumber"];
 
-  v5 = [(NSString *)self->_routingNumber pk_zString];
-  [v3 setObject:v5 forKeyedSubscript:@"routingNumber"];
+  pk_zString2 = [(NSString *)self->_routingNumber pk_zString];
+  [dictionary setObject:pk_zString2 forKeyedSubscript:@"routingNumber"];
 
-  [v3 setObject:self->_name forKeyedSubscript:@"name"];
+  [dictionary setObject:self->_name forKeyedSubscript:@"name"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_status];
-  [v3 setObject:v6 forKeyedSubscript:@"status"];
+  [dictionary setObject:v6 forKeyedSubscript:@"status"];
 
-  v7 = [v3 copy];
+  v7 = [dictionary copy];
 
   return v7;
 }
 
-- (PKAccountPaymentFundingDetailsBankAccount)initWithCoder:(id)a3
+- (PKAccountPaymentFundingDetailsBankAccount)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKAccountPaymentFundingDetailsBankAccount;
-  v5 = [(PKAccountPaymentFundingDetails *)&v19 initWithCoder:v4];
+  v5 = [(PKAccountPaymentFundingDetails *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountId"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountNumber"];
-    v9 = [v8 pk_zString];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountNumber"];
+    pk_zString = [v8 pk_zString];
     accountNumber = v5->_accountNumber;
-    v5->_accountNumber = v9;
+    v5->_accountNumber = pk_zString;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routingNumber"];
-    v12 = [v11 pk_zString];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routingNumber"];
+    pk_zString2 = [v11 pk_zString];
     routingNumber = v5->_routingNumber;
-    v5->_routingNumber = v12;
+    v5->_routingNumber = pk_zString2;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v14;
 
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"verification"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"verification"];
     verificationDetails = v5->_verificationDetails;
     v5->_verificationDetails = v16;
   }
@@ -135,23 +135,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKAccountPaymentFundingDetailsBankAccount;
-  v4 = a3;
-  [(PKAccountPaymentFundingDetails *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_accountIdentifier forKey:{@"accountId", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_accountNumber forKey:@"accountNumber"];
-  [v4 encodeObject:self->_routingNumber forKey:@"routingNumber"];
-  [v4 encodeObject:self->_name forKey:@"name"];
-  [v4 encodeInteger:self->_status forKey:@"status"];
-  [v4 encodeObject:self->_verificationDetails forKey:@"verification"];
+  coderCopy = coder;
+  [(PKAccountPaymentFundingDetails *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:{@"accountId", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_accountNumber forKey:@"accountNumber"];
+  [coderCopy encodeObject:self->_routingNumber forKey:@"routingNumber"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeObject:self->_verificationDetails forKey:@"verification"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -160,13 +160,13 @@
 
   v15.receiver = self;
   v15.super_class = PKAccountPaymentFundingDetailsBankAccount;
-  if (![(PKAccountPaymentFundingDetails *)&v15 isEqual:v4])
+  if (![(PKAccountPaymentFundingDetails *)&v15 isEqual:equalCopy])
   {
     goto LABEL_17;
   }
 
   accountIdentifier = self->_accountIdentifier;
-  v6 = v4[3];
+  v6 = equalCopy[3];
   if (accountIdentifier)
   {
     v7 = v6 == 0;
@@ -191,7 +191,7 @@
   }
 
   verificationDetails = self->_verificationDetails;
-  v9 = v4[8];
+  v9 = equalCopy[8];
   if (verificationDetails)
   {
     v10 = v9 == 0;
@@ -221,7 +221,7 @@ LABEL_17:
 
 LABEL_20:
   name = self->_name;
-  v14 = v4[6];
+  v14 = equalCopy[6];
   if (name && v14)
   {
     v11 = [(NSString *)name isEqual:?];
@@ -239,13 +239,13 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_accountIdentifier];
-  [v3 safelyAddObject:self->_name];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_accountIdentifier];
+  [array safelyAddObject:self->_name];
   v7.receiver = self;
   v7.super_class = PKAccountPaymentFundingDetailsBankAccount;
   v4 = [(PKAccountPaymentFundingDetailsBankAccount *)&v7 hash];
-  v5 = PKCombinedHash(v4, v3);
+  v5 = PKCombinedHash(v4, array);
 
   return v5;
 }
@@ -283,18 +283,18 @@ LABEL_18:
   return v3;
 }
 
-- (void)setAccountNumber:(id)a3
+- (void)setAccountNumber:(id)number
 {
-  v4 = [a3 pk_zString];
+  pk_zString = [number pk_zString];
   accountNumber = self->_accountNumber;
-  self->_accountNumber = v4;
+  self->_accountNumber = pk_zString;
 }
 
-- (void)setRoutingNumber:(id)a3
+- (void)setRoutingNumber:(id)number
 {
-  v4 = [a3 pk_zString];
+  pk_zString = [number pk_zString];
   routingNumber = self->_routingNumber;
-  self->_routingNumber = v4;
+  self->_routingNumber = pk_zString;
 }
 
 @end

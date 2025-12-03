@@ -1,14 +1,14 @@
 @interface _UIArchiveItem
-- (void)setPathInArchive:(id)a3;
+- (void)setPathInArchive:(id)archive;
 @end
 
 @implementation _UIArchiveItem
 
-- (void)setPathInArchive:(id)a3
+- (void)setPathInArchive:(id)archive
 {
-  v4 = [a3 stringByStandardizingPath];
+  stringByStandardizingPath = [archive stringByStandardizingPath];
   pathInArchive = self->_pathInArchive;
-  self->_pathInArchive = v4;
+  self->_pathInArchive = stringByStandardizingPath;
 }
 
 @end

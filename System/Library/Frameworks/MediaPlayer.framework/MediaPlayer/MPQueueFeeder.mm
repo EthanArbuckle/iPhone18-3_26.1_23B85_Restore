@@ -1,104 +1,104 @@
 @interface MPQueueFeeder
-- (BOOL)identifierRegistryWithExclusiveAccessReturningBOOL:(id)a3;
+- (BOOL)identifierRegistryWithExclusiveAccessReturningBOOL:(id)l;
 - (MPQueueFeeder)init;
-- (id)identifierRegistryWithExclusiveAccessReturningObject:(id)a3;
-- (int64_t)identifierRegistryWithExclusiveAccessReturningInteger:(id)a3;
-- (void)getRepresentativeMetadataForPlaybackContext:(id)a3 properties:(id)a4 completion:(id)a5;
-- (void)identifierRegistryWithExclusiveAccess:(id)a3;
-- (void)replaceIdentifierRegistry:(id)a3;
+- (id)identifierRegistryWithExclusiveAccessReturningObject:(id)object;
+- (int64_t)identifierRegistryWithExclusiveAccessReturningInteger:(id)integer;
+- (void)getRepresentativeMetadataForPlaybackContext:(id)context properties:(id)properties completion:(id)completion;
+- (void)identifierRegistryWithExclusiveAccess:(id)access;
+- (void)replaceIdentifierRegistry:(id)registry;
 @end
 
 @implementation MPQueueFeeder
 
-- (void)getRepresentativeMetadataForPlaybackContext:(id)a3 properties:(id)a4 completion:(id)a5
+- (void)getRepresentativeMetadataForPlaybackContext:(id)context properties:(id)properties completion:(id)completion
 {
   v7 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v7 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = NSStringFromSelector(a2);
-    [v11 handleFailureInMethod:a2 object:self file:@"MPQueueFeeder.m" lineNumber:90 description:{@"Subclass %@ must implement -%@ defined in %@.", v9, v10, @"[MPQueueFeeder class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPQueueFeeder.m" lineNumber:90 description:{@"Subclass %@ must implement -%@ defined in %@.", v9, v10, @"[MPQueueFeeder class]"}];
   }
 }
 
-- (int64_t)identifierRegistryWithExclusiveAccessReturningInteger:(id)a3
+- (int64_t)identifierRegistryWithExclusiveAccessReturningInteger:(id)integer
 {
-  v5 = a3;
+  integerCopy = integer;
   if (([objc_opt_class() usesIdentifierRegistry] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPQueueFeeder.m" lineNumber:74 description:@"Invalid attempt to use identifierRegistry"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPQueueFeeder.m" lineNumber:74 description:@"Invalid attempt to use identifierRegistry"];
   }
 
   os_unfair_lock_lock(&self->_identifierRegistryLock);
-  v6 = v5[2](v5, self->_identifierRegistry);
+  v6 = integerCopy[2](integerCopy, self->_identifierRegistry);
 
   os_unfair_lock_unlock(&self->_identifierRegistryLock);
   return v6;
 }
 
-- (BOOL)identifierRegistryWithExclusiveAccessReturningBOOL:(id)a3
+- (BOOL)identifierRegistryWithExclusiveAccessReturningBOOL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   if (([objc_opt_class() usesIdentifierRegistry] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPQueueFeeder.m" lineNumber:66 description:@"Invalid attempt to use identifierRegistry"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPQueueFeeder.m" lineNumber:66 description:@"Invalid attempt to use identifierRegistry"];
   }
 
   os_unfair_lock_lock(&self->_identifierRegistryLock);
-  v6 = v5[2](v5, self->_identifierRegistry);
+  v6 = lCopy[2](lCopy, self->_identifierRegistry);
 
   os_unfair_lock_unlock(&self->_identifierRegistryLock);
   return v6;
 }
 
-- (id)identifierRegistryWithExclusiveAccessReturningObject:(id)a3
+- (id)identifierRegistryWithExclusiveAccessReturningObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   if (([objc_opt_class() usesIdentifierRegistry] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPQueueFeeder.m" lineNumber:58 description:@"Invalid attempt to use identifierRegistry"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPQueueFeeder.m" lineNumber:58 description:@"Invalid attempt to use identifierRegistry"];
   }
 
   os_unfair_lock_lock(&self->_identifierRegistryLock);
-  v6 = v5[2](v5, self->_identifierRegistry);
+  v6 = objectCopy[2](objectCopy, self->_identifierRegistry);
 
   os_unfair_lock_unlock(&self->_identifierRegistryLock);
 
   return v6;
 }
 
-- (void)identifierRegistryWithExclusiveAccess:(id)a3
+- (void)identifierRegistryWithExclusiveAccess:(id)access
 {
-  v5 = a3;
+  accessCopy = access;
   if (([objc_opt_class() usesIdentifierRegistry] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MPQueueFeeder.m" lineNumber:51 description:@"Invalid attempt to use identifierRegistry"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPQueueFeeder.m" lineNumber:51 description:@"Invalid attempt to use identifierRegistry"];
   }
 
   os_unfair_lock_lock(&self->_identifierRegistryLock);
-  v5[2](v5, self->_identifierRegistry);
+  accessCopy[2](accessCopy, self->_identifierRegistry);
 
   os_unfair_lock_unlock(&self->_identifierRegistryLock);
 }
 
-- (void)replaceIdentifierRegistry:(id)a3
+- (void)replaceIdentifierRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   if (([objc_opt_class() usesIdentifierRegistry] & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MPQueueFeeder.m" lineNumber:44 description:@"Invalid attempt to use identifierRegistry"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPQueueFeeder.m" lineNumber:44 description:@"Invalid attempt to use identifierRegistry"];
   }
 
   os_unfair_lock_lock(&self->_identifierRegistryLock);
   identifierRegistry = self->_identifierRegistry;
-  self->_identifierRegistry = v5;
+  self->_identifierRegistry = registryCopy;
 
   os_unfair_lock_unlock(&self->_identifierRegistryLock);
 }

@@ -1,8 +1,8 @@
 @interface PUIReportSensorEventsController
 - (BOOL)isGreenTeaSpecialCategory;
 - (PUIReportSensorEventsController)init;
-- (id)eventSpecifiersForRecords:(id)a3 greenTea:(BOOL)a4;
-- (id)headerForCategory:(id)a3;
+- (id)eventSpecifiersForRecords:(id)records greenTea:(BOOL)tea;
+- (id)headerForCategory:(id)category;
 - (id)specifiers;
 @end
 
@@ -15,8 +15,8 @@
   v2 = [(PUIReportSensorEventsController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_dataDidChange name:@"PUIReportSensorManagerDataHasChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_dataDidChange name:@"PUIReportSensorManagerDataHasChangedNotification" object:0];
   }
 
   return v2;
@@ -30,8 +30,8 @@
   }
 
   v3 = isGreenTeaSpecialCategory_greenTeaSpecialCategories;
-  v4 = [(PUIReportSensorEventsController *)self category];
-  LOBYTE(v3) = [v3 containsObject:v4];
+  category = [(PUIReportSensorEventsController *)self category];
+  LOBYTE(v3) = [v3 containsObject:category];
 
   return v3;
 }
@@ -60,31 +60,31 @@ void __60__PUIReportSensorEventsController_isGreenTeaSpecialCategory__block_invo
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [(PUIReportSensorEventsController *)self bundleID];
-    v8 = [(PUIReportSensorEventsController *)self category];
-    PUIAnalyticsLogView(v6, v7, v8);
+    bundleID = [(PUIReportSensorEventsController *)self bundleID];
+    category = [(PUIReportSensorEventsController *)self category];
+    PUIAnalyticsLogView(v6, bundleID, category);
 
-    v9 = [(PUIReportSensorEventsController *)self category];
+    category2 = [(PUIReportSensorEventsController *)self category];
 
-    if (!v9)
+    if (!category2)
     {
-      v10 = [(PUIReportSensorEventsController *)self specifier];
-      v11 = [v10 identifier];
-      [(PUIReportSensorEventsController *)self setCategory:v11];
+      specifier = [(PUIReportSensorEventsController *)self specifier];
+      identifier = [specifier identifier];
+      [(PUIReportSensorEventsController *)self setCategory:identifier];
 
-      v12 = [(PUIReportSensorEventsController *)self specifier];
-      v13 = [v12 objectForKeyedSubscript:@"PUIReportAppIDKey"];
+      specifier2 = [(PUIReportSensorEventsController *)self specifier];
+      v13 = [specifier2 objectForKeyedSubscript:@"PUIReportAppIDKey"];
       [(PUIReportSensorEventsController *)self setBundleID:v13];
 
-      v14 = [(PUIReportSensorEventsController *)self specifier];
-      v15 = [v14 objectForKeyedSubscript:@"PUIReportSensorManagerKey"];
+      specifier3 = [(PUIReportSensorEventsController *)self specifier];
+      v15 = [specifier3 objectForKeyedSubscript:@"PUIReportSensorManagerKey"];
       [(PUIReportSensorEventsController *)self setManager:v15];
     }
 
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"EVENTS_HEADER_GROUP"];
-    v18 = [(PUIReportSensorEventsController *)self category];
-    v19 = [(PUIReportSensorEventsController *)self headerForCategory:v18];
+    category3 = [(PUIReportSensorEventsController *)self category];
+    v19 = [(PUIReportSensorEventsController *)self headerForCategory:category3];
     [v17 setObject:v19 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
     [v16 addObject:v17];
@@ -93,13 +93,13 @@ void __60__PUIReportSensorEventsController_isGreenTeaSpecialCategory__block_invo
     v22 = [v20 groupSpecifierWithID:@"EVENTS_GROUP" name:v21];
 
     [v16 addObject:v22];
-    v23 = [(PUIReportSensorEventsController *)self manager];
+    manager = [(PUIReportSensorEventsController *)self manager];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __45__PUIReportSensorEventsController_specifiers__block_invoke;
     v29[3] = &unk_279BA21E0;
     v29[4] = self;
-    v24 = [v23 eventsFiltered:v29];
+    v24 = [manager eventsFiltered:v29];
 
     if (isGreenTeaSKU_once != -1)
     {
@@ -141,18 +141,18 @@ uint64_t __45__PUIReportSensorEventsController_specifiers__block_invoke(uint64_t
   return v11;
 }
 
-- (id)eventSpecifiersForRecords:(id)a3 greenTea:(BOOL)a4
+- (id)eventSpecifiersForRecords:(id)records greenTea:(BOOL)tea
 {
-  v33 = a4;
+  teaCopy = tea;
   v46 = *MEMORY[0x277D85DE8];
   v4 = eventSpecifiersForRecords_greenTea__onceToken;
-  v5 = a3;
+  recordsCopy = records;
   if (v4 != -1)
   {
     [PUIReportSensorEventsController eventSpecifiersForRecords:greenTea:];
   }
 
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_39];
+  v6 = [recordsCopy sortedArrayUsingComparator:&__block_literal_global_39];
 
   v35 = objc_opt_new();
   v39 = 0u;
@@ -181,9 +181,9 @@ uint64_t __45__PUIReportSensorEventsController_specifiers__block_invoke(uint64_t
         isKindOfClass = objc_opt_isKindOfClass();
         if (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v11 = [v9 access];
-          v12 = [v11 identifier];
-          v13 = [v12 UUIDString];
+          access = [v9 access];
+          identifier = [access identifier];
+          uUIDString = [identifier UUIDString];
 
           v14 = *(v7 + 2728);
           if (isKindOfClass)
@@ -194,32 +194,32 @@ uint64_t __45__PUIReportSensorEventsController_specifiers__block_invoke(uint64_t
             v17 = *(v7 + 2728);
             [v15 endTime];
             v18 = [v17 dateWithTimeIntervalSinceReferenceDate:?];
-            v19 = [v15 access];
+            access2 = [v15 access];
 
-            v20 = [v19 accessCount];
+            accessCount = [access2 accessCount];
           }
 
           else
           {
             [v9 startTime];
             v18 = [v14 dateWithTimeIntervalSinceReferenceDate:?];
-            v20 = 0;
+            accessCount = 0;
             v16 = v18;
           }
 
           v21 = [eventSpecifiersForRecords_greenTea__intervalFormatter stringFromDate:v16 toDate:v18];
           v22 = [eventSpecifiersForRecords_greenTea__valueFormatter stringFromDate:v16];
           v23 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:&stru_28771E540 target:self set:0 get:sel_valueForSpecifier_ detail:0 cell:4 edit:0];
-          [v23 setIdentifier:v13];
+          [v23 setIdentifier:uUIDString];
           v24 = [eventSpecifiersForRecords_greenTea__titleFormatter stringFromDate:v16];
           [v23 setName:v24];
 
           [v23 setObject:v21 forKeyedSubscript:v38];
-          if ((isKindOfClass & v33) == 1)
+          if ((isKindOfClass & teaCopy) == 1)
           {
-            if (v20)
+            if (accessCount)
             {
-              v25 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%@ (%lu)", v22, v20];
+              v25 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%@ (%lu)", v22, accessCount];
               [v23 setObject:v25 forKeyedSubscript:v38];
               goto LABEL_16;
             }
@@ -249,12 +249,12 @@ LABEL_16:
           goto LABEL_25;
         }
 
-        v13 = _PUILoggingFacility();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        uUIDString = _PUILoggingFacility();
+        if (os_log_type_enabled(uUIDString, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
           v44 = v9;
-          _os_log_impl(&dword_2657FE000, v13, OS_LOG_TYPE_DEFAULT, "Unrecognized record type, %@", buf, 0xCu);
+          _os_log_impl(&dword_2657FE000, uUIDString, OS_LOG_TYPE_DEFAULT, "Unrecognized record type, %@", buf, 0xCu);
         }
 
 LABEL_25:
@@ -336,10 +336,10 @@ uint64_t __70__PUIReportSensorEventsController_eventSpecifiersForRecords_greenTe
   }
 }
 
-- (id)headerForCategory:(id)a3
+- (id)headerForCategory:(id)category
 {
   v14[7] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  categoryCopy = category;
   v4 = *MEMORY[0x277D412B8];
   v13[0] = *MEMORY[0x277D412A0];
   v13[1] = v4;
@@ -358,11 +358,11 @@ uint64_t __70__PUIReportSensorEventsController_eventSpecifiersForRecords_greenTe
   v13[6] = *MEMORY[0x277D412C0];
   v14[6] = @"EVENTS_HEADER_TEXT_SCREEN_RECORDING";
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:7];
-  v8 = [v7 objectForKeyedSubscript:v3];
+  v8 = [v7 objectForKeyedSubscript:categoryCopy];
 
   if (v8)
   {
-    v9 = [v7 objectForKeyedSubscript:v3];
+    v9 = [v7 objectForKeyedSubscript:categoryCopy];
     v10 = PUI_LocalizedStringForAppReport(v9);
   }
 
@@ -371,7 +371,7 @@ uint64_t __70__PUIReportSensorEventsController_eventSpecifiersForRecords_greenTe
     v9 = _PUILoggingFacility();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(PUIReportSensorEventsController *)v3 headerForCategory:v9];
+      [(PUIReportSensorEventsController *)categoryCopy headerForCategory:v9];
     }
 
     v10 = &stru_28771E540;

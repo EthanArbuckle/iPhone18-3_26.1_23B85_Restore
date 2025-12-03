@@ -1,7 +1,7 @@
 @interface FREditorialItemCreator
 - (FREditorialItemCreator)init;
-- (FREditorialItemCreator)initWithThumbnailCreator:(id)a3;
-- (id)createEditorialItemFromCachedEntry:(id)a3;
+- (FREditorialItemCreator)initWithThumbnailCreator:(id)creator;
+- (id)createEditorialItemFromCachedEntry:(id)entry;
 @end
 
 @implementation FREditorialItemCreator
@@ -29,10 +29,10 @@
   objc_exception_throw(v4);
 }
 
-- (FREditorialItemCreator)initWithThumbnailCreator:(id)a3
+- (FREditorialItemCreator)initWithThumbnailCreator:(id)creator
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  creatorCopy = creator;
+  if (!creatorCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006B2B4();
   }
@@ -43,25 +43,25 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_thumbnailCreator, a3);
+    objc_storeStrong(&v6->_thumbnailCreator, creator);
   }
 
   return v7;
 }
 
-- (id)createEditorialItemFromCachedEntry:(id)a3
+- (id)createEditorialItemFromCachedEntry:(id)entry
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
-    v6 = [v4 image];
+    image = [entryCopy image];
 
-    if (v6)
+    if (image)
     {
-      v7 = [(FREditorialItemCreator *)self thumbnailCreator];
-      v8 = [v5 image];
-      v9 = [v7 editorialThumbnailImageWith:v8];
+      thumbnailCreator = [(FREditorialItemCreator *)self thumbnailCreator];
+      image2 = [v5 image];
+      v9 = [thumbnailCreator editorialThumbnailImageWith:image2];
     }
 
     else
@@ -77,13 +77,13 @@
     }
 
     v13 = [TSEditorialItem alloc];
-    v14 = [v5 editorialItemID];
-    v15 = [v5 title];
-    v16 = [v5 subtitle];
-    v17 = [v5 subtitleColorString];
-    v18 = [v5 actionUrlString];
-    v19 = [NSURL URLWithString:v18];
-    v10 = [v13 initWithIdentifier:v14 title:v15 subtitle:v16 subtitleColor:v17 attributes:v11 actionURL:v19 thumbnailImage:v9 backingTag:0 headline:0];
+    editorialItemID = [v5 editorialItemID];
+    title = [v5 title];
+    subtitle = [v5 subtitle];
+    subtitleColorString = [v5 subtitleColorString];
+    actionUrlString = [v5 actionUrlString];
+    v19 = [NSURL URLWithString:actionUrlString];
+    v10 = [v13 initWithIdentifier:editorialItemID title:title subtitle:subtitle subtitleColor:subtitleColorString attributes:v11 actionURL:v19 thumbnailImage:v9 backingTag:0 headline:0];
   }
 
   else

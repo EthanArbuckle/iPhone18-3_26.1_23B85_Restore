@@ -1,9 +1,9 @@
 @interface PUITextAlignmentBarButtonItem
-+ (id)buttonConfigurationForTextAlignment:(unint64_t)a3;
++ (id)buttonConfigurationForTextAlignment:(unint64_t)alignment;
 + (id)defaultImage;
-- (PUITextAlignmentBarButtonItem)initWithTextAlignment:(unint64_t)a3 target:(id)a4 action:(SEL)a5;
+- (PUITextAlignmentBarButtonItem)initWithTextAlignment:(unint64_t)alignment target:(id)target action:(SEL)action;
 - (void)_update;
-- (void)setTextAlignment:(unint64_t)a3;
+- (void)setTextAlignment:(unint64_t)alignment;
 @end
 
 @implementation PUITextAlignmentBarButtonItem
@@ -17,36 +17,36 @@
   return v4;
 }
 
-+ (id)buttonConfigurationForTextAlignment:(unint64_t)a3
++ (id)buttonConfigurationForTextAlignment:(unint64_t)alignment
 {
-  if (a3 == 1)
+  if (alignment == 1)
   {
-    v3 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-    v4 = [MEMORY[0x1E69DC888] labelColor];
-    [v3 setBaseForegroundColor:v4];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [filledButtonConfiguration setBaseForegroundColor:labelColor];
   }
 
-  v5 = [v3 background];
-  [v5 setCornerRadius:10.0];
+  background = [filledButtonConfiguration background];
+  [background setCornerRadius:10.0];
 
-  [v3 setButtonSize:1];
+  [filledButtonConfiguration setButtonSize:1];
   v6 = +[PUITextAlignmentBarButtonItem defaultImage];
-  [v3 setImage:v6];
+  [filledButtonConfiguration setImage:v6];
 
-  return v3;
+  return filledButtonConfiguration;
 }
 
-- (PUITextAlignmentBarButtonItem)initWithTextAlignment:(unint64_t)a3 target:(id)a4 action:(SEL)a5
+- (PUITextAlignmentBarButtonItem)initWithTextAlignment:(unint64_t)alignment target:(id)target action:(SEL)action
 {
-  v8 = a4;
-  v9 = [PUITextAlignmentBarButtonItem buttonConfigurationForTextAlignment:a3];
+  targetCopy = target;
+  v9 = [PUITextAlignmentBarButtonItem buttonConfigurationForTextAlignment:alignment];
   v10 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v9 primaryAction:0];
-  [v10 addTarget:v8 action:a5 forControlEvents:64];
+  [v10 addTarget:targetCopy action:action forControlEvents:64];
 
   v14.receiver = self;
   v14.super_class = PUITextAlignmentBarButtonItem;
@@ -55,17 +55,17 @@
   if (v11)
   {
     objc_storeStrong(&v11->_button, v10);
-    v12->_textAlignment = a3;
+    v12->_textAlignment = alignment;
   }
 
   return v12;
 }
 
-- (void)setTextAlignment:(unint64_t)a3
+- (void)setTextAlignment:(unint64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(PUITextAlignmentBarButtonItem *)self _update];
   }
 }

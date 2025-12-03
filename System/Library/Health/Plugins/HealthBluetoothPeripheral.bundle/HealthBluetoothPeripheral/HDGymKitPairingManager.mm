@@ -1,46 +1,46 @@
 @interface HDGymKitPairingManager
-- (HDGymKitPairingManager)initWithProfile:(id)a3;
+- (HDGymKitPairingManager)initWithProfile:(id)profile;
 - (HDGymKitPairingManagerDelegate)delegate;
 - (id)_newWatchAppStateMonitor;
 - (void)dealloc;
-- (void)deliverError:(id)a3;
-- (void)forbidConnectionForFitnessMachineSessionUUID:(id)a3 withConnectionUUID:(id)a4;
-- (void)gymKitSettings:(id)a3 didChangeFromNFCPermission:(unint64_t)a4 toNFCPermission:(unint64_t)a5;
-- (void)handleBLEConnectionCompletedSuccessfully:(BOOL)a3;
-- (void)monitorDidDetectAppActivate:(id)a3;
-- (void)monitorDidDetectAppDeactivate:(id)a3;
-- (void)nearFieldInterfaceDidEnterField:(id)a3;
-- (void)nearFieldInterfaceDidReadTag:(id)a3;
-- (void)nearFieldInterfaceFieldDetectionDidEndUnexpectedly:(id)a3;
-- (void)nearFieldInterfaceTagSessionDidEndUnexpectedly:(id)a3;
-- (void)permitConnectionForFitnessMachineSessionUUID:(id)a3 activityType:(unint64_t)a4 withConnectionUUID:(id)a5;
-- (void)registerConnectionInitiatorClient:(id)a3 withConnectionUUID:(id)a4;
+- (void)deliverError:(id)error;
+- (void)forbidConnectionForFitnessMachineSessionUUID:(id)d withConnectionUUID:(id)iD;
+- (void)gymKitSettings:(id)settings didChangeFromNFCPermission:(unint64_t)permission toNFCPermission:(unint64_t)cPermission;
+- (void)handleBLEConnectionCompletedSuccessfully:(BOOL)successfully;
+- (void)monitorDidDetectAppActivate:(id)activate;
+- (void)monitorDidDetectAppDeactivate:(id)deactivate;
+- (void)nearFieldInterfaceDidEnterField:(id)field;
+- (void)nearFieldInterfaceDidReadTag:(id)tag;
+- (void)nearFieldInterfaceFieldDetectionDidEndUnexpectedly:(id)unexpectedly;
+- (void)nearFieldInterfaceTagSessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)permitConnectionForFitnessMachineSessionUUID:(id)d activityType:(unint64_t)type withConnectionUUID:(id)iD;
+- (void)registerConnectionInitiatorClient:(id)client withConnectionUUID:(id)d;
 - (void)reset;
 - (void)simulateAccept;
-- (void)simulateTapWithFitnessMachineType:(unint64_t)a3;
-- (void)stateTimersFieldDetectTimeout:(id)a3;
-- (void)stateTimersTagReadTimeout:(id)a3;
-- (void)stateTimersUserAcceptanceTimeout:(id)a3;
-- (void)updatedConnectionStateWithError:(id)a3;
+- (void)simulateTapWithFitnessMachineType:(unint64_t)type;
+- (void)stateTimersFieldDetectTimeout:(id)timeout;
+- (void)stateTimersTagReadTimeout:(id)timeout;
+- (void)stateTimersUserAcceptanceTimeout:(id)timeout;
+- (void)updatedConnectionStateWithError:(id)error;
 - (void)updatedFitnessMachine;
-- (void)updatedFitnessMachineState:(unint64_t)a3 fitnessMachineSessionUUID:(id)a4;
+- (void)updatedFitnessMachineState:(unint64_t)state fitnessMachineSessionUUID:(id)d;
 - (void)workoutAppIsReady;
-- (void)workoutManager:(id)a3 currentWorkout:(id)a4 didChangeToState:(int64_t)a5;
-- (void)workoutManager:(id)a3 didUpdateCurrentWorkout:(id)a4;
+- (void)workoutManager:(id)manager currentWorkout:(id)workout didChangeToState:(int64_t)state;
+- (void)workoutManager:(id)manager didUpdateCurrentWorkout:(id)workout;
 @end
 
 @implementation HDGymKitPairingManager
 
-- (HDGymKitPairingManager)initWithProfile:(id)a3
+- (HDGymKitPairingManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v24.receiver = self;
   v24.super_class = HDGymKitPairingManager;
   v5 = [(HDGymKitPairingManager *)&v24 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueueWithQOSClass();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -49,9 +49,9 @@
     connectionInitiatorClients = v6->_connectionInitiatorClients;
     v6->_connectionInitiatorClients = v9;
 
-    v11 = [(HDGymKitPairingManager *)v6 _newNearFieldInterface];
+    _newNearFieldInterface = [(HDGymKitPairingManager *)v6 _newNearFieldInterface];
     nearFieldInterface = v6->_nearFieldInterface;
-    v6->_nearFieldInterface = v11;
+    v6->_nearFieldInterface = _newNearFieldInterface;
 
     [(HDNearFieldInterface *)v6->_nearFieldInterface setDelegate:v6];
     v13 = [HDGymKitSettings alloc];
@@ -66,14 +66,14 @@
     fitnessMachineStateTimers = v6->_fitnessMachineStateTimers;
     v6->_fitnessMachineStateTimers = v17;
 
-    v19 = [(HDGymKitPairingManager *)v6 _newWatchAppStateMonitor];
+    _newWatchAppStateMonitor = [(HDGymKitPairingManager *)v6 _newWatchAppStateMonitor];
     workoutAppStateMonitor = v6->_workoutAppStateMonitor;
-    v6->_workoutAppStateMonitor = v19;
+    v6->_workoutAppStateMonitor = _newWatchAppStateMonitor;
 
     [(HDWatchAppStateMonitor *)v6->_workoutAppStateMonitor setDelegate:v6];
     v21 = objc_loadWeakRetained(&v6->_profile);
-    v22 = [v21 workoutManager];
-    [v22 registerCurrentWorkoutObserver:v6];
+    workoutManager = [v21 workoutManager];
+    [workoutManager registerCurrentWorkoutObserver:v6];
   }
 
   return v6;
@@ -82,8 +82,8 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained workoutManager];
-  [v4 unregisterCurrentWorkoutObserver:self];
+  workoutManager = [WeakRetained workoutManager];
+  [workoutManager unregisterCurrentWorkoutObserver:self];
 
   [(HDFitnessMachineStateTimers *)self->_fitnessMachineStateTimers cancelAllTimers];
   [(HDPowerAssertion *)self->_tagReadPowerAssertion invalidate];
@@ -112,7 +112,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)handleBLEConnectionCompletedSuccessfully:(BOOL)a3
+- (void)handleBLEConnectionCompletedSuccessfully:(BOOL)successfully
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -120,11 +120,11 @@
   v4[2] = sub_6438;
   v4[3] = &unk_5CA50;
   v4[4] = self;
-  v5 = a3;
+  successfullyCopy = successfully;
   dispatch_async(queue, v4);
 }
 
-- (void)gymKitSettings:(id)a3 didChangeFromNFCPermission:(unint64_t)a4 toNFCPermission:(unint64_t)a5
+- (void)gymKitSettings:(id)settings didChangeFromNFCPermission:(unint64_t)permission toNFCPermission:(unint64_t)cPermission
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -132,18 +132,18 @@
   v6[2] = sub_650C;
   v6[3] = &unk_5C9B0;
   v6[4] = self;
-  v6[5] = a5;
+  v6[5] = cPermission;
   dispatch_async(queue, v6);
 }
 
-- (void)nearFieldInterfaceDidEnterField:(id)a3
+- (void)nearFieldInterfaceDidEnterField:(id)field
 {
   _HKInitializeLogging();
   v4 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Received a field detect event", buf, 0xCu);
   }
 
@@ -157,14 +157,14 @@
   dispatch_async(queue, block);
 }
 
-- (void)nearFieldInterfaceFieldDetectionDidEndUnexpectedly:(id)a3
+- (void)nearFieldInterfaceFieldDetectionDidEndUnexpectedly:(id)unexpectedly
 {
   _HKInitializeLogging();
   v4 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: NDefTagSession ended unexpectedly", buf, 0xCu);
   }
 
@@ -177,7 +177,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)nearFieldInterfaceDidReadTag:(id)a3
+- (void)nearFieldInterfaceDidReadTag:(id)tag
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -188,7 +188,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)nearFieldInterfaceTagSessionDidEndUnexpectedly:(id)a3
+- (void)nearFieldInterfaceTagSessionDidEndUnexpectedly:(id)unexpectedly
 {
   _HKInitializeLogging();
   v4 = HKLogWorkouts;
@@ -200,7 +200,7 @@
   [(HDGymKitPairingManager *)self reset];
 }
 
-- (void)monitorDidDetectAppActivate:(id)a3
+- (void)monitorDidDetectAppActivate:(id)activate
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -211,7 +211,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)monitorDidDetectAppDeactivate:(id)a3
+- (void)monitorDidDetectAppDeactivate:(id)deactivate
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -222,35 +222,35 @@
   dispatch_async(queue, block);
 }
 
-- (void)workoutManager:(id)a3 didUpdateCurrentWorkout:(id)a4
+- (void)workoutManager:(id)manager didUpdateCurrentWorkout:(id)workout
 {
-  v5 = a4;
+  workoutCopy = workout;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_6DC8;
   v8[3] = &unk_5C8C8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = workoutCopy;
+  v7 = workoutCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)workoutManager:(id)a3 currentWorkout:(id)a4 didChangeToState:(int64_t)a5
+- (void)workoutManager:(id)manager currentWorkout:(id)workout didChangeToState:(int64_t)state
 {
-  v6 = a4;
+  workoutCopy = workout;
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_2A1C4;
   v9[3] = &unk_5C8C8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = workoutCopy;
+  v8 = workoutCopy;
   dispatch_async(queue, v9);
 }
 
-- (void)stateTimersUserAcceptanceTimeout:(id)a3
+- (void)stateTimersUserAcceptanceTimeout:(id)timeout
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = [NSError hk_error:805 description:@"No user acceptance within the required timeout"];
@@ -258,55 +258,55 @@
   [WeakRetained pairingManager:self failedPairingWithError:v5];
 }
 
-- (void)registerConnectionInitiatorClient:(id)a3 withConnectionUUID:(id)a4
+- (void)registerConnectionInitiatorClient:(id)client withConnectionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  dCopy = d;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_7134;
   block[3] = &unk_5C788;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = dCopy;
+  v13 = clientCopy;
+  v9 = clientCopy;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
-- (void)permitConnectionForFitnessMachineSessionUUID:(id)a3 activityType:(unint64_t)a4 withConnectionUUID:(id)a5
+- (void)permitConnectionForFitnessMachineSessionUUID:(id)d activityType:(unint64_t)type withConnectionUUID:(id)iD
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_73BC;
   v13[3] = &unk_5CB18;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = dCopy;
+  v15 = iDCopy;
+  typeCopy = type;
+  v11 = iDCopy;
+  v12 = dCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)forbidConnectionForFitnessMachineSessionUUID:(id)a3 withConnectionUUID:(id)a4
+- (void)forbidConnectionForFitnessMachineSessionUUID:(id)d withConnectionUUID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2AA0C;
   block[3] = &unk_5C788;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = iDCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -332,50 +332,50 @@
   dispatch_async(queue, block);
 }
 
-- (void)updatedFitnessMachineState:(unint64_t)a3 fitnessMachineSessionUUID:(id)a4
+- (void)updatedFitnessMachineState:(unint64_t)state fitnessMachineSessionUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2ACC0;
   block[3] = &unk_5CBA8;
-  v10 = v6;
-  v11 = a3;
+  v10 = dCopy;
+  stateCopy = state;
   block[4] = self;
-  v8 = v6;
+  v8 = dCopy;
   dispatch_async(queue, block);
 }
 
-- (void)updatedConnectionStateWithError:(id)a3
+- (void)updatedConnectionStateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_7898;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)deliverError:(id)a3
+- (void)deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_2AFBC;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)simulateTapWithFitnessMachineType:(unint64_t)a3
+- (void)simulateTapWithFitnessMachineType:(unint64_t)type
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -383,7 +383,7 @@
   v4[2] = sub_7A5C;
   v4[3] = &unk_5C9B0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_async(queue, v4);
 }
 
@@ -405,7 +405,7 @@
   return WeakRetained;
 }
 
-- (void)stateTimersFieldDetectTimeout:(id)a3
+- (void)stateTimersFieldDetectTimeout:(id)timeout
 {
   sub_7CD4(self);
   sub_29524(v3);
@@ -413,7 +413,7 @@
   sub_29618(v3);
 }
 
-- (void)stateTimersTagReadTimeout:(id)a3
+- (void)stateTimersTagReadTimeout:(id)timeout
 {
   sub_7CD4(self);
 

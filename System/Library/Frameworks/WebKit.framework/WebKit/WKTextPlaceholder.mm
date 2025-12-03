@@ -1,21 +1,21 @@
 @interface WKTextPlaceholder
-- (WKTextPlaceholder)initWithElementContext:(const void *)a3;
+- (WKTextPlaceholder)initWithElementContext:(const void *)context;
 - (id).cxx_construct;
 - (id)rects;
 @end
 
 @implementation WKTextPlaceholder
 
-- (WKTextPlaceholder)initWithElementContext:(const void *)a3
+- (WKTextPlaceholder)initWithElementContext:(const void *)context
 {
   result = [(UITextPlaceholder *)self init];
   if (result)
   {
-    result->_elementContext.boundingRect = *a3;
-    v6 = *(a3 + 2);
-    v5 = *(a3 + 3);
-    v7 = *(a3 + 1);
-    result[1].super._attachment = *(a3 + 8);
+    result->_elementContext.boundingRect = *context;
+    v6 = *(context + 2);
+    v5 = *(context + 3);
+    v7 = *(context + 1);
+    result[1].super._attachment = *(context + 8);
     *(&result->_elementContext.documentIdentifier.m_value + 8) = v6;
     *&result[1].super.super.isa = v5;
     *&result->_elementContext.webPageIdentifier.m_value.m_identifier = v7;

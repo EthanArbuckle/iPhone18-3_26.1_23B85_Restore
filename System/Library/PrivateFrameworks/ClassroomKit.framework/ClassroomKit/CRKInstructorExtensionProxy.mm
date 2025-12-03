@@ -1,14 +1,14 @@
 @interface CRKInstructorExtensionProxy
 + (id)sharedExtensionProxy;
-- (BOOL)proxiesContainClassroomApp:(id)a3;
+- (BOOL)proxiesContainClassroomApp:(id)app;
 - (CRKInstructorExtensionProxy)init;
-- (id)extensionAttributesForExtensionIdentifier:(id)a3 containingAppURL:(id)a4;
-- (void)applicationInstallsDidStart:(id)a3;
-- (void)beginExtensionRequestWithCompletionBlock:(id)a3;
-- (void)configureInstructorExtensionAfterFetchError:(id)a3 completionBlock:(id)a4;
+- (id)extensionAttributesForExtensionIdentifier:(id)identifier containingAppURL:(id)l;
+- (void)applicationInstallsDidStart:(id)start;
+- (void)beginExtensionRequestWithCompletionBlock:(id)block;
+- (void)configureInstructorExtensionAfterFetchError:(id)error completionBlock:(id)block;
 - (void)dealloc;
-- (void)establishEndpointWithCompletionBlock:(id)a3;
-- (void)fetchListenerEndpointForExtensionBundleIdentifier:(id)a3 fromClassroomBundleWithURL:(id)a4 completionBlock:(id)a5;
+- (void)establishEndpointWithCompletionBlock:(id)block;
+- (void)fetchListenerEndpointForExtensionBundleIdentifier:(id)identifier fromClassroomBundleWithURL:(id)l completionBlock:(id)block;
 - (void)resetExtension;
 @end
 
@@ -48,9 +48,9 @@ uint64_t __51__CRKInstructorExtensionProxy_sharedExtensionProxy__block_invoke()
   v2 = [(CRKInstructorExtensionProxy *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     mWorkspace = v2->mWorkspace;
-    v2->mWorkspace = v3;
+    v2->mWorkspace = defaultWorkspace;
 
     [(LSApplicationWorkspace *)v2->mWorkspace addObserver:v2];
   }
@@ -72,40 +72,40 @@ uint64_t __51__CRKInstructorExtensionProxy_sharedExtensionProxy__block_invoke()
   self->mContextIdentifier = 0;
 }
 
-- (void)fetchListenerEndpointForExtensionBundleIdentifier:(id)a3 fromClassroomBundleWithURL:(id)a4 completionBlock:(id)a5
+- (void)fetchListenerEndpointForExtensionBundleIdentifier:(id)identifier fromClassroomBundleWithURL:(id)l completionBlock:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  lCopy = l;
+  blockCopy = block;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKInstructorExtensionProxy fetchListenerEndpointForExtensionBundleIdentifier:a2 fromClassroomBundleWithURL:self completionBlock:?];
   }
 
-  if (v11)
+  if (blockCopy)
   {
     if (self->mInstructorExtension)
     {
-      [(CRKInstructorExtensionProxy *)self beginExtensionRequestWithCompletionBlock:v11];
+      [(CRKInstructorExtensionProxy *)self beginExtensionRequestWithCompletionBlock:blockCopy];
     }
 
     else
     {
-      if (v9)
+      if (identifierCopy)
       {
-        v12 = v9;
+        v12 = identifierCopy;
       }
 
       else
       {
         v13 = +[CRKClassroomInstallation preferredInstallation];
-        v14 = [v13 instructordBundleIdentifier];
-        v15 = v14;
+        instructordBundleIdentifier = [v13 instructordBundleIdentifier];
+        v15 = instructordBundleIdentifier;
         v16 = @"com.apple.classroom.instructord";
-        if (v14)
+        if (instructordBundleIdentifier)
         {
-          v16 = v14;
+          v16 = instructordBundleIdentifier;
         }
 
         v12 = v16;
@@ -114,17 +114,17 @@ uint64_t __51__CRKInstructorExtensionProxy_sharedExtensionProxy__block_invoke()
       v17 = _CRKLogGeneral_6();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v10 path];
+        path = [lCopy path];
         *buf = 138543618;
         v29 = v12;
         v30 = 2112;
-        v31 = v18;
+        v31 = path;
         _os_log_impl(&dword_243550000, v17, OS_LOG_TYPE_DEFAULT, "Connecting to instructord with identifier %{public}@ in Classroom App with path %@", buf, 0x16u);
       }
 
-      if (v10)
+      if (lCopy)
       {
-        v19 = [(CRKInstructorExtensionProxy *)self extensionAttributesForExtensionIdentifier:v12 containingAppURL:v10];
+        v19 = [(CRKInstructorExtensionProxy *)self extensionAttributesForExtensionIdentifier:v12 containingAppURL:lCopy];
         objc_initWeak(buf, self);
         v20 = MEMORY[0x277CCA9C8];
         v23[0] = MEMORY[0x277D85DD0];
@@ -132,8 +132,8 @@ uint64_t __51__CRKInstructorExtensionProxy_sharedExtensionProxy__block_invoke()
         v23[2] = __124__CRKInstructorExtensionProxy_fetchListenerEndpointForExtensionBundleIdentifier_fromClassroomBundleWithURL_completionBlock___block_invoke;
         v23[3] = &unk_278DC2498;
         objc_copyWeak(&v26, buf);
-        v24 = v9;
-        v25 = v11;
+        v24 = identifierCopy;
+        v25 = blockCopy;
         [v20 extensionsWithMatchingAttributes:v19 completion:v23];
 
         objc_destroyWeak(&v26);
@@ -148,7 +148,7 @@ uint64_t __51__CRKInstructorExtensionProxy_sharedExtensionProxy__block_invoke()
         mInstructorExtension = self->mInstructorExtension;
         self->mInstructorExtension = v21;
 
-        [(CRKInstructorExtensionProxy *)self configureInstructorExtensionAfterFetchError:v19 completionBlock:v11];
+        [(CRKInstructorExtensionProxy *)self configureInstructorExtensionAfterFetchError:v19 completionBlock:blockCopy];
       }
     }
   }
@@ -214,10 +214,10 @@ void __124__CRKInstructorExtensionProxy_fetchListenerEndpointForExtensionBundleI
   }
 }
 
-- (void)configureInstructorExtensionAfterFetchError:(id)a3 completionBlock:(id)a4
+- (void)configureInstructorExtensionAfterFetchError:(id)error completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  errorCopy = error;
+  blockCopy = block;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKInstructorExtensionProxy configureInstructorExtensionAfterFetchError:a2 completionBlock:self];
@@ -247,22 +247,22 @@ void __124__CRKInstructorExtensionProxy_fetchListenerEndpointForExtensionBundleI
     v16 = &unk_278DC2510;
     objc_copyWeak(&v17, &location);
     [(NSExtension *)v11 setRequestInterruptionBlock:&v13];
-    [(CRKInstructorExtensionProxy *)self beginExtensionRequestWithCompletionBlock:v8, v13, v14, v15, v16];
+    [(CRKInstructorExtensionProxy *)self beginExtensionRequestWithCompletionBlock:blockCopy, v13, v14, v15, v16];
     objc_destroyWeak(&v17);
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (errorCopy)
   {
-    v8[2](v8, 0, v7);
+    blockCopy[2](blockCopy, 0, errorCopy);
   }
 
   else
   {
     v12 = CRKErrorWithCodeAndUserInfo(101, 0);
-    v8[2](v8, 0, v12);
+    blockCopy[2](blockCopy, 0, v12);
   }
 }
 
@@ -284,9 +284,9 @@ void __91__CRKInstructorExtensionProxy_configureInstructorExtensionAfterFetchErr
   [WeakRetained performSelectorOnMainThread:sel_resetExtension withObject:0 waitUntilDone:0];
 }
 
-- (void)beginExtensionRequestWithCompletionBlock:(id)a3
+- (void)beginExtensionRequestWithCompletionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   if (!self->mInstructorExtension)
   {
     [(CRKInstructorExtensionProxy *)a2 beginExtensionRequestWithCompletionBlock:?];
@@ -294,7 +294,7 @@ void __91__CRKInstructorExtensionProxy_configureInstructorExtensionAfterFetchErr
 
   if (self->mContextIdentifier)
   {
-    [(CRKInstructorExtensionProxy *)self establishEndpointWithCompletionBlock:v5];
+    [(CRKInstructorExtensionProxy *)self establishEndpointWithCompletionBlock:blockCopy];
   }
 
   else
@@ -305,7 +305,7 @@ void __91__CRKInstructorExtensionProxy_configureInstructorExtensionAfterFetchErr
     v7[2] = __72__CRKInstructorExtensionProxy_beginExtensionRequestWithCompletionBlock___block_invoke;
     v7[3] = &unk_278DC2538;
     v7[4] = self;
-    v8 = v5;
+    v8 = blockCopy;
     [(NSExtension *)mInstructorExtension beginExtensionRequestWithInputItems:0 completion:v7];
   }
 }
@@ -334,18 +334,18 @@ uint64_t __72__CRKInstructorExtensionProxy_beginExtensionRequestWithCompletionBl
   return [v2 establishEndpointWithCompletionBlock:v3];
 }
 
-- (void)establishEndpointWithCompletionBlock:(id)a3
+- (void)establishEndpointWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSExtension *)self->mInstructorExtension _extensionContextForUUID:self->mContextIdentifier];
-  v6 = [v5 _auxiliaryConnection];
+  _auxiliaryConnection = [v5 _auxiliaryConnection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__CRKInstructorExtensionProxy_establishEndpointWithCompletionBlock___block_invoke;
   v12[3] = &unk_278DC0FE0;
-  v7 = v4;
+  v7 = blockCopy;
   v13 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v12];
+  v8 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:v12];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -384,30 +384,30 @@ void __68__CRKInstructorExtensionProxy_establishEndpointWithCompletionBlock___bl
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (id)extensionAttributesForExtensionIdentifier:(id)a3 containingAppURL:(id)a4
+- (id)extensionAttributesForExtensionIdentifier:(id)identifier containingAppURL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
+  lCopy = l;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
-  [v7 setObject:v6 forKeyedSubscript:*MEMORY[0x277CCA0E0]];
+  [v7 setObject:identifierCopy forKeyedSubscript:*MEMORY[0x277CCA0E0]];
 
-  v8 = [v5 path];
+  path = [lCopy path];
 
-  [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x277CCA0B8]];
+  [v7 setObject:path forKeyedSubscript:*MEMORY[0x277CCA0B8]];
   v9 = [v7 copy];
 
   return v9;
 }
 
-- (BOOL)proxiesContainClassroomApp:(id)a3
+- (BOOL)proxiesContainClassroomApp:(id)app
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  appCopy = app;
+  v4 = [appCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -417,11 +417,11 @@ void __68__CRKInstructorExtensionProxy_establishEndpointWithCompletionBlock___bl
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(appCopy);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) bundleIdentifier];
-        v8 = CRKIsClassroomBundleIdentifier(v7);
+        bundleIdentifier = [*(*(&v10 + 1) + 8 * i) bundleIdentifier];
+        v8 = CRKIsClassroomBundleIdentifier(bundleIdentifier);
 
         if (v8)
         {
@@ -430,7 +430,7 @@ void __68__CRKInstructorExtensionProxy_establishEndpointWithCompletionBlock___bl
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [appCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -445,9 +445,9 @@ LABEL_11:
   return v4;
 }
 
-- (void)applicationInstallsDidStart:(id)a3
+- (void)applicationInstallsDidStart:(id)start
 {
-  if ([(CRKInstructorExtensionProxy *)self proxiesContainClassroomApp:a3])
+  if ([(CRKInstructorExtensionProxy *)self proxiesContainClassroomApp:start])
   {
 
     [(CRKInstructorExtensionProxy *)self resetExtension];

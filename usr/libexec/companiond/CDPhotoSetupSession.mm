@@ -1,5 +1,5 @@
 @interface CDPhotoSetupSession
-- (CDPhotoSetupSession)initWithBluetoothDevice:(id)a3;
+- (CDPhotoSetupSession)initWithBluetoothDevice:(id)device;
 - (void)_activated;
 - (void)_invalidated;
 - (void)_showViewService;
@@ -7,23 +7,23 @@
 - (void)_startNotificationSession;
 - (void)activate;
 - (void)invalidate;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation CDPhotoSetupSession
 
-- (CDPhotoSetupSession)initWithBluetoothDevice:(id)a3
+- (CDPhotoSetupSession)initWithBluetoothDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = CDPhotoSetupSession;
   v6 = [(CDPhotoSetupSession *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bluetoothDevice, a3);
+    objc_storeStrong(&v6->_bluetoothDevice, device);
     objc_storeStrong(&v7->_dispatchQueue, &_dispatch_main_q);
   }
 
@@ -156,8 +156,8 @@
 
   v4 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:@"com.apple.CompanionSetup" viewControllerClassName:@"CompanionSetup.PhotoSetupProxCardFlowViewController"];
   v11 = @"device";
-  v5 = [(CBDevice *)self->_bluetoothDevice dictionaryRepresentation];
-  v12 = v5;
+  dictionaryRepresentation = [(CBDevice *)self->_bluetoothDevice dictionaryRepresentation];
+  v12 = dictionaryRepresentation;
   v6 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
   v7 = objc_alloc_init(SBSRemoteAlertConfigurationContext);
@@ -170,26 +170,26 @@
   [(SBSRemoteAlertHandle *)self->_viewServiceHandle activateWithContext:0];
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v3 = a3;
+  activateCopy = activate;
   v4 = sub_100005370();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = activateCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "View service activated: %@", &v5, 0xCu);
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = sub_100005370();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = deactivateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "View service deactivated: %@", buf, 0xCu);
   }
 
@@ -202,17 +202,17 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   v8 = sub_100005370();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = v6;
+    v12 = handleCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "View service invalidated: %@, error: %@", buf, 0x16u);
   }
 

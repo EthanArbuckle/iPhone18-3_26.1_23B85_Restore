@@ -1,6 +1,6 @@
 @interface SKUIRedeemNativeResultsViewController
-+ (BOOL)canShowResultsForRedeem:(id)a3;
-- (SKUIRedeemNativeResultsViewController)initWithRedeem:(id)a3;
++ (BOOL)canShowResultsForRedeem:(id)redeem;
+- (SKUIRedeemNativeResultsViewController)initWithRedeem:(id)redeem;
 - (double)_tableWidth;
 - (id)_anotherButtonSection;
 - (id)_emptySection;
@@ -13,23 +13,23 @@
 - (id)_messageViewSection;
 - (id)_passbookLearnMoreSection;
 - (id)_resultImageViewSection;
-- (void)_extendedMessageAction:(id)a3;
-- (void)_openAction:(id)a3;
-- (void)_passbookLockupAction:(id)a3;
-- (void)_redeemAnotherAction:(id)a3;
+- (void)_extendedMessageAction:(id)action;
+- (void)_openAction:(id)action;
+- (void)_passbookLockupAction:(id)action;
+- (void)_redeemAnotherAction:(id)action;
 - (void)_reloadResultViewMessage;
 - (void)_reloadSections;
-- (void)_setItemImage:(id)a3;
+- (void)_setItemImage:(id)image;
 - (void)dealloc;
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4;
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed;
 - (void)loadView;
-- (void)redeemResultsView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)redeemResultsView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SKUIRedeemNativeResultsViewController
 
-+ (BOOL)canShowResultsForRedeem:(id)a3
++ (BOOL)canShowResultsForRedeem:(id)redeem
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -39,9 +39,9 @@
   return 1;
 }
 
-- (SKUIRedeemNativeResultsViewController)initWithRedeem:(id)a3
+- (SKUIRedeemNativeResultsViewController)initWithRedeem:(id)redeem
 {
-  v4 = a3;
+  redeemCopy = redeem;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIRedeemNativeResultsViewController initWithRedeem:];
@@ -49,11 +49,11 @@
 
   v21.receiver = self;
   v21.super_class = SKUIRedeemNativeResultsViewController;
-  v5 = [(SKUIRedeemResultsViewController *)&v21 initWithRedeem:v4];
+  v5 = [(SKUIRedeemResultsViewController *)&v21 initWithRedeem:redeemCopy];
   if (v5)
   {
-    v6 = [v4 items];
-    v7 = [v6 count];
+    items = [redeemCopy items];
+    v7 = [items count];
 
     if (v7)
     {
@@ -62,14 +62,14 @@
       v5->_itemStateCenter = v8;
 
       [(SKUIItemStateCenter *)v5->_itemStateCenter addObserver:v5];
-      v10 = [v4 downloads];
+      downloads = [redeemCopy downloads];
 
-      if (v10)
+      if (downloads)
       {
-        v11 = [v4 downloads];
-        if (v11)
+        downloads2 = [redeemCopy downloads];
+        if (downloads2)
         {
-          v12 = v11;
+          v12 = downloads2;
         }
 
         else
@@ -79,9 +79,9 @@
 
         v13 = [MEMORY[0x277CBEB98] setWithArray:v12];
         v14 = MEMORY[0x277CCABB0];
-        v15 = [v4 items];
-        v16 = [v15 firstObject];
-        v17 = [v14 numberWithLongLong:{objc_msgSend(v16, "itemIdentifier")}];
+        items2 = [redeemCopy items];
+        firstObject = [items2 firstObject];
+        v17 = [v14 numberWithLongLong:{objc_msgSend(firstObject, "itemIdentifier")}];
 
         if (v17)
         {
@@ -102,15 +102,15 @@
 {
   [(UIButton *)self->_anotherButton removeTarget:self action:0 forControlEvents:64];
   [(SKUITextBoxView *)self->_extendedMessageView removeTarget:self action:0 forControlEvents:64];
-  v3 = [(SKUIGiftItemView *)self->_itemView itemOfferButton];
-  [v3 removeTarget:self action:0 forControlEvents:64];
+  itemOfferButton = [(SKUIGiftItemView *)self->_itemView itemOfferButton];
+  [itemOfferButton removeTarget:self action:0 forControlEvents:64];
 
   itemStateCenter = self->_itemStateCenter;
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(SKUIRedeemResultsViewController *)self redeem];
-  v7 = [v6 items];
-  v8 = [v7 firstObject];
-  v9 = [v5 numberWithLongLong:{objc_msgSend(v8, "itemIdentifier")}];
+  redeem = [(SKUIRedeemResultsViewController *)self redeem];
+  items = [redeem items];
+  firstObject = [items firstObject];
+  v9 = [v5 numberWithLongLong:{objc_msgSend(firstObject, "itemIdentifier")}];
   [(SKUIItemStateCenter *)itemStateCenter removeRelationshipsForParentAdamId:v9];
 
   [(SKUIItemStateCenter *)self->_itemStateCenter removeObserver:self];
@@ -127,11 +127,11 @@
   [(SKUIRedeemResultsView *)v6 setContentInsetAdjustmentBehavior:101];
   [(SKUIRedeemNativeResultsViewController *)self setView:v6];
   [(SKUIRedeemNativeResultsViewController *)self _reloadSections];
-  v3 = [(SKUIRedeemStepViewController *)self clientContext];
-  v4 = v3;
-  if (v3)
+  clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+  v4 = clientContext;
+  if (clientContext)
   {
-    [v3 localizedStringForKey:@"REDEEM_VIEW_TITLE" inTable:@"Redeem"];
+    [clientContext localizedStringForKey:@"REDEEM_VIEW_TITLE" inTable:@"Redeem"];
   }
 
   else
@@ -142,24 +142,24 @@
   [(SKUIRedeemNativeResultsViewController *)self setTitle:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SKUIRedeemResultsViewController *)self redeem];
-  v6 = [v5 headerArtworkProvider];
+  appearCopy = appear;
+  redeem = [(SKUIRedeemResultsViewController *)self redeem];
+  headerArtworkProvider = [redeem headerArtworkProvider];
 
-  if (v6)
+  if (headerArtworkProvider)
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     if (v8 == 2.0)
     {
-      [v6 largestArtwork];
+      [headerArtworkProvider largestArtwork];
     }
 
     else
     {
-      [v6 smallestArtwork];
+      [headerArtworkProvider smallestArtwork];
     }
     v9 = ;
 
@@ -182,19 +182,19 @@
     objc_destroyWeak(&location);
   }
 
-  v14 = [(SKUIGiftItemView *)self->_itemView artworkContext];
-  v15 = [(SKUIRedeemNativeResultsViewController *)self _item];
-  v16 = [v14 URLForItem:v15];
+  artworkContext = [(SKUIGiftItemView *)self->_itemView artworkContext];
+  _item = [(SKUIRedeemNativeResultsViewController *)self _item];
+  v16 = [artworkContext URLForItem:_item];
 
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x277D69CD8]);
-    v18 = [(SKUIRedeemNativeResultsViewController *)self _item];
-    v19 = [v14 URLForItem:v18];
+    _item2 = [(SKUIRedeemNativeResultsViewController *)self _item];
+    v19 = [artworkContext URLForItem:_item2];
     v20 = [v17 initWithURL:v19];
 
-    v21 = [(SKUIRedeemNativeResultsViewController *)self _item];
-    v22 = [v14 dataConsumerForItem:v21];
+    _item3 = [(SKUIRedeemNativeResultsViewController *)self _item];
+    v22 = [artworkContext dataConsumerForItem:_item3];
     [v20 setDataConsumer:v22];
 
     objc_initWeak(&location, self);
@@ -211,7 +211,7 @@
 
   v23.receiver = self;
   v23.super_class = SKUIRedeemNativeResultsViewController;
-  [(SKUIRedeemNativeResultsViewController *)&v23 viewWillAppear:v3];
+  [(SKUIRedeemNativeResultsViewController *)&v23 viewWillAppear:appearCopy];
 }
 
 void __56__SKUIRedeemNativeResultsViewController_viewWillAppear___block_invoke(uint64_t a1, void *a2)
@@ -260,16 +260,16 @@ void __56__SKUIRedeemNativeResultsViewController_viewWillAppear___block_invoke_4
   }
 }
 
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__SKUIRedeemNativeResultsViewController_itemStateCenter_itemStatesChanged___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -321,22 +321,22 @@ void __75__SKUIRedeemNativeResultsViewController_itemStateCenter_itemStatesChang
   }
 }
 
-- (void)redeemResultsView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)redeemResultsView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v5 = [(SKUIRedeemResultsViewController *)self redeem];
-  v6 = [v5 links];
+  pathCopy = path;
+  redeem = [(SKUIRedeemResultsViewController *)self redeem];
+  links = [redeem links];
 
-  if ([v6 count])
+  if ([links count])
   {
-    v7 = [v13 section];
-    v8 = [(SKUIRedeemNativeResultsViewController *)self view];
-    v9 = [v8 sections];
-    v10 = [v9 count] - 2;
+    section = [pathCopy section];
+    view = [(SKUIRedeemNativeResultsViewController *)self view];
+    sections = [view sections];
+    v10 = [sections count] - 2;
 
-    if (v7 == v10)
+    if (section == v10)
     {
-      v11 = [v6 objectAtIndex:{objc_msgSend(v13, "row")}];
+      v11 = [links objectAtIndex:{objc_msgSend(pathCopy, "row")}];
       v12 = [v11 URL];
 
       if (v12)
@@ -347,7 +347,7 @@ void __75__SKUIRedeemNativeResultsViewController_itemStateCenter_itemStatesChang
   }
 }
 
-- (void)_extendedMessageAction:(id)a3
+- (void)_extendedMessageAction:(id)action
 {
   if (!self->_extendedMessageIsExpanded)
   {
@@ -357,10 +357,10 @@ void __75__SKUIRedeemNativeResultsViewController_itemStateCenter_itemStatesChang
     v9 = v8;
     [(SKUITextLayout *)self->_extendedMessageTextLayout textSize];
     v11 = v10;
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v14 = &kSKUITextBoxLayoutTextBottomPaddingIPad;
     }
@@ -373,30 +373,30 @@ void __75__SKUIRedeemNativeResultsViewController_itemStateCenter_itemStatesChang
     [(SKUITextBoxView *)self->_extendedMessageView setFrame:v5, v7, v9, v11 + *v14];
     [(SKUITextBoxView *)self->_extendedMessageView setNumberOfVisibleLines:0];
     self->_extendedMessageIsExpanded = 1;
-    v15 = [(SKUIRedeemNativeResultsViewController *)self view];
-    [v15 reloadData];
+    view = [(SKUIRedeemNativeResultsViewController *)self view];
+    [view reloadData];
   }
 }
 
-- (void)_openAction:(id)a3
+- (void)_openAction:(id)action
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIRedeemResultsViewController *)self redeem];
-  v6 = [v5 items];
-  v7 = [v6 objectAtIndex:0];
+  actionCopy = action;
+  redeem = [(SKUIRedeemResultsViewController *)self redeem];
+  items = [redeem items];
+  v7 = [items objectAtIndex:0];
 
   v8 = -[SKUIItemStateCenter stateForItemWithIdentifier:](self->_itemStateCenter, "stateForItemWithIdentifier:", [v7 itemIdentifier]);
-  LOBYTE(v5) = [v8 state];
+  LOBYTE(redeem) = [v8 state];
 
-  if ((v5 & 4) != 0)
+  if ((redeem & 4) != 0)
   {
     v19 = 0;
     v20 = &v19;
     v21 = 0x3032000000;
     v22 = __Block_byref_object_copy__98;
     v23 = __Block_byref_object_dispose__98;
-    v24 = [v7 bundleIdentifier];
+    bundleIdentifier = [v7 bundleIdentifier];
     v9 = v20[5];
     if (v9 || (v10 = dispatch_semaphore_create(0), v11 = objc_alloc_init(MEMORY[0x277D69C68]), [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v7, "itemIdentifier")}], v12 = objc_claimAutoreleasedReturnValue(), v25[0] = v12, objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v25, 1), v13 = objc_claimAutoreleasedReturnValue(), v16[0] = MEMORY[0x277D85DD0], v16[1] = 3221225472, v16[2] = __53__SKUIRedeemNativeResultsViewController__openAction___block_invoke, v16[3] = &unk_2781FB1F0, v18 = &v19, v14 = v10, v17 = v14, objc_msgSend(v11, "getLibraryItemsForITunesStoreItemIdentifiers:completionBlock:", v13, v16), v13, v12, v11, dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL), v17, v14, (v9 = v20[5]) != 0))
     {
@@ -422,42 +422,42 @@ intptr_t __53__SKUIRedeemNativeResultsViewController__openAction___block_invoke(
   return dispatch_semaphore_signal(v7);
 }
 
-- (void)_passbookLockupAction:(id)a3
+- (void)_passbookLockupAction:(id)action
 {
   v8 = objc_alloc_init(SKUIRedeemITunesPassLearnMoreViewController);
-  v4 = [(SKUIRedeemStepViewController *)self clientContext];
-  [(SKUIRedeemStepViewController *)v8 setClientContext:v4];
+  clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+  [(SKUIRedeemStepViewController *)v8 setClientContext:clientContext];
 
-  v5 = [(SKUIRedeemStepViewController *)self configuration];
-  [(SKUIRedeemStepViewController *)v8 setConfiguration:v5];
+  configuration = [(SKUIRedeemStepViewController *)self configuration];
+  [(SKUIRedeemStepViewController *)v8 setConfiguration:configuration];
 
-  v6 = [(SKUIRedeemNativeResultsViewController *)self operationQueue];
-  [(SKUIRedeemStepViewController *)v8 setOperationQueue:v6];
+  operationQueue = [(SKUIRedeemNativeResultsViewController *)self operationQueue];
+  [(SKUIRedeemStepViewController *)v8 setOperationQueue:operationQueue];
 
   v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v8];
   [(SKUIRedeemNativeResultsViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_redeemAnotherAction:(id)a3
+- (void)_redeemAnotherAction:(id)action
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUIRedeemNativeResultsViewController *)self navigationController];
+  navigationController = [(SKUIRedeemNativeResultsViewController *)self navigationController];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v4 = [MEMORY[0x277D69B38] sharedConfig];
-    v5 = [v4 shouldLog];
-    if ([v4 shouldLogToDisk])
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    v7 = [v4 OSLogObject];
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v6 &= 2u;
     }
@@ -481,7 +481,7 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v7 = [MEMORY[0x277CCACA8] stringWithCString:v11 encoding:{4, v13, v12, *v13, *&v13[16]}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v11 encoding:{4, v13, v12, *v13, *&v13[16]}];
       free(v11);
       SSFileLog();
     }
@@ -489,7 +489,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [v3 redeemAgainAnimated:1];
+  [navigationController redeemAgainAnimated:1];
 LABEL_13:
 }
 
@@ -506,11 +506,11 @@ LABEL_13:
     [(UIButton *)self->_anotherButton setContentHorizontalAlignment:0];
     [(UIButton *)self->_anotherButton setContentEdgeInsets:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
     v5 = self->_anotherButton;
-    v6 = [(SKUIRedeemStepViewController *)self clientContext];
-    v7 = v6;
-    if (v6)
+    clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+    v7 = clientContext;
+    if (clientContext)
     {
-      [v6 localizedStringForKey:@"REDEEM_SUCCESS_REDEEM_AGAIN" inTable:@"Redeem"];
+      [clientContext localizedStringForKey:@"REDEEM_SUCCESS_REDEEM_AGAIN" inTable:@"Redeem"];
     }
 
     else
@@ -520,9 +520,9 @@ LABEL_13:
     v8 = ;
     [(UIButton *)v5 setTitle:v8 forState:0];
 
-    v9 = [(UIButton *)self->_anotherButton titleLabel];
+    titleLabel = [(UIButton *)self->_anotherButton titleLabel];
     v10 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-    [v9 setFont:v10];
+    [titleLabel setFont:v10];
 
     [(UIButton *)self->_anotherButton frame];
     v12 = v11;
@@ -555,10 +555,10 @@ LABEL_13:
 
 - (id)_extendedMessageViewSection
 {
-  v3 = [(SKUIRedeemResultsViewController *)self redeem];
-  v4 = [v3 message];
+  redeem = [(SKUIRedeemResultsViewController *)self redeem];
+  message = [redeem message];
 
-  if (v4)
+  if (message)
   {
     if (!self->_extendedMessageView)
     {
@@ -571,17 +571,17 @@ LABEL_13:
       v7 = objc_alloc_init(SKUITextLayoutRequest);
       [(SKUITextLayoutRequest *)v7 setNumberOfLines:3];
       [(SKUITextLayoutRequest *)v7 setFontSize:14.0];
-      v8 = [(SKUIRedeemResultsViewController *)self redeem];
-      v9 = [v8 message];
-      [(SKUITextLayoutRequest *)v7 setText:v9];
+      redeem2 = [(SKUIRedeemResultsViewController *)self redeem];
+      message2 = [redeem2 message];
+      [(SKUITextLayoutRequest *)v7 setText:message2];
 
       [(SKUIRedeemNativeResultsViewController *)self _tableWidth];
       v11 = v10;
-      v12 = [MEMORY[0x277D75418] currentDevice];
-      v13 = [v12 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
       v14 = 60.0;
-      if ((v13 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
       {
         v14 = 30.0;
       }
@@ -599,11 +599,11 @@ LABEL_13:
       if ([(SKUITextLayout *)self->_extendedMessageTextLayout requiresTruncation])
       {
         v21 = self->_extendedMessageView;
-        v22 = [(SKUIRedeemStepViewController *)self clientContext];
-        v23 = v22;
-        if (v22)
+        clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+        v23 = clientContext;
+        if (clientContext)
         {
-          [v22 localizedStringForKey:@"MORE_BUTTON"];
+          [clientContext localizedStringForKey:@"MORE_BUTTON"];
         }
 
         else
@@ -624,10 +624,10 @@ LABEL_13:
         self->_extendedMessageIsExpanded = 1;
       }
 
-      v29 = [MEMORY[0x277D75418] currentDevice];
-      v30 = [v29 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-      if ((v30 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v31 = &kSKUITextBoxLayoutTextBottomPaddingIPad;
       }
@@ -643,10 +643,10 @@ LABEL_13:
     }
 
     v24 = [[SKUIRedeemResultSimpleTableViewSection alloc] initWithView:self->_extendedMessageView];
-    v34 = [MEMORY[0x277D75418] currentDevice];
-    v35 = [v34 userInterfaceIdiom];
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-    if ((v35 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v36 = 30.0;
     }
@@ -656,10 +656,10 @@ LABEL_13:
       v36 = 15.0;
     }
 
-    v37 = [MEMORY[0x277D75418] currentDevice];
-    v38 = [v37 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-    if ((v38 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v39 = 30.0;
     }
@@ -682,18 +682,18 @@ LABEL_13:
 
 - (id)_headerImageViewSection
 {
-  v3 = [(SKUIRedeemResultsViewController *)self redeem];
-  v4 = [v3 headerArtworkProvider];
+  redeem = [(SKUIRedeemResultsViewController *)self redeem];
+  headerArtworkProvider = [redeem headerArtworkProvider];
 
-  if (v4)
+  if (headerArtworkProvider)
   {
     if (!self->_headerImageView)
     {
-      v5 = [v4 smallestArtwork];
+      smallestArtwork = [headerArtworkProvider smallestArtwork];
       v6 = objc_alloc(MEMORY[0x277D755E8]);
       [(SKUIRedeemNativeResultsViewController *)self _tableWidth];
       v8 = v7;
-      [v5 size];
+      [smallestArtwork size];
       v10 = [v6 initWithFrame:{0.0, 0.0, v8, v9}];
       headerImageView = self->_headerImageView;
       self->_headerImageView = v10;
@@ -714,28 +714,28 @@ LABEL_13:
 
 - (id)_itemViewSection
 {
-  v3 = [(SKUIRedeemNativeResultsViewController *)self _itemView];
-  [v3 frame];
+  _itemView = [(SKUIRedeemNativeResultsViewController *)self _itemView];
+  [_itemView frame];
   v5 = v4;
   v7 = v6;
   [(SKUIRedeemNativeResultsViewController *)self _tableWidth];
   v9 = v8;
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v12 = 60.0;
-  if ((v11 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v12 = 30.0;
   }
 
-  [v3 sizeThatFits:{v9 - v12, 1.79769313e308}];
-  [v3 setFrame:{v5, v7, v13, v14}];
-  v15 = [[SKUIRedeemResultSimpleTableViewSection alloc] initWithView:v3];
-  v16 = [MEMORY[0x277D75418] currentDevice];
-  v17 = [v16 userInterfaceIdiom];
+  [_itemView sizeThatFits:{v9 - v12, 1.79769313e308}];
+  [_itemView setFrame:{v5, v7, v13, v14}];
+  v15 = [[SKUIRedeemResultSimpleTableViewSection alloc] initWithView:_itemView];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if ((v17 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v18 = 30.0;
   }
@@ -745,10 +745,10 @@ LABEL_13:
     v18 = 15.0;
   }
 
-  v19 = [MEMORY[0x277D75418] currentDevice];
-  v20 = [v19 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-  if ((v20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v21 = 30.0;
   }
@@ -771,16 +771,16 @@ LABEL_13:
     messageView = self->_messageView;
     self->_messageView = v3;
 
-    v5 = [(SKUIRedeemResultsViewController *)self redeem];
-    v6 = [v5 inAppPurchase];
+    redeem = [(SKUIRedeemResultsViewController *)self redeem];
+    inAppPurchase = [redeem inAppPurchase];
 
-    if (v6)
+    if (inAppPurchase)
     {
-      v7 = [(SKUIRedeemStepViewController *)self clientContext];
-      v8 = v7;
-      if (v7)
+      clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+      redeem2 = clientContext;
+      if (clientContext)
       {
-        [v7 localizedStringForKey:@"REDEEM_SUCCESS_MESSAGE_IN_APP" inTable:@"Redeem"];
+        [clientContext localizedStringForKey:@"REDEEM_SUCCESS_MESSAGE_IN_APP" inTable:@"Redeem"];
       }
 
       else
@@ -792,21 +792,21 @@ LABEL_13:
 
     else
     {
-      v8 = [(SKUIRedeemResultsViewController *)self redeem];
-      v9 = [v8 title];
-      v10 = v9;
-      if (v9)
+      redeem2 = [(SKUIRedeemResultsViewController *)self redeem];
+      title = [redeem2 title];
+      v10 = title;
+      if (title)
       {
-        v11 = v9;
+        v11 = title;
       }
 
       else
       {
-        v12 = [(SKUIRedeemStepViewController *)self clientContext];
-        v13 = v12;
-        if (v12)
+        clientContext2 = [(SKUIRedeemStepViewController *)self clientContext];
+        v13 = clientContext2;
+        if (clientContext2)
         {
-          [v12 localizedStringForKey:@"REDEEM_SUCCESS_MESSAGE" inTable:@"Redeem"];
+          [clientContext2 localizedStringForKey:@"REDEEM_SUCCESS_MESSAGE" inTable:@"Redeem"];
         }
 
         else
@@ -840,10 +840,10 @@ LABEL_13:
   [v6 bounds];
   v11 = (v9 - v10) * 0.5;
   v12 = floorf(v11);
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  v14 = [v13 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v14 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v15 = -54.0;
   }
@@ -860,12 +860,12 @@ LABEL_13:
 
 - (id)_linksSection
 {
-  v2 = [(SKUIRedeemResultsViewController *)self redeem];
-  v3 = [v2 links];
+  redeem = [(SKUIRedeemResultsViewController *)self redeem];
+  links = [redeem links];
 
-  if ([v3 count])
+  if ([links count])
   {
-    v4 = [[SKUIRedeemResultLinksTableViewSection alloc] initWithLinks:v3];
+    v4 = [[SKUIRedeemResultLinksTableViewSection alloc] initWithLinks:links];
   }
 
   else
@@ -878,13 +878,13 @@ LABEL_13:
 
 - (id)_item
 {
-  v3 = [(SKUIRedeemResultsViewController *)self redeem];
-  v4 = [v3 items];
-  if ([v4 count])
+  redeem = [(SKUIRedeemResultsViewController *)self redeem];
+  items = [redeem items];
+  if ([items count])
   {
-    v5 = [(SKUIRedeemResultsViewController *)self redeem];
-    v6 = [v5 items];
-    v7 = [v6 objectAtIndex:0];
+    redeem2 = [(SKUIRedeemResultsViewController *)self redeem];
+    items2 = [redeem2 items];
+    v7 = [items2 objectAtIndex:0];
   }
 
   else
@@ -897,22 +897,22 @@ LABEL_13:
 
 - (id)_itemView
 {
-  v3 = [(SKUIRedeemNativeResultsViewController *)self _item];
-  if (v3 && !self->_itemView)
+  _item = [(SKUIRedeemNativeResultsViewController *)self _item];
+  if (_item && !self->_itemView)
   {
     v4 = [SKUIGiftItemView alloc];
-    v5 = [(SKUIRedeemStepViewController *)self clientContext];
-    v6 = [(SKUIGiftItemView *)v4 initWithStyle:3 item:v3 clientContext:v5];
+    clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+    v6 = [(SKUIGiftItemView *)v4 initWithStyle:3 item:_item clientContext:clientContext];
     itemView = self->_itemView;
     self->_itemView = v6;
 
     v8 = self->_itemView;
-    v9 = [v3 artistName];
-    [(SKUIGiftItemView *)v8 setArtistName:v9];
+    artistName = [_item artistName];
+    [(SKUIGiftItemView *)v8 setArtistName:artistName];
 
     v10 = self->_itemView;
-    v11 = [v3 categoryName];
-    [(SKUIGiftItemView *)v10 setCategoryName:v11];
+    categoryName = [_item categoryName];
+    [(SKUIGiftItemView *)v10 setCategoryName:categoryName];
 
     v12 = self->_itemView;
     if (self->_itemImage)
@@ -922,31 +922,31 @@ LABEL_13:
 
     else
     {
-      v13 = [(SKUIGiftItemView *)self->_itemView artworkContext];
-      v14 = [v13 placeholderImageForItem:v3];
+      artworkContext = [(SKUIGiftItemView *)self->_itemView artworkContext];
+      v14 = [artworkContext placeholderImageForItem:_item];
       [(SKUIGiftItemView *)v12 setItemImage:v14];
     }
 
-    -[SKUIGiftItemView setNumberOfUserRatings:](self->_itemView, "setNumberOfUserRatings:", [v3 numberOfUserRatings]);
+    -[SKUIGiftItemView setNumberOfUserRatings:](self->_itemView, "setNumberOfUserRatings:", [_item numberOfUserRatings]);
     v15 = self->_itemView;
-    v16 = [v3 primaryItemOffer];
-    v17 = [v16 buttonText];
-    [(SKUIGiftItemView *)v15 setPrice:v17];
+    primaryItemOffer = [_item primaryItemOffer];
+    buttonText = [primaryItemOffer buttonText];
+    [(SKUIGiftItemView *)v15 setPrice:buttonText];
 
     v18 = self->_itemView;
-    v19 = [v3 title];
-    [(SKUIGiftItemView *)v18 setTitle:v19];
+    title = [_item title];
+    [(SKUIGiftItemView *)v18 setTitle:title];
 
     v20 = self->_itemView;
-    [v3 userRating];
+    [_item userRating];
     *&v22 = v21 / 5.0;
     [(SKUIGiftItemView *)v20 setUserRating:v22];
     v23 = self->_itemView;
-    v24 = -[SKUIItemStateCenter stateForItemWithIdentifier:](self->_itemStateCenter, "stateForItemWithIdentifier:", [v3 itemIdentifier]);
+    v24 = -[SKUIItemStateCenter stateForItemWithIdentifier:](self->_itemStateCenter, "stateForItemWithIdentifier:", [_item itemIdentifier]);
     [(SKUIGiftItemView *)v23 setItemState:v24];
 
-    v25 = [(SKUIGiftItemView *)self->_itemView itemOfferButton];
-    [v25 addTarget:self action:sel__openAction_ forControlEvents:64];
+    itemOfferButton = [(SKUIGiftItemView *)self->_itemView itemOfferButton];
+    [itemOfferButton addTarget:self action:sel__openAction_ forControlEvents:64];
   }
 
   v26 = self->_itemView;
@@ -960,21 +960,21 @@ LABEL_13:
   if (!self->_passbookLockup)
   {
     v3 = [SKUIRedeemITunesPassLockup alloc];
-    v4 = [(SKUIRedeemStepViewController *)self configuration];
-    v5 = [v4 ITunesPassConfiguration];
-    v6 = [(SKUIRedeemStepViewController *)self clientContext];
-    v7 = [(SKUIRedeemITunesPassLockup *)v3 initWithITunesPassConfiguration:v5 clientContext:v6];
+    configuration = [(SKUIRedeemStepViewController *)self configuration];
+    iTunesPassConfiguration = [configuration ITunesPassConfiguration];
+    clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+    v7 = [(SKUIRedeemITunesPassLockup *)v3 initWithITunesPassConfiguration:iTunesPassConfiguration clientContext:clientContext];
     passbookLockup = self->_passbookLockup;
     self->_passbookLockup = v7;
 
     [(SKUIRedeemITunesPassLockup *)self->_passbookLockup addTarget:self action:sel__passbookLockupAction_ forControlEvents:64];
     [(SKUIRedeemNativeResultsViewController *)self _tableWidth];
     v10 = v9;
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v13 = 60.0;
-    if ((v12 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       v13 = 30.0;
     }
@@ -995,52 +995,52 @@ LABEL_13:
 
 - (void)_reloadResultViewMessage
 {
-  v3 = [(SKUIRedeemNativeResultsViewController *)self _item];
-  v4 = [(SKUIRedeemResultsViewController *)self redeem];
-  v5 = v4;
-  if (v3)
+  _item = [(SKUIRedeemNativeResultsViewController *)self _item];
+  redeem = [(SKUIRedeemResultsViewController *)self redeem];
+  v5 = redeem;
+  if (_item)
   {
-    v6 = [v4 inAppPurchase];
+    inAppPurchase = [redeem inAppPurchase];
 
-    if (v6)
+    if (inAppPurchase)
     {
-      v7 = [(SKUIRedeemResultsViewController *)self redeem];
-      v8 = [v7 inAppPurchase];
+      redeem2 = [(SKUIRedeemResultsViewController *)self redeem];
+      inAppPurchase2 = [redeem2 inAppPurchase];
 LABEL_4:
-      v39 = v8;
+      v39 = inAppPurchase2;
       goto LABEL_23;
     }
 
-    v12 = [v3 itemKind];
-    if ((v12 - 1) > 0x10)
+    itemKind = [_item itemKind];
+    if ((itemKind - 1) > 0x10)
     {
       v13 = @"UNKNOWN";
     }
 
     else
     {
-      v13 = off_2782007F8[v12 - 1];
+      v13 = off_2782007F8[itemKind - 1];
     }
 
     v14 = +[SKUIItemStateCenter defaultCenter];
-    v15 = [v14 stateForItemWithIdentifier:{objc_msgSend(v3, "itemIdentifier")}];
-    v16 = [v15 state];
+    v15 = [v14 stateForItemWithIdentifier:{objc_msgSend(_item, "itemIdentifier")}];
+    state = [v15 state];
 
-    [(SKUIRedeemNativeResultsViewController *)self setCurrentItemStateFlag:[(SKUIRedeemNativeResultsViewController *)self currentItemStateFlag]| v16];
-    v17 = [(SKUIRedeemNativeResultsViewController *)self currentItemStateFlag];
-    if ((v17 & 0x44) != 0)
+    [(SKUIRedeemNativeResultsViewController *)self setCurrentItemStateFlag:[(SKUIRedeemNativeResultsViewController *)self currentItemStateFlag]| state];
+    currentItemStateFlag = [(SKUIRedeemNativeResultsViewController *)self currentItemStateFlag];
+    if ((currentItemStateFlag & 0x44) != 0)
     {
-      v7 = [(SKUIRedeemStepViewController *)self clientContext];
+      redeem2 = [(SKUIRedeemStepViewController *)self clientContext];
       v18 = @"REDEEM_SUCCESS_INSTALLED_";
       goto LABEL_14;
     }
 
-    v25 = v17 & 3;
-    IsSoftwareKind = SKUIItemKindIsSoftwareKind([v3 itemKind]);
+    v25 = currentItemStateFlag & 3;
+    IsSoftwareKind = SKUIItemKindIsSoftwareKind([_item itemKind]);
     v27 = IsSoftwareKind;
     if (v25)
     {
-      v7 = [(SKUIRedeemStepViewController *)self clientContext];
+      redeem2 = [(SKUIRedeemStepViewController *)self clientContext];
       if (v27)
       {
         v18 = @"REDEEM_SUCCESS_INSTALLING_";
@@ -1053,9 +1053,9 @@ LABEL_4:
 
 LABEL_14:
       v19 = [(__CFString *)v18 stringByAppendingString:v13];
-      if (v7)
+      if (redeem2)
       {
-        [v7 localizedStringForKey:v19 inTable:@"Redeem"];
+        [redeem2 localizedStringForKey:v19 inTable:@"Redeem"];
       }
 
       else
@@ -1069,16 +1069,16 @@ LABEL_14:
 
     if (IsSoftwareKind)
     {
-      IsTVOnly = SKUIItemDeviceFamilyIsTVOnly([v3 deviceFamilies]);
-      v36 = [(SKUIRedeemStepViewController *)self clientContext];
-      v7 = v36;
+      IsTVOnly = SKUIItemDeviceFamilyIsTVOnly([_item deviceFamilies]);
+      clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+      redeem2 = clientContext;
       if (IsTVOnly)
       {
-        if (v36)
+        if (clientContext)
         {
           v37 = @"REDEEM_SUCCESS_TV_INSTALL";
 LABEL_36:
-          v8 = [v7 localizedStringForKey:v37 inTable:@"Redeem"];
+          inAppPurchase2 = [redeem2 localizedStringForKey:v37 inTable:@"Redeem"];
           goto LABEL_4;
         }
 
@@ -1087,7 +1087,7 @@ LABEL_36:
 
       else
       {
-        if (v36)
+        if (clientContext)
         {
           v37 = @"REDEEM_SUCCESS_PREPARE_TO_INSTALL";
           goto LABEL_36;
@@ -1099,8 +1099,8 @@ LABEL_36:
 
     else
     {
-      v7 = [(SKUIRedeemStepViewController *)self clientContext];
-      if (v7)
+      redeem2 = [(SKUIRedeemStepViewController *)self clientContext];
+      if (redeem2)
       {
         v37 = @"REDEEM_SUCCESS_PREPARE_TO_DOWNLOAD";
         goto LABEL_36;
@@ -1109,38 +1109,38 @@ LABEL_36:
       v38 = @"REDEEM_SUCCESS_PREPARE_TO_DOWNLOAD";
     }
 
-    v8 = [SKUIClientContext localizedStringForKey:v38 inBundles:0 inTable:@"Redeem"];
+    inAppPurchase2 = [SKUIClientContext localizedStringForKey:v38 inBundles:0 inTable:@"Redeem"];
     goto LABEL_4;
   }
 
-  v9 = [v4 credit];
+  credit = [redeem credit];
 
-  if (!v9)
+  if (!credit)
   {
     v39 = &stru_2827FFAC8;
     [(SKUIRedeemResultMessageView *)self->_messageView setMessage:&stru_2827FFAC8];
     goto LABEL_24;
   }
 
-  v10 = [(SKUIRedeemStepViewController *)self clientContext];
-  v11 = v10;
-  if (v10)
+  clientContext2 = [(SKUIRedeemStepViewController *)self clientContext];
+  v11 = clientContext2;
+  if (clientContext2)
   {
-    [v10 localizedStringForKey:@"REDEEM_SUCCESS_CREDIT_FORMAT" inTable:@"Redeem"];
+    [clientContext2 localizedStringForKey:@"REDEEM_SUCCESS_CREDIT_FORMAT" inTable:@"Redeem"];
   }
 
   else
   {
     [SKUIClientContext localizedStringForKey:@"REDEEM_SUCCESS_CREDIT_FORMAT" inBundles:0 inTable:@"Redeem"];
   }
-  v7 = ;
+  redeem2 = ;
 
   v20 = MEMORY[0x277CCACA8];
-  v21 = [(SKUIRedeemResultsViewController *)self redeem];
-  v22 = [v21 credit];
-  v23 = [(SKUIRedeemResultsViewController *)self redeem];
-  v24 = [v23 balance];
-  v39 = [v20 stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@%@" error:0, v22, v24];
+  redeem3 = [(SKUIRedeemResultsViewController *)self redeem];
+  credit2 = [redeem3 credit];
+  redeem4 = [(SKUIRedeemResultsViewController *)self redeem];
+  balance = [redeem4 balance];
+  v39 = [v20 stringWithValidatedFormat:redeem2 validFormatSpecifiers:@"%@%@" error:0, credit2, balance];
 
 LABEL_23:
   [(SKUIRedeemResultMessageView *)self->_messageView setMessage:v39];
@@ -1156,35 +1156,35 @@ LABEL_24:
 
 - (double)_tableWidth
 {
-  v3 = [(SKUIRedeemNativeResultsViewController *)self traitCollection];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  if ([v4 userInterfaceIdiom] || -[SKUIRedeemNativeResultsViewController interfaceOrientation](self, "interfaceOrientation") == 1)
+  traitCollection = [(SKUIRedeemNativeResultsViewController *)self traitCollection];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] || -[SKUIRedeemNativeResultsViewController interfaceOrientation](self, "interfaceOrientation") == 1)
   {
   }
 
   else
   {
-    v11 = [v3 verticalSizeClass];
+    verticalSizeClass = [traitCollection verticalSizeClass];
 
-    if (v11 != 2)
+    if (verticalSizeClass != 2)
     {
       v7 = 414.0;
       goto LABEL_7;
     }
   }
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = 540.0;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v7 = v9;
   }
 
@@ -1196,97 +1196,97 @@ LABEL_7:
 - (void)_reloadSections
 {
   v55 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [(SKUIRedeemResultsViewController *)self redeem];
-  v4 = [v3 thankYouDictionary];
+  redeem = [(SKUIRedeemResultsViewController *)self redeem];
+  thankYouDictionary = [redeem thankYouDictionary];
 
-  if (v4)
+  if (thankYouDictionary)
   {
-    v5 = [(SKUIRedeemNativeResultsViewController *)self _item];
+    _item = [(SKUIRedeemNativeResultsViewController *)self _item];
 
-    if (v5)
+    if (_item)
     {
-      v6 = [(SKUIRedeemResultsViewController *)self redeem];
-      v7 = [v6 headerArtworkProvider];
-      v8 = [v7 smallestArtwork];
+      redeem2 = [(SKUIRedeemResultsViewController *)self redeem];
+      headerArtworkProvider = [redeem2 headerArtworkProvider];
+      smallestArtwork = [headerArtworkProvider smallestArtwork];
 
-      if (!v8 || ([v8 size], v9 < 150.0))
+      if (!smallestArtwork || ([smallestArtwork size], v9 < 150.0))
       {
-        v10 = [(SKUIRedeemNativeResultsViewController *)self _emptySection];
-        v11 = [MEMORY[0x277D75418] currentDevice];
-        [v11 userInterfaceIdiom];
+        _emptySection = [(SKUIRedeemNativeResultsViewController *)self _emptySection];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        [currentDevice userInterfaceIdiom];
 
-        __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v12, v55, v10);
+        __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v12, v55, _emptySection);
       }
 
-      v13 = [(SKUIRedeemNativeResultsViewController *)self _headerImageViewSection];
-      v14 = [MEMORY[0x277D75418] currentDevice];
-      [v14 userInterfaceIdiom];
+      _headerImageViewSection = [(SKUIRedeemNativeResultsViewController *)self _headerImageViewSection];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      [currentDevice2 userInterfaceIdiom];
 
-      __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v15, v55, v13);
-      v16 = [(SKUIRedeemNativeResultsViewController *)self _messageViewSection];
-      v17 = [MEMORY[0x277D75418] currentDevice];
-      [v17 userInterfaceIdiom];
+      __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v15, v55, _headerImageViewSection);
+      _messageViewSection = [(SKUIRedeemNativeResultsViewController *)self _messageViewSection];
+      currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+      [currentDevice3 userInterfaceIdiom];
 
-      __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(5.0, v18, v55, v16);
-      v19 = [(SKUIRedeemNativeResultsViewController *)self _itemViewSection];
-      v20 = [MEMORY[0x277D75418] currentDevice];
-      [v20 userInterfaceIdiom];
+      __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(5.0, v18, v55, _messageViewSection);
+      _itemViewSection = [(SKUIRedeemNativeResultsViewController *)self _itemViewSection];
+      currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+      [currentDevice4 userInterfaceIdiom];
 
-      __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v21, v55, v19);
+      __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v21, v55, _itemViewSection);
     }
 
     else
     {
-      v28 = [(SKUIRedeemNativeResultsViewController *)self _emptySection];
-      v29 = [MEMORY[0x277D75418] currentDevice];
-      [v29 userInterfaceIdiom];
+      _emptySection2 = [(SKUIRedeemNativeResultsViewController *)self _emptySection];
+      currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+      [currentDevice5 userInterfaceIdiom];
 
-      __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v30, v55, v28);
-      v31 = [(SKUIRedeemNativeResultsViewController *)self _resultImageViewSection];
-      v32 = [MEMORY[0x277D75418] currentDevice];
-      [v32 userInterfaceIdiom];
+      __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v30, v55, _emptySection2);
+      _resultImageViewSection = [(SKUIRedeemNativeResultsViewController *)self _resultImageViewSection];
+      currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+      [currentDevice6 userInterfaceIdiom];
 
-      __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v33, v55, v31);
-      v8 = [(SKUIRedeemNativeResultsViewController *)self _messageViewSection];
-      v34 = [MEMORY[0x277D75418] currentDevice];
-      [v34 userInterfaceIdiom];
+      __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v33, v55, _resultImageViewSection);
+      smallestArtwork = [(SKUIRedeemNativeResultsViewController *)self _messageViewSection];
+      currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+      [currentDevice7 userInterfaceIdiom];
 
-      __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(5.0, v35, v55, v8);
+      __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(5.0, v35, v55, smallestArtwork);
     }
 
-    v36 = [(SKUIRedeemNativeResultsViewController *)self _extendedMessageViewSection];
-    v37 = [MEMORY[0x277D75418] currentDevice];
-    [v37 userInterfaceIdiom];
+    _extendedMessageViewSection = [(SKUIRedeemNativeResultsViewController *)self _extendedMessageViewSection];
+    currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice8 userInterfaceIdiom];
 
-    __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(5.0, v38, v55, v36);
-    v39 = [(SKUIRedeemNativeResultsViewController *)self _linksSection];
-    __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v39, v55, v39);
+    __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(5.0, v38, v55, _extendedMessageViewSection);
+    _linksSection = [(SKUIRedeemNativeResultsViewController *)self _linksSection];
+    __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, _linksSection, v55, _linksSection);
 
-    v40 = [(SKUIRedeemNativeResultsViewController *)self _emptySection];
-    v41 = [MEMORY[0x277D75418] currentDevice];
-    [v41 userInterfaceIdiom];
+    _emptySection3 = [(SKUIRedeemNativeResultsViewController *)self _emptySection];
+    currentDevice9 = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice9 userInterfaceIdiom];
 
-    __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v42, v55, v40);
+    __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v42, v55, _emptySection3);
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v22 = [MEMORY[0x277D75418] currentDevice];
-  v23 = [v22 userInterfaceIdiom];
+  currentDevice10 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice10 userInterfaceIdiom];
 
-  if ((v23 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v24 = [(SKUIRedeemNativeResultsViewController *)self _emptySection];
-    v25 = [MEMORY[0x277D75418] currentDevice];
-    [v25 userInterfaceIdiom];
+    _emptySection4 = [(SKUIRedeemNativeResultsViewController *)self _emptySection];
+    currentDevice11 = [MEMORY[0x277D75418] currentDevice];
+    [currentDevice11 userInterfaceIdiom];
 
-    __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v26, v55, v24);
+    __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v26, v55, _emptySection4);
   }
 
-  v27 = [(SKUIRedeemNativeResultsViewController *)self _item];
+  _item2 = [(SKUIRedeemNativeResultsViewController *)self _item];
 
-  if (v27)
+  if (_item2)
   {
     [(SKUIRedeemNativeResultsViewController *)self _itemViewSection];
   }
@@ -1296,37 +1296,37 @@ LABEL_18:
     [(SKUIRedeemNativeResultsViewController *)self _resultImageViewSection];
   }
   v43 = ;
-  v44 = [MEMORY[0x277D75418] currentDevice];
-  [v44 userInterfaceIdiom];
+  currentDevice12 = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice12 userInterfaceIdiom];
 
   __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(0.0, v45, v55, v43);
-  v46 = [(SKUIRedeemNativeResultsViewController *)self _messageViewSection];
-  v47 = [MEMORY[0x277D75418] currentDevice];
-  [v47 userInterfaceIdiom];
+  _messageViewSection2 = [(SKUIRedeemNativeResultsViewController *)self _messageViewSection];
+  currentDevice13 = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice13 userInterfaceIdiom];
 
-  __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(5.0, v48, v55, v46);
-  v49 = [(SKUIRedeemNativeResultsViewController *)self _anotherButtonSection];
-  __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(2.0, v49, v55, v49);
+  __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(5.0, v48, v55, _messageViewSection2);
+  _anotherButtonSection = [(SKUIRedeemNativeResultsViewController *)self _anotherButtonSection];
+  __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(2.0, _anotherButtonSection, v55, _anotherButtonSection);
 
   if ([(SKUIRedeemStepViewController *)self shouldShowPassbookLearnMore])
   {
-    v40 = [(SKUIRedeemNativeResultsViewController *)self _passbookLearnMoreSection];
-    v50 = [MEMORY[0x277D759A0] mainScreen];
-    v51 = [v50 bounds];
+    _emptySection3 = [(SKUIRedeemNativeResultsViewController *)self _passbookLearnMoreSection];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    bounds = [mainScreen bounds];
     v52 = 11.0;
     if (v53 > 480.0)
     {
       v52 = 30.0;
     }
 
-    __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(v52, v51, v55, v40);
+    __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(v52, bounds, v55, _emptySection3);
 
     goto LABEL_18;
   }
 
 LABEL_19:
-  v54 = [(SKUIRedeemNativeResultsViewController *)self view];
-  [v54 setSections:v55];
+  view = [(SKUIRedeemNativeResultsViewController *)self view];
+  [view setSections:v55];
 }
 
 void __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(double a1, uint64_t a2, void *a3, void *a4)
@@ -1348,12 +1348,12 @@ void __56__SKUIRedeemNativeResultsViewController__reloadSections__block_invoke(d
   }
 }
 
-- (void)_setItemImage:(id)a3
+- (void)_setItemImage:(id)image
 {
-  objc_storeStrong(&self->_itemImage, a3);
-  v5 = a3;
-  v6 = [(SKUIRedeemNativeResultsViewController *)self _itemView];
-  [v6 setItemImage:self->_itemImage];
+  objc_storeStrong(&self->_itemImage, image);
+  imageCopy = image;
+  _itemView = [(SKUIRedeemNativeResultsViewController *)self _itemView];
+  [_itemView setItemImage:self->_itemImage];
 }
 
 + (void)canShowResultsForRedeem:.cold.1()

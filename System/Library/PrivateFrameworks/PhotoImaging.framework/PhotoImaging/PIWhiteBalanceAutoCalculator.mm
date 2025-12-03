@@ -1,17 +1,17 @@
 @interface PIWhiteBalanceAutoCalculator
-- ($7CC5A320EBB83734983E5E759578C212)_chooseNeutralGrayForNonSushi:(id *)a3;
-- ($7CC5A320EBB83734983E5E759578C212)_correctedRGBResultFromResult:(id)a3;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_chooseTempTintForSushi:(id *)a3 RAWProperties:(id)a4 brightness:(double)a5;
-- (BOOL)_useTempTint:(id)a3;
-- (void)submit:(id)a3;
+- ($7CC5A320EBB83734983E5E759578C212)_chooseNeutralGrayForNonSushi:(id *)sushi;
+- ($7CC5A320EBB83734983E5E759578C212)_correctedRGBResultFromResult:(id)result;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_chooseTempTintForSushi:(id *)sushi RAWProperties:(id)properties brightness:(double)brightness;
+- (BOOL)_useTempTint:(id)tint;
+- (void)submit:(id)submit;
 @end
 
 @implementation PIWhiteBalanceAutoCalculator
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_chooseTempTintForSushi:(id *)a3 RAWProperties:(id)a4 brightness:(double)a5
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_chooseTempTintForSushi:(id *)sushi RAWProperties:(id)properties brightness:(double)brightness
 {
-  v7 = a4;
-  v8 = [v7 inputNeutralXYFromRGB:&a3->var1];
+  propertiesCopy = properties;
+  v8 = [propertiesCopy inputNeutralXYFromRGB:&sushi->var1];
   v9 = [v8 objectAtIndexedSubscript:0];
   [v9 doubleValue];
   v11 = v10;
@@ -22,7 +22,7 @@
   v14 = v13;
   v41 = v13;
 
-  v15 = [v7 inputNeutralXYFromRGB:a3];
+  v15 = [propertiesCopy inputNeutralXYFromRGB:sushi];
 
   v16 = [v15 objectAtIndexedSubscript:0];
   [v16 doubleValue];
@@ -96,7 +96,7 @@
   *v28 = (1.0 - v32) * 0.358500004 + v32 * v21;
   *buf = 0.0;
   nu_xy_to_tempTint();
-  v33 = fmax(fmin(1.0 - pow(fmax(a5 + -5.0, 0.0) / 5.0, 0.330000013), 1.0), 0.0);
+  v33 = fmax(fmin(1.0 - pow(fmax(brightness + -5.0, 0.0) / 5.0, 0.330000013), 1.0), 0.0);
   v34 = (1.0 - v33) * dbl_1C7845D40[*buf > 6500.0] + v33 * *v27;
   v35 = (1.0 - v33) * dbl_1C7845D50[*buf > 6500.0] + v33 * *v28;
 
@@ -107,20 +107,20 @@
   return result;
 }
 
-- ($7CC5A320EBB83734983E5E759578C212)_chooseNeutralGrayForNonSushi:(id *)a3
+- ($7CC5A320EBB83734983E5E759578C212)_chooseNeutralGrayForNonSushi:(id *)sushi
 {
-  v3 = a3->var0.var0[0];
-  v4 = a3->var0.var0[1];
-  v5 = a3->var0.var0[2];
-  v6 = a3->var0.var0[3];
-  v7 = a3->var1.var0[0];
-  v8 = a3->var1.var0[1];
-  v9 = a3->var1.var0[2];
-  v10 = sqrt((v4 + -1.0) * (v4 + -1.0) + (a3->var0.var0[0] + -1.0) * (a3->var0.var0[0] + -1.0) + (v5 + -1.0) * (v5 + -1.0));
+  v3 = sushi->var0.var0[0];
+  v4 = sushi->var0.var0[1];
+  v5 = sushi->var0.var0[2];
+  v6 = sushi->var0.var0[3];
+  v7 = sushi->var1.var0[0];
+  v8 = sushi->var1.var0[1];
+  v9 = sushi->var1.var0[2];
+  v10 = sqrt((v4 + -1.0) * (v4 + -1.0) + (sushi->var0.var0[0] + -1.0) * (sushi->var0.var0[0] + -1.0) + (v5 + -1.0) * (v5 + -1.0));
   v11 = sqrt((v8 + -1.0) * (v8 + -1.0) + (v7 + -1.0) * (v7 + -1.0) + (v9 + -1.0) * (v9 + -1.0));
   if (v11 < v10 && vabdd_f64(v11, v10) > 0.01)
   {
-    v6 = a3->var1.var0[3];
+    v6 = sushi->var1.var0[3];
     if (*MEMORY[0x1E69B3D78] != -1)
     {
       dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_303);
@@ -146,14 +146,14 @@
   return result;
 }
 
-- ($7CC5A320EBB83734983E5E759578C212)_correctedRGBResultFromResult:(id)a3
+- ($7CC5A320EBB83734983E5E759578C212)_correctedRGBResultFromResult:(id)result
 {
-  v3 = a3.var0[2];
-  v4 = a3.var0[1];
-  v5 = a3.var0[0];
-  a3.var0[0] = a3.var0[1] * -0.0276515931 + a3.var0[0] * 1.02395463 + a3.var0[2] * 0.0029618456;
-  v19 = *a3.var0;
-  *v6.i64 = pow(fabs(a3.var0[0]), 0.25);
+  v3 = result.var0[2];
+  v4 = result.var0[1];
+  v5 = result.var0[0];
+  result.var0[0] = result.var0[1] * -0.0276515931 + result.var0[0] * 1.02395463 + result.var0[2] * 0.0029618456;
+  v19 = *result.var0;
+  *v6.i64 = pow(fabs(result.var0[0]), 0.25);
   v7.f64[0] = NAN;
   v7.f64[1] = NAN;
   v8 = vnegq_f64(v7);
@@ -179,20 +179,20 @@
   return result;
 }
 
-- (BOOL)_useTempTint:(id)a3
+- (BOOL)_useTempTint:(id)tint
 {
-  v7 = a3;
+  tintCopy = tint;
   v4 = 0.0;
   v5 = 0.0;
-  YIQFromRGB(v7.var0, &v6, &v5, &v4, 0.0, 1.0, 0.0);
+  YIQFromRGB(tintCopy.var0, &v6, &v5, &v4, 0.0, 1.0, 0.0);
   return sqrt(v4 * v4 + v5 * v5) > 0.0399999991;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v10 = NUAssertLogger_7479();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -214,8 +214,8 @@
         v18 = dispatch_get_specific(*v12);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v18;
         v28 = 2114;
@@ -226,8 +226,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -236,18 +236,18 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
-  v6 = [(NURenderRequest *)self composition];
+  v5 = submitCopy;
+  composition = [(NURenderRequest *)self composition];
   v7 = [objc_alloc(MEMORY[0x1E69B3B30]) initWithRequest:self];
   [v7 setName:@"PIWhiteBalanceAutoCalculator-imageProperties"];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __39__PIWhiteBalanceAutoCalculator_submit___block_invoke;
   v23[3] = &unk_1E82AC510;
-  v24 = v6;
+  v24 = composition;
   v25 = v5;
   v23[4] = self;
-  v8 = v6;
+  v8 = composition;
   v9 = v5;
   [v7 submit:v23];
 }

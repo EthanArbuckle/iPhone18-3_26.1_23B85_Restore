@@ -8,29 +8,29 @@
 
 - (id)databaseValue_toString
 {
-  v1 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:a1 encoding:4];
+  v1 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:self encoding:4];
 
   return v1;
 }
 
 - (id)databaseValue_toNumber
 {
-  v1 = [a1 databaseValue_toString];
-  v2 = [v1 databaseValue_toNumber];
+  databaseValue_toString = [self databaseValue_toString];
+  databaseValue_toNumber = [databaseValue_toString databaseValue_toNumber];
 
-  return v2;
+  return databaseValue_toNumber;
 }
 
 - (uint64_t)databaseValue_blobRepresentationWithLength:()CCDatabaseValue
 {
   if (a3)
   {
-    *a3 = [a1 length];
+    *a3 = [self length];
   }
 
-  v4 = a1;
+  selfCopy = self;
 
-  return [v4 bytes];
+  return [selfCopy bytes];
 }
 
 @end

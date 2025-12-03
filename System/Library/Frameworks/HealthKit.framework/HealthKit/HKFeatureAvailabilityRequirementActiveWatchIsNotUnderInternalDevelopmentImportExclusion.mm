@@ -1,26 +1,26 @@
 @interface HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion)initWithCoder:(id)a3;
-- (HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion)initWithFeatureIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion)initWithCoder:(id)coder;
+- (HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion)initWithFeatureIdentifier:(id)identifier;
 - (NSArray)requiredEntitlements;
 - (NSString)requirementDescription;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 - (unint64_t)hash;
-- (void)registerObserver:(id)a3 forDataSource:(id)a4;
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4;
+- (void)registerObserver:(id)observer forDataSource:(id)source;
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source;
 @end
 
 @implementation HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion
 
-- (HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion)initWithFeatureIdentifier:(id)a3
+- (HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion)initWithFeatureIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion;
   v5 = [(HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     featureIdentifier = v5->_featureIdentifier;
     v5->_featureIdentifier = v6;
   }
@@ -31,9 +31,9 @@
 - (NSString)requirementDescription
 {
   v2 = +[_HKBehavior sharedBehavior];
-  v3 = [v2 isAppleWatch];
+  isAppleWatch = [v2 isAppleWatch];
 
-  if (v3)
+  if (isAppleWatch)
   {
     return @"Current watch must not be excluded from import for internal development";
   }
@@ -56,17 +56,17 @@
   return v3;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
-  v5 = a3;
-  v6 = [(HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion *)self featureIdentifier];
-  v7 = [v6 isEqualToString:@"OxygenSaturationRecording"];
+  sourceCopy = source;
+  featureIdentifier = [(HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion *)self featureIdentifier];
+  v7 = [featureIdentifier isEqualToString:@"OxygenSaturationRecording"];
 
-  if (v7 && ([v5 behavior], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isVirtualDevice"), v8, (v9 & 1) == 0))
+  if (v7 && ([sourceCopy behavior], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isVirtualDevice"), v8, (v9 & 1) == 0))
   {
-    v11 = [v5 importExclusionDeviceDataSource];
-    v12 = [v5 behavior];
-    v13 = [v11 isActiveWatchProdFusedWithBehavior:v12];
+    importExclusionDeviceDataSource = [sourceCopy importExclusionDeviceDataSource];
+    behavior = [sourceCopy behavior];
+    v13 = [importExclusionDeviceDataSource isActiveWatchProdFusedWithBehavior:behavior];
 
     if (v13)
     {
@@ -77,9 +77,9 @@
 
       else
       {
-        v14 = [v5 importExclusionDeviceDataSource];
-        v15 = [v5 behavior];
-        v16 = [v14 isImportAllowedForActiveWatchWithBehavior:v15 featureIdentifier:self->_featureIdentifier];
+        importExclusionDeviceDataSource2 = [sourceCopy importExclusionDeviceDataSource];
+        behavior2 = [sourceCopy behavior];
+        v16 = [importExclusionDeviceDataSource2 isImportAllowedForActiveWatchWithBehavior:behavior2 featureIdentifier:self->_featureIdentifier];
 
         if (v16 && ([v16 BOOLValue] & 1) != 0)
         {
@@ -107,19 +107,19 @@
   return v10;
 }
 
-- (void)registerObserver:(id)a3 forDataSource:(id)a4
+- (void)registerObserver:(id)observer forDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  objc_initWeak(&location, v7);
-  v8 = [v7 devicePairingAndSwitchingNotificationDataSource];
+  observerCopy = observer;
+  sourceCopy = source;
+  objc_initWeak(&location, sourceCopy);
+  devicePairingAndSwitchingNotificationDataSource = [sourceCopy devicePairingAndSwitchingNotificationDataSource];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __122__HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion_registerObserver_forDataSource___block_invoke;
   v9[3] = &unk_1E7379DC8;
   objc_copyWeak(&v10, &location);
   v9[4] = self;
-  [v8 registerObserverForDevicePairingChanges:v6 block:v9];
+  [devicePairingAndSwitchingNotificationDataSource registerObserverForDevicePairingChanges:observerCopy block:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -153,24 +153,24 @@ void __122__HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelop
   }
 }
 
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source
 {
-  v5 = a3;
-  v6 = [a4 devicePairingAndSwitchingNotificationDataSource];
-  [v6 unregisterObserverForDevicePairingChanges:v5];
+  observerCopy = observer;
+  devicePairingAndSwitchingNotificationDataSource = [source devicePairingAndSwitchingNotificationDataSource];
+  [devicePairingAndSwitchingNotificationDataSource unregisterObserverForDevicePairingChanges:observerCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion *)self featureIdentifier];
-    v7 = [v5 featureIdentifier];
+    v5 = equalCopy;
+    featureIdentifier = [(HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion *)self featureIdentifier];
+    featureIdentifier2 = [v5 featureIdentifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [featureIdentifier isEqualToString:featureIdentifier2];
   }
 
   else
@@ -186,16 +186,16 @@ void __122__HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelop
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = [v4 hash];
-  v6 = [(HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion *)self featureIdentifier];
-  v7 = [v6 hash];
+  featureIdentifier = [(HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion *)self featureIdentifier];
+  v7 = [featureIdentifier hash];
 
   return v7 ^ v5;
 }
 
-- (HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion)initWithCoder:(id)a3
+- (HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featureIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featureIdentifier"];
 
   v6 = [(HKFeatureAvailabilityRequirementActiveWatchIsNotUnderInternalDevelopmentImportExclusion *)self initWithFeatureIdentifier:v5];
   return v6;

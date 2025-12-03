@@ -1,8 +1,8 @@
 @interface SOSInCallUILauncher
 + (SOSInCallUILauncher)sharedInCallUILauncher;
-+ (id)SOSRemoteAlertActivationReasonForSOSInCallUILaunchReason:(int64_t)a3;
-- (void)launchInCallUIForReason:(int64_t)a3 withRequestURL:(id)a4 completion:(id)a5;
-- (void)processObserver:(id)a3 bundleIdentifier:(id)a4 didUpdateApplicationRunning:(BOOL)a5;
++ (id)SOSRemoteAlertActivationReasonForSOSInCallUILaunchReason:(int64_t)reason;
+- (void)launchInCallUIForReason:(int64_t)reason withRequestURL:(id)l completion:(id)completion;
+- (void)processObserver:(id)observer bundleIdentifier:(id)identifier didUpdateApplicationRunning:(BOOL)running;
 @end
 
 @implementation SOSInCallUILauncher
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __45__SOSInCallUILauncher_sharedInCallUILauncher__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInCallUILauncher_onceToken != -1)
   {
     dispatch_once(&sharedInCallUILauncher_onceToken, block);
@@ -31,23 +31,23 @@ uint64_t __45__SOSInCallUILauncher_sharedInCallUILauncher__block_invoke(uint64_t
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)launchInCallUIForReason:(int64_t)a3 withRequestURL:(id)a4 completion:(id)a5
+- (void)launchInCallUIForReason:(int64_t)reason withRequestURL:(id)l completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  completionCopy = completion;
   v10 = sos_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v37 = a3;
+    reasonCopy = reason;
     _os_log_impl(&dword_264323000, v10, OS_LOG_TYPE_DEFAULT, "launched for reason: %ld", buf, 0xCu);
   }
 
-  v11 = [objc_opt_class() SOSRemoteAlertActivationReasonForSOSInCallUILaunchReason:a3];
-  if (a3 > 3)
+  v11 = [objc_opt_class() SOSRemoteAlertActivationReasonForSOSInCallUILaunchReason:reason];
+  if (reason > 3)
   {
-    if (a3 == 5)
+    if (reason == 5)
     {
       v14 = sos_default_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -58,7 +58,7 @@ uint64_t __45__SOSInCallUILauncher_sharedInCallUILauncher__block_invoke(uint64_t
       goto LABEL_18;
     }
 
-    if (a3 != 4)
+    if (reason != 4)
     {
       goto LABEL_19;
     }
@@ -71,14 +71,14 @@ LABEL_13:
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
     [v14 setQueryItems:v21];
 
-    v22 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v23 = [v14 URL];
     v28 = MEMORY[0x277D85DD0];
     v29 = 3221225472;
     v30 = __73__SOSInCallUILauncher_launchInCallUIForReason_withRequestURL_completion___block_invoke;
     v31 = &unk_279B53B28;
-    v32 = v9;
-    [v22 openURL:v23 configuration:0 completionHandler:&v28];
+    v32 = completionCopy;
+    [defaultWorkspace openURL:v23 configuration:0 completionHandler:&v28];
 
     v24 = [(SOSInCallUILauncher *)self processObserver:v28];
 
@@ -88,42 +88,42 @@ LABEL_13:
       [(SOSInCallUILauncher *)self setProcessObserver:v25];
     }
 
-    v26 = [(SOSInCallUILauncher *)self processObserver];
-    [v26 setDelegate:self];
+    processObserver = [(SOSInCallUILauncher *)self processObserver];
+    [processObserver setDelegate:self];
 
     goto LABEL_18;
   }
 
-  if ((a3 - 1) < 2)
+  if ((reason - 1) < 2)
   {
     goto LABEL_13;
   }
 
-  if (a3 == 3)
+  if (reason == 3)
   {
     v12 = objc_alloc(MEMORY[0x277D66BD8]);
     v13 = TUInCallRemoteAlertViewControllerClassName();
     v14 = [v12 initWithServiceName:@"com.apple.InCallService" viewControllerClassName:v13];
 
     v15 = [MEMORY[0x277D66BF0] lookupHandlesForDefinition:v14 creatingIfNone:1];
-    v16 = [v15 firstObject];
+    firstObject = [v15 firstObject];
 
-    [v16 addObserver:self];
+    [firstObject addObserver:self];
     v17 = objc_alloc_init(MEMORY[0x277D66BC0]);
     [v17 setReason:v11];
-    if (v8)
+    if (lCopy)
     {
-      v18 = [v8 absoluteString];
-      if ([v18 length])
+      absoluteString = [lCopy absoluteString];
+      if ([absoluteString length])
       {
         v33 = @"SOSRemoteAlertActivationContextUserInfoRequestURLString";
-        v34 = v18;
+        v34 = absoluteString;
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
         [v17 setUserInfo:v19];
       }
     }
 
-    [v16 activateWithContext:v17];
+    [firstObject activateWithContext:v17];
 
 LABEL_18:
   }
@@ -163,24 +163,24 @@ uint64_t __73__SOSInCallUILauncher_launchInCallUIForReason_withRequestURL_comple
   return result;
 }
 
-+ (id)SOSRemoteAlertActivationReasonForSOSInCallUILaunchReason:(int64_t)a3
++ (id)SOSRemoteAlertActivationReasonForSOSInCallUILaunchReason:(int64_t)reason
 {
-  if ((a3 - 1) > 4)
+  if ((reason - 1) > 4)
   {
     return @"SOSRemoteAlertAcivationReasonNone";
   }
 
   else
   {
-    return off_279B54008[a3 - 1];
+    return off_279B54008[reason - 1];
   }
 }
 
-- (void)processObserver:(id)a3 bundleIdentifier:(id)a4 didUpdateApplicationRunning:(BOOL)a5
+- (void)processObserver:(id)observer bundleIdentifier:(id)identifier didUpdateApplicationRunning:(BOOL)running
 {
-  if (!a5)
+  if (!running)
   {
-    v6 = [(SOSInCallUILauncher *)self processObserver:a3];
+    v6 = [(SOSInCallUILauncher *)self processObserver:observer];
     [v6 setDelegate:0];
 
     v7 = MEMORY[0x277D85CD0];

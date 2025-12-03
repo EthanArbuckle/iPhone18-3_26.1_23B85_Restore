@@ -1,32 +1,32 @@
 @interface RectangleHistoryCell
-- (_TtC7Measure20RectangleHistoryCell)initWithCoder:(id)a3;
-- (_TtC7Measure20RectangleHistoryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC7Measure20RectangleHistoryCell)initWithCoder:(id)coder;
+- (_TtC7Measure20RectangleHistoryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation RectangleHistoryCell
 
-- (_TtC7Measure20RectangleHistoryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC7Measure20RectangleHistoryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = String._bridgeToObjectiveC()();
+    identifier = String._bridgeToObjectiveC()();
   }
 
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(BaseRectangleHistoryCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v8 = [(BaseRectangleHistoryCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
 
   return v8;
 }
 
-- (_TtC7Measure20RectangleHistoryCell)initWithCoder:(id)a3
+- (_TtC7Measure20RectangleHistoryCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(BaseRectangleHistoryCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(BaseRectangleHistoryCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

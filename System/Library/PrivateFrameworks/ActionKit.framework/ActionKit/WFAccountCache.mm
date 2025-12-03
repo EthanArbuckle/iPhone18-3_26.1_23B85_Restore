@@ -1,62 +1,62 @@
 @interface WFAccountCache
 - (WFAccountCache)init;
-- (id)accountsForService:(id)a3;
-- (id)numberOfAccountsForService:(id)a3;
-- (void)clearCacheForService:(id)a3;
-- (void)setAccounts:(id)a3 forService:(id)a4;
-- (void)setNumberOfAccounts:(id)a3 forService:(id)a4;
+- (id)accountsForService:(id)service;
+- (id)numberOfAccountsForService:(id)service;
+- (void)clearCacheForService:(id)service;
+- (void)setAccounts:(id)accounts forService:(id)service;
+- (void)setNumberOfAccounts:(id)accounts forService:(id)service;
 @end
 
 @implementation WFAccountCache
 
-- (void)clearCacheForService:(id)a3
+- (void)clearCacheForService:(id)service
 {
   cache = self->_cache;
-  v5 = a3;
-  v6 = [v5 stringByAppendingString:@"-accounts"];
+  serviceCopy = service;
+  v6 = [serviceCopy stringByAppendingString:@"-accounts"];
   [(NSCache *)cache removeObjectForKey:v6];
 
   v7 = self->_cache;
-  v8 = [v5 stringByAppendingString:@"-count"];
+  v8 = [serviceCopy stringByAppendingString:@"-count"];
 
   [(NSCache *)v7 removeObjectForKey:v8];
 }
 
-- (void)setAccounts:(id)a3 forService:(id)a4
+- (void)setAccounts:(id)accounts forService:(id)service
 {
   cache = self->_cache;
-  v6 = a3;
-  v7 = [a4 stringByAppendingString:@"-accounts"];
-  [(NSCache *)cache setObject:v6 forKey:v7];
+  accountsCopy = accounts;
+  v7 = [service stringByAppendingString:@"-accounts"];
+  [(NSCache *)cache setObject:accountsCopy forKey:v7];
 }
 
-- (void)setNumberOfAccounts:(id)a3 forService:(id)a4
+- (void)setNumberOfAccounts:(id)accounts forService:(id)service
 {
   cache = self->_cache;
-  v6 = a3;
-  v7 = [a4 stringByAppendingString:@"-count"];
-  [(NSCache *)cache setObject:v6 forKey:v7];
+  accountsCopy = accounts;
+  v7 = [service stringByAppendingString:@"-count"];
+  [(NSCache *)cache setObject:accountsCopy forKey:v7];
 }
 
-- (id)accountsForService:(id)a3
+- (id)accountsForService:(id)service
 {
   cache = self->_cache;
-  v4 = [a3 stringByAppendingString:@"-accounts"];
+  v4 = [service stringByAppendingString:@"-accounts"];
   v5 = [(NSCache *)cache objectForKey:v4];
 
   return v5;
 }
 
-- (id)numberOfAccountsForService:(id)a3
+- (id)numberOfAccountsForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   cache = self->_cache;
-  v6 = [v4 stringByAppendingString:@"-count"];
+  v6 = [serviceCopy stringByAppendingString:@"-count"];
   v7 = [(NSCache *)cache objectForKey:v6];
 
   if (!v7)
   {
-    v8 = [(WFAccountCache *)self accountsForService:v4];
+    v8 = [(WFAccountCache *)self accountsForService:serviceCopy];
     v9 = v8;
     if (v8)
     {

@@ -1,6 +1,6 @@
 @interface MTRDoorLockClusterAppleAliroLockOperationEvent
 - (MTRDoorLockClusterAppleAliroLockOperationEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterAppleAliroLockOperationEvent);
-  v5 = [(MTRDoorLockClusterAppleAliroLockOperationEvent *)self lockOperationType];
-  [(MTRDoorLockClusterAppleAliroLockOperationEvent *)v4 setLockOperationType:v5];
+  lockOperationType = [(MTRDoorLockClusterAppleAliroLockOperationEvent *)self lockOperationType];
+  [(MTRDoorLockClusterAppleAliroLockOperationEvent *)v4 setLockOperationType:lockOperationType];
 
-  v6 = [(MTRDoorLockClusterAppleAliroLockOperationEvent *)self userIndex];
-  [(MTRDoorLockClusterAppleAliroLockOperationEvent *)v4 setUserIndex:v6];
+  userIndex = [(MTRDoorLockClusterAppleAliroLockOperationEvent *)self userIndex];
+  [(MTRDoorLockClusterAppleAliroLockOperationEvent *)v4 setUserIndex:userIndex];
 
-  v7 = [(MTRDoorLockClusterAppleAliroLockOperationEvent *)self fabricIndex];
-  [(MTRDoorLockClusterAppleAliroLockOperationEvent *)v4 setFabricIndex:v7];
+  fabricIndex = [(MTRDoorLockClusterAppleAliroLockOperationEvent *)self fabricIndex];
+  [(MTRDoorLockClusterAppleAliroLockOperationEvent *)v4 setFabricIndex:fabricIndex];
 
-  v8 = [(MTRDoorLockClusterAppleAliroLockOperationEvent *)self credentials];
-  [(MTRDoorLockClusterAppleAliroLockOperationEvent *)v4 setCredentials:v8];
+  credentials = [(MTRDoorLockClusterAppleAliroLockOperationEvent *)self credentials];
+  [(MTRDoorLockClusterAppleAliroLockOperationEvent *)v4 setCredentials:credentials];
 
   return v4;
 }

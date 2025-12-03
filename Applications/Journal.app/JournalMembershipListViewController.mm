@@ -1,20 +1,20 @@
 @interface JournalMembershipListViewController
-- (_TtC7Journal35JournalMembershipListViewController)initWithCoder:(id)a3;
-- (_TtC7Journal35JournalMembershipListViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC7Journal35JournalMembershipListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)presentationController:(id)a3 viewControllerForAdaptivePresentationStyle:(int64_t)a4;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
+- (_TtC7Journal35JournalMembershipListViewController)initWithCoder:(id)coder;
+- (_TtC7Journal35JournalMembershipListViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC7Journal35JournalMembershipListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)presentationController:(id)controller viewControllerForAdaptivePresentationStyle:(int64_t)style;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
 - (void)loadView;
-- (void)presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
+- (void)presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation JournalMembershipListViewController
 
-- (_TtC7Journal35JournalMembershipListViewController)initWithCoder:(id)a3
+- (_TtC7Journal35JournalMembershipListViewController)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC7Journal35JournalMembershipListViewController_onDone);
   *v4 = 0;
@@ -33,60 +33,60 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10012DC7C();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10012E690(a3);
+  selfCopy = self;
+  sub_10012E690(disappear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10012E7B0();
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_10012E8E8(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10012E8E8(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (_TtC7Journal35JournalMembershipListViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC7Journal35JournalMembershipListViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7Journal35JournalMembershipListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal35JournalMembershipListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
   objc_opt_self();
   v7 = swift_dynamicCastObjCClass();
   if (v7)
   {
     v8 = v7;
-    v9 = a3;
-    v10 = a4;
-    v11 = self;
+    controllerCopy = controller;
+    collectionCopy = collection;
+    selfCopy = self;
     if ([v8 sourceItem])
     {
 
@@ -95,13 +95,13 @@
 
     else
     {
-      v13 = [v8 sourceView];
+      sourceView = [v8 sourceView];
 
-      if (!v13)
+      if (!sourceView)
       {
 
         v12 = 2;
-        v9 = v11;
+        controllerCopy = selfCopy;
         goto LABEL_8;
       }
     }
@@ -115,29 +115,29 @@ LABEL_8:
   return 2;
 }
 
-- (void)presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4
+- (void)presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100132630(v7);
+  controllerCopy = controller;
+  presentationControllerCopy = presentationController;
+  selfCopy = self;
+  sub_100132630(presentationControllerCopy);
 }
 
-- (id)presentationController:(id)a3 viewControllerForAdaptivePresentationStyle:(int64_t)a4
+- (id)presentationController:(id)controller viewControllerForAdaptivePresentationStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_100132198(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v8 = sub_100132198(controllerCopy, style);
 
   return v8;
 }
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  v7 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_10013282C(a4);
+  selfCopy = self;
+  sub_10013282C(style);
 
   swift_unknownObjectRelease();
 }

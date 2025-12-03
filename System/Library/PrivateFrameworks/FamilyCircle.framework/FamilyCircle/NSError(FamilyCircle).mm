@@ -34,9 +34,9 @@
   v5 = MEMORY[0x1E695DF90];
   v6 = a4;
   v7 = objc_alloc_init(v5);
-  v8 = [v6 reason];
+  reason = [v6 reason];
 
-  [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A578]];
+  [v7 setObject:reason forKeyedSubscript:*MEMORY[0x1E696A578]];
   v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.family.error" code:a3 userInfo:v7];
 
   return v9;

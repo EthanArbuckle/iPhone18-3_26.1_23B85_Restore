@@ -1,25 +1,25 @@
 @interface PDDPEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEventDetails:(id)a3;
-- (int)StringAsEventDetailsType:(id)a3;
-- (int)StringAsEventType:(id)a3;
+- (int)StringAsEventDetails:(id)details;
+- (int)StringAsEventDetailsType:(id)type;
+- (int)StringAsEventType:(id)type;
 - (int)eventDetails;
 - (int)eventDetailsType;
 - (int)eventType;
 - (unint64_t)hash;
-- (void)addExtraInfo:(id)a3;
+- (void)addExtraInfo:(id)info;
 - (void)clearOneofValuesForEventDetails;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setAttachmentEventDetails:(id)a3;
-- (void)setHandoutEventDetails:(id)a3;
-- (void)setHasEventDetailsType:(BOOL)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)setProgressEventDetails:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setAttachmentEventDetails:(id)details;
+- (void)setHandoutEventDetails:(id)details;
+- (void)setHasEventDetailsType:(BOOL)type;
+- (void)setHasEventType:(BOOL)type;
+- (void)setProgressEventDetails:(id)details;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPEvent
@@ -37,9 +37,9 @@
   }
 }
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -52,105 +52,105 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsEventType:(id)a3
+- (int)StringAsEventType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_EVENT_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_EVENT_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ASSIGN_HANDOUT_TYPE"])
+  else if ([typeCopy isEqualToString:@"ASSIGN_HANDOUT_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UPDATE_HANDOUT_TYPE"])
+  else if ([typeCopy isEqualToString:@"UPDATE_HANDOUT_TYPE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TRY_AGAIN_TYPE"])
+  else if ([typeCopy isEqualToString:@"TRY_AGAIN_TYPE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"REVIEW_ATTACHMENT_TYPE"])
+  else if ([typeCopy isEqualToString:@"REVIEW_ATTACHMENT_TYPE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CANCEL_TRY_AGAIN_TYPE"])
+  else if ([typeCopy isEqualToString:@"CANCEL_TRY_AGAIN_TYPE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CANCEL_REVIEW_ATTACHMENT_TYPE"])
+  else if ([typeCopy isEqualToString:@"CANCEL_REVIEW_ATTACHMENT_TYPE"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"DELETE_HANDOUT_TYPE"])
+  else if ([typeCopy isEqualToString:@"DELETE_HANDOUT_TYPE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"MARK_HANDOUT_DONE_TYPE"])
+  else if ([typeCopy isEqualToString:@"MARK_HANDOUT_DONE_TYPE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"OPEN_HANDOUT_TYPE"])
+  else if ([typeCopy isEqualToString:@"OPEN_HANDOUT_TYPE"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"OPEN_ATTACHMENT_TYPE"])
+  else if ([typeCopy isEqualToString:@"OPEN_ATTACHMENT_TYPE"])
   {
     v4 = 102;
   }
 
-  else if ([v3 isEqualToString:@"MARK_DONE_TYPE"])
+  else if ([typeCopy isEqualToString:@"MARK_DONE_TYPE"])
   {
     v4 = 103;
   }
 
-  else if ([v3 isEqualToString:@"MARK_DONE_LATE_TYPE"])
+  else if ([typeCopy isEqualToString:@"MARK_DONE_LATE_TYPE"])
   {
     v4 = 104;
   }
 
-  else if ([v3 isEqualToString:@"MARK_NOT_DONE_TYPE"])
+  else if ([typeCopy isEqualToString:@"MARK_NOT_DONE_TYPE"])
   {
     v4 = 105;
   }
 
-  else if ([v3 isEqualToString:@"SCORE_TYPE"])
+  else if ([typeCopy isEqualToString:@"SCORE_TYPE"])
   {
     v4 = 201;
   }
 
-  else if ([v3 isEqualToString:@"TIME_SPENT_TYPE"])
+  else if ([typeCopy isEqualToString:@"TIME_SPENT_TYPE"])
   {
     v4 = 202;
   }
 
-  else if ([v3 isEqualToString:@"BINARY_TYPE"])
+  else if ([typeCopy isEqualToString:@"BINARY_TYPE"])
   {
     v4 = 203;
   }
 
-  else if ([v3 isEqualToString:@"QUANTITY_TYPE"])
+  else if ([typeCopy isEqualToString:@"QUANTITY_TYPE"])
   {
     v4 = 204;
   }
 
-  else if ([v3 isEqualToString:@"RANGE_TYPE"])
+  else if ([typeCopy isEqualToString:@"RANGE_TYPE"])
   {
     v4 = 205;
   }
 
-  else if ([v3 isEqualToString:@"ACTIVITY_STARTED_TYPE"])
+  else if ([typeCopy isEqualToString:@"ACTIVITY_STARTED_TYPE"])
   {
     v4 = 206;
   }
@@ -163,22 +163,22 @@
   return v4;
 }
 
-- (void)addExtraInfo:(id)a3
+- (void)addExtraInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   extraInfos = self->_extraInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!extraInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_extraInfos;
     self->_extraInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     extraInfos = self->_extraInfos;
   }
 
-  [(NSMutableArray *)extraInfos addObject:v4];
+  [(NSMutableArray *)extraInfos addObject:infoCopy];
 }
 
 - (int)eventDetailsType
@@ -194,9 +194,9 @@
   }
 }
 
-- (void)setHasEventDetailsType:(BOOL)a3
+- (void)setHasEventDetailsType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -209,25 +209,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsEventDetailsType:(id)a3
+- (int)StringAsEventDetailsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_EVENT_DETAILS"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_EVENT_DETAILS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"HANDOUT_EVENT_DETAILS"])
+  else if ([typeCopy isEqualToString:@"HANDOUT_EVENT_DETAILS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ATTACHMENT_EVENT_DETAILS"])
+  else if ([typeCopy isEqualToString:@"ATTACHMENT_EVENT_DETAILS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PROGRESS_EVENT_DETAILS"])
+  else if ([typeCopy isEqualToString:@"PROGRESS_EVENT_DETAILS"])
   {
     v4 = 3;
   }
@@ -240,34 +240,34 @@
   return v4;
 }
 
-- (void)setHandoutEventDetails:(id)a3
+- (void)setHandoutEventDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   [(PDDPEvent *)self clearOneofValuesForEventDetails];
   *&self->_has |= 1u;
   self->_eventDetails = 1;
   handoutEventDetails = self->_handoutEventDetails;
-  self->_handoutEventDetails = v4;
+  self->_handoutEventDetails = detailsCopy;
 }
 
-- (void)setAttachmentEventDetails:(id)a3
+- (void)setAttachmentEventDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   [(PDDPEvent *)self clearOneofValuesForEventDetails];
   *&self->_has |= 1u;
   self->_eventDetails = 2;
   attachmentEventDetails = self->_attachmentEventDetails;
-  self->_attachmentEventDetails = v4;
+  self->_attachmentEventDetails = detailsCopy;
 }
 
-- (void)setProgressEventDetails:(id)a3
+- (void)setProgressEventDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   [(PDDPEvent *)self clearOneofValuesForEventDetails];
   *&self->_has |= 1u;
   self->_eventDetails = 3;
   progressEventDetails = self->_progressEventDetails;
-  self->_progressEventDetails = v4;
+  self->_progressEventDetails = detailsCopy;
 }
 
 - (int)eventDetails
@@ -283,25 +283,25 @@
   }
 }
 
-- (int)StringAsEventDetails:(id)a3
+- (int)StringAsEventDetails:(id)details
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  detailsCopy = details;
+  if ([detailsCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"handout_event_details"])
+  else if ([detailsCopy isEqualToString:@"handout_event_details"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"attachment_event_details"])
+  else if ([detailsCopy isEqualToString:@"attachment_event_details"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"progress_event_details"])
+  else if ([detailsCopy isEqualToString:@"progress_event_details"])
   {
     v4 = 3;
   }
@@ -333,8 +333,8 @@
   v7.receiver = self;
   v7.super_class = PDDPEvent;
   v3 = [(PDDPEvent *)&v7 description];
-  v4 = [(PDDPEvent *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPEvent *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -512,15 +512,15 @@ LABEL_48:
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v9 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v11 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   if ([(NSMutableArray *)self->_extraInfos count])
@@ -545,8 +545,8 @@ LABEL_48:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation3 = [*(*(&v30 + 1) + 8 * i) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation3];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -577,22 +577,22 @@ LABEL_48:
   handoutEventDetails = self->_handoutEventDetails;
   if (handoutEventDetails)
   {
-    v22 = [(PDDPHandoutEventDetails *)handoutEventDetails dictionaryRepresentation];
-    [v4 setObject:v22 forKey:@"handout_event_details"];
+    dictionaryRepresentation4 = [(PDDPHandoutEventDetails *)handoutEventDetails dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"handout_event_details"];
   }
 
   attachmentEventDetails = self->_attachmentEventDetails;
   if (attachmentEventDetails)
   {
-    v24 = [(PDDPAttachmentEventDetails *)attachmentEventDetails dictionaryRepresentation];
-    [v4 setObject:v24 forKey:@"attachment_event_details"];
+    dictionaryRepresentation5 = [(PDDPAttachmentEventDetails *)attachmentEventDetails dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"attachment_event_details"];
   }
 
   progressEventDetails = self->_progressEventDetails;
   if (progressEventDetails)
   {
-    v26 = [(PDDPProgressEventDetails *)progressEventDetails dictionaryRepresentation];
-    [v4 setObject:v26 forKey:@"progress_event_details"];
+    dictionaryRepresentation6 = [(PDDPProgressEventDetails *)progressEventDetails dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation6 forKey:@"progress_event_details"];
   }
 
   if (*&self->_has)
@@ -614,9 +614,9 @@ LABEL_48:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_objectId)
   {
     PBDataWriterWriteStringField();
@@ -692,26 +692,26 @@ LABEL_48:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_eventDetails;
-    *(v4 + 80) |= 1u;
+    toCopy[8] = self->_eventDetails;
+    *(toCopy + 80) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_objectId)
   {
-    [v4 setObjectId:?];
-    v4 = v10;
+    [toCopy setObjectId:?];
+    toCopy = v10;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v4[10] = self->_eventType;
-    *(v4 + 80) |= 4u;
+    toCopy[10] = self->_eventType;
+    *(toCopy + 80) |= 4u;
   }
 
   if (self->_dateCreated)
@@ -727,10 +727,10 @@ LABEL_48:
   if ([(PDDPEvent *)self extraInfosCount])
   {
     [v10 clearExtraInfos];
-    v5 = [(PDDPEvent *)self extraInfosCount];
-    if (v5)
+    extraInfosCount = [(PDDPEvent *)self extraInfosCount];
+    if (extraInfosCount)
     {
-      v6 = v5;
+      v6 = extraInfosCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PDDPEvent *)self extraInfoAtIndex:i];
@@ -765,9 +765,9 @@ LABEL_48:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -775,7 +775,7 @@ LABEL_48:
     *(v5 + 80) |= 1u;
   }
 
-  v7 = [(NSString *)self->_objectId copyWithZone:a3];
+  v7 = [(NSString *)self->_objectId copyWithZone:zone];
   v8 = v6[8];
   v6[8] = v7;
 
@@ -785,11 +785,11 @@ LABEL_48:
     *(v6 + 80) |= 4u;
   }
 
-  v9 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v9 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v11 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v12 = v6[3];
   v6[3] = v11;
 
@@ -812,7 +812,7 @@ LABEL_48:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v26 + 1) + 8 * i) copyWithZone:{a3, v26}];
+        v18 = [*(*(&v26 + 1) + 8 * i) copyWithZone:{zone, v26}];
         [v6 addExtraInfo:v18];
       }
 
@@ -828,46 +828,46 @@ LABEL_48:
     *(v6 + 80) |= 2u;
   }
 
-  v19 = [(PDDPHandoutEventDetails *)self->_handoutEventDetails copyWithZone:a3, v26];
+  v19 = [(PDDPHandoutEventDetails *)self->_handoutEventDetails copyWithZone:zone, v26];
   v20 = v6[7];
   v6[7] = v19;
 
-  v21 = [(PDDPAttachmentEventDetails *)self->_attachmentEventDetails copyWithZone:a3];
+  v21 = [(PDDPAttachmentEventDetails *)self->_attachmentEventDetails copyWithZone:zone];
   v22 = v6[1];
   v6[1] = v21;
 
-  v23 = [(PDDPProgressEventDetails *)self->_progressEventDetails copyWithZone:a3];
+  v23 = [(PDDPProgressEventDetails *)self->_progressEventDetails copyWithZone:zone];
   v24 = v6[9];
   v6[9] = v23;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
   has = self->_has;
-  v6 = *(v4 + 80);
+  v6 = *(equalCopy + 80);
   if (has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_eventDetails != *(v4 + 8))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_eventDetails != *(equalCopy + 8))
     {
       goto LABEL_32;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
     goto LABEL_32;
   }
 
   objectId = self->_objectId;
-  if (objectId | *(v4 + 8))
+  if (objectId | *(equalCopy + 8))
   {
     if (![(NSString *)objectId isEqual:?])
     {
@@ -877,12 +877,12 @@ LABEL_32:
     }
 
     has = self->_has;
-    v6 = *(v4 + 80);
+    v6 = *(equalCopy + 80);
   }
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_eventType != *(v4 + 10))
+    if ((v6 & 4) == 0 || self->_eventType != *(equalCopy + 10))
     {
       goto LABEL_32;
     }
@@ -894,13 +894,13 @@ LABEL_32:
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 2) && ![(PDDPDate *)dateCreated isEqual:?])
+  if (dateCreated | *(equalCopy + 2) && ![(PDDPDate *)dateCreated isEqual:?])
   {
     goto LABEL_32;
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 3))
+  if (dateLastModified | *(equalCopy + 3))
   {
     if (![(PDDPDate *)dateLastModified isEqual:?])
     {
@@ -909,7 +909,7 @@ LABEL_32:
   }
 
   extraInfos = self->_extraInfos;
-  if (extraInfos | *(v4 + 6))
+  if (extraInfos | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)extraInfos isEqual:?])
     {
@@ -917,28 +917,28 @@ LABEL_32:
     }
   }
 
-  v11 = *(v4 + 80);
+  v11 = *(equalCopy + 80);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_eventDetailsType != *(v4 + 9))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_eventDetailsType != *(equalCopy + 9))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_32;
   }
 
   handoutEventDetails = self->_handoutEventDetails;
-  if (handoutEventDetails | *(v4 + 7) && ![(PDDPHandoutEventDetails *)handoutEventDetails isEqual:?])
+  if (handoutEventDetails | *(equalCopy + 7) && ![(PDDPHandoutEventDetails *)handoutEventDetails isEqual:?])
   {
     goto LABEL_32;
   }
 
   attachmentEventDetails = self->_attachmentEventDetails;
-  if (attachmentEventDetails | *(v4 + 1))
+  if (attachmentEventDetails | *(equalCopy + 1))
   {
     if (![(PDDPAttachmentEventDetails *)attachmentEventDetails isEqual:?])
     {
@@ -947,7 +947,7 @@ LABEL_32:
   }
 
   progressEventDetails = self->_progressEventDetails;
-  if (progressEventDetails | *(v4 + 9))
+  if (progressEventDetails | *(equalCopy + 9))
   {
     v15 = [(PDDPProgressEventDetails *)progressEventDetails isEqual:?];
   }
@@ -1003,17 +1003,17 @@ LABEL_33:
   return v10 ^ v11 ^ [(PDDPProgressEventDetails *)self->_progressEventDetails hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[20])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[20])
   {
-    self->_eventDetails = v4[8];
+    self->_eventDetails = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(PDDPEvent *)self setObjectId:?];
   }

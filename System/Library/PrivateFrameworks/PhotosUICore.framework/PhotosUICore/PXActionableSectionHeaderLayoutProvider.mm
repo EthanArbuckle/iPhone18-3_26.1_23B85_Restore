@@ -1,22 +1,22 @@
 @interface PXActionableSectionHeaderLayoutProvider
-- (CGSize)singleViewLayout:(id)a3 desiredSizeForReferenceSize:(CGSize)a4;
+- (CGSize)singleViewLayout:(id)layout desiredSizeForReferenceSize:(CGSize)size;
 - (PXActionableSectionHeaderLayoutProvider)init;
-- (PXActionableSectionHeaderLayoutProvider)initWithViewModel:(id)a3 viewProvider:(id)a4;
-- (PXActionableSectionHeaderLayoutProvider)initWithViewModel:(id)a3 viewProvider:(id)a4 viewClass:(Class)a5;
+- (PXActionableSectionHeaderLayoutProvider)initWithViewModel:(id)model viewProvider:(id)provider;
+- (PXActionableSectionHeaderLayoutProvider)initWithViewModel:(id)model viewProvider:(id)provider viewClass:(Class)class;
 - (PXPhotosSectionHeaderLayoutProviderInvalidationDelegate)invalidationDelegate;
 - (PXPhotosSectionHeaderLayoutProviderInvalidationDelegate)topHeaderInvalidationDelegate;
 - (PXPhotosSectionHeaderLayoutViewProvider)viewProvider;
-- (id)_createSectionHeaderLayoutForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4 spec:(id)a5 outAlignment:(unint64_t *)a6;
-- (id)actionTextForActionType:(int64_t)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5;
-- (id)configurationForSingleViewLayout:(id)a3;
-- (id)createFilterButtonControllerForLayout:(id)a3;
-- (id)createSectionHeaderLayoutForSectionedLayout:(id)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5 spec:(id)a6 outAlignment:(unint64_t *)a7;
-- (int64_t)actionTypeForHeaderLayout:(id)a3;
-- (void)_getPrimaryText:(id *)a3 secondaryText:(id *)a4 forLayout:(id)a5;
-- (void)sectionHeader:(id)a3 didPressButtonForActionType:(int64_t)a4 sender:(id)a5;
-- (void)sectionedLayout:(id)a3 headerLayout:(id)a4 didChangeDataSource:(id)a5 sectionIndexPath:(PXSimpleIndexPath *)a6 hasSectionChanges:(BOOL)a7;
-- (void)setSelectedState:(BOOL)a3 forItemsInSectionHeaderLayout:(id)a4;
-- (void)topHeaderLayout:(id)a3 didChangeDataSource:(id)a4;
+- (id)_createSectionHeaderLayoutForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path spec:(id)spec outAlignment:(unint64_t *)alignment;
+- (id)actionTextForActionType:(int64_t)type dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path;
+- (id)configurationForSingleViewLayout:(id)layout;
+- (id)createFilterButtonControllerForLayout:(id)layout;
+- (id)createSectionHeaderLayoutForSectionedLayout:(id)layout dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path spec:(id)spec outAlignment:(unint64_t *)alignment;
+- (int64_t)actionTypeForHeaderLayout:(id)layout;
+- (void)_getPrimaryText:(id *)text secondaryText:(id *)secondaryText forLayout:(id)layout;
+- (void)sectionHeader:(id)header didPressButtonForActionType:(int64_t)type sender:(id)sender;
+- (void)sectionedLayout:(id)layout headerLayout:(id)headerLayout didChangeDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path hasSectionChanges:(BOOL)changes;
+- (void)setSelectedState:(BOOL)state forItemsInSectionHeaderLayout:(id)layout;
+- (void)topHeaderLayout:(id)layout didChangeDataSource:(id)source;
 @end
 
 @implementation PXActionableSectionHeaderLayoutProvider
@@ -42,36 +42,36 @@
   return WeakRetained;
 }
 
-- (id)createFilterButtonControllerForLayout:(id)a3
+- (id)createFilterButtonControllerForLayout:(id)layout
 {
-  v4 = [(PXActionableSectionHeaderLayoutProvider *)self filterButtonConfigurationForLayout:a3];
-  v5 = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
+  v4 = [(PXActionableSectionHeaderLayoutProvider *)self filterButtonConfigurationForLayout:layout];
+  viewModel = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
 
   v6 = 0;
-  if (v5 && v4)
+  if (viewModel && v4)
   {
     v7 = [PXPhotosFilterToggleButtonController alloc];
-    v8 = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
-    v6 = [(PXPhotosFilterToggleButtonController *)v7 initWithViewModel:v8 buttonConfiguration:v4];
+    viewModel2 = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
+    v6 = [(PXPhotosFilterToggleButtonController *)v7 initWithViewModel:viewModel2 buttonConfiguration:v4];
   }
 
   return v6;
 }
 
-- (void)setSelectedState:(BOOL)a3 forItemsInSectionHeaderLayout:(id)a4
+- (void)setSelectedState:(BOOL)state forItemsInSectionHeaderLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
-  v8 = [v7 selectionManager];
+  layoutCopy = layout;
+  viewModel = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
+  selectionManager = [viewModel selectionManager];
 
-  v9 = [v8 selectionSnapshot];
-  v10 = [v9 dataSource];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  dataSource = [selectionSnapshot dataSource];
 
   v20 = 0u;
   v21 = 0u;
-  if (v6)
+  if (layoutCopy)
   {
-    [v6 sectionIndexPath];
+    [layoutCopy sectionIndexPath];
   }
 
   else
@@ -79,10 +79,10 @@
     memset(v19, 0, sizeof(v19));
   }
 
-  v11 = [v6 dataSource];
-  if (v10)
+  dataSource2 = [layoutCopy dataSource];
+  if (dataSource)
   {
-    [v10 convertIndexPath:v19 fromSectionedDataSource:v11];
+    [dataSource convertIndexPath:v19 fromSectionedDataSource:dataSource2];
   }
 
   else
@@ -94,35 +94,35 @@
   v18[0] = v20;
   v18[1] = v21;
   v12 = [off_1E7721768 indexPathSetWithIndexPath:v18];
-  v13 = [v10 itemIndexPathsForSections:v12];
+  v13 = [dataSource itemIndexPathsForSections:v12];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __90__PXActionableSectionHeaderLayoutProvider_setSelectedState_forItemsInSectionHeaderLayout___block_invoke;
   v15[3] = &unk_1E77493D8;
-  v17 = a3;
+  stateCopy = state;
   v16 = v13;
   v14 = v13;
-  [v8 performChanges:v15];
+  [selectionManager performChanges:v15];
 }
 
-- (void)sectionHeader:(id)a3 didPressButtonForActionType:(int64_t)a4 sender:(id)a5
+- (void)sectionHeader:(id)header didPressButtonForActionType:(int64_t)type sender:(id)sender
 {
-  v12 = a3;
-  v9 = a5;
-  if (a4 <= 8)
+  headerCopy = header;
+  senderCopy = sender;
+  if (type <= 8)
   {
-    if (((1 << a4) & 0xA2) != 0)
+    if (((1 << type) & 0xA2) != 0)
     {
       v10 = 1;
     }
 
     else
     {
-      if (((1 << a4) & 0x144) == 0)
+      if (((1 << type) & 0x144) == 0)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderLayoutProvider+iOS.m" lineNumber:360 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderLayoutProvider+iOS.m" lineNumber:360 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
@@ -130,33 +130,33 @@
       v10 = 0;
     }
 
-    [(PXActionableSectionHeaderLayoutProvider *)self sectionHeader:v12 didToggleSelectedState:v10];
+    [(PXActionableSectionHeaderLayoutProvider *)self sectionHeader:headerCopy didToggleSelectedState:v10];
   }
 }
 
-- (id)configurationForSingleViewLayout:(id)a3
+- (id)configurationForSingleViewLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = objc_alloc_init(_PXActionableSectionHeaderViewConfiguration);
   v54 = 0;
   v55[0] = 0;
-  [(PXActionableSectionHeaderLayoutProvider *)self _getPrimaryText:v55 secondaryText:&v54 forLayout:v4];
+  [(PXActionableSectionHeaderLayoutProvider *)self _getPrimaryText:v55 secondaryText:&v54 forLayout:layoutCopy];
   v6 = v55[0];
   v7 = v54;
   v46 = v6;
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setPrimaryText:v6];
   v45 = v7;
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setSecondaryText:v7];
-  v8 = [v4 spec];
-  v9 = [v8 sectionHeaderSpec];
-  [v9 padding];
+  spec = [layoutCopy spec];
+  sectionHeaderSpec = [spec sectionHeaderSpec];
+  [sectionHeaderSpec padding];
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setEdgeInsets:?];
 
-  v10 = [(PXActionableSectionHeaderLayoutProvider *)self actionTypeForHeaderLayout:v4];
-  v11 = [v4 dataSource];
-  if (v4)
+  v10 = [(PXActionableSectionHeaderLayoutProvider *)self actionTypeForHeaderLayout:layoutCopy];
+  dataSource = [layoutCopy dataSource];
+  if (layoutCopy)
   {
-    [v4 sectionIndexPath];
+    [layoutCopy sectionIndexPath];
   }
 
   else
@@ -165,12 +165,12 @@
     v53 = 0u;
   }
 
-  v12 = [(PXActionableSectionHeaderLayoutProvider *)self actionTextForActionType:v10 dataSource:v11 sectionIndexPath:location];
+  v12 = [(PXActionableSectionHeaderLayoutProvider *)self actionTextForActionType:v10 dataSource:dataSource sectionIndexPath:location];
 
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setActionText:v12];
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setActionType:v10];
-  v13 = [off_1E7721810 sharedInstance];
-  v14 = [v13 useGradientSectionHeaders];
+  sharedInstance = [off_1E7721810 sharedInstance];
+  useGradientSectionHeaders = [sharedInstance useGradientSectionHeaders];
 
   v15 = v10 < 9;
   if (v10 - 7 > 1)
@@ -186,7 +186,7 @@
     aBlock[2] = __76__PXActionableSectionHeaderLayoutProvider_configurationForSingleViewLayout___block_invoke;
     aBlock[3] = &unk_1E773D8B0;
     objc_copyWeak(&v51, location);
-    v50 = v4;
+    v50 = layoutCopy;
     v16 = _Block_copy(aBlock);
 
     objc_destroyWeak(&v51);
@@ -197,12 +197,12 @@
   v17 = [v12 length];
   v18 = v17 != 0;
   v19 = v16 != 0;
-  if ([(PXActionableSectionHeaderLayoutProvider *)self actionVisibilityForHeaderLayout:v4]== 1)
+  if ([(PXActionableSectionHeaderLayoutProvider *)self actionVisibilityForHeaderLayout:layoutCopy]== 1)
   {
-    v20 = [v4 wantsBackground];
+    wantsBackground = [layoutCopy wantsBackground];
     if (v17)
     {
-      v18 = v20;
+      v18 = wantsBackground;
     }
 
     else
@@ -212,7 +212,7 @@
 
     if (v16)
     {
-      v19 = v20;
+      v19 = wantsBackground;
     }
 
     else
@@ -223,48 +223,48 @@
 
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setShowsActionButton:v18];
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setShowsSecondaryButton:v19];
-  v21 = [(PXActionableSectionHeaderLayoutProvider *)self customBackgroundStyle];
-  if (v21)
+  customBackgroundStyle = [(PXActionableSectionHeaderLayoutProvider *)self customBackgroundStyle];
+  if (customBackgroundStyle)
   {
-    v22 = [(PXActionableSectionHeaderLayoutProvider *)self customBackgroundStyle];
-    v23 = [v22 unsignedIntegerValue];
+    customBackgroundStyle2 = [(PXActionableSectionHeaderLayoutProvider *)self customBackgroundStyle];
+    unsignedIntegerValue = [customBackgroundStyle2 unsignedIntegerValue];
   }
 
   else
   {
-    v23 = v14;
+    unsignedIntegerValue = useGradientSectionHeaders;
   }
 
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setButtonStyle:v15];
-  [(_PXActionableSectionHeaderViewConfiguration *)v5 setBackgroundStyle:v23];
-  v24 = [v4 spec];
-  v25 = [v24 visualEffectViewGroupName];
-  [(_PXActionableSectionHeaderViewConfiguration *)v5 setBackdropViewGroupName:v25];
+  [(_PXActionableSectionHeaderViewConfiguration *)v5 setBackgroundStyle:unsignedIntegerValue];
+  spec2 = [layoutCopy spec];
+  visualEffectViewGroupName = [spec2 visualEffectViewGroupName];
+  [(_PXActionableSectionHeaderViewConfiguration *)v5 setBackdropViewGroupName:visualEffectViewGroupName];
 
-  v26 = [(PXActionableSectionHeaderLayoutProvider *)self gradientImage];
-  [(_PXActionableSectionHeaderViewConfiguration *)v5 setGradientImage:v26];
+  gradientImage = [(PXActionableSectionHeaderLayoutProvider *)self gradientImage];
+  [(_PXActionableSectionHeaderViewConfiguration *)v5 setGradientImage:gradientImage];
 
-  v27 = [v4 spec];
-  v28 = [v27 sectionHeaderSpec];
-  [v28 gradientAlpha];
+  spec3 = [layoutCopy spec];
+  sectionHeaderSpec2 = [spec3 sectionHeaderSpec];
+  [sectionHeaderSpec2 gradientAlpha];
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setGradientAlpha:?];
 
-  v29 = [v4 spec];
-  v30 = [v29 sectionHeaderSpec];
-  [v30 gradientOverhang];
+  spec4 = [layoutCopy spec];
+  sectionHeaderSpec3 = [spec4 sectionHeaderSpec];
+  [sectionHeaderSpec3 gradientOverhang];
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setGradientOverhang:?];
 
-  v31 = [v4 spec];
-  v32 = [v31 sectionHeaderSpec];
-  [(_PXActionableSectionHeaderViewConfiguration *)v5 setButtonSpec:v32];
+  spec5 = [layoutCopy spec];
+  sectionHeaderSpec4 = [spec5 sectionHeaderSpec];
+  [(_PXActionableSectionHeaderViewConfiguration *)v5 setButtonSpec:sectionHeaderSpec4];
 
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setShowsTopSeparator:1];
-  v33 = [v4 spec];
-  -[_PXActionableSectionHeaderViewConfiguration setPreferredUserInterfaceStyle:](v5, "setPreferredUserInterfaceStyle:", [v33 preferredUserInterfaceStyle]);
+  spec6 = [layoutCopy spec];
+  -[_PXActionableSectionHeaderViewConfiguration setPreferredUserInterfaceStyle:](v5, "setPreferredUserInterfaceStyle:", [spec6 preferredUserInterfaceStyle]);
 
-  if (v4)
+  if (layoutCopy)
   {
-    [v4 sectionIndexPath];
+    [layoutCopy sectionIndexPath];
   }
 
   else
@@ -278,25 +278,25 @@
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setSectionIndexPath:location];
   *location = 0u;
   v53 = 0u;
-  if (v4)
+  if (layoutCopy)
   {
-    [v4 sectionIndexPath];
+    [layoutCopy sectionIndexPath];
   }
 
-  v34 = [v4 dataSource];
-  v35 = v34;
+  dataSource2 = [layoutCopy dataSource];
+  v35 = dataSource2;
   v36 = location[0];
-  if (location[0] == *off_1E7721F68 || location[1] == 0x7FFFFFFFFFFFFFFFLL || v53 != 0x7FFFFFFFFFFFFFFFLL || v36 != [v34 identifier])
+  if (location[0] == *off_1E7721F68 || location[1] == 0x7FFFFFFFFFFFFFFFLL || v53 != 0x7FFFFFFFFFFFFFFFLL || v36 != [dataSource2 identifier])
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderLayoutProvider+iOS.m" lineNumber:343 description:@"Header layouts that are not global must be associated with a current section"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderLayoutProvider+iOS.m" lineNumber:343 description:@"Header layouts that are not global must be associated with a current section"];
   }
 
   v37 = [v35 numberOfItemsInSection:location[1]];
-  v38 = [v4 spec];
-  v39 = [v38 assetsSpec];
-  v40 = [v39 zoomableSpec];
-  v41 = v37 >= [v40 staticNumberOfColumns];
+  spec7 = [layoutCopy spec];
+  assetsSpec = [spec7 assetsSpec];
+  zoomableSpec = [assetsSpec zoomableSpec];
+  v41 = v37 >= [zoomableSpec staticNumberOfColumns];
 
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setAvoidsTintedButtonsAtHighSpeeds:v41];
   [(_PXActionableSectionHeaderViewConfiguration *)v5 setSupportsMultipleLinesInCompactLayout:1];
@@ -312,14 +312,14 @@ id __76__PXActionableSectionHeaderLayoutProvider_configurationForSingleViewLayou
   return v3;
 }
 
-- (CGSize)singleViewLayout:(id)a3 desiredSizeForReferenceSize:(CGSize)a4
+- (CGSize)singleViewLayout:(id)layout desiredSizeForReferenceSize:(CGSize)size
 {
-  width = a4.width;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  width = size.width;
+  layoutCopy = layout;
+  v7 = layoutCopy;
+  if (layoutCopy)
   {
-    [v6 sectionIndexPath];
+    [layoutCopy sectionIndexPath];
     v8 = location[0];
   }
 
@@ -336,29 +336,29 @@ id __76__PXActionableSectionHeaderLayoutProvider_configurationForSingleViewLayou
     v9 = v50;
     v10 = v49;
     v11 = [(PXActionableSectionHeaderLayoutProvider *)self actionTypeForHeaderLayout:v7];
-    v12 = [v7 spec];
-    v13 = [v12 sectionHeaderSpec];
-    v14 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
-    [v14 setBackdropButtonSpec:v13];
+    spec = [v7 spec];
+    sectionHeaderSpec = [spec sectionHeaderSpec];
+    referenceHeaderView = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
+    [referenceHeaderView setBackdropButtonSpec:sectionHeaderSpec];
 
-    v15 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
-    [v15 setPrimaryText:v9];
+    referenceHeaderView2 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
+    [referenceHeaderView2 setPrimaryText:v9];
 
-    v16 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
-    [v16 setSecondaryText:v10];
+    referenceHeaderView3 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
+    [referenceHeaderView3 setSecondaryText:v10];
 
-    v17 = [v7 spec];
-    v18 = [v17 sectionHeaderSpec];
-    [v18 padding];
+    spec2 = [v7 spec];
+    sectionHeaderSpec2 = [spec2 sectionHeaderSpec];
+    [sectionHeaderSpec2 padding];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
-    [v27 setContentInsets:{v20, v22, v24, v26}];
+    referenceHeaderView4 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
+    [referenceHeaderView4 setContentInsets:{v20, v22, v24, v26}];
 
-    v28 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
-    [v28 setSupportsMultipleLinesInCompactLayout:1];
+    referenceHeaderView5 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
+    [referenceHeaderView5 setSupportsMultipleLinesInCompactLayout:1];
 
     if (v11 > 8 || (-[PXActionableSectionHeaderLayoutProvider referenceHeaderView](self, "referenceHeaderView"), v29 = objc_claimAutoreleasedReturnValue(), [v29 setButtonStyle:1], v29, v11 - 7 > 1))
     {
@@ -383,7 +383,7 @@ id __76__PXActionableSectionHeaderLayoutProvider_configurationForSingleViewLayou
     v31 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView:v43];
     [v31 setFilterButtonControllerFactory:v30];
 
-    v32 = [v7 dataSource];
+    dataSource = [v7 dataSource];
     if (v7)
     {
       [v7 sectionIndexPath];
@@ -395,17 +395,17 @@ id __76__PXActionableSectionHeaderLayoutProvider_configurationForSingleViewLayou
       v52 = 0u;
     }
 
-    v33 = [(PXActionableSectionHeaderLayoutProvider *)self actionTextForActionType:v11 dataSource:v32 sectionIndexPath:location];
+    v33 = [(PXActionableSectionHeaderLayoutProvider *)self actionTextForActionType:v11 dataSource:dataSource sectionIndexPath:location];
 
     v34 = [v33 length];
     v35 = v34 != 0;
     v36 = v30 != 0;
     if ([(PXActionableSectionHeaderLayoutProvider *)self actionVisibilityForHeaderLayout:v7]== 1)
     {
-      v37 = [v7 wantsBackground];
+      wantsBackground = [v7 wantsBackground];
       if (v34)
       {
-        v35 = v37;
+        v35 = wantsBackground;
       }
 
       else
@@ -415,7 +415,7 @@ id __76__PXActionableSectionHeaderLayoutProvider_configurationForSingleViewLayou
 
       if (v30)
       {
-        v36 = v37;
+        v36 = wantsBackground;
       }
 
       else
@@ -424,14 +424,14 @@ id __76__PXActionableSectionHeaderLayoutProvider_configurationForSingleViewLayou
       }
     }
 
-    v38 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
-    [v38 setShowsActionButton:v35];
+    referenceHeaderView6 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
+    [referenceHeaderView6 setShowsActionButton:v35];
 
-    v39 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
-    [v39 setShowsSecondaryButton:v36];
+    referenceHeaderView7 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
+    [referenceHeaderView7 setShowsSecondaryButton:v36];
 
-    v40 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
-    [v40 setActionText:v33];
+    referenceHeaderView8 = [(PXActionableSectionHeaderLayoutProvider *)self referenceHeaderView];
+    [referenceHeaderView8 setActionText:v33];
 
     [v7 spec];
     objc_claimAutoreleasedReturnValue();
@@ -453,34 +453,34 @@ id __88__PXActionableSectionHeaderLayoutProvider_singleViewLayout_desiredSizeFor
   return v3;
 }
 
-- (void)sectionedLayout:(id)a3 headerLayout:(id)a4 didChangeDataSource:(id)a5 sectionIndexPath:(PXSimpleIndexPath *)a6 hasSectionChanges:(BOOL)a7
+- (void)sectionedLayout:(id)layout headerLayout:(id)headerLayout didChangeDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path hasSectionChanges:(BOOL)changes
 {
-  v7 = a7;
-  v10 = a4;
-  [v10 setDataSource:a5];
-  v11 = *&a6->item;
-  v12[0] = *&a6->dataSourceIdentifier;
+  changesCopy = changes;
+  headerLayoutCopy = headerLayout;
+  [headerLayoutCopy setDataSource:source];
+  v11 = *&path->item;
+  v12[0] = *&path->dataSourceIdentifier;
   v12[1] = v11;
-  [v10 setSectionIndexPath:v12];
-  if (v7)
+  [headerLayoutCopy setSectionIndexPath:v12];
+  if (changesCopy)
   {
-    [v10 viewContentDidChange];
+    [headerLayoutCopy viewContentDidChange];
   }
 }
 
-- (id)createSectionHeaderLayoutForSectionedLayout:(id)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5 spec:(id)a6 outAlignment:(unint64_t *)a7
+- (id)createSectionHeaderLayoutForSectionedLayout:(id)layout dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path spec:(id)spec outAlignment:(unint64_t *)alignment
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = *&a5->item;
-  v17 = *&a5->dataSourceIdentifier;
+  sourceCopy = source;
+  specCopy = spec;
+  v13 = *&path->item;
+  v17 = *&path->dataSourceIdentifier;
   v18 = v13;
-  if ([(PXActionableSectionHeaderLayoutProvider *)self wantsHeaderForDataSource:v11 sectionIndexPath:&v17])
+  if ([(PXActionableSectionHeaderLayoutProvider *)self wantsHeaderForDataSource:sourceCopy sectionIndexPath:&v17])
   {
-    v14 = *&a5->item;
-    v17 = *&a5->dataSourceIdentifier;
+    v14 = *&path->item;
+    v17 = *&path->dataSourceIdentifier;
     v18 = v14;
-    v15 = [(PXActionableSectionHeaderLayoutProvider *)self _createSectionHeaderLayoutForDataSource:v11 sectionIndexPath:&v17 spec:v12 outAlignment:a7];
+    v15 = [(PXActionableSectionHeaderLayoutProvider *)self _createSectionHeaderLayoutForDataSource:sourceCopy sectionIndexPath:&v17 spec:specCopy outAlignment:alignment];
   }
 
   else
@@ -491,20 +491,20 @@ id __88__PXActionableSectionHeaderLayoutProvider_singleViewLayout_desiredSizeFor
   return v15;
 }
 
-- (void)topHeaderLayout:(id)a3 didChangeDataSource:(id)a4
+- (void)topHeaderLayout:(id)layout didChangeDataSource:(id)source
 {
-  v5 = a3;
-  [v5 setDataSource:a4];
-  [v5 viewContentDidChange];
+  layoutCopy = layout;
+  [layoutCopy setDataSource:source];
+  [layoutCopy viewContentDidChange];
 }
 
-- (void)_getPrimaryText:(id *)a3 secondaryText:(id *)a4 forLayout:(id)a5
+- (void)_getPrimaryText:(id *)text secondaryText:(id *)secondaryText forLayout:(id)layout
 {
-  v8 = a5;
-  v9 = [v8 dataSource];
-  if (v8)
+  layoutCopy = layout;
+  dataSource = [layoutCopy dataSource];
+  if (layoutCopy)
   {
-    [v8 sectionIndexPath];
+    [layoutCopy sectionIndexPath];
   }
 
   else
@@ -513,12 +513,12 @@ id __88__PXActionableSectionHeaderLayoutProvider_singleViewLayout_desiredSizeFor
     v12 = 0u;
   }
 
-  *a3 = [(PXActionableSectionHeaderLayoutProvider *)self primaryTextForDataSource:v9 sectionIndexPath:&v11];
+  *text = [(PXActionableSectionHeaderLayoutProvider *)self primaryTextForDataSource:dataSource sectionIndexPath:&v11];
 
-  v10 = [v8 dataSource];
-  if (v8)
+  dataSource2 = [layoutCopy dataSource];
+  if (layoutCopy)
   {
-    [v8 sectionIndexPath];
+    [layoutCopy sectionIndexPath];
   }
 
   else
@@ -527,38 +527,38 @@ id __88__PXActionableSectionHeaderLayoutProvider_singleViewLayout_desiredSizeFor
     v12 = 0u;
   }
 
-  *a4 = [(PXActionableSectionHeaderLayoutProvider *)self secondaryTextForDataSource:v10 sectionIndexPath:&v11];
+  *secondaryText = [(PXActionableSectionHeaderLayoutProvider *)self secondaryTextForDataSource:dataSource2 sectionIndexPath:&v11];
 }
 
-- (id)_createSectionHeaderLayoutForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4 spec:(id)a5 outAlignment:(unint64_t *)a6
+- (id)_createSectionHeaderLayoutForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path spec:(id)spec outAlignment:(unint64_t *)alignment
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [[PXActionableSectionHeaderLayout alloc] initWithSpec:v10];
+  specCopy = spec;
+  sourceCopy = source;
+  v12 = [[PXActionableSectionHeaderLayout alloc] initWithSpec:specCopy];
 
-  [(PXActionableSectionHeaderLayout *)v12 setDataSource:v11];
-  v13 = *&a4->item;
-  v16[0] = *&a4->dataSourceIdentifier;
+  [(PXActionableSectionHeaderLayout *)v12 setDataSource:sourceCopy];
+  v13 = *&path->item;
+  v16[0] = *&path->dataSourceIdentifier;
   v16[1] = v13;
   [(PXActionableSectionHeaderLayout *)v12 setSectionIndexPath:v16];
   [(PXGSingleViewLayout *)v12 setStyle:2];
   [(PXGSingleViewLayout *)v12 setContentViewClass:self->_actionableViewClass];
   [(PXGSingleViewLayout *)v12 setDelegate:self];
   [(PXActionableSectionHeaderLayout *)v12 setInteractionDelegate:self];
-  v14 = [(PXActionableSectionHeaderLayoutProvider *)self viewProvider];
-  [(PXActionableSectionHeaderLayout *)v12 setViewProvider:v14];
+  viewProvider = [(PXActionableSectionHeaderLayoutProvider *)self viewProvider];
+  [(PXActionableSectionHeaderLayout *)v12 setViewProvider:viewProvider];
 
-  *a6 = [(PXActionableSectionHeaderLayoutProvider *)self alignmentForHeaderLayout:v12];
+  *alignment = [(PXActionableSectionHeaderLayoutProvider *)self alignmentForHeaderLayout:v12];
 
   return v12;
 }
 
-- (int64_t)actionTypeForHeaderLayout:(id)a3
+- (int64_t)actionTypeForHeaderLayout:(id)layout
 {
-  v3 = a3;
-  if ([v3 isInSelectMode])
+  layoutCopy = layout;
+  if ([layoutCopy isInSelectMode])
   {
-    if ([v3 areAllItemsSelected])
+    if ([layoutCopy areAllItemsSelected])
     {
       v4 = 2;
     }
@@ -577,18 +577,18 @@ id __88__PXActionableSectionHeaderLayoutProvider_singleViewLayout_desiredSizeFor
   return v4;
 }
 
-- (id)actionTextForActionType:(int64_t)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5
+- (id)actionTextForActionType:(int64_t)type dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v6 = a4;
-  if (a3 <= 8)
+  sourceCopy = source;
+  if (type <= 8)
   {
-    if (((1 << a3) & 0xA0) != 0)
+    if (((1 << type) & 0xA0) != 0)
     {
       v7 = @"PXPhotosGridsSectionEnterSelectModeButton";
       goto LABEL_11;
     }
 
-    if (((1 << a3) & 0x140) != 0)
+    if (((1 << type) & 0x140) != 0)
     {
       v7 = @"PXPhotosGridsSectionLeaveSelectModeButton";
 LABEL_11:
@@ -596,23 +596,23 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (((1 << a3) & 0x18) != 0)
+    if (((1 << type) & 0x18) != 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXActionableSectionHeaderLayoutProvider actionTextForActionType:dataSource:sectionIndexPath:]"];
-      [v10 handleFailureInFunction:v11 file:@"PXActionableSectionHeaderLayoutProvider+iOS.m" lineNumber:132 description:@"Code which should be unreachable has been reached"];
+      [currentHandler handleFailureInFunction:v11 file:@"PXActionableSectionHeaderLayoutProvider+iOS.m" lineNumber:132 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v7 = @"PXPhotosGridsSectionSelectButton";
     goto LABEL_11;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v7 = @"PXPhotosGridsSectionDeselectButton";
     goto LABEL_11;
@@ -626,34 +626,34 @@ LABEL_12:
 
 - (PXActionableSectionHeaderLayoutProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderLayoutProvider+iOS.m" lineNumber:92 description:{@"%s is not available as initializer", "-[PXActionableSectionHeaderLayoutProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXActionableSectionHeaderLayoutProvider+iOS.m" lineNumber:92 description:{@"%s is not available as initializer", "-[PXActionableSectionHeaderLayoutProvider init]"}];
 
   abort();
 }
 
-- (PXActionableSectionHeaderLayoutProvider)initWithViewModel:(id)a3 viewProvider:(id)a4
+- (PXActionableSectionHeaderLayoutProvider)initWithViewModel:(id)model viewProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXActionableSectionHeaderLayoutProvider *)self initWithViewModel:v7 viewProvider:v6 viewClass:objc_opt_class()];
+  providerCopy = provider;
+  modelCopy = model;
+  v8 = [(PXActionableSectionHeaderLayoutProvider *)self initWithViewModel:modelCopy viewProvider:providerCopy viewClass:objc_opt_class()];
 
   return v8;
 }
 
-- (PXActionableSectionHeaderLayoutProvider)initWithViewModel:(id)a3 viewProvider:(id)a4 viewClass:(Class)a5
+- (PXActionableSectionHeaderLayoutProvider)initWithViewModel:(id)model viewProvider:(id)provider viewClass:(Class)class
 {
-  v9 = a3;
-  v10 = a4;
+  modelCopy = model;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = PXActionableSectionHeaderLayoutProvider;
   v11 = [(PXActionableSectionHeaderLayoutProvider *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_viewModel, a3);
-    objc_storeWeak(&v12->_viewProvider, v10);
-    objc_storeStrong(&v12->_actionableViewClass, a5);
+    objc_storeStrong(&v11->_viewModel, model);
+    objc_storeWeak(&v12->_viewProvider, providerCopy);
+    objc_storeStrong(&v12->_actionableViewClass, class);
     v13 = objc_alloc(v12->_actionableViewClass);
     v14 = [v13 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     referenceHeaderView = v12->_referenceHeaderView;

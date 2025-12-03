@@ -1,17 +1,17 @@
 @interface CKDPSupportedCapabilities
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)version;
 - (unint64_t)hash;
-- (void)addFieldLevelCapabilities:(id)a3;
-- (void)addRecordLevelCapabilities:(id)a3;
-- (void)addZoneLevelCapabilities:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFieldLevelCapabilities:(id)capabilities;
+- (void)addRecordLevelCapabilities:(id)capabilities;
+- (void)addZoneLevelCapabilities:(id)capabilities;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPSupportedCapabilities
@@ -29,58 +29,58 @@
   }
 }
 
-- (void)addZoneLevelCapabilities:(id)a3
+- (void)addZoneLevelCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   zoneLevelCapabilities = self->_zoneLevelCapabilities;
-  v8 = v4;
+  v8 = capabilitiesCopy;
   if (!zoneLevelCapabilities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_zoneLevelCapabilities;
     self->_zoneLevelCapabilities = v6;
 
-    v4 = v8;
+    capabilitiesCopy = v8;
     zoneLevelCapabilities = self->_zoneLevelCapabilities;
   }
 
-  objc_msgSend_addObject_(zoneLevelCapabilities, v4, v4);
+  objc_msgSend_addObject_(zoneLevelCapabilities, capabilitiesCopy, capabilitiesCopy);
 }
 
-- (void)addRecordLevelCapabilities:(id)a3
+- (void)addRecordLevelCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   recordLevelCapabilities = self->_recordLevelCapabilities;
-  v8 = v4;
+  v8 = capabilitiesCopy;
   if (!recordLevelCapabilities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_recordLevelCapabilities;
     self->_recordLevelCapabilities = v6;
 
-    v4 = v8;
+    capabilitiesCopy = v8;
     recordLevelCapabilities = self->_recordLevelCapabilities;
   }
 
-  objc_msgSend_addObject_(recordLevelCapabilities, v4, v4);
+  objc_msgSend_addObject_(recordLevelCapabilities, capabilitiesCopy, capabilitiesCopy);
 }
 
-- (void)addFieldLevelCapabilities:(id)a3
+- (void)addFieldLevelCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   fieldLevelCapabilities = self->_fieldLevelCapabilities;
-  v8 = v4;
+  v8 = capabilitiesCopy;
   if (!fieldLevelCapabilities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_fieldLevelCapabilities;
     self->_fieldLevelCapabilities = v6;
 
-    v4 = v8;
+    capabilitiesCopy = v8;
     fieldLevelCapabilities = self->_fieldLevelCapabilities;
   }
 
-  objc_msgSend_addObject_(fieldLevelCapabilities, v4, v4);
+  objc_msgSend_addObject_(fieldLevelCapabilities, capabilitiesCopy, capabilitiesCopy);
 }
 
 - (id)description
@@ -242,16 +242,16 @@
   return v6;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = objc_msgSend_position(a3, a2, a3);
-  if (v5 < objc_msgSend_length(a3, v6, v7))
+  v5 = objc_msgSend_position(from, a2, from);
+  if (v5 < objc_msgSend_length(from, v6, v7))
   {
     do
     {
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
 
       v10 = 0;
@@ -260,20 +260,20 @@
       while (1)
       {
         LOBYTE(v64) = 0;
-        v13 = objc_msgSend_position(a3, v8, v9, v64) + 1;
-        if (v13 >= objc_msgSend_position(a3, v14, v15) && (v18 = objc_msgSend_position(a3, v16, v17) + 1, v18 <= objc_msgSend_length(a3, v19, v20)))
+        v13 = objc_msgSend_position(from, v8, v9, v64) + 1;
+        if (v13 >= objc_msgSend_position(from, v14, v15) && (v18 = objc_msgSend_position(from, v16, v17) + 1, v18 <= objc_msgSend_length(from, v19, v20)))
         {
-          v21 = objc_msgSend_data(a3, v16, v17);
-          v24 = objc_msgSend_position(a3, v22, v23);
+          v21 = objc_msgSend_data(from, v16, v17);
+          v24 = objc_msgSend_position(from, v22, v23);
           objc_msgSend_getBytes_range_(v21, v25, &v64, v24, 1);
 
-          v28 = objc_msgSend_position(a3, v26, v27);
-          objc_msgSend_setPosition_(a3, v29, v28 + 1);
+          v28 = objc_msgSend_position(from, v26, v27);
+          objc_msgSend_setPosition_(from, v29, v28 + 1);
         }
 
         else
         {
-          objc_msgSend__setError(a3, v16, v17);
+          objc_msgSend__setError(from, v16, v17);
         }
 
         v12 |= (v64 & 0x7F) << v10;
@@ -291,17 +291,17 @@
         }
       }
 
-      v31 = objc_msgSend_hasError(a3, v8, v9) ? 0 : v12;
+      v31 = objc_msgSend_hasError(from, v8, v9) ? 0 : v12;
 LABEL_15:
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
 
       v9 = v31 & 7;
       if (v9 == 4)
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
 
       v32 = (v31 >> 3);
@@ -317,20 +317,20 @@ LABEL_15:
             while (1)
             {
               LOBYTE(v64) = 0;
-              v40 = objc_msgSend_position(a3, v32, v9, v64) + 1;
-              if (v40 >= objc_msgSend_position(a3, v41, v42) && (v45 = objc_msgSend_position(a3, v43, v44) + 1, v45 <= objc_msgSend_length(a3, v46, v47)))
+              v40 = objc_msgSend_position(from, v32, v9, v64) + 1;
+              if (v40 >= objc_msgSend_position(from, v41, v42) && (v45 = objc_msgSend_position(from, v43, v44) + 1, v45 <= objc_msgSend_length(from, v46, v47)))
               {
-                v48 = objc_msgSend_data(a3, v43, v44);
-                v51 = objc_msgSend_position(a3, v49, v50);
+                v48 = objc_msgSend_data(from, v43, v44);
+                v51 = objc_msgSend_position(from, v49, v50);
                 objc_msgSend_getBytes_range_(v48, v52, &v64, v51, 1);
 
-                v55 = objc_msgSend_position(a3, v53, v54);
-                objc_msgSend_setPosition_(a3, v56, v55 + 1);
+                v55 = objc_msgSend_position(from, v53, v54);
+                objc_msgSend_setPosition_(from, v56, v55 + 1);
               }
 
               else
               {
-                objc_msgSend__setError(a3, v43, v44);
+                objc_msgSend__setError(from, v43, v44);
               }
 
               v39 |= (v64 & 0x7F) << v37;
@@ -348,7 +348,7 @@ LABEL_15:
               }
             }
 
-            if (objc_msgSend_hasError(a3, v32, v9))
+            if (objc_msgSend_hasError(from, v32, v9))
             {
               v57 = 0;
             }
@@ -390,7 +390,7 @@ LABEL_58:
 LABEL_45:
           v64 = 0;
           v65 = 0;
-          if (!PBReaderPlaceMark() || !sub_22536EBA4(v33, a3, v59))
+          if (!PBReaderPlaceMark() || !sub_22536EBA4(v33, from, v59))
           {
             goto LABEL_58;
           }
@@ -441,19 +441,19 @@ LABEL_41:
       }
 
 LABEL_51:
-      v60 = objc_msgSend_position(a3, v32, v9);
+      v60 = objc_msgSend_position(from, v32, v9);
     }
 
-    while (v60 < objc_msgSend_length(a3, v61, v62));
+    while (v60 < objc_msgSend_length(from, v61, v62));
   }
 
-  return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+  return objc_msgSend_hasError(from, v8, v9) ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     version = self->_version;
@@ -574,20 +574,20 @@ LABEL_51:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[12] = self->_version;
-    *(v4 + 64) |= 1u;
+    toCopy[12] = self->_version;
+    *(toCopy + 64) |= 1u;
   }
 
   time = self->_time;
-  v37 = v4;
+  v37 = toCopy;
   if (time)
   {
-    objc_msgSend_setTime_(v4, v5, time);
+    objc_msgSend_setTime_(toCopy, v5, time);
   }
 
   deviceIdentifier = self->_deviceIdentifier;
@@ -648,11 +648,11 @@ LABEL_51:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v65 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -661,15 +661,15 @@ LABEL_51:
     *(v10 + 64) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_time, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_time, v11, zone);
   v14 = v12[4];
   v12[4] = v13;
 
-  v16 = objc_msgSend_copyWithZone_(self->_deviceIdentifier, v15, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_deviceIdentifier, v15, zone);
   v17 = v12[1];
   v12[1] = v16;
 
-  v19 = objc_msgSend_copyWithZone_(self->_userIdentifier, v18, a3);
+  v19 = objc_msgSend_copyWithZone_(self->_userIdentifier, v18, zone);
   v20 = v12[5];
   v12[5] = v19;
 
@@ -692,7 +692,7 @@ LABEL_51:
           objc_enumerationMutation(v21);
         }
 
-        v28 = objc_msgSend_copyWithZone_(*(*(&v58 + 1) + 8 * i), v24, a3);
+        v28 = objc_msgSend_copyWithZone_(*(*(&v58 + 1) + 8 * i), v24, zone);
         objc_msgSend_addZoneLevelCapabilities_(v12, v29, v28);
       }
 
@@ -721,7 +721,7 @@ LABEL_51:
           objc_enumerationMutation(v30);
         }
 
-        v37 = objc_msgSend_copyWithZone_(*(*(&v54 + 1) + 8 * j), v33, a3);
+        v37 = objc_msgSend_copyWithZone_(*(*(&v54 + 1) + 8 * j), v33, zone);
         objc_msgSend_addRecordLevelCapabilities_(v12, v38, v37);
       }
 
@@ -750,7 +750,7 @@ LABEL_51:
           objc_enumerationMutation(v39);
         }
 
-        v46 = objc_msgSend_copyWithZone_(*(*(&v50 + 1) + 8 * k), v42, a3, v50);
+        v46 = objc_msgSend_copyWithZone_(*(*(&v50 + 1) + 8 * k), v42, zone, v50);
         objc_msgSend_addFieldLevelCapabilities_(v12, v47, v46);
       }
 
@@ -764,25 +764,25 @@ LABEL_51:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_19;
   }
 
-  v8 = *(v4 + 64);
+  v8 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((v4[8] & 1) == 0 || self->_version != *(v4 + 12))
+    if ((equalCopy[8] & 1) == 0 || self->_version != *(equalCopy + 12))
     {
       goto LABEL_19;
     }
   }
 
-  else if (v4[8])
+  else if (equalCopy[8])
   {
 LABEL_19:
     isEqual = 0;
@@ -790,14 +790,14 @@ LABEL_19:
   }
 
   time = self->_time;
-  v10 = v4[4];
+  v10 = equalCopy[4];
   if (time | v10 && !objc_msgSend_isEqual_(time, v7, v10))
   {
     goto LABEL_19;
   }
 
   deviceIdentifier = self->_deviceIdentifier;
-  v12 = v4[1];
+  v12 = equalCopy[1];
   if (deviceIdentifier | v12)
   {
     if (!objc_msgSend_isEqual_(deviceIdentifier, v7, v12))
@@ -807,7 +807,7 @@ LABEL_19:
   }
 
   userIdentifier = self->_userIdentifier;
-  v14 = v4[5];
+  v14 = equalCopy[5];
   if (userIdentifier | v14)
   {
     if (!objc_msgSend_isEqual_(userIdentifier, v7, v14))
@@ -817,7 +817,7 @@ LABEL_19:
   }
 
   zoneLevelCapabilities = self->_zoneLevelCapabilities;
-  v16 = v4[7];
+  v16 = equalCopy[7];
   if (zoneLevelCapabilities | v16)
   {
     if (!objc_msgSend_isEqual_(zoneLevelCapabilities, v7, v16))
@@ -827,7 +827,7 @@ LABEL_19:
   }
 
   recordLevelCapabilities = self->_recordLevelCapabilities;
-  v18 = v4[3];
+  v18 = equalCopy[3];
   if (recordLevelCapabilities | v18)
   {
     if (!objc_msgSend_isEqual_(recordLevelCapabilities, v7, v18))
@@ -837,7 +837,7 @@ LABEL_19:
   }
 
   fieldLevelCapabilities = self->_fieldLevelCapabilities;
-  v20 = v4[2];
+  v20 = equalCopy[2];
   if (fieldLevelCapabilities | v20)
   {
     isEqual = objc_msgSend_isEqual_(fieldLevelCapabilities, v7, v20);
@@ -873,14 +873,14 @@ LABEL_20:
   return v11 ^ v17 ^ objc_msgSend_hash(self->_fieldLevelCapabilities, v18, v19);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = v4;
-  if (v4[16])
+  fromCopy = from;
+  v6 = fromCopy;
+  if (fromCopy[16])
   {
-    self->_version = v4[12];
+    self->_version = fromCopy[12];
     *&self->_has |= 1u;
   }
 

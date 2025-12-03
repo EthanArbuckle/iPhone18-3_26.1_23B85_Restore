@@ -1,19 +1,19 @@
 @interface OSIUtilities
-+ (BOOL)isWeekend:(id)a3;
++ (BOOL)isWeekend:(id)weekend;
 + (BOOL)isiPhone;
-+ (id)loIAtBeginningAndEndOfIntervals:(id)a3;
-+ (id)midnightDateFrom:(id)a3;
-+ (int64_t)currentBatteryLevelWithContext:(id)a3;
++ (id)loIAtBeginningAndEndOfIntervals:(id)intervals;
++ (id)midnightDateFrom:(id)from;
++ (int64_t)currentBatteryLevelWithContext:(id)context;
 @end
 
 @implementation OSIUtilities
 
-+ (id)loIAtBeginningAndEndOfIntervals:(id)a3
++ (id)loIAtBeginningAndEndOfIntervals:(id)intervals
 {
   v99 = *MEMORY[0x277D85DE8];
-  v55 = a3;
+  intervalsCopy = intervals;
   oslog = os_log_create("com.apple.osintelligence", "osiutilities.loi");
-  v50 = [MEMORY[0x277D01280] defaultManager];
+  defaultManager = [MEMORY[0x277D01280] defaultManager];
   v75 = 0;
   v76 = &v75;
   v77 = 0x3032000000;
@@ -21,13 +21,13 @@
   v79 = __Block_byref_object_dispose__2;
   v80 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [v55 firstObject];
-  v5 = [v4 startDate];
-  v53 = [v5 dateByAddingTimeInterval:-86400.0];
+  firstObject = [intervalsCopy firstObject];
+  startDate = [firstObject startDate];
+  v53 = [startDate dateByAddingTimeInterval:-86400.0];
 
-  v6 = [v55 lastObject];
-  v7 = [v6 endDate];
-  v52 = [v7 dateByAddingTimeInterval:86400.0];
+  lastObject = [intervalsCopy lastObject];
+  endDate = [lastObject endDate];
+  v52 = [endDate dateByAddingTimeInterval:86400.0];
 
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
@@ -52,7 +52,7 @@
   v72 = v73;
   v8 = v3;
   v70 = v8;
-  [v50 fetchLocationsOfInterestVisitedBetweenStartDate:v53 endDate:v52 withHandler:v69];
+  [defaultManager fetchLocationsOfInterestVisitedBetweenStartDate:v53 endDate:v52 withHandler:v69];
   v9 = dispatch_time(0, 30000000000);
   dispatch_semaphore_wait(v8, v9);
   v60 = objc_opt_new();
@@ -80,8 +80,8 @@
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v11 = [v10 visits];
-        v12 = [v11 countByEnumeratingWithState:&v61 objects:v97 count:16];
+        visits = [v10 visits];
+        v12 = [visits countByEnumeratingWithState:&v61 objects:v97 count:16];
         if (v12)
         {
           v13 = *v62;
@@ -91,26 +91,26 @@
             {
               if (*v62 != v13)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(visits);
               }
 
               v15 = *(*(&v61 + 1) + 8 * j);
               v95[0] = @"visitEntryDate";
-              v16 = [v15 entryDate];
-              v96[0] = v16;
+              entryDate = [v15 entryDate];
+              v96[0] = entryDate;
               v95[1] = @"visitExitDate";
-              v17 = [v15 exitDate];
-              v96[1] = v17;
+              exitDate = [v15 exitDate];
+              v96[1] = exitDate;
               v95[2] = @"loi";
-              v18 = [v10 identifier];
-              v19 = [v18 UUIDString];
-              v96[2] = v19;
+              identifier = [v10 identifier];
+              uUIDString = [identifier UUIDString];
+              v96[2] = uUIDString;
               v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v96 forKeys:v95 count:3];
 
               [v60 addObject:v20];
             }
 
-            v12 = [v11 countByEnumeratingWithState:&v61 objects:v97 count:16];
+            v12 = [visits countByEnumeratingWithState:&v61 objects:v97 count:16];
           }
 
           while (v12);
@@ -125,10 +125,10 @@
 
   [v60 sortUsingComparator:&__block_literal_global_3];
   v21 = objc_opt_new();
-  for (k = 0; [v55 count] > k; ++k)
+  for (k = 0; [intervalsCopy count] > k; ++k)
   {
     v93[0] = @"interval";
-    v23 = [v55 objectAtIndexedSubscript:k];
+    v23 = [intervalsCopy objectAtIndexedSubscript:k];
     v93[1] = @"loi";
     v94[0] = v23;
     v94[1] = &stru_286EB4F30;
@@ -141,21 +141,21 @@
   for (m = 0; ; m = v27 + (v42 ^ 1))
   {
     v27 = m;
-    if ([v55 count] <= m || objc_msgSend(v60, "count") <= v25)
+    if ([intervalsCopy count] <= m || objc_msgSend(v60, "count") <= v25)
     {
       break;
     }
 
     v28 = [v60 objectAtIndexedSubscript:?];
-    v29 = [v55 objectAtIndexedSubscript:m];
+    v29 = [intervalsCopy objectAtIndexedSubscript:m];
     v30 = [v28 objectForKeyedSubscript:@"visitEntryDate"];
-    v31 = [v29 startDate];
-    [v30 timeIntervalSinceDate:v31];
+    startDate2 = [v29 startDate];
+    [v30 timeIntervalSinceDate:startDate2];
     if (v32 <= 0.0)
     {
       v33 = [v28 objectForKeyedSubscript:@"visitExitDate"];
-      v34 = [v29 endDate];
-      [v33 timeIntervalSinceDate:v34];
+      endDate2 = [v29 endDate];
+      [v33 timeIntervalSinceDate:endDate2];
       v36 = v35 < 0.0;
 
       if (v36)
@@ -179,8 +179,8 @@
 
 LABEL_28:
     v39 = [v28 objectForKeyedSubscript:@"visitExitDate"];
-    v40 = [v29 endDate];
-    [v39 timeIntervalSinceDate:v40];
+    endDate3 = [v29 endDate];
+    [v39 timeIntervalSinceDate:endDate3];
     v42 = v41 <= 0.0;
 
     v25 += v42;
@@ -189,7 +189,7 @@ LABEL_28:
   v43 = oslog;
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
   {
-    v44 = [v55 count];
+    v44 = [intervalsCopy count];
     v45 = [v76[5] count];
     v46 = [v60 count];
     *buf = 134219266;
@@ -242,41 +242,41 @@ uint64_t __48__OSIUtilities_loIAtBeginningAndEndOfIntervals___block_invoke_2(uin
   return v7;
 }
 
-+ (int64_t)currentBatteryLevelWithContext:(id)a3
++ (int64_t)currentBatteryLevelWithContext:(id)context
 {
   v3 = MEMORY[0x277CFE338];
-  v4 = a3;
-  v5 = [v3 keyPathForBatteryStateDataDictionary];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  contextCopy = context;
+  keyPathForBatteryStateDataDictionary = [v3 keyPathForBatteryStateDataDictionary];
+  v6 = [contextCopy objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
 
-  v7 = [MEMORY[0x277CFE338] batteryPercentageKey];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [v8 integerValue];
+  batteryPercentageKey = [MEMORY[0x277CFE338] batteryPercentageKey];
+  v8 = [v6 objectForKeyedSubscript:batteryPercentageKey];
+  integerValue = [v8 integerValue];
 
-  return v9;
+  return integerValue;
 }
 
-+ (id)midnightDateFrom:(id)a3
++ (id)midnightDateFrom:(id)from
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  [v5 setTimeZone:v6];
+  fromCopy = from;
+  currentCalendar = [v3 currentCalendar];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  [currentCalendar setTimeZone:systemTimeZone];
 
-  v7 = [v5 components:540 fromDate:v4];
+  v7 = [currentCalendar components:540 fromDate:fromCopy];
 
-  v8 = [v5 dateFromComponents:v7];
+  v8 = [currentCalendar dateFromComponents:v7];
 
   return v8;
 }
 
-+ (BOOL)isWeekend:(id)a3
++ (BOOL)isWeekend:(id)weekend
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 isDateInWeekend:v4];
+  weekendCopy = weekend;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar isDateInWeekend:weekendCopy];
 
   return v6;
 }

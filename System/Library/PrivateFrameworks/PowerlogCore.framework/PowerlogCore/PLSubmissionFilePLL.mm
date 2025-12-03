@@ -1,43 +1,43 @@
 @interface PLSubmissionFilePLL
 - (BOOL)copyAndPrepareLog;
-- (BOOL)copyArchiveAtPath:(id)a3 to:(id)a4;
-- (BOOL)copyLastArchiveToPath:(id)a3;
-- (BOOL)copyPowerlogToPath:(id)a3;
-- (BOOL)copyUpgradePowerlogToPath:(id)a3;
-- (BOOL)prepareDatabaseAtPath:(id)a3;
-- (PLSubmissionFilePLL)initWithConfig:(id)a3;
+- (BOOL)copyArchiveAtPath:(id)path to:(id)to;
+- (BOOL)copyLastArchiveToPath:(id)path;
+- (BOOL)copyPowerlogToPath:(id)path;
+- (BOOL)copyUpgradePowerlogToPath:(id)path;
+- (BOOL)prepareDatabaseAtPath:(id)path;
+- (PLSubmissionFilePLL)initWithConfig:(id)config;
 - (id)baseCADictionary;
 - (id)fileExtension;
 - (id)fileType;
-- (id)updateSubmissionTagWithConnection:(id)a3;
+- (id)updateSubmissionTagWithConnection:(id)connection;
 - (void)flush;
 - (void)generateSubmissionTagForCurrentLog;
-- (void)logSubmissionSizeToAnalytics:(unint64_t)a3 withUncompressedSize:(unint64_t)a4;
+- (void)logSubmissionSizeToAnalytics:(unint64_t)analytics withUncompressedSize:(unint64_t)size;
 - (void)submit;
 @end
 
 @implementation PLSubmissionFilePLL
 
-- (PLSubmissionFilePLL)initWithConfig:(id)a3
+- (PLSubmissionFilePLL)initWithConfig:(id)config
 {
-  v4 = a3;
-  if (([v4 submitPLL] & 1) == 0 && !objc_msgSend(v4, "submitPLLUpgrade"))
+  configCopy = config;
+  if (([configCopy submitPLL] & 1) == 0 && !objc_msgSend(configCopy, "submitPLLUpgrade"))
   {
     goto LABEL_9;
   }
 
   v8.receiver = self;
   v8.super_class = PLSubmissionFilePLL;
-  self = [(PLSubmissionFile *)&v8 initWithConfig:v4];
+  self = [(PLSubmissionFile *)&v8 initWithConfig:configCopy];
   if (!self)
   {
     goto LABEL_8;
   }
 
-  if ([v4 submitReasonType] == 5)
+  if ([configCopy submitReasonType] == 5)
   {
-    v5 = [v4 taskingType];
-    -[PLSubmissionFilePLL setIsEnergyTasking:](self, "setIsEnergyTasking:", [v5 isEqualToString:@"Energy"]);
+    taskingType = [configCopy taskingType];
+    -[PLSubmissionFilePLL setIsEnergyTasking:](self, "setIsEnergyTasking:", [taskingType isEqualToString:@"Energy"]);
   }
 
   else
@@ -49,22 +49,22 @@
   {
 LABEL_8:
     self = self;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
 LABEL_9:
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)fileType
 {
-  v2 = [(PLSubmissionFile *)self taskingConfig];
-  if ([v2 submittedFilesMask] == 1024)
+  taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+  if ([taskingConfig submittedFilesMask] == 1024)
   {
     v3 = @"UpgradePowerlog";
   }
@@ -81,8 +81,8 @@ LABEL_9:
 
 - (id)fileExtension
 {
-  v2 = [(PLSubmissionFile *)self taskingConfig];
-  if ([v2 submittedFilesMask] == 1024)
+  taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+  if ([taskingConfig submittedFilesMask] == 1024)
   {
     v3 = @".PLSQL.pllupgrade.anon";
   }
@@ -97,7 +97,7 @@ LABEL_9:
   return v3;
 }
 
-- (void)logSubmissionSizeToAnalytics:(unint64_t)a3 withUncompressedSize:(unint64_t)a4
+- (void)logSubmissionSizeToAnalytics:(unint64_t)analytics withUncompressedSize:(unint64_t)size
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
@@ -126,21 +126,21 @@ id __73__PLSubmissionFilePLL_logSubmissionSizeToAnalytics_withUncompressedSize__
 - (BOOL)copyAndPrepareLog
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(PLSubmissionFile *)self taskingConfig];
-  v4 = [v3 startDate];
-  v5 = [(PLSubmissionFile *)self taskingConfig];
-  v6 = [v5 endDate];
-  [PLEnhancedTaskingAgent logAggregatedDataFromSignpostWithStartDate:v4 withEndDate:v6];
+  taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+  startDate = [taskingConfig startDate];
+  taskingConfig2 = [(PLSubmissionFile *)self taskingConfig];
+  endDate = [taskingConfig2 endDate];
+  [PLEnhancedTaskingAgent logAggregatedDataFromSignpostWithStartDate:startDate withEndDate:endDate];
 
-  v7 = [(PLSubmissionFile *)self filePath];
-  if (v7)
+  filePath = [(PLSubmissionFile *)self filePath];
+  if (filePath)
   {
-    v8 = [(PLSubmissionFile *)self directory];
+    directory = [(PLSubmissionFile *)self directory];
 
-    if (v8)
+    if (directory)
     {
-      v9 = [(PLSubmissionFile *)self directory];
-      [PLUtilities createAndChownDirectoryIfDirectoryDoesNotExist:v9];
+      directory2 = [(PLSubmissionFile *)self directory];
+      [PLUtilities createAndChownDirectoryIfDirectoryDoesNotExist:directory2];
     }
 
     if ([(PLSubmissionFilePLL *)self isEnergyTasking])
@@ -152,18 +152,18 @@ id __73__PLSubmissionFilePLL_logSubmissionSizeToAnalytics_withUncompressedSize__
         _os_log_impl(&dword_1D8611000, v10, OS_LOG_TYPE_DEFAULT, "Preparing most recent powerlog archive...", &v27, 2u);
       }
 
-      v11 = [(PLSubmissionFilePLL *)self copyLastArchiveToPath:v7];
+      v11 = [(PLSubmissionFilePLL *)self copyLastArchiveToPath:filePath];
 LABEL_19:
       v17 = v11;
       goto LABEL_22;
     }
 
-    v18 = [(PLSubmissionFile *)self taskingConfig];
-    v19 = [v18 submittedFilesMask];
+    taskingConfig3 = [(PLSubmissionFile *)self taskingConfig];
+    submittedFilesMask = [taskingConfig3 submittedFilesMask];
 
     v20 = PLLogSubmission();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-    if (v19 != 1024)
+    if (submittedFilesMask != 1024)
     {
       if (v21)
       {
@@ -171,7 +171,7 @@ LABEL_19:
         _os_log_impl(&dword_1D8611000, v20, OS_LOG_TYPE_DEFAULT, "Preparing powerlog...", &v27, 2u);
       }
 
-      v11 = [(PLSubmissionFilePLL *)self copyPowerlogToPath:v7];
+      v11 = [(PLSubmissionFilePLL *)self copyPowerlogToPath:filePath];
       goto LABEL_19;
     }
 
@@ -181,16 +181,16 @@ LABEL_19:
       _os_log_impl(&dword_1D8611000, v20, OS_LOG_TYPE_DEFAULT, "Preparing upgrade powerlog...", &v27, 2u);
     }
 
-    v22 = [(PLSubmissionFile *)self taskingConfig];
-    v23 = [v22 startDate];
-    if (v23)
+    taskingConfig4 = [(PLSubmissionFile *)self taskingConfig];
+    startDate2 = [taskingConfig4 startDate];
+    if (startDate2)
     {
-      v24 = [(PLSubmissionFilePLL *)self copyPowerlogToPath:v7];
+      v24 = [(PLSubmissionFilePLL *)self copyPowerlogToPath:filePath];
     }
 
     else
     {
-      v24 = [(PLSubmissionFilePLL *)self copyUpgradePowerlogToPath:v7];
+      v24 = [(PLSubmissionFilePLL *)self copyUpgradePowerlogToPath:filePath];
     }
 
     v17 = v24;
@@ -200,9 +200,9 @@ LABEL_19:
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error no path provided!"];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLSubmissionsClasses/PLSubmissionFilePLL.m"];
-    v14 = [v13 lastPathComponent];
+    lastPathComponent = [v13 lastPathComponent];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLSubmissionFilePLL copyAndPrepareLog]"];
-    [PLCoreStorage logMessage:v12 fromFile:v14 fromFunction:v15 fromLineNumber:103];
+    [PLCoreStorage logMessage:v12 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:103];
 
     v16 = PLLogCommon();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -231,39 +231,39 @@ LABEL_22:
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)prepareDatabaseAtPath:(id)a3
+- (BOOL)prepareDatabaseAtPath:(id)path
 {
   v85 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLSubmissionFile *)self taskingConfig];
-  v6 = v5;
-  if (!v5)
+  pathCopy = path;
+  taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+  v6 = taskingConfig;
+  if (!taskingConfig)
   {
     v12 = 0;
     goto LABEL_42;
   }
 
-  v7 = [v5 cacheSize];
-  v58 = [v7 longLongValue];
+  cacheSize = [taskingConfig cacheSize];
+  longLongValue = [cacheSize longLongValue];
 
-  v8 = [v6 removeEntries];
-  v9 = [v6 hashEntries];
-  v10 = [v6 trimmingQueries];
-  v11 = [[PLSQLiteConnection alloc] initWithFilePath:v4];
+  removeEntries = [v6 removeEntries];
+  hashEntries = [v6 hashEntries];
+  trimmingQueries = [v6 trimmingQueries];
+  v11 = [[PLSQLiteConnection alloc] initWithFilePath:pathCopy];
   v12 = v11 != 0;
   if (v11)
   {
     v13 = [(PLSubmissionFilePLL *)self updateSubmissionTagWithConnection:v11];
-    v14 = [v6 removeEntries];
-    if (v14 || ([v6 hashEntries], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+    removeEntries2 = [v6 removeEntries];
+    if (removeEntries2 || ([v6 hashEntries], (removeEntries2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v53 = [v6 trimmingQueries];
+      trimmingQueries2 = [v6 trimmingQueries];
 
-      if (!v53)
+      if (!trimmingQueries2)
       {
 LABEL_39:
         [(PLSQLiteConnection *)v11 closeConnection];
@@ -271,14 +271,14 @@ LABEL_39:
       }
     }
 
-    [(PLSQLiteConnection *)v11 dropTables:v8];
-    [(PLSQLiteConnection *)v11 hashEntryKeyKeys:v9];
-    v56 = v9;
-    v57 = v8;
+    [(PLSQLiteConnection *)v11 dropTables:removeEntries];
+    [(PLSQLiteConnection *)v11 hashEntryKeyKeys:hashEntries];
+    v56 = hashEntries;
+    v57 = removeEntries;
     if ([v6 submitReasonType] == 4)
     {
-      v54 = v10;
-      v55 = v4;
+      v54 = trimmingQueries;
+      v55 = pathCopy;
       v15 = PLLogSubmission();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -306,13 +306,13 @@ LABEL_39:
               objc_enumerationMutation(v17);
             }
 
-            v22 = [*(*(&v78 + 1) + 8 * i) entryKeys];
+            entryKeys = [*(*(&v78 + 1) + 8 * i) entryKeys];
             v76[0] = MEMORY[0x1E69E9820];
             v76[1] = 3221225472;
             v76[2] = __45__PLSubmissionFilePLL_prepareDatabaseAtPath___block_invoke;
             v76[3] = &unk_1E851B108;
             v77 = v16;
-            [v22 enumerateObjectsUsingBlock:v76];
+            [entryKeys enumerateObjectsUsingBlock:v76];
           }
 
           v19 = [v17 countByEnumeratingWithState:&v78 objects:v84 count:16];
@@ -402,8 +402,8 @@ LABEL_39:
       v42 = v40;
       [v37 enumerateObjectsUsingBlock:v63];
 
-      v4 = v55;
-      v10 = v54;
+      pathCopy = v55;
+      trimmingQueries = v54;
     }
 
     if (!+[PLUtilities SwitchToIncrementalVacuumEnabled])
@@ -415,8 +415,8 @@ LABEL_39:
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v43 = v10;
-    v44 = v10;
+    v43 = trimmingQueries;
+    v44 = trimmingQueries;
     v45 = [v44 countByEnumeratingWithState:&v59 objects:v83 count:16];
     if (v45)
     {
@@ -432,7 +432,7 @@ LABEL_29:
         }
 
         v49 = *(*(&v59 + 1) + 8 * v48);
-        if ([PLFileStats fileSizeAtPath:v4]<= v58)
+        if ([PLFileStats fileSizeAtPath:pathCopy]<= longLongValue)
         {
           break;
         }
@@ -460,9 +460,9 @@ LABEL_29:
     }
 
     v12 = v11 != 0;
-    v9 = v56;
-    v10 = v43;
-    v8 = v57;
+    hashEntries = v56;
+    trimmingQueries = v43;
+    removeEntries = v57;
     goto LABEL_39;
   }
 
@@ -562,21 +562,21 @@ void __45__PLSubmissionFilePLL_prepareDatabaseAtPath___block_invoke_2_136(uint64
 {
   v3 = [(PLOperator *)PLStorageOperator entryKeyForType:@"EventForward" andName:@"SubmissionTag"];
   v4 = +[PowerlogCore sharedCore];
-  v5 = [v4 storage];
-  v6 = [v5 lastEntryForKey:v3];
+  storage = [v4 storage];
+  v6 = [storage lastEntryForKey:v3];
 
   if (v6)
   {
     v7 = +[PowerlogCore sharedCore];
-    v8 = [v7 storage];
+    storage2 = [v7 storage];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __57__PLSubmissionFilePLL_generateSubmissionTagForCurrentLog__block_invoke;
     v26[3] = &unk_1E8519100;
     v9 = v6;
     v27 = v9;
-    v28 = self;
-    [v8 updateEntry:v9 withBlock:v26];
+    selfCopy = self;
+    [storage2 updateEntry:v9 withBlock:v26];
 
     v10 = v27;
 LABEL_3:
@@ -588,13 +588,13 @@ LABEL_3:
   v11 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:0.0];
   [(PLEntry *)v9 setEntryDate:v11];
 
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
-  [(PLEntry *)v9 setObject:v13 forKeyedSubscript:@"UUIDTag"];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(PLEntry *)v9 setObject:uUIDString forKeyedSubscript:@"UUIDTag"];
 
   v14 = +[PowerlogCore sharedCore];
-  v15 = [v14 storage];
-  [v15 writeEntry:v9 withCompletionBlock:&__block_literal_global_48];
+  storage3 = [v14 storage];
+  [storage3 writeEntry:v9 withCompletionBlock:&__block_literal_global_48];
 
   if (+[PLDefaults debugEnabled])
   {
@@ -613,9 +613,9 @@ LABEL_3:
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"generateSubmissionTag CREATE (%@)\n", v9, block, v22, v23, v24, v25];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLSubmissionsClasses/PLSubmissionFilePLL.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent = [v17 lastPathComponent];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLSubmissionFilePLL generateSubmissionTagForCurrentLog]"];
-      [PLCoreStorage logMessage:v10 fromFile:v18 fromFunction:v19 fromLineNumber:354];
+      [PLCoreStorage logMessage:v10 fromFile:lastPathComponent fromFunction:v19 fromLineNumber:354];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -681,24 +681,24 @@ BOOL __57__PLSubmissionFilePLL_generateSubmissionTagForCurrentLog__block_invoke_
   return result;
 }
 
-- (id)updateSubmissionTagWithConnection:(id)a3
+- (id)updateSubmissionTagWithConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(PLSubmissionFile *)self taskingConfig];
-  v6 = [v5 getSubmitReasonTypeToReasonLog];
+  connectionCopy = connection;
+  taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+  getSubmitReasonTypeToReasonLog = [taskingConfig getSubmitReasonTypeToReasonLog];
   v7 = PLLogSubmission();
   v8 = v7;
-  if (v4 && v6)
+  if (connectionCopy && getSubmitReasonTypeToReasonLog)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       [PLSubmissionFilePLL updateSubmissionTagWithConnection:];
     }
 
-    v9 = [v5 tagUUID];
+    tagUUID = [taskingConfig tagUUID];
     v8 = [(PLOperator *)PLStorageOperator entryKeyForType:@"EventForward" andName:@"SubmissionTag"];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UPDATE %@ SET %@ = '%@', %@ = '%@'", v8, @"Reason", v6, @"UUIDTag", v9];
-    v11 = [v4 performQuery:v10];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UPDATE %@ SET %@ = '%@', %@ = '%@'", v8, @"Reason", getSubmitReasonTypeToReasonLog, @"UUIDTag", tagUUID];
+    v11 = [connectionCopy performQuery:v10];
   }
 
   else
@@ -708,10 +708,10 @@ BOOL __57__PLSubmissionFilePLL_generateSubmissionTagForCurrentLog__block_invoke_
       [PLSubmissionFilePLL updateSubmissionTagWithConnection:];
     }
 
-    v9 = 0;
+    tagUUID = 0;
   }
 
-  return v9;
+  return tagUUID;
 }
 
 - (void)submit
@@ -738,45 +738,45 @@ id __29__PLSubmissionFilePLL_submit__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (BOOL)copyPowerlogToPath:(id)a3
+- (BOOL)copyPowerlogToPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(PLSubmissionFilePLL *)self generateSubmissionTagForCurrentLog];
   [(PLSubmissionFilePLL *)self flush];
-  v5 = [(PLSubmissionFile *)self taskingConfig];
-  v6 = [v5 startDate];
+  taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+  startDate = [taskingConfig startDate];
 
-  v7 = [(PLSubmissionFile *)self taskingConfig];
-  v8 = [v7 submitReasonType];
+  taskingConfig2 = [(PLSubmissionFile *)self taskingConfig];
+  submitReasonType = [taskingConfig2 submitReasonType];
 
-  if (v8 == 4)
+  if (submitReasonType == 4)
   {
-    v9 = [(PLSubmissionFile *)self taskingConfig];
-    v10 = [v9 endDate];
+    taskingConfig3 = [(PLSubmissionFile *)self taskingConfig];
+    endDate = [taskingConfig3 endDate];
   }
 
   else
   {
-    v10 = 0;
+    endDate = 0;
   }
 
-  v11 = [(PLSubmissionFile *)self taskingConfig];
-  v12 = [v11 cacheSize];
+  taskingConfig4 = [(PLSubmissionFile *)self taskingConfig];
+  cacheSize = [taskingConfig4 cacheSize];
 
-  if (v12)
+  if (cacheSize)
   {
-    v13 = [(PLSubmissionFile *)self taskingConfig];
-    v14 = [v13 cacheSize];
-    v15 = [v14 integerValue];
+    taskingConfig5 = [(PLSubmissionFile *)self taskingConfig];
+    cacheSize2 = [taskingConfig5 cacheSize];
+    integerValue = [cacheSize2 integerValue];
 
     v16 = +[PLSQLiteConnection sharedSQLiteConnection];
-    v17 = [PLCoreStorage allOperatorTablesToTrimConditionsForTrimDate:v6];
-    LOBYTE(v15) = [v16 copyDatabaseToPath:v4 fromDate:v6 toDate:v10 withTableFilters:v17 vacuumDB:0 withCacheSize:v15];
+    v17 = [PLCoreStorage allOperatorTablesToTrimConditionsForTrimDate:startDate];
+    LOBYTE(integerValue) = [v16 copyDatabaseToPath:pathCopy fromDate:startDate toDate:endDate withTableFilters:v17 vacuumDB:0 withCacheSize:integerValue];
 
-    if (v15)
+    if (integerValue)
     {
 LABEL_6:
-      [(PLSubmissionFilePLL *)self prepareDatabaseAtPath:v4];
+      [(PLSubmissionFilePLL *)self prepareDatabaseAtPath:pathCopy];
       [(PLSubmissionFile *)self decorateFile];
       v18 = +[PLSQLiteConnection sharedSQLiteConnection];
       [v18 clearTableHasTimestampColumnCache];
@@ -790,8 +790,8 @@ LABEL_6:
   {
     v20 = +[PLUtilities SwitchToIncrementalVacuumEnabled];
     v21 = +[PLSQLiteConnection sharedSQLiteConnection];
-    v22 = [PLCoreStorage allOperatorTablesToTrimConditionsForTrimDate:v6];
-    LOBYTE(v20) = [v21 copyDatabaseToPath:v4 fromDate:v6 toDate:v10 withTableFilters:v22 vacuumDB:v20 ^ 1u];
+    v22 = [PLCoreStorage allOperatorTablesToTrimConditionsForTrimDate:startDate];
+    LOBYTE(v20) = [v21 copyDatabaseToPath:pathCopy fromDate:startDate toDate:endDate withTableFilters:v22 vacuumDB:v20 ^ 1u];
 
     if (v20)
     {
@@ -811,25 +811,25 @@ LABEL_11:
   return v19;
 }
 
-- (BOOL)copyArchiveAtPath:(id)a3 to:(id)a4
+- (BOOL)copyArchiveAtPath:(id)path to:(id)to
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 stringByAppendingString:@".gz"];
+  pathCopy = path;
+  toCopy = to;
+  v8 = [toCopy stringByAppendingString:@".gz"];
   v9 = PLLogSubmission();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v6;
+    v27 = pathCopy;
     v28 = 2112;
     v29 = v8;
     _os_log_impl(&dword_1D8611000, v9, OS_LOG_TYPE_DEFAULT, "Copying archive at '%@' to '%@'...", buf, 0x16u);
   }
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v25 = 0;
-  v11 = [v10 copyItemAtPath:v6 toPath:v8 error:&v25];
+  v11 = [defaultManager copyItemAtPath:pathCopy toPath:v8 error:&v25];
   v12 = v25;
 
   [(PLSubmissionFilePLL *)self emitCopyResult:v11];
@@ -850,7 +850,7 @@ LABEL_11:
     [PLSubmissionFilePLL copyArchiveAtPath:to:];
   }
 
-  v15 = [PLUtilities decompressWithSource:v8 withDestination:v7 withRemoveSrc:1];
+  v15 = [PLUtilities decompressWithSource:v8 withDestination:toCopy withRemoveSrc:1];
   [(PLSubmissionFilePLL *)self emitDecompressionResult:v15];
   if (!v15)
   {
@@ -863,8 +863,8 @@ LABEL_11:
     goto LABEL_21;
   }
 
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
-  v17 = [v16 fileExistsAtPath:v7];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  v17 = [defaultManager2 fileExistsAtPath:toCopy];
 
   [(PLSubmissionFilePLL *)self emitFileExists:v17];
   v18 = PLLogSubmission();
@@ -873,7 +873,7 @@ LABEL_11:
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [PLSubmissionFilePLL copyArchiveAtPath:v7 to:v14];
+      [PLSubmissionFilePLL copyArchiveAtPath:toCopy to:v14];
     }
 
 LABEL_17:
@@ -886,11 +886,11 @@ LABEL_21:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v7;
+    v27 = toCopy;
     _os_log_impl(&dword_1D8611000, v14, OS_LOG_TYPE_DEFAULT, "Successfully copied archived powerlog to %@!", buf, 0xCu);
   }
 
-  v19 = [(PLSubmissionFilePLL *)self prepareDatabaseAtPath:v7];
+  v19 = [(PLSubmissionFilePLL *)self prepareDatabaseAtPath:toCopy];
   [(PLSubmissionFilePLL *)self emitPreparationResult:v19];
   if (!v19)
   {
@@ -909,19 +909,19 @@ LABEL_22:
   return v21;
 }
 
-- (BOOL)copyLastArchiveToPath:(id)a3
+- (BOOL)copyLastArchiveToPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[PLArchiveManager lastArchivePath];
-  LOBYTE(self) = [(PLSubmissionFilePLL *)self copyArchiveAtPath:v5 to:v4];
+  LOBYTE(self) = [(PLSubmissionFilePLL *)self copyArchiveAtPath:v5 to:pathCopy];
 
   return self;
 }
 
-- (BOOL)copyUpgradePowerlogToPath:(id)a3
+- (BOOL)copyUpgradePowerlogToPath:(id)path
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v5 = MEMORY[0x1E695DF00];
   [PLDefaults doubleForKey:@"LastUpgradeTimestamp" ifNotSet:-1.0];
   v6 = [v5 dateWithTimeIntervalSince1970:?];
@@ -929,38 +929,38 @@ LABEL_22:
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 startDate];
-    v10 = [(PLSubmissionFile *)self taskingConfig];
-    [v10 setStartDate:v9];
+    startDate = [v7 startDate];
+    taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+    [taskingConfig setStartDate:startDate];
 
-    v11 = [v8 endDate];
-    v12 = [(PLSubmissionFile *)self taskingConfig];
-    [v12 setEndDate:v11];
+    endDate = [v8 endDate];
+    taskingConfig2 = [(PLSubmissionFile *)self taskingConfig];
+    [taskingConfig2 setEndDate:endDate];
 
     v13 = PLLogSubmission();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v8 compressedPath];
-      v15 = [v14 lastPathComponent];
+      compressedPath = [v8 compressedPath];
+      lastPathComponent = [compressedPath lastPathComponent];
       v20 = 138412546;
       v21 = v6;
       v22 = 2112;
-      v23 = v15;
+      v23 = lastPathComponent;
       _os_log_impl(&dword_1D8611000, v13, OS_LOG_TYPE_INFO, "Choosing archived powerlog for upgrade date '%@': %@", &v20, 0x16u);
     }
 
-    v16 = [v8 compressedPath];
-    v17 = [(PLSubmissionFilePLL *)self copyArchiveAtPath:v16 to:v4];
+    compressedPath2 = [v8 compressedPath];
+    v17 = [(PLSubmissionFilePLL *)self copyArchiveAtPath:compressedPath2 to:pathCopy];
   }
 
   else
   {
-    v16 = PLLogSubmission();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+    compressedPath2 = PLLogSubmission();
+    if (os_log_type_enabled(compressedPath2, OS_LOG_TYPE_INFO))
     {
       v20 = 138412290;
       v21 = v6;
-      _os_log_impl(&dword_1D8611000, v16, OS_LOG_TYPE_INFO, "No archived upgrade powerlog for upgrade date '%@'", &v20, 0xCu);
+      _os_log_impl(&dword_1D8611000, compressedPath2, OS_LOG_TYPE_INFO, "No archived upgrade powerlog for upgrade date '%@'", &v20, 0xCu);
     }
 
     v17 = 0;
@@ -972,21 +972,21 @@ LABEL_22:
 
 - (id)baseCADictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PLSubmissionFile *)self taskingConfig];
-  v5 = [v4 request];
-  [v3 setObject:v5 forKeyedSubscript:@"TaskingRequest"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+  request = [taskingConfig request];
+  [dictionary setObject:request forKeyedSubscript:@"TaskingRequest"];
 
-  v6 = [(PLSubmissionFile *)self taskingConfig];
-  v7 = [v6 taskingType];
-  [v3 setObject:v7 forKeyedSubscript:@"TaskingType"];
+  taskingConfig2 = [(PLSubmissionFile *)self taskingConfig];
+  taskingType = [taskingConfig2 taskingType];
+  [dictionary setObject:taskingType forKeyedSubscript:@"TaskingType"];
 
-  v8 = [(PLSubmissionFile *)self taskingConfig];
-  v9 = [v8 configUUID];
-  v10 = [v9 UUIDString];
-  [v3 setObject:v10 forKeyedSubscript:@"TaskingUUID"];
+  taskingConfig3 = [(PLSubmissionFile *)self taskingConfig];
+  configUUID = [taskingConfig3 configUUID];
+  uUIDString = [configUUID UUIDString];
+  [dictionary setObject:uUIDString forKeyedSubscript:@"TaskingUUID"];
 
-  return v3;
+  return dictionary;
 }
 
 - (void)logSubmissionSizeToAnalytics:withUncompressedSize:.cold.1()

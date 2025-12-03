@@ -1,33 +1,33 @@
 @interface SFUnifiedBarRegistrationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_makeBarItemForSFBarItem:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_makeBarItemForSFBarItem:(int64_t)item;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axApplyLabel:(id)a3 withType:(int64_t)a4;
-- (void)_axSetTabGroupTitle:(id)a3 forItem:(id)a4;
-- (void)setAttributedTitle:(id)a3 forBarItem:(int64_t)a4;
-- (void)setTitle:(id)a3 forBarItem:(int64_t)a4;
+- (void)_axApplyLabel:(id)label withType:(int64_t)type;
+- (void)_axSetTabGroupTitle:(id)title forItem:(id)item;
+- (void)setAttributedTitle:(id)title forBarItem:(int64_t)item;
+- (void)setTitle:(id)title forBarItem:(int64_t)item;
 @end
 
 @implementation SFUnifiedBarRegistrationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFUnifiedBarRegistration" hasInstanceMethod:@"_makeBarItemForSFBarItem:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"SFUnifiedBarRegistration" hasInstanceMethod:@"setTitle:forBarItem:" withFullSignature:{"v", "@", "q", 0}];
-  [v3 validateClass:@"SFUnifiedBarRegistration" hasInstanceMethod:@"setAttributedTitle:forBarItem:" withFullSignature:{"v", "@", "q", 0}];
-  [v3 validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_bookmarksAndSidebarButton" withType:"SFUnifiedBarButton"];
-  [v3 validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_backButton" withType:"SFUnifiedBarItem"];
-  [v3 validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_forwardButton" withType:"SFUnifiedBarItem"];
-  [v3 validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_tabGroupButton" withType:"SFUnifiedBarItem"];
-  [v3 validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_newTabButton" withType:"SFUnifiedBarItem"];
-  [v3 validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_tabOverviewButton" withType:"SFUnifiedBarItem"];
-  [v3 validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_cancelButton" withType:"SFUnifiedBarItem"];
-  [v3 validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_shareButton" withType:"SFUnifiedBarItem"];
-  [v3 validateClass:@"SFFeatureManager"];
-  [v3 validateClass:@"SFFeatureManager" hasClassMethod:@"sharedFeatureManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_barManager" withType:"_SFBarManager"];
-  [v3 validateClass:@"_SFBarManager" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFUnifiedBarRegistration" hasInstanceMethod:@"_makeBarItemForSFBarItem:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"SFUnifiedBarRegistration" hasInstanceMethod:@"setTitle:forBarItem:" withFullSignature:{"v", "@", "q", 0}];
+  [validationsCopy validateClass:@"SFUnifiedBarRegistration" hasInstanceMethod:@"setAttributedTitle:forBarItem:" withFullSignature:{"v", "@", "q", 0}];
+  [validationsCopy validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_bookmarksAndSidebarButton" withType:"SFUnifiedBarButton"];
+  [validationsCopy validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_backButton" withType:"SFUnifiedBarItem"];
+  [validationsCopy validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_forwardButton" withType:"SFUnifiedBarItem"];
+  [validationsCopy validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_tabGroupButton" withType:"SFUnifiedBarItem"];
+  [validationsCopy validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_newTabButton" withType:"SFUnifiedBarItem"];
+  [validationsCopy validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_tabOverviewButton" withType:"SFUnifiedBarItem"];
+  [validationsCopy validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_cancelButton" withType:"SFUnifiedBarItem"];
+  [validationsCopy validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_shareButton" withType:"SFUnifiedBarItem"];
+  [validationsCopy validateClass:@"SFFeatureManager"];
+  [validationsCopy validateClass:@"SFFeatureManager" hasClassMethod:@"sharedFeatureManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFUnifiedBarRegistration" hasInstanceVariable:@"_barManager" withType:"_SFBarManager"];
+  [validationsCopy validateClass:@"_SFBarManager" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -60,20 +60,20 @@
   [(SFUnifiedBarRegistrationAccessibility *)self _axApplyLabel:v10 withType:6];
 }
 
-- (id)_makeBarItemForSFBarItem:(int64_t)a3
+- (id)_makeBarItemForSFBarItem:(int64_t)item
 {
   v7.receiver = self;
   v7.super_class = SFUnifiedBarRegistrationAccessibility;
   v5 = [(SFUnifiedBarRegistrationAccessibility *)&v7 _makeBarItemForSFBarItem:?];
-  [(SFUnifiedBarRegistrationAccessibility *)self _axApplyLabel:v5 withType:a3];
+  [(SFUnifiedBarRegistrationAccessibility *)self _axApplyLabel:v5 withType:item];
 
   return v5;
 }
 
-- (void)_axApplyLabel:(id)a3 withType:(int64_t)a4
+- (void)_axApplyLabel:(id)label withType:(int64_t)type
 {
-  v12 = a3;
-  switch(a4)
+  labelCopy = label;
+  switch(type)
   {
     case 0:
       v6 = @"buttonbar.back.text";
@@ -82,7 +82,7 @@
       v6 = @"buttonbar.forward.text";
       goto LABEL_20;
     case 2:
-      v7 = [v12 safeValueForKeyPath:@"attributedTitle.string"];
+      v7 = [labelCopy safeValueForKeyPath:@"attributedTitle.string"];
       v8 = [(SFUnifiedBarRegistrationAccessibility *)self safeValueForKey:@"_tabGroupButton"];
       [(SFUnifiedBarRegistrationAccessibility *)self _axSetTabGroupTitle:v7 forItem:v8];
 
@@ -102,7 +102,7 @@
       }
 
       v11 = accessibilitySafariServicesLocalizedString(v10);
-      [v12 setAccessibilityLabel:v11];
+      [labelCopy setAccessibilityLabel:v11];
 
       goto LABEL_21;
     case 4:
@@ -139,7 +139,7 @@
       v6 = @"buttonbar.reload";
 LABEL_20:
       v7 = accessibilitySafariServicesLocalizedString(v6);
-      [v12 setAccessibilityLabel:v7];
+      [labelCopy setAccessibilityLabel:v7];
 LABEL_21:
 
       break;
@@ -148,43 +148,43 @@ LABEL_21:
   }
 }
 
-- (void)_axSetTabGroupTitle:(id)a3 forItem:(id)a4
+- (void)_axSetTabGroupTitle:(id)title forItem:(id)item
 {
-  if (a3)
+  if (title)
   {
-    v5 = a4;
-    v6 = a3;
+    itemCopy = item;
+    titleCopy = title;
     v8 = accessibilityMobileSafariLocalizedString(@"tab.group.name.button");
     v7 = AXCFormattedString();
 
-    [v5 setAccessibilityLabel:{v7, v6}];
+    [itemCopy setAccessibilityLabel:{v7, titleCopy}];
   }
 }
 
-- (void)setTitle:(id)a3 forBarItem:(int64_t)a4
+- (void)setTitle:(id)title forBarItem:(int64_t)item
 {
-  v6 = a3;
+  titleCopy = title;
   v8.receiver = self;
   v8.super_class = SFUnifiedBarRegistrationAccessibility;
-  [(SFUnifiedBarRegistrationAccessibility *)&v8 setTitle:v6 forBarItem:a4];
-  if (a4 == 2)
+  [(SFUnifiedBarRegistrationAccessibility *)&v8 setTitle:titleCopy forBarItem:item];
+  if (item == 2)
   {
     v7 = [(SFUnifiedBarRegistrationAccessibility *)self safeValueForKey:@"_tabGroupButton"];
-    [(SFUnifiedBarRegistrationAccessibility *)self _axSetTabGroupTitle:v6 forItem:v7];
+    [(SFUnifiedBarRegistrationAccessibility *)self _axSetTabGroupTitle:titleCopy forItem:v7];
   }
 }
 
-- (void)setAttributedTitle:(id)a3 forBarItem:(int64_t)a4
+- (void)setAttributedTitle:(id)title forBarItem:(int64_t)item
 {
-  v6 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = SFUnifiedBarRegistrationAccessibility;
-  [(SFUnifiedBarRegistrationAccessibility *)&v9 setAttributedTitle:v6 forBarItem:a4];
-  if (a4 == 2)
+  [(SFUnifiedBarRegistrationAccessibility *)&v9 setAttributedTitle:titleCopy forBarItem:item];
+  if (item == 2)
   {
-    v7 = [v6 string];
+    string = [titleCopy string];
     v8 = [(SFUnifiedBarRegistrationAccessibility *)self safeValueForKey:@"_tabGroupButton"];
-    [(SFUnifiedBarRegistrationAccessibility *)self _axSetTabGroupTitle:v7 forItem:v8];
+    [(SFUnifiedBarRegistrationAccessibility *)self _axSetTabGroupTitle:string forItem:v8];
   }
 }
 

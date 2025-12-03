@@ -3,7 +3,7 @@
 - (CGPoint)startPoint;
 - (UIKBMultilingualIntroductionArrowView)init;
 - (void)_updatePath;
-- (void)setStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4;
+- (void)setStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint;
 @end
 
 @implementation UIKBMultilingualIntroductionArrowView
@@ -16,10 +16,10 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(UIView *)v2 _inheritedRenderConfig];
-    v5 = [v4 lightKeyboard];
+    _inheritedRenderConfig = [(UIView *)v2 _inheritedRenderConfig];
+    lightKeyboard = [_inheritedRenderConfig lightKeyboard];
     v6 = 0.35;
-    if (v5)
+    if (lightKeyboard)
     {
       v6 = 0.65;
     }
@@ -40,20 +40,20 @@
     -[CAShapeLayer setFillColor:](v3->_arrowHeadLayer, "setFillColor:", [v7 CGColor]);
     -[CAShapeLayer setStrokeColor:](v3->_arrowHeadLayer, "setStrokeColor:", [v7 CGColor]);
     [(UIView *)v3 setUserInteractionEnabled:0];
-    v13 = [(UIView *)v3 layer];
-    [v13 addSublayer:v3->_arrowTailLayer];
+    layer = [(UIView *)v3 layer];
+    [layer addSublayer:v3->_arrowTailLayer];
 
-    v14 = [(UIView *)v3 layer];
-    [v14 addSublayer:v3->_arrowHeadLayer];
+    layer2 = [(UIView *)v3 layer];
+    [layer2 addSublayer:v3->_arrowHeadLayer];
   }
 
   return v3;
 }
 
-- (void)setStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4
+- (void)setStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint
 {
-  self->_startPoint = a3;
-  self->_endPoint = a4;
+  self->_startPoint = point;
+  self->_endPoint = endPoint;
   [(UIKBMultilingualIntroductionArrowView *)self _updatePath];
 }
 

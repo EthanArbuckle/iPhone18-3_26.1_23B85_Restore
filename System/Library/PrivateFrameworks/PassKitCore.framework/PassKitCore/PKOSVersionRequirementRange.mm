@@ -1,32 +1,32 @@
 @interface PKOSVersionRequirementRange
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOSVersionRequirementRange:(id)a3;
-- (BOOL)versionMeetsRequirements:(id)a3 deviceClass:(id)a4;
-- (PKOSVersionRequirementRange)initWithCoder:(id)a3;
-- (PKOSVersionRequirementRange)initWithDictionary:(id)a3;
-- (PKOSVersionRequirementRange)initWithMinimumVersion:(id)a3 maximumVersion:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOSVersionRequirementRange:(id)range;
+- (BOOL)versionMeetsRequirements:(id)requirements deviceClass:(id)class;
+- (PKOSVersionRequirementRange)initWithCoder:(id)coder;
+- (PKOSVersionRequirementRange)initWithDictionary:(id)dictionary;
+- (PKOSVersionRequirementRange)initWithMinimumVersion:(id)version maximumVersion:(id)maximumVersion;
 - (id)asDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKOSVersionRequirementRange
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_minimum];
-  [v3 safelyAddObject:self->_maximum];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_minimum];
+  [array safelyAddObject:self->_maximum];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (PKOSVersionRequirementRange)initWithDictionary:(id)a3
+- (PKOSVersionRequirementRange)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKDictionaryForKey:@"minimum"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKDictionaryForKey:@"minimum"];
   if (v5)
   {
     v6 = [[PKOSVersionRequirement alloc] initWithDictionary:v5];
@@ -37,7 +37,7 @@
     v6 = 0;
   }
 
-  v7 = [v4 PKDictionaryForKey:@"maximum"];
+  v7 = [dictionaryCopy PKDictionaryForKey:@"maximum"];
   if (v7)
   {
     v8 = [[PKOSVersionRequirement alloc] initWithDictionary:v7];
@@ -51,7 +51,7 @@
   if (v6 | v8)
   {
     self = [(PKOSVersionRequirementRange *)self initWithMinimumVersion:v6 maximumVersion:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -63,24 +63,24 @@
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Invalid version range", v12, 2u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (PKOSVersionRequirementRange)initWithMinimumVersion:(id)a3 maximumVersion:(id)a4
+- (PKOSVersionRequirementRange)initWithMinimumVersion:(id)version maximumVersion:(id)maximumVersion
 {
-  v7 = a3;
-  v8 = a4;
+  versionCopy = version;
+  maximumVersionCopy = maximumVersion;
   v12.receiver = self;
   v12.super_class = PKOSVersionRequirementRange;
   v9 = [(PKOSVersionRequirementRange *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_minimum, a3);
-    objc_storeStrong(&v10->_maximum, a4);
+    objc_storeStrong(&v9->_minimum, version);
+    objc_storeStrong(&v10->_maximum, maximumVersion);
   }
 
   return v10;
@@ -92,15 +92,15 @@
   minimum = self->_minimum;
   if (minimum)
   {
-    v5 = [(PKOSVersionRequirement *)minimum asDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"minimum"];
+    asDictionary = [(PKOSVersionRequirement *)minimum asDictionary];
+    [v3 setObject:asDictionary forKeyedSubscript:@"minimum"];
   }
 
   maximum = self->_maximum;
   if (maximum)
   {
-    v7 = [(PKOSVersionRequirement *)maximum asDictionary];
-    [v3 setObject:v7 forKeyedSubscript:@"maximum"];
+    asDictionary2 = [(PKOSVersionRequirement *)maximum asDictionary];
+    [v3 setObject:asDictionary2 forKeyedSubscript:@"maximum"];
   }
 
   v8 = [v3 copy];
@@ -108,14 +108,14 @@
   return v8;
 }
 
-- (BOOL)versionMeetsRequirements:(id)a3 deviceClass:(id)a4
+- (BOOL)versionMeetsRequirements:(id)requirements deviceClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
+  requirementsCopy = requirements;
+  classCopy = class;
   minimum = self->_minimum;
   if (minimum)
   {
-    v9 = ([(PKOSVersionRequirement *)minimum compare:v6 deviceClass:v7]+ 1) < 2;
+    v9 = ([(PKOSVersionRequirement *)minimum compare:requirementsCopy deviceClass:classCopy]+ 1) < 2;
   }
 
   else
@@ -126,7 +126,7 @@
   maximum = self->_maximum;
   if (maximum)
   {
-    v11 = [(PKOSVersionRequirement *)maximum compare:v6 deviceClass:v7]== 1;
+    v11 = [(PKOSVersionRequirement *)maximum compare:requirementsCopy deviceClass:classCopy]== 1;
   }
 
   else
@@ -136,9 +136,9 @@
 
   if (v9 && v11)
   {
-    if ([v7 isEqualToString:@"Watch"])
+    if ([classCopy isEqualToString:@"Watch"])
     {
-      v12 = [(PKOSVersionRequirementRange *)self versionMeetsRequirements:v6 deviceClass:@"iPhone"];
+      v12 = [(PKOSVersionRequirementRange *)self versionMeetsRequirements:requirementsCopy deviceClass:@"iPhone"];
     }
 
     else
@@ -155,19 +155,19 @@
   return v12;
 }
 
-- (PKOSVersionRequirementRange)initWithCoder:(id)a3
+- (PKOSVersionRequirementRange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKOSVersionRequirementRange;
   v5 = [(PKOSVersionRequirementRange *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimum"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimum"];
     minimum = v5->_minimum;
     v5->_minimum = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maximum"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maximum"];
     maximum = v5->_maximum;
     v5->_maximum = v8;
   }
@@ -175,50 +175,50 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minimum = self->_minimum;
-  v5 = a3;
-  [v5 encodeObject:minimum forKey:@"minimum"];
-  [v5 encodeObject:self->_maximum forKey:@"maximum"];
+  coderCopy = coder;
+  [coderCopy encodeObject:minimum forKey:@"minimum"];
+  [coderCopy encodeObject:self->_maximum forKey:@"maximum"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKOSVersionRequirementRange allocWithZone:](PKOSVersionRequirementRange init];
-  v6 = [(PKOSVersionRequirement *)self->_maximum copyWithZone:a3];
+  v6 = [(PKOSVersionRequirement *)self->_maximum copyWithZone:zone];
   maximum = v5->_maximum;
   v5->_maximum = v6;
 
-  v8 = [(PKOSVersionRequirement *)self->_minimum copyWithZone:a3];
+  v8 = [(PKOSVersionRequirement *)self->_minimum copyWithZone:zone];
   minimum = v5->_minimum;
   v5->_minimum = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKOSVersionRequirementRange *)self isEqualToOSVersionRequirementRange:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKOSVersionRequirementRange *)self isEqualToOSVersionRequirementRange:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToOSVersionRequirementRange:(id)a3
+- (BOOL)isEqualToOSVersionRequirementRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   minimum = self->_minimum;
-  v6 = v4[1];
+  v6 = rangeCopy[1];
   if (minimum)
   {
     v7 = v6 == 0;
@@ -248,7 +248,7 @@ LABEL_7:
 
 LABEL_9:
   maximum = self->_maximum;
-  v10 = v4[2];
+  v10 = rangeCopy[2];
   if (maximum && v10)
   {
     v8 = [(PKOSVersionRequirement *)maximum isEqual:?];

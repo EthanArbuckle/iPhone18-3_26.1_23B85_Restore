@@ -32,8 +32,8 @@
         v10 = objc_opt_class();
         if ([v10 isSubclassOfClass:{objc_opt_class(), v16}])
         {
-          v11 = [v9 flatten];
-          [v3 addObjectsFromArray:v11];
+          flatten = [v9 flatten];
+          [v3 addObjectsFromArray:flatten];
 LABEL_13:
 
           goto LABEL_14;
@@ -41,18 +41,18 @@ LABEL_13:
 
         if (objc_opt_respondsToSelector())
         {
-          v12 = [v9 allObjects];
+          allObjects = [v9 allObjects];
 LABEL_12:
-          v11 = v12;
-          v13 = [v12 flatten];
-          [v3 addObjectsFromArray:v13];
+          flatten = allObjects;
+          flatten2 = [allObjects flatten];
+          [v3 addObjectsFromArray:flatten2];
 
           goto LABEL_13;
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v12 = [v9 allValues];
+          allObjects = [v9 allValues];
           goto LABEL_12;
         }
 

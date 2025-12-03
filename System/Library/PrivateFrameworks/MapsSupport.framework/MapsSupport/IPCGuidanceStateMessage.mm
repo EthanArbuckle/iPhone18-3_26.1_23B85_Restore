@@ -1,20 +1,20 @@
 @interface IPCGuidanceStateMessage
-- (IPCGuidanceStateMessage)initWithDictionary:(id)a3;
+- (IPCGuidanceStateMessage)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryValue;
 @end
 
 @implementation IPCGuidanceStateMessage
 
-- (IPCGuidanceStateMessage)initWithDictionary:(id)a3
+- (IPCGuidanceStateMessage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = IPCGuidanceStateMessage;
-  v5 = [(IPCMessageObject *)&v8 initWithDictionary:v4];
+  v5 = [(IPCMessageObject *)&v8 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"kIPCGuidanceStateMessageIncludeRouteKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"kIPCGuidanceStateMessageIncludeRouteKey"];
     -[IPCGuidanceStateMessage setIncludeRoute:](v5, "setIncludeRoute:", [v6 BOOLValue]);
   }
 
@@ -25,8 +25,8 @@
 {
   v8.receiver = self;
   v8.super_class = IPCGuidanceStateMessage;
-  v3 = [(IPCMessageObject *)&v8 dictionaryValue];
-  v4 = [v3 mutableCopy];
+  dictionaryValue = [(IPCMessageObject *)&v8 dictionaryValue];
+  v4 = [dictionaryValue mutableCopy];
 
   v5 = [NSNumber numberWithBool:[(IPCGuidanceStateMessage *)self includeRoute]];
   [v4 setObject:v5 forKeyedSubscript:@"kIPCGuidanceStateMessageIncludeRouteKey"];
@@ -41,8 +41,8 @@
   v7.receiver = self;
   v7.super_class = IPCGuidanceStateMessage;
   v3 = [(IPCGuidanceStateMessage *)&v7 description];
-  v4 = [(IPCGuidanceStateMessage *)self dictionaryValue];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryValue = [(IPCGuidanceStateMessage *)self dictionaryValue];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryValue];
 
   return v5;
 }

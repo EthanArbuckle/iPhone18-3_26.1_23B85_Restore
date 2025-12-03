@@ -1,16 +1,16 @@
 @interface MusicMonogramArtworkToken
-- (BOOL)isEqual:(id)a3;
-- (MusicMonogramArtworkToken)initWithFullName:(id)a3 rightToLeft:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MusicMonogramArtworkToken)initWithFullName:(id)name rightToLeft:(BOOL)left;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MusicMonogramArtworkToken
 
-- (MusicMonogramArtworkToken)initWithFullName:(id)a3 rightToLeft:(BOOL)a4
+- (MusicMonogramArtworkToken)initWithFullName:(id)name rightToLeft:(BOOL)left
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 length])
+  nameCopy = name;
+  v7 = nameCopy;
+  if (nameCopy && [nameCopy length])
   {
     v13.receiver = self;
     v13.super_class = MusicMonogramArtworkToken;
@@ -21,25 +21,25 @@
       fullName = v8->_fullName;
       v8->_fullName = v9;
 
-      v8->_rightToLeft = a4;
+      v8->_rightToLeft = left;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -49,7 +49,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       fullName = self->_fullName;
       v7 = (fullName == v5->_fullName || [(NSString *)fullName isEqualToString:?]) && self->_rightToLeft == v5->_rightToLeft;
     }
@@ -63,7 +63,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   fullName = self->_fullName;

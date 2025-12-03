@@ -1,19 +1,19 @@
 @interface PTEffectPersonSegmentationVision
-+ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)segmentationSizeForColorSize:(SEL)a3;
++ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)segmentationSizeForColorSize:(SEL)size;
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)segmentationSize;
 - (CGSize)colorSize;
-- (PTEffectPersonSegmentationVision)initWithMetalContext:(id)a3 colorSize:(CGSize)a4;
+- (PTEffectPersonSegmentationVision)initWithMetalContext:(id)context colorSize:(CGSize)size;
 - (__CVBuffer)outputPixelBuffer;
-- (id)runPersonSegmentationForPixelBuffer:(__CVBuffer *)a3;
+- (id)runPersonSegmentationForPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation PTEffectPersonSegmentationVision
 
-- (PTEffectPersonSegmentationVision)initWithMetalContext:(id)a3 colorSize:(CGSize)a4
+- (PTEffectPersonSegmentationVision)initWithMetalContext:(id)context colorSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  contextCopy = context;
   v32.receiver = self;
   v32.super_class = PTEffectPersonSegmentationVision;
   v9 = [(PTEffectPersonSegmentationVision *)&v32 init];
@@ -23,7 +23,7 @@
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v9->_metalContext, a3);
+  objc_storeStrong(&v9->_metalContext, context);
   v10->_colorSize.width = width;
   v10->_colorSize.height = height;
   v11 = objc_alloc_init(MEMORY[0x277CE2E18]);
@@ -66,14 +66,14 @@ LABEL_11:
   return v15;
 }
 
-+ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)segmentationSizeForColorSize:(SEL)a3
++ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)segmentationSizeForColorSize:(SEL)size
 {
   *&retstr->var0 = xmmword_2244A5BB0;
   retstr->var2 = 1;
   return result;
 }
 
-- (id)runPersonSegmentationForPixelBuffer:(__CVBuffer *)a3
+- (id)runPersonSegmentationForPixelBuffer:(__CVBuffer *)buffer
 {
   v25[1] = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -89,7 +89,7 @@ LABEL_11:
   v25[0] = self->_personSegmentationRequest;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
   v24 = 0;
-  LOBYTE(visionRequestHandler) = [(VNSequenceRequestHandler *)visionRequestHandler performRequests:v9 onCVPixelBuffer:a3 error:&v24];
+  LOBYTE(visionRequestHandler) = [(VNSequenceRequestHandler *)visionRequestHandler performRequests:v9 onCVPixelBuffer:buffer error:&v24];
   v10 = v24;
 
   if ((visionRequestHandler & 1) == 0)
@@ -101,13 +101,13 @@ LABEL_11:
     }
   }
 
-  v18 = [(VNGeneratePersonSegmentationRequest *)self->_personSegmentationRequest results];
-  if ([v18 count])
+  results = [(VNGeneratePersonSegmentationRequest *)self->_personSegmentationRequest results];
+  if ([results count])
   {
-    v19 = [v18 objectAtIndexedSubscript:0];
-    v20 = [v19 pixelBuffer];
-    v21 = [(PTMetalContext *)self->_metalContext device];
-    v22 = [PTPixelBufferUtil createTextureFromPixelBuffer:v20 device:v21];
+    v19 = [results objectAtIndexedSubscript:0];
+    pixelBuffer = [v19 pixelBuffer];
+    device = [(PTMetalContext *)self->_metalContext device];
+    v22 = [PTPixelBufferUtil createTextureFromPixelBuffer:pixelBuffer device:device];
   }
 
   else
@@ -136,19 +136,19 @@ LABEL_11:
 
 - (__CVBuffer)outputPixelBuffer
 {
-  v2 = [(VNGeneratePersonSegmentationRequest *)self->_personSegmentationRequest results];
-  if ([v2 count])
+  results = [(VNGeneratePersonSegmentationRequest *)self->_personSegmentationRequest results];
+  if ([results count])
   {
-    v3 = [v2 objectAtIndexedSubscript:0];
-    v4 = [v3 pixelBuffer];
+    v3 = [results objectAtIndexedSubscript:0];
+    pixelBuffer = [v3 pixelBuffer];
   }
 
   else
   {
-    v4 = 0;
+    pixelBuffer = 0;
   }
 
-  return v4;
+  return pixelBuffer;
 }
 
 @end

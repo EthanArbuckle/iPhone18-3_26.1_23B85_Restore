@@ -1,22 +1,22 @@
 @interface DNDSModeAssertionSourceRecord
-+ (id)recordForAssertionSource:(id)a3;
-+ (id)recordForDictionary:(id)a3 keys:(id *)a4;
-- (id)dictionaryWithKeys:(id *)a3 options:(unint64_t)a4;
++ (id)recordForAssertionSource:(id)source;
++ (id)recordForDictionary:(id)dictionary keys:(id *)keys;
+- (id)dictionaryWithKeys:(id *)keys options:(unint64_t)options;
 - (id)object;
 @end
 
 @implementation DNDSModeAssertionSourceRecord
 
-+ (id)recordForDictionary:(id)a3 keys:(id *)a4
++ (id)recordForDictionary:(id)dictionary keys:(id *)keys
 {
-  if (a3)
+  if (dictionary)
   {
-    v5 = a3;
+    dictionaryCopy = dictionary;
     v6 = objc_alloc_init(DNDSModeAssertionSourceRecord);
-    v7 = [v5 bs_safeStringForKey:a4->var4.var0];
+    v7 = [dictionaryCopy bs_safeStringForKey:keys->var4.var0];
     [(DNDSModeAssertionSourceRecord *)v6 setClientIdentifier:v7];
 
-    v8 = [v5 bs_safeStringForKey:a4->var4.var1];
+    v8 = [dictionaryCopy bs_safeStringForKey:keys->var4.var1];
 
     [(DNDSModeAssertionSourceRecord *)v6 setDeviceIdentifier:v8];
   }
@@ -29,30 +29,30 @@
   return v6;
 }
 
-- (id)dictionaryWithKeys:(id *)a3 options:(unint64_t)a4
+- (id)dictionaryWithKeys:(id *)keys options:(unint64_t)options
 {
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [(DNDSModeAssertionSourceRecord *)self clientIdentifier];
-  [v6 bs_setSafeObject:v7 forKey:a3->var4.var0];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  clientIdentifier = [(DNDSModeAssertionSourceRecord *)self clientIdentifier];
+  [dictionary bs_setSafeObject:clientIdentifier forKey:keys->var4.var0];
 
-  v8 = [(DNDSModeAssertionSourceRecord *)self deviceIdentifier];
-  [v6 bs_setSafeObject:v8 forKey:a3->var4.var1];
+  deviceIdentifier = [(DNDSModeAssertionSourceRecord *)self deviceIdentifier];
+  [dictionary bs_setSafeObject:deviceIdentifier forKey:keys->var4.var1];
 
-  return v6;
+  return dictionary;
 }
 
-+ (id)recordForAssertionSource:(id)a3
++ (id)recordForAssertionSource:(id)source
 {
-  if (a3)
+  if (source)
   {
-    v3 = a3;
+    sourceCopy = source;
     v4 = objc_alloc_init(DNDSModeAssertionSourceRecord);
-    v5 = [v3 clientIdentifier];
-    [(DNDSModeAssertionSourceRecord *)v4 setClientIdentifier:v5];
+    clientIdentifier = [sourceCopy clientIdentifier];
+    [(DNDSModeAssertionSourceRecord *)v4 setClientIdentifier:clientIdentifier];
 
-    v6 = [v3 deviceIdentifier];
+    deviceIdentifier = [sourceCopy deviceIdentifier];
 
-    [(DNDSModeAssertionSourceRecord *)v4 setDeviceIdentifier:v6];
+    [(DNDSModeAssertionSourceRecord *)v4 setDeviceIdentifier:deviceIdentifier];
   }
 
   else
@@ -65,11 +65,11 @@
 
 - (id)object
 {
-  v3 = [(DNDSModeAssertionSourceRecord *)self clientIdentifier];
-  v4 = [(DNDSModeAssertionSourceRecord *)self deviceIdentifier];
-  if (v3)
+  clientIdentifier = [(DNDSModeAssertionSourceRecord *)self clientIdentifier];
+  deviceIdentifier = [(DNDSModeAssertionSourceRecord *)self deviceIdentifier];
+  if (clientIdentifier)
   {
-    v5 = [objc_alloc(MEMORY[0x277D05988]) initWithClientIdentifier:v3 deviceIdentifier:v4];
+    v5 = [objc_alloc(MEMORY[0x277D05988]) initWithClientIdentifier:clientIdentifier deviceIdentifier:deviceIdentifier];
   }
 
   else

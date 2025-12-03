@@ -24,13 +24,13 @@
   {
     v2->_neighborScore = NAN;
     v2->_bestLocationCoordinate = CLLocationCoordinate2DMake(NAN, NAN);
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     previousMomentNode = v3->_previousMomentNode;
-    v3->_previousMomentNode = v4;
+    v3->_previousMomentNode = null;
 
-    v6 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
     nextMomentNode = v3->_nextMomentNode;
-    v3->_nextMomentNode = v6;
+    v3->_nextMomentNode = null2;
   }
 
   return v3;

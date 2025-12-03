@@ -11,11 +11,11 @@
 
 - (id)targetViewController
 {
-  v3 = [(SBBannerCustomTransitionAnimatorContext *)self transitionContext];
-  v4 = [v3 viewControllerForKey:*MEMORY[0x277D77230]];
+  transitionContext = [(SBBannerCustomTransitionAnimatorContext *)self transitionContext];
+  v4 = [transitionContext viewControllerForKey:*MEMORY[0x277D77230]];
 
-  v5 = [(SBBannerCustomTransitionAnimatorContext *)self transitionContext];
-  v6 = [v5 viewControllerForKey:*MEMORY[0x277D77240]];
+  transitionContext2 = [(SBBannerCustomTransitionAnimatorContext *)self transitionContext];
+  v6 = [transitionContext2 viewControllerForKey:*MEMORY[0x277D77240]];
 
   if ([(SBBannerCustomTransitionAnimatorContext *)self isPresentationTransition])
   {
@@ -34,17 +34,17 @@
 
 - (UIView)transitionView
 {
-  v2 = [(SBBannerCustomTransitionAnimatorContext *)self targetViewController];
-  v3 = [v2 view];
+  targetViewController = [(SBBannerCustomTransitionAnimatorContext *)self targetViewController];
+  view = [targetViewController view];
 
-  return v3;
+  return view;
 }
 
 - (CGRect)initialFrame
 {
-  v3 = [(SBBannerCustomTransitionAnimatorContext *)self transitionContext];
-  v4 = [(SBBannerCustomTransitionAnimatorContext *)self targetViewController];
-  [v3 initialFrameForViewController:v4];
+  transitionContext = [(SBBannerCustomTransitionAnimatorContext *)self transitionContext];
+  targetViewController = [(SBBannerCustomTransitionAnimatorContext *)self targetViewController];
+  [transitionContext initialFrameForViewController:targetViewController];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -63,10 +63,10 @@
 
 - (CGRect)initialContentFrame
 {
-  v3 = [(SBBannerCustomTransitionAnimatorContext *)self targetViewController];
+  targetViewController = [(SBBannerCustomTransitionAnimatorContext *)self targetViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v3 bannerContentOutsets];
+    [targetViewController bannerContentOutsets];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -100,9 +100,9 @@
 
 - (CGRect)finalFrame
 {
-  v3 = [(SBBannerCustomTransitionAnimatorContext *)self transitionContext];
-  v4 = [(SBBannerCustomTransitionAnimatorContext *)self targetViewController];
-  [v3 finalFrameForViewController:v4];
+  transitionContext = [(SBBannerCustomTransitionAnimatorContext *)self transitionContext];
+  targetViewController = [(SBBannerCustomTransitionAnimatorContext *)self targetViewController];
+  [transitionContext finalFrameForViewController:targetViewController];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -121,10 +121,10 @@
 
 - (CGRect)finalContentFrame
 {
-  v3 = [(SBBannerCustomTransitionAnimatorContext *)self targetViewController];
+  targetViewController = [(SBBannerCustomTransitionAnimatorContext *)self targetViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v3 bannerContentOutsets];
+    [targetViewController bannerContentOutsets];
     v5 = v4;
     v7 = v6;
     v9 = v8;

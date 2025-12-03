@@ -1,13 +1,13 @@
 @interface CVNLPCaptionRuntimeParameters
-- (CVNLPCaptionRuntimeParameters)initWithOptions:(id)a3;
-- (void)_loadRuntimeParameters:(id)a3;
+- (CVNLPCaptionRuntimeParameters)initWithOptions:(id)options;
+- (void)_loadRuntimeParameters:(id)parameters;
 @end
 
 @implementation CVNLPCaptionRuntimeParameters
 
-- (CVNLPCaptionRuntimeParameters)initWithOptions:(id)a3
+- (CVNLPCaptionRuntimeParameters)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = CVNLPCaptionRuntimeParameters;
   v5 = [(CVNLPCaptionRuntimeParameters *)&v10 init];
@@ -16,17 +16,17 @@
   {
     *&v5->_captionModelMinimumConfidence = xmmword_1D9DDE7E0;
     v5->_excludeGenderStrategy = 1;
-    objc_msgSend__loadRuntimeParameters_(v5, v6, v4, v7);
+    objc_msgSend__loadRuntimeParameters_(v5, v6, optionsCopy, v7);
   }
 
   return v8;
 }
 
-- (void)_loadRuntimeParameters:(id)a3
+- (void)_loadRuntimeParameters:(id)parameters
 {
   v243 = *MEMORY[0x1E69E9840];
-  v212 = a3;
-  v209 = objc_msgSend_objectForKeyedSubscript_(v212, v3, CVNLPCaptionModelPath, v4);
+  parametersCopy = parameters;
+  v209 = objc_msgSend_objectForKeyedSubscript_(parametersCopy, v3, CVNLPCaptionModelPath, v4);
   v7 = objc_msgSend_URLByAppendingPathComponent_(v209, v5, @"runtime_parameters.json", v6);
   v8 = MEMORY[0x1E695DEF0];
   v211 = v7;
@@ -232,11 +232,11 @@ LABEL_70:
             {
               v220 = 0;
 LABEL_82:
-              v148 = objc_msgSend_objectForKeyedSubscript_(v212, v128, CVNLPCaptionEnableGenderedCaptions, v130);
+              v148 = objc_msgSend_objectForKeyedSubscript_(parametersCopy, v128, CVNLPCaptionEnableGenderedCaptions, v130);
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v206 = objc_msgSend_objectForKeyedSubscript_(v212, v149, CVNLPCaptionEnableGenderedCaptions, v150);
+                v206 = objc_msgSend_objectForKeyedSubscript_(parametersCopy, v149, CVNLPCaptionEnableGenderedCaptions, v150);
 
                 if (v206)
                 {

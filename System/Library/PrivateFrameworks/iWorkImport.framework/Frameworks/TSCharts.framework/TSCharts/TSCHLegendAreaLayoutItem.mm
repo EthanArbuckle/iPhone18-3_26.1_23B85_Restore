@@ -1,30 +1,30 @@
 @interface TSCHLegendAreaLayoutItem
-- (CGAffineTransform)i_transformForRenderingLabel:(SEL)a3 paragraphStyle:(unint64_t)a4 cellType:(id)a5 rangePtr:(int)a6 outElementSize:(_NSRange *)a7 outClipRect:(CGSize *)a8;
-- (CGAffineTransform)transformForRenderingBadge:(SEL)a3 cellType:(unint64_t)a4 outElementSize:(int)a5 outClipRect:(CGSize *)a6;
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3;
+- (CGAffineTransform)i_transformForRenderingLabel:(SEL)label paragraphStyle:(unint64_t)style cellType:(id)type rangePtr:(int)ptr outElementSize:(_NSRange *)size outClipRect:(CGSize *)rect;
+- (CGAffineTransform)transformForRenderingBadge:(SEL)badge cellType:(unint64_t)type outElementSize:(int)size outClipRect:(CGSize *)rect;
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection;
 - (CGRect)calcDrawingRect;
 - (CGRect)legendModelGeometryFrame;
 - (CGSize)calcMinSize;
-- (TSCHLegendAreaLayoutItem)initWithParent:(id)a3;
+- (TSCHLegendAreaLayoutItem)initWithParent:(id)parent;
 - (TSCHLegendModelCache)legendModelCache;
 - (double)p_legendModelWidth;
-- (id)renderersWithRep:(id)a3;
+- (id)renderersWithRep:(id)rep;
 - (void)clearAll;
 - (void)clearLayoutSize;
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4;
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block;
 - (void)resetLayoutSize;
-- (void)setLayoutSize:(CGSize)a3;
-- (void)setLegendModelGeometryFrame:(CGRect)a3;
+- (void)setLayoutSize:(CGSize)size;
+- (void)setLegendModelGeometryFrame:(CGRect)frame;
 - (void)updateLegendGeometryFrameFromLegendModelCache;
 @end
 
 @implementation TSCHLegendAreaLayoutItem
 
-- (TSCHLegendAreaLayoutItem)initWithParent:(id)a3
+- (TSCHLegendAreaLayoutItem)initWithParent:(id)parent
 {
   v10.receiver = self;
   v10.super_class = TSCHLegendAreaLayoutItem;
-  v3 = [(TSCHChartLayoutItem *)&v10 initWithParent:a3];
+  v3 = [(TSCHChartLayoutItem *)&v10 initWithParent:parent];
   v8 = v3;
   if (v3)
   {
@@ -67,10 +67,10 @@
   return v16;
 }
 
-- (void)setLayoutSize:(CGSize)a3
+- (void)setLayoutSize:(CGSize)size
 {
-  width = a3.width;
-  v6 = objc_msgSend_legendModelCache(self, a2, a3.width, a3.height, v3);
+  width = size.width;
+  v6 = objc_msgSend_legendModelCache(self, a2, size.width, size.height, v3);
   v10 = objc_msgSend_viewCacheForWidth_(v6, v7, width, v8, v9);
   objc_msgSend_legendSize(v10, v11, v12, v13, v14);
   v15.receiver = self;
@@ -199,20 +199,20 @@
   return result;
 }
 
-- (void)setLegendModelGeometryFrame:(CGRect)a3
+- (void)setLegendModelGeometryFrame:(CGRect)frame
 {
-  v4 = objc_msgSend_valueWithCGRect_(MEMORY[0x277CCAE60], a2, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  v4 = objc_msgSend_valueWithCGRect_(MEMORY[0x277CCAE60], a2, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
   legendGeometryFrame = self->_legendGeometryFrame;
   self->_legendGeometryFrame = v4;
 
-  v7 = self;
+  selfCopy = self;
   do
   {
-    objc_msgSend_clearDrawingRect(v7, v6, v8, v9, v10);
-    objc_msgSend_clearOverhangRect(v7, v11, v12, v13, v14);
-    v19 = objc_msgSend_parent(v7, v15, v16, v17, v18);
+    objc_msgSend_clearDrawingRect(selfCopy, v6, v8, v9, v10);
+    objc_msgSend_clearOverhangRect(selfCopy, v11, v12, v13, v14);
+    v19 = objc_msgSend_parent(selfCopy, v15, v16, v17, v18);
 
-    v7 = v19;
+    selfCopy = v19;
   }
 
   while (v19);
@@ -241,22 +241,22 @@
   objc_msgSend_setLegendModelGeometryFrame_(self, v11, v19, v20, v21, v22);
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v5 = objc_opt_new();
   v6 = [TSCHLegendRenderer alloc];
-  v11 = objc_msgSend_initWithChartRep_layoutItem_(v6, v7, v8, v9, v10, v4, self);
+  v11 = objc_msgSend_initWithChartRep_layoutItem_(v6, v7, v8, v9, v10, repCopy, self);
 
   objc_msgSend_addObject_(v5, v12, v13, v14, v15, v11);
 
   return v5;
 }
 
-- (CGAffineTransform)i_transformForRenderingLabel:(SEL)a3 paragraphStyle:(unint64_t)a4 cellType:(id)a5 rangePtr:(int)a6 outElementSize:(_NSRange *)a7 outClipRect:(CGSize *)a8
+- (CGAffineTransform)i_transformForRenderingLabel:(SEL)label paragraphStyle:(unint64_t)style cellType:(id)type rangePtr:(int)ptr outElementSize:(_NSRange *)size outClipRect:(CGSize *)rect
 {
-  v12 = *&a6;
-  v16 = a5;
+  v12 = *&ptr;
+  typeCopy = type;
   v17 = MEMORY[0x277CBF398];
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
@@ -272,19 +272,19 @@
   v120 = *(v24 + 32);
   *&retstr->tx = v120;
   v27 = objc_msgSend_legendModelCache(self, v25, *&v120, *&v121, v26);
-  v33 = objc_msgSend_cellForSeriesIndex_cellType_(v27, v28, v29, v30, v31, a4, v12);
+  v33 = objc_msgSend_cellForSeriesIndex_cellType_(v27, v28, v29, v30, v31, style, v12);
   if (v33)
   {
-    v118 = v16;
+    v118 = typeCopy;
     objc_msgSend_layoutSize(self, v32, v34, v35, v36);
     v123 = objc_msgSend_viewCacheForWidth_(v27, v37, v38, v39, v40);
     v45 = objc_msgSend_labelString(v33, v41, v42, v43, v44);
     v116 = v22;
     v117 = v23;
-    if (a7)
+    if (size)
     {
-      location = a7->location;
-      length = a7->length;
+      location = size->location;
+      length = size->length;
     }
 
     else
@@ -345,7 +345,7 @@
       v131.origin.y = v106;
       v131.size.width = v22;
       v131.size.height = v23;
-      v16 = v93;
+      typeCopy = v93;
       if (CGRectIsNull(v131) || CGRectIsNull(v125))
       {
         *&retstr->a = v122;
@@ -385,7 +385,7 @@
       y = v88;
       width = v89;
       height = v90;
-      v16 = v118;
+      typeCopy = v118;
     }
   }
 
@@ -414,18 +414,18 @@
     a9->size.height = height;
   }
 
-  if (a8)
+  if (rect)
   {
-    a8->width = v22;
-    a8->height = v23;
+    rect->width = v22;
+    rect->height = v23;
   }
 
   return result;
 }
 
-- (CGAffineTransform)transformForRenderingBadge:(SEL)a3 cellType:(unint64_t)a4 outElementSize:(int)a5 outClipRect:(CGSize *)a6
+- (CGAffineTransform)transformForRenderingBadge:(SEL)badge cellType:(unint64_t)type outElementSize:(int)size outClipRect:(CGSize *)rect
 {
-  v10 = *&a5;
+  v10 = *&size;
   v14 = MEMORY[0x277CBF2C0];
   v76 = *(MEMORY[0x277CBF2C0] + 16);
   v77 = *MEMORY[0x277CBF2C0];
@@ -433,8 +433,8 @@
   *&retstr->c = v76;
   v75 = *(v14 + 32);
   *&retstr->tx = v75;
-  v15 = objc_msgSend_legendModelCache(self, a3, *&v75, *&v76, v7);
-  v21 = objc_msgSend_cellForSeriesIndex_cellType_(v15, v16, v17, v18, v19, a4, v10);
+  v15 = objc_msgSend_legendModelCache(self, badge, *&v75, *&v76, v7);
+  v21 = objc_msgSend_cellForSeriesIndex_cellType_(v15, v16, v17, v18, v19, type, v10);
   if (v21)
   {
     objc_msgSend_layoutSize(self, v20, v22, v23, v24);
@@ -493,22 +493,22 @@ LABEL_5:
     }
   }
 
-  if (a6)
+  if (rect)
   {
-    a6->width = v63;
-    a6->height = v65;
+    rect->width = v63;
+    rect->height = v65;
   }
 
   return result;
 }
 
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block
 {
-  x = a3.x;
-  y = a3.y;
+  x = elements.x;
+  y = elements.y;
   v145[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     v10 = objc_msgSend_chartInfo(self, v5, v7, v8, v9);
     v15 = objc_msgSend_chartType(v10, v11, v12, v13, v14);
@@ -531,7 +531,7 @@ LABEL_5:
         if (CGRectContainsPoint(v148, v146))
         {
           v131 = v10;
-          v132 = v6;
+          v132 = blockCopy;
           v36 = objc_msgSend_model(self, v32, v33, v34, v35);
           v41 = objc_msgSend_numberOfSeries(v36, v37, v38, v39, v40);
 
@@ -619,12 +619,12 @@ LABEL_5:
                   v109 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v73, v107, v75, v76, v60);
                   v144 = v109;
                   objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v110, v111, v112, v113, &v144, 1);
-                  v114 = self;
+                  selfCopy = self;
                   v116 = v115 = v62;
                   v121 = objc_msgSend_selectionPathWithType_name_arguments_(TSCHSelectionPath, v117, v118, v119, v120, @"text", v108, v116);
 
                   v62 = v115;
-                  self = v114;
+                  self = selfCopy;
 
                   v80 = v121;
                 }
@@ -657,7 +657,7 @@ LABEL_5:
           v123 = objc_msgSend_legendType(TSCHSelectionPathType, v56, v57, v58, v59);
           v128 = objc_msgSend_selectionPathWithPathType_arguments_subSelection_(TSCHSelectionPath, v124, v125, v126, v127, v123, 0, v80);
 
-          v6 = v132;
+          blockCopy = v132;
           (*(v132 + 2))(v132, v128, 0);
 
           v15 = v130;
@@ -668,14 +668,14 @@ LABEL_5:
   }
 }
 
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  selectionCopy = selection;
   v42.receiver = self;
   v42.super_class = TSCHLegendAreaLayoutItem;
-  Mutable = [(TSCHChartLayoutItem *)&v42 newDragAndDropHighlightPathForSelection:v4];
-  if (objc_msgSend_count(v4, v6, v7, v8, v9))
+  Mutable = [(TSCHChartLayoutItem *)&v42 newDragAndDropHighlightPathForSelection:selectionCopy];
+  if (objc_msgSend_count(selectionCopy, v6, v7, v8, v9))
   {
     if (Mutable)
     {
@@ -693,8 +693,8 @@ LABEL_5:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v37 = v4;
-    v11 = v4;
+    v37 = selectionCopy;
+    v11 = selectionCopy;
     v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, v13, v14, v15, &v38, v43, 16);
     if (v16)
     {
@@ -731,7 +731,7 @@ LABEL_5:
       while (v21);
     }
 
-    v4 = v37;
+    selectionCopy = v37;
   }
 
   return Mutable;

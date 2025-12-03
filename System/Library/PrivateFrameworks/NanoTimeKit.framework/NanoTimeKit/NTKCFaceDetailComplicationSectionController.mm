@@ -1,27 +1,27 @@
 @interface NTKCFaceDetailComplicationSectionController
-+ (BOOL)hasComplicationsForFace:(id)a3;
-- (BOOL)_canSelectRow:(int64_t)a3;
++ (BOOL)hasComplicationsForFace:(id)face;
+- (BOOL)_canSelectRow:(int64_t)row;
 - (NSSet)richComplicationSlots;
-- (NTKCFaceDetailComplicationSectionController)initWithTableViewController:(id)a3 face:(id)a4 faceView:(id)a5 inGallery:(BOOL)a6;
+- (NTKCFaceDetailComplicationSectionController)initWithTableViewController:(id)controller face:(id)face faceView:(id)view inGallery:(BOOL)gallery;
 - (NTKCFaceDetailComplicationSectionDelegate)delegate;
-- (void)_addComplication:(id)a3;
+- (void)_addComplication:(id)complication;
 - (void)_commonInit;
-- (void)didSelectRow:(int64_t)a3;
+- (void)didSelectRow:(int64_t)row;
 - (void)faceDidChange;
 @end
 
 @implementation NTKCFaceDetailComplicationSectionController
 
-+ (BOOL)hasComplicationsForFace:(id)a3
++ (BOOL)hasComplicationsForFace:(id)face
 {
-  v3 = a3;
+  faceCopy = face;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
   v4 = objc_opt_class();
-  v5 = [v3 device];
-  v6 = [v4 fixedComplicationSlotsForDevice:v5];
+  device = [faceCopy device];
+  v6 = [v4 fixedComplicationSlotsForDevice:device];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -29,14 +29,14 @@
   v10[3] = &unk_278780C38;
   v7 = v6;
   v11 = v7;
-  v8 = v3;
+  v8 = faceCopy;
   v12 = v8;
   v13 = &v14;
   [v8 enumerateComplicationSlotsWithBlock:v10];
-  LOBYTE(v5) = *(v15 + 24);
+  LOBYTE(device) = *(v15 + 24);
 
   _Block_object_dispose(&v14, 8);
-  return v5;
+  return device;
 }
 
 void __71__NTKCFaceDetailComplicationSectionController_hasComplicationsForFace___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -57,17 +57,17 @@ void __71__NTKCFaceDetailComplicationSectionController_hasComplicationsForFace__
   }
 }
 
-- (NTKCFaceDetailComplicationSectionController)initWithTableViewController:(id)a3 face:(id)a4 faceView:(id)a5 inGallery:(BOOL)a6
+- (NTKCFaceDetailComplicationSectionController)initWithTableViewController:(id)controller face:(id)face faceView:(id)view inGallery:(BOOL)gallery
 {
-  v6 = a6;
-  v11 = a5;
+  galleryCopy = gallery;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = NTKCFaceDetailComplicationSectionController;
-  v12 = [(NTKCFaceDetailSectionController *)&v15 initWithTableViewController:a3 face:a4 inGallery:v6];
+  v12 = [(NTKCFaceDetailSectionController *)&v15 initWithTableViewController:controller face:face inGallery:galleryCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_faceView, a5);
+    objc_storeStrong(&v12->_faceView, view);
   }
 
   return v13;
@@ -75,21 +75,21 @@ void __71__NTKCFaceDetailComplicationSectionController_hasComplicationsForFace__
 
 - (void)_commonInit
 {
-  v3 = [(NTKCFaceDetailSectionController *)self face];
+  face = [(NTKCFaceDetailSectionController *)self face];
   v4 = objc_opt_class();
-  v5 = [(NTKCFaceDetailSectionController *)self face];
-  v6 = [v5 device];
-  v7 = [v4 fixedComplicationSlotsForDevice:v6];
+  face2 = [(NTKCFaceDetailSectionController *)self face];
+  device = [face2 device];
+  v7 = [v4 fixedComplicationSlotsForDevice:device];
 
-  v8 = [(NTKCFaceDetailSectionController *)self face];
+  face3 = [(NTKCFaceDetailSectionController *)self face];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__NTKCFaceDetailComplicationSectionController__commonInit__block_invoke;
   v10[3] = &unk_27877F498;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v9 = v7;
-  [v8 enumerateComplicationSlotsWithBlock:v10];
+  [face3 enumerateComplicationSlotsWithBlock:v10];
 }
 
 void __58__NTKCFaceDetailComplicationSectionController__commonInit__block_invoke(uint64_t a1, void *a2)
@@ -155,47 +155,47 @@ void __58__NTKCFaceDetailComplicationSectionController__commonInit__block_invoke
   }
 }
 
-- (void)_addComplication:(id)a3
+- (void)_addComplication:(id)complication
 {
-  v4 = a3;
-  v5 = [(NTKCFaceDetailSectionController *)self rows];
+  complicationCopy = complication;
+  rows = [(NTKCFaceDetailSectionController *)self rows];
 
-  if (!v5)
+  if (!rows)
   {
     v6 = objc_opt_new();
     [(NTKCFaceDetailSectionController *)self setRows:v6];
   }
 
-  v7 = [(NTKCFaceDetailSectionController *)self rows];
-  [v7 addObject:v4];
+  rows2 = [(NTKCFaceDetailSectionController *)self rows];
+  [rows2 addObject:complicationCopy];
 }
 
-- (BOOL)_canSelectRow:(int64_t)a3
+- (BOOL)_canSelectRow:(int64_t)row
 {
-  v5 = [(NTKCFaceDetailSectionController *)self rows];
-  v6 = [v5 indexOfObject:self->_hiddenCell];
+  rows = [(NTKCFaceDetailSectionController *)self rows];
+  v6 = [rows indexOfObject:self->_hiddenCell];
 
-  if (v6 == a3)
+  if (v6 == row)
   {
     return 0;
   }
 
-  v8 = [(NTKCFaceDetailSectionController *)self rows];
-  v9 = [v8 objectAtIndexedSubscript:a3];
-  v10 = [v9 enabled];
+  rows2 = [(NTKCFaceDetailSectionController *)self rows];
+  v9 = [rows2 objectAtIndexedSubscript:row];
+  enabled = [v9 enabled];
 
-  return v10;
+  return enabled;
 }
 
-- (void)didSelectRow:(int64_t)a3
+- (void)didSelectRow:(int64_t)row
 {
-  v5 = [(NTKCFaceDetailSectionController *)self rows];
-  v9 = [v5 objectAtIndexedSubscript:a3];
+  rows = [(NTKCFaceDetailSectionController *)self rows];
+  v9 = [rows objectAtIndexedSubscript:row];
 
-  v6 = [v9 slot];
-  v7 = [v9 complication];
-  v8 = [(NTKCFaceDetailComplicationSectionController *)self delegate];
-  [v8 complicationSection:self wantsToPresentPickerForSlot:v6 selectedComplication:v7];
+  slot = [v9 slot];
+  complication = [v9 complication];
+  delegate = [(NTKCFaceDetailComplicationSectionController *)self delegate];
+  [delegate complicationSection:self wantsToPresentPickerForSlot:slot selectedComplication:complication];
 }
 
 - (void)faceDidChange
@@ -205,8 +205,8 @@ void __58__NTKCFaceDetailComplicationSectionController__commonInit__block_invoke
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v3 = [(NTKCFaceDetailSectionController *)self rows];
-  v4 = [v3 countByEnumeratingWithState:&v59 objects:v67 count:16];
+  rows = [(NTKCFaceDetailSectionController *)self rows];
+  v4 = [rows countByEnumeratingWithState:&v59 objects:v67 count:16];
   if (v4)
   {
     v5 = v4;
@@ -217,52 +217,52 @@ void __58__NTKCFaceDetailComplicationSectionController__commonInit__block_invoke
       {
         if (*v60 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rows);
         }
 
         v8 = *(*(&v59 + 1) + 8 * i);
         if (v8 != self->_hiddenCell)
         {
-          v9 = [(NTKCFaceDetailSectionController *)self face];
-          v10 = [(NTKCFaceDetailComplicationsHiddenCell *)v8 slot];
-          v11 = [v9 complicationForSlot:v10];
+          face = [(NTKCFaceDetailSectionController *)self face];
+          slot = [(NTKCFaceDetailComplicationsHiddenCell *)v8 slot];
+          v11 = [face complicationForSlot:slot];
           [(NTKCFaceDetailComplicationsHiddenCell *)v8 setComplication:v11];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v59 objects:v67 count:16];
+      v5 = [rows countByEnumeratingWithState:&v59 objects:v67 count:16];
     }
 
     while (v5);
   }
 
-  v12 = [(NTKCFaceDetailSectionController *)self rows];
-  v13 = [v12 indexOfObject:self->_hiddenCell];
+  rows2 = [(NTKCFaceDetailSectionController *)self rows];
+  v13 = [rows2 indexOfObject:self->_hiddenCell];
 
-  v14 = [(NTKFaceView *)self->_faceView allVisibleComplicationsForCurrentConfiguration];
-  v15 = [v14 count];
+  allVisibleComplicationsForCurrentConfiguration = [(NTKFaceView *)self->_faceView allVisibleComplicationsForCurrentConfiguration];
+  v15 = [allVisibleComplicationsForCurrentConfiguration count];
 
   if (!v15 && !self->_hiddenCell)
   {
     v16 = objc_alloc_init(NTKCFaceDetailComplicationsHiddenCell);
     [(NTKCFaceDetailComplicationSectionController *)self setHiddenCell:v16];
 
-    v17 = [(NTKCFaceDetailSectionController *)self face];
-    v18 = [v17 _complicationsNotAvailableForThisNounString];
-    v19 = [(NTKCFaceDetailComplicationSectionController *)self hiddenCell];
-    v20 = [v19 textLabel];
-    [v20 setText:v18];
+    face2 = [(NTKCFaceDetailSectionController *)self face];
+    _complicationsNotAvailableForThisNounString = [face2 _complicationsNotAvailableForThisNounString];
+    hiddenCell = [(NTKCFaceDetailComplicationSectionController *)self hiddenCell];
+    textLabel = [hiddenCell textLabel];
+    [textLabel setText:_complicationsNotAvailableForThisNounString];
   }
 
-  v21 = [(NTKFaceView *)self->_faceView _complicationSlotsHiddenByCurrentConfiguration];
-  if ([v21 count])
+  _complicationSlotsHiddenByCurrentConfiguration = [(NTKFaceView *)self->_faceView _complicationSlotsHiddenByCurrentConfiguration];
+  if ([_complicationSlotsHiddenByCurrentConfiguration count])
   {
     v57 = 0uLL;
     v58 = 0uLL;
     v55 = 0uLL;
     v56 = 0uLL;
-    v22 = [(NTKCFaceDetailSectionController *)self rows];
-    v23 = [v22 countByEnumeratingWithState:&v55 objects:v66 count:16];
+    rows3 = [(NTKCFaceDetailSectionController *)self rows];
+    v23 = [rows3 countByEnumeratingWithState:&v55 objects:v66 count:16];
     if (v23)
     {
       v24 = v23;
@@ -274,18 +274,18 @@ void __58__NTKCFaceDetailComplicationSectionController__commonInit__block_invoke
         {
           if (*v56 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(rows3);
           }
 
           v27 = *(*(&v55 + 1) + 8 * j);
           if (v27 != self->_hiddenCell)
           {
-            v28 = [*(*(&v55 + 1) + 8 * j) slot];
-            -[NTKCFaceDetailComplicationsHiddenCell setEnabled:](v27, "setEnabled:", [v21 containsObject:v28] ^ 1);
+            slot2 = [*(*(&v55 + 1) + 8 * j) slot];
+            -[NTKCFaceDetailComplicationsHiddenCell setEnabled:](v27, "setEnabled:", [_complicationSlotsHiddenByCurrentConfiguration containsObject:slot2] ^ 1);
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v55 objects:v66 count:16];
+        v24 = [rows3 countByEnumeratingWithState:&v55 objects:v66 count:16];
       }
 
       while (v24);
@@ -299,8 +299,8 @@ void __58__NTKCFaceDetailComplicationSectionController__commonInit__block_invoke
     v54 = 0uLL;
     v51 = 0uLL;
     v52 = 0uLL;
-    v22 = [(NTKCFaceDetailSectionController *)self rows];
-    v29 = [v22 countByEnumeratingWithState:&v51 objects:v65 count:16];
+    rows3 = [(NTKCFaceDetailSectionController *)self rows];
+    v29 = [rows3 countByEnumeratingWithState:&v51 objects:v65 count:16];
     if (v29)
     {
       v30 = v29;
@@ -311,13 +311,13 @@ void __58__NTKCFaceDetailComplicationSectionController__commonInit__block_invoke
         {
           if (*v52 != v31)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(rows3);
           }
 
           [*(*(&v51 + 1) + 8 * k) setEnabled:1];
         }
 
-        v30 = [v22 countByEnumeratingWithState:&v51 objects:v65 count:16];
+        v30 = [rows3 countByEnumeratingWithState:&v51 objects:v65 count:16];
       }
 
       while (v30);
@@ -326,45 +326,45 @@ void __58__NTKCFaceDetailComplicationSectionController__commonInit__block_invoke
 
   v33 = v15 == 0;
 
-  v34 = [(NTKCFaceDetailSectionController *)self rows];
-  v35 = [v34 indexOfObject:self->_hiddenCell];
+  rows4 = [(NTKCFaceDetailSectionController *)self rows];
+  v35 = [rows4 indexOfObject:self->_hiddenCell];
 
   v36 = v35 == 0x7FFFFFFFFFFFFFFFLL && v33;
   v37 = v13 == 0x7FFFFFFFFFFFFFFFLL || v33;
   if (v35 != v13 || v36 || (v37 & 1) == 0)
   {
-    v38 = [(NTKCFaceDetailSectionController *)self tableView];
-    [v38 beginUpdates];
+    tableView = [(NTKCFaceDetailSectionController *)self tableView];
+    [tableView beginUpdates];
 
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v39 = [MEMORY[0x277CCAA70] indexPathForRow:v13 inSection:{-[NTKCFaceDetailSectionController section](self, "section")}];
-      v40 = [(NTKCFaceDetailSectionController *)self tableView];
+      tableView2 = [(NTKCFaceDetailSectionController *)self tableView];
       v64 = v39;
       v41 = [MEMORY[0x277CBEA60] arrayWithObjects:&v64 count:1];
-      [v40 deleteRowsAtIndexPaths:v41 withRowAnimation:100];
+      [tableView2 deleteRowsAtIndexPaths:v41 withRowAnimation:100];
 
-      v42 = [(NTKCFaceDetailSectionController *)self rows];
-      [v42 removeObject:self->_hiddenCell];
+      rows5 = [(NTKCFaceDetailSectionController *)self rows];
+      [rows5 removeObject:self->_hiddenCell];
     }
 
     if (v35 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v43 = [(NTKCFaceDetailSectionController *)self rows];
-      v44 = [v43 count];
+      rows6 = [(NTKCFaceDetailSectionController *)self rows];
+      v44 = [rows6 count];
 
       v45 = [MEMORY[0x277CCAA70] indexPathForRow:v44 inSection:{-[NTKCFaceDetailSectionController section](self, "section")}];
-      v46 = [(NTKCFaceDetailSectionController *)self tableView];
+      tableView3 = [(NTKCFaceDetailSectionController *)self tableView];
       v63 = v45;
       v47 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
-      [v46 insertRowsAtIndexPaths:v47 withRowAnimation:100];
+      [tableView3 insertRowsAtIndexPaths:v47 withRowAnimation:100];
 
-      v48 = [(NTKCFaceDetailSectionController *)self rows];
-      [v48 addObject:self->_hiddenCell];
+      rows7 = [(NTKCFaceDetailSectionController *)self rows];
+      [rows7 addObject:self->_hiddenCell];
     }
 
-    v49 = [(NTKCFaceDetailSectionController *)self tableView];
-    [v49 endUpdates];
+    tableView4 = [(NTKCFaceDetailSectionController *)self tableView];
+    [tableView4 endUpdates];
   }
 }
 
@@ -374,11 +374,11 @@ void __58__NTKCFaceDetailComplicationSectionController__commonInit__block_invoke
   if (!richComplicationSlots)
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = [(NTKCFaceDetailSectionController *)self face];
+    face = [(NTKCFaceDetailSectionController *)self face];
     v6 = objc_opt_class();
-    v7 = [(NTKCFaceDetailSectionController *)self face];
-    v8 = [v7 device];
-    v9 = [v6 richComplicationSlotsForDevice:v8];
+    face2 = [(NTKCFaceDetailSectionController *)self face];
+    device = [face2 device];
+    v9 = [v6 richComplicationSlotsForDevice:device];
     v10 = [v4 setWithArray:v9];
     v11 = self->_richComplicationSlots;
     self->_richComplicationSlots = v10;

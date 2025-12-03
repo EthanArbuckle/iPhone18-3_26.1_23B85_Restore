@@ -7,9 +7,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXTapticSoundTestingContainer *)self sound];
+  sound = [(AXTapticSoundTestingContainer *)self sound];
   [(AXTapticSoundTestingContainer *)self delay];
-  v6 = [v3 stringWithFormat:@"%@ [delay: %f]", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@ [delay: %f]", sound, v5];
 
   return v6;
 }

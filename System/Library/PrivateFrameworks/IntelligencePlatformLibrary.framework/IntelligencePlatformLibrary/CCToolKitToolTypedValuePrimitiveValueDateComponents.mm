@@ -1,25 +1,25 @@
 @interface CCToolKitToolTypedValuePrimitiveValueDateComponents
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValueDateComponents)initWithCalendar:(id)a3 timeZoneIdentifier:(id)a4 era:(id)a5 year:(id)a6 month:(id)a7 day:(id)a8 hour:(id)a9 minute:(id)a10 second:(id)a11 nanosecond:(id)a12 weekday:(id)a13 weekdayOrdinal:(id)a14 quarter:(id)a15 weekOfMonth:(id)a16 weekOfYear:(id)a17 yearForWeekOfYear:(id)a18 error:(id *)a19;
-- (CCToolKitToolTypedValuePrimitiveValueDateComponents)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValueDateComponents)initWithCalendar:(id)calendar timeZoneIdentifier:(id)identifier era:(id)era year:(id)year month:(id)month day:(id)day hour:(id)hour minute:(id)self0 second:(id)self1 nanosecond:(id)self2 weekday:(id)self3 weekdayOrdinal:(id)self4 quarter:(id)self5 weekOfMonth:(id)self6 weekOfYear:(id)self7 yearForWeekOfYear:(id)self8 error:(id *)self9;
+- (CCToolKitToolTypedValuePrimitiveValueDateComponents)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar)calendar;
 - (NSString)timeZoneIdentifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValuePrimitiveValueDateComponents
 
-- (CCToolKitToolTypedValuePrimitiveValueDateComponents)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValuePrimitiveValueDateComponents)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v35[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"calendar"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"calendar"];
     if (v9)
     {
       v10 = v9;
@@ -34,42 +34,42 @@
         goto LABEL_10;
       }
 
-      v25 = a4;
+      errorCopy2 = error;
       v31 = v8;
-      v32 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v25 = a4;
+      errorCopy2 = error;
       v31 = v8;
-      v32 = self;
+      selfCopy2 = self;
       v11 = 0;
     }
 
     v34 = v11;
-    v30 = [v6 objectForKeyedSubscript:@"timeZoneIdentifier"];
-    v27 = [v6 objectForKeyedSubscript:@"era"];
-    v29 = [v6 objectForKeyedSubscript:@"year"];
-    v28 = [v6 objectForKeyedSubscript:@"month"];
-    v26 = [v6 objectForKeyedSubscript:@"day"];
-    v33 = [v6 objectForKeyedSubscript:@"hour"];
-    v24 = [v6 objectForKeyedSubscript:@"minute"];
-    v23 = [v6 objectForKeyedSubscript:@"second"];
-    v22 = [v6 objectForKeyedSubscript:@"nanosecond"];
-    v21 = [v6 objectForKeyedSubscript:@"weekday"];
-    v20 = [v6 objectForKeyedSubscript:@"weekdayOrdinal"];
-    v19 = [v6 objectForKeyedSubscript:@"quarter"];
-    v15 = [v6 objectForKeyedSubscript:@"weekOfMonth"];
-    v16 = [v6 objectForKeyedSubscript:@"weekOfYear"];
-    v17 = [v6 objectForKeyedSubscript:@"yearForWeekOfYear"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"timeZoneIdentifier"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"era"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"year"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"month"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"day"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"hour"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"minute"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"second"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"nanosecond"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"weekday"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"weekdayOrdinal"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"quarter"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"weekOfMonth"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"weekOfYear"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"yearForWeekOfYear"];
     v13 = v30;
     v11 = v27;
-    v14 = [[CCToolKitToolTypedValuePrimitiveValueDateComponents alloc] initWithCalendar:v34 timeZoneIdentifier:v30 era:v27 year:v29 month:v28 day:v26 hour:v33 minute:v24 second:v23 nanosecond:v22 weekday:v21 weekdayOrdinal:v20 quarter:v19 weekOfMonth:v15 weekOfYear:v16 yearForWeekOfYear:v17 error:v25];
+    v14 = [[CCToolKitToolTypedValuePrimitiveValueDateComponents alloc] initWithCalendar:v34 timeZoneIdentifier:v30 era:v27 year:v29 month:v28 day:v26 hour:v33 minute:v24 second:v23 nanosecond:v22 weekday:v21 weekdayOrdinal:v20 quarter:v19 weekOfMonth:v15 weekOfYear:v16 yearForWeekOfYear:v17 error:errorCopy2];
 
     v10 = v34;
     v8 = v31;
-    self = v32;
+    self = selfCopy2;
 LABEL_10:
 
     goto LABEL_11;
@@ -87,15 +87,15 @@ LABEL_11:
   v3 = objc_opt_new();
   if (self->_calendar)
   {
-    v4 = [(CCToolKitToolTypedValuePrimitiveValueDateComponents *)self calendar];
-    v5 = [v4 jsonDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"calendar"];
+    calendar = [(CCToolKitToolTypedValuePrimitiveValueDateComponents *)self calendar];
+    jsonDictionary = [calendar jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"calendar"];
   }
 
   if (self->_timeZoneIdentifier)
   {
-    v6 = [(CCToolKitToolTypedValuePrimitiveValueDateComponents *)self timeZoneIdentifier];
-    [v3 setObject:v6 forKeyedSubscript:@"timeZoneIdentifier"];
+    timeZoneIdentifier = [(CCToolKitToolTypedValuePrimitiveValueDateComponents *)self timeZoneIdentifier];
+    [v3 setObject:timeZoneIdentifier forKeyedSubscript:@"timeZoneIdentifier"];
   }
 
   if (self->_hasEra)
@@ -187,11 +187,11 @@ LABEL_11:
   return v21;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v23 = v5;
+  v23 = blockCopy;
   if (self->_calendar)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] subMessageValue:self->_calendar];
@@ -303,10 +303,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -393,16 +393,16 @@ LABEL_21:
       case 1u:
         v24 = [CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar alloc];
         CCPBReaderReadDataNoCopy();
-        v25 = a4;
-        v27 = v26 = v6;
+        errorCopy = error;
+        v27 = v26 = dataCopy;
         v144 = 0;
         v28 = [(CCItemMessage *)v24 initWithData:v27 error:&v144];
         v11 = v144;
         calendar = self->_calendar;
         self->_calendar = v28;
 
-        v6 = v26;
-        a4 = v25;
+        dataCopy = v26;
+        error = errorCopy;
         v10 = MEMORY[0x1E6993AA8];
         continue;
       case 2u:
@@ -1022,17 +1022,17 @@ LABEL_127:
         {
           v131 = objc_opt_class();
           NSStringFromClass(v131);
-          v143 = self;
+          selfCopy = self;
           v132 = v10;
-          v133 = a4;
-          v135 = v134 = v6;
+          errorCopy2 = error;
+          v135 = v134 = dataCopy;
           v136 = *&v7[*v132];
           v11 = CCSkipFieldErrorForMessage();
 
-          v6 = v134;
-          a4 = v133;
+          dataCopy = v134;
+          error = errorCopy2;
           v10 = v132;
-          self = v143;
+          self = selfCopy;
         }
 
         continue;
@@ -1112,28 +1112,28 @@ LABEL_191:
   return v141;
 }
 
-- (CCToolKitToolTypedValuePrimitiveValueDateComponents)initWithCalendar:(id)a3 timeZoneIdentifier:(id)a4 era:(id)a5 year:(id)a6 month:(id)a7 day:(id)a8 hour:(id)a9 minute:(id)a10 second:(id)a11 nanosecond:(id)a12 weekday:(id)a13 weekdayOrdinal:(id)a14 quarter:(id)a15 weekOfMonth:(id)a16 weekOfYear:(id)a17 yearForWeekOfYear:(id)a18 error:(id *)a19
+- (CCToolKitToolTypedValuePrimitiveValueDateComponents)initWithCalendar:(id)calendar timeZoneIdentifier:(id)identifier era:(id)era year:(id)year month:(id)month day:(id)day hour:(id)hour minute:(id)self0 second:(id)self1 nanosecond:(id)self2 weekday:(id)self3 weekdayOrdinal:(id)self4 quarter:(id)self5 weekOfMonth:(id)self6 weekOfYear:(id)self7 yearForWeekOfYear:(id)self8 error:(id *)self9
 {
-  v24 = a3;
-  v25 = a4;
-  v26 = a5;
-  v27 = a6;
-  v28 = a7;
-  v74 = a8;
-  v29 = a9;
-  v30 = a10;
-  v83 = a11;
-  v82 = a12;
-  v81 = a13;
-  v80 = a14;
-  v79 = a15;
-  v78 = a16;
-  v77 = a17;
-  v76 = a18;
+  calendarCopy = calendar;
+  identifierCopy = identifier;
+  eraCopy = era;
+  yearCopy = year;
+  monthCopy = month;
+  dayCopy = day;
+  hourCopy = hour;
+  minuteCopy = minute;
+  secondCopy = second;
+  nanosecondCopy = nanosecond;
+  weekdayCopy = weekday;
+  ordinalCopy = ordinal;
+  quarterCopy = quarter;
+  ofMonthCopy = ofMonth;
+  ofYearCopy = ofYear;
+  weekOfYearCopy = weekOfYear;
   v84 = objc_opt_new();
-  v72 = v30;
-  v73 = v29;
-  if (v24)
+  v72 = minuteCopy;
+  v73 = hourCopy;
+  if (calendarCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -1145,10 +1145,10 @@ LABEL_191:
       goto LABEL_20;
     }
 
-    v33 = [v24 data];
+    data = [calendarCopy data];
     CCPBDataWriterWriteDataField();
 
-    if (!v25)
+    if (!identifierCopy)
     {
 LABEL_4:
       v34 = v32;
@@ -1159,16 +1159,16 @@ LABEL_4:
   else
   {
     v32 = 0;
-    if (!v25)
+    if (!identifierCopy)
     {
       goto LABEL_4;
     }
   }
 
-  v35 = v26;
-  v36 = v27;
-  v37 = v28;
-  v38 = v24;
+  v35 = eraCopy;
+  v36 = yearCopy;
+  v37 = monthCopy;
+  v38 = calendarCopy;
   objc_opt_class();
   v39 = CCValidateIsInstanceOfExpectedClass();
   v34 = v32;
@@ -1176,15 +1176,15 @@ LABEL_4:
   if (v39)
   {
     CCPBDataWriterWriteStringField();
-    v24 = v38;
-    v28 = v37;
-    v27 = v36;
-    v26 = v35;
+    calendarCopy = v38;
+    monthCopy = v37;
+    yearCopy = v36;
+    eraCopy = v35;
 LABEL_8:
-    v71 = v24;
+    v71 = calendarCopy;
     v40 = 0x1E696A000uLL;
-    v41 = v74;
-    if (v26)
+    v41 = dayCopy;
+    if (eraCopy)
     {
       objc_opt_class();
       v42 = CCValidateIsInstanceOfExpectedClass();
@@ -1195,14 +1195,14 @@ LABEL_8:
         goto LABEL_57;
       }
 
-      [v26 longLongValue];
+      [eraCopy longLongValue];
       CCPBDataWriterWriteInt64Field();
       v40 = 0x1E696A000uLL;
-      if (!v27)
+      if (!yearCopy)
       {
 LABEL_11:
         v43 = v32;
-        if (v28)
+        if (monthCopy)
         {
           goto LABEL_12;
         }
@@ -1214,7 +1214,7 @@ LABEL_11:
     else
     {
       v32 = v34;
-      if (!v27)
+      if (!yearCopy)
       {
         goto LABEL_11;
       }
@@ -1229,10 +1229,10 @@ LABEL_11:
       goto LABEL_62;
     }
 
-    [v27 longLongValue];
+    [yearCopy longLongValue];
     CCPBDataWriterWriteInt64Field();
     v40 = 0x1E696A000uLL;
-    if (v28)
+    if (monthCopy)
     {
 LABEL_12:
       objc_opt_class();
@@ -1244,14 +1244,14 @@ LABEL_12:
         goto LABEL_57;
       }
 
-      [v28 longLongValue];
+      [monthCopy longLongValue];
       CCPBDataWriterWriteInt64Field();
       v40 = 0x1E696A000uLL;
-      if (!v74)
+      if (!dayCopy)
       {
 LABEL_14:
         v43 = v32;
-        if (v29)
+        if (hourCopy)
         {
           goto LABEL_15;
         }
@@ -1269,10 +1269,10 @@ LABEL_25:
         goto LABEL_62;
       }
 
-      [v74 longLongValue];
+      [dayCopy longLongValue];
       CCPBDataWriterWriteInt64Field();
       v40 = 0x1E696A000uLL;
-      if (v29)
+      if (hourCopy)
       {
 LABEL_15:
         objc_opt_class();
@@ -1284,10 +1284,10 @@ LABEL_15:
           goto LABEL_57;
         }
 
-        [v29 longLongValue];
+        [hourCopy longLongValue];
         CCPBDataWriterWriteInt64Field();
         v40 = 0x1E696A000;
-        if (!v30)
+        if (!minuteCopy)
         {
           goto LABEL_17;
         }
@@ -1297,12 +1297,12 @@ LABEL_15:
 
 LABEL_27:
       v32 = v43;
-      if (!v30)
+      if (!minuteCopy)
       {
 LABEL_17:
         v43 = v32;
 LABEL_30:
-        if (v83)
+        if (secondCopy)
         {
           v52 = *(v40 + 3480);
           objc_opt_class();
@@ -1314,7 +1314,7 @@ LABEL_30:
             goto LABEL_57;
           }
 
-          [v83 longLongValue];
+          [secondCopy longLongValue];
           CCPBDataWriterWriteInt64Field();
           v40 = 0x1E696A000;
         }
@@ -1324,7 +1324,7 @@ LABEL_30:
           v32 = v43;
         }
 
-        if (v82)
+        if (nanosecondCopy)
         {
           v54 = *(v40 + 3480);
           objc_opt_class();
@@ -1336,7 +1336,7 @@ LABEL_30:
             goto LABEL_62;
           }
 
-          [v82 longLongValue];
+          [nanosecondCopy longLongValue];
           CCPBDataWriterWriteInt64Field();
           v40 = 0x1E696A000;
         }
@@ -1346,7 +1346,7 @@ LABEL_30:
           v43 = v32;
         }
 
-        if (v81)
+        if (weekdayCopy)
         {
           v56 = *(v40 + 3480);
           objc_opt_class();
@@ -1358,7 +1358,7 @@ LABEL_30:
             goto LABEL_57;
           }
 
-          [v81 longLongValue];
+          [weekdayCopy longLongValue];
           CCPBDataWriterWriteInt64Field();
           v40 = 0x1E696A000;
         }
@@ -1368,7 +1368,7 @@ LABEL_30:
           v32 = v43;
         }
 
-        if (v80)
+        if (ordinalCopy)
         {
           v58 = *(v40 + 3480);
           objc_opt_class();
@@ -1380,7 +1380,7 @@ LABEL_30:
             goto LABEL_62;
           }
 
-          [v80 longLongValue];
+          [ordinalCopy longLongValue];
           CCPBDataWriterWriteInt64Field();
           v40 = 0x1E696A000;
         }
@@ -1390,7 +1390,7 @@ LABEL_30:
           v43 = v32;
         }
 
-        if (v79)
+        if (quarterCopy)
         {
           v60 = *(v40 + 3480);
           objc_opt_class();
@@ -1402,7 +1402,7 @@ LABEL_30:
             goto LABEL_57;
           }
 
-          [v79 longLongValue];
+          [quarterCopy longLongValue];
           CCPBDataWriterWriteInt64Field();
           v40 = 0x1E696A000;
         }
@@ -1412,7 +1412,7 @@ LABEL_30:
           v32 = v43;
         }
 
-        if (!v78)
+        if (!ofMonthCopy)
         {
           v43 = v32;
           goto LABEL_54;
@@ -1425,11 +1425,11 @@ LABEL_30:
 
         if (v63)
         {
-          [v78 longLongValue];
+          [ofMonthCopy longLongValue];
           CCPBDataWriterWriteInt64Field();
           v40 = 0x1E696A000;
 LABEL_54:
-          if (!v77)
+          if (!ofYearCopy)
           {
             v32 = v43;
             goto LABEL_59;
@@ -1442,11 +1442,11 @@ LABEL_54:
 
           if (v65)
           {
-            [v77 longLongValue];
+            [ofYearCopy longLongValue];
             CCPBDataWriterWriteInt64Field();
             v40 = 0x1E696A000;
 LABEL_59:
-            if (!v76)
+            if (!weekOfYearCopy)
             {
               v68 = v84;
               goto LABEL_67;
@@ -1459,15 +1459,15 @@ LABEL_59:
 
             if (v67)
             {
-              [v76 longLongValue];
+              [weekOfYearCopy longLongValue];
               v68 = v84;
               CCPBDataWriterWriteInt64Field();
               v32 = v43;
 LABEL_67:
-              v70 = [v68 immutableData];
-              v47 = [(CCItemMessage *)self initWithData:v70 error:a19];
+              immutableData = [v68 immutableData];
+              selfCopy2 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-              v46 = v47;
+              v46 = selfCopy2;
               goto LABEL_64;
             }
 
@@ -1478,9 +1478,9 @@ LABEL_57:
           CCSetError();
           v46 = 0;
 LABEL_63:
-          v47 = self;
+          selfCopy2 = self;
 LABEL_64:
-          v24 = v71;
+          calendarCopy = v71;
           goto LABEL_65;
         }
 
@@ -1502,7 +1502,7 @@ LABEL_28:
         goto LABEL_62;
       }
 
-      [v30 longLongValue];
+      [minuteCopy longLongValue];
       CCPBDataWriterWriteInt64Field();
       v40 = 0x1E696A000uLL;
       goto LABEL_30;
@@ -1510,7 +1510,7 @@ LABEL_28:
 
 LABEL_24:
     v32 = v43;
-    if (!v74)
+    if (!dayCopy)
     {
       goto LABEL_14;
     }
@@ -1521,13 +1521,13 @@ LABEL_24:
   CCSetError();
   v46 = 0;
   v32 = v34;
-  v24 = v38;
-  v28 = v37;
-  v27 = v36;
-  v26 = v35;
+  calendarCopy = v38;
+  monthCopy = v37;
+  yearCopy = v36;
+  eraCopy = v35;
 LABEL_20:
-  v41 = v74;
-  v47 = self;
+  v41 = dayCopy;
+  selfCopy2 = self;
 LABEL_65:
 
   return v46;

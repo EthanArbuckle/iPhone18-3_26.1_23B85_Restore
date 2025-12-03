@@ -1,36 +1,36 @@
 @interface SGPatternDataFile
-- (SGPatternDataFile)initWithData:(id)a3;
-- (SGPatternDataFile)initWithPath:(id)a3;
-- (id)dataForOffset:(id)a3 includeTerminator:(int)a4;
+- (SGPatternDataFile)initWithData:(id)data;
+- (SGPatternDataFile)initWithPath:(id)path;
+- (id)dataForOffset:(id)offset includeTerminator:(int)terminator;
 @end
 
 @implementation SGPatternDataFile
 
-- (id)dataForOffset:(id)a3 includeTerminator:(int)a4
+- (id)dataForOffset:(id)offset includeTerminator:(int)terminator
 {
-  v7 = a3;
-  v8 = [v7 longLongValue];
-  if ((v8 & 3) != 0)
+  offsetCopy = offset;
+  longLongValue = [offsetCopy longLongValue];
+  if ((longLongValue & 3) != 0)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SGPatterns.m" lineNumber:589 description:{@"Invalid parameter not satisfying: %@", @"(off & 0b11) == 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGPatterns.m" lineNumber:589 description:{@"Invalid parameter not satisfying: %@", @"(off & 0b11) == 0"}];
   }
 
-  if (a4)
+  if (terminator)
   {
-    v9 = HIDWORD(v8);
+    v9 = HIDWORD(longLongValue);
   }
 
   else
   {
-    v9 = HIDWORD(v8) + 1;
+    v9 = HIDWORD(longLongValue) + 1;
   }
 
-  v10 = v8;
-  if (v9 + v8 > [(NSData *)self->_fileData length])
+  v10 = longLongValue;
+  if (v9 + longLongValue > [(NSData *)self->_fileData length])
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"SGPatterns.m" lineNumber:592 description:{@"Invalid parameter not satisfying: %@", @"off + len <= _fileData.length"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGPatterns.m" lineNumber:592 description:{@"Invalid parameter not satisfying: %@", @"off + len <= _fileData.length"}];
   }
 
   v11 = objc_autoreleasePoolPush();
@@ -40,13 +40,13 @@
   return v12;
 }
 
-- (SGPatternDataFile)initWithData:(id)a3
+- (SGPatternDataFile)initWithData:(id)data
 {
-  v6 = a3;
-  if (!v6)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SGPatterns.m" lineNumber:575 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGPatterns.m" lineNumber:575 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
   v11.receiver = self;
@@ -55,28 +55,28 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_fileData, a3);
+    objc_storeStrong(&v7->_fileData, data);
   }
 
   return v8;
 }
 
-- (SGPatternDataFile)initWithPath:(id)a3
+- (SGPatternDataFile)initWithPath:(id)path
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SGPatterns.m" lineNumber:566 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGPatterns.m" lineNumber:566 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   v12 = 0;
-  v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v5 options:1 error:&v12];
+  v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:pathCopy options:1 error:&v12];
   v7 = v12;
   if (!v6)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SGPatterns.m" lineNumber:569 description:{@"Error loading file %@: %@", v5, v7}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGPatterns.m" lineNumber:569 description:{@"Error loading file %@: %@", pathCopy, v7}];
   }
 
   v8 = [(SGPatternDataFile *)self initWithData:v6];

@@ -1,25 +1,25 @@
 @interface PKTransactionSupportTransactionSectionController
-- (PKTransactionSupportTransactionSectionController)initWithTransactionItem:(id)a3 transactionItemPresenter:(id)a4 collectionView:(id)a5;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (PKTransactionSupportTransactionSectionController)initWithTransactionItem:(id)item transactionItemPresenter:(id)presenter collectionView:(id)view;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 @end
 
 @implementation PKTransactionSupportTransactionSectionController
 
-- (PKTransactionSupportTransactionSectionController)initWithTransactionItem:(id)a3 transactionItemPresenter:(id)a4 collectionView:(id)a5
+- (PKTransactionSupportTransactionSectionController)initWithTransactionItem:(id)item transactionItemPresenter:(id)presenter collectionView:(id)view
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  presenterCopy = presenter;
+  viewCopy = view;
   v24.receiver = self;
   v24.super_class = PKTransactionSupportTransactionSectionController;
   v12 = [(PKPaymentSetupListSectionController *)&v24 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_transactionItem, a3);
-    objc_storeStrong(&v13->_transactionItemPresenter, a4);
-    objc_storeStrong(&v13->_collectionView, a5);
+    objc_storeStrong(&v12->_transactionItem, item);
+    objc_storeStrong(&v13->_transactionItemPresenter, presenter);
+    objc_storeStrong(&v13->_collectionView, view);
     objc_initWeak(&location, v13);
     v14 = MEMORY[0x1E69DC800];
     v15 = objc_opt_class();
@@ -51,18 +51,18 @@ void __116__PKTransactionSupportTransactionSectionController_initWithTransaction
   }
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = PKTransactionSupportTransactionSectionController;
-  v4 = [(PKPaymentSetupListSectionController *)&v6 layoutWithLayoutEnvironment:a3 sectionIdentifier:a4];
+  v4 = [(PKPaymentSetupListSectionController *)&v6 layoutWithLayoutEnvironment:environment sectionIdentifier:identifier];
   [v4 contentInsets];
   [v4 setContentInsets:16.0];
 
   return v4;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);

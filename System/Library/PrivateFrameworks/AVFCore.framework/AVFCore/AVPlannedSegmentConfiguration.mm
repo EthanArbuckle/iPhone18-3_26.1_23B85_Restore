@@ -1,14 +1,14 @@
 @interface AVPlannedSegmentConfiguration
-- (AVPlannedSegmentConfiguration)initWithDuration:(id *)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVPlannedSegmentConfiguration)initWithDuration:(id *)duration;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation AVPlannedSegmentConfiguration
 
-- (AVPlannedSegmentConfiguration)initWithDuration:(id *)a3
+- (AVPlannedSegmentConfiguration)initWithDuration:(id *)duration
 {
-  if ((a3->var2 & 0x1D) != 1 || (time1 = *a3, time2 = **&MEMORY[0x1E6960CC0], CMTimeCompare(&time1, &time2) <= 0))
+  if ((duration->var2 & 0x1D) != 1 || (time1 = *duration, time2 = **&MEMORY[0x1E6960CC0], CMTimeCompare(&time1, &time2) <= 0))
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"duration must be numeric and greater than 0." userInfo:0]);
   }
@@ -18,24 +18,24 @@
   result = [(AVPlannedSegmentConfiguration *)&v7 init];
   if (result)
   {
-    v6 = *&a3->var0;
-    result->_duration.epoch = a3->var3;
+    v6 = *&duration->var0;
+    result->_duration.epoch = duration->var3;
     *&result->_duration.value = v6;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   v10 = v3;
   v11 = v4;
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -46,7 +46,7 @@
     return 0;
   }
 
-  [a3 duration];
+  [equal duration];
   duration = self->_duration;
   return CMTimeCompare(&duration, &time2) == 0;
 }

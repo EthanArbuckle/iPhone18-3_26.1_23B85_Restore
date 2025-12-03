@@ -1,32 +1,32 @@
 @interface RouteOverviewStringProvider
-+ (id)artworkDataForRoute:(id)a3;
++ (id)artworkDataForRoute:(id)route;
 + (id)delimeter;
-+ (id)etaStringFromRoute:(id)a3;
-+ (id)primaryTextForRoute:(id)a3 font:(id)a4;
-+ (id)routeDescriptionTextForRoute:(id)a3 font:(id)a4;
-+ (id)secondaryMultiPartTextForRoute:(id)a3 font:(id)a4;
-+ (unint64_t)adjustedTransportTypeForRoute:(id)a3;
++ (id)etaStringFromRoute:(id)route;
++ (id)primaryTextForRoute:(id)route font:(id)font;
++ (id)routeDescriptionTextForRoute:(id)route font:(id)font;
++ (id)secondaryMultiPartTextForRoute:(id)route font:(id)font;
++ (unint64_t)adjustedTransportTypeForRoute:(id)route;
 @end
 
 @implementation RouteOverviewStringProvider
 
-+ (unint64_t)adjustedTransportTypeForRoute:(id)a3
++ (unint64_t)adjustedTransportTypeForRoute:(id)route
 {
-  v3 = a3;
-  v4 = [v3 transportType];
-  if (v4 > 5)
+  routeCopy = route;
+  transportType = [routeCopy transportType];
+  if (transportType > 5)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = qword_1012160D0[v4];
+    v5 = qword_1012160D0[transportType];
   }
 
-  v6 = [v3 isWalkingOnlyTransitRoute];
+  isWalkingOnlyTransitRoute = [routeCopy isWalkingOnlyTransitRoute];
 
-  if (v6)
+  if (isWalkingOnlyTransitRoute)
   {
     return 4;
   }
@@ -37,36 +37,36 @@
   }
 }
 
-+ (id)artworkDataForRoute:(id)a3
++ (id)artworkDataForRoute:(id)route
 {
-  v4 = a3;
-  if ([a1 adjustedTransportTypeForRoute:v4] == 4)
+  routeCopy = route;
+  if ([self adjustedTransportTypeForRoute:routeCopy] == 4)
   {
-    v5 = [v4 routePlanningArtworks];
+    routePlanningArtworks = [routeCopy routePlanningArtworks];
   }
 
   else
   {
-    v5 = 0;
+    routePlanningArtworks = 0;
   }
 
-  return v5;
+  return routePlanningArtworks;
 }
 
-+ (id)etaStringFromRoute:(id)a3
++ (id)etaStringFromRoute:(id)route
 {
-  v3 = a3;
-  [v3 travelAndChargingDuration];
+  routeCopy = route;
+  [routeCopy travelAndChargingDuration];
   v5 = v4;
-  v6 = [v3 destination];
-  v7 = [v3 routeAttributes];
-  if ([v7 hasTimepoint])
+  destination = [routeCopy destination];
+  routeAttributes = [routeCopy routeAttributes];
+  if ([routeAttributes hasTimepoint])
   {
-    v8 = [v3 routeAttributes];
-    v9 = v8;
-    if (v8)
+    routeAttributes2 = [routeCopy routeAttributes];
+    v9 = routeAttributes2;
+    if (routeAttributes2)
     {
-      [v8 timepoint];
+      [routeAttributes2 timepoint];
       v10 = v20;
     }
 
@@ -84,49 +84,49 @@
   }
 
   v12 = [GuidanceETA alloc];
-  v13 = [v6 timezone];
-  v14 = -[GuidanceETA initWithLeaveByDate:remainingTime:remainingDistance:arrivalBatteryCharge:destinationTimeZone:transportType:](v12, "initWithLeaveByDate:remainingTime:remainingDistance:arrivalBatteryCharge:destinationTimeZone:transportType:", v11, 0, v13, [v3 transportType], v5, 0.0);
+  timezone = [destination timezone];
+  v14 = -[GuidanceETA initWithLeaveByDate:remainingTime:remainingDistance:arrivalBatteryCharge:destinationTimeZone:transportType:](v12, "initWithLeaveByDate:remainingTime:remainingDistance:arrivalBatteryCharge:destinationTimeZone:transportType:", v11, 0, timezone, [routeCopy transportType], v5, 0.0);
 
   v15 = +[NSCalendar autoupdatingCurrentCalendar];
   v16 = +[NSLocale autoupdatingCurrentLocale];
   [v15 setLocale:v16];
 
-  v17 = [(GuidanceETA *)v14 etaDateString];
-  v18 = [[GEOComposedString alloc] initWithString:v17];
+  etaDateString = [(GuidanceETA *)v14 etaDateString];
+  v18 = [[GEOComposedString alloc] initWithString:etaDateString];
 
   return v18;
 }
 
-+ (id)secondaryMultiPartTextForRoute:(id)a3 font:(id)a4
++ (id)secondaryMultiPartTextForRoute:(id)route font:(id)font
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 transportType] == 1)
+  routeCopy = route;
+  fontCopy = font;
+  if ([routeCopy transportType] == 1)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v6 isWalkingOnlyTransitRoute] ^ 1;
+    v8 = [routeCopy isWalkingOnlyTransitRoute] ^ 1;
   }
 
   v9 = objc_alloc_init(NSMutableArray);
-  if ([v6 transportType])
+  if ([routeCopy transportType])
   {
     goto LABEL_5;
   }
 
-  v10 = [v6 routeAttributes];
-  v11 = [v10 hasTimepoint];
+  routeAttributes = [routeCopy routeAttributes];
+  hasTimepoint = [routeAttributes hasTimepoint];
 
-  if (v11)
+  if (hasTimepoint)
   {
-    v12 = [v6 routeAttributes];
-    v13 = v12;
-    if (v12)
+    routeAttributes2 = [routeCopy routeAttributes];
+    v13 = routeAttributes2;
+    if (routeAttributes2)
     {
-      [v12 timepoint];
+      [routeAttributes2 timepoint];
     }
 
     else
@@ -149,53 +149,53 @@ LABEL_5:
   }
 
 LABEL_11:
-  v14 = [a1 etaStringFromRoute:{v6, v32}];
+  v14 = [self etaStringFromRoute:{routeCopy, v32}];
   if (v14)
   {
     [v9 addObject:v14];
   }
 
 LABEL_16:
-  v15 = [v6 planningDistanceString];
+  planningDistanceString = [routeCopy planningDistanceString];
 
-  if (v15)
+  if (planningDistanceString)
   {
-    v16 = [v6 planningDistanceString];
-    v17 = [v16 optionsWithArgumentHandler:&stru_10165D770];
+    planningDistanceString2 = [routeCopy planningDistanceString];
+    v17 = [planningDistanceString2 optionsWithArgumentHandler:&stru_10165D770];
     [v17 setShouldUpdateFormatStrings:1];
-    v18 = [v16 composedStringWithOptions:v17];
+    v18 = [planningDistanceString2 composedStringWithOptions:v17];
     v19 = v18;
     if (v18)
     {
-      v20 = v18;
+      planningDistanceString3 = v18;
     }
 
     else
     {
-      v20 = [v6 planningDistanceString];
+      planningDistanceString3 = [routeCopy planningDistanceString];
     }
 
-    v21 = v20;
+    v21 = planningDistanceString3;
 
     [v9 addObject:v21];
   }
 
-  if ([v6 transportType] == 1 || objc_msgSend(v6, "isWalkingOnlyTransitRoute"))
+  if ([routeCopy transportType] == 1 || objc_msgSend(routeCopy, "isWalkingOnlyTransitRoute"))
   {
-    v22 = [v6 planningDescriptionString];
+    planningDescriptionString = [routeCopy planningDescriptionString];
 
-    if (v22)
+    if (planningDescriptionString)
     {
-      v23 = [v6 planningDescriptionString];
-      [v9 addObject:v23];
+      planningDescriptionString2 = [routeCopy planningDescriptionString];
+      [v9 addObject:planningDescriptionString2];
     }
   }
 
-  v24 = [v6 planningSeparatorString];
-  v25 = v24;
-  if (v24)
+  planningSeparatorString = [routeCopy planningSeparatorString];
+  v25 = planningSeparatorString;
+  if (planningSeparatorString)
   {
-    v26 = v24;
+    v26 = planningSeparatorString;
   }
 
   else
@@ -206,10 +206,10 @@ LABEL_16:
   v27 = v26;
 
   v28 = [[NSAttributedString alloc] initWithString:v27];
-  if (v7)
+  if (fontCopy)
   {
     v33 = NSFontAttributeName;
-    v34 = v7;
+    v34 = fontCopy;
     v29 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
   }
 
@@ -223,22 +223,22 @@ LABEL_16:
   return v30;
 }
 
-+ (id)routeDescriptionTextForRoute:(id)a3 font:(id)a4
++ (id)routeDescriptionTextForRoute:(id)route font:(id)font
 {
-  v5 = a3;
-  v6 = a4;
+  routeCopy = route;
+  fontCopy = font;
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [v5 planningDescriptionString];
-  if (v8)
+  planningDescriptionString = [routeCopy planningDescriptionString];
+  if (planningDescriptionString)
   {
-    [v7 addObject:v8];
+    [v7 addObject:planningDescriptionString];
   }
 
-  v9 = [v5 planningSeparatorString];
-  v10 = v9;
-  if (v9)
+  planningSeparatorString = [routeCopy planningSeparatorString];
+  v10 = planningSeparatorString;
+  if (planningSeparatorString)
   {
-    v11 = v9;
+    v11 = planningSeparatorString;
   }
 
   else
@@ -254,9 +254,9 @@ LABEL_16:
   [v14 setObject:v15 forKeyedSubscript:MKServerFormattedStringArtworkSFSymbolScaleAttributeKey];
 
   [v14 setObject:&off_1016EA3E8 forKeyedSubscript:MKServerFormattedStringArtworkSFSymbolStyleAttributeKey];
-  if (v6)
+  if (fontCopy)
   {
-    [v14 setObject:v6 forKeyedSubscript:NSFontAttributeName];
+    [v14 setObject:fontCopy forKeyedSubscript:NSFontAttributeName];
   }
 
   v16 = [MKMultiPartAttributedString _mapkit_multiPartAttributedStringForComposedStrings:v7 defaultAttributes:v14 repeatedSeparator:v13];
@@ -264,18 +264,18 @@ LABEL_16:
   return v16;
 }
 
-+ (id)primaryTextForRoute:(id)a3 font:(id)a4
++ (id)primaryTextForRoute:(id)route font:(id)font
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 previewDurationString];
+  routeCopy = route;
+  fontCopy = font;
+  previewDurationString = [routeCopy previewDurationString];
 
-  if (v7)
+  if (previewDurationString)
   {
-    if (v6)
+    if (fontCopy)
     {
       v14 = NSFontAttributeName;
-      v15 = v6;
+      v15 = fontCopy;
       v8 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     }
 
@@ -284,13 +284,13 @@ LABEL_16:
       v8 = 0;
     }
 
-    v10 = [v5 previewDurationString];
+    previewDurationString2 = [routeCopy previewDurationString];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100F36984;
     v12[3] = &unk_10165D730;
-    v13 = v5;
-    v9 = [NSAttributedString _mapkit_attributedStringForComposedString:v10 defaultAttributes:v8 argumentOverrideHandler:v12];
+    v13 = routeCopy;
+    v9 = [NSAttributedString _mapkit_attributedStringForComposedString:previewDurationString2 defaultAttributes:v8 argumentOverrideHandler:v12];
   }
 
   else

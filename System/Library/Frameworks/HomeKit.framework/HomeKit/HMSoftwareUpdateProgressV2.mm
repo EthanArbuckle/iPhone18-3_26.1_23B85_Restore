@@ -1,7 +1,7 @@
 @interface HMSoftwareUpdateProgressV2
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMSoftwareUpdateProgressV2)initWithPercentageComplete:(float)a3 estimatedTimeRemaining:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMSoftwareUpdateProgressV2)initWithPercentageComplete:(float)complete estimatedTimeRemaining:(double)remaining;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
@@ -38,10 +38,10 @@
   return [v2 shortDescription];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -51,7 +51,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -91,15 +91,15 @@
   return v8 ^ v5;
 }
 
-- (HMSoftwareUpdateProgressV2)initWithPercentageComplete:(float)a3 estimatedTimeRemaining:(double)a4
+- (HMSoftwareUpdateProgressV2)initWithPercentageComplete:(float)complete estimatedTimeRemaining:(double)remaining
 {
   v7.receiver = self;
   v7.super_class = HMSoftwareUpdateProgressV2;
   result = [(HMSoftwareUpdateProgressV2 *)&v7 init];
   if (result)
   {
-    result->_percentageComplete = a3;
-    result->_estimatedTimeRemaining = a4;
+    result->_percentageComplete = complete;
+    result->_estimatedTimeRemaining = remaining;
   }
 
   return result;

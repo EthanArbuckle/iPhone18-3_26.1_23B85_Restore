@@ -1,8 +1,8 @@
 @interface FTAuthKitManager
 + (id)sharedInstance;
 - (FTAuthKitManager)init;
-- (void)anisetteHeadersForRequest:(id)a3 completionBlockQueue:(id)a4 completionBlock:(id)a5;
-- (void)handleResponse:(id)a3 forRequest:(id)a4 completionBlock:(id)a5;
+- (void)anisetteHeadersForRequest:(id)request completionBlockQueue:(id)queue completionBlock:(id)block;
+- (void)handleResponse:(id)response forRequest:(id)request completionBlock:(id)block;
 @end
 
 @implementation FTAuthKitManager
@@ -42,13 +42,13 @@
   return v2;
 }
 
-- (void)anisetteHeadersForRequest:(id)a3 completionBlockQueue:(id)a4 completionBlock:(id)a5
+- (void)anisetteHeadersForRequest:(id)request completionBlockQueue:(id)queue completionBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  queueCopy = queue;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v10 = [a3 copy];
+    v10 = [request copy];
     queue = self->_queue;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -56,19 +56,19 @@
     v13[3] = &unk_1E7435298;
     v13[4] = self;
     v14 = v10;
-    v15 = v8;
-    v16 = v9;
+    v15 = queueCopy;
+    v16 = blockCopy;
     v12 = v10;
     dispatch_async(queue, v13);
   }
 }
 
-- (void)handleResponse:(id)a3 forRequest:(id)a4 completionBlock:(id)a5
+- (void)handleResponse:(id)response forRequest:(id)request completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  responseCopy = response;
+  requestCopy = request;
+  blockCopy = block;
+  if (blockCopy)
   {
     queue = self->_queue;
     v12[0] = MEMORY[0x1E69E9820];
@@ -76,9 +76,9 @@
     v12[2] = sub_19593EEF8;
     v12[3] = &unk_1E7435298;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
+    v13 = responseCopy;
+    v14 = requestCopy;
+    v15 = blockCopy;
     dispatch_async(queue, v12);
   }
 }

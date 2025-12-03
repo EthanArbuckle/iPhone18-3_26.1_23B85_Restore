@@ -1,41 +1,41 @@
 @interface NEDNSProxy
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (NEDNSProxy)init;
-- (NEDNSProxy)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NEDNSProxy)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEDNSProxy
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
-  v5 = [(NEDNSProxy *)self protocol];
-  v6 = v5 != 0;
+  errorsCopy = errors;
+  protocol = [(NEDNSProxy *)self protocol];
+  v6 = protocol != 0;
 
-  if (!v5)
+  if (!protocol)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
   }
 
-  v7 = [(NEDNSProxy *)self protocol];
-  if (v7)
+  protocol2 = [(NEDNSProxy *)self protocol];
+  if (protocol2)
   {
-    v8 = v7;
-    v9 = v5 != 0;
-    v10 = [(NEDNSProxy *)self protocol];
-    v11 = [v10 checkValidityAndCollectErrors:v4];
+    v8 = protocol2;
+    v9 = protocol != 0;
+    protocol3 = [(NEDNSProxy *)self protocol];
+    v11 = [protocol3 checkValidityAndCollectErrors:errorsCopy];
 
     v6 = v11 & v9;
   }
 
-  v12 = [(NEDNSProxy *)self perApp];
-  if (v12)
+  perApp = [(NEDNSProxy *)self perApp];
+  if (perApp)
   {
-    v13 = v12;
-    v14 = [(NEDNSProxy *)self perApp];
-    v15 = [v14 checkValidityAndCollectErrors:v4];
+    v13 = perApp;
+    perApp2 = [(NEDNSProxy *)self perApp];
+    v15 = [perApp2 checkValidityAndCollectErrors:errorsCopy];
 
     v6 &= v15;
   }
@@ -43,44 +43,44 @@
   return v6 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEDNSProxy allocWithZone:?]];
   [(NEDNSProxy *)v4 setEnabled:[(NEDNSProxy *)self isEnabled]];
-  v5 = [(NEDNSProxy *)self protocol];
-  [(NEDNSProxy *)v4 setProtocol:v5];
+  protocol = [(NEDNSProxy *)self protocol];
+  [(NEDNSProxy *)v4 setProtocol:protocol];
 
-  v6 = [(NEDNSProxy *)self perApp];
-  [(NEDNSProxy *)v4 setPerApp:v6];
+  perApp = [(NEDNSProxy *)self perApp];
+  [(NEDNSProxy *)v4 setPerApp:perApp];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[NEDNSProxy isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
-  v5 = [(NEDNSProxy *)self protocol];
-  [v4 encodeObject:v5 forKey:@"Protocol"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[NEDNSProxy isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
+  protocol = [(NEDNSProxy *)self protocol];
+  [coderCopy encodeObject:protocol forKey:@"Protocol"];
 
-  v6 = [(NEDNSProxy *)self perApp];
-  [v4 encodeObject:v6 forKey:@"PerApp"];
+  perApp = [(NEDNSProxy *)self perApp];
+  [coderCopy encodeObject:perApp forKey:@"PerApp"];
 }
 
-- (NEDNSProxy)initWithCoder:(id)a3
+- (NEDNSProxy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NEDNSProxy;
   v5 = [(NEDNSProxy *)&v11 init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"Enabled"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Protocol"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"Enabled"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Protocol"];
     protocol = v5->_protocol;
     v5->_protocol = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PerApp"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PerApp"];
     perApp = v5->_perApp;
     v5->_perApp = v8;
   }

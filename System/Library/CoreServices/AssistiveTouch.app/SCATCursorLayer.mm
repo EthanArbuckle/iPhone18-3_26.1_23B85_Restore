@@ -1,14 +1,14 @@
 @interface SCATCursorLayer
 - (BOOL)usesHighVisibility;
 - (SCATCursorLayer)init;
-- (double)_opacityForTheme:(int64_t)a3 level:(int64_t)a4 highVisibility:(BOOL)a5 options:(int)a6;
-- (id)_strokeColorForTheme:(int64_t)a3 level:(int64_t)a4 highVisibility:(BOOL)a5 options:(int)a6;
+- (double)_opacityForTheme:(int64_t)theme level:(int64_t)level highVisibility:(BOOL)visibility options:(int)options;
+- (id)_strokeColorForTheme:(int64_t)theme level:(int64_t)level highVisibility:(BOOL)visibility options:(int)options;
 - (id)description;
-- (void)_updatePresentationProperties:(int)a3;
-- (void)ensureHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateLevel:(int64_t)a3 animated:(BOOL)a4 options:(int)a5;
-- (void)updatePath:(id)a3 frame:(CGRect)a4 cornerRadius:(double)a5 isSimpleRect:(BOOL)a6 animated:(BOOL)a7 options:(int)a8;
-- (void)updateTheme:(int64_t)a3 animated:(BOOL)a4 options:(int)a5;
+- (void)_updatePresentationProperties:(int)properties;
+- (void)ensureHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)updateLevel:(int64_t)level animated:(BOOL)animated options:(int)options;
+- (void)updatePath:(id)path frame:(CGRect)frame cornerRadius:(double)radius isSimpleRect:(BOOL)rect animated:(BOOL)animated options:(int)options;
+- (void)updateTheme:(int64_t)theme animated:(BOOL)animated options:(int)options;
 @end
 
 @implementation SCATCursorLayer
@@ -50,17 +50,17 @@
 - (BOOL)usesHighVisibility
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchScannerCursorHighVisibilityEnabled];
+  assistiveTouchScannerCursorHighVisibilityEnabled = [v2 assistiveTouchScannerCursorHighVisibilityEnabled];
 
-  return v3;
+  return assistiveTouchScannerCursorHighVisibilityEnabled;
 }
 
-- (void)ensureHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)ensureHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (self->_ensureHidden != a3)
+  if (self->_ensureHidden != hidden)
   {
-    self->_ensureHidden = a3;
-    if (a4)
+    self->_ensureHidden = hidden;
+    if (animated)
     {
 
       [(SCATCursorLayer *)self _updatePresentationProperties:0];
@@ -77,16 +77,16 @@
   }
 }
 
-- (void)updateTheme:(int64_t)a3 animated:(BOOL)a4 options:(int)a5
+- (void)updateTheme:(int64_t)theme animated:(BOOL)animated options:(int)options
 {
-  if (self->_theme != a3)
+  if (self->_theme != theme)
   {
-    v5 = *&a5;
-    self->_theme = a3;
-    if (a4)
+    v5 = *&options;
+    self->_theme = theme;
+    if (animated)
     {
 
-      [(SCATCursorLayer *)self _updatePresentationProperties:*&a5];
+      [(SCATCursorLayer *)self _updatePresentationProperties:*&options];
     }
 
     else
@@ -100,16 +100,16 @@
   }
 }
 
-- (void)updateLevel:(int64_t)a3 animated:(BOOL)a4 options:(int)a5
+- (void)updateLevel:(int64_t)level animated:(BOOL)animated options:(int)options
 {
-  if (self->_level != a3)
+  if (self->_level != level)
   {
-    v5 = *&a5;
-    self->_level = a3;
-    if (a4)
+    v5 = *&options;
+    self->_level = level;
+    if (animated)
     {
 
-      [(SCATCursorLayer *)self _updatePresentationProperties:*&a5];
+      [(SCATCursorLayer *)self _updatePresentationProperties:*&options];
     }
 
     else
@@ -123,29 +123,29 @@
   }
 }
 
-- (void)updatePath:(id)a3 frame:(CGRect)a4 cornerRadius:(double)a5 isSimpleRect:(BOOL)a6 animated:(BOOL)a7 options:(int)a8
+- (void)updatePath:(id)path frame:(CGRect)frame cornerRadius:(double)radius isSimpleRect:(BOOL)rect animated:(BOOL)animated options:(int)options
 {
-  v8 = *&a8;
-  v10 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a3;
-  [(SCATCursorLayer *)self setSimpleRect:v10];
-  if ((v8 & 2) != 0 || !a7)
+  v8 = *&options;
+  rectCopy = rect;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  pathCopy = path;
+  [(SCATCursorLayer *)self setSimpleRect:rectCopy];
+  if ((v8 & 2) != 0 || !animated)
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
   }
 
-  if (v17)
+  if (pathCopy)
   {
     [(SCATCursorLayer *)self setFrame:x, y, width, height];
     [(SCATCursorLayer *)self _updatePresentationProperties:v8];
-    v16 = v17;
-    -[SCATCursorLayer setPath:](self, "setPath:", [v17 CGPath]);
-    if (a7)
+    v16 = pathCopy;
+    -[SCATCursorLayer setPath:](self, "setPath:", [pathCopy CGPath]);
+    if (animated)
     {
       goto LABEL_7;
     }
@@ -154,7 +154,7 @@
   }
 
   [(SCATCursorLayer *)self _updatePresentationProperties:v8];
-  if (!a7)
+  if (!animated)
   {
 LABEL_6:
     +[CATransaction commit];
@@ -163,13 +163,13 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_updatePresentationProperties:(int)a3
+- (void)_updatePresentationProperties:(int)properties
 {
-  v3 = *&a3;
-  v5 = [(SCATCursorLayer *)self theme];
-  v6 = [(SCATCursorLayer *)self level];
-  v7 = [(SCATCursorLayer *)self usesHighVisibility];
-  if (v6)
+  v3 = *&properties;
+  theme = [(SCATCursorLayer *)self theme];
+  level = [(SCATCursorLayer *)self level];
+  usesHighVisibility = [(SCATCursorLayer *)self usesHighVisibility];
+  if (level)
   {
     ensureHidden = self->_ensureHidden;
   }
@@ -180,34 +180,34 @@ LABEL_7:
   }
 
   [(SCATCursorLayer *)self setHidden:ensureHidden];
-  v9 = [(SCATCursorLayer *)self _strokeColorForTheme:v5 level:v6 highVisibility:v7 options:v3];
+  v9 = [(SCATCursorLayer *)self _strokeColorForTheme:theme level:level highVisibility:usesHighVisibility options:v3];
   [(SCATCursorLayer *)self setRestingStrokeColor:v9];
 
-  v10 = [(SCATCursorLayer *)self restingStrokeColor];
-  -[SCATCursorLayer setStrokeColor:](self, "setStrokeColor:", [v10 CGColor]);
+  restingStrokeColor = [(SCATCursorLayer *)self restingStrokeColor];
+  -[SCATCursorLayer setStrokeColor:](self, "setStrokeColor:", [restingStrokeColor CGColor]);
 
-  v11 = [(SCATCursorLayer *)self _fillColorForTheme:v5 level:v6 highVisibility:v7 options:v3];
+  v11 = [(SCATCursorLayer *)self _fillColorForTheme:theme level:level highVisibility:usesHighVisibility options:v3];
   [(SCATCursorLayer *)self setRestingFillColor:v11];
 
-  v12 = [(SCATCursorLayer *)self restingFillColor];
-  -[SCATCursorLayer setFillColor:](self, "setFillColor:", [v12 CGColor]);
+  restingFillColor = [(SCATCursorLayer *)self restingFillColor];
+  -[SCATCursorLayer setFillColor:](self, "setFillColor:", [restingFillColor CGColor]);
 
-  [(SCATCursorLayer *)self _boundsInsetForTheme:v5 level:v6 highVisibility:v7 options:v3];
+  [(SCATCursorLayer *)self _boundsInsetForTheme:theme level:level highVisibility:usesHighVisibility options:v3];
   [(SCATCursorLayer *)self setBoundsInset:?];
-  [(SCATCursorLayer *)self _borderWidthForTheme:v5 level:v6 highVisibility:v7 options:v3];
+  [(SCATCursorLayer *)self _borderWidthForTheme:theme level:level highVisibility:usesHighVisibility options:v3];
   [(SCATCursorLayer *)self setLineWidth:?];
-  v13 = [(SCATCursorLayer *)self _borderPatternForTheme:v5 level:v6 highVisibility:v7 options:v3];
+  v13 = [(SCATCursorLayer *)self _borderPatternForTheme:theme level:level highVisibility:usesHighVisibility options:v3];
   [(SCATCursorLayer *)self setLineDashPattern:v13];
 
-  [(SCATCursorLayer *)self _opacityForTheme:v5 level:v6 highVisibility:v7 options:v3];
+  [(SCATCursorLayer *)self _opacityForTheme:theme level:level highVisibility:usesHighVisibility options:v3];
   *&v14 = v14;
 
   [(SCATCursorLayer *)self setOpacity:v14];
 }
 
-- (id)_strokeColorForTheme:(int64_t)a3 level:(int64_t)a4 highVisibility:(BOOL)a5 options:(int)a6
+- (id)_strokeColorForTheme:(int64_t)theme level:(int64_t)level highVisibility:(BOOL)visibility options:(int)options
 {
-  v6 = [AXSettings sharedInstance:a3];
+  v6 = [AXSettings sharedInstance:theme];
   [v6 assistiveTouchCursorColor];
 
   v7 = AXSAssistiveTouchCursorColor();
@@ -215,11 +215,11 @@ LABEL_7:
   return [UIColor colorWithCGColor:v7];
 }
 
-- (double)_opacityForTheme:(int64_t)a3 level:(int64_t)a4 highVisibility:(BOOL)a5 options:(int)a6
+- (double)_opacityForTheme:(int64_t)theme level:(int64_t)level highVisibility:(BOOL)visibility options:(int)options
 {
-  if (a3 == 2)
+  if (theme == 2)
   {
-    v6 = [(SCATCursorLayer *)self styleProvider:a3];
+    v6 = [(SCATCursorLayer *)self styleProvider:theme];
     [v6 cursorContainerOpacity];
     v8 = v7;
 
@@ -229,7 +229,7 @@ LABEL_7:
   else
   {
     result = 0.6;
-    if (a4 != 2)
+    if (level != 2)
     {
       return 1.0;
     }

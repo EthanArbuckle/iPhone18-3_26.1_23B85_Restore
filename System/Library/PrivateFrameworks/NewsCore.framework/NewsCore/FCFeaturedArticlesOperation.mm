@@ -1,8 +1,8 @@
 @interface FCFeaturedArticlesOperation
 - (BOOL)validateOperation;
 - (FCFeaturedArticlesOperation)init;
-- (FCFeaturedArticlesOperation)initWithContext:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCFeaturedArticlesOperation)initWithContext:(id)context;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -34,19 +34,19 @@
   objc_exception_throw(v6);
 }
 
-- (FCFeaturedArticlesOperation)initWithContext:(id)a3
+- (FCFeaturedArticlesOperation)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = FCFeaturedArticlesOperation;
   v6 = [(FCOperation *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
-    v8 = [MEMORY[0x1E695DEC8] array];
+    objc_storeStrong(&v6->_context, context);
+    array = [MEMORY[0x1E695DEC8] array];
     networkEvents = v7->_networkEvents;
-    v7->_networkEvents = v8;
+    v7->_networkEvents = array;
   }
 
   return v7;
@@ -216,15 +216,15 @@ uint64_t __47__FCFeaturedArticlesOperation_performOperation__block_invoke_4(uint
   return 0;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(FCFeaturedArticlesOperation *)self fetchCompletionHandler];
+  errorCopy = error;
+  fetchCompletionHandler = [(FCFeaturedArticlesOperation *)self fetchCompletionHandler];
 
-  if (v4)
+  if (fetchCompletionHandler)
   {
-    v5 = [(FCFeaturedArticlesOperation *)self fetchCompletionHandler];
-    v6 = v5;
+    fetchCompletionHandler2 = [(FCFeaturedArticlesOperation *)self fetchCompletionHandler];
+    v6 = fetchCompletionHandler2;
     if (self)
     {
       resultFeedItems = self->_resultFeedItems;
@@ -235,7 +235,7 @@ uint64_t __47__FCFeaturedArticlesOperation_performOperation__block_invoke_4(uint
       resultFeedItems = 0;
     }
 
-    (*(v5 + 16))(v5, resultFeedItems, v8);
+    (*(fetchCompletionHandler2 + 16))(fetchCompletionHandler2, resultFeedItems, errorCopy);
   }
 }
 

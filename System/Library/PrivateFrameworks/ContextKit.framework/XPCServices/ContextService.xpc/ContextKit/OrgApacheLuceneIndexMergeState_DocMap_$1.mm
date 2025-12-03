@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneIndexMergeState_DocMap_$1
-- (OrgApacheLuceneIndexMergeState_DocMap_$1)initWithOrgApacheLuceneUtilBits:(id)a3 withOrgApacheLuceneUtilPackedPackedLongValues:(id)a4 withInt:(int)a5 withInt:(int)a6;
+- (OrgApacheLuceneIndexMergeState_DocMap_$1)initWithOrgApacheLuceneUtilBits:(id)bits withOrgApacheLuceneUtilPackedPackedLongValues:(id)values withInt:(int)int withInt:(int)withInt;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexMergeState_DocMap_$1
 
-- (OrgApacheLuceneIndexMergeState_DocMap_$1)initWithOrgApacheLuceneUtilBits:(id)a3 withOrgApacheLuceneUtilPackedPackedLongValues:(id)a4 withInt:(int)a5 withInt:(int)a6
+- (OrgApacheLuceneIndexMergeState_DocMap_$1)initWithOrgApacheLuceneUtilBits:(id)bits withOrgApacheLuceneUtilPackedPackedLongValues:(id)values withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->val$liveDocs_, a3);
-  JreStrongAssign(&self->val$docMap_, a4);
-  self->val$maxDoc_ = a5;
-  self->val$numDeletedDocs_ = a6;
+  JreStrongAssign(&self->val$liveDocs_, bits);
+  JreStrongAssign(&self->val$docMap_, values);
+  self->val$maxDoc_ = int;
+  self->val$numDeletedDocs_ = withInt;
   return self;
 }
 

@@ -1,22 +1,22 @@
 @interface TSURegressionModel
-- (_NSRange)superscriptRangeAtIndex:(int)a3;
-- (double)coefficientAtIndex:(int)a3;
-- (double)estimateForX:(double *)a3;
+- (_NSRange)superscriptRangeAtIndex:(int)index;
+- (double)coefficientAtIndex:(int)index;
+- (double)estimateForX:(double *)x;
 - (double)rSquared;
 - (id)equationString;
-- (id)formattedStringWithCoefficient:(double)a3 locale:(id)a4;
-- (id)getEquationStringAndBuildSuperscriptRangesArray:(id)a3;
-- (id)initAffineWithMappings:(int)a3 xs:(double *)a4 ys:(double *)a5 xDimension:(int)a6;
-- (id)initNonAffineWithMappings:(int)a3 xs:(double *)a4 ys:(double *)a5 xDimension:(int)a6 desiredIntercept:(double)a7;
+- (id)formattedStringWithCoefficient:(double)coefficient locale:(id)locale;
+- (id)getEquationStringAndBuildSuperscriptRangesArray:(id)array;
+- (id)initAffineWithMappings:(int)mappings xs:(double *)xs ys:(double *)ys xDimension:(int)dimension;
+- (id)initNonAffineWithMappings:(int)mappings xs:(double *)xs ys:(double *)ys xDimension:(int)dimension desiredIntercept:(double)intercept;
 - (int)numCoefficients;
 - (int)regressionType;
 @end
 
 @implementation TSURegressionModel
 
-- (id)initAffineWithMappings:(int)a3 xs:(double *)a4 ys:(double *)a5 xDimension:(int)a6
+- (id)initAffineWithMappings:(int)mappings xs:(double *)xs ys:(double *)ys xDimension:(int)dimension
 {
-  v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSURegressionModel initAffineWithMappings:xs:ys:xDimension:]", a4, a5, *&a6}];
+  v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSURegressionModel initAffineWithMappings:xs:ys:xDimension:]", xs, ys, *&dimension}];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSURegressionModel.m"];
   [TSUAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:23 isFatal:0 description:"TSURegressionModel subclasses must override"];
 
@@ -24,9 +24,9 @@
   return 0;
 }
 
-- (id)initNonAffineWithMappings:(int)a3 xs:(double *)a4 ys:(double *)a5 xDimension:(int)a6 desiredIntercept:(double)a7
+- (id)initNonAffineWithMappings:(int)mappings xs:(double *)xs ys:(double *)ys xDimension:(int)dimension desiredIntercept:(double)intercept
 {
-  v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSURegressionModel initNonAffineWithMappings:xs:ys:xDimension:desiredIntercept:]", a4, a5, *&a6, a7}];
+  v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSURegressionModel initNonAffineWithMappings:xs:ys:xDimension:desiredIntercept:]", xs, ys, *&dimension, intercept}];
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSURegressionModel.m"];
   [TSUAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:28 isFatal:0 description:"TSURegressionModel subclasses must override"];
 
@@ -54,7 +54,7 @@
   return 0;
 }
 
-- (double)coefficientAtIndex:(int)a3
+- (double)coefficientAtIndex:(int)index
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSURegressionModel coefficientAtIndex:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSURegressionModel.m"];
@@ -64,7 +64,7 @@
   return 0.0;
 }
 
-- (double)estimateForX:(double *)a3
+- (double)estimateForX:(double *)x
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSURegressionModel estimateForX:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSURegressionModel.m"];
@@ -84,7 +84,7 @@
   return 0.0;
 }
 
-- (id)getEquationStringAndBuildSuperscriptRangesArray:(id)a3
+- (id)getEquationStringAndBuildSuperscriptRangesArray:(id)array
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSURegressionModel getEquationStringAndBuildSuperscriptRangesArray:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSURegressionModel.m"];
@@ -94,7 +94,7 @@
   return 0;
 }
 
-- (_NSRange)superscriptRangeAtIndex:(int)a3
+- (_NSRange)superscriptRangeAtIndex:(int)index
 {
   v3 = 0;
   v4 = 0;
@@ -113,11 +113,11 @@
   return 0;
 }
 
-- (id)formattedStringWithCoefficient:(double)a3 locale:(id)a4
+- (id)formattedStringWithCoefficient:(double)coefficient locale:(id)locale
 {
-  v5 = a4;
-  v6 = fabs(a3);
-  if (!v5)
+  localeCopy = locale;
+  v6 = fabs(coefficient);
+  if (!localeCopy)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSURegressionModel formattedStringWithCoefficient:locale:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSURegressionModel.m"];
@@ -156,7 +156,7 @@
   }
 
   LOBYTE(v12) = 0;
-  v10 = [v5 numberFormatterStringFromDouble:v9 withFormat:0 useDecimalPlaces:0 minDecimalPlaces:0 decimalPlaces:0 showThousandsSeparator:0 currencyCode:a3 suppressMinusSign:v12];
+  v10 = [localeCopy numberFormatterStringFromDouble:v9 withFormat:0 useDecimalPlaces:0 minDecimalPlaces:0 decimalPlaces:0 showThousandsSeparator:0 currencyCode:coefficient suppressMinusSign:v12];
 
   return v10;
 }

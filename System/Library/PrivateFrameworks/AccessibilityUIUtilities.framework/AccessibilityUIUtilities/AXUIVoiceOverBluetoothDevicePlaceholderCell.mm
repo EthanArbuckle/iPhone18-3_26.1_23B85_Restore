@@ -1,16 +1,16 @@
 @interface AXUIVoiceOverBluetoothDevicePlaceholderCell
-- (AXUIVoiceOverBluetoothDevicePlaceholderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (AXUIVoiceOverBluetoothDevicePlaceholderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation AXUIVoiceOverBluetoothDevicePlaceholderCell
 
-- (AXUIVoiceOverBluetoothDevicePlaceholderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (AXUIVoiceOverBluetoothDevicePlaceholderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v10.receiver = self;
   v10.super_class = AXUIVoiceOverBluetoothDevicePlaceholderCell;
-  v5 = [(PSTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(PSTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (v5)
   {
     v6 = [objc_allocWithZone(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
@@ -18,8 +18,8 @@
     v5->_spinner = v6;
 
     [(UIActivityIndicatorView *)v5->_spinner startAnimating];
-    v8 = [(AXUIVoiceOverBluetoothDevicePlaceholderCell *)v5 contentView];
-    [v8 addSubview:v5->_spinner];
+    contentView = [(AXUIVoiceOverBluetoothDevicePlaceholderCell *)v5 contentView];
+    [contentView addSubview:v5->_spinner];
   }
 
   return v5;
@@ -44,13 +44,13 @@
   v7 = 10.0;
   if (![*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection])
   {
-    v8 = [(AXUIVoiceOverBluetoothDevicePlaceholderCell *)self contentView];
-    [v8 frame];
+    contentView = [(AXUIVoiceOverBluetoothDevicePlaceholderCell *)self contentView];
+    [contentView frame];
     v7 = v9 - v4 + -10.0;
   }
 
-  v10 = [(AXUIVoiceOverBluetoothDevicePlaceholderCell *)self contentView];
-  [v10 frame];
+  contentView2 = [(AXUIVoiceOverBluetoothDevicePlaceholderCell *)self contentView];
+  [contentView2 frame];
   v12 = (v11 - v6) * 0.5;
   v13 = ceilf(v12);
 

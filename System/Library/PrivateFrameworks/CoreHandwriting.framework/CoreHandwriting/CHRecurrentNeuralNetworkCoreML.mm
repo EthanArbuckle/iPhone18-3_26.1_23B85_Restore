@@ -1,16 +1,16 @@
 @interface CHRecurrentNeuralNetworkCoreML
-- (CHRecurrentNeuralNetworkCoreML)initWithModelName:(id)a3;
+- (CHRecurrentNeuralNetworkCoreML)initWithModelName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation CHRecurrentNeuralNetworkCoreML
 
-- (CHRecurrentNeuralNetworkCoreML)initWithModelName:(id)a3
+- (CHRecurrentNeuralNetworkCoreML)initWithModelName:(id)name
 {
   v286 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v261 = v4;
-  if (self && (v281.receiver = self, v281.super_class = CHRecurrentNeuralNetworkCoreML, (v5 = [(CHRecurrentNeuralNetwork *)&v281 initWithModelName:v4]) != 0))
+  nameCopy = name;
+  v261 = nameCopy;
+  if (self && (v281.receiver = self, v281.super_class = CHRecurrentNeuralNetworkCoreML, (v5 = [(CHRecurrentNeuralNetwork *)&v281 initWithModelName:nameCopy]) != 0))
   {
     v262 = v5;
     v6 = v261;

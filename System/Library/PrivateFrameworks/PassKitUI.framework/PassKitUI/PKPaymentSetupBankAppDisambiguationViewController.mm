@@ -1,28 +1,28 @@
 @interface PKPaymentSetupBankAppDisambiguationViewController
-- (PKPaymentSetupBankAppDisambiguationViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 delegate:(id)a5 paymentSetupProduct:(id)a6 inAppMethod:(id)a7 cameraCaptureMethod:(id)a8;
+- (PKPaymentSetupBankAppDisambiguationViewController)initWithProvisioningController:(id)controller context:(int64_t)context delegate:(id)delegate paymentSetupProduct:(id)product inAppMethod:(id)method cameraCaptureMethod:(id)captureMethod;
 - (PKPaymentSetupBankAppDisambiguationViewControllerFlowDelegate)flowDelegate;
-- (void)didSelectCameraWithCompletion:(id)a3;
-- (void)didSelectInAppWithCompletion:(id)a3;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didSelectCameraWithCompletion:(id)completion;
+- (void)didSelectInAppWithCompletion:(id)completion;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPaymentSetupBankAppDisambiguationViewController
 
-- (PKPaymentSetupBankAppDisambiguationViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 delegate:(id)a5 paymentSetupProduct:(id)a6 inAppMethod:(id)a7 cameraCaptureMethod:(id)a8
+- (PKPaymentSetupBankAppDisambiguationViewController)initWithProvisioningController:(id)controller context:(int64_t)context delegate:(id)delegate paymentSetupProduct:(id)product inAppMethod:(id)method cameraCaptureMethod:(id)captureMethod
 {
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
+  productCopy = product;
+  methodCopy = method;
+  captureMethodCopy = captureMethod;
   v21.receiver = self;
   v21.super_class = PKPaymentSetupBankAppDisambiguationViewController;
-  v16 = [(PKPaymentSetupOptionsViewController *)&v21 initWithContext:a4];
+  v16 = [(PKPaymentSetupOptionsViewController *)&v21 initWithContext:context];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_paymentSetupProduct, a6);
-    v18 = [[PKPaymentSetupBankAppDisambiguationController alloc] initWithPaymentSetupProduct:v17->_paymentSetupProduct inAppMethod:v14 cameraCaptureMethod:v15];
+    objc_storeStrong(&v16->_paymentSetupProduct, product);
+    v18 = [[PKPaymentSetupBankAppDisambiguationController alloc] initWithPaymentSetupProduct:v17->_paymentSetupProduct inAppMethod:methodCopy cameraCaptureMethod:captureMethodCopy];
     sectionController = v17->_sectionController;
     v17->_sectionController = v18;
 
@@ -39,8 +39,8 @@
   v7.receiver = self;
   v7.super_class = PKPaymentSetupBankAppDisambiguationViewController;
   [(PKPaymentSetupOptionsViewController *)&v7 viewDidLoad];
-  v3 = [(PKPaymentSetupBankAppDisambiguationViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:0];
+  navigationItem = [(PKPaymentSetupBankAppDisambiguationViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 
   v4 = PKLocalizedPaymentString(&cfstr_CardType.isa);
   [(PKPaymentSetupOptionsViewController *)self setTitleText:v4];
@@ -53,20 +53,20 @@
   [(PKPaymentSetupOptionsViewController *)self setSections:v6 animated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupBankAppDisambiguationViewController;
-  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)didSelectInAppWithCompletion:(id)a3
+- (void)didSelectInAppWithCompletion:(id)completion
 {
   reporter = self->_reporter;
-  v5 = a3;
+  completionCopy = completion;
   [(PKProvisioningAnalyticsSessionUIReporter *)reporter reportOtherButtonPressed:@"inApp"];
-  v6 = _Block_copy(v5);
+  v6 = _Block_copy(completionCopy);
 
   loadingCompletion = self->_loadingCompletion;
   self->_loadingCompletion = v6;
@@ -75,12 +75,12 @@
   [WeakRetained bankAppDisambiguationViewControllerDidSelectApp:self];
 }
 
-- (void)didSelectCameraWithCompletion:(id)a3
+- (void)didSelectCameraWithCompletion:(id)completion
 {
   reporter = self->_reporter;
-  v5 = a3;
+  completionCopy = completion;
   [(PKProvisioningAnalyticsSessionUIReporter *)reporter reportOtherButtonPressed:@"manualEntry"];
-  v6 = _Block_copy(v5);
+  v6 = _Block_copy(completionCopy);
 
   loadingCompletion = self->_loadingCompletion;
   self->_loadingCompletion = v6;
@@ -89,13 +89,13 @@
   [WeakRetained bankAppDisambiguationViewControllerDidManualEntry:self];
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(PKDynamicCollectionViewController *)self collectionView:a3];
-  [v6 setUserInteractionEnabled:!v4];
+  iCopy = i;
+  v6 = [(PKDynamicCollectionViewController *)self collectionView:i];
+  [v6 setUserInteractionEnabled:!iCopy];
 
-  if (!v4)
+  if (!iCopy)
   {
     loadingCompletion = self->_loadingCompletion;
     if (loadingCompletion)

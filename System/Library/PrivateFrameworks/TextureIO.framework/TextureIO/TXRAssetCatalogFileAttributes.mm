@@ -1,15 +1,15 @@
 @interface TXRAssetCatalogFileAttributes
 - (TXRAssetCatalogFileAttributes)init;
-- (void)setColorSpace:(CGColorSpace *)a3;
+- (void)setColorSpace:(CGColorSpace *)space;
 @end
 
 @implementation TXRAssetCatalogFileAttributes
 
-- (void)setColorSpace:(CGColorSpace *)a3
+- (void)setColorSpace:(CGColorSpace *)space
 {
-  CGColorSpaceRetain(a3);
+  CGColorSpaceRetain(space);
   CGColorSpaceRelease(self->_colorSpace);
-  self->_colorSpace = a3;
+  self->_colorSpace = space;
 }
 
 - (TXRAssetCatalogFileAttributes)init

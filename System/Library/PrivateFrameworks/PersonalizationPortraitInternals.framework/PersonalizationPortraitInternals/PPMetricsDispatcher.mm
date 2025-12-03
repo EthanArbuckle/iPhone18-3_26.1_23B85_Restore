@@ -1,19 +1,19 @@
 @interface PPMetricsDispatcher
-+ (void)logPayloadForEvent:(id)a3 payload:(id)a4 inBackground:(BOOL)a5;
++ (void)logPayloadForEvent:(id)event payload:(id)payload inBackground:(BOOL)background;
 @end
 
 @implementation PPMetricsDispatcher
 
-+ (void)logPayloadForEvent:(id)a3 payload:(id)a4 inBackground:(BOOL)a5
++ (void)logPayloadForEvent:(id)event payload:(id)payload inBackground:(BOOL)background
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  backgroundCopy = background;
+  eventCopy = event;
+  payloadCopy = payload;
   v9 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-172800.0];
   v10 = +[PPTrialWrapper sharedInstance];
-  v11 = [v10 lastTreatmentUpdate];
+  lastTreatmentUpdate = [v10 lastTreatmentUpdate];
 
-  if (!v11 || [v11 compare:v9] != 1)
+  if (!lastTreatmentUpdate || [lastTreatmentUpdate compare:v9] != 1)
   {
     v18 = 0;
     v19 = &v18;
@@ -26,13 +26,13 @@
     v13[1] = 3221225472;
     v13[2] = __63__PPMetricsDispatcher_logPayloadForEvent_payload_inBackground___block_invoke;
     v13[3] = &unk_278975C50;
-    v17 = v5;
+    v17 = backgroundCopy;
     v16 = &v18;
-    v14 = v8;
-    v15 = v7;
+    v14 = payloadCopy;
+    v15 = eventCopy;
     dispatch_sync(v12, v13);
 
-    if (v5)
+    if (backgroundCopy)
     {
       dispatch_block_wait(v19[5], 0xFFFFFFFFFFFFFFFFLL);
     }

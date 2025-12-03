@@ -1,6 +1,6 @@
 @interface FAFamilyMemberDetailsUIRequest
 - (id)_queryString;
-- (void)URLRequestWithCompletion:(id)a3;
+- (void)URLRequestWithCompletion:(id)completion;
 - (void)_queryString;
 @end
 
@@ -48,24 +48,24 @@ LABEL_6:
     [(FAFamilyMemberDetailsUIRequest *)v3 _queryString];
   }
 
-  v9 = [v3 query];
+  query = [v3 query];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return query;
 }
 
-- (void)URLRequestWithCompletion:(id)a3
+- (void)URLRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__FAFamilyMemberDetailsUIRequest_URLRequestWithCompletion___block_invoke;
   v7[3] = &unk_2782F4478;
-  v8 = v4;
+  v8 = completionCopy;
   v6.receiver = self;
   v6.super_class = FAFamilyMemberDetailsUIRequest;
-  v5 = v4;
+  v5 = completionCopy;
   [(FAFamilyRequest *)&v6 URLRequestWithCompletion:v7];
 }
 
@@ -95,7 +95,7 @@ void __59__FAFamilyMemberDetailsUIRequest_URLRequestWithCompletion___block_invok
 - (void)_queryString
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 query];
+  query = [self query];
   OUTLINED_FUNCTION_1();
   _os_log_debug_impl(&dword_21BB35000, a2, OS_LOG_TYPE_DEBUG, "Query string %@", v5, 0xCu);
 

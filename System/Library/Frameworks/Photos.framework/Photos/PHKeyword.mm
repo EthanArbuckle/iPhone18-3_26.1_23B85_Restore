@@ -1,11 +1,11 @@
 @interface PHKeyword
 + (id)entityKeyMap;
-+ (id)fetchKeywordsForAsset:(id)a3 options:(id)a4;
-+ (id)fetchKeywordsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)fetchKeywordsWithTitles:(id)a3 options:(id)a4;
-+ (id)localIdentifierWithUUID:(id)a3;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-- (PHKeyword)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
++ (id)fetchKeywordsForAsset:(id)asset options:(id)options;
++ (id)fetchKeywordsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)fetchKeywordsWithTitles:(id)titles options:(id)options;
++ (id)localIdentifierWithUUID:(id)d;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
+- (PHKeyword)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 - (id)description;
 @end
 
@@ -21,19 +21,19 @@
   return v4;
 }
 
-- (PHKeyword)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHKeyword)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = PHKeyword;
-  v9 = [(PHObject *)&v15 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHObject *)&v15 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"title"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     title = v9->_title;
     v9->_title = v10;
 
-    v12 = [v8 objectForKeyedSubscript:@"shortcut"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"shortcut"];
     shortcut = v9->_shortcut;
     v9->_shortcut = v12;
   }
@@ -41,16 +41,16 @@
   return v9;
 }
 
-+ (id)fetchKeywordsForAsset:(id)a3 options:(id)a4
++ (id)fetchKeywordsForAsset:(id)asset options:(id)options
 {
-  v5 = a3;
+  assetCopy = asset;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__PHKeyword_fetchKeywordsForAsset_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = assetCopy;
+  v6 = assetCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -63,16 +63,16 @@ id __43__PHKeyword_fetchKeywordsForAsset_options___block_invoke(uint64_t a1, uin
   return v3;
 }
 
-+ (id)fetchKeywordsWithTitles:(id)a3 options:(id)a4
++ (id)fetchKeywordsWithTitles:(id)titles options:(id)options
 {
-  v5 = a3;
+  titlesCopy = titles;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__PHKeyword_fetchKeywordsWithTitles_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = titlesCopy;
+  v6 = titlesCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -85,16 +85,16 @@ id __45__PHKeyword_fetchKeywordsWithTitles_options___block_invoke(uint64_t a1, u
   return v3;
 }
 
-+ (id)fetchKeywordsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)fetchKeywordsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__PHKeyword_fetchKeywordsWithLocalIdentifiers_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = identifiersCopy;
+  v6 = identifiersCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -115,12 +115,12 @@ id __38__PHKeyword_fetchKeywordsWithOptions___block_invoke(uint64_t a1, uint64_t
   return v3;
 }
 
-+ (id)localIdentifierWithUUID:(id)a3
++ (id)localIdentifierWithUUID:(id)d
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 identifierCode];
-  v7 = [v4 stringWithFormat:@"%@/L0/%@", v5, v6];
+  dCopy = d;
+  identifierCode = [self identifierCode];
+  v7 = [v4 stringWithFormat:@"%@/L0/%@", dCopy, identifierCode];
 
   return v7;
 }
@@ -155,7 +155,7 @@ void __25__PHKeyword_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_16_47324 = v5;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   pl_dispatch_once();
   v3 = propertiesToFetchWithHint__pl_once_object_15_47337;

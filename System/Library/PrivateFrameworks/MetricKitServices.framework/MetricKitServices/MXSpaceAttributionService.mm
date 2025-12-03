@@ -4,7 +4,7 @@
 - (BOOL)startService;
 - (BOOL)stopService;
 - (MXSpaceAttributionService)init;
-- (id)getMetricsForClient:(id)a3;
+- (id)getMetricsForClient:(id)client;
 - (void)_updateService;
 - (void)unarchiveSpaceAttributionData;
 @end
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __58__MXSpaceAttributionService_sharedSpaceAttributionService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSpaceAttributionService_onceToken != -1)
   {
     dispatch_once(&sharedSpaceAttributionService_onceToken, block);
@@ -122,14 +122,14 @@ uint64_t __58__MXSpaceAttributionService_sharedSpaceAttributionService__block_in
 {
   v23 = *MEMORY[0x277D85DE8];
   [(NSMutableArray *)self->_spaceAttributionDataPaths removeAllObjects];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = +[MXUtilities containerPath];
   v5 = [&unk_286A1CA88 objectAtIndexedSubscript:6];
   v6 = [v4 stringByAppendingPathComponent:v5];
-  v7 = [(MXService *)self currentClient];
-  v8 = [v6 stringByAppendingPathComponent:v7];
+  currentClient = [(MXService *)self currentClient];
+  v8 = [v6 stringByAppendingPathComponent:currentClient];
   v20 = 0;
-  v9 = [v3 contentsOfDirectoryAtPath:v8 error:&v20];
+  v9 = [defaultManager contentsOfDirectoryAtPath:v8 error:&v20];
   v10 = v20;
 
   if (v10)
@@ -170,24 +170,24 @@ uint64_t __58__MXSpaceAttributionService_sharedSpaceAttributionService__block_in
   _os_log_debug_impl(&dword_258D95000, log, OS_LOG_TYPE_DEBUG, "Log file consistent, assigning client data.", buf, 2u);
 }
 
-- (id)getMetricsForClient:(id)a3
+- (id)getMetricsForClient:(id)client
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v27 = self;
+  selfCopy = self;
   unarchivedSpaceAttributionData = self->_unarchivedSpaceAttributionData;
   if (!unarchivedSpaceAttributionData)
   {
     MXSpaceAttributionServiceLogHandle = self->_MXSpaceAttributionServiceLogHandle;
-    if (os_log_type_enabled(v27->_MXSpaceAttributionServiceLogHandle, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(selfCopy->_MXSpaceAttributionServiceLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&dword_258D95000, MXSpaceAttributionServiceLogHandle, OS_LOG_TYPE_DEFAULT, "Unarchived powerlog data not yet set, running unarchive.", buf, 2u);
     }
 
-    [(MXSpaceAttributionService *)v27 unarchiveSpaceAttributionData];
-    unarchivedSpaceAttributionData = v27->_unarchivedSpaceAttributionData;
+    [(MXSpaceAttributionService *)selfCopy unarchiveSpaceAttributionData];
+    unarchivedSpaceAttributionData = selfCopy->_unarchivedSpaceAttributionData;
   }
 
   v30 = 0u;
@@ -210,18 +210,18 @@ uint64_t __58__MXSpaceAttributionService_sharedSpaceAttributionService__block_in
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
-        v14 = [v13 metrics];
-        v15 = [v14 objectForKey:v4];
+        metrics = [v13 metrics];
+        v15 = [metrics objectForKey:clientCopy];
 
         if (v15)
         {
           v16 = +[MXUtilities getServicesDateFormatter];
-          v17 = [v13 datestamp];
-          v18 = [v16 stringFromDate:v17];
+          datestamp = [v13 datestamp];
+          v18 = [v16 stringFromDate:datestamp];
 
-          v19 = [v13 metrics];
-          v20 = [v19 objectForKey:v4];
-          v21 = [(MXService *)v27 pruneSourceData:v20];
+          metrics2 = [v13 metrics];
+          v20 = [metrics2 objectForKey:clientCopy];
+          v21 = [(MXService *)selfCopy pruneSourceData:v20];
           [v5 setObject:v21 forKeyedSubscript:v18];
         }
       }
@@ -240,11 +240,11 @@ uint64_t __58__MXSpaceAttributionService_sharedSpaceAttributionService__block_in
 
   else
   {
-    v24 = v27->_MXSpaceAttributionServiceLogHandle;
+    v24 = selfCopy->_MXSpaceAttributionServiceLogHandle;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v4;
+      v33 = clientCopy;
       _os_log_impl(&dword_258D95000, v24, OS_LOG_TYPE_DEFAULT, "No data for client: %@", buf, 0xCu);
     }
 
@@ -260,7 +260,7 @@ uint64_t __58__MXSpaceAttributionService_sharedSpaceAttributionService__block_in
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_258D95000, a2, OS_LOG_TYPE_ERROR, "Failed to obtain log paths with error: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

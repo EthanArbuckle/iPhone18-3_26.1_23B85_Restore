@@ -1,15 +1,15 @@
 @interface CodableModelIdentity
 - (_TtC16MusicApplication20CodableModelIdentity)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CodableModelIdentity
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2BEFC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2BEFC(coderCopy);
 }
 
 - (_TtC16MusicApplication20CodableModelIdentity)init

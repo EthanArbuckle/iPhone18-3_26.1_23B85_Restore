@@ -1,26 +1,26 @@
 @interface NMSAppActivityStatus
-- (BOOL)_exceedsDormancyInterval:(double)a3 forDate:(id)a4;
+- (BOOL)_exceedsDormancyInterval:(double)interval forDate:(id)date;
 - (BOOL)isAppContentDormant;
-- (BOOL)isAppContentDormantWithInterval:(double)a3;
+- (BOOL)isAppContentDormantWithInterval:(double)interval;
 - (BOOL)isAppDownloadingDormant;
-- (BOOL)isAppDownloadingDormantWithInterval:(double)a3;
-- (NMSAppActivityStatus)initWithBundleID:(id)a3;
+- (BOOL)isAppDownloadingDormantWithInterval:(double)interval;
+- (NMSAppActivityStatus)initWithBundleID:(id)d;
 - (double)_defaultDormancyInterval;
 - (id)description;
 @end
 
 @implementation NMSAppActivityStatus
 
-- (NMSAppActivityStatus)initWithBundleID:(id)a3
+- (NMSAppActivityStatus)initWithBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = NMSAppActivityStatus;
   v6 = [(NMSAppActivityStatus *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleID, a3);
+    objc_storeStrong(&v6->_bundleID, d);
     v8 = v7;
   }
 
@@ -30,50 +30,50 @@
 - (id)description
 {
   v3 = +[NMSyncDefaults sharedDefaults];
-  v4 = [(NMSAppActivityStatus *)self bundleID];
-  v5 = [v3 installDateForBundleID:v4];
+  bundleID = [(NMSAppActivityStatus *)self bundleID];
+  v5 = [v3 installDateForBundleID:bundleID];
 
   v6 = +[NMSyncDefaults sharedDefaults];
-  v7 = [(NMSAppActivityStatus *)self bundleID];
-  v8 = [v6 lastUserPinningChangeDateForBundleID:v7];
+  bundleID2 = [(NMSAppActivityStatus *)self bundleID];
+  v8 = [v6 lastUserPinningChangeDateForBundleID:bundleID2];
 
   v9 = +[NMSyncDefaults sharedDefaults];
-  v10 = [(NMSAppActivityStatus *)self bundleID];
-  v11 = [v9 lastContentUsedDateForBundleID:v10];
+  bundleID3 = [(NMSAppActivityStatus *)self bundleID];
+  v11 = [v9 lastContentUsedDateForBundleID:bundleID3];
 
   v12 = +[NMSyncDefaults sharedDefaults];
-  v13 = [(NMSAppActivityStatus *)self bundleID];
-  v14 = [v12 lastLocalPlaybackDateForBundleID:v13];
+  bundleID4 = [(NMSAppActivityStatus *)self bundleID];
+  v14 = [v12 lastLocalPlaybackDateForBundleID:bundleID4];
 
   v15 = +[NMSyncDefaults sharedDefaults];
-  v16 = [(NMSAppActivityStatus *)self bundleID];
-  v17 = [v15 dormancyIntervalInHoursForBundleID:v16];
+  bundleID5 = [(NMSAppActivityStatus *)self bundleID];
+  v17 = [v15 dormancyIntervalInHoursForBundleID:bundleID5];
 
   v18 = MEMORY[0x277CCACA8];
   v23.receiver = self;
   v23.super_class = NMSAppActivityStatus;
   v19 = [(NMSAppActivityStatus *)&v23 description];
-  v20 = [(NMSAppActivityStatus *)self bundleID];
-  v21 = [v18 stringWithFormat:@"%@ bundleID <%@> installDate <%@> lastPinChange <%@> lastContentUsedDate <%@> lastLocalPlaybackDate <%@> dormancyIntervalInHours <%ld>", v19, v20, v5, v8, v11, v14, v17];
+  bundleID6 = [(NMSAppActivityStatus *)self bundleID];
+  v21 = [v18 stringWithFormat:@"%@ bundleID <%@> installDate <%@> lastPinChange <%@> lastContentUsedDate <%@> lastLocalPlaybackDate <%@> dormancyIntervalInHours <%ld>", v19, bundleID6, v5, v8, v11, v14, v17];
 
   return v21;
 }
 
-- (BOOL)_exceedsDormancyInterval:(double)a3 forDate:(id)a4
+- (BOOL)_exceedsDormancyInterval:(double)interval forDate:(id)date
 {
-  if (!a4)
+  if (!date)
   {
     return 1;
   }
 
   v5 = MEMORY[0x277CBEAA8];
-  v6 = a4;
+  dateCopy = date;
   [v5 timeIntervalSinceReferenceDate];
   v8 = v7;
-  [v6 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v10 = v9;
 
-  return v8 - v10 >= a3;
+  return v8 - v10 >= interval;
 }
 
 - (BOOL)isAppContentDormant
@@ -83,21 +83,21 @@
   return [(NMSAppActivityStatus *)self isAppContentDormantWithInterval:?];
 }
 
-- (BOOL)isAppContentDormantWithInterval:(double)a3
+- (BOOL)isAppContentDormantWithInterval:(double)interval
 {
   v5 = +[NMSyncDefaults sharedDefaults];
-  v6 = [(NMSAppActivityStatus *)self bundleID];
-  v7 = [v5 lastUserLaunchDateForBundleID:v6];
+  bundleID = [(NMSAppActivityStatus *)self bundleID];
+  v7 = [v5 lastUserLaunchDateForBundleID:bundleID];
 
-  if ([(NMSAppActivityStatus *)self _exceedsDormancyInterval:v7 forDate:a3])
+  if ([(NMSAppActivityStatus *)self _exceedsDormancyInterval:v7 forDate:interval])
   {
     v8 = +[NMSyncDefaults sharedDefaults];
-    v9 = [(NMSAppActivityStatus *)self bundleID];
-    v10 = [v8 lastContentUsedDateForBundleID:v9];
+    bundleID2 = [(NMSAppActivityStatus *)self bundleID];
+    v10 = [v8 lastContentUsedDateForBundleID:bundleID2];
 
-    if ([(NMSAppActivityStatus *)self _exceedsDormancyInterval:v10 forDate:a3])
+    if ([(NMSAppActivityStatus *)self _exceedsDormancyInterval:v10 forDate:interval])
     {
-      v11 = [(NMSAppActivityStatus *)self isAppDownloadingDormantWithInterval:a3];
+      v11 = [(NMSAppActivityStatus *)self isAppDownloadingDormantWithInterval:interval];
     }
 
     else
@@ -121,25 +121,25 @@
   return [(NMSAppActivityStatus *)self isAppDownloadingDormantWithInterval:?];
 }
 
-- (BOOL)isAppDownloadingDormantWithInterval:(double)a3
+- (BOOL)isAppDownloadingDormantWithInterval:(double)interval
 {
   v5 = +[NMSyncDefaults sharedDefaults];
-  v6 = [(NMSAppActivityStatus *)self bundleID];
-  v7 = [v5 lastUserPinningChangeDateForBundleID:v6];
+  bundleID = [(NMSAppActivityStatus *)self bundleID];
+  v7 = [v5 lastUserPinningChangeDateForBundleID:bundleID];
 
-  if ([(NMSAppActivityStatus *)self _exceedsDormancyInterval:v7 forDate:a3])
+  if ([(NMSAppActivityStatus *)self _exceedsDormancyInterval:v7 forDate:interval])
   {
     v8 = +[NMSyncDefaults sharedDefaults];
-    v9 = [(NMSAppActivityStatus *)self bundleID];
-    v10 = [v8 lastLocalPlaybackDateForBundleID:v9];
+    bundleID2 = [(NMSAppActivityStatus *)self bundleID];
+    v10 = [v8 lastLocalPlaybackDateForBundleID:bundleID2];
 
-    if ([(NMSAppActivityStatus *)self _exceedsDormancyInterval:v10 forDate:a3])
+    if ([(NMSAppActivityStatus *)self _exceedsDormancyInterval:v10 forDate:interval])
     {
       v11 = +[NMSyncDefaults sharedDefaults];
-      v12 = [(NMSAppActivityStatus *)self bundleID];
-      v13 = [v11 installDateForBundleID:v12];
+      bundleID3 = [(NMSAppActivityStatus *)self bundleID];
+      v13 = [v11 installDateForBundleID:bundleID3];
 
-      v14 = [(NMSAppActivityStatus *)self _exceedsDormancyInterval:v13 forDate:a3];
+      v14 = [(NMSAppActivityStatus *)self _exceedsDormancyInterval:v13 forDate:interval];
     }
 
     else
@@ -159,8 +159,8 @@
 - (double)_defaultDormancyInterval
 {
   v3 = +[NMSyncDefaults sharedDefaults];
-  v4 = [(NMSAppActivityStatus *)self bundleID];
-  v5 = [v3 dormancyIntervalInHoursForBundleID:v4];
+  bundleID = [(NMSAppActivityStatus *)self bundleID];
+  v5 = [v3 dormancyIntervalInHoursForBundleID:bundleID];
 
   return (3600 * v5);
 }

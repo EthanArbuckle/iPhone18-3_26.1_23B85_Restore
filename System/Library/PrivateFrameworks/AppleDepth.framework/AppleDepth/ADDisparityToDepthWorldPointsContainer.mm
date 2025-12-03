@@ -1,12 +1,12 @@
 @interface ADDisparityToDepthWorldPointsContainer
-- (ADDisparityToDepthFitWorldPoint)getPointFromContainer:(int)a3;
-- (ADDisparityToDepthWorldPointsContainer)initWithParameters:(id)a3;
+- (ADDisparityToDepthFitWorldPoint)getPointFromContainer:(int)container;
+- (ADDisparityToDepthWorldPointsContainer)initWithParameters:(id)parameters;
 - (unint64_t)size;
 @end
 
 @implementation ADDisparityToDepthWorldPointsContainer
 
-- (ADDisparityToDepthFitWorldPoint)getPointFromContainer:(int)a3
+- (ADDisparityToDepthFitWorldPoint)getPointFromContainer:(int)container
 {
   v5 = v3;
   DisparityToDepth::WorldPointsContainer::vector(self->_worldPoints.__ptr_, &v10);
@@ -28,7 +28,7 @@ LABEL_5:
       v9 = v8[1];
       *v5 = *v8;
       *(v5 + 16) = v9;
-      if (*(v5 + 20) == a3)
+      if (*(v5 + 20) == container)
       {
         break;
       }
@@ -63,9 +63,9 @@ LABEL_5:
   return (v3 - v2) >> 5;
 }
 
-- (ADDisparityToDepthWorldPointsContainer)initWithParameters:(id)a3
+- (ADDisparityToDepthWorldPointsContainer)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v6.receiver = self;
   v6.super_class = ADDisparityToDepthWorldPointsContainer;
   if ([(ADDisparityToDepthWorldPointsContainer *)&v6 init])

@@ -1,61 +1,61 @@
 @interface CRKClassKitFacadeDecoratorBase
-- (BOOL)ownsError:(id)a3;
+- (BOOL)ownsError:(id)error;
 - (CRKClassKitFacadeDecoratorBase)init;
-- (CRKClassKitFacadeDecoratorBase)initWithClassKitFacade:(id)a3;
+- (CRKClassKitFacadeDecoratorBase)initWithClassKitFacade:(id)facade;
 - (NSString)description;
-- (id)classDataObserverWithSortDescriptors:(id)a3;
-- (id)locationsObserverWithSortDescriptors:(id)a3;
-- (id)makeClassWithLocationID:(id)a3 name:(id)a4;
-- (id)makeInstructorQueryForSearchString:(id)a3 locationIDs:(id)a4 sortingGivenNameFirst:(BOOL)a5 pageSize:(int64_t)a6;
-- (id)makeQueryForLocationsAllowingEasyStudentSignInForPersonID:(id)a3;
-- (id)makeQueryForPersonsWithIdentifiers:(id)a3;
-- (id)makeStudentQueryForSearchString:(id)a3 locationIDs:(id)a4 sortingGivenNameFirst:(BOOL)a5 pageSize:(int64_t)a6;
-- (id)objectIDsOfInstructorsInClass:(id)a3;
-- (id)objectIDsOfStudentsInClass:(id)a3;
-- (id)personObserverWithPersonIDs:(id)a3 sortDescriptors:(id)a4;
-- (id)subscribeToClassMembershipChangeEvents:(id)a3;
-- (id)subscribeToCurrentUserDidChangeEvents:(id)a3;
+- (id)classDataObserverWithSortDescriptors:(id)descriptors;
+- (id)locationsObserverWithSortDescriptors:(id)descriptors;
+- (id)makeClassWithLocationID:(id)d name:(id)name;
+- (id)makeInstructorQueryForSearchString:(id)string locationIDs:(id)ds sortingGivenNameFirst:(BOOL)first pageSize:(int64_t)size;
+- (id)makeQueryForLocationsAllowingEasyStudentSignInForPersonID:(id)d;
+- (id)makeQueryForPersonsWithIdentifiers:(id)identifiers;
+- (id)makeStudentQueryForSearchString:(id)string locationIDs:(id)ds sortingGivenNameFirst:(BOOL)first pageSize:(int64_t)size;
+- (id)objectIDsOfInstructorsInClass:(id)class;
+- (id)objectIDsOfStudentsInClass:(id)class;
+- (id)personObserverWithPersonIDs:(id)ds sortDescriptors:(id)descriptors;
+- (id)subscribeToClassMembershipChangeEvents:(id)events;
+- (id)subscribeToCurrentUserDidChangeEvents:(id)events;
 - (int64_t)accountState;
-- (void)addInstructor:(id)a3 toClass:(id)a4;
-- (void)addStudent:(id)a3 toClass:(id)a4;
-- (void)currentUserWithCompletion:(id)a3;
-- (void)deregisterDataObserver:(id)a3;
-- (void)enrolledClassesWithCompletion:(id)a3;
-- (void)executeQuery:(id)a3;
-- (void)instructedClassesWithCompletion:(id)a3;
-- (void)instructorsInClassWithObjectID:(id)a3 completion:(id)a4;
-- (void)locationsWithManagePermissionsForUserWithObjectID:(id)a3 completion:(id)a4;
-- (void)locationsWithObjectIDs:(id)a3 completion:(id)a4;
-- (void)registerDataObserver:(id)a3;
-- (void)removeClass:(id)a3 completion:(id)a4;
-- (void)removeInstructor:(id)a3 fromClass:(id)a4;
-- (void)removeStudent:(id)a3 fromClass:(id)a4;
-- (void)saveClass:(id)a3 completion:(id)a4;
-- (void)studentsInClassWithObjectID:(id)a3 completion:(id)a4;
-- (void)syncServerConfigWithCompletion:(id)a3;
+- (void)addInstructor:(id)instructor toClass:(id)class;
+- (void)addStudent:(id)student toClass:(id)class;
+- (void)currentUserWithCompletion:(id)completion;
+- (void)deregisterDataObserver:(id)observer;
+- (void)enrolledClassesWithCompletion:(id)completion;
+- (void)executeQuery:(id)query;
+- (void)instructedClassesWithCompletion:(id)completion;
+- (void)instructorsInClassWithObjectID:(id)d completion:(id)completion;
+- (void)locationsWithManagePermissionsForUserWithObjectID:(id)d completion:(id)completion;
+- (void)locationsWithObjectIDs:(id)ds completion:(id)completion;
+- (void)registerDataObserver:(id)observer;
+- (void)removeClass:(id)class completion:(id)completion;
+- (void)removeInstructor:(id)instructor fromClass:(id)class;
+- (void)removeStudent:(id)student fromClass:(id)class;
+- (void)saveClass:(id)class completion:(id)completion;
+- (void)studentsInClassWithObjectID:(id)d completion:(id)completion;
+- (void)syncServerConfigWithCompletion:(id)completion;
 @end
 
 @implementation CRKClassKitFacadeDecoratorBase
 
 - (CRKClassKitFacadeDecoratorBase)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithClassKitFacade_);
-  [v4 handleFailureInMethod:a2 object:self file:@"CRKClassKitFacadeDecoratorBase.m" lineNumber:20 description:{@"Use %@ instead", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKClassKitFacadeDecoratorBase.m" lineNumber:20 description:{@"Use %@ instead", v5}];
 
   return 0;
 }
 
-- (CRKClassKitFacadeDecoratorBase)initWithClassKitFacade:(id)a3
+- (CRKClassKitFacadeDecoratorBase)initWithClassKitFacade:(id)facade
 {
-  v5 = a3;
+  facadeCopy = facade;
   v9.receiver = self;
   v9.super_class = CRKClassKitFacadeDecoratorBase;
   v6 = [(CRKClassKitFacadeDecoratorBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingClassKitFacade, a3);
+    objc_storeStrong(&v6->_underlyingClassKitFacade, facade);
   }
 
   return v7;
@@ -65,268 +65,268 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v6 = [v3 stringWithFormat:@"<%@: %p { underlyingClassKitFacade = %@ }>", v4, self, v5];
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v6 = [v3 stringWithFormat:@"<%@: %p { underlyingClassKitFacade = %@ }>", v4, self, underlyingClassKitFacade];
 
   return v6;
 }
 
 - (int64_t)accountState
 {
-  v2 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v3 = [v2 accountState];
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  accountState = [underlyingClassKitFacade accountState];
 
-  return v3;
+  return accountState;
 }
 
-- (BOOL)ownsError:(id)a3
+- (BOOL)ownsError:(id)error
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v6 = [v5 ownsError:v4];
+  errorCopy = error;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v6 = [underlyingClassKitFacade ownsError:errorCopy];
 
   return v6;
 }
 
-- (void)syncServerConfigWithCompletion:(id)a3
+- (void)syncServerConfigWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v5 syncServerConfigWithCompletion:v4];
+  completionCopy = completion;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade syncServerConfigWithCompletion:completionCopy];
 }
 
-- (id)classDataObserverWithSortDescriptors:(id)a3
+- (id)classDataObserverWithSortDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v6 = [v5 classDataObserverWithSortDescriptors:v4];
+  descriptorsCopy = descriptors;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v6 = [underlyingClassKitFacade classDataObserverWithSortDescriptors:descriptorsCopy];
 
   return v6;
 }
 
-- (id)locationsObserverWithSortDescriptors:(id)a3
+- (id)locationsObserverWithSortDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v6 = [v5 locationsObserverWithSortDescriptors:v4];
+  descriptorsCopy = descriptors;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v6 = [underlyingClassKitFacade locationsObserverWithSortDescriptors:descriptorsCopy];
 
   return v6;
 }
 
-- (id)personObserverWithPersonIDs:(id)a3 sortDescriptors:(id)a4
+- (id)personObserverWithPersonIDs:(id)ds sortDescriptors:(id)descriptors
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v9 = [v8 personObserverWithPersonIDs:v7 sortDescriptors:v6];
+  descriptorsCopy = descriptors;
+  dsCopy = ds;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v9 = [underlyingClassKitFacade personObserverWithPersonIDs:dsCopy sortDescriptors:descriptorsCopy];
 
   return v9;
 }
 
-- (void)registerDataObserver:(id)a3
+- (void)registerDataObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v5 registerDataObserver:v4];
+  observerCopy = observer;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade registerDataObserver:observerCopy];
 }
 
-- (void)deregisterDataObserver:(id)a3
+- (void)deregisterDataObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v5 deregisterDataObserver:v4];
+  observerCopy = observer;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade deregisterDataObserver:observerCopy];
 }
 
-- (void)currentUserWithCompletion:(id)a3
+- (void)currentUserWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v5 currentUserWithCompletion:v4];
+  completionCopy = completion;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade currentUserWithCompletion:completionCopy];
 }
 
-- (void)enrolledClassesWithCompletion:(id)a3
+- (void)enrolledClassesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v5 enrolledClassesWithCompletion:v4];
+  completionCopy = completion;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade enrolledClassesWithCompletion:completionCopy];
 }
 
-- (void)instructedClassesWithCompletion:(id)a3
+- (void)instructedClassesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v5 instructedClassesWithCompletion:v4];
+  completionCopy = completion;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade instructedClassesWithCompletion:completionCopy];
 }
 
-- (void)instructorsInClassWithObjectID:(id)a3 completion:(id)a4
+- (void)instructorsInClassWithObjectID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v8 instructorsInClassWithObjectID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade instructorsInClassWithObjectID:dCopy completion:completionCopy];
 }
 
-- (void)studentsInClassWithObjectID:(id)a3 completion:(id)a4
+- (void)studentsInClassWithObjectID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v8 studentsInClassWithObjectID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade studentsInClassWithObjectID:dCopy completion:completionCopy];
 }
 
-- (void)saveClass:(id)a3 completion:(id)a4
+- (void)saveClass:(id)class completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v8 saveClass:v7 completion:v6];
+  completionCopy = completion;
+  classCopy = class;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade saveClass:classCopy completion:completionCopy];
 }
 
-- (void)addStudent:(id)a3 toClass:(id)a4
+- (void)addStudent:(id)student toClass:(id)class
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v8 addStudent:v7 toClass:v6];
+  classCopy = class;
+  studentCopy = student;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade addStudent:studentCopy toClass:classCopy];
 }
 
-- (void)removeStudent:(id)a3 fromClass:(id)a4
+- (void)removeStudent:(id)student fromClass:(id)class
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v8 removeStudent:v7 fromClass:v6];
+  classCopy = class;
+  studentCopy = student;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade removeStudent:studentCopy fromClass:classCopy];
 }
 
-- (id)objectIDsOfStudentsInClass:(id)a3
+- (id)objectIDsOfStudentsInClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v6 = [v5 objectIDsOfStudentsInClass:v4];
+  classCopy = class;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v6 = [underlyingClassKitFacade objectIDsOfStudentsInClass:classCopy];
 
   return v6;
 }
 
-- (void)addInstructor:(id)a3 toClass:(id)a4
+- (void)addInstructor:(id)instructor toClass:(id)class
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v8 addInstructor:v7 toClass:v6];
+  classCopy = class;
+  instructorCopy = instructor;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade addInstructor:instructorCopy toClass:classCopy];
 }
 
-- (void)removeInstructor:(id)a3 fromClass:(id)a4
+- (void)removeInstructor:(id)instructor fromClass:(id)class
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v8 removeInstructor:v7 fromClass:v6];
+  classCopy = class;
+  instructorCopy = instructor;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade removeInstructor:instructorCopy fromClass:classCopy];
 }
 
-- (id)objectIDsOfInstructorsInClass:(id)a3
+- (id)objectIDsOfInstructorsInClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v6 = [v5 objectIDsOfInstructorsInClass:v4];
+  classCopy = class;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v6 = [underlyingClassKitFacade objectIDsOfInstructorsInClass:classCopy];
 
   return v6;
 }
 
-- (id)makeClassWithLocationID:(id)a3 name:(id)a4
+- (id)makeClassWithLocationID:(id)d name:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v9 = [v8 makeClassWithLocationID:v7 name:v6];
+  nameCopy = name;
+  dCopy = d;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v9 = [underlyingClassKitFacade makeClassWithLocationID:dCopy name:nameCopy];
 
   return v9;
 }
 
-- (void)locationsWithManagePermissionsForUserWithObjectID:(id)a3 completion:(id)a4
+- (void)locationsWithManagePermissionsForUserWithObjectID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v8 locationsWithManagePermissionsForUserWithObjectID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade locationsWithManagePermissionsForUserWithObjectID:dCopy completion:completionCopy];
 }
 
-- (void)locationsWithObjectIDs:(id)a3 completion:(id)a4
+- (void)locationsWithObjectIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v8 locationsWithObjectIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade locationsWithObjectIDs:dsCopy completion:completionCopy];
 }
 
-- (void)removeClass:(id)a3 completion:(id)a4
+- (void)removeClass:(id)class completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v8 removeClass:v7 completion:v6];
+  completionCopy = completion;
+  classCopy = class;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade removeClass:classCopy completion:completionCopy];
 }
 
-- (id)makeStudentQueryForSearchString:(id)a3 locationIDs:(id)a4 sortingGivenNameFirst:(BOOL)a5 pageSize:(int64_t)a6
+- (id)makeStudentQueryForSearchString:(id)string locationIDs:(id)ds sortingGivenNameFirst:(BOOL)first pageSize:(int64_t)size
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v13 = [v12 makeStudentQueryForSearchString:v11 locationIDs:v10 sortingGivenNameFirst:v7 pageSize:a6];
+  firstCopy = first;
+  dsCopy = ds;
+  stringCopy = string;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v13 = [underlyingClassKitFacade makeStudentQueryForSearchString:stringCopy locationIDs:dsCopy sortingGivenNameFirst:firstCopy pageSize:size];
 
   return v13;
 }
 
-- (id)makeInstructorQueryForSearchString:(id)a3 locationIDs:(id)a4 sortingGivenNameFirst:(BOOL)a5 pageSize:(int64_t)a6
+- (id)makeInstructorQueryForSearchString:(id)string locationIDs:(id)ds sortingGivenNameFirst:(BOOL)first pageSize:(int64_t)size
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v13 = [v12 makeInstructorQueryForSearchString:v11 locationIDs:v10 sortingGivenNameFirst:v7 pageSize:a6];
+  firstCopy = first;
+  dsCopy = ds;
+  stringCopy = string;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v13 = [underlyingClassKitFacade makeInstructorQueryForSearchString:stringCopy locationIDs:dsCopy sortingGivenNameFirst:firstCopy pageSize:size];
 
   return v13;
 }
 
-- (id)makeQueryForPersonsWithIdentifiers:(id)a3
+- (id)makeQueryForPersonsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v6 = [v5 makeQueryForPersonsWithIdentifiers:v4];
+  identifiersCopy = identifiers;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v6 = [underlyingClassKitFacade makeQueryForPersonsWithIdentifiers:identifiersCopy];
 
   return v6;
 }
 
-- (id)makeQueryForLocationsAllowingEasyStudentSignInForPersonID:(id)a3
+- (id)makeQueryForLocationsAllowingEasyStudentSignInForPersonID:(id)d
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v6 = [v5 makeQueryForLocationsAllowingEasyStudentSignInForPersonID:v4];
+  dCopy = d;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v6 = [underlyingClassKitFacade makeQueryForLocationsAllowingEasyStudentSignInForPersonID:dCopy];
 
   return v6;
 }
 
-- (void)executeQuery:(id)a3
+- (void)executeQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v5 executeQuery:v4];
+  queryCopy = query;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade executeQuery:queryCopy];
 }
 
-- (id)subscribeToClassMembershipChangeEvents:(id)a3
+- (id)subscribeToClassMembershipChangeEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v6 = [v5 subscribeToClassMembershipChangeEvents:v4];
+  eventsCopy = events;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v6 = [underlyingClassKitFacade subscribeToClassMembershipChangeEvents:eventsCopy];
 
   return v6;
 }
 
-- (id)subscribeToCurrentUserDidChangeEvents:(id)a3
+- (id)subscribeToCurrentUserDidChangeEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v6 = [v5 subscribeToCurrentUserDidChangeEvents:v4];
+  eventsCopy = events;
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  v6 = [underlyingClassKitFacade subscribeToCurrentUserDidChangeEvents:eventsCopy];
 
   return v6;
 }

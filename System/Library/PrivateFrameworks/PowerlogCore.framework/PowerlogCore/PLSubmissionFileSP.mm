@@ -1,16 +1,16 @@
 @interface PLSubmissionFileSP
 - (BOOL)copyAndPrepareLog;
-- (PLSubmissionFileSP)initWithConfig:(id)a3;
+- (PLSubmissionFileSP)initWithConfig:(id)config;
 - (void)copyAndPrepareLog;
 @end
 
 @implementation PLSubmissionFileSP
 
-- (PLSubmissionFileSP)initWithConfig:(id)a3
+- (PLSubmissionFileSP)initWithConfig:(id)config
 {
   v7.receiver = self;
   v7.super_class = PLSubmissionFileSP;
-  v3 = [(PLSubmissionFile *)&v7 initWithConfig:a3];
+  v3 = [(PLSubmissionFile *)&v7 initWithConfig:config];
   v4 = v3;
   if (v3 && ![(PLSubmissionFileSP *)v3 copyAndPrepareLog])
   {
@@ -28,8 +28,8 @@
 - (BOOL)copyAndPrepareLog
 {
   v107[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PLSubmissionFile *)self taskingConfig];
-  if (![v3 signpostDisable])
+  taskingConfig = [(PLSubmissionFile *)self taskingConfig];
+  if (![taskingConfig signpostDisable])
   {
     if (+[PLPlatform internalBuild]&& [PLDefaults BOOLForKey:@"SignpostReaderDisable" ifNotSet:0])
     {
@@ -43,10 +43,10 @@
       goto LABEL_13;
     }
 
-    v12 = [v3 signpostAllowlist];
-    if (v12)
+    signpostAllowlist = [taskingConfig signpostAllowlist];
+    if (signpostAllowlist)
     {
-      v13 = v12;
+      v13 = signpostAllowlist;
     }
 
     else
@@ -63,7 +63,7 @@
       v13 = v14;
     }
 
-    if ((+[PLPlatform internalBuild](PLPlatform, "internalBuild") || +[PLPlatform seedBuild](PLPlatform, "seedBuild")) && ([v3 deviceModel], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(&unk_1F540B6E0, "containsObject:", v15), v15, v16))
+    if ((+[PLPlatform internalBuild](PLPlatform, "internalBuild") || +[PLPlatform seedBuild](PLPlatform, "seedBuild")) && ([taskingConfig deviceModel], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(&unk_1F540B6E0, "containsObject:", v15), v15, v16))
     {
       v17 = [v13 mutableCopy];
       [v17 setObject:&unk_1F540B6F8 forKeyedSubscript:@"com.apple.TextInput"];
@@ -77,17 +77,17 @@
     }
 
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v19 = [v3 tagUUID];
-    [v18 setObject:v19 forKeyedSubscript:@"TagUUID"];
+    tagUUID = [taskingConfig tagUUID];
+    [v18 setObject:tagUUID forKeyedSubscript:@"TagUUID"];
 
-    v20 = [v3 builds];
-    v21 = [v20 lastObject];
-    [v18 setObject:v21 forKeyedSubscript:@"Build"];
+    builds = [taskingConfig builds];
+    lastObject = [builds lastObject];
+    [v18 setObject:lastObject forKeyedSubscript:@"Build"];
 
-    v22 = [v3 deviceModel];
-    [v18 setObject:v22 forKeyedSubscript:@"Model"];
+    deviceModel = [taskingConfig deviceModel];
+    [v18 setObject:deviceModel forKeyedSubscript:@"Model"];
 
-    if ([v3 internal])
+    if ([taskingConfig internal])
     {
       v23 = @"true";
     }
@@ -98,7 +98,7 @@
     }
 
     [v18 setObject:v23 forKeyedSubscript:@"Internal"];
-    if ([v3 seed])
+    if ([taskingConfig seed])
     {
       v24 = @"true";
     }
@@ -109,18 +109,18 @@
     }
 
     [v18 setObject:v24 forKeyedSubscript:@"Beta"];
-    v25 = [v3 getSubmitReasonTypeToReasonLog];
-    [v18 setObject:v25 forKeyedSubscript:@"Reason"];
+    getSubmitReasonTypeToReasonLog = [taskingConfig getSubmitReasonTypeToReasonLog];
+    [v18 setObject:getSubmitReasonTypeToReasonLog forKeyedSubscript:@"Reason"];
 
-    v26 = [v3 getDateMarkerLegacy];
-    [v18 setObject:v26 forKeyedSubscript:@"Date"];
+    getDateMarkerLegacy = [taskingConfig getDateMarkerLegacy];
+    [v18 setObject:getDateMarkerLegacy forKeyedSubscript:@"Date"];
 
     v106[0] = @"CollectDate";
-    v27 = [v3 getDateMarker];
-    v107[0] = v27;
+    getDateMarker = [taskingConfig getDateMarker];
+    v107[0] = getDateMarker;
     v106[1] = @"SignpostStartDate";
-    v28 = [MEMORY[0x1E695DF00] date];
-    v29 = [PLSubmissionConfig getDateMarkerFromSystemDate:v28];
+    date = [MEMORY[0x1E695DF00] date];
+    v29 = [PLSubmissionConfig getDateMarkerFromSystemDate:date];
     v107[1] = v29;
     v106[2] = @"DebugEnabled";
     v30 = +[PLPlatform internalBuild];
@@ -142,37 +142,37 @@
     {
     }
 
-    v33 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v3, "submittedFilesMask")}];
+    v33 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(taskingConfig, "submittedFilesMask")}];
     [v18 setObject:v33 forKeyedSubscript:@"SubmittedFilesMask"];
 
-    v34 = [(PLSubmissionFile *)self taskingConfig];
-    [v34 setCkTagConfig:v18];
+    taskingConfig2 = [(PLSubmissionFile *)self taskingConfig];
+    [taskingConfig2 setCkTagConfig:v18];
 
     v35 = [v18 mutableCopy];
     v36 = [v18 objectForKeyedSubscript:@"ExtendedAttributes"];
-    v37 = [v36 serializedJSONString];
-    [v35 setObject:v37 forKeyedSubscript:@"ExtendedAttributes"];
+    serializedJSONString = [v36 serializedJSONString];
+    [v35 setObject:serializedJSONString forKeyedSubscript:@"ExtendedAttributes"];
 
-    v38 = [v3 startDate];
-    v39 = [v38 convertFromMonotonicToSystem];
+    startDate = [taskingConfig startDate];
+    convertFromMonotonicToSystem = [startDate convertFromMonotonicToSystem];
 
-    v40 = [v3 endDate];
-    v41 = [v40 convertFromMonotonicToSystem];
+    endDate = [taskingConfig endDate];
+    convertFromMonotonicToSystem2 = [endDate convertFromMonotonicToSystem];
 
     v99 = v35;
     if (+[PLPlatform internalBuild](PLPlatform, "internalBuild") && _os_feature_enabled_impl() && (-[PLSubmissionFile taskingConfig](self, "taskingConfig"), v42 = objc_claimAutoreleasedReturnValue(), v43 = [v42 submitSP], v42, v43))
     {
       v9 = v100;
-      if (v39 && v41)
+      if (convertFromMonotonicToSystem && convertFromMonotonicToSystem2)
       {
         if (v35)
         {
-          v44 = [v39 laterDate:v41];
+          v44 = [convertFromMonotonicToSystem laterDate:convertFromMonotonicToSystem2];
 
-          if (v44 != v39)
+          if (v44 != convertFromMonotonicToSystem)
           {
-            v96 = v41;
-            p_super = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v39 endDate:v41];
+            v96 = convertFromMonotonicToSystem2;
+            p_super = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:convertFromMonotonicToSystem endDate:convertFromMonotonicToSystem2];
             v95 = objc_alloc_init(PPSSignpostController);
             v98 = [(PPSSignpostController *)v95 generateForTimeRange:p_super];
             v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v98, "count")}];
@@ -186,28 +186,28 @@
 
             v48 = MEMORY[0x1E696AEC0];
             v49 = [v18 objectForKeyedSubscript:@"Date"];
-            v97 = v39;
+            v97 = convertFromMonotonicToSystem;
             if (v49)
             {
-              v50 = [v18 objectForKeyedSubscript:@"Date"];
-              v51 = [v48 stringWithFormat:@"Signpost_%@", v50];
+              taskingConfig3 = [v18 objectForKeyedSubscript:@"Date"];
+              v51 = [v48 stringWithFormat:@"Signpost_%@", taskingConfig3];
             }
 
             else
             {
-              v50 = [(PLSubmissionFile *)self taskingConfig];
-              v64 = [v50 configUUID];
-              v51 = [v48 stringWithFormat:@"Signpost_%@", v64];
+              taskingConfig3 = [(PLSubmissionFile *)self taskingConfig];
+              configUUID = [taskingConfig3 configUUID];
+              v51 = [v48 stringWithFormat:@"Signpost_%@", configUUID];
             }
 
             v65 = MEMORY[0x1E695DFF8];
-            v66 = [(PLSubmissionFile *)self filePath];
-            v67 = [v65 fileURLWithPath:v66];
+            filePath = [(PLSubmissionFile *)self filePath];
+            v67 = [v65 fileURLWithPath:filePath];
             v94 = v51;
             v68 = [v67 URLByAppendingPathComponent:v51];
 
-            v69 = [MEMORY[0x1E696AC08] defaultManager];
-            [v69 createDirectoryAtURL:v68 withIntermediateDirectories:1 attributes:0 error:0];
+            defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+            [defaultManager createDirectoryAtURL:v68 withIntermediateDirectories:1 attributes:0 error:0];
 
             v102[0] = MEMORY[0x1E69E9820];
             v102[1] = 3221225472;
@@ -217,11 +217,11 @@
             v103 = v70;
             [v98 enumerateObjectsUsingBlock:v102];
             v92 = [v70 URLByAppendingPathComponent:@"tag.json"];
-            v71 = [v92 path];
-            LOBYTE(v66) = [(PLSubmissionFile *)self createTagFileWithPath:v71 withInfo:v99];
+            path = [v92 path];
+            LOBYTE(filePath) = [(PLSubmissionFile *)self createTagFileWithPath:path withInfo:v99];
 
             v93 = v70;
-            if (v66)
+            if (filePath)
             {
               v72 = [MEMORY[0x1E6999F68] archiveDirectoryAt:v70 deleteOriginal:1];
               v73 = PLLogSubmission();
@@ -235,27 +235,27 @@
                 }
 
                 v76 = MEMORY[0x1E696AEC0];
-                v77 = [(PLSubmissionFile *)self taskingConfig];
-                v78 = [v77 tagUUID];
-                v79 = [v76 stringWithFormat:@"%@Powerlog_%@/", @"/tmp/powerlog/cloud/", v78];
+                taskingConfig4 = [(PLSubmissionFile *)self taskingConfig];
+                tagUUID2 = [taskingConfig4 tagUUID];
+                v79 = [v76 stringWithFormat:@"%@Powerlog_%@/", @"/tmp/powerlog/cloud/", tagUUID2];
 
                 v80 = MEMORY[0x1E696AEC0];
-                v81 = [v75 path];
-                v82 = [v81 lastPathComponent];
+                path2 = [v75 path];
+                lastPathComponent = [path2 lastPathComponent];
                 v91 = v79;
-                v83 = [v80 stringWithFormat:@"%@%@/", v79, v82];
+                v83 = [v80 stringWithFormat:@"%@%@/", v79, lastPathComponent];
 
-                v84 = [MEMORY[0x1E696AC08] defaultManager];
-                v85 = [v75 path];
+                defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+                path3 = [v75 path];
                 v101 = 0;
-                v86 = v84;
+                v86 = defaultManager2;
                 v90 = v83;
-                v11 = [v84 moveItemAtPath:v85 toPath:v83 error:&v101];
+                bOOLValue = [defaultManager2 moveItemAtPath:path3 toPath:v83 error:&v101];
                 v74 = v101;
 
                 v9 = v100;
-                v39 = v97;
-                if ((v11 & 1) == 0)
+                convertFromMonotonicToSystem = v97;
+                if ((bOOLValue & 1) == 0)
                 {
                   v87 = PLLogSubmission();
                   if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
@@ -276,35 +276,35 @@
                   [(PLSubmissionFileSP *)v74 copyAndPrepareLog];
                 }
 
-                v11 = 0;
-                v39 = v97;
+                bOOLValue = 0;
+                convertFromMonotonicToSystem = v97;
               }
 
               v89 = v92;
 
-              v41 = v96;
+              convertFromMonotonicToSystem2 = v96;
             }
 
             else
             {
               v75 = PLLogSubmission();
-              v39 = v97;
+              convertFromMonotonicToSystem = v97;
               if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
               {
                 v89 = v92;
                 [(PLSubmissionFileSP *)v92 copyAndPrepareLog];
-                v11 = 0;
+                bOOLValue = 0;
                 v9 = v100;
                 v88 = v95;
-                v41 = v96;
+                convertFromMonotonicToSystem2 = v96;
               }
 
               else
               {
-                v11 = 0;
+                bOOLValue = 0;
                 v9 = v100;
                 v88 = v95;
-                v41 = v96;
+                convertFromMonotonicToSystem2 = v96;
                 v89 = v92;
               }
             }
@@ -338,19 +338,19 @@
         }
       }
 
-      v11 = 0;
+      bOOLValue = 0;
     }
 
     else
     {
       v52 = objc_alloc_init(SignpostReaderHelper);
-      v53 = [(PLSubmissionFile *)self taskingConfig];
-      v54 = [v53 submitSP];
+      taskingConfig5 = [(PLSubmissionFile *)self taskingConfig];
+      submitSP = [taskingConfig5 submitSP];
       v55 = v52;
       v56 = v52;
       v9 = v100;
-      v57 = v41;
-      v58 = [(SignpostReaderHelper *)v56 generateSignpostSubmissionWithTagConfig:v35 withAllowlist:v100 withStartDate:v39 withEndDate:v41 includeSPFile:v54];
+      v57 = convertFromMonotonicToSystem2;
+      v58 = [(SignpostReaderHelper *)v56 generateSignpostSubmissionWithTagConfig:v35 withAllowlist:v100 withStartDate:convertFromMonotonicToSystem withEndDate:convertFromMonotonicToSystem2 includeSPFile:submitSP];
 
       if (v58)
       {
@@ -359,12 +359,12 @@
         if (objc_opt_isKindOfClass())
         {
           [v58 objectForKeyedSubscript:@"success"];
-          v61 = v60 = v39;
-          v11 = [v61 BOOLValue];
+          v61 = v60 = convertFromMonotonicToSystem;
+          bOOLValue = [v61 BOOLValue];
 
-          v39 = v60;
+          convertFromMonotonicToSystem = v60;
           v9 = v100;
-          if (v11)
+          if (bOOLValue)
           {
             v59 = 0;
           }
@@ -377,19 +377,19 @@
 
         else
         {
-          v11 = 0;
+          bOOLValue = 0;
         }
       }
 
       else
       {
-        v11 = 0;
+        bOOLValue = 0;
         v59 = 3;
       }
 
       [(PLSubmissionFile *)self logSubmissionResultToCAWithErrorType:v59 withFileType:@"signpost" withOverrideKeys:0];
 
-      v41 = v57;
+      convertFromMonotonicToSystem2 = v57;
       p_super = &v55->super;
     }
 
@@ -415,9 +415,9 @@ LABEL_55:
     {
       v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"copyAndPrepareLog: Signpost submission disabled"];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLSubmissionsClasses/PLSubmissionFileSP.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent2 = [v6 lastPathComponent];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLSubmissionFileSP copyAndPrepareLog]"];
-      [PLCoreStorage logMessage:v5 fromFile:v7 fromFunction:v8 fromLineNumber:56];
+      [PLCoreStorage logMessage:v5 fromFile:lastPathComponent2 fromFunction:v8 fromLineNumber:56];
 
       v9 = v5;
       v10 = PLLogCommon();
@@ -427,18 +427,18 @@ LABEL_55:
       }
 
 LABEL_13:
-      v11 = 0;
+      bOOLValue = 0;
 LABEL_56:
 
       goto LABEL_57;
     }
   }
 
-  v11 = 0;
+  bOOLValue = 0;
 LABEL_57:
 
   v62 = *MEMORY[0x1E69E9840];
-  return v11 & 1;
+  return bOOLValue & 1;
 }
 
 BOOL __39__PLSubmissionFileSP_copyAndPrepareLog__block_invoke(uint64_t a1)
@@ -463,7 +463,7 @@ void __39__PLSubmissionFileSP_copyAndPrepareLog__block_invoke_157(uint64_t a1, v
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1D8611000, a2, OS_LOG_TYPE_DEBUG, "%@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

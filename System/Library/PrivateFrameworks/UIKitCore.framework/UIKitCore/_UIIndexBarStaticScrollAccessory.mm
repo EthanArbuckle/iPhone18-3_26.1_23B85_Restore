@@ -2,25 +2,25 @@
 - (UIScrollView)scrollView;
 - (void)_installScrollPocketInteractionIfNecessary;
 - (void)layoutSubviews;
-- (void)setShowIndexBar:(BOOL)a3;
+- (void)setShowIndexBar:(BOOL)bar;
 - (void)update;
 @end
 
 @implementation _UIIndexBarStaticScrollAccessory
 
-- (void)setShowIndexBar:(BOOL)a3
+- (void)setShowIndexBar:(BOOL)bar
 {
-  if (self->_showIndexBar != a3)
+  if (self->_showIndexBar != bar)
   {
-    v3 = a3;
-    self->_showIndexBar = a3;
+    barCopy = bar;
+    self->_showIndexBar = bar;
     [(_UIStaticScrollBar *)self setShouldInsetButtonsForIndex:?];
-    if (v3)
+    if (barCopy)
     {
       v14 = 0;
       v15 = 0;
-      v5 = [(UIView *)self traitCollection];
-      [(UIIndexBarView *)UIIndexBarAccessoryView makeIndexBarView:&v15 containerView:&v14 forTraits:v5];
+      traitCollection = [(UIView *)self traitCollection];
+      [(UIIndexBarView *)UIIndexBarAccessoryView makeIndexBarView:&v15 containerView:&v14 forTraits:traitCollection];
       v6 = v15;
       v7 = v14;
 
@@ -60,11 +60,11 @@
   v11.receiver = self;
   v11.super_class = _UIIndexBarStaticScrollAccessory;
   [(_UIStaticScrollBar *)&v11 layoutSubviews];
-  v3 = [(_UIStaticScrollBar *)self downButton];
-  [v3 frame];
+  downButton = [(_UIStaticScrollBar *)self downButton];
+  [downButton frame];
   MinY = CGRectGetMinY(v12);
-  v5 = [(_UIStaticScrollBar *)self upButton];
-  [v5 frame];
+  upButton = [(_UIStaticScrollBar *)self upButton];
+  [upButton frame];
   v6 = MinY - CGRectGetMaxY(v13);
 
   if (v6 <= 0.0)

@@ -10,7 +10,7 @@
   v6[0] = *a3;
   v6[1] = v3;
   v6[2] = a3[2];
-  v4 = [a1 valueWithCGAffineTransform:v6];
+  v4 = [self valueWithCGAffineTransform:v6];
 
   return v4;
 }

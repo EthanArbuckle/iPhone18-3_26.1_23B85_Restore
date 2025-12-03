@@ -1,25 +1,25 @@
 @interface _ICQDeviceInfo
-+ (id)defaultDeviceInfoWithBundleId:(id)a3;
-+ (id)getInfoWithBundleId:(id)a3;
-+ (id)templateKeyForItemCount:(id)a3;
-+ (id)templateKeyForPhotos:(unint64_t)a3 video:(unint64_t)a4;
-+ (id)wordsToReplaceForItemCount:(id)a3;
-+ (void)getInfoWithBundleId:(id)a3 completion:(id)a4;
++ (id)defaultDeviceInfoWithBundleId:(id)id;
++ (id)getInfoWithBundleId:(id)id;
++ (id)templateKeyForItemCount:(id)count;
++ (id)templateKeyForPhotos:(unint64_t)photos video:(unint64_t)video;
++ (id)wordsToReplaceForItemCount:(id)count;
++ (void)getInfoWithBundleId:(id)id completion:(id)completion;
 @end
 
 @implementation _ICQDeviceInfo
 
-+ (id)templateKeyForPhotos:(unint64_t)a3 video:(unint64_t)a4
++ (id)templateKeyForPhotos:(unint64_t)photos video:(unint64_t)video
 {
   v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v7 = v6;
   v8 = @"xp";
-  if (a3 == 1)
+  if (photos == 1)
   {
     v8 = @"1p";
   }
 
-  if (a3)
+  if (photos)
   {
     v9 = v8;
   }
@@ -31,12 +31,12 @@
 
   [v6 appendString:v9];
   v10 = @"xv";
-  if (a4 == 1)
+  if (video == 1)
   {
     v10 = @"1v";
   }
 
-  if (a4)
+  if (video)
   {
     v11 = v10;
   }
@@ -51,13 +51,13 @@
   return v7;
 }
 
-+ (id)templateKeyForItemCount:(id)a3
++ (id)templateKeyForItemCount:(id)count
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  countCopy = count;
+  v4 = countCopy;
+  if (countCopy)
   {
-    if ([v3 intValue])
+    if ([countCopy intValue])
     {
       if ([v4 intValue] == 1)
       {
@@ -84,10 +84,10 @@
   return v5;
 }
 
-+ (id)wordsToReplaceForItemCount:(id)a3
++ (id)wordsToReplaceForItemCount:(id)count
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (count)
   {
     v7 = @"%$ItemCount";
     v3 = [_ICQHelperFunctions getStringFromNumber:?];
@@ -105,33 +105,33 @@
   return v4;
 }
 
-+ (void)getInfoWithBundleId:(id)a3 completion:(id)a4
++ (void)getInfoWithBundleId:(id)id completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"com.apple.mobileslideshow"])
+  idCopy = id;
+  completionCopy = completion;
+  if ([idCopy isEqualToString:@"com.apple.mobileslideshow"])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __49___ICQDeviceInfo_getInfoWithBundleId_completion___block_invoke;
     v8[3] = &unk_27A6529B8;
-    v9 = v5;
-    v10 = v6;
+    v9 = idCopy;
+    v10 = completionCopy;
     [_ICQPhotosInfo getInfoWithCompletion:v8];
   }
 
   else
   {
-    v7 = [_ICQDeviceInfo defaultDeviceInfoWithBundleId:v5];
-    (*(v6 + 2))(v6, v7, 0);
+    v7 = [_ICQDeviceInfo defaultDeviceInfoWithBundleId:idCopy];
+    (*(completionCopy + 2))(completionCopy, v7, 0);
   }
 }
 
-+ (id)defaultDeviceInfoWithBundleId:(id)a3
++ (id)defaultDeviceInfoWithBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_alloc_init(_ICQDeviceInfo);
-  [(_ICQDeviceInfo *)v4 setBundleId:v3];
+  [(_ICQDeviceInfo *)v4 setBundleId:idCopy];
 
   [(_ICQDeviceInfo *)v4 setKey:@"default"];
   v5 = objc_alloc_init(MEMORY[0x277CBEAC0]);
@@ -140,9 +140,9 @@
   return v4;
 }
 
-+ (id)getInfoWithBundleId:(id)a3
++ (id)getInfoWithBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -157,11 +157,11 @@
   v15 = &v16;
   v5 = v4;
   v14 = v5;
-  [_ICQDeviceInfo getInfoWithBundleId:v3 completion:&v10];
+  [_ICQDeviceInfo getInfoWithBundleId:idCopy completion:&v10];
   v6 = dispatch_time(0, 1000000000);
   if (dispatch_semaphore_wait(v5, v6))
   {
-    v7 = [_ICQDeviceInfo defaultDeviceInfoWithBundleId:v3, v10, v11, v12, v13];
+    v7 = [_ICQDeviceInfo defaultDeviceInfoWithBundleId:idCopy, v10, v11, v12, v13];
   }
 
   else

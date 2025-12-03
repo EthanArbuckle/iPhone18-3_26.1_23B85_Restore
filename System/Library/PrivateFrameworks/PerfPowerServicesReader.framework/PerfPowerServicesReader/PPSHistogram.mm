@@ -1,46 +1,46 @@
 @interface PPSHistogram
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHistogram:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHistogram:(id)histogram;
 - (NSArray)metrics;
-- (PPSHistogram)initWithBinCount:(unint64_t)a3 range:(id)a4 metricName:(id)a5;
-- (PPSHistogram)initWithBinCount:(unint64_t)a3 range:(id)a4 metricName:(id)a5 samples:(id)a6;
-- (PPSHistogram)initWithCoder:(id)a3;
-- (PPSHistogram)initWithDimensions:(id)a3;
-- (PPSHistogram)initWithHistogram:(id)a3;
+- (PPSHistogram)initWithBinCount:(unint64_t)count range:(id)range metricName:(id)name;
+- (PPSHistogram)initWithBinCount:(unint64_t)count range:(id)range metricName:(id)name samples:(id)samples;
+- (PPSHistogram)initWithCoder:(id)coder;
+- (PPSHistogram)initWithDimensions:(id)dimensions;
+- (PPSHistogram)initWithHistogram:(id)histogram;
 - (__n128)counts:;
 - (id)JSONRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (id)dictionary;
-- (id)indicesFor:(id)a3;
+- (id)indicesFor:(id)for;
 - (uint64_t)counts:;
 - (void)JSONRepresentation;
 - (void)counts:;
-- (void)encodeWithCoder:(id)a3;
-- (void)recordSample:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)recordSample:(id)sample;
 @end
 
 @implementation PPSHistogram
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PPSHistogram allocWithZone:a3];
+  v4 = [PPSHistogram allocWithZone:zone];
 
   return [(PPSHistogram *)v4 initWithHistogram:self];
 }
 
-- (PPSHistogram)initWithCoder:(id)a3
+- (PPSHistogram)initWithCoder:(id)coder
 {
   v14[35] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PPSHistogram;
   if ([(PPSHistogram *)&v13 init])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_PPSHistogram"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_PPSHistogram"];
     v6 = v5;
-    v7 = [v5 bytes];
+    bytes = [v5 bytes];
     v8 = [v5 length];
     v9 = v8;
     if (v8 < 0x7FFFFFFFFFFFFFF8)
@@ -50,7 +50,7 @@
         *(&__dst[0].__r_.__value_.__s + 23) = v8;
         if (v8)
         {
-          memmove(__dst, v7, v8);
+          memmove(__dst, bytes, v8);
         }
 
         __dst[0].__r_.__value_.__s.__data_[v9] = 0;
@@ -73,18 +73,18 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4[33] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  coderCopy = coder;
   std::ostringstream::basic_ostringstream[abi:ne200100](v4);
   boost::archive::text_oarchive::text_oarchive();
 }
 
-- (PPSHistogram)initWithBinCount:(unint64_t)a3 range:(id)a4 metricName:(id)a5
+- (PPSHistogram)initWithBinCount:(unint64_t)count range:(id)range metricName:(id)name
 {
   v10 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = PPSHistogram;
   if ([(PPSHistogram *)&v9 init])
@@ -96,17 +96,17 @@
   return 0;
 }
 
-- (PPSHistogram)initWithBinCount:(unint64_t)a3 range:(id)a4 metricName:(id)a5 samples:(id)a6
+- (PPSHistogram)initWithBinCount:(unint64_t)count range:(id)range metricName:(id)name samples:(id)samples
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v28 = *MEMORY[0x277D85DE8];
-  v11 = a6;
-  v12 = [(PPSHistogram *)self initWithBinCount:a3 range:a5 metricName:var0, var1];
-  v13 = v12;
-  if (v12)
+  samplesCopy = samples;
+  var1 = [(PPSHistogram *)self initWithBinCount:count range:name metricName:var0, var1];
+  v13 = var1;
+  if (var1)
   {
-    if (!v12->_histogramPtr.__ptr_)
+    if (!var1->_histogramPtr.__ptr_)
     {
       v19 = 0;
       goto LABEL_13;
@@ -116,7 +116,7 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v14 = v11;
+    v14 = samplesCopy;
     v15 = [v14 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v15)
     {
@@ -153,7 +153,7 @@ LABEL_13:
   return v19;
 }
 
-- (PPSHistogram)initWithDimensions:(id)a3
+- (PPSHistogram)initWithDimensions:(id)dimensions
 {
   v85 = *MEMORY[0x277D85DE8];
   v78 = 0;
@@ -163,8 +163,8 @@ LABEL_13:
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = a3;
-  v3 = [obj countByEnumeratingWithState:&v74 objects:v84 count:{16, a3}];
+  obj = dimensions;
+  v3 = [obj countByEnumeratingWithState:&v74 objects:v84 count:{16, dimensions}];
   if (v3)
   {
     v55 = *v75;
@@ -188,8 +188,8 @@ LABEL_3:
       {
         if (v7 == 0.0 && v8 == 0.0)
         {
-          v10 = [v4 edges];
-          v11 = [v10 count] == 0;
+          edges = [v4 edges];
+          v11 = [edges count] == 0;
 
           if (v11)
           {
@@ -230,8 +230,8 @@ LABEL_70:
       v71 = 0u;
       v72 = 0u;
       v73 = 0u;
-      v14 = [v4 edges];
-      v15 = [v14 count] == 0;
+      edges2 = [v4 edges];
+      v15 = [edges2 count] == 0;
 
       if (!v15)
       {
@@ -241,8 +241,8 @@ LABEL_70:
           v67 = 0uLL;
           v64 = 0uLL;
           v65 = 0uLL;
-          v16 = [v4 edges];
-          v17 = [v16 countByEnumeratingWithState:&v64 objects:v83 count:16];
+          edges3 = [v4 edges];
+          v17 = [edges3 countByEnumeratingWithState:&v64 objects:v83 count:16];
           if (v17)
           {
             v18 = *v65;
@@ -252,7 +252,7 @@ LABEL_70:
               {
                 if (*v65 != v18)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(edges3);
                 }
 
                 std::string::basic_string[abi:ne200100]<0>(__p, [*(*(&v64 + 1) + 8 * i) UTF8String]);
@@ -323,7 +323,7 @@ LABEL_70:
                 }
               }
 
-              v17 = [v16 countByEnumeratingWithState:&v64 objects:v83 count:16];
+              v17 = [edges3 countByEnumeratingWithState:&v64 objects:v83 count:16];
             }
 
             while (v17);
@@ -336,8 +336,8 @@ LABEL_70:
           v61 = 0uLL;
           v58 = 0uLL;
           v59 = 0uLL;
-          v16 = [v4 edges];
-          v31 = [v16 countByEnumeratingWithState:&v58 objects:v82 count:16];
+          edges3 = [v4 edges];
+          v31 = [edges3 countByEnumeratingWithState:&v58 objects:v82 count:16];
           if (v31)
           {
             v32 = *v59;
@@ -347,7 +347,7 @@ LABEL_70:
               {
                 if (*v59 != v32)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(edges3);
                 }
 
                 [*(*(&v58 + 1) + 8 * j) doubleValue];
@@ -402,7 +402,7 @@ LABEL_70:
                 *&v73 = v36;
               }
 
-              v31 = [v16 countByEnumeratingWithState:&v58 objects:v82 count:16];
+              v31 = [edges3 countByEnumeratingWithState:&v58 objects:v82 count:16];
             }
 
             while (v31);
@@ -471,11 +471,11 @@ LABEL_71:
   return v47;
 }
 
-- (BOOL)isEqualToHistogram:(id)a3
+- (BOOL)isEqualToHistogram:(id)histogram
 {
-  v4 = a3;
-  v5 = [(PPSHistogram *)self rank];
-  if (v5 != [v4 rank])
+  histogramCopy = histogram;
+  rank = [(PPSHistogram *)self rank];
+  if (rank != [histogramCopy rank])
   {
     goto LABEL_12;
   }
@@ -483,13 +483,13 @@ LABEL_71:
   v6 = 0;
   while (v6 < [(PPSHistogram *)self rank])
   {
-    v7 = [(PPSHistogram *)self dimensions];
-    v8 = [v7 objectAtIndexedSubscript:v6];
+    dimensions = [(PPSHistogram *)self dimensions];
+    v8 = [dimensions objectAtIndexedSubscript:v6];
     [v8 range];
     v10 = v9;
     v12 = v11;
-    v13 = [v4 dimensions];
-    v14 = [v13 objectAtIndexedSubscript:v6];
+    dimensions2 = [histogramCopy dimensions];
+    v14 = [dimensions2 objectAtIndexedSubscript:v6];
     [v14 range];
     v16 = v15;
     v18 = v17;
@@ -507,10 +507,10 @@ LABEL_71:
     goto LABEL_13;
   }
 
-  if (v4 && (v20 = -[PPSHistogram size](self, "size"), v20 == [v4 size]) && (v21 = -[PPSHistogram sum:](self, "sum:", 1), v21 == objc_msgSend(v4, "sum:", 1)))
+  if (histogramCopy && (v20 = -[PPSHistogram size](self, "size"), v20 == [histogramCopy size]) && (v21 = -[PPSHistogram sum:](self, "sum:", 1), v21 == objc_msgSend(histogramCopy, "sum:", 1)))
   {
     ptr = self->_histogramPtr.__ptr_;
-    v23 = v4[1];
+    v23 = histogramCopy[1];
     if (ptr == v23)
     {
       v19 = 1;
@@ -537,15 +537,15 @@ LABEL_13:
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(PPSHistogram *)self dimensions];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  dimensions = [(PPSHistogram *)self dimensions];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(dimensions, "count")}];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(PPSHistogram *)self dimensions];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  dimensions2 = [(PPSHistogram *)self dimensions];
+  v7 = [dimensions2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -555,14 +555,14 @@ LABEL_13:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dimensions2);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) metricName];
-        [v5 addObject:v10];
+        metricName = [*(*(&v14 + 1) + 8 * i) metricName];
+        [v5 addObject:metricName];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [dimensions2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -578,15 +578,15 @@ LABEL_13:
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(PPSHistogram *)self dimensions];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  dimensions = [(PPSHistogram *)self dimensions];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(dimensions, "count")}];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(PPSHistogram *)self dimensions];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  dimensions2 = [(PPSHistogram *)self dimensions];
+  v7 = [dimensions2 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = *v21;
@@ -596,7 +596,7 @@ LABEL_13:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dimensions2);
         }
 
         v10 = [*(*(&v20 + 1) + 8 * i) performSelector:sel_dictionary];
@@ -606,7 +606,7 @@ LABEL_13:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [dimensions2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v7);
@@ -637,21 +637,21 @@ LABEL_13:
   return v14;
 }
 
-- (id)indicesFor:(id)a3
+- (id)indicesFor:(id)for
 {
   v72 = *MEMORY[0x277D85DE8];
   __src = 0;
   v69 = 0;
   v70 = 0;
-  v55 = a3;
-  std::vector<double>::reserve(&__src, [v55 count]);
-  v54 = self;
+  forCopy = for;
+  std::vector<double>::reserve(&__src, [forCopy count]);
+  selfCopy = self;
   pps::Histogram_Internal::categoriesPerAxis(self->_histogramPtr.__ptr_, &v66);
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v55;
+  obj = forCopy;
   v4 = [obj countByEnumeratingWithState:&v62 objects:v71 count:16];
   if (v4)
   {
@@ -904,7 +904,7 @@ LABEL_28:
     while (v46);
   }
 
-  pps::Histogram_Internal::indicesOfSample(v54->_histogramPtr.__ptr_, &__src, &v59);
+  pps::Histogram_Internal::indicesOfSample(selfCopy->_histogramPtr.__ptr_, &__src, &v59);
   v47 = objc_opt_new();
   v48 = v59;
   v49 = v60;
@@ -912,7 +912,7 @@ LABEL_28:
   {
     do
     {
-      v50 = [MEMORY[0x277CCABB0] numberWithInteger:{*v48, v54}];
+      v50 = [MEMORY[0x277CCABB0] numberWithInteger:{*v48, selfCopy}];
       [v47 addObject:v50];
 
       ++v48;
@@ -941,21 +941,21 @@ LABEL_28:
   return v51;
 }
 
-- (void)recordSample:(id)a3
+- (void)recordSample:(id)sample
 {
   v55 = *MEMORY[0x277D85DE8];
   __src = 0;
   v52 = 0;
   v53 = 0;
-  v37 = a3;
+  sampleCopy = sample;
   pps::Histogram_Internal::categoriesPerAxis(self->_histogramPtr.__ptr_, &v49);
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v38 = self;
-  obj = v37;
-  v4 = [obj countByEnumeratingWithState:&v45 objects:v54 count:{16, v37}];
+  selfCopy = self;
+  obj = sampleCopy;
+  v4 = [obj countByEnumeratingWithState:&v45 objects:v54 count:{16, sampleCopy}];
   if (v4)
   {
     v5 = 0;
@@ -1077,7 +1077,7 @@ LABEL_16:
 LABEL_36:
             if (v22)
             {
-              self = v38;
+              self = selfCopy;
 LABEL_40:
               v23 = v52;
               if (v52 >= v53)
@@ -1138,7 +1138,7 @@ LABEL_40:
 
             v14 = v14 + 1.0;
             *&v13 += 24;
-            self = v38;
+            self = selfCopy;
             if (*&v13 == v12)
             {
               goto LABEL_40;
@@ -1186,8 +1186,8 @@ LABEL_17:
   v4 = [(PPSHistogram *)self counts:0];
   [v3 setObject:v4 forKeyedSubscript:@"counts"];
 
-  v5 = [(PPSHistogram *)self dimensions];
-  [v3 setObject:v5 forKeyedSubscript:@"dimensions"];
+  dimensions = [(PPSHistogram *)self dimensions];
+  [v3 setObject:dimensions forKeyedSubscript:@"dimensions"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PPSHistogram sum:](self, "sum:", 0)}];
   [v3 setObject:v6 forKeyedSubscript:@"sum"];
@@ -1197,14 +1197,14 @@ LABEL_17:
   return v7;
 }
 
-- (PPSHistogram)initWithHistogram:(id)a3
+- (PPSHistogram)initWithHistogram:(id)histogram
 {
-  v4 = a3;
+  histogramCopy = histogram;
   v8.receiver = self;
   v8.super_class = PPSHistogram;
   if ([(PPSHistogram *)&v8 init])
   {
-    v5 = v4[1];
+    v5 = histogramCopy[1];
     operator new();
   }
 
@@ -1226,16 +1226,16 @@ LABEL_17:
 
 - (id)description
 {
-  v2 = [(PPSHistogram *)self dictionary];
-  v3 = [v2 description];
+  dictionary = [(PPSHistogram *)self dictionary];
+  v3 = [dictionary description];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -1243,7 +1243,7 @@ LABEL_17:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPSHistogram *)self isEqualToHistogram:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPSHistogram *)self isEqualToHistogram:equalCopy];
   }
 
   return v5;
@@ -1252,8 +1252,8 @@ LABEL_17:
 - (__n128)counts:
 {
   *a2 = &unk_286FF2690;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
@@ -1261,7 +1261,7 @@ LABEL_17:
 - (void)counts:
 {
   v11 = *a2;
-  if (v11 && **(a1 + 8) < ((*(*(a1 + 16) + 8) - **(a1 + 16)) >> 3))
+  if (v11 && **(self + 8) < ((*(*(self + 16) + 8) - **(self + 16)) >> 3))
   {
     for (i = 0; i < [v11 count]; ++i)
     {
@@ -1271,7 +1271,7 @@ LABEL_17:
 
       if (isKindOfClass)
       {
-        v6 = *(a1 + 24);
+        v6 = *(self + 24);
         v7 = [v11 objectAtIndexedSubscript:i];
         std::function<void ()(NSMutableArray *)>::operator()(v6, v7);
       }
@@ -1284,10 +1284,10 @@ LABEL_17:
 
         if (v9)
         {
-          v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:*(**(a1 + 16) + 8 * **(a1 + 8))];
+          v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:*(**(self + 16) + 8 * **(self + 8))];
           [v11 setObject:v10 atIndexedSubscript:i];
 
-          ++**(a1 + 8);
+          ++**(self + 8);
         }
       }
     }
@@ -1297,7 +1297,7 @@ LABEL_17:
 - (uint64_t)counts:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

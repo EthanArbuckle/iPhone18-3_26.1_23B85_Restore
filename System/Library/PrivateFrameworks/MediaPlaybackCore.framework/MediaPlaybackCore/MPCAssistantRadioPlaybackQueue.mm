@@ -1,6 +1,6 @@
 @interface MPCAssistantRadioPlaybackQueue
-+ (id)radioQueueWithContextID:(id)a3 stationStringID:(id)a4;
-- (MPCAssistantRadioPlaybackQueue)initWithContextID:(id)a3 stationStringID:(id)a4;
++ (id)radioQueueWithContextID:(id)d stationStringID:(id)iD;
+- (MPCAssistantRadioPlaybackQueue)initWithContextID:(id)d stationStringID:(id)iD;
 - (_MRSystemAppPlaybackQueue)createRemotePlaybackQueue;
 - (id)description;
 @end
@@ -16,17 +16,17 @@
   MRSystemAppPlaybackQueueSetIsRequestingImmediatePlayback();
   [(MPCAssistantPlaybackQueue *)self shouldOverrideManuallyCuratedQueue];
   MRSystemAppPlaybackQueueSetShouldOverrideManuallyCuratedQueue();
-  v4 = [(MPCAssistantPlaybackQueue *)self siriRecommendationID];
+  siriRecommendationID = [(MPCAssistantPlaybackQueue *)self siriRecommendationID];
   MRSystemAppPlaybackQueueSetSiriRecommendationIdentifier();
 
-  v5 = [(MPCAssistantPlaybackQueue *)self siriAssetInfo];
+  siriAssetInfo = [(MPCAssistantPlaybackQueue *)self siriAssetInfo];
   MRSystemAppPlaybackQueueSetSiriAssetInfo();
 
   v6 = objc_opt_self();
-  v7 = [v6 featureName];
+  featureName = [v6 featureName];
   MRSystemAppPlaybackQueueSetFeatureName();
 
-  v8 = [(MPCAssistantPlaybackQueue *)self siriWHAMetricsInfo];
+  siriWHAMetricsInfo = [(MPCAssistantPlaybackQueue *)self siriWHAMetricsInfo];
   MRSystemAppPlaybackQueueSetSiriWHAMetricsInfo();
 
   return v3;
@@ -43,15 +43,15 @@
   return v5;
 }
 
-- (MPCAssistantRadioPlaybackQueue)initWithContextID:(id)a3 stationStringID:(id)a4
+- (MPCAssistantRadioPlaybackQueue)initWithContextID:(id)d stationStringID:(id)iD
 {
-  v6 = a4;
+  iDCopy = iD;
   v11.receiver = self;
   v11.super_class = MPCAssistantRadioPlaybackQueue;
-  v7 = [(MPCAssistantPlaybackQueue *)&v11 initWithContextID:a3];
+  v7 = [(MPCAssistantPlaybackQueue *)&v11 initWithContextID:d];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [iDCopy copy];
     stationStringID = v7->_stationStringID;
     v7->_stationStringID = v8;
   }
@@ -59,11 +59,11 @@
   return v7;
 }
 
-+ (id)radioQueueWithContextID:(id)a3 stationStringID:(id)a4
++ (id)radioQueueWithContextID:(id)d stationStringID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithContextID:v7 stationStringID:v6];
+  iDCopy = iD;
+  dCopy = d;
+  v8 = [[self alloc] initWithContextID:dCopy stationStringID:iDCopy];
 
   return v8;
 }

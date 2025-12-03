@@ -3,27 +3,27 @@
 - (CGPoint)previousPosition;
 - (UIView)canvasView;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CRLWPImmediatePressGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  beganCopy = began;
   [(CRLWPImmediatePressGestureRecognizer *)self setDidSendReset:0];
   [(CRLWPImmediatePressGestureRecognizer *)self setPreviousTimestamp:CFAbsoluteTimeGetCurrent()];
   v14.receiver = self;
   v14.super_class = CRLWPImmediatePressGestureRecognizer;
-  [(CRLWPImmediatePressGestureRecognizer *)&v14 touchesBegan:v7 withEvent:v6];
+  [(CRLWPImmediatePressGestureRecognizer *)&v14 touchesBegan:beganCopy withEvent:eventCopy];
 
-  v8 = [v7 anyObject];
+  anyObject = [beganCopy anyObject];
 
-  v9 = [(CRLWPImmediatePressGestureRecognizer *)self canvasView];
+  canvasView = [(CRLWPImmediatePressGestureRecognizer *)self canvasView];
 
-  if (v9)
+  if (canvasView)
   {
     [(CRLWPImmediatePressGestureRecognizer *)self canvasView];
   }
@@ -33,15 +33,15 @@
     [(CRLWPImmediatePressGestureRecognizer *)self view];
   }
   v10 = ;
-  [v8 locationInView:v10];
+  [anyObject locationInView:v10];
   [(CRLWPImmediatePressGestureRecognizer *)self setPreviousPosition:?];
 
-  v11 = [v8 tapCount];
-  -[CRLWPImmediatePressGestureRecognizer setInputType:](self, "setInputType:", sub_10042B6C0([v8 type]));
-  v12 = [(CRLWPImmediatePressGestureRecognizer *)self state];
-  if (v11 < 2)
+  tapCount = [anyObject tapCount];
+  -[CRLWPImmediatePressGestureRecognizer setInputType:](self, "setInputType:", sub_10042B6C0([anyObject type]));
+  state = [(CRLWPImmediatePressGestureRecognizer *)self state];
+  if (tapCount < 2)
   {
-    if (v12 <= 0)
+    if (state <= 0)
     {
       [(CRLWPImmediatePressGestureRecognizer *)self previousPosition];
       [(CRLWPImmediatePressGestureRecognizer *)self setInitialPosition:?];
@@ -61,23 +61,23 @@ LABEL_13:
     }
   }
 
-  else if (v12 != 5)
+  else if (state != 5)
   {
     goto LABEL_6;
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   Current = CFAbsoluteTimeGetCurrent();
   [(CRLWPImmediatePressGestureRecognizer *)self previousTimestamp];
   v10 = Current - v9;
   [(CRLWPImmediatePressGestureRecognizer *)self setPreviousTimestamp:Current];
-  v11 = [v6 anyObject];
-  v12 = [(CRLWPImmediatePressGestureRecognizer *)self view];
-  [v11 locationInView:v12];
+  anyObject = [movedCopy anyObject];
+  view = [(CRLWPImmediatePressGestureRecognizer *)self view];
+  [anyObject locationInView:view];
   v14 = v13;
   v16 = v15;
 
@@ -125,7 +125,7 @@ LABEL_13:
   [(CRLWPImmediatePressGestureRecognizer *)self setVelocity:v21];
   v27.receiver = self;
   v27.super_class = CRLWPImmediatePressGestureRecognizer;
-  [(CRLWPImmediatePressGestureRecognizer *)&v27 touchesMoved:v6 withEvent:v7];
+  [(CRLWPImmediatePressGestureRecognizer *)&v27 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
 - (void)reset
@@ -135,8 +135,8 @@ LABEL_13:
   [(CRLWPImmediatePressGestureRecognizer *)&v11 reset];
   if (![(CRLWPImmediatePressGestureRecognizer *)self didSendReset])
   {
-    v3 = [(CRLWPImmediatePressGestureRecognizer *)self delegate];
-    v10 = sub_1003035DC(v3, 1, v4, v5, v6, v7, v8, v9, &OBJC_PROTOCOL___CRLGestureDelegate);
+    delegate = [(CRLWPImmediatePressGestureRecognizer *)self delegate];
+    v10 = sub_1003035DC(delegate, 1, v4, v5, v6, v7, v8, v9, &OBJC_PROTOCOL___CRLGestureDelegate);
 
     [v10 didReset:self];
     [(CRLWPImmediatePressGestureRecognizer *)self setDidSendReset:1];

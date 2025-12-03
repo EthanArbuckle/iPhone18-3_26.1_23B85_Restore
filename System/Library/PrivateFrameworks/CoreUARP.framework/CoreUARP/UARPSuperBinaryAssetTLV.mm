@@ -1,118 +1,118 @@
 @interface UARPSuperBinaryAssetTLV
-+ (id)decomposeTLVs:(id)a3;
-+ (id)findTLVWithType:(unint64_t)a3 tlvs:(id)a4;
-+ (id)findTLVsWithType:(unint64_t)a3 tlvs:(id)a4;
++ (id)decomposeTLVs:(id)vs;
++ (id)findTLVWithType:(unint64_t)type tlvs:(id)tlvs;
++ (id)findTLVsWithType:(unint64_t)type tlvs:(id)tlvs;
 - (NSArray)valueAsTLVs;
 - (NSData)valueAsData;
 - (NSNumber)valueAsNumber;
 - (NSString)valueAsString;
 - (NSURL)valueAsURL;
 - (UARPAssetVersion)valueAsVersion;
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 dataValue:(id)a4;
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 stringValue:(id)a4;
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 tagValue:(id)a4;
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 tlvLength:(unint64_t)a4 tlvValue:(void *)a5;
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 unsignedInt16:(unsigned __int16)a4;
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 unsignedInt32:(unsigned int)a4;
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 unsignedInt64:(unint64_t)a4;
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 unsignedInt8:(unsigned __int8)a4;
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 urlValue:(id)a4;
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 version:(UARPVersion *)a4;
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 versionInfo:(uarpPayloadVersionInfo *)a4;
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type dataValue:(id)value;
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type stringValue:(id)value;
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type tagValue:(id)value;
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type tlvLength:(unint64_t)length tlvValue:(void *)value;
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type unsignedInt16:(unsigned __int16)int16;
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type unsignedInt32:(unsigned int)int32;
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type unsignedInt64:(unint64_t)int64;
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type unsignedInt8:(unsigned __int8)int8;
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type urlValue:(id)value;
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type version:(UARPVersion *)version;
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type versionInfo:(uarpPayloadVersionInfo *)info;
 - (id)description;
-- (id)generateTLV:(id *)a3;
+- (id)generateTLV:(id *)v;
 @end
 
 @implementation UARPSuperBinaryAssetTLV
 
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 unsignedInt8:(unsigned __int8)a4
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type unsignedInt8:(unsigned __int8)int8
 {
   v7.receiver = self;
   v7.super_class = UARPSuperBinaryAssetTLV;
   result = [(UARPSuperBinaryAssetTLV *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_val8 = a4;
+    result->_type = type;
+    result->_val8 = int8;
     result->_valueType = 0;
   }
 
   return result;
 }
 
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 unsignedInt16:(unsigned __int16)a4
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type unsignedInt16:(unsigned __int16)int16
 {
   v7.receiver = self;
   v7.super_class = UARPSuperBinaryAssetTLV;
   result = [(UARPSuperBinaryAssetTLV *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_val16 = a4;
+    result->_type = type;
+    result->_val16 = int16;
     result->_valueType = 1;
   }
 
   return result;
 }
 
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 unsignedInt32:(unsigned int)a4
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type unsignedInt32:(unsigned int)int32
 {
   v7.receiver = self;
   v7.super_class = UARPSuperBinaryAssetTLV;
   result = [(UARPSuperBinaryAssetTLV *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_val32 = a4;
+    result->_type = type;
+    result->_val32 = int32;
     result->_valueType = 2;
   }
 
   return result;
 }
 
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 unsignedInt64:(unint64_t)a4
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type unsignedInt64:(unint64_t)int64
 {
   v7.receiver = self;
   v7.super_class = UARPSuperBinaryAssetTLV;
   result = [(UARPSuperBinaryAssetTLV *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_val64 = a4;
+    result->_type = type;
+    result->_val64 = int64;
     result->_valueType = 3;
   }
 
   return result;
 }
 
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 dataValue:(id)a4
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type dataValue:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = UARPSuperBinaryAssetTLV;
   v8 = [(UARPSuperBinaryAssetTLV *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_data, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_data, value);
     v9->_valueType = 4;
   }
 
   return v9;
 }
 
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 stringValue:(id)a4
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type stringValue:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = UARPSuperBinaryAssetTLV;
   v7 = [(UARPSuperBinaryAssetTLV *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [valueCopy copy];
     string = v8->_string;
     v8->_string = v9;
 
@@ -122,17 +122,17 @@
   return v8;
 }
 
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 tagValue:(id)a4
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type tagValue:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = UARPSuperBinaryAssetTLV;
   v7 = [(UARPSuperBinaryAssetTLV *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [valueCopy copy];
     string = v8->_string;
     v8->_string = v9;
 
@@ -142,17 +142,17 @@
   return v8;
 }
 
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 urlValue:(id)a4
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type urlValue:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = UARPSuperBinaryAssetTLV;
   v7 = [(UARPSuperBinaryAssetTLV *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [valueCopy copy];
     url = v8->_url;
     v8->_url = v9;
 
@@ -162,32 +162,32 @@
   return v8;
 }
 
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 version:(UARPVersion *)a4
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type version:(UARPVersion *)version
 {
   v7.receiver = self;
   v7.super_class = UARPSuperBinaryAssetTLV;
   result = [(UARPSuperBinaryAssetTLV *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_version = *a4;
+    result->_type = type;
+    result->_version = *version;
     result->_valueType = 8;
   }
 
   return result;
 }
 
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 versionInfo:(uarpPayloadVersionInfo *)a4
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type versionInfo:(uarpPayloadVersionInfo *)info
 {
   v9.receiver = self;
   v9.super_class = UARPSuperBinaryAssetTLV;
   result = [(UARPSuperBinaryAssetTLV *)&v9 init];
   if (result)
   {
-    result->_type = a3;
-    v7 = *&a4->tag.char1;
-    v8 = *&a4->activeVersion.build;
-    result->_versionInfo.stagedVersion.build = a4->stagedVersion.build;
+    result->_type = type;
+    v7 = *&info->tag.char1;
+    v8 = *&info->activeVersion.build;
+    result->_versionInfo.stagedVersion.build = info->stagedVersion.build;
     *&result->_versionInfo.activeVersion.build = v8;
     *&result->_versionInfo.tag.char1 = v7;
     result->_valueType = 9;
@@ -196,18 +196,18 @@
   return result;
 }
 
-- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)a3 tlvLength:(unint64_t)a4 tlvValue:(void *)a5
+- (UARPSuperBinaryAssetTLV)initWithType:(unint64_t)type tlvLength:(unint64_t)length tlvValue:(void *)value
 {
-  if (!a5)
+  if (!value)
   {
     goto LABEL_44;
   }
 
-  if (a3 > 3291140095)
+  if (type > 3291140095)
   {
-    if (a3 > 3436347651)
+    if (type > 3436347651)
     {
-      switch(a3)
+      switch(type)
       {
         case 0xCCD28104uLL:
         case 0xCCD2810CuLL:
@@ -241,7 +241,7 @@
         case 0xCCD2811AuLL:
           goto LABEL_5;
         case 0xCCD2811EuLL:
-          v8 = [MEMORY[0x277CBEA90] dataWithBytes:a5 length:a4];
+          v8 = [MEMORY[0x277CBEA90] dataWithBytes:value length:length];
           v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
           if (!v12)
           {
@@ -249,60 +249,60 @@
           }
 
           v13 = [UARPSuperBinaryAssetTLV alloc];
-          v14 = 3436347678;
+          typeCopy = 3436347678;
           goto LABEL_49;
         default:
-          if (a3 - 4042160640u < 2)
+          if (type - 4042160640u < 2)
           {
             goto LABEL_47;
           }
 
-          if (a3 != 4042160643)
+          if (type != 4042160643)
           {
             goto LABEL_11;
           }
 
 LABEL_5:
-          if (a4 != 1)
+          if (length != 1)
           {
             goto LABEL_44;
           }
 
-          v7 = [[UARPSuperBinaryAssetTLV alloc] initWithType:a3 unsignedInt8:*a5];
+          v7 = [[UARPSuperBinaryAssetTLV alloc] initWithType:type unsignedInt8:*value];
           break;
       }
 
       goto LABEL_41;
     }
 
-    if (a3 == 3291140096 || a3 == 3291140105)
+    if (type == 3291140096 || type == 3291140105)
     {
 LABEL_39:
-      if (a4 == 4)
+      if (length == 4)
       {
-        v7 = [[UARPSuperBinaryAssetTLV alloc] initWithType:a3 unsignedInt32:uarpHtonl(*a5)];
+        v7 = [[UARPSuperBinaryAssetTLV alloc] initWithType:type unsignedInt32:uarpHtonl(*value)];
         goto LABEL_41;
       }
 
       goto LABEL_44;
     }
 
-    if (a3 == 3291140106)
+    if (type == 3291140106)
     {
       goto LABEL_47;
     }
 
 LABEL_11:
-    v8 = [MEMORY[0x277CBEA90] dataWithBytes:a5 length:a4];
-    v9 = [[UARPSuperBinaryAssetTLV alloc] initWithType:a3 dataValue:v8];
+    v8 = [MEMORY[0x277CBEA90] dataWithBytes:value length:length];
+    v9 = [[UARPSuperBinaryAssetTLV alloc] initWithType:type dataValue:v8];
 LABEL_56:
 
     goto LABEL_57;
   }
 
-  if (a3 > 2158597887)
+  if (type > 2158597887)
   {
-    switch(a3)
+    switch(type)
     {
       case 0x88B29102uLL:
       case 0x88B29115uLL:
@@ -331,12 +331,12 @@ LABEL_56:
         goto LABEL_39;
       case 0x88B29106uLL:
       case 0x88B2911BuLL:
-        if (a4 != 8)
+        if (length != 8)
         {
           goto LABEL_44;
         }
 
-        v7 = [[UARPSuperBinaryAssetTLV alloc] initWithType:a3 unsignedInt64:uarpHtonll(*a5)];
+        v7 = [[UARPSuperBinaryAssetTLV alloc] initWithType:type unsignedInt64:uarpHtonll(*value)];
         break;
       case 0x88B29107uLL:
       case 0x88B29108uLL:
@@ -370,7 +370,7 @@ LABEL_56:
       case 0x88B29133uLL:
         goto LABEL_5;
       default:
-        if (a3 - 2158597888u >= 3)
+        if (type - 2158597888u >= 3)
         {
           goto LABEL_11;
         }
@@ -381,15 +381,15 @@ LABEL_56:
     goto LABEL_41;
   }
 
-  if (a3 <= 1155952127)
+  if (type <= 1155952127)
   {
-    if (a3 > 76079622)
+    if (type > 76079622)
     {
-      if (a3 <= 538280447)
+      if (type <= 538280447)
       {
-        if (a3 - 272691969 >= 2)
+        if (type - 272691969 >= 2)
         {
-          if (a3 != 76079623)
+          if (type != 76079623)
           {
             goto LABEL_11;
           }
@@ -398,14 +398,14 @@ LABEL_56:
         }
 
 LABEL_47:
-        v8 = [MEMORY[0x277CBEA90] dataWithBytes:a5 length:a4];
+        v8 = [MEMORY[0x277CBEA90] dataWithBytes:value length:length];
         v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
         if (v12)
         {
           v13 = [UARPSuperBinaryAssetTLV alloc];
-          v14 = a3;
+          typeCopy = type;
 LABEL_49:
-          v9 = [(UARPSuperBinaryAssetTLV *)v13 initWithType:v14 stringValue:v12];
+          v9 = [(UARPSuperBinaryAssetTLV *)v13 initWithType:typeCopy stringValue:v12];
         }
 
         else
@@ -417,14 +417,14 @@ LABEL_54:
         goto LABEL_56;
       }
 
-      if (a3 == 538280448)
+      if (type == 538280448)
       {
         goto LABEL_47;
       }
 
       v10 = 538280449;
 LABEL_38:
-      if (a3 == v10)
+      if (type == v10)
       {
         goto LABEL_39;
       }
@@ -432,12 +432,12 @@ LABEL_38:
       goto LABEL_11;
     }
 
-    if (a3 - 76079617 < 2)
+    if (type - 76079617 < 2)
     {
       goto LABEL_47;
     }
 
-    if (a3 != 76079616 && a3 != 76079619)
+    if (type != 76079616 && type != 76079619)
     {
       goto LABEL_11;
     }
@@ -445,21 +445,21 @@ LABEL_38:
     goto LABEL_32;
   }
 
-  if (a3 <= 1619725823)
+  if (type <= 1619725823)
   {
-    if (a3 == 1155952128)
+    if (type == 1155952128)
     {
       v17 = 0u;
       *&v16[4] = 0u;
-      v11 = (a5 + 20);
-      *v16 = *a5;
-      uarpVersionEndianSwap(a5 + 1, &v16[4]);
+      v11 = (value + 20);
+      *v16 = *value;
+      uarpVersionEndianSwap(value + 1, &v16[4]);
       uarpVersionEndianSwap(v11, &v17);
       v7 = [[UARPSuperBinaryAssetTLV alloc] initWithType:1155952128 versionInfo:v16];
       goto LABEL_41;
     }
 
-    if (a3 == 1155952129)
+    if (type == 1155952129)
     {
       goto LABEL_47;
     }
@@ -468,17 +468,17 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (a3 - 1619725824 > 8)
+  if (type - 1619725824 > 8)
   {
     goto LABEL_11;
   }
 
-  if (((1 << a3) & 0x109) != 0)
+  if (((1 << type) & 0x109) != 0)
   {
 LABEL_32:
-    if (a4 == 2)
+    if (length == 2)
     {
-      v7 = [[UARPSuperBinaryAssetTLV alloc] initWithType:a3 unsignedInt16:uarpHtons(*a5)];
+      v7 = [[UARPSuperBinaryAssetTLV alloc] initWithType:type unsignedInt16:uarpHtons(*value)];
       goto LABEL_41;
     }
 
@@ -487,20 +487,20 @@ LABEL_44:
     goto LABEL_57;
   }
 
-  if (((1 << a3) & 6) != 0)
+  if (((1 << type) & 6) != 0)
   {
     goto LABEL_47;
   }
 
-  if (a3 != 1619725831)
+  if (type != 1619725831)
   {
     goto LABEL_11;
   }
 
 LABEL_23:
   *v16 = 0uLL;
-  uarpVersionEndianSwap(a5, v16);
-  v7 = [[UARPSuperBinaryAssetTLV alloc] initWithType:a3 version:v16];
+  uarpVersionEndianSwap(value, v16);
+  v7 = [[UARPSuperBinaryAssetTLV alloc] initWithType:type version:v16];
 LABEL_41:
   v9 = v7;
 LABEL_57:
@@ -617,7 +617,7 @@ LABEL_57:
   return v3;
 }
 
-- (id)generateTLV:(id *)a3
+- (id)generateTLV:(id *)v
 {
   v15 = 0;
   v4 = 0;
@@ -706,10 +706,10 @@ LABEL_24:
     HIDWORD(v15) = uarpHtonl([(NSString *)self->_string length]);
     v4 = objc_alloc_init(MEMORY[0x277CBEB28]);
     [v4 appendBytes:&v15 length:8];
-    v10 = [(NSString *)self->_string UTF8String];
+    uTF8String = [(NSString *)self->_string UTF8String];
     v8 = [(NSString *)self->_string length];
     v7 = v4;
-    p_val8 = v10;
+    p_val8 = uTF8String;
     goto LABEL_24;
   }
 
@@ -751,10 +751,10 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v11 = [(NSString *)self->_string UTF8String];
+  uTF8String2 = [(NSString *)self->_string UTF8String];
   if ([(NSString *)self->_string length]== 4)
   {
-    *v13 = uarpPayloadTagPack(v11);
+    *v13 = uarpPayloadTagPack(uTF8String2);
     HIDWORD(v15) = uarpHtonl(4u);
     v4 = objc_alloc_init(MEMORY[0x277CBEB28]);
     [v4 appendBytes:&v15 length:{8, *v13}];
@@ -767,13 +767,13 @@ LABEL_25:
   return v4;
 }
 
-+ (id)decomposeTLVs:(id)a3
++ (id)decomposeTLVs:(id)vs
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  vsCopy = vs;
   v18 = 0;
   v4 = objc_opt_new();
-  if ([v3 length])
+  if ([vsCopy length])
   {
     v6 = 0;
     v7 = MEMORY[0x277D86220];
@@ -781,7 +781,7 @@ LABEL_25:
     v16 = v5;
     while (1)
     {
-      [v3 getBytes:&v18 range:{v6, 8, v16}];
+      [vsCopy getBytes:&v18 range:{v6, 8, v16}];
       LODWORD(v18) = uarpHtonl(v18);
       v8 = uarpHtonl(HIDWORD(v18));
       HIDWORD(v18) = v8;
@@ -792,7 +792,7 @@ LABEL_25:
 
       v9 = v6 + 8;
       v10 = v8;
-      v11 = [v3 subdataWithRange:{v9, v8}];
+      v11 = [vsCopy subdataWithRange:{v9, v8}];
       v12 = [UARPSuperBinaryAssetTLV alloc];
       v13 = -[UARPSuperBinaryAssetTLV initWithType:tlvLength:tlvValue:](v12, "initWithType:tlvLength:tlvValue:", v18, HIDWORD(v18), [v11 bytes]);
       if (v13)
@@ -807,13 +807,13 @@ LABEL_25:
         v21 = 1024;
         v22 = HIDWORD(v18);
         v23 = 2112;
-        v24 = a1;
+        selfCopy = self;
         _os_log_error_impl(&dword_247AA7000, v7, OS_LOG_TYPE_ERROR, "attempting to add a nil tlv (T=0x%08x, L=%u) to superbinary %@", buf, 0x18u);
       }
 
       v6 = v9 + v10;
 
-      if (v6 >= [v3 length])
+      if (v6 >= [vsCopy length])
       {
         goto LABEL_12;
       }
@@ -937,24 +937,24 @@ LABEL_24:
   return v3;
 }
 
-+ (id)findTLVWithType:(unint64_t)a3 tlvs:(id)a4
++ (id)findTLVWithType:(unint64_t)type tlvs:(id)tlvs
 {
-  v4 = [UARPSuperBinaryAssetTLV findTLVsWithType:a3 tlvs:a4];
-  v5 = [v4 firstObject];
+  v4 = [UARPSuperBinaryAssetTLV findTLVsWithType:type tlvs:tlvs];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-+ (id)findTLVsWithType:(unint64_t)a3 tlvs:(id)a4
++ (id)findTLVsWithType:(unint64_t)type tlvs:(id)tlvs
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  tlvsCopy = tlvs;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = tlvsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -970,7 +970,7 @@ LABEL_24:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if ([v12 type] == a3)
+        if ([v12 type] == type)
         {
           [v6 addObject:v12];
         }

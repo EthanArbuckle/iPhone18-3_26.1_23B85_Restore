@@ -1,12 +1,12 @@
 @interface DefaultInitiatorSessionDetailsViewController
-- (_TtC15SafetyMonitorUI44DefaultInitiatorSessionDetailsViewController)initWithCoder:(id)a3;
-- (_TtC15SafetyMonitorUI44DefaultInitiatorSessionDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15SafetyMonitorUI44DefaultInitiatorSessionDetailsViewController)initWithCoder:(id)coder;
+- (_TtC15SafetyMonitorUI44DefaultInitiatorSessionDetailsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation DefaultInitiatorSessionDetailsViewController
 
-- (_TtC15SafetyMonitorUI44DefaultInitiatorSessionDetailsViewController)initWithCoder:(id)a3
+- (_TtC15SafetyMonitorUI44DefaultInitiatorSessionDetailsViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC15SafetyMonitorUI44DefaultInitiatorSessionDetailsViewController_sessionViewModel;
   if (qword_27FF74FC0 != -1)
@@ -27,11 +27,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_264682754();
 }
 
-- (_TtC15SafetyMonitorUI44DefaultInitiatorSessionDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15SafetyMonitorUI44DefaultInitiatorSessionDetailsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

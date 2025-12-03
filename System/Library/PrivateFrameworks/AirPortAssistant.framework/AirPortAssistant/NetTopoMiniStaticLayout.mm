@@ -1,17 +1,17 @@
 @interface NetTopoMiniStaticLayout
-- (CGImage)imageForDeviceSpec:(id)a3 wantSmall:(BOOL)a4 forContentsScale:(double)a5;
-- (NetTopoMiniStaticLayout)initWithContainerLayer:(id)a3 andOptions:(int)a4;
-- (void)createLayoutForDevices:(id)a3;
+- (CGImage)imageForDeviceSpec:(id)spec wantSmall:(BOOL)small forContentsScale:(double)scale;
+- (NetTopoMiniStaticLayout)initWithContainerLayer:(id)layer andOptions:(int)options;
+- (void)createLayoutForDevices:(id)devices;
 - (void)dealloc;
 - (void)destroyDeviceLayers;
 - (void)performLayout;
-- (void)setContainerLayer:(id)a3;
-- (void)setOwningView:(id)a3;
+- (void)setContainerLayer:(id)layer;
+- (void)setOwningView:(id)view;
 @end
 
 @implementation NetTopoMiniStaticLayout
 
-- (NetTopoMiniStaticLayout)initWithContainerLayer:(id)a3 andOptions:(int)a4
+- (NetTopoMiniStaticLayout)initWithContainerLayer:(id)layer andOptions:(int)options
 {
   v13.receiver = self;
   v13.super_class = NetTopoMiniStaticLayout;
@@ -20,12 +20,12 @@
   {
     if (dword_27E383068 <= 800 && (dword_27E383068 != -1 || sub_23EB74AC8(&dword_27E383068, 0x320u)))
     {
-      sub_23EB75374(&dword_27E383068, "[NetTopoMiniStaticLayout initWithContainerLayer:andOptions:]", 800, "containerLayer = %@, options = %d\n", v6, v7, v8, v9, a3);
+      sub_23EB75374(&dword_27E383068, "[NetTopoMiniStaticLayout initWithContainerLayer:andOptions:]", 800, "containerLayer = %@, options = %d\n", v6, v7, v8, v9, layer);
     }
 
-    v10->_containerLayer = a3;
-    v10->_layoutOptions = a4;
-    objc_msgSend_setMasksToBounds_(a3, v11, 1);
+    v10->_containerLayer = layer;
+    v10->_layoutOptions = options;
+    objc_msgSend_setMasksToBounds_(layer, v11, 1);
     v10->_topoDeviceLayers = objc_alloc_init(MEMORY[0x277CBEB18]);
     v10->_connectionLayers = objc_alloc_init(MEMORY[0x277CBEB18]);
   }
@@ -112,55 +112,55 @@
   [(NetTopoMiniStaticLayout *)&v4 dealloc];
 }
 
-- (void)setContainerLayer:(id)a3
+- (void)setContainerLayer:(id)layer
 {
-  if (self->_containerLayer != a3)
+  if (self->_containerLayer != layer)
   {
     if (dword_27E383068 <= 800 && (dword_27E383068 != -1 || sub_23EB74AC8(&dword_27E383068, 0x320u)))
     {
-      sub_23EB75374(&dword_27E383068, "[NetTopoMiniStaticLayout setContainerLayer:]", 800, "containerLayer = %@\n", v3, v4, v5, v6, a3);
+      sub_23EB75374(&dword_27E383068, "[NetTopoMiniStaticLayout setContainerLayer:]", 800, "containerLayer = %@\n", v3, v4, v5, v6, layer);
     }
 
-    objc_msgSend_destroyDeviceLayers(self, a2, a3);
-    v9 = a3;
+    objc_msgSend_destroyDeviceLayers(self, a2, layer);
+    layerCopy = layer;
 
-    self->_containerLayer = a3;
+    self->_containerLayer = layer;
   }
 }
 
-- (void)setOwningView:(id)a3
+- (void)setOwningView:(id)view
 {
-  if (self->_owningView != a3)
+  if (self->_owningView != view)
   {
     if (dword_27E383068 <= 800 && (dword_27E383068 != -1 || sub_23EB74AC8(&dword_27E383068, 0x320u)))
     {
-      sub_23EB75374(&dword_27E383068, "[NetTopoMiniStaticLayout setOwningView:]", 800, "owningView = %@\n", v3, v4, v5, v6, a3);
+      sub_23EB75374(&dword_27E383068, "[NetTopoMiniStaticLayout setOwningView:]", 800, "owningView = %@\n", v3, v4, v5, v6, view);
     }
 
-    v9 = a3;
+    viewCopy = view;
 
-    self->_owningView = a3;
+    self->_owningView = view;
   }
 }
 
-- (CGImage)imageForDeviceSpec:(id)a3 wantSmall:(BOOL)a4 forContentsScale:(double)a5
+- (CGImage)imageForDeviceSpec:(id)spec wantSmall:(BOOL)small forContentsScale:(double)scale
 {
-  v6 = a4;
-  v9 = objc_msgSend_objectForKey_(a3, a2, off_27E3830A8[0]);
+  smallCopy = small;
+  v9 = objc_msgSend_objectForKey_(spec, a2, off_27E3830A8[0]);
   if (!objc_msgSend_isEqualToString_(v9, v10, off_27E3830B0[0]))
   {
     return 0;
   }
 
   v13 = objc_msgSend_layoutOptions(self, v11, v12);
-  v15 = objc_msgSend_objectForKey_(a3, v14, off_27E3830B8[0]);
+  v15 = objc_msgSend_objectForKey_(spec, v14, off_27E3830B8[0]);
   v18 = objc_msgSend_unsignedIntegerValue(v15, v16, v17);
-  v20 = objc_msgSend_objectForKey_(a3, v19, off_27E3830C0[0]);
+  v20 = objc_msgSend_objectForKey_(spec, v19, off_27E3830C0[0]);
   v23 = objc_msgSend_unsignedIntegerValue(v20, v21, v22);
   v25 = objc_msgSend_imageForBaseStationWithProductID_subProductID_deviceKind_small_cropped_threeDee_(ImageStore, v24, v18, 0, v23, 0, v13 & 1, 0);
-  v27 = objc_msgSend_cgImageFromImage_forContentsScale_(ImageStore, v26, v25, a5);
+  v27 = objc_msgSend_cgImageFromImage_forContentsScale_(ImageStore, v26, v25, scale);
   v28 = v27;
-  if (v6)
+  if (smallCopy)
   {
     v28 = sub_23EBFD790(v27, 75.0);
     v29 = v28;
@@ -408,7 +408,7 @@
   }
 }
 
-- (void)createLayoutForDevices:(id)a3
+- (void)createLayoutForDevices:(id)devices
 {
   v85 = *MEMORY[0x277D85DE8];
   if (dword_27E383068 <= 800 && (dword_27E383068 != -1 || sub_23EB74AC8(&dword_27E383068, 0x320u)))
@@ -416,14 +416,14 @@
     sub_23EB75374(&dword_27E383068, "[NetTopoMiniStaticLayout createLayoutForDevices:]", 800, "self = %@\n", v3, v4, v5, v6, self);
   }
 
-  v8 = objc_msgSend_layoutOptions(self, a2, a3);
-  objc_msgSend_setTopoDevicesDescriptor_(self, v9, a3);
+  v8 = objc_msgSend_layoutOptions(self, a2, devices);
+  objc_msgSend_setTopoDevicesDescriptor_(self, v9, devices);
   objc_msgSend_destroyDeviceLayers(self, v10, v11);
   v82 = 0u;
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v12, &v80, v84, 16);
+  v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(devices, v12, &v80, v84, 16);
   if (v13)
   {
     v16 = v13;
@@ -436,7 +436,7 @@
       {
         if (*v81 != v79)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(devices);
         }
 
         v20 = *(*(&v80 + 1) + 8 * i);
@@ -519,7 +519,7 @@
         ++v17;
       }
 
-      v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v52, &v80, v84, 16);
+      v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(devices, v52, &v80, v84, 16);
     }
 
     while (v16);

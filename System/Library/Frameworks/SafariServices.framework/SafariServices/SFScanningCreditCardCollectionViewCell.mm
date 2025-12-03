@@ -1,7 +1,7 @@
 @interface SFScanningCreditCardCollectionViewCell
 + (double)desiredCellWidth;
-- (SFScanningCreditCardCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (SFScanningCreditCardCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SFScanningCreditCardCollectionViewCell
@@ -38,17 +38,17 @@ void __58__SFScanningCreditCardCollectionViewCell_desiredCellWidth__block_invoke
   *&desiredCellWidth_cellWidth = v9 + v10 + 4.0 + 40.0;
 }
 
-- (SFScanningCreditCardCollectionViewCell)initWithFrame:(CGRect)a3
+- (SFScanningCreditCardCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v39[2] = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = SFScanningCreditCardCollectionViewCell;
-  v3 = [(SFScanningCreditCardCollectionViewCell *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFScanningCreditCardCollectionViewCell *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SFScanningCreditCardCollectionViewCell *)v3 setAccessibilityIdentifier:@"ScanCreditCardCell"];
-    v5 = [(SFScanningCreditCardCollectionViewCell *)v4 contentView];
+    contentView = [(SFScanningCreditCardCollectionViewCell *)v4 contentView];
     v36 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [v36 _setContinuousCornerRadius:12.0];
     [(SFScanningCreditCardCollectionViewCell *)v4 setBackgroundView:v36];
@@ -82,22 +82,22 @@ void __58__SFScanningCreditCardCollectionViewCell_desiredCellWidth__block_invoke
     [v19 setAlignment:3];
     [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v19 setSpacing:4.0];
-    v20 = v5;
-    [v5 addSubview:v19];
+    v20 = contentView;
+    [contentView addSubview:v19];
     v31 = MEMORY[0x1E696ACD8];
-    v35 = [v19 centerXAnchor];
-    v34 = [v5 centerXAnchor];
-    v32 = [v35 constraintEqualToAnchor:v34];
+    centerXAnchor = [v19 centerXAnchor];
+    centerXAnchor2 = [contentView centerXAnchor];
+    v32 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v38[0] = v32;
-    v21 = [v19 centerYAnchor];
+    centerYAnchor = [v19 centerYAnchor];
     v33 = v20;
-    v22 = [v20 centerYAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerYAnchor2 = [v20 centerYAnchor];
+    v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v38[1] = v23;
-    v24 = [v19 widthAnchor];
-    v25 = [v20 layoutMarginsGuide];
-    v26 = [v25 widthAnchor];
-    v27 = [v24 constraintLessThanOrEqualToAnchor:v26];
+    widthAnchor = [v19 widthAnchor];
+    layoutMarginsGuide = [v20 layoutMarginsGuide];
+    widthAnchor2 = [layoutMarginsGuide widthAnchor];
+    v27 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
     v38[2] = v27;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:3];
     [v31 activateConstraints:v28];
@@ -108,16 +108,16 @@ void __58__SFScanningCreditCardCollectionViewCell_desiredCellWidth__block_invoke
   return v4;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(SFScanningCreditCardCollectionViewCell *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(SFScanningCreditCardCollectionViewCell *)self isHighlighted];
   v8.receiver = self;
   v8.super_class = SFScanningCreditCardCollectionViewCell;
-  [(SFScanningCreditCardCollectionViewCell *)&v8 setHighlighted:v3];
-  if (v5 != v3)
+  [(SFScanningCreditCardCollectionViewCell *)&v8 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
-    if (v3)
+    if (highlightedCopy)
     {
       [MEMORY[0x1E69DC888] systemFillColor];
     }
@@ -127,8 +127,8 @@ void __58__SFScanningCreditCardCollectionViewCell_desiredCellWidth__block_invoke
       [MEMORY[0x1E69DC888] clearColor];
     }
     v6 = ;
-    v7 = [(SFScanningCreditCardCollectionViewCell *)self backgroundView];
-    [v7 setBackgroundColor:v6];
+    backgroundView = [(SFScanningCreditCardCollectionViewCell *)self backgroundView];
+    [backgroundView setBackgroundColor:v6];
   }
 }
 

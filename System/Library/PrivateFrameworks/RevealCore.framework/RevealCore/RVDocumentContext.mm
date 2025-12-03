@@ -1,25 +1,25 @@
 @interface RVDocumentContext
-- (RVDocumentContext)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setExistingDDResultsList:(id)a3;
-- (void)setGroupAllResults:(id)a3;
-- (void)setNameAndEmailWithRawSenderField:(id)a3;
+- (RVDocumentContext)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setExistingDDResultsList:(id)list;
+- (void)setGroupAllResults:(id)results;
+- (void)setNameAndEmailWithRawSenderField:(id)field;
 @end
 
 @implementation RVDocumentContext
 
-- (void)setNameAndEmailWithRawSenderField:(id)a3
+- (void)setNameAndEmailWithRawSenderField:(id)field
 {
-  v69 = a3;
-  if (![v69 length])
+  fieldCopy = field;
+  if (![fieldCopy length])
   {
     goto LABEL_120;
   }
 
   if (![(NSString *)self->authorEmailAddress length])
   {
-    v67 = self;
-    v4 = v69;
+    selfCopy = self;
+    v4 = fieldCopy;
     v5 = [v4 length];
     v6 = NSZoneMalloc(0, 2 * v5 + 2);
     v7 = v6;
@@ -138,7 +138,7 @@ LABEL_26:
     }
 
     v16 = MEMORY[0x277D85DE0];
-    self = v67;
+    self = selfCopy;
     while (1)
     {
       v17 = v8;
@@ -171,8 +171,8 @@ LABEL_26:
     if ([v20 containsString:@"@"] && objc_msgSend(v20, "length") >= 3)
     {
       v21 = [v20 stringByReplacingOccurrencesOfString:@" " withString:&stru_2874EC008];
-      authorEmailAddress = v67->authorEmailAddress;
-      v67->authorEmailAddress = v21;
+      authorEmailAddress = selfCopy->authorEmailAddress;
+      selfCopy->authorEmailAddress = v21;
     }
   }
 
@@ -183,7 +183,7 @@ LABEL_26:
     goto LABEL_120;
   }
 
-  v25 = v69;
+  v25 = fieldCopy;
   v26 = [v25 length];
   v27 = NSZoneMalloc(0, 2 * v26 + 2);
   v28 = NSZoneMalloc(0, 2 * v26 + 2);
@@ -480,64 +480,64 @@ LABEL_110:
 LABEL_120:
 }
 
-- (RVDocumentContext)initWithCoder:(id)a3
+- (RVDocumentContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RVDocumentContext *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorName"];
     authorName = v5->authorName;
     v5->authorName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorEmailAddress"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorEmailAddress"];
     authorEmailAddress = v5->authorEmailAddress;
     v5->authorEmailAddress = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorContactUUID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorContactUUID"];
     authorContactUUID = v5->authorContactUUID;
     v5->authorContactUUID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentReferenceDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentReferenceDate"];
     contentReferenceDate = v5->contentReferenceDate;
     v5->contentReferenceDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentReferenceTimeZone"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentReferenceTimeZone"];
     contentReferenceTimeZone = v5->contentReferenceTimeZone;
     v5->contentReferenceTimeZone = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentSubject"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentSubject"];
     contentSubject = v5->contentSubject;
     v5->contentSubject = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedText"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedText"];
     selectedText = v5->selectedText;
     v5->selectedText = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentURL"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentURL"];
     documentURL = v5->documentURL;
     v5->documentURL = v20;
 
     v22 = MEMORY[0x277CBEB98];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"existingDDResultsList"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"existingDDResultsList"];
     existingDDResultsList = v5->existingDDResultsList;
     v5->existingDDResultsList = v25;
 
-    v27 = [v4 decodeObjectOfClasses:v24 forKey:@"groupAllResults"];
+    v27 = [coderCopy decodeObjectOfClasses:v24 forKey:@"groupAllResults"];
     groupAllResults = v5->groupAllResults;
     v5->groupAllResults = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupCategory"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupCategory"];
     groupCategory = v5->groupCategory;
     v5->groupCategory = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupTranscript"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupTranscript"];
     groupTranscript = v5->groupTranscript;
     v5->groupTranscript = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coreSpotlightUniqueIdentifier"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coreSpotlightUniqueIdentifier"];
     coreSpotlightUniqueIdentifier = v5->coreSpotlightUniqueIdentifier;
     v5->coreSpotlightUniqueIdentifier = v33;
   }
@@ -545,61 +545,61 @@ LABEL_120:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RVDocumentContext *)self authorName];
-  [v4 encodeObject:v5 forKey:@"authorName"];
+  coderCopy = coder;
+  authorName = [(RVDocumentContext *)self authorName];
+  [coderCopy encodeObject:authorName forKey:@"authorName"];
 
-  v6 = [(RVDocumentContext *)self authorEmailAddress];
-  [v4 encodeObject:v6 forKey:@"authorEmailAddress"];
+  authorEmailAddress = [(RVDocumentContext *)self authorEmailAddress];
+  [coderCopy encodeObject:authorEmailAddress forKey:@"authorEmailAddress"];
 
-  v7 = [(RVDocumentContext *)self authorContactUUID];
-  [v4 encodeObject:v7 forKey:@"authorContactUUID"];
+  authorContactUUID = [(RVDocumentContext *)self authorContactUUID];
+  [coderCopy encodeObject:authorContactUUID forKey:@"authorContactUUID"];
 
-  v8 = [(RVDocumentContext *)self contentReferenceDate];
-  [v4 encodeObject:v8 forKey:@"contentReferenceDate"];
+  contentReferenceDate = [(RVDocumentContext *)self contentReferenceDate];
+  [coderCopy encodeObject:contentReferenceDate forKey:@"contentReferenceDate"];
 
-  v9 = [(RVDocumentContext *)self contentReferenceTimeZone];
-  [v4 encodeObject:v9 forKey:@"contentReferenceTimeZone"];
+  contentReferenceTimeZone = [(RVDocumentContext *)self contentReferenceTimeZone];
+  [coderCopy encodeObject:contentReferenceTimeZone forKey:@"contentReferenceTimeZone"];
 
-  v10 = [(RVDocumentContext *)self contentSubject];
-  [v4 encodeObject:v10 forKey:@"contentSubject"];
+  contentSubject = [(RVDocumentContext *)self contentSubject];
+  [coderCopy encodeObject:contentSubject forKey:@"contentSubject"];
 
-  v11 = [(RVDocumentContext *)self selectedText];
-  [v4 encodeObject:v11 forKey:@"selectedText"];
+  selectedText = [(RVDocumentContext *)self selectedText];
+  [coderCopy encodeObject:selectedText forKey:@"selectedText"];
 
-  v12 = [(RVDocumentContext *)self documentURL];
-  [v4 encodeObject:v12 forKey:@"documentURL"];
+  documentURL = [(RVDocumentContext *)self documentURL];
+  [coderCopy encodeObject:documentURL forKey:@"documentURL"];
 
-  v13 = [(RVDocumentContext *)self existingDDResultsList];
-  [v4 encodeObject:v13 forKey:@"existingDDResultsList"];
+  existingDDResultsList = [(RVDocumentContext *)self existingDDResultsList];
+  [coderCopy encodeObject:existingDDResultsList forKey:@"existingDDResultsList"];
 
-  v14 = [(RVDocumentContext *)self groupAllResults];
-  [v4 encodeObject:v14 forKey:@"groupAllResults"];
+  groupAllResults = [(RVDocumentContext *)self groupAllResults];
+  [coderCopy encodeObject:groupAllResults forKey:@"groupAllResults"];
 
-  v15 = [(RVDocumentContext *)self groupCategory];
-  [v4 encodeObject:v15 forKey:@"groupCategory"];
+  groupCategory = [(RVDocumentContext *)self groupCategory];
+  [coderCopy encodeObject:groupCategory forKey:@"groupCategory"];
 
-  v16 = [(RVDocumentContext *)self groupTranscript];
-  [v4 encodeObject:v16 forKey:@"groupTranscript"];
+  groupTranscript = [(RVDocumentContext *)self groupTranscript];
+  [coderCopy encodeObject:groupTranscript forKey:@"groupTranscript"];
 
-  v17 = [(RVDocumentContext *)self coreSpotlightUniqueIdentifier];
-  [v4 encodeObject:v17 forKey:@"coreSpotlightUniqueIdentifier"];
+  coreSpotlightUniqueIdentifier = [(RVDocumentContext *)self coreSpotlightUniqueIdentifier];
+  [coderCopy encodeObject:coreSpotlightUniqueIdentifier forKey:@"coreSpotlightUniqueIdentifier"];
 }
 
-- (void)setGroupAllResults:(id)a3
+- (void)setGroupAllResults:(id)results
 {
-  v4 = convertResultToObjCInArrayIfNecessary(a3);
+  v4 = convertResultToObjCInArrayIfNecessary(results);
   groupAllResults = self->groupAllResults;
   self->groupAllResults = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setExistingDDResultsList:(id)a3
+- (void)setExistingDDResultsList:(id)list
 {
-  v4 = convertResultToObjCInArrayIfNecessary(a3);
+  v4 = convertResultToObjCInArrayIfNecessary(list);
   existingDDResultsList = self->existingDDResultsList;
   self->existingDDResultsList = v4;
 

@@ -1,30 +1,30 @@
 @interface LemonadeExpandableCuratedLibraryGestureController
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (void)handlePanWithGesture:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (void)handlePanWithGesture:(id)gesture;
 @end
 
 @implementation LemonadeExpandableCuratedLibraryGestureController
 
-- (void)handlePanWithGesture:(id)a3
+- (void)handlePanWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A3F5E0B0(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_1A3F5E0B0(gestureCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = 0;
-  return [a4 px:v5 isPanGestureRecognizerOfScrollView:?];
+  return [gestureRecognizer px:v5 isPanGestureRecognizerOfScrollView:?];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1A3F5E2F8(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_1A3F5E2F8(beginCopy);
 
   return self & 1;
 }

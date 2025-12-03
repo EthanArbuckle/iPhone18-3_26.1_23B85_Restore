@@ -1,6 +1,6 @@
 @interface CLMapHelperService
 - (CLMapHelperService)init;
-- (id)convertCLMapRoadVectorToRoadDictionaryArray:(void *)a3;
+- (id)convertCLMapRoadVectorToRoadDictionaryArray:(void *)array;
 - (void)cancelRoadDataRequest;
 - (void)clearMemoryAndExitCleanly;
 - (void)releaseOSTransaction;
@@ -18,9 +18,9 @@
   if (v2)
   {
     v3 = [NSString stringWithFormat:@"_CLMapHelperService, %p", v2];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
 
@@ -52,9 +52,9 @@
 - (void)clearMemoryAndExitCleanly
 {
   NSLog(@"CLTSP,CLMM,MapHelperService CleanExit", a2);
-  v3 = [(CLMapHelperService *)self releaseOSTransaction];
+  releaseOSTransaction = [(CLMapHelperService *)self releaseOSTransaction];
 
-  _xpc_transaction_exit_clean(v3);
+  _xpc_transaction_exit_clean(releaseOSTransaction);
 }
 
 - (void)takeOSTransaction
@@ -106,13 +106,13 @@
   }
 }
 
-- (id)convertCLMapRoadVectorToRoadDictionaryArray:(void *)a3
+- (id)convertCLMapRoadVectorToRoadDictionaryArray:(void *)array
 {
   v4 = +[NSMutableArray array];
-  v5 = *a3;
-  v35 = *(a3 + 1);
+  v5 = *array;
+  v35 = *(array + 1);
   v36 = v4;
-  if (*a3 != v35)
+  if (*array != v35)
   {
     do
     {

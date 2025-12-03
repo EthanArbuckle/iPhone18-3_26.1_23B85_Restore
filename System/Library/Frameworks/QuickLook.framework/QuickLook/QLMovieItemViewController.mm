@@ -6,7 +6,7 @@
 - (BOOL)canPinchToDismiss;
 - (BOOL)canSwipeToDismiss;
 - (BOOL)canToggleFullScreen;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)play;
 - (BOOL)shouldAllowEditingContents;
 - (PHPlaceholderView)airPlayPlaceholderView;
@@ -14,60 +14,60 @@
 - (QLMovieItemViewController)init;
 - (UIScrollView)playerViewControllerScrollView;
 - (id)_metadataItemTitle;
-- (id)editBehaviorAlertActionsForDoneButtonTap:(id)a3;
+- (id)editBehaviorAlertActionsForDoneButtonTap:(id)tap;
 - (id)imageAnalysisToolbarButton;
 - (id)lookupAction;
 - (id)registeredKeyCommands;
 - (id)scrollView;
-- (id)scrollViewInView:(id)a3;
-- (id)setupPlayerViewWithPlayer:(id)a3;
-- (id)toolbarButtonsForTraitCollection:(id)a3;
+- (id)scrollViewInView:(id)view;
+- (id)setupPlayerViewWithPlayer:(id)player;
+- (id)toolbarButtonsForTraitCollection:(id)collection;
 - (id)transitioningView;
-- (void)_addAssetBadgeViewToHierarchyIfNeeded:(id)a3;
+- (void)_addAssetBadgeViewToHierarchyIfNeeded:(id)needed;
 - (void)_checkForMemoriesAppleMusic;
-- (void)_displayAssetBadgeView:(id)a3;
+- (void)_displayAssetBadgeView:(id)view;
 - (void)_enterEditMode;
-- (void)_exitEditMode:(BOOL)a3;
-- (void)_hideAssetBadgeViewAfterDelayIfNeeded:(double)a3;
+- (void)_exitEditMode:(BOOL)mode;
+- (void)_hideAssetBadgeViewAfterDelayIfNeeded:(double)needed;
 - (void)_hideAssetBadgeViewIfVisible;
 - (void)_lookupButtonTapped;
 - (void)_modifySessionForMemoriesAppleMusicMixing;
 - (void)_resetTrimmingValues;
 - (void)_rotateIfPossible;
 - (void)_rotateMovieRight;
-- (void)_saveMovieIfEdited:(BOOL)a3 forceSaving:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)_saveMovieIfEditedWithEditedCopy:(id)a3 shouldDismissAfterSaving:(BOOL)a4 completionHandler:(id)a5;
+- (void)_saveMovieIfEdited:(BOOL)edited forceSaving:(BOOL)saving withCompletionHandler:(id)handler;
+- (void)_saveMovieIfEditedWithEditedCopy:(id)copy shouldDismissAfterSaving:(BOOL)saving completionHandler:(id)handler;
 - (void)_setupEditBehavior;
-- (void)_setupWithCompletionHandler:(id)a3;
-- (void)_showAssetBadgeView:(id)a3;
+- (void)_setupWithCompletionHandler:(id)handler;
+- (void)_showAssetBadgeView:(id)view;
 - (void)_showAssetBadgeViewIfNeeded;
 - (void)_showBadge;
-- (void)_showFailedToSaveChangesAlertWithError:(id)a3;
+- (void)_showFailedToSaveChangesAlertWithError:(id)error;
 - (void)_stopLookupIfNeeded;
-- (void)_updateAssetBadgeViewVisibilityForFullscreenMode:(BOOL)a3;
-- (void)_updateAssetBadgeViewVisibilityWithNewPlayingStatus:(int64_t)a3;
+- (void)_updateAssetBadgeViewVisibilityForFullscreenMode:(BOOL)mode;
+- (void)_updateAssetBadgeViewVisibilityWithNewPlayingStatus:(int64_t)status;
 - (void)_updateEditMode;
-- (void)_updateEditsTrimmingValuesWithTrimStartTime:(double)a3 trimEndTime:(double)a4;
+- (void)_updateEditsTrimmingValuesWithTrimStartTime:(double)time trimEndTime:(double)endTime;
 - (void)_updateInterfaceAfterExitingEditMode;
-- (void)_updateMemoriesAppleMusicAudioTrackWithPlayerItem:(id)a3 shouldUseNoMusicTrack:(BOOL)a4;
-- (void)_updateMemoriesAppleMusicIsPlaying:(BOOL)a3;
+- (void)_updateMemoriesAppleMusicAudioTrackWithPlayerItem:(id)item shouldUseNoMusicTrack:(BOOL)track;
+- (void)_updateMemoriesAppleMusicIsPlaying:(BOOL)playing;
 - (void)_updatePlaceHolderView;
 - (void)_updatePlayButtonVisibility;
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)dealloc;
 - (void)didChangePlayingStatus;
 - (void)didReachEndOfMedia;
-- (void)handlePerformedKeyCommandIfNeeded:(id)a3;
-- (void)hostApplicationDidEnterBackground:(id)a3;
+- (void)handlePerformedKeyCommandIfNeeded:(id)needed;
+- (void)hostApplicationDidEnterBackground:(id)background;
 - (void)loadAssetMetadata;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performFirstTimeAppearanceActions:(unint64_t)a3;
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5;
-- (void)playerViewControllerWillPerformAnalysisCalloutAction:(id)a3;
-- (void)savePreviewEditedCopyWithCompletionHandler:(id)a3;
-- (void)transitionDidFinish:(BOOL)a3 didComplete:(BOOL)a4;
-- (void)transitionDidStart:(BOOL)a3;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performFirstTimeAppearanceActions:(unint64_t)actions;
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator;
+- (void)playerViewControllerWillPerformAnalysisCalloutAction:(id)action;
+- (void)savePreviewEditedCopyWithCompletionHandler:(id)handler;
+- (void)transitionDidFinish:(BOOL)finish didComplete:(BOOL)complete;
+- (void)transitionDidStart:(BOOL)start;
 - (void)updateInterfaceAfterSavingEdits;
 - (void)updateInterfaceForSavingEdits;
 @end
@@ -93,23 +93,23 @@
   return v2;
 }
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contentsCopy = contents;
+  contextCopy = context;
+  handlerCopy = handler;
   [(QLScrollableContentItemViewController *)self setShouldFit:1];
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __89__QLMovieItemViewController_loadPreviewControllerWithContents_context_completionHandler___block_invoke;
   v13[3] = &unk_278B57740;
-  v11 = v10;
+  v11 = handlerCopy;
   v14 = v11;
   objc_copyWeak(&v15, &location);
   v12.receiver = self;
   v12.super_class = QLMovieItemViewController;
-  [(QLMediaItemViewController *)&v12 loadPreviewControllerWithContents:v8 context:v9 completionHandler:v13];
+  [(QLMediaItemViewController *)&v12 loadPreviewControllerWithContents:contentsCopy context:contextCopy completionHandler:v13];
   objc_destroyWeak(&v15);
 
   objc_destroyWeak(&location);
@@ -183,32 +183,32 @@ LABEL_18:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupWithCompletionHandler:(id)a3
+- (void)_setupWithCompletionHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   [(QLMediaItemBaseViewController *)self imageSize];
   [(QLMovieItemViewController *)self setPreferredContentSize:?];
   [(QLMovieItemViewController *)self loadAssetMetadata];
-  v4 = [(QLMediaItemBaseViewController *)self player];
-  [v4 addObserver:self forKeyPath:@"externalPlaybackActive" options:3 context:&QLMovieItemViewControllerContext];
+  player = [(QLMediaItemBaseViewController *)self player];
+  [player addObserver:self forKeyPath:@"externalPlaybackActive" options:3 context:&QLMovieItemViewControllerContext];
 
   self->_isObservingPlayerExternalPlaybackActive = 1;
-  v5 = [(QLMediaItemBaseViewController *)self mediaAsset];
-  self->_assetHasValidVideoTrack = [v5 ql_hasValidVideoTrack];
+  mediaAsset = [(QLMediaItemBaseViewController *)self mediaAsset];
+  self->_assetHasValidVideoTrack = [mediaAsset ql_hasValidVideoTrack];
 
   [(QLMovieItemViewController *)self _setupEditBehavior];
-  v6 = v7;
-  if (v7)
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0);
-    v6 = v7;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v6 = handlerCopy;
   }
 }
 
-- (id)setupPlayerViewWithPlayer:(id)a3
+- (id)setupPlayerViewWithPlayer:(id)player
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  playerCopy = player;
   [(QLMovieItemViewController *)self setAdditionalSafeAreaInsets:0.0, 0.0, 20.0, 0.0];
   v5 = objc_alloc_init(MEMORY[0x277CB85E0]);
   playerViewController = self->_playerViewController;
@@ -216,86 +216,86 @@ LABEL_18:
 
   [(AVPlayerViewController *)self->_playerViewController setAllowsVideoFrameAnalysis:1];
   [(AVPlayerViewController *)self->_playerViewController setUpdatesNowPlayingInfoCenter:1];
-  v7 = [(AVPlayerViewController *)self->_playerViewController view];
-  [v7 setBackgroundColor:0];
+  view = [(AVPlayerViewController *)self->_playerViewController view];
+  [view setBackgroundColor:0];
 
   [(AVPlayerViewController *)self->_playerViewController setShowsPlaybackControls:_os_feature_enabled_impl()];
-  [(AVPlayerViewController *)self->_playerViewController setPlayer:v4];
+  [(AVPlayerViewController *)self->_playerViewController setPlayer:playerCopy];
 
   [(AVPlayerViewController *)self->_playerViewController setAllowsPictureInPicturePlayback:0];
   [(AVPlayerViewController *)self->_playerViewController setDelegate:self];
   [(AVPlayerViewController *)self->_playerViewController setShowsExitFullScreenButton:0];
   if (_os_feature_enabled_impl())
   {
-    v8 = [(AVPlayerViewController *)self->_playerViewController configuration];
-    [v8 setExcludedControls:{objc_msgSend(v8, "excludedControls") | 0x1FD0}];
-    [v8 setPrefersFullScreenStyleForEmbeddedMode:1];
-    [(AVPlayerViewController *)self->_playerViewController setConfiguration:v8];
+    configuration = [(AVPlayerViewController *)self->_playerViewController configuration];
+    [configuration setExcludedControls:{objc_msgSend(configuration, "excludedControls") | 0x1FD0}];
+    [configuration setPrefersFullScreenStyleForEmbeddedMode:1];
+    [(AVPlayerViewController *)self->_playerViewController setConfiguration:configuration];
     [(AVPlayerViewController *)self->_playerViewController setPrefersDeviceUserInterfaceStyle:1];
   }
 
-  v9 = [(QLMovieItemViewController *)self _metadataItemTitle];
-  v41[0] = v9;
+  _metadataItemTitle = [(QLMovieItemViewController *)self _metadataItemTitle];
+  v41[0] = _metadataItemTitle;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:1];
-  v11 = [(AVPlayerViewController *)self->_playerViewController player];
-  v12 = [v11 currentItem];
-  [v12 setExternalMetadata:v10];
+  player = [(AVPlayerViewController *)self->_playerViewController player];
+  currentItem = [player currentItem];
+  [currentItem setExternalMetadata:v10];
 
-  v13 = [(AVPlayerViewController *)self->_playerViewController view];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(AVPlayerViewController *)self->_playerViewController view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(QLMovieItemViewController *)self addChildViewController:self->_playerViewController];
-  v14 = [(QLMovieItemViewController *)self view];
-  v15 = [(AVPlayerViewController *)self->_playerViewController view];
-  [v14 addSubview:v15];
+  view3 = [(QLMovieItemViewController *)self view];
+  view4 = [(AVPlayerViewController *)self->_playerViewController view];
+  [view3 addSubview:view4];
 
   [(AVPlayerViewController *)self->_playerViewController didMoveToParentViewController:self];
-  v16 = [(QLMovieItemViewController *)self view];
+  view5 = [(QLMovieItemViewController *)self view];
   v17 = MEMORY[0x277CCAAD0];
   v39 = @"player";
-  v18 = [(AVPlayerViewController *)self->_playerViewController view];
-  v40 = v18;
+  view6 = [(AVPlayerViewController *)self->_playerViewController view];
+  v40 = view6;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
   v20 = [v17 constraintsWithVisualFormat:@"H:|[player]|" options:0 metrics:0 views:v19];
-  [v16 addConstraints:v20];
+  [view5 addConstraints:v20];
 
-  v21 = [(QLMovieItemViewController *)self view];
+  view7 = [(QLMovieItemViewController *)self view];
   v22 = MEMORY[0x277CCAAD0];
-  v23 = [(AVPlayerViewController *)self->_playerViewController view];
-  v38 = v23;
+  view8 = [(AVPlayerViewController *)self->_playerViewController view];
+  v38 = view8;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
   v25 = [v22 constraintsWithVisualFormat:@"V:|[player]|" options:0 metrics:0 views:v24];
-  [v21 addConstraints:v25];
+  [view7 addConstraints:v25];
 
-  v26 = [(QLMovieItemViewController *)self playerViewController];
+  playerViewController = [(QLMovieItemViewController *)self playerViewController];
   LOBYTE(v25) = objc_opt_respondsToSelector();
 
   if (v25)
   {
-    v27 = [(QLMovieItemViewController *)self playerViewController];
-    [v27 addObserver:self forKeyPath:@"analysisInteractionInProgress" options:5 context:&QLMovieItemViewControllerContext];
+    playerViewController2 = [(QLMovieItemViewController *)self playerViewController];
+    [playerViewController2 addObserver:self forKeyPath:@"analysisInteractionInProgress" options:5 context:&QLMovieItemViewControllerContext];
   }
 
-  v28 = [(QLMovieItemViewController *)self playerViewController];
+  playerViewController3 = [(QLMovieItemViewController *)self playerViewController];
   v29 = objc_opt_respondsToSelector();
 
   if (v29)
   {
-    v30 = [(QLMovieItemViewController *)self playerViewController];
-    [v30 addObserver:self forKeyPath:@"toggleLookupAction" options:5 context:&QLMovieItemViewControllerContext];
+    playerViewController4 = [(QLMovieItemViewController *)self playerViewController];
+    [playerViewController4 addObserver:self forKeyPath:@"toggleLookupAction" options:5 context:&QLMovieItemViewControllerContext];
   }
 
-  v31 = [(QLMovieItemViewController *)self playerViewController];
-  [v31 addObserver:self forKeyPath:@"videoBounds" options:5 context:&QLMovieItemViewControllerContext];
+  playerViewController5 = [(QLMovieItemViewController *)self playerViewController];
+  [playerViewController5 addObserver:self forKeyPath:@"videoBounds" options:5 context:&QLMovieItemViewControllerContext];
 
   if (_os_feature_enabled_impl())
   {
     [(QLMovieItemViewController *)self _checkForMemoriesAppleMusic];
     if ([(QLMovieItemViewController *)self _hasMemoriesAppleMusic])
     {
-      v32 = [(AVPlayerViewController *)self->_playerViewController player];
-      v33 = [v32 currentItem];
-      [(QLMovieItemViewController *)self _updateMemoriesAppleMusicAudioTrackWithPlayerItem:v33 shouldUseNoMusicTrack:1];
+      player2 = [(AVPlayerViewController *)self->_playerViewController player];
+      currentItem2 = [player2 currentItem];
+      [(QLMovieItemViewController *)self _updateMemoriesAppleMusicAudioTrackWithPlayerItem:currentItem2 shouldUseNoMusicTrack:1];
 
       [(QLMovieItemViewController *)self _modifySessionForMemoriesAppleMusicMixing];
     }
@@ -310,68 +310,68 @@ LABEL_18:
 - (id)_metadataItemTitle
 {
   v3 = MEMORY[0x277CD5DE0];
-  v4 = [(QLMediaItemBaseViewController *)self mediaAsset];
-  v5 = [v3 ql_propertyTitleFromAsset:v4];
+  mediaAsset = [(QLMediaItemBaseViewController *)self mediaAsset];
+  previewTitle = [v3 ql_propertyTitleFromAsset:mediaAsset];
 
-  if (!v5)
+  if (!previewTitle)
   {
-    v6 = [(QLItemViewController *)self context];
-    v5 = [v6 previewTitle];
+    context = [(QLItemViewController *)self context];
+    previewTitle = [context previewTitle];
   }
 
-  v7 = [MEMORY[0x277CE6558] metadataItem];
-  [v7 setKey:*MEMORY[0x277CE5F28]];
-  [v7 setIdentifier:*MEMORY[0x277CE5EF0]];
-  [v7 setValue:v5];
+  metadataItem = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem setKey:*MEMORY[0x277CE5F28]];
+  [metadataItem setIdentifier:*MEMORY[0x277CE5EF0]];
+  [metadataItem setValue:previewTitle];
 
-  return v7;
+  return metadataItem;
 }
 
 - (void)dealloc
 {
-  v3 = [(QLMovieItemViewController *)self playerViewController];
+  playerViewController = [(QLMovieItemViewController *)self playerViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(QLMovieItemViewController *)self playerViewController];
-    [v5 removeObserver:self forKeyPath:@"analysisInteractionInProgress" context:&QLMovieItemViewControllerContext];
+    playerViewController2 = [(QLMovieItemViewController *)self playerViewController];
+    [playerViewController2 removeObserver:self forKeyPath:@"analysisInteractionInProgress" context:&QLMovieItemViewControllerContext];
   }
 
-  v6 = [(QLMovieItemViewController *)self playerViewController];
+  playerViewController3 = [(QLMovieItemViewController *)self playerViewController];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(QLMovieItemViewController *)self playerViewController];
-    [v8 removeObserver:self forKeyPath:@"toggleLookupAction" context:&QLMovieItemViewControllerContext];
+    playerViewController4 = [(QLMovieItemViewController *)self playerViewController];
+    [playerViewController4 removeObserver:self forKeyPath:@"toggleLookupAction" context:&QLMovieItemViewControllerContext];
   }
 
   if (self->_isObservingPlayerExternalPlaybackActive)
   {
-    v9 = [(QLMediaItemBaseViewController *)self player];
-    [v9 removeObserver:self forKeyPath:@"externalPlaybackActive" context:&QLMovieItemViewControllerContext];
+    player = [(QLMediaItemBaseViewController *)self player];
+    [player removeObserver:self forKeyPath:@"externalPlaybackActive" context:&QLMovieItemViewControllerContext];
   }
 
-  v10 = [(QLMovieItemViewController *)self playerViewController];
-  [v10 removeObserver:self forKeyPath:@"videoBounds" context:&QLMovieItemViewControllerContext];
+  playerViewController5 = [(QLMovieItemViewController *)self playerViewController];
+  [playerViewController5 removeObserver:self forKeyPath:@"videoBounds" context:&QLMovieItemViewControllerContext];
 
   v11.receiver = self;
   v11.super_class = QLMovieItemViewController;
   [(QLMediaItemViewController *)&v11 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  if (a6 == &QLMovieItemViewControllerContext)
+  pathCopy = path;
+  objectCopy = object;
+  if (context == &QLMovieItemViewControllerContext)
   {
-    v12 = [(QLMediaItemBaseViewController *)self player];
+    player = [(QLMediaItemBaseViewController *)self player];
 
-    if (v12 == v11)
+    if (player == objectCopy)
     {
-      if ([v10 isEqualToString:@"externalPlaybackActive"])
+      if ([pathCopy isEqualToString:@"externalPlaybackActive"])
       {
         [(QLMovieItemViewController *)self _updatePlaceHolderView];
       }
@@ -379,35 +379,35 @@ LABEL_18:
 
     else
     {
-      v13 = [(QLMovieItemViewController *)self playerViewController];
+      playerViewController = [(QLMovieItemViewController *)self playerViewController];
 
-      if (v13 == v11)
+      if (playerViewController == objectCopy)
       {
-        if (![v10 isEqualToString:@"analysisInteractionInProgress"])
+        if (![pathCopy isEqualToString:@"analysisInteractionInProgress"])
         {
-          if ([v10 isEqualToString:@"toggleLookupAction"] && (-[QLMovieItemViewController lookupAction](self, "lookupAction"), v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
+          if ([pathCopy isEqualToString:@"toggleLookupAction"] && (-[QLMovieItemViewController lookupAction](self, "lookupAction"), v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
           {
-            v15 = [(QLItemViewController *)self delegate];
-            [v15 previewItemViewControllerWantsUpdateOverlay:self animated:0];
+            delegate = [(QLItemViewController *)self delegate];
+            [delegate previewItemViewControllerWantsUpdateOverlay:self animated:0];
           }
 
           else
           {
-            if (![v10 isEqualToString:@"videoBounds"])
+            if (![pathCopy isEqualToString:@"videoBounds"])
             {
               goto LABEL_3;
             }
 
-            v15 = [(QLMovieItemViewController *)self view];
-            v16 = [(QLMovieItemViewController *)self playerViewController];
-            [v16 videoBounds];
+            delegate = [(QLMovieItemViewController *)self view];
+            playerViewController2 = [(QLMovieItemViewController *)self playerViewController];
+            [playerViewController2 videoBounds];
             v18 = v17;
             v20 = v19;
             v22 = v21;
             v24 = v23;
-            v25 = [(QLMovieItemViewController *)self playerViewController];
-            v26 = [v25 view];
-            [v15 convertRect:v26 fromView:{v18, v20, v22, v24}];
+            playerViewController3 = [(QLMovieItemViewController *)self playerViewController];
+            view = [playerViewController3 view];
+            [delegate convertRect:view fromView:{v18, v20, v22, v24}];
             [(QLItemViewController *)self setContentFrame:?];
           }
 
@@ -423,40 +423,40 @@ LABEL_18:
   {
     v27.receiver = self;
     v27.super_class = QLMovieItemViewController;
-    [(QLMediaItemViewController *)&v27 observeValueForKeyPath:v10 ofObject:v11 change:a5 context:a6];
+    [(QLMediaItemViewController *)&v27 observeValueForKeyPath:pathCopy ofObject:objectCopy change:change context:context];
   }
 
 LABEL_3:
 }
 
-- (void)hostApplicationDidEnterBackground:(id)a3
+- (void)hostApplicationDidEnterBackground:(id)background
 {
   v4.receiver = self;
   v4.super_class = QLMovieItemViewController;
-  [(QLMediaItemViewController *)&v4 hostApplicationDidEnterBackground:a3];
+  [(QLMediaItemViewController *)&v4 hostApplicationDidEnterBackground:background];
   [(QLMediaItemBaseViewController *)self pause];
 }
 
 - (BOOL)canEnterFullScreen
 {
-  v2 = [(QLMediaItemBaseViewController *)self player];
-  v3 = [v2 isExternalPlaybackActive];
+  player = [(QLMediaItemBaseViewController *)self player];
+  isExternalPlaybackActive = [player isExternalPlaybackActive];
 
-  return v3 ^ 1;
+  return isExternalPlaybackActive ^ 1;
 }
 
 - (BOOL)play
 {
   v6.receiver = self;
   v6.super_class = QLMovieItemViewController;
-  v3 = [(QLMediaItemBaseViewController *)&v6 play];
-  if (v3)
+  play = [(QLMediaItemBaseViewController *)&v6 play];
+  if (play)
   {
-    v4 = [(QLItemViewController *)self delegate];
-    [v4 previewItemViewController:self wantsFullScreen:1];
+    delegate = [(QLItemViewController *)self delegate];
+    [delegate previewItemViewController:self wantsFullScreen:1];
   }
 
-  return v3;
+  return play;
 }
 
 - (id)scrollView
@@ -465,8 +465,8 @@ LABEL_3:
 
   if (!WeakRetained)
   {
-    v4 = [(AVPlayerViewController *)self->_playerViewController view];
-    v5 = [(QLMovieItemViewController *)self scrollViewInView:v4];
+    view = [(AVPlayerViewController *)self->_playerViewController view];
+    v5 = [(QLMovieItemViewController *)self scrollViewInView:view];
     objc_storeWeak(&self->_playerViewControllerScrollView, v5);
   }
 
@@ -475,14 +475,14 @@ LABEL_3:
   return v6;
 }
 
-- (id)scrollViewInView:(id)a3
+- (id)scrollViewInView:(id)view
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = viewCopy;
   }
 
   else
@@ -491,8 +491,8 @@ LABEL_3:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [v4 subviews];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    subviews = [viewCopy subviews];
+    v7 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -503,7 +503,7 @@ LABEL_3:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = [(QLMovieItemViewController *)self scrollViewInView:*(*(&v14 + 1) + 8 * i)];
@@ -515,7 +515,7 @@ LABEL_3:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -542,10 +542,10 @@ LABEL_13:
     return 0;
   }
 
-  v3 = [(QLMovieItemViewController *)self scrollView];
-  [v3 minimumZoomScale];
+  scrollView = [(QLMovieItemViewController *)self scrollView];
+  [scrollView minimumZoomScale];
   v5 = v4;
-  [v3 zoomScale];
+  [scrollView zoomScale];
   v2 = v5 == v6;
 
   return v2;
@@ -586,11 +586,11 @@ LABEL_13:
 
 - (void)_updatePlayButtonVisibility
 {
-  v3 = [(QLMovieItemViewController *)self _isInteractingWithAnalysis];
-  v4 = [(QLItemViewController *)self appearance];
-  v5 = [v4 presentationMode] == 4;
+  _isInteractingWithAnalysis = [(QLMovieItemViewController *)self _isInteractingWithAnalysis];
+  appearance = [(QLItemViewController *)self appearance];
+  v5 = [appearance presentationMode] == 4;
 
-  if (v3 || ![(QLMediaItemBaseViewController *)self playable]|| self->_isEditing || (_os_feature_enabled_impl() & 1) == 0 && ([(QLItemViewController *)self isSavingEdits]|| self->_isSavingEditsBeforeDismissing))
+  if (_isInteractingWithAnalysis || ![(QLMediaItemBaseViewController *)self playable]|| self->_isEditing || (_os_feature_enabled_impl() & 1) == 0 && ([(QLItemViewController *)self isSavingEdits]|| self->_isSavingEditsBeforeDismissing))
   {
     v5 = 1;
   }
@@ -626,23 +626,23 @@ LABEL_13:
 
 - (void)_stopLookupIfNeeded
 {
-  v3 = [(QLMovieItemViewController *)self lookupAction];
-  if (v3)
+  lookupAction = [(QLMovieItemViewController *)self lookupAction];
+  if (lookupAction)
   {
-    v5 = v3;
-    v4 = [v3 state] == 1;
-    v3 = v5;
+    v5 = lookupAction;
+    v4 = [lookupAction state] == 1;
+    lookupAction = v5;
     if (v4)
     {
       [(QLMovieItemViewController *)self _lookupButtonTapped];
-      v3 = v5;
+      lookupAction = v5;
     }
   }
 }
 
 - (BOOL)_isInteractingWithAnalysis
 {
-  v3 = [(QLMovieItemViewController *)self playerViewController];
+  playerViewController = [(QLMovieItemViewController *)self playerViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -650,15 +650,15 @@ LABEL_13:
     return 0;
   }
 
-  v5 = [(QLMovieItemViewController *)self playerViewController];
-  v6 = [v5 analysisInteractionInProgress];
+  playerViewController2 = [(QLMovieItemViewController *)self playerViewController];
+  analysisInteractionInProgress = [playerViewController2 analysisInteractionInProgress];
 
-  return v6;
+  return analysisInteractionInProgress;
 }
 
-- (void)transitionDidStart:(BOOL)a3
+- (void)transitionDidStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
 
     [(QLMovieItemViewController *)self _updatePlayButtonVisibility];
@@ -675,15 +675,15 @@ LABEL_13:
   }
 }
 
-- (void)transitionDidFinish:(BOOL)a3 didComplete:(BOOL)a4
+- (void)transitionDidFinish:(BOOL)finish didComplete:(BOOL)complete
 {
-  if (a3 && a4 && ![(QLMovieItemViewController *)self isEditing])
+  if (finish && complete && ![(QLMovieItemViewController *)self isEditing])
   {
-    v6 = [(QLMediaItemBaseViewController *)self player];
-    [v6 play];
+    player = [(QLMediaItemBaseViewController *)self player];
+    [player play];
   }
 
-  else if (!a4 && [(QLMediaItemBaseViewController *)self playingStatus]!= 1)
+  else if (!complete && [(QLMediaItemBaseViewController *)self playingStatus]!= 1)
   {
 
     [(QLMovieItemViewController *)self _updatePlayButtonVisibility];
@@ -692,43 +692,43 @@ LABEL_13:
 
 - (id)transitioningView
 {
-  v3 = [(QLMediaItemBaseViewController *)self player];
-  if ([v3 isExternalPlaybackActive])
+  player = [(QLMediaItemBaseViewController *)self player];
+  if ([player isExternalPlaybackActive])
   {
-    v4 = self->_airPlayPlaceholderView;
+    view = self->_airPlayPlaceholderView;
   }
 
   else
   {
-    v4 = [(AVPlayerViewController *)self->_playerViewController view];
+    view = [(AVPlayerViewController *)self->_playerViewController view];
   }
 
-  v5 = v4;
+  v5 = view;
 
   return v5;
 }
 
 - (BOOL)shouldAllowEditingContents
 {
-  v3 = [(QLMediaItemBaseViewController *)self mediaAsset];
-  v4 = [v3 hasProtectedContent];
+  mediaAsset = [(QLMediaItemBaseViewController *)self mediaAsset];
+  hasProtectedContent = [mediaAsset hasProtectedContent];
 
-  if ((v4 & 1) == 0)
+  if ((hasProtectedContent & 1) == 0)
   {
-    v6 = [(QLItemViewController *)self context];
-    v7 = [v6 canBeEdited];
-    if (v7 && (-[QLItemViewController context](self, "context"), v4 = objc_claimAutoreleasedReturnValue(), [v4 editedFileBehavior]))
+    context = [(QLItemViewController *)self context];
+    canBeEdited = [context canBeEdited];
+    if (canBeEdited && (-[QLItemViewController context](self, "context"), hasProtectedContent = objc_claimAutoreleasedReturnValue(), [hasProtectedContent editedFileBehavior]))
     {
       v5 = 1;
     }
 
     else
     {
-      v8 = [(QLItemViewController *)self context];
-      v9 = [v8 item];
-      v5 = [v9 editingMode] != 0;
+      context2 = [(QLItemViewController *)self context];
+      item = [context2 item];
+      v5 = [item editingMode] != 0;
 
-      if (!v7)
+      if (!canBeEdited)
       {
 LABEL_8:
 
@@ -746,10 +746,10 @@ LABEL_8:
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CB8030];
-  v4 = [(QLMediaItemBaseViewController *)self player];
-  v5 = [v4 audioSession];
+  player = [(QLMediaItemBaseViewController *)self player];
+  audioSession = [player audioSession];
   v10 = 0;
-  [v5 setCategory:v3 withOptions:1 error:&v10];
+  [audioSession setCategory:v3 withOptions:1 error:&v10];
   v6 = v10;
 
   if (v6)
@@ -775,56 +775,56 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateMemoriesAppleMusicIsPlaying:(BOOL)a3
+- (void)_updateMemoriesAppleMusicIsPlaying:(BOOL)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   v24[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277D43F88] sharedInstance];
-  if (([v5 isConnected] & 1) == 0)
+  mEMORY[0x277D43F88] = [MEMORY[0x277D43F88] sharedInstance];
+  if (([mEMORY[0x277D43F88] isConnected] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v6 = [(QLMovieItemViewController *)self _memoriesAppleMusicAdamID];
+  _memoriesAppleMusicAdamID = [(QLMovieItemViewController *)self _memoriesAppleMusicAdamID];
 
-  if (!v6)
+  if (!_memoriesAppleMusicAdamID)
   {
 LABEL_6:
-    v16 = [(AVPlayerViewController *)self->_playerViewController player];
-    v17 = [v16 currentItem];
-    [(QLMovieItemViewController *)self _updateMemoriesAppleMusicAudioTrackWithPlayerItem:v17 shouldUseNoMusicTrack:0];
+    player = [(AVPlayerViewController *)self->_playerViewController player];
+    currentItem = [player currentItem];
+    [(QLMovieItemViewController *)self _updateMemoriesAppleMusicAudioTrackWithPlayerItem:currentItem shouldUseNoMusicTrack:0];
 
-    v18 = [(QLMovieItemViewController *)self _musicPlayer];
+    _musicPlayer = [(QLMovieItemViewController *)self _musicPlayer];
     goto LABEL_7;
   }
 
-  v7 = [(AVPlayerViewController *)self->_playerViewController player];
-  v8 = [v7 currentItem];
-  [(QLMovieItemViewController *)self _updateMemoriesAppleMusicAudioTrackWithPlayerItem:v8 shouldUseNoMusicTrack:1];
+  player2 = [(AVPlayerViewController *)self->_playerViewController player];
+  currentItem2 = [player2 currentItem];
+  [(QLMovieItemViewController *)self _updateMemoriesAppleMusicAudioTrackWithPlayerItem:currentItem2 shouldUseNoMusicTrack:1];
 
-  if (v3)
+  if (playingCopy)
   {
     objc_initWeak(&location, self);
-    v9 = [(QLMovieItemViewController *)self _musicPlayer];
-    [v9 stop];
+    _musicPlayer2 = [(QLMovieItemViewController *)self _musicPlayer];
+    [_musicPlayer2 stop];
 
-    v10 = [(QLMovieItemViewController *)self _musicPlayer];
-    [v10 setRepeatMode:1];
+    _musicPlayer3 = [(QLMovieItemViewController *)self _musicPlayer];
+    [_musicPlayer3 setRepeatMode:1];
 
-    v11 = [(QLMovieItemViewController *)self _musicPlayer];
-    v12 = [(QLMovieItemViewController *)self _memoriesAppleMusicAdamID];
-    v24[0] = v12;
+    _musicPlayer4 = [(QLMovieItemViewController *)self _musicPlayer];
+    _memoriesAppleMusicAdamID2 = [(QLMovieItemViewController *)self _memoriesAppleMusicAdamID];
+    v24[0] = _memoriesAppleMusicAdamID2;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-    [v11 setQueueWithStoreIDs:v13];
+    [_musicPlayer4 setQueueWithStoreIDs:v13];
 
-    v14 = [(QLMovieItemViewController *)self _musicPlayer];
+    _musicPlayer5 = [(QLMovieItemViewController *)self _musicPlayer];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_invoke;
     v21[3] = &unk_278B588C0;
     objc_copyWeak(&v22, &location);
-    [v14 prepareToPlayWithCompletionHandler:v21];
+    [_musicPlayer5 prepareToPlayWithCompletionHandler:v21];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -832,10 +832,10 @@ LABEL_6:
     return;
   }
 
-  v18 = [(QLMovieItemViewController *)self _musicPlayer];
+  _musicPlayer = [(QLMovieItemViewController *)self _musicPlayer];
 LABEL_7:
-  v20 = v18;
-  [v18 stop];
+  v20 = _musicPlayer;
+  [_musicPlayer stop];
   v19 = *MEMORY[0x277D85DE8];
 }
 
@@ -939,8 +939,8 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
 
 - (BOOL)_hasMemoriesAppleMusic
 {
-  v2 = [(QLMovieItemViewController *)self _memoriesAppleMusicAdamID];
-  v3 = v2 != 0;
+  _memoriesAppleMusicAdamID = [(QLMovieItemViewController *)self _memoriesAppleMusicAdamID];
+  v3 = _memoriesAppleMusicAdamID != 0;
 
   return v3;
 }
@@ -948,11 +948,11 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
 - (void)_checkForMemoriesAppleMusic
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [(QLMediaItemBaseViewController *)self mediaAsset];
-  v4 = v3;
-  if (v3)
+  mediaAsset = [(QLMediaItemBaseViewController *)self mediaAsset];
+  v4 = mediaAsset;
+  if (mediaAsset)
   {
-    v5 = [v3 mediaSelectionGroupForMediaCharacteristic:*MEMORY[0x277CE5DE0]];
+    v5 = [mediaAsset mediaSelectionGroupForMediaCharacteristic:*MEMORY[0x277CE5DE0]];
     [(QLMovieItemViewController *)self set_memoriesAppleMusicAdamID:0];
     [(QLMovieItemViewController *)self set_memoriesWithoutMusicMediaOption:0];
     if (v5)
@@ -965,7 +965,7 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
       v27 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
       if (v27)
       {
-        v23 = self;
+        selfCopy = self;
         v24 = v5;
         v30 = 0;
         v33 = 0;
@@ -985,12 +985,12 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
 
             v28 = v7;
             v29 = *(*(&v38 + 1) + 8 * v7);
-            v8 = [v29 commonMetadata];
+            commonMetadata = [v29 commonMetadata];
             v34 = 0u;
             v35 = 0u;
             v36 = 0u;
             v37 = 0u;
-            v9 = [v8 countByEnumeratingWithState:&v34 objects:v42 count:16];
+            v9 = [commonMetadata countByEnumeratingWithState:&v34 objects:v42 count:16];
             if (v9)
             {
               v10 = v9;
@@ -1001,7 +1001,7 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
                 {
                   if (*v35 != v11)
                   {
-                    objc_enumerationMutation(v8);
+                    objc_enumerationMutation(commonMetadata);
                   }
 
                   v13 = [*(*(&v34 + 1) + 8 * i) mutableCopy];
@@ -1012,15 +1012,15 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
                   if (isKindOfClass)
                   {
                     v16 = [v13 key];
-                    v17 = [v13 stringValue];
+                    stringValue = [v13 stringValue];
                     if ([v16 isEqualToString:v32])
                     {
-                      v18 = v17;
+                      v18 = stringValue;
 
                       v33 = v18;
                     }
 
-                    if ([v16 isEqualToString:v6] && objc_msgSend(v17, "isEqualToString:", @"No Music Just Voice") && objc_msgSend(obj, "count") >= 2)
+                    if ([v16 isEqualToString:v6] && objc_msgSend(stringValue, "isEqualToString:", @"No Music Just Voice") && objc_msgSend(obj, "count") >= 2)
                     {
                       v19 = v29;
 
@@ -1029,7 +1029,7 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
                   }
                 }
 
-                v10 = [v8 countByEnumeratingWithState:&v34 objects:v42 count:16];
+                v10 = [commonMetadata countByEnumeratingWithState:&v34 objects:v42 count:16];
               }
 
               while (v10);
@@ -1051,8 +1051,8 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
           v21 = v30;
           if (v30)
           {
-            [(QLMovieItemViewController *)v23 set_memoriesAppleMusicAdamID:v33];
-            [(QLMovieItemViewController *)v23 set_memoriesWithoutMusicMediaOption:v30];
+            [(QLMovieItemViewController *)selfCopy set_memoriesAppleMusicAdamID:v33];
+            [(QLMovieItemViewController *)selfCopy set_memoriesWithoutMusicMediaOption:v30];
           }
         }
 
@@ -1075,26 +1075,26 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateMemoriesAppleMusicAudioTrackWithPlayerItem:(id)a3 shouldUseNoMusicTrack:(BOOL)a4
+- (void)_updateMemoriesAppleMusicAudioTrackWithPlayerItem:(id)item shouldUseNoMusicTrack:(BOOL)track
 {
-  v4 = a4;
-  v11 = a3;
-  v6 = [v11 asset];
-  v7 = [v6 mediaSelectionGroupForMediaCharacteristic:*MEMORY[0x277CE5DE0]];
+  trackCopy = track;
+  itemCopy = item;
+  asset = [itemCopy asset];
+  v7 = [asset mediaSelectionGroupForMediaCharacteristic:*MEMORY[0x277CE5DE0]];
   v8 = v7;
   if (v7)
   {
-    if (v4)
+    if (trackCopy)
     {
-      v9 = [(QLMovieItemViewController *)self _memoriesWithoutMusicMediaOption];
-      [v11 selectMediaOption:v9 inMediaSelectionGroup:v8];
+      _memoriesWithoutMusicMediaOption = [(QLMovieItemViewController *)self _memoriesWithoutMusicMediaOption];
+      [itemCopy selectMediaOption:_memoriesWithoutMusicMediaOption inMediaSelectionGroup:v8];
     }
 
     else
     {
-      v9 = [v7 options];
-      v10 = [v9 objectAtIndexedSubscript:0];
-      [v11 selectMediaOption:v10 inMediaSelectionGroup:v8];
+      _memoriesWithoutMusicMediaOption = [v7 options];
+      v10 = [_memoriesWithoutMusicMediaOption objectAtIndexedSubscript:0];
+      [itemCopy selectMediaOption:v10 inMediaSelectionGroup:v8];
     }
   }
 }
@@ -1114,8 +1114,8 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
 
 - (BOOL)_enterEditModeIfPossible
 {
-  v3 = [(QLItemViewController *)self isSavingEdits];
-  if (v3)
+  isSavingEdits = [(QLItemViewController *)self isSavingEdits];
+  if (isSavingEdits)
   {
     v4 = MEMORY[0x277D43EF8];
     v5 = *MEMORY[0x277D43EF8];
@@ -1137,7 +1137,7 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
     [(QLMovieItemViewController *)self _enterEditMode];
   }
 
-  return !v3;
+  return !isSavingEdits;
 }
 
 - (void)_enterEditMode
@@ -1156,7 +1156,7 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_23A714000, v11, OS_LOG_TYPE_ERROR, "Could not enter edit mode because editing preview (%@) is not allowed. #PreviewController", &v13, 0xCu);
     }
 
@@ -1165,20 +1165,20 @@ void __64__QLMovieItemViewController__updateMemoriesAppleMusicIsPlaying___block_
 
   self->_isEditing = 1;
   [(QLMovieItemViewController *)self _updatePlayButtonVisibility];
-  v3 = [(QLItemViewController *)self delegate];
-  [v3 previewItemViewController:self didEnableEditMode:1];
+  delegate = [(QLItemViewController *)self delegate];
+  [delegate previewItemViewController:self didEnableEditMode:1];
 
-  v4 = [(AVEditBehavior *)self->_editBehavior behaviorContext];
-  [v4 startEditing];
+  behaviorContext = [(AVEditBehavior *)self->_editBehavior behaviorContext];
+  [behaviorContext startEditing];
 
-  v5 = [(QLItemViewController *)self delegate];
-  [v5 previewItemViewController:self wantsFullScreen:1];
+  delegate2 = [(QLItemViewController *)self delegate];
+  [delegate2 previewItemViewController:self wantsFullScreen:1];
 
-  v6 = [(QLItemViewController *)self delegate];
-  [v6 previewItemViewControllerWantsUpdateOverlay:self animated:0];
+  delegate3 = [(QLItemViewController *)self delegate];
+  [delegate3 previewItemViewControllerWantsUpdateOverlay:self animated:0];
 
-  v7 = [(QLItemViewController *)self delegate];
-  [v7 previewItemViewControllerWantsUpdateKeyCommands:self];
+  delegate4 = [(QLItemViewController *)self delegate];
+  [delegate4 previewItemViewControllerWantsUpdateKeyCommands:self];
 
   if (!_os_feature_enabled_impl())
   {
@@ -1193,20 +1193,20 @@ LABEL_10:
   [(AVPlayerViewController *)playerViewController setShowsPlaybackControls:0];
 }
 
-- (void)_exitEditMode:(BOOL)a3
+- (void)_exitEditMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   self->_isEditing = 0;
-  v5 = [(AVEditBehavior *)self->_editBehavior behaviorContext];
-  [v5 endEditing];
+  behaviorContext = [(AVEditBehavior *)self->_editBehavior behaviorContext];
+  [behaviorContext endEditing];
 
-  v6 = [(QLMovieItemViewController *)self playerViewController];
-  v7 = [v6 player];
-  v8 = [v7 currentItem];
-  v9 = v8;
-  if (v8)
+  playerViewController = [(QLMovieItemViewController *)self playerViewController];
+  player = [playerViewController player];
+  currentItem = [player currentItem];
+  v9 = currentItem;
+  if (currentItem)
   {
-    [v8 reversePlaybackEndTime];
+    [currentItem reversePlaybackEndTime];
   }
 
   else
@@ -1215,13 +1215,13 @@ LABEL_10:
   }
 
   Seconds = CMTimeGetSeconds(&time);
-  v11 = [(QLMovieItemViewController *)self playerViewController];
-  v12 = [v11 player];
-  v13 = [v12 currentItem];
-  v14 = v13;
-  if (v13)
+  playerViewController2 = [(QLMovieItemViewController *)self playerViewController];
+  player2 = [playerViewController2 player];
+  currentItem2 = [player2 currentItem];
+  v14 = currentItem2;
+  if (currentItem2)
   {
-    [v13 forwardPlaybackEndTime];
+    [currentItem2 forwardPlaybackEndTime];
   }
 
   else
@@ -1238,7 +1238,7 @@ LABEL_10:
   }
 
   [(QLMovieEdits *)self->_editsSinceLastSave trimmed];
-  if (v3)
+  if (modeCopy)
   {
     objc_initWeak(&time, self);
     v18[0] = MEMORY[0x277D85DD0];
@@ -1319,22 +1319,22 @@ void __43__QLMovieItemViewController__exitEditMode___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)_updateEditsTrimmingValuesWithTrimStartTime:(double)a3 trimEndTime:(double)a4
+- (void)_updateEditsTrimmingValuesWithTrimStartTime:(double)time trimEndTime:(double)endTime
 {
   [(QLMovieEdits *)self->_editsSinceLastSave setTrimStartTime:?];
-  [(QLMovieEdits *)self->_editsSinceLastSave setTrimEndTime:a4];
-  [(QLMovieEdits *)self->_edits setTrimStartTime:a3];
+  [(QLMovieEdits *)self->_editsSinceLastSave setTrimEndTime:endTime];
+  [(QLMovieEdits *)self->_edits setTrimStartTime:time];
   edits = self->_edits;
 
-  [(QLMovieEdits *)edits setTrimEndTime:a4];
+  [(QLMovieEdits *)edits setTrimEndTime:endTime];
 }
 
 - (void)_updateInterfaceAfterExitingEditMode
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(QLMovieItemViewController *)self playerViewController];
-    [v3 flashPlaybackControlsWithDuration:10.0];
+    playerViewController = [(QLMovieItemViewController *)self playerViewController];
+    [playerViewController flashPlaybackControlsWithDuration:10.0];
   }
 
   else
@@ -1342,8 +1342,8 @@ void __43__QLMovieItemViewController__exitEditMode___block_invoke_3(uint64_t a1)
     [(QLMovieItemViewController *)self _updatePlayButtonVisibility];
   }
 
-  v4 = [(QLItemViewController *)self delegate];
-  [v4 previewItemViewController:self wantsFullScreen:0];
+  delegate = [(QLItemViewController *)self delegate];
+  [delegate previewItemViewController:self wantsFullScreen:0];
 }
 
 - (void)_resetTrimmingValues
@@ -1356,27 +1356,27 @@ void __43__QLMovieItemViewController__exitEditMode___block_invoke_3(uint64_t a1)
 
 - (void)_updateEditMode
 {
-  v3 = [(QLMovieEdits *)self->_editsSinceLastSave hasEdits];
-  v4 = [(QLItemViewController *)self delegate];
-  [v4 previewItemViewController:self hasUnsavedEdits:v3];
+  hasEdits = [(QLMovieEdits *)self->_editsSinceLastSave hasEdits];
+  delegate = [(QLItemViewController *)self delegate];
+  [delegate previewItemViewController:self hasUnsavedEdits:hasEdits];
 
-  v5 = [(QLItemViewController *)self delegate];
-  [v5 previewItemViewController:self didEnableEditMode:v3];
+  delegate2 = [(QLItemViewController *)self delegate];
+  [delegate2 previewItemViewController:self didEnableEditMode:hasEdits];
 }
 
 - (void)updateInterfaceForSavingEdits
 {
   [(QLMediaItemBaseViewController *)self pause];
   [(QLMovieItemViewController *)self _updatePlayButtonVisibility];
-  v3 = [(QLMovieItemViewController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(QLMovieItemViewController *)self view];
+  [view setUserInteractionEnabled:0];
 }
 
 - (void)updateInterfaceAfterSavingEdits
 {
   [(QLMovieItemViewController *)self _updatePlayButtonVisibility];
-  v3 = [(QLMovieItemViewController *)self view];
-  [v3 setUserInteractionEnabled:1];
+  view = [(QLMovieItemViewController *)self view];
+  [view setUserInteractionEnabled:1];
 }
 
 - (void)_rotateIfPossible
@@ -1410,35 +1410,35 @@ void __43__QLMovieItemViewController__exitEditMode___block_invoke_3(uint64_t a1)
 {
   [(QLMovieEdits *)self->_editsSinceLastSave incrementRightRotationsCount];
   [(QLMovieEdits *)self->_edits incrementRightRotationsCount];
-  v3 = [(AVEditBehavior *)self->_editBehavior behaviorContext];
-  [v3 rotateClockwise];
+  behaviorContext = [(AVEditBehavior *)self->_editBehavior behaviorContext];
+  [behaviorContext rotateClockwise];
 }
 
-- (void)_saveMovieIfEdited:(BOOL)a3 forceSaving:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)_saveMovieIfEdited:(BOOL)edited forceSaving:(BOOL)saving withCompletionHandler:(id)handler
 {
-  v8 = a5;
-  if ([(QLMovieEdits *)self->_editsSinceLastSave hasEdits]|| a4)
+  handlerCopy = handler;
+  if ([(QLMovieEdits *)self->_editsSinceLastSave hasEdits]|| saving)
   {
     objc_initWeak(buf, self);
-    v11 = [(QLItemViewController *)self context];
-    v12 = [v11 item];
-    v13 = [v12 previewItemContentType];
+    context = [(QLItemViewController *)self context];
+    item = [context item];
+    previewItemContentType = [item previewItemContentType];
 
-    if (v13)
+    if (previewItemContentType)
     {
       v14 = MEMORY[0x277CE1CB8];
-      v15 = [(QLItemViewController *)self context];
-      v16 = [v15 item];
-      v17 = [v16 previewItemContentType];
-      v18 = [v14 typeWithIdentifier:v17];
+      context2 = [(QLItemViewController *)self context];
+      item2 = [context2 item];
+      previewItemContentType2 = [item2 previewItemContentType];
+      v18 = [v14 typeWithIdentifier:previewItemContentType2];
 
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __82__QLMovieItemViewController__saveMovieIfEdited_forceSaving_withCompletionHandler___block_invoke;
       v19[3] = &unk_278B58238;
-      v20 = v8;
+      v20 = handlerCopy;
       objc_copyWeak(&v21, buf);
-      v22 = a3;
+      editedCopy = edited;
       [(QLItemViewController *)self editedCopyToSaveChangesWithOutputType:v18 completionHandler:v19];
       objc_destroyWeak(&v21);
     }
@@ -1446,7 +1446,7 @@ void __43__QLMovieItemViewController__exitEditMode___block_invoke_3(uint64_t a1)
     else
     {
       v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D43EF0] code:0 userInfo:0];
-      (*(v8 + 2))(v8, 0, v18);
+      (*(handlerCopy + 2))(handlerCopy, 0, v18);
     }
 
     objc_destroyWeak(buf);
@@ -1468,7 +1468,7 @@ void __43__QLMovieItemViewController__exitEditMode___block_invoke_3(uint64_t a1)
       _os_log_impl(&dword_23A714000, v10, OS_LOG_TYPE_DEBUG, "Not saving new video because it was not edited (was already saved or no changed were made). #AnyItemViewController", buf, 2u);
     }
 
-    (*(v8 + 2))(v8, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -1503,26 +1503,26 @@ void __82__QLMovieItemViewController__saveMovieIfEdited_forceSaving_withCompleti
   }
 }
 
-- (void)_saveMovieIfEditedWithEditedCopy:(id)a3 shouldDismissAfterSaving:(BOOL)a4 completionHandler:(id)a5
+- (void)_saveMovieIfEditedWithEditedCopy:(id)copy shouldDismissAfterSaving:(BOOL)saving completionHandler:(id)handler
 {
   v93 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v76 = [(QLMovieEdits *)self->_edits rotated];
-  v10 = [(QLMovieEdits *)self->_edits trimmed];
+  copyCopy = copy;
+  handlerCopy = handler;
+  rotated = [(QLMovieEdits *)self->_edits rotated];
+  trimmed = [(QLMovieEdits *)self->_edits trimmed];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __105__QLMovieItemViewController__saveMovieIfEditedWithEditedCopy_shouldDismissAfterSaving_completionHandler___block_invoke;
   aBlock[3] = &unk_278B58910;
   objc_copyWeak(&v89, &location);
-  v77 = v9;
+  v77 = handlerCopy;
   v88 = v77;
   v78 = _Block_copy(aBlock);
   [(QLItemViewController *)self showSaveEditsProgressIndicatorAfterDelay];
-  self->_isSavingEditsBeforeDismissing = a4;
+  self->_isSavingEditsBeforeDismissing = saving;
   [(QLItemViewController *)self didStartSavingEdits];
-  if (!v10)
+  if (!trimmed)
   {
     v15 = *MEMORY[0x277D43EF8];
     if (!*MEMORY[0x277D43EF8])
@@ -1538,23 +1538,23 @@ void __82__QLMovieItemViewController__saveMovieIfEdited_forceSaving_withCompleti
       _os_log_impl(&dword_23A714000, v15, OS_LOG_TYPE_INFO, "Creating AVMutableMovie for new rotated movie. %@ #Media", &buf, 0xCu);
     }
 
-    v16 = [MEMORY[0x277CCAA00] defaultManager];
-    v17 = [v8 url];
-    v18 = [v17 path];
-    v19 = [v16 fileExistsAtPath:v18];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v17 = [copyCopy url];
+    path = [v17 path];
+    v19 = [defaultManager fileExistsAtPath:path];
 
     if (v19)
     {
-      [v8 removeFromDisk:0];
+      [copyCopy removeFromDisk:0];
     }
 
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
-    v21 = [(QLItemViewController *)self context];
-    v22 = [v21 item];
-    v23 = [v22 saveURL];
-    v24 = [v8 url];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    context = [(QLItemViewController *)self context];
+    item = [context item];
+    saveURL = [item saveURL];
+    v24 = [copyCopy url];
     v81 = 0;
-    v25 = [v20 copyItemAtURL:v23 toURL:v24 error:&v81];
+    v25 = [defaultManager2 copyItemAtURL:saveURL toURL:v24 error:&v81];
     v26 = v81;
     if (v26)
     {
@@ -1574,7 +1574,7 @@ void __82__QLMovieItemViewController__saveMovieIfEdited_forceSaving_withCompleti
       v32 = v31;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        v33 = [v8 url];
+        v33 = [copyCopy url];
         LODWORD(buf.a) = 138412546;
         *(&buf.a + 4) = v33;
         WORD2(buf.b) = 2112;
@@ -1582,26 +1582,26 @@ void __82__QLMovieItemViewController__saveMovieIfEdited_forceSaving_withCompleti
         _os_log_impl(&dword_23A714000, v32, OS_LOG_TYPE_ERROR, "Could not copy original movie to save rotated version at URL: %@. Error: %@ #Media", &buf, 0x16u);
       }
 
-      [v8 removeFromDisk:0];
+      [copyCopy removeFromDisk:0];
       v78[2](v78, 0, v26);
       goto LABEL_35;
     }
 
     v27 = MEMORY[0x277CE6560];
-    v28 = [v8 url];
+    v28 = [copyCopy url];
     v29 = [v27 movieWithURL:v28 options:0];
 
     goto LABEL_43;
   }
 
   memset(&t2, 0, 24);
-  v11 = [(QLMovieItemViewController *)self playerViewController];
-  v12 = [v11 player];
-  v13 = [v12 currentItem];
-  v14 = v13;
-  if (v13)
+  playerViewController = [(QLMovieItemViewController *)self playerViewController];
+  player = [playerViewController player];
+  currentItem = [player currentItem];
+  v14 = currentItem;
+  if (currentItem)
   {
-    [v13 reversePlaybackEndTime];
+    [currentItem reversePlaybackEndTime];
   }
 
   else
@@ -1611,13 +1611,13 @@ void __82__QLMovieItemViewController__saveMovieIfEdited_forceSaving_withCompleti
 
   v85 = 0uLL;
   v86 = 0.0;
-  v34 = [(QLMovieItemViewController *)self playerViewController];
-  v35 = [v34 player];
-  v36 = [v35 currentItem];
-  v37 = v36;
-  if (v36)
+  playerViewController2 = [(QLMovieItemViewController *)self playerViewController];
+  player2 = [playerViewController2 player];
+  currentItem2 = [player2 currentItem];
+  v37 = currentItem2;
+  if (currentItem2)
   {
-    [v36 forwardPlaybackEndTime];
+    [currentItem2 forwardPlaybackEndTime];
   }
 
   else
@@ -1669,7 +1669,7 @@ void __82__QLMovieItemViewController__saveMovieIfEdited_forceSaving_withCompleti
     v47 = v46;
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
-      v48 = [v8 url];
+      v48 = [copyCopy url];
       [(QLMovieEdits *)self->_edits trimStartTime];
       v50 = v49;
       [(QLMovieEdits *)self->_edits trimEndTime];
@@ -1682,7 +1682,7 @@ void __82__QLMovieItemViewController__saveMovieIfEdited_forceSaving_withCompleti
       _os_log_impl(&dword_23A714000, v47, OS_LOG_TYPE_ERROR, "Could not create edited movie for trimmed movie at URL: %@ because of invalid trim values (startTime: %f endTime: %f). #Media", &buf, 0x20u);
     }
 
-    [v8 removeFromDisk:0];
+    [copyCopy removeFromDisk:0];
     v78[2](v78, 0, 0);
     v26 = 0;
 LABEL_35:
@@ -1705,7 +1705,7 @@ LABEL_35:
 
   v29 = objc_alloc_init(MEMORY[0x277CE6560]);
   v52 = objc_alloc(MEMORY[0x277CE64F0]);
-  v53 = [v8 url];
+  v53 = [copyCopy url];
   v54 = [v52 initWithURL:v53 options:0];
   [v29 setDefaultMediaDataStorage:v54];
 
@@ -1714,11 +1714,11 @@ LABEL_35:
   rhs.c = t2.c;
   duration = v84;
   CMTimeRangeMake(&buf, &rhs, &duration);
-  v55 = [(QLMediaItemBaseViewController *)self mediaAsset];
+  mediaAsset = [(QLMediaItemBaseViewController *)self mediaAsset];
   v82 = 0;
   rhs = buf;
   duration = *v39;
-  v56 = [v29 insertTimeRange:&rhs ofAsset:v55 atTime:&duration copySampleData:1 error:&v82];
+  v56 = [v29 insertTimeRange:&rhs ofAsset:mediaAsset atTime:&duration copySampleData:1 error:&v82];
   v26 = v82;
   if (v26)
   {
@@ -1728,7 +1728,7 @@ LABEL_35:
   if (v56)
   {
 LABEL_43:
-    if (v76)
+    if (rotated)
     {
       v57 = MEMORY[0x277D43EF8];
       v58 = *MEMORY[0x277D43EF8];
@@ -1741,20 +1741,20 @@ LABEL_43:
       v59 = v58;
       if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
       {
-        v60 = [(QLMovieEdits *)self->_edits rightRotationsCount];
+        rightRotationsCount = [(QLMovieEdits *)self->_edits rightRotationsCount];
         LODWORD(buf.a) = 134218242;
-        *(&buf.a + 4) = v60;
+        *(&buf.a + 4) = rightRotationsCount;
         WORD2(buf.b) = 2112;
         *(&buf.b + 6) = self;
         _os_log_impl(&dword_23A714000, v59, OS_LOG_TYPE_INFO, "Setting preferred transform of rotated movie with rotations count: %lu. %@ #Media", &buf, 0x16u);
       }
 
       v61 = [v29 tracksWithMediaType:*MEMORY[0x277CE5EA8]];
-      v62 = [v61 firstObject];
+      firstObject = [v61 firstObject];
 
-      if (v62)
+      if (firstObject)
       {
-        [v62 preferredTransform];
+        [firstObject preferredTransform];
       }
 
       else
@@ -1764,14 +1764,14 @@ LABEL_43:
 
       CGAffineTransformMakeRotation(&t2, [(QLMovieEdits *)self->_edits rightRotationsCount]* 1.57079633);
       CGAffineTransformConcat(&buf, &rhs, &t2);
-      [v62 setPreferredTransform:&buf];
+      [firstObject setPreferredTransform:&buf];
     }
 
-    v66 = [v8 url];
-    v67 = [(QLItemViewController *)self context];
-    v68 = [v67 contentType];
+    v66 = [copyCopy url];
+    context2 = [(QLItemViewController *)self context];
+    contentType = [context2 contentType];
     v79 = 0;
-    v69 = [v29 writeMovieHeaderToURL:v66 fileType:v68 options:0 error:&v79];
+    v69 = [v29 writeMovieHeaderToURL:v66 fileType:contentType options:0 error:&v79];
     v26 = v79;
     if (v26)
     {
@@ -1796,7 +1796,7 @@ LABEL_43:
       if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
       {
         LODWORD(buf.a) = 138412546;
-        *(&buf.a + 4) = v8;
+        *(&buf.a + 4) = copyCopy;
         WORD2(buf.b) = 2112;
         *(&buf.b + 6) = self;
         _os_log_impl(&dword_23A714000, v72, OS_LOG_TYPE_INFO, "Successfully wrote new header of edited movie to URL of edited copy: %@. %@ #Media", &buf, 0x16u);
@@ -1804,9 +1804,9 @@ LABEL_43:
 
       [(QLMovieEdits *)self->_editsSinceLastSave resetEditingValues];
       [(QLMovieItemViewController *)self _updateEditMode];
-      [v8 bumpVersion];
-      [v8 markAsPurgeable];
-      (v78)[2](v78, v8, 0);
+      [copyCopy bumpVersion];
+      [copyCopy markAsPurgeable];
+      (v78)[2](v78, copyCopy, 0);
       v26 = 0;
     }
 
@@ -1821,7 +1821,7 @@ LABEL_43:
       v73 = v72;
       if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
       {
-        v74 = [v8 url];
+        v74 = [copyCopy url];
         LODWORD(buf.a) = 138412546;
         *(&buf.a + 4) = v74;
         WORD2(buf.b) = 2112;
@@ -1829,7 +1829,7 @@ LABEL_43:
         _os_log_impl(&dword_23A714000, v73, OS_LOG_TYPE_ERROR, "Could not write header for trimmed movie at URL of edited copy: %@. Error: %@ #Media", &buf, 0x16u);
       }
 
-      [v8 removeFromDisk:0];
+      [copyCopy removeFromDisk:0];
       v78[2](v78, 0, v26);
     }
 
@@ -1846,7 +1846,7 @@ LABEL_43:
   v64 = v63;
   if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
   {
-    v65 = [v8 url];
+    v65 = [copyCopy url];
     LODWORD(rhs.a) = 138412546;
     *(&rhs.a + 4) = v65;
     WORD2(rhs.b) = 2112;
@@ -1854,7 +1854,7 @@ LABEL_43:
     _os_log_impl(&dword_23A714000, v64, OS_LOG_TYPE_ERROR, "Could not write contents for trimmed movie at URL: %@. Error: %@ #Media", &rhs, 0x16u);
   }
 
-  [v8 removeFromDisk:0];
+  [copyCopy removeFromDisk:0];
   v78[2](v78, 0, v26);
 LABEL_71:
 
@@ -1892,30 +1892,30 @@ void __105__QLMovieItemViewController__saveMovieIfEditedWithEditedCopy_shouldDis
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)savePreviewEditedCopyWithCompletionHandler:(id)a3
+- (void)savePreviewEditedCopyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(QLMovieItemViewController *)self shouldAllowEditingContents])
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __72__QLMovieItemViewController_savePreviewEditedCopyWithCompletionHandler___block_invoke;
     v5[3] = &unk_278B58210;
-    v6 = v4;
+    v6 = handlerCopy;
     [(QLMovieItemViewController *)self _saveMovieIfEdited:1 withCompletionHandler:v5];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
 - (id)imageAnalysisToolbarButton
 {
-  v3 = [(QLMovieItemViewController *)self lookupAction];
-  v4 = v3;
-  if (v3 && ([v3 attributes] & 5) == 0)
+  lookupAction = [(QLMovieItemViewController *)self lookupAction];
+  v4 = lookupAction;
+  if (lookupAction && ([lookupAction attributes] & 5) == 0)
   {
     if (!self->_imageAnalysisToolbarButton)
     {
@@ -1962,41 +1962,41 @@ void __105__QLMovieItemViewController__saveMovieIfEditedWithEditedCopy_shouldDis
 
 - (id)lookupAction
 {
-  v3 = [(QLMovieItemViewController *)self playerViewController];
+  playerViewController = [(QLMovieItemViewController *)self playerViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(QLMovieItemViewController *)self playerViewController];
-    v6 = [v5 toggleLookupAction];
+    playerViewController2 = [(QLMovieItemViewController *)self playerViewController];
+    toggleLookupAction = [playerViewController2 toggleLookupAction];
   }
 
   else
   {
-    v6 = 0;
+    toggleLookupAction = 0;
   }
 
-  return v6;
+  return toggleLookupAction;
 }
 
 - (void)_lookupButtonTapped
 {
-  v3 = [(QLMovieItemViewController *)self lookupAction];
-  if (v3)
+  lookupAction = [(QLMovieItemViewController *)self lookupAction];
+  if (lookupAction)
   {
-    v4 = v3;
-    [v3 performWithSender:self target:0];
-    v3 = v4;
+    v4 = lookupAction;
+    [lookupAction performWithSender:self target:0];
+    lookupAction = v4;
   }
 }
 
-- (void)_showFailedToSaveChangesAlertWithError:(id)a3
+- (void)_showFailedToSaveChangesAlertWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277D75110];
   v6 = QLLocalizedStringFromTable();
-  v7 = [v4 localizedDescription];
-  v8 = [v5 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  localizedDescription = [errorCopy localizedDescription];
+  v8 = [v5 alertControllerWithTitle:v6 message:localizedDescription preferredStyle:1];
 
   objc_initWeak(&location, self);
   v9 = MEMORY[0x277D750F8];
@@ -2021,13 +2021,13 @@ void __68__QLMovieItemViewController__showFailedToSaveChangesAlertWithError___bl
   [WeakRetained _updateInterfaceAfterExitingEditMode];
 }
 
-- (id)editBehaviorAlertActionsForDoneButtonTap:(id)a3
+- (id)editBehaviorAlertActionsForDoneButtonTap:(id)tap
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(QLItemViewController *)self context];
-  v6 = [v5 item];
-  [v6 editingMode];
+  tapCopy = tap;
+  context = [(QLItemViewController *)self context];
+  item = [context item];
+  [item editingMode];
 
   v7 = QLLocalizedString();
   objc_initWeak(&location, self);
@@ -2055,30 +2055,30 @@ void __70__QLMovieItemViewController_editBehaviorAlertActionsForDoneButtonTap___
   [WeakRetained _exitEditMode:1];
 }
 
-- (void)performFirstTimeAppearanceActions:(unint64_t)a3
+- (void)performFirstTimeAppearanceActions:(unint64_t)actions
 {
-  if ((a3 & 2) != 0)
+  if ((actions & 2) != 0)
   {
     [(QLMovieItemViewController *)self play];
   }
 
-  else if ((a3 & 4) != 0)
+  else if ((actions & 4) != 0)
   {
     [(QLMovieItemViewController *)self _enterEditMode];
   }
 }
 
-- (id)toolbarButtonsForTraitCollection:(id)a3
+- (id)toolbarButtonsForTraitCollection:(id)collection
 {
   v16.receiver = self;
   v16.super_class = QLMovieItemViewController;
-  v4 = [(QLMediaItemBaseViewController *)&v16 toolbarButtonsForTraitCollection:a3];
+  v4 = [(QLMediaItemBaseViewController *)&v16 toolbarButtonsForTraitCollection:collection];
   v5 = [v4 mutableCopy];
 
-  v6 = [(QLMovieItemViewController *)self imageAnalysisToolbarButton];
-  if (v6)
+  imageAnalysisToolbarButton = [(QLMovieItemViewController *)self imageAnalysisToolbarButton];
+  if (imageAnalysisToolbarButton)
   {
-    [v5 addObject:v6];
+    [v5 addObject:imageAnalysisToolbarButton];
   }
 
   if (![(QLMovieItemViewController *)self shouldAllowEditingContents])
@@ -2151,14 +2151,14 @@ LABEL_17:
   return v14;
 }
 
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"QLMediaTrimButtonIdentifier"])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([identifierCopy isEqualToString:@"QLMediaTrimButtonIdentifier"])
   {
     [(QLMovieItemViewController *)self editButtonTapped];
-    if (!v7)
+    if (!handlerCopy)
     {
       goto LABEL_10;
     }
@@ -2166,10 +2166,10 @@ LABEL_17:
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"QLMediaRotateRightButtonIdentifier"])
+  if ([identifierCopy isEqualToString:@"QLMediaRotateRightButtonIdentifier"])
   {
     [(QLMovieItemViewController *)self _rotateRightButtonTapped];
-    if (!v7)
+    if (!handlerCopy)
     {
       goto LABEL_10;
     }
@@ -2177,21 +2177,21 @@ LABEL_17:
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"QLMediaLookupButtonIdentifier"])
+  if ([identifierCopy isEqualToString:@"QLMediaLookupButtonIdentifier"])
   {
     [(QLMovieItemViewController *)self _lookupButtonTapped];
-    if (v7)
+    if (handlerCopy)
     {
 LABEL_9:
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 
-  else if ([v6 isEqualToString:@"QLActionButtonIdentifier"])
+  else if ([identifierCopy isEqualToString:@"QLActionButtonIdentifier"])
   {
     v9.receiver = self;
     v9.super_class = QLMovieItemViewController;
-    [(QLMediaItemBaseViewController *)&v9 buttonPressedWithIdentifier:v6 completionHandler:v7];
+    [(QLMediaItemBaseViewController *)&v9 buttonPressedWithIdentifier:identifierCopy completionHandler:handlerCopy];
     [(QLMediaItemBaseViewController *)self pause];
   }
 
@@ -2199,7 +2199,7 @@ LABEL_9:
   {
     v8.receiver = self;
     v8.super_class = QLMovieItemViewController;
-    [(QLMediaItemBaseViewController *)&v8 buttonPressedWithIdentifier:v6 completionHandler:v7];
+    [(QLMediaItemBaseViewController *)&v8 buttonPressedWithIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 
 LABEL_10:
@@ -2227,17 +2227,17 @@ LABEL_10:
 
   v13.receiver = self;
   v13.super_class = QLMovieItemViewController;
-  v10 = [(QLMediaItemViewController *)&v13 registeredKeyCommands];
-  v11 = [v10 arrayByAddingObjectsFromArray:v3];
+  registeredKeyCommands = [(QLMediaItemViewController *)&v13 registeredKeyCommands];
+  v11 = [registeredKeyCommands arrayByAddingObjectsFromArray:v3];
 
   return v11;
 }
 
-- (void)handlePerformedKeyCommandIfNeeded:(id)a3
+- (void)handlePerformedKeyCommandIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [v4 keyCommandIdentifier];
-  if (v5 == 4)
+  neededCopy = needed;
+  keyCommandIdentifier = [neededCopy keyCommandIdentifier];
+  if (keyCommandIdentifier == 4)
   {
     if (_os_feature_enabled_impl())
     {
@@ -2247,18 +2247,18 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (v5 == 7)
+  if (keyCommandIdentifier == 7)
   {
     [(QLMovieItemViewController *)self _rotateIfPossible];
     goto LABEL_8;
   }
 
-  if (v5 != 6)
+  if (keyCommandIdentifier != 6)
   {
 LABEL_7:
     v6.receiver = self;
     v6.super_class = QLMovieItemViewController;
-    [(QLMediaItemViewController *)&v6 handlePerformedKeyCommandIfNeeded:v4];
+    [(QLMediaItemViewController *)&v6 handlePerformedKeyCommandIfNeeded:neededCopy];
     goto LABEL_8;
   }
 
@@ -2285,45 +2285,45 @@ LABEL_8:
 - (void)_updatePlaceHolderView
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v3 = [(QLMovieItemViewController *)self airPlayPlaceholderView];
-  v4 = [v3 superview];
+  airPlayPlaceholderView = [(QLMovieItemViewController *)self airPlayPlaceholderView];
+  superview = [airPlayPlaceholderView superview];
 
-  if (!v4)
+  if (!superview)
   {
-    v5 = [(QLMovieItemViewController *)self view];
-    [v5 addSubview:self->_airPlayPlaceholderView];
+    view = [(QLMovieItemViewController *)self view];
+    [view addSubview:self->_airPlayPlaceholderView];
 
     [(PHPlaceholderView *)self->_airPlayPlaceholderView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(QLMovieItemViewController *)self view];
+    view2 = [(QLMovieItemViewController *)self view];
     v7 = MEMORY[0x277CCAAD0];
     airPlayPlaceholderView = self->_airPlayPlaceholderView;
     v26 = @"placeHolderView";
     v27[0] = airPlayPlaceholderView;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     v10 = [v7 constraintsWithVisualFormat:@"H:|-0-[placeHolderView]-0-|" options:0 metrics:0 views:v9];
-    [v6 addConstraints:v10];
+    [view2 addConstraints:v10];
 
-    v11 = [(QLMovieItemViewController *)self view];
+    view3 = [(QLMovieItemViewController *)self view];
     v12 = MEMORY[0x277CCAAD0];
     v13 = self->_airPlayPlaceholderView;
     v24 = @"placeHolderView";
     v25 = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v15 = [v12 constraintsWithVisualFormat:@"V:|-0-[placeHolderView]-0-|" options:0 metrics:0 views:v14];
-    [v11 addConstraints:v15];
+    [view3 addConstraints:v15];
   }
 
-  v16 = [(QLMediaItemBaseViewController *)self player];
-  v17 = [v16 isExternalPlaybackActive];
+  player = [(QLMediaItemBaseViewController *)self player];
+  isExternalPlaybackActive = [player isExternalPlaybackActive];
 
-  if (v17)
+  if (isExternalPlaybackActive)
   {
-    v18 = [(QLItemViewController *)self delegate];
-    [v18 previewItemViewController:self wantsFullScreen:1];
+    delegate = [(QLItemViewController *)self delegate];
+    [delegate previewItemViewController:self wantsFullScreen:1];
   }
 
-  v19 = [(QLMediaItemBaseViewController *)self player];
-  v20 = [v19 isExternalPlaybackActive] ^ 1;
+  player2 = [(QLMediaItemBaseViewController *)self player];
+  v20 = [player2 isExternalPlaybackActive] ^ 1;
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -2353,136 +2353,136 @@ void __51__QLMovieItemViewController__updatePlaceHolderView__block_invoke(uint64
 
 - (void)_showBadge
 {
-  v3 = [(QLMovieItemViewController *)self assetIsHDR];
-  if ([v3 BOOLValue])
+  assetIsHDR = [(QLMovieItemViewController *)self assetIsHDR];
+  if ([assetIsHDR BOOLValue])
   {
   }
 
   else
   {
-    v4 = [(QLMovieItemViewController *)self assetIsProRes];
-    v5 = [v4 BOOLValue];
+    assetIsProRes = [(QLMovieItemViewController *)self assetIsProRes];
+    bOOLValue = [assetIsProRes BOOLValue];
 
-    if (!v5)
+    if (!bOOLValue)
     {
       return;
     }
   }
 
-  v6 = [(QLMovieItemViewController *)self assetBadgeView];
-  [(QLMovieItemViewController *)self _showAssetBadgeView:v6];
+  assetBadgeView = [(QLMovieItemViewController *)self assetBadgeView];
+  [(QLMovieItemViewController *)self _showAssetBadgeView:assetBadgeView];
 }
 
 - (void)_showAssetBadgeViewIfNeeded
 {
   if ((_os_feature_enabled_impl() & 1) == 0 && ![(QLMediaItemBaseViewController *)self isFullScreen]&& [(QLMediaItemBaseViewController *)self playingStatus]!= 1)
   {
-    v3 = [(QLMovieItemViewController *)self assetIsHDR];
-    if ([v3 BOOLValue])
+    assetIsHDR = [(QLMovieItemViewController *)self assetIsHDR];
+    if ([assetIsHDR BOOLValue])
     {
     }
 
     else
     {
-      v4 = [(QLMovieItemViewController *)self assetIsProRes];
-      v5 = [v4 BOOLValue];
+      assetIsProRes = [(QLMovieItemViewController *)self assetIsProRes];
+      bOOLValue = [assetIsProRes BOOLValue];
 
-      if (!v5)
+      if (!bOOLValue)
       {
         return;
       }
     }
 
-    v6 = [(QLMovieItemViewController *)self assetBadgeView];
-    [(QLMovieItemViewController *)self _showAssetBadgeView:v6];
+    assetBadgeView = [(QLMovieItemViewController *)self assetBadgeView];
+    [(QLMovieItemViewController *)self _showAssetBadgeView:assetBadgeView];
   }
 }
 
-- (void)_showAssetBadgeView:(id)a3
+- (void)_showAssetBadgeView:(id)view
 {
-  v4 = a3;
-  [(QLMovieItemViewController *)self _addAssetBadgeViewToHierarchyIfNeeded:v4];
-  [(QLMovieItemViewController *)self _displayAssetBadgeView:v4];
+  viewCopy = view;
+  [(QLMovieItemViewController *)self _addAssetBadgeViewToHierarchyIfNeeded:viewCopy];
+  [(QLMovieItemViewController *)self _displayAssetBadgeView:viewCopy];
 }
 
-- (void)_addAssetBadgeViewToHierarchyIfNeeded:(id)a3
+- (void)_addAssetBadgeViewToHierarchyIfNeeded:(id)needed
 {
-  v16 = a3;
-  v4 = [v16 superview];
+  neededCopy = needed;
+  superview = [neededCopy superview];
 
-  if (!v4)
+  if (!superview)
   {
-    v5 = [(QLMovieItemViewController *)self view];
-    [v5 addSubview:v16];
+    view = [(QLMovieItemViewController *)self view];
+    [view addSubview:neededCopy];
 
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [v16 topAnchor];
-    v7 = [(QLMovieItemViewController *)self view];
-    v8 = [v7 safeAreaLayoutGuide];
-    v9 = [v8 topAnchor];
-    v10 = [v6 constraintEqualToAnchor:v9 constant:20.0];
+    [neededCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    topAnchor = [neededCopy topAnchor];
+    view2 = [(QLMovieItemViewController *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
     [v10 setActive:1];
 
-    v11 = [v16 leadingAnchor];
-    v12 = [(QLMovieItemViewController *)self view];
-    v13 = [v12 safeAreaLayoutGuide];
-    v14 = [v13 leadingAnchor];
-    v15 = [v11 constraintEqualToAnchor:v14 constant:16.0];
+    leadingAnchor = [neededCopy leadingAnchor];
+    view3 = [(QLMovieItemViewController *)self view];
+    safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     [v15 setActive:1];
   }
 }
 
-- (void)_displayAssetBadgeView:(id)a3
+- (void)_displayAssetBadgeView:(id)view
 {
-  v4 = a3;
-  v5 = [(QLMovieItemViewController *)self assetIsProRes];
-  v6 = [v5 BOOLValue];
+  viewCopy = view;
+  assetIsProRes = [(QLMovieItemViewController *)self assetIsProRes];
+  bOOLValue = [assetIsProRes BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    [v4 setImage:0];
-    v7 = [(QLMovieItemViewController *)self assetIsProResRaw];
-    [v7 BOOLValue];
+    [viewCopy setImage:0];
+    assetIsProResRaw = [(QLMovieItemViewController *)self assetIsProResRaw];
+    [assetIsProResRaw BOOLValue];
   }
 
   else
   {
-    v8 = [(QLMovieItemViewController *)self assetIsHDR];
-    v9 = [v8 BOOLValue];
+    assetIsHDR = [(QLMovieItemViewController *)self assetIsHDR];
+    bOOLValue2 = [assetIsHDR BOOLValue];
 
-    if (!v9)
+    if (!bOOLValue2)
     {
       goto LABEL_6;
     }
 
     v10 = [MEMORY[0x277D755B8] systemImageNamed:@"tv"];
-    [v4 setImage:v10];
+    [viewCopy setImage:v10];
   }
 
   v11 = QLLocalizedString();
-  [v4 setText:v11];
+  [viewCopy setText:v11];
 
 LABEL_6:
-  if ([v4 isHidden])
+  if ([viewCopy isHidden])
   {
-    [v4 setAlpha:0.0];
-    [v4 setHidden:0];
+    [viewCopy setAlpha:0.0];
+    [viewCopy setHidden:0];
     v12 = MEMORY[0x277D75D18];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__QLMovieItemViewController__displayAssetBadgeView___block_invoke;
     v13[3] = &unk_278B57190;
-    v14 = v4;
+    v14 = viewCopy;
     [v12 animateWithDuration:v13 animations:0.2];
   }
 }
 
-- (void)_hideAssetBadgeViewAfterDelayIfNeeded:(double)a3
+- (void)_hideAssetBadgeViewAfterDelayIfNeeded:(double)needed
 {
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     objc_initWeak(&location, self);
-    v5 = dispatch_time(0, (a3 * 1000000000.0));
+    v5 = dispatch_time(0, (needed * 1000000000.0));
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __67__QLMovieItemViewController__hideAssetBadgeViewAfterDelayIfNeeded___block_invoke;
@@ -2508,13 +2508,13 @@ void __67__QLMovieItemViewController__hideAssetBadgeViewAfterDelayIfNeeded___blo
 
 - (void)_hideAssetBadgeViewIfVisible
 {
-  v2 = [(QLMovieItemViewController *)self assetBadgeView];
-  [v2 setHidden:1];
+  assetBadgeView = [(QLMovieItemViewController *)self assetBadgeView];
+  [assetBadgeView setHidden:1];
 }
 
-- (void)_updateAssetBadgeViewVisibilityWithNewPlayingStatus:(int64_t)a3
+- (void)_updateAssetBadgeViewVisibilityWithNewPlayingStatus:(int64_t)status
 {
-  if (a3 == 1)
+  if (status == 1)
   {
     [(QLMovieItemViewController *)self _hideAssetBadgeViewAfterDelayIfNeeded:2.5];
   }
@@ -2525,12 +2525,12 @@ void __67__QLMovieItemViewController__hideAssetBadgeViewAfterDelayIfNeeded___blo
   }
 }
 
-- (void)_updateAssetBadgeViewVisibilityForFullscreenMode:(BOOL)a3
+- (void)_updateAssetBadgeViewVisibilityForFullscreenMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    if (v3)
+    if (modeCopy)
     {
 
       [(QLMovieItemViewController *)self _hideAssetBadgeViewIfVisible];
@@ -2574,13 +2574,13 @@ void __67__QLMovieItemViewController__hideAssetBadgeViewAfterDelayIfNeeded___blo
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A714000, v4, OS_LOG_TYPE_INFO, "Loading metadata for current asset. %@ #Media", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v5 = [(QLMediaItemBaseViewController *)self mediaAsset];
-  if (v5)
+  mediaAsset = [(QLMediaItemBaseViewController *)self mediaAsset];
+  if (mediaAsset)
   {
     gotLoadHelper_x8__OBJC_CLASS___PFMetadata(v6);
     v8 = *(v7 + 1112);
@@ -2588,7 +2588,7 @@ void __67__QLMovieItemViewController__hideAssetBadgeViewAfterDelayIfNeeded___blo
     v10[1] = 3221225472;
     v10[2] = __46__QLMovieItemViewController_loadAssetMetadata__block_invoke;
     v10[3] = &unk_278B58960;
-    v11 = v5;
+    v11 = mediaAsset;
     objc_copyWeak(&v12, buf);
     [v8 metadataForAsset:v11 completionHandler:v10];
     objc_destroyWeak(&v12);
@@ -2713,9 +2713,9 @@ void __46__QLMovieItemViewController_loadAssetMetadata__block_invoke_228(uint64_
   [v1 _updateAssetBadgeViewVisibilityWithNewPlayingStatus:{objc_msgSend(v1, "playingStatus")}];
 }
 
-- (void)playerViewControllerWillPerformAnalysisCalloutAction:(id)a3
+- (void)playerViewControllerWillPerformAnalysisCalloutAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = MEMORY[0x277D43EF8];
   v6 = *MEMORY[0x277D43EF8];
   if (!*MEMORY[0x277D43EF8])
@@ -2732,15 +2732,15 @@ void __46__QLMovieItemViewController_loadAssetMetadata__block_invoke_228(uint64_
 
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v7 = [(QLItemViewController *)self delegate];
-    [v7 previewItemViewController:self wantsFullScreen:1];
+    delegate = [(QLItemViewController *)self delegate];
+    [delegate previewItemViewController:self wantsFullScreen:1];
   }
 }
 
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
   objc_initWeak(&location, self);
   LOBYTE(self) = _os_feature_enabled_impl();
   v14[0] = MEMORY[0x277D85DD0];
@@ -2748,15 +2748,15 @@ void __46__QLMovieItemViewController_loadAssetMetadata__block_invoke_228(uint64_
   v14[2] = __120__QLMovieItemViewController_playerViewController_willTransitionToVisibilityOfPlaybackControls_withAnimationCoordinator___block_invoke;
   v14[3] = &unk_278B57540;
   objc_copyWeak(&v15, &location);
-  v16 = a4;
+  controlsCopy = controls;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __120__QLMovieItemViewController_playerViewController_willTransitionToVisibilityOfPlaybackControls_withAnimationCoordinator___block_invoke_2;
   v10[3] = &unk_278B58988;
   objc_copyWeak(&v11, &location);
-  v12 = a4;
-  v13 = self;
-  [v9 addCoordinatedAnimations:v14 completion:v10];
+  controlsCopy2 = controls;
+  selfCopy = self;
+  [coordinatorCopy addCoordinatedAnimations:v14 completion:v10];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -2797,9 +2797,9 @@ LABEL_9:
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

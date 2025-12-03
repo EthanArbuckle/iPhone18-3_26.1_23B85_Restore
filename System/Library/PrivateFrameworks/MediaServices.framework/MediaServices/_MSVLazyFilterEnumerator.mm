@@ -9,19 +9,19 @@
   v3 = 0;
   do
   {
-    v4 = [(NSEnumerator *)self->_enumerator nextObject];
+    nextObject = [(NSEnumerator *)self->_enumerator nextObject];
 
-    if (!v4)
+    if (!nextObject)
     {
       break;
     }
 
-    v3 = v4;
+    v3 = nextObject;
   }
 
   while (!(*(self->_block + 2))());
 
-  return v4;
+  return nextObject;
 }
 
 @end

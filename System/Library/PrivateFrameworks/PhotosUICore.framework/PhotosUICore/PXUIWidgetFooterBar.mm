@@ -1,21 +1,21 @@
 @interface PXUIWidgetFooterBar
 - (double)viewHeight;
 - (id)createView;
-- (void)setDisclosureTitle:(id)a3;
-- (void)setSpec:(id)a3;
+- (void)setDisclosureTitle:(id)title;
+- (void)setSpec:(id)spec;
 - (void)updateView;
 @end
 
 @implementation PXUIWidgetFooterBar
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v4 = a3;
-  v5 = [(PXWidgetBar *)self spec];
+  specCopy = spec;
+  spec = [(PXWidgetBar *)self spec];
   v7.receiver = self;
   v7.super_class = PXUIWidgetFooterBar;
-  [(PXWidgetBar *)&v7 setSpec:v4];
-  if (v5 != v4 && ([v4 isEqual:v5] & 1) == 0)
+  [(PXWidgetBar *)&v7 setSpec:specCopy];
+  if (spec != specCopy && ([specCopy isEqual:spec] & 1) == 0)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -34,14 +34,14 @@ uint64_t __31__PXUIWidgetFooterBar_setSpec___block_invoke(uint64_t a1)
   return [v2 invalidateViewHeight];
 }
 
-- (void)setDisclosureTitle:(id)a3
+- (void)setDisclosureTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PXWidgetBar *)self disclosureTitle];
+  titleCopy = title;
+  disclosureTitle = [(PXWidgetBar *)self disclosureTitle];
   v7.receiver = self;
   v7.super_class = PXUIWidgetFooterBar;
-  [(PXWidgetBar *)&v7 setDisclosureTitle:v4];
-  if (v5 != v4 && ([v4 isEqual:v5] & 1) == 0)
+  [(PXWidgetBar *)&v7 setDisclosureTitle:titleCopy];
+  if (disclosureTitle != titleCopy && ([titleCopy isEqual:disclosureTitle] & 1) == 0)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -54,19 +54,19 @@ uint64_t __31__PXUIWidgetFooterBar_setSpec___block_invoke(uint64_t a1)
 
 - (double)viewHeight
 {
-  v3 = [(PXWidgetBar *)self disclosureTitle];
-  v4 = [v3 length];
+  disclosureTitle = [(PXWidgetBar *)self disclosureTitle];
+  v4 = [disclosureTitle length];
 
   if (!v4)
   {
     return 0.0;
   }
 
-  v5 = [(PXWidgetBar *)self spec];
-  [v5 distanceBetweenTopAndFirstBaseline];
+  spec = [(PXWidgetBar *)self spec];
+  [spec distanceBetweenTopAndFirstBaseline];
   v7 = v6;
-  v8 = [(PXWidgetBar *)self spec];
-  [v8 distanceBetweenLastBaselineAndBottom];
+  spec2 = [(PXWidgetBar *)self spec];
+  [spec2 distanceBetweenLastBaselineAndBottom];
   v10 = v7 + v9;
 
   return v10;
@@ -77,28 +77,28 @@ uint64_t __31__PXUIWidgetFooterBar_setSpec___block_invoke(uint64_t a1)
   v23.receiver = self;
   v23.super_class = PXUIWidgetFooterBar;
   [(PXUIWidgetBar *)&v23 updateView];
-  v3 = [(PXWidgetBar *)self spec];
-  [v3 contentInsets];
+  spec = [(PXWidgetBar *)self spec];
+  [spec contentInsets];
   v5 = v4;
   v7 = v6;
-  [v3 minimumDistanceBetweenTopAndFirstAscender];
+  [spec minimumDistanceBetweenTopAndFirstAscender];
   v9 = v8;
-  [v3 minimumDistanceBetweenLastDescenderAndBottom];
+  [spec minimumDistanceBetweenLastDescenderAndBottom];
   v11 = v10;
-  v12 = [(PXWidgetBar *)self view];
+  view = [(PXWidgetBar *)self view];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __33__PXUIWidgetFooterBar_updateView__block_invoke;
   v15[3] = &unk_1E7749878;
-  v16 = v12;
-  v17 = self;
-  v18 = v3;
+  v16 = view;
+  selfCopy = self;
+  v18 = spec;
   v19 = v9;
   v20 = v5;
   v21 = v11;
   v22 = v7;
-  v13 = v3;
-  v14 = v12;
+  v13 = spec;
+  v14 = view;
   [v14 performChanges:v15];
 }
 

@@ -1,103 +1,103 @@
 @interface CLSArchivedQuestionStep
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (id)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)willBeDeletedFromDatabase:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (id)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
+- (void)willBeDeletedFromDatabase:(id)database;
 @end
 
 @implementation CLSArchivedQuestionStep
 
-- (id)initWithDatabaseRow:(id)a3
+- (id)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSArchivedQuestionStep *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSArchivedQuestionStep *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"parentObjectID");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"parentObjectID");
     [v6 setParentObjectID:v7];
 
-    v8 = sub_10016D778(v4, @"questionText");
+    v8 = sub_10016D778(rowCopy, @"questionText");
     [v6 setQuestionText:v8];
 
-    v9 = sub_10016D778(v4, @"displayOrder");
+    v9 = sub_10016D778(rowCopy, @"displayOrder");
     [v6 setDisplayOrder:{objc_msgSend(v9, "integerValue")}];
 
-    v10 = sub_10016D778(v4, @"version");
+    v10 = sub_10016D778(rowCopy, @"version");
     [v6 setVersion:{objc_msgSend(v10, "integerValue")}];
 
-    v11 = sub_10016D778(v4, @"type");
+    v11 = sub_10016D778(rowCopy, @"type");
     [v6 setType:{objc_msgSend(v11, "integerValue")}];
 
-    v12 = sub_10016D778(v4, @"questionType");
+    v12 = sub_10016D778(rowCopy, @"questionType");
     [v6 setQuestionType:{objc_msgSend(v12, "integerValue")}];
   }
 
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v12.receiver = self;
   v12.super_class = CLSArchivedQuestionStep;
-  v4 = a3;
-  [(CLSArchivedQuestionStep *)&v12 bindTo:v4];
+  toCopy = to;
+  [(CLSArchivedQuestionStep *)&v12 bindTo:toCopy];
   v13 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v13 count:1, v12.receiver, v12.super_class];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSArchivedQuestionStep *)self parentObjectID];
-  sub_1000982FC(v4, v6, @"parentObjectID");
+  parentObjectID = [(CLSArchivedQuestionStep *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, @"parentObjectID");
 
-  v7 = [(CLSArchivedQuestionStep *)self questionText];
-  sub_1000982FC(v4, v7, @"questionText");
+  questionText = [(CLSArchivedQuestionStep *)self questionText];
+  sub_1000982FC(toCopy, questionText, @"questionText");
 
   v8 = [NSNumber numberWithInteger:[(CLSArchivedQuestionStep *)self displayOrder]];
-  sub_1000982FC(v4, v8, @"displayOrder");
+  sub_1000982FC(toCopy, v8, @"displayOrder");
 
   v9 = [NSNumber numberWithInteger:[(CLSArchivedQuestionStep *)self version]];
-  sub_1000982FC(v4, v9, @"version");
+  sub_1000982FC(toCopy, v9, @"version");
 
   v10 = [NSNumber numberWithInteger:[(CLSArchivedQuestionStep *)self type]];
-  sub_1000982FC(v4, v10, @"type");
+  sub_1000982FC(toCopy, v10, @"type");
 
   v11 = [NSNumber numberWithInteger:[(CLSArchivedQuestionStep *)self questionType]];
-  sub_1000982FC(v4, v11, @"questionType");
+  sub_1000982FC(toCopy, v11, @"questionType");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table CLSArchivedQuestionStep(   objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    questionText      text,\n    version           integer,\n    displayOrder      integer,\n    type              integer,\n    questionType      integer,\n    foreign key (parentObjectID) references CLSArchivedSurvey(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSArchivedQuestionStep_objectID on CLSArchivedQuestionStep (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSArchivedQuestionStep_parentObjectID on CLSArchivedQuestionStep (parentObjectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSArchivedQuestionStep(   objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    questionText      text,\n    version           integer,\n    displayOrder      integer,\n    type              integer,\n    questionType      integer,\n    foreign key (parentObjectID) references CLSArchivedSurvey(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSArchivedQuestionStep_objectID on CLSArchivedQuestionStep (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSArchivedQuestionStep_parentObjectID on CLSArchivedQuestionStep (parentObjectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_8;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_8:
 
   return v9;
 }
 
-- (void)willBeDeletedFromDatabase:(id)a3
+- (void)willBeDeletedFromDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSArchivedQuestionStep *)self objectID];
-  v7 = v5;
+  databaseCopy = database;
+  objectID = [(CLSArchivedQuestionStep *)self objectID];
+  v7 = objectID;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
-  [v4 deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
-  [v4 deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
-  [v4 deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
-  [v4 deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
+  [databaseCopy deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
+  [databaseCopy deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
+  [databaseCopy deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
+  [databaseCopy deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v6];
 }
 
 @end

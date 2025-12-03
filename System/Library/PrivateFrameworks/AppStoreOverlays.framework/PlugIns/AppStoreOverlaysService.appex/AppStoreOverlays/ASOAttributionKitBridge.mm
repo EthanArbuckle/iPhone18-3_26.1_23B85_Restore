@@ -1,11 +1,11 @@
 @interface ASOAttributionKitBridge
 - (ASOAttributionKitBridge)init;
-- (id)processReengagementWithAdvertisedItemID:(unint64_t)a3 compactJWS:(id)a4 bundleID:(id)a5 url:(id)a6;
+- (id)processReengagementWithAdvertisedItemID:(unint64_t)d compactJWS:(id)s bundleID:(id)iD url:(id)url;
 @end
 
 @implementation ASOAttributionKitBridge
 
-- (id)processReengagementWithAdvertisedItemID:(unint64_t)a3 compactJWS:(id)a4 bundleID:(id)a5 url:(id)a6
+- (id)processReengagementWithAdvertisedItemID:(unint64_t)d compactJWS:(id)s bundleID:(id)iD url:(id)url
 {
   v8 = *(*(sub_10000D4AC(&qword_10002C1C8, &unk_10001CCA0) - 8) + 64);
   v9 = (__chkstk_darwin)();
@@ -14,7 +14,7 @@
   v13 = &v22 - v12;
   sub_100018458();
   sub_100018458();
-  if (a6)
+  if (url)
   {
     sub_100018078();
     v14 = sub_100018088();
@@ -27,7 +27,7 @@
     (*(*(v14 - 8) + 56))(v11, 1, 1, v14);
   }
 
-  v15 = self;
+  selfCopy = self;
   sub_10000DF3C();
 
   sub_10000E79C(v11, &qword_10002C1C8, &unk_10001CCA0);

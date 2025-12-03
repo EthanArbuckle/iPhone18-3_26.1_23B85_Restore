@@ -1,29 +1,29 @@
 @interface MCStateOperationStringSet
-+ (id)stateOperationForTargetPlugObjectID:(id)a3 withStateKey:(id)a4 andString:(id)a5;
-- (MCStateOperationStringSet)initWithImprint:(id)a3;
++ (id)stateOperationForTargetPlugObjectID:(id)d withStateKey:(id)key andString:(id)string;
+- (MCStateOperationStringSet)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MCStateOperationStringSet
 
-+ (id)stateOperationForTargetPlugObjectID:(id)a3 withStateKey:(id)a4 andString:(id)a5
++ (id)stateOperationForTargetPlugObjectID:(id)d withStateKey:(id)key andString:(id)string
 {
-  v6 = [MCStateOperationStringSet stateOperationForTargetPlugObjectID:a3 withStateKey:a4];
-  v6[4] = [a5 copy];
+  v6 = [MCStateOperationStringSet stateOperationForTargetPlugObjectID:d withStateKey:key];
+  v6[4] = [string copy];
   return v6;
 }
 
-- (MCStateOperationStringSet)initWithImprint:(id)a3
+- (MCStateOperationStringSet)initWithImprint:(id)imprint
 {
   v6.receiver = self;
   v6.super_class = MCStateOperationStringSet;
   v4 = [(MCStateOperation *)&v6 initWithImprint:?];
   if (v4)
   {
-    v4->_string = [a3 objectForKey:@"string"];
+    v4->_string = [imprint objectForKey:@"string"];
   }
 
   return v4;
@@ -41,18 +41,18 @@
 {
   v7.receiver = self;
   v7.super_class = MCStateOperationStringSet;
-  v3 = [(MCStateOperation *)&v7 imprint];
-  v4 = v3;
+  imprint = [(MCStateOperation *)&v7 imprint];
+  v4 = imprint;
   string = self->_string;
   if (string)
   {
-    [v3 setObject:string forKey:@"string"];
+    [imprint setObject:string forKey:@"string"];
   }
 
   return v4;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v6.receiver = self;
   v6.super_class = MCStateOperationStringSet;
@@ -60,7 +60,7 @@
   string = self->_string;
   if (string)
   {
-    *(a3 + 4) = [(NSString *)string copy];
+    *(snapshot + 4) = [(NSString *)string copy];
   }
 }
 

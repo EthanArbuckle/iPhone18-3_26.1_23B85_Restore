@@ -1,42 +1,42 @@
 @interface PKSectionTableViewController
 - (BOOL)_recomputeMappedSections;
 - (BOOL)isMappingValid;
-- (BOOL)recomputeMappedSectionsAndReloadSections:(id)a3;
+- (BOOL)recomputeMappedSectionsAndReloadSections:(id)sections;
 - (BOOL)reloadData;
-- (PKSectionTableViewController)initWithStyle:(int64_t)a3 numberOfSections:(unint64_t)a4;
+- (PKSectionTableViewController)initWithStyle:(int64_t)style numberOfSections:(unint64_t)sections;
 - (void)_swapBuffers;
 - (void)dealloc;
-- (void)reloadRow:(int64_t)a3 inSection:(unint64_t)a4;
-- (void)reloadRows:(id)a3 inSection:(unint64_t)a4;
-- (void)reloadSection:(unint64_t)a3;
-- (void)reloadSections:(id)a3;
+- (void)reloadRow:(int64_t)row inSection:(unint64_t)section;
+- (void)reloadRows:(id)rows inSection:(unint64_t)section;
+- (void)reloadSection:(unint64_t)section;
+- (void)reloadSections:(id)sections;
 - (void)updateSectionVisibilityAndReloadIfNecessaryForAllSections;
-- (void)updateSectionVisibilityAndReloadIfNecessaryForSection:(unint64_t)a3;
-- (void)updateSectionVisibilityAndReloadIfNecessaryForSections:(id)a3;
+- (void)updateSectionVisibilityAndReloadIfNecessaryForSection:(unint64_t)section;
+- (void)updateSectionVisibilityAndReloadIfNecessaryForSections:(id)sections;
 - (void)viewDidLoad;
 @end
 
 @implementation PKSectionTableViewController
 
-- (PKSectionTableViewController)initWithStyle:(int64_t)a3 numberOfSections:(unint64_t)a4
+- (PKSectionTableViewController)initWithStyle:(int64_t)style numberOfSections:(unint64_t)sections
 {
-  if (a4)
+  if (sections)
   {
     v14.receiver = self;
     v14.super_class = PKSectionTableViewController;
-    self = [(PKSectionTableViewController *)&v14 initWithStyle:a3];
-    v5 = self;
+    self = [(PKSectionTableViewController *)&v14 initWithStyle:style];
+    selfCopy2 = self;
     if (self)
     {
-      self->_numberOfSections = a4;
-      if (a4 - 0x2000000000000000 >= 0xE000000000000001)
+      self->_numberOfSections = sections;
+      if (sections - 0x2000000000000000 >= 0xE000000000000001)
       {
         p_currentMap = &self->_currentMap;
-        self->_currentMap.indexToSection = malloc_type_malloc(8 * a4, 0x8936F740uLL);
-        sectionToIndex = malloc_type_calloc(a4, 8uLL, 0x3B9677FCuLL);
-        v5->_currentMap.sectionToIndex = sectionToIndex;
-        p_sectionToIndex = &v5->_currentMap.sectionToIndex;
-        indexToSection = v5->_currentMap.indexToSection;
+        self->_currentMap.indexToSection = malloc_type_malloc(8 * sections, 0x8936F740uLL);
+        sectionToIndex = malloc_type_calloc(sections, 8uLL, 0x3B9677FCuLL);
+        selfCopy2->_currentMap.sectionToIndex = sectionToIndex;
+        p_sectionToIndex = &selfCopy2->_currentMap.sectionToIndex;
+        indexToSection = selfCopy2->_currentMap.indexToSection;
         if (indexToSection)
         {
           v10 = sectionToIndex == 0;
@@ -52,36 +52,36 @@
           if (indexToSection)
           {
             free(p_currentMap->indexToSection);
-            v5->_currentMap.indexToSection = 0;
-            sectionToIndex = v5->_currentMap.sectionToIndex;
+            selfCopy2->_currentMap.indexToSection = 0;
+            sectionToIndex = selfCopy2->_currentMap.sectionToIndex;
           }
         }
 
         else
         {
-          memset(v5->_currentMap.indexToSection, 255, 8 * a4);
-          numberOfSections = v5->_numberOfSections;
+          memset(selfCopy2->_currentMap.indexToSection, 255, 8 * sections);
+          numberOfSections = selfCopy2->_numberOfSections;
           if (numberOfSections - 0x2000000000000000 < 0xE000000000000001)
           {
             goto LABEL_15;
           }
 
-          v5->_bufferedMap.indexToSection = malloc_type_malloc(8 * numberOfSections, 0x8936F740uLL);
+          selfCopy2->_bufferedMap.indexToSection = malloc_type_malloc(8 * numberOfSections, 0x8936F740uLL);
           sectionToIndex = malloc_type_calloc(numberOfSections, 8uLL, 0x3B9677FCuLL);
-          v5->_bufferedMap.sectionToIndex = sectionToIndex;
-          p_sectionToIndex = &v5->_bufferedMap.sectionToIndex;
-          v13 = v5->_bufferedMap.indexToSection;
+          selfCopy2->_bufferedMap.sectionToIndex = sectionToIndex;
+          p_sectionToIndex = &selfCopy2->_bufferedMap.sectionToIndex;
+          v13 = selfCopy2->_bufferedMap.indexToSection;
           if (v13 && sectionToIndex)
           {
-            memset(v5->_bufferedMap.indexToSection, 255, 8 * numberOfSections);
+            memset(selfCopy2->_bufferedMap.indexToSection, 255, 8 * numberOfSections);
             goto LABEL_16;
           }
 
           if (v13)
           {
-            free(v5->_bufferedMap.indexToSection);
-            v5->_bufferedMap.indexToSection = 0;
-            sectionToIndex = v5->_bufferedMap.sectionToIndex;
+            free(selfCopy2->_bufferedMap.indexToSection);
+            selfCopy2->_bufferedMap.indexToSection = 0;
+            sectionToIndex = selfCopy2->_bufferedMap.sectionToIndex;
           }
         }
 
@@ -94,19 +94,19 @@
 
 LABEL_15:
 
-      v5 = 0;
+      selfCopy2 = 0;
 LABEL_16:
-      self = v5;
-      v5 = self;
+      self = selfCopy2;
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    v5 = 0;
+    selfCopy2 = 0;
   }
 
-  return v5;
+  return selfCopy2;
 }
 
 - (void)dealloc
@@ -152,22 +152,22 @@ LABEL_16:
   [(PKSectionTableViewController *)&v4 viewDidLoad];
   if (!self->_skipSetupForReadableContentGuide)
   {
-    v3 = [(PKSectionTableViewController *)self tableView];
-    [v3 pkui_setupForReadableContentGuide];
+    tableView = [(PKSectionTableViewController *)self tableView];
+    [tableView pkui_setupForReadableContentGuide];
   }
 
   [(PKSectionTableViewController *)self _recomputeMappedSections];
   [(PKSectionTableViewController *)self _swapBuffers];
 }
 
-- (BOOL)recomputeMappedSectionsAndReloadSections:(id)a3
+- (BOOL)recomputeMappedSectionsAndReloadSections:(id)sections
 {
-  v21 = a3;
+  sectionsCopy = sections;
   if ([(PKSectionTableViewController *)self isViewLoaded])
   {
-    v20 = [(PKSectionTableViewController *)self _recomputeMappedSections];
-    v4 = [(PKSectionTableViewController *)self tableView];
-    [v4 beginUpdates];
+    _recomputeMappedSections = [(PKSectionTableViewController *)self _recomputeMappedSections];
+    tableView = [(PKSectionTableViewController *)self tableView];
+    [tableView beginUpdates];
     context = objc_autoreleasePoolPush();
     if (self->_numberOfSections)
     {
@@ -185,7 +185,7 @@ LABEL_16:
           if (v7 != v9 && v7 == v11)
           {
             v16 = [MEMORY[0x1E696AC90] indexSetWithIndex:v5 - v6 + v8];
-            [v4 insertSections:v16 withRowAnimation:{-[PKSectionTableViewController rowAnimationForInsertingSection:](self, "rowAnimationForInsertingSection:", v7)}];
+            [tableView insertSections:v16 withRowAnimation:{-[PKSectionTableViewController rowAnimationForInsertingSection:](self, "rowAnimationForInsertingSection:", v7)}];
 
             ++v5;
           }
@@ -197,10 +197,10 @@ LABEL_16:
               v10 = 1;
             }
 
-            if (!v10 && [v21 containsIndex:v7])
+            if (!v10 && [sectionsCopy containsIndex:v7])
             {
               v14 = [MEMORY[0x1E696AC90] indexSetWithIndex:self->_currentMap.sectionToIndex[v7]];
-              [v4 reloadSections:v14 withRowAnimation:{-[PKSectionTableViewController rowAnimationForReloadingSection:](self, "rowAnimationForReloadingSection:", v7)}];
+              [tableView reloadSections:v14 withRowAnimation:{-[PKSectionTableViewController rowAnimationForReloadingSection:](self, "rowAnimationForReloadingSection:", v7)}];
             }
           }
         }
@@ -208,7 +208,7 @@ LABEL_16:
         else
         {
           v15 = [MEMORY[0x1E696AC90] indexSetWithIndex:?];
-          [v4 deleteSections:v15 withRowAnimation:{-[PKSectionTableViewController rowAnimationForDeletingSection:](self, "rowAnimationForDeletingSection:", v7)}];
+          [tableView deleteSections:v15 withRowAnimation:{-[PKSectionTableViewController rowAnimationForDeletingSection:](self, "rowAnimationForDeletingSection:", v7)}];
 
           ++v6;
         }
@@ -221,9 +221,9 @@ LABEL_16:
 
     objc_autoreleasePoolPop(context);
     [(PKSectionTableViewController *)self _swapBuffers];
-    [v4 endUpdates];
+    [tableView endUpdates];
 
-    v17 = v20;
+    v17 = _recomputeMappedSections;
   }
 
   else
@@ -236,37 +236,37 @@ LABEL_16:
 
 - (BOOL)reloadData
 {
-  v3 = [(PKSectionTableViewController *)self isViewLoaded];
-  if (v3)
+  isViewLoaded = [(PKSectionTableViewController *)self isViewLoaded];
+  if (isViewLoaded)
   {
-    v4 = [(PKSectionTableViewController *)self _recomputeMappedSections];
+    _recomputeMappedSections = [(PKSectionTableViewController *)self _recomputeMappedSections];
     [(PKSectionTableViewController *)self _swapBuffers];
-    v5 = [(PKSectionTableViewController *)self tableView];
-    [v5 setEditing:0 animated:0];
-    [v5 reloadData];
+    tableView = [(PKSectionTableViewController *)self tableView];
+    [tableView setEditing:0 animated:0];
+    [tableView reloadData];
 
-    LOBYTE(v3) = v4;
+    LOBYTE(isViewLoaded) = _recomputeMappedSections;
   }
 
-  return v3;
+  return isViewLoaded;
 }
 
-- (void)reloadSections:(id)a3
+- (void)reloadSections:(id)sections
 {
-  v4 = a3;
-  if ([v4 count] && -[PKSectionTableViewController isViewLoaded](self, "isViewLoaded"))
+  sectionsCopy = sections;
+  if ([sectionsCopy count] && -[PKSectionTableViewController isViewLoaded](self, "isViewLoaded"))
   {
-    v5 = [(PKSectionTableViewController *)self tableView];
-    v6 = [v5 numberOfSections];
+    tableView = [(PKSectionTableViewController *)self tableView];
+    numberOfSections = [tableView numberOfSections];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __47__PKSectionTableViewController_reloadSections___block_invoke;
     v8[3] = &unk_1E8014DD0;
-    v9 = v4;
-    v10 = self;
-    v11 = v5;
-    v12 = v6;
-    v7 = v5;
+    v9 = sectionsCopy;
+    selfCopy = self;
+    v11 = tableView;
+    v12 = numberOfSections;
+    v7 = tableView;
     [v7 performBatchUpdates:v8 completion:0];
   }
 }
@@ -335,17 +335,17 @@ void __47__PKSectionTableViewController_reloadSections___block_invoke(uint64_t a
   }
 }
 
-- (void)reloadSection:(unint64_t)a3
+- (void)reloadSection:(unint64_t)section
 {
   v15 = *MEMORY[0x1E69E9840];
-  if ([(PKSectionTableViewController *)self isViewLoaded]&& self->_currentMap.indexToSection[self->_currentMap.sectionToIndex[a3]] == a3)
+  if ([(PKSectionTableViewController *)self isViewLoaded]&& self->_currentMap.indexToSection[self->_currentMap.sectionToIndex[section]] == section)
   {
-    v5 = [(PKSectionTableViewController *)self tableView];
-    v6 = self->_currentMap.sectionToIndex[a3];
-    v7 = [v5 numberOfSections];
-    if (v6 >= v7)
+    tableView = [(PKSectionTableViewController *)self tableView];
+    v6 = self->_currentMap.sectionToIndex[section];
+    numberOfSections = [tableView numberOfSections];
+    if (v6 >= numberOfSections)
     {
-      v9 = v7;
+      v9 = numberOfSections;
       v10 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -360,32 +360,32 @@ void __47__PKSectionTableViewController_reloadSections___block_invoke(uint64_t a
     else
     {
       v8 = [MEMORY[0x1E696AC90] indexSetWithIndex:v6];
-      [v5 reloadSections:v8 withRowAnimation:{-[PKSectionTableViewController rowAnimationForReloadingSection:](self, "rowAnimationForReloadingSection:", a3)}];
+      [tableView reloadSections:v8 withRowAnimation:{-[PKSectionTableViewController rowAnimationForReloadingSection:](self, "rowAnimationForReloadingSection:", section)}];
     }
   }
 }
 
-- (void)reloadRow:(int64_t)a3 inSection:(unint64_t)a4
+- (void)reloadRow:(int64_t)row inSection:(unint64_t)section
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:row];
   v8[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  [(PKSectionTableViewController *)self reloadRows:v7 inSection:a4];
+  [(PKSectionTableViewController *)self reloadRows:v7 inSection:section];
 }
 
-- (void)reloadRows:(id)a3 inSection:(unint64_t)a4
+- (void)reloadRows:(id)rows inSection:(unint64_t)section
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(PKSectionTableViewController *)self isViewLoaded]&& self->_currentMap.indexToSection[self->_currentMap.sectionToIndex[a4]] == a4)
+  rowsCopy = rows;
+  if ([(PKSectionTableViewController *)self isViewLoaded]&& self->_currentMap.indexToSection[self->_currentMap.sectionToIndex[section]] == section)
   {
-    v7 = [(PKSectionTableViewController *)self tableView];
-    v8 = self->_currentMap.sectionToIndex[a4];
-    v9 = [v7 numberOfSections];
-    if (v8 >= v9)
+    tableView = [(PKSectionTableViewController *)self tableView];
+    v8 = self->_currentMap.sectionToIndex[section];
+    numberOfSections = [tableView numberOfSections];
+    if (v8 >= numberOfSections)
     {
-      v17 = v9;
+      v17 = numberOfSections;
       v10 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -399,13 +399,13 @@ void __47__PKSectionTableViewController_reloadSections___block_invoke(uint64_t a
 
     else
     {
-      v18 = v7;
+      v18 = tableView;
       v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v11 = v6;
+      v11 = rowsCopy;
       v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v12)
       {
@@ -430,21 +430,21 @@ void __47__PKSectionTableViewController_reloadSections___block_invoke(uint64_t a
         while (v13);
       }
 
-      v7 = v18;
-      [v18 reloadRowsAtIndexPaths:v10 withRowAnimation:{-[PKSectionTableViewController rowAnimationForReloadingSection:](self, "rowAnimationForReloadingSection:", a4)}];
+      tableView = v18;
+      [v18 reloadRowsAtIndexPaths:v10 withRowAnimation:{-[PKSectionTableViewController rowAnimationForReloadingSection:](self, "rowAnimationForReloadingSection:", section)}];
     }
   }
 }
 
-- (void)updateSectionVisibilityAndReloadIfNecessaryForSection:(unint64_t)a3
+- (void)updateSectionVisibilityAndReloadIfNecessaryForSection:(unint64_t)section
 {
-  v5 = self->_currentMap.indexToSection[self->_currentMap.sectionToIndex[a3]];
-  if ((v5 == a3) == [(PKSectionTableViewController *)self shouldMapSection:?])
+  v5 = self->_currentMap.indexToSection[self->_currentMap.sectionToIndex[section]];
+  if ((v5 == section) == [(PKSectionTableViewController *)self shouldMapSection:?])
   {
-    if (v5 == a3)
+    if (v5 == section)
     {
 
-      [(PKSectionTableViewController *)self reloadSection:a3];
+      [(PKSectionTableViewController *)self reloadSection:section];
     }
   }
 
@@ -455,18 +455,18 @@ void __47__PKSectionTableViewController_reloadSections___block_invoke(uint64_t a
   }
 }
 
-- (void)updateSectionVisibilityAndReloadIfNecessaryForSections:(id)a3
+- (void)updateSectionVisibilityAndReloadIfNecessaryForSections:(id)sections
 {
-  v4 = a3;
-  v5 = [(PKSectionTableViewController *)self tableView];
+  sectionsCopy = sections;
+  tableView = [(PKSectionTableViewController *)self tableView];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __87__PKSectionTableViewController_updateSectionVisibilityAndReloadIfNecessaryForSections___block_invoke;
   v7[3] = &unk_1E8010A10;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 performBatchUpdates:v7 completion:0];
+  v8 = sectionsCopy;
+  selfCopy = self;
+  v6 = sectionsCopy;
+  [tableView performBatchUpdates:v7 completion:0];
 }
 
 void __87__PKSectionTableViewController_updateSectionVisibilityAndReloadIfNecessaryForSections___block_invoke(uint64_t a1)

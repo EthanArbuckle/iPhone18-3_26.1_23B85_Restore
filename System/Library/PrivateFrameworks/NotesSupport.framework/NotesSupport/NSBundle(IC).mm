@@ -7,27 +7,27 @@
 
 - (uint64_t)ic_isAppExtension
 {
-  v1 = [a1 infoDictionary];
-  v2 = [v1 allKeys];
-  v3 = [v2 containsObject:@"NSExtension"];
+  infoDictionary = [self infoDictionary];
+  allKeys = [infoDictionary allKeys];
+  v3 = [allKeys containsObject:@"NSExtension"];
 
   return v3;
 }
 
 - (uint64_t)ic_canEditNotes
 {
-  v2 = [a1 bundleIdentifier];
+  bundleIdentifier = [self bundleIdentifier];
   v3 = ICNotesAppBundleIdentifier();
-  if ([v2 isEqual:v3])
+  if ([bundleIdentifier isEqual:v3])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [a1 bundleIdentifier];
+    bundleIdentifier2 = [self bundleIdentifier];
     v6 = ICEditorExtensionBundleIdentifier();
-    v4 = [v5 isEqual:v6];
+    v4 = [bundleIdentifier2 isEqual:v6];
   }
 
   return v4;

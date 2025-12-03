@@ -1,21 +1,21 @@
 @interface AVFigAssetWriterCaptionTrack
-- (BOOL)addCaption:(id)a3 error:(id *)a4;
-- (BOOL)addCaptionGroup:(id)a3 error:(id *)a4;
-- (BOOL)addCaptionGroupAsSampleBuffer:(id)a3 error:(id *)a4;
-- (BOOL)addSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4;
-- (BOOL)flushCaptionsUntilTime:(id *)a3 error:(id *)a4;
-- (BOOL)flushCaptionsWithError:(id *)a3;
-- (BOOL)markEndOfDataReturningError:(id *)a3;
-- (int)_attachToFigAssetWriterUsingFormatSpecification:(id)a3 sourcePixelBufferAttributes:(id)a4 multiPass:(BOOL)a5 error:(id *)a6;
+- (BOOL)addCaption:(id)caption error:(id *)error;
+- (BOOL)addCaptionGroup:(id)group error:(id *)error;
+- (BOOL)addCaptionGroupAsSampleBuffer:(id)buffer error:(id *)error;
+- (BOOL)addSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error;
+- (BOOL)flushCaptionsUntilTime:(id *)time error:(id *)error;
+- (BOOL)flushCaptionsWithError:(id *)error;
+- (BOOL)markEndOfDataReturningError:(id *)error;
+- (int)_attachToFigAssetWriterUsingFormatSpecification:(id)specification sourcePixelBufferAttributes:(id)attributes multiPass:(BOOL)pass error:(id *)error;
 - (void)dealloc;
 - (void)prepareToEndSession;
 @end
 
 @implementation AVFigAssetWriterCaptionTrack
 
-- (int)_attachToFigAssetWriterUsingFormatSpecification:(id)a3 sourcePixelBufferAttributes:(id)a4 multiPass:(BOOL)a5 error:(id *)a6
+- (int)_attachToFigAssetWriterUsingFormatSpecification:(id)specification sourcePixelBufferAttributes:(id)attributes multiPass:(BOOL)pass error:(id *)error
 {
-  v9 = CMMediaTypeFromAVMediaType([(AVFigAssetWriterTrack *)self mediaType:a3]);
+  v9 = CMMediaTypeFromAVMediaType([(AVFigAssetWriterTrack *)self mediaType:specification]);
   v10 = [(AVMediaFileType *)[(AVFigAssetWriterTrack *)self mediaFileType] UTI];
   v30 = 0;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
@@ -39,11 +39,11 @@
     v12 = 0;
   }
 
-  v13 = [a3 outputSettings];
-  v14 = v13;
-  if (v13)
+  outputSettings = [specification outputSettings];
+  v14 = outputSettings;
+  if (outputSettings)
   {
-    [v13 captionTimeCodeFrameDuration];
+    [outputSettings captionTimeCodeFrameDuration];
   }
 
   v28 = 0uLL;
@@ -54,15 +54,15 @@
     goto LABEL_24;
   }
 
-  v16 = [v14 useDropFrameTimeCode];
+  useDropFrameTimeCode = [v14 useDropFrameTimeCode];
   v17 = MEMORY[0x1E695E4C0];
-  if (v16)
+  if (useDropFrameTimeCode)
   {
     v17 = MEMORY[0x1E695E4D0];
   }
 
   CFDictionarySetValue(Mutable, *MEMORY[0x1E6971868], *v17);
-  v18 = [(AVFigAssetWriterTrack *)self figAssetWriter];
+  figAssetWriter = [(AVFigAssetWriterTrack *)self figAssetWriter];
   v19 = *(*(CMBaseObjectGetVTable() + 16) + 152);
   if (!v19)
   {
@@ -72,7 +72,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v15 = v19(v18, v9, v12, Mutable, &v30);
+  v15 = v19(figAssetWriter, v9, v12, Mutable, &v30);
   if (v15)
   {
 LABEL_24:
@@ -93,9 +93,9 @@ LABEL_24:
   self->_nextGroupStartTime.epoch = *(v24 + 16);
 LABEL_18:
   v26 = v30;
-  if (a6 && !v30)
+  if (error && !v30)
   {
-    *a6 = v21;
+    *error = v21;
   }
 
   if (Mutable)
@@ -114,21 +114,21 @@ LABEL_18:
   [(AVFigAssetWriterTrack *)&v3 dealloc];
 }
 
-- (BOOL)addSampleBuffer:(opaqueCMSampleBuffer *)a3 error:(id *)a4
+- (BOOL)addSampleBuffer:(opaqueCMSampleBuffer *)buffer error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = AVErrorForClientProgrammingError([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot call appendSampleBuffer: when a caption adaptor is attached" userInfo:0]);
+    *error = AVErrorForClientProgrammingError([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot call appendSampleBuffer: when a caption adaptor is attached" userInfo:0]);
   }
 
   return 0;
 }
 
-- (BOOL)flushCaptionsUntilTime:(id *)a3 error:(id *)a4
+- (BOOL)flushCaptionsUntilTime:(id *)time error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
   captionGrouper = self->_captionGrouper;
-  v18 = *a3;
+  v18 = *time;
   v7 = [(AVCaptionGrouper *)captionGrouper flushAddedCaptionsIntoGroupsUpToTime:&v18];
   v14 = 0u;
   v15 = 0u;
@@ -148,7 +148,7 @@ LABEL_3:
         objc_enumerationMutation(v7);
       }
 
-      v12 = [(AVFigAssetWriterCaptionTrack *)self addCaptionGroupAsSampleBuffer:*(*(&v14 + 1) + 8 * v11) error:a4];
+      v12 = [(AVFigAssetWriterCaptionTrack *)self addCaptionGroupAsSampleBuffer:*(*(&v14 + 1) + 8 * v11) error:error];
       if (!v12)
       {
         break;
@@ -176,22 +176,22 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)flushCaptionsWithError:(id *)a3
+- (BOOL)flushCaptionsWithError:(id *)error
 {
   v4 = *MEMORY[0x1E6960C88];
   v5 = *(MEMORY[0x1E6960C88] + 16);
-  return [(AVFigAssetWriterCaptionTrack *)self flushCaptionsUntilTime:&v4 error:a3];
+  return [(AVFigAssetWriterCaptionTrack *)self flushCaptionsUntilTime:&v4 error:error];
 }
 
-- (BOOL)addCaption:(id)a3 error:(id *)a4
+- (BOOL)addCaption:(id)caption error:(id *)error
 {
   v26 = 0;
   p_previousCaptionTimeRange = &self->_previousCaptionTimeRange;
   if (self->_previousCaptionTimeRange.start.flags)
   {
-    if (a3)
+    if (caption)
     {
-      [a3 timeRange];
+      [caption timeRange];
     }
 
     else
@@ -215,9 +215,9 @@ LABEL_9:
 
   if (self->_nextGroupStartTime.flags)
   {
-    if (a3)
+    if (caption)
     {
-      [a3 timeRange];
+      [caption timeRange];
     }
 
     else
@@ -239,7 +239,7 @@ LABEL_21:
       v13 = AVErrorForClientProgrammingError([v8 exceptionWithName:v9 reason:v10 userInfo:0]);
       result = 0;
       v26 = v13;
-      if (!a4)
+      if (!error)
       {
         return result;
       }
@@ -248,9 +248,9 @@ LABEL_21:
     }
   }
 
-  if (a3)
+  if (caption)
   {
-    [a3 timeRange];
+    [caption timeRange];
   }
 
   else
@@ -263,10 +263,10 @@ LABEL_21:
   *&p_previousCaptionTimeRange->start.value = *time1;
   *&p_previousCaptionTimeRange->start.epoch = v11;
   *&p_previousCaptionTimeRange->duration.timescale = v18;
-  [(AVCaptionGrouper *)self->_captionGrouper addCaption:a3];
-  if (a3)
+  [(AVCaptionGrouper *)self->_captionGrouper addCaption:caption];
+  if (caption)
   {
-    [a3 timeRange];
+    [caption timeRange];
   }
 
   else
@@ -279,27 +279,27 @@ LABEL_21:
   *time1 = v14;
   *&time1[16] = v15;
   result = [(AVFigAssetWriterCaptionTrack *)self flushCaptionsUntilTime:time1 error:&v26, v14, v15, v16];
-  if (a4)
+  if (error)
   {
 LABEL_22:
     if (!result)
     {
-      *a4 = v26;
+      *error = v26;
     }
   }
 
   return result;
 }
 
-- (BOOL)addCaptionGroup:(id)a3 error:(id *)a4
+- (BOOL)addCaptionGroup:(id)group error:(id *)error
 {
   v25 = 0;
   p_nextGroupStartTime = &self->_nextGroupStartTime;
   if (self->_nextGroupStartTime.flags)
   {
-    if (a3)
+    if (group)
     {
-      [a3 timeRange];
+      [group timeRange];
     }
 
     else
@@ -328,9 +328,9 @@ LABEL_22:
   CMTimeRangeGetEnd(&v20, &time1);
   if (v20.flags)
   {
-    if (a3)
+    if (group)
     {
-      [a3 timeRange];
+      [group timeRange];
     }
 
     else
@@ -356,7 +356,7 @@ LABEL_18:
       v14 = AVErrorForClientProgrammingError([v8 exceptionWithName:v9 reason:v10 userInfo:0]);
       result = 0;
       v25 = v14;
-      if (!a4)
+      if (!error)
       {
         return result;
       }
@@ -365,9 +365,9 @@ LABEL_18:
     }
   }
 
-  if (a3)
+  if (group)
   {
-    [a3 timeRange];
+    [group timeRange];
   }
 
   else
@@ -377,13 +377,13 @@ LABEL_18:
 
   CMTimeRangeGetEnd(&time2, &time1);
   *p_nextGroupStartTime = time2;
-  result = [(AVFigAssetWriterCaptionTrack *)self addCaptionGroupAsSampleBuffer:a3 error:&v25];
-  if (a4)
+  result = [(AVFigAssetWriterCaptionTrack *)self addCaptionGroupAsSampleBuffer:group error:&v25];
+  if (error)
   {
 LABEL_19:
     if (!result)
     {
-      *a4 = v25;
+      *error = v25;
     }
   }
 
@@ -398,7 +398,7 @@ LABEL_19:
   [(AVFigAssetWriterTrack *)&v3 prepareToEndSession];
 }
 
-- (BOOL)markEndOfDataReturningError:(id *)a3
+- (BOOL)markEndOfDataReturningError:(id *)error
 {
   v8 = 0;
   v5 = [(AVFigAssetWriterCaptionTrack *)self flushCaptionsWithError:&v8];
@@ -409,18 +409,18 @@ LABEL_19:
     LOBYTE(v5) = [(AVFigAssetWriterTrack *)&v7 markEndOfDataReturningError:&v8];
   }
 
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v8;
+    *error = v8;
   }
 
   return v5;
 }
 
-- (BOOL)addCaptionGroupAsSampleBuffer:(id)a3 error:(id *)a4
+- (BOOL)addCaptionGroupAsSampleBuffer:(id)buffer error:(id *)error
 {
   v11 = 0;
-  v6 = [a3 copySampleBufferWithError:&v11];
+  v6 = [buffer copySampleBufferWithError:&v11];
   if (v6)
   {
     v7 = v6;
@@ -428,7 +428,7 @@ LABEL_19:
     v10.super_class = AVFigAssetWriterCaptionTrack;
     v8 = [(AVFigAssetWriterTrack *)&v10 addSampleBuffer:v6 error:&v11];
     CFRelease(v7);
-    if (!a4)
+    if (!error)
     {
       return v8;
     }
@@ -437,7 +437,7 @@ LABEL_19:
   else
   {
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       return v8;
     }
@@ -445,7 +445,7 @@ LABEL_19:
 
   if (!v8)
   {
-    *a4 = v11;
+    *error = v11;
   }
 
   return v8;

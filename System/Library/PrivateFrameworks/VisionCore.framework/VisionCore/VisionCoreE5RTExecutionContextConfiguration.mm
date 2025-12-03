@@ -1,11 +1,11 @@
 @interface VisionCoreE5RTExecutionContextConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VisionCoreE5RTExecutionContextConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (v4)
@@ -25,10 +25,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -38,17 +38,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VisionCoreE5RTExecutionContextConfiguration *)self boundInputObjects];
-      v7 = [(VisionCoreE5RTExecutionContextConfiguration *)v5 boundInputObjects];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      boundInputObjects = [(VisionCoreE5RTExecutionContextConfiguration *)self boundInputObjects];
+      boundInputObjects2 = [(VisionCoreE5RTExecutionContextConfiguration *)v5 boundInputObjects];
+      v8 = boundInputObjects2;
+      if (boundInputObjects == boundInputObjects2)
       {
       }
 
       else
       {
-        v9 = [v6 isEqual:v7];
+        v9 = [boundInputObjects isEqual:boundInputObjects2];
 
         if (!v9)
         {
@@ -56,16 +56,16 @@
         }
       }
 
-      v11 = [(VisionCoreE5RTExecutionContextConfiguration *)self boundOutputObjects];
-      v12 = [(VisionCoreE5RTExecutionContextConfiguration *)v5 boundOutputObjects];
-      v13 = v12;
-      if (v11 == v12)
+      boundOutputObjects = [(VisionCoreE5RTExecutionContextConfiguration *)self boundOutputObjects];
+      boundOutputObjects2 = [(VisionCoreE5RTExecutionContextConfiguration *)v5 boundOutputObjects];
+      v13 = boundOutputObjects2;
+      if (boundOutputObjects == boundOutputObjects2)
       {
       }
 
       else
       {
-        v14 = [v11 isEqual:v12];
+        v14 = [boundOutputObjects isEqual:boundOutputObjects2];
 
         if (!v14)
         {
@@ -73,12 +73,12 @@
         }
       }
 
-      v15 = [(VisionCoreE5RTExecutionContextConfiguration *)self prewireInUseAllocations];
-      if (v15 == [(VisionCoreE5RTExecutionContextConfiguration *)v5 prewireInUseAllocations])
+      prewireInUseAllocations = [(VisionCoreE5RTExecutionContextConfiguration *)self prewireInUseAllocations];
+      if (prewireInUseAllocations == [(VisionCoreE5RTExecutionContextConfiguration *)v5 prewireInUseAllocations])
       {
-        v16 = [(VisionCoreE5RTExecutionContextConfiguration *)self completionQueue];
-        v17 = [(VisionCoreE5RTExecutionContextConfiguration *)v5 completionQueue];
-        v10 = v16 == v17;
+        completionQueue = [(VisionCoreE5RTExecutionContextConfiguration *)self completionQueue];
+        completionQueue2 = [(VisionCoreE5RTExecutionContextConfiguration *)v5 completionQueue];
+        v10 = completionQueue == completionQueue2;
 
         goto LABEL_16;
       }

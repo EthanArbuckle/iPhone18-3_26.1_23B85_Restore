@@ -1,5 +1,5 @@
 @interface _UIInterfaceActionCustomViewRepresentationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityUserTestingIsCancelButton;
 - (BOOL)_accessibilityUserTestingIsDefaultButton;
 - (BOOL)_accessibilityUserTestingIsDestructiveButton;
@@ -13,14 +13,14 @@
 
 @implementation _UIInterfaceActionCustomViewRepresentationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v10 = location;
   v9 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v7 = @"_UIInterfaceActionCustomViewRepresentationView";
   v3 = @"UIInterfaceActionRepresentationView";
   [location[0] validateClass:? isKindOfClass:?];
@@ -47,76 +47,76 @@
 - (unint64_t)accessibilityTraits
 {
   v3 = [(_UIInterfaceActionCustomViewRepresentationViewAccessibility *)self safeValueForKey:@"_actionContentView"];
-  v4 = [v3 accessibilityTraits];
+  accessibilityTraits = [v3 accessibilityTraits];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return accessibilityTraits;
 }
 
 - (BOOL)isAccessibilityElement
 {
   v3 = [(_UIInterfaceActionCustomViewRepresentationViewAccessibility *)self safeValueForKey:@"_actionContentView"];
-  v4 = [v3 isAccessibilityElement];
+  isAccessibilityElement = [v3 isAccessibilityElement];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return isAccessibilityElement;
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(_UIInterfaceActionCustomViewRepresentationViewAccessibility *)self safeValueForKey:@"_actionContentView"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityLanguage
 {
   v3 = [(_UIInterfaceActionCustomViewRepresentationViewAccessibility *)self safeValueForKey:@"_actionContentView"];
-  v4 = [v3 accessibilityLanguage];
+  accessibilityLanguage = [v3 accessibilityLanguage];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityLanguage;
 }
 
 - (id)accessibilityIdentifier
 {
   v3 = [(_UIInterfaceActionCustomViewRepresentationViewAccessibility *)self safeValueForKey:@"_actionContentView"];
-  v4 = [v3 accessibilityIdentifier];
+  accessibilityIdentifier = [v3 accessibilityIdentifier];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return accessibilityIdentifier;
 }
 
 - (BOOL)_accessibilityUserTestingIsDefaultButton
 {
   v3 = [(_UIInterfaceActionCustomViewRepresentationViewAccessibility *)self safeValueForKey:@"_actionContentView"];
-  v4 = [v3 _accessibilityUserTestingIsDefaultButton];
+  _accessibilityUserTestingIsDefaultButton = [v3 _accessibilityUserTestingIsDefaultButton];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return _accessibilityUserTestingIsDefaultButton;
 }
 
 - (BOOL)_accessibilityUserTestingIsCancelButton
 {
   v3 = [(_UIInterfaceActionCustomViewRepresentationViewAccessibility *)self safeValueForKey:@"_actionContentView"];
-  v4 = [v3 _accessibilityUserTestingIsCancelButton];
+  _accessibilityUserTestingIsCancelButton = [v3 _accessibilityUserTestingIsCancelButton];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return _accessibilityUserTestingIsCancelButton;
 }
 
 - (BOOL)_accessibilityUserTestingIsDestructiveButton
 {
   v3 = [(_UIInterfaceActionCustomViewRepresentationViewAccessibility *)self safeValueForKey:@"_actionContentView"];
-  v4 = [v3 _accessibilityUserTestingIsDestructiveButton];
+  _accessibilityUserTestingIsDestructiveButton = [v3 _accessibilityUserTestingIsDestructiveButton];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return _accessibilityUserTestingIsDestructiveButton;
 }
 
 - (BOOL)_accessibilityUserTestingIsPreferredButton
 {
   v3 = [(_UIInterfaceActionCustomViewRepresentationViewAccessibility *)self safeValueForKey:@"_actionContentView"];
-  v4 = [v3 _accessibilityUserTestingIsPreferredButton];
+  _accessibilityUserTestingIsPreferredButton = [v3 _accessibilityUserTestingIsPreferredButton];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return _accessibilityUserTestingIsPreferredButton;
 }
 
 @end

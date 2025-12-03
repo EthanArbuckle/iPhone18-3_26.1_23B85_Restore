@@ -1,8 +1,8 @@
 @interface _GCGamepadEventKeyboardEventAdapterConfig
 - (_GCGamepadEventKeyboardEventAdapterConfig)init;
-- (_GCGamepadEventKeyboardEventAdapterConfig)initWithCoder:(id)a3;
-- (int64_t)gamepadElementForUsagePage:(int64_t)a3 usage:(int64_t)a4;
-- (void)mapUsagePage:(int64_t)a3 usage:(int64_t)a4 toGamepadElement:(int64_t)a5;
+- (_GCGamepadEventKeyboardEventAdapterConfig)initWithCoder:(id)coder;
+- (int64_t)gamepadElementForUsagePage:(int64_t)page usage:(int64_t)usage;
+- (void)mapUsagePage:(int64_t)page usage:(int64_t)usage toGamepadElement:(int64_t)element;
 @end
 
 @implementation _GCGamepadEventKeyboardEventAdapterConfig
@@ -14,16 +14,16 @@
   return [(_GCGamepadEventKeyboardEventAdapterConfig *)&v3 init];
 }
 
-- (_GCGamepadEventKeyboardEventAdapterConfig)initWithCoder:(id)a3
+- (_GCGamepadEventKeyboardEventAdapterConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _GCGamepadEventKeyboardEventAdapterConfig;
   v5 = [(_GCGamepadEventKeyboardEventAdapterConfig *)&v10 init];
   if (v5)
   {
     v9 = 0;
-    v6 = [v4 decodeBytesForKey:@"mappings" returnedLength:&v9];
+    v6 = [coderCopy decodeBytesForKey:@"mappings" returnedLength:&v9];
     if (v9 >= 0x2F0)
     {
       v7 = 752;
@@ -40,20 +40,20 @@
   return v5;
 }
 
-- (void)mapUsagePage:(int64_t)a3 usage:(int64_t)a4 toGamepadElement:(int64_t)a5
+- (void)mapUsagePage:(int64_t)page usage:(int64_t)usage toGamepadElement:(int64_t)element
 {
-  if (a5 <= 0x2E)
+  if (element <= 0x2E)
   {
-    v5 = self + 16 * a5;
-    *(v5 + 1) = a3;
-    *(v5 + 2) = a4;
+    v5 = self + 16 * element;
+    *(v5 + 1) = page;
+    *(v5 + 2) = usage;
   }
 }
 
-- (int64_t)gamepadElementForUsagePage:(int64_t)a3 usage:(int64_t)a4
+- (int64_t)gamepadElementForUsagePage:(int64_t)page usage:(int64_t)usage
 {
   result = 0;
-  for (i = &self->_mappings[0].usage; *(i - 1) != a3 || *i != a4; i += 2)
+  for (i = &self->_mappings[0].usage; *(i - 1) != page || *i != usage; i += 2)
   {
     if (++result == 47)
     {

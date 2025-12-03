@@ -6,9 +6,9 @@
 
 - (id)hashComponent
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(PKAccountPaymentFundingSource *)self type];
-  switch(v4)
+  string = [MEMORY[0x1E696AD60] string];
+  type = [(PKAccountPaymentFundingSource *)self type];
+  switch(type)
   {
     case 4:
       v6 = PKAccountFundingSourceTypeStringSavings;
@@ -16,17 +16,17 @@
     case 2:
       v6 = PKAccountFundingSourceTypeStringApplePayCash;
 LABEL_7:
-      [v3 appendString:*v6];
+      [string appendString:*v6];
       break;
     case 1:
-      [v3 appendString:@"ACH"];
-      v5 = [(PKAccountPaymentFundingSource *)self identifier];
-      [v3 appendString:v5];
+      [string appendString:@"ACH"];
+      identifier = [(PKAccountPaymentFundingSource *)self identifier];
+      [string appendString:identifier];
 
       break;
   }
 
-  v7 = [v3 copy];
+  v7 = [string copy];
 
   return v7;
 }

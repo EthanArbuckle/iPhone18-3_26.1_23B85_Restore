@@ -1,9 +1,9 @@
 @interface MCCertificatePickerController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_setCellPropertiesOnSpecifier:(id)a3 forCertificate:(__SecCertificate *)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_setCellPropertiesOnSpecifier:(id)specifier forCertificate:(__SecCertificate *)certificate;
 - (void)setRowToSelect;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -14,37 +14,37 @@
   v6.receiver = self;
   v6.super_class = MCCertificatePickerController;
   [(PSListItemsController *)&v6 viewDidLoad];
-  v3 = [(MCCertificatePickerController *)self table];
+  table = [(MCCertificatePickerController *)self table];
   v4 = objc_opt_class();
   v5 = +[(PSTableCell *)MCCertificatePickerCell];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (void)_setCellPropertiesOnSpecifier:(id)a3 forCertificate:(__SecCertificate *)a4
+- (void)_setCellPropertiesOnSpecifier:(id)specifier forCertificate:(__SecCertificate *)certificate
 {
-  v10 = a3;
-  v5 = SecCertificateCopySubjectSummary(a4);
+  specifierCopy = specifier;
+  v5 = SecCertificateCopySubjectSummary(certificate);
   if (v5)
   {
-    [v10 setProperty:v5 forKey:@"kMCCellTitleKey"];
+    [specifierCopy setProperty:v5 forKey:@"kMCCellTitleKey"];
   }
 
   v6 = SecCertificateCopyIssuerSummary();
   if (v6)
   {
-    [v10 setProperty:v6 forKey:@"kMCCellIssuerKey"];
+    [specifierCopy setProperty:v6 forKey:@"kMCCellIssuerKey"];
   }
 
   SecCertificateNotValidAfter();
   v8 = CFDateCreate(*MEMORY[0x277CBECE8], v7);
-  v9 = v10;
+  v9 = specifierCopy;
   if (v8)
   {
-    [v10 setProperty:v8 forKey:@"kMCCellExpirationDateKey"];
-    v9 = v10;
+    [specifierCopy setProperty:v8 forKey:@"kMCCellExpirationDateKey"];
+    v9 = specifierCopy;
   }
 
-  [v9 setProperty:a4 forKey:@"kMCCertificateDetailsCertificateRefKey"];
+  [v9 setProperty:certificate forKey:@"kMCCertificateDetailsCertificateRefKey"];
 }
 
 - (id)specifiers
@@ -54,9 +54,9 @@
   v4 = *(&self->super.super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) values];
+    values = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) values];
     result = 0;
-    if ([v5 count] < 1)
+    if ([values count] < 1)
     {
       v15 = 0;
       v16 = 0;
@@ -69,7 +69,7 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    ValueAtIndex = CFArrayGetValueAtIndex(v5, 0);
+    ValueAtIndex = CFArrayGetValueAtIndex(values, 0);
     v7 = CFGetTypeID(ValueAtIndex);
     v30 = v3;
     if (v7 == CFDataGetTypeID())
@@ -84,7 +84,7 @@ LABEL_33:
       v11 = *MEMORY[0x277CBED28];
       values[0] = *MEMORY[0x277CDC240];
       values[1] = v11;
-      values[2] = v5;
+      values[2] = values;
       values[3] = v8;
       v12 = CFDictionaryCreate(*MEMORY[0x277CBECE8], keys, values, 4, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
       if (SecItemCopyMatching(v12, &result))
@@ -119,7 +119,7 @@ LABEL_30:
 
     else if (v7 == SecIdentityGetTypeID())
     {
-      v14 = v5;
+      v14 = values;
       v13 = 0;
       result = v14;
       if (!v14)
@@ -135,7 +135,7 @@ LABEL_30:
         goto LABEL_29;
       }
 
-      v14 = v5;
+      v14 = values;
       result = v14;
       v13 = 1;
       if (!v14)
@@ -195,7 +195,7 @@ LABEL_24:
         [v21 setProperty:v16 forKey:v31];
         [(MCCertificatePickerController *)self _setCellPropertiesOnSpecifier:v21 forCertificate:keys[0]];
         v22 = MEMORY[0x277CBEA60];
-        v23 = [v5 objectAtIndex:v18];
+        v23 = [values objectAtIndex:v18];
         v24 = [v22 arrayWithObject:v23];
         [v21 setValues:v24];
 
@@ -253,8 +253,8 @@ LABEL_34:
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v13 = [(MCCertificatePickerController *)self specifiers];
-        v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        specifiers = [(MCCertificatePickerController *)self specifiers];
+        v14 = [specifiers countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v14)
         {
           v15 = v14;
@@ -268,13 +268,13 @@ LABEL_34:
             {
               if (*v24 != v17)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(specifiers);
               }
 
-              v19 = [*(*(&v23 + 1) + 8 * v18) values];
-              v20 = [v19 lastObject];
+              values = [*(*(&v23 + 1) + 8 * v18) values];
+              lastObject = [values lastObject];
 
-              if (v12 == v20)
+              if (v12 == lastObject)
               {
                 *(&self->super.super.super.super.super.super.isa + v2) = v16;
                 goto LABEL_14;
@@ -285,7 +285,7 @@ LABEL_34:
             }
 
             while (v15 != v18);
-            v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+            v15 = [specifiers countByEnumeratingWithState:&v23 objects:v27 count:16];
             v16 = v22;
             if (v15)
             {
@@ -304,17 +304,17 @@ LABEL_14:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = MCCertificatePickerController;
-  v7 = [(PSListItemsController *)&v14 tableView:a3 cellForRowAtIndexPath:v6];
+  v7 = [(PSListItemsController *)&v14 tableView:view cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
-    v9 = [(MCCertificatePickerController *)self specifierAtIndex:[(MCCertificatePickerController *)self indexForIndexPath:v6]];
+    v9 = [(MCCertificatePickerController *)self specifierAtIndex:[(MCCertificatePickerController *)self indexForIndexPath:pathCopy]];
     v10 = [v9 propertyForKey:@"kMCCellTitleKey"];
     [v8 setTitle:v10];
 
@@ -328,9 +328,9 @@ LABEL_14:
   return v7;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v7 = [(MCCertificatePickerController *)self specifierAtIndex:[(MCCertificatePickerController *)self indexForIndexPath:a4]];
+  v7 = [(MCCertificatePickerController *)self specifierAtIndex:[(MCCertificatePickerController *)self indexForIndexPath:path]];
   v5 = objc_alloc_init(*&v7[*MEMORY[0x277D3FC98]]);
   if (v5)
   {

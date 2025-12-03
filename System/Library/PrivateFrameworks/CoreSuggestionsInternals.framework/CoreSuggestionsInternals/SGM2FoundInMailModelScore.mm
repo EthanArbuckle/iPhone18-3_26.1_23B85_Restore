@@ -1,46 +1,46 @@
 @interface SGM2FoundInMailModelScore
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsContactDetail:(id)a3;
-- (int)StringAsMode:(id)a3;
-- (int)StringAsModel:(id)a3;
-- (int)StringAsSupervision:(id)a3;
+- (int)StringAsContactDetail:(id)detail;
+- (int)StringAsMode:(id)mode;
+- (int)StringAsModel:(id)model;
+- (int)StringAsSupervision:(id)supervision;
 - (int)contactDetail;
 - (int)mode;
 - (int)model;
 - (int)supervision;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCorrect:(BOOL)a3;
-- (void)setHasMode:(BOOL)a3;
-- (void)setHasModel:(BOOL)a3;
-- (void)setHasResult:(BOOL)a3;
-- (void)setHasSupervision:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCorrect:(BOOL)correct;
+- (void)setHasMode:(BOOL)mode;
+- (void)setHasModel:(BOOL)model;
+- (void)setHasResult:(BOOL)result;
+- (void)setHasSupervision:(BOOL)supervision;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2FoundInMailModelScore
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SGM2FoundInMailModelScore *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 4) != 0)
   {
-    self->_model = *(v4 + 7);
+    self->_model = *(fromCopy + 7);
     *&self->_has |= 4u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -53,14 +53,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 40) & 1) == 0)
+  else if ((*(fromCopy + 40) & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_contactDetail = *(v4 + 2);
+  self->_contactDetail = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x20) == 0)
   {
 LABEL_6:
@@ -73,9 +73,9 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_result = *(v4 + 37);
+  self->_result = *(fromCopy + 37);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x10) == 0)
   {
 LABEL_7:
@@ -88,9 +88,9 @@ LABEL_7:
   }
 
 LABEL_16:
-  self->_correct = *(v4 + 36);
+  self->_correct = *(fromCopy + 36);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) == 0)
   {
 LABEL_8:
@@ -103,12 +103,12 @@ LABEL_8:
   }
 
 LABEL_17:
-  self->_mode = *(v4 + 6);
+  self->_mode = *(fromCopy + 6);
   *&self->_has |= 2u;
-  if ((*(v4 + 40) & 8) != 0)
+  if ((*(fromCopy + 40) & 8) != 0)
   {
 LABEL_9:
-    self->_supervision = *(v4 + 8);
+    self->_supervision = *(fromCopy + 8);
     *&self->_has |= 8u;
   }
 
@@ -198,16 +198,16 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   key = self->_key;
-  if (key | *(v4 + 2))
+  if (key | *(equalCopy + 2))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -217,60 +217,60 @@ LABEL_7:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_model != *(v4 + 7))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_model != *(equalCopy + 7))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_38;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_contactDetail != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_contactDetail != *(equalCopy + 2))
     {
       goto LABEL_38;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_38;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 40) & 0x20) == 0)
+    if ((*(equalCopy + 40) & 0x20) == 0)
     {
       goto LABEL_38;
     }
 
-    v6 = *(v4 + 37);
+    v6 = *(equalCopy + 37);
     if (self->_result)
     {
-      if ((*(v4 + 37) & 1) == 0)
+      if ((*(equalCopy + 37) & 1) == 0)
       {
         goto LABEL_38;
       }
     }
 
-    else if (*(v4 + 37))
+    else if (*(equalCopy + 37))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 40) & 0x20) != 0)
+  else if ((*(equalCopy + 40) & 0x20) != 0)
   {
     goto LABEL_38;
   }
 
   if ((*&self->_has & 0x10) == 0)
   {
-    if ((*(v4 + 40) & 0x10) == 0)
+    if ((*(equalCopy + 40) & 0x10) == 0)
     {
       goto LABEL_18;
     }
@@ -280,21 +280,21 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if ((*(v4 + 40) & 0x10) == 0)
+  if ((*(equalCopy + 40) & 0x10) == 0)
   {
     goto LABEL_38;
   }
 
-  v7 = *(v4 + 36);
+  v7 = *(equalCopy + 36);
   if (self->_correct)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
       goto LABEL_38;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_38;
   }
@@ -302,21 +302,21 @@ LABEL_38:
 LABEL_18:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_mode != *(v4 + 6))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_mode != *(equalCopy + 6))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_38;
   }
 
-  v8 = (*(v4 + 40) & 8) == 0;
+  v8 = (*(equalCopy + 40) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_supervision != *(v4 + 8))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_supervision != *(equalCopy + 8))
     {
       goto LABEL_38;
     }
@@ -329,10 +329,10 @@ LABEL_39:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -416,21 +416,21 @@ LABEL_7:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_key)
   {
-    v6 = v4;
-    [v4 setKey:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 7) = self->_model;
-    *(v4 + 40) |= 4u;
+    *(toCopy + 7) = self->_model;
+    *(toCopy + 40) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -449,8 +449,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 2) = self->_contactDetail;
-  *(v4 + 40) |= 1u;
+  *(toCopy + 2) = self->_contactDetail;
+  *(toCopy + 40) |= 1u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -464,8 +464,8 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 37) = self->_result;
-  *(v4 + 40) |= 0x20u;
+  *(toCopy + 37) = self->_result;
+  *(toCopy + 40) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -479,8 +479,8 @@ LABEL_7:
   }
 
 LABEL_16:
-  *(v4 + 36) = self->_correct;
-  *(v4 + 40) |= 0x10u;
+  *(toCopy + 36) = self->_correct;
+  *(toCopy + 40) |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -494,26 +494,26 @@ LABEL_8:
   }
 
 LABEL_17:
-  *(v4 + 6) = self->_mode;
-  *(v4 + 40) |= 2u;
+  *(toCopy + 6) = self->_mode;
+  *(toCopy + 40) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_9:
-    *(v4 + 8) = self->_supervision;
-    *(v4 + 40) |= 8u;
+    *(toCopy + 8) = self->_supervision;
+    *(toCopy + 40) |= 8u;
   }
 
 LABEL_10:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -521,7 +521,7 @@ LABEL_10:
   {
     model = self->_model;
     PBDataWriterWriteInt32Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -542,7 +542,7 @@ LABEL_5:
 
   contactDetail = self->_contactDetail;
   PBDataWriterWriteInt32Field();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -558,7 +558,7 @@ LABEL_6:
 LABEL_15:
   result = self->_result;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -574,7 +574,7 @@ LABEL_7:
 LABEL_16:
   correct = self->_correct;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -590,13 +590,13 @@ LABEL_8:
 LABEL_17:
   mode = self->_mode;
   PBDataWriterWriteInt32Field();
-  v4 = v12;
+  toCopy = v12;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_9:
     supervision = self->_supervision;
     PBDataWriterWriteInt32Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_10:
@@ -604,12 +604,12 @@ LABEL_10:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -729,31 +729,31 @@ LABEL_28:
   v8.receiver = self;
   v8.super_class = SGM2FoundInMailModelScore;
   v4 = [(SGM2FoundInMailModelScore *)&v8 description];
-  v5 = [(SGM2FoundInMailModelScore *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2FoundInMailModelScore *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsSupervision:(id)a3
+- (int)StringAsSupervision:(id)supervision
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMFoundInMailSupervisionTypeNone"])
+  supervisionCopy = supervision;
+  if ([supervisionCopy isEqualToString:@"SGMFoundInMailSupervisionTypeNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMFoundInMailSupervisionTypeContact"])
+  else if ([supervisionCopy isEqualToString:@"SGMFoundInMailSupervisionTypeContact"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMFoundInMailSupervisionTypeAppleContact"])
+  else if ([supervisionCopy isEqualToString:@"SGMFoundInMailSupervisionTypeAppleContact"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMFoundInMailSupervisionTypePreviousModel"])
+  else if ([supervisionCopy isEqualToString:@"SGMFoundInMailSupervisionTypePreviousModel"])
   {
     v4 = 3;
   }
@@ -766,9 +766,9 @@ LABEL_28:
   return v4;
 }
 
-- (void)setHasSupervision:(BOOL)a3
+- (void)setHasSupervision:(BOOL)supervision
 {
-  if (a3)
+  if (supervision)
   {
     v3 = 8;
   }
@@ -794,20 +794,20 @@ LABEL_28:
   }
 }
 
-- (int)StringAsMode:(id)a3
+- (int)StringAsMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGFoundInMailModelModeTraining"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"SGFoundInMailModelModeTraining"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGFoundInMailModelModeEvaluation"])
+  else if ([modeCopy isEqualToString:@"SGFoundInMailModelModeEvaluation"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGFoundInMailModelModePrediction"])
+  else if ([modeCopy isEqualToString:@"SGFoundInMailModelModePrediction"])
   {
     v4 = 2;
   }
@@ -820,9 +820,9 @@ LABEL_28:
   return v4;
 }
 
-- (void)setHasMode:(BOOL)a3
+- (void)setHasMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -848,9 +848,9 @@ LABEL_28:
   }
 }
 
-- (void)setHasCorrect:(BOOL)a3
+- (void)setHasCorrect:(BOOL)correct
 {
-  if (a3)
+  if (correct)
   {
     v3 = 16;
   }
@@ -863,9 +863,9 @@ LABEL_28:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasResult:(BOOL)a3
+- (void)setHasResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 32;
   }
@@ -878,30 +878,30 @@ LABEL_28:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsContactDetail:(id)a3
+- (int)StringAsContactDetail:(id)detail
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMContactDetailTypeEmail"])
+  detailCopy = detail;
+  if ([detailCopy isEqualToString:@"SGMContactDetailTypeEmail"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypePhone"])
+  else if ([detailCopy isEqualToString:@"SGMContactDetailTypePhone"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeAddress"])
+  else if ([detailCopy isEqualToString:@"SGMContactDetailTypeAddress"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeOther"])
+  else if ([detailCopy isEqualToString:@"SGMContactDetailTypeOther"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeBirthday"])
+  else if ([detailCopy isEqualToString:@"SGMContactDetailTypeBirthday"])
   {
     v4 = 4;
   }
@@ -927,25 +927,25 @@ LABEL_28:
   }
 }
 
-- (int)StringAsModel:(id)a3
+- (int)StringAsModel:(id)model
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMFoundInMailModelTypeRegex"])
+  modelCopy = model;
+  if ([modelCopy isEqualToString:@"SGMFoundInMailModelTypeRegex"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMFoundInMailModelTypeLogistic"])
+  else if ([modelCopy isEqualToString:@"SGMFoundInMailModelTypeLogistic"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMFoundInMailModelTypeLinear"])
+  else if ([modelCopy isEqualToString:@"SGMFoundInMailModelTypeLinear"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMFoundInMailModelTypeNaiveBayes"])
+  else if ([modelCopy isEqualToString:@"SGMFoundInMailModelTypeNaiveBayes"])
   {
     v4 = 3;
   }
@@ -958,9 +958,9 @@ LABEL_28:
   return v4;
 }
 
-- (void)setHasModel:(BOOL)a3
+- (void)setHasModel:(BOOL)model
 {
-  if (a3)
+  if (model)
   {
     v3 = 4;
   }

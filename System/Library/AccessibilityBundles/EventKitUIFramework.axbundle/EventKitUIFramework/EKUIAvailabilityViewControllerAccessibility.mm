@@ -1,5 +1,5 @@
 @interface EKUIAvailabilityViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilitySetup;
 - (void)layout;
@@ -7,12 +7,12 @@
 
 @implementation EKUIAvailabilityViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKUIAvailabilityViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"EKUIAvailabilityViewController" hasInstanceMethod:@"freeSpanViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKUIAvailabilityViewController" hasInstanceMethod:@"participantList" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKUIAvailabilityViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"EKUIAvailabilityViewController" hasInstanceMethod:@"freeSpanViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKUIAvailabilityViewController" hasInstanceMethod:@"participantList" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -28,13 +28,13 @@
   v6 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
+  view = [v3 view];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __66__EKUIAvailabilityViewControllerAccessibility__accessibilitySetup__block_invoke;
   v5[3] = &unk_29F2BC9E0;
   v5[4] = self;
-  [v4 _setAccessibilityElementsBlock:v5];
+  [view _setAccessibilityElementsBlock:v5];
 }
 
 id __66__EKUIAvailabilityViewControllerAccessibility__accessibilitySetup__block_invoke(uint64_t a1)

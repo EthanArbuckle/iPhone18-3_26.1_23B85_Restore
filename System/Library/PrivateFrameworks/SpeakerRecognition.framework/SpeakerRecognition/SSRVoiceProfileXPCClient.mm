@@ -1,12 +1,12 @@
 @interface SSRVoiceProfileXPCClient
 - (SSRVoiceProfileXPCClient)init;
 - (SSRVoiceProfileXPCClientDelegate)delegate;
-- (void)_handleListenerDisconnectedError:(id)a3;
-- (void)_handleListenerError:(id)a3;
-- (void)_handleListenerEvent:(id)a3;
+- (void)_handleListenerDisconnectedError:(id)error;
+- (void)_handleListenerError:(id)error;
+- (void)_handleListenerEvent:(id)event;
 - (void)connect;
 - (void)dealloc;
-- (void)fetchEnrollmentStatusForSiriProfileId:(id)a3 forLanguageCode:(id)a4 completion:(id)a5;
+- (void)fetchEnrollmentStatusForSiriProfileId:(id)id forLanguageCode:(id)code completion:(id)completion;
 @end
 
 @implementation SSRVoiceProfileXPCClient
@@ -18,18 +18,18 @@
   return WeakRetained;
 }
 
-- (void)fetchEnrollmentStatusForSiriProfileId:(id)a3 forLanguageCode:(id)a4 completion:(id)a5
+- (void)fetchEnrollmentStatusForSiriProfileId:(id)id forLanguageCode:(id)code completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  codeCopy = code;
+  completionCopy = completion;
   *keys = xmmword_278578910;
   v31 = "siriProfileId";
   values[0] = xpc_int64_create(1);
-  if (v9)
+  if (codeCopy)
   {
-    v11 = xpc_string_create([v9 UTF8String]);
+    v11 = xpc_string_create([codeCopy UTF8String]);
   }
 
   else
@@ -39,9 +39,9 @@
 
   v12 = v11;
   values[1] = v11;
-  if (v8)
+  if (idCopy)
   {
-    v13 = xpc_string_create([v8 UTF8String]);
+    v13 = xpc_string_create([idCopy UTF8String]);
   }
 
   else
@@ -70,7 +70,7 @@
   handler[1] = 3221225472;
   handler[2] = __93__SSRVoiceProfileXPCClient_fetchEnrollmentStatusForSiriProfileId_forLanguageCode_completion___block_invoke;
   handler[3] = &unk_278578940;
-  v19 = v10;
+  v19 = completionCopy;
   v24 = v19;
   xpc_connection_send_message_with_reply(xpcConnection, v16, 0, handler);
 
@@ -136,9 +136,9 @@ void __93__SSRVoiceProfileXPCClient_fetchEnrollmentStatusForSiriProfileId_forLan
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleListenerDisconnectedError:(id)a3
+- (void)_handleListenerDisconnectedError:(id)error
 {
-  v4 = [(SSRVoiceProfileXPCClient *)self delegate];
+  delegate = [(SSRVoiceProfileXPCClient *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
@@ -148,12 +148,12 @@ void __93__SSRVoiceProfileXPCClient_fetchEnrollmentStatusForSiriProfileId_forLan
   }
 }
 
-- (void)_handleListenerError:(id)a3
+- (void)_handleListenerError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
     v10 = *MEMORY[0x277D01970];
     if (!os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
@@ -169,9 +169,9 @@ void __93__SSRVoiceProfileXPCClient_fetchEnrollmentStatusForSiriProfileId_forLan
     goto LABEL_15;
   }
 
-  if (v4 != MEMORY[0x277D863F8] && v4 != MEMORY[0x277D863F0])
+  if (errorCopy != MEMORY[0x277D863F8] && errorCopy != MEMORY[0x277D863F0])
   {
-    string = xpc_dictionary_get_string(v4, *MEMORY[0x277D86400]);
+    string = xpc_dictionary_get_string(errorCopy, *MEMORY[0x277D86400]);
     v10 = *MEMORY[0x277D01970];
     if (!os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
     {
@@ -202,14 +202,14 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleListenerEvent:(id)a3
+- (void)_handleListenerEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    if (MEMORY[0x22AA717E0](v4) == MEMORY[0x277D86480])
+    if (MEMORY[0x22AA717E0](eventCopy) == MEMORY[0x277D86480])
     {
       [(SSRVoiceProfileXPCClient *)self _handleListenerError:v5];
       goto LABEL_9;

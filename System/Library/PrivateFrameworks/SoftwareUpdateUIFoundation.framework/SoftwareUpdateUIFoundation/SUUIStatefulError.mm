@@ -1,61 +1,61 @@
 @interface SUUIStatefulError
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isIntrinsicallyEquivalentToError:(id)a3 withStatefulDescriptor:(id)a4 download:(id)a5;
-- (BOOL)isNonBlockingErrorForStatefulDescriptor:(id)a3 download:(id)a4;
-- (BOOL)shouldEnableUpdateOptionsWithStatefulDescriptor:(id)a3 download:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isIntrinsicallyEquivalentToError:(id)error withStatefulDescriptor:(id)descriptor download:(id)download;
+- (BOOL)isNonBlockingErrorForStatefulDescriptor:(id)descriptor download:(id)download;
+- (BOOL)shouldEnableUpdateOptionsWithStatefulDescriptor:(id)descriptor download:(id)download;
 - (SUUIErrorTraits)traits;
-- (id)bodyTokenWithStatefulDescriptor:(id)a3 download:(id)a4;
-- (id)headingTokenWithStatefulDescriptor:(id)a3 download:(id)a4;
-- (id)initFromError:(id)a3;
+- (id)bodyTokenWithStatefulDescriptor:(id)descriptor download:(id)download;
+- (id)headingTokenWithStatefulDescriptor:(id)descriptor download:(id)download;
+- (id)initFromError:(id)error;
 @end
 
 @implementation SUUIStatefulError
 
-- (id)initFromError:(id)a3
+- (id)initFromError:(id)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v11;
-  v7 = [location[0] domain];
-  v5 = [location[0] code];
-  v6 = [location[0] userInfo];
-  v11 = 0;
+  objc_storeStrong(location, error);
+  v4 = selfCopy;
+  domain = [location[0] domain];
+  code = [location[0] code];
+  userInfo = [location[0] userInfo];
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = SUUIStatefulError;
-  v11 = [(SUUIStatefulError *)&v9 initWithDomain:v7 code:v5 userInfo:?];
-  v8 = MEMORY[0x277D82BE0](v11);
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  selfCopy = [(SUUIStatefulError *)&v9 initWithDomain:domain code:code userInfo:?];
+  v8 = MEMORY[0x277D82BE0](selfCopy);
+  MEMORY[0x277D82BD8](userInfo);
+  MEMORY[0x277D82BD8](domain);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (BOOL)isIntrinsicallyEquivalentToError:(id)a3 withStatefulDescriptor:(id)a4 download:(id)a5
+- (BOOL)isIntrinsicallyEquivalentToError:(id)error withStatefulDescriptor:(id)descriptor download:(id)download
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, descriptor);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, download);
   if (location[0])
   {
-    v9 = [(SUUIStatefulError *)v25 domain];
-    v10 = [location[0] domain];
+    domain = [(SUUIStatefulError *)selfCopy domain];
+    domain2 = [location[0] domain];
     v11 = 1;
-    if ([v9 isEqualToString:?])
+    if ([domain isEqualToString:?])
     {
-      v8 = [(SUUIStatefulError *)v25 code];
-      v11 = v8 != [location[0] code];
+      code = [(SUUIStatefulError *)selfCopy code];
+      v11 = code != [location[0] code];
     }
 
-    MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](domain2);
+    MEMORY[0x277D82BD8](domain);
     if (v11)
     {
       v26 = 0;
@@ -64,7 +64,7 @@
 
     else
     {
-      v20 = [(SUUIStatefulError *)v25 headingTokenWithStatefulDescriptor:v23 download:v22];
+      v20 = [(SUUIStatefulError *)selfCopy headingTokenWithStatefulDescriptor:v23 download:v22];
       v18 = 0;
       v7 = 0;
       if (!v20)
@@ -87,7 +87,7 @@
 
       else
       {
-        v17 = [(SUUIStatefulError *)v25 bodyTokenWithStatefulDescriptor:v23 download:v22];
+        v17 = [(SUUIStatefulError *)selfCopy bodyTokenWithStatefulDescriptor:v23 download:v22];
         v15 = 0;
         LOBYTE(v6) = 0;
         if (v17)
@@ -109,8 +109,8 @@
 
         else
         {
-          v14 = [(SUUIStatefulError *)v25 shouldEnableUpdateOptionsWithStatefulDescriptor:v23 download:v22];
-          v26 = v14 == [(SUUIStatefulError *)v25 shouldEnableUpdateOptionsWithStatefulDescriptor:v23 download:v22];
+          v14 = [(SUUIStatefulError *)selfCopy shouldEnableUpdateOptionsWithStatefulDescriptor:v23 download:v22];
+          v26 = v14 == [(SUUIStatefulError *)selfCopy shouldEnableUpdateOptionsWithStatefulDescriptor:v23 download:v22];
         }
 
         v21 = 1;
@@ -133,13 +133,13 @@
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v8 == location[0])
+  objc_storeStrong(location, equal);
+  if (selfCopy == location[0])
   {
     v9 = 1;
     v6 = 1;
@@ -151,7 +151,7 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = MEMORY[0x277D82BE0](location[0]);
-      v4.receiver = v8;
+      v4.receiver = selfCopy;
       v4.super_class = SUUIStatefulError;
       v9 = [(SUUIStatefulError *)&v4 isEqual:v5];
       v6 = 1;
@@ -183,14 +183,14 @@
   objc_exception_throw(v8);
 }
 
-- (BOOL)isNonBlockingErrorForStatefulDescriptor:(id)a3 download:(id)a4
+- (BOOL)isNonBlockingErrorForStatefulDescriptor:(id)descriptor download:(id)download
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, descriptor);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, download);
   v8 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE658];
   v6 = MEMORY[0x277CCACA8];
@@ -203,14 +203,14 @@
   objc_exception_throw(v11);
 }
 
-- (id)headingTokenWithStatefulDescriptor:(id)a3 download:(id)a4
+- (id)headingTokenWithStatefulDescriptor:(id)descriptor download:(id)download
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, descriptor);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, download);
   v8 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE658];
   v6 = MEMORY[0x277CCACA8];
@@ -223,14 +223,14 @@
   objc_exception_throw(v11);
 }
 
-- (id)bodyTokenWithStatefulDescriptor:(id)a3 download:(id)a4
+- (id)bodyTokenWithStatefulDescriptor:(id)descriptor download:(id)download
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, descriptor);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, download);
   v8 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE658];
   v6 = MEMORY[0x277CCACA8];
@@ -243,14 +243,14 @@
   objc_exception_throw(v11);
 }
 
-- (BOOL)shouldEnableUpdateOptionsWithStatefulDescriptor:(id)a3 download:(id)a4
+- (BOOL)shouldEnableUpdateOptionsWithStatefulDescriptor:(id)descriptor download:(id)download
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, descriptor);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, download);
   v8 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE658];
   v6 = MEMORY[0x277CCACA8];

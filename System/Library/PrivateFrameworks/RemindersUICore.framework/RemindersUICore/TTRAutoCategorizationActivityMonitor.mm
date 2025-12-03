@@ -1,13 +1,13 @@
 @interface TTRAutoCategorizationActivityMonitor
-- (void)autoCategorizationActivityDidChange:(id)a3;
+- (void)autoCategorizationActivityDidChange:(id)change;
 @end
 
 @implementation TTRAutoCategorizationActivityMonitor
 
-- (void)autoCategorizationActivityDidChange:(id)a3
+- (void)autoCategorizationActivityDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_21DBF908C();
 }
 

@@ -7,40 +7,40 @@
 - (id)outcomeTelemetryDictionary
 {
   v26[5] = *MEMORY[0x277D85DE8];
-  v3 = [(UploadRecord *)self dateUploaded];
-  v4 = v3;
-  if (v3)
+  dateUploaded = [(UploadRecord *)self dateUploaded];
+  v4 = dateUploaded;
+  if (dateUploaded)
   {
-    v5 = v3;
+    v5 = dateUploaded;
   }
 
   else
   {
-    v6 = [(UploadRecord *)self dateLastProcessed];
-    v7 = v6;
-    if (v6)
+    dateLastProcessed = [(UploadRecord *)self dateLastProcessed];
+    v7 = dateLastProcessed;
+    if (dateLastProcessed)
     {
-      v8 = v6;
+      date = dateLastProcessed;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v5 = v8;
+    v5 = date;
   }
 
-  v9 = [(UploadRecord *)self dateCreated];
-  [v9 timeIntervalSinceDate:v5];
+  dateCreated = [(UploadRecord *)self dateCreated];
+  [dateCreated timeIntervalSinceDate:v5];
   v11 = v10;
 
   v12 = v11 / -3600;
   v13 = ([(UploadRecord *)self size]+ 1023) >> 10;
-  v14 = [(UploadRecord *)self uploadStatus];
-  if (v14 < 6)
+  uploadStatus = [(UploadRecord *)self uploadStatus];
+  if (uploadStatus < 6)
   {
-    v15 = v14 + 1;
+    v15 = uploadStatus + 1;
   }
 
   else
@@ -52,12 +52,12 @@
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
   v26[0] = v16;
   v25[1] = @"bundle_id";
-  v17 = [(UploadRecord *)self applicationIdentifier];
-  v18 = v17;
+  applicationIdentifier = [(UploadRecord *)self applicationIdentifier];
+  v18 = applicationIdentifier;
   v19 = &stru_285E18D78;
-  if (v17)
+  if (applicationIdentifier)
   {
-    v19 = v17;
+    v19 = applicationIdentifier;
   }
 
   v26[1] = v19;

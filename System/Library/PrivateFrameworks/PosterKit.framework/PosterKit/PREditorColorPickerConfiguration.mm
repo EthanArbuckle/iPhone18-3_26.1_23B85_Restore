@@ -1,38 +1,38 @@
 @interface PREditorColorPickerConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PREditorColorPickerConfiguration)initWithBSXPCCoder:(id)a3;
-- (PREditorColorPickerConfiguration)initWithCoder:(id)a3;
-- (PREditorColorPickerConfiguration)initWithIdentifier:(id)a3 prompt:(id)a4 selectedColor:(id)a5 suggestedColors:(id)a6 colorPalette:(id)a7 colorWellDisplayMode:(unint64_t)a8 showsSlider:(BOOL)a9 context:(unint64_t)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PREditorColorPickerConfiguration)initWithBSXPCCoder:(id)coder;
+- (PREditorColorPickerConfiguration)initWithCoder:(id)coder;
+- (PREditorColorPickerConfiguration)initWithIdentifier:(id)identifier prompt:(id)prompt selectedColor:(id)color suggestedColors:(id)colors colorPalette:(id)palette colorWellDisplayMode:(unint64_t)mode showsSlider:(BOOL)slider context:(unint64_t)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)didUpdateColors;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setColorPalette:(id)a3;
-- (void)setSelectedColor:(id)a3;
-- (void)setSuggestedColor:(id)a3;
-- (void)setSuggestedColors:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setColorPalette:(id)palette;
+- (void)setSelectedColor:(id)color;
+- (void)setSuggestedColor:(id)color;
+- (void)setSuggestedColors:(id)colors;
 @end
 
 @implementation PREditorColorPickerConfiguration
 
-- (PREditorColorPickerConfiguration)initWithIdentifier:(id)a3 prompt:(id)a4 selectedColor:(id)a5 suggestedColors:(id)a6 colorPalette:(id)a7 colorWellDisplayMode:(unint64_t)a8 showsSlider:(BOOL)a9 context:(unint64_t)a10
+- (PREditorColorPickerConfiguration)initWithIdentifier:(id)identifier prompt:(id)prompt selectedColor:(id)color suggestedColors:(id)colors colorPalette:(id)palette colorWellDisplayMode:(unint64_t)mode showsSlider:(BOOL)slider context:(unint64_t)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
+  identifierCopy = identifier;
+  promptCopy = prompt;
+  colorCopy = color;
+  colorsCopy = colors;
+  paletteCopy = palette;
   v66.receiver = self;
   v66.super_class = PREditorColorPickerConfiguration;
   v22 = [(PREditorColorPickerConfiguration *)&v66 init];
   if (v22)
   {
-    if (v17)
+    if (identifierCopy)
     {
-      v23 = v17;
+      v23 = identifierCopy;
     }
 
     else
@@ -44,11 +44,11 @@
     identifier = v22->_identifier;
     v22->_identifier = v24;
 
-    v56 = a8;
-    v57 = v19;
-    if (v18)
+    modeCopy = mode;
+    v57 = colorCopy;
+    if (promptCopy)
     {
-      v26 = [v18 copy];
+      v26 = [promptCopy copy];
       prompt = v22->_prompt;
       v22->_prompt = v26;
     }
@@ -66,7 +66,7 @@
     isKindOfClass = objc_opt_isKindOfClass();
     objc_opt_class();
     v32 = objc_opt_isKindOfClass();
-    if (v19)
+    if (colorCopy)
     {
       v33 = v32;
       objc_opt_class();
@@ -111,18 +111,18 @@
     v61 = a2;
     v39 = v22;
     v59 = v39;
-    v40 = [v20 bs_compactMap:v58];
+    v40 = [colorsCopy bs_compactMap:v58];
     v41 = [v40 copy];
     suggestedColors = v39->_suggestedColors;
     v39->_suggestedColors = v41;
 
-    v54 = v18;
-    if (v21)
+    v54 = promptCopy;
+    if (paletteCopy)
     {
-      v43 = v56;
-      v44 = v21;
-      v45 = v17;
-      v46 = v20;
+      v43 = modeCopy;
+      v44 = paletteCopy;
+      v45 = identifierCopy;
+      v46 = colorsCopy;
       v47 = v44;
       v48 = v44;
     }
@@ -130,45 +130,45 @@
     else
     {
       v48 = +[PREditorColorPalette extendedPalette];
-      v43 = v56;
+      v43 = modeCopy;
       v47 = 0;
-      v45 = v17;
-      v46 = v20;
+      v45 = identifierCopy;
+      v46 = colorsCopy;
     }
 
     colorPalette = v39->_colorPalette;
     v39->_colorPalette = v48;
 
     v39->_colorWellDisplayMode = v43;
-    v39->_showsSlider = a9;
-    v39->_context = a10;
+    v39->_showsSlider = slider;
+    v39->_context = context;
     if (v35)
     {
-      v50 = 1;
-      v20 = v46;
-      v18 = v54;
-      v17 = v45;
+      includesObjectsOfTypePRPosterColor = 1;
+      colorsCopy = v46;
+      promptCopy = v54;
+      identifierCopy = v45;
     }
 
     else
     {
-      v20 = v46;
-      v17 = v45;
+      colorsCopy = v46;
+      identifierCopy = v45;
       if ((v63[3] & 1) == 0)
       {
-        v21 = v47;
-        v50 = [v47 includesObjectsOfTypePRPosterColor];
-        v18 = v54;
+        paletteCopy = v47;
+        includesObjectsOfTypePRPosterColor = [v47 includesObjectsOfTypePRPosterColor];
+        promptCopy = v54;
         goto LABEL_23;
       }
 
-      v50 = 1;
-      v18 = v54;
+      includesObjectsOfTypePRPosterColor = 1;
+      promptCopy = v54;
     }
 
-    v21 = v47;
+    paletteCopy = v47;
 LABEL_23:
-    v39->_includesObjectsOfTypePRPickerColor = v50;
+    v39->_includesObjectsOfTypePRPickerColor = includesObjectsOfTypePRPosterColor;
     colorPickerSourceView = v39->_colorPickerSourceView;
     v39->_colorPickerSourceView = 0;
 
@@ -176,7 +176,7 @@ LABEL_23:
     v39->_colorPickerSourceItem = 0;
 
     _Block_object_dispose(&v62, 8);
-    v19 = v57;
+    colorCopy = v57;
   }
 
   return v22;
@@ -208,14 +208,14 @@ LABEL_7:
   return v5;
 }
 
-- (void)setSelectedColor:(id)a3
+- (void)setSelectedColor:(id)color
 {
-  v12 = a3;
+  colorCopy = color;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
   v6 = objc_opt_isKindOfClass();
-  if (v12)
+  if (colorCopy)
   {
     if (((isKindOfClass | v6) & 1) == 0)
     {
@@ -224,13 +224,13 @@ LABEL_7:
 
     if (isKindOfClass)
     {
-      v7 = v12;
+      v7 = colorCopy;
     }
 
     else
     {
       v8 = [PRPosterColor alloc];
-      v9 = [v12 copy];
+      v9 = [colorCopy copy];
       v7 = [(PRPosterColor *)v8 initWithColor:v9];
     }
   }
@@ -247,18 +247,18 @@ LABEL_7:
   [(PREditorColorPickerConfiguration *)self didUpdateColors];
 }
 
-- (void)setSuggestedColor:(id)a3
+- (void)setSuggestedColor:(id)color
 {
-  v9 = a3;
-  if (![(PRPosterColor *)self->_suggestedColor isEquivalentToColor:v9])
+  colorCopy = color;
+  if (![(PRPosterColor *)self->_suggestedColor isEquivalentToColor:colorCopy])
   {
-    v4 = v9;
+    v4 = colorCopy;
     v5 = v4;
     if (v4 && ([v4 isSuggested] & 1) == 0)
     {
-      v6 = [v5 copyAsSuggestedColor];
+      copyAsSuggestedColor = [v5 copyAsSuggestedColor];
 
-      v5 = v6;
+      v5 = copyAsSuggestedColor;
     }
 
     v7 = [v5 copy];
@@ -271,9 +271,9 @@ LABEL_7:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSuggestedColors:(id)a3
+- (void)setSuggestedColors:(id)colors
 {
-  v5 = a3;
+  colorsCopy = colors;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -285,7 +285,7 @@ LABEL_7:
   v9[5] = v10;
   v9[6] = a2;
   v9[4] = self;
-  v6 = [v5 bs_compactMap:v9];
+  v6 = [colorsCopy bs_compactMap:v9];
   v7 = [v6 copy];
   suggestedColors = self->_suggestedColors;
   self->_suggestedColors = v7;
@@ -320,19 +320,19 @@ LABEL_7:
   return v5;
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  v5 = a3;
+  paletteCopy = palette;
   p_colorPalette = &self->_colorPalette;
-  if (self->_colorPalette != v5)
+  if (self->_colorPalette != paletteCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_colorPalette, a3);
+    v7 = paletteCopy;
+    objc_storeStrong(p_colorPalette, palette);
     p_colorPalette = [(PREditorColorPickerConfiguration *)self didUpdateColors];
-    v5 = v7;
+    paletteCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_colorPalette, v5);
+  MEMORY[0x1EEE66BB8](p_colorPalette, paletteCopy);
 }
 
 - (void)didUpdateColors
@@ -388,10 +388,10 @@ LABEL_7:
   self->_includesObjectsOfTypePRPickerColor = v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v31 = 1;
   }
@@ -403,15 +403,15 @@ LABEL_7:
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PREditorColorPickerConfiguration *)self identifier];
-      v9 = [(PREditorColorPickerConfiguration *)v7 identifier];
+      v7 = equalCopy;
+      identifier = [(PREditorColorPickerConfiguration *)self identifier];
+      identifier2 = [(PREditorColorPickerConfiguration *)v7 identifier];
       v10 = BSEqualStrings();
 
       if (v10 && ([(PREditorColorPickerConfiguration *)self prompt], v11 = objc_claimAutoreleasedReturnValue(), [(PREditorColorPickerConfiguration *)v7 prompt], v12 = objc_claimAutoreleasedReturnValue(), v13 = BSEqualStrings(), v12, v11, v13) && ([(PREditorColorPickerConfiguration *)self colorPalette], v14 = objc_claimAutoreleasedReturnValue(), [(PREditorColorPickerConfiguration *)v7 colorPalette], v15 = objc_claimAutoreleasedReturnValue(), v16 = BSEqualObjects(), v15, v14, v16) && ([(PREditorColorPickerConfiguration *)self selectedColor], v17 = objc_claimAutoreleasedReturnValue(), [(PREditorColorPickerConfiguration *)v7 selectedColor], v18 = objc_claimAutoreleasedReturnValue(), v19 = BSEqualObjects(), v18, v17, v19) && ([(PREditorColorPickerConfiguration *)self suggestedColors], v20 = objc_claimAutoreleasedReturnValue(), [(PREditorColorPickerConfiguration *)v7 suggestedColors], v21 = objc_claimAutoreleasedReturnValue(), v22 = BSEqualObjects(), v21, v20, v22) && (v23 = [(PREditorColorPickerConfiguration *)self showsSlider], v23 == [(PREditorColorPickerConfiguration *)v7 showsSlider]) && (v24 = [(PREditorColorPickerConfiguration *)self colorWellDisplayMode], v24 == [(PREditorColorPickerConfiguration *)v7 colorWellDisplayMode]) && (v25 = [(PREditorColorPickerConfiguration *)self context], v25 == [(PREditorColorPickerConfiguration *)v7 context]) && ([(PREditorColorPickerConfiguration *)self colorPickerSourceView], v26 = objc_claimAutoreleasedReturnValue(), [(PREditorColorPickerConfiguration *)v7 colorPickerSourceView], v27 = objc_claimAutoreleasedReturnValue(), v28 = BSEqualObjects(), v27, v26, v28))
       {
-        v29 = [(PREditorColorPickerConfiguration *)self colorPickerSourceItem];
-        v30 = [(PREditorColorPickerConfiguration *)v7 colorPickerSourceItem];
+        colorPickerSourceItem = [(PREditorColorPickerConfiguration *)self colorPickerSourceItem];
+        colorPickerSourceItem2 = [(PREditorColorPickerConfiguration *)v7 colorPickerSourceItem];
         v31 = BSEqualObjects();
       }
 
@@ -432,16 +432,16 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v19 = [(PREditorColorPickerConfiguration *)self identifier];
-  v3 = [v19 hash];
-  v4 = [(PREditorColorPickerConfiguration *)self prompt];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(PREditorColorPickerConfiguration *)self colorPalette];
-  v7 = [v6 hash];
-  v8 = [(PREditorColorPickerConfiguration *)self selectedColor];
-  v9 = v5 ^ v7 ^ [v8 hash];
-  v10 = [(PREditorColorPickerConfiguration *)self suggestedColors];
-  v11 = v9 ^ [v10 hash];
+  identifier = [(PREditorColorPickerConfiguration *)self identifier];
+  v3 = [identifier hash];
+  prompt = [(PREditorColorPickerConfiguration *)self prompt];
+  v5 = [prompt hash] ^ v3;
+  colorPalette = [(PREditorColorPickerConfiguration *)self colorPalette];
+  v7 = [colorPalette hash];
+  selectedColor = [(PREditorColorPickerConfiguration *)self selectedColor];
+  v9 = v5 ^ v7 ^ [selectedColor hash];
+  suggestedColors = [(PREditorColorPickerConfiguration *)self suggestedColors];
+  v11 = v9 ^ [suggestedColors hash];
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PREditorColorPickerConfiguration colorWellDisplayMode](self, "colorWellDisplayMode")}];
   v13 = v11 ^ [v12 hash];
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[PREditorColorPickerConfiguration showsSlider](self, "showsSlider")}];
@@ -459,7 +459,7 @@ LABEL_7:
   v8 = 3221225472;
   v9 = __47__PREditorColorPickerConfiguration_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -468,65 +468,65 @@ LABEL_7:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(PREditorColorPickerConfiguration *)self identifier];
-  v6 = [(PREditorColorPickerConfiguration *)self prompt];
-  v7 = [(PREditorColorPickerConfiguration *)self selectedColor];
-  v8 = [(PREditorColorPickerConfiguration *)self suggestedColors];
-  v9 = [(PREditorColorPickerConfiguration *)self colorPalette];
-  v10 = [(PREditorColorPickerConfiguration *)self colorWellDisplayMode];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(PREditorColorPickerConfiguration *)self identifier];
+  prompt = [(PREditorColorPickerConfiguration *)self prompt];
+  selectedColor = [(PREditorColorPickerConfiguration *)self selectedColor];
+  suggestedColors = [(PREditorColorPickerConfiguration *)self suggestedColors];
+  colorPalette = [(PREditorColorPickerConfiguration *)self colorPalette];
+  colorWellDisplayMode = [(PREditorColorPickerConfiguration *)self colorWellDisplayMode];
   LOBYTE(v13) = [(PREditorColorPickerConfiguration *)self showsSlider];
-  v11 = [v4 initWithIdentifier:v5 prompt:v6 selectedColor:v7 suggestedColors:v8 colorPalette:v9 colorWellDisplayMode:v10 showsSlider:v13 context:{-[PREditorColorPickerConfiguration context](self, "context")}];
+  v11 = [v4 initWithIdentifier:identifier prompt:prompt selectedColor:selectedColor suggestedColors:suggestedColors colorPalette:colorPalette colorWellDisplayMode:colorWellDisplayMode showsSlider:v13 context:{-[PREditorColorPickerConfiguration context](self, "context")}];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(PREditorColorPickerConfiguration *)self identifier];
-  [v11 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(PREditorColorPickerConfiguration *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(PREditorColorPickerConfiguration *)self prompt];
-  [v11 encodeObject:v5 forKey:@"prompt"];
+  prompt = [(PREditorColorPickerConfiguration *)self prompt];
+  [coderCopy encodeObject:prompt forKey:@"prompt"];
 
-  v6 = [(PREditorColorPickerConfiguration *)self selectedColor];
-  [v11 encodeObject:v6 forKey:@"selectedColor"];
+  selectedColor = [(PREditorColorPickerConfiguration *)self selectedColor];
+  [coderCopy encodeObject:selectedColor forKey:@"selectedColor"];
 
-  v7 = [(PREditorColorPickerConfiguration *)self suggestedColors];
-  if (v7)
+  suggestedColors = [(PREditorColorPickerConfiguration *)self suggestedColors];
+  if (suggestedColors)
   {
-    [v11 encodeObject:v7 forKey:@"suggestedColors"];
+    [coderCopy encodeObject:suggestedColors forKey:@"suggestedColors"];
   }
 
-  v8 = [(PREditorColorPickerConfiguration *)self colorPalette];
-  [v11 encodeObject:v8 forKey:@"palette"];
+  colorPalette = [(PREditorColorPickerConfiguration *)self colorPalette];
+  [coderCopy encodeObject:colorPalette forKey:@"palette"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PREditorColorPickerConfiguration colorWellDisplayMode](self, "colorWellDisplayMode")}];
-  [v11 encodeObject:v9 forKey:@"colorWellDisplayMode"];
+  [coderCopy encodeObject:v9 forKey:@"colorWellDisplayMode"];
 
-  [v11 encodeBool:-[PREditorColorPickerConfiguration showsSlider](self forKey:{"showsSlider"), @"showsSlider"}];
+  [coderCopy encodeBool:-[PREditorColorPickerConfiguration showsSlider](self forKey:{"showsSlider"), @"showsSlider"}];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PREditorColorPickerConfiguration context](self, "context")}];
-  [v11 encodeObject:v10 forKey:@"context"];
+  [coderCopy encodeObject:v10 forKey:@"context"];
 }
 
-- (PREditorColorPickerConfiguration)initWithCoder:(id)a3
+- (PREditorColorPickerConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = objc_opt_self();
-  v35 = [v3 decodeObjectOfClass:v4 forKey:@"identifier"];
+  v35 = [coderCopy decodeObjectOfClass:v4 forKey:@"identifier"];
 
   v5 = objc_opt_self();
-  v6 = [v3 decodeObjectOfClass:v5 forKey:@"prompt"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"prompt"];
 
   v7 = objc_opt_self();
-  v8 = [v3 decodeObjectOfClass:v7 forKey:@"selectedColor"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"selectedColor"];
 
   if (!v8)
   {
-    v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"selectedColor"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedColor"];
     if (v9)
     {
       v8 = [[PRPosterColor alloc] initWithColor:v9];
@@ -542,7 +542,7 @@ LABEL_7:
   v11 = objc_opt_self();
   v12 = objc_opt_self();
   v13 = [v10 setWithObjects:{v11, v12, 0}];
-  v14 = [v3 decodeObjectOfClasses:v13 forKey:@"suggestedColors"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"suggestedColors"];
 
   if (!v14)
   {
@@ -550,7 +550,7 @@ LABEL_7:
     v16 = objc_opt_self();
     v17 = objc_opt_self();
     v18 = [v15 setWithObjects:{v16, v17, 0}];
-    v19 = [v3 decodeObjectOfClasses:v18 forKey:@"suggestedColors"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"suggestedColors"];
 
     if (v19)
     {
@@ -564,22 +564,22 @@ LABEL_7:
   }
 
   v20 = objc_opt_self();
-  v21 = [v3 decodeObjectOfClass:v20 forKey:@"palette"];
+  v21 = [coderCopy decodeObjectOfClass:v20 forKey:@"palette"];
 
   v22 = objc_opt_self();
-  v23 = [v3 decodeObjectOfClass:v22 forKey:@"colorWellDisplayMode"];
+  v23 = [coderCopy decodeObjectOfClass:v22 forKey:@"colorWellDisplayMode"];
 
   if (v23)
   {
-    v24 = [v23 unsignedIntegerValue];
-    if (v24 >= 2)
+    unsignedIntegerValue = [v23 unsignedIntegerValue];
+    if (unsignedIntegerValue >= 2)
     {
       v25 = 2;
     }
 
     else
     {
-      v25 = v24;
+      v25 = unsignedIntegerValue;
     }
   }
 
@@ -588,21 +588,21 @@ LABEL_7:
     v25 = 2;
   }
 
-  v26 = [v3 decodeBoolForKey:@"showsSlider"];
+  v26 = [coderCopy decodeBoolForKey:@"showsSlider"];
   v27 = objc_opt_self();
-  v28 = [v3 decodeObjectOfClass:v27 forKey:@"context"];
+  v28 = [coderCopy decodeObjectOfClass:v27 forKey:@"context"];
 
   if (v28)
   {
-    v29 = [v28 unsignedIntegerValue];
-    if (v29 >= 3)
+    unsignedIntegerValue2 = [v28 unsignedIntegerValue];
+    if (unsignedIntegerValue2 >= 3)
     {
       v30 = 0;
     }
 
     else
     {
-      v30 = v29;
+      v30 = unsignedIntegerValue2;
     }
   }
 
@@ -625,50 +625,50 @@ PRPosterColor *__50__PREditorColorPickerConfiguration_initWithCoder___block_invo
   return v3;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(PREditorColorPickerConfiguration *)self identifier];
-  [v11 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(PREditorColorPickerConfiguration *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(PREditorColorPickerConfiguration *)self prompt];
-  [v11 encodeObject:v5 forKey:@"prompt"];
+  prompt = [(PREditorColorPickerConfiguration *)self prompt];
+  [coderCopy encodeObject:prompt forKey:@"prompt"];
 
-  v6 = [(PREditorColorPickerConfiguration *)self selectedColor];
-  [v11 encodeObject:v6 forKey:@"selectedColor"];
+  selectedColor = [(PREditorColorPickerConfiguration *)self selectedColor];
+  [coderCopy encodeObject:selectedColor forKey:@"selectedColor"];
 
-  v7 = [(PREditorColorPickerConfiguration *)self suggestedColors];
-  if (v7)
+  suggestedColors = [(PREditorColorPickerConfiguration *)self suggestedColors];
+  if (suggestedColors)
   {
-    [v11 encodeObject:v7 forKey:@"suggestedColors"];
+    [coderCopy encodeObject:suggestedColors forKey:@"suggestedColors"];
   }
 
-  v8 = [(PREditorColorPickerConfiguration *)self colorPalette];
-  [v11 encodeObject:v8 forKey:@"palette"];
+  colorPalette = [(PREditorColorPickerConfiguration *)self colorPalette];
+  [coderCopy encodeObject:colorPalette forKey:@"palette"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PREditorColorPickerConfiguration colorWellDisplayMode](self, "colorWellDisplayMode")}];
-  [v11 encodeObject:v9 forKey:@"colorWellDisplayMode"];
+  [coderCopy encodeObject:v9 forKey:@"colorWellDisplayMode"];
 
-  [v11 encodeBool:-[PREditorColorPickerConfiguration showsSlider](self forKey:{"showsSlider"), @"showsSlider"}];
+  [coderCopy encodeBool:-[PREditorColorPickerConfiguration showsSlider](self forKey:{"showsSlider"), @"showsSlider"}];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PREditorColorPickerConfiguration context](self, "context")}];
-  [v11 encodeObject:v10 forKey:@"context"];
+  [coderCopy encodeObject:v10 forKey:@"context"];
 }
 
-- (PREditorColorPickerConfiguration)initWithBSXPCCoder:(id)a3
+- (PREditorColorPickerConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = objc_opt_self();
-  v30 = [v3 decodeObjectOfClass:v4 forKey:@"identifier"];
+  v30 = [coderCopy decodeObjectOfClass:v4 forKey:@"identifier"];
 
   v5 = objc_opt_self();
-  v6 = [v3 decodeObjectOfClass:v5 forKey:@"prompt"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"prompt"];
 
   v7 = objc_opt_self();
-  v8 = [v3 decodeObjectOfClass:v7 forKey:@"selectedColor"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"selectedColor"];
 
   if (!v8)
   {
-    v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"selectedColor"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedColor"];
     if (v9)
     {
       v8 = [[PRPosterColor alloc] initWithColor:v9];
@@ -681,12 +681,12 @@ PRPosterColor *__50__PREditorColorPickerConfiguration_initWithCoder___block_invo
   }
 
   v10 = objc_opt_class();
-  v11 = [v3 decodeCollectionOfClass:v10 containingClass:objc_opt_class() forKey:@"suggestedColors"];
+  v11 = [coderCopy decodeCollectionOfClass:v10 containingClass:objc_opt_class() forKey:@"suggestedColors"];
   if (!v11)
   {
     v12 = objc_opt_class();
     v13 = objc_opt_self();
-    v14 = [v3 decodeCollectionOfClass:v12 containingClass:v13 forKey:@"suggestedColors"];
+    v14 = [coderCopy decodeCollectionOfClass:v12 containingClass:v13 forKey:@"suggestedColors"];
 
     if (v14)
     {
@@ -700,22 +700,22 @@ PRPosterColor *__50__PREditorColorPickerConfiguration_initWithCoder___block_invo
   }
 
   v15 = objc_opt_self();
-  v16 = [v3 decodeObjectOfClass:v15 forKey:@"palette"];
+  v16 = [coderCopy decodeObjectOfClass:v15 forKey:@"palette"];
 
   v17 = objc_opt_self();
-  v18 = [v3 decodeObjectOfClass:v17 forKey:@"colorWellDisplayMode"];
+  v18 = [coderCopy decodeObjectOfClass:v17 forKey:@"colorWellDisplayMode"];
 
   if (v18)
   {
-    v19 = [v18 unsignedIntegerValue];
-    if (v19 >= 2)
+    unsignedIntegerValue = [v18 unsignedIntegerValue];
+    if (unsignedIntegerValue >= 2)
     {
       v20 = 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = unsignedIntegerValue;
     }
   }
 
@@ -724,21 +724,21 @@ PRPosterColor *__50__PREditorColorPickerConfiguration_initWithCoder___block_invo
     v20 = 2;
   }
 
-  v21 = [v3 decodeBoolForKey:@"showsSlider"];
+  v21 = [coderCopy decodeBoolForKey:@"showsSlider"];
   v22 = objc_opt_self();
-  v23 = [v3 decodeObjectOfClass:v22 forKey:@"context"];
+  v23 = [coderCopy decodeObjectOfClass:v22 forKey:@"context"];
 
   if (v23)
   {
-    v24 = [v23 unsignedIntegerValue];
-    if (v24 >= 3)
+    unsignedIntegerValue2 = [v23 unsignedIntegerValue];
+    if (unsignedIntegerValue2 >= 3)
     {
       v25 = 0;
     }
 
     else
     {
-      v25 = v24;
+      v25 = unsignedIntegerValue2;
     }
   }
 
@@ -761,49 +761,49 @@ PRPosterColor *__55__PREditorColorPickerConfiguration_initWithBSXPCCoder___block
   return v3;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v17 = a3;
-  v4 = [(PREditorColorPickerConfiguration *)self identifier];
-  [v17 appendString:v4 withName:@"identifier"];
+  formatterCopy = formatter;
+  identifier = [(PREditorColorPickerConfiguration *)self identifier];
+  [formatterCopy appendString:identifier withName:@"identifier"];
 
-  v5 = [(PREditorColorPickerConfiguration *)self prompt];
-  [v17 appendString:v5 withName:@"prompt" skipIfEmpty:1];
+  prompt = [(PREditorColorPickerConfiguration *)self prompt];
+  [formatterCopy appendString:prompt withName:@"prompt" skipIfEmpty:1];
 
-  v6 = [(PREditorColorPickerConfiguration *)self selectedColor];
-  v7 = [v17 appendObject:v6 withName:@"selectedColor" skipIfNil:1];
+  selectedColor = [(PREditorColorPickerConfiguration *)self selectedColor];
+  v7 = [formatterCopy appendObject:selectedColor withName:@"selectedColor" skipIfNil:1];
 
-  v8 = [(PREditorColorPickerConfiguration *)self suggestedColors];
-  v9 = [v17 appendObject:v8 withName:@"suggestedColors" skipIfNil:1];
+  suggestedColors = [(PREditorColorPickerConfiguration *)self suggestedColors];
+  v9 = [formatterCopy appendObject:suggestedColors withName:@"suggestedColors" skipIfNil:1];
 
-  v10 = [(PREditorColorPickerConfiguration *)self colorPalette];
-  v11 = [v17 appendObject:v10 withName:@"colorPalette"];
+  colorPalette = [(PREditorColorPickerConfiguration *)self colorPalette];
+  v11 = [formatterCopy appendObject:colorPalette withName:@"colorPalette"];
 
-  v12 = [(PREditorColorPickerConfiguration *)self colorWellDisplayMode];
-  if (v12 > 2)
+  colorWellDisplayMode = [(PREditorColorPickerConfiguration *)self colorWellDisplayMode];
+  if (colorWellDisplayMode > 2)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = off_1E78431E0[v12];
+    v13 = off_1E78431E0[colorWellDisplayMode];
   }
 
-  [v17 appendString:v13 withName:@"colorWellDisplayMode"];
-  v14 = [v17 appendBool:-[PREditorColorPickerConfiguration showsSlider](self withName:{"showsSlider"), @"showsSlider"}];
-  v15 = [(PREditorColorPickerConfiguration *)self context];
-  if (v15 > 2)
+  [formatterCopy appendString:v13 withName:@"colorWellDisplayMode"];
+  v14 = [formatterCopy appendBool:-[PREditorColorPickerConfiguration showsSlider](self withName:{"showsSlider"), @"showsSlider"}];
+  context = [(PREditorColorPickerConfiguration *)self context];
+  if (context > 2)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = off_1E78431F8[v15];
+    v16 = off_1E78431F8[context];
   }
 
-  [v17 appendString:v16 withName:@"context"];
+  [formatterCopy appendString:v16 withName:@"context"];
 }
 
 - (void)initWithIdentifier:(const char *)a1 prompt:selectedColor:suggestedColors:colorPalette:colorWellDisplayMode:showsSlider:context:.cold.1(const char *a1)

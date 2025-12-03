@@ -1,20 +1,20 @@
 @interface CHUISWidgetHostCancelTouchesAssertion
-- (CHUISWidgetHostCancelTouchesAssertion)initWithAssertions:(id)a3;
+- (CHUISWidgetHostCancelTouchesAssertion)initWithAssertions:(id)assertions;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation CHUISWidgetHostCancelTouchesAssertion
 
-- (CHUISWidgetHostCancelTouchesAssertion)initWithAssertions:(id)a3
+- (CHUISWidgetHostCancelTouchesAssertion)initWithAssertions:(id)assertions
 {
-  v4 = a3;
+  assertionsCopy = assertions;
   v9.receiver = self;
   v9.super_class = CHUISWidgetHostCancelTouchesAssertion;
   v5 = [(CHUISWidgetHostCancelTouchesAssertion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [assertionsCopy copy];
     assertions = v5->_assertions;
     v5->_assertions = v6;
   }
@@ -43,8 +43,8 @@
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(CHUISWidgetHostCancelTouchesAssertion *)self assertions];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    assertions = [(CHUISWidgetHostCancelTouchesAssertion *)self assertions];
+    v4 = [assertions countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = *v9;
@@ -55,14 +55,14 @@
         {
           if (*v9 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(assertions);
           }
 
           [*(*(&v8 + 1) + 8 * v6++) invalidate];
         }
 
         while (v4 != v6);
-        v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v4 = [assertions countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v4);

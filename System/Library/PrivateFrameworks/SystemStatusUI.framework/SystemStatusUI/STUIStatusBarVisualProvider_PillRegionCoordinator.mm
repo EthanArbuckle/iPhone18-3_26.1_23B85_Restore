@@ -1,15 +1,15 @@
 @interface STUIStatusBarVisualProvider_PillRegionCoordinator
-- (BOOL)handledUpdateOfActionable:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5;
+- (BOOL)handledUpdateOfActionable:(id)actionable highlighted:(BOOL)highlighted initialPress:(BOOL)press;
 - (STUIStatusBarPillRegionVisualProvider)visualProvider;
 - (id)animationForBackgroundActivityIcon;
-- (id)animationForBackgroundActivityPillWithDuration:(double)a3 scale:(double)a4;
-- (void)_hideActivityDetailAndUpdate:(BOOL)a3;
-- (void)_updateBackgroundActivityWithEntry:(id)a3 timeEntry:(id)a4 needsUpdate:(BOOL)a5;
-- (void)setPillIconPlacement:(id)a3;
-- (void)setPillRegion:(id)a3;
-- (void)setVisualProvider:(id)a3;
-- (void)updateDataForBackgroundActivity:(id)a3;
-- (void)updateRegion:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5 cornerRadius:(double)a6;
+- (id)animationForBackgroundActivityPillWithDuration:(double)duration scale:(double)scale;
+- (void)_hideActivityDetailAndUpdate:(BOOL)update;
+- (void)_updateBackgroundActivityWithEntry:(id)entry timeEntry:(id)timeEntry needsUpdate:(BOOL)update;
+- (void)setPillIconPlacement:(id)placement;
+- (void)setPillRegion:(id)region;
+- (void)setVisualProvider:(id)provider;
+- (void)updateDataForBackgroundActivity:(id)activity;
+- (void)updateRegion:(id)region highlighted:(BOOL)highlighted initialPress:(BOOL)press cornerRadius:(double)radius;
 @end
 
 @implementation STUIStatusBarVisualProvider_PillRegionCoordinator
@@ -21,71 +21,71 @@
   return WeakRetained;
 }
 
-- (void)setPillRegion:(id)a3
+- (void)setPillRegion:(id)region
 {
-  v5 = a3;
+  regionCopy = region;
   pillRegion = self->_pillRegion;
   p_pillRegion = &self->_pillRegion;
-  if (pillRegion != v5)
+  if (pillRegion != regionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_pillRegion, a3);
+    v8 = regionCopy;
+    objc_storeStrong(p_pillRegion, region);
     [(STUIStatusBarRegion *)*p_pillRegion disableWithToken:11];
-    v5 = v8;
+    regionCopy = v8;
   }
 }
 
-- (void)setPillIconPlacement:(id)a3
+- (void)setPillIconPlacement:(id)placement
 {
-  v5 = a3;
-  objc_storeStrong(&self->_pillIconPlacement, a3);
+  placementCopy = placement;
+  objc_storeStrong(&self->_pillIconPlacement, placement);
   backgroundActivityDetailPlacement = self->_backgroundActivityDetailPlacement;
-  self->_backgroundActivityDetailPlacement = v5;
+  self->_backgroundActivityDetailPlacement = placementCopy;
 }
 
-- (void)setVisualProvider:(id)a3
+- (void)setVisualProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   self->_visualProviderImplementsBackgroundActivityPillAnimation = objc_opt_respondsToSelector() & 1;
   objc_storeWeak(&self->_visualProvider, obj);
 }
 
-- (void)updateDataForBackgroundActivity:(id)a3
+- (void)updateDataForBackgroundActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (self->_pillRegion || self->_backgroundActivityDetailPlacement)
   {
-    v28 = v4;
-    v5 = [v4 backgroundActivityEntry];
-    v6 = v5;
+    v28 = activityCopy;
+    backgroundActivityEntry = [activityCopy backgroundActivityEntry];
+    v6 = backgroundActivityEntry;
     pillRegion = self->_pillRegion;
-    if (v5)
+    if (backgroundActivityEntry)
     {
       if (!pillRegion)
       {
         goto LABEL_18;
       }
 
-      v8 = [v5 isEnabled];
+      isEnabled = [backgroundActivityEntry isEnabled];
       v9 = self->_pillRegion;
-      if (v8)
+      if (isEnabled)
       {
         [(STUIStatusBarRegion *)v9 enableWithToken:11];
-        v10 = [v6 backgroundActivityIdentifier];
-        v11 = [STUIStatusBarActivityAction actionForBackgroundActivityWithIdentifier:v10];
+        backgroundActivityIdentifier = [v6 backgroundActivityIdentifier];
+        v11 = [STUIStatusBarActivityAction actionForBackgroundActivityWithIdentifier:backgroundActivityIdentifier];
         [(STUIStatusBarRegion *)self->_pillRegion setAction:v11];
 
-        v12 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
-        v13 = [v12 statusBar];
-        v14 = [v13 currentAggregatedData];
+        visualProvider = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
+        statusBar = [visualProvider statusBar];
+        currentAggregatedData = [statusBar currentAggregatedData];
         v15 = [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277D6BD70]];
-        v16 = [v14 dataByApplyingUpdate:v28 keys:v15];
+        v16 = [currentAggregatedData dataByApplyingUpdate:v28 keys:v15];
 
-        v17 = [v16 backNavigationEntry];
-        if ([v17 isEnabled])
+        backNavigationEntry = [v16 backNavigationEntry];
+        if ([backNavigationEntry isEnabled])
         {
-          v18 = [MEMORY[0x277D6BAF0] disabledEntry];
-          [v28 setBackNavigationEntry:v18];
+          disabledEntry = [MEMORY[0x277D6BAF0] disabledEntry];
+          [v28 setBackNavigationEntry:disabledEntry];
         }
       }
 
@@ -105,25 +105,25 @@
       goto LABEL_20;
     }
 
-    v19 = [v28 shortTimeEntry];
+    shortTimeEntry = [v28 shortTimeEntry];
 
-    if (v19)
+    if (shortTimeEntry)
     {
-      v20 = [v28 shortTimeEntry];
-      v21 = [v20 isEnabled];
-      v22 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
-      v23 = [v22 statusBar];
-      v24 = [v23 currentAggregatedData];
-      v25 = [v24 shortTimeEntry];
-      v26 = [v25 isEnabled];
+      shortTimeEntry2 = [v28 shortTimeEntry];
+      isEnabled2 = [shortTimeEntry2 isEnabled];
+      visualProvider2 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
+      statusBar2 = [visualProvider2 statusBar];
+      currentAggregatedData2 = [statusBar2 currentAggregatedData];
+      shortTimeEntry3 = [currentAggregatedData2 shortTimeEntry];
+      isEnabled3 = [shortTimeEntry3 isEnabled];
 
-      if (v6 || ((v21 ^ v26) & 1) != 0)
+      if (v6 || ((isEnabled2 ^ isEnabled3) & 1) != 0)
       {
 LABEL_18:
         if (self->_backgroundActivityDetailPlacement)
         {
-          v27 = [v28 shortTimeEntry];
-          [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self _updateBackgroundActivityWithEntry:v6 timeEntry:v27 needsUpdate:0];
+          shortTimeEntry4 = [v28 shortTimeEntry];
+          [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self _updateBackgroundActivityWithEntry:v6 timeEntry:shortTimeEntry4 needsUpdate:0];
         }
       }
     }
@@ -135,22 +135,22 @@ LABEL_18:
 
 LABEL_20:
 
-    v4 = v28;
+    activityCopy = v28;
   }
 }
 
-- (void)_updateBackgroundActivityWithEntry:(id)a3 timeEntry:(id)a4 needsUpdate:(BOOL)a5
+- (void)_updateBackgroundActivityWithEntry:(id)entry timeEntry:(id)timeEntry needsUpdate:(BOOL)update
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self backgroundActivityDetailTimer];
-  [v10 invalidate];
+  updateCopy = update;
+  entryCopy = entry;
+  timeEntryCopy = timeEntry;
+  backgroundActivityDetailTimer = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self backgroundActivityDetailTimer];
+  [backgroundActivityDetailTimer invalidate];
 
   [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self setBackgroundActivityDetailTimer:0];
-  if (v8)
+  if (entryCopy)
   {
-    if (v9)
+    if (timeEntryCopy)
     {
       goto LABEL_3;
     }
@@ -158,24 +158,24 @@ LABEL_20:
 
   else
   {
-    v13 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
-    v14 = [v13 statusBar];
-    v15 = [v14 currentAggregatedData];
-    v8 = [v15 backgroundActivityEntry];
+    visualProvider = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
+    statusBar = [visualProvider statusBar];
+    currentAggregatedData = [statusBar currentAggregatedData];
+    entryCopy = [currentAggregatedData backgroundActivityEntry];
 
-    if (v9)
+    if (timeEntryCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
-  v17 = [v16 statusBar];
-  v18 = [v17 currentAggregatedData];
-  v9 = [v18 shortTimeEntry];
+  visualProvider2 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
+  statusBar2 = [visualProvider2 statusBar];
+  currentAggregatedData2 = [statusBar2 currentAggregatedData];
+  timeEntryCopy = [currentAggregatedData2 shortTimeEntry];
 
 LABEL_3:
-  if (![v8 isEnabled])
+  if (![entryCopy isEnabled])
   {
     goto LABEL_15;
   }
@@ -183,7 +183,7 @@ LABEL_3:
   if (!self->_pillRegion)
   {
 LABEL_13:
-    [v8 displayStartDate];
+    [entryCopy displayStartDate];
     v21 = v20 + 3.0 - CACurrentMediaTime();
     if (v21 > 0.0)
     {
@@ -204,23 +204,23 @@ LABEL_13:
     }
 
 LABEL_15:
-    [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self _hideActivityDetailAndUpdate:v5];
+    [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self _hideActivityDetailAndUpdate:updateCopy];
     goto LABEL_16;
   }
 
-  v11 = [v8 backgroundActivityIdentifier];
-  if (![STUIStatusBarPillBackgroundActivityItem shouldKeepIconVisibleForActivityWithIdentifier:v11])
+  backgroundActivityIdentifier = [entryCopy backgroundActivityIdentifier];
+  if (![STUIStatusBarPillBackgroundActivityItem shouldKeepIconVisibleForActivityWithIdentifier:backgroundActivityIdentifier])
   {
-    v12 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
-    if ([v12 expanded])
+    visualProvider3 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
+    if ([visualProvider3 expanded])
     {
 
       goto LABEL_8;
     }
 
-    v19 = [v9 isEnabled];
+    isEnabled = [timeEntryCopy isEnabled];
 
-    if (!v19)
+    if (!isEnabled)
     {
       goto LABEL_9;
     }
@@ -235,20 +235,20 @@ LABEL_9:
 LABEL_16:
 }
 
-- (void)_hideActivityDetailAndUpdate:(BOOL)a3
+- (void)_hideActivityDetailAndUpdate:(BOOL)update
 {
-  v3 = a3;
-  v5 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
-  v6 = [v5 expanded];
+  updateCopy = update;
+  visualProvider = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
+  expanded = [visualProvider expanded];
 
-  if ((v6 & 1) == 0)
+  if ((expanded & 1) == 0)
   {
     [(STUIStatusBarDisplayItemPlacement *)self->_backgroundActivityDetailPlacement setEnabled:0];
-    if (v3)
+    if (updateCopy)
     {
-      v8 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
-      v7 = [v8 statusBar];
-      [v7 updateWithAnimations:MEMORY[0x277CBEBF8]];
+      visualProvider2 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
+      statusBar = [visualProvider2 statusBar];
+      [statusBar updateWithAnimations:MEMORY[0x277CBEBF8]];
     }
   }
 }
@@ -274,14 +274,14 @@ LABEL_16:
   return v2;
 }
 
-- (id)animationForBackgroundActivityPillWithDuration:(double)a3 scale:(double)a4
+- (id)animationForBackgroundActivityPillWithDuration:(double)duration scale:(double)scale
 {
   v7 = [STUIStatusBarAnimationFactory fadeAnimationWithDuration:"fadeAnimationWithDuration:scale:" scale:?];
-  v8 = [STUIStatusBarAnimationFactory fadeAnimationWithDuration:a3 scale:a4];
+  v8 = [STUIStatusBarAnimationFactory fadeAnimationWithDuration:duration scale:scale];
   [v8 setPriority:20];
-  v9 = [STUIStatusBarAnimationFactory fadeAnimationWithDuration:a3 scale:a4 offset:0.0, 0.0];
+  v9 = [STUIStatusBarAnimationFactory fadeAnimationWithDuration:duration scale:scale offset:0.0, 0.0];
   [v9 setPriority:20];
-  v10 = [STUIStatusBarAnimationFactory fadeAnimationWithDuration:a3 scale:a4 offset:-0.0, 0.0];
+  v10 = [STUIStatusBarAnimationFactory fadeAnimationWithDuration:duration scale:scale offset:-0.0, 0.0];
   [v10 setPriority:20];
   v11 = +[(STUIStatusBarItem *)STUIStatusBarPillBackgroundActivityItem];
   [v7 addSubAnimation:v9 forDisplayItemWithIdentifier:v11];
@@ -295,8 +295,8 @@ LABEL_16:
   [v7 setDelaysDependentItems:1];
   if (self->_visualProviderImplementsBackgroundActivityPillAnimation)
   {
-    v14 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
-    v15 = [v14 animationForBackgroundActivityPillAnimation:v7 duration:a3 scale:a4];
+    visualProvider = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self visualProvider];
+    v15 = [visualProvider animationForBackgroundActivityPillAnimation:v7 duration:duration scale:scale];
 
     v7 = v15;
   }
@@ -304,36 +304,36 @@ LABEL_16:
   return v7;
 }
 
-- (void)updateRegion:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5 cornerRadius:(double)a6
+- (void)updateRegion:(id)region highlighted:(BOOL)highlighted initialPress:(BOOL)press cornerRadius:(double)radius
 {
-  v7 = a5;
-  v8 = a4;
+  pressCopy = press;
+  highlightedCopy = highlighted;
   v15[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [v9 highlightView];
-  if (!v10)
+  regionCopy = region;
+  highlightView = [regionCopy highlightView];
+  if (!highlightView)
   {
-    v10 = objc_alloc_init(STUIStatusBarRoundedCornerView);
-    [(STUIStatusBarRoundedCornerView *)v10 setCornerRadius:a6];
-    [v9 setHighlightView:v10];
+    highlightView = objc_alloc_init(STUIStatusBarRoundedCornerView);
+    [(STUIStatusBarRoundedCornerView *)highlightView setCornerRadius:radius];
+    [regionCopy setHighlightView:highlightView];
   }
 
   v11 = MEMORY[0x277D75220];
-  v15[0] = v10;
+  v15[0] = highlightView;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __104__STUIStatusBarVisualProvider_PillRegionCoordinator_updateRegion_highlighted_initialPress_cornerRadius___block_invoke;
   v13[3] = &__block_descriptor_33_e16_v16__0__UIView_8l;
-  v14 = v8;
-  [v11 _setVisuallyHighlighted:v8 forViews:v12 initialPress:v7 highlightBlock:v13];
+  v14 = highlightedCopy;
+  [v11 _setVisuallyHighlighted:highlightedCopy forViews:v12 initialPress:pressCopy highlightBlock:v13];
 }
 
-- (BOOL)handledUpdateOfActionable:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5
+- (BOOL)handledUpdateOfActionable:(id)actionable highlighted:(BOOL)highlighted initialPress:(BOOL)press
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  pressCopy = press;
+  highlightedCopy = highlighted;
+  actionableCopy = actionable;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -343,20 +343,20 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = v8;
+  v9 = actionableCopy;
   if (!v9)
   {
     goto LABEL_6;
   }
 
-  v10 = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self pillRegion];
+  pillRegion = [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self pillRegion];
 
-  if (v10 != v9)
+  if (pillRegion != v9)
   {
     goto LABEL_6;
   }
 
-  [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self updateRegion:v9 highlighted:v6 initialPress:v5 cornerRadius:-1.0];
+  [(STUIStatusBarVisualProvider_PillRegionCoordinator *)self updateRegion:v9 highlighted:highlightedCopy initialPress:pressCopy cornerRadius:-1.0];
   v11 = 1;
 LABEL_7:
 

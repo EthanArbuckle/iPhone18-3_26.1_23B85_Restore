@@ -1,29 +1,29 @@
 @interface RTXPCActivityCriteria
-+ (const)convertNetworkTransferDirection:(unint64_t)a3;
-+ (const)convertPriority:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (RTXPCActivityCriteria)initWithInterval:(double)a3 gracePeriod:(double)a4 priority:(unint64_t)a5 requireNetworkConnectivity:(BOOL)a6 requireInexpensiveNetworkConnectivity:(BOOL)a7 networkTransferDirection:(unint64_t)a8 allowBattery:(BOOL)a9 powerNap:(BOOL)a10 delay:(double)a11;
-- (RTXPCActivityCriteria)initWithInterval:(double)a3 gracePeriod:(double)a4 priority:(unint64_t)a5 requireNetworkConnectivity:(BOOL)a6 requireInexpensiveNetworkConnectivity:(BOOL)a7 networkTransferDirection:(unint64_t)a8 allowBattery:(BOOL)a9 powerNap:(BOOL)a10 delay:(double)a11 requiresClassA:(BOOL)a12;
-- (RTXPCActivityCriteria)initWithInterval:(double)a3 gracePeriod:(double)a4 priority:(unint64_t)a5 requireNetworkConnectivity:(BOOL)a6 requireInexpensiveNetworkConnectivity:(BOOL)a7 networkTransferDirection:(unint64_t)a8 allowBattery:(BOOL)a9 powerNap:(BOOL)a10 delay:(double)a11 requiresClassB:(BOOL)a12;
-- (RTXPCActivityCriteria)initWithInterval:(double)a3 gracePeriod:(double)a4 priority:(unint64_t)a5 requireNetworkConnectivity:(BOOL)a6 requireInexpensiveNetworkConnectivity:(BOOL)a7 networkTransferUploadSize:(unint64_t)a8 networkTransferDownloadSize:(unint64_t)a9 allowBattery:(BOOL)a10 powerNap:(BOOL)a11 delay:(double)a12 requireBatteryLevel:(id)a13;
-- (RTXPCActivityCriteria)initWithInterval:(double)a3 gracePeriod:(double)a4 priority:(unint64_t)a5 requireNetworkConnectivity:(BOOL)a6 requireInexpensiveNetworkConnectivity:(BOOL)a7 networkTransferUploadSize:(unint64_t)a8 networkTransferDownloadSize:(unint64_t)a9 allowBattery:(BOOL)a10 powerNap:(BOOL)a11 delay:(double)a12 requireBatteryLevel:(id)a13 requiresClassB:(BOOL)a14 requiresClassA:(BOOL)a15;
++ (const)convertNetworkTransferDirection:(unint64_t)direction;
++ (const)convertPriority:(unint64_t)priority;
+- (BOOL)isEqual:(id)equal;
+- (RTXPCActivityCriteria)initWithInterval:(double)interval gracePeriod:(double)period priority:(unint64_t)priority requireNetworkConnectivity:(BOOL)connectivity requireInexpensiveNetworkConnectivity:(BOOL)networkConnectivity networkTransferDirection:(unint64_t)direction allowBattery:(BOOL)battery powerNap:(BOOL)self0 delay:(double)self1;
+- (RTXPCActivityCriteria)initWithInterval:(double)interval gracePeriod:(double)period priority:(unint64_t)priority requireNetworkConnectivity:(BOOL)connectivity requireInexpensiveNetworkConnectivity:(BOOL)networkConnectivity networkTransferDirection:(unint64_t)direction allowBattery:(BOOL)battery powerNap:(BOOL)self0 delay:(double)self1 requiresClassA:(BOOL)self2;
+- (RTXPCActivityCriteria)initWithInterval:(double)interval gracePeriod:(double)period priority:(unint64_t)priority requireNetworkConnectivity:(BOOL)connectivity requireInexpensiveNetworkConnectivity:(BOOL)networkConnectivity networkTransferDirection:(unint64_t)direction allowBattery:(BOOL)battery powerNap:(BOOL)self0 delay:(double)self1 requiresClassB:(BOOL)self2;
+- (RTXPCActivityCriteria)initWithInterval:(double)interval gracePeriod:(double)period priority:(unint64_t)priority requireNetworkConnectivity:(BOOL)connectivity requireInexpensiveNetworkConnectivity:(BOOL)networkConnectivity networkTransferUploadSize:(unint64_t)size networkTransferDownloadSize:(unint64_t)downloadSize allowBattery:(BOOL)self0 powerNap:(BOOL)self1 delay:(double)self2 requireBatteryLevel:(id)self3;
+- (RTXPCActivityCriteria)initWithInterval:(double)interval gracePeriod:(double)period priority:(unint64_t)priority requireNetworkConnectivity:(BOOL)connectivity requireInexpensiveNetworkConnectivity:(BOOL)networkConnectivity networkTransferUploadSize:(unint64_t)size networkTransferDownloadSize:(unint64_t)downloadSize allowBattery:(BOOL)self0 powerNap:(BOOL)self1 delay:(double)self2 requireBatteryLevel:(id)self3 requiresClassB:(BOOL)self4 requiresClassA:(BOOL)self5;
 - (id)description;
 @end
 
 @implementation RTXPCActivityCriteria
 
-+ (const)convertPriority:(unint64_t)a3
++ (const)convertPriority:(unint64_t)priority
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (priority)
   {
-    if (a3 == 2)
+    if (priority == 2)
     {
       v4 = MEMORY[0x277D86350];
       return *v4;
     }
 
-    if (a3 == 1)
+    if (priority == 1)
     {
       v4 = MEMORY[0x277D86348];
       return *v4;
@@ -33,7 +33,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = 134218498;
-      v8 = a3;
+      priorityCopy = priority;
       v9 = 2080;
       v10 = "+[RTXPCActivityCriteria convertPriority:]";
       v11 = 1024;
@@ -45,18 +45,18 @@
   return 0;
 }
 
-+ (const)convertNetworkTransferDirection:(unint64_t)a3
++ (const)convertNetworkTransferDirection:(unint64_t)direction
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 > 1)
+  if (direction > 1)
   {
-    if (a3 == 3)
+    if (direction == 3)
     {
       v4 = MEMORY[0x277D862F0];
       return *v4;
     }
 
-    if (a3 == 2)
+    if (direction == 2)
     {
       v4 = MEMORY[0x277D862E8];
       return *v4;
@@ -65,19 +65,19 @@
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!direction)
   {
     return 0;
   }
 
-  if (a3 != 1)
+  if (direction != 1)
   {
 LABEL_8:
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 134218498;
-      v8 = a3;
+      directionCopy = direction;
       v9 = 2080;
       v10 = "+[RTXPCActivityCriteria convertNetworkTransferDirection:]";
       v11 = 1024;
@@ -92,20 +92,20 @@ LABEL_8:
   return *v4;
 }
 
-- (RTXPCActivityCriteria)initWithInterval:(double)a3 gracePeriod:(double)a4 priority:(unint64_t)a5 requireNetworkConnectivity:(BOOL)a6 requireInexpensiveNetworkConnectivity:(BOOL)a7 networkTransferDirection:(unint64_t)a8 allowBattery:(BOOL)a9 powerNap:(BOOL)a10 delay:(double)a11
+- (RTXPCActivityCriteria)initWithInterval:(double)interval gracePeriod:(double)period priority:(unint64_t)priority requireNetworkConnectivity:(BOOL)connectivity requireInexpensiveNetworkConnectivity:(BOOL)networkConnectivity networkTransferDirection:(unint64_t)direction allowBattery:(BOOL)battery powerNap:(BOOL)self0 delay:(double)self1
 {
-  v13 = a9;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
+  batteryCopy = battery;
+  directionCopy = direction;
+  networkConnectivityCopy = networkConnectivity;
+  connectivityCopy = connectivity;
   v29 = *MEMORY[0x277D85DE8];
-  if (a8 >= 4)
+  if (direction >= 4)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
       *buf = 67109120;
-      v28 = v14;
+      v28 = directionCopy;
       _os_log_fault_impl(&dword_2304B3000, v23, OS_LOG_TYPE_FAULT, "receive unexpected network transfer direction when initializing criteria, %d", buf, 8u);
     }
 
@@ -115,29 +115,29 @@ LABEL_8:
 
   else
   {
-    v21 = qword_230AFE4C0[a8];
-    v22 = qword_230AFE4E0[a8];
+    v21 = qword_230AFE4C0[direction];
+    v22 = qword_230AFE4E0[direction];
   }
 
   LOWORD(v26) = 0;
-  LOBYTE(v25) = a10;
-  return [(RTXPCActivityCriteria *)self initWithInterval:a5 gracePeriod:v16 priority:v15 requireNetworkConnectivity:v22 requireInexpensiveNetworkConnectivity:v21 networkTransferUploadSize:v13 networkTransferDownloadSize:a3 allowBattery:a4 powerNap:a11 delay:v25 requireBatteryLevel:0 requiresClassB:v26 requiresClassA:?];
+  LOBYTE(v25) = nap;
+  return [(RTXPCActivityCriteria *)self initWithInterval:priority gracePeriod:connectivityCopy priority:networkConnectivityCopy requireNetworkConnectivity:v22 requireInexpensiveNetworkConnectivity:v21 networkTransferUploadSize:batteryCopy networkTransferDownloadSize:interval allowBattery:period powerNap:delay delay:v25 requireBatteryLevel:0 requiresClassB:v26 requiresClassA:?];
 }
 
-- (RTXPCActivityCriteria)initWithInterval:(double)a3 gracePeriod:(double)a4 priority:(unint64_t)a5 requireNetworkConnectivity:(BOOL)a6 requireInexpensiveNetworkConnectivity:(BOOL)a7 networkTransferDirection:(unint64_t)a8 allowBattery:(BOOL)a9 powerNap:(BOOL)a10 delay:(double)a11 requiresClassA:(BOOL)a12
+- (RTXPCActivityCriteria)initWithInterval:(double)interval gracePeriod:(double)period priority:(unint64_t)priority requireNetworkConnectivity:(BOOL)connectivity requireInexpensiveNetworkConnectivity:(BOOL)networkConnectivity networkTransferDirection:(unint64_t)direction allowBattery:(BOOL)battery powerNap:(BOOL)self0 delay:(double)self1 requiresClassA:(BOOL)self2
 {
-  v14 = a9;
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
+  batteryCopy = battery;
+  directionCopy = direction;
+  networkConnectivityCopy = networkConnectivity;
+  connectivityCopy = connectivity;
   v30 = *MEMORY[0x277D85DE8];
-  if (a8 >= 4)
+  if (direction >= 4)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
     {
       *buf = 67109120;
-      v29 = v15;
+      v29 = directionCopy;
       _os_log_fault_impl(&dword_2304B3000, v24, OS_LOG_TYPE_FAULT, "receive unexpected network transfer direction when initializing criteria, %d", buf, 8u);
     }
 
@@ -147,30 +147,30 @@ LABEL_8:
 
   else
   {
-    v22 = qword_230AFE4C0[a8];
-    v23 = qword_230AFE4E0[a8];
+    v22 = qword_230AFE4C0[direction];
+    v23 = qword_230AFE4E0[direction];
   }
 
-  BYTE1(v27) = a12;
+  BYTE1(v27) = a;
   LOBYTE(v27) = 0;
-  LOBYTE(v26) = a10;
-  return [(RTXPCActivityCriteria *)self initWithInterval:a5 gracePeriod:v17 priority:v16 requireNetworkConnectivity:v23 requireInexpensiveNetworkConnectivity:v22 networkTransferUploadSize:v14 networkTransferDownloadSize:a3 allowBattery:a4 powerNap:a11 delay:v26 requireBatteryLevel:0 requiresClassB:v27 requiresClassA:?];
+  LOBYTE(v26) = nap;
+  return [(RTXPCActivityCriteria *)self initWithInterval:priority gracePeriod:connectivityCopy priority:networkConnectivityCopy requireNetworkConnectivity:v23 requireInexpensiveNetworkConnectivity:v22 networkTransferUploadSize:batteryCopy networkTransferDownloadSize:interval allowBattery:period powerNap:delay delay:v26 requireBatteryLevel:0 requiresClassB:v27 requiresClassA:?];
 }
 
-- (RTXPCActivityCriteria)initWithInterval:(double)a3 gracePeriod:(double)a4 priority:(unint64_t)a5 requireNetworkConnectivity:(BOOL)a6 requireInexpensiveNetworkConnectivity:(BOOL)a7 networkTransferDirection:(unint64_t)a8 allowBattery:(BOOL)a9 powerNap:(BOOL)a10 delay:(double)a11 requiresClassB:(BOOL)a12
+- (RTXPCActivityCriteria)initWithInterval:(double)interval gracePeriod:(double)period priority:(unint64_t)priority requireNetworkConnectivity:(BOOL)connectivity requireInexpensiveNetworkConnectivity:(BOOL)networkConnectivity networkTransferDirection:(unint64_t)direction allowBattery:(BOOL)battery powerNap:(BOOL)self0 delay:(double)self1 requiresClassB:(BOOL)self2
 {
-  v14 = a9;
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
+  batteryCopy = battery;
+  directionCopy = direction;
+  networkConnectivityCopy = networkConnectivity;
+  connectivityCopy = connectivity;
   v30 = *MEMORY[0x277D85DE8];
-  if (a8 >= 4)
+  if (direction >= 4)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
     {
       *buf = 67109120;
-      v29 = v15;
+      v29 = directionCopy;
       _os_log_fault_impl(&dword_2304B3000, v24, OS_LOG_TYPE_FAULT, "receive unexpected network transfer direction when initializing criteria, %d", buf, 8u);
     }
 
@@ -180,26 +180,26 @@ LABEL_8:
 
   else
   {
-    v22 = qword_230AFE4C0[a8];
-    v23 = qword_230AFE4E0[a8];
+    v22 = qword_230AFE4C0[direction];
+    v23 = qword_230AFE4E0[direction];
   }
 
-  LOWORD(v27) = a12;
-  LOBYTE(v26) = a10;
-  return [(RTXPCActivityCriteria *)self initWithInterval:a5 gracePeriod:v17 priority:v16 requireNetworkConnectivity:v23 requireInexpensiveNetworkConnectivity:v22 networkTransferUploadSize:v14 networkTransferDownloadSize:a3 allowBattery:a4 powerNap:a11 delay:v26 requireBatteryLevel:0 requiresClassB:v27 requiresClassA:?];
+  LOWORD(v27) = b;
+  LOBYTE(v26) = nap;
+  return [(RTXPCActivityCriteria *)self initWithInterval:priority gracePeriod:connectivityCopy priority:networkConnectivityCopy requireNetworkConnectivity:v23 requireInexpensiveNetworkConnectivity:v22 networkTransferUploadSize:batteryCopy networkTransferDownloadSize:interval allowBattery:period powerNap:delay delay:v26 requireBatteryLevel:0 requiresClassB:v27 requiresClassA:?];
 }
 
-- (RTXPCActivityCriteria)initWithInterval:(double)a3 gracePeriod:(double)a4 priority:(unint64_t)a5 requireNetworkConnectivity:(BOOL)a6 requireInexpensiveNetworkConnectivity:(BOOL)a7 networkTransferUploadSize:(unint64_t)a8 networkTransferDownloadSize:(unint64_t)a9 allowBattery:(BOOL)a10 powerNap:(BOOL)a11 delay:(double)a12 requireBatteryLevel:(id)a13
+- (RTXPCActivityCriteria)initWithInterval:(double)interval gracePeriod:(double)period priority:(unint64_t)priority requireNetworkConnectivity:(BOOL)connectivity requireInexpensiveNetworkConnectivity:(BOOL)networkConnectivity networkTransferUploadSize:(unint64_t)size networkTransferDownloadSize:(unint64_t)downloadSize allowBattery:(BOOL)self0 powerNap:(BOOL)self1 delay:(double)self2 requireBatteryLevel:(id)self3
 {
   LOWORD(v15) = 0;
-  LOBYTE(v14) = a11;
-  return [(RTXPCActivityCriteria *)self initWithInterval:a5 gracePeriod:a6 priority:a7 requireNetworkConnectivity:a8 requireInexpensiveNetworkConnectivity:a9 networkTransferUploadSize:a10 networkTransferDownloadSize:a3 allowBattery:a4 powerNap:a12 delay:v14 requireBatteryLevel:a13 requiresClassB:v15 requiresClassA:?];
+  LOBYTE(v14) = nap;
+  return [(RTXPCActivityCriteria *)self initWithInterval:priority gracePeriod:connectivity priority:networkConnectivity requireNetworkConnectivity:size requireInexpensiveNetworkConnectivity:downloadSize networkTransferUploadSize:battery networkTransferDownloadSize:interval allowBattery:period powerNap:delay delay:v14 requireBatteryLevel:level requiresClassB:v15 requiresClassA:?];
 }
 
-- (RTXPCActivityCriteria)initWithInterval:(double)a3 gracePeriod:(double)a4 priority:(unint64_t)a5 requireNetworkConnectivity:(BOOL)a6 requireInexpensiveNetworkConnectivity:(BOOL)a7 networkTransferUploadSize:(unint64_t)a8 networkTransferDownloadSize:(unint64_t)a9 allowBattery:(BOOL)a10 powerNap:(BOOL)a11 delay:(double)a12 requireBatteryLevel:(id)a13 requiresClassB:(BOOL)a14 requiresClassA:(BOOL)a15
+- (RTXPCActivityCriteria)initWithInterval:(double)interval gracePeriod:(double)period priority:(unint64_t)priority requireNetworkConnectivity:(BOOL)connectivity requireInexpensiveNetworkConnectivity:(BOOL)networkConnectivity networkTransferUploadSize:(unint64_t)size networkTransferDownloadSize:(unint64_t)downloadSize allowBattery:(BOOL)self0 powerNap:(BOOL)self1 delay:(double)self2 requireBatteryLevel:(id)self3 requiresClassB:(BOOL)self4 requiresClassA:(BOOL)self5
 {
-  v25 = a13;
-  if (a3 < 0.0)
+  levelCopy = level;
+  if (interval < 0.0)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -214,7 +214,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a4 < 0.0)
+  if (period < 0.0)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -226,11 +226,11 @@ LABEL_10:
 
 LABEL_11:
 
-    v28 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  if (a12 < 0.0)
+  if (delay < 0.0)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -249,28 +249,28 @@ LABEL_11:
   v31 = v30;
   if (v30)
   {
-    *(v30 + 3) = a3;
-    *(v30 + 4) = a12;
-    *(v30 + 5) = a4;
-    *(v30 + 6) = a5;
-    v30[8] = a6;
-    v30[9] = a7;
-    *(v30 + 8) = a8;
-    *(v30 + 9) = a9;
-    v30[10] = a10;
-    v30[11] = a11;
+    *(v30 + 3) = interval;
+    *(v30 + 4) = delay;
+    *(v30 + 5) = period;
+    *(v30 + 6) = priority;
+    v30[8] = connectivity;
+    v30[9] = networkConnectivity;
+    *(v30 + 8) = size;
+    *(v30 + 9) = downloadSize;
+    v30[10] = battery;
+    v30[11] = nap;
     *(v30 + 11) = 0x7FF8000000000000;
     *(v30 + 14) = 0;
-    objc_storeStrong(v30 + 10, a13);
-    v31[12] = a14;
-    v31[13] = a15;
+    objc_storeStrong(v30 + 10, level);
+    v31[12] = b;
+    v31[13] = a;
   }
 
   self = v31;
-  v28 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v28;
+  return selfCopy;
 }
 
 - (id)description
@@ -371,9 +371,9 @@ LABEL_12:
     v18 = @"NO";
   }
 
-  v19 = [(RTXPCActivityCriteria *)self networkTransferUploadSize];
-  v20 = [(RTXPCActivityCriteria *)self networkTransferDownloadSize];
-  v21 = [(RTXPCActivityCriteria *)self requireBatteryLevel];
+  networkTransferUploadSize = [(RTXPCActivityCriteria *)self networkTransferUploadSize];
+  networkTransferDownloadSize = [(RTXPCActivityCriteria *)self networkTransferDownloadSize];
+  requireBatteryLevel = [(RTXPCActivityCriteria *)self requireBatteryLevel];
   if ([(RTXPCActivityCriteria *)self requiresClassB])
   {
     v22 = @"YES";
@@ -394,22 +394,22 @@ LABEL_12:
     v23 = @"NO";
   }
 
-  v24 = [v33 stringWithFormat:@"interval, %.2f, delay, %.2f, gracePeriod, %.2f, priority, %s, requireNetworkConnectivity, %@, requireInexpensiveNetworkConnectivity, %@, networkTransferDirection, %s, allowBattery, %@, powerNap, %@, expectedDuration, %.2f, cpuIntensive, %@, userRequestedBackgroundTask, %@, postInstall, %@, requiresBuddyComplete, %@, uploadSize, %d, downloadSize, %d, requireBatteryLevel, %@, requiresClassB, %@, requiresClassA, %@", v4, v6, v8, v32, v31, v30, v29, v28, v27, v14, v26, v16, v17, v18, v19, v20, v21, v22, v23];
+  v24 = [v33 stringWithFormat:@"interval, %.2f, delay, %.2f, gracePeriod, %.2f, priority, %s, requireNetworkConnectivity, %@, requireInexpensiveNetworkConnectivity, %@, networkTransferDirection, %s, allowBattery, %@, powerNap, %@, expectedDuration, %.2f, cpuIntensive, %@, userRequestedBackgroundTask, %@, postInstall, %@, requiresBuddyComplete, %@, uploadSize, %d, downloadSize, %d, requireBatteryLevel, %@, requiresClassB, %@, requiresClassA, %@", v4, v6, v8, v32, v31, v30, v29, v28, v27, v14, v26, v16, v17, v18, networkTransferUploadSize, networkTransferDownloadSize, requireBatteryLevel, v22, v23];
 
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   [(RTXPCActivityCriteria *)self interval];
   v6 = v5;
-  [v4 interval];
-  if (v6 == v7 && (-[RTXPCActivityCriteria delay](self, "delay"), v9 = v8, [v4 delay], v9 == v10) && (-[RTXPCActivityCriteria gracePeriod](self, "gracePeriod"), v12 = v11, objc_msgSend(v4, "gracePeriod"), v12 == v13) && (v14 = -[RTXPCActivityCriteria priority](self, "priority"), v14 == objc_msgSend(v4, "priority")) && (v15 = -[RTXPCActivityCriteria requireNetworkConnectivity](self, "requireNetworkConnectivity"), v15 == objc_msgSend(v4, "requireNetworkConnectivity")) && (v16 = -[RTXPCActivityCriteria requireInexpensiveNetworkConnectivity](self, "requireInexpensiveNetworkConnectivity"), v16 == objc_msgSend(v4, "requireInexpensiveNetworkConnectivity")) && (v17 = -[RTXPCActivityCriteria networkTransferDirection](self, "networkTransferDirection"), v17 == objc_msgSend(v4, "networkTransferDirection")) && (v18 = -[RTXPCActivityCriteria allowBattery](self, "allowBattery"), v18 == objc_msgSend(v4, "allowBattery")) && (v19 = -[RTXPCActivityCriteria powerNap](self, "powerNap"), v19 == objc_msgSend(v4, "powerNap")) && (-[RTXPCActivityCriteria expectedDuration](self, "expectedDuration"), v21 = v20, objc_msgSend(v4, "expectedDuration"), v21 == v22) && (v23 = -[RTXPCActivityCriteria cpuIntensive](self, "cpuIntensive"), v23 == objc_msgSend(v4, "cpuIntensive")) && (v24 = -[RTXPCActivityCriteria userRequestedBackgroundTask](self, "userRequestedBackgroundTask"), v24 == objc_msgSend(v4, "userRequestedBackgroundTask")) && (v25 = -[RTXPCActivityCriteria postInstall](self, "postInstall"), v25 == objc_msgSend(v4, "postInstall")) && (v26 = -[RTXPCActivityCriteria requiresBuddyComplete](self, "requiresBuddyComplete"), v26 == objc_msgSend(v4, "requiresBuddyComplete")) && (v27 = -[RTXPCActivityCriteria networkTransferUploadSize](self, "networkTransferUploadSize"), v27 == objc_msgSend(v4, "networkTransferUploadSize")) && (v28 = -[RTXPCActivityCriteria networkTransferDownloadSize](self, "networkTransferDownloadSize"), v28 == objc_msgSend(v4, "networkTransferDownloadSize")))
+  [equalCopy interval];
+  if (v6 == v7 && (-[RTXPCActivityCriteria delay](self, "delay"), v9 = v8, [equalCopy delay], v9 == v10) && (-[RTXPCActivityCriteria gracePeriod](self, "gracePeriod"), v12 = v11, objc_msgSend(equalCopy, "gracePeriod"), v12 == v13) && (v14 = -[RTXPCActivityCriteria priority](self, "priority"), v14 == objc_msgSend(equalCopy, "priority")) && (v15 = -[RTXPCActivityCriteria requireNetworkConnectivity](self, "requireNetworkConnectivity"), v15 == objc_msgSend(equalCopy, "requireNetworkConnectivity")) && (v16 = -[RTXPCActivityCriteria requireInexpensiveNetworkConnectivity](self, "requireInexpensiveNetworkConnectivity"), v16 == objc_msgSend(equalCopy, "requireInexpensiveNetworkConnectivity")) && (v17 = -[RTXPCActivityCriteria networkTransferDirection](self, "networkTransferDirection"), v17 == objc_msgSend(equalCopy, "networkTransferDirection")) && (v18 = -[RTXPCActivityCriteria allowBattery](self, "allowBattery"), v18 == objc_msgSend(equalCopy, "allowBattery")) && (v19 = -[RTXPCActivityCriteria powerNap](self, "powerNap"), v19 == objc_msgSend(equalCopy, "powerNap")) && (-[RTXPCActivityCriteria expectedDuration](self, "expectedDuration"), v21 = v20, objc_msgSend(equalCopy, "expectedDuration"), v21 == v22) && (v23 = -[RTXPCActivityCriteria cpuIntensive](self, "cpuIntensive"), v23 == objc_msgSend(equalCopy, "cpuIntensive")) && (v24 = -[RTXPCActivityCriteria userRequestedBackgroundTask](self, "userRequestedBackgroundTask"), v24 == objc_msgSend(equalCopy, "userRequestedBackgroundTask")) && (v25 = -[RTXPCActivityCriteria postInstall](self, "postInstall"), v25 == objc_msgSend(equalCopy, "postInstall")) && (v26 = -[RTXPCActivityCriteria requiresBuddyComplete](self, "requiresBuddyComplete"), v26 == objc_msgSend(equalCopy, "requiresBuddyComplete")) && (v27 = -[RTXPCActivityCriteria networkTransferUploadSize](self, "networkTransferUploadSize"), v27 == objc_msgSend(equalCopy, "networkTransferUploadSize")) && (v28 = -[RTXPCActivityCriteria networkTransferDownloadSize](self, "networkTransferDownloadSize"), v28 == objc_msgSend(equalCopy, "networkTransferDownloadSize")))
   {
-    v29 = [(RTXPCActivityCriteria *)self requireBatteryLevel];
-    v30 = [v4 requireBatteryLevel];
-    v31 = v29 == v30;
+    requireBatteryLevel = [(RTXPCActivityCriteria *)self requireBatteryLevel];
+    requireBatteryLevel2 = [equalCopy requireBatteryLevel];
+    v31 = requireBatteryLevel == requireBatteryLevel2;
   }
 
   else

@@ -1,25 +1,25 @@
 @interface SISchemaAggregatedMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaAggregatedMetrics)initWithDictionary:(id)a3;
-- (SISchemaAggregatedMetrics)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaAggregatedMetrics)initWithDictionary:(id)dictionary;
+- (SISchemaAggregatedMetrics)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaAggregatedMetrics
 
-- (SISchemaAggregatedMetrics)initWithDictionary:(id)a3
+- (SISchemaAggregatedMetrics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaAggregatedMetrics;
   v5 = [(SISchemaAggregatedMetrics *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"voiceTrigger"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"voiceTrigger"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(SISchemaAggregatedMetrics *)v5 setVoiceTrigger:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"selfTriggerSuppression"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"selfTriggerSuppression"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (SISchemaAggregatedMetrics)initWithJSON:(id)a3
+- (SISchemaAggregatedMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaAggregatedMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaAggregatedMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaAggregatedMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_selfTriggerSuppression)
   {
-    v4 = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    selfTriggerSuppression = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
+    dictionaryRepresentation = [selfTriggerSuppression dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"selfTriggerSuppression"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"selfTriggerSuppression"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"selfTriggerSuppression"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"selfTriggerSuppression"];
     }
   }
 
   if (self->_voiceTrigger)
   {
-    v7 = [(SISchemaAggregatedMetrics *)self voiceTrigger];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    voiceTrigger = [(SISchemaAggregatedMetrics *)self voiceTrigger];
+    dictionaryRepresentation2 = [voiceTrigger dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"voiceTrigger"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"voiceTrigger"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"voiceTrigger"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"voiceTrigger"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaAggregatedMetrics *)self voiceTrigger];
-  v6 = [v4 voiceTrigger];
-  if ((v5 != 0) == (v6 == 0))
+  voiceTrigger = [(SISchemaAggregatedMetrics *)self voiceTrigger];
+  voiceTrigger2 = [equalCopy voiceTrigger];
+  if ((voiceTrigger != 0) == (voiceTrigger2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaAggregatedMetrics *)self voiceTrigger];
-  if (v7)
+  voiceTrigger3 = [(SISchemaAggregatedMetrics *)self voiceTrigger];
+  if (voiceTrigger3)
   {
-    v8 = v7;
-    v9 = [(SISchemaAggregatedMetrics *)self voiceTrigger];
-    v10 = [v4 voiceTrigger];
-    v11 = [v9 isEqual:v10];
+    v8 = voiceTrigger3;
+    voiceTrigger4 = [(SISchemaAggregatedMetrics *)self voiceTrigger];
+    voiceTrigger5 = [equalCopy voiceTrigger];
+    v11 = [voiceTrigger4 isEqual:voiceTrigger5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
-  v6 = [v4 selfTriggerSuppression];
-  if ((v5 != 0) != (v6 == 0))
+  voiceTrigger = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
+  voiceTrigger2 = [equalCopy selfTriggerSuppression];
+  if ((voiceTrigger != 0) != (voiceTrigger2 == 0))
   {
-    v12 = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
-    if (!v12)
+    selfTriggerSuppression = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
+    if (!selfTriggerSuppression)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
-    v15 = [v4 selfTriggerSuppression];
-    v16 = [v14 isEqual:v15];
+    v13 = selfTriggerSuppression;
+    selfTriggerSuppression2 = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
+    selfTriggerSuppression3 = [equalCopy selfTriggerSuppression];
+    v16 = [selfTriggerSuppression2 isEqual:selfTriggerSuppression3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaAggregatedMetrics *)self voiceTrigger];
+  toCopy = to;
+  voiceTrigger = [(SISchemaAggregatedMetrics *)self voiceTrigger];
 
-  if (v4)
+  if (voiceTrigger)
   {
-    v5 = [(SISchemaAggregatedMetrics *)self voiceTrigger];
+    voiceTrigger2 = [(SISchemaAggregatedMetrics *)self voiceTrigger];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
+  selfTriggerSuppression = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
 
-  if (v6)
+  if (selfTriggerSuppression)
   {
-    v7 = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
+    selfTriggerSuppression2 = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = SISchemaAggregatedMetrics;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(SISchemaAggregatedMetrics *)self voiceTrigger];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  voiceTrigger = [(SISchemaAggregatedMetrics *)self voiceTrigger];
+  v7 = [voiceTrigger applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaAggregatedMetrics *)self deleteVoiceTrigger];
   }
 
-  v9 = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  selfTriggerSuppression = [(SISchemaAggregatedMetrics *)self selfTriggerSuppression];
+  v10 = [selfTriggerSuppression applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaAggregatedMetrics *)self deleteSelfTriggerSuppression];
   }

@@ -3,8 +3,8 @@
 - ($AC64C642040120CEEAD84DEEACA9A5CE)videoCompTimeRange;
 - (JFXPlayableElement)clip;
 - (id)description;
-- (void)setAudioCompTimeRange:(id *)a3;
-- (void)setVideoCompTimeRange:(id *)a3;
+- (void)setAudioCompTimeRange:(id *)range;
+- (void)setVideoCompTimeRange:(id *)range;
 - (void)swapTrackGroup;
 @end
 
@@ -12,11 +12,11 @@
 
 - (void)swapTrackGroup
 {
-  v4 = [(EditListCompositionState *)self currentTrackGroup];
-  v3 = [(EditListCompositionState *)self alternateTrackGroup];
-  [(EditListCompositionState *)self setCurrentTrackGroup:v3];
+  currentTrackGroup = [(EditListCompositionState *)self currentTrackGroup];
+  alternateTrackGroup = [(EditListCompositionState *)self alternateTrackGroup];
+  [(EditListCompositionState *)self setCurrentTrackGroup:alternateTrackGroup];
 
-  [(EditListCompositionState *)self setAlternateTrackGroup:v4];
+  [(EditListCompositionState *)self setAlternateTrackGroup:currentTrackGroup];
 }
 
 - (id)description
@@ -91,11 +91,11 @@
   return self;
 }
 
-- (void)setVideoCompTimeRange:(id *)a3
+- (void)setVideoCompTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_videoCompTimeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_videoCompTimeRange.duration.timescale = *&range->var1.var1;
   *&self->_videoCompTimeRange.start.epoch = v4;
   *&self->_videoCompTimeRange.start.value = v3;
 }
@@ -109,11 +109,11 @@
   return self;
 }
 
-- (void)setAudioCompTimeRange:(id *)a3
+- (void)setAudioCompTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_audioCompTimeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_audioCompTimeRange.duration.timescale = *&range->var1.var1;
   *&self->_audioCompTimeRange.start.epoch = v4;
   *&self->_audioCompTimeRange.start.value = v3;
 }

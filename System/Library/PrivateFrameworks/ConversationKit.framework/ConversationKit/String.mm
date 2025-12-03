@@ -6,7 +6,7 @@
 
 - (uint64_t):()block
 {
-  v3 = *__swift_project_boxed_opaque_existential_1((a1 + 32), *(a1 + 56));
+  v3 = *__swift_project_boxed_opaque_existential_1((self + 32), *(self + 56));
   if (a2)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&_sSaySo11IDSEndpointCGMd);

@@ -1,53 +1,53 @@
 @interface IDSOpportunisticData
 - (BOOL)isInvalid;
-- (BOOL)shouldSendToDestination:(id)a3;
-- (IDSOpportunisticData)initWithCoder:(id)a3;
-- (IDSOpportunisticData)initWithData:(id)a3 identifier:(id)a4 serviceName:(id)a5 accountUniqueID:(id)a6 options:(id)a7;
-- (IDSOpportunisticData)initWithData:(id)a3 identifier:(id)a4 serviceName:(id)a5 accountUniqueID:(id)a6 options:(id)a7 sendCount:(id)a8;
+- (BOOL)shouldSendToDestination:(id)destination;
+- (IDSOpportunisticData)initWithCoder:(id)coder;
+- (IDSOpportunisticData)initWithData:(id)data identifier:(id)identifier serviceName:(id)name accountUniqueID:(id)d options:(id)options;
+- (IDSOpportunisticData)initWithData:(id)data identifier:(id)identifier serviceName:(id)name accountUniqueID:(id)d options:(id)options sendCount:(id)count;
 - (id)copy;
 - (id)description;
-- (int64_t)sendCountForURI:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)incrementSendCountForDestination:(id)a3;
+- (int64_t)sendCountForURI:(id)i;
+- (void)encodeWithCoder:(id)coder;
+- (void)incrementSendCountForDestination:(id)destination;
 - (void)markInvalid;
 @end
 
 @implementation IDSOpportunisticData
 
-- (IDSOpportunisticData)initWithData:(id)a3 identifier:(id)a4 serviceName:(id)a5 accountUniqueID:(id)a6 options:(id)a7
+- (IDSOpportunisticData)initWithData:(id)data identifier:(id)identifier serviceName:(id)name accountUniqueID:(id)d options:(id)options
 {
   v12 = MEMORY[0x1E695DF90];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  optionsCopy = options;
+  dCopy = d;
+  nameCopy = name;
+  identifierCopy = identifier;
+  dataCopy = data;
   v18 = objc_alloc_init(v12);
-  v19 = [(IDSOpportunisticData *)self initWithData:v17 identifier:v16 serviceName:v15 accountUniqueID:v14 options:v13 sendCount:v18];
+  v19 = [(IDSOpportunisticData *)self initWithData:dataCopy identifier:identifierCopy serviceName:nameCopy accountUniqueID:dCopy options:optionsCopy sendCount:v18];
 
   return v19;
 }
 
-- (IDSOpportunisticData)initWithData:(id)a3 identifier:(id)a4 serviceName:(id)a5 accountUniqueID:(id)a6 options:(id)a7 sendCount:(id)a8
+- (IDSOpportunisticData)initWithData:(id)data identifier:(id)identifier serviceName:(id)name accountUniqueID:(id)d options:(id)options sendCount:(id)count
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dataCopy = data;
+  identifierCopy = identifier;
+  nameCopy = name;
+  dCopy = d;
+  optionsCopy = options;
+  countCopy = count;
   v24.receiver = self;
   v24.super_class = IDSOpportunisticData;
   v18 = [(IDSOpportunisticData *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_data, a3);
-    objc_storeStrong(&v19->_identifier, a4);
-    objc_storeStrong(&v19->_serviceName, a5);
-    objc_storeStrong(&v19->_accountUniqueID, a6);
-    objc_storeStrong(&v19->_options, a7);
-    objc_storeStrong(&v19->_sendCount, a8);
+    objc_storeStrong(&v18->_data, data);
+    objc_storeStrong(&v19->_identifier, identifier);
+    objc_storeStrong(&v19->_serviceName, name);
+    objc_storeStrong(&v19->_accountUniqueID, d);
+    objc_storeStrong(&v19->_options, options);
+    objc_storeStrong(&v19->_sendCount, count);
   }
 
   return v19;
@@ -60,12 +60,12 @@
     return 1;
   }
 
-  v3 = [(IDSOpportunisticOptions *)self->_options expiryDate];
-  if (v3)
+  expiryDate = [(IDSOpportunisticOptions *)self->_options expiryDate];
+  if (expiryDate)
   {
-    v4 = [(IDSOpportunisticOptions *)self->_options expiryDate];
+    expiryDate2 = [(IDSOpportunisticOptions *)self->_options expiryDate];
     v5 = objc_opt_new();
-    v6 = [v4 compare:v5] == -1;
+    v6 = [expiryDate2 compare:v5] == -1;
   }
 
   else
@@ -82,10 +82,10 @@
   self->_data = 0;
 }
 
-- (BOOL)shouldSendToDestination:(id)a3
+- (BOOL)shouldSendToDestination:(id)destination
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  destinationCopy = destination;
   if ([(IDSOpportunisticData *)self isInvalid])
   {
     v5 = 0;
@@ -97,8 +97,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [v4 normalizedURIs];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    normalizedURIs = [destinationCopy normalizedURIs];
+    v7 = [normalizedURIs countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -109,7 +109,7 @@
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(normalizedURIs);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
@@ -122,8 +122,8 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v13 = [(IDSOpportunisticOptions *)self->_options blocklistedDestinations];
-          v14 = [v13 containsObject:v11];
+          blocklistedDestinations = [(IDSOpportunisticOptions *)self->_options blocklistedDestinations];
+          v14 = [blocklistedDestinations containsObject:v11];
 
           if (v14)
           {
@@ -131,7 +131,7 @@ LABEL_15:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [normalizedURIs countByEnumeratingWithState:&v16 objects:v20 count:16];
         v5 = 1;
         if (v8)
         {
@@ -153,15 +153,15 @@ LABEL_16:
   return v5;
 }
 
-- (void)incrementSendCountForDestination:(id)a3
+- (void)incrementSendCountForDestination:(id)destination
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [a3 normalizedURIs];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  normalizedURIs = [destination normalizedURIs];
+  v5 = [normalizedURIs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -172,7 +172,7 @@ LABEL_16:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(normalizedURIs);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -192,31 +192,31 @@ LABEL_16:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [normalizedURIs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 }
 
-- (int64_t)sendCountForURI:(id)a3
+- (int64_t)sendCountForURI:(id)i
 {
-  v3 = [(NSMutableDictionary *)self->_sendCount objectForKeyedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSMutableDictionary *)self->_sendCount objectForKeyedSubscript:i];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (id)copy
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(IDSOpportunisticData *)self data];
-  v5 = [(IDSOpportunisticData *)self identifier];
-  v6 = [(IDSOpportunisticData *)self serviceName];
-  v7 = [(IDSOpportunisticData *)self accountUniqueID];
-  v8 = [(IDSOpportunisticData *)self options];
-  v9 = [(IDSOpportunisticData *)self sendCount];
-  v10 = [v3 initWithData:v4 identifier:v5 serviceName:v6 accountUniqueID:v7 options:v8 sendCount:v9];
+  data = [(IDSOpportunisticData *)self data];
+  identifier = [(IDSOpportunisticData *)self identifier];
+  serviceName = [(IDSOpportunisticData *)self serviceName];
+  accountUniqueID = [(IDSOpportunisticData *)self accountUniqueID];
+  options = [(IDSOpportunisticData *)self options];
+  sendCount = [(IDSOpportunisticData *)self sendCount];
+  v10 = [v3 initWithData:data identifier:identifier serviceName:serviceName accountUniqueID:accountUniqueID options:options sendCount:sendCount];
 
   return v10;
 }
@@ -225,55 +225,55 @@ LABEL_16:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSOpportunisticData *)self identifier];
-  v6 = [(IDSOpportunisticData *)self data];
-  v7 = [v6 length];
-  v8 = [(IDSOpportunisticData *)self serviceName];
-  v9 = [(IDSOpportunisticData *)self accountUniqueID];
-  v10 = [(IDSOpportunisticData *)self options];
-  v11 = [v3 stringWithFormat:@"<%@:%p %@, %llu bytes, service: %@, account: %@, options: %@>", v4, self, v5, v7, v8, v9, v10];
+  identifier = [(IDSOpportunisticData *)self identifier];
+  data = [(IDSOpportunisticData *)self data];
+  v7 = [data length];
+  serviceName = [(IDSOpportunisticData *)self serviceName];
+  accountUniqueID = [(IDSOpportunisticData *)self accountUniqueID];
+  options = [(IDSOpportunisticData *)self options];
+  v11 = [v3 stringWithFormat:@"<%@:%p %@, %llu bytes, service: %@, account: %@, options: %@>", v4, self, identifier, v7, serviceName, accountUniqueID, options];
 
   return v11;
 }
 
-- (IDSOpportunisticData)initWithCoder:(id)a3
+- (IDSOpportunisticData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountUniqueID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"service"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"options"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountUniqueID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"service"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"options"];
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v10 setWithObjects:{v11, v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"sendCount"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"sendCount"];
 
   v15 = [(IDSOpportunisticData *)self initWithData:v5 identifier:v6 serviceName:v8 accountUniqueID:v7 options:v9 sendCount:v14];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSOpportunisticData *)self data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  data = [(IDSOpportunisticData *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 
-  v6 = [(IDSOpportunisticData *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  identifier = [(IDSOpportunisticData *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v7 = [(IDSOpportunisticData *)self serviceName];
-  [v4 encodeObject:v7 forKey:@"service"];
+  serviceName = [(IDSOpportunisticData *)self serviceName];
+  [coderCopy encodeObject:serviceName forKey:@"service"];
 
-  v8 = [(IDSOpportunisticData *)self accountUniqueID];
-  [v4 encodeObject:v8 forKey:@"accountUniqueID"];
+  accountUniqueID = [(IDSOpportunisticData *)self accountUniqueID];
+  [coderCopy encodeObject:accountUniqueID forKey:@"accountUniqueID"];
 
-  v9 = [(IDSOpportunisticData *)self options];
-  [v4 encodeObject:v9 forKey:@"options"];
+  options = [(IDSOpportunisticData *)self options];
+  [coderCopy encodeObject:options forKey:@"options"];
 
-  v10 = [(IDSOpportunisticData *)self sendCount];
-  [v4 encodeObject:v10 forKey:@"sendCount"];
+  sendCount = [(IDSOpportunisticData *)self sendCount];
+  [coderCopy encodeObject:sendCount forKey:@"sendCount"];
 }
 
 @end

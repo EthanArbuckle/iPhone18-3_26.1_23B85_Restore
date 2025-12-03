@@ -1,24 +1,24 @@
 @interface WDTableCellRunIterator
-- (id)childIteratorFrom:(id)a3;
-- (id)newChildIteratorFrom:(id)a3;
+- (id)childIteratorFrom:(id)from;
+- (id)newChildIteratorFrom:(id)from;
 @end
 
 @implementation WDTableCellRunIterator
 
-- (id)childIteratorFrom:(id)a3
+- (id)childIteratorFrom:(id)from
 {
-  v3 = [a3 text];
-  v4 = [v3 runIterator];
+  text = [from text];
+  runIterator = [text runIterator];
 
-  return v4;
+  return runIterator;
 }
 
-- (id)newChildIteratorFrom:(id)a3
+- (id)newChildIteratorFrom:(id)from
 {
-  v3 = [a3 text];
-  v4 = [v3 newRunIterator];
+  text = [from text];
+  newRunIterator = [text newRunIterator];
 
-  return v4;
+  return newRunIterator;
 }
 
 @end

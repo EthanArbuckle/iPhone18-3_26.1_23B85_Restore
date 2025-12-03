@@ -18,7 +18,7 @@
     v8 = swift_allocObject();
     *(v8 + 16) = 0;
     *(v8 + 24) = 0;
-    v9 = self;
+    selfCopy = self;
     *(&self->super.isa + v6) = sub_1C2D22B9C(0, 0, v5, &unk_1C2E81EC8, v8);
   }
 }

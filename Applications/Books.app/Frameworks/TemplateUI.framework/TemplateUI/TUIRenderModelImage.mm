@@ -1,22 +1,22 @@
 @interface TUIRenderModelImage
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGSize)size;
-- (TUIRenderModelImage)initWithSubmodels:(id)a3;
+- (TUIRenderModelImage)initWithSubmodels:(id)submodels;
 - (UIEdgeInsets)eraseableInsets;
 - (unint64_t)hash;
 @end
 
 @implementation TUIRenderModelImage
 
-- (TUIRenderModelImage)initWithSubmodels:(id)a3
+- (TUIRenderModelImage)initWithSubmodels:(id)submodels
 {
-  v4 = a3;
+  submodelsCopy = submodels;
   v9.receiver = self;
   v9.super_class = TUIRenderModelImage;
   v5 = [(TUIRenderModelImage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [submodelsCopy copy];
     submodels = v5->_submodels;
     v5->_submodels = v6;
 
@@ -26,17 +26,17 @@
   return v5;
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, modelCopy);
 
   if (TUIRenderModelIsEqualToRenderModel(self, v6) && ((-[TUIRenderModelImage eraseableInsets](self, "eraseableInsets"), v8 = v7, v10 = v9, v12 = v11, v14 = v13, [v6 eraseableInsets], v10 == v18) ? (v19 = v8 == v15) : (v19 = 0), v19 ? (v20 = v14 == v17) : (v20 = 0), v20 ? (v21 = v12 == v16) : (v21 = 0), v21))
   {
-    v23 = [(TUIRenderModelImage *)self image];
-    v24 = [v6 image];
-    v22 = v23 == v24 || [v23 isEqual:v24];
+    image = [(TUIRenderModelImage *)self image];
+    image2 = [v6 image];
+    v22 = image == image2 || [image isEqual:image2];
   }
 
   else
@@ -49,8 +49,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(TUIRenderModelImage *)self identifier];
-  v3 = TUIIdentifierHash(v2);
+  identifier = [(TUIRenderModelImage *)self identifier];
+  v3 = TUIIdentifierHash(identifier);
 
   return v3;
 }

@@ -1,14 +1,14 @@
 @interface CLMiLoGenericEventResponse
-- (CLMiLoGenericEventResponse)initWithCoder:(id)a3;
-- (CLMiLoGenericEventResponse)initWithEventType:(unint64_t)a3 withDescription:(id)a4 withError:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLMiLoGenericEventResponse)initWithCoder:(id)coder;
+- (CLMiLoGenericEventResponse)initWithEventType:(unint64_t)type withDescription:(id)description withError:(id)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLMiLoGenericEventResponse
 
-- (CLMiLoGenericEventResponse)initWithEventType:(unint64_t)a3 withDescription:(id)a4 withError:(id)a5
+- (CLMiLoGenericEventResponse)initWithEventType:(unint64_t)type withDescription:(id)description withError:(id)error
 {
   v11.receiver = self;
   v11.super_class = CLMiLoGenericEventResponse;
@@ -16,9 +16,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_eventType = a3;
-    v8->_genericEventDescription = a4;
-    v9->_error = a5;
+    v8->_eventType = type;
+    v8->_genericEventDescription = description;
+    v9->_error = error;
   }
 
   return v9;
@@ -31,9 +31,9 @@
   [(CLMiLoGenericEventResponse *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   eventType = self->_eventType;
   genericEventDescription = self->_genericEventDescription;
   error = self->_error;
@@ -41,22 +41,22 @@
   return MEMORY[0x1EEE66B58](v4, sel_initWithEventType_withDescription_withError_);
 }
 
-- (CLMiLoGenericEventResponse)initWithCoder:(id)a3
+- (CLMiLoGenericEventResponse)initWithCoder:(id)coder
 {
-  [a3 decodeIntegerForKey:@"kCLMiLoConnectionCodingKeyGenericEventType"];
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyGenericEventDescription"];
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyGenericEventError"];
+  [coder decodeIntegerForKey:@"kCLMiLoConnectionCodingKeyGenericEventType"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyGenericEventDescription"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyGenericEventError"];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithEventType_withDescription_withError_);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:self->_eventType forKey:@"kCLMiLoConnectionCodingKeyGenericEventType"];
-  [a3 encodeObject:self->_genericEventDescription forKey:@"kCLMiLoConnectionCodingKeyGenericEventDescription"];
+  [coder encodeInteger:self->_eventType forKey:@"kCLMiLoConnectionCodingKeyGenericEventType"];
+  [coder encodeObject:self->_genericEventDescription forKey:@"kCLMiLoConnectionCodingKeyGenericEventDescription"];
   error = self->_error;
 
-  [a3 encodeObject:error forKey:@"kCLMiLoConnectionCodingKeyGenericEventError"];
+  [coder encodeObject:error forKey:@"kCLMiLoConnectionCodingKeyGenericEventError"];
 }
 
 @end

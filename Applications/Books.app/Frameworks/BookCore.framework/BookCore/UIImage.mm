@@ -1,58 +1,58 @@
 @interface UIImage
-+ (UIImage)imageWithColor:(id)a3;
-+ (UIImage)imageWithSolidColor:(id)a3 atSize:(CGSize)a4;
-+ (id)im_imageWithCGImage:(CGImage *)a3;
-+ (id)im_imageWithCGImages:(id)a3 size:(CGSize)a4;
-+ (id)im_imageWithCenteredIconImage:(id)a3 iconColor:(id)a4 size:(CGSize)a5;
++ (UIImage)imageWithColor:(id)color;
++ (UIImage)imageWithSolidColor:(id)color atSize:(CGSize)size;
++ (id)im_imageWithCGImage:(CGImage *)image;
++ (id)im_imageWithCGImages:(id)images size:(CGSize)size;
++ (id)im_imageWithCenteredIconImage:(id)image iconColor:(id)color size:(CGSize)size;
 + (id)invisibleImage;
 - (BOOL)im_isLikelyBlank;
 - (CGImage)im_CGImage;
-- (UIImage)imageWithTint:(id)a3;
-- (id)bc_imageWithConfiguration:(id)a3 limitedToContentSizeCategory:(id)a4;
+- (UIImage)imageWithTint:(id)tint;
+- (id)bc_imageWithConfiguration:(id)configuration limitedToContentSizeCategory:(id)category;
 - (id)im_CGImages;
-- (id)im_imageWithAlpha:(double)a3;
-- (id)im_imageWithPixelSize:(CGSize)a3;
-- (id)im_imageWithSize:(CGSize)a3 options:(int)a4;
-- (id)imageMaskWithColor:(id)a3;
-- (id)imageMaskWithColor:(id)a3 forTraitCollection:(id)a4;
-- (unint64_t)colorAtPixelX:(unint64_t)a3 y:(unint64_t)a4;
+- (id)im_imageWithAlpha:(double)alpha;
+- (id)im_imageWithPixelSize:(CGSize)size;
+- (id)im_imageWithSize:(CGSize)size options:(int)options;
+- (id)imageMaskWithColor:(id)color;
+- (id)imageMaskWithColor:(id)color forTraitCollection:(id)collection;
+- (unint64_t)colorAtPixelX:(unint64_t)x y:(unint64_t)y;
 - (unint64_t)im_averageColor;
-- (void)dumpAsPNGToCachesNamed:(id)a3;
+- (void)dumpAsPNGToCachesNamed:(id)named;
 @end
 
 @implementation UIImage
 
-+ (id)im_imageWithCGImage:(CGImage *)a3
++ (id)im_imageWithCGImage:(CGImage *)image
 {
-  v3 = [[UIImage alloc] initWithCGImage:a3];
+  v3 = [[UIImage alloc] initWithCGImage:image];
 
   return v3;
 }
 
 - (CGImage)im_CGImage
 {
-  v2 = self;
+  selfCopy = self;
 
-  return [(UIImage *)v2 CGImage];
+  return [(UIImage *)selfCopy CGImage];
 }
 
-- (id)im_imageWithSize:(CGSize)a3 options:(int)a4
+- (id)im_imageWithSize:(CGSize)size options:(int)options
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UIImage *)self size];
   if (width == v9 && height == v8)
   {
     goto LABEL_20;
   }
 
-  if (a4)
+  if (options)
   {
     [(UIImage *)self size];
     v12 = width / v11;
     [(UIImage *)self size];
     v14 = height / v13;
-    if (a4 == 1)
+    if (options == 1)
     {
       if (v12 >= v14)
       {
@@ -68,7 +68,7 @@
     else
     {
       v15 = 1.0;
-      if (a4 == 2)
+      if (options == 2)
       {
         if (v12 >= v14)
         {
@@ -99,25 +99,25 @@
   if (v18 == v21 && v19 == v20)
   {
 LABEL_20:
-    v23 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v23 = [(UIImage *)self im_imageWithPixelSize:v18, v19];
+    selfCopy = [(UIImage *)self im_imageWithPixelSize:v18, v19];
   }
 
-  return v23;
+  return selfCopy;
 }
 
-- (id)im_imageWithPixelSize:(CGSize)a3
+- (id)im_imageWithPixelSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIImage *)self im_CGImage];
-  if (v6)
+  height = size.height;
+  width = size.width;
+  im_CGImage = [(UIImage *)self im_CGImage];
+  if (im_CGImage)
   {
-    v7 = v6;
+    v7 = im_CGImage;
     v17.width = width;
     v17.height = height;
     UIGraphicsBeginImageContextWithOptions(v17, 0, 0.0);
@@ -164,36 +164,36 @@ LABEL_20:
 
 - (id)im_CGImages
 {
-  v2 = [(UIImage *)self CGImage];
-  if (v2)
+  cGImage = [(UIImage *)self CGImage];
+  if (cGImage)
   {
-    v2 = [NSArray arrayWithObject:v2];
+    cGImage = [NSArray arrayWithObject:cGImage];
   }
 
-  return v2;
+  return cGImage;
 }
 
-+ (id)im_imageWithCGImages:(id)a3 size:(CGSize)a4
++ (id)im_imageWithCGImages:(id)images size:(CGSize)size
 {
-  v4 = a3;
-  v5 = [v4 count];
+  imagesCopy = images;
+  v5 = [imagesCopy count];
   if (v5 >= 2)
   {
     sub_1E8F40(v5, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  v13 = [v4 lastObject];
-  if (v13)
+  lastObject = [imagesCopy lastObject];
+  if (lastObject)
   {
-    v13 = [[UIImage alloc] initWithCGImage:v13];
+    lastObject = [[UIImage alloc] initWithCGImage:lastObject];
   }
 
-  return v13;
+  return lastObject;
 }
 
-- (UIImage)imageWithTint:(id)a3
+- (UIImage)imageWithTint:(id)tint
 {
-  v4 = a3;
+  tintCopy = tint;
   [(UIImage *)self size];
   v6 = v5;
   [(UIImage *)self size];
@@ -214,25 +214,25 @@ LABEL_20:
   v20 = 0;
   v21 = v6;
   v22 = v8;
-  v17 = v4;
-  v18 = self;
-  v13 = v4;
+  v17 = tintCopy;
+  selfCopy = self;
+  v13 = tintCopy;
   v14 = [v12 imageWithActions:v16];
 
   return v14;
 }
 
-- (id)imageMaskWithColor:(id)a3 forTraitCollection:(id)a4
+- (id)imageMaskWithColor:(id)color forTraitCollection:(id)collection
 {
-  v5 = [a3 resolvedColorWithTraitCollection:a4];
+  v5 = [color resolvedColorWithTraitCollection:collection];
   v6 = [(UIImage *)self imageMaskWithColor:v5];
 
   return v6;
 }
 
-- (id)imageMaskWithColor:(id)a3
+- (id)imageMaskWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(UIImage *)self size];
   v6 = v5;
   [(UIImage *)self size];
@@ -244,16 +244,16 @@ LABEL_20:
   [(UIImage *)self size];
   CGContextTranslateCTM(CurrentContext, 0.0, -v10);
   CGContextSaveGState(CurrentContext);
-  v11 = [(UIImage *)self CGImage];
+  cGImage = [(UIImage *)self CGImage];
   v17.origin.x = 0.0;
   v17.origin.y = 0.0;
   v17.size.width = v6;
   v17.size.height = v8;
-  CGContextClipToMask(CurrentContext, v17, v11);
+  CGContextClipToMask(CurrentContext, v17, cGImage);
   CGContextSetBlendMode(CurrentContext, kCGBlendModeMultiply);
-  v12 = [v4 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v12);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v18.origin.x = 0.0;
   v18.origin.y = 0.0;
   v18.size.width = v6;
@@ -266,18 +266,18 @@ LABEL_20:
   return v13;
 }
 
-+ (UIImage)imageWithSolidColor:(id)a3 atSize:(CGSize)a4
++ (UIImage)imageWithSolidColor:(id)color atSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   v12.width = width;
   v12.height = height;
   UIGraphicsBeginImageContext(v12);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v8 = [v6 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v8);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v13.origin.x = 0.0;
   v13.origin.y = 0.0;
   v13.size.width = width;
@@ -289,27 +289,27 @@ LABEL_20:
   return v9;
 }
 
-+ (id)im_imageWithCenteredIconImage:(id)a3 iconColor:(id)a4 size:(CGSize)a5
++ (id)im_imageWithCenteredIconImage:(id)image iconColor:(id)color size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  colorCopy = color;
+  v10 = colorCopy;
   v11 = 0;
-  if (v8 && v9)
+  if (imageCopy && colorCopy)
   {
     v12 = +[UIGraphicsImageRendererFormat preferredFormat];
     v13 = [v12 copy];
 
-    [v8 scale];
+    [imageCopy scale];
     [v13 setScale:?];
     CGRectMakeWithSize();
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    [v8 size];
+    [imageCopy size];
     CGRectMakeWithSize();
     CGRectCenterRectInRect();
     v23 = v22;
@@ -329,7 +329,7 @@ LABEL_20:
     v40 = v25;
     v41 = v31;
     v42 = v30;
-    v33 = v8;
+    v33 = imageCopy;
     v34 = v10;
     v11 = [v28 imageWithActions:v32];
   }
@@ -337,7 +337,7 @@ LABEL_20:
   return v11;
 }
 
-- (id)im_imageWithAlpha:(double)a3
+- (id)im_imageWithAlpha:(double)alpha
 {
   v5 = +[UIGraphicsImageRendererFormat preferredFormat];
   v6 = [v5 copy];
@@ -357,22 +357,22 @@ LABEL_20:
   v14[4] = self;
   *&v14[7] = v8;
   *&v14[8] = v10;
-  *&v14[9] = a3;
+  *&v14[9] = alpha;
   v12 = [v11 imageWithActions:v14];
 
   return v12;
 }
 
-- (unint64_t)colorAtPixelX:(unint64_t)a3 y:(unint64_t)a4
+- (unint64_t)colorAtPixelX:(unint64_t)x y:(unint64_t)y
 {
   [(UIImage *)self scale];
   v8 = v7;
-  v9 = [(UIImage *)self CGImage];
-  v16.origin.x = v8 * a3;
-  v16.origin.y = v8 * a4;
+  cGImage = [(UIImage *)self CGImage];
+  v16.origin.x = v8 * x;
+  v16.origin.y = v8 * y;
   v16.size.width = 1.0;
   v16.size.height = 1.0;
-  v10 = CGImageCreateWithImageInRect(v9, v16);
+  v10 = CGImageCreateWithImageInRect(cGImage, v16);
   if (!v10)
   {
     return -1;
@@ -393,36 +393,36 @@ LABEL_20:
   return bswap32(data);
 }
 
-- (void)dumpAsPNGToCachesNamed:(id)a3
+- (void)dumpAsPNGToCachesNamed:(id)named
 {
-  v10 = a3;
-  v4 = [v10 lowercaseString];
-  v5 = [v4 hasSuffix:@"png"];
+  namedCopy = named;
+  lowercaseString = [namedCopy lowercaseString];
+  v5 = [lowercaseString hasSuffix:@"png"];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v10 stringByAppendingPathExtension:@"png"];
+    v6 = [namedCopy stringByAppendingPathExtension:@"png"];
 
-    v10 = v6;
+    namedCopy = v6;
   }
 
   v7 = +[UIApplication applicationCacheDirectory];
-  v8 = [v7 stringByAppendingPathComponent:v10];
+  v8 = [v7 stringByAppendingPathComponent:namedCopy];
 
   v9 = UIImagePNGRepresentation(self);
   [v9 writeToFile:v8 atomically:0];
 }
 
-+ (UIImage)imageWithColor:(id)a3
++ (UIImage)imageWithColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v9.width = 1.0;
   v9.height = 1.0;
   UIGraphicsBeginImageContext(v9);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [v3 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v5);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v10.origin.x = 0.0;
   v10.origin.y = 0.0;
   v10.size.width = 1.0;
@@ -463,7 +463,7 @@ LABEL_20:
 
 - (BOOL)im_isLikelyBlank
 {
-  v2 = [(UIImage *)self CGImage];
+  cGImage = [(UIImage *)self CGImage];
   v3 = malloc_type_calloc(1uLL, 0x9C40uLL, 0x7769C865uLL);
   if (!v3)
   {
@@ -486,7 +486,7 @@ LABEL_20:
   v19.origin.x = 0.0;
   v19.origin.y = 0.0;
   v19.size.height = 100.0;
-  CGContextDrawImage(v6, v19, v2);
+  CGContextDrawImage(v6, v19, cGImage);
   v8 = 0;
   v9 = 1;
   while (!v7)
@@ -523,13 +523,13 @@ LABEL_34:
   return v9;
 }
 
-- (id)bc_imageWithConfiguration:(id)a3 limitedToContentSizeCategory:(id)a4
+- (id)bc_imageWithConfiguration:(id)configuration limitedToContentSizeCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  categoryCopy = category;
   v8 = +[UITraitCollection currentTraitCollection];
-  v9 = [v8 preferredContentSizeCategory];
-  v10 = UIContentSizeCategoryCompareToCategory(v9, v7);
+  preferredContentSizeCategory = [v8 preferredContentSizeCategory];
+  v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, categoryCopy);
 
   if (v10 == NSOrderedDescending)
   {
@@ -537,12 +537,12 @@ LABEL_34:
     v14[1] = 3221225472;
     v14[2] = sub_B62D8;
     v14[3] = &unk_2CC5B8;
-    v15 = v7;
+    v15 = categoryCopy;
     v11 = [v8 traitCollectionByModifyingTraits:v14];
     [UITraitCollection setCurrentTraitCollection:v11];
   }
 
-  v12 = [(UIImage *)self imageWithConfiguration:v6];
+  v12 = [(UIImage *)self imageWithConfiguration:configurationCopy];
   [UITraitCollection setCurrentTraitCollection:v8];
 
   return v12;

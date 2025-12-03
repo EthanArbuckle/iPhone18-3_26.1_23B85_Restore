@@ -1,20 +1,20 @@
 @interface CLMKStyledPointAnnotation
-- (CLMKStyledPointAnnotation)initWithCoordinate:(CLLocationCoordinate2D)a3 title:(id)a4 subtitle:(id)a5 styleAttributes:(id)a6;
+- (CLMKStyledPointAnnotation)initWithCoordinate:(CLLocationCoordinate2D)coordinate title:(id)title subtitle:(id)subtitle styleAttributes:(id)attributes;
 @end
 
 @implementation CLMKStyledPointAnnotation
 
-- (CLMKStyledPointAnnotation)initWithCoordinate:(CLLocationCoordinate2D)a3 title:(id)a4 subtitle:(id)a5 styleAttributes:(id)a6
+- (CLMKStyledPointAnnotation)initWithCoordinate:(CLLocationCoordinate2D)coordinate title:(id)title subtitle:(id)subtitle styleAttributes:(id)attributes
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v13.receiver = self;
   v13.super_class = CLMKStyledPointAnnotation;
-  v10 = a6;
-  v11 = [(CLMKStyledPointAnnotation *)&v13 initWithCoordinate:a4 title:a5 subtitle:latitude, longitude];
-  [(CLMKStyledPointAnnotation *)v11 setStyleAttributes:v10, v13.receiver, v13.super_class];
+  attributesCopy = attributes;
+  longitude = [(CLMKStyledPointAnnotation *)&v13 initWithCoordinate:title title:subtitle subtitle:latitude, longitude];
+  [(CLMKStyledPointAnnotation *)longitude setStyleAttributes:attributesCopy, v13.receiver, v13.super_class];
 
-  return v11;
+  return longitude;
 }
 
 @end

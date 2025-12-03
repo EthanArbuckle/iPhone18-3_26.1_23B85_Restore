@@ -1,27 +1,27 @@
 @interface ApertureBannerElement
 - (NSString)associatedAppBundleIdentifier;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setAssociatedAppBundleIdentifier:(id)a3;
-- (void)setLeadingView:(id)a3;
-- (void)setMinimalView:(id)a3;
-- (void)setPreferredLayoutMode:(int64_t)a3;
-- (void)setTrailingView:(id)a3;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setAssociatedAppBundleIdentifier:(id)identifier;
+- (void)setLeadingView:(id)view;
+- (void)setMinimalView:(id)view;
+- (void)setPreferredLayoutMode:(int64_t)mode;
+- (void)setTrailingView:(id)view;
 @end
 
 @implementation ApertureBannerElement
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  *(self + OBJC_IVAR____TtC16CommunicationsUI21ApertureBannerElement_activeLayoutMode) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____TtC16CommunicationsUI21ApertureBannerElement_activeLayoutMode) = mode;
+  selfCopy = self;
 
   sub_1C2E72DD4();
 }
 
-- (void)setPreferredLayoutMode:(int64_t)a3
+- (void)setPreferredLayoutMode:(int64_t)mode
 {
-  v4 = self;
-  sub_1C2DDE58C(a3);
+  selfCopy = self;
+  sub_1C2DDE58C(mode);
 }
 
 - (NSString)associatedAppBundleIdentifier
@@ -40,9 +40,9 @@
   return v2;
 }
 
-- (void)setAssociatedAppBundleIdentifier:(id)a3
+- (void)setAssociatedAppBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1C2E75C64();
   }
@@ -58,25 +58,25 @@
   v6[1] = v5;
 }
 
-- (void)setLeadingView:(id)a3
+- (void)setLeadingView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC16CommunicationsUI21ApertureBannerElement_leadingView);
-  *(self + OBJC_IVAR____TtC16CommunicationsUI21ApertureBannerElement_leadingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC16CommunicationsUI21ApertureBannerElement_leadingView) = view;
+  viewCopy = view;
 }
 
-- (void)setMinimalView:(id)a3
+- (void)setMinimalView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC16CommunicationsUI21ApertureBannerElement_minimalView);
-  *(self + OBJC_IVAR____TtC16CommunicationsUI21ApertureBannerElement_minimalView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC16CommunicationsUI21ApertureBannerElement_minimalView) = view;
+  viewCopy = view;
 }
 
-- (void)setTrailingView:(id)a3
+- (void)setTrailingView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC16CommunicationsUI21ApertureBannerElement_trailingView);
-  *(self + OBJC_IVAR____TtC16CommunicationsUI21ApertureBannerElement_trailingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC16CommunicationsUI21ApertureBannerElement_trailingView) = view;
+  viewCopy = view;
 }
 
 @end

@@ -1,51 +1,51 @@
 @interface PBUIWallpaperDefaults
 + (id)defaults;
-- (BOOL)hasVideoForVariant:(int64_t)a3;
-- (BOOL)isPortraitForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (BOOL)magnifyEnabledForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (BOOL)proceduralUserSetForVariant:(int64_t)a3;
-- (BOOL)supportsCroppingForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (CGRect)cropRectForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
+- (BOOL)hasVideoForVariant:(int64_t)variant;
+- (BOOL)isPortraitForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (BOOL)magnifyEnabledForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (BOOL)proceduralUserSetForVariant:(int64_t)variant;
+- (BOOL)supportsCroppingForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (CGRect)cropRectForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
 - (PBUIWallpaperDefaults)init;
-- (PBUIWallpaperDefaults)initWithdefaultsDomain:(id)a3;
-- (double)parallaxFactorForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (double)stillTimeInVideoForVariant:(int64_t)a3;
-- (double)zoomScaleForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)_defaultsWrapperForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)_keyForWallpaperMode:(int64_t)a3;
+- (PBUIWallpaperDefaults)initWithdefaultsDomain:(id)domain;
+- (double)parallaxFactorForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (double)stillTimeInVideoForVariant:(int64_t)variant;
+- (double)zoomScaleForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)_defaultsWrapperForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)_keyForWallpaperMode:(int64_t)mode;
 - (id)description;
-- (id)imageHashForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)nameForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)proceduralIdentifierForVariant:(int64_t)a3;
-- (id)proceduralOptionsForVariant:(int64_t)a3;
-- (id)wallpaperColorDataForVariant:(int64_t)a3;
-- (id)wallpaperColorNameForVariant:(int64_t)a3;
-- (id)wallpaperGradientDataForVariant:(int64_t)a3;
-- (id)wallpaperKitDataForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)wallpaperOptionsForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (void)_setDefaultsWithDictionary:(id)a3 variant:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (void)_updateDefaultsForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4 updater:(id)a5;
+- (id)imageHashForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)nameForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)proceduralIdentifierForVariant:(int64_t)variant;
+- (id)proceduralOptionsForVariant:(int64_t)variant;
+- (id)wallpaperColorDataForVariant:(int64_t)variant;
+- (id)wallpaperColorNameForVariant:(int64_t)variant;
+- (id)wallpaperGradientDataForVariant:(int64_t)variant;
+- (id)wallpaperKitDataForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)wallpaperOptionsForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (void)_setDefaultsWithDictionary:(id)dictionary variant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (void)_updateDefaultsForVariant:(int64_t)variant wallpaperMode:(int64_t)mode updater:(id)updater;
 - (void)resetCroppingDefaults;
 - (void)resetDefaults;
-- (void)setColorData:(id)a3 forLocations:(int64_t)a4;
-- (void)setColorName:(id)a3 forLocations:(int64_t)a4;
-- (void)setCropRect:(CGRect)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (void)setGradientData:(id)a3 forLocations:(int64_t)a4;
-- (void)setHasVideo:(BOOL)a3;
-- (void)setImageHash:(id)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (void)setMagnifyEnabled:(BOOL)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (void)setName:(id)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (void)setParallaxFactor:(double)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (void)setPortrait:(BOOL)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (void)setProceduralIdentifier:(id)a3 forLocations:(int64_t)a4;
-- (void)setProceduralOptions:(id)a3 forLocations:(int64_t)a4;
-- (void)setProceduralUserSet:(BOOL)a3 forLocations:(int64_t)a4;
-- (void)setStillTimeInVideo:(double)a3;
-- (void)setSupportsCropping:(BOOL)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (void)setWallpaperKitData:(id)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (void)setWallpaperOptions:(id)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (void)setZoomScale:(double)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (void)updateDefaultsForLocations:(int64_t)a3 updater:(id)a4;
+- (void)setColorData:(id)data forLocations:(int64_t)locations;
+- (void)setColorName:(id)name forLocations:(int64_t)locations;
+- (void)setCropRect:(CGRect)rect forLocations:(int64_t)locations wallpaperMode:(int64_t)mode;
+- (void)setGradientData:(id)data forLocations:(int64_t)locations;
+- (void)setHasVideo:(BOOL)video;
+- (void)setImageHash:(id)hash forLocations:(int64_t)locations wallpaperMode:(int64_t)mode;
+- (void)setMagnifyEnabled:(BOOL)enabled forLocations:(int64_t)locations wallpaperMode:(int64_t)mode;
+- (void)setName:(id)name forLocations:(int64_t)locations wallpaperMode:(int64_t)mode;
+- (void)setParallaxFactor:(double)factor forLocations:(int64_t)locations wallpaperMode:(int64_t)mode;
+- (void)setPortrait:(BOOL)portrait forLocations:(int64_t)locations wallpaperMode:(int64_t)mode;
+- (void)setProceduralIdentifier:(id)identifier forLocations:(int64_t)locations;
+- (void)setProceduralOptions:(id)options forLocations:(int64_t)locations;
+- (void)setProceduralUserSet:(BOOL)set forLocations:(int64_t)locations;
+- (void)setStillTimeInVideo:(double)video;
+- (void)setSupportsCropping:(BOOL)cropping forLocations:(int64_t)locations wallpaperMode:(int64_t)mode;
+- (void)setWallpaperKitData:(id)data forLocations:(int64_t)locations wallpaperMode:(int64_t)mode;
+- (void)setWallpaperOptions:(id)options forLocations:(int64_t)locations wallpaperMode:(int64_t)mode;
+- (void)setZoomScale:(double)scale forLocations:(int64_t)locations wallpaperMode:(int64_t)mode;
+- (void)updateDefaultsForLocations:(int64_t)locations updater:(id)updater;
 @end
 
 @implementation PBUIWallpaperDefaults
@@ -71,16 +71,16 @@ uint64_t __33__PBUIWallpaperDefaults_defaults__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (PBUIWallpaperDefaults)initWithdefaultsDomain:(id)a3
+- (PBUIWallpaperDefaults)initWithdefaultsDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v9.receiver = self;
   v9.super_class = PBUIWallpaperDefaults;
   v6 = [(PBUIWallpaperDefaults *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_defaultsDomain, a3);
+    objc_storeStrong(&v6->_defaultsDomain, domain);
   }
 
   return v7;
@@ -159,66 +159,66 @@ uint64_t __33__PBUIWallpaperDefaults_defaults__block_invoke()
   [(PBUIWallpaperDefaults *)self resetWallpaperKitDataDefaults];
 }
 
-- (id)wallpaperOptionsForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperOptionsForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
   v7 = objc_alloc_init(PBUIWallpaperOptions);
-  [(PBUIWallpaperOptions *)v7 setSupportsCropping:[(PBUIWallpaperDefaults *)self supportsCroppingForVariant:a3 wallpaperMode:a4]];
-  [(PBUIWallpaperDefaults *)self cropRectForVariant:a3 wallpaperMode:a4];
+  [(PBUIWallpaperOptions *)v7 setSupportsCropping:[(PBUIWallpaperDefaults *)self supportsCroppingForVariant:variant wallpaperMode:mode]];
+  [(PBUIWallpaperDefaults *)self cropRectForVariant:variant wallpaperMode:mode];
   [(PBUIWallpaperOptions *)v7 setCropRect:?];
-  [(PBUIWallpaperDefaults *)self parallaxFactorForVariant:a3 wallpaperMode:a4];
+  [(PBUIWallpaperDefaults *)self parallaxFactorForVariant:variant wallpaperMode:mode];
   [(PBUIWallpaperOptions *)v7 setParallaxFactor:?];
-  [(PBUIWallpaperOptions *)v7 setMagnifyEnabled:[(PBUIWallpaperDefaults *)self magnifyEnabledForVariant:a3 wallpaperMode:a4]];
-  [(PBUIWallpaperDefaults *)self zoomScaleForVariant:a3 wallpaperMode:a4];
+  [(PBUIWallpaperOptions *)v7 setMagnifyEnabled:[(PBUIWallpaperDefaults *)self magnifyEnabledForVariant:variant wallpaperMode:mode]];
+  [(PBUIWallpaperDefaults *)self zoomScaleForVariant:variant wallpaperMode:mode];
   [(PBUIWallpaperOptions *)v7 setZoomScale:?];
-  [(PBUIWallpaperOptions *)v7 setPortrait:[(PBUIWallpaperDefaults *)self isPortraitForVariant:a3 wallpaperMode:a4]];
-  v8 = [(PBUIWallpaperDefaults *)self nameForVariant:a3 wallpaperMode:a4];
+  [(PBUIWallpaperOptions *)v7 setPortrait:[(PBUIWallpaperDefaults *)self isPortraitForVariant:variant wallpaperMode:mode]];
+  v8 = [(PBUIWallpaperDefaults *)self nameForVariant:variant wallpaperMode:mode];
   [(PBUIWallpaperOptions *)v7 setName:v8];
 
-  [(PBUIWallpaperOptions *)v7 setWallpaperMode:a4];
-  [(PBUIWallpaperOptions *)v7 setHasVideo:[(PBUIWallpaperDefaults *)self hasVideoForVariant:a3]];
-  [(PBUIWallpaperDefaults *)self stillTimeInVideoForVariant:a3];
+  [(PBUIWallpaperOptions *)v7 setWallpaperMode:mode];
+  [(PBUIWallpaperOptions *)v7 setHasVideo:[(PBUIWallpaperDefaults *)self hasVideoForVariant:variant]];
+  [(PBUIWallpaperDefaults *)self stillTimeInVideoForVariant:variant];
   [(PBUIWallpaperOptions *)v7 setStillTimeInVideo:?];
-  v9 = [(PBUIWallpaperDefaults *)self wallpaperKitDataForVariant:a3 wallpaperMode:a4];
+  v9 = [(PBUIWallpaperDefaults *)self wallpaperKitDataForVariant:variant wallpaperMode:mode];
   [(PBUIWallpaperOptions *)v7 setWallpaperKitData:v9];
 
   return v7;
 }
 
-- (void)setWallpaperOptions:(id)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (void)setWallpaperOptions:(id)options forLocations:(int64_t)locations wallpaperMode:(int64_t)mode
 {
-  v8 = a3;
-  -[PBUIWallpaperDefaults setSupportsCropping:forLocations:wallpaperMode:](self, "setSupportsCropping:forLocations:wallpaperMode:", [v8 supportsCropping], a4, a5);
-  [v8 cropRect];
-  [(PBUIWallpaperDefaults *)self setCropRect:a4 forLocations:a5 wallpaperMode:?];
-  [v8 parallaxFactor];
-  [(PBUIWallpaperDefaults *)self setParallaxFactor:a4 forLocations:a5 wallpaperMode:?];
-  -[PBUIWallpaperDefaults setMagnifyEnabled:forLocations:wallpaperMode:](self, "setMagnifyEnabled:forLocations:wallpaperMode:", [v8 isMagnifyEnabled], a4, a5);
-  [v8 zoomScale];
-  [(PBUIWallpaperDefaults *)self setZoomScale:a4 forLocations:a5 wallpaperMode:?];
-  -[PBUIWallpaperDefaults setPortrait:forLocations:wallpaperMode:](self, "setPortrait:forLocations:wallpaperMode:", [v8 isPortrait], a4, a5);
-  v9 = [v8 name];
-  [(PBUIWallpaperDefaults *)self setName:v9 forLocations:a4 wallpaperMode:a5];
+  optionsCopy = options;
+  -[PBUIWallpaperDefaults setSupportsCropping:forLocations:wallpaperMode:](self, "setSupportsCropping:forLocations:wallpaperMode:", [optionsCopy supportsCropping], locations, mode);
+  [optionsCopy cropRect];
+  [(PBUIWallpaperDefaults *)self setCropRect:locations forLocations:mode wallpaperMode:?];
+  [optionsCopy parallaxFactor];
+  [(PBUIWallpaperDefaults *)self setParallaxFactor:locations forLocations:mode wallpaperMode:?];
+  -[PBUIWallpaperDefaults setMagnifyEnabled:forLocations:wallpaperMode:](self, "setMagnifyEnabled:forLocations:wallpaperMode:", [optionsCopy isMagnifyEnabled], locations, mode);
+  [optionsCopy zoomScale];
+  [(PBUIWallpaperDefaults *)self setZoomScale:locations forLocations:mode wallpaperMode:?];
+  -[PBUIWallpaperDefaults setPortrait:forLocations:wallpaperMode:](self, "setPortrait:forLocations:wallpaperMode:", [optionsCopy isPortrait], locations, mode);
+  name = [optionsCopy name];
+  [(PBUIWallpaperDefaults *)self setName:name forLocations:locations wallpaperMode:mode];
 
-  -[PBUIWallpaperDefaults setHasVideo:](self, "setHasVideo:", [v8 hasVideo]);
-  [v8 stillTimeInVideo];
+  -[PBUIWallpaperDefaults setHasVideo:](self, "setHasVideo:", [optionsCopy hasVideo]);
+  [optionsCopy stillTimeInVideo];
   [(PBUIWallpaperDefaults *)self setStillTimeInVideo:?];
-  v10 = [v8 wallpaperKitData];
+  wallpaperKitData = [optionsCopy wallpaperKitData];
 
-  [(PBUIWallpaperDefaults *)self setWallpaperKitData:v10 forLocations:a4 wallpaperMode:a5];
+  [(PBUIWallpaperDefaults *)self setWallpaperKitData:wallpaperKitData forLocations:locations wallpaperMode:mode];
 }
 
-- (void)updateDefaultsForLocations:(int64_t)a3 updater:(id)a4
+- (void)updateDefaultsForLocations:(int64_t)locations updater:(id)updater
 {
-  v4 = a3;
-  v6 = a4;
+  locationsCopy = locations;
+  updaterCopy = updater;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__PBUIWallpaperDefaults_updateDefaultsForLocations_updater___block_invoke;
   v8[3] = &unk_278364270;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  PBUIWallpaperEnumerateVariantsForLocations(v4, v8);
+  v9 = updaterCopy;
+  v7 = updaterCopy;
+  PBUIWallpaperEnumerateVariantsForLocations(locationsCopy, v8);
 }
 
 uint64_t __60__PBUIWallpaperDefaults_updateDefaultsForLocations_updater___block_invoke(uint64_t a1, uint64_t a2)
@@ -231,32 +231,32 @@ uint64_t __60__PBUIWallpaperDefaults_updateDefaultsForLocations_updater___block_
   return result;
 }
 
-- (void)_updateDefaultsForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4 updater:(id)a5
+- (void)_updateDefaultsForVariant:(int64_t)variant wallpaperMode:(int64_t)mode updater:(id)updater
 {
-  v8 = a5;
-  v10 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:a4];
-  v8[2](v8, v10);
+  updaterCopy = updater;
+  v10 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:mode];
+  updaterCopy[2](updaterCopy, v10);
 
-  v9 = [v10 wallpaperDefaultsDict];
-  [(PBUIWallpaperDefaults *)self _setDefaultsWithDictionary:v9 variant:a3 wallpaperMode:a4];
+  wallpaperDefaultsDict = [v10 wallpaperDefaultsDict];
+  [(PBUIWallpaperDefaults *)self _setDefaultsWithDictionary:wallpaperDefaultsDict variant:variant wallpaperMode:mode];
 }
 
-- (id)_defaultsWrapperForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)_defaultsWrapperForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v7 = [(PBUIWallpaperDefaults *)self defaultsDomain];
-  v8 = [(PBUIWallpaperDefaults *)self _keyForWallpaperMode:a4];
-  if (!a3)
+  defaultsDomain = [(PBUIWallpaperDefaults *)self defaultsDomain];
+  v8 = [(PBUIWallpaperDefaults *)self _keyForWallpaperMode:mode];
+  if (!variant)
   {
-    v9 = [v7 lockScreenWallpapers];
+    lockScreenWallpapers = [defaultsDomain lockScreenWallpapers];
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (variant == 1)
   {
-    v9 = [v7 homeScreenWallpapers];
+    lockScreenWallpapers = [defaultsDomain homeScreenWallpapers];
 LABEL_5:
-    v10 = v9;
-    v11 = [v9 objectForKey:v8];
+    v10 = lockScreenWallpapers;
+    v11 = [lockScreenWallpapers objectForKey:v8];
 
     goto LABEL_7;
   }
@@ -268,82 +268,82 @@ LABEL_7:
   return v12;
 }
 
-- (void)_setDefaultsWithDictionary:(id)a3 variant:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (void)_setDefaultsWithDictionary:(id)dictionary variant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v8 = a3;
-  v14 = [(PBUIWallpaperDefaults *)self defaultsDomain];
-  v9 = [(PBUIWallpaperDefaults *)self _keyForWallpaperMode:a5];
-  if (a4 == 1)
+  dictionaryCopy = dictionary;
+  defaultsDomain = [(PBUIWallpaperDefaults *)self defaultsDomain];
+  v9 = [(PBUIWallpaperDefaults *)self _keyForWallpaperMode:mode];
+  if (variant == 1)
   {
-    v10 = [v14 homeScreenWallpapers];
+    homeScreenWallpapers = [defaultsDomain homeScreenWallpapers];
   }
 
   else
   {
-    if (a4)
+    if (variant)
     {
       v11 = 0;
       goto LABEL_7;
     }
 
-    v10 = [v14 lockScreenWallpapers];
+    homeScreenWallpapers = [defaultsDomain lockScreenWallpapers];
   }
 
-  v11 = v10;
+  v11 = homeScreenWallpapers;
 LABEL_7:
   v12 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v11];
-  [v12 setObject:v8 forKey:v9];
+  [v12 setObject:dictionaryCopy forKey:v9];
 
-  if (a4 == 1)
+  if (variant == 1)
   {
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v12];
-    [v14 setHomeScreenWallpapers:v13];
+    [defaultsDomain setHomeScreenWallpapers:v13];
   }
 
   else
   {
-    if (a4)
+    if (variant)
     {
       goto LABEL_12;
     }
 
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v12];
-    [v14 setLockScreenWallpapers:v13];
+    [defaultsDomain setLockScreenWallpapers:v13];
   }
 
 LABEL_12:
 }
 
-- (id)_keyForWallpaperMode:(int64_t)a3
+- (id)_keyForWallpaperMode:(int64_t)mode
 {
-  if (a3 >= 2)
+  if (mode >= 2)
   {
-    v3 = a3;
+    modeCopy = mode;
   }
 
   else
   {
-    v3 = 0;
+    modeCopy = 0;
   }
 
-  v4 = PBUIStringForWallpaperMode(v3);
+  v4 = PBUIStringForWallpaperMode(modeCopy);
 
   return v4;
 }
 
-- (void)setWallpaperKitData:(id)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (void)setWallpaperKitData:(id)data forLocations:(int64_t)locations wallpaperMode:(int64_t)mode
 {
-  v6 = a4;
-  v8 = a3;
+  locationsCopy = locations;
+  dataCopy = data;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__PBUIWallpaperDefaults_setWallpaperKitData_forLocations_wallpaperMode___block_invoke;
   v10[3] = &unk_2783626B0;
-  v11 = v8;
-  v12 = a5;
+  v11 = dataCopy;
+  modeCopy = mode;
   v10[4] = self;
-  v9 = v8;
-  PBUIWallpaperEnumerateVariantsForLocations(v6, v10);
+  v9 = dataCopy;
+  PBUIWallpaperEnumerateVariantsForLocations(locationsCopy, v10);
 }
 
 void __72__PBUIWallpaperDefaults_setWallpaperKitData_forLocations_wallpaperMode___block_invoke(uint64_t a1, uint64_t a2)
@@ -358,24 +358,24 @@ void __72__PBUIWallpaperDefaults_setWallpaperKitData_forLocations_wallpaperMode_
   [v4 _updateDefaultsForVariant:a2 wallpaperMode:v3 updater:v5];
 }
 
-- (id)wallpaperKitDataForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperKitDataForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:a4];
-  v5 = [v4 wallpaperKitData];
+  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:mode];
+  wallpaperKitData = [v4 wallpaperKitData];
 
-  return v5;
+  return wallpaperKitData;
 }
 
-- (void)setParallaxFactor:(double)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (void)setParallaxFactor:(double)factor forLocations:(int64_t)locations wallpaperMode:(int64_t)mode
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __70__PBUIWallpaperDefaults_setParallaxFactor_forLocations_wallpaperMode___block_invoke;
   v5[3] = &unk_278364300;
   v5[4] = self;
-  v5[5] = a5;
-  *&v5[6] = a3;
-  PBUIWallpaperEnumerateVariantsForLocations(a4, v5);
+  v5[5] = mode;
+  *&v5[6] = factor;
+  PBUIWallpaperEnumerateVariantsForLocations(locations, v5);
 }
 
 uint64_t __70__PBUIWallpaperDefaults_setParallaxFactor_forLocations_wallpaperMode___block_invoke(void *a1, uint64_t a2)
@@ -390,25 +390,25 @@ uint64_t __70__PBUIWallpaperDefaults_setParallaxFactor_forLocations_wallpaperMod
   return [v3 _updateDefaultsForVariant:a2 wallpaperMode:v2 updater:v5];
 }
 
-- (double)parallaxFactorForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (double)parallaxFactorForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:a4];
+  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:mode];
   [v4 parallaxFactor];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setZoomScale:(double)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (void)setZoomScale:(double)scale forLocations:(int64_t)locations wallpaperMode:(int64_t)mode
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __65__PBUIWallpaperDefaults_setZoomScale_forLocations_wallpaperMode___block_invoke;
   v5[3] = &unk_278364300;
   v5[4] = self;
-  v5[5] = a5;
-  *&v5[6] = a3;
-  PBUIWallpaperEnumerateVariantsForLocations(a4, v5);
+  v5[5] = mode;
+  *&v5[6] = scale;
+  PBUIWallpaperEnumerateVariantsForLocations(locations, v5);
 }
 
 uint64_t __65__PBUIWallpaperDefaults_setZoomScale_forLocations_wallpaperMode___block_invoke(void *a1, uint64_t a2)
@@ -423,9 +423,9 @@ uint64_t __65__PBUIWallpaperDefaults_setZoomScale_forLocations_wallpaperMode___b
   return [v3 _updateDefaultsForVariant:a2 wallpaperMode:v2 updater:v5];
 }
 
-- (double)zoomScaleForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (double)zoomScaleForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:a4];
+  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:mode];
   [v4 zoomScale];
   v6 = v5;
 
@@ -439,16 +439,16 @@ uint64_t __65__PBUIWallpaperDefaults_setZoomScale_forLocations_wallpaperMode___b
   [(PBUIWallpaperDefaults *)self updateDefaultsForLocations:3 updater:&__block_literal_global_34_2];
 }
 
-- (void)setCropRect:(CGRect)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (void)setCropRect:(CGRect)rect forLocations:(int64_t)locations wallpaperMode:(int64_t)mode
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __64__PBUIWallpaperDefaults_setCropRect_forLocations_wallpaperMode___block_invoke;
   v5[3] = &unk_278364348;
   v5[4] = self;
-  v5[5] = a5;
-  v6 = a3;
-  PBUIWallpaperEnumerateVariantsForLocations(a4, v5);
+  v5[5] = mode;
+  rectCopy = rect;
+  PBUIWallpaperEnumerateVariantsForLocations(locations, v5);
 }
 
 uint64_t __64__PBUIWallpaperDefaults_setCropRect_forLocations_wallpaperMode___block_invoke(uint64_t a1, uint64_t a2)
@@ -465,9 +465,9 @@ uint64_t __64__PBUIWallpaperDefaults_setCropRect_forLocations_wallpaperMode___bl
   return [v3 _updateDefaultsForVariant:a2 wallpaperMode:v2 updater:v6];
 }
 
-- (CGRect)cropRectForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (CGRect)cropRectForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:a4];
+  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:mode];
   [v4 cropRect];
   v6 = v5;
   v8 = v7;
@@ -485,20 +485,20 @@ uint64_t __64__PBUIWallpaperDefaults_setCropRect_forLocations_wallpaperMode___bl
   return result;
 }
 
-- (void)setSupportsCropping:(BOOL)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (void)setSupportsCropping:(BOOL)cropping forLocations:(int64_t)locations wallpaperMode:(int64_t)mode
 {
-  v7 = a3;
+  croppingCopy = cropping;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__PBUIWallpaperDefaults_setSupportsCropping_forLocations_wallpaperMode___block_invoke;
   v9[3] = &unk_278364390;
   v9[4] = self;
-  v9[5] = a5;
-  v10 = a3;
-  PBUIWallpaperEnumerateVariantsForLocations(a4, v9);
-  if (v7)
+  v9[5] = mode;
+  croppingCopy2 = cropping;
+  PBUIWallpaperEnumerateVariantsForLocations(locations, v9);
+  if (croppingCopy)
   {
-    [(PBUIWallpaperDefaults *)self setMagnifyEnabled:0 forLocations:a4 wallpaperMode:a5];
+    [(PBUIWallpaperDefaults *)self setMagnifyEnabled:0 forLocations:locations wallpaperMode:mode];
   }
 }
 
@@ -514,28 +514,28 @@ uint64_t __72__PBUIWallpaperDefaults_setSupportsCropping_forLocations_wallpaperM
   return [v3 _updateDefaultsForVariant:a2 wallpaperMode:v2 updater:v5];
 }
 
-- (BOOL)supportsCroppingForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (BOOL)supportsCroppingForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:a4];
-  v5 = [v4 supportsCropping];
+  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:mode];
+  supportsCropping = [v4 supportsCropping];
 
-  return v5;
+  return supportsCropping;
 }
 
-- (void)setMagnifyEnabled:(BOOL)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (void)setMagnifyEnabled:(BOOL)enabled forLocations:(int64_t)locations wallpaperMode:(int64_t)mode
 {
-  v7 = a3;
+  enabledCopy = enabled;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__PBUIWallpaperDefaults_setMagnifyEnabled_forLocations_wallpaperMode___block_invoke;
   v9[3] = &unk_278364390;
   v9[4] = self;
-  v9[5] = a5;
-  v10 = a3;
-  PBUIWallpaperEnumerateVariantsForLocations(a4, v9);
-  if (v7)
+  v9[5] = mode;
+  enabledCopy2 = enabled;
+  PBUIWallpaperEnumerateVariantsForLocations(locations, v9);
+  if (enabledCopy)
   {
-    [(PBUIWallpaperDefaults *)self setSupportsCropping:0 forLocations:a4 wallpaperMode:a5];
+    [(PBUIWallpaperDefaults *)self setSupportsCropping:0 forLocations:locations wallpaperMode:mode];
   }
 }
 
@@ -551,24 +551,24 @@ uint64_t __70__PBUIWallpaperDefaults_setMagnifyEnabled_forLocations_wallpaperMod
   return [v3 _updateDefaultsForVariant:a2 wallpaperMode:v2 updater:v5];
 }
 
-- (BOOL)magnifyEnabledForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (BOOL)magnifyEnabledForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:a4];
-  v5 = [v4 magnifyEnabled];
+  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:mode];
+  magnifyEnabled = [v4 magnifyEnabled];
 
-  return v5;
+  return magnifyEnabled;
 }
 
-- (void)setPortrait:(BOOL)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (void)setPortrait:(BOOL)portrait forLocations:(int64_t)locations wallpaperMode:(int64_t)mode
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __64__PBUIWallpaperDefaults_setPortrait_forLocations_wallpaperMode___block_invoke;
   v5[3] = &unk_278364390;
   v5[4] = self;
-  v5[5] = a5;
-  v6 = a3;
-  PBUIWallpaperEnumerateVariantsForLocations(a4, v5);
+  v5[5] = mode;
+  portraitCopy = portrait;
+  PBUIWallpaperEnumerateVariantsForLocations(locations, v5);
 }
 
 uint64_t __64__PBUIWallpaperDefaults_setPortrait_forLocations_wallpaperMode___block_invoke(uint64_t a1, uint64_t a2)
@@ -583,27 +583,27 @@ uint64_t __64__PBUIWallpaperDefaults_setPortrait_forLocations_wallpaperMode___bl
   return [v3 _updateDefaultsForVariant:a2 wallpaperMode:v2 updater:v5];
 }
 
-- (BOOL)isPortraitForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (BOOL)isPortraitForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:a4];
-  v5 = [v4 portrait];
+  v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:mode];
+  portrait = [v4 portrait];
 
-  return v5;
+  return portrait;
 }
 
-- (void)setName:(id)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (void)setName:(id)name forLocations:(int64_t)locations wallpaperMode:(int64_t)mode
 {
-  v6 = a4;
-  v8 = a3;
+  locationsCopy = locations;
+  nameCopy = name;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__PBUIWallpaperDefaults_setName_forLocations_wallpaperMode___block_invoke;
   v10[3] = &unk_2783626B0;
-  v11 = v8;
-  v12 = a5;
+  v11 = nameCopy;
+  modeCopy = mode;
   v10[4] = self;
-  v9 = v8;
-  PBUIWallpaperEnumerateVariantsForLocations(v6, v10);
+  v9 = nameCopy;
+  PBUIWallpaperEnumerateVariantsForLocations(locationsCopy, v10);
 }
 
 void __60__PBUIWallpaperDefaults_setName_forLocations_wallpaperMode___block_invoke(uint64_t a1, uint64_t a2)
@@ -618,35 +618,35 @@ void __60__PBUIWallpaperDefaults_setName_forLocations_wallpaperMode___block_invo
   [v4 _updateDefaultsForVariant:a2 wallpaperMode:v3 updater:v5];
 }
 
-- (id)nameForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)nameForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  if (a3 == -1)
+  if (variant == -1)
   {
-    v5 = 0;
+    wallpaperName = 0;
   }
 
   else
   {
-    v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:a4];
-    v5 = [v4 wallpaperName];
+    v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:mode];
+    wallpaperName = [v4 wallpaperName];
   }
 
-  return v5;
+  return wallpaperName;
 }
 
-- (void)setImageHash:(id)a3 forLocations:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (void)setImageHash:(id)hash forLocations:(int64_t)locations wallpaperMode:(int64_t)mode
 {
-  v6 = a4;
-  v8 = a3;
+  locationsCopy = locations;
+  hashCopy = hash;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__PBUIWallpaperDefaults_setImageHash_forLocations_wallpaperMode___block_invoke;
   v10[3] = &unk_2783626B0;
-  v11 = v8;
-  v12 = a5;
+  v11 = hashCopy;
+  modeCopy = mode;
   v10[4] = self;
-  v9 = v8;
-  PBUIWallpaperEnumerateVariantsForLocations(v6, v10);
+  v9 = hashCopy;
+  PBUIWallpaperEnumerateVariantsForLocations(locationsCopy, v10);
 }
 
 void __65__PBUIWallpaperDefaults_setImageHash_forLocations_wallpaperMode___block_invoke(uint64_t a1, uint64_t a2)
@@ -661,71 +661,71 @@ void __65__PBUIWallpaperDefaults_setImageHash_forLocations_wallpaperMode___block
   [v4 _updateDefaultsForVariant:a2 wallpaperMode:v3 updater:v5];
 }
 
-- (id)imageHashForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)imageHashForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  if (a3 == -1)
+  if (variant == -1)
   {
-    v5 = 0;
+    imageHashData = 0;
   }
 
   else
   {
-    v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:a4];
-    v5 = [v4 imageHashData];
+    v4 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:mode];
+    imageHashData = [v4 imageHashData];
   }
 
-  return v5;
+  return imageHashData;
 }
 
-- (void)setHasVideo:(BOOL)a3
+- (void)setHasVideo:(BOOL)video
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __37__PBUIWallpaperDefaults_setHasVideo___block_invoke;
   v3[3] = &__block_descriptor_33_e38_v16__0__PBUIWallpaperDefaultsWrapper_8l;
-  v4 = a3;
+  videoCopy = video;
   [(PBUIWallpaperDefaults *)self _updateDefaultsForVariant:0 wallpaperMode:0 updater:v3];
 }
 
-- (BOOL)hasVideoForVariant:(int64_t)a3
+- (BOOL)hasVideoForVariant:(int64_t)variant
 {
-  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:0];
-  v4 = [v3 hasVideo];
+  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:0];
+  hasVideo = [v3 hasVideo];
 
-  return v4;
+  return hasVideo;
 }
 
-- (void)setStillTimeInVideo:(double)a3
+- (void)setStillTimeInVideo:(double)video
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __45__PBUIWallpaperDefaults_setStillTimeInVideo___block_invoke;
   v3[3] = &__block_descriptor_40_e38_v16__0__PBUIWallpaperDefaultsWrapper_8l;
-  *&v3[4] = a3;
+  *&v3[4] = video;
   [(PBUIWallpaperDefaults *)self _updateDefaultsForVariant:0 wallpaperMode:0 updater:v3];
 }
 
-- (double)stillTimeInVideoForVariant:(int64_t)a3
+- (double)stillTimeInVideoForVariant:(int64_t)variant
 {
-  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:0];
+  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:0];
   [v3 stillTimeInVideo];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setColorData:(id)a3 forLocations:(int64_t)a4
+- (void)setColorData:(id)data forLocations:(int64_t)locations
 {
-  v4 = a4;
-  v6 = a3;
+  locationsCopy = locations;
+  dataCopy = data;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__PBUIWallpaperDefaults_setColorData_forLocations___block_invoke;
   v8[3] = &unk_278362330;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  PBUIWallpaperEnumerateVariantsForLocations(v4, v8);
+  v9 = dataCopy;
+  v7 = dataCopy;
+  PBUIWallpaperEnumerateVariantsForLocations(locationsCopy, v8);
 }
 
 void __51__PBUIWallpaperDefaults_setColorData_forLocations___block_invoke(uint64_t a1, uint64_t a2)
@@ -739,26 +739,26 @@ void __51__PBUIWallpaperDefaults_setColorData_forLocations___block_invoke(uint64
   [v3 _updateDefaultsForVariant:a2 wallpaperMode:0 updater:v4];
 }
 
-- (id)wallpaperColorDataForVariant:(int64_t)a3
+- (id)wallpaperColorDataForVariant:(int64_t)variant
 {
-  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:0];
-  v4 = [v3 colorData];
+  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:0];
+  colorData = [v3 colorData];
 
-  return v4;
+  return colorData;
 }
 
-- (void)setColorName:(id)a3 forLocations:(int64_t)a4
+- (void)setColorName:(id)name forLocations:(int64_t)locations
 {
-  v4 = a4;
-  v6 = a3;
+  locationsCopy = locations;
+  nameCopy = name;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__PBUIWallpaperDefaults_setColorName_forLocations___block_invoke;
   v8[3] = &unk_278362330;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  PBUIWallpaperEnumerateVariantsForLocations(v4, v8);
+  v9 = nameCopy;
+  v7 = nameCopy;
+  PBUIWallpaperEnumerateVariantsForLocations(locationsCopy, v8);
 }
 
 void __51__PBUIWallpaperDefaults_setColorName_forLocations___block_invoke(uint64_t a1, uint64_t a2)
@@ -772,26 +772,26 @@ void __51__PBUIWallpaperDefaults_setColorName_forLocations___block_invoke(uint64
   [v3 _updateDefaultsForVariant:a2 wallpaperMode:0 updater:v4];
 }
 
-- (id)wallpaperColorNameForVariant:(int64_t)a3
+- (id)wallpaperColorNameForVariant:(int64_t)variant
 {
-  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:0];
-  v4 = [v3 colorName];
+  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:0];
+  colorName = [v3 colorName];
 
-  return v4;
+  return colorName;
 }
 
-- (void)setGradientData:(id)a3 forLocations:(int64_t)a4
+- (void)setGradientData:(id)data forLocations:(int64_t)locations
 {
-  v4 = a4;
-  v6 = a3;
+  locationsCopy = locations;
+  dataCopy = data;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__PBUIWallpaperDefaults_setGradientData_forLocations___block_invoke;
   v8[3] = &unk_278362330;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  PBUIWallpaperEnumerateVariantsForLocations(v4, v8);
+  v9 = dataCopy;
+  v7 = dataCopy;
+  PBUIWallpaperEnumerateVariantsForLocations(locationsCopy, v8);
 }
 
 void __54__PBUIWallpaperDefaults_setGradientData_forLocations___block_invoke(uint64_t a1, uint64_t a2)
@@ -805,26 +805,26 @@ void __54__PBUIWallpaperDefaults_setGradientData_forLocations___block_invoke(uin
   [v3 _updateDefaultsForVariant:a2 wallpaperMode:0 updater:v4];
 }
 
-- (id)wallpaperGradientDataForVariant:(int64_t)a3
+- (id)wallpaperGradientDataForVariant:(int64_t)variant
 {
-  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:0];
-  v4 = [v3 gradientData];
+  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:0];
+  gradientData = [v3 gradientData];
 
-  return v4;
+  return gradientData;
 }
 
-- (void)setProceduralIdentifier:(id)a3 forLocations:(int64_t)a4
+- (void)setProceduralIdentifier:(id)identifier forLocations:(int64_t)locations
 {
-  v4 = a4;
-  v6 = a3;
+  locationsCopy = locations;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__PBUIWallpaperDefaults_setProceduralIdentifier_forLocations___block_invoke;
   v8[3] = &unk_278362330;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  PBUIWallpaperEnumerateVariantsForLocations(v4, v8);
+  v9 = identifierCopy;
+  v7 = identifierCopy;
+  PBUIWallpaperEnumerateVariantsForLocations(locationsCopy, v8);
 }
 
 void __62__PBUIWallpaperDefaults_setProceduralIdentifier_forLocations___block_invoke(uint64_t a1, uint64_t a2)
@@ -838,26 +838,26 @@ void __62__PBUIWallpaperDefaults_setProceduralIdentifier_forLocations___block_in
   [v3 _updateDefaultsForVariant:a2 wallpaperMode:0 updater:v4];
 }
 
-- (id)proceduralIdentifierForVariant:(int64_t)a3
+- (id)proceduralIdentifierForVariant:(int64_t)variant
 {
-  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:0];
-  v4 = [v3 wallpaperIdentifier];
+  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:0];
+  wallpaperIdentifier = [v3 wallpaperIdentifier];
 
-  return v4;
+  return wallpaperIdentifier;
 }
 
-- (void)setProceduralOptions:(id)a3 forLocations:(int64_t)a4
+- (void)setProceduralOptions:(id)options forLocations:(int64_t)locations
 {
-  v4 = a4;
-  v6 = a3;
+  locationsCopy = locations;
+  optionsCopy = options;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__PBUIWallpaperDefaults_setProceduralOptions_forLocations___block_invoke;
   v8[3] = &unk_278362330;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  PBUIWallpaperEnumerateVariantsForLocations(v4, v8);
+  v9 = optionsCopy;
+  v7 = optionsCopy;
+  PBUIWallpaperEnumerateVariantsForLocations(locationsCopy, v8);
 }
 
 void __59__PBUIWallpaperDefaults_setProceduralOptions_forLocations___block_invoke(uint64_t a1, uint64_t a2)
@@ -871,23 +871,23 @@ void __59__PBUIWallpaperDefaults_setProceduralOptions_forLocations___block_invok
   [v3 _updateDefaultsForVariant:a2 wallpaperMode:0 updater:v4];
 }
 
-- (id)proceduralOptionsForVariant:(int64_t)a3
+- (id)proceduralOptionsForVariant:(int64_t)variant
 {
-  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:0];
-  v4 = [v3 wallpaperOptions];
+  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:0];
+  wallpaperOptions = [v3 wallpaperOptions];
 
-  return v4;
+  return wallpaperOptions;
 }
 
-- (void)setProceduralUserSet:(BOOL)a3 forLocations:(int64_t)a4
+- (void)setProceduralUserSet:(BOOL)set forLocations:(int64_t)locations
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__PBUIWallpaperDefaults_setProceduralUserSet_forLocations___block_invoke;
   v4[3] = &unk_2783643B8;
   v4[4] = self;
-  v5 = a3;
-  PBUIWallpaperEnumerateVariantsForLocations(a4, v4);
+  setCopy = set;
+  PBUIWallpaperEnumerateVariantsForLocations(locations, v4);
 }
 
 uint64_t __59__PBUIWallpaperDefaults_setProceduralUserSet_forLocations___block_invoke(uint64_t a1, uint64_t a2)
@@ -901,12 +901,12 @@ uint64_t __59__PBUIWallpaperDefaults_setProceduralUserSet_forLocations___block_i
   return [v2 _updateDefaultsForVariant:a2 wallpaperMode:0 updater:v4];
 }
 
-- (BOOL)proceduralUserSetForVariant:(int64_t)a3
+- (BOOL)proceduralUserSetForVariant:(int64_t)variant
 {
-  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:a3 wallpaperMode:0];
-  v4 = [v3 wallpaperWasUserSet];
+  v3 = [(PBUIWallpaperDefaults *)self _defaultsWrapperForVariant:variant wallpaperMode:0];
+  wallpaperWasUserSet = [v3 wallpaperWasUserSet];
 
-  return v4;
+  return wallpaperWasUserSet;
 }
 
 @end

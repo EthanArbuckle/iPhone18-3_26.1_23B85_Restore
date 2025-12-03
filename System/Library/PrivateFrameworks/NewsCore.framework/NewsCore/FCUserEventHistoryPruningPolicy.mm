@@ -1,19 +1,19 @@
 @interface FCUserEventHistoryPruningPolicy
-- (FCUserEventHistoryPruningPolicy)initWithType:(int64_t)a3 value:(unint64_t)a4;
+- (FCUserEventHistoryPruningPolicy)initWithType:(int64_t)type value:(unint64_t)value;
 - (id)description;
 @end
 
 @implementation FCUserEventHistoryPruningPolicy
 
-- (FCUserEventHistoryPruningPolicy)initWithType:(int64_t)a3 value:(unint64_t)a4
+- (FCUserEventHistoryPruningPolicy)initWithType:(int64_t)type value:(unint64_t)value
 {
   v7.receiver = self;
   v7.super_class = FCUserEventHistoryPruningPolicy;
   result = [(FCUserEventHistoryPruningPolicy *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_value = a4;
+    result->_type = type;
+    result->_value = value;
   }
 
   return result;
@@ -22,15 +22,15 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCUserEventHistoryPruningPolicy *)self type];
-  if (v4 > 4)
+  type = [(FCUserEventHistoryPruningPolicy *)self type];
+  if (type > 4)
   {
     v5 = @"MaxTotalSize";
   }
 
   else
   {
-    v5 = off_1E7C3B8B8[v4];
+    v5 = off_1E7C3B8B8[type];
   }
 
   [v3 appendFormat:@"; type: %@", v5];

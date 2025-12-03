@@ -1,12 +1,12 @@
 @interface WKWebPrivacyNotificationListener
-- (WKWebPrivacyNotificationListener)initWithType:(int64_t)a3 callback:(id)a4;
+- (WKWebPrivacyNotificationListener)initWithType:(int64_t)type callback:(id)callback;
 - (void)dealloc;
-- (void)didUpdate:(id)a3;
+- (void)didUpdate:(id)update;
 @end
 
 @implementation WKWebPrivacyNotificationListener
 
-- (WKWebPrivacyNotificationListener)initWithType:(int64_t)a3 callback:(id)a4
+- (WKWebPrivacyNotificationListener)initWithType:(int64_t)type callback:(id)callback
 {
   v11.receiver = self;
   v11.super_class = WKWebPrivacyNotificationListener;
@@ -14,15 +14,15 @@
   v7 = v6;
   if (v6)
   {
-    v6->_resourceType = a3;
-    v8 = _Block_copy(a4);
+    v6->_resourceType = type;
+    v8 = _Block_copy(callback);
     _Block_release(v7->_callback.m_block);
     v7->_callback.m_block = v8;
     _Block_release(0);
     if (PAL::WebPrivacyLibrary(1))
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 addObserver:v7 selector:sel_didUpdate_ name:PAL::get_WebPrivacy_WPResourceDataChangedNotificationName(v9) object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v7 selector:sel_didUpdate_ name:PAL::get_WebPrivacy_WPResourceDataChangedNotificationName(defaultCenter) object:0];
     }
   }
 
@@ -33,8 +33,8 @@
 {
   if (PAL::WebPrivacyLibrary(1))
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self name:PAL::get_WebPrivacy_WPResourceDataChangedNotificationName(v3) object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:PAL::get_WebPrivacy_WPResourceDataChangedNotificationName(defaultCenter) object:0];
   }
 
   v4.receiver = self;
@@ -42,10 +42,10 @@
   [(WKWebPrivacyNotificationListener *)&v4 dealloc];
 }
 
-- (void)didUpdate:(id)a3
+- (void)didUpdate:(id)update
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:PAL::get_WebPrivacy_WPNotificationUserInfoResourceTypeKey(v4)];
+  userInfo = [update userInfo];
+  v5 = [userInfo objectForKey:PAL::get_WebPrivacy_WPNotificationUserInfoResourceTypeKey(userInfo)];
   v6 = WTF::dynamic_objc_cast<NSNumber>(v5);
   if (v6 && self->_callback.m_block && [v6 integerValue] == self->_resourceType)
   {

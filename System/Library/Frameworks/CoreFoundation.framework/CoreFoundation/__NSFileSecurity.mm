@@ -1,22 +1,22 @@
 @interface __NSFileSecurity
-+ (id)__new:(_filesec *)a3;
-- (BOOL)clearProperties:(unint64_t)a3;
-- (BOOL)copyAccessControlList:(_acl *)a3;
-- (BOOL)getGroup:(unsigned int *)a3;
++ (id)__new:(_filesec *)__new;
+- (BOOL)clearProperties:(unint64_t)properties;
+- (BOOL)copyAccessControlList:(_acl *)list;
+- (BOOL)getGroup:(unsigned int *)group;
 - (BOOL)getGroupUUID:(unsigned __int8 *)(a3;
-- (BOOL)getMode:(unsigned __int16 *)a3;
-- (BOOL)getOwner:(unsigned int *)a3;
+- (BOOL)getMode:(unsigned __int16 *)mode;
+- (BOOL)getOwner:(unsigned int *)owner;
 - (BOOL)getOwnerUUID:(unsigned __int8 *)(a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setAccessControlList:(_acl *)a3;
-- (BOOL)setGroup:(unsigned int)a3;
-- (BOOL)setMode:(unsigned __int16)a3;
-- (BOOL)setOwner:(unsigned int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setAccessControlList:(_acl *)list;
+- (BOOL)setGroup:(unsigned int)group;
+- (BOOL)setMode:(unsigned __int16)mode;
+- (BOOL)setOwner:(unsigned int)owner;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation __NSFileSecurity
@@ -36,21 +36,21 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)__new:(_filesec *)a3
++ (id)__new:(_filesec *)__new
 {
-  result = __CFAllocateObject(a1, 0);
-  *(result + 1) = a3;
+  result = __CFAllocateObject(self, 0);
+  *(result + 1) = __new;
   return result;
 }
 
-- (BOOL)getOwner:(unsigned int *)a3
+- (BOOL)getOwner:(unsigned int *)owner
 {
   v8 = *MEMORY[0x1E69E9840];
   v7 = 0;
   property = filesec_get_property(self->_filesec, FILESEC_OWNER, &v7);
   if (!property)
   {
-    *a3 = v7;
+    *owner = v7;
   }
 
   result = property == 0;
@@ -58,23 +58,23 @@
   return result;
 }
 
-- (BOOL)setOwner:(unsigned int)a3
+- (BOOL)setOwner:(unsigned int)owner
 {
   v6 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  result = filesec_set_property(self->_filesec, FILESEC_OWNER, &v5) == 0;
+  ownerCopy = owner;
+  result = filesec_set_property(self->_filesec, FILESEC_OWNER, &ownerCopy) == 0;
   v4 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)getGroup:(unsigned int *)a3
+- (BOOL)getGroup:(unsigned int *)group
 {
   v8 = *MEMORY[0x1E69E9840];
   v7 = 0;
   property = filesec_get_property(self->_filesec, FILESEC_GROUP, &v7);
   if (!property)
   {
-    *a3 = v7;
+    *group = v7;
   }
 
   result = property == 0;
@@ -82,23 +82,23 @@
   return result;
 }
 
-- (BOOL)setGroup:(unsigned int)a3
+- (BOOL)setGroup:(unsigned int)group
 {
   v6 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  result = filesec_set_property(self->_filesec, FILESEC_GROUP, &v5) == 0;
+  groupCopy = group;
+  result = filesec_set_property(self->_filesec, FILESEC_GROUP, &groupCopy) == 0;
   v4 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)getMode:(unsigned __int16 *)a3
+- (BOOL)getMode:(unsigned __int16 *)mode
 {
   v8 = *MEMORY[0x1E69E9840];
   v7 = 0;
   property = filesec_get_property(self->_filesec, FILESEC_MODE, &v7);
   if (!property)
   {
-    *a3 = v7;
+    *mode = v7;
   }
 
   result = property == 0;
@@ -106,11 +106,11 @@
   return result;
 }
 
-- (BOOL)setMode:(unsigned __int16)a3
+- (BOOL)setMode:(unsigned __int16)mode
 {
   v6 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  result = filesec_set_property(self->_filesec, FILESEC_MODE, &v5) == 0;
+  modeCopy = mode;
+  result = filesec_set_property(self->_filesec, FILESEC_MODE, &modeCopy) == 0;
   v4 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -145,7 +145,7 @@
   return result;
 }
 
-- (BOOL)copyAccessControlList:(_acl *)a3
+- (BOOL)copyAccessControlList:(_acl *)list
 {
   acl[1] = *MEMORY[0x1E69E9840];
   acl[0] = 0;
@@ -153,7 +153,7 @@
   if (!property)
   {
     v5 = acl_dup(acl[0]);
-    *a3 = v5;
+    *list = v5;
     if (v5)
     {
       acl_free(acl[0]);
@@ -161,7 +161,7 @@
 
     else
     {
-      *a3 = acl[0];
+      *list = acl[0];
     }
   }
 
@@ -170,18 +170,18 @@
   return result;
 }
 
-- (BOOL)setAccessControlList:(_acl *)a3
+- (BOOL)setAccessControlList:(_acl *)list
 {
   v8[1] = *MEMORY[0x1E69E9840];
   filesec = self->_filesec;
-  v8[0] = a3;
+  v8[0] = list;
   v4 = v8;
-  if (!a3)
+  if (!list)
   {
     v4 = 0;
   }
 
-  if (a3 == 1)
+  if (list == 1)
   {
     v5 = 1;
   }
@@ -196,13 +196,13 @@
   return result;
 }
 
-- (BOOL)clearProperties:(unint64_t)a3
+- (BOOL)clearProperties:(unint64_t)properties
 {
-  v3 = a3;
-  if (a3)
+  propertiesCopy = properties;
+  if (properties)
   {
     v5 = filesec_unset_property(self->_filesec, FILESEC_OWNER) == 0;
-    if ((v3 & 2) == 0)
+    if ((propertiesCopy & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -211,27 +211,27 @@
   }
 
   v5 = 1;
-  if ((a3 & 2) != 0)
+  if ((properties & 2) != 0)
   {
 LABEL_5:
     v5 &= filesec_unset_property(self->_filesec, FILESEC_GROUP) == 0;
   }
 
 LABEL_6:
-  if ((v3 & 4) != 0)
+  if ((propertiesCopy & 4) != 0)
   {
     v5 &= filesec_unset_property(self->_filesec, FILESEC_MODE) == 0;
-    if ((v3 & 8) == 0)
+    if ((propertiesCopy & 8) == 0)
     {
 LABEL_8:
-      if ((v3 & 0x10) == 0)
+      if ((propertiesCopy & 0x10) == 0)
       {
         goto LABEL_9;
       }
 
 LABEL_14:
       v5 &= filesec_unset_property(self->_filesec, FILESEC_GRPUUID) == 0;
-      if ((v3 & 0x20) == 0)
+      if ((propertiesCopy & 0x20) == 0)
       {
         return v5;
       }
@@ -240,19 +240,19 @@ LABEL_14:
     }
   }
 
-  else if ((v3 & 8) == 0)
+  else if ((propertiesCopy & 8) == 0)
   {
     goto LABEL_8;
   }
 
   v5 &= filesec_unset_property(self->_filesec, FILESEC_UUID) == 0;
-  if ((v3 & 0x10) != 0)
+  if ((propertiesCopy & 0x10) != 0)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
-  if ((v3 & 0x20) != 0)
+  if ((propertiesCopy & 0x20) != 0)
   {
     return (filesec_unset_property(self->_filesec, FILESEC_ACL) == 0) & v5;
   }
@@ -262,12 +262,12 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(__NSFileSecurity *)self _filesec];
-  if (v3)
+  _filesec = [(__NSFileSecurity *)self _filesec];
+  if (_filesec)
   {
-    v4 = v3;
+    v4 = _filesec;
     v11[0] = 0;
     v10[0] = 0;
     v10[1] = 0;
@@ -275,75 +275,75 @@ LABEL_9:
     v7[1] = 0;
     obj_p = 0;
     v7[0] = 0;
-    if (filesec_get_property(v3, FILESEC_OWNER, v11 + 4))
+    if (filesec_get_property(_filesec, FILESEC_OWNER, v11 + 4))
     {
-      v2 = 1;
+      selfCopy = 1;
     }
 
     else
     {
-      v2 = 3;
+      selfCopy = 3;
     }
 
     if (!filesec_get_property(v4, FILESEC_GROUP, v11))
     {
-      v2 |= 4uLL;
+      selfCopy |= 4uLL;
     }
 
     if (!filesec_get_property(v4, FILESEC_UUID, v10))
     {
-      v2 |= 8uLL;
+      selfCopy |= 8uLL;
     }
 
     if (!filesec_get_property(v4, FILESEC_MODE, &v9))
     {
-      v2 |= 0x10uLL;
+      selfCopy |= 0x10uLL;
     }
 
     if (!filesec_get_property(v4, FILESEC_ACL, &obj_p))
     {
       acl_free(obj_p);
-      v2 |= 0x20uLL;
+      selfCopy |= 0x20uLL;
     }
 
     if (!filesec_get_property(v4, FILESEC_GRPUUID, v7))
     {
-      v2 |= 0x40uLL;
+      selfCopy |= 0x40uLL;
     }
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (self == a3)
+  if (self == equal)
   {
     v16 = 1;
     goto LABEL_35;
   }
 
-  if (!a3 || (objc_opt_isKindOfClass() & 1) == 0)
+  if (!equal || (objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_34:
     v16 = 0;
     goto LABEL_35;
   }
 
-  v5 = [(__NSFileSecurity *)self _filesec];
-  v6 = [a3 _filesec];
-  v7 = v6;
-  if (!v5 || !v6)
+  _filesec = [(__NSFileSecurity *)self _filesec];
+  _filesec2 = [equal _filesec];
+  v7 = _filesec2;
+  if (!_filesec || !_filesec2)
   {
-    v16 = (v5 | v6) == 0;
+    v16 = (_filesec | _filesec2) == 0;
     goto LABEL_35;
   }
 
   LODWORD(acl) = 0;
   LODWORD(v27) = 0;
-  property = filesec_get_property(v5, FILESEC_OWNER, &acl);
+  property = filesec_get_property(_filesec, FILESEC_OWNER, &acl);
   if ((property == 0) == (filesec_get_property(v7, FILESEC_OWNER, &v27) != 0) || !property && acl != v27)
   {
     goto LABEL_34;
@@ -351,7 +351,7 @@ LABEL_34:
 
   LODWORD(acl) = 0;
   LODWORD(v27) = 0;
-  v9 = filesec_get_property(v5, FILESEC_GROUP, &acl);
+  v9 = filesec_get_property(_filesec, FILESEC_GROUP, &acl);
   if ((v9 == 0) == (filesec_get_property(v7, FILESEC_GROUP, &v27) != 0) || !v9 && acl != v27)
   {
     goto LABEL_34;
@@ -359,7 +359,7 @@ LABEL_34:
 
   LOWORD(acl) = 0;
   LOWORD(v27) = 0;
-  v10 = filesec_get_property(v5, FILESEC_MODE, &acl);
+  v10 = filesec_get_property(_filesec, FILESEC_MODE, &acl);
   if ((v10 == 0) == (filesec_get_property(v7, FILESEC_MODE, &v27) != 0) || !v10 && acl != v27)
   {
     goto LABEL_34;
@@ -369,7 +369,7 @@ LABEL_34:
   v30 = 0;
   v27 = 0;
   v28 = 0;
-  v11 = filesec_get_property(v5, FILESEC_UUID, &acl);
+  v11 = filesec_get_property(_filesec, FILESEC_UUID, &acl);
   if ((v11 == 0) == (filesec_get_property(v7, FILESEC_UUID, &v27) != 0))
   {
     goto LABEL_34;
@@ -384,7 +384,7 @@ LABEL_34:
   v30 = 0;
   v27 = 0;
   v28 = 0;
-  v12 = filesec_get_property(v5, FILESEC_GRPUUID, &acl);
+  v12 = filesec_get_property(_filesec, FILESEC_GRPUUID, &acl);
   if ((v12 == 0) == (filesec_get_property(v7, FILESEC_GRPUUID, &v27) != 0))
   {
     goto LABEL_34;
@@ -397,7 +397,7 @@ LABEL_34:
 
   acl = 0;
   v27 = 0;
-  v13 = filesec_get_property(v5, FILESEC_ACL, &acl);
+  v13 = filesec_get_property(_filesec, FILESEC_ACL, &acl);
   v14 = filesec_get_property(v7, FILESEC_ACL, &v27);
   v15 = v14;
   if (v14 | v13)
@@ -452,9 +452,9 @@ LABEL_35:
 - (id)description
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v3 = [(__NSFileSecurity *)self _filesec];
-  v4 = v3;
-  if (v3)
+  _filesec = [(__NSFileSecurity *)self _filesec];
+  v4 = _filesec;
+  if (_filesec)
   {
     v31[0] = 0;
     v30 = 0;
@@ -463,7 +463,7 @@ LABEL_35:
     *&v28.byte0 = 0;
     *&v28.byte8 = 0;
     acl = 0;
-    property = filesec_get_property(v3, FILESEC_OWNER, v31 + 4);
+    property = filesec_get_property(_filesec, FILESEC_OWNER, v31 + 4);
     v6 = filesec_get_property(v4, FILESEC_GROUP, v31);
     v25 = filesec_get_property(v4, FILESEC_MODE, &v30);
     v7 = filesec_get_property(v4, FILESEC_UUID, &v29);
@@ -635,13 +635,13 @@ LABEL_49:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = filesec_dup([(__NSFileSecurity *)self _filesec]);
   if (result)
   {
     v5 = result;
-    v6 = [objc_opt_class() allocWithZone:a3];
+    v6 = [objc_opt_class() allocWithZone:zone];
 
     return [v6 initWithFileSec:v5];
   }
@@ -649,18 +649,18 @@ LABEL_49:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   len_p[1] = *MEMORY[0x1E69E9840];
-  if (![a3 allowsKeyedCoding])
+  if (![coder allowsKeyedCoding])
   {
     objc_exception_throw([NSException exceptionWithName:@"NSInvalidArgumentException" reason:@"NSFileSecurity cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
-  v5 = [(__NSFileSecurity *)self _filesec];
+  _filesec = [(__NSFileSecurity *)self _filesec];
   acl = 0;
   len_p[0] = 0;
-  if (!filesec_get_property(v5, FILESEC_ACL, &acl))
+  if (!filesec_get_property(_filesec, FILESEC_ACL, &acl))
   {
     v9 = acl_to_text(acl, len_p);
     if (v9)
@@ -705,35 +705,35 @@ LABEL_49:
 LABEL_8:
   v14 = 0;
   v13 = 0;
-  if (!filesec_get_property(v5, FILESEC_OWNER, &v14 + 4))
+  if (!filesec_get_property(_filesec, FILESEC_OWNER, &v14 + 4))
   {
     *(v7 + 1) = HIDWORD(v14);
     *v7 |= 1u;
   }
 
-  if (!filesec_get_property(v5, FILESEC_GROUP, &v14))
+  if (!filesec_get_property(_filesec, FILESEC_GROUP, &v14))
   {
     *(v7 + 2) = v14;
     *v7 |= 2u;
   }
 
-  if (!filesec_get_property(v5, FILESEC_MODE, &v13))
+  if (!filesec_get_property(_filesec, FILESEC_MODE, &v13))
   {
     *(v7 + 3) = v13;
     *v7 |= 0x10u;
   }
 
-  if (!filesec_get_property(v5, FILESEC_UUID, v7 + 32))
+  if (!filesec_get_property(_filesec, FILESEC_UUID, v7 + 32))
   {
     *v7 |= 4u;
   }
 
-  if (!filesec_get_property(v5, FILESEC_GRPUUID, v7 + 48))
+  if (!filesec_get_property(_filesec, FILESEC_GRPUUID, v7 + 48))
   {
     *v7 |= 8u;
   }
 
-  [a3 encodeBytes:v7 length:v8 forKey:@"NS.filesec"];
+  [coder encodeBytes:v7 length:v8 forKey:@"NS.filesec"];
   CFAllocatorDeallocate(&__kCFAllocatorSystemDefault, v7);
 LABEL_21:
   v12 = *MEMORY[0x1E69E9840];

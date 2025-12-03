@@ -1,21 +1,21 @@
 @interface DOCActionManager
 - (DOCActionManager)init;
-- (DOCActionManager)initWithItemManager:(id)a3 managedPermission:(id)a4;
+- (DOCActionManager)initWithItemManager:(id)manager managedPermission:(id)permission;
 - (NSArray)actions;
 - (NSArray)associatedActionManagers;
 - (NSArray)forbiddenActionIdentifiers;
-- (id)_filteredMenuActionsFor:(id)a3 availabilityIdentifier:(int64_t)a4 in:(id)a5 currentConfiguration:(id)a6 sortOverrideHandler:(id)a7;
-- (id)additionalBuiltInActionsFor:(id)a3;
-- (id)builtinActionsForNodes:(id)a3 inNode:(id)a4 currentConfiguration:(id)a5;
-- (id)createToolbarDelete:(BOOL)a3;
-- (id)createToolbarRecover:(BOOL)a3;
-- (id)returnToSenderActionsFor:(id)a3 presentingViewController:(id)a4;
+- (id)_filteredMenuActionsFor:(id)for availabilityIdentifier:(int64_t)identifier in:(id)in currentConfiguration:(id)configuration sortOverrideHandler:(id)handler;
+- (id)additionalBuiltInActionsFor:(id)for;
+- (id)builtinActionsForNodes:(id)nodes inNode:(id)node currentConfiguration:(id)configuration;
+- (id)createToolbarDelete:(BOOL)delete;
+- (id)createToolbarRecover:(BOOL)recover;
+- (id)returnToSenderActionsFor:(id)for presentingViewController:(id)controller;
 - (id)shareAction;
-- (id)sharedWithYouActionsFor:(id)a3 presentingViewController:(id)a4;
-- (void)performAction:(id)a3 withURLs:(id)a4 completionHandler:(id)a5;
-- (void)setActions:(id)a3;
-- (void)setAssociatedActionManagers:(id)a3;
-- (void)setForbiddenActionIdentifiers:(id)a3;
+- (id)sharedWithYouActionsFor:(id)for presentingViewController:(id)controller;
+- (void)performAction:(id)action withURLs:(id)ls completionHandler:(id)handler;
+- (void)setActions:(id)actions;
+- (void)setAssociatedActionManagers:(id)managers;
+- (void)setForbiddenActionIdentifiers:(id)identifiers;
 @end
 
 @implementation DOCActionManager
@@ -29,7 +29,7 @@
   return v2.super.isa;
 }
 
-- (void)setForbiddenActionIdentifiers:(id)a3
+- (void)setForbiddenActionIdentifiers:(id)identifiers
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR___DOCActionManager_forbiddenActionIdentifiers;
@@ -47,7 +47,7 @@
   return v3.super.isa;
 }
 
-- (void)setAssociatedActionManagers:(id)a3
+- (void)setAssociatedActionManagers:(id)managers
 {
   type metadata accessor for DOCActionManager(self);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -66,7 +66,7 @@
   return v2.super.isa;
 }
 
-- (void)setActions:(id)a3
+- (void)setActions:(id)actions
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UIDocumentBrowserAction);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -75,11 +75,11 @@
   *(self + v5) = v4;
 }
 
-- (id)additionalBuiltInActionsFor:(id)a3
+- (id)additionalBuiltInActionsFor:(id)for
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo7DOCNode_pMd);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   specialized DOCActionManager.additionalBuiltInActions(for:)(v4);
 
   type metadata accessor for FPAction(0);
@@ -92,14 +92,14 @@
 
 - (DOCActionManager)init
 {
-  v3 = [objc_opt_self() defaultManager];
-  v4 = [objc_opt_self() defaultPermission];
-  v5 = [(DOCActionManager *)self initWithItemManager:v3 managedPermission:v4];
+  defaultManager = [objc_opt_self() defaultManager];
+  defaultPermission = [objc_opt_self() defaultPermission];
+  v5 = [(DOCActionManager *)self initWithItemManager:defaultManager managedPermission:defaultPermission];
 
   return v5;
 }
 
-- (DOCActionManager)initWithItemManager:(id)a3 managedPermission:(id)a4
+- (DOCActionManager)initWithItemManager:(id)manager managedPermission:(id)permission
 {
   v7 = MEMORY[0x277D84F90];
   *(self + OBJC_IVAR___DOCActionManager_forbiddenActionIdentifiers) = MEMORY[0x277D84F90];
@@ -107,18 +107,18 @@
   *(self + OBJC_IVAR___DOCActionManager_actions) = v7;
   *(self + OBJC_IVAR___DOCActionManager_actionManagerDelegate + 8) = 0;
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR___DOCActionManager_fpItemManager) = a3;
-  *(self + OBJC_IVAR___DOCActionManager_managedPermission) = a4;
+  *(self + OBJC_IVAR___DOCActionManager_fpItemManager) = manager;
+  *(self + OBJC_IVAR___DOCActionManager_managedPermission) = permission;
   v11.receiver = self;
   v11.super_class = DOCActionManager;
-  v8 = a3;
-  v9 = a4;
+  managerCopy = manager;
+  permissionCopy = permission;
   return [(DOCActionManager *)&v11 init];
 }
 
-- (id)_filteredMenuActionsFor:(id)a3 availabilityIdentifier:(int64_t)a4 in:(id)a5 currentConfiguration:(id)a6 sortOverrideHandler:(id)a7
+- (id)_filteredMenuActionsFor:(id)for availabilityIdentifier:(int64_t)identifier in:(id)in currentConfiguration:(id)configuration sortOverrideHandler:(id)handler
 {
-  v11 = _Block_copy(a7);
+  v11 = _Block_copy(handler);
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo7DOCNode_pMd);
   v12 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   if (v11)
@@ -134,9 +134,9 @@
   }
 
   swift_unknownObjectRetain();
-  v14 = a6;
-  v15 = self;
-  DOCActionManager._filteredMenuActions(for:availabilityIdentifier:in:currentConfiguration:sortOverrideHandler:)(v12, a4, a5, v14, v11, v13);
+  configurationCopy = configuration;
+  selfCopy = self;
+  DOCActionManager._filteredMenuActions(for:availabilityIdentifier:in:currentConfiguration:sortOverrideHandler:)(v12, identifier, in, configurationCopy, v11, v13);
   outlined consume of (@escaping @callee_guaranteed () -> (@owned DOCCopyableBarButtonItem))?(v11);
   swift_unknownObjectRelease();
 
@@ -146,14 +146,14 @@
   return v16.super.isa;
 }
 
-- (id)builtinActionsForNodes:(id)a3 inNode:(id)a4 currentConfiguration:(id)a5
+- (id)builtinActionsForNodes:(id)nodes inNode:(id)node currentConfiguration:(id)configuration
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo7DOCNode_pMd);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  DOCActionManager.builtinActions(for:in:currentConfiguration:)(v8, a4, v9);
+  configurationCopy = configuration;
+  selfCopy = self;
+  DOCActionManager.builtinActions(for:in:currentConfiguration:)(v8, node, configurationCopy);
   swift_unknownObjectRelease();
 
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UIDocumentBrowserAction);
@@ -162,12 +162,12 @@
   return v11.super.isa;
 }
 
-- (id)sharedWithYouActionsFor:(id)a3 presentingViewController:(id)a4
+- (id)sharedWithYouActionsFor:(id)for presentingViewController:(id)controller
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  specialized DOCActionManager.sharedWithYouActions(for:presentingViewController:)(a3, v7);
+  controllerCopy = controller;
+  selfCopy = self;
+  specialized DOCActionManager.sharedWithYouActions(for:presentingViewController:)(for, controllerCopy);
   swift_unknownObjectRelease();
 
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UIDocumentBrowserAction);
@@ -176,11 +176,11 @@
   return v9.super.isa;
 }
 
-- (id)returnToSenderActionsFor:(id)a3 presentingViewController:(id)a4
+- (id)returnToSenderActionsFor:(id)for presentingViewController:(id)controller
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   specialized DOCActionManager.returnToSenderActions(for:presentingViewController:)();
   swift_unknownObjectRelease();
 
@@ -190,9 +190,9 @@
   return v8.super.isa;
 }
 
-- (id)createToolbarRecover:(BOOL)a3
+- (id)createToolbarRecover:(BOOL)recover
 {
-  if (a3)
+  if (recover)
   {
     specialized static UIDocumentBrowserAction.untrashAction()();
   }
@@ -205,31 +205,31 @@
   return v3;
 }
 
-- (id)createToolbarDelete:(BOOL)a3
+- (id)createToolbarDelete:(BOOL)delete
 {
-  specialized DOCActionManager.createToolbarDelete(_:)(a3);
+  specialized DOCActionManager.createToolbarDelete(_:)(delete);
 
   return v3;
 }
 
 - (id)shareAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCActionManager.shareAction()();
 
   return v3;
 }
 
-- (void)performAction:(id)a3 withURLs:(id)a4 completionHandler:(id)a5
+- (void)performAction:(id)action withURLs:(id)ls completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for FPSandboxingURLWrapper);
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = swift_allocObject();
   *(v11 + 16) = v6;
-  v12 = self;
+  selfCopy = self;
   DOCActionManager.perform(actionWithIdentifier:with:completionHandler:)(v7, v9, v10, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool) -> (), v11);
 }
 

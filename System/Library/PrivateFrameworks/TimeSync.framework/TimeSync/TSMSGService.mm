@@ -1,9 +1,9 @@
 @interface TSMSGService
 + (id)sharedMSGService;
-- (BOOL)startExternalSync:(id *)a3 error:(id *)a4;
+- (BOOL)startExternalSync:(id *)sync error:(id *)error;
 - (TSMSGService)init;
 - (void)daemonClientRefresh;
-- (void)dispatchMSGNotification:(unsigned __int16)a3 args:(const unint64_t *)a4 numArgs:(unsigned int)a5;
+- (void)dispatchMSGNotification:(unsigned __int16)notification args:(const unint64_t *)args numArgs:(unsigned int)numArgs;
 @end
 
 @implementation TSMSGService
@@ -43,13 +43,13 @@ void __32__TSMSGService_sharedMSGService__block_invoke()
   if (v2)
   {
     *&v2->_extSyncSessionsLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     activeExtSyncSessionsByTriggerId = v3->_activeExtSyncSessionsByTriggerId;
-    v3->_activeExtSyncSessionsByTriggerId = v4;
+    v3->_activeExtSyncSessionsByTriggerId = dictionary;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     activeClockSessionsBySyncId = v3->_activeClockSessionsBySyncId;
-    v3->_activeClockSessionsBySyncId = v6;
+    v3->_activeClockSessionsBySyncId = dictionary2;
 
     v8 = MEMORY[0x277CCACA8];
     v9 = objc_opt_class();
@@ -199,13 +199,13 @@ void __35__TSMSGService_daemonClientRefresh__block_invoke(uint64_t a1)
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)startExternalSync:(id *)a3 error:(id *)a4
+- (BOOL)startExternalSync:(id *)sync error:(id *)error
 {
   if (_os_feature_enabled_impl())
   {
     v7 = +[TSXDaemonServiceClient sharedDaemonServiceClient];
     os_unfair_lock_lock(&self->_extSyncSessionsLock);
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3->var0.var1];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sync->var0.var1];
     v9 = [(NSMutableDictionary *)self->_activeExtSyncSessionsByTriggerId objectForKey:v8];
 
     if (v9)
@@ -215,18 +215,18 @@ void __35__TSMSGService_daemonClientRefresh__block_invoke(uint64_t a1)
 
     else
     {
-      v10 = [v7 startMSGExternalSync:a3];
+      v10 = [v7 startMSGExternalSync:sync];
       if (!v10)
       {
-        v12 = *&a3->var2;
-        v17[4] = *&a3->var0.var7;
+        v12 = *&sync->var2;
+        v17[4] = *&sync->var0.var7;
         v17[5] = v12;
-        var4 = a3->var4;
-        v13 = *&a3->var0.var2.var1;
-        v17[0] = *&a3->var0.var0;
+        var4 = sync->var4;
+        v13 = *&sync->var0.var2.var1;
+        v17[0] = *&sync->var0.var0;
         v17[1] = v13;
-        v14 = *&a3->var0.var5;
-        v17[2] = *&a3->var0.var3.var1;
+        v14 = *&sync->var0.var5;
+        v17[2] = *&sync->var0.var3.var1;
         v17[3] = v14;
         v15 = [MEMORY[0x277CCAE60] valuewithTSMSGExternalSyncConfig:v17];
         [(NSMutableDictionary *)self->_activeExtSyncSessionsByTriggerId setObject:v15 forKeyedSubscript:v8];
@@ -235,16 +235,16 @@ void __35__TSMSGService_daemonClientRefresh__block_invoke(uint64_t a1)
 
     os_unfair_lock_unlock(&self->_extSyncSessionsLock);
     v11 = v10 == 0;
-    if (a4 && v10)
+    if (error && v10)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TSErrorDomain" code:v10 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"TSErrorDomain" code:v10 userInfo:0];
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"TSErrorDomain" code:-536870201 userInfo:0];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -255,13 +255,13 @@ void __35__TSMSGService_daemonClientRefresh__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (void)dispatchMSGNotification:(unsigned __int16)a3 args:(const unint64_t *)a4 numArgs:(unsigned int)a5
+- (void)dispatchMSGNotification:(unsigned __int16)notification args:(const unint64_t *)args numArgs:(unsigned int)numArgs
 {
-  v7 = a3;
+  notificationCopy = notification;
   v39 = *MEMORY[0x277D85DE8];
-  if (a3 <= 3u)
+  if (notification <= 3u)
   {
-    v8 = TSMSGNotifyTypeToString_TSMSGNotifyTypeStrings[a3];
+    v8 = TSMSGNotifyTypeToString_TSMSGNotifyTypeStrings[notification];
   }
 
   else
@@ -270,13 +270,13 @@ void __35__TSMSGService_daemonClientRefresh__block_invoke(uint64_t a1)
   }
 
   v9 = [MEMORY[0x277CCAB68] stringWithFormat:@"msgType: %@, args: [", v8];
-  if (a4 && a5)
+  if (args && numArgs)
   {
     v10 = 0;
     do
     {
-      [v9 appendFormat:@"%llu", a4[v10]];
-      if (v10 < a5 - 1)
+      [v9 appendFormat:@"%llu", args[v10]];
+      if (v10 < numArgs - 1)
       {
         [v9 appendString:{@", "}];
       }
@@ -284,7 +284,7 @@ void __35__TSMSGService_daemonClientRefresh__block_invoke(uint64_t a1)
       ++v10;
     }
 
-    while (a5 != v10);
+    while (numArgs != v10);
   }
 
   [v9 appendString:@"]\n"];
@@ -296,20 +296,20 @@ void __35__TSMSGService_daemonClientRefresh__block_invoke(uint64_t a1)
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Received MSG notification: %s\n", buf, 0xCu);
   }
 
-  if (v7 <= 1)
+  if (notificationCopy <= 1)
   {
-    if (v7)
+    if (notificationCopy)
     {
-      if (v7 == 1)
+      if (notificationCopy == 1)
       {
-        if (!a4 || a5 != 2)
+        if (!args || numArgs != 2)
         {
           [TSMSGService dispatchMSGNotification:args:numArgs:];
           goto LABEL_41;
         }
 
-        v11 = *a4;
-        v12 = a4[1];
+        v11 = *args;
+        v12 = args[1];
         os_unfair_lock_lock(&self->_extSyncSessionsLock);
         activeExtSyncSessionsByTriggerId = self->_activeExtSyncSessionsByTriggerId;
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11];
@@ -345,14 +345,14 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    if (!a4 || a5 != 2)
+    if (!args || numArgs != 2)
     {
       [TSMSGService dispatchMSGNotification:args:numArgs:];
       goto LABEL_41;
     }
 
-    v19 = *a4;
-    v20 = a4[1];
+    v19 = *args;
+    v20 = args[1];
     os_unfair_lock_lock(&self->_extSyncSessionsLock);
     v21 = self->_activeExtSyncSessionsByTriggerId;
     v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v19];
@@ -380,16 +380,16 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  if (v7 == 2)
+  if (notificationCopy == 2)
   {
-    if (!a4 || a5 != 2)
+    if (!args || numArgs != 2)
     {
       [TSMSGService dispatchMSGNotification:args:numArgs:];
       goto LABEL_41;
     }
 
-    v24 = *a4;
-    v25 = *(a4 + 2);
+    v24 = *args;
+    v25 = *(args + 2);
     os_unfair_lock_lock(&self->_extSyncSessionsLock);
     v26 = self->_activeExtSyncSessionsByTriggerId;
     v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v24];
@@ -419,16 +419,16 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if (v7 == 3)
+  if (notificationCopy == 3)
   {
-    if (!a4 || a5 != 2)
+    if (!args || numArgs != 2)
     {
       [TSMSGService dispatchMSGNotification:args:numArgs:];
       goto LABEL_41;
     }
 
-    v11 = *a4;
-    v12 = a4[1];
+    v11 = *args;
+    v12 = args[1];
     os_unfair_lock_lock(&self->_extSyncSessionsLock);
     v17 = self->_activeExtSyncSessionsByTriggerId;
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11];
@@ -460,7 +460,7 @@ LABEL_40:
 LABEL_28:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [TSMSGService dispatchMSGNotification:v7 args:? numArgs:?];
+    [TSMSGService dispatchMSGNotification:notificationCopy args:? numArgs:?];
   }
 
 LABEL_41:

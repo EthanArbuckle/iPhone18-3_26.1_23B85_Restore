@@ -2,7 +2,7 @@
 - (NSDictionary)properties;
 - (NSSet)labels;
 - (_TtC11PhotosGraph4Node)init;
-- (_TtC11PhotosGraph4Node)initWithIdentifier:(unint64_t)a3 labels:(id)a4 properties:(id)a5;
+- (_TtC11PhotosGraph4Node)initWithIdentifier:(unint64_t)identifier labels:(id)labels properties:(id)properties;
 @end
 
 @implementation Node
@@ -26,12 +26,12 @@
   return v3;
 }
 
-- (_TtC11PhotosGraph4Node)initWithIdentifier:(unint64_t)a3 labels:(id)a4 properties:(id)a5
+- (_TtC11PhotosGraph4Node)initWithIdentifier:(unint64_t)identifier labels:(id)labels properties:(id)properties
 {
   v7 = sub_22F741420();
   sub_22F20B0E0();
   v8 = sub_22F740CA0();
-  *(self + OBJC_IVAR____TtC11PhotosGraph4Node_identifier) = a3;
+  *(self + OBJC_IVAR____TtC11PhotosGraph4Node_identifier) = identifier;
   *(self + OBJC_IVAR____TtC11PhotosGraph4Node_labels) = v7;
   *(self + OBJC_IVAR____TtC11PhotosGraph4Node_properties) = v8;
   v10.receiver = self;

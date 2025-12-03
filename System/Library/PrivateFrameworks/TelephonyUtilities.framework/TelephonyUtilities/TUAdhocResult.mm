@@ -4,22 +4,22 @@
 - (NSArray)idsCanonicalDestinations;
 - (NSString)backingContactIdentifier;
 - (NSString)displayName;
-- (TUAdhocResult)initWithString:(id)a3;
+- (TUAdhocResult)initWithString:(id)string;
 - (TUSearchController)searchController;
 @end
 
 @implementation TUAdhocResult
 
-- (TUAdhocResult)initWithString:(id)a3
+- (TUAdhocResult)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v8.receiver = self;
   v8.super_class = TUAdhocResult;
   v5 = [(TUAdhocResult *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(TUAdhocResult *)v5 setValue:v4];
+    [(TUAdhocResult *)v5 setValue:stringCopy];
   }
 
   return v6;
@@ -27,40 +27,40 @@
 
 - (NSString)displayName
 {
-  v2 = [(TUAdhocResult *)self value];
-  v3 = [v2 formattedDisplayID];
+  value = [(TUAdhocResult *)self value];
+  formattedDisplayID = [value formattedDisplayID];
 
-  return v3;
+  return formattedDisplayID;
 }
 
 - (CNContact)backingContact
 {
-  v3 = [(TUAdhocResult *)self searchController];
-  v4 = [v3 contactStore];
-  v5 = [(TUAdhocResult *)self value];
-  v6 = [v4 contactForDestinationId:v5];
+  searchController = [(TUAdhocResult *)self searchController];
+  contactStore = [searchController contactStore];
+  value = [(TUAdhocResult *)self value];
+  v6 = [contactStore contactForDestinationId:value];
 
   return v6;
 }
 
 - (NSString)backingContactIdentifier
 {
-  v2 = [(TUAdhocResult *)self backingContact];
-  v3 = [v2 identifier];
+  backingContact = [(TUAdhocResult *)self backingContact];
+  identifier = [backingContact identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSArray)handles
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(TUAdhocResult *)self value];
-  v4 = [v3 length];
+  value = [(TUAdhocResult *)self value];
+  v4 = [value length];
 
   if (v4)
   {
-    v5 = [(TUAdhocResult *)self value];
-    v9[0] = v5;
+    value2 = [(TUAdhocResult *)self value];
+    v9[0] = value2;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
@@ -77,17 +77,17 @@
 - (NSArray)idsCanonicalDestinations
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(TUAdhocResult *)self value];
-  v4 = [v3 length];
+  value = [(TUAdhocResult *)self value];
+  v4 = [value length];
 
   if (v4)
   {
-    v5 = [(TUAdhocResult *)self value];
-    v6 = [v5 IDSFormattedDestinationID];
+    value2 = [(TUAdhocResult *)self value];
+    iDSFormattedDestinationID = [value2 IDSFormattedDestinationID];
 
-    if (v6)
+    if (iDSFormattedDestinationID)
     {
-      v10[0] = v6;
+      v10[0] = iDSFormattedDestinationID;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     }
 

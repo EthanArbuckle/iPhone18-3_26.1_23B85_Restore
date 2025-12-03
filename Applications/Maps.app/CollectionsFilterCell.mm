@@ -1,6 +1,6 @@
 @interface CollectionsFilterCell
-- (CollectionsFilterCell)initWithFrame:(CGRect)a3;
-- (void)configureWithModel:(id)a3;
+- (CollectionsFilterCell)initWithFrame:(CGRect)frame;
+- (void)configureWithModel:(id)model;
 - (void)prepareForReuse;
 - (void)setFilterLabel;
 - (void)setUpCornerRadius;
@@ -11,27 +11,27 @@
 - (void)setupConstraints;
 - (void)setupSelectedBackgroundView;
 - (void)setupSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateUI;
 @end
 
 @implementation CollectionsFilterCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = CollectionsFilterCell;
-  v4 = a3;
-  [(CollectionsFilterCell *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CollectionsFilterCell *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [(CollectionsFilterCell *)self traitCollection:v10.receiver];
-  v6 = [v5 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
 
-  v7 = [v4 userInterfaceStyle];
-  if (v6 != v7)
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(CollectionsFilterCell *)self viewModel];
-    v9 = [(CollectionsFilterCell *)self viewModel];
-    [v8 modelSelected:objc_msgSend(v9 isDarkMode:{"isSelected"), v6 == 2}];
+    viewModel = [(CollectionsFilterCell *)self viewModel];
+    viewModel2 = [(CollectionsFilterCell *)self viewModel];
+    [viewModel modelSelected:objc_msgSend(viewModel2 isDarkMode:{"isSelected"), userInterfaceStyle == 2}];
 
     [(CollectionsFilterCell *)self updateUI];
   }
@@ -39,32 +39,32 @@
 
 - (void)updateUI
 {
-  v3 = [(CollectionsFilterCell *)self viewModel];
-  v4 = [v3 filterTitle];
-  v5 = [(CollectionsFilterCell *)self filterLabel];
-  [v5 setText:v4];
+  viewModel = [(CollectionsFilterCell *)self viewModel];
+  filterTitle = [viewModel filterTitle];
+  filterLabel = [(CollectionsFilterCell *)self filterLabel];
+  [filterLabel setText:filterTitle];
 
-  v6 = [(CollectionsFilterCell *)self viewModel];
-  v7 = [v6 textColor];
-  v8 = [(CollectionsFilterCell *)self filterLabel];
-  [v8 setTextColor:v7];
+  viewModel2 = [(CollectionsFilterCell *)self viewModel];
+  textColor = [viewModel2 textColor];
+  filterLabel2 = [(CollectionsFilterCell *)self filterLabel];
+  [filterLabel2 setTextColor:textColor];
 
-  v9 = [(CollectionsFilterCell *)self viewModel];
-  v10 = [v9 filterFont];
-  v11 = [(CollectionsFilterCell *)self filterLabel];
-  [v11 setFont:v10];
+  viewModel3 = [(CollectionsFilterCell *)self viewModel];
+  filterFont = [viewModel3 filterFont];
+  filterLabel3 = [(CollectionsFilterCell *)self filterLabel];
+  [filterLabel3 setFont:filterFont];
 
-  v12 = [(CollectionsFilterCell *)self viewModel];
-  v13 = [v12 backgroundColor];
-  v14 = [(CollectionsFilterCell *)self contentView];
-  [v14 setBackgroundColor:v13];
+  viewModel4 = [(CollectionsFilterCell *)self viewModel];
+  backgroundColor = [viewModel4 backgroundColor];
+  contentView = [(CollectionsFilterCell *)self contentView];
+  [contentView setBackgroundColor:backgroundColor];
 
-  LODWORD(v12) = MapsFeature_IsEnabled_Maps269();
-  v16 = [(CollectionsFilterCell *)self viewModel];
-  v15 = [v16 isSelected];
-  if (v12)
+  LODWORD(viewModel4) = MapsFeature_IsEnabled_Maps269();
+  viewModel5 = [(CollectionsFilterCell *)self viewModel];
+  isSelected = [viewModel5 isSelected];
+  if (viewModel4)
   {
-    if (v15)
+    if (isSelected)
     {
       [(CollectionsFilterCell *)self setUpSelectedBorder];
     }
@@ -75,7 +75,7 @@
     }
   }
 
-  else if (v15)
+  else if (isSelected)
   {
     [(CollectionsFilterCell *)self setUpSelectedShadows];
   }
@@ -99,34 +99,34 @@
   }
   v7 = ;
   v3 = v7;
-  v4 = [v7 CGColor];
-  v5 = [(CollectionsFilterCell *)self contentView];
-  v6 = [v5 layer];
-  [v6 setBorderColor:v4];
+  cGColor = [v7 CGColor];
+  contentView = [(CollectionsFilterCell *)self contentView];
+  layer = [contentView layer];
+  [layer setBorderColor:cGColor];
 }
 
 - (void)setUpSelectedBorder
 {
   v7 = +[UIColor clearColor];
   v3 = v7;
-  v4 = [v7 CGColor];
-  v5 = [(CollectionsFilterCell *)self contentView];
-  v6 = [v5 layer];
-  [v6 setBorderColor:v4];
+  cGColor = [v7 CGColor];
+  contentView = [(CollectionsFilterCell *)self contentView];
+  layer = [contentView layer];
+  [layer setBorderColor:cGColor];
 }
 
 - (void)setUpCornerRadius
 {
   IsEnabled_Maps269 = MapsFeature_IsEnabled_Maps269();
-  v4 = [(CollectionsFilterCell *)self contentView];
-  v5 = v4;
+  contentView = [(CollectionsFilterCell *)self contentView];
+  v5 = contentView;
   if (IsEnabled_Maps269)
   {
-    [v4 _setContinuousCornerRadius:16.0];
+    [contentView _setContinuousCornerRadius:16.0];
 
-    v6 = [(CollectionsFilterCell *)self contentView];
-    v7 = [v6 layer];
-    [v7 setMasksToBounds:1];
+    contentView2 = [(CollectionsFilterCell *)self contentView];
+    layer = [contentView2 layer];
+    [layer setMasksToBounds:1];
 
     if (MapsFeature_IsEnabled_Maps269())
     {
@@ -138,55 +138,55 @@
       v8 = 1.0;
     }
 
-    v9 = [(CollectionsFilterCell *)self contentView];
-    v10 = [v9 layer];
-    [v10 setBorderWidth:v8];
+    contentView3 = [(CollectionsFilterCell *)self contentView];
+    layer2 = [contentView3 layer];
+    [layer2 setBorderWidth:v8];
 
-    v14 = +[UIColor lightGrayColor];
-    v11 = [v14 CGColor];
-    v12 = [(CollectionsFilterCell *)self contentView];
-    v13 = [v12 layer];
-    [v13 setBorderColor:v11];
+    contentView5 = +[UIColor lightGrayColor];
+    cGColor = [contentView5 CGColor];
+    contentView4 = [(CollectionsFilterCell *)self contentView];
+    layer3 = [contentView4 layer];
+    [layer3 setBorderColor:cGColor];
   }
 
   else
   {
-    [v4 _setContinuousCornerRadius:8.0];
+    [contentView _setContinuousCornerRadius:8.0];
 
-    v14 = [(CollectionsFilterCell *)self contentView];
-    v12 = [v14 layer];
-    [v12 setMasksToBounds:1];
+    contentView5 = [(CollectionsFilterCell *)self contentView];
+    contentView4 = [contentView5 layer];
+    [contentView4 setMasksToBounds:1];
   }
 }
 
 - (void)setUpUnselectedShadows
 {
-  v3 = [(CollectionsFilterCell *)self layer];
-  [v3 setShadowOpacity:0.0];
+  layer = [(CollectionsFilterCell *)self layer];
+  [layer setShadowOpacity:0.0];
 
-  v4 = [(CollectionsFilterCell *)self layer];
-  [v4 setShadowRadius:0.0];
+  layer2 = [(CollectionsFilterCell *)self layer];
+  [layer2 setShadowRadius:0.0];
 }
 
 - (void)setUpSelectedShadows
 {
-  v3 = [(CollectionsFilterCell *)self layer];
-  [v3 setMasksToBounds:0];
+  layer = [(CollectionsFilterCell *)self layer];
+  [layer setMasksToBounds:0];
 
   v4 = +[UIColor blackColor];
-  v5 = [v4 CGColor];
-  v6 = [(CollectionsFilterCell *)self layer];
-  [v6 setShadowColor:v5];
+  cGColor = [v4 CGColor];
+  layer2 = [(CollectionsFilterCell *)self layer];
+  [layer2 setShadowColor:cGColor];
 
-  v7 = [(CollectionsFilterCell *)self layer];
+  layer3 = [(CollectionsFilterCell *)self layer];
   LODWORD(v8) = 1036831949;
-  [v7 setShadowOpacity:v8];
+  [layer3 setShadowOpacity:v8];
 
-  v9 = [(CollectionsFilterCell *)self layer];
-  [v9 setShadowOffset:{0.0, 1.0}];
+  layer4 = [(CollectionsFilterCell *)self layer];
+  [layer4 setShadowOffset:{0.0, 1.0}];
 
-  v10 = [(CollectionsFilterCell *)self layer];
-  [v10 setShadowRadius:4.0];
+  layer5 = [(CollectionsFilterCell *)self layer];
+  [layer5 setShadowRadius:4.0];
 }
 
 - (void)setupConstraints
@@ -194,57 +194,57 @@
   v45 = objc_alloc_init(NSMutableArray);
   if (MapsFeature_IsEnabled_Maps269())
   {
-    v43 = [(CollectionsFilterCell *)self selectedBackgroundView];
-    v39 = [v43 leadingAnchor];
-    v41 = [(CollectionsFilterCell *)self contentView];
-    v37 = [v41 leadingAnchor];
-    v35 = [v39 constraintEqualToAnchor:v37];
+    selectedBackgroundView = [(CollectionsFilterCell *)self selectedBackgroundView];
+    leadingAnchor = [selectedBackgroundView leadingAnchor];
+    contentView = [(CollectionsFilterCell *)self contentView];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v47[0] = v35;
-    v33 = [(CollectionsFilterCell *)self selectedBackgroundView];
-    v29 = [v33 trailingAnchor];
-    v31 = [(CollectionsFilterCell *)self contentView];
-    v27 = [v31 trailingAnchor];
-    v25 = [v29 constraintEqualToAnchor:v27];
+    selectedBackgroundView2 = [(CollectionsFilterCell *)self selectedBackgroundView];
+    trailingAnchor = [selectedBackgroundView2 trailingAnchor];
+    contentView2 = [(CollectionsFilterCell *)self contentView];
+    trailingAnchor2 = [contentView2 trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v47[1] = v25;
-    v23 = [(CollectionsFilterCell *)self selectedBackgroundView];
-    v20 = [v23 topAnchor];
-    v21 = [(CollectionsFilterCell *)self contentView];
-    v3 = [v21 topAnchor];
-    v4 = [v20 constraintEqualToAnchor:v3];
+    selectedBackgroundView3 = [(CollectionsFilterCell *)self selectedBackgroundView];
+    topAnchor = [selectedBackgroundView3 topAnchor];
+    contentView3 = [(CollectionsFilterCell *)self contentView];
+    topAnchor2 = [contentView3 topAnchor];
+    v4 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v47[2] = v4;
-    v5 = [(CollectionsFilterCell *)self selectedBackgroundView];
-    v6 = [v5 bottomAnchor];
-    v7 = [(CollectionsFilterCell *)self contentView];
-    v8 = [v7 bottomAnchor];
-    v9 = [v6 constraintEqualToAnchor:v8];
+    selectedBackgroundView4 = [(CollectionsFilterCell *)self selectedBackgroundView];
+    bottomAnchor = [selectedBackgroundView4 bottomAnchor];
+    contentView4 = [(CollectionsFilterCell *)self contentView];
+    bottomAnchor2 = [contentView4 bottomAnchor];
+    v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v47[3] = v9;
     v10 = [NSArray arrayWithObjects:v47 count:4];
     [v45 addObjectsFromArray:v10];
   }
 
-  v44 = [(CollectionsFilterCell *)self filterLabel];
-  v40 = [v44 leadingAnchor];
-  v42 = [(CollectionsFilterCell *)self contentView];
-  v38 = [v42 leadingAnchor];
-  v36 = [v40 constraintEqualToAnchor:v38];
+  filterLabel = [(CollectionsFilterCell *)self filterLabel];
+  leadingAnchor3 = [filterLabel leadingAnchor];
+  contentView5 = [(CollectionsFilterCell *)self contentView];
+  leadingAnchor4 = [contentView5 leadingAnchor];
+  v36 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v46[0] = v36;
-  v34 = [(CollectionsFilterCell *)self filterLabel];
-  v30 = [v34 trailingAnchor];
-  v32 = [(CollectionsFilterCell *)self contentView];
-  v28 = [v32 trailingAnchor];
-  v26 = [v30 constraintEqualToAnchor:v28];
+  filterLabel2 = [(CollectionsFilterCell *)self filterLabel];
+  trailingAnchor3 = [filterLabel2 trailingAnchor];
+  contentView6 = [(CollectionsFilterCell *)self contentView];
+  trailingAnchor4 = [contentView6 trailingAnchor];
+  v26 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v46[1] = v26;
-  v24 = [(CollectionsFilterCell *)self filterLabel];
-  v22 = [v24 topAnchor];
-  v11 = [(CollectionsFilterCell *)self contentView];
-  v12 = [v11 topAnchor];
-  v13 = [v22 constraintEqualToAnchor:v12];
+  filterLabel3 = [(CollectionsFilterCell *)self filterLabel];
+  topAnchor3 = [filterLabel3 topAnchor];
+  contentView7 = [(CollectionsFilterCell *)self contentView];
+  topAnchor4 = [contentView7 topAnchor];
+  v13 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v46[2] = v13;
-  v14 = [(CollectionsFilterCell *)self filterLabel];
-  v15 = [v14 bottomAnchor];
-  v16 = [(CollectionsFilterCell *)self contentView];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  filterLabel4 = [(CollectionsFilterCell *)self filterLabel];
+  bottomAnchor3 = [filterLabel4 bottomAnchor];
+  contentView8 = [(CollectionsFilterCell *)self contentView];
+  bottomAnchor4 = [contentView8 bottomAnchor];
+  v18 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v46[3] = v18;
   v19 = [NSArray arrayWithObjects:v46 count:4];
   [v45 addObjectsFromArray:v19];
@@ -257,25 +257,25 @@
   v3 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(CollectionsFilterCell *)self setFilterLabel:v3];
 
-  v4 = [(CollectionsFilterCell *)self filterLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  filterLabel = [(CollectionsFilterCell *)self filterLabel];
+  [filterLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(CollectionsFilterCell *)self filterLabel];
-  [v5 setTextAlignment:1];
+  filterLabel2 = [(CollectionsFilterCell *)self filterLabel];
+  [filterLabel2 setTextAlignment:1];
 
   v6 = +[UIColor clearColor];
-  v7 = [(CollectionsFilterCell *)self filterLabel];
-  [v7 setBackgroundColor:v6];
+  filterLabel3 = [(CollectionsFilterCell *)self filterLabel];
+  [filterLabel3 setBackgroundColor:v6];
 
-  v8 = [(CollectionsFilterCell *)self filterLabel];
-  [v8 setNumberOfLines:1];
+  filterLabel4 = [(CollectionsFilterCell *)self filterLabel];
+  [filterLabel4 setNumberOfLines:1];
 
-  v9 = [(CollectionsFilterCell *)self filterLabel];
-  [v9 setAccessibilityIdentifier:@"CollectionsFilterCellLabel"];
+  filterLabel5 = [(CollectionsFilterCell *)self filterLabel];
+  [filterLabel5 setAccessibilityIdentifier:@"CollectionsFilterCellLabel"];
 
-  v11 = [(CollectionsFilterCell *)self contentView];
-  v10 = [(CollectionsFilterCell *)self filterLabel];
-  [v11 addSubview:v10];
+  contentView = [(CollectionsFilterCell *)self contentView];
+  filterLabel6 = [(CollectionsFilterCell *)self filterLabel];
+  [contentView addSubview:filterLabel6];
 }
 
 - (void)setupSelectedBackgroundView
@@ -303,36 +303,36 @@
   v7.super_class = CollectionsFilterCell;
   [(CollectionsFilterCell *)&v7 prepareForReuse];
   [(CollectionsFilterCell *)self setViewModel:0];
-  v3 = [(CollectionsFilterCell *)self filterLabel];
-  [v3 setText:0];
+  filterLabel = [(CollectionsFilterCell *)self filterLabel];
+  [filterLabel setText:0];
 
-  v4 = [(CollectionsFilterCell *)self filterLabel];
-  [v4 setTextColor:0];
+  filterLabel2 = [(CollectionsFilterCell *)self filterLabel];
+  [filterLabel2 setTextColor:0];
 
-  v5 = [(CollectionsFilterCell *)self contentView];
-  [v5 setBackgroundColor:0];
+  contentView = [(CollectionsFilterCell *)self contentView];
+  [contentView setBackgroundColor:0];
 
-  v6 = [(CollectionsFilterCell *)self selectedBackgroundView];
-  [v6 setBackgroundColor:0];
+  selectedBackgroundView = [(CollectionsFilterCell *)self selectedBackgroundView];
+  [selectedBackgroundView setBackgroundColor:0];
 }
 
-- (void)configureWithModel:(id)a3
+- (void)configureWithModel:(id)model
 {
-  [(CollectionsFilterCell *)self setViewModel:a3];
+  [(CollectionsFilterCell *)self setViewModel:model];
   [(CollectionsFilterCell *)self updateUI];
-  v4 = [(CollectionsFilterCell *)self selectedBackgroundView];
-  [v4 setAlpha:0.0];
+  selectedBackgroundView = [(CollectionsFilterCell *)self selectedBackgroundView];
+  [selectedBackgroundView setAlpha:0.0];
 
   v6 = +[UIColor quaternarySystemFillColor];
-  v5 = [(CollectionsFilterCell *)self selectedBackgroundView];
-  [v5 setBackgroundColor:v6];
+  selectedBackgroundView2 = [(CollectionsFilterCell *)self selectedBackgroundView];
+  [selectedBackgroundView2 setBackgroundColor:v6];
 }
 
-- (CollectionsFilterCell)initWithFrame:(CGRect)a3
+- (CollectionsFilterCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CollectionsFilterCell;
-  v3 = [(CollectionsFilterCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CollectionsFilterCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();

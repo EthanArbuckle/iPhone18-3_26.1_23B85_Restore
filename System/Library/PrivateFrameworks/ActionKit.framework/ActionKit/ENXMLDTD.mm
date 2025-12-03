@@ -1,53 +1,53 @@
 @interface ENXMLDTD
-+ (ENXMLDTD)dtdWithBundleResource:(id)a3 ofType:(id)a4;
++ (ENXMLDTD)dtdWithBundleResource:(id)resource ofType:(id)type;
 + (ENXMLDTD)enexDTD;
 + (ENXMLDTD)enml2dtd;
 + (ENXMLDTD)lat1DTD;
 + (ENXMLDTD)specialDTD;
 + (ENXMLDTD)symbolDTD;
 + (void)initialize;
-- (BOOL)isAttributeLegal:(id)a3 inElement:(id)a4;
-- (ENXMLDTD)initWithContentsOfFile:(id)a3;
-- (_xmlElement)xmlElementNamed:(id)a3;
-- (_xmlEntity)xmlEntityNamed:(id)a3;
-- (id)sanitizedAttributes:(id)a3 forElement:(id)a4;
+- (BOOL)isAttributeLegal:(id)legal inElement:(id)element;
+- (ENXMLDTD)initWithContentsOfFile:(id)file;
+- (_xmlElement)xmlElementNamed:(id)named;
+- (_xmlEntity)xmlEntityNamed:(id)named;
+- (id)sanitizedAttributes:(id)attributes forElement:(id)element;
 - (void)dealloc;
 @end
 
 @implementation ENXMLDTD
 
-- (BOOL)isAttributeLegal:(id)a3 inElement:(id)a4
+- (BOOL)isAttributeLegal:(id)legal inElement:(id)element
 {
   v6 = MEMORY[0x277CBEAC0];
   v7 = MEMORY[0x277CBEB68];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 null];
-  v11 = [v6 dictionaryWithObject:v10 forKey:v9];
+  elementCopy = element;
+  legalCopy = legal;
+  null = [v7 null];
+  v11 = [v6 dictionaryWithObject:null forKey:legalCopy];
 
-  v12 = [(ENXMLDTD *)self sanitizedAttributes:v11 forElement:v8];
+  v12 = [(ENXMLDTD *)self sanitizedAttributes:v11 forElement:elementCopy];
 
   LOBYTE(self) = [v12 count] == 1;
   return self;
 }
 
-- (id)sanitizedAttributes:(id)a3 forElement:(id)a4
+- (id)sanitizedAttributes:(id)attributes forElement:(id)element
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ENXMLDTD *)self xmlElementNamed:v7];
+  attributesCopy = attributes;
+  elementCopy = element;
+  v8 = [(ENXMLDTD *)self xmlElementNamed:elementCopy];
   if (v8)
   {
     v9 = v8;
-    v21 = v6;
+    v21 = attributesCopy;
     v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v10 = [v6 allKeys];
+    allKeys = [attributesCopy allKeys];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v11 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
       v12 = v11;
@@ -58,7 +58,7 @@
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allKeys);
           }
 
           attributes = v9->attributes;
@@ -96,18 +96,18 @@ LABEL_15:
           ;
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v12 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v12);
     }
 
-    v6 = v21;
+    attributesCopy = v21;
   }
 
   else
   {
-    NSLog(&cfstr_ErrorRetrievin.isa, v7, self);
+    NSLog(&cfstr_ErrorRetrievin.isa, elementCopy, self);
     v22 = 0;
   }
 
@@ -116,16 +116,16 @@ LABEL_15:
   return v22;
 }
 
-- (_xmlElement)xmlElementNamed:(id)a3
+- (_xmlElement)xmlElementNamed:(id)named
 {
   elements = self->_dtd->elements;
-  v5 = a3;
-  v6 = [a3 cStringUsingEncoding:4];
+  namedCopy = named;
+  v6 = [named cStringUsingEncoding:4];
 
   return xmlHashLookup(elements, v6);
 }
 
-- (_xmlEntity)xmlEntityNamed:(id)a3
+- (_xmlEntity)xmlEntityNamed:(id)named
 {
   entities = self->_dtd->entities;
   if (!entities)
@@ -133,7 +133,7 @@ LABEL_15:
     return 0;
   }
 
-  v4 = [a3 cStringUsingEncoding:4];
+  v4 = [named cStringUsingEncoding:4];
 
   return xmlHashLookup(entities, v4);
 }
@@ -152,9 +152,9 @@ LABEL_15:
   [(ENXMLDTD *)&v4 dealloc];
 }
 
-- (ENXMLDTD)initWithContentsOfFile:(id)a3
+- (ENXMLDTD)initWithContentsOfFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v13.receiver = self;
   v13.super_class = ENXMLDTD;
   v5 = [(ENXMLDTD *)&v13 init];
@@ -163,7 +163,7 @@ LABEL_15:
     goto LABEL_4;
   }
 
-  Filename = xmlParserInputBufferCreateFilename([v4 fileSystemRepresentation], XML_CHAR_ENCODING_NONE);
+  Filename = xmlParserInputBufferCreateFilename([fileCopy fileSystemRepresentation], XML_CHAR_ENCODING_NONE);
   if (!Filename)
   {
     LastError = xmlGetLastError();
@@ -177,7 +177,7 @@ LABEL_15:
       v10 = 0;
     }
 
-    NSLog(&cfstr_Xmlparserinput.isa, v4, v10);
+    NSLog(&cfstr_Xmlparserinput.isa, fileCopy, v10);
     goto LABEL_13;
   }
 
@@ -310,9 +310,9 @@ void __19__ENXMLDTD_enexDTD__block_invoke()
   enexDTD_dtd = v0;
 }
 
-+ (ENXMLDTD)dtdWithBundleResource:(id)a3 ofType:(id)a4
++ (ENXMLDTD)dtdWithBundleResource:(id)resource ofType:(id)type
 {
-  v4 = [ENSDKResourceLoader pathToResourceNamed:a3 extension:a4];
+  v4 = [ENSDKResourceLoader pathToResourceNamed:resource extension:type];
   v5 = [[ENXMLDTD alloc] initWithContentsOfFile:v4];
 
   return v5;
@@ -320,7 +320,7 @@ void __19__ENXMLDTD_enexDTD__block_invoke()
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     defaultExternalEntityLoader = xmlGetExternalEntityLoader();
 

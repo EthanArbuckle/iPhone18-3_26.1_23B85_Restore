@@ -1,8 +1,8 @@
 @interface _LSDAppProtectionAccessManager
 + (id)sharedInstance;
 - (_LSDAppProtectionAccessManager)init;
-- (id)readFromDBWithError:(id *)a3;
-- (id)writeToDB:(id)a3;
+- (id)readFromDBWithError:(id *)error;
+- (id)writeToDB:(id)b;
 @end
 
 @implementation _LSDAppProtectionAccessManager
@@ -32,7 +32,7 @@
   return v3;
 }
 
-- (id)readFromDBWithError:(id *)a3
+- (id)readFromDBWithError:(id *)error
 {
   v23[2] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_dbLock);
@@ -47,10 +47,10 @@
     v7 = self->_cache;
     self->_cache = v6;
 
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [__LSDefaultsGetSharedInstance() appProtectionStoreFileURL];
-    v10 = [v9 path];
-    v11 = [v8 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    appProtectionStoreFileURL = [__LSDefaultsGetSharedInstance() appProtectionStoreFileURL];
+    path = [appProtectionStoreFileURL path];
+    v11 = [defaultManager fileExistsAtPath:path];
 
     if ((v11 & 1) == 0)
     {
@@ -61,13 +61,13 @@
       }
 
       v13 = self->_cache;
-      v14 = [__LSDefaultsGetSharedInstance() appProtectionStoreFileURL];
-      [(NSDictionary *)v13 writeToURL:v14 error:a3];
+      appProtectionStoreFileURL2 = [__LSDefaultsGetSharedInstance() appProtectionStoreFileURL];
+      [(NSDictionary *)v13 writeToURL:appProtectionStoreFileURL2 error:error];
     }
 
     v15 = MEMORY[0x1E695DF20];
-    v16 = [__LSDefaultsGetSharedInstance() appProtectionStoreFileURL];
-    v17 = [v15 dictionaryWithContentsOfURL:v16 error:a3];
+    appProtectionStoreFileURL3 = [__LSDefaultsGetSharedInstance() appProtectionStoreFileURL];
+    v17 = [v15 dictionaryWithContentsOfURL:appProtectionStoreFileURL3 error:error];
     v18 = self->_cache;
     self->_cache = v17;
 
@@ -81,18 +81,18 @@
   return v19;
 }
 
-- (id)writeToDB:(id)a3
+- (id)writeToDB:(id)b
 {
-  v4 = a3;
+  bCopy = b;
   os_unfair_lock_lock(&self->_dbLock);
-  v5 = [v4 copy];
+  v5 = [bCopy copy];
   cache = self->_cache;
   self->_cache = v5;
 
   v7 = self->_cache;
-  v8 = [__LSDefaultsGetSharedInstance() appProtectionStoreFileURL];
+  appProtectionStoreFileURL = [__LSDefaultsGetSharedInstance() appProtectionStoreFileURL];
   v11 = 0;
-  [(NSDictionary *)v7 writeToURL:v8 error:&v11];
+  [(NSDictionary *)v7 writeToURL:appProtectionStoreFileURL error:&v11];
   v9 = v11;
 
   os_unfair_lock_unlock(&self->_dbLock);

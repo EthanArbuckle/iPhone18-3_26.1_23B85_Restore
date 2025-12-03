@@ -1,8 +1,8 @@
 @interface CSHomeAffordanceComponent
 - (CSHomeAffordanceComponent)init;
 - (unint64_t)viewStyle;
-- (void)setSuppressTeachableMomentsAnimation:(int64_t)a3;
-- (void)setViewStyle:(unint64_t)a3;
+- (void)setSuppressTeachableMomentsAnimation:(int64_t)animation;
+- (void)setViewStyle:(unint64_t)style;
 @end
 
 @implementation CSHomeAffordanceComponent
@@ -24,40 +24,40 @@
 
 - (unint64_t)viewStyle
 {
-  v2 = [(CSComponent *)self value];
-  v3 = v2;
-  if (v2)
+  value = [(CSComponent *)self value];
+  v3 = value;
+  if (value)
   {
-    v4 = [v2 intValue];
+    intValue = [value intValue];
   }
 
   else
   {
-    v4 = 1;
+    intValue = 1;
   }
 
-  return v4;
+  return intValue;
 }
 
-- (void)setViewStyle:(unint64_t)a3
+- (void)setViewStyle:(unint64_t)style
 {
-  v5 = [(CSComponent *)self value];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v7 = [v5 isEqualToNumber:v6];
+  value = [(CSComponent *)self value];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:style];
+  v7 = [value isEqualToNumber:v6];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:style];
     [(CSComponent *)self setValue:v8];
   }
 }
 
-- (void)setSuppressTeachableMomentsAnimation:(int64_t)a3
+- (void)setSuppressTeachableMomentsAnimation:(int64_t)animation
 {
-  if ([(CSComponent *)self flag]!= a3)
+  if ([(CSComponent *)self flag]!= animation)
   {
 
-    [(CSComponent *)self setFlag:a3];
+    [(CSComponent *)self setFlag:animation];
   }
 }
 

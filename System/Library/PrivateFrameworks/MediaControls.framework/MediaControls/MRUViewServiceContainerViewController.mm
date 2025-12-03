@@ -2,17 +2,17 @@
 - (BOOL)prefersStatusBarHidden;
 - (BOOL)shouldUsePopoverAnchor;
 - (MRUViewServiceContainerViewController)init;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)prepareForPopoverPresentation:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)transitionToVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateMaterialForPresenting:(BOOL)a3;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)prepareForPopoverPresentation:(id)presentation;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setConfiguration:(id)configuration;
+- (void)transitionToVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)updateMaterialForPresenting:(BOOL)presenting;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewServiceRoutingViewControllerDidChangeSize:(id)a3;
-- (void)viewServiceRoutingViewControllerDidDismiss:(id)a3;
-- (void)viewServiceRoutingViewControllerDidDismiss:(id)a3 withCustomRowTapped:(id)a4;
+- (void)viewServiceRoutingViewControllerDidChangeSize:(id)size;
+- (void)viewServiceRoutingViewControllerDidDismiss:(id)dismiss;
+- (void)viewServiceRoutingViewControllerDidDismiss:(id)dismiss withCustomRowTapped:(id)tapped;
 @end
 
 @implementation MRUViewServiceContainerViewController
@@ -47,11 +47,11 @@
   sourceView = self->_sourceView;
   self->_sourceView = v4;
 
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIView *)self->_sourceView setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UIView *)self->_sourceView setBackgroundColor:clearColor];
 
-  v7 = [(MRUViewServiceContainerViewController *)self view];
-  [v7 addSubview:self->_sourceView];
+  view = [(MRUViewServiceContainerViewController *)self view];
+  [view addSubview:self->_sourceView];
 
   v8 = [MEMORY[0x1E69AE158] materialViewWithRecipe:4 options:0 initialWeighting:0.0];
   materialView = self->_materialView;
@@ -62,8 +62,8 @@
   v11 = [[MRUVisualStylingProvider alloc] initWithVisualStylingProvider:v10];
   [(MRUViewServiceRoutingViewController *)self->_routingViewController setStylingProvider:v11];
 
-  v12 = [(MRUViewServiceContainerViewController *)self view];
-  [v12 addSubview:self->_materialView];
+  view2 = [(MRUViewServiceContainerViewController *)self view];
+  [view2 addSubview:self->_materialView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -73,8 +73,8 @@
   [(MRUViewServiceContainerViewController *)&v4 viewDidLayoutSubviews];
   [(MPMediaControlsConfiguration *)self->_configuration sourceRect];
   [(UIView *)self->_sourceView setFrame:?];
-  v3 = [(MRUViewServiceContainerViewController *)self view];
-  [v3 bounds];
+  view = [(MRUViewServiceContainerViewController *)self view];
+  [view bounds];
   [(MTMaterialView *)self->_materialView setFrame:?];
 }
 
@@ -86,24 +86,24 @@
   }
 
   v3 = MEMORY[0x1E696AAE8];
-  v4 = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
-  LOBYTE(v3) = [v3 mru_isSpringBoardBundleIdentifier:v4];
+  presentingAppBundleID = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
+  LOBYTE(v3) = [v3 mru_isSpringBoardBundleIdentifier:presentingAppBundleID];
 
   return v3;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_configuration, a3);
-  v5 = a3;
-  [(MRUViewServiceRoutingViewController *)self->_routingViewController setConfiguration:v5];
+  objc_storeStrong(&self->_configuration, configuration);
+  configurationCopy = configuration;
+  [(MRUViewServiceRoutingViewController *)self->_routingViewController setConfiguration:configurationCopy];
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[MRUPopoverPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v7];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v9 = [[MRUPopoverPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   if ([(MRUViewServiceContainerViewController *)self shouldUsePopoverAnchor])
   {
@@ -112,10 +112,10 @@
 
   CCUIExpandedModuleContinuousCornerRadius();
   [(MRUPopoverPresentationController *)v9 _setCornerRadius:?];
-  v10 = [MEMORY[0x1E69DC938] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v11 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v12 = 15;
   }
@@ -131,70 +131,70 @@
   return v9;
 }
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
   routingViewController = self->_routingViewController;
-  v5 = a3;
-  v9 = [(MRUViewServiceRoutingViewController *)routingViewController view];
-  v6 = [(MRUViewServiceContainerViewController *)self view];
-  [v6 bounds];
-  [v9 sizeThatFits:{v7, v8}];
-  [v5 setPopoverContentSize:?];
+  presentationCopy = presentation;
+  view = [(MRUViewServiceRoutingViewController *)routingViewController view];
+  view2 = [(MRUViewServiceContainerViewController *)self view];
+  [view2 bounds];
+  [view sizeThatFits:{v7, v8}];
+  [presentationCopy setPopoverContentSize:?];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(MRUViewServiceContainerViewController *)self dismissalBlock];
+  dismissalBlock = [(MRUViewServiceContainerViewController *)self dismissalBlock];
 
-  if (v4)
+  if (dismissalBlock)
   {
-    v5 = [(MRUViewServiceContainerViewController *)self dismissalBlock];
-    v5[2]();
+    dismissalBlock2 = [(MRUViewServiceContainerViewController *)self dismissalBlock];
+    dismissalBlock2[2]();
   }
 }
 
-- (void)transitionToVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)transitionToVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (a3)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  if (visible)
   {
-    [(MRUViewServiceContainerViewController *)self presentViewController:self->_routingViewController animated:a4 completion:0];
+    [(MRUViewServiceContainerViewController *)self presentViewController:self->_routingViewController animated:animated completion:0];
   }
 
   else
   {
-    v7 = [(MRUViewServiceContainerViewController *)self dismissalBlock];
-    [(MRUViewServiceContainerViewController *)self dismissViewControllerAnimated:v4 completion:v7];
+    dismissalBlock = [(MRUViewServiceContainerViewController *)self dismissalBlock];
+    [(MRUViewServiceContainerViewController *)self dismissViewControllerAnimated:animatedCopy completion:dismissalBlock];
   }
 
-  [(MRUViewServiceContainerViewController *)self updateMaterialForPresenting:v5];
+  [(MRUViewServiceContainerViewController *)self updateMaterialForPresenting:visibleCopy];
 }
 
-- (void)viewServiceRoutingViewControllerDidChangeSize:(id)a3
+- (void)viewServiceRoutingViewControllerDidChangeSize:(id)size
 {
-  v4 = a3;
-  v5 = [(MRUViewServiceContainerViewController *)self routingViewController];
-  v6 = [v5 transitionCoordinator];
+  sizeCopy = size;
+  routingViewController = [(MRUViewServiceContainerViewController *)self routingViewController];
+  transitionCoordinator = [routingViewController transitionCoordinator];
 
-  if (v6)
+  if (transitionCoordinator)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __87__MRUViewServiceContainerViewController_viewServiceRoutingViewControllerDidChangeSize___block_invoke_2;
     v11[3] = &unk_1E7665460;
-    v12 = v4;
-    v13 = self;
-    [v6 animateAlongsideTransition:&__block_literal_global_42 completion:v11];
+    v12 = sizeCopy;
+    selfCopy = self;
+    [transitionCoordinator animateAlongsideTransition:&__block_literal_global_42 completion:v11];
   }
 
   else
   {
-    v7 = [v4 view];
-    v8 = [(MRUViewServiceContainerViewController *)self view];
-    [v8 bounds];
-    [v7 sizeThatFits:{v9, v10}];
-    [v4 setPreferredContentSize:?];
+    view = [sizeCopy view];
+    view2 = [(MRUViewServiceContainerViewController *)self view];
+    [view2 bounds];
+    [view sizeThatFits:{v9, v10}];
+    [sizeCopy setPreferredContentSize:?];
   }
 }
 
@@ -207,23 +207,23 @@ void __87__MRUViewServiceContainerViewController_viewServiceRoutingViewControlle
   [*(a1 + 32) setPreferredContentSize:?];
 }
 
-- (void)viewServiceRoutingViewControllerDidDismiss:(id)a3
+- (void)viewServiceRoutingViewControllerDidDismiss:(id)dismiss
 {
-  v4 = [(MRUViewServiceContainerViewController *)self dismissalBlock];
-  [(MRUViewServiceContainerViewController *)self dismissViewControllerAnimated:1 completion:v4];
+  dismissalBlock = [(MRUViewServiceContainerViewController *)self dismissalBlock];
+  [(MRUViewServiceContainerViewController *)self dismissViewControllerAnimated:1 completion:dismissalBlock];
 }
 
-- (void)viewServiceRoutingViewControllerDidDismiss:(id)a3 withCustomRowTapped:(id)a4
+- (void)viewServiceRoutingViewControllerDidDismiss:(id)dismiss withCustomRowTapped:(id)tapped
 {
-  v6 = a3;
-  v7 = a4;
+  dismissCopy = dismiss;
+  tappedCopy = tapped;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __104__MRUViewServiceContainerViewController_viewServiceRoutingViewControllerDidDismiss_withCustomRowTapped___block_invoke;
   v9[3] = &unk_1E7663980;
   objc_copyWeak(&v11, &location);
-  v8 = v7;
+  v8 = tappedCopy;
   v10 = v8;
   [(MRUViewServiceContainerViewController *)self dismissViewControllerAnimated:1 completion:v9];
 
@@ -240,8 +240,8 @@ void __104__MRUViewServiceContainerViewController_viewServiceRoutingViewControll
 
 - (BOOL)shouldUsePopoverAnchor
 {
-  v3 = [(MRUViewServiceContainerViewController *)self view];
-  [v3 bounds];
+  view = [(MRUViewServiceContainerViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -282,13 +282,13 @@ void __104__MRUViewServiceContainerViewController_viewServiceRoutingViewControll
   v43.size.width = v9;
   v43.size.height = v11;
   rect1 = CGRectGetWidth(v43);
-  v20 = [(MRUViewServiceContainerViewController *)self view];
-  v21 = [v20 window];
-  v22 = [v21 windowScene];
-  v23 = [v22 screen];
+  view2 = [(MRUViewServiceContainerViewController *)self view];
+  window = [view2 window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
 
-  v24 = [v23 displayIdentity];
-  v25 = [v24 isExternal];
+  displayIdentity = [screen displayIdentity];
+  isExternal = [displayIdentity isExternal];
 
   v44.origin.x = v13;
   v44.origin.y = v15;
@@ -312,8 +312,8 @@ void __104__MRUViewServiceContainerViewController_viewServiceRoutingViewControll
     v26 = !CGRectContainsRect(v45, v48);
   }
 
-  v27 = [MEMORY[0x1E69DC938] currentDevice];
-  v28 = [v27 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v46.origin.x = MinX;
   v46.size.width = Width;
@@ -351,35 +351,35 @@ LABEL_8:
   }
 
 LABEL_6:
-  v30 = (v25 ^ 1) & ((v28 & 0xFFFFFFFFFFFFFFFBLL) == 1 || v29);
+  v30 = (isExternal ^ 1) & ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || v29);
 LABEL_9:
 
   return v30;
 }
 
-- (void)updateMaterialForPresenting:(BOOL)a3
+- (void)updateMaterialForPresenting:(BOOL)presenting
 {
-  v3 = a3;
+  presentingCopy = presenting;
   if (![(MRUViewServiceContainerViewController *)self shouldUsePopoverAnchor])
   {
-    v5 = [(MRUViewServiceContainerViewController *)self routingViewController];
-    v6 = [v5 transitionCoordinator];
+    routingViewController = [(MRUViewServiceContainerViewController *)self routingViewController];
+    transitionCoordinator = [routingViewController transitionCoordinator];
 
-    if (v6)
+    if (transitionCoordinator)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __69__MRUViewServiceContainerViewController_updateMaterialForPresenting___block_invoke;
       v8[3] = &unk_1E76642B8;
       v8[4] = self;
-      v9 = v3;
-      [v6 animateAlongsideTransition:v8 completion:0];
+      v9 = presentingCopy;
+      [transitionCoordinator animateAlongsideTransition:v8 completion:0];
     }
 
     else
     {
       v7 = 0.0;
-      if (v3)
+      if (presentingCopy)
       {
         v7 = 1.0;
       }

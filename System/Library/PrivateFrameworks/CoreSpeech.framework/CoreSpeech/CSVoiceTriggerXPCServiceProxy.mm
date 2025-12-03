@@ -1,13 +1,13 @@
 @interface CSVoiceTriggerXPCServiceProxy
 + (id)sharedInstance;
-- (CSVoiceTriggerXPCServiceProxy)initWithAssertionMonitor:(id)a3;
+- (CSVoiceTriggerXPCServiceProxy)initWithAssertionMonitor:(id)monitor;
 - (id)_fetchAssertionMonitor;
 - (id)fetchVoiceTriggerStats;
-- (void)enableVoiceTrigger:(BOOL)a3 withAssertion:(id)a4 timestamp:(double)a5;
+- (void)enableVoiceTrigger:(BOOL)trigger withAssertion:(id)assertion timestamp:(double)timestamp;
 - (void)notifyServiceConnectionLost;
 - (void)notifyVoiceTriggeredSiriSessionCancelled;
-- (void)setPhraseSpotterBypassing:(BOOL)a3 timeout:(double)a4;
-- (void)setRaiseToSpeakBypassing:(BOOL)a3 timeout:(double)a4;
+- (void)setPhraseSpotterBypassing:(BOOL)bypassing timeout:(double)timeout;
+- (void)setRaiseToSpeakBypassing:(BOOL)bypassing timeout:(double)timeout;
 @end
 
 @implementation CSVoiceTriggerXPCServiceProxy
@@ -15,9 +15,9 @@
 - (id)fetchVoiceTriggerStats
 {
   v2 = +[CSVoiceTriggerDataCollector sharedInstance];
-  v3 = [v2 fetchVoiceTriggerHeartBeatMetrics];
+  fetchVoiceTriggerHeartBeatMetrics = [v2 fetchVoiceTriggerHeartBeatMetrics];
 
-  return v3;
+  return fetchVoiceTriggerHeartBeatMetrics;
 }
 
 - (void)notifyServiceConnectionLost
@@ -84,7 +84,7 @@
   }
 }
 
-- (void)setRaiseToSpeakBypassing:(BOOL)a3 timeout:(double)a4
+- (void)setRaiseToSpeakBypassing:(BOOL)bypassing timeout:(double)timeout
 {
   if (qword_10029DFC0 != -1)
   {
@@ -98,15 +98,15 @@
   block[2] = sub_10001EE7C;
   block[3] = &unk_10024E6E8;
   block[4] = self;
-  v10 = a3;
-  v9[1] = *&a4;
+  bypassingCopy = bypassing;
+  v9[1] = *&timeout;
   objc_copyWeak(v9, &location);
   dispatch_sync(v7, block);
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
 }
 
-- (void)setPhraseSpotterBypassing:(BOOL)a3 timeout:(double)a4
+- (void)setPhraseSpotterBypassing:(BOOL)bypassing timeout:(double)timeout
 {
   if (qword_10029DFA8 != -1)
   {
@@ -120,18 +120,18 @@
   block[2] = sub_10001F434;
   block[3] = &unk_10024E6E8;
   block[4] = self;
-  v10 = a3;
-  v9[1] = *&a4;
+  bypassingCopy = bypassing;
+  v9[1] = *&timeout;
   objc_copyWeak(v9, &location);
   dispatch_sync(v7, block);
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
 }
 
-- (void)enableVoiceTrigger:(BOOL)a3 withAssertion:(id)a4 timestamp:(double)a5
+- (void)enableVoiceTrigger:(BOOL)trigger withAssertion:(id)assertion timestamp:(double)timestamp
 {
-  v6 = a3;
-  v8 = a4;
+  triggerCopy = trigger;
+  assertionCopy = assertion;
   v9 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -140,17 +140,17 @@
     v19 = 2082;
     v20 = "[CSVoiceTriggerXPCServiceProxy enableVoiceTrigger:withAssertion:timestamp:]";
     v21 = 1026;
-    v22 = v6;
+    v22 = triggerCopy;
     v23 = 2114;
-    v24 = v8;
+    v24 = assertionCopy;
     v25 = 2050;
-    v26 = a5;
+    timestampCopy = timestamp;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s ::: %{public}s enable: %{public}d reason: %{public}@ timestamp : %{public}lf", buf, 0x30u);
   }
 
   if (qword_10029DF88 == -1)
   {
-    if (v8)
+    if (assertionCopy)
     {
 LABEL_5:
       v10 = qword_10029DFA0;
@@ -158,10 +158,10 @@ LABEL_5:
       v12[1] = 3221225472;
       v12[2] = sub_10001FAF0;
       v12[3] = &unk_100250678;
-      v16 = v6;
-      v15 = a5;
-      v13 = v8;
-      v14 = self;
+      v16 = triggerCopy;
+      timestampCopy2 = timestamp;
+      v13 = assertionCopy;
+      selfCopy = self;
       dispatch_sync(v10, v12);
 
       goto LABEL_9;
@@ -171,7 +171,7 @@ LABEL_5:
   else
   {
     dispatch_once(&qword_10029DF88, &stru_10024E6A0);
-    if (v8)
+    if (assertionCopy)
     {
       goto LABEL_5;
     }
@@ -204,18 +204,18 @@ LABEL_9:
   return v3;
 }
 
-- (CSVoiceTriggerXPCServiceProxy)initWithAssertionMonitor:(id)a3
+- (CSVoiceTriggerXPCServiceProxy)initWithAssertionMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v13.receiver = self;
   v13.super_class = CSVoiceTriggerXPCServiceProxy;
   v6 = [(CSVoiceTriggerXPCServiceProxy *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (monitorCopy)
     {
-      objc_storeStrong(&v6->_assertionMonitor, a3);
+      objc_storeStrong(&v6->_assertionMonitor, monitor);
     }
 
     v8 = +[NSMutableSet set];

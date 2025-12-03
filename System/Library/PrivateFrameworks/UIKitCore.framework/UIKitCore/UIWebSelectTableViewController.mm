@@ -1,14 +1,14 @@
 @interface UIWebSelectTableViewController
-- (UIWebSelectTableViewController)initWithDOMHTMLSelectNode:(id)a3 cachedItems:(id)a4 singleSelectionIndex:(unint64_t)a5 multipleSelection:(BOOL)a6;
-- (id)_optionsForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (UIWebSelectTableViewController)initWithDOMHTMLSelectNode:(id)node cachedItems:(id)items singleSelectionIndex:(unint64_t)index multipleSelection:(BOOL)selection;
+- (id)_optionsForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_setupGroupsAndOptions;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UIWebSelectTableViewController
@@ -24,7 +24,7 @@
   v21 = 0u;
   v22 = 0u;
   obj = self->_cachedItems;
-  v16 = self;
+  selfCopy = self;
   v5 = [(NSArray *)obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
@@ -42,7 +42,7 @@
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 node];
+        node = [v10 node];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
         if (isKindOfClass)
@@ -52,7 +52,7 @@
           goto LABEL_10;
         }
 
-        [v11 parentNode];
+        [node parentNode];
         objc_opt_class();
         v14 = objc_opt_isKindOfClass();
         if (((v14 | v8) & 1) == 0)
@@ -71,10 +71,10 @@ LABEL_10:
           }
         }
 
-        if (!v16->_allowsMultipleSelection && [v10 selected])
+        if (!selfCopy->_allowsMultipleSelection && [v10 selected])
         {
-          v16->_singleSelectionIndex = [v4 count];
-          v16->_singleSelectionSection = [v17 count];
+          selfCopy->_singleSelectionIndex = [v4 count];
+          selfCopy->_singleSelectionSection = [v17 count];
         }
 
         [v4 addObject:v10];
@@ -90,10 +90,10 @@ LABEL_10:
   [(UIWebOptGroup *)v3 setOptions:v4];
   [v17 addObject:v3];
 
-  [(UIWebSelectTableViewController *)v16 set_groupsAndOptions:v17];
+  [(UIWebSelectTableViewController *)selfCopy set_groupsAndOptions:v17];
 }
 
-- (UIWebSelectTableViewController)initWithDOMHTMLSelectNode:(id)a3 cachedItems:(id)a4 singleSelectionIndex:(unint64_t)a5 multipleSelection:(BOOL)a6
+- (UIWebSelectTableViewController)initWithDOMHTMLSelectNode:(id)node cachedItems:(id)items singleSelectionIndex:(unint64_t)index multipleSelection:(BOOL)selection
 {
   v16.receiver = self;
   v16.super_class = UIWebSelectTableViewController;
@@ -101,18 +101,18 @@ LABEL_10:
   v11 = v10;
   if (v10)
   {
-    [(UIWebSelectTableViewController *)v10 set_selectionNode:a3];
-    [(UIWebSelectTableViewController *)v11 set_cachedItems:a4];
-    v11->_singleSelectionIndex = a5;
+    [(UIWebSelectTableViewController *)v10 set_selectionNode:node];
+    [(UIWebSelectTableViewController *)v11 set_cachedItems:items];
+    v11->_singleSelectionIndex = index;
     v11->_singleSelectionSection = 0;
-    v11->_allowsMultipleSelection = a6;
+    v11->_allowsMultipleSelection = selection;
     [(UIWebSelectTableViewController *)v11 _setupGroupsAndOptions];
     v15 = 0;
     v14 = 0;
-    [a3 getTextWritingDirection:&v15 override:&v14];
+    [node getTextWritingDirection:&v15 override:&v14];
     v11->_textAlignment = 2 * (v15 != 0);
-    v12 = [a3 title];
-    -[UIViewController setTitle:](v11, "setTitle:", [v12 _uikit_stringWithWritingDirection:v15 asOverride:v14]);
+    title = [node title];
+    -[UIViewController setTitle:](v11, "setTitle:", [title _uikit_stringWithWritingDirection:v15 asOverride:v14]);
   }
 
   return v11;
@@ -128,29 +128,29 @@ LABEL_10:
   [(UITableViewController *)&v3 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = UIWebSelectTableViewController;
-  [(UITableViewController *)&v9 viewWillAppear:a3];
+  [(UITableViewController *)&v9 viewWillAppear:appear];
   singleSelectionIndex = self->_singleSelectionIndex;
   if (singleSelectionIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = [MEMORY[0x1E696AC88] indexPathForRow:singleSelectionIndex inSection:self->_singleSelectionSection];
-    v6 = [(UITableViewController *)self tableView];
-    v7 = [v5 section];
-    if (v7 < [(UITableView *)v6 numberOfSections])
+    tableView = [(UITableViewController *)self tableView];
+    section = [v5 section];
+    if (section < [(UITableView *)tableView numberOfSections])
     {
       v8 = [v5 row];
-      if (v8 < -[UITableView numberOfRowsInSection:](v6, "numberOfRowsInSection:", [v5 section]))
+      if (v8 < -[UITableView numberOfRowsInSection:](tableView, "numberOfRowsInSection:", [v5 section]))
       {
-        [(UITableView *)v6 scrollToRowAtIndexPath:v5 atScrollPosition:2 animated:0];
+        [(UITableView *)tableView scrollToRowAtIndexPath:v5 atScrollPosition:2 animated:0];
       }
     }
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(UIWebSelectTableViewController *)self _isEmpty])
   {
@@ -162,27 +162,27 @@ LABEL_10:
   return [(NSArray *)groupsAndOptions count];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if ([(UIWebSelectTableViewController *)self _isEmpty])
   {
     return 1;
   }
 
-  v7 = [-[NSArray objectAtIndex:](self->_groupsAndOptions objectAtIndex:{a4), "options"}];
+  v7 = [-[NSArray objectAtIndex:](self->_groupsAndOptions objectAtIndex:{section), "options"}];
 
   return [v7 count];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
     return 0;
   }
 
   WebThreadLock();
-  v6 = [objc_msgSend(-[NSArray objectAtIndex:](self->_groupsAndOptions objectAtIndex:{a4), "group"), "node"}];
+  v6 = [objc_msgSend(-[NSArray objectAtIndex:](self->_groupsAndOptions objectAtIndex:{section), "group"), "node"}];
   if (!v6)
   {
     return 0;
@@ -191,16 +191,16 @@ LABEL_10:
   return [v6 itemTitle];
 }
 
-- (id)_optionsForSection:(int64_t)a3
+- (id)_optionsForSection:(int64_t)section
 {
-  v3 = [(NSArray *)self->_groupsAndOptions objectAtIndex:a3];
+  v3 = [(NSArray *)self->_groupsAndOptions objectAtIndex:section];
 
   return [v3 options];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"UIWebPopoverTableViewCellReuseIdentifier"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"UIWebPopoverTableViewCellReuseIdentifier"];
   if (!v6)
   {
     v6 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"UIWebPopoverTableViewCellReuseIdentifier"];
@@ -217,22 +217,22 @@ LABEL_10:
 
   else
   {
-    v7 = -[UIWebSelectTableViewController _optionsForSection:](self, "_optionsForSection:", [a4 section]);
+    v7 = -[UIWebSelectTableViewController _optionsForSection:](self, "_optionsForSection:", [path section]);
     [(UIView *)v6 bounds];
     [(UITableViewCell *)v6 contentRectForBounds:?];
     [(UITableViewCell *)v6 textRectForContentRect:?];
     v9 = v8;
     [(UIFont *)[(UILabel *)[(UITableViewCell *)v6 textLabel] font] pointSize];
     v11 = v10;
-    v12 = [(UILabel *)[(UITableViewCell *)v6 textLabel] font];
-    v13 = v12;
+    font = [(UILabel *)[(UITableViewCell *)v6 textLabel] font];
+    v13 = font;
     if (v9 != self->_maximumTextWidth || self->_fontSize == 0.0)
     {
       self->_maximumTextWidth = v9;
-      self->_fontSize = adjustedFontSize(v12, self->_cachedItems, v9, v11);
+      self->_fontSize = adjustedFontSize(font, self->_cachedItems, v9, v11);
     }
 
-    v14 = [objc_msgSend(v7 objectAtIndex:{objc_msgSend(a4, "row")), "node"}];
+    v14 = [objc_msgSend(v7 objectAtIndex:{objc_msgSend(path, "row")), "node"}];
     WebThreadLock();
     [v14 populateCell:v6];
     -[UILabel setFont:](-[UITableViewCell textLabel](v6, "textLabel"), "setFont:", [v13 fontWithSize:self->_fontSize]);
@@ -243,24 +243,24 @@ LABEL_10:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   if ([(UIWebSelectTableViewController *)self _isEmpty])
   {
     return;
   }
 
-  v7 = -[NSArray objectAtIndex:](self->_groupsAndOptions, "objectAtIndex:", [a4 section]);
-  v8 = [v7 options];
+  v7 = -[NSArray objectAtIndex:](self->_groupsAndOptions, "objectAtIndex:", [path section]);
+  options = [v7 options];
   if (self->_allowsMultipleSelection)
   {
-    [a3 deselectRowAtIndexPath:objc_msgSend(a3 animated:{"indexPathForSelectedRow"), 0}];
-    v9 = [a3 cellForRowAtIndexPath:a4];
+    [view deselectRowAtIndexPath:objc_msgSend(view animated:{"indexPathForSelectedRow"), 0}];
+    v9 = [view cellForRowAtIndexPath:path];
     if ([objc_msgSend(v9 "textLabel")])
     {
-      v10 = [v9 accessoryType];
-      v11 = v10 == 0;
-      if (v10)
+      accessoryType = [v9 accessoryType];
+      v11 = accessoryType == 0;
+      if (accessoryType)
       {
         v12 = 0;
       }
@@ -271,9 +271,9 @@ LABEL_10:
       }
 
       [v9 setAccessoryType:v12];
-      v13 = [v8 objectAtIndex:{objc_msgSend(a4, "row")}];
+      v13 = [options objectAtIndex:{objc_msgSend(path, "row")}];
       WebThreadLock();
-      -[DOMHTMLSelectElement _activateItemAtIndex:allowMultipleSelection:](-[UIWebSelectTableViewController _selectionNode](self, "_selectionNode"), "_activateItemAtIndex:allowMultipleSelection:", [a4 row] + objc_msgSend(v7, "offset"), 1);
+      -[DOMHTMLSelectElement _activateItemAtIndex:allowMultipleSelection:](-[UIWebSelectTableViewController _selectionNode](self, "_selectionNode"), "_activateItemAtIndex:allowMultipleSelection:", [path row] + objc_msgSend(v7, "offset"), 1);
 
       [v13 setSelected:v11];
     }
@@ -281,13 +281,13 @@ LABEL_10:
     return;
   }
 
-  [a3 deselectRowAtIndexPath:a4 animated:0];
+  [view deselectRowAtIndexPath:path animated:0];
   singleSelectionIndex = self->_singleSelectionIndex;
   if (singleSelectionIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v15 = 0;
 LABEL_14:
-    v16 = [a3 cellForRowAtIndexPath:a4];
+    v16 = [view cellForRowAtIndexPath:path];
     if (![objc_msgSend(v16 "textLabel")])
     {
       return;
@@ -295,7 +295,7 @@ LABEL_14:
 
     if (v15)
     {
-      v17 = [a3 cellForRowAtIndexPath:v15];
+      v17 = [view cellForRowAtIndexPath:v15];
       if (v17)
       {
         v18 = v17;
@@ -309,11 +309,11 @@ LABEL_14:
     if (v16 && ![v16 accessoryType])
     {
       [v16 setAccessoryType:3];
-      self->_singleSelectionIndex = [a4 row];
-      self->_singleSelectionSection = [a4 section];
-      v19 = [v8 objectAtIndex:self->_singleSelectionIndex];
+      self->_singleSelectionIndex = [path row];
+      self->_singleSelectionSection = [path section];
+      v19 = [options objectAtIndex:self->_singleSelectionIndex];
       WebThreadLock();
-      -[DOMHTMLSelectElement _activateItemAtIndex:](-[UIWebSelectTableViewController _selectionNode](self, "_selectionNode"), "_activateItemAtIndex:", [a4 row] + objc_msgSend(v7, "offset"));
+      -[DOMHTMLSelectElement _activateItemAtIndex:](-[UIWebSelectTableViewController _selectionNode](self, "_selectionNode"), "_activateItemAtIndex:", [path row] + objc_msgSend(v7, "offset"));
       [v19 setSelected:1];
     }
 
@@ -328,7 +328,7 @@ LABEL_14:
   }
 
   v15 = [MEMORY[0x1E696AC88] indexPathForRow:singleSelectionIndex inSection:self->_singleSelectionSection];
-  if (![a4 isEqual:v15])
+  if (![path isEqual:v15])
   {
     goto LABEL_14;
   }

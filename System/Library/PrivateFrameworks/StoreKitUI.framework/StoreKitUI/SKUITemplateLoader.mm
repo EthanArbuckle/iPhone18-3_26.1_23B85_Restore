@@ -1,18 +1,18 @@
 @interface SKUITemplateLoader
-- (SKUITemplateLoader)initWithURLs:(id)a3 completionBlock:(id)a4;
-- (id)_operationWithURL:(id)a3;
-- (void)_operation:(id)a3 didCompleteWithOutput:(id)a4;
-- (void)_operation:(id)a3 didFailWithError:(id)a4;
-- (void)_operationDidFinish:(id)a3;
+- (SKUITemplateLoader)initWithURLs:(id)ls completionBlock:(id)block;
+- (id)_operationWithURL:(id)l;
+- (void)_operation:(id)_operation didCompleteWithOutput:(id)output;
+- (void)_operation:(id)_operation didFailWithError:(id)error;
+- (void)_operationDidFinish:(id)finish;
 - (void)load;
 @end
 
 @implementation SKUITemplateLoader
 
-- (SKUITemplateLoader)initWithURLs:(id)a3 completionBlock:(id)a4
+- (SKUITemplateLoader)initWithURLs:(id)ls completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  lsCopy = ls;
+  blockCopy = block;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -30,11 +30,11 @@
   v16 = [(SKUITemplateLoader *)&v30 init];
   if (v16)
   {
-    v17 = [v6 copy];
+    v17 = [lsCopy copy];
     URLs = v16->_URLs;
     v16->_URLs = v17;
 
-    v19 = [v7 copy];
+    v19 = [blockCopy copy];
     completionBlock = v16->_completionBlock;
     v16->_completionBlock = v19;
 
@@ -60,17 +60,17 @@
   return v16;
 }
 
-- (id)_operationWithURL:(id)a3
+- (id)_operationWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURL:v4];
+  lCopy = l;
+  v5 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURL:lCopy];
   [v5 setAllowedRetryCount:1];
   v6 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURLRequestProperties:v5];
   [v6 setRecordsMetrics:1];
   [v6 setITunesStoreRequest:1];
   v7 = [SKUITemplateParsingDataProvider alloc];
-  v8 = [(SKUITemplateLoader *)self templateParsingRegularExpression];
-  v9 = [(SKUITemplateParsingDataProvider *)v7 initWithRegularExpression:v8];
+  templateParsingRegularExpression = [(SKUITemplateLoader *)self templateParsingRegularExpression];
+  v9 = [(SKUITemplateParsingDataProvider *)v7 initWithRegularExpression:templateParsingRegularExpression];
   [v6 setDataConsumer:v9];
 
   objc_initWeak(&location, self);
@@ -129,19 +129,19 @@ uint64_t __40__SKUITemplateLoader__operationWithURL___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)_operation:(id)a3 didCompleteWithOutput:(id)a4
+- (void)_operation:(id)_operation didCompleteWithOutput:(id)output
 {
-  v6 = a3;
+  _operationCopy = _operation;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__SKUITemplateLoader__operation_didCompleteWithOutput___block_invoke;
   v10[3] = &unk_2781FD910;
-  v11 = v6;
-  v7 = v6;
-  v8 = a4;
+  v11 = _operationCopy;
+  v7 = _operationCopy;
+  outputCopy = output;
   [SKUIMetricsAppLaunchEvent withPendingLaunchEvent:v10];
-  v9 = [(SKUITemplateLoader *)self templateStrings];
-  [v9 addEntriesFromDictionary:v8];
+  templateStrings = [(SKUITemplateLoader *)self templateStrings];
+  [templateStrings addEntriesFromDictionary:outputCopy];
 
   [(SKUITemplateLoader *)self _operationDidFinish:v7];
 }
@@ -166,54 +166,54 @@ void __55__SKUITemplateLoader__operation_didCompleteWithOutput___block_invoke(ui
   }
 }
 
-- (void)_operation:(id)a3 didFailWithError:(id)a4
+- (void)_operation:(id)_operation didFailWithError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(SKUITemplateLoader *)self errors];
-  [v7 addObject:v6];
+  errorCopy = error;
+  _operationCopy = _operation;
+  errors = [(SKUITemplateLoader *)self errors];
+  [errors addObject:errorCopy];
 
-  [(SKUITemplateLoader *)self _operationDidFinish:v8];
+  [(SKUITemplateLoader *)self _operationDidFinish:_operationCopy];
 }
 
-- (void)_operationDidFinish:(id)a3
+- (void)_operationDidFinish:(id)finish
 {
   v16[1] = *MEMORY[0x277D85DE8];
   [(SKUITemplateLoader *)self setPendingOperationCount:[(SKUITemplateLoader *)self pendingOperationCount]- 1];
   if (![(SKUITemplateLoader *)self pendingOperationCount])
   {
-    v4 = [(SKUITemplateLoader *)self errors];
-    v5 = [v4 count];
+    errors = [(SKUITemplateLoader *)self errors];
+    v5 = [errors count];
 
-    v6 = [(SKUITemplateLoader *)self errors];
-    v7 = v6;
+    errors2 = [(SKUITemplateLoader *)self errors];
+    errors3 = errors2;
     if (v5 == 1)
     {
-      v8 = [v6 firstObject];
+      firstObject = [errors2 firstObject];
     }
 
     else
     {
-      v9 = [v6 count];
+      v9 = [errors2 count];
 
       if (v9 < 2)
       {
-        v8 = 0;
+        firstObject = 0;
         goto LABEL_8;
       }
 
       v10 = MEMORY[0x277CCA9B8];
       v15 = @"SKUITemplateLoaderErrorUnderlyingErrorsKey";
-      v7 = [(SKUITemplateLoader *)self errors];
-      v16[0] = v7;
+      errors3 = [(SKUITemplateLoader *)self errors];
+      v16[0] = errors3;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-      v8 = [v10 errorWithDomain:@"SKUITemplateLoaderErrorDomain" code:561278320 userInfo:v11];
+      firstObject = [v10 errorWithDomain:@"SKUITemplateLoaderErrorDomain" code:561278320 userInfo:v11];
     }
 
 LABEL_8:
-    v12 = [(SKUITemplateLoader *)self completionBlock];
-    v13 = [(SKUITemplateLoader *)self templateStrings];
-    (v12)[2](v12, v13, v8);
+    completionBlock = [(SKUITemplateLoader *)self completionBlock];
+    templateStrings = [(SKUITemplateLoader *)self templateStrings];
+    (completionBlock)[2](completionBlock, templateStrings, firstObject);
 
     retainSelf = self->_retainSelf;
     self->_retainSelf = 0;
@@ -224,15 +224,15 @@ LABEL_8:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(SKUITemplateLoader *)self URLs];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  uRLs = [(SKUITemplateLoader *)self URLs];
+  v5 = [v3 initWithCapacity:{objc_msgSend(uRLs, "count")}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(SKUITemplateLoader *)self URLs];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  uRLs2 = [(SKUITemplateLoader *)self URLs];
+  v7 = [uRLs2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -244,7 +244,7 @@ LABEL_8:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(uRLs2);
         }
 
         v11 = [(SKUITemplateLoader *)self _operationWithURL:*(*(&v13 + 1) + 8 * v10)];
@@ -254,15 +254,15 @@ LABEL_8:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [uRLs2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
   -[SKUITemplateLoader setPendingOperationCount:](self, "setPendingOperationCount:", [v5 count]);
-  v12 = [(SKUITemplateLoader *)self operationQueue];
-  [v12 addOperations:v5 waitUntilFinished:0];
+  operationQueue = [(SKUITemplateLoader *)self operationQueue];
+  [operationQueue addOperations:v5 waitUntilFinished:0];
 
   objc_storeStrong(&self->_retainSelf, self);
 }

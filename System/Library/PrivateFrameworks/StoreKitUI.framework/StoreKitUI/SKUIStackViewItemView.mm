@@ -1,16 +1,16 @@
 @interface SKUIStackViewItemView
-- (void)drawRect:(CGRect)a3;
-- (void)setBorderColor:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setShouldFlipImageHorizontal:(BOOL)a3;
-- (void)setShouldFlipImageVertical:(BOOL)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setBorderColor:(id)color;
+- (void)setImage:(id)image;
+- (void)setShouldFlipImageHorizontal:(BOOL)horizontal;
+- (void)setShouldFlipImageVertical:(BOOL)vertical;
 @end
 
 @implementation SKUIStackViewItemView
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -23,9 +23,9 @@
     }
   }
 
-  if (self->_borderColor != v4)
+  if (self->_borderColor != colorCopy)
   {
-    v13 = [(UIColor *)v4 copy];
+    v13 = [(UIColor *)colorCopy copy];
     borderColor = self->_borderColor;
     self->_borderColor = v13;
 
@@ -33,9 +33,9 @@
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -48,16 +48,16 @@
     }
   }
 
-  if (self->_image != v5)
+  if (self->_image != imageCopy)
   {
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     [(SKUIStackViewItemView *)self setNeedsDisplay];
   }
 }
 
-- (void)setShouldFlipImageHorizontal:(BOOL)a3
+- (void)setShouldFlipImageHorizontal:(BOOL)horizontal
 {
-  v3 = a3;
+  horizontalCopy = horizontal;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -70,16 +70,16 @@
     }
   }
 
-  if (self->_shouldFlipImageHorizontal != v3)
+  if (self->_shouldFlipImageHorizontal != horizontalCopy)
   {
-    self->_shouldFlipImageHorizontal = v3;
+    self->_shouldFlipImageHorizontal = horizontalCopy;
     [(SKUIStackViewItemView *)self setNeedsDisplay];
   }
 }
 
-- (void)setShouldFlipImageVertical:(BOOL)a3
+- (void)setShouldFlipImageVertical:(BOOL)vertical
 {
-  v3 = a3;
+  verticalCopy = vertical;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -92,14 +92,14 @@
     }
   }
 
-  if (self->_shouldFlipImageVertical != v3)
+  if (self->_shouldFlipImageVertical != verticalCopy)
   {
-    self->_shouldFlipImageVertical = v3;
+    self->_shouldFlipImageVertical = verticalCopy;
     [(SKUIStackViewItemView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (os_variant_has_internal_content())
   {
@@ -162,8 +162,8 @@
     v26 = *&drawRect__borderWidth;
     if (*&drawRect__borderWidth == 0.0)
     {
-      v27 = [MEMORY[0x277D759A0] mainScreen];
-      [v27 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       *&drawRect__borderWidth = 1.0 / v28;
 
       borderColor = self->_borderColor;

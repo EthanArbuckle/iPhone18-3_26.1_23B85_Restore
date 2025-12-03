@@ -1,15 +1,15 @@
 @interface SavingsFCCStepUpController
 - (_TtC9PassKitUI26SavingsFCCStepUpController)init;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
 @end
 
 @implementation SavingsFCCStepUpController
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BD8BD95C(a3);
+  flowCopy = flow;
+  selfCopy = self;
+  sub_1BD8BD95C(flow);
 }
 
 - (_TtC9PassKitUI26SavingsFCCStepUpController)init

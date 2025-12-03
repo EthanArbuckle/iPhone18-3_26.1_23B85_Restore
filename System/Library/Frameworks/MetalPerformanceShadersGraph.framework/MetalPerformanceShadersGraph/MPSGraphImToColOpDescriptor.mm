@@ -1,6 +1,6 @@
 @interface MPSGraphImToColOpDescriptor
 + (MPSGraphImToColOpDescriptor)descriptorWithKernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight strideInX:(NSUInteger)strideInX strideInY:(NSUInteger)strideInY dilationRateInX:(NSUInteger)dilationRateInX dilationRateInY:(NSUInteger)dilationRateInY paddingLeft:(NSUInteger)paddingLeft paddingRight:(NSUInteger)paddingRight paddingTop:(NSUInteger)paddingTop paddingBottom:(NSUInteger)paddingBottom dataLayout:(MPSGraphTensorNamedDataLayout)dataLayout;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)setExplicitPaddingWithPaddingLeft:(NSUInteger)paddingLeft paddingRight:(NSUInteger)paddingRight paddingTop:(NSUInteger)paddingTop paddingBottom:(NSUInteger)paddingBottom;
 @end
 
@@ -33,7 +33,7 @@
   [(MPSGraphImToColOpDescriptor *)self setPaddingBottom:paddingBottom];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPSGraphImToColOpDescriptor alloc];
   [(MPSGraphImToColOpDescriptor *)v4 setKernelWidth:self->_kernelWidth];

@@ -1,6 +1,6 @@
 @interface CCScheduledTaskState
 - (BOOL)isExpired;
-- (CCScheduledTaskState)initWithIdentifier:(id)a3 setBookkeeping:(id)a4;
+- (CCScheduledTaskState)initWithIdentifier:(id)identifier setBookkeeping:(id)bookkeeping;
 - (CCSetBookkeeping)setBookkeeping;
 - (NSString)identifier;
 @end
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (CCScheduledTaskState)initWithIdentifier:(id)a3 setBookkeeping:(id)a4
+- (CCScheduledTaskState)initWithIdentifier:(id)identifier setBookkeeping:(id)bookkeeping
 {
   sub_1B6E0938C();
   swift_unknownObjectRetain();
@@ -31,7 +31,7 @@
 
 - (BOOL)isExpired
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ScheduledTaskState.isExpired()();
 
   return v3;

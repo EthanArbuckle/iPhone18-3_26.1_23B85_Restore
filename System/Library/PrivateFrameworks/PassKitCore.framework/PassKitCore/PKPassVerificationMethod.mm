@@ -1,84 +1,84 @@
 @interface PKPassVerificationMethod
-+ (id)methodFromLegacyChannel:(id)a3;
-+ (id)verificationMethodFromDictionary:(id)a3;
-- (PKPassVerificationMethod)initWithCoder:(id)a3;
-- (id)_initWithType:(unint64_t)a3 channel:(id)a4;
-- (id)_initWithType:(unint64_t)a3 dictionary:(id)a4;
-- (id)_initWithType:(unint64_t)a3 identifier:(id)a4 requiresUserInteraction:(BOOL)a5;
++ (id)methodFromLegacyChannel:(id)channel;
++ (id)verificationMethodFromDictionary:(id)dictionary;
+- (PKPassVerificationMethod)initWithCoder:(id)coder;
+- (id)_initWithType:(unint64_t)type channel:(id)channel;
+- (id)_initWithType:(unint64_t)type dictionary:(id)dictionary;
+- (id)_initWithType:(unint64_t)type identifier:(id)identifier requiresUserInteraction:(BOOL)interaction;
 - (id)_legacyChannelRepresentation;
 - (id)debugTypeDescription;
 - (id)description;
 - (id)redactedDescription;
-- (void)_appendDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_appendDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassVerificationMethod
 
-- (id)_initWithType:(unint64_t)a3 identifier:(id)a4 requiresUserInteraction:(BOOL)a5
+- (id)_initWithType:(unint64_t)type identifier:(id)identifier requiresUserInteraction:(BOOL)interaction
 {
-  v9 = a4;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PKPassVerificationMethod;
   v10 = [(PKPassVerificationMethod *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    objc_storeStrong(&v10->_identifier, a4);
-    v11->_requiresUserInteraction = a5;
+    v10->_type = type;
+    objc_storeStrong(&v10->_identifier, identifier);
+    v11->_requiresUserInteraction = interaction;
   }
 
   return v11;
 }
 
-- (id)_initWithType:(unint64_t)a3 dictionary:(id)a4
+- (id)_initWithType:(unint64_t)type dictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PKPassVerificationMethod;
   v7 = [(PKPassVerificationMethod *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 PKStringForKey:@"identifier"];
+    v7->_type = type;
+    v9 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v8->_requiresUserInteraction = [v6 PKBoolForKey:@"requiresUserInteraction"];
+    v8->_requiresUserInteraction = [dictionaryCopy PKBoolForKey:@"requiresUserInteraction"];
   }
 
   return v8;
 }
 
-- (id)_initWithType:(unint64_t)a3 channel:(id)a4
+- (id)_initWithType:(unint64_t)type channel:(id)channel
 {
-  v6 = a4;
+  channelCopy = channel;
   v14.receiver = self;
   v14.super_class = PKPassVerificationMethod;
   v7 = [(PKPassVerificationMethod *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 identifier];
+    v7->_type = type;
+    identifier = [channelCopy identifier];
     identifier = v8->_identifier;
-    v8->_identifier = v9;
+    v8->_identifier = identifier;
 
-    v8->_requiresUserInteraction = [v6 requiresUserInteraction];
-    v11 = [v6 organizationName];
+    v8->_requiresUserInteraction = [channelCopy requiresUserInteraction];
+    organizationName = [channelCopy organizationName];
     organizationName = v8->_organizationName;
-    v8->_organizationName = v11;
+    v8->_organizationName = organizationName;
   }
 
   return v8;
 }
 
-+ (id)verificationMethodFromDictionary:(id)a3
++ (id)verificationMethodFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 PKStringForKey:@"type"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy PKStringForKey:@"type"];
   v5 = v4;
   if (!v4)
   {
@@ -145,17 +145,17 @@ LABEL_9:
 
   v7 = PKPassVerificationOneTimePinMethod;
 LABEL_20:
-  v9 = [[v7 alloc] initWithDictionary:v3];
+  v9 = [[v7 alloc] initWithDictionary:dictionaryCopy];
 LABEL_21:
 
   return v9;
 }
 
-+ (id)methodFromLegacyChannel:(id)a3
++ (id)methodFromLegacyChannel:(id)channel
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (v5 = [v3 type] - 1, v5 <= 9) && ((0x39Fu >> v5) & 1) != 0)
+  channelCopy = channel;
+  v4 = channelCopy;
+  if (channelCopy && (v5 = [channelCopy type] - 1, v5 <= 9) && ((0x39Fu >> v5) & 1) != 0)
   {
     v6 = [objc_alloc(*off_1E79D8868[v5]) _initWithChannel:v4];
   }
@@ -194,11 +194,11 @@ LABEL_12:
   if (type == 2)
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = self;
+    selfCopy = self;
     v9 = [v12 alloc];
-    v10 = [(PKPassVerificationMethod *)v13 direction];
+    direction = [(PKPassVerificationMethod *)selfCopy direction];
 
-    if (v10 <= 2)
+    if (direction <= 2)
     {
       v11 = off_1E79D88D0;
       goto LABEL_9;
@@ -212,15 +212,15 @@ LABEL_10:
   if (type == 1)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = self;
+    selfCopy2 = self;
     v9 = [v7 alloc];
-    v10 = [(PKPassVerificationMethod *)v8 channel];
+    direction = [(PKPassVerificationMethod *)selfCopy2 channel];
 
-    if (v10 <= 2)
+    if (direction <= 2)
     {
       v11 = off_1E79D88B8;
 LABEL_9:
-      v14 = v11[v10];
+      v14 = v11[direction];
 LABEL_11:
       v6 = [v9 initWithFormat:@"%@.%@", v4, v14];
       goto LABEL_12;
@@ -235,23 +235,23 @@ LABEL_13:
   return v15;
 }
 
-- (PKPassVerificationMethod)initWithCoder:(id)a3
+- (PKPassVerificationMethod)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPassVerificationMethod;
   v5 = [(PKPassVerificationMethod *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = PKPassVerificationMethodTypeFromString(v6);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v5->_requiresUserInteraction = [v4 decodeBoolForKey:@"requiresUserInteraction"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
+    v5->_requiresUserInteraction = [coderCopy decodeBoolForKey:@"requiresUserInteraction"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
     organizationName = v5->_organizationName;
     v5->_organizationName = v9;
   }
@@ -259,16 +259,16 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v6 = a3;
+  coderCopy = coder;
   v5 = PKPassVerificationMethodTypeToString(type);
-  [v6 encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:v5 forKey:@"type"];
 
-  [v6 encodeObject:self->_identifier forKey:@"identifier"];
-  [v6 encodeBool:self->_requiresUserInteraction forKey:@"requiresUserInteraction"];
-  [v6 encodeObject:self->_organizationName forKey:@"organizationName"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeBool:self->_requiresUserInteraction forKey:@"requiresUserInteraction"];
+  [coderCopy encodeObject:self->_organizationName forKey:@"organizationName"];
 }
 
 - (id)description
@@ -285,14 +285,14 @@ LABEL_13:
   return v7;
 }
 
-- (void)_appendDescription:(id)a3
+- (void)_appendDescription:(id)description
 {
   type = self->_type;
-  v7 = a3;
+  descriptionCopy = description;
   v5 = PKPassVerificationMethodTypeToString(type);
-  [v7 appendFormat:@"type: '%@'; ", v5];
+  [descriptionCopy appendFormat:@"type: '%@'; ", v5];
 
-  [v7 appendFormat:@"identifier: '%@'; ", self->_identifier];
+  [descriptionCopy appendFormat:@"identifier: '%@'; ", self->_identifier];
   if (self->_requiresUserInteraction)
   {
     v6 = @"Yes";
@@ -303,8 +303,8 @@ LABEL_13:
     v6 = @"No";
   }
 
-  [v7 appendFormat:@"requiresUserInteraction: '%@'; ", v6];
-  [v7 appendFormat:@"organizationName: '%@'; ", self->_organizationName];
+  [descriptionCopy appendFormat:@"requiresUserInteraction: '%@'; ", v6];
+  [descriptionCopy appendFormat:@"organizationName: '%@'; ", self->_organizationName];
 }
 
 - (id)redactedDescription

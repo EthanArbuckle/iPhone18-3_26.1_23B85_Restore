@@ -1,44 +1,44 @@
 @interface PKApplyRadioPickerTitleRow
-- (PKApplyRadioPickerTitleRow)initWithTitle:(id)a3;
-- (void)configureCell:(id)a3;
+- (PKApplyRadioPickerTitleRow)initWithTitle:(id)title;
+- (void)configureCell:(id)cell;
 @end
 
 @implementation PKApplyRadioPickerTitleRow
 
-- (PKApplyRadioPickerTitleRow)initWithTitle:(id)a3
+- (PKApplyRadioPickerTitleRow)initWithTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = PKApplyRadioPickerTitleRow;
   v6 = [(PKApplyRadioPickerTitleRow *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_title, a3);
+    objc_storeStrong(&v6->_title, title);
   }
 
   return v7;
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
   v4 = MEMORY[0x1E69DCC28];
-  v5 = a3;
-  v11 = [v4 cellConfiguration];
-  v6 = [v11 textProperties];
-  [v6 setNumberOfLines:0];
+  cellCopy = cell;
+  cellConfiguration = [v4 cellConfiguration];
+  textProperties = [cellConfiguration textProperties];
+  [textProperties setNumberOfLines:0];
   v7 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD00], 0);
-  [v6 setFont:v7];
+  [textProperties setFont:v7];
 
   v8 = PKTableViewCellTextInset();
-  [v11 setDirectionalLayoutMargins:{v8, v8, 0.0, v8}];
-  [v11 setText:self->_title];
-  v9 = [MEMORY[0x1E69DC6E8] listCellConfiguration];
+  [cellConfiguration setDirectionalLayoutMargins:{v8, v8, 0.0, v8}];
+  [cellConfiguration setText:self->_title];
+  listCellConfiguration = [MEMORY[0x1E69DC6E8] listCellConfiguration];
   v10 = PKProvisioningSecondaryBackgroundColor();
-  [v9 setBackgroundColor:v10];
+  [listCellConfiguration setBackgroundColor:v10];
 
-  [v5 setBackgroundConfiguration:v9];
-  [v5 setContentConfiguration:v11];
+  [cellCopy setBackgroundConfiguration:listCellConfiguration];
+  [cellCopy setContentConfiguration:cellConfiguration];
 }
 
 @end

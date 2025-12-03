@@ -1,40 +1,40 @@
 @interface PKPassUserEducationDemoFooterView
-- (BOOL)_showGlyphForState:(unint64_t)a3;
-- (PKPassUserEducationDemoFooterView)initWithPass:(id)a3 userEducationDemoController:(id)a4 context:(id)a5 contactlessSession:(id)a6;
-- (id)_buttonForType:(unint64_t)a3 failureReason:(unint64_t)a4;
-- (id)_filledButtonWithTitle:(id)a3 action:(id)a4;
+- (BOOL)_showGlyphForState:(unint64_t)state;
+- (PKPassUserEducationDemoFooterView)initWithPass:(id)pass userEducationDemoController:(id)controller context:(id)context contactlessSession:(id)session;
+- (id)_buttonForType:(unint64_t)type failureReason:(unint64_t)reason;
+- (id)_filledButtonWithTitle:(id)title action:(id)action;
 - (void)_cancelAuthentication;
-- (void)_consumeAuthenticatorEvaluationResponse:(id)a3 completion:(id)a4;
+- (void)_consumeAuthenticatorEvaluationResponse:(id)response completion:(id)completion;
 - (void)_endContactlessPaymentSession;
 - (void)_endPaymentAuthorization;
 - (void)_performAuthentication;
-- (void)_transitionToState:(unint64_t)a3 failureReason:(unint64_t)a4 animated:(BOOL)a5;
-- (void)authenticator:(id)a3 didTransitionToEvaluationStateWithEvent:(id)a4;
+- (void)_transitionToState:(unint64_t)state failureReason:(unint64_t)reason animated:(BOOL)animated;
+- (void)authenticator:(id)authenticator didTransitionToEvaluationStateWithEvent:(id)event;
 - (void)dealloc;
 - (void)dismissPasscodeViewController;
-- (void)layoutIfNeededAnimated:(BOOL)a3;
+- (void)layoutIfNeededAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)presentPasscodeViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5;
-- (void)willBecomeHiddenAnimated:(BOOL)a3;
-- (void)willBecomeVisibleAnimated:(BOOL)a3;
+- (void)presentPasscodeViewController:(id)controller completionHandler:(id)handler reply:(id)reply;
+- (void)willBecomeHiddenAnimated:(BOOL)animated;
+- (void)willBecomeVisibleAnimated:(BOOL)animated;
 @end
 
 @implementation PKPassUserEducationDemoFooterView
 
-- (PKPassUserEducationDemoFooterView)initWithPass:(id)a3 userEducationDemoController:(id)a4 context:(id)a5 contactlessSession:(id)a6
+- (PKPassUserEducationDemoFooterView)initWithPass:(id)pass userEducationDemoController:(id)controller context:(id)context contactlessSession:(id)session
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  passCopy = pass;
+  controllerCopy = controller;
+  sessionCopy = session;
   v36.receiver = self;
   v36.super_class = PKPassUserEducationDemoFooterView;
-  v13 = [(PKPassFooterContentView *)&v36 initWithPass:v10 presentationContext:a5];
+  v13 = [(PKPassFooterContentView *)&v36 initWithPass:passCopy presentationContext:context];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_userEducationDemoController, a4);
-    objc_storeStrong(&v14->_contactlessInterfaceSession, a6);
+    objc_storeStrong(&v13->_userEducationDemoController, controller);
+    objc_storeStrong(&v14->_contactlessInterfaceSession, session);
     v15 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(v15, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
 
@@ -57,8 +57,8 @@
     [(PKPassPaymentPayStateView *)v14->_payStateView setDelegate:v14];
     [(PKPassPaymentPayStateView *)v14->_payStateView setAlpha:0.0];
     [(PKPassPaymentPayStateView *)v14->_payStateView setLabelAlpha:1.0];
-    v23 = [(PKPassPaymentPayStateView *)v14->_payStateView glyph];
-    [v23 setState:6 animated:0 completionHandler:0];
+    glyph = [(PKPassPaymentPayStateView *)v14->_payStateView glyph];
+    [glyph setState:6 animated:0 completionHandler:0];
 
     [(PKPassUserEducationDemoFooterView *)v14 addSubview:v14->_payStateView];
     v24 = [objc_alloc(MEMORY[0x1E69AD308]) initWithStyle:0];
@@ -71,15 +71,15 @@
     [(LAUIPhysicalButtonView *)v26 setInstruction:v27];
 
     [(PKPassUserEducationDemoFooterView *)v14 addSubview:v14->_physicalButtonView];
-    v28 = [(PKPassFooterContentView *)v14 bottomRule];
-    [v28 setAlpha:0.0];
+    bottomRule = [(PKPassFooterContentView *)v14 bottomRule];
+    [bottomRule setAlpha:0.0];
 
     [(PKPassFooterContentView *)v14 setInfoButtonAlpha:0.0];
-    v29 = [v10 paymentPass];
-    v30 = [v29 devicePrimaryContactlessPaymentApplication];
-    v37[0] = v30;
+    paymentPass = [passCopy paymentPass];
+    devicePrimaryContactlessPaymentApplication = [paymentPass devicePrimaryContactlessPaymentApplication];
+    v37[0] = devicePrimaryContactlessPaymentApplication;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
-    v32 = [v12 activatePaymentApplications:v31 forPaymentPass:v29];
+    v32 = [sessionCopy activatePaymentApplications:v31 forPaymentPass:paymentPass];
 
     if ((v32 & 1) == 0)
     {
@@ -103,26 +103,26 @@
   [(PKPassFooterContentView *)&v3 dealloc];
 }
 
-- (BOOL)_showGlyphForState:(unint64_t)a3
+- (BOOL)_showGlyphForState:(unint64_t)state
 {
-  if (a3 > 7)
+  if (state > 7)
   {
     return 0;
   }
 
-  if (((1 << a3) & 0x9E) != 0)
+  if (((1 << state) & 0x9E) != 0)
   {
     return PKSystemApertureIsAvailable() ^ 1;
   }
 
-  return ((1 << a3) & 0x60) != 0;
+  return ((1 << state) & 0x60) != 0;
 }
 
-- (void)_transitionToState:(unint64_t)a3 failureReason:(unint64_t)a4 animated:(BOOL)a5
+- (void)_transitionToState:(unint64_t)state failureReason:(unint64_t)reason animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v45 = *MEMORY[0x1E69E9840];
-  if ([(PKPassFooterContentView *)self isInvalidated]|| self->_currentState == a3)
+  if ([(PKPassFooterContentView *)self isInvalidated]|| self->_currentState == state)
   {
     return;
   }
@@ -139,11 +139,11 @@
   }
 
   v11 = 6;
-  v32 = a4;
-  v33 = v5;
-  if (a3 <= 3)
+  reasonCopy = reason;
+  v33 = animatedCopy;
+  if (state <= 3)
   {
-    if (a3 > 1)
+    if (state > 1)
     {
       v15 = 3;
       if (v10)
@@ -158,7 +158,7 @@
       }
 
       v17 = 5;
-      if (a3 == 3)
+      if (state == 3)
       {
         v18 = 0;
       }
@@ -168,25 +168,25 @@
         v18 = currentActionButtonType;
       }
 
-      if (a3 != 3)
+      if (state != 3)
       {
         v16 = 0;
         v17 = 6;
       }
 
-      if (a3 != 2)
+      if (state != 2)
       {
         currentActionButtonType = v18;
       }
 
       v12 = 0;
-      if (a3 != 2)
+      if (state != 2)
       {
         v15 = v16;
       }
 
       v31 = v15;
-      if (a3 == 2)
+      if (state == 2)
       {
         v11 = 4;
       }
@@ -197,9 +197,9 @@
       }
     }
 
-    else if (a3)
+    else if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         if (self->_currentState == 2)
         {
@@ -236,9 +236,9 @@
     goto LABEL_51;
   }
 
-  if (a3 > 5)
+  if (state > 5)
   {
-    if (a3 == 6)
+    if (state == 6)
     {
       v12 = 0;
       v11 = 11;
@@ -247,7 +247,7 @@
       goto LABEL_51;
     }
 
-    if (a3 != 7)
+    if (state != 7)
     {
       v12 = 0;
       v31 = 0;
@@ -255,9 +255,9 @@
     }
 
     v12 = 0;
-    if (a4 != 1)
+    if (reason != 1)
     {
-      if (a4 == 3)
+      if (reason == 3)
       {
         v12 = 0;
         v11 = 0;
@@ -266,7 +266,7 @@
         goto LABEL_51;
       }
 
-      if (a4 != 2)
+      if (reason != 2)
       {
         v31 = 0;
         v11 = 0;
@@ -293,7 +293,7 @@ LABEL_50:
   }
 
   v12 = 0;
-  if (a3 == 4)
+  if (state == 4)
   {
     v31 = 0;
     v11 = 0;
@@ -326,9 +326,9 @@ LABEL_51:
     v39 = 2048;
     v40 = currentState;
     v41 = 2048;
-    v42 = a3;
+    stateCopy = state;
     v43 = 2048;
-    v44 = a4;
+    reasonCopy2 = reason;
     v22 = v20;
     _os_log_impl(&dword_1BD026000, v19, OS_LOG_TYPE_DEFAULT, "%@: Transitioning footer state %lu to %lu(%lu)", location, 0x2Au);
   }
@@ -338,7 +338,7 @@ LABEL_51:
     v11 = 6;
   }
 
-  v23 = [(PKPassUserEducationDemoFooterView *)self _buttonForType:currentActionButtonType failureReason:a4];
+  v23 = [(PKPassUserEducationDemoFooterView *)self _buttonForType:currentActionButtonType failureReason:reason];
   [(UIButton *)self->_actionButton alpha];
   [v23 setAlpha:?];
   if (v23)
@@ -362,7 +362,7 @@ LABEL_51:
   aBlock[3] = &__block_descriptor_33_e28_v28__0__UIView_8B16___v___20l;
   v35 = v33;
   v24 = _Block_copy(aBlock);
-  v24[2](v24, self->_payStateView, [(PKPassUserEducationDemoFooterView *)self _showGlyphForState:a3], 0);
+  v24[2](v24, self->_payStateView, [(PKPassUserEducationDemoFooterView *)self _showGlyphForState:state], 0);
   v24[2](v24, self->_actionButton, v23 != 0, 0);
   if (self->_userIntentStyle == 1)
   {
@@ -374,20 +374,20 @@ LABEL_51:
 
   [(PKPassPaymentPayStateView *)self->_payStateView setRecognizingHint:self->_authenticationEvaluationState == 2];
   [(PKPassPaymentPayStateView *)self->_payStateView setState:v31 animated:v33 withCompletionHandler:0];
-  v26 = [(PKPassPaymentPayStateView *)self->_payStateView glyph];
-  [v26 setState:v11 animated:v33 completionHandler:0];
+  glyph = [(PKPassPaymentPayStateView *)self->_payStateView glyph];
+  [glyph setState:v11 animated:v33 completionHandler:0];
 
   if (v30)
   {
     AudioServicesPlaySystemSound(0x573u);
     [(PKPassPaymentPayStateView *)self->_payStateView emphasizeStateIfPossible:v31 withOverrideText:0];
-    v27 = [(UIButton *)self->_actionButton layer];
-    v28 = [MEMORY[0x1E6979300] pkui_shakeAnimation];
-    v29 = [v27 pkui_addAdditiveAnimation:v28];
+    layer = [(UIButton *)self->_actionButton layer];
+    pkui_shakeAnimation = [MEMORY[0x1E6979300] pkui_shakeAnimation];
+    v29 = [layer pkui_addAdditiveAnimation:pkui_shakeAnimation];
   }
 
-  self->_currentState = a3;
-  self->_currentFailureReason = v32;
+  self->_currentState = state;
+  self->_currentFailureReason = reasonCopy;
 }
 
 void __79__PKPassUserEducationDemoFooterView__transitionToState_failureReason_animated___block_invoke(uint64_t a1, char a2)
@@ -469,8 +469,8 @@ uint64_t __79__PKPassUserEducationDemoFooterView__transitionToState_failureReaso
     self->_authenticating = 1;
     if ([(PKPassUserEducationDemoFooterView *)self _canAuthenticateWithBiometrics]|| [(PKPassUserEducationDemoFooterView *)self _canAuthenticateWithPasscode])
     {
-      v3 = [(PKPassFooterContentView *)self pass];
-      v4 = [MEMORY[0x1E69B8750] _copyDevicePrimaryContactlessAccessControlForSecureElementPass:v3];
+      pass = [(PKPassFooterContentView *)self pass];
+      v4 = [MEMORY[0x1E69B8750] _copyDevicePrimaryContactlessAccessControlForSecureElementPass:pass];
       v5 = [objc_alloc(MEMORY[0x1E69BC748]) initWithPolicy:0];
       [v5 setInitialAuthenticatorState:self->_authenticatorState];
       [v5 setAssumeUserIntentAvailable:1];
@@ -490,8 +490,8 @@ uint64_t __79__PKPassUserEducationDemoFooterView__transitionToState_failureReaso
       [(PKAuthenticator *)authenticator evaluateRequest:v5 withCompletion:v18];
       if (self->_userIntentStyle == -1)
       {
-        v7 = [(UIView *)self pkui_viewControllerFromResponderChain];
-        if (v7)
+        pkui_viewControllerFromResponderChain = [(UIView *)self pkui_viewControllerFromResponderChain];
+        if (pkui_viewControllerFromResponderChain)
         {
           aBlock[0] = MEMORY[0x1E69E9820];
           aBlock[1] = 3221225472;
@@ -506,7 +506,7 @@ uint64_t __79__PKPassUserEducationDemoFooterView__transitionToState_failureReaso
           objc_copyWeak(&v15, &location);
           v9 = _Block_copy(&v11);
           AccesibilityIntentUnavailable = PKAlertCreateAccesibilityIntentUnavailable(v8, v9);
-          [v7 presentViewController:AccesibilityIntentUnavailable animated:1 completion:{0, v11, v12, v13, v14}];
+          [pkui_viewControllerFromResponderChain presentViewController:AccesibilityIntentUnavailable animated:1 completion:{0, v11, v12, v13, v14}];
 
           objc_destroyWeak(&v15);
           objc_destroyWeak(&v17);
@@ -645,10 +645,10 @@ void __59__PKPassUserEducationDemoFooterView__performAuthentication__block_invok
   }
 }
 
-- (void)_consumeAuthenticatorEvaluationResponse:(id)a3 completion:(id)a4
+- (void)_consumeAuthenticatorEvaluationResponse:(id)response completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   v8 = self->_contactlessInterfaceSession;
   authorizationQueue = self->_authorizationQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -656,10 +656,10 @@ void __59__PKPassUserEducationDemoFooterView__performAuthentication__block_invok
   block[2] = __88__PKPassUserEducationDemoFooterView__consumeAuthenticatorEvaluationResponse_completion___block_invoke;
   block[3] = &unk_1E8012300;
   v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = responseCopy;
+  v16 = completionCopy;
+  v10 = completionCopy;
+  v11 = responseCopy;
   v12 = v8;
   dispatch_async(authorizationQueue, block);
 }
@@ -689,23 +689,23 @@ uint64_t __88__PKPassUserEducationDemoFooterView__consumeAuthenticatorEvaluation
   return result;
 }
 
-- (id)_buttonForType:(unint64_t)a3 failureReason:(unint64_t)a4
+- (id)_buttonForType:(unint64_t)type failureReason:(unint64_t)reason
 {
-  if (!a3)
+  if (!type)
   {
     v13 = 0;
     goto LABEL_17;
   }
 
   v6 = MEMORY[0x1E69BA330];
-  if (a4)
+  if (reason)
   {
     v6 = MEMORY[0x1E69BA2F8];
   }
 
   v7 = *v6;
   objc_initWeak(&location, self);
-  switch(a3)
+  switch(type)
   {
     case 3uLL:
       v15 = MEMORY[0x1E69DC628];
@@ -819,10 +819,10 @@ void __66__PKPassUserEducationDemoFooterView__buttonForType_failureReason___bloc
   [v4 subject:v5 sendEvent:v9];
 }
 
-- (id)_filledButtonWithTitle:(id)a3 action:(id)a4
+- (id)_filledButtonWithTitle:(id)title action:(id)action
 {
-  v5 = a4;
-  v6 = a3;
+  actionCopy = action;
+  titleCopy = title;
   PKFloatRoundToPixel();
   v8 = v7;
   v9 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD00], *MEMORY[0x1E69DDC40]);
@@ -833,17 +833,17 @@ void __66__PKPassUserEducationDemoFooterView__buttonForType_failureReason___bloc
   v16 = vdupq_n_s64(2uLL);
   v11 = [[PKContinuousButton alloc] initWithConfiguration:&v14];
   [(PKContinuousButton *)v11 setContentEdgeInsets:v8, 25.0, 16.0 - v8, 25.0];
-  v12 = [(PKContinuousButton *)v11 titleLabel];
-  [v12 setFont:v9];
-  [v12 setMinimumScaleFactor:0.5];
-  [v12 setTextAlignment:1];
-  [v12 setLineBreakMode:4];
-  [(PKContinuousButton *)v11 setTitle:v6 forState:0];
+  titleLabel = [(PKContinuousButton *)v11 titleLabel];
+  [titleLabel setFont:v9];
+  [titleLabel setMinimumScaleFactor:0.5];
+  [titleLabel setTextAlignment:1];
+  [titleLabel setLineBreakMode:4];
+  [(PKContinuousButton *)v11 setTitle:titleCopy forState:0];
 
   [(PKContinuousButton *)v11 _setTouchInsets:-10.0, -10.0, -10.0, -10.0];
   [(PKContinuousButton *)v11 setExclusiveTouch:1];
   [(PKContinuousButton *)v11 sizeToFit];
-  [(PKContinuousButton *)v11 addAction:v5 forControlEvents:64];
+  [(PKContinuousButton *)v11 addAction:actionCopy forControlEvents:64];
 
   return v11;
 }
@@ -867,13 +867,13 @@ void __66__PKPassUserEducationDemoFooterView__buttonForType_failureReason___bloc
       v16 = &v15;
       v17 = 0x2020000000;
       v18 = 0;
-      v6 = [MEMORY[0x1E69DC668] sharedApplication];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __PeformBackgroundTask_block_invoke;
       v14[3] = &unk_1E8011A18;
       v14[4] = &v15;
-      v7 = [v6 beginBackgroundTaskWithExpirationHandler:v14];
+      v7 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithExpirationHandler:v14];
       v16[3] = v7;
 
       v13[0] = MEMORY[0x1E69E9820];
@@ -906,9 +906,9 @@ void __66__PKPassUserEducationDemoFooterView__buttonForType_failureReason___bloc
   }
 }
 
-- (void)layoutIfNeededAnimated:(BOOL)a3
+- (void)layoutIfNeededAnimated:(BOOL)animated
 {
-  self->_animated = a3;
+  self->_animated = animated;
   [(PKPassUserEducationDemoFooterView *)self layoutIfNeeded];
   self->_animated = 0;
 }
@@ -943,19 +943,19 @@ void __66__PKPassUserEducationDemoFooterView__buttonForType_failureReason___bloc
   [(PKPassPaymentPayStateView *)self->_payStateView setLabelStateBottomInset:CGRectGetHeight(v22) + 12.0];
   if (![(PKPassPaymentPayStateView *)self->_payStateView layoutState])
   {
-    v11 = [(PKPassPaymentPayStateView *)self->_payStateView label];
-    v12 = v11;
-    if (v11)
+    label = [(PKPassPaymentPayStateView *)self->_payStateView label];
+    v12 = label;
+    if (label)
     {
-      v13 = v11;
+      glyph = label;
     }
 
     else
     {
-      v13 = [(PKPassPaymentPayStateView *)self->_payStateView glyph];
+      glyph = [(PKPassPaymentPayStateView *)self->_payStateView glyph];
     }
 
-    v14 = v13;
+    v14 = glyph;
 
     [v14 bounds];
     [(PKPassUserEducationDemoFooterView *)self convertRect:v14 fromView:?];
@@ -971,7 +971,7 @@ void __66__PKPassUserEducationDemoFooterView__buttonForType_failureReason___bloc
   }
 }
 
-- (void)authenticator:(id)a3 didTransitionToEvaluationStateWithEvent:(id)a4
+- (void)authenticator:(id)authenticator didTransitionToEvaluationStateWithEvent:(id)event
 {
   v21 = *MEMORY[0x1E69E9840];
   if (!self->_authenticating)
@@ -979,9 +979,9 @@ void __66__PKPassUserEducationDemoFooterView__buttonForType_failureReason___bloc
     return;
   }
 
-  var1 = a4.var1;
-  var0 = a4.var0;
-  self->_authenticationEvaluationState = a4.var0;
+  var1 = event.var1;
+  var0 = event.var0;
+  self->_authenticationEvaluationState = event.var0;
   if (PKPearlIsAvailable())
   {
     v7 = (self->_coachingState - 3) < 2;
@@ -1107,27 +1107,27 @@ LABEL_30:
   [(PKPassUserEducationDemoFooterView *)self _transitionToState:v9 failureReason:currentFailureReason animated:1];
 }
 
-- (void)presentPasscodeViewController:(id)a3 completionHandler:(id)a4 reply:(id)a5
+- (void)presentPasscodeViewController:(id)controller completionHandler:(id)handler reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_passcodeVC);
 
   if (WeakRetained)
   {
-    if (v9)
+    if (handlerCopy)
     {
-      v9[2](v9, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
   }
 
   else
   {
-    v12 = objc_storeWeak(&self->_passcodeVC, v8);
-    [v8 setModalPresentationStyle:5];
+    v12 = objc_storeWeak(&self->_passcodeVC, controllerCopy);
+    [controllerCopy setModalPresentationStyle:5];
 
-    v13 = [(UIView *)self pkui_viewControllerFromResponderChain];
+    pkui_viewControllerFromResponderChain = [(UIView *)self pkui_viewControllerFromResponderChain];
     objc_initWeak(&location, self);
     v14 = objc_loadWeakRetained(&self->_passcodeVC);
     v15[0] = MEMORY[0x1E69E9820];
@@ -1135,8 +1135,8 @@ LABEL_30:
     v15[2] = __91__PKPassUserEducationDemoFooterView_presentPasscodeViewController_completionHandler_reply___block_invoke;
     v15[3] = &unk_1E80111D0;
     objc_copyWeak(&v17, &location);
-    v16 = v9;
-    [v13 presentViewController:v14 animated:1 completion:v15];
+    v16 = handlerCopy;
+    [pkui_viewControllerFromResponderChain presentViewController:v14 animated:1 completion:v15];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -1164,15 +1164,15 @@ void __91__PKPassUserEducationDemoFooterView_presentPasscodeViewController_compl
 {
   WeakRetained = objc_loadWeakRetained(&self->_passcodeVC);
   objc_storeWeak(&self->_passcodeVC, 0);
-  v3 = [WeakRetained presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [WeakRetained presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)willBecomeVisibleAnimated:(BOOL)a3
+- (void)willBecomeVisibleAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = PKPassUserEducationDemoFooterView;
-  [(PKPassFooterContentView *)&v4 willBecomeVisibleAnimated:a3];
+  [(PKPassFooterContentView *)&v4 willBecomeVisibleAnimated:animated];
   self->_isVisible = 1;
   if (self->_currentState == 1)
   {
@@ -1180,11 +1180,11 @@ void __91__PKPassUserEducationDemoFooterView_presentPasscodeViewController_compl
   }
 }
 
-- (void)willBecomeHiddenAnimated:(BOOL)a3
+- (void)willBecomeHiddenAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = PKPassUserEducationDemoFooterView;
-  [(PKPassFooterContentView *)&v4 willBecomeHiddenAnimated:a3];
+  [(PKPassFooterContentView *)&v4 willBecomeHiddenAnimated:animated];
   self->_isVisible = 0;
   [(PKPassUserEducationDemoFooterView *)self _endPaymentAuthorization];
 }

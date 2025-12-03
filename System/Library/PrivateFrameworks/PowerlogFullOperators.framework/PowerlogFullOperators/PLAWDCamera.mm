@@ -1,29 +1,29 @@
 @interface PLAWDCamera
 + (id)entryAggregateDefinitionAwdCamera;
 + (id)entryAggregateDefinitions;
-+ (id)getSharedObjWithOperator:(id)a3;
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4;
-- (void)addEntryToCameraTable:(id)a3 withValue:(double)a4;
-- (void)handleBackCameraCallback:(id)a3;
-- (void)handleCameraCallback:(id)a3;
-- (void)handleFrontCameraCallback:(id)a3;
-- (void)handleTorchCameraCallback:(id)a3;
++ (id)getSharedObjWithOperator:(id)operator;
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn;
+- (void)addEntryToCameraTable:(id)table withValue:(double)value;
+- (void)handleBackCameraCallback:(id)callback;
+- (void)handleCameraCallback:(id)callback;
+- (void)handleFrontCameraCallback:(id)callback;
+- (void)handleTorchCameraCallback:(id)callback;
 - (void)initCameraStats;
 - (void)reInitCameraStats;
 - (void)resetCameraTable;
-- (void)startMetricCollection:(id)a3;
-- (void)stopMetricCollection:(id)a3;
+- (void)startMetricCollection:(id)collection;
+- (void)stopMetricCollection:(id)collection;
 @end
 
 @implementation PLAWDCamera
 
-+ (id)getSharedObjWithOperator:(id)a3
++ (id)getSharedObjWithOperator:(id)operator
 {
   v3 = plAwdCamera;
   if (!plAwdCamera)
   {
-    v4 = a3;
-    v5 = [(PLAWDAuxMetrics *)[PLAWDCamera alloc] initWithOperator:v4];
+    operatorCopy = operator;
+    v5 = [(PLAWDAuxMetrics *)[PLAWDCamera alloc] initWithOperator:operatorCopy];
 
     v6 = plAwdCamera;
     plAwdCamera = v5;
@@ -38,8 +38,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = kPLAWDAggregateNameCameraMetrics;
-  v2 = [a1 entryAggregateDefinitionAwdCamera];
-  v7[0] = v2;
+  entryAggregateDefinitionAwdCamera = [self entryAggregateDefinitionAwdCamera];
+  v7[0] = entryAggregateDefinitionAwdCamera;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -60,13 +60,13 @@
   v25[0] = v3;
   v24[1] = *MEMORY[0x277D3F540];
   v20[0] = kPLAWDCameraMetricsKey;
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
   v20[1] = kPLAWDCameraMetricsValue;
-  v21[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v21[1] = v7;
+  v21[0] = commonTypeDict_StringFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v21[1] = commonTypeDict_RealFormat_aggregateFunction_sum;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v25[1] = v8;
   v24[2] = *MEMORY[0x277D3F478];
@@ -88,37 +88,37 @@
   return v12;
 }
 
-- (void)startMetricCollection:(id)a3
+- (void)startMetricCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PLAWDAuxMetrics *)self runningMetrics];
-  [v5 addObject:v4];
+  collectionCopy = collection;
+  runningMetrics = [(PLAWDAuxMetrics *)self runningMetrics];
+  [runningMetrics addObject:collectionCopy];
 
-  v6 = [v4 longValue];
-  if (v6 == 2031627)
+  longValue = [collectionCopy longValue];
+  if (longValue == 2031627)
   {
     [(PLAWDCamera *)self initCameraStats];
     v7 = *MEMORY[0x277D3F5D0];
     v8 = [MEMORY[0x277D3F698] entryKeyForType:*MEMORY[0x277D3F5D0] andName:*MEMORY[0x277D3F770]];
     v9 = objc_alloc(MEMORY[0x277D3F1A8]);
-    v10 = [(PLAWDAuxMetrics *)self operator];
+    operator = [(PLAWDAuxMetrics *)self operator];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __37__PLAWDCamera_startMetricCollection___block_invoke;
     v29[3] = &unk_279A58F10;
     v29[4] = self;
-    v11 = [v9 initWithOperator:v10 forEntryKey:v8 withBlock:v29];
+    v11 = [v9 initWithOperator:operator forEntryKey:v8 withBlock:v29];
 
     [(PLAWDCamera *)self setCameraEventCallback:v11];
     v12 = [MEMORY[0x277D3F698] entryKeyForType:v7 andName:*MEMORY[0x277D3F778]];
     v13 = objc_alloc(MEMORY[0x277D3F1A8]);
-    v14 = [(PLAWDAuxMetrics *)self operator];
+    operator2 = [(PLAWDAuxMetrics *)self operator];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __37__PLAWDCamera_startMetricCollection___block_invoke_2;
     v28[3] = &unk_279A58F10;
     v28[4] = self;
-    v15 = [v13 initWithOperator:v14 forEntryKey:v12 withBlock:v28];
+    v15 = [v13 initWithOperator:operator2 forEntryKey:v12 withBlock:v28];
 
     [(PLAWDCamera *)self setCameraEventCallbackTorch:v15];
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -139,9 +139,9 @@
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Start Camera collection ", @"*******PLAWDMetricsService*******", block, v24, v25, v26, v27];
         v18 = MEMORY[0x277D3F178];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDCamera.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent = [v19 lastPathComponent];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDCamera startMetricCollection:]"];
-        [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:97];
+        [v18 logMessage:v17 fromFile:lastPathComponent fromFunction:v21 fromLineNumber:97];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -180,14 +180,14 @@ uint64_t __37__PLAWDCamera_startMetricCollection___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)stopMetricCollection:(id)a3
+- (void)stopMetricCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PLAWDAuxMetrics *)self runningMetrics];
-  [v5 removeObject:v4];
+  collectionCopy = collection;
+  runningMetrics = [(PLAWDAuxMetrics *)self runningMetrics];
+  [runningMetrics removeObject:collectionCopy];
 
-  v6 = [v4 longValue];
-  if (v6 == 2031627)
+  longValue = [collectionCopy longValue];
+  if (longValue == 2031627)
   {
     [(PLAWDCamera *)self setCameraEventCallback:0];
     [(PLAWDCamera *)self setCameraEventCallbackTorch:0];
@@ -209,9 +209,9 @@ uint64_t __37__PLAWDCamera_startMetricCollection___block_invoke_3(uint64_t a1)
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Stop Camera collection ", @"*******PLAWDMetricsService*******", block, v18, v19, v20, v21];
         v9 = MEMORY[0x277D3F178];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDCamera.m"];
-        v11 = [v10 lastPathComponent];
+        lastPathComponent = [v10 lastPathComponent];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDCamera stopMetricCollection:]"];
-        [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:114];
+        [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:114];
 
         v13 = PLLogCommon();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -222,8 +222,8 @@ uint64_t __37__PLAWDCamera_startMetricCollection___block_invoke_3(uint64_t a1)
     }
   }
 
-  v14 = [(PLAWDAuxMetrics *)self runningMetrics];
-  v15 = [v14 count];
+  runningMetrics2 = [(PLAWDAuxMetrics *)self runningMetrics];
+  v15 = [runningMetrics2 count];
 
   if (!v15)
   {
@@ -262,9 +262,9 @@ uint64_t __36__PLAWDCamera_stopMetricCollection___block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : init Camera stats: ", @"*******PLAWDMetricsService*******", block, v11, v12, v13, v14];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDCamera.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDCamera initCameraStats]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:130];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:130];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -286,8 +286,8 @@ uint64_t __30__PLAWDCamera_initCameraStats__block_invoke(uint64_t a1)
 
 - (void)reInitCameraStats
 {
-  v3 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v3 timeIntervalSince1970];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [monotonicDate timeIntervalSince1970];
   v5 = v4;
 
   if ([(PLAWDCamera *)self prevFrontCameraState])
@@ -323,9 +323,9 @@ uint64_t __30__PLAWDCamera_initCameraStats__block_invoke(uint64_t a1)
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Re-init Camera stats: ", @"*******PLAWDMetricsService*******", block, v14, v15, v16, v17];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDCamera.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDCamera reInitCameraStats]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:149];
+      [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:149];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -353,26 +353,26 @@ uint64_t __32__PLAWDCamera_reInitCameraStats__block_invoke(uint64_t a1)
   [(PLAWDAuxMetrics *)&v4 resetTableWithEntryKey:v3];
 }
 
-- (void)addEntryToCameraTable:(id)a3 withValue:(double)a4
+- (void)addEntryToCameraTable:(id)table withValue:(double)value
 {
   v6 = *MEMORY[0x277D3F5B8];
   v7 = kPLAWDAggregateNameCameraMetrics;
-  v8 = a3;
+  tableCopy = table;
   v12 = [(PLOperator *)PLAWDMetricsService entryKeyForType:v6 andName:v7];
   v9 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v12];
-  [v9 setObject:v8 forKeyedSubscript:kPLAWDCameraMetricsKey];
+  [v9 setObject:tableCopy forKeyedSubscript:kPLAWDCameraMetricsKey];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithDouble:value];
   [v9 setObject:v10 forKeyedSubscript:kPLAWDCameraMetricsValue];
 
-  v11 = [(PLAWDAuxMetrics *)self operator];
-  [v11 logEntry:v9];
+  operator = [(PLAWDAuxMetrics *)self operator];
+  [operator logEntry:v9];
 }
 
-- (void)handleCameraCallback:(id)a3
+- (void)handleCameraCallback:(id)callback
 {
-  v10 = a3;
-  v4 = [v10 objectForKey:@"entry"];
+  callbackCopy = callback;
+  v4 = [callbackCopy objectForKey:@"entry"];
   v5 = v4;
   if (v4)
   {
@@ -382,34 +382,34 @@ uint64_t __32__PLAWDCamera_reInitCameraStats__block_invoke(uint64_t a1)
     if (v7)
     {
       v8 = [v5 objectForKeyedSubscript:v6];
-      v9 = [v8 intValue];
+      intValue = [v8 intValue];
 
-      if ([MEMORY[0x277D3F698] isBackFacingCamera:v9])
+      if ([MEMORY[0x277D3F698] isBackFacingCamera:intValue])
       {
-        [(PLAWDCamera *)self handleBackCameraCallback:v10];
+        [(PLAWDCamera *)self handleBackCameraCallback:callbackCopy];
       }
 
-      else if ([MEMORY[0x277D3F698] isFrontFacingCamera:v9])
+      else if ([MEMORY[0x277D3F698] isFrontFacingCamera:intValue])
       {
-        [(PLAWDCamera *)self handleFrontCameraCallback:v10];
+        [(PLAWDCamera *)self handleFrontCameraCallback:callbackCopy];
       }
     }
   }
 }
 
-- (void)handleFrontCameraCallback:(id)a3
+- (void)handleFrontCameraCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v5 timeIntervalSince1970];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [monotonicDate timeIntervalSince1970];
     v7 = v6;
 
     v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F788]];
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       [(PLAWDCamera *)self setFrontCameraTimestamp:v7];
     }
@@ -439,13 +439,13 @@ uint64_t __32__PLAWDCamera_reInitCameraStats__block_invoke(uint64_t a1)
       if (handleFrontCameraCallback__classDebugEnabled == 1)
       {
         v12 = MEMORY[0x277CCACA8];
-        v13 = [(PLAWDCamera *)self prevFrontCameraState];
-        v14 = [v12 stringWithFormat:@"%@ : FrontCameraCallback: currState=%d prevState=%d  ", @"*******PLAWDMetricsService*******", v9, v13, block, v21, v22, v23, v24];
+        prevFrontCameraState = [(PLAWDCamera *)self prevFrontCameraState];
+        v14 = [v12 stringWithFormat:@"%@ : FrontCameraCallback: currState=%d prevState=%d  ", @"*******PLAWDMetricsService*******", bOOLValue, prevFrontCameraState, block, v21, v22, v23, v24];
         v15 = MEMORY[0x277D3F178];
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDCamera.m"];
-        v17 = [v16 lastPathComponent];
+        lastPathComponent = [v16 lastPathComponent];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDCamera handleFrontCameraCallback:]"];
-        [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:200];
+        [v15 logMessage:v14 fromFile:lastPathComponent fromFunction:v18 fromLineNumber:200];
 
         v19 = PLLogCommon();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -455,7 +455,7 @@ uint64_t __32__PLAWDCamera_reInitCameraStats__block_invoke(uint64_t a1)
       }
     }
 
-    [(PLAWDCamera *)self setPrevFrontCameraState:v9];
+    [(PLAWDCamera *)self setPrevFrontCameraState:bOOLValue];
   }
 }
 
@@ -466,19 +466,19 @@ uint64_t __41__PLAWDCamera_handleFrontCameraCallback___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleBackCameraCallback:(id)a3
+- (void)handleBackCameraCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v5 timeIntervalSince1970];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [monotonicDate timeIntervalSince1970];
     v7 = v6;
 
     v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F788]];
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       [(PLAWDCamera *)self setBackCameraTimestamp:v7];
     }
@@ -508,13 +508,13 @@ uint64_t __41__PLAWDCamera_handleFrontCameraCallback___block_invoke(uint64_t a1)
       if (handleBackCameraCallback__classDebugEnabled == 1)
       {
         v12 = MEMORY[0x277CCACA8];
-        v13 = [(PLAWDCamera *)self prevBackCameraState];
-        v14 = [v12 stringWithFormat:@"%@ : BackCameraCallback: currState=%d prevState=%d  ", @"*******PLAWDMetricsService*******", v9, v13, block, v21, v22, v23, v24];
+        prevBackCameraState = [(PLAWDCamera *)self prevBackCameraState];
+        v14 = [v12 stringWithFormat:@"%@ : BackCameraCallback: currState=%d prevState=%d  ", @"*******PLAWDMetricsService*******", bOOLValue, prevBackCameraState, block, v21, v22, v23, v24];
         v15 = MEMORY[0x277D3F178];
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDCamera.m"];
-        v17 = [v16 lastPathComponent];
+        lastPathComponent = [v16 lastPathComponent];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDCamera handleBackCameraCallback:]"];
-        [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:222];
+        [v15 logMessage:v14 fromFile:lastPathComponent fromFunction:v18 fromLineNumber:222];
 
         v19 = PLLogCommon();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -524,7 +524,7 @@ uint64_t __41__PLAWDCamera_handleFrontCameraCallback___block_invoke(uint64_t a1)
       }
     }
 
-    [(PLAWDCamera *)self setPrevBackCameraState:v9];
+    [(PLAWDCamera *)self setPrevBackCameraState:bOOLValue];
   }
 }
 
@@ -535,19 +535,19 @@ uint64_t __40__PLAWDCamera_handleBackCameraCallback___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleTorchCameraCallback:(id)a3
+- (void)handleTorchCameraCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v5 timeIntervalSince1970];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [monotonicDate timeIntervalSince1970];
     v7 = v6;
 
     v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F780]];
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       [(PLAWDCamera *)self setTorchCameraTimestamp:v7];
     }
@@ -577,13 +577,13 @@ uint64_t __40__PLAWDCamera_handleBackCameraCallback___block_invoke(uint64_t a1)
       if (handleTorchCameraCallback__classDebugEnabled == 1)
       {
         v12 = MEMORY[0x277CCACA8];
-        v13 = [(PLAWDCamera *)self prevTorchCameraState];
-        v14 = [v12 stringWithFormat:@"%@ : TorchCameraCallback: currState=%d prevState=%d  ", @"*******PLAWDMetricsService*******", v9, v13, block, v21, v22, v23, v24];
+        prevTorchCameraState = [(PLAWDCamera *)self prevTorchCameraState];
+        v14 = [v12 stringWithFormat:@"%@ : TorchCameraCallback: currState=%d prevState=%d  ", @"*******PLAWDMetricsService*******", bOOLValue, prevTorchCameraState, block, v21, v22, v23, v24];
         v15 = MEMORY[0x277D3F178];
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDCamera.m"];
-        v17 = [v16 lastPathComponent];
+        lastPathComponent = [v16 lastPathComponent];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDCamera handleTorchCameraCallback:]"];
-        [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:244];
+        [v15 logMessage:v14 fromFile:lastPathComponent fromFunction:v18 fromLineNumber:244];
 
         v19 = PLLogCommon();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -593,7 +593,7 @@ uint64_t __40__PLAWDCamera_handleBackCameraCallback___block_invoke(uint64_t a1)
       }
     }
 
-    [(PLAWDCamera *)self setPrevTorchCameraState:v9];
+    [(PLAWDCamera *)self setPrevTorchCameraState:bOOLValue];
   }
 }
 
@@ -604,28 +604,28 @@ uint64_t __41__PLAWDCamera_handleTorchCameraCallback___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 newMetricContainerWithIdentifier:{objc_msgSend(v6, "unsignedIntValue")}];
+  serverCopy = server;
+  connCopy = conn;
+  v8 = [connCopy newMetricContainerWithIdentifier:{objc_msgSend(serverCopy, "unsignedIntValue")}];
   v9 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:-86400.0];
-  v10 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   [v9 timeIntervalSince1970];
   v12 = v11;
-  [v10 timeIntervalSince1970];
+  [monotonicDate timeIntervalSince1970];
   v14 = v13;
 
-  if ([v6 longValue] == 2031627)
+  if ([serverCopy longValue] == 2031627)
   {
     if (v8)
     {
       v15 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:kPLAWDAggregateNameCameraMetrics];
-      v16 = [(PLAWDAuxMetrics *)self operator];
-      v17 = [v16 storage];
+      operator = [(PLAWDAuxMetrics *)self operator];
+      storage = [operator storage];
       v59 = v15;
-      v18 = [v17 aggregateEntriesForKey:v15 withBucketLength:86400.0 inTimeIntervalRange:{v12, v14 - v12}];
+      v18 = [storage aggregateEntriesForKey:v15 withBucketLength:86400.0 inTimeIntervalRange:{v12, v14 - v12}];
 
       v58 = v18;
       v19 = [MEMORY[0x277D3F190] summarizeAggregateEntries:v18];
@@ -650,10 +650,10 @@ uint64_t __41__PLAWDCamera_handleTorchCameraCallback___block_invoke(uint64_t a1)
           v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"aggregatedResults=%@", v19];
           v23 = MEMORY[0x277D3F178];
           v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDCamera.m"];
-          v25 = [v24 lastPathComponent];
+          lastPathComponent = [v24 lastPathComponent];
           v26 = v22;
           v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDCamera submitDataToAWDServer:withAwdConn:]"];
-          [v23 logMessage:v26 fromFile:v25 fromFunction:v27 fromLineNumber:268];
+          [v23 logMessage:v26 fromFile:lastPathComponent fromFunction:v27 fromLineNumber:268];
 
           v28 = PLLogCommon();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -669,9 +669,9 @@ uint64_t __41__PLAWDCamera_handleTorchCameraCallback___block_invoke(uint64_t a1)
       if (v20)
       {
         v55 = v8;
-        [v20 setTimestamp:{objc_msgSend(v7, "getAWDTimestamp")}];
-        v29 = [MEMORY[0x277CBEAA8] monotonicDate];
-        [v29 timeIntervalSince1970];
+        [v20 setTimestamp:{objc_msgSend(connCopy, "getAWDTimestamp")}];
+        monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+        [monotonicDate2 timeIntervalSince1970];
         v31 = v30;
 
         [v20 setCameraFrontOnDuration:0];
@@ -766,9 +766,9 @@ uint64_t __41__PLAWDCamera_handleTorchCameraCallback___block_invoke(uint64_t a1)
             v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Submit Camera stats: submit cnt=%ld ", @"*******PLAWDMetricsService*******", -[PLAWDCamera cameraSubmitCnt](self, "cameraSubmitCnt")];
             v47 = MEMORY[0x277D3F178];
             v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDCamera.m"];
-            v49 = [v48 lastPathComponent];
+            lastPathComponent2 = [v48 lastPathComponent];
             v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDCamera submitDataToAWDServer:withAwdConn:]"];
-            [v47 logMessage:v46 fromFile:v49 fromFunction:v50 fromLineNumber:309];
+            [v47 logMessage:v46 fromFile:lastPathComponent2 fromFunction:v50 fromLineNumber:309];
 
             v51 = PLLogCommon();
             if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
@@ -784,7 +784,7 @@ uint64_t __41__PLAWDCamera_handleTorchCameraCallback___block_invoke(uint64_t a1)
     }
 
     [(PLAWDCamera *)self reInitCameraStats];
-    v52 = [v7 submitMetric:v8];
+    v52 = [connCopy submitMetric:v8];
   }
 
   else

@@ -1,15 +1,15 @@
 @interface PXSharedAlbumActionNavigationController
-- (PXSharedAlbumActionNavigationController)initWithAssets:(id)a3 batchComment:(id)a4 perAssetCreationOptions:(id)a5;
-- (PXSharedAlbumActionNavigationController)initWithAssets:(id)a3 batchComment:(id)a4 perAssetCreationOptions:(id)a5 selectedPostToAlbumUUID:(id)a6;
-- (PXSharedAlbumActionNavigationController)initWithCoder:(id)a3;
-- (PXSharedAlbumActionNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (PXSharedAlbumActionNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PXSharedAlbumActionNavigationController)initWithRootViewController:(id)a3;
+- (PXSharedAlbumActionNavigationController)initWithAssets:(id)assets batchComment:(id)comment perAssetCreationOptions:(id)options;
+- (PXSharedAlbumActionNavigationController)initWithAssets:(id)assets batchComment:(id)comment perAssetCreationOptions:(id)options selectedPostToAlbumUUID:(id)d;
+- (PXSharedAlbumActionNavigationController)initWithCoder:(id)coder;
+- (PXSharedAlbumActionNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (PXSharedAlbumActionNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (PXSharedAlbumActionNavigationController)initWithRootViewController:(id)controller;
 - (PXSharedAlbumActionNavigationControllerDelegate)actionControllerDelegate;
-- (void)setAssets:(id)a3;
-- (void)setViewModel:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setAssets:(id)assets;
+- (void)setViewModel:(id)model;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PXSharedAlbumActionNavigationController
@@ -22,16 +22,16 @@
   return Strong;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
   v4 = *(self + OBJC_IVAR___PXSharedAlbumActionNavigationController_viewModel);
-  *(self + OBJC_IVAR___PXSharedAlbumActionNavigationController_viewModel) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___PXSharedAlbumActionNavigationController_viewModel) = model;
+  modelCopy = model;
 }
 
-- (PXSharedAlbumActionNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXSharedAlbumActionNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1A524C674();
     v7 = v6;
@@ -43,17 +43,17 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  sub_1A440E070(v5, v7, a4);
+  bundleCopy = bundle;
+  sub_1A440E070(v5, v7, bundle);
 }
 
-- (PXSharedAlbumActionNavigationController)initWithAssets:(id)a3 batchComment:(id)a4 perAssetCreationOptions:(id)a5
+- (PXSharedAlbumActionNavigationController)initWithAssets:(id)assets batchComment:(id)comment perAssetCreationOptions:(id)options
 {
   sub_1A3C52C70(0, &qword_1EB126660);
   v6 = sub_1A524CA34();
   sub_1A524C674();
   v8 = v7;
-  if (a5)
+  if (options)
   {
     sub_1A3C52C70(0, &qword_1EB12B618);
     v9 = sub_1A524C3E4();
@@ -67,19 +67,19 @@
   PXSharedAlbumActionNavigationController.init(assets:batchComment:perAssetCreationOptions:)(v6, v7, v8, v9);
 }
 
-- (PXSharedAlbumActionNavigationController)initWithAssets:(id)a3 batchComment:(id)a4 perAssetCreationOptions:(id)a5 selectedPostToAlbumUUID:(id)a6
+- (PXSharedAlbumActionNavigationController)initWithAssets:(id)assets batchComment:(id)comment perAssetCreationOptions:(id)options selectedPostToAlbumUUID:(id)d
 {
   sub_1A3C52C70(0, &qword_1EB126660);
   v8 = sub_1A524CA34();
   sub_1A524C674();
   v10 = v9;
-  if (a5)
+  if (options)
   {
     sub_1A3C52C70(0, &qword_1EB12B618);
-    a5 = sub_1A524C3E4();
+    options = sub_1A524C3E4();
   }
 
-  if (a6)
+  if (d)
   {
     v11 = sub_1A524C674();
     v12 = v9;
@@ -91,10 +91,10 @@
     v12 = 0;
   }
 
-  PXSharedAlbumActionNavigationController.init(assets:batchComment:perAssetCreationOptions:selectedPostToAlbumUUID:)(v8, v9, v10, a5, v11, v12);
+  PXSharedAlbumActionNavigationController.init(assets:batchComment:perAssetCreationOptions:selectedPostToAlbumUUID:)(v8, v9, v10, options, v11, v12);
 }
 
-- (PXSharedAlbumActionNavigationController)initWithCoder:(id)a3
+- (PXSharedAlbumActionNavigationController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR___PXSharedAlbumActionNavigationController_viewModel) = 0;
@@ -104,48 +104,48 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  PXSharedAlbumActionNavigationController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  PXSharedAlbumActionNavigationController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = PXSharedAlbumActionNavigationController;
-  v4 = self;
-  [(PXSharedAlbumActionNavigationController *)&v7 viewWillDisappear:v3];
-  if (![(PXSharedAlbumActionNavigationController *)v4 didDismissSharedAlbumsActionView:v7.receiver])
+  selfCopy = self;
+  [(PXSharedAlbumActionNavigationController *)&v7 viewWillDisappear:disappearCopy];
+  if (![(PXSharedAlbumActionNavigationController *)selfCopy didDismissSharedAlbumsActionView:v7.receiver])
   {
-    v5 = [(PXSharedAlbumActionNavigationController *)v4 viewModel];
-    if (v5)
+    viewModel = [(PXSharedAlbumActionNavigationController *)selfCopy viewModel];
+    if (viewModel)
     {
-      v6 = v5;
-      (*((*MEMORY[0x1E69E7D40] & v5->super.isa) + 0x6E0))(0, 0);
+      v6 = viewModel;
+      (*((*MEMORY[0x1E69E7D40] & viewModel->super.isa) + 0x6E0))(0, 0);
     }
 
-    [(PXSharedAlbumActionNavigationController *)v4 setViewModel:0];
+    [(PXSharedAlbumActionNavigationController *)selfCopy setViewModel:0];
   }
 }
 
-- (void)setAssets:(id)a3
+- (void)setAssets:(id)assets
 {
   sub_1A3C52C70(0, &qword_1EB126660);
   v4 = sub_1A524CA34();
-  v5 = self;
+  selfCopy = self;
   PXSharedAlbumActionNavigationController.setAssets(_:)(v4);
 }
 
-- (PXSharedAlbumActionNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (PXSharedAlbumActionNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (PXSharedAlbumActionNavigationController)initWithRootViewController:(id)a3
+- (PXSharedAlbumActionNavigationController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

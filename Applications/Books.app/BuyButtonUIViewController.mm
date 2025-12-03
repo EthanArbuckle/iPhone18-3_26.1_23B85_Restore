@@ -1,14 +1,14 @@
 @interface BuyButtonUIViewController
-- (_TtC5Books25BuyButtonUIViewController)initWithCoder:(id)a3;
-- (_TtC5Books25BuyButtonUIViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_buyButtonPressed:(id)a3;
+- (_TtC5Books25BuyButtonUIViewController)initWithCoder:(id)coder;
+- (_TtC5Books25BuyButtonUIViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_buyButtonPressed:(id)pressed;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
 
 @implementation BuyButtonUIViewController
 
-- (_TtC5Books25BuyButtonUIViewController)initWithCoder:(id)a3
+- (_TtC5Books25BuyButtonUIViewController)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC5Books25BuyButtonUIViewController_eventHandler;
   *v3 = 0u;
@@ -25,29 +25,29 @@
 - (void)loadView
 {
   v3 = objc_allocWithZone(type metadata accessor for BuyButtonUIView());
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 initWithFrame:{0.0, 0.0, 0.0, 0.0}];
-  [(BuyButtonUIViewController *)v5 setView:v4];
+  [(BuyButtonUIViewController *)selfCopy setView:v4];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10049C274();
 }
 
-- (_TtC5Books25BuyButtonUIViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Books25BuyButtonUIViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)_buyButtonPressed:(id)a3
+- (void)_buyButtonPressed:(id)pressed
 {
-  if (a3)
+  if (pressed)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -56,7 +56,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10049E2D8();

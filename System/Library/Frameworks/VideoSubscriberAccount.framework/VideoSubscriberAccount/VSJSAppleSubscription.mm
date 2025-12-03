@@ -1,8 +1,8 @@
 @interface VSJSAppleSubscription
-+ (id)appleSubscriptionsFromJSAppleSubscriptions:(id)a3;
-+ (id)jsAppleSubscriptionsFromAppleSubscriptions:(id)a3;
++ (id)appleSubscriptionsFromJSAppleSubscriptions:(id)subscriptions;
++ (id)jsAppleSubscriptionsFromAppleSubscriptions:(id)subscriptions;
 - (VSJSAppleSubscription)init;
-- (VSJSAppleSubscription)initWithAppleSubscription:(id)a3;
+- (VSJSAppleSubscription)initWithAppleSubscription:(id)subscription;
 - (id)appleSubscription;
 @end
 
@@ -15,21 +15,21 @@
   return [(VSJSObject *)&v3 init];
 }
 
-- (VSJSAppleSubscription)initWithAppleSubscription:(id)a3
+- (VSJSAppleSubscription)initWithAppleSubscription:(id)subscription
 {
-  v4 = a3;
+  subscriptionCopy = subscription;
   v13.receiver = self;
   v13.super_class = VSJSAppleSubscription;
   v5 = [(VSJSObject *)&v13 init];
   if (v5)
   {
-    v6 = [v4 customerID];
-    v7 = [v6 copy];
+    customerID = [subscriptionCopy customerID];
+    v7 = [customerID copy];
     customerID = v5->_customerID;
     v5->_customerID = v7;
 
-    v9 = [v4 productCodes];
-    v10 = [v9 copy];
+    productCodes = [subscriptionCopy productCodes];
+    v10 = [productCodes copy];
     productCodes = v5->_productCodes;
     v5->_productCodes = v10;
   }
@@ -40,14 +40,14 @@
 - (id)appleSubscription
 {
   v3 = [VSAppleSubscription alloc];
-  v4 = [(VSJSAppleSubscription *)self customerID];
-  v5 = [(VSJSAppleSubscription *)self productCodes];
-  v6 = [(VSAppleSubscription *)v3 initWithCustomerID:v4 productCodes:v5];
+  customerID = [(VSJSAppleSubscription *)self customerID];
+  productCodes = [(VSJSAppleSubscription *)self productCodes];
+  v6 = [(VSAppleSubscription *)v3 initWithCustomerID:customerID productCodes:productCodes];
 
   return v6;
 }
 
-+ (id)appleSubscriptionsFromJSAppleSubscriptions:(id)a3
++ (id)appleSubscriptionsFromJSAppleSubscriptions:(id)subscriptions
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
@@ -69,10 +69,10 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) appleSubscription];
-        if (v8)
+        appleSubscription = [*(*(&v10 + 1) + 8 * i) appleSubscription];
+        if (appleSubscription)
         {
-          [v3 addObject:v8];
+          [v3 addObject:appleSubscription];
         }
       }
 
@@ -85,16 +85,16 @@
   return v3;
 }
 
-+ (id)jsAppleSubscriptionsFromAppleSubscriptions:(id)a3
++ (id)jsAppleSubscriptionsFromAppleSubscriptions:(id)subscriptions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  subscriptionsCopy = subscriptions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = subscriptionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

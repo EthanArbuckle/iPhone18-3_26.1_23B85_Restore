@@ -1,32 +1,32 @@
 @interface RatingRowViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation RatingRowViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.RatingRowView" hasInstanceMethod:@"accessibilityRatingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.RatingRowView" hasInstanceMethod:@"accessibilityBarView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.RatingRowView" hasInstanceMethod:@"accessibilityRatingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.RatingRowView" hasInstanceMethod:@"accessibilityBarView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(RatingRowViewAccessibility *)self safeValueForKey:@"accessibilityRatingView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(RatingRowViewAccessibility *)self safeValueForKey:@"accessibilityBarView"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

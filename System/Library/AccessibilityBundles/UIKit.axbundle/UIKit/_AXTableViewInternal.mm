@@ -55,9 +55,9 @@
 
 - (uint64_t)searchControllerDimmingViewVisible
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 42) & 1;
+    v2 = *(self + 42) & 1;
   }
 
   else
@@ -80,9 +80,9 @@
 
 - (uint64_t)searchTableViewVisible
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 41) & 1;
+    v2 = *(self + 41) & 1;
   }
 
   else
@@ -105,9 +105,9 @@
 
 - (uint64_t)accessibleElementCount
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 48);
+    return *(self + 48);
   }
 
   else
@@ -128,9 +128,9 @@
 
 - (uint64_t)children
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else
@@ -141,9 +141,9 @@
 
 - (uint64_t)indexMap
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 16);
+    return *(self + 16);
   }
 
   else
@@ -164,9 +164,9 @@
 
 - (uint64_t)sectionHeaders
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 24);
+    return *(self + 24);
   }
 
   else
@@ -177,9 +177,9 @@
 
 - (uint64_t)sectionFooters
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 32);
+    return *(self + 32);
   }
 
   else

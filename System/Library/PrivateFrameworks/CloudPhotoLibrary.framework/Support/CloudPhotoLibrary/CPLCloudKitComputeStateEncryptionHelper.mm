@@ -1,6 +1,6 @@
 @interface CPLCloudKitComputeStateEncryptionHelper
-- (BOOL)decryptFileAtURL:(id)a3 outputFileURL:(id)a4 error:(id *)a5;
-- (BOOL)encryptFileAtURL:(id)a3 outputFileURL:(id)a4 error:(id *)a5;
+- (BOOL)decryptFileAtURL:(id)l outputFileURL:(id)rL error:(id *)error;
+- (BOOL)encryptFileAtURL:(id)l outputFileURL:(id)rL error:(id *)error;
 - (CPLCloudKitComputeStateEncryptionHelper)init;
 - (void)start;
 @end
@@ -36,11 +36,11 @@
   [(PFClientSideEncryptionManager *)self->_clientSideEncryptionManager start];
 }
 
-- (BOOL)encryptFileAtURL:(id)a3 outputFileURL:(id)a4 error:(id *)a5
+- (BOOL)encryptFileAtURL:(id)l outputFileURL:(id)rL error:(id *)error
 {
   clientSideEncryptionManager = self->_clientSideEncryptionManager;
   v23 = 0;
-  v7 = [(PFClientSideEncryptionManager *)clientSideEncryptionManager archiveFileAtURL:a3 outputFileURL:a4 error:&v23];
+  v7 = [(PFClientSideEncryptionManager *)clientSideEncryptionManager archiveFileAtURL:l outputFileURL:rL error:&v23];
   v8 = v23;
   v9 = v8;
   if (v7)
@@ -48,31 +48,31 @@
     goto LABEL_12;
   }
 
-  v10 = [v8 domain];
-  v11 = [v10 isEqualToString:PFErrorDomain];
+  domain = [v8 domain];
+  v11 = [domain isEqualToString:PFErrorDomain];
 
   if (v11)
   {
-    v12 = [v9 code];
-    if (v12 != 8)
+    code = [v9 code];
+    if (code != 8)
     {
-      if (v12 == 500101)
+      if (code == 500101)
       {
         v13 = @"Encryption helper is unavailable: %@";
         v14 = 1;
         goto LABEL_8;
       }
 
-      v15 = [v9 cplUnderlyingPOSIXError];
+      cplUnderlyingPOSIXError = [v9 cplUnderlyingPOSIXError];
 
-      if (!v15)
+      if (!cplUnderlyingPOSIXError)
       {
         v13 = @"Failed to encrypt file: %@";
         v14 = 2;
 LABEL_8:
         v16 = [NSString alloc];
-        v17 = [v9 localizedDescription];
-        v18 = [v16 initWithFormat:v13, v17];
+        localizedDescription = [v9 localizedDescription];
+        v18 = [v16 initWithFormat:v13, localizedDescription];
 
         if (v18)
         {
@@ -89,10 +89,10 @@ LABEL_8:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v21 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
 LABEL_12:
@@ -100,11 +100,11 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)decryptFileAtURL:(id)a3 outputFileURL:(id)a4 error:(id *)a5
+- (BOOL)decryptFileAtURL:(id)l outputFileURL:(id)rL error:(id *)error
 {
   clientSideEncryptionManager = self->_clientSideEncryptionManager;
   v23 = 0;
-  v7 = [(PFClientSideEncryptionManager *)clientSideEncryptionManager unarchiveFileAtURL:a3 outputFileURL:a4 error:&v23];
+  v7 = [(PFClientSideEncryptionManager *)clientSideEncryptionManager unarchiveFileAtURL:l outputFileURL:rL error:&v23];
   v8 = v23;
   v9 = v8;
   if (v7)
@@ -112,31 +112,31 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v10 = [v8 domain];
-  v11 = [v10 isEqualToString:PFErrorDomain];
+  domain = [v8 domain];
+  v11 = [domain isEqualToString:PFErrorDomain];
 
   if (v11)
   {
-    v12 = [v9 code];
-    if (v12 != 8)
+    code = [v9 code];
+    if (code != 8)
     {
-      if (v12 == 500101)
+      if (code == 500101)
       {
         v13 = @"Encryption helper is unavailable: %@";
         v14 = 1;
         goto LABEL_8;
       }
 
-      v15 = [v9 cplUnderlyingPOSIXError];
+      cplUnderlyingPOSIXError = [v9 cplUnderlyingPOSIXError];
 
-      if (!v15)
+      if (!cplUnderlyingPOSIXError)
       {
         v13 = @"Failed to decrypt file: %@";
         v14 = 3;
 LABEL_8:
         v16 = [NSString alloc];
-        v17 = [v9 localizedDescription];
-        v18 = [v16 initWithFormat:v13, v17];
+        localizedDescription = [v9 localizedDescription];
+        v18 = [v16 initWithFormat:v13, localizedDescription];
 
         if (v18)
         {
@@ -153,10 +153,10 @@ LABEL_8:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v21 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
 LABEL_12:

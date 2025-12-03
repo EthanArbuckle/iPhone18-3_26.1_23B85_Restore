@@ -1,23 +1,23 @@
 @interface RCComposition
-+ (id)_compositionByMergingInterruptedCapture:(id)a3 contentUpdated:(BOOL *)a4;
-+ (void)rcs_composeToFinalDestination:(id)a3 completionBlock:(id)a4;
-- (id)_compositionByReplacingDecomposedFragments:(id)a3;
-- (void)_eaccess_repairDecomposedFragmentMetadataIfNecessary:(id)a3;
-- (void)rcs_repairDecomposedFragmentMetadataIfNecessary:(id)a3;
++ (id)_compositionByMergingInterruptedCapture:(id)capture contentUpdated:(BOOL *)updated;
++ (void)rcs_composeToFinalDestination:(id)destination completionBlock:(id)block;
+- (id)_compositionByReplacingDecomposedFragments:(id)fragments;
+- (void)_eaccess_repairDecomposedFragmentMetadataIfNecessary:(id)necessary;
+- (void)rcs_repairDecomposedFragmentMetadataIfNecessary:(id)necessary;
 @end
 
 @implementation RCComposition
 
-+ (void)rcs_composeToFinalDestination:(id)a3 completionBlock:(id)a4
++ (void)rcs_composeToFinalDestination:(id)destination completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  destinationCopy = destination;
+  blockCopy = block;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
   v44 = sub_100001D7C;
   v45 = sub_100006CC8;
-  v7 = v5;
+  v7 = destinationCopy;
   v46 = v7;
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
@@ -26,17 +26,17 @@
   v40[4] = &v41;
   [v7 _eaccess_repairDecomposedFragmentMetadataIfNecessary:v40];
   v8 = +[NSFileManager defaultManager];
-  v9 = [v42[5] composedAVURL];
-  v10 = [v9 path];
-  v11 = [v8 fileExistsAtPath:v10 isDirectory:0];
+  composedAVURL = [v42[5] composedAVURL];
+  path = [composedAVURL path];
+  v11 = [v8 fileExistsAtPath:path isDirectory:0];
 
-  v12 = [v42[5] decomposedFragments];
-  v13 = [v12 count];
+  decomposedFragments = [v42[5] decomposedFragments];
+  v13 = [decomposedFragments count];
 
   if (v13)
   {
-    v14 = [v42[5] savedRecordingUUID];
-    if (v14)
+    savedRecordingUUID = [v42[5] savedRecordingUUID];
+    if (savedRecordingUUID)
     {
       v15 = v42[5];
       v39 = 0;
@@ -65,8 +65,8 @@
         out_token = 0;
         if (RCRunningInSavedRecordingDaemon())
         {
-          v23 = [v42[5] savedRecordingUUID];
-          v24 = [NSString stringWithFormat:@"%@.%@", RCFinalizationProgressNotificationName, v23];
+          savedRecordingUUID2 = [v42[5] savedRecordingUUID];
+          v24 = [NSString stringWithFormat:@"%@.%@", RCFinalizationProgressNotificationName, savedRecordingUUID2];
 
           notify_register_check([v24 UTF8String], &out_token);
           v34[0] = _NSConcreteStackBlock;
@@ -95,21 +95,21 @@
         v33 = out_token;
         v30 = v28;
         v32 = &v41;
-        v31 = v6;
+        v31 = blockCopy;
         [v21 writeCompositionWithCompletionBlock:v29];
       }
 
       else
       {
         v21 = RCGenericErrorWithUnderlyingError();
-        (*(v6 + 2))(v6, 0, 0, v21);
+        (*(blockCopy + 2))(blockCopy, 0, 0, v21);
       }
     }
 
     else
     {
       v17 = RCGenericErrorWithUnderlyingError();
-      (*(v6 + 2))(v6, 0, 0, v17);
+      (*(blockCopy + 2))(blockCopy, 0, 0, v17);
     }
   }
 
@@ -125,35 +125,35 @@
       v20 = 0;
     }
 
-    (*(v6 + 2))(v6, v20, 0, 0);
+    (*(blockCopy + 2))(blockCopy, v20, 0, 0);
   }
 
   _Block_object_dispose(&v41, 8);
 }
 
-- (void)rcs_repairDecomposedFragmentMetadataIfNecessary:(id)a3
+- (void)rcs_repairDecomposedFragmentMetadataIfNecessary:(id)necessary
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100006FA8;
   v5[3] = &unk_100055408;
-  v6 = a3;
-  v4 = v6;
+  necessaryCopy = necessary;
+  v4 = necessaryCopy;
   [(RCComposition *)self _eaccess_repairDecomposedFragmentMetadataIfNecessary:v5];
 }
 
-- (void)_eaccess_repairDecomposedFragmentMetadataIfNecessary:(id)a3
+- (void)_eaccess_repairDecomposedFragmentMetadataIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19[0] = 0;
   v5 = [RCComposition _compositionByMergingInterruptedCapture:self contentUpdated:v19];
-  v6 = [v5 decomposedFragments];
-  v7 = [v6 count];
+  decomposedFragments = [v5 decomposedFragments];
+  v7 = [decomposedFragments count];
   v8 = [NSMutableArray arrayWithCapacity:v7];
-  v9 = [v5 decomposedFragments];
+  decomposedFragments2 = [v5 decomposedFragments];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000071AC;
@@ -162,24 +162,24 @@
   v15 = v7;
   v10 = v8;
   v13 = v10;
-  [v9 enumerateObjectsUsingBlock:v12];
+  [decomposedFragments2 enumerateObjectsUsingBlock:v12];
 
-  if (v4)
+  if (necessaryCopy)
   {
     v11 = [v5 _compositionByReplacingDecomposedFragments:v10];
 
-    v4[2](v4, v11, *(v17 + 24));
+    necessaryCopy[2](necessaryCopy, v11, *(v17 + 24));
     v5 = v11;
   }
 
   _Block_object_dispose(&v16, 8);
 }
 
-+ (id)_compositionByMergingInterruptedCapture:(id)a3 contentUpdated:(BOOL *)a4
++ (id)_compositionByMergingInterruptedCapture:(id)capture contentUpdated:(BOOL *)updated
 {
-  v6 = a3;
-  v7 = [v6 composedAVURL];
-  v8 = [a1 mergeCaptureFragmentMetadataURLForComposedAVURL:v7];
+  captureCopy = capture;
+  composedAVURL = [captureCopy composedAVURL];
+  v8 = [self mergeCaptureFragmentMetadataURLForComposedAVURL:composedAVURL];
 
   v9 = [NSDictionary dictionaryWithContentsOfURL:v8];
   if (v9)
@@ -188,8 +188,8 @@
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 AVOutputURL];
-      v13 = [AVURLAsset rc_preciseTimingAssetWithURL:v12];
+      aVOutputURL = [v10 AVOutputURL];
+      v13 = [AVURLAsset rc_preciseTimingAssetWithURL:aVOutputURL];
 
       [v13 rc_durationInSeconds];
       v15 = v14;
@@ -201,11 +201,11 @@
         [v11 setTimeRangeInContentToUse:?];
         RCTimeRangeMake();
         [v11 setTimeRangeInComposition:?];
-        v16 = [v6 compositionByOverdubbingWithFragment:v11];
+        v16 = [captureCopy compositionByOverdubbingWithFragment:v11];
 
-        if (a4)
+        if (updated)
         {
-          *a4 = 1;
+          *updated = 1;
         }
 
         v17 = +[NSFileManager defaultManager];
@@ -213,8 +213,8 @@
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v18 = [v16 composedWaveformURLs];
-        v19 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        composedWaveformURLs = [v16 composedWaveformURLs];
+        v19 = [composedWaveformURLs countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v19)
         {
           v20 = v19;
@@ -225,41 +225,41 @@
             {
               if (*v27 != v21)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(composedWaveformURLs);
               }
 
               [v17 removeItemAtURL:*(*(&v26 + 1) + 8 * i) error:0];
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v26 objects:v30 count:16];
+            v20 = [composedWaveformURLs countByEnumeratingWithState:&v26 objects:v30 count:16];
           }
 
           while (v20);
         }
 
-        v6 = v16;
+        captureCopy = v16;
       }
     }
 
     v23 = +[NSFileManager defaultManager];
     [v23 removeItemAtURL:v8 error:0];
 
-    v24 = v6;
+    v24 = captureCopy;
   }
 
   else
   {
-    v24 = v6;
+    v24 = captureCopy;
   }
 
   return v24;
 }
 
-- (id)_compositionByReplacingDecomposedFragments:(id)a3
+- (id)_compositionByReplacingDecomposedFragments:(id)fragments
 {
-  v4 = a3;
+  fragmentsCopy = fragments;
   v5 = [(RCComposition *)self mutableCopy];
-  [v5 setDecomposedFragments:v4];
+  [v5 setDecomposedFragments:fragmentsCopy];
 
   return v5;
 }

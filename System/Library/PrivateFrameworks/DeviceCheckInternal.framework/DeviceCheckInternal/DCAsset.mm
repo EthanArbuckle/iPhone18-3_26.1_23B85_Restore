@@ -1,25 +1,25 @@
 @interface DCAsset
-+ (id)assetWithMobileAsset:(id)a3;
++ (id)assetWithMobileAsset:(id)asset;
 - (id)description;
 @end
 
 @implementation DCAsset
 
-+ (id)assetWithMobileAsset:(id)a3
++ (id)assetWithMobileAsset:(id)asset
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 assetProperty:*MEMORY[0x277D28900]];
-  v5 = [v4 unsignedIntegerValue];
+  assetCopy = asset;
+  v4 = [assetCopy assetProperty:*MEMORY[0x277D28900]];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  if (v5 != 1)
+  if (unsignedIntegerValue != 1)
   {
 LABEL_12:
     v8 = 0;
     goto LABEL_13;
   }
 
-  v6 = [v3 assetProperty:@"com.apple.devicecheck.pubvalue"];
+  v6 = [assetCopy assetProperty:@"com.apple.devicecheck.pubvalue"];
   if (!v6)
   {
     if (DCInternalLogSystem_onceToken_7 != -1)
@@ -43,7 +43,7 @@ LABEL_12:
   v7 = v6;
   v8 = objc_alloc_init(DCAsset);
   [(DCAsset *)v8 setVersion:1];
-  v9 = [v3 assetProperty:@"com.apple.devicecheck.refreshtimer"];
+  v9 = [assetCopy assetProperty:@"com.apple.devicecheck.refreshtimer"];
   [v9 doubleValue];
   [(DCAsset *)v8 setPublicKeyRefreshInterval:?];
 

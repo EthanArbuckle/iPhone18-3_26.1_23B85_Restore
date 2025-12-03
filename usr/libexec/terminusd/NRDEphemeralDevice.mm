@@ -19,9 +19,9 @@
     connection = 0;
   }
 
-  v6 = [v3 initWithFormat:@"[NRDEphemeralDevices:%@, %@]", v4, connection];
+  connection = [v3 initWithFormat:@"[NRDEphemeralDevices:%@, %@]", v4, connection];
 
-  return v6;
+  return connection;
 }
 
 @end

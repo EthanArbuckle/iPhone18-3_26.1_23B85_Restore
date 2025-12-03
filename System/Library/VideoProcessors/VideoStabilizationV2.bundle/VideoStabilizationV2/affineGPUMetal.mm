@@ -1,22 +1,22 @@
 @interface affineGPUMetal
-- (affineGPUMetal)initWithMetalContext:(id)a3;
-- (id)_allocatePyramidWithPixelFormat:(unint64_t)a3 bottomLevelWidth:(unint64_t)a4 bottomLevelHeight:(unint64_t)a5 scaleFactor:(unint64_t)a6 includeBottomLevel:(BOOL)a7 minimumDimension:(unint64_t)a8;
-- (id)_compileShader:(id)a3 fragment:(id)a4 pixelFormat:(unint64_t)a5 deltaMapPixelFormat:(unint64_t)a6 unstyledPixelFormat:(unint64_t)a7 constants:(id)a8;
+- (affineGPUMetal)initWithMetalContext:(id)context;
+- (id)_allocatePyramidWithPixelFormat:(unint64_t)format bottomLevelWidth:(unint64_t)width bottomLevelHeight:(unint64_t)height scaleFactor:(unint64_t)factor includeBottomLevel:(BOOL)level minimumDimension:(unint64_t)dimension;
+- (id)_compileShader:(id)shader fragment:(id)fragment pixelFormat:(unint64_t)format deltaMapPixelFormat:(unint64_t)pixelFormat unstyledPixelFormat:(unint64_t)unstyledPixelFormat constants:(id)constants;
 - (int)_allocateSemanticStyleColorCubeTextures;
-- (int)_blurDeltaMapBordersFromStyledPixelBuffer:(__CVBuffer *)a3 withUnstyledPixelBuffer:(__CVBuffer *)a4 to:(__CVBuffer *)a5;
-- (int)_cachedTexturesFromPixelBuffer:(__CVBuffer *)a3 isTwoPass:(BOOL)a4 isOptimized:(BOOL)a5 textures:(id *)a6;
-- (int)_createRenderPipelinesForShaders:(id)a3;
-- (int)_duplicateBottomRowsOnPixelBuffer:(__CVBuffer *)a3;
-- (int)_getBlurDeltaMapBordersShaderParameters:(unint64_t)a3 pipelineIndexToUse:(int *)a4;
-- (int)_getBlurShaderParameters:(unint64_t)a3 pipelineIndexToUse:(int *)a4;
-- (int)_getTransformShaderParameters:(unint64_t)a3 isLuma:(BOOL)a4 isRGB:(BOOL)a5 isAttachment:(BOOL)a6 pixelRatio:(unsigned int *)a7 pipelineIndexToUse:(int *)a8;
+- (int)_blurDeltaMapBordersFromStyledPixelBuffer:(__CVBuffer *)buffer withUnstyledPixelBuffer:(__CVBuffer *)pixelBuffer to:(__CVBuffer *)to;
+- (int)_cachedTexturesFromPixelBuffer:(__CVBuffer *)buffer isTwoPass:(BOOL)pass isOptimized:(BOOL)optimized textures:(id *)textures;
+- (int)_createRenderPipelinesForShaders:(id)shaders;
+- (int)_duplicateBottomRowsOnPixelBuffer:(__CVBuffer *)buffer;
+- (int)_getBlurDeltaMapBordersShaderParameters:(unint64_t)parameters pipelineIndexToUse:(int *)use;
+- (int)_getBlurShaderParameters:(unint64_t)parameters pipelineIndexToUse:(int *)use;
+- (int)_getTransformShaderParameters:(unint64_t)parameters isLuma:(BOOL)luma isRGB:(BOOL)b isAttachment:(BOOL)attachment pixelRatio:(unsigned int *)ratio pipelineIndexToUse:(int *)use;
 - (int)_initBlurShaders;
 - (int)_initComputeShaders;
 - (int)_initTransformShaders;
-- (int)_renderBlurInputTextures:(id *)a3 inputTexturesCount:(unsigned int)a4 outputTextures:(id *)a5;
-- (int)_transformInputPixelBuffer:(__CVBuffer *)a3 outputPixelBuffer:(__CVBuffer *)a4 ltmLUT:(id)a5 isAttachment:(BOOL)a6 commandBuffer:(id)a7;
-- (int)renderWithPixelBuffer:(__CVBuffer *)a3 metadata:(id)a4 pixelBufferValidRect:(CGRect *)a5 ltmLUT:(id)a6 outputPixelBuffer:(__CVBuffer *)a7 isAttachmentRendering:(BOOL)a8;
-- (int)renderWithSampleBuffer:(opaqueCMSampleBuffer *)a3 pixelBufferValidRect:(CGRect *)a4 ltmLUT:(id)a5 outputPixelBuffer:(__CVBuffer *)a6 isAttachmentRendering:(BOOL)a7;
+- (int)_renderBlurInputTextures:(id *)textures inputTexturesCount:(unsigned int)count outputTextures:(id *)outputTextures;
+- (int)_transformInputPixelBuffer:(__CVBuffer *)buffer outputPixelBuffer:(__CVBuffer *)pixelBuffer ltmLUT:(id)t isAttachment:(BOOL)attachment commandBuffer:(id)commandBuffer;
+- (int)renderWithPixelBuffer:(__CVBuffer *)buffer metadata:(id)metadata pixelBufferValidRect:(CGRect *)rect ltmLUT:(id)t outputPixelBuffer:(__CVBuffer *)pixelBuffer isAttachmentRendering:(BOOL)rendering;
+- (int)renderWithSampleBuffer:(opaqueCMSampleBuffer *)buffer pixelBufferValidRect:(CGRect *)rect ltmLUT:(id)t outputPixelBuffer:(__CVBuffer *)pixelBuffer isAttachmentRendering:(BOOL)rendering;
 - (int)setTransformsArray:(float *)(a3 transforms3x3:transformStrides:inputSize:outputSize:pixelBufferValidRect:isQuadraSensor:;
 - (int)updateCubesIfNeeded;
 - (uint64_t)_allocateSemanticStyleColorCubeTextures;
@@ -24,23 +24,23 @@
 - (uint64_t)_initComputeShaders;
 - (uint64_t)_initTransformShaders;
 - (uint64_t)updateCubesIfNeeded;
-- (void)_addCommandBufferHandler:(id)a3;
-- (void)_blurDuplicatedPixelsOnPixelBuffer:(__CVBuffer *)a3 validBufferRect:(CGRect *)a4 forDeltaMap:(BOOL)a5;
+- (void)_addCommandBufferHandler:(id)handler;
+- (void)_blurDuplicatedPixelsOnPixelBuffer:(__CVBuffer *)buffer validBufferRect:(CGRect *)rect forDeltaMap:(BOOL)map;
 - (void)_deallocateTransformBuffers;
-- (void)cacheSourcePixelBuffer:(__CVBuffer *)a3;
-- (void)configureBlurWith:(id *)a3;
-- (void)configureP3ToBT2020conversion:(BOOL)a3;
+- (void)cacheSourcePixelBuffer:(__CVBuffer *)buffer;
+- (void)configureBlurWith:(id *)with;
+- (void)configureP3ToBT2020conversion:(BOOL)t2020conversion;
 - (void)dealloc;
 - (void)finish;
-- (void)setRenderMethod:(int)a3;
+- (void)setRenderMethod:(int)method;
 @end
 
 @implementation affineGPUMetal
 
-- (affineGPUMetal)initWithMetalContext:(id)a3
+- (affineGPUMetal)initWithMetalContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
     [affineGPUMetal initWithMetalContext:?];
 LABEL_15:
@@ -58,7 +58,7 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   v7->_useBicubic = 1;
   if ([(affineGPUMetal *)v7 _initTransformShaders])
   {
@@ -217,8 +217,8 @@ LABEL_16:
     LODWORD(self->_swathMatrices) = 8 * v23 * v22;
     self->_overscanHeight = 48 * v23 * v22;
     self->_swathRenderVertexIndicesBufferSize = (12 * v22 - 12) * (v23 + 0x7FFFFFFF);
-    v24 = [(FigMetalContext *)self->_metalContext device];
-    v25 = [v24 newBufferWithLength:LODWORD(self->_swathMatrices) options:0];
+    device = [(FigMetalContext *)self->_metalContext device];
+    v25 = [device newBufferWithLength:LODWORD(self->_swathMatrices) options:0];
     verticesBuffer = self->_verticesBuffer;
     self->_verticesBuffer = v25;
 
@@ -228,8 +228,8 @@ LABEL_16:
       goto LABEL_92;
     }
 
-    v27 = [(FigMetalContext *)self->_metalContext device];
-    v28 = [v27 newBufferWithLength:self->_overscanHeight options:0];
+    device2 = [(FigMetalContext *)self->_metalContext device];
+    v28 = [device2 newBufferWithLength:self->_overscanHeight options:0];
     matricesBuffer = self->_matricesBuffer;
     self->_matricesBuffer = v28;
 
@@ -239,8 +239,8 @@ LABEL_16:
       goto LABEL_92;
     }
 
-    v30 = [(FigMetalContext *)self->_metalContext device];
-    v31 = [v30 newBufferWithLength:self->_swathRenderVertexIndicesBufferSize options:0];
+    device3 = [(FigMetalContext *)self->_metalContext device];
+    v31 = [device3 newBufferWithLength:self->_swathRenderVertexIndicesBufferSize options:0];
     vertexIndicesBuffer = self->_vertexIndicesBuffer;
     self->_vertexIndicesBuffer = v31;
 
@@ -338,13 +338,13 @@ LABEL_16:
     *&self->_swathVertices[4] = v58;
     if (v58)
     {
-      v59 = [(MTLBuffer *)self->_matricesBuffer contents];
-      *&self->_swathMatricesBufferSize = v59;
-      if (v59)
+      contents = [(MTLBuffer *)self->_matricesBuffer contents];
+      *&self->_swathMatricesBufferSize = contents;
+      if (contents)
       {
-        v60 = [(MTLBuffer *)self->_vertexIndicesBuffer contents];
-        self->_swathRenderVertexIndices = v60;
-        if (v60)
+        contents2 = [(MTLBuffer *)self->_vertexIndicesBuffer contents];
+        self->_swathRenderVertexIndices = contents2;
+        if (contents2)
         {
           self->_transformConfig.clampingEnabled = 0;
           *&self->_anon_281[43] = 0;
@@ -486,14 +486,14 @@ LABEL_16:
               v99 = v74;
               do
               {
-                v60[v94] = v97++;
-                v60[v94 + 1] = v97;
-                v60[v94 + 2] = v98;
-                v60[v94 + 3] = v97;
-                v60[v94 + 4] = v98;
+                contents2[v94] = v97++;
+                contents2[v94 + 1] = v97;
+                contents2[v94 + 2] = v98;
+                contents2[v94 + 3] = v97;
+                contents2[v94 + 4] = v98;
                 v100 = v94 + 5;
                 v94 += 6;
-                v60[v100] = ++v98;
+                contents2[v100] = ++v98;
                 --v99;
               }
 
@@ -606,10 +606,10 @@ LABEL_74:
   *&self->_texMatCount[4] = 0;
 }
 
-- (void)setRenderMethod:(int)a3
+- (void)setRenderMethod:(int)method
 {
   useBicubic = self->_useBicubic;
-  v4 = a3 == 1;
+  v4 = method == 1;
   if (useBicubic != v4)
   {
     self->_useBicubic = v4;
@@ -632,9 +632,9 @@ LABEL_74:
   }
 }
 
-- (void)configureP3ToBT2020conversion:(BOOL)a3
+- (void)configureP3ToBT2020conversion:(BOOL)t2020conversion
 {
-  if (a3)
+  if (t2020conversion)
   {
     v3 = 2;
   }
@@ -647,13 +647,13 @@ LABEL_74:
   LODWORD(self->_intermediateOutputPixelBuffer) = v3;
 }
 
-- (void)cacheSourcePixelBuffer:(__CVBuffer *)a3
+- (void)cacheSourcePixelBuffer:(__CVBuffer *)buffer
 {
   v4 = 0;
   v5 = 0;
-  if (a3)
+  if (buffer)
   {
-    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a3 isTwoPass:1 isOptimized:0 textures:v3])
+    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:buffer isTwoPass:1 isOptimized:0 textures:v3])
     {
       fig_log_get_emitter();
       FigDebugAssert3();
@@ -706,26 +706,26 @@ LABEL_74:
   self->_smoothedChromaPyramid = 0;
 }
 
-- (int)renderWithPixelBuffer:(__CVBuffer *)a3 metadata:(id)a4 pixelBufferValidRect:(CGRect *)a5 ltmLUT:(id)a6 outputPixelBuffer:(__CVBuffer *)a7 isAttachmentRendering:(BOOL)a8
+- (int)renderWithPixelBuffer:(__CVBuffer *)buffer metadata:(id)metadata pixelBufferValidRect:(CGRect *)rect ltmLUT:(id)t outputPixelBuffer:(__CVBuffer *)pixelBuffer isAttachmentRendering:(BOOL)rendering
 {
-  LODWORD(v8) = a8;
-  v14 = a4;
-  v15 = a6;
-  if (!a3)
+  LODWORD(v8) = rendering;
+  metadataCopy = metadata;
+  tCopy = t;
+  if (!buffer)
   {
     [affineGPUMetal renderWithPixelBuffer:metadata:pixelBufferValidRect:ltmLUT:outputPixelBuffer:isAttachmentRendering:];
 LABEL_100:
-    v57 = 0;
+    commandBuffer = 0;
     goto LABEL_91;
   }
 
-  if (!a5)
+  if (!rect)
   {
     [affineGPUMetal renderWithPixelBuffer:metadata:pixelBufferValidRect:ltmLUT:outputPixelBuffer:isAttachmentRendering:];
     goto LABEL_100;
   }
 
-  if (!a7)
+  if (!pixelBuffer)
   {
     [affineGPUMetal renderWithPixelBuffer:metadata:pixelBufferValidRect:ltmLUT:outputPixelBuffer:isAttachmentRendering:];
     goto LABEL_100;
@@ -755,12 +755,12 @@ LABEL_100:
     goto LABEL_100;
   }
 
-  v73 = a5;
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
-  v18 = CVPixelBufferGetWidthOfPlane(a7, 0);
-  v77 = CVPixelBufferGetHeightOfPlane(a7, 0);
-  v72 = [v14 objectForKeyedSubscript:kFigCaptureStreamMetadata_QuadraBinningFactor];
+  rectCopy = rect;
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
+  v18 = CVPixelBufferGetWidthOfPlane(pixelBuffer, 0);
+  v77 = CVPixelBufferGetHeightOfPlane(pixelBuffer, 0);
+  v72 = [metadataCopy objectForKeyedSubscript:kFigCaptureStreamMetadata_QuadraBinningFactor];
 
   v78 = v8;
   if (v8)
@@ -829,9 +829,9 @@ LABEL_26:
         goto LABEL_33;
       }
 
-      if (self->_inputChromaPyramid || (v27 = CVPixelBufferGetWidthOfPlane(a3, 1uLL), [(affineGPUMetal *)self _allocatePyramidWithPixelFormat:60 bottomLevelWidth:v27 bottomLevelHeight:CVPixelBufferGetHeightOfPlane(a3 scaleFactor:1uLL) includeBottomLevel:4 minimumDimension:0, 8], v28 = objc_claimAutoreleasedReturnValue(), inputChromaPyramid = self->_inputChromaPyramid, self->_inputChromaPyramid = v28, inputChromaPyramid, self->_inputChromaPyramid))
+      if (self->_inputChromaPyramid || (v27 = CVPixelBufferGetWidthOfPlane(buffer, 1uLL), [(affineGPUMetal *)self _allocatePyramidWithPixelFormat:60 bottomLevelWidth:v27 bottomLevelHeight:CVPixelBufferGetHeightOfPlane(buffer scaleFactor:1uLL) includeBottomLevel:4 minimumDimension:0, 8], v28 = objc_claimAutoreleasedReturnValue(), inputChromaPyramid = self->_inputChromaPyramid, self->_inputChromaPyramid = v28, inputChromaPyramid, self->_inputChromaPyramid))
       {
-        if (self->_smoothedChromaPyramid || (v30 = CVPixelBufferGetWidthOfPlane(a3, 1uLL), [(affineGPUMetal *)self _allocatePyramidWithPixelFormat:60 bottomLevelWidth:v30 bottomLevelHeight:CVPixelBufferGetHeightOfPlane(a3 scaleFactor:1uLL) includeBottomLevel:4 minimumDimension:0, 8], v31 = objc_claimAutoreleasedReturnValue(), smoothedChromaPyramid = self->_smoothedChromaPyramid, self->_smoothedChromaPyramid = v31, smoothedChromaPyramid, self->_smoothedChromaPyramid))
+        if (self->_smoothedChromaPyramid || (v30 = CVPixelBufferGetWidthOfPlane(buffer, 1uLL), [(affineGPUMetal *)self _allocatePyramidWithPixelFormat:60 bottomLevelWidth:v30 bottomLevelHeight:CVPixelBufferGetHeightOfPlane(buffer scaleFactor:1uLL) includeBottomLevel:4 minimumDimension:0, 8], v31 = objc_claimAutoreleasedReturnValue(), smoothedChromaPyramid = self->_smoothedChromaPyramid, self->_smoothedChromaPyramid = v31, smoothedChromaPyramid, self->_smoothedChromaPyramid))
         {
           *&self->_anon_281[343] = 0;
           *&self->_anon_281[347] = *&self->_attachmentIsLinearThumbnail;
@@ -847,7 +847,7 @@ LABEL_26:
       }
 
 LABEL_110:
-      v57 = 0;
+      commandBuffer = 0;
       v70 = -12786;
       goto LABEL_92;
     }
@@ -873,7 +873,7 @@ LABEL_25:
   }
 
 LABEL_33:
-  v33 = a7;
+  pixelBufferCopy = pixelBuffer;
   if (LODWORD(self->_intermediateOutputPixelBuffer) == 1)
   {
     p_m2m = &self->_m2m;
@@ -883,7 +883,7 @@ LABEL_33:
       goto LABEL_42;
     }
 
-    if (CVPixelBufferGetWidthOfPlane(m2m, 0) != v18 || CVPixelBufferGetHeightOfPlane(*p_m2m, 0) != v77 || (PixelFormatType = CVPixelBufferGetPixelFormatType(*p_m2m), PixelFormatType != CVPixelBufferGetPixelFormatType(a7)))
+    if (CVPixelBufferGetWidthOfPlane(m2m, 0) != v18 || CVPixelBufferGetHeightOfPlane(*p_m2m, 0) != v77 || (PixelFormatType = CVPixelBufferGetPixelFormatType(*p_m2m), PixelFormatType != CVPixelBufferGetPixelFormatType(pixelBuffer)))
     {
       if (*p_m2m)
       {
@@ -894,13 +894,13 @@ LABEL_33:
       goto LABEL_42;
     }
 
-    v33 = *p_m2m;
+    pixelBufferCopy = *p_m2m;
     if (!*p_m2m)
     {
 LABEL_42:
       v74 = v18;
-      v75 = v15;
-      v76 = v14;
+      v75 = tCopy;
+      v76 = metadataCopy;
       v37 = CVPixelBufferGetAttributes();
       v38 = CVPixelBufferGetAttributes();
       v39 = +[NSMutableDictionary dictionary];
@@ -914,17 +914,17 @@ LABEL_42:
       v41 = [v37 objectForKeyedSubscript:kCVBufferPropagatedAttachmentsKey];
       [v39 setObject:v41 forKeyedSubscript:v40];
 
-      v42 = CVPixelBufferGetPixelFormatType(a7);
+      v42 = CVPixelBufferGetPixelFormatType(pixelBuffer);
       v43 = CVPixelBufferCreate(kCFAllocatorDefault, v74, v77, v42, v39, &self->_m2m);
       if (v43)
       {
         v70 = v43;
         [affineGPUMetal renderWithPixelBuffer:v43 metadata:v39 pixelBufferValidRect:v38 ltmLUT:v37 outputPixelBuffer:? isAttachmentRendering:?];
-        v57 = 0;
+        commandBuffer = 0;
         goto LABEL_105;
       }
 
-      v44 = CVBufferCopyAttachments(a3, kCVAttachmentMode_ShouldPropagate);
+      v44 = CVBufferCopyAttachments(buffer, kCVAttachmentMode_ShouldPropagate);
       if (v44)
       {
         v45 = CFAutorelease(v44);
@@ -934,18 +934,18 @@ LABEL_42:
         }
       }
 
-      v33 = *p_m2m;
-      v15 = v75;
-      v14 = v76;
+      pixelBufferCopy = *p_m2m;
+      tCopy = v75;
+      metadataCopy = v76;
       v18 = v74;
     }
   }
 
-  v46 = [v14 objectForKeyedSubscript:kFigVideoStabilizationSampleBufferAttachmentKey_OutputSmartStyleUnstyledEnabled];
-  v47 = [v46 BOOLValue];
+  v46 = [metadataCopy objectForKeyedSubscript:kFigVideoStabilizationSampleBufferAttachmentKey_OutputSmartStyleUnstyledEnabled];
+  bOOLValue = [v46 BOOLValue];
 
   v8 = v8;
-  if (((v47 & 1) != 0 || LOBYTE(self->_blurOverscan.width) == 1) && (self->_reverseCoefficients || self->_intermediateOutputUnstyledPixelBuffer) && (v8 & 1) == 0)
+  if (((bOOLValue & 1) != 0 || LOBYTE(self->_blurOverscan.width) == 1) && (self->_reverseCoefficients || self->_intermediateOutputUnstyledPixelBuffer) && (v8 & 1) == 0)
   {
     p_ditherNoStyle = &self->_ditherNoStyle;
     v49 = *&self->_ditherNoStyle;
@@ -954,7 +954,7 @@ LABEL_42:
       goto LABEL_62;
     }
 
-    if (CVPixelBufferGetWidthOfPlane(v49, 0) != v18 || CVPixelBufferGetHeightOfPlane(*p_ditherNoStyle, 0) != v77 || (v50 = CVPixelBufferGetPixelFormatType(*p_ditherNoStyle), v50 != CVPixelBufferGetPixelFormatType(a7)))
+    if (CVPixelBufferGetWidthOfPlane(v49, 0) != v18 || CVPixelBufferGetHeightOfPlane(*p_ditherNoStyle, 0) != v77 || (v50 = CVPixelBufferGetPixelFormatType(*p_ditherNoStyle), v50 != CVPixelBufferGetPixelFormatType(pixelBuffer)))
     {
       if (*p_ditherNoStyle)
       {
@@ -968,8 +968,8 @@ LABEL_42:
     if (!*p_ditherNoStyle)
     {
 LABEL_62:
-      v75 = v15;
-      v76 = v14;
+      v75 = tCopy;
+      v76 = metadataCopy;
       v51 = CVPixelBufferGetAttributes();
       v52 = +[NSMutableDictionary dictionary];
       [v52 setObject:&__NSDictionary0__struct forKeyedSubscript:kCVPixelBufferIOSurfacePropertiesKey];
@@ -978,10 +978,10 @@ LABEL_62:
         [v52 addEntriesFromDictionary:v51];
       }
 
-      v53 = CVPixelBufferGetPixelFormatType(v33);
+      v53 = CVPixelBufferGetPixelFormatType(pixelBufferCopy);
       if (!CVPixelBufferCreate(kCFAllocatorDefault, v18, v77, v53, v52, &self->_ditherNoStyle))
       {
-        v54 = CVBufferCopyAttachments(a7, kCVAttachmentMode_ShouldPropagate);
+        v54 = CVBufferCopyAttachments(pixelBuffer, kCVAttachmentMode_ShouldPropagate);
         v8 = v8;
         if (v54)
         {
@@ -992,26 +992,26 @@ LABEL_62:
           }
         }
 
-        v15 = v75;
+        tCopy = v75;
         goto LABEL_69;
       }
 
       [affineGPUMetal renderWithPixelBuffer:v52 metadata:v51 pixelBufferValidRect:? ltmLUT:? outputPixelBuffer:? isAttachmentRendering:?];
-      v57 = 0;
+      commandBuffer = 0;
       v70 = -12786;
 LABEL_105:
-      v15 = v75;
-      v14 = v76;
+      tCopy = v75;
+      metadataCopy = v76;
       goto LABEL_92;
     }
   }
 
 LABEL_69:
   self->_gpuProcessFailed = 0;
-  v56 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v57 = [v56 commandBuffer];
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  if (!v57)
+  if (!commandBuffer)
   {
     [affineGPUMetal renderWithPixelBuffer:? metadata:? pixelBufferValidRect:? ltmLUT:? outputPixelBuffer:? isAttachmentRendering:?];
     v70 = v79;
@@ -1019,16 +1019,16 @@ LABEL_69:
   }
 
   [(affineGPUMetal *)self updateCubesIfNeeded];
-  [(affineGPUMetal *)self _transformInputPixelBuffer:a3 outputPixelBuffer:v33 ltmLUT:v15 isAttachment:v8 commandBuffer:v57];
-  v58 = CMGetAttachment(a3, @"InputDepthPixelBuffer", 0);
-  v59 = CMGetAttachment(a3, @"OutputDepthPixelBuffer", 0);
+  [(affineGPUMetal *)self _transformInputPixelBuffer:buffer outputPixelBuffer:pixelBufferCopy ltmLUT:tCopy isAttachment:v8 commandBuffer:commandBuffer];
+  v58 = CMGetAttachment(buffer, @"InputDepthPixelBuffer", 0);
+  v59 = CMGetAttachment(buffer, @"OutputDepthPixelBuffer", 0);
   if (v58)
   {
     v60 = v59;
     if (v59)
     {
-      v8 = v15;
-      v61 = [v14 objectForKeyedSubscript:kFigVideoStabilizationSampleBufferProcessorMetadata_DepthBufferFOVScaling];
+      v8 = tCopy;
+      v61 = [metadataCopy objectForKeyedSubscript:kFigVideoStabilizationSampleBufferProcessorMetadata_DepthBufferFOVScaling];
       v62 = v61;
       if (v61)
       {
@@ -1038,30 +1038,30 @@ LABEL_69:
         *&self->_anon_281[47] = vdup_lane_s32(v64, 0);
       }
 
-      [(affineGPUMetal *)self _transformInputPixelBuffer:v58 outputPixelBuffer:v60 ltmLUT:0 isAttachment:1 commandBuffer:v57];
+      [(affineGPUMetal *)self _transformInputPixelBuffer:v58 outputPixelBuffer:v60 ltmLUT:0 isAttachment:1 commandBuffer:commandBuffer];
 
-      v15 = v8;
+      tCopy = v8;
       LOBYTE(v8) = v78;
     }
   }
 
-  [(affineGPUMetal *)self _addCommandBufferHandler:v57];
+  [(affineGPUMetal *)self _addCommandBufferHandler:commandBuffer];
   if (gGMFigKTraceEnabled)
   {
-    v65 = [v57 commandQueue];
-    v66 = [v65 commandBuffer];
+    commandQueue2 = [commandBuffer commandQueue];
+    commandBuffer2 = [commandQueue2 commandBuffer];
 
-    [v66 setLabel:@"KTRACE_MTLCMDBUF"];
-    [v66 addCompletedHandler:&__block_literal_global];
-    [v66 commit];
-    [v57 addCompletedHandler:&__block_literal_global_74];
+    [commandBuffer2 setLabel:@"KTRACE_MTLCMDBUF"];
+    [commandBuffer2 addCompletedHandler:&__block_literal_global];
+    [commandBuffer2 commit];
+    [commandBuffer addCompletedHandler:&__block_literal_global_74];
   }
 
-  [v57 commit];
+  [commandBuffer commit];
   if ((v8 & 1) == 0)
   {
     v67 = *&self->_ditherNoStyle;
-    CMSetAttachment(a3, @"OutputSmartStyleUnstyledPixelBuffer", v67, 1u);
+    CMSetAttachment(buffer, @"OutputSmartStyleUnstyledPixelBuffer", v67, 1u);
     if (LOBYTE(self->_blurOverscan.width) == 1)
     {
       if (v72)
@@ -1071,10 +1071,10 @@ LABEL_69:
 
       else
       {
-        v68 = v73;
+        v68 = rectCopy;
       }
 
-      [(affineGPUMetal *)self _blurDuplicatedPixelsOnPixelBuffer:v33 validBufferRect:v68 forDeltaMap:0];
+      [(affineGPUMetal *)self _blurDuplicatedPixelsOnPixelBuffer:pixelBufferCopy validBufferRect:v68 forDeltaMap:0];
       if (v67)
       {
         [(affineGPUMetal *)self _blurDuplicatedPixelsOnPixelBuffer:v67 validBufferRect:v68 forDeltaMap:1];
@@ -1082,19 +1082,19 @@ LABEL_69:
 
       if (self->_intermediateOutputUnstyledPixelBuffer)
       {
-        v69 = CMGetAttachment(a3, @"OutputSmartStyleDeltaMapPixelBuffer", 0);
+        v69 = CMGetAttachment(buffer, @"OutputSmartStyleDeltaMapPixelBuffer", 0);
         if (v67)
         {
           if (v69)
           {
-            [(affineGPUMetal *)self _blurDeltaMapBordersFromStyledPixelBuffer:v33 withUnstyledPixelBuffer:v67 to:v69];
+            [(affineGPUMetal *)self _blurDeltaMapBordersFromStyledPixelBuffer:pixelBufferCopy withUnstyledPixelBuffer:v67 to:v69];
           }
         }
       }
     }
   }
 
-  [(affineGPUMetal *)self _duplicateBottomRowsOnPixelBuffer:v33];
+  [(affineGPUMetal *)self _duplicateBottomRowsOnPixelBuffer:pixelBufferCopy];
   [(FigMetalContext *)self->_metalContext waitForIdle];
   if (self->_gpuProcessFailed)
   {
@@ -1105,7 +1105,7 @@ LABEL_69:
 
   if (LODWORD(self->_intermediateOutputPixelBuffer) == 1)
   {
-    [(MTLTexture *)self->_fgCubeTexture downsample:v33 dst:a7 sync_m2m:1];
+    [(MTLTexture *)self->_fgCubeTexture downsample:pixelBufferCopy dst:pixelBuffer sync_m2m:1];
   }
 
 LABEL_91:
@@ -1115,13 +1115,13 @@ LABEL_92:
   return v70;
 }
 
-- (int)renderWithSampleBuffer:(opaqueCMSampleBuffer *)a3 pixelBufferValidRect:(CGRect *)a4 ltmLUT:(id)a5 outputPixelBuffer:(__CVBuffer *)a6 isAttachmentRendering:(BOOL)a7
+- (int)renderWithSampleBuffer:(opaqueCMSampleBuffer *)buffer pixelBufferValidRect:(CGRect *)rect ltmLUT:(id)t outputPixelBuffer:(__CVBuffer *)pixelBuffer isAttachmentRendering:(BOOL)rendering
 {
-  v7 = a7;
-  v12 = a5;
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
-  v13 = CMGetAttachment(a3, kFigCaptureSampleBufferAttachmentKey_StreamingSemanticStylePersonMaskSampleBuffer, 0);
-  if ((v7 & 1) != 0 || !v13)
+  renderingCopy = rendering;
+  tCopy = t;
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
+  v13 = CMGetAttachment(buffer, kFigCaptureSampleBufferAttachmentKey_StreamingSemanticStylePersonMaskSampleBuffer, 0);
+  if ((renderingCopy & 1) != 0 || !v13)
   {
     backgroundColorCube = self->_backgroundColorCube;
     *&self->_foregroundColorCube = 0u;
@@ -1132,17 +1132,17 @@ LABEL_92:
   else
   {
     self->_foregroundColorCube = CMSampleBufferGetImageBuffer(v13);
-    v14 = CMGetAttachment(a3, kFigCaptureSampleBufferAttachmentKey_StreamingSemanticStyleForegroundLUT, 0);
+    v14 = CMGetAttachment(buffer, kFigCaptureSampleBufferAttachmentKey_StreamingSemanticStyleForegroundLUT, 0);
     v15 = self->_backgroundColorCube;
     self->_backgroundColorCube = v14;
 
-    v16 = CMGetAttachment(a3, kFigCaptureSampleBufferAttachmentKey_StreamingSemanticStyleBackgroundLUT, 0);
+    v16 = CMGetAttachment(buffer, kFigCaptureSampleBufferAttachmentKey_StreamingSemanticStyleBackgroundLUT, 0);
   }
 
   fgCubePtr = self->_fgCubePtr;
   self->_fgCubePtr = v16;
 
-  if (v7)
+  if (renderingCopy)
   {
     LOBYTE(self->_forwardCoefficients) = 0;
     HIDWORD(self->_forwardCoefficients) = 0;
@@ -1150,7 +1150,7 @@ LABEL_92:
 
   else
   {
-    v19 = CMGetAttachment(a3, kFigCaptureSampleBufferAttachmentKey_SubjectRelightingCurveParameter, 0);
+    v19 = CMGetAttachment(buffer, kFigCaptureSampleBufferAttachmentKey_SubjectRelightingCurveParameter, 0);
     v20 = v19;
     LOBYTE(self->_forwardCoefficients) = v19 != 0;
     if (v19)
@@ -1160,11 +1160,11 @@ LABEL_92:
     }
   }
 
-  v22 = CMGetAttachment(a3, @"AttachmentName", 0);
+  v22 = CMGetAttachment(buffer, @"AttachmentName", 0);
   BYTE4(self[1].super.isa) = [v22 isEqual:kFigCaptureSampleBufferAttachedMediaKey_SmartStyleStreamingLinearThumbnail];
 
   v23 = kFigSampleBufferAttachmentKey_AttachedMedia;
-  v24 = CMGetAttachment(a3, kFigSampleBufferAttachmentKey_AttachedMedia, 0);
+  v24 = CMGetAttachment(buffer, kFigSampleBufferAttachmentKey_AttachedMedia, 0);
   v25 = kFigCaptureSampleBufferAttachedMediaKey_SmartStyleStreamingIntegratedForwardLearnedCoefficients;
   v26 = [v24 objectForKeyedSubscript:kFigCaptureSampleBufferAttachedMediaKey_SmartStyleStreamingIntegratedForwardLearnedCoefficients];
   reverseCoefficients = self->_reverseCoefficients;
@@ -1177,26 +1177,26 @@ LABEL_92:
 
   if (self->_reverseCoefficients || self->_intermediateOutputUnstyledPixelBuffer)
   {
-    v39 = v7;
-    v31 = v12;
-    v32 = a4;
-    v33 = a6;
+    v39 = renderingCopy;
+    v31 = tCopy;
+    rectCopy = rect;
+    pixelBufferCopy = pixelBuffer;
     v34 = [v24 mutableCopy];
     [v34 setObject:0 forKeyedSubscript:v25];
     [v34 setObject:0 forKeyedSubscript:v28];
     v35 = [v34 copy];
-    CMRemoveAttachment(a3, v23);
-    CMSetAttachment(a3, v23, v35, 1u);
+    CMRemoveAttachment(buffer, v23);
+    CMSetAttachment(buffer, v23, v35, 1u);
     LOBYTE(self->_forwardCoefficients) = 0;
 
-    a6 = v33;
-    a4 = v32;
-    v12 = v31;
-    v7 = v39;
+    pixelBuffer = pixelBufferCopy;
+    rect = rectCopy;
+    tCopy = v31;
+    renderingCopy = v39;
   }
 
-  v36 = CMGetAttachment(a3, kFigCaptureSampleBufferAttachmentKey_MetadataDictionary, 0);
-  v37 = [(affineGPUMetal *)self renderWithPixelBuffer:ImageBuffer metadata:v36 pixelBufferValidRect:a4 ltmLUT:v12 outputPixelBuffer:a6 isAttachmentRendering:v7];
+  v36 = CMGetAttachment(buffer, kFigCaptureSampleBufferAttachmentKey_MetadataDictionary, 0);
+  v37 = [(affineGPUMetal *)self renderWithPixelBuffer:ImageBuffer metadata:v36 pixelBufferValidRect:rect ltmLUT:tCopy outputPixelBuffer:pixelBuffer isAttachmentRendering:renderingCopy];
 
   if (v37)
   {
@@ -1211,11 +1211,11 @@ LABEL_92:
   return v37;
 }
 
-- (int)_transformInputPixelBuffer:(__CVBuffer *)a3 outputPixelBuffer:(__CVBuffer *)a4 ltmLUT:(id)a5 isAttachment:(BOOL)a6 commandBuffer:(id)a7
+- (int)_transformInputPixelBuffer:(__CVBuffer *)buffer outputPixelBuffer:(__CVBuffer *)pixelBuffer ltmLUT:(id)t isAttachment:(BOOL)attachment commandBuffer:(id)commandBuffer
 {
-  v141 = a6;
-  v133 = a5;
-  v135 = a7;
+  attachmentCopy = attachment;
+  tCopy = t;
+  commandBufferCopy = commandBuffer;
   v176 = 0;
   v177 = 0;
   v173 = 0;
@@ -1226,7 +1226,7 @@ LABEL_92:
   v168 = 0;
   v165 = 0;
   v164 = 0.0;
-  if (!*&self->_swathVertices[4] || !LODWORD(self->_swathMatrices) || !*&self->_swathMatricesBufferSize || !self->_overscanHeight || !self->_swathRenderVertexIndices || !self->_swathRenderVertexIndicesBufferSize || !a3 || !a4 || !v135)
+  if (!*&self->_swathVertices[4] || !LODWORD(self->_swathMatrices) || !*&self->_swathMatricesBufferSize || !self->_overscanHeight || !self->_swathRenderVertexIndices || !self->_swathRenderVertexIndicesBufferSize || !buffer || !pixelBuffer || !commandBufferCopy)
   {
     fig_log_get_emitter();
 LABEL_185:
@@ -1234,8 +1234,8 @@ LABEL_185:
     goto LABEL_186;
   }
 
-  v136 = *&self->_texMatCount[4] <= 1 && (self->_forwardCoefficients & 1) == 0 && !v133 && LODWORD(self->_intermediateOutputPixelBuffer) != 2 && !self->_foregroundColorCube && !self->_reverseCoefficients && !self->_intermediateOutputUnstyledPixelBuffer && (LOBYTE(self->_ditherStrengthChroma) & 1) == 0 && (BYTE4(self[1].super.isa) & 1) == 0 && CVPixelBufferGetPixelFormatType(a3) != 2016686642 && CVPixelBufferGetPixelFormatType(a3) != 2019963442 && CVPixelBufferGetPixelFormatType(a3) != 1882468914 && CVPixelBufferGetPixelFormatType(a3) != 1885745714 && CVPixelBufferGetPixelFormatType(a3) != 645428786 && CVPixelBufferGetPixelFormatType(a3) != 645424690 && CVPixelBufferGetPixelFormatType(a3) != 762869298 && CVPixelBufferGetPixelFormatType(a3) != 762865202 && CVPixelBufferGetPixelFormatType(a3) != 796423730 && CVPixelBufferGetPixelFormatType(a3) != 796419634 && CVPixelBufferGetPixelFormatType(a3) != 2088269362 && CVPixelBufferGetPixelFormatType(a3) != 2088265266 && CVPixelBufferGetPixelFormatType(a3) != 1278226488 && CVPixelBufferGetPixelFormatType(a3) != 1278226536 && CVPixelBufferGetPixelFormatType(a3) != 1278226534 && CVPixelBufferGetPixelFormatType(a3) != 1751411059;
-  v9 = [(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a3 isTwoPass:1 isOptimized:0 textures:v175];
+  v136 = *&self->_texMatCount[4] <= 1 && (self->_forwardCoefficients & 1) == 0 && !tCopy && LODWORD(self->_intermediateOutputPixelBuffer) != 2 && !self->_foregroundColorCube && !self->_reverseCoefficients && !self->_intermediateOutputUnstyledPixelBuffer && (LOBYTE(self->_ditherStrengthChroma) & 1) == 0 && (BYTE4(self[1].super.isa) & 1) == 0 && CVPixelBufferGetPixelFormatType(buffer) != 2016686642 && CVPixelBufferGetPixelFormatType(buffer) != 2019963442 && CVPixelBufferGetPixelFormatType(buffer) != 1882468914 && CVPixelBufferGetPixelFormatType(buffer) != 1885745714 && CVPixelBufferGetPixelFormatType(buffer) != 645428786 && CVPixelBufferGetPixelFormatType(buffer) != 645424690 && CVPixelBufferGetPixelFormatType(buffer) != 762869298 && CVPixelBufferGetPixelFormatType(buffer) != 762865202 && CVPixelBufferGetPixelFormatType(buffer) != 796423730 && CVPixelBufferGetPixelFormatType(buffer) != 796419634 && CVPixelBufferGetPixelFormatType(buffer) != 2088269362 && CVPixelBufferGetPixelFormatType(buffer) != 2088265266 && CVPixelBufferGetPixelFormatType(buffer) != 1278226488 && CVPixelBufferGetPixelFormatType(buffer) != 1278226536 && CVPixelBufferGetPixelFormatType(buffer) != 1278226534 && CVPixelBufferGetPixelFormatType(buffer) != 1751411059;
+  v9 = [(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:buffer isTwoPass:1 isOptimized:0 textures:v175];
   if (v9)
   {
     fig_log_get_emitter();
@@ -1246,7 +1246,7 @@ LABEL_183:
     goto LABEL_164;
   }
 
-  v9 = [(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a4 isTwoPass:v136 isOptimized:1 textures:&v172];
+  v9 = [(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:pixelBuffer isTwoPass:v136 isOptimized:1 textures:&v172];
   if (v9)
   {
     fig_log_get_emitter();
@@ -1260,8 +1260,8 @@ LABEL_183:
     goto LABEL_185;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  if (!v141)
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+  if (!attachmentCopy)
   {
     reverseCoefficients = self->_reverseCoefficients;
     if (!reverseCoefficients && LOBYTE(self->_ditherStrengthChroma) != 1)
@@ -1293,9 +1293,9 @@ LABEL_183:
         kdebug_trace();
       }
 
-      v11 = [v135 computeCommandEncoder];
-      v12 = v11;
-      if (!v11)
+      computeCommandEncoder = [commandBufferCopy computeCommandEncoder];
+      v12 = computeCommandEncoder;
+      if (!computeCommandEncoder)
       {
         fig_log_get_emitter();
         FigDebugAssert3();
@@ -1306,7 +1306,7 @@ LABEL_191:
         goto LABEL_183;
       }
 
-      [v11 setComputePipelineState:self->_pipelineComputeStates[1]];
+      [computeCommandEncoder setComputePipelineState:self->_pipelineComputeStates[1]];
       [v12 setImageblockWidth:32 height:32];
       [v12 setBytes:&self->_anon_281[331] length:12 atIndex:0];
       v13 = v176;
@@ -1334,10 +1334,10 @@ LABEL_191:
             v19 = *(*(&v160 + 1) + 8 * v17);
             [v12 setTexture:v18 atIndex:0];
             [v12 setTexture:v19 atIndex:3];
-            v20 = [v19 width];
-            v21 = [v19 height];
-            *&v146.f64[0] = v20;
-            *&v146.f64[1] = v21;
+            width = [v19 width];
+            height = [v19 height];
+            *&v146.f64[0] = width;
+            *&v146.f64[1] = height;
             *&v147 = 1;
             v157 = v142;
             v158 = 1;
@@ -1357,12 +1357,12 @@ LABEL_191:
 
       [v12 setComputePipelineState:self->_pipelineComputeStates[2]];
       [v12 setImageblockWidth:32 height:32];
-      v22 = [(NSArray *)self->_inputLumaPyramid lastObject];
+      lastObject = [(NSArray *)self->_inputLumaPyramid lastObject];
 
       v23 = [(NSArray *)self->_smoothedLumaPyramid count];
       if (v23 < 2)
       {
-        v31 = v22;
+        v31 = lastObject;
       }
 
       else
@@ -1380,19 +1380,19 @@ LABEL_191:
           v156 = fmaxf(v28 * v27, *(&v155 + 1));
           [v12 setBytes:&v155 length:12 atIndex:0];
           [v12 setTexture:v25 atIndex:0];
-          [v12 setTexture:v22 atIndex:1];
+          [v12 setTexture:lastObject atIndex:1];
           [v12 setTexture:v26 atIndex:2];
-          v29 = [v26 width];
-          v30 = [v26 height];
-          *&v146.f64[0] = v29;
-          *&v146.f64[1] = v30;
+          width2 = [v26 width];
+          height2 = [v26 height];
+          *&v146.f64[0] = width2;
+          *&v146.f64[1] = height2;
           *&v147 = 1;
           v157 = v143;
           v158 = 1;
           [v12 dispatchThreads:&v146 threadsPerThreadgroup:&v157];
           v31 = v26;
 
-          v22 = v31;
+          lastObject = v31;
           v32 = v24-- <= 0;
         }
 
@@ -1425,11 +1425,11 @@ LABEL_68:
           kdebug_trace();
         }
 
-        v33 = [v135 computeCommandEncoder];
-        v34 = v33;
-        if (v33)
+        computeCommandEncoder2 = [commandBufferCopy computeCommandEncoder];
+        v34 = computeCommandEncoder2;
+        if (computeCommandEncoder2)
         {
-          [v33 setComputePipelineState:self->_pipelineComputeStates[1]];
+          [computeCommandEncoder2 setComputePipelineState:self->_pipelineComputeStates[1]];
           [v34 setImageblockWidth:32 height:32];
           [v34 setBytes:&self->_anon_281[343] length:12 atIndex:0];
           v35 = v177;
@@ -1457,10 +1457,10 @@ LABEL_68:
                 v41 = *(*(&v151 + 1) + 8 * v39);
                 [v34 setTexture:v40 atIndex:0];
                 [v34 setTexture:v41 atIndex:3];
-                v42 = [v41 width];
-                v43 = [v41 height];
-                *&v146.f64[0] = v42;
-                *&v146.f64[1] = v43;
+                width3 = [v41 width];
+                height3 = [v41 height];
+                *&v146.f64[0] = width3;
+                *&v146.f64[1] = height3;
                 *&v147 = 1;
                 v157 = v144;
                 v158 = 1;
@@ -1480,12 +1480,12 @@ LABEL_68:
 
           [v34 setComputePipelineState:self->_pipelineComputeStates[2]];
           [v34 setImageblockWidth:32 height:32];
-          v44 = [(NSArray *)self->_inputChromaPyramid lastObject];
+          lastObject2 = [(NSArray *)self->_inputChromaPyramid lastObject];
 
           v45 = [(NSArray *)self->_smoothedChromaPyramid count];
           if (v45 < 2)
           {
-            v53 = v44;
+            v53 = lastObject2;
           }
 
           else
@@ -1503,19 +1503,19 @@ LABEL_68:
               v156 = fmaxf(v50 * v49, *(&v155 + 1));
               [v34 setBytes:&v155 length:12 atIndex:0];
               [v34 setTexture:v47 atIndex:0];
-              [v34 setTexture:v44 atIndex:1];
+              [v34 setTexture:lastObject2 atIndex:1];
               [v34 setTexture:v48 atIndex:2];
-              v51 = [v48 width];
-              v52 = [v48 height];
-              *&v146.f64[0] = v51;
-              *&v146.f64[1] = v52;
+              width4 = [v48 width];
+              height4 = [v48 height];
+              *&v146.f64[0] = width4;
+              *&v146.f64[1] = height4;
               *&v147 = 1;
               v157 = v145;
               v158 = 1;
               [v34 dispatchThreads:&v146 threadsPerThreadgroup:&v157];
               v53 = v48;
 
-              v44 = v53;
+              lastObject2 = v53;
               v32 = v46-- <= 0;
             }
 
@@ -1575,12 +1575,12 @@ LABEL_88:
 
   while (1)
   {
-    v62 = [*(&v176 + v54) width];
-    v63 = [*(&v176 + v54) height];
-    v140 = [*(&v173 + v54) width];
-    v64 = [*(&v173 + v54) height];
-    v164 = 1.0 / v62;
-    v9 = -[affineGPUMetal _getTransformShaderParameters:isLuma:isRGB:isAttachment:pixelRatio:pipelineIndexToUse:](self, "_getTransformShaderParameters:isLuma:isRGB:isAttachment:pixelRatio:pipelineIndexToUse:", [*(&v173 + v54) pixelFormat], v54 == 0, PixelFormatType == 1111970369, v141, &v165, &v165 + 4);
+    width5 = [*(&v176 + v54) width];
+    height5 = [*(&v176 + v54) height];
+    width6 = [*(&v173 + v54) width];
+    height6 = [*(&v173 + v54) height];
+    v164 = 1.0 / width5;
+    v9 = -[affineGPUMetal _getTransformShaderParameters:isLuma:isRGB:isAttachment:pixelRatio:pipelineIndexToUse:](self, "_getTransformShaderParameters:isLuma:isRGB:isAttachment:pixelRatio:pipelineIndexToUse:", [*(&v173 + v54) pixelFormat], v54 == 0, PixelFormatType == 1111970369, attachmentCopy, &v165, &v165 + 4);
     if (v9)
     {
       fig_log_get_emitter();
@@ -1612,26 +1612,26 @@ LABEL_88:
       goto LABEL_177;
     }
 
-    v67 = [v66 colorAttachments];
-    v68 = [v67 objectAtIndexedSubscript:0];
+    colorAttachments = [v66 colorAttachments];
+    v68 = [colorAttachments objectAtIndexedSubscript:0];
     [v68 setLoadAction:0];
 
-    v69 = [v66 colorAttachments];
-    v70 = [v69 objectAtIndexedSubscript:0];
+    colorAttachments2 = [v66 colorAttachments];
+    v70 = [colorAttachments2 objectAtIndexedSubscript:0];
     [v70 setStoreAction:1];
 
     v71 = *(&v173 + v54);
-    v72 = [v66 colorAttachments];
-    v73 = [v72 objectAtIndexedSubscript:0];
+    colorAttachments3 = [v66 colorAttachments];
+    v73 = [colorAttachments3 objectAtIndexedSubscript:0];
     [v73 setTexture:v71];
 
-    if (!v141)
+    if (!attachmentCopy)
     {
       break;
     }
 
 LABEL_103:
-    v84 = [v135 renderCommandEncoderWithDescriptor:v66];
+    v84 = [commandBufferCopy renderCommandEncoderWithDescriptor:v66];
 
     if (!v84)
     {
@@ -1644,10 +1644,10 @@ LABEL_103:
     }
 
     [v84 setRenderPipelineState:pipelineRenderStates[SHIDWORD(v165)]];
-    v85 = v64;
-    if (v141)
+    v85 = height6;
+    if (attachmentCopy)
     {
-      v86.f64[0] = v140;
+      v86.f64[0] = width6;
       v87 = *&self->_outputWidth;
       v88.i64[0] = *p_inputWidth;
       v88.i64[1] = HIDWORD(*p_inputWidth);
@@ -1655,36 +1655,36 @@ LABEL_103:
       v88.i64[0] = v87;
       v88.i64[1] = HIDWORD(v87);
       v90 = vdivq_f64(v89, vcvtq_f64_u64(v88));
-      v91 = v140 * v90.f64[0];
-      v86.f64[1] = v64;
+      v91 = width6 * v90.f64[0];
+      v86.f64[1] = height6;
       v85 = vmuld_lane_f64(v85, v90, 1);
       v92 = vmulq_f64(vmlaq_f64(vnegq_f64(v86), v90, v86), v129);
     }
 
     else
     {
-      v93 = v62 / v65;
-      if (v62 / v65 <= v140)
+      v93 = width5 / v65;
+      if (width5 / v65 <= width6)
       {
-        v93 = v140;
+        v93 = width6;
       }
 
       v91 = v93;
-      if (v62 / v65 <= v140)
+      if (width5 / v65 <= width6)
       {
         v94 = 0.0;
       }
 
       else
       {
-        v94 = (v62 / v65 - v140) * -0.5;
+        v94 = (width5 / v65 - width6) * -0.5;
       }
 
       v92 = *&v94;
-      if (v63 > v64)
+      if (height5 > height6)
       {
-        v85 = v63;
-        v92.f64[1] = (v63 - v64) * -0.5;
+        v85 = height5;
+        v92.f64[1] = (height5 - height6) * -0.5;
       }
     }
 
@@ -1716,9 +1716,9 @@ LABEL_115:
       while (v96++ < v175[0]);
     }
 
-    if (v133)
+    if (tCopy)
     {
-      [v84 setFragmentTexture:v133 atIndex:2];
+      [v84 setFragmentTexture:tCopy atIndex:2];
     }
 
     if (self->_bgCubePtr)
@@ -1738,7 +1738,7 @@ LABEL_115:
       }
     }
 
-    if (v141)
+    if (attachmentCopy)
     {
       if (BYTE4(self[1].super.isa) != 1)
       {
@@ -1746,7 +1746,7 @@ LABEL_115:
       }
 
       *&self->_anon_281[39] = 1;
-      CVPixelBufferGetPixelFormatType(a4);
+      CVPixelBufferGetPixelFormatType(pixelBuffer);
       if ((CMIGetPixelFormatInfo() & 0x100) != 0)
       {
         CMIGetPixelBufferYCCMatrix();
@@ -1784,8 +1784,8 @@ LABEL_115:
         goto LABEL_115;
       }
 
-      CVPixelBufferGetPixelFormatType(a3);
-      CVPixelBufferGetPixelFormatType(a4);
+      CVPixelBufferGetPixelFormatType(buffer);
+      CVPixelBufferGetPixelFormatType(pixelBuffer);
       v102 = CMIGetPixelFormatInfo();
       v103 = CMIGetPixelFormatInfo();
       v138 = 0u;
@@ -1922,14 +1922,14 @@ LABEL_154:
         [v84 setFragmentTexture:v115 atIndex:6];
         if (HIDWORD(v123))
         {
-          v116 = [(NSArray *)self->_smoothedLumaPyramid firstObject];
-          [v84 setFragmentTexture:v116 atIndex:8];
+          firstObject = [(NSArray *)self->_smoothedLumaPyramid firstObject];
+          [v84 setFragmentTexture:firstObject atIndex:8];
         }
 
         if (v123)
         {
-          v117 = [(NSArray *)self->_smoothedChromaPyramid firstObject];
-          [v84 setFragmentTexture:v117 atIndex:9];
+          firstObject2 = [(NSArray *)self->_smoothedChromaPyramid firstObject];
+          [v84 setFragmentTexture:firstObject2 atIndex:9];
         }
       }
 
@@ -1949,7 +1949,7 @@ LABEL_116:
       self->_anon_281[31] = 0;
     }
 
-    *&self->_anon_281[55] = vdiv_f32(_D9, vcvt_f32_u32(__PAIR64__(v64, v140)));
+    *&self->_anon_281[55] = vdiv_f32(_D9, vcvt_f32_u32(__PAIR64__(height6, width6)));
     [v84 setFragmentBytes:&self->_transformConfig length:368 atIndex:{0, v121, v122}];
     [v84 setTriangleFillMode:0];
     [v84 drawIndexedPrimitives:3 indexCount:self->_swathRenderVertexIndicesBufferSize >> 1 indexType:0 indexBuffer:self->_vertexIndicesBuffer indexBufferOffset:0];
@@ -1980,8 +1980,8 @@ LABEL_100:
 
       self->_anon_281[355] = 1;
       v81 = v167;
-      v82 = [v66 colorAttachments];
-      v83 = [v82 objectAtIndexedSubscript:2];
+      colorAttachments4 = [v66 colorAttachments];
+      v83 = [colorAttachments4 objectAtIndexedSubscript:2];
       [v83 setTexture:v81];
     }
 
@@ -1992,7 +1992,7 @@ LABEL_100:
   v149 = 0u;
   v146 = 0u;
   v147 = 0u;
-  v74 = CMGetAttachment(a3, @"OutputSmartStyleDeltaMapPixelBuffer", 0);
+  v74 = CMGetAttachment(buffer, @"OutputSmartStyleDeltaMapPixelBuffer", 0);
   if (!v74)
   {
     fig_log_get_emitter();
@@ -2014,8 +2014,8 @@ LABEL_100:
     if (!v9)
     {
       v77 = v170;
-      v78 = [v66 colorAttachments];
-      v79 = [v78 objectAtIndexedSubscript:1];
+      colorAttachments5 = [v66 colorAttachments];
+      v79 = [colorAttachments5 objectAtIndexedSubscript:1];
       [v79 setTexture:v77];
 
       goto LABEL_100;
@@ -2031,57 +2031,57 @@ LABEL_164:
   return v9;
 }
 
-- (int)_renderBlurInputTextures:(id *)a3 inputTexturesCount:(unsigned int)a4 outputTextures:(id *)a5
+- (int)_renderBlurInputTextures:(id *)textures inputTexturesCount:(unsigned int)count outputTextures:(id *)outputTextures
 {
   v42 = 0;
-  if (!a4)
+  if (!count)
   {
     [affineGPUMetal _renderBlurInputTextures:inputTexturesCount:outputTextures:];
     return -12780;
   }
 
-  if (!a3)
+  if (!textures)
   {
     [affineGPUMetal _renderBlurInputTextures:inputTexturesCount:outputTextures:];
     return -12780;
   }
 
-  if (!a5)
+  if (!outputTextures)
   {
     [affineGPUMetal _renderBlurInputTextures:inputTexturesCount:outputTextures:];
     return -12780;
   }
 
-  v7 = self;
+  selfCopy = self;
   if (LODWORD(self->_blurVertexIndices) > 0x1000)
   {
     [affineGPUMetal _renderBlurInputTextures:inputTexturesCount:outputTextures:];
     return -12780;
   }
 
-  v9 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v10 = [v9 commandBuffer];
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  if (!v10)
+  if (!commandBuffer)
   {
     [affineGPUMetal _renderBlurInputTextures:? inputTexturesCount:? outputTextures:?];
     return v43;
   }
 
-  if (a5->var0)
+  if (outputTextures->var0)
   {
-    v38 = a5;
+    outputTexturesCopy = outputTextures;
     v11 = 0;
     v12 = 0;
     v13 = 0;
     v14 = 0;
-    pipelineRenderStates = v7->_pipelineRenderStates;
-    var1 = a5->var1;
-    v15 = a3->var1;
-    v16 = a4;
+    pipelineRenderStates = selfCopy->_pipelineRenderStates;
+    var1 = outputTextures->var1;
+    v15 = textures->var1;
+    countCopy = count;
     while (1)
     {
-      v17 = -[affineGPUMetal _getBlurShaderParameters:pipelineIndexToUse:](v7, "_getBlurShaderParameters:pipelineIndexToUse:", [var1[v11] pixelFormat], &v42);
+      v17 = -[affineGPUMetal _getBlurShaderParameters:pipelineIndexToUse:](selfCopy, "_getBlurShaderParameters:pipelineIndexToUse:", [var1[v11] pixelFormat], &v42);
       if (v17)
       {
         v36 = v17;
@@ -2093,12 +2093,12 @@ LABEL_164:
 
       if (!pipelineRenderStates[v42])
       {
-        [(affineGPUMetal *)v12 _renderBlurInputTextures:v10 inputTexturesCount:v13 outputTextures:v14];
+        [(affineGPUMetal *)v12 _renderBlurInputTextures:commandBuffer inputTexturesCount:v13 outputTextures:v14];
         return -12782;
       }
 
-      v18 = [(FigMetalContext *)v7->_metalContext device];
-      v19 = [v18 newBufferWithBytes:*&v7->_blurVertexIndicesSize length:v7->_P3ToBT2020ConversionMethod options:0];
+      device = [(FigMetalContext *)selfCopy->_metalContext device];
+      v19 = [device newBufferWithBytes:*&selfCopy->_blurVertexIndicesSize length:selfCopy->_P3ToBT2020ConversionMethod options:0];
 
       if (!v19)
       {
@@ -2115,22 +2115,22 @@ LABEL_164:
       }
 
       v39 = v19;
-      v21 = v7;
-      v22 = [v20 colorAttachments];
-      v23 = [v22 objectAtIndexedSubscript:0];
+      v21 = selfCopy;
+      colorAttachments = [v20 colorAttachments];
+      v23 = [colorAttachments objectAtIndexedSubscript:0];
       [v23 setLoadAction:1];
 
-      v24 = [v20 colorAttachments];
-      v25 = [v24 objectAtIndexedSubscript:0];
+      colorAttachments2 = [v20 colorAttachments];
+      v25 = [colorAttachments2 objectAtIndexedSubscript:0];
       [v25 setStoreAction:1];
 
       v26 = var1[v11];
-      v27 = [v20 colorAttachments];
-      [v27 objectAtIndexedSubscript:0];
-      v29 = v28 = v10;
+      colorAttachments3 = [v20 colorAttachments];
+      [colorAttachments3 objectAtIndexedSubscript:0];
+      v29 = v28 = commandBuffer;
       [v29 setTexture:v26];
 
-      v10 = v28;
+      commandBuffer = v28;
       v30 = [v28 renderCommandEncoderWithDescriptor:v20];
 
       if (!v30)
@@ -2140,7 +2140,7 @@ LABEL_164:
 
       v12 = v30;
       [v30 setRenderPipelineState:pipelineRenderStates[v42]];
-      v7 = v21;
+      selfCopy = v21;
       [v30 setVertexBytes:*&v21->_blurVertexSize length:LODWORD(v21->_blurVertexIndices) atIndex:0];
       v31 = 0;
       v32 = v15;
@@ -2151,7 +2151,7 @@ LABEL_164:
         [v12 setFragmentTexture:v33 atIndex:v31++];
       }
 
-      while (v16 != v31);
+      while (countCopy != v31);
       [v12 setFragmentBytes:&v21->_anon_429[11] length:32 atIndex:0];
       [v12 setTriangleFillMode:0];
       [v12 drawIndexedPrimitives:3 indexCount:v21->_P3ToBT2020ConversionMethod >> 1 indexType:0 indexBuffer:v39 indexBufferOffset:0];
@@ -2160,7 +2160,7 @@ LABEL_164:
       ++v15;
       v13 = v39;
       v14 = v20;
-      if (v11 >= v38->var0)
+      if (v11 >= outputTexturesCopy->var0)
       {
 
         goto LABEL_17;
@@ -2172,24 +2172,24 @@ LABEL_164:
   }
 
 LABEL_17:
-  [(affineGPUMetal *)v7 _addCommandBufferHandler:v10];
+  [(affineGPUMetal *)selfCopy _addCommandBufferHandler:commandBuffer];
   if (gGMFigKTraceEnabled)
   {
-    v34 = [v10 commandQueue];
-    v35 = [v34 commandBuffer];
+    commandQueue2 = [commandBuffer commandQueue];
+    commandBuffer2 = [commandQueue2 commandBuffer];
 
-    [v35 setLabel:@"KTRACE_MTLCMDBUF"];
-    [v35 addCompletedHandler:&__block_literal_global_129];
-    [v35 commit];
-    [v10 addCompletedHandler:&__block_literal_global_131];
+    [commandBuffer2 setLabel:@"KTRACE_MTLCMDBUF"];
+    [commandBuffer2 addCompletedHandler:&__block_literal_global_129];
+    [commandBuffer2 commit];
+    [commandBuffer addCompletedHandler:&__block_literal_global_131];
   }
 
-  [v10 commit];
+  [commandBuffer commit];
 
   return 0;
 }
 
-- (int)_blurDeltaMapBordersFromStyledPixelBuffer:(__CVBuffer *)a3 withUnstyledPixelBuffer:(__CVBuffer *)a4 to:(__CVBuffer *)a5
+- (int)_blurDeltaMapBordersFromStyledPixelBuffer:(__CVBuffer *)buffer withUnstyledPixelBuffer:(__CVBuffer *)pixelBuffer to:(__CVBuffer *)to
 {
   v35 = 0;
   v33 = 0;
@@ -2198,12 +2198,12 @@ LABEL_17:
   v32 = 0;
   v28 = 0;
   v29 = 0;
-  if (!a3 || !a4 || !a5)
+  if (!buffer || !pixelBuffer || !to)
   {
     fig_log_get_emitter();
     FigDebugAssert3();
     v23 = 0;
-    v10 = 0;
+    commandBuffer = 0;
     v12 = 0;
     v14 = 0;
     v8 = -12780;
@@ -2217,7 +2217,7 @@ LABEL_17:
     FigDebugAssert3();
 LABEL_22:
     v23 = 0;
-    v10 = 0;
+    commandBuffer = 0;
 LABEL_27:
     v12 = 0;
 LABEL_28:
@@ -2225,7 +2225,7 @@ LABEL_28:
     goto LABEL_16;
   }
 
-  v8 = [(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a4 isTwoPass:1 isOptimized:0 textures:v30];
+  v8 = [(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:pixelBuffer isTwoPass:1 isOptimized:0 textures:v30];
   if (v8)
   {
     fig_log_get_emitter();
@@ -2233,7 +2233,7 @@ LABEL_28:
     goto LABEL_22;
   }
 
-  v8 = [(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a5 isTwoPass:0 isOptimized:0 textures:v27];
+  v8 = [(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:to isTwoPass:0 isOptimized:0 textures:v27];
   if (v8)
   {
     fig_log_get_emitter();
@@ -2241,10 +2241,10 @@ LABEL_28:
     goto LABEL_22;
   }
 
-  v9 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v10 = [v9 commandBuffer];
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  if (!v10)
+  if (!commandBuffer)
   {
     fig_log_get_emitter();
     FigDebugAssert3();
@@ -2274,8 +2274,8 @@ LABEL_26:
     goto LABEL_16;
   }
 
-  v11 = [(FigMetalContext *)self->_metalContext device];
-  v12 = [v11 newBufferWithBytes:&self->_blurRenderIndices[5] length:96 options:0];
+  device = [(FigMetalContext *)self->_metalContext device];
+  v12 = [device newBufferWithBytes:&self->_blurRenderIndices[5] length:96 options:0];
 
   if (!v12)
   {
@@ -2298,20 +2298,20 @@ LABEL_26:
     goto LABEL_28;
   }
 
-  v15 = [v13 colorAttachments];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  colorAttachments = [v13 colorAttachments];
+  v16 = [colorAttachments objectAtIndexedSubscript:0];
   [v16 setLoadAction:1];
 
-  v17 = [v14 colorAttachments];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v14 colorAttachments];
+  v18 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v18 setStoreAction:1];
 
   v19 = v28;
-  v20 = [v14 colorAttachments];
-  v21 = [v20 objectAtIndexedSubscript:0];
+  colorAttachments3 = [v14 colorAttachments];
+  v21 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v21 setTexture:v19];
 
-  v22 = [v10 renderCommandEncoderWithDescriptor:v14];
+  v22 = [commandBuffer renderCommandEncoderWithDescriptor:v14];
   v23 = v22;
   if (v22)
   {
@@ -2326,19 +2326,19 @@ LABEL_26:
     [v23 setTriangleFillMode:0];
     [v23 drawIndexedPrimitives:3 indexCount:48 indexType:0 indexBuffer:v12 indexBufferOffset:0];
     [v23 endEncoding];
-    [(affineGPUMetal *)self _addCommandBufferHandler:v10];
+    [(affineGPUMetal *)self _addCommandBufferHandler:commandBuffer];
     if (gGMFigKTraceEnabled)
     {
-      v24 = [v10 commandQueue];
-      v25 = [v24 commandBuffer];
+      commandQueue2 = [commandBuffer commandQueue];
+      commandBuffer2 = [commandQueue2 commandBuffer];
 
-      [v25 setLabel:@"KTRACE_MTLCMDBUF"];
-      [v25 addCompletedHandler:&__block_literal_global_142];
-      [v25 commit];
-      [v10 addCompletedHandler:&__block_literal_global_144];
+      [commandBuffer2 setLabel:@"KTRACE_MTLCMDBUF"];
+      [commandBuffer2 addCompletedHandler:&__block_literal_global_142];
+      [commandBuffer2 commit];
+      [commandBuffer addCompletedHandler:&__block_literal_global_144];
     }
 
-    [v10 commit];
+    [commandBuffer commit];
     v8 = 0;
   }
 
@@ -2356,19 +2356,19 @@ LABEL_16:
   return v8;
 }
 
-- (void)configureBlurWith:(id *)a3
+- (void)configureBlurWith:(id *)with
 {
-  if (!a3)
+  if (!with)
   {
     [affineGPUMetal configureBlurWith:];
     return;
   }
 
-  var0 = a3->var0;
-  LOBYTE(self->_blurOverscan.width) = a3->var0 != 0;
+  var0 = with->var0;
+  LOBYTE(self->_blurOverscan.width) = with->var0 != 0;
   if (var0)
   {
-    if (a3->var1 < 4)
+    if (with->var1 < 4)
     {
       [affineGPUMetal configureBlurWith:];
       return;
@@ -2377,7 +2377,7 @@ LABEL_16:
     *self->_blurPreviousTextureIndex = 0u;
     HIDWORD(self->_blurOverscan.width) = 5;
     *&self->_blurRadiusTable[4] = 4;
-    *&self->_blurOverscan.height = vcvtq_f64_f32(vcvt_f32_s32(*&a3->var2));
+    *&self->_blurOverscan.height = vcvtq_f64_f32(vcvt_f32_s32(*&with->var2));
     __asm { FMOV            V0.2S, #-1.0 }
 
     *&self->_blurBorderVertices[10] = -_D0;
@@ -2417,31 +2417,31 @@ LABEL_16:
     *&self->_blurRenderIndices[45] = xmmword_438E0;
     *&self->_blurRadiusTable[8] = 0x102030201020100;
     self->_blurBorderIndices[3] = 257;
-    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a3->var8[0] isTwoPass:1 isOptimized:0 textures:self->_blurTempTextures[0][0].texture])
+    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:with->var8[0] isTwoPass:1 isOptimized:0 textures:self->_blurTempTextures[0][0].texture])
     {
       [affineGPUMetal configureBlurWith:];
       return;
     }
 
-    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a3->var8[1] isTwoPass:1 isOptimized:0 textures:self->_blurPreviousTextures[0][0].texture])
+    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:with->var8[1] isTwoPass:1 isOptimized:0 textures:self->_blurPreviousTextures[0][0].texture])
     {
       [affineGPUMetal configureBlurWith:];
       return;
     }
 
-    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a3->var8[2] isTwoPass:1 isOptimized:0 textures:self->_blurPreviousTextures[0][1].texture])
+    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:with->var8[2] isTwoPass:1 isOptimized:0 textures:self->_blurPreviousTextures[0][1].texture])
     {
       [affineGPUMetal configureBlurWith:];
       return;
     }
 
-    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a3->var8[3] isTwoPass:1 isOptimized:0 textures:self->_blurPreviousTextures[0][2].texture])
+    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:with->var8[3] isTwoPass:1 isOptimized:0 textures:self->_blurPreviousTextures[0][2].texture])
     {
       [affineGPUMetal configureBlurWith:];
       return;
     }
 
-    v12 = a3->var9[0];
+    v12 = with->var9[0];
     if (!v12)
     {
       goto LABEL_28;
@@ -2453,19 +2453,19 @@ LABEL_16:
       return;
     }
 
-    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a3->var9[1] isTwoPass:1 isOptimized:0 textures:self->_blurPreviousTextures[1][0].texture])
+    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:with->var9[1] isTwoPass:1 isOptimized:0 textures:self->_blurPreviousTextures[1][0].texture])
     {
       [affineGPUMetal configureBlurWith:];
       return;
     }
 
-    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a3->var9[2] isTwoPass:1 isOptimized:0 textures:self->_blurPreviousTextures[1][1].texture])
+    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:with->var9[2] isTwoPass:1 isOptimized:0 textures:self->_blurPreviousTextures[1][1].texture])
     {
       [affineGPUMetal configureBlurWith:];
       return;
     }
 
-    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a3->var9[3] isTwoPass:1 isOptimized:0 textures:self->_blurPreviousTextures[1][2].texture])
+    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:with->var9[3] isTwoPass:1 isOptimized:0 textures:self->_blurPreviousTextures[1][2].texture])
     {
       [affineGPUMetal configureBlurWith:];
     }
@@ -2473,7 +2473,7 @@ LABEL_16:
     else
     {
 LABEL_28:
-      if (a3->var10)
+      if (with->var10)
       {
         LOBYTE(self->_ditherStrengthChroma) = 1;
         *&self->_fbsDeltaThresholdLuma = xmmword_438F0;
@@ -2483,7 +2483,7 @@ LABEL_28:
   }
 }
 
-- (void)_blurDuplicatedPixelsOnPixelBuffer:(__CVBuffer *)a3 validBufferRect:(CGRect *)a4 forDeltaMap:(BOOL)a5
+- (void)_blurDuplicatedPixelsOnPixelBuffer:(__CVBuffer *)buffer validBufferRect:(CGRect *)rect forDeltaMap:(BOOL)map
 {
   v124 = 0;
   v125 = 0;
@@ -2499,10 +2499,10 @@ LABEL_28:
   v108 = 0;
   v109 = 0;
   v110 = 0;
-  if (a3)
+  if (buffer)
   {
-    v5 = a5;
-    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:a3 isTwoPass:1 isOptimized:0 textures:&v123])
+    mapCopy = map;
+    if ([(affineGPUMetal *)self _cachedTexturesFromPixelBuffer:buffer isTwoPass:1 isOptimized:0 textures:&v123])
     {
       fig_log_get_emitter();
       FigDebugAssert3();
@@ -2511,7 +2511,7 @@ LABEL_28:
     else
     {
       p_inputWidth = &self->_inputWidth;
-      ++self->_blurPreviousTextureIndex[v5];
+      ++self->_blurPreviousTextureIndex[mapCopy];
       __asm { FMOV            V10.2S, #-1.0 }
 
       v13 = -_D10;
@@ -2522,9 +2522,9 @@ LABEL_28:
       *&self->_blurBorderVertices[58] = _D10;
       *&self->_blurRenderIndices[1] = -_D13;
       v15 = *&self->_blurOverscan.height;
-      if (a4)
+      if (rect)
       {
-        v15 = vaddq_f64(v15, a4->origin);
+        v15 = vaddq_f64(v15, rect->origin);
       }
 
       v16 = *&self->_swathMatricesBufferSize;
@@ -2535,20 +2535,20 @@ LABEL_28:
       v20.i64[1] = HIDWORD(*p_inputWidth);
       v21 = vcvtq_f64_u64(v20);
       v22 = 0;
-      if (a4)
+      if (rect)
       {
         v98 = v21;
         v100 = v15;
         v103 = *&self->_texMatCount[4];
-        IsNull = CGRectIsNull(*a4);
+        IsNull = CGRectIsNull(*rect);
         v21 = v98;
         v15 = v100;
         size = v98;
         v17 = v103;
         if (!IsNull)
         {
-          size = a4->size;
-          v22 = vcvt_f32_f64(a4->origin);
+          size = rect->size;
+          v22 = vcvt_f32_f64(rect->origin);
         }
       }
 
@@ -2558,7 +2558,7 @@ LABEL_28:
       }
 
       v25 = 0;
-      v26 = v5;
+      v26 = mapCopy;
       v27.i64[0] = v18;
       v27.i64[1] = HIDWORD(v18);
       v28 = vcvtq_f64_u64(v27);
@@ -2967,8 +2967,8 @@ LABEL_63:
     }
   }
 
-  v5 = [(FigMetalContext *)self->_metalContext device];
-  v6 = [v5 supportsFamily:1004];
+  device = [(FigMetalContext *)self->_metalContext device];
+  v6 = [device supportsFamily:1004];
 
   if (!v6)
   {
@@ -2998,13 +2998,13 @@ LABEL_63:
   return v12;
 }
 
-- (int)_createRenderPipelinesForShaders:(id)a3
+- (int)_createRenderPipelinesForShaders:(id)shaders
 {
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = a3;
+  obj = shaders;
   v4 = [obj countByEnumeratingWithState:&v47 objects:v46 count:16];
   if (v4)
   {
@@ -3039,23 +3039,23 @@ LABEL_20:
         }
 
         v12 = [v10 objectForKeyedSubscript:@"index"];
-        v43 = [v12 unsignedIntValue];
+        unsignedIntValue = [v12 unsignedIntValue];
 
         v13 = [v10 objectForKeyedSubscript:@"pixelFormat"];
-        v14 = [v13 unsignedIntValue];
+        unsignedIntValue2 = [v13 unsignedIntValue];
 
         v15 = [v10 objectForKeyedSubscript:@"deltaMapPixelFormat"];
-        v41 = [v15 unsignedIntValue];
+        unsignedIntValue3 = [v15 unsignedIntValue];
 
         v16 = [v10 objectForKeyedSubscript:@"unstyledPixelFormat"];
-        v40 = [v16 unsignedIntValue];
+        unsignedIntValue4 = [v16 unsignedIntValue];
 
-        v17 = [(FigMetalContext *)self->_metalContext device];
-        v42 = v14;
+        device = [(FigMetalContext *)self->_metalContext device];
+        v42 = unsignedIntValue2;
         MTLPixelFormatGetInfoForDevice();
-        LOBYTE(v14) = v45;
+        LOBYTE(unsignedIntValue2) = v45;
 
-        if ((v14 & 0x10) != 0)
+        if ((unsignedIntValue2 & 0x10) != 0)
         {
           if ([v11 count])
           {
@@ -3065,14 +3065,14 @@ LABEL_20:
             {
               v20 = [v11 objectAtIndexedSubscript:v18];
               v21 = [v20 objectAtIndexedSubscript:1];
-              v22 = [v21 BOOLValue];
+              bOOLValue = [v21 BOOLValue];
 
-              LOBYTE(v44) = v22;
+              LOBYTE(v44) = bOOLValue;
               v23 = [v11 objectAtIndexedSubscript:v18];
               v24 = [v23 objectAtIndexedSubscript:0];
-              v25 = [v24 unsignedIntValue];
+              unsignedIntValue5 = [v24 unsignedIntValue];
               v26 = v44;
-              if (!v25)
+              if (!unsignedIntValue5)
               {
                 v26 = self->_useBicubic & v44;
               }
@@ -3091,13 +3091,13 @@ LABEL_20:
 
           v30 = [v10 objectForKeyedSubscript:@"vertName"];
           v31 = [v10 objectForKeyedSubscript:@"fragName"];
-          v32 = [(affineGPUMetal *)self _compileShader:v30 fragment:v31 pixelFormat:v42 deltaMapPixelFormat:v41 unstyledPixelFormat:v40 constants:v6];
-          v33 = pipelineRenderStates[v43];
-          pipelineRenderStates[v43] = v32;
+          v32 = [(affineGPUMetal *)self _compileShader:v30 fragment:v31 pixelFormat:v42 deltaMapPixelFormat:unsignedIntValue3 unstyledPixelFormat:unsignedIntValue4 constants:v6];
+          v33 = pipelineRenderStates[unsignedIntValue];
+          pipelineRenderStates[unsignedIntValue] = v32;
 
           v5 = v38;
           v7 = v36;
-          if (!pipelineRenderStates[v43])
+          if (!pipelineRenderStates[unsignedIntValue])
           {
             [affineGPUMetal _createRenderPipelinesForShaders:];
             v34 = -12786;
@@ -3131,18 +3131,18 @@ LABEL_21:
   return v34;
 }
 
-- (id)_compileShader:(id)a3 fragment:(id)a4 pixelFormat:(unint64_t)a5 deltaMapPixelFormat:(unint64_t)a6 unstyledPixelFormat:(unint64_t)a7 constants:(id)a8
+- (id)_compileShader:(id)shader fragment:(id)fragment pixelFormat:(unint64_t)format deltaMapPixelFormat:(unint64_t)pixelFormat unstyledPixelFormat:(unint64_t)unstyledPixelFormat constants:(id)constants
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  shaderCopy = shader;
+  fragmentCopy = fragment;
+  constantsCopy = constants;
   v17 = 1;
-  if (a6)
+  if (pixelFormat)
   {
     v17 = 2;
   }
 
-  if (a7)
+  if (unstyledPixelFormat)
   {
     v18 = v17 + 1;
   }
@@ -3153,7 +3153,7 @@ LABEL_21:
   }
 
   v19 = [NSMutableArray arrayWithCapacity:v18];
-  if (!v14)
+  if (!shaderCopy)
   {
     [affineGPUMetal _compileShader:fragment:pixelFormat:deltaMapPixelFormat:unstyledPixelFormat:constants:];
 LABEL_20:
@@ -3162,13 +3162,13 @@ LABEL_20:
     goto LABEL_14;
   }
 
-  if (!v15)
+  if (!fragmentCopy)
   {
     [affineGPUMetal _compileShader:fragment:pixelFormat:deltaMapPixelFormat:unstyledPixelFormat:constants:];
     goto LABEL_20;
   }
 
-  if (!v16)
+  if (!constantsCopy)
   {
     [affineGPUMetal _compileShader:fragment:pixelFormat:deltaMapPixelFormat:unstyledPixelFormat:constants:];
     goto LABEL_20;
@@ -3182,7 +3182,7 @@ LABEL_20:
   }
 
   v21 = v20;
-  [v20 setPixelFormat:a5];
+  [v20 setPixelFormat:format];
   [v19 addObject:v21];
   v22 = objc_opt_new();
 
@@ -3192,15 +3192,15 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  [v22 setPixelFormat:a6];
+  [v22 setPixelFormat:pixelFormat];
   [v19 addObject:v22];
   v23 = objc_opt_new();
 
   if (v23)
   {
-    [v23 setPixelFormat:a7];
+    [v23 setPixelFormat:unstyledPixelFormat];
     [v19 addObject:v23];
-    v24 = [(FigMetalContext *)self->_metalContext renderPipelineStateForVertexFunction:v14 vertexDescriptor:0 fragmentFunction:v15 constants:v16 colorAttachmentDescriptorArrray:v19];
+    v24 = [(FigMetalContext *)self->_metalContext renderPipelineStateForVertexFunction:shaderCopy vertexDescriptor:0 fragmentFunction:fragmentCopy constants:constantsCopy colorAttachmentDescriptorArrray:v19];
     if (!v24)
     {
       [affineGPUMetal _compileShader:fragment:pixelFormat:deltaMapPixelFormat:unstyledPixelFormat:constants:];
@@ -3219,11 +3219,11 @@ LABEL_14:
   return v24;
 }
 
-- (int)_cachedTexturesFromPixelBuffer:(__CVBuffer *)a3 isTwoPass:(BOOL)a4 isOptimized:(BOOL)a5 textures:(id *)a6
+- (int)_cachedTexturesFromPixelBuffer:(__CVBuffer *)buffer isTwoPass:(BOOL)pass isOptimized:(BOOL)optimized textures:(id *)textures
 {
-  v50 = a5;
+  optimizedCopy = optimized;
   image = 0;
-  if (!a3)
+  if (!buffer)
   {
     [affineGPUMetal _cachedTexturesFromPixelBuffer:isTwoPass:isOptimized:textures:];
 LABEL_186:
@@ -3232,21 +3232,21 @@ LABEL_186:
     goto LABEL_181;
   }
 
-  if (!a6)
+  if (!textures)
   {
     [affineGPUMetal _cachedTexturesFromPixelBuffer:isTwoPass:isOptimized:textures:];
     goto LABEL_186;
   }
 
-  v7 = a4;
+  passCopy = pass;
   p_cvMetalTextureCacheRef = &self->_cvMetalTextureCacheRef;
   if (!self->_cvMetalTextureCacheRef)
   {
     v53 = kCVMetalTextureCacheMaximumTextureAgeKey;
     v54 = &off_55D50;
     v11 = [NSDictionary dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-    v12 = [(FigMetalContext *)self->_metalContext device];
-    v13 = CVMetalTextureCacheCreate(kCFAllocatorDefault, v11, v12, 0, p_cvMetalTextureCacheRef);
+    device = [(FigMetalContext *)self->_metalContext device];
+    v13 = CVMetalTextureCacheCreate(kCFAllocatorDefault, v11, device, 0, p_cvMetalTextureCacheRef);
 
     if (v13)
     {
@@ -3256,8 +3256,8 @@ LABEL_186:
     }
   }
 
-  a6->var0 = 0;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  textures->var0 = 0;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v15 = 0;
   v13 = -12782;
   if (PixelFormatType <= 1111970368)
@@ -3352,7 +3352,7 @@ LABEL_79:
 
         v20 = 540;
         v22 = 10;
-        if (v50)
+        if (optimizedCopy)
         {
           v22 = 80;
           v23 = 4;
@@ -3364,7 +3364,7 @@ LABEL_79:
         }
 
 LABEL_68:
-        if (v7)
+        if (passCopy)
         {
           v18 = v22;
         }
@@ -3374,7 +3374,7 @@ LABEL_68:
           v18 = v20;
         }
 
-        if (v7)
+        if (passCopy)
         {
           v17 = v23;
         }
@@ -3433,7 +3433,7 @@ LABEL_68:
         }
 
 LABEL_84:
-        v26 = !v7;
+        v26 = !passCopy;
         v27 = 540;
         v28 = 10;
 LABEL_92:
@@ -3460,7 +3460,7 @@ LABEL_92:
         }
 
 LABEL_89:
-        v26 = !v7;
+        v26 = !passCopy;
         v27 = 546;
 LABEL_91:
         v28 = 588;
@@ -3468,7 +3468,7 @@ LABEL_91:
       }
 
 LABEL_90:
-      v26 = !v7;
+      v26 = !passCopy;
       v27 = 547;
       goto LABEL_91;
     }
@@ -3509,7 +3509,7 @@ LABEL_41:
     v20 = 543;
 LABEL_65:
     v22 = 20;
-    if (v50)
+    if (optimizedCopy)
     {
       v22 = 60;
       v23 = 2;
@@ -3555,7 +3555,7 @@ LABEL_65:
         }
       }
 
-      if (v7)
+      if (passCopy)
       {
         v18 = 588;
       }
@@ -3601,9 +3601,9 @@ LABEL_65:
   }
 
 LABEL_96:
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
-  CVPixelBufferGetIOSurface(a3);
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
+  CVPixelBufferGetIOSurface(buffer);
   if (IOSurfaceGetCompressionTypeOfPlane() == 3 || IOSurfaceGetCompressionTypeOfPlane() == 4)
   {
     v31 = 16391;
@@ -3619,34 +3619,34 @@ LABEL_96:
   v52 = v32;
   v15 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
 
-  if (CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, *p_cvMetalTextureCacheRef, a3, v15, v18, WidthOfPlane / v17, HeightOfPlane, 0, &image))
+  if (CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, *p_cvMetalTextureCacheRef, buffer, v15, v18, WidthOfPlane / v17, HeightOfPlane, 0, &image))
   {
     [affineGPUMetal _cachedTexturesFromPixelBuffer:isTwoPass:isOptimized:textures:];
     goto LABEL_191;
   }
 
   v33 = CVMetalTextureGetTexture(image);
-  v34 = a6->var1[0];
-  a6->var1[0] = v33;
+  v34 = textures->var1[0];
+  textures->var1[0] = v33;
 
-  if (!a6->var1[0])
+  if (!textures->var1[0])
   {
     [affineGPUMetal _cachedTexturesFromPixelBuffer:isTwoPass:isOptimized:textures:];
     goto LABEL_191;
   }
 
-  ++a6->var0;
+  ++textures->var0;
   if (image)
   {
     CFRelease(image);
   }
 
-  if (!v7)
+  if (!passCopy)
   {
     goto LABEL_180;
   }
 
-  v35 = CVPixelBufferGetPixelFormatType(a3);
+  v35 = CVPixelBufferGetPixelFormatType(buffer);
   v36 = 1;
   v13 = -12782;
   v37 = MTLPixelFormatRG8Unorm;
@@ -3720,7 +3720,7 @@ LABEL_166:
             goto LABEL_181;
           }
 
-          if (v50)
+          if (optimizedCopy)
           {
             v37 = MTLPixelFormatBGRA8Unorm;
           }
@@ -3730,7 +3730,7 @@ LABEL_166:
             v37 = MTLPixelFormatRG8Unorm;
           }
 
-          if (v50)
+          if (optimizedCopy)
           {
             v36 = 2;
           }
@@ -3803,9 +3803,9 @@ LABEL_153:
       }
 
 LABEL_176:
-      v45 = CVPixelBufferGetWidthOfPlane(a3, 1uLL);
-      v46 = CVPixelBufferGetHeightOfPlane(a3, 1uLL);
-      if (CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, *p_cvMetalTextureCacheRef, a3, v15, v37, v45 / v36, v46, 1uLL, &image))
+      v45 = CVPixelBufferGetWidthOfPlane(buffer, 1uLL);
+      v46 = CVPixelBufferGetHeightOfPlane(buffer, 1uLL);
+      if (CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, *p_cvMetalTextureCacheRef, buffer, v15, v37, v45 / v36, v46, 1uLL, &image))
       {
         [affineGPUMetal _cachedTexturesFromPixelBuffer:isTwoPass:isOptimized:textures:];
       }
@@ -3813,12 +3813,12 @@ LABEL_176:
       else
       {
         v47 = CVMetalTextureGetTexture(image);
-        v48 = a6->var1[1];
-        a6->var1[1] = v47;
+        v48 = textures->var1[1];
+        textures->var1[1] = v47;
 
-        if (a6->var1[1])
+        if (textures->var1[1])
         {
-          ++a6->var0;
+          ++textures->var0;
           if (image)
           {
             CFRelease(image);
@@ -3912,34 +3912,34 @@ LABEL_181:
   return v13;
 }
 
-- (int)_getTransformShaderParameters:(unint64_t)a3 isLuma:(BOOL)a4 isRGB:(BOOL)a5 isAttachment:(BOOL)a6 pixelRatio:(unsigned int *)a7 pipelineIndexToUse:(int *)a8
+- (int)_getTransformShaderParameters:(unint64_t)parameters isLuma:(BOOL)luma isRGB:(BOOL)b isAttachment:(BOOL)attachment pixelRatio:(unsigned int *)ratio pipelineIndexToUse:(int *)use
 {
-  if (!a7)
+  if (!ratio)
   {
     [affineGPUMetal _getTransformShaderParameters:isLuma:isRGB:isAttachment:pixelRatio:pipelineIndexToUse:];
     return -12780;
   }
 
-  if (!a8)
+  if (!use)
   {
     [affineGPUMetal _getTransformShaderParameters:isLuma:isRGB:isAttachment:pixelRatio:pipelineIndexToUse:];
     return -12780;
   }
 
-  if (a3 > 114)
+  if (parameters > 114)
   {
-    if (a3 > 545)
+    if (parameters > 545)
     {
-      if (a3 > 587)
+      if (parameters > 587)
       {
-        if (a3 == 588)
+        if (parameters == 588)
         {
           v8 = 0;
           v9 = 7;
           goto LABEL_70;
         }
 
-        if (a3 == 589)
+        if (parameters == 589)
         {
           v8 = 0;
           v9 = 8;
@@ -3949,7 +3949,7 @@ LABEL_181:
         goto LABEL_59;
       }
 
-      if (a3 == 546)
+      if (parameters == 546)
       {
         if (LODWORD(self->_intermediateOutputPixelBuffer) == 2)
         {
@@ -3961,7 +3961,7 @@ LABEL_181:
           v9 = 20;
         }
 
-        *a8 = v9;
+        *use = v9;
         if (!self->_reverseCoefficients)
         {
           goto LABEL_69;
@@ -3972,13 +3972,13 @@ LABEL_181:
         goto LABEL_66;
       }
 
-      if (a3 != 547)
+      if (parameters != 547)
       {
         goto LABEL_59;
       }
 
       v9 = 29;
-      *a8 = 29;
+      *use = 29;
       if (self->_reverseCoefficients)
       {
         v12 = self->_intermediateOutputUnstyledPixelBuffer == 0;
@@ -3989,16 +3989,16 @@ LABEL_181:
 
     else
     {
-      if (a3 <= 542)
+      if (parameters <= 542)
       {
-        if (a3 == 115)
+        if (parameters == 115)
         {
           v8 = 0;
           v9 = 47;
           goto LABEL_70;
         }
 
-        if (a3 == 540)
+        if (parameters == 540)
         {
           if (self->_bgCubePtr)
           {
@@ -4027,7 +4027,7 @@ LABEL_181:
             v10 = 23;
           }
 
-          *a8 = v10;
+          *use = v10;
           if (self->_reverseCoefficients)
           {
             if (self->_intermediateOutputUnstyledPixelBuffer)
@@ -4041,7 +4041,7 @@ LABEL_181:
             }
           }
 
-          *a8 = v10;
+          *use = v10;
           if (!self->_reverseCoefficients && LOBYTE(self->_ditherStrengthChroma) != 1 || self->_fbsDeltaThresholdLuma <= 0.0 && self->_fbsEdgeThresholdLuma <= 0.0)
           {
             v8 = 0;
@@ -4062,7 +4062,7 @@ LABEL_181:
           }
 
 LABEL_70:
-          *a8 = v9;
+          *use = v9;
 LABEL_71:
           v14 = 1;
           goto LABEL_72;
@@ -4071,7 +4071,7 @@ LABEL_71:
         goto LABEL_59;
       }
 
-      if (a3 == 543)
+      if (parameters == 543)
       {
         if (LODWORD(self->_intermediateOutputPixelBuffer) == 2)
         {
@@ -4083,7 +4083,7 @@ LABEL_71:
           v9 = 17;
         }
 
-        *a8 = v9;
+        *use = v9;
         if (BYTE4(self[1].super.isa))
         {
           v9 = 48;
@@ -4108,13 +4108,13 @@ LABEL_66:
 
       else
       {
-        if (a3 != 544)
+        if (parameters != 544)
         {
           goto LABEL_59;
         }
 
         v9 = 26;
-        *a8 = 26;
+        *use = 26;
         if (self->_reverseCoefficients)
         {
           v12 = self->_intermediateOutputUnstyledPixelBuffer == 0;
@@ -4129,13 +4129,13 @@ LABEL_69:
     goto LABEL_70;
   }
 
-  if (a3 > 54)
+  if (parameters > 54)
   {
-    if (a3 > 79)
+    if (parameters > 79)
     {
-      if (a3 != 80)
+      if (parameters != 80)
       {
-        if (a3 == 110)
+        if (parameters == 110)
         {
           v8 = 0;
           v9 = 46;
@@ -4145,16 +4145,16 @@ LABEL_69:
         goto LABEL_59;
       }
 
-      if (a4 && !a5)
+      if (luma && !b)
       {
         v8 = 0;
-        *a8 = 0;
+        *use = 0;
         v14 = 4;
         goto LABEL_72;
       }
 
       v8 = 0;
-      if (a5)
+      if (b)
       {
         v9 = 9;
         goto LABEL_70;
@@ -4165,20 +4165,20 @@ LABEL_69:
 
     else
     {
-      if (a3 == 55)
+      if (parameters == 55)
       {
         v8 = 0;
         v9 = 45;
         goto LABEL_70;
       }
 
-      if (a3 != 60)
+      if (parameters != 60)
       {
         goto LABEL_59;
       }
 
       v8 = 0;
-      if (!a4)
+      if (!luma)
       {
         v9 = 6;
         goto LABEL_70;
@@ -4187,11 +4187,11 @@ LABEL_69:
       v11 = 5;
     }
 
-    *a8 = v11;
+    *use = v11;
     v14 = 2;
 LABEL_72:
-    *a7 = v14;
-    if (a6)
+    *ratio = v14;
+    if (attachment)
     {
       return v8;
     }
@@ -4199,16 +4199,16 @@ LABEL_72:
     goto LABEL_73;
   }
 
-  if (a3 > 24)
+  if (parameters > 24)
   {
-    if (a3 == 25)
+    if (parameters == 25)
     {
       v8 = 0;
       v9 = 44;
       goto LABEL_70;
     }
 
-    if (a3 == 30)
+    if (parameters == 30)
     {
       v8 = 0;
       v9 = 3;
@@ -4218,14 +4218,14 @@ LABEL_72:
 
   else
   {
-    if (a3 == 10)
+    if (parameters == 10)
     {
       v8 = 0;
       v9 = 2;
       goto LABEL_70;
     }
 
-    if (a3 == 20)
+    if (parameters == 20)
     {
       v8 = 0;
       v9 = 4;
@@ -4234,9 +4234,9 @@ LABEL_72:
   }
 
 LABEL_59:
-  *a8 = -1;
+  *use = -1;
   v8 = -12780;
-  if (a6)
+  if (attachment)
   {
     return v8;
   }
@@ -4244,8 +4244,8 @@ LABEL_59:
 LABEL_73:
   if ((self->_reverseCoefficients || self->_intermediateOutputUnstyledPixelBuffer) && *&self->_ditherNoStyle)
   {
-    v15 = *a8;
-    if (*a8 > 20)
+    v15 = *use;
+    if (*use > 20)
     {
       if (v15 > 27)
       {
@@ -4309,34 +4309,34 @@ LABEL_73:
         case 15:
           v16 = 34;
 LABEL_117:
-          *a8 = v16;
+          *use = v16;
           return v8;
       }
     }
 
-    *a8 = -1;
+    *use = -1;
     return -12780;
   }
 
   return v8;
 }
 
-- (int)_getBlurShaderParameters:(unint64_t)a3 pipelineIndexToUse:(int *)a4
+- (int)_getBlurShaderParameters:(unint64_t)parameters pipelineIndexToUse:(int *)use
 {
-  if (a4)
+  if (use)
   {
-    if (a3 <= 539)
+    if (parameters <= 539)
     {
-      if (a3 > 29)
+      if (parameters > 29)
       {
-        if (a3 == 30)
+        if (parameters == 30)
         {
           result = 0;
           v5 = 50;
           goto LABEL_23;
         }
 
-        if (a3 == 60)
+        if (parameters == 60)
         {
           result = 0;
           v5 = 53;
@@ -4346,14 +4346,14 @@ LABEL_117:
 
       else
       {
-        if (a3 == 10)
+        if (parameters == 10)
         {
           result = 0;
           v5 = 49;
           goto LABEL_23;
         }
 
-        if (a3 == 20)
+        if (parameters == 20)
         {
           result = 0;
           v5 = 52;
@@ -4362,16 +4362,16 @@ LABEL_117:
       }
     }
 
-    else if (a3 <= 545)
+    else if (parameters <= 545)
     {
-      if (a3 == 540)
+      if (parameters == 540)
       {
         result = 0;
         v5 = 51;
         goto LABEL_23;
       }
 
-      if (a3 == 543)
+      if (parameters == 543)
       {
         result = 0;
         v5 = 54;
@@ -4381,7 +4381,7 @@ LABEL_117:
 
     else
     {
-      switch(a3)
+      switch(parameters)
       {
         case 0x222uLL:
           result = 0;
@@ -4395,12 +4395,12 @@ LABEL_117:
           result = 0;
           v5 = 56;
 LABEL_23:
-          *a4 = v5;
+          *use = v5;
           return result;
       }
     }
 
-    *a4 = -1;
+    *use = -1;
     return -12780;
   }
 
@@ -4411,11 +4411,11 @@ LABEL_23:
   }
 }
 
-- (int)_getBlurDeltaMapBordersShaderParameters:(unint64_t)a3 pipelineIndexToUse:(int *)a4
+- (int)_getBlurDeltaMapBordersShaderParameters:(unint64_t)parameters pipelineIndexToUse:(int *)use
 {
-  if (a4)
+  if (use)
   {
-    switch(a3)
+    switch(parameters)
     {
       case 0x222uLL:
         result = 0;
@@ -4429,11 +4429,11 @@ LABEL_23:
         result = 0;
         v5 = 58;
 LABEL_8:
-        *a4 = v5;
+        *use = v5;
         return result;
     }
 
-    *a4 = -1;
+    *use = -1;
     return -12780;
   }
 
@@ -4444,54 +4444,54 @@ LABEL_8:
   }
 }
 
-- (void)_addCommandBufferHandler:(id)a3
+- (void)_addCommandBufferHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __43__affineGPUMetal__addCommandBufferHandler___block_invoke;
   v5[3] = &unk_550B0;
   objc_copyWeak(&v6, &location);
-  [v4 addCompletedHandler:v5];
+  [handlerCopy addCompletedHandler:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (id)_allocatePyramidWithPixelFormat:(unint64_t)a3 bottomLevelWidth:(unint64_t)a4 bottomLevelHeight:(unint64_t)a5 scaleFactor:(unint64_t)a6 includeBottomLevel:(BOOL)a7 minimumDimension:(unint64_t)a8
+- (id)_allocatePyramidWithPixelFormat:(unint64_t)format bottomLevelWidth:(unint64_t)width bottomLevelHeight:(unint64_t)height scaleFactor:(unint64_t)factor includeBottomLevel:(BOOL)level minimumDimension:(unint64_t)dimension
 {
   v14 = objc_alloc_init(NSMutableArray);
   if (v14)
   {
-    if (a6)
+    if (factor)
     {
-      if (!a7)
+      if (!level)
       {
-        a4 = (a6 - 1 + a4) / a6;
-        a5 = (a6 - 1 + a5) / a6;
+        width = (factor - 1 + width) / factor;
+        height = (factor - 1 + height) / factor;
       }
 
-      if (a4 >= a5)
+      if (width >= height)
       {
-        v15 = a5;
+        widthCopy = height;
       }
 
       else
       {
-        v15 = a4;
+        widthCopy = width;
       }
 
-      if (v15 < a8)
+      if (widthCopy < dimension)
       {
 LABEL_16:
         v22 = v14;
         goto LABEL_17;
       }
 
-      v16 = a6 - 1;
+      v16 = factor - 1;
       while (1)
       {
-        v17 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:a3 width:a4 height:a5 mipmapped:0];
+        v17 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:format width:width height:height mipmapped:0];
         v18 = v17;
         if (!v17)
         {
@@ -4500,8 +4500,8 @@ LABEL_16:
         }
 
         [v17 setUsage:23];
-        v19 = [(FigMetalContext *)self->_metalContext device];
-        v20 = [v19 newTextureWithDescriptor:v18];
+        device = [(FigMetalContext *)self->_metalContext device];
+        v20 = [device newTextureWithDescriptor:v18];
 
         if (!v20)
         {
@@ -4509,19 +4509,19 @@ LABEL_16:
         }
 
         [v14 addObject:v20];
-        a4 = (v16 + a4) / a6;
-        a5 = (v16 + a5) / a6;
-        if (a4 >= a5)
+        width = (v16 + width) / factor;
+        height = (v16 + height) / factor;
+        if (width >= height)
         {
-          v21 = a5;
+          widthCopy2 = height;
         }
 
         else
         {
-          v21 = a4;
+          widthCopy2 = width;
         }
 
-        if (v21 < a8)
+        if (widthCopy2 < dimension)
         {
           goto LABEL_16;
         }
@@ -4565,8 +4565,8 @@ LABEL_9:
   [v4 setWidth:32];
   [v4 setPixelFormat:70];
   [v4 setUsage:7];
-  v5 = [(FigMetalContext *)self->_metalContext device];
-  v6 = [v5 newTextureWithDescriptor:v4];
+  device = [(FigMetalContext *)self->_metalContext device];
+  v6 = [device newTextureWithDescriptor:v4];
   segmentationMask = self->_segmentationMask;
   self->_segmentationMask = v6;
 
@@ -4576,8 +4576,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [(FigMetalContext *)self->_metalContext device];
-  v9 = [v8 newTextureWithDescriptor:v4];
+  device2 = [(FigMetalContext *)self->_metalContext device];
+  v9 = [device2 newTextureWithDescriptor:v4];
   bgCubeTexture = self->_bgCubeTexture;
   self->_bgCubeTexture = v9;
 
@@ -4597,11 +4597,11 @@ LABEL_5:
 {
   if ((self->_bgCubeTexture && self->_segmentationMask || ([(affineGPUMetal *)self _allocateSemanticStyleColorCubeTextures], self->_bgCubeTexture)) && self->_segmentationMask)
   {
-    v3 = [(NSData *)self->_backgroundColorCube bytes];
-    if (v3)
+    bytes = [(NSData *)self->_backgroundColorCube bytes];
+    if (bytes)
     {
-      v4 = v3;
-      if (self->_bgCubePtr != v3)
+      v4 = bytes;
+      if (self->_bgCubePtr != bytes)
       {
         bgCubeTexture = self->_bgCubeTexture;
         v9 = 0;
@@ -4614,11 +4614,11 @@ LABEL_5:
       }
     }
 
-    v6 = [self->_fgCubePtr bytes];
+    bytes2 = [self->_fgCubePtr bytes];
     result = 0;
-    if (v6)
+    if (bytes2)
     {
-      if (*&self->_srlFixOn != v6)
+      if (*&self->_srlFixOn != bytes2)
       {
         segmentationMask = self->_segmentationMask;
         v9 = 0;
@@ -4626,9 +4626,9 @@ LABEL_5:
         v11 = 0;
         v12 = xmmword_43910;
         v13 = 1;
-        [(__CVBuffer *)segmentationMask replaceRegion:&v9 mipmapLevel:0 slice:0 withBytes:v6 bytesPerRow:128 bytesPerImage:0];
+        [(__CVBuffer *)segmentationMask replaceRegion:&v9 mipmapLevel:0 slice:0 withBytes:bytes2 bytesPerRow:128 bytesPerImage:0];
         result = 0;
-        *&self->_srlFixOn = v6;
+        *&self->_srlFixOn = bytes2;
       }
     }
   }
@@ -4642,93 +4642,93 @@ LABEL_5:
   return result;
 }
 
-- (int)_duplicateBottomRowsOnPixelBuffer:(__CVBuffer *)a3
+- (int)_duplicateBottomRowsOnPixelBuffer:(__CVBuffer *)buffer
 {
   extraRowsOnBottom = 0;
   if (self->_pipelineComputeStates[0] && *(&self->_P3ToBT2020ConversionMethod + 4) == 1)
   {
-    v4 = a3;
-    if (!a3)
+    bufferCopy = buffer;
+    if (!buffer)
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_7();
       FigDebugAssert3();
-      return v4;
+      return bufferCopy;
     }
 
-    CVPixelBufferGetExtendedPixels(a3, 0, 0, 0, &extraRowsOnBottom);
-    if (CVPixelBufferGetHeight(v4) == 1080 && extraRowsOnBottom == 8)
+    CVPixelBufferGetExtendedPixels(buffer, 0, 0, 0, &extraRowsOnBottom);
+    if (CVPixelBufferGetHeight(bufferCopy) == 1080 && extraRowsOnBottom == 8)
     {
-      if (CVPixelBufferGetPixelFormatType(v4) == 875704438 || CVPixelBufferGetPixelFormatType(v4) == 875704422)
+      if (CVPixelBufferGetPixelFormatType(bufferCopy) == 875704438 || CVPixelBufferGetPixelFormatType(bufferCopy) == 875704422)
       {
-        IOSurface = CVPixelBufferGetIOSurface(v4);
+        IOSurface = CVPixelBufferGetIOSurface(bufferCopy);
         if (!IOSurface)
         {
           fig_log_get_emitter();
           OUTLINED_FUNCTION_7();
           FigDebugAssert3();
-          LODWORD(v4) = -12782;
-          return v4;
+          LODWORD(bufferCopy) = -12782;
+          return bufferCopy;
         }
 
         v7 = IOSurface;
-        v8 = [(FigMetalContext *)self->_metalContext device];
-        v9 = [v8 newBufferWithIOSurface:v7];
+        device = [(FigMetalContext *)self->_metalContext device];
+        v9 = [device newBufferWithIOSurface:v7];
 
         if (!v9)
         {
           fig_log_get_emitter();
           OUTLINED_FUNCTION_7();
           FigDebugAssert3();
-          LODWORD(v4) = -12786;
-          return v4;
+          LODWORD(bufferCopy) = -12786;
+          return bufferCopy;
         }
 
         v20 = 0x43800000437;
         OffsetOfPlane = IOSurfaceGetOffsetOfPlane();
         v21 = OffsetOfPlane - IOSurfaceGetOffsetOfPlane();
         BytesPerRowOfPlane = IOSurfaceGetBytesPerRowOfPlane(v7, 0);
-        v11 = [(FigMetalContext *)self->_metalContext commandQueue];
-        v12 = [v11 commandBuffer];
+        commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+        commandBuffer = [commandQueue commandBuffer];
 
-        if (!v12)
+        if (!commandBuffer)
         {
           OUTLINED_FUNCTION_2();
           OUTLINED_FUNCTION_4_1();
           FigDebugAssert3();
           OUTLINED_FUNCTION_2();
           OUTLINED_FUNCTION_5_1();
-          LODWORD(v4) = FigSignalErrorAtGM();
+          LODWORD(bufferCopy) = FigSignalErrorAtGM();
 
-          return v4;
+          return bufferCopy;
         }
 
-        v13 = [v12 computeCommandEncoder];
-        if (!v13)
+        computeCommandEncoder = [commandBuffer computeCommandEncoder];
+        if (!computeCommandEncoder)
         {
           OUTLINED_FUNCTION_2();
           OUTLINED_FUNCTION_4_1();
           FigDebugAssert3();
           OUTLINED_FUNCTION_2();
           OUTLINED_FUNCTION_5_1();
-          LODWORD(v4) = FigSignalErrorAtGM();
+          LODWORD(bufferCopy) = FigSignalErrorAtGM();
 
-          return v4;
+          return bufferCopy;
         }
 
-        v14 = v13;
-        [v13 setComputePipelineState:self->_pipelineComputeStates[0]];
+        v14 = computeCommandEncoder;
+        [computeCommandEncoder setComputePipelineState:self->_pipelineComputeStates[0]];
         [v14 setBuffer:v9 offset:0 atIndex:0];
         [v14 setBytes:&v20 length:16 atIndex:1];
-        v18 = ((CVPixelBufferGetWidth(v4) >> 1) + 31) >> 5;
+        v18 = ((CVPixelBufferGetWidth(bufferCopy) >> 1) + 31) >> 5;
         v19 = vdupq_n_s64(1uLL);
         v16 = xmmword_43900;
         v17 = 1;
         [v14 dispatchThreadgroups:&v18 threadsPerThreadgroup:&v16];
         [v14 endEncoding];
-        [(affineGPUMetal *)self _addCommandBufferHandler:v12];
-        [v12 commit];
-        CVBufferSetAttachment(v4, kCVPixelBufferExtendedPixelsFilledKey, kCFBooleanTrue, kCVAttachmentMode_ShouldNotPropagate);
+        [(affineGPUMetal *)self _addCommandBufferHandler:commandBuffer];
+        [commandBuffer commit];
+        CVBufferSetAttachment(bufferCopy, kCVPixelBufferExtendedPixelsFilledKey, kCFBooleanTrue, kCVAttachmentMode_ShouldNotPropagate);
       }
 
       else
@@ -4740,8 +4740,8 @@ LABEL_5:
     }
   }
 
-  LODWORD(v4) = 0;
-  return v4;
+  LODWORD(bufferCopy) = 0;
+  return bufferCopy;
 }
 
 - (void)initWithMetalContext:.cold.1()
@@ -5190,7 +5190,7 @@ LABEL_5:
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_5_1();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 
@@ -5398,7 +5398,7 @@ LABEL_5:
   FigDebugAssert3();
   OUTLINED_FUNCTION_1();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 

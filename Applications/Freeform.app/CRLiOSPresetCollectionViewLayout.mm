@@ -1,142 +1,142 @@
 @interface CRLiOSPresetCollectionViewLayout
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)isCellEditableForSection:(unint64_t)a3 context:(id)a4;
-- (BOOL)p_shouldVerticallyDistributeEvenlyInContext:(id)a3;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (BOOL)shouldVerticallyDistributeEvenlyForContext:(id)a3;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)isCellEditableForSection:(unint64_t)section context:(id)context;
+- (BOOL)p_shouldVerticallyDistributeEvenlyInContext:(id)context;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (BOOL)shouldVerticallyDistributeEvenlyForContext:(id)context;
 - (BOOL)showsSubpageNavigator;
 - (BOOL)supportsSearch;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (CGSize)p_swatchInsets;
-- (CGSize)sizeOfPresetInSection:(unint64_t)a3;
-- (CRLiOSPresetCollectionViewLayout)initWithPresetCollectionViewLayoutProvider:(id)a3 delegate:(id)a4;
+- (CGSize)sizeOfPresetInSection:(unint64_t)section;
+- (CRLiOSPresetCollectionViewLayout)initWithPresetCollectionViewLayoutProvider:(id)provider delegate:(id)delegate;
 - (CRLiOSPresetCollectionViewLayoutDelegate)p_delegate;
 - (NSArray)pageControlTitles;
 - (NSArray)subpageNavigatorItems;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (UIEdgeInsets)p_insetsInSection:(unint64_t)a3 forContext:(id)a4;
-- (double)additionalHeightForItemInSection:(unint64_t)a3 context:(id)a4;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5;
-- (double)horizontalInsetForItemInSection:(unint64_t)a3 context:(id)a4;
-- (double)p_horizontalSpacingInSection:(unint64_t)a3 forContext:(id)a4;
-- (double)p_minimumInteritemSpacingInSection:(unint64_t)a3 forContext:(id)a4;
-- (double)p_minimumLineSpacingInSection:(unint64_t)a3 forContext:(id)a4;
-- (double)p_swatchHeightGivenWidth:(double)a3 context:(id)a4;
-- (double)p_swatchWidthInSection:(unint64_t)a3 forContext:(id)a4;
-- (double)p_verticalSpacingForSection:(unint64_t)a3 context:(id)a4;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (UIEdgeInsets)p_insetsInSection:(unint64_t)section forContext:(id)context;
+- (double)additionalHeightForItemInSection:(unint64_t)section context:(id)context;
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index;
+- (double)horizontalInsetForItemInSection:(unint64_t)section context:(id)context;
+- (double)p_horizontalSpacingInSection:(unint64_t)section forContext:(id)context;
+- (double)p_minimumInteritemSpacingInSection:(unint64_t)section forContext:(id)context;
+- (double)p_minimumLineSpacingInSection:(unint64_t)section forContext:(id)context;
+- (double)p_swatchHeightGivenWidth:(double)width context:(id)context;
+- (double)p_swatchWidthInSection:(unint64_t)section forContext:(id)context;
+- (double)p_verticalSpacingForSection:(unint64_t)section context:(id)context;
 - (id)cellRegistrationDictionary;
-- (id)cellReuseIdentifierForSection:(unint64_t)a3 context:(id)a4;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
+- (id)cellReuseIdentifierForSection:(unint64_t)section context:(id)context;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
 - (id)p_context;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
-- (unint64_t)numberOfSectionsInCollectionViewForContext:(id)a3;
-- (unint64_t)p_itemsPerRowInContext:(id)a3;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
+- (unint64_t)numberOfSectionsInCollectionViewForContext:(id)context;
+- (unint64_t)p_itemsPerRowInContext:(id)context;
 - (unint64_t)pageControlType;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 @end
 
 @implementation CRLiOSPresetCollectionViewLayout
 
-- (CRLiOSPresetCollectionViewLayout)initWithPresetCollectionViewLayoutProvider:(id)a3 delegate:(id)a4
+- (CRLiOSPresetCollectionViewLayout)initWithPresetCollectionViewLayoutProvider:(id)provider delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = CRLiOSPresetCollectionViewLayout;
   v9 = [(CRLiOSPresetCollectionViewLayout *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_layoutProvider, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_layoutProvider, provider);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;
 }
 
-- (double)additionalHeightForItemInSection:(unint64_t)a3 context:(id)a4
+- (double)additionalHeightForItemInSection:(unint64_t)section context:(id)context
 {
-  v6 = a4;
-  v7 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+  contextCopy = context;
+  presetCollectionViewLayoutProvider = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
   v8 = objc_opt_respondsToSelector();
 
   v9 = 0.0;
   if (v8)
   {
-    v10 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
-    [v10 additionalHeightForItemInSection:a3 context:v6];
+    presetCollectionViewLayoutProvider2 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+    [presetCollectionViewLayoutProvider2 additionalHeightForItemInSection:section context:contextCopy];
     v9 = v11;
   }
 
   return v9;
 }
 
-- (id)cellReuseIdentifierForSection:(unint64_t)a3 context:(id)a4
+- (id)cellReuseIdentifierForSection:(unint64_t)section context:(id)context
 {
-  v6 = a4;
-  v7 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
-  v8 = [v7 cellReuseIdentifierForSection:a3 context:v6];
+  contextCopy = context;
+  presetCollectionViewLayoutProvider = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+  v8 = [presetCollectionViewLayoutProvider cellReuseIdentifierForSection:section context:contextCopy];
 
   return v8;
 }
 
 - (id)cellRegistrationDictionary
 {
-  v2 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
-  v3 = [v2 cellRegistrationDictionary];
+  presetCollectionViewLayoutProvider = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+  cellRegistrationDictionary = [presetCollectionViewLayoutProvider cellRegistrationDictionary];
 
-  return v3;
+  return cellRegistrationDictionary;
 }
 
-- (BOOL)isCellEditableForSection:(unint64_t)a3 context:(id)a4
+- (BOOL)isCellEditableForSection:(unint64_t)section context:(id)context
 {
-  v6 = a4;
-  v7 = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
-  LOBYTE(a3) = [v7 isCellEditableForSection:a3 context:v6];
+  contextCopy = context;
+  p_layoutProvider = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
+  LOBYTE(section) = [p_layoutProvider isCellEditableForSection:section context:contextCopy];
 
-  return a3;
+  return section;
 }
 
-- (double)horizontalInsetForItemInSection:(unint64_t)a3 context:(id)a4
+- (double)horizontalInsetForItemInSection:(unint64_t)section context:(id)context
 {
-  v6 = a4;
-  v7 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+  contextCopy = context;
+  presetCollectionViewLayoutProvider = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
   v8 = objc_opt_respondsToSelector();
 
   v9 = 0.0;
   if (v8)
   {
-    v10 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
-    [v10 horizontalInsetForItemInSection:a3 context:v6];
+    presetCollectionViewLayoutProvider2 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+    [presetCollectionViewLayoutProvider2 horizontalInsetForItemInSection:section context:contextCopy];
     v9 = v11;
   }
 
   return v9;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
-  v5 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
-  v6 = [(CRLiOSPresetCollectionViewLayout *)self p_context];
-  v7 = [v5 numberOfItemsInSection:a3 context:v6];
+  presetCollectionViewLayoutProvider = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+  p_context = [(CRLiOSPresetCollectionViewLayout *)self p_context];
+  v7 = [presetCollectionViewLayoutProvider numberOfItemsInSection:section context:p_context];
 
   return v7;
 }
 
-- (unint64_t)numberOfSectionsInCollectionViewForContext:(id)a3
+- (unint64_t)numberOfSectionsInCollectionViewForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+  contextCopy = context;
+  presetCollectionViewLayoutProvider = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
-    v8 = [v7 numberOfSectionsInCollectionViewForContext:v4];
+    presetCollectionViewLayoutProvider2 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+    v8 = [presetCollectionViewLayoutProvider2 numberOfSectionsInCollectionViewForContext:contextCopy];
   }
 
   else
@@ -147,12 +147,12 @@
   return v8;
 }
 
-- (CGSize)sizeOfPresetInSection:(unint64_t)a3
+- (CGSize)sizeOfPresetInSection:(unint64_t)section
 {
-  v5 = [(CRLiOSPresetCollectionViewLayout *)self p_context];
-  [(CRLiOSPresetCollectionViewLayout *)self p_swatchWidthInSection:a3 forContext:v5];
+  p_context = [(CRLiOSPresetCollectionViewLayout *)self p_context];
+  [(CRLiOSPresetCollectionViewLayout *)self p_swatchWidthInSection:section forContext:p_context];
   v7 = v6;
-  [(CRLiOSPresetCollectionViewLayout *)self p_swatchHeightGivenWidth:v5 context:?];
+  [(CRLiOSPresetCollectionViewLayout *)self p_swatchHeightGivenWidth:p_context context:?];
   v9 = v8;
 
   v10 = v7;
@@ -162,59 +162,59 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v5 = [a4 layer];
-  [v5 setHidden:0];
+  layer = [cell layer];
+  [layer setHidden:0];
 }
 
 - (BOOL)showsSubpageNavigator
 {
-  v2 = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
-  v3 = [v2 showsSubpageNavigator];
+  p_layoutProvider = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
+  showsSubpageNavigator = [p_layoutProvider showsSubpageNavigator];
 
-  return v3;
+  return showsSubpageNavigator;
 }
 
 - (NSArray)subpageNavigatorItems
 {
-  v2 = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
+  p_layoutProvider = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 subpageTitles];
+    subpageTitles = [p_layoutProvider subpageTitles];
   }
 
   else
   {
-    v3 = &__NSArray0__struct;
+    subpageTitles = &__NSArray0__struct;
   }
 
-  return v3;
+  return subpageTitles;
 }
 
 - (BOOL)supportsSearch
 {
-  v2 = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
-  v3 = [v2 supportsSearch];
+  p_layoutProvider = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
+  supportsSearch = [p_layoutProvider supportsSearch];
 
-  return v3;
+  return supportsSearch;
 }
 
 - (unint64_t)pageControlType
 {
-  v2 = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
-  v3 = [v2 pageControlType];
+  p_layoutProvider = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
+  pageControlType = [p_layoutProvider pageControlType];
 
-  return v3;
+  return pageControlType;
 }
 
 - (NSArray)pageControlTitles
 {
-  v2 = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
+  p_layoutProvider = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 pageControlTitles];
-    v4 = [v3 crl_arrayByMappingObjectsUsingBlock:&stru_10183C120];
+    pageControlTitles = [p_layoutProvider pageControlTitles];
+    v4 = [pageControlTitles crl_arrayByMappingObjectsUsingBlock:&stru_10183C120];
   }
 
   else
@@ -225,25 +225,25 @@
   return v4;
 }
 
-- (BOOL)shouldVerticallyDistributeEvenlyForContext:(id)a3
+- (BOOL)shouldVerticallyDistributeEvenlyForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
-  v6 = [v5 shouldVerticallyDistributeEvenlyForContext:v4];
+  contextCopy = context;
+  p_layoutProvider = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
+  v6 = [p_layoutProvider shouldVerticallyDistributeEvenlyForContext:contextCopy];
 
   return v6;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = [a5 section];
-  [(CRLiOSPresetCollectionViewLayout *)self sizeOfPresetInSection:v6];
+  section = [path section];
+  [(CRLiOSPresetCollectionViewLayout *)self sizeOfPresetInSection:section];
   v8 = v7;
   v10 = v9;
-  v11 = [(CRLiOSPresetCollectionViewLayout *)self p_context];
-  [(CRLiOSPresetCollectionViewLayout *)self horizontalInsetForItemInSection:v6 context:v11];
+  p_context = [(CRLiOSPresetCollectionViewLayout *)self p_context];
+  [(CRLiOSPresetCollectionViewLayout *)self horizontalInsetForItemInSection:section context:p_context];
   v13 = v8 + v12 * 2.0;
-  [(CRLiOSPresetCollectionViewLayout *)self additionalHeightForItemInSection:v6 context:v11];
+  [(CRLiOSPresetCollectionViewLayout *)self additionalHeightForItemInSection:section context:p_context];
   v15 = v10 + v14;
 
   v16 = v13;
@@ -253,10 +253,10 @@
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = [(CRLiOSPresetCollectionViewLayout *)self p_context:a3];
-  [(CRLiOSPresetCollectionViewLayout *)self p_insetsInSection:a5 forContext:v7];
+  v7 = [(CRLiOSPresetCollectionViewLayout *)self p_context:view];
+  [(CRLiOSPresetCollectionViewLayout *)self p_insetsInSection:index forContext:v7];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -273,60 +273,60 @@
   return result;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index
 {
-  v7 = [(CRLiOSPresetCollectionViewLayout *)self p_context:a3];
-  [(CRLiOSPresetCollectionViewLayout *)self p_minimumInteritemSpacingInSection:a5 forContext:v7];
+  v7 = [(CRLiOSPresetCollectionViewLayout *)self p_context:view];
+  [(CRLiOSPresetCollectionViewLayout *)self p_minimumInteritemSpacingInSection:index forContext:v7];
   v9 = v8;
 
   return v9;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index
 {
-  v7 = [(CRLiOSPresetCollectionViewLayout *)self p_context:a3];
-  [(CRLiOSPresetCollectionViewLayout *)self p_minimumLineSpacingInSection:a5 forContext:v7];
+  v7 = [(CRLiOSPresetCollectionViewLayout *)self p_context:view];
+  [(CRLiOSPresetCollectionViewLayout *)self p_minimumLineSpacingInSection:index forContext:v7];
   v9 = v8;
 
   return v9;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CRLiOSPresetCollectionViewLayout *)self p_delegate];
-  v7 = [v6 presetCollectionViewLayoutShouldHighlightPresetAtIndexPath:v5];
+  pathCopy = path;
+  p_delegate = [(CRLiOSPresetCollectionViewLayout *)self p_delegate];
+  v7 = [p_delegate presetCollectionViewLayoutShouldHighlightPresetAtIndexPath:pathCopy];
 
   return v7;
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CRLiOSPresetCollectionViewLayout *)self p_delegate];
-  [v6 presetCollectionViewLayoutDidHighlightPresetAtIndexPath:v5];
+  pathCopy = path;
+  p_delegate = [(CRLiOSPresetCollectionViewLayout *)self p_delegate];
+  [p_delegate presetCollectionViewLayoutDidHighlightPresetAtIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CRLiOSPresetCollectionViewLayout *)self p_delegate];
-  [v6 presetCollectionViewLayoutDidUnhighlightPresetAtIndexPath:v5];
+  pathCopy = path;
+  p_delegate = [(CRLiOSPresetCollectionViewLayout *)self p_delegate];
+  [p_delegate presetCollectionViewLayoutDidUnhighlightPresetAtIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CRLiOSPresetCollectionViewLayout *)self p_delegate];
-  [v6 presetCollectionViewLayoutDidSelectPresetAtIndexPath:v5];
+  pathCopy = path;
+  p_delegate = [(CRLiOSPresetCollectionViewLayout *)self p_delegate];
+  [p_delegate presetCollectionViewLayoutDidSelectPresetAtIndexPath:pathCopy];
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v20.receiver = self;
   v20.super_class = CRLiOSPresetCollectionViewLayout;
   if ([(CRLiOSPresetCollectionViewLayout *)&v20 shouldInvalidateLayoutForBoundsChange:?])
@@ -334,8 +334,8 @@
     return 1;
   }
 
-  v9 = [(CRLiOSPresetCollectionViewLayout *)self collectionView];
-  [v9 bounds];
+  collectionView = [(CRLiOSPresetCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -354,21 +354,21 @@
   return v18 != v19 && vabdd_f64(v18, v19) >= fabs(v19 * 0.000000999999997);
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  rect = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  rect = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v8 = objc_opt_class();
   v28.receiver = self;
   v28.super_class = CRLiOSPresetCollectionViewLayout;
-  v9 = [(CRLiOSPresetCollectionViewLayout *)&v28 invalidationContextForBoundsChange:x, y, width, height];
-  v10 = sub_100013F00(v8, v9);
+  height = [(CRLiOSPresetCollectionViewLayout *)&v28 invalidationContextForBoundsChange:x, y, width, height];
+  v10 = sub_100013F00(v8, height);
 
-  v11 = [(CRLiOSPresetCollectionViewLayout *)self collectionView];
-  [v11 bounds];
+  collectionView = [(CRLiOSPresetCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -404,55 +404,55 @@
 
 - (id)p_context
 {
-  v2 = [(CRLiOSPresetCollectionViewLayout *)self p_delegate];
-  v3 = [v2 context];
+  p_delegate = [(CRLiOSPresetCollectionViewLayout *)self p_delegate];
+  context = [p_delegate context];
 
-  return v3;
+  return context;
 }
 
-- (double)p_swatchWidthInSection:(unint64_t)a3 forContext:(id)a4
+- (double)p_swatchWidthInSection:(unint64_t)section forContext:(id)context
 {
-  v6 = a4;
-  v7 = [(CRLiOSPresetCollectionViewLayout *)self p_itemsPerRowInContext:v6];
+  contextCopy = context;
+  v7 = [(CRLiOSPresetCollectionViewLayout *)self p_itemsPerRowInContext:contextCopy];
   [(CRLiOSPresetCollectionViewLayout *)self p_swatchInsets];
   v9 = v8;
-  v10 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
-  [v10 minimumHorizontalSpacingMultiplierInSection:a3 forContext:v6];
+  presetCollectionViewLayoutProvider = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+  [presetCollectionViewLayoutProvider minimumHorizontalSpacingMultiplierInSection:section forContext:contextCopy];
   v12 = v11;
 
   v13 = v7 + v12 * (v7 + 1.0);
-  [v6 contentSize];
+  [contextCopy contentSize];
   v15 = v14;
 
   return floor(v15 / v13 + v9 * 2.0);
 }
 
-- (double)p_swatchHeightGivenWidth:(double)a3 context:(id)a4
+- (double)p_swatchHeightGivenWidth:(double)width context:(id)context
 {
-  v6 = a4;
-  v7 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
-  [v7 presetWidthToHeightRatioForContext:v6];
+  contextCopy = context;
+  presetCollectionViewLayoutProvider = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+  [presetCollectionViewLayoutProvider presetWidthToHeightRatioForContext:contextCopy];
   v9 = v8;
 
-  return floor(a3 / v9);
+  return floor(width / v9);
 }
 
-- (UIEdgeInsets)p_insetsInSection:(unint64_t)a3 forContext:(id)a4
+- (UIEdgeInsets)p_insetsInSection:(unint64_t)section forContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   [(CRLiOSPresetCollectionViewLayout *)self p_swatchInsets];
   v8 = v7;
   v10 = v9;
-  [(CRLiOSPresetCollectionViewLayout *)self p_horizontalSpacingInSection:a3 forContext:v6];
+  [(CRLiOSPresetCollectionViewLayout *)self p_horizontalSpacingInSection:section forContext:contextCopy];
   v12 = v11;
-  [(CRLiOSPresetCollectionViewLayout *)self horizontalInsetForItemInSection:a3 context:v6];
+  [(CRLiOSPresetCollectionViewLayout *)self horizontalInsetForItemInSection:section context:contextCopy];
   v14 = v13;
-  [(CRLiOSPresetCollectionViewLayout *)self p_verticalSpacingForSection:a3 context:v6];
+  [(CRLiOSPresetCollectionViewLayout *)self p_verticalSpacingForSection:section context:contextCopy];
   v16 = v15;
-  LODWORD(a3) = [(CRLiOSPresetCollectionViewLayout *)self p_shouldVerticallyDistributeEvenlyInContext:v6];
+  LODWORD(section) = [(CRLiOSPresetCollectionViewLayout *)self p_shouldVerticallyDistributeEvenlyInContext:contextCopy];
 
   v17 = fmin(v16 - v10, 32.0);
-  if (a3)
+  if (section)
   {
     v17 = v16;
   }
@@ -467,14 +467,14 @@
   return result;
 }
 
-- (double)p_minimumLineSpacingInSection:(unint64_t)a3 forContext:(id)a4
+- (double)p_minimumLineSpacingInSection:(unint64_t)section forContext:(id)context
 {
-  v6 = a4;
-  [(CRLiOSPresetCollectionViewLayout *)self p_verticalSpacingForSection:a3 context:v6];
+  contextCopy = context;
+  [(CRLiOSPresetCollectionViewLayout *)self p_verticalSpacingForSection:section context:contextCopy];
   v8 = v7;
-  LOBYTE(a3) = [(CRLiOSPresetCollectionViewLayout *)self p_shouldVerticallyDistributeEvenlyInContext:v6];
+  LOBYTE(section) = [(CRLiOSPresetCollectionViewLayout *)self p_shouldVerticallyDistributeEvenlyInContext:contextCopy];
 
-  if (a3)
+  if (section)
   {
     return v8;
   }
@@ -483,59 +483,59 @@
   return v8 + v10 * -2.0;
 }
 
-- (double)p_minimumInteritemSpacingInSection:(unint64_t)a3 forContext:(id)a4
+- (double)p_minimumInteritemSpacingInSection:(unint64_t)section forContext:(id)context
 {
-  v6 = a4;
-  [(CRLiOSPresetCollectionViewLayout *)self p_horizontalSpacingInSection:a3 forContext:v6];
+  contextCopy = context;
+  [(CRLiOSPresetCollectionViewLayout *)self p_horizontalSpacingInSection:section forContext:contextCopy];
   v8 = v7;
   [(CRLiOSPresetCollectionViewLayout *)self p_swatchInsets];
   v10 = v9;
-  [(CRLiOSPresetCollectionViewLayout *)self horizontalInsetForItemInSection:a3 context:v6];
+  [(CRLiOSPresetCollectionViewLayout *)self horizontalInsetForItemInSection:section context:contextCopy];
   v12 = v11;
 
   return v8 + (v10 + v12) * -2.0;
 }
 
-- (double)p_horizontalSpacingInSection:(unint64_t)a3 forContext:(id)a4
+- (double)p_horizontalSpacingInSection:(unint64_t)section forContext:(id)context
 {
-  v6 = a4;
-  v7 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
-  [v7 minimumHorizontalSpacingMultiplierInSection:a3 forContext:v6];
+  contextCopy = context;
+  presetCollectionViewLayoutProvider = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+  [presetCollectionViewLayoutProvider minimumHorizontalSpacingMultiplierInSection:section forContext:contextCopy];
   v9 = v8;
 
-  [(CRLiOSPresetCollectionViewLayout *)self p_swatchWidthInSection:a3 forContext:v6];
+  [(CRLiOSPresetCollectionViewLayout *)self p_swatchWidthInSection:section forContext:contextCopy];
   v11 = v10;
 
   [(CRLiOSPresetCollectionViewLayout *)self p_swatchInsets];
   return v9 * (v11 + v12 * -2.0);
 }
 
-- (BOOL)p_shouldVerticallyDistributeEvenlyInContext:(id)a3
+- (BOOL)p_shouldVerticallyDistributeEvenlyInContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
-  v6 = [v5 shouldVerticallyDistributeEvenlyForContext:v4];
+  contextCopy = context;
+  presetCollectionViewLayoutProvider = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+  v6 = [presetCollectionViewLayoutProvider shouldVerticallyDistributeEvenlyForContext:contextCopy];
 
   return v6;
 }
 
-- (double)p_verticalSpacingForSection:(unint64_t)a3 context:(id)a4
+- (double)p_verticalSpacingForSection:(unint64_t)section context:(id)context
 {
-  v6 = a4;
-  [(CRLiOSPresetCollectionViewLayout *)self p_swatchWidthInSection:a3 forContext:v6];
-  [(CRLiOSPresetCollectionViewLayout *)self p_swatchHeightGivenWidth:v6 context:?];
+  contextCopy = context;
+  [(CRLiOSPresetCollectionViewLayout *)self p_swatchWidthInSection:section forContext:contextCopy];
+  [(CRLiOSPresetCollectionViewLayout *)self p_swatchHeightGivenWidth:contextCopy context:?];
   v8 = v7;
-  if ([(CRLiOSPresetCollectionViewLayout *)self p_shouldVerticallyDistributeEvenlyInContext:v6])
+  if ([(CRLiOSPresetCollectionViewLayout *)self p_shouldVerticallyDistributeEvenlyInContext:contextCopy])
   {
-    v9 = vcvtps_u32_f32([(CRLiOSPresetCollectionViewLayout *)self numberOfItemsInSection:a3]/ [(CRLiOSPresetCollectionViewLayout *)self p_itemsPerRowInContext:v6]);
-    [v6 contentSize];
+    v9 = vcvtps_u32_f32([(CRLiOSPresetCollectionViewLayout *)self numberOfItemsInSection:section]/ [(CRLiOSPresetCollectionViewLayout *)self p_itemsPerRowInContext:contextCopy]);
+    [contextCopy contentSize];
     v11 = floor((v10 - v9 * v8) / (v9 + 1));
   }
 
   else
   {
-    v12 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
-    [v12 minimumVerticalSpacingMultiplierInSection:a3 forContext:v6];
+    presetCollectionViewLayoutProvider = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+    [presetCollectionViewLayoutProvider minimumVerticalSpacingMultiplierInSection:section forContext:contextCopy];
     v14 = v13;
 
     [(CRLiOSPresetCollectionViewLayout *)self p_swatchInsets];
@@ -545,19 +545,19 @@
   return v11;
 }
 
-- (unint64_t)p_itemsPerRowInContext:(id)a3
+- (unint64_t)p_itemsPerRowInContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
-  v6 = [v5 itemsPerRowForContext:v4];
+  contextCopy = context;
+  p_layoutProvider = [(CRLiOSPresetCollectionViewLayout *)self p_layoutProvider];
+  v6 = [p_layoutProvider itemsPerRowForContext:contextCopy];
 
   return v6;
 }
 
 - (CGSize)p_swatchInsets
 {
-  v2 = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
-  [v2 swatchInsets];
+  presetCollectionViewLayoutProvider = [(CRLiOSPresetCollectionViewLayout *)self presetCollectionViewLayoutProvider];
+  [presetCollectionViewLayoutProvider swatchInsets];
   v4 = v3;
   v6 = v5;
 

@@ -1,10 +1,10 @@
 @interface CLFallHealthKitManager
-+ (void)recordFallEventInHealthKit:(const ImpactEvent *)a3;
++ (void)recordFallEventInHealthKit:(const ImpactEvent *)kit;
 @end
 
 @implementation CLFallHealthKitManager
 
-+ (void)recordFallEventInHealthKit:(const ImpactEvent *)a3
++ (void)recordFallEventInHealthKit:(const ImpactEvent *)kit
 {
   if (!objc_opt_class())
   {
@@ -14,8 +14,8 @@
   if (+[HKHealthStore isHealthDataAvailable])
   {
     v4 = 0;
-    p_fHasMotionBeforeImpact = &a3->fImpact.fHasMotionBeforeImpact;
-    fHasMotionBeforeImpact = a3->fImpact.fHasMotionBeforeImpact;
+    p_fHasMotionBeforeImpact = &kit->fImpact.fHasMotionBeforeImpact;
+    fHasMotionBeforeImpact = kit->fImpact.fHasMotionBeforeImpact;
     v7 = 1;
     if (fHasMotionBeforeImpact > 4)
     {
@@ -52,7 +52,7 @@
       goto LABEL_23;
     }
 
-    if (a3->fImpact.fHasMotionBeforeImpact)
+    if (kit->fImpact.fHasMotionBeforeImpact)
     {
       if (fHasMotionBeforeImpact != 1)
       {
@@ -86,7 +86,7 @@ LABEL_25:
             v19 = @"_HKPrivateFallActionRequested";
             v20 = [NSNumber numberWithBool:v4];
             v15 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-            v16 = [NSDate dateWithTimeIntervalSinceReferenceDate:*&a3->fImpact.fOperatingMode];
+            v16 = [NSDate dateWithTimeIntervalSinceReferenceDate:*&kit->fImpact.fOperatingMode];
             v18 = +[HKQuantitySample quantitySampleWithType:quantity:startDate:endDate:device:metadata:](HKQuantitySample, "quantitySampleWithType:quantity:startDate:endDate:device:metadata:", v14, +[HKQuantity quantityWithUnit:doubleValue:](HKQuantity, "quantityWithUnit:doubleValue:", +[HKUnit countUnit](HKUnit, "countUnit"), 1.0), v16, v16, +[HKDevice localDevice], v15);
             [v13 saveObjects:+[NSArray arrayWithObjects:count:](NSArray withCompletion:{"arrayWithObjects:count:", &v18, 1), &stru_10245B230}];
           }

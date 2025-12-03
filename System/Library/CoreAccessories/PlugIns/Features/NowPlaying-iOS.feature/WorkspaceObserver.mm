@@ -1,8 +1,8 @@
 @interface WorkspaceObserver
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)applicationsWillInstall:(id)a3;
-- (void)applicationsWillUninstall:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)applicationsWillInstall:(id)install;
+- (void)applicationsWillUninstall:(id)uninstall;
 - (void)startObserving;
 - (void)stopObserving;
 @end
@@ -11,53 +11,53 @@
 
 - (void)startObserving
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 addObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace addObserver:self];
 }
 
 - (void)stopObserving
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 }
 
-- (void)applicationsWillInstall:(id)a3
+- (void)applicationsWillInstall:(id)install
 {
-  v5 = a3;
+  installCopy = install;
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationsWillInstall:v5];
+    [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationsWillInstall:installCopy];
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v5 = a3;
+  installCopy = install;
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationsDidInstall:v5];
+    [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationsDidInstall:installCopy];
   }
 }
 
-- (void)applicationsWillUninstall:(id)a3
+- (void)applicationsWillUninstall:(id)uninstall
 {
-  v5 = a3;
+  uninstallCopy = uninstall;
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationsWillUninstall:v5];
+    [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationsWillUninstall:uninstallCopy];
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v5 = a3;
+  uninstallCopy = uninstall;
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationsDidUninstall:v5];
+    [(LSApplicationWorkspaceObserverProtocol *)self->_delegate applicationsDidUninstall:uninstallCopy];
   }
 }
 

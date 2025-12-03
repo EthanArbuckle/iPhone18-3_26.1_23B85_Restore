@@ -1,28 +1,28 @@
 @interface FCPersonalizationTodaySectionMapping
-- (FCPersonalizationTodaySectionMapping)initWithCoder:(id)a3;
-- (FCPersonalizationTodaySectionMapping)initWithPBTodaySectionMapping:(id)a3;
-- (id)groupViewExposureTypesForTodaySectionIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FCPersonalizationTodaySectionMapping)initWithCoder:(id)coder;
+- (FCPersonalizationTodaySectionMapping)initWithPBTodaySectionMapping:(id)mapping;
+- (id)groupViewExposureTypesForTodaySectionIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCPersonalizationTodaySectionMapping
 
-- (FCPersonalizationTodaySectionMapping)initWithPBTodaySectionMapping:(id)a3
+- (FCPersonalizationTodaySectionMapping)initWithPBTodaySectionMapping:(id)mapping
 {
-  v5 = a3;
+  mappingCopy = mapping;
   v14.receiver = self;
   v14.super_class = FCPersonalizationTodaySectionMapping;
   v6 = [(FCPersonalizationTodaySectionMapping *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pbTodaySectionMapping, a3);
+    objc_storeStrong(&v6->_pbTodaySectionMapping, mapping);
     v8 = MEMORY[0x1E695DF20];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __70__FCPersonalizationTodaySectionMapping_initWithPBTodaySectionMapping___block_invoke;
     v12[3] = &unk_1E7C36EC8;
-    v13 = v5;
+    v13 = mappingCopy;
     v9 = [v8 fc_dictionary:v12];
     todaySectionIdentifiersToFRGroupViewExposureTypes = v7->_todaySectionIdentifiersToFRGroupViewExposureTypes;
     v7->_todaySectionIdentifiersToFRGroupViewExposureTypes = v9;
@@ -78,29 +78,29 @@ void __70__FCPersonalizationTodaySectionMapping_initWithPBTodaySectionMapping___
   }
 }
 
-- (FCPersonalizationTodaySectionMapping)initWithCoder:(id)a3
+- (FCPersonalizationTodaySectionMapping)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"todaySectionMapping"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"todaySectionMapping"];
 
   v6 = [(FCPersonalizationTodaySectionMapping *)self initWithPBTodaySectionMapping:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pbTodaySectionMapping = self->_pbTodaySectionMapping;
   if (pbTodaySectionMapping)
   {
-    [a3 encodeObject:pbTodaySectionMapping forKey:@"todaySectionMapping"];
+    [coder encodeObject:pbTodaySectionMapping forKey:@"todaySectionMapping"];
   }
 }
 
-- (id)groupViewExposureTypesForTodaySectionIdentifier:(id)a3
+- (id)groupViewExposureTypesForTodaySectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(FCPersonalizationTodaySectionMapping *)self todaySectionIdentifiersToFRGroupViewExposureTypes];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  todaySectionIdentifiersToFRGroupViewExposureTypes = [(FCPersonalizationTodaySectionMapping *)self todaySectionIdentifiersToFRGroupViewExposureTypes];
+  v6 = [todaySectionIdentifiersToFRGroupViewExposureTypes objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }

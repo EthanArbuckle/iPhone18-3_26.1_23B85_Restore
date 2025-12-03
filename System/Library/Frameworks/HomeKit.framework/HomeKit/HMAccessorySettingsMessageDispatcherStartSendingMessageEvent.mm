@@ -1,5 +1,5 @@
 @interface HMAccessorySettingsMessageDispatcherStartSendingMessageEvent
-- (HMAccessorySettingsMessageDispatcherStartSendingMessageEvent)initWithMessageName:(id)a3 updateKeyPath:(id)a4;
+- (HMAccessorySettingsMessageDispatcherStartSendingMessageEvent)initWithMessageName:(id)name updateKeyPath:(id)path;
 - (id)eventPayload;
 @end
 
@@ -8,24 +8,24 @@
 - (id)eventPayload
 {
   v3 = [HMCoreAnalyticsStringFieldData alloc];
-  v4 = [(HMAccessorySettingsMessageDispatcherStartSendingMessageEvent *)self messageName];
-  v5 = [(HMCoreAnalyticsStringFieldData *)v3 initWithName:@"messageName" stringValue:v4];
+  messageName = [(HMAccessorySettingsMessageDispatcherStartSendingMessageEvent *)self messageName];
+  v5 = [(HMCoreAnalyticsStringFieldData *)v3 initWithName:@"messageName" stringValue:messageName];
 
   v14.receiver = self;
   v14.super_class = HMAccessorySettingsMessageDispatcherStartSendingMessageEvent;
-  v6 = [(HMCoreAnalyticsMetricEvent *)&v14 eventPayload];
-  v7 = [v6 mutableCopy];
+  eventPayload = [(HMCoreAnalyticsMetricEvent *)&v14 eventPayload];
+  v7 = [eventPayload mutableCopy];
 
-  v8 = [(HMCoreAnalyticsFieldData *)v5 value];
-  v9 = [(HMCoreAnalyticsFieldData *)v5 name];
-  [v7 setObject:v8 forKeyedSubscript:v9];
+  value = [(HMCoreAnalyticsFieldData *)v5 value];
+  name = [(HMCoreAnalyticsFieldData *)v5 name];
+  [v7 setObject:value forKeyedSubscript:name];
 
-  v10 = [(HMAccessorySettingsMessageDispatcherStartSendingMessageEvent *)self updateKeyPath];
+  updateKeyPath = [(HMAccessorySettingsMessageDispatcherStartSendingMessageEvent *)self updateKeyPath];
 
-  if (v10)
+  if (updateKeyPath)
   {
-    v11 = [(HMAccessorySettingsMessageDispatcherStartSendingMessageEvent *)self updateKeyPath];
-    [v7 setObject:v11 forKeyedSubscript:@"updateKeyPath"];
+    updateKeyPath2 = [(HMAccessorySettingsMessageDispatcherStartSendingMessageEvent *)self updateKeyPath];
+    [v7 setObject:updateKeyPath2 forKeyedSubscript:@"updateKeyPath"];
   }
 
   v12 = [v7 copy];
@@ -33,20 +33,20 @@
   return v12;
 }
 
-- (HMAccessorySettingsMessageDispatcherStartSendingMessageEvent)initWithMessageName:(id)a3 updateKeyPath:(id)a4
+- (HMAccessorySettingsMessageDispatcherStartSendingMessageEvent)initWithMessageName:(id)name updateKeyPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  nameCopy = name;
+  pathCopy = path;
+  if (nameCopy)
   {
-    v9 = v8;
+    v9 = pathCopy;
     v17.receiver = self;
     v17.super_class = HMAccessorySettingsMessageDispatcherStartSendingMessageEvent;
     v10 = [(HMCoreAnalyticsMetricEvent *)&v17 initWithName:@"com.apple.HomeKit.HMAccessorySettingsMetricsDispatcher.MessageDispatcher.StartSendingMessageEvent"];
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_messageName, a3);
+      objc_storeStrong(&v10->_messageName, name);
       v12 = [v9 copy];
       updateKeyPath = v11->_updateKeyPath;
       v11->_updateKeyPath = v12;

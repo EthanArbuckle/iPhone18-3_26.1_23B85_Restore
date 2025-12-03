@@ -1,36 +1,36 @@
 @interface CADEventsForAssistantSearchPredicate
-- (CADEventsForAssistantSearchPredicate)initWithCoder:(id)a3;
-- (CADEventsForAssistantSearchPredicate)initWithTimeZone:(id)a3 startDate:(id)a4 endDate:(id)a5 title:(id)a6 location:(id)a7 notes:(id)a8 participants:(id)a9 limit:(int64_t)a10;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
+- (CADEventsForAssistantSearchPredicate)initWithCoder:(id)coder;
+- (CADEventsForAssistantSearchPredicate)initWithTimeZone:(id)zone startDate:(id)date endDate:(id)endDate title:(id)title location:(id)location notes:(id)notes participants:(id)participants limit:(int64_t)self0;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADEventsForAssistantSearchPredicate
 
-- (CADEventsForAssistantSearchPredicate)initWithTimeZone:(id)a3 startDate:(id)a4 endDate:(id)a5 title:(id)a6 location:(id)a7 notes:(id)a8 participants:(id)a9 limit:(int64_t)a10
+- (CADEventsForAssistantSearchPredicate)initWithTimeZone:(id)zone startDate:(id)date endDate:(id)endDate title:(id)title location:(id)location notes:(id)notes participants:(id)participants limit:(int64_t)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
+  zoneCopy = zone;
+  dateCopy = date;
+  endDateCopy = endDate;
+  titleCopy = title;
+  locationCopy = location;
+  notesCopy = notes;
+  participantsCopy = participants;
   v27.receiver = self;
   v27.super_class = CADEventsForAssistantSearchPredicate;
   v24 = [(EKPredicate *)&v27 initWithCalendars:0];
   v25 = v24;
   if (v24)
   {
-    [(EKPredicate *)v24 setStartDate:v18];
-    [(EKPredicate *)v25 setEndDate:v19];
-    objc_storeStrong(&v25->super._timeZone, a3);
-    [(EKPredicate *)v25 setTitle:v20];
-    [(CADEventsForAssistantSearchPredicate *)v25 setLocation:v21];
-    [(CADEventsForAssistantSearchPredicate *)v25 setNotes:v22];
-    [(CADEventsForAssistantSearchPredicate *)v25 setParticipants:v23];
-    [(CADEventsForAssistantSearchPredicate *)v25 setLimit:a10];
+    [(EKPredicate *)v24 setStartDate:dateCopy];
+    [(EKPredicate *)v25 setEndDate:endDateCopy];
+    objc_storeStrong(&v25->super._timeZone, zone);
+    [(EKPredicate *)v25 setTitle:titleCopy];
+    [(CADEventsForAssistantSearchPredicate *)v25 setLocation:locationCopy];
+    [(CADEventsForAssistantSearchPredicate *)v25 setNotes:notesCopy];
+    [(CADEventsForAssistantSearchPredicate *)v25 setParticipants:participantsCopy];
+    [(CADEventsForAssistantSearchPredicate *)v25 setLimit:limit];
   }
 
   return v25;
@@ -45,137 +45,137 @@
   v5 = [v3 initWithSuperclassDescription:v4];
 
   [v5 setKey:@"timeZone" withObject:self->super._timeZone];
-  v6 = [(EKPredicate *)self startDate];
-  [v5 setKey:@"startDate" withDate:v6];
+  startDate = [(EKPredicate *)self startDate];
+  [v5 setKey:@"startDate" withDate:startDate];
 
-  v7 = [(EKPredicate *)self endDate];
-  [v5 setKey:@"endDate" withDate:v7];
+  endDate = [(EKPredicate *)self endDate];
+  [v5 setKey:@"endDate" withDate:endDate];
 
-  v8 = [(EKPredicate *)self title];
-  [v5 setKey:@"title" withString:v8];
+  title = [(EKPredicate *)self title];
+  [v5 setKey:@"title" withString:title];
 
-  v9 = [(CADEventsForAssistantSearchPredicate *)self location];
-  [v5 setKey:@"location" withString:v9];
+  location = [(CADEventsForAssistantSearchPredicate *)self location];
+  [v5 setKey:@"location" withString:location];
 
-  v10 = [(CADEventsForAssistantSearchPredicate *)self notes];
-  [v5 setKey:@"notes" withString:v10];
+  notes = [(CADEventsForAssistantSearchPredicate *)self notes];
+  [v5 setKey:@"notes" withString:notes];
 
-  v11 = [(CADEventsForAssistantSearchPredicate *)self participants];
-  [v5 setKey:@"participants" withArray:v11];
+  participants = [(CADEventsForAssistantSearchPredicate *)self participants];
+  [v5 setKey:@"participants" withArray:participants];
 
   [v5 setKey:@"limit" withInteger:{-[CADEventsForAssistantSearchPredicate limit](self, "limit")}];
-  v12 = [v5 build];
+  build = [v5 build];
 
-  return v12;
+  return build;
 }
 
-- (CADEventsForAssistantSearchPredicate)initWithCoder:(id)a3
+- (CADEventsForAssistantSearchPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CADEventsForAssistantSearchPredicate;
-  v5 = [(EKPredicate *)&v19 initWithCoder:v4];
+  v5 = [(EKPredicate *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     [(EKPredicate *)v5 setStartDate:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     [(EKPredicate *)v5 setEndDate:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
     timeZone = v5->super._timeZone;
     v5->super._timeZone = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     [(EKPredicate *)v5 setTitle:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     [(CADEventsForAssistantSearchPredicate *)v5 setLocation:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notes"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notes"];
     [(CADEventsForAssistantSearchPredicate *)v5 setNotes:v12];
 
     v13 = MEMORY[0x277CBEB98];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"participants"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"participants"];
     [(CADEventsForAssistantSearchPredicate *)v5 setParticipants:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
     -[CADEventsForAssistantSearchPredicate setLimit:](v5, "setLimit:", [v17 integerValue]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = CADEventsForAssistantSearchPredicate;
-  v4 = a3;
-  [(EKPredicate *)&v12 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(EKPredicate *)&v12 encodeWithCoder:coderCopy];
   v5 = [(EKPredicate *)self startDate:v12.receiver];
-  [v4 encodeObject:v5 forKey:@"startDate"];
+  [coderCopy encodeObject:v5 forKey:@"startDate"];
 
-  v6 = [(EKPredicate *)self endDate];
-  [v4 encodeObject:v6 forKey:@"endDate"];
+  endDate = [(EKPredicate *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 
-  [v4 encodeObject:self->super._timeZone forKey:@"timeZone"];
-  v7 = [(EKPredicate *)self title];
-  [v4 encodeObject:v7 forKey:@"title"];
+  [coderCopy encodeObject:self->super._timeZone forKey:@"timeZone"];
+  title = [(EKPredicate *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v8 = [(CADEventsForAssistantSearchPredicate *)self location];
-  [v4 encodeObject:v8 forKey:@"location"];
+  location = [(CADEventsForAssistantSearchPredicate *)self location];
+  [coderCopy encodeObject:location forKey:@"location"];
 
-  v9 = [(CADEventsForAssistantSearchPredicate *)self notes];
-  [v4 encodeObject:v9 forKey:@"notes"];
+  notes = [(CADEventsForAssistantSearchPredicate *)self notes];
+  [coderCopy encodeObject:notes forKey:@"notes"];
 
-  v10 = [(CADEventsForAssistantSearchPredicate *)self participants];
-  [v4 encodeObject:v10 forKey:@"participants"];
+  participants = [(CADEventsForAssistantSearchPredicate *)self participants];
+  [coderCopy encodeObject:participants forKey:@"participants"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CADEventsForAssistantSearchPredicate limit](self, "limit")}];
-  [v4 encodeObject:v11 forKey:@"limit"];
+  [coderCopy encodeObject:v11 forKey:@"limit"];
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
   v35 = *MEMORY[0x277D85DE8];
   v5 = CADLogHandle;
   if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22430B000, v5, OS_LOG_TYPE_DEBUG, "Preparing to fetch matching events for predicate: [%@]", buf, 0xCu);
   }
 
   v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(EKPredicate *)self startDate];
-  v7 = [(EKPredicate *)self endDate];
-  v27 = [(EKPredicate *)self title];
-  v26 = [(CADEventsForAssistantSearchPredicate *)self location];
-  v8 = [(CADEventsForAssistantSearchPredicate *)self notes];
-  v9 = [(CADEventsForAssistantSearchPredicate *)self participants];
-  v24 = [(CADEventsForAssistantSearchPredicate *)self limit];
+  startDate = [(EKPredicate *)self startDate];
+  endDate = [(EKPredicate *)self endDate];
+  title = [(EKPredicate *)self title];
+  location = [(CADEventsForAssistantSearchPredicate *)self location];
+  notes = [(CADEventsForAssistantSearchPredicate *)self notes];
+  participants = [(CADEventsForAssistantSearchPredicate *)self participants];
+  limit = [(CADEventsForAssistantSearchPredicate *)self limit];
   AuxilliaryDatabaseID = CalDatabaseGetAuxilliaryDatabaseID();
   v11 = [(EKPredicate *)self calendarRowIDsForDatabaseID:AuxilliaryDatabaseID];
   v12 = [(EKPredicate *)self restrictedCalendarRowIDsForDatabaseID:AuxilliaryDatabaseID];
   FilterFromRowIDs = CreateFilterFromRowIDs(v11, v12);
-  if (v6 | v7)
+  if (startDate | endDate)
   {
-    if (v6 && v7)
+    if (startDate && endDate)
     {
-      v17 = [v7 dateByAddingTimeInterval:-1.0];
+      v17 = [endDate dateByAddingTimeInterval:-1.0];
       timeZone = self->super._timeZone;
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __70__CADEventsForAssistantSearchPredicate_copyMatchingItemsWithDatabase___block_invoke;
       v28[3] = &unk_27851B2C0;
-      v29 = v27;
-      v30 = v26;
-      v31 = v8;
-      v32 = v9;
-      v19 = MEMORY[0x22AA4B930](a3, FilterFromRowIDs, v6, v17, timeZone, v24, v28);
+      v29 = title;
+      v30 = location;
+      v31 = notes;
+      v32 = participants;
+      v19 = MEMORY[0x22AA4B930](database, FilterFromRowIDs, startDate, v17, timeZone, limit, v28);
 
       if (v19)
       {
@@ -191,11 +191,11 @@
     if (v14)
     {
       v15 = v14;
-      if (v27 || v26 || v8 || v9)
+      if (title || location || notes || participants)
       {
-        if (v9)
+        if (participants)
         {
-          [v9 objectAtIndex:0];
+          [participants objectAtIndex:0];
         }
 
         v20 = CalDatabaseCopyEventIDsOfEventsMatching();
@@ -224,7 +224,7 @@
         }
       }
 
-      [v25 addObjectsFromArray:{v16, v24}];
+      [v25 addObjectsFromArray:{v16, limit}];
       CFRelease(v16);
 LABEL_21:
       CFRelease(v15);

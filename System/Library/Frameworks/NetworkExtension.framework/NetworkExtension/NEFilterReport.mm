@@ -1,39 +1,39 @@
 @interface NEFilterReport
-- (NEFilterReport)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithFlow:(uint64_t)a3 action:(uint64_t)a4 event:;
+- (NEFilterReport)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithFlow:(uint64_t)flow action:(uint64_t)action event:;
 @end
 
 @implementation NEFilterReport
 
-- (void)initWithFlow:(uint64_t)a3 action:(uint64_t)a4 event:
+- (void)initWithFlow:(uint64_t)flow action:(uint64_t)action event:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = NEFilterReport;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       [v8 setFlow:v7];
-      [a1 setAction:a3];
-      a1[3] = a4;
-      a1[4] = [v7 inBytes];
-      a1[5] = [v7 outBytes];
+      [self setAction:flow];
+      self[3] = action;
+      self[4] = [v7 inBytes];
+      self[5] = [v7 outBytes];
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(NEFilterReport *)self flow];
-  [v4 setFlow:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  flow = [(NEFilterReport *)self flow];
+  [v4 setFlow:flow];
 
   [v4 setAction:{-[NEFilterReport action](self, "action")}];
   [v4 setBytesInboundCount:{-[NEFilterReport bytesInboundCount](self, "bytesInboundCount")}];
@@ -41,34 +41,34 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(NEFilterReport *)self flow];
-  [v5 encodeObject:v4 forKey:@"kNEFilterReportFlow"];
+  coderCopy = coder;
+  flow = [(NEFilterReport *)self flow];
+  [coderCopy encodeObject:flow forKey:@"kNEFilterReportFlow"];
 
-  [v5 encodeInteger:-[NEFilterReport action](self forKey:{"action"), @"kNEFilterReportAction"}];
-  [v5 encodeInteger:-[NEFilterReport event](self forKey:{"event"), @"reportEvent"}];
-  [v5 encodeInteger:-[NEFilterReport bytesInboundCount](self forKey:{"bytesInboundCount"), @"bytesInboundCount"}];
-  [v5 encodeInteger:-[NEFilterReport bytesOutboundCount](self forKey:{"bytesOutboundCount"), @"bytesOutboundCount"}];
+  [coderCopy encodeInteger:-[NEFilterReport action](self forKey:{"action"), @"kNEFilterReportAction"}];
+  [coderCopy encodeInteger:-[NEFilterReport event](self forKey:{"event"), @"reportEvent"}];
+  [coderCopy encodeInteger:-[NEFilterReport bytesInboundCount](self forKey:{"bytesInboundCount"), @"bytesInboundCount"}];
+  [coderCopy encodeInteger:-[NEFilterReport bytesOutboundCount](self forKey:{"bytesOutboundCount"), @"bytesOutboundCount"}];
 }
 
-- (NEFilterReport)initWithCoder:(id)a3
+- (NEFilterReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NEFilterReport;
   v5 = [(NEFilterReport *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNEFilterReportFlow"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNEFilterReportFlow"];
     flow = v5->_flow;
     v5->_flow = v6;
 
-    v5->_action = [v4 decodeIntegerForKey:@"kNEFilterReportAction"];
-    v5->_event = [v4 decodeIntegerForKey:@"reportEvent"];
-    v5->_bytesInboundCount = [v4 decodeIntegerForKey:@"bytesInboundCount"];
-    v5->_bytesOutboundCount = [v4 decodeIntegerForKey:@"bytesOutboundCount"];
+    v5->_action = [coderCopy decodeIntegerForKey:@"kNEFilterReportAction"];
+    v5->_event = [coderCopy decodeIntegerForKey:@"reportEvent"];
+    v5->_bytesInboundCount = [coderCopy decodeIntegerForKey:@"bytesInboundCount"];
+    v5->_bytesOutboundCount = [coderCopy decodeIntegerForKey:@"bytesOutboundCount"];
   }
 
   return v5;

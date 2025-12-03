@@ -1,25 +1,25 @@
 @interface DMFSetDeclarationsRequest
-- (DMFSetDeclarationsRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DMFSetDeclarationsRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFSetDeclarationsRequest
 
-- (DMFSetDeclarationsRequest)initWithCoder:(id)a3
+- (DMFSetDeclarationsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = DMFSetDeclarationsRequest;
-  v5 = [(CATTaskRequest *)&v27 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v27 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"organizationIdentifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"organizationIdentifier"];
     organizationIdentifier = v5->_organizationIdentifier;
     v5->_organizationIdentifier = v7;
 
     v9 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"syncToken"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"syncToken"];
     syncToken = v5->_syncToken;
     v5->_syncToken = v10;
 
@@ -35,7 +35,7 @@
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = [v26 setWithObjects:{v25, v24, v12, v13, v14, v15, v16, v17, v18, v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"declarations"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"declarations"];
     declarations = v5->_declarations;
     v5->_declarations = v21;
   }
@@ -43,20 +43,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = DMFSetDeclarationsRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v8 encodeWithCoder:coderCopy];
   v5 = [(DMFSetDeclarationsRequest *)self organizationIdentifier:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"organizationIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"organizationIdentifier"];
 
-  v6 = [(DMFSetDeclarationsRequest *)self syncToken];
-  [v4 encodeObject:v6 forKey:@"syncToken"];
+  syncToken = [(DMFSetDeclarationsRequest *)self syncToken];
+  [coderCopy encodeObject:syncToken forKey:@"syncToken"];
 
-  v7 = [(DMFSetDeclarationsRequest *)self declarations];
-  [v4 encodeObject:v7 forKey:@"declarations"];
+  declarations = [(DMFSetDeclarationsRequest *)self declarations];
+  [coderCopy encodeObject:declarations forKey:@"declarations"];
 }
 
 @end

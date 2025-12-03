@@ -1,23 +1,23 @@
 @interface CSDeviceActivationXPCClient
-- (CSDeviceActivationXPCClient)initWithMachServiceName:(const char *)a3;
-- (id)_decodeError:(id)a3;
-- (void)_handleListenerError:(id)a3;
-- (void)_handleListenerEvent:(id)a3;
-- (void)_sendMessage:(id)a3 connection:(id)a4 completion:(id)a5;
+- (CSDeviceActivationXPCClient)initWithMachServiceName:(const char *)name;
+- (id)_decodeError:(id)error;
+- (void)_handleListenerError:(id)error;
+- (void)_handleListenerEvent:(id)event;
+- (void)_sendMessage:(id)message connection:(id)connection completion:(id)completion;
 - (void)connect;
 - (void)dealloc;
-- (void)notifyActivationEvent:(id)a3 completion:(id)a4;
+- (void)notifyActivationEvent:(id)event completion:(id)completion;
 @end
 
 @implementation CSDeviceActivationXPCClient
 
-- (id)_decodeError:(id)a3
+- (id)_decodeError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    string = xpc_dictionary_get_string(v3, "resultErrorDomain");
+    string = xpc_dictionary_get_string(errorCopy, "resultErrorDomain");
     if (string)
     {
       int64 = xpc_dictionary_get_int64(v4, "resultErrorCode");
@@ -35,24 +35,24 @@
   return string;
 }
 
-- (void)_sendMessage:(id)a3 connection:(id)a4 completion:(id)a5
+- (void)_sendMessage:(id)message connection:(id)connection completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9)
+  messageCopy = message;
+  connectionCopy = connection;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (messageCopy && connectionCopy)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __66__CSDeviceActivationXPCClient__sendMessage_connection_completion___block_invoke;
     v13[3] = &unk_1E865CAF8;
     v13[4] = self;
-    v14 = v10;
-    xpc_connection_send_message_with_reply(v9, v8, 0, v13);
+    v14 = completionCopy;
+    xpc_connection_send_message_with_reply(connectionCopy, messageCopy, 0, v13);
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.corespeech" code:1252 userInfo:0];
     (v11)[2](v11, 0, v12);
@@ -91,11 +91,11 @@ void __66__CSDeviceActivationXPCClient__sendMessage_connection_completion___bloc
 LABEL_7:
 }
 
-- (void)notifyActivationEvent:(id)a3 completion:(id)a4
+- (void)notifyActivationEvent:(id)event completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -108,12 +108,12 @@ LABEL_7:
   v14[1] = 3221225472;
   v14[2] = __64__CSDeviceActivationXPCClient_notifyActivationEvent_completion___block_invoke;
   v14[3] = &unk_1E865CAB8;
-  v9 = v7;
+  v9 = completionCopy;
   v15 = v9;
   v10 = MEMORY[0x1E12BA300](v14);
   *buf = xmmword_1E865CAD8;
   values[0] = xpc_int64_create(2);
-  values[1] = [v6 xpcObject];
+  values[1] = [eventCopy xpcObject];
   v11 = xpc_dictionary_create(buf, values, 2uLL);
   [(CSDeviceActivationXPCClient *)self _sendMessage:v11 connection:self->_xpcConnection completion:v10];
 
@@ -135,12 +135,12 @@ uint64_t __64__CSDeviceActivationXPCClient_notifyActivationEvent_completion___bl
   return result;
 }
 
-- (void)_handleListenerError:(id)a3
+- (void)_handleListenerError:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
     v15 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -157,9 +157,9 @@ uint64_t __64__CSDeviceActivationXPCClient_notifyActivationEvent_completion___bl
   }
 
   v6 = MEMORY[0x1E69E9E20];
-  if (v4 != MEMORY[0x1E69E9E20] && v4 != MEMORY[0x1E69E9E18])
+  if (errorCopy != MEMORY[0x1E69E9E20] && errorCopy != MEMORY[0x1E69E9E18])
   {
-    string = xpc_dictionary_get_string(v4, *MEMORY[0x1E69E9E28]);
+    string = xpc_dictionary_get_string(errorCopy, *MEMORY[0x1E69E9E28]);
     v15 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
@@ -205,14 +205,14 @@ LABEL_15:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleListenerEvent:(id)a3
+- (void)_handleListenerEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    if (MEMORY[0x1E12BAC70](v4) == MEMORY[0x1E69E9E98])
+    if (MEMORY[0x1E12BAC70](eventCopy) == MEMORY[0x1E69E9E98])
     {
       [(CSDeviceActivationXPCClient *)self _handleListenerError:v5];
       goto LABEL_9;
@@ -300,7 +300,7 @@ void __38__CSDeviceActivationXPCClient_connect__block_invoke(uint64_t a1, void *
   [WeakRetained _handleListenerEvent:v3];
 }
 
-- (CSDeviceActivationXPCClient)initWithMachServiceName:(const char *)a3
+- (CSDeviceActivationXPCClient)initWithMachServiceName:(const char *)name
 {
   v15 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -309,7 +309,7 @@ void __38__CSDeviceActivationXPCClient_connect__block_invoke(uint64_t a1, void *
   if (v4)
   {
     CSLogInitIfNeededWithSubsystemType(0);
-    mach_service = xpc_connection_create_mach_service(a3, 0, 0);
+    mach_service = xpc_connection_create_mach_service(name, 0, 0);
     xpcConnection = v4->_xpcConnection;
     v4->_xpcConnection = mach_service;
 
@@ -319,7 +319,7 @@ void __38__CSDeviceActivationXPCClient_connect__block_invoke(uint64_t a1, void *
       *buf = 136315394;
       v12 = "[CSDeviceActivationXPCClient initWithMachServiceName:]";
       v13 = 2080;
-      v14 = a3;
+      nameCopy = name;
       _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s machServiceName : %s", buf, 0x16u);
     }
   }

@@ -1,38 +1,38 @@
 @interface WBSCyclerBookmarkLeafRepresentation
-- (BOOL)isEquivalent:(id)a3;
-- (WBSCyclerBookmarkLeafRepresentation)initWithCoder:(id)a3;
-- (WBSCyclerBookmarkLeafRepresentation)initWithURL:(id)a3 title:(id)a4 uniqueIdentifier:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEquivalent:(id)equivalent;
+- (WBSCyclerBookmarkLeafRepresentation)initWithCoder:(id)coder;
+- (WBSCyclerBookmarkLeafRepresentation)initWithURL:(id)l title:(id)title uniqueIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSCyclerBookmarkLeafRepresentation
 
-- (WBSCyclerBookmarkLeafRepresentation)initWithURL:(id)a3 title:(id)a4 uniqueIdentifier:(id)a5
+- (WBSCyclerBookmarkLeafRepresentation)initWithURL:(id)l title:(id)title uniqueIdentifier:(id)identifier
 {
-  v9 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = WBSCyclerBookmarkLeafRepresentation;
-  v10 = [(WBSCyclerItemRepresentation *)&v14 initWithTitle:a4 uniqueIdentifier:a5];
+  v10 = [(WBSCyclerItemRepresentation *)&v14 initWithTitle:title uniqueIdentifier:identifier];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_url, a3);
+    objc_storeStrong(&v10->_url, l);
     v12 = v11;
   }
 
   return v11;
 }
 
-- (WBSCyclerBookmarkLeafRepresentation)initWithCoder:(id)a3
+- (WBSCyclerBookmarkLeafRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WBSCyclerBookmarkLeafRepresentation;
-  v5 = [(WBSCyclerItemRepresentation *)&v10 initWithCoder:v4];
+  v5 = [(WBSCyclerItemRepresentation *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     url = v5->_url;
     v5->_url = v6;
 
@@ -42,35 +42,35 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WBSCyclerBookmarkLeafRepresentation;
-  v4 = a3;
-  [(WBSCyclerItemRepresentation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_url forKey:{@"URL", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(WBSCyclerItemRepresentation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_url forKey:{@"URL", v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [WBSCyclerBookmarkLeafRepresentation alloc];
   url = self->_url;
-  v6 = [(WBSCyclerItemRepresentation *)self title];
-  v7 = [(WBSCyclerItemRepresentation *)self uniqueIdentifier];
-  v8 = [(WBSCyclerBookmarkLeafRepresentation *)v4 initWithURL:url title:v6 uniqueIdentifier:v7];
+  title = [(WBSCyclerItemRepresentation *)self title];
+  uniqueIdentifier = [(WBSCyclerItemRepresentation *)self uniqueIdentifier];
+  v8 = [(WBSCyclerBookmarkLeafRepresentation *)v4 initWithURL:url title:title uniqueIdentifier:uniqueIdentifier];
 
-  v9 = [(WBSCyclerItemRepresentation *)self extraAttributes];
-  [(WBSCyclerItemRepresentation *)v8 setExtraAttributes:v9];
+  extraAttributes = [(WBSCyclerItemRepresentation *)self extraAttributes];
+  [(WBSCyclerItemRepresentation *)v8 setExtraAttributes:extraAttributes];
 
   return v8;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   v7.receiver = self;
   v7.super_class = WBSCyclerBookmarkLeafRepresentation;
-  if ([(WBSCyclerItemRepresentation *)&v7 isEquivalent:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(WBSCyclerItemRepresentation *)&v7 isEquivalent:equivalentCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = WBSIsEqual();
   }

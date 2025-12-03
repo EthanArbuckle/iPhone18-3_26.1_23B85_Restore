@@ -1,8 +1,8 @@
 @interface CCSetChangeXPCNotifier
 + (id)sharedInstance;
 - (CCSetChangeXPCNotifier)init;
-- (void)_handlePublisherAction:(unsigned int)a3 token:(unint64_t)a4 descriptor:(id)a5;
-- (void)notifyChangeToSet:(id)a3;
+- (void)_handlePublisherAction:(unsigned int)action token:(unint64_t)token descriptor:(id)descriptor;
+- (void)notifyChangeToSet:(id)set;
 @end
 
 @implementation CCSetChangeXPCNotifier
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __40__CCSetChangeXPCNotifier_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2_1 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2_1, block);
@@ -96,11 +96,11 @@ void __30__CCSetChangeXPCNotifier_init__block_invoke_2(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)_handlePublisherAction:(unsigned int)a3 token:(unint64_t)a4 descriptor:(id)a5
+- (void)_handlePublisherAction:(unsigned int)action token:(unint64_t)token descriptor:(id)descriptor
 {
   v20 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  switch(a3)
+  switch(action)
   {
     case 2u:
       v11 = __biome_log_for_category();
@@ -115,20 +115,20 @@ void __30__CCSetChangeXPCNotifier_init__block_invoke_2(uint64_t a1, uint64_t a2)
       v12 = __biome_log_for_category();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+        v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
         v18 = 138412290;
         v19 = v13;
         _os_log_impl(&dword_1B6DB2000, v12, OS_LOG_TYPE_DEFAULT, "CCSetChangeXPCNotifier removing listener with token: %@", &v18, 0xCu);
       }
 
       tokens = self->_tokens;
-      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
       LOBYTE(tokens) = [(NSMutableArray *)tokens containsObject:v15];
 
       if (tokens)
       {
         v16 = self->_tokens;
-        v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+        v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
         [(NSMutableArray *)v16 removeObject:v11];
       }
 
@@ -137,7 +137,7 @@ void __30__CCSetChangeXPCNotifier_init__block_invoke_2(uint64_t a1, uint64_t a2)
         v11 = __biome_log_for_category();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          [CCSetChangeXPCNotifier _handlePublisherAction:a4 token:v11 descriptor:?];
+          [CCSetChangeXPCNotifier _handlePublisherAction:token token:v11 descriptor:?];
         }
       }
 
@@ -146,14 +146,14 @@ void __30__CCSetChangeXPCNotifier_init__block_invoke_2(uint64_t a1, uint64_t a2)
       v8 = __biome_log_for_category();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+        v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
         v18 = 138412290;
         v19 = v9;
         _os_log_impl(&dword_1B6DB2000, v8, OS_LOG_TYPE_DEFAULT, "CCSetChangeXPCNotifier adding listener with token: %@", &v18, 0xCu);
       }
 
       v10 = self->_tokens;
-      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
       [(NSMutableArray *)v10 addObject:v11];
 LABEL_15:
 
@@ -163,17 +163,17 @@ LABEL_15:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyChangeToSet:(id)a3
+- (void)notifyChangeToSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__CCSetChangeXPCNotifier_notifyChangeToSet___block_invoke;
   v7[3] = &unk_1E7C8B0D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = setCopy;
+  v6 = setCopy;
   dispatch_sync(queue, v7);
 }
 

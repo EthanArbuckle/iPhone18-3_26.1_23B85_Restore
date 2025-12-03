@@ -9,7 +9,7 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  if ([a1 containsString:v8])
+  if ([self containsString:v8])
   {
     v11 = v10;
     if ([v9 length])
@@ -19,15 +19,15 @@
       v11 = v12;
     }
 
-    v13 = [a1 stringByReplacingOccurrencesOfString:v8 withString:v11];
+    selfCopy = [self stringByReplacingOccurrencesOfString:v8 withString:v11];
   }
 
   else
   {
-    v13 = a1;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

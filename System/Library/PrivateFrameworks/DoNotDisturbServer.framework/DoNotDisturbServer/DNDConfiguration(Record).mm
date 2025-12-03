@@ -11,27 +11,27 @@
   v40 = *MEMORY[0x277D85DE8];
   v5 = a3;
   v6 = a4;
-  v7 = [MEMORY[0x277D05A20] defaultConfiguration];
-  v8 = [v5 applicationConfigurationType];
-  [v7 setApplicationConfigurationType:{objc_msgSend(v8, "integerValue")}];
+  defaultConfiguration = [MEMORY[0x277D05A20] defaultConfiguration];
+  applicationConfigurationType = [v5 applicationConfigurationType];
+  [defaultConfiguration setApplicationConfigurationType:{objc_msgSend(applicationConfigurationType, "integerValue")}];
 
-  v9 = [v5 senderConfigurationType];
-  [v7 setSenderConfigurationType:{objc_msgSend(v9, "integerValue")}];
+  senderConfigurationType = [v5 senderConfigurationType];
+  [defaultConfiguration setSenderConfigurationType:{objc_msgSend(senderConfigurationType, "integerValue")}];
 
-  v10 = [v5 suppressionType];
-  [v7 setSuppressionType:{objc_msgSend(v10, "unsignedIntegerValue")}];
+  suppressionType = [v5 suppressionType];
+  [defaultConfiguration setSuppressionType:{objc_msgSend(suppressionType, "unsignedIntegerValue")}];
 
-  v11 = [v5 suppressionMode];
-  v34 = v7;
-  [v7 setSuppressionMode:{objc_msgSend(v11, "unsignedIntegerValue")}];
+  suppressionMode = [v5 suppressionMode];
+  v34 = defaultConfiguration;
+  [defaultConfiguration setSuppressionMode:{objc_msgSend(suppressionMode, "unsignedIntegerValue")}];
 
   v12 = objc_opt_new();
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v13 = [v6 allowedApplications];
-  v14 = [v13 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  allowedApplications = [v6 allowedApplications];
+  v14 = [allowedApplications countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v14)
   {
     v15 = v14;
@@ -42,49 +42,49 @@
       {
         if (*v36 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allowedApplications);
         }
 
         v18 = *(*(&v35 + 1) + 8 * i);
-        v19 = [v6 allowedApplications];
-        v20 = [v19 objectForKey:v18];
+        allowedApplications2 = [v6 allowedApplications];
+        v20 = [allowedApplications2 objectForKey:v18];
 
         v21 = [MEMORY[0x277D058C0] configurationForRecord:v20];
         [v12 setObject:v21 forKey:v18];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v15 = [allowedApplications countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v15);
   }
 
   [v34 setAllowedApplicationIdentifiers:v12];
-  v22 = [v6 deniedApplications];
-  [v34 setDeniedApplicationIdentifiers:v22];
+  deniedApplications = [v6 deniedApplications];
+  [v34 setDeniedApplicationIdentifiers:deniedApplications];
 
-  v23 = [v6 allowedWebApplications];
-  [v34 setAllowedWebApplicationIdentifiers:v23];
+  allowedWebApplications = [v6 allowedWebApplications];
+  [v34 setAllowedWebApplicationIdentifiers:allowedWebApplications];
 
-  v24 = [v6 deniedWebApplications];
-  [v34 setDeniedWebApplicationIdentifiers:v24];
+  deniedWebApplications = [v6 deniedWebApplications];
+  [v34 setDeniedWebApplicationIdentifiers:deniedWebApplications];
 
   v25 = MEMORY[0x277D05A90];
-  v26 = [v6 senderConfiguration];
-  v27 = [v25 configurationForRecord:v26];
+  senderConfiguration = [v6 senderConfiguration];
+  v27 = [v25 configurationForRecord:senderConfiguration];
   [v34 setSenderConfiguration:v27];
 
-  v28 = [v5 minimumBreakthroughUrgency];
-  [v34 setMinimumBreakthroughUrgency:{objc_msgSend(v28, "integerValue")}];
+  minimumBreakthroughUrgency = [v5 minimumBreakthroughUrgency];
+  [v34 setMinimumBreakthroughUrgency:{objc_msgSend(minimumBreakthroughUrgency, "integerValue")}];
 
-  v29 = [v5 hideApplicationBadges];
-  [v34 setHideApplicationBadges:{objc_msgSend(v29, "integerValue")}];
+  hideApplicationBadges = [v5 hideApplicationBadges];
+  [v34 setHideApplicationBadges:{objc_msgSend(hideApplicationBadges, "integerValue")}];
 
-  v30 = [v5 allowIntelligentManagement];
-  [v34 setAllowIntelligentManagement:{objc_msgSend(v30, "integerValue")}];
+  allowIntelligentManagement = [v5 allowIntelligentManagement];
+  [v34 setAllowIntelligentManagement:{objc_msgSend(allowIntelligentManagement, "integerValue")}];
 
-  v31 = [v5 compatibilityVersion];
-  [v34 setCompatibilityVersion:{objc_msgSend(v31, "integerValue")}];
+  compatibilityVersion = [v5 compatibilityVersion];
+  [v34 setCompatibilityVersion:{objc_msgSend(compatibilityVersion, "integerValue")}];
 
   v32 = *MEMORY[0x277D85DE8];
 
@@ -94,28 +94,28 @@
 - (DNDSMutableConfigurationRecord)makeRecord
 {
   v2 = objc_alloc_init(DNDSMutableConfigurationRecord);
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "applicationConfigurationType")}];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "applicationConfigurationType")}];
   [(DNDSMutableConfigurationRecord *)v2 setApplicationConfigurationType:v3];
 
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "senderConfigurationType")}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "senderConfigurationType")}];
   [(DNDSMutableConfigurationRecord *)v2 setSenderConfigurationType:v4];
 
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "suppressionType")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "suppressionType")}];
   [(DNDSMutableConfigurationRecord *)v2 setSuppressionType:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "suppressionMode")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "suppressionMode")}];
   [(DNDSMutableConfigurationRecord *)v2 setSuppressionMode:v6];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "minimumBreakthroughUrgency")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "minimumBreakthroughUrgency")}];
   [(DNDSMutableConfigurationRecord *)v2 setMinimumBreakthroughUrgency:v7];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "hideApplicationBadges")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "hideApplicationBadges")}];
   [(DNDSMutableConfigurationRecord *)v2 setHideApplicationBadges:v8];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "allowIntelligentManagement")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "allowIntelligentManagement")}];
   [(DNDSMutableConfigurationRecord *)v2 setAllowIntelligentManagement:v9];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "compatibilityVersion")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "compatibilityVersion")}];
   [(DNDSMutableConfigurationRecord *)v2 setCompatibilityVersion:v10];
 
   return v2;
@@ -125,19 +125,19 @@
 {
   v26 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(DNDSMutableConfigurationSecureRecord);
-  v3 = [a1 senderConfiguration];
-  v4 = [v3 makeRecord];
-  [(DNDSMutableConfigurationSecureRecord *)v2 setSenderConfiguration:v4];
+  senderConfiguration = [self senderConfiguration];
+  makeRecord = [senderConfiguration makeRecord];
+  [(DNDSMutableConfigurationSecureRecord *)v2 setSenderConfiguration:makeRecord];
 
   v5 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [a1 allowedApplicationIdentifiers];
-  v7 = [v6 allKeys];
+  allowedApplicationIdentifiers = [self allowedApplicationIdentifiers];
+  allKeys = [allowedApplicationIdentifiers allKeys];
 
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -148,32 +148,32 @@
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [a1 allowedApplicationIdentifiers];
-        v14 = [v13 objectForKey:v12];
+        allowedApplicationIdentifiers2 = [self allowedApplicationIdentifiers];
+        v14 = [allowedApplicationIdentifiers2 objectForKey:v12];
 
-        v15 = [v14 makeRecord];
-        [v5 setObject:v15 forKey:v12];
+        makeRecord2 = [v14 makeRecord];
+        [v5 setObject:makeRecord2 forKey:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
   }
 
   [(DNDSMutableConfigurationSecureRecord *)v2 setAllowedApplications:v5];
-  v16 = [a1 deniedApplicationIdentifiers];
-  [(DNDSMutableConfigurationSecureRecord *)v2 setDeniedApplications:v16];
+  deniedApplicationIdentifiers = [self deniedApplicationIdentifiers];
+  [(DNDSMutableConfigurationSecureRecord *)v2 setDeniedApplications:deniedApplicationIdentifiers];
 
-  v17 = [a1 allowedWebApplicationIdentifiers];
-  [(DNDSMutableConfigurationSecureRecord *)v2 setAllowedWebApplications:v17];
+  allowedWebApplicationIdentifiers = [self allowedWebApplicationIdentifiers];
+  [(DNDSMutableConfigurationSecureRecord *)v2 setAllowedWebApplications:allowedWebApplicationIdentifiers];
 
-  v18 = [a1 deniedWebApplicationIdentifiers];
-  [(DNDSMutableConfigurationSecureRecord *)v2 setDeniedWebApplications:v18];
+  deniedWebApplicationIdentifiers = [self deniedWebApplicationIdentifiers];
+  [(DNDSMutableConfigurationSecureRecord *)v2 setDeniedWebApplications:deniedWebApplicationIdentifiers];
 
   v19 = *MEMORY[0x277D85DE8];
 

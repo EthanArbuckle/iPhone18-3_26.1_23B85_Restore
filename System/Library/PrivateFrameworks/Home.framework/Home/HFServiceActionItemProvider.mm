@@ -1,39 +1,39 @@
 @interface HFServiceActionItemProvider
-- (BOOL)isMatterServiceActionItem:(id)a3 forAccessoryID:(id)a4;
+- (BOOL)isMatterServiceActionItem:(id)item forAccessoryID:(id)d;
 - (HFActionSetValueSourceDelegate)actionSetValueSourceDelegate;
 - (HFServiceActionItemProvider)init;
-- (HFServiceActionItemProvider)initWithHome:(id)a3 actionSet:(id)a4;
-- (HFServiceActionItemProvider)initWithHome:(id)a3 actionSetBuilder:(id)a4;
-- (id)_actionItemForAccessory:(id)a3 addedActionsItems:(id)a4 home:(id)a5;
-- (id)_actionItemForCharacteristic:(id)a3 addedActionItems:(id)a4 home:(id)a5;
-- (id)_actionItemForMediaProfile:(id)a3 addedActionItems:(id)a4 home:(id)a5;
-- (id)_addOrUpdateActionItemWithAction:(id)a3 actionBuilder:(id)a4 addedActionItems:(id)a5 home:(id)a6;
-- (id)_addOrUpdateActionItemWithMediaAction:(id)a3 mediaActionBuilder:(id)a4 addedActionItems:(id)a5 home:(id)a6;
-- (id)_addOrUpdateMatterActionItemForAction:(id)a3 actionBuilder:(id)a4 addedActionsItems:(id)a5 home:(id)a6;
-- (id)_createActionItemForCharacteristic:(id)a3 home:(id)a4;
-- (id)_createActionItemForMediaProfile:(id)a3 home:(id)a4;
-- (id)_createMatterActionItemFor:(id)a3 home:(id)a4 actionSetBuilder:(id)a5;
-- (id)_findServiceActionForIdentifier:(id)a3 addedActionItems:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFServiceActionItemProvider)initWithHome:(id)home actionSet:(id)set;
+- (HFServiceActionItemProvider)initWithHome:(id)home actionSetBuilder:(id)builder;
+- (id)_actionItemForAccessory:(id)accessory addedActionsItems:(id)items home:(id)home;
+- (id)_actionItemForCharacteristic:(id)characteristic addedActionItems:(id)items home:(id)home;
+- (id)_actionItemForMediaProfile:(id)profile addedActionItems:(id)items home:(id)home;
+- (id)_addOrUpdateActionItemWithAction:(id)action actionBuilder:(id)builder addedActionItems:(id)items home:(id)home;
+- (id)_addOrUpdateActionItemWithMediaAction:(id)action mediaActionBuilder:(id)builder addedActionItems:(id)items home:(id)home;
+- (id)_addOrUpdateMatterActionItemForAction:(id)action actionBuilder:(id)builder addedActionsItems:(id)items home:(id)home;
+- (id)_createActionItemForCharacteristic:(id)characteristic home:(id)home;
+- (id)_createActionItemForMediaProfile:(id)profile home:(id)home;
+- (id)_createMatterActionItemFor:(id)for home:(id)home actionSetBuilder:(id)builder;
+- (id)_findServiceActionForIdentifier:(id)identifier addedActionItems:(id)items;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
-- (void)setActionSetValueSourceDelegate:(id)a3;
+- (void)setActionSetValueSourceDelegate:(id)delegate;
 @end
 
 @implementation HFServiceActionItemProvider
 
-- (id)_createMatterActionItemFor:(id)a3 home:(id)a4 actionSetBuilder:(id)a5
+- (id)_createMatterActionItemFor:(id)for home:(id)home actionSetBuilder:(id)builder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  MatterbC03for4home16actionSetBuilderSo0abC0CSgSo11HMAccessoryC_So6HMHomeCSo08HFActionkL8Protocol_So06HFItemL0CyyXlGXctF_0 = _sSo27HFServiceActionItemProviderC4HomeE013_createMatterbC03for4home16actionSetBuilderSo0abC0CSgSo11HMAccessoryC_So6HMHomeCSo08HFActionkL8Protocol_So06HFItemL0CyyXlGXctF_0(v8, v9, v10);
+  forCopy = for;
+  homeCopy = home;
+  builderCopy = builder;
+  selfCopy = self;
+  MatterbC03for4home16actionSetBuilderSo0abC0CSgSo11HMAccessoryC_So6HMHomeCSo08HFActionkL8Protocol_So06HFItemL0CyyXlGXctF_0 = _sSo27HFServiceActionItemProviderC4HomeE013_createMatterbC03for4home16actionSetBuilderSo0abC0CSgSo11HMAccessoryC_So6HMHomeCSo08HFActionkL8Protocol_So06HFItemL0CyyXlGXctF_0(forCopy, homeCopy, builderCopy);
 
   return MatterbC03for4home16actionSetBuilderSo0abC0CSgSo11HMAccessoryC_So6HMHomeCSo08HFActionkL8Protocol_So06HFItemL0CyyXlGXctF_0;
 }
 
-- (BOOL)isMatterServiceActionItem:(id)a3 forAccessoryID:(id)a4
+- (BOOL)isMatterServiceActionItem:(id)item forAccessoryID:(id)d
 {
   v6 = sub_20DD63744();
   v7 = *(v6 - 8);
@@ -41,9 +41,9 @@
   MEMORY[0x28223BE20](v6);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20DD63714();
-  v11 = a3;
-  v12 = self;
-  LOBYTE(self) = _sSo27HFServiceActionItemProviderC4HomeE015isMatterServicebC0_14forAccessoryIDSbSo0abC0C_10Foundation4UUIDVtF_0(v11);
+  itemCopy = item;
+  selfCopy = self;
+  LOBYTE(self) = _sSo27HFServiceActionItemProviderC4HomeE015isMatterServicebC0_14forAccessoryIDSbSo0abC0C_10Foundation4UUIDVtF_0(itemCopy);
 
   (*(v7 + 8))(v10, v6);
   return self & 1;
@@ -51,26 +51,26 @@
 
 - (HFServiceActionItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_actionSet_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HFServiceActionItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HFServiceActionItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HFServiceActionItemProvider)initWithHome:(id)a3 actionSet:(id)a4
+- (HFServiceActionItemProvider)initWithHome:(id)home actionSet:(id)set
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  setCopy = set;
   v14.receiver = self;
   v14.super_class = HFServiceActionItemProvider;
   v9 = [(HFItemProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_actionSet, a4);
-    v11 = [[HFActionSetValueSource alloc] initWithActionSet:v8];
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_actionSet, set);
+    v11 = [[HFActionSetValueSource alloc] initWithActionSet:setCopy];
     valueSource = v10->_valueSource;
     v10->_valueSource = v11;
   }
@@ -78,19 +78,19 @@
   return v10;
 }
 
-- (HFServiceActionItemProvider)initWithHome:(id)a3 actionSetBuilder:(id)a4
+- (HFServiceActionItemProvider)initWithHome:(id)home actionSetBuilder:(id)builder
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  builderCopy = builder;
   v14.receiver = self;
   v14.super_class = HFServiceActionItemProvider;
   v9 = [(HFItemProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_actionSetBuilder, a4);
-    v11 = [[HFActionSetValueSource alloc] initWithActionSetBuilder:v8];
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_actionSetBuilder, builder);
+    v11 = [[HFActionSetValueSource alloc] initWithActionSetBuilder:builderCopy];
     valueSource = v10->_valueSource;
     v10->_valueSource = v11;
   }
@@ -98,22 +98,22 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFServiceActionItemProvider *)self actionSet];
+  actionSet = [(HFServiceActionItemProvider *)self actionSet];
 
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFServiceActionItemProvider *)self home];
-  if (v4)
+  home = [(HFServiceActionItemProvider *)self home];
+  if (actionSet)
   {
-    v7 = [(HFServiceActionItemProvider *)self actionSet];
-    v8 = [v5 initWithHome:v6 actionSet:v7];
+    actionSet2 = [(HFServiceActionItemProvider *)self actionSet];
+    v8 = [v5 initWithHome:home actionSet:actionSet2];
   }
 
   else
   {
-    v7 = [(HFServiceActionItemProvider *)self actionSetBuilder];
-    v8 = [v5 initWithHome:v6 actionSetBuilder:v7];
+    actionSet2 = [(HFServiceActionItemProvider *)self actionSetBuilder];
+    v8 = [v5 initWithHome:home actionSetBuilder:actionSet2];
   }
 
   v9 = v8;
@@ -123,25 +123,25 @@
 
 - (HFActionSetValueSourceDelegate)actionSetValueSourceDelegate
 {
-  v2 = [(HFServiceActionItemProvider *)self valueSource];
-  v3 = [v2 delegate];
+  valueSource = [(HFServiceActionItemProvider *)self valueSource];
+  delegate = [valueSource delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setActionSetValueSourceDelegate:(id)a3
+- (void)setActionSetValueSourceDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HFServiceActionItemProvider *)self valueSource];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  valueSource = [(HFServiceActionItemProvider *)self valueSource];
+  [valueSource setDelegate:delegateCopy];
 }
 
 - (id)reloadItems
 {
   v97 = *MEMORY[0x277D85DE8];
   v3 = [HFMutableSetDiff alloc];
-  v4 = [(HFServiceActionItemProvider *)self actionItems];
-  v5 = [(HFMutableSetDiff *)v3 initWithFromSet:v4];
+  actionItems = [(HFServiceActionItemProvider *)self actionItems];
+  v5 = [(HFMutableSetDiff *)v3 initWithFromSet:actionItems];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -155,8 +155,8 @@
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v6 = [(HFServiceActionItemProvider *)self actionItems];
-  v7 = [v6 countByEnumeratingWithState:&v87 objects:v96 count:16];
+  actionItems2 = [(HFServiceActionItemProvider *)self actionItems];
+  v7 = [actionItems2 countByEnumeratingWithState:&v87 objects:v96 count:16];
   if (v7)
   {
     v8 = v7;
@@ -167,7 +167,7 @@
       {
         if (*v88 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(actionItems2);
         }
 
         v11 = *(*(&v87 + 1) + 8 * i);
@@ -178,7 +178,7 @@
         [v11 setActionBuilders:v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v87 objects:v96 count:16];
+      v8 = [actionItems2 countByEnumeratingWithState:&v87 objects:v96 count:16];
     }
 
     while (v8);
@@ -188,10 +188,10 @@
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v14 = [(HFServiceActionItemProvider *)self actionSet];
-  v15 = [v14 actions];
+  actionSet = [(HFServiceActionItemProvider *)self actionSet];
+  actions = [actionSet actions];
 
-  v16 = [v15 countByEnumeratingWithState:&v83 objects:v95 count:16];
+  v16 = [actions countByEnumeratingWithState:&v83 objects:v95 count:16];
   if (v16)
   {
     v17 = v16;
@@ -207,7 +207,7 @@
       {
         if (*v84 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(actions);
         }
 
         v21 = *(*(&v83 + 1) + 8 * v20);
@@ -215,9 +215,9 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v23 = [(HFSetDiff *)v63 additions];
-          v24 = [(HFServiceActionItemProvider *)self home];
-          v25 = [(HFServiceActionItemProvider *)self _addOrUpdateActionItemWithMediaAction:v21 mediaActionBuilder:0 addedActionItems:v23 home:v24];
+          additions = [(HFSetDiff *)v63 additions];
+          home = [(HFServiceActionItemProvider *)self home];
+          v25 = [(HFServiceActionItemProvider *)self _addOrUpdateActionItemWithMediaAction:v21 mediaActionBuilder:0 addedActionItems:additions home:home];
 
           v80[0] = MEMORY[0x277D85DD0];
           v80[1] = 3221225472;
@@ -233,16 +233,16 @@
           v27 = v19;
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
-          v29 = [(HFSetDiff *)v63 additions];
-          v30 = [(HFServiceActionItemProvider *)self home];
+          additions2 = [(HFSetDiff *)v63 additions];
+          home2 = [(HFServiceActionItemProvider *)self home];
           if (isKindOfClass)
           {
-            [(HFServiceActionItemProvider *)self _addOrUpdateMatterActionItemForAction:v21 actionBuilder:0 addedActionsItems:v29 home:v30];
+            [(HFServiceActionItemProvider *)self _addOrUpdateMatterActionItemForAction:v21 actionBuilder:0 addedActionsItems:additions2 home:home2];
           }
 
           else
           {
-            [(HFServiceActionItemProvider *)self _addOrUpdateActionItemWithAction:v21 actionBuilder:0 addedActionItems:v29 home:v30];
+            [(HFServiceActionItemProvider *)self _addOrUpdateActionItemWithAction:v21 actionBuilder:0 addedActionItems:additions2 home:home2];
           }
           v25 = ;
 
@@ -256,7 +256,7 @@
       }
 
       while (v17 != v20);
-      v17 = [v15 countByEnumeratingWithState:&v83 objects:v95 count:16];
+      v17 = [actions countByEnumeratingWithState:&v83 objects:v95 count:16];
     }
 
     while (v17);
@@ -266,11 +266,11 @@
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v31 = [(HFServiceActionItemProvider *)self actionSetBuilder];
-  v32 = [v31 actions];
+  actionSetBuilder = [(HFServiceActionItemProvider *)self actionSetBuilder];
+  actions2 = [actionSetBuilder actions];
 
-  obj = v32;
-  v33 = [v32 countByEnumeratingWithState:&v76 objects:v94 count:16];
+  obj = actions2;
+  v33 = [actions2 countByEnumeratingWithState:&v76 objects:v94 count:16];
   if (v33)
   {
     v34 = v33;
@@ -289,9 +289,9 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v38 = [(HFSetDiff *)v63 additions];
-          v39 = [(HFServiceActionItemProvider *)self home];
-          v40 = [(HFServiceActionItemProvider *)self _addOrUpdateActionItemWithMediaAction:0 mediaActionBuilder:v37 addedActionItems:v38 home:v39];
+          additions3 = [(HFSetDiff *)v63 additions];
+          home3 = [(HFServiceActionItemProvider *)self home];
+          v40 = [(HFServiceActionItemProvider *)self _addOrUpdateActionItemWithMediaAction:0 mediaActionBuilder:v37 addedActionItems:additions3 home:home3];
 
           v73[0] = MEMORY[0x277D85DD0];
           v73[1] = 3221225472;
@@ -305,16 +305,16 @@
         {
           objc_opt_class();
           v41 = objc_opt_isKindOfClass();
-          v42 = [(HFSetDiff *)v63 additions];
-          v43 = [(HFServiceActionItemProvider *)self home];
+          additions4 = [(HFSetDiff *)v63 additions];
+          home4 = [(HFServiceActionItemProvider *)self home];
           if (v41)
           {
-            [(HFServiceActionItemProvider *)self _addOrUpdateMatterActionItemForAction:0 actionBuilder:v37 addedActionsItems:v42 home:v43];
+            [(HFServiceActionItemProvider *)self _addOrUpdateMatterActionItemForAction:0 actionBuilder:v37 addedActionsItems:additions4 home:home4];
           }
 
           else
           {
-            [(HFServiceActionItemProvider *)self _addOrUpdateActionItemWithAction:0 actionBuilder:v37 addedActionItems:v42 home:v43];
+            [(HFServiceActionItemProvider *)self _addOrUpdateActionItemWithAction:0 actionBuilder:v37 addedActionItems:additions4 home:home4];
           }
           v40 = ;
 
@@ -332,8 +332,8 @@
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v44 = [(HFServiceActionItemProvider *)self actionItems];
-  v45 = [v44 countByEnumeratingWithState:&v69 objects:v93 count:16];
+  actionItems3 = [(HFServiceActionItemProvider *)self actionItems];
+  v45 = [actionItems3 countByEnumeratingWithState:&v69 objects:v93 count:16];
   if (v45)
   {
     v46 = v45;
@@ -344,19 +344,19 @@
       {
         if (*v70 != v47)
         {
-          objc_enumerationMutation(v44);
+          objc_enumerationMutation(actionItems3);
         }
 
         v49 = *(*(&v69 + 1) + 8 * k);
-        v50 = [v49 actions];
-        if ([v50 count])
+        actions3 = [v49 actions];
+        if ([actions3 count])
         {
         }
 
         else
         {
-          v51 = [v49 actionBuilders];
-          v52 = [v51 count];
+          actionBuilders = [v49 actionBuilders];
+          v52 = [actionBuilders count];
 
           if (!v52)
           {
@@ -365,21 +365,21 @@
         }
       }
 
-      v46 = [v44 countByEnumeratingWithState:&v69 objects:v93 count:16];
+      v46 = [actionItems3 countByEnumeratingWithState:&v69 objects:v93 count:16];
     }
 
     while (v46);
   }
 
-  v53 = [(HFSetDiff *)v63 toSet];
-  v54 = [v53 mutableCopy];
+  toSet = [(HFSetDiff *)v63 toSet];
+  v54 = [toSet mutableCopy];
   [(HFServiceActionItemProvider *)self setActionItems:v54];
 
   v55 = [HFItemProviderReloadResults alloc];
-  v56 = [(HFSetDiff *)v63 additions];
-  v57 = [(HFSetDiff *)v63 deletions];
-  v58 = [(HFSetDiff *)v63 updates];
-  v59 = [(HFItemProviderReloadResults *)v55 initWithAddedItems:v56 removedItems:v57 existingItems:v58];
+  additions5 = [(HFSetDiff *)v63 additions];
+  deletions = [(HFSetDiff *)v63 deletions];
+  updates = [(HFSetDiff *)v63 updates];
+  v59 = [(HFItemProviderReloadResults *)v55 initWithAddedItems:additions5 removedItems:deletions existingItems:updates];
 
   v60 = [MEMORY[0x277D2C900] futureWithResult:v59];
 
@@ -425,36 +425,36 @@ void __42__HFServiceActionItemProvider_reloadItems__block_invoke(uint64_t a1, vo
 {
   v7.receiver = self;
   v7.super_class = HFServiceActionItemProvider;
-  v3 = [(HFItemProvider *)&v7 invalidationReasons];
-  v4 = [(HFServiceActionItemProvider *)self actionSet];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
+  actionSet = [(HFServiceActionItemProvider *)self actionSet];
 
-  if (v4)
+  if (actionSet)
   {
-    v5 = [v3 setByAddingObject:@"actionSet"];
+    v5 = [invalidationReasons setByAddingObject:@"actionSet"];
 
-    v3 = v5;
+    invalidationReasons = v5;
   }
 
-  return v3;
+  return invalidationReasons;
 }
 
-- (id)_actionItemForCharacteristic:(id)a3 addedActionItems:(id)a4 home:(id)a5
+- (id)_actionItemForCharacteristic:(id)characteristic addedActionItems:(id)items home:(id)home
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  characteristicCopy = characteristic;
+  itemsCopy = items;
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
-  v12 = [v9 service];
-  v13 = [v12 uniqueIdentifier];
+  service = [characteristicCopy service];
+  uniqueIdentifier = [service uniqueIdentifier];
 
-  if (v13)
+  if (uniqueIdentifier)
   {
-    v14 = [(HFServiceActionItemProvider *)self _findServiceActionForIdentifier:v13 addedActionItems:v10];
+    v14 = [(HFServiceActionItemProvider *)self _findServiceActionForIdentifier:uniqueIdentifier addedActionItems:itemsCopy];
   }
 
   else
@@ -465,16 +465,16 @@ void __42__HFServiceActionItemProvider_reloadItems__block_invoke(uint64_t a1, vo
   return v14;
 }
 
-- (id)_actionItemForMediaProfile:(id)a3 addedActionItems:(id)a4 home:(id)a5
+- (id)_actionItemForMediaProfile:(id)profile addedActionItems:(id)items home:(id)home
 {
-  v7 = a4;
-  v8 = [a3 accessories];
-  v9 = [v8 anyObject];
-  v10 = [v9 uniqueIdentifier];
+  itemsCopy = items;
+  accessories = [profile accessories];
+  anyObject = [accessories anyObject];
+  uniqueIdentifier = [anyObject uniqueIdentifier];
 
-  if (v10)
+  if (uniqueIdentifier)
   {
-    v11 = [(HFServiceActionItemProvider *)self _findServiceActionForIdentifier:v10 addedActionItems:v7];
+    v11 = [(HFServiceActionItemProvider *)self _findServiceActionForIdentifier:uniqueIdentifier addedActionItems:itemsCopy];
   }
 
   else
@@ -485,17 +485,17 @@ void __42__HFServiceActionItemProvider_reloadItems__block_invoke(uint64_t a1, vo
   return v11;
 }
 
-- (id)_findServiceActionForIdentifier:(id)a3 addedActionItems:(id)a4
+- (id)_findServiceActionForIdentifier:(id)identifier addedActionItems:(id)items
 {
   v54 = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v6 = a4;
-  v7 = [(HFServiceActionItemProvider *)self actionItems];
-  v39 = self;
-  if (v7)
+  identifierCopy = identifier;
+  itemsCopy = items;
+  actionItems = [(HFServiceActionItemProvider *)self actionItems];
+  selfCopy = self;
+  if (actionItems)
   {
-    v8 = [(HFServiceActionItemProvider *)self actionItems];
-    v9 = [v8 mutableCopy];
+    actionItems2 = [(HFServiceActionItemProvider *)self actionItems];
+    v9 = [actionItems2 mutableCopy];
   }
 
   else
@@ -503,12 +503,12 @@ void __42__HFServiceActionItemProvider_reloadItems__block_invoke(uint64_t a1, vo
     v9 = [MEMORY[0x277CBEB58] set];
   }
 
-  if (v6)
+  if (itemsCopy)
   {
-    [v9 unionSet:v6];
+    [v9 unionSet:itemsCopy];
   }
 
-  v38 = v6;
+  v38 = itemsCopy;
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
@@ -529,17 +529,17 @@ void __42__HFServiceActionItemProvider_reloadItems__block_invoke(uint64_t a1, vo
         }
 
         v14 = *(*(&v48 + 1) + 8 * i);
-        v15 = [v14 containingItem];
+        containingItem = [v14 containingItem];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v17 = [v14 containingItem];
-          v18 = [v17 serviceGroup];
-          v19 = [v18 services];
-          v20 = [v19 valueForKey:@"uniqueIdentifier"];
-          v21 = [v20 containsObject:v41];
+          containingItem2 = [v14 containingItem];
+          serviceGroup = [containingItem2 serviceGroup];
+          services = [serviceGroup services];
+          v20 = [services valueForKey:@"uniqueIdentifier"];
+          v21 = [v20 containsObject:identifierCopy];
 
           if (v21)
           {
@@ -591,7 +591,7 @@ LABEL_20:
     }
 
     v22 = *(*(&v44 + 1) + 8 * v27);
-    v28 = [v22 containingItem];
+    containingItem3 = [v22 containingItem];
     objc_opt_class();
     v29 = objc_opt_isKindOfClass();
 
@@ -600,7 +600,7 @@ LABEL_20:
       break;
     }
 
-    if ([(HFServiceActionItemProvider *)v39 isMatterServiceActionItem:v22 forAccessoryID:v41])
+    if ([(HFServiceActionItemProvider *)selfCopy isMatterServiceActionItem:v22 forAccessoryID:identifierCopy])
     {
       v34 = v22;
       goto LABEL_32;
@@ -619,10 +619,10 @@ LABEL_27:
     }
   }
 
-  v30 = [v22 containingItem];
-  v31 = [v30 service];
-  v32 = [v31 uniqueIdentifier];
-  v33 = [v32 isEqual:v41];
+  containingItem4 = [v22 containingItem];
+  service = [containingItem4 service];
+  uniqueIdentifier = [service uniqueIdentifier];
+  v33 = [uniqueIdentifier isEqual:identifierCopy];
 
   if (!v33)
   {
@@ -643,7 +643,7 @@ LABEL_33:
   v42[1] = 3221225472;
   v42[2] = __80__HFServiceActionItemProvider__findServiceActionForIdentifier_addedActionItems___block_invoke;
   v42[3] = &unk_277E00400;
-  v43 = v41;
+  v43 = identifierCopy;
   v22 = [v23 na_firstObjectPassingTest:v42];
 
 LABEL_34:
@@ -697,37 +697,37 @@ uint64_t __80__HFServiceActionItemProvider__findServiceActionForIdentifier_added
   return v4;
 }
 
-- (id)_createActionItemForCharacteristic:(id)a3 home:(id)a4
+- (id)_createActionItemForCharacteristic:(id)characteristic home:(id)home
 {
-  v6 = a4;
-  v7 = [a3 service];
-  v8 = [v6 hf_serviceGroupsForService:v7];
-  v9 = [v8 firstObject];
+  homeCopy = home;
+  service = [characteristic service];
+  v8 = [homeCopy hf_serviceGroupsForService:service];
+  firstObject = [v8 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
     v10 = [HFServiceGroupItem alloc];
-    v11 = [(HFServiceActionItemProvider *)self valueSource];
-    v12 = [(HFServiceGroupItem *)v10 initWithValueSource:v11 serviceGroup:v9];
+    valueSource = [(HFServiceActionItemProvider *)self valueSource];
+    v12 = [(HFServiceGroupItem *)v10 initWithValueSource:valueSource serviceGroup:firstObject];
   }
 
   else
   {
-    if (!v7 || ![v7 hf_isVisible])
+    if (!service || ![service hf_isVisible])
     {
       v13 = 0;
       goto LABEL_10;
     }
 
-    v11 = [(HFServiceActionItemProvider *)self valueSource];
-    v12 = [HFServiceItem serviceItemForService:v7 valueSource:v11];
+    valueSource = [(HFServiceActionItemProvider *)self valueSource];
+    v12 = [HFServiceItem serviceItemForService:service valueSource:valueSource];
   }
 
   v13 = v12;
 
   if (v13 && [v13 containsActions])
   {
-    v14 = [[HFServiceActionItem alloc] initWithHome:v6 containingItem:v13];
+    v14 = [[HFServiceActionItem alloc] initWithHome:homeCopy containingItem:v13];
     goto LABEL_11;
   }
 
@@ -738,83 +738,83 @@ LABEL_11:
   return v14;
 }
 
-- (id)_createActionItemForMediaProfile:(id)a3 home:(id)a4
+- (id)_createActionItemForMediaProfile:(id)profile home:(id)home
 {
-  v6 = a4;
-  v7 = a3;
+  homeCopy = home;
+  profileCopy = profile;
   v8 = [HFServiceActionItem alloc];
   v9 = [HFMediaAccessoryItem alloc];
-  v10 = [(HFServiceActionItemProvider *)self valueSource];
-  v11 = [(HFMediaAccessoryItem *)v9 initWithValueSource:v10 mediaProfileContainer:v7];
+  valueSource = [(HFServiceActionItemProvider *)self valueSource];
+  v11 = [(HFMediaAccessoryItem *)v9 initWithValueSource:valueSource mediaProfileContainer:profileCopy];
 
-  v12 = [(HFServiceActionItem *)v8 initWithHome:v6 containingItem:v11];
+  v12 = [(HFServiceActionItem *)v8 initWithHome:homeCopy containingItem:v11];
 
   return v12;
 }
 
-- (id)_addOrUpdateActionItemWithAction:(id)a3 actionBuilder:(id)a4 addedActionItems:(id)a5 home:(id)a6
+- (id)_addOrUpdateActionItemWithAction:(id)action actionBuilder:(id)builder addedActionItems:(id)items home:(id)home
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  actionCopy = action;
+  builderCopy = builder;
+  itemsCopy = items;
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:283 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:283 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
-  if (!(v11 | v12))
+  if (!(actionCopy | builderCopy))
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:284 description:{@"Invalid parameter not satisfying: %@", @"action || actionBuilder"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:284 description:{@"Invalid parameter not satisfying: %@", @"action || actionBuilder"}];
     v16 = 0;
 LABEL_16:
 
     goto LABEL_19;
   }
 
-  if (v11 && v12)
+  if (actionCopy && builderCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"!action || !actionBuilder"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"!action || !actionBuilder"}];
 
 LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v11 characteristic];
-      v16 = [(HFServiceActionItemProvider *)self _actionItemForCharacteristic:v15 addedActionItems:v13 home:v14];
+      currentHandler2 = [actionCopy characteristic];
+      v16 = [(HFServiceActionItemProvider *)self _actionItemForCharacteristic:currentHandler2 addedActionItems:itemsCopy home:homeCopy];
       if (!v16)
       {
-        v16 = [(HFServiceActionItemProvider *)self _createActionItemForCharacteristic:v15 home:v14];
+        v16 = [(HFServiceActionItemProvider *)self _createActionItemForCharacteristic:currentHandler2 home:homeCopy];
       }
 
-      [v16 addAction:v11];
+      [v16 addAction:actionCopy];
       goto LABEL_16;
     }
 
     goto LABEL_17;
   }
 
-  if (v11)
+  if (actionCopy)
   {
     goto LABEL_7;
   }
 
-  if (v12)
+  if (builderCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v12 characteristic];
-      v16 = [(HFServiceActionItemProvider *)self _actionItemForCharacteristic:v15 addedActionItems:v13 home:v14];
+      currentHandler2 = [builderCopy characteristic];
+      v16 = [(HFServiceActionItemProvider *)self _actionItemForCharacteristic:currentHandler2 addedActionItems:itemsCopy home:homeCopy];
       if (!v16)
       {
-        v16 = [(HFServiceActionItemProvider *)self _createActionItemForCharacteristic:v15 home:v14];
+        v16 = [(HFServiceActionItemProvider *)self _createActionItemForCharacteristic:currentHandler2 home:homeCopy];
       }
 
-      [v16 addActionBuilder:v12];
+      [v16 addActionBuilder:builderCopy];
       goto LABEL_16;
     }
 
@@ -829,26 +829,26 @@ LABEL_19:
   return v16;
 }
 
-- (id)_addOrUpdateActionItemWithMediaAction:(id)a3 mediaActionBuilder:(id)a4 addedActionItems:(id)a5 home:(id)a6
+- (id)_addOrUpdateActionItemWithMediaAction:(id)action mediaActionBuilder:(id)builder addedActionItems:(id)items home:(id)home
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  actionCopy = action;
+  builderCopy = builder;
+  itemsCopy = items;
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
-  if ((v11 != 0) == (v12 != 0))
+  if ((actionCopy != 0) == (builderCopy != 0))
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"(action != nil) ^ (actionBuilder != nil)"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"(action != nil) ^ (actionBuilder != nil)"}];
   }
 
   v15 = [MEMORY[0x277CBEB98] set];
-  if (v11)
+  if (actionCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -856,51 +856,51 @@ LABEL_19:
       goto LABEL_12;
     }
 
-    v16 = [v11 mediaProfiles];
+    mediaProfiles = [actionCopy mediaProfiles];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __110__HFServiceActionItemProvider__addOrUpdateActionItemWithMediaAction_mediaActionBuilder_addedActionItems_home___block_invoke;
     v30[3] = &unk_277E00428;
     v30[4] = self;
     v17 = &v31;
-    v31 = v13;
+    v31 = itemsCopy;
     v18 = &v32;
-    v32 = v14;
+    v32 = homeCopy;
     v19 = &v33;
-    v33 = v11;
+    v33 = actionCopy;
     v20 = v30;
     goto LABEL_11;
   }
 
-  if (v12)
+  if (builderCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v12 mediaProfiles];
+      mediaProfiles = [builderCopy mediaProfiles];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __110__HFServiceActionItemProvider__addOrUpdateActionItemWithMediaAction_mediaActionBuilder_addedActionItems_home___block_invoke_2;
       v26[3] = &unk_277E00428;
       v26[4] = self;
       v17 = &v27;
-      v27 = v13;
+      v27 = itemsCopy;
       v18 = &v28;
-      v28 = v14;
+      v28 = homeCopy;
       v19 = &v29;
-      v29 = v12;
+      v29 = builderCopy;
       v20 = v26;
 LABEL_11:
-      v21 = [v16 na_map:v20];
+      v21 = [mediaProfiles na_map:v20];
 
       v15 = v21;
     }
   }
 
 LABEL_12:
-  v22 = [v15 allObjects];
+  allObjects = [v15 allObjects];
 
-  return v22;
+  return allObjects;
 }
 
 id __110__HFServiceActionItemProvider__addOrUpdateActionItemWithMediaAction_mediaActionBuilder_addedActionItems_home___block_invoke(uint64_t a1, void *a2)
@@ -931,21 +931,21 @@ id __110__HFServiceActionItemProvider__addOrUpdateActionItemWithMediaAction_medi
   return v4;
 }
 
-- (id)_actionItemForAccessory:(id)a3 addedActionsItems:(id)a4 home:(id)a5
+- (id)_actionItemForAccessory:(id)accessory addedActionsItems:(id)items home:(id)home
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  accessoryCopy = accessory;
+  itemsCopy = items;
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:354 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceActionItemProvider.m" lineNumber:354 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
-  v12 = [v9 uniqueIdentifier];
-  if (v12)
+  uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+  if (uniqueIdentifier)
   {
-    v13 = [(HFServiceActionItemProvider *)self _findServiceActionForIdentifier:v12 addedActionItems:v10];
+    v13 = [(HFServiceActionItemProvider *)self _findServiceActionForIdentifier:uniqueIdentifier addedActionItems:itemsCopy];
   }
 
   else
@@ -956,51 +956,51 @@ id __110__HFServiceActionItemProvider__addOrUpdateActionItemWithMediaAction_medi
   return v13;
 }
 
-- (id)_addOrUpdateMatterActionItemForAction:(id)a3 actionBuilder:(id)a4 addedActionsItems:(id)a5 home:(id)a6
+- (id)_addOrUpdateMatterActionItemForAction:(id)action actionBuilder:(id)builder addedActionsItems:(id)items home:(id)home
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  actionCopy = action;
+  builderCopy = builder;
+  itemsCopy = items;
+  homeCopy = home;
+  if (actionCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v10 commands];
-      v15 = [v14 firstObject];
-      v16 = [v15 accessory];
+      commands = [actionCopy commands];
+      firstObject = [commands firstObject];
+      accessory = [firstObject accessory];
 
-      v17 = [(HFServiceActionItemProvider *)self _actionItemForAccessory:v16 addedActionsItems:v12 home:v13];
+      v17 = [(HFServiceActionItemProvider *)self _actionItemForAccessory:accessory addedActionsItems:itemsCopy home:homeCopy];
       if (!v17)
       {
-        v18 = [(HFServiceActionItemProvider *)self valueSource];
-        v19 = [v18 actionSetBuilder];
-        v17 = [(HFServiceActionItemProvider *)self _createMatterActionItemFor:v16 home:v13 actionSetBuilder:v19];
+        valueSource = [(HFServiceActionItemProvider *)self valueSource];
+        actionSetBuilder = [valueSource actionSetBuilder];
+        v17 = [(HFServiceActionItemProvider *)self _createMatterActionItemFor:accessory home:homeCopy actionSetBuilder:actionSetBuilder];
       }
 
-      [v17 addAction:v10];
+      [v17 addAction:actionCopy];
 LABEL_11:
 
       goto LABEL_13;
     }
   }
 
-  else if (v11)
+  else if (builderCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v11 accessory];
-      v17 = [(HFServiceActionItemProvider *)self _actionItemForAccessory:v16 addedActionsItems:v12 home:v13];
+      accessory = [builderCopy accessory];
+      v17 = [(HFServiceActionItemProvider *)self _actionItemForAccessory:accessory addedActionsItems:itemsCopy home:homeCopy];
       if (!v17)
       {
-        v20 = [(HFServiceActionItemProvider *)self valueSource];
-        v21 = [v20 actionSetBuilder];
-        v17 = [(HFServiceActionItemProvider *)self _createMatterActionItemFor:v16 home:v13 actionSetBuilder:v21];
+        valueSource2 = [(HFServiceActionItemProvider *)self valueSource];
+        actionSetBuilder2 = [valueSource2 actionSetBuilder];
+        v17 = [(HFServiceActionItemProvider *)self _createMatterActionItemFor:accessory home:homeCopy actionSetBuilder:actionSetBuilder2];
       }
 
-      [v17 addActionBuilder:v11];
+      [v17 addActionBuilder:builderCopy];
       goto LABEL_11;
     }
   }

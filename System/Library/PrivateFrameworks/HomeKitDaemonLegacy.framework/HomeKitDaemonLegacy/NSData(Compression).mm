@@ -9,7 +9,7 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v2 = objc_autoreleasePoolPush();
-  v3 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:{2 * objc_msgSend(a1, "length", 0, 0, 0, 0, 0, 0, 0)}];
+  v3 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:{2 * objc_msgSend(self, "length", 0, 0, 0, 0, 0, 0, 0)}];
   bzero(v19, 0x2000uLL);
   memset(&v14.zalloc, 0, 24);
   v4 = inflateInit2_(&v14, 15, "1.2.12", 112);
@@ -33,7 +33,7 @@
 
   else
   {
-    v14.avail_in = [a1 length];
+    v14.avail_in = [self length];
     while (1)
     {
       v14.avail_out = 0x2000;
@@ -93,8 +93,8 @@ LABEL_12:
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:{deflateBound(&v15, objc_msgSend(a1, "length", *&v15.next_in, *&v15.total_in, *&v15.avail_out, *&v15.msg))}];
-    v15.avail_in = [a1 length];
+    v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:{deflateBound(&v15, objc_msgSend(self, "length", *&v15.next_in, *&v15.total_in, *&v15.avail_out, *&v15.msg))}];
+    v15.avail_in = [self length];
     while (1)
     {
       v15.avail_out = 0x2000;

@@ -6,17 +6,17 @@
 
 - (void)tv_updateViewLayout
 {
-  v2 = [a1 tv_associatedIKViewElement];
-  if (v2)
+  tv_associatedIKViewElement = [self tv_associatedIKViewElement];
+  if (tv_associatedIKViewElement)
   {
-    v5 = v2;
-    v3 = [a1 view];
-    [v3 transferLayoutStylesFromElement:v5];
+    v5 = tv_associatedIKViewElement;
+    view = [self view];
+    [view transferLayoutStylesFromElement:v5];
 
-    v4 = [a1 view];
-    [v4 setNeedsLayout];
+    view2 = [self view];
+    [view2 setNeedsLayout];
 
-    v2 = v5;
+    tv_associatedIKViewElement = v5;
   }
 }
 

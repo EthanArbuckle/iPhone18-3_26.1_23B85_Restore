@@ -1,6 +1,6 @@
 @interface TIGainFocusEvent
 - (NSArray)originalWordEntries;
-- (TIGainFocusEvent)initWithTIKeyboardState:(id)a3 andLocale:(id)a4;
+- (TIGainFocusEvent)initWithTIKeyboardState:(id)state andLocale:(id)locale;
 - (id)originalDocumentText;
 - (id)originalWords;
 @end
@@ -13,12 +13,12 @@
   originalWords = self->_originalWords;
   if (!originalWords)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(TIGainFocusEvent *)self originalDocumentText];
-    if (![v5 length])
+    array = [MEMORY[0x277CBEB18] array];
+    originalDocumentText = [(TIGainFocusEvent *)self originalDocumentText];
+    if (![originalDocumentText length])
     {
 LABEL_15:
-      v11 = [v4 copy];
+      v11 = [array copy];
       v12 = self->_originalWords;
       self->_originalWords = v11;
 
@@ -26,18 +26,18 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v6 = 4 * [v5 length];
+    v6 = 4 * [originalDocumentText length];
     v7 = malloc_type_malloc(v6, 0x100004077774924uLL);
     v19 = 0;
     v18 = xmmword_22CC889D0;
-    if ([v5 getBytes:v7 maxLength:v6 usedLength:&v19 encoding:4 options:0 range:0 remainingRange:{objc_msgSend(v5, "length"), &v18}])
+    if ([originalDocumentText getBytes:v7 maxLength:v6 usedLength:&v19 encoding:4 options:0 range:0 remainingRange:{objc_msgSend(originalDocumentText, "length"), &v18}])
     {
       if (v18 != 0x7FFFFFFFFFFFFFFFLL && IXACanLogMessageAtLevel())
       {
         v8 = IXASessionDetailsLogFacility();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
-          v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s The range (%lu, %lu) was left over when getting the bytes from the original document text '%@'", "-[TIGainFocusEvent originalWords]", v18, v5];
+          v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s The range (%lu, %lu) was left over when getting the bytes from the original document text '%@'", "-[TIGainFocusEvent originalWords]", v18, originalDocumentText];
           *buf = 138412290;
           v21 = v16;
           _os_log_debug_impl(&dword_22CA55000, v8, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -46,7 +46,7 @@ LABEL_15:
 
       locale = self->_locale;
       LMStreamTokenizerCreate();
-      v17 = v4;
+      v17 = array;
       LMStreamTokenizerPushBytes();
       LMStreamTokenizerRelease();
       v10 = v17;
@@ -64,7 +64,7 @@ LABEL_14:
       v10 = IXASessionDetailsLogFacility();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Unable to get the bytes from the original document text '%@'", "-[TIGainFocusEvent originalWords]", v5];
+        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Unable to get the bytes from the original document text '%@'", "-[TIGainFocusEvent originalWords]", originalDocumentText];
         *buf = 138412290;
         v21 = v15;
         _os_log_debug_impl(&dword_22CA55000, v10, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -85,17 +85,17 @@ LABEL_16:
   originalDocumentText = self->_originalDocumentText;
   if (!originalDocumentText)
   {
-    v4 = [(TIUserAction *)self keyboardState];
-    v5 = [v4 documentState];
+    keyboardState = [(TIUserAction *)self keyboardState];
+    documentState = [keyboardState documentState];
 
-    if (v5)
+    if (documentState)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = [v5 contextBeforeInput];
-      v8 = v7;
-      if (v7)
+      contextBeforeInput = [documentState contextBeforeInput];
+      v8 = contextBeforeInput;
+      if (contextBeforeInput)
       {
-        v9 = v7;
+        v9 = contextBeforeInput;
       }
 
       else
@@ -103,11 +103,11 @@ LABEL_16:
         v9 = &stru_283FDFAF8;
       }
 
-      v10 = [v5 selectedText];
-      v11 = v10;
-      if (v10)
+      selectedText = [documentState selectedText];
+      v11 = selectedText;
+      if (selectedText)
       {
-        v12 = v10;
+        v12 = selectedText;
       }
 
       else
@@ -115,11 +115,11 @@ LABEL_16:
         v12 = &stru_283FDFAF8;
       }
 
-      v13 = [v5 contextAfterInput];
-      v14 = v13;
-      if (v13)
+      contextAfterInput = [documentState contextAfterInput];
+      v14 = contextAfterInput;
+      if (contextAfterInput)
       {
-        v15 = v13;
+        v15 = contextAfterInput;
       }
 
       else
@@ -159,14 +159,14 @@ void __33__TIGainFocusEvent_originalWords__block_invoke(uint64_t a1, uint64_t a2
   originalWordEntries = self->_originalWordEntries;
   if (!originalWordEntries)
   {
-    v30 = [MEMORY[0x277CBEB18] array];
-    v4 = [(TIGainFocusEvent *)self originalDocumentText];
-    v5 = [v4 length];
+    array = [MEMORY[0x277CBEB18] array];
+    originalDocumentText = [(TIGainFocusEvent *)self originalDocumentText];
+    v5 = [originalDocumentText length];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v31 = self;
+    selfCopy = self;
     obj = [(TIGainFocusEvent *)self originalWords];
     v29 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v29)
@@ -183,7 +183,7 @@ void __33__TIGainFocusEvent_originalWords__block_invoke(uint64_t a1, uint64_t a2
           }
 
           v8 = *(*(&v32 + 1) + 8 * i);
-          v9 = [v4 rangeOfString:v8 options:2 range:{v6, v5}];
+          v9 = [originalDocumentText rangeOfString:v8 options:2 range:{v6, v5}];
           if (v9 == 0x7FFFFFFFFFFFFFFFLL)
           {
             if (IXACanLogMessageAtLevel())
@@ -191,7 +191,7 @@ void __33__TIGainFocusEvent_originalWords__block_invoke(uint64_t a1, uint64_t a2
               v22 = IXASessionDetailsLogFacility();
               if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
               {
-                v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s An error occurred when trying to locate '%@' within the original document text '%@'", "-[TIGainFocusEvent originalWordEntries]", v8, v4];
+                v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s An error occurred when trying to locate '%@' within the original document text '%@'", "-[TIGainFocusEvent originalWordEntries]", v8, originalDocumentText];
                 *buf = 138412290;
                 v37 = v26;
                 _os_log_debug_impl(&dword_22CA55000, v22, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -203,12 +203,12 @@ void __33__TIGainFocusEvent_originalWords__block_invoke(uint64_t a1, uint64_t a2
 
           v11 = v9;
           v12 = v10;
-          v13 = [v4 substringWithRange:{0, v9}];
+          v13 = [originalDocumentText substringWithRange:{0, v9}];
           v14 = [MEMORY[0x277D6F350] documentStateWithContextBefore:v13 selectedText:0 contextAfter:0];
           v6 = v11 + v12;
-          v15 = [v4 substringWithRange:{0, v11 + v12}];
-          v16 = [(TIUserAction *)v31 keyboardState];
-          v17 = [v16 copy];
+          v15 = [originalDocumentText substringWithRange:{0, v11 + v12}];
+          keyboardState = [(TIUserAction *)selfCopy keyboardState];
+          v17 = [keyboardState copy];
 
           v18 = [MEMORY[0x277D6F350] documentStateWithContextBefore:v15 selectedText:0 contextAfter:0];
           [v17 setDocumentState:v18];
@@ -218,12 +218,12 @@ void __33__TIGainFocusEvent_originalWords__block_invoke(uint64_t a1, uint64_t a2
           [(TIUserAction *)v20 setDocumentState:v14];
           [(TIUserAction *)v20 setKeyboardState:v17];
           [(TIWordEntry *)v20 setAcceptedCandidate:v19];
-          v21 = [v19 candidate];
-          [(TIWordEntry *)v20 setAcceptedString:v21];
+          candidate = [v19 candidate];
+          [(TIWordEntry *)v20 setAcceptedString:candidate];
 
           [(TIWordEntry *)v20 setOrigin:1];
-          [(NSArray *)v30 addObject:v20];
-          v5 = [v4 length] - v6;
+          [(NSArray *)array addObject:v20];
+          v5 = [originalDocumentText length] - v6;
         }
 
         v29 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
@@ -238,10 +238,10 @@ void __33__TIGainFocusEvent_originalWords__block_invoke(uint64_t a1, uint64_t a2
 
 LABEL_15:
 
-    v23 = v31->_originalWordEntries;
-    v31->_originalWordEntries = v30;
+    v23 = selfCopy->_originalWordEntries;
+    selfCopy->_originalWordEntries = array;
 
-    originalWordEntries = v31->_originalWordEntries;
+    originalWordEntries = selfCopy->_originalWordEntries;
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -249,17 +249,17 @@ LABEL_15:
   return originalWordEntries;
 }
 
-- (TIGainFocusEvent)initWithTIKeyboardState:(id)a3 andLocale:(id)a4
+- (TIGainFocusEvent)initWithTIKeyboardState:(id)state andLocale:(id)locale
 {
-  v7 = a4;
+  localeCopy = locale;
   v12.receiver = self;
   v12.super_class = TIGainFocusEvent;
-  v8 = [(TIContextChangeEvent *)&v12 initWithTIKeyboardState:a3 andActionType:10];
+  v8 = [(TIContextChangeEvent *)&v12 initWithTIKeyboardState:state andActionType:10];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_locale, a4);
-    v10 = [(TIGainFocusEvent *)v9 originalWords];
+    objc_storeStrong(&v8->_locale, locale);
+    originalWords = [(TIGainFocusEvent *)v9 originalWords];
   }
 
   return v9;

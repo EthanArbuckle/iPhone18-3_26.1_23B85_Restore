@@ -1,26 +1,26 @@
 @interface ASVWrappedButton
-- (void)sendAction:(SEL)a3 to:(id)a4 forEvent:(id)a5;
-- (void)setHighlighted:(BOOL)a3;
+- (void)sendAction:(SEL)action to:(id)to forEvent:(id)event;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation ASVWrappedButton
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = ASVWrappedButton;
   [(ASVWrappedButton *)&v6 setHighlighted:?];
-  v5 = [(ASVWrappedButton *)self wrapperButton];
-  [v5 setHighlighted:v3];
+  wrapperButton = [(ASVWrappedButton *)self wrapperButton];
+  [wrapperButton setHighlighted:highlightedCopy];
 }
 
-- (void)sendAction:(SEL)a3 to:(id)a4 forEvent:(id)a5
+- (void)sendAction:(SEL)action to:(id)to forEvent:(id)event
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(ASVWrappedButton *)self wrapperButton];
-  [v10 sendAction:a3 to:v9 forEvent:v8];
+  eventCopy = event;
+  toCopy = to;
+  wrapperButton = [(ASVWrappedButton *)self wrapperButton];
+  [wrapperButton sendAction:action to:toCopy forEvent:eventCopy];
 }
 
 @end

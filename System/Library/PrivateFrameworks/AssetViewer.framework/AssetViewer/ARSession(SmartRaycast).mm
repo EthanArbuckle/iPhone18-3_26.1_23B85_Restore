@@ -8,9 +8,9 @@
 
 - (__n128)cameraPosition
 {
-  v1 = [a1 currentFrame];
-  v2 = [v1 camera];
-  [v2 transform];
+  currentFrame = [self currentFrame];
+  camera = [currentFrame camera];
+  [camera transform];
   v5 = v3;
 
   return v5;
@@ -20,7 +20,7 @@
 {
   [a3 worldPosition];
   v9 = v4;
-  [a1 cameraPosition];
+  [self cameraPosition];
   v6 = vsubq_f32(v9, v5);
   v7 = vmulq_f32(v6, v6);
   return sqrtf(v7.f32[2] + vaddv_f32(*v7.f32));
@@ -28,23 +28,23 @@
 
 - (ASVRealHitTestResult)smartRaycastResultForImagePoint:()SmartRaycast assetPosition:maxDistance:
 {
-  v9 = [a1 currentFrame];
-  v10 = [v9 camera];
-  v11 = [v10 trackingState];
+  currentFrame = [self currentFrame];
+  camera = [currentFrame camera];
+  trackingState = [camera trackingState];
 
-  if (v11 == 2)
+  if (trackingState == 2)
   {
     v12 = float2ToPoint(a3);
     v14 = v13;
-    v15 = [a1 currentFrame];
-    v16 = [v15 raycastQueryFromPoint:2 allowingTarget:2 alignment:{v12, v14}];
+    currentFrame2 = [self currentFrame];
+    v16 = [currentFrame2 raycastQueryFromPoint:2 allowingTarget:2 alignment:{v12, v14}];
 
-    v17 = [a1 raycast:v16];
+    v17 = [self raycast:v16];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __85__ARSession_SmartRaycast__smartRaycastResultForImagePoint_assetPosition_maxDistance___block_invoke;
     v26[3] = &unk_278CCAF88;
-    v26[4] = a1;
+    v26[4] = self;
     v26[5] = a2;
     v27 = a5;
     v18 = [v17 indexOfObjectPassingTest:v26];
@@ -58,7 +58,7 @@
       v20 = v18;
       v21 = [ASVRealHitTestResult alloc];
       v22 = [v17 objectAtIndexedSubscript:v20];
-      [a1 cameraPosition];
+      [self cameraPosition];
       v19 = [(ASVRealHitTestResult *)v21 initWithRaycastResult:v22 imagePoint:*&a3 assetPosition:a4 cameraPosition:v23];
     }
   }

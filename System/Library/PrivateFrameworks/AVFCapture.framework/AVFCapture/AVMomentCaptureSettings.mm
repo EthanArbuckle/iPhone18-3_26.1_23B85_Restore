@@ -1,63 +1,63 @@
 @interface AVMomentCaptureSettings
-+ (id)settingsWithPhotoSettings:(id)a3;
-+ (id)settingsWithUserInitiatedCaptureTime:(unint64_t)a3;
-+ (id)settingsWithUserInitiatedCaptureTime:(unint64_t)a3 uniqueID:(int64_t)a4;
++ (id)settingsWithPhotoSettings:(id)settings;
++ (id)settingsWithUserInitiatedCaptureTime:(unint64_t)time;
++ (id)settingsWithUserInitiatedCaptureTime:(unint64_t)time uniqueID:(int64_t)d;
 - (AVCapturePhotoSettings)photoSettings;
 - (NSString)bravoCameraSelectionBehaviorForRecording;
-- (id)_initWithPhotoSettings:(id)a3;
-- (id)_initWithUserInitiatedCaptureTime:(unint64_t)a3 uniqueID:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithPhotoSettings:(id)settings;
+- (id)_initWithUserInitiatedCaptureTime:(unint64_t)time uniqueID:(int64_t)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (int64_t)uniqueID;
 - (unint64_t)userInitiatedCaptureTime;
 - (void)dealloc;
-- (void)setBravoCameraSelectionBehaviorForRecording:(id)a3;
-- (void)setDigitalFlashMode:(int64_t)a3;
-- (void)setFlashMode:(int64_t)a3;
-- (void)setHDRMode:(int64_t)a3;
-- (void)setPhotoQualityPrioritization:(int64_t)a3;
-- (void)setTorchMode:(int64_t)a3;
+- (void)setBravoCameraSelectionBehaviorForRecording:(id)recording;
+- (void)setDigitalFlashMode:(int64_t)mode;
+- (void)setFlashMode:(int64_t)mode;
+- (void)setHDRMode:(int64_t)mode;
+- (void)setPhotoQualityPrioritization:(int64_t)prioritization;
+- (void)setTorchMode:(int64_t)mode;
 @end
 
 @implementation AVMomentCaptureSettings
 
-- (id)_initWithPhotoSettings:(id)a3
+- (id)_initWithPhotoSettings:(id)settings
 {
   v6.receiver = self;
   v6.super_class = AVMomentCaptureSettings;
   v4 = [(AVMomentCaptureSettings *)&v6 init];
   if (v4)
   {
-    v4->_photoSettings = [a3 copy];
+    v4->_photoSettings = [settings copy];
     v4->_bravoCameraSelectionBehaviorForRecording = @"AVCaptureBravoCameraSelectionBehaviorEvaluatesOnZoomChange";
   }
 
   return v4;
 }
 
-+ (id)settingsWithPhotoSettings:(id)a3
++ (id)settingsWithPhotoSettings:(id)settings
 {
-  v3 = [objc_alloc(objc_opt_class()) _initWithPhotoSettings:a3];
+  v3 = [objc_alloc(objc_opt_class()) _initWithPhotoSettings:settings];
 
   return v3;
 }
 
-+ (id)settingsWithUserInitiatedCaptureTime:(unint64_t)a3
++ (id)settingsWithUserInitiatedCaptureTime:(unint64_t)time
 {
-  v3 = [objc_alloc(objc_opt_class()) _initWithUserInitiatedCaptureTime:a3 uniqueID:{+[AVCapturePhotoSettings uniqueID](AVCapturePhotoSettings, "uniqueID")}];
+  v3 = [objc_alloc(objc_opt_class()) _initWithUserInitiatedCaptureTime:time uniqueID:{+[AVCapturePhotoSettings uniqueID](AVCapturePhotoSettings, "uniqueID")}];
 
   return v3;
 }
 
-+ (id)settingsWithUserInitiatedCaptureTime:(unint64_t)a3 uniqueID:(int64_t)a4
++ (id)settingsWithUserInitiatedCaptureTime:(unint64_t)time uniqueID:(int64_t)d
 {
-  v4 = [objc_alloc(objc_opt_class()) _initWithUserInitiatedCaptureTime:a3 uniqueID:a4];
+  v4 = [objc_alloc(objc_opt_class()) _initWithUserInitiatedCaptureTime:time uniqueID:d];
 
   return v4;
 }
 
-- (id)_initWithUserInitiatedCaptureTime:(unint64_t)a3 uniqueID:(int64_t)a4
+- (id)_initWithUserInitiatedCaptureTime:(unint64_t)time uniqueID:(int64_t)d
 {
   v9.receiver = self;
   v9.super_class = AVMomentCaptureSettings;
@@ -65,8 +65,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_uniqueID = a4;
-    v6->_userInitiatedCaptureTime = a3;
+    v6->_uniqueID = d;
+    v6->_userInitiatedCaptureTime = time;
     v6->_photoQualityPrioritization = 3;
     v6->_bravoCameraSelectionBehaviorForRecording = @"AVCaptureBravoCameraSelectionBehaviorEvaluatesOnZoomChange";
   }
@@ -81,7 +81,7 @@
   [(AVMomentCaptureSettings *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   photoSettings = self->_photoSettings;
   v5 = [AVMomentCaptureSettings alloc];
@@ -163,9 +163,9 @@
   return v2;
 }
 
-- (void)setTorchMode:(int64_t)a3
+- (void)setTorchMode:(int64_t)mode
 {
-  if (a3 >= 3)
+  if (mode >= 3)
   {
     v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -178,13 +178,13 @@
 
   else
   {
-    self->_torchMode = a3;
+    self->_torchMode = mode;
   }
 }
 
-- (void)setFlashMode:(int64_t)a3
+- (void)setFlashMode:(int64_t)mode
 {
-  if (a3 >= 3)
+  if (mode >= 3)
   {
     v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -197,13 +197,13 @@
 
   else
   {
-    self->_flashMode = a3;
+    self->_flashMode = mode;
   }
 }
 
-- (void)setDigitalFlashMode:(int64_t)a3
+- (void)setDigitalFlashMode:(int64_t)mode
 {
-  if (a3 >= 3)
+  if (mode >= 3)
   {
     v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -216,13 +216,13 @@
 
   else
   {
-    self->_digitalFlashMode = a3;
+    self->_digitalFlashMode = mode;
   }
 }
 
-- (void)setPhotoQualityPrioritization:(int64_t)a3
+- (void)setPhotoQualityPrioritization:(int64_t)prioritization
 {
-  if ((a3 - 1) >= 3)
+  if ((prioritization - 1) >= 3)
   {
     v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -235,13 +235,13 @@
 
   else
   {
-    self->_photoQualityPrioritization = a3;
+    self->_photoQualityPrioritization = prioritization;
   }
 }
 
-- (void)setHDRMode:(int64_t)a3
+- (void)setHDRMode:(int64_t)mode
 {
-  if (a3 >= 3)
+  if (mode >= 3)
   {
     v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -254,7 +254,7 @@
 
   else
   {
-    self->_HDRMode = a3;
+    self->_HDRMode = mode;
   }
 }
 
@@ -265,20 +265,20 @@
   return v2;
 }
 
-- (void)setBravoCameraSelectionBehaviorForRecording:(id)a3
+- (void)setBravoCameraSelectionBehaviorForRecording:(id)recording
 {
   v6[0] = @"AVCaptureBravoCameraSelectionBehaviorEvaluatesContinuously";
   v6[1] = @"AVCaptureBravoCameraSelectionBehaviorEvaluatesOnZoomChange";
   v6[2] = @"AVCaptureBravoCameraSelectionBehaviorEvaluatesNever";
-  if ([objc_msgSend(MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:{3), "containsObject:", a3}])
+  if ([objc_msgSend(MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:{3), "containsObject:", recording}])
   {
 
-    self->_bravoCameraSelectionBehaviorForRecording = [a3 copy];
+    self->_bravoCameraSelectionBehaviorForRecording = [recording copy];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, a3}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, recording}];
     if (AVCaptureShouldThrowForAPIViolations())
     {
       objc_exception_throw(v5);

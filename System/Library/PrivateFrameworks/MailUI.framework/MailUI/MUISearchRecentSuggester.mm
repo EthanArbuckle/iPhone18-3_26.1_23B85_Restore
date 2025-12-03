@@ -1,15 +1,15 @@
 @interface MUISearchRecentSuggester
 + (OS_os_log)log;
-+ (id)suggesterWithPersistentDirectory:(id)a3;
-- (MUISearchRecentSuggester)initWithPersistentDirectory:(id)a3;
++ (id)suggesterWithPersistentDirectory:(id)directory;
+- (MUISearchRecentSuggester)initWithPersistentDirectory:(id)directory;
 - (NSArray)categories;
-- (id)generateSuggestionsUsingPhraseManager:(id)a3 handler:(id)a4;
+- (id)generateSuggestionsUsingPhraseManager:(id)manager handler:(id)handler;
 - (void)_excludeStorageURLFromBackup;
 - (void)_removeOldSuggestions;
-- (void)addSuggestion:(id)a3;
+- (void)addSuggestion:(id)suggestion;
 - (void)dealloc;
 - (void)deleteAllSuggestions;
-- (void)deleteSuggestion:(id)a3;
+- (void)deleteSuggestion:(id)suggestion;
 - (void)loadRecentSearches;
 - (void)saveRecentSearches;
 @end
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __31__MUISearchRecentSuggester_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_15 != -1)
   {
     dispatch_once(&log_onceToken_15, block);
@@ -42,17 +42,17 @@ void __31__MUISearchRecentSuggester_log__block_invoke(uint64_t a1)
   log_log_15 = v2;
 }
 
-- (MUISearchRecentSuggester)initWithPersistentDirectory:(id)a3
+- (MUISearchRecentSuggester)initWithPersistentDirectory:(id)directory
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  directoryCopy = directory;
   v30.receiver = self;
   v30.super_class = MUISearchRecentSuggester;
   v5 = [(MUISearchRecentSuggester *)&v30 init];
   if (v5)
   {
-    v25 = v4;
-    v6 = [v4 URLByAppendingPathComponent:@"recentSearches.plist" isDirectory:0];
+    v25 = directoryCopy;
+    v6 = [directoryCopy URLByAppendingPathComponent:@"recentSearches.plist" isDirectory:0];
     storageURL = v5->_storageURL;
     v5->_storageURL = v6;
 
@@ -98,8 +98,8 @@ void __31__MUISearchRecentSuggester_log__block_invoke(uint64_t a1)
           }
 
           v22 = *(*(&v26 + 1) + 8 * i);
-          v23 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v23 addObserver:v5 selector:sel_saveRecentSearches name:v22 object:0];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter addObserver:v5 selector:sel_saveRecentSearches name:v22 object:0];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -109,7 +109,7 @@ void __31__MUISearchRecentSuggester_log__block_invoke(uint64_t a1)
     }
 
     [(MUISearchRecentSuggester *)v5 _excludeStorageURLFromBackup];
-    v4 = v25;
+    directoryCopy = v25;
   }
 
   return v5;
@@ -123,10 +123,10 @@ void __31__MUISearchRecentSuggester_log__block_invoke(uint64_t a1)
   [(MUISearchRecentSuggester *)&v3 dealloc];
 }
 
-+ (id)suggesterWithPersistentDirectory:(id)a3
++ (id)suggesterWithPersistentDirectory:(id)directory
 {
-  v3 = a3;
-  v4 = [[MUISearchRecentSuggester alloc] initWithPersistentDirectory:v3];
+  directoryCopy = directory;
+  v4 = [[MUISearchRecentSuggester alloc] initWithPersistentDirectory:directoryCopy];
 
   return v4;
 }
@@ -172,22 +172,22 @@ void __56__MUISearchRecentSuggester__excludeStorageURLFromBackup__block_invoke(u
   }
 }
 
-- (void)deleteSuggestion:(id)a3
+- (void)deleteSuggestion:(id)suggestion
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionCopy = suggestion;
   v5 = +[MUISearchRecentSuggester log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 debugDescription];
+    v6 = [suggestionCopy debugDescription];
     v8 = 138543362;
     v9 = v6;
     _os_log_impl(&dword_214A5E000, v5, OS_LOG_TYPE_DEFAULT, "Delete suggestion %{public}@.", &v8, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(MUISearchRecentSuggester *)self recentSearches];
-  [v7 removeObject:v4];
+  recentSearches = [(MUISearchRecentSuggester *)self recentSearches];
+  [recentSearches removeObject:suggestionCopy];
 
   self->_needSave = 1;
   os_unfair_lock_unlock(&self->_lock);
@@ -203,46 +203,46 @@ void __56__MUISearchRecentSuggester__excludeStorageURLFromBackup__block_invoke(u
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(MUISearchRecentSuggester *)self recentSearches];
-  [v4 removeAllObjects];
+  recentSearches = [(MUISearchRecentSuggester *)self recentSearches];
+  [recentSearches removeAllObjects];
 
   self->_needSave = 1;
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addSuggestion:(id)a3
+- (void)addSuggestion:(id)suggestion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionCopy = suggestion;
   v5 = +[MUISearchRecentSuggester log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 ef_publicDescription];
+    ef_publicDescription = [suggestionCopy ef_publicDescription];
     v13 = 138543362;
-    v14 = v6;
+    v14 = ef_publicDescription;
     _os_log_impl(&dword_214A5E000, v5, OS_LOG_TYPE_DEFAULT, "Add suggestion %{public}@.", &v13, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
   supportedCategories = self->_supportedCategories;
-  v8 = [v4 category];
-  LODWORD(supportedCategories) = [(NSArray *)supportedCategories containsObject:v8];
+  category = [suggestionCopy category];
+  LODWORD(supportedCategories) = [(NSArray *)supportedCategories containsObject:category];
 
   if (supportedCategories)
   {
-    v9 = [(MUISearchRecentSuggester *)self recentSearches];
-    v10 = [v9 member:v4];
+    recentSearches = [(MUISearchRecentSuggester *)self recentSearches];
+    v10 = [recentSearches member:suggestionCopy];
 
     if (!v10)
     {
-      v11 = [(MUISearchRecentSuggester *)self recentSearches];
-      [v11 addObject:v4];
+      recentSearches2 = [(MUISearchRecentSuggester *)self recentSearches];
+      [recentSearches2 addObject:suggestionCopy];
 
-      v10 = v4;
+      v10 = suggestionCopy;
     }
 
-    v12 = [MEMORY[0x277CBEAA8] date];
-    [v10 setLastUsedTime:v12];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v10 setLastUsedTime:date];
 
     self->_needSave = 1;
   }
@@ -252,9 +252,9 @@ void __56__MUISearchRecentSuggester__excludeStorageURLFromBackup__block_invoke(u
 
 - (void)_removeOldSuggestions
 {
-  v3 = [(MUISearchRecentSuggester *)self recentSearches];
+  recentSearches = [(MUISearchRecentSuggester *)self recentSearches];
   v2 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_32];
-  [v3 filterUsingPredicate:v2];
+  [recentSearches filterUsingPredicate:v2];
 }
 
 BOOL __49__MUISearchRecentSuggester__removeOldSuggestions__block_invoke(uint64_t a1, void *a2)
@@ -272,7 +272,7 @@ BOOL __49__MUISearchRecentSuggester__removeOldSuggestions__block_invoke(uint64_t
 
 - (void)saveRecentSearches
 {
-  v1 = [a1 ef_publicDescription];
+  ef_publicDescription = [self ef_publicDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0(&dword_214A5E000, v2, v3, "Failed to write recent searches %{public}@", v4, v5, v6, v7, v8);
 }
@@ -296,27 +296,27 @@ id __46__MUISearchRecentSuggester_saveRecentSearches__block_invoke(uint64_t a1, 
 - (void)loadRecentSearches
 {
   v7 = [a2 debugDescription];
-  *a1 = 138412290;
+  *self = 138412290;
   *a3 = v7;
-  _os_log_error_impl(&dword_214A5E000, a4, OS_LOG_TYPE_ERROR, "Drop %@ from recent searches.", a1, 0xCu);
+  _os_log_error_impl(&dword_214A5E000, a4, OS_LOG_TYPE_ERROR, "Drop %@ from recent searches.", self, 0xCu);
 }
 
-- (id)generateSuggestionsUsingPhraseManager:(id)a3 handler:(id)a4
+- (id)generateSuggestionsUsingPhraseManager:(id)manager handler:(id)handler
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 phraseKind] == 1)
+  managerCopy = manager;
+  handlerCopy = handler;
+  if ([managerCopy phraseKind] == 1)
   {
     os_unfair_lock_lock(&self->_lock);
-    v8 = [(MUISearchRecentSuggester *)self recentSearches];
-    v9 = [v8 allObjects];
+    recentSearches = [(MUISearchRecentSuggester *)self recentSearches];
+    allObjects = [recentSearches allObjects];
 
     os_unfair_lock_unlock(&self->_lock);
     v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastUsedTime" ascending:0];
     v19[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-    v12 = [v9 sortedArrayUsingDescriptors:v11];
+    v12 = [allObjects sortedArrayUsingDescriptors:v11];
 
     v13 = [v12 ef_prefix:{-[MUISearchRecentSuggester maxRecentCount](self, "maxRecentCount")}];
 
@@ -329,7 +329,7 @@ id __46__MUISearchRecentSuggester_saveRecentSearches__block_invoke(uint64_t a1, 
       _os_log_impl(&dword_214A5E000, v14, OS_LOG_TYPE_DEFAULT, "Found recent suggestions %@", &v17, 0xCu);
     }
 
-    v7[2](v7, v13);
+    handlerCopy[2](handlerCopy, v13);
   }
 
   return 0;

@@ -1,15 +1,15 @@
 @interface MSPPlaceBookmark
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsOrigin:(id)a3;
+- (int)StringAsOrigin:(id)origin;
 - (int)origin;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOrigin:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOrigin:(BOOL)origin;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPPlaceBookmark
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasOrigin:(BOOL)a3
+- (void)setHasOrigin:(BOOL)origin
 {
-  if (a3)
+  if (origin)
   {
     v3 = 2;
   }
@@ -42,17 +42,17 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsOrigin:(id)a3
+- (int)StringAsOrigin:(id)origin
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OTHER"])
+  originCopy = origin;
+  if ([originCopy isEqualToString:@"OTHER"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"DROPPED_PIN"];
+    v4 = [originCopy isEqualToString:@"DROPPED_PIN"];
   }
 
   return v4;
@@ -64,20 +64,20 @@
   v8.receiver = self;
   v8.super_class = MSPPlaceBookmark;
   v4 = [(MSPPlaceBookmark *)&v8 description];
-  v5 = [(MSPPlaceBookmark *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPPlaceBookmark *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   mapItemStorage = self->_mapItemStorage;
   if (mapItemStorage)
   {
-    v5 = [(GEOMapItemStorage *)mapItemStorage dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"mapItemStorage"];
+    dictionaryRepresentation = [(GEOMapItemStorage *)mapItemStorage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"mapItemStorage"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -101,116 +101,116 @@
       v7 = @"OTHER";
     }
 
-    [v3 setObject:v7 forKey:@"origin"];
+    [dictionary setObject:v7 forKey:@"origin"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   droppedPinCoordinate = self->_droppedPinCoordinate;
   if (droppedPinCoordinate)
   {
-    v10 = [(GEOLatLng *)droppedPinCoordinate dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"droppedPinCoordinate"];
+    dictionaryRepresentation2 = [(GEOLatLng *)droppedPinCoordinate dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"droppedPinCoordinate"];
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithInt:self->_droppedPinFloorOrdinal];
-    [v3 setObject:v11 forKey:@"droppedPinFloorOrdinal"];
+    [dictionary setObject:v11 forKey:@"droppedPinFloorOrdinal"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v13 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"Unknown Fields"];
+    dictionaryRepresentation3 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"Unknown Fields"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_mapItemStorage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     origin = self->_origin;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_droppedPinCoordinate)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     droppedPinFloorOrdinal = self->_droppedPinFloorOrdinal;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_mapItemStorage)
   {
-    [v4 setMapItemStorage:?];
-    v4 = v5;
+    [toCopy setMapItemStorage:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 10) = self->_origin;
-    *(v4 + 56) |= 2u;
+    *(toCopy + 10) = self->_origin;
+    *(toCopy + 56) |= 2u;
   }
 
   if (self->_title)
   {
     [v5 setTitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_droppedPinCoordinate)
   {
     [v5 setDroppedPinCoordinate:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_droppedPinFloorOrdinal;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 6) = self->_droppedPinFloorOrdinal;
+    *(toCopy + 56) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(GEOMapItemStorage *)self->_mapItemStorage copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(GEOMapItemStorage *)self->_mapItemStorage copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -220,11 +220,11 @@
     *(v5 + 56) |= 2u;
   }
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(GEOLatLng *)self->_droppedPinCoordinate copyWithZone:a3];
+  v10 = [(GEOLatLng *)self->_droppedPinCoordinate copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -238,16 +238,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   mapItemStorage = self->_mapItemStorage;
-  if (mapItemStorage | *(v4 + 4))
+  if (mapItemStorage | *(equalCopy + 4))
   {
     if (![(GEOMapItemStorage *)mapItemStorage isEqual:?])
     {
@@ -255,16 +255,16 @@
     }
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_origin != *(v4 + 10))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_origin != *(equalCopy + 10))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
 LABEL_17:
     v9 = 0;
@@ -272,13 +272,13 @@ LABEL_17:
   }
 
   title = self->_title;
-  if (title | *(v4 + 6) && ![(NSString *)title isEqual:?])
+  if (title | *(equalCopy + 6) && ![(NSString *)title isEqual:?])
   {
     goto LABEL_17;
   }
 
   droppedPinCoordinate = self->_droppedPinCoordinate;
-  if (droppedPinCoordinate | *(v4 + 2))
+  if (droppedPinCoordinate | *(equalCopy + 2))
   {
     if (![(GEOLatLng *)droppedPinCoordinate isEqual:?])
     {
@@ -286,10 +286,10 @@ LABEL_17:
     }
   }
 
-  v9 = (*(v4 + 56) & 1) == 0;
+  v9 = (*(equalCopy + 56) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_droppedPinFloorOrdinal != *(v4 + 6))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_droppedPinFloorOrdinal != *(equalCopy + 6))
     {
       goto LABEL_17;
     }
@@ -330,12 +330,12 @@ LABEL_18:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   mapItemStorage = self->_mapItemStorage;
-  v6 = *(v4 + 4);
-  v9 = v4;
+  v6 = *(fromCopy + 4);
+  v9 = fromCopy;
   if (mapItemStorage)
   {
     if (!v6)
@@ -356,22 +356,22 @@ LABEL_18:
     [(MSPPlaceBookmark *)self setMapItemStorage:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  if ((*(v4 + 56) & 2) != 0)
+  if ((*(fromCopy + 56) & 2) != 0)
   {
-    self->_origin = *(v4 + 10);
+    self->_origin = *(fromCopy + 10);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(MSPPlaceBookmark *)self setTitle:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
   droppedPinCoordinate = self->_droppedPinCoordinate;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (droppedPinCoordinate)
   {
     if (!v8)
@@ -392,11 +392,11 @@ LABEL_7:
     [(MSPPlaceBookmark *)self setDroppedPinCoordinate:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_17:
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
-    self->_droppedPinFloorOrdinal = *(v4 + 6);
+    self->_droppedPinFloorOrdinal = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 

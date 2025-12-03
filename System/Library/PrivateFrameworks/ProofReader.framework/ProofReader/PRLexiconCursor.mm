@@ -1,38 +1,38 @@
 @interface PRLexiconCursor
 - (BOOL)hasChildren;
 - (BOOL)hasEntries;
-- (PRLexiconCursor)initWithLexicon:(id)a3;
+- (PRLexiconCursor)initWithLexicon:(id)lexicon;
 - (double)prefixProbability;
 - (double)terminationProbability;
-- (void)_advance:(id)a3;
-- (void)_enumerateCompletions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)advanceWithString:(id)a3;
+- (void)_advance:(id)_advance;
+- (void)_enumerateCompletions:(unint64_t)completions usingBlock:(id)block;
+- (void)advanceWithString:(id)string;
 - (void)dealloc;
-- (void)enumerateCompletionEntries:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateCompletions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateEntriesUsingBlock:(id)a3;
+- (void)enumerateCompletionEntries:(unint64_t)entries usingBlock:(id)block;
+- (void)enumerateCompletions:(unint64_t)completions usingBlock:(id)block;
+- (void)enumerateEntriesUsingBlock:(id)block;
 @end
 
 @implementation PRLexiconCursor
 
-- (PRLexiconCursor)initWithLexicon:(id)a3
+- (PRLexiconCursor)initWithLexicon:(id)lexicon
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (lexicon)
   {
     v7.receiver = self;
     v7.super_class = PRLexiconCursor;
-    v3 = [(PRLexiconCursor *)&v7 init];
-    if (v3)
+    selfCopy = [(PRLexiconCursor *)&v7 init];
+    if (selfCopy)
     {
-      v5 = a3;
-      v3->_lexicon = v5;
-      [(PRLexicon *)v5 lexicon];
-      v3->_cursor = LXLexiconCreateRootCursor();
+      lexiconCopy = lexicon;
+      selfCopy->_lexicon = lexiconCopy;
+      [(PRLexicon *)lexiconCopy lexicon];
+      selfCopy->_cursor = LXLexiconCreateRootCursor();
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -48,7 +48,7 @@
   [(PRLexiconCursor *)&v4 dealloc];
 }
 
-- (void)_advance:(id)a3
+- (void)_advance:(id)_advance
 {
   if (self->_cursor)
   {
@@ -58,12 +58,12 @@
   }
 }
 
-- (void)advanceWithString:(id)a3
+- (void)advanceWithString:(id)string
 {
-  if ([a3 length])
+  if ([string length])
   {
 
-    [(PRLexiconCursor *)self _advance:a3];
+    [(PRLexiconCursor *)self _advance:string];
   }
 }
 
@@ -113,7 +113,7 @@
   return result;
 }
 
-- (void)enumerateEntriesUsingBlock:(id)a3
+- (void)enumerateEntriesUsingBlock:(id)block
 {
   v3[0] = 0;
   v3[1] = v3;
@@ -141,7 +141,7 @@ void __46__PRLexiconCursor_enumerateEntriesUsingBlock___block_invoke(uint64_t a1
   }
 }
 
-- (void)_enumerateCompletions:(unint64_t)a3 usingBlock:(id)a4
+- (void)_enumerateCompletions:(unint64_t)completions usingBlock:(id)block
 {
   if (self->_cursor)
   {
@@ -179,7 +179,7 @@ uint64_t __52__PRLexiconCursor__enumerateCompletions_usingBlock___block_invoke(v
   return result;
 }
 
-- (void)enumerateCompletions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateCompletions:(unint64_t)completions usingBlock:(id)block
 {
   if (self->_cursor)
   {
@@ -187,12 +187,12 @@ uint64_t __52__PRLexiconCursor__enumerateCompletions_usingBlock___block_invoke(v
     v4[1] = 3221225472;
     v4[2] = __51__PRLexiconCursor_enumerateCompletions_usingBlock___block_invoke;
     v4[3] = &unk_1E8405868;
-    v4[4] = a4;
-    [(PRLexiconCursor *)self _enumerateCompletions:a3 usingBlock:v4];
+    v4[4] = block;
+    [(PRLexiconCursor *)self _enumerateCompletions:completions usingBlock:v4];
   }
 }
 
-- (void)enumerateCompletionEntries:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateCompletionEntries:(unint64_t)entries usingBlock:(id)block
 {
   if (self->_cursor)
   {

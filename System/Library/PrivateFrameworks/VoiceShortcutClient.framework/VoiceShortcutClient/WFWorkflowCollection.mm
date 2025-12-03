@@ -1,56 +1,56 @@
 @interface WFWorkflowCollection
-- (BOOL)isEqual:(id)a3;
-- (WFWorkflowCollection)initWithCoder:(id)a3;
-- (WFWorkflowCollection)initWithIdentifier:(id)a3 isFolder:(BOOL)a4 name:(id)a5 glyphCharacter:(unsigned __int16)a6 isDeleted:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (WFWorkflowCollection)initWithCoder:(id)coder;
+- (WFWorkflowCollection)initWithIdentifier:(id)identifier isFolder:(BOOL)folder name:(id)name glyphCharacter:(unsigned __int16)character isDeleted:(BOOL)deleted;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWorkflowCollection
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFWorkflowCollection;
-  v4 = a3;
-  [(WFDatabaseObjectDescriptor *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDatabaseObjectDescriptor *)&v7 encodeWithCoder:coderCopy];
   v5 = [(WFWorkflowCollection *)self name:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"name"];
+  [coderCopy encodeObject:v5 forKey:@"name"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{-[WFWorkflowCollection glyphCharacter](self, "glyphCharacter")}];
-  [v4 encodeObject:v6 forKey:@"glyphCharacter"];
+  [coderCopy encodeObject:v6 forKey:@"glyphCharacter"];
 
-  [v4 encodeBool:-[WFWorkflowCollection isFolder](self forKey:{"isFolder"), @"folder"}];
-  [v4 encodeBool:-[WFWorkflowCollection isDeleted](self forKey:{"isDeleted"), @"deleted"}];
+  [coderCopy encodeBool:-[WFWorkflowCollection isFolder](self forKey:{"isFolder"), @"folder"}];
+  [coderCopy encodeBool:-[WFWorkflowCollection isDeleted](self forKey:{"isDeleted"), @"deleted"}];
 }
 
-- (WFWorkflowCollection)initWithCoder:(id)a3
+- (WFWorkflowCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = WFWorkflowCollection;
-  v5 = [(WFDatabaseObjectDescriptor *)&v11 initWithCoder:v4];
+  v5 = [(WFDatabaseObjectDescriptor *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"glyphCharacter"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"glyphCharacter"];
     v5->_glyphCharacter = [v8 unsignedLongValue];
 
-    v5->_folder = [v4 decodeBoolForKey:@"folder"];
-    v5->_deleted = [v4 decodeBoolForKey:@"deleted"];
+    v5->_folder = [coderCopy decodeBoolForKey:@"folder"];
+    v5->_deleted = [coderCopy decodeBoolForKey:@"deleted"];
     v9 = v5;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -60,17 +60,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WFDatabaseObjectDescriptor *)v5 identifier];
-      v7 = [(WFDatabaseObjectDescriptor *)self identifier];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      identifier = [(WFDatabaseObjectDescriptor *)v5 identifier];
+      identifier2 = [(WFDatabaseObjectDescriptor *)self identifier];
+      if ([identifier isEqualToString:identifier2])
       {
-        v8 = [(WFWorkflowCollection *)v5 name];
-        v9 = [(WFWorkflowCollection *)self name];
-        if ([v8 isEqualToString:v9])
+        name = [(WFWorkflowCollection *)v5 name];
+        name2 = [(WFWorkflowCollection *)self name];
+        if ([name isEqualToString:name2])
         {
-          v10 = [(WFWorkflowCollection *)v5 glyphCharacter];
-          v11 = v10 == [(WFWorkflowCollection *)self glyphCharacter];
+          glyphCharacter = [(WFWorkflowCollection *)v5 glyphCharacter];
+          v11 = glyphCharacter == [(WFWorkflowCollection *)self glyphCharacter];
         }
 
         else
@@ -96,30 +96,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(WFWorkflowCollection *)self name];
-  v4 = [v3 hash];
+  name = [(WFWorkflowCollection *)self name];
+  v4 = [name hash];
   v5 = v4 ^ [(WFWorkflowCollection *)self glyphCharacter];
-  v6 = [(WFWorkflowCollection *)self isFolder];
-  v7 = v6 ^ [(WFWorkflowCollection *)self isDeleted];
+  isFolder = [(WFWorkflowCollection *)self isFolder];
+  v7 = isFolder ^ [(WFWorkflowCollection *)self isDeleted];
 
   return v5 ^ v7;
 }
 
-- (WFWorkflowCollection)initWithIdentifier:(id)a3 isFolder:(BOOL)a4 name:(id)a5 glyphCharacter:(unsigned __int16)a6 isDeleted:(BOOL)a7
+- (WFWorkflowCollection)initWithIdentifier:(id)identifier isFolder:(BOOL)folder name:(id)name glyphCharacter:(unsigned __int16)character isDeleted:(BOOL)deleted
 {
-  v12 = a5;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = WFWorkflowCollection;
-  v13 = [(WFDatabaseObjectDescriptor *)&v18 initWithIdentifier:a3 objectType:2];
+  v13 = [(WFDatabaseObjectDescriptor *)&v18 initWithIdentifier:identifier objectType:2];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [nameCopy copy];
     name = v13->_name;
     v13->_name = v14;
 
-    v13->_glyphCharacter = a6;
-    v13->_folder = a4;
-    v13->_deleted = a7;
+    v13->_glyphCharacter = character;
+    v13->_folder = folder;
+    v13->_deleted = deleted;
     v16 = v13;
   }
 

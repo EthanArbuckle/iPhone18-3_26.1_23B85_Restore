@@ -1,6 +1,6 @@
 @interface NWConcrete_nw_resolver
 - (NSString)description;
-- (id)initWithEndpoint:(void *)a3 parameters:(void *)a4 path:(unsigned __int8 *)a5 log_str:;
+- (id)initWithEndpoint:(void *)endpoint parameters:(void *)parameters path:(unsigned __int8 *)path log_str:;
 - (void)dealloc;
 @end
 
@@ -515,13 +515,13 @@ LABEL_100:
   return v5;
 }
 
-- (id)initWithEndpoint:(void *)a3 parameters:(void *)a4 path:(unsigned __int8 *)a5 log_str:
+- (id)initWithEndpoint:(void *)endpoint parameters:(void *)parameters path:(unsigned __int8 *)path log_str:
 {
   v83 = *MEMORY[0x1E69E9840];
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  if (!a1)
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
+  if (!self)
   {
     goto LABEL_34;
   }
@@ -567,7 +567,7 @@ LABEL_100:
   }
 
 LABEL_13:
-  v81.receiver = a1;
+  v81.receiver = self;
   v81.super_class = NWConcrete_nw_resolver;
   v17 = objc_msgSendSuper2(&v81, sel_init);
   v18 = v17;
@@ -645,13 +645,13 @@ LABEL_119:
     goto LABEL_33;
   }
 
-  a1 = v17;
+  self = v17;
   *(v17 + 21) = 0;
   *(v17 + 2) = 0;
   objc_storeStrong(v17 + 3, a2);
-  if (v11)
+  if (endpointCopy)
   {
-    v19 = v11;
+    v19 = endpointCopy;
   }
 
   else
@@ -749,7 +749,7 @@ LABEL_119:
 LABEL_25:
 
 LABEL_33:
-      a1 = 0;
+      self = 0;
       goto LABEL_34;
     }
 
@@ -758,7 +758,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  objc_storeStrong(v18 + 28, a4);
+  objc_storeStrong(v18 + 28, parameters);
   v27 = v18[28];
   if (v27)
   {
@@ -903,13 +903,13 @@ LABEL_24:
 
   *(v18 + 370) = *(v18 + 370) & 0xDF | v51;
   *(v18 + 372) = *(v18 + 372) & 0xFB | (4 * (nw_parameters_get_expired_dns_behavior(v18[2]) == (nw_parameters_expired_dns_behavior_prohibit|nw_parameters_expired_dns_behavior_allow)));
-  if (a5)
+  if (path)
   {
     v52 = v18 + 35;
     v53 = 84;
     while (1)
     {
-      v54 = *a5;
+      v54 = *path;
       *v52 = v54;
       if (!v54)
       {
@@ -917,7 +917,7 @@ LABEL_24:
       }
 
       ++v52;
-      ++a5;
+      ++path;
       if (--v53 <= 1)
       {
         *v52 = 0;
@@ -979,8 +979,8 @@ LABEL_24:
         v60 = gLogObj;
         if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
         {
-          v61 = *(a1 + 91);
-          v62 = a1[3];
+          v61 = *(self + 91);
+          v62 = self[3];
           v63 = v62;
           if (v62)
           {
@@ -992,7 +992,7 @@ LABEL_24:
             v64 = "<NULL>";
           }
 
-          v66 = a1[2];
+          v66 = self[2];
           *buf = 136446978;
           *&buf[4] = "[NWConcrete_nw_resolver initWithEndpoint:parameters:path:log_str:]";
           *&buf[12] = 1024;
@@ -1009,7 +1009,7 @@ LABEL_24:
 
 LABEL_34:
 
-  return a1;
+  return self;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface AVTAvatarAttributeEditorSectionSupplementalPicker
-+ (id)pickerForMulticolorPicker:(id)a3 isMultipleSelected:(BOOL)a4 switchToSingleColorAvatarUpdater:(id)a5 switchToMultipleColorAvatarUpdater:(id)a6;
-+ (id)pickerForPairableModelCategory:(id)a3 isPaired:(BOOL)a4 avatarUpdaterOnPair:(id)a5;
-+ (id)pickerFromEditorSection:(id)a3;
-- (AVTAvatarAttributeEditorSectionSupplementalPicker)initWithLocalizedTitle:(id)a3 choices:(id)a4;
-- (id)copyWithLocalizedTitle:(id)a3;
++ (id)pickerForMulticolorPicker:(id)picker isMultipleSelected:(BOOL)selected switchToSingleColorAvatarUpdater:(id)updater switchToMultipleColorAvatarUpdater:(id)avatarUpdater;
++ (id)pickerForPairableModelCategory:(id)category isPaired:(BOOL)paired avatarUpdaterOnPair:(id)pair;
++ (id)pickerFromEditorSection:(id)section;
+- (AVTAvatarAttributeEditorSectionSupplementalPicker)initWithLocalizedTitle:(id)title choices:(id)choices;
+- (id)copyWithLocalizedTitle:(id)title;
 @end
 
 @implementation AVTAvatarAttributeEditorSectionSupplementalPicker
 
-+ (id)pickerFromEditorSection:(id)a3
++ (id)pickerFromEditorSection:(id)section
 {
-  v3 = a3;
+  sectionCopy = section;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__12;
   v15 = __Block_byref_object_dispose__12;
   v16 = 0;
-  v4 = [v3 sectionItems];
+  sectionItems = [sectionCopy sectionItems];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __77__AVTAvatarAttributeEditorSectionSupplementalPicker_pickerFromEditorSection___block_invoke;
   v10[3] = &unk_1E7F3C280;
   v10[4] = &v11;
-  v5 = [v4 avt_map:v10];
+  v5 = [sectionItems avt_map:v10];
 
   v6 = [AVTAvatarAttributeEditorSectionSupplementalPicker alloc];
-  v7 = [v12[5] localizedName];
-  v8 = [(AVTAvatarAttributeEditorSectionSupplementalPicker *)v6 initWithLocalizedTitle:v7 choices:v5];
+  localizedName = [v12[5] localizedName];
+  v8 = [(AVTAvatarAttributeEditorSectionSupplementalPicker *)v6 initWithLocalizedTitle:localizedName choices:v5];
 
   _Block_object_dispose(&v11, 8);
 
@@ -50,37 +50,37 @@ AVTAvatarAttributeEditorSectionSupplementalPickerItem *__77__AVTAvatarAttributeE
   return v8;
 }
 
-+ (id)pickerForPairableModelCategory:(id)a3 isPaired:(BOOL)a4 avatarUpdaterOnPair:(id)a5
++ (id)pickerForPairableModelCategory:(id)category isPaired:(BOOL)paired avatarUpdaterOnPair:(id)pair
 {
-  v5 = a4;
+  pairedCopy = paired;
   v28[2] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [a3 pairing];
-  if (v8)
+  pairCopy = pair;
+  pairing = [category pairing];
+  if (pairing)
   {
     v9 = [AVTAvatarAttributeEditorSectionSupplementalPickerItem alloc];
-    v10 = [v8 localizedPairTitle];
-    v11 = [v8 localizedPairedDescription];
+    localizedPairTitle = [pairing localizedPairTitle];
+    localizedPairedDescription = [pairing localizedPairedDescription];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __113__AVTAvatarAttributeEditorSectionSupplementalPicker_pickerForPairableModelCategory_isPaired_avatarUpdaterOnPair___block_invoke;
     v26[3] = &unk_1E7F3C2A8;
-    v12 = v8;
+    v12 = pairing;
     v27 = v12;
-    v13 = [(AVTAvatarAttributeEditorSectionSupplementalPickerItem *)v9 initWithLocalizedName:v10 localizedDescription:v11 avatarUpdater:0 editorUpdater:v26 selected:v5];
+    v13 = [(AVTAvatarAttributeEditorSectionSupplementalPickerItem *)v9 initWithLocalizedName:localizedPairTitle localizedDescription:localizedPairedDescription avatarUpdater:0 editorUpdater:v26 selected:pairedCopy];
 
     v14 = [AVTAvatarAttributeEditorSectionSupplementalPickerItem alloc];
-    v15 = [v12 localizedUnpairTitle];
-    v16 = [v12 localizedUnpairedDescription];
+    localizedUnpairTitle = [v12 localizedUnpairTitle];
+    localizedUnpairedDescription = [v12 localizedUnpairedDescription];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __113__AVTAvatarAttributeEditorSectionSupplementalPicker_pickerForPairableModelCategory_isPaired_avatarUpdaterOnPair___block_invoke_2;
     v24[3] = &unk_1E7F3C2A8;
     v17 = v12;
     v25 = v17;
-    v18 = [(AVTAvatarAttributeEditorSectionSupplementalPickerItem *)v14 initWithLocalizedName:v15 localizedDescription:v16 avatarUpdater:v7 editorUpdater:v24 selected:v5 ^ 1];
+    v18 = [(AVTAvatarAttributeEditorSectionSupplementalPickerItem *)v14 initWithLocalizedName:localizedUnpairTitle localizedDescription:localizedUnpairedDescription avatarUpdater:pairCopy editorUpdater:v24 selected:pairedCopy ^ 1];
 
-    if (v5)
+    if (pairedCopy)
     {
       [v17 localizedPairTitle];
     }
@@ -119,47 +119,47 @@ void __113__AVTAvatarAttributeEditorSectionSupplementalPicker_pickerForPairableM
   [v3 setCategory:objc_msgSend(v2 inPairedState:{"pairedCategory"), 0}];
 }
 
-+ (id)pickerForMulticolorPicker:(id)a3 isMultipleSelected:(BOOL)a4 switchToSingleColorAvatarUpdater:(id)a5 switchToMultipleColorAvatarUpdater:(id)a6
++ (id)pickerForMulticolorPicker:(id)picker isMultipleSelected:(BOOL)selected switchToSingleColorAvatarUpdater:(id)updater switchToMultipleColorAvatarUpdater:(id)avatarUpdater
 {
-  v8 = a4;
+  selectedCopy = selected;
   v40[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 auxiliaryPicker];
-  v13 = v12;
-  if (v12)
+  pickerCopy = picker;
+  updaterCopy = updater;
+  avatarUpdaterCopy = avatarUpdater;
+  auxiliaryPicker = [pickerCopy auxiliaryPicker];
+  v13 = auxiliaryPicker;
+  if (auxiliaryPicker)
   {
-    v14 = [v12 items];
-    v15 = [v14 objectAtIndexedSubscript:0];
+    items = [auxiliaryPicker items];
+    v15 = [items objectAtIndexedSubscript:0];
 
-    v16 = [v13 items];
-    v17 = [v16 objectAtIndexedSubscript:1];
+    items2 = [v13 items];
+    v17 = [items2 objectAtIndexedSubscript:1];
 
-    v34 = v11;
+    v34 = avatarUpdaterCopy;
     v18 = [AVTAvatarAttributeEditorSectionSupplementalPickerItem alloc];
-    v19 = [v15 title];
+    title = [v15 title];
     [v15 message];
-    v20 = v35 = v10;
+    v20 = v35 = updaterCopy;
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __166__AVTAvatarAttributeEditorSectionSupplementalPicker_pickerForMulticolorPicker_isMultipleSelected_switchToSingleColorAvatarUpdater_switchToMultipleColorAvatarUpdater___block_invoke;
     v38[3] = &unk_1E7F3C2A8;
-    v21 = v9;
+    v21 = pickerCopy;
     v39 = v21;
-    v22 = [(AVTAvatarAttributeEditorSectionSupplementalPickerItem *)v18 initWithLocalizedName:v19 localizedDescription:v20 avatarUpdater:v35 editorUpdater:v38 selected:v8 ^ 1];
+    v22 = [(AVTAvatarAttributeEditorSectionSupplementalPickerItem *)v18 initWithLocalizedName:title localizedDescription:v20 avatarUpdater:v35 editorUpdater:v38 selected:selectedCopy ^ 1];
 
     v23 = [AVTAvatarAttributeEditorSectionSupplementalPickerItem alloc];
-    v24 = [v17 title];
-    v25 = [v17 message];
+    title2 = [v17 title];
+    message = [v17 message];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __166__AVTAvatarAttributeEditorSectionSupplementalPicker_pickerForMulticolorPicker_isMultipleSelected_switchToSingleColorAvatarUpdater_switchToMultipleColorAvatarUpdater___block_invoke_2;
     v36[3] = &unk_1E7F3C2A8;
     v37 = v21;
-    v26 = [(AVTAvatarAttributeEditorSectionSupplementalPickerItem *)v23 initWithLocalizedName:v24 localizedDescription:v25 avatarUpdater:v34 editorUpdater:v36 selected:v8];
+    v26 = [(AVTAvatarAttributeEditorSectionSupplementalPickerItem *)v23 initWithLocalizedName:title2 localizedDescription:message avatarUpdater:v34 editorUpdater:v36 selected:selectedCopy];
 
-    if (v8)
+    if (selectedCopy)
     {
       v27 = v17;
     }
@@ -169,16 +169,16 @@ void __113__AVTAvatarAttributeEditorSectionSupplementalPicker_pickerForPairableM
       v27 = v15;
     }
 
-    v28 = [v27 title];
+    title3 = [v27 title];
     v29 = [AVTAvatarAttributeEditorSectionSupplementalPicker alloc];
     v40[0] = v22;
     v40[1] = v26;
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
     v31 = v29;
-    v11 = v34;
-    v32 = [(AVTAvatarAttributeEditorSectionSupplementalPicker *)v31 initWithLocalizedTitle:v28 choices:v30];
+    avatarUpdaterCopy = v34;
+    v32 = [(AVTAvatarAttributeEditorSectionSupplementalPicker *)v31 initWithLocalizedTitle:title3 choices:v30];
 
-    v10 = v35;
+    updaterCopy = v35;
   }
 
   else
@@ -207,29 +207,29 @@ void __166__AVTAvatarAttributeEditorSectionSupplementalPicker_pickerForMulticolo
   [v4 setEnabledMulticolorSubpickersIndex:v5 forMulticolorPickerIdentifier:v6];
 }
 
-- (AVTAvatarAttributeEditorSectionSupplementalPicker)initWithLocalizedTitle:(id)a3 choices:(id)a4
+- (AVTAvatarAttributeEditorSectionSupplementalPicker)initWithLocalizedTitle:(id)title choices:(id)choices
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  choicesCopy = choices;
   v12.receiver = self;
   v12.super_class = AVTAvatarAttributeEditorSectionSupplementalPicker;
   v9 = [(AVTAvatarAttributeEditorSectionSupplementalPicker *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_localizedTitle, a3);
-    objc_storeStrong(&v10->_choices, a4);
+    objc_storeStrong(&v9->_localizedTitle, title);
+    objc_storeStrong(&v10->_choices, choices);
   }
 
   return v10;
 }
 
-- (id)copyWithLocalizedTitle:(id)a3
+- (id)copyWithLocalizedTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = [AVTAvatarAttributeEditorSectionSupplementalPicker alloc];
-  v6 = [(AVTAvatarAttributeEditorSectionSupplementalPicker *)self choices];
-  v7 = [(AVTAvatarAttributeEditorSectionSupplementalPicker *)v5 initWithLocalizedTitle:v4 choices:v6];
+  choices = [(AVTAvatarAttributeEditorSectionSupplementalPicker *)self choices];
+  v7 = [(AVTAvatarAttributeEditorSectionSupplementalPicker *)v5 initWithLocalizedTitle:titleCopy choices:choices];
 
   return v7;
 }

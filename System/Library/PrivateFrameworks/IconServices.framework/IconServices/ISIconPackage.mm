@@ -1,50 +1,50 @@
 @interface ISIconPackage
-- (ISIconPackage)initWithTypeIdentifier:(id)a3 configuration:(id)a4;
+- (ISIconPackage)initWithTypeIdentifier:(id)identifier configuration:(id)configuration;
 @end
 
 @implementation ISIconPackage
 
-- (ISIconPackage)initWithTypeIdentifier:(id)a3 configuration:(id)a4
+- (ISIconPackage)initWithTypeIdentifier:(id)identifier configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
   v34.receiver = self;
   v34.super_class = ISIconPackage;
   v8 = [(ISIconPackage *)&v34 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E69636B0] typeRecordWithIdentifier:v6];
+    v9 = [MEMORY[0x1E69636B0] typeRecordWithIdentifier:identifierCopy];
     v10 = *MEMORY[0x1E6982DC8];
-    v11 = [*MEMORY[0x1E6982DC8] identifier];
-    v12 = [v9 conformsToTypeIdentifier:v11];
+    identifier = [*MEMORY[0x1E6982DC8] identifier];
+    v12 = [v9 conformsToTypeIdentifier:identifier];
 
     if (v12)
     {
       v13 = MEMORY[0x1E69636B0];
-      v14 = [v10 identifier];
-      v15 = [v13 typeRecordWithIdentifier:v14];
+      identifier2 = [v10 identifier];
+      v15 = [v13 typeRecordWithIdentifier:identifier2];
 
-      v16 = [v15 iconDictionary];
-      v17 = [v16 _IF_stringForKey:@"ISIconPackageIdentifier"];
+      iconDictionary = [v15 iconDictionary];
+      v17 = [iconDictionary _IF_stringForKey:@"ISIconPackageIdentifier"];
 
       v18 = [MEMORY[0x1E69636B0] typeRecordWithIdentifier:v17];
-      if (!v7)
+      if (!configurationCopy)
       {
-        v7 = objc_alloc_init(ISFolderIconConfiguration);
+        configurationCopy = objc_alloc_init(ISFolderIconConfiguration);
       }
 
       v19 = [ISFolderIconConfigurationParser alloc];
-      v20 = [v9 iconDictionary];
-      v21 = [(ISFolderIconConfigurationParser *)v19 initWithIconDictionary:v20];
+      iconDictionary2 = [v9 iconDictionary];
+      v21 = [(ISFolderIconConfigurationParser *)v19 initWithIconDictionary:iconDictionary2];
 
       if (v21)
       {
-        v22 = [(ISIconConfigurationMarkupParser *)v21 symbolName];
+        symbolName = [(ISIconConfigurationMarkupParser *)v21 symbolName];
 
-        if (v22)
+        if (symbolName)
         {
-          v23 = [(ISIconConfigurationMarkupParser *)v21 symbolName];
-          [(ISFolderIconConfiguration *)v7 setSymbolName:v23];
+          symbolName2 = [(ISIconConfigurationMarkupParser *)v21 symbolName];
+          [(ISFolderIconConfiguration *)configurationCopy setSymbolName:symbolName2];
         }
       }
     }
@@ -57,7 +57,7 @@
     v24 = _ISDefaultLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      [ISIconPackage initWithTypeIdentifier:v6 configuration:v24];
+      [ISIconPackage initWithTypeIdentifier:identifierCopy configuration:v24];
     }
 
     v25 = objc_opt_new();
@@ -65,9 +65,9 @@
     v30[1] = 3221225472;
     v30[2] = __54__ISIconPackage_initWithTypeIdentifier_configuration___block_invoke;
     v30[3] = &unk_1E77C6758;
-    v31 = v6;
-    v7 = v7;
-    v32 = v7;
+    v31 = identifierCopy;
+    configurationCopy = configurationCopy;
+    v32 = configurationCopy;
     v33 = v25;
     v26 = v25;
     [v18 enumerateChildTypesWithBlock:v30];

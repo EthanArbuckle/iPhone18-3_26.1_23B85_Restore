@@ -1,9 +1,9 @@
 @interface _OSLastLockPredictorActivityClassifier
 + (id)predictor;
 - (_OSLastLockPredictorActivityClassifier)init;
-- (double)determineTimeSinceActiveWithInputDate:(id)a3 andInputTimeSinceActive:(double)a4;
-- (double)extrapolatedUserPresenceDurationsAtDate:(id)a3;
-- (id)lastLockPredictionResultAtDate:(id)a3 withTimeSinceActive:(double)a4 withError:(id *)a5;
+- (double)determineTimeSinceActiveWithInputDate:(id)date andInputTimeSinceActive:(double)active;
+- (double)extrapolatedUserPresenceDurationsAtDate:(id)date;
+- (id)lastLockPredictionResultAtDate:(id)date withTimeSinceActive:(double)active withError:(id *)error;
 - (void)loadFactors;
 @end
 
@@ -67,13 +67,13 @@
   [(_OSLastLockPredictor *)self setConfidenceThresholdRelaxed:0.2];
 }
 
-- (double)extrapolatedUserPresenceDurationsAtDate:(id)a3
+- (double)extrapolatedUserPresenceDurationsAtDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[_OSUserPresenceHistory sharedInstance];
-  v5 = [v4 historicalSecondsSincePresentAtDate:v3 whichStrata:3];
-  v6 = [v4 historicalSecondsSincePresentAtDate:v3 whichStrata:1];
-  v7 = [v4 historicalSecondsSincePresentAtDate:v3 whichStrata:2];
+  v5 = [v4 historicalSecondsSincePresentAtDate:dateCopy whichStrata:3];
+  v6 = [v4 historicalSecondsSincePresentAtDate:dateCopy whichStrata:1];
+  v7 = [v4 historicalSecondsSincePresentAtDate:dateCopy whichStrata:2];
 
   [OSIntelligenceUtilities medianOf:v5];
   v8 = [NSNumber numberWithDouble:?];
@@ -91,17 +91,17 @@
   return v13;
 }
 
-- (double)determineTimeSinceActiveWithInputDate:(id)a3 andInputTimeSinceActive:(double)a4
+- (double)determineTimeSinceActiveWithInputDate:(id)date andInputTimeSinceActive:(double)active
 {
-  v6 = a3;
-  v7 = *&v6;
-  if (a4 >= 0.0)
+  dateCopy = date;
+  v7 = *&dateCopy;
+  if (active >= 0.0)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 134217984;
-      v19 = a4 / 60.0;
+      v19 = active / 60.0;
       v11 = "Input timeSinceActive is explicitly set to %.2f min";
       v13 = log;
       v14 = 12;
@@ -112,7 +112,7 @@ LABEL_15:
 
   else
   {
-    if (!v6)
+    if (!dateCopy)
     {
       +[NSDate now];
       v7 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
@@ -124,14 +124,14 @@ LABEL_15:
       if (v8 >= -900.0)
       {
         [(_OSLastLockPredictor *)self presentDuration];
-        a4 = v16;
+        active = v16;
         v10 = self->_log;
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 138412546;
           v19 = v7;
           v20 = 2048;
-          v21 = a4 / 60.0;
+          v21 = active / 60.0;
           v11 = "Querying near now at %@. Real-time timeSinceActive = %.2f min";
           goto LABEL_14;
         }
@@ -140,14 +140,14 @@ LABEL_15:
       else
       {
         [OSIntelligenceUtilities secondsSinceBecomingPresentAtDate:*&v7];
-        a4 = v15;
+        active = v15;
         v10 = self->_log;
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 138412546;
           v19 = v7;
           v20 = 2048;
-          v21 = a4 / 60.0;
+          v21 = active / 60.0;
           v11 = "Querying into the past at %@. Historical timeSinceActive = %.2f min";
           goto LABEL_14;
         }
@@ -157,14 +157,14 @@ LABEL_15:
     else
     {
       [(_OSLastLockPredictorActivityClassifier *)self extrapolatedUserPresenceDurationsAtDate:*&v7];
-      a4 = v9;
+      active = v9;
       v10 = self->_log;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412546;
         v19 = v7;
         v20 = 2048;
-        v21 = a4 / 60.0;
+        v21 = active / 60.0;
         v11 = "Querying into the future at %@. Extrapolated timeSinceActive = %.2f min";
 LABEL_14:
         v13 = v10;
@@ -174,23 +174,23 @@ LABEL_14:
     }
   }
 
-  return a4;
+  return active;
 }
 
-- (id)lastLockPredictionResultAtDate:(id)a3 withTimeSinceActive:(double)a4 withError:(id *)a5
+- (id)lastLockPredictionResultAtDate:(id)date withTimeSinceActive:(double)active withError:(id *)error
 {
-  v8 = a3;
+  dateCopy = date;
   v9 = os_transaction_create();
   if (!self->_classifier)
   {
-    *a5 = [NSError errorWithDomain:@"com.apple.OSIntelligence.LastLockPredictorActivityClassifier" code:6 userInfo:&off_10009CB38];
-    v18 = [[_OSLastLockPredictorOutput alloc] initInvalidOutput];
+    *error = [NSError errorWithDomain:@"com.apple.OSIntelligence.LastLockPredictorActivityClassifier" code:6 userInfo:&off_10009CB38];
+    initInvalidOutput = [[_OSLastLockPredictorOutput alloc] initInvalidOutput];
 LABEL_7:
-    v19 = v18;
+    v19 = initInvalidOutput;
     goto LABEL_15;
   }
 
-  [v8 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   if (v10 > 43260.0)
   {
     log = self->_log;
@@ -206,46 +206,46 @@ LABEL_7:
     [(_OSLastLockPredictor *)self confidenceThresholdRelaxed];
     v16 = v15;
     [(_OSLastLockPredictor *)self confidenceThresholdStrict];
-    v18 = [v12 initWithConfidenceValue:1 andRelaxedThreshold:v14 andStrictThreshold:v16 andPredictedDuration:v17 andReason:2.0];
+    initInvalidOutput = [v12 initWithConfidenceValue:1 andRelaxedThreshold:v14 andStrictThreshold:v16 andPredictedDuration:v17 andReason:2.0];
     goto LABEL_7;
   }
 
-  [(_OSLastLockPredictorActivityClassifier *)self determineTimeSinceActiveWithInputDate:v8 andInputTimeSinceActive:a4];
+  [(_OSLastLockPredictorActivityClassifier *)self determineTimeSinceActiveWithInputDate:dateCopy andInputTimeSinceActive:active];
   v21 = v20;
-  v22 = [(MLModel *)self->_classifier modelDescription];
-  v23 = [v22 inputDescriptionsByName];
-  v24 = [v23 allKeys];
+  modelDescription = [(MLModel *)self->_classifier modelDescription];
+  inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+  allKeys = [inputDescriptionsByName allKeys];
 
   v25 = +[_OSUserPresenceHistory sharedInstance];
   v57 = @"time_since_active";
   v26 = [NSNumber numberWithDouble:v21 / 3600.0];
   v58 = v26;
   v27 = [NSDictionary dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-  v28 = [_OSLastLockFeatureFactory inputFeaturesWithNames:v24 atDate:v8 withIntervalHistory:v25 withContext:v27];
+  v28 = [_OSLastLockFeatureFactory inputFeaturesWithNames:allKeys atDate:dateCopy withIntervalHistory:v25 withContext:v27];
 
   v29 = self->_log;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     v30 = v29;
-    v31 = [v28 dictionary];
-    [v31 description];
+    dictionary = [v28 dictionary];
+    [dictionary description];
     v50 = v28;
     v32 = v9;
-    v34 = v33 = v24;
+    v34 = v33 = allKeys;
     *buf = 138412290;
     v52 = *&v34;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Features: %@", buf, 0xCu);
 
-    v24 = v33;
+    allKeys = v33;
     v9 = v32;
     v28 = v50;
   }
 
-  v35 = [(MLModel *)self->_classifier predictionFromFeatures:v28 error:a5, v50];
+  v35 = [(MLModel *)self->_classifier predictionFromFeatures:v28 error:error, v50];
   v36 = [v35 featureValueForName:@"classProbability"];
-  v37 = [v36 dictionaryValue];
+  dictionaryValue = [v36 dictionaryValue];
 
-  v38 = [v37 objectForKeyedSubscript:&off_10009B5B0];
+  v38 = [dictionaryValue objectForKeyedSubscript:&off_10009B5B0];
   [v38 doubleValue];
   v40 = v39;
 

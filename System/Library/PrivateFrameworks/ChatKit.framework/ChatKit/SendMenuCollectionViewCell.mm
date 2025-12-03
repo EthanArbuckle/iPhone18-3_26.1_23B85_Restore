@@ -1,47 +1,47 @@
 @interface SendMenuCollectionViewCell
 - (CGPoint)center;
 - (CGRect)accessibilityFrame;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setCenter:(CGPoint)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCenter:(CGPoint)center;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SendMenuCollectionViewCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for SendMenuCollectionViewCell();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(SendMenuCollectionViewCell *)&v6 traitCollectionDidChange:v4];
+  [(SendMenuCollectionViewCell *)&v6 traitCollectionDidChange:changeCopy];
   sub_190A136DC();
   sub_190A155A4();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_190A14580(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_190A14580(event, x, y);
 
   return v10;
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_190D531F0();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_190D531E0();
-  v8 = self;
+  selfCopy = self;
   sub_190A147E0();
 
   (*(v5 + 8))(v7, v4);
@@ -49,9 +49,9 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = self;
+  selfCopy = self;
   sub_190A143DC();
-  [(SendMenuCollectionViewCell *)v2 convertRect:0 toView:?];
+  [(SendMenuCollectionViewCell *)selfCopy convertRect:0 toView:?];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -70,7 +70,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190A15C30();
 }
 
@@ -84,10 +84,10 @@
   return result;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for SendMenuCollectionViewCell();
   v5 = v9.receiver;
@@ -105,15 +105,15 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_190A17F0C();
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v9 = _s7ChatKit26SendMenuCollectionViewCellC18pointerInteraction_8styleForSo14UIPointerStyleCSgSo0lI0C_So0L6RegionCtF_0();
 
   return v9;

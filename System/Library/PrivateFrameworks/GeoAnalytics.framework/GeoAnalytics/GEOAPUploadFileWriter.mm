@@ -1,5 +1,5 @@
 @interface GEOAPUploadFileWriter
-- (void)_arpcDataForType:(int)a3 dataBlock:(id)a4;
+- (void)_arpcDataForType:(int)type dataBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -33,13 +33,13 @@
   [(GEOAPUploadFileWriter *)&v7 dealloc];
 }
 
-- (void)_arpcDataForType:(int)a3 dataBlock:(id)a4
+- (void)_arpcDataForType:(int)type dataBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v7 = objc_alloc_init(GEOLogMessageCollectionRequest);
   [v7 requestTypeCode];
   v6 = GEOProtocolBufferRequestHeader();
-  v5[2](v5, v6, a3 != 13);
+  blockCopy[2](blockCopy, v6, type != 13);
 }
 
 @end

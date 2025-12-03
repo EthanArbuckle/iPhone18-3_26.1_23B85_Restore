@@ -1,27 +1,27 @@
 @interface PKHardwareVersionRange
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHardwareVersionRange:(id)a3;
-- (BOOL)matchesDeviceVersion:(id)a3;
-- (PKHardwareVersionRange)initWithCoder:(id)a3;
-- (PKHardwareVersionRange)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHardwareVersionRange:(id)range;
+- (BOOL)matchesDeviceVersion:(id)version;
+- (PKHardwareVersionRange)initWithCoder:(id)coder;
+- (PKHardwareVersionRange)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKHardwareVersionRange
 
-- (PKHardwareVersionRange)initWithDictionary:(id)a3
+- (PKHardwareVersionRange)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = PKHardwareVersionRange;
   v5 = [(PKHardwareVersionRange *)&v25 init];
   if (v5)
   {
-    v6 = [v4 PKDictionaryForKey:@"iPhone"];
+    v6 = [dictionaryCopy PKDictionaryForKey:@"iPhone"];
     if (v6)
     {
       v7 = [[PKDeviceVersionRange alloc] initWithDictionary:v6];
@@ -29,7 +29,7 @@
       v5->_iphone = v7;
     }
 
-    v9 = [v4 PKDictionaryForKey:@"Watch"];
+    v9 = [dictionaryCopy PKDictionaryForKey:@"Watch"];
 
     if (v9)
     {
@@ -38,7 +38,7 @@
       v5->_watch = v10;
     }
 
-    v12 = [v4 PKDictionaryForKey:@"iPad"];
+    v12 = [dictionaryCopy PKDictionaryForKey:@"iPad"];
 
     if (v12)
     {
@@ -47,7 +47,7 @@
       v5->_ipad = v13;
     }
 
-    v15 = [v4 PKDictionaryForKey:@"iPod"];
+    v15 = [dictionaryCopy PKDictionaryForKey:@"iPod"];
 
     if (v15)
     {
@@ -56,7 +56,7 @@
       v5->_ipod = v16;
     }
 
-    v18 = [v4 PKDictionaryForKey:@"AppleTV"];
+    v18 = [dictionaryCopy PKDictionaryForKey:@"AppleTV"];
 
     if (v18)
     {
@@ -65,7 +65,7 @@
       v5->_appletv = v19;
     }
 
-    v21 = [v4 PKDictionaryForKey:@"RealityDevice"];
+    v21 = [dictionaryCopy PKDictionaryForKey:@"RealityDevice"];
 
     if (v21)
     {
@@ -81,52 +81,52 @@
 - (id)asDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKDeviceVersionRange *)self->_iphone asDictionary];
-  [v3 setObject:v4 forKeyedSubscript:@"iPhone"];
+  asDictionary = [(PKDeviceVersionRange *)self->_iphone asDictionary];
+  [v3 setObject:asDictionary forKeyedSubscript:@"iPhone"];
 
-  v5 = [(PKDeviceVersionRange *)self->_watch asDictionary];
-  [v3 setObject:v5 forKeyedSubscript:@"Watch"];
+  asDictionary2 = [(PKDeviceVersionRange *)self->_watch asDictionary];
+  [v3 setObject:asDictionary2 forKeyedSubscript:@"Watch"];
 
-  v6 = [(PKDeviceVersionRange *)self->_ipad asDictionary];
-  [v3 setObject:v6 forKeyedSubscript:@"iPad"];
+  asDictionary3 = [(PKDeviceVersionRange *)self->_ipad asDictionary];
+  [v3 setObject:asDictionary3 forKeyedSubscript:@"iPad"];
 
-  v7 = [(PKDeviceVersionRange *)self->_ipod asDictionary];
-  [v3 setObject:v7 forKeyedSubscript:@"iPod"];
+  asDictionary4 = [(PKDeviceVersionRange *)self->_ipod asDictionary];
+  [v3 setObject:asDictionary4 forKeyedSubscript:@"iPod"];
 
-  v8 = [(PKDeviceVersionRange *)self->_appletv asDictionary];
-  [v3 setObject:v8 forKeyedSubscript:@"AppleTV"];
+  asDictionary5 = [(PKDeviceVersionRange *)self->_appletv asDictionary];
+  [v3 setObject:asDictionary5 forKeyedSubscript:@"AppleTV"];
 
-  v9 = [(PKDeviceVersionRange *)self->_vision asDictionary];
-  [v3 setObject:v9 forKeyedSubscript:@"RealityDevice"];
+  asDictionary6 = [(PKDeviceVersionRange *)self->_vision asDictionary];
+  [v3 setObject:asDictionary6 forKeyedSubscript:@"RealityDevice"];
 
   v10 = [v3 copy];
 
   return v10;
 }
 
-- (BOOL)matchesDeviceVersion:(id)a3
+- (BOOL)matchesDeviceVersion:(id)version
 {
-  v4 = a3;
-  v5 = [v4 deviceClass];
-  v6 = v5;
-  if (v5 == @"iPhone")
+  versionCopy = version;
+  deviceClass = [versionCopy deviceClass];
+  v6 = deviceClass;
+  if (deviceClass == @"iPhone")
   {
     goto LABEL_4;
   }
 
-  if (!v5)
+  if (!deviceClass)
   {
 LABEL_22:
     v10 = 0;
     goto LABEL_23;
   }
 
-  v7 = [@"iPhone" isEqualToString:v5];
+  v7 = [@"iPhone" isEqualToString:deviceClass];
 
   if (v7)
   {
 LABEL_4:
-    v8 = [(PKHardwareVersionRange *)self iphone];
+    iphone = [(PKHardwareVersionRange *)self iphone];
   }
 
   else
@@ -134,7 +134,7 @@ LABEL_4:
     v11 = v6;
     if (v11 == @"Watch" || (v12 = v11, v13 = [@"Watch" isEqualToString:v11], v12, v13))
     {
-      v8 = [(PKHardwareVersionRange *)self watch];
+      iphone = [(PKHardwareVersionRange *)self watch];
     }
 
     else
@@ -142,7 +142,7 @@ LABEL_4:
       v14 = v12;
       if (v14 == @"iPad" || (v15 = v14, v16 = [@"iPad" isEqualToString:v14], v15, v16))
       {
-        v8 = [(PKHardwareVersionRange *)self ipad];
+        iphone = [(PKHardwareVersionRange *)self ipad];
       }
 
       else
@@ -150,7 +150,7 @@ LABEL_4:
         v17 = v15;
         if (v17 == @"iPod" || (v18 = v17, v19 = [@"iPod" isEqualToString:v17], v18, v19))
         {
-          v8 = [(PKHardwareVersionRange *)self ipod];
+          iphone = [(PKHardwareVersionRange *)self ipod];
         }
 
         else
@@ -158,7 +158,7 @@ LABEL_4:
           v20 = v18;
           if (v20 == @"AppleTV" || (v21 = v20, v22 = [@"AppleTV" isEqualToString:v20], v21, v22))
           {
-            v8 = [(PKHardwareVersionRange *)self appletv];
+            iphone = [(PKHardwareVersionRange *)self appletv];
           }
 
           else
@@ -175,55 +175,55 @@ LABEL_4:
               }
             }
 
-            v8 = [(PKHardwareVersionRange *)self vision];
+            iphone = [(PKHardwareVersionRange *)self vision];
           }
         }
       }
     }
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = iphone;
+  if (!iphone)
   {
     goto LABEL_22;
   }
 
-  v10 = [v8 _matchesDeviceVersion:v4];
+  v10 = [iphone _matchesDeviceVersion:versionCopy];
 
 LABEL_23:
   return v10;
 }
 
-- (PKHardwareVersionRange)initWithCoder:(id)a3
+- (PKHardwareVersionRange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = PKHardwareVersionRange;
   v5 = [(PKHardwareVersionRange *)&v20 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"iPhone"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"iPhone"];
     iphone = v5->_iphone;
     v5->_iphone = v7;
 
-    v9 = [v4 decodeObjectOfClass:v6 forKey:@"Watch"];
+    v9 = [coderCopy decodeObjectOfClass:v6 forKey:@"Watch"];
     watch = v5->_watch;
     v5->_watch = v9;
 
-    v11 = [v4 decodeObjectOfClass:v6 forKey:@"iPad"];
+    v11 = [coderCopy decodeObjectOfClass:v6 forKey:@"iPad"];
     ipad = v5->_ipad;
     v5->_ipad = v11;
 
-    v13 = [v4 decodeObjectOfClass:v6 forKey:@"iPod"];
+    v13 = [coderCopy decodeObjectOfClass:v6 forKey:@"iPod"];
     ipod = v5->_ipod;
     v5->_ipod = v13;
 
-    v15 = [v4 decodeObjectOfClass:v6 forKey:@"AppleTV"];
+    v15 = [coderCopy decodeObjectOfClass:v6 forKey:@"AppleTV"];
     appletv = v5->_appletv;
     v5->_appletv = v15;
 
-    v17 = [v4 decodeObjectOfClass:v6 forKey:@"RealityDevice"];
+    v17 = [coderCopy decodeObjectOfClass:v6 forKey:@"RealityDevice"];
     vision = v5->_vision;
     v5->_vision = v17;
   }
@@ -231,70 +231,70 @@ LABEL_23:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   iphone = self->_iphone;
-  v5 = a3;
-  [v5 encodeObject:iphone forKey:@"iPhone"];
-  [v5 encodeObject:self->_watch forKey:@"Watch"];
-  [v5 encodeObject:self->_ipad forKey:@"iPad"];
-  [v5 encodeObject:self->_ipod forKey:@"iPod"];
-  [v5 encodeObject:self->_appletv forKey:@"AppleTV"];
-  [v5 encodeObject:self->_vision forKey:@"RealityDevice"];
+  coderCopy = coder;
+  [coderCopy encodeObject:iphone forKey:@"iPhone"];
+  [coderCopy encodeObject:self->_watch forKey:@"Watch"];
+  [coderCopy encodeObject:self->_ipad forKey:@"iPad"];
+  [coderCopy encodeObject:self->_ipod forKey:@"iPod"];
+  [coderCopy encodeObject:self->_appletv forKey:@"AppleTV"];
+  [coderCopy encodeObject:self->_vision forKey:@"RealityDevice"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKHardwareVersionRange allocWithZone:](PKHardwareVersionRange init];
-  v6 = [(PKDeviceVersionRange *)self->_iphone copyWithZone:a3];
+  v6 = [(PKDeviceVersionRange *)self->_iphone copyWithZone:zone];
   iphone = v5->_iphone;
   v5->_iphone = v6;
 
-  v8 = [(PKDeviceVersionRange *)self->_watch copyWithZone:a3];
+  v8 = [(PKDeviceVersionRange *)self->_watch copyWithZone:zone];
   watch = v5->_watch;
   v5->_watch = v8;
 
-  v10 = [(PKDeviceVersionRange *)self->_ipad copyWithZone:a3];
+  v10 = [(PKDeviceVersionRange *)self->_ipad copyWithZone:zone];
   ipad = v5->_ipad;
   v5->_ipad = v10;
 
-  v12 = [(PKDeviceVersionRange *)self->_ipod copyWithZone:a3];
+  v12 = [(PKDeviceVersionRange *)self->_ipod copyWithZone:zone];
   ipod = v5->_ipod;
   v5->_ipod = v12;
 
-  v14 = [(PKDeviceVersionRange *)self->_appletv copyWithZone:a3];
+  v14 = [(PKDeviceVersionRange *)self->_appletv copyWithZone:zone];
   appletv = v5->_appletv;
   v5->_appletv = v14;
 
-  v16 = [(PKDeviceVersionRange *)self->_vision copyWithZone:a3];
+  v16 = [(PKDeviceVersionRange *)self->_vision copyWithZone:zone];
   vision = v5->_vision;
   v5->_vision = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKHardwareVersionRange *)self isEqualToHardwareVersionRange:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKHardwareVersionRange *)self isEqualToHardwareVersionRange:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToHardwareVersionRange:(id)a3
+- (BOOL)isEqualToHardwareVersionRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   iphone = self->_iphone;
-  v6 = v4[1];
+  v6 = rangeCopy[1];
   if (iphone)
   {
     v7 = v6 == 0;
@@ -319,7 +319,7 @@ LABEL_23:
   }
 
   watch = self->_watch;
-  v9 = v4[2];
+  v9 = rangeCopy[2];
   if (watch && v9)
   {
     if (![(PKDeviceVersionRange *)watch isEqual:?])
@@ -334,7 +334,7 @@ LABEL_23:
   }
 
   ipad = self->_ipad;
-  v11 = v4[3];
+  v11 = rangeCopy[3];
   if (ipad && v11)
   {
     if (![(PKDeviceVersionRange *)ipad isEqual:?])
@@ -349,7 +349,7 @@ LABEL_23:
   }
 
   ipod = self->_ipod;
-  v13 = v4[4];
+  v13 = rangeCopy[4];
   if (ipod && v13)
   {
     if (![(PKDeviceVersionRange *)ipod isEqual:?])
@@ -364,7 +364,7 @@ LABEL_23:
   }
 
   appletv = self->_appletv;
-  v15 = v4[5];
+  v15 = rangeCopy[5];
   if (!appletv || !v15)
   {
     if (appletv == v15)
@@ -384,7 +384,7 @@ LABEL_31:
 
 LABEL_27:
   vision = self->_vision;
-  v17 = v4[6];
+  v17 = rangeCopy[6];
   if (vision && v17)
   {
     v18 = [(PKDeviceVersionRange *)vision isEqual:?];
@@ -402,14 +402,14 @@ LABEL_32:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_iphone];
-  [v3 safelyAddObject:self->_watch];
-  [v3 safelyAddObject:self->_ipad];
-  [v3 safelyAddObject:self->_ipod];
-  [v3 safelyAddObject:self->_appletv];
-  [v3 safelyAddObject:self->_vision];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_iphone];
+  [array safelyAddObject:self->_watch];
+  [array safelyAddObject:self->_ipad];
+  [array safelyAddObject:self->_ipod];
+  [array safelyAddObject:self->_appletv];
+  [array safelyAddObject:self->_vision];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

@@ -1,21 +1,21 @@
 @interface MFProgressView
 + (id)progressViewWithDefaultStyleStrokeAndRect;
-- (BOOL)_isValidCenter:(CGPoint)a3 radius:(double)a4 rect:(CGRect)a5;
+- (BOOL)_isValidCenter:(CGPoint)center radius:(double)radius rect:(CGRect)rect;
 - (CGSize)intrinsicContentSize;
-- (MFProgressView)initWithProgressViewStyle:(int64_t)a3 stroke:(double)a4 frame:(CGRect)a5;
+- (MFProgressView)initWithProgressViewStyle:(int64_t)style stroke:(double)stroke frame:(CGRect)frame;
 - (MFProgressViewDelegate)delegate;
 - (void)_adjustProgress;
-- (void)_drawCircleWithCenter:(CGPoint)a3 radius:(double)a4;
-- (void)_drawProgressInRect:(CGRect)a3;
-- (void)_drawWedgeWithCenter:(CGPoint)a3 radius:(double)a4;
+- (void)_drawCircleWithCenter:(CGPoint)center radius:(double)radius;
+- (void)_drawProgressInRect:(CGRect)rect;
+- (void)_drawWedgeWithCenter:(CGPoint)center radius:(double)radius;
 - (void)_invalidateDisplayLink;
 - (void)_invalidateSimulationTimer;
-- (void)_onDisplayLink:(id)a3;
+- (void)_onDisplayLink:(id)link;
 - (void)_stopSimulationIfCompleted;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)progressDidFinish;
-- (void)setProgress:(double)a3;
+- (void)setProgress:(double)progress;
 - (void)simulateActivity;
 @end
 
@@ -32,20 +32,20 @@
   return v6;
 }
 
-- (MFProgressView)initWithProgressViewStyle:(int64_t)a3 stroke:(double)a4 frame:(CGRect)a5
+- (MFProgressView)initWithProgressViewStyle:(int64_t)style stroke:(double)stroke frame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = MFProgressView;
-  v6 = [(MFProgressView *)&v12 initWithFrame:a3, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  v6 = [(MFProgressView *)&v12 initWithFrame:style, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v6;
   if (v6)
   {
-    v6->_stroke = a4;
+    v6->_stroke = stroke;
     v8 = [MEMORY[0x1E69DC888] colorWithRed:0.870000005 green:0.870000005 blue:0.870000005 alpha:1.0];
     [(MFProgressView *)v7 setTintColor:v8];
 
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    [(MFProgressView *)v7 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MFProgressView *)v7 setBackgroundColor:clearColor];
 
     [(MFProgressView *)v7 bounds];
     [(MFProgressView *)v7 setBounds:?];
@@ -82,9 +82,9 @@
   self->_displayLink = 0;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v4 = self->_targetProgress - a3;
+  v4 = self->_targetProgress - progress;
   if (v4 < 0.0)
   {
     v4 = -v4;
@@ -103,11 +103,11 @@
       [(CADisplayLink *)v8 setPreferredFrameRateRange:*&v11.minimum, *&v11.maximum, *&v11.preferred];
 
       v9 = self->_displayLink;
-      v10 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [(CADisplayLink *)v9 addToRunLoop:v10 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [(CADisplayLink *)v9 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
     }
 
-    self->_targetProgress = a3;
+    self->_targetProgress = progress;
   }
 }
 
@@ -144,19 +144,19 @@
   self->_simulateActivityTimer = 0;
 }
 
-- (void)_onDisplayLink:(id)a3
+- (void)_onDisplayLink:(id)link
 {
   [(MFProgressView *)self bounds];
 
   [(MFProgressView *)self setNeedsDisplayInRect:?];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(MFProgressView *)self _adjustProgress];
 
   [(MFProgressView *)self _drawProgressInRect:x, y, width, height];
@@ -190,12 +190,12 @@
   }
 }
 
-- (void)_drawProgressInRect:(CGRect)a3
+- (void)_drawProgressInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   UIRectGetCenter();
   v9 = v8;
   v11 = v10;
@@ -208,14 +208,14 @@
   }
 }
 
-- (BOOL)_isValidCenter:(CGPoint)a3 radius:(double)a4 rect:(CGRect)a5
+- (BOOL)_isValidCenter:(CGPoint)center radius:(double)radius rect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a3.y;
-  v11 = a3.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = center.y;
+  v11 = center.x;
   v29 = *MEMORY[0x1E69E9840];
   if (CGFloatIsValid() && CGFloatIsValid() && (CGFloatIsValid() & 1) != 0)
   {
@@ -238,7 +238,7 @@
     v19 = 138413314;
     v20 = v15;
     v21 = 2048;
-    v22 = a4;
+    radiusCopy = radius;
     v23 = 2112;
     v24 = v16;
     v25 = 2048;
@@ -251,28 +251,28 @@
   return 0;
 }
 
-- (void)_drawCircleWithCenter:(CGPoint)a3 radius:(double)a4
+- (void)_drawCircleWithCenter:(CGPoint)center radius:(double)radius
 {
-  v5 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:a3.x startAngle:a3.y endAngle:a4 clockwise:{0.0, 6.28318531}];
+  v5 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:center.x startAngle:center.y endAngle:radius clockwise:{0.0, 6.28318531}];
   [(UIColor *)self->_tintColor setStroke];
   [(UIColor *)self->_tintColor setFill];
   [v5 setLineWidth:self->_stroke];
   [v5 strokeWithBlendMode:17 alpha:1.0];
 }
 
-- (void)_drawWedgeWithCenter:(CGPoint)a3 radius:(double)a4
+- (void)_drawWedgeWithCenter:(CGPoint)center radius:(double)radius
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   displayedProgress = self->_displayedProgress;
   if (fabs(displayedProgress) >= 2.22044605e-16)
   {
-    v8 = [MEMORY[0x1E69DC728] bezierPath];
-    [v8 moveToPoint:{x, y}];
-    [v8 addLineToPoint:{x, y - a4}];
-    [v8 addArcWithCenter:1 radius:x startAngle:y endAngle:a4 clockwise:{-1.57079633, displayedProgress * 6.28318531 + -1.57079633}];
-    [v8 addLineToPoint:{x, y}];
-    [v8 fillWithBlendMode:17 alpha:1.0];
+    bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+    [bezierPath moveToPoint:{x, y}];
+    [bezierPath addLineToPoint:{x, y - radius}];
+    [bezierPath addArcWithCenter:1 radius:x startAngle:y endAngle:radius clockwise:{-1.57079633, displayedProgress * 6.28318531 + -1.57079633}];
+    [bezierPath addLineToPoint:{x, y}];
+    [bezierPath fillWithBlendMode:17 alpha:1.0];
   }
 }
 

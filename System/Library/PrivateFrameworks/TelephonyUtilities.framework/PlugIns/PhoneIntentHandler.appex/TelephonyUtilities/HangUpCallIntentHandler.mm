@@ -1,7 +1,7 @@
 @interface HangUpCallIntentHandler
 - (HangUpCallIntentHandler)init;
-- (void)confirmHangUpCall:(id)a3 completion:(id)a4;
-- (void)handleHangUpCall:(id)a3 completion:(id)a4;
+- (void)confirmHangUpCall:(id)call completion:(id)completion;
+- (void)handleHangUpCall:(id)call completion:(id)completion;
 @end
 
 @implementation HangUpCallIntentHandler
@@ -24,52 +24,52 @@
   return v2;
 }
 
-- (void)confirmHangUpCall:(id)a3 completion:(id)a4
+- (void)confirmHangUpCall:(id)call completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  callCopy = call;
+  completionCopy = completion;
   v8 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = callCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Confirming Siri request to hang up: %@", buf, 0xCu);
   }
 
-  v9 = [(HangUpCallIntentHandler *)self callCenter];
-  v10 = [v9 queue];
+  callCenter = [(HangUpCallIntentHandler *)self callCenter];
+  queue = [callCenter queue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100022C34;
   v12[3] = &unk_10004CF28;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
-  dispatch_sync(v10, v12);
+  v13 = completionCopy;
+  v11 = completionCopy;
+  dispatch_sync(queue, v12);
 }
 
-- (void)handleHangUpCall:(id)a3 completion:(id)a4
+- (void)handleHangUpCall:(id)call completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  callCopy = call;
+  completionCopy = completion;
   v8 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = callCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Handling Siri request to hang up: %@", buf, 0xCu);
   }
 
-  v9 = [(HangUpCallIntentHandler *)self callCenter];
-  v10 = [v9 queue];
+  callCenter = [(HangUpCallIntentHandler *)self callCenter];
+  queue = [callCenter queue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100022E78;
   v12[3] = &unk_10004CF28;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
-  dispatch_sync(v10, v12);
+  v13 = completionCopy;
+  v11 = completionCopy;
+  dispatch_sync(queue, v12);
 }
 
 @end

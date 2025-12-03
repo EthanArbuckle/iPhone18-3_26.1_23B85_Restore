@@ -20,8 +20,8 @@
 
 - (double)moreKeyFontSize
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 usesCompactKeycapsFont])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v3 = 19.0;
   }
@@ -36,8 +36,8 @@
 
 - (double)moreABCKeyFontSize
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 usesCompactKeycapsFont])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v3 = 19.0;
   }
@@ -52,8 +52,8 @@
 
 - (CGPoint)returnKeyOffset
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 usesCompactKeycapsFont])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v3 = -2.0;
   }
@@ -72,8 +72,8 @@
 
 - (CGPoint)internationalKeyOffset
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 usesCompactKeycapsFont])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v3 = -1.0;
   }
@@ -92,9 +92,9 @@
 
 - (CGPoint)dictationKeyOffset
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 usesCompactKeycapsFont];
-  if (v3)
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
+  if (usesCompactKeycapsFont)
   {
     v4 = 0.0;
   }
@@ -104,7 +104,7 @@
     v4 = *MEMORY[0x1E695EFF8];
   }
 
-  if (v3)
+  if (usesCompactKeycapsFont)
   {
     v5 = -1.0;
   }
@@ -123,8 +123,8 @@
 
 - (CGPoint)more123KeyOffset
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 usesCompactKeycapsFont])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v3 = 0.0;
   }
@@ -143,8 +143,8 @@
 
 - (CGPoint)moreABCKeyOffset
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 usesCompactKeycapsFont])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v3 = 0.0;
   }
@@ -229,23 +229,23 @@
 
 - (id)lightKeycapsFontName
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self boldTextEnabled];
+  boldTextEnabled = [(UIKBRenderFactory *)self boldTextEnabled];
   v6 = @".KeycapsB-Keys";
-  if (v5)
+  if (boldTextEnabled)
   {
     v6 = @".PhoneKeyCaps";
   }
 
   v7 = @"UIKBRenderFactorySystemCompactFontName";
-  if (v5)
+  if (boldTextEnabled)
   {
     v7 = @".SFCompact-Bold";
   }
 
-  if (v4)
+  if (usesCompactKeycapsFont)
   {
     v8 = v7;
   }

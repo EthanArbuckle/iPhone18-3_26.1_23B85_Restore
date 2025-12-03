@@ -1,6 +1,6 @@
 @interface TSKPulseAnimationController
-- (TSKPulseAnimationController)initWithDelegate:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (TSKPulseAnimationController)initWithDelegate:(id)delegate;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 - (void)reset;
 - (void)startAnimating;
@@ -9,14 +9,14 @@
 
 @implementation TSKPulseAnimationController
 
-- (TSKPulseAnimationController)initWithDelegate:(id)a3
+- (TSKPulseAnimationController)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = TSKPulseAnimationController;
   result = [(TSKPulseAnimationController *)&v5 init];
   if (result)
   {
-    result->_delegate = a3;
+    result->_delegate = delegate;
     result->_duration = 0.1;
     result->_pulseOffset = 6.0;
   }
@@ -39,14 +39,14 @@
   [(TSKHighlightController *)&v2 reset];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (self->_pulsating && (!self->_autohide || [objc_msgSend(a3 "keyPath")]))
+  if (self->_pulsating && (!self->_autohide || [objc_msgSend(stop "keyPath")]))
   {
     self->_pulsating = 0;
     if (self->_autohide)
     {
-      [(TSKHighlightController *)self hide:a3];
+      [(TSKHighlightController *)self hide:stop];
       [(CALayer *)[(TSKHighlightController *)self layer] removeAllAnimations];
       [(TSKHighlightController *)self setImage:0];
     }

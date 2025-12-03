@@ -11,33 +11,33 @@
 - (unint64_t)accessibilityTraits
 {
   v2 = [(SUTableCellContentViewAccessibility *)self safeValueForKey:@"_configuration"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityHint
 {
   v2 = [(SUTableCellContentViewAccessibility *)self safeValueForKey:@"_configuration"];
-  v3 = [v2 accessibilityHint];
+  accessibilityHint = [v2 accessibilityHint];
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(SUTableCellContentViewAccessibility *)self safeValueForKey:@"_configuration"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(SUTableCellContentViewAccessibility *)self safeValueForKey:@"_configuration"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)description

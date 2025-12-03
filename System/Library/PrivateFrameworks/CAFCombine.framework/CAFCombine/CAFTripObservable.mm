@@ -1,25 +1,25 @@
 @interface CAFTripObservable
 - (NSString)description;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)tripService:(id)a3 didUpdateAverageSpeed:(id)a4;
-- (void)tripService:(id)a3 didUpdateDistance:(id)a4;
-- (void)tripService:(id)a3 didUpdateDuration:(id)a4;
-- (void)tripService:(id)a3 didUpdateEnergy:(id)a4;
-- (void)tripService:(id)a3 didUpdateEnergyEfficiency:(id)a4;
-- (void)tripService:(id)a3 didUpdateFuelEfficiency:(id)a4;
-- (void)tripService:(id)a3 didUpdateName:(id)a4;
-- (void)tripService:(id)a3 didUpdateShowOdometer:(BOOL)a4;
-- (void)tripService:(id)a3 didUpdateSortOrder:(unsigned __int8)a4;
-- (void)tripService:(id)a3 didUpdateUserVisibleLabel:(id)a4;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)tripService:(id)service didUpdateAverageSpeed:(id)speed;
+- (void)tripService:(id)service didUpdateDistance:(id)distance;
+- (void)tripService:(id)service didUpdateDuration:(id)duration;
+- (void)tripService:(id)service didUpdateEnergy:(id)energy;
+- (void)tripService:(id)service didUpdateEnergyEfficiency:(id)efficiency;
+- (void)tripService:(id)service didUpdateFuelEfficiency:(id)efficiency;
+- (void)tripService:(id)service didUpdateName:(id)name;
+- (void)tripService:(id)service didUpdateShowOdometer:(BOOL)odometer;
+- (void)tripService:(id)service didUpdateSortOrder:(unsigned __int8)order;
+- (void)tripService:(id)service didUpdateUserVisibleLabel:(id)label;
 @end
 
 @implementation CAFTripObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFTripObservable.description.getter();
   v5 = v4;
 
@@ -28,32 +28,32 @@
   return v6;
 }
 
-- (void)tripService:(id)a3 didUpdateUserVisibleLabel:(id)a4
+- (void)tripService:(id)service didUpdateUserVisibleLabel:(id)label
 {
-  if (a4)
+  if (label)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTripObservable.tripService(_:didUpdateUserVisibleLabel:)();
 }
 
-- (void)tripService:(id)a3 didUpdateSortOrder:(unsigned __int8)a4
+- (void)tripService:(id)service didUpdateSortOrder:(unsigned __int8)order
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTripObservable.tripService(_:didUpdateSortOrder:)();
 }
 
-- (void)tripService:(id)a3 didUpdateAverageSpeed:(id)a4
+- (void)tripService:(id)service didUpdateAverageSpeed:(id)speed
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo11NSUnitSpeedCGSgMd, &_s10Foundation11MeasurementVySo11NSUnitSpeedCGSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  if (a4)
+  if (speed)
   {
     type metadata accessor for CAFVehicleUnits(0, &lazy cache variable for type metadata for NSUnitSpeed, 0x277CCAE40);
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
@@ -70,20 +70,20 @@
   }
 
   __swift_storeEnumTagSinglePayload(v12, v13, 1, v11);
-  v14 = a3;
-  v15 = self;
-  CAFTripObservable.tripService(_:didUpdateAverageSpeed:)(v15, v10);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFTripObservable.tripService(_:didUpdateAverageSpeed:)(selfCopy, v10);
 
   outlined destroy of Measurement<NSUnitFuelEfficiency>?(v10, &_s10Foundation11MeasurementVySo11NSUnitSpeedCGSgMd, &_s10Foundation11MeasurementVySo11NSUnitSpeedCGSgMR);
 }
 
-- (void)tripService:(id)a3 didUpdateDistance:(id)a4
+- (void)tripService:(id)service didUpdateDistance:(id)distance
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo12NSUnitLengthCGSgMd, &_s10Foundation11MeasurementVySo12NSUnitLengthCGSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  if (a4)
+  if (distance)
   {
     type metadata accessor for CAFVehicleUnits(0, &lazy cache variable for type metadata for NSUnitLength, 0x277CCAE20);
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
@@ -100,20 +100,20 @@
   }
 
   __swift_storeEnumTagSinglePayload(v12, v13, 1, v11);
-  v14 = a3;
-  v15 = self;
-  CAFTripObservable.tripService(_:didUpdateDistance:)(v15, v10);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFTripObservable.tripService(_:didUpdateDistance:)(selfCopy, v10);
 
   outlined destroy of Measurement<NSUnitFuelEfficiency>?(v10, &_s10Foundation11MeasurementVySo12NSUnitLengthCGSgMd, &_s10Foundation11MeasurementVySo12NSUnitLengthCGSgMR);
 }
 
-- (void)tripService:(id)a3 didUpdateDuration:(id)a4
+- (void)tripService:(id)service didUpdateDuration:(id)duration
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo14NSUnitDurationCGSgMd, &_s10Foundation11MeasurementVySo14NSUnitDurationCGSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  if (a4)
+  if (duration)
   {
     type metadata accessor for CAFVehicleUnits(0, &lazy cache variable for type metadata for NSUnitDuration, 0x277CCADD0);
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
@@ -130,20 +130,20 @@
   }
 
   __swift_storeEnumTagSinglePayload(v12, v13, 1, v11);
-  v14 = a3;
-  v15 = self;
-  CAFTripObservable.tripService(_:didUpdateDuration:)(v15, v10);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFTripObservable.tripService(_:didUpdateDuration:)(selfCopy, v10);
 
   outlined destroy of Measurement<NSUnitFuelEfficiency>?(v10, &_s10Foundation11MeasurementVySo14NSUnitDurationCGSgMd, &_s10Foundation11MeasurementVySo14NSUnitDurationCGSgMR);
 }
 
-- (void)tripService:(id)a3 didUpdateEnergy:(id)a4
+- (void)tripService:(id)service didUpdateEnergy:(id)energy
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo12NSUnitEnergyCGSgMd, &_s10Foundation11MeasurementVySo12NSUnitEnergyCGSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  if (a4)
+  if (energy)
   {
     type metadata accessor for CAFVehicleUnits(0, &lazy cache variable for type metadata for NSUnitEnergy, 0x277CCADF8);
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
@@ -160,20 +160,20 @@
   }
 
   __swift_storeEnumTagSinglePayload(v12, v13, 1, v11);
-  v14 = a3;
-  v15 = self;
-  CAFTripObservable.tripService(_:didUpdateEnergy:)(v15, v10);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFTripObservable.tripService(_:didUpdateEnergy:)(selfCopy, v10);
 
   outlined destroy of Measurement<NSUnitFuelEfficiency>?(v10, &_s10Foundation11MeasurementVySo12NSUnitEnergyCGSgMd, &_s10Foundation11MeasurementVySo12NSUnitEnergyCGSgMR);
 }
 
-- (void)tripService:(id)a3 didUpdateEnergyEfficiency:(id)a4
+- (void)tripService:(id)service didUpdateEnergyEfficiency:(id)efficiency
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo23CAFUnitEnergyEfficiencyCGSgMd, &_s10Foundation11MeasurementVySo23CAFUnitEnergyEfficiencyCGSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  if (a4)
+  if (efficiency)
   {
     type metadata accessor for CAFVehicleUnits(0, &lazy cache variable for type metadata for CAFUnitEnergyEfficiency, 0x277CF8768);
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
@@ -190,20 +190,20 @@
   }
 
   __swift_storeEnumTagSinglePayload(v12, v13, 1, v11);
-  v14 = a3;
-  v15 = self;
-  CAFTripObservable.tripService(_:didUpdateEnergyEfficiency:)(v15, v10);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFTripObservable.tripService(_:didUpdateEnergyEfficiency:)(selfCopy, v10);
 
   outlined destroy of Measurement<NSUnitFuelEfficiency>?(v10, &_s10Foundation11MeasurementVySo23CAFUnitEnergyEfficiencyCGSgMd, &_s10Foundation11MeasurementVySo23CAFUnitEnergyEfficiencyCGSgMR);
 }
 
-- (void)tripService:(id)a3 didUpdateFuelEfficiency:(id)a4
+- (void)tripService:(id)service didUpdateFuelEfficiency:(id)efficiency
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo20NSUnitFuelEfficiencyCGSgMd, _s10Foundation11MeasurementVySo20NSUnitFuelEfficiencyCGSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  if (a4)
+  if (efficiency)
   {
     type metadata accessor for CAFVehicleUnits(0, &lazy cache variable for type metadata for NSUnitFuelEfficiency, 0x277CCAE08);
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
@@ -220,47 +220,47 @@
   }
 
   __swift_storeEnumTagSinglePayload(v12, v13, 1, v11);
-  v14 = a3;
-  v15 = self;
-  CAFTripObservable.tripService(_:didUpdateFuelEfficiency:)(v15, v10);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFTripObservable.tripService(_:didUpdateFuelEfficiency:)(selfCopy, v10);
 
   outlined destroy of Measurement<NSUnitFuelEfficiency>?(v10, &_s10Foundation11MeasurementVySo20NSUnitFuelEfficiencyCGSgMd, _s10Foundation11MeasurementVySo20NSUnitFuelEfficiencyCGSgMR);
 }
 
-- (void)tripService:(id)a3 didUpdateShowOdometer:(BOOL)a4
+- (void)tripService:(id)service didUpdateShowOdometer:(BOOL)odometer
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTripObservable.tripService(_:didUpdateShowOdometer:)();
 }
 
-- (void)tripService:(id)a3 didUpdateName:(id)a4
+- (void)tripService:(id)service didUpdateName:(id)name
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTripObservable.tripService(_:didUpdateName:)();
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFTripObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFTripObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFTripObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFTripObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFTripObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

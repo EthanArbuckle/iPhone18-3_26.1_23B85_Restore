@@ -1,7 +1,7 @@
 @interface HMDMediaDestinationModel
 + (id)logCategory;
 + (id)properties;
-- (HMDMediaDestinationModel)initWithDestination:(id)a3 changeType:(unint64_t)a4;
+- (HMDMediaDestinationModel)initWithDestination:(id)destination changeType:(unint64_t)type;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
 @end
@@ -62,43 +62,43 @@ void __38__HMDMediaDestinationModel_properties__block_invoke()
 - (id)attributeDescriptions
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDBackingStoreModelObject *)self setProperties];
-  v4 = [v3 containsObject:@"supportedOptions"];
-  v5 = [v3 containsObject:@"audioGroupIdentifier"];
+  setProperties = [(HMDBackingStoreModelObject *)self setProperties];
+  v4 = [setProperties containsObject:@"supportedOptions"];
+  v5 = [setProperties containsObject:@"audioGroupIdentifier"];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v21 = [(HMDBackingStoreModelObject *)self uuid];
+  uuid = [(HMDBackingStoreModelObject *)self uuid];
   v7 = [v6 initWithName:@"uuid" value:?];
   v22[0] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMDBackingStoreModelObject *)self parentUUID];
-  v10 = [v8 initWithName:@"parentUUID" value:v9];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
+  v10 = [v8 initWithName:@"parentUUID" value:parentUUID];
   v22[1] = v10;
   v11 = objc_alloc(MEMORY[0x277D0F778]);
   v20 = v4;
   if (v4)
   {
-    v12 = [(HMDMediaDestinationModel *)self supportedOptions];
+    supportedOptions = [(HMDMediaDestinationModel *)self supportedOptions];
   }
 
   else
   {
-    v12 = @"not set";
+    supportedOptions = @"not set";
   }
 
-  v13 = [v11 initWithName:@"supportedOptions" value:v12];
+  v13 = [v11 initWithName:@"supportedOptions" value:supportedOptions];
   v22[2] = v13;
   v14 = objc_alloc(MEMORY[0x277D0F778]);
   if (v5)
   {
-    v15 = [(HMDMediaDestinationModel *)self audioGroupIdentifier];
+    audioGroupIdentifier = [(HMDMediaDestinationModel *)self audioGroupIdentifier];
   }
 
   else
   {
-    v15 = @"not set";
+    audioGroupIdentifier = @"not set";
   }
 
-  v16 = [v14 initWithName:@"audioGroupIdentifier" value:v15];
+  v16 = [v14 initWithName:@"audioGroupIdentifier" value:audioGroupIdentifier];
   v22[3] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
 
@@ -117,19 +117,19 @@ void __38__HMDMediaDestinationModel_properties__block_invoke()
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackingStoreModelObject *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDBackingStoreModelObject *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (HMDMediaDestinationModel)initWithDestination:(id)a3 changeType:(unint64_t)a4
+- (HMDMediaDestinationModel)initWithDestination:(id)destination changeType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v6 parentIdentifier];
+  destinationCopy = destination;
+  uniqueIdentifier = [destinationCopy uniqueIdentifier];
+  parentIdentifier = [destinationCopy parentIdentifier];
 
-  v9 = [(HMDBackingStoreModelObject *)self initWithVersion:0 changeType:a4 uuid:v7 parentUUID:v8];
+  v9 = [(HMDBackingStoreModelObject *)self initWithVersion:0 changeType:type uuid:uniqueIdentifier parentUUID:parentIdentifier];
   return v9;
 }
 

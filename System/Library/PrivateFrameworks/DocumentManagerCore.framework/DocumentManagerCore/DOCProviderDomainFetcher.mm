@@ -1,9 +1,9 @@
 @interface DOCProviderDomainFetcher
-- (BOOL)fetchProviders:(id)a3 queue:(id)a4;
+- (BOOL)fetchProviders:(id)providers queue:(id)queue;
 - (DOCProviderDomainFetcher)init;
-- (id)providersFromIterator:(id)a3;
+- (id)providersFromIterator:(id)iterator;
 - (void)dealloc;
-- (void)openSyncCompleted:(id)a3;
+- (void)openSyncCompleted:(id)completed;
 @end
 
 @implementation DOCProviderDomainFetcher
@@ -16,9 +16,9 @@
   if (v2)
   {
     StartFINode();
-    v3 = [MEMORY[0x277D04700] providerDomainsContainer];
+    providerDomainsContainer = [MEMORY[0x277D04700] providerDomainsContainer];
     providerDomainsNode = v2->_providerDomainsNode;
-    v2->_providerDomainsNode = v3;
+    v2->_providerDomainsNode = providerDomainsContainer;
 
     v5 = [MEMORY[0x277D04708] observerForFINode:v2->_providerDomainsNode withObserver:v2];
     observer = v2->_observer;
@@ -32,115 +32,115 @@
 
 - (void)dealloc
 {
-  v3 = [(DOCProviderDomainFetcher *)self observer];
-  [v3 stopObserving:3];
+  observer = [(DOCProviderDomainFetcher *)self observer];
+  [observer stopObserving:3];
 
   v4.receiver = self;
   v4.super_class = DOCProviderDomainFetcher;
   [(DOCProviderDomainFetcher *)&v4 dealloc];
 }
 
-- (BOOL)fetchProviders:(id)a3 queue:(id)a4
+- (BOOL)fetchProviders:(id)providers queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DOCProviderDomainFetcher *)self providerDomainsNode];
-  v9 = [v8 iteratorWithOptions:0];
+  providersCopy = providers;
+  queueCopy = queue;
+  providerDomainsNode = [(DOCProviderDomainFetcher *)self providerDomainsNode];
+  v9 = [providerDomainsNode iteratorWithOptions:0];
 
-  v10 = [v9 fullyPopulated];
-  if (v10)
+  fullyPopulated = [v9 fullyPopulated];
+  if (fullyPopulated)
   {
-    v11 = [(DOCProviderDomainFetcher *)self providersFromIterator:v9];
-    v6[2](v6, v11);
+    selfCopy = [(DOCProviderDomainFetcher *)self providersFromIterator:v9];
+    providersCopy[2](providersCopy, selfCopy);
   }
 
   else
   {
-    if (!v7)
+    if (!queueCopy)
     {
-      v7 = dispatch_get_global_queue(21, 0);
+      queueCopy = dispatch_get_global_queue(21, 0);
     }
 
-    v11 = self;
-    objc_sync_enter(v11);
-    v12 = [(DOCProviderDomainFetcher *)v11 pendingQueuesAndCallbacks];
-    v13 = [v12 mutableCopy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    pendingQueuesAndCallbacks = [(DOCProviderDomainFetcher *)selfCopy pendingQueuesAndCallbacks];
+    strongToStrongObjectsMapTable = [pendingQueuesAndCallbacks mutableCopy];
 
-    if (!v13)
+    if (!strongToStrongObjectsMapTable)
     {
-      v13 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+      strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     }
 
-    v14 = [v13 objectForKey:v7];
-    v15 = [v14 mutableCopy];
+    v14 = [strongToStrongObjectsMapTable objectForKey:queueCopy];
+    array = [v14 mutableCopy];
 
-    if (!v15)
+    if (!array)
     {
-      v15 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
-    v16 = _Block_copy(v6);
-    [v15 addObject:v16];
+    v16 = _Block_copy(providersCopy);
+    [array addObject:v16];
 
-    [v13 setObject:v15 forKey:v7];
-    [(DOCProviderDomainFetcher *)v11 setPendingQueuesAndCallbacks:v13];
+    [strongToStrongObjectsMapTable setObject:array forKey:queueCopy];
+    [(DOCProviderDomainFetcher *)selfCopy setPendingQueuesAndCallbacks:strongToStrongObjectsMapTable];
 
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
   }
 
-  return v10;
+  return fullyPopulated;
 }
 
-- (id)providersFromIterator:(id)a3
+- (id)providersFromIterator:(id)iterator
 {
-  v3 = a3;
+  iteratorCopy = iterator;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [v3 first];
-  if (v5)
+  first = [iteratorCopy first];
+  if (first)
   {
-    v6 = v5;
+    v6 = first;
     do
     {
-      v7 = [v6 fpDomain];
-      if (v7)
+      fpDomain = [v6 fpDomain];
+      if (fpDomain)
       {
-        [v4 addObject:v7];
+        [v4 addObject:fpDomain];
       }
 
-      v8 = [v3 next];
+      next = [iteratorCopy next];
 
-      v6 = v8;
+      v6 = next;
     }
 
-    while (v8);
+    while (next);
   }
 
   return v4;
 }
 
-- (void)openSyncCompleted:(id)a3
+- (void)openSyncCompleted:(id)completed
 {
   v27 = *MEMORY[0x277D85DE8];
-  v18 = a3;
+  completedCopy = completed;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(DOCProviderDomainFetcher *)v4 pendingQueuesAndCallbacks];
-  [(DOCProviderDomainFetcher *)v4 setPendingQueuesAndCallbacks:0];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingQueuesAndCallbacks = [(DOCProviderDomainFetcher *)selfCopy pendingQueuesAndCallbacks];
+  [(DOCProviderDomainFetcher *)selfCopy setPendingQueuesAndCallbacks:0];
+  objc_sync_exit(selfCopy);
 
-  if ([v5 count])
+  if ([pendingQueuesAndCallbacks count])
   {
-    v16 = v5;
-    v6 = [(DOCProviderDomainFetcher *)v4 providerDomainsNode];
-    v17 = [v6 iteratorWithOptions:0];
+    v16 = pendingQueuesAndCallbacks;
+    providerDomainsNode = [(DOCProviderDomainFetcher *)selfCopy providerDomainsNode];
+    v17 = [providerDomainsNode iteratorWithOptions:0];
 
-    v7 = [(DOCProviderDomainFetcher *)v4 providersFromIterator:v17];
+    v7 = [(DOCProviderDomainFetcher *)selfCopy providersFromIterator:v17];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = v5;
+    v8 = pendingQueuesAndCallbacks;
     v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v9)
     {
@@ -176,7 +176,7 @@
       while (v9);
     }
 
-    v5 = v16;
+    pendingQueuesAndCallbacks = v16;
   }
 
   v15 = *MEMORY[0x277D85DE8];

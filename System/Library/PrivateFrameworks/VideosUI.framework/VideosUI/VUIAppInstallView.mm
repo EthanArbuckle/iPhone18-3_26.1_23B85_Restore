@@ -3,25 +3,25 @@
 + (double)_appIconRadius;
 + (id)_progressMaskImage;
 - (CGSize)intrinsicContentSize;
-- (VUIAppInstallView)initWithFrame:(CGRect)a3;
-- (void)_makeImageBorderVisible:(BOOL)a3;
+- (VUIAppInstallView)initWithFrame:(CGRect)frame;
+- (void)_makeImageBorderVisible:(BOOL)visible;
 - (void)dealloc;
-- (void)finishInstallationWithCompletion:(id)a3;
+- (void)finishInstallationWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)progressViewCanBeRemoved:(id)a3;
-- (void)setAppIcon:(id)a3;
-- (void)setInstallProgress:(double)a3;
+- (void)progressViewCanBeRemoved:(id)removed;
+- (void)setAppIcon:(id)icon;
+- (void)setInstallProgress:(double)progress;
 - (void)setWaiting;
 @end
 
 @implementation VUIAppInstallView
 
-- (VUIAppInstallView)initWithFrame:(CGRect)a3
+- (VUIAppInstallView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v23.receiver = self;
   v23.super_class = VUIAppInstallView;
   v7 = [(VUIAppInstallView *)&v23 initWithFrame:?];
@@ -38,31 +38,31 @@
       v10 = v7->_appIconImageView;
       +[VUIAppInstallView _appIconRadius];
       [(UIImageView *)v10 _setContinuousCornerRadius:?];
-      v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v11 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v13 = 1.0 / v12;
 
       v7->_imageBorderWidth = v13;
-      v14 = [(UIImageView *)v7->_appIconImageView layer];
-      [v14 setBorderWidth:v13];
+      layer = [(UIImageView *)v7->_appIconImageView layer];
+      [layer setBorderWidth:v13];
 
-      v15 = [(UIImageView *)v7->_appIconImageView layer];
+      layer2 = [(UIImageView *)v7->_appIconImageView layer];
       v16 = [MEMORY[0x1E69DC888] colorWithWhite:0.8 alpha:1.0];
-      [v15 setBorderColor:{objc_msgSend(v16, "CGColor")}];
+      [layer2 setBorderColor:{objc_msgSend(v16, "CGColor")}];
 
-      v17 = [(UIImageView *)v7->_appIconImageView layer];
-      [v17 setBorderPathIsBounds:1];
+      layer3 = [(UIImageView *)v7->_appIconImageView layer];
+      [layer3 setBorderPathIsBounds:1];
     }
 
     [(VUIAppInstallView *)v7 addSubview:v7->_appIconImageView];
-    v18 = [[VUISBIconProgressView alloc] initWithFrame:x, y, width, height];
+    height = [[VUISBIconProgressView alloc] initWithFrame:x, y, width, height];
     progressView = v7->_progressView;
-    v7->_progressView = v18;
+    v7->_progressView = height;
 
     [(VUISBIconProgressView *)v7->_progressView setDelegate:v7];
     v20 = v7->_progressView;
-    v21 = [objc_opt_class() _progressMaskImage];
-    [(VUISBIconProgressView *)v20 setOverlayImage:v21];
+    _progressMaskImage = [objc_opt_class() _progressMaskImage];
+    [(VUISBIconProgressView *)v20 setOverlayImage:_progressMaskImage];
 
     [(VUISBIconProgressView *)v7->_progressView setAutoresizingMask:18];
     [(UIImageView *)v7->_appIconImageView addSubview:v7->_progressView];
@@ -103,12 +103,12 @@
   [(VUIAppInstallView *)&v3 dealloc];
 }
 
-- (void)progressViewCanBeRemoved:(id)a3
+- (void)progressViewCanBeRemoved:(id)removed
 {
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, a2, a3);
+    completion[2](completion, a2, removed);
     v5 = self->_completion;
     self->_completion = 0;
 
@@ -116,9 +116,9 @@
   }
 }
 
-- (void)finishInstallationWithCompletion:(id)a3
+- (void)finishInstallationWithCompletion:(id)completion
 {
-  v4 = [a3 copy];
+  v4 = [completion copy];
   completion = self->_completion;
   self->_completion = v4;
 
@@ -127,23 +127,23 @@
   [(VUISBIconProgressView *)progressView setState:0 paused:0 fractionLoaded:1 animated:1.0];
 }
 
-- (void)setAppIcon:(id)a3
+- (void)setAppIcon:(id)icon
 {
-  v5 = a3;
-  if (self->_appIcon != v5)
+  iconCopy = icon;
+  if (self->_appIcon != iconCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_appIcon, a3);
+    v6 = iconCopy;
+    objc_storeStrong(&self->_appIcon, icon);
     [(UIImageView *)self->_appIconImageView setImage:v6];
-    v5 = v6;
+    iconCopy = v6;
   }
 }
 
-- (void)setInstallProgress:(double)a3
+- (void)setInstallProgress:(double)progress
 {
-  if (vabdd_f64(self->_installProgress, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_installProgress, progress) > 0.00000011920929)
   {
-    self->_installProgress = a3;
+    self->_installProgress = progress;
     [(VUISBIconProgressView *)self->_progressView setState:2 paused:0 fractionLoaded:1 animated:?];
 
     [(VUIAppInstallView *)self _makeImageBorderVisible:0];
@@ -157,20 +157,20 @@
   [(VUIAppInstallView *)self _makeImageBorderVisible:0];
 }
 
-- (void)_makeImageBorderVisible:(BOOL)a3
+- (void)_makeImageBorderVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if (([MEMORY[0x1E69DF6F0] isTV] & 1) == 0)
   {
-    v5 = [(UIImageView *)self->_appIconImageView layer];
+    layer = [(UIImageView *)self->_appIconImageView layer];
     imageBorderWidth = 0.0;
-    if (v3)
+    if (visibleCopy)
     {
       imageBorderWidth = self->_imageBorderWidth;
     }
 
-    v7 = v5;
-    [v5 setBorderWidth:imageBorderWidth];
+    v7 = layer;
+    [layer setBorderWidth:imageBorderWidth];
   }
 }
 
@@ -181,21 +181,21 @@
   {
     v4 = *MEMORY[0x1E695EFF8];
     v5 = *(MEMORY[0x1E695EFF8] + 8);
-    [a1 _appIconSize];
+    [self _appIconSize];
     v7 = v6;
     v9 = v8;
-    v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v12 = v11;
     v21.width = v7;
     v21.height = v9;
     UIGraphicsBeginImageContextWithOptions(v21, 0, v12);
 
-    v13 = [MEMORY[0x1E69DC888] blackColor];
-    [v13 setFill];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [blackColor setFill];
 
     v14 = MEMORY[0x1E69DC728];
-    [a1 _appIconRadius];
+    [self _appIconRadius];
     v16 = [v14 bezierPathWithRoundedRect:v4 cornerRadius:{v5, v7, v9, v15}];
     [v16 fillWithBlendMode:17 alpha:1.0];
 
@@ -212,7 +212,7 @@
 
 + (double)_appIconRadius
 {
-  [a1 _appIconSize];
+  [self _appIconSize];
 
   [VUIAppIconImageService iconCornerRadiusForSize:?];
   return result;
@@ -220,8 +220,8 @@
 
 + (CGSize)_appIconSize
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 2;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 2;
 
   v4 = dbl_1E4297510[v3];
   v5 = dbl_1E4297520[v3];

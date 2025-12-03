@@ -1,8 +1,8 @@
 @interface VUIBaseView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation VUIBaseView
@@ -24,18 +24,18 @@
   [(VUIBaseView *)self vui_layoutSubviews:0 computationOnly:v3, v4];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = VUIBaseView;
-  v4 = a3;
-  [(VUIBaseView *)&v5 willMoveToWindow:v4];
-  [(VUIBaseView *)self vui_willMoveToWindow:v4, v5.receiver, v5.super_class];
+  windowCopy = window;
+  [(VUIBaseView *)&v5 willMoveToWindow:windowCopy];
+  [(VUIBaseView *)self vui_willMoveToWindow:windowCopy, v5.receiver, v5.super_class];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIBaseView *)self vui_layoutSubviews:1 computationOnly:a3.width, a3.height];
+  [(VUIBaseView *)self vui_layoutSubviews:1 computationOnly:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

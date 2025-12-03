@@ -1,11 +1,11 @@
 @interface MAAutoAssetProgress
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MAAutoAssetProgress)init;
-- (MAAutoAssetProgress)initWithCoder:(id)a3;
+- (MAAutoAssetProgress)initWithCoder:(id)coder;
 - (id)copy;
 - (id)newSummaryDictionary;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAutoAssetProgress
@@ -26,32 +26,32 @@
   return result;
 }
 
-- (MAAutoAssetProgress)initWithCoder:(id)a3
+- (MAAutoAssetProgress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = MAAutoAssetProgress;
   v5 = [(MAAutoAssetProgress *)&v8 init];
   if (v5)
   {
-    v5->_totalExpectedBytes = [v4 decodeInt64ForKey:@"totalExpectedBytes"];
-    v5->_totalWrittenBytes = [v4 decodeInt64ForKey:@"totalWrittenBytes"];
-    v5->_isStalled = [v4 decodeBoolForKey:@"isStalled"];
-    [v4 decodeDoubleForKey:@"expectedTimeRemainingSecs"];
+    v5->_totalExpectedBytes = [coderCopy decodeInt64ForKey:@"totalExpectedBytes"];
+    v5->_totalWrittenBytes = [coderCopy decodeInt64ForKey:@"totalWrittenBytes"];
+    v5->_isStalled = [coderCopy decodeBoolForKey:@"isStalled"];
+    [coderCopy decodeDoubleForKey:@"expectedTimeRemainingSecs"];
     v5->_expectedTimeRemainingSecs = v6;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[MAAutoAssetProgress totalExpectedBytes](self forKey:{"totalExpectedBytes"), @"totalExpectedBytes"}];
-  [v4 encodeInt64:-[MAAutoAssetProgress totalWrittenBytes](self forKey:{"totalWrittenBytes"), @"totalWrittenBytes"}];
-  [v4 encodeBool:-[MAAutoAssetProgress isStalled](self forKey:{"isStalled"), @"isStalled"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[MAAutoAssetProgress totalExpectedBytes](self forKey:{"totalExpectedBytes"), @"totalExpectedBytes"}];
+  [coderCopy encodeInt64:-[MAAutoAssetProgress totalWrittenBytes](self forKey:{"totalWrittenBytes"), @"totalWrittenBytes"}];
+  [coderCopy encodeBool:-[MAAutoAssetProgress isStalled](self forKey:{"isStalled"), @"isStalled"}];
   [(MAAutoAssetProgress *)self expectedTimeRemainingSecs];
-  [v4 encodeDouble:@"expectedTimeRemainingSecs" forKey:?];
+  [coderCopy encodeDouble:@"expectedTimeRemainingSecs" forKey:?];
 }
 
 - (id)copy
@@ -65,10 +65,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -78,9 +78,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MAAutoAssetProgress *)v5 totalExpectedBytes];
-      if (v6 == [(MAAutoAssetProgress *)self totalExpectedBytes]&& (v7 = [(MAAutoAssetProgress *)v5 totalWrittenBytes], v7 == [(MAAutoAssetProgress *)self totalWrittenBytes]) && (v8 = [(MAAutoAssetProgress *)v5 isStalled], v8 == [(MAAutoAssetProgress *)self isStalled]))
+      v5 = equalCopy;
+      totalExpectedBytes = [(MAAutoAssetProgress *)v5 totalExpectedBytes];
+      if (totalExpectedBytes == [(MAAutoAssetProgress *)self totalExpectedBytes]&& (v7 = [(MAAutoAssetProgress *)v5 totalWrittenBytes], v7 == [(MAAutoAssetProgress *)self totalWrittenBytes]) && (v8 = [(MAAutoAssetProgress *)v5 isStalled], v8 == [(MAAutoAssetProgress *)self isStalled]))
       {
         [(MAAutoAssetProgress *)v5 expectedTimeRemainingSecs];
         v12 = v11;
@@ -106,8 +106,8 @@
 - (id)summary
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MAAutoAssetProgress *)self totalExpectedBytes];
-  v5 = [(MAAutoAssetProgress *)self totalWrittenBytes];
+  totalExpectedBytes = [(MAAutoAssetProgress *)self totalExpectedBytes];
+  totalWrittenBytes = [(MAAutoAssetProgress *)self totalWrittenBytes];
   if ([(MAAutoAssetProgress *)self isStalled])
   {
     v6 = @"Y";
@@ -119,7 +119,7 @@
   }
 
   [(MAAutoAssetProgress *)self expectedTimeRemainingSecs];
-  return [v3 stringWithFormat:@"expectedBytes:%lld|writtenBytes:%lld|stalled:%@|timeRemainingSecs:%f", v4, v5, v6, v7];
+  return [v3 stringWithFormat:@"expectedBytes:%lld|writtenBytes:%lld|stalled:%@|timeRemainingSecs:%f", totalExpectedBytes, totalWrittenBytes, v6, v7];
 }
 
 - (id)newSummaryDictionary

@@ -1,37 +1,37 @@
 @interface EKCalendarSubscriptionSpamCheckEditItem
 - (EKCalendarSubscriptionSpamCheckEditItemDelegate)subscriptionSpamDelegate;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (void)_receivedSpamCheckResult:(BOOL)a3 forURL:(id)a4;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (void)_receivedSpamCheckResult:(BOOL)result forURL:(id)l;
 - (void)_sendSpamCheckRequest;
 - (void)_throttlePeriodEnded;
 - (void)_updateUI;
-- (void)setURLToCheck:(id)a3;
+- (void)setURLToCheck:(id)check;
 @end
 
 @implementation EKCalendarSubscriptionSpamCheckEditItem
 
-- (void)setURLToCheck:(id)a3
+- (void)setURLToCheck:(id)check
 {
-  v9 = a3;
+  checkCopy = check;
   if (([(NSURL *)self->_currentURL isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_currentURL, a3);
-    v5 = [(NSURL *)self->_currentURL absoluteString];
-    v6 = [v5 length];
+    objc_storeStrong(&self->_currentURL, check);
+    absoluteString = [(NSURL *)self->_currentURL absoluteString];
+    v6 = [absoluteString length];
 
     if (!v6)
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 0;
       goto LABEL_6;
     }
 
     if (self->_inThrottlePeriod)
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 2;
 LABEL_6:
-      [(EKCalendarSubscriptionSpamCheckEditItem *)v7 _setState:v8];
+      [(EKCalendarSubscriptionSpamCheckEditItem *)selfCopy2 _setState:v8];
       goto LABEL_8;
     }
 
@@ -73,12 +73,12 @@ LABEL_8:
   }
 }
 
-- (void)_receivedSpamCheckResult:(BOOL)a3 forURL:(id)a4
+- (void)_receivedSpamCheckResult:(BOOL)result forURL:(id)l
 {
-  v4 = a3;
-  if ([a4 isEqual:self->_currentURL])
+  resultCopy = result;
+  if ([l isEqual:self->_currentURL])
   {
-    if (v4)
+    if (resultCopy)
     {
       v6 = 3;
     }
@@ -89,8 +89,8 @@ LABEL_8:
     }
 
     [(EKCalendarSubscriptionSpamCheckEditItem *)self _setState:v6];
-    v7 = [(EKCalendarSubscriptionSpamCheckEditItem *)self subscriptionSpamDelegate];
-    [v7 calendarSubscriptionSpamCheckEditItem:self didDetermineThatURL:self->_currentURL isSpam:v4];
+    subscriptionSpamDelegate = [(EKCalendarSubscriptionSpamCheckEditItem *)self subscriptionSpamDelegate];
+    [subscriptionSpamDelegate calendarSubscriptionSpamCheckEditItem:self didDetermineThatURL:self->_currentURL isSpam:resultCopy];
   }
 }
 
@@ -122,16 +122,16 @@ LABEL_8:
   v12 = [v5 localizedStringForKey:v4 value:&stru_1F4EF6790 table:0];
 
 LABEL_9:
-  v6 = [MEMORY[0x1E69DCC28] plainFooterConfiguration];
-  [v6 setText:v12];
-  v7 = [v6 textProperties];
-  [v7 setAlignment:1];
+  plainFooterConfiguration = [MEMORY[0x1E69DCC28] plainFooterConfiguration];
+  [plainFooterConfiguration setText:v12];
+  textProperties = [plainFooterConfiguration textProperties];
+  [textProperties setAlignment:1];
 
   if (self->_state == 3)
   {
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    v9 = [v6 textProperties];
-    [v9 setColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    textProperties2 = [plainFooterConfiguration textProperties];
+    [textProperties2 setColor:whiteColor];
 
     [MEMORY[0x1E69DC888] systemRedColor];
   }
@@ -141,15 +141,15 @@ LABEL_9:
     [MEMORY[0x1E69DC888] clearColor];
   }
   v10 = ;
-  v11 = [(UITableViewCell *)self->_cell contentView];
-  [v11 setBackgroundColor:v10];
+  contentView = [(UITableViewCell *)self->_cell contentView];
+  [contentView setBackgroundColor:v10];
 
-  [(UITableViewCell *)self->_cell setContentConfiguration:v6];
+  [(UITableViewCell *)self->_cell setContentConfiguration:plainFooterConfiguration];
   [(UITableViewCell *)self->_cell sizeToFit];
   [(UITableViewCell *)self->_cell setNeedsLayout];
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)
@@ -158,15 +158,15 @@ LABEL_9:
     v6 = self->_cell;
     self->_cell = v5;
 
-    v7 = [MEMORY[0x1E69DCC28] plainFooterConfiguration];
-    [v7 setText:@" "];
-    [(UITableViewCell *)self->_cell setContentConfiguration:v7];
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITableViewCell *)self->_cell setBackgroundColor:v8];
+    plainFooterConfiguration = [MEMORY[0x1E69DCC28] plainFooterConfiguration];
+    [plainFooterConfiguration setText:@" "];
+    [(UITableViewCell *)self->_cell setContentConfiguration:plainFooterConfiguration];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITableViewCell *)self->_cell setBackgroundColor:clearColor];
 
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    v10 = [(UITableViewCell *)self->_cell contentView];
-    [v10 setBackgroundColor:v9];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    contentView = [(UITableViewCell *)self->_cell contentView];
+    [contentView setBackgroundColor:clearColor2];
 
     [(EKCalendarSubscriptionSpamCheckEditItem *)self _updateUI];
     cell = self->_cell;

@@ -1,8 +1,8 @@
 @interface PXStoryRecipe
 - ($A35046FF140701A0BC97C4369CFAD28C)overallDurationInfo;
 - (PXStoryRecipe)init;
-- (PXStoryRecipe)initWithAssetCollection:(id)a3 keyAsset:(id)a4 curatedAssets:(id)a5 untruncatedCuratedAssets:(id)a6 allAssets:(id)a7 movieHighlights:(id)a8 detailedSaliency:(id)a9 chapterCollection:(id)a10 overallDurationInfo:(id *)a11 styleConfigurationList:(id)a12 sourcePersistableRecipe:(id)a13 initialSongResource:(id)a14 fallbackSongResource:(id)a15 autoEditDecisionListsBySong:(id)a16;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (PXStoryRecipe)initWithAssetCollection:(id)collection keyAsset:(id)asset curatedAssets:(id)assets untruncatedCuratedAssets:(id)curatedAssets allAssets:(id)allAssets movieHighlights:(id)highlights detailedSaliency:(id)saliency chapterCollection:(id)self0 overallDurationInfo:(id *)self1 styleConfigurationList:(id)self2 sourcePersistableRecipe:(id)self3 initialSongResource:(id)self4 fallbackSongResource:(id)self5 autoEditDecisionListsBySong:(id)self6;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 @end
 
 @implementation PXStoryRecipe
@@ -19,51 +19,51 @@
   return self;
 }
 
-- (PXStoryRecipe)initWithAssetCollection:(id)a3 keyAsset:(id)a4 curatedAssets:(id)a5 untruncatedCuratedAssets:(id)a6 allAssets:(id)a7 movieHighlights:(id)a8 detailedSaliency:(id)a9 chapterCollection:(id)a10 overallDurationInfo:(id *)a11 styleConfigurationList:(id)a12 sourcePersistableRecipe:(id)a13 initialSongResource:(id)a14 fallbackSongResource:(id)a15 autoEditDecisionListsBySong:(id)a16
+- (PXStoryRecipe)initWithAssetCollection:(id)collection keyAsset:(id)asset curatedAssets:(id)assets untruncatedCuratedAssets:(id)curatedAssets allAssets:(id)allAssets movieHighlights:(id)highlights detailedSaliency:(id)saliency chapterCollection:(id)self0 overallDurationInfo:(id *)self1 styleConfigurationList:(id)self2 sourcePersistableRecipe:(id)self3 initialSongResource:(id)self4 fallbackSongResource:(id)self5 autoEditDecisionListsBySong:(id)self6
 {
-  v41 = a3;
-  v35 = a4;
-  v46 = a4;
-  v36 = a5;
-  v45 = a5;
-  v44 = a6;
-  v37 = a7;
-  v43 = a7;
-  v42 = a8;
-  v40 = a9;
-  v39 = a10;
-  v21 = a12;
-  v22 = a13;
-  v23 = a14;
-  v24 = a15;
-  v25 = a16;
+  collectionCopy = collection;
+  assetCopy = asset;
+  assetCopy2 = asset;
+  assetsCopy = assets;
+  assetsCopy2 = assets;
+  curatedAssetsCopy = curatedAssets;
+  allAssetsCopy = allAssets;
+  allAssetsCopy2 = allAssets;
+  highlightsCopy = highlights;
+  saliencyCopy = saliency;
+  chapterCollectionCopy = chapterCollection;
+  listCopy = list;
+  recipeCopy = recipe;
+  resourceCopy = resource;
+  songResourceCopy = songResource;
+  songCopy = song;
   v47.receiver = self;
   v47.super_class = PXStoryRecipe;
   v26 = [(PXStoryRecipe *)&v47 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_assetCollection, a3);
-    objc_storeStrong(&v27->_keyAsset, v35);
-    objc_storeStrong(&v27->_curatedAssets, v36);
-    objc_storeStrong(&v27->_untruncatedCuratedAssets, a6);
-    objc_storeStrong(&v27->_allAssets, v37);
-    objc_storeStrong(&v27->_movieHighlights, a8);
-    objc_storeStrong(&v27->_detailedSaliency, a9);
-    objc_storeStrong(&v27->_chapterCollection, a10);
-    *&v27->_overallDurationInfo.kind = *&a11->var0;
-    v28 = *&a11->var1.var0.var1;
-    v29 = *&a11->var1.var1.var0;
-    v30 = *&a11->var1.var2.var1;
-    *&v27->_overallDurationInfo.specificDurationInfo.preferredDuration.epoch = *&a11->var1.var1.var3;
+    objc_storeStrong(&v26->_assetCollection, collection);
+    objc_storeStrong(&v27->_keyAsset, assetCopy);
+    objc_storeStrong(&v27->_curatedAssets, assetsCopy);
+    objc_storeStrong(&v27->_untruncatedCuratedAssets, curatedAssets);
+    objc_storeStrong(&v27->_allAssets, allAssetsCopy);
+    objc_storeStrong(&v27->_movieHighlights, highlights);
+    objc_storeStrong(&v27->_detailedSaliency, saliency);
+    objc_storeStrong(&v27->_chapterCollection, chapterCollection);
+    *&v27->_overallDurationInfo.kind = *&info->var0;
+    v28 = *&info->var1.var0.var1;
+    v29 = *&info->var1.var1.var0;
+    v30 = *&info->var1.var2.var1;
+    *&v27->_overallDurationInfo.specificDurationInfo.preferredDuration.epoch = *&info->var1.var1.var3;
     *&v27->_overallDurationInfo.specificDurationInfo.maximumDuration.timescale = v30;
     *&v27->_overallDurationInfo.specificDurationInfo.minimumDuration.timescale = v28;
     *&v27->_overallDurationInfo.specificDurationInfo.preferredDuration.value = v29;
-    objc_storeStrong(&v27->_styleConfigurationList, a12);
-    objc_storeStrong(&v27->_sourcePersistableRecipe, a13);
-    objc_storeStrong(&v27->_initialSongResource, a14);
-    objc_storeStrong(&v27->_fallbackSongResource, a15);
-    v31 = [v25 copy];
+    objc_storeStrong(&v27->_styleConfigurationList, list);
+    objc_storeStrong(&v27->_sourcePersistableRecipe, recipe);
+    objc_storeStrong(&v27->_initialSongResource, resource);
+    objc_storeStrong(&v27->_fallbackSongResource, songResource);
+    v31 = [songCopy copy];
     autoEditDecisionListsBySong = v27->_autoEditDecisionListsBySong;
     v27->_autoEditDecisionListsBySong = v31;
   }
@@ -83,16 +83,16 @@
   return [(PXStoryRecipe *)self initWithAssetCollection:0 keyAsset:0 curatedAssets:0 untruncatedCuratedAssets:0 allAssets:0 movieHighlights:0 detailedSaliency:0 chapterCollection:0 overallDurationInfo:v5 styleConfigurationList:0 sourcePersistableRecipe:0 initialSongResource:0 fallbackSongResource:0 autoEditDecisionListsBySong:0];
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
-  v8 = a3;
-  v4 = [(PXStoryRecipe *)self curatedAssets];
-  v5 = [(PXStoryRecipe *)self chapterCollection];
-  v6 = v5;
-  if (v5)
+  containerCopy = container;
+  curatedAssets = [(PXStoryRecipe *)self curatedAssets];
+  chapterCollection = [(PXStoryRecipe *)self chapterCollection];
+  v6 = chapterCollection;
+  if (chapterCollection)
   {
-    v7 = PXStoryChapterCollectionDiagnosticDescptionWithAssets(v5, v4);
-    [v8 addAttachmentWithText:v7 name:@"Chapters"];
+    v7 = PXStoryChapterCollectionDiagnosticDescptionWithAssets(chapterCollection, curatedAssets);
+    [containerCopy addAttachmentWithText:v7 name:@"Chapters"];
   }
 }
 

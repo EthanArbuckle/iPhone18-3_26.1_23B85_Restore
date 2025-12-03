@@ -2,9 +2,9 @@
 - (CustomRoutesTask)init;
 - (void)_handleAvailabilityChange;
 - (void)dealloc;
-- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)a3;
-- (void)setActiveTileGroupHash:(id)a3;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)group;
+- (void)setActiveTileGroupHash:(id)hash;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation CustomRoutesTask
@@ -20,8 +20,8 @@
     v4 = +[GEOResourceManifestManager modernManager];
     [v4 addTileGroupObserver:v3 queue:&_dispatch_main_q];
 
-    v5 = [v4 activeTileGroup];
-    v6 = [v5 hashForPurpose:0];
+    activeTileGroup = [v4 activeTileGroup];
+    v6 = [activeTileGroup hashForPurpose:0];
     v7 = [v6 copy];
 
     v8 = GEOConfigGetString();
@@ -46,17 +46,17 @@
   return v3;
 }
 
-- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)a3
+- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)group
 {
-  v6 = [a3 activeTileGroup];
-  v4 = [v6 hashForPurpose:0];
+  activeTileGroup = [group activeTileGroup];
+  v4 = [activeTileGroup hashForPurpose:0];
   v5 = [v4 copy];
   [(CustomRoutesTask *)self setActiveTileGroupHash:v5];
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == 745 && a3.var1 == &unk_101644E90)
+  if (key.var0 == 745 && key.var1 == &unk_101644E90)
   {
     [(CustomRoutesTask *)self _handleAvailabilityChange];
   }
@@ -78,13 +78,13 @@
   [v4 purgeSnapshotsWithCompletionBlock:0];
 }
 
-- (void)setActiveTileGroupHash:(id)a3
+- (void)setActiveTileGroupHash:(id)hash
 {
-  v5 = a3;
+  hashCopy = hash;
   activeTileGroupHash = self->_activeTileGroupHash;
   p_activeTileGroupHash = &self->_activeTileGroupHash;
   v8 = activeTileGroupHash;
-  v9 = v5;
+  v9 = hashCopy;
   if (v9 | v8)
   {
     v10 = [v8 isEqual:v9];
@@ -100,7 +100,7 @@
       }
 
       v12 = *p_activeTileGroupHash;
-      objc_storeStrong(p_activeTileGroupHash, a3);
+      objc_storeStrong(p_activeTileGroupHash, hash);
       GEOConfigSetString();
       if (v12)
       {

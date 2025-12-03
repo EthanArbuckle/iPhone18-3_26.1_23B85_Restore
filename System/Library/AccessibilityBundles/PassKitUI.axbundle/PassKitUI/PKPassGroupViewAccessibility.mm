@@ -1,9 +1,9 @@
 @interface PKPassGroupViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityScrollToVisible;
 - (BOOL)_axIsCardFirstInPile;
 - (BOOL)_axIsOnlyCardInPile;
-- (BOOL)_axMoveCard:(id)a3 up:(BOOL)a4;
+- (BOOL)_axMoveCard:(id)card up:(BOOL)up;
 - (BOOL)accessibilityElementsHidden;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)isAccessibilityElement;
@@ -19,33 +19,33 @@
 
 @implementation PKPassGroupViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateProtocol:@"PKPassGroupStackViewDatasource" hasMethod:@"indexOfGroup:" isInstanceMethod:1 isRequired:1];
-  [v3 validateProtocol:@"PKPassGroupStackViewDatasource" hasMethod:@"numberOfGroups" isInstanceMethod:1 isRequired:1];
-  [v3 validateProtocol:@"PKPassGroupStackViewDatasource" hasMethod:@"indexOfSeparationGroup" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"PKPassGroupStackView"];
-  [v3 validateClass:@"PKPassGroupStackView" hasInstanceMethod:@"groupViewPanDidBegin:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PKPassGroupStackView" hasInstanceMethod:@"groupViewPanDidEnd:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PKPassGroupStackView" hasInstanceMethod:@"reloadData" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PKGroup" hasInstanceMethod:@"passAtIndex:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"PKPassGroupView" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPassGroupStackView" hasInstanceMethod:@"_groupCellHeight" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PKPassGroupStackView" hasInstanceVariable:@"_passPileViews" withType:"NSMutableArray"];
-  [v3 validateClass:@"UIScrollView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPassGroupStackView" hasInstanceMethod:@"datasource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPassGroupStackView" hasInstanceVariable:@"_headerContainerView" withType:"PKPassthroughView"];
-  [v3 validateClass:@"PKPassGroupStackView" isKindOfClass:@"UIScrollView"];
-  [v3 validateClass:@"PKPassGroupView" hasInstanceMethod:@"_groupViewTapped" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateProtocol:@"PKPassGroupStackViewDatasource" hasMethod:@"indexOfGroup:" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateProtocol:@"PKPassGroupStackViewDatasource" hasMethod:@"numberOfGroups" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateProtocol:@"PKPassGroupStackViewDatasource" hasMethod:@"indexOfSeparationGroup" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"PKPassGroupStackView"];
+  [validationsCopy validateClass:@"PKPassGroupStackView" hasInstanceMethod:@"groupViewPanDidBegin:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PKPassGroupStackView" hasInstanceMethod:@"groupViewPanDidEnd:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PKPassGroupStackView" hasInstanceMethod:@"reloadData" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PKGroup" hasInstanceMethod:@"passAtIndex:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"PKPassGroupView" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPassGroupStackView" hasInstanceMethod:@"_groupCellHeight" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PKPassGroupStackView" hasInstanceVariable:@"_passPileViews" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"UIScrollView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPassGroupStackView" hasInstanceMethod:@"datasource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPassGroupStackView" hasInstanceVariable:@"_headerContainerView" withType:"PKPassthroughView"];
+  [validationsCopy validateClass:@"PKPassGroupStackView" isKindOfClass:@"UIScrollView"];
+  [validationsCopy validateClass:@"PKPassGroupView" hasInstanceMethod:@"_groupViewTapped" withFullSignature:{"v", 0}];
 }
 
 - (BOOL)_axIsCardFirstInPile
 {
   v3 = [(PKPassGroupViewAccessibility *)self safeValueForKey:@"presentationState"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 != 2)
+  if (intValue != 2)
   {
     return 0;
   }
@@ -80,9 +80,9 @@
   }
 
   v4 = [(PKPassGroupViewAccessibility *)self safeValueForKey:@"presentationState"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  if (v5 == 1)
+  if (intValue == 1)
   {
     return 1;
   }
@@ -98,9 +98,9 @@
   }
 
   v3 = [(PKPassGroupViewAccessibility *)self safeValueForKey:@"presentationState"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 == 3)
+  if (intValue == 3)
   {
     return 0;
   }
@@ -114,9 +114,9 @@
 - (BOOL)_accessibilityScrollToVisible
 {
   v3 = [(PKPassGroupViewAccessibility *)self safeValueForKey:@"presentationState"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 == 1)
+  if (intValue == 1)
   {
     v23 = 0;
     objc_opt_class();
@@ -352,9 +352,9 @@ uint64_t __50__PKPassGroupViewAccessibility_accessibilityFrame__block_invoke_2(u
 {
   v3 = [(PKPassGroupViewAccessibility *)self safeValueForKey:@"group"];
   v4 = [v3 safeValueForKey:@"passCount"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  if (v5)
+  if (integerValue)
   {
     v13 = 0;
     v14 = &v13;
@@ -373,8 +373,8 @@ uint64_t __50__PKPassGroupViewAccessibility_accessibilityFrame__block_invoke_2(u
     else
     {
       v6 = [(PKPassGroupViewAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_386];
-      v7 = [v6 accessibilityLabel];
-      v8 = [v7 length];
+      accessibilityLabel = [v6 accessibilityLabel];
+      v8 = [accessibilityLabel length];
 
       if (v8)
       {
@@ -459,11 +459,11 @@ uint64_t __50__PKPassGroupViewAccessibility_accessibilityLabel__block_invoke_2(u
   v14 = accessibilityLocalizedString(@"move.card.down.action");
   v15 = [v13 initWithName:v14 target:self selector:sel__axMoveCardDown_];
 
-  v16 = [MEMORY[0x29EDB8DE8] array];
-  v17 = v16;
+  array = [MEMORY[0x29EDB8DE8] array];
+  v17 = array;
   if (v6 && v6 != v9 + 1)
   {
-    [v16 addObject:v12];
+    [array addObject:v12];
   }
 
   if (v6 < v7 - 1 && v6 != v9)
@@ -495,9 +495,9 @@ uint64_t __58__PKPassGroupViewAccessibility_accessibilityCustomActions__block_in
   return result;
 }
 
-- (BOOL)_axMoveCard:(id)a3 up:(BOOL)a4
+- (BOOL)_axMoveCard:(id)card up:(BOOL)up
 {
-  v5 = a3;
+  cardCopy = card;
   v6 = [(PKPassGroupViewAccessibility *)self safeValueForKey:@"group"];
   v7 = [(PKPassGroupViewAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Pkpassgroupsta.isa)];
   [v7 safeValueForKey:@"datasource"];
@@ -551,34 +551,34 @@ uint64_t __47__PKPassGroupViewAccessibility__axMoveCard_up___block_invoke_2(uint
 - (id)accessibilityValue
 {
   v3 = [(PKPassGroupViewAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_406];
-  v4 = [v3 accessibilityLabel];
-  v5 = [v4 length];
+  accessibilityLabel = [v3 accessibilityLabel];
+  v5 = [accessibilityLabel length];
 
   if (v5)
   {
-    v6 = [v3 accessibilityLabel];
-    v11 = [v3 accessibilityValue];
-    v7 = __AXStringForVariables();
+    accessibilityLabel2 = [v3 accessibilityLabel];
+    accessibilityValue = [v3 accessibilityValue];
+    accessibilityValue3 = __AXStringForVariables();
   }
 
   else
   {
-    v6 = [(PKPassGroupViewAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_414];
-    v8 = [v6 accessibilityValue];
-    v9 = [v8 length];
+    accessibilityLabel2 = [(PKPassGroupViewAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_414];
+    accessibilityValue2 = [accessibilityLabel2 accessibilityValue];
+    v9 = [accessibilityValue2 length];
 
     if (v9)
     {
-      v7 = [v6 accessibilityValue];
+      accessibilityValue3 = [accessibilityLabel2 accessibilityValue];
     }
 
     else
     {
-      v7 = 0;
+      accessibilityValue3 = 0;
     }
   }
 
-  return v7;
+  return accessibilityValue3;
 }
 
 uint64_t __50__PKPassGroupViewAccessibility_accessibilityValue__block_invoke(uint64_t a1, void *a2)
@@ -631,9 +631,9 @@ void __58__PKPassGroupViewAccessibility_accessibilityPerformEscape__block_invoke
     v5 = 10.0;
   }
 
-  v6 = [v2 window];
+  window = [v2 window];
   [v2 convertPoint:0 toView:{MidX, v5}];
-  [v6 convertPoint:0 toWindow:?];
+  [window convertPoint:0 toWindow:?];
   v8 = v7;
   v10 = v9;
 

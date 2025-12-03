@@ -1,16 +1,16 @@
 @interface MTSetPlaybackQueueRequest
-+ (id)requestWithContext:(id)a3;
++ (id)requestWithContext:(id)context;
 - (BOOL)validate;
-- (void)finishWithStatus:(int64_t)a3;
+- (void)finishWithStatus:(int64_t)status;
 @end
 
 @implementation MTSetPlaybackQueueRequest
 
-+ (id)requestWithContext:(id)a3
++ (id)requestWithContext:(id)context
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 copy];
+  contextCopy = context;
+  v5 = objc_alloc_init(self);
+  v6 = [contextCopy copy];
 
   [v5 setContext:v6];
 
@@ -19,11 +19,11 @@
 
 - (BOOL)validate
 {
-  v3 = [(MTSetPlaybackQueueRequest *)self manifest];
+  manifest = [(MTSetPlaybackQueueRequest *)self manifest];
 
-  v4 = [(MTSetPlaybackQueueRequest *)self context];
+  context = [(MTSetPlaybackQueueRequest *)self context];
 
-  if (!v4)
+  if (!context)
   {
     v5 = +[IMLogger sharedLogger];
     [v5 logFile:"/Library/Caches/com.apple.xbs/Sources/Marmoset/Source/Classes/Support/MTPlayerController.m" lineNumber:2705 format:@"Falling back to the default playback context."];
@@ -32,17 +32,17 @@
     [(MTSetPlaybackQueueRequest *)self setContext:v6];
   }
 
-  return v3 != 0;
+  return manifest != 0;
 }
 
-- (void)finishWithStatus:(int64_t)a3
+- (void)finishWithStatus:(int64_t)status
 {
-  v5 = [(MTSetPlaybackQueueRequest *)self completion];
+  completion = [(MTSetPlaybackQueueRequest *)self completion];
 
-  if (v5)
+  if (completion)
   {
-    v6 = [(MTSetPlaybackQueueRequest *)self completion];
-    v6[2](v6, a3);
+    completion2 = [(MTSetPlaybackQueueRequest *)self completion];
+    completion2[2](completion2, status);
 
     [(MTSetPlaybackQueueRequest *)self setCompletion:0];
   }

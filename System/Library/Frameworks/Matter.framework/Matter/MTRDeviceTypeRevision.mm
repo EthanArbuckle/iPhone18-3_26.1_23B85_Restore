@@ -1,26 +1,26 @@
 @interface MTRDeviceTypeRevision
-- (BOOL)isEqual:(id)a3;
-- (MTRDeviceTypeRevision)initWithCoder:(id)a3;
-- (MTRDeviceTypeRevision)initWithDeviceTypeID:(id)a3 revision:(id)a4;
-- (MTRDeviceTypeRevision)initWithDeviceTypeStruct:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTRDeviceTypeRevision)initWithCoder:(id)coder;
+- (MTRDeviceTypeRevision)initWithDeviceTypeID:(id)d revision:(id)revision;
+- (MTRDeviceTypeRevision)initWithDeviceTypeStruct:(id)struct;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTRDeviceTypeRevision
 
-- (MTRDeviceTypeRevision)initWithDeviceTypeID:(id)a3 revision:(id)a4
+- (MTRDeviceTypeRevision)initWithDeviceTypeID:(id)d revision:(id)revision
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = 0;
-  if (v6 && v7)
+  dCopy = d;
+  revisionCopy = revision;
+  v8 = revisionCopy;
+  selfCopy = 0;
+  if (dCopy && revisionCopy)
   {
-    v10 = [v6 unsignedLongLongValue];
-    v11 = v10;
-    if (HIDWORD(v10))
+    unsignedLongLongValue = [dCopy unsignedLongLongValue];
+    v11 = unsignedLongLongValue;
+    if (HIDWORD(unsignedLongLongValue))
     {
       v15 = sub_2393D9044(0);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -36,7 +36,7 @@
       }
     }
 
-    else if ((v10 & 0xFFFF0000) > 0xFFFE0000 || (v10 & 0xC000) == 0xC000)
+    else if ((unsignedLongLongValue & 0xFFFF0000) > 0xFFFE0000 || (unsignedLongLongValue & 0xC000) == 0xC000)
     {
       v16 = sub_2393D9044(0);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -54,14 +54,14 @@
 
     else
     {
-      v12 = [v8 unsignedLongLongValue];
-      if ((v12 - 1) < 0xFFFF)
+      unsignedLongLongValue2 = [v8 unsignedLongLongValue];
+      if ((unsignedLongLongValue2 - 1) < 0xFFFF)
       {
-        v13 = [v6 copy];
+        v13 = [dCopy copy];
         v14 = [v8 copy];
         self = sub_238F4261C(&self->super.isa, v13, v14);
 
-        v9 = self;
+        selfCopy = self;
         goto LABEL_21;
       }
 
@@ -69,14 +69,14 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v21 = v12;
+        v21 = unsignedLongLongValue2;
         _os_log_impl(&dword_238DAE000, v17, OS_LOG_TYPE_ERROR, "MTRDeviceTypeRevision provided invalid device type revision: 0x%llx", buf, 0xCu);
       }
 
       if (!sub_2393D5398(1u))
       {
 LABEL_20:
-        v9 = 0;
+        selfCopy = 0;
         goto LABEL_21;
       }
     }
@@ -88,57 +88,57 @@ LABEL_20:
 LABEL_21:
 
   v18 = *MEMORY[0x277D85DE8];
-  return v9;
+  return selfCopy;
 }
 
-- (MTRDeviceTypeRevision)initWithDeviceTypeStruct:(id)a3
+- (MTRDeviceTypeRevision)initWithDeviceTypeStruct:(id)struct
 {
-  v4 = a3;
-  v5 = [v4 deviceType];
-  v6 = [v4 revision];
-  v7 = [(MTRDeviceTypeRevision *)self initWithDeviceTypeID:v5 revision:v6];
+  structCopy = struct;
+  deviceType = [structCopy deviceType];
+  revision = [structCopy revision];
+  v7 = [(MTRDeviceTypeRevision *)self initWithDeviceTypeID:deviceType revision:revision];
 
   return v7;
 }
 
-- (MTRDeviceTypeRevision)initWithCoder:(id)a3
+- (MTRDeviceTypeRevision)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MTRDeviceTypeRevision;
   v5 = [(MTRDeviceTypeRevision *)&v11 init];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "decodeInt64ForKey:", @"ty"}];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(coderCopy, "decodeInt64ForKey:", @"ty"}];
   deviceTypeID = v5->_deviceTypeID;
   v5->_deviceTypeID = v6;
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v4, "decodeIntegerForKey:", @"re"}];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(coderCopy, "decodeIntegerForKey:", @"re"}];
   deviceTypeRevision = v5->_deviceTypeRevision;
   v5->_deviceTypeRevision = v8;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[NSNumber unsignedLongLongValue](self->_deviceTypeID forKey:{"unsignedLongLongValue"), @"ty"}];
-  [v4 encodeInteger:-[NSNumber unsignedIntegerValue](self->_deviceTypeRevision forKey:{"unsignedIntegerValue"), @"re"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[NSNumber unsignedLongLongValue](self->_deviceTypeID forKey:{"unsignedLongLongValue"), @"ty"}];
+  [coderCopy encodeInteger:-[NSNumber unsignedIntegerValue](self->_deviceTypeRevision forKey:{"unsignedIntegerValue"), @"re"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     deviceTypeID = self->_deviceTypeID;
-    v9 = [v7 deviceTypeID];
-    if ([(NSNumber *)deviceTypeID isEqual:v9])
+    deviceTypeID = [v7 deviceTypeID];
+    if ([(NSNumber *)deviceTypeID isEqual:deviceTypeID])
     {
       deviceTypeRevision = self->_deviceTypeRevision;
-      v11 = [v7 deviceTypeRevision];
-      v6 = [(NSNumber *)deviceTypeRevision isEqual:v11];
+      deviceTypeRevision = [v7 deviceTypeRevision];
+      v6 = [(NSNumber *)deviceTypeRevision isEqual:deviceTypeRevision];
     }
 
     else
@@ -159,17 +159,17 @@ LABEL_21:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(NSNumber *)self->_deviceTypeID unsignedIntValue];
-  v6 = [(MTRDeviceTypeRevision *)self typeInformation];
-  v7 = [v6 name];
-  v8 = [(NSNumber *)self->_deviceTypeRevision unsignedIntValue];
+  unsignedIntValue = [(NSNumber *)self->_deviceTypeID unsignedIntValue];
+  typeInformation = [(MTRDeviceTypeRevision *)self typeInformation];
+  name = [typeInformation name];
+  unsignedIntValue2 = [(NSNumber *)self->_deviceTypeRevision unsignedIntValue];
   v9 = @"???";
-  if (v7)
+  if (name)
   {
-    v9 = v7;
+    v9 = name;
   }
 
-  v10 = [v3 stringWithFormat:@"<%@ 0x%x (%@) rev %d>", v4, v5, v9, v8];
+  v10 = [v3 stringWithFormat:@"<%@ 0x%x (%@) rev %d>", v4, unsignedIntValue, v9, unsignedIntValue2];
 
   return v10;
 }

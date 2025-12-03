@@ -1,6 +1,6 @@
 @interface DownloadsCVCLibraryActionControllerBridge
 - (_TtC23ShelfKitCollectionViews41DownloadsCVCLibraryActionControllerBridge)init;
-- (void)cancelAllDownloadsUserInitiated:(BOOL)a3;
+- (void)cancelAllDownloadsUserInitiated:(BOOL)initiated;
 @end
 
 @implementation DownloadsCVCLibraryActionControllerBridge
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)cancelAllDownloadsUserInitiated:(BOOL)a3
+- (void)cancelAllDownloadsUserInitiated:(BOOL)initiated
 {
   __swift_project_boxed_opaque_existential_1Tm((&self->super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews41DownloadsCVCLibraryActionControllerBridge_libraryActionController), *&self->libraryActionController[OBJC_IVAR____TtC23ShelfKitCollectionViews41DownloadsCVCLibraryActionControllerBridge_libraryActionController + 16]);
-  v4 = self;
+  selfCopy = self;
   sub_30AE48();
 }
 

@@ -1,92 +1,92 @@
 @interface NqmlStringGenerator
 - (_TtC11AppStoreKitP33_9642CCE02323FAF22DDBBFD3680E3E9F19NqmlStringGenerator)init;
-- (void)parser:(id)a3 didEndElement:(unint64_t)a4;
-- (void)parser:(id)a3 didEndListOfStyle:(unint64_t)a4;
-- (void)parser:(id)a3 didFindCharacters:(id)a4;
-- (void)parser:(id)a3 didStartElement:(unint64_t)a4 attributes:(id)a5;
-- (void)parser:(id)a3 didStartListOfStyle:(unint64_t)a4;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
-- (void)parserDidEndDocument:(id)a3;
-- (void)parserDidEndListElement:(id)a3;
-- (void)parserDidFindNewline:(id)a3;
-- (void)parserDidStartDocument:(id)a3;
-- (void)parserDidStartListElement:(id)a3;
+- (void)parser:(id)parser didEndElement:(unint64_t)element;
+- (void)parser:(id)parser didEndListOfStyle:(unint64_t)style;
+- (void)parser:(id)parser didFindCharacters:(id)characters;
+- (void)parser:(id)parser didStartElement:(unint64_t)element attributes:(id)attributes;
+- (void)parser:(id)parser didStartListOfStyle:(unint64_t)style;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
+- (void)parserDidEndDocument:(id)document;
+- (void)parserDidEndListElement:(id)element;
+- (void)parserDidFindNewline:(id)newline;
+- (void)parserDidStartDocument:(id)document;
+- (void)parserDidStartListElement:(id)element;
 @end
 
 @implementation NqmlStringGenerator
 
-- (void)parserDidStartDocument:(id)a3
+- (void)parserDidStartDocument:(id)document
 {
-  v4 = a3;
-  v5 = self;
+  documentCopy = document;
+  selfCopy = self;
   sub_1E1ADD484();
 }
 
-- (void)parserDidEndDocument:(id)a3
+- (void)parserDidEndDocument:(id)document
 {
-  v4 = a3;
-  v5 = self;
+  documentCopy = document;
+  selfCopy = self;
   sub_1E1ADD5D8();
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  parserCopy = parser;
+  occurredCopy = occurred;
+  selfCopy = self;
   sub_1E1ADD680();
 }
 
-- (void)parser:(id)a3 didStartElement:(unint64_t)a4 attributes:(id)a5
+- (void)parser:(id)parser didStartElement:(unint64_t)element attributes:(id)attributes
 {
   type metadata accessor for NqmlAttributeName(0);
   sub_1E1ADE418(&unk_1EE1E3400, type metadata accessor for NqmlAttributeName);
   v8 = sub_1E1AF5C7C();
-  v9 = a3;
-  v10 = self;
-  sub_1E1ADD860(a4, v8);
+  parserCopy = parser;
+  selfCopy = self;
+  sub_1E1ADD860(element, v8);
 }
 
-- (void)parser:(id)a3 didEndElement:(unint64_t)a4
+- (void)parser:(id)parser didEndElement:(unint64_t)element
 {
-  v6 = a3;
-  v7 = self;
-  sub_1E1ADDC70(a4);
+  parserCopy = parser;
+  selfCopy = self;
+  sub_1E1ADDC70(element);
 }
 
-- (void)parser:(id)a3 didFindCharacters:(id)a4
+- (void)parser:(id)parser didFindCharacters:(id)characters
 {
   sub_1E1AF5DFC();
-  v6 = a3;
-  v7 = self;
+  parserCopy = parser;
+  selfCopy = self;
   sub_1E1ADDD4C();
 }
 
-- (void)parserDidFindNewline:(id)a3
+- (void)parserDidFindNewline:(id)newline
 {
-  v3 = self;
+  selfCopy = self;
   sub_1E1ADC1D8();
 }
 
-- (void)parser:(id)a3 didStartListOfStyle:(unint64_t)a4
+- (void)parser:(id)parser didStartListOfStyle:(unint64_t)style
 {
-  v6 = a3;
-  v7 = self;
-  sub_1E1ADDF40(a4);
+  parserCopy = parser;
+  selfCopy = self;
+  sub_1E1ADDF40(style);
 }
 
-- (void)parserDidStartListElement:(id)a3
+- (void)parserDidStartListElement:(id)element
 {
-  v4 = a3;
-  v5 = self;
+  elementCopy = element;
+  selfCopy = self;
   sub_1E1ADE0EC();
 }
 
-- (void)parserDidEndListElement:(id)a3
+- (void)parserDidEndListElement:(id)element
 {
-  v7 = self;
+  selfCopy = self;
   sub_1E1ADC1D8();
-  v3 = *(&v7->super.isa + OBJC_IVAR____TtC11AppStoreKitP33_9642CCE02323FAF22DDBBFD3680E3E9F19NqmlStringGenerator_orderedListTracker);
+  v3 = *(&selfCopy->super.isa + OBJC_IVAR____TtC11AppStoreKitP33_9642CCE02323FAF22DDBBFD3680E3E9F19NqmlStringGenerator_orderedListTracker);
   if (v3)
   {
     v4 = *(v3 + 16);
@@ -102,10 +102,10 @@
   }
 }
 
-- (void)parser:(id)a3 didEndListOfStyle:(unint64_t)a4
+- (void)parser:(id)parser didEndListOfStyle:(unint64_t)style
 {
-  v5 = a3;
-  v6 = self;
+  parserCopy = parser;
+  selfCopy = self;
   sub_1E1ADE330();
 }
 

@@ -1,69 +1,69 @@
 @interface NCNotificationListPersistentStateManager
 + (id)_dataDirectoryPath;
 + (id)_persistentStateFilePath;
-- (BOOL)_containsNotificationRequest:(id)a3 inMutableRepresentationForGroup:(id)a4 shouldRemove:(BOOL)a5;
-- (BOOL)_containsNotificationRequest:(id)a3 inMutableRepresentationForSection:(id)a4 shouldRemove:(BOOL)a5;
+- (BOOL)_containsNotificationRequest:(id)request inMutableRepresentationForGroup:(id)group shouldRemove:(BOOL)remove;
+- (BOOL)_containsNotificationRequest:(id)request inMutableRepresentationForSection:(id)section shouldRemove:(BOOL)remove;
 - (BOOL)_doesPersistentStateFileExist;
-- (BOOL)_getSectionFromPersistentStateRepresentation:(id)a3 request:(id)a4 section:(unint64_t *)a5;
-- (BOOL)_isListRepresentation:(id)a3 equalToListRepresentation:(id)a4;
-- (BOOL)_isMigratedTimeSensitiveNotificationRequest:(id)a3;
-- (BOOL)_isMutableListRepresentationEmpty:(id)a3;
-- (BOOL)_isRepresentationForGroup:(id)a3 equalToRepresentationForGroup:(id)a4;
-- (BOOL)_isRepresentationForGroupEmpty:(id)a3;
-- (BOOL)_isRepresentationForGroups:(id)a3 equalToRepresentationForGroups:(id)a4;
-- (BOOL)_isRepresentationForMigrationTimes:(id)a3 equalToRepresentationForMigrationTimes:(id)a4;
-- (BOOL)_isRepresentationForSection:(id)a3 equalToRepresentationForSection:(id)a4;
-- (BOOL)_isRepresentationForSectionEmpty:(id)a3;
-- (BOOL)_isRepresentationForSections:(id)a3 equalToRepresentationForSections:(id)a4;
-- (NCNotificationListPersistentStateManager)initWithDelegate:(id)a3;
+- (BOOL)_getSectionFromPersistentStateRepresentation:(id)representation request:(id)request section:(unint64_t *)section;
+- (BOOL)_isListRepresentation:(id)representation equalToListRepresentation:(id)listRepresentation;
+- (BOOL)_isMigratedTimeSensitiveNotificationRequest:(id)request;
+- (BOOL)_isMutableListRepresentationEmpty:(id)empty;
+- (BOOL)_isRepresentationForGroup:(id)group equalToRepresentationForGroup:(id)forGroup;
+- (BOOL)_isRepresentationForGroupEmpty:(id)empty;
+- (BOOL)_isRepresentationForGroups:(id)groups equalToRepresentationForGroups:(id)forGroups;
+- (BOOL)_isRepresentationForMigrationTimes:(id)times equalToRepresentationForMigrationTimes:(id)migrationTimes;
+- (BOOL)_isRepresentationForSection:(id)section equalToRepresentationForSection:(id)forSection;
+- (BOOL)_isRepresentationForSectionEmpty:(id)empty;
+- (BOOL)_isRepresentationForSections:(id)sections equalToRepresentationForSections:(id)forSections;
+- (NCNotificationListPersistentStateManager)initWithDelegate:(id)delegate;
 - (NCNotificationListPersistentStateManagerDelegate)delegate;
-- (id)_getStoredMigrationTimeAndClearNotificationRequest:(id)a3;
-- (id)_listRepresentationForNotificationList:(id)a3 sections:(id)a4 listCache:(id)a5 migrationScheduler:(id)a6 listInfo:(id)a7 detailed:(BOOL)a8 hashIdentifiers:(BOOL)a9 includeHistory:(BOOL)a10 includeHidden:(BOOL)a11;
-- (id)_mutableRepresentationForMigratedTimeSensitiveNotificationRequestsInRepresentationForList:(id)a3;
-- (id)_mutableRepresentationForRepresentationForGroup:(id)a3;
-- (id)_mutableRepresentationForRepresentationForMigratedTimeSensitiveNotificationRequests:(id)a3;
-- (id)_mutableRepresentationForRepresentationForNotificationRequests:(id)a3;
-- (id)_mutableRepresentationForRepresentationForRequestMigrationTimes:(id)a3;
-- (id)_mutableRepresentationForRepresentationForSection:(id)a3;
-- (id)_mutableRepresentationForRequestMigrationTimesInRepresentationForList:(id)a3;
-- (id)_mutableRepresentationForStoredListRepresentation:(id)a3;
-- (id)_representationForGroup:(id)a3 atIndex:(unint64_t)a4 detailed:(BOOL)a5 hashIdentifiers:(BOOL)a6;
-- (id)_representationForGroupWithSectionIdentifier:(id)a3 threadIdentifier:(id)a4 inRepresentationForGroups:(id)a5;
-- (id)_representationForGroups:(id)a3 detailed:(BOOL)a4 hashIdentifiers:(BOOL)a5;
-- (id)_representationForListCache:(id)a3;
-- (id)_representationForMigratedTimeSensitiveNotificationRequests:(id)a3;
-- (id)_representationForMigrationScheduler:(id)a3;
-- (id)_representationForNotificationRequest:(id)a3 hashIdentifiers:(BOOL)a4;
-- (id)_representationForNotificationRequests:(id)a3 detailed:(BOOL)a4 hashIdentifiers:(BOOL)a5;
-- (id)_representationForRequestMigrationTimes:(id)a3;
-- (id)_representationForSection:(id)a3 detailed:(BOOL)a4 hashIdentifiers:(BOOL)a5 includeHidden:(BOOL)a6;
-- (id)_representationForSections:(id)a3 detailed:(BOOL)a4 hashIdentifiers:(BOOL)a5 includeHidden:(BOOL)a6;
-- (id)_sectionRepresentationOfSectionType:(id)a3 inRepresentationForSections:(id)a4;
-- (id)_summaryMigrationTimeInRepresentationForList:(id)a3;
-- (id)stateRepresentationForNotificationList:(id)a3 sectionLists:(id)a4 listCache:(id)a5 migrationScheduler:(id)a6 listInfo:(id)a7 detailed:(BOOL)a8;
-- (int)_formatVersionForListRepresentation:(id)a3;
-- (unint64_t)_getSectionTypeAndRemoveNotificationRequest:(id)a3 inMutableRepresentationForSections:(id)a4;
-- (unint64_t)sectionForStoredNotificationRequest:(id)a3;
-- (void)_clearStoredListRepresentationForSectionIdentifier:(id)a3;
-- (void)_clearStoredMigratedTimeSensitiveNotificationRequestsForSectionIdentifier:(id)a3;
-- (void)_clearStoredRequestMigrationTimesForSectionIdentifier:(id)a3;
-- (void)_clearStoredSectionIdentifier:(id)a3 inMutableRepresentationForSection:(id)a4;
+- (id)_getStoredMigrationTimeAndClearNotificationRequest:(id)request;
+- (id)_listRepresentationForNotificationList:(id)list sections:(id)sections listCache:(id)cache migrationScheduler:(id)scheduler listInfo:(id)info detailed:(BOOL)detailed hashIdentifiers:(BOOL)identifiers includeHistory:(BOOL)self0 includeHidden:(BOOL)self1;
+- (id)_mutableRepresentationForMigratedTimeSensitiveNotificationRequestsInRepresentationForList:(id)list;
+- (id)_mutableRepresentationForRepresentationForGroup:(id)group;
+- (id)_mutableRepresentationForRepresentationForMigratedTimeSensitiveNotificationRequests:(id)requests;
+- (id)_mutableRepresentationForRepresentationForNotificationRequests:(id)requests;
+- (id)_mutableRepresentationForRepresentationForRequestMigrationTimes:(id)times;
+- (id)_mutableRepresentationForRepresentationForSection:(id)section;
+- (id)_mutableRepresentationForRequestMigrationTimesInRepresentationForList:(id)list;
+- (id)_mutableRepresentationForStoredListRepresentation:(id)representation;
+- (id)_representationForGroup:(id)group atIndex:(unint64_t)index detailed:(BOOL)detailed hashIdentifiers:(BOOL)identifiers;
+- (id)_representationForGroupWithSectionIdentifier:(id)identifier threadIdentifier:(id)threadIdentifier inRepresentationForGroups:(id)groups;
+- (id)_representationForGroups:(id)groups detailed:(BOOL)detailed hashIdentifiers:(BOOL)identifiers;
+- (id)_representationForListCache:(id)cache;
+- (id)_representationForMigratedTimeSensitiveNotificationRequests:(id)requests;
+- (id)_representationForMigrationScheduler:(id)scheduler;
+- (id)_representationForNotificationRequest:(id)request hashIdentifiers:(BOOL)identifiers;
+- (id)_representationForNotificationRequests:(id)requests detailed:(BOOL)detailed hashIdentifiers:(BOOL)identifiers;
+- (id)_representationForRequestMigrationTimes:(id)times;
+- (id)_representationForSection:(id)section detailed:(BOOL)detailed hashIdentifiers:(BOOL)identifiers includeHidden:(BOOL)hidden;
+- (id)_representationForSections:(id)sections detailed:(BOOL)detailed hashIdentifiers:(BOOL)identifiers includeHidden:(BOOL)hidden;
+- (id)_sectionRepresentationOfSectionType:(id)type inRepresentationForSections:(id)sections;
+- (id)_summaryMigrationTimeInRepresentationForList:(id)list;
+- (id)stateRepresentationForNotificationList:(id)list sectionLists:(id)lists listCache:(id)cache migrationScheduler:(id)scheduler listInfo:(id)info detailed:(BOOL)detailed;
+- (int)_formatVersionForListRepresentation:(id)representation;
+- (unint64_t)_getSectionTypeAndRemoveNotificationRequest:(id)request inMutableRepresentationForSections:(id)sections;
+- (unint64_t)sectionForStoredNotificationRequest:(id)request;
+- (void)_clearStoredListRepresentationForSectionIdentifier:(id)identifier;
+- (void)_clearStoredMigratedTimeSensitiveNotificationRequestsForSectionIdentifier:(id)identifier;
+- (void)_clearStoredRequestMigrationTimesForSectionIdentifier:(id)identifier;
+- (void)_clearStoredSectionIdentifier:(id)identifier inMutableRepresentationForSection:(id)section;
 - (void)_ensureDataDirectoryExists;
-- (void)_mergePendingNotificationListRepresentation:(id)a3 withMutableListRepresentation:(id)a4;
-- (void)_mergePendingRequestMigrationTimesRepresentation:(id)a3 withMutableRepresentationForRequestMigrationTimes:(id)a4;
-- (void)_mergeRepresentationForGroup:(id)a3 withMutableRepresentationForGroup:(id)a4;
-- (void)_mergeRepresentationForNotificationRequests:(id)a3 withMutableRepresentationForNotificationRequests:(id)a4;
-- (void)_mergeRepresentationForSection:(id)a3 withMutableRepresentationForSection:(id)a4;
+- (void)_mergePendingNotificationListRepresentation:(id)representation withMutableListRepresentation:(id)listRepresentation;
+- (void)_mergePendingRequestMigrationTimesRepresentation:(id)representation withMutableRepresentationForRequestMigrationTimes:(id)times;
+- (void)_mergeRepresentationForGroup:(id)group withMutableRepresentationForGroup:(id)forGroup;
+- (void)_mergeRepresentationForNotificationRequests:(id)requests withMutableRepresentationForNotificationRequests:(id)notificationRequests;
+- (void)_mergeRepresentationForSection:(id)section withMutableRepresentationForSection:(id)forSection;
 - (void)_persistCachedRepresentations;
-- (void)_publishOnReadForStoredPersistentStateRepresentation:(id)a3;
+- (void)_publishOnReadForStoredPersistentStateRepresentation:(id)representation;
 - (void)_readPersistentStateFromFile;
-- (void)_readPersistentStateFromFileIfNecessaryWithCompletion:(id)a3;
+- (void)_readPersistentStateFromFileIfNecessaryWithCompletion:(id)completion;
 - (void)_scheduleListRepresentationPersistence;
-- (void)_sendPersistentStateToVendor:(id)a3;
-- (void)_throttledWriteFileListRepresentation:(id)a3 vendorListRepresentation:(id)a4;
-- (void)_writePersistentStateToFileWithRepresentation:(id)a3;
-- (void)notificationsLoadedForSectionIdentifier:(id)a3;
-- (void)updatePersistentStateForNotificationList:(id)a3 sectionLists:(id)a4 listCache:(id)a5 migrationScheduler:(id)a6 listInfo:(id)a7 detailed:(BOOL)a8;
+- (void)_sendPersistentStateToVendor:(id)vendor;
+- (void)_throttledWriteFileListRepresentation:(id)representation vendorListRepresentation:(id)listRepresentation;
+- (void)_writePersistentStateToFileWithRepresentation:(id)representation;
+- (void)notificationsLoadedForSectionIdentifier:(id)identifier;
+- (void)updatePersistentStateForNotificationList:(id)list sectionLists:(id)lists listCache:(id)cache migrationScheduler:(id)scheduler listInfo:(id)info detailed:(BOOL)detailed;
 @end
 
 @implementation NCNotificationListPersistentStateManager
@@ -122,16 +122,16 @@
   }
 }
 
-- (NCNotificationListPersistentStateManager)initWithDelegate:(id)a3
+- (NCNotificationListPersistentStateManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = NCNotificationListPersistentStateManager;
   v5 = [(NCNotificationListPersistentStateManager *)&v20 init];
   if (v5)
   {
     NCRegisterUserNotificationsUILogging();
-    objc_storeWeak(v5 + 3, v4);
+    objc_storeWeak(v5 + 3, delegateCopy);
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_create("com.apple.UserNotificationsUI.NCNotificationListPersistentStateManager", v6);
     v8 = *(v5 + 1);
@@ -142,8 +142,8 @@
     *(v5 + 9) = v9;
 
     v11 = *(v5 + 9);
-    v12 = [MEMORY[0x277CBEAF8] currentLocale];
-    [v11 setLocale:v12];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    [v11 setLocale:currentLocale];
 
     [*(v5 + 9) setDateStyle:1];
     [*(v5 + 9) setTimeStyle:3];
@@ -170,22 +170,22 @@
   return v5;
 }
 
-- (void)updatePersistentStateForNotificationList:(id)a3 sectionLists:(id)a4 listCache:(id)a5 migrationScheduler:(id)a6 listInfo:(id)a7 detailed:(BOOL)a8
+- (void)updatePersistentStateForNotificationList:(id)list sectionLists:(id)lists listCache:(id)cache migrationScheduler:(id)scheduler listInfo:(id)info detailed:(BOOL)detailed
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  detailedCopy = detailed;
+  listCopy = list;
+  listsCopy = lists;
+  cacheCopy = cache;
+  schedulerCopy = scheduler;
+  infoCopy = info;
   BYTE2(v24) = 0;
   LOWORD(v24) = 1;
-  v19 = [NCNotificationListPersistentStateManager _listRepresentationForNotificationList:"_listRepresentationForNotificationList:sections:listCache:migrationScheduler:listInfo:detailed:hashIdentifiers:includeHistory:includeHidden:" sections:v14 listCache:v15 migrationScheduler:v16 listInfo:v17 detailed:v18 hashIdentifiers:v8 includeHistory:v24 includeHidden:?];
+  v19 = [NCNotificationListPersistentStateManager _listRepresentationForNotificationList:"_listRepresentationForNotificationList:sections:listCache:migrationScheduler:listInfo:detailed:hashIdentifiers:includeHistory:includeHidden:" sections:listCopy listCache:listsCopy migrationScheduler:cacheCopy listInfo:schedulerCopy detailed:infoCopy hashIdentifiers:detailedCopy includeHistory:v24 includeHidden:?];
   if (UNCCatchMe())
   {
     BYTE2(v25) = 1;
     LOWORD(v25) = 256;
-    v20 = [NCNotificationListPersistentStateManager _listRepresentationForNotificationList:"_listRepresentationForNotificationList:sections:listCache:migrationScheduler:listInfo:detailed:hashIdentifiers:includeHistory:includeHidden:" sections:v14 listCache:v15 migrationScheduler:v16 listInfo:v17 detailed:v18 hashIdentifiers:v8 includeHistory:v25 includeHidden:?];
+    v20 = [NCNotificationListPersistentStateManager _listRepresentationForNotificationList:"_listRepresentationForNotificationList:sections:listCache:migrationScheduler:listInfo:detailed:hashIdentifiers:includeHistory:includeHidden:" sections:listCopy listCache:listsCopy migrationScheduler:cacheCopy listInfo:schedulerCopy detailed:infoCopy hashIdentifiers:detailedCopy includeHistory:v25 includeHidden:?];
   }
 
   else
@@ -254,45 +254,45 @@ void __145__NCNotificationListPersistentStateManager_updatePersistentStateForNot
   }
 }
 
-- (id)stateRepresentationForNotificationList:(id)a3 sectionLists:(id)a4 listCache:(id)a5 migrationScheduler:(id)a6 listInfo:(id)a7 detailed:(BOOL)a8
+- (id)stateRepresentationForNotificationList:(id)list sectionLists:(id)lists listCache:(id)cache migrationScheduler:(id)scheduler listInfo:(id)info detailed:(BOOL)detailed
 {
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  return [NCNotificationListPersistentStateManager _listRepresentationForNotificationList:"_listRepresentationForNotificationList:sections:listCache:migrationScheduler:listInfo:detailed:hashIdentifiers:includeHistory:includeHidden:" sections:a3 listCache:a4 migrationScheduler:a5 listInfo:a6 detailed:a7 hashIdentifiers:a8 includeHistory:v9 includeHidden:?];
+  return [NCNotificationListPersistentStateManager _listRepresentationForNotificationList:"_listRepresentationForNotificationList:sections:listCache:migrationScheduler:listInfo:detailed:hashIdentifiers:includeHistory:includeHidden:" sections:list listCache:lists migrationScheduler:cache listInfo:scheduler detailed:info hashIdentifiers:detailed includeHistory:v9 includeHidden:?];
 }
 
-- (void)notificationsLoadedForSectionIdentifier:(id)a3
+- (void)notificationsLoadedForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   if (self->_storedPersistentStateRepresentation)
   {
-    [(NCNotificationListPersistentStateManager *)self _clearStoredListRepresentationForSectionIdentifier:v4];
-    v4 = v5;
+    [(NCNotificationListPersistentStateManager *)self _clearStoredListRepresentationForSectionIdentifier:identifierCopy];
+    identifierCopy = v5;
   }
 
   if (self->_storedPersistentMigrationTimes)
   {
     [(NCNotificationListPersistentStateManager *)self _clearStoredRequestMigrationTimesForSectionIdentifier:v5];
-    v4 = v5;
+    identifierCopy = v5;
   }
 
   if (self->_storedPersistentMigratedTimeSensitiveNotificationRequests)
   {
     [(NCNotificationListPersistentStateManager *)self _clearStoredMigratedTimeSensitiveNotificationRequestsForSectionIdentifier:v5];
-    v4 = v5;
+    identifierCopy = v5;
   }
 }
 
-- (BOOL)_getSectionFromPersistentStateRepresentation:(id)a3 request:(id)a4 section:(unint64_t *)a5
+- (BOOL)_getSectionFromPersistentStateRepresentation:(id)representation request:(id)request section:(unint64_t *)section
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (a3)
+  requestCopy = request;
+  if (representation)
   {
-    v9 = [a3 objectForKey:@"3.list.sections"];
-    v10 = [(NCNotificationListPersistentStateManager *)self _getSectionTypeAndRemoveNotificationRequest:v8 inMutableRepresentationForSections:v9];
-    *a5 = v10;
+    v9 = [representation objectForKey:@"3.list.sections"];
+    v10 = [(NCNotificationListPersistentStateManager *)self _getSectionTypeAndRemoveNotificationRequest:requestCopy inMutableRepresentationForSections:v9];
+    *section = v10;
     if (v10 == 4 && [(NCNotificationListPersistentStateManager *)self hasStoredCurrentDigestMigrationTimeExpired])
     {
       v11 = *MEMORY[0x277D77DC8];
@@ -301,31 +301,31 @@ void __145__NCNotificationListPersistentStateManager_updatePersistentStateForNot
         v12 = v11;
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
-        v15 = [v8 notificationIdentifier];
-        v16 = [v15 un_logDigest];
+        notificationIdentifier = [requestCopy notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
         v17 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:self->_storedPersistentSummaryMigrationTime];
         v19 = 138543874;
         v20 = v14;
         v21 = 2114;
-        v22 = v16;
+        v22 = un_logDigest;
         v23 = 2112;
         v24 = v17;
         _os_log_impl(&dword_21E77E000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ moving request %{public}@ to read digest from current digest because the stored digest migration time [%@] has already expired!", &v19, 0x20u);
       }
 
-      *a5 = 6;
+      *section = 6;
     }
   }
 
-  return a3 != 0;
+  return representation != 0;
 }
 
-- (unint64_t)sectionForStoredNotificationRequest:(id)a3
+- (unint64_t)sectionForStoredNotificationRequest:(id)request
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v36 = 0x7FFFFFFFFFFFFFFFLL;
-  if ([(NCNotificationListPersistentStateManager *)self _getSectionFromPersistentStateRepresentation:self->_storedPersistentStateRepresentation request:v4 section:&v36])
+  if ([(NCNotificationListPersistentStateManager *)self _getSectionFromPersistentStateRepresentation:self->_storedPersistentStateRepresentation request:requestCopy section:&v36])
   {
     v5 = v36 == 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -337,12 +337,12 @@ void __145__NCNotificationListPersistentStateManager_updatePersistentStateForNot
 
   if (v5)
   {
-    [(NCNotificationListPersistentStateManager *)self _getSectionFromPersistentStateRepresentation:self->_currentStateRepresentation request:v4 section:&v36];
+    [(NCNotificationListPersistentStateManager *)self _getSectionFromPersistentStateRepresentation:self->_currentStateRepresentation request:requestCopy section:&v36];
   }
 
   if (self->_storedPersistentMigrationTimes)
   {
-    v6 = [(NCNotificationListPersistentStateManager *)self _getStoredMigrationTimeAndClearNotificationRequest:v4];
+    v6 = [(NCNotificationListPersistentStateManager *)self _getStoredMigrationTimeAndClearNotificationRequest:requestCopy];
     v7 = v6;
     if (v6 && (v36 - 1) <= 1)
     {
@@ -357,13 +357,13 @@ void __145__NCNotificationListPersistentStateManager_updatePersistentStateForNot
             v17 = v16;
             v18 = objc_opt_class();
             v19 = NSStringFromClass(v18);
-            v20 = [v4 notificationIdentifier];
-            v21 = [v20 un_logDigest];
+            notificationIdentifier = [requestCopy notificationIdentifier];
+            un_logDigest = [notificationIdentifier un_logDigest];
             v22 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v7];
             *buf = 138543874;
             v38 = v19;
             v39 = 2114;
-            v40 = v21;
+            v40 = un_logDigest;
             v41 = 2112;
             v42 = v22;
             _os_log_impl(&dword_21E77E000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ moving request %{public}@ to history from incoming because its stored migration time [%@] has already expired!", buf, 0x20u);
@@ -380,13 +380,13 @@ void __145__NCNotificationListPersistentStateManager_updatePersistentStateForNot
             v10 = v9;
             v11 = objc_opt_class();
             v12 = NSStringFromClass(v11);
-            v13 = [v4 notificationIdentifier];
-            v14 = [v13 un_logDigest];
+            notificationIdentifier2 = [requestCopy notificationIdentifier];
+            un_logDigest2 = [notificationIdentifier2 un_logDigest];
             v15 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v7];
             *buf = 138543874;
             v38 = v12;
             v39 = 2114;
-            v40 = v14;
+            v40 = un_logDigest2;
             v41 = 2112;
             v42 = v15;
             _os_log_impl(&dword_21E77E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ moving request %{public}@ to incoming from prominent incoming because its stored migration time [%@] has already expired!", buf, 0x20u);
@@ -404,13 +404,13 @@ void __145__NCNotificationListPersistentStateManager_updatePersistentStateForNot
         block[3] = &unk_2783715C0;
         block[4] = self;
         v34 = v7;
-        v35 = v4;
+        v35 = requestCopy;
         dispatch_async(MEMORY[0x277D85CD0], block);
       }
     }
   }
 
-  if (self->_storedPersistentMigratedTimeSensitiveNotificationRequests && [(NCNotificationListPersistentStateManager *)self _isMigratedTimeSensitiveNotificationRequest:v4])
+  if (self->_storedPersistentMigratedTimeSensitiveNotificationRequests && [(NCNotificationListPersistentStateManager *)self _isMigratedTimeSensitiveNotificationRequest:requestCopy])
   {
     v23 = *MEMORY[0x277D77DC8];
     if (os_log_type_enabled(*MEMORY[0x277D77DC8], OS_LOG_TYPE_DEFAULT))
@@ -418,12 +418,12 @@ void __145__NCNotificationListPersistentStateManager_updatePersistentStateForNot
       v24 = v23;
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
-      v27 = [v4 notificationIdentifier];
-      v28 = [v27 un_logDigest];
+      notificationIdentifier3 = [requestCopy notificationIdentifier];
+      un_logDigest3 = [notificationIdentifier3 un_logDigest];
       *buf = 138543618;
       v38 = v26;
       v39 = 2112;
-      v40 = v28;
+      v40 = un_logDigest3;
       _os_log_impl(&dword_21E77E000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ found migrated time sensitive notification request for record %@.", buf, 0x16u);
     }
 
@@ -432,7 +432,7 @@ void __145__NCNotificationListPersistentStateManager_updatePersistentStateForNot
     v31[2] = __80__NCNotificationListPersistentStateManager_sectionForStoredNotificationRequest___block_invoke_5;
     v31[3] = &unk_27836F560;
     v31[4] = self;
-    v32 = v4;
+    v32 = requestCopy;
     dispatch_async(MEMORY[0x277D85CD0], v31);
   }
 
@@ -455,64 +455,64 @@ void __80__NCNotificationListPersistentStateManager_sectionForStoredNotification
 
 + (id)_dataDirectoryPath
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = v3;
-  if (v3 && ([v3 isEqualToString:@"com.apple.springboard"] & 1) == 0)
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = bundleIdentifier;
+  if (bundleIdentifier && ([bundleIdentifier isEqualToString:@"com.apple.springboard"] & 1) == 0)
   {
-    v6 = [@"~/Library/UserNotificationsUI/" stringByExpandingTildeInPath];
-    v5 = [v6 stringByAppendingPathComponent:v4];
+    stringByExpandingTildeInPath = [@"~/Library/UserNotificationsUI/" stringByExpandingTildeInPath];
+    stringByExpandingTildeInPath2 = [stringByExpandingTildeInPath stringByAppendingPathComponent:v4];
   }
 
   else
   {
-    v5 = [@"~/Library/UserNotificationsUI/" stringByExpandingTildeInPath];
+    stringByExpandingTildeInPath2 = [@"~/Library/UserNotificationsUI/" stringByExpandingTildeInPath];
   }
 
-  return v5;
+  return stringByExpandingTildeInPath2;
 }
 
 + (id)_persistentStateFilePath
 {
-  v2 = [a1 _dataDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"NotificationListPersistentState.json"];
+  _dataDirectoryPath = [self _dataDirectoryPath];
+  v3 = [_dataDirectoryPath stringByAppendingPathComponent:@"NotificationListPersistentState.json"];
 
   return v3;
 }
 
 - (void)_ensureDataDirectoryExists
 {
-  v3 = [objc_opt_class() _dataDirectoryPath];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  if (([v2 fileExistsAtPath:v3] & 1) == 0)
+  _dataDirectoryPath = [objc_opt_class() _dataDirectoryPath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (([defaultManager fileExistsAtPath:_dataDirectoryPath] & 1) == 0)
   {
-    [v2 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:0];
+    [defaultManager createDirectoryAtPath:_dataDirectoryPath withIntermediateDirectories:1 attributes:0 error:0];
   }
 }
 
 - (BOOL)_doesPersistentStateFileExist
 {
-  v2 = [objc_opt_class() _persistentStateFilePath];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:v2];
+  _persistentStateFilePath = [objc_opt_class() _persistentStateFilePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:_persistentStateFilePath];
 
   return v4;
 }
 
-- (void)_throttledWriteFileListRepresentation:(id)a3 vendorListRepresentation:(id)a4
+- (void)_throttledWriteFileListRepresentation:(id)representation vendorListRepresentation:(id)listRepresentation
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  listRepresentationCopy = listRepresentation;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __107__NCNotificationListPersistentStateManager__throttledWriteFileListRepresentation_vendorListRepresentation___block_invoke;
   block[3] = &unk_2783715C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = representationCopy;
+  v13 = listRepresentationCopy;
+  v9 = listRepresentationCopy;
+  v10 = representationCopy;
   dispatch_async(queue, block);
 }
 
@@ -541,32 +541,32 @@ void __82__NCNotificationListPersistentStateManager__scheduleListRepresentationP
     _os_log_impl(&dword_21E77E000, v3, OS_LOG_TYPE_DEFAULT, "Persisting cached representations", v8, 2u);
   }
 
-  v4 = [(NCNotificationListPersistentStateManager *)self cachedListRepresentationForThrottledWriteToFile];
+  cachedListRepresentationForThrottledWriteToFile = [(NCNotificationListPersistentStateManager *)self cachedListRepresentationForThrottledWriteToFile];
 
-  if (v4)
+  if (cachedListRepresentationForThrottledWriteToFile)
   {
-    v5 = [(NCNotificationListPersistentStateManager *)self cachedListRepresentationForThrottledWriteToFile];
-    [(NCNotificationListPersistentStateManager *)self _writePersistentStateToFileWithRepresentation:v5];
+    cachedListRepresentationForThrottledWriteToFile2 = [(NCNotificationListPersistentStateManager *)self cachedListRepresentationForThrottledWriteToFile];
+    [(NCNotificationListPersistentStateManager *)self _writePersistentStateToFileWithRepresentation:cachedListRepresentationForThrottledWriteToFile2];
   }
 
-  v6 = [(NCNotificationListPersistentStateManager *)self cachedListRepresentationForThrottledSendToVendor];
+  cachedListRepresentationForThrottledSendToVendor = [(NCNotificationListPersistentStateManager *)self cachedListRepresentationForThrottledSendToVendor];
 
-  if (v6)
+  if (cachedListRepresentationForThrottledSendToVendor)
   {
-    v7 = [(NCNotificationListPersistentStateManager *)self cachedListRepresentationForThrottledSendToVendor];
-    [(NCNotificationListPersistentStateManager *)self _sendPersistentStateToVendor:v7];
+    cachedListRepresentationForThrottledSendToVendor2 = [(NCNotificationListPersistentStateManager *)self cachedListRepresentationForThrottledSendToVendor];
+    [(NCNotificationListPersistentStateManager *)self _sendPersistentStateToVendor:cachedListRepresentationForThrottledSendToVendor2];
   }
 }
 
-- (void)_sendPersistentStateToVendor:(id)a3
+- (void)_sendPersistentStateToVendor:(id)vendor
 {
-  v4 = a3;
+  vendorCopy = vendor;
   if (UNCCatchMe())
   {
     v5 = MEMORY[0x277D77DC8];
     v6 = *MEMORY[0x277D77DC8];
     v7 = *MEMORY[0x277D77DC8];
-    if (v4)
+    if (vendorCopy)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
@@ -574,7 +574,7 @@ void __82__NCNotificationListPersistentStateManager__scheduleListRepresentationP
         _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "Sending persistent state to vendor", buf, 2u);
       }
 
-      v8 = [v4 mutableCopy];
+      v8 = [vendorCopy mutableCopy];
       v9 = [v8 objectForKeyedSubscript:@"3.list.sections"];
       v10 = [v9 mutableCopy];
 
@@ -640,18 +640,18 @@ void __82__NCNotificationListPersistentStateManager__scheduleListRepresentationP
   }
 }
 
-- (void)_writePersistentStateToFileWithRepresentation:(id)a3
+- (void)_writePersistentStateToFileWithRepresentation:(id)representation
 {
   v17 = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v4 = a3;
+  representationCopy = representation;
   dispatch_assert_queue_V2(queue);
   v14 = 0;
-  v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v4 options:0 error:&v14];
+  v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:representationCopy options:0 error:&v14];
 
   v6 = v14;
-  v7 = [objc_opt_class() _persistentStateFilePath];
-  v8 = [v5 writeToFile:v7 atomically:1];
+  _persistentStateFilePath = [objc_opt_class() _persistentStateFilePath];
+  v8 = [v5 writeToFile:_persistentStateFilePath atomically:1];
 
   v9 = *MEMORY[0x277D77DC8];
   v10 = *MEMORY[0x277D77DC8];
@@ -682,25 +682,25 @@ void __82__NCNotificationListPersistentStateManager__scheduleListRepresentationP
   }
 }
 
-- (void)_readPersistentStateFromFileIfNecessaryWithCompletion:(id)a3
+- (void)_readPersistentStateFromFileIfNecessaryWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (![(NCNotificationListPersistentStateManager *)self hasLoadedStoredPersistentState])
   {
     [(NCNotificationListPersistentStateManager *)self _readPersistentStateFromFile];
   }
 
-  v4 = v5;
-  if (v5)
+  v4 = completionCopy;
+  if (completionCopy)
   {
-    (*(v5 + 2))(v5, [(NCNotificationListPersistentStateManager *)self hasLoadedStoredPersistentState]);
-    v4 = v5;
+    (*(completionCopy + 2))(completionCopy, [(NCNotificationListPersistentStateManager *)self hasLoadedStoredPersistentState]);
+    v4 = completionCopy;
   }
 }
 
 - (void)_readPersistentStateFromFile
 {
-  v2 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_3_1();
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
@@ -708,33 +708,33 @@ void __82__NCNotificationListPersistentStateManager__scheduleListRepresentationP
   OUTLINED_FUNCTION_0_6(&dword_21E77E000, v5, v6, "%{public}@ found non-dictionary top level JSON object!", v7, v8, v9, v10, v11);
 }
 
-- (void)_publishOnReadForStoredPersistentStateRepresentation:(id)a3
+- (void)_publishOnReadForStoredPersistentStateRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(NCNotificationListPersistentStateManager *)self delegate];
-  v6 = [(NCNotificationListPersistentStateManager *)self _summaryMigrationTimeInRepresentationForList:v4];
+  representationCopy = representation;
+  delegate = [(NCNotificationListPersistentStateManager *)self delegate];
+  v6 = [(NCNotificationListPersistentStateManager *)self _summaryMigrationTimeInRepresentationForList:representationCopy];
   storedPersistentSummaryMigrationTime = self->_storedPersistentSummaryMigrationTime;
   self->_storedPersistentSummaryMigrationTime = v6;
 
   if (self->_storedPersistentSummaryMigrationTime)
   {
-    [v5 persistentStateManager:self didFetchSummaryMigrationTime:?];
+    [delegate persistentStateManager:self didFetchSummaryMigrationTime:?];
     [(NSDate *)self->_storedPersistentSummaryMigrationTime timeIntervalSinceNow];
     self->_storedCurrentDigestMigrationTimeExpired = v8 < 0.0;
   }
 
-  v9 = [(NCNotificationListPersistentStateManager *)self storedPersistentStateRepresentation];
-  v10 = [v9 objectForKey:@"3.list.sections"];
+  storedPersistentStateRepresentation = [(NCNotificationListPersistentStateManager *)self storedPersistentStateRepresentation];
+  v10 = [storedPersistentStateRepresentation objectForKey:@"3.list.sections"];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __97__NCNotificationListPersistentStateManager__publishOnReadForStoredPersistentStateRepresentation___block_invoke;
   v16 = &unk_278372650;
-  v11 = v5;
+  v11 = delegate;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   [v10 enumerateObjectsUsingBlock:&v13];
-  v12 = [v4 objectForKey:{@"7.list.infoStore", v13, v14, v15, v16}];
+  v12 = [representationCopy objectForKey:{@"7.list.infoStore", v13, v14, v15, v16}];
   if (v12)
   {
     [v11 persistentStateManager:self didFetchStoredListInfo:v12];
@@ -752,25 +752,25 @@ void __97__NCNotificationListPersistentStateManager__publishOnReadForStoredPersi
   }
 }
 
-- (id)_listRepresentationForNotificationList:(id)a3 sections:(id)a4 listCache:(id)a5 migrationScheduler:(id)a6 listInfo:(id)a7 detailed:(BOOL)a8 hashIdentifiers:(BOOL)a9 includeHistory:(BOOL)a10 includeHidden:(BOOL)a11
+- (id)_listRepresentationForNotificationList:(id)list sections:(id)sections listCache:(id)cache migrationScheduler:(id)scheduler listInfo:(id)info detailed:(BOOL)detailed hashIdentifiers:(BOOL)identifiers includeHistory:(BOOL)self0 includeHidden:(BOOL)self1
 {
-  v43 = a8;
+  detailedCopy = detailed;
   v51 = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v16 = a4;
-  v44 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = v16;
+  listCopy = list;
+  sectionsCopy = sections;
+  cacheCopy = cache;
+  schedulerCopy = scheduler;
+  infoCopy = info;
+  v19 = sectionsCopy;
   v20 = v19;
-  if (a10)
+  if (history)
   {
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v21 = [v45 notificationSections];
-    v22 = [v21 countByEnumeratingWithState:&v46 objects:v50 count:16];
+    notificationSections = [listCopy notificationSections];
+    v22 = [notificationSections countByEnumeratingWithState:&v46 objects:v50 count:16];
     v20 = v19;
     if (v22)
     {
@@ -782,7 +782,7 @@ void __97__NCNotificationListPersistentStateManager__publishOnReadForStoredPersi
         {
           if (*v47 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(notificationSections);
           }
 
           v26 = *(*(&v46 + 1) + 8 * i);
@@ -794,7 +794,7 @@ void __97__NCNotificationListPersistentStateManager__publishOnReadForStoredPersi
           }
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v46 objects:v50 count:16];
+        v23 = [notificationSections countByEnumeratingWithState:&v46 objects:v50 count:16];
         if (v23)
         {
           continue;
@@ -812,19 +812,19 @@ LABEL_12:
   v27 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v27 setObject:&unk_2830155D8 forKey:@"0.list.formatVersion"];
   dateFormatter = self->_dateFormatter;
-  v29 = [MEMORY[0x277CBEAA8] date];
-  v30 = [(NSDateFormatter *)dateFormatter stringFromDate:v29];
+  date = [MEMORY[0x277CBEAA8] date];
+  v30 = [(NSDateFormatter *)dateFormatter stringFromDate:date];
   [v27 setObject:v30 forKey:@"0.list.stateTimestamp"];
 
-  v31 = [(NCNotificationListPersistentStateManager *)self _representationForSections:v20 detailed:v43 hashIdentifiers:a9 includeHidden:a11];
+  v31 = [(NCNotificationListPersistentStateManager *)self _representationForSections:v20 detailed:detailedCopy hashIdentifiers:identifiers includeHidden:hidden];
   [v27 setObject:v31 forKey:@"3.list.sections"];
 
-  v32 = [(NCNotificationListPersistentStateManager *)self storedPersistentStateRepresentation];
+  storedPersistentStateRepresentation = [(NCNotificationListPersistentStateManager *)self storedPersistentStateRepresentation];
 
-  if (v32)
+  if (storedPersistentStateRepresentation)
   {
-    v33 = [(NCNotificationListPersistentStateManager *)self storedPersistentStateRepresentation];
-    v34 = [(NCNotificationListPersistentStateManager *)self _mutableRepresentationForStoredListRepresentation:v33];
+    storedPersistentStateRepresentation2 = [(NCNotificationListPersistentStateManager *)self storedPersistentStateRepresentation];
+    v34 = [(NCNotificationListPersistentStateManager *)self _mutableRepresentationForStoredListRepresentation:storedPersistentStateRepresentation2];
 
     if (v34)
     {
@@ -832,9 +832,9 @@ LABEL_12:
     }
   }
 
-  if (v17)
+  if (schedulerCopy)
   {
-    v35 = [(NCNotificationListPersistentStateManager *)self _representationForMigrationScheduler:v17];
+    v35 = [(NCNotificationListPersistentStateManager *)self _representationForMigrationScheduler:schedulerCopy];
     v36 = v35;
     if (v35 && [v35 count])
     {
@@ -842,12 +842,12 @@ LABEL_12:
     }
   }
 
-  v37 = [(NCNotificationListPersistentStateManager *)self storedPersistentMigrationTimes];
+  storedPersistentMigrationTimes = [(NCNotificationListPersistentStateManager *)self storedPersistentMigrationTimes];
 
-  if (v37)
+  if (storedPersistentMigrationTimes)
   {
-    v38 = [(NCNotificationListPersistentStateManager *)self storedPersistentMigrationTimes];
-    v39 = [(NCNotificationListPersistentStateManager *)self _mutableRepresentationForRepresentationForRequestMigrationTimes:v38];
+    storedPersistentMigrationTimes2 = [(NCNotificationListPersistentStateManager *)self storedPersistentMigrationTimes];
+    v39 = [(NCNotificationListPersistentStateManager *)self _mutableRepresentationForRepresentationForRequestMigrationTimes:storedPersistentMigrationTimes2];
 
     if (v39)
     {
@@ -855,19 +855,19 @@ LABEL_12:
     }
   }
 
-  if (v18 && [v18 count])
+  if (infoCopy && [infoCopy count])
   {
-    [v27 setObject:v18 forKey:@"7.list.infoStore"];
+    [v27 setObject:infoCopy forKey:@"7.list.infoStore"];
   }
 
-  if (v43)
+  if (detailedCopy)
   {
-    v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v45, "totalNotificationCount")}];
+    v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(listCopy, "totalNotificationCount")}];
     [v27 setObject:v40 forKey:@"1.list.totalNotificationCount"];
 
-    if (v44)
+    if (cacheCopy)
     {
-      v41 = [(NCNotificationListPersistentStateManager *)self _representationForListCache:v44];
+      v41 = [(NCNotificationListPersistentStateManager *)self _representationForListCache:cacheCopy];
       [v27 setObject:v41 forKey:@"2.list.cacheState"];
     }
   }
@@ -875,16 +875,16 @@ LABEL_12:
   return v27;
 }
 
-- (BOOL)_isListRepresentation:(id)a3 equalToListRepresentation:(id)a4
+- (BOOL)_isListRepresentation:(id)representation equalToListRepresentation:(id)listRepresentation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"3.list.sections"];
-  v9 = [v7 objectForKey:@"3.list.sections"];
+  representationCopy = representation;
+  listRepresentationCopy = listRepresentation;
+  v8 = [representationCopy objectForKey:@"3.list.sections"];
+  v9 = [listRepresentationCopy objectForKey:@"3.list.sections"];
   if ([(NCNotificationListPersistentStateManager *)self _isRepresentationForSections:v8 equalToRepresentationForSections:v9])
   {
-    v10 = [v6 objectForKey:@"4.list.migrationTimes"];
-    v11 = [v7 objectForKey:@"4.list.migrationTimes"];
+    v10 = [representationCopy objectForKey:@"4.list.migrationTimes"];
+    v11 = [listRepresentationCopy objectForKey:@"4.list.migrationTimes"];
     v12 = [(NCNotificationListPersistentStateManager *)self _isRepresentationForMigrationTimes:v10 equalToRepresentationForMigrationTimes:v11];
   }
 
@@ -896,40 +896,40 @@ LABEL_12:
   return v12;
 }
 
-- (int)_formatVersionForListRepresentation:(id)a3
+- (int)_formatVersionForListRepresentation:(id)representation
 {
-  v3 = [a3 objectForKey:@"0.list.formatVersion"];
+  v3 = [representation objectForKey:@"0.list.formatVersion"];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v5 = -1;
+    intValue = -1;
   }
 
-  return v5;
+  return intValue;
 }
 
-- (id)_mutableRepresentationForStoredListRepresentation:(id)a3
+- (id)_mutableRepresentationForStoredListRepresentation:(id)representation
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  representationCopy = representation;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 objectForKey:@"3.list.sections"];
+  v7 = [representationCopy objectForKey:@"3.list.sections"];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __94__NCNotificationListPersistentStateManager__mutableRepresentationForStoredListRepresentation___block_invoke;
   v17 = &unk_278372678;
-  v18 = self;
+  selfCopy = self;
   v19 = v8;
   v9 = v8;
   [v7 enumerateObjectsUsingBlock:&v14];
-  [v6 setObject:v9 forKey:{@"3.list.sections", v14, v15, v16, v17, v18}];
-  v10 = [v5 objectForKey:@"5.list.pendingStore"];
+  [v6 setObject:v9 forKey:{@"3.list.sections", v14, v15, v16, v17, selfCopy}];
+  v10 = [representationCopy objectForKey:@"5.list.pendingStore"];
 
   [(NCNotificationListPersistentStateManager *)self _mergePendingNotificationListRepresentation:v10 withMutableListRepresentation:v6];
   if ([v9 count])
@@ -953,11 +953,11 @@ void __94__NCNotificationListPersistentStateManager__mutableRepresentationForSto
   [*(a1 + 40) addObject:v3];
 }
 
-- (void)_mergePendingNotificationListRepresentation:(id)a3 withMutableListRepresentation:(id)a4
+- (void)_mergePendingNotificationListRepresentation:(id)representation withMutableListRepresentation:(id)listRepresentation
 {
-  v6 = a4;
-  v7 = [a3 objectForKey:@"3.list.sections"];
-  v8 = [v6 objectForKey:@"3.list.sections"];
+  listRepresentationCopy = listRepresentation;
+  v7 = [representation objectForKey:@"3.list.sections"];
+  v8 = [listRepresentationCopy objectForKey:@"3.list.sections"];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -988,10 +988,10 @@ void __118__NCNotificationListPersistentStateManager__mergePendingNotificationLi
   }
 }
 
-- (void)_clearStoredListRepresentationForSectionIdentifier:(id)a3
+- (void)_clearStoredListRepresentationForSectionIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x277D77DC8];
   v6 = *MEMORY[0x277D77DC8];
   if (os_log_type_enabled(*MEMORY[0x277D77DC8], OS_LOG_TYPE_DEFAULT))
@@ -1002,7 +1002,7 @@ void __118__NCNotificationListPersistentStateManager__mergePendingNotificationLi
     *buf = 138543618;
     v23 = v9;
     v24 = 2114;
-    v25 = v4;
+    v25 = identifierCopy;
     _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ clearing stored notifications for section %{public}@", buf, 0x16u);
   }
 
@@ -1013,7 +1013,7 @@ void __118__NCNotificationListPersistentStateManager__mergePendingNotificationLi
   v19[2] = __95__NCNotificationListPersistentStateManager__clearStoredListRepresentationForSectionIdentifier___block_invoke;
   v19[3] = &unk_2783726A0;
   v19[4] = self;
-  v12 = v4;
+  v12 = identifierCopy;
   v20 = v12;
   v13 = v11;
   v21 = v13;
@@ -1065,69 +1065,69 @@ void __95__NCNotificationListPersistentStateManager__clearStoredListRepresentati
   [v2 persistentStateManager:*(a1 + 32) finishedLoadingDataForSectionType:NCNotificationListSectionTypeFromString(*(a1 + 40))];
 }
 
-- (BOOL)_isMutableListRepresentationEmpty:(id)a3
+- (BOOL)_isMutableListRepresentationEmpty:(id)empty
 {
-  v3 = [a3 objectForKey:@"3.list.sections"];
+  v3 = [empty objectForKey:@"3.list.sections"];
   v4 = [v3 count] == 0;
 
   return v4;
 }
 
-- (id)_representationForListCache:(id)a3
+- (id)_representationForListCache:(id)cache
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  cacheCopy = cache;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "activeNotificationCellCount")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(cacheCopy, "activeNotificationCellCount")}];
   [v5 setObject:v6 forKey:@"0.cache.activeViews"];
 
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v4 currentCacheSizeCount];
+  currentCacheSizeCount = [cacheCopy currentCacheSizeCount];
 
-  v9 = [v7 numberWithUnsignedInteger:v8];
+  v9 = [v7 numberWithUnsignedInteger:currentCacheSizeCount];
   [v5 setObject:v9 forKey:@"1.cache.availableViews"];
 
   return v5;
 }
 
-- (id)_representationForMigrationScheduler:(id)a3
+- (id)_representationForMigrationScheduler:(id)scheduler
 {
-  v4 = a3;
+  schedulerCopy = scheduler;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [v4 upcomingScheduledMigrationDate];
-  if (v6)
+  upcomingScheduledMigrationDate = [schedulerCopy upcomingScheduledMigrationDate];
+  if (upcomingScheduledMigrationDate)
   {
-    v7 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v6];
+    v7 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:upcomingScheduledMigrationDate];
     [v5 setObject:v7 forKey:@"0.migrationTime.upcoming"];
   }
 
-  v8 = [v4 migrationDateForNotificationDigest];
-  if (v8)
+  migrationDateForNotificationDigest = [schedulerCopy migrationDateForNotificationDigest];
+  if (migrationDateForNotificationDigest)
   {
-    v9 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v8];
+    v9 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:migrationDateForNotificationDigest];
     [v5 setObject:v9 forKey:@"1.migrationTime.summary"];
   }
 
-  v10 = [v4 migrationDatesForNotificationRequests];
-  if ([v10 count])
+  migrationDatesForNotificationRequests = [schedulerCopy migrationDatesForNotificationRequests];
+  if ([migrationDatesForNotificationRequests count])
   {
-    v11 = [(NCNotificationListPersistentStateManager *)self _representationForRequestMigrationTimes:v10];
+    v11 = [(NCNotificationListPersistentStateManager *)self _representationForRequestMigrationTimes:migrationDatesForNotificationRequests];
     [v5 setObject:v11 forKey:@"2.migrationTime.requests"];
   }
 
-  v12 = [v4 migratedTimeSensitiveNotificationRequests];
-  if ([v12 count])
+  migratedTimeSensitiveNotificationRequests = [schedulerCopy migratedTimeSensitiveNotificationRequests];
+  if ([migratedTimeSensitiveNotificationRequests count])
   {
-    v13 = [(NCNotificationListPersistentStateManager *)self _representationForMigratedTimeSensitiveNotificationRequests:v12];
+    v13 = [(NCNotificationListPersistentStateManager *)self _representationForMigratedTimeSensitiveNotificationRequests:migratedTimeSensitiveNotificationRequests];
     [v5 setObject:v13 forKey:@"3.migrationTime.migratedTimeSensitiveNotificationRequests"];
   }
 
   return v5;
 }
 
-- (id)_summaryMigrationTimeInRepresentationForList:(id)a3
+- (id)_summaryMigrationTimeInRepresentationForList:(id)list
 {
-  v4 = [a3 objectForKey:@"4.list.migrationTimes"];
+  v4 = [list objectForKey:@"4.list.migrationTimes"];
   v5 = v4;
   if (v4)
   {
@@ -1151,12 +1151,12 @@ void __95__NCNotificationListPersistentStateManager__clearStoredListRepresentati
   return v7;
 }
 
-- (BOOL)_isRepresentationForMigrationTimes:(id)a3 equalToRepresentationForMigrationTimes:(id)a4
+- (BOOL)_isRepresentationForMigrationTimes:(id)times equalToRepresentationForMigrationTimes:(id)migrationTimes
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = v6;
+  timesCopy = times;
+  migrationTimesCopy = migrationTimes;
+  v7 = timesCopy;
+  v8 = migrationTimesCopy;
   v9 = [v7 objectForKey:@"0.migrationTime.upcoming"];
   v10 = [v8 objectForKey:@"0.migrationTime.upcoming"];
   if ([v9 isEqualToString:v10] && (objc_msgSend(v7, "objectForKey:", @"1.migrationTime.summary"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectForKey:", @"1.migrationTime.summary"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "isEqualToString:", v12), v12, v11, v13) && (objc_msgSend(v7, "objectForKey:", @"2.migrationTime.requests"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectForKey:", @"2.migrationTime.requests"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "isEqualToDictionary:", v15), v15, v14, v16))
@@ -1174,10 +1174,10 @@ void __95__NCNotificationListPersistentStateManager__clearStoredListRepresentati
   return v19;
 }
 
-- (id)_representationForRequestMigrationTimes:(id)a3
+- (id)_representationForRequestMigrationTimes:(id)times
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  timesCopy = times;
   v6 = objc_alloc_init(v4);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -1185,8 +1185,8 @@ void __95__NCNotificationListPersistentStateManager__clearStoredListRepresentati
   v10[3] = &unk_278371858;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
+  selfCopy = self;
+  [timesCopy enumerateKeysAndObjectsUsingBlock:v10];
 
   v8 = v7;
   return v7;
@@ -1211,11 +1211,11 @@ void __84__NCNotificationListPersistentStateManager__representationForRequestMig
   [v7 setObject:v8 forKey:v10];
 }
 
-- (id)_mutableRepresentationForRequestMigrationTimesInRepresentationForList:(id)a3
+- (id)_mutableRepresentationForRequestMigrationTimesInRepresentationForList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = v4;
+  v6 = listCopy;
   v7 = [v6 objectForKey:@"4.list.migrationTimes"];
   v8 = v7;
   if (v7)
@@ -1250,9 +1250,9 @@ void __84__NCNotificationListPersistentStateManager__representationForRequestMig
   return v12;
 }
 
-- (id)_mutableRepresentationForRepresentationForRequestMigrationTimes:(id)a3
+- (id)_mutableRepresentationForRepresentationForRequestMigrationTimes:(id)times
 {
-  v3 = a3;
+  timesCopy = times;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -1260,7 +1260,7 @@ void __84__NCNotificationListPersistentStateManager__representationForRequestMig
   v7[3] = &unk_2783726F0;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [timesCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -1295,16 +1295,16 @@ void __108__NCNotificationListPersistentStateManager__mutableRepresentationForRe
   [v4 setObject:v7 forKey:v6];
 }
 
-- (void)_mergePendingRequestMigrationTimesRepresentation:(id)a3 withMutableRepresentationForRequestMigrationTimes:(id)a4
+- (void)_mergePendingRequestMigrationTimesRepresentation:(id)representation withMutableRepresentationForRequestMigrationTimes:(id)times
 {
-  v5 = a4;
+  timesCopy = times;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __143__NCNotificationListPersistentStateManager__mergePendingRequestMigrationTimesRepresentation_withMutableRepresentationForRequestMigrationTimes___block_invoke;
   v7[3] = &unk_2783726F0;
-  v8 = v5;
-  v6 = v5;
-  [a3 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = timesCopy;
+  v6 = timesCopy;
+  [representation enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __143__NCNotificationListPersistentStateManager__mergePendingRequestMigrationTimesRepresentation_withMutableRepresentationForRequestMigrationTimes___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1326,10 +1326,10 @@ void __143__NCNotificationListPersistentStateManager__mergePendingRequestMigrati
   }
 }
 
-- (void)_clearStoredRequestMigrationTimesForSectionIdentifier:(id)a3
+- (void)_clearStoredRequestMigrationTimesForSectionIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x277D85DE8];
-  [(NSMutableDictionary *)self->_storedPersistentMigrationTimes removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_storedPersistentMigrationTimes removeObjectForKey:identifier];
   if (![(NSMutableDictionary *)self->_storedPersistentMigrationTimes count])
   {
     v4 = *MEMORY[0x277D77DC8];
@@ -1348,22 +1348,22 @@ void __143__NCNotificationListPersistentStateManager__mergePendingRequestMigrati
   }
 }
 
-- (id)_getStoredMigrationTimeAndClearNotificationRequest:(id)a3
+- (id)_getStoredMigrationTimeAndClearNotificationRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 sectionIdentifier];
-  v6 = [(NSMutableDictionary *)self->_storedPersistentMigrationTimes objectForKey:v5];
+  requestCopy = request;
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  v6 = [(NSMutableDictionary *)self->_storedPersistentMigrationTimes objectForKey:sectionIdentifier];
   if (v6)
   {
-    v7 = [v4 notificationIdentifier];
-    v8 = [v7 un_logDigest];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
 
-    v9 = [v6 objectForKey:v8];
+    v9 = [v6 objectForKey:un_logDigest];
     if (v9)
     {
       v10 = [(NSDateFormatter *)self->_dateFormatter dateFromString:v9];
-      [v6 removeObjectForKey:v8];
+      [v6 removeObjectForKey:un_logDigest];
     }
 
     else
@@ -1373,7 +1373,7 @@ void __143__NCNotificationListPersistentStateManager__mergePendingRequestMigrati
 
     if (![v6 count])
     {
-      [(NSMutableDictionary *)self->_storedPersistentMigrationTimes removeObjectForKey:v5];
+      [(NSMutableDictionary *)self->_storedPersistentMigrationTimes removeObjectForKey:sectionIdentifier];
       if (![(NSMutableDictionary *)self->_storedPersistentMigrationTimes count])
       {
         v11 = *MEMORY[0x277D77DC8];
@@ -1401,10 +1401,10 @@ void __143__NCNotificationListPersistentStateManager__mergePendingRequestMigrati
   return v10;
 }
 
-- (id)_representationForMigratedTimeSensitiveNotificationRequests:(id)a3
+- (id)_representationForMigratedTimeSensitiveNotificationRequests:(id)requests
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  requestsCopy = requests;
   v5 = objc_alloc_init(v3);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -1412,7 +1412,7 @@ void __143__NCNotificationListPersistentStateManager__mergePendingRequestMigrati
   v8[3] = &unk_278370868;
   v6 = v5;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [requestsCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -1433,11 +1433,11 @@ void __104__NCNotificationListPersistentStateManager__representationForMigratedT
   [v4 addObject:v6];
 }
 
-- (id)_mutableRepresentationForMigratedTimeSensitiveNotificationRequestsInRepresentationForList:(id)a3
+- (id)_mutableRepresentationForMigratedTimeSensitiveNotificationRequestsInRepresentationForList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [v4 objectForKey:@"4.list.migrationTimes"];
+  v6 = [listCopy objectForKey:@"4.list.migrationTimes"];
   v7 = v6;
   if (v6)
   {
@@ -1453,9 +1453,9 @@ void __104__NCNotificationListPersistentStateManager__representationForMigratedT
   return v5;
 }
 
-- (id)_mutableRepresentationForRepresentationForMigratedTimeSensitiveNotificationRequests:(id)a3
+- (id)_mutableRepresentationForRepresentationForMigratedTimeSensitiveNotificationRequests:(id)requests
 {
-  v3 = a3;
+  requestsCopy = requests;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -1463,7 +1463,7 @@ void __104__NCNotificationListPersistentStateManager__representationForMigratedT
   v7[3] = &unk_278372740;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [requestsCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -1495,10 +1495,10 @@ void __128__NCNotificationListPersistentStateManager__mutableRepresentationForRe
   [v2 addObject:v3];
 }
 
-- (void)_clearStoredMigratedTimeSensitiveNotificationRequestsForSectionIdentifier:(id)a3
+- (void)_clearStoredMigratedTimeSensitiveNotificationRequestsForSectionIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x277D85DE8];
-  [(NSMutableDictionary *)self->_storedPersistentMigratedTimeSensitiveNotificationRequests removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_storedPersistentMigratedTimeSensitiveNotificationRequests removeObjectForKey:identifier];
   if (![(NSMutableDictionary *)self->_storedPersistentMigratedTimeSensitiveNotificationRequests count])
   {
     v4 = *MEMORY[0x277D77DC8];
@@ -1517,17 +1517,17 @@ void __128__NCNotificationListPersistentStateManager__mutableRepresentationForRe
   }
 }
 
-- (BOOL)_isMigratedTimeSensitiveNotificationRequest:(id)a3
+- (BOOL)_isMigratedTimeSensitiveNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 sectionIdentifier];
-  v6 = [(NSMutableDictionary *)self->_storedPersistentMigratedTimeSensitiveNotificationRequests objectForKey:v5];
+  requestCopy = request;
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  v6 = [(NSMutableDictionary *)self->_storedPersistentMigratedTimeSensitiveNotificationRequests objectForKey:sectionIdentifier];
   if (v6)
   {
-    v7 = [v4 notificationIdentifier];
-    v8 = [v7 un_logDigest];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
 
-    v9 = [v6 containsObject:v8];
+    v9 = [v6 containsObject:un_logDigest];
   }
 
   else
@@ -1538,22 +1538,22 @@ void __128__NCNotificationListPersistentStateManager__mutableRepresentationForRe
   return v9;
 }
 
-- (id)_representationForSections:(id)a3 detailed:(BOOL)a4 hashIdentifiers:(BOOL)a5 includeHidden:(BOOL)a6
+- (id)_representationForSections:(id)sections detailed:(BOOL)detailed hashIdentifiers:(BOOL)identifiers includeHidden:(BOOL)hidden
 {
   v10 = MEMORY[0x277CBEB18];
-  v11 = a3;
+  sectionsCopy = sections;
   v12 = objc_alloc_init(v10);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __110__NCNotificationListPersistentStateManager__representationForSections_detailed_hashIdentifiers_includeHidden___block_invoke;
   v17[3] = &unk_278372768;
-  v19 = a6;
+  hiddenCopy = hidden;
   v17[4] = self;
-  v20 = a4;
-  v21 = a5;
+  detailedCopy = detailed;
+  identifiersCopy = identifiers;
   v13 = v12;
   v18 = v13;
-  [v11 enumerateObjectsUsingBlock:v17];
+  [sectionsCopy enumerateObjectsUsingBlock:v17];
 
   v14 = v18;
   v15 = v13;
@@ -1584,49 +1584,49 @@ uint64_t __110__NCNotificationListPersistentStateManager__representationForSecti
   return MEMORY[0x2821F96F8](v4);
 }
 
-- (id)_representationForSection:(id)a3 detailed:(BOOL)a4 hashIdentifiers:(BOOL)a5 includeHidden:(BOOL)a6
+- (id)_representationForSection:(id)section detailed:(BOOL)detailed hashIdentifiers:(BOOL)identifiers includeHidden:(BOOL)hidden
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
+  identifiersCopy = identifiers;
+  detailedCopy = detailed;
+  sectionCopy = section;
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v12 = NCNotificationListSectionTypeString([v10 sectionType]);
+  v12 = NCNotificationListSectionTypeString([sectionCopy sectionType]);
   [v11 setObject:v12 forKey:@"0.section.type"];
 
-  if (a6)
+  if (hidden)
   {
-    [v10 allNotificationGroupsIncludingHidden];
+    [sectionCopy allNotificationGroupsIncludingHidden];
   }
 
   else
   {
-    [v10 allNotificationGroups];
+    [sectionCopy allNotificationGroups];
   }
   v13 = ;
   if ([v13 count])
   {
-    v14 = [(NCNotificationListPersistentStateManager *)self _representationForGroups:v13 detailed:v8 hashIdentifiers:v7];
+    v14 = [(NCNotificationListPersistentStateManager *)self _representationForGroups:v13 detailed:detailedCopy hashIdentifiers:identifiersCopy];
     [v11 setObject:v14 forKey:@"3.section.groups"];
   }
 
-  if (v8)
+  if (detailedCopy)
   {
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "notificationCount")}];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(sectionCopy, "notificationCount")}];
     [v11 setObject:v15 forKey:@"1.section.notificationCount"];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(sectionCopy, "count")}];
     [v11 setObject:v16 forKey:@"2.section.groupCount"];
   }
 
   return v11;
 }
 
-- (BOOL)_isRepresentationForSections:(id)a3 equalToRepresentationForSections:(id)a4
+- (BOOL)_isRepresentationForSections:(id)sections equalToRepresentationForSections:(id)forSections
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
+  sectionsCopy = sections;
+  forSectionsCopy = forSections;
+  v8 = sectionsCopy;
+  v9 = forSectionsCopy;
   v10 = [v8 count];
   if (v10 == [v9 count])
   {
@@ -1664,18 +1664,18 @@ uint64_t __110__NCNotificationListPersistentStateManager__representationForSecti
   return v16;
 }
 
-- (BOOL)_isRepresentationForSection:(id)a3 equalToRepresentationForSection:(id)a4
+- (BOOL)_isRepresentationForSection:(id)section equalToRepresentationForSection:(id)forSection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"0.section.type"];
-  v9 = [v7 objectForKey:@"0.section.type"];
+  sectionCopy = section;
+  forSectionCopy = forSection;
+  v8 = [sectionCopy objectForKey:@"0.section.type"];
+  v9 = [forSectionCopy objectForKey:@"0.section.type"];
   v10 = [v8 isEqualToString:v9];
 
   if (v10)
   {
-    v11 = [v6 objectForKey:@"3.section.groups"];
-    v12 = [v7 objectForKey:@"3.section.groups"];
+    v11 = [sectionCopy objectForKey:@"3.section.groups"];
+    v12 = [forSectionCopy objectForKey:@"3.section.groups"];
     v13 = [(NCNotificationListPersistentStateManager *)self _isRepresentationForGroups:v11 equalToRepresentationForGroups:v12];
   }
 
@@ -1687,14 +1687,14 @@ uint64_t __110__NCNotificationListPersistentStateManager__representationForSecti
   return v13;
 }
 
-- (unint64_t)_getSectionTypeAndRemoveNotificationRequest:(id)a3 inMutableRepresentationForSections:(id)a4
+- (unint64_t)_getSectionTypeAndRemoveNotificationRequest:(id)request inMutableRepresentationForSections:(id)sections
 {
-  v6 = a3;
+  requestCopy = request;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0x7FFFFFFFFFFFFFFFLL;
-  v7 = a4;
+  sectionsCopy = sections;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -1706,14 +1706,14 @@ uint64_t __110__NCNotificationListPersistentStateManager__representationForSecti
   v12[2] = __123__NCNotificationListPersistentStateManager__getSectionTypeAndRemoveNotificationRequest_inMutableRepresentationForSections___block_invoke;
   v12[3] = &unk_278372790;
   v12[4] = self;
-  v8 = v6;
+  v8 = requestCopy;
   v13 = v8;
   v14 = &v22;
   v15 = &v16;
-  [v7 enumerateObjectsUsingBlock:v12];
+  [sectionsCopy enumerateObjectsUsingBlock:v12];
   if (v17[5] && [(NCNotificationListPersistentStateManager *)self _isRepresentationForSectionEmpty:?])
   {
-    [v7 removeObject:v17[5]];
+    [sectionsCopy removeObject:v17[5]];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __123__NCNotificationListPersistentStateManager__getSectionTypeAndRemoveNotificationRequest_inMutableRepresentationForSections___block_invoke_2;
@@ -1763,15 +1763,15 @@ void __123__NCNotificationListPersistentStateManager__getSectionTypeAndRemoveNot
   [v2 persistentStateManager:*(a1 + 32) finishedLoadingDataForSectionType:*(*(*(a1 + 40) + 8) + 24)];
 }
 
-- (BOOL)_containsNotificationRequest:(id)a3 inMutableRepresentationForSection:(id)a4 shouldRemove:(BOOL)a5
+- (BOOL)_containsNotificationRequest:(id)request inMutableRepresentationForSection:(id)section shouldRemove:(BOOL)remove
 {
-  v8 = a3;
+  requestCopy = request;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  v9 = a4;
-  v10 = [v9 objectForKey:@"3.section.groups"];
+  sectionCopy = section;
+  v10 = [sectionCopy objectForKey:@"3.section.groups"];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1784,8 +1784,8 @@ void __123__NCNotificationListPersistentStateManager__getSectionTypeAndRemoveNot
   v14[3] = &unk_2783727E0;
   v16 = &v25;
   v14[4] = self;
-  v11 = v8;
-  v18 = a5;
+  v11 = requestCopy;
+  removeCopy = remove;
   v15 = v11;
   v17 = &v19;
   [v10 enumerateObjectsUsingBlock:v14];
@@ -1815,11 +1815,11 @@ void __120__NCNotificationListPersistentStateManager__containsNotificationReques
   *a4 = a1;
 }
 
-- (id)_mutableRepresentationForRepresentationForSection:(id)a3
+- (id)_mutableRepresentationForRepresentationForSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = v4;
+  v6 = sectionCopy;
   v7 = [v6 objectForKey:@"0.section.type"];
   v8 = v7;
   if (v7)
@@ -1834,7 +1834,7 @@ void __120__NCNotificationListPersistentStateManager__containsNotificationReques
   v15 = 3221225472;
   v16 = __94__NCNotificationListPersistentStateManager__mutableRepresentationForRepresentationForSection___block_invoke;
   v17 = &unk_278372678;
-  v18 = self;
+  selfCopy = self;
   v12 = v10;
   v19 = v12;
   [v11 enumerateObjectsUsingBlock:&v14];
@@ -1852,17 +1852,17 @@ void __94__NCNotificationListPersistentStateManager__mutableRepresentationForRep
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)_sectionRepresentationOfSectionType:(id)a3 inRepresentationForSections:(id)a4
+- (id)_sectionRepresentationOfSectionType:(id)type inRepresentationForSections:(id)sections
 {
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  sectionsCopy = sections;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __108__NCNotificationListPersistentStateManager__sectionRepresentationOfSectionType_inRepresentationForSections___block_invoke;
   v11[3] = &unk_278372808;
-  v7 = v5;
+  v7 = typeCopy;
   v12 = v7;
-  v8 = [v6 indexOfObjectPassingTest:v11];
+  v8 = [sectionsCopy indexOfObjectPassingTest:v11];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -1870,7 +1870,7 @@ void __94__NCNotificationListPersistentStateManager__mutableRepresentationForRep
 
   else
   {
-    v9 = [v6 objectAtIndex:v8];
+    v9 = [sectionsCopy objectAtIndex:v8];
   }
 
   return v9;
@@ -1884,11 +1884,11 @@ uint64_t __108__NCNotificationListPersistentStateManager__sectionRepresentationO
   return v4;
 }
 
-- (void)_mergeRepresentationForSection:(id)a3 withMutableRepresentationForSection:(id)a4
+- (void)_mergeRepresentationForSection:(id)section withMutableRepresentationForSection:(id)forSection
 {
-  v6 = a3;
-  v7 = [a4 objectForKey:@"3.section.groups"];
-  v8 = [v6 objectForKey:@"3.section.groups"];
+  sectionCopy = section;
+  v7 = [forSection objectForKey:@"3.section.groups"];
+  v8 = [sectionCopy objectForKey:@"3.section.groups"];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -1920,18 +1920,18 @@ void __111__NCNotificationListPersistentStateManager__mergeRepresentationForSect
   }
 }
 
-- (void)_clearStoredSectionIdentifier:(id)a3 inMutableRepresentationForSection:(id)a4
+- (void)_clearStoredSectionIdentifier:(id)identifier inMutableRepresentationForSection:(id)section
 {
-  v5 = a3;
-  v6 = [a4 objectForKey:@"3.section.groups"];
+  identifierCopy = identifier;
+  v6 = [section objectForKey:@"3.section.groups"];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __108__NCNotificationListPersistentStateManager__clearStoredSectionIdentifier_inMutableRepresentationForSection___block_invoke;
   v13 = &unk_278372650;
-  v14 = v5;
+  v14 = identifierCopy;
   v15 = v7;
-  v8 = v5;
+  v8 = identifierCopy;
   v9 = v7;
   [v6 enumerateObjectsUsingBlock:&v10];
   [v6 removeObjectsInArray:{v9, v10, v11, v12, v13}];
@@ -1947,29 +1947,29 @@ void __108__NCNotificationListPersistentStateManager__clearStoredSectionIdentifi
   }
 }
 
-- (BOOL)_isRepresentationForSectionEmpty:(id)a3
+- (BOOL)_isRepresentationForSectionEmpty:(id)empty
 {
-  v3 = [a3 objectForKey:@"3.section.groups"];
+  v3 = [empty objectForKey:@"3.section.groups"];
   v4 = [v3 count] == 0;
 
   return v4;
 }
 
-- (id)_representationForGroups:(id)a3 detailed:(BOOL)a4 hashIdentifiers:(BOOL)a5
+- (id)_representationForGroups:(id)groups detailed:(BOOL)detailed hashIdentifiers:(BOOL)identifiers
 {
   v8 = MEMORY[0x277CBEB18];
-  v9 = a3;
+  groupsCopy = groups;
   v10 = objc_alloc_init(v8);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __94__NCNotificationListPersistentStateManager__representationForGroups_detailed_hashIdentifiers___block_invoke;
   v15[3] = &unk_278372830;
   v15[4] = self;
-  v17 = a4;
-  v18 = a5;
+  detailedCopy = detailed;
+  identifiersCopy = identifiers;
   v11 = v10;
   v16 = v11;
-  [v9 enumerateObjectsUsingBlock:v15];
+  [groupsCopy enumerateObjectsUsingBlock:v15];
 
   v12 = v16;
   v13 = v11;
@@ -1983,59 +1983,59 @@ void __94__NCNotificationListPersistentStateManager__representationForGroups_det
   [*(a1 + 40) addObject:v4];
 }
 
-- (id)_representationForGroup:(id)a3 atIndex:(unint64_t)a4 detailed:(BOOL)a5 hashIdentifiers:(BOOL)a6
+- (id)_representationForGroup:(id)group atIndex:(unint64_t)index detailed:(BOOL)detailed hashIdentifiers:(BOOL)identifiers
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
+  identifiersCopy = identifiers;
+  detailedCopy = detailed;
+  groupCopy = group;
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v12 = [v10 sectionIdentifier];
-  v13 = [v12 copy];
+  sectionIdentifier = [groupCopy sectionIdentifier];
+  v13 = [sectionIdentifier copy];
   [v11 setObject:v13 forKey:@"1.group.sectionIdentifier"];
 
-  if (v6)
+  if (identifiersCopy)
   {
-    v14 = [v10 threadIdentifier];
-    v15 = [v14 un_logDigest];
-    [v11 setObject:v15 forKey:@"2.group.threadIdentifier"];
+    threadIdentifier = [groupCopy threadIdentifier];
+    un_logDigest = [threadIdentifier un_logDigest];
+    [v11 setObject:un_logDigest forKey:@"2.group.threadIdentifier"];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v16 = [v10 leadingNotificationRequest];
-  v17 = [v16 isUniqueThreadIdentifier];
+  leadingNotificationRequest = [groupCopy leadingNotificationRequest];
+  isUniqueThreadIdentifier = [leadingNotificationRequest isUniqueThreadIdentifier];
 
-  if (v17)
+  if (isUniqueThreadIdentifier)
   {
-    v14 = [v10 threadIdentifier];
-    [v11 setObject:v14 forKey:@"2.group.threadIdentifier"];
+    threadIdentifier = [groupCopy threadIdentifier];
+    [v11 setObject:threadIdentifier forKey:@"2.group.threadIdentifier"];
     goto LABEL_5;
   }
 
 LABEL_6:
-  v18 = [v10 allNotificationRequests];
-  v19 = [(NCNotificationListPersistentStateManager *)self _representationForNotificationRequests:v18 detailed:v7 hashIdentifiers:v6];
+  allNotificationRequests = [groupCopy allNotificationRequests];
+  v19 = [(NCNotificationListPersistentStateManager *)self _representationForNotificationRequests:allNotificationRequests detailed:detailedCopy hashIdentifiers:identifiersCopy];
   [v11 setObject:v19 forKey:@"5.group.notificationRequests"];
 
-  if (v7)
+  if (detailedCopy)
   {
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
     [v11 setObject:v20 forKey:@"0.group.index"];
 
-    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(groupCopy, "count")}];
     [v11 setObject:v21 forKey:@"4.group.notificationCount"];
 
-    v22 = [v10 leadingNotificationRequest];
+    leadingNotificationRequest2 = [groupCopy leadingNotificationRequest];
 
-    if (v22)
+    if (leadingNotificationRequest2)
     {
-      v23 = [v10 leadingNotificationRequest];
-      v24 = [v23 timestamp];
+      leadingNotificationRequest3 = [groupCopy leadingNotificationRequest];
+      timestamp = [leadingNotificationRequest3 timestamp];
 
-      if (v24)
+      if (timestamp)
       {
-        v25 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v24];
+        v25 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:timestamp];
         [v11 setObject:v25 forKey:@"3.group.timestamp"];
       }
     }
@@ -2044,12 +2044,12 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)_isRepresentationForGroups:(id)a3 equalToRepresentationForGroups:(id)a4
+- (BOOL)_isRepresentationForGroups:(id)groups equalToRepresentationForGroups:(id)forGroups
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
+  groupsCopy = groups;
+  forGroupsCopy = forGroups;
+  v8 = groupsCopy;
+  v9 = forGroupsCopy;
   v10 = [v8 count];
   if (v10 == [v9 count])
   {
@@ -2087,12 +2087,12 @@ LABEL_6:
   return v16;
 }
 
-- (BOOL)_isRepresentationForGroup:(id)a3 equalToRepresentationForGroup:(id)a4
+- (BOOL)_isRepresentationForGroup:(id)group equalToRepresentationForGroup:(id)forGroup
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = v6;
+  groupCopy = group;
+  forGroupCopy = forGroup;
+  v7 = groupCopy;
+  v8 = forGroupCopy;
   v9 = [v7 objectForKey:@"1.group.sectionIdentifier"];
   v10 = [v8 objectForKey:@"1.group.sectionIdentifier"];
   v11 = [v9 isEqualToString:v10];
@@ -2112,32 +2112,32 @@ LABEL_6:
   return v17;
 }
 
-- (BOOL)_containsNotificationRequest:(id)a3 inMutableRepresentationForGroup:(id)a4 shouldRemove:(BOOL)a5
+- (BOOL)_containsNotificationRequest:(id)request inMutableRepresentationForGroup:(id)group shouldRemove:(BOOL)remove
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 objectForKey:@"1.group.sectionIdentifier"];
-  v11 = [v9 objectForKey:@"2.group.threadIdentifier"];
-  v12 = [v9 objectForKey:@"5.group.notificationRequests"];
+  removeCopy = remove;
+  requestCopy = request;
+  groupCopy = group;
+  v10 = [groupCopy objectForKey:@"1.group.sectionIdentifier"];
+  v11 = [groupCopy objectForKey:@"2.group.threadIdentifier"];
+  v12 = [groupCopy objectForKey:@"5.group.notificationRequests"];
 
-  v13 = [(NCNotificationListPersistentStateManager *)self _representationForNotificationRequest:v8 hashIdentifiers:1];
-  v14 = [v8 sectionIdentifier];
-  if (([v10 isEqualToString:v14] & 1) == 0)
+  v13 = [(NCNotificationListPersistentStateManager *)self _representationForNotificationRequest:requestCopy hashIdentifiers:1];
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  if (([v10 isEqualToString:sectionIdentifier] & 1) == 0)
   {
 
     LOBYTE(v17) = 0;
     goto LABEL_16;
   }
 
-  v23 = v5;
-  v15 = [v8 threadIdentifier];
-  v16 = [v11 isEqualToString:v15];
+  v23 = removeCopy;
+  threadIdentifier = [requestCopy threadIdentifier];
+  v16 = [v11 isEqualToString:threadIdentifier];
   if ((v16 & 1) == 0)
   {
-    v18 = [v8 threadIdentifier];
-    v22 = [v18 un_logDigest];
-    if (([v11 isEqualToString:v22] & 1) == 0)
+    threadIdentifier2 = [requestCopy threadIdentifier];
+    un_logDigest = [threadIdentifier2 un_logDigest];
+    if (([v11 isEqualToString:un_logDigest] & 1) == 0)
     {
       v17 = 0;
       goto LABEL_12;
@@ -2149,12 +2149,12 @@ LABEL_6:
       goto LABEL_12;
     }
 
-    v21 = v18;
+    v21 = threadIdentifier2;
 LABEL_11:
-    v19 = [v8 notificationIdentifier];
-    v17 = [v12 containsObject:v19];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    v17 = [v12 containsObject:notificationIdentifier];
 
-    v18 = v21;
+    threadIdentifier2 = v21;
     if (v16)
     {
       goto LABEL_13;
@@ -2184,11 +2184,11 @@ LABEL_16:
   return v17;
 }
 
-- (id)_mutableRepresentationForRepresentationForGroup:(id)a3
+- (id)_mutableRepresentationForRepresentationForGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [v4 objectForKey:@"1.group.sectionIdentifier"];
+  v6 = [groupCopy objectForKey:@"1.group.sectionIdentifier"];
   v7 = v6;
   if (v6)
   {
@@ -2196,7 +2196,7 @@ LABEL_16:
     [v5 setObject:v8 forKey:@"1.group.sectionIdentifier"];
   }
 
-  v9 = [v4 objectForKey:@"2.group.threadIdentifier"];
+  v9 = [groupCopy objectForKey:@"2.group.threadIdentifier"];
   v10 = v9;
   if (v9)
   {
@@ -2204,7 +2204,7 @@ LABEL_16:
     [v5 setObject:v11 forKey:@"2.group.threadIdentifier"];
   }
 
-  v12 = [v4 objectForKey:@"5.group.notificationRequests"];
+  v12 = [groupCopy objectForKey:@"5.group.notificationRequests"];
   if (v12)
   {
     v13 = [(NCNotificationListPersistentStateManager *)self _mutableRepresentationForRepresentationForNotificationRequests:v12];
@@ -2214,20 +2214,20 @@ LABEL_16:
   return v5;
 }
 
-- (id)_representationForGroupWithSectionIdentifier:(id)a3 threadIdentifier:(id)a4 inRepresentationForGroups:(id)a5
+- (id)_representationForGroupWithSectionIdentifier:(id)identifier threadIdentifier:(id)threadIdentifier inRepresentationForGroups:(id)groups
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  threadIdentifierCopy = threadIdentifier;
+  groupsCopy = groups;
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __132__NCNotificationListPersistentStateManager__representationForGroupWithSectionIdentifier_threadIdentifier_inRepresentationForGroups___block_invoke;
   v18 = &unk_278372858;
-  v19 = v7;
-  v20 = v8;
-  v10 = v7;
-  v11 = v8;
-  v12 = [v9 indexOfObjectPassingTest:&v15];
+  v19 = identifierCopy;
+  v20 = threadIdentifierCopy;
+  v10 = identifierCopy;
+  v11 = threadIdentifierCopy;
+  v12 = [groupsCopy indexOfObjectPassingTest:&v15];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = 0;
@@ -2235,7 +2235,7 @@ LABEL_16:
 
   else
   {
-    v13 = [v9 objectAtIndex:{v12, v15, v16, v17, v18, v19, v20}];
+    v13 = [groupsCopy objectAtIndex:{v12, v15, v16, v17, v18, v19, v20}];
   }
 
   return v13;
@@ -2261,40 +2261,40 @@ uint64_t __132__NCNotificationListPersistentStateManager__representationForGroup
   return v7;
 }
 
-- (void)_mergeRepresentationForGroup:(id)a3 withMutableRepresentationForGroup:(id)a4
+- (void)_mergeRepresentationForGroup:(id)group withMutableRepresentationForGroup:(id)forGroup
 {
-  v6 = a4;
-  v8 = [a3 objectForKey:@"5.group.notificationRequests"];
-  v7 = [v6 objectForKey:@"5.group.notificationRequests"];
+  forGroupCopy = forGroup;
+  v8 = [group objectForKey:@"5.group.notificationRequests"];
+  v7 = [forGroupCopy objectForKey:@"5.group.notificationRequests"];
 
   [(NCNotificationListPersistentStateManager *)self _mergeRepresentationForNotificationRequests:v8 withMutableRepresentationForNotificationRequests:v7];
 }
 
-- (BOOL)_isRepresentationForGroupEmpty:(id)a3
+- (BOOL)_isRepresentationForGroupEmpty:(id)empty
 {
-  v3 = [a3 objectForKey:@"5.group.notificationRequests"];
+  v3 = [empty objectForKey:@"5.group.notificationRequests"];
   v4 = [v3 count] == 0;
 
   return v4;
 }
 
-- (id)_representationForNotificationRequests:(id)a3 detailed:(BOOL)a4 hashIdentifiers:(BOOL)a5
+- (id)_representationForNotificationRequests:(id)requests detailed:(BOOL)detailed hashIdentifiers:(BOOL)identifiers
 {
   v7 = MEMORY[0x277CBEB40];
-  v8 = a3;
-  v9 = [v7 orderedSet];
+  requestsCopy = requests;
+  orderedSet = [v7 orderedSet];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __108__NCNotificationListPersistentStateManager__representationForNotificationRequests_detailed_hashIdentifiers___block_invoke;
   v14[3] = &unk_278372880;
-  v16 = a5;
+  identifiersCopy = identifiers;
   v14[4] = self;
-  v15 = v9;
-  v10 = v9;
-  [v8 enumerateObjectsUsingBlock:v14];
+  v15 = orderedSet;
+  v10 = orderedSet;
+  [requestsCopy enumerateObjectsUsingBlock:v14];
 
-  v11 = [v10 array];
-  v12 = [v11 mutableCopy];
+  array = [v10 array];
+  v12 = [array mutableCopy];
 
   return v12;
 }
@@ -2305,24 +2305,24 @@ void __108__NCNotificationListPersistentStateManager__representationForNotificat
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)_representationForNotificationRequest:(id)a3 hashIdentifiers:(BOOL)a4
+- (id)_representationForNotificationRequest:(id)request hashIdentifiers:(BOOL)identifiers
 {
-  v4 = a4;
-  v5 = [a3 notificationIdentifier];
-  v6 = v5;
-  if (v4)
+  identifiersCopy = identifiers;
+  notificationIdentifier = [request notificationIdentifier];
+  v6 = notificationIdentifier;
+  if (identifiersCopy)
   {
-    v7 = [v5 un_logDigest];
+    un_logDigest = [notificationIdentifier un_logDigest];
 
-    v6 = v7;
+    v6 = un_logDigest;
   }
 
   return v6;
 }
 
-- (id)_mutableRepresentationForRepresentationForNotificationRequests:(id)a3
+- (id)_mutableRepresentationForRepresentationForNotificationRequests:(id)requests
 {
-  v3 = a3;
+  requestsCopy = requests;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -2330,21 +2330,21 @@ void __108__NCNotificationListPersistentStateManager__representationForNotificat
   v7[3] = &unk_278372718;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [requestsCopy enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
 
-- (void)_mergeRepresentationForNotificationRequests:(id)a3 withMutableRepresentationForNotificationRequests:(id)a4
+- (void)_mergeRepresentationForNotificationRequests:(id)requests withMutableRepresentationForNotificationRequests:(id)notificationRequests
 {
-  v5 = a4;
+  notificationRequestsCopy = notificationRequests;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __137__NCNotificationListPersistentStateManager__mergeRepresentationForNotificationRequests_withMutableRepresentationForNotificationRequests___block_invoke;
   v7[3] = &unk_278372718;
-  v8 = v5;
-  v6 = v5;
-  [a3 enumerateObjectsUsingBlock:v7];
+  v8 = notificationRequestsCopy;
+  v6 = notificationRequestsCopy;
+  [requests enumerateObjectsUsingBlock:v7];
 }
 
 void __137__NCNotificationListPersistentStateManager__mergeRepresentationForNotificationRequests_withMutableRepresentationForNotificationRequests___block_invoke(uint64_t a1, void *a2)

@@ -2,19 +2,19 @@
 + (id)cachedMetricsRecalculatingIfNecessary;
 + (void)cachedMetricsRecalculatingIfNecessary;
 - (CKMessageEntryViewLayoutMetrics)init;
-- (CKMessageEntryViewLayoutMetrics)initWithCoder:(id)a3;
+- (CKMessageEntryViewLayoutMetrics)initWithCoder:(id)coder;
 - (UIEdgeInsets)entryViewContentInsets;
 - (UIEdgeInsets)entryViewTextAlignmentInsets;
 - (void)calculateTextMetrics;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKMessageEntryViewLayoutMetrics
 
 + (id)cachedMetricsRecalculatingIfNecessary
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:?];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:?];
   v4 = [v3 mutableCopy];
 
   if (!v4)
@@ -24,14 +24,14 @@
 
   v5 = +[CKUIBehavior sharedBehaviors];
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 balloonTextFont];
+  balloonTextFont = [v6 balloonTextFont];
 
-  [v7 pointSize];
+  [balloonTextFont pointSize];
   v9 = v8;
-  v75 = [v7 fontName];
-  v63 = v7;
-  v10 = [v7 fontDescriptor];
-  v60 = [v10 symbolicTraits];
+  fontName = [balloonTextFont fontName];
+  v63 = balloonTextFont;
+  fontDescriptor = [balloonTextFont fontDescriptor];
+  symbolicTraits = [fontDescriptor symbolicTraits];
 
   v74 = [v4 objectForKey:?];
   v73 = [v4 objectForKey:?];
@@ -47,11 +47,11 @@
   v16 = v15;
   v70 = [v4 objectForKeyedSubscript:?];
   v17 = [v4 objectForKeyedSubscript:?];
-  v18 = [MEMORY[0x1E69DC938] currentDevice];
-  v19 = [v18 buildVersion];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  buildVersion = [currentDevice buildVersion];
 
-  v20 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v21 = [v20 componentsJoinedByString:@"-"];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  v21 = [preferredLanguages componentsJoinedByString:@"-"];
 
   v22 = CKPreferredContentSizeCategory();
   [v5 entryViewVerticalCoverInsets];
@@ -74,13 +74,13 @@
   }
 
   v65 = v28;
-  v69 = v19;
-  v32 = [v74 isEqualToIgnoringCase:v19];
+  v69 = buildVersion;
+  v32 = [v74 isEqualToIgnoringCase:buildVersion];
   v68 = v21;
   v33 = [v73 isEqualToIgnoringCase:v21];
   v67 = v22;
   v34 = [v72 isEqualToIgnoringCase:v22];
-  v35 = [v71 isEqualToString:v75];
+  v35 = [v71 isEqualToString:fontName];
   v66 = v23;
   v36 = [v70 isEqualToString:v23];
   v62 = v17;
@@ -95,7 +95,7 @@
     }
 
     v49 = v48 & v35 & v59;
-    if (v60 != v58)
+    if (symbolicTraits != v58)
     {
       v49 = 0;
     }
@@ -110,7 +110,7 @@
     {
       v38 = v65;
       v40 = v29;
-      v42 = v75;
+      v42 = fontName;
       goto LABEL_17;
     }
   }
@@ -129,9 +129,9 @@
     v41 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
     [v4 setObject:v41 forKey:@"CKEntryViewLayoutMetricsInfoLastCachedBalloonTextFontSize"];
 
-    v42 = v75;
-    [v4 setObject:v75 forKey:@"CKEntryViewLayoutMetricsInfoLastCachedBalloonTextFontName"];
-    v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v60];
+    v42 = fontName;
+    [v4 setObject:fontName forKey:@"CKEntryViewLayoutMetricsInfoLastCachedBalloonTextFontName"];
+    v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:symbolicTraits];
     [v4 setObject:v43 forKeyedSubscript:@"CKEntryViewLayoutMetricsInfoLastCachedBalloonTextFontSymbolicTraits"];
 
     [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"CKEntryViewLayoutMetricsInfoUseTextLayoutManager"];
@@ -143,8 +143,8 @@
 
     [v4 setObject:v66 forKeyedSubscript:@"CKEntryViewLayoutMetricsInfoLastCachedEntryViewVerticalCoverInsets"];
     [v4 setObject:@"v0" forKeyedSubscript:@"CKEntryViewLayoutMetricsInfoLastCachedCacheVersion"];
-    v46 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v46 setObject:v4 forKey:@"CKEntryViewLayoutMetricsInfo"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 setObject:v4 forKey:@"CKEntryViewLayoutMetricsInfo"];
 
 LABEL_17:
     v52 = v72;
@@ -157,7 +157,7 @@ LABEL_17:
   }
 
   v56 = IMLogHandleForCategory();
-  v42 = v75;
+  v42 = fontName;
   v52 = v72;
   v51 = v73;
   v53 = v70;
@@ -200,65 +200,65 @@ LABEL_21:
   return v3;
 }
 
-- (CKMessageEntryViewLayoutMetrics)initWithCoder:(id)a3
+- (CKMessageEntryViewLayoutMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CKMessageEntryViewLayoutMetrics;
   v5 = [(CKMessageEntryViewLayoutMetrics *)&v19 init];
   if (v5)
   {
-    [v4 decodeUIEdgeInsetsForKey:@"entryViewContentInsets"];
+    [coderCopy decodeUIEdgeInsetsForKey:@"entryViewContentInsets"];
     v5->_entryViewContentInsets.top = v6;
     v5->_entryViewContentInsets.left = v7;
     v5->_entryViewContentInsets.bottom = v8;
     v5->_entryViewContentInsets.right = v9;
-    [v4 decodeUIEdgeInsetsForKey:@"entryViewTextAlignmentInsets"];
+    [coderCopy decodeUIEdgeInsetsForKey:@"entryViewTextAlignmentInsets"];
     v5->_entryViewTextAlignmentInsets.top = v10;
     v5->_entryViewTextAlignmentInsets.left = v11;
     v5->_entryViewTextAlignmentInsets.bottom = v12;
     v5->_entryViewTextAlignmentInsets.right = v13;
-    [v4 decodeDoubleForKey:@"defaultEntryContentViewHeight"];
+    [coderCopy decodeDoubleForKey:@"defaultEntryContentViewHeight"];
     v5->_defaultEntryContentViewHeight = v14;
-    [v4 decodeDoubleForKey:@"defaultSubjectEntryContentViewHeight"];
+    [coderCopy decodeDoubleForKey:@"defaultSubjectEntryContentViewHeight"];
     v5->_defaultSubjectEntryContentViewHeight = v15;
-    [v4 decodeDoubleForKey:@"defaultEntryViewHeight"];
+    [coderCopy decodeDoubleForKey:@"defaultEntryViewHeight"];
     v5->_defaultEntryViewHeight = v16;
-    [v4 decodeDoubleForKey:@"defaultSubjectEntryViewHeight"];
+    [coderCopy decodeDoubleForKey:@"defaultSubjectEntryViewHeight"];
     v5->_defaultSubjectEntryViewHeight = v17;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   top = self->_entryViewContentInsets.top;
   left = self->_entryViewContentInsets.left;
   bottom = self->_entryViewContentInsets.bottom;
   right = self->_entryViewContentInsets.right;
-  v12 = a3;
-  [v12 encodeUIEdgeInsets:@"entryViewContentInsets" forKey:{top, left, bottom, right}];
-  [v12 encodeUIEdgeInsets:@"entryViewTextAlignmentInsets" forKey:{self->_entryViewTextAlignmentInsets.top, self->_entryViewTextAlignmentInsets.left, self->_entryViewTextAlignmentInsets.bottom, self->_entryViewTextAlignmentInsets.right}];
+  coderCopy = coder;
+  [coderCopy encodeUIEdgeInsets:@"entryViewContentInsets" forKey:{top, left, bottom, right}];
+  [coderCopy encodeUIEdgeInsets:@"entryViewTextAlignmentInsets" forKey:{self->_entryViewTextAlignmentInsets.top, self->_entryViewTextAlignmentInsets.left, self->_entryViewTextAlignmentInsets.bottom, self->_entryViewTextAlignmentInsets.right}];
   defaultEntryContentViewHeight = self->_defaultEntryContentViewHeight;
   *&defaultEntryContentViewHeight = defaultEntryContentViewHeight;
-  [v12 encodeFloat:@"defaultEntryContentViewHeight" forKey:defaultEntryContentViewHeight];
+  [coderCopy encodeFloat:@"defaultEntryContentViewHeight" forKey:defaultEntryContentViewHeight];
   defaultSubjectEntryContentViewHeight = self->_defaultSubjectEntryContentViewHeight;
   *&defaultSubjectEntryContentViewHeight = defaultSubjectEntryContentViewHeight;
-  [v12 encodeFloat:@"defaultSubjectEntryContentViewHeight" forKey:defaultSubjectEntryContentViewHeight];
+  [coderCopy encodeFloat:@"defaultSubjectEntryContentViewHeight" forKey:defaultSubjectEntryContentViewHeight];
   defaultEntryViewHeight = self->_defaultEntryViewHeight;
   *&defaultEntryViewHeight = defaultEntryViewHeight;
-  [v12 encodeFloat:@"defaultEntryViewHeight" forKey:defaultEntryViewHeight];
+  [coderCopy encodeFloat:@"defaultEntryViewHeight" forKey:defaultEntryViewHeight];
   defaultSubjectEntryViewHeight = self->_defaultSubjectEntryViewHeight;
   *&defaultSubjectEntryViewHeight = defaultSubjectEntryViewHeight;
-  [v12 encodeFloat:@"defaultSubjectEntryViewHeight" forKey:defaultSubjectEntryViewHeight];
+  [coderCopy encodeFloat:@"defaultSubjectEntryViewHeight" forKey:defaultSubjectEntryViewHeight];
 }
 
 - (void)calculateTextMetrics
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v6 = fmin(v4, v5);
 
   v7 = +[CKUIBehavior sharedBehaviors];
@@ -266,8 +266,8 @@ LABEL_21:
   v9 = [v8 localizedStringForKey:@"MADRID" value:&stru_1F04268F8 table:@"ChatKit"];
 
   v46 = *MEMORY[0x1E69DB648];
-  v10 = [v7 balloonTextFont];
-  v47[0] = v10;
+  balloonTextFont = [v7 balloonTextFont];
+  v47[0] = balloonTextFont;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:&v46 count:1];
 
   v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v9 attributes:v11];
@@ -353,7 +353,7 @@ LABEL_21:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_19020E000, a2, OS_LOG_TYPE_ERROR, "Failed to encode metrics. Error: %@", &v2, 0xCu);
 }
 

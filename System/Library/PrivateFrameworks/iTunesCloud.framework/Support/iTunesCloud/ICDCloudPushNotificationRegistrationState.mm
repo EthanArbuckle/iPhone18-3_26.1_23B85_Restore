@@ -1,5 +1,5 @@
 @interface ICDCloudPushNotificationRegistrationState
-- (ICDCloudPushNotificationRegistrationState)initWithDictionaryRepresentation:(id)a3;
+- (ICDCloudPushNotificationRegistrationState)initWithDictionaryRepresentation:(id)representation;
 - (id)dictionaryRepresentation;
 @end
 
@@ -22,13 +22,13 @@
   return v3;
 }
 
-- (ICDCloudPushNotificationRegistrationState)initWithDictionaryRepresentation:(id)a3
+- (ICDCloudPushNotificationRegistrationState)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(ICDCloudPushNotificationRegistrationState *)self init];
   if (v5)
   {
-    v6 = [v4 ic_dictionaryValueForKey:@"accountStates"];
+    v6 = [representationCopy ic_dictionaryValueForKey:@"accountStates"];
     v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
     accountRegistrationStates = v5->_accountRegistrationStates;
     v5->_accountRegistrationStates = v7;

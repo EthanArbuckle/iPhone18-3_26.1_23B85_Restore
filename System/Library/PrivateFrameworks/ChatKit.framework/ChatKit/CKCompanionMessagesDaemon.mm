@@ -3,8 +3,8 @@
 - (BOOL)syncDeviceSalt;
 - (CKCompanionMessagesDaemon)init;
 - (void)registerForActivities;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncResponseKitData:(id)a3;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncResponseKitData:(id)data;
 - (void)systemDidLeaveDataProtectionLock;
 - (void)triggerWRCannedRepliesStoreDowngradeIfNeeded;
 @end
@@ -62,7 +62,7 @@
   v21 = sub_10000486C;
   v22 = 0;
   v3 = +[IMTextInputCryptographer sharedCryptographer];
-  v4 = [v3 dispatchQueue];
+  dispatchQueue = [v3 dispatchQueue];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100004874;
@@ -70,7 +70,7 @@
   v16 = &v17;
   v5 = v3;
   v15 = v5;
-  dispatch_sync(v4, &v11);
+  dispatch_sync(dispatchQueue, &v11);
 
   if (IMOSLoggingEnabled())
   {
@@ -105,13 +105,13 @@
   return v9;
 }
 
-- (void)syncResponseKitData:(id)a3
+- (void)syncResponseKitData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[NSFileManager defaultManager];
   v6 = sub_100005C80();
-  v7 = [v6 path];
-  v8 = [v5 fileExistsAtPath:v7];
+  path = [v6 path];
+  v8 = [v5 fileExistsAtPath:path];
 
   if (v8)
   {
@@ -127,12 +127,12 @@
       v19[3] = &unk_10000C440;
       v19[4] = self;
       v20 = v11;
-      v21 = v4;
+      v21 = dataCopy;
       v12 = v11;
       v13 = objc_retainBlock(v19);
       v14 = [IMFileCopier alloc];
-      v15 = [v12 path];
-      v16 = [v14 initWithInputURL:v6 outputURL:v12 identifier:v15 operation:0 completionBlock:v13 queue:&_dispatch_main_q];
+      path2 = [v12 path];
+      v16 = [v14 initWithInputURL:v6 outputURL:v12 identifier:path2 operation:0 completionBlock:v13 queue:&_dispatch_main_q];
 
       [v16 start];
       goto LABEL_14;
@@ -159,22 +159,22 @@
     }
   }
 
-  if (v4)
+  if (dataCopy)
   {
-    v4[2](v4);
+    dataCopy[2](dataCopy);
   }
 
 LABEL_14:
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
   v8 = +[IMSystemMonitor sharedInstance];
-  v9 = [v8 isUnderDataProtectionLock];
+  isUnderDataProtectionLock = [v8 isUnderDataProtectionLock];
 
-  if (v9)
+  if (isUnderDataProtectionLock)
   {
     waitingForUnlockToSyncDeviceSalt = self->_waitingForUnlockToSyncDeviceSalt;
     v11 = IMOSLoggingEnabled();
@@ -241,9 +241,9 @@ LABEL_16:
 {
   if (self->_waitingForUnlockToSyncDeviceSalt)
   {
-    v3 = [(CKCompanionMessagesDaemon *)self syncDeviceSalt];
+    syncDeviceSalt = [(CKCompanionMessagesDaemon *)self syncDeviceSalt];
     v4 = IMOSLoggingEnabled();
-    if (v3)
+    if (syncDeviceSalt)
     {
       if (v4)
       {

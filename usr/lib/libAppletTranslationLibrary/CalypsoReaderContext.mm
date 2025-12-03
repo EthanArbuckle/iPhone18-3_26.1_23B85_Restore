@@ -1,25 +1,25 @@
 @interface CalypsoReaderContext
-- (id)readAll:(id)a3 withFileMapping:(id)a4 debug:(BOOL)a5 error:(id *)a6;
+- (id)readAll:(id)all withFileMapping:(id)mapping debug:(BOOL)debug error:(id *)error;
 - (void)dumpAllFiles;
 @end
 
 @implementation CalypsoReaderContext
 
-- (id)readAll:(id)a3 withFileMapping:(id)a4 debug:(BOOL)a5 error:(id *)a6
+- (id)readAll:(id)all withFileMapping:(id)mapping debug:(BOOL)debug error:(id *)error
 {
-  v32 = a5;
+  debugCopy = debug;
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
-  v37 = self;
+  allCopy = all;
+  mappingCopy = mapping;
+  v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(mappingCopy, "count")}];
+  selfCopy = self;
   [(CalypsoReaderContext *)self setFiles:v10];
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v11 = v9;
+  v11 = mappingCopy;
   v34 = [v11 countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v34)
   {
@@ -50,18 +50,18 @@
         v16 = [v11 objectForKeyedSubscript:v13];
         v17 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
         v18 = [v16 objectForKeyedSubscript:@"sfi"];
-        v19 = [v18 unsignedCharValue];
+        unsignedCharValue = [v18 unsignedCharValue];
 
         v20 = [v16 objectForKeyedSubscript:@"numRecords"];
-        v21 = [v20 unsignedCharValue];
+        unsignedCharValue2 = [v20 unsignedCharValue];
 
-        if (v21)
+        if (unsignedCharValue2)
         {
           v22 = 1;
           while (1)
           {
             v39 = 0;
-            v23 = [CalypsoReaderContext readRecord:v8 sfi:v19 index:v22 recLength:0 error:&v39];
+            v23 = [CalypsoReaderContext readRecord:allCopy sfi:unsignedCharValue index:v22 recLength:0 error:&v39];
             v24 = v39;
             if (v24)
             {
@@ -70,21 +70,21 @@
 
             if (v23)
             {
-              v25 = [CalypsoRecord withRecordSfi:v19 recordNumber:v22 recordData:v23];
+              v25 = [CalypsoRecord withRecordSfi:unsignedCharValue recordNumber:v22 recordData:v23];
               [v17 addObject:v25];
             }
 
-            if (v21 < ++v22)
+            if (unsignedCharValue2 < ++v22)
             {
               goto LABEL_14;
             }
           }
 
           v28 = v24;
-          if (a6)
+          if (error)
           {
             v29 = v24;
-            *a6 = v28;
+            *error = v28;
           }
 
           v11 = v36;
@@ -93,8 +93,8 @@
         }
 
 LABEL_14:
-        v26 = [(CalypsoReaderContext *)v37 files];
-        [v26 setObject:v17 forKeyedSubscript:v38];
+        files = [(CalypsoReaderContext *)selfCopy files];
+        [files setObject:v17 forKeyedSubscript:v38];
 
         v11 = v36;
       }
@@ -109,12 +109,12 @@ LABEL_14:
     }
   }
 
-  if (v32)
+  if (debugCopy)
   {
-    [(CalypsoReaderContext *)v37 dumpAllFiles];
+    [(CalypsoReaderContext *)selfCopy dumpAllFiles];
   }
 
-  v27 = v37;
+  v27 = selfCopy;
 LABEL_22:
 
   v30 = *MEMORY[0x277D85DE8];
@@ -136,8 +136,8 @@ LABEL_22:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CalypsoReaderContext *)self files];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  files = [(CalypsoReaderContext *)self files];
+  v5 = [files countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -151,12 +151,12 @@ LABEL_22:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(files);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v9);
-        v12 = [(CalypsoReaderContext *)self files];
-        v7 = [v12 objectForKeyedSubscript:v11];
+        files2 = [(CalypsoReaderContext *)self files];
+        v7 = [files2 objectForKeyedSubscript:v11];
 
         [v7 enumerateObjectsUsingBlock:&__block_literal_global_4];
         ++v9;
@@ -164,7 +164,7 @@ LABEL_22:
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v6 = [files countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v6);

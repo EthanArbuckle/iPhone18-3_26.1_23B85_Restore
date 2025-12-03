@@ -1,31 +1,31 @@
 @interface TSADebugTableViewController
-- (TSADebugTableViewController)initWithParent:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)addItemWithTitle:(id)a3 target:(id)a4 action:(SEL)a5;
+- (TSADebugTableViewController)initWithParent:(id)parent;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)addItemWithTitle:(id)title target:(id)target action:(SEL)action;
 - (void)dealloc;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TSADebugTableViewController
 
-- (TSADebugTableViewController)initWithParent:(id)a3
+- (TSADebugTableViewController)initWithParent:(id)parent
 {
   v8.receiver = self;
   v8.super_class = TSADebugTableViewController;
   v4 = [(TSADebugTableViewController *)&v8 init];
   if (v4)
   {
-    if (!a3)
+    if (!parent)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSADebugTableViewController initWithParent:]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADebugTableViewController.mm"), 71, @"invalid nil value for '%s'", "parent"}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/application/ios/TSADebugTableViewController.mm"), 71, @"invalid nil value for '%s'", "parent"}];
     }
 
-    v4->_parent = a3;
+    v4->_parent = parent;
   }
 
   [(TSADebugTableViewController *)v4 view];
@@ -39,9 +39,9 @@
   [(TSADebugTableViewController *)&v3 dealloc];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = -[NSMutableArray objectAtIndex:](self->_debugItems, "objectAtIndex:", [a4 row]);
+  v5 = -[NSMutableArray objectAtIndex:](self->_debugItems, "objectAtIndex:", [path row]);
   [objc_msgSend(v5 "target")];
   parent = self->_parent;
 
@@ -60,9 +60,9 @@
   [(TSADebugTableViewController *)self setTableView:v4];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"DebugCell"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"DebugCell"];
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"DebugCell"];
@@ -72,7 +72,7 @@
   return v6;
 }
 
-- (void)addItemWithTitle:(id)a3 target:(id)a4 action:(SEL)a5
+- (void)addItemWithTitle:(id)title target:(id)target action:(SEL)action
 {
   debugItems = self->_debugItems;
   if (!debugItems)
@@ -85,7 +85,7 @@
   if (v10 < 1)
   {
 LABEL_7:
-    v13 = [[DebugItem alloc] initWithTitle:a3 target:a4 action:a5];
+    v13 = [[DebugItem alloc] initWithTitle:title target:target action:action];
     [(NSMutableArray *)self->_debugItems addObject:v13];
     [-[TSADebugTableViewController tableView](self "tableView")];
   }
@@ -94,7 +94,7 @@ LABEL_7:
   {
     v11 = v10;
     v12 = 0;
-    while (([objc_msgSend(-[NSMutableArray objectAtIndex:](self->_debugItems objectAtIndex:{v12), "title"), "isEqualToString:", a3}] & 1) == 0)
+    while (([objc_msgSend(-[NSMutableArray objectAtIndex:](self->_debugItems objectAtIndex:{v12), "title"), "isEqualToString:", title}] & 1) == 0)
     {
       if (v11 == ++v12)
       {
@@ -104,24 +104,24 @@ LABEL_7:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = TSADebugTableViewController;
-  [(TSADebugTableViewController *)&v8 viewWillAppear:a3];
+  [(TSADebugTableViewController *)&v8 viewWillAppear:appear];
   [objc_msgSend(-[TSADebugTableViewController tableView](self "tableView")];
   [-[TSADebugTableViewController view](self "view")];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(TSADebugTableViewController *)self tableView];
-  [v5 deselectRowAtIndexPath:objc_msgSend(v5 animated:{"indexPathForSelectedRow"), 0}];
-  [v5 setContentOffset:0 animated:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  disappearCopy = disappear;
+  tableView = [(TSADebugTableViewController *)self tableView];
+  [tableView deselectRowAtIndexPath:objc_msgSend(tableView animated:{"indexPathForSelectedRow"), 0}];
+  [tableView setContentOffset:0 animated:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
   v6.receiver = self;
   v6.super_class = TSADebugTableViewController;
-  [(TSADebugTableViewController *)&v6 viewDidDisappear:v3];
+  [(TSADebugTableViewController *)&v6 viewDidDisappear:disappearCopy];
 }
 
 @end

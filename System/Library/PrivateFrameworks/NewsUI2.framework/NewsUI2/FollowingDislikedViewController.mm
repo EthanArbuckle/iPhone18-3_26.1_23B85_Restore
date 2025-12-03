@@ -1,16 +1,16 @@
 @interface FollowingDislikedViewController
-- (_TtC7NewsUI231FollowingDislikedViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI231FollowingDislikedViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC7NewsUI231FollowingDislikedViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI231FollowingDislikedViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation FollowingDislikedViewController
 
-- (_TtC7NewsUI231FollowingDislikedViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI231FollowingDislikedViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI231FollowingDislikedViewController_prewarm) = 1;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI231FollowingDislikedViewController____lazy_storage___closeBarButtonItem) = 0;
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (_TtC7NewsUI231FollowingDislikedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI231FollowingDislikedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -28,7 +28,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_219BD3894();
 }
 
@@ -38,15 +38,15 @@
   v15.super_class = swift_getObjectType();
   v2 = v15.receiver;
   [(FollowingDislikedViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC7NewsUI231FollowingDislikedViewController_blueprintViewController] view];
-  if (v3)
+  view = [*&v2[OBJC_IVAR____TtC7NewsUI231FollowingDislikedViewController_blueprintViewController] view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [v2 view];
-    if (v5)
+    v4 = view;
+    view2 = [v2 view];
+    if (view2)
     {
-      v6 = v5;
-      [v5 bounds];
+      v6 = view2;
+      [view2 bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -65,29 +65,29 @@
   __break(1u);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(FollowingDislikedViewController *)&v4 viewDidAppear:v3];
+  [(FollowingDislikedViewController *)&v4 viewDidAppear:appearCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_219BD3D7C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_219BD3D7C(change);
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v6 = v7.receiver;
-  [(FollowingDislikedViewController *)&v7 setEditing:v5 animated:v4];
+  [(FollowingDislikedViewController *)&v7 setEditing:editingCopy animated:animatedCopy];
   sub_219BE8654();
 }
 

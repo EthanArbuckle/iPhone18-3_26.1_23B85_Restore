@@ -1,13 +1,13 @@
 @interface IDSGlobalLinkP2PKeyNegotiatorController
 - (_TtC17identityservicesd39IDSGlobalLinkP2PKeyNegotiatorController)init;
-- (void)negotiatorForGroup:(id)a3 completionHandler:(id)a4;
+- (void)negotiatorForGroup:(id)group completionHandler:(id)handler;
 @end
 
 @implementation IDSGlobalLinkP2PKeyNegotiatorController
 
-- (void)negotiatorForGroup:(id)a3 completionHandler:(id)a4
+- (void)negotiatorForGroup:(id)group completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_100936B38();
   v8 = v7;
   v9 = swift_allocObject();
@@ -18,7 +18,7 @@
   v10[4] = self;
   v10[5] = v6;
   v10[6] = v8;
-  v11 = self;
+  selfCopy = self;
 
   sub_100936188();
 }

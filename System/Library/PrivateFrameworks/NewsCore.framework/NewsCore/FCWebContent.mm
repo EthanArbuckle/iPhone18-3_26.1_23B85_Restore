@@ -1,6 +1,6 @@
 @interface FCWebContent
 - (FCWebContent)init;
-- (FCWebContent)initWithArticleID:(id)a3 sourceURL:(id)a4 excerptAssetHandle:(id)a5;
+- (FCWebContent)initWithArticleID:(id)d sourceURL:(id)l excerptAssetHandle:(id)handle;
 @end
 
 @implementation FCWebContent
@@ -31,22 +31,22 @@
   objc_exception_throw(v6);
 }
 
-- (FCWebContent)initWithArticleID:(id)a3 sourceURL:(id)a4 excerptAssetHandle:(id)a5
+- (FCWebContent)initWithArticleID:(id)d sourceURL:(id)l excerptAssetHandle:(id)handle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  lCopy = l;
+  handleCopy = handle;
   v15.receiver = self;
   v15.super_class = FCWebContent;
   v11 = [(FCWebContent *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     articleID = v11->_articleID;
     v11->_articleID = v12;
 
-    objc_storeStrong(&v11->_sourceURL, a4);
-    objc_storeStrong(&v11->_excerptAssetHandle, a5);
+    objc_storeStrong(&v11->_sourceURL, l);
+    objc_storeStrong(&v11->_excerptAssetHandle, handle);
   }
 
   return v11;

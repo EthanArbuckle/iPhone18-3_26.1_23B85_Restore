@@ -1,22 +1,22 @@
 @interface AvailableUseCasesWrapper
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AvailableUseCasesWrapper
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AvailableUseCasesWrapper.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AvailableUseCasesWrapper.encode(with:)(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   AvailableUseCasesWrapper.copy(with:)(v6);
 
   sub_18E1E15F4(v6, v6[3]);
@@ -27,7 +27,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   AvailableUseCasesWrapper.description.getter();
 
   v3 = sub_18E44EA8C();
@@ -37,7 +37,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AvailableUseCasesWrapper.hash.getter();
 
   return v3;

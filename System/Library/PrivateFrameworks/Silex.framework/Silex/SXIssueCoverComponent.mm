@@ -1,14 +1,14 @@
 @interface SXIssueCoverComponent
-- (BOOL)videoPlaybackEnabledWithValue:(id)a3 withType:(int)a4;
+- (BOOL)videoPlaybackEnabledWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXIssueCoverComponent
 
-- (BOOL)videoPlaybackEnabledWithValue:(id)a3 withType:(int)a4
+- (BOOL)videoPlaybackEnabledWithValue:(id)value withType:(int)type
 {
-  if (a4 == 2)
+  if (type == 2)
   {
-    return [a3 BOOLValue];
+    return [value BOOLValue];
   }
 
   else

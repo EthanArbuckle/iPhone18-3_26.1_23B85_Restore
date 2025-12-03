@@ -1,7 +1,7 @@
 @interface HMDHomeObjectLookup
 + (id)logCategory;
 - (HMDHome)home;
-- (HMDHomeObjectLookup)initWithHome:(id)a3;
+- (HMDHomeObjectLookup)initWithHome:(id)home;
 - (id)logIdentifier;
 - (void)_scanAccessoriesAndServices;
 - (void)_scanActionSets;
@@ -9,7 +9,7 @@
 - (void)_scanResidentDevices;
 - (void)_scanRooms;
 - (void)_scanServiceGroups;
-- (void)_scanSettings:(id)a3;
+- (void)_scanSettings:(id)settings;
 - (void)_scanTriggers;
 - (void)_scanUsers;
 - (void)_scanZones;
@@ -27,11 +27,11 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeObjectLookup *)self home];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  home = [(HMDHomeObjectLookup *)self home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (void)_scanUsers
@@ -41,10 +41,10 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(HMDHomeObjectLookup *)self home];
-  v4 = [v3 users];
+  home = [(HMDHomeObjectLookup *)self home];
+  users = [home users];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [users countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -56,28 +56,28 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(users);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
-        v10 = [(HMDObjectLookup *)self uuidToObjectMapping];
-        v11 = [v9 uuid];
-        [v10 setObject:v9 forKey:v11];
+        uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+        uuid = [v9 uuid];
+        [uuidToObjectMapping setObject:v9 forKey:uuid];
 
-        v12 = [v9 assistantAccessControlModelUUID];
+        assistantAccessControlModelUUID = [v9 assistantAccessControlModelUUID];
 
-        if (v12)
+        if (assistantAccessControlModelUUID)
         {
-          v13 = [(HMDObjectLookup *)self uuidToObjectMapping];
-          v14 = [v9 assistantAccessControlModelUUID];
-          [v13 setObject:v9 forKey:v14];
+          uuidToObjectMapping2 = [(HMDObjectLookup *)self uuidToObjectMapping];
+          assistantAccessControlModelUUID2 = [v9 assistantAccessControlModelUUID];
+          [uuidToObjectMapping2 setObject:v9 forKey:assistantAccessControlModelUUID2];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [users countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -93,10 +93,10 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(HMDHomeObjectLookup *)self home];
-  v4 = [v3 mediaSystems];
+  home = [(HMDHomeObjectLookup *)self home];
+  mediaSystems = [home mediaSystems];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [mediaSystems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -108,22 +108,22 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mediaSystems);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
-        v10 = [(HMDObjectLookup *)self uuidToObjectMapping];
-        v11 = [v9 uuid];
-        [v10 setObject:v9 forKey:v11];
+        uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+        uuid = [v9 uuid];
+        [uuidToObjectMapping setObject:v9 forKey:uuid];
 
-        v12 = [v9 settingsController];
-        [(HMDHomeObjectLookup *)self _scanSettings:v12];
+        settingsController = [v9 settingsController];
+        [(HMDHomeObjectLookup *)self _scanSettings:settingsController];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [mediaSystems countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -139,11 +139,11 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(HMDHomeObjectLookup *)self home];
-  v4 = [v3 residentDeviceManager];
-  v5 = [v4 residentDevices];
+  home = [(HMDHomeObjectLookup *)self home];
+  residentDeviceManager = [home residentDeviceManager];
+  residentDevices = [residentDeviceManager residentDevices];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [residentDevices countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -155,19 +155,19 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(residentDevices);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(HMDObjectLookup *)self uuidToObjectMapping];
-        v12 = [v10 identifier];
-        [v11 setObject:v10 forKey:v12];
+        uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+        identifier = [v10 identifier];
+        [uuidToObjectMapping setObject:v10 forKey:identifier];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [residentDevices countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -183,11 +183,11 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v3 = [(HMDHomeObjectLookup *)self home];
-  v4 = [v3 triggers];
+  home = [(HMDHomeObjectLookup *)self home];
+  triggers = [home triggers];
 
-  obj = v4;
-  v23 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  obj = triggers;
+  v23 = [triggers countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v23)
   {
     v22 = *v29;
@@ -202,9 +202,9 @@
         }
 
         v6 = *(*(&v28 + 1) + 8 * v5);
-        v7 = [(HMDObjectLookup *)self uuidToObjectMapping];
-        v8 = [v6 uuid];
-        [v7 setObject:v6 forKey:v8];
+        uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+        uuid = [v6 uuid];
+        [uuidToObjectMapping setObject:v6 forKey:uuid];
 
         v9 = v6;
         objc_opt_class();
@@ -224,8 +224,8 @@
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v12 = [v11 events];
-        v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        events = [v11 events];
+        v13 = [events countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v13)
         {
           v14 = v13;
@@ -237,19 +237,19 @@
             {
               if (*v25 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(events);
               }
 
               v17 = *(*(&v24 + 1) + 8 * v16);
-              v18 = [(HMDObjectLookup *)self uuidToObjectMapping];
-              v19 = [v17 uuid];
-              [v18 setObject:v17 forKey:v19];
+              uuidToObjectMapping2 = [(HMDObjectLookup *)self uuidToObjectMapping];
+              uuid2 = [v17 uuid];
+              [uuidToObjectMapping2 setObject:v17 forKey:uuid2];
 
               ++v16;
             }
 
             while (v14 != v16);
-            v14 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v14 = [events countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v14);
@@ -275,10 +275,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(HMDHomeObjectLookup *)self home];
-  v4 = [v3 serviceGroups];
+  home = [(HMDHomeObjectLookup *)self home];
+  serviceGroups = [home serviceGroups];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [serviceGroups countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -290,19 +290,19 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(serviceGroups);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(HMDObjectLookup *)self uuidToObjectMapping];
-        v11 = [v9 uuid];
-        [v10 setObject:v9 forKey:v11];
+        uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+        uuid = [v9 uuid];
+        [uuidToObjectMapping setObject:v9 forKey:uuid];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [serviceGroups countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -314,11 +314,11 @@
 - (void)_scanActionSets
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeObjectLookup *)self home];
-  v4 = [v3 actionSets];
-  v22 = v3;
-  v5 = [v3 triggerOwnedActionSets];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  home = [(HMDHomeObjectLookup *)self home];
+  actionSets = [home actionSets];
+  v22 = home;
+  triggerOwnedActionSets = [home triggerOwnedActionSets];
+  v6 = [actionSets arrayByAddingObjectsFromArray:triggerOwnedActionSets];
 
   v31 = 0u;
   v32 = 0u;
@@ -341,16 +341,16 @@
         }
 
         v10 = *(*(&v29 + 1) + 8 * v9);
-        v11 = [(HMDObjectLookup *)self uuidToObjectMapping];
-        v12 = [v10 uuid];
-        [v11 setObject:v10 forKey:v12];
+        uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+        uuid = [v10 uuid];
+        [uuidToObjectMapping setObject:v10 forKey:uuid];
 
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v13 = [v10 actions];
-        v14 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        actions = [v10 actions];
+        v14 = [actions countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v14)
         {
           v15 = v14;
@@ -362,19 +362,19 @@
             {
               if (*v26 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(actions);
               }
 
               v18 = *(*(&v25 + 1) + 8 * v17);
-              v19 = [(HMDObjectLookup *)self uuidToObjectMapping];
-              v20 = [v18 uuid];
-              [v19 setObject:v18 forKey:v20];
+              uuidToObjectMapping2 = [(HMDObjectLookup *)self uuidToObjectMapping];
+              uuid2 = [v18 uuid];
+              [uuidToObjectMapping2 setObject:v18 forKey:uuid2];
 
               ++v17;
             }
 
             while (v15 != v17);
-            v15 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v15 = [actions countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v15);
@@ -400,10 +400,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(HMDHomeObjectLookup *)self home];
-  v4 = [v3 zones];
+  home = [(HMDHomeObjectLookup *)self home];
+  zones = [home zones];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [zones countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -415,19 +415,19 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(zones);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(HMDObjectLookup *)self uuidToObjectMapping];
-        v11 = [v9 uuid];
-        [v10 setObject:v9 forKey:v11];
+        uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+        uuid = [v9 uuid];
+        [uuidToObjectMapping setObject:v9 forKey:uuid];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [zones countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -439,13 +439,13 @@
 - (void)_scanRooms
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeObjectLookup *)self home];
+  home = [(HMDHomeObjectLookup *)self home];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 rooms];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  rooms = [home rooms];
+  v5 = [rooms countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -457,44 +457,44 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(rooms);
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
-        v10 = [(HMDObjectLookup *)self uuidToObjectMapping];
-        v11 = [v9 uuid];
-        [v10 setObject:v9 forKey:v11];
+        uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+        uuid = [v9 uuid];
+        [uuidToObjectMapping setObject:v9 forKey:uuid];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [rooms countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
   }
 
-  v12 = [(HMDObjectLookup *)self uuidToObjectMapping];
-  v13 = [v3 roomForEntireHome];
-  v14 = [v3 roomForEntireHome];
-  v15 = [v14 uuid];
-  [v12 setObject:v13 forKey:v15];
+  uuidToObjectMapping2 = [(HMDObjectLookup *)self uuidToObjectMapping];
+  roomForEntireHome = [home roomForEntireHome];
+  roomForEntireHome2 = [home roomForEntireHome];
+  uuid2 = [roomForEntireHome2 uuid];
+  [uuidToObjectMapping2 setObject:roomForEntireHome forKey:uuid2];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scanSettings:(id)a3
+- (void)_scanSettings:(id)settings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 childrenIdentifiers];
-  v6 = [v4 transactionReceiver];
+  settingsCopy = settings;
+  childrenIdentifiers = [settingsCopy childrenIdentifiers];
+  transactionReceiver = [settingsCopy transactionReceiver];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = childrenIdentifiers;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -511,8 +511,8 @@
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        v13 = [(HMDObjectLookup *)self uuidToObjectMapping];
-        [v13 setObject:v6 forKey:v12];
+        uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+        [uuidToObjectMapping setObject:transactionReceiver forKey:v12];
 
         ++v11;
       }
@@ -534,11 +534,11 @@
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v3 = [(HMDHomeObjectLookup *)self home];
-  v4 = [v3 accessories];
+  home = [(HMDHomeObjectLookup *)self home];
+  accessories = [home accessories];
 
-  obj = v4;
-  v35 = [v4 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  obj = accessories;
+  v35 = [accessories countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v35)
   {
     v34 = *v42;
@@ -553,9 +553,9 @@
         }
 
         v6 = *(*(&v41 + 1) + 8 * v5);
-        v7 = [(HMDObjectLookup *)self uuidToObjectMapping];
-        v8 = [v6 uuid];
-        [v7 setObject:v6 forKey:v8];
+        uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+        uuid = [v6 uuid];
+        [uuidToObjectMapping setObject:v6 forKey:uuid];
 
         v9 = v6;
         objc_opt_class();
@@ -576,8 +576,8 @@
         v37 = 0u;
         v38 = 0u;
         v36 = v11;
-        v12 = [v11 services];
-        v13 = [v12 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        services = [v11 services];
+        v13 = [services countByEnumeratingWithState:&v37 objects:v45 count:16];
         if (v13)
         {
           v14 = v13;
@@ -589,19 +589,19 @@
             {
               if (*v38 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(services);
               }
 
               v17 = *(*(&v37 + 1) + 8 * v16);
-              v18 = [(HMDObjectLookup *)self uuidToObjectMapping];
-              v19 = [v17 uuid];
-              [v18 setObject:v17 forKey:v19];
+              uuidToObjectMapping2 = [(HMDObjectLookup *)self uuidToObjectMapping];
+              uuid2 = [v17 uuid];
+              [uuidToObjectMapping2 setObject:v17 forKey:uuid2];
 
               ++v16;
             }
 
             while (v14 != v16);
-            v14 = [v12 countByEnumeratingWithState:&v37 objects:v45 count:16];
+            v14 = [services countByEnumeratingWithState:&v37 objects:v45 count:16];
           }
 
           while (v14);
@@ -623,26 +623,26 @@
 
         if (v22)
         {
-          v23 = [v22 audioDestinationManager];
-          if (v23)
+          audioDestinationManager = [v22 audioDestinationManager];
+          if (audioDestinationManager)
           {
-            v24 = [(HMDObjectLookup *)self uuidToObjectMapping];
-            v25 = [v23 backingStoreHandler];
-            v26 = [v23 identifier];
-            [v24 setObject:v25 forKey:v26];
+            uuidToObjectMapping3 = [(HMDObjectLookup *)self uuidToObjectMapping];
+            backingStoreHandler = [audioDestinationManager backingStoreHandler];
+            identifier = [audioDestinationManager identifier];
+            [uuidToObjectMapping3 setObject:backingStoreHandler forKey:identifier];
           }
 
-          v27 = [v22 audioDestinationController];
-          if (v27)
+          audioDestinationController = [v22 audioDestinationController];
+          if (audioDestinationController)
           {
-            v28 = [(HMDObjectLookup *)self uuidToObjectMapping];
-            v29 = [v27 backingStoreHandler];
-            v30 = [v27 identifier];
-            [v28 setObject:v29 forKey:v30];
+            uuidToObjectMapping4 = [(HMDObjectLookup *)self uuidToObjectMapping];
+            backingStoreHandler2 = [audioDestinationController backingStoreHandler];
+            identifier2 = [audioDestinationController identifier];
+            [uuidToObjectMapping4 setObject:backingStoreHandler2 forKey:identifier2];
           }
 
-          v31 = [v22 settingsController];
-          [(HMDHomeObjectLookup *)self _scanSettings:v31];
+          settingsController = [v22 settingsController];
+          [(HMDHomeObjectLookup *)self _scanSettings:settingsController];
         }
 
         ++v5;
@@ -663,14 +663,14 @@
   v8.receiver = self;
   v8.super_class = HMDHomeObjectLookup;
   [(HMDObjectLookup *)&v8 scanObjects];
-  v3 = [(HMDHomeObjectLookup *)self home];
-  v4 = [(HMDObjectLookup *)self uuidToObjectMapping];
-  v5 = [v3 uuid];
-  [v4 setObject:v3 forKey:v5];
+  home = [(HMDHomeObjectLookup *)self home];
+  uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+  uuid = [home uuid];
+  [uuidToObjectMapping setObject:home forKey:uuid];
 
-  v6 = [(HMDObjectLookup *)self uuidToObjectMapping];
-  v7 = [v3 homeConfigurationUUID];
-  [v6 setObject:v3 forKey:v7];
+  uuidToObjectMapping2 = [(HMDObjectLookup *)self uuidToObjectMapping];
+  homeConfigurationUUID = [home homeConfigurationUUID];
+  [uuidToObjectMapping2 setObject:home forKey:homeConfigurationUUID];
 
   [(HMDHomeObjectLookup *)self _scanAccessoriesAndServices];
   [(HMDHomeObjectLookup *)self _scanRooms];
@@ -683,17 +683,17 @@
   [(HMDHomeObjectLookup *)self _scanUsers];
 }
 
-- (HMDHomeObjectLookup)initWithHome:(id)a3
+- (HMDHomeObjectLookup)initWithHome:(id)home
 {
-  v4 = a3;
-  v5 = [v4 workQueue];
+  homeCopy = home;
+  workQueue = [homeCopy workQueue];
   v8.receiver = self;
   v8.super_class = HMDHomeObjectLookup;
-  v6 = [(HMDObjectLookup *)&v8 initWithWorkQueue:v5];
+  v6 = [(HMDObjectLookup *)&v8 initWithWorkQueue:workQueue];
 
   if (v6)
   {
-    objc_storeWeak(&v6->_home, v4);
+    objc_storeWeak(&v6->_home, homeCopy);
   }
 
   return v6;

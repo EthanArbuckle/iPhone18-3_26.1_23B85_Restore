@@ -1,28 +1,28 @@
 @interface CAMSmartStylePreviewView
-- (CAMSmartStylePreviewView)initWithFrame:(CGRect)a3;
+- (CAMSmartStylePreviewView)initWithFrame:(CGRect)frame;
 - (CAMSmartStylePreviewViewDelegate)delegate;
 - (NSDictionary)_fileURLImageProperties;
 - (NSURL)_fileURL;
 - (PEAsset)_asset;
 - (void)_addConstraints;
-- (void)_setComposition:(id)a3;
-- (void)_setDidFinishRendering:(BOOL)a3;
+- (void)_setComposition:(id)composition;
+- (void)_setDidFinishRendering:(BOOL)rendering;
 - (void)_updateMediaViewZoomIfNecessary;
 - (void)_updatePreviewAdjustments;
-- (void)mediaViewDidFinishRendering:(id)a3 withStatistics:(id)a4;
-- (void)setLogIdentifier:(id)a3;
-- (void)setResourceLoadResult:(id)a3;
-- (void)setStyle:(id)a3;
+- (void)mediaViewDidFinishRendering:(id)rendering withStatistics:(id)statistics;
+- (void)setLogIdentifier:(id)identifier;
+- (void)setResourceLoadResult:(id)result;
+- (void)setStyle:(id)style;
 - (void)speedUpFadeInAnimations;
 @end
 
 @implementation CAMSmartStylePreviewView
 
-- (CAMSmartStylePreviewView)initWithFrame:(CGRect)a3
+- (CAMSmartStylePreviewView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CAMSmartStylePreviewView;
-  v3 = [(CAMSmartStylePreviewView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMSmartStylePreviewView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69B3DC0]);
@@ -35,8 +35,8 @@
     [(NUMediaView *)v3->__mediaView setDelegate:v3];
     [(NUMediaView *)v3->__mediaView setAlpha:0.0];
     [(CAMSmartStylePreviewView *)v3 addSubview:v3->__mediaView];
-    v6 = [MEMORY[0x1E69DC888] systemGray5Color];
-    [(CAMSmartStylePreviewView *)v3 setBackgroundColor:v6];
+    systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+    [(CAMSmartStylePreviewView *)v3 setBackgroundColor:systemGray5Color];
 
     [(CAMSmartStylePreviewView *)v3 _addConstraints];
   }
@@ -44,126 +44,126 @@
   return v3;
 }
 
-- (void)setLogIdentifier:(id)a3
+- (void)setLogIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   logIdentifier = self->_logIdentifier;
-  if (logIdentifier != v5)
+  if (logIdentifier != identifierCopy)
   {
-    v7 = v5;
-    logIdentifier = [(NSString *)logIdentifier isEqualToString:v5];
-    v5 = v7;
+    v7 = identifierCopy;
+    logIdentifier = [(NSString *)logIdentifier isEqualToString:identifierCopy];
+    identifierCopy = v7;
     if ((logIdentifier & 1) == 0)
     {
-      objc_storeStrong(&self->_logIdentifier, a3);
-      v5 = v7;
+      objc_storeStrong(&self->_logIdentifier, identifier);
+      identifierCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](logIdentifier, v5);
+  MEMORY[0x1EEE66BB8](logIdentifier, identifierCopy);
 }
 
-- (void)setResourceLoadResult:(id)a3
+- (void)setResourceLoadResult:(id)result
 {
-  v5 = a3;
-  if (self->_resourceLoadResult != v5)
+  resultCopy = result;
+  if (self->_resourceLoadResult != resultCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_resourceLoadResult, a3);
-    v6 = [(CAMSmartStyleSettingsResourceLoadResult *)v9 compositionController];
-    v7 = [v6 copy];
+    v9 = resultCopy;
+    objc_storeStrong(&self->_resourceLoadResult, result);
+    compositionController = [(CAMSmartStyleSettingsResourceLoadResult *)v9 compositionController];
+    v7 = [compositionController copy];
     compositionController = self->__compositionController;
     self->__compositionController = v7;
 
     [(CAMSmartStylePreviewView *)self _updatePreviewAdjustments];
-    v5 = v9;
+    resultCopy = v9;
   }
 }
 
 - (PEAsset)_asset
 {
-  v2 = [(CAMSmartStylePreviewView *)self resourceLoadResult];
-  v3 = [v2 asset];
+  resourceLoadResult = [(CAMSmartStylePreviewView *)self resourceLoadResult];
+  asset = [resourceLoadResult asset];
 
-  return v3;
+  return asset;
 }
 
 - (NSURL)_fileURL
 {
-  v2 = [(CAMSmartStylePreviewView *)self resourceLoadResult];
-  v3 = [v2 fileURL];
+  resourceLoadResult = [(CAMSmartStylePreviewView *)self resourceLoadResult];
+  fileURL = [resourceLoadResult fileURL];
 
-  return v3;
+  return fileURL;
 }
 
 - (NSDictionary)_fileURLImageProperties
 {
-  v2 = [(CAMSmartStylePreviewView *)self resourceLoadResult];
-  v3 = [v2 fileURLImageProperties];
+  resourceLoadResult = [(CAMSmartStylePreviewView *)self resourceLoadResult];
+  fileURLImageProperties = [resourceLoadResult fileURLImageProperties];
 
-  return v3;
+  return fileURLImageProperties;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   style = self->_style;
-  if (style != v5)
+  if (style != styleCopy)
   {
-    v7 = v5;
-    style = [style isEqualToSmartStyle:v5];
-    v5 = v7;
+    v7 = styleCopy;
+    style = [style isEqualToSmartStyle:styleCopy];
+    styleCopy = v7;
     if ((style & 1) == 0)
     {
-      objc_storeStrong(&self->_style, a3);
+      objc_storeStrong(&self->_style, style);
       style = [(CAMSmartStylePreviewView *)self _updatePreviewAdjustments];
-      v5 = v7;
+      styleCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](style, v5);
+  MEMORY[0x1EEE66BB8](style, styleCopy);
 }
 
-- (void)_setDidFinishRendering:(BOOL)a3
+- (void)_setDidFinishRendering:(BOOL)rendering
 {
-  if (self->_didFinishRendering != a3)
+  if (self->_didFinishRendering != rendering)
   {
-    self->_didFinishRendering = a3;
-    if (a3)
+    self->_didFinishRendering = rendering;
+    if (rendering)
     {
-      v4 = [(CAMSmartStylePreviewView *)self delegate];
-      [v4 smartStylePreviewViewDidFinishRendering:self];
+      delegate = [(CAMSmartStylePreviewView *)self delegate];
+      [delegate smartStylePreviewViewDidFinishRendering:self];
     }
   }
 }
 
 - (void)speedUpFadeInAnimations
 {
-  v2 = [(NUMediaView *)self->__mediaView layer];
-  [v2 removeAnimationForKey:@"opacity"];
+  layer = [(NUMediaView *)self->__mediaView layer];
+  [layer removeAnimationForKey:@"opacity"];
 }
 
-- (void)mediaViewDidFinishRendering:(id)a3 withStatistics:(id)a4
+- (void)mediaViewDidFinishRendering:(id)rendering withStatistics:(id)statistics
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->__mediaView == a3)
+  statisticsCopy = statistics;
+  if (self->__mediaView == rendering)
   {
     v7 = os_log_create("com.apple.camera", "SmartStyleSettings");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CAMSmartStylePreviewView *)self logIdentifier];
-      v9 = [(CAMSmartStylePreviewView *)self resourceLoadResult];
-      v10 = [v9 logIdentifier];
-      [v6 totalDuration];
+      logIdentifier = [(CAMSmartStylePreviewView *)self logIdentifier];
+      resourceLoadResult = [(CAMSmartStylePreviewView *)self resourceLoadResult];
+      logIdentifier2 = [resourceLoadResult logIdentifier];
+      [statisticsCopy totalDuration];
       v12 = v11;
-      [v6 duration];
+      [statisticsCopy duration];
       v14 = v13;
-      [v6 latency];
+      [statisticsCopy latency];
       *buf = 138544386;
-      v19 = v8;
+      v19 = logIdentifier;
       v20 = 2114;
-      v21 = v10;
+      v21 = logIdentifier2;
       v22 = 2048;
       v23 = v12;
       v24 = 2048;
@@ -203,21 +203,21 @@ uint64_t __71__CAMSmartStylePreviewView_mediaViewDidFinishRendering_withStatisti
 {
   v17[4] = *MEMORY[0x1E69E9840];
   v13 = MEMORY[0x1E696ACD8];
-  v16 = [(NUMediaView *)self->__mediaView topAnchor];
-  v15 = [(CAMSmartStylePreviewView *)self topAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  topAnchor = [(NUMediaView *)self->__mediaView topAnchor];
+  topAnchor2 = [(CAMSmartStylePreviewView *)self topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v17[0] = v14;
-  v3 = [(NUMediaView *)self->__mediaView bottomAnchor];
-  v4 = [(CAMSmartStylePreviewView *)self bottomAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  bottomAnchor = [(NUMediaView *)self->__mediaView bottomAnchor];
+  bottomAnchor2 = [(CAMSmartStylePreviewView *)self bottomAnchor];
+  v5 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v17[1] = v5;
-  v6 = [(NUMediaView *)self->__mediaView leadingAnchor];
-  v7 = [(CAMSmartStylePreviewView *)self leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  leadingAnchor = [(NUMediaView *)self->__mediaView leadingAnchor];
+  leadingAnchor2 = [(CAMSmartStylePreviewView *)self leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v17[2] = v8;
-  v9 = [(NUMediaView *)self->__mediaView trailingAnchor];
-  v10 = [(CAMSmartStylePreviewView *)self trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  trailingAnchor = [(NUMediaView *)self->__mediaView trailingAnchor];
+  trailingAnchor2 = [(CAMSmartStylePreviewView *)self trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v17[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:4];
   [v13 activateConstraints:v12];
@@ -225,39 +225,39 @@ uint64_t __71__CAMSmartStylePreviewView_mediaViewDidFinishRendering_withStatisti
 
 - (void)_updatePreviewAdjustments
 {
-  v3 = [(CAMSmartStylePreviewView *)self style];
-  v4 = [(CAMSmartStylePreviewView *)self _compositionController];
-  v5 = [(CAMSmartStylePreviewView *)self _asset];
-  v6 = [(CAMSmartStylePreviewView *)self _fileURL];
-  v7 = [(CAMSmartStylePreviewView *)self _fileURLImageProperties];
-  v8 = [(CAMSmartStylePreviewView *)self resourceLoadResult];
-  [v8 cropRect];
-  v13 = [CAMSmartStyleSettingsRenderUtilities compositionForStyle:v3 compositionController:v4 originalAsset:v5 fileURL:v6 fileURLImageProperties:v7 aspectRatio:1.0 cropRect:v9, v10, v11, v12];
+  style = [(CAMSmartStylePreviewView *)self style];
+  _compositionController = [(CAMSmartStylePreviewView *)self _compositionController];
+  _asset = [(CAMSmartStylePreviewView *)self _asset];
+  _fileURL = [(CAMSmartStylePreviewView *)self _fileURL];
+  _fileURLImageProperties = [(CAMSmartStylePreviewView *)self _fileURLImageProperties];
+  resourceLoadResult = [(CAMSmartStylePreviewView *)self resourceLoadResult];
+  [resourceLoadResult cropRect];
+  v13 = [CAMSmartStyleSettingsRenderUtilities compositionForStyle:style compositionController:_compositionController originalAsset:_asset fileURL:_fileURL fileURLImageProperties:_fileURLImageProperties aspectRatio:1.0 cropRect:v9, v10, v11, v12];
 
   [(CAMSmartStylePreviewView *)self _setComposition:v13];
 }
 
-- (void)_setComposition:(id)a3
+- (void)_setComposition:(id)composition
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->__composition != v5)
+  compositionCopy = composition;
+  if (self->__composition != compositionCopy)
   {
     v6 = os_log_create("com.apple.camera", "SmartStyleSettings");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(CAMSmartStylePreviewView *)self logIdentifier];
-      v8 = [(CAMSmartStylePreviewView *)self style];
+      logIdentifier = [(CAMSmartStylePreviewView *)self logIdentifier];
+      style = [(CAMSmartStylePreviewView *)self style];
       v9 = 138543618;
-      v10 = v7;
+      v10 = logIdentifier;
       v11 = 2114;
-      v12 = v8;
+      v12 = style;
       _os_log_impl(&dword_1A3640000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: updating composition for %{public}@", &v9, 0x16u);
     }
 
-    objc_storeStrong(&self->__composition, a3);
+    objc_storeStrong(&self->__composition, composition);
     self->__hasUpdatedZoomForComposition = 0;
-    [(NUMediaView *)self->__mediaView setComposition:v5];
+    [(NUMediaView *)self->__mediaView setComposition:compositionCopy];
     [(CAMSmartStylePreviewView *)self _setDidFinishRendering:0];
     [(CAMSmartStylePreviewView *)self _updateMediaViewZoomIfNecessary];
   }

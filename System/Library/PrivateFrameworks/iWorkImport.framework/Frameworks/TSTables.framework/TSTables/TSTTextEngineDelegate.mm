@@ -1,18 +1,18 @@
 @interface TSTTextEngineDelegate
-- (TSTTextEngineDelegate)initWithPadding:(UIEdgeInsets)a3 verticalAlignment:(int)a4 locale:(id)a5 shouldHyphenate:(BOOL)a6 styleProvidingSource:(id)a7;
+- (TSTTextEngineDelegate)initWithPadding:(UIEdgeInsets)padding verticalAlignment:(int)alignment locale:(id)locale shouldHyphenate:(BOOL)hyphenate styleProvidingSource:(id)source;
 - (TSWPStyleProviding)styleProvidingSource;
 @end
 
 @implementation TSTTextEngineDelegate
 
-- (TSTTextEngineDelegate)initWithPadding:(UIEdgeInsets)a3 verticalAlignment:(int)a4 locale:(id)a5 shouldHyphenate:(BOOL)a6 styleProvidingSource:(id)a7
+- (TSTTextEngineDelegate)initWithPadding:(UIEdgeInsets)padding verticalAlignment:(int)alignment locale:(id)locale shouldHyphenate:(BOOL)hyphenate styleProvidingSource:(id)source
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v16 = a5;
-  v17 = a7;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
+  localeCopy = locale;
+  sourceCopy = source;
   v27.receiver = self;
   v27.super_class = TSTTextEngineDelegate;
   v18 = [(TSTTextEngineDelegate *)&v27 init];
@@ -23,11 +23,11 @@
     mPadding = v18->mPadding;
     v18->mPadding = v24;
 
-    v18->mVerticalAlignment = a4;
+    v18->mVerticalAlignment = alignment;
     v18->mMaxWidthForChildren = 1.79769313e308;
-    objc_storeStrong(&v18->mLocale, a5);
-    v18->mShouldHyphenate = a6;
-    objc_storeWeak(&v18->mStyleProvidingSource, v17);
+    objc_storeStrong(&v18->mLocale, locale);
+    v18->mShouldHyphenate = hyphenate;
+    objc_storeWeak(&v18->mStyleProvidingSource, sourceCopy);
   }
 
   return v18;

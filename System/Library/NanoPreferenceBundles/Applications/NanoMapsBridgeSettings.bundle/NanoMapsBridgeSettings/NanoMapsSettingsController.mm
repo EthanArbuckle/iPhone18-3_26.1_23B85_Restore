@@ -1,26 +1,26 @@
 @interface NanoMapsSettingsController
-- (NanoMapsSettingsController)initWithCoder:(id)a3;
-- (NanoMapsSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_legacyTurnAlertsEnabled:(id)a3;
-- (id)_turnAlertsEnabled:(id)a3;
+- (NanoMapsSettingsController)initWithCoder:(id)coder;
+- (NanoMapsSettingsController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_legacyTurnAlertsEnabled:(id)enabled;
+- (id)_turnAlertsEnabled:(id)enabled;
 - (id)applicationGroupSpecifiers;
 - (id)localizedPaneTitle;
 - (void)_createSpecifiers;
-- (void)_setCarPlayDrivingTurnAlertsEnabled:(id)a3 specifier:(id)a4;
-- (void)_setCyclingTurnAlertsEnabled:(id)a3 specifier:(id)a4;
-- (void)_setDrivingTurnAlertsEnabled:(id)a3 specifier:(id)a4;
-- (void)_setTransitTurnAlertsEnabled:(id)a3 specifier:(id)a4;
-- (void)_setTurnAlertsEnabled:(id)a3 forKey:(id)a4;
-- (void)_setWalkingTurnAlertsEnabled:(id)a3 specifier:(id)a4;
+- (void)_setCarPlayDrivingTurnAlertsEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setCyclingTurnAlertsEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setDrivingTurnAlertsEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setTransitTurnAlertsEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setTurnAlertsEnabled:(id)enabled forKey:(id)key;
+- (void)_setWalkingTurnAlertsEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation NanoMapsSettingsController
 
-- (NanoMapsSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (NanoMapsSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = NanoMapsSettingsController;
-  v4 = [(NanoMapsSettingsController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(NanoMapsSettingsController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -30,11 +30,11 @@
   return v5;
 }
 
-- (NanoMapsSettingsController)initWithCoder:(id)a3
+- (NanoMapsSettingsController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NanoMapsSettingsController;
-  v3 = [(NanoMapsSettingsController *)&v6 initWithCoder:a3];
+  v3 = [(NanoMapsSettingsController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -130,9 +130,9 @@
 - (id)applicationGroupSpecifiers
 {
   v3 = +[NRPairedDeviceRegistry sharedInstance];
-  v4 = [v3 getActivePairedDevice];
+  getActivePairedDevice = [v3 getActivePairedDevice];
 
-  v5 = [v4 valueForProperty:NRDevicePropertySystemVersion];
+  v5 = [getActivePairedDevice valueForProperty:NRDevicePropertySystemVersion];
   v6 = [v5 componentsSeparatedByString:@"."];
 
   if ([v6 count] && (objc_msgSend(v6, "firstObject"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "integerValue"), v7, v8 >= 5))
@@ -169,81 +169,81 @@
   return v14;
 }
 
-- (void)_setTurnAlertsEnabled:(id)a3 forKey:(id)a4
+- (void)_setTurnAlertsEnabled:(id)enabled forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  keyCopy = key;
   v7 = MAPSGetTurnAlertsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 138412546;
-    v9 = v6;
+    v9 = keyCopy;
     v10 = 2112;
-    v11 = v5;
+    v11 = enabledCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "[NanoMaps] Setting turn alerts %@ to %@", &v8, 0x16u);
   }
 
-  +[NanoMapsSettingsManager setBool:forKey:](NanoMapsSettingsManager, "setBool:forKey:", [v5 BOOLValue], v6);
+  +[NanoMapsSettingsManager setBool:forKey:](NanoMapsSettingsManager, "setBool:forKey:", [enabledCopy BOOLValue], keyCopy);
 }
 
-- (id)_turnAlertsEnabled:(id)a3
+- (id)_turnAlertsEnabled:(id)enabled
 {
-  v3 = a3;
-  v4 = [NanoMapsSettingsManager BOOLForKey:v3 defaultValue:[NanoMapsSettingsManager BOOLForKey:@"turnAlertsEnabled" defaultValue:1]];
+  enabledCopy = enabled;
+  v4 = [NanoMapsSettingsManager BOOLForKey:enabledCopy defaultValue:[NanoMapsSettingsManager BOOLForKey:@"turnAlertsEnabled" defaultValue:1]];
 
   return [NSNumber numberWithBool:v4];
 }
 
-- (id)_legacyTurnAlertsEnabled:(id)a3
+- (id)_legacyTurnAlertsEnabled:(id)enabled
 {
   v3 = [NanoMapsSettingsManager BOOLForKey:@"turnAlertsEnabled" defaultValue:1];
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)_setDrivingTurnAlertsEnabled:(id)a3 specifier:(id)a4
+- (void)_setDrivingTurnAlertsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  [(NanoMapsSettingsController *)self _setTurnAlertsEnabled:v5 forKey:@"drivingTurnAlertsEnabled"];
-  v6 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  [(NanoMapsSettingsController *)self _setTurnAlertsEnabled:enabledCopy forKey:@"drivingTurnAlertsEnabled"];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [NanoMapsSettingsManager setBool:v6 ^ 1 forKey:@"navVoiceMutedForDrivingTurnAlerts"];
+  [NanoMapsSettingsManager setBool:bOOLValue ^ 1 forKey:@"navVoiceMutedForDrivingTurnAlerts"];
 }
 
-- (void)_setCarPlayDrivingTurnAlertsEnabled:(id)a3 specifier:(id)a4
+- (void)_setCarPlayDrivingTurnAlertsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  [(NanoMapsSettingsController *)self _setTurnAlertsEnabled:v5 forKey:@"carPlayDrivingTurnAlertsEnabled"];
-  v6 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  [(NanoMapsSettingsController *)self _setTurnAlertsEnabled:enabledCopy forKey:@"carPlayDrivingTurnAlertsEnabled"];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [NanoMapsSettingsManager setBool:v6 ^ 1 forKey:@"navVoiceMutedForCarPlayDrivingTurnAlerts"];
+  [NanoMapsSettingsManager setBool:bOOLValue ^ 1 forKey:@"navVoiceMutedForCarPlayDrivingTurnAlerts"];
 }
 
-- (void)_setWalkingTurnAlertsEnabled:(id)a3 specifier:(id)a4
+- (void)_setWalkingTurnAlertsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  [(NanoMapsSettingsController *)self _setTurnAlertsEnabled:v5 forKey:@"walkingTurnAlertsEnabled"];
-  v6 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  [(NanoMapsSettingsController *)self _setTurnAlertsEnabled:enabledCopy forKey:@"walkingTurnAlertsEnabled"];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [NanoMapsSettingsManager setBool:v6 ^ 1 forKey:@"navVoiceMutedForWalkingTurnAlerts"];
+  [NanoMapsSettingsManager setBool:bOOLValue ^ 1 forKey:@"navVoiceMutedForWalkingTurnAlerts"];
 }
 
-- (void)_setTransitTurnAlertsEnabled:(id)a3 specifier:(id)a4
+- (void)_setTransitTurnAlertsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  [(NanoMapsSettingsController *)self _setTurnAlertsEnabled:v5 forKey:@"transitTurnAlertsEnabled"];
-  v6 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  [(NanoMapsSettingsController *)self _setTurnAlertsEnabled:enabledCopy forKey:@"transitTurnAlertsEnabled"];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [NanoMapsSettingsManager setBool:v6 ^ 1 forKey:@"navVoiceMutedForTransitTurnAlerts"];
+  [NanoMapsSettingsManager setBool:bOOLValue ^ 1 forKey:@"navVoiceMutedForTransitTurnAlerts"];
 }
 
-- (void)_setCyclingTurnAlertsEnabled:(id)a3 specifier:(id)a4
+- (void)_setCyclingTurnAlertsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  [(NanoMapsSettingsController *)self _setTurnAlertsEnabled:v5 forKey:@"cyclingTurnAlertsEnabled"];
-  v6 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  [(NanoMapsSettingsController *)self _setTurnAlertsEnabled:enabledCopy forKey:@"cyclingTurnAlertsEnabled"];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [NanoMapsSettingsManager setBool:v6 ^ 1 forKey:@"navVoiceMutedForCyclingTurnAlerts"];
+  [NanoMapsSettingsManager setBool:bOOLValue ^ 1 forKey:@"navVoiceMutedForCyclingTurnAlerts"];
 }
 
 @end

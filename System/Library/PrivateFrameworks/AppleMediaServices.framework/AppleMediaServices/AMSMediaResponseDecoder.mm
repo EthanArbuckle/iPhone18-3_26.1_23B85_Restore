@@ -1,46 +1,46 @@
 @interface AMSMediaResponseDecoder
-- (id)resultFromResult:(id)a3 error:(id *)a4;
+- (id)resultFromResult:(id)result error:(id *)error;
 @end
 
 @implementation AMSMediaResponseDecoder
 
-- (id)resultFromResult:(id)a3 error:(id *)a4
+- (id)resultFromResult:(id)result error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 response];
+  resultCopy = result;
+  response = [resultCopy response];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v5 response];
+    response2 = [resultCopy response];
     v9 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{200, 100}];
-    v10 = [v8 statusCode];
-    if (v10 == 401)
+    statusCode = [response2 statusCode];
+    if (statusCode == 401)
     {
       v11 = @"Media token is expired.";
     }
 
     else
     {
-      v10 = [v8 statusCode];
-      if (v10 == 403)
+      statusCode = [response2 statusCode];
+      if (statusCode == 403)
       {
         v11 = @"Media token is invalid.";
       }
 
       else
       {
-        if ([v8 statusCode] != 404)
+        if ([response2 statusCode] != 404)
         {
-          if ([v9 containsIndex:{objc_msgSend(v8, "statusCode")}])
+          if ([v9 containsIndex:{objc_msgSend(response2, "statusCode")}])
           {
             v12 = 0;
           }
 
           else
           {
-            v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Response status code is: %lu", objc_msgSend(v8, "statusCode")];
+            v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Response status code is: %lu", objc_msgSend(response2, "statusCode")];
             v12 = AMSError(301, @"Invalid Status Code", v16, 0);
           }
 
@@ -55,11 +55,11 @@ LABEL_13:
         }
 
         v11 = @"Media resource not found.";
-        v10 = 405;
+        statusCode = 405;
       }
     }
 
-    v12 = AMSError(v10, @"Invalid Status Code", v11, 0);
+    v12 = AMSError(statusCode, @"Invalid Status Code", v11, 0);
     goto LABEL_13;
   }
 
@@ -67,16 +67,16 @@ LABEL_13:
   if (!v12)
   {
 LABEL_14:
-    v14 = [[AMSMediaResult alloc] initWithResult:v5];
+    v14 = [[AMSMediaResult alloc] initWithResult:resultCopy];
     goto LABEL_15;
   }
 
 LABEL_5:
-  if (a4)
+  if (error)
   {
     v13 = v12;
     v14 = 0;
-    *a4 = v12;
+    *error = v12;
   }
 
   else

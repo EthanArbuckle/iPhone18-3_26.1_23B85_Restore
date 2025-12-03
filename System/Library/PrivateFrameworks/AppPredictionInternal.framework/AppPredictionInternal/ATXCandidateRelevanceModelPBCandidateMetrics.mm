@@ -1,33 +1,33 @@
 @interface ATXCandidateRelevanceModelPBCandidateMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCandidateNumberOfModelWeights:(BOOL)a3;
-- (void)setHasCandidateNumberOfNonZeroModelWeights:(BOOL)a3;
-- (void)setHasCandidateNumberOfPositiveSamples:(BOOL)a3;
-- (void)setHasCandidateNumberOfSamples:(BOOL)a3;
-- (void)setHasCandidateShadowF1:(BOOL)a3;
-- (void)setHasCandidateShadowLaunchPercentage:(BOOL)a3;
-- (void)setHasCandidateShadowPrecision:(BOOL)a3;
-- (void)setHasCandidateShadowRecall:(BOOL)a3;
-- (void)setHasCandidateShadowShownPercentage:(BOOL)a3;
-- (void)setHasCandidateUIF1:(BOOL)a3;
-- (void)setHasCandidateUILaunchPercentage:(BOOL)a3;
-- (void)setHasCandidateUIPrecision:(BOOL)a3;
-- (void)setHasCandidateUIRecall:(BOOL)a3;
-- (void)setHasCandidateUIShownPercentage:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCandidateNumberOfModelWeights:(BOOL)weights;
+- (void)setHasCandidateNumberOfNonZeroModelWeights:(BOOL)weights;
+- (void)setHasCandidateNumberOfPositiveSamples:(BOOL)samples;
+- (void)setHasCandidateNumberOfSamples:(BOOL)samples;
+- (void)setHasCandidateShadowF1:(BOOL)f1;
+- (void)setHasCandidateShadowLaunchPercentage:(BOOL)percentage;
+- (void)setHasCandidateShadowPrecision:(BOOL)precision;
+- (void)setHasCandidateShadowRecall:(BOOL)recall;
+- (void)setHasCandidateShadowShownPercentage:(BOOL)percentage;
+- (void)setHasCandidateUIF1:(BOOL)f1;
+- (void)setHasCandidateUILaunchPercentage:(BOOL)percentage;
+- (void)setHasCandidateUIPrecision:(BOOL)precision;
+- (void)setHasCandidateUIRecall:(BOOL)recall;
+- (void)setHasCandidateUIShownPercentage:(BOOL)percentage;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXCandidateRelevanceModelPBCandidateMetrics
 
-- (void)setHasCandidateNumberOfPositiveSamples:(BOOL)a3
+- (void)setHasCandidateNumberOfPositiveSamples:(BOOL)samples
 {
-  if (a3)
+  if (samples)
   {
     v3 = 8;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasCandidateNumberOfSamples:(BOOL)a3
+- (void)setHasCandidateNumberOfSamples:(BOOL)samples
 {
-  if (a3)
+  if (samples)
   {
     v3 = 16;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasCandidateNumberOfModelWeights:(BOOL)a3
+- (void)setHasCandidateNumberOfModelWeights:(BOOL)weights
 {
-  if (a3)
+  if (weights)
   {
     v3 = 2;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasCandidateNumberOfNonZeroModelWeights:(BOOL)a3
+- (void)setHasCandidateNumberOfNonZeroModelWeights:(BOOL)weights
 {
-  if (a3)
+  if (weights)
   {
     v3 = 4;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasCandidateShadowLaunchPercentage:(BOOL)a3
+- (void)setHasCandidateShadowLaunchPercentage:(BOOL)percentage
 {
-  if (a3)
+  if (percentage)
   {
     v3 = 64;
   }
@@ -100,9 +100,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasCandidateShadowShownPercentage:(BOOL)a3
+- (void)setHasCandidateShadowShownPercentage:(BOOL)percentage
 {
-  if (a3)
+  if (percentage)
   {
     v3 = 512;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasCandidateShadowPrecision:(BOOL)a3
+- (void)setHasCandidateShadowPrecision:(BOOL)precision
 {
-  if (a3)
+  if (precision)
   {
     v3 = 128;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasCandidateShadowRecall:(BOOL)a3
+- (void)setHasCandidateShadowRecall:(BOOL)recall
 {
-  if (a3)
+  if (recall)
   {
     v3 = 256;
   }
@@ -145,9 +145,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasCandidateShadowF1:(BOOL)a3
+- (void)setHasCandidateShadowF1:(BOOL)f1
 {
-  if (a3)
+  if (f1)
   {
     v3 = 32;
   }
@@ -160,9 +160,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasCandidateUILaunchPercentage:(BOOL)a3
+- (void)setHasCandidateUILaunchPercentage:(BOOL)percentage
 {
-  if (a3)
+  if (percentage)
   {
     v3 = 2048;
   }
@@ -175,9 +175,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasCandidateUIShownPercentage:(BOOL)a3
+- (void)setHasCandidateUIShownPercentage:(BOOL)percentage
 {
-  if (a3)
+  if (percentage)
   {
     v3 = 0x4000;
   }
@@ -190,9 +190,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasCandidateUIPrecision:(BOOL)a3
+- (void)setHasCandidateUIPrecision:(BOOL)precision
 {
-  if (a3)
+  if (precision)
   {
     v3 = 4096;
   }
@@ -205,9 +205,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasCandidateUIRecall:(BOOL)a3
+- (void)setHasCandidateUIRecall:(BOOL)recall
 {
-  if (a3)
+  if (recall)
   {
     v3 = 0x2000;
   }
@@ -220,9 +220,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasCandidateUIF1:(BOOL)a3
+- (void)setHasCandidateUIF1:(BOOL)f1
 {
-  if (a3)
+  if (f1)
   {
     v3 = 1024;
   }
@@ -241,20 +241,20 @@
   v8.receiver = self;
   v8.super_class = ATXCandidateRelevanceModelPBCandidateMetrics;
   v4 = [(ATXCandidateRelevanceModelPBCandidateMetrics *)&v8 description];
-  v5 = [(ATXCandidateRelevanceModelPBCandidateMetrics *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXCandidateRelevanceModelPBCandidateMetrics *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_candidateNumberOfPositiveSamples];
-    [v3 setObject:v9 forKey:@"candidateNumberOfPositiveSamples"];
+    [dictionary setObject:v9 forKey:@"candidateNumberOfPositiveSamples"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -275,7 +275,7 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_candidateNumberOfSamples];
-  [v3 setObject:v10 forKey:@"candidateNumberOfSamples"];
+  [dictionary setObject:v10 forKey:@"candidateNumberOfSamples"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -291,7 +291,7 @@ LABEL_4:
 
 LABEL_24:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_candidateNumberOfDaysWithPositiveSamples];
-  [v3 setObject:v11 forKey:@"candidateNumberOfDaysWithPositiveSamples"];
+  [dictionary setObject:v11 forKey:@"candidateNumberOfDaysWithPositiveSamples"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -307,7 +307,7 @@ LABEL_5:
 
 LABEL_25:
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_candidateNumberOfModelWeights];
-  [v3 setObject:v12 forKey:@"candidateNumberOfModelWeights"];
+  [dictionary setObject:v12 forKey:@"candidateNumberOfModelWeights"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -323,7 +323,7 @@ LABEL_6:
 
 LABEL_26:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_candidateNumberOfNonZeroModelWeights];
-  [v3 setObject:v13 forKey:@"candidateNumberOfNonZeroModelWeights"];
+  [dictionary setObject:v13 forKey:@"candidateNumberOfNonZeroModelWeights"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -340,7 +340,7 @@ LABEL_7:
 LABEL_27:
   *&v4 = self->_candidateShadowLaunchPercentage;
   v14 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v14 forKey:@"candidateShadowLaunchPercentage"];
+  [dictionary setObject:v14 forKey:@"candidateShadowLaunchPercentage"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -357,7 +357,7 @@ LABEL_8:
 LABEL_28:
   *&v4 = self->_candidateShadowShownPercentage;
   v15 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v15 forKey:@"candidateShadowShownPercentage"];
+  [dictionary setObject:v15 forKey:@"candidateShadowShownPercentage"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -374,7 +374,7 @@ LABEL_9:
 LABEL_29:
   *&v4 = self->_candidateShadowPrecision;
   v16 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v16 forKey:@"candidateShadowPrecision"];
+  [dictionary setObject:v16 forKey:@"candidateShadowPrecision"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -391,7 +391,7 @@ LABEL_10:
 LABEL_30:
   *&v4 = self->_candidateShadowRecall;
   v17 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v17 forKey:@"candidateShadowRecall"];
+  [dictionary setObject:v17 forKey:@"candidateShadowRecall"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -408,7 +408,7 @@ LABEL_11:
 LABEL_31:
   *&v4 = self->_candidateShadowF1;
   v18 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v18 forKey:@"candidateShadowF1"];
+  [dictionary setObject:v18 forKey:@"candidateShadowF1"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -425,7 +425,7 @@ LABEL_12:
 LABEL_32:
   *&v4 = self->_candidateUILaunchPercentage;
   v19 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v19 forKey:@"candidateUILaunchPercentage"];
+  [dictionary setObject:v19 forKey:@"candidateUILaunchPercentage"];
 
   has = self->_has;
   if ((has & 0x4000) == 0)
@@ -442,7 +442,7 @@ LABEL_13:
 LABEL_33:
   *&v4 = self->_candidateUIShownPercentage;
   v20 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v20 forKey:@"candidateUIShownPercentage"];
+  [dictionary setObject:v20 forKey:@"candidateUIShownPercentage"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -459,7 +459,7 @@ LABEL_14:
 LABEL_34:
   *&v4 = self->_candidateUIPrecision;
   v21 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v21 forKey:@"candidateUIPrecision"];
+  [dictionary setObject:v21 forKey:@"candidateUIPrecision"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -476,36 +476,36 @@ LABEL_15:
 LABEL_35:
   *&v4 = self->_candidateUIRecall;
   v22 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v22 forKey:@"candidateUIRecall"];
+  [dictionary setObject:v22 forKey:@"candidateUIRecall"];
 
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_16:
     *&v4 = self->_candidateUIF1;
     v6 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v6 forKey:@"candidateUIF1"];
+    [dictionary setObject:v6 forKey:@"candidateUIF1"];
   }
 
 LABEL_17:
   candidateIdentifier = self->_candidateIdentifier;
   if (candidateIdentifier)
   {
-    [v3 setObject:candidateIdentifier forKey:@"candidateIdentifier"];
+    [dictionary setObject:candidateIdentifier forKey:@"candidateIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v21 = v4;
+  v21 = toCopy;
   if ((has & 8) != 0)
   {
     candidateNumberOfPositiveSamples = self->_candidateNumberOfPositiveSamples;
     PBDataWriterWriteUint32Field();
-    v4 = v21;
+    toCopy = v21;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -526,7 +526,7 @@ LABEL_3:
 
   candidateNumberOfSamples = self->_candidateNumberOfSamples;
   PBDataWriterWriteUint32Field();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -542,7 +542,7 @@ LABEL_4:
 LABEL_24:
   candidateNumberOfDaysWithPositiveSamples = self->_candidateNumberOfDaysWithPositiveSamples;
   PBDataWriterWriteUint32Field();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -558,7 +558,7 @@ LABEL_5:
 LABEL_25:
   candidateNumberOfModelWeights = self->_candidateNumberOfModelWeights;
   PBDataWriterWriteUint32Field();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -574,7 +574,7 @@ LABEL_6:
 LABEL_26:
   candidateNumberOfNonZeroModelWeights = self->_candidateNumberOfNonZeroModelWeights;
   PBDataWriterWriteUint32Field();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -590,7 +590,7 @@ LABEL_7:
 LABEL_27:
   candidateShadowLaunchPercentage = self->_candidateShadowLaunchPercentage;
   PBDataWriterWriteFloatField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -606,7 +606,7 @@ LABEL_8:
 LABEL_28:
   candidateShadowShownPercentage = self->_candidateShadowShownPercentage;
   PBDataWriterWriteFloatField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -622,7 +622,7 @@ LABEL_9:
 LABEL_29:
   candidateShadowPrecision = self->_candidateShadowPrecision;
   PBDataWriterWriteFloatField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -638,7 +638,7 @@ LABEL_10:
 LABEL_30:
   candidateShadowRecall = self->_candidateShadowRecall;
   PBDataWriterWriteFloatField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -654,7 +654,7 @@ LABEL_11:
 LABEL_31:
   candidateShadowF1 = self->_candidateShadowF1;
   PBDataWriterWriteFloatField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -670,7 +670,7 @@ LABEL_12:
 LABEL_32:
   candidateUILaunchPercentage = self->_candidateUILaunchPercentage;
   PBDataWriterWriteFloatField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -686,7 +686,7 @@ LABEL_13:
 LABEL_33:
   candidateUIShownPercentage = self->_candidateUIShownPercentage;
   PBDataWriterWriteFloatField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -702,7 +702,7 @@ LABEL_14:
 LABEL_34:
   candidateUIPrecision = self->_candidateUIPrecision;
   PBDataWriterWriteFloatField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -718,31 +718,31 @@ LABEL_15:
 LABEL_35:
   candidateUIRecall = self->_candidateUIRecall;
   PBDataWriterWriteFloatField();
-  v4 = v21;
+  toCopy = v21;
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_16:
     candidateUIF1 = self->_candidateUIF1;
     PBDataWriterWriteFloatField();
-    v4 = v21;
+    toCopy = v21;
   }
 
 LABEL_17:
   if (self->_candidateIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v21;
+    toCopy = v21;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[7] = self->_candidateNumberOfPositiveSamples;
-    *(v4 + 38) |= 8u;
+    toCopy[7] = self->_candidateNumberOfPositiveSamples;
+    *(toCopy + 38) |= 8u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -761,8 +761,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[8] = self->_candidateNumberOfSamples;
-  *(v4 + 38) |= 0x10u;
+  toCopy[8] = self->_candidateNumberOfSamples;
+  *(toCopy + 38) |= 0x10u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -776,8 +776,8 @@ LABEL_4:
   }
 
 LABEL_24:
-  v4[4] = self->_candidateNumberOfDaysWithPositiveSamples;
-  *(v4 + 38) |= 1u;
+  toCopy[4] = self->_candidateNumberOfDaysWithPositiveSamples;
+  *(toCopy + 38) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -791,8 +791,8 @@ LABEL_5:
   }
 
 LABEL_25:
-  v4[5] = self->_candidateNumberOfModelWeights;
-  *(v4 + 38) |= 2u;
+  toCopy[5] = self->_candidateNumberOfModelWeights;
+  *(toCopy + 38) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -806,8 +806,8 @@ LABEL_6:
   }
 
 LABEL_26:
-  v4[6] = self->_candidateNumberOfNonZeroModelWeights;
-  *(v4 + 38) |= 4u;
+  toCopy[6] = self->_candidateNumberOfNonZeroModelWeights;
+  *(toCopy + 38) |= 4u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -821,8 +821,8 @@ LABEL_7:
   }
 
 LABEL_27:
-  v4[10] = LODWORD(self->_candidateShadowLaunchPercentage);
-  *(v4 + 38) |= 0x40u;
+  toCopy[10] = LODWORD(self->_candidateShadowLaunchPercentage);
+  *(toCopy + 38) |= 0x40u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -836,8 +836,8 @@ LABEL_8:
   }
 
 LABEL_28:
-  v4[13] = LODWORD(self->_candidateShadowShownPercentage);
-  *(v4 + 38) |= 0x200u;
+  toCopy[13] = LODWORD(self->_candidateShadowShownPercentage);
+  *(toCopy + 38) |= 0x200u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -851,8 +851,8 @@ LABEL_9:
   }
 
 LABEL_29:
-  v4[11] = LODWORD(self->_candidateShadowPrecision);
-  *(v4 + 38) |= 0x80u;
+  toCopy[11] = LODWORD(self->_candidateShadowPrecision);
+  *(toCopy + 38) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -866,8 +866,8 @@ LABEL_10:
   }
 
 LABEL_30:
-  v4[12] = LODWORD(self->_candidateShadowRecall);
-  *(v4 + 38) |= 0x100u;
+  toCopy[12] = LODWORD(self->_candidateShadowRecall);
+  *(toCopy + 38) |= 0x100u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -881,8 +881,8 @@ LABEL_11:
   }
 
 LABEL_31:
-  v4[9] = LODWORD(self->_candidateShadowF1);
-  *(v4 + 38) |= 0x20u;
+  toCopy[9] = LODWORD(self->_candidateShadowF1);
+  *(toCopy + 38) |= 0x20u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -896,8 +896,8 @@ LABEL_12:
   }
 
 LABEL_32:
-  v4[15] = LODWORD(self->_candidateUILaunchPercentage);
-  *(v4 + 38) |= 0x800u;
+  toCopy[15] = LODWORD(self->_candidateUILaunchPercentage);
+  *(toCopy + 38) |= 0x800u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -911,8 +911,8 @@ LABEL_13:
   }
 
 LABEL_33:
-  v4[18] = LODWORD(self->_candidateUIShownPercentage);
-  *(v4 + 38) |= 0x4000u;
+  toCopy[18] = LODWORD(self->_candidateUIShownPercentage);
+  *(toCopy + 38) |= 0x4000u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -926,8 +926,8 @@ LABEL_14:
   }
 
 LABEL_34:
-  v4[16] = LODWORD(self->_candidateUIPrecision);
-  *(v4 + 38) |= 0x1000u;
+  toCopy[16] = LODWORD(self->_candidateUIPrecision);
+  *(toCopy + 38) |= 0x1000u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -941,27 +941,27 @@ LABEL_15:
   }
 
 LABEL_35:
-  v4[17] = LODWORD(self->_candidateUIRecall);
-  *(v4 + 38) |= 0x2000u;
+  toCopy[17] = LODWORD(self->_candidateUIRecall);
+  *(toCopy + 38) |= 0x2000u;
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_16:
-    v4[14] = LODWORD(self->_candidateUIF1);
-    *(v4 + 38) |= 0x400u;
+    toCopy[14] = LODWORD(self->_candidateUIF1);
+    *(toCopy + 38) |= 0x400u;
   }
 
 LABEL_17:
   if (self->_candidateIdentifier)
   {
-    v6 = v4;
-    [v4 setCandidateIdentifier:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setCandidateIdentifier:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -1176,26 +1176,26 @@ LABEL_16:
   }
 
 LABEL_17:
-  v8 = [(NSString *)self->_candidateIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_candidateIdentifier copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_79;
   }
 
   has = self->_has;
-  v6 = *(v4 + 38);
+  v6 = *(equalCopy + 38);
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_candidateNumberOfPositiveSamples != *(v4 + 7))
+    if ((v6 & 8) == 0 || self->_candidateNumberOfPositiveSamples != *(equalCopy + 7))
     {
       goto LABEL_79;
     }
@@ -1210,7 +1210,7 @@ LABEL_79:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_candidateNumberOfSamples != *(v4 + 8))
+    if ((v6 & 0x10) == 0 || self->_candidateNumberOfSamples != *(equalCopy + 8))
     {
       goto LABEL_79;
     }
@@ -1223,7 +1223,7 @@ LABEL_79:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_candidateNumberOfDaysWithPositiveSamples != *(v4 + 4))
+    if ((v6 & 1) == 0 || self->_candidateNumberOfDaysWithPositiveSamples != *(equalCopy + 4))
     {
       goto LABEL_79;
     }
@@ -1236,7 +1236,7 @@ LABEL_79:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_candidateNumberOfModelWeights != *(v4 + 5))
+    if ((v6 & 2) == 0 || self->_candidateNumberOfModelWeights != *(equalCopy + 5))
     {
       goto LABEL_79;
     }
@@ -1249,7 +1249,7 @@ LABEL_79:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_candidateNumberOfNonZeroModelWeights != *(v4 + 6))
+    if ((v6 & 4) == 0 || self->_candidateNumberOfNonZeroModelWeights != *(equalCopy + 6))
     {
       goto LABEL_79;
     }
@@ -1262,7 +1262,7 @@ LABEL_79:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_candidateShadowLaunchPercentage != *(v4 + 10))
+    if ((v6 & 0x40) == 0 || self->_candidateShadowLaunchPercentage != *(equalCopy + 10))
     {
       goto LABEL_79;
     }
@@ -1275,20 +1275,20 @@ LABEL_79:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 38) & 0x200) == 0 || self->_candidateShadowShownPercentage != *(v4 + 13))
+    if ((*(equalCopy + 38) & 0x200) == 0 || self->_candidateShadowShownPercentage != *(equalCopy + 13))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 38) & 0x200) != 0)
+  else if ((*(equalCopy + 38) & 0x200) != 0)
   {
     goto LABEL_79;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_candidateShadowPrecision != *(v4 + 11))
+    if ((v6 & 0x80) == 0 || self->_candidateShadowPrecision != *(equalCopy + 11))
     {
       goto LABEL_79;
     }
@@ -1301,20 +1301,20 @@ LABEL_79:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 38) & 0x100) == 0 || self->_candidateShadowRecall != *(v4 + 12))
+    if ((*(equalCopy + 38) & 0x100) == 0 || self->_candidateShadowRecall != *(equalCopy + 12))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 38) & 0x100) != 0)
+  else if ((*(equalCopy + 38) & 0x100) != 0)
   {
     goto LABEL_79;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_candidateShadowF1 != *(v4 + 9))
+    if ((v6 & 0x20) == 0 || self->_candidateShadowF1 != *(equalCopy + 9))
     {
       goto LABEL_79;
     }
@@ -1327,71 +1327,71 @@ LABEL_79:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 38) & 0x800) == 0 || self->_candidateUILaunchPercentage != *(v4 + 15))
+    if ((*(equalCopy + 38) & 0x800) == 0 || self->_candidateUILaunchPercentage != *(equalCopy + 15))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 38) & 0x800) != 0)
+  else if ((*(equalCopy + 38) & 0x800) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 38) & 0x4000) == 0 || self->_candidateUIShownPercentage != *(v4 + 18))
+    if ((*(equalCopy + 38) & 0x4000) == 0 || self->_candidateUIShownPercentage != *(equalCopy + 18))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 38) & 0x4000) != 0)
+  else if ((*(equalCopy + 38) & 0x4000) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 38) & 0x1000) == 0 || self->_candidateUIPrecision != *(v4 + 16))
+    if ((*(equalCopy + 38) & 0x1000) == 0 || self->_candidateUIPrecision != *(equalCopy + 16))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 38) & 0x1000) != 0)
+  else if ((*(equalCopy + 38) & 0x1000) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 38) & 0x2000) == 0 || self->_candidateUIRecall != *(v4 + 17))
+    if ((*(equalCopy + 38) & 0x2000) == 0 || self->_candidateUIRecall != *(equalCopy + 17))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 38) & 0x2000) != 0)
+  else if ((*(equalCopy + 38) & 0x2000) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 38) & 0x400) == 0 || self->_candidateUIF1 != *(v4 + 14))
+    if ((*(equalCopy + 38) & 0x400) == 0 || self->_candidateUIF1 != *(equalCopy + 14))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(v4 + 38) & 0x400) != 0)
+  else if ((*(equalCopy + 38) & 0x400) != 0)
   {
     goto LABEL_79;
   }
 
   candidateIdentifier = self->_candidateIdentifier;
-  if (candidateIdentifier | *(v4 + 1))
+  if (candidateIdentifier | *(equalCopy + 1))
   {
     v8 = [(NSString *)candidateIdentifier isEqual:?];
   }
@@ -1820,15 +1820,15 @@ LABEL_17:
   return v10 ^ v9 ^ v11 ^ v12 ^ v13 ^ v17 ^ v18 ^ v22 ^ v26 ^ v30 ^ v34 ^ v38 ^ v42 ^ v46 ^ v50 ^ [(NSString *)self->_candidateIdentifier hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 38);
+  fromCopy = from;
+  v5 = *(fromCopy + 38);
   if ((v5 & 8) != 0)
   {
-    self->_candidateNumberOfPositiveSamples = *(v4 + 7);
+    self->_candidateNumberOfPositiveSamples = *(fromCopy + 7);
     *&self->_has |= 8u;
-    v5 = *(v4 + 38);
+    v5 = *(fromCopy + 38);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -1846,9 +1846,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_candidateNumberOfSamples = *(v4 + 8);
+  self->_candidateNumberOfSamples = *(fromCopy + 8);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 1) == 0)
   {
 LABEL_4:
@@ -1861,9 +1861,9 @@ LABEL_4:
   }
 
 LABEL_24:
-  self->_candidateNumberOfDaysWithPositiveSamples = *(v4 + 4);
+  self->_candidateNumberOfDaysWithPositiveSamples = *(fromCopy + 4);
   *&self->_has |= 1u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 2) == 0)
   {
 LABEL_5:
@@ -1876,9 +1876,9 @@ LABEL_5:
   }
 
 LABEL_25:
-  self->_candidateNumberOfModelWeights = *(v4 + 5);
+  self->_candidateNumberOfModelWeights = *(fromCopy + 5);
   *&self->_has |= 2u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 4) == 0)
   {
 LABEL_6:
@@ -1891,9 +1891,9 @@ LABEL_6:
   }
 
 LABEL_26:
-  self->_candidateNumberOfNonZeroModelWeights = *(v4 + 6);
+  self->_candidateNumberOfNonZeroModelWeights = *(fromCopy + 6);
   *&self->_has |= 4u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x40) == 0)
   {
 LABEL_7:
@@ -1906,9 +1906,9 @@ LABEL_7:
   }
 
 LABEL_27:
-  self->_candidateShadowLaunchPercentage = *(v4 + 10);
+  self->_candidateShadowLaunchPercentage = *(fromCopy + 10);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x200) == 0)
   {
 LABEL_8:
@@ -1921,9 +1921,9 @@ LABEL_8:
   }
 
 LABEL_28:
-  self->_candidateShadowShownPercentage = *(v4 + 13);
+  self->_candidateShadowShownPercentage = *(fromCopy + 13);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x80) == 0)
   {
 LABEL_9:
@@ -1936,9 +1936,9 @@ LABEL_9:
   }
 
 LABEL_29:
-  self->_candidateShadowPrecision = *(v4 + 11);
+  self->_candidateShadowPrecision = *(fromCopy + 11);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x100) == 0)
   {
 LABEL_10:
@@ -1951,9 +1951,9 @@ LABEL_10:
   }
 
 LABEL_30:
-  self->_candidateShadowRecall = *(v4 + 12);
+  self->_candidateShadowRecall = *(fromCopy + 12);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x20) == 0)
   {
 LABEL_11:
@@ -1966,9 +1966,9 @@ LABEL_11:
   }
 
 LABEL_31:
-  self->_candidateShadowF1 = *(v4 + 9);
+  self->_candidateShadowF1 = *(fromCopy + 9);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x800) == 0)
   {
 LABEL_12:
@@ -1981,9 +1981,9 @@ LABEL_12:
   }
 
 LABEL_32:
-  self->_candidateUILaunchPercentage = *(v4 + 15);
+  self->_candidateUILaunchPercentage = *(fromCopy + 15);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_13:
@@ -1996,9 +1996,9 @@ LABEL_13:
   }
 
 LABEL_33:
-  self->_candidateUIShownPercentage = *(v4 + 18);
+  self->_candidateUIShownPercentage = *(fromCopy + 18);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_14:
@@ -2011,9 +2011,9 @@ LABEL_14:
   }
 
 LABEL_34:
-  self->_candidateUIPrecision = *(v4 + 16);
+  self->_candidateUIPrecision = *(fromCopy + 16);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_15:
@@ -2026,21 +2026,21 @@ LABEL_15:
   }
 
 LABEL_35:
-  self->_candidateUIRecall = *(v4 + 17);
+  self->_candidateUIRecall = *(fromCopy + 17);
   *&self->_has |= 0x2000u;
-  if ((*(v4 + 38) & 0x400) != 0)
+  if ((*(fromCopy + 38) & 0x400) != 0)
   {
 LABEL_16:
-    self->_candidateUIF1 = *(v4 + 14);
+    self->_candidateUIF1 = *(fromCopy + 14);
     *&self->_has |= 0x400u;
   }
 
 LABEL_17:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(ATXCandidateRelevanceModelPBCandidateMetrics *)self setCandidateIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

@@ -1,10 +1,10 @@
 @interface _UILumaTrackingGroup
 - ($F24F406B2B787EFB06265DBA3D28CBD5)transitionBoundaries;
-- (_UILumaTrackingGroup)initWithTransitionBoundaries:(id)a3 minimumDifference:(double)a4 delegate:(id)a5 views:(id)a6;
+- (_UILumaTrackingGroup)initWithTransitionBoundaries:(id)boundaries minimumDifference:(double)difference delegate:(id)delegate views:(id)views;
 - (void)_updateLumaValue;
-- (void)backgroundLumaView:(id)a3 didChangeLuma:(double)a4;
-- (void)setPaused:(BOOL)a3;
-- (void)unpauseAfterSeedingWithLumaLevel:(unint64_t)a3;
+- (void)backgroundLumaView:(id)view didChangeLuma:(double)luma;
+- (void)setPaused:(BOOL)paused;
+- (void)unpauseAfterSeedingWithLumaLevel:(unint64_t)level;
 @end
 
 @implementation _UILumaTrackingGroup
@@ -97,14 +97,14 @@ LABEL_19:
       do
       {
         v21 = [(NSArray *)self->_lumaViews objectAtIndexedSubscript:v18, v33];
-        v22 = [v21 backgroundLuminanceLevel];
-        if (!v22)
+        backgroundLuminanceLevel = [v21 backgroundLuminanceLevel];
+        if (!backgroundLuminanceLevel)
         {
           goto LABEL_32;
         }
 
-        v23 = v22;
-        if (v22 == self->_backgroundLuminanceLevel)
+        v23 = backgroundLuminanceLevel;
+        if (backgroundLuminanceLevel == self->_backgroundLuminanceLevel)
         {
           goto LABEL_32;
         }
@@ -161,12 +161,12 @@ LABEL_32:
   }
 }
 
-- (_UILumaTrackingGroup)initWithTransitionBoundaries:(id)a3 minimumDifference:(double)a4 delegate:(id)a5 views:(id)a6
+- (_UILumaTrackingGroup)initWithTransitionBoundaries:(id)boundaries minimumDifference:(double)difference delegate:(id)delegate views:(id)views
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v10 = a5;
-  v11 = a6;
+  var1 = boundaries.var1;
+  var0 = boundaries.var0;
+  delegateCopy = delegate;
+  viewsCopy = views;
   v22.receiver = self;
   v22.super_class = _UILumaTrackingGroup;
   v12 = [(_UILumaTrackingGroup *)&v22 init];
@@ -176,9 +176,9 @@ LABEL_32:
     v12->_backgroundLuminanceLevel = 0;
     v12->_transitionBoundaries.minimum = var0;
     v12->_transitionBoundaries.maximum = var1;
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     v13->_paused = 1;
-    v14 = [v11 copy];
+    v14 = [viewsCopy copy];
     lumaViews = v13->_lumaViews;
     v13->_lumaViews = v14;
 
@@ -192,8 +192,8 @@ LABEL_32:
       do
       {
         v19 = [(NSArray *)v13->_lumaViews objectAtIndexedSubscript:v18];
-        v20 = [MEMORY[0x1E695DFB0] null];
-        [(NSMutableArray *)v13->_lumaValues setObject:v20 atIndexedSubscript:v18];
+        null = [MEMORY[0x1E695DFB0] null];
+        [(NSMutableArray *)v13->_lumaValues setObject:null atIndexedSubscript:v18];
 
         [v19 setPaused:1];
         [v19 setTransitionBoundaries:{var0, var1}];
@@ -212,13 +212,13 @@ LABEL_32:
   return v13;
 }
 
-- (void)backgroundLumaView:(id)a3 didChangeLuma:(double)a4
+- (void)backgroundLumaView:(id)view didChangeLuma:(double)luma
 {
-  v6 = [(NSArray *)self->_lumaViews indexOfObject:a3];
+  v6 = [(NSArray *)self->_lumaViews indexOfObject:view];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v6;
-    v8 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+    v8 = [MEMORY[0x1E696AD98] numberWithDouble:luma];
     [(NSMutableArray *)self->_lumaValues setObject:v8 atIndexedSubscript:v7];
 
     if ((*&self->_lumaTrackingGroupFlags & 1) == 0)
@@ -234,13 +234,13 @@ LABEL_32:
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    v3 = a3;
-    self->_paused = a3;
+    pausedCopy = paused;
+    self->_paused = paused;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -261,7 +261,7 @@ LABEL_32:
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * v8++) setPaused:{v3, v9}];
+          [*(*(&v9 + 1) + 8 * v8++) setPaused:{pausedCopy, v9}];
         }
 
         while (v6 != v8);
@@ -273,14 +273,14 @@ LABEL_32:
   }
 }
 
-- (void)unpauseAfterSeedingWithLumaLevel:(unint64_t)a3
+- (void)unpauseAfterSeedingWithLumaLevel:(unint64_t)level
 {
   v19 = *MEMORY[0x1E69E9840];
   if (self->_paused)
   {
-    if (a3)
+    if (level)
     {
-      self->_backgroundLuminanceLevel = a3;
+      self->_backgroundLuminanceLevel = level;
       v5 = objc_opt_new();
       outliers = self->_outliers;
       self->_outliers = v5;
@@ -314,7 +314,7 @@ LABEL_32:
             objc_enumerationMutation(v9);
           }
 
-          [*(*(&v14 + 1) + 8 * v13++) unpauseAfterSeedingWithLumaLevel:{a3, v14}];
+          [*(*(&v14 + 1) + 8 * v13++) unpauseAfterSeedingWithLumaLevel:{level, v14}];
         }
 
         while (v11 != v13);

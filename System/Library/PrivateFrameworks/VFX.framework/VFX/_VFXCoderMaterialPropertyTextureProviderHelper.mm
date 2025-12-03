@@ -1,5 +1,5 @@
 @interface _VFXCoderMaterialPropertyTextureProviderHelper
-- (id)cachedTextureWithURL:(id)a3 token:(id *)a4 didFallbackToDefaultTexture:(BOOL *)a5;
+- (id)cachedTextureWithURL:(id)l token:(id *)token didFallbackToDefaultTexture:(BOOL *)texture;
 - (void)dealloc;
 @end
 
@@ -16,23 +16,23 @@
   [(_VFXCoderMaterialPropertyTextureProviderHelper *)&v4 dealloc];
 }
 
-- (id)cachedTextureWithURL:(id)a3 token:(id *)a4 didFallbackToDefaultTexture:(BOOL *)a5
+- (id)cachedTextureWithURL:(id)l token:(id *)token didFallbackToDefaultTexture:(BOOL *)texture
 {
-  if (a4)
+  if (token)
   {
-    *a4 = 0;
+    *token = 0;
   }
 
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = sub_1AF28BC98;
   v30[3] = &unk_1E7A7E0E8;
-  v30[4] = a3;
-  v9 = sub_1AF198494(a3, 1, v30);
+  v30[4] = l;
+  v9 = sub_1AF198494(l, 1, v30);
   v10 = v9;
-  if (a4)
+  if (token)
   {
-    *a4 = v9;
+    *token = v9;
   }
 
   v29 = 0;
@@ -47,14 +47,14 @@
     if (v22)
     {
       v25 = v22;
-      v26 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v23, @"VFXMaterialPropertyTextureProviderHelper could not find texture for %@", v24, a3);
-      objc_msgSend_renderContext_didFallbackToDefaultTextureForSource_message_(v25, v27, v11, a3, v26);
+      v26 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v23, @"VFXMaterialPropertyTextureProviderHelper could not find texture for %@", v24, l);
+      objc_msgSend_renderContext_didFallbackToDefaultTextureForSource_message_(v25, v27, v11, l, v26);
     }
   }
 
-  if (a5)
+  if (texture)
   {
-    *a5 = v29;
+    *texture = v29;
   }
 
   return v18;

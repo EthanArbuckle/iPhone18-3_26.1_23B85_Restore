@@ -1,26 +1,26 @@
 @interface CLLocationStreamingConnectionManager
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (BOOL)isRemoteWatchStreamingCompatible;
 - (BOOL)shouldUseIDSForLocationStreaming;
 - (CLLocationStreamingConnectionManager)init;
-- (id)packageMessage:(id)a3;
+- (id)packageMessage:(id)message;
 - (void)activateRapportLinkIfNecessary;
-- (void)addClient:(id)a3;
+- (void)addClient:(id)client;
 - (void)beginService;
 - (void)endService;
-- (void)retireClient:(id)a3;
-- (void)sendMessage:(id)a3;
-- (void)sendMessageIDS:(id)a3;
-- (void)sendMessageRapport:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
-- (void)setSilo:(id)a3;
-- (void)updateNearbyStatusWithCompanionLinkDevice:(id)a3 didConnect:(BOOL)a4;
-- (void)updateNearbyStatusWithDevices:(id)a3;
-- (void)withClients:(id)a3;
+- (void)retireClient:(id)client;
+- (void)sendMessage:(id)message;
+- (void)sendMessageIDS:(id)s;
+- (void)sendMessageRapport:(id)rapport;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
+- (void)setSilo:(id)silo;
+- (void)updateNearbyStatusWithCompanionLinkDevice:(id)device didConnect:(BOOL)connect;
+- (void)updateNearbyStatusWithDevices:(id)devices;
+- (void)withClients:(id)clients;
 @end
 
 @implementation CLLocationStreamingConnectionManager
@@ -33,41 +33,41 @@
     return 0;
   }
 
-  v2 = [+[PDRRegistry sharedInstance](PDRRegistry getActiveDevice];
-  if (!v2)
+  getActiveDevice = [+[PDRRegistry sharedInstance](PDRRegistry getActiveDevice];
+  if (!getActiveDevice)
   {
     return 0;
   }
 
-  return [v2 supportsCapability:35032708];
+  return [getActiveDevice supportsCapability:35032708];
 }
 
 - (BOOL)shouldUseIDSForLocationStreaming
 {
   [-[CLLocationStreamingConnectionManager universe](self "universe")];
-  LODWORD(v3) = [(CLLocationStreamingConnectionManager *)self isRemoteWatchStreamingCompatible];
-  if (v3)
+  LODWORD(getActiveDevice) = [(CLLocationStreamingConnectionManager *)self isRemoteWatchStreamingCompatible];
+  if (getActiveDevice)
   {
-    v3 = objc_opt_class();
-    if (v3)
+    getActiveDevice = objc_opt_class();
+    if (getActiveDevice)
     {
-      v3 = [+[PDRRegistry sharedInstance](PDRRegistry getActiveDevice];
-      if (v3)
+      getActiveDevice = [+[PDRRegistry sharedInstance](PDRRegistry getActiveDevice];
+      if (getActiveDevice)
       {
-        LOBYTE(v3) = [objc_msgSend(objc_msgSend(objc_msgSend(v3 "systemBuildVersion")] < 8;
+        LOBYTE(getActiveDevice) = [objc_msgSend(objc_msgSend(objc_msgSend(getActiveDevice "systemBuildVersion")] < 8;
       }
     }
   }
 
-  return v3;
+  return getActiveDevice;
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -104,12 +104,12 @@
   return result;
 }
 
-- (void)updateNearbyStatusWithCompanionLinkDevice:(id)a3 didConnect:(BOOL)a4
+- (void)updateNearbyStatusWithCompanionLinkDevice:(id)device didConnect:(BOOL)connect
 {
-  v4 = a4;
-  if ([objc_msgSend(a3 "effectiveIdentifier")] && self->_pairIsNearby != v4)
+  connectCopy = connect;
+  if ([objc_msgSend(device "effectiveIdentifier")] && self->_pairIsNearby != connectCopy)
   {
-    self->_pairIsNearby = v4;
+    self->_pairIsNearby = connectCopy;
     if (qword_1025D47B0 != -1)
     {
       sub_1018BAD4C();
@@ -137,14 +137,14 @@
   }
 }
 
-- (void)updateNearbyStatusWithDevices:(id)a3
+- (void)updateNearbyStatusWithDevices:(id)devices
 {
   [-[CLLocationStreamingConnectionManager universe](self "universe")];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v14 objects:v24 count:16];
+  v5 = [devices countByEnumeratingWithState:&v14 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -155,7 +155,7 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -166,7 +166,7 @@
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v14 objects:v24 count:16];
+      v6 = [devices countByEnumeratingWithState:&v14 objects:v24 count:16];
       if (v6)
       {
         continue;
@@ -246,7 +246,7 @@ LABEL_12:
   }
 }
 
-- (void)setSilo:(id)a3
+- (void)setSilo:(id)silo
 {
   if (qword_1025D47B0 != -1)
   {
@@ -263,10 +263,10 @@ LABEL_12:
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:suspending silo until IDS becomes available}", buf, 0x12u);
   }
 
-  [a3 suspend];
+  [silo suspend];
   v8.receiver = self;
   v8.super_class = CLLocationStreamingConnectionManager;
-  [(CLLocationStreamingConnectionManager *)&v8 setSilo:a3];
+  [(CLLocationStreamingConnectionManager *)&v8 setSilo:silo];
   if (qword_1025D47B0 != -1)
   {
     sub_1018BAD60();
@@ -287,7 +287,7 @@ LABEL_12:
   v7[2] = sub_100547988;
   v7[3] = &unk_10245D460;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = silo;
   [IDSService serviceWithIdentifier:@"com.apple.private.alloy.location.stream" completion:v7];
 }
 
@@ -298,9 +298,9 @@ LABEL_12:
   [(CLLocationStreamingConnectionManager *)self activateRapportLinkIfNecessary];
   [(CLLocationStreamingConnectionManager *)self setUnacknowledgedMessages:+[NSMutableDictionary dictionary]];
   [(CLLocationStreamingConnectionManager *)self setClients:+[NSMutableSet set]];
-  v3 = [(IDSService *)[(CLLocationStreamingConnectionManager *)self service] devices];
+  devices = [(IDSService *)[(CLLocationStreamingConnectionManager *)self service] devices];
 
-  [(CLLocationStreamingConnectionManager *)self updateNearbyStatusWithDevices:v3];
+  [(CLLocationStreamingConnectionManager *)self updateNearbyStatusWithDevices:devices];
 }
 
 - (void)endService
@@ -315,42 +315,42 @@ LABEL_12:
   [(CLLocationStreamingConnectionManager *)self setService:0];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
   [-[CLLocationStreamingConnectionManager universe](self "universe")];
-  [(NSMutableSet *)self->_clients addObject:a3];
+  [(NSMutableSet *)self->_clients addObject:client];
   pairIsNearby = self->_pairIsNearby;
 
-  [a3 pairedDeviceIsNearby:pairIsNearby];
+  [client pairedDeviceIsNearby:pairIsNearby];
 }
 
-- (void)retireClient:(id)a3
+- (void)retireClient:(id)client
 {
   [-[CLLocationStreamingConnectionManager universe](self "universe")];
   clients = self->_clients;
 
-  [(NSMutableSet *)clients removeObject:a3];
+  [(NSMutableSet *)clients removeObject:client];
 }
 
-- (id)packageMessage:(id)a3
+- (id)packageMessage:(id)message
 {
   v4 = +[NSMutableDictionary dictionary];
-  [v4 setObject:objc_msgSend(a3 forKeyedSubscript:{"messageType"), @"kCLLocationStreamingMessageKeyType"}];
-  [v4 setObject:+[NSNumber numberWithInt:](NSNumber forKeyedSubscript:{"numberWithInt:", objc_msgSend(a3, "protocolVersion")), @"kCLLocationStreamingMessageKeyVersion"}];
-  if ([a3 payload])
+  [v4 setObject:objc_msgSend(message forKeyedSubscript:{"messageType"), @"kCLLocationStreamingMessageKeyType"}];
+  [v4 setObject:+[NSNumber numberWithInt:](NSNumber forKeyedSubscript:{"numberWithInt:", objc_msgSend(message, "protocolVersion")), @"kCLLocationStreamingMessageKeyVersion"}];
+  if ([message payload])
   {
-    [v4 setObject:objc_msgSend(a3 forKeyedSubscript:{"payload"), @"kCLLocationStreamingMessageKeyPayload"}];
+    [v4 setObject:objc_msgSend(message forKeyedSubscript:{"payload"), @"kCLLocationStreamingMessageKeyPayload"}];
   }
 
   return v4;
 }
 
-- (void)sendMessageIDS:(id)a3
+- (void)sendMessageIDS:(id)s
 {
   v5 = [(CLLocationStreamingConnectionManager *)self packageMessage:?];
   v22 = 0uLL;
-  v6 = [(CLLocationStreamingConnectionManager *)self service];
-  v7 = -[IDSService sendMessage:toDestinations:priority:options:identifier:error:](v6, "sendMessage:toDestinations:priority:options:identifier:error:", v5, +[NSSet setWithObject:](NSSet, "setWithObject:", IDSDefaultPairedDevice), [a3 priority], objc_msgSend(a3, "idsOptions"), &v22 + 8, &v22);
+  service = [(CLLocationStreamingConnectionManager *)self service];
+  v7 = -[IDSService sendMessage:toDestinations:priority:options:identifier:error:](service, "sendMessage:toDestinations:priority:options:identifier:error:", v5, +[NSSet setWithObject:](NSSet, "setWithObject:", IDSDefaultPairedDevice), [s priority], objc_msgSend(s, "idsOptions"), &v22 + 8, &v22);
   if (v22 == 0)
   {
     if (qword_1025D47B0 != -1)
@@ -361,7 +361,7 @@ LABEL_12:
     v12 = qword_1025D47B8;
     if (os_log_type_enabled(qword_1025D47B8, OS_LOG_TYPE_FAULT))
     {
-      v13 = [objc_msgSend(a3 "messageType")];
+      v13 = [objc_msgSend(s "messageType")];
       *buf = 68289282;
       v24 = 0;
       v25 = 2082;
@@ -378,7 +378,7 @@ LABEL_12:
     v14 = qword_1025D47B8;
     if (os_signpost_enabled(qword_1025D47B8))
     {
-      v15 = [objc_msgSend(a3 "messageType")];
+      v15 = [objc_msgSend(s "messageType")];
       *buf = 68289282;
       v24 = 0;
       v25 = 2082;
@@ -401,7 +401,7 @@ LABEL_12:
     if (os_log_type_enabled(qword_1025D47B8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v22;
-      v11 = [objc_msgSend(a3 "messageType")];
+      v11 = [objc_msgSend(s "messageType")];
       *buf = 68289538;
       v24 = 0;
       v25 = 2082;
@@ -417,7 +417,7 @@ LABEL_12:
     v20[1] = 3221225472;
     v20[2] = sub_1005481B8;
     v20[3] = &unk_10245D488;
-    v20[4] = a3;
+    v20[4] = s;
     v20[5] = v22;
     v21 = v8;
     [(CLLocationStreamingConnectionManager *)self withClients:v20];
@@ -425,8 +425,8 @@ LABEL_12:
 
   else
   {
-    v16 = [(CLLocationStreamingConnectionManager *)self unacknowledgedMessages];
-    [(NSMutableDictionary *)v16 setObject:a3 forKeyedSubscript:*(&v22 + 1)];
+    unacknowledgedMessages = [(CLLocationStreamingConnectionManager *)self unacknowledgedMessages];
+    [(NSMutableDictionary *)unacknowledgedMessages setObject:s forKeyedSubscript:*(&v22 + 1)];
     if (qword_1025D47B0 != -1)
     {
       sub_1018BAD60();
@@ -435,8 +435,8 @@ LABEL_12:
     v17 = qword_1025D47B8;
     if (os_log_type_enabled(qword_1025D47B8, OS_LOG_TYPE_INFO))
     {
-      v18 = [objc_msgSend(a3 "messageType")];
-      v19 = [*(&v22 + 1) UTF8String];
+      v18 = [objc_msgSend(s "messageType")];
+      uTF8String = [*(&v22 + 1) UTF8String];
       *buf = 68289538;
       v24 = 0;
       v25 = 2082;
@@ -444,13 +444,13 @@ LABEL_12:
       v27 = 2082;
       v28 = v18;
       v29 = 2082;
-      v30 = v19;
+      v30 = uTF8String;
       _os_log_impl(dword_100000000, v17, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Handed off message to IDS, message type:%{public, location:escape_only}s, identifier:%{public, location:escape_only}s}", buf, 0x26u);
     }
   }
 }
 
-- (void)sendMessageRapport:(id)a3
+- (void)sendMessageRapport:(id)rapport
 {
   v5 = [(CLLocationStreamingConnectionManager *)self packageMessage:?];
   v23[0] = 0;
@@ -463,16 +463,16 @@ LABEL_12:
   v20 = sub_100047414;
   v21 = sub_1000483E0;
   v22 = 0;
-  v6 = [(CLLocationStreamingConnectionManager *)self rapportLink];
+  rapportLink = [(CLLocationStreamingConnectionManager *)self rapportLink];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1005485A4;
   v16[3] = &unk_10245D4D8;
   v16[6] = &v17;
   v16[7] = v23;
-  v16[4] = a3;
+  v16[4] = rapport;
   v16[5] = self;
-  [(RPCompanionLinkClient *)v6 sendEventID:@"com.apple.locationd.rapport.event" event:v5 destinationID:RPDestinationIdentifierPairedCompanion options:0 completion:v16];
+  [(RPCompanionLinkClient *)rapportLink sendEventID:@"com.apple.locationd.rapport.event" event:v5 destinationID:RPDestinationIdentifierPairedCompanion options:0 completion:v16];
   if (v18[5])
   {
     if (qword_1025D47B0 != -1)
@@ -484,7 +484,7 @@ LABEL_12:
     if (os_log_type_enabled(qword_1025D47B8, OS_LOG_TYPE_ERROR))
     {
       v8 = v18[5];
-      v9 = [objc_msgSend(a3 "messageType")];
+      v9 = [objc_msgSend(rapport "messageType")];
       *buf = 68289538;
       v26 = 2082;
       v27 = "";
@@ -503,7 +503,7 @@ LABEL_12:
     if (os_signpost_enabled(qword_1025D47B8))
     {
       v11 = v18[5];
-      v12 = [objc_msgSend(a3 "messageType")];
+      v12 = [objc_msgSend(rapport "messageType")];
       *buf = 68289538;
       v26 = 2082;
       v27 = "";
@@ -518,7 +518,7 @@ LABEL_12:
     v15[1] = 3221225472;
     v15[2] = sub_100548834;
     v15[3] = &unk_10245D500;
-    v15[4] = a3;
+    v15[4] = rapport;
     v15[5] = &v17;
     v15[6] = v23;
     [(CLLocationStreamingConnectionManager *)self withClients:v15];
@@ -534,7 +534,7 @@ LABEL_12:
     v13 = qword_1025D47B8;
     if (os_log_type_enabled(qword_1025D47B8, OS_LOG_TYPE_INFO))
     {
-      v14 = [objc_msgSend(a3 "messageType")];
+      v14 = [objc_msgSend(rapport "messageType")];
       *buf = 68289282;
       v26 = 2082;
       v27 = "";
@@ -548,7 +548,7 @@ LABEL_12:
   _Block_object_dispose(v23, 8);
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   [-[CLLocationStreamingConnectionManager universe](self "universe")];
   if ([(CLLocationStreamingConnectionManager *)self isRemoteWatchStreamingCompatible])
@@ -556,13 +556,13 @@ LABEL_12:
     if ([(CLLocationStreamingConnectionManager *)self shouldUseIDSForLocationStreaming])
     {
 
-      [(CLLocationStreamingConnectionManager *)self sendMessageIDS:a3];
+      [(CLLocationStreamingConnectionManager *)self sendMessageIDS:message];
     }
 
     else
     {
 
-      [(CLLocationStreamingConnectionManager *)self sendMessageRapport:a3];
+      [(CLLocationStreamingConnectionManager *)self sendMessageRapport:message];
     }
   }
 
@@ -585,7 +585,7 @@ LABEL_12:
   }
 }
 
-- (void)withClients:(id)a3
+- (void)withClients:(id)clients
 {
   [-[CLLocationStreamingConnectionManager universe](self "universe")];
   v10 = 0u;
@@ -608,7 +608,7 @@ LABEL_12:
           objc_enumerationMutation(clients);
         }
 
-        (*(a3 + 2))(a3, *(*(&v10 + 1) + 8 * v9));
+        (*(clients + 2))(clients, *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 
@@ -620,11 +620,11 @@ LABEL_12:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   [-[CLLocationStreamingConnectionManager universe](self universe];
-  v9 = [a5 objectForKeyedSubscript:@"kCLLocationStreamingMessageKeyPayload"];
-  v10 = [a5 objectForKeyedSubscript:@"kCLLocationStreamingMessageKeyType"];
+  v9 = [message objectForKeyedSubscript:@"kCLLocationStreamingMessageKeyPayload"];
+  v10 = [message objectForKeyedSubscript:@"kCLLocationStreamingMessageKeyType"];
   if (v10)
   {
     v11 = v10;
@@ -641,15 +641,15 @@ LABEL_12:
       v23 = 2082;
       v24 = "";
       v25 = 2082;
-      v26 = [v11 UTF8String];
+      messageCopy2 = [v11 UTF8String];
       _os_log_impl(dword_100000000, v12, OS_LOG_TYPE_INFO, "{msg%{public}.0s:IDS Got message, type:%{public, location:escape_only}s}", buf, 0x1Cu);
     }
 
-    v13 = [objc_msgSend(a5 objectForKeyedSubscript:{@"kCLLocationStreamingMessageKeyVersion", "intValue"}];
+    v13 = [objc_msgSend(message objectForKeyedSubscript:{@"kCLLocationStreamingMessageKeyVersion", "intValue"}];
     sub_100312E54();
     sub_10000EC00(buf, [v11 UTF8String]);
     v14 = sub_10045EF04(&qword_102656D88, buf);
-    if (SBYTE3(v26) < 0)
+    if (SBYTE3(messageCopy2) < 0)
     {
       operator delete(*buf);
     }
@@ -685,13 +685,13 @@ LABEL_12:
     v17 = qword_1025D47B8;
     if (os_log_type_enabled(qword_1025D47B8, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v11 UTF8String];
+      uTF8String = [v11 UTF8String];
       *buf = 68290050;
       *&buf[4] = 0;
       v23 = 2082;
       v24 = "";
       v25 = 2082;
-      v26 = v18;
+      messageCopy2 = uTF8String;
       v27 = 1026;
       v28 = v13;
       v29 = 1026;
@@ -717,7 +717,7 @@ LABEL_12:
       v23 = 2082;
       v24 = "";
       v25 = 2113;
-      v26 = a5;
+      messageCopy2 = message;
       _os_log_impl(dword_100000000, v19, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Missing message type, message:%{private, location:escape_only}@}", buf, 0x1Cu);
       if (qword_1025D47B0 != -1)
       {
@@ -733,22 +733,22 @@ LABEL_12:
       v23 = 2082;
       v24 = "";
       v25 = 2113;
-      v26 = a5;
+      messageCopy2 = message;
       _os_signpost_emit_with_name_impl(dword_100000000, v20, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Missing message type", "{msg%{public}.0s:Missing message type, message:%{private, location:escape_only}@}", buf, 0x1Cu);
     }
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   [-[CLLocationStreamingConnectionManager universe](self universe];
-  if (a5)
+  if (identifier)
   {
-    v11 = [(NSMutableDictionary *)[(CLLocationStreamingConnectionManager *)self unacknowledgedMessages] objectForKeyedSubscript:a5];
+    v11 = [(NSMutableDictionary *)[(CLLocationStreamingConnectionManager *)self unacknowledgedMessages] objectForKeyedSubscript:identifier];
     v12 = v11;
-    [(NSMutableDictionary *)[(CLLocationStreamingConnectionManager *)self unacknowledgedMessages] removeObjectForKey:a5];
-    if (a7 && v8)
+    [(NSMutableDictionary *)[(CLLocationStreamingConnectionManager *)self unacknowledgedMessages] removeObjectForKey:identifier];
+    if (error && successCopy)
     {
       if (qword_1025D48A0 != -1)
       {
@@ -763,7 +763,7 @@ LABEL_12:
         v27 = 2082;
         v28 = "";
         v29 = 2082;
-        v30 = "assert";
+        uTF8String = "assert";
         v31 = 2081;
         *v32 = "false";
         _os_log_impl(dword_100000000, v20, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Assertion failed, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
@@ -783,7 +783,7 @@ LABEL_12:
           v27 = 2082;
           v28 = "";
           v29 = 2082;
-          v30 = "assert";
+          uTF8String = "assert";
           v31 = 2081;
           *v32 = "false";
           _os_signpost_emit_with_name_impl(dword_100000000, v21, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Assertion failed", "{msg%{public}.0s:Assertion failed, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
@@ -801,7 +801,7 @@ LABEL_12:
           v27 = 2082;
           v28 = "";
           v29 = 2082;
-          v30 = "assert";
+          uTF8String = "assert";
           v31 = 2081;
           *v32 = "false";
           _os_log_impl(dword_100000000, v22, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Assertion failed, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
@@ -813,7 +813,7 @@ LABEL_41:
       }
     }
 
-    if (!a7 && v8)
+    if (!error && successCopy)
     {
       if (qword_1025D47B0 != -1)
       {
@@ -828,7 +828,7 @@ LABEL_41:
         v27 = 2082;
         v28 = "";
         v29 = 2082;
-        v30 = [a5 UTF8String];
+        uTF8String = [identifier UTF8String];
         v31 = 2082;
         *v32 = [objc_msgSend(v11 "messageType")];
         _os_log_impl(dword_100000000, v13, OS_LOG_TYPE_INFO, "{msg%{public}.0s:IDS Send success, identifier:%{public, location:escape_only}s, type:%{public, location:escape_only}s}", buf, 0x26u);
@@ -845,7 +845,7 @@ LABEL_29:
       return;
     }
 
-    v17 = [objc_msgSend(a7 "userInfo")];
+    v17 = [objc_msgSend(error "userInfo")];
     if (!v17 || [v17 code] != 32)
     {
       if (qword_1025D47B0 != -1)
@@ -861,11 +861,11 @@ LABEL_29:
         v27 = 2082;
         v28 = "";
         v29 = 2082;
-        v30 = [a5 UTF8String];
+        uTF8String = [identifier UTF8String];
         v31 = 1026;
-        *v32 = v8;
+        *v32 = successCopy;
         *&v32[4] = 2114;
-        *&v32[6] = a7;
+        *&v32[6] = error;
         v33 = 2082;
         v34 = [objc_msgSend(v11 "messageType")];
         _os_log_impl(dword_100000000, v19, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#warning Send failure, identifier:%{public, location:escape_only}s, success:%{public}d, error:%{public, location:escape_only}@, type:%{public, location:escape_only}s}", buf, 0x36u);
@@ -876,7 +876,7 @@ LABEL_29:
       v24[2] = sub_1005494E0;
       v24[3] = &unk_10245D410;
       v24[4] = v11;
-      v24[5] = a7;
+      v24[5] = error;
       v14 = v24;
       goto LABEL_29;
     }
@@ -930,11 +930,11 @@ LABEL_29:
   }
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
   [-[CLLocationStreamingConnectionManager universe](self universe];
 
-  [(CLLocationStreamingConnectionManager *)self updateNearbyStatusWithDevices:a4];
+  [(CLLocationStreamingConnectionManager *)self updateNearbyStatusWithDevices:changed];
 }
 
 @end

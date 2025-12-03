@@ -1,6 +1,6 @@
 @interface HMDAudioAnalysisNotificationSentLogEvent
 + (id)shortDescription;
-- (HMDAudioAnalysisNotificationSentLogEvent)initWithDate:(id)a3 reason:(unint64_t)a4 state:(unint64_t)a5;
+- (HMDAudioAnalysisNotificationSentLogEvent)initWithDate:(id)date reason:(unint64_t)reason state:(unint64_t)state;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -22,18 +22,18 @@
   return v5;
 }
 
-- (HMDAudioAnalysisNotificationSentLogEvent)initWithDate:(id)a3 reason:(unint64_t)a4 state:(unint64_t)a5
+- (HMDAudioAnalysisNotificationSentLogEvent)initWithDate:(id)date reason:(unint64_t)reason state:(unint64_t)state
 {
-  v9 = a3;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = HMDAudioAnalysisNotificationSentLogEvent;
   v10 = [(HMMLogEvent *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_dateOfOccurrence, a3);
-    v11->_reason = a4;
-    v11->_state = a5;
+    objc_storeStrong(&v10->_dateOfOccurrence, date);
+    v11->_reason = reason;
+    v11->_state = state;
   }
 
   return v11;

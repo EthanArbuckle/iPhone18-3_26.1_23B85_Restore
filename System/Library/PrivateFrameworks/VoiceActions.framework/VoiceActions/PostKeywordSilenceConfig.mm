@@ -5,10 +5,10 @@
 - (int64_t)lookForwardFrames;
 - (int64_t)minSilenceFrameCountAtEndOfKeyword;
 - (int64_t)minSilenceFramesExpected;
-- (void)setLookForwardFrames:(int64_t)a3;
-- (void)setMinSilenceFrameCountAtEndOfKeyword:(int64_t)a3;
-- (void)setMinSilenceFramesExpected:(int64_t)a3;
-- (void)setSilenceProbability:(float)a3;
+- (void)setLookForwardFrames:(int64_t)frames;
+- (void)setMinSilenceFrameCountAtEndOfKeyword:(int64_t)keyword;
+- (void)setMinSilenceFramesExpected:(int64_t)expected;
+- (void)setSilenceProbability:(float)probability;
 @end
 
 @implementation PostKeywordSilenceConfig
@@ -20,11 +20,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setLookForwardFrames:(int64_t)a3
+- (void)setLookForwardFrames:(int64_t)frames
 {
   v5 = OBJC_IVAR___PostKeywordSilenceConfig_lookForwardFrames;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = frames;
 }
 
 - (int64_t)minSilenceFramesExpected
@@ -34,11 +34,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setMinSilenceFramesExpected:(int64_t)a3
+- (void)setMinSilenceFramesExpected:(int64_t)expected
 {
   v5 = OBJC_IVAR___PostKeywordSilenceConfig_minSilenceFramesExpected;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = expected;
 }
 
 - (float)silenceProbability
@@ -48,11 +48,11 @@
   return *v2;
 }
 
-- (void)setSilenceProbability:(float)a3
+- (void)setSilenceProbability:(float)probability
 {
   v4 = (self + OBJC_IVAR___PostKeywordSilenceConfig_silenceProbability);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = probability;
 }
 
 - (int64_t)minSilenceFrameCountAtEndOfKeyword
@@ -62,11 +62,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setMinSilenceFrameCountAtEndOfKeyword:(int64_t)a3
+- (void)setMinSilenceFrameCountAtEndOfKeyword:(int64_t)keyword
 {
   v5 = OBJC_IVAR___PostKeywordSilenceConfig_minSilenceFrameCountAtEndOfKeyword;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = keyword;
 }
 
 - (PostKeywordSilenceConfig)init
@@ -89,7 +89,7 @@
   v6 = *(v5 + 48);
   v7 = *(v5 + 52);
   swift_allocObject();
-  v8 = self;
+  selfCopy = self;
   sub_272376B2C();
   type metadata accessor for PostKeywordSilence();
   sub_27227DA80(&qword_2808822F0, v9, type metadata accessor for PostKeywordSilence);

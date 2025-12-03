@@ -1,31 +1,31 @@
 @interface VNTrackMaskDetector
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)createE5RTFunctionDescriptorForConfigurationOptions:(id)a3 functionName:(id)a4 error:(id *)a5;
-+ (id)modelURLForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)createE5RTFunctionDescriptorForConfigurationOptions:(id)options functionName:(id)name error:(id *)error;
++ (id)modelURLForConfigurationOptions:(id)options error:(id *)error;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation VNTrackMaskDetector
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v169 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v150 = a7;
-  v151 = a9;
-  v153 = v13;
-  v152 = [v13 valueForKey:@"VNTrackMaskDetectorProcessOption_State"];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v153 = optionsCopy;
+  v152 = [optionsCopy valueForKey:@"VNTrackMaskDetectorProcessOption_State"];
   if (v152)
   {
-    v14 = [v13 objectForKeyedSubscript:@"VNTrackMaskDetectorProcessorOption_GenerateCropRect"];
-    v15 = [v14 BOOLValue];
+    v14 = [optionsCopy objectForKeyedSubscript:@"VNTrackMaskDetectorProcessorOption_GenerateCropRect"];
+    bOOLValue = [v14 BOOLValue];
 
-    v16 = [(VNDetector *)self validatedImageBufferFromOptions:v13 error:a8];
+    v16 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
     v149 = v16;
     if (!v16)
     {
@@ -35,7 +35,7 @@ LABEL_107:
       goto LABEL_108;
     }
 
-    v147 = [VNValidationUtilities originatingRequestSpecifierInOptions:v153 error:a8];
+    v147 = [VNValidationUtilities originatingRequestSpecifierInOptions:v153 error:error];
     if (!v147)
     {
       goto LABEL_30;
@@ -45,7 +45,7 @@ LABEL_107:
     value = v159;
     flags = HIDWORD(v160);
     timescale = v160;
-    v142 = v15;
+    v142 = bOOLValue;
     if (BYTE4(v160))
     {
       epoch = v161;
@@ -83,7 +83,7 @@ LABEL_107:
       [v152 setLastUpdatePTS:&time1];
     }
 
-    v21 = [v16 bufferWithWidth:objc_msgSend(v16 height:"width") format:objc_msgSend(v16 options:"height") error:{1111970369, v153, a8}];
+    v21 = [v16 bufferWithWidth:objc_msgSend(v16 height:"width") format:objc_msgSend(v16 options:"height") error:{1111970369, v153, error}];
     if (!v21)
     {
 LABEL_30:
@@ -94,7 +94,7 @@ LABEL_106:
     }
 
     pixelBuffer = v21;
-    v143 = self;
+    selfCopy = self;
     if ([v152 firstFrame])
     {
       v22 = v152;
@@ -106,118 +106,118 @@ LABEL_106:
         if ([v22 inititalMask])
         {
           v23 = [(VisionCoreE5RTInferenceFunctionDescriptor *)self->_functionDescriptor_Updated function:v139];
-          v24 = [v23 descriptorForOutput:@"update_h" error:a8];
-          v25 = [v24 shape];
-          v26 = v25;
-          v27 = *[v25 sizes];
-          v28 = v25;
-          v29 = *([v25 sizes] + 8);
-          v30 = v25;
-          v31 = *([v25 sizes] + 16);
+          v24 = [v23 descriptorForOutput:@"update_h" error:error];
+          shape = [v24 shape];
+          v26 = shape;
+          v27 = *[shape sizes];
+          v28 = shape;
+          v29 = *([shape sizes] + 8);
+          v30 = shape;
+          v31 = *([shape sizes] + 16);
           time1.value = 0;
-          v32 = v25;
+          v32 = shape;
           v33 = (v29 * v27 * v31);
-          VNCVPixelBufferCreateUsingIOSurface(*([v25 sizes] + 24), v33, 0x4C303068u, 0, &time1);
-          [VNCVPixelBufferHelper zeroOutPixelBuffer:a8 error:?];
+          VNCVPixelBufferCreateUsingIOSurface(*([shape sizes] + 24), v33, 0x4C303068u, 0, &time1);
+          [VNCVPixelBufferHelper zeroOutPixelBuffer:error error:?];
           [v22 setHiddenMaskBuffer:time1.value];
-          v34 = v25;
-          VNCVPixelBufferCreateUsingIOSurface(*([v25 sizes] + 24), v33, 0x4C303068u, 0, &time1);
-          [VNCVPixelBufferHelper zeroOutPixelBuffer:a8 error:?];
+          v34 = shape;
+          VNCVPixelBufferCreateUsingIOSurface(*([shape sizes] + 24), v33, 0x4C303068u, 0, &time1);
+          [VNCVPixelBufferHelper zeroOutPixelBuffer:error error:?];
           [v22 setHiddenMaskBufferOutput:time1.value];
-          v35 = [v23 descriptorForOutput:@"update_k" error:a8];
+          v35 = [v23 descriptorForOutput:@"update_k" error:error];
 
-          v36 = [v35 shape];
+          shape2 = [v35 shape];
 
-          v37 = v36;
-          v38 = *[v36 sizes];
-          v39 = v36;
-          v40 = *([v36 sizes] + 8);
-          v41 = v36;
-          v42 = *([v36 sizes] + 16);
-          v43 = v36;
+          v37 = shape2;
+          v38 = *[shape2 sizes];
+          v39 = shape2;
+          v40 = *([shape2 sizes] + 8);
+          v41 = shape2;
+          v42 = *([shape2 sizes] + 16);
+          v43 = shape2;
           v44 = (v40 * v38 * v42);
-          VNCVPixelBufferCreateUsingIOSurface(*([v36 sizes] + 24), v44, 0x4C303068u, 0, &time1);
-          [VNCVPixelBufferHelper zeroOutPixelBuffer:a8 error:?];
+          VNCVPixelBufferCreateUsingIOSurface(*([shape2 sizes] + 24), v44, 0x4C303068u, 0, &time1);
+          [VNCVPixelBufferHelper zeroOutPixelBuffer:error error:?];
           [v22 setPreviousKey:time1.value];
-          v45 = v36;
-          VNCVPixelBufferCreateUsingIOSurface(*([v36 sizes] + 24), v44, 0x4C303068u, 0, &time1);
-          [VNCVPixelBufferHelper zeroOutPixelBuffer:a8 error:?];
+          v45 = shape2;
+          VNCVPixelBufferCreateUsingIOSurface(*([shape2 sizes] + 24), v44, 0x4C303068u, 0, &time1);
+          [VNCVPixelBufferHelper zeroOutPixelBuffer:error error:?];
           [v22 setPreviousKeyOutput:time1.value];
-          v46 = [v23 descriptorForOutput:@"update_v" error:a8];
+          v46 = [v23 descriptorForOutput:@"update_v" error:error];
 
-          v47 = [v46 shape];
+          shape3 = [v46 shape];
 
-          v48 = v47;
-          v49 = *[v47 sizes];
-          v50 = v47;
-          v51 = *([v47 sizes] + 8);
-          v52 = v47;
-          v53 = *([v47 sizes] + 16);
-          v54 = v47;
+          v48 = shape3;
+          v49 = *[shape3 sizes];
+          v50 = shape3;
+          v51 = *([shape3 sizes] + 8);
+          v52 = shape3;
+          v53 = *([shape3 sizes] + 16);
+          v54 = shape3;
           v55 = (v51 * v49 * v53);
-          VNCVPixelBufferCreateUsingIOSurface(*([v47 sizes] + 24), v55, 0x4C303068u, 0, &time1);
-          [VNCVPixelBufferHelper zeroOutPixelBuffer:a8 error:?];
+          VNCVPixelBufferCreateUsingIOSurface(*([shape3 sizes] + 24), v55, 0x4C303068u, 0, &time1);
+          [VNCVPixelBufferHelper zeroOutPixelBuffer:error error:?];
           [v22 setPreviousValue:time1.value];
-          v56 = v47;
-          VNCVPixelBufferCreateUsingIOSurface(*([v47 sizes] + 24), v55, 0x4C303068u, 0, &time1);
-          [VNCVPixelBufferHelper zeroOutPixelBuffer:a8 error:?];
+          v56 = shape3;
+          VNCVPixelBufferCreateUsingIOSurface(*([shape3 sizes] + 24), v55, 0x4C303068u, 0, &time1);
+          [VNCVPixelBufferHelper zeroOutPixelBuffer:error error:?];
           [v22 setPreviousValueOutput:time1.value];
-          v57 = [(VisionCoreE5RTInferenceFunctionDescriptor *)v143->_functionDescriptor_Mask function];
+          function = [(VisionCoreE5RTInferenceFunctionDescriptor *)selfCopy->_functionDescriptor_Mask function];
 
-          v58 = [v57 descriptorForOutput:@"regular_prob" error:a8];
+          v58 = [function descriptorForOutput:@"regular_prob" error:error];
 
-          v59 = [v58 shape];
+          shape4 = [v58 shape];
 
-          v60 = v59;
-          v61 = *[v59 sizes];
-          v62 = v59;
-          v63 = *([v59 sizes] + 8);
-          v64 = v59;
-          v65 = *([v59 sizes] + 16);
-          v66 = v59;
+          v60 = shape4;
+          v61 = *[shape4 sizes];
+          v62 = shape4;
+          v63 = *([shape4 sizes] + 8);
+          v64 = shape4;
+          v65 = *([shape4 sizes] + 16);
+          v66 = shape4;
           v67 = (v63 * v61 * v65);
-          VNCVPixelBufferCreateUsingIOSurface(*([v59 sizes] + 24), v67, 0x4C303066u, 0, &time1);
-          [VNCVPixelBufferHelper zeroOutPixelBuffer:a8 error:?];
+          VNCVPixelBufferCreateUsingIOSurface(*([shape4 sizes] + 24), v67, 0x4C303066u, 0, &time1);
+          [VNCVPixelBufferHelper zeroOutPixelBuffer:error error:?];
           [v146 setOutputMask:time1.value];
-          v68 = v59;
-          VNCVPixelBufferCreateUsingIOSurface(*([v59 sizes] + 24), v67, 0x4C303068u, 0, &time1);
-          [VNCVPixelBufferHelper zeroOutPixelBuffer:a8 error:?];
+          v68 = shape4;
+          VNCVPixelBufferCreateUsingIOSurface(*([shape4 sizes] + 24), v67, 0x4C303068u, 0, &time1);
+          [VNCVPixelBufferHelper zeroOutPixelBuffer:error error:?];
           [v146 setOutput:time1.value];
-          v144 = [v57 descriptorForOutput:@"regular_q" error:a8];
+          v144 = [function descriptorForOutput:@"regular_q" error:error];
 
-          v69 = [v144 shape];
+          shape5 = [v144 shape];
 
-          v70 = v69;
-          v71 = *[v69 sizes];
-          v72 = v69;
-          v73 = *([v69 sizes] + 8);
-          v74 = v69;
-          v75 = *([v69 sizes] + 16);
-          v76 = v69;
-          VNCVPixelBufferCreateUsingIOSurface(*([v69 sizes] + 24), (v73 * v71 * v75), 0x4C303068u, 0, &time1);
-          [VNCVPixelBufferHelper zeroOutPixelBuffer:a8 error:?];
+          v70 = shape5;
+          v71 = *[shape5 sizes];
+          v72 = shape5;
+          v73 = *([shape5 sizes] + 8);
+          v74 = shape5;
+          v75 = *([shape5 sizes] + 16);
+          v76 = shape5;
+          VNCVPixelBufferCreateUsingIOSurface(*([shape5 sizes] + 24), (v73 * v71 * v75), 0x4C303068u, 0, &time1);
+          [VNCVPixelBufferHelper zeroOutPixelBuffer:error error:?];
           [v146 setQuality:time1.value];
           v77 = [objc_alloc(MEMORY[0x1E69DF940]) initWithCapacity:5];
-          if ([v77 assignPixelBuffer:a4 toName:@"input_image" error:a8] & 1) != 0 && (objc_msgSend(v77, "assignPixelBuffer:toName:error:", objc_msgSend(v146, "inititalMask"), @"mask", a8) & 1) != 0 && (objc_msgSend(v77, "assignPixelBuffer:toName:error:", objc_msgSend(v146, "hiddenMaskBuffer"), @"hidden_state", a8) & 1) != 0 && (objc_msgSend(v77, "assignPixelBuffer:toName:error:", objc_msgSend(v146, "previousKey"), @"prev_key", a8) & 1) != 0 && (objc_msgSend(v77, "assignPixelBuffer:toName:error:", objc_msgSend(v146, "previousValue"), @"prev_value", a8))
+          if ([v77 assignPixelBuffer:buffer toName:@"input_image" error:error] & 1) != 0 && (objc_msgSend(v77, "assignPixelBuffer:toName:error:", objc_msgSend(v146, "inititalMask"), @"mask", error) & 1) != 0 && (objc_msgSend(v77, "assignPixelBuffer:toName:error:", objc_msgSend(v146, "hiddenMaskBuffer"), @"hidden_state", error) & 1) != 0 && (objc_msgSend(v77, "assignPixelBuffer:toName:error:", objc_msgSend(v146, "previousKey"), @"prev_key", error) & 1) != 0 && (objc_msgSend(v77, "assignPixelBuffer:toName:error:", objc_msgSend(v146, "previousValue"), @"prev_value", error))
           {
             v78 = [objc_alloc(MEMORY[0x1E69DF940]) initWithCapacity:3];
-            if ([v78 assignPixelBuffer:objc_msgSend(v146 toName:"previousValueOutput") error:{@"init_v", a8}] & 1) != 0 && (objc_msgSend(v78, "assignPixelBuffer:toName:error:", objc_msgSend(v146, "previousKeyOutput"), @"init_k", a8) & 1) != 0 && (objc_msgSend(v78, "assignPixelBuffer:toName:error:", objc_msgSend(v146, "hiddenMaskBufferOutput"), @"init_h", a8))
+            if ([v78 assignPixelBuffer:objc_msgSend(v146 toName:"previousValueOutput") error:{@"init_v", error}] & 1) != 0 && (objc_msgSend(v78, "assignPixelBuffer:toName:error:", objc_msgSend(v146, "previousKeyOutput"), @"init_k", error) & 1) != 0 && (objc_msgSend(v78, "assignPixelBuffer:toName:error:", objc_msgSend(v146, "hiddenMaskBufferOutput"), @"init_h", error))
             {
               v79 = objc_alloc_init(MEMORY[0x1E69DF8D8]);
               [v79 setBoundInputObjects:v77];
               [v79 setBoundOutputObjects:v78];
-              v80 = [(VisionCoreE5RTInferenceFunctionDescriptor *)v143->_functionDescriptor_Memory function];
-              v81 = [v80 newExecutionContextWithConfiguration:v79 error:a8];
+              function2 = [(VisionCoreE5RTInferenceFunctionDescriptor *)selfCopy->_functionDescriptor_Memory function];
+              v81 = [function2 newExecutionContextWithConfiguration:v79 error:error];
 
-              if ([v81 executeAndReturnError:a8])
+              if ([v81 executeAndReturnError:error])
               {
-                +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v146 hiddenMaskBufferOutput], objc_msgSend(v146, "hiddenMaskBuffer"), a8);
-                +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v146 previousKeyOutput], objc_msgSend(v146, "previousKey"), a8);
-                +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v146 previousValueOutput], objc_msgSend(v146, "previousValue"), a8);
+                +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v146 hiddenMaskBufferOutput], objc_msgSend(v146, "hiddenMaskBuffer"), error);
+                +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v146 previousKeyOutput], objc_msgSend(v146, "previousKey"), error);
+                +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v146 previousValueOutput], objc_msgSend(v146, "previousValue"), error);
               }
 
-              v82 = *a8 == 0;
-              if (*a8)
+              v82 = *error == 0;
+              if (*error)
               {
                 LOBYTE(lhs.data) = 0;
               }
@@ -239,9 +239,9 @@ LABEL_106:
 
         else
         {
-          if (a8)
+          if (error)
           {
-            *a8 = [VNError errorForInternalErrorWithLocalizedDescription:@"Initial mask missing for processing", v139, v141];
+            *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Initial mask missing for processing", v139, v141];
           }
 
           v82 = 0;
@@ -258,7 +258,7 @@ LABEL_106:
           v90 = 1.0;
           if (v98)
           {
-            if (!+[VNCVPixelBufferHelper copyCVPixelBufferContentFromFP16ToFP32:target:error:](VNCVPixelBufferHelper, v98, [v146 outputMask], a8))
+            if (!+[VNCVPixelBufferHelper copyCVPixelBufferContentFromFP16ToFP32:target:error:](VNCVPixelBufferHelper, v98, [v146 outputMask], error))
             {
               v110 = 0;
               v102 = 0;
@@ -297,23 +297,23 @@ LABEL_70:
           Width = CVPixelBufferGetWidth(pixelBuffer);
           Height = CVPixelBufferGetHeight(pixelBuffer);
           PixelFormatType = CVPixelBufferGetPixelFormatType(pixelBuffer);
-          v102 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:Height height:PixelFormatType pixelFormatType:a8 error:?];
-          v103 = [v152 outputMask];
-          if (!v143)
+          v102 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:Height height:PixelFormatType pixelFormatType:error error:?];
+          outputMask = [v152 outputMask];
+          if (!selfCopy)
           {
             goto LABEL_89;
           }
 
-          v104 = v103;
-          highResMaskPixelBuffer = v143->highResMaskPixelBuffer;
-          if (!highResMaskPixelBuffer || (v106 = CVPixelBufferGetWidth(highResMaskPixelBuffer), v106 != CVPixelBufferGetWidth(pixelBuffer)) || (v107 = CVPixelBufferGetHeight(v143->highResMaskPixelBuffer), v108 = CVPixelBufferGetHeight(pixelBuffer), v109 = v143, v107 != v108))
+          v104 = outputMask;
+          highResMaskPixelBuffer = selfCopy->highResMaskPixelBuffer;
+          if (!highResMaskPixelBuffer || (v106 = CVPixelBufferGetWidth(highResMaskPixelBuffer), v106 != CVPixelBufferGetWidth(pixelBuffer)) || (v107 = CVPixelBufferGetHeight(selfCopy->highResMaskPixelBuffer), v108 = CVPixelBufferGetHeight(pixelBuffer), v109 = selfCopy, v107 != v108))
           {
-            CVPixelBufferRelease(v143->highResMaskPixelBuffer);
+            CVPixelBufferRelease(selfCopy->highResMaskPixelBuffer);
             v112 = CVPixelBufferGetWidth(pixelBuffer);
             v113 = CVPixelBufferGetHeight(pixelBuffer);
-            v114 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v112 height:v113 pixelFormatType:1278226534 error:a8];
-            v109 = v143;
-            v143->highResMaskPixelBuffer = v114;
+            v114 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v112 height:v113 pixelFormatType:1278226534 error:error];
+            v109 = selfCopy;
+            selfCopy->highResMaskPixelBuffer = v114;
           }
 
           time1.value = MEMORY[0x1E69E9820];
@@ -324,16 +324,16 @@ LABEL_70:
           v162 = v104;
           v160 = v109;
           v115 = _Block_copy(&time1);
-          v116 = VNExecuteBlock(v115, a8);
-          v117 = v143->highResMaskPixelBuffer;
+          v116 = VNExecuteBlock(v115, error);
+          v117 = selfCopy->highResMaskPixelBuffer;
           if ((v116 & 1) == 0)
           {
-            CVPixelBufferRelease(v143->highResMaskPixelBuffer);
+            CVPixelBufferRelease(selfCopy->highResMaskPixelBuffer);
             v117 = 0;
-            v143->highResMaskPixelBuffer = 0;
+            selfCopy->highResMaskPixelBuffer = 0;
           }
 
-          v118 = v143->_postProcessingMetalContext;
+          v118 = selfCopy->_postProcessingMetalContext;
           time1.value = MEMORY[0x1E69E9820];
           *&time1.timescale = 3221225472;
           time1.epoch = __93__VNTrackMaskDetector__removeBackgroundFromPixelBuffer_toPixelBuffer_usingMask_offset_error___block_invoke;
@@ -342,19 +342,19 @@ LABEL_70:
           v163 = v102;
           v164 = v117;
           v160 = v118;
-          v161 = v143;
+          v161 = selfCopy;
           v165 = 0;
           v119 = v118;
           v120 = _Block_copy(&time1);
-          v121 = VNExecuteBlock(v120, a8);
+          v121 = VNExecuteBlock(v120, error);
 
           if (v121)
           {
             v122 = *MEMORY[0x1E6965CE8];
-            if (CVBufferHasAttachment(a4, *MEMORY[0x1E6965CE8]))
+            if (CVBufferHasAttachment(buffer, *MEMORY[0x1E6965CE8]))
             {
               LODWORD(time1.value) = 0;
-              v123 = CVBufferCopyAttachment(a4, v122, &time1);
+              v123 = CVBufferCopyAttachment(buffer, v122, &time1);
               CVBufferSetAttachment(v102, v122, v123, time1.value);
               CFRelease(v123);
             }
@@ -437,29 +437,29 @@ LABEL_89:
       if (self)
       {
         v84 = [objc_alloc(MEMORY[0x1E69DF940]) initWithCapacity:5];
-        if (([v84 assignPixelBuffer:a4 toName:@"input_image" error:a8] & 1) == 0 || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "inititalMask"), @"mask", a8) || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "hiddenMaskBuffer"), @"hidden_state", a8) || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "previousKey"), @"prev_key", a8) || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "previousValue"), @"prev_value", a8))
+        if (([v84 assignPixelBuffer:buffer toName:@"input_image" error:error] & 1) == 0 || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "inititalMask"), @"mask", error) || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "hiddenMaskBuffer"), @"hidden_state", error) || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "previousKey"), @"prev_key", error) || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "previousValue"), @"prev_value", error))
         {
           goto LABEL_95;
         }
 
         v85 = [objc_alloc(MEMORY[0x1E69DF940]) initWithCapacity:5];
-        if (([v85 assignPixelBuffer:objc_msgSend(v83 toName:"previousValueOutput") error:{@"update_v", a8}] & 1) != 0 && objc_msgSend(v85, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "previousKeyOutput"), @"update_k", a8) && objc_msgSend(v85, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "hiddenMaskBufferOutput"), @"update_h", a8) && objc_msgSend(v85, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "output"), @"update_prob", a8) && objc_msgSend(v85, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "quality"), @"update_q", a8))
+        if (([v85 assignPixelBuffer:objc_msgSend(v83 toName:"previousValueOutput") error:{@"update_v", error}] & 1) != 0 && objc_msgSend(v85, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "previousKeyOutput"), @"update_k", error) && objc_msgSend(v85, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "hiddenMaskBufferOutput"), @"update_h", error) && objc_msgSend(v85, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "output"), @"update_prob", error) && objc_msgSend(v85, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "quality"), @"update_q", error))
         {
           v93 = objc_alloc_init(MEMORY[0x1E69DF8D8]);
           [v93 setBoundInputObjects:v84];
           [v93 setBoundOutputObjects:v85];
-          v94 = [(VisionCoreE5RTInferenceFunctionDescriptor *)self->_functionDescriptor_Updated function];
-          v95 = [v94 newExecutionContextWithConfiguration:v93 error:a8];
+          function3 = [(VisionCoreE5RTInferenceFunctionDescriptor *)self->_functionDescriptor_Updated function];
+          v95 = [function3 newExecutionContextWithConfiguration:v93 error:error];
 
-          if ([v95 executeAndReturnError:a8])
+          if ([v95 executeAndReturnError:error])
           {
-            +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v83 hiddenMaskBufferOutput], objc_msgSend(v83, "hiddenMaskBuffer"), a8);
-            +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v83 previousKeyOutput], objc_msgSend(v83, "previousKey"), a8);
-            +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v83 previousValueOutput], objc_msgSend(v83, "previousValue"), a8);
-            +[VNCVPixelBufferHelper copyCVPixelBufferContentFromFP16ToFP32:target:error:](VNCVPixelBufferHelper, [v83 output], objc_msgSend(v83, "outputMask"), a8);
+            +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v83 hiddenMaskBufferOutput], objc_msgSend(v83, "hiddenMaskBuffer"), error);
+            +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v83 previousKeyOutput], objc_msgSend(v83, "previousKey"), error);
+            +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v83 previousValueOutput], objc_msgSend(v83, "previousValue"), error);
+            +[VNCVPixelBufferHelper copyCVPixelBufferContentFromFP16ToFP32:target:error:](VNCVPixelBufferHelper, [v83 output], objc_msgSend(v83, "outputMask"), error);
           }
 
-          v96 = *a8 == 0;
+          v96 = *error == 0;
 
           if (v96)
           {
@@ -476,27 +476,27 @@ LABEL_89:
     else if (self)
     {
       v84 = [objc_alloc(MEMORY[0x1E69DF940]) initWithCapacity:5];
-      if (([v84 assignPixelBuffer:a4 toName:@"input_image" error:a8] & 1) == 0 || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "inititalMask"), @"mask", a8) || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "hiddenMaskBuffer"), @"hidden_state", a8) || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "previousKey"), @"prev_key", a8) || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "previousValue"), @"prev_value", a8))
+      if (([v84 assignPixelBuffer:buffer toName:@"input_image" error:error] & 1) == 0 || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "inititalMask"), @"mask", error) || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "hiddenMaskBuffer"), @"hidden_state", error) || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "previousKey"), @"prev_key", error) || !objc_msgSend(v84, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "previousValue"), @"prev_value", error))
       {
         goto LABEL_95;
       }
 
       v85 = [objc_alloc(MEMORY[0x1E69DF940]) initWithCapacity:3];
-      if (([v85 assignPixelBuffer:objc_msgSend(v83 toName:"hiddenMaskBufferOutput") error:{@"regular_h", a8}] & 1) != 0 && objc_msgSend(v85, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "output"), @"regular_prob", a8) && objc_msgSend(v85, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "quality"), @"regular_q", a8))
+      if (([v85 assignPixelBuffer:objc_msgSend(v83 toName:"hiddenMaskBufferOutput") error:{@"regular_h", error}] & 1) != 0 && objc_msgSend(v85, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "output"), @"regular_prob", error) && objc_msgSend(v85, "assignPixelBuffer:toName:error:", objc_msgSend(v83, "quality"), @"regular_q", error))
       {
         v86 = objc_alloc_init(MEMORY[0x1E69DF8D8]);
         [v86 setBoundInputObjects:v84];
         [v86 setBoundOutputObjects:v85];
-        v87 = [(VisionCoreE5RTInferenceFunctionDescriptor *)self->_functionDescriptor_Mask function];
-        v88 = [v87 newExecutionContextWithConfiguration:v86 error:a8];
+        function4 = [(VisionCoreE5RTInferenceFunctionDescriptor *)self->_functionDescriptor_Mask function];
+        v88 = [function4 newExecutionContextWithConfiguration:v86 error:error];
 
-        if ([v88 executeAndReturnError:a8])
+        if ([v88 executeAndReturnError:error])
         {
-          +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v83 hiddenMaskBufferOutput], objc_msgSend(v83, "hiddenMaskBuffer"), a8);
-          +[VNCVPixelBufferHelper copyCVPixelBufferContentFromFP16ToFP32:target:error:](VNCVPixelBufferHelper, [v83 output], objc_msgSend(v83, "outputMask"), a8);
+          +[VNCVPixelBufferHelper copyCVPixelBufferContent:target:error:](VNCVPixelBufferHelper, [v83 hiddenMaskBufferOutput], objc_msgSend(v83, "hiddenMaskBuffer"), error);
+          +[VNCVPixelBufferHelper copyCVPixelBufferContentFromFP16ToFP32:target:error:](VNCVPixelBufferHelper, [v83 output], objc_msgSend(v83, "outputMask"), error);
         }
 
-        v89 = *a8 == 0;
+        v89 = *error == 0;
 
         if (v89)
         {
@@ -534,10 +534,10 @@ LABEL_95:
     goto LABEL_97;
   }
 
-  if (a8)
+  if (error)
   {
     [VNError errorForInternalErrorWithLocalizedDescription:@"State missing for processing"];
-    *a8 = v19 = 0;
+    *error = v19 = 0;
   }
 
   else
@@ -662,23 +662,23 @@ LABEL_5:
   return 0;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a6;
-  [v17 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
-  v19 = [(VNDetector *)self validatedImageBufferFromOptions:v17 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
+  v19 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v20 = v19;
   if (v19)
   {
-    v21 = [v19 width];
-    v22 = width * v21;
-    v23 = [v20 height];
-    v24 = height * v23;
+    width = [v19 width];
+    v22 = width * width;
+    height = [v20 height];
+    v24 = height * height;
     if (v22 >= v24)
     {
       v25 = v24;
@@ -691,12 +691,12 @@ LABEL_5:
 
     if (v25 < 512.0)
     {
-      VNRecordImageTooSmallWarningWithImageMinimumShortDimension(v18, 512);
+      VNRecordImageTooSmallWarningWithImageMinimumShortDimension(recorderCopy, 512);
     }
 
-    v26 = [(VNDetector *)self configurationOptions];
-    v27 = [v20 croppedBufferWithWidth:512 height:512 format:1111970369 cropRect:v17 options:a8 error:{x * v21, y * v23, v22, v24}];
-    *a7 = v27;
+    configurationOptions = [(VNDetector *)self configurationOptions];
+    v27 = [v20 croppedBufferWithWidth:512 height:512 format:1111970369 cropRect:optionsCopy options:error error:{x * width, y * height, v22, v24}];
+    *buffer = v27;
     v28 = v27 != 0;
   }
 
@@ -708,23 +708,23 @@ LABEL_5:
   return v28;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
-  v7 = [(VNDetector *)self configurationOptions];
-  v8 = [objc_opt_class() createE5RTFunctionDescriptorForConfigurationOptions:v7 functionName:@"initialFrame" error:a4];
+  sessionCopy = session;
+  configurationOptions = [(VNDetector *)self configurationOptions];
+  v8 = [objc_opt_class() createE5RTFunctionDescriptorForConfigurationOptions:configurationOptions functionName:@"initialFrame" error:error];
   functionDescriptor_Memory = self->_functionDescriptor_Memory;
   self->_functionDescriptor_Memory = v8;
 
-  if (self->_functionDescriptor_Memory && ([objc_opt_class() createE5RTFunctionDescriptorForConfigurationOptions:v7 functionName:@"regularFrame" error:a4], v10 = objc_claimAutoreleasedReturnValue(), functionDescriptor_Mask = self->_functionDescriptor_Mask, self->_functionDescriptor_Mask = v10, functionDescriptor_Mask, self->_functionDescriptor_Mask) && (objc_msgSend(objc_opt_class(), "createE5RTFunctionDescriptorForConfigurationOptions:functionName:error:", v7, @"updateFrame", a4), v12 = objc_claimAutoreleasedReturnValue(), functionDescriptor_Updated = self->_functionDescriptor_Updated, self->_functionDescriptor_Updated = v12, functionDescriptor_Updated, self->_functionDescriptor_Updated) && (v14 = self->_functionDescriptor_Memory, v25.receiver = self, v25.super_class = VNTrackMaskDetector, -[VNE5RTBasedDetector completeInitializationForSession:functionDescriptor:error:](&v25, sel_completeInitializationForSession_functionDescriptor_error_, v6, v14, a4)))
+  if (self->_functionDescriptor_Memory && ([objc_opt_class() createE5RTFunctionDescriptorForConfigurationOptions:configurationOptions functionName:@"regularFrame" error:error], v10 = objc_claimAutoreleasedReturnValue(), functionDescriptor_Mask = self->_functionDescriptor_Mask, self->_functionDescriptor_Mask = v10, functionDescriptor_Mask, self->_functionDescriptor_Mask) && (objc_msgSend(objc_opt_class(), "createE5RTFunctionDescriptorForConfigurationOptions:functionName:error:", configurationOptions, @"updateFrame", error), v12 = objc_claimAutoreleasedReturnValue(), functionDescriptor_Updated = self->_functionDescriptor_Updated, self->_functionDescriptor_Updated = v12, functionDescriptor_Updated, self->_functionDescriptor_Updated) && (v14 = self->_functionDescriptor_Memory, v25.receiver = self, v25.super_class = VNTrackMaskDetector, -[VNE5RTBasedDetector completeInitializationForSession:functionDescriptor:error:](&v25, sel_completeInitializationForSession_functionDescriptor_error_, sessionCopy, v14, error)))
   {
-    v15 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:a4];
+    v15 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:error];
     if (v15)
     {
-      v16 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStagePostProcessing" error:a4];
-      if (v16 && ([VNComputeDeviceUtilities metalDeviceForComputeDevice:v16], v17 = objc_claimAutoreleasedReturnValue(), [VNMetalContext metalContextForDevice:v17 error:a4], v18 = objc_claimAutoreleasedReturnValue(), postProcessingMetalContext = self->_postProcessingMetalContext, self->_postProcessingMetalContext = v18, postProcessingMetalContext, v17, (v20 = self->_postProcessingMetalContext) != 0))
+      v16 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStagePostProcessing" error:error];
+      if (v16 && ([VNComputeDeviceUtilities metalDeviceForComputeDevice:v16], v17 = objc_claimAutoreleasedReturnValue(), [VNMetalContext metalContextForDevice:v17 error:error], v18 = objc_claimAutoreleasedReturnValue(), postProcessingMetalContext = self->_postProcessingMetalContext, self->_postProcessingMetalContext = v18, postProcessingMetalContext, v17, (v20 = self->_postProcessingMetalContext) != 0))
       {
-        v21 = [(VNMetalContext *)v20 computePipelineStateForFunctionWithName:a4 error:?];
+        v21 = [(VNMetalContext *)v20 computePipelineStateForFunctionWithName:error error:?];
         applyMaskComputeState = self->_applyMaskComputeState;
         self->_applyMaskComputeState = v21;
 
@@ -760,9 +760,9 @@ LABEL_5:
   [(VNDetector *)&v3 dealloc];
 }
 
-+ (id)modelURLForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)modelURLForConfigurationOptions:(id)options error:(id *)error
 {
-  v4 = [VNEspressoHelpers pathForEspressoResourceWithFilename:@"vmtracker_model_v1_6.mlmodelc" error:a4];
+  v4 = [VNEspressoHelpers pathForEspressoResourceWithFilename:@"vmtracker_model_v1_6.mlmodelc" error:error];
   if (v4)
   {
     v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4];
@@ -782,7 +782,7 @@ LABEL_5:
   block[1] = 3221225472;
   block[2] = __60__VNTrackMaskDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNTrackMaskDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNTrackMaskDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -806,7 +806,7 @@ void __60__VNTrackMaskDetector_configurationOptionKeysForDetectorKey__block_invo
   +[VNTrackMaskDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
   v5[2] = *MEMORY[0x1E69E9840];
   v5[0] = @"VNComputeStageMain";
@@ -816,11 +816,11 @@ void __60__VNTrackMaskDetector_configurationOptionKeysForDetectorKey__block_invo
   return v3;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allNeuralEngineComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allNeuralEngineComputeDevices:options];
   v8[1] = @"VNComputeStagePostProcessing";
   v9[0] = v4;
   v5 = +[VNComputeDeviceUtilities allGPUComputeDevices];
@@ -830,28 +830,28 @@ void __60__VNTrackMaskDetector_configurationOptionKeysForDetectorKey__block_invo
   return v6;
 }
 
-+ (id)createE5RTFunctionDescriptorForConfigurationOptions:(id)a3 functionName:(id)a4 error:(id *)a5
++ (id)createE5RTFunctionDescriptorForConfigurationOptions:(id)options functionName:(id)name error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v29 = a4;
-  v9 = [a1 E5RTProgramLibraryForConfigurationOptions:v8 error:a5];
+  optionsCopy = options;
+  nameCopy = name;
+  v9 = [self E5RTProgramLibraryForConfigurationOptions:optionsCopy error:error];
   v28 = v9;
   if (v9)
   {
-    v10 = [v9 functionNamed:v29 error:a5];
+    v10 = [v9 functionNamed:nameCopy error:error];
     if (v10)
     {
-      v26 = [v10 descriptorOfClass:objc_opt_class() forInput:@"input_image" error:a5];
+      v26 = [v10 descriptorOfClass:objc_opt_class() forInput:@"input_image" error:error];
       v30[0] = v26;
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v12 = [v10 inputs];
-      for (i = 0; [v12 count] > i; ++i)
+      inputs = [v10 inputs];
+      for (i = 0; [inputs count] > i; ++i)
       {
         v14 = objc_opt_class();
-        v15 = [v12 objectAtIndexedSubscript:i];
-        v16 = [v10 descriptorOfClass:v14 forInput:v15 error:a5];
+        v15 = [inputs objectAtIndexedSubscript:i];
+        v16 = [v10 descriptorOfClass:v14 forInput:v15 error:error];
 
         if (!v16)
         {
@@ -862,11 +862,11 @@ void __60__VNTrackMaskDetector_configurationOptionKeysForDetectorKey__block_invo
         [v11 addObject:v16];
       }
 
-      v18 = [v10 outputs];
+      outputs = [v10 outputs];
       v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
       for (j = 0; ; ++j)
       {
-        if ([v18 count] <= j)
+        if ([outputs count] <= j)
         {
           v24 = [objc_alloc(MEMORY[0x1E69DF970]) initWithMajor:1];
           v17 = [objc_alloc(MEMORY[0x1E69DF8E0]) initWithFunction:v10 inputDescriptors:v11 inputImageDescriptors:v27 outputDescriptors:v19 confidencesOutputDescriptors:0 networkVersion:v24];
@@ -875,8 +875,8 @@ void __60__VNTrackMaskDetector_configurationOptionKeysForDetectorKey__block_invo
         }
 
         v21 = objc_opt_class();
-        v22 = [v18 objectAtIndexedSubscript:j];
-        v23 = [v10 descriptorOfClass:v21 forOutput:v22 error:a5];
+        v22 = [outputs objectAtIndexedSubscript:j];
+        v23 = [v10 descriptorOfClass:v21 forOutput:v22 error:error];
 
         if (!v23)
         {

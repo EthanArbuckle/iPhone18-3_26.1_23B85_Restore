@@ -1,15 +1,15 @@
 @interface PKAccountWebServiceFundingSourcesResponse
-- (PKAccountWebServiceFundingSourcesResponse)initWithData:(id)a3;
+- (PKAccountWebServiceFundingSourcesResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceFundingSourcesResponse
 
-- (PKAccountWebServiceFundingSourcesResponse)initWithData:(id)a3
+- (PKAccountWebServiceFundingSourcesResponse)initWithData:(id)data
 {
   v34 = *MEMORY[0x1E69E9840];
   v28.receiver = self;
   v28.super_class = PKAccountWebServiceFundingSourcesResponse;
-  v3 = [(PKWebServiceResponse *)&v28 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v28 initWithData:data];
   v4 = v3;
   if (!v3)
   {
@@ -18,12 +18,12 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 PKArrayForKey:@"fundingSources"];
-    v7 = [MEMORY[0x1E695DF70] array];
+    v6 = [jSONObject PKArrayForKey:@"fundingSources"];
+    array = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -47,7 +47,7 @@ LABEL_11:
           v13 = *(*(&v24 + 1) + 8 * v12);
           v14 = [PKAccountPaymentFundingSource alloc];
           v15 = [(PKAccountPaymentFundingSource *)v14 initWithDictionary:v13, v24];
-          [(NSArray *)v7 safelyAddObject:v15];
+          [(NSArray *)array safelyAddObject:v15];
 
           ++v12;
         }
@@ -60,7 +60,7 @@ LABEL_11:
     }
 
     fundingSources = v4->_fundingSources;
-    v4->_fundingSources = v7;
+    v4->_fundingSources = array;
 
     goto LABEL_11;
   }

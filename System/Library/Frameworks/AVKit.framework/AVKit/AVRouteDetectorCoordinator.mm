@@ -4,11 +4,11 @@
 + (id)sharedSystemRouteDetector;
 + (void)beginDetectingRoutes;
 + (void)endDetectingRoutes;
-+ (void)setMultipleRoutesDetected:(BOOL)a3;
++ (void)setMultipleRoutesDetected:(BOOL)detected;
 + (void)updateMultipleRoutesDetected;
 - (BOOL)multipleRoutesDetected;
 - (void)dealloc;
-- (void)setRouteDetectionEnabled:(BOOL)a3;
+- (void)setRouteDetectionEnabled:(BOOL)enabled;
 @end
 
 @implementation AVRouteDetectorCoordinator
@@ -28,14 +28,14 @@
   return [v2 multipleRoutesDetected];
 }
 
-- (void)setRouteDetectionEnabled:(BOOL)a3
+- (void)setRouteDetectionEnabled:(BOOL)enabled
 {
-  if (self->_routeDetectionEnabled != a3)
+  if (self->_routeDetectionEnabled != enabled)
   {
-    v3 = a3;
-    self->_routeDetectionEnabled = a3;
+    enabledCopy = enabled;
+    self->_routeDetectionEnabled = enabled;
     v4 = objc_opt_class();
-    if (v3)
+    if (enabledCopy)
     {
 
       [v4 beginDetectingRoutes];
@@ -49,13 +49,13 @@
   }
 }
 
-+ (void)setMultipleRoutesDetected:(BOOL)a3
++ (void)setMultipleRoutesDetected:(BOOL)detected
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__AVRouteDetectorCoordinator_setMultipleRoutesDetected___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v4 = a3;
+  detectedCopy = detected;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -86,13 +86,13 @@ void __56__AVRouteDetectorCoordinator_setMultipleRoutesDetected___block_invoke(u
 
 + (void)updateMultipleRoutesDetected
 {
-  v3 = [a1 routeDetectorCoordinatorQueue];
+  routeDetectorCoordinatorQueue = [self routeDetectorCoordinatorQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__AVRouteDetectorCoordinator_updateMultipleRoutesDetected__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
-  dispatch_async(v3, block);
+  block[4] = self;
+  dispatch_async(routeDetectorCoordinatorQueue, block);
 }
 
 void __58__AVRouteDetectorCoordinator_updateMultipleRoutesDetected__block_invoke(uint64_t a1)
@@ -107,13 +107,13 @@ void __58__AVRouteDetectorCoordinator_updateMultipleRoutesDetected__block_invoke
 
 + (void)endDetectingRoutes
 {
-  v3 = [a1 routeDetectorCoordinatorQueue];
+  routeDetectorCoordinatorQueue = [self routeDetectorCoordinatorQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__AVRouteDetectorCoordinator_endDetectingRoutes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
-  dispatch_async(v3, block);
+  block[4] = self;
+  dispatch_async(routeDetectorCoordinatorQueue, block);
 }
 
 void __48__AVRouteDetectorCoordinator_endDetectingRoutes__block_invoke(uint64_t a1)
@@ -127,13 +127,13 @@ void __48__AVRouteDetectorCoordinator_endDetectingRoutes__block_invoke(uint64_t 
 
 + (void)beginDetectingRoutes
 {
-  v3 = [a1 routeDetectorCoordinatorQueue];
+  routeDetectorCoordinatorQueue = [self routeDetectorCoordinatorQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__AVRouteDetectorCoordinator_beginDetectingRoutes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
-  dispatch_async(v3, block);
+  block[4] = self;
+  dispatch_async(routeDetectorCoordinatorQueue, block);
 }
 
 void __50__AVRouteDetectorCoordinator_beginDetectingRoutes__block_invoke(uint64_t a1)
@@ -151,7 +151,7 @@ void __50__AVRouteDetectorCoordinator_beginDetectingRoutes__block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __55__AVRouteDetectorCoordinator_sharedSystemRouteDetector__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSystemRouteDetector_onceToken != -1)
   {
     dispatch_once(&sharedSystemRouteDetector_onceToken, block);

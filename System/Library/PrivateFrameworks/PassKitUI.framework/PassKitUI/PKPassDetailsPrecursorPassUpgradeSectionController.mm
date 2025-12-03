@@ -1,51 +1,51 @@
 @interface PKPassDetailsPrecursorPassUpgradeSectionController
-- (PKPassDetailsPrecursorPassUpgradeSectionController)initWithPass:(id)a3 webService:(id)a4 delegate:(id)a5;
+- (PKPassDetailsPrecursorPassUpgradeSectionController)initWithPass:(id)pass webService:(id)service delegate:(id)delegate;
 - (PKPassDetailsPrecursorPassUpgradeSectionControllerDelegate)delegate;
 - (id)allSectionIdentifiers;
 - (id)sectionIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (int64_t)tableView:(id)a3 numberOfRowsInSectionIdentifier:(id)a4;
-- (void)_updateSectionIdentifiersNotify:(BOOL)a3 animated:(BOOL)a4;
-- (void)loadDescriptionWithAnimated:(BOOL)a3 completion:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (int64_t)tableView:(id)view numberOfRowsInSectionIdentifier:(id)identifier;
+- (void)_updateSectionIdentifiersNotify:(BOOL)notify animated:(BOOL)animated;
+- (void)loadDescriptionWithAnimated:(BOOL)animated completion:(id)completion;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPassDetailsPrecursorPassUpgradeSectionController
 
-- (PKPassDetailsPrecursorPassUpgradeSectionController)initWithPass:(id)a3 webService:(id)a4 delegate:(id)a5
+- (PKPassDetailsPrecursorPassUpgradeSectionController)initWithPass:(id)pass webService:(id)service delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  passCopy = pass;
+  serviceCopy = service;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = PKPassDetailsPrecursorPassUpgradeSectionController;
   v12 = [(PKPaymentPassDetailSectionController *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_pass, a3);
-    v14 = [objc_alloc(MEMORY[0x1E69B9088]) initWithPass:v9 webService:v10];
+    objc_storeStrong(&v12->_pass, pass);
+    v14 = [objc_alloc(MEMORY[0x1E69B9088]) initWithPass:passCopy webService:serviceCopy];
     precursorController = v13->_precursorController;
     v13->_precursorController = v14;
 
     [(PKPrecursorPassUpgradeController *)v13->_precursorController setDelegate:v13];
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
   }
 
   return v13;
 }
 
-- (void)_updateSectionIdentifiersNotify:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateSectionIdentifiersNotify:(BOOL)notify animated:(BOOL)animated
 {
   self->_mapped = self->_description != 0;
-  if (a3)
+  if (notify)
   {
-    v4 = a4;
+    animatedCopy = animated;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    if (v4)
+    if (animatedCopy)
     {
-      v6 = [(PKPassDetailsPrecursorPassUpgradeSectionController *)self sectionIdentifiers];
-      [WeakRetained reloadSections:v6];
+      sectionIdentifiers = [(PKPassDetailsPrecursorPassUpgradeSectionController *)self sectionIdentifiers];
+      [WeakRetained reloadSections:sectionIdentifiers];
     }
 
     else
@@ -55,20 +55,20 @@
   }
 }
 
-- (void)loadDescriptionWithAnimated:(BOOL)a3 completion:(id)a4
+- (void)loadDescriptionWithAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PKPrecursorPassUpgradeController *)self->_precursorController devicePrimaryPrecursorRequest];
+  completionCopy = completion;
+  devicePrimaryPrecursorRequest = [(PKPrecursorPassUpgradeController *)self->_precursorController devicePrimaryPrecursorRequest];
   precursorController = self->_precursorController;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __93__PKPassDetailsPrecursorPassUpgradeSectionController_loadDescriptionWithAnimated_completion___block_invoke;
   v10[3] = &unk_1E8018ED0;
-  v12 = a3;
+  animatedCopy = animated;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [(PKPrecursorPassUpgradeController *)precursorController requestDescriptionFor:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(PKPrecursorPassUpgradeController *)precursorController requestDescriptionFor:devicePrimaryPrecursorRequest completion:v10];
 }
 
 void __93__PKPassDetailsPrecursorPassUpgradeSectionController_loadDescriptionWithAnimated_completion___block_invoke(uint64_t a1, void *a2)
@@ -101,35 +101,35 @@ void __93__PKPassDetailsPrecursorPassUpgradeSectionController_loadDescriptionWit
 {
   if (([(PKPaymentPassDetailSectionController *)self detailViewStyle]- 1) > 1 || [(PKPaymentPassDetailSectionController *)self currentSegment]|| !self->_mapped)
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allSectionIdentifiers = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v3 = [(PKPassDetailsPrecursorPassUpgradeSectionController *)self allSectionIdentifiers];
+    allSectionIdentifiers = [(PKPassDetailsPrecursorPassUpgradeSectionController *)self allSectionIdentifiers];
   }
 
-  return v3;
+  return allSectionIdentifiers;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (PKEqualObjects())
   {
-    if ([v8 row])
+    if ([pathCopy row])
     {
-      v9 = -[NSArray objectAtIndex:](self->_actions, "objectAtIndex:", [v8 row] - 1);
-      v10 = [v9 localizedActionText];
-      [(PKPaymentPassDetailSectionController *)self linkCellWithText:v10 forTableView:v7];
+      localizedTitle = -[NSArray objectAtIndex:](self->_actions, "objectAtIndex:", [pathCopy row] - 1);
+      localizedActionText = [localizedTitle localizedActionText];
+      [(PKPaymentPassDetailSectionController *)self linkCellWithText:localizedActionText forTableView:viewCopy];
     }
 
     else
     {
-      v9 = [(PKPrecursorPassUpgradeRequestDescription *)self->_description localizedTitle];
-      v10 = [(PKPrecursorPassUpgradeRequestDescription *)self->_description localizedDescription];
-      [(PKPaymentPassDetailSectionController *)self stackedInfoCellWithPrimaryText:v9 detailText:v10 cellStyle:1 forTableView:v7];
+      localizedTitle = [(PKPrecursorPassUpgradeRequestDescription *)self->_description localizedTitle];
+      localizedActionText = [(PKPrecursorPassUpgradeRequestDescription *)self->_description localizedDescription];
+      [(PKPaymentPassDetailSectionController *)self stackedInfoCellWithPrimaryText:localizedTitle detailText:localizedActionText cellStyle:1 forTableView:viewCopy];
     }
     v11 = ;
   }
@@ -142,7 +142,7 @@ void __93__PKPassDetailsPrecursorPassUpgradeSectionController_loadDescriptionWit
   return v11;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSectionIdentifier:(id)a4
+- (int64_t)tableView:(id)view numberOfRowsInSectionIdentifier:(id)identifier
 {
   if (!PKEqualObjects())
   {
@@ -158,25 +158,25 @@ void __93__PKPassDetailsPrecursorPassUpgradeSectionController_loadDescriptionWit
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 deselectRowAtIndexPath:v9 animated:1];
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   v11 = PKEqualObjects();
 
   if (v11)
   {
-    if ([v9 row] >= 1)
+    if ([pathCopy row] >= 1)
     {
-      v12 = [v9 row];
+      v12 = [pathCopy row];
       if (v12 <= [(NSArray *)self->_actions count])
       {
-        v13 = [v8 cellForRowAtIndexPath:v9];
+        v13 = [viewCopy cellForRowAtIndexPath:pathCopy];
         [(PKPaymentPassDetailSectionController *)self showSpinner:1 inCell:v13 overrideTextColor:0];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        v15 = -[NSArray objectAtIndex:](self->_actions, "objectAtIndex:", [v9 row] - 1);
+        v15 = -[NSArray objectAtIndex:](self->_actions, "objectAtIndex:", [pathCopy row] - 1);
         precursorController = self->_precursorController;
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;

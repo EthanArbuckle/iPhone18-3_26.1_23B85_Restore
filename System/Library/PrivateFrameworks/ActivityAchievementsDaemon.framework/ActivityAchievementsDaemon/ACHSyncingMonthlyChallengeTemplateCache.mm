@@ -1,27 +1,27 @@
 @interface ACHSyncingMonthlyChallengeTemplateCache
-- (ACHSyncingMonthlyChallengeTemplateCache)initWithHealthStore:(id)a3;
-- (BOOL)cacheTemplate:(id)a3 error:(id *)a4;
-- (id)allCachedTemplatesWithError:(id *)a3;
-- (id)templateForDateComponents:(id)a3 error:(id *)a4;
+- (ACHSyncingMonthlyChallengeTemplateCache)initWithHealthStore:(id)store;
+- (BOOL)cacheTemplate:(id)template error:(id *)error;
+- (id)allCachedTemplatesWithError:(id *)error;
+- (id)templateForDateComponents:(id)components error:(id *)error;
 @end
 
 @implementation ACHSyncingMonthlyChallengeTemplateCache
 
-- (ACHSyncingMonthlyChallengeTemplateCache)initWithHealthStore:(id)a3
+- (ACHSyncingMonthlyChallengeTemplateCache)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = ACHSyncingMonthlyChallengeTemplateCache;
   v6 = [(ACHSyncingMonthlyChallengeTemplateCache *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
-    v8 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    objc_storeStrong(&v6->_healthStore, store);
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
     gregorianCalendar = v7->_gregorianCalendar;
-    v7->_gregorianCalendar = v8;
+    v7->_gregorianCalendar = hk_gregorianCalendar;
 
-    v10 = [objc_alloc(MEMORY[0x277CCD570]) initWithCategory:0 domainName:@"com.apple.ActivityAchievements.MonthlyChallengeTemplateCache" healthStore:v5];
+    v10 = [objc_alloc(MEMORY[0x277CCD570]) initWithCategory:0 domainName:@"com.apple.ActivityAchievements.MonthlyChallengeTemplateCache" healthStore:storeCopy];
     kvDomain = v7->_kvDomain;
     v7->_kvDomain = v10;
 
@@ -31,12 +31,12 @@
   return v7;
 }
 
-- (BOOL)cacheTemplate:(id)a3 error:(id *)a4
+- (BOOL)cacheTemplate:(id)template error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 uniqueName];
-  v8 = [v7 componentsSeparatedByString:@"_"];
+  templateCopy = template;
+  uniqueName = [templateCopy uniqueName];
+  v8 = [uniqueName componentsSeparatedByString:@"_"];
 
   if ([v8 count] == 3)
   {
@@ -56,16 +56,16 @@
   if (v13)
   {
     os_unfair_lock_lock(&self->_lock);
-    v14 = [(ACHSyncingMonthlyChallengeTemplateCache *)self kvDomain];
-    v15 = [v14 stringForKey:v12 error:a4];
+    kvDomain = [(ACHSyncingMonthlyChallengeTemplateCache *)self kvDomain];
+    v15 = [kvDomain stringForKey:v12 error:error];
 
     os_unfair_lock_unlock(&self->_lock);
-    if (*a4)
+    if (*error)
     {
       v16 = ACHLogMonthlyChallenges();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = *a4;
+        v17 = *error;
         *buf = 138412290;
         v28 = v17;
         _os_log_impl(&dword_221DDC000, v16, OS_LOG_TYPE_DEFAULT, "Unable to access values in key-value domain for cache: %@", buf, 0xCu);
@@ -77,8 +77,8 @@
       if (!v15)
       {
         os_unfair_lock_lock(&self->_lock);
-        v24 = [(ACHSyncingMonthlyChallengeTemplateCache *)self kvDomain];
-        v18 = [v24 setString:v13 forKey:v12 error:a4];
+        kvDomain2 = [(ACHSyncingMonthlyChallengeTemplateCache *)self kvDomain];
+        v18 = [kvDomain2 setString:v13 forKey:v12 error:error];
 
         os_unfair_lock_unlock(&self->_lock);
         goto LABEL_16;
@@ -104,7 +104,7 @@
       if (v21)
       {
         v21 = v21;
-        *a4 = v21;
+        *error = v21;
       }
     }
 
@@ -121,7 +121,7 @@ LABEL_17:
   return v18;
 }
 
-- (id)allCachedTemplatesWithError:(id *)a3
+- (id)allCachedTemplatesWithError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
@@ -138,7 +138,7 @@ LABEL_17:
   v29[3] = __Block_byref_object_copy__7;
   v29[4] = __Block_byref_object_dispose__7;
   v30 = 0;
-  v6 = [(ACHSyncingMonthlyChallengeTemplateCache *)self kvDomain];
+  kvDomain = [(ACHSyncingMonthlyChallengeTemplateCache *)self kvDomain];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __71__ACHSyncingMonthlyChallengeTemplateCache_allCachedTemplatesWithError___block_invoke;
@@ -147,17 +147,17 @@ LABEL_17:
   v28 = v29;
   dsema = v5;
   v26 = dsema;
-  [v6 allValuesWithCompletion:v25];
+  [kvDomain allValuesWithCompletion:v25];
 
   os_unfair_lock_unlock(&self->_lock);
   v7 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(dsema, v7))
   {
-    v8 = ACHLogMonthlyChallenges();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    allValues = ACHLogMonthlyChallenges();
+    if (os_log_type_enabled(allValues, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_221DDC000, v8, OS_LOG_TYPE_DEFAULT, "Timed out waiting for fetch of cached monthly challenge templates.", buf, 2u);
+      _os_log_impl(&dword_221DDC000, allValues, OS_LOG_TYPE_DEFAULT, "Timed out waiting for fetch of cached monthly challenge templates.", buf, 2u);
     }
 
     v9 = 0;
@@ -166,12 +166,12 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (*a3)
+  if (*error)
   {
     v12 = ACHLogMonthlyChallenges();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(ACHSyncingMonthlyChallengeTemplateCache *)a3 allCachedTemplatesWithError:v12];
+      [(ACHSyncingMonthlyChallengeTemplateCache *)error allCachedTemplatesWithError:v12];
     }
   }
 
@@ -182,8 +182,8 @@ LABEL_5:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [v32[5] allValues];
-    v13 = [v8 countByEnumeratingWithState:&v21 objects:v39 count:16];
+    allValues = [v32[5] allValues];
+    v13 = [allValues countByEnumeratingWithState:&v21 objects:v39 count:16];
     if (v13)
     {
       v14 = *v22;
@@ -193,12 +193,12 @@ LABEL_5:
         {
           if (*v22 != v14)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
-          v17 = [(ACHSyncingMonthlyChallengeTemplateCache *)self gregorianCalendar];
-          v18 = ACHMonthlyChallengeTemplateFromCacheValue(v16, v17);
+          gregorianCalendar = [(ACHSyncingMonthlyChallengeTemplateCache *)self gregorianCalendar];
+          v18 = ACHMonthlyChallengeTemplateFromCacheValue(v16, gregorianCalendar);
 
           if (v18)
           {
@@ -217,7 +217,7 @@ LABEL_5:
           }
         }
 
-        v13 = [v8 countByEnumeratingWithState:&v21 objects:v39 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v21 objects:v39 count:16];
       }
 
       while (v13);
@@ -254,28 +254,28 @@ void __71__ACHSyncingMonthlyChallengeTemplateCache_allCachedTemplatesWithError__
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)templateForDateComponents:(id)a3 error:(id *)a4
+- (id)templateForDateComponents:(id)components error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04ld_%02ld", objc_msgSend(v6, "year"), objc_msgSend(v6, "month")];
+  componentsCopy = components;
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04ld_%02ld", objc_msgSend(componentsCopy, "year"), objc_msgSend(componentsCopy, "month")];
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(ACHSyncingMonthlyChallengeTemplateCache *)self kvDomain];
-  v9 = [v8 stringForKey:v7 error:a4];
+  kvDomain = [(ACHSyncingMonthlyChallengeTemplateCache *)self kvDomain];
+  v9 = [kvDomain stringForKey:v7 error:error];
 
   os_unfair_lock_unlock(&self->_lock);
-  if (*a4)
+  if (*error)
   {
     v10 = ACHLogMonthlyChallenges();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(ACHSyncingMonthlyChallengeTemplateCache *)v6 templateForDateComponents:a4 error:v10];
+      [(ACHSyncingMonthlyChallengeTemplateCache *)componentsCopy templateForDateComponents:error error:v10];
     }
   }
 
   if (v9)
   {
-    v11 = [(ACHSyncingMonthlyChallengeTemplateCache *)self gregorianCalendar];
-    v12 = ACHMonthlyChallengeTemplateFromCacheValue(v9, v11);
+    gregorianCalendar = [(ACHSyncingMonthlyChallengeTemplateCache *)self gregorianCalendar];
+    v12 = ACHMonthlyChallengeTemplateFromCacheValue(v9, gregorianCalendar);
   }
 
   else

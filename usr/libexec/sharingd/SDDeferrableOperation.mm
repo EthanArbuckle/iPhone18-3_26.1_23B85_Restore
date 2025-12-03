@@ -1,27 +1,27 @@
 @interface SDDeferrableOperation
 - (SDDeferrableOperation)init;
-- (SDDeferrableOperation)initWithIdentifier:(id)a3 queue:(id)a4 operation:(id)a5;
+- (SDDeferrableOperation)initWithIdentifier:(id)identifier queue:(id)queue operation:(id)operation;
 - (id)returnPreventUntilDate;
-- (void)pushPreventionDateForReason:(id)a3 newDate:(id)a4;
+- (void)pushPreventionDateForReason:(id)reason newDate:(id)date;
 - (void)scheduleOperation;
 @end
 
 @implementation SDDeferrableOperation
 
-- (SDDeferrableOperation)initWithIdentifier:(id)a3 queue:(id)a4 operation:(id)a5
+- (SDDeferrableOperation)initWithIdentifier:(id)identifier queue:(id)queue operation:(id)operation
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(operation);
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   v10 = swift_allocObject();
   *(v10 + 16) = v6;
-  v11 = a4;
-  v12 = sub_10042CA04(v7, v9, v11, sub_10042C9FC, v10);
+  queueCopy = queue;
+  v12 = sub_10042CA04(v7, v9, queueCopy, sub_10042C9FC, v10);
 
   return v12;
 }
 
-- (void)pushPreventionDateForReason:(id)a3 newDate:(id)a4
+- (void)pushPreventionDateForReason:(id)reason newDate:(id)date
 {
   v5 = type metadata accessor for Date();
   v6 = *(v5 - 8);
@@ -31,7 +31,7 @@
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = self;
+  selfCopy = self;
   sub_100427BBC(v10, v12, v9);
 
   (*(v6 + 8))(v9, v5);
@@ -39,7 +39,7 @@
 
 - (void)scheduleOperation
 {
-  v2 = self;
+  selfCopy = self;
   sub_100428AA8();
 }
 

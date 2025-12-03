@@ -1,24 +1,24 @@
 @interface SCUIScreenTimePasscodeController
-+ (id)_isScreenTimePasscodeSet:(id *)a3;
-+ (void)_checkScreenTimePasscodeFromViewController:(id)a3 completionHandler:(id)a4;
-+ (void)askUserForScreenTimePasscodeFrom:(UIViewController *)a3 interventionType:(int64_t)a4 completionHandler:(id)a5;
-+ (void)askUserForScreenTimePasscodeFrom:(UIViewController *)a3 model:(SCUIInterventionScreenModel *)a4 completionHandler:(id)a5;
++ (id)_isScreenTimePasscodeSet:(id *)set;
++ (void)_checkScreenTimePasscodeFromViewController:(id)controller completionHandler:(id)handler;
++ (void)askUserForScreenTimePasscodeFrom:(UIViewController *)from interventionType:(int64_t)type completionHandler:(id)handler;
++ (void)askUserForScreenTimePasscodeFrom:(UIViewController *)from model:(SCUIInterventionScreenModel *)model completionHandler:(id)handler;
 @end
 
 @implementation SCUIScreenTimePasscodeController
 
-+ (id)_isScreenTimePasscodeSet:(id *)a3
++ (id)_isScreenTimePasscodeSet:(id *)set
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [MEMORY[0x1E69CA9A8] settingEnabled];
+  settingEnabled = [MEMORY[0x1E69CA9A8] settingEnabled];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:settingEnabled];
 }
 
-+ (void)_checkScreenTimePasscodeFromViewController:(id)a3 completionHandler:(id)a4
++ (void)_checkScreenTimePasscodeFromViewController:(id)controller completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -44,16 +44,16 @@
     v12[1] = 3221225472;
     v12[2] = __97__SCUIScreenTimePasscodeController__checkScreenTimePasscodeFromViewController_completionHandler___block_invoke;
     v12[3] = &unk_1E7FF23D0;
-    v13 = v7;
-    v14 = a1;
+    v13 = handlerCopy;
+    selfCopy = self;
     [v10 authenticateForCommunicationConfigurationOverrideWithCompletionHandler:v12];
-    v11 = v13;
+    screenTimeUnavailable = v13;
   }
 
   else
   {
-    v11 = [a1 screenTimeUnavailable];
-    (*(v7 + 2))(v7, v11);
+    screenTimeUnavailable = [self screenTimeUnavailable];
+    (*(handlerCopy + 2))(handlerCopy, screenTimeUnavailable);
   }
 }
 
@@ -97,18 +97,18 @@ LABEL_10:
 LABEL_11:
 }
 
-+ (void)askUserForScreenTimePasscodeFrom:(UIViewController *)a3 model:(SCUIInterventionScreenModel *)a4 completionHandler:(id)a5
++ (void)askUserForScreenTimePasscodeFrom:(UIViewController *)from model:(SCUIInterventionScreenModel *)model completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCDBB20, &qword_1BC75F0D0);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = from;
+  v14[3] = model;
   v14[4] = v13;
-  v14[5] = a1;
+  v14[5] = self;
   v15 = sub_1BC75BE10();
   (*(*(v15 - 8) + 56))(v12, 1, 1, v15);
   v16 = swift_allocObject();
@@ -121,23 +121,23 @@ LABEL_11:
   v17[3] = 0;
   v17[4] = &unk_1BC7649A0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  fromCopy = from;
+  modelCopy = model;
   sub_1BC6AD080(0, 0, v12, &unk_1BC7649A8, v17);
 }
 
-+ (void)askUserForScreenTimePasscodeFrom:(UIViewController *)a3 interventionType:(int64_t)a4 completionHandler:(id)a5
++ (void)askUserForScreenTimePasscodeFrom:(UIViewController *)from interventionType:(int64_t)type completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCDBB20, &qword_1BC75F0D0);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v19 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = from;
+  v14[3] = type;
   v14[4] = v13;
-  v14[5] = a1;
+  v14[5] = self;
   v15 = sub_1BC75BE10();
   (*(*(v15 - 8) + 56))(v12, 1, 1, v15);
   v16 = swift_allocObject();
@@ -150,7 +150,7 @@ LABEL_11:
   v17[3] = 0;
   v17[4] = &unk_1BC764960;
   v17[5] = v16;
-  v18 = a3;
+  fromCopy = from;
   sub_1BC6AD080(0, 0, v12, &unk_1BC764970, v17);
 }
 

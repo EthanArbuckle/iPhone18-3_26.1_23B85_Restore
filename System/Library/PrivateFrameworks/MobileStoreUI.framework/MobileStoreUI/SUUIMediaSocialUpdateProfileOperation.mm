@@ -1,30 +1,30 @@
 @interface SUUIMediaSocialUpdateProfileOperation
 - (NSNumber)identifier;
 - (NSString)entityType;
-- (SUUIMediaSocialUpdateProfileOperation)initWithClientContext:(id)a3;
-- (id)_imageDictionaryFromPhotoUpload:(id)a3;
-- (id)_requestBodyWithError:(id *)a3;
-- (id)_requestWithError:(id *)a3;
+- (SUUIMediaSocialUpdateProfileOperation)initWithClientContext:(id)context;
+- (id)_imageDictionaryFromPhotoUpload:(id)upload;
+- (id)_requestBodyWithError:(id *)error;
+- (id)_requestWithError:(id *)error;
 - (id)outputBlock;
 - (void)main;
-- (void)setEntityType:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setOutputBlock:(id)a3;
-- (void)setValue:(id)a3 forProfileField:(id)a4;
+- (void)setEntityType:(id)type;
+- (void)setIdentifier:(id)identifier;
+- (void)setOutputBlock:(id)block;
+- (void)setValue:(id)value forProfileField:(id)field;
 @end
 
 @implementation SUUIMediaSocialUpdateProfileOperation
 
-- (SUUIMediaSocialUpdateProfileOperation)initWithClientContext:(id)a3
+- (SUUIMediaSocialUpdateProfileOperation)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = SUUIMediaSocialUpdateProfileOperation;
   v6 = [(SSVOperation *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
     v8 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     lock = v7->_lock;
     v7->_lock = v8;
@@ -63,12 +63,12 @@
   return v4;
 }
 
-- (void)setEntityType:(id)a3
+- (void)setEntityType:(id)type
 {
   lock = self->_lock;
-  v5 = a3;
+  typeCopy = type;
   [(NSLock *)lock lock];
-  v6 = [v5 copy];
+  v6 = [typeCopy copy];
 
   entityType = self->_entityType;
   self->_entityType = v6;
@@ -78,12 +78,12 @@
   [(NSLock *)v8 unlock];
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   lock = self->_lock;
-  v5 = a3;
+  identifierCopy = identifier;
   [(NSLock *)lock lock];
-  v6 = [v5 copy];
+  v6 = [identifierCopy copy];
 
   identifier = self->_identifier;
   self->_identifier = v6;
@@ -93,13 +93,13 @@
   [(NSLock *)v8 unlock];
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(NSLock *)self->_lock lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -107,10 +107,10 @@
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)setValue:(id)a3 forProfileField:(id)a4
+- (void)setValue:(id)value forProfileField:(id)field
 {
-  v12 = a3;
-  v6 = a4;
+  valueCopy = value;
+  fieldCopy = field;
   [(NSLock *)self->_lock lock];
   if (!self->_parameters)
   {
@@ -119,7 +119,7 @@
     self->_parameters = v7;
   }
 
-  if ([v6 isEqualToString:@"backgroundImage"] || objc_msgSend(v6, "isEqualToString:", @"profileImage"))
+  if ([fieldCopy isEqualToString:@"backgroundImage"] || objc_msgSend(fieldCopy, "isEqualToString:", @"profileImage"))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -127,18 +127,18 @@
       goto LABEL_9;
     }
 
-    v9 = [(SUUIMediaSocialUpdateProfileOperation *)self _imageDictionaryFromPhotoUpload:v12];
+    v9 = [(SUUIMediaSocialUpdateProfileOperation *)self _imageDictionaryFromPhotoUpload:valueCopy];
     v10 = self->_parameters;
   }
 
   else
   {
     v11 = self->_parameters;
-    v9 = [v12 copy];
+    v9 = [valueCopy copy];
     v10 = v11;
   }
 
-  [(NSMutableDictionary *)v10 setObject:v9 forKey:v6];
+  [(NSMutableDictionary *)v10 setObject:v9 forKey:fieldCopy];
 
 LABEL_9:
   [(NSLock *)self->_lock unlock];
@@ -162,8 +162,8 @@ LABEL_9:
   }
 
   v4 = [(SUUIClientContext *)self->_clientContext newLoadStoreURLOperationWithURLRequest:v3];
-  v5 = [MEMORY[0x277D69D48] consumer];
-  [v4 setDataConsumer:v5];
+  consumer = [MEMORY[0x277D69D48] consumer];
+  [v4 setDataConsumer:consumer];
 
   v19 = 0;
   v20 = &v19;
@@ -212,8 +212,8 @@ LABEL_12:
 LABEL_13:
     if (!v27[5])
     {
-      v12 = [v4 URLResponse];
-      if ([v12 statusCode] == 403)
+      uRLResponse = [v4 URLResponse];
+      if ([uRLResponse statusCode] == 403)
       {
         v13 = 3;
       }
@@ -232,11 +232,11 @@ LABEL_13:
   _Block_object_dispose(&v19, 8);
 
 LABEL_19:
-  v16 = [(SUUIMediaSocialUpdateProfileOperation *)self outputBlock];
-  v17 = v16;
-  if (v16)
+  outputBlock = [(SUUIMediaSocialUpdateProfileOperation *)self outputBlock];
+  v17 = outputBlock;
+  if (outputBlock)
   {
-    (*(v16 + 16))(v16, v9, v27[5]);
+    (*(outputBlock + 16))(outputBlock, v9, v27[5]);
   }
 
   _Block_object_dispose(&v26, 8);
@@ -271,23 +271,23 @@ LABEL_5:
 LABEL_6:
 }
 
-- (id)_imageDictionaryFromPhotoUpload:(id)a3
+- (id)_imageDictionaryFromPhotoUpload:(id)upload
 {
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  uploadCopy = upload;
   v5 = [v3 alloc];
-  v6 = [v4 token];
-  v7 = [v4 tokenType];
+  token = [uploadCopy token];
+  tokenType = [uploadCopy tokenType];
 
-  v8 = [v5 initWithObjectsAndKeys:{v6, @"contentToken", v7, @"contentTokenType", 0}];
+  v8 = [v5 initWithObjectsAndKeys:{token, @"contentToken", tokenType, @"contentTokenType", 0}];
 
   return v8;
 }
 
-- (id)_requestWithError:(id *)a3
+- (id)_requestWithError:(id *)error
 {
-  v5 = [(SUUIClientContext *)self->_clientContext URLBag];
-  v6 = [v5 valueForKey:*MEMORY[0x277D6A670] error:a3];
+  uRLBag = [(SUUIClientContext *)self->_clientContext URLBag];
+  v6 = [uRLBag valueForKey:*MEMORY[0x277D6A670] error:error];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -303,7 +303,7 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(SUUIMediaSocialUpdateProfileOperation *)self _requestBodyWithError:a3];
+    v8 = [(SUUIMediaSocialUpdateProfileOperation *)self _requestBodyWithError:error];
     if (v8)
     {
       v9 = objc_alloc(MEMORY[0x277CBAB50]);
@@ -322,10 +322,10 @@ LABEL_6:
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     SSError();
-    *a3 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -336,22 +336,22 @@ LABEL_6:
   return v11;
 }
 
-- (id)_requestBodyWithError:(id *)a3
+- (id)_requestBodyWithError:(id *)error
 {
   if (self->_entityType && self->_identifier && (parameters = self->_parameters) != 0)
   {
     v6 = [(NSMutableDictionary *)parameters mutableCopy];
     v7 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{self->_entityType, @"type", self->_identifier, @"id", 0}];
     [v6 setObject:v7 forKey:@"owner"];
-    v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v6 options:0 error:a3];
+    v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v6 options:0 error:error];
   }
 
   else
   {
     v8 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"SUUIErrorDomain" code:4 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"SUUIErrorDomain" code:4 userInfo:0];
     }
   }
 

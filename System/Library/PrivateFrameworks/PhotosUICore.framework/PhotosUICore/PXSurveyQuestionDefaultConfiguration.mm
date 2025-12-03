@@ -1,6 +1,6 @@
 @interface PXSurveyQuestionDefaultConfiguration
 - (CGRect)contentRectForOneUp;
-- (PXSurveyQuestionDefaultConfiguration)initWithTitle:(id)a3;
+- (PXSurveyQuestionDefaultConfiguration)initWithTitle:(id)title;
 - (UIView)contentView;
 @end
 
@@ -28,8 +28,8 @@
     v5 = self->_placeholderView;
     self->_placeholderView = v4;
 
-    v6 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UIView *)self->_placeholderView setBackgroundColor:v6];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UIView *)self->_placeholderView setBackgroundColor:systemBackgroundColor];
 
     placeholderView = self->_placeholderView;
   }
@@ -37,15 +37,15 @@
   return placeholderView;
 }
 
-- (PXSurveyQuestionDefaultConfiguration)initWithTitle:(id)a3
+- (PXSurveyQuestionDefaultConfiguration)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = PXSurveyQuestionDefaultConfiguration;
   v5 = [(PXSurveyQuestionDefaultConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [titleCopy copy];
     title = v5->_title;
     v5->_title = v6;
 

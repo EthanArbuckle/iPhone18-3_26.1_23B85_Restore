@@ -1,29 +1,29 @@
 @interface _UISceneUserNotificationsBSActionsHandler
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation _UISceneUserNotificationsBSActionsHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v82 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  actionsCopy = actions;
+  sceneCopy = scene;
+  iSceneCopy = iScene;
+  contextCopy = context;
   v13 = [MEMORY[0x1E695DFA8] set];
   if ([UIApp _appAdoptsUISceneLifecycle])
   {
-    v52 = v12;
-    v53 = v10;
-    v54 = v9;
-    v55 = v11;
+    v52 = contextCopy;
+    v53 = sceneCopy;
+    v54 = actionsCopy;
+    v55 = iSceneCopy;
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v14 = v9;
+    v14 = actionsCopy;
     v15 = [v14 countByEnumeratingWithState:&v69 objects:v80 count:16];
     if (v15)
     {
@@ -101,50 +101,50 @@
             }
 
             v30 = *(*(&v76 + 1) + 8 * v29);
-            v31 = [*(v28 + 776) currentNotificationCenter];
-            v32 = [v31 delegate];
+            currentNotificationCenter = [*(v28 + 776) currentNotificationCenter];
+            delegate = [currentNotificationCenter delegate];
             if (objc_opt_respondsToSelector())
             {
-              v33 = [v30 response];
-              if (v33)
+              response = [v30 response];
+              if (response)
               {
                 v63 = v30;
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
                   v65 = MEMORY[0x1E69832F8];
-                  v67 = [v33 notification];
-                  v34 = [v33 actionIdentifier];
-                  v35 = [v33 originIdentifier];
-                  v61 = [v33 targetConnectionEndpoint];
-                  v36 = [v24 session];
-                  v37 = [v36 persistentIdentifier];
-                  v38 = [v33 userText];
+                  notification = [response notification];
+                  actionIdentifier = [response actionIdentifier];
+                  originIdentifier = [response originIdentifier];
+                  targetConnectionEndpoint = [response targetConnectionEndpoint];
+                  session = [v24 session];
+                  persistentIdentifier = [session persistentIdentifier];
+                  userText = [response userText];
                   v39 = v65;
-                  v64 = v35;
-                  v66 = v34;
-                  v40 = v35;
-                  v41 = v61;
-                  v42 = [v39 responseWithNotification:v67 actionIdentifier:v34 originIdentifier:v40 targetConnectionEndpoint:v61 targetSceneIdentifier:v37 userText:v38];
+                  v64 = originIdentifier;
+                  v66 = actionIdentifier;
+                  v40 = originIdentifier;
+                  v41 = targetConnectionEndpoint;
+                  v42 = [v39 responseWithNotification:notification actionIdentifier:actionIdentifier originIdentifier:v40 targetConnectionEndpoint:targetConnectionEndpoint targetSceneIdentifier:persistentIdentifier userText:userText];
                 }
 
                 else
                 {
                   v68 = MEMORY[0x1E69832A8];
-                  v43 = [v33 notification];
-                  v44 = [v33 actionIdentifier];
-                  v45 = [v33 originIdentifier];
-                  v62 = [v33 targetConnectionEndpoint];
-                  v36 = [v24 session];
-                  v37 = [v36 persistentIdentifier];
+                  notification2 = [response notification];
+                  actionIdentifier2 = [response actionIdentifier];
+                  originIdentifier2 = [response originIdentifier];
+                  targetConnectionEndpoint2 = [response targetConnectionEndpoint];
+                  session = [v24 session];
+                  persistentIdentifier = [session persistentIdentifier];
                   v46 = v68;
-                  v66 = v44;
-                  v67 = v43;
-                  v64 = v45;
-                  v47 = v45;
-                  v41 = v62;
-                  v42 = [v46 responseWithNotification:v43 actionIdentifier:v44 originIdentifier:v47 targetConnectionEndpoint:v62 targetSceneIdentifier:v37];
-                  v38 = v33;
+                  v66 = actionIdentifier2;
+                  notification = notification2;
+                  v64 = originIdentifier2;
+                  v47 = originIdentifier2;
+                  v41 = targetConnectionEndpoint2;
+                  v42 = [v46 responseWithNotification:notification2 actionIdentifier:actionIdentifier2 originIdentifier:v47 targetConnectionEndpoint:targetConnectionEndpoint2 targetSceneIdentifier:persistentIdentifier];
+                  userText = response;
                 }
 
                 v24 = v57;
@@ -165,7 +165,7 @@
               v74 = v24;
               v75 = v30;
               v48 = _UIAutologgingVoidBlock(@"Warning: UNUserNotificationCenter delegate received call to -userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler: but the completion handler was never called.", v73);
-              [v32 userNotificationCenter:v31 didReceiveNotificationResponse:v42 withCompletionHandler:v48];
+              [delegate userNotificationCenter:currentNotificationCenter didReceiveNotificationResponse:v42 withCompletionHandler:v48];
 
               v26 = v59;
               v28 = 0x1E6983000;
@@ -182,32 +182,32 @@
       }
     }
 
-    v10 = v53;
-    v9 = v54;
-    v11 = v55;
-    v12 = v52;
+    sceneCopy = v53;
+    actionsCopy = v54;
+    iSceneCopy = v55;
+    contextCopy = v52;
   }
 
-  v49 = [MEMORY[0x1E695DFA8] setWithSet:{v9, v52, v53, v54}];
+  v49 = [MEMORY[0x1E695DFA8] setWithSet:{actionsCopy, v52, v53, v54}];
   [v49 minusSet:v13];
   v50 = [v49 copy];
 
   return v50;
 }
 
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context
 {
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v26 = a4;
-  v27 = a5;
-  v28 = a6;
+  actionsCopy = actions;
+  sceneCopy = scene;
+  sessionCopy = session;
+  contextCopy = context;
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v11 = v9;
+  v11 = actionsCopy;
   v12 = 0;
   v13 = 0;
   v14 = [v11 countByEnumeratingWithState:&v39 objects:v43 count:16];
@@ -233,9 +233,9 @@
 
           if ([v12 isDefaultAction])
           {
-            v20 = [v12 response];
+            response = [v12 response];
             v38 = v13;
-            __119___UISceneCloudKitShareMetadataBSActionHandler__launchOptionsFromActions_forFBSScene_uiSceneSession_transitionContext___block_invoke(&v38, v20);
+            __119___UISceneCloudKitShareMetadataBSActionHandler__launchOptionsFromActions_forFBSScene_uiSceneSession_transitionContext___block_invoke(&v38, response);
             v21 = v38;
 
             v13 = v21;

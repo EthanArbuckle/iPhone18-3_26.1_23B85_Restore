@@ -1,7 +1,7 @@
 @interface CHCallInteractionInProcessDataSource
 - (CHCallInteractionDataSourceDelegate)delegate;
 - (CHCallInteractionInProcessDataSource)init;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CHCallInteractionInProcessDataSource
@@ -16,9 +16,9 @@
   {
     v2->_accessorLock._os_unfair_lock_opaque = 0;
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.CallHistory.queue.%@.%p", objc_opt_class(), v2];
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
 
     objc_initWeak(&location, v3);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -67,13 +67,13 @@ void __44__CHCallInteractionInProcessDataSource_init__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_delegate != v5)
+  if (self->_delegate != delegateCopy)
   {
-    objc_storeStrong(&self->_delegate, a3);
+    objc_storeStrong(&self->_delegate, delegate);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);

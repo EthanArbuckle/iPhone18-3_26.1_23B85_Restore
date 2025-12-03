@@ -1,27 +1,27 @@
 @interface CAFASCTreeNode
-+ (id)nodeType:(unsigned __int8)a3 withName:(id)a4;
-+ (id)nodeType:(unsigned __int8)a3 withType:(id)a4;
-- (id)_childNodeMatchingType:(id)a3;
++ (id)nodeType:(unsigned __int8)type withName:(id)name;
++ (id)nodeType:(unsigned __int8)type withType:(id)withType;
+- (id)_childNodeMatchingType:(id)type;
 - (id)description;
-- (id)treeLogLinesIndent:(unint64_t)a3;
+- (id)treeLogLinesIndent:(unint64_t)indent;
 @end
 
 @implementation CAFASCTreeNode
 
-+ (id)nodeType:(unsigned __int8)a3 withType:(id)a4
++ (id)nodeType:(unsigned __int8)type withType:(id)withType
 {
-  v4 = a3;
-  v5 = a4;
+  typeCopy = type;
+  withTypeCopy = withType;
   v6 = objc_opt_new();
-  [v6 setType:v5];
-  if (v4 == 2)
+  [v6 setType:withTypeCopy];
+  if (typeCopy == 2)
   {
     v8 = +[CAFCharacteristicTypes characteristicNameByType];
-    v9 = [v8 objectForKeyedSubscript:v5];
+    v9 = [v8 objectForKeyedSubscript:withTypeCopy];
     if (!v9)
     {
       v13 = +[CAFControlTypes controlNameByType];
-      v14 = [v13 objectForKeyedSubscript:v5];
+      v14 = [v13 objectForKeyedSubscript:withTypeCopy];
       [v6 setName:v14];
 
       goto LABEL_9;
@@ -30,14 +30,14 @@
 
   else
   {
-    if (v4 == 1)
+    if (typeCopy == 1)
     {
       v7 = +[CAFServiceTypes serviceNameByType];
     }
 
     else
     {
-      if (v4)
+      if (typeCopy)
       {
         goto LABEL_10;
       }
@@ -46,47 +46,47 @@
     }
 
     v8 = v7;
-    v9 = [v7 objectForKeyedSubscript:v5];
+    v9 = [v7 objectForKeyedSubscript:withTypeCopy];
   }
 
   [v6 setName:v9];
 LABEL_9:
 
 LABEL_10:
-  v10 = [v6 name];
-  if (v10)
+  name = [v6 name];
+  if (name)
   {
   }
 
-  else if ([v5 isEqualToString:@"*"])
+  else if ([withTypeCopy isEqualToString:@"*"])
   {
-    [v6 setName:v5];
+    [v6 setName:withTypeCopy];
   }
 
-  v11 = [v6 name];
+  name2 = [v6 name];
 
-  if (v11)
+  if (name2)
   {
-    v11 = v6;
+    name2 = v6;
   }
 
-  return v11;
+  return name2;
 }
 
-+ (id)nodeType:(unsigned __int8)a3 withName:(id)a4
++ (id)nodeType:(unsigned __int8)type withName:(id)name
 {
-  v4 = a3;
-  v5 = a4;
+  typeCopy = type;
+  nameCopy = name;
   v6 = objc_opt_new();
-  [v6 setName:v5];
-  if (v4 == 2)
+  [v6 setName:nameCopy];
+  if (typeCopy == 2)
   {
     v8 = +[CAFCharacteristicTypes characteristicTypeByName];
-    v9 = [v8 objectForKeyedSubscript:v5];
+    v9 = [v8 objectForKeyedSubscript:nameCopy];
     if (!v9)
     {
       v12 = +[CAFControlTypes controlTypeByName];
-      v13 = [v12 objectForKeyedSubscript:v5];
+      v13 = [v12 objectForKeyedSubscript:nameCopy];
       [v6 setType:v13];
 
       goto LABEL_9;
@@ -95,14 +95,14 @@ LABEL_10:
 
   else
   {
-    if (v4 == 1)
+    if (typeCopy == 1)
     {
       v7 = +[CAFServiceTypes serviceTypeByName];
     }
 
     else
     {
-      if (v4)
+      if (typeCopy)
       {
         goto LABEL_10;
       }
@@ -111,55 +111,55 @@ LABEL_10:
     }
 
     v8 = v7;
-    v9 = [v7 objectForKeyedSubscript:v5];
+    v9 = [v7 objectForKeyedSubscript:nameCopy];
   }
 
   [v6 setType:v9];
 LABEL_9:
 
 LABEL_10:
-  v10 = [v6 type];
+  type = [v6 type];
 
-  if (v10)
+  if (type)
   {
-    v10 = v6;
+    type = v6;
   }
 
-  return v10;
+  return type;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFASCTreeNode *)self name];
-  v6 = [(CAFASCTreeNode *)self type];
-  v7 = [(CAFASCTreeNode *)self children];
-  v8 = [v3 stringWithFormat:@"<%@: %p name=%@ type=%@> %@", v4, self, v5, v6, v7];
+  name = [(CAFASCTreeNode *)self name];
+  type = [(CAFASCTreeNode *)self type];
+  children = [(CAFASCTreeNode *)self children];
+  v8 = [v3 stringWithFormat:@"<%@: %p name=%@ type=%@> %@", v4, self, name, type, children];
 
   return v8;
 }
 
-- (id)treeLogLinesIndent:(unint64_t)a3
+- (id)treeLogLinesIndent:(unint64_t)indent
 {
   v27[1] = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
-  if (a3)
+  if (indent)
   {
-    v6 = a3;
+    indentCopy = indent;
     do
     {
       [v5 appendString:@"\t"];
-      --v6;
+      --indentCopy;
     }
 
-    while (v6);
+    while (indentCopy);
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(CAFASCTreeNode *)self name];
-  v9 = [(CAFASCTreeNode *)self type];
-  v10 = [v7 stringWithFormat:@"%@ %@ %@", v5, v8, v9];
+  name = [(CAFASCTreeNode *)self name];
+  type = [(CAFASCTreeNode *)self type];
+  v10 = [v7 stringWithFormat:@"%@ %@ %@", v5, name, type];
   v27[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   v12 = [v11 mutableCopy];
@@ -168,10 +168,10 @@ LABEL_10:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v13 = [(CAFASCTreeNode *)self children];
-  v14 = [v13 allValues];
+  children = [(CAFASCTreeNode *)self children];
+  allValues = [children allValues];
 
-  v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v15 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v15)
   {
     v16 = v15;
@@ -182,14 +182,14 @@ LABEL_10:
       {
         if (*v23 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allValues);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * i) treeLogLinesIndent:a3 + 1];
+        v19 = [*(*(&v22 + 1) + 8 * i) treeLogLinesIndent:indent + 1];
         [v12 addObjectsFromArray:v19];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v16 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v16);
@@ -200,9 +200,9 @@ LABEL_10:
   return v12;
 }
 
-- (id)_childNodeMatchingType:(id)a3
+- (id)_childNodeMatchingType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -220,7 +220,7 @@ LABEL_10:
   v10[1] = 3221225472;
   v10[2] = __41__CAFASCTreeNode__childNodeMatchingType___block_invoke;
   v10[3] = &unk_27890F420;
-  v6 = v4;
+  v6 = typeCopy;
   v11 = v6;
   v12 = &v14;
   v13 = &v20;

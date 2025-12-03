@@ -1,21 +1,21 @@
 @interface WatchCrownPressQuickAction
-- (WatchCrownPressQuickAction)initWithLocalizedTitle:(id)a3 completionHandler:(id)a4;
+- (WatchCrownPressQuickAction)initWithLocalizedTitle:(id)title completionHandler:(id)handler;
 @end
 
 @implementation WatchCrownPressQuickAction
 
-- (WatchCrownPressQuickAction)initWithLocalizedTitle:(id)a3 completionHandler:(id)a4
+- (WatchCrownPressQuickAction)initWithLocalizedTitle:(id)title completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__WatchCrownPressQuickAction_initWithLocalizedTitle_completionHandler___block_invoke;
   v11[3] = &unk_279E65E40;
-  v12 = v6;
+  v12 = handlerCopy;
   v10.receiver = self;
   v10.super_class = WatchCrownPressQuickAction;
-  v7 = v6;
-  v8 = [(WatchQuickAction *)&v10 initWithLocalizedTitle:a3 activationCallback:v11];
+  v7 = handlerCopy;
+  v8 = [(WatchQuickAction *)&v10 initWithLocalizedTitle:title activationCallback:v11];
 
   return v8;
 }

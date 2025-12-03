@@ -1,19 +1,19 @@
 @interface ISCompositorResourceProviderKey
-+ (id)resourceKeyWithName:(id)a3 flags:(unint64_t)a4;
++ (id)resourceKeyWithName:(id)name flags:(unint64_t)flags;
 @end
 
 @implementation ISCompositorResourceProviderKey
 
-+ (id)resourceKeyWithName:(id)a3 flags:(unint64_t)a4
++ (id)resourceKeyWithName:(id)name flags:(unint64_t)flags
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = objc_alloc_init(ISCompositorResourceProviderKey);
-  v7 = [v5 copy];
+  v7 = [nameCopy copy];
 
   name = v6->_name;
   v6->_name = v7;
 
-  v6->_flags = a4;
+  v6->_flags = flags;
 
   return v6;
 }

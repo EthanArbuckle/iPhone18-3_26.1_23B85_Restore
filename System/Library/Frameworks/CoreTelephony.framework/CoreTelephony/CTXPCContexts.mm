@@ -1,15 +1,15 @@
 @interface CTXPCContexts
-- (BOOL)isEqual:(id)a3;
-- (CTXPCContexts)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTXPCContexts)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)findForAccount:(id)a3;
-- (id)findForAccount:(id)a3 within:(id)a4;
-- (id)findForSlot:(int64_t)a3;
-- (id)findForSlot:(int64_t)a3 within:(id)a4;
-- (id)findForUuid:(id)a3;
-- (id)findForUuid:(id)a3 within:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)findForAccount:(id)account;
+- (id)findForAccount:(id)account within:(id)within;
+- (id)findForSlot:(int64_t)slot;
+- (id)findForSlot:(int64_t)slot within:(id)within;
+- (id)findForUuid:(id)uuid;
+- (id)findForUuid:(id)uuid within:(id)within;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTXPCContexts
@@ -17,27 +17,27 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTXPCContexts *)self subscriptions];
-  [v3 appendFormat:@", subscriptions=%@", v4];
+  subscriptions = [(CTXPCContexts *)self subscriptions];
+  [v3 appendFormat:@", subscriptions=%@", subscriptions];
 
-  v5 = [(CTXPCContexts *)self dataPreferred];
-  [v3 appendFormat:@", dataPreferred=%@", v5];
+  dataPreferred = [(CTXPCContexts *)self dataPreferred];
+  [v3 appendFormat:@", dataPreferred=%@", dataPreferred];
 
-  v6 = [(CTXPCContexts *)self voicePreferred];
-  [v3 appendFormat:@", voicePreferred=%@", v6];
+  voicePreferred = [(CTXPCContexts *)self voicePreferred];
+  [v3 appendFormat:@", voicePreferred=%@", voicePreferred];
 
-  v7 = [(CTXPCContexts *)self existingUserSubscriptions];
-  [v3 appendFormat:@", existingUserSubscriptions=%@", v7];
+  existingUserSubscriptions = [(CTXPCContexts *)self existingUserSubscriptions];
+  [v3 appendFormat:@", existingUserSubscriptions=%@", existingUserSubscriptions];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_15;
   }
@@ -55,9 +55,9 @@
     goto LABEL_4;
   }
 
-  v7 = [(CTXPCContexts *)v5 subscriptions];
+  subscriptions = [(CTXPCContexts *)equalCopy subscriptions];
 
-  if (!v7)
+  if (!subscriptions)
   {
 LABEL_15:
     v12 = 1;
@@ -72,8 +72,8 @@ LABEL_15:
   }
 
 LABEL_4:
-  v7 = [(CTXPCContexts *)v5 subscriptions];
-  if ([subscriptions isEqual:v7])
+  subscriptions = [(CTXPCContexts *)equalCopy subscriptions];
+  if ([subscriptions isEqual:subscriptions])
   {
     v8 = 0;
     v9 = 1;
@@ -90,8 +90,8 @@ LABEL_58:
 
   v9 = 1;
 LABEL_22:
-  v14 = [(CTXPCContexts *)v5 subscriptions];
-  if (v14)
+  subscriptions2 = [(CTXPCContexts *)equalCopy subscriptions];
+  if (subscriptions2)
   {
 
     v12 = 0;
@@ -103,10 +103,10 @@ LABEL_6:
   dataPreferred = self->_dataPreferred;
   if (dataPreferred)
   {
-    subscriptions = [(CTXPCContexts *)v5 dataPreferred];
+    subscriptions = [(CTXPCContexts *)equalCopy dataPreferred];
     if (([(NSUUID *)dataPreferred isEqual:subscriptions]& 1) != 0)
     {
-      v11 = 0;
+      existingUserSubscriptions = 0;
       goto LABEL_25;
     }
 
@@ -117,8 +117,8 @@ LABEL_6:
     }
   }
 
-  v13 = [(CTXPCContexts *)v5 dataPreferred];
-  if (v13)
+  dataPreferred = [(CTXPCContexts *)equalCopy dataPreferred];
+  if (dataPreferred)
   {
     v12 = 0;
 LABEL_54:
@@ -126,15 +126,15 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  v11 = 1;
+  existingUserSubscriptions = 1;
 LABEL_25:
   voicePreferred = self->_voicePreferred;
   if (voicePreferred)
   {
-    v3 = [(CTXPCContexts *)v5 voicePreferred];
-    if (([(NSUUID *)voicePreferred isEqual:v3]& 1) != 0)
+    voicePreferred = [(CTXPCContexts *)equalCopy voicePreferred];
+    if (([(NSUUID *)voicePreferred isEqual:voicePreferred]& 1) != 0)
     {
-      v21 = v3;
+      v21 = voicePreferred;
       v20 = 0;
       goto LABEL_35;
     }
@@ -146,30 +146,30 @@ LABEL_25:
     }
   }
 
-  v16 = [(CTXPCContexts *)v5 voicePreferred];
-  if (v16)
+  voicePreferred2 = [(CTXPCContexts *)equalCopy voicePreferred];
+  if (voicePreferred2)
   {
     v12 = 0;
     goto LABEL_44;
   }
 
-  v21 = v3;
+  v21 = voicePreferred;
   v20 = 1;
 LABEL_35:
-  v22 = v11;
+  v22 = existingUserSubscriptions;
   existingUserSubscriptions = self->_existingUserSubscriptions;
   if (existingUserSubscriptions)
   {
-    v11 = [(CTXPCContexts *)v5 existingUserSubscriptions];
-    if (([(NSArray *)existingUserSubscriptions isEqual:v11]& 1) != 0)
+    existingUserSubscriptions = [(CTXPCContexts *)equalCopy existingUserSubscriptions];
+    if (([(NSArray *)existingUserSubscriptions isEqual:existingUserSubscriptions]& 1) != 0)
     {
       v12 = 1;
 LABEL_42:
 
-      v3 = v21;
+      voicePreferred = v21;
       if ((v20 & 1) == 0)
       {
-        LODWORD(v11) = v22;
+        LODWORD(existingUserSubscriptions) = v22;
         if (!voicePreferred)
         {
           goto LABEL_52;
@@ -178,8 +178,8 @@ LABEL_42:
         goto LABEL_47;
       }
 
-      v16 = 0;
-      LODWORD(v11) = v22;
+      voicePreferred2 = 0;
+      LODWORD(existingUserSubscriptions) = v22;
       goto LABEL_44;
     }
 
@@ -190,8 +190,8 @@ LABEL_42:
     }
   }
 
-  v18 = [(CTXPCContexts *)v5 existingUserSubscriptions];
-  v12 = v18 == 0;
+  existingUserSubscriptions2 = [(CTXPCContexts *)equalCopy existingUserSubscriptions];
+  v12 = existingUserSubscriptions2 == 0;
 
   if (existingUserSubscriptions)
   {
@@ -200,8 +200,8 @@ LABEL_42:
 
   if (!v20)
   {
-    LODWORD(v11) = v22;
-    v3 = v21;
+    LODWORD(existingUserSubscriptions) = v22;
+    voicePreferred = v21;
     if (!voicePreferred)
     {
       goto LABEL_52;
@@ -210,15 +210,15 @@ LABEL_42:
     goto LABEL_47;
   }
 
-  v16 = 0;
-  LODWORD(v11) = v22;
-  v3 = v21;
+  voicePreferred2 = 0;
+  LODWORD(existingUserSubscriptions) = v22;
+  voicePreferred = v21;
 LABEL_44:
 
   if (!voicePreferred)
   {
 LABEL_52:
-    if (!v11)
+    if (!existingUserSubscriptions)
     {
       goto LABEL_55;
     }
@@ -228,10 +228,10 @@ LABEL_52:
 
 LABEL_47:
 
-  if (v11)
+  if (existingUserSubscriptions)
   {
 LABEL_53:
-    v13 = 0;
+    dataPreferred = 0;
     goto LABEL_54;
   }
 
@@ -270,42 +270,42 @@ LABEL_59:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTXPCContexts *)self subscriptions];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  subscriptions = [(CTXPCContexts *)self subscriptions];
+  v6 = [subscriptions copy];
   [v4 setSubscriptions:v6];
 
-  v7 = [(CTXPCContexts *)self dataPreferred];
-  v8 = [v7 copy];
+  dataPreferred = [(CTXPCContexts *)self dataPreferred];
+  v8 = [dataPreferred copy];
   [v4 setDataPreferred:v8];
 
-  v9 = [(CTXPCContexts *)self voicePreferred];
-  v10 = [v9 copy];
+  voicePreferred = [(CTXPCContexts *)self voicePreferred];
+  v10 = [voicePreferred copy];
   [v4 setVoicePreferred:v10];
 
-  v11 = [(CTXPCContexts *)self existingUserSubscriptions];
-  v12 = [v11 copy];
+  existingUserSubscriptions = [(CTXPCContexts *)self existingUserSubscriptions];
+  v12 = [existingUserSubscriptions copy];
   [v4 setExistingUserSubscriptions:v12];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   subscriptions = self->_subscriptions;
-  v5 = a3;
-  [v5 encodeObject:subscriptions forKey:@"subscriptions"];
-  [v5 encodeObject:self->_dataPreferred forKey:@"user_data_preferred"];
-  [v5 encodeObject:self->_voicePreferred forKey:@"user_default_voice"];
-  [v5 encodeObject:self->_existingUserSubscriptions forKey:@"existingUserSubs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:subscriptions forKey:@"subscriptions"];
+  [coderCopy encodeObject:self->_dataPreferred forKey:@"user_data_preferred"];
+  [coderCopy encodeObject:self->_voicePreferred forKey:@"user_default_voice"];
+  [coderCopy encodeObject:self->_existingUserSubscriptions forKey:@"existingUserSubs"];
 }
 
-- (CTXPCContexts)initWithCoder:(id)a3
+- (CTXPCContexts)initWithCoder:(id)coder
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = CTXPCContexts;
   v5 = [(CTXPCContexts *)&v22 init];
@@ -316,15 +316,15 @@ LABEL_59:
     v24[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"subscriptions"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"subscriptions"];
     subscriptions = v5->_subscriptions;
     v5->_subscriptions = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"user_data_preferred"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"user_data_preferred"];
     dataPreferred = v5->_dataPreferred;
     v5->_dataPreferred = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"user_default_voice"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"user_default_voice"];
     voicePreferred = v5->_voicePreferred;
     v5->_voicePreferred = v13;
 
@@ -333,7 +333,7 @@ LABEL_59:
     v23[1] = objc_opt_class();
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
     v17 = [v15 setWithArray:v16];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"existingUserSubs"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"existingUserSubs"];
     existingUserSubscriptions = v5->_existingUserSubscriptions;
     v5->_existingUserSubscriptions = v18;
   }
@@ -342,15 +342,15 @@ LABEL_59:
   return v5;
 }
 
-- (id)findForSlot:(int64_t)a3
+- (id)findForSlot:(int64_t)slot
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CTXPCContexts *)self subscriptions];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subscriptions = [(CTXPCContexts *)self subscriptions];
+  v5 = [subscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -361,18 +361,18 @@ LABEL_59:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subscriptions);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 slotID] == a3)
+        if ([v9 slotID] == slot)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [subscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -390,16 +390,16 @@ LABEL_11:
   return v10;
 }
 
-- (id)findForUuid:(id)a3
+- (id)findForUuid:(id)uuid
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  uuidCopy = uuid;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CTXPCContexts *)self subscriptions];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subscriptions = [(CTXPCContexts *)self subscriptions];
+  v6 = [subscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -409,12 +409,12 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subscriptions);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 uuid];
-        v11 = [v10 isEqual:v4];
+        uuid = [v9 uuid];
+        v11 = [uuid isEqual:uuidCopy];
 
         if (v11)
         {
@@ -423,7 +423,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [subscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -440,16 +440,16 @@ LABEL_11:
   return v6;
 }
 
-- (id)findForAccount:(id)a3
+- (id)findForAccount:(id)account
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CTXPCContexts *)self subscriptions];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subscriptions = [(CTXPCContexts *)self subscriptions];
+  v6 = [subscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -459,12 +459,12 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subscriptions);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 accountID];
-        v11 = [v10 isEqualToString:v4];
+        accountID = [v9 accountID];
+        v11 = [accountID isEqualToString:accountCopy];
 
         if (v11)
         {
@@ -473,7 +473,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [subscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -490,15 +490,15 @@ LABEL_11:
   return v6;
 }
 
-- (id)findForSlot:(int64_t)a3 within:(id)a4
+- (id)findForSlot:(int64_t)slot within:(id)within
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  withinCopy = within;
+  v6 = [withinCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -509,18 +509,18 @@ LABEL_11:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(withinCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if ([v10 slotID] == a3)
+        if ([v10 slotID] == slot)
         {
           v11 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [withinCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -538,16 +538,16 @@ LABEL_11:
   return v11;
 }
 
-- (id)findForUuid:(id)a3 within:(id)a4
+- (id)findForUuid:(id)uuid within:(id)within
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  uuidCopy = uuid;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  withinCopy = within;
+  v7 = [withinCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -557,12 +557,12 @@ LABEL_11:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(withinCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 uuid];
-        v12 = [v11 isEqual:v5];
+        uuid = [v10 uuid];
+        v12 = [uuid isEqual:uuidCopy];
 
         if (v12)
         {
@@ -571,7 +571,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [withinCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -588,16 +588,16 @@ LABEL_11:
   return v7;
 }
 
-- (id)findForAccount:(id)a3 within:(id)a4
+- (id)findForAccount:(id)account within:(id)within
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  accountCopy = account;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  withinCopy = within;
+  v7 = [withinCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -607,12 +607,12 @@ LABEL_11:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(withinCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 accountID];
-        v12 = [v11 isEqualToString:v5];
+        accountID = [v10 accountID];
+        v12 = [accountID isEqualToString:accountCopy];
 
         if (v12)
         {
@@ -621,7 +621,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [withinCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;

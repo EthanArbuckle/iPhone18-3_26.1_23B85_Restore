@@ -1,13 +1,13 @@
 @interface MattingDebugUtils
-+ (BOOL)saveTextureArray:(id)a3 AsBinaryFile:(const char *)a4;
-+ (void)createPathIfNeeded:(id)a3;
++ (BOOL)saveTextureArray:(id)array AsBinaryFile:(const char *)file;
++ (void)createPathIfNeeded:(id)needed;
 @end
 
 @implementation MattingDebugUtils
 
-+ (void)createPathIfNeeded:(id)a3
++ (void)createPathIfNeeded:(id)needed
 {
-  v3 = objc_msgSend_stringByDeletingLastPathComponent(a3, a2, a3);
+  v3 = objc_msgSend_stringByDeletingLastPathComponent(needed, a2, needed);
   v6 = objc_msgSend_defaultManager(MEMORY[0x29EDB9FB8], v4, v5);
   v15 = 0;
   v8 = objc_msgSend_createDirectoryAtPath_withIntermediateDirectories_attributes_error_(v6, v7, v3, 1, 0, &v15);
@@ -31,11 +31,11 @@
   }
 }
 
-+ (BOOL)saveTextureArray:(id)a3 AsBinaryFile:(const char *)a4
++ (BOOL)saveTextureArray:(id)array AsBinaryFile:(const char *)file
 {
-  v5 = a3;
-  v7 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v6, @"%s", a4);
-  v10 = objc_msgSend_pixelFormat(v5, v8, v9);
+  arrayCopy = array;
+  v7 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v6, @"%s", file);
+  v10 = objc_msgSend_pixelFormat(arrayCopy, v8, v9);
   if (v10 <= 69)
   {
     switch(v10)
@@ -94,26 +94,26 @@ LABEL_14:
 LABEL_9:
   v13 = 4;
 LABEL_20:
-  v16 = objc_msgSend_width(v5, v11, v12);
+  v16 = objc_msgSend_width(arrayCopy, v11, v12);
   v17 = objc_alloc(MEMORY[0x29EDB8DF8]);
-  v20 = objc_msgSend_width(v5, v18, v19);
-  v23 = objc_msgSend_height(v5, v21, v22);
-  v26 = objc_msgSend_arrayLength(v5, v24, v25);
+  v20 = objc_msgSend_width(arrayCopy, v18, v19);
+  v23 = objc_msgSend_height(arrayCopy, v21, v22);
+  v26 = objc_msgSend_arrayLength(arrayCopy, v24, v25);
   v28 = objc_msgSend_initWithLength_(v17, v27, v20 * v13 * v23 * v26);
   v29 = v28;
   v32 = objc_msgSend_bytes(v29, v30, v31);
-  if (objc_msgSend_arrayLength(v5, v33, v34))
+  if (objc_msgSend_arrayLength(arrayCopy, v33, v34))
   {
     v37 = 0;
     v38 = v16 * v13;
     v39 = 1;
     do
     {
-      v40 = objc_msgSend_pixelFormat(v5, v35, v36);
-      v42 = objc_msgSend_newTextureViewWithPixelFormat_textureType_levels_slices_(v5, v41, v40, 2, 0, 1, v37, 1);
-      v45 = v32 + v37 * v38 * objc_msgSend_height(v5, v43, v44);
-      v48 = objc_msgSend_width(v5, v46, v47);
-      v51 = objc_msgSend_height(v5, v49, v50);
+      v40 = objc_msgSend_pixelFormat(arrayCopy, v35, v36);
+      v42 = objc_msgSend_newTextureViewWithPixelFormat_textureType_levels_slices_(arrayCopy, v41, v40, 2, 0, 1, v37, 1);
+      v45 = v32 + v37 * v38 * objc_msgSend_height(arrayCopy, v43, v44);
+      v48 = objc_msgSend_width(arrayCopy, v46, v47);
+      v51 = objc_msgSend_height(arrayCopy, v49, v50);
       buf = 0uLL;
       v67 = 0;
       v68 = v48;
@@ -124,7 +124,7 @@ LABEL_20:
       v37 = v39;
     }
 
-    while (objc_msgSend_arrayLength(v5, v53, v54) > v39++);
+    while (objc_msgSend_arrayLength(arrayCopy, v53, v54) > v39++);
   }
 
   objc_msgSend_createPathIfNeeded_(MattingDebugUtils, v35, v7);

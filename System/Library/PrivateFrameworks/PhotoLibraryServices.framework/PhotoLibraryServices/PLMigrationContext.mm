@@ -1,5 +1,5 @@
 @interface PLMigrationContext
-- (PLMigrationContext)initWithPathManager:(id)a3 coordinator:(id)a4 onStore:(id)a5 orStoreURL:(id)a6 version:(unsigned __int16)a7 options:(id)a8 migrationPolicy:(unsigned int)a9 analyticsEventManager:(id)a10 graphCache:(id)a11;
+- (PLMigrationContext)initWithPathManager:(id)manager coordinator:(id)coordinator onStore:(id)store orStoreURL:(id)l version:(unsigned __int16)version options:(id)options migrationPolicy:(unsigned int)policy analyticsEventManager:(id)self0 graphCache:(id)self1;
 - (id)newModelMigrationHistory;
 - (void)dealloc;
 @end
@@ -8,12 +8,12 @@
 
 - (id)newModelMigrationHistory
 {
-  v3 = [(PLMigrationContext *)self coordinator];
+  coordinator = [(PLMigrationContext *)self coordinator];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PLMigrationContext *)self pathManager];
-  v7 = [(PLMigrationContext *)self graphCache];
-  v8 = PLManagedObjectContextForMigrationActionWithCoordinator(v3, v5, v6, v7);
+  pathManager = [(PLMigrationContext *)self pathManager];
+  graphCache = [(PLMigrationContext *)self graphCache];
+  v8 = PLManagedObjectContextForMigrationActionWithCoordinator(coordinator, v5, pathManager, graphCache);
 
   v9 = [[PLModelMigrationHistory alloc] initWithManagedObjectContext:v8];
   return v9;
@@ -27,29 +27,29 @@
   [(PLMigrationContext *)&v3 dealloc];
 }
 
-- (PLMigrationContext)initWithPathManager:(id)a3 coordinator:(id)a4 onStore:(id)a5 orStoreURL:(id)a6 version:(unsigned __int16)a7 options:(id)a8 migrationPolicy:(unsigned int)a9 analyticsEventManager:(id)a10 graphCache:(id)a11
+- (PLMigrationContext)initWithPathManager:(id)manager coordinator:(id)coordinator onStore:(id)store orStoreURL:(id)l version:(unsigned __int16)version options:(id)options migrationPolicy:(unsigned int)policy analyticsEventManager:(id)self0 graphCache:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  obj = a5;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
-  v22 = self;
-  v45 = a10;
-  v44 = a11;
-  if (v17)
+  managerCopy = manager;
+  coordinatorCopy = coordinator;
+  obj = store;
+  storeCopy = store;
+  lCopy = l;
+  optionsCopy = options;
+  selfCopy = self;
+  eventManagerCopy = eventManager;
+  cacheCopy = cache;
+  if (managerCopy)
   {
-    if (v18)
+    if (coordinatorCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_14:
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PLModelMigrationContext.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"coordinator"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationContext.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"coordinator"}];
 
-    if (v21)
+    if (optionsCopy)
     {
       goto LABEL_4;
     }
@@ -57,61 +57,61 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v37 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v37 handleFailureInMethod:a2 object:self file:@"PLModelMigrationContext.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigrationContext.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
-  if (!v18)
+  if (!coordinatorCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
-  if (v21)
+  if (optionsCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_15:
-  v39 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v39 handleFailureInMethod:a2 object:v22 file:@"PLModelMigrationContext.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"PLModelMigrationContext.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"options"}];
 
 LABEL_4:
-  if (!(v19 | v20))
+  if (!(storeCopy | lCopy))
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:v22 file:@"PLModelMigrationContext.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"sourceStore || storeURL"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:selfCopy file:@"PLModelMigrationContext.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"sourceStore || storeURL"}];
   }
 
-  v49.receiver = v22;
+  v49.receiver = selfCopy;
   v49.super_class = PLMigrationContext;
   v23 = [(PLMigrationContext *)&v49 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_pathManager, a3);
-    objc_storeStrong(&v24->_coordinator, a4);
+    objc_storeStrong(&v23->_pathManager, manager);
+    objc_storeStrong(&v24->_coordinator, coordinator);
     objc_storeStrong(&v24->_store, obj);
-    v25 = v20;
-    if (!v20)
+    v25 = lCopy;
+    if (!lCopy)
     {
-      v25 = [v19 URL];
+      v25 = [storeCopy URL];
     }
 
     v26 = [v25 copy];
     storeURL = v24->_storeURL;
     v24->_storeURL = v26;
 
-    if (!v20)
+    if (!lCopy)
     {
     }
 
-    v24->_previousStoreVersion = a7;
-    v28 = [v21 copy];
+    v24->_previousStoreVersion = version;
+    v28 = [optionsCopy copy];
     options = v24->_options;
     v24->_options = v28;
 
-    v24->_policy = a9;
-    objc_storeStrong(&v24->_analyticsEventManager, a10);
+    v24->_policy = policy;
+    objc_storeStrong(&v24->_analyticsEventManager, eventManager);
     v24->_libraryIdentifier = PLMigrationContextWellKnownPhotoLibraryIdentifier(v24->_pathManager);
     v30 = objc_initWeak(&location, v24);
 
@@ -127,10 +127,10 @@ LABEL_4:
     lazyModelMigrationHistory = v24->_lazyModelMigrationHistory;
     v24->_lazyModelMigrationHistory = v32;
 
-    objc_storeStrong(&v24->_graphCache, a11);
-    v34 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v24->_graphCache, cache);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     userInfo = v24->_userInfo;
-    v24->_userInfo = v34;
+    v24->_userInfo = dictionary;
   }
 
   return v24;

@@ -1,198 +1,198 @@
 @interface HDHealthRecordsXPCService
 - (HDHealthRecordDocumentProcessor)FHIRProcessor;
-- (HDHealthRecordsXPCService)initWithHealthRecordDocumentConfiguration:(id)a3;
+- (HDHealthRecordsXPCService)initWithHealthRecordDocumentConfiguration:(id)configuration;
 - (id)remoteInterface;
-- (void)remote_compareExistingPatientResourceData:(id)a3 incomingPatientResourceData:(id)a4 completion:(id)a5;
-- (void)remote_executeFHIRExtractionRequest:(id)a3 completion:(id)a4;
-- (void)remote_executeFHIRReferenceExtractionRequest:(id)a3 completion:(id)a4;
-- (void)remote_extractAttachmentContentFromFHIRResource:(id)a3 completion:(id)a4;
-- (void)remote_fetchSpotlightSearchResultsForQueryString:(id)a3 completion:(id)a4;
-- (void)remote_indexClinicalDocumentsWithRequest:(id)a3 completion:(id)a4;
-- (void)remote_optInDataForFHIRDocumentWithRequest:(id)a3 redactor:(id)a4 completion:(id)a5;
-- (void)remote_preprocessSignedClinicalData:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)remote_preprocessSignedClinicalDataFHIRResourceObject:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)remote_processOriginalSignedClinicalDataRecords:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)remote_processSignedClinicalDataContextCollection:(id)a3 completion:(id)a4;
-- (void)remote_reprocessOriginalRecords:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)remote_rulesVersionForFHIRDocumentExtractionWithCompletion:(id)a3;
-- (void)remote_supportedFHIRConfigurationWithCompletion:(id)a3;
+- (void)remote_compareExistingPatientResourceData:(id)data incomingPatientResourceData:(id)resourceData completion:(id)completion;
+- (void)remote_executeFHIRExtractionRequest:(id)request completion:(id)completion;
+- (void)remote_executeFHIRReferenceExtractionRequest:(id)request completion:(id)completion;
+- (void)remote_extractAttachmentContentFromFHIRResource:(id)resource completion:(id)completion;
+- (void)remote_fetchSpotlightSearchResultsForQueryString:(id)string completion:(id)completion;
+- (void)remote_indexClinicalDocumentsWithRequest:(id)request completion:(id)completion;
+- (void)remote_optInDataForFHIRDocumentWithRequest:(id)request redactor:(id)redactor completion:(id)completion;
+- (void)remote_preprocessSignedClinicalData:(id)data options:(unint64_t)options completion:(id)completion;
+- (void)remote_preprocessSignedClinicalDataFHIRResourceObject:(id)object options:(unint64_t)options completion:(id)completion;
+- (void)remote_processOriginalSignedClinicalDataRecords:(id)records options:(unint64_t)options completion:(id)completion;
+- (void)remote_processSignedClinicalDataContextCollection:(id)collection completion:(id)completion;
+- (void)remote_reprocessOriginalRecords:(id)records options:(unint64_t)options completion:(id)completion;
+- (void)remote_rulesVersionForFHIRDocumentExtractionWithCompletion:(id)completion;
+- (void)remote_supportedFHIRConfigurationWithCompletion:(id)completion;
 @end
 
 @implementation HDHealthRecordsXPCService
 
-- (HDHealthRecordsXPCService)initWithHealthRecordDocumentConfiguration:(id)a3
+- (HDHealthRecordsXPCService)initWithHealthRecordDocumentConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = [(HDHealthRecordsXPCService *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthDocumentConfiguration, a3);
+    objc_storeStrong(&v6->_healthDocumentConfiguration, configuration);
   }
 
   return v7;
 }
 
-- (void)remote_rulesVersionForFHIRDocumentExtractionWithCompletion:(id)a3
+- (void)remote_rulesVersionForFHIRDocumentExtractionWithCompletion:(id)completion
 {
-  v7 = a3;
-  if (!v7)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     sub_100002F48(a2, self);
   }
 
-  v5 = [(HDHealthRecordsXPCService *)self FHIRProcessor];
-  v6 = [v5 extractionRulesetVersion];
-  v7[2](v7, v6, 0);
+  fHIRProcessor = [(HDHealthRecordsXPCService *)self FHIRProcessor];
+  extractionRulesetVersion = [fHIRProcessor extractionRulesetVersion];
+  completionCopy[2](completionCopy, extractionRulesetVersion, 0);
 }
 
-- (void)remote_supportedFHIRConfigurationWithCompletion:(id)a3
+- (void)remote_supportedFHIRConfigurationWithCompletion:(id)completion
 {
-  v7 = a3;
-  if (!v7)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     sub_100002FC4(a2, self);
   }
 
-  v5 = [(HDHealthRecordsXPCService *)self FHIRProcessor];
-  v6 = [v5 supportedFHIRConfiguration];
-  v7[2](v7, v6, 0);
+  fHIRProcessor = [(HDHealthRecordsXPCService *)self FHIRProcessor];
+  supportedFHIRConfiguration = [fHIRProcessor supportedFHIRConfiguration];
+  completionCopy[2](completionCopy, supportedFHIRConfiguration, 0);
 }
 
-- (void)remote_executeFHIRReferenceExtractionRequest:(id)a3 completion:(id)a4
+- (void)remote_executeFHIRReferenceExtractionRequest:(id)request completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v5;
-    v8 = v6;
+    v7 = requestCopy;
+    v8 = completionCopy;
     HKDispatchAsyncOnGlobalConcurrentQueue();
   }
 }
 
-- (void)remote_compareExistingPatientResourceData:(id)a3 incomingPatientResourceData:(id)a4 completion:(id)a5
+- (void)remote_compareExistingPatientResourceData:(id)data incomingPatientResourceData:(id)resourceData completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  dataCopy = data;
+  resourceDataCopy = resourceData;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = v7;
-    v11 = v8;
-    v12 = v9;
+    v10 = dataCopy;
+    v11 = resourceDataCopy;
+    v12 = completionCopy;
     HKDispatchAsyncOnGlobalConcurrentQueue();
   }
 }
 
-- (void)remote_executeFHIRExtractionRequest:(id)a3 completion:(id)a4
+- (void)remote_executeFHIRExtractionRequest:(id)request completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v5;
-    v8 = v6;
+    v7 = requestCopy;
+    v8 = completionCopy;
     HKDispatchAsyncOnGlobalConcurrentQueue();
   }
 }
 
-- (void)remote_extractAttachmentContentFromFHIRResource:(id)a3 completion:(id)a4
+- (void)remote_extractAttachmentContentFromFHIRResource:(id)resource completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  resourceCopy = resource;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v5;
-    v8 = v6;
+    v7 = resourceCopy;
+    v8 = completionCopy;
     HKDispatchAsyncOnGlobalConcurrentQueue();
   }
 }
 
-- (void)remote_optInDataForFHIRDocumentWithRequest:(id)a3 redactor:(id)a4 completion:(id)a5
+- (void)remote_optInDataForFHIRDocumentWithRequest:(id)request redactor:(id)redactor completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  requestCopy = request;
+  redactorCopy = redactor;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = v7;
-    v11 = v8;
-    v12 = v9;
+    v10 = requestCopy;
+    v11 = redactorCopy;
+    v12 = completionCopy;
     HKDispatchAsyncOnGlobalConcurrentQueue();
   }
 }
 
-- (void)remote_preprocessSignedClinicalData:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)remote_preprocessSignedClinicalData:(id)data options:(unint64_t)options completion:(id)completion
 {
-  v6 = a3;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  dataCopy = data;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = dataCopy;
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
 
-- (void)remote_preprocessSignedClinicalDataFHIRResourceObject:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)remote_preprocessSignedClinicalDataFHIRResourceObject:(id)object options:(unint64_t)options completion:(id)completion
 {
-  v6 = a3;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  objectCopy = object;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = objectCopy;
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
 
-- (void)remote_reprocessOriginalRecords:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)remote_reprocessOriginalRecords:(id)records options:(unint64_t)options completion:(id)completion
 {
-  v6 = a3;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  recordsCopy = records;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = recordsCopy;
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
 
-- (void)remote_processOriginalSignedClinicalDataRecords:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)remote_processOriginalSignedClinicalDataRecords:(id)records options:(unint64_t)options completion:(id)completion
 {
-  v6 = a3;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  recordsCopy = records;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = recordsCopy;
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
 
-- (void)remote_processSignedClinicalDataContextCollection:(id)a3 completion:(id)a4
+- (void)remote_processSignedClinicalDataContextCollection:(id)collection completion:(id)completion
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  collectionCopy = collection;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = collectionCopy;
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
 
-- (void)remote_indexClinicalDocumentsWithRequest:(id)a3 completion:(id)a4
+- (void)remote_indexClinicalDocumentsWithRequest:(id)request completion:(id)completion
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  requestCopy = request;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = requestCopy;
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
 
-- (void)remote_fetchSpotlightSearchResultsForQueryString:(id)a3 completion:(id)a4
+- (void)remote_fetchSpotlightSearchResultsForQueryString:(id)string completion:(id)completion
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  stringCopy = string;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = stringCopy;
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
 
 - (HDHealthRecordDocumentProcessor)FHIRProcessor
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  if (!v3->_FHIRProcessor)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_FHIRProcessor)
   {
-    healthDocumentConfiguration = v3->_healthDocumentConfiguration;
+    healthDocumentConfiguration = selfCopy->_healthDocumentConfiguration;
     if (healthDocumentConfiguration)
     {
       v5 = healthDocumentConfiguration;
@@ -207,19 +207,19 @@
       if (!v5)
       {
         v10 = +[NSAssertionHandler currentHandler];
-        [v10 handleFailureInMethod:a2 object:v3 file:@"HDHealthRecordsXPCService.m" lineNumber:297 description:{@"Error loading pipeline configuration: %@", v6}];
+        [v10 handleFailureInMethod:a2 object:selfCopy file:@"HDHealthRecordsXPCService.m" lineNumber:297 description:{@"Error loading pipeline configuration: %@", v6}];
 
         v5 = 0;
       }
     }
 
     v7 = [[HDHealthRecordDocumentProcessor alloc] initWithConfiguration:v5];
-    [(HDHealthRecordsXPCService *)v3 setFHIRProcessor:v7];
+    [(HDHealthRecordsXPCService *)selfCopy setFHIRProcessor:v7];
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
-  FHIRProcessor = v3->_FHIRProcessor;
+  FHIRProcessor = selfCopy->_FHIRProcessor;
 
   return FHIRProcessor;
 }

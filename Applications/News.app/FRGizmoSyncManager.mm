@@ -1,14 +1,14 @@
 @interface FRGizmoSyncManager
-- (FRGizmoSyncManager)initWithAppConfigManager:(id)a3 readingList:(id)a4 readingHistory:(id)a5;
+- (FRGizmoSyncManager)initWithAppConfigManager:(id)manager readingList:(id)list readingHistory:(id)history;
 - (FRGizmoSyncManagerDelegate)delegate;
 - (id)_newCompanionConnection;
-- (void)_fetchMetadataWithCompletion:(id)a3;
-- (void)_syncPreferredRefreshDatesWithCompletion:(id)a3;
-- (void)_syncSavedIdentifiersOnGizmo:(id)a3 articleIdentifiersOnGizmo:(id)a4 withCompletion:(id)a5;
-- (void)_syncSeenIdentifiers:(id)a3 withCompletion:(id)a4;
-- (void)gizmoPreferencesNotifierDidNoticeUpdate:(id)a3;
-- (void)readingHistoryDidClear:(id)a3;
-- (void)readingList:(id)a3 didAddArticles:(id)a4 removeArticles:(id)a5 eventInitiationLevel:(int64_t)a6;
+- (void)_fetchMetadataWithCompletion:(id)completion;
+- (void)_syncPreferredRefreshDatesWithCompletion:(id)completion;
+- (void)_syncSavedIdentifiersOnGizmo:(id)gizmo articleIdentifiersOnGizmo:(id)onGizmo withCompletion:(id)completion;
+- (void)_syncSeenIdentifiers:(id)identifiers withCompletion:(id)completion;
+- (void)gizmoPreferencesNotifierDidNoticeUpdate:(id)update;
+- (void)readingHistoryDidClear:(id)clear;
+- (void)readingList:(id)list didAddArticles:(id)articles removeArticles:(id)removeArticles eventInitiationLevel:(int64_t)level;
 - (void)syncWithGizmo;
 @end
 
@@ -62,11 +62,11 @@
   return v2;
 }
 
-- (FRGizmoSyncManager)initWithAppConfigManager:(id)a3 readingList:(id)a4 readingHistory:(id)a5
+- (FRGizmoSyncManager)initWithAppConfigManager:(id)manager readingList:(id)list readingHistory:(id)history
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  listCopy = list;
+  historyCopy = history;
   +[NSThread isMainThread];
   v17.receiver = self;
   v17.super_class = FRGizmoSyncManager;
@@ -74,42 +74,42 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_appConfigManager, a3);
-    objc_storeStrong(&v13->_readingList, a4);
-    objc_storeStrong(&v13->_readingHistory, a5);
+    objc_storeStrong(&v12->_appConfigManager, manager);
+    objc_storeStrong(&v13->_readingList, list);
+    objc_storeStrong(&v13->_readingHistory, history);
     v14 = objc_alloc_init(FRGizmoPreferencesNotifier);
     [(FRGizmoPreferencesNotifier *)v14 setDelegate:v13];
     notifier = v13->_notifier;
     v13->_notifier = v14;
 
-    [v10 addObserver:v13];
-    [v11 addObserver:v13];
+    [listCopy addObserver:v13];
+    [historyCopy addObserver:v13];
   }
 
   return v13;
 }
 
-- (void)gizmoPreferencesNotifierDidNoticeUpdate:(id)a3
+- (void)gizmoPreferencesNotifierDidNoticeUpdate:(id)update
 {
   +[NSThread isMainThread];
 
   [(FRGizmoSyncManager *)self syncWithGizmo];
 }
 
-- (void)readingList:(id)a3 didAddArticles:(id)a4 removeArticles:(id)a5 eventInitiationLevel:(int64_t)a6
+- (void)readingList:(id)list didAddArticles:(id)articles removeArticles:(id)removeArticles eventInitiationLevel:(int64_t)level
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  listCopy = list;
+  articlesCopy = articles;
+  removeArticlesCopy = removeArticles;
   +[NSThread isMainThread];
-  if ([v10 count] || objc_msgSend(v11, "count"))
+  if ([articlesCopy count] || objc_msgSend(removeArticlesCopy, "count"))
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      *&buf[4] = [v10 count];
+      *&buf[4] = [articlesCopy count];
       *&buf[12] = 2048;
-      *&buf[14] = [v11 count];
+      *&buf[14] = [removeArticlesCopy count];
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Marking %lu IDs saved and %lu IDs unsaved…", buf, 0x16u);
     }
 
@@ -118,15 +118,15 @@
     *&buf[16] = 0x3032000000;
     v31 = sub_100009BC8;
     v32 = sub_100009F38;
-    v33 = [(FRGizmoSyncManager *)self _newCompanionConnection];
+    _newCompanionConnection = [(FRGizmoSyncManager *)self _newCompanionConnection];
     [*(*&buf[8] + 40) resume];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_100040500;
     v26[3] = &unk_1000C46A0;
-    v12 = v10;
+    v12 = articlesCopy;
     v27 = v12;
-    v13 = v11;
+    v13 = removeArticlesCopy;
     v28 = v13;
     v29 = buf;
     v14 = objc_retainBlock(v26);
@@ -147,9 +147,9 @@
   }
 }
 
-- (void)readingHistoryDidClear:(id)a3
+- (void)readingHistoryDidClear:(id)clear
 {
-  v4 = a3;
+  clearCopy = clear;
   +[NSThread isMainThread];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -162,7 +162,7 @@
   v11 = 0x3032000000;
   v12 = sub_100009BC8;
   v13 = sub_100009F38;
-  v14 = [(FRGizmoSyncManager *)self _newCompanionConnection];
+  _newCompanionConnection = [(FRGizmoSyncManager *)self _newCompanionConnection];
   [*(v10 + 5) resume];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -181,9 +181,9 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_fetchMetadataWithCompletion:(id)a3
+- (void)_fetchMetadataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
@@ -195,13 +195,13 @@
   v17 = 0x3032000000;
   v18 = sub_100009BC8;
   v19 = sub_100009F38;
-  v20 = [(FRGizmoSyncManager *)self _newCompanionConnection];
+  _newCompanionConnection = [(FRGizmoSyncManager *)self _newCompanionConnection];
   [*(v16 + 5) resume];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100040B04;
   v12[3] = &unk_1000C4718;
-  v5 = v4;
+  v5 = completionCopy;
   v13 = v5;
   v14 = buf;
   v6 = objc_retainBlock(v12);
@@ -218,54 +218,54 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_syncSeenIdentifiers:(id)a3 withCompletion:(id)a4
+- (void)_syncSeenIdentifiers:(id)identifiers withCompletion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100040D84;
   block[3] = &unk_1000C4808;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = identifiersCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_syncSavedIdentifiersOnGizmo:(id)a3 articleIdentifiersOnGizmo:(id)a4 withCompletion:(id)a5
+- (void)_syncSavedIdentifiersOnGizmo:(id)gizmo articleIdentifiersOnGizmo:(id)onGizmo withCompletion:(id)completion
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100041488;
   v11[3] = &unk_1000C3D18;
-  v12 = a3;
-  v13 = self;
-  v14 = a4;
-  v15 = a5;
-  v8 = v15;
-  v9 = v14;
-  v10 = v12;
+  gizmoCopy = gizmo;
+  selfCopy = self;
+  onGizmoCopy = onGizmo;
+  completionCopy = completion;
+  v8 = completionCopy;
+  v9 = onGizmoCopy;
+  v10 = gizmoCopy;
   dispatch_async(&_dispatch_main_q, v11);
 }
 
-- (void)_syncPreferredRefreshDatesWithCompletion:(id)a3
+- (void)_syncPreferredRefreshDatesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Syncing refresh dates with gizmo…", buf, 2u);
   }
 
-  v5 = [(FRGizmoSyncManager *)self appConfigManager];
+  appConfigManager = [(FRGizmoSyncManager *)self appConfigManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100041A70;
   v7[3] = &unk_1000C3110;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchAppConfigurationIfNeededWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [appConfigManager fetchAppConfigurationIfNeededWithCompletion:v7];
 }
 
 - (FRGizmoSyncManagerDelegate)delegate

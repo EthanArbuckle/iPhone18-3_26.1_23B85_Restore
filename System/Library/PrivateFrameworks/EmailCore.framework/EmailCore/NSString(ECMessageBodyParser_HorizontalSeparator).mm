@@ -7,7 +7,7 @@
 - (BOOL)ec_isHorizontalSeparator
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [a1 length];
+  v2 = [self length];
   if ((v2 - 201) < 0xFFFFFFFFFFFFFF3ALL)
   {
     result = 0;
@@ -17,8 +17,8 @@ LABEL_8:
   }
 
   v4 = v2;
-  v5 = [a1 _fastCharacterContents];
-  if (!v5)
+  _fastCharacterContents = [self _fastCharacterContents];
+  if (!_fastCharacterContents)
   {
     *&v7 = 0xAAAAAAAAAAAAAAAALL;
     *(&v7 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -47,14 +47,14 @@ LABEL_8:
     v9[1] = v7;
     v9[2] = v7;
     v9[0] = v7;
-    [a1 getCharacters:v9 range:{0, v4}];
+    [self getCharacters:v9 range:{0, v4}];
     result = bufferIsHorizontalSeparator(v9, v9 + 2 * v4);
     goto LABEL_8;
   }
 
   v6 = *MEMORY[0x277D85DE8];
 
-  return bufferIsHorizontalSeparator(v5, &v5[2 * v4]);
+  return bufferIsHorizontalSeparator(_fastCharacterContents, &_fastCharacterContents[2 * v4]);
 }
 
 @end

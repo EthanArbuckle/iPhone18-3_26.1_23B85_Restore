@@ -4,11 +4,11 @@
 - (CGSize)contentSize;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)performBatchUpdates:(id)a3 completion:(id)a4;
+- (void)performBatchUpdates:(id)updates completion:(id)completion;
 - (void)safeAreaInsetsDidChange;
-- (void)setAccessoryView:(id)a3 atEdge:(int64_t)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentSize:(CGSize)a3;
+- (void)setAccessoryView:(id)view atEdge:(int64_t)edge;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation UpdateCoalescingCollectionView
@@ -27,7 +27,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   UpdateCoalescingCollectionView.layoutSubviews()();
 }
 
@@ -41,18 +41,18 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   updated = type metadata accessor for UpdateCoalescingCollectionView(0);
   v13.receiver = self;
   v13.super_class = updated;
-  v7 = self;
+  selfCopy = self;
   [(UpdateCoalescingCollectionView *)&v13 contentSize];
   v9 = v8;
   v11 = v10;
-  v12.receiver = v7;
+  v12.receiver = selfCopy;
   v12.super_class = updated;
   [(UpdateCoalescingCollectionView *)&v12 setContentSize:width, height];
   UpdateCoalescingCollectionView.contentSize.didset(v9, v11);
@@ -60,38 +60,38 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   UpdateCoalescingCollectionView.didMoveToWindow()();
 }
 
 - (void)safeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   UpdateCoalescingCollectionView.safeAreaInsetsDidChange()();
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   UpdateCoalescingCollectionView.bounds.setter(x, y, width, height);
 }
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   updated = UpdateCoalescingCollectionView.canBecomeFirstResponder.getter();
 
   return updated & 1;
 }
 
-- (void)performBatchUpdates:(id)a3 completion:(id)a4
+- (void)performBatchUpdates:(id)updates completion:(id)completion
 {
-  v6 = _Block_copy(a3);
-  v7 = _Block_copy(a4);
+  v6 = _Block_copy(updates);
+  v7 = _Block_copy(completion);
   v8 = v7;
   if (v6)
   {
@@ -120,17 +120,17 @@ LABEL_3:
   v11 = 0;
   v10 = 0;
 LABEL_6:
-  v12 = self;
+  selfCopy = self;
   UpdateCoalescingCollectionView.performBatchUpdates(_:completion:)(v6, v9, v11, v10);
   outlined consume of (@escaping @callee_guaranteed (@guaranteed NSFileWrapper?) -> (@owned NSFileWrapper, @error @owned Error))?(v11);
   outlined consume of (@escaping @callee_guaranteed (@guaranteed NSFileWrapper?) -> (@owned NSFileWrapper, @error @owned Error))?(v6);
 }
 
-- (void)setAccessoryView:(id)a3 atEdge:(int64_t)a4
+- (void)setAccessoryView:(id)view atEdge:(int64_t)edge
 {
-  v6 = a3;
-  v7 = self;
-  UpdateCoalescingCollectionView.setAccessory(_:at:)(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  UpdateCoalescingCollectionView.setAccessory(_:at:)(viewCopy, edge);
 }
 
 @end

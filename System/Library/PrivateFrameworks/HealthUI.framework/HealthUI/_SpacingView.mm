@@ -1,20 +1,20 @@
 @interface _SpacingView
 - (CGSize)intrinsicContentSize;
 - (CGSize)spacingSize;
-- (_SpacingView)initWithWidth:(double)a3 height:(double)a4;
+- (_SpacingView)initWithWidth:(double)width height:(double)height;
 @end
 
 @implementation _SpacingView
 
-- (_SpacingView)initWithWidth:(double)a3 height:(double)a4
+- (_SpacingView)initWithWidth:(double)width height:(double)height
 {
   v7.receiver = self;
   v7.super_class = _SpacingView;
-  result = [(_SpacingView *)&v7 initWithFrame:0.0, 0.0, a3, a4];
+  result = [(_SpacingView *)&v7 initWithFrame:0.0, 0.0, width, height];
   if (result)
   {
-    result->_spacingSize.width = a3;
-    result->_spacingSize.height = a4;
+    result->_spacingSize.width = width;
+    result->_spacingSize.height = height;
   }
 
   return result;

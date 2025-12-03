@@ -1,21 +1,21 @@
 @interface WFNumberWrapper
-+ (id)wrapperWithNumber:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)wrapperWithNumber:(id)number;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation WFNumberWrapper
 
-+ (id)wrapperWithNumber:(id)a3
++ (id)wrapperWithNumber:(id)number
 {
-  v6 = a3;
-  if (v6)
+  numberCopy = number;
+  if (numberCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:a1 file:@"WFNumberSubstitutableState.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"number == nil || [number isKindOfClass:[NSNumber class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"WFNumberSubstitutableState.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"number == nil || [number isKindOfClass:[NSNumber class]]"}];
     }
   }
 
@@ -23,16 +23,16 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong((v7 + 8), a3);
+    objc_storeStrong((v7 + 8), number);
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -42,10 +42,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFNumberWrapper *)self number];
-      v6 = [(WFNumberWrapper *)v4 number];
-      v7 = v5;
-      v8 = v6;
+      number = [(WFNumberWrapper *)self number];
+      number2 = [(WFNumberWrapper *)equalCopy number];
+      v7 = number;
+      v8 = number2;
       v9 = v8;
       if (v7 == v8)
       {
@@ -73,8 +73,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WFNumberWrapper *)self number];
-  v3 = [v2 hash];
+  number = [(WFNumberWrapper *)self number];
+  v3 = [number hash];
 
   return v3;
 }

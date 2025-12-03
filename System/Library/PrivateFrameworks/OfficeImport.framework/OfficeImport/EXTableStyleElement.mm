@@ -1,35 +1,35 @@
 @interface EXTableStyleElement
-+ (id)edTableStyleElementFromXmlTableStyleElement:(_xmlNode *)a3 state:(id)a4;
-+ (int)edStyleTableTypeFromXmlStyleTableType:(id)a3;
++ (id)edTableStyleElementFromXmlTableStyleElement:(_xmlNode *)element state:(id)state;
++ (int)edStyleTableTypeFromXmlStyleTableType:(id)type;
 @end
 
 @implementation EXTableStyleElement
 
-+ (id)edTableStyleElementFromXmlTableStyleElement:(_xmlNode *)a3 state:(id)a4
++ (id)edTableStyleElementFromXmlTableStyleElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  if (a3)
+  stateCopy = state;
+  if (element)
   {
     v7 = [EDTableStyleElement alloc];
-    v8 = [v6 resources];
-    v9 = [(EDTableStyleElement *)v7 initWithResources:v8];
+    resources = [stateCopy resources];
+    v9 = [(EDTableStyleElement *)v7 initWithResources:resources];
 
     v16 = 0;
-    CXOptionalStringAttribute(a3, CXNoNamespace, "type", &v16);
+    CXOptionalStringAttribute(element, CXNoNamespace, "type", &v16);
     v10 = v16;
-    -[EDTableStyleElement setType:](v9, "setType:", [a1 edStyleTableTypeFromXmlStyleTableType:v10]);
+    -[EDTableStyleElement setType:](v9, "setType:", [self edStyleTableTypeFromXmlStyleTableType:v10]);
     v15 = 0;
-    if (CXOptionalUnsignedLongAttribute(a3, CXNoNamespace, "size", &v15))
+    if (CXOptionalUnsignedLongAttribute(element, CXNoNamespace, "size", &v15))
     {
       [(EDTableStyleElement *)v9 setBandSize:v15];
     }
 
     v14 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "dxfId", &v14))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "dxfId", &v14))
     {
-      v11 = [v6 isPredefinedDxfsBeingRead];
+      isPredefinedDxfsBeingRead = [stateCopy isPredefinedDxfsBeingRead];
       v12 = v14;
-      if (v11)
+      if (isPredefinedDxfsBeingRead)
       {
         v12 = --v14;
       }
@@ -46,16 +46,16 @@
   return v9;
 }
 
-+ (int)edStyleTableTypeFromXmlStyleTableType:(id)a3
++ (int)edStyleTableTypeFromXmlStyleTableType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (!typeCopy)
   {
     goto LABEL_58;
   }
 
-  if (([v3 isEqualToString:@"wholeTable"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"wholeTable"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"headerRow"])
     {

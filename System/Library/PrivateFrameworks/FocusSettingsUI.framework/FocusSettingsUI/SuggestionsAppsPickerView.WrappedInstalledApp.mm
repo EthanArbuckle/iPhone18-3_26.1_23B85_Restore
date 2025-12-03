@@ -1,7 +1,7 @@
 @interface SuggestionsAppsPickerView.WrappedInstalledApp
 - (NSString)displayName;
 - (_TtCV15FocusSettingsUI25SuggestionsAppsPickerView19WrappedInstalledApp)init;
-- (void)setDisplayName:(id)a3;
+- (void)setDisplayName:(id)name;
 @end
 
 @implementation SuggestionsAppsPickerView.WrappedInstalledApp
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
   v4 = sub_24BAAA01C();
   v5 = (self + OBJC_IVAR____TtCV15FocusSettingsUI25SuggestionsAppsPickerView19WrappedInstalledApp_displayName);

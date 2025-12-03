@@ -2,7 +2,7 @@
 - (AAUIAppleIDRepairController)init;
 - (AAUIAppleIDRepairControllerDelegate)delegate;
 - (void)_prepareAction;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -18,23 +18,23 @@
 
   if (v5)
   {
-    v6 = [(OBBaseWelcomeController *)v5 navigationItem];
-    [v6 setHidesBackButton:1 animated:0];
+    navigationItem = [(OBBaseWelcomeController *)v5 navigationItem];
+    [navigationItem setHidesBackButton:1 animated:0];
 
-    v7 = [MEMORY[0x1E6959A48] defaultStore];
-    v8 = [v7 aa_primaryAppleAccount];
-    [(AAUIAppleIDRepairController *)v5 setPrimaryAccount:v8];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+    [(AAUIAppleIDRepairController *)v5 setPrimaryAccount:aa_primaryAppleAccount];
 
     v9 = objc_alloc_init(MEMORY[0x1E698DE88]);
     [(AAUIAppleIDRepairController *)v5 setAuthContext:v9];
 
-    v10 = [(AAUIAppleIDRepairController *)v5 primaryAccount];
-    v11 = [v10 aa_altDSID];
-    v12 = [(AAUIAppleIDRepairController *)v5 authContext];
-    [v12 setAltDSID:v11];
+    primaryAccount = [(AAUIAppleIDRepairController *)v5 primaryAccount];
+    aa_altDSID = [primaryAccount aa_altDSID];
+    authContext = [(AAUIAppleIDRepairController *)v5 authContext];
+    [authContext setAltDSID:aa_altDSID];
 
-    v13 = [(AAUIAppleIDRepairController *)v5 authContext];
-    [v13 setNeedsRepair:1];
+    authContext2 = [(AAUIAppleIDRepairController *)v5 authContext];
+    [authContext2 setNeedsRepair:1];
   }
 
   return v5;
@@ -128,16 +128,16 @@ LABEL_7:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(AAUIAppleIDRepairController *)self authContext];
-  v6 = [(AAUIAppleIDRepairController *)self navigationController];
-  [v5 setPresentingViewController:v6];
+  appearCopy = appear;
+  authContext = [(AAUIAppleIDRepairController *)self authContext];
+  navigationController = [(AAUIAppleIDRepairController *)self navigationController];
+  [authContext setPresentingViewController:navigationController];
 
   v7.receiver = self;
   v7.super_class = AAUIAppleIDRepairController;
-  [(AAUIOBSpinnerViewController *)&v7 viewDidAppear:v3];
+  [(AAUIOBSpinnerViewController *)&v7 viewDidAppear:appearCopy];
 }
 
 - (AAUIAppleIDRepairControllerDelegate)delegate

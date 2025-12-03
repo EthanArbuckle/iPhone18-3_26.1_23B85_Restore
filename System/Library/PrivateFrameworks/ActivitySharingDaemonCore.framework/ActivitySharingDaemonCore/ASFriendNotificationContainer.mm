@@ -1,32 +1,32 @@
 @interface ASFriendNotificationContainer
-+ (id)containerWithNotificationRequest:(id)a3 friendUUID:(id)a4 bulletinType:(int64_t)a5;
-- (ASFriendNotificationContainer)initWithNotificationRequest:(id)a3 friendUUID:(id)a4 bulletinType:(int64_t)a5;
++ (id)containerWithNotificationRequest:(id)request friendUUID:(id)d bulletinType:(int64_t)type;
+- (ASFriendNotificationContainer)initWithNotificationRequest:(id)request friendUUID:(id)d bulletinType:(int64_t)type;
 @end
 
 @implementation ASFriendNotificationContainer
 
-+ (id)containerWithNotificationRequest:(id)a3 friendUUID:(id)a4 bulletinType:(int64_t)a5
++ (id)containerWithNotificationRequest:(id)request friendUUID:(id)d bulletinType:(int64_t)type
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[ASFriendNotificationContainer alloc] initWithNotificationRequest:v8 friendUUID:v7 bulletinType:a5];
+  dCopy = d;
+  requestCopy = request;
+  v9 = [[ASFriendNotificationContainer alloc] initWithNotificationRequest:requestCopy friendUUID:dCopy bulletinType:type];
 
   return v9;
 }
 
-- (ASFriendNotificationContainer)initWithNotificationRequest:(id)a3 friendUUID:(id)a4 bulletinType:(int64_t)a5
+- (ASFriendNotificationContainer)initWithNotificationRequest:(id)request friendUUID:(id)d bulletinType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  requestCopy = request;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = ASFriendNotificationContainer;
   v11 = [(ASFriendNotificationContainer *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_notificationRequest, a3);
-    objc_storeStrong(&v12->_friendUUID, a4);
-    v12->_notificationRequestType = a5;
+    objc_storeStrong(&v11->_notificationRequest, request);
+    objc_storeStrong(&v12->_friendUUID, d);
+    v12->_notificationRequestType = type;
   }
 
   return v12;

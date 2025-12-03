@@ -1,45 +1,45 @@
 @interface SVXDeviceProblemsState
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXDeviceProblemsState)initWithCoder:(id)a3;
-- (SVXDeviceProblemsState)initWithIsFixingProblems:(BOOL)a3 problems:(unint64_t)a4;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXDeviceProblemsState)initWithCoder:(id)coder;
+- (SVXDeviceProblemsState)initWithIsFixingProblems:(BOOL)problems problems:(unint64_t)a4;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXDeviceProblemsState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   isFixingProblems = self->_isFixingProblems;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithBool:isFixingProblems];
-  [v6 encodeObject:v7 forKey:@"SVXDeviceProblemsState::isFixingProblems"];
+  [coderCopy encodeObject:v7 forKey:@"SVXDeviceProblemsState::isFixingProblems"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_problems];
-  [v6 encodeObject:v8 forKey:@"SVXDeviceProblemsState::problems"];
+  [coderCopy encodeObject:v8 forKey:@"SVXDeviceProblemsState::problems"];
 }
 
-- (SVXDeviceProblemsState)initWithCoder:(id)a3
+- (SVXDeviceProblemsState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceProblemsState::isFixingProblems"];
-  v6 = [v5 BOOLValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceProblemsState::isFixingProblems"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceProblemsState::problems"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceProblemsState::problems"];
 
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return [(SVXDeviceProblemsState *)self initWithIsFixingProblems:v6 problems:v8];
+  return [(SVXDeviceProblemsState *)self initWithIsFixingProblems:bOOLValue problems:unsignedIntegerValue];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -49,7 +49,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isFixingProblems = self->_isFixingProblems;
       if (isFixingProblems == [(SVXDeviceProblemsState *)v5 isFixingProblems])
       {
@@ -82,7 +82,7 @@
   return v6 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v15.receiver = self;
@@ -367,50 +367,50 @@ LABEL_25:
   return v13;
 }
 
-- (SVXDeviceProblemsState)initWithIsFixingProblems:(BOOL)a3 problems:(unint64_t)a4
+- (SVXDeviceProblemsState)initWithIsFixingProblems:(BOOL)problems problems:(unint64_t)a4
 {
   v7.receiver = self;
   v7.super_class = SVXDeviceProblemsState;
   result = [(SVXDeviceProblemsState *)&v7 init];
   if (result)
   {
-    result->_isFixingProblems = a3;
+    result->_isFixingProblems = problems;
     result->_problems = a4;
   }
 
   return result;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXDeviceProblemsStateMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXDeviceProblemsStateMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXDeviceProblemsStateMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXDeviceProblemsState *)self copy];
+    generate = [(SVXDeviceProblemsState *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXDeviceProblemsStateMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXDeviceProblemsStateMutation *)v4 generate];
+  generate = [(_SVXDeviceProblemsStateMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

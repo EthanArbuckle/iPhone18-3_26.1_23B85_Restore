@@ -1,28 +1,28 @@
 @interface PSUICallingSubgroup
 - (PSListController)listController;
 - (PSSpecifier)parentSpecifier;
-- (PSUICallingSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4;
-- (PSUICallingSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4 parentSpecifier:(id)a5;
+- (PSUICallingSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier;
+- (PSUICallingSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier parentSpecifier:(id)parentSpecifier;
 - (id)specifiers;
-- (void)setWifiCallingSpecifiers:(id)a3;
+- (void)setWifiCallingSpecifiers:(id)specifiers;
 - (void)viewWillAppear;
 @end
 
 @implementation PSUICallingSubgroup
 
-- (PSUICallingSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4 parentSpecifier:(id)a5
+- (PSUICallingSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier parentSpecifier:(id)parentSpecifier
 {
-  v7 = a3;
-  v8 = a5;
+  controllerCopy = controller;
+  parentSpecifierCopy = parentSpecifier;
   v14.receiver = self;
   v14.super_class = PSUICallingSubgroup;
   v9 = [(PSUICallingSubgroup *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_listController, v7);
-    v11 = objc_storeWeak(&v10->_parentSpecifier, v8);
-    v12 = [v8 propertyForKey:*MEMORY[0x277D40128]];
+    objc_storeWeak(&v9->_listController, controllerCopy);
+    v11 = objc_storeWeak(&v10->_parentSpecifier, parentSpecifierCopy);
+    v12 = [parentSpecifierCopy propertyForKey:*MEMORY[0x277D40128]];
 
     v10->_supportsWiFiCalling = [SettingsCellularUtils supportsWiFiCalling:v12];
   }
@@ -30,10 +30,10 @@
   return v10;
 }
 
-- (PSUICallingSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PSUICallingSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer called" reason:@"Unsupported initializer called" userInfo:0]);
 }
 
@@ -96,7 +96,7 @@
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
   WeakRetained = objc_loadWeakRetained(&self->_parentSpecifier);
   v8 = objc_loadWeakRetained(&self->_listController);
-  v9 = [v8 bundle];
+  bundle = [v8 bundle];
   v10 = objc_loadWeakRetained(&self->_listController);
   v29 = 0;
   v11 = SpecifiersFromPlist();
@@ -117,7 +117,7 @@
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
   v15 = objc_loadWeakRetained(&self->_parentSpecifier);
   v16 = objc_loadWeakRetained(&self->_listController);
-  v17 = [v16 bundle];
+  bundle2 = [v16 bundle];
   v18 = objc_loadWeakRetained(&self->_listController);
   v28 = 0;
   v19 = SpecifiersFromPlist();
@@ -131,13 +131,13 @@
   return v26;
 }
 
-- (void)setWifiCallingSpecifiers:(id)a3
+- (void)setWifiCallingSpecifiers:(id)specifiers
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  specifiersCopy = specifiers;
   if (self->_supportsWiFiCalling)
   {
-    objc_storeStrong(&self->_wifiCallingSpecifiers, a3);
+    objc_storeStrong(&self->_wifiCallingSpecifiers, specifiers);
     p_super = [(PSUICallingSubgroup *)self getLogger];
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
     {
@@ -149,12 +149,12 @@
 
   else
   {
-    v7 = [(PSUICallingSubgroup *)self getLogger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICallingSubgroup *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 136315138;
       v10 = "[PSUICallingSubgroup setWifiCallingSpecifiers:]";
-      _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "%s WiFi calling is not supported, omitting specifiers", &v9, 0xCu);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s WiFi calling is not supported, omitting specifiers", &v9, 0xCu);
     }
 
     p_super = &self->_wifiCallingSpecifiers->super;

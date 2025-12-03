@@ -3,11 +3,11 @@
 + (id)genericGesture;
 + (id)primary;
 + (id)protobufSchema;
-- (BKSHIDEventDeferringSelectionPathIdentifier)initWithCoder:(id)a3;
-- (BKSHIDEventDeferringSelectionPathIdentifier)initWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_substituteSingeltonForIdentifierString:(id)a3;
-- (id)didFinishProtobufDecodingWithError:(id *)a3;
+- (BKSHIDEventDeferringSelectionPathIdentifier)initWithCoder:(id)coder;
+- (BKSHIDEventDeferringSelectionPathIdentifier)initWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (id)_substituteSingeltonForIdentifierString:(id)string;
+- (id)didFinishProtobufDecodingWithError:(id *)error;
 @end
 
 @implementation BKSHIDEventDeferringSelectionPathIdentifier
@@ -43,28 +43,28 @@ uint64_t __54__BKSHIDEventDeferringSelectionPathIdentifier_primary__block_invoke
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)didFinishProtobufDecodingWithError:(id *)a3
+- (id)didFinishProtobufDecodingWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = [(BKSHIDEventDeferringSelectionPathIdentifier *)self _substituteSingeltonForIdentifierString:self->_identifier];
   v5 = v4;
   if (v4)
   {
-    v3 = v4;
+    selfCopy = v4;
   }
 
-  v6 = v3;
+  v6 = selfCopy;
 
-  return v3;
+  return selfCopy;
 }
 
-- (BKSHIDEventDeferringSelectionPathIdentifier)initWithCoder:(id)a3
+- (BKSHIDEventDeferringSelectionPathIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = BKSHIDEventDeferringSelectionPathIdentifier;
   v5 = [(BKSHIDEventDeferringSelectionPathIdentifier *)&v9 init];
-  if (!v5 || ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"], v6 = objc_claimAutoreleasedReturnValue(), -[BKSHIDEventDeferringSelectionPathIdentifier _substituteSingeltonForIdentifierString:](v5, "_substituteSingeltonForIdentifierString:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if (!v5 || ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"], v6 = objc_claimAutoreleasedReturnValue(), -[BKSHIDEventDeferringSelectionPathIdentifier _substituteSingeltonForIdentifierString:](v5, "_substituteSingeltonForIdentifierString:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
     v7 = v5;
   }
@@ -72,10 +72,10 @@ uint64_t __54__BKSHIDEventDeferringSelectionPathIdentifier_primary__block_invoke
   return v7;
 }
 
-- (id)_substituteSingeltonForIdentifierString:(id)a3
+- (id)_substituteSingeltonForIdentifierString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqual:@"primary"])
+  stringCopy = string;
+  if ([stringCopy isEqual:@"primary"])
   {
     v4 = +[BKSHIDEventDeferringSelectionPathIdentifier primary];
 LABEL_5:
@@ -83,7 +83,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqual:@"genericGesture"])
+  if ([stringCopy isEqual:@"genericGesture"])
   {
     v4 = +[BKSHIDEventDeferringSelectionPathIdentifier genericGesture];
     goto LABEL_5;
@@ -95,11 +95,11 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -135,15 +135,15 @@ LABEL_7:
   return v11;
 }
 
-- (BKSHIDEventDeferringSelectionPathIdentifier)initWithIdentifier:(id)a3
+- (BKSHIDEventDeferringSelectionPathIdentifier)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = BKSHIDEventDeferringSelectionPathIdentifier;
   v5 = [(BKSHIDEventDeferringSelectionPathIdentifier *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -157,7 +157,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __61__BKSHIDEventDeferringSelectionPathIdentifier_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_91 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_91, block);

@@ -1,29 +1,29 @@
 @interface AdaptiveGlyphTextView
 - (BOOL)becomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)resignFirstResponder;
 - (NSArray)keyCommands;
 - (NSString)accessibilityLabel;
-- (_TtC13MessagesPolls21AdaptiveGlyphTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (void)adaptiveImageGlyphUpdatedWithNotification:(id)a3;
+- (_TtC13MessagesPolls21AdaptiveGlyphTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (void)adaptiveImageGlyphUpdatedWithNotification:(id)notification;
 - (void)handleMoveToNextOption;
-- (void)handlePayload:(id)a3 withPayloadId:(id)a4;
+- (void)handlePayload:(id)payload withPayloadId:(id)id;
 - (void)handleTabShift;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AdaptiveGlyphTextView
 
-- (_TtC13MessagesPolls21AdaptiveGlyphTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC13MessagesPolls21AdaptiveGlyphTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = sub_54FC(a4, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
+  v10 = sub_54FC(container, x, y, width, height);
 
   return v10;
 }
@@ -41,7 +41,7 @@
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2AF4();
 
   return v3 & 1;
@@ -49,17 +49,17 @@
 
 - (BOOL)resignFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2D94();
 
   return v3 & 1;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_301C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_301C(change);
 }
 
 - (NSArray)keyCommands
@@ -85,7 +85,7 @@
   {
     v5 = *(Strong + OBJC_IVAR____TtCV13MessagesPolls28AdaptiveGlyphSwiftUITextView11Coordinator_parent + 64);
     v4 = *(Strong + OBJC_IVAR____TtCV13MessagesPolls28AdaptiveGlyphSwiftUITextView11Coordinator_parent + 72);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
@@ -98,13 +98,13 @@
   {
     v5 = *(Strong + OBJC_IVAR____TtCV13MessagesPolls28AdaptiveGlyphSwiftUITextView11Coordinator_parent + 80);
     v4 = *(Strong + OBJC_IVAR____TtCV13MessagesPolls28AdaptiveGlyphSwiftUITextView11Coordinator_parent + 88);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)adaptiveImageGlyphUpdatedWithNotification:(id)a3
+- (void)adaptiveImageGlyphUpdatedWithNotification:(id)notification
 {
   v4 = sub_473A4();
   v5 = *(v4 - 8);
@@ -112,17 +112,17 @@
   __chkstk_darwin();
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_47394();
-  v9 = self;
+  selfCopy = self;
   sub_3388();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_48734();
     swift_unknownObjectRelease();
@@ -131,25 +131,25 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_3674(a3, v10);
+  v8 = sub_3674(action, v10);
 
   sub_60C8(v10, &qword_62128, &qword_4AA80);
   return v8 & 1;
 }
 
-- (void)handlePayload:(id)a3 withPayloadId:(id)a4
+- (void)handlePayload:(id)payload withPayloadId:(id)id
 {
-  v4 = a4;
-  if (a3)
+  idCopy = id;
+  if (payload)
   {
     v6 = sub_48394();
-    if (v4)
+    if (idCopy)
     {
 LABEL_3:
-      v4 = sub_48414();
+      idCopy = sub_48414();
       v8 = v7;
       goto LABEL_6;
     }
@@ -158,7 +158,7 @@ LABEL_3:
   else
   {
     v6 = 0;
-    if (a4)
+    if (id)
     {
       goto LABEL_3;
     }
@@ -166,14 +166,14 @@ LABEL_3:
 
   v8 = 0;
 LABEL_6:
-  v9 = self;
-  sub_3F18(v6, v4, v8);
+  selfCopy = self;
+  sub_3F18(v6, idCopy, v8);
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
-  result = [(AdaptiveGlyphTextView *)v2 attributedText];
+  selfCopy = self;
+  result = [(AdaptiveGlyphTextView *)selfCopy attributedText];
   if (!result)
   {
     __break(1u);
@@ -185,8 +185,8 @@ LABEL_6:
 
   if (v5 < 1)
   {
-    v8 = *(&v2->super.super.super.super.super.isa + OBJC_IVAR____TtC13MessagesPolls21AdaptiveGlyphTextView_placeholderText);
-    v7 = *&v2->previousPayloadDelegate[OBJC_IVAR____TtC13MessagesPolls21AdaptiveGlyphTextView_placeholderText];
+    v8 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC13MessagesPolls21AdaptiveGlyphTextView_placeholderText);
+    v7 = *&selfCopy->previousPayloadDelegate[OBJC_IVAR____TtC13MessagesPolls21AdaptiveGlyphTextView_placeholderText];
 
     if (v7)
     {
@@ -207,18 +207,18 @@ LABEL_7:
   return v6;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     sub_48414();
-    v4 = self;
+    selfCopy = self;
     v5 = sub_483D4();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 

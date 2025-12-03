@@ -1,37 +1,37 @@
 @interface MKMapItem
-+ (MKMapItem)mapItemWithLocalSearchMapItem:(id)a3 phoneticLocaleIdentifier:(id)a4;
-+ (MKMapItem)mapItemWithLocalSearchMapItem:(id)a3 reservationDelegate:(id)a4;
++ (MKMapItem)mapItemWithLocalSearchMapItem:(id)item phoneticLocaleIdentifier:(id)identifier;
++ (MKMapItem)mapItemWithLocalSearchMapItem:(id)item reservationDelegate:(id)delegate;
 - (id)_ma_detourText;
 @end
 
 @implementation MKMapItem
 
-+ (MKMapItem)mapItemWithLocalSearchMapItem:(id)a3 phoneticLocaleIdentifier:(id)a4
++ (MKMapItem)mapItemWithLocalSearchMapItem:(id)item phoneticLocaleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a1 mapItemWithLocalSearchMapItem:a3];
-  v8 = [v7 place];
-  [v8 setPhoneticLocaleIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [self mapItemWithLocalSearchMapItem:item];
+  place = [v7 place];
+  [place setPhoneticLocaleIdentifier:identifierCopy];
 
   return v7;
 }
 
-+ (MKMapItem)mapItemWithLocalSearchMapItem:(id)a3 reservationDelegate:(id)a4
++ (MKMapItem)mapItemWithLocalSearchMapItem:(id)item reservationDelegate:(id)delegate
 {
-  if (a3)
+  if (item)
   {
-    v5 = a4;
-    v6 = a3;
-    v7 = [v6 resultDetourInfoData];
-    v8 = [v6 placeData2];
-    v9 = +[MKMapItem mapItemWithSerializedPlaceData:serializedDetourInfo:currentLocation:](MKMapItem, "mapItemWithSerializedPlaceData:serializedDetourInfo:currentLocation:", v8, v7, [v6 isCurrentLocation]);
+    delegateCopy = delegate;
+    itemCopy = item;
+    resultDetourInfoData = [itemCopy resultDetourInfoData];
+    placeData2 = [itemCopy placeData2];
+    v9 = +[MKMapItem mapItemWithSerializedPlaceData:serializedDetourInfo:currentLocation:](MKMapItem, "mapItemWithSerializedPlaceData:serializedDetourInfo:currentLocation:", placeData2, resultDetourInfoData, [itemCopy isCurrentLocation]);
 
-    v10 = [v6 label];
-    [v9 setName:v10];
+    label = [itemCopy label];
+    [v9 setName:label];
 
-    v11 = [v6 restaurantInfo];
+    restaurantInfo = [itemCopy restaurantInfo];
 
-    v12 = [v11 _ma_reservationInfoWithDelegate:v5];
+    v12 = [restaurantInfo _ma_reservationInfoWithDelegate:delegateCopy];
 
     [v9 setReservationInfo:v12];
   }
@@ -46,17 +46,17 @@
 
 - (id)_ma_detourText
 {
-  v3 = [(MKMapItem *)self _detourInfo];
+  _detourInfo = [(MKMapItem *)self _detourInfo];
 
-  if (v3)
+  if (_detourInfo)
   {
-    v4 = [(MKMapItem *)self _detourInfo];
-    [v4 detourTime];
+    _detourInfo2 = [(MKMapItem *)self _detourInfo];
+    [_detourInfo2 detourTime];
     v5 = 60.0;
     if (v6 > 60.0)
     {
-      v7 = [(MKMapItem *)self _detourInfo];
-      [v7 detourTime];
+      _detourInfo3 = [(MKMapItem *)self _detourInfo];
+      [_detourInfo3 detourTime];
       v5 = v8;
     }
 
@@ -66,10 +66,10 @@
     v11 = +[NSBundle _ma_bundle];
     v12 = [v11 siriUILocalizedStringForKey:@"Adds %@"];
 
-    v3 = [NSString stringWithFormat:v12, v10];
+    _detourInfo = [NSString stringWithFormat:v12, v10];
   }
 
-  return v3;
+  return _detourInfo;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface BWUBProcessorController
 + (void)initialize;
 - (BOOL)finishProcessingCurrentInputNow;
-- (BWUBProcessorController)initWithConfiguration:(id)a3;
-- (CMAttachmentBearerRef)_newOutputSampleBufferWithSampleBuffer:(__CVBuffer *)a3 pixelBuffer:(CFTypeRef *)a4 formatDescriptionInOut:(uint64_t)a5 metadataToMerge:;
-- (id)adaptiveBracketingDigitalFlashTotalIntegrationTimesProviderForPortType:(id)a3;
-- (id)adaptiveBracketingParametersForDigitalFlashMode:(int)a3 frameStatistics:(id)a4 stationary:(BOOL)a5 sphereOffsetEnabled:(BOOL)a6 detectedObjects:(id)a7;
-- (id)processorGetInferenceResults:(id)a3;
-- (int)enqueueInputForProcessing:(id)a3 delegate:(id)a4 processErrorRecoveryFrame:(BOOL)a5 processOriginalImage:(BOOL)a6 clientBracketSequenceNumber:(int)a7 processSemanticRendering:(BOOL)a8 provideInferenceInputImageForProcessing:(BOOL)a9 inferencesAvailable:(BOOL)a10;
+- (BWUBProcessorController)initWithConfiguration:(id)configuration;
+- (CMAttachmentBearerRef)_newOutputSampleBufferWithSampleBuffer:(__CVBuffer *)buffer pixelBuffer:(CFTypeRef *)pixelBuffer formatDescriptionInOut:(uint64_t)out metadataToMerge:;
+- (id)adaptiveBracketingDigitalFlashTotalIntegrationTimesProviderForPortType:(id)type;
+- (id)adaptiveBracketingParametersForDigitalFlashMode:(int)mode frameStatistics:(id)statistics stationary:(BOOL)stationary sphereOffsetEnabled:(BOOL)enabled detectedObjects:(id)objects;
+- (id)processorGetInferenceResults:(id)results;
+- (int)enqueueInputForProcessing:(id)processing delegate:(id)delegate processErrorRecoveryFrame:(BOOL)frame processOriginalImage:(BOOL)image clientBracketSequenceNumber:(int)number processSemanticRendering:(BOOL)rendering provideInferenceInputImageForProcessing:(BOOL)forProcessing inferencesAvailable:(BOOL)self0;
 - (int)progressiveLowLightFusionBatchSize;
 - (uint64_t)_loadSetupAndPrepareUBProcessor;
 - (uint64_t)_processUBOriginalImage;
-- (uint64_t)_setupProcessorForProcessingType:(uint64_t)a1;
-- (uint64_t)_singleImageProcessSampleBuffer:(CMAttachmentBearerRef *)a3 sampleBufferOut:;
+- (uint64_t)_setupProcessorForProcessingType:(uint64_t)type;
+- (uint64_t)_singleImageProcessSampleBuffer:(CMAttachmentBearerRef *)buffer sampleBufferOut:;
 - (uint64_t)_updateStateIfNeeded;
 - (unint64_t)_setupProcessor;
 - (void)_processDeepFusion;
@@ -20,17 +20,17 @@
 - (void)_serviceNextRequest;
 - (void)cancelProcessing;
 - (void)dealloc;
-- (void)input:(id)a3 addFrame:(opaqueCMSampleBuffer *)a4 isReferenceFrame:(BOOL)a5;
-- (void)inputReceivedAllFrames:(id)a3;
-- (void)processor:(id)a3 didSelectFusionMode:(int)a4;
-- (void)processor:(id)a3 outputReadyWithFrameType:(int)a4 outputPixelBuffer:(__CVBuffer *)a5 outputMetadata:(id)a6 error:(int)a7;
+- (void)input:(id)input addFrame:(opaqueCMSampleBuffer *)frame isReferenceFrame:(BOOL)referenceFrame;
+- (void)inputReceivedAllFrames:(id)frames;
+- (void)processor:(id)processor didSelectFusionMode:(int)mode;
+- (void)processor:(id)processor outputReadyWithFrameType:(int)type outputPixelBuffer:(__CVBuffer *)buffer outputMetadata:(id)metadata error:(int)error;
 @end
 
 @implementation BWUBProcessorController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -39,14 +39,14 @@
   }
 }
 
-- (BWUBProcessorController)initWithConfiguration:(id)a3
+- (BWUBProcessorController)initWithConfiguration:(id)configuration
 {
   v7.receiver = self;
   v7.super_class = BWUBProcessorController;
   v4 = [(BWUBProcessorController *)&v7 init];
   if (v4)
   {
-    v4->_configuration = a3;
+    v4->_configuration = configuration;
     v4->_requestQueue = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6 = [[FigStateMachine alloc] initWithLabel:@"BWUBProcessorController state machine" stateCount:8 initialState:1 owner:v4];
     [(FigStateMachine *)v6 setPerformsAtomicStateTransitions:0];
@@ -102,10 +102,10 @@
 
 - (uint64_t)_updateStateIfNeeded
 {
-  result = [*(a1 + 80) currentState];
+  result = [*(self + 80) currentState];
   if (a2 != result)
   {
-    v5 = *(a1 + 80);
+    v5 = *(self + 80);
 
     return [v5 transitionToState:a2];
   }
@@ -113,17 +113,17 @@
   return result;
 }
 
-- (int)enqueueInputForProcessing:(id)a3 delegate:(id)a4 processErrorRecoveryFrame:(BOOL)a5 processOriginalImage:(BOOL)a6 clientBracketSequenceNumber:(int)a7 processSemanticRendering:(BOOL)a8 provideInferenceInputImageForProcessing:(BOOL)a9 inferencesAvailable:(BOOL)a10
+- (int)enqueueInputForProcessing:(id)processing delegate:(id)delegate processErrorRecoveryFrame:(BOOL)frame processOriginalImage:(BOOL)image clientBracketSequenceNumber:(int)number processSemanticRendering:(BOOL)rendering provideInferenceInputImageForProcessing:(BOOL)forProcessing inferencesAvailable:(BOOL)self0
 {
-  v12 = a6;
-  v13 = a5;
-  if (!-[NSSet containsObject:](self->_supportedPortTypes, "containsObject:", [a3 portType]))
+  imageCopy = image;
+  frameCopy = frame;
+  if (!-[NSSet containsObject:](self->_supportedPortTypes, "containsObject:", [processing portType]))
   {
     FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
     os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
     fig_log_call_emit_and_clean_up_after_send_and_compose();
-    [a3 portType];
+    [processing portType];
     v27 = _os_log_send_and_compose_impl();
     FigCapturePleaseFileRadar(FrameworkRadarComponent, v27, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWUBProcessorController.m", 1151, @"LastShownDate:BWUBProcessorController.m:1151", @"LastShownBuild:BWUBProcessorController.m:1151", 0);
     v28 = v27;
@@ -132,7 +132,7 @@ LABEL_15:
     return -12780;
   }
 
-  if (v13 && v12)
+  if (frameCopy && imageCopy)
   {
     v23 = FigCaptureGetFrameworkRadarComponent();
     v24 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -145,7 +145,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a7)
+  if (number)
   {
     v25 = FigCaptureGetFrameworkRadarComponent();
     v26 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -157,7 +157,7 @@ LABEL_14:
   }
 
   v17 = objc_alloc_init(self->_ubFusionOutputClass);
-  if ([objc_msgSend(a3 "captureStreamSettings")] == 12)
+  if ([objc_msgSend(processing "captureStreamSettings")] == 12)
   {
     v18 = objc_alloc_init(self->_ubDeepFusionOutputClass);
   }
@@ -167,7 +167,7 @@ LABEL_14:
     v18 = 0;
   }
 
-  v19 = [[BWUBProcessorRequest alloc] initWithInput:a3 output:v17 deepFusionOutput:v18 processErrorRecoveryFrame:v13 processOriginalImage:v12 processSemanticRendering:a8 provideInferenceInputImageForProcessing:a9 inferencesAvailable:a10 delegate:a4];
+  v19 = [[BWUBProcessorRequest alloc] initWithInput:processing output:v17 deepFusionOutput:v18 processErrorRecoveryFrame:frameCopy processOriginalImage:imageCopy processSemanticRendering:rendering provideInferenceInputImageForProcessing:forProcessing inferencesAvailable:available delegate:delegate];
 
   [(NSMutableArray *)self->_requestQueue addObject:v19];
   if ([(FigStateMachine *)self->_stateMachine currentState]== 1)
@@ -204,7 +204,7 @@ LABEL_14:
 
 - (uint64_t)_loadSetupAndPrepareUBProcessor
 {
-  if (!a1 || *(a1 + 88))
+  if (!self || *(self + 88))
   {
     return 0;
   }
@@ -217,14 +217,14 @@ LABEL_44:
     return 0;
   }
 
-  v25 = [MEMORY[0x1E695DF90] dictionary];
-  v2 = [MEMORY[0x1E695DF90] dictionary];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v28 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
-  [v2 setObject:v3 forKeyedSubscript:@"DefaultSensorIDs"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary3;
+  [dictionary2 setObject:dictionary3 forKeyedSubscript:@"DefaultSensorIDs"];
   v27 = [MEMORY[0x1E695DFA8] set];
-  v29 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -244,31 +244,31 @@ LABEL_44:
           objc_enumerationMutation(obj);
         }
 
-        v9 = [objc_msgSend(*(a1 + 64) "sensorConfigurationsByPortType")];
+        v9 = [objc_msgSend(*(self + 64) "sensorConfigurationsByPortType")];
         [v9 sensorIDString];
-        [v4 setObject:a1 forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_29_6(), "portType")}];
+        [v4 setObject:self forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_29_6(), "portType")}];
         [MEMORY[0x1E695DF90] dictionary];
         v10 = [objc_msgSend(OUTLINED_FUNCTION_29_6() "sensorIDDictionary")];
         if (v10)
         {
-          [a1 setObject:v10 forKeyedSubscript:@"UBParameters"];
+          [self setObject:v10 forKeyedSubscript:@"UBParameters"];
         }
 
         v11 = [objc_msgSend(v9 "sensorIDDictionary")];
         if (v11)
         {
-          [a1 setObject:v11 forKeyedSubscript:@"ChromaticDefringing"];
+          [self setObject:v11 forKeyedSubscript:@"ChromaticDefringing"];
         }
 
-        v31 = [v9 sensorIDString];
-        v32 = a1;
-        [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-        [v2 setObject:a1 forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_29_6(), "portType")}];
+        sensorIDString = [v9 sensorIDString];
+        selfCopy = self;
+        [MEMORY[0x1E695DF20] dictionaryWithObjects:&selfCopy forKeys:&sensorIDString count:1];
+        [dictionary2 setObject:self forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_29_6(), "portType")}];
         [v9 cameraInfo];
-        [v28 setObject:a1 forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_29_6(), "portType")}];
+        [dictionary4 setObject:self forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_29_6(), "portType")}];
         [v27 addObject:{objc_msgSend(v9, "portType")}];
         [objc_msgSend(objc_msgSend(v9 "sensorIDDictionary")];
-        [v29 setObject:a1 forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_29_6(), "portType")}];
+        [dictionary5 setObject:self forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_29_6(), "portType")}];
       }
 
       v6 = [obj countByEnumeratingWithState:&v34 objects:v33 count:16];
@@ -277,20 +277,20 @@ LABEL_44:
     while (v6);
   }
 
-  if (![v2 count])
+  if (![dictionary2 count])
   {
     OUTLINED_FUNCTION_0();
     FigDebugAssert3();
   }
 
-  [v25 setObject:v2 forKeyedSubscript:*off_1E798A9D0];
-  if ([v28 count])
+  [dictionary setObject:dictionary2 forKeyedSubscript:*off_1E798A9D0];
+  if ([dictionary4 count])
   {
-    [v25 setObject:v28 forKeyedSubscript:*off_1E798A970];
+    [dictionary setObject:dictionary4 forKeyedSubscript:*off_1E798A970];
   }
 
-  *(a1 + 72) = [objc_alloc(MEMORY[0x1E695DFD8]) initWithSet:v27];
-  *(a1 + 128) = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v29];
+  *(self + 72) = [objc_alloc(MEMORY[0x1E695DFD8]) initWithSet:v27];
+  *(self + 128) = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:dictionary5];
   v12 = [MEMORY[0x1E696AAE8] bundleWithPath:@"/System/Library/VideoProcessors/UB.bundle"];
   if (!v12)
   {
@@ -306,28 +306,28 @@ LABEL_44:
   }
 
   v14 = [v13 classNamed:@"UBFusionOutput"];
-  *(a1 + 104) = v14;
+  *(self + 104) = v14;
   if (!v14)
   {
     goto LABEL_41;
   }
 
   v15 = [v13 classNamed:@"UBDeepFusionOutput"];
-  *(a1 + 136) = v15;
+  *(self + 136) = v15;
   if (!v15)
   {
     goto LABEL_41;
   }
 
   v16 = [v13 classNamed:@"UBProgressiveBracketingStatistics"];
-  *(a1 + 112) = v16;
+  *(self + 112) = v16;
   if (!v16)
   {
     goto LABEL_41;
   }
 
   v17 = [v13 classNamed:@"UBProgressiveBracketingParameters"];
-  *(a1 + 120) = v17;
+  *(self + 120) = v17;
   if (!v17)
   {
     goto LABEL_41;
@@ -336,14 +336,14 @@ LABEL_44:
   v18 = objc_alloc([v13 classNamed:@"UBProcessor"]);
   [OUTLINED_FUNCTION_11_25() metalCommandQueue];
   v19 = [OUTLINED_FUNCTION_17() initWithCommandQueue:?];
-  *(a1 + 88) = v19;
+  *(self + 88) = v19;
   if (!v19)
   {
     goto LABEL_41;
   }
 
   v20 = objc_alloc_init([v13 classNamed:@"UBPrepareDescriptor"]);
-  *(a1 + 96) = v20;
+  *(self + 96) = v20;
   if (!v20)
   {
     goto LABEL_41;
@@ -357,22 +357,22 @@ LABEL_44:
   [OUTLINED_FUNCTION_41_8() setPixelFormat:?];
   [OUTLINED_FUNCTION_11_25() alwaysAllowModifyingInputBuffers];
   [OUTLINED_FUNCTION_41_8() setAllowModifyingInputBuffers:?];
-  v21 = [MEMORY[0x1E695DF90] dictionary];
-  [v21 setObject:*(a1 + 96) forKeyedSubscript:&unk_1F2243FD8];
+  dictionary6 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary6 setObject:*(self + 96) forKeyedSubscript:&unk_1F2243FD8];
   if ([OUTLINED_FUNCTION_11_25() unifiedBracketingFusionSupportEnabled])
   {
-    [v21 setObject:*(a1 + 96) forKeyedSubscript:&unk_1F2243FF0];
+    [dictionary6 setObject:*(self + 96) forKeyedSubscript:&unk_1F2243FF0];
   }
 
   if ([OUTLINED_FUNCTION_11_25() lowLightFusionEnabled])
   {
-    [v21 setObject:*(a1 + 96) forKeyedSubscript:&unk_1F2244008];
+    [dictionary6 setObject:*(self + 96) forKeyedSubscript:&unk_1F2244008];
   }
 
   if ([OUTLINED_FUNCTION_11_25() deepFusionEnabled])
   {
     v22 = objc_alloc_init([v13 classNamed:@"UBPrepareDescriptor"]);
-    *(a1 + 144) = v22;
+    *(self + 144) = v22;
     if (v22)
     {
       [objc_msgSend(OUTLINED_FUNCTION_11_25() "inputFormat")];
@@ -383,7 +383,7 @@ LABEL_44:
       [OUTLINED_FUNCTION_39_8() setPixelFormat:?];
       [OUTLINED_FUNCTION_11_25() alwaysAllowModifyingInputBuffers];
       [OUTLINED_FUNCTION_39_8() setAllowModifyingInputBuffers:?];
-      [v21 setObject:*(a1 + 144) forKeyedSubscript:&unk_1F2244020];
+      [dictionary6 setObject:*(self + 144) forKeyedSubscript:&unk_1F2244020];
       goto LABEL_36;
     }
 
@@ -391,21 +391,21 @@ LABEL_41:
     v23 = 4294954510;
 LABEL_39:
 
-    *(a1 + 88) = 0;
-    *(a1 + 96) = 0;
+    *(self + 88) = 0;
+    *(self + 96) = 0;
 
-    *(a1 + 144) = 0;
+    *(self + 144) = 0;
     return v23;
   }
 
 LABEL_36:
-  [v25 setObject:v21 forKeyedSubscript:*off_1E798D420];
+  [dictionary setObject:dictionary6 forKeyedSubscript:*off_1E798D420];
   if ([OUTLINED_FUNCTION_11_25() depthDataDeliveryEnabled])
   {
-    [v25 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*off_1E798D418];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*off_1E798D418];
   }
 
-  v23 = [*(a1 + 88) setupWithOptions:v25];
+  v23 = [*(self + 88) setupWithOptions:dictionary];
   if (v23)
   {
     goto LABEL_39;
@@ -414,21 +414,21 @@ LABEL_36:
   return v23;
 }
 
-- (void)input:(id)a3 addFrame:(opaqueCMSampleBuffer *)a4 isReferenceFrame:(BOOL)a5
+- (void)input:(id)input addFrame:(opaqueCMSampleBuffer *)frame isReferenceFrame:(BOOL)referenceFrame
 {
-  v5 = a5;
-  if ([(BWUBProcessorRequest *)self->_currentRequest input]== a3)
+  referenceFrameCopy = referenceFrame;
+  if ([(BWUBProcessorRequest *)self->_currentRequest input]== input)
   {
-    ubp_addFrame(self, &self->_currentRequest->super.isa, self->_ubProcessor, a4, v5);
-    [(BWUBProcessorInput *)[(BWUBProcessorRequest *)self->_currentRequest input] updateAdaptiveBracketingFrameParametersIfNeededUsingFrame:a4 err:[(BWUBProcessorRequest *)self->_currentRequest err]];
+    ubp_addFrame(self, &self->_currentRequest->super.isa, self->_ubProcessor, frame, referenceFrameCopy);
+    [(BWUBProcessorInput *)[(BWUBProcessorRequest *)self->_currentRequest input] updateAdaptiveBracketingFrameParametersIfNeededUsingFrame:frame err:[(BWUBProcessorRequest *)self->_currentRequest err]];
   }
 
   [(BWUBProcessorController *)self _updateStateIfNeeded];
 }
 
-- (void)inputReceivedAllFrames:(id)a3
+- (void)inputReceivedAllFrames:(id)frames
 {
-  if ([(BWUBProcessorRequest *)self->_currentRequest input]== a3)
+  if ([(BWUBProcessorRequest *)self->_currentRequest input]== frames)
   {
 
     [(BWUBProcessorController *)self _updateStateIfNeeded];
@@ -489,29 +489,29 @@ LABEL_36:
     v1 = result;
     v2 = result[22];
     v3 = v2 ? v2[5] : 0;
-    v4 = [v2 input];
+    input = [v2 input];
     v5 = [v1[22] err];
 
     v1[22] = 0;
-    [v3 processorController:v1 didFinishProcessingInput:v4 err:v5];
+    [v3 processorController:v1 didFinishProcessingInput:input err:v5];
 
     result = [v1[21] firstObject];
     v1[22] = result;
     if (result)
     {
       [v1[21] removeObjectAtIndex:0];
-      v6 = [v1[22] input];
+      input2 = [v1[22] input];
 
-      return [v6 setDelegate:v1];
+      return [input2 setDelegate:v1];
     }
   }
 
   return result;
 }
 
-- (uint64_t)_setupProcessorForProcessingType:(uint64_t)a1
+- (uint64_t)_setupProcessorForProcessingType:(uint64_t)type
 {
-  if (!a1)
+  if (!type)
   {
     return 0;
   }
@@ -526,7 +526,7 @@ LABEL_36:
     OUTLINED_FUNCTION_4_0();
     if (v2)
     {
-      v7 = *(a1 + 176);
+      v7 = *(type + 176);
       v67 = 136315907;
       v68 = "[BWUBProcessorController _setupProcessorForProcessingType:]";
       v69 = 2113;
@@ -549,7 +549,7 @@ LABEL_36:
   v8 = [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_15_15() "input")];
   [OUTLINED_FUNCTION_45_8() setOutput:0];
   [OUTLINED_FUNCTION_45_8() resetState];
-  v9 = [OUTLINED_FUNCTION_15_15() input];
+  input = [OUTLINED_FUNCTION_15_15() input];
   v10 = OUTLINED_FUNCTION_15_15();
   if (v10)
   {
@@ -560,14 +560,14 @@ LABEL_36:
       if (v8 == 10)
       {
         v14 = v13;
-        v15 = [v13 sceneFlags];
+        sceneFlags = [v13 sceneFlags];
         v16 = v3;
-        v17 = [v14 sceneFlags];
+        sceneFlags2 = [v14 sceneFlags];
         v18 = [v14 captureFlags] & 0x100000;
-        v19 = [v14 captureFlags];
-        v20 = v17 & 4;
+        captureFlags = [v14 captureFlags];
+        v20 = sceneFlags2 & 4;
         v3 = v16;
-        v21 = (v19 >> 22) & 1;
+        v21 = (captureFlags >> 22) & 1;
         if (v18)
         {
           LODWORD(v21) = 1;
@@ -583,7 +583,7 @@ LABEL_36:
           v22 = v21;
         }
 
-        if ((v15 & 8) != 0)
+        if ((sceneFlags & 8) != 0)
         {
           v23 = 1;
         }
@@ -599,10 +599,10 @@ LABEL_36:
         v23 = 1;
       }
 
-      [*(a1 + 88) setSrlEnabled:{v23, v58, v59}];
-      v24 = [OUTLINED_FUNCTION_15_15() provideInferenceInputImageForProcessing];
+      [*(type + 88) setSrlEnabled:{v23, v58, v59}];
+      provideInferenceInputImageForProcessing = [OUTLINED_FUNCTION_15_15() provideInferenceInputImageForProcessing];
       v11 = 176;
-      if (v24)
+      if (provideInferenceInputImageForProcessing)
       {
         OUTLINED_FUNCTION_19_13();
         v26 = [v25 processorController:? newOutputPixelBufferForProcessorInput:? type:?];
@@ -629,7 +629,7 @@ LABEL_36:
     v12 = 0;
   }
 
-  v27 = [objc_msgSend(objc_msgSend(*(a1 + v11) input];
+  input2 = [objc_msgSend(objc_msgSend(*(type + v11) input];
   v66 = v12;
   v63 = v3;
   if (v3 != 3)
@@ -657,9 +657,9 @@ LABEL_36:
       }
     }
 
-    cfa = v27;
-    v46 = *(a1 + 96);
-    v52 = [v51 output];
+    cfa = input2;
+    v46 = *(type + 96);
+    output = [v51 output];
     v53 = OUTLINED_FUNCTION_15_15();
     if (v53)
     {
@@ -683,35 +683,35 @@ LABEL_85:
     if (v55)
     {
       v45 = v55;
-      [v52 setPixelBuffer:v55];
+      [output setPixelBuffer:v55];
       [MEMORY[0x1E695DF90] dictionary];
       [OUTLINED_FUNCTION_7() setMetadata:?];
-      [v52 setInferenceInputPixelBuffer:v12];
-      v56 = [v9 fusionMode];
+      [output setInferenceInputPixelBuffer:v12];
+      fusionMode = [input fusionMode];
       if (v3 - 1 <= 1)
       {
         if (([objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_15_15() "input")] & 0x800) != 0)
         {
           if (([objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_15_15() "input")] & 0x1000) != 0)
           {
-            v56 = v56;
+            fusionMode = fusionMode;
           }
 
           else
           {
-            v56 = 1;
+            fusionMode = 1;
           }
         }
 
         if (v3 == 2)
         {
-          v57 = [OUTLINED_FUNCTION_15_15() input];
-          [(BWUBProcessorInput *)v57 adaptiveBracketingParameters];
+          input3 = [OUTLINED_FUNCTION_15_15() input];
+          [(BWUBProcessorInput *)input3 adaptiveBracketingParameters];
           [OUTLINED_FUNCTION_45_8() setProgressiveBracketingParameters:?];
         }
       }
 
-      [OUTLINED_FUNCTION_45_8() setFusionMode:v56];
+      [OUTLINED_FUNCTION_45_8() setFusionMode:fusionMode];
       if (([objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_15_15() "input")] & 0x100) != 0)
       {
         [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_15_15() "input")];
@@ -732,9 +732,9 @@ LABEL_85:
     goto LABEL_77;
   }
 
-  v28 = *(a1 + 144);
-  v29 = [OUTLINED_FUNCTION_15_15() deepFusionOutput];
-  if (![objc_msgSend(v9 "captureSettings")])
+  v28 = *(type + 144);
+  deepFusionOutput = [OUTLINED_FUNCTION_15_15() deepFusionOutput];
+  if (![objc_msgSend(input "captureSettings")])
   {
     cf = 0;
     goto LABEL_30;
@@ -764,8 +764,8 @@ LABEL_77:
   v30 = 0;
 LABEL_29:
   cf = v30;
-  [v29 setProxyPixelBuffer:v30];
-  [v29 setProxyMetadata:{objc_msgSend(MEMORY[0x1E695DF90], "dictionary")}];
+  [deepFusionOutput setProxyPixelBuffer:v30];
+  [deepFusionOutput setProxyMetadata:{objc_msgSend(MEMORY[0x1E695DF90], "dictionary")}];
 LABEL_30:
   v61 = v28;
   if (([objc_opt_class() lazilyAllocatesDeepFusionOutputBuffers] & 1) == 0)
@@ -797,7 +797,7 @@ LABEL_30:
         v33 = [v40 processorController:? newOutputPixelBufferForProcessorInput:? type:?];
         if (v33)
         {
-          if (([objc_msgSend(objc_msgSend(*(a1 + 176) "input")] & 0x400000) == 0)
+          if (([objc_msgSend(objc_msgSend(*(type + 176) "input")] & 0x400000) == 0)
           {
             v32 = 0;
 LABEL_40:
@@ -844,19 +844,19 @@ LABEL_80:
   v35 = 0;
   v36 = 0;
 LABEL_41:
-  [v29 setReferencePixelBuffer:v36];
+  [deepFusionOutput setReferencePixelBuffer:v36];
   v62 = v35;
-  [v29 setReferenceNoisePixelBuffer:v35];
-  [v29 setReferenceMetadata:{objc_msgSend(MEMORY[0x1E695DF90], "dictionary")}];
+  [deepFusionOutput setReferenceNoisePixelBuffer:v35];
+  [deepFusionOutput setReferenceMetadata:{objc_msgSend(MEMORY[0x1E695DF90], "dictionary")}];
   v43 = v34;
-  [v29 setLongPixelBuffer:v34];
+  [deepFusionOutput setLongPixelBuffer:v34];
   v44 = v33;
-  [v29 setLongNoisePixelBuffer:v33];
-  [v29 setLongMetadata:{objc_msgSend(MEMORY[0x1E695DF90], "dictionary")}];
-  [v29 setRealLongNoisePixelBuffer:v32];
-  [v29 setInferenceInputPixelBuffer:v66];
-  [OUTLINED_FUNCTION_23_10() setReferenceFrameHasEVMinus:(v27 >> 20) & 1];
-  [*(a1 + 176) deepFusionOutput];
+  [deepFusionOutput setLongNoisePixelBuffer:v33];
+  [deepFusionOutput setLongMetadata:{objc_msgSend(MEMORY[0x1E695DF90], "dictionary")}];
+  [deepFusionOutput setRealLongNoisePixelBuffer:v32];
+  [deepFusionOutput setInferenceInputPixelBuffer:v66];
+  [OUTLINED_FUNCTION_23_10() setReferenceFrameHasEVMinus:(input2 >> 20) & 1];
+  [*(type + 176) deepFusionOutput];
   v45 = 0;
   v46 = v61;
   v47 = v32;
@@ -865,7 +865,7 @@ LABEL_42:
   v48 = [OUTLINED_FUNCTION_23_10() prepareToProcess:v63 prepareDescriptor:v46];
   if (!v48)
   {
-    [OUTLINED_FUNCTION_23_10() setDelegate:a1];
+    [OUTLINED_FUNCTION_23_10() setDelegate:type];
   }
 
   if (v45)
@@ -922,8 +922,8 @@ LABEL_60:
   if (result)
   {
     v1 = result;
-    v2 = [(BWUBNRFProcessorRequest *)*(result + 176) processingType];
-    if ([(BWUBProcessorController *)v1 _setupProcessorForProcessingType:v2])
+    processingType = [(BWUBNRFProcessorRequest *)*(result + 176) processingType];
+    if ([(BWUBProcessorController *)v1 _setupProcessorForProcessingType:processingType])
     {
       [OUTLINED_FUNCTION_44_7() setErr:?];
       [*(v1 + 88) setOutput:0];
@@ -936,25 +936,25 @@ LABEL_60:
     {
       for (i = 0; ; ++i)
       {
-        v4 = [OUTLINED_FUNCTION_44_7() input];
-        if (v4)
+        input = [OUTLINED_FUNCTION_44_7() input];
+        if (input)
         {
-          v4 = OUTLINED_FUNCTION_42_8(v4);
+          input = OUTLINED_FUNCTION_42_8(input);
         }
 
-        result = [v4 count];
+        result = [input count];
         if (result <= i)
         {
           break;
         }
 
-        v5 = [OUTLINED_FUNCTION_44_7() input];
-        if (v5)
+        input2 = [OUTLINED_FUNCTION_44_7() input];
+        if (input2)
         {
-          v5 = OUTLINED_FUNCTION_42_8(v5);
+          input2 = OUTLINED_FUNCTION_42_8(input2);
         }
 
-        v6 = [v5 objectAtIndexedSubscript:i];
+        v6 = [input2 objectAtIndexedSubscript:i];
         v7 = i == [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_44_7() "input")];
         ubp_addFrame(v1, *(v1 + 176), *(v1 + 88), v6, v7);
       }
@@ -966,30 +966,30 @@ LABEL_60:
 
 - (void)_processSingleImage
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 176);
+    v2 = *(self + 176);
     if (v2 && v2[32] == 1)
     {
-      v3 = [objc_msgSend(v2 "input")];
+      firstObject = [objc_msgSend(v2 "input")];
     }
 
     else
     {
-      v4 = [v2 input];
-      if (v4)
+      input = [v2 input];
+      if (input)
       {
-        v4 = v4[7];
+        input = input[7];
       }
 
-      v3 = [v4 firstObject];
+      firstObject = [input firstObject];
     }
 
     cf = 0;
-    [(BWUBProcessorController *)a1 _singleImageProcessSampleBuffer:v3 sampleBufferOut:&cf];
+    [(BWUBProcessorController *)self _singleImageProcessSampleBuffer:firstObject sampleBufferOut:&cf];
     if (cf)
     {
-      v5 = *(a1 + 176);
+      v5 = *(self + 176);
       if (v5)
       {
         if (*(v5 + 32) == 1)
@@ -1001,7 +1001,7 @@ LABEL_60:
       }
     }
 
-    [(BWUBProcessorRequest *)*(a1 + 176) imageType];
+    [(BWUBProcessorRequest *)*(self + 176) imageType];
     [OUTLINED_FUNCTION_43_8() input];
     v8 = OUTLINED_FUNCTION_14_17();
     OUTLINED_FUNCTION_35_10(v8, v9, v10, v11, v12, v13);
@@ -1012,7 +1012,7 @@ LABEL_60:
   }
 }
 
-- (uint64_t)_singleImageProcessSampleBuffer:(CMAttachmentBearerRef *)a3 sampleBufferOut:
+- (uint64_t)_singleImageProcessSampleBuffer:(CMAttachmentBearerRef *)buffer sampleBufferOut:
 {
   if (result)
   {
@@ -1069,9 +1069,9 @@ LABEL_60:
             CMSetAttachment(target, v11, v12, 1u);
 
             result = 0;
-            if (a3)
+            if (buffer)
             {
-              *a3 = target;
+              *buffer = target;
             }
           }
         }
@@ -1089,14 +1089,14 @@ LABEL_60:
 
 - (void)_processUBFusion
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v3 = [*(a1 + 176) err];
+  process = [*(self + 176) err];
   sampleBufferOut[0] = 0;
-  v4 = [OUTLINED_FUNCTION_10_26() output];
+  output = [OUTLINED_FUNCTION_10_26() output];
   v5 = [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_10_26() "input")];
   if (dword_1EB58DE40)
   {
@@ -1121,45 +1121,45 @@ LABEL_60:
 
   i = kBWNodeSampleBufferAttachmentKey_StillImageProcessingFlags;
   v9 = &unk_1E799C000;
-  if (v3)
+  if (process)
   {
-    v10 = [v4 metadata];
-    if (!v10)
+    metadata = [output metadata];
+    if (!metadata)
     {
-      v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
+      metadata = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    [v10 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v3), @"UBAddFrameFailure"}];
+    [metadata setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", process), @"UBAddFrameFailure"}];
     goto LABEL_53;
   }
 
-  v3 = [*(a1 + 88) process];
-  v10 = [v4 metadata];
-  if (!v3)
+  process = [*(self + 88) process];
+  metadata = [output metadata];
+  if (!process)
   {
     v11 = [objc_msgSend(OUTLINED_FUNCTION_10_26() "input")];
-    CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(v11, [v4 pixelBuffer], (a1 + 152), sampleBufferOut);
+    CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(v11, [output pixelBuffer], (self + 152), sampleBufferOut);
     if (!CopyWithNewPixelBuffer)
     {
-      v101 = v10;
+      v101 = metadata;
       HIDWORD(v98) = v5;
       if (([objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_10_26() "input")] & 0x800) == 0)
       {
 LABEL_27:
         v5 = HIDWORD(v98);
-        v10 = v101;
-        if ([v4 fusionMode] == 2 && (objc_opt_respondsToSelector() & 1) != 0)
+        metadata = v101;
+        if ([output fusionMode] == 2 && (objc_opt_respondsToSelector() & 1) != 0)
         {
           v39 = [objc_msgSend(OUTLINED_FUNCTION_10_26() "input")];
           memset(&v142, 0, sizeof(v142));
           CMSampleBufferGetPresentationTimeStamp(&v142, v39);
-          v40 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           for (i = 0; i != 3; ++i)
           {
             for (j = 0; j != 3; ++j)
             {
               v42 = MEMORY[0x1E696AD98];
-              [v4 refFrameTransform];
+              [output refFrameTransform];
               LODWORD(v114) = v43;
               LODWORD(v116) = v44;
               v113 = *&v45;
@@ -1167,7 +1167,7 @@ LABEL_27:
               LODWORD(v118) = v47;
               v117 = v48;
               LODWORD(v45) = *((&v113 + 2 * i) & 0xFFFFFFFFFFFFFFF3 | (4 * (j & 3)));
-              [v40 addObject:{objc_msgSend(v42, "numberWithFloat:", v45)}];
+              [array addObject:{objc_msgSend(v42, "numberWithFloat:", v45)}];
             }
           }
 
@@ -1183,16 +1183,16 @@ LABEL_27:
           }
 
           v5 = HIDWORD(v98);
-          v10 = v101;
-          v51 = [v49 input];
+          metadata = v101;
+          input = [v49 input];
           v141 = v142;
-          [v50 processorController:a1 didSelectNewReferenceFrameWithPTS:&v141 transform:v40 processorInput:v51];
+          [v50 processorController:self didSelectNewReferenceFrameWithPTS:&v141 transform:array processorInput:input];
         }
 
         CMSetAttachment(sampleBufferOut[0], @"HasUnreliableBracketingMetadata", MEMORY[0x1E695E118], 1u);
         v52 = CMGetAttachment(sampleBufferOut[0], *off_1E798A3C8, 0);
-        [v52 addEntriesFromDictionary:v10];
-        [v52 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", objc_msgSend(v4, "fusionMode")), *off_1E798A670}];
+        [v52 addEntriesFromDictionary:metadata];
+        [v52 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", objc_msgSend(output, "fusionMode")), *off_1E798A670}];
         if (([objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_10_26() "input")] & 0x100000) != 0)
         {
           v53 = [CMGetAttachment(sampleBufferOut[0] @"StillImageProcessingFlags"];
@@ -1271,7 +1271,7 @@ LABEL_27:
 
           OUTLINED_FUNCTION_2_4();
           fig_log_call_emit_and_clean_up_after_send_and_compose();
-          v10 = v101;
+          metadata = v101;
         }
 
         v69 = OUTLINED_FUNCTION_10_26();
@@ -1286,14 +1286,14 @@ LABEL_27:
         }
 
         v71 = sampleBufferOut[0];
-        v72 = [(BWUBProcessorRequest *)v69 imageType];
-        [v70 processorController:a1 didFinishProcessingSampleBuffer:v71 type:v72 processorInput:objc_msgSend(OUTLINED_FUNCTION_10_26() err:{"input"), 0}];
-        v3 = 0;
+        imageType = [(BWUBProcessorRequest *)v69 imageType];
+        [v70 processorController:self didFinishProcessingSampleBuffer:v71 type:imageType processorInput:objc_msgSend(OUTLINED_FUNCTION_10_26() err:{"input"), 0}];
+        process = 0;
         goto LABEL_53;
       }
 
-      v13 = [v4 fusionMode];
-      if (v13 == 1)
+      fusionMode = [output fusionMode];
+      if (fusionMode == 1)
       {
         if (!BWSampleBufferGetAttachedMedia(sampleBufferOut[0], 0x1F21AAAF0))
         {
@@ -1305,7 +1305,7 @@ LABEL_27:
         }
       }
 
-      else if (v13 == 2)
+      else if (fusionMode == 2)
       {
         v140[0] = @"Depth";
         v140[1] = 0x1F21AABD0;
@@ -1326,7 +1326,7 @@ LABEL_20:
       v136 = 0u;
       v137 = 0u;
       v138 = 0u;
-      v26 = OUTLINED_FUNCTION_47_8(v18, v19, v20, v21, v22, v23, v24, v25, v92, v94, v96, v98, v99, v10, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, 0);
+      v26 = OUTLINED_FUNCTION_47_8(v18, v19, v20, v21, v22, v23, v24, v25, v92, v94, v96, v98, v99, metadata, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, 0);
       if (v26)
       {
         i = v26;
@@ -1354,13 +1354,13 @@ LABEL_20:
       goto LABEL_27;
     }
 
-    v3 = CopyWithNewPixelBuffer;
+    process = CopyWithNewPixelBuffer;
   }
 
 LABEL_53:
   if (![OUTLINED_FUNCTION_10_26() err])
   {
-    [OUTLINED_FUNCTION_10_26() setErr:v3];
+    [OUTLINED_FUNCTION_10_26() setErr:process];
   }
 
   v73 = sampleBufferOut[0];
@@ -1369,11 +1369,11 @@ LABEL_53:
     goto LABEL_56;
   }
 
-  [v4 setPixelBuffer:0];
+  [output setPixelBuffer:0];
   v74 = [objc_msgSend(OUTLINED_FUNCTION_10_26() "input")];
   if (([objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_10_26() "input")] & 1) == 0 && v74)
   {
-    if ([(BWUBProcessorController *)a1 _setupProcessorForProcessingType:?]|| [(BWUBProcessorController *)a1 _singleImageProcessSampleBuffer:v74 sampleBufferOut:sampleBufferOut])
+    if ([(BWUBProcessorController *)self _setupProcessorForProcessingType:?]|| [(BWUBProcessorController *)self _singleImageProcessSampleBuffer:v74 sampleBufferOut:sampleBufferOut])
     {
       OUTLINED_FUNCTION_1_5();
       FigDebugAssert3();
@@ -1381,7 +1381,7 @@ LABEL_53:
 
     else if (dword_1EB58DE40)
     {
-      v102 = v10;
+      v102 = metadata;
       OUTLINED_FUNCTION_10_19();
       v75 = OUTLINED_FUNCTION_22_11();
       v76 = v144;
@@ -1400,7 +1400,7 @@ LABEL_53:
 
       OUTLINED_FUNCTION_2_4();
       fig_log_call_emit_and_clean_up_after_send_and_compose();
-      v10 = v102;
+      metadata = v102;
       v9 = &unk_1E799C000;
     }
 
@@ -1412,7 +1412,7 @@ LABEL_53:
 
     ImageBuffer = CMSampleBufferGetImageBuffer(v74);
     PixelFormatType = CVPixelBufferGetPixelFormatType(ImageBuffer);
-    if (PixelFormatType == [objc_msgSend(*(a1 + 64) "outputFormat")] && !BWCMSampleBufferCreateCopyIncludingMetadata(v74, sampleBufferOut) && dword_1EB58DE40)
+    if (PixelFormatType == [objc_msgSend(*(self + 64) "outputFormat")] && !BWCMSampleBufferCreateCopyIncludingMetadata(v74, sampleBufferOut) && dword_1EB58DE40)
     {
       OUTLINED_FUNCTION_10_19();
       v81 = OUTLINED_FUNCTION_22_11();
@@ -1429,7 +1429,7 @@ LABEL_53:
 
       if (v83)
       {
-        v84 = *(a1 + 176);
+        v84 = *(self + 176);
         [objc_msgSend(objc_msgSend(v84 "input")];
         OUTLINED_FUNCTION_36_11();
         OUTLINED_FUNCTION_18_15("[BWUBProcessorController _processUBFusion]");
@@ -1511,12 +1511,12 @@ LABEL_56:
 
 - (void)_processDeepFusion
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v3 = [a1[22] err];
+  v3 = [self[22] err];
   sampleBufferOut[0] = 0;
   if (dword_1EB58DE40)
   {
@@ -1536,7 +1536,7 @@ LABEL_56:
 
     if (v7)
     {
-      v8 = a1[22];
+      v8 = self[22];
       [objc_msgSend(objc_msgSend(v8 "input")];
       v42 = 136315651;
       OUTLINED_FUNCTION_27_9();
@@ -1557,9 +1557,9 @@ LABEL_56:
       goto LABEL_21;
     }
 
-    v9 = [OUTLINED_FUNCTION_17_15() input];
-    v10 = [OUTLINED_FUNCTION_17_15() deepFusionOutput];
-    if (![v10 longPixelBuffer])
+    input = [OUTLINED_FUNCTION_17_15() input];
+    deepFusionOutput = [OUTLINED_FUNCTION_17_15() deepFusionOutput];
+    if (![deepFusionOutput longPixelBuffer])
     {
       OUTLINED_FUNCTION_20_11();
       v12 = [v11 processorController:? newOutputPixelBufferForProcessorInput:? type:?];
@@ -1569,11 +1569,11 @@ LABEL_56:
       }
 
       v1 = v12;
-      [v10 setLongPixelBuffer:v12];
+      [deepFusionOutput setLongPixelBuffer:v12];
       CFRelease(v1);
     }
 
-    if (![v10 longNoisePixelBuffer])
+    if (![deepFusionOutput longNoisePixelBuffer])
     {
       OUTLINED_FUNCTION_20_11();
       v14 = [v13 processorController:? newOutputPixelBufferForProcessorInput:? type:?];
@@ -1583,24 +1583,24 @@ LABEL_56:
       }
 
       v1 = v14;
-      [v10 setLongNoisePixelBuffer:v14];
+      [deepFusionOutput setLongNoisePixelBuffer:v14];
       CFRelease(v1);
     }
 
-    if ([v10 realLongNoisePixelBuffer] || (objc_msgSend(objc_msgSend(v9, "captureSettings"), "captureFlags") & 0x400000) == 0)
+    if ([deepFusionOutput realLongNoisePixelBuffer] || (objc_msgSend(objc_msgSend(input, "captureSettings"), "captureFlags") & 0x400000) == 0)
     {
 LABEL_21:
-      v18 = [a1[11] process];
-      if (v18)
+      process = [self[11] process];
+      if (process)
       {
-        v3 = v18;
+        v3 = process;
       }
 
       else
       {
-        if ([a1[8] deepFusionWaitForProcessingToFinish])
+        if ([self[8] deepFusionWaitForProcessingToFinish])
         {
-          [a1[11] finishProcessing];
+          [self[11] finishProcessing];
         }
 
         v3 = 0;
@@ -1614,7 +1614,7 @@ LABEL_21:
     if (v16)
     {
       v17 = v16;
-      [v10 setRealLongNoisePixelBuffer:v16];
+      [deepFusionOutput setRealLongNoisePixelBuffer:v16];
       CFRelease(v17);
       goto LABEL_21;
     }
@@ -1652,14 +1652,14 @@ LABEL_50:
     }
 
     v20 = v19;
-    if ([(BWUBProcessorController *)a1 _setupProcessorForProcessingType:?])
+    if ([(BWUBProcessorController *)self _setupProcessorForProcessingType:?])
     {
       OUTLINED_FUNCTION_6_38();
     }
 
     else
     {
-      if (![(BWUBProcessorController *)a1 _singleImageProcessSampleBuffer:v20 sampleBufferOut:sampleBufferOut])
+      if (![(BWUBProcessorController *)self _singleImageProcessSampleBuffer:v20 sampleBufferOut:sampleBufferOut])
       {
         if (dword_1EB58DE40)
         {
@@ -1679,7 +1679,7 @@ LABEL_50:
 
           if (v22)
           {
-            v23 = a1[22];
+            v23 = self[22];
             [objc_msgSend(objc_msgSend(v23 "input")];
             v42 = 136315651;
             OUTLINED_FUNCTION_27_9();
@@ -1709,14 +1709,14 @@ LABEL_41:
 
     ImageBuffer = CMSampleBufferGetImageBuffer(v20);
     PixelFormatType = CVPixelBufferGetPixelFormatType(ImageBuffer);
-    if (PixelFormatType == [objc_msgSend(a1[8] "outputFormat")] && !BWCMSampleBufferCreateCopyIncludingMetadata(v20, sampleBufferOut) && dword_1EB58DE40)
+    if (PixelFormatType == [objc_msgSend(self[8] "outputFormat")] && !BWCMSampleBufferCreateCopyIncludingMetadata(v20, sampleBufferOut) && dword_1EB58DE40)
     {
       v27 = OUTLINED_FUNCTION_16_18();
       os_log_type_enabled(v27, v44);
       OUTLINED_FUNCTION_4_0();
       if (v1)
       {
-        v28 = a1[22];
+        v28 = self[22];
         [objc_msgSend(objc_msgSend(v28 "input")];
         v42 = 136315651;
         OUTLINED_FUNCTION_27_9();
@@ -1747,12 +1747,12 @@ LABEL_49:
   }
 }
 
-- (void)processor:(id)a3 outputReadyWithFrameType:(int)a4 outputPixelBuffer:(__CVBuffer *)a5 outputMetadata:(id)a6 error:(int)a7
+- (void)processor:(id)processor outputReadyWithFrameType:(int)type outputPixelBuffer:(__CVBuffer *)buffer outputMetadata:(id)metadata error:(int)error
 {
-  if (a5 && !a7)
+  if (buffer && !error)
   {
     v10 = 9;
-    switch(a4)
+    switch(type)
     {
       case 2:
         v28 = OUTLINED_FUNCTION_48_8([(BWUBProcessorInput *)[(BWUBProcessorRequest *)self->_currentRequest input] referenceFrame], 152);
@@ -1768,19 +1768,19 @@ LABEL_49:
         v30 = OUTLINED_FUNCTION_14_17();
         goto LABEL_24;
       case 3:
-        v11 = [(BWUBProcessorRequest *)self->_currentRequest deepFusionOutput];
-        if ([(UBDeepFusionOutput *)v11 refFrameTransformIsValid]&& (objc_opt_respondsToSelector() & 1) != 0)
+        deepFusionOutput = [(BWUBProcessorRequest *)self->_currentRequest deepFusionOutput];
+        if ([(UBDeepFusionOutput *)deepFusionOutput refFrameTransformIsValid]&& (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v12 = [(BWUBProcessorInput *)[(BWUBProcessorRequest *)self->_currentRequest input] evMinusReferenceFrame];
+          evMinusReferenceFrame = [(BWUBProcessorInput *)[(BWUBProcessorRequest *)self->_currentRequest input] evMinusReferenceFrame];
           memset(&v39, 0, sizeof(v39));
-          CMSampleBufferGetPresentationTimeStamp(&v39, v12);
-          v13 = [MEMORY[0x1E695DF70] array];
+          CMSampleBufferGetPresentationTimeStamp(&v39, evMinusReferenceFrame);
+          array = [MEMORY[0x1E695DF70] array];
           for (i = 0; i != 3; ++i)
           {
             for (j = 0; j != 3; ++j)
             {
               v16 = MEMORY[0x1E696AD98];
-              [(UBDeepFusionOutput *)v11 refFrameTransform];
+              [(UBDeepFusionOutput *)deepFusionOutput refFrameTransform];
               v34 = v17;
               v36 = v18;
               v33 = v19;
@@ -1788,7 +1788,7 @@ LABEL_49:
               v38 = v21;
               v37 = v22;
               LODWORD(v19) = *((&v33 + 2 * i) & 0xFFFFFFFFFFFFFFF3 | (4 * (j & 3)));
-              [v13 addObject:{objc_msgSend(v16, "numberWithFloat:", v19)}];
+              [array addObject:{objc_msgSend(v16, "numberWithFloat:", v19)}];
             }
           }
 
@@ -1803,9 +1803,9 @@ LABEL_49:
             delegate = 0;
           }
 
-          v25 = [(BWUBProcessorRequest *)currentRequest input];
+          input = [(BWUBProcessorRequest *)currentRequest input];
           v32 = v39;
-          [(BWUBProcessorControllerDelegate *)delegate processorController:self didSelectNewReferenceFrameWithPTS:&v32 transform:v13 processorInput:v25];
+          [(BWUBProcessorControllerDelegate *)delegate processorController:self didSelectNewReferenceFrameWithPTS:&v32 transform:array processorInput:input];
         }
 
         v10 = 8;
@@ -1833,7 +1833,7 @@ LABEL_17:
         }
 
         LODWORD(v31) = 0;
-        [(BWUBProcessorControllerDelegate *)v27 processorController:self didFinishProcessingBuffer:a5 metadata:a6 type:v10 captureFrameFlags:0 processorInput:[(BWUBProcessorRequest *)v26 input] err:v31];
+        [(BWUBProcessorControllerDelegate *)v27 processorController:self didFinishProcessingBuffer:buffer metadata:metadata type:v10 captureFrameFlags:0 processorInput:[(BWUBProcessorRequest *)v26 input] err:v31];
         break;
       case 8:
         v28 = OUTLINED_FUNCTION_48_8([(BWUBProcessorInput *)[(BWUBProcessorRequest *)self->_currentRequest input] referenceFrame], 160);
@@ -1855,12 +1855,12 @@ LABEL_25:
   }
 }
 
-- (CMAttachmentBearerRef)_newOutputSampleBufferWithSampleBuffer:(__CVBuffer *)a3 pixelBuffer:(CFTypeRef *)a4 formatDescriptionInOut:(uint64_t)a5 metadataToMerge:
+- (CMAttachmentBearerRef)_newOutputSampleBufferWithSampleBuffer:(__CVBuffer *)buffer pixelBuffer:(CFTypeRef *)pixelBuffer formatDescriptionInOut:(uint64_t)out metadataToMerge:
 {
   if (result)
   {
     target = 0;
-    if (BWCMSampleBufferCreateCopyWithNewPixelBuffer(a2, a3, a4, &target))
+    if (BWCMSampleBufferCreateCopyWithNewPixelBuffer(a2, buffer, pixelBuffer, &target))
     {
       OUTLINED_FUNCTION_1_5();
       FigDebugAssert3();
@@ -1870,7 +1870,7 @@ LABEL_25:
     {
       v6 = *off_1E798A3C8;
       v7 = [CMGetAttachment(target *off_1E798A3C8];
-      [v7 addEntriesFromDictionary:a5];
+      [v7 addEntriesFromDictionary:out];
       CMSetAttachment(target, v6, v7, 1u);
     }
 
@@ -1880,9 +1880,9 @@ LABEL_25:
   return result;
 }
 
-- (void)processor:(id)a3 didSelectFusionMode:(int)a4
+- (void)processor:(id)processor didSelectFusionMode:(int)mode
 {
-  v4 = *&a4;
+  v4 = *&mode;
   currentRequest = self->_currentRequest;
   if (currentRequest)
   {
@@ -1894,12 +1894,12 @@ LABEL_25:
     delegate = 0;
   }
 
-  v8 = [(BWUBProcessorRequest *)currentRequest input];
+  input = [(BWUBProcessorRequest *)currentRequest input];
 
-  [(BWUBProcessorControllerDelegate *)delegate processorController:self didSelectFusionMode:v4 processorInput:v8];
+  [(BWUBProcessorControllerDelegate *)delegate processorController:self didSelectFusionMode:v4 processorInput:input];
 }
 
-- (id)processorGetInferenceResults:(id)a3
+- (id)processorGetInferenceResults:(id)results
 {
   v4 = objc_alloc_init(NSClassFromString(&cfstr_Ubprocessorinf.isa));
   if ([(BWUBProcessorRequest *)self->_currentRequest inferencesAvailable])
@@ -1940,13 +1940,13 @@ LABEL_25:
   return v4;
 }
 
-- (id)adaptiveBracketingParametersForDigitalFlashMode:(int)a3 frameStatistics:(id)a4 stationary:(BOOL)a5 sphereOffsetEnabled:(BOOL)a6 detectedObjects:(id)a7
+- (id)adaptiveBracketingParametersForDigitalFlashMode:(int)mode frameStatistics:(id)statistics stationary:(BOOL)stationary sphereOffsetEnabled:(BOOL)enabled detectedObjects:(id)objects
 {
-  if (a3 && (v7 = a5, [a4 portType], (v11 = objc_msgSend(OUTLINED_FUNCTION_7(), "objectForKeyedSubscript:")) != 0))
+  if (mode && (v7 = stationary, [statistics portType], (v11 = objc_msgSend(OUTLINED_FUNCTION_7(), "objectForKeyedSubscript:")) != 0))
   {
     v12 = v11;
-    UBStatisticsFromFrameStatistics = udp_createUBStatisticsFromFrameStatistics(self->_ubProgressiveBracketingStatisticsClass, a4, v7);
-    v14 = -[BWUBAdaptiveBracketingParameters initWithProgressiveBracketingParameters:progressiveBracketingStatisticsClass:]([BWUBAdaptiveBracketingParameters alloc], [objc_alloc(self->_ubProgressiveBracketingParametersClass) initWithOptions:v12 portType:objc_msgSend(a4 statistics:"portType") mode:{UBStatisticsFromFrameStatistics, a3 == 2}], self->_ubProgressiveBracketingStatisticsClass);
+    UBStatisticsFromFrameStatistics = udp_createUBStatisticsFromFrameStatistics(self->_ubProgressiveBracketingStatisticsClass, statistics, v7);
+    v14 = -[BWUBAdaptiveBracketingParameters initWithProgressiveBracketingParameters:progressiveBracketingStatisticsClass:]([BWUBAdaptiveBracketingParameters alloc], [objc_alloc(self->_ubProgressiveBracketingParametersClass) initWithOptions:v12 portType:objc_msgSend(statistics statistics:"portType") mode:{UBStatisticsFromFrameStatistics, mode == 2}], self->_ubProgressiveBracketingStatisticsClass);
   }
 
   else
@@ -1957,12 +1957,12 @@ LABEL_25:
   return v14;
 }
 
-- (id)adaptiveBracketingDigitalFlashTotalIntegrationTimesProviderForPortType:(id)a3
+- (id)adaptiveBracketingDigitalFlashTotalIntegrationTimesProviderForPortType:(id)type
 {
   v5 = [(NSDictionary *)self->_adaptiveBracketingCaptureParametersByPortType objectForKeyedSubscript:?];
   if (v5)
   {
-    v5 = -[BWUBAdaptiveBracketingParameters initWithProgressiveBracketingParameters:progressiveBracketingStatisticsClass:]([BWUBAdaptiveBracketingParameters alloc], [objc_alloc(self->_ubProgressiveBracketingParametersClass) initWithOptions:v5 portType:a3 statistics:0 mode:0], self->_ubProgressiveBracketingStatisticsClass);
+    v5 = -[BWUBAdaptiveBracketingParameters initWithProgressiveBracketingParameters:progressiveBracketingStatisticsClass:]([BWUBAdaptiveBracketingParameters alloc], [objc_alloc(self->_ubProgressiveBracketingParametersClass) initWithOptions:v5 portType:type statistics:0 mode:0], self->_ubProgressiveBracketingStatisticsClass);
   }
 
   return v5;

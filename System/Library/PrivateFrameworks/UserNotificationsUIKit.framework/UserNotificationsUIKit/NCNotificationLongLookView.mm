@@ -1,12 +1,12 @@
 @interface NCNotificationLongLookView
-- (BOOL)_lookViewTapGestureRecognizerShouldReceiveTouch:(id)a3;
+- (BOOL)_lookViewTapGestureRecognizerShouldReceiveTouch:(id)touch;
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)adjustsFontForContentSizeCategory;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (CGAffineTransform)contentTransform;
 - (CGRect)_actionsViewFrame;
 - (CGRect)_mainContentViewFrame;
-- (CGSize)_contentSizeThatFitsContentWithSizeExcludingActions:(CGSize)a3;
+- (CGSize)_contentSizeThatFitsContentWithSizeExcludingActions:(CGSize)actions;
 - (CGSize)_contentViewSize;
 - (UITapGestureRecognizer)lookViewTapGestureRecognizer;
 - (void)_configureCustomContentView;
@@ -17,22 +17,22 @@
 - (void)_layoutNotificationContentView;
 - (void)_updateTopMargin;
 - (void)layoutSubviews;
-- (void)notificationContentView:(id)a3 willInteractWithURL:(id)a4;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setCustomContentLocation:(unint64_t)a3;
-- (void)setCustomContentSize:(CGSize)a3;
-- (void)setDateAlpha:(double)a3;
-- (void)setHideDate:(BOOL)a3;
-- (void)setHidesNotificationContent:(BOOL)a3;
-- (void)setMaximumNumberOfPrimaryLargeTextLines:(unint64_t)a3;
-- (void)setMaximumNumberOfPrimaryTextLines:(unint64_t)a3;
-- (void)setMaximumNumberOfSecondaryLargeTextLines:(unint64_t)a3;
-- (void)setMaximumNumberOfSecondaryTextLines:(unint64_t)a3;
-- (void)setPrimarySubtitleText:(id)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setScreenCaptureProhibited:(BOOL)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)notificationContentView:(id)view willInteractWithURL:(id)l;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setCustomContentLocation:(unint64_t)location;
+- (void)setCustomContentSize:(CGSize)size;
+- (void)setDateAlpha:(double)alpha;
+- (void)setHideDate:(BOOL)date;
+- (void)setHidesNotificationContent:(BOOL)content;
+- (void)setMaximumNumberOfPrimaryLargeTextLines:(unint64_t)lines;
+- (void)setMaximumNumberOfPrimaryTextLines:(unint64_t)lines;
+- (void)setMaximumNumberOfSecondaryLargeTextLines:(unint64_t)lines;
+- (void)setMaximumNumberOfSecondaryTextLines:(unint64_t)lines;
+- (void)setPrimarySubtitleText:(id)text;
+- (void)setPrimaryText:(id)text;
+- (void)setScreenCaptureProhibited:(BOOL)prohibited;
+- (void)setSecondaryText:(id)text;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NCNotificationLongLookView
@@ -45,22 +45,22 @@
   return lookViewTapGestureRecognizer;
 }
 
-- (void)setCustomContentLocation:(unint64_t)a3
+- (void)setCustomContentLocation:(unint64_t)location
 {
-  if (self->_customContentLocation != a3)
+  if (self->_customContentLocation != location)
   {
-    self->_customContentLocation = a3;
+    self->_customContentLocation = location;
     [(NCNotificationLongLookView *)self _updateTopMargin];
 
     [(NCNotificationLongLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setCustomContentSize:(CGSize)a3
+- (void)setCustomContentSize:(CGSize)size
 {
   v4.receiver = self;
   v4.super_class = NCNotificationLongLookView;
-  [(PLExpandedPlatterView *)&v4 setCustomContentSize:a3.width, a3.height];
+  [(PLExpandedPlatterView *)&v4 setCustomContentSize:size.width, size.height];
   [(NCNotificationLongLookView *)self _updateTopMargin];
 }
 
@@ -89,13 +89,13 @@ LABEL_5:
   [(NCNotificationContentView *)notificationContentView setUseSmallTopMargin:v5];
 }
 
-- (void)setHidesNotificationContent:(BOOL)a3
+- (void)setHidesNotificationContent:(BOOL)content
 {
-  if (self->_hidesNotificationContent != a3)
+  if (self->_hidesNotificationContent != content)
   {
     v10 = v3;
-    self->_hidesNotificationContent = a3;
-    if (a3)
+    self->_hidesNotificationContent = content;
+    if (content)
     {
       [(NCNotificationContentView *)self->_notificationContentView removeFromSuperview];
       notificationContentView = self->_notificationContentView;
@@ -109,77 +109,77 @@ LABEL_5:
   }
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCNotificationContentView *)self->_notificationContentView primaryText];
-  v5 = [v6 isEqual:v4];
+  textCopy = text;
+  primaryText = [(NCNotificationContentView *)self->_notificationContentView primaryText];
+  v5 = [textCopy isEqual:primaryText];
 
   if ((v5 & 1) == 0)
   {
     [(NCNotificationLongLookView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationContentView *)self->_notificationContentView setPrimaryText:v6];
+    [(NCNotificationContentView *)self->_notificationContentView setPrimaryText:textCopy];
   }
 }
 
-- (void)setPrimarySubtitleText:(id)a3
+- (void)setPrimarySubtitleText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCNotificationContentView *)self->_notificationContentView primarySubtitleText];
-  v5 = [v6 isEqual:v4];
+  textCopy = text;
+  primarySubtitleText = [(NCNotificationContentView *)self->_notificationContentView primarySubtitleText];
+  v5 = [textCopy isEqual:primarySubtitleText];
 
   if ((v5 & 1) == 0)
   {
     [(NCNotificationLongLookView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationContentView *)self->_notificationContentView setPrimarySubtitleText:v6];
+    [(NCNotificationContentView *)self->_notificationContentView setPrimarySubtitleText:textCopy];
   }
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCNotificationContentView *)self->_notificationContentView secondaryText];
-  v5 = [v6 isEqual:v4];
+  textCopy = text;
+  secondaryText = [(NCNotificationContentView *)self->_notificationContentView secondaryText];
+  v5 = [textCopy isEqual:secondaryText];
 
   if ((v5 & 1) == 0)
   {
     [(NCNotificationLongLookView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationContentView *)self->_notificationContentView setSecondaryText:v6];
+    [(NCNotificationContentView *)self->_notificationContentView setSecondaryText:textCopy];
   }
 }
 
-- (void)setScreenCaptureProhibited:(BOOL)a3
+- (void)setScreenCaptureProhibited:(BOOL)prohibited
 {
-  v3 = a3;
+  prohibitedCopy = prohibited;
   [(PLExpandedPlatterView *)self _configureMainContentViewIfNecessary];
   notificationContentView = self->_notificationContentView;
 
-  [(NCNotificationContentView *)notificationContentView setScreenCaptureProhibited:v3];
+  [(NCNotificationContentView *)notificationContentView setScreenCaptureProhibited:prohibitedCopy];
 }
 
-- (void)setHideDate:(BOOL)a3
+- (void)setHideDate:(BOOL)date
 {
-  v3 = a3;
+  dateCopy = date;
   [(PLExpandedPlatterView *)self _configureMainContentViewIfNecessary];
   notificationContentView = self->_notificationContentView;
 
-  [(NCNotificationContentView *)notificationContentView setHideDate:v3];
+  [(NCNotificationContentView *)notificationContentView setHideDate:dateCopy];
 }
 
-- (void)setDateAlpha:(double)a3
+- (void)setDateAlpha:(double)alpha
 {
   [(PLExpandedPlatterView *)self _configureMainContentViewIfNecessary];
   notificationContentView = self->_notificationContentView;
 
-  [(NCNotificationContentView *)notificationContentView setDateAlpha:a3];
+  [(NCNotificationContentView *)notificationContentView setDateAlpha:alpha];
 }
 
-- (CGSize)_contentSizeThatFitsContentWithSizeExcludingActions:(CGSize)a3
+- (CGSize)_contentSizeThatFitsContentWithSizeExcludingActions:(CGSize)actions
 {
-  width = a3.width;
+  width = actions.width;
   v12.receiver = self;
   v12.super_class = NCNotificationLongLookView;
-  [(PLExpandedPlatterView *)&v12 _contentSizeThatFitsContentWithSizeExcludingActions:a3.width, a3.height];
+  [(PLExpandedPlatterView *)&v12 _contentSizeThatFitsContentWithSizeExcludingActions:actions.width, actions.height];
   v6 = v5;
   v8 = v7;
   if (!self->_hidesNotificationContent)
@@ -203,8 +203,8 @@ LABEL_5:
   [(PLExpandedPlatterView *)&v4 _configureCustomContentView];
   if (!self->_hidesNotificationContent && self->_customContentLocation != 1)
   {
-    v3 = [(PLExpandedPlatterView *)self customContentView];
-    [v3 _setContinuousCornerRadius:0.0];
+    customContentView = [(PLExpandedPlatterView *)self customContentView];
+    [customContentView _setContinuousCornerRadius:0.0];
   }
 }
 
@@ -218,16 +218,16 @@ LABEL_5:
     self->_notificationContentView = v3;
 
     [(NCNotificationContentView *)self->_notificationContentView setDelegate:self];
-    v5 = [(NCNotificationContentView *)self->_notificationContentView layer];
-    [v5 setMaskedCorners:12];
+    layer = [(NCNotificationContentView *)self->_notificationContentView layer];
+    [layer setMaskedCorners:12];
 
     [(NCNotificationContentView *)self->_notificationContentView _setContinuousCornerRadius:13.0];
     v6 = self->_notificationContentView;
-    v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(NCNotificationContentView *)v6 setBackgroundColor:v7];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(NCNotificationContentView *)v6 setBackgroundColor:systemBackgroundColor];
 
-    v8 = [(PLExpandedPlatterView *)self _mainContentView];
-    [v8 addSubview:self->_notificationContentView];
+    _mainContentView = [(PLExpandedPlatterView *)self _mainContentView];
+    [_mainContentView addSubview:self->_notificationContentView];
   }
 }
 
@@ -320,8 +320,8 @@ LABEL_5:
   if (self->_notificationContentView)
   {
     [(PLExpandedPlatterView *)self _layoutMainContentViewIfNecessary];
-    v3 = [(PLExpandedPlatterView *)self _mainContentView];
-    [v3 frame];
+    _mainContentView = [(PLExpandedPlatterView *)self _mainContentView];
+    [_mainContentView frame];
     v5 = v4;
     v7 = v6;
 
@@ -360,17 +360,17 @@ LABEL_5:
     if ([(PLExpandedPlatterView *)self clipsVisibleContentToBounds])
     {
       [(PLExpandedPlatterView *)self _layoutMainContentViewIfNecessary];
-      v3 = [(PLExpandedPlatterView *)self _mainContentView];
-      [v3 frame];
+      _mainContentView = [(PLExpandedPlatterView *)self _mainContentView];
+      [_mainContentView frame];
       v5 = v4;
       v7 = v6;
 
       [(NCNotificationContentView *)self->_notificationContentView sizeThatFits:v5, v7];
       [(NCNotificationLongLookView *)self bounds];
       [(PLExpandedPlatterView *)self _flexibleAreaSizeForBounds:?];
-      v8 = [(PLExpandedPlatterView *)self customContentView];
-      [v8 frame];
-      [v8 setFrame:?];
+      customContentView = [(PLExpandedPlatterView *)self customContentView];
+      [customContentView frame];
+      [customContentView setFrame:?];
     }
   }
 }
@@ -385,15 +385,15 @@ LABEL_5:
     {
       [(NCNotificationContentView *)self->_notificationContentView frame];
       v18 = v17;
-      v19 = [(PLExpandedPlatterView *)self customContentView];
-      [v19 frame];
+      customContentView = [(PLExpandedPlatterView *)self customContentView];
+      [customContentView frame];
       v21 = v20;
       v23 = v22;
       v25 = v24;
       v27 = v26;
 
-      v28 = [(PLExpandedPlatterView *)self customContentView];
-      [v28 setFrame:{v21, v18 + v23, v25, v27}];
+      customContentView2 = [(PLExpandedPlatterView *)self customContentView];
+      [customContentView2 setFrame:{v21, v18 + v23, v25, v27}];
     }
 
     else if (!customContentLocation)
@@ -403,8 +403,8 @@ LABEL_5:
       v8 = v7;
       v10 = v9;
       v12 = v11;
-      v13 = [(PLExpandedPlatterView *)self customContentView];
-      [v13 frame];
+      customContentView3 = [(PLExpandedPlatterView *)self customContentView];
+      [customContentView3 frame];
       v15 = v14;
 
       notificationContentView = self->_notificationContentView;
@@ -427,28 +427,28 @@ LABEL_5:
   }
 }
 
-- (BOOL)_lookViewTapGestureRecognizerShouldReceiveTouch:(id)a3
+- (BOOL)_lookViewTapGestureRecognizerShouldReceiveTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = [(PLExpandedPlatterView *)self _headerContentView];
-  if ([v5 isDescendantOfView:v6])
+  touchCopy = touch;
+  view = [touchCopy view];
+  _headerContentView = [(PLExpandedPlatterView *)self _headerContentView];
+  if ([view isDescendantOfView:_headerContentView])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(PLExpandedPlatterView *)self _mainContentView];
-    v7 = [v5 isDescendantOfView:v8];
+    _mainContentView = [(PLExpandedPlatterView *)self _mainContentView];
+    v7 = [view isDescendantOfView:_mainContentView];
   }
 
-  v9 = [(PLExpandedPlatterView *)self delegate];
+  delegate = [(PLExpandedPlatterView *)self delegate];
   if (v7)
   {
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v9 notificationLongLookView:self tapGestureRecognizerShouldReceiveTouch:v4];
+      v10 = [delegate notificationLongLookView:self tapGestureRecognizerShouldReceiveTouch:touchCopy];
     }
 
     else
@@ -465,50 +465,50 @@ LABEL_5:
   return v10;
 }
 
-- (void)setMaximumNumberOfPrimaryTextLines:(unint64_t)a3
+- (void)setMaximumNumberOfPrimaryTextLines:(unint64_t)lines
 {
   [(NCNotificationLongLookView *)self _configureNotificationContentViewIfNecessary];
   notificationContentView = self->_notificationContentView;
 
-  [(NCNotificationContentView *)notificationContentView setMaximumNumberOfPrimaryTextLines:a3];
+  [(NCNotificationContentView *)notificationContentView setMaximumNumberOfPrimaryTextLines:lines];
 }
 
-- (void)setMaximumNumberOfPrimaryLargeTextLines:(unint64_t)a3
+- (void)setMaximumNumberOfPrimaryLargeTextLines:(unint64_t)lines
 {
   [(NCNotificationLongLookView *)self _configureNotificationContentViewIfNecessary];
   notificationContentView = self->_notificationContentView;
 
-  [(NCNotificationContentView *)notificationContentView setMaximumNumberOfPrimaryLargeTextLines:a3];
+  [(NCNotificationContentView *)notificationContentView setMaximumNumberOfPrimaryLargeTextLines:lines];
 }
 
-- (void)setMaximumNumberOfSecondaryTextLines:(unint64_t)a3
+- (void)setMaximumNumberOfSecondaryTextLines:(unint64_t)lines
 {
   [(NCNotificationLongLookView *)self _configureNotificationContentViewIfNecessary];
   notificationContentView = self->_notificationContentView;
 
-  [(NCNotificationContentView *)notificationContentView setSecondaryTextMaximumNumberOfLines:a3];
+  [(NCNotificationContentView *)notificationContentView setSecondaryTextMaximumNumberOfLines:lines];
 }
 
-- (void)setMaximumNumberOfSecondaryLargeTextLines:(unint64_t)a3
+- (void)setMaximumNumberOfSecondaryLargeTextLines:(unint64_t)lines
 {
   [(NCNotificationLongLookView *)self _configureNotificationContentViewIfNecessary];
   notificationContentView = self->_notificationContentView;
 
-  [(NCNotificationContentView *)notificationContentView setMaximumNumberOfSecondaryLargeTextLines:a3];
+  [(NCNotificationContentView *)notificationContentView setMaximumNumberOfSecondaryLargeTextLines:lines];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_lookViewTapGestureRecognizer != a3)
+  if (self->_lookViewTapGestureRecognizer != recognizer)
   {
     return 0;
   }
 
-  v5 = self;
-  v6 = [a4 view];
-  LOBYTE(v5) = [v6 isDescendantOfView:v5->_notificationContentView];
+  selfCopy = self;
+  view = [gestureRecognizer view];
+  LOBYTE(selfCopy) = [view isDescendantOfView:selfCopy->_notificationContentView];
 
-  return v5;
+  return selfCopy;
 }
 
 - (CGAffineTransform)contentTransform
@@ -521,13 +521,13 @@ LABEL_5:
   return self;
 }
 
-- (void)notificationContentView:(id)a3 willInteractWithURL:(id)a4
+- (void)notificationContentView:(id)view willInteractWithURL:(id)l
 {
-  v6 = a4;
-  v5 = [(PLExpandedPlatterView *)self delegate];
+  lCopy = l;
+  delegate = [(PLExpandedPlatterView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 notificationLongLookView:self willInteractWithURL:v6];
+    [delegate notificationLongLookView:self willInteractWithURL:lCopy];
   }
 }
 
@@ -544,22 +544,22 @@ LABEL_5:
   return [(PLExpandedPlatterView *)&v4 adjustsFontForContentSizeCategory];
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v5.receiver = self;
   v5.super_class = NCNotificationLongLookView;
   [(PLExpandedPlatterView *)&v5 setAdjustsFontForContentSizeCategory:?];
   [(NCNotificationLongLookView *)self _configureNotificationContentViewIfNecessary];
-  [(NCNotificationContentView *)self->_notificationContentView setAdjustsFontForContentSizeCategory:v3];
+  [(NCNotificationContentView *)self->_notificationContentView setAdjustsFontForContentSizeCategory:categoryCopy];
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
   v6.receiver = self;
   v6.super_class = NCNotificationLongLookView;
-  v3 = [(PLExpandedPlatterView *)&v6 adjustForContentSizeCategoryChange];
-  v4 = [(NCNotificationContentView *)self->_notificationContentView adjustForContentSizeCategoryChange]| v3;
+  adjustForContentSizeCategoryChange = [(PLExpandedPlatterView *)&v6 adjustForContentSizeCategoryChange];
+  v4 = [(NCNotificationContentView *)self->_notificationContentView adjustForContentSizeCategoryChange]| adjustForContentSizeCategoryChange;
   if (v4)
   {
     [(NCNotificationLongLookView *)self setNeedsLayout];
@@ -568,11 +568,11 @@ LABEL_5:
   return v4 & 1;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = NCNotificationLongLookView;
-  [(NCNotificationLongLookView *)&v4 traitCollectionDidChange:a3];
+  [(NCNotificationLongLookView *)&v4 traitCollectionDidChange:change];
   [(NCNotificationLongLookView *)self adjustForContentSizeCategoryChange];
 }
 

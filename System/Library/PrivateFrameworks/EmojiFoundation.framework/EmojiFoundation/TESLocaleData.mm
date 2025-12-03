@@ -1,88 +1,88 @@
 @interface TESLocaleData
-+ (id)animationNameForTextEffectType:(int64_t)a3;
-+ (id)localeDataWithLocale:(id)a3;
-+ (id)localeDataWithLocaleIdentifier:(id)a3;
-+ (int64_t)textEffectTypeForAnimationName:(id)a3;
-- (TESLocaleData)initWithLocale:(id)a3;
-- (TESLocaleData)initWithLocaleIdentifier:(id)a3;
-- (id)textEffectCandidatesInString:(id)a3 searchRange:(_NSRange)a4 options:(unint64_t)a5;
-- (void)enumerateTextEffectCandidatesInString:(id)a3 searchRange:(_NSRange)a4 options:(unint64_t)a5 usingBlock:(id)a6;
++ (id)animationNameForTextEffectType:(int64_t)type;
++ (id)localeDataWithLocale:(id)locale;
++ (id)localeDataWithLocaleIdentifier:(id)identifier;
++ (int64_t)textEffectTypeForAnimationName:(id)name;
+- (TESLocaleData)initWithLocale:(id)locale;
+- (TESLocaleData)initWithLocaleIdentifier:(id)identifier;
+- (id)textEffectCandidatesInString:(id)string searchRange:(_NSRange)range options:(unint64_t)options;
+- (void)enumerateTextEffectCandidatesInString:(id)string searchRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block;
 @end
 
 @implementation TESLocaleData
 
-+ (id)animationNameForTextEffectType:(int64_t)a3
++ (id)animationNameForTextEffectType:(int64_t)type
 {
-  if ((a3 - 1) > 0xB)
+  if ((type - 1) > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A5F738[a3 - 1];
+    return off_1E7A5F738[type - 1];
   }
 }
 
-+ (int64_t)textEffectTypeForAnimationName:(id)a3
++ (int64_t)textEffectTypeForAnimationName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"big"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"big"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"small"])
+  else if ([nameCopy isEqualToString:@"small"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"jitter"])
+  else if ([nameCopy isEqualToString:@"jitter"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"explode"])
+  else if ([nameCopy isEqualToString:@"explode"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"shakeVertical"])
+  else if ([nameCopy isEqualToString:@"shakeVertical"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"shakeHorizontal"])
+  else if ([nameCopy isEqualToString:@"shakeHorizontal"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"bloom"])
+  else if ([nameCopy isEqualToString:@"bloom"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"bounce"])
+  else if ([nameCopy isEqualToString:@"bounce"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"bold"])
+  else if ([nameCopy isEqualToString:@"bold"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"underline"])
+  else if ([nameCopy isEqualToString:@"underline"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"italic"])
+  else if ([nameCopy isEqualToString:@"italic"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"strikeThrough"])
+  else if ([nameCopy isEqualToString:@"strikeThrough"])
   {
     v4 = 12;
   }
@@ -95,48 +95,48 @@
   return v4;
 }
 
-+ (id)localeDataWithLocaleIdentifier:(id)a3
++ (id)localeDataWithLocaleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[TESLocaleData alloc] initWithLocaleIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[TESLocaleData alloc] initWithLocaleIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)localeDataWithLocale:(id)a3
++ (id)localeDataWithLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [[TESLocaleData alloc] initWithLocale:v3];
+  localeCopy = locale;
+  v4 = [[TESLocaleData alloc] initWithLocale:localeCopy];
 
   return v4;
 }
 
-- (TESLocaleData)initWithLocaleIdentifier:(id)a3
+- (TESLocaleData)initWithLocaleIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:a3];
+  v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:identifier];
   if (v4)
   {
     self = [(TESLocaleData *)self initWithLocale:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (TESLocaleData)initWithLocale:(id)a3
+- (TESLocaleData)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v9.receiver = self;
   v9.super_class = TESLocaleData;
   v5 = [(TESLocaleData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [localeCopy copy];
     locale = v5->_locale;
     v5->_locale = v6;
   }
@@ -144,19 +144,19 @@
   return v5;
 }
 
-- (void)enumerateTextEffectCandidatesInString:(id)a3 searchRange:(_NSRange)a4 options:(unint64_t)a5 usingBlock:(id)a6
+- (void)enumerateTextEffectCandidatesInString:(id)string searchRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
+  stringCopy = string;
+  blockCopy = block;
   v11 = +[TESMatcherManager sharedManager];
-  v12 = [(TESLocaleData *)self locale];
-  v13 = [v11 matcherForLocale:v12];
+  locale = [(TESLocaleData *)self locale];
+  v13 = [v11 matcherForLocale:locale];
 
-  if ((a5 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    v18 = [v13 phraseMatcher];
-    [v18 matchesForString:v9 searchRange:{a4.location, a4.length}];
+    phraseMatcher = [v13 phraseMatcher];
+    [phraseMatcher matchesForString:stringCopy searchRange:{range.location, range.length}];
     LOBYTE(v23[0]) = 0;
     v25 = 0u;
     v26 = 0u;
@@ -175,9 +175,9 @@
             objc_enumerationMutation(v14);
           }
 
-          if (v10)
+          if (blockCopy)
           {
-            (*(v10 + 2))(v10, *(*(&v25 + 1) + 8 * i), v23);
+            (*(blockCopy + 2))(blockCopy, *(*(&v25 + 1) + 8 * i), v23);
           }
 
           if (v23[0])
@@ -207,8 +207,8 @@
   v20[2] = __86__TESLocaleData_enumerateTextEffectCandidatesInString_searchRange_options_usingBlock___block_invoke;
   v20[3] = &unk_1E7A5F6F0;
   v22 = v23;
-  v21 = v10;
-  [v13 enumerateTextEffectCandidatesInString:v9 searchRange:a4.location options:a4.length usingBlock:{a5, v20}];
+  v21 = blockCopy;
+  [v13 enumerateTextEffectCandidatesInString:stringCopy searchRange:range.location options:range.length usingBlock:{options, v20}];
 
   _Block_object_dispose(v23, 8);
 LABEL_15:
@@ -224,12 +224,12 @@ uint64_t __86__TESLocaleData_enumerateTextEffectCandidatesInString_searchRange_o
   return (*(*(a1 + 32) + 16))();
 }
 
-- (id)textEffectCandidatesInString:(id)a3 searchRange:(_NSRange)a4 options:(unint64_t)a5
+- (id)textEffectCandidatesInString:(id)string searchRange:(_NSRange)range options:(unint64_t)options
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = MEMORY[0x1E695DF70];
-  v10 = a3;
+  stringCopy = string;
   v11 = objc_alloc_init(v9);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -237,7 +237,7 @@ uint64_t __86__TESLocaleData_enumerateTextEffectCandidatesInString_searchRange_o
   v15[3] = &unk_1E7A5F718;
   v16 = v11;
   v12 = v11;
-  [(TESLocaleData *)self enumerateTextEffectCandidatesInString:v10 searchRange:location options:length usingBlock:a5, v15];
+  [(TESLocaleData *)self enumerateTextEffectCandidatesInString:stringCopy searchRange:location options:length usingBlock:options, v15];
 
   v13 = [v12 copy];
 

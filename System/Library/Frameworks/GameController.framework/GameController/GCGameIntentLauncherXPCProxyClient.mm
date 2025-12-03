@@ -1,7 +1,7 @@
 @interface GCGameIntentLauncherXPCProxyClient
 - (GCGameIntentLauncherXPCProxyClient)init;
 - (void)dealloc;
-- (void)launchApplicationWithBundleIdentifier:(id)a3;
+- (void)launchApplicationWithBundleIdentifier:(id)identifier;
 - (void)refreshActiveClient;
 - (void)togglePlatformGamesLibrary;
 @end
@@ -17,16 +17,16 @@
   servers = v2->_servers;
   v2->_servers = v3;
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:v2 selector:sel_consoleUserDidChange_ name:*MEMORY[0x1E69A0330] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel_consoleUserDidChange_ name:*MEMORY[0x1E69A0330] object:0];
 
   return v2;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69A0330] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69A0330] object:0];
 
   v4.receiver = self;
   v4.super_class = GCGameIntentLauncherXPCProxyClient;
@@ -36,28 +36,28 @@
 - (void)refreshActiveClient
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_DEBUG))
   {
     v5 = 138412290;
     v6 = &unk_1F4E8E330;
-    _os_log_debug_impl(&dword_1D2CD5000, a1, OS_LOG_TYPE_DEBUG, "GCGameIntentLauncherXPCProxy - clientForCurrentUser %@ is nil, early exit", &v5, 0xCu);
+    _os_log_debug_impl(&dword_1D2CD5000, self, OS_LOG_TYPE_DEBUG, "GCGameIntentLauncherXPCProxy - clientForCurrentUser %@ is nil, early exit", &v5, 0xCu);
   }
 
-  *a2 = a1;
+  *a2 = self;
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)launchApplicationWithBundleIdentifier:(id)a3
+- (void)launchApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(GCGameIntentLauncherXPCProxyClient *)self server];
-  [v5 launchApplicationWithBundleIdentifier:v4];
+  identifierCopy = identifier;
+  server = [(GCGameIntentLauncherXPCProxyClient *)self server];
+  [server launchApplicationWithBundleIdentifier:identifierCopy];
 }
 
 - (void)togglePlatformGamesLibrary
 {
-  v2 = [(GCGameIntentLauncherXPCProxyClient *)self server];
-  [v2 togglePlatformGamesLibrary];
+  server = [(GCGameIntentLauncherXPCProxyClient *)self server];
+  [server togglePlatformGamesLibrary];
 }
 
 - (void)agentCheckIn:(NSObject *)a1 effectiveUserIdentifier:.cold.1(NSObject *a1)

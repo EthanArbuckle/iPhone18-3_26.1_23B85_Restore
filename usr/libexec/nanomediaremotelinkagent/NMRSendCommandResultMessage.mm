@@ -1,5 +1,5 @@
 @interface NMRSendCommandResultMessage
-- (NMRSendCommandResultMessage)initWithProtobufData:(id)a3;
+- (NMRSendCommandResultMessage)initWithProtobufData:(id)data;
 - (NSArray)handlerReturnStatuses;
 - (NSDate)serializationDate;
 - (NSNumber)originIdentifier;
@@ -8,15 +8,15 @@
 
 @implementation NMRSendCommandResultMessage
 
-- (NMRSendCommandResultMessage)initWithProtobufData:(id)a3
+- (NMRSendCommandResultMessage)initWithProtobufData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = NMRSendCommandResultMessage;
   v5 = [(NMRSendCommandResultMessage *)&v10 init];
   if (v5)
   {
-    v6 = [[_NMRSendCommandResultMessageProtobuf alloc] initWithData:v4];
+    v6 = [[_NMRSendCommandResultMessageProtobuf alloc] initWithData:dataCopy];
     protobuf = v5->_protobuf;
     v5->_protobuf = v6;
 

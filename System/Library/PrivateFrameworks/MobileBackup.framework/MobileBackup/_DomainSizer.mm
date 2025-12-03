@@ -1,42 +1,42 @@
 @interface _DomainSizer
-+ (id)sizeDomain:(id)a3 manager:(id)a4 operationTracker:(id)a5 account:(id)a6 device:(id)a7 error:(id *)a8;
-- (BOOL)_addDependentDomainsWithError:(id *)a3;
-- (BOOL)_addDomainSizesWithError:(id *)a3;
-- (BOOL)_addPlaceholdersSizesWithError:(id *)a3;
++ (id)sizeDomain:(id)domain manager:(id)manager operationTracker:(id)tracker account:(id)account device:(id)device error:(id *)error;
+- (BOOL)_addDependentDomainsWithError:(id *)error;
+- (BOOL)_addDomainSizesWithError:(id *)error;
+- (BOOL)_addPlaceholdersSizesWithError:(id *)error;
 - (BOOL)_addZeroBytesForDisabledAndRestrictedDomainNames;
-- (BOOL)_addZeroBytesForEmptyStaticDomainsWithError:(id *)a3;
-- (_DomainSizer)initWithPlaceholderFileList:(id)a3 persona:(id)a4 cache:(id)a5 appManager:(id)a6 domainQuotasByDomainHMAC:(id)a7 restrictedDomains:(id)a8 disabledDomains:(id)a9 domainToSize:(id)a10;
+- (BOOL)_addZeroBytesForEmptyStaticDomainsWithError:(id *)error;
+- (_DomainSizer)initWithPlaceholderFileList:(id)list persona:(id)persona cache:(id)cache appManager:(id)manager domainQuotasByDomainHMAC:(id)c restrictedDomains:(id)domains disabledDomains:(id)disabledDomains domainToSize:(id)self0;
 - (id)_convertDomainSizesToDomainInfos;
-- (id)_sizeWithError:(id *)a3;
-- (void)_addCloudSize:(int64_t)a3 localSize:(int64_t)a4 forDomain:(id)a5;
+- (id)_sizeWithError:(id *)error;
+- (void)_addCloudSize:(int64_t)size localSize:(int64_t)localSize forDomain:(id)domain;
 @end
 
 @implementation _DomainSizer
 
-- (_DomainSizer)initWithPlaceholderFileList:(id)a3 persona:(id)a4 cache:(id)a5 appManager:(id)a6 domainQuotasByDomainHMAC:(id)a7 restrictedDomains:(id)a8 disabledDomains:(id)a9 domainToSize:(id)a10
+- (_DomainSizer)initWithPlaceholderFileList:(id)list persona:(id)persona cache:(id)cache appManager:(id)manager domainQuotasByDomainHMAC:(id)c restrictedDomains:(id)domains disabledDomains:(id)disabledDomains domainToSize:(id)self0
 {
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v27 = a7;
-  v26 = a8;
-  v25 = a9;
-  v17 = a10;
+  listCopy = list;
+  personaCopy = persona;
+  cacheCopy = cache;
+  managerCopy = manager;
+  cCopy = c;
+  domainsCopy = domains;
+  disabledDomainsCopy = disabledDomains;
+  sizeCopy = size;
   v32.receiver = self;
   v32.super_class = _DomainSizer;
   v18 = [(_DomainSizer *)&v32 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_placeholderDB, a3);
-    objc_storeStrong(&v19->_persona, a4);
-    objc_storeStrong(&v19->_cache, a5);
-    objc_storeStrong(&v19->_appManager, a6);
-    objc_storeStrong(&v19->_domainQuotasByDomainHMAC, a7);
-    objc_storeStrong(&v19->_restrictedDomains, a8);
-    objc_storeStrong(&v19->_disabledDomains, a9);
-    objc_storeStrong(&v19->_domainToSize, a10);
+    objc_storeStrong(&v18->_placeholderDB, list);
+    objc_storeStrong(&v19->_persona, persona);
+    objc_storeStrong(&v19->_cache, cache);
+    objc_storeStrong(&v19->_appManager, manager);
+    objc_storeStrong(&v19->_domainQuotasByDomainHMAC, c);
+    objc_storeStrong(&v19->_restrictedDomains, domains);
+    objc_storeStrong(&v19->_disabledDomains, disabledDomains);
+    objc_storeStrong(&v19->_domainToSize, size);
     v20 = objc_opt_new();
     systemAppsInBackup = v19->_systemAppsInBackup;
     v19->_systemAppsInBackup = v20;
@@ -49,23 +49,23 @@
   return v19;
 }
 
-- (void)_addCloudSize:(int64_t)a3 localSize:(int64_t)a4 forDomain:(id)a5
+- (void)_addCloudSize:(int64_t)size localSize:(int64_t)localSize forDomain:(id)domain
 {
   domainSizeByDomainName = self->_domainSizeByDomainName;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)domainSizeByDomainName objectForKeyedSubscript:v9];
+  domainCopy = domain;
+  v10 = [(NSMutableDictionary *)domainSizeByDomainName objectForKeyedSubscript:domainCopy];
   if (!v10)
   {
     v10 = objc_opt_new();
   }
 
   v11 = v10;
-  [v10 setLocalSize:{objc_msgSend(v10, "localSize") + a4}];
-  [v11 setCloudSize:{objc_msgSend(v11, "cloudSize") + a3}];
-  [(NSMutableDictionary *)self->_domainSizeByDomainName setObject:v11 forKeyedSubscript:v9];
+  [v10 setLocalSize:{objc_msgSend(v10, "localSize") + localSize}];
+  [v11 setCloudSize:{objc_msgSend(v11, "cloudSize") + size}];
+  [(NSMutableDictionary *)self->_domainSizeByDomainName setObject:v11 forKeyedSubscript:domainCopy];
 }
 
-- (BOOL)_addDomainSizesWithError:(id *)a3
+- (BOOL)_addDomainSizesWithError:(id *)error
 {
   placeholderDB = self->_placeholderDB;
   v5[0] = _NSConcreteStackBlock;
@@ -73,10 +73,10 @@
   v5[2] = sub_10008E27C;
   v5[3] = &unk_1003BCDF0;
   v5[4] = self;
-  return [(MBPlaceholderFileListDB *)placeholderDB enumerateDomainList:a3 block:v5];
+  return [(MBPlaceholderFileListDB *)placeholderDB enumerateDomainList:error block:v5];
 }
 
-- (BOOL)_addPlaceholdersSizesWithError:(id *)a3
+- (BOOL)_addPlaceholdersSizesWithError:(id *)error
 {
   placeholderDB = self->_placeholderDB;
   v5[0] = _NSConcreteStackBlock;
@@ -84,7 +84,7 @@
   v5[2] = sub_10008E5DC;
   v5[3] = &unk_1003BCE18;
   v5[4] = self;
-  return [(MBPlaceholderFileListDB *)placeholderDB enumerateAppPlaceholderDomains:a3 block:v5];
+  return [(MBPlaceholderFileListDB *)placeholderDB enumerateAppPlaceholderDomains:error block:v5];
 }
 
 - (BOOL)_addZeroBytesForDisabledAndRestrictedDomainNames
@@ -120,9 +120,9 @@
             {
               v11 = [v6[510] containerIDWithName:v9];
               appManager = self->_appManager;
-              v13 = [(_DomainSizer *)self persona];
+              persona = [(_DomainSizer *)self persona];
               v22 = 0;
-              v14 = [(MBAppManager *)appManager fetchAppWithIdentifier:v11 persona:v13 error:&v22];
+              v14 = [(MBAppManager *)appManager fetchAppWithIdentifier:v11 persona:persona error:&v22];
               v15 = v22;
 
               if (v14)
@@ -186,7 +186,7 @@
   return 1;
 }
 
-- (BOOL)_addZeroBytesForEmptyStaticDomainsWithError:(id *)a3
+- (BOOL)_addZeroBytesForEmptyStaticDomainsWithError:(id *)error
 {
   v4 = [[MBDomainManager alloc] initWithPersona:self->_persona];
   v15 = 0u;
@@ -194,8 +194,8 @@
   v17 = 0u;
   v18 = 0u;
   v14 = v4;
-  v5 = [(MBDomainManager *)v4 systemDomainsByName];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  systemDomainsByName = [(MBDomainManager *)v4 systemDomainsByName];
+  v6 = [systemDomainsByName countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -206,7 +206,7 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(systemDomainsByName);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -230,7 +230,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v7 = [systemDomainsByName countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v7);
@@ -239,7 +239,7 @@
   return 1;
 }
 
-- (BOOL)_addDependentDomainsWithError:(id *)a3
+- (BOOL)_addDependentDomainsWithError:(id *)error
 {
   placeholderDB = self->_placeholderDB;
   v30[0] = _NSConcreteStackBlock;
@@ -247,7 +247,7 @@
   v30[2] = sub_10008F140;
   v30[3] = &unk_1003BCE40;
   v30[4] = self;
-  v5 = [(MBPlaceholderFileListDB *)placeholderDB enumerateDomainDependencies:a3 block:v30];
+  v5 = [(MBPlaceholderFileListDB *)placeholderDB enumerateDomainDependencies:error block:v30];
   if (v5)
   {
     domainToSize = self->_domainToSize;
@@ -345,42 +345,42 @@
   v10 = 3221225472;
   v11 = sub_10008F384;
   v12 = &unk_1003BCE68;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
   v14 = v5;
   [(NSMutableDictionary *)domainSizeByDomainName enumerateKeysAndObjectsUsingBlock:&v9];
-  [v5 sortUsingComparator:{&stru_1003BCEA8, v9, v10, v11, v12, v13}];
+  [v5 sortUsingComparator:{&stru_1003BCEA8, v9, v10, v11, v12, selfCopy}];
   v6 = v14;
   v7 = v5;
 
   return v5;
 }
 
-- (id)_sizeWithError:(id *)a3
+- (id)_sizeWithError:(id *)error
 {
-  if ([(_DomainSizer *)self _addDomainSizesWithError:?]&& [(_DomainSizer *)self _addPlaceholdersSizesWithError:a3]&& [(_DomainSizer *)self _addZeroBytesForDisabledAndRestrictedDomainNames]&& [(_DomainSizer *)self _addZeroBytesForEmptyStaticDomainsWithError:a3]&& [(_DomainSizer *)self _addDependentDomainsWithError:a3])
+  if ([(_DomainSizer *)self _addDomainSizesWithError:?]&& [(_DomainSizer *)self _addPlaceholdersSizesWithError:error]&& [(_DomainSizer *)self _addZeroBytesForDisabledAndRestrictedDomainNames]&& [(_DomainSizer *)self _addZeroBytesForEmptyStaticDomainsWithError:error]&& [(_DomainSizer *)self _addDependentDomainsWithError:error])
   {
-    v5 = [(_DomainSizer *)self _convertDomainSizesToDomainInfos];
+    _convertDomainSizesToDomainInfos = [(_DomainSizer *)self _convertDomainSizesToDomainInfos];
   }
 
   else
   {
-    v5 = 0;
+    _convertDomainSizesToDomainInfos = 0;
   }
 
-  return v5;
+  return _convertDomainSizesToDomainInfos;
 }
 
-+ (id)sizeDomain:(id)a3 manager:(id)a4 operationTracker:(id)a5 account:(id)a6 device:(id)a7 error:(id *)a8
++ (id)sizeDomain:(id)domain manager:(id)manager operationTracker:(id)tracker account:(id)account device:(id)device error:(id *)error
 {
-  v38 = a3;
-  v39 = a4;
-  v40 = a5;
-  v42 = a6;
-  v12 = a7;
-  v13 = [v12 snapshots];
+  domainCopy = domain;
+  managerCopy = manager;
+  trackerCopy = tracker;
+  accountCopy = account;
+  deviceCopy = device;
+  snapshots = [deviceCopy snapshots];
   v45 = 0;
-  v43 = MBGetAllDomainQuotasByDomainHMAC(v13, &v45);
+  v43 = MBGetAllDomainQuotasByDomainHMAC(snapshots, &v45);
   v14 = v45;
 
   if (v43 || ([MBError isError:v14 withCode:4]& 1) != 0)
@@ -396,20 +396,20 @@
       _MBLog();
     }
 
-    v17 = [v42 persona];
-    v18 = [v17 snapshotDatabaseDirectory];
+    persona = [accountCopy persona];
+    snapshotDatabaseDirectory = [persona snapshotDatabaseDirectory];
 
-    v19 = [v12 snapshots];
-    v20 = [v19 lastObject];
-    v21 = [v20 commitID];
+    snapshots2 = [deviceCopy snapshots];
+    lastObject = [snapshots2 lastObject];
+    commitID = [lastObject commitID];
 
     v44 = 0;
-    v22 = [v12 synchronizeFileListsWithOperationTracker:v40 snapshotDirectory:v18 commitID:v21 error:&v44 fetchedFileListBlock:&stru_1003BCEE8];
+    v22 = [deviceCopy synchronizeFileListsWithOperationTracker:trackerCopy snapshotDirectory:snapshotDatabaseDirectory commitID:commitID error:&v44 fetchedFileListBlock:&stru_1003BCEE8];
     v14 = v44;
 
     if (v22)
     {
-      v23 = [MBPlaceholderFileListDB openOrCreatePlaceholderFileListIn:v18 commitID:v21 error:a8];
+      v23 = [MBPlaceholderFileListDB openOrCreatePlaceholderFileListIn:snapshotDatabaseDirectory commitID:commitID error:error];
       if (!v23)
       {
         goto LABEL_18;
@@ -418,18 +418,18 @@
       v24 = [MBMobileInstallation alloc];
       v37 = [(MBMobileInstallation *)v24 initWithSafeHarborDir:kMBSafeHarborDir];
       v25 = [[MBAppManager alloc] initWithMobileInstallation:v37];
-      v36 = [v39 allRestrictedDomainNames:v25 account:v42];
-      v26 = [v42 persona];
-      v27 = [(MBAppManager *)v25 allDisabledDomainNamesForPersona:v26];
+      v36 = [managerCopy allRestrictedDomainNames:v25 account:accountCopy];
+      persona2 = [accountCopy persona];
+      v27 = [(MBAppManager *)v25 allDisabledDomainNamesForPersona:persona2];
 
-      v28 = [v39 openCacheWithAccount:v42 accessType:2 error:a8];
+      v28 = [managerCopy openCacheWithAccount:accountCopy accessType:2 error:error];
       if (v28)
       {
         v29 = [_DomainSizer alloc];
-        v30 = [v42 persona];
-        v31 = [(_DomainSizer *)v29 initWithPlaceholderFileList:v23 persona:v30 cache:v28 appManager:v25 domainQuotasByDomainHMAC:v43 restrictedDomains:v36 disabledDomains:v27 domainToSize:v38];
+        persona3 = [accountCopy persona];
+        v31 = [(_DomainSizer *)v29 initWithPlaceholderFileList:v23 persona:persona3 cache:v28 appManager:v25 domainQuotasByDomainHMAC:v43 restrictedDomains:v36 disabledDomains:v27 domainToSize:domainCopy];
 
-        v32 = [(_DomainSizer *)v31 _sizeWithError:a8];
+        v32 = [(_DomainSizer *)v31 _sizeWithError:error];
       }
 
       else
@@ -437,7 +437,7 @@
         v32 = 0;
       }
 
-      if (([v23 close:a8] & 1) == 0)
+      if (([v23 close:error] & 1) == 0)
       {
 LABEL_18:
         v32 = 0;
@@ -450,18 +450,18 @@ LABEL_18:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v47 = v38;
+        v47 = domainCopy;
         v48 = 2112;
         v49 = v14;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "=quota-calculation= Failed to synchronize file lists when sizing domain %@: %@", buf, 0x16u);
         _MBLog();
       }
 
-      if (a8)
+      if (error)
       {
         v34 = v14;
         v32 = 0;
-        *a8 = v14;
+        *error = v14;
       }
 
       else
@@ -473,12 +473,12 @@ LABEL_18:
 
   else
   {
-    v18 = MBGetDefaultLog();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    snapshotDatabaseDirectory = MBGetDefaultLog();
+    if (os_log_type_enabled(snapshotDatabaseDirectory, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v47 = v14;
-      _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "=quota-calculation= Failed to get domain quotas by domain hmac: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, snapshotDatabaseDirectory, OS_LOG_TYPE_ERROR, "=quota-calculation= Failed to get domain quotas by domain hmac: %@", buf, 0xCu);
       _MBLog();
     }
 

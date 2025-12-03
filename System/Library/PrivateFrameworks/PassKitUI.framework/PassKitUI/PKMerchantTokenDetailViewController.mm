@@ -1,23 +1,23 @@
 @interface PKMerchantTokenDetailViewController
-- (BOOL)shouldMapSection:(unint64_t)a3;
-- (PKMerchantTokenDetailViewController)initWithMerchantToken:(id)a3;
+- (BOOL)shouldMapSection:(unint64_t)section;
+- (PKMerchantTokenDetailViewController)initWithMerchantToken:(id)token;
 - (PKMerchantTokenDetailViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_contactKeysToFetch;
-- (id)_deletePaymentMethodCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_headerCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_manageAutoReloadCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_managePaymentMethodCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_manageRecurringPaymentCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)presentationSceneIdentifierForTopUpController:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_deletePaymentMethodCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_headerCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_manageAutoReloadCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_managePaymentMethodCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_manageRecurringPaymentCellForTableView:(id)view atIndexPath:(id)path;
+- (id)presentationSceneIdentifierForTopUpController:(id)controller;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_deleteMerchantToken;
 - (void)_didSelectAutoReloadManagement;
-- (void)_didSelectDeletePaymentMethodAtIndexPath:(id)a3;
-- (void)_didSelectRecurringPaymentAtIndexPath:(id)a3;
+- (void)_didSelectDeletePaymentMethodAtIndexPath:(id)path;
+- (void)_didSelectRecurringPaymentAtIndexPath:(id)path;
 - (void)_disableNavigation;
 - (void)_enableNavigation;
 - (void)_hideLoadingView;
@@ -25,14 +25,14 @@
 - (void)_setUpTableView;
 - (void)_setUpViews;
 - (void)_showLoadingView;
-- (void)_updateRecurringPaymentsWithCompletion:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)thresholdTopUpController:(id)a3 requestsPopViewController:(id)a4;
-- (void)thresholdTopUpController:(id)a3 requestsPushViewController:(id)a4;
-- (void)thresholdTopUpControllerCompletedSetup:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_updateRecurringPaymentsWithCompletion:(id)completion;
+- (void)preflightWithCompletion:(id)completion;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)thresholdTopUpController:(id)controller requestsPopViewController:(id)viewController;
+- (void)thresholdTopUpController:(id)controller requestsPushViewController:(id)viewController;
+- (void)thresholdTopUpControllerCompletedSetup:(id)setup;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
@@ -41,47 +41,47 @@
 
 @implementation PKMerchantTokenDetailViewController
 
-- (PKMerchantTokenDetailViewController)initWithMerchantToken:(id)a3
+- (PKMerchantTokenDetailViewController)initWithMerchantToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v23.receiver = self;
   v23.super_class = PKMerchantTokenDetailViewController;
   v6 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v23, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1], 5);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_merchantToken, a3);
+    objc_storeStrong(&v6->_merchantToken, token);
     v7->_showMerchantIcon = PKMerchantTokensForceMerchantIconsEnabled();
-    v8 = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
     webService = v7->_webService;
-    v7->_webService = v8;
+    v7->_webService = mEMORY[0x1E69B8EF8];
 
-    v10 = [(PKMerchantTokenDetailViewController *)v7 navigationItem];
+    navigationItem = [(PKMerchantTokenDetailViewController *)v7 navigationItem];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      [v10 pkui_setupScrollEdgeChromelessAppearance];
-      [v10 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
 
-    v11 = [v5 merchantName];
-    v12 = v11;
-    if (!v7->_showMerchantIcon && [v11 length])
+    merchantName = [tokenCopy merchantName];
+    v12 = merchantName;
+    if (!v7->_showMerchantIcon && [merchantName length])
     {
-      [v10 setTitle:v12];
+      [navigationItem setTitle:v12];
     }
 
     if ([(PKMerchantToken *)v7->_merchantToken isAppleCashPaymentToken])
     {
-      v13 = [MEMORY[0x1E69B9000] sharedInstance];
-      v14 = [v13 account];
+      mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+      account = [mEMORY[0x1E69B9000] account];
       peerPaymentAccount = v7->_peerPaymentAccount;
-      v7->_peerPaymentAccount = v14;
+      v7->_peerPaymentAccount = account;
 
-      [v13 registerObserver:v7];
+      [mEMORY[0x1E69B9000] registerObserver:v7];
       v16 = objc_alloc_init(MEMORY[0x1E695CE18]);
       v17 = objc_alloc(MEMORY[0x1E69B8740]);
-      v18 = [(PKMerchantTokenDetailViewController *)v7 _contactKeysToFetch];
-      v19 = [v17 initWithContactStore:v16 keysToFetch:v18];
+      _contactKeysToFetch = [(PKMerchantTokenDetailViewController *)v7 _contactKeysToFetch];
+      v19 = [v17 initWithContactStore:v16 keysToFetch:_contactKeysToFetch];
 
       v20 = [[PKPaymentTransactionCellController alloc] initWithContactResolver:v19 context:0];
       transactionPresenter = v7->_transactionPresenter;
@@ -92,22 +92,22 @@
   return v7;
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PKMerchantToken *)self->_merchantToken isAppleCashPaymentToken])
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __63__PKMerchantTokenDetailViewController_preflightWithCompletion___block_invoke;
     v5[3] = &unk_1E8010B50;
-    v6 = v4;
+    v6 = completionCopy;
     [(PKMerchantTokenDetailViewController *)self _updateRecurringPaymentsWithCompletion:v5];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -122,22 +122,22 @@ uint64_t __63__PKMerchantTokenDetailViewController_preflightWithCompletion___blo
   return result;
 }
 
-- (void)_updateRecurringPaymentsWithCompletion:(id)a3
+- (void)_updateRecurringPaymentsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69B9000] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
   objc_initWeak(&location, self);
-  v6 = [(PKMerchantToken *)self->_merchantToken merchantTokenId];
+  merchantTokenId = [(PKMerchantToken *)self->_merchantToken merchantTokenId];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78__PKMerchantTokenDetailViewController__updateRecurringPaymentsWithCompletion___block_invoke;
   v9[3] = &unk_1E801B5D8;
-  v7 = v6;
+  v7 = merchantTokenId;
   v10 = v7;
   objc_copyWeak(&v12, &location);
-  v8 = v4;
+  v8 = completionCopy;
   v11 = v8;
-  [v5 recurringPaymentsWithCompletion:v9];
+  [mEMORY[0x1E69B9000] recurringPaymentsWithCompletion:v9];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -270,12 +270,12 @@ void __78__PKMerchantTokenDetailViewController__updateRecurringPaymentsWithCompl
   [(PKMerchantTokenDetailViewController *)self _setUpViews];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKMerchantTokenDetailViewController;
-  [(PKMerchantTokenDetailViewController *)&v8 viewDidAppear:a3];
+  [(PKMerchantTokenDetailViewController *)&v8 viewDidAppear:appear];
   v3 = MEMORY[0x1E69B8540];
   v4 = *MEMORY[0x1E69BB6F8];
   v5 = *MEMORY[0x1E69BABE8];
@@ -288,12 +288,12 @@ void __78__PKMerchantTokenDetailViewController__updateRecurringPaymentsWithCompl
   [v3 subject:v4 sendEvent:v7];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v12[3] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = PKMerchantTokenDetailViewController;
-  [(PKMerchantTokenDetailViewController *)&v10 viewDidDisappear:a3];
+  [(PKMerchantTokenDetailViewController *)&v10 viewDidDisappear:disappear];
   if (([(PKMerchantTokenDetailViewController *)self isBeingDismissed]& 1) != 0 || [(PKMerchantTokenDetailViewController *)self isMovingFromParentViewController])
   {
     v4 = MEMORY[0x1E69B8540];
@@ -319,13 +319,13 @@ void __78__PKMerchantTokenDetailViewController__updateRecurringPaymentsWithCompl
   [(PKMerchantTokenDetailViewController *)&v14 viewWillLayoutSubviews];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKMerchantTokenDetailViewController *)self tableView];
-    v4 = [(PKMerchantTokenDetailViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    tableView = [(PKMerchantTokenDetailViewController *)self tableView];
+    navigationItem = [(PKMerchantTokenDetailViewController *)self navigationItem];
+    [tableView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 
-  v5 = [(PKMerchantTokenDetailViewController *)self view];
-  [v5 bounds];
+  view = [(PKMerchantTokenDetailViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -346,8 +346,8 @@ void __78__PKMerchantTokenDetailViewController__updateRecurringPaymentsWithCompl
   v12.receiver = self;
   v12.super_class = PKMerchantTokenDetailViewController;
   [(PKMerchantTokenDetailViewController *)&v12 viewLayoutMarginsDidChange];
-  v3 = [(PKMerchantTokenDetailViewController *)self view];
-  [v3 layoutMargins];
+  view = [(PKMerchantTokenDetailViewController *)self view];
+  [view layoutMargins];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -356,18 +356,18 @@ void __78__PKMerchantTokenDetailViewController__updateRecurringPaymentsWithCompl
   [(PKMerchantTokenLoadingView *)self->_loadingView setLayoutMargins:v5, v7, v9, v11];
 }
 
-- (BOOL)shouldMapSection:(unint64_t)a3
+- (BOOL)shouldMapSection:(unint64_t)section
 {
-  v3 = self;
+  selfCopy = self;
   LOBYTE(self) = 1;
-  if (a3 > 2)
+  if (section > 2)
   {
-    if (a3 == 3)
+    if (section == 3)
     {
-      LODWORD(self) = [(PKMerchantToken *)v3->_merchantToken isAppleCashPaymentToken];
+      LODWORD(self) = [(PKMerchantToken *)selfCopy->_merchantToken isAppleCashPaymentToken];
       if (self)
       {
-        peerPaymentAccount = v3->_peerPaymentAccount;
+        peerPaymentAccount = selfCopy->_peerPaymentAccount;
 
         LOBYTE(self) = [(PKPeerPaymentAccount *)peerPaymentAccount supportsThresholdTopUp];
       }
@@ -375,15 +375,15 @@ void __78__PKMerchantTokenDetailViewController__updateRecurringPaymentsWithCompl
 
     else
     {
-      LOBYTE(self) = a3 != 5;
+      LOBYTE(self) = section != 5;
     }
   }
 
-  else if (a3 == 1)
+  else if (section == 1)
   {
-    if ([(PKMerchantToken *)v3->_merchantToken isAppleCashPaymentToken])
+    if ([(PKMerchantToken *)selfCopy->_merchantToken isAppleCashPaymentToken])
     {
-      LOBYTE(self) = v3->_peerPaymentAccount == 0;
+      LOBYTE(self) = selfCopy->_peerPaymentAccount == 0;
     }
 
     else
@@ -392,12 +392,12 @@ void __78__PKMerchantTokenDetailViewController__updateRecurringPaymentsWithCompl
     }
   }
 
-  else if (a3 == 2)
+  else if (section == 2)
   {
-    LODWORD(self) = [(PKMerchantToken *)v3->_merchantToken isAppleCashPaymentToken];
+    LODWORD(self) = [(PKMerchantToken *)selfCopy->_merchantToken isAppleCashPaymentToken];
     if (self)
     {
-      v4 = v3->_peerPaymentAccount;
+      v4 = selfCopy->_peerPaymentAccount;
 
       LOBYTE(self) = [(PKPeerPaymentAccount *)v4 supportsRecurringPayments];
     }
@@ -406,9 +406,9 @@ void __78__PKMerchantTokenDetailViewController__updateRecurringPaymentsWithCompl
   return self;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   result = 1;
   if (v5 > 2)
   {
@@ -441,11 +441,11 @@ void __78__PKMerchantTokenDetailViewController__updateRecurringPaymentsWithCompl
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   v9 = 0;
   if (v8 <= 1)
   {
@@ -456,12 +456,12 @@ void __78__PKMerchantTokenDetailViewController__updateRecurringPaymentsWithCompl
         goto LABEL_13;
       }
 
-      v10 = [(PKMerchantTokenDetailViewController *)self _managePaymentMethodCellForTableView:v6 atIndexPath:v7];
+      v10 = [(PKMerchantTokenDetailViewController *)self _managePaymentMethodCellForTableView:viewCopy atIndexPath:pathCopy];
     }
 
     else
     {
-      v10 = [(PKMerchantTokenDetailViewController *)self _headerCellForTableView:v6 atIndexPath:v7];
+      v10 = [(PKMerchantTokenDetailViewController *)self _headerCellForTableView:viewCopy atIndexPath:pathCopy];
     }
   }
 
@@ -470,13 +470,13 @@ void __78__PKMerchantTokenDetailViewController__updateRecurringPaymentsWithCompl
     switch(v8)
     {
       case 2:
-        v10 = [(PKMerchantTokenDetailViewController *)self _manageRecurringPaymentCellForTableView:v6 atIndexPath:v7];
+        v10 = [(PKMerchantTokenDetailViewController *)self _manageRecurringPaymentCellForTableView:viewCopy atIndexPath:pathCopy];
         break;
       case 3:
-        v10 = [(PKMerchantTokenDetailViewController *)self _manageAutoReloadCellForTableView:v6 atIndexPath:v7];
+        v10 = [(PKMerchantTokenDetailViewController *)self _manageAutoReloadCellForTableView:viewCopy atIndexPath:pathCopy];
         break;
       case 4:
-        v10 = [(PKMerchantTokenDetailViewController *)self _deletePaymentMethodCellForTableView:v6 atIndexPath:v7];
+        v10 = [(PKMerchantTokenDetailViewController *)self _deletePaymentMethodCellForTableView:viewCopy atIndexPath:pathCopy];
         break;
       default:
         goto LABEL_13;
@@ -489,9 +489,9 @@ LABEL_13:
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if ([(PKSectionTableViewController *)self sectionForIndex:a4]== 2)
+  if ([(PKSectionTableViewController *)self sectionForIndex:section]== 2)
   {
     v5 = [(NSArray *)self->_recurringPayments count];
     if (v5)
@@ -508,9 +508,9 @@ LABEL_13:
   return v5;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (v5 == 4)
   {
     if ([(PKMerchantToken *)self->_merchantToken isAMPPaymentToken])
@@ -526,8 +526,8 @@ LABEL_13:
     if ([(PKMerchantToken *)self->_merchantToken isDeferredPayment])
     {
       v6 = PKLocalizedMerchantTokensString(&cfstr_MerchantTokenD_13.isa);
-      v7 = [(PKMerchantToken *)self->_merchantToken merchantName];
-      v13 = [(PKMerchantToken *)self->_merchantToken merchantName];
+      merchantName = [(PKMerchantToken *)self->_merchantToken merchantName];
+      merchantName2 = [(PKMerchantToken *)self->_merchantToken merchantName];
       v9 = PKStringWithValidatedFormat();
 
 LABEL_21:
@@ -537,7 +537,7 @@ LABEL_21:
     if (![(PKMerchantToken *)self->_merchantToken isAppleCashPaymentToken])
     {
       v6 = PKLocalizedMerchantTokensString(&cfstr_MerchantTokenD_12.isa);
-      v7 = [(PKMerchantToken *)self->_merchantToken merchantName];
+      merchantName = [(PKMerchantToken *)self->_merchantToken merchantName];
       goto LABEL_20;
     }
 
@@ -568,7 +568,7 @@ LABEL_27:
   v6 = PKPrimaryAppleAccountEmail();
   if (v6)
   {
-    v7 = PKLocalizedMerchantTokensString(&cfstr_MerchantTokenD_23.isa);
+    merchantName = PKLocalizedMerchantTokensString(&cfstr_MerchantTokenD_23.isa);
 LABEL_20:
     v9 = PKStringWithValidatedFormat();
     goto LABEL_21;
@@ -582,17 +582,17 @@ LABEL_23:
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if ((a4 - 1) >= 3)
+  viewCopy = view;
+  if ((section - 1) >= 3)
   {
-    if (a4 == 4)
+    if (section == 4)
     {
       v7 = 35.0;
     }
 
-    else if (a4)
+    else if (section)
     {
       v7 = 0.0;
     }
@@ -608,7 +608,7 @@ LABEL_23:
     }
   }
 
-  else if ([(PKMerchantTokenDetailViewController *)self tableView:v6 numberOfRowsInSection:a4]<= 0)
+  else if ([(PKMerchantTokenDetailViewController *)self tableView:viewCopy numberOfRowsInSection:section]<= 0)
   {
     v7 = 0.0;
   }
@@ -621,32 +621,32 @@ LABEL_23:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  [a3 deselectRowAtIndexPath:v13 animated:1];
-  v6 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v13 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v6 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   if (v6 <= 2)
   {
     if (v6 != 1)
     {
       if (v6 == 2)
       {
-        [(PKMerchantTokenDetailViewController *)self _didSelectRecurringPaymentAtIndexPath:v13];
+        [(PKMerchantTokenDetailViewController *)self _didSelectRecurringPaymentAtIndexPath:pathCopy];
       }
 
       goto LABEL_17;
     }
 
-    v7 = [(PKMerchantToken *)self->_merchantToken merchantTokenManagementURL];
-    if (v7)
+    merchantTokenManagementURL = [(PKMerchantToken *)self->_merchantToken merchantTokenManagementURL];
+    if (merchantTokenManagementURL)
     {
       v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [v8 setObject:*MEMORY[0x1E69BA6F0] forKeyedSubscript:*MEMORY[0x1E69BA680]];
       [v8 setObject:*MEMORY[0x1E69BAAC8] forKeyedSubscript:*MEMORY[0x1E69BABE8]];
       [v8 setObject:*MEMORY[0x1E69BAAD0] forKeyedSubscript:*MEMORY[0x1E69BA440]];
-      v9 = [(PKMerchantToken *)self->_merchantToken appleMerchantId];
-      [v8 safelySetObject:v9 forKey:*MEMORY[0x1E69BAAD8]];
+      appleMerchantId = [(PKMerchantToken *)self->_merchantToken appleMerchantId];
+      [v8 safelySetObject:appleMerchantId forKey:*MEMORY[0x1E69BAAD8]];
 
       [MEMORY[0x1E69B8540] subject:*MEMORY[0x1E69BB6F8] sendEvent:v8];
       if ([(PKMerchantToken *)self->_merchantToken isAMPPaymentToken])
@@ -660,8 +660,8 @@ LABEL_16:
 
       if (![(PKMerchantToken *)self->_merchantToken isAppleCashPaymentToken])
       {
-        v11 = [MEMORY[0x1E69DC668] sharedApplication];
-        v12 = [v11 canOpenURL:v7];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        v12 = [mEMORY[0x1E69DC668] canOpenURL:merchantTokenManagementURL];
 
         if (!v12)
         {
@@ -690,7 +690,7 @@ LABEL_16:
 
   else if (v6 == 4)
   {
-    [(PKMerchantTokenDetailViewController *)self _didSelectDeletePaymentMethodAtIndexPath:v13];
+    [(PKMerchantTokenDetailViewController *)self _didSelectDeletePaymentMethodAtIndexPath:pathCopy];
   }
 
 LABEL_17:
@@ -705,17 +705,17 @@ LABEL_17:
 
 - (void)_setUpTableView
 {
-  v2 = [(PKMerchantTokenDetailViewController *)self tableView];
-  [v2 registerClass:objc_opt_class() forCellReuseIdentifier:@"HeaderCell"];
-  [v2 registerClass:objc_opt_class() forCellReuseIdentifier:@"ManagePaymentMethodCell"];
-  [v2 registerClass:objc_opt_class() forCellReuseIdentifier:@"ManageAutoReloadCell"];
-  [v2 registerClass:objc_opt_class() forCellReuseIdentifier:@"ManageRecurringPayment"];
-  [v2 setAlwaysBounceVertical:0];
+  tableView = [(PKMerchantTokenDetailViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"HeaderCell"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"ManagePaymentMethodCell"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"ManageAutoReloadCell"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"ManageRecurringPayment"];
+  [tableView setAlwaysBounceVertical:0];
 }
 
 - (void)_setUpLoadingView
 {
-  v8 = [(PKMerchantTokenDetailViewController *)self view];
+  view = [(PKMerchantTokenDetailViewController *)self view];
   v3 = [PKMerchantTokenLoadingView alloc];
   v4 = [(PKMerchantTokenLoadingView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   loadingView = self->_loadingView;
@@ -726,14 +726,14 @@ LABEL_17:
   [(PKMerchantTokenLoadingView *)v6 setLoadingText:v7];
 
   [(PKMerchantTokenLoadingView *)self->_loadingView setHidden:1];
-  [v8 addSubview:self->_loadingView];
+  [view addSubview:self->_loadingView];
 }
 
 - (void)_showLoadingView
 {
-  v3 = [(PKMerchantTokenDetailViewController *)self view];
+  view = [(PKMerchantTokenDetailViewController *)self view];
   [(PKMerchantTokenLoadingView *)self->_loadingView setHidden:0];
-  [v3 bringSubviewToFront:self->_loadingView];
+  [view bringSubviewToFront:self->_loadingView];
   [(PKMerchantTokenDetailViewController *)self _disableNavigation];
 }
 
@@ -746,44 +746,44 @@ LABEL_17:
 
 - (void)_enableNavigation
 {
-  v3 = [(PKMerchantTokenDetailViewController *)self navigationController];
-  v4 = [v3 navigationBar];
-  [v4 setUserInteractionEnabled:1];
+  navigationController = [(PKMerchantTokenDetailViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:1];
 
-  v6 = [(PKMerchantTokenDetailViewController *)self navigationController];
-  v5 = [v6 interactivePopGestureRecognizer];
-  [v5 setEnabled:1];
+  navigationController2 = [(PKMerchantTokenDetailViewController *)self navigationController];
+  interactivePopGestureRecognizer = [navigationController2 interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:1];
 }
 
 - (void)_disableNavigation
 {
-  v3 = [(PKMerchantTokenDetailViewController *)self navigationController];
-  v4 = [v3 navigationBar];
-  [v4 setUserInteractionEnabled:0];
+  navigationController = [(PKMerchantTokenDetailViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:0];
 
-  v6 = [(PKMerchantTokenDetailViewController *)self navigationController];
-  v5 = [v6 interactivePopGestureRecognizer];
-  [v5 setEnabled:0];
+  navigationController2 = [(PKMerchantTokenDetailViewController *)self navigationController];
+  interactivePopGestureRecognizer = [navigationController2 interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:0];
 }
 
-- (id)_headerCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_headerCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:@"HeaderCell" forIndexPath:a4];
+  v5 = [view dequeueReusableCellWithIdentifier:@"HeaderCell" forIndexPath:path];
   [v5 updateCellWithMerchantToken:self->_merchantToken];
 
   return v5;
 }
 
-- (id)_managePaymentMethodCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_managePaymentMethodCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:@"ManagePaymentMethodCell" forIndexPath:a4];
-  v6 = [v5 defaultContentConfiguration];
+  v5 = [view dequeueReusableCellWithIdentifier:@"ManagePaymentMethodCell" forIndexPath:path];
+  defaultContentConfiguration = [v5 defaultContentConfiguration];
   if ([(PKMerchantToken *)self->_merchantToken isAMPPaymentToken])
   {
     v7 = PKLocalizedMerchantTokensString(&cfstr_MerchantTokenD_28.isa);
 LABEL_3:
     v8 = v7;
-    [v6 setText:v7];
+    [defaultContentConfiguration setText:v7];
     goto LABEL_7;
   }
 
@@ -794,12 +794,12 @@ LABEL_3:
   }
 
   v8 = PKLocalizedMerchantTokensString(&cfstr_MerchantTokenD_22.isa);
-  v9 = [(PKMerchantToken *)self->_merchantToken merchantName];
+  merchantName = [(PKMerchantToken *)self->_merchantToken merchantName];
   v10 = PKStringWithValidatedFormat();
-  [v6 setText:{v10, v9}];
+  [defaultContentConfiguration setText:{v10, merchantName}];
 
 LABEL_7:
-  v11 = [v6 textProperties];
+  textProperties = [defaultContentConfiguration textProperties];
   if (PKBridgeUsesDarkAppearance())
   {
     BPSBridgeTintColor();
@@ -810,17 +810,17 @@ LABEL_7:
     [MEMORY[0x1E69DC888] systemBlueColor];
   }
   v12 = ;
-  [v11 setColor:v12];
+  [textProperties setColor:v12];
 
-  [v5 setContentConfiguration:v6];
+  [v5 setContentConfiguration:defaultContentConfiguration];
 
   return v5;
 }
 
-- (id)_deletePaymentMethodCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_deletePaymentMethodCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:@"ManagePaymentMethodCell" forIndexPath:a4];
-  v6 = [v5 defaultContentConfiguration];
+  v5 = [view dequeueReusableCellWithIdentifier:@"ManagePaymentMethodCell" forIndexPath:path];
+  defaultContentConfiguration = [v5 defaultContentConfiguration];
   if ([(PKMerchantToken *)self->_merchantToken isDeferredPayment])
   {
     v7 = @"MERCHANT_TOKEN_DETAIL_DELETE_DEFERRED_BUTTON_TEXT";
@@ -832,22 +832,22 @@ LABEL_7:
   }
 
   v8 = PKLocalizedMerchantTokensString(&v7->isa);
-  [v6 setText:v8];
+  [defaultContentConfiguration setText:v8];
 
-  v9 = [v6 textProperties];
-  v10 = [MEMORY[0x1E69DC888] systemRedColor];
-  [v9 setColor:v10];
+  textProperties = [defaultContentConfiguration textProperties];
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+  [textProperties setColor:systemRedColor];
 
-  [v5 setContentConfiguration:v6];
+  [v5 setContentConfiguration:defaultContentConfiguration];
   PKAccessibilityIDCellSet(v5, *MEMORY[0x1E69B9B80]);
 
   return v5;
 }
 
-- (id)_manageRecurringPaymentCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_manageRecurringPaymentCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"ManageRecurringPayment" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"ManageRecurringPayment" forIndexPath:pathCopy];
   if (!v7)
   {
     v7 = [[PKPaymentTransactionTableCell alloc] initWithStyle:0 reuseIdentifier:@"ManageRecurringPayment"];
@@ -855,7 +855,7 @@ LABEL_7:
 
   [(PKPaymentTransactionTableCell *)v7 setAdditionalInsets:0.0, 7.0, 0.0, 7.0];
   recurringPayments = self->_recurringPayments;
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [(NSArray *)recurringPayments objectAtIndex:v9];
   v11 = PKPeerPaymentTransactionForRecurringPayment();
@@ -864,15 +864,15 @@ LABEL_7:
   return v7;
 }
 
-- (id)_manageAutoReloadCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_manageAutoReloadCellForTableView:(id)view atIndexPath:(id)path
 {
-  v4 = [a3 dequeueReusableCellWithIdentifier:@"ManageAutoReloadCell" forIndexPath:a4];
-  v5 = [v4 defaultContentConfiguration];
+  v4 = [view dequeueReusableCellWithIdentifier:@"ManageAutoReloadCell" forIndexPath:path];
+  defaultContentConfiguration = [v4 defaultContentConfiguration];
   v6 = PKLocalizedPeerPaymentRecurringString(&cfstr_MerchantTokenM.isa);
-  [v5 setText:v6];
+  [defaultContentConfiguration setText:v6];
 
   [v4 setAccessoryType:1];
-  [v4 setContentConfiguration:v5];
+  [v4 setContentConfiguration:defaultContentConfiguration];
 
   return v4;
 }
@@ -883,11 +883,11 @@ LABEL_7:
   if (!autoReloadController)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69B8A60]);
-    v5 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
-    v6 = [v4 passWithUniqueID:v5];
-    v7 = [v6 paymentPass];
+    associatedPassUniqueID = [(PKPeerPaymentAccount *)self->_peerPaymentAccount associatedPassUniqueID];
+    v6 = [v4 passWithUniqueID:associatedPassUniqueID];
+    paymentPass = [v6 paymentPass];
 
-    v8 = [[PKPeerPaymentThresholdTopUpController alloc] initWithPeerPaymentAccount:self->_peerPaymentAccount pass:v7 context:0 passLibraryDataProvider:v4 delegate:self];
+    v8 = [[PKPeerPaymentThresholdTopUpController alloc] initWithPeerPaymentAccount:self->_peerPaymentAccount pass:paymentPass context:0 passLibraryDataProvider:v4 delegate:self];
     v9 = self->_autoReloadController;
     self->_autoReloadController = v8;
 
@@ -899,40 +899,40 @@ LABEL_7:
   [(PKPeerPaymentThresholdTopUpController *)autoReloadController presentTopUpFlowForRecurringPayment:autoReload];
 }
 
-- (void)_didSelectRecurringPaymentAtIndexPath:(id)a3
+- (void)_didSelectRecurringPaymentAtIndexPath:(id)path
 {
-  v14 = -[NSArray objectAtIndex:](self->_recurringPayments, "objectAtIndex:", [a3 row]);
+  v14 = -[NSArray objectAtIndex:](self->_recurringPayments, "objectAtIndex:", [path row]);
   v4 = objc_alloc(MEMORY[0x1E69B8F28]);
-  v5 = [MEMORY[0x1E69B9020] sharedService];
-  v6 = [v4 initWithPeerPaymentWebService:v5];
+  mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+  v6 = [v4 initWithPeerPaymentWebService:mEMORY[0x1E69B9020]];
 
-  v7 = [(PKPeerPaymentAccount *)self->_peerPaymentAccount recurringPaymentsFeatureDescriptor];
+  recurringPaymentsFeatureDescriptor = [(PKPeerPaymentAccount *)self->_peerPaymentAccount recurringPaymentsFeatureDescriptor];
   v8 = [PKPeerPaymentRecurringPaymentDetailViewController alloc];
-  v9 = [v14 recipientAddress];
-  v10 = [(PKPeerPaymentRecurringPaymentDetailViewController *)v8 initWithRecurringPayment:v14 recipientAddress:v9 mode:2 context:0 peerPaymentController:v6 remoteMessagesComposer:0];
+  recipientAddress = [v14 recipientAddress];
+  v10 = [(PKPeerPaymentRecurringPaymentDetailViewController *)v8 initWithRecurringPayment:v14 recipientAddress:recipientAddress mode:2 context:0 peerPaymentController:v6 remoteMessagesComposer:0];
 
-  v11 = [v7 minimumAmount];
-  [(PKPeerPaymentRecurringPaymentDetailViewController *)v10 setMinimumAmount:v11];
+  minimumAmount = [recurringPaymentsFeatureDescriptor minimumAmount];
+  [(PKPeerPaymentRecurringPaymentDetailViewController *)v10 setMinimumAmount:minimumAmount];
 
-  v12 = [v7 maximumAmount];
-  [(PKPeerPaymentRecurringPaymentDetailViewController *)v10 setMaximumAmount:v12];
+  maximumAmount = [recurringPaymentsFeatureDescriptor maximumAmount];
+  [(PKPeerPaymentRecurringPaymentDetailViewController *)v10 setMaximumAmount:maximumAmount];
 
-  v13 = [(PKMerchantTokenDetailViewController *)self navigationController];
-  if ([v13 pk_settings_useStateDrivenNavigation])
+  navigationController = [(PKMerchantTokenDetailViewController *)self navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v13 pk_settings_pushViewController:v10];
+    [navigationController pk_settings_pushViewController:v10];
   }
 
   else
   {
-    [v13 pushViewController:v10 animated:1];
+    [navigationController pushViewController:v10 animated:1];
   }
 }
 
-- (void)_didSelectDeletePaymentMethodAtIndexPath:(id)a3
+- (void)_didSelectDeletePaymentMethodAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts];
+  pathCopy = path;
+  pkui_userInterfaceIdiomSupportsLargeLayouts = [(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts];
   if ([(PKMerchantToken *)self->_merchantToken isAMPPaymentToken])
   {
     v6 = PKLocalizedMerchantTokensString(&cfstr_MerchantTokenD_30.isa);
@@ -950,10 +950,10 @@ LABEL_7:
     v9 = @"MERCHANT_TOKEN_DETAIL_DELETE_SHEET_MESSAGE";
 LABEL_10:
     v10 = PKLocalizedMerchantTokensString(&v9->isa);
-    v21 = [(PKMerchantToken *)self->_merchantToken merchantName];
+    merchantName = [(PKMerchantToken *)self->_merchantToken merchantName];
     v7 = PKStringWithValidatedFormat();
 
-    if (v5)
+    if (pkui_userInterfaceIdiomSupportsLargeLayouts)
     {
       goto LABEL_4;
     }
@@ -964,7 +964,7 @@ LABEL_10:
   v6 = PKLocalizedPeerPaymentRecurringString(&cfstr_MerchantTokenD_31.isa);
 LABEL_3:
   v7 = v6;
-  if (v5)
+  if (pkui_userInterfaceIdiomSupportsLargeLayouts)
   {
 LABEL_4:
     PKLocalizedMerchantTokensString(&cfstr_MerchantTokenD_3.isa);
@@ -975,14 +975,14 @@ LABEL_4:
 LABEL_11:
   v8 = 0;
 LABEL_12:
-  v11 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v7 message:v8 preferredStyle:{v5, v21}];
-  if ((v5 & 1) == 0)
+  v11 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v7 message:v8 preferredStyle:{pkui_userInterfaceIdiomSupportsLargeLayouts, merchantName}];
+  if ((pkui_userInterfaceIdiomSupportsLargeLayouts & 1) == 0)
   {
-    v12 = [(PKMerchantTokenDetailViewController *)self tableView];
-    v13 = [v12 cellForRowAtIndexPath:v4];
+    tableView = [(PKMerchantTokenDetailViewController *)self tableView];
+    v13 = [tableView cellForRowAtIndexPath:pathCopy];
 
-    v14 = [v11 popoverPresentationController];
-    [v14 setSourceView:v13];
+    popoverPresentationController = [v11 popoverPresentationController];
+    [popoverPresentationController setSourceView:v13];
   }
 
   v15 = MEMORY[0x1E69DC648];
@@ -1020,8 +1020,8 @@ LABEL_12:
   v14[3] = *MEMORY[0x1E69E9840];
   [(PKMerchantTokenDetailViewController *)self _showLoadingView];
   v3 = objc_alloc_init(MEMORY[0x1E69B87A8]);
-  v4 = [(PKMerchantToken *)self->_merchantToken merchantTokenId];
-  [v3 setMerchantTokenId:v4];
+  merchantTokenId = [(PKMerchantToken *)self->_merchantToken merchantTokenId];
+  [v3 setMerchantTokenId:merchantTokenId];
 
   v5 = MEMORY[0x1E69B8540];
   v6 = *MEMORY[0x1E69BB6F8];
@@ -1086,24 +1086,24 @@ void __59__PKMerchantTokenDetailViewController__deleteMerchantToken__block_invok
   }
 }
 
-- (void)thresholdTopUpController:(id)a3 requestsPushViewController:(id)a4
+- (void)thresholdTopUpController:(id)controller requestsPushViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(PKMerchantTokenDetailViewController *)self navigationController];
-  if ([v6 pk_settings_useStateDrivenNavigation])
+  viewControllerCopy = viewController;
+  navigationController = [(PKMerchantTokenDetailViewController *)self navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v6 pk_settings_pushViewController:v5];
+    [navigationController pk_settings_pushViewController:viewControllerCopy];
   }
 
   else
   {
-    [v6 pushViewController:v5 animated:1];
+    [navigationController pushViewController:viewControllerCopy animated:1];
   }
 }
 
-- (void)thresholdTopUpController:(id)a3 requestsPopViewController:(id)a4
+- (void)thresholdTopUpController:(id)controller requestsPopViewController:(id)viewController
 {
-  v5 = [(PKMerchantTokenDetailViewController *)self navigationController:a3];
+  v5 = [(PKMerchantTokenDetailViewController *)self navigationController:controller];
   if ([v5 pk_settings_useStateDrivenNavigation])
   {
     [v5 pk_settings_popViewController];
@@ -1115,21 +1115,21 @@ void __59__PKMerchantTokenDetailViewController__deleteMerchantToken__block_invok
   }
 }
 
-- (id)presentationSceneIdentifierForTopUpController:(id)a3
+- (id)presentationSceneIdentifierForTopUpController:(id)controller
 {
-  v3 = [(PKMerchantTokenDetailViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKMerchantTokenDetailViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
-- (void)thresholdTopUpControllerCompletedSetup:(id)a3
+- (void)thresholdTopUpControllerCompletedSetup:(id)setup
 {
-  v4 = [(PKMerchantTokenDetailViewController *)self navigationController];
-  v3 = [v4 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(PKMerchantTokenDetailViewController *)self navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (id)_contactKeysToFetch
@@ -1138,12 +1138,12 @@ void __59__PKMerchantTokenDetailViewController__deleteMerchantToken__block_invok
   v2 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
   v10[0] = v2;
   v3 = _MergedGlobals_7_1[0]();
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = -[objc_class descriptorForRequiredKeysWithThreeDTouchEnabled:](v3, "descriptorForRequiredKeysWithThreeDTouchEnabled:", [v4 _supportsForceTouch]);
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v5 = -[objc_class descriptorForRequiredKeysWithThreeDTouchEnabled:](v3, "descriptorForRequiredKeysWithThreeDTouchEnabled:", [currentDevice _supportsForceTouch]);
   v10[1] = v5;
-  v6 = [off_1EE9A1D00[0]() descriptorForRequiredKeys];
+  descriptorForRequiredKeys = [off_1EE9A1D00[0]() descriptorForRequiredKeys];
   v7 = *MEMORY[0x1E695C208];
-  v10[2] = v6;
+  v10[2] = descriptorForRequiredKeys;
   v10[3] = v7;
   v10[4] = *MEMORY[0x1E695C330];
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:5];

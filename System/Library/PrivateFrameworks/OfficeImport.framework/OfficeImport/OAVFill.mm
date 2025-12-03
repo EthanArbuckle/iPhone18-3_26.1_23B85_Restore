@@ -1,60 +1,60 @@
 @interface OAVFill
-+ (id)readBlipRefFromManager:(id)a3 state:(id)a4;
-+ (id)readFromManager:(id)a3 state:(id)a4;
-+ (id)targetBgColorWithManager:(id)a3;
-+ (id)targetFgColorWithManager:(id)a3;
-+ (void)addStopsFromArray:(const OAVGradientStop *)a3 stopCount:(int)a4 inverted:(BOOL)a5 startPos:(float)a6 endPos:(float)a7 toGradientFill:(id)a8 manager:(id)a9;
-+ (void)readGradientFill:(id)a3 fromManager:(id)a4;
-+ (void)readImageFill:(id)a3 fromManager:(id)a4 state:(id)a5;
++ (id)readBlipRefFromManager:(id)manager state:(id)state;
++ (id)readFromManager:(id)manager state:(id)state;
++ (id)targetBgColorWithManager:(id)manager;
++ (id)targetFgColorWithManager:(id)manager;
++ (void)addStopsFromArray:(const OAVGradientStop *)array stopCount:(int)count inverted:(BOOL)inverted startPos:(float)pos endPos:(float)endPos toGradientFill:(id)fill manager:(id)manager;
++ (void)readGradientFill:(id)fill fromManager:(id)manager;
++ (void)readImageFill:(id)fill fromManager:(id)manager state:(id)state;
 @end
 
 @implementation OAVFill
 
-+ (id)readFromManager:(id)a3 state:(id)a4
++ (id)readFromManager:(id)manager state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 fillType];
-  if ([v6 isFilled])
+  managerCopy = manager;
+  stateCopy = state;
+  fillType = [managerCopy fillType];
+  if ([managerCopy isFilled])
   {
-    if ([v8 isEqualToString:@"solid"])
+    if ([fillType isEqualToString:@"solid"])
     {
       v9 = objc_alloc_init(OADSolidFill);
-      v10 = [a1 targetFgColorWithManager:v6];
+      v10 = [self targetFgColorWithManager:managerCopy];
       [(OADSolidFill *)v9 setColor:v10];
 LABEL_15:
 
       goto LABEL_17;
     }
 
-    if ([v8 isEqualToString:@"gradient"])
+    if ([fillType isEqualToString:@"gradient"])
     {
       v9 = objc_alloc_init(OADGradientFill);
-      [a1 readGradientFill:v9 fromManager:v6];
+      [self readGradientFill:v9 fromManager:managerCopy];
       v10 = objc_alloc_init(OADLinearShade);
       [(OADLinearShade *)v10 setScaled:0];
-      [v6 fillAngle];
+      [managerCopy fillAngle];
       *&v12 = (((270.0 - v11) / 360.0) - floorf((270.0 - v11) / 360.0)) * 360.0;
       [(OADLinearShade *)v10 setAngle:v12];
       [(OADSolidFill *)v9 setShade:v10];
       goto LABEL_15;
     }
 
-    if ([v8 isEqualToString:@"gradientRadial"])
+    if ([fillType isEqualToString:@"gradientRadial"])
     {
       v9 = objc_alloc_init(OADGradientFill);
-      [a1 readGradientFill:v9 fromManager:v6];
+      [self readGradientFill:v9 fromManager:managerCopy];
       v10 = objc_alloc_init(OADPathShade);
       [(OADLinearShade *)v10 setType:1];
       [(OADSolidFill *)v9 setShade:v10];
       goto LABEL_15;
     }
 
-    if ([v8 isEqualToString:@"pattern"])
+    if ([fillType isEqualToString:@"pattern"])
     {
-      v10 = [a1 readBlipRefFromManager:v6 state:v7];
-      v13 = [a1 targetFgColorWithManager:v6];
-      v14 = [a1 targetBgColorWithManager:v6];
+      v10 = [self readBlipRefFromManager:managerCopy state:stateCopy];
+      v13 = [self targetFgColorWithManager:managerCopy];
+      v14 = [self targetBgColorWithManager:managerCopy];
       v9 = objc_alloc_init(OADPatternFill);
       [(OADSolidFill *)v9 setFgColor:v13];
       [(OADSolidFill *)v9 setBgColor:v14];
@@ -65,10 +65,10 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    if ([v8 isEqualToString:@"tile"])
+    if ([fillType isEqualToString:@"tile"])
     {
       v9 = objc_alloc_init(OADImageFill);
-      v16 = [a1 readBlipRefFromManager:v6 state:v7];
+      v16 = [self readBlipRefFromManager:managerCopy state:stateCopy];
       [(OADSolidFill *)v9 setBlipRef:v16];
 
       v10 = objc_alloc_init(OADTileTechnique);
@@ -76,14 +76,14 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    if ([v8 isEqualToString:@"frame"])
+    if ([fillType isEqualToString:@"frame"])
     {
-      v17 = [v6 imageFillId];
+      imageFillId = [managerCopy imageFillId];
 
-      if (v17)
+      if (imageFillId)
       {
         v9 = objc_alloc_init(OADImageFill);
-        v18 = [a1 readBlipRefFromManager:v6 state:v7];
+        v18 = [self readBlipRefFromManager:managerCopy state:stateCopy];
         [(OADSolidFill *)v9 setBlipRef:v18];
 
         v10 = objc_alloc_init(OADStretchTechnique);
@@ -99,58 +99,58 @@ LABEL_17:
   return v9;
 }
 
-+ (id)targetFgColorWithManager:(id)a3
++ (id)targetFgColorWithManager:(id)manager
 {
-  v3 = a3;
-  v4 = [v3 fillFgColor];
-  [v3 fillFgAlpha];
-  v5 = [OAVColor readColorFromAttribute:v4 alpha:v3 manager:?];
+  managerCopy = manager;
+  fillFgColor = [managerCopy fillFgColor];
+  [managerCopy fillFgAlpha];
+  v5 = [OAVColor readColorFromAttribute:fillFgColor alpha:managerCopy manager:?];
 
   return v5;
 }
 
-+ (id)targetBgColorWithManager:(id)a3
++ (id)targetBgColorWithManager:(id)manager
 {
-  v3 = a3;
-  v4 = [v3 fillBgColor];
-  [v3 fillBgAlpha];
-  v5 = [OAVColor readColorFromAttribute:v4 alpha:v3 manager:?];
+  managerCopy = manager;
+  fillBgColor = [managerCopy fillBgColor];
+  [managerCopy fillBgAlpha];
+  v5 = [OAVColor readColorFromAttribute:fillBgColor alpha:managerCopy manager:?];
 
   return v5;
 }
 
-+ (void)addStopsFromArray:(const OAVGradientStop *)a3 stopCount:(int)a4 inverted:(BOOL)a5 startPos:(float)a6 endPos:(float)a7 toGradientFill:(id)a8 manager:(id)a9
++ (void)addStopsFromArray:(const OAVGradientStop *)array stopCount:(int)count inverted:(BOOL)inverted startPos:(float)pos endPos:(float)endPos toGradientFill:(id)fill manager:(id)manager
 {
-  v12 = a5;
-  v37 = a8;
-  v15 = a9;
-  v16 = v15;
-  if (a6 < a7)
+  invertedCopy = inverted;
+  fillCopy = fill;
+  managerCopy = manager;
+  v16 = managerCopy;
+  if (pos < endPos)
   {
-    v36 = v15;
-    [v15 fillFgAlpha];
+    v36 = managerCopy;
+    [managerCopy fillFgAlpha];
     v18 = v17;
     [v16 fillBgAlpha];
     v20 = v19;
-    v21 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a4];
-    v22 = a4 - 1;
-    if (v12)
+    v21 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:count];
+    v22 = count - 1;
+    if (invertedCopy)
     {
-      v23 = -1;
+      countCopy = -1;
     }
 
     else
     {
       v22 = 0;
-      v23 = a4;
+      countCopy = count;
     }
 
-    v24 = v22 - v23;
-    if (v22 != v23)
+    v24 = v22 - countCopy;
+    if (v22 != countCopy)
     {
-      v25 = a6;
-      v26 = (a7 - a6);
-      if (v12)
+      posCopy = pos;
+      v26 = (endPos - pos);
+      if (invertedCopy)
       {
         v27 = -1;
       }
@@ -160,11 +160,11 @@ LABEL_17:
         v27 = 1;
       }
 
-      p_var1 = &a3[v22].var1;
+      p_var1 = &array[v22].var1;
       do
       {
         v29 = *(p_var1 - 1);
-        if (v12)
+        if (invertedCopy)
         {
           v30 = 1.0 - *p_var1;
         }
@@ -184,7 +184,7 @@ LABEL_17:
           [v32 addTransform:v33];
         }
 
-        v35 = v25 + v30 * v26;
+        v35 = posCopy + v30 * v26;
         *&v35 = v35;
         [OADGradientFillStop addStopWithColor:v32 position:v21 toArray:v35];
 
@@ -195,70 +195,70 @@ LABEL_17:
       while (v24);
     }
 
-    [v37 setStops:v21];
+    [fillCopy setStops:v21];
 
     v16 = v36;
   }
 }
 
-+ (void)readGradientFill:(id)a3 fromManager:(id)a4
++ (void)readGradientFill:(id)fill fromManager:(id)manager
 {
-  a3;
-  v5 = a4;
-  [v5 fillType];
+  fill;
+  managerCopy = manager;
+  [managerCopy fillType];
   if ([objc_claimAutoreleasedReturnValue() isEqualToString:@"gradient"])
   {
-    [v5 fillAngle];
+    [managerCopy fillAngle];
   }
 
-  [v5 fillFocus];
-  v6 = [v5 fillFgColor];
+  [managerCopy fillFocus];
+  fillFgColor = [managerCopy fillFgColor];
   LODWORD(v7) = 1.0;
-  [OAVColor readColorFromAttribute:v6 alpha:v5 manager:v7];
+  [OAVColor readColorFromAttribute:fillFgColor alpha:managerCopy manager:v7];
   objc_claimAutoreleasedReturnValue();
-  v8 = [v5 fillBgColor];
+  fillBgColor = [managerCopy fillBgColor];
   LODWORD(v9) = 1.0;
-  [OAVColor readColorFromAttribute:v8 alpha:v5 manager:v9];
+  [OAVColor readColorFromAttribute:fillBgColor alpha:managerCopy manager:v9];
   objc_claimAutoreleasedReturnValue();
-  [v5 fillGradientColors];
+  [managerCopy fillGradientColors];
   [objc_claimAutoreleasedReturnValue() componentsSeparatedByString:@";"];
   [objc_claimAutoreleasedReturnValue() count];
   operator new[]();
 }
 
-+ (void)readImageFill:(id)a3 fromManager:(id)a4 state:(id)a5
++ (void)readImageFill:(id)fill fromManager:(id)manager state:(id)state
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 imageFillId];
-  v11 = [v8 packagePart];
-  v12 = [v11 relationshipForIdentifier:v10];
+  fillCopy = fill;
+  managerCopy = manager;
+  stateCopy = state;
+  imageFillId = [managerCopy imageFillId];
+  packagePart = [managerCopy packagePart];
+  v12 = [packagePart relationshipForIdentifier:imageFillId];
 
-  v13 = [v12 targetLocation];
-  v14 = [v9 blipRefForURL:v13];
+  targetLocation = [v12 targetLocation];
+  v14 = [stateCopy blipRefForURL:targetLocation];
 
-  [v17 setBlipRef:v14];
+  [fillCopy setBlipRef:v14];
   v15 = objc_alloc_init(OADForegroundColorEffect);
-  v16 = [a1 targetFgColorWithManager:v8];
+  v16 = [self targetFgColorWithManager:managerCopy];
   [(OADForegroundColorEffect *)v15 setForegroundColor:v16];
 }
 
-+ (id)readBlipRefFromManager:(id)a3 state:(id)a4
++ (id)readBlipRefFromManager:(id)manager state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 imageFillId];
-  if (v8)
+  managerCopy = manager;
+  stateCopy = state;
+  imageFillId = [managerCopy imageFillId];
+  if (imageFillId)
   {
-    v9 = [v6 packagePart];
-    v10 = [v9 relationshipForIdentifier:v8];
+    packagePart = [managerCopy packagePart];
+    v10 = [packagePart relationshipForIdentifier:imageFillId];
 
-    v11 = [v10 targetLocation];
-    v12 = [v7 blipRefForURL:v11];
+    targetLocation = [v10 targetLocation];
+    v12 = [stateCopy blipRefForURL:targetLocation];
 
     v13 = objc_alloc_init(OADForegroundColorEffect);
-    v14 = [a1 targetFgColorWithManager:v6];
+    v14 = [self targetFgColorWithManager:managerCopy];
     [(OADForegroundColorEffect *)v13 setForegroundColor:v14];
   }
 

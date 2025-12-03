@@ -1,18 +1,18 @@
 @interface ConfigurationIntentResponse
 - (ConfigurationIntentResponse)init;
-- (ConfigurationIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (ConfigurationIntentResponse)initWithPropertiesByName:(id)a3;
+- (ConfigurationIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (ConfigurationIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation ConfigurationIntentResponse
 
-- (ConfigurationIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (ConfigurationIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v7 = [(ConfigurationIntentResponse *)self init];
-  *(&v7->super.super.isa + OBJC_IVAR___ConfigurationIntentResponse_code) = a3;
+  *(&v7->super.super.isa + OBJC_IVAR___ConfigurationIntentResponse_code) = code;
   v8 = v7;
-  [(ConfigurationIntentResponse *)v8 setUserActivity:v6];
+  [(ConfigurationIntentResponse *)v8 setUserActivity:activityCopy];
 
   return v8;
 }
@@ -25,9 +25,9 @@
   return [(ConfigurationIntentResponse *)&v3 init];
 }
 
-- (ConfigurationIntentResponse)initWithPropertiesByName:(id)a3
+- (ConfigurationIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_10000CD04();
   }

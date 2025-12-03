@@ -2,7 +2,7 @@
 - (NSString)lib_digestMD5;
 - (NSString)lib_shortDigestMD5;
 - (id)lib_gzippedData;
-- (void)lib_enumerateSubdataWithOffset:(unint64_t)a3 length:(unint64_t)a4 usingBlock:(id)a5;
+- (void)lib_enumerateSubdataWithOffset:(unint64_t)offset length:(unint64_t)length usingBlock:(id)block;
 @end
 
 @implementation NSData
@@ -23,15 +23,15 @@
 
 - (NSString)lib_shortDigestMD5
 {
-  v2 = [(NSData *)self lib_digestMD5];
-  if ([v2 length] <= 8)
+  lib_digestMD5 = [(NSData *)self lib_digestMD5];
+  if ([lib_digestMD5 length] <= 8)
   {
-    v3 = v2;
+    v3 = lib_digestMD5;
   }
 
   else
   {
-    v3 = [v2 substringToIndex:8];
+    v3 = [lib_digestMD5 substringToIndex:8];
   }
 
   v4 = v3;
@@ -39,29 +39,29 @@
   return v4;
 }
 
-- (void)lib_enumerateSubdataWithOffset:(unint64_t)a3 length:(unint64_t)a4 usingBlock:(id)a5
+- (void)lib_enumerateSubdataWithOffset:(unint64_t)offset length:(unint64_t)length usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v14 = 0;
-  if ([(NSData *)self length]> a3)
+  if ([(NSData *)self length]> offset)
   {
-    v9 = -a3;
+    v9 = -offset;
     do
     {
       v10 = [(NSData *)self length]+ v9;
       v11 = objc_autoreleasePoolPush();
-      if (v10 >= a4)
+      if (v10 >= length)
       {
-        v12 = a4;
+        lengthCopy = length;
       }
 
       else
       {
-        v12 = v10;
+        lengthCopy = v10;
       }
 
-      v13 = [(NSData *)self subdataWithRange:a3, v12];
-      v8[2](v8, v13, v10 < a4, &v14);
+      lengthCopy = [(NSData *)self subdataWithRange:offset, lengthCopy];
+      blockCopy[2](blockCopy, lengthCopy, v10 < length, &v14);
 
       objc_autoreleasePoolPop(v11);
       if (v14 == 1)
@@ -69,20 +69,20 @@
         break;
       }
 
-      a3 += a4;
-      v9 -= a4;
+      offset += length;
+      v9 -= length;
     }
 
-    while (a3 < [(NSData *)self length]);
+    while (offset < [(NSData *)self length]);
   }
 }
 
 - (id)lib_gzippedData
 {
-  v3 = [(NSData *)self bytes];
+  bytes = [(NSData *)self bytes];
   v4 = [(NSData *)self length];
   v5 = 0;
-  if (v3)
+  if (bytes)
   {
     v6 = v4;
     if (v4)

@@ -1,14 +1,14 @@
 @interface GSClientManagedLibrary
-- (BOOL)generationsRemove:(id)a3 error:(id *)a4;
-- (GSClientManagedLibrary)initWithURL:(id)a3 error:(id *)a4;
+- (BOOL)generationsRemove:(id)remove error:(id *)error;
+- (GSClientManagedLibrary)initWithURL:(id)l error:(id *)error;
 @end
 
 @implementation GSClientManagedLibrary
 
-- (GSClientManagedLibrary)initWithURL:(id)a3 error:(id *)a4
+- (GSClientManagedLibrary)initWithURL:(id)l error:(id *)error
 {
-  v7 = a3;
-  if (([v7 isFileURL] & 1) == 0)
+  lCopy = l;
+  if (([lCopy isFileURL] & 1) == 0)
   {
     [GSClientManagedLibrary initWithURL:a2 error:self];
   }
@@ -19,7 +19,7 @@
   if (v8)
   {
     v9 = +[GSStorageManager manager];
-    v10 = [v9 temporaryStorageForItemAtURL:v7 locatedAtURL:v7 error:a4];
+    v10 = [v9 temporaryStorageForItemAtURL:lCopy locatedAtURL:lCopy error:error];
     ts = v8->_ts;
     v8->_ts = v10;
 
@@ -33,14 +33,14 @@
   return v8;
 }
 
-- (BOOL)generationsRemove:(id)a3 error:(id *)a4
+- (BOOL)generationsRemove:(id)remove error:(id *)error
 {
-  v6 = a3;
+  removeCopy = remove;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 1;
-  v7 = [(GSTemporaryStorage *)self->_ts additionsWithNames:v6 inNameSpace:@"com.apple.documentVersions" error:0];
+  v7 = [(GSTemporaryStorage *)self->_ts additionsWithNames:removeCopy inNameSpace:@"com.apple.documentVersions" error:0];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -63,9 +63,9 @@
     dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v11 = *(v24 + 24);

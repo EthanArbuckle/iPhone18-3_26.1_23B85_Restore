@@ -10,8 +10,8 @@
 - (id)sb_arrayByInsertingOrMovingObject:()SpringBoard toIndex:
 {
   v6 = a3;
-  v7 = [a1 mutableCopy];
-  v8 = [a1 indexOfObject:v6];
+  v7 = [self mutableCopy];
+  v8 = [self indexOfObject:v6];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [v7 removeObjectAtIndex:v8];
@@ -25,8 +25,8 @@
 - (id)sb_arrayByAddingOrMovingObject:()SpringBoard
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
-  v6 = [a1 indexOfObject:v4];
+  v5 = [self mutableCopy];
+  v6 = [self indexOfObject:v4];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [v5 removeObjectAtIndex:v6];
@@ -42,21 +42,21 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSArray(SpringBoard) *)a2 sb_arrayByRemovingObject:a1];
+    [(NSArray(SpringBoard) *)a2 sb_arrayByRemovingObject:self];
   }
 
-  if ([a1 containsObject:v5])
+  if ([self containsObject:v5])
   {
-    v6 = [a1 mutableCopy];
-    [v6 removeObject:v5];
+    selfCopy = [self mutableCopy];
+    [selfCopy removeObject:v5];
   }
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)sb_arrayByRemovingObjects:()SpringBoard
@@ -64,16 +64,16 @@
   v4 = a3;
   if ([v4 count])
   {
-    v5 = [a1 mutableCopy];
-    [v5 removeObjectsInArray:v4];
+    selfCopy = [self mutableCopy];
+    [selfCopy removeObjectsInArray:v4];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)sb_arrayByRemovingObject:()SpringBoard .cold.1(uint64_t a1, uint64_t a2)

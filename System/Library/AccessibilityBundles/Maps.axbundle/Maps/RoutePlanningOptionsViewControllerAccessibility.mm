@@ -1,17 +1,17 @@
 @interface RoutePlanningOptionsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation RoutePlanningOptionsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"RoutePlanningOptionsViewController" hasInstanceMethod:@"modalHeaderView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RoutePlanningOptionsViewController" isKindOfClass:@"ContaineeViewController"];
-  [v3 validateClass:@"ContaineeViewController" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"RoutePlanningOptionsViewController" hasInstanceMethod:@"modalHeaderView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RoutePlanningOptionsViewController" isKindOfClass:@"ContaineeViewController"];
+  [validationsCopy validateClass:@"ContaineeViewController" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -19,7 +19,7 @@
   v3 = objc_opt_new();
   v4 = [(RoutePlanningOptionsViewControllerAccessibility *)self safeUIViewForKey:@"contentView"];
   v5 = [(RoutePlanningOptionsViewControllerAccessibility *)self safeUIViewForKey:@"modalHeaderView"];
-  v6 = [v4 superview];
+  superview = [v4 superview];
   [v3 axSafelyAddObject:v5];
   [v3 axSafelyAddObject:v4];
   v15[0] = MEMORY[0x29EDCA5F8];
@@ -28,7 +28,7 @@
   v15[3] = &unk_29F2CC388;
   v16 = v3;
   v7 = v3;
-  [v6 setAccessibilityElementsBlock:v15];
+  [superview setAccessibilityElementsBlock:v15];
   v10 = MEMORY[0x29EDCA5F8];
   v11 = 3221225472;
   v12 = __93__RoutePlanningOptionsViewControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_2;

@@ -1,76 +1,76 @@
 @interface PUICodableImage
-+ (BOOL)bs_encodeRepresentation:(int64_t)a3 value:(id)a4 withCoder:(id)a5;
-+ (CGImage)createCGImageFromCPBitmapData:(id)a3 error:(id *)a4;
-+ (CGImage)createCGImageFromData:(id)a3 error:(id *)a4;
-+ (CGImage)createCGImageFromURL:(id)a3 error:(id *)a4;
-+ (id)dataRepresentationForImage:(CGImage *)a3 error:(id *)a4;
-+ (id)makeWithOther:(id)a3;
-+ (void)encodeRepresentation:(int64_t)a3 value:(id)a4 withCoder:(id)a5;
-- (BOOL)isEqualRepresentation:(id)a3;
-- (BOOL)refersToIdenticalImageFrom:(id)a3;
++ (BOOL)bs_encodeRepresentation:(int64_t)representation value:(id)value withCoder:(id)coder;
++ (CGImage)createCGImageFromCPBitmapData:(id)data error:(id *)error;
++ (CGImage)createCGImageFromData:(id)data error:(id *)error;
++ (CGImage)createCGImageFromURL:(id)l error:(id *)error;
++ (id)dataRepresentationForImage:(CGImage *)image error:(id *)error;
++ (id)makeWithOther:(id)other;
++ (void)encodeRepresentation:(int64_t)representation value:(id)value withCoder:(id)coder;
+- (BOOL)isEqualRepresentation:(id)representation;
+- (BOOL)refersToIdenticalImageFrom:(id)from;
 - (CGImage)CGImage;
-- (CGImage)buildCGImageWithError:(id *)a3;
-- (PUICodableImage)initWithBSXPCCoder:(id)a3;
-- (PUICodableImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 error:(id *)a5;
-- (PUICodableImage)initWithCoder:(id)a3;
-- (PUICodableImage)initWithIOSurface:(id)a3 scale:(double)a4 error:(id *)a5;
-- (PUICodableImage)initWithUIImage:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromSourceData:(id)a3 scale:(double)a4 error:(id *)a5;
-- (id)initFromURL:(id)a3 scale:(double)a4 error:(id *)a5;
-- (id)surfaceCreatingIfNecessary:(BOOL)a3;
+- (CGImage)buildCGImageWithError:(id *)error;
+- (PUICodableImage)initWithBSXPCCoder:(id)coder;
+- (PUICodableImage)initWithCGImage:(CGImage *)image scale:(double)scale error:(id *)error;
+- (PUICodableImage)initWithCoder:(id)coder;
+- (PUICodableImage)initWithIOSurface:(id)surface scale:(double)scale error:(id *)error;
+- (PUICodableImage)initWithUIImage:(id)image error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromSourceData:(id)data scale:(double)scale error:(id *)error;
+- (id)initFromURL:(id)l scale:(double)scale error:(id *)error;
+- (id)surfaceCreatingIfNecessary:(BOOL)necessary;
 - (id)wrappedIOSurface;
 - (void)dealloc;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUICodableImage
 
-- (PUICodableImage)initWithIOSurface:(id)a3 scale:(double)a4 error:(id *)a5
+- (PUICodableImage)initWithIOSurface:(id)surface scale:(double)scale error:(id *)error
 {
-  v8 = a3;
+  surfaceCopy = surface;
   v9 = [(PUICodableImage *)self init];
   v10 = v9;
   if (v9)
   {
     v9->_representation = 2;
-    objc_storeStrong(&v9->_surface, a3);
-    v10->_scale = a4;
+    objc_storeStrong(&v9->_surface, surface);
+    v10->_scale = scale;
   }
 
   return v10;
 }
 
-+ (id)makeWithOther:(id)a3
++ (id)makeWithOther:(id)other
 {
-  v3 = a3;
+  otherCopy = other;
   v4 = objc_alloc_init(PUICodableImage);
-  v4->_representation = *(v3 + 1);
-  objc_storeStrong(&v4->_surface, *(v3 + 2));
-  objc_storeStrong(&v4->_url, *(v3 + 3));
-  v5 = *(v3 + 4);
+  v4->_representation = *(otherCopy + 1);
+  objc_storeStrong(&v4->_surface, *(otherCopy + 2));
+  objc_storeStrong(&v4->_url, *(otherCopy + 3));
+  v5 = *(otherCopy + 4);
   if (v5)
   {
     v5 = CGImageRetain(v5);
   }
 
   v4->_sourceImage = v5;
-  v6 = *(v3 + 6);
+  v6 = *(otherCopy + 6);
   if (v6)
   {
     v6 = CGImageRetain(v6);
   }
 
   v4->_cachedImage = v6;
-  v7 = [*(v3 + 5) copy];
+  v7 = [*(otherCopy + 5) copy];
   bitmapSourceData = v4->_bitmapSourceData;
   v4->_bitmapSourceData = v7;
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PUICodableImage allocWithZone:?]];
   v4->_representation = self->_representation;
@@ -97,15 +97,15 @@
   return v4;
 }
 
-- (id)initFromSourceData:(id)a3 scale:(double)a4 error:(id *)a5
+- (id)initFromSourceData:(id)data scale:(double)scale error:(id *)error
 {
-  v8 = a3;
-  v9 = [PUICodableImage createCGImageFromData:v8 error:a5];
-  if (v9)
+  dataCopy = data;
+  selfCopy = [PUICodableImage createCGImageFromData:dataCopy error:error];
+  if (selfCopy)
   {
     if (CGImageGetImageSource())
     {
-      v10 = [(PUICodableImage *)self initWithCGImage:v9 scale:a5 error:a4];
+      v10 = [(PUICodableImage *)self initWithCGImage:selfCopy scale:error error:scale];
     }
 
     else
@@ -116,32 +116,32 @@
       v10 = v11;
       if (v11)
       {
-        v11->_cachedImage = v9;
+        v11->_cachedImage = selfCopy;
         v11->_representation = 1;
-        v12 = [v8 copy];
+        v12 = [dataCopy copy];
         bitmapSourceData = v10->_bitmapSourceData;
         v10->_bitmapSourceData = v12;
 
-        v10->_scale = a4;
+        v10->_scale = scale;
         goto LABEL_7;
       }
     }
 
-    CGImageRelease(v9);
+    CGImageRelease(selfCopy);
 LABEL_7:
     self = v10;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)initFromURL:(id)a3 scale:(double)a4 error:(id *)a5
+- (id)initFromURL:(id)l scale:(double)scale error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v9 = [(PUICodableImage *)self init];
   v10 = v9;
-  if (v9 && (v9->_representation = 3, v11 = [v8 copy], url = v10->_url, v10->_url = v11, url, v10->_scale = a4, v13 = objc_msgSend(objc_opt_class(), "createCGImageFromURL:error:", v10->_url, a5), (v10->_cachedImage = v13) == 0))
+  if (v9 && (v9->_representation = 3, v11 = [lCopy copy], url = v10->_url, v10->_url = v11, url, v10->_scale = scale, v13 = objc_msgSend(objc_opt_class(), "createCGImageFromURL:error:", v10->_url, error), (v10->_cachedImage = v13) == 0))
   {
     v14 = 0;
   }
@@ -154,53 +154,53 @@ LABEL_7:
   return v14;
 }
 
-- (PUICodableImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 error:(id *)a5
+- (PUICodableImage)initWithCGImage:(CGImage *)image scale:(double)scale error:(id *)error
 {
-  v7 = [(PUICodableImage *)self init:a3];
+  v7 = [(PUICodableImage *)self init:image];
   v8 = v7;
   if (v7)
   {
     v7->_representation = 0;
-    v7->_sourceImage = CGImageRetain(a3);
-    v8->_scale = a4;
+    v7->_sourceImage = CGImageRetain(image);
+    v8->_scale = scale;
   }
 
   return v8;
 }
 
-- (PUICodableImage)initWithUIImage:(id)a3 error:(id *)a4
+- (PUICodableImage)initWithUIImage:(id)image error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 ioSurface];
-  if (v7)
+  imageCopy = image;
+  ioSurface = [imageCopy ioSurface];
+  if (ioSurface)
   {
-    [v6 scale];
-    v8 = [(PUICodableImage *)self initWithIOSurface:v7 scale:a4 error:?];
+    [imageCopy scale];
+    v8 = [(PUICodableImage *)self initWithIOSurface:ioSurface scale:error error:?];
   }
 
   else
   {
-    CGImageRepresentation = [v6 CGImage];
+    CGImageRepresentation = [imageCopy CGImage];
     if (!CGImageRepresentation)
     {
       CGImageRepresentation = _UIImageGetCGImageRepresentation();
       if (!CGImageRepresentation)
       {
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_7;
       }
     }
 
     v10 = CGImageRepresentation;
-    [v6 scale];
-    v8 = [(PUICodableImage *)self initWithCGImage:v10 scale:a4 error:?];
+    [imageCopy scale];
+    v8 = [(PUICodableImage *)self initWithCGImage:v10 scale:error error:?];
   }
 
   self = v8;
-  v11 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v11;
+  return selfCopy;
 }
 
 - (CGImage)CGImage
@@ -219,7 +219,7 @@ LABEL_7:
   return result;
 }
 
-- (CGImage)buildCGImageWithError:(id *)a3
+- (CGImage)buildCGImageWithError:(id *)error
 {
   v18[2] = *MEMORY[0x1E69E9840];
   if (self->_surface)
@@ -249,11 +249,11 @@ LABEL_7:
 
   if (!self->_url || (v11 = objc_opt_class(), url = self->_url, v16 = 0, v6 = [v11 createCGImageFromURL:url error:&v16], v13 = v16, v7, v7 = v13, !v6))
   {
-    if (a3)
+    if (error)
     {
       v14 = v7;
       v6 = 0;
-      *a3 = v7;
+      *error = v7;
     }
 
     else
@@ -278,26 +278,26 @@ LABEL_11:
   [(PUICodableImage *)&v3 dealloc];
 }
 
-- (id)surfaceCreatingIfNecessary:(BOOL)a3
+- (id)surfaceCreatingIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
-  v5 = [(PUICodableImage *)self wrappedIOSurface];
-  if (v3 && !v5)
+  necessaryCopy = necessary;
+  wrappedIOSurface = [(PUICodableImage *)self wrappedIOSurface];
+  if (necessaryCopy && !wrappedIOSurface)
   {
     sourceImage = self->_sourceImage;
-    if (!sourceImage || (PUIIOSurfaceFromCGImage(sourceImage, 1), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!sourceImage || (PUIIOSurfaceFromCGImage(sourceImage, 1), (wrappedIOSurface = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v5 = 0;
+      wrappedIOSurface = 0;
     }
   }
 
-  return v5;
+  return wrappedIOSurface;
 }
 
-- (BOOL)refersToIdenticalImageFrom:(id)a3
+- (BOOL)refersToIdenticalImageFrom:(id)from
 {
-  v4 = a3;
-  if ([(PUICodableImage *)self isEqualRepresentation:v4])
+  fromCopy = from;
+  if ([(PUICodableImage *)self isEqualRepresentation:fromCopy])
   {
     v5 = 1;
   }
@@ -306,22 +306,22 @@ LABEL_11:
   {
     [(PUICodableImage *)self CGImage];
     Hash = CGImageGetHash();
-    [v4 CGImage];
+    [fromCopy CGImage];
     v5 = Hash == CGImageGetHash();
   }
 
   return v5;
 }
 
-- (BOOL)isEqualRepresentation:(id)a3
+- (BOOL)isEqualRepresentation:(id)representation
 {
-  v4 = a3;
-  if (!self->_cachedImage || !v4[6] || (v5 = CGImageGetIdentifier(), v5 != CGImageGetIdentifier()))
+  representationCopy = representation;
+  if (!self->_cachedImage || !representationCopy[6] || (v5 = CGImageGetIdentifier(), v5 != CGImageGetIdentifier()))
   {
     bitmapSourceData = self->_bitmapSourceData;
     if (bitmapSourceData)
     {
-      v8 = v4[5];
+      v8 = representationCopy[5];
       if (v8)
       {
         v6 = bitmapSourceData == v8;
@@ -329,25 +329,25 @@ LABEL_11:
       }
     }
 
-    v9 = [(PUICodableImage *)self wrappedIOSurface];
-    v10 = [v4 wrappedIOSurface];
-    v11 = v10;
-    if (v9 && v10)
+    wrappedIOSurface = [(PUICodableImage *)self wrappedIOSurface];
+    wrappedIOSurface2 = [representationCopy wrappedIOSurface];
+    v11 = wrappedIOSurface2;
+    if (wrappedIOSurface && wrappedIOSurface2)
     {
-      ID = IOSurfaceGetID(v9);
+      ID = IOSurfaceGetID(wrappedIOSurface);
       Identifier = IOSurfaceGetID(v11);
     }
 
     else
     {
       url = self->_url;
-      if (url && v4[3])
+      if (url && representationCopy[3])
       {
         v6 = [(NSURL *)url isEqual:?];
         goto LABEL_19;
       }
 
-      if (!self->_sourceImage || !v4[4])
+      if (!self->_sourceImage || !representationCopy[4])
       {
         v6 = 0;
         goto LABEL_19;
@@ -389,18 +389,18 @@ LABEL_20:
   return sourceImage;
 }
 
-- (PUICodableImage)initWithCoder:(id)a3
+- (PUICodableImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"scale"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"scale"];
   v6 = v5;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"representation"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"representation"];
   v8 = v7;
   if (v7)
   {
     if ([v7 isEqualToString:@"fileURL"])
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v8];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v8];
       if (v9)
       {
         v19 = 0;
@@ -416,7 +416,7 @@ LABEL_12:
 
     else if ([v8 isEqualToString:@"imageData"])
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v8];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v8];
       if (v9)
       {
         v18 = 0;
@@ -434,11 +434,11 @@ LABEL_12:
 LABEL_16:
         self = self;
 
-        v12 = self;
+        selfCopy = self;
         goto LABEL_17;
       }
 
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v8];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v8];
       if (v9)
       {
         v17 = 0;
@@ -451,28 +451,28 @@ LABEL_16:
     v13 = 0;
     v14 = 0;
 LABEL_14:
-    v15 = self;
+    selfCopy2 = self;
     self = v13;
 
     if (v14)
     {
-      [v4 failWithError:v14];
+      [coderCopy failWithError:v14];
     }
 
     goto LABEL_16;
   }
 
-  v12 = 0;
+  selfCopy = 0;
 LABEL_17:
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 encodeDouble:@"scale" forKey:self->_scale];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"scale" forKey:self->_scale];
   surface = self->_surface;
   if (!surface)
   {
@@ -496,7 +496,7 @@ LABEL_17:
             v14[1] = @"Somehow a PUICodableImage was made that had no actual source or image.";
             v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
             v12 = [v9 errorWithDomain:@"com.apple.PosterUIFoundation.RendererService" code:9999 userInfo:v11];
-            [v4 failWithError:v12];
+            [coderCopy failWithError:v12];
 
             goto LABEL_5;
           }
@@ -521,31 +521,31 @@ LABEL_13:
           v8 = 1;
         }
 
-        [PUICodableImage encodeRepresentation:v8 value:v7 withCoder:v4];
+        [PUICodableImage encodeRepresentation:v8 value:v7 withCoder:coderCopy];
         goto LABEL_13;
       }
     }
   }
 
-  [PUICodableImage encodeRepresentation:self->_representation value:surface withCoder:v4];
+  [PUICodableImage encodeRepresentation:self->_representation value:surface withCoder:coderCopy];
 LABEL_5:
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeDouble:@"scale" forKey:self->_scale];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"scale" forKey:self->_scale];
   surface = self->_surface;
   if (surface || (surface = self->_url) != 0)
   {
-    [PUICodableImage bs_encodeRepresentation:self->_representation value:surface withCoder:v9];
+    [PUICodableImage bs_encodeRepresentation:self->_representation value:surface withCoder:coderCopy];
 LABEL_4:
-    v5 = v9;
+    v5 = coderCopy;
     goto LABEL_5;
   }
 
   sourceImage = self->_sourceImage;
-  v5 = v9;
+  v5 = coderCopy;
   if (sourceImage || (sourceImage = self->_cachedImage) != 0)
   {
     v7 = PUIIOSurfaceFromCGImage(sourceImage, 0);
@@ -567,22 +567,22 @@ LABEL_15:
       v8 = 1;
     }
 
-    [PUICodableImage bs_encodeRepresentation:v8 value:v7 withCoder:v9];
+    [PUICodableImage bs_encodeRepresentation:v8 value:v7 withCoder:coderCopy];
     goto LABEL_15;
   }
 
 LABEL_5:
 }
 
-- (PUICodableImage)initWithBSXPCCoder:(id)a3
+- (PUICodableImage)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"scale"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"scale"];
   v6 = v5;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"representation"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"representation"];
   if ([v7 isEqualToString:@"fileURL"])
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v7];
     if (v8)
     {
       v20 = 0;
@@ -590,9 +590,9 @@ LABEL_5:
       v9 = v20;
 LABEL_7:
       v10 = v9;
-      v11 = self;
+      selfCopy = self;
 LABEL_9:
-      v12 = v11;
+      v12 = selfCopy;
 
       self = v12;
       goto LABEL_10;
@@ -603,7 +603,7 @@ LABEL_9:
 
   if ([v7 isEqualToString:@"imageData"])
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v7];
     if (v8)
     {
       v19 = 0;
@@ -614,7 +614,7 @@ LABEL_9:
 
 LABEL_8:
     v10 = 0;
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
@@ -624,7 +624,7 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v14 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9EC0] forKey:v7];
+  v14 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9EC0] forKey:v7];
   v8 = v14;
   if (v14)
   {
@@ -634,16 +634,16 @@ LABEL_8:
       v18 = 0;
       self = [(PUICodableImage *)self initWithIOSurface:v15 scale:&v18 error:v6];
       v10 = v18;
-      v16 = self;
+      selfCopy2 = self;
     }
 
     else
     {
       v10 = 0;
-      v16 = 0;
+      selfCopy2 = 0;
     }
 
-    v17 = v16;
+    v17 = selfCopy2;
 
     self = v17;
   }
@@ -667,13 +667,13 @@ LABEL_13:
   return self;
 }
 
-+ (void)encodeRepresentation:(int64_t)a3 value:(id)a4 withCoder:(id)a5
++ (void)encodeRepresentation:(int64_t)representation value:(id)value withCoder:(id)coder
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  v10 = a3 & ~(a3 >> 63);
+  valueCopy = value;
+  coderCopy = coder;
+  v9 = coderCopy;
+  v10 = representation & ~(representation >> 63);
   if (v10 >= 4)
   {
     v10 = 4;
@@ -693,17 +693,17 @@ LABEL_13:
   else
   {
     v12 = off_1E78563C0[v11];
-    [v8 encodeObject:v12 forKey:@"representation"];
-    [v9 encodeObject:v7 forKey:v12];
+    [coderCopy encodeObject:v12 forKey:@"representation"];
+    [v9 encodeObject:valueCopy forKey:v12];
   }
 }
 
-+ (BOOL)bs_encodeRepresentation:(int64_t)a3 value:(id)a4 withCoder:(id)a5
++ (BOOL)bs_encodeRepresentation:(int64_t)representation value:(id)value withCoder:(id)coder
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  v10 = a3 & ~(a3 >> 63);
+  valueCopy = value;
+  coderCopy = coder;
+  v9 = coderCopy;
+  v10 = representation & ~(representation >> 63);
   if (v10 >= 4)
   {
     v10 = 4;
@@ -713,34 +713,34 @@ LABEL_13:
   if ((v10 - 1) <= 2)
   {
     v12 = off_1E78563C0[v11];
-    [v8 encodeObject:v12 forKey:@"representation"];
-    if ([(__IOSurface *)v7 isMemberOfClass:objc_opt_class()])
+    [coderCopy encodeObject:v12 forKey:@"representation"];
+    if ([(__IOSurface *)valueCopy isMemberOfClass:objc_opt_class()])
     {
-      XPCObject = IOSurfaceCreateXPCObject(v7);
+      XPCObject = IOSurfaceCreateXPCObject(valueCopy);
       [v9 encodeXPCObject:XPCObject forKey:v12];
     }
 
     else
     {
-      [v9 encodeObject:v7 forKey:v12];
+      [v9 encodeObject:valueCopy forKey:v12];
     }
   }
 
   return v11 < 3;
 }
 
-+ (CGImage)createCGImageFromURL:(id)a3 error:(id *)a4
++ (CGImage)createCGImageFromURL:(id)l error:(id *)error
 {
   v32[4] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  lCopy = l;
+  if (!lCopy)
   {
     [PUICodableImage createCGImageFromURL:a2 error:?];
   }
 
-  v8 = v7;
+  v8 = lCopy;
   v28 = 0;
-  v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v7 options:1 error:&v28];
+  v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:lCopy options:1 error:&v28];
   v10 = v28;
   v11 = v10;
   if (!v9)
@@ -761,7 +761,7 @@ LABEL_7:
   }
 
   v27 = 0;
-  ImageAtIndex = [a1 createCGImageFromCPBitmapData:v9 error:&v27];
+  ImageAtIndex = [self createCGImageFromCPBitmapData:v9 error:&v27];
   v13 = v27;
 
   if (ImageAtIndex)
@@ -778,7 +778,7 @@ LABEL_10:
   v14 = CGImageSourceCreateWithURL(v8, 0);
   if (!v14)
   {
-    if (a4)
+    if (error)
     {
       v17 = MEMORY[0x1E696ABC0];
       v23 = *MEMORY[0x1E696A580];
@@ -808,7 +808,7 @@ LABEL_17:
   CFRelease(v15);
   if (!ImageAtIndex)
   {
-    if (a4)
+    if (error)
     {
       v17 = MEMORY[0x1E696ABC0];
       v18 = *MEMORY[0x1E696A580];
@@ -826,7 +826,7 @@ LABEL_17:
       v22 = v29;
 LABEL_16:
       v25 = [v20 dictionaryWithObjects:v21 forKeys:v22 count:4];
-      *a4 = [v17 errorWithDomain:@"com.apple.PosterUIFoundation.RendererService" code:1 userInfo:v25];
+      *error = [v17 errorWithDomain:@"com.apple.PosterUIFoundation.RendererService" code:1 userInfo:v25];
 
       goto LABEL_17;
     }
@@ -839,18 +839,18 @@ LABEL_18:
   return ImageAtIndex;
 }
 
-+ (CGImage)createCGImageFromData:(id)a3 error:(id *)a4
++ (CGImage)createCGImageFromData:(id)data error:(id *)error
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  dataCopy = data;
+  if (!dataCopy)
   {
     [PUICodableImage createCGImageFromData:a2 error:?];
   }
 
-  v8 = v7;
+  v8 = dataCopy;
   v23 = 0;
-  ImageAtIndex = [a1 createCGImageFromCPBitmapData:v7 error:&v23];
+  ImageAtIndex = [self createCGImageFromCPBitmapData:dataCopy error:&v23];
   v10 = v23;
   v11 = v10;
   if (!ImageAtIndex)
@@ -863,7 +863,7 @@ LABEL_18:
     v12 = CGImageSourceCreateWithData(v8, 0);
     if (!v12)
     {
-      if (a4)
+      if (error)
       {
         v20 = *MEMORY[0x1E696A588];
         v26[0] = *MEMORY[0x1E696A580];
@@ -890,7 +890,7 @@ LABEL_14:
     CFRelease(v13);
     if (!ImageAtIndex)
     {
-      if (a4)
+      if (error)
       {
         v15 = *MEMORY[0x1E696A588];
         v24[0] = *MEMORY[0x1E696A580];
@@ -905,7 +905,7 @@ LABEL_14:
         v19 = v24;
 LABEL_13:
         v21 = [v17 dictionaryWithObjects:v18 forKeys:v19 count:3];
-        *a4 = [v16 errorWithDomain:@"com.apple.PosterUIFoundation.RendererService" code:1 userInfo:v21];
+        *error = [v16 errorWithDomain:@"com.apple.PosterUIFoundation.RendererService" code:1 userInfo:v21];
 
         goto LABEL_14;
       }
@@ -919,7 +919,7 @@ LABEL_15:
   return ImageAtIndex;
 }
 
-+ (id)dataRepresentationForImage:(CGImage *)a3 error:(id *)a4
++ (id)dataRepresentationForImage:(CGImage *)image error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v6 = CGImageCopySourceData();
@@ -948,30 +948,30 @@ LABEL_15:
 
   v9 = [PUIImageOnDiskFormat alloc];
   v10 = [(PUIImageOnDiskFormat *)v9 initWithTypeRecord:*MEMORY[0x1E6982E00] destinationOptions:0 addImageOptions:0];
-  v11 = [MEMORY[0x1E695DF88] data];
-  v12 = [(PUIImageOnDiskFormat *)v10 resolveDestinationOptionsForImage:a3];
-  v13 = CGImageDestinationCreateWithData(v11, [(PUIImageOnDiskFormat *)v10 typeIdentifier], 1uLL, v12);
+  data = [MEMORY[0x1E695DF88] data];
+  v12 = [(PUIImageOnDiskFormat *)v10 resolveDestinationOptionsForImage:image];
+  v13 = CGImageDestinationCreateWithData(data, [(PUIImageOnDiskFormat *)v10 typeIdentifier], 1uLL, v12);
   if (v13)
   {
     v14 = v13;
-    v15 = [(PUIImageOnDiskFormat *)v10 resolveAddImageOptionsForImage:a3];
-    CGImageDestinationAddImage(v14, a3, v15);
+    v15 = [(PUIImageOnDiskFormat *)v10 resolveAddImageOptionsForImage:image];
+    CGImageDestinationAddImage(v14, image, v15);
     v16 = CGImageDestinationFinalize(v14);
     CFRelease(v14);
     if (v16)
     {
-      v7 = v11;
+      v7 = data;
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
         v18 = MEMORY[0x1E696ABC0];
         v21 = *MEMORY[0x1E696A578];
         v22 = @"Image final encoding failed for unknown reasons in CoreGraphics.";
         v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-        *a4 = [v18 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:2 userInfo:v19];
+        *error = [v18 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:2 userInfo:v19];
       }
 
       v7 = 0;
@@ -980,7 +980,7 @@ LABEL_15:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v7 = 0;
       goto LABEL_16;
@@ -991,7 +991,7 @@ LABEL_15:
     v24[0] = @"Image destination failed to be created to Data.";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     [v17 errorWithDomain:@"com.apple.PosterBoard.PosterUIFoundation.ImageEncoding" code:1 userInfo:v15];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
 LABEL_16:
@@ -1000,7 +1000,7 @@ LABEL_17:
   return v7;
 }
 
-+ (CGImage)createCGImageFromCPBitmapData:(id)a3 error:(id *)a4
++ (CGImage)createCGImageFromCPBitmapData:(id)data error:(id *)error
 {
   v13[2] = *MEMORY[0x1E69E9840];
   ImagesFromData = CPBitmapCreateImagesFromData();
@@ -1016,7 +1016,7 @@ LABEL_17:
     CFRetain(ValueAtIndex);
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = MEMORY[0x1E696ABC0];
     v9 = *MEMORY[0x1E696A588];
@@ -1025,7 +1025,7 @@ LABEL_17:
     v13[0] = @"CPBitmap file contained no images.";
     v13[1] = @"The bitmap file was valid, it just had no images.";
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-    *a4 = [v8 errorWithDomain:@"com.apple.PosterUIFoundation.RendererService" code:2 userInfo:v10];
+    *error = [v8 errorWithDomain:@"com.apple.PosterUIFoundation.RendererService" code:2 userInfo:v10];
   }
 
   CFRelease(ImagesFromData);

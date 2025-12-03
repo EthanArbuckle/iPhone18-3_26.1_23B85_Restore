@@ -1,35 +1,35 @@
 @interface WLAAddContentToWatchList
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation WLAAddContentToWatchList
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   NSLog(@"WLAAddContentToWatchList: Got add content request.");
   v5 = +[WLKSettingsStore sharedSettings];
-  v6 = [v5 optedIn];
+  optedIn = [v5 optedIn];
 
-  if (v6)
+  if (optedIn)
   {
-    v7 = [(WLAAddContentToWatchList *)self canonicalId];
+    canonicalId = [(WLAAddContentToWatchList *)self canonicalId];
 
-    if (v7)
+    if (canonicalId)
     {
       v8 = [WLKAddToUpNextRequest alloc];
-      v9 = [(WLAAddContentToWatchList *)self canonicalId];
-      v10 = [v8 initWithCanonicalID:v9];
+      canonicalId2 = [(WLAAddContentToWatchList *)self canonicalId];
+      v10 = [v8 initWithCanonicalID:canonicalId2];
 
-      v11 = [(WLAAddContentToWatchList *)self canonicalId];
-      NSLog(@"WLAAddContentToWatchList: Will perform add favorite request: %p for canonical: %@", v10, v11);
+      canonicalId3 = [(WLAAddContentToWatchList *)self canonicalId];
+      NSLog(@"WLAAddContentToWatchList: Will perform add favorite request: %p for canonical: %@", v10, canonicalId3);
 
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = __50__WLAAddContentToWatchList_performWithCompletion___block_invoke;
       v15[3] = &unk_83C8;
       v16 = v10;
-      v17 = v4;
+      v17 = completionCopy;
       v12 = v10;
       [v12 makeRequestWithCompletion:v15];
 
@@ -38,7 +38,7 @@ LABEL_9:
     }
 
     NSLog(@"WLAAddContentToWatchList: No canonical ID provided.");
-    if (v4)
+    if (completionCopy)
     {
       v13 = objc_alloc_init(SACommandFailed);
       goto LABEL_8;
@@ -48,13 +48,13 @@ LABEL_9:
   else
   {
     NSLog(@"WLAAddContentToWatchList: Not opted in.  Bailing out.");
-    if (v4)
+    if (completionCopy)
     {
       v13 = [[SACommandFailed alloc] initWithErrorCode:9056];
 LABEL_8:
       v12 = v13;
-      v14 = [v13 dictionary];
-      (*(v4 + 2))(v4, v14);
+      dictionary = [v13 dictionary];
+      (*(completionCopy + 2))(completionCopy, dictionary);
 
       goto LABEL_9;
     }

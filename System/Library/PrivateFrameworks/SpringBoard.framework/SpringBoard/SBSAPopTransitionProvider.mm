@@ -1,14 +1,14 @@
 @interface SBSAPopTransitionProvider
-- (id)preferencesFromContext:(id)a3;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSAPopTransitionProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = contextCopy;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -29,7 +29,7 @@
 
   v7 = v6;
 
-  v8 = [v7 elementContexts];
+  elementContexts = [v7 elementContexts];
   v30.receiver = self;
   v30.super_class = SBSAPopTransitionProvider;
   v9 = [(SBSABasePreferencesProvider *)&v30 preferencesFromContext:v7];
@@ -56,10 +56,10 @@
   v22 = v5;
   v13 = v12;
 
-  v14 = [v13 containerViewDescriptions];
-  v15 = [v14 mutableCopy];
+  containerViewDescriptions = [v13 containerViewDescriptions];
+  v15 = [containerViewDescriptions mutableCopy];
 
-  if ([v8 count])
+  if ([elementContexts count])
   {
     v16 = 0;
     do
@@ -78,7 +78,7 @@
       v26 = v17;
       v28 = a2;
       v29 = v16;
-      v18 = v8;
+      v18 = elementContexts;
       v27 = v18;
       v19 = v17;
       v20 = [v13 copyWithBlock:v25];

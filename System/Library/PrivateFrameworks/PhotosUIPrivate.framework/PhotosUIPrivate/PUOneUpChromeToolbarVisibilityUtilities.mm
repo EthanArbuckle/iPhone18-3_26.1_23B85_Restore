@@ -1,13 +1,13 @@
 @interface PUOneUpChromeToolbarVisibilityUtilities
-+ (BOOL)sizeClassSupportsVisibleToolbarWithTraitCollection:(id)a3;
++ (BOOL)sizeClassSupportsVisibleToolbarWithTraitCollection:(id)collection;
 @end
 
 @implementation PUOneUpChromeToolbarVisibilityUtilities
 
-+ (BOOL)sizeClassSupportsVisibleToolbarWithTraitCollection:(id)a3
++ (BOOL)sizeClassSupportsVisibleToolbarWithTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = static OneUpChromeToolbarVisibilityUtilities.sizeClassSupportsVisibleToolbar(traitCollection:)(v3);
+  collectionCopy = collection;
+  v4 = static OneUpChromeToolbarVisibilityUtilities.sizeClassSupportsVisibleToolbar(traitCollection:)(collectionCopy);
 
   return v4;
 }

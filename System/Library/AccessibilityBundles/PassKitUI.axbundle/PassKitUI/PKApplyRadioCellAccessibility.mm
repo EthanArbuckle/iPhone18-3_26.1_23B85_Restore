@@ -1,5 +1,5 @@
 @interface PKApplyRadioCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,20 +7,20 @@
 
 @implementation PKApplyRadioCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKApplyRadioCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKApplyRadioCell" hasInstanceVariable:@"_button" withType:"UIButton"];
-  [v3 validateClass:@"PKApplyRadioCell" hasInstanceVariable:@"_radioButtonSelected" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKApplyRadioCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKApplyRadioCell" hasInstanceVariable:@"_button" withType:"UIButton"];
+  [validationsCopy validateClass:@"PKApplyRadioCell" hasInstanceVariable:@"_radioButtonSelected" withType:"B"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(PKApplyRadioCellAccessibility *)self safeUIViewForKey:@"_titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -48,17 +48,17 @@
     v7 = v4;
     AXPerformSafeBlock();
 
-    v5 = 1;
+    accessibilityActivate = 1;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PKApplyRadioCellAccessibility;
-    v5 = [(PKApplyRadioCellAccessibility *)&v8 accessibilityActivate];
+    accessibilityActivate = [(PKApplyRadioCellAccessibility *)&v8 accessibilityActivate];
   }
 
-  return v5;
+  return accessibilityActivate;
 }
 
 @end

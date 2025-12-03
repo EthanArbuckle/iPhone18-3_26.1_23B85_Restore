@@ -1,17 +1,17 @@
 @interface SBBannerAuthority
 - (BNConsideringDelegate)delegate;
-- (BOOL)_shouldDropPresentableDuringScreenSharing:(id)a3 userInfo:(id)a4;
+- (BOOL)_shouldDropPresentableDuringScreenSharing:(id)sharing userInfo:(id)info;
 - (BOOL)_shouldDropPresentablesDuringScreenSharing;
 - (SBBannerAuthority)init;
-- (int64_t)_mediatedDecisionFromDecisions:(id)a3 defaultDecision:(int64_t)a4;
-- (int64_t)shouldMorphToPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5 stateChange:(id *)a6;
-- (int64_t)shouldNewTierBeAddedToTopForPresentable:(id)a3 withPresentable:(id)a4;
-- (int64_t)shouldOverlapPresentable:(id)a3 withPresentable:(id)a4;
-- (int64_t)shouldPostPresentable:(id)a3 userInfo:(id)a4 reason:(id *)a5;
-- (int64_t)shouldPresentPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5;
+- (int64_t)_mediatedDecisionFromDecisions:(id)decisions defaultDecision:(int64_t)decision;
+- (int64_t)shouldMorphToPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable stateChange:(id *)change;
+- (int64_t)shouldNewTierBeAddedToTopForPresentable:(id)presentable withPresentable:(id)withPresentable;
+- (int64_t)shouldOverlapPresentable:(id)presentable withPresentable:(id)withPresentable;
+- (int64_t)shouldPostPresentable:(id)presentable userInfo:(id)info reason:(id *)reason;
+- (int64_t)shouldPresentPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable;
 - (void)_configureSinksIfNecessary;
-- (void)bannerAuthority:(id)a3 mayChangeDecisionForResponsiblePresentable:(id)a4;
-- (void)registerAuthority:(id)a3 forRequesterIdentifier:(id)a4;
+- (void)bannerAuthority:(id)authority mayChangeDecisionForResponsiblePresentable:(id)presentable;
+- (void)registerAuthority:(id)authority forRequesterIdentifier:(id)identifier;
 @end
 
 @implementation SBBannerAuthority
@@ -30,11 +30,11 @@
   return v3;
 }
 
-- (void)registerAuthority:(id)a3 forRequesterIdentifier:(id)a4
+- (void)registerAuthority:(id)authority forRequesterIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10 && v6)
+  authorityCopy = authority;
+  identifierCopy = identifier;
+  if (authorityCopy && identifierCopy)
   {
     requesterIDsToAuthorities = self->_requesterIDsToAuthorities;
     if (!requesterIDsToAuthorities)
@@ -46,23 +46,23 @@
       requesterIDsToAuthorities = self->_requesterIDsToAuthorities;
     }
 
-    [(NSMutableDictionary *)requesterIDsToAuthorities setObject:v10 forKey:v6];
+    [(NSMutableDictionary *)requesterIDsToAuthorities setObject:authorityCopy forKey:identifierCopy];
     if (objc_opt_respondsToSelector())
     {
-      [v10 setDelegate:self];
+      [authorityCopy setDelegate:self];
     }
   }
 }
 
-- (int64_t)shouldPostPresentable:(id)a3 userInfo:(id)a4 reason:(id *)a5
+- (int64_t)shouldPostPresentable:(id)presentable userInfo:(id)info reason:(id *)reason
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(SBBannerAuthority *)self _isScreenSharingActive]&& [(SBBannerAuthority *)self _shouldDropPresentablesDuringScreenSharing]&& [(SBBannerAuthority *)self _shouldDropPresentableDuringScreenSharing:v8 userInfo:v9])
+  presentableCopy = presentable;
+  infoCopy = info;
+  if ([(SBBannerAuthority *)self _isScreenSharingActive]&& [(SBBannerAuthority *)self _shouldDropPresentablesDuringScreenSharing]&& [(SBBannerAuthority *)self _shouldDropPresentableDuringScreenSharing:presentableCopy userInfo:infoCopy])
   {
-    if (a5)
+    if (reason)
     {
-      *a5 = @"Posting not permitted during screen sharing";
+      *reason = @"Posting not permitted during screen sharing";
     }
 
     v10 = -1;
@@ -76,35 +76,35 @@
   return v10;
 }
 
-- (int64_t)shouldPresentPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5
+- (int64_t)shouldPresentPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 presentableType] == 1)
+  presentableCopy = presentable;
+  presentablesCopy = presentables;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [presentableCopy presentableType] == 1)
   {
     v10 = 1;
-    v11 = v9;
+    v11 = presentablesCopy;
   }
 
   else
   {
     requesterIDsToAuthorities = self->_requesterIDsToAuthorities;
-    v13 = [v8 requesterIdentifier];
-    v14 = [(NSMutableDictionary *)requesterIDsToAuthorities objectForKey:v13];
+    requesterIdentifier = [presentableCopy requesterIdentifier];
+    v14 = [(NSMutableDictionary *)requesterIDsToAuthorities objectForKey:requesterIdentifier];
 
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_269];
-    v11 = [v9 filteredArrayUsingPredicate:v15];
+    v11 = [presentablesCopy filteredArrayUsingPredicate:v15];
 
     v16 = self->_requesterIDsToAuthorities;
-    v17 = [v11 lastObject];
-    v18 = [v17 requesterIdentifier];
-    v19 = [(NSMutableDictionary *)v16 objectForKey:v18];
+    lastObject = [v11 lastObject];
+    requesterIdentifier2 = [lastObject requesterIdentifier];
+    v19 = [(NSMutableDictionary *)v16 objectForKey:requesterIdentifier2];
 
     if (v14)
     {
       v33 = 0;
-      v20 = [v14 shouldPresentPresentable:v8 withPresentedPresentables:v11 responsiblePresentable:&v33];
+      v20 = [v14 shouldPresentPresentable:presentableCopy withPresentedPresentables:v11 responsiblePresentable:&v33];
       v30 = v33;
     }
 
@@ -115,11 +115,11 @@
     }
 
     v31 = v14;
-    v21 = a5;
+    responsiblePresentableCopy = responsiblePresentable;
     if (v19)
     {
       v32 = 0;
-      v22 = [v19 shouldPresentPresentable:v8 withPresentedPresentables:v11 responsiblePresentable:&v32];
+      v22 = [v19 shouldPresentPresentable:presentableCopy withPresentedPresentables:v11 responsiblePresentable:&v32];
       v23 = v32;
     }
 
@@ -136,12 +136,12 @@
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
     v10 = [(SBBannerAuthority *)self _mediatedDecisionFromDecisions:v26 defaultDecision:1];
 
-    if (v21)
+    if (responsiblePresentableCopy)
     {
       v27 = v23;
       if (v10 == v22 || (v27 = v30, v10 == v29))
       {
-        *v21 = v27;
+        *responsiblePresentableCopy = v27;
       }
     }
   }
@@ -157,18 +157,18 @@ BOOL __95__SBBannerAuthority_shouldPresentPresentable_withPresentedPresentables_
   return v3;
 }
 
-- (int64_t)shouldOverlapPresentable:(id)a3 withPresentable:(id)a4
+- (int64_t)shouldOverlapPresentable:(id)presentable withPresentable:(id)withPresentable
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  presentableCopy = presentable;
+  withPresentableCopy = withPresentable;
   requesterIDsToAuthorities = self->_requesterIDsToAuthorities;
-  v9 = [v6 requesterIdentifier];
-  v10 = [(NSMutableDictionary *)requesterIDsToAuthorities objectForKey:v9];
+  requesterIdentifier = [presentableCopy requesterIdentifier];
+  v10 = [(NSMutableDictionary *)requesterIDsToAuthorities objectForKey:requesterIdentifier];
 
   v11 = self->_requesterIDsToAuthorities;
-  v12 = [v7 requesterIdentifier];
-  v13 = [(NSMutableDictionary *)v11 objectForKey:v12];
+  requesterIdentifier2 = [withPresentableCopy requesterIdentifier];
+  v13 = [(NSMutableDictionary *)v11 objectForKey:requesterIdentifier2];
 
   if (!v10)
   {
@@ -183,14 +183,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v14 = [v10 shouldOverlapPresentable:v6 withPresentable:v7];
+  v14 = [v10 shouldOverlapPresentable:presentableCopy withPresentable:withPresentableCopy];
   if (!v13)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v15 = [v13 shouldOverlapPresentable:v6 withPresentable:v7];
+  v15 = [v13 shouldOverlapPresentable:presentableCopy withPresentable:withPresentableCopy];
 LABEL_6:
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:v14];
   v21[0] = v16;
@@ -202,22 +202,22 @@ LABEL_6:
   return v19;
 }
 
-- (int64_t)shouldNewTierBeAddedToTopForPresentable:(id)a3 withPresentable:(id)a4
+- (int64_t)shouldNewTierBeAddedToTopForPresentable:(id)presentable withPresentable:(id)withPresentable
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  presentableCopy = presentable;
+  withPresentableCopy = withPresentable;
   requesterIDsToAuthorities = self->_requesterIDsToAuthorities;
-  v9 = [v6 requesterIdentifier];
-  v10 = [(NSMutableDictionary *)requesterIDsToAuthorities objectForKey:v9];
+  requesterIdentifier = [presentableCopy requesterIdentifier];
+  v10 = [(NSMutableDictionary *)requesterIDsToAuthorities objectForKey:requesterIdentifier];
 
   v11 = self->_requesterIDsToAuthorities;
-  v12 = [v7 requesterIdentifier];
-  v13 = [(NSMutableDictionary *)v11 objectForKey:v12];
+  requesterIdentifier2 = [withPresentableCopy requesterIdentifier];
+  v13 = [(NSMutableDictionary *)v11 objectForKey:requesterIdentifier2];
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v10 shouldNewTierBeAddedToTopForPresentable:v6 withPresentable:v7];
+    v14 = [v10 shouldNewTierBeAddedToTopForPresentable:presentableCopy withPresentable:withPresentableCopy];
   }
 
   else
@@ -227,7 +227,7 @@ LABEL_6:
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v13 shouldNewTierBeAddedToTopForPresentable:v6 withPresentable:v7];
+    v15 = [v13 shouldNewTierBeAddedToTopForPresentable:presentableCopy withPresentable:withPresentableCopy];
   }
 
   else
@@ -245,25 +245,25 @@ LABEL_6:
   return v19;
 }
 
-- (int64_t)shouldMorphToPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5 stateChange:(id *)a6
+- (int64_t)shouldMorphToPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable stateChange:(id *)change
 {
   v48[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  presentableCopy = presentable;
+  presentablesCopy = presentables;
   requesterIDsToAuthorities = self->_requesterIDsToAuthorities;
-  v11 = [v8 requesterIdentifier];
-  v12 = [(NSMutableDictionary *)requesterIDsToAuthorities objectForKey:v11];
+  requesterIdentifier = [presentableCopy requesterIdentifier];
+  v12 = [(NSMutableDictionary *)requesterIDsToAuthorities objectForKey:requesterIdentifier];
 
   v13 = self->_requesterIDsToAuthorities;
-  v14 = [v9 lastObject];
-  v15 = [v14 requesterIdentifier];
-  v16 = [(NSMutableDictionary *)v13 objectForKey:v15];
+  lastObject = [presentablesCopy lastObject];
+  requesterIdentifier2 = [lastObject requesterIdentifier];
+  v16 = [(NSMutableDictionary *)v13 objectForKey:requesterIdentifier2];
 
   if (objc_opt_respondsToSelector())
   {
     v46 = 0;
     v47 = 0;
-    v17 = [v12 shouldMorphToPresentable:v8 withPresentedPresentables:v9 responsiblePresentable:&v47 stateChange:&v46];
+    v17 = [v12 shouldMorphToPresentable:presentableCopy withPresentedPresentables:presentablesCopy responsiblePresentable:&v47 stateChange:&v46];
     v18 = v47;
     v19 = v46;
   }
@@ -284,17 +284,17 @@ LABEL_6:
     v44 = 0;
     v45 = 0;
     v20 = v16;
-    v21 = v8;
-    v22 = v9;
-    v23 = [v20 shouldMorphToPresentable:v8 withPresentedPresentables:v9 responsiblePresentable:&v45 stateChange:&v44];
+    v21 = presentableCopy;
+    v22 = presentablesCopy;
+    v23 = [v20 shouldMorphToPresentable:presentableCopy withPresentedPresentables:presentablesCopy responsiblePresentable:&v45 stateChange:&v44];
     v24 = v45;
     v25 = v44;
   }
 
   else
   {
-    v22 = v9;
-    v21 = v8;
+    v22 = presentablesCopy;
+    v21 = presentableCopy;
     v24 = 0;
     v23 = 0;
     v25 = MEMORY[0x277CBEC28];
@@ -309,40 +309,40 @@ LABEL_6:
 
   if (v29 == v23)
   {
-    v30 = a6;
+    changeCopy2 = change;
     v31 = v39;
     v32 = v40;
-    if (a5)
+    if (responsiblePresentable)
     {
       v33 = v24;
-      *a5 = v24;
+      *responsiblePresentable = v24;
     }
 
     v34 = v25;
-    if (!a6)
+    if (!change)
     {
       goto LABEL_18;
     }
 
 LABEL_17:
-    *v30 = v34;
+    *changeCopy2 = v34;
     goto LABEL_18;
   }
 
   v35 = v29 == v17;
-  v30 = a6;
+  changeCopy2 = change;
   v31 = v39;
   v32 = v40;
   if (v35)
   {
-    if (a5)
+    if (responsiblePresentable)
     {
       v36 = v40;
-      *a5 = v40;
+      *responsiblePresentable = v40;
     }
 
     v34 = v39;
-    if (a6)
+    if (change)
     {
       goto LABEL_17;
     }
@@ -353,41 +353,41 @@ LABEL_18:
   return v29;
 }
 
-- (void)bannerAuthority:(id)a3 mayChangeDecisionForResponsiblePresentable:(id)a4
+- (void)bannerAuthority:(id)authority mayChangeDecisionForResponsiblePresentable:(id)presentable
 {
-  v11 = a4;
+  presentableCopy = presentable;
   requesterIDsToAuthorities = self->_requesterIDsToAuthorities;
-  v7 = a3;
-  v8 = [(NSMutableDictionary *)requesterIDsToAuthorities allValues];
-  v9 = [v8 containsObject:v7];
+  authorityCopy = authority;
+  allValues = [(NSMutableDictionary *)requesterIDsToAuthorities allValues];
+  v9 = [allValues containsObject:authorityCopy];
 
   if (v9)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained bannerAuthority:self mayChangeDecisionForResponsiblePresentable:v11];
+    [WeakRetained bannerAuthority:self mayChangeDecisionForResponsiblePresentable:presentableCopy];
   }
 }
 
-- (int64_t)_mediatedDecisionFromDecisions:(id)a3 defaultDecision:(int64_t)a4
+- (int64_t)_mediatedDecisionFromDecisions:(id)decisions defaultDecision:(int64_t)decision
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  decisionsCopy = decisions;
+  v6 = [decisionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v6)
   {
 LABEL_15:
 
 LABEL_16:
-    v8 = a4;
+    decisionCopy = decision;
     goto LABEL_17;
   }
 
   v7 = v6;
-  v8 = 0;
+  decisionCopy = 0;
   v9 = *v14;
   do
   {
@@ -395,13 +395,13 @@ LABEL_16:
     {
       if (*v14 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(decisionsCopy);
       }
 
-      v11 = [*(*(&v13 + 1) + 8 * i) integerValue];
-      if (v11)
+      integerValue = [*(*(&v13 + 1) + 8 * i) integerValue];
+      if (integerValue)
       {
-        if (v8 && v8 != v11)
+        if (decisionCopy && decisionCopy != integerValue)
         {
           goto LABEL_15;
         }
@@ -409,52 +409,52 @@ LABEL_16:
 
       else
       {
-        v11 = v8;
+        integerValue = decisionCopy;
       }
 
-      v8 = v11;
+      decisionCopy = integerValue;
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v7 = [decisionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   }
 
   while (v7);
 
-  if (!v8)
+  if (!decisionCopy)
   {
     goto LABEL_16;
   }
 
 LABEL_17:
 
-  return v8;
+  return decisionCopy;
 }
 
 - (void)_configureSinksIfNecessary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_sinks && !v2->_isConfiguringSinks)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_sinks && !selfCopy->_isConfiguringSinks)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    sinks = v2->_sinks;
-    v2->_sinks = v3;
+    sinks = selfCopy->_sinks;
+    selfCopy->_sinks = v3;
 
     Serial = BSDispatchQueueCreateSerial();
-    biomeQueue = v2->_biomeQueue;
-    v2->_biomeQueue = Serial;
+    biomeQueue = selfCopy->_biomeQueue;
+    selfCopy->_biomeQueue = Serial;
 
-    v2->_isConfiguringSinks = 1;
-    v7 = v2->_biomeQueue;
+    selfCopy->_isConfiguringSinks = 1;
+    v7 = selfCopy->_biomeQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__SBBannerAuthority__configureSinksIfNecessary__block_invoke;
     block[3] = &unk_2783A8C18;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(v7, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __47__SBBannerAuthority__configureSinksIfNecessary__block_invoke(uint64_t a1)
@@ -516,17 +516,17 @@ uint64_t __47__SBBannerAuthority__configureSinksIfNecessary__block_invoke_31(uin
 
 - (BOOL)_shouldDropPresentablesDuringScreenSharing
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"SBAllowNotificationsDuringScreenSharing"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"SBAllowNotificationsDuringScreenSharing"];
 
   return v3 ^ 1;
 }
 
-- (BOOL)_shouldDropPresentableDuringScreenSharing:(id)a3 userInfo:(id)a4
+- (BOOL)_shouldDropPresentableDuringScreenSharing:(id)sharing userInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 objectForKey:*MEMORY[0x277D68088]];
+  sharingCopy = sharing;
+  v6 = [info objectForKey:*MEMORY[0x277D68088]];
   v7 = objc_opt_class();
   v8 = v6;
   if (v7)
@@ -549,32 +549,32 @@ uint64_t __47__SBBannerAuthority__configureSinksIfNecessary__block_invoke_31(uin
 
   v10 = v9;
 
-  v11 = [v10 BOOLValue];
-  if (v11)
+  bOOLValue = [v10 BOOLValue];
+  if (bOOLValue)
   {
     v12 = SBLogBanners();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138543362;
-      v21 = v5;
+      v21 = sharingCopy;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Based on user info key, shouldn't drop presentable while screen sharing: %{public}@", &v20, 0xCu);
     }
   }
 
   else
   {
-    v13 = [v5 requesterIdentifier];
+    requesterIdentifier = [sharingCopy requesterIdentifier];
     if (BSEqualStrings())
     {
-      v14 = [v5 requestIdentifier];
-      v15 = [v14 hasPrefix:@"com.apple.conversationController"];
+      requestIdentifier = [sharingCopy requestIdentifier];
+      v15 = [requestIdentifier hasPrefix:@"com.apple.conversationController"];
 
       if (v15)
       {
         v12 = SBLogBanners();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          [SBBannerAuthority _shouldDropPresentableDuringScreenSharing:v5 userInfo:v12];
+          [SBBannerAuthority _shouldDropPresentableDuringScreenSharing:sharingCopy userInfo:v12];
         }
 
         goto LABEL_17;
@@ -585,7 +585,7 @@ uint64_t __47__SBBannerAuthority__configureSinksIfNecessary__block_invoke_31(uin
     {
     }
 
-    v16 = [v5 requesterIdentifier];
+    requesterIdentifier2 = [sharingCopy requesterIdentifier];
     v17 = BSEqualStrings();
 
     if (!v17)
@@ -597,7 +597,7 @@ uint64_t __47__SBBannerAuthority__configureSinksIfNecessary__block_invoke_31(uin
     v12 = SBLogBanners();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [SBBannerAuthority _shouldDropPresentableDuringScreenSharing:v5 userInfo:v12];
+      [SBBannerAuthority _shouldDropPresentableDuringScreenSharing:sharingCopy userInfo:v12];
     }
   }
 

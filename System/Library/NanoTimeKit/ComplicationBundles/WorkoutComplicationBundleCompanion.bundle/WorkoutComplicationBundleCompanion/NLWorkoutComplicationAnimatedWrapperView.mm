@@ -1,23 +1,23 @@
 @interface NLWorkoutComplicationAnimatedWrapperView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NLWorkoutComplicationAnimatedWrapperView)initWithAnimationImages:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NLWorkoutComplicationAnimatedWrapperView)initWithAnimationImages:(id)images;
 - (UIColor)overrideColor;
-- (void)_applyAnimationForPauseState:(BOOL)a3 animated:(BOOL)a4;
+- (void)_applyAnimationForPauseState:(BOOL)state animated:(BOOL)animated;
 - (void)_updateState;
 - (void)_updateTint;
 - (void)layoutSubviews;
-- (void)setColor:(id)a3;
-- (void)setImageProvider:(id)a3;
+- (void)setColor:(id)color;
+- (void)setImageProvider:(id)provider;
 @end
 
 @implementation NLWorkoutComplicationAnimatedWrapperView
 
-- (NLWorkoutComplicationAnimatedWrapperView)initWithAnimationImages:(id)a3
+- (NLWorkoutComplicationAnimatedWrapperView)initWithAnimationImages:(id)images
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, images);
   if ([location[0] count])
   {
     v15 = objc_alloc_init(NLWorkoutImageView);
@@ -27,67 +27,67 @@
     v6 = [v7 imageWithRenderingMode:2];
     [v15 setImage:?];
 
-    v8 = v18;
+    v8 = selfCopy;
     v11 = 0;
     v12 = 0;
-    v9 = [v15 image];
-    [v9 size];
+    image = [v15 image];
+    [image size];
     v13 = v3;
     v14 = v4;
-    v18 = 0;
+    selfCopy = 0;
     v10.receiver = v8;
     v10.super_class = NLWorkoutComplicationAnimatedWrapperView;
-    v18 = [(NLWorkoutComplicationAnimatedWrapperView *)&v10 initWithFrame:0.0, 0.0, v3, v4];
-    objc_storeStrong(&v18, v18);
+    selfCopy = [(NLWorkoutComplicationAnimatedWrapperView *)&v10 initWithFrame:0.0, 0.0, v3, v4];
+    objc_storeStrong(&selfCopy, selfCopy);
 
-    if (v18)
+    if (selfCopy)
     {
-      objc_storeStrong(v18 + 1, v15);
-      [v18 addSubview:*(v18 + 1)];
+      objc_storeStrong(selfCopy + 1, v15);
+      [selfCopy addSubview:*(selfCopy + 1)];
     }
 
-    v19 = v18;
+    v19 = selfCopy;
     v16 = 1;
     objc_storeStrong(&v15, 0);
   }
 
   else
   {
-    objc_storeStrong(&v18, 0);
-    v19 = v18;
+    objc_storeStrong(&selfCopy, 0);
+    v19 = selfCopy;
     v16 = 1;
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v19;
 }
 
-- (void)setImageProvider:(id)a3
+- (void)setImageProvider:(id)provider
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (location[0] != v4->_imageProvider)
+  objc_storeStrong(location, provider);
+  if (location[0] != selfCopy->_imageProvider)
   {
-    objc_storeStrong(&v4->_imageProvider, location[0]);
-    [(NLWorkoutComplicationAnimatedWrapperView *)v4 _updateState];
+    objc_storeStrong(&selfCopy->_imageProvider, location[0]);
+    [(NLWorkoutComplicationAnimatedWrapperView *)selfCopy _updateState];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (([location[0] isEqual:v4->_color] & 1) == 0)
+  objc_storeStrong(location, color);
+  if (([location[0] isEqual:selfCopy->_color] & 1) == 0)
   {
-    objc_storeStrong(&v4->_color, location[0]);
-    [(NLWorkoutComplicationAnimatedWrapperView *)v4 _updateTint];
+    objc_storeStrong(&selfCopy->_color, location[0]);
+    [(NLWorkoutComplicationAnimatedWrapperView *)selfCopy _updateTint];
   }
 
   objc_storeStrong(location, 0);
@@ -99,21 +99,21 @@
   [CATransaction setDisableActions:1];
   [(UIImageView *)self->_imageView setTintColor:self->_color];
   +[CATransaction commit];
-  v2 = [(UIColor *)self->_color CGColor];
-  v3 = [(UIImageView *)self->_imageView layer];
-  [v3 setContentsMultiplyColor:v2];
+  cGColor = [(UIColor *)self->_color CGColor];
+  layer = [(UIImageView *)self->_imageView layer];
+  [layer setContentsMultiplyColor:cGColor];
 }
 
-- (void)_applyAnimationForPauseState:(BOOL)a3 animated:(BOOL)a4
+- (void)_applyAnimationForPauseState:(BOOL)state animated:(BOOL)animated
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  v9 = a4;
-  if (a3)
+  stateCopy = state;
+  animatedCopy = animated;
+  if (state)
   {
-    [(UIImageView *)v12->_imageView stopAnimating];
-    if (v9)
+    [(UIImageView *)selfCopy->_imageView stopAnimating];
+    if (animatedCopy)
     {
       v8 = [CABasicAnimation animationWithKeyPath:@"opacity"];
       [(CABasicAnimation *)v8 setToValue:&off_10A80];
@@ -124,8 +124,8 @@
       v6 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
       [(CABasicAnimation *)v8 setTimingFunction:?];
 
-      v7 = [(UIImageView *)v12->_imageView layer];
-      [v7 addAnimation:v8 forKey:@"pulse"];
+      layer = [(UIImageView *)selfCopy->_imageView layer];
+      [layer addAnimation:v8 forKey:@"pulse"];
 
       objc_storeStrong(&v8, 0);
     }
@@ -133,26 +133,26 @@
 
   else
   {
-    v5 = [(UIImageView *)v12->_imageView layer];
-    [v5 removeAllAnimations];
+    layer2 = [(UIImageView *)selfCopy->_imageView layer];
+    [layer2 removeAllAnimations];
 
-    [(UIImageView *)v12->_imageView startAnimating];
+    [(UIImageView *)selfCopy->_imageView startAnimating];
   }
 }
 
 - (void)_updateState
 {
-  v3 = self;
+  selfCopy = self;
   v2[1] = a2;
   v2[0] = self->_imageProvider;
-  -[NLWorkoutComplicationAnimatedWrapperView _applyAnimationForPauseState:animated:](v3, "_applyAnimationForPauseState:animated:", [v2[0] isPaused], 1);
+  -[NLWorkoutComplicationAnimatedWrapperView _applyAnimationForPauseState:animated:](selfCopy, "_applyAnimationForPauseState:animated:", [v2[0] isPaused], 1);
   objc_storeStrong(v2, 0);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v7 = [(UIImageView *)self->_imageView image];
-  [(UIImage *)v7 size];
+  image = [(UIImageView *)self->_imageView image];
+  [(UIImage *)image size];
   v8 = v3;
   v9 = v4;
 
@@ -181,9 +181,9 @@
 
   else
   {
-    v6 = [(CLKImageProvider *)self->_imageProvider tintColor];
+    tintColor = [(CLKImageProvider *)self->_imageProvider tintColor];
     v5 = 1;
-    v2 = v6;
+    v2 = tintColor;
   }
 
   v7 = v2;

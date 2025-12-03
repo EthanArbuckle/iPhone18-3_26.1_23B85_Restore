@@ -1,6 +1,6 @@
 @interface GQDWPLineSpacing
 - (GQDWPLineSpacing)init;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor;
 @end
 
 @implementation GQDWPLineSpacing
@@ -18,12 +18,12 @@
   return result;
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor
 {
   v6 = 3;
-  if (sub_42FBC(a3, qword_A35E8, "mode", &dword_A4240, &self->mMode))
+  if (sub_42FBC(reader, qword_A35E8, "mode", &dword_A4240, &self->mMode))
   {
-    sub_42888(a3, qword_A35E8, "amt", &self->mAmount);
+    sub_42888(reader, qword_A35E8, "amt", &self->mAmount);
     if (v7)
     {
       return 1;

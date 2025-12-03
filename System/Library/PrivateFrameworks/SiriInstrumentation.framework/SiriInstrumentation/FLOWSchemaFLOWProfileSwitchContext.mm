@@ -1,57 +1,57 @@
 @interface FLOWSchemaFLOWProfileSwitchContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWProfileSwitchContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWProfileSwitchContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWProfileSwitchContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWProfileSwitchContext)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasProfileSwitchByNameType:(BOOL)a3;
-- (void)setHasProfileSwitchDurationInMs:(BOOL)a3;
-- (void)setHasProfileSwitchFailureReason:(BOOL)a3;
-- (void)setHasProfileSwitchOutcome:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasProfileSwitchByNameType:(BOOL)type;
+- (void)setHasProfileSwitchDurationInMs:(BOOL)ms;
+- (void)setHasProfileSwitchFailureReason:(BOOL)reason;
+- (void)setHasProfileSwitchOutcome:(BOOL)outcome;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWProfileSwitchContext
 
-- (FLOWSchemaFLOWProfileSwitchContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWProfileSwitchContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = FLOWSchemaFLOWProfileSwitchContext;
   v5 = [(FLOWSchemaFLOWProfileSwitchContext *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"profileSwitchMethod"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"profileSwitchMethod"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWProfileSwitchContext setProfileSwitchMethod:](v5, "setProfileSwitchMethod:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"profileSwitchByNameType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"profileSwitchByNameType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWProfileSwitchContext setProfileSwitchByNameType:](v5, "setProfileSwitchByNameType:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"profileSwitchOutcome"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"profileSwitchOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWProfileSwitchContext setProfileSwitchOutcome:](v5, "setProfileSwitchOutcome:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"profileSwitchFailureReason"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"profileSwitchFailureReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWProfileSwitchContext setProfileSwitchFailureReason:](v5, "setProfileSwitchFailureReason:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"profileSwitchDurationInMs"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"profileSwitchDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWProfileSwitchContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWProfileSwitchContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWProfileSwitchContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWProfileSwitchContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWProfileSwitchContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,7 +100,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -115,7 +115,7 @@
       v10 = off_1E78D60D0[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"profileSwitchByNameType"];
+    [dictionary setObject:v10 forKeyedSubscript:@"profileSwitchByNameType"];
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -135,7 +135,7 @@ LABEL_3:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWProfileSwitchContext profileSwitchDurationInMs](self, "profileSwitchDurationInMs")}];
-  [v3 setObject:v11 forKeyedSubscript:@"profileSwitchDurationInMs"];
+  [dictionary setObject:v11 forKeyedSubscript:@"profileSwitchDurationInMs"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -161,7 +161,7 @@ LABEL_20:
     v13 = off_1E78D6110[v12];
   }
 
-  [v3 setObject:v13 forKeyedSubscript:@"profileSwitchFailureReason"];
+  [dictionary setObject:v13 forKeyedSubscript:@"profileSwitchFailureReason"];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -186,21 +186,21 @@ LABEL_24:
     v15 = off_1E78D6130[v14];
   }
 
-  [v3 setObject:v15 forKeyedSubscript:@"profileSwitchMethod"];
+  [dictionary setObject:v15 forKeyedSubscript:@"profileSwitchMethod"];
   if ((*&self->_has & 4) == 0)
   {
     goto LABEL_12;
   }
 
 LABEL_6:
-  v5 = [(FLOWSchemaFLOWProfileSwitchContext *)self profileSwitchOutcome];
+  profileSwitchOutcome = [(FLOWSchemaFLOWProfileSwitchContext *)self profileSwitchOutcome];
   v6 = @"FLOWPROFILESWITCHOUTCOME_UNKNOWN";
-  if (v5 == 1)
+  if (profileSwitchOutcome == 1)
   {
     v6 = @"FLOWPROFILESWITCHOUTCOME_SUCCESS";
   }
 
-  if (v5 == 2)
+  if (profileSwitchOutcome == 2)
   {
     v7 = @"FLOWPROFILESWITCHOUTCOME_FAILURE";
   }
@@ -210,11 +210,11 @@ LABEL_6:
     v7 = v6;
   }
 
-  [v3 setObject:v7 forKeyedSubscript:@"profileSwitchOutcome"];
+  [dictionary setObject:v7 forKeyedSubscript:@"profileSwitchOutcome"];
 LABEL_12:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -285,16 +285,16 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[28];
+  v6 = equalCopy[28];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -303,13 +303,13 @@ LABEL_6:
   if (*&has)
   {
     profileSwitchMethod = self->_profileSwitchMethod;
-    if (profileSwitchMethod != [v4 profileSwitchMethod])
+    if (profileSwitchMethod != [equalCopy profileSwitchMethod])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -321,13 +321,13 @@ LABEL_6:
   if (v8)
   {
     profileSwitchByNameType = self->_profileSwitchByNameType;
-    if (profileSwitchByNameType != [v4 profileSwitchByNameType])
+    if (profileSwitchByNameType != [equalCopy profileSwitchByNameType])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -339,13 +339,13 @@ LABEL_6:
   if (v10)
   {
     profileSwitchOutcome = self->_profileSwitchOutcome;
-    if (profileSwitchOutcome != [v4 profileSwitchOutcome])
+    if (profileSwitchOutcome != [equalCopy profileSwitchOutcome])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -357,10 +357,10 @@ LABEL_6:
   if (v12)
   {
     profileSwitchFailureReason = self->_profileSwitchFailureReason;
-    if (profileSwitchFailureReason == [v4 profileSwitchFailureReason])
+    if (profileSwitchFailureReason == [equalCopy profileSwitchFailureReason])
     {
       has = self->_has;
-      v6 = v4[28];
+      v6 = equalCopy[28];
       goto LABEL_18;
     }
 
@@ -379,7 +379,7 @@ LABEL_18:
   if (v14)
   {
     profileSwitchDurationInMs = self->_profileSwitchDurationInMs;
-    if (profileSwitchDurationInMs != [v4 profileSwitchDurationInMs])
+    if (profileSwitchDurationInMs != [equalCopy profileSwitchDurationInMs])
     {
       goto LABEL_22;
     }
@@ -391,9 +391,9 @@ LABEL_23:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -454,9 +454,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setHasProfileSwitchDurationInMs:(BOOL)a3
+- (void)setHasProfileSwitchDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 16;
   }
@@ -469,9 +469,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasProfileSwitchFailureReason:(BOOL)a3
+- (void)setHasProfileSwitchFailureReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -484,9 +484,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasProfileSwitchOutcome:(BOOL)a3
+- (void)setHasProfileSwitchOutcome:(BOOL)outcome
 {
-  if (a3)
+  if (outcome)
   {
     v3 = 4;
   }
@@ -499,9 +499,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasProfileSwitchByNameType:(BOOL)a3
+- (void)setHasProfileSwitchByNameType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

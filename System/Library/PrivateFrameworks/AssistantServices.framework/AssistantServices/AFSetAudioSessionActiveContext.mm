@@ -1,51 +1,51 @@
 @interface AFSetAudioSessionActiveContext
-+ (id)newWithBuilder:(id)a3;
-- (AFSetAudioSessionActiveContext)initWithBuilder:(id)a3;
-- (AFSetAudioSessionActiveContext)initWithCoder:(id)a3;
-- (AFSetAudioSessionActiveContext)initWithOptions:(unint64_t)a3 reason:(int64_t)a4 speechRequestOptions:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFSetAudioSessionActiveContext)initWithBuilder:(id)builder;
+- (AFSetAudioSessionActiveContext)initWithCoder:(id)coder;
+- (AFSetAudioSessionActiveContext)initWithOptions:(unint64_t)options reason:(int64_t)reason speechRequestOptions:(id)requestOptions;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (id)redactedDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSetAudioSessionActiveContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   options = self->_options;
-  v8 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:options];
-  [v8 encodeObject:v6 forKey:@"AFSetAudioSessionActiveContext::options"];
+  [coderCopy encodeObject:v6 forKey:@"AFSetAudioSessionActiveContext::options"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_reason];
-  [v8 encodeObject:v7 forKey:@"AFSetAudioSessionActiveContext::reason"];
+  [coderCopy encodeObject:v7 forKey:@"AFSetAudioSessionActiveContext::reason"];
 
-  [v8 encodeObject:self->_speechRequestOptions forKey:@"AFSetAudioSessionActiveContext::speechRequestOptions"];
+  [coderCopy encodeObject:self->_speechRequestOptions forKey:@"AFSetAudioSessionActiveContext::speechRequestOptions"];
 }
 
-- (AFSetAudioSessionActiveContext)initWithCoder:(id)a3
+- (AFSetAudioSessionActiveContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSetAudioSessionActiveContext::options"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSetAudioSessionActiveContext::options"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSetAudioSessionActiveContext::reason"];
-  v8 = [v7 integerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSetAudioSessionActiveContext::reason"];
+  integerValue = [v7 integerValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSetAudioSessionActiveContext::speechRequestOptions"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSetAudioSessionActiveContext::speechRequestOptions"];
 
-  v10 = [(AFSetAudioSessionActiveContext *)self initWithOptions:v6 reason:v8 speechRequestOptions:v9];
+  v10 = [(AFSetAudioSessionActiveContext *)self initWithOptions:unsignedIntegerValue reason:integerValue speechRequestOptions:v9];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -55,13 +55,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       options = self->_options;
       if (options == [(AFSetAudioSessionActiveContext *)v5 options]&& (reason = self->_reason, reason == [(AFSetAudioSessionActiveContext *)v5 reason]))
       {
-        v8 = [(AFSetAudioSessionActiveContext *)v5 speechRequestOptions];
+        speechRequestOptions = [(AFSetAudioSessionActiveContext *)v5 speechRequestOptions];
         speechRequestOptions = self->_speechRequestOptions;
-        v10 = speechRequestOptions == v8 || [(AFSpeechRequestOptions *)speechRequestOptions isEqual:v8];
+        v10 = speechRequestOptions == speechRequestOptions || [(AFSpeechRequestOptions *)speechRequestOptions isEqual:speechRequestOptions];
       }
 
       else
@@ -110,7 +110,7 @@
   return v7;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v13.receiver = self;
@@ -135,17 +135,17 @@
   return v11;
 }
 
-- (AFSetAudioSessionActiveContext)initWithOptions:(unint64_t)a3 reason:(int64_t)a4 speechRequestOptions:(id)a5
+- (AFSetAudioSessionActiveContext)initWithOptions:(unint64_t)options reason:(int64_t)reason speechRequestOptions:(id)requestOptions
 {
-  v8 = a5;
+  requestOptionsCopy = requestOptions;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __78__AFSetAudioSessionActiveContext_initWithOptions_reason_speechRequestOptions___block_invoke;
   v12[3] = &unk_1E7342378;
-  v14 = a3;
-  v15 = a4;
-  v13 = v8;
-  v9 = v8;
+  optionsCopy = options;
+  reasonCopy = reason;
+  v13 = requestOptionsCopy;
+  v9 = requestOptionsCopy;
   v10 = [(AFSetAudioSessionActiveContext *)self initWithBuilder:v12];
 
   return v10;
@@ -160,23 +160,23 @@ void __78__AFSetAudioSessionActiveContext_initWithOptions_reason_speechRequestOp
   [v4 setSpeechRequestOptions:a1[4]];
 }
 
-- (AFSetAudioSessionActiveContext)initWithBuilder:(id)a3
+- (AFSetAudioSessionActiveContext)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = AFSetAudioSessionActiveContext;
   v5 = [(AFSetAudioSessionActiveContext *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFSetAudioSessionActiveContextMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFSetAudioSessionActiveContextMutation *)v7 isDirty])
     {
       v6->_options = [(_AFSetAudioSessionActiveContextMutation *)v7 getOptions];
       v6->_reason = [(_AFSetAudioSessionActiveContextMutation *)v7 getReason];
-      v8 = [(_AFSetAudioSessionActiveContextMutation *)v7 getSpeechRequestOptions];
-      v9 = [v8 copy];
+      getSpeechRequestOptions = [(_AFSetAudioSessionActiveContextMutation *)v7 getSpeechRequestOptions];
+      v9 = [getSpeechRequestOptions copy];
       speechRequestOptions = v6->_speechRequestOptions;
       v6->_speechRequestOptions = v9;
     }
@@ -185,28 +185,28 @@ void __78__AFSetAudioSessionActiveContext_initWithOptions_reason_speechRequestOp
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFSetAudioSessionActiveContextMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFSetAudioSessionActiveContextMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFSetAudioSessionActiveContext);
       v6->_options = [(_AFSetAudioSessionActiveContextMutation *)v5 getOptions];
       v6->_reason = [(_AFSetAudioSessionActiveContextMutation *)v5 getReason];
-      v7 = [(_AFSetAudioSessionActiveContextMutation *)v5 getSpeechRequestOptions];
-      v8 = [v7 copy];
+      getSpeechRequestOptions = [(_AFSetAudioSessionActiveContextMutation *)v5 getSpeechRequestOptions];
+      v8 = [getSpeechRequestOptions copy];
       speechRequestOptions = v6->_speechRequestOptions;
       v6->_speechRequestOptions = v8;
     }

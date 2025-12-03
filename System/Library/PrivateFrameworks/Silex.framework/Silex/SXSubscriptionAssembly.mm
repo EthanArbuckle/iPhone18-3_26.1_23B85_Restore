@@ -1,24 +1,24 @@
 @interface SXSubscriptionAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXSubscriptionAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F5422C40 factory:&__block_literal_global_94];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F5422C40 factory:&__block_literal_global_94];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerProtocol:&unk_1F53EA938 factory:&__block_literal_global_60_0];
+  publicContainer2 = [registryCopy publicContainer];
+  v7 = [publicContainer2 registerProtocol:&unk_1F53EA938 factory:&__block_literal_global_60_0];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerProtocol:&unk_1F53AD270 factory:&__block_literal_global_68];
+  publicContainer3 = [registryCopy publicContainer];
+  v9 = [publicContainer3 registerProtocol:&unk_1F53AD270 factory:&__block_literal_global_68];
 
-  v11 = [v3 publicContainer];
+  publicContainer4 = [registryCopy publicContainer];
 
-  v10 = [v11 registerProtocol:&unk_1F53A85F0 factory:&__block_literal_global_77];
+  v10 = [publicContainer4 registerProtocol:&unk_1F53A85F0 factory:&__block_literal_global_77];
 }
 
 SXSubscribeActionHandler *__41__SXSubscriptionAssembly_loadInRegistry___block_invoke()

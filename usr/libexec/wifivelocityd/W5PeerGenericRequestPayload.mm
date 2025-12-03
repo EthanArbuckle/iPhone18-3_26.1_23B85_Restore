@@ -1,16 +1,16 @@
 @interface W5PeerGenericRequestPayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerGenericRequestPayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerGenericRequestPayload)initWithRequest:(id)request;
 - (id)__allowedClasses;
 - (id)encode;
 @end
 
 @implementation W5PeerGenericRequestPayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
@@ -33,9 +33,9 @@
   return v2;
 }
 
-- (W5PeerGenericRequestPayload)initWithRequest:(id)a3
+- (W5PeerGenericRequestPayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v16.receiver = self;
   v16.super_class = W5PeerGenericRequestPayload;
   v5 = [(W5PeerGenericRequestPayload *)&v16 init];
@@ -61,15 +61,15 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  v6 = [v4 objectForKey:@"payload"];
+  v6 = [requestCopy objectForKey:@"payload"];
   if (!v6)
   {
     v10 = 0;
     goto LABEL_8;
   }
 
-  v7 = [(W5PeerGenericRequestPayload *)v5 __allowedClasses];
-  v8 = [NSSet setWithArray:v7];
+  __allowedClasses = [(W5PeerGenericRequestPayload *)v5 __allowedClasses];
+  v8 = [NSSet setWithArray:__allowedClasses];
   v15 = 0;
   v9 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v8 fromData:v6 error:&v15];
   v10 = v15;
@@ -103,18 +103,18 @@ LABEL_8:
 - (id)encode
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(W5PeerGenericRequestPayload *)self info];
+  info = [(W5PeerGenericRequestPayload *)self info];
 
-  if (v4)
+  if (info)
   {
-    v5 = [(W5PeerGenericRequestPayload *)self info];
+    info2 = [(W5PeerGenericRequestPayload *)self info];
     v14 = 0;
-    v4 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v14];
+    info = [NSKeyedArchiver archivedDataWithRootObject:info2 requiringSecureCoding:1 error:&v14];
     v6 = v14;
 
-    if (v4)
+    if (info)
     {
-      [v3 setObject:v4 forKeyedSubscript:@"payload"];
+      [v3 setObject:info forKeyedSubscript:@"payload"];
     }
 
     else
@@ -135,7 +135,7 @@ LABEL_8:
         _os_log_send_and_compose_impl();
       }
 
-      v4 = 0;
+      info = 0;
     }
   }
 

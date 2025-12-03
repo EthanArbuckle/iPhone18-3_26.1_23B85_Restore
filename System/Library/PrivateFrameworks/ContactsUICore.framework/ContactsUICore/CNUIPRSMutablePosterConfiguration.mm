@@ -53,9 +53,9 @@
 
     else
     {
-      v12 = [PRSMutablePosterConfigurationClass mutableConfiguration];
+      mutableConfiguration = [PRSMutablePosterConfigurationClass mutableConfiguration];
       v9 = v2->_wrappedMutablePosterConfiguration;
-      v2->_wrappedMutablePosterConfiguration = v12;
+      v2->_wrappedMutablePosterConfiguration = mutableConfiguration;
     }
 
     v13 = v2;

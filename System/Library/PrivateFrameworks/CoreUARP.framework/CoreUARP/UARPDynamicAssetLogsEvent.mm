@@ -1,10 +1,10 @@
 @interface UARPDynamicAssetLogsEvent
 + (id)tag;
 - (BOOL)decomposeUARP;
-- (BOOL)expandToDirectory:(id)a3 forRemoteEndpoint:(id)a4;
+- (BOOL)expandToDirectory:(id)directory forRemoteEndpoint:(id)endpoint;
 - (UARPDynamicAssetLogsEvent)init;
-- (UARPDynamicAssetLogsEvent)initWithURL:(id)a3;
-- (id)createLogsFilepath:(id)a3 forRemoteEndpoint:(id)a4;
+- (UARPDynamicAssetLogsEvent)initWithURL:(id)l;
+- (id)createLogsFilepath:(id)filepath forRemoteEndpoint:(id)endpoint;
 @end
 
 @implementation UARPDynamicAssetLogsEvent
@@ -16,16 +16,16 @@
   return 0;
 }
 
-- (UARPDynamicAssetLogsEvent)initWithURL:(id)a3
+- (UARPDynamicAssetLogsEvent)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = UARPDynamicAssetLogsEvent;
   v6 = [(UARPDynamicAssetLogsEvent *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v8 = os_log_create("com.apple.accessoryupdater.uarp", "logs");
     log = v7->_log;
     v7->_log = v8;
@@ -53,11 +53,11 @@
   return v5;
 }
 
-- (BOOL)expandToDirectory:(id)a3 forRemoteEndpoint:(id)a4
+- (BOOL)expandToDirectory:(id)directory forRemoteEndpoint:(id)endpoint
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v32 = a4;
+  directoryCopy = directory;
+  endpointCopy = endpoint;
   if (![(UARPDynamicAssetLogsEvent *)self decomposeUARP])
   {
     v25 = 0;
@@ -90,11 +90,11 @@
       }
 
       v11 = *(*(&v33 + 1) + 8 * i);
-      v12 = [(UARPDynamicAssetLogsEvent *)self createLogsFilepath:v11 forRemoteEndpoint:v32, v29];
+      v12 = [(UARPDynamicAssetLogsEvent *)self createLogsFilepath:v11 forRemoteEndpoint:endpointCopy, v29];
       v13 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v12];
-      v14 = [MEMORY[0x277CCAA00] defaultManager];
-      v15 = [v13 path];
-      v16 = [v14 createFileAtPath:v15 contents:0 attributes:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      path = [v13 path];
+      v16 = [defaultManager createFileAtPath:path contents:0 attributes:0];
 
       if ((v16 & 1) == 0)
       {
@@ -121,20 +121,20 @@ LABEL_21:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v20 = v19;
-        v21 = [v13 path];
+        path2 = [v13 path];
         *buf = v29;
         v38 = "[UARPDynamicAssetLogsEvent expandToDirectory:forRemoteEndpoint:]";
         v39 = 2112;
-        v40 = v21;
+        v40 = path2;
         _os_log_impl(&dword_247AA7000, v20, OS_LOG_TYPE_INFO, "%s: Successfully Expanded LOGS to File: %@", buf, 0x16u);
       }
 
-      if (v6)
+      if (directoryCopy)
       {
         v22 = UARPStringLogsDirectoryFilePath();
-        v23 = [v6 path];
-        v24 = [v12 lastPathComponent];
-        UARPCopyFile(v22, v23, v24);
+        path3 = [directoryCopy path];
+        lastPathComponent = [v12 lastPathComponent];
+        UARPCopyFile(v22, path3, lastPathComponent);
       }
     }
 
@@ -163,18 +163,18 @@ LABEL_23:
   return v3;
 }
 
-- (id)createLogsFilepath:(id)a3 forRemoteEndpoint:(id)a4
+- (id)createLogsFilepath:(id)filepath forRemoteEndpoint:(id)endpoint
 {
-  v5 = a4;
-  v6 = [a3 tlvs];
-  v7 = [UARPSuperBinaryAssetTLV findTLVWithType:3436347665 tlvs:v6];
+  endpointCopy = endpoint;
+  tlvs = [filepath tlvs];
+  v7 = [UARPSuperBinaryAssetTLV findTLVWithType:3436347665 tlvs:tlvs];
 
   if (v7)
   {
-    v8 = [v7 valueAsString];
-    v9 = [v8 UTF8String];
+    valueAsString = [v7 valueAsString];
+    uTF8String = [valueAsString UTF8String];
 
-    v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:v9];
+    v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:uTF8String];
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"-%@", v10];
   }
 
@@ -183,11 +183,11 @@ LABEL_23:
     v11 = @".txt";
   }
 
-  v12 = [v5 appleModelNumber];
-  v13 = [v5 serialNumber];
+  appleModelNumber = [endpointCopy appleModelNumber];
+  serialNumber = [endpointCopy serialNumber];
 
   v14 = UARPStringLogsDirectoryFilePath();
-  v15 = UARPUniqueFilename(v12, v13, v14, @"LOGS", v11);
+  v15 = UARPUniqueFilename(appleModelNumber, serialNumber, v14, @"LOGS", v11);
 
   return v15;
 }

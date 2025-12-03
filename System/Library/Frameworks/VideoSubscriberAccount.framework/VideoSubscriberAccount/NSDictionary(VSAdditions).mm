@@ -17,7 +17,7 @@
 
 - (id)vs_objectOfClass:()VSAdditions forKey:
 {
-  v4 = [a1 objectForKey:a4];
+  v4 = [self objectForKey:a4];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -30,7 +30,7 @@
 - (id)vs_dictionaryForKey:()VSAdditions
 {
   v4 = a3;
-  v5 = [a1 vs_objectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self vs_objectOfClass:objc_opt_class() forKey:v4];
 
   return v5;
 }
@@ -38,14 +38,14 @@
 - (id)vs_arrayForKey:()VSAdditions
 {
   v4 = a3;
-  v5 = [a1 vs_objectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self vs_objectOfClass:objc_opt_class() forKey:v4];
 
   return v5;
 }
 
 - (id)vs_arrayOfKindOfClass:()VSAdditions forKey:
 {
-  v5 = [a1 vs_arrayForKey:a4];
+  v5 = [self vs_arrayForKey:a4];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__NSDictionary_VSAdditions__vs_arrayOfKindOfClass_forKey___block_invoke;
@@ -60,7 +60,7 @@
 - (id)vs_arrayOfStringsForKey:()VSAdditions
 {
   v4 = a3;
-  v5 = [a1 vs_arrayOfKindOfClass:objc_opt_class() forKey:v4];
+  v5 = [self vs_arrayOfKindOfClass:objc_opt_class() forKey:v4];
 
   return v5;
 }
@@ -68,7 +68,7 @@
 - (id)vs_arrayOfNumbersForKey:()VSAdditions
 {
   v4 = a3;
-  v5 = [a1 vs_arrayOfKindOfClass:objc_opt_class() forKey:v4];
+  v5 = [self vs_arrayOfKindOfClass:objc_opt_class() forKey:v4];
 
   return v5;
 }
@@ -76,7 +76,7 @@
 - (id)vs_arrayOfDictionariesForKey:()VSAdditions
 {
   v4 = a3;
-  v5 = [a1 vs_arrayOfKindOfClass:objc_opt_class() forKey:v4];
+  v5 = [self vs_arrayOfKindOfClass:objc_opt_class() forKey:v4];
 
   return v5;
 }
@@ -84,23 +84,23 @@
 - (id)vs_numberForKey:()VSAdditions
 {
   v4 = a3;
-  v5 = [a1 vs_objectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self vs_objectOfClass:objc_opt_class() forKey:v4];
 
   return v5;
 }
 
 - (uint64_t)vs_BOOLForKey:()VSAdditions
 {
-  v1 = [a1 vs_numberForKey:?];
-  v2 = [v1 BOOLValue];
+  v1 = [self vs_numberForKey:?];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)vs_stringForKey:()VSAdditions
 {
   v4 = a3;
-  v5 = [a1 vs_objectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self vs_objectOfClass:objc_opt_class() forKey:v4];
 
   return v5;
 }
@@ -109,7 +109,7 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  [a1 allKeys];
+  [self allKeys];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -131,7 +131,7 @@
         v10 = *(*(&v13 + 1) + 8 * i);
         if (![v4 caseInsensitiveCompare:{v10, v13}])
         {
-          v11 = [a1 objectForKey:v10];
+          v11 = [self objectForKey:v10];
           goto LABEL_11;
         }
       }
@@ -156,21 +156,21 @@ LABEL_11:
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 allKeys];
-  v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v7 = [v4 componentsSeparatedByCharactersInSet:v6];
+  allKeys = [self allKeys];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v7 = [v4 componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
   v8 = [v7 componentsJoinedByString:&stru_284DD5B48];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v5;
+  v9 = allKeys;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
-    v20 = a1;
+    selfCopy = self;
     v21 = v4;
     v12 = *v23;
     while (2)
@@ -183,13 +183,13 @@ LABEL_11:
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-        v16 = [v14 componentsSeparatedByCharactersInSet:v15];
+        whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+        v16 = [v14 componentsSeparatedByCharactersInSet:whitespaceCharacterSet2];
         v17 = [v16 componentsJoinedByString:&stru_284DD5B48];
 
         if (![v8 caseInsensitiveCompare:v17])
         {
-          v18 = [v20 objectForKey:v14];
+          v18 = [selfCopy objectForKey:v14];
 
           goto LABEL_11;
         }

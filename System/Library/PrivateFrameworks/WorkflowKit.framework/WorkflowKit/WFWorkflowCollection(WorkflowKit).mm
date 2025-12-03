@@ -6,7 +6,7 @@
 
 - (uint64_t)systemIconName
 {
-  [a1 glyphCharacter];
+  [self glyphCharacter];
 
   return WFSystemImageNameForOutlineGlyphCharacter();
 }

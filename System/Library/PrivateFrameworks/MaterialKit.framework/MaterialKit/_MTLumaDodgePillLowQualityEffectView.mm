@@ -1,14 +1,14 @@
 @interface _MTLumaDodgePillLowQualityEffectView
-- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)a3;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)key;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation _MTLumaDodgePillLowQualityEffectView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if (__supportedAnimationPropertyKey(v4))
+  keyCopy = key;
+  if (__supportedAnimationPropertyKey(keyCopy))
   {
     v5 = 1;
   }
@@ -17,16 +17,16 @@
   {
     v7.receiver = self;
     v7.super_class = _MTLumaDodgePillLowQualityEffectView;
-    v5 = [(_MTLumaDodgePillLowQualityEffectView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(_MTLumaDodgePillLowQualityEffectView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)key
 {
-  v4 = a3;
-  if (__supportedAnimationPropertyKey(v4))
+  keyCopy = key;
+  if (__supportedAnimationPropertyKey(keyCopy))
   {
     v5 = 1;
   }
@@ -35,7 +35,7 @@
   {
     v7.receiver = self;
     v7.super_class = _MTLumaDodgePillLowQualityEffectView;
-    v5 = [(_MTLumaDodgePillLowQualityEffectView *)&v7 _shouldAnimatePropertyAdditivelyWithKey:v4];
+    v5 = [(_MTLumaDodgePillLowQualityEffectView *)&v7 _shouldAnimatePropertyAdditivelyWithKey:keyCopy];
   }
 
   return v5;

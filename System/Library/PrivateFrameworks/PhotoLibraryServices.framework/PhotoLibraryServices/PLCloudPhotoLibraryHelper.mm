@@ -1,7 +1,7 @@
 @interface PLCloudPhotoLibraryHelper
 + (void)_donateTipsAppEnablementSignal;
-+ (void)disableCPL:(id)a3;
-+ (void)enableCPL:(id)a3;
++ (void)disableCPL:(id)l;
++ (void)enableCPL:(id)l;
 @end
 
 @implementation PLCloudPhotoLibraryHelper
@@ -11,32 +11,32 @@
   v2 = objc_alloc(MEMORY[0x1E698EBC0]);
   v7 = [v2 initWithContentIdentifier:@"com.apple.mobileslideshow.icpl-enabled" context:*MEMORY[0x1E69BFF18] osBuild:0 userInfo:0];
   v3 = BiomeLibrary();
-  v4 = [v3 Discoverability];
-  v5 = [v4 Signals];
-  v6 = [v5 source];
+  discoverability = [v3 Discoverability];
+  signals = [discoverability Signals];
+  source = [signals source];
 
-  [v6 sendEvent:v7];
+  [source sendEvent:v7];
 }
 
-+ (void)disableCPL:(id)a3
++ (void)disableCPL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v5 = +[PLAccountStore pl_sharedAccountStore];
-  v4 = [v5 cachedPrimaryAppleAccount];
-  [v4 setEnabled:0 forDataclass:*MEMORY[0x1E6959AE8]];
-  [v5 saveAccount:v4 withDataclassActions:0 doVerify:0 completion:v3];
+  cachedPrimaryAppleAccount = [v5 cachedPrimaryAppleAccount];
+  [cachedPrimaryAppleAccount setEnabled:0 forDataclass:*MEMORY[0x1E6959AE8]];
+  [v5 saveAccount:cachedPrimaryAppleAccount withDataclassActions:0 doVerify:0 completion:lCopy];
 }
 
-+ (void)enableCPL:(id)a3
++ (void)enableCPL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v6 = +[PLAccountStore pl_sharedAccountStore];
-  v5 = [v6 cachedPrimaryAppleAccount];
-  [v5 setEnabled:1 forDataclass:*MEMORY[0x1E6959AE8]];
-  [v5 setEnabled:0 forDataclass:*MEMORY[0x1E6959B30]];
-  [v6 saveAccount:v5 withDataclassActions:0 doVerify:0 completion:v4];
+  cachedPrimaryAppleAccount = [v6 cachedPrimaryAppleAccount];
+  [cachedPrimaryAppleAccount setEnabled:1 forDataclass:*MEMORY[0x1E6959AE8]];
+  [cachedPrimaryAppleAccount setEnabled:0 forDataclass:*MEMORY[0x1E6959B30]];
+  [v6 saveAccount:cachedPrimaryAppleAccount withDataclassActions:0 doVerify:0 completion:lCopy];
 
-  [a1 _donateTipsAppEnablementSignal];
+  [self _donateTipsAppEnablementSignal];
 }
 
 @end

@@ -8,9 +8,9 @@
 - (BOOL)needToGeneratePreviews
 {
   v24 = *MEMORY[0x1E69E9840];
-  v22.receiver = a1;
+  v22.receiver = self;
   v22.super_class = &off_1F5078E18;
-  if (!objc_msgSendSuper2(&v22, sel_needToGeneratePreviews) || ![a1 subAttachmentCount])
+  if (!objc_msgSendSuper2(&v22, sel_needToGeneratePreviews) || ![self subAttachmentCount])
   {
     return 0;
   }
@@ -59,8 +59,8 @@
     v7 = 0.0;
   }
 
-  v15 = [a1 firstSubAttachment];
-  v16 = [v15 attachmentPreviewImageWithMinSize:v7 scale:{v7, 1.0}];
+  firstSubAttachment = [self firstSubAttachment];
+  v16 = [firstSubAttachment attachmentPreviewImageWithMinSize:v7 scale:{v7, 1.0}];
   v14 = v16 != 0;
 
   return v14;
@@ -131,18 +131,18 @@
     v8 = 0.0;
   }
 
-  v15 = [a1 attachment];
-  v16 = [v15 managedObjectContext];
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v60[0] = MEMORY[0x1E69E9820];
   v60[1] = 3221225472;
   v60[2] = __75__ICAttachmentGalleryModel_PreviewGeneration__generatePreviewsInOperation___block_invoke;
   v60[3] = &unk_1E846DF20;
   *&v60[8] = v8;
-  v60[4] = a1;
+  v60[4] = self;
   v60[5] = &v65;
   v60[6] = v71;
   v60[7] = &v73;
-  [v16 performBlockAndWait:v60];
+  [managedObjectContext performBlockAndWait:v60];
 
   v17 = v66[5];
   if (!v17)
@@ -163,7 +163,7 @@
       _os_log_debug_impl(&dword_1D4171000, v39, OS_LOG_TYPE_DEBUG, "%@ %@ %@ early return", buf, 0x20u);
     }
 
-    v46 = v39;
+    ic_JPEGData = v39;
     goto LABEL_32;
   }
 
@@ -174,8 +174,8 @@
     v66[5] = v18;
   }
 
-  v46 = [v66[5] ic_JPEGData];
-  v20 = CGImageSourceCreateWithData(v46, 0);
+  ic_JPEGData = [v66[5] ic_JPEGData];
+  v20 = CGImageSourceCreateWithData(ic_JPEGData, 0);
   if (v20)
   {
     cf = v20;
@@ -189,16 +189,16 @@
       v25 = v24;
       if (v23 && v24)
       {
-        v26 = [a1 attachment];
-        v27 = [v26 managedObjectContext];
+        attachment2 = [self attachment];
+        managedObjectContext2 = [attachment2 managedObjectContext];
         v57[0] = MEMORY[0x1E69E9820];
         v57[1] = 3221225472;
         v57[2] = __75__ICAttachmentGalleryModel_PreviewGeneration__generatePreviewsInOperation___block_invoke_14;
         v57[3] = &unk_1E8468D98;
-        v57[4] = a1;
+        v57[4] = self;
         v58 = v23;
         v59 = v25;
-        [v27 performBlockAndWait:v57];
+        [managedObjectContext2 performBlockAndWait:v57];
       }
     }
 
@@ -225,18 +225,18 @@
           v32 = *(*(&v53 + 1) + 8 * j);
           [v32 imageSize];
           v34 = v33;
-          v35 = [a1 attachment];
-          v36 = [v35 managedObjectContext];
+          attachment3 = [self attachment];
+          managedObjectContext3 = [attachment3 managedObjectContext];
           v52[0] = MEMORY[0x1E69E9820];
           v52[1] = 3221225472;
           v52[2] = __75__ICAttachmentGalleryModel_PreviewGeneration__generatePreviewsInOperation___block_invoke_2;
           v52[3] = &unk_1E846DF48;
           v52[8] = v34;
-          v52[4] = a1;
+          v52[4] = self;
           v52[5] = v32;
           v52[6] = v71;
           v52[7] = cf;
-          [v36 performBlockAndWait:v52];
+          [managedObjectContext3 performBlockAndWait:v52];
         }
 
         v29 = [obj countByEnumeratingWithState:&v53 objects:v79 count:16];
@@ -245,15 +245,15 @@
       while (v29);
     }
 
-    v37 = [a1 attachment];
-    v38 = [v37 managedObjectContext];
+    attachment4 = [self attachment];
+    managedObjectContext4 = [attachment4 managedObjectContext];
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __75__ICAttachmentGalleryModel_PreviewGeneration__generatePreviewsInOperation___block_invoke_3;
     v51[3] = &unk_1E8468FA8;
     v51[5] = v71;
-    v51[4] = a1;
-    [v38 performBlockAndWait:v51];
+    v51[4] = self;
+    [managedObjectContext4 performBlockAndWait:v51];
 
     CFRelease(cf);
     v39 = v45;

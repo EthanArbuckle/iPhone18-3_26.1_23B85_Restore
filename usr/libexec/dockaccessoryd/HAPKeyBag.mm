@@ -1,31 +1,31 @@
 @interface HAPKeyBag
 + (id)logCategory;
 - (BOOL)isEmpty;
-- (BOOL)isValidIndex:(int64_t)a3;
-- (HAPKeyBag)initWithAccessoryIdentifier:(id)a3 keyStore:(id)a4;
-- (HAPKeyBag)initWithAccessoryIdentifier:(id)a3 keyStore:(id)a4 controllerKeyList:(id)a5;
+- (BOOL)isValidIndex:(int64_t)index;
+- (HAPKeyBag)initWithAccessoryIdentifier:(id)identifier keyStore:(id)store;
+- (HAPKeyBag)initWithAccessoryIdentifier:(id)identifier keyStore:(id)store controllerKeyList:(id)list;
 - (HAPKeyStore)keyStore;
-- (id)_populateBagWithPairingIdentitiesForAccessory:(id)a3 fromStore:(id)a4;
+- (id)_populateBagWithPairingIdentitiesForAccessory:(id)accessory fromStore:(id)store;
 - (id)currentIdentity;
 - (id)logIdentifier;
 - (id)nextIdentity;
 - (int64_t)getCurrentIndexInBag;
 - (unint64_t)totalIdentities;
 - (void)refreshKeys;
-- (void)setCurrentIndexInBag:(int64_t)a3;
+- (void)setCurrentIndexInBag:(int64_t)bag;
 @end
 
 @implementation HAPKeyBag
 
-- (HAPKeyBag)initWithAccessoryIdentifier:(id)a3 keyStore:(id)a4
+- (HAPKeyBag)initWithAccessoryIdentifier:(id)identifier keyStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  storeCopy = store;
+  if (identifierCopy)
   {
-    v8 = v7;
-    v9 = [(HAPKeyBag *)self _populateBagWithPairingIdentitiesForAccessory:v6 fromStore:v7];
-    v10 = [(HAPKeyBag *)self initWithAccessoryIdentifier:v6 keyStore:v8 controllerKeyList:v9];
+    v8 = storeCopy;
+    v9 = [(HAPKeyBag *)self _populateBagWithPairingIdentitiesForAccessory:identifierCopy fromStore:storeCopy];
+    v10 = [(HAPKeyBag *)self initWithAccessoryIdentifier:identifierCopy keyStore:v8 controllerKeyList:v9];
 
     return v10;
   }
@@ -37,25 +37,25 @@
   }
 }
 
-- (HAPKeyBag)initWithAccessoryIdentifier:(id)a3 keyStore:(id)a4 controllerKeyList:(id)a5
+- (HAPKeyBag)initWithAccessoryIdentifier:(id)identifier keyStore:(id)store controllerKeyList:(id)list
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  storeCopy = store;
+  listCopy = list;
+  if (!identifierCopy)
   {
     sub_1001F8A90();
   }
 
-  v12 = v11;
+  v12 = listCopy;
   v24.receiver = self;
   v24.super_class = HAPKeyBag;
   v13 = [(HAPKeyBag *)&v24 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_accessoryIdentifier, a3);
-    objc_storeWeak(&v14->_keyStore, v10);
+    objc_storeStrong(&v13->_accessoryIdentifier, identifier);
+    objc_storeWeak(&v14->_keyStore, storeCopy);
     v14->_currentIndexInBag = -1;
     v15 = [v12 copy];
     availableKeysToTry = v14->_availableKeysToTry;
@@ -68,7 +68,7 @@
       v19 = sub_10007FAFC(v17);
       accessoryIdentifier = v14->_accessoryIdentifier;
       v21 = [NSNumber numberWithUnsignedInteger:[(NSArray *)v14->_availableKeysToTry count]];
-      v22 = [(NSArray *)v14->_availableKeysToTry firstObject];
+      firstObject = [(NSArray *)v14->_availableKeysToTry firstObject];
       *buf = 138544130;
       v26 = v19;
       v27 = 2112;
@@ -76,7 +76,7 @@
       v29 = 2112;
       v30 = v21;
       v31 = 2112;
-      v32 = v22;
+      v32 = firstObject;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%{public}@Initialized key bag for accessory [%@] with %@ keys and primary identity: [%@]", buf, 0x2Au);
     }
   }
@@ -86,26 +86,26 @@
 
 - (void)refreshKeys
 {
-  v3 = [(HAPKeyBag *)self accessoryIdentifier];
+  accessoryIdentifier = [(HAPKeyBag *)self accessoryIdentifier];
 
-  if (!v3)
+  if (!accessoryIdentifier)
   {
     sub_1001F8AC0();
     goto LABEL_11;
   }
 
-  v4 = [(HAPKeyBag *)self keyStore];
+  keyStore = [(HAPKeyBag *)self keyStore];
 
-  if (!v4)
+  if (!keyStore)
   {
     sub_1001F8AA8();
 LABEL_11:
     __break(1u);
   }
 
-  v5 = [(HAPKeyBag *)self accessoryIdentifier];
-  v6 = [(HAPKeyBag *)self keyStore];
-  v7 = [(HAPKeyBag *)self _populateBagWithPairingIdentitiesForAccessory:v5 fromStore:v6];
+  accessoryIdentifier2 = [(HAPKeyBag *)self accessoryIdentifier];
+  keyStore2 = [(HAPKeyBag *)self keyStore];
+  v7 = [(HAPKeyBag *)self _populateBagWithPairingIdentitiesForAccessory:accessoryIdentifier2 fromStore:keyStore2];
 
   os_unfair_lock_lock_with_options();
   availableKeysToTry = self->_availableKeysToTry;
@@ -123,16 +123,16 @@ LABEL_11:
 
     self->_currentIndexInBag = -1;
     os_unfair_lock_unlock(&self->_lock);
-    v11 = self;
+    selfCopy = self;
     v12 = sub_10007FAA0();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = sub_10007FAFC(v11);
-      v14 = [(HAPKeyBag *)v11 accessoryIdentifier];
+      v13 = sub_10007FAFC(selfCopy);
+      accessoryIdentifier3 = [(HAPKeyBag *)selfCopy accessoryIdentifier];
       v15 = 138543874;
       v16 = v13;
       v17 = 2112;
-      v18 = v14;
+      v18 = accessoryIdentifier3;
       v19 = 2112;
       v20 = v7;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%{public}@Refreshed key bag for accessory [%@] with identities: [%@]", &v15, 0x20u);
@@ -140,16 +140,16 @@ LABEL_11:
   }
 }
 
-- (id)_populateBagWithPairingIdentitiesForAccessory:(id)a3 fromStore:(id)a4
+- (id)_populateBagWithPairingIdentitiesForAccessory:(id)accessory fromStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  storeCopy = store;
   v8 = objc_autoreleasePoolPush();
-  v9 = [v7 allAccessoryPairingKeys];
-  v10 = v9;
-  if (v9)
+  allAccessoryPairingKeys = [storeCopy allAccessoryPairingKeys];
+  v10 = allAccessoryPairingKeys;
+  if (allAccessoryPairingKeys)
   {
-    v11 = v9;
+    v11 = allAccessoryPairingKeys;
   }
 
   else
@@ -159,8 +159,8 @@ LABEL_11:
 
   v12 = [NSMutableArray arrayWithArray:v11];
 
-  v13 = [v7 getAssociatedControllerKeyForAccessory:v6];
-  if (v13 || ([v7 readControllerPairingKeyForAccessory:v6 error:0], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  v13 = [storeCopy getAssociatedControllerKeyForAccessory:accessoryCopy];
+  if (v13 || ([storeCopy readControllerPairingKeyForAccessory:accessoryCopy error:0], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v14 = v13;
     [v12 removeObject:v13];
@@ -169,11 +169,11 @@ LABEL_11:
 
   if ([v12 hmf_isEmpty])
   {
-    v15 = self;
+    selfCopy = self;
     v16 = sub_10007FAA0();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = sub_10007FAFC(v15);
+      v17 = sub_10007FAFC(selfCopy);
       v20 = 138543362;
       v21 = v17;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%{public}@This is strange. We do not have any controller keys in the key chain.", &v20, 0xCu);
@@ -195,23 +195,23 @@ LABEL_11:
   return currentIndexInBag;
 }
 
-- (void)setCurrentIndexInBag:(int64_t)a3
+- (void)setCurrentIndexInBag:(int64_t)bag
 {
   os_unfair_lock_lock_with_options();
-  self->_currentIndexInBag = a3;
+  self->_currentIndexInBag = bag;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)isValidIndex:(int64_t)a3
+- (BOOL)isValidIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     return 0;
   }
 
-  v4 = [(HAPKeyBag *)self availableKeysToTry];
-  v5 = [v4 count] > a3;
+  availableKeysToTry = [(HAPKeyBag *)self availableKeysToTry];
+  v5 = [availableKeysToTry count] > index;
 
   return v5;
 }
@@ -220,25 +220,25 @@ LABEL_11:
 {
   if ([(HAPKeyBag *)self isEmpty])
   {
-    v3 = 0;
+    currentIdentity = 0;
   }
 
   else
   {
     [(HAPKeyBag *)self setCurrentIndexInBag:[(HAPKeyBag *)self currentIndexInBag]+ 1];
-    v3 = [(HAPKeyBag *)self currentIdentity];
-    v4 = self;
+    currentIdentity = [(HAPKeyBag *)self currentIdentity];
+    selfCopy = self;
     v5 = sub_10007FAA0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = sub_10007FAFC(v4);
-      v7 = [NSNumber numberWithInteger:[(HAPKeyBag *)v4 currentIndexInBag]];
-      v8 = [(HAPKeyBag *)v4 availableKeysToTry];
-      v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 count]);
+      v6 = sub_10007FAFC(selfCopy);
+      v7 = [NSNumber numberWithInteger:[(HAPKeyBag *)selfCopy currentIndexInBag]];
+      availableKeysToTry = [(HAPKeyBag *)selfCopy availableKeysToTry];
+      v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [availableKeysToTry count]);
       v11 = 138544130;
       v12 = v6;
       v13 = 2112;
-      v14 = v3;
+      v14 = currentIdentity;
       v15 = 2112;
       v16 = v7;
       v17 = 2112;
@@ -247,7 +247,7 @@ LABEL_11:
     }
   }
 
-  return v3;
+  return currentIdentity;
 }
 
 - (id)currentIdentity
@@ -259,14 +259,14 @@ LABEL_11:
 
   if ([(HAPKeyBag *)self isValidIndex:[(HAPKeyBag *)self currentIndexInBag]])
   {
-    v3 = [(HAPKeyBag *)self availableKeysToTry];
-    v4 = [v3 objectAtIndex:{-[HAPKeyBag currentIndexInBag](self, "currentIndexInBag")}];
+    availableKeysToTry = [(HAPKeyBag *)self availableKeysToTry];
+    v4 = [availableKeysToTry objectAtIndex:{-[HAPKeyBag currentIndexInBag](self, "currentIndexInBag")}];
 
-    v5 = self;
+    selfCopy = self;
     v6 = sub_10007FAA0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = sub_10007FAFC(v5);
+      v7 = sub_10007FAFC(selfCopy);
       v9 = 138543618;
       v10 = v7;
       v11 = 2112;
@@ -285,16 +285,16 @@ LABEL_11:
 
 - (BOOL)isEmpty
 {
-  v2 = [(HAPKeyBag *)self availableKeysToTry];
-  v3 = [v2 hmf_isEmpty];
+  availableKeysToTry = [(HAPKeyBag *)self availableKeysToTry];
+  hmf_isEmpty = [availableKeysToTry hmf_isEmpty];
 
-  return v3;
+  return hmf_isEmpty;
 }
 
 - (unint64_t)totalIdentities
 {
-  v2 = [(HAPKeyBag *)self availableKeysToTry];
-  v3 = [v2 count];
+  availableKeysToTry = [(HAPKeyBag *)self availableKeysToTry];
+  v3 = [availableKeysToTry count];
 
   return v3;
 }
@@ -302,10 +302,10 @@ LABEL_11:
 - (id)logIdentifier
 {
   v3 = objc_opt_class();
-  v4 = [(HAPKeyBag *)self accessoryIdentifier];
+  accessoryIdentifier = [(HAPKeyBag *)self accessoryIdentifier];
   v5 = [NSNumber numberWithInteger:[(HAPKeyBag *)self getCurrentIndexInBag]];
   v6 = [NSNumber numberWithUnsignedInteger:[(HAPKeyBag *)self totalIdentities]];
-  v7 = [NSString stringWithFormat:@"%@ %@ (%@/%@)", v3, v4, v5, v6];
+  v7 = [NSString stringWithFormat:@"%@ %@ (%@/%@)", v3, accessoryIdentifier, v5, v6];
 
   return v7;
 }

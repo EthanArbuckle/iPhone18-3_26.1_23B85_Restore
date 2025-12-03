@@ -1,23 +1,23 @@
 @interface SXPhoneNumberActionSerializer
-- (id)URLForAction:(id)a3 type:(int64_t)a4;
+- (id)URLForAction:(id)action type:(int64_t)type;
 @end
 
 @implementation SXPhoneNumberActionSerializer
 
-- (id)URLForAction:(id)a3 type:(int64_t)a4
+- (id)URLForAction:(id)action type:(int64_t)type
 {
-  v5 = a3;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  actionCopy = action;
+  if (actionCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 phoneNumber];
+    phoneNumber = [actionCopy phoneNumber];
 
     v7 = 0;
-    if (a4 != 1 && v6)
+    if (type != 1 && phoneNumber)
     {
       v8 = objc_alloc_init(MEMORY[0x1E696AF20]);
       [v8 setScheme:@"tel"];
-      v9 = [v5 phoneNumber];
-      [v8 setHost:v9];
+      phoneNumber2 = [actionCopy phoneNumber];
+      [v8 setHost:phoneNumber2];
 
       v7 = [v8 URL];
     }

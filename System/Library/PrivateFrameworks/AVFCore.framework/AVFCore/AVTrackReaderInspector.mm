@@ -4,13 +4,13 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minSampleDuration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)uneditedDuration;
 - (BOOL)hasAudioSampleDependencies;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)preferredTransform;
 - (CGSize)dimensions;
 - (CGSize)naturalSize;
-- (OpaqueFigSampleCursorService)_getFigSampleCursorServiceReportingTimeAccuracy:(BOOL *)a3;
+- (OpaqueFigSampleCursorService)_getFigSampleCursorServiceReportingTimeAccuracy:(BOOL *)accuracy;
 - (float)preferredVolume;
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5;
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index;
 - (id)_trackReferences;
 - (id)commonMetadata;
 - (id)loudnessInfo;
@@ -18,30 +18,30 @@
 - (int)decodabilityValidationResult;
 - (int)playabilityValidationResult;
 - (unint64_t)hash;
-- (void)_valueAsCFTypeForProperty:(__CFString *)a3;
+- (void)_valueAsCFTypeForProperty:(__CFString *)property;
 - (void)dealloc;
 @end
 
 @implementation AVTrackReaderInspector
 
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index
 {
-  v6 = *&a4;
-  v17 = a4;
+  v6 = *&d;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = AVTrackReaderInspector;
   v8 = [AVAssetTrackInspector _initWithAsset:sel__initWithAsset_trackID_trackIndex_ trackID:? trackIndex:?];
   if (v8)
   {
-    if (a3)
+    if (asset)
     {
       v15 = 0;
       v14 = 0;
-      v9 = [a3 _copyFormatReader];
-      v8[4] = v9;
-      if (v9)
+      _copyFormatReader = [asset _copyFormatReader];
+      v8[4] = _copyFormatReader;
+      if (_copyFormatReader)
       {
-        v10 = v9;
+        v10 = _copyFormatReader;
         if (v6)
         {
           v11 = *(*(CMBaseObjectGetVTable() + 16) + 56);
@@ -51,12 +51,12 @@
           }
         }
 
-        else if ((a5 & 0x8000000000000000) == 0)
+        else if ((index & 0x8000000000000000) == 0)
         {
           v12 = *(*(CMBaseObjectGetVTable() + 16) + 48);
           if (v12)
           {
-            v12(v10, a5, &v15, &v14, &v17);
+            v12(v10, index, &v15, &v14, &dCopy);
           }
         }
       }
@@ -68,10 +68,10 @@
 
       v8[5] = v15;
       v8[6] = objc_alloc_init(AVDispatchOnce);
-      *(v8 + 17) = v17;
+      *(v8 + 17) = dCopy;
       *(v8 + 18) = v14;
-      *(v8 + 88) = [a3 _prefersNominalDurations];
-      v8[10] = [a3 _weakReference];
+      *(v8 + 88) = [asset _prefersNominalDurations];
+      v8[10] = [asset _weakReference];
     }
 
     if (!v8[5])
@@ -110,7 +110,7 @@ LABEL_14:
   [(AVAssetTrackInspector *)&v6 dealloc];
 }
 
-- (OpaqueFigSampleCursorService)_getFigSampleCursorServiceReportingTimeAccuracy:(BOOL *)a3
+- (OpaqueFigSampleCursorService)_getFigSampleCursorServiceReportingTimeAccuracy:(BOOL *)accuracy
 {
   copySampleCursorServiceOnce = self->_copySampleCursorServiceOnce;
   v7[0] = MEMORY[0x1E69E9820];
@@ -119,9 +119,9 @@ LABEL_14:
   v7[3] = &unk_1E7460C00;
   v7[4] = self;
   [(AVDispatchOnce *)copySampleCursorServiceOnce runBlockOnce:v7];
-  if (a3)
+  if (accuracy)
   {
-    *a3 = self->_sampleCursorTimeAccuracyIsExact;
+    *accuracy = self->_sampleCursorTimeAccuracyIsExact;
   }
 
   return self->_figSampleCursorService;
@@ -161,7 +161,7 @@ void __74__AVTrackReaderInspector__getFigSampleCursorServiceReportingTimeAccurac
   }
 }
 
-- (void)_valueAsCFTypeForProperty:(__CFString *)a3
+- (void)_valueAsCFTypeForProperty:(__CFString *)property
 {
   v7 = 0;
   result = [(AVTrackReaderInspector *)self _figTrackReader];
@@ -171,7 +171,7 @@ void __74__AVTrackReaderInspector__getFigSampleCursorServiceReportingTimeAccurac
     v6 = *(*(CMBaseObjectGetVTable() + 8) + 48);
     if (v6)
     {
-      v6(FigBaseObject, a3, *MEMORY[0x1E695E480], &v7);
+      v6(FigBaseObject, property, *MEMORY[0x1E695E480], &v7);
       return v7;
     }
 
@@ -193,13 +193,13 @@ void __74__AVTrackReaderInspector__getFigSampleCursorServiceReportingTimeAccurac
   }
 
   v4 = v3;
-  v5 = [(AVTrackReaderInspector *)self _figTrackReader];
-  if (!v5)
+  _figTrackReader = [(AVTrackReaderInspector *)self _figTrackReader];
+  if (!_figTrackReader)
   {
     return -50;
   }
 
-  v6 = v5;
+  v6 = _figTrackReader;
   formatReader = self->_formatReader;
 
   return MEMORY[0x1EEDCD540](formatReader, v6, v4);
@@ -214,13 +214,13 @@ void __74__AVTrackReaderInspector__getFigSampleCursorServiceReportingTimeAccurac
   }
 
   v4 = v3;
-  v5 = [(AVTrackReaderInspector *)self _figTrackReader];
-  if (!v5)
+  _figTrackReader = [(AVTrackReaderInspector *)self _figTrackReader];
+  if (!_figTrackReader)
   {
     return -50;
   }
 
-  v6 = v5;
+  v6 = _figTrackReader;
   formatReader = self->_formatReader;
 
   return MEMORY[0x1EEDCD548](formatReader, v6, v4);
@@ -228,12 +228,12 @@ void __74__AVTrackReaderInspector__getFigSampleCursorServiceReportingTimeAccurac
 
 - ($2FE3C3292E52C4A5B67D27538456EAD9)timeRange
 {
-  v4 = [(AVTrackReaderInspector *)self segments];
-  result = [v4 count];
+  segments = [(AVTrackReaderInspector *)self segments];
+  result = [segments count];
   v6 = &result[-1].var1.var3 + 7;
   if (result == 1)
   {
-    result = [v4 objectAtIndex:0];
+    result = [segments objectAtIndex:0];
     if (result)
     {
       result = [($2FE3C3292E52C4A5B67D27538456EAD9 *)result timeMapping];
@@ -274,7 +274,7 @@ LABEL_10:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v4 objectAtIndex:0];
+  v10 = [segments objectAtIndex:0];
   if (v10)
   {
     [v10 timeMapping];
@@ -294,7 +294,7 @@ LABEL_10:
   memset(&v19, 0, sizeof(v19));
   v16 = 0u;
   v17 = 0u;
-  v12 = [v4 objectAtIndex:v6];
+  v12 = [segments objectAtIndex:v6];
   if (v12)
   {
     [v12 timeMapping];
@@ -346,9 +346,9 @@ LABEL_10:
 - (id)mediaCharacteristics
 {
   v3 = [(AVFigObjectInspector *)self _arrayForProperty:*MEMORY[0x1E69738E8]];
-  v4 = [(AVTrackReaderInspector *)self _figMediaType];
+  _figMediaType = [(AVTrackReaderInspector *)self _figMediaType];
 
-  return AVSynthesizeAVMediaCharacteristicsFromFigValues(v3, v4);
+  return AVSynthesizeAVMediaCharacteristicsFromFigValues(v3, _figMediaType);
 }
 
 - (CGSize)naturalSize
@@ -470,7 +470,7 @@ LABEL_10:
 - (id)commonMetadata
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   cf = 0;
   if (self->_trackReader)
   {
@@ -498,7 +498,7 @@ LABEL_10:
             v9 = [AVMetadataItem _metadataItemWithFigMetadataDictionary:*(*(&v11 + 1) + 8 * i)];
             if (v9)
             {
-              [v3 addObject:v9];
+              [array addObject:v9];
             }
           }
 
@@ -515,15 +515,15 @@ LABEL_10:
     CFRelease(cf);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)_trackReferences
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = [-[AVTrackReaderInspector asset](self "asset")];
-  v13 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(AVTrackReaderInspector *)self trackID];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  trackID = [(AVTrackReaderInspector *)self trackID];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -548,12 +548,12 @@ LABEL_10:
         v14[1] = 3221225472;
         v14[2] = __42__AVTrackReaderInspector__trackReferences__block_invoke;
         v14[3] = &unk_1E7464EE0;
-        v15 = v4;
+        v15 = trackID;
         v14[4] = v10;
         v11 = [v10 indexesOfObjectsPassingTest:v14];
         if ([v11 count])
         {
-          [v13 setObject:objc_msgSend(v10 forKey:{"objectsAtIndexes:", v11), v9}];
+          [dictionary setObject:objc_msgSend(v10 forKey:{"objectsAtIndexes:", v11), v9}];
         }
       }
 
@@ -563,7 +563,7 @@ LABEL_10:
     while (v6);
   }
 
-  return v13;
+  return dictionary;
 }
 
 BOOL __42__AVTrackReaderInspector__trackReferences__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -581,7 +581,7 @@ BOOL __42__AVTrackReaderInspector__trackReferences__block_invoke(uint64_t a1, ui
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -589,20 +589,20 @@ BOOL __42__AVTrackReaderInspector__trackReferences__block_invoke(uint64_t a1, ui
     return 0;
   }
 
-  v5 = [(AVTrackReaderInspector *)self _figTrackReader];
-  v6 = [a3 _figTrackReader];
-  if (v5 == v6)
+  _figTrackReader = [(AVTrackReaderInspector *)self _figTrackReader];
+  _figTrackReader2 = [equal _figTrackReader];
+  if (_figTrackReader == _figTrackReader2)
   {
     return 1;
   }
 
-  v7 = v6;
+  v7 = _figTrackReader2;
   result = 0;
-  if (v5)
+  if (_figTrackReader)
   {
     if (v7)
     {
-      return CFEqual(v5, v7) != 0;
+      return CFEqual(_figTrackReader, v7) != 0;
     }
   }
 
@@ -611,11 +611,11 @@ BOOL __42__AVTrackReaderInspector__trackReferences__block_invoke(uint64_t a1, ui
 
 - (unint64_t)hash
 {
-  v3 = [(AVTrackReaderInspector *)self _figTrackReader];
-  if (v3)
+  _figTrackReader = [(AVTrackReaderInspector *)self _figTrackReader];
+  if (_figTrackReader)
   {
 
-    return CFHash(v3);
+    return CFHash(_figTrackReader);
   }
 
   else

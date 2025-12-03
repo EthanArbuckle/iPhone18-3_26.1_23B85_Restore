@@ -1,17 +1,17 @@
 @interface SFMinibarButtonBar
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (void)animateLinkImage:(CGImage *)a3 fromRect:(CGRect)a4 inView:(id)a5 toBarItem:(int64_t)a6 afterDestinationLayerBouncesBlock:(id)a7;
-- (void)willBeginTransitionWithCoordinator:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (void)animateLinkImage:(CGImage *)image fromRect:(CGRect)rect inView:(id)view toBarItem:(int64_t)item afterDestinationLayerBouncesBlock:(id)block;
+- (void)willBeginTransitionWithCoordinator:(id)coordinator;
 @end
 
 @implementation SFMinibarButtonBar
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  sub_2159F9AFC(width, height, a4, a5);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  sub_2159F9AFC(width, height, priority, fittingPriority);
   v11 = v10;
   v13 = v12;
 
@@ -22,13 +22,13 @@
   return result;
 }
 
-- (void)animateLinkImage:(CGImage *)a3 fromRect:(CGRect)a4 inView:(id)a5 toBarItem:(int64_t)a6 afterDestinationLayerBouncesBlock:(id)a7
+- (void)animateLinkImage:(CGImage *)image fromRect:(CGRect)rect inView:(id)view toBarItem:(int64_t)item afterDestinationLayerBouncesBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = _Block_copy(a7);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v15 = _Block_copy(block);
   if (v15)
   {
     v16 = swift_allocObject();
@@ -41,18 +41,18 @@
     v16 = 0;
   }
 
-  v17 = a3;
-  v18 = a5;
-  v19 = self;
-  sub_2159FA3E4(v17, v18, a6, v15, v16, x, y, width, height);
+  imageCopy = image;
+  viewCopy = view;
+  selfCopy = self;
+  sub_2159FA3E4(imageCopy, viewCopy, item, v15, v16, x, y, width, height);
   sub_2159F7E0C(v15);
 }
 
-- (void)willBeginTransitionWithCoordinator:(id)a3
+- (void)willBeginTransitionWithCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_2159FA6FC(a3);
+  selfCopy = self;
+  sub_2159FA6FC(coordinator);
   swift_unknownObjectRelease();
 }
 

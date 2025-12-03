@@ -1,44 +1,44 @@
 @interface AFSetAudioSessionActiveResult
-+ (id)newWithBuilder:(id)a3;
-- (AFSetAudioSessionActiveResult)initWithAudioSessionID:(unsigned int)a3 error:(id)a4;
-- (AFSetAudioSessionActiveResult)initWithBuilder:(id)a3;
-- (AFSetAudioSessionActiveResult)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFSetAudioSessionActiveResult)initWithAudioSessionID:(unsigned int)d error:(id)error;
+- (AFSetAudioSessionActiveResult)initWithBuilder:(id)builder;
+- (AFSetAudioSessionActiveResult)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSetAudioSessionActiveResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   audioSessionID = self->_audioSessionID;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInt:audioSessionID];
-  [v7 encodeObject:v6 forKey:@"AFSetAudioSessionActiveResult::audioSessionID"];
+  [coderCopy encodeObject:v6 forKey:@"AFSetAudioSessionActiveResult::audioSessionID"];
 
-  [v7 encodeObject:self->_error forKey:@"AFSetAudioSessionActiveResult::error"];
+  [coderCopy encodeObject:self->_error forKey:@"AFSetAudioSessionActiveResult::error"];
 }
 
-- (AFSetAudioSessionActiveResult)initWithCoder:(id)a3
+- (AFSetAudioSessionActiveResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSetAudioSessionActiveResult::audioSessionID"];
-  v6 = [v5 unsignedIntValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSetAudioSessionActiveResult::audioSessionID"];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSetAudioSessionActiveResult::error"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSetAudioSessionActiveResult::error"];
 
-  v8 = [(AFSetAudioSessionActiveResult *)self initWithAudioSessionID:v6 error:v7];
+  v8 = [(AFSetAudioSessionActiveResult *)self initWithAudioSessionID:unsignedIntValue error:v7];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -48,13 +48,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       audioSessionID = self->_audioSessionID;
       if (audioSessionID == [(AFSetAudioSessionActiveResult *)v5 audioSessionID])
       {
-        v7 = [(AFSetAudioSessionActiveResult *)v5 error];
+        error = [(AFSetAudioSessionActiveResult *)v5 error];
         error = self->_error;
-        v9 = error == v7 || [(NSError *)error isEqual:v7];
+        v9 = error == error || [(NSError *)error isEqual:error];
       }
 
       else
@@ -81,7 +81,7 @@
   return v5 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -92,16 +92,16 @@
   return v6;
 }
 
-- (AFSetAudioSessionActiveResult)initWithAudioSessionID:(unsigned int)a3 error:(id)a4
+- (AFSetAudioSessionActiveResult)initWithAudioSessionID:(unsigned int)d error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__AFSetAudioSessionActiveResult_initWithAudioSessionID_error___block_invoke;
   v10[3] = &unk_1E7349488;
-  v12 = a3;
-  v11 = v6;
-  v7 = v6;
+  dCopy = d;
+  v11 = errorCopy;
+  v7 = errorCopy;
   v8 = [(AFSetAudioSessionActiveResult *)self initWithBuilder:v10];
 
   return v8;
@@ -115,22 +115,22 @@ void __62__AFSetAudioSessionActiveResult_initWithAudioSessionID_error___block_in
   [v4 setError:*(a1 + 32)];
 }
 
-- (AFSetAudioSessionActiveResult)initWithBuilder:(id)a3
+- (AFSetAudioSessionActiveResult)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = AFSetAudioSessionActiveResult;
   v5 = [(AFSetAudioSessionActiveResult *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFSetAudioSessionActiveResultMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFSetAudioSessionActiveResultMutation *)v7 isDirty])
     {
       v6->_audioSessionID = [(_AFSetAudioSessionActiveResultMutation *)v7 getAudioSessionID];
-      v8 = [(_AFSetAudioSessionActiveResultMutation *)v7 getError];
-      v9 = [v8 copy];
+      getError = [(_AFSetAudioSessionActiveResultMutation *)v7 getError];
+      v9 = [getError copy];
       error = v6->_error;
       v6->_error = v9;
     }
@@ -139,27 +139,27 @@ void __62__AFSetAudioSessionActiveResult_initWithAudioSessionID_error___block_in
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFSetAudioSessionActiveResultMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFSetAudioSessionActiveResultMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFSetAudioSessionActiveResult);
       v6->_audioSessionID = [(_AFSetAudioSessionActiveResultMutation *)v5 getAudioSessionID];
-      v7 = [(_AFSetAudioSessionActiveResultMutation *)v5 getError];
-      v8 = [v7 copy];
+      getError = [(_AFSetAudioSessionActiveResultMutation *)v5 getError];
+      v8 = [getError copy];
       error = v6->_error;
       v6->_error = v8;
     }

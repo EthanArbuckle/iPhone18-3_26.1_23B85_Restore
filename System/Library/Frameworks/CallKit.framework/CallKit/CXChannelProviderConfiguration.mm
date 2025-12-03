@@ -1,13 +1,13 @@
 @interface CXChannelProviderConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfiguration:(id)a3;
-- (CXChannelProviderConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfiguration:(id)configuration;
+- (CXChannelProviderConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)sanitizedCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (id)sanitizedCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXChannelProviderConfiguration
@@ -21,71 +21,71 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXChannelProviderConfiguration *)self isEqualToConfiguration:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXChannelProviderConfiguration *)self isEqualToConfiguration:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToConfiguration:(id)a3
+- (BOOL)isEqualToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   LODWORD(self) = [(CXChannelProviderConfiguration *)self audioSessionID];
-  v5 = [v4 audioSessionID];
+  audioSessionID = [configurationCopy audioSessionID];
 
-  return self == v5;
+  return self == audioSessionID;
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
-  v5 = a3;
-  [v5 setAudioSessionID:{-[CXChannelProviderConfiguration audioSessionID](self, "audioSessionID")}];
+  copyCopy = copy;
+  [copyCopy setAudioSessionID:{-[CXChannelProviderConfiguration audioSessionID](self, "audioSessionID")}];
 }
 
-- (id)sanitizedCopyWithZone:(_NSZone *)a3
+- (id)sanitizedCopyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  [(CXChannelProviderConfiguration *)self updateSanitizedCopy:v5 withZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  [(CXChannelProviderConfiguration *)self updateSanitizedCopy:v5 withZone:zone];
 
   return v5;
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
-  v6 = a3;
-  [(CXChannelProviderConfiguration *)self updateSanitizedCopy:v6 withZone:a4];
-  [v6 setAudioSessionID:{-[CXChannelProviderConfiguration audioSessionID](self, "audioSessionID")}];
+  copyCopy = copy;
+  [(CXChannelProviderConfiguration *)self updateSanitizedCopy:copyCopy withZone:zone];
+  [copyCopy setAudioSessionID:{-[CXChannelProviderConfiguration audioSessionID](self, "audioSessionID")}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  [(CXChannelProviderConfiguration *)self updateCopy:v5 withZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  [(CXChannelProviderConfiguration *)self updateCopy:v5 withZone:zone];
   return v5;
 }
 
-- (CXChannelProviderConfiguration)initWithCoder:(id)a3
+- (CXChannelProviderConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CXChannelProviderConfiguration *)self init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_audioSessionID);
-    v5->_audioSessionID = [v4 decodeInt32ForKey:v6];
+    v5->_audioSessionID = [coderCopy decodeInt32ForKey:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CXChannelProviderConfiguration *)self audioSessionID];
+  coderCopy = coder;
+  audioSessionID = [(CXChannelProviderConfiguration *)self audioSessionID];
   v6 = NSStringFromSelector(sel_audioSessionID);
-  [v4 encodeInt32:v5 forKey:v6];
+  [coderCopy encodeInt32:audioSessionID forKey:v6];
 }
 
 @end

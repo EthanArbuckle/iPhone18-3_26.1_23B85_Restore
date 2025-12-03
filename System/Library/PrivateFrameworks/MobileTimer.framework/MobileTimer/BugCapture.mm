@@ -1,11 +1,11 @@
 @interface BugCapture
-+ (void)reportBugWithType:(id)a3 subType:(id)a4 name:(id)a5 value:(id)a6;
++ (void)reportBugWithType:(id)type subType:(id)subType name:(id)name value:(id)value;
 - (_TtC11MobileTimer10BugCapture)init;
 @end
 
 @implementation BugCapture
 
-+ (void)reportBugWithType:(id)a3 subType:(id)a4 name:(id)a5 value:(id)a6
++ (void)reportBugWithType:(id)type subType:(id)subType name:(id)name value:(id)value
 {
   v6 = sub_1B20A9A74();
   v8 = v7;

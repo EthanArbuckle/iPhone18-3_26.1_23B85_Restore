@@ -7,30 +7,30 @@
 - (BOOL)VCCCGetBytes:()VCControlChannelMessageProtocol size:
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = [(__CFString *)a1 VCCCLength];
-  if (a4 >= v7)
+  vCCCLength = [(__CFString *)self VCCCLength];
+  if (a4 >= vCCCLength)
   {
-    [(__CFString *)a1 getBytes:a3 length:a4];
-    if (a4 > v7)
+    [(__CFString *)self getBytes:a3 length:a4];
+    if (a4 > vCCCLength)
     {
-      bzero((a3 + v7), a4 - v7);
+      bzero((a3 + vCCCLength), a4 - vCCCLength);
     }
 
-    return a4 >= v7;
+    return a4 >= vCCCLength;
   }
 
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
-      return a4 >= v7;
+      return a4 >= vCCCLength;
     }
 
     v9 = VRTraceErrorLogLevelToCSTR();
     v10 = *MEMORY[0x1E6986650];
     if (!os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      return a4 >= v7;
+      return a4 >= vCCCLength;
     }
 
     v17 = 136316418;
@@ -40,9 +40,9 @@
     v21 = 1024;
     v22 = 26;
     v23 = 2112;
-    v24 = a1;
+    selfCopy = self;
     v25 = 1024;
-    *v26 = [(__CFString *)a1 VCCCLength];
+    *v26 = [(__CFString *)self VCCCLength];
     *&v26[4] = 1024;
     *&v26[6] = a4;
     v11 = " [%s] %s:%d message '%@' is too long for given buffer (%d > %d)";
@@ -50,12 +50,12 @@
     v13 = 50;
 LABEL_15:
     _os_log_error_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_ERROR, v11, &v17, v13);
-    return a4 >= v7;
+    return a4 >= vCCCLength;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(__CFString *)a1 performSelector:sel_logPrefix];
+    v8 = [(__CFString *)self performSelector:sel_logPrefix];
   }
 
   else
@@ -76,13 +76,13 @@ LABEL_15:
       v21 = 1024;
       v22 = 26;
       v23 = 2112;
-      v24 = v8;
+      selfCopy = v8;
       v25 = 2048;
-      *v26 = a1;
+      *v26 = self;
       *&v26[8] = 2112;
-      v27 = a1;
+      selfCopy2 = self;
       v28 = 1024;
-      v29 = [(__CFString *)a1 VCCCLength];
+      vCCCLength2 = [(__CFString *)self VCCCLength];
       v30 = 1024;
       v31 = a4;
       v11 = " [%s] %s:%d %@(%p) message '%@' is too long for given buffer (%d > %d)";
@@ -92,7 +92,7 @@ LABEL_15:
     }
   }
 
-  return a4 >= v7;
+  return a4 >= vCCCLength;
 }
 
 @end

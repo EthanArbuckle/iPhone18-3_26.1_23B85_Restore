@@ -1,6 +1,6 @@
 @interface PSHandsPolicy
 - (PSHandsPolicy)init;
-- (id)evaluatePolicy:(id)a3;
+- (id)evaluatePolicy:(id)policy;
 @end
 
 @implementation PSHandsPolicy
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (id)evaluatePolicy:(id)a3
+- (id)evaluatePolicy:(id)policy
 {
   v4 = objc_alloc_init(NSMutableDictionary);
   v15 = 0u;

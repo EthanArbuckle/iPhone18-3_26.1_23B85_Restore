@@ -1,11 +1,11 @@
 @interface ML3DatabaseValidationClient
 + (id)sharedClient;
-- (BOOL)_validateDatabaseForPath:(id)a3 usingLibrary:(id)a4;
-- (BOOL)isValidatingDatabaseForPath:(id)a3;
-- (BOOL)validateDatabaseForConnection:(id)a3;
-- (BOOL)validateDatabaseForLibrary:(id)a3;
+- (BOOL)_validateDatabaseForPath:(id)path usingLibrary:(id)library;
+- (BOOL)isValidatingDatabaseForPath:(id)path;
+- (BOOL)validateDatabaseForConnection:(id)connection;
+- (BOOL)validateDatabaseForLibrary:(id)library;
 - (ML3DatabaseValidationClient)init;
-- (id)_validatableDatabaseForPath:(id)a3;
+- (id)_validatableDatabaseForPath:(id)path;
 @end
 
 @implementation ML3DatabaseValidationClient
@@ -48,9 +48,9 @@ uint64_t __43__ML3DatabaseValidationClient_sharedClient__block_invoke()
   return v3;
 }
 
-- (BOOL)isValidatingDatabaseForPath:(id)a3
+- (BOOL)isValidatingDatabaseForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -61,9 +61,9 @@ uint64_t __43__ML3DatabaseValidationClient_sharedClient__block_invoke()
   block[2] = __59__ML3DatabaseValidationClient_isValidatingDatabaseForPath___block_invoke;
   block[3] = &unk_278765F28;
   block[4] = self;
-  v9 = v4;
+  v9 = pathCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = pathCopy;
   dispatch_sync(serialQueue, block);
   LOBYTE(serialQueue) = *(v12 + 24);
 
@@ -77,27 +77,27 @@ void __59__ML3DatabaseValidationClient_isValidatingDatabaseForPath___block_invok
   *(*(a1[6] + 8) + 24) = [v2 validationState] == 1;
 }
 
-- (BOOL)_validateDatabaseForPath:(id)a3 usingLibrary:(id)a4
+- (BOOL)_validateDatabaseForPath:(id)path usingLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  libraryCopy = library;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = [(ML3DatabaseValidationClient *)self _validatableDatabaseForPath:v6];
+  v8 = [(ML3DatabaseValidationClient *)self _validatableDatabaseForPath:pathCopy];
   if (([v8 currentQueueIsValidationQueue] & 1) == 0)
   {
-    v9 = [v8 validationSerialQueue];
+    validationSerialQueue = [v8 validationSerialQueue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __69__ML3DatabaseValidationClient__validateDatabaseForPath_usingLibrary___block_invoke;
     v12[3] = &unk_2787657E8;
     v13 = v8;
-    v14 = v7;
+    v14 = libraryCopy;
     v16 = &v17;
-    v15 = v6;
-    dispatch_sync(v9, v12);
+    v15 = pathCopy;
+    dispatch_sync(validationSerialQueue, v12);
   }
 
   v10 = *(v18 + 24);
@@ -168,9 +168,9 @@ LABEL_13:
   return [*(a1 + 32) setValidationState:0];
 }
 
-- (id)_validatableDatabaseForPath:(id)a3
+- (id)_validatableDatabaseForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -182,10 +182,10 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __59__ML3DatabaseValidationClient__validatableDatabaseForPath___block_invoke;
   block[3] = &unk_278765F28;
-  v10 = v4;
+  v10 = pathCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   dispatch_sync(serialQueue, block);
   v7 = v13[5];
 
@@ -211,28 +211,28 @@ void __59__ML3DatabaseValidationClient__validatableDatabaseForPath___block_invok
   }
 }
 
-- (BOOL)validateDatabaseForConnection:(id)a3
+- (BOOL)validateDatabaseForConnection:(id)connection
 {
-  v5 = a3;
-  v6 = [v5 databasePath];
+  connectionCopy = connection;
+  databasePath = [connectionCopy databasePath];
 
-  if (!v6)
+  if (!databasePath)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"ML3DatabaseValidationClient.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"connection.databasePath != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseValidationClient.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"connection.databasePath != nil"}];
   }
 
-  v7 = [v5 databasePath];
-  v8 = [(ML3DatabaseValidationClient *)self _validateDatabaseForPath:v7 usingLibrary:0];
+  databasePath2 = [connectionCopy databasePath];
+  v8 = [(ML3DatabaseValidationClient *)self _validateDatabaseForPath:databasePath2 usingLibrary:0];
 
   return v8;
 }
 
-- (BOOL)validateDatabaseForLibrary:(id)a3
+- (BOOL)validateDatabaseForLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [v4 databasePath];
-  LOBYTE(self) = [(ML3DatabaseValidationClient *)self _validateDatabaseForPath:v5 usingLibrary:v4];
+  libraryCopy = library;
+  databasePath = [libraryCopy databasePath];
+  LOBYTE(self) = [(ML3DatabaseValidationClient *)self _validateDatabaseForPath:databasePath usingLibrary:libraryCopy];
 
   return self;
 }

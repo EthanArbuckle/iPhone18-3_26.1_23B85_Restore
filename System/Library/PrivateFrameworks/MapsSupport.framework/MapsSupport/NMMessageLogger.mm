@@ -1,35 +1,35 @@
 @interface NMMessageLogger
-+ (id)descriptionForLocationUpdateRelativeMessage:(id)a3;
-+ (id)descriptionForSetWantsAllNavStatusUpdatesMessage:(id)a3;
-+ (id)descriptionForUpdateNavRouteDetailsMessage:(id)a3;
-+ (id)descriptionForUpdateNavRouteStatusMessage:(id)a3;
-+ (id)shortDebugDescriptionForMessage:(id)a3;
++ (id)descriptionForLocationUpdateRelativeMessage:(id)message;
++ (id)descriptionForSetWantsAllNavStatusUpdatesMessage:(id)message;
++ (id)descriptionForUpdateNavRouteDetailsMessage:(id)message;
++ (id)descriptionForUpdateNavRouteStatusMessage:(id)message;
++ (id)shortDebugDescriptionForMessage:(id)message;
 @end
 
 @implementation NMMessageLogger
 
-+ (id)descriptionForSetWantsAllNavStatusUpdatesMessage:(id)a3
++ (id)descriptionForSetWantsAllNavStatusUpdatesMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 argumentForTag:5];
+  messageCopy = message;
+  v4 = [messageCopy argumentForTag:5];
   if ([v4 BOOLValue])
   {
-    v5 = [v3 argumentForTag:401];
+    v5 = [messageCopy argumentForTag:401];
 
-    v6 = [v5 dataValue];
-    v7 = [v3 type];
-    if (v7 > 202)
+    dataValue = [v5 dataValue];
+    type = [messageCopy type];
+    if (type > 202)
     {
-      if (v7 <= 400)
+      if (type <= 400)
       {
-        if (v7 <= 205)
+        if (type <= 205)
         {
-          if (v7 == 203)
+          if (type == 203)
           {
             v8 = @"FAILED_TO_UPDATE_LOCATION";
           }
 
-          else if (v7 == 204)
+          else if (type == 204)
           {
             v8 = @"DID_PAUSE_LOCATION_UPDATES";
           }
@@ -42,7 +42,7 @@
 
         else
         {
-          switch(v7)
+          switch(type)
           {
             case 300:
               v8 = @"UPDATE_NAV_ROUTE_DETAILS";
@@ -93,7 +93,7 @@
               v8 = @"SET_DISPLAYED_STEP";
               break;
             default:
-              if (v7 != 206)
+              if (type != 206)
               {
                 goto LABEL_98;
               }
@@ -106,17 +106,17 @@
         goto LABEL_179;
       }
 
-      if (v7 > 599)
+      if (type > 599)
       {
-        if (v7 > 1499)
+        if (type > 1499)
         {
-          if (v7 == 1500)
+          if (type == 1500)
           {
             v8 = @"DEBUG_FETCH_CONFIGURATION_INFO";
             goto LABEL_179;
           }
 
-          if (v7 == 1501)
+          if (type == 1501)
           {
             v8 = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
             goto LABEL_179;
@@ -125,13 +125,13 @@
 
         else
         {
-          if (v7 == 600)
+          if (type == 600)
           {
             v8 = @"FETCH_ROUTE_GENIUS";
             goto LABEL_179;
           }
 
-          if (v7 == 1000)
+          if (type == 1000)
           {
             v8 = @"PING";
             goto LABEL_179;
@@ -141,15 +141,15 @@
         goto LABEL_98;
       }
 
-      if (v7 > 500)
+      if (type > 500)
       {
-        if (v7 == 501)
+        if (type == 501)
         {
           v8 = @"PLACE_DATA_IDENTIFIER_LOOKUP";
           goto LABEL_179;
         }
 
-        if (v7 == 502)
+        if (type == 502)
         {
           v8 = @"SERVICE_REQUEST";
           goto LABEL_179;
@@ -158,13 +158,13 @@
         goto LABEL_98;
       }
 
-      if (v7 == 401)
+      if (type == 401)
       {
         v8 = @"OPEN_URL";
         goto LABEL_179;
       }
 
-      if (v7 != 500)
+      if (type != 500)
       {
         goto LABEL_98;
       }
@@ -174,11 +174,11 @@
 
     else
     {
-      if (v7 <= 99)
+      if (type <= 99)
       {
-        if (v7 > 3)
+        if (type > 3)
         {
-          switch(v7)
+          switch(type)
           {
             case '2':
               v8 = @"START_INITIAL_SYNC";
@@ -234,7 +234,7 @@
               v8 = @"SET_SUBSCRIPTION_SHOULD_SYNC";
               break;
             default:
-              if (v7 != 4)
+              if (type != 4)
               {
                 goto LABEL_98;
               }
@@ -246,7 +246,7 @@
           goto LABEL_179;
         }
 
-        switch(v7)
+        switch(type)
         {
           case 1:
             v8 = @"FETCH_TILES";
@@ -260,18 +260,18 @@
         }
 
 LABEL_98:
-        v8 = [NSString stringWithFormat:@"(unknown: %i)", v7];
+        v8 = [NSString stringWithFormat:@"(unknown: %i)", type];
         goto LABEL_179;
       }
 
-      if (v7 <= 102)
+      if (type <= 102)
       {
-        if (v7 == 100)
+        if (type == 100)
         {
           v8 = @"CHECKIN_WITH_TILE_GROUP";
         }
 
-        else if (v7 == 101)
+        else if (type == 101)
         {
           v8 = @"FORCE_UPDATE_MANIFEST";
         }
@@ -284,9 +284,9 @@ LABEL_98:
         goto LABEL_179;
       }
 
-      if (v7 > 200)
+      if (type > 200)
       {
-        if (v7 == 201)
+        if (type == 201)
         {
           v8 = @"STOP_LOCATION_UPDATE";
         }
@@ -299,13 +299,13 @@ LABEL_98:
         goto LABEL_179;
       }
 
-      if (v7 == 103)
+      if (type == 103)
       {
         v8 = @"FETCH_RESOURCE";
         goto LABEL_179;
       }
 
-      if (v7 != 200)
+      if (type != 200)
       {
         goto LABEL_98;
       }
@@ -314,94 +314,94 @@ LABEL_98:
     }
 
 LABEL_179:
-    v10 = [NSString stringWithFormat:@"%@ YES routeID:%@", v8, v6];
+    v10 = [NSString stringWithFormat:@"%@ YES routeID:%@", v8, dataValue];
 
     v4 = v5;
     goto LABEL_182;
   }
 
-  v9 = [v3 type];
-  if (v9 > 202)
+  type2 = [messageCopy type];
+  if (type2 > 202)
   {
-    if (v9 <= 400)
+    if (type2 <= 400)
     {
-      if (v9 <= 205)
+      if (type2 <= 205)
       {
-        if (v9 == 203)
+        if (type2 == 203)
         {
-          v6 = @"FAILED_TO_UPDATE_LOCATION";
+          dataValue = @"FAILED_TO_UPDATE_LOCATION";
         }
 
-        else if (v9 == 204)
+        else if (type2 == 204)
         {
-          v6 = @"DID_PAUSE_LOCATION_UPDATES";
+          dataValue = @"DID_PAUSE_LOCATION_UPDATES";
         }
 
         else
         {
-          v6 = @"DID_RESUME_LOCATION_UPDATES";
+          dataValue = @"DID_RESUME_LOCATION_UPDATES";
         }
       }
 
       else
       {
-        switch(v9)
+        switch(type2)
         {
           case 300:
-            v6 = @"UPDATE_NAV_ROUTE_DETAILS";
+            dataValue = @"UPDATE_NAV_ROUTE_DETAILS";
             break;
           case 301:
-            v6 = @"UPDATE_NAV_ROUTE_STATUS";
+            dataValue = @"UPDATE_NAV_ROUTE_STATUS";
             break;
           case 302:
-            v6 = @"START_NAV";
+            dataValue = @"START_NAV";
             break;
           case 303:
-            v6 = @"STOP_NAV";
+            dataValue = @"STOP_NAV";
             break;
           case 304:
-            v6 = @"PREVIEW_NAV";
+            dataValue = @"PREVIEW_NAV";
             break;
           case 305:
-            v6 = @"CLEAR_NAV_PREVIEW";
+            dataValue = @"CLEAR_NAV_PREVIEW";
             break;
           case 306:
-            v6 = @"SET_WANTS_ALL_NAV_STATUS_UPDATES";
+            dataValue = @"SET_WANTS_ALL_NAV_STATUS_UPDATES";
             break;
           case 307:
-            v6 = @"DISMISS_NAV_SAFETY_ALERT";
+            dataValue = @"DISMISS_NAV_SAFETY_ALERT";
             break;
           case 308:
-            v6 = @"AVAILABLE_ROUTE";
+            dataValue = @"AVAILABLE_ROUTE";
             break;
           case 309:
-            v6 = @"SELECTED_ROUTE";
+            dataValue = @"SELECTED_ROUTE";
             break;
           case 310:
-            v6 = @"REQUEST_NAVIGATION_UPDATE";
+            dataValue = @"REQUEST_NAVIGATION_UPDATE";
             break;
           case 311:
-            v6 = @"UPDATE_NAV_ROUTE_UPDATE";
+            dataValue = @"UPDATE_NAV_ROUTE_UPDATE";
             break;
           case 312:
-            v6 = @"AVAILABLE_ROUTE_UPDATE";
+            dataValue = @"AVAILABLE_ROUTE_UPDATE";
             break;
           case 313:
-            v6 = @"PAUSE_NAV";
+            dataValue = @"PAUSE_NAV";
             break;
           case 314:
-            v6 = @"RESUME_NAV";
+            dataValue = @"RESUME_NAV";
             break;
           case 315:
-            v6 = @"SET_DISPLAYED_STEP";
+            dataValue = @"SET_DISPLAYED_STEP";
             break;
           default:
-            if (v9 != 206)
+            if (type2 != 206)
             {
               goto LABEL_101;
             }
 
-            v6 = @"APPLY_LOCATION_AUTHORIZATION";
+            dataValue = @"APPLY_LOCATION_AUTHORIZATION";
             break;
         }
       }
@@ -409,34 +409,34 @@ LABEL_179:
       goto LABEL_181;
     }
 
-    if (v9 > 599)
+    if (type2 > 599)
     {
-      if (v9 > 1499)
+      if (type2 > 1499)
       {
-        if (v9 == 1500)
+        if (type2 == 1500)
         {
-          v6 = @"DEBUG_FETCH_CONFIGURATION_INFO";
+          dataValue = @"DEBUG_FETCH_CONFIGURATION_INFO";
           goto LABEL_181;
         }
 
-        if (v9 == 1501)
+        if (type2 == 1501)
         {
-          v6 = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
+          dataValue = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
           goto LABEL_181;
         }
       }
 
       else
       {
-        if (v9 == 600)
+        if (type2 == 600)
         {
-          v6 = @"FETCH_ROUTE_GENIUS";
+          dataValue = @"FETCH_ROUTE_GENIUS";
           goto LABEL_181;
         }
 
-        if (v9 == 1000)
+        if (type2 == 1000)
         {
-          v6 = @"PING";
+          dataValue = @"PING";
           goto LABEL_181;
         }
       }
@@ -444,193 +444,193 @@ LABEL_179:
       goto LABEL_101;
     }
 
-    if (v9 > 500)
+    if (type2 > 500)
     {
-      if (v9 == 501)
+      if (type2 == 501)
       {
-        v6 = @"PLACE_DATA_IDENTIFIER_LOOKUP";
+        dataValue = @"PLACE_DATA_IDENTIFIER_LOOKUP";
         goto LABEL_181;
       }
 
-      if (v9 == 502)
+      if (type2 == 502)
       {
-        v6 = @"SERVICE_REQUEST";
+        dataValue = @"SERVICE_REQUEST";
         goto LABEL_181;
       }
 
       goto LABEL_101;
     }
 
-    if (v9 == 401)
+    if (type2 == 401)
     {
-      v6 = @"OPEN_URL";
+      dataValue = @"OPEN_URL";
       goto LABEL_181;
     }
 
-    if (v9 != 500)
+    if (type2 != 500)
     {
       goto LABEL_101;
     }
 
-    v6 = @"PLACE_DATA_MUID_LOOKUP";
+    dataValue = @"PLACE_DATA_MUID_LOOKUP";
   }
 
   else
   {
-    if (v9 <= 99)
+    if (type2 <= 99)
     {
-      if (v9 > 3)
+      if (type2 > 3)
       {
-        switch(v9)
+        switch(type2)
         {
           case '2':
-            v6 = @"START_INITIAL_SYNC";
+            dataValue = @"START_INITIAL_SYNC";
             break;
           case '3':
-            v6 = @"FETCH_CURRENT_COUNTRY_CODE";
+            dataValue = @"FETCH_CURRENT_COUNTRY_CODE";
             break;
           case '4':
-            v6 = @"FETCH_EXPERIMENTS_CONFIG";
+            dataValue = @"FETCH_EXPERIMENTS_CONFIG";
             break;
           case '5':
-            v6 = @"DID_CHANGE_EXPERIMENTS_CONFIG";
+            dataValue = @"DID_CHANGE_EXPERIMENTS_CONFIG";
             break;
           case '6':
-            v6 = @"SYNC_UP_NEXT_ITEMS";
+            dataValue = @"SYNC_UP_NEXT_ITEMS";
             break;
           case '7':
-            v6 = @"REQUEST_UP_NEXT_ITEMS";
+            dataValue = @"REQUEST_UP_NEXT_ITEMS";
             break;
           case '8':
-            v6 = @"SYNC_CONFIG_STORE";
+            dataValue = @"SYNC_CONFIG_STORE";
             break;
           case '9':
-            v6 = @"CHECKIN_WITH_CONFIG_STORE";
+            dataValue = @"CHECKIN_WITH_CONFIG_STORE";
             break;
           case ':':
-            v6 = @"REQUEST_ANALYTIC_IDENTIFIERS";
+            dataValue = @"REQUEST_ANALYTIC_IDENTIFIERS";
             break;
           case ';':
-            v6 = @"CHECKIN_WITH_SUBSCRIPTION_INFO";
+            dataValue = @"CHECKIN_WITH_SUBSCRIPTION_INFO";
             break;
           case '<':
-            v6 = @"SYNC_SUBSCRIPTION_INFO";
+            dataValue = @"SYNC_SUBSCRIPTION_INFO";
             break;
           case '=':
-            v6 = @"SET_OBSERVED_SUBSCRIPTION_IDENTIFIERS";
+            dataValue = @"SET_OBSERVED_SUBSCRIPTION_IDENTIFIERS";
             break;
           case '>':
             goto LABEL_101;
           case '?':
-            v6 = @"UPDATE_SUBSCRIPTION_STATE";
+            dataValue = @"UPDATE_SUBSCRIPTION_STATE";
             break;
           case '@':
-            v6 = @"START_STOP_SUBSCRIPTION_DOWNLOAD";
+            dataValue = @"START_STOP_SUBSCRIPTION_DOWNLOAD";
             break;
           case 'A':
-            v6 = @"CHECKIN_WITH_SUBSCRIPTION_STATE_SUMMARY";
+            dataValue = @"CHECKIN_WITH_SUBSCRIPTION_STATE_SUMMARY";
             break;
           case 'B':
-            v6 = @"SET_SUBSCRIPTION_STATE_SUMMARY";
+            dataValue = @"SET_SUBSCRIPTION_STATE_SUMMARY";
             break;
           case 'C':
-            v6 = @"SET_SUBSCRIPTION_SHOULD_SYNC";
+            dataValue = @"SET_SUBSCRIPTION_SHOULD_SYNC";
             break;
           default:
-            if (v9 != 4)
+            if (type2 != 4)
             {
               goto LABEL_101;
             }
 
-            v6 = @"FETCHED_TILE";
+            dataValue = @"FETCHED_TILE";
             break;
         }
 
         goto LABEL_181;
       }
 
-      switch(v9)
+      switch(type2)
       {
         case 1:
-          v6 = @"FETCH_TILES";
+          dataValue = @"FETCH_TILES";
           goto LABEL_181;
         case 2:
-          v6 = @"CANCEL_TILES";
+          dataValue = @"CANCEL_TILES";
           goto LABEL_181;
         case 3:
-          v6 = @"REPORT_CORRUPT_TILE";
+          dataValue = @"REPORT_CORRUPT_TILE";
           goto LABEL_181;
       }
 
 LABEL_101:
-      v6 = [NSString stringWithFormat:@"(unknown: %i)", v9];
+      dataValue = [NSString stringWithFormat:@"(unknown: %i)", type2];
       goto LABEL_181;
     }
 
-    if (v9 <= 102)
+    if (type2 <= 102)
     {
-      if (v9 == 100)
+      if (type2 == 100)
       {
-        v6 = @"CHECKIN_WITH_TILE_GROUP";
+        dataValue = @"CHECKIN_WITH_TILE_GROUP";
       }
 
-      else if (v9 == 101)
+      else if (type2 == 101)
       {
-        v6 = @"FORCE_UPDATE_MANIFEST";
+        dataValue = @"FORCE_UPDATE_MANIFEST";
       }
 
       else
       {
-        v6 = @"DID_CHANGE_ACTIVE_TILE_GROUP";
+        dataValue = @"DID_CHANGE_ACTIVE_TILE_GROUP";
       }
 
       goto LABEL_181;
     }
 
-    if (v9 > 200)
+    if (type2 > 200)
     {
-      if (v9 == 201)
+      if (type2 == 201)
       {
-        v6 = @"STOP_LOCATION_UPDATE";
+        dataValue = @"STOP_LOCATION_UPDATE";
       }
 
       else
       {
-        v6 = @"UPDATED_LOCATION";
+        dataValue = @"UPDATED_LOCATION";
       }
 
       goto LABEL_181;
     }
 
-    if (v9 == 103)
+    if (type2 == 103)
     {
-      v6 = @"FETCH_RESOURCE";
+      dataValue = @"FETCH_RESOURCE";
       goto LABEL_181;
     }
 
-    if (v9 != 200)
+    if (type2 != 200)
     {
       goto LABEL_101;
     }
 
-    v6 = @"START_LOCATION_UPDATE";
+    dataValue = @"START_LOCATION_UPDATE";
   }
 
 LABEL_181:
-  v10 = [NSString stringWithFormat:@"%@ NO", v6];
+  v10 = [NSString stringWithFormat:@"%@ NO", dataValue];
 LABEL_182:
 
   return v10;
 }
 
-+ (id)descriptionForUpdateNavRouteDetailsMessage:(id)a3
++ (id)descriptionForUpdateNavRouteDetailsMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 argumentForTag:401];
-  v5 = [v4 dataValue];
-  if (v5)
+  messageCopy = message;
+  v4 = [messageCopy argumentForTag:401];
+  dataValue = [v4 dataValue];
+  if (dataValue)
   {
-    v6 = [[GEOCompanionRouteDetails alloc] initWithData:v5];
+    v6 = [[GEOCompanionRouteDetails alloc] initWithData:dataValue];
   }
 
   else
@@ -638,12 +638,12 @@ LABEL_182:
     v6 = 0;
   }
 
-  v7 = [v3 argumentForTag:402];
+  v7 = [messageCopy argumentForTag:402];
 
-  v8 = [v7 dataValue];
-  if (v8)
+  dataValue2 = [v7 dataValue];
+  if (dataValue2)
   {
-    v9 = [[GEOCompanionRouteStatus alloc] initWithData:v8];
+    v9 = [[GEOCompanionRouteStatus alloc] initWithData:dataValue2];
   }
 
   else
@@ -651,12 +651,12 @@ LABEL_182:
     v9 = 0;
   }
 
-  v10 = [v3 argumentForTag:406];
+  v10 = [messageCopy argumentForTag:406];
 
-  v11 = [v10 dataValue];
-  if (v11)
+  dataValue3 = [v10 dataValue];
+  if (dataValue3)
   {
-    v12 = [[GEOCompanionRouteContext alloc] initWithData:v11];
+    v12 = [[GEOCompanionRouteContext alloc] initWithData:dataValue3];
   }
 
   else
@@ -664,17 +664,17 @@ LABEL_182:
     v12 = 0;
   }
 
-  v13 = [v3 type];
+  type = [messageCopy type];
   v25 = v10;
-  v26 = v5;
-  v24 = v8;
-  if (v13 <= 202)
+  v26 = dataValue;
+  v24 = dataValue2;
+  if (type <= 202)
   {
-    if (v13 > 99)
+    if (type > 99)
     {
-      if (v13 <= 102)
+      if (type <= 102)
       {
-        if (v13 == 100)
+        if (type == 100)
         {
           v14 = v12;
           v15 = @"CHECKIN_WITH_TILE_GROUP";
@@ -683,7 +683,7 @@ LABEL_182:
         else
         {
           v14 = v12;
-          if (v13 == 101)
+          if (type == 101)
           {
             v15 = @"FORCE_UPDATE_MANIFEST";
           }
@@ -697,10 +697,10 @@ LABEL_182:
         goto LABEL_99;
       }
 
-      if (v13 > 200)
+      if (type > 200)
       {
         v14 = v12;
-        if (v13 == 201)
+        if (type == 201)
         {
           v15 = @"STOP_LOCATION_UPDATE";
         }
@@ -713,14 +713,14 @@ LABEL_182:
         goto LABEL_99;
       }
 
-      if (v13 == 103)
+      if (type == 103)
       {
         v14 = v12;
         v15 = @"FETCH_RESOURCE";
         goto LABEL_99;
       }
 
-      if (v13 == 200)
+      if (type == 200)
       {
         v14 = v12;
         v15 = @"START_LOCATION_UPDATE";
@@ -730,9 +730,9 @@ LABEL_182:
 
     else
     {
-      if (v13 > 3)
+      if (type > 3)
       {
-        switch(v13)
+        switch(type)
         {
           case '2':
             v14 = v12;
@@ -805,7 +805,7 @@ LABEL_182:
             v15 = @"SET_SUBSCRIPTION_SHOULD_SYNC";
             break;
           default:
-            if (v13 != 4)
+            if (type != 4)
             {
               goto LABEL_59;
             }
@@ -818,7 +818,7 @@ LABEL_182:
         goto LABEL_99;
       }
 
-      switch(v13)
+      switch(type)
       {
         case 1:
           v14 = v12;
@@ -837,24 +837,24 @@ LABEL_182:
 
 LABEL_59:
     v14 = v12;
-    v15 = [NSString stringWithFormat:@"(unknown: %i)", v13];
+    v15 = [NSString stringWithFormat:@"(unknown: %i)", type];
     goto LABEL_99;
   }
 
-  if (v13 > 400)
+  if (type > 400)
   {
-    if (v13 > 599)
+    if (type > 599)
     {
-      if (v13 > 1499)
+      if (type > 1499)
       {
-        if (v13 == 1500)
+        if (type == 1500)
         {
           v14 = v12;
           v15 = @"DEBUG_FETCH_CONFIGURATION_INFO";
           goto LABEL_99;
         }
 
-        if (v13 == 1501)
+        if (type == 1501)
         {
           v14 = v12;
           v15 = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
@@ -864,14 +864,14 @@ LABEL_59:
 
       else
       {
-        if (v13 == 600)
+        if (type == 600)
         {
           v14 = v12;
           v15 = @"FETCH_ROUTE_GENIUS";
           goto LABEL_99;
         }
 
-        if (v13 == 1000)
+        if (type == 1000)
         {
           v14 = v12;
           v15 = @"PING";
@@ -880,16 +880,16 @@ LABEL_59:
       }
     }
 
-    else if (v13 > 500)
+    else if (type > 500)
     {
-      if (v13 == 501)
+      if (type == 501)
       {
         v14 = v12;
         v15 = @"PLACE_DATA_IDENTIFIER_LOOKUP";
         goto LABEL_99;
       }
 
-      if (v13 == 502)
+      if (type == 502)
       {
         v14 = v12;
         v15 = @"SERVICE_REQUEST";
@@ -899,14 +899,14 @@ LABEL_59:
 
     else
     {
-      if (v13 == 401)
+      if (type == 401)
       {
         v14 = v12;
         v15 = @"OPEN_URL";
         goto LABEL_99;
       }
 
-      if (v13 == 500)
+      if (type == 500)
       {
         v14 = v12;
         v15 = @"PLACE_DATA_MUID_LOOKUP";
@@ -917,9 +917,9 @@ LABEL_59:
     goto LABEL_59;
   }
 
-  if (v13 <= 205)
+  if (type <= 205)
   {
-    if (v13 == 203)
+    if (type == 203)
     {
       v14 = v12;
       v15 = @"FAILED_TO_UPDATE_LOCATION";
@@ -928,7 +928,7 @@ LABEL_59:
     else
     {
       v14 = v12;
-      if (v13 == 204)
+      if (type == 204)
       {
         v15 = @"DID_PAUSE_LOCATION_UPDATES";
       }
@@ -942,7 +942,7 @@ LABEL_59:
 
   else
   {
-    switch(v13)
+    switch(type)
     {
       case 300:
         v14 = v12;
@@ -1009,7 +1009,7 @@ LABEL_59:
         v15 = @"SET_DISPLAYED_STEP";
         break;
       default:
-        if (v13 != 206)
+        if (type != 206)
         {
           goto LABEL_59;
         }
@@ -1022,33 +1022,33 @@ LABEL_59:
 
 LABEL_99:
   v16 = v6;
-  v17 = [v6 routeID];
-  v18 = [v9 stepID];
-  v19 = [v9 feedbackType];
-  if (v19 >= 0xB)
+  routeID = [v6 routeID];
+  stepID = [v9 stepID];
+  feedbackType = [v9 feedbackType];
+  if (feedbackType >= 0xB)
   {
-    v20 = [NSString stringWithFormat:@"(unknown: %i)", v19];
+    v20 = [NSString stringWithFormat:@"(unknown: %i)", feedbackType];
   }
 
   else
   {
-    v20 = off_1000866A8[v19];
+    v20 = off_1000866A8[feedbackType];
   }
 
-  v21 = [v14 simpleDescription];
-  v22 = [NSString stringWithFormat:@"%@ routeID:%@ stepID:%i feedbackType:%@ routeContext:%@", v15, v17, v18, v20, v21];
+  simpleDescription = [v14 simpleDescription];
+  v22 = [NSString stringWithFormat:@"%@ routeID:%@ stepID:%i feedbackType:%@ routeContext:%@", v15, routeID, stepID, v20, simpleDescription];
 
   return v22;
 }
 
-+ (id)descriptionForUpdateNavRouteStatusMessage:(id)a3
++ (id)descriptionForUpdateNavRouteStatusMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 argumentForTag:402];
-  v5 = [v4 dataValue];
-  if (v5)
+  messageCopy = message;
+  v4 = [messageCopy argumentForTag:402];
+  dataValue = [v4 dataValue];
+  if (dataValue)
   {
-    v6 = [[GEOCompanionRouteStatus alloc] initWithData:v5];
+    v6 = [[GEOCompanionRouteStatus alloc] initWithData:dataValue];
   }
 
   else
@@ -1056,12 +1056,12 @@ LABEL_99:
     v6 = 0;
   }
 
-  v7 = [v3 argumentForTag:406];
+  v7 = [messageCopy argumentForTag:406];
 
-  v8 = [v7 dataValue];
-  if (v8)
+  dataValue2 = [v7 dataValue];
+  if (dataValue2)
   {
-    v9 = [[GEOCompanionRouteContext alloc] initWithData:v8];
+    v9 = [[GEOCompanionRouteContext alloc] initWithData:dataValue2];
   }
 
   else
@@ -1069,20 +1069,20 @@ LABEL_99:
     v9 = 0;
   }
 
-  v10 = [v3 type];
+  type = [messageCopy type];
   v18 = v7;
-  if (v10 <= 202)
+  if (type <= 202)
   {
-    if (v10 > 99)
+    if (type > 99)
     {
-      if (v10 <= 102)
+      if (type <= 102)
       {
-        if (v10 == 100)
+        if (type == 100)
         {
           v11 = @"CHECKIN_WITH_TILE_GROUP";
         }
 
-        else if (v10 == 101)
+        else if (type == 101)
         {
           v11 = @"FORCE_UPDATE_MANIFEST";
         }
@@ -1095,9 +1095,9 @@ LABEL_99:
         goto LABEL_96;
       }
 
-      if (v10 > 200)
+      if (type > 200)
       {
-        if (v10 == 201)
+        if (type == 201)
         {
           v11 = @"STOP_LOCATION_UPDATE";
         }
@@ -1110,13 +1110,13 @@ LABEL_99:
         goto LABEL_96;
       }
 
-      if (v10 == 103)
+      if (type == 103)
       {
         v11 = @"FETCH_RESOURCE";
         goto LABEL_96;
       }
 
-      if (v10 == 200)
+      if (type == 200)
       {
         v11 = @"START_LOCATION_UPDATE";
         goto LABEL_96;
@@ -1125,9 +1125,9 @@ LABEL_99:
 
     else
     {
-      if (v10 > 3)
+      if (type > 3)
       {
-        switch(v10)
+        switch(type)
         {
           case '2':
             v11 = @"START_INITIAL_SYNC";
@@ -1183,7 +1183,7 @@ LABEL_99:
             v11 = @"SET_SUBSCRIPTION_SHOULD_SYNC";
             break;
           default:
-            if (v10 != 4)
+            if (type != 4)
             {
               goto LABEL_56;
             }
@@ -1195,7 +1195,7 @@ LABEL_99:
         goto LABEL_96;
       }
 
-      switch(v10)
+      switch(type)
       {
         case 1:
           v11 = @"FETCH_TILES";
@@ -1210,23 +1210,23 @@ LABEL_99:
     }
 
 LABEL_56:
-    v11 = [NSString stringWithFormat:@"(unknown: %i)", v10];
+    v11 = [NSString stringWithFormat:@"(unknown: %i)", type];
     goto LABEL_96;
   }
 
-  if (v10 > 400)
+  if (type > 400)
   {
-    if (v10 > 599)
+    if (type > 599)
     {
-      if (v10 > 1499)
+      if (type > 1499)
       {
-        if (v10 == 1500)
+        if (type == 1500)
         {
           v11 = @"DEBUG_FETCH_CONFIGURATION_INFO";
           goto LABEL_96;
         }
 
-        if (v10 == 1501)
+        if (type == 1501)
         {
           v11 = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
           goto LABEL_96;
@@ -1235,13 +1235,13 @@ LABEL_56:
 
       else
       {
-        if (v10 == 600)
+        if (type == 600)
         {
           v11 = @"FETCH_ROUTE_GENIUS";
           goto LABEL_96;
         }
 
-        if (v10 == 1000)
+        if (type == 1000)
         {
           v11 = @"PING";
           goto LABEL_96;
@@ -1249,15 +1249,15 @@ LABEL_56:
       }
     }
 
-    else if (v10 > 500)
+    else if (type > 500)
     {
-      if (v10 == 501)
+      if (type == 501)
       {
         v11 = @"PLACE_DATA_IDENTIFIER_LOOKUP";
         goto LABEL_96;
       }
 
-      if (v10 == 502)
+      if (type == 502)
       {
         v11 = @"SERVICE_REQUEST";
         goto LABEL_96;
@@ -1266,13 +1266,13 @@ LABEL_56:
 
     else
     {
-      if (v10 == 401)
+      if (type == 401)
       {
         v11 = @"OPEN_URL";
         goto LABEL_96;
       }
 
-      if (v10 == 500)
+      if (type == 500)
       {
         v11 = @"PLACE_DATA_MUID_LOOKUP";
         goto LABEL_96;
@@ -1282,14 +1282,14 @@ LABEL_56:
     goto LABEL_56;
   }
 
-  if (v10 <= 205)
+  if (type <= 205)
   {
-    if (v10 == 203)
+    if (type == 203)
     {
       v11 = @"FAILED_TO_UPDATE_LOCATION";
     }
 
-    else if (v10 == 204)
+    else if (type == 204)
     {
       v11 = @"DID_PAUSE_LOCATION_UPDATES";
     }
@@ -1302,7 +1302,7 @@ LABEL_56:
 
   else
   {
-    switch(v10)
+    switch(type)
     {
       case 300:
         v11 = @"UPDATE_NAV_ROUTE_DETAILS";
@@ -1353,7 +1353,7 @@ LABEL_56:
         v11 = @"SET_DISPLAYED_STEP";
         break;
       default:
-        if (v10 != 206)
+        if (type != 206)
         {
           goto LABEL_56;
         }
@@ -1364,42 +1364,42 @@ LABEL_56:
   }
 
 LABEL_96:
-  v12 = [v6 stepID];
-  v13 = [v6 feedbackType];
-  if (v13 >= 0xB)
+  stepID = [v6 stepID];
+  feedbackType = [v6 feedbackType];
+  if (feedbackType >= 0xB)
   {
-    v14 = [NSString stringWithFormat:@"(unknown: %i)", v13];
+    v14 = [NSString stringWithFormat:@"(unknown: %i)", feedbackType];
   }
 
   else
   {
-    v14 = off_1000866A8[v13];
+    v14 = off_1000866A8[feedbackType];
   }
 
-  v15 = [v9 simpleDescription];
-  v16 = [NSString stringWithFormat:@"%@ stepID:%i feedbackType:%@ routeContext:%@", v11, v12, v14, v15];
+  simpleDescription = [v9 simpleDescription];
+  v16 = [NSString stringWithFormat:@"%@ stepID:%i feedbackType:%@ routeContext:%@", v11, stepID, v14, simpleDescription];
 
   return v16;
 }
 
-+ (id)descriptionForLocationUpdateRelativeMessage:(id)a3
++ (id)descriptionForLocationUpdateRelativeMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 argumentForTag:4];
-  v5 = [v3 type];
+  messageCopy = message;
+  v4 = [messageCopy argumentForTag:4];
+  type = [messageCopy type];
 
-  if (v5 <= 202)
+  if (type <= 202)
   {
-    if (v5 > 99)
+    if (type > 99)
     {
-      if (v5 <= 102)
+      if (type <= 102)
       {
-        if (v5 == 100)
+        if (type == 100)
         {
           v6 = @"CHECKIN_WITH_TILE_GROUP";
         }
 
-        else if (v5 == 101)
+        else if (type == 101)
         {
           v6 = @"FORCE_UPDATE_MANIFEST";
         }
@@ -1412,9 +1412,9 @@ LABEL_96:
         goto LABEL_90;
       }
 
-      if (v5 > 200)
+      if (type > 200)
       {
-        if (v5 == 201)
+        if (type == 201)
         {
           v6 = @"STOP_LOCATION_UPDATE";
         }
@@ -1427,13 +1427,13 @@ LABEL_96:
         goto LABEL_90;
       }
 
-      if (v5 == 103)
+      if (type == 103)
       {
         v6 = @"FETCH_RESOURCE";
         goto LABEL_90;
       }
 
-      if (v5 == 200)
+      if (type == 200)
       {
         v6 = @"START_LOCATION_UPDATE";
         goto LABEL_90;
@@ -1442,9 +1442,9 @@ LABEL_96:
 
     else
     {
-      if (v5 > 3)
+      if (type > 3)
       {
-        switch(v5)
+        switch(type)
         {
           case '2':
             v6 = @"START_INITIAL_SYNC";
@@ -1500,7 +1500,7 @@ LABEL_96:
             v6 = @"SET_SUBSCRIPTION_SHOULD_SYNC";
             break;
           default:
-            if (v5 != 4)
+            if (type != 4)
             {
               goto LABEL_50;
             }
@@ -1512,7 +1512,7 @@ LABEL_96:
         goto LABEL_90;
       }
 
-      switch(v5)
+      switch(type)
       {
         case 1:
           v6 = @"FETCH_TILES";
@@ -1527,23 +1527,23 @@ LABEL_96:
     }
 
 LABEL_50:
-    v6 = [NSString stringWithFormat:@"(unknown: %i)", v5];
+    v6 = [NSString stringWithFormat:@"(unknown: %i)", type];
     goto LABEL_90;
   }
 
-  if (v5 > 400)
+  if (type > 400)
   {
-    if (v5 > 599)
+    if (type > 599)
     {
-      if (v5 > 1499)
+      if (type > 1499)
       {
-        if (v5 == 1500)
+        if (type == 1500)
         {
           v6 = @"DEBUG_FETCH_CONFIGURATION_INFO";
           goto LABEL_90;
         }
 
-        if (v5 == 1501)
+        if (type == 1501)
         {
           v6 = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
           goto LABEL_90;
@@ -1552,13 +1552,13 @@ LABEL_50:
 
       else
       {
-        if (v5 == 600)
+        if (type == 600)
         {
           v6 = @"FETCH_ROUTE_GENIUS";
           goto LABEL_90;
         }
 
-        if (v5 == 1000)
+        if (type == 1000)
         {
           v6 = @"PING";
           goto LABEL_90;
@@ -1566,15 +1566,15 @@ LABEL_50:
       }
     }
 
-    else if (v5 > 500)
+    else if (type > 500)
     {
-      if (v5 == 501)
+      if (type == 501)
       {
         v6 = @"PLACE_DATA_IDENTIFIER_LOOKUP";
         goto LABEL_90;
       }
 
-      if (v5 == 502)
+      if (type == 502)
       {
         v6 = @"SERVICE_REQUEST";
         goto LABEL_90;
@@ -1583,13 +1583,13 @@ LABEL_50:
 
     else
     {
-      if (v5 == 401)
+      if (type == 401)
       {
         v6 = @"OPEN_URL";
         goto LABEL_90;
       }
 
-      if (v5 == 500)
+      if (type == 500)
       {
         v6 = @"PLACE_DATA_MUID_LOOKUP";
         goto LABEL_90;
@@ -1599,14 +1599,14 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (v5 <= 205)
+  if (type <= 205)
   {
-    if (v5 == 203)
+    if (type == 203)
     {
       v6 = @"FAILED_TO_UPDATE_LOCATION";
     }
 
-    else if (v5 == 204)
+    else if (type == 204)
     {
       v6 = @"DID_PAUSE_LOCATION_UPDATES";
     }
@@ -1619,7 +1619,7 @@ LABEL_50:
 
   else
   {
-    switch(v5)
+    switch(type)
     {
       case 300:
         v6 = @"UPDATE_NAV_ROUTE_DETAILS";
@@ -1670,7 +1670,7 @@ LABEL_50:
         v6 = @"SET_DISPLAYED_STEP";
         break;
       default:
-        if (v5 != 206)
+        if (type != 206)
         {
           goto LABEL_50;
         }
@@ -1681,53 +1681,53 @@ LABEL_50:
   }
 
 LABEL_90:
-  v7 = [v4 stringValue];
-  v8 = [NSString stringWithFormat:@"%@ bundleID:%@", v6, v7];
+  stringValue = [v4 stringValue];
+  v8 = [NSString stringWithFormat:@"%@ bundleID:%@", v6, stringValue];
 
   return v8;
 }
 
-+ (id)shortDebugDescriptionForMessage:(id)a3
++ (id)shortDebugDescriptionForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 > 299)
+  messageCopy = message;
+  type = [messageCopy type];
+  if (type > 299)
   {
-    switch(v5)
+    switch(type)
     {
       case 300:
-        v6 = [a1 descriptionForUpdateNavRouteDetailsMessage:v4];
+        v6 = [self descriptionForUpdateNavRouteDetailsMessage:messageCopy];
         goto LABEL_4;
       case 301:
-        v6 = [a1 descriptionForUpdateNavRouteStatusMessage:v4];
+        v6 = [self descriptionForUpdateNavRouteStatusMessage:messageCopy];
         goto LABEL_4;
       case 306:
-        v6 = [a1 descriptionForSetWantsAllNavStatusUpdatesMessage:v4];
+        v6 = [self descriptionForSetWantsAllNavStatusUpdatesMessage:messageCopy];
         goto LABEL_4;
     }
   }
 
-  else if ((v5 - 200) < 6)
+  else if ((type - 200) < 6)
   {
-    v6 = [a1 descriptionForLocationUpdateRelativeMessage:v4];
+    v6 = [self descriptionForLocationUpdateRelativeMessage:messageCopy];
 LABEL_4:
     v7 = v6;
     goto LABEL_5;
   }
 
-  v9 = [v4 type];
-  if (v9 <= 202)
+  type2 = [messageCopy type];
+  if (type2 <= 202)
   {
-    if (v9 > 99)
+    if (type2 > 99)
     {
-      if (v9 <= 102)
+      if (type2 <= 102)
       {
-        if (v9 == 100)
+        if (type2 == 100)
         {
           v7 = @"CHECKIN_WITH_TILE_GROUP";
         }
 
-        else if (v9 == 101)
+        else if (type2 == 101)
         {
           v7 = @"FORCE_UPDATE_MANIFEST";
         }
@@ -1740,9 +1740,9 @@ LABEL_4:
         goto LABEL_5;
       }
 
-      if (v9 > 200)
+      if (type2 > 200)
       {
-        if (v9 == 201)
+        if (type2 == 201)
         {
           v7 = @"STOP_LOCATION_UPDATE";
         }
@@ -1755,13 +1755,13 @@ LABEL_4:
         goto LABEL_5;
       }
 
-      if (v9 == 103)
+      if (type2 == 103)
       {
         v7 = @"FETCH_RESOURCE";
         goto LABEL_5;
       }
 
-      if (v9 == 200)
+      if (type2 == 200)
       {
         v7 = @"START_LOCATION_UPDATE";
         goto LABEL_5;
@@ -1770,9 +1770,9 @@ LABEL_4:
 
     else
     {
-      if (v9 > 3)
+      if (type2 > 3)
       {
-        switch(v9)
+        switch(type2)
         {
           case '2':
             v7 = @"START_INITIAL_SYNC";
@@ -1828,7 +1828,7 @@ LABEL_4:
             v7 = @"SET_SUBSCRIPTION_SHOULD_SYNC";
             break;
           default:
-            if (v9 != 4)
+            if (type2 != 4)
             {
               goto LABEL_63;
             }
@@ -1840,7 +1840,7 @@ LABEL_4:
         goto LABEL_5;
       }
 
-      switch(v9)
+      switch(type2)
       {
         case 1:
           v7 = @"FETCH_TILES";
@@ -1855,23 +1855,23 @@ LABEL_4:
     }
 
 LABEL_63:
-    v6 = [NSString stringWithFormat:@"(unknown: %i)", v9];
+    v6 = [NSString stringWithFormat:@"(unknown: %i)", type2];
     goto LABEL_4;
   }
 
-  if (v9 > 400)
+  if (type2 > 400)
   {
-    if (v9 > 599)
+    if (type2 > 599)
     {
-      if (v9 > 1499)
+      if (type2 > 1499)
       {
-        if (v9 == 1500)
+        if (type2 == 1500)
         {
           v7 = @"DEBUG_FETCH_CONFIGURATION_INFO";
           goto LABEL_5;
         }
 
-        if (v9 == 1501)
+        if (type2 == 1501)
         {
           v7 = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
           goto LABEL_5;
@@ -1880,13 +1880,13 @@ LABEL_63:
 
       else
       {
-        if (v9 == 600)
+        if (type2 == 600)
         {
           v7 = @"FETCH_ROUTE_GENIUS";
           goto LABEL_5;
         }
 
-        if (v9 == 1000)
+        if (type2 == 1000)
         {
           v7 = @"PING";
           goto LABEL_5;
@@ -1894,15 +1894,15 @@ LABEL_63:
       }
     }
 
-    else if (v9 > 500)
+    else if (type2 > 500)
     {
-      if (v9 == 501)
+      if (type2 == 501)
       {
         v7 = @"PLACE_DATA_IDENTIFIER_LOOKUP";
         goto LABEL_5;
       }
 
-      if (v9 == 502)
+      if (type2 == 502)
       {
         v7 = @"SERVICE_REQUEST";
         goto LABEL_5;
@@ -1911,13 +1911,13 @@ LABEL_63:
 
     else
     {
-      if (v9 == 401)
+      if (type2 == 401)
       {
         v7 = @"OPEN_URL";
         goto LABEL_5;
       }
 
-      if (v9 == 500)
+      if (type2 == 500)
       {
         v7 = @"PLACE_DATA_MUID_LOOKUP";
         goto LABEL_5;
@@ -1927,14 +1927,14 @@ LABEL_63:
     goto LABEL_63;
   }
 
-  if (v9 <= 205)
+  if (type2 <= 205)
   {
-    if (v9 == 203)
+    if (type2 == 203)
     {
       v7 = @"FAILED_TO_UPDATE_LOCATION";
     }
 
-    else if (v9 == 204)
+    else if (type2 == 204)
     {
       v7 = @"DID_PAUSE_LOCATION_UPDATES";
     }
@@ -1947,7 +1947,7 @@ LABEL_63:
 
   else
   {
-    switch(v9)
+    switch(type2)
     {
       case 300:
         v7 = @"UPDATE_NAV_ROUTE_DETAILS";
@@ -1998,7 +1998,7 @@ LABEL_63:
         v7 = @"SET_DISPLAYED_STEP";
         break;
       default:
-        if (v9 != 206)
+        if (type2 != 206)
         {
           goto LABEL_63;
         }

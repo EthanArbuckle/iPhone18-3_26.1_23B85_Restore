@@ -1,10 +1,10 @@
 @interface PKActionGroup
 - (BOOL)resolve;
 - (PKActionGroup)init;
-- (id)trackAction:(id)a3;
+- (id)trackAction:(id)action;
 - (void)_check;
-- (void)_trackGuardedAction:(void *)a3 queue:(char)a4 strict:;
-- (void)activateWithCompletion:(id)a3 queue:(id)a4;
+- (void)_trackGuardedAction:(void *)action queue:(char)queue strict:;
+- (void)activateWithCompletion:(id)completion queue:(id)queue;
 - (void)dealloc;
 @end
 
@@ -44,27 +44,27 @@ LABEL_4:
   __break(1u);
 }
 
-- (void)_trackGuardedAction:(void *)a3 queue:(char)a4 strict:
+- (void)_trackGuardedAction:(void *)action queue:(char)queue strict:
 {
   v7 = a2;
-  v8 = a3;
-  if (!a1)
+  actionCopy = action;
+  if (!self)
   {
     goto LABEL_4;
   }
 
-  os_unfair_lock_lock(a1 + 2);
+  os_unfair_lock_lock(self + 2);
   result = objc_autoreleasePoolPush();
-  if (*(a1 + 12) != 1)
+  if (*(self + 12) != 1)
   {
     v10 = result;
-    atomic_exchange(a1 + 16, 1u);
-    atomic_fetch_add(a1 + 7, 1u);
+    atomic_exchange(self + 16, 1u);
+    atomic_fetch_add(self + 7, 1u);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __50__PKActionGroup__trackGuardedAction_queue_strict___block_invoke;
     aBlock[3] = &unk_1E79C44A0;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v25 = v7;
     v11 = _Block_copy(aBlock);
     v12 = [PKDeallocationGuard alloc];
@@ -72,7 +72,7 @@ LABEL_4:
     v21[1] = 3221225472;
     v21[2] = __50__PKActionGroup__trackGuardedAction_queue_strict___block_invoke_2;
     v21[3] = &unk_1E79C4748;
-    v23 = a4;
+    queueCopy = queue;
     v13 = v11;
     v22 = v13;
     v14 = [(PKDeallocationGuard *)v12 initWithBlock:v21];
@@ -87,20 +87,20 @@ LABEL_4:
     v17 = _Block_copy(v18);
 
     objc_autoreleasePoolPop(v10);
-    os_unfair_lock_unlock(a1 + 2);
-    a1 = _Block_copy(v17);
+    os_unfair_lock_unlock(self + 2);
+    self = _Block_copy(v17);
 
 LABEL_4:
-    return a1;
+    return self;
   }
 
   __break(1u);
   return result;
 }
 
-- (id)trackAction:(id)a3
+- (id)trackAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (!self)
   {
     goto LABEL_4;
@@ -118,7 +118,7 @@ LABEL_4:
     v8[2] = __30__PKActionGroup__trackAction___block_invoke;
     v8[3] = &unk_1E79C44A0;
     v8[4] = self;
-    v9 = v4;
+    v9 = actionCopy;
     v7 = _Block_copy(v8);
 
     objc_autoreleasePoolPop(v6);
@@ -133,11 +133,11 @@ LABEL_4:
   return result;
 }
 
-- (void)activateWithCompletion:(id)a3 queue:(id)a4
+- (void)activateWithCompletion:(id)completion queue:(id)queue
 {
-  aBlock = a3;
-  v6 = a4;
-  if (aBlock && v6 && (os_unfair_lock_lock(&self->_lock), !self->_activated))
+  aBlock = completion;
+  queueCopy = queue;
+  if (aBlock && queueCopy && (os_unfair_lock_lock(&self->_lock), !self->_activated))
   {
     self->_activated = 1;
     if (atomic_load(&self->_count))
@@ -146,12 +146,12 @@ LABEL_4:
       completion = self->_completion;
       self->_completion = v8;
 
-      objc_storeStrong(&self->_queue, a4);
+      objc_storeStrong(&self->_queue, queue);
     }
 
     else
     {
-      dispatch_async(v6, aBlock);
+      dispatch_async(queueCopy, aBlock);
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -211,20 +211,20 @@ void __50__PKActionGroup__trackGuardedAction_queue_strict___block_invoke(uint64_
 
 - (void)_check
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    if (*(a1 + 12) == 1 && (v2 = atomic_load((a1 + 14))) == 0 && *(a1 + 24))
+    os_unfair_lock_lock((self + 8));
+    if (*(self + 12) == 1 && (v2 = atomic_load((self + 14))) == 0 && *(self + 24))
     {
-      queue = *(a1 + 32);
-      v4 = _Block_copy(*(a1 + 24));
-      v5 = *(a1 + 32);
-      *(a1 + 32) = 0;
+      queue = *(self + 32);
+      v4 = _Block_copy(*(self + 24));
+      v5 = *(self + 32);
+      *(self + 32) = 0;
 
-      v6 = *(a1 + 24);
-      *(a1 + 24) = 0;
+      v6 = *(self + 24);
+      *(self + 24) = 0;
 
-      os_unfair_lock_unlock((a1 + 8));
+      os_unfair_lock_unlock((self + 8));
       if (v4)
       {
         if (!queue)
@@ -241,7 +241,7 @@ void __50__PKActionGroup__trackGuardedAction_queue_strict___block_invoke(uint64_
 
     else
     {
-      os_unfair_lock_unlock((a1 + 8));
+      os_unfair_lock_unlock((self + 8));
       v3 = 0;
     }
   }

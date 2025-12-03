@@ -2,8 +2,8 @@
 + (id)sharedStore;
 - (HeartRateStore)init;
 - (void)_updateHeartRateEnabled;
-- (void)_updateHeartRateWithCompletion:(id)a3;
-- (void)recentHeartRateWithCompletion:(id)a3;
+- (void)_updateHeartRateWithCompletion:(id)completion;
+- (void)recentHeartRateWithCompletion:(id)completion;
 @end
 
 @implementation HeartRateStore
@@ -44,12 +44,12 @@ uint64_t __29__HeartRateStore_sharedStore__block_invoke()
   return v3;
 }
 
-- (void)recentHeartRateWithCompletion:(id)a3
+- (void)recentHeartRateWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v4;
+    v8 = completionCopy;
     v5 = CFAbsoluteTimeGetCurrent() - self->_recentHeartRateTime;
     recentHeartRate = 85;
     if (self->_heartRateEnabled)
@@ -67,19 +67,19 @@ uint64_t __29__HeartRateStore_sharedStore__block_invoke()
     }
 
     v7[2](v7, recentHeartRate);
-    v4 = v8;
+    completionCopy = v8;
     if (self->_heartRateEnabled && v5 > 660.0 && !self->_heartRateQuery)
     {
       [(HeartRateStore *)self _updateHeartRateWithCompletion:v8];
-      v4 = v8;
+      completionCopy = v8;
     }
   }
 }
 
-- (void)_updateHeartRateWithCompletion:(id)a3
+- (void)_updateHeartRateWithCompletion:(id)completion
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (self->_heartRateEnabled && [MEMORY[0x277CCD4D8] isHealthDataAvailable])
   {
     objc_initWeak(&location, self);
@@ -88,10 +88,10 @@ uint64_t __29__HeartRateStore_sharedStore__block_invoke()
     v24[2] = __49__HeartRateStore__updateHeartRateWithCompletion___block_invoke;
     v24[3] = &unk_278F7A1B8;
     objc_copyWeak(&v26, &location);
-    v25 = v4;
+    v25 = completionCopy;
     v5 = MEMORY[0x24C1E9BB0](v24);
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [v6 dateByAddingTimeInterval:-660.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v7 = [date dateByAddingTimeInterval:-660.0];
 
     v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %@", *MEMORY[0x277CCC778], v7];
     v9 = *MEMORY[0x277CCCB90];
@@ -187,9 +187,9 @@ void __49__HeartRateStore__updateHeartRateWithCompletion___block_invoke_2(uint64
 {
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"EnableHeartRate", @"com.apple.nanolifestyle.privacy", &keyExistsAndHasValidFormat);
-  v4 = [MEMORY[0x277D75128] isRunningInStoreDemoMode];
+  isRunningInStoreDemoMode = [MEMORY[0x277D75128] isRunningInStoreDemoMode];
   v5 = 0;
-  if ((v4 & 1) == 0)
+  if ((isRunningInStoreDemoMode & 1) == 0)
   {
     if (AppBooleanValue)
     {

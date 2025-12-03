@@ -1,55 +1,55 @@
 @interface SBCaptureButtonConsoleModeBehavior
-- (unint64_t)cameraLaunchIntentInContext:(id)a3;
-- (unint64_t)coachIntentInContext:(id)a3;
-- (unint64_t)prewarmIntentInContext:(id)a3;
+- (unint64_t)cameraLaunchIntentInContext:(id)context;
+- (unint64_t)coachIntentInContext:(id)context;
+- (unint64_t)prewarmIntentInContext:(id)context;
 @end
 
 @implementation SBCaptureButtonConsoleModeBehavior
 
-- (unint64_t)prewarmIntentInContext:(id)a3
+- (unint64_t)prewarmIntentInContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 policy];
-  v5 = [v4 consoleModeMitigationEnabled];
+  contextCopy = context;
+  policy = [contextCopy policy];
+  consoleModeMitigationEnabled = [policy consoleModeMitigationEnabled];
 
-  if (v5)
+  if (consoleModeMitigationEnabled)
   {
-    v6 = [v3 inGameMode];
+    inGameMode = [contextCopy inGameMode];
   }
 
   else
   {
-    v6 = 0;
+    inGameMode = 0;
   }
 
-  return v6;
+  return inGameMode;
 }
 
-- (unint64_t)cameraLaunchIntentInContext:(id)a3
+- (unint64_t)cameraLaunchIntentInContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 policy];
-  v5 = [v4 consoleModeMitigationEnabled];
+  contextCopy = context;
+  policy = [contextCopy policy];
+  consoleModeMitigationEnabled = [policy consoleModeMitigationEnabled];
 
-  if (v5)
+  if (consoleModeMitigationEnabled)
   {
-    v6 = [v3 inGameMode];
+    inGameMode = [contextCopy inGameMode];
   }
 
   else
   {
-    v6 = 0;
+    inGameMode = 0;
   }
 
-  return v6;
+  return inGameMode;
 }
 
-- (unint64_t)coachIntentInContext:(id)a3
+- (unint64_t)coachIntentInContext:(id)context
 {
-  v3 = a3;
-  if ([v3 inGameMode] && objc_msgSend(v3, "event") == 2)
+  contextCopy = context;
+  if ([contextCopy inGameMode] && objc_msgSend(contextCopy, "event") == 2)
   {
-    if ([v3 inGameModeStreakCount] == 1)
+    if ([contextCopy inGameModeStreakCount] == 1)
     {
       v4 = 2;
     }

@@ -1,17 +1,17 @@
 @interface MTMusicSubscriptionInfoSyncUtil
 - (MTMusicSubscriptionInfoSyncUtil)init;
-- (MTMusicSubscriptionInfoSyncUtil)initWithBag:(id)a3 accountStore:(id)a4;
+- (MTMusicSubscriptionInfoSyncUtil)initWithBag:(id)bag accountStore:(id)store;
 @end
 
 @implementation MTMusicSubscriptionInfoSyncUtil
 
-- (MTMusicSubscriptionInfoSyncUtil)initWithBag:(id)a3 accountStore:(id)a4
+- (MTMusicSubscriptionInfoSyncUtil)initWithBag:(id)bag accountStore:(id)store
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v7 = a4;
+  storeCopy = store;
 
-  return sub_1D90662DC(a3, v7, self);
+  return sub_1D90662DC(bag, storeCopy, self);
 }
 
 - (MTMusicSubscriptionInfoSyncUtil)init

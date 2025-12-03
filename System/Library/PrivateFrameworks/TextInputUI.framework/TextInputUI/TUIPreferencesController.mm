@@ -1,29 +1,29 @@
 @interface TUIPreferencesController
 + (id)sharedPreferencesController;
-- (id)suggestedDictationModesForKeyboardLanguages:(id)a3;
+- (id)suggestedDictationModesForKeyboardLanguages:(id)languages;
 @end
 
 @implementation TUIPreferencesController
 
-- (id)suggestedDictationModesForKeyboardLanguages:(id)a3
+- (id)suggestedDictationModesForKeyboardLanguages:(id)languages
 {
   v92 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  languagesCopy = languages;
   v57 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v61 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:5];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = [MEMORY[0x1E695DFA8] set];
-  v7 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v56 = [v7 updateEnabledDictationLanguages:0];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  v56 = [mEMORY[0x1E69DCBF0] updateEnabledDictationLanguages:0];
 
-  v8 = [MEMORY[0x1E69D95B8] sharedInputModeController];
+  mEMORY[0x1E69D95B8] = [MEMORY[0x1E69D95B8] sharedInputModeController];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  obj = v3;
-  v60 = v8;
+  obj = languagesCopy;
+  v60 = mEMORY[0x1E69D95B8];
   v63 = [obj countByEnumeratingWithState:&v78 objects:v91 count:16];
   if (v63)
   {
@@ -40,7 +40,7 @@
         v10 = *(*(&v78 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v8 defaultDictationLanguagesForKeyboardLanguage:v10];
+          v11 = [mEMORY[0x1E69D95B8] defaultDictationLanguagesForKeyboardLanguage:v10];
         }
 
         else
@@ -78,12 +78,12 @@
             while (v14);
           }
 
-          [v61 addObjectsFromArray:v12];
+          [orderedSet addObjectsFromArray:v12];
         }
 
         else
         {
-          [v61 addObject:v10];
+          [orderedSet addObject:v10];
         }
 
         if ([v11 count])
@@ -117,14 +117,14 @@
               }
 
               v23 = MEMORY[0x193AE8240](*(*(&v70 + 1) + 8 * k));
-              if ([v5 containsObject:v23])
+              if ([array containsObject:v23])
               {
                 v24 = v6;
               }
 
               else
               {
-                v24 = v5;
+                v24 = array;
               }
 
               [v24 addObject:v23];
@@ -136,7 +136,7 @@
           while (v20);
         }
 
-        v8 = v60;
+        mEMORY[0x1E69D95B8] = v60;
       }
 
       v63 = [obj countByEnumeratingWithState:&v78 objects:v91 count:16];
@@ -145,7 +145,7 @@
     while (v63);
   }
 
-  [v61 array];
+  [orderedSet array];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
@@ -218,17 +218,17 @@
             {
 LABEL_48:
               v41 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v29];
-              v42 = [v41 countryCode];
+              countryCode = [v41 countryCode];
 
-              if ([v42 length])
+              if ([countryCode length])
               {
                 v43 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
                 v44 = [v29 stringByAppendingString:@"_long"];
                 v53 = [v43 localizedStringForKey:v44 value:&stru_1F03BA8F8 table:@"Dictation"];
 
                 v45 = MEMORY[0x1E696AEC0];
-                v46 = [MEMORY[0x1E695DF58] currentLocale];
-                v47 = [v46 localizedStringForCountryCode:v42];
+                currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+                v47 = [currentLocale localizedStringForCountryCode:countryCode];
                 v52 = [v45 localizedStringWithFormat:v53, v47];
 
                 v35 = v52;
@@ -281,7 +281,7 @@ LABEL_48:
   block[1] = 3221225472;
   block[2] = __55__TUIPreferencesController_sharedPreferencesController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedPreferencesController_token != -1)
   {
     dispatch_once(&sharedPreferencesController_token, block);

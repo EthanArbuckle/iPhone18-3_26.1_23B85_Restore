@@ -1,17 +1,17 @@
 @interface TSPMutableLargeStringArraySegment
-- (unint64_t)estimatedByteSizeOfElement:(id)a3;
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (unint64_t)estimatedByteSizeOfElement:(id)element;
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation TSPMutableLargeStringArraySegment
 
-- (unint64_t)estimatedByteSizeOfElement:(id)a3
+- (unint64_t)estimatedByteSizeOfElement:(id)element
 {
-  v5 = a3;
-  if (!v5 || (objc_msgSend_null(MEMORY[0x277CBEB68], v3, v4), v6 = objc_claimAutoreleasedReturnValue(), v6, v6 == v5))
+  elementCopy = element;
+  if (!elementCopy || (objc_msgSend_null(MEMORY[0x277CBEB68], v3, v4), v6 = objc_claimAutoreleasedReturnValue(), v6, v6 == elementCopy))
   {
     v15 = 1;
   }
@@ -47,60 +47,60 @@
   return v15;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors(&descriptor_table_TSPMessages_2eproto, 0);
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276A7A350, off_2812FC248[70]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276A7A350, off_2812FC248[70]);
 
-  objc_msgSend_saveToMessage_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToMessage_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = sub_276A7A0CC;
   v30[3] = &unk_27A6E2898;
-  v7 = v6;
+  v7 = archiverCopy;
   v31 = v7;
-  v32 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, v30);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, message, v30);
   v14 = objc_msgSend_count(self, v9, v10);
   if (v14)
   {
     v15 = 0;
     while (1)
     {
-      v16 = *(a3 + 5);
+      v16 = *(message + 5);
       if (!v16)
       {
         break;
       }
 
-      v17 = *(a3 + 8);
+      v17 = *(message + 8);
       v18 = *v16;
       if (v17 >= *v16)
       {
-        if (v18 == *(a3 + 9))
+        if (v18 == *(message + 9))
         {
 LABEL_8:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 6, v18 + 1);
-          v16 = *(a3 + 5);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message + 6, v18 + 1);
+          v16 = *(message + 5);
           v18 = *v16;
         }
 
         *v16 = v18 + 1;
-        v19 = google::protobuf::Arena::CreateMaybeMessage<TSP::LargeStringArraySegment_OptionalElement>(*(a3 + 3));
-        v20 = *(a3 + 8);
-        v21 = *(a3 + 5) + 8 * v20;
-        *(a3 + 8) = v20 + 1;
+        v19 = google::protobuf::Arena::CreateMaybeMessage<TSP::LargeStringArraySegment_OptionalElement>(*(message + 3));
+        v20 = *(message + 8);
+        v21 = *(message + 5) + 8 * v20;
+        *(message + 8) = v20 + 1;
         *(v21 + 8) = v19;
         goto LABEL_10;
       }
 
-      *(a3 + 8) = v17 + 1;
+      *(message + 8) = v17 + 1;
       v19 = *&v16[2 * v17 + 2];
 LABEL_10:
       v22 = objc_msgSend_objectAtIndex_(self, v11, v15);
@@ -129,41 +129,41 @@ LABEL_10:
       }
     }
 
-    v18 = *(a3 + 9);
+    v18 = *(message + 9);
     goto LABEL_8;
   }
 
 LABEL_16:
-  v28 = TSP::LargeStringArraySegment::ByteSizeLong(a3, v11, v12, v13);
+  v28 = TSP::LargeStringArraySegment::ByteSizeLong(message, v11, v12, v13);
   objc_msgSend_setEstimatedByteSize_(self, v29, v28);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors(&descriptor_table_TSPMessages_2eproto, 0);
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812FC248[70]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812FC248[70]);
 
-  objc_msgSend_loadFromMessage_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromMessage_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = sub_276A7A30C;
   v21 = &unk_27A6E46B8;
-  v7 = v6;
+  v7 = unarchiverCopy;
   v22 = v7;
-  v23 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, &v18);
-  if (*(a3 + 8) >= 1)
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, message, &v18);
+  if (*(message + 8) >= 1)
   {
     v12 = 0;
     do
     {
-      v13 = *(*(a3 + 5) + 8 * v12 + 8);
+      v13 = *(*(message + 5) + 8 * v12 + 8);
       if (*(v13 + 16))
       {
         v14 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v9, *(v13 + 24) & 0xFFFFFFFFFFFFFFFELL, v18, v19, v20, v21);
@@ -179,10 +179,10 @@ LABEL_16:
       ++v12;
     }
 
-    while (v12 < *(a3 + 8));
+    while (v12 < *(message + 8));
   }
 
-  v16 = TSP::LargeStringArraySegment::ByteSizeLong(a3, v9, v10, v11);
+  v16 = TSP::LargeStringArraySegment::ByteSizeLong(message, v9, v10, v11);
   objc_msgSend_setEstimatedByteSize_(self, v17, v16);
 }
 

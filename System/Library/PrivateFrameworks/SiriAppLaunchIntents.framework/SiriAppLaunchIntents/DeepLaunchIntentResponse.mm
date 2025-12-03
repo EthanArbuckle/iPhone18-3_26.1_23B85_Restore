@@ -1,12 +1,12 @@
 @interface DeepLaunchIntentResponse
-- (DeepLaunchIntentResponse)initWithPropertiesByName:(id)a3;
+- (DeepLaunchIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation DeepLaunchIntentResponse
 
-- (DeepLaunchIntentResponse)initWithPropertiesByName:(id)a3
+- (DeepLaunchIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_26618C840();
   }

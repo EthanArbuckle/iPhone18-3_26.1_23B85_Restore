@@ -6,13 +6,13 @@
 
 - (id)styleAttributes
 {
-  v2 = [(MapsSuggestionsLocationOfInterest *)self type];
+  type = [(MapsSuggestionsLocationOfInterest *)self type];
   v3 = 0;
-  if (v2 <= 0)
+  if (type <= 0)
   {
-    if (v2 != -1)
+    if (type != -1)
     {
-      if (!v2)
+      if (!type)
       {
         v3 = +[GEOFeatureStyleAttributes homeStyleAttributes];
       }
@@ -25,19 +25,19 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (v2 == 1)
+  if (type == 1)
   {
     v3 = +[GEOFeatureStyleAttributes workStyleAttributes];
     goto LABEL_12;
   }
 
-  if (v2 == 2)
+  if (type == 2)
   {
     v3 = +[GEOFeatureStyleAttributes schoolStyleAttributes];
     goto LABEL_12;
   }
 
-  if (v2 == 3)
+  if (type == 3)
   {
     goto LABEL_9;
   }

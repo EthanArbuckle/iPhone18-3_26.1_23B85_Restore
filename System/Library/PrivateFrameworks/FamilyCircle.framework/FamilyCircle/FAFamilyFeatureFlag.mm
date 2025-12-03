@@ -2,7 +2,7 @@
 + (id)megadomeAdoption;
 - (BOOL)isEnabled;
 - (FAFamilyFeatureFlag)init;
-- (FAFamilyFeatureFlag)initWithRawValue:(id)a3;
+- (FAFamilyFeatureFlag)initWithRawValue:(id)value;
 @end
 
 @implementation FAFamilyFeatureFlag
@@ -19,7 +19,7 @@
   return v3;
 }
 
-- (FAFamilyFeatureFlag)initWithRawValue:(id)a3
+- (FAFamilyFeatureFlag)initWithRawValue:(id)value
 {
   v4._countAndFlagsBits = sub_1B715E0A0();
   FamilyFeatureFlags.init(rawValue:)(v4);
@@ -31,7 +31,7 @@
 
 - (BOOL)isEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B710179C();
 
   return v3 & 1;

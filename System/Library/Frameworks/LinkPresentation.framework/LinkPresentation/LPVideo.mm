@@ -2,62 +2,62 @@
 - (AVAsset)_asset;
 - (BOOL)_canEncodeWithoutComputation;
 - (BOOL)hasAudio;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
 - (CGSize)_intrinsicSizeIfKnown;
-- (LPVideo)initWithCoder:(id)a3;
-- (LPVideo)initWithData:(id)a3 MIMEType:(id)a4 hasAudio:(BOOL)a5;
-- (LPVideo)initWithData:(id)a3 MIMEType:(id)a4 properties:(id)a5;
-- (LPVideo)initWithItemProvider:(id)a3 properties:(id)a4;
-- (LPVideo)initWithStreamingURL:(id)a3 hasAudio:(BOOL)a4;
-- (LPVideo)initWithStreamingURL:(id)a3 properties:(id)a4;
-- (LPVideo)initWithYouTubeURL:(id)a3;
-- (LPVideo)initWithYouTubeURL:(id)a3 properties:(id)a4;
+- (LPVideo)initWithCoder:(id)coder;
+- (LPVideo)initWithData:(id)data MIMEType:(id)type hasAudio:(BOOL)audio;
+- (LPVideo)initWithData:(id)data MIMEType:(id)type properties:(id)properties;
+- (LPVideo)initWithItemProvider:(id)provider properties:(id)properties;
+- (LPVideo)initWithStreamingURL:(id)l hasAudio:(BOOL)audio;
+- (LPVideo)initWithStreamingURL:(id)l properties:(id)properties;
+- (LPVideo)initWithYouTubeURL:(id)l;
+- (LPVideo)initWithYouTubeURL:(id)l properties:(id)properties;
 - (NSItemProvider)_itemProvider;
-- (id)_initWithVideo:(id)a3;
-- (id)initByReferencingFileURL:(id)a3 MIMEType:(id)a4 hasAudio:(BOOL)a5;
-- (id)initByReferencingFileURL:(id)a3 MIMEType:(id)a4 properties:(id)a5;
+- (id)_initWithVideo:(id)video;
+- (id)initByReferencingFileURL:(id)l MIMEType:(id)type hasAudio:(BOOL)audio;
+- (id)initByReferencingFileURL:(id)l MIMEType:(id)type properties:(id)properties;
 - (void)_installMediaServicesResetNotificationHandler;
-- (void)_intrinsicSizeWithCompletionHandler:(id)a3;
+- (void)_intrinsicSizeWithCompletionHandler:(id)handler;
 - (void)_mediaServicesWereReset;
 - (void)_uninstallMediaServicesResetNotificationHandler;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadAsynchronouslyWithCompletionHandler:(id)a3;
-- (void)setFileURL:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadAsynchronouslyWithCompletionHandler:(id)handler;
+- (void)setFileURL:(id)l;
 @end
 
 @implementation LPVideo
 
-- (id)_initWithVideo:(id)a3
+- (id)_initWithVideo:(id)video
 {
-  v4 = a3;
-  v5 = [v4 data];
-  v6 = [v4 fileURL];
-  v7 = [v4 MIMEType];
-  v8 = [v4 properties];
+  videoCopy = video;
+  data = [videoCopy data];
+  fileURL = [videoCopy fileURL];
+  mIMEType = [videoCopy MIMEType];
+  properties = [videoCopy properties];
   v12.receiver = self;
   v12.super_class = LPVideo;
-  v9 = [(LPVisualMedia *)&v12 _initWithData:v5 fileURL:v6 MIMEType:v7 properties:v8];
+  v9 = [(LPVisualMedia *)&v12 _initWithData:data fileURL:fileURL MIMEType:mIMEType properties:properties];
 
   if (v9)
   {
-    objc_storeStrong(v9 + 14, v4[14]);
-    objc_storeStrong(v9 + 15, v4[15]);
+    objc_storeStrong(v9 + 14, videoCopy[14]);
+    objc_storeStrong(v9 + 15, videoCopy[15]);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (LPVideo)initWithData:(id)a3 MIMEType:(id)a4 hasAudio:(BOOL)a5
+- (LPVideo)initWithData:(id)data MIMEType:(id)type hasAudio:(BOOL)audio
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  audioCopy = audio;
+  dataCopy = data;
+  typeCopy = type;
   v10 = objc_alloc_init(LPVideoProperties);
-  [(LPVideoProperties *)v10 setHasAudio:v5];
-  v11 = [(LPVideo *)self initWithData:v8 MIMEType:v9 properties:v10];
+  [(LPVideoProperties *)v10 setHasAudio:audioCopy];
+  v11 = [(LPVideo *)self initWithData:dataCopy MIMEType:typeCopy properties:v10];
   v12 = v11;
   if (v11)
   {
@@ -67,14 +67,14 @@
   return v12;
 }
 
-- (id)initByReferencingFileURL:(id)a3 MIMEType:(id)a4 hasAudio:(BOOL)a5
+- (id)initByReferencingFileURL:(id)l MIMEType:(id)type hasAudio:(BOOL)audio
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  audioCopy = audio;
+  lCopy = l;
+  typeCopy = type;
   v10 = objc_alloc_init(LPVideoProperties);
-  [(LPVideoProperties *)v10 setHasAudio:v5];
-  v11 = [(LPVisualMedia *)self _initByReferencingFileURL:v8 MIMEType:v9 properties:v10];
+  [(LPVideoProperties *)v10 setHasAudio:audioCopy];
+  v11 = [(LPVisualMedia *)self _initByReferencingFileURL:lCopy MIMEType:typeCopy properties:v10];
   v12 = v11;
   if (v11)
   {
@@ -84,11 +84,11 @@
   return v12;
 }
 
-- (id)initByReferencingFileURL:(id)a3 MIMEType:(id)a4 properties:(id)a5
+- (id)initByReferencingFileURL:(id)l MIMEType:(id)type properties:(id)properties
 {
   v9.receiver = self;
   v9.super_class = LPVideo;
-  v5 = [(LPVisualMedia *)&v9 _initByReferencingFileURL:a3 MIMEType:a4 properties:a5];
+  v5 = [(LPVisualMedia *)&v9 _initByReferencingFileURL:l MIMEType:type properties:properties];
   v6 = v5;
   if (v5)
   {
@@ -98,11 +98,11 @@
   return v6;
 }
 
-- (LPVideo)initWithData:(id)a3 MIMEType:(id)a4 properties:(id)a5
+- (LPVideo)initWithData:(id)data MIMEType:(id)type properties:(id)properties
 {
   v9.receiver = self;
   v9.super_class = LPVideo;
-  v5 = [(LPVisualMedia *)&v9 _initWithData:a3 MIMEType:a4 properties:a5];
+  v5 = [(LPVisualMedia *)&v9 _initWithData:data MIMEType:type properties:properties];
   v6 = v5;
   if (v5)
   {
@@ -112,13 +112,13 @@
   return v6;
 }
 
-- (LPVideo)initWithStreamingURL:(id)a3 hasAudio:(BOOL)a4
+- (LPVideo)initWithStreamingURL:(id)l hasAudio:(BOOL)audio
 {
-  v4 = a4;
-  v6 = a3;
+  audioCopy = audio;
+  lCopy = l;
   v7 = objc_alloc_init(LPVideoProperties);
-  [(LPVideoProperties *)v7 setHasAudio:v4];
-  v8 = [(LPVideo *)self initWithStreamingURL:v6 properties:v7];
+  [(LPVideoProperties *)v7 setHasAudio:audioCopy];
+  v8 = [(LPVideo *)self initWithStreamingURL:lCopy properties:v7];
   v9 = v8;
   if (v8)
   {
@@ -128,28 +128,28 @@
   return v9;
 }
 
-- (LPVideo)initWithStreamingURL:(id)a3 properties:(id)a4
+- (LPVideo)initWithStreamingURL:(id)l properties:(id)properties
 {
-  v7 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = LPVideo;
-  v8 = [(LPVisualMedia *)&v12 initWithProperties:a4];
+  v8 = [(LPVisualMedia *)&v12 initWithProperties:properties];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_streamingURL, a3);
+    objc_storeStrong(&v8->_streamingURL, l);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (LPVideo)initWithYouTubeURL:(id)a3
+- (LPVideo)initWithYouTubeURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(LPVideoProperties);
   [(LPVideoProperties *)v5 setHasAudio:1];
-  v6 = [(LPVideo *)self initWithYouTubeURL:v4 properties:v5];
+  v6 = [(LPVideo *)self initWithYouTubeURL:lCopy properties:v5];
   v7 = v6;
   if (v6)
   {
@@ -159,16 +159,16 @@
   return v7;
 }
 
-- (LPVideo)initWithYouTubeURL:(id)a3 properties:(id)a4
+- (LPVideo)initWithYouTubeURL:(id)l properties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  propertiesCopy = properties;
   v12.receiver = self;
   v12.super_class = LPVideo;
-  v9 = [(LPVisualMedia *)&v12 initWithProperties:v8];
-  if (v9 && [LPPresentationSpecializations isYouTubeEmbedURL:v7])
+  v9 = [(LPVisualMedia *)&v12 initWithProperties:propertiesCopy];
+  if (v9 && [LPPresentationSpecializations isYouTubeEmbedURL:lCopy])
   {
-    objc_storeStrong(&v9->_youTubeURL, a3);
+    objc_storeStrong(&v9->_youTubeURL, l);
     v10 = v9;
   }
 
@@ -180,16 +180,16 @@
   return v10;
 }
 
-- (LPVideo)initWithItemProvider:(id)a3 properties:(id)a4
+- (LPVideo)initWithItemProvider:(id)provider properties:(id)properties
 {
-  v7 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = LPVideo;
-  v8 = [(LPVisualMedia *)&v12 initWithProperties:a4];
+  v8 = [(LPVisualMedia *)&v12 initWithProperties:properties];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_itemProvider, a3);
+    objc_storeStrong(&v8->_itemProvider, provider);
     v10 = v9;
   }
 
@@ -204,24 +204,24 @@
   [(LPVideo *)&v3 dealloc];
 }
 
-- (LPVideo)initWithCoder:(id)a3
+- (LPVideo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(LPVideoProperties);
-  -[LPVideoProperties setHasAudio:](v5, "setHasAudio:", [v4 decodeBoolForKey:@"hasAudio"]);
-  v6 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"overlappingControlsColor"];
+  -[LPVideoProperties setHasAudio:](v5, "setHasAudio:", [coderCopy decodeBoolForKey:@"hasAudio"]);
+  v6 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"overlappingControlsColor"];
   [(LPVideoProperties *)v5 _setOverlappingControlsColor:v6];
 
   v14.receiver = self;
   v14.super_class = LPVideo;
-  v7 = [(LPVisualMedia *)&v14 initWithCoder:v4 properties:v5];
+  v7 = [(LPVisualMedia *)&v14 initWithCoder:coderCopy properties:v5];
   if (v7)
   {
-    v8 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"streamingURL"];
+    v8 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"streamingURL"];
     streamingURL = v7->_streamingURL;
     v7->_streamingURL = v8;
 
-    v10 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"youTubeURL"];
+    v10 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"youTubeURL"];
     youTubeURL = v7->_youTubeURL;
     v7->_youTubeURL = v10;
 
@@ -231,12 +231,12 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if ([(LPVideo *)self needsAsynchronousLoad])
   {
-    if ([v4 _lp_coderType] != 1)
+    if ([coderCopy _lp_coderType] != 1)
     {
       v5 = LPLogChannelSerialization();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -249,22 +249,22 @@
 
   v9.receiver = self;
   v9.super_class = LPVideo;
-  [(LPVisualMedia *)&v9 encodeWithCoder:v4];
-  [v4 _lp_encodeURLIfNotNilOrLocalFile:self->_streamingURL forKey:@"streamingURL"];
-  [v4 _lp_encodeURLIfNotNilOrLocalFile:self->_youTubeURL forKey:@"youTubeURL"];
-  v6 = [(LPVisualMedia *)self properties];
-  [v4 encodeBool:objc_msgSend(v6 forKey:{"hasAudio"), @"hasAudio"}];
+  [(LPVisualMedia *)&v9 encodeWithCoder:coderCopy];
+  [coderCopy _lp_encodeURLIfNotNilOrLocalFile:self->_streamingURL forKey:@"streamingURL"];
+  [coderCopy _lp_encodeURLIfNotNilOrLocalFile:self->_youTubeURL forKey:@"youTubeURL"];
+  properties = [(LPVisualMedia *)self properties];
+  [coderCopy encodeBool:objc_msgSend(properties forKey:{"hasAudio"), @"hasAudio"}];
 
-  v7 = [(LPVisualMedia *)self properties];
-  v8 = [v7 _overlappingControlsColor];
-  [v4 _lp_encodeObjectIfNotNil:v8 forKey:@"overlappingControlsColor"];
+  properties2 = [(LPVisualMedia *)self properties];
+  _overlappingControlsColor = [properties2 _overlappingControlsColor];
+  [coderCopy _lp_encodeObjectIfNotNil:_overlappingControlsColor forKey:@"overlappingControlsColor"];
 }
 
 - (BOOL)_canEncodeWithoutComputation
 {
-  v3 = [(LPVisualMedia *)self fileURL];
+  fileURL = [(LPVisualMedia *)self fileURL];
 
-  if (v3)
+  if (fileURL)
   {
     return 0;
   }
@@ -274,18 +274,18 @@
     return 1;
   }
 
-  v6 = [(LPVisualMedia *)self _cachedData];
-  v4 = v6 != 0;
+  _cachedData = [(LPVisualMedia *)self _cachedData];
+  v4 = _cachedData != 0;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPVideo;
-  if ([(LPVisualMedia *)&v8 isEqual:v4])
+  if ([(LPVisualMedia *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -295,7 +295,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if (objectsAreEqual_1(v6[14], self->_streamingURL))
       {
         v5 = objectsAreEqual_1(v6[15], self->_youTubeURL);
@@ -316,14 +316,14 @@
   return v5;
 }
 
-- (void)setFileURL:(id)a3
+- (void)setFileURL:(id)l
 {
-  v4 = a3;
-  if ([v4 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v7 = self;
-    v5 = &v7;
-    v6 = v4;
+    selfCopy = self;
+    v5 = &selfCopy;
+    v6 = lCopy;
   }
 
   else
@@ -334,15 +334,15 @@
   }
 
   v5->super_class = LPVideo;
-  [(objc_super *)v5 setFileURL:v6, v7];
+  [(objc_super *)v5 setFileURL:v6, selfCopy];
 }
 
 - (BOOL)hasAudio
 {
-  v2 = [(LPVisualMedia *)self properties];
-  v3 = [v2 hasAudio];
+  properties = [(LPVisualMedia *)self properties];
+  hasAudio = [properties hasAudio];
 
-  return v3;
+  return hasAudio;
 }
 
 - (CGSize)_intrinsicSizeIfKnown
@@ -354,31 +354,31 @@
   return result;
 }
 
-- (void)_intrinsicSizeWithCompletionHandler:(id)a3
+- (void)_intrinsicSizeWithCompletionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (*&self->_streamingURL != 0)
   {
     goto LABEL_2;
   }
 
-  v7 = [(LPVisualMedia *)self fileURL];
-  if (v7)
+  fileURL = [(LPVisualMedia *)self fileURL];
+  if (fileURL)
   {
   }
 
   else
   {
-    v8 = [(LPVisualMedia *)self data];
+    data = [(LPVisualMedia *)self data];
 
-    if (!v8)
+    if (!data)
     {
 LABEL_2:
       v5.n128_u64[0] = *MEMORY[0x1E695F060];
       v6.n128_u64[0] = *(MEMORY[0x1E695F060] + 8);
 LABEL_3:
-      v4[2](v4, v5, v6);
+      handlerCopy[2](handlerCopy, v5, v6);
       goto LABEL_4;
     }
   }
@@ -392,8 +392,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v12 = [(LPVideo *)self _asset];
-  if (v12 && !self->_startedFetchingIntrinsicSize)
+  _asset = [(LPVideo *)self _asset];
+  if (_asset && !self->_startedFetchingIntrinsicSize)
   {
     self->_startedFetchingIntrinsicSize = 1;
     v19 = @"tracks";
@@ -403,16 +403,16 @@ LABEL_3:
     v14[1] = 3221225472;
     v14[2] = __47__LPVideo__intrinsicSizeWithCompletionHandler___block_invoke;
     v14[3] = &unk_1E7A36A70;
-    v15 = v12;
-    v17 = self;
-    v18 = v4;
+    v15 = _asset;
+    selfCopy = self;
+    v18 = handlerCopy;
     v16 = &unk_1F2483980;
     [v15 loadValuesAsynchronouslyForKeys:&unk_1F2483998 keysForCollectionKeys:v13 completionHandler:v14];
   }
 
   else
   {
-    (v4[2])(v4, v9, v10);
+    (handlerCopy[2])(handlerCopy, v9, v10);
   }
 
 LABEL_4:
@@ -544,9 +544,9 @@ LABEL_23:
   }
 }
 
-- (void)loadAsynchronouslyWithCompletionHandler:(id)a3
+- (void)loadAsynchronouslyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   itemProviderLoadGroup = self->_itemProviderLoadGroup;
   if (!itemProviderLoadGroup)
   {
@@ -570,8 +570,8 @@ LABEL_23:
   block[2] = __51__LPVideo_loadAsynchronouslyWithCompletionHandler___block_invoke_3;
   block[3] = &unk_1E7A356A0;
   block[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_group_notify(itemProviderLoadGroup, MEMORY[0x1E69E96A0], block);
 }
 
@@ -611,10 +611,10 @@ uint64_t __51__LPVideo_loadAsynchronouslyWithCompletionHandler___block_invoke_3(
 
   else
   {
-    v5 = [(LPVisualMedia *)self data];
+    data = [(LPVisualMedia *)self data];
     v6 = MEMORY[0x1E696ACA0];
-    v7 = [(LPVisualMedia *)self MIMEType];
-    v3 = [v6 _lp_itemProviderWithData:v5 MIMEType:v7];
+    mIMEType = [(LPVisualMedia *)self MIMEType];
+    v3 = [v6 _lp_itemProviderWithData:data MIMEType:mIMEType];
   }
 
   return v3;
@@ -654,8 +654,8 @@ uint64_t __51__LPVideo_loadAsynchronouslyWithCompletionHandler___block_invoke_3(
       if (v12)
       {
         v13 = +[LPTestingOverrides customLoader];
-        v14 = [(AVURLAsset *)self->_asset resourceLoader];
-        [v13 installCustomMediaLoader:v14];
+        resourceLoader = [(AVURLAsset *)self->_asset resourceLoader];
+        [v13 installCustomMediaLoader:resourceLoader];
       }
 
       [(LPVideo *)self _installMediaServicesResetNotificationHandler];
@@ -664,16 +664,16 @@ uint64_t __51__LPVideo_loadAsynchronouslyWithCompletionHandler___block_invoke_3(
 
     else
     {
-      v15 = [(LPVisualMedia *)self data];
+      data = [(LPVisualMedia *)self data];
 
-      if (v15)
+      if (data)
       {
         v16 = MEMORY[0x1E6988168];
         v17 = MEMORY[0x1E695DFF8];
         v18 = MEMORY[0x1E696AEC0];
-        v19 = [MEMORY[0x1E696AFB0] UUID];
-        v20 = [v19 UUIDString];
-        v21 = [v18 stringWithFormat:@"link-presentation-video://video/%@", v20];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
+        v21 = [v18 stringWithFormat:@"link-presentation-video://video/%@", uUIDString];
         v22 = [v17 URLWithString:v21];
         v23 = *MEMORY[0x1E6987BF8];
         v31[0] = *MEMORY[0x1E6987BD8];
@@ -691,8 +691,8 @@ uint64_t __51__LPVideo_loadAsynchronouslyWithCompletionHandler___block_invoke_3(
           self->_mediaLoadingQueue = v27;
         }
 
-        v29 = [v25 resourceLoader];
-        [v29 setDelegate:self queue:self->_mediaLoadingQueue];
+        resourceLoader2 = [v25 resourceLoader];
+        [resourceLoader2 setDelegate:self queue:self->_mediaLoadingQueue];
 
         objc_storeStrong(&self->_asset, v25);
         [(LPVideo *)self _installMediaServicesResetNotificationHandler];
@@ -713,17 +713,17 @@ uint64_t __51__LPVideo_loadAsynchronouslyWithCompletionHandler___block_invoke_3(
 {
   [(LPVideo *)self _uninstallMediaServicesResetNotificationHandler];
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = +[LPMediaPlaybackManager shared];
-  v5 = [v4 audioSession];
-  v6 = [MEMORY[0x1E696ADC8] mainQueue];
+  audioSession = [v4 audioSession];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   v7 = *MEMORY[0x1E6958128];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__LPVideo__installMediaServicesResetNotificationHandler__block_invoke;
   v10[3] = &unk_1E7A36A98;
   objc_copyWeak(&v11, &location);
-  v8 = [v3 addObserverForName:v7 object:v5 queue:v6 usingBlock:v10];
+  v8 = [defaultCenter addObserverForName:v7 object:audioSession queue:mainQueue usingBlock:v10];
   mediaServicesResetNotificationHandler = self->_mediaServicesResetNotificationHandler;
   self->_mediaServicesResetNotificationHandler = v8;
 
@@ -749,8 +749,8 @@ void __56__LPVideo__installMediaServicesResetNotificationHandler__block_invoke(u
 {
   if (self->_mediaServicesResetNotificationHandler)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_mediaServicesResetNotificationHandler];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_mediaServicesResetNotificationHandler];
 
     mediaServicesResetNotificationHandler = self->_mediaServicesResetNotificationHandler;
   }
@@ -763,62 +763,62 @@ void __56__LPVideo__installMediaServicesResetNotificationHandler__block_invoke(u
   self->_mediaServicesResetNotificationHandler = 0;
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 request];
-  v9 = [v8 URL];
+  loaderCopy = loader;
+  resourceCopy = resource;
+  request = [resourceCopy request];
+  v9 = [request URL];
   v10 = [(AVURLAsset *)self->_asset URL];
   v11 = [v9 isEqual:v10];
 
   if (v11)
   {
-    v12 = [v7 contentInformationRequest];
+    contentInformationRequest = [resourceCopy contentInformationRequest];
 
-    if (v12)
+    if (contentInformationRequest)
     {
-      v13 = [(LPVisualMedia *)self MIMEType];
-      v14 = [LPMIMETypeRegistry UTIForMIMEType:v13];
+      mIMEType = [(LPVisualMedia *)self MIMEType];
+      v14 = [LPMIMETypeRegistry UTIForMIMEType:mIMEType];
 
-      v15 = [v7 contentInformationRequest];
-      [v15 setContentType:v14];
+      contentInformationRequest2 = [resourceCopy contentInformationRequest];
+      [contentInformationRequest2 setContentType:v14];
 
-      v16 = [(LPVisualMedia *)self data];
-      v17 = [v16 length];
-      v18 = [v7 contentInformationRequest];
-      [v18 setContentLength:v17];
+      data = [(LPVisualMedia *)self data];
+      v17 = [data length];
+      contentInformationRequest3 = [resourceCopy contentInformationRequest];
+      [contentInformationRequest3 setContentLength:v17];
 
-      v19 = [v7 contentInformationRequest];
-      [v19 setByteRangeAccessSupported:1];
+      contentInformationRequest4 = [resourceCopy contentInformationRequest];
+      [contentInformationRequest4 setByteRangeAccessSupported:1];
     }
 
-    v20 = [v7 dataRequest];
+    dataRequest = [resourceCopy dataRequest];
 
-    if (v20)
+    if (dataRequest)
     {
-      v21 = [v7 dataRequest];
-      v22 = [v21 requestedOffset];
-      v23 = [(LPVisualMedia *)self data];
-      v24 = [v23 length];
-      v25 = v24 - [v21 requestedOffset];
+      dataRequest2 = [resourceCopy dataRequest];
+      requestedOffset = [dataRequest2 requestedOffset];
+      data2 = [(LPVisualMedia *)self data];
+      v24 = [data2 length];
+      v25 = v24 - [dataRequest2 requestedOffset];
 
       if (!v25)
       {
         goto LABEL_15;
       }
 
-      if (([v21 requestsAllDataToEndOfResource] & 1) == 0)
+      if (([dataRequest2 requestsAllDataToEndOfResource] & 1) == 0)
       {
-        v26 = [v21 requestedLength];
-        if (v26 < v25)
+        requestedLength = [dataRequest2 requestedLength];
+        if (requestedLength < v25)
         {
-          v25 = v26;
+          v25 = requestedLength;
         }
       }
 
-      v27 = [(LPVisualMedia *)self data];
-      v28 = [v27 subdataWithRange:{v22, v25}];
+      data3 = [(LPVisualMedia *)self data];
+      v28 = [data3 subdataWithRange:{requestedOffset, v25}];
 
       if (!v28)
       {
@@ -828,15 +828,15 @@ LABEL_15:
         goto LABEL_14;
       }
 
-      [v21 respondWithData:v28];
+      [dataRequest2 respondWithData:v28];
     }
 
-    [v7 finishLoading];
+    [resourceCopy finishLoading];
   }
 
   else
   {
-    [v7 finishLoadingWithError:0];
+    [resourceCopy finishLoadingWithError:0];
   }
 
   v29 = 1;

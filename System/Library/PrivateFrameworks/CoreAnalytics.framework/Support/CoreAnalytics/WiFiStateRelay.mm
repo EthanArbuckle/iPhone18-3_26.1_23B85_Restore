@@ -1,7 +1,7 @@
 @interface WiFiStateRelay
 - (BOOL)wiFiActiveAndUsingPersonalHotspot;
-- (WiFiStateRelay)initWithMonitoring:(WiFiStateDelegate *)a3;
-- (char)retrieveWiFILQM:(id)a3;
+- (WiFiStateRelay)initWithMonitoring:(WiFiStateDelegate *)monitoring;
+- (char)retrieveWiFILQM:(id)m;
 - (id).cxx_construct;
 - (optional<std::string>)retrieveRadioTech;
 - (queue)getQueue;
@@ -10,7 +10,7 @@
 - (void)dealloc;
 - (void)deregisterForCWEventTypes;
 - (void)refreshWiFiLQM;
-- (void)refreshWiFiLQM:(id)a3;
+- (void)refreshWiFiLQM:(id)m;
 - (void)refreshWiFiRadioTech;
 - (void)registerForCWEventTypes;
 - (void)registerForSCDynamicStoreLQMUpdates;
@@ -28,7 +28,7 @@
   return v4;
 }
 
-- (WiFiStateRelay)initWithMonitoring:(WiFiStateDelegate *)a3
+- (WiFiStateRelay)initWithMonitoring:(WiFiStateDelegate *)monitoring
 {
   v12.receiver = self;
   v12.super_class = WiFiStateRelay;
@@ -40,7 +40,7 @@
 
   if (objc_opt_class())
   {
-    v4->delegate = a3;
+    v4->delegate = monitoring;
     v5 = dispatch_queue_create("analyticsd.NetworkingStateResolver.WiFiStateRelay.myQueue", 0);
     fObj = v4->_stateRelayQueue.fObj.fObj;
     v4->_stateRelayQueue.fObj.fObj = v5;
@@ -242,31 +242,31 @@ LABEL_8:
   coreWiFiInterface = self->_coreWiFiInterface;
   if (coreWiFiInterface)
   {
-    v4 = [(CWFInterface *)self->_coreWiFiInterface interfaceName];
+    interfaceName = [(CWFInterface *)self->_coreWiFiInterface interfaceName];
   }
 
   else
   {
-    v4 = 0;
+    interfaceName = 0;
   }
 
-  v5 = v4;
-  [(WiFiStateRelay *)self refreshWiFiLQM:v4];
+  v5 = interfaceName;
+  [(WiFiStateRelay *)self refreshWiFiLQM:interfaceName];
   if (coreWiFiInterface)
   {
   }
 }
 
-- (void)refreshWiFiLQM:(id)a3
+- (void)refreshWiFiLQM:(id)m
 {
-  v4 = a3;
-  if (v4)
+  mCopy = m;
+  if (mCopy)
   {
-    v5 = [[NWInterface alloc] initWithInterfaceName:v4];
+    v5 = [[NWInterface alloc] initWithInterfaceName:mCopy];
     v6 = v5;
     if (v5 && [v5 type] == 1 && objc_msgSend(v6, "subtype") == 1001)
     {
-      (*(self->delegate->var0 + 2))(&v9, self->delegate, [(WiFiStateRelay *)self retrieveWiFILQM:v4]| 0x100);
+      (*(self->delegate->var0 + 2))(&v9, self->delegate, [(WiFiStateRelay *)self retrieveWiFILQM:mCopy]| 0x100);
       v7 = v9;
       v9 = 0;
     }
@@ -343,32 +343,32 @@ LABEL_8:
     return sub_100081734(retstr, v9);
   }
 
-  v6 = [*(v2 + 64) networkName];
+  networkName = [*(v2 + 64) networkName];
 
-  if (!v6)
+  if (!networkName)
   {
     v9 = &unk_100192B78;
     return sub_100081734(retstr, v9);
   }
 
-  v7 = [*(v2 + 64) maxPHYModeDescription];
-  v8 = v7;
-  if (v7)
+  maxPHYModeDescription = [*(v2 + 64) maxPHYModeDescription];
+  v8 = maxPHYModeDescription;
+  if (maxPHYModeDescription)
   {
-    v10 = [v7 UTF8String];
-    sub_1000817A4(retstr, &v10);
+    uTF8String = [maxPHYModeDescription UTF8String];
+    sub_1000817A4(retstr, &uTF8String);
   }
 
   return result;
 }
 
-- (char)retrieveWiFILQM:(id)a3
+- (char)retrieveWiFILQM:(id)m
 {
-  v4 = a3;
+  mCopy = m;
   if (self->_scDynamicStore)
   {
     v5 = kSCEntNetLinkQuality;
-    NetworkInterfaceEntity = SCDynamicStoreKeyCreateNetworkInterfaceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, v4, kSCEntNetLinkQuality);
+    NetworkInterfaceEntity = SCDynamicStoreKeyCreateNetworkInterfaceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, mCopy, kSCEntNetLinkQuality);
     if (NetworkInterfaceEntity)
     {
       v7 = SCDynamicStoreCopyValue(self->_scDynamicStore, NetworkInterfaceEntity);
@@ -376,12 +376,12 @@ LABEL_8:
       if (v7)
       {
         v9 = [v7 objectForKey:v5];
-        v10 = [v9 intValue];
+        intValue = [v9 intValue];
       }
 
       else
       {
-        v10 = -1;
+        intValue = -1;
       }
     }
 
@@ -393,33 +393,33 @@ LABEL_8:
         sub_10011D414(v11);
       }
 
-      v10 = -1;
+      intValue = -1;
     }
   }
 
   else
   {
-    v10 = -1;
+    intValue = -1;
   }
 
-  return v10;
+  return intValue;
 }
 
 - (BOOL)wiFiActiveAndUsingPersonalHotspot
 {
-  v3 = [(CWFInterface *)self->_coreWiFiInterface NANData];
-  v4 = v3;
-  if (v3 && ([v3 currentKnownNetworkProfile], (v5 = objc_claimAutoreleasedReturnValue()) != 0) || (-[CWFInterface currentKnownNetworkProfile](self->_coreWiFiInterface, "currentKnownNetworkProfile"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  nANData = [(CWFInterface *)self->_coreWiFiInterface NANData];
+  v4 = nANData;
+  if (nANData && ([nANData currentKnownNetworkProfile], (v5 = objc_claimAutoreleasedReturnValue()) != 0) || (-[CWFInterface currentKnownNetworkProfile](self->_coreWiFiInterface, "currentKnownNetworkProfile"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = [v5 isPersonalHotspot];
+    isPersonalHotspot = [v5 isPersonalHotspot];
   }
 
   else
   {
-    v6 = 0;
+    isPersonalHotspot = 0;
   }
 
-  return v6;
+  return isPersonalHotspot;
 }
 
 - (id).cxx_construct

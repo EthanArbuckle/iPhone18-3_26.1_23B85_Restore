@@ -2,8 +2,8 @@
 - (MTNotificationView)init;
 - (NSString)statusString;
 - (NSString)timeString;
-- (void)setStatusString:(id)a3;
-- (void)setTimeString:(id)a3;
+- (void)setStatusString:(id)string;
+- (void)setTimeString:(id)string;
 @end
 
 @implementation MTNotificationView
@@ -18,8 +18,8 @@
     v3 = objc_opt_new();
     [(MTNotificationView *)v2 setLabelContainer:v3];
 
-    v4 = [(MTNotificationView *)v2 labelContainer];
-    [(MTNotificationView *)v2 addLayoutGuide:v4];
+    labelContainer = [(MTNotificationView *)v2 labelContainer];
+    [(MTNotificationView *)v2 addLayoutGuide:labelContainer];
 
     v5 = objc_opt_new();
     [(MTNotificationView *)v2 setTimeLabel:v5];
@@ -31,10 +31,10 @@
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v7 = [(MTNotificationView *)v2 timeLabel];
-    v83[0] = v7;
-    v8 = [(MTNotificationView *)v2 statusLabel];
-    v83[1] = v8;
+    timeLabel = [(MTNotificationView *)v2 timeLabel];
+    v83[0] = timeLabel;
+    statusLabel = [(MTNotificationView *)v2 statusLabel];
+    v83[1] = statusLabel;
     v9 = [NSArray arrayWithObjects:v83 count:2];
 
     v10 = [v9 countByEnumeratingWithState:&v78 objects:v84 count:16];
@@ -67,133 +67,133 @@
     }
 
     v16 = [UIFont systemFontOfSize:88.0 weight:UIFontWeightThin];
-    v17 = [v16 mtui_fontByAddingTimeFontAttributes];
-    v18 = [(MTNotificationView *)v2 timeLabel];
-    [v18 setFont:v17];
+    mtui_fontByAddingTimeFontAttributes = [v16 mtui_fontByAddingTimeFontAttributes];
+    timeLabel2 = [(MTNotificationView *)v2 timeLabel];
+    [timeLabel2 setFont:mtui_fontByAddingTimeFontAttributes];
 
     v19 = [UIFont systemFontOfSize:20.0 weight:UIFontWeightRegular];
-    v20 = [(MTNotificationView *)v2 statusLabel];
-    [v20 setFont:v19];
+    statusLabel2 = [(MTNotificationView *)v2 statusLabel];
+    [statusLabel2 setFont:v19];
 
     v21 = objc_opt_new();
-    v22 = [(MTNotificationView *)v2 labelContainer];
-    v23 = [v22 topAnchor];
-    v24 = [(MTNotificationView *)v2 topAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    labelContainer2 = [(MTNotificationView *)v2 labelContainer];
+    topAnchor = [labelContainer2 topAnchor];
+    topAnchor2 = [(MTNotificationView *)v2 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v21 addObject:v25];
 
-    v26 = [(MTNotificationView *)v2 labelContainer];
-    v27 = [v26 bottomAnchor];
-    v28 = [(MTNotificationView *)v2 bottomAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    labelContainer3 = [(MTNotificationView *)v2 labelContainer];
+    bottomAnchor = [labelContainer3 bottomAnchor];
+    bottomAnchor2 = [(MTNotificationView *)v2 bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v21 addObject:v29];
 
-    v30 = [(MTNotificationView *)v2 timeLabel];
-    v31 = [v30 lastBaselineAnchor];
-    v32 = [(MTNotificationView *)v2 labelContainer];
-    v33 = [v32 topAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33 constant:155.0];
+    timeLabel3 = [(MTNotificationView *)v2 timeLabel];
+    lastBaselineAnchor = [timeLabel3 lastBaselineAnchor];
+    labelContainer4 = [(MTNotificationView *)v2 labelContainer];
+    topAnchor3 = [labelContainer4 topAnchor];
+    v34 = [lastBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:155.0];
     [v21 addObject:v34];
 
-    v35 = [(MTNotificationView *)v2 labelContainer];
-    v36 = [v35 bottomAnchor];
-    v37 = [(MTNotificationView *)v2 statusLabel];
-    v38 = [v37 lastBaselineAnchor];
-    v39 = [v36 constraintEqualToAnchor:v38 constant:63.0];
+    labelContainer5 = [(MTNotificationView *)v2 labelContainer];
+    bottomAnchor3 = [labelContainer5 bottomAnchor];
+    statusLabel3 = [(MTNotificationView *)v2 statusLabel];
+    lastBaselineAnchor2 = [statusLabel3 lastBaselineAnchor];
+    v39 = [bottomAnchor3 constraintEqualToAnchor:lastBaselineAnchor2 constant:63.0];
     [v21 addObject:v39];
 
-    v40 = [(MTNotificationView *)v2 statusLabel];
-    v41 = [v40 lastBaselineAnchor];
-    v42 = [(MTNotificationView *)v2 timeLabel];
-    v43 = [v42 lastBaselineAnchor];
-    v44 = [v41 constraintEqualToAnchor:v43 constant:46.0];
+    statusLabel4 = [(MTNotificationView *)v2 statusLabel];
+    lastBaselineAnchor3 = [statusLabel4 lastBaselineAnchor];
+    timeLabel4 = [(MTNotificationView *)v2 timeLabel];
+    lastBaselineAnchor4 = [timeLabel4 lastBaselineAnchor];
+    v44 = [lastBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor4 constant:46.0];
     [v21 addObject:v44];
 
-    v45 = [(MTNotificationView *)v2 labelContainer];
-    v46 = [v45 centerXAnchor];
-    v47 = [(MTNotificationView *)v2 centerXAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
+    labelContainer6 = [(MTNotificationView *)v2 labelContainer];
+    centerXAnchor = [labelContainer6 centerXAnchor];
+    centerXAnchor2 = [(MTNotificationView *)v2 centerXAnchor];
+    v48 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v21 addObject:v48];
 
-    v49 = [(MTNotificationView *)v2 labelContainer];
-    v50 = [v49 centerYAnchor];
-    v51 = [(MTNotificationView *)v2 centerYAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51 constant:-3.0];
+    labelContainer7 = [(MTNotificationView *)v2 labelContainer];
+    centerYAnchor = [labelContainer7 centerYAnchor];
+    centerYAnchor2 = [(MTNotificationView *)v2 centerYAnchor];
+    v52 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:-3.0];
     [v21 addObject:v52];
 
-    v53 = [(MTNotificationView *)v2 timeLabel];
-    v54 = [v53 leadingAnchor];
-    v55 = [(MTNotificationView *)v2 labelContainer];
-    v56 = [v55 leadingAnchor];
-    v57 = [v54 constraintEqualToAnchor:v56];
+    timeLabel5 = [(MTNotificationView *)v2 timeLabel];
+    leadingAnchor = [timeLabel5 leadingAnchor];
+    labelContainer8 = [(MTNotificationView *)v2 labelContainer];
+    leadingAnchor2 = [labelContainer8 leadingAnchor];
+    v57 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v21 addObject:v57];
 
-    v58 = [(MTNotificationView *)v2 timeLabel];
-    v59 = [v58 trailingAnchor];
-    v60 = [(MTNotificationView *)v2 labelContainer];
-    v61 = [v60 trailingAnchor];
-    v62 = [v59 constraintEqualToAnchor:v61];
+    timeLabel6 = [(MTNotificationView *)v2 timeLabel];
+    trailingAnchor = [timeLabel6 trailingAnchor];
+    labelContainer9 = [(MTNotificationView *)v2 labelContainer];
+    trailingAnchor2 = [labelContainer9 trailingAnchor];
+    v62 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v21 addObject:v62];
 
-    v63 = [(MTNotificationView *)v2 timeLabel];
-    v64 = [v63 centerXAnchor];
-    v65 = [(MTNotificationView *)v2 centerXAnchor];
-    v66 = [v64 constraintEqualToAnchor:v65];
+    timeLabel7 = [(MTNotificationView *)v2 timeLabel];
+    centerXAnchor3 = [timeLabel7 centerXAnchor];
+    centerXAnchor4 = [(MTNotificationView *)v2 centerXAnchor];
+    v66 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v21 addObject:v66];
 
-    v67 = [(MTNotificationView *)v2 statusLabel];
-    v68 = [v67 centerXAnchor];
-    v69 = [(MTNotificationView *)v2 centerXAnchor];
-    v70 = [v68 constraintEqualToAnchor:v69];
+    statusLabel5 = [(MTNotificationView *)v2 statusLabel];
+    centerXAnchor5 = [statusLabel5 centerXAnchor];
+    centerXAnchor6 = [(MTNotificationView *)v2 centerXAnchor];
+    v70 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     [v21 addObject:v70];
 
-    v71 = [(MTNotificationView *)v2 statusLabel];
-    v72 = [v71 widthAnchor];
-    v73 = [(MTNotificationView *)v2 timeLabel];
-    v74 = [v73 widthAnchor];
-    v75 = [v72 constraintEqualToAnchor:v74];
+    statusLabel6 = [(MTNotificationView *)v2 statusLabel];
+    widthAnchor = [statusLabel6 widthAnchor];
+    timeLabel8 = [(MTNotificationView *)v2 timeLabel];
+    widthAnchor2 = [timeLabel8 widthAnchor];
+    v75 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v21 addObject:v75];
 
     [NSLayoutConstraint activateConstraints:v21];
-    v76 = [(MTNotificationView *)v2 layer];
-    [v76 setAllowsGroupBlending:0];
+    layer = [(MTNotificationView *)v2 layer];
+    [layer setAllowsGroupBlending:0];
   }
 
   return v2;
 }
 
-- (void)setTimeString:(id)a3
+- (void)setTimeString:(id)string
 {
-  v4 = a3;
-  v5 = [(MTNotificationView *)self timeLabel];
-  [v5 setText:v4];
+  stringCopy = string;
+  timeLabel = [(MTNotificationView *)self timeLabel];
+  [timeLabel setText:stringCopy];
 
   [(MTNotificationView *)self setNeedsUpdateConstraints];
 }
 
 - (NSString)timeString
 {
-  v2 = [(MTNotificationView *)self timeLabel];
-  v3 = [v2 text];
+  timeLabel = [(MTNotificationView *)self timeLabel];
+  text = [timeLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setStatusString:(id)a3
+- (void)setStatusString:(id)string
 {
-  v4 = a3;
-  v5 = [(MTNotificationView *)self statusLabel];
-  [v5 setText:v4];
+  stringCopy = string;
+  statusLabel = [(MTNotificationView *)self statusLabel];
+  [statusLabel setText:stringCopy];
 
   [(MTNotificationView *)self setNeedsUpdateConstraints];
 }
 
 - (NSString)statusString
 {
-  v2 = [(MTNotificationView *)self statusLabel];
-  v3 = [v2 text];
+  statusLabel = [(MTNotificationView *)self statusLabel];
+  text = [statusLabel text];
 
-  return v3;
+  return text;
 }
 
 @end

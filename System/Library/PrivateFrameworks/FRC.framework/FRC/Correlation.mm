@@ -1,24 +1,24 @@
 @interface Correlation
-- (Correlation)initWithDevice:(id)a3 interleaved:(BOOL)a4;
-- (void)calcCorrelation:(id)a3 with:(id)a4 output:(id)a5;
+- (Correlation)initWithDevice:(id)device interleaved:(BOOL)interleaved;
+- (void)calcCorrelation:(id)correlation with:(id)with output:(id)output;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3 first:(id)a4 second:(id)a5 destination:(id)a6;
+- (void)encodeToCommandBuffer:(id)buffer first:(id)first second:(id)second destination:(id)destination;
 - (void)setupMetal;
 @end
 
 @implementation Correlation
 
-- (Correlation)initWithDevice:(id)a3 interleaved:(BOOL)a4
+- (Correlation)initWithDevice:(id)device interleaved:(BOOL)interleaved
 {
-  v7 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = Correlation;
   v8 = [(Correlation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a3);
-    v9->_interleaved = a4;
+    objc_storeStrong(&v8->_device, device);
+    v9->_interleaved = interleaved;
     [(Correlation *)v9 setupMetal];
   }
 
@@ -27,25 +27,25 @@
 
 - (void)setupMetal
 {
-  v3 = [(MTLDevice *)self->_device newCommandQueue];
+  newCommandQueue = [(MTLDevice *)self->_device newCommandQueue];
   commandQueue = self->_commandQueue;
-  self->_commandQueue = v3;
+  self->_commandQueue = newCommandQueue;
 
   v5 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.FRC"];
   v6 = [v5 URLForResource:@"default" withExtension:@"metallib"];
   device = self->_device;
   if (v6)
   {
-    v8 = [(MTLDevice *)device newLibraryWithURL:v6 error:0];
+    newDefaultLibrary = [(MTLDevice *)device newLibraryWithURL:v6 error:0];
   }
 
   else
   {
-    v8 = [(MTLDevice *)device newDefaultLibrary];
+    newDefaultLibrary = [(MTLDevice *)device newDefaultLibrary];
   }
 
   mtlLibrary = self->_mtlLibrary;
-  self->_mtlLibrary = v8;
+  self->_mtlLibrary = newDefaultLibrary;
 
   v10 = objc_opt_new();
   v36 = 0;
@@ -135,39 +135,39 @@
   [(Correlation *)&v2 dealloc];
 }
 
-- (void)calcCorrelation:(id)a3 with:(id)a4 output:(id)a5
+- (void)calcCorrelation:(id)correlation with:(id)with output:(id)output
 {
   commandQueue = self->_commandQueue;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  [(Correlation *)self encodeToCommandBuffer:v12 first:v11 second:v10 destination:v9];
+  outputCopy = output;
+  withCopy = with;
+  correlationCopy = correlation;
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  [(Correlation *)self encodeToCommandBuffer:commandBuffer first:correlationCopy second:withCopy destination:outputCopy];
 
-  [v12 commit];
-  [v12 waitUntilCompleted];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 }
 
-- (void)encodeToCommandBuffer:(id)a3 first:(id)a4 second:(id)a5 destination:(id)a6
+- (void)encodeToCommandBuffer:(id)buffer first:(id)first second:(id)second destination:(id)destination
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v10 && v11 && v12)
+  firstCopy = first;
+  secondCopy = second;
+  destinationCopy = destination;
+  v13 = destinationCopy;
+  if (firstCopy && secondCopy && destinationCopy)
   {
-    v14 = [a3 computeCommandEncoder];
-    if (v14)
+    computeCommandEncoder = [buffer computeCommandEncoder];
+    if (computeCommandEncoder)
     {
-      v15 = [v13 arrayLength];
+      arrayLength = [v13 arrayLength];
       v16 = 48;
-      if (v15 > 0x51)
+      if (arrayLength > 0x51)
       {
         v16 = 56;
       }
 
       v17 = 32;
-      if (v15 > 0x51)
+      if (arrayLength > 0x51)
       {
         v17 = 40;
       }
@@ -203,23 +203,23 @@
         v21 = 4;
       }
 
-      [v14 setComputePipelineState:v20];
-      [v14 setTexture:v10 atIndex:0];
-      [v14 setTexture:v11 atIndex:1];
-      [v14 setTexture:v13 atIndex:2];
+      [computeCommandEncoder setComputePipelineState:v20];
+      [computeCommandEncoder setTexture:firstCopy atIndex:0];
+      [computeCommandEncoder setTexture:secondCopy atIndex:1];
+      [computeCommandEncoder setTexture:v13 atIndex:2];
       v24[0] = (v19 + [v13 width] - 1) >> v21;
       v24[1] = ([v13 height] + 15) >> 4;
       v24[2] = 1;
       v22 = v19;
       v23 = xmmword_24A8FF080;
-      [v14 dispatchThreadgroups:v24 threadsPerThreadgroup:&v22];
-      [v14 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v24 threadsPerThreadgroup:&v22];
+      [computeCommandEncoder endEncoding];
     }
   }
 
   else
   {
-    NSLog(&cfstr_InputsAndDesti.isa, v10, v11, v12);
+    NSLog(&cfstr_InputsAndDesti.isa, firstCopy, secondCopy, destinationCopy);
   }
 }
 

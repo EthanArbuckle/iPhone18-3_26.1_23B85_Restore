@@ -1,21 +1,21 @@
 @interface TSWPStorageChildEnumerator
-- (TSWPStorageChildEnumerator)initWithStorage:(id)a3 range:(_NSRange)a4;
+- (TSWPStorageChildEnumerator)initWithStorage:(id)storage range:(_NSRange)range;
 - (id)nextObject;
 - (void)dealloc;
 @end
 
 @implementation TSWPStorageChildEnumerator
 
-- (TSWPStorageChildEnumerator)initWithStorage:(id)a3 range:(_NSRange)a4
+- (TSWPStorageChildEnumerator)initWithStorage:(id)storage range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9.receiver = self;
   v9.super_class = TSWPStorageChildEnumerator;
   v7 = [(TSWPStorageChildEnumerator *)&v9 init];
   if (v7)
   {
-    v7->_storage = a3;
+    v7->_storage = storage;
     v7->_charRange.location = location;
     v7->_charRange.length = length;
   }
@@ -92,10 +92,10 @@
       while (v15);
     }
 
-    v27 = [(TSWPStorage *)self->_storage sectionCount];
-    if (v27)
+    sectionCount = [(TSWPStorage *)self->_storage sectionCount];
+    if (sectionCount)
     {
-      v28 = v27;
+      v28 = sectionCount;
       v29 = 0;
       v30 = 1;
       do

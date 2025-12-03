@@ -15,10 +15,10 @@
 - (id)description
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(NSCKRecordMetadata *)self->_recordMetadata createRecordID];
+  createRecordID = [(NSCKRecordMetadata *)self->_recordMetadata createRecordID];
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
-  v7 = [v5 stringWithFormat:@"<%@: %p> %@ -> %@", NSStringFromClass(v6), self, -[NSManagedObject objectID](self->_insertedObject, "objectID"), v4];
+  v7 = [v5 stringWithFormat:@"<%@: %p> %@ -> %@", NSStringFromClass(v6), self, -[NSManagedObject objectID](self->_insertedObject, "objectID"), createRecordID];
 
   v8 = v7;
   objc_autoreleasePoolPop(v3);

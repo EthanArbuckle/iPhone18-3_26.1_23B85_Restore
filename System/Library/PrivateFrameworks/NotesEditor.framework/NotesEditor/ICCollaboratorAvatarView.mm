@@ -3,11 +3,11 @@
 - (CGPoint)frameAnchorPoint;
 - (NSString)name;
 - (void)didMoveToWindow;
-- (void)handleHoverWithRecognizer:(id)a3;
-- (void)handleTap:(id)a3;
-- (void)removeFromSuperviewAnimatedWithCompletion:(id)a3;
-- (void)setFrameAnchorPoint:(CGPoint)a3;
-- (void)setIsExpanded:(BOOL)a3 animated:(BOOL)a4;
+- (void)handleHoverWithRecognizer:(id)recognizer;
+- (void)handleTap:(id)tap;
+- (void)removeFromSuperviewAnimatedWithCompletion:(id)completion;
+- (void)setFrameAnchorPoint:(CGPoint)point;
+- (void)setIsExpanded:(BOOL)expanded animated:(BOOL)animated;
 - (void)updateWithoutAnimation;
 @end
 
@@ -54,34 +54,34 @@
   return result;
 }
 
-- (void)setFrameAnchorPoint:(CGPoint)a3
+- (void)setFrameAnchorPoint:(CGPoint)point
 {
-  *(self + OBJC_IVAR___ICCollaboratorAvatarView_frameAnchorPoint) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR___ICCollaboratorAvatarView_frameAnchorPoint) = point;
+  selfCopy = self;
   sub_21532CAEC(0);
   sub_21532CEBC();
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   CollaboratorAvatarView.didMoveToWindow()();
 }
 
-- (void)setIsExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setIsExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  if (*(self + OBJC_IVAR___ICCollaboratorAvatarView_isExpanded) != a3)
+  if (*(self + OBJC_IVAR___ICCollaboratorAvatarView_isExpanded) != expanded)
   {
-    *(self + OBJC_IVAR___ICCollaboratorAvatarView_isExpanded) = a3;
-    v6 = self;
-    sub_21532CAEC(a4);
+    *(self + OBJC_IVAR___ICCollaboratorAvatarView_isExpanded) = expanded;
+    selfCopy = self;
+    sub_21532CAEC(animated);
     sub_21532CEBC();
   }
 }
 
-- (void)removeFromSuperviewAnimatedWithCompletion:(id)a3
+- (void)removeFromSuperviewAnimatedWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -96,29 +96,29 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_21532DCA8(v7, v6);
   sub_21532594C(v7);
 }
 
 - (void)updateWithoutAnimation
 {
-  v2 = self;
+  selfCopy = self;
   sub_21532CAEC(0);
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
+  tapCopy = tap;
+  selfCopy = self;
   sub_21532FB7C();
 }
 
-- (void)handleHoverWithRecognizer:(id)a3
+- (void)handleHoverWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_21532F73C(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_21532F73C(recognizerCopy);
 }
 
 @end

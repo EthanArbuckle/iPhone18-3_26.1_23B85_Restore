@@ -1,22 +1,22 @@
 @interface ProxCardKitTestPickerViewController
 - (ProxCardKitTestPickerViewController)init;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
 @end
 
 @implementation ProxCardKitTestPickerViewController
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v6 = [(ProxCardKitTestPickerViewController *)self data:a3];
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  v6 = [(ProxCardKitTestPickerViewController *)self data:view];
+  v7 = [v6 objectAtIndexedSubscript:row];
 
   return v7;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v4 = [(ProxCardKitTestPickerViewController *)self data:a3];
+  v4 = [(ProxCardKitTestPickerViewController *)self data:view];
   v5 = [v4 count];
 
   return v5;
@@ -46,12 +46,12 @@
 
     [(PRXAction *)v4->_nextAction setEnabled:0];
     v8 = objc_alloc_init(PRXTextField);
-    v9 = [(ProxCardKitTestPickerViewController *)v4 contentView];
-    [v9 setTextField:v8];
+    contentView = [(ProxCardKitTestPickerViewController *)v4 contentView];
+    [contentView setTextField:v8];
 
-    v10 = [(ProxCardKitTestPickerViewController *)v4 contentView];
-    v11 = [v10 textField];
-    [v11 setPlaceholder:@"Other"];
+    contentView2 = [(ProxCardKitTestPickerViewController *)v4 contentView];
+    textField = [contentView2 textField];
+    [textField setPlaceholder:@"Other"];
 
     v12 = v4;
     objc_destroyWeak(&v18);

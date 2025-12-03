@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __69__CNObservableContractEnforcementPreferences_shouldSwizzleNilResults__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shouldSwizzleNilResults_cn_once_token_17 != -1)
   {
     dispatch_once(&shouldSwizzleNilResults_cn_once_token_17, block);
@@ -43,7 +43,7 @@ uint64_t __69__CNObservableContractEnforcementPreferences_shouldSwizzleNilResult
   block[1] = 3221225472;
   block[2] = __70__CNObservableContractEnforcementPreferences_shouldEnforceRxProtocols__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shouldEnforceRxProtocols_cn_once_token_16 != -1)
   {
     dispatch_once(&shouldEnforceRxProtocols_cn_once_token_16, block);

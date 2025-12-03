@@ -1,10 +1,10 @@
 @interface ENCDGroup
 + (id)fetchRequest;
-+ (id)groupFromGroup:(id)a3 insertIntoManagedObjectContext:(id)a4;
-+ (id)insertIntoManagedObjectContext:(id)a3;
-+ (id)predicateForGroupID:(id)a3;
-+ (id)predicateForGroupIDs:(id)a3;
-+ (id)predicateForStableGroupID:(id)a3;
++ (id)groupFromGroup:(id)group insertIntoManagedObjectContext:(id)context;
++ (id)insertIntoManagedObjectContext:(id)context;
++ (id)predicateForGroupID:(id)d;
++ (id)predicateForGroupIDs:(id)ds;
++ (id)predicateForStableGroupID:(id)d;
 @end
 
 @implementation ENCDGroup
@@ -19,71 +19,71 @@
   return v5;
 }
 
-+ (id)insertIntoManagedObjectContext:(id)a3
++ (id)insertIntoManagedObjectContext:(id)context
 {
   v4 = MEMORY[0x277CBE408];
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_opt_self();
   v7 = NSStringFromClass(v6);
-  v8 = [v4 entityForName:v7 inManagedObjectContext:v5];
+  v8 = [v4 entityForName:v7 inManagedObjectContext:contextCopy];
 
-  v9 = [[a1 alloc] initWithEntity:v8 insertIntoManagedObjectContext:v5];
+  v9 = [[self alloc] initWithEntity:v8 insertIntoManagedObjectContext:contextCopy];
 
   return v9;
 }
 
-+ (id)groupFromGroup:(id)a3 insertIntoManagedObjectContext:(id)a4
++ (id)groupFromGroup:(id)group insertIntoManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = [ENCDGroup insertIntoManagedObjectContext:a4];
-  v7 = [v5 groupID];
-  [v6 setGroupID:v7];
+  groupCopy = group;
+  v6 = [ENCDGroup insertIntoManagedObjectContext:context];
+  groupID = [groupCopy groupID];
+  [v6 setGroupID:groupID];
 
-  v8 = [v5 groupID];
-  v9 = [v8 stableGroupID];
-  [v6 setStableGroupID:v9];
+  groupID2 = [groupCopy groupID];
+  stableGroupID = [groupID2 stableGroupID];
+  [v6 setStableGroupID:stableGroupID];
 
-  v10 = [v5 groupID];
-  [v6 setGroupIDGeneration:{objc_msgSend(v10, "generation")}];
+  groupID3 = [groupCopy groupID];
+  [v6 setGroupIDGeneration:{objc_msgSend(groupID3, "generation")}];
 
-  v11 = [v5 sharedApplicationData];
-  [v6 setSharedApplicationData:v11];
+  sharedApplicationData = [groupCopy sharedApplicationData];
+  [v6 setSharedApplicationData:sharedApplicationData];
 
-  v12 = [v5 cypher];
+  cypher = [groupCopy cypher];
 
-  [v6 setCypher:v12];
+  [v6 setCypher:cypher];
 
   return v6;
 }
 
-+ (id)predicateForGroupID:(id)a3
++ (id)predicateForGroupID:(id)d
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  dCopy = d;
   v5 = NSStringFromSelector(sel_groupID);
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  dCopy = [v3 predicateWithFormat:@"%K == %@", v5, dCopy];
 
-  return v6;
+  return dCopy;
 }
 
-+ (id)predicateForGroupIDs:(id)a3
++ (id)predicateForGroupIDs:(id)ds
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  dsCopy = ds;
   v5 = NSStringFromSelector(sel_groupID);
-  v6 = [v3 predicateWithFormat:@"%K IN %@", v5, v4];
+  dsCopy = [v3 predicateWithFormat:@"%K IN %@", v5, dsCopy];
 
-  return v6;
+  return dsCopy;
 }
 
-+ (id)predicateForStableGroupID:(id)a3
++ (id)predicateForStableGroupID:(id)d
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  dCopy = d;
   v5 = NSStringFromSelector(sel_stableGroupID);
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  dCopy = [v3 predicateWithFormat:@"%K == %@", v5, dCopy];
 
-  return v6;
+  return dCopy;
 }
 
 @end

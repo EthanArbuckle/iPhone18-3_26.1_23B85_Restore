@@ -1,8 +1,8 @@
 @interface DBGSize
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withSize:(CGSize)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withSize:(CGSize)size;
 - (CGSize)size;
-- (DBGSize)initWithCGSize:(CGSize)a3;
+- (DBGSize)initWithCGSize:(CGSize)size;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -10,17 +10,17 @@
 
 @implementation DBGSize
 
-+ (id)withSize:(CGSize)a3
++ (id)withSize:(CGSize)size
 {
-  v3 = [[a1 alloc] initWithCGSize:{a3.width, a3.height}];
+  v3 = [[self alloc] initWithCGSize:{size.width, size.height}];
 
   return v3;
 }
 
-- (DBGSize)initWithCGSize:(CGSize)a3
+- (DBGSize)initWithCGSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = DBGSize;
   result = [(DBGSize *)&v6 init];
@@ -35,8 +35,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGSize *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGSize *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -61,7 +61,7 @@
   return result;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
   v7 = DBGDecodeValueFromJSONCompatibleValue();
   v8 = 0;
@@ -70,10 +70,10 @@
   {
     width = CGSizeZero.width;
     height = CGSizeZero.height;
-    if (a5)
+    if (error)
     {
       v12 = v8;
-      *a5 = v9;
+      *error = v9;
     }
   }
 
@@ -94,7 +94,7 @@
     width = valuePtr.width;
   }
 
-  v17 = [a1 withSize:{width, height}];
+  v17 = [self withSize:{width, height}];
 
   return v17;
 }

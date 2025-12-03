@@ -1,38 +1,38 @@
 @interface CBShellServer
 + (id)sharedInstance;
-- (BOOL)_auditToken:(id *)a3 hasEntitlement:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_auditToken:(id *)token hasEntitlement:(id)entitlement;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CBRemoteAlertServerDelegate)remoteAlertsDelegate;
 - (CBShellServer)init;
 - (CBSystemServicesServerDelegate)systemServicesDelegate;
-- (unint64_t)_getEntitlementLevelForConnection:(id)a3;
-- (void)_setClassesForProxyServerOnInterface:(id)a3;
-- (void)_setClassesForRemoteAlertsOnInterface:(id)a3;
-- (void)addShutdownTask:(id)a3 forReason:(id)a4;
-- (void)connectToSSID:(id)a3 completion:(id)a4;
-- (void)connectToSSID:(id)a3 password:(id)a4 completion:(id)a5;
-- (void)connectedNetwork:(id)a3;
-- (void)createAlert:(id)a3 timeout:(unint64_t)a4 completion:(id)a5;
-- (void)currentLocaleIdentifier:(id)a3;
-- (void)diagnosticsRunning:(id)a3;
+- (unint64_t)_getEntitlementLevelForConnection:(id)connection;
+- (void)_setClassesForProxyServerOnInterface:(id)interface;
+- (void)_setClassesForRemoteAlertsOnInterface:(id)interface;
+- (void)addShutdownTask:(id)task forReason:(id)reason;
+- (void)connectToSSID:(id)d completion:(id)completion;
+- (void)connectToSSID:(id)d password:(id)password completion:(id)completion;
+- (void)connectedNetwork:(id)network;
+- (void)createAlert:(id)alert timeout:(unint64_t)timeout completion:(id)completion;
+- (void)currentLocaleIdentifier:(id)identifier;
+- (void)diagnosticsRunning:(id)running;
 - (void)dimDisplay;
 - (void)disableNetworkReconnect;
 - (void)disableTouchButtonEvents;
-- (void)displayDimmed:(id)a3;
+- (void)displayDimmed:(id)dimmed;
 - (void)enableNetworkReconnect;
 - (void)enableTouchButtonEvents;
 - (void)exitCheckerBoard;
 - (void)hideSceneStatusBar;
 - (void)launchDiagnostics;
-- (void)networkReconnectEnabled:(id)a3;
-- (void)networkScanWithCompletion:(id)a3;
-- (void)proxyServerWithCompletion:(id)a3;
-- (void)receiveResponseFromAlertWithIdentifier:(id)a3 timeout:(double)a4 completion:(id)a5;
-- (void)removeShutdownTask:(id)a3;
-- (void)setLocaleIdentifier:(id)a3 completion:(id)a4;
+- (void)networkReconnectEnabled:(id)enabled;
+- (void)networkScanWithCompletion:(id)completion;
+- (void)proxyServerWithCompletion:(id)completion;
+- (void)receiveResponseFromAlertWithIdentifier:(id)identifier timeout:(double)timeout completion:(id)completion;
+- (void)removeShutdownTask:(id)task;
+- (void)setLocaleIdentifier:(id)identifier completion:(id)completion;
 - (void)showSceneStatusBar;
 - (void)start;
-- (void)statusBarStyle:(int64_t)a3;
+- (void)statusBarStyle:(int64_t)style;
 - (void)undimDisplay;
 @end
 
@@ -68,27 +68,27 @@
 
 - (void)start
 {
-  v3 = [(CBShellServer *)self listener];
-  [v3 setDelegate:self];
+  listener = [(CBShellServer *)self listener];
+  [listener setDelegate:self];
 
-  v4 = [(CBShellServer *)self listener];
-  [v4 resume];
+  listener2 = [(CBShellServer *)self listener];
+  [listener2 resume];
 }
 
-- (void)createAlert:(id)a3 timeout:(unint64_t)a4 completion:(id)a5
+- (void)createAlert:(id)alert timeout:(unint64_t)timeout completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CBShellServer *)self remoteAlertsDelegate];
-  [v10 server:self createAlert:v9 timeout:v8 completion:a4];
+  completionCopy = completion;
+  alertCopy = alert;
+  remoteAlertsDelegate = [(CBShellServer *)self remoteAlertsDelegate];
+  [remoteAlertsDelegate server:self createAlert:alertCopy timeout:completionCopy completion:timeout];
 }
 
-- (void)receiveResponseFromAlertWithIdentifier:(id)a3 timeout:(double)a4 completion:(id)a5
+- (void)receiveResponseFromAlertWithIdentifier:(id)identifier timeout:(double)timeout completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CBShellServer *)self remoteAlertsDelegate];
-  [v10 server:self receiveResponseFromAlertWithIdentifier:v9 timeout:v8 completion:a4];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  remoteAlertsDelegate = [(CBShellServer *)self remoteAlertsDelegate];
+  [remoteAlertsDelegate server:self receiveResponseFromAlertWithIdentifier:identifierCopy timeout:completionCopy completion:timeout];
 }
 
 - (void)exitCheckerBoard
@@ -101,82 +101,82 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)proxyServerWithCompletion:(id)a3
+- (void)proxyServerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CBShellServer *)self systemServicesDelegate];
-  v6 = [v5 proxyServer];
+  completionCopy = completion;
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  proxyServer = [systemServicesDelegate proxyServer];
 
-  v4[2](v4, v6);
+  completionCopy[2](completionCopy, proxyServer);
 }
 
 - (void)showSceneStatusBar
 {
-  v2 = [(CBShellServer *)self systemServicesDelegate];
-  [v2 showSceneStatusBar];
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate showSceneStatusBar];
 }
 
 - (void)hideSceneStatusBar
 {
-  v2 = [(CBShellServer *)self systemServicesDelegate];
-  [v2 hideSceneStatusBar];
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate hideSceneStatusBar];
 }
 
-- (void)statusBarStyle:(int64_t)a3
+- (void)statusBarStyle:(int64_t)style
 {
-  v4 = [(CBShellServer *)self systemServicesDelegate];
-  [v4 statusBarStyle:a3];
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate statusBarStyle:style];
 }
 
 - (void)dimDisplay
 {
-  v2 = [(CBShellServer *)self systemServicesDelegate];
-  [v2 dimDisplay];
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate dimDisplay];
 }
 
 - (void)undimDisplay
 {
-  v2 = [(CBShellServer *)self systemServicesDelegate];
-  [v2 undimDisplay];
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate undimDisplay];
 }
 
 - (void)enableTouchButtonEvents
 {
-  v2 = [(CBShellServer *)self systemServicesDelegate];
-  [v2 enableTouchButtonEvents];
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate enableTouchButtonEvents];
 }
 
 - (void)disableTouchButtonEvents
 {
-  v2 = [(CBShellServer *)self systemServicesDelegate];
-  [v2 disableTouchButtonEvents];
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate disableTouchButtonEvents];
 }
 
 - (void)disableNetworkReconnect
 {
-  v2 = [(CBShellServer *)self systemServicesDelegate];
-  [v2 disableNetworkReconnect];
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate disableNetworkReconnect];
 }
 
 - (void)enableNetworkReconnect
 {
-  v2 = [(CBShellServer *)self systemServicesDelegate];
-  [v2 enableNetworkReconnect];
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate enableNetworkReconnect];
 }
 
-- (void)addShutdownTask:(id)a3 forReason:(id)a4
+- (void)addShutdownTask:(id)task forReason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CBShellServer *)self systemServicesDelegate];
-  [v8 addShutdownTask:v7 forReason:v6];
+  reasonCopy = reason;
+  taskCopy = task;
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate addShutdownTask:taskCopy forReason:reasonCopy];
 }
 
-- (void)removeShutdownTask:(id)a3
+- (void)removeShutdownTask:(id)task
 {
-  v4 = a3;
-  v5 = [(CBShellServer *)self systemServicesDelegate];
-  [v5 removeShutdownTask:v4];
+  taskCopy = task;
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate removeShutdownTask:taskCopy];
 }
 
 - (void)launchDiagnostics
@@ -192,21 +192,21 @@
   objc_destroyWeak(&location);
 }
 
-- (void)diagnosticsRunning:(id)a3
+- (void)diagnosticsRunning:(id)running
 {
-  v4 = a3;
-  v5 = [(CBShellServer *)self systemServicesDelegate];
-  [v5 diagnosticsRunning:v4];
+  runningCopy = running;
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate diagnosticsRunning:runningCopy];
 }
 
-- (void)connectToSSID:(id)a3 completion:(id)a4
+- (void)connectToSSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if (+[CBUtilities isInternalInstall])
   {
-    v8 = [(CBShellServer *)self systemServicesDelegate];
-    [v8 connectToSSID:v6 completion:v7];
+    systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+    [systemServicesDelegate connectToSSID:dCopy completion:completionCopy];
   }
 
   else
@@ -218,19 +218,19 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "This function is not available on customer install", v10, 2u);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)connectToSSID:(id)a3 password:(id)a4 completion:(id)a5
+- (void)connectToSSID:(id)d password:(id)password completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  passwordCopy = password;
+  completionCopy = completion;
   if (+[CBUtilities isInternalInstall])
   {
-    v11 = [(CBShellServer *)self systemServicesDelegate];
-    [v11 connectToSSID:v8 password:v9 completion:v10];
+    systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+    [systemServicesDelegate connectToSSID:dCopy password:passwordCopy completion:completionCopy];
   }
 
   else
@@ -242,17 +242,17 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "This function is not available on customer install", v13, 2u);
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)networkScanWithCompletion:(id)a3
+- (void)networkScanWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (+[CBUtilities isInternalInstall])
   {
-    v6 = [(CBShellServer *)self systemServicesDelegate];
-    [v6 networkScanWithCompletion:v4];
+    systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+    [systemServicesDelegate networkScanWithCompletion:completionCopy];
   }
 
   else
@@ -264,17 +264,17 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "This function is not available on customer install", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)connectedNetwork:(id)a3
+- (void)connectedNetwork:(id)network
 {
-  v4 = a3;
+  networkCopy = network;
   if (+[CBUtilities isInternalInstall])
   {
-    v6 = [(CBShellServer *)self systemServicesDelegate];
-    [v6 connectedNetwork:v4];
+    systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+    [systemServicesDelegate connectedNetwork:networkCopy];
   }
 
   else
@@ -286,51 +286,51 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "This function is not available on customer install", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(networkCopy + 2))(networkCopy, 0);
   }
 }
 
-- (void)networkReconnectEnabled:(id)a3
+- (void)networkReconnectEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(CBShellServer *)self systemServicesDelegate];
-  [v5 networkReconnectEnabled:v4];
+  enabledCopy = enabled;
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate networkReconnectEnabled:enabledCopy];
 }
 
-- (void)displayDimmed:(id)a3
+- (void)displayDimmed:(id)dimmed
 {
-  v4 = a3;
-  v5 = [(CBShellServer *)self systemServicesDelegate];
-  [v5 displayDimmed:v4];
+  dimmedCopy = dimmed;
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate displayDimmed:dimmedCopy];
 }
 
-- (void)currentLocaleIdentifier:(id)a3
+- (void)currentLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CBShellServer *)self systemServicesDelegate];
-  [v5 currentLocaleIdentifier:v4];
+  identifierCopy = identifier;
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate currentLocaleIdentifier:identifierCopy];
 }
 
-- (void)setLocaleIdentifier:(id)a3 completion:(id)a4
+- (void)setLocaleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CBShellServer *)self systemServicesDelegate];
-  [v8 setLocaleIdentifier:v7 completion:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  systemServicesDelegate = [(CBShellServer *)self systemServicesDelegate];
+  [systemServicesDelegate setLocaleIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(CBShellServer *)self _getEntitlementLevelForConnection:v5];
+  connectionCopy = connection;
+  v6 = [(CBShellServer *)self _getEntitlementLevelForConnection:connectionCopy];
   if (v6 == 3)
   {
-    v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CBSSystemServicesProtocol];
-    [v5 setExportedInterface:v8];
+    exportedInterface2 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CBSSystemServicesProtocol];
+    [connectionCopy setExportedInterface:exportedInterface2];
 LABEL_7:
 
-    v10 = [v5 exportedInterface];
-    [(CBShellServer *)self _setClassesForProxyServerOnInterface:v10];
+    exportedInterface = [connectionCopy exportedInterface];
+    [(CBShellServer *)self _setClassesForProxyServerOnInterface:exportedInterface];
     goto LABEL_8;
   }
 
@@ -343,51 +343,51 @@ LABEL_7:
     }
 
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CBSServerProtocol];
-    [v5 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
-    v8 = [v5 exportedInterface];
-    [(CBShellServer *)self _setClassesForRemoteAlertsOnInterface:v8];
+    exportedInterface2 = [connectionCopy exportedInterface];
+    [(CBShellServer *)self _setClassesForRemoteAlertsOnInterface:exportedInterface2];
     goto LABEL_7;
   }
 
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CBSRemoteAlertServerProtocol];
-  [v5 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
-  v10 = [v5 exportedInterface];
-  [(CBShellServer *)self _setClassesForRemoteAlertsOnInterface:v10];
+  exportedInterface = [connectionCopy exportedInterface];
+  [(CBShellServer *)self _setClassesForRemoteAlertsOnInterface:exportedInterface];
 LABEL_8:
 
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
   v11 = 1;
 LABEL_10:
 
   return v11;
 }
 
-- (void)_setClassesForRemoteAlertsOnInterface:(id)a3
+- (void)_setClassesForRemoteAlertsOnInterface:(id)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   v4 = [NSSet setWithObject:objc_opt_class()];
-  [v3 setClasses:v4 forSelector:"createAlert:timeout:completion:" argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v4 forSelector:"createAlert:timeout:completion:" argumentIndex:0 ofReply:0];
 }
 
-- (void)_setClassesForProxyServerOnInterface:(id)a3
+- (void)_setClassesForProxyServerOnInterface:(id)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   v4 = [NSSet setWithObject:objc_opt_class()];
-  [v3 setClasses:v4 forSelector:"proxyServerWithCompletion:" argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:"proxyServerWithCompletion:" argumentIndex:0 ofReply:1];
 }
 
-- (unint64_t)_getEntitlementLevelForConnection:(id)a3
+- (unint64_t)_getEntitlementLevelForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
+  connectionCopy = connection;
+  v5 = connectionCopy;
   v8 = 0u;
   v9 = 0u;
-  if (v4)
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   if ([(CBShellServer *)self _auditToken:&v8 hasEntitlement:kCheckerBoardServicesEntitlement])
@@ -413,9 +413,9 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)_auditToken:(id *)a3 hasEntitlement:(id)a4
+- (BOOL)_auditToken:(id *)token hasEntitlement:(id)entitlement
 {
-  [a4 UTF8String];
+  [entitlement UTF8String];
   v4 = xpc_copy_entitlement_for_token();
   v5 = v4;
   if (v4)

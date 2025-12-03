@@ -1,29 +1,29 @@
 @interface RMConfigurationCombineApplicator
-- (RMConfigurationCombineApplicator)initWithAdapter:(id)a3;
-- (id)_configurationByDeclarationKeyFromConfigurations:(id)a3;
-- (void)_beginProcessingWithConfigurations:(id)a3 storesByIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6;
-- (void)_fetchExistingDeclarationKeysWithConfigurations:(id)a3 storesByIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6;
-- (void)_installDeclarationKeysWithScope:(int64_t)a3 configurations:(id)a4 completionHandler:(id)a5;
-- (void)_processExistingDeclarationKeysWithConfigurations:(id)a3 oldDeclarationKeys:(id)a4 storesByIdentifier:(id)a5 scope:(int64_t)a6 completionHandler:(id)a7;
-- (void)_sendStatusForFailedKeys:(id)a3 enumerator:(id)a4 applyError:(id)a5 scope:(int64_t)a6 configurations:(id)a7 completionHandler:(id)a8;
-- (void)_sendStatusForSuccessKeys:(id)a3 failedKeys:(id)a4 reasons:(id)a5 applyError:(id)a6 scope:(int64_t)a7 configurations:(id)a8 success:(BOOL)a9 completionHandler:(id)a10;
-- (void)_sendStatusForSuccessKeys:(id)a3 reasons:(id)a4 scope:(int64_t)a5 configurations:(id)a6 completionHandler:(id)a7;
-- (void)_uninstallDeclarationKeys:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
-- (void)configurationUIForConfiguration:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
+- (RMConfigurationCombineApplicator)initWithAdapter:(id)adapter;
+- (id)_configurationByDeclarationKeyFromConfigurations:(id)configurations;
+- (void)_beginProcessingWithConfigurations:(id)configurations storesByIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
+- (void)_fetchExistingDeclarationKeysWithConfigurations:(id)configurations storesByIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
+- (void)_installDeclarationKeysWithScope:(int64_t)scope configurations:(id)configurations completionHandler:(id)handler;
+- (void)_processExistingDeclarationKeysWithConfigurations:(id)configurations oldDeclarationKeys:(id)keys storesByIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
+- (void)_sendStatusForFailedKeys:(id)keys enumerator:(id)enumerator applyError:(id)error scope:(int64_t)scope configurations:(id)configurations completionHandler:(id)handler;
+- (void)_sendStatusForSuccessKeys:(id)keys failedKeys:(id)failedKeys reasons:(id)reasons applyError:(id)error scope:(int64_t)scope configurations:(id)configurations success:(BOOL)success completionHandler:(id)self0;
+- (void)_sendStatusForSuccessKeys:(id)keys reasons:(id)reasons scope:(int64_t)scope configurations:(id)configurations completionHandler:(id)handler;
+- (void)_uninstallDeclarationKeys:(id)keys scope:(int64_t)scope completionHandler:(id)handler;
+- (void)configurationUIForConfiguration:(id)configuration scope:(int64_t)scope completionHandler:(id)handler;
 @end
 
 @implementation RMConfigurationCombineApplicator
 
-- (RMConfigurationCombineApplicator)initWithAdapter:(id)a3
+- (RMConfigurationCombineApplicator)initWithAdapter:(id)adapter
 {
-  v5 = a3;
+  adapterCopy = adapter;
   v11.receiver = self;
   v11.super_class = RMConfigurationCombineApplicator;
   v6 = [(RMConfigurationCombineApplicator *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_adapter, a3);
+    objc_storeStrong(&v6->_adapter, adapter);
     v8 = [[WrappedCombineAdapter alloc] initWithAdapter:v7->_adapter];
     wrappingAdapter = v7->_wrappingAdapter;
     v7->_wrappingAdapter = v8;
@@ -32,44 +32,44 @@
   return v7;
 }
 
-- (void)configurationUIForConfiguration:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
+- (void)configurationUIForConfiguration:(id)configuration scope:(int64_t)scope completionHandler:(id)handler
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [(RMConfigurationCombineApplicator *)self adapter];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  adapter = [(RMConfigurationCombineApplicator *)self adapter];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(RMConfigurationCombineApplicator *)self adapter];
-    [v11 configurationUIForConfiguration:v12 scope:a4 completionHandler:v8];
+    adapter2 = [(RMConfigurationCombineApplicator *)self adapter];
+    [adapter2 configurationUIForConfiguration:configurationCopy scope:scope completionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 }
 
-- (void)_beginProcessingWithConfigurations:(id)a3 storesByIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6
+- (void)_beginProcessingWithConfigurations:(id)configurations storesByIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(RMConfigurationCombineApplicator *)self wrappingAdapter];
+  configurationsCopy = configurations;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  wrappingAdapter = [(RMConfigurationCombineApplicator *)self wrappingAdapter];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __114__RMConfigurationCombineApplicator__beginProcessingWithConfigurations_storesByIdentifier_scope_completionHandler___block_invoke;
   v17[3] = &unk_279B05498;
   v17[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = a5;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
-  [v13 beginProcessingConfigurationsForScope:a5 completionHandler:v17];
+  v18 = configurationsCopy;
+  v19 = identifierCopy;
+  v20 = handlerCopy;
+  scopeCopy = scope;
+  v14 = identifierCopy;
+  v15 = configurationsCopy;
+  v16 = handlerCopy;
+  [wrappingAdapter beginProcessingConfigurationsForScope:scope completionHandler:v17];
 }
 
 void __114__RMConfigurationCombineApplicator__beginProcessingWithConfigurations_storesByIdentifier_scope_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -92,25 +92,25 @@ void __114__RMConfigurationCombineApplicator__beginProcessingWithConfigurations_
   }
 }
 
-- (void)_fetchExistingDeclarationKeysWithConfigurations:(id)a3 storesByIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6
+- (void)_fetchExistingDeclarationKeysWithConfigurations:(id)configurations storesByIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(RMConfigurationCombineApplicator *)self wrappingAdapter];
+  configurationsCopy = configurations;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  wrappingAdapter = [(RMConfigurationCombineApplicator *)self wrappingAdapter];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __127__RMConfigurationCombineApplicator__fetchExistingDeclarationKeysWithConfigurations_storesByIdentifier_scope_completionHandler___block_invoke;
   v17[3] = &unk_279B054C0;
-  v20 = v12;
-  v21 = a5;
+  v20 = handlerCopy;
+  scopeCopy = scope;
   v17[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
-  [v13 allDeclarationKeysForScope:a5 completionHandler:v17];
+  v18 = configurationsCopy;
+  v19 = identifierCopy;
+  v14 = identifierCopy;
+  v15 = configurationsCopy;
+  v16 = handlerCopy;
+  [wrappingAdapter allDeclarationKeysForScope:scope completionHandler:v17];
 }
 
 void __127__RMConfigurationCombineApplicator__fetchExistingDeclarationKeysWithConfigurations_storesByIdentifier_scope_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -149,52 +149,52 @@ void __127__RMConfigurationCombineApplicator__fetchExistingDeclarationKeysWithCo
 LABEL_9:
 }
 
-- (void)_processExistingDeclarationKeysWithConfigurations:(id)a3 oldDeclarationKeys:(id)a4 storesByIdentifier:(id)a5 scope:(int64_t)a6 completionHandler:(id)a7
+- (void)_processExistingDeclarationKeysWithConfigurations:(id)configurations oldDeclarationKeys:(id)keys storesByIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = [(RMConfigurationCombineApplicator *)self _configurationByDeclarationKeyFromConfigurations:v11];
+  configurationsCopy = configurations;
+  keysCopy = keys;
+  handlerCopy = handler;
+  v14 = [(RMConfigurationCombineApplicator *)self _configurationByDeclarationKeyFromConfigurations:configurationsCopy];
   v15 = MEMORY[0x277CBEB98];
-  v16 = [v14 allKeys];
-  v17 = [v15 setWithArray:v16];
+  allKeys = [v14 allKeys];
+  v17 = [v15 setWithArray:allKeys];
 
-  if ([v12 isEqualToSet:v17])
+  if ([keysCopy isEqualToSet:v17])
   {
-    v18 = [MEMORY[0x277D45F58] configurationCombineApplicator];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+    configurationCombineApplicator = [MEMORY[0x277D45F58] configurationCombineApplicator];
+    if (os_log_type_enabled(configurationCombineApplicator, OS_LOG_TYPE_DEBUG))
     {
-      [RMConfigurationCombineApplicator _processExistingDeclarationKeysWithConfigurations:v18 oldDeclarationKeys:? storesByIdentifier:? scope:? completionHandler:?];
+      [RMConfigurationCombineApplicator _processExistingDeclarationKeysWithConfigurations:configurationCombineApplicator oldDeclarationKeys:? storesByIdentifier:? scope:? completionHandler:?];
     }
 
-    [(RMConfigurationCombineApplicator *)self _endProcessingWithSuccess:1 scope:a6 completionHandler:v13];
+    [(RMConfigurationCombineApplicator *)self _endProcessingWithSuccess:1 scope:scope completionHandler:handlerCopy];
   }
 
-  else if ([v11 count])
+  else if ([configurationsCopy count])
   {
-    [(RMConfigurationCombineApplicator *)self _installDeclarationKeysWithScope:a6 configurations:v14 completionHandler:v13];
+    [(RMConfigurationCombineApplicator *)self _installDeclarationKeysWithScope:scope configurations:v14 completionHandler:handlerCopy];
   }
 
   else
   {
-    v19 = [v12 objectEnumerator];
-    [(RMConfigurationCombineApplicator *)self _uninstallDeclarationKeys:v19 scope:a6 completionHandler:v13];
+    objectEnumerator = [keysCopy objectEnumerator];
+    [(RMConfigurationCombineApplicator *)self _uninstallDeclarationKeys:objectEnumerator scope:scope completionHandler:handlerCopy];
   }
 }
 
-- (void)_installDeclarationKeysWithScope:(int64_t)a3 configurations:(id)a4 completionHandler:(id)a5
+- (void)_installDeclarationKeysWithScope:(int64_t)scope configurations:(id)configurations completionHandler:(id)handler
 {
   v59 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v32 = a5;
-  v35 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-  v34 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v7, "count")}];
-  v36 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+  configurationsCopy = configurations;
+  handlerCopy = handler;
+  v35 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(configurationsCopy, "count")}];
+  v34 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(configurationsCopy, "count")}];
+  v36 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(configurationsCopy, "count")}];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v8 = v7;
+  v8 = configurationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (!v9)
   {
@@ -214,26 +214,26 @@ LABEL_9:
 
       v13 = *(*(&v50 + 1) + 8 * i);
       v14 = [v8 objectForKeyedSubscript:v13];
-      v15 = [v14 declaration];
-      v16 = [(RMConfigurationCombineApplicator *)self adapter];
-      [v16 configurationClass];
+      declaration = [v14 declaration];
+      adapter = [(RMConfigurationCombineApplicator *)self adapter];
+      [adapter configurationClass];
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v18 = [v14 store];
-        v19 = [v18 isValidDeclaration:v15];
+        store = [v14 store];
+        v19 = [store isValidDeclaration:declaration];
 
         if (v19)
         {
-          [v35 addObject:v15];
+          [v35 addObject:declaration];
           [v34 addObject:v13];
           goto LABEL_16;
         }
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          [RMConfigurationCombineApplicator _installDeclarationKeysWithScope:v54 configurations:v15 completionHandler:&v55];
+          [RMConfigurationCombineApplicator _installDeclarationKeysWithScope:v54 configurations:declaration completionHandler:&v55];
         }
 
         v21 = v36;
@@ -242,12 +242,12 @@ LABEL_9:
 
       else
       {
-        v20 = [MEMORY[0x277D45F58] configurationCombineApplicator];
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+        configurationCombineApplicator = [MEMORY[0x277D45F58] configurationCombineApplicator];
+        if (os_log_type_enabled(configurationCombineApplicator, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v57 = v15;
-          _os_log_error_impl(&dword_261E36000, v20, OS_LOG_TYPE_ERROR, "Incorrect declaration class: %{public}@", buf, 0xCu);
+          v57 = declaration;
+          _os_log_error_impl(&dword_261E36000, configurationCombineApplicator, OS_LOG_TYPE_ERROR, "Incorrect declaration class: %{public}@", buf, 0xCu);
         }
 
         v21 = v36;
@@ -266,30 +266,30 @@ LABEL_18:
 
   if ([v35 count])
   {
-    v23 = [(RMConfigurationCombineApplicator *)self adapter];
-    v24 = [v23 combineConfigurations:v35];
+    adapter2 = [(RMConfigurationCombineApplicator *)self adapter];
+    v24 = [adapter2 combineConfigurations:v35];
 
-    v25 = [(RMConfigurationCombineApplicator *)self wrappingAdapter];
+    wrappingAdapter = [(RMConfigurationCombineApplicator *)self wrappingAdapter];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __102__RMConfigurationCombineApplicator__installDeclarationKeysWithScope_configurations_completionHandler___block_invoke_55;
     v37[3] = &unk_279B05510;
     v38 = v34;
     v39 = v36;
-    v40 = self;
+    selfCopy = self;
     v41 = v8;
-    v42 = v32;
-    v43 = a3;
-    v26 = v32;
+    v42 = handlerCopy;
+    scopeCopy = scope;
+    v26 = handlerCopy;
     v27 = v8;
     v28 = v36;
     v29 = v34;
-    [v25 applyCombinedConfiguration:v24 declarationKeys:v29 scope:a3 completionHandler:v37];
+    [wrappingAdapter applyCombinedConfiguration:v24 declarationKeys:v29 scope:scope completionHandler:v37];
   }
 
   else
   {
-    v30 = [(RMConfigurationCombineApplicator *)self wrappingAdapter];
+    wrappingAdapter2 = [(RMConfigurationCombineApplicator *)self wrappingAdapter];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __102__RMConfigurationCombineApplicator__installDeclarationKeysWithScope_configurations_completionHandler___block_invoke;
@@ -298,13 +298,13 @@ LABEL_18:
     v45 = v34;
     v46 = v36;
     v47 = v8;
-    v48 = v32;
-    v49 = a3;
-    v27 = v32;
+    v48 = handlerCopy;
+    scopeCopy2 = scope;
+    v27 = handlerCopy;
     v28 = v8;
     v29 = v36;
     v24 = v34;
-    [v30 removeCombinedConfigurationForScope:a3 completionHandler:v44];
+    [wrappingAdapter2 removeCombinedConfigurationForScope:scope completionHandler:v44];
   }
 
   v31 = *MEMORY[0x277D85DE8];
@@ -378,30 +378,30 @@ void __102__RMConfigurationCombineApplicator__installDeclarationKeysWithScope_co
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendStatusForSuccessKeys:(id)a3 failedKeys:(id)a4 reasons:(id)a5 applyError:(id)a6 scope:(int64_t)a7 configurations:(id)a8 success:(BOOL)a9 completionHandler:(id)a10
+- (void)_sendStatusForSuccessKeys:(id)keys failedKeys:(id)failedKeys reasons:(id)reasons applyError:(id)error scope:(int64_t)scope configurations:(id)configurations success:(BOOL)success completionHandler:(id)self0
 {
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
-  v19 = a10;
-  v20 = a5;
-  v21 = [a3 objectEnumerator];
+  failedKeysCopy = failedKeys;
+  errorCopy = error;
+  configurationsCopy = configurations;
+  handlerCopy = handler;
+  reasonsCopy = reasons;
+  objectEnumerator = [keys objectEnumerator];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __139__RMConfigurationCombineApplicator__sendStatusForSuccessKeys_failedKeys_reasons_applyError_scope_configurations_success_completionHandler___block_invoke;
   v26[3] = &unk_279B05560;
   v26[4] = self;
-  v27 = v16;
-  v28 = v17;
-  v29 = v18;
-  v32 = a9;
-  v30 = v19;
-  v31 = a7;
-  v22 = v19;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  [(RMConfigurationCombineApplicator *)self _sendStatusForSuccessKeys:v21 reasons:v20 scope:a7 configurations:v23 completionHandler:v26];
+  v27 = failedKeysCopy;
+  v28 = errorCopy;
+  v29 = configurationsCopy;
+  successCopy = success;
+  v30 = handlerCopy;
+  scopeCopy = scope;
+  v22 = handlerCopy;
+  v23 = configurationsCopy;
+  v24 = errorCopy;
+  v25 = failedKeysCopy;
+  [(RMConfigurationCombineApplicator *)self _sendStatusForSuccessKeys:objectEnumerator reasons:reasonsCopy scope:scope configurations:v23 completionHandler:v26];
 }
 
 void __139__RMConfigurationCombineApplicator__sendStatusForSuccessKeys_failedKeys_reasons_applyError_scope_configurations_success_completionHandler___block_invoke(uint64_t a1)
@@ -424,35 +424,35 @@ void __139__RMConfigurationCombineApplicator__sendStatusForSuccessKeys_failedKey
   [v2 _sendStatusForFailedKeys:v3 enumerator:v4 applyError:v6 scope:v5 configurations:v7 completionHandler:v9];
 }
 
-- (void)_sendStatusForSuccessKeys:(id)a3 reasons:(id)a4 scope:(int64_t)a5 configurations:(id)a6 completionHandler:(id)a7
+- (void)_sendStatusForSuccessKeys:(id)keys reasons:(id)reasons scope:(int64_t)scope configurations:(id)configurations completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v12 nextObject];
-  if (v16)
+  keysCopy = keys;
+  reasonsCopy = reasons;
+  configurationsCopy = configurations;
+  handlerCopy = handler;
+  nextObject = [keysCopy nextObject];
+  if (nextObject)
   {
-    v17 = [v14 objectForKeyedSubscript:v16];
-    v18 = [v17 store];
-    v19 = [v17 declaration];
+    v17 = [configurationsCopy objectForKeyedSubscript:nextObject];
+    store = [v17 store];
+    declaration = [v17 declaration];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __109__RMConfigurationCombineApplicator__sendStatusForSuccessKeys_reasons_scope_configurations_completionHandler___block_invoke;
     v20[3] = &unk_279B05588;
-    v21 = v16;
-    v22 = self;
-    v23 = v12;
-    v24 = v13;
-    v27 = a5;
-    v25 = v14;
-    v26 = v15;
-    [v18 configurationSuccessfullyApplied:v19 reasons:v24 completionHandler:v20];
+    v21 = nextObject;
+    selfCopy = self;
+    v23 = keysCopy;
+    v24 = reasonsCopy;
+    scopeCopy = scope;
+    v25 = configurationsCopy;
+    v26 = handlerCopy;
+    [store configurationSuccessfullyApplied:declaration reasons:v24 completionHandler:v20];
   }
 
   else
   {
-    v15[2](v15);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -470,72 +470,72 @@ uint64_t __109__RMConfigurationCombineApplicator__sendStatusForSuccessKeys_reaso
   return [*(a1 + 40) _sendStatusForSuccessKeys:*(a1 + 48) reasons:*(a1 + 56) scope:*(a1 + 80) configurations:*(a1 + 64) completionHandler:*(a1 + 72)];
 }
 
-- (void)_sendStatusForFailedKeys:(id)a3 enumerator:(id)a4 applyError:(id)a5 scope:(int64_t)a6 configurations:(id)a7 completionHandler:(id)a8
+- (void)_sendStatusForFailedKeys:(id)keys enumerator:(id)enumerator applyError:(id)error scope:(int64_t)scope configurations:(id)configurations completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = [v14 nextObject];
-  v19 = [v13 objectForKeyedSubscript:v18];
-  v20 = [v19 integerValue];
+  keysCopy = keys;
+  enumeratorCopy = enumerator;
+  errorCopy = error;
+  configurationsCopy = configurations;
+  handlerCopy = handler;
+  nextObject = [enumeratorCopy nextObject];
+  v19 = [keysCopy objectForKeyedSubscript:nextObject];
+  integerValue = [v19 integerValue];
 
-  if (v18)
+  if (nextObject)
   {
-    v21 = [v16 objectForKeyedSubscript:v18];
+    v21 = [configurationsCopy objectForKeyedSubscript:nextObject];
     [v21 store];
     v33 = v32 = v21;
-    v22 = [v21 declaration];
-    v34 = v15;
-    if (v20 == 2)
+    declaration = [v21 declaration];
+    v34 = errorCopy;
+    if (integerValue == 2)
     {
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __122__RMConfigurationCombineApplicator__sendStatusForFailedKeys_enumerator_applyError_scope_configurations_completionHandler___block_invoke_59;
       v43[3] = &unk_279B055B0;
       v31 = v44;
-      v44[0] = v18;
+      v44[0] = nextObject;
       v44[1] = self;
       v30 = &v45;
-      v45 = v13;
+      v45 = keysCopy;
       v29 = &v46;
-      v46 = v14;
+      v46 = enumeratorCopy;
       v23 = &v47;
-      v47 = v15;
-      v49[1] = a6;
+      v47 = errorCopy;
+      v49[1] = scope;
       v24 = &v48;
-      v48 = v16;
+      v48 = configurationsCopy;
       v25 = v49;
-      v49[0] = v17;
+      v49[0] = handlerCopy;
       v26 = v33;
-      [v33 configurationNotSupported:v22 error:0 completionHandler:v43];
+      [v33 configurationNotSupported:declaration error:0 completionHandler:v43];
     }
 
-    else if (v20)
+    else if (integerValue)
     {
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __122__RMConfigurationCombineApplicator__sendStatusForFailedKeys_enumerator_applyError_scope_configurations_completionHandler___block_invoke_60;
       v36[3] = &unk_279B055B0;
       v31 = v37;
-      v37[0] = v18;
+      v37[0] = nextObject;
       v37[1] = self;
       v30 = &v38;
-      v38 = v13;
+      v38 = keysCopy;
       v29 = &v39;
-      v39 = v14;
+      v39 = enumeratorCopy;
       v23 = &v40;
-      v27 = v15;
+      v27 = errorCopy;
       v40 = v27;
-      v42[1] = a6;
+      v42[1] = scope;
       v24 = &v41;
-      v41 = v16;
+      v41 = configurationsCopy;
       v25 = v42;
-      v42[0] = v17;
+      v42[0] = handlerCopy;
       v28 = v27;
       v26 = v33;
-      [v33 configurationFailedToApply:v22 error:v28 completionHandler:v36];
+      [v33 configurationFailedToApply:declaration error:v28 completionHandler:v36];
     }
 
     else
@@ -545,29 +545,29 @@ uint64_t __109__RMConfigurationCombineApplicator__sendStatusForSuccessKeys_reaso
       v50[2] = __122__RMConfigurationCombineApplicator__sendStatusForFailedKeys_enumerator_applyError_scope_configurations_completionHandler___block_invoke;
       v50[3] = &unk_279B055B0;
       v31 = v51;
-      v51[0] = v18;
+      v51[0] = nextObject;
       v51[1] = self;
       v30 = &v52;
-      v52 = v13;
+      v52 = keysCopy;
       v29 = &v53;
-      v53 = v14;
+      v53 = enumeratorCopy;
       v23 = &v54;
-      v54 = v15;
-      v56[1] = a6;
+      v54 = errorCopy;
+      v56[1] = scope;
       v24 = &v55;
-      v55 = v16;
+      v55 = configurationsCopy;
       v25 = v56;
-      v56[0] = v17;
+      v56[0] = handlerCopy;
       v26 = v33;
-      [v33 configurationIsInvalid:v22 error:0 completionHandler:v50];
+      [v33 configurationIsInvalid:declaration error:0 completionHandler:v50];
     }
 
-    v15 = v34;
+    errorCopy = v34;
   }
 
   else
   {
-    v17[2](v17);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -613,28 +613,28 @@ uint64_t __122__RMConfigurationCombineApplicator__sendStatusForFailedKeys_enumer
   return [*(a1 + 40) _sendStatusForFailedKeys:*(a1 + 48) enumerator:*(a1 + 56) applyError:*(a1 + 64) scope:*(a1 + 88) configurations:*(a1 + 72) completionHandler:*(a1 + 80)];
 }
 
-- (void)_uninstallDeclarationKeys:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
+- (void)_uninstallDeclarationKeys:(id)keys scope:(int64_t)scope completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x277D45F58] configurationCombineApplicator];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  keysCopy = keys;
+  handlerCopy = handler;
+  configurationCombineApplicator = [MEMORY[0x277D45F58] configurationCombineApplicator];
+  if (os_log_type_enabled(configurationCombineApplicator, OS_LOG_TYPE_DEBUG))
   {
     [RMConfigurationCombineApplicator _uninstallDeclarationKeys:scope:completionHandler:];
   }
 
-  v11 = [(RMConfigurationCombineApplicator *)self wrappingAdapter];
+  wrappingAdapter = [(RMConfigurationCombineApplicator *)self wrappingAdapter];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __86__RMConfigurationCombineApplicator__uninstallDeclarationKeys_scope_completionHandler___block_invoke;
   v14[3] = &unk_279B055D8;
-  v16 = v9;
-  v17 = a4;
+  v16 = handlerCopy;
+  scopeCopy = scope;
   v14[4] = self;
-  v15 = v8;
-  v12 = v8;
-  v13 = v9;
-  [v11 removeCombinedConfigurationForScope:a4 completionHandler:v14];
+  v15 = keysCopy;
+  v12 = keysCopy;
+  v13 = handlerCopy;
+  [wrappingAdapter removeCombinedConfigurationForScope:scope completionHandler:v14];
 }
 
 void __86__RMConfigurationCombineApplicator__uninstallDeclarationKeys_scope_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -673,16 +673,16 @@ void __86__RMConfigurationCombineApplicator__endProcessingWithSuccess_scope_comp
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_configurationByDeclarationKeyFromConfigurations:(id)a3
+- (id)_configurationByDeclarationKeyFromConfigurations:(id)configurations
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationsCopy = configurations;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = configurationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -698,8 +698,8 @@ void __86__RMConfigurationCombineApplicator__endProcessingWithSuccess_scope_comp
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [(RMConfigurationCombineApplicator *)self adapter];
-        v13 = [v12 declarationKeyForConfiguration:v11];
+        adapter = [(RMConfigurationCombineApplicator *)self adapter];
+        v13 = [adapter declarationKeyForConfiguration:v11];
 
         [v5 setObject:v11 forKeyedSubscript:v13];
       }

@@ -1,49 +1,49 @@
 @interface SUOverlayViewController
 + (CGSize)defaultOverlaySize;
-- (BOOL)_isControllerLoaded:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)_isControllerLoaded:(id)loaded;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)shouldExcludeFromNavigationHistory;
 - (CGSize)overlaySize;
-- (SUOverlayViewController)initWithOverlayConfiguration:(id)a3;
+- (SUOverlayViewController)initWithOverlayConfiguration:(id)configuration;
 - (id)_activeViewController;
 - (id)_flipTransition;
 - (id)_subviewContainerView;
 - (id)copyArchivableContext;
 - (void)_applyDisplayProperties;
-- (void)_applyOverlayConfiguration:(id)a3;
-- (void)_enqueueAction:(id)a3;
-- (void)_finishFlipAction:(id)a3;
+- (void)_applyOverlayConfiguration:(id)configuration;
+- (void)_enqueueAction:(id)action;
+- (void)_finishFlipAction:(id)action;
 - (void)_overlayActionDidFinish;
 - (void)_overlayAnimationDidFinish;
-- (void)_performFlipAction:(id)a3;
-- (void)_performFlipTransitionAction:(id)a3;
+- (void)_performFlipAction:(id)action;
+- (void)_performFlipTransitionAction:(id)action;
 - (void)_performNextAction;
-- (void)_setActiveViewController:(id)a3 updateInterface:(BOOL)a4;
-- (void)_setShadowVisible:(BOOL)a3;
+- (void)_setActiveViewController:(id)controller updateInterface:(BOOL)interface;
+- (void)_setShadowVisible:(BOOL)visible;
 - (void)_tearDownTouchCaptureView;
-- (void)_touchCaptureAction:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)_touchCaptureAction:(id)action;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
-- (void)flipWithTransition:(id)a3;
-- (void)imagePageViewTapped:(id)a3;
+- (void)flipWithTransition:(id)transition;
+- (void)imagePageViewTapped:(id)tapped;
 - (void)invalidateForMemoryPurge;
 - (void)loadView;
-- (void)restoreArchivableContext:(id)a3;
-- (void)setBackViewController:(id)a3;
-- (void)setFrontViewController:(id)a3;
-- (void)setMaskProvider:(id)a3;
-- (void)setOverlaySize:(CGSize)a3;
-- (void)setScriptWindowContext:(id)a3;
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDismissWithTransition:(id)a3;
+- (void)restoreArchivableContext:(id)context;
+- (void)setBackViewController:(id)controller;
+- (void)setFrontViewController:(id)controller;
+- (void)setMaskProvider:(id)provider;
+- (void)setOverlaySize:(CGSize)size;
+- (void)setScriptWindowContext:(id)context;
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDismissWithTransition:(id)transition;
 @end
 
 @implementation SUOverlayViewController
 
-- (SUOverlayViewController)initWithOverlayConfiguration:(id)a3
+- (SUOverlayViewController)initWithOverlayConfiguration:(id)configuration
 {
   v8.receiver = self;
   v8.super_class = SUOverlayViewController;
@@ -57,9 +57,9 @@
     v4->_overlaySize.height = v6;
     v4->_shadowOpacity = 0.670000017;
     v4->_shadowRadius = 15.0;
-    if (a3)
+    if (configuration)
     {
-      [(SUOverlayViewController *)v4 _applyOverlayConfiguration:a3];
+      [(SUOverlayViewController *)v4 _applyOverlayConfiguration:configuration];
     }
   }
 
@@ -91,26 +91,26 @@
   return result;
 }
 
-- (void)flipWithTransition:(id)a3
+- (void)flipWithTransition:(id)transition
 {
   v6 = objc_alloc_init(SUOverlayAction);
   [(SUOverlayAction *)v6 setActionType:3];
-  [(SUOverlayAction *)v6 setTransition:a3];
+  [(SUOverlayAction *)v6 setTransition:transition];
   [(SUOverlayAction *)v6 setViewController:[(SUOverlayViewController *)self _activeViewController]];
   lastFlipTransition = self->_lastFlipTransition;
-  if (lastFlipTransition != a3)
+  if (lastFlipTransition != transition)
   {
 
-    self->_lastFlipTransition = [a3 copy];
+    self->_lastFlipTransition = [transition copy];
   }
 
   [(SUOverlayViewController *)self _enqueueAction:v6];
 }
 
-- (void)setBackViewController:(id)a3
+- (void)setBackViewController:(id)controller
 {
   backViewController = self->_backViewController;
-  if (backViewController != a3)
+  if (backViewController != controller)
   {
     activeViewController = self->_activeViewController;
     if (activeViewController)
@@ -125,18 +125,18 @@
 
     if (v7)
     {
-      [(SUOverlayViewController *)self _setActiveViewController:a3 updateInterface:1];
+      [(SUOverlayViewController *)self _setActiveViewController:controller updateInterface:1];
       backViewController = self->_backViewController;
     }
 
-    self->_backViewController = a3;
+    self->_backViewController = controller;
   }
 }
 
-- (void)setFrontViewController:(id)a3
+- (void)setFrontViewController:(id)controller
 {
   frontViewController = self->_frontViewController;
-  if (frontViewController != a3)
+  if (frontViewController != controller)
   {
     activeViewController = self->_activeViewController;
     if (activeViewController)
@@ -151,62 +151,62 @@
 
     if (v7)
     {
-      [(SUOverlayViewController *)self _setActiveViewController:a3 updateInterface:1];
+      [(SUOverlayViewController *)self _setActiveViewController:controller updateInterface:1];
       frontViewController = self->_frontViewController;
     }
 
-    self->_frontViewController = a3;
+    self->_frontViewController = controller;
   }
 }
 
-- (void)setMaskProvider:(id)a3
+- (void)setMaskProvider:(id)provider
 {
   [-[SUOverlayViewController _subviewContainerView](self "_subviewContainerView")];
 
   [(SUOverlayViewController *)self _applyDisplayProperties];
 }
 
-- (void)setOverlaySize:(CGSize)a3
+- (void)setOverlaySize:(CGSize)size
 {
-  if (self->_overlaySize.width != a3.width || self->_overlaySize.height != a3.height)
+  if (self->_overlaySize.width != size.width || self->_overlaySize.height != size.height)
   {
-    self->_overlaySize = a3;
+    self->_overlaySize = size;
     [-[UIViewController overlayBackgroundViewController](self "overlayBackgroundViewController")];
 
     [(SUOverlayViewController *)self _applyDisplayProperties];
   }
 }
 
-- (void)setScriptWindowContext:(id)a3
+- (void)setScriptWindowContext:(id)context
 {
-  if (self->_scriptWindowContext != a3)
+  if (self->_scriptWindowContext != context)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
 
-      self->_scriptWindowContext = a3;
+      self->_scriptWindowContext = context;
     }
   }
 }
 
-- (void)viewWillDismissWithTransition:(id)a3
+- (void)viewWillDismissWithTransition:(id)transition
 {
-  if ([a3 type] == 1)
+  if ([transition type] == 1)
   {
 
     [(SUOverlayViewController *)self _setShadowVisible:0];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v9.receiver = self;
   v9.super_class = SUOverlayViewController;
-  v6 = [(SUViewController *)&v9 canPerformAction:a3 withSender:a4];
+  v6 = [(SUViewController *)&v9 canPerformAction:action withSender:sender];
   if (v6)
   {
-    if (sel_isEqual(a3, sel_storePage_finishedWithSuccess_))
+    if (sel_isEqual(action, sel_storePage_finishedWithSuccess_))
     {
       state = self->_state;
       if ((state & 6) != 0)
@@ -233,29 +233,29 @@
 {
   v9.receiver = self;
   v9.super_class = SUOverlayViewController;
-  v3 = [(SUViewController *)&v9 copyArchivableContext];
-  [v3 setType:3];
+  copyArchivableContext = [(SUViewController *)&v9 copyArchivableContext];
+  [copyArchivableContext setType:3];
   if (![(SUOverlayViewController *)self shouldExcludeFromNavigationHistory])
   {
-    v4 = [(UIViewController *)self->_backViewController copyArchivableContext];
-    v5 = v4;
-    if (v4 && [v4 type])
+    copyArchivableContext2 = [(UIViewController *)self->_backViewController copyArchivableContext];
+    v5 = copyArchivableContext2;
+    if (copyArchivableContext2 && [copyArchivableContext2 type])
     {
-      [v3 setValue:v5 forMetadataKey:@"back"];
+      [copyArchivableContext setValue:v5 forMetadataKey:@"back"];
     }
 
-    v6 = [(UIViewController *)self->_frontViewController copyArchivableContext];
-    v7 = v6;
-    if (v6 && [v6 type])
+    copyArchivableContext3 = [(UIViewController *)self->_frontViewController copyArchivableContext];
+    v7 = copyArchivableContext3;
+    if (copyArchivableContext3 && [copyArchivableContext3 type])
     {
-      [v3 setValue:v7 forMetadataKey:@"front"];
+      [copyArchivableContext setValue:v7 forMetadataKey:@"front"];
     }
 
-    [v3 setValue:objc_msgSend(MEMORY[0x1E696AD98] forMetadataKey:{"numberWithBool:", self->_activeViewController == self->_frontViewController), @"on-front"}];
-    [v3 setValue:-[SUOverlayViewController presentationTransition](self forMetadataKey:{"presentationTransition"), @"presentation"}];
+    [copyArchivableContext setValue:objc_msgSend(MEMORY[0x1E696AD98] forMetadataKey:{"numberWithBool:", self->_activeViewController == self->_frontViewController), @"on-front"}];
+    [copyArchivableContext setValue:-[SUOverlayViewController presentationTransition](self forMetadataKey:{"presentationTransition"), @"presentation"}];
   }
 
-  return v3;
+  return copyArchivableContext;
 }
 
 - (void)invalidateForMemoryPurge
@@ -281,37 +281,37 @@
   v11 = v10;
   v12 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v4, v6, v8, v10}];
   [v12 setAutoresizingMask:18];
-  v13 = [(SUOverlayViewController *)self _subviewContainerView];
-  [v13 setFrame:{v5, v7, v9, v11}];
-  [v12 addSubview:v13];
+  _subviewContainerView = [(SUOverlayViewController *)self _subviewContainerView];
+  [_subviewContainerView setFrame:{v5, v7, v9, v11}];
+  [v12 addSubview:_subviewContainerView];
   [(SUOverlayViewController *)self setView:v12];
 
   [v3 setFrame:{v5, v7, v9, v11}];
-  [v13 addSubview:v3];
+  [_subviewContainerView addSubview:v3];
   [(SUOverlayViewController *)self _setShadowVisible:0];
 
   [(SUOverlayViewController *)self _applyDisplayProperties];
 }
 
-- (void)restoreArchivableContext:(id)a3
+- (void)restoreArchivableContext:(id)context
 {
-  v5 = [a3 valueForMetadataKey:@"back"];
+  v5 = [context valueForMetadataKey:@"back"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 copyViewController];
-    [(SUOverlayViewController *)self setBackViewController:v6];
+    copyViewController = [v5 copyViewController];
+    [(SUOverlayViewController *)self setBackViewController:copyViewController];
   }
 
-  v7 = [a3 valueForMetadataKey:@"front"];
+  v7 = [context valueForMetadataKey:@"front"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 copyViewController];
-    [(SUOverlayViewController *)self setFrontViewController:v8];
+    copyViewController2 = [v7 copyViewController];
+    [(SUOverlayViewController *)self setFrontViewController:copyViewController2];
   }
 
-  v9 = [a3 valueForMetadataKey:@"presentation"];
+  v9 = [context valueForMetadataKey:@"presentation"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -319,7 +319,7 @@
   }
 
   backViewController = self->_backViewController;
-  v11 = [a3 valueForMetadataKey:@"on-front"];
+  v11 = [context valueForMetadataKey:@"on-front"];
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v11 BOOLValue])
   {
     backViewController = self->_frontViewController;
@@ -328,43 +328,43 @@
   [(SUOverlayViewController *)self _setActiveViewController:backViewController updateInterface:1];
   v12.receiver = self;
   v12.super_class = SUOverlayViewController;
-  [(SUViewController *)&v12 restoreArchivableContext:a3];
+  [(SUViewController *)&v12 restoreArchivableContext:context];
 }
 
 - (BOOL)shouldExcludeFromNavigationHistory
 {
   v9.receiver = self;
   v9.super_class = SUOverlayViewController;
-  v3 = [(SUViewController *)&v9 shouldExcludeFromNavigationHistory];
+  shouldExcludeFromNavigationHistory = [(SUViewController *)&v9 shouldExcludeFromNavigationHistory];
   v4 = objc_opt_respondsToSelector();
-  v5 = v4 | v3;
-  if ((v4 & 1) != 0 && (v3 & 1) == 0)
+  shouldExcludeFromNavigationHistory2 = v4 | shouldExcludeFromNavigationHistory;
+  if ((v4 & 1) != 0 && (shouldExcludeFromNavigationHistory & 1) == 0)
   {
-    v5 = [(UIViewController *)self->_backViewController shouldExcludeFromNavigationHistory];
+    shouldExcludeFromNavigationHistory2 = [(UIViewController *)self->_backViewController shouldExcludeFromNavigationHistory];
   }
 
   v6 = objc_opt_respondsToSelector();
-  v7 = v6 | v5;
-  if ((v6 & 1) != 0 && (v5 & 1) == 0)
+  shouldExcludeFromNavigationHistory3 = v6 | shouldExcludeFromNavigationHistory2;
+  if ((v6 & 1) != 0 && (shouldExcludeFromNavigationHistory2 & 1) == 0)
   {
-    v7 = [(UIViewController *)self->_frontViewController shouldExcludeFromNavigationHistory];
+    shouldExcludeFromNavigationHistory3 = [(UIViewController *)self->_frontViewController shouldExcludeFromNavigationHistory];
   }
 
-  return v7 & 1;
+  return shouldExcludeFromNavigationHistory3 & 1;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUOverlayViewController *)self _setShadowVisible:1];
   v5.receiver = self;
   v5.super_class = SUOverlayViewController;
-  [(SUViewController *)&v5 viewDidAppear:v3];
+  [(SUViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if ([(SUOverlayViewController *)self isViewLoaded])
   {
     subviewContainerView = self->_subviewContainerView;
@@ -389,30 +389,30 @@
 
   v8.receiver = self;
   v8.super_class = SUOverlayViewController;
-  [(SUViewController *)&v8 viewDidDisappear:v3];
+  [(SUViewController *)&v8 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUOverlayViewController *)self _activeViewController];
   [(SUOverlayViewController *)self _tearDownTouchCaptureView];
   v5.receiver = self;
   v5.super_class = SUOverlayViewController;
-  [(SUViewController *)&v5 viewWillAppear:v3];
+  [(SUViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)imagePageViewTapped:(id)a3
+- (void)imagePageViewTapped:(id)tapped
 {
-  v4 = [(SUOverlayViewController *)self _flipTransition];
+  _flipTransition = [(SUOverlayViewController *)self _flipTransition];
 
-  [(SUOverlayViewController *)self flipWithTransition:v4];
+  [(SUOverlayViewController *)self flipWithTransition:_flipTransition];
 }
 
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success
 {
-  v4 = a4;
-  if ([a3 isDescendantOfViewController:self->_backViewController])
+  successCopy = success;
+  if ([page isDescendantOfViewController:self->_backViewController])
   {
     v7 = self->_state & 0xFFFFFFFFFFFFFFFDLL;
     v8 = 2;
@@ -420,7 +420,7 @@
 
   else
   {
-    v9 = [a3 isDescendantOfViewController:self->_frontViewController];
+    v9 = [page isDescendantOfViewController:self->_frontViewController];
     state = self->_state;
     if (!v9)
     {
@@ -431,7 +431,7 @@
     v8 = 4;
   }
 
-  if (v4)
+  if (successCopy)
   {
     v8 = 0;
   }
@@ -440,30 +440,30 @@
   self->_state = state;
 LABEL_8:
   self->_state = state & 0xFFFFFFFFFFFFFFFELL;
-  if (!v4)
+  if (!successCopy)
   {
-    v11 = [(SUOverlayViewController *)self _flipTransition];
+    _flipTransition = [(SUOverlayViewController *)self _flipTransition];
 
-    [(SUOverlayViewController *)self flipWithTransition:v11];
+    [(SUOverlayViewController *)self flipWithTransition:_flipTransition];
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  [(SUOverlayViewController *)self _overlayAnimationDidFinish:a3];
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
+  [(SUOverlayViewController *)self _overlayAnimationDidFinish:stop];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-  [v4 endIgnoringInteractionEvents];
+  [mEMORY[0x1E69DC668] endIgnoringInteractionEvents];
 }
 
-- (void)_touchCaptureAction:(id)a3
+- (void)_touchCaptureAction:(id)action
 {
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
 
-  [v4 sendAction:sel_overlayPageViewTapped_ to:0 from:self forEvent:0];
+  [mEMORY[0x1E69DC668] sendAction:sel_overlayPageViewTapped_ to:0 from:self forEvent:0];
 }
 
-- (void)_enqueueAction:(id)a3
+- (void)_enqueueAction:(id)action
 {
   actionQueue = self->_actionQueue;
   if (!actionQueue)
@@ -472,7 +472,7 @@ LABEL_8:
     self->_actionQueue = actionQueue;
   }
 
-  [(NSMutableArray *)actionQueue addObject:a3];
+  [(NSMutableArray *)actionQueue addObject:action];
   if ([(NSMutableArray *)self->_actionQueue count]== 1)
   {
 
@@ -480,20 +480,20 @@ LABEL_8:
   }
 }
 
-- (void)_finishFlipAction:(id)a3
+- (void)_finishFlipAction:(id)action
 {
-  v5 = [a3 viewController];
+  viewController = [action viewController];
   backViewController = self->_backViewController;
-  if (v5 == backViewController)
+  if (viewController == backViewController)
   {
     backViewController = self->_frontViewController;
   }
 
-  v7 = [objc_msgSend(a3 "transition")];
+  v7 = [objc_msgSend(action "transition")];
   if ([(SUOverlayViewController *)self isViewLoaded])
   {
     v8 = v7 == 1;
-    [(UIViewController *)v5 viewDidDisappear:v8];
+    [(UIViewController *)viewController viewDidDisappear:v8];
     [(UIViewController *)backViewController viewDidAppear:v8];
     if (self->_touchCaptureView)
     {
@@ -503,9 +503,9 @@ LABEL_8:
     [(SUOverlayViewController *)self _setShadowVisible:1];
   }
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v9 postNotificationName:@"SUOverlayDidFlipNotification" object:self];
+  [defaultCenter postNotificationName:@"SUOverlayDidFlipNotification" object:self];
 }
 
 - (void)_overlayActionDidFinish
@@ -524,26 +524,26 @@ LABEL_8:
 - (void)_overlayAnimationDidFinish
 {
   v3 = [(NSMutableArray *)self->_actionQueue objectAtIndex:0];
-  v4 = [v3 animationCount];
-  v5 = v4 - 1;
-  if (v4 >= 1)
+  animationCount = [v3 animationCount];
+  v5 = animationCount - 1;
+  if (animationCount >= 1)
   {
     [v3 setAnimationCount:v5];
-    v4 = v5;
+    animationCount = v5;
   }
 
-  if (!v4)
+  if (!animationCount)
   {
 
     [(SUOverlayViewController *)self _overlayActionDidFinish];
   }
 }
 
-- (void)_performFlipAction:(id)a3
+- (void)_performFlipAction:(id)action
 {
-  v5 = [a3 viewController];
+  viewController = [action viewController];
   frontViewController = self->_frontViewController;
-  if (v5 == frontViewController)
+  if (viewController == frontViewController)
   {
     frontViewController = self->_backViewController;
   }
@@ -552,7 +552,7 @@ LABEL_8:
   if (([(SUOverlayViewController *)self isViewLoaded]& 1) != 0)
   {
 
-    [(SUOverlayViewController *)self _performFlipTransitionAction:a3];
+    [(SUOverlayViewController *)self _performFlipTransitionAction:action];
   }
 
   else
@@ -562,12 +562,12 @@ LABEL_8:
   }
 }
 
-- (void)_performFlipTransitionAction:(id)a3
+- (void)_performFlipTransitionAction:(id)action
 {
-  v5 = [a3 transition];
-  v6 = [a3 viewController];
+  transition = [action transition];
+  viewController = [action viewController];
   frontViewController = self->_frontViewController;
-  if (v6 == frontViewController)
+  if (viewController == frontViewController)
   {
     frontViewController = self->_backViewController;
     v8 = @"fromRight";
@@ -578,34 +578,34 @@ LABEL_8:
     v8 = @"fromLeft";
   }
 
-  v9 = [v5 type];
+  type = [transition type];
   self->_state = self->_state & 0xFFFFFFFFFFFFFFFELL | [(SUOverlayViewController *)self _isControllerLoaded:frontViewController]^ 1;
-  v10 = v9 == 1;
-  [(UIViewController *)v6 viewWillDisappear:v10];
+  v10 = type == 1;
+  [(UIViewController *)viewController viewWillDisappear:v10];
   [(UIViewController *)frontViewController viewWillAppear:v10];
   subviewContainerView = self->_subviewContainerView;
-  v12 = [(UIViewController *)frontViewController view];
+  view = [(UIViewController *)frontViewController view];
   [(SUMaskedView *)subviewContainerView bounds];
-  [(UIView *)v12 setFrame:?];
-  if ([v5 type] == 1)
+  [(UIView *)view setFrame:?];
+  if ([transition type] == 1)
   {
-    v13 = [MEMORY[0x1E6979538] animation];
-    [v13 setDelegate:self];
-    [v5 duration];
+    animation = [MEMORY[0x1E6979538] animation];
+    [animation setDelegate:self];
+    [transition duration];
     v15 = v14;
     UIAnimationDragCoefficient();
-    [v13 setDuration:v15 * v16];
-    [v13 setFillMode:*MEMORY[0x1E69797E8]];
-    [v13 setSubtype:v8];
-    [v13 setType:@"oglFlip"];
-    [v13 setTimingFunction:{objc_msgSend(MEMORY[0x1E69793D0], "functionWithName:", *MEMORY[0x1E6979EB8])}];
+    [animation setDuration:v15 * v16];
+    [animation setFillMode:*MEMORY[0x1E69797E8]];
+    [animation setSubtype:v8];
+    [animation setType:@"oglFlip"];
+    [animation setTimingFunction:{objc_msgSend(MEMORY[0x1E69793D0], "functionWithName:", *MEMORY[0x1E6979EB8])}];
     [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
     [MEMORY[0x1E6979518] begin];
     [(SUOverlayViewController *)self _setShadowVisible:0];
-    [[(UIViewController *)v6 view] removeFromSuperview];
+    [[(UIViewController *)viewController view] removeFromSuperview];
     [-[SUMaskedView layer](subviewContainerView "layer")];
-    [(SUMaskedView *)subviewContainerView addSubview:v12];
-    [a3 setAnimationCount:1];
+    [(SUMaskedView *)subviewContainerView addSubview:view];
+    [action setAnimationCount:1];
     v17 = MEMORY[0x1E6979518];
 
     [v17 commit];
@@ -613,9 +613,9 @@ LABEL_8:
 
   else
   {
-    [[(UIViewController *)v6 view] removeFromSuperview];
-    [(SUMaskedView *)subviewContainerView addSubview:v12];
-    [(UIViewController *)v6 viewDidDisappear:0];
+    [[(UIViewController *)viewController view] removeFromSuperview];
+    [(SUMaskedView *)subviewContainerView addSubview:view];
+    [(UIViewController *)viewController viewDidDisappear:0];
     [(UIViewController *)frontViewController viewDidAppear:0];
 
     [(SUOverlayViewController *)self _overlayActionDidFinish];
@@ -667,28 +667,28 @@ LABEL_8:
       [v3 setShadowOpacity:shadowOpacity];
     }
 
-    v6 = [(SUMaskedView *)self->_subviewContainerView copyMaskPath];
-    [v3 setShadowPath:v6];
-    if (v6)
+    copyMaskPath = [(SUMaskedView *)self->_subviewContainerView copyMaskPath];
+    [v3 setShadowPath:copyMaskPath];
+    if (copyMaskPath)
     {
 
-      CGPathRelease(v6);
+      CGPathRelease(copyMaskPath);
     }
   }
 }
 
-- (void)_applyOverlayConfiguration:(id)a3
+- (void)_applyOverlayConfiguration:(id)configuration
 {
-  v5 = [a3 cornerRadius];
-  if (v5 >= 1)
+  cornerRadius = [configuration cornerRadius];
+  if (cornerRadius >= 1)
   {
-    v6 = v5;
+    v6 = cornerRadius;
     v7 = objc_alloc_init(SURoundedCornersMaskProvider);
     [(SURoundedCornersMaskProvider *)v7 setCornerRadius:v6];
     [(SUOverlayViewController *)self setMaskProvider:v7];
   }
 
-  [a3 size];
+  [configuration size];
   if (v9 > 0.00000011920929)
   {
     self->_overlaySize.height = v9;
@@ -713,12 +713,12 @@ LABEL_8:
   return lastFlipTransition;
 }
 
-- (BOOL)_isControllerLoaded:(id)a3
+- (BOOL)_isControllerLoaded:(id)loaded
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a3 = [a3 navigationController];
+    loaded = [loaded navigationController];
   }
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -726,16 +726,16 @@ LABEL_8:
     return 0;
   }
 
-  return [a3 isSkLoaded];
+  return [loaded isSkLoaded];
 }
 
-- (void)_setActiveViewController:(id)a3 updateInterface:(BOOL)a4
+- (void)_setActiveViewController:(id)controller updateInterface:(BOOL)interface
 {
   activeViewController = self->_activeViewController;
-  if (activeViewController != a3)
+  if (activeViewController != controller)
   {
-    v6 = a4;
-    if (a4)
+    interfaceCopy = interface;
+    if (interface)
     {
       if ([(UIViewController *)self->_activeViewController isViewLoaded])
       {
@@ -752,20 +752,20 @@ LABEL_8:
       [(SUOverlayViewController *)self removeChildViewController:?];
     }
 
-    self->_activeViewController = a3;
-    if (a3)
+    self->_activeViewController = controller;
+    if (controller)
     {
-      [(SUOverlayViewController *)self addChildViewController:a3];
-      if (v6)
+      [(SUOverlayViewController *)self addChildViewController:controller];
+      if (interfaceCopy)
       {
         if ([(SUOverlayViewController *)self isViewLoaded])
         {
           [(UIViewController *)self->_activeViewController viewWillAppear:0];
-          v8 = [(UIViewController *)self->_activeViewController view];
+          view = [(UIViewController *)self->_activeViewController view];
           subviewContainerView = self->_subviewContainerView;
           [(SUMaskedView *)subviewContainerView bounds];
-          [(UIView *)v8 setFrame:?];
-          [(SUMaskedView *)subviewContainerView addSubview:v8];
+          [(UIView *)view setFrame:?];
+          [(SUMaskedView *)subviewContainerView addSubview:view];
           v10 = self->_activeViewController;
 
           [(UIViewController *)v10 viewDidAppear:0];
@@ -775,11 +775,11 @@ LABEL_8:
   }
 }
 
-- (void)_setShadowVisible:(BOOL)a3
+- (void)_setShadowVisible:(BOOL)visible
 {
   v5 = [-[SUOverlayViewController view](self "view")];
   v6 = v5;
-  if (a3)
+  if (visible)
   {
     [v5 setShadowOffset:{0.0, 10.0}];
 

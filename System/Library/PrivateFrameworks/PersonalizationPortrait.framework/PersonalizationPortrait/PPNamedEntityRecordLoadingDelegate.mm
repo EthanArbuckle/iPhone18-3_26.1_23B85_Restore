@@ -1,9 +1,9 @@
 @interface PPNamedEntityRecordLoadingDelegate
-- (PPNamedEntityRecordLoadingDelegate)initWithName:(id)a3;
+- (PPNamedEntityRecordLoadingDelegate)initWithName:(id)name;
 - (id)description;
-- (unsigned)recentRecordLoadingHandler:(id)a3;
+- (unsigned)recentRecordLoadingHandler:(id)handler;
 - (unsigned)recentRecordLoadingSetup;
-- (unsigned)recordLoadingHandler:(id)a3;
+- (unsigned)recordLoadingHandler:(id)handler;
 - (unsigned)recordLoadingSetup;
 - (void)recentRecordLoadingCompletion;
 - (void)recordLoadingCompletion;
@@ -30,12 +30,12 @@
   }
 }
 
-- (unsigned)recentRecordLoadingHandler:(id)a3
+- (unsigned)recentRecordLoadingHandler:(id)handler
 {
   recentNamedEntityRecordsHandler = self->_recentNamedEntityRecordsHandler;
   if (recentNamedEntityRecordsHandler)
   {
-    LOBYTE(recentNamedEntityRecordsHandler) = recentNamedEntityRecordsHandler[2](recentNamedEntityRecordsHandler, a3);
+    LOBYTE(recentNamedEntityRecordsHandler) = recentNamedEntityRecordsHandler[2](recentNamedEntityRecordsHandler, handler);
   }
 
   return recentNamedEntityRecordsHandler;
@@ -61,12 +61,12 @@
   }
 }
 
-- (unsigned)recordLoadingHandler:(id)a3
+- (unsigned)recordLoadingHandler:(id)handler
 {
   namedEntityRecordsHandler = self->_namedEntityRecordsHandler;
   if (namedEntityRecordsHandler)
   {
-    LOBYTE(namedEntityRecordsHandler) = namedEntityRecordsHandler[2](namedEntityRecordsHandler, a3);
+    LOBYTE(namedEntityRecordsHandler) = namedEntityRecordsHandler[2](namedEntityRecordsHandler, handler);
   }
 
   return namedEntityRecordsHandler;
@@ -92,11 +92,11 @@
   return v2;
 }
 
-- (PPNamedEntityRecordLoadingDelegate)initWithName:(id)a3
+- (PPNamedEntityRecordLoadingDelegate)initWithName:(id)name
 {
   v4.receiver = self;
   v4.super_class = PPNamedEntityRecordLoadingDelegate;
-  return [(PPRecordLoadingDelegate *)&v4 initWithName:a3];
+  return [(PPRecordLoadingDelegate *)&v4 initWithName:name];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface SGBloomFilter
-- (BOOL)exists:(id)a3;
-- (SGBloomFilter)initWithDirectory:(id)a3 name:(id)a4;
-- (SGBloomFilter)initWithHead:(id)a3 tail:(id)a4;
+- (BOOL)exists:(id)exists;
+- (SGBloomFilter)initWithDirectory:(id)directory name:(id)name;
+- (SGBloomFilter)initWithHead:(id)head tail:(id)tail;
 - (SGBloomFilter)initWithInMemoryStorage;
 - (SGBloomFilter)initWithInMemoryStorageSparse;
 - (id)counts;
 - (void)_rotate;
 - (void)_rotateIfNecessary;
-- (void)add:(id)a3;
-- (void)addAsync:(id)a3;
+- (void)add:(id)add;
+- (void)addAsync:(id)async;
 - (void)forceRotate;
 @end
 
@@ -47,12 +47,12 @@ void __23__SGBloomFilter_counts__block_invoke(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-- (BOOL)exists:(id)a3
+- (BOOL)exists:(id)exists
 {
   v13 = *MEMORY[0x277D85DE8];
   v9 = 0;
   v10 = 0;
-  SGMurmurhashString(a3, 12345, &v9);
+  SGMurmurhashString(exists, 12345, &v9);
   v4 = v9;
   v9 = 0;
   v10 = &v9;
@@ -89,17 +89,17 @@ uint64_t __24__SGBloomFilter_exists___block_invoke(void *a1)
   return result;
 }
 
-- (void)addAsync:(id)a3
+- (void)addAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26__SGBloomFilter_addAsync___block_invoke;
   v7[3] = &unk_278955830;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = asyncCopy;
+  v6 = asyncCopy;
   dispatch_async(queue, v7);
 }
 
@@ -118,17 +118,17 @@ uint64_t __26__SGBloomFilter_addAsync___block_invoke(uint64_t a1)
   return [v3 add:v4];
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v4 = a3;
+  addCopy = add;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __21__SGBloomFilter_add___block_invoke;
   v7[3] = &unk_278955830;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = addCopy;
+  v6 = addCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -186,35 +186,35 @@ uint64_t __21__SGBloomFilter_add___block_invoke(uint64_t a1)
 
   v8 = v7;
   v9 = self->_tail;
-  v10 = [(SGBloomFilterChunk *)v8 path];
-  v11 = [(SGBloomFilterChunk *)v9 path];
-  v12 = [v10 hasSuffix:@".bf-head"];
+  path = [(SGBloomFilterChunk *)v8 path];
+  path2 = [(SGBloomFilterChunk *)v9 path];
+  v12 = [path hasSuffix:@".bf-head"];
   if (v12)
   {
     v13 = v9;
     v14 = objc_autoreleasePoolPush();
-    v15 = [v10 substringToIndex:{objc_msgSend(v10, "length") - 8}];
+    v15 = [path substringToIndex:{objc_msgSend(path, "length") - 8}];
     v16 = [v15 stringByAppendingString:@".bf2-head"];
-    v17 = v10;
-    v18 = v11;
+    v17 = path;
+    v18 = path2;
   }
 
   else
   {
-    if (![v11 hasSuffix:@".bf-tail"])
+    if (![path2 hasSuffix:@".bf-tail"])
     {
       v22 = 0;
-      v18 = v11;
-      v21 = v10;
+      v18 = path2;
+      v21 = path;
       goto LABEL_11;
     }
 
     v13 = v9;
     v14 = objc_autoreleasePoolPush();
-    v15 = [v11 substringToIndex:{objc_msgSend(v11, "length") - 8}];
+    v15 = [path2 substringToIndex:{objc_msgSend(path2, "length") - 8}];
     v18 = [v15 stringByAppendingString:@".bf2-tail"];
-    v17 = v11;
-    v16 = v10;
+    v17 = path2;
+    v16 = path;
   }
 
   objc_autoreleasePoolPop(v14);
@@ -225,9 +225,9 @@ uint64_t __21__SGBloomFilter_add___block_invoke(uint64_t a1)
 LABEL_11:
   [(SGBloomFilterChunk *)v8 close];
   [(SGBloomFilterChunk *)v9 close];
-  v23 = [v10 UTF8String];
-  v24 = [v18 UTF8String];
-  rename(v23, v24, v25);
+  uTF8String = [path UTF8String];
+  uTF8String2 = [v18 UTF8String];
+  rename(uTF8String, uTF8String2, v25);
   if (v26)
   {
     v27 = sgLogHandle();
@@ -244,14 +244,14 @@ LABEL_11:
     }
   }
 
-  if (v22 && unlink([v11 UTF8String]))
+  if (v22 && unlink([path2 UTF8String]))
   {
     v28 = sgLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       v35 = *__error();
       v36 = 138412546;
-      v37 = v11;
+      v37 = path2;
       v38 = 1024;
       LODWORD(v39) = v35;
       _os_log_error_impl(&dword_231E60000, v28, OS_LOG_TYPE_ERROR, "Could not unlink %@: errno=%i", &v36, 0x12u);
@@ -279,15 +279,15 @@ LABEL_21:
   }
 }
 
-- (SGBloomFilter)initWithDirectory:(id)a3 name:(id)a4
+- (SGBloomFilter)initWithDirectory:(id)directory name:(id)name
 {
   v69 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  directoryCopy = directory;
+  nameCopy = name;
+  v9 = nameCopy;
+  if (directoryCopy)
   {
-    if (v8)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -295,8 +295,8 @@ LABEL_21:
 
   else
   {
-    v52 = [MEMORY[0x277CCA890] currentHandler];
-    [v52 handleFailureInMethod:a2 object:self file:@"SGBloomFilter.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"dirPath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGBloomFilter.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"dirPath"}];
 
     if (v9)
     {
@@ -304,8 +304,8 @@ LABEL_21:
     }
   }
 
-  v53 = [MEMORY[0x277CCA890] currentHandler];
-  [v53 handleFailureInMethod:a2 object:self file:@"SGBloomFilter.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGBloomFilter.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
 LABEL_3:
   if (initWithDirectory_name__onceToken != -1)
@@ -313,15 +313,15 @@ LABEL_3:
     dispatch_once(&initWithDirectory_name__onceToken, &__block_literal_global_12874);
   }
 
-  v10 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:v7 second:v9];
+  v10 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:directoryCopy second:v9];
   pthread_mutex_lock(&initWithDirectory_name__lock);
   v11 = [initWithDirectory_name__instances objectForKey:v10];
   if (!v11)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v64 = 0;
-    v15 = [v14 contentsOfDirectoryAtPath:v7 error:&v64];
+    v15 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:&v64];
     v16 = v64;
 
     if (!v15)
@@ -330,7 +330,7 @@ LABEL_3:
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v66 = v7;
+        v66 = directoryCopy;
         v67 = 2112;
         v68 = v16;
         _os_log_error_impl(&dword_231E60000, v35, OS_LOG_TYPE_ERROR, "Error listing contents of directory %@: %@", buf, 0x16u);
@@ -341,7 +341,7 @@ LABEL_3:
     }
 
     v58 = v13;
-    v54 = self;
+    selfCopy = self;
     v17 = v16;
     v18 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v15];
     v19 = [v9 stringByAppendingString:@".bf-head"];
@@ -385,16 +385,16 @@ LABEL_3:
       {
         v62 = v29;
 
-        v31 = [v7 stringByAppendingPathComponent:v20];
+        v31 = [directoryCopy stringByAppendingPathComponent:v20];
         v32 = unlink([v31 UTF8String]);
 
-        v33 = v54;
+        v33 = selfCopy;
         if (v32)
         {
           v34 = sgLogHandle();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
           {
-            v48 = [v7 stringByAppendingPathComponent:v20];
+            v48 = [directoryCopy stringByAppendingPathComponent:v20];
             v49 = *__error();
             *buf = 138412546;
             v66 = v48;
@@ -417,7 +417,7 @@ LABEL_3:
       v30 = v17;
     }
 
-    v33 = v54;
+    v33 = selfCopy;
 LABEL_27:
     v56 = v30;
     v57 = v15;
@@ -425,7 +425,7 @@ LABEL_27:
     {
       v36 = v61;
 
-      v37 = [v7 stringByAppendingPathComponent:v63];
+      v37 = [directoryCopy stringByAppendingPathComponent:v63];
       v38 = unlink([v37 UTF8String]);
 
       if (v38)
@@ -433,7 +433,7 @@ LABEL_27:
         v39 = sgLogHandle();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
-          v50 = [v7 stringByAppendingPathComponent:v63];
+          v50 = [directoryCopy stringByAppendingPathComponent:v63];
           v51 = *__error();
           *buf = 138412546;
           v66 = v50;
@@ -450,10 +450,10 @@ LABEL_27:
     }
 
     v40 = [SGBloomFilterChunkMmap alloc];
-    v41 = [v7 stringByAppendingPathComponent:v36];
+    v41 = [directoryCopy stringByAppendingPathComponent:v36];
     v42 = [(SGBloomFilterChunkMmap *)v40 initWithPath:v41];
     v43 = [SGBloomFilterChunkMmap alloc];
-    v44 = [v7 stringByAppendingPathComponent:v62];
+    v44 = [directoryCopy stringByAppendingPathComponent:v62];
     v45 = [(SGBloomFilterChunkMmap *)v43 initWithPath:v44];
     v12 = [(SGBloomFilter *)v33 initWithHead:v42 tail:v45];
 
@@ -510,18 +510,18 @@ uint64_t __40__SGBloomFilter_initWithDirectory_name___block_invoke()
   return v5;
 }
 
-- (SGBloomFilter)initWithHead:(id)a3 tail:(id)a4
+- (SGBloomFilter)initWithHead:(id)head tail:(id)tail
 {
-  v7 = a3;
-  v8 = a4;
+  headCopy = head;
+  tailCopy = tail;
   v15.receiver = self;
   v15.super_class = SGBloomFilter;
   v9 = [(SGBloomFilter *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_head, a3);
-    objc_storeStrong(&v10->_tail, a4);
+    objc_storeStrong(&v9->_head, head);
+    objc_storeStrong(&v10->_tail, tail);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.suggestions.SGBloomFilter", v11);
     queue = v10->_queue;

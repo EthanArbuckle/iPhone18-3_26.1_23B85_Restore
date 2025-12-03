@@ -1,26 +1,26 @@
 @interface WFRunningProgressSuppressionStateMachine
 - (WFRunningProgressSuppressionStateMachineDelegate)delegate;
-- (void)decideRunningProgressIsAllowed:(BOOL)a3 withReason:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)startedRunningAction:(id)a3 inShortcut:(id)a4;
-- (void)startedRunningShortcut:(id)a3 withDialogAttribution:(id)a4;
+- (void)decideRunningProgressIsAllowed:(BOOL)allowed withReason:(id)reason;
+- (void)setDelegate:(id)delegate;
+- (void)startedRunningAction:(id)action inShortcut:(id)shortcut;
+- (void)startedRunningShortcut:(id)shortcut withDialogAttribution:(id)attribution;
 @end
 
 @implementation WFRunningProgressSuppressionStateMachine
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1CA282EF4();
 }
 
-- (void)startedRunningShortcut:(id)a3 withDialogAttribution:(id)a4
+- (void)startedRunningShortcut:(id)shortcut withDialogAttribution:(id)attribution
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1CA28C8D4(v6, v7);
+  shortcutCopy = shortcut;
+  attributionCopy = attribution;
+  selfCopy = self;
+  sub_1CA28C8D4(shortcutCopy, attributionCopy);
 }
 
 - (WFRunningProgressSuppressionStateMachineDelegate)delegate
@@ -30,19 +30,19 @@
   return v2;
 }
 
-- (void)startedRunningAction:(id)a3 inShortcut:(id)a4
+- (void)startedRunningAction:(id)action inShortcut:(id)shortcut
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1CA6304C0(v6, v7);
+  actionCopy = action;
+  shortcutCopy = shortcut;
+  selfCopy = self;
+  sub_1CA6304C0(actionCopy, shortcutCopy);
 }
 
-- (void)decideRunningProgressIsAllowed:(BOOL)a3 withReason:(id)a4
+- (void)decideRunningProgressIsAllowed:(BOOL)allowed withReason:(id)reason
 {
   sub_1CA94C3A8();
-  v6 = self;
-  sub_1CA28C7C4(a3);
+  selfCopy = self;
+  sub_1CA28C7C4(allowed);
 }
 
 @end

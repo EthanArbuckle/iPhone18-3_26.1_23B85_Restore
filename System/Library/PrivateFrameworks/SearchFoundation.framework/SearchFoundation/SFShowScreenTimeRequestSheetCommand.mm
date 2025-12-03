@@ -1,12 +1,12 @@
 @interface SFShowScreenTimeRequestSheetCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFShowScreenTimeRequestSheetCommand)initWithCoder:(id)a3;
-- (SFShowScreenTimeRequestSheetCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFShowScreenTimeRequestSheetCommand)initWithCoder:(id)coder;
+- (SFShowScreenTimeRequestSheetCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFShowScreenTimeRequestSheetCommand
@@ -16,38 +16,38 @@
   v7.receiver = self;
   v7.super_class = SFShowScreenTimeRequestSheetCommand;
   v3 = [(SFCommand *)&v7 hash];
-  v4 = [(SFShowScreenTimeRequestSheetCommand *)self requestIdentifier];
-  v5 = [v4 hash];
+  requestIdentifier = [(SFShowScreenTimeRequestSheetCommand *)self requestIdentifier];
+  v5 = [requestIdentifier hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFShowScreenTimeRequestSheetCommand *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFShowScreenTimeRequestSheetCommand, [(SFCommand *)&v13 isEqual:v4]))
+  else if ([(SFShowScreenTimeRequestSheetCommand *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFShowScreenTimeRequestSheetCommand, [(SFCommand *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFShowScreenTimeRequestSheetCommand *)self requestIdentifier];
-    v7 = [(SFShowScreenTimeRequestSheetCommand *)v5 requestIdentifier];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    requestIdentifier = [(SFShowScreenTimeRequestSheetCommand *)self requestIdentifier];
+    requestIdentifier2 = [(SFShowScreenTimeRequestSheetCommand *)v5 requestIdentifier];
+    if ((requestIdentifier != 0) == (requestIdentifier2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFShowScreenTimeRequestSheetCommand *)self requestIdentifier];
-      if (v8)
+      requestIdentifier3 = [(SFShowScreenTimeRequestSheetCommand *)self requestIdentifier];
+      if (requestIdentifier3)
       {
-        v9 = [(SFShowScreenTimeRequestSheetCommand *)self requestIdentifier];
-        v10 = [(SFShowScreenTimeRequestSheetCommand *)v5 requestIdentifier];
-        v11 = [v9 isEqual:v10];
+        requestIdentifier4 = [(SFShowScreenTimeRequestSheetCommand *)self requestIdentifier];
+        requestIdentifier5 = [(SFShowScreenTimeRequestSheetCommand *)v5 requestIdentifier];
+        v11 = [requestIdentifier4 isEqual:requestIdentifier5];
       }
 
       else
@@ -65,13 +65,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFShowScreenTimeRequestSheetCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFShowScreenTimeRequestSheetCommand *)self requestIdentifier];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  requestIdentifier = [(SFShowScreenTimeRequestSheetCommand *)self requestIdentifier];
+  v6 = [requestIdentifier copy];
   [v4 setRequestIdentifier:v6];
 
   return v4;
@@ -80,70 +80,70 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBShowScreenTimeRequestSheetCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBShowScreenTimeRequestSheetCommand *)v2 jsonData];
+  jsonData = [(_SFPBShowScreenTimeRequestSheetCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBShowScreenTimeRequestSheetCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBShowScreenTimeRequestSheetCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBShowScreenTimeRequestSheetCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFShowScreenTimeRequestSheetCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFShowScreenTimeRequestSheetCommand)initWithCoder:(id)a3
+- (SFShowScreenTimeRequestSheetCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFShowScreenTimeRequestSheetCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 requestIdentifier];
-    [(SFShowScreenTimeRequestSheetCommand *)v5 setRequestIdentifier:v9];
+    requestIdentifier = [(SFCommand *)v8 requestIdentifier];
+    [(SFShowScreenTimeRequestSheetCommand *)v5 setRequestIdentifier:requestIdentifier];
 
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFShowScreenTimeRequestSheetCommand)initWithProtobuf:(id)a3
+- (SFShowScreenTimeRequestSheetCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFShowScreenTimeRequestSheetCommand;
   v5 = [(SFShowScreenTimeRequestSheetCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 requestIdentifier];
+    requestIdentifier = [protobufCopy requestIdentifier];
 
-    if (v6)
+    if (requestIdentifier)
     {
-      v7 = [v4 requestIdentifier];
-      [(SFShowScreenTimeRequestSheetCommand *)v5 setRequestIdentifier:v7];
+      requestIdentifier2 = [protobufCopy requestIdentifier];
+      [(SFShowScreenTimeRequestSheetCommand *)v5 setRequestIdentifier:requestIdentifier2];
     }
 
     v8 = v5;

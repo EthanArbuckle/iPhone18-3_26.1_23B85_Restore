@@ -1,11 +1,11 @@
 @interface NPHMagicRingbackAutomaton
 + (BOOL)shouldNotFlipMute;
 - (NPHMagicRingbackAutomaton)init;
-- (void)_flipMuteForCall:(id)a3;
-- (void)_flipMuteForCall:(id)a3 and:(id)a4;
-- (void)setCurrentIncomingCallRequest:(id)a3;
-- (void)setCurrentOutgoingCallResponse:(id)a3;
-- (void)stateManager:(id)a3 callConfigurationUpdated:(id)a4;
+- (void)_flipMuteForCall:(id)call;
+- (void)_flipMuteForCall:(id)call and:(id)and;
+- (void)setCurrentIncomingCallRequest:(id)request;
+- (void)setCurrentOutgoingCallResponse:(id)response;
+- (void)stateManager:(id)manager callConfigurationUpdated:(id)updated;
 @end
 
 @implementation NPHMagicRingbackAutomaton
@@ -25,17 +25,17 @@
   return v2;
 }
 
-- (void)stateManager:(id)a3 callConfigurationUpdated:(id)a4
+- (void)stateManager:(id)manager callConfigurationUpdated:(id)updated
 {
-  v5 = a4;
-  v6 = [(NPHMagicRingbackAutomaton *)self currentOutgoingCallResponse];
+  updatedCopy = updated;
+  currentOutgoingCallResponse = [(NPHMagicRingbackAutomaton *)self currentOutgoingCallResponse];
 
-  if (v6)
+  if (currentOutgoingCallResponse)
   {
-    v7 = [(NPHMagicRingbackAutomaton *)self currentOutgoingCallResponse];
-    v8 = [v7 status];
+    currentOutgoingCallResponse2 = [(NPHMagicRingbackAutomaton *)self currentOutgoingCallResponse];
+    status = [currentOutgoingCallResponse2 status];
 
-    if (v8 == 6)
+    if (status == 6)
     {
       [(NPHMagicRingbackAutomaton *)self setCurrentOutgoingCallResponse:0];
     }
@@ -43,27 +43,27 @@
 
   else
   {
-    v9 = [(NPHMagicRingbackAutomaton *)self currentIncomingCallRequest];
+    currentIncomingCallRequest = [(NPHMagicRingbackAutomaton *)self currentIncomingCallRequest];
 
-    if (v9)
+    if (currentIncomingCallRequest)
     {
-      v10 = [(NPHMagicRingbackAutomaton *)self currentIncomingCallRequest];
-      v11 = [v10 status];
+      currentIncomingCallRequest2 = [(NPHMagicRingbackAutomaton *)self currentIncomingCallRequest];
+      status2 = [currentIncomingCallRequest2 status];
 
-      if (v11 == 6)
+      if (status2 == 6)
       {
-        v12 = [(NPHMagicRingbackAutomaton *)self currentIncomingCallRequest];
-        v13 = [v12 disconnectedReason];
+        currentIncomingCallRequest3 = [(NPHMagicRingbackAutomaton *)self currentIncomingCallRequest];
+        disconnectedReason = [currentIncomingCallRequest3 disconnectedReason];
 
-        if (v13 == 6)
+        if (disconnectedReason == 6)
         {
           v14 = [NPHCall alloc];
           v15 = objc_opt_new();
           v16 = [(NPHCall *)v14 initWithTUCall:v15];
           [(NPHMagicRingbackAutomaton *)self setCurrentOutgoingCallResponse:v16];
 
-          v17 = [(NPHMagicRingbackAutomaton *)self currentIncomingCallRequest];
-          v18 = [v17 redialPrompt];
+          currentIncomingCallRequest4 = [(NPHMagicRingbackAutomaton *)self currentIncomingCallRequest];
+          redialPrompt = [currentIncomingCallRequest4 redialPrompt];
 
           v19 = +[NSUserDefaults standardUserDefaults];
           [v19 doubleForKey:@"NPHMagicRingbackAutomatonCallBackDelay"];
@@ -74,7 +74,7 @@
           v31[1] = 3221225472;
           v31[2] = sub_100007F58;
           v31[3] = &unk_1000148D8;
-          v31[4] = v18;
+          v31[4] = redialPrompt;
           v31[5] = self;
           dispatch_after(v22, &_dispatch_main_q, v31);
         }
@@ -85,32 +85,32 @@
 
     else
     {
-      v23 = [v5 incomingCall];
-      if (v23)
+      incomingCall = [updatedCopy incomingCall];
+      if (incomingCall)
       {
-        v24 = v23;
-        v25 = [v5 calls];
-        v26 = [v25 count];
+        v24 = incomingCall;
+        calls = [updatedCopy calls];
+        v26 = [calls count];
 
         if (v26 == 1)
         {
-          v27 = [v5 incomingCall];
-          [(NPHMagicRingbackAutomaton *)self setCurrentIncomingCallRequest:v27];
+          incomingCall2 = [updatedCopy incomingCall];
+          [(NPHMagicRingbackAutomaton *)self setCurrentIncomingCallRequest:incomingCall2];
 
           v28 = +[TUCallCenter sharedInstance];
-          v29 = [(NPHMagicRingbackAutomaton *)self currentIncomingCallRequest];
-          v30 = [v29 onlyTUCall];
-          [v28 answerCall:v30];
+          currentIncomingCallRequest5 = [(NPHMagicRingbackAutomaton *)self currentIncomingCallRequest];
+          onlyTUCall = [currentIncomingCallRequest5 onlyTUCall];
+          [v28 answerCall:onlyTUCall];
         }
       }
     }
   }
 }
 
-- (void)setCurrentIncomingCallRequest:(id)a3
+- (void)setCurrentIncomingCallRequest:(id)request
 {
-  v5 = a3;
-  objc_storeStrong(&self->_currentIncomingCallRequest, a3);
+  requestCopy = request;
+  objc_storeStrong(&self->_currentIncomingCallRequest, request);
   v6 = sub_100001C24();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -126,15 +126,15 @@
   v10[2] = sub_100008148;
   v10[3] = &unk_1000148D8;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = requestCopy;
+  v9 = requestCopy;
   dispatch_after(v8, &_dispatch_main_q, v10);
 }
 
-- (void)setCurrentOutgoingCallResponse:(id)a3
+- (void)setCurrentOutgoingCallResponse:(id)response
 {
-  v5 = a3;
-  objc_storeStrong(&self->_currentOutgoingCallResponse, a3);
+  responseCopy = response;
+  objc_storeStrong(&self->_currentOutgoingCallResponse, response);
   v6 = sub_100001C24();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -150,14 +150,14 @@
   v10[2] = sub_1000082A0;
   v10[3] = &unk_1000148D8;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = responseCopy;
+  v9 = responseCopy;
   dispatch_after(v8, &_dispatch_main_q, v10);
 }
 
-- (void)_flipMuteForCall:(id)a3
+- (void)_flipMuteForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if (([objc_opt_class() shouldNotFlipMute] & 1) == 0)
   {
     v5[0] = _NSConcreteStackBlock;
@@ -165,27 +165,27 @@
     v5[2] = sub_100008358;
     v5[3] = &unk_1000148D8;
     v5[4] = self;
-    v6 = v4;
+    v6 = callCopy;
     [(NPHMagicRingbackAutomaton *)self _flipMuteForCall:v6 and:v5];
   }
 }
 
-- (void)_flipMuteForCall:(id)a3 and:(id)a4
+- (void)_flipMuteForCall:(id)call and:(id)and
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 onlyTUCall];
-  v8 = [v7 isUplinkMuted];
-  v9 = [v6 onlyTUCall];
+  andCopy = and;
+  callCopy = call;
+  onlyTUCall = [callCopy onlyTUCall];
+  isUplinkMuted = [onlyTUCall isUplinkMuted];
+  onlyTUCall2 = [callCopy onlyTUCall];
 
-  [v9 setUplinkMuted:v8 ^ 1];
+  [onlyTUCall2 setUplinkMuted:isUplinkMuted ^ 1];
   v10 = dispatch_time(0, 1000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100008590;
   block[3] = &unk_100014B80;
-  v13 = v5;
-  v11 = v5;
+  v13 = andCopy;
+  v11 = andCopy;
   dispatch_after(v10, &_dispatch_main_q, block);
 }
 

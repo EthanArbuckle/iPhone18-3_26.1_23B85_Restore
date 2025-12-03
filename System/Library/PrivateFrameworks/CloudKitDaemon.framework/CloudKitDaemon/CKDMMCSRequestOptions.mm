@@ -1,27 +1,27 @@
 @interface CKDMMCSRequestOptions
 - (BOOL)usesBackgroundSession;
-- (CKDMMCSRequestOptions)initWithOperation:(id)a3;
+- (CKDMMCSRequestOptions)initWithOperation:(id)operation;
 - (id)CKPropertiesDescription;
 - (id)MMCSOptions;
 @end
 
 @implementation CKDMMCSRequestOptions
 
-- (CKDMMCSRequestOptions)initWithOperation:(id)a3
+- (CKDMMCSRequestOptions)initWithOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v99.receiver = self;
   v99.super_class = CKDMMCSRequestOptions;
   v7 = [(CKDMMCSRequestOptions *)&v99 init];
   if (v7)
   {
-    v8 = objc_msgSend_container(v4, v5, v6);
-    v7->_databaseScope = objc_msgSend_databaseScope(v4, v9, v10);
+    v8 = objc_msgSend_container(operationCopy, v5, v6);
+    v7->_databaseScope = objc_msgSend_databaseScope(operationCopy, v9, v10);
     v13 = objc_msgSend_containerID(v8, v11, v12);
     containerID = v7->_containerID;
     v7->_containerID = v13;
 
-    v17 = objc_msgSend_topmostParentOperation(v4, v15, v16);
+    v17 = objc_msgSend_topmostParentOperation(operationCopy, v15, v16);
     v20 = objc_msgSend_operationInfo(v17, v18, v19);
     v23 = objc_msgSend_group(v20, v21, v22);
     v26 = objc_msgSend_operationGroupID(v23, v24, v25);
@@ -38,33 +38,33 @@
     topmostParentOperationID = v7->_topmostParentOperationID;
     v7->_topmostParentOperationID = v40;
 
-    v44 = objc_msgSend_applicationBundleIdentifierForContainerAccess(v4, v42, v43);
+    v44 = objc_msgSend_applicationBundleIdentifierForContainerAccess(operationCopy, v42, v43);
     applicationBundleIdentifierForContainerAccess = v7->_applicationBundleIdentifierForContainerAccess;
     v7->_applicationBundleIdentifierForContainerAccess = v44;
 
-    v48 = objc_msgSend_applicationBundleIdentifierForNetworkAttribution(v4, v46, v47);
+    v48 = objc_msgSend_applicationBundleIdentifierForNetworkAttribution(operationCopy, v46, v47);
     applicationBundleIdentifierForNetworkAttribution = v7->_applicationBundleIdentifierForNetworkAttribution;
     v7->_applicationBundleIdentifierForNetworkAttribution = v48;
 
-    v52 = objc_msgSend_sourceApplicationSecondaryIdentifier(v4, v50, v51);
+    v52 = objc_msgSend_sourceApplicationSecondaryIdentifier(operationCopy, v50, v51);
     applicationSecondaryID = v7->_applicationSecondaryID;
     v7->_applicationSecondaryID = v52;
 
-    v7->_allowsCellularAccess = objc_msgSend_allowsCellularAccess(v4, v54, v55);
-    v7->_allowsExpensiveNetworkAccess = objc_msgSend_allowsExpensiveNetworkAccess(v4, v56, v57);
+    v7->_allowsCellularAccess = objc_msgSend_allowsCellularAccess(operationCopy, v54, v55);
+    v7->_allowsExpensiveNetworkAccess = objc_msgSend_allowsExpensiveNetworkAccess(operationCopy, v56, v57);
     v60 = objc_msgSend_entitlements(v8, v58, v59);
     v7->_allowsPowerNapScheduling = objc_msgSend_hasDarkWakeNetworkReachabilityEnabledEntitlement(v60, v61, v62);
 
-    v7->_qualityOfService = objc_msgSend_qualityOfService(v4, v63, v64);
-    v7->_clientQueuePriority = objc_msgSend_clientQueuePriority(v4, v65, v66);
-    v7->_resolvedAutomaticallyRetryNetworkFailures = objc_msgSend_resolvedAutomaticallyRetryNetworkFailures(v4, v67, v68);
-    v7->_resolvedDiscretionaryNetworkBehavior = objc_msgSend_resolvedDiscretionaryNetworkBehavior(v4, v69, v70);
-    v7->_duetPreClearedMode = objc_msgSend_duetPreClearedMode(v4, v71, v72);
-    v74 = objc_msgSend_metricOptionsForNetworkOperation_(MEMORY[0x277CF36B8], v73, v4);
+    v7->_qualityOfService = objc_msgSend_qualityOfService(operationCopy, v63, v64);
+    v7->_clientQueuePriority = objc_msgSend_clientQueuePriority(operationCopy, v65, v66);
+    v7->_resolvedAutomaticallyRetryNetworkFailures = objc_msgSend_resolvedAutomaticallyRetryNetworkFailures(operationCopy, v67, v68);
+    v7->_resolvedDiscretionaryNetworkBehavior = objc_msgSend_resolvedDiscretionaryNetworkBehavior(operationCopy, v69, v70);
+    v7->_duetPreClearedMode = objc_msgSend_duetPreClearedMode(operationCopy, v71, v72);
+    v74 = objc_msgSend_metricOptionsForNetworkOperation_(MEMORY[0x277CF36B8], v73, operationCopy);
     metricOptions = v7->_metricOptions;
     v7->_metricOptions = v74;
 
-    v78 = objc_msgSend_deviceContext(v4, v76, v77);
+    v78 = objc_msgSend_deviceContext(operationCopy, v76, v77);
     v81 = objc_msgSend_testServer(v78, v79, v80);
 
     if (v81 && (objc_msgSend_useLiveServer(v81, v82, v83) & 1) == 0)
@@ -74,19 +74,19 @@
       v7->_networkingDelegate = v84;
     }
 
-    v7->_networkServiceType = objc_msgSend_networkServiceType(v4, v82, v83);
-    v88 = objc_msgSend_cacheDeleteAvailableSpaceClass(v4, v86, v87);
+    v7->_networkServiceType = objc_msgSend_networkServiceType(operationCopy, v82, v83);
+    v88 = objc_msgSend_cacheDeleteAvailableSpaceClass(operationCopy, v86, v87);
     cacheDeleteAvailableSpaceClass = v7->_cacheDeleteAvailableSpaceClass;
     v7->_cacheDeleteAvailableSpaceClass = v88;
 
-    if ((objc_msgSend_preferAnonymousRequests(v4, v90, v91) & 1) == 0)
+    if ((objc_msgSend_preferAnonymousRequests(operationCopy, v90, v91) & 1) == 0)
     {
       v94 = objc_msgSend_hardwareID(v8, v92, v93);
       deviceHardwareID = v7->_deviceHardwareID;
       v7->_deviceHardwareID = v94;
     }
 
-    v96 = objc_msgSend_MMCSRequestOptions(v4, v92, v93);
+    v96 = objc_msgSend_MMCSRequestOptions(operationCopy, v92, v93);
     MMCSRequestOptions = v7->_MMCSRequestOptions;
     v7->_MMCSRequestOptions = v96;
   }

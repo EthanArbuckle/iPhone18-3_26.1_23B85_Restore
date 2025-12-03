@@ -1,10 +1,10 @@
 @interface AXSpeakSelectionController
-- (id)highlightWord:(id)a3;
-- (id)quickSpeakEnabled:(id)a3;
+- (id)highlightWord:(id)word;
+- (id)quickSpeakEnabled:(id)enabled;
 - (id)specifiers;
 - (void)_reloadQuickSpeakHighlightSpecifier;
 - (void)loadView;
-- (void)setQuickSpeakEnabled:(id)a3 specifier:(id)a4;
+- (void)setQuickSpeakEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation AXSpeakSelectionController
@@ -26,21 +26,21 @@
   return v4;
 }
 
-- (id)quickSpeakEnabled:(id)a3
+- (id)quickSpeakEnabled:(id)enabled
 {
   v3 = _AXSQuickSpeakEnabled() != 0;
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setQuickSpeakEnabled:(id)a3 specifier:(id)a4
+- (void)setQuickSpeakEnabled:(id)enabled specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [enabled BOOLValue];
 
   _AXSQuickSpeakSetEnabled();
 }
 
-- (id)highlightWord:(id)a3
+- (id)highlightWord:(id)word
 {
   if (_AXSQuickSpeakHighlightTextEnabled())
   {

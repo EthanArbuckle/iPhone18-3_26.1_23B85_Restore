@@ -1,27 +1,27 @@
 @interface NEProvider
-+ (BOOL)isNEProviderBundle:(id)a3 forExtensionPoint:(id)a4;
++ (BOOL)isNEProviderBundle:(id)bundle forExtensionPoint:(id)point;
 + (BOOL)isRunningInProvider;
 + (void)startSystemExtensionMode;
 - (NWUDPSession)createUDPSessionToEndpoint:(NWEndpoint *)remoteEndpoint fromEndpoint:(NWHostEndpoint *)localEndpoint;
-- (id)initAllowUnentitled:(BOOL)a3;
-- (int64_t)_callSwiftHandleNewUDPFlow:(id)a3 initialRemoteFlowEndpoint:(id)a4;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (id)initAllowUnentitled:(BOOL)unentitled;
+- (int64_t)_callSwiftHandleNewUDPFlow:(id)flow initialRemoteFlowEndpoint:(id)endpoint;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)dealloc;
 - (void)displayMessage:(NSString *)message completionHandler:(void *)completionHandler;
-- (void)observerHelperHandler:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setdefaultPathObserver:(id)a3;
+- (void)observerHelperHandler:(id)handler ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setdefaultPathObserver:(id)observer;
 - (void)sleepWithCompletionHandler:(void *)completionHandler;
 - (void)wake;
 @end
 
 @implementation NEProvider
 
-- (int64_t)_callSwiftHandleNewUDPFlow:(id)a3 initialRemoteFlowEndpoint:(id)a4
+- (int64_t)_callSwiftHandleNewUDPFlow:(id)flow initialRemoteFlowEndpoint:(id)endpoint
 {
-  v5 = a3;
+  flowCopy = flow;
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_1BA854638(v5);
+  selfCopy = self;
+  v7 = sub_1BA854638(flowCopy);
 
   swift_unknownObjectRelease();
   return v7;
@@ -35,9 +35,9 @@
   isKindOfClass = objc_opt_isKindOfClass();
   if (v11 && (isKindOfClass & 1) == 0 && ([(NEProvider *)self appName], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [(NEProvider *)self context];
-    v10 = [(NEProvider *)self appName];
-    [v9 displayMessage:v10 message:v11 completionHandler:v6];
+    context = [(NEProvider *)self context];
+    appName = [(NEProvider *)self appName];
+    [context displayMessage:appName message:v11 completionHandler:v6];
   }
 
   else
@@ -55,9 +55,9 @@
   if (v5)
   {
     v9 = MEMORY[0x1E6977E08];
-    v10 = [(NWHostEndpoint *)v5 hostname];
-    v11 = [(NWHostEndpoint *)v5 port];
-    v12 = [v9 endpointWithHostname:v10 port:v11];
+    hostname = [(NWHostEndpoint *)v5 hostname];
+    port = [(NWHostEndpoint *)v5 port];
+    v12 = [v9 endpointWithHostname:hostname port:port];
     [v8 setLocalAddress:v12];
   }
 
@@ -73,7 +73,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_INFO, "%@: Waking", &v5, 0xCu);
   }
 
@@ -88,7 +88,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_INFO, "%@: Sleeping", &v7, 0xCu);
   }
 
@@ -96,11 +96,11 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observerHelperHandler:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observerHelperHandler:(id)handler ofObject:(id)object change:(id)change context:(void *)context
 {
-  v16 = a3;
-  v9 = a4;
-  v11 = a5;
+  handlerCopy = handler;
+  objectCopy = object;
+  changeCopy = change;
   if (self)
   {
     Property = objc_getProperty(self, v10, 16, 1);
@@ -111,7 +111,7 @@
     Property = 0;
   }
 
-  if (Property == v9 && [v16 isEqualToString:@"path"])
+  if (Property == objectCopy && [handlerCopy isEqualToString:@"path"])
   {
     if (self)
     {
@@ -123,14 +123,14 @@
       v14 = 0;
     }
 
-    v15 = [v14 path];
-    [(NEProvider *)self setDefaultPath:v15];
+    path = [v14 path];
+    [(NEProvider *)self setDefaultPath:path];
   }
 }
 
-- (void)setdefaultPathObserver:(id)a3
+- (void)setdefaultPathObserver:(id)observer
 {
-  Property = a3;
+  Property = observer;
   v5 = Property;
   if (self)
   {
@@ -150,22 +150,22 @@
   MEMORY[0x1EEE66BB8](Property, v5);
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  [(NEProvider *)self setContext:a3];
+  [(NEProvider *)self setContext:context];
   if (self)
   {
     v5 = objc_getProperty(self, v4, 16, 1);
     if (v5)
     {
       v6 = v5;
-      v7 = [(NEProvider *)self context];
+      context = [(NEProvider *)self context];
 
-      if (v7)
+      if (context)
       {
         defaultPathEvaluator = self->_defaultPathEvaluator;
-        v9 = [(NEProvider *)self context];
-        [(NWPathEvaluator *)defaultPathEvaluator addObserver:v9 forKeyPath:@"path" options:5 context:0];
+        context2 = [(NEProvider *)self context];
+        [(NWPathEvaluator *)defaultPathEvaluator addObserver:context2 forKeyPath:@"path" options:5 context:0];
       }
     }
   }
@@ -176,13 +176,13 @@
   [(NEProvider *)self setDefaultPath:0];
   if (self && objc_getProperty(self, v3, 16, 1))
   {
-    v4 = [(NEProvider *)self context];
+    context = [(NEProvider *)self context];
 
-    if (v4)
+    if (context)
     {
       v6 = objc_getProperty(self, v5, 16, 1);
-      v7 = [(NEProvider *)self context];
-      [v6 removeObserver:v7 forKeyPath:@"path"];
+      context2 = [(NEProvider *)self context];
+      [v6 removeObserver:context2 forKeyPath:@"path"];
     }
 
     objc_setProperty_atomic(self, v5, 0, 16);
@@ -193,13 +193,13 @@
   [(NEProvider *)&v8 dealloc];
 }
 
-- (id)initAllowUnentitled:(BOOL)a3
+- (id)initAllowUnentitled:(BOOL)unentitled
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = SecTaskCreateFromSelf(0);
   if (!v5)
   {
-    if (!a3)
+    if (!unentitled)
     {
       goto LABEL_11;
     }
@@ -239,17 +239,17 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 0;
+    bOOLValue = 0;
   }
 
   CFRelease(v6);
 
-  if (!v8 && !a3)
+  if (!v8 && !unentitled)
   {
 LABEL_11:
     v11 = ne_log_obj();
@@ -268,7 +268,7 @@ LABEL_24:
     goto LABEL_18;
   }
 
-  if ((v10 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     goto LABEL_14;
   }
@@ -290,22 +290,22 @@ LABEL_15:
   }
 
   v16 = v15;
-  v17 = [MEMORY[0x1E6977E50] sharedDefaultEvaluator];
+  mEMORY[0x1E6977E50] = [MEMORY[0x1E6977E50] sharedDefaultEvaluator];
   self = v16[2];
-  v16[2] = v17;
+  v16[2] = mEMORY[0x1E6977E50];
 LABEL_20:
 
   v18 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-+ (BOOL)isNEProviderBundle:(id)a3 forExtensionPoint:(id)a4
++ (BOOL)isNEProviderBundle:(id)bundle forExtensionPoint:(id)point
 {
-  v5 = a4;
-  v6 = [a3 infoDictionary];
-  if (isa_nsdictionary(v6))
+  pointCopy = point;
+  infoDictionary = [bundle infoDictionary];
+  if (isa_nsdictionary(infoDictionary))
   {
-    v7 = [v6 objectForKeyedSubscript:@"CFBundlePackageType"];
+    v7 = [infoDictionary objectForKeyedSubscript:@"CFBundlePackageType"];
     if (!isa_nsstring(v7) || ![v7 isEqualToString:@"XPC!"])
     {
       v10 = 0;
@@ -314,7 +314,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v8 = [v6 objectForKeyedSubscript:@"NSExtension"];
+    v8 = [infoDictionary objectForKeyedSubscript:@"NSExtension"];
     if (!isa_nsdictionary(v8))
     {
       v10 = 0;
@@ -326,9 +326,9 @@ LABEL_15:
     v9 = [v8 objectForKeyedSubscript:@"NSExtensionPointIdentifier"];
     if (isa_nsstring(v9))
     {
-      if (v5)
+      if (pointCopy)
       {
-        if ([v9 isEqualToString:v5])
+        if ([v9 isEqualToString:pointCopy])
         {
 LABEL_8:
           v10 = 1;

@@ -1,33 +1,33 @@
 @interface ICAssert
-+ (void)handleFailedAssertWithCondition:(const char *)a3 functionName:(const char *)a4 simulateCrash:(BOOL)a5 showAlert:(BOOL)a6 alertMessage:(id)a7 format:(id)a8;
-+ (void)handleFailedAssertWithCondition:(const char *)a3 functionName:(const char *)a4 simulateCrash:(BOOL)a5 showAlert:(BOOL)a6 format:(id)a7;
++ (void)handleFailedAssertWithCondition:(const char *)condition functionName:(const char *)name simulateCrash:(BOOL)crash showAlert:(BOOL)alert alertMessage:(id)message format:(id)format;
++ (void)handleFailedAssertWithCondition:(const char *)condition functionName:(const char *)name simulateCrash:(BOOL)crash showAlert:(BOOL)alert format:(id)format;
 @end
 
 @implementation ICAssert
 
-+ (void)handleFailedAssertWithCondition:(const char *)a3 functionName:(const char *)a4 simulateCrash:(BOOL)a5 showAlert:(BOOL)a6 alertMessage:(id)a7 format:(id)a8
++ (void)handleFailedAssertWithCondition:(const char *)condition functionName:(const char *)name simulateCrash:(BOOL)crash showAlert:(BOOL)alert alertMessage:(id)message format:(id)format
 {
-  v9 = a6;
-  v10 = a5;
+  alertCopy = alert;
+  crashCopy = crash;
   v42 = *MEMORY[0x1E69E9840];
-  v13 = a7;
+  messageCopy = message;
   v14 = MEMORY[0x1E696AEC0];
-  v15 = a8;
-  v16 = [[v14 alloc] initWithFormat:v15 arguments:&v43];
+  formatCopy = format;
+  v16 = [[v14 alloc] initWithFormat:formatCopy arguments:&v43];
 
   v17 = os_log_create("com.apple.notes", "Assert");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315650;
-    v37 = a3;
+    conditionCopy = condition;
     v38 = 2080;
-    v39 = a4;
+    nameCopy = name;
     v40 = 2112;
     v41 = v16;
     _os_log_error_impl(&dword_1D4576000, v17, OS_LOG_TYPE_ERROR, "Failed assertion (%s) in %s: %@", buf, 0x20u);
   }
 
-  if (v10)
+  if (crashCopy)
   {
     v18 = os_log_create("com.apple.notes", "SimulatedCrash");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -36,28 +36,28 @@
     }
   }
 
-  if (v9)
+  if (alertCopy)
   {
-    v35 = v10;
-    v19 = v13;
-    v20 = a4;
-    v21 = a3;
+    v35 = crashCopy;
+    v19 = messageCopy;
+    nameCopy2 = name;
+    conditionCopy2 = condition;
     v22 = +[ICUtilities showInternalInstallUI];
-    v23 = [MEMORY[0x1E696AAE8] mainBundle];
-    v24 = [v23 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     v25 = ICNotesAppBundleIdentifier();
-    v26 = [v24 isEqualToString:v25];
+    v26 = [bundleIdentifier isEqualToString:v25];
 
-    v27 = [MEMORY[0x1E696AE30] processInfo];
-    v28 = [v27 environment];
-    v29 = [v28 objectForKeyedSubscript:@"SuppressAssertionAlerts"];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    environment = [processInfo environment];
+    v29 = [environment objectForKeyedSubscript:@"SuppressAssertionAlerts"];
     v30 = ([v29 BOOLValue] & 1) != 0 || +[ICDeviceSupport isRunningUnitTests](ICDeviceSupport, "isRunningUnitTests");
 
-    v13 = v19;
+    messageCopy = v19;
     if ((v22 & v26) == 1 && !v30)
     {
       v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Notes TTR: %@", v16];
-      v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed assertion (%s) in %s:\n%@", v21, v20, v16];
+      v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed assertion (%s) in %s:\n%@", conditionCopy2, nameCopy2, v16];
       v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"I got this alert right after I...\n\n%@", v32];
       if (!v35)
       {
@@ -68,20 +68,20 @@
         }
       }
 
-      [ICRadarUtilities promptUserToFileBugWithAlertMessage:v13 bugTitle:v31 bugDescription:v33];
+      [ICRadarUtilities promptUserToFileBugWithAlertMessage:messageCopy bugTitle:v31 bugDescription:v33];
     }
   }
 }
 
-+ (void)handleFailedAssertWithCondition:(const char *)a3 functionName:(const char *)a4 simulateCrash:(BOOL)a5 showAlert:(BOOL)a6 format:(id)a7
++ (void)handleFailedAssertWithCondition:(const char *)condition functionName:(const char *)name simulateCrash:(BOOL)crash showAlert:(BOOL)alert format:(id)format
 {
-  v7 = a6;
-  v8 = a5;
+  alertCopy = alert;
+  crashCopy = crash;
   v12 = MEMORY[0x1E696AEC0];
-  v13 = a7;
-  v14 = [[v12 alloc] initWithFormat:v13 arguments:&v15];
+  formatCopy = format;
+  v14 = [[v12 alloc] initWithFormat:formatCopy arguments:&v15];
 
-  [a1 handleFailedAssertWithCondition:a3 functionName:a4 simulateCrash:v8 showAlert:v7 alertMessage:@"You encountered a serious bug in Notes. Will you please file a Radar?" format:{@"%@", v14}];
+  [self handleFailedAssertWithCondition:condition functionName:name simulateCrash:crashCopy showAlert:alertCopy alertMessage:@"You encountered a serious bug in Notes. Will you please file a Radar?" format:{@"%@", v14}];
 }
 
 + (void)handleFailedAssertWithCondition:(uint64_t)a1 functionName:(NSObject *)a2 simulateCrash:showAlert:alertMessage:format:.cold.1(uint64_t a1, NSObject *a2)

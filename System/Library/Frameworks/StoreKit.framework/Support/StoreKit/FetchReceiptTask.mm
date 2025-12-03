@@ -1,28 +1,28 @@
 @interface FetchReceiptTask
-- (BOOL)_isUnifiedReceiptValidAndCurrentAtBundleURL:(id)a3;
-- (FetchReceiptTask)initWithClient:(id)a3;
-- (id)_requestBodyWithAccount:(id)a3;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6;
-- (void)_URLRequestWithBag:(id)a3 completionHandler:(id)a4;
-- (void)_accountWithCompletionHandler:(id)a3;
-- (void)_authenticateAndRequestReceiptWithCompletionHandler:(id)a3;
-- (void)_requestReceiptStringWithCompletionHandler:(id)a3;
+- (BOOL)_isUnifiedReceiptValidAndCurrentAtBundleURL:(id)l;
+- (FetchReceiptTask)initWithClient:(id)client;
+- (id)_requestBodyWithAccount:(id)account;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion;
+- (void)_URLRequestWithBag:(id)bag completionHandler:(id)handler;
+- (void)_accountWithCompletionHandler:(id)handler;
+- (void)_authenticateAndRequestReceiptWithCompletionHandler:(id)handler;
+- (void)_requestReceiptStringWithCompletionHandler:(id)handler;
 - (void)main;
 @end
 
 @implementation FetchReceiptTask
 
-- (FetchReceiptTask)initWithClient:(id)a3
+- (FetchReceiptTask)initWithClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v6 = [(Task *)self init];
   v7 = v6;
   if (v6)
   {
     *(&v6->_forceAuth + 2) = 1;
-    objc_storeStrong((&v6->_apiVersion + 2), a3);
+    objc_storeStrong((&v6->_apiVersion + 2), client);
   }
 
   return v7;
@@ -46,9 +46,9 @@
   if (os_log_type_enabled(qword_1003D3EC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(FetchReceiptTask *)self logKey];
+    logKey = [(FetchReceiptTask *)self logKey];
     *buf = 138543618;
-    v33 = v7;
+    v33 = logKey;
     v34 = 2114;
     v35 = objc_opt_class();
     v8 = v35;
@@ -60,16 +60,16 @@
     goto LABEL_16;
   }
 
-  v9 = [(FetchReceiptTask *)self client];
-  if ([v9 objc_clientType] == 3)
+  client = [(FetchReceiptTask *)self client];
+  if ([client objc_clientType] == 3)
   {
 
     goto LABEL_16;
   }
 
-  v10 = [(FetchReceiptTask *)self client];
-  v11 = [v10 callerBundleURL];
-  v12 = [(FetchReceiptTask *)self _isUnifiedReceiptValidAndCurrentAtBundleURL:v11];
+  client2 = [(FetchReceiptTask *)self client];
+  callerBundleURL = [client2 callerBundleURL];
+  v12 = [(FetchReceiptTask *)self _isUnifiedReceiptValidAndCurrentAtBundleURL:callerBundleURL];
 
   if (!v12)
   {
@@ -82,20 +82,20 @@ LABEL_16:
     v20 = objc_retainBlock(v31);
     if ([(FetchReceiptTask *)self forceAuth])
     {
-      v21 = [(FetchReceiptTask *)self dialogContext];
+      dialogContext = [(FetchReceiptTask *)self dialogContext];
 
-      if (v21)
+      if (dialogContext)
       {
-        v22 = [(FetchReceiptTask *)self client];
-        v23 = [(FetchReceiptTask *)self dialogContext];
-        v24 = [(FetchReceiptTask *)self logKey];
+        client3 = [(FetchReceiptTask *)self client];
+        dialogContext2 = [(FetchReceiptTask *)self dialogContext];
+        logKey2 = [(FetchReceiptTask *)self logKey];
         v29[0] = _NSConcreteStackBlock;
         v29[1] = 3221225472;
         v29[2] = sub_10002A348;
         v29[3] = &unk_100380E38;
         v29[4] = self;
         v30 = v20;
-        [_TtC9storekitd19objc_AccountManager authenticateWithClient:v22 reason:@"StoreKit client initiated for refreshing AppTransaction" dialogContext:v23 logKey:v24 completionHandler:v29];
+        [_TtC9storekitd19objc_AccountManager authenticateWithClient:client3 reason:@"StoreKit client initiated for refreshing AppTransaction" dialogContext:dialogContext2 logKey:logKey2 completionHandler:v29];
       }
 
       else
@@ -109,9 +109,9 @@ LABEL_16:
         if (os_log_type_enabled(qword_1003D3EC8, OS_LOG_TYPE_DEFAULT))
         {
           v26 = v25;
-          v27 = [(FetchReceiptTask *)self logKey];
+          logKey3 = [(FetchReceiptTask *)self logKey];
           *buf = 138543362;
-          v33 = v27;
+          v33 = logKey3;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] No context available to force authentication", buf, 0xCu);
         }
 
@@ -137,17 +137,17 @@ LABEL_16:
   if (os_log_type_enabled(qword_1003D3EC8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [(FetchReceiptTask *)self logKey];
-    v16 = [(FetchReceiptTask *)self client];
-    v17 = [v16 requestBundleID];
-    v18 = [(FetchReceiptTask *)self client];
-    v19 = [v18 callerBundleURL];
+    logKey4 = [(FetchReceiptTask *)self logKey];
+    client4 = [(FetchReceiptTask *)self client];
+    requestBundleID = [client4 requestBundleID];
+    client5 = [(FetchReceiptTask *)self client];
+    callerBundleURL2 = [client5 callerBundleURL];
     *buf = 138543874;
-    v33 = v15;
+    v33 = logKey4;
     v34 = 2114;
-    v35 = v17;
+    v35 = requestBundleID;
     v36 = 2114;
-    v37 = v19;
+    v37 = callerBundleURL2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@] Receipt is valid and current at %{public}@. Skipping refresh.", buf, 0x20u);
   }
 
@@ -156,36 +156,36 @@ LABEL_16:
 LABEL_25:
 }
 
-- (void)_accountWithCompletionHandler:(id)a3
+- (void)_accountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FetchReceiptTask *)self client];
-  v6 = [v5 objc_clientType];
+  handlerCopy = handler;
+  client = [(FetchReceiptTask *)self client];
+  objc_clientType = [client objc_clientType];
 
-  if (v6 == 3 || [(FetchReceiptTask *)self _useVPPBagURL])
+  if (objc_clientType == 3 || [(FetchReceiptTask *)self _useVPPBagURL])
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
   {
-    v7 = [(FetchReceiptTask *)self client];
+    client2 = [(FetchReceiptTask *)self client];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10002A468;
     v8[3] = &unk_100380E60;
     v8[4] = self;
-    v9 = v4;
-    [_TtC9storekitd19objc_AccountManager accountWithClient:v7 completionHandler:v8];
+    v9 = handlerCopy;
+    [_TtC9storekitd19objc_AccountManager accountWithClient:client2 completionHandler:v8];
   }
 }
 
-- (void)_authenticateAndRequestReceiptWithCompletionHandler:(id)a3
+- (void)_authenticateAndRequestReceiptWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FetchReceiptTask *)self dialogContext];
+  handlerCopy = handler;
+  dialogContext = [(FetchReceiptTask *)self dialogContext];
 
-  if (v5)
+  if (dialogContext)
   {
     if (qword_1003D3EE8 != -1)
     {
@@ -196,26 +196,26 @@ LABEL_25:
     if (os_log_type_enabled(qword_1003D3EC8, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(FetchReceiptTask *)self logKey];
-      v9 = [(FetchReceiptTask *)self client];
-      v10 = [v9 requestBundleID];
+      logKey = [(FetchReceiptTask *)self logKey];
+      client = [(FetchReceiptTask *)self client];
+      requestBundleID = [client requestBundleID];
       *buf = 138543618;
-      v21 = v8;
+      v21 = logKey;
       v22 = 2114;
-      v23 = v10;
+      v23 = requestBundleID;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@] Handling authentication request", buf, 0x16u);
     }
 
-    v11 = [(FetchReceiptTask *)self client];
-    v12 = [(FetchReceiptTask *)self dialogContext];
-    v13 = [(FetchReceiptTask *)self logKey];
+    client2 = [(FetchReceiptTask *)self client];
+    dialogContext2 = [(FetchReceiptTask *)self dialogContext];
+    logKey2 = [(FetchReceiptTask *)self logKey];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10002AAC0;
     v18[3] = &unk_100380EB0;
     v18[4] = self;
-    v19 = v4;
-    [_TtC9storekitd19objc_AccountManager authenticateWithClient:v11 reason:@"Receipt renewal" dialogContext:v12 logKey:v13 completionHandler:v18];
+    v19 = handlerCopy;
+    [_TtC9storekitd19objc_AccountManager authenticateWithClient:client2 reason:@"Receipt renewal" dialogContext:dialogContext2 logKey:logKey2 completionHandler:v18];
 
     v14 = v19;
   }
@@ -231,77 +231,77 @@ LABEL_25:
     if (os_log_type_enabled(qword_1003D3EC8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [(FetchReceiptTask *)self logKey];
+      logKey3 = [(FetchReceiptTask *)self logKey];
       *buf = 138543362;
-      v21 = v17;
+      v21 = logKey3;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] No client available to handle authentication request", buf, 0xCu);
     }
 
     v14 = ASDErrorWithDescription();
-    (*(v4 + 2))(v4, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14);
   }
 }
 
-- (void)_requestReceiptStringWithCompletionHandler:(id)a3
+- (void)_requestReceiptStringWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FetchReceiptTask *)self client];
-  v6 = [v5 bag];
+  handlerCopy = handler;
+  client = [(FetchReceiptTask *)self client];
+  v6 = [client bag];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002AC44;
   v8[3] = &unk_100380F00;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(FetchReceiptTask *)self _URLRequestWithBag:v6 completionHandler:v8];
 }
 
-- (BOOL)_isUnifiedReceiptValidAndCurrentAtBundleURL:(id)a3
+- (BOOL)_isUnifiedReceiptValidAndCurrentAtBundleURL:(id)l
 {
-  v4 = [ASFReceipt receiptFromBundleAtURL:a3];
+  v4 = [ASFReceipt receiptFromBundleAtURL:l];
   if (v4)
   {
-    v5 = [(FetchReceiptTask *)self client];
-    v6 = [v5 requestBundleID];
-    v7 = [v4 bundleID];
-    LODWORD(v8) = [v6 isEqualToString:v7];
+    client = [(FetchReceiptTask *)self client];
+    requestBundleID = [client requestBundleID];
+    bundleID = [v4 bundleID];
+    LODWORD(v8) = [requestBundleID isEqualToString:bundleID];
 
-    v9 = [(FetchReceiptTask *)self client];
-    v10 = [v9 requestBundleVersion];
-    v11 = [v4 bundleVersion];
-    LODWORD(v12) = [v10 isEqualToString:v11];
+    client2 = [(FetchReceiptTask *)self client];
+    requestBundleVersion = [client2 requestBundleVersion];
+    bundleVersion = [v4 bundleVersion];
+    LODWORD(v12) = [requestBundleVersion isEqualToString:bundleVersion];
 
-    v13 = [v4 expirationDate];
-    [v13 timeIntervalSinceNow];
+    expirationDate = [v4 expirationDate];
+    [expirationDate timeIntervalSinceNow];
     v15 = v14;
 
     v16 = objc_opt_new();
     *buf = 0;
     *&buf[8] = 0;
-    v17 = [(FetchReceiptTask *)self client];
-    v18 = [v17 deviceVendorID];
-    [v18 getUUIDBytes:buf];
+    client3 = [(FetchReceiptTask *)self client];
+    deviceVendorID = [client3 deviceVendorID];
+    [deviceVendorID getUUIDBytes:buf];
 
     v19 = [NSData dataWithBytes:buf length:16];
     [v16 appendData:v19];
 
-    v20 = [v4 opaqueDSIDData];
-    [v16 appendData:v20];
+    opaqueDSIDData = [v4 opaqueDSIDData];
+    [v16 appendData:opaqueDSIDData];
 
-    v21 = [v4 bundleIDData];
-    [v16 appendData:v21];
+    bundleIDData = [v4 bundleIDData];
+    [v16 appendData:bundleIDData];
 
     *md = 0;
     v66 = 0;
     v67 = 0;
     CC_SHA1([v16 bytes], objc_msgSend(v16, "length"), md);
-    v22 = [v4 sha1];
+    sha1 = [v4 sha1];
     v23 = [NSData dataWithBytes:md length:20];
-    LODWORD(v24) = [v22 isEqualToData:v23];
+    LODWORD(v24) = [sha1 isEqualToData:v23];
 
-    v25 = [(FetchReceiptTask *)self client];
-    v26 = [v25 bag];
+    client4 = [(FetchReceiptTask *)self client];
+    v26 = [client4 bag];
 
     v27 = +[_TtC9storekitd6BagKey receiptRefreshMinAge];
     v52 = v26;
@@ -327,8 +327,8 @@ LABEL_25:
     v50 = v30;
     [v29 doubleValue];
     v32 = [NSDate dateWithTimeIntervalSinceNow:-v31];
-    v33 = [v4 creationDate];
-    v34 = [v32 compare:v33];
+    creationDate = [v4 creationDate];
+    v34 = [v32 compare:creationDate];
 
     if (qword_1003D3EE8 != -1)
     {
@@ -341,8 +341,8 @@ LABEL_25:
       log = v35;
       [(FetchReceiptTask *)self logKey];
       v36 = v47 = v16;
-      v46 = [(FetchReceiptTask *)self client];
-      [v46 requestBundleID];
+      client5 = [(FetchReceiptTask *)self client];
+      [client5 requestBundleID];
       v37 = v49 = v24;
       v24 = v34;
       if (v8)
@@ -437,28 +437,28 @@ LABEL_25:
   return v42;
 }
 
-- (void)_URLRequestWithBag:(id)a3 completionHandler:(id)a4
+- (void)_URLRequestWithBag:(id)bag completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002B564;
   v8[3] = &unk_10037FDF0;
-  v9 = a3;
-  v10 = a4;
+  bagCopy = bag;
+  handlerCopy = handler;
   v8[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = bagCopy;
+  v7 = handlerCopy;
   [(FetchReceiptTask *)self _accountWithCompletionHandler:v8];
 }
 
-- (id)_requestBodyWithAccount:(id)a3
+- (id)_requestBodyWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_alloc_init(NSMutableDictionary);
-  if (v4)
+  if (accountCopy)
   {
     v6 = +[ACAccountStore ams_sharedAccountStore];
-    v7 = [v6 ams_secureTokenForAccount:v4];
+    v7 = [v6 ams_secureTokenForAccount:accountCopy];
 
     if (v7)
     {
@@ -472,24 +472,24 @@ LABEL_25:
   v9 = +[AMSDevice serialNumber];
   [v5 setObject:v9 forKeyedSubscript:@"serialNumber"];
 
-  v10 = [(FetchReceiptTask *)self client];
-  v11 = [v10 deviceVendorID];
-  v12 = [v11 UUIDString];
-  [v5 setObject:v12 forKeyedSubscript:@"vid"];
+  client = [(FetchReceiptTask *)self client];
+  deviceVendorID = [client deviceVendorID];
+  uUIDString = [deviceVendorID UUIDString];
+  [v5 setObject:uUIDString forKeyedSubscript:@"vid"];
 
   if ([(FetchReceiptTask *)self apiVersion]!= 1)
   {
-    v13 = [(FetchReceiptTask *)self client];
-    v14 = [v13 deviceVendorID];
-    v15 = [v14 UUIDString];
-    v16 = [v15 lowercaseString];
-    [v5 setObject:v16 forKeyedSubscript:@"deviceVerification"];
+    client2 = [(FetchReceiptTask *)self client];
+    deviceVendorID2 = [client2 deviceVendorID];
+    uUIDString2 = [deviceVendorID2 UUIDString];
+    lowercaseString = [uUIDString2 lowercaseString];
+    [v5 setObject:lowercaseString forKeyedSubscript:@"deviceVerification"];
   }
 
-  v17 = [(FetchReceiptTask *)self client];
-  v18 = [v17 isBeta];
+  client3 = [(FetchReceiptTask *)self client];
+  isBeta = [client3 isBeta];
 
-  if (v18)
+  if (isBeta)
   {
     [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:off_1003CAFD8];
   }
@@ -512,19 +512,19 @@ LABEL_25:
     [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:@"want-vpp"];
   }
 
-  v21 = [(FetchReceiptTask *)self client];
-  v22 = [v21 callerBundleURL];
-  v23 = [ASFReceipt receiptFromBundleAtURL:v22];
+  client4 = [(FetchReceiptTask *)self client];
+  callerBundleURL = [client4 callerBundleURL];
+  v23 = [ASFReceipt receiptFromBundleAtURL:callerBundleURL];
 
   if ([v23 isVPPLicensed] && objc_msgSend(v23, "isRevoked"))
   {
     [v5 setObject:&__kCFBooleanTrue forKey:@"revoked"];
   }
 
-  v24 = [(FetchReceiptTask *)self client];
-  v25 = [v24 objc_clientType];
+  client5 = [(FetchReceiptTask *)self client];
+  objc_clientType = [client5 objc_clientType];
 
-  if (v25 == 1)
+  if (objc_clientType == 1)
   {
     v26 = @"adam-id";
     if (v20)
@@ -539,35 +539,35 @@ LABEL_25:
     }
 
     v28 = v26;
-    v29 = [(FetchReceiptTask *)self client];
-    v30 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v29 storeItemID]);
+    client6 = [(FetchReceiptTask *)self client];
+    v30 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [client6 storeItemID]);
     [v5 setObject:v30 forKeyedSubscript:v28];
 
     v31 = v27;
-    v32 = [(FetchReceiptTask *)self client];
-    v33 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v32 storeExternalVersionID]);
-    [v5 setObject:v33 forKeyedSubscript:v31];
+    client7 = [(FetchReceiptTask *)self client];
+    requestBundleVersion = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [client7 storeExternalVersionID]);
+    [v5 setObject:requestBundleVersion forKeyedSubscript:v31];
   }
 
   else
   {
-    v34 = [(FetchReceiptTask *)self client];
-    v35 = [v34 requestBundleID];
-    [v5 setObject:v35 forKeyedSubscript:@"bundle-id"];
+    client8 = [(FetchReceiptTask *)self client];
+    requestBundleID = [client8 requestBundleID];
+    [v5 setObject:requestBundleID forKeyedSubscript:@"bundle-id"];
 
-    v32 = [(FetchReceiptTask *)self client];
-    v33 = [v32 requestBundleVersion];
-    [v5 setObject:v33 forKeyedSubscript:@"version-id"];
+    client7 = [(FetchReceiptTask *)self client];
+    requestBundleVersion = [client7 requestBundleVersion];
+    [v5 setObject:requestBundleVersion forKeyedSubscript:@"version-id"];
   }
 
   return v5;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [(FetchReceiptTask *)self dialogContext];
+  requestCopy = request;
+  completionCopy = completion;
+  dialogContext = [(FetchReceiptTask *)self dialogContext];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
@@ -581,18 +581,18 @@ LABEL_25:
     if (os_log_type_enabled(qword_1003D3EC8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(FetchReceiptTask *)self logKey];
-      v15 = [(FetchReceiptTask *)self client];
-      v16 = [v15 requestBundleID];
+      logKey = [(FetchReceiptTask *)self logKey];
+      client = [(FetchReceiptTask *)self client];
+      requestBundleID = [client requestBundleID];
       v19 = 138543618;
-      v20 = v14;
+      v20 = logKey;
       v21 = 2114;
-      v22 = v16;
+      v22 = requestBundleID;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@] Handling dialog request", &v19, 0x16u);
     }
 
-    v17 = [(FetchReceiptTask *)self dialogContext];
-    [v17 handleDialogRequest:v8 completionHandler:v9];
+    dialogContext2 = [(FetchReceiptTask *)self dialogContext];
+    [dialogContext2 handleDialogRequest:requestCopy completionHandler:completionCopy];
   }
 
   else
@@ -608,16 +608,16 @@ LABEL_25:
       sub_1002C9FB8(v18, self);
     }
 
-    v17 = ASDErrorWithDescription();
-    v9[2](v9, 0, v17);
+    dialogContext2 = ASDErrorWithDescription();
+    completionCopy[2](completionCopy, 0, dialogContext2);
   }
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [(FetchReceiptTask *)self dialogContext];
+  requestCopy = request;
+  completionCopy = completion;
+  dialogContext = [(FetchReceiptTask *)self dialogContext];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
@@ -631,21 +631,21 @@ LABEL_25:
     if (os_log_type_enabled(qword_1003D3EC8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(FetchReceiptTask *)self logKey];
-      v15 = [(FetchReceiptTask *)self client];
-      v16 = [v15 requestBundleID];
+      logKey = [(FetchReceiptTask *)self logKey];
+      client = [(FetchReceiptTask *)self client];
+      requestBundleID = [client requestBundleID];
       v20 = 138543618;
-      v21 = v14;
+      v21 = logKey;
       v22 = 2114;
-      v23 = v16;
+      v23 = requestBundleID;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@] Handling authentication request", &v20, 0x16u);
     }
 
-    v17 = [(FetchReceiptTask *)self dialogContext];
-    v18 = [(FetchReceiptTask *)self logKey];
-    [_TtC9storekitd19objc_AccountManager authenticateWithRequest:v8 dialogContext:v17 logKey:v18 completionHandler:v9];
+    dialogContext2 = [(FetchReceiptTask *)self dialogContext];
+    logKey2 = [(FetchReceiptTask *)self logKey];
+    [_TtC9storekitd19objc_AccountManager authenticateWithRequest:requestCopy dialogContext:dialogContext2 logKey:logKey2 completionHandler:completionCopy];
 
-    v9 = v18;
+    completionCopy = logKey2;
   }
 
   else
@@ -661,16 +661,16 @@ LABEL_25:
       sub_1002CA080(v19, self);
     }
 
-    v17 = ASDErrorWithDescription();
-    (*(v9 + 2))(v9, 0, v17);
+    dialogContext2 = ASDErrorWithDescription();
+    (*(completionCopy + 2))(completionCopy, 0, dialogContext2);
   }
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [(FetchReceiptTask *)self dialogContext];
+  requestCopy = request;
+  completionCopy = completion;
+  dialogContext = [(FetchReceiptTask *)self dialogContext];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
@@ -684,22 +684,22 @@ LABEL_25:
     if (os_log_type_enabled(qword_1003D3EC8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(FetchReceiptTask *)self logKey];
-      v15 = [(FetchReceiptTask *)self client];
-      v16 = [v15 requestBundleID];
+      logKey = [(FetchReceiptTask *)self logKey];
+      client = [(FetchReceiptTask *)self client];
+      requestBundleID = [client requestBundleID];
       v21 = 138543618;
-      v22 = v14;
+      v22 = logKey;
       v23 = 2114;
-      v24 = v16;
+      v24 = requestBundleID;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@] Handling engagement request", &v21, 0x16u);
     }
 
-    v17 = [(FetchReceiptTask *)self dialogContext];
-    v18 = [(FetchReceiptTask *)self client];
-    v19 = [v18 bag];
-    [v17 handleEngagementRequest:v8 bag:v19 completionHandler:v9];
+    dialogContext2 = [(FetchReceiptTask *)self dialogContext];
+    client2 = [(FetchReceiptTask *)self client];
+    v19 = [client2 bag];
+    [dialogContext2 handleEngagementRequest:requestCopy bag:v19 completionHandler:completionCopy];
 
-    v9 = v18;
+    completionCopy = client2;
   }
 
   else
@@ -715,8 +715,8 @@ LABEL_25:
       sub_1002CA148(v20, self);
     }
 
-    v17 = ASDErrorWithDescription();
-    (*(v9 + 2))(v9, 0, v17);
+    dialogContext2 = ASDErrorWithDescription();
+    (*(completionCopy + 2))(completionCopy, 0, dialogContext2);
   }
 }
 

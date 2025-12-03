@@ -1,12 +1,12 @@
 @interface VCVideoRuleCollectionsImmersiveVideoMac
 - (BOOL)initSupportedPayloads;
-- (VCVideoRuleCollectionsImmersiveVideoMac)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsImmersiveVideoMac)initWithHardwareSettings:(id)settings;
 - (void)initSupportedPayloads;
 @end
 
 @implementation VCVideoRuleCollectionsImmersiveVideoMac
 
-- (VCVideoRuleCollectionsImmersiveVideoMac)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsImmersiveVideoMac)initWithHardwareSettings:(id)settings
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_hardwareSettings = a3;
+    v4->_hardwareSettings = settings;
     if (![(VCVideoRuleCollectionsImmersiveVideoMac *)v4 initSupportedPayloads]|| ![(VCVideoRuleCollectionsImmersiveVideo *)v5 setupMVHEVCRules])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -77,7 +77,7 @@
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = 136315906;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2080;
   v6 = "[VCVideoRuleCollectionsImmersiveVideoMac initSupportedPayloads]";
   v7 = 1024;

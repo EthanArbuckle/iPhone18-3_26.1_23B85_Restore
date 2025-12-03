@@ -1,22 +1,22 @@
 @interface UIDictationLandingView
-+ (double)widthForLineHeight:(double)a3;
++ (double)widthForLineHeight:(double)height;
 + (id)sharedInstance;
 - (BOOL)canStopLanding;
 - (BOOL)delegateWasEmpty;
-- (UIDictationLandingView)initWithFrame:(CGRect)a3;
+- (UIDictationLandingView)initWithFrame:(CGRect)frame;
 - (double)fadeOutDuration;
 - (id)_currentTextInputView;
 - (void)_invalidatDisplayLink;
-- (void)advanceLanding:(id)a3;
+- (void)advanceLanding:(id)landing;
 - (void)clearRotation;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)errorShakeDidFinish;
 - (void)hideCursor;
-- (void)performRemoteSelector:(SEL)a3;
-- (void)rotateBy:(double)a3;
+- (void)performRemoteSelector:(SEL)selector;
+- (void)rotateBy:(double)by;
 - (void)showCursor;
-- (void)shrinkWithCompletion:(id)a3;
+- (void)shrinkWithCompletion:(id)completion;
 - (void)startDisplayLinkIfNecessary;
 - (void)startLandingIfNecessary;
 - (void)stopLanding;
@@ -26,11 +26,11 @@
 
 @implementation UIDictationLandingView
 
-+ (double)widthForLineHeight:(double)a3
++ (double)widthForLineHeight:(double)height
 {
-  [a1 diameterForLineHeight:?];
+  [self diameterForLineHeight:?];
   v6 = v5 * 0.5;
-  [a1 diameterForLineHeight:a3];
+  [self diameterForLineHeight:height];
   return ceil(v6 + v7 + v6);
 }
 
@@ -49,11 +49,11 @@
   return v2;
 }
 
-- (UIDictationLandingView)initWithFrame:(CGRect)a3
+- (UIDictationLandingView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = UIDictationLandingView;
-  v3 = [(UIView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -91,18 +91,18 @@
   [(UIView *)self setTransform:&v3];
 }
 
-- (void)rotateBy:(double)a3
+- (void)rotateBy:(double)by
 {
-  v4 = self->_angle + a3;
+  v4 = self->_angle + by;
   self->_angle = v4;
   CGAffineTransformMakeRotation(&v6, v4 * 0.0174532925);
   v5 = v6;
   [(UIView *)self setTransform:&v5];
 }
 
-- (void)shrinkWithCompletion:(id)a3
+- (void)shrinkWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s dictation landing view is shrinking", "-[UIDictationLandingView shrinkWithCompletion:]"];
   [UIDictationController logDictationString:v5];
 
@@ -110,8 +110,8 @@
   [(CADisplayLink *)self->_displayLink timestamp];
   self->_shrinkStartTime = v6;
   afterShrinkCompletionInvocation = self->_afterShrinkCompletionInvocation;
-  self->_afterShrinkCompletionInvocation = v4;
-  v8 = v4;
+  self->_afterShrinkCompletionInvocation = completionCopy;
+  v8 = completionCopy;
 
   v9 = +[UIDictationLandingViewSettings sharedInstance];
   [v9 fadeOutDuration];
@@ -125,7 +125,7 @@
   [UIView animateWithDuration:393216 delay:v12 options:0 animations:v11 completion:0.0];
 }
 
-- (void)advanceLanding:(id)a3
+- (void)advanceLanding:(id)landing
 {
   [(CADisplayLink *)self->_displayLink timestamp];
   v5 = v4 - self->_startTime;
@@ -177,25 +177,25 @@ void __41__UIDictationLandingView_advanceLanding___block_invoke(uint64_t a1)
   *(v2 + 480) = 0;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v54 = *MEMORY[0x1E69E9840];
   v5 = self->_diameter * 0.5;
   if (+[UIDictationController viewMode]== 6)
   {
-    v6 = [objc_opt_self() mainScreen];
+    mainScreen = [objc_opt_self() mainScreen];
   }
 
   else
   {
     v7 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v8 = [v7 containerWindow];
-    v6 = [v8 screen];
+    containerWindow = [v7 containerWindow];
+    mainScreen = [containerWindow screen];
   }
 
-  [v6 scale];
+  [mainScreen scale];
   v10 = ceil(width * 0.5 * v9) / v9;
   v11 = ceil(height * 0.5 * v9) / v9;
   v12 = v9 <= 1.0;
@@ -250,13 +250,13 @@ void __41__UIDictationLandingView_advanceLanding___block_invoke(uint64_t a1)
   v36 = 0.0;
   v37 = 0;
   v21 = +[UIKeyboardImpl activeInstance];
-  v22 = [v21 textInteractionAssistant];
-  v23 = [v22 _selectionViewManager];
-  v24 = [v23 _cursorTintColor];
-  v25 = v24;
-  if (v24)
+  textInteractionAssistant = [v21 textInteractionAssistant];
+  _selectionViewManager = [textInteractionAssistant _selectionViewManager];
+  _cursorTintColor = [_selectionViewManager _cursorTintColor];
+  v25 = _cursorTintColor;
+  if (_cursorTintColor)
   {
-    v26 = v24;
+    v26 = _cursorTintColor;
   }
 
   else
@@ -328,22 +328,22 @@ void __41__UIDictationLandingView_advanceLanding___block_invoke(uint64_t a1)
 - (id)_currentTextInputView
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 textInteractionAssistant];
-  v4 = [v3 view];
-  v5 = [v4 textInputView];
+  textInteractionAssistant = [v2 textInteractionAssistant];
+  view = [textInteractionAssistant view];
+  textInputView = [view textInputView];
 
-  return v5;
+  return textInputView;
 }
 
 - (void)updatePosition
 {
   v3 = +[UIKeyboardImpl sharedInstance];
-  v21 = [v3 delegate];
+  delegate = [v3 delegate];
 
-  v4 = [v21 _textSelectingContainer];
+  _textSelectingContainer = [delegate _textSelectingContainer];
   if (self->_placeholder && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 frameForDictationResultPlaceholder:self->_placeholder];
+    [_textSelectingContainer frameForDictationResultPlaceholder:self->_placeholder];
     v24 = CGRectIntegral(v23);
     x = v24.origin.x;
     y = v24.origin.y;
@@ -351,9 +351,9 @@ void __41__UIDictationLandingView_advanceLanding___block_invoke(uint64_t a1)
     height = v24.size.height;
     [UIDictationLandingView diameterForLineHeight:v24.size.height];
     self->_diameter = v9;
-    v10 = [(UIDictationLandingView *)self _currentTextInputView];
-    v11 = [v21 textInputView];
-    [v10 convertRect:v11 fromView:{x, y, width, height}];
+    _currentTextInputView = [(UIDictationLandingView *)self _currentTextInputView];
+    textInputView = [delegate textInputView];
+    [_currentTextInputView convertRect:textInputView fromView:{x, y, width, height}];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -383,20 +383,20 @@ void __41__UIDictationLandingView_advanceLanding___block_invoke(uint64_t a1)
   v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Landing view hideCursor", "-[UIDictationLandingView hideCursor]"];
   [UIDictationController logDictationString:v3];
 
-  v4 = [(UIDictationLandingView *)self hideCursorAssertion];
-  [v4 invalidate];
+  hideCursorAssertion = [(UIDictationLandingView *)self hideCursorAssertion];
+  [hideCursorAssertion invalidate];
 
   [(UIDictationLandingView *)self setHideCursorAssertion:0];
   v5 = +[UIKeyboardImpl sharedInstance];
-  v6 = [v5 _activeAssertionController];
-  v7 = [v6 nonVisibleAssertionWithReason:@"Dictation Landing View"];
+  _activeAssertionController = [v5 _activeAssertionController];
+  v7 = [_activeAssertionController nonVisibleAssertionWithReason:@"Dictation Landing View"];
   [(UIDictationLandingView *)self setHideCursorAssertion:v7];
 
   if (!+[UIKeyboard isRedesignedTextCursorEnabled])
   {
     v9 = +[UIKeyboardImpl sharedInstance];
-    v8 = [v9 textInteractionAssistant];
-    [v8 setSelectionHighlightMode:1];
+    textInteractionAssistant = [v9 textInteractionAssistant];
+    [textInteractionAssistant setSelectionHighlightMode:1];
   }
 }
 
@@ -408,12 +408,12 @@ void __41__UIDictationLandingView_advanceLanding___block_invoke(uint64_t a1)
   if (!+[UIKeyboard isRedesignedTextCursorEnabled])
   {
     v4 = +[UIKeyboardImpl sharedInstance];
-    v5 = [v4 textInteractionAssistant];
-    [v5 setSelectionHighlightMode:1];
+    textInteractionAssistant = [v4 textInteractionAssistant];
+    [textInteractionAssistant setSelectionHighlightMode:1];
   }
 
-  v6 = [(UIDictationLandingView *)self hideCursorAssertion];
-  [v6 invalidate];
+  hideCursorAssertion = [(UIDictationLandingView *)self hideCursorAssertion];
+  [hideCursorAssertion invalidate];
 
   [(UIDictationLandingView *)self setHideCursorAssertion:0];
 }
@@ -424,23 +424,23 @@ void __41__UIDictationLandingView_advanceLanding___block_invoke(uint64_t a1)
   if (!self->_displayLink)
   {
     v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v4 = [v3 containerWindow];
+    containerWindow = [v3 containerWindow];
 
-    v5 = [MEMORY[0x1E6979328] mainDisplay];
-    if (v4)
+    mainDisplay = [MEMORY[0x1E6979328] mainDisplay];
+    if (containerWindow)
     {
-      v6 = [v4 screen];
-      v7 = [v6 _userInterfaceIdiom];
+      screen = [containerWindow screen];
+      _userInterfaceIdiom = [screen _userInterfaceIdiom];
 
-      if (v7 == 3)
+      if (_userInterfaceIdiom == 3)
       {
-        v21 = v4;
+        v21 = containerWindow;
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v8 = [MEMORY[0x1E6979328] displays];
-        v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        displays = [MEMORY[0x1E6979328] displays];
+        v9 = [displays countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v9)
         {
           v10 = v9;
@@ -452,67 +452,67 @@ void __41__UIDictationLandingView_advanceLanding___block_invoke(uint64_t a1)
             {
               if (*v23 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(displays);
               }
 
               v13 = *(*(&v22 + 1) + 8 * v12);
-              v14 = [MEMORY[0x1E6979328] mainDisplay];
+              mainDisplay2 = [MEMORY[0x1E6979328] mainDisplay];
 
-              if (v13 != v14)
+              if (v13 != mainDisplay2)
               {
                 v15 = v13;
 
-                v5 = v15;
+                mainDisplay = v15;
               }
 
               ++v12;
             }
 
             while (v10 != v12);
-            v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+            v10 = [displays countByEnumeratingWithState:&v22 objects:v26 count:16];
           }
 
           while (v10);
         }
 
-        v4 = v21;
+        containerWindow = v21;
       }
     }
 
-    v16 = [MEMORY[0x1E6979330] displayLinkWithDisplay:v5 target:self selector:sel_advanceLanding_];
+    v16 = [MEMORY[0x1E6979330] displayLinkWithDisplay:mainDisplay target:self selector:sel_advanceLanding_];
     displayLink = self->_displayLink;
     self->_displayLink = v16;
 
     [(CADisplayLink *)self->_displayLink setPreferredFramesPerSecond:60];
     v18 = self->_displayLink;
-    v19 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v18 addToRunLoop:v19 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v18 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     [(CADisplayLink *)self->_displayLink timestamp];
     self->_startTime = v20;
   }
 }
 
-- (void)performRemoteSelector:(SEL)a3
+- (void)performRemoteSelector:(SEL)selector
 {
   v11[1] = *MEMORY[0x1E69E9840];
   if (+[UIKeyboard isKeyboardProcess])
   {
     v4 = +[UIKeyboardImpl activeInstance];
-    v5 = [v4 inputDelegateManager];
-    v6 = [v5 inputSystemSourceSession];
+    inputDelegateManager = [v4 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-    if (v6)
+    if (inputSystemSourceSession)
     {
-      v7 = [v6 textOperations];
-      [v7 setCustomInfoType:0x1EFB7C8F0];
+      textOperations = [inputSystemSourceSession textOperations];
+      [textOperations setCustomInfoType:0x1EFB7C8F0];
       v10 = @"selector";
-      v8 = NSStringFromSelector(a3);
+      v8 = NSStringFromSelector(selector);
       v11[0] = v8;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-      [v7 setCustomInfo:v9];
+      [textOperations setCustomInfo:v9];
 
-      [v6 flushOperations];
+      [inputSystemSourceSession flushOperations];
     }
   }
 }
@@ -535,11 +535,11 @@ void __41__UIDictationLandingView_advanceLanding___block_invoke(uint64_t a1)
   [UIDictationController logDictationString:v3];
 
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 inputDelegate];
-  v6 = [v5 selectedTextRange];
-  v7 = [v6 isEmpty];
+  inputDelegate = [v4 inputDelegate];
+  selectedTextRange = [inputDelegate selectedTextRange];
+  isEmpty = [selectedTextRange isEmpty];
 
-  if (v7)
+  if (isEmpty)
   {
     self->_didSkipLanding = 0;
     displayLink = self->_displayLink;
@@ -557,8 +557,8 @@ void __41__UIDictationLandingView_advanceLanding___block_invoke(uint64_t a1)
     if (placeholder)
     {
 LABEL_10:
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s The landing view was in an unexpected state. _displayLink: %@, _placeholder: %@", "-[UIDictationLandingView startLandingIfNecessary]", displayLink, placeholder];
-      [UIDictationController logDictationString:v23];
+      placeholder = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s The landing view was in an unexpected state. _displayLink: %@, _placeholder: %@", "-[UIDictationLandingView startLandingIfNecessary]", displayLink, placeholder];
+      [UIDictationController logDictationString:placeholder];
 
       return;
     }
@@ -571,34 +571,34 @@ LABEL_10:
     }
 
     v12 = +[UIKeyboardImpl activeInstance];
-    v13 = [v12 inputDelegate];
+    inputDelegate2 = [v12 inputDelegate];
 
     v14 = +[UIKeyboardImpl activeInstance];
-    v15 = [v14 inputDelegateManager];
-    v16 = [v15 hasAsyncCapableInputDelegate];
+    inputDelegateManager = [v14 inputDelegateManager];
+    hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
 
-    if ((v16 & 1) == 0)
+    if ((hasAsyncCapableInputDelegate & 1) == 0)
     {
-      v17 = [v13 _textSelectingContainer];
+      _textSelectingContainer = [inputDelegate2 _textSelectingContainer];
       [(UIDictationLandingView *)self hideCursor];
-      self->_didHaveText = [v13 hasText];
+      self->_didHaveText = [inputDelegate2 hasText];
       v18 = +[UIDictationController activeInstance];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __49__UIDictationLandingView_startLandingIfNecessary__block_invoke;
       v27[3] = &unk_1E70F6228;
-      v28 = v17;
-      v29 = self;
-      v19 = v13;
+      v28 = _textSelectingContainer;
+      selfCopy = self;
+      v19 = inputDelegate2;
       v30 = v19;
-      v20 = v17;
+      v20 = _textSelectingContainer;
       [v18 performIgnoringDocumentChanges:v27];
 
       [(UIDictationLandingView *)self updatePosition];
       if (v19 && [(UIDictationLandingView *)self hasActivePlaceholder])
       {
-        v21 = [(UIDictationLandingView *)self _currentTextInputView];
-        [v21 addSubview:self];
+        _currentTextInputView = [(UIDictationLandingView *)self _currentTextInputView];
+        [_currentTextInputView addSubview:self];
       }
 
       [(UIView *)self setAlpha:0.0];
@@ -742,8 +742,8 @@ void __37__UIDictationLandingView_stopLanding__block_invoke(uint64_t a1)
 
 - (BOOL)canStopLanding
 {
-  v3 = [(UIView *)self superview];
-  v4 = v3 || [(UIDictationLandingView *)self hasActivePlaceholder]|| self->_didSkipLanding;
+  superview = [(UIView *)self superview];
+  v4 = superview || [(UIDictationLandingView *)self hasActivePlaceholder]|| self->_didSkipLanding;
 
   return v4;
 }
@@ -773,10 +773,10 @@ uint64_t __45__UIDictationLandingView_errorShakeDidFinish__block_invoke(uint64_t
 {
   [(UIDictationLandingView *)self performRemoteSelector:a2];
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 textInteractionAssistant];
-  v5 = [v4 isValid];
+  textInteractionAssistant = [v3 textInteractionAssistant];
+  isValid = [textInteractionAssistant isValid];
 
-  if (v5)
+  if (isValid)
   {
     [(UIDictationLandingView *)self startLandingIfNecessary];
     v37 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform.translation.x"];
@@ -815,8 +815,8 @@ uint64_t __45__UIDictationLandingView_errorShakeDidFinish__block_invoke(uint64_t
     v35 = [v21 arrayWithObjects:{v23, v25, v27, v29, v31, v33, v34, 0}];
     [v37 setValues:v35];
 
-    v36 = [(UIView *)self layer];
-    [v36 addAnimation:v37 forKey:@"shake"];
+    layer = [(UIView *)self layer];
+    [layer addAnimation:v37 forKey:@"shake"];
 
     [(UIDictationLandingView *)self performSelector:sel_errorShakeDidFinish withObject:0 afterDelay:0.9];
   }

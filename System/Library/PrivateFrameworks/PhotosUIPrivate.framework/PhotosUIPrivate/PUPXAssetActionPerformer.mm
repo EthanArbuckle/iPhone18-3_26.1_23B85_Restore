@@ -1,13 +1,13 @@
 @interface PUPXAssetActionPerformer
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
-- (BOOL)actionPerformer:(id)a3 presentViewController:(id)a4;
-- (BOOL)prefersAssetInclusionAfterRemovalForActionPerformer:(id)a3;
-- (PUPXAssetActionPerformer)initWithActionType:(unint64_t)a3 assets:(id)a4 orAssetsByAssetCollection:(id)a5;
-- (PUPXAssetActionPerformer)initWithUnderlyingActionPerformer:(id)a3;
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler;
+- (BOOL)actionPerformer:(id)performer presentViewController:(id)controller;
+- (BOOL)prefersAssetInclusionAfterRemovalForActionPerformer:(id)performer;
+- (PUPXAssetActionPerformer)initWithActionType:(unint64_t)type assets:(id)assets orAssetsByAssetCollection:(id)collection;
+- (PUPXAssetActionPerformer)initWithUnderlyingActionPerformer:(id)performer;
 - (PXActionPerformerDelegate)forwardingDelegate;
-- (id)undoManagerForActionPerformer:(id)a3;
+- (id)undoManagerForActionPerformer:(id)performer;
 - (unint64_t)state;
-- (void)actionPerformer:(id)a3 didChangeState:(unint64_t)a4;
+- (void)actionPerformer:(id)performer didChangeState:(unint64_t)state;
 @end
 
 @implementation PUPXAssetActionPerformer
@@ -19,9 +19,9 @@
   return WeakRetained;
 }
 
-- (BOOL)prefersAssetInclusionAfterRemovalForActionPerformer:(id)a3
+- (BOOL)prefersAssetInclusionAfterRemovalForActionPerformer:(id)performer
 {
-  v4 = [(PUAssetActionPerformer *)self delegate];
+  delegate = [(PUAssetActionPerformer *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -29,40 +29,40 @@
     return 0;
   }
 
-  v6 = [(PUAssetActionPerformer *)self delegate];
-  v7 = [v6 prefersAssetInclusionAfterRemovalForActionPerformer:self];
+  delegate2 = [(PUAssetActionPerformer *)self delegate];
+  v7 = [delegate2 prefersAssetInclusionAfterRemovalForActionPerformer:self];
 
   return v7;
 }
 
-- (id)undoManagerForActionPerformer:(id)a3
+- (id)undoManagerForActionPerformer:(id)performer
 {
-  v4 = [(PUAssetActionPerformer *)self delegate];
-  v5 = [v4 undoManagerForAssetActionPerformer:self];
+  delegate = [(PUAssetActionPerformer *)self delegate];
+  v5 = [delegate undoManagerForAssetActionPerformer:self];
 
   return v5;
 }
 
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(PUAssetActionPerformer *)self delegate];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  delegate = [(PUAssetActionPerformer *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = v7;
-    v12 = [(PUAssetActionPerformer *)self delegate];
+    v11 = controllerCopy;
+    delegate2 = [(PUAssetActionPerformer *)self delegate];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __84__PUPXAssetActionPerformer_actionPerformer_dismissViewController_completionHandler___block_invoke;
     v16[3] = &unk_1E7B80CB0;
     v17 = v11;
-    v18 = self;
-    v19 = v8;
+    selfCopy = self;
+    v19 = handlerCopy;
     v13 = v11;
-    v14 = [v12 assetActionPerformer:self dismissViewController:v13 completionHandler:v16];
+    v14 = [delegate2 assetActionPerformer:self dismissViewController:v13 completionHandler:v16];
   }
 
   else
@@ -94,17 +94,17 @@ uint64_t __84__PUPXAssetActionPerformer_actionPerformer_dismissViewController_co
   return result;
 }
 
-- (BOOL)actionPerformer:(id)a3 presentViewController:(id)a4
+- (BOOL)actionPerformer:(id)performer presentViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [(PUAssetActionPerformer *)self delegate];
+  controllerCopy = controller;
+  delegate = [(PUAssetActionPerformer *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = v5;
-    v9 = [(PUAssetActionPerformer *)self delegate];
-    v10 = [v9 assetActionPerformer:self presentViewController:v8];
+    v8 = controllerCopy;
+    delegate2 = [(PUAssetActionPerformer *)self delegate];
+    v10 = [delegate2 assetActionPerformer:self presentViewController:v8];
 
     if (v10)
     {
@@ -120,34 +120,34 @@ uint64_t __84__PUPXAssetActionPerformer_actionPerformer_dismissViewController_co
   return v10;
 }
 
-- (void)actionPerformer:(id)a3 didChangeState:(unint64_t)a4
+- (void)actionPerformer:(id)performer didChangeState:(unint64_t)state
 {
-  v14 = a3;
-  v6 = [(PUAssetActionPerformer *)self delegate];
+  performerCopy = performer;
+  delegate = [(PUAssetActionPerformer *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    if (a4 > 19)
+    if (state > 19)
     {
-      v9 = a4;
-      if (a4 != 20)
+      stateCopy = state;
+      if (state != 20)
       {
-        if (a4 == 30)
+        if (state == 30)
         {
-          v9 = 30;
+          stateCopy = 30;
         }
 
         else
         {
-          v9 = 0;
+          stateCopy = 0;
         }
       }
     }
 
     else
     {
-      if (a4 == 10)
+      if (state == 10)
       {
         v8 = 10;
       }
@@ -157,35 +157,35 @@ uint64_t __84__PUPXAssetActionPerformer_actionPerformer_dismissViewController_co
         v8 = 0;
       }
 
-      if (a4 == 5)
+      if (state == 5)
       {
-        v9 = 5;
+        stateCopy = 5;
       }
 
       else
       {
-        v9 = v8;
+        stateCopy = v8;
       }
     }
 
-    v10 = [(PUAssetActionPerformer *)self delegate];
-    [v10 assetActionPerformer:self didChangeState:v9];
+    delegate2 = [(PUAssetActionPerformer *)self delegate];
+    [delegate2 assetActionPerformer:self didChangeState:stateCopy];
   }
 
-  v11 = [(PUPXAssetActionPerformer *)self forwardingDelegate];
+  forwardingDelegate = [(PUPXAssetActionPerformer *)self forwardingDelegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(PUPXAssetActionPerformer *)self forwardingDelegate];
-    [v13 actionPerformer:v14 didChangeState:a4];
+    forwardingDelegate2 = [(PUPXAssetActionPerformer *)self forwardingDelegate];
+    [forwardingDelegate2 actionPerformer:performerCopy didChangeState:state];
   }
 }
 
 - (unint64_t)state
 {
-  v2 = [(PXAssetActionPerformer *)self->_underlyingActionPerformer state];
-  if (v2 == 30)
+  state = [(PXAssetActionPerformer *)self->_underlyingActionPerformer state];
+  if (state == 30)
   {
     v3 = 30;
   }
@@ -195,12 +195,12 @@ uint64_t __84__PUPXAssetActionPerformer_actionPerformer_dismissViewController_co
     v3 = 0;
   }
 
-  if (v2 == 20)
+  if (state == 20)
   {
     v3 = 20;
   }
 
-  if (v2 == 10)
+  if (state == 10)
   {
     v4 = 10;
   }
@@ -210,12 +210,12 @@ uint64_t __84__PUPXAssetActionPerformer_actionPerformer_dismissViewController_co
     v4 = 0;
   }
 
-  if (v2 == 5)
+  if (state == 5)
   {
     v4 = 5;
   }
 
-  if (v2 <= 19)
+  if (state <= 19)
   {
     return v4;
   }
@@ -226,18 +226,18 @@ uint64_t __84__PUPXAssetActionPerformer_actionPerformer_dismissViewController_co
   }
 }
 
-- (PUPXAssetActionPerformer)initWithUnderlyingActionPerformer:(id)a3
+- (PUPXAssetActionPerformer)initWithUnderlyingActionPerformer:(id)performer
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  performerCopy = performer;
+  if (!performerCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUPXAssetActionManager.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"actionPerformer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXAssetActionManager.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"actionPerformer"}];
   }
 
-  v7 = [v6 actionType];
-  v8 = PUAssetActionTypeForPXAssetActionType(v7);
+  actionType = [performerCopy actionType];
+  v8 = PUAssetActionTypeForPXAssetActionType(actionType);
 
   if (v8)
   {
@@ -247,15 +247,15 @@ uint64_t __84__PUPXAssetActionPerformer_actionPerformer_dismissViewController_co
     p_isa = &v9->super.super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_underlyingActionPerformer, a3);
-      v11 = [v6 delegate];
-      objc_storeWeak(p_isa + 11, v11);
+      objc_storeStrong(&v9->_underlyingActionPerformer, performer);
+      delegate = [performerCopy delegate];
+      objc_storeWeak(p_isa + 11, delegate);
 
-      [v6 setDelegate:p_isa];
+      [performerCopy setDelegate:p_isa];
     }
 
     self = p_isa;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -263,24 +263,24 @@ uint64_t __84__PUPXAssetActionPerformer_actionPerformer_dismissViewController_co
     v13 = PXAssertGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v6 actionType];
+      actionType2 = [performerCopy actionType];
       *buf = 138412290;
-      v19 = v15;
+      v19 = actionType2;
       _os_log_error_impl(&dword_1B36F3000, v13, OS_LOG_TYPE_ERROR, "There is no equivalent PUAssetActionType given for %@", buf, 0xCu);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (PUPXAssetActionPerformer)initWithActionType:(unint64_t)a3 assets:(id)a4 orAssetsByAssetCollection:(id)a5
+- (PUPXAssetActionPerformer)initWithActionType:(unint64_t)type assets:(id)assets orAssetsByAssetCollection:(id)collection
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"PUPXAssetActionManager.m" lineNumber:338 description:{@"%s is not available as initializer", "-[PUPXAssetActionPerformer initWithActionType:assets:orAssetsByAssetCollection:]"}];
+  assetsCopy = assets;
+  collectionCopy = collection;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXAssetActionManager.m" lineNumber:338 description:{@"%s is not available as initializer", "-[PUPXAssetActionPerformer initWithActionType:assets:orAssetsByAssetCollection:]"}];
 
   abort();
 }

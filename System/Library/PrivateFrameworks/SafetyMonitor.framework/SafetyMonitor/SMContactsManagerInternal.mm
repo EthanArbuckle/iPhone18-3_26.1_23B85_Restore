@@ -1,8 +1,8 @@
 @interface SMContactsManagerInternal
 + (SMContactsManagerInternal)shared;
-- (id)activeSessionRecipientContactsFor:(id)a3;
-- (id)contactWith:(id)a3;
-- (id)fetchAdditionalInfoFor:(id)a3 keysToFetch:(id)a4;
+- (id)activeSessionRecipientContactsFor:(id)for;
+- (id)contactWith:(id)with;
+- (id)fetchAdditionalInfoFor:(id)for keysToFetch:(id)fetch;
 - (id)fetchSelfContact;
 - (void)dealloc;
 @end
@@ -12,11 +12,11 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4 name:*MEMORY[0x277CBD140] object:0];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:*MEMORY[0x277CBD140] object:0];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for ContactsManager();
   [(SMContactsManagerInternal *)&v6 dealloc];
 }
@@ -33,9 +33,9 @@
   return v3;
 }
 
-- (id)contactWith:(id)a3
+- (id)contactWith:(id)with
 {
-  if (a3)
+  if (with)
   {
     v4 = sub_2645D398C();
     v6 = v5;
@@ -47,17 +47,17 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_264572718(v4, v6);
 
   return v8;
 }
 
-- (id)activeSessionRecipientContactsFor:(id)a3
+- (id)activeSessionRecipientContactsFor:(id)for
 {
-  v5 = a3;
-  v6 = self;
-  sub_26457325C(a3);
+  forCopy = for;
+  selfCopy = self;
+  sub_26457325C(for);
 
   sub_264569FD8(0, &unk_27FF72DA0, 0x277CBDA58);
   v7 = sub_2645D3A3C();
@@ -65,16 +65,16 @@
   return v7;
 }
 
-- (id)fetchAdditionalInfoFor:(id)a3 keysToFetch:(id)a4
+- (id)fetchAdditionalInfoFor:(id)for keysToFetch:(id)fetch
 {
-  v5 = a3;
-  if (a3)
+  forCopy = for;
+  if (for)
   {
     sub_264569FD8(0, &unk_27FF72DA0, 0x277CBDA58);
-    v5 = sub_2645D3A4C();
+    forCopy = sub_2645D3A4C();
   }
 
-  if (a4)
+  if (fetch)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FF72D90, &qword_2645D9C58);
     v7 = sub_2645D3A4C();
@@ -85,8 +85,8 @@
     v7 = 0;
   }
 
-  v8 = self;
-  v9 = sub_26457392C(v5, v7);
+  selfCopy = self;
+  v9 = sub_26457392C(forCopy, v7);
 
   if (v9)
   {
@@ -104,7 +104,7 @@
 
 - (id)fetchSelfContact
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2645740DC();
 
   return v3;

@@ -21,15 +21,15 @@
   v10[1] = 3221225472;
   v10[2] = __65__NSIndexPath_TVMLKitAdditions__flattenedIndexForItemInSections___block_invoke;
   v10[3] = &unk_279D6F560;
-  v10[4] = a1;
+  v10[4] = self;
   v10[5] = &v11;
   v10[6] = &v17;
   [v4 enumerateObjectsUsingBlock:v10];
   v5 = v12[5];
-  if (v5 && (v6 = [v5 numberOfItems], v6 > objc_msgSend(a1, "item")))
+  if (v5 && (v6 = [v5 numberOfItems], v6 > objc_msgSend(self, "item")))
   {
     v7 = v18[3];
-    v8 = [a1 item] + v7;
+    v8 = [self item] + v7;
   }
 
   else

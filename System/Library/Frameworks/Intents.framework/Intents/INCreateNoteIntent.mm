@@ -7,18 +7,18 @@
 - (id)_metadata;
 - (id)_redactedDictionaryRepresentation;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setContent:(id)a3;
-- (void)setGroupName:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setContent:(id)content;
+- (void)setGroupName:(id)name;
+- (void)setTitle:(id)title;
 @end
 
 @implementation INCreateNoteIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INCreateNoteIntent *)self _typedBackingStore:a3];
+  v6 = [(INCreateNoteIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -27,42 +27,42 @@
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"title";
-  v3 = [(INCreateNoteIntent *)self title];
-  v4 = v3;
-  if (!v3)
+  title = [(INCreateNoteIntent *)self title];
+  null = title;
+  if (!title)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"content";
-  v5 = [(INCreateNoteIntent *)self content];
-  v6 = v5;
-  if (!v5)
+  content = [(INCreateNoteIntent *)self content];
+  null2 = content;
+  if (!content)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"groupName";
-  v7 = [(INCreateNoteIntent *)self groupName];
-  v8 = v7;
-  if (!v7)
+  groupName = [(INCreateNoteIntent *)self groupName];
+  null3 = groupName;
+  if (!groupName)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (!v7)
+  if (!groupName)
   {
   }
 
-  if (!v5)
+  if (!content)
   {
   }
 
-  if (!v3)
+  if (!title)
   {
   }
 
@@ -73,64 +73,64 @@
 
 - (id)_redactedDictionaryRepresentation
 {
-  v2 = [(INCreateNoteIntent *)self _dictionaryRepresentation];
-  v3 = [v2 mutableCopy];
+  _dictionaryRepresentation = [(INCreateNoteIntent *)self _dictionaryRepresentation];
+  v3 = [_dictionaryRepresentation mutableCopy];
 
   [v3 setObject:@"<redacted>" forKey:@"title"];
 
   return v3;
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v4 = a3;
-  v6 = [(INCreateNoteIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  nameCopy = name;
+  _typedBackingStore = [(INCreateNoteIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(nameCopy);
 
-  [v6 setGroupName:v5];
+  [_typedBackingStore setGroupName:v5];
 }
 
 - (INSpeakableString)groupName
 {
-  v2 = [(INCreateNoteIntent *)self _typedBackingStore];
-  v3 = [v2 groupName];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INCreateNoteIntent *)self _typedBackingStore];
+  groupName = [_typedBackingStore groupName];
+  v4 = INIntentSlotValueTransformFromDataString(groupName);
 
   return v4;
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v4 = a3;
-  v6 = [(INCreateNoteIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToNoteContent(v4);
+  contentCopy = content;
+  _typedBackingStore = [(INCreateNoteIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToNoteContent(contentCopy);
 
-  [v6 setContent:v5];
+  [_typedBackingStore setContent:v5];
 }
 
 - (INNoteContent)content
 {
-  v2 = [(INCreateNoteIntent *)self _typedBackingStore];
-  v3 = [v2 content];
-  v4 = INIntentSlotValueTransformFromNoteContent(v3);
+  _typedBackingStore = [(INCreateNoteIntent *)self _typedBackingStore];
+  content = [_typedBackingStore content];
+  v4 = INIntentSlotValueTransformFromNoteContent(content);
 
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v6 = [(INCreateNoteIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  titleCopy = title;
+  _typedBackingStore = [(INCreateNoteIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(titleCopy);
 
-  [v6 setTitle:v5];
+  [_typedBackingStore setTitle:v5];
 }
 
 - (INSpeakableString)title
 {
-  v2 = [(INCreateNoteIntent *)self _typedBackingStore];
-  v3 = [v2 title];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INCreateNoteIntent *)self _typedBackingStore];
+  title = [_typedBackingStore title];
+  v4 = INIntentSlotValueTransformFromDataString(title);
 
   return v4;
 }
@@ -154,28 +154,28 @@
   return v12;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INCreateNoteIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INCreateNoteIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INCreateNoteIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INCreateNoteIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

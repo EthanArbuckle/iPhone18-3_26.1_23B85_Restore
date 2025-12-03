@@ -1,69 +1,69 @@
 @interface BMUserProofingEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMUserProofingEvent)initWithAbsoluteTimestamp:(double)a3 age:(id)a4 gender:(id)a5 skinTone:(id)a6 ethnicity:(id)a7 deviceLanguage:(id)a8 proofingDecision:(id)a9 issuer:(id)a10 livenessAssessment:(id)a11 gestureAssessment:(id)a12;
-- (BMUserProofingEvent)initWithCoder:(id)a3;
-- (BMUserProofingEvent)initWithProto:(id)a3;
-- (BMUserProofingEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMUserProofingEvent)initWithAbsoluteTimestamp:(double)timestamp age:(id)age gender:(id)gender skinTone:(id)tone ethnicity:(id)ethnicity deviceLanguage:(id)language proofingDecision:(id)decision issuer:(id)self0 livenessAssessment:(id)self1 gestureAssessment:(id)self2;
+- (BMUserProofingEvent)initWithCoder:(id)coder;
+- (BMUserProofingEvent)initWithProto:(id)proto;
+- (BMUserProofingEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMUserProofingEvent
 
-- (BMUserProofingEvent)initWithAbsoluteTimestamp:(double)a3 age:(id)a4 gender:(id)a5 skinTone:(id)a6 ethnicity:(id)a7 deviceLanguage:(id)a8 proofingDecision:(id)a9 issuer:(id)a10 livenessAssessment:(id)a11 gestureAssessment:(id)a12
+- (BMUserProofingEvent)initWithAbsoluteTimestamp:(double)timestamp age:(id)age gender:(id)gender skinTone:(id)tone ethnicity:(id)ethnicity deviceLanguage:(id)language proofingDecision:(id)decision issuer:(id)self0 livenessAssessment:(id)self1 gestureAssessment:(id)self2
 {
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
+  ageCopy = age;
+  genderCopy = gender;
+  toneCopy = tone;
+  ethnicityCopy = ethnicity;
+  languageCopy = language;
+  decisionCopy = decision;
+  issuerCopy = issuer;
+  assessmentCopy = assessment;
+  gestureAssessmentCopy = gestureAssessment;
   v49.receiver = self;
   v49.super_class = BMUserProofingEvent;
   v28 = [(BMUserProofingEvent *)&v49 init];
   v29 = v28;
   if (v28)
   {
-    v28->_absoluteTimestamp = a3;
-    v30 = [v19 copy];
+    v28->_absoluteTimestamp = timestamp;
+    v30 = [ageCopy copy];
     age = v29->_age;
     v29->_age = v30;
 
-    v32 = [v20 copy];
+    v32 = [genderCopy copy];
     gender = v29->_gender;
     v29->_gender = v32;
 
-    v34 = [v21 copy];
+    v34 = [toneCopy copy];
     skinTone = v29->_skinTone;
     v29->_skinTone = v34;
 
-    v36 = [v22 copy];
+    v36 = [ethnicityCopy copy];
     ethnicity = v29->_ethnicity;
     v29->_ethnicity = v36;
 
-    v38 = [v23 copy];
+    v38 = [languageCopy copy];
     deviceLanguage = v29->_deviceLanguage;
     v29->_deviceLanguage = v38;
 
-    v40 = [v24 copy];
+    v40 = [decisionCopy copy];
     proofingDecision = v29->_proofingDecision;
     v29->_proofingDecision = v40;
 
-    v42 = [v25 copy];
+    v42 = [issuerCopy copy];
     issuer = v29->_issuer;
     v29->_issuer = v42;
 
-    v44 = [v26 copy];
+    v44 = [assessmentCopy copy];
     livenessAssessment = v29->_livenessAssessment;
     v29->_livenessAssessment = v44;
 
-    v46 = [v27 copy];
+    v46 = [gestureAssessmentCopy copy];
     gestureAssessment = v29->_gestureAssessment;
     v29->_gestureAssessment = v46;
   }
@@ -71,12 +71,12 @@
   return v29;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -84,7 +84,7 @@
     v8 = __biome_log_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [BMUserProofingEvent eventWithData:a4 dataVersion:v8];
+      [BMUserProofingEvent eventWithData:version dataVersion:v8];
     }
 
     v7 = 0;
@@ -93,45 +93,45 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMUserProofingEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"user_proofing"];
+  coderCopy = coder;
+  encodeAsProto = [(BMUserProofingEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"user_proofing"];
 }
 
-- (BMUserProofingEvent)initWithCoder:(id)a3
+- (BMUserProofingEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"user_proofing" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"user_proofing" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMUserProofingEvent *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMUserProofingEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMUserProofingEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMUserProofingEvent)initWithProto:(id)a3
+- (BMUserProofingEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -145,7 +145,7 @@
       goto LABEL_17;
     }
 
-    v5 = v4;
+    v5 = protoCopy;
     [v5 absoluteTimestamp];
     if (v6 != 0.0)
     {
@@ -153,32 +153,32 @@
       if (v7)
       {
         v8 = v7;
-        v9 = [v5 gender];
-        if (v9)
+        gender = [v5 gender];
+        if (gender)
         {
-          v10 = v9;
-          v11 = [v5 deviceLanguage];
-          if (v11)
+          v10 = gender;
+          deviceLanguage = [v5 deviceLanguage];
+          if (deviceLanguage)
           {
-            v12 = v11;
-            v13 = [v5 proofingDecision];
+            v12 = deviceLanguage;
+            proofingDecision = [v5 proofingDecision];
 
-            if (v13)
+            if (proofingDecision)
             {
               [v5 absoluteTimestamp];
               v15 = v14;
               v27 = [v5 age];
-              v26 = [v5 gender];
-              v16 = [v5 skinTone];
-              v17 = [v5 ethnicity];
-              v18 = [v5 deviceLanguage];
-              v19 = [v5 proofingDecision];
-              v20 = [v5 issuer];
-              v21 = [v5 livenessAssessment];
-              v22 = [v5 gestureAssessment];
-              self = [(BMUserProofingEvent *)self initWithAbsoluteTimestamp:v27 age:v26 gender:v16 skinTone:v17 ethnicity:v18 deviceLanguage:v19 proofingDecision:v15 issuer:v20 livenessAssessment:v21 gestureAssessment:v22];
+              gender2 = [v5 gender];
+              skinTone = [v5 skinTone];
+              ethnicity = [v5 ethnicity];
+              deviceLanguage2 = [v5 deviceLanguage];
+              proofingDecision2 = [v5 proofingDecision];
+              issuer = [v5 issuer];
+              livenessAssessment = [v5 livenessAssessment];
+              gestureAssessment = [v5 gestureAssessment];
+              self = [(BMUserProofingEvent *)self initWithAbsoluteTimestamp:v27 age:gender2 gender:skinTone skinTone:ethnicity ethnicity:deviceLanguage2 deviceLanguage:proofingDecision2 proofingDecision:v15 issuer:issuer livenessAssessment:livenessAssessment gestureAssessment:gestureAssessment];
 
-              v23 = self;
+              selfCopy = self;
 LABEL_18:
 
               goto LABEL_19;
@@ -198,33 +198,33 @@ LABEL_14:
     }
 
 LABEL_17:
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
-  v23 = 0;
+  selfCopy = 0;
 LABEL_19:
 
-  return v23;
+  return selfCopy;
 }
 
-- (BMUserProofingEvent)initWithProtoData:(id)a3
+- (BMUserProofingEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBUserProofingEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBUserProofingEvent alloc] initWithData:dataCopy];
 
     self = [(BMUserProofingEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -256,13 +256,13 @@ LABEL_19:
   return v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = equalCopy;
     absoluteTimestamp = self->_absoluteTimestamp;
     [v7 absoluteTimestamp];
     if (absoluteTimestamp != v9)
@@ -303,8 +303,8 @@ LABEL_12:
     v16 = gender;
     if (!gender)
     {
-      v17 = [v7 gender];
-      if (!v17)
+      gender = [v7 gender];
+      if (!gender)
       {
         v70 = v13;
         v69 = 0;
@@ -312,12 +312,12 @@ LABEL_12:
         goto LABEL_19;
       }
 
-      v69 = v17;
+      v69 = gender;
       v16 = self->_gender;
     }
 
-    v4 = [v7 gender];
-    if (![(NSString *)v16 isEqualToString:v4])
+    gender2 = [v7 gender];
+    if (![(NSString *)v16 isEqualToString:gender2])
     {
       v14 = 0;
       goto LABEL_88;
@@ -330,8 +330,8 @@ LABEL_19:
     v20 = skinTone;
     if (!skinTone)
     {
-      v21 = [v7 skinTone];
-      if (!v21)
+      skinTone = [v7 skinTone];
+      if (!skinTone)
       {
         v67 = v18;
         v68 = 0;
@@ -339,14 +339,14 @@ LABEL_19:
         goto LABEL_26;
       }
 
-      v65 = v21;
+      v65 = skinTone;
       v20 = self->_skinTone;
     }
 
-    v22 = [v7 skinTone];
+    skinTone2 = [v7 skinTone];
     v23 = v20;
-    v24 = v22;
-    if (![(NSString *)v23 isEqualToString:v22])
+    v24 = skinTone2;
+    if (![(NSString *)v23 isEqualToString:skinTone2])
     {
       v14 = 0;
       goto LABEL_84;
@@ -360,19 +360,19 @@ LABEL_26:
     v26 = ethnicity;
     if (!ethnicity)
     {
-      v27 = [v7 ethnicity];
-      if (!v27)
+      ethnicity = [v7 ethnicity];
+      if (!ethnicity)
       {
         v60 = 0;
         v63 = 0;
         goto LABEL_33;
       }
 
-      v60 = v27;
+      v60 = ethnicity;
       v26 = self->_ethnicity;
     }
 
-    v66 = [v7 ethnicity];
+    ethnicity2 = [v7 ethnicity];
     if (![(NSString *)v26 isEqualToString:?])
     {
       v14 = 0;
@@ -386,19 +386,19 @@ LABEL_33:
     v62 = deviceLanguage;
     if (!deviceLanguage)
     {
-      v29 = [v7 deviceLanguage];
-      if (!v29)
+      deviceLanguage = [v7 deviceLanguage];
+      if (!deviceLanguage)
       {
         v56 = 0;
         v59 = 0;
         goto LABEL_40;
       }
 
-      v56 = v29;
+      v56 = deviceLanguage;
       deviceLanguage = self->_deviceLanguage;
     }
 
-    v61 = [v7 deviceLanguage];
+    deviceLanguage2 = [v7 deviceLanguage];
     if (![(NSString *)deviceLanguage isEqualToString:?])
     {
       v14 = 0;
@@ -412,19 +412,19 @@ LABEL_40:
     v58 = proofingDecision;
     if (!proofingDecision)
     {
-      v31 = [v7 proofingDecision];
-      if (!v31)
+      proofingDecision = [v7 proofingDecision];
+      if (!proofingDecision)
       {
         v52 = 0;
         v55 = 0;
         goto LABEL_47;
       }
 
-      v52 = v31;
+      v52 = proofingDecision;
       proofingDecision = self->_proofingDecision;
     }
 
-    v57 = [v7 proofingDecision];
+    proofingDecision2 = [v7 proofingDecision];
     if (![(NSString *)proofingDecision isEqualToString:?])
     {
       v14 = 0;
@@ -438,19 +438,19 @@ LABEL_47:
     v54 = issuer;
     if (!issuer)
     {
-      v33 = [v7 issuer];
-      if (!v33)
+      issuer = [v7 issuer];
+      if (!issuer)
       {
         v48 = 0;
         v51 = 0;
         goto LABEL_54;
       }
 
-      v48 = v33;
+      v48 = issuer;
       issuer = self->_issuer;
     }
 
-    v53 = [v7 issuer];
+    issuer2 = [v7 issuer];
     if (![(NSString *)issuer isEqualToString:?])
     {
       v14 = 0;
@@ -464,19 +464,19 @@ LABEL_54:
     v50 = livenessAssessment;
     if (!livenessAssessment)
     {
-      v35 = [v7 livenessAssessment];
-      if (!v35)
+      livenessAssessment = [v7 livenessAssessment];
+      if (!livenessAssessment)
       {
         v45 = 0;
         v47 = 0;
         goto LABEL_61;
       }
 
-      v45 = v35;
+      v45 = livenessAssessment;
       livenessAssessment = self->_livenessAssessment;
     }
 
-    v49 = [v7 livenessAssessment];
+    livenessAssessment2 = [v7 livenessAssessment];
     if (![(NSString *)livenessAssessment isEqualToString:?])
     {
       v14 = 0;
@@ -490,8 +490,8 @@ LABEL_61:
     v37 = gestureAssessment;
     if (!gestureAssessment)
     {
-      v38 = [v7 gestureAssessment];
-      if (!v38)
+      gestureAssessment = [v7 gestureAssessment];
+      if (!gestureAssessment)
       {
         v42 = 0;
         v14 = 1;
@@ -662,7 +662,7 @@ LABEL_66:
         goto LABEL_67;
       }
 
-      v43 = v38;
+      v43 = gestureAssessment;
       v37 = self->_gestureAssessment;
     }
 

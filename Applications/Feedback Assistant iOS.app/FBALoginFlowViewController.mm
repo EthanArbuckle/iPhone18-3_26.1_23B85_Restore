@@ -1,20 +1,20 @@
 @interface FBALoginFlowViewController
-- (void)prepareForSegue:(id)a3 sender:(id)a4;
+- (void)prepareForSegue:(id)segue sender:(id)sender;
 @end
 
 @implementation FBALoginFlowViewController
 
-- (void)prepareForSegue:(id)a3 sender:(id)a4
+- (void)prepareForSegue:(id)segue sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [v8 isEqualToString:@"FBAStartupLicensePresentation"];
+  segueCopy = segue;
+  senderCopy = sender;
+  identifier = [segueCopy identifier];
+  v9 = [identifier isEqualToString:@"FBAStartupLicensePresentation"];
 
   if (v9)
   {
-    v10 = [v6 destinationViewController];
-    v11 = [v10 topViewController];
+    destinationViewController = [segueCopy destinationViewController];
+    topViewController = [destinationViewController topViewController];
 
     objc_initWeak(&location, self);
     v12[0] = _NSConcreteStackBlock;
@@ -23,7 +23,7 @@
     v12[3] = &unk_1000DE618;
     objc_copyWeak(&v13, &location);
     v12[4] = self;
-    [v11 setCompletion:v12];
+    [topViewController setCompletion:v12];
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }

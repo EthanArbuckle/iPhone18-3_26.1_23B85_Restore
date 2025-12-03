@@ -1,20 +1,20 @@
 @interface MultilineWrappingListView
 - (CGRect)previousFrame;
 - (CGSize)intrinsicContentSize;
-- (MultilineWrappingListView)initWithCoder:(id)a3;
-- (MultilineWrappingListView)initWithFrame:(CGRect)a3;
-- (double)_paddingForItem:(id)a3;
+- (MultilineWrappingListView)initWithCoder:(id)coder;
+- (MultilineWrappingListView)initWithFrame:(CGRect)frame;
+- (double)_paddingForItem:(id)item;
 - (double)singleLineWidth;
 - (unint64_t)numberOfLines;
-- (void)_addArrangedSubview:(id)a3 horizontalSpacing:(id)a4;
+- (void)_addArrangedSubview:(id)subview horizontalSpacing:(id)spacing;
 - (void)_commonInit;
-- (void)_enumerateItemsForPreferredMaxLayoutWidth:(double)a3 block:(id)a4;
-- (void)_enumerateLinesForPreferredMaxLayoutWidth:(double)a3 block:(id)a4;
+- (void)_enumerateItemsForPreferredMaxLayoutWidth:(double)width block:(id)block;
+- (void)_enumerateLinesForPreferredMaxLayoutWidth:(double)width block:(id)block;
 - (void)_invalidateFrameSize;
 - (void)_invalidateLayout;
-- (void)addArrangedSubview:(id)a3 withCustomHorizontalSpacing:(double)a4;
+- (void)addArrangedSubview:(id)subview withCustomHorizontalSpacing:(double)spacing;
 - (void)layoutSubviews;
-- (void)willRemoveSubview:(id)a3;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation MultilineWrappingListView
@@ -32,14 +32,14 @@
   return result;
 }
 
-- (double)_paddingForItem:(id)a3
+- (double)_paddingForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 horizontalSpacing];
-  if (v5)
+  itemCopy = item;
+  horizontalSpacing = [itemCopy horizontalSpacing];
+  if (horizontalSpacing)
   {
-    v6 = [v4 horizontalSpacing];
-    [v6 floatValue];
+    horizontalSpacing2 = [itemCopy horizontalSpacing];
+    [horizontalSpacing2 floatValue];
     v8 = v7;
   }
 
@@ -52,9 +52,9 @@
   return v8;
 }
 
-- (void)_enumerateLinesForPreferredMaxLayoutWidth:(double)a3 block:(id)a4
+- (void)_enumerateLinesForPreferredMaxLayoutWidth:(double)width block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_opt_new();
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -87,8 +87,8 @@
         }
 
         v17 = *(*(&v44 + 1) + 8 * i);
-        v18 = [v17 view];
-        [v18 _mapkit_fittingSize];
+        view = [v17 view];
+        [view _mapkit_fittingSize];
         v20 = v19;
         v22 = v21;
 
@@ -102,14 +102,14 @@
         v50.origin.y = y;
         v50.size.width = width;
         v50.size.height = height;
-        if (CGRectGetMaxX(v50) + v20 > a3)
+        if (CGRectGetMaxX(v50) + v20 > width)
         {
           v24 = (*(v12 + 2))(v12, x, y, width, height);
           v26 = v25;
           v28 = v27;
           v30 = v29;
           v31 = [v7 copy];
-          v6[2](v6, v31, v24, v26, v28, v30);
+          blockCopy[2](blockCopy, v31, v24, v26, v28, v30);
 
           v51.origin.x = v24;
           v51.origin.y = v26;
@@ -142,20 +142,20 @@
     v38 = v37;
     v40 = v39;
     v41 = [v7 copy];
-    v6[2](v6, v41, v34, v36, v38, v40);
+    blockCopy[2](blockCopy, v41, v34, v36, v38, v40);
   }
 }
 
-- (void)_enumerateItemsForPreferredMaxLayoutWidth:(double)a3 block:(id)a4
+- (void)_enumerateItemsForPreferredMaxLayoutWidth:(double)width block:(id)block
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100E97FDC;
   v6[3] = &unk_101657348;
-  v7 = self;
-  v8 = a4;
-  v5 = v8;
-  [(MultilineWrappingListView *)v7 _enumerateLinesForPreferredMaxLayoutWidth:v6 block:a3];
+  selfCopy = self;
+  blockCopy = block;
+  v5 = blockCopy;
+  [(MultilineWrappingListView *)selfCopy _enumerateLinesForPreferredMaxLayoutWidth:v6 block:width];
 }
 
 - (void)_invalidateFrameSize
@@ -174,8 +174,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(MultilineWrappingListView *)self items];
-  v4 = [v3 count];
+  items = [(MultilineWrappingListView *)self items];
+  v4 = [items count];
 
   if (v4)
   {
@@ -239,54 +239,54 @@
   }
 }
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
-  v4 = a3;
-  v5 = [(MultilineWrappingListView *)self items];
+  subviewCopy = subview;
+  items = [(MultilineWrappingListView *)self items];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100E98714;
   v9[3] = &unk_1016572F8;
-  v6 = v4;
+  v6 = subviewCopy;
   v10 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v9];
+  v7 = [items indexOfObjectPassingTest:v9];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(MultilineWrappingListView *)self items];
-    [v8 removeObjectAtIndex:v7];
+    items2 = [(MultilineWrappingListView *)self items];
+    [items2 removeObjectAtIndex:v7];
 
     [(MultilineWrappingListView *)self _invalidateLayout];
   }
 }
 
-- (void)_addArrangedSubview:(id)a3 horizontalSpacing:(id)a4
+- (void)_addArrangedSubview:(id)subview horizontalSpacing:(id)spacing
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [[StackViewItem alloc] initWithView:v7 horizontalSpacing:v6];
+  spacingCopy = spacing;
+  subviewCopy = subview;
+  v10 = [[StackViewItem alloc] initWithView:subviewCopy horizontalSpacing:spacingCopy];
 
-  v8 = [(MultilineWrappingListView *)self items];
-  [v8 addObject:v10];
+  items = [(MultilineWrappingListView *)self items];
+  [items addObject:v10];
 
-  v9 = [(StackViewItem *)v10 view];
-  [(MultilineWrappingListView *)self addSubview:v9];
+  view = [(StackViewItem *)v10 view];
+  [(MultilineWrappingListView *)self addSubview:view];
 
   [(MultilineWrappingListView *)self _invalidateLayout];
 }
 
-- (void)addArrangedSubview:(id)a3 withCustomHorizontalSpacing:(double)a4
+- (void)addArrangedSubview:(id)subview withCustomHorizontalSpacing:(double)spacing
 {
-  v6 = a3;
-  v7 = [NSNumber numberWithDouble:a4];
-  [(MultilineWrappingListView *)self _addArrangedSubview:v6 horizontalSpacing:v7];
+  subviewCopy = subview;
+  v7 = [NSNumber numberWithDouble:spacing];
+  [(MultilineWrappingListView *)self _addArrangedSubview:subviewCopy horizontalSpacing:v7];
 }
 
 - (double)singleLineWidth
 {
-  v3 = [(MultilineWrappingListView *)self cachedSingleLineWidth];
+  cachedSingleLineWidth = [(MultilineWrappingListView *)self cachedSingleLineWidth];
 
-  if (!v3)
+  if (!cachedSingleLineWidth)
   {
     v10 = 0;
     v11 = &v10;
@@ -304,8 +304,8 @@
     _Block_object_dispose(&v10, 8);
   }
 
-  v5 = [(MultilineWrappingListView *)self cachedSingleLineWidth];
-  [v5 floatValue];
+  cachedSingleLineWidth2 = [(MultilineWrappingListView *)self cachedSingleLineWidth];
+  [cachedSingleLineWidth2 floatValue];
   v7 = v6;
 
   return v7;
@@ -313,9 +313,9 @@
 
 - (unint64_t)numberOfLines
 {
-  v3 = [(MultilineWrappingListView *)self cachedNumberOfLines];
+  cachedNumberOfLines = [(MultilineWrappingListView *)self cachedNumberOfLines];
 
-  if (!v3)
+  if (!cachedNumberOfLines)
   {
     v9 = 0;
     v10 = &v9;
@@ -334,10 +334,10 @@
     _Block_object_dispose(&v9, 8);
   }
 
-  v5 = [(MultilineWrappingListView *)self cachedNumberOfLines];
-  v6 = [v5 unsignedIntegerValue];
+  cachedNumberOfLines2 = [(MultilineWrappingListView *)self cachedNumberOfLines];
+  unsignedIntegerValue = [cachedNumberOfLines2 unsignedIntegerValue];
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
 - (void)_commonInit
@@ -353,11 +353,11 @@
   self->_previousFrame.size.height = v8;
 }
 
-- (MultilineWrappingListView)initWithFrame:(CGRect)a3
+- (MultilineWrappingListView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MultilineWrappingListView;
-  v3 = [(MultilineWrappingListView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MultilineWrappingListView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -367,11 +367,11 @@
   return v4;
 }
 
-- (MultilineWrappingListView)initWithCoder:(id)a3
+- (MultilineWrappingListView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MultilineWrappingListView;
-  v3 = [(MultilineWrappingListView *)&v6 initWithCoder:a3];
+  v3 = [(MultilineWrappingListView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

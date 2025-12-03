@@ -1,15 +1,15 @@
 @interface _SFIdentity
-- (_SFIdentity)initWithCoder:(id)a3;
-- (_SFIdentity)initWithKeyPair:(id)a3 certificate:(id)a4;
-- (_SFIdentity)initWithPublicKey:(id)a3 certificate:(id)a4;
+- (_SFIdentity)initWithCoder:(id)coder;
+- (_SFIdentity)initWithKeyPair:(id)pair certificate:(id)certificate;
+- (_SFIdentity)initWithPublicKey:(id)key certificate:(id)certificate;
 @end
 
 @implementation _SFIdentity
 
-- (_SFIdentity)initWithPublicKey:(id)a3 certificate:(id)a4
+- (_SFIdentity)initWithPublicKey:(id)key certificate:(id)certificate
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  certificateCopy = certificate;
   v13.receiver = self;
   v13.super_class = _SFIdentity;
   v9 = [(_SFIdentity *)&v13 init];
@@ -19,17 +19,17 @@
     identityInternal = v9->_identityInternal;
     v9->_identityInternal = v10;
 
-    objc_storeStrong(v9->_identityInternal + 1, a3);
-    objc_storeStrong(v9->_identityInternal + 3, a4);
+    objc_storeStrong(v9->_identityInternal + 1, key);
+    objc_storeStrong(v9->_identityInternal + 3, certificate);
   }
 
   return v9;
 }
 
-- (_SFIdentity)initWithKeyPair:(id)a3 certificate:(id)a4
+- (_SFIdentity)initWithKeyPair:(id)pair certificate:(id)certificate
 {
-  v7 = a3;
-  v8 = a4;
+  pairCopy = pair;
+  certificateCopy = certificate;
   v16.receiver = self;
   v16.super_class = _SFIdentity;
   v9 = [(_SFIdentity *)&v16 init];
@@ -39,19 +39,19 @@
     identityInternal = v9->_identityInternal;
     v9->_identityInternal = v10;
 
-    v12 = [v7 publicKey];
+    publicKey = [pairCopy publicKey];
     v13 = v9->_identityInternal;
     v14 = v13[1];
-    v13[1] = v12;
+    v13[1] = publicKey;
 
-    objc_storeStrong(v9->_identityInternal + 3, a4);
-    objc_storeStrong(v9->_identityInternal + 2, a3);
+    objc_storeStrong(v9->_identityInternal + 3, certificate);
+    objc_storeStrong(v9->_identityInternal + 2, pair);
   }
 
   return v9;
 }
 
-- (_SFIdentity)initWithCoder:(id)a3
+- (_SFIdentity)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _SFIdentity;

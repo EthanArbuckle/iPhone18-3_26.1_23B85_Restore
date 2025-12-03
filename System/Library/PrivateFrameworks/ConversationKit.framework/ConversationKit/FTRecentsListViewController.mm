@@ -1,39 +1,39 @@
 @interface FTRecentsListViewController
-- (FTRecentsListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)accessibilityCustomActionsForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4;
-- (id)presentingViewControllerForAcceptedContactActionsManager:(id)a3 sourceView:(id *)a4 sourceRect:(CGRect *)a5;
-- (void)acceptedContactActionsManager:(id)a3 didCreateNewContact:(id)a4;
-- (void)acceptedContactActionsManager:(id)a3 didRecordRecentEvent:(id)a4;
-- (void)acceptedContactActionsManagerDidCancel:(id)a3;
+- (FTRecentsListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)accessibilityCustomActionsForIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration;
+- (id)presentingViewControllerForAcceptedContactActionsManager:(id)manager sourceView:(id *)view sourceRect:(CGRect *)rect;
+- (void)acceptedContactActionsManager:(id)manager didCreateNewContact:(id)contact;
+- (void)acceptedContactActionsManager:(id)manager didRecordRecentEvent:(id)event;
+- (void)acceptedContactActionsManagerDidCancel:(id)cancel;
 - (void)beginEditing;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)configurationChanged;
-- (void)deleteButtonAction:(id)a3;
-- (void)didSelectAccessoryViewForLinkWithSender:(id)a3;
-- (void)didSelectAccessoryViewForOngoingCallWithSender:(id)a3;
-- (void)didSelectAccessoryViewForRecentCallWithSender:(id)a3;
+- (void)deleteButtonAction:(id)action;
+- (void)didSelectAccessoryViewForLinkWithSender:(id)sender;
+- (void)didSelectAccessoryViewForOngoingCallWithSender:(id)sender;
+- (void)didSelectAccessoryViewForRecentCallWithSender:(id)sender;
 - (void)didTapNewCallButton;
-- (void)didTapNewLinkButtonFrom:(id)a3;
+- (void)didTapNewLinkButtonFrom:(id)from;
 - (void)dismissCallFilteringOnboarding;
 - (void)dismissContactsModal;
 - (void)dismissMoreHelp;
 - (void)enableCallFiltering;
 - (void)endEditing;
 - (void)handleNewFaceTimeMenuAction;
-- (void)markAsReadButtonAction:(id)a3;
+- (void)markAsReadButtonAction:(id)action;
 - (void)presentOnboardingViewController;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -41,68 +41,68 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   RecentsListViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  RecentsListViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  RecentsListViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  RecentsListViewController.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  RecentsListViewController.scrollViewDidScroll(_:)(scrollCopy);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   RecentsListViewController.viewWillLayoutSubviews()();
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   RecentsListViewController.collectionView(_:willDisplay:forItemAt:)();
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  RecentsListViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  RecentsListViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  RecentsListViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  RecentsListViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (FTRecentsListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (FTRecentsListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   RecentsListViewController.init(nibName:bundle:)();
 }
 
-- (id)accessibilityCustomActionsForIndexPath:(id)a3
+- (id)accessibilityCustomActionsForIndexPath:(id)path
 {
   v3 = type metadata accessor for IndexPath();
   v4 = *(v3 - 8);
@@ -118,117 +118,117 @@
 
 - (void)handleNewFaceTimeMenuAction
 {
-  v2 = self;
+  selfCopy = self;
   RecentsListViewController.handleNewFaceTimeMenuAction()();
 }
 
-- (void)didSelectAccessoryViewForOngoingCallWithSender:(id)a3
+- (void)didSelectAccessoryViewForOngoingCallWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  RecentsListViewController.didSelectAccessoryViewForOngoingCall(sender:)(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  RecentsListViewController.didSelectAccessoryViewForOngoingCall(sender:)(senderCopy);
 }
 
-- (void)didSelectAccessoryViewForRecentCallWithSender:(id)a3
+- (void)didSelectAccessoryViewForRecentCallWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  RecentsListViewController.didSelectAccessoryViewForRecentCall(sender:)(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  RecentsListViewController.didSelectAccessoryViewForRecentCall(sender:)(senderCopy);
 }
 
-- (void)didSelectAccessoryViewForLinkWithSender:(id)a3
+- (void)didSelectAccessoryViewForLinkWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  RecentsListViewController.didSelectAccessoryViewForLink(sender:)(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  RecentsListViewController.didSelectAccessoryViewForLink(sender:)(senderCopy);
 }
 
 - (void)didTapNewCallButton
 {
-  v2 = self;
+  selfCopy = self;
   RecentsListViewController.didTapNewCallButton()();
 }
 
-- (void)didTapNewLinkButtonFrom:(id)a3
+- (void)didTapNewLinkButtonFrom:(id)from
 {
-  v4 = a3;
-  v5 = self;
-  RecentsListViewController.didTapNewLinkButton(from:)(v4);
+  fromCopy = from;
+  selfCopy = self;
+  RecentsListViewController.didTapNewLinkButton(from:)(fromCopy);
 }
 
 - (void)presentOnboardingViewController
 {
-  v2 = self;
+  selfCopy = self;
   RecentsListViewController.presentOnboardingViewController()();
 }
 
 - (void)beginEditing
 {
-  v2 = self;
+  selfCopy = self;
   RecentsListViewController.beginEditing()();
 }
 
 - (void)endEditing
 {
-  v2 = self;
+  selfCopy = self;
   RecentsListViewController.endEditing()();
 }
 
 - (void)enableCallFiltering
 {
-  v2 = self;
+  selfCopy = self;
   RecentsListViewController.enableCallFiltering()();
 }
 
 - (void)dismissCallFilteringOnboarding
 {
-  v2 = self;
+  selfCopy = self;
   RecentsListViewController.dismissCallFilteringOnboarding()();
 }
 
 - (void)configurationChanged
 {
-  v2 = self;
+  selfCopy = self;
   RecentsListViewController.configurationChanged()();
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   RecentsListViewController.collectionView(_:didSelectItemAt:)();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  RecentsListViewController.collectionView(_:didDeselectItemAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  RecentsListViewController.collectionView(_:didDeselectItemAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   RecentsListViewController.collectionView(_:contextMenuConfigurationForItemAt:point:)();
   v14 = v13;
 
@@ -237,106 +237,106 @@
   return v14;
 }
 
-- (id)collectionView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4
+- (id)collectionView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v10 = RecentsListViewController.collectionView(_:previewForHighlightingContextMenuWithConfiguration:)(v6, v9);
+  viewCopy = view;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v10 = RecentsListViewController.collectionView(_:previewForHighlightingContextMenuWithConfiguration:)(viewCopy, v9);
 
   return v10;
 }
 
 - (void)dismissMoreHelp
 {
-  v2 = self;
+  selfCopy = self;
   RecentsListViewController.dismissMoreHelp()();
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  RecentsListViewController.setEditing(_:animated:)(a3, a4);
+  selfCopy = self;
+  RecentsListViewController.setEditing(_:animated:)(editing, animated);
 }
 
-- (void)deleteButtonAction:(id)a3
+- (void)deleteButtonAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  RecentsListViewController.deleteButtonAction(_:)(v4);
+  actionCopy = action;
+  selfCopy = self;
+  RecentsListViewController.deleteButtonAction(_:)(actionCopy);
 }
 
-- (void)markAsReadButtonAction:(id)a3
+- (void)markAsReadButtonAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   RecentsListViewController.markAsReadButtonAction(_:)();
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
-  RecentsListViewController.scrollViewWillBeginDragging(_:)(v5);
+  draggingCopy = dragging;
+  selfCopy = self;
+  RecentsListViewController.scrollViewWillBeginDragging(_:)(selfCopy);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
-  RecentsListViewController.scrollViewDidEndDecelerating(_:)(v5);
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  RecentsListViewController.scrollViewDidEndDecelerating(_:)(selfCopy);
 }
 
-- (id)presentingViewControllerForAcceptedContactActionsManager:(id)a3 sourceView:(id *)a4 sourceRect:(CGRect *)a5
+- (id)presentingViewControllerForAcceptedContactActionsManager:(id)manager sourceView:(id *)view sourceRect:(CGRect *)rect
 {
-  v7 = a3;
-  v8 = self;
-  v9 = RecentsListViewController.presentingViewController(for:sourceView:sourceRect:)(v8, a4);
+  managerCopy = manager;
+  selfCopy = self;
+  v9 = RecentsListViewController.presentingViewController(for:sourceView:sourceRect:)(selfCopy, view);
 
   return v9;
 }
 
-- (void)acceptedContactActionsManager:(id)a3 didRecordRecentEvent:(id)a4
+- (void)acceptedContactActionsManager:(id)manager didRecordRecentEvent:(id)event
 {
-  if (a4)
+  if (event)
   {
-    v6 = a3;
-    v7 = self;
+    managerCopy = manager;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
-    v8 = swift_unknownObjectRelease();
+    selfCopy2 = swift_unknownObjectRelease();
   }
 
   else
   {
     memset(v10, 0, sizeof(v10));
-    v9 = a3;
-    v8 = self;
+    managerCopy2 = manager;
+    selfCopy2 = self;
   }
 
-  RecentsListViewController.acceptedContactActionsManager(_:didRecordRecentEvent:)(v8);
+  RecentsListViewController.acceptedContactActionsManager(_:didRecordRecentEvent:)(selfCopy2);
 
   outlined destroy of CallControlsService?(v10, &_sypSgMd);
 }
 
-- (void)acceptedContactActionsManager:(id)a3 didCreateNewContact:(id)a4
+- (void)acceptedContactActionsManager:(id)manager didCreateNewContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  contactCopy = contact;
+  selfCopy = self;
   RecentsListViewController.acceptedContactActionsManager(_:didCreateNewContact:)();
 }
 
-- (void)acceptedContactActionsManagerDidCancel:(id)a3
+- (void)acceptedContactActionsManagerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   RecentsListViewController.acceptedContactActionsManagerDidCancel(_:)();
 }
 
 - (void)dismissContactsModal
 {
-  v2 = self;
+  selfCopy = self;
   RecentsListViewController.dismissContactsModal()();
 }
 

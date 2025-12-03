@@ -1,16 +1,16 @@
 @interface _UIAnimatingLabel
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)setFont:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)setFont:(id)font;
 @end
 
 @implementation _UIAnimatingLabel
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_shouldAnimateVariantWeight && ([v4 isEqualToString:@"variantWeight"] & 1) != 0)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (self->_shouldAnimateVariantWeight && ([keyCopy isEqualToString:@"variantWeight"] & 1) != 0)
   {
     v6 = 1;
   }
@@ -25,17 +25,17 @@
   return v6;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(UILabel *)self font];
-  v6 = [v5 familyName];
-  v7 = [v4 familyName];
-  if ([v6 isEqualToString:v7])
+  fontCopy = font;
+  font = [(UILabel *)self font];
+  familyName = [font familyName];
+  familyName2 = [fontCopy familyName];
+  if ([familyName isEqualToString:familyName2])
   {
-    [v5 pointSize];
+    [font pointSize];
     v9 = v8;
-    [v4 pointSize];
+    [fontCopy pointSize];
     v11 = v9 == v10;
   }
 
@@ -46,43 +46,43 @@
 
   self->_shouldAnimateVariantWeight = v11;
 
-  v12 = [v4 _variantWeight];
-  v13 = [(UIView *)self layer];
+  _variantWeight = [fontCopy _variantWeight];
+  layer = [(UIView *)self layer];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v15 = [(UIView *)self layer];
-    v16 = v15;
-    if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+    layer2 = [(UIView *)self layer];
+    v16 = layer2;
+    if (_variantWeight == 0x7FFFFFFFFFFFFFFFLL)
     {
       v17 = 400;
     }
 
     else
     {
-      v17 = v12;
+      v17 = _variantWeight;
     }
 
-    [v15 setVariantWeight:v17];
+    [layer2 setVariantWeight:v17];
   }
 
   v18.receiver = self;
   v18.super_class = _UIAnimatingLabel;
-  [(UILabel *)&v18 setFont:v4];
+  [(UILabel *)&v18 setFont:fontCopy];
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  v6 = a3;
-  v7 = [(UIView *)self layer];
+  layerCopy = layer;
+  layer = [(UIView *)self layer];
 
-  if (v7 == v6)
+  if (layer == layerCopy)
   {
     v12.receiver = self;
     v12.super_class = _UIAnimatingLabel;
-    [(UIView *)&v12 drawLayer:v6 inContext:a4];
+    [(UIView *)&v12 drawLayer:layerCopy inContext:context];
   }
 
   else
@@ -90,21 +90,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 variantWeight];
-      v9 = [(UILabel *)self font];
-      v10 = [v9 _fontWithVariantWeight:v8];
+      variantWeight = [layerCopy variantWeight];
+      font = [(UILabel *)self font];
+      v10 = [font _fontWithVariantWeight:variantWeight];
       v15.receiver = self;
       v15.super_class = _UIAnimatingLabel;
       [(UILabel *)&v15 setFont:v10];
 
-      v11 = [(UIView *)self layer];
+      layer2 = [(UIView *)self layer];
       v14.receiver = self;
       v14.super_class = _UIAnimatingLabel;
-      [(UIView *)&v14 drawLayer:v11 inContext:a4];
+      [(UIView *)&v14 drawLayer:layer2 inContext:context];
 
       v13.receiver = self;
       v13.super_class = _UIAnimatingLabel;
-      [(UILabel *)&v13 setFont:v9];
+      [(UILabel *)&v13 setFont:font];
     }
   }
 }

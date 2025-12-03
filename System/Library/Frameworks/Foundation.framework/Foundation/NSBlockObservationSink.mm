@@ -1,12 +1,12 @@
 @interface NSBlockObservationSink
-- (NSBlockObservationSink)initWithBlock:(id)a3 tag:(int)a4;
-- (void)_receiveBox:(id)a3;
+- (NSBlockObservationSink)initWithBlock:(id)block tag:(int)tag;
+- (void)_receiveBox:(id)box;
 - (void)dealloc;
 @end
 
 @implementation NSBlockObservationSink
 
-- (NSBlockObservationSink)initWithBlock:(id)a3 tag:(int)a4
+- (NSBlockObservationSink)initWithBlock:(id)block tag:(int)tag
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -14,25 +14,25 @@
   v6 = [(NSBlockObservationSink *)&v8 init];
   if (v6)
   {
-    v6->_block = [a3 copy];
-    v6->_tag = a4;
+    v6->_block = [block copy];
+    v6->_tag = tag;
   }
 
   return v6;
 }
 
-- (void)_receiveBox:(id)a3
+- (void)_receiveBox:(id)box
 {
   v8 = *MEMORY[0x1E69E9840];
   tag = self->_tag;
-  if (*(a3 + 6) == tag && tag != 3)
+  if (*(box + 6) == tag && tag != 3)
   {
     (*(self->_block + 2))();
   }
 
   v7.receiver = self;
   v7.super_class = NSBlockObservationSink;
-  [(NSBlockObservationSink *)&v7 _receiveBox:a3];
+  [(NSBlockObservationSink *)&v7 _receiveBox:box];
 }
 
 - (void)dealloc

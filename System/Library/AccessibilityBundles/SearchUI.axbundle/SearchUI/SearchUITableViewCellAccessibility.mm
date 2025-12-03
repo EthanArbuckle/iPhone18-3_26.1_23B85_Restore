@@ -1,5 +1,5 @@
 @interface SearchUITableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityContainsCombinedView;
 - (BOOL)_accessibilityContainsSportsGrid;
 - (BOOL)_accessibilityHasAccessibleSubviews;
@@ -17,31 +17,31 @@
 
 @implementation SearchUITableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUIMovieCardSectionView"];
-  [v3 validateClass:@"SearchUIWebCardSectionView"];
-  [v3 validateClass:@"SearchUIDetailedRowCardSectionView"];
-  [v3 validateClass:@"SearchUITableViewCell" hasInstanceMethod:@"rowModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIRowModel" hasInstanceMethod:@"cardSection" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIRowModel" hasInstanceMethod:@"isTappable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SearchUIRowModel" hasProperty:@"identifyingResult" withType:"@"];
-  [v3 validateClass:@"SFSearchResult" hasProperty:@"contentType" withType:"@"];
-  [v3 validateProtocol:@"SFTableHeaderRowCardSection" hasRequiredInstanceMethod:@"tableIdentifier"];
-  [v3 validateProtocol:@"SFTableHeaderRowCardSection" conformsToProtocol:@"SFCardSection"];
-  [v3 validateClass:@"CNActionView"];
-  [v3 validateClass:@"TLKStoreButton"];
-  [v3 validateClass:@"SearchUIDetailedRowCardSectionView"];
-  [v3 validateClass:@"SearchUICardSectionView"];
-  [v3 validateClass:@"SearchUIHomeScreenAppIconView"];
-  [v3 validateClass:@"SearchUICardSectionTableCell" isKindOfClass:@"SearchUITableViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUIMovieCardSectionView"];
+  [validationsCopy validateClass:@"SearchUIWebCardSectionView"];
+  [validationsCopy validateClass:@"SearchUIDetailedRowCardSectionView"];
+  [validationsCopy validateClass:@"SearchUITableViewCell" hasInstanceMethod:@"rowModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIRowModel" hasInstanceMethod:@"cardSection" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIRowModel" hasInstanceMethod:@"isTappable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SearchUIRowModel" hasProperty:@"identifyingResult" withType:"@"];
+  [validationsCopy validateClass:@"SFSearchResult" hasProperty:@"contentType" withType:"@"];
+  [validationsCopy validateProtocol:@"SFTableHeaderRowCardSection" hasRequiredInstanceMethod:@"tableIdentifier"];
+  [validationsCopy validateProtocol:@"SFTableHeaderRowCardSection" conformsToProtocol:@"SFCardSection"];
+  [validationsCopy validateClass:@"CNActionView"];
+  [validationsCopy validateClass:@"TLKStoreButton"];
+  [validationsCopy validateClass:@"SearchUIDetailedRowCardSectionView"];
+  [validationsCopy validateClass:@"SearchUICardSectionView"];
+  [validationsCopy validateClass:@"SearchUIHomeScreenAppIconView"];
+  [validationsCopy validateClass:@"SearchUICardSectionTableCell" isKindOfClass:@"SearchUITableViewCell"];
 }
 
 - (BOOL)_accessibilityUsesOverrideContainerProtocol
 {
-  v2 = [(SearchUITableViewCellAccessibility *)self _accessibilitySearchCellElements];
-  v3 = [v2 count] != 0;
+  _accessibilitySearchCellElements = [(SearchUITableViewCellAccessibility *)self _accessibilitySearchCellElements];
+  v3 = [_accessibilitySearchCellElements count] != 0;
 
   return v3;
 }
@@ -50,18 +50,18 @@
 {
   v7.receiver = self;
   v7.super_class = SearchUITableViewCellAccessibility;
-  v3 = [(SearchUITableViewCellAccessibility *)&v7 accessibilityElements];
-  if ([v3 count])
+  accessibilityElements = [(SearchUITableViewCellAccessibility *)&v7 accessibilityElements];
+  if ([accessibilityElements count])
   {
-    v4 = v3;
+    _accessibilitySearchCellElements = accessibilityElements;
   }
 
   else
   {
-    v4 = [(SearchUITableViewCellAccessibility *)self _accessibilitySearchCellElements];
+    _accessibilitySearchCellElements = [(SearchUITableViewCellAccessibility *)self _accessibilitySearchCellElements];
   }
 
-  v5 = v4;
+  v5 = _accessibilitySearchCellElements;
 
   return v5;
 }
@@ -125,22 +125,22 @@ LABEL_9:
 
 - (id)_accessibilityRetrieveTableViewCellText
 {
-  v3 = [(SearchUITableViewCellAccessibility *)self contentView];
-  v4 = [v3 _accessibilityFindDescendant:&__block_literal_global_13];
+  contentView = [(SearchUITableViewCellAccessibility *)self contentView];
+  v4 = [contentView _accessibilityFindDescendant:&__block_literal_global_13];
 
   if (v4)
   {
-    v5 = 0;
+    _accessibilityRetrieveTableViewCellText = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SearchUITableViewCellAccessibility;
-    v5 = [(SearchUITableViewCellAccessibility *)&v7 _accessibilityRetrieveTableViewCellText];
+    _accessibilityRetrieveTableViewCellText = [(SearchUITableViewCellAccessibility *)&v7 _accessibilityRetrieveTableViewCellText];
   }
 
-  return v5;
+  return _accessibilityRetrieveTableViewCellText;
 }
 
 uint64_t __77__SearchUITableViewCellAccessibility__accessibilityRetrieveTableViewCellText__block_invoke(uint64_t a1, void *a2)
@@ -163,7 +163,7 @@ uint64_t __77__SearchUITableViewCellAccessibility__accessibilityRetrieveTableVie
 
 - (id)accessibilityLabel
 {
-  v3 = [(SearchUITableViewCellAccessibility *)self accessibilityElements];
+  accessibilityElements = [(SearchUITableViewCellAccessibility *)self accessibilityElements];
   v4 = MEMORY[0x29ED341C0]();
 
   v5 = [(SearchUITableViewCellAccessibility *)self safeValueForKey:@"rowModel"];
@@ -189,49 +189,49 @@ uint64_t __77__SearchUITableViewCellAccessibility__accessibilityRetrieveTableVie
 
 - (id)automationCustomProperties
 {
-  v3 = [(SearchUITableViewCellAccessibility *)self accessibilityElements];
-  v4 = v3;
-  if (v3 && [v3 count])
+  accessibilityElements = [(SearchUITableViewCellAccessibility *)self accessibilityElements];
+  v4 = accessibilityElements;
+  if (accessibilityElements && [accessibilityElements count])
   {
     v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v5 automationCustomProperties];
+    automationCustomProperties = [v5 automationCustomProperties];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SearchUITableViewCellAccessibility;
-    v6 = [(SearchUITableViewCellAccessibility *)&v8 automationCustomProperties];
+    automationCustomProperties = [(SearchUITableViewCellAccessibility *)&v8 automationCustomProperties];
   }
 
-  return v6;
+  return automationCustomProperties;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(SearchUITableViewCellAccessibility *)self accessibilityElements];
-  v4 = v3;
-  if (v3 && [v3 count])
+  accessibilityElements = [(SearchUITableViewCellAccessibility *)self accessibilityElements];
+  v4 = accessibilityElements;
+  if (accessibilityElements && [accessibilityElements count])
   {
     v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v5 accessibilityValue];
+    accessibilityValue = [v5 accessibilityValue];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SearchUITableViewCellAccessibility;
-    v6 = [(SearchUITableViewCellAccessibility *)&v8 accessibilityValue];
+    accessibilityValue = [(SearchUITableViewCellAccessibility *)&v8 accessibilityValue];
   }
 
-  return v6;
+  return accessibilityValue;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(SearchUITableViewCellAccessibility *)self accessibilityElements];
-  v4 = v3;
-  if (v3 && [v3 count])
+  accessibilityElements = [(SearchUITableViewCellAccessibility *)self accessibilityElements];
+  v4 = accessibilityElements;
+  if (accessibilityElements && [accessibilityElements count])
   {
     NSClassFromString(&cfstr_Searchuicardse_3.isa);
     if (objc_opt_isKindOfClass())
@@ -319,7 +319,7 @@ uint64_t __73__SearchUITableViewCellAccessibility__accessibilityHasAccessibleSub
   {
     v6.receiver = self;
     v6.super_class = SearchUITableViewCellAccessibility;
-    v3 = [(SearchUITableViewCellAccessibility *)&v6 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(SearchUITableViewCellAccessibility *)&v6 _accessibilitySupplementaryFooterViews];
   }
 
   else
@@ -334,10 +334,10 @@ uint64_t __73__SearchUITableViewCellAccessibility__accessibilityHasAccessibleSub
     v5[2] = __76__SearchUITableViewCellAccessibility__accessibilitySupplementaryFooterViews__block_invoke_2;
     v5[3] = &unk_29F2F5068;
     v5[4] = self;
-    v3 = [(SearchUITableViewCellAccessibility *)self _accessibilityFindSubviewDescendantsPassingTest:v5];
+    _accessibilitySupplementaryFooterViews = [(SearchUITableViewCellAccessibility *)self _accessibilityFindSubviewDescendantsPassingTest:v5];
   }
 
-  return v3;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 Class __76__SearchUITableViewCellAccessibility__accessibilitySupplementaryFooterViews__block_invoke()
@@ -389,8 +389,8 @@ uint64_t __76__SearchUITableViewCellAccessibility__accessibilitySupplementaryFoo
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(SearchUITableViewCellAccessibility *)self accessibilityElements];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accessibilityElements = [(SearchUITableViewCellAccessibility *)self accessibilityElements];
+  v3 = [accessibilityElements countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -401,7 +401,7 @@ uint64_t __76__SearchUITableViewCellAccessibility__accessibilitySupplementaryFoo
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessibilityElements);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -413,7 +413,7 @@ uint64_t __76__SearchUITableViewCellAccessibility__accessibilitySupplementaryFoo
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [accessibilityElements countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;

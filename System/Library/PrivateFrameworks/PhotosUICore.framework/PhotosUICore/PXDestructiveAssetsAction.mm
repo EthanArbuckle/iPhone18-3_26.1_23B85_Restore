@@ -1,67 +1,67 @@
 @interface PXDestructiveAssetsAction
-+ (id)actionWithAssets:(id)a3 record:(id)a4;
-- (PXDestructiveAssetsAction)initWithAsset:(id)a3 record:(id)a4;
-- (PXDestructiveAssetsAction)initWithAssets:(id)a3;
-- (PXDestructiveAssetsAction)initWithAssets:(id)a3 record:(id)a4;
-- (void)performChanges:(id)a3 completionHandler:(id)a4;
++ (id)actionWithAssets:(id)assets record:(id)record;
+- (PXDestructiveAssetsAction)initWithAsset:(id)asset record:(id)record;
+- (PXDestructiveAssetsAction)initWithAssets:(id)assets;
+- (PXDestructiveAssetsAction)initWithAssets:(id)assets record:(id)record;
+- (void)performChanges:(id)changes completionHandler:(id)handler;
 @end
 
 @implementation PXDestructiveAssetsAction
 
-- (PXDestructiveAssetsAction)initWithAsset:(id)a3 record:(id)a4
+- (PXDestructiveAssetsAction)initWithAsset:(id)asset record:(id)record
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v14[0] = v7;
+  assetCopy = asset;
+  v14[0] = assetCopy;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a4;
+  recordCopy = record;
   v10 = [v8 arrayWithObjects:v14 count:1];
-  v11 = [(PXDestructiveAssetsAction *)self initWithAssets:v10 record:v9];
+  v11 = [(PXDestructiveAssetsAction *)self initWithAssets:v10 record:recordCopy];
 
   if (!v11)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:0 file:@"PXDestructiveAssetsAction.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"self != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:0 file:@"PXDestructiveAssetsAction.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"self != nil"}];
   }
 
   return v11;
 }
 
-- (void)performChanges:(id)a3 completionHandler:(id)a4
+- (void)performChanges:(id)changes completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E696AEC0];
   v9 = PXActionPhaseDescription([(PXAction *)self phase]);
-  v10 = [(PXAction *)self actionIdentifier];
-  v11 = [v8 stringWithFormat:@"%@ %@", v9, v10];
+  actionIdentifier = [(PXAction *)self actionIdentifier];
+  v11 = [v8 stringWithFormat:@"%@ %@", v9, actionIdentifier];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__PXDestructiveAssetsAction_performChanges_completionHandler___block_invoke;
   aBlock[3] = &unk_1E774BD88;
   aBlock[4] = self;
-  v12 = v7;
+  v12 = handlerCopy;
   v26 = v12;
   v13 = _Block_copy(aBlock);
-  v14 = [(PXDestructiveAssetsAction *)self record];
-  v15 = [(PXAssetsAction *)self assets];
-  v16 = [v15 count];
+  record = [(PXDestructiveAssetsAction *)self record];
+  assets = [(PXAssetsAction *)self assets];
+  v16 = [assets count];
 
-  v17 = [v14 userConfirmation];
-  if (v17 == 1)
+  userConfirmation = [record userConfirmation];
+  if (userConfirmation == 1)
   {
-    if ([v14 assetCount] != v16)
+    if ([record assetCount] != v16)
     {
-      [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"confirmed asset count %ti doesn't match %ti for destructive action %@", objc_msgSend(v14, "assetCount"), v16, v11}];
+      [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"confirmed asset count %ti doesn't match %ti for destructive action %@", objc_msgSend(record, "assetCount"), v16, v11}];
       goto LABEL_9;
     }
   }
 
-  else if (v17 == 2)
+  else if (userConfirmation == 2)
   {
-    [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"user denied destructive action %@, record: %@", v11, v14, v21}];
+    [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:{@"user denied destructive action %@, record: %@", v11, record, v21}];
     v20 = LABEL_9:;
     v13[2](v13, 0, v20);
     goto LABEL_10;
@@ -70,15 +70,15 @@
   v18 = PLUIActionsGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v14 publicDescription];
+    publicDescription = [record publicDescription];
     *buf = 134218754;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
     v30 = v11;
     v31 = 2048;
     v32 = v16;
     v33 = 2114;
-    v34 = v19;
+    v34 = publicDescription;
     _os_log_impl(&dword_1A3C1C000, v18, OS_LOG_TYPE_DEFAULT, "%p %{public}@ on %ti asset(s), record: %{public}@", buf, 0x2Au);
   }
 
@@ -89,7 +89,7 @@
   v24 = v13;
   v22.receiver = self;
   v22.super_class = PXDestructiveAssetsAction;
-  [(PXPhotosAction *)&v22 performChanges:v6 completionHandler:v23];
+  [(PXPhotosAction *)&v22 performChanges:changesCopy completionHandler:v23];
   v20 = v24;
 LABEL_10:
 }
@@ -133,35 +133,35 @@ LABEL_6:
   (*(*(a1 + 40) + 16))(*(a1 + 40), a2, v5, v14);
 }
 
-- (PXDestructiveAssetsAction)initWithAssets:(id)a3
+- (PXDestructiveAssetsAction)initWithAssets:(id)assets
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXDestructiveAssetsAction.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXDestructiveAssetsAction initWithAssets:]"}];
+  assetsCopy = assets;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDestructiveAssetsAction.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXDestructiveAssetsAction initWithAssets:]"}];
 
   abort();
 }
 
-- (PXDestructiveAssetsAction)initWithAssets:(id)a3 record:(id)a4
+- (PXDestructiveAssetsAction)initWithAssets:(id)assets record:(id)record
 {
-  v7 = a4;
+  recordCopy = record;
   v11.receiver = self;
   v11.super_class = PXDestructiveAssetsAction;
-  v8 = [(PXAssetsAction *)&v11 initWithAssets:a3];
+  v8 = [(PXAssetsAction *)&v11 initWithAssets:assets];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_record, a4);
+    objc_storeStrong(&v8->_record, record);
   }
 
   return v9;
 }
 
-+ (id)actionWithAssets:(id)a3 record:(id)a4
++ (id)actionWithAssets:(id)assets record:(id)record
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithAssets:v7 record:v6];
+  recordCopy = record;
+  assetsCopy = assets;
+  v8 = [[self alloc] initWithAssets:assetsCopy record:recordCopy];
 
   if (!v8)
   {

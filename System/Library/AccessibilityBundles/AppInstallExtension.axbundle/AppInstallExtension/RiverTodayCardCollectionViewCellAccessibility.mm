@@ -1,19 +1,19 @@
 @interface RiverTodayCardCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation RiverTodayCardCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppInstallExtension.RiverTodayCardCollectionViewCell" hasSwiftField:@"labelsView" withSwiftType:"TodayCardLabelsView"];
-  [v3 validateClass:@"AppInstallExtension.TodayCardLabelsView" hasSwiftField:@"badgeTransitioningContainer" withSwiftType:"TodayTransitioningLabelView"];
-  [v3 validateClass:@"AppInstallExtension.TodayCardLabelsView" hasSwiftField:@"titleTransitioningContainer" withSwiftType:"TodayTransitioningLabelView"];
-  [v3 validateClass:@"AppInstallExtension.TodayCardLabelsView" hasSwiftField:@"descriptionTransitioningContainer" withSwiftType:"TodayTransitioningLabelView"];
-  [v3 validateClass:@"AppInstallExtension.TodayTransitioningLabelView" hasSwiftField:@"label" withSwiftType:"DynamicTypeLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppInstallExtension.RiverTodayCardCollectionViewCell" hasSwiftField:@"labelsView" withSwiftType:"TodayCardLabelsView"];
+  [validationsCopy validateClass:@"AppInstallExtension.TodayCardLabelsView" hasSwiftField:@"badgeTransitioningContainer" withSwiftType:"TodayTransitioningLabelView"];
+  [validationsCopy validateClass:@"AppInstallExtension.TodayCardLabelsView" hasSwiftField:@"titleTransitioningContainer" withSwiftType:"TodayTransitioningLabelView"];
+  [validationsCopy validateClass:@"AppInstallExtension.TodayCardLabelsView" hasSwiftField:@"descriptionTransitioningContainer" withSwiftType:"TodayTransitioningLabelView"];
+  [validationsCopy validateClass:@"AppInstallExtension.TodayTransitioningLabelView" hasSwiftField:@"label" withSwiftType:"DynamicTypeLabel"];
 }
 
 - (unint64_t)accessibilityTraits

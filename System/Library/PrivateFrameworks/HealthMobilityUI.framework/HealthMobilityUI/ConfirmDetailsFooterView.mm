@@ -1,11 +1,11 @@
 @interface ConfirmDetailsFooterView
-- (_TtC16HealthMobilityUI24ConfirmDetailsFooterView)initWithCoder:(id)a3;
-- (_TtC16HealthMobilityUI24ConfirmDetailsFooterView)initWithFrame:(CGRect)a3;
+- (_TtC16HealthMobilityUI24ConfirmDetailsFooterView)initWithCoder:(id)coder;
+- (_TtC16HealthMobilityUI24ConfirmDetailsFooterView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ConfirmDetailsFooterView
 
-- (_TtC16HealthMobilityUI24ConfirmDetailsFooterView)initWithCoder:(id)a3
+- (_TtC16HealthMobilityUI24ConfirmDetailsFooterView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16HealthMobilityUI24ConfirmDetailsFooterView____lazy_storage___titleLabel) = 0;
   result = sub_2519AF198();
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (_TtC16HealthMobilityUI24ConfirmDetailsFooterView)initWithFrame:(CGRect)a3
+- (_TtC16HealthMobilityUI24ConfirmDetailsFooterView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

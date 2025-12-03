@@ -1,20 +1,20 @@
 @interface RemoteSearchCoordinator
-- (RemoteSearchCoordinator)initWithAccount:(id)a3 searchContext:(id)a4 logIdentifier:(id)a5 progress:(id)a6;
-- (id)createSearchOperationsForMailbox:(id)a3 logPrefix:(id)a4;
+- (RemoteSearchCoordinator)initWithAccount:(id)account searchContext:(id)context logIdentifier:(id)identifier progress:(id)progress;
+- (id)createSearchOperationsForMailbox:(id)mailbox logPrefix:(id)prefix;
 - (void)_addAllSearchOperations;
 - (void)cancel;
 - (void)performSearch;
-- (void)remoteSearchOperation:(id)a3 didFindResults:(BOOL)a4;
+- (void)remoteSearchOperation:(id)operation didFindResults:(BOOL)results;
 @end
 
 @implementation RemoteSearchCoordinator
 
-- (RemoteSearchCoordinator)initWithAccount:(id)a3 searchContext:(id)a4 logIdentifier:(id)a5 progress:(id)a6
+- (RemoteSearchCoordinator)initWithAccount:(id)account searchContext:(id)context logIdentifier:(id)identifier progress:(id)progress
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  accountCopy = account;
+  contextCopy = context;
+  identifierCopy = identifier;
+  progressCopy = progress;
   v32.receiver = self;
   v32.super_class = RemoteSearchCoordinator;
   v15 = [(RemoteSearchCoordinator *)&v32 init];
@@ -22,15 +22,15 @@
   v17 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_account, a3);
-    objc_storeStrong(&v16->_searchContext, a4);
-    v18 = [v11 uniqueID];
-    v29 = v14;
-    v30 = v12;
-    v31 = v11;
-    v19 = [v12 sessionID];
-    v20 = v13;
-    v21 = v18;
+    objc_storeStrong(&v15->_account, account);
+    objc_storeStrong(&v16->_searchContext, context);
+    uniqueID = [accountCopy uniqueID];
+    v29 = progressCopy;
+    v30 = contextCopy;
+    v31 = accountCopy;
+    sessionID = [contextCopy sessionID];
+    v20 = identifierCopy;
+    v21 = uniqueID;
     v22 = v21;
     if ([v21 length] >= 9)
     {
@@ -41,22 +41,22 @@
 
     if (v20)
     {
-      [NSString stringWithFormat:@"%@-%@-#%lu", v20, v22, v19];
+      [NSString stringWithFormat:@"%@-%@-#%lu", v20, v22, sessionID];
     }
 
     else
     {
-      [NSString stringWithFormat:@"%@-#%lu", v22, v19];
+      [NSString stringWithFormat:@"%@-#%lu", v22, sessionID];
     }
     v24 = ;
 
     logPrefix = v17->_logPrefix;
     v17->_logPrefix = v24;
 
-    objc_storeStrong(&v16->_progress, a6);
-    v12 = v30;
-    v11 = v31;
-    v14 = v29;
+    objc_storeStrong(&v16->_progress, progress);
+    contextCopy = v30;
+    accountCopy = v31;
+    progressCopy = v29;
     v26 = objc_opt_new();
     workQueue = v17->_workQueue;
     v17->_workQueue = v26;
@@ -134,18 +134,18 @@
     v14 = 1024;
     v15 = cancelled;
     v16 = 1024;
-    v17 = [(NSProgress *)v4 completedUnitCount];
+    completedUnitCount = [(NSProgress *)v4 completedUnitCount];
     v18 = 1024;
-    v19 = [(NSProgress *)v4 totalUnitCount];
+    totalUnitCount = [(NSProgress *)v4 totalUnitCount];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#search-manager [%{public}@] cancelled: %{BOOL}d, %u/%u remote searches", &v12, 0x1Eu);
   }
 }
 
-- (void)remoteSearchOperation:(id)a3 didFindResults:(BOOL)a4
+- (void)remoteSearchOperation:(id)operation didFindResults:(BOOL)results
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  resultsCopy = results;
+  operationCopy = operation;
+  if (resultsCopy)
   {
     if (self)
     {
@@ -156,8 +156,8 @@
   else
   {
     v7 = +[MFActivityMonitor currentMonitor];
-    v8 = [v7 error];
-    if (v8)
+    error = [v7 error];
+    if (error)
     {
       v9 = MFLogGeneral();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -173,14 +173,14 @@
         }
 
         v11 = logPrefix;
-        v12 = sub_1000D5BC0(v6);
-        v13 = [v12 ef_publicDescription];
+        v12 = sub_1000D5BC0(operationCopy);
+        ef_publicDescription = [v12 ef_publicDescription];
         v14 = 138543874;
         v15 = v11;
         v16 = 2114;
-        v17 = v13;
+        v17 = ef_publicDescription;
         v18 = 2112;
-        v19 = v8;
+        v19 = error;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#search-manager [%{public}@] mailbox %{public}@: Monitor error: %@", &v14, 0x20u);
       }
     }
@@ -189,8 +189,8 @@
 
 - (void)_addAllSearchOperations
 {
-  v3 = [(RemoteSearchCoordinator *)self nextSearchableMailbox];
-  if (v3)
+  nextSearchableMailbox = [(RemoteSearchCoordinator *)self nextSearchableMailbox];
+  if (nextSearchableMailbox)
   {
     v4 = -1;
     do
@@ -214,7 +214,7 @@
       v7 = logPrefix;
       v8 = [NSString stringWithFormat:@"%@.%u", v7, (v4 + 2)];
 
-      v9 = v3[2](v3);
+      v9 = nextSearchableMailbox[2](nextSearchableMailbox);
       v10 = [(RemoteSearchCoordinator *)self createSearchOperationsForMailbox:v9 logPrefix:v8];
       v11 = [v10 count];
       if (v11)
@@ -260,11 +260,11 @@
   }
 }
 
-- (id)createSearchOperationsForMailbox:(id)a3 logPrefix:(id)a4
+- (id)createSearchOperationsForMailbox:(id)mailbox logPrefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  mailboxCopy = mailbox;
+  prefixCopy = prefix;
+  if (mailboxCopy)
   {
     v8 = objc_alloc_init(NSMutableArray);
     v9 = [EMInternalPreferences preferenceEnabled:49];
@@ -293,12 +293,12 @@
         searchContext = 0;
       }
 
-      v15 = sub_1000B41FC(&v13->super.super.isa, v6, searchContext, v7, v12, self, 1);
-      v16 = [(RemoteSearchCoordinator *)self foundMessagesCompletion];
-      sub_1000D5C24(v15, v16, v17);
+      v15 = sub_1000B41FC(&v13->super.super.isa, mailboxCopy, searchContext, prefixCopy, v12, self, 1);
+      foundMessagesCompletion = [(RemoteSearchCoordinator *)self foundMessagesCompletion];
+      sub_1000D5C24(v15, foundMessagesCompletion, v17);
 
-      v18 = [(RemoteSearchCoordinator *)self stopEarly];
-      sub_1000D5C38(v15, v18, v19);
+      stopEarly = [(RemoteSearchCoordinator *)self stopEarly];
+      sub_1000D5C38(v15, stopEarly, v19);
 
       [v8 addObject:v15];
     }
@@ -327,12 +327,12 @@
         v23 = 0;
       }
 
-      v24 = sub_1000B41FC(&v22->super.super.isa, v6, v23, v7, v21, self, 0);
-      v25 = [(RemoteSearchCoordinator *)self foundMessagesCompletion];
-      sub_1000D5C24(v24, v25, v26);
+      v24 = sub_1000B41FC(&v22->super.super.isa, mailboxCopy, v23, prefixCopy, v21, self, 0);
+      foundMessagesCompletion2 = [(RemoteSearchCoordinator *)self foundMessagesCompletion];
+      sub_1000D5C24(v24, foundMessagesCompletion2, v26);
 
-      v27 = [(RemoteSearchCoordinator *)self stopEarly];
-      sub_1000D5C38(v24, v27, v28);
+      stopEarly2 = [(RemoteSearchCoordinator *)self stopEarly];
+      sub_1000D5C38(v24, stopEarly2, v28);
 
       [v8 addObject:v24];
     }

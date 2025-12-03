@@ -1,27 +1,27 @@
 @interface UITextMultiTapRecognizer
-- (BOOL)_allowsEventWithRequiredButtonMask:(id)a3;
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)canPreventGestureRecognizer:(id)a3;
+- (BOOL)_allowsEventWithRequiredButtonMask:(id)mask;
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event;
+- (BOOL)canPreventGestureRecognizer:(id)recognizer;
 - (CGPoint)location;
-- (CGPoint)locationInView:(id)a3;
-- (UITextMultiTapRecognizer)initWithTarget:(id)a3 tapAction:(SEL)a4;
+- (CGPoint)locationInView:(id)view;
+- (UITextMultiTapRecognizer)initWithTarget:(id)target tapAction:(SEL)action;
 - (double)_touchSloppinessFactor;
 - (unint64_t)tapCount;
-- (void)onStateUpdate:(id)a3;
+- (void)onStateUpdate:(id)update;
 - (void)reset;
-- (void)tapRecognizerFailedToRecognizeTap:(id)a3;
-- (void)tapRecognizerRecognizedTap:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)tapRecognizerFailedToRecognizeTap:(id)tap;
+- (void)tapRecognizerRecognizedTap:(id)tap;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UITextMultiTapRecognizer
 
-- (UITextMultiTapRecognizer)initWithTarget:(id)a3 tapAction:(SEL)a4
+- (UITextMultiTapRecognizer)initWithTarget:(id)target tapAction:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v12.receiver = self;
   v12.super_class = UITextMultiTapRecognizer;
   v7 = [(UIGestureRecognizer *)&v12 initWithTarget:self action:sel_onStateUpdate_];
@@ -32,18 +32,18 @@
     v7->_tapRecognizer = v8;
 
     [(UITapRecognizer *)v7->_tapRecognizer setDelegate:v7];
-    objc_storeWeak(&v7->_target, v6);
-    if (a4)
+    objc_storeWeak(&v7->_target, targetCopy);
+    if (action)
     {
-      v10 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v10 = 0;
+      actionCopy = 0;
     }
 
-    v7->_tapAction = v10;
+    v7->_tapAction = actionCopy;
     [(UITapRecognizer *)v7->_tapRecognizer setNumberOfTouchesRequired:1];
     [(UITapRecognizer *)v7->_tapRecognizer setContinuousTapRecognition:1];
     [(UITapRecognizer *)v7->_tapRecognizer setAllowableMovement:45.0];
@@ -54,9 +54,9 @@
   return v7;
 }
 
-- (void)onStateUpdate:(id)a3
+- (void)onStateUpdate:(id)update
 {
-  v8 = a3;
+  updateCopy = update;
   if ([(UIGestureRecognizer *)self state]!= UIGestureRecognizerStateBegan && [(UIGestureRecognizer *)self state]!= UIGestureRecognizerStateChanged || self->_sendTapAction)
   {
     WeakRetained = objc_loadWeakRetained(&self->_target);
@@ -88,9 +88,9 @@
 
 - (unint64_t)tapCount
 {
-  v3 = [(UITextMultiTapRecognizer *)self recognizesOnSubsequentTouchDowns];
+  recognizesOnSubsequentTouchDowns = [(UITextMultiTapRecognizer *)self recognizesOnSubsequentTouchDowns];
   v4 = 5;
-  if (v3)
+  if (recognizesOnSubsequentTouchDowns)
   {
     v4 = 4;
   }
@@ -100,8 +100,8 @@
 
 - (CGPoint)location
 {
-  v3 = [(UIGestureRecognizer *)self view];
-  [(UITextMultiTapRecognizer *)self locationInView:v3];
+  view = [(UIGestureRecognizer *)self view];
+  [(UITextMultiTapRecognizer *)self locationInView:view];
   v5 = v4;
   v7 = v6;
 
@@ -112,7 +112,7 @@
   return result;
 }
 
-- (void)tapRecognizerRecognizedTap:(id)a3
+- (void)tapRecognizerRecognizedTap:(id)tap
 {
   touchDownCount = self->_touchDownCount;
   if (touchDownCount == [(UITextMultiTapRecognizer *)self minimumNumberOfTapsRequired])
@@ -135,10 +135,10 @@ LABEL_6:
   self->_sendTapAction = 1;
 }
 
-- (void)tapRecognizerFailedToRecognizeTap:(id)a3
+- (void)tapRecognizerFailedToRecognizeTap:(id)tap
 {
-  v4 = [(UITapRecognizer *)self->_tapRecognizer activeTouches];
-  if ([v4 count])
+  activeTouches = [(UITapRecognizer *)self->_tapRecognizer activeTouches];
+  if ([activeTouches count])
   {
 
     v5 = 5;
@@ -147,9 +147,9 @@ LABEL_6:
   else
   {
     touchDownCount = self->_touchDownCount;
-    v7 = [(UITextMultiTapRecognizer *)self minimumNumberOfTapsRequired];
+    minimumNumberOfTapsRequired = [(UITextMultiTapRecognizer *)self minimumNumberOfTapsRequired];
 
-    if (touchDownCount >= v7)
+    if (touchDownCount >= minimumNumberOfTapsRequired)
     {
       v5 = 3;
     }
@@ -165,16 +165,16 @@ LABEL_6:
 
 - (double)_touchSloppinessFactor
 {
-  v2 = [(UIGestureRecognizer *)self view];
-  [v2 _touchSloppinessFactor];
+  view = [(UIGestureRecognizer *)self view];
+  [view _touchSloppinessFactor];
   v4 = v3;
 
   return v4;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  [(UITapRecognizer *)self->_tapRecognizer locationInView:a3];
+  [(UITapRecognizer *)self->_tapRecognizer locationInView:view];
   result.y = v4;
   result.x = v3;
   return result;
@@ -190,14 +190,14 @@ LABEL_6:
   [(UITapRecognizer *)self->_tapRecognizer _reset];
 }
 
-- (BOOL)canPreventGestureRecognizer:(id)a3
+- (BOOL)canPreventGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if ([v4 _isGestureType:0])
+  recognizerCopy = recognizer;
+  if ([recognizerCopy _isGestureType:0])
   {
-    v5 = v4;
-    v6 = [v5 numberOfTouchesRequired];
-    if (v6 == [(UITextMultiTapRecognizer *)self numberOfTouchesRequired])
+    v5 = recognizerCopy;
+    numberOfTouchesRequired = [v5 numberOfTouchesRequired];
+    if (numberOfTouchesRequired == [(UITextMultiTapRecognizer *)self numberOfTouchesRequired])
     {
       v7 = [v5 numberOfTapsRequired] > 1;
 LABEL_8:
@@ -208,11 +208,11 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  if ([v4 _isGestureType:1])
+  if ([recognizerCopy _isGestureType:1])
   {
-    v5 = v4;
-    v8 = [v5 numberOfTouchesRequired];
-    if (v8 == [(UITextMultiTapRecognizer *)self numberOfTouchesRequired])
+    v5 = recognizerCopy;
+    numberOfTouchesRequired2 = [v5 numberOfTouchesRequired];
+    if (numberOfTouchesRequired2 == [(UITextMultiTapRecognizer *)self numberOfTouchesRequired])
     {
       v7 = [v5 numberOfTapsRequired] != 0;
       goto LABEL_8;
@@ -224,17 +224,17 @@ LABEL_7:
   }
 
   objc_opt_class();
-  v7 = (objc_opt_isKindOfClass() & 1) != 0 && [v4 numberOfFullTaps] > 0;
+  v7 = (objc_opt_isKindOfClass() & 1) != 0 && [recognizerCopy numberOfFullTaps] > 0;
 LABEL_9:
 
   return !v7;
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 modifierFlags] & 0x40000) != 0)
+  touchCopy = touch;
+  eventCopy = event;
+  if (([eventCopy modifierFlags] & 0x40000) != 0)
   {
     v8 = 0;
   }
@@ -243,19 +243,19 @@ LABEL_9:
   {
     v10.receiver = self;
     v10.super_class = UITextMultiTapRecognizer;
-    v8 = [(UIGestureRecognizer *)&v10 _shouldReceiveTouch:v6 withEvent:v7];
+    v8 = [(UIGestureRecognizer *)&v10 _shouldReceiveTouch:touchCopy withEvent:eventCopy];
   }
 
   return v8;
 }
 
-- (BOOL)_allowsEventWithRequiredButtonMask:(id)a3
+- (BOOL)_allowsEventWithRequiredButtonMask:(id)mask
 {
-  v4 = a3;
+  maskCopy = mask;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = maskCopy;
   }
 
   else
@@ -264,10 +264,10 @@ LABEL_9:
   }
 
   v6 = v5;
-  if (self->_requiredButtonMask && [v4 _buttonMask] && objc_msgSend(v6, "_containsHIDPointerEvent"))
+  if (self->_requiredButtonMask && [maskCopy _buttonMask] && objc_msgSend(v6, "_containsHIDPointerEvent"))
   {
     requiredButtonMask = self->_requiredButtonMask;
-    v8 = ([v4 _buttonMask] & requiredButtonMask) == requiredButtonMask;
+    v8 = ([maskCopy _buttonMask] & requiredButtonMask) == requiredButtonMask;
   }
 
   else
@@ -278,17 +278,17 @@ LABEL_9:
   return v8;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = UITextMultiTapRecognizer;
-  v6 = a4;
-  v7 = a3;
-  [(UIGestureRecognizer *)&v9 touchesBegan:v7 withEvent:v6];
-  [(UITapRecognizer *)self->_tapRecognizer touchesBegan:v7 withEvent:v6, v9.receiver, v9.super_class];
+  eventCopy = event;
+  beganCopy = began;
+  [(UIGestureRecognizer *)&v9 touchesBegan:beganCopy withEvent:eventCopy];
+  [(UITapRecognizer *)self->_tapRecognizer touchesBegan:beganCopy withEvent:eventCopy, v9.receiver, v9.super_class];
 
-  LODWORD(v7) = [(UITextMultiTapRecognizer *)self _allowsEventWithRequiredButtonMask:v6];
-  if (!v7)
+  LODWORD(beganCopy) = [(UITextMultiTapRecognizer *)self _allowsEventWithRequiredButtonMask:eventCopy];
+  if (!beganCopy)
   {
     v8 = 5;
     goto LABEL_6;
@@ -304,37 +304,37 @@ LABEL_6:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   v8.receiver = self;
   v8.super_class = UITextMultiTapRecognizer;
-  [(UIGestureRecognizer *)&v8 touchesMoved:v6 withEvent:v7];
+  [(UIGestureRecognizer *)&v8 touchesMoved:movedCopy withEvent:eventCopy];
   if ([(UIGestureRecognizer *)self state]!= UIGestureRecognizerStateFailed)
   {
-    [(UITapRecognizer *)self->_tapRecognizer touchesMoved:v6 withEvent:v7];
+    [(UITapRecognizer *)self->_tapRecognizer touchesMoved:movedCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = UITextMultiTapRecognizer;
-  v6 = a4;
-  v7 = a3;
-  [(UIGestureRecognizer *)&v8 touchesEnded:v7 withEvent:v6];
-  [(UITapRecognizer *)self->_tapRecognizer touchesEnded:v7 withEvent:v6, v8.receiver, v8.super_class];
+  eventCopy = event;
+  endedCopy = ended;
+  [(UIGestureRecognizer *)&v8 touchesEnded:endedCopy withEvent:eventCopy];
+  [(UITapRecognizer *)self->_tapRecognizer touchesEnded:endedCopy withEvent:eventCopy, v8.receiver, v8.super_class];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = UITextMultiTapRecognizer;
-  v6 = a4;
-  v7 = a3;
-  [(UIGestureRecognizer *)&v8 touchesCancelled:v7 withEvent:v6];
-  [(UITapRecognizer *)self->_tapRecognizer touchesCancelled:v7 withEvent:v6, v8.receiver, v8.super_class];
+  eventCopy = event;
+  cancelledCopy = cancelled;
+  [(UIGestureRecognizer *)&v8 touchesCancelled:cancelledCopy withEvent:eventCopy];
+  [(UITapRecognizer *)self->_tapRecognizer touchesCancelled:cancelledCopy withEvent:eventCopy, v8.receiver, v8.super_class];
 
   [(UIGestureRecognizer *)self setState:4];
 }

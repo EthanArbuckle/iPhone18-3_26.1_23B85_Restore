@@ -1,9 +1,9 @@
 @interface TSCH3DGeometryResource
 + (id)resource;
-+ (id)resourceWithType:(int)a3 resource:(id)a4;
-+ (id)resourceWithType:(int)a3 resource:(id)a4 arrays:(id)a5 geometry:(id)a6;
-- (TSCH3DGeometryResource)initWithType:(int)a3 resource:(id)a4 arrays:(id)a5 geometry:(id)a6;
-- (void)submitToProcessor:(id)a3 withPortion:(int)a4;
++ (id)resourceWithType:(int)type resource:(id)resource;
++ (id)resourceWithType:(int)type resource:(id)resource arrays:(id)arrays geometry:(id)geometry;
+- (TSCH3DGeometryResource)initWithType:(int)type resource:(id)resource arrays:(id)arrays geometry:(id)geometry;
+- (void)submitToProcessor:(id)processor withPortion:(int)portion;
 @end
 
 @implementation TSCH3DGeometryResource
@@ -11,44 +11,44 @@
 + (id)resource
 {
   v3 = objc_alloc_init(TSCH3DGeometryArrays);
-  v8 = objc_msgSend_resourceWithType_resource_arrays_geometry_(a1, v4, v5, v6, v7, 0, 0, v3, 0);
+  v8 = objc_msgSend_resourceWithType_resource_arrays_geometry_(self, v4, v5, v6, v7, 0, 0, v3, 0);
 
   return v8;
 }
 
-+ (id)resourceWithType:(int)a3 resource:(id)a4
++ (id)resourceWithType:(int)type resource:(id)resource
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&type;
+  resourceCopy = resource;
   v7 = objc_alloc_init(TSCH3DGeometryArrays);
-  v12 = objc_msgSend_resourceWithType_resource_arrays_geometry_(a1, v8, v9, v10, v11, v4, v6, v7, 0);
+  v12 = objc_msgSend_resourceWithType_resource_arrays_geometry_(self, v8, v9, v10, v11, v4, resourceCopy, v7, 0);
 
   return v12;
 }
 
-+ (id)resourceWithType:(int)a3 resource:(id)a4 arrays:(id)a5 geometry:(id)a6
++ (id)resourceWithType:(int)type resource:(id)resource arrays:(id)arrays geometry:(id)geometry
 {
-  v8 = *&a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a1 alloc];
-  v18 = objc_msgSend_initWithType_resource_arrays_geometry_(v13, v14, v15, v16, v17, v8, v10, v11, v12);
+  v8 = *&type;
+  resourceCopy = resource;
+  arraysCopy = arrays;
+  geometryCopy = geometry;
+  v13 = [self alloc];
+  v18 = objc_msgSend_initWithType_resource_arrays_geometry_(v13, v14, v15, v16, v17, v8, resourceCopy, arraysCopy, geometryCopy);
 
   return v18;
 }
 
-- (TSCH3DGeometryResource)initWithType:(int)a3 resource:(id)a4 arrays:(id)a5 geometry:(id)a6
+- (TSCH3DGeometryResource)initWithType:(int)type resource:(id)resource arrays:(id)arrays geometry:(id)geometry
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  resourceCopy = resource;
+  arraysCopy = arrays;
+  geometryCopy = geometry;
   v41.receiver = self;
   v41.super_class = TSCH3DGeometryResource;
   v15 = [(TSCH3DGeometryResource *)&v41 init];
   if (v15)
   {
-    if (!v12)
+    if (!arraysCopy)
     {
       v40 = MEMORY[0x277D81150];
       v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v16, v17, v18, "[TSCH3DGeometryResource initWithType:resource:arrays:geometry:]");
@@ -58,24 +58,24 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v29, v30, v31, v32);
     }
 
-    v15->_type = a3;
-    objc_storeStrong(&v15->_resource, a4);
-    v37 = objc_msgSend_copy(v12, v33, v34, v35, v36);
+    v15->_type = type;
+    objc_storeStrong(&v15->_resource, resource);
+    v37 = objc_msgSend_copy(arraysCopy, v33, v34, v35, v36);
     arrays = v15->_arrays;
     v15->_arrays = v37;
 
-    objc_storeStrong(&v15->_geometry, a6);
+    objc_storeStrong(&v15->_geometry, geometry);
   }
 
   return v15;
 }
 
-- (void)submitToProcessor:(id)a3 withPortion:(int)a4
+- (void)submitToProcessor:(id)processor withPortion:(int)portion
 {
-  v112 = a3;
+  processorCopy = processor;
   v10 = objc_msgSend_type(self, v6, v7, v8, v9);
   v16 = objc_msgSend_infoWithType_(TSCH3DPrimitiveInfo, v11, v12, v13, v14, v10);
-  if (a4 == 1)
+  if (portion == 1)
   {
     if ((objc_msgSend_hasArrays(self, v15, v17, v18, v19) & 1) == 0)
     {
@@ -96,7 +96,7 @@
     goto LABEL_11;
   }
 
-  if (a4 == 2)
+  if (portion == 2)
   {
     if (!objc_msgSend_hasArrays(self, v15, v17, v18, v19))
     {
@@ -112,7 +112,7 @@
     goto LABEL_11;
   }
 
-  if (a4 == 3 && objc_msgSend_hasArrays(self, v15, v17, v18, v19))
+  if (portion == 3 && objc_msgSend_hasArrays(self, v15, v17, v18, v19))
   {
     v20 = objc_msgSend_type(self, v15, v17, v18, v19);
     v25 = objc_msgSend_arrays(self, v21, v22, v23, v24);
@@ -127,7 +127,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  objc_msgSend_submit_(v112, v15, v17, v18, v19, v16);
+  objc_msgSend_submit_(processorCopy, v15, v17, v18, v19, v16);
 }
 
 @end

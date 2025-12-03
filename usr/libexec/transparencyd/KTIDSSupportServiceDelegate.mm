@@ -1,17 +1,17 @@
 @interface KTIDSSupportServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation KTIDSSupportServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"application-identifier"];
-  v7 = [v5 valueForEntitlement:@"com.apple.transparencyd.ids-support"];
-  v8 = [v7 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"application-identifier"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.transparencyd.ids-support"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     if (qword_10038BE00 != -1)
     {
@@ -25,23 +25,23 @@
       v17 = 138412546;
       *v18 = v6;
       *&v18[8] = 1024;
-      *&v18[10] = [v5 processIdentifier];
+      *&v18[10] = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "ids-support accepting new connection from: %@[%d]", &v17, 0x12u);
     }
 
-    v11 = [(KTIDSSupportServiceDelegate *)self xpcQueue];
-    [v5 _setQueue:v11];
+    xpcQueue = [(KTIDSSupportServiceDelegate *)self xpcQueue];
+    [connectionCopy _setQueue:xpcQueue];
 
     v12 = +[TransparencyIDSSupportInterface interface];
-    [v5 setExportedInterface:v12];
+    [connectionCopy setExportedInterface:v12];
 
-    [v5 setExportedObject:self->_daemonContext];
-    [v5 resume];
+    [connectionCopy setExportedObject:self->_daemonContext];
+    [connectionCopy resume];
   }
 
   else
   {
-    v13 = [v5 valueForEntitlement:@"application-identifier"];
+    v13 = [connectionCopy valueForEntitlement:@"application-identifier"];
     if (qword_10038BE00 != -1)
     {
       sub_10024BC80();
@@ -52,14 +52,14 @@
     {
       v15 = v14;
       v17 = 67109378;
-      *v18 = [v5 processIdentifier];
+      *v18 = [connectionCopy processIdentifier];
       *&v18[4] = 2112;
       *&v18[6] = v13;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "ids-support rejecting client %d/[%@] due to lack of entitlement", &v17, 0x12u);
     }
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 @end

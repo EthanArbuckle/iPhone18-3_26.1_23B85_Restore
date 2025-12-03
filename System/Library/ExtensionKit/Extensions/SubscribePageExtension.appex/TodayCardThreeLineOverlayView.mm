@@ -1,21 +1,21 @@
 @interface TodayCardThreeLineOverlayView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TodayCardThreeLineOverlayView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10067DB14();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_10067DEA0(width);
   v7 = v6;
 
@@ -26,11 +26,11 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10067E7B0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10067E7B0(change);
 }
 
 @end

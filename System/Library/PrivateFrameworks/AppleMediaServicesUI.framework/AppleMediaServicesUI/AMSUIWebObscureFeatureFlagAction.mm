@@ -6,7 +6,7 @@
 
 - (id)runAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BB179AE0();
 
   return v3;

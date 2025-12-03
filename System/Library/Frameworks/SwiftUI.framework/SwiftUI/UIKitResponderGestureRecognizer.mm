@@ -1,23 +1,23 @@
 @interface UIKitResponderGestureRecognizer
-- (BOOL)_canBeCancelledByGestureRecognizer:(id)a3;
-- (BOOL)_isGestureType:(int64_t)a3;
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
-- (BOOL)canPreventGestureRecognizer:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3;
-- (BOOL)shouldRequireFailureOfGestureRecognizer:(id)a3;
+- (BOOL)_canBeCancelledByGestureRecognizer:(id)recognizer;
+- (BOOL)_isGestureType:(int64_t)type;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
+- (BOOL)canPreventGestureRecognizer:(id)recognizer;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer;
+- (BOOL)shouldRequireFailureOfGestureRecognizer:(id)recognizer;
 - (NSString)name;
 - (_TtC7SwiftUI31UIKitResponderGestureRecognizer)init;
-- (_TtC7SwiftUI31UIKitResponderGestureRecognizer)initWithCoder:(id)a3;
+- (_TtC7SwiftUI31UIKitResponderGestureRecognizer)initWithCoder:(id)coder;
 - (unint64_t)numberOfTapsRequired;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation UIKitResponderGestureRecognizer
 
 - (NSString)name
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIKitResponderGestureRecognizer.name.getter();
   v5 = v4;
 
@@ -34,25 +34,25 @@
   return v6;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
-    v9 = self;
-    a3 = MEMORY[0x18D00C850](v6, v8);
+    selfCopy = self;
+    name = MEMORY[0x18D00C850](v6, v8);
   }
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
   }
 
   v11.receiver = self;
   v11.super_class = ObjectType;
-  [(UIKitResponderGestureRecognizer *)&v11 setName:a3];
+  [(UIKitResponderGestureRecognizer *)&v11 setName:name];
 }
 
 - (_TtC7SwiftUI31UIKitResponderGestureRecognizer)init
@@ -68,7 +68,7 @@
   return [(UIKitGestureRecognizer *)&v6 init];
 }
 
-- (_TtC7SwiftUI31UIKitResponderGestureRecognizer)initWithCoder:(id)a3
+- (_TtC7SwiftUI31UIKitResponderGestureRecognizer)initWithCoder:(id)coder
 {
   *(&self->super.super._gestureFlags + OBJC_IVAR____TtC7SwiftUI31UIKitResponderGestureRecognizer_responder) = 0;
   swift_weakInit();
@@ -78,23 +78,23 @@
   return result;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  v5 = self;
+  selfCopy = self;
   LOBYTE(ObjCClassMetadata) = UIKitResponderGestureRecognizer.isKind(of:)(ObjCClassMetadata);
 
   return ObjCClassMetadata & 1;
 }
 
-- (BOOL)_isGestureType:(int64_t)a3
+- (BOOL)_isGestureType:(int64_t)type
 {
   result = 0;
-  if (!a3)
+  if (!type)
   {
     if (swift_weakLoadStrong())
     {
-      v5 = self;
+      selfCopy = self;
       AnyGestureResponder.requiredTapCount.getter();
       v7 = v6;
 
@@ -113,7 +113,7 @@
   result = swift_weakLoadStrong();
   if (result)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = AnyGestureResponder.requiredTapCount.getter();
     v7 = v6;
 
@@ -135,47 +135,47 @@
   return result;
 }
 
-- (BOOL)canPreventGestureRecognizer:(id)a3
+- (BOOL)canPreventGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = UIKitResponderGestureRecognizer.canPrevent(_:)(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  LOBYTE(self) = UIKitResponderGestureRecognizer.canPrevent(_:)(recognizerCopy);
 
   return self & 1;
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = UIKitResponderGestureRecognizer.canBePrevented(by:)(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  LOBYTE(self) = UIKitResponderGestureRecognizer.canBePrevented(by:)(recognizerCopy);
 
   return self & 1;
 }
 
-- (BOOL)shouldRequireFailureOfGestureRecognizer:(id)a3
+- (BOOL)shouldRequireFailureOfGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = UIKitResponderGestureRecognizer.shouldRequireFailure(of:)(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  LOBYTE(self) = UIKitResponderGestureRecognizer.shouldRequireFailure(of:)(recognizerCopy);
 
   return self & 1;
 }
 
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = UIKitResponderGestureRecognizer.shouldBeRequiredToFail(by:)(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  LOBYTE(self) = UIKitResponderGestureRecognizer.shouldBeRequiredToFail(by:)(recognizerCopy);
 
   return self & 1;
 }
 
-- (BOOL)_canBeCancelledByGestureRecognizer:(id)a3
+- (BOOL)_canBeCancelledByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = UIKitResponderGestureRecognizer._canBeCancelled(by:)(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  LOBYTE(self) = UIKitResponderGestureRecognizer._canBeCancelled(by:)(recognizerCopy);
 
   return self & 1;
 }

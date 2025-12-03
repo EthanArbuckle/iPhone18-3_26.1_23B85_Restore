@@ -1,8 +1,8 @@
 @interface SPCoreSpotlightContactsUpdater
 + (id)sharedInstance;
 - (SPCoreSpotlightContactsUpdater)init;
-- (id)updatedCountsFromExisting:(id)a3 result:(int64_t *)a4 shouldUpdateMonth:(BOOL)a5;
-- (void)updateContactCounts:(id)a3;
+- (id)updatedCountsFromExisting:(id)existing result:(int64_t *)result shouldUpdateMonth:(BOOL)month;
+- (void)updateContactCounts:(id)counts;
 @end
 
 @implementation SPCoreSpotlightContactsUpdater
@@ -35,28 +35,28 @@ uint64_t __48__SPCoreSpotlightContactsUpdater_sharedInstance__block_invoke()
   return [(SPCoreSpotlightContactsUpdater *)&v3 init];
 }
 
-- (id)updatedCountsFromExisting:(id)a3 result:(int64_t *)a4 shouldUpdateMonth:(BOOL)a5
+- (id)updatedCountsFromExisting:(id)existing result:(int64_t *)result shouldUpdateMonth:(BOOL)month
 {
-  v5 = a5;
+  monthCopy = month;
   v22[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 count] == 4)
+  existingCopy = existing;
+  if ([existingCopy count] == 4)
   {
-    v7 = [v6 objectAtIndexedSubscript:3];
-    v8 = [v7 unsignedIntegerValue];
+    v7 = [existingCopy objectAtIndexedSubscript:3];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    v9 = [v6 objectAtIndexedSubscript:2];
-    v10 = [v9 unsignedIntegerValue];
+    v9 = [existingCopy objectAtIndexedSubscript:2];
+    unsignedIntegerValue2 = [v9 unsignedIntegerValue];
 
-    v11 = [v6 objectAtIndexedSubscript:1];
-    v12 = [v11 unsignedIntegerValue];
+    v11 = [existingCopy objectAtIndexedSubscript:1];
+    unsignedIntegerValue3 = [v11 unsignedIntegerValue];
 
-    v13 = [v6 objectAtIndexedSubscript:0];
-    v14 = [v13 unsignedIntegerValue];
+    v13 = [existingCopy objectAtIndexedSubscript:0];
+    unsignedIntegerValue4 = [v13 unsignedIntegerValue];
 
-    if (v5)
+    if (monthCopy)
     {
-      v15 = v10 >> 2;
+      v15 = unsignedIntegerValue2 >> 2;
     }
 
     else
@@ -65,11 +65,11 @@ uint64_t __48__SPCoreSpotlightContactsUpdater_sharedInstance__block_invoke()
     }
 
     v22[0] = &unk_2846C96C8;
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12 - ((4 * (v12 / 7)) >> 2) + v14];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue3 - ((4 * (unsignedIntegerValue3 / 7)) >> 2) + unsignedIntegerValue4];
     v22[1] = v16;
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10 - v15 + v12 / 7];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue2 - v15 + unsignedIntegerValue3 / 7];
     v22[2] = v17;
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15 + v8];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15 + unsignedIntegerValue];
     v22[3] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
   }
@@ -84,10 +84,10 @@ uint64_t __48__SPCoreSpotlightContactsUpdater_sharedInstance__block_invoke()
   return v19;
 }
 
-- (void)updateContactCounts:(id)a3
+- (void)updateContactCounts:(id)counts
 {
   v49 = *MEMORY[0x277D85DE8];
-  v29 = a3;
+  countsCopy = counts;
   v3 = objc_opt_new();
   [v3 setInternal:1];
   v28 = *MEMORY[0x277CC2C18];
@@ -122,8 +122,8 @@ uint64_t __48__SPCoreSpotlightContactsUpdater_sharedInstance__block_invoke()
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
   [v3 setBundleIDs:v15];
 
-  v16 = [v3 fetchAttributes];
-  v17 = [v16 count];
+  fetchAttributes = [v3 fetchAttributes];
+  v17 = [fetchAttributes count];
 
   v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"((%@=\"*\"", v28, v27, v26, v6, v7, v8, v9, v10, v11, v12, *MEMORY[0x277CC26B0], *MEMORY[0x277CC26B0]];
   v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
@@ -131,13 +131,13 @@ uint64_t __48__SPCoreSpotlightContactsUpdater_sharedInstance__block_invoke()
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v36 = v29;
+    v36 = countsCopy;
     _os_log_impl(&dword_231A35000, v20, OS_LOG_TYPE_INFO, "3 Enter group %p", buf, 0xCu);
   }
 
-  if (v29)
+  if (countsCopy)
   {
-    dispatch_group_enter(v29);
+    dispatch_group_enter(countsCopy);
   }
 
   v21 = +[SPCoreSpotlightIndexer sharedInstance];
@@ -148,12 +148,12 @@ uint64_t __48__SPCoreSpotlightContactsUpdater_sharedInstance__block_invoke()
   v34 = v17;
   v31[4] = self;
   v32 = v19;
-  v22 = v29;
+  v22 = countsCopy;
   v33 = v22;
   v23 = v19;
   v24 = [v21 startQuery:v18 withContext:v3 handler:v31];
 
-  if (v29 && !v24)
+  if (countsCopy && !v24)
   {
     dispatch_group_leave(v22);
   }

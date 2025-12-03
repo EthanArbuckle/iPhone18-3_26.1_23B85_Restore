@@ -1,32 +1,32 @@
 @interface TSDFrameRep
-- (CGImage)p_newFrameForMask:(BOOL)a3 size:(CGSize)a4 forCALayer:(BOOL)a5 viewScale:(double)a6;
-- (CGImage)p_newRenderedFrameForMask:(BOOL)a3 size:(CGSize)a4 forCALayer:(BOOL)a5 viewScale:(double)a6;
-- (TSDFrameRep)initWithTSDFrame:(id)a3;
-- (id)applyToCALayer:(id)a3 withRepLayer:(id)a4 maskLayer:(id)a5 viewScale:(double)a6;
-- (id)p_createRepeatingLayerWithImage:(CGImage *)a3 vertical:(BOOL)a4 screenScale:(double)a5;
-- (void)applyMaskForRectWithCoverage:(CGRect)a3 toContext:(CGContext *)a4;
-- (void)blendMaskBeforeRenderingImageInContext:(CGContext *)a3;
+- (CGImage)p_newFrameForMask:(BOOL)mask size:(CGSize)size forCALayer:(BOOL)layer viewScale:(double)scale;
+- (CGImage)p_newRenderedFrameForMask:(BOOL)mask size:(CGSize)size forCALayer:(BOOL)layer viewScale:(double)scale;
+- (TSDFrameRep)initWithTSDFrame:(id)frame;
+- (id)applyToCALayer:(id)layer withRepLayer:(id)repLayer maskLayer:(id)maskLayer viewScale:(double)scale;
+- (id)p_createRepeatingLayerWithImage:(CGImage *)image vertical:(BOOL)vertical screenScale:(double)scale;
+- (void)applyMaskForRectWithCoverage:(CGRect)coverage toContext:(CGContext *)context;
+- (void)blendMaskBeforeRenderingImageInContext:(CGContext *)context;
 - (void)dealloc;
-- (void)frameRect:(CGRect)a3 inContext:(CGContext *)a4 withTotalScale:(double)a5;
-- (void)p_addEdgeLayerForIndex:(unsigned int)a3 toLayer:(id)a4 maskLayer:(id)a5;
-- (void)p_addUnreplicatedLayerForIndex:(unsigned int)a3 toLayer:(id)a4 maskLayer:(id)a5;
-- (void)p_adjustRepeatingLayer:(id)a3 withImageRect:(CGRect)a4 start:(double)a5 end:(double)a6 vertical:(BOOL)a7;
-- (void)p_drawFrameIntoRect:(CGRect)a3 inContext:(CGContext *)a4 withImages:(id)a5 atViewScale:(double)a6 isMask:(BOOL)a7;
-- (void)p_drawTiles:(id)a3 inContext:(CGContext *)a4 rect:(CGRect)a5 start:(double)a6 end:(double)a7 vertical:(BOOL)a8;
-- (void)p_setRepeatingLayerWithIndex:(unsigned int)a3 sublayers:(id)a4 maskLayers:(id)a5 toRect:(CGRect)a6 start:(double)a7 end:(double)a8;
-- (void)p_setUnreplicatedLayerWithIndex:(unsigned int)a3 sublayers:(id)a4 maskLayers:(id)a5 toRect:(CGRect)a6;
-- (void)updateCALayer:(id)a3 toRect:(CGRect)a4 withRepLayer:(id)a5 maskLayer:(id)a6 viewScale:(double)a7 maskLayerTransform:(CGAffineTransform *)a8;
+- (void)frameRect:(CGRect)rect inContext:(CGContext *)context withTotalScale:(double)scale;
+- (void)p_addEdgeLayerForIndex:(unsigned int)index toLayer:(id)layer maskLayer:(id)maskLayer;
+- (void)p_addUnreplicatedLayerForIndex:(unsigned int)index toLayer:(id)layer maskLayer:(id)maskLayer;
+- (void)p_adjustRepeatingLayer:(id)layer withImageRect:(CGRect)rect start:(double)start end:(double)end vertical:(BOOL)vertical;
+- (void)p_drawFrameIntoRect:(CGRect)rect inContext:(CGContext *)context withImages:(id)images atViewScale:(double)scale isMask:(BOOL)mask;
+- (void)p_drawTiles:(id)tiles inContext:(CGContext *)context rect:(CGRect)rect start:(double)start end:(double)end vertical:(BOOL)vertical;
+- (void)p_setRepeatingLayerWithIndex:(unsigned int)index sublayers:(id)sublayers maskLayers:(id)layers toRect:(CGRect)rect start:(double)start end:(double)end;
+- (void)p_setUnreplicatedLayerWithIndex:(unsigned int)index sublayers:(id)sublayers maskLayers:(id)layers toRect:(CGRect)rect;
+- (void)updateCALayer:(id)layer toRect:(CGRect)rect withRepLayer:(id)repLayer maskLayer:(id)maskLayer viewScale:(double)scale maskLayerTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TSDFrameRep
 
-- (TSDFrameRep)initWithTSDFrame:(id)a3
+- (TSDFrameRep)initWithTSDFrame:(id)frame
 {
-  if (!a3)
+  if (!frame)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameRep initWithTSDFrame:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 70, @"invalid nil value for '%s'", "frame"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 70, @"invalid nil value for '%s'", "frame"}];
   }
 
   v22.receiver = self;
@@ -34,29 +34,29 @@
   v7 = [(TSDFrameRep *)&v22 init];
   if (v7)
   {
-    v8 = a3;
-    v7->mFrame = v8;
-    v9 = [(TSDFrame *)v8 frameSpec];
-    if (!v9)
+    frameCopy = frame;
+    v7->mFrame = frameCopy;
+    frameSpec = [(TSDFrame *)frameCopy frameSpec];
+    if (!frameSpec)
     {
-      v10 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameRep initWithTSDFrame:]"];
-      [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 76, @"invalid nil value for '%s'", "frameSpec"}];
+      [currentHandler2 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 76, @"invalid nil value for '%s'", "frameSpec"}];
     }
 
-    [(TSDFrameSpec *)v9 i_addInterestInProviders];
-    if ([(TSDFrameSpec *)v9 i_hasImages])
+    [(TSDFrameSpec *)frameSpec i_addInterestInProviders];
+    if ([(TSDFrameSpec *)frameSpec i_hasImages])
     {
       v12 = 0;
       v7->mImages = objc_alloc_init(MEMORY[0x277CBEB18]);
       do
       {
-        v13 = [(TSDFrameSpec *)v9 i_providerForIndex:v12 mask:0];
+        v13 = [(TSDFrameSpec *)frameSpec i_providerForIndex:v12 mask:0];
         if (!v13)
         {
-          v14 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
           v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameRep initWithTSDFrame:]"];
-          [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 83, @"invalid nil value for '%s'", "provider"}];
+          [currentHandler3 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 83, @"invalid nil value for '%s'", "provider"}];
         }
 
         [(NSArray *)v7->mImages addObject:v13];
@@ -67,18 +67,18 @@
       while (v12 != 8);
     }
 
-    if ([(TSDFrameSpec *)v9 i_hasMask])
+    if ([(TSDFrameSpec *)frameSpec i_hasMask])
     {
       v16 = 0;
       v7->mMasks = objc_alloc_init(MEMORY[0x277CBEB18]);
       do
       {
-        v17 = [(TSDFrameSpec *)v9 i_providerForIndex:v16 mask:1];
+        v17 = [(TSDFrameSpec *)frameSpec i_providerForIndex:v16 mask:1];
         if (!v17)
         {
-          v18 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
           v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameRep initWithTSDFrame:]"];
-          [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 93, @"invalid nil value for '%s'", "provider"}];
+          [currentHandler4 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 93, @"invalid nil value for '%s'", "provider"}];
         }
 
         [(NSArray *)v7->mMasks addObject:v17];
@@ -89,9 +89,9 @@
       while (v16 != 8);
     }
 
-    if ([(TSDFrameSpec *)v9 i_hasAdornment])
+    if ([(TSDFrameSpec *)frameSpec i_hasAdornment])
     {
-      v20 = [(TSDFrameSpec *)v9 i_providerForIndex:8 mask:0];
+      v20 = [(TSDFrameSpec *)frameSpec i_providerForIndex:8 mask:0];
       v7->mAdornment = v20;
       [(TSDImageProvider *)v20 addInterest];
     }
@@ -112,12 +112,12 @@
   [(TSDFrameRep *)&v3 dealloc];
 }
 
-- (void)frameRect:(CGRect)a3 inContext:(CGContext *)a4 withTotalScale:(double)a5
+- (void)frameRect:(CGRect)rect inContext:(CGContext *)context withTotalScale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(TSDFrame *)self->mFrame i_willRenderForRect:?])
   {
     [(TSDFrame *)self->mFrame coverageRectWithoutAdornment:x, y, width, height];
@@ -125,10 +125,10 @@
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    CGContextSaveGState(a4);
+    CGContextSaveGState(context);
     if (self->mImages)
     {
-      v20 = [(TSDFrameRep *)self p_newFrameForMask:0 size:0 forCALayer:v17 viewScale:v19, fmax(a5, 1.0)];
+      v20 = [(TSDFrameRep *)self p_newFrameForMask:0 size:0 forCALayer:v17 viewScale:v19, fmax(scale, 1.0)];
       if (v20)
       {
         v21 = v20;
@@ -136,13 +136,13 @@
         v30.origin.y = v15;
         v30.size.width = v17;
         v30.size.height = v19;
-        CGContextDrawImage(a4, v30, v20);
+        CGContextDrawImage(context, v30, v20);
         CGImageRelease(v21);
       }
 
       else
       {
-        [(TSDFrameRep *)self p_drawFrameIntoRect:a4 inContext:self->mImages withImages:0 atViewScale:v13 isMask:v15, v17, v19, 1.0];
+        [(TSDFrameRep *)self p_drawFrameIntoRect:context inContext:self->mImages withImages:0 atViewScale:v13 isMask:v15, v17, v19, 1.0];
       }
     }
 
@@ -154,37 +154,37 @@
       v24 = v31.size.width;
       v25 = v31.size.height;
       MaxY = CGRectGetMaxY(v31);
-      CGContextTranslateCTM(a4, 0.0, MaxY);
-      CGContextScaleCTM(a4, 1.0, -1.0);
+      CGContextTranslateCTM(context, 0.0, MaxY);
+      CGContextScaleCTM(context, 1.0, -1.0);
       v32.origin.x = v22;
       v32.origin.y = v23;
       v32.size.width = v24;
       v32.size.height = v25;
       MinY = CGRectGetMinY(v32);
-      CGContextTranslateCTM(a4, 0.0, -MinY);
-      v28 = [(TSDBitmapImageProvider *)self->mAdornment CGImageForSize:a4 inContext:0 orLayer:v24, v25];
+      CGContextTranslateCTM(context, 0.0, -MinY);
+      v28 = [(TSDBitmapImageProvider *)self->mAdornment CGImageForSize:context inContext:0 orLayer:v24, v25];
       v33.origin.x = v22;
       v33.origin.y = v23;
       v33.size.width = v24;
       v33.size.height = v25;
-      CGContextDrawImage(a4, v33, v28);
+      CGContextDrawImage(context, v33, v28);
     }
 
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)applyMaskForRectWithCoverage:(CGRect)a3 toContext:(CGContext *)a4
+- (void)applyMaskForRectWithCoverage:(CGRect)coverage toContext:(CGContext *)context
 {
   if (self->mMasks)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    if ([(TSDFrame *)self->mFrame shouldRenderForSizeIncludingCoverage:a3.size.width, a3.size.height])
+    height = coverage.size.height;
+    width = coverage.size.width;
+    y = coverage.origin.y;
+    x = coverage.origin.x;
+    if ([(TSDFrame *)self->mFrame shouldRenderForSizeIncludingCoverage:coverage.size.width, coverage.size.height])
     {
-      v10 = [(TSDFrameRep *)self p_newFrameForMask:1 size:0 forCALayer:width viewScale:height, TSDCGContextAssociatedScreenScale(a4)];
+      v10 = [(TSDFrameRep *)self p_newFrameForMask:1 size:0 forCALayer:width viewScale:height, TSDCGContextAssociatedScreenScale(context)];
       if (v10)
       {
         v11 = v10;
@@ -192,54 +192,54 @@
         v13.origin.y = y;
         v13.size.width = width;
         v13.size.height = height;
-        CGContextClipToMask(a4, v13, v10);
+        CGContextClipToMask(context, v13, v10);
 
         CGImageRelease(v11);
       }
 
       else
       {
-        [(TSDFrameRep *)self p_drawFrameIntoRect:a4 inContext:self->mMasks withImages:1 atViewScale:x isMask:y, width, height, 1.0];
+        [(TSDFrameRep *)self p_drawFrameIntoRect:context inContext:self->mMasks withImages:1 atViewScale:x isMask:y, width, height, 1.0];
         self->mShouldEnableBlendMode = 1;
       }
     }
   }
 }
 
-- (void)blendMaskBeforeRenderingImageInContext:(CGContext *)a3
+- (void)blendMaskBeforeRenderingImageInContext:(CGContext *)context
 {
   if (self->mShouldEnableBlendMode)
   {
     self->mShouldEnableBlendMode = 0;
-    CGContextSetBlendMode(a3, kCGBlendModeSourceIn);
+    CGContextSetBlendMode(context, kCGBlendModeSourceIn);
   }
 }
 
-- (id)applyToCALayer:(id)a3 withRepLayer:(id)a4 maskLayer:(id)a5 viewScale:(double)a6
+- (id)applyToCALayer:(id)layer withRepLayer:(id)repLayer maskLayer:(id)maskLayer viewScale:(double)scale
 {
-  if (![(TSDFrame *)self->mFrame shouldRender:a3])
+  if (![(TSDFrame *)self->mFrame shouldRender:layer])
   {
     return 0;
   }
 
-  [a3 contentsScale];
+  [layer contentsScale];
   v10 = v9;
-  [a3 setSublayers:0];
+  [layer setSublayers:0];
   if (self->mImages)
   {
     mMasks = self->mMasks;
     if (mMasks)
     {
-      if (!a5)
+      if (!maskLayer)
       {
-        v12 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameRep applyToCALayer:withRepLayer:maskLayer:viewScale:]"];
-        [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 223, @"invalid nil value for '%s'", "repMaskLayer"}];
+        [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 223, @"invalid nil value for '%s'", "repMaskLayer"}];
       }
 
       if (self->mMaskLayer)
       {
-        v14 = [objc_msgSend(a5 "sublayers")];
+        v14 = [objc_msgSend(maskLayer "sublayers")];
         mMaskLayer = self->mMaskLayer;
         if (v14)
         {
@@ -257,7 +257,7 @@
       v18 = objc_alloc_init(MEMORY[0x277CD9ED0]);
       self->mMaskLayer = v18;
       [(CALayer *)v18 setContentsScale:v10];
-      [a5 addSublayer:self->mMaskLayer];
+      [maskLayer addSublayer:self->mMaskLayer];
     }
 
     else
@@ -274,8 +274,8 @@
     v19 = 0;
     do
     {
-      [(TSDFrameRep *)self p_addUnreplicatedLayerForIndex:v19 toLayer:a3 maskLayer:self->mMaskLayer];
-      [(TSDFrameRep *)self p_addEdgeLayerForIndex:(v19 + 1) toLayer:a3 maskLayer:self->mMaskLayer];
+      [(TSDFrameRep *)self p_addUnreplicatedLayerForIndex:v19 toLayer:layer maskLayer:self->mMaskLayer];
+      [(TSDFrameRep *)self p_addEdgeLayerForIndex:(v19 + 1) toLayer:layer maskLayer:self->mMaskLayer];
       v20 = v19 >= 5;
       v19 = (v19 + 2);
     }
@@ -283,42 +283,42 @@
     while (!v20);
     if (mMasks)
     {
-      v21 = [MEMORY[0x277CD9ED0] layer];
+      layer = [MEMORY[0x277CD9ED0] layer];
       DeviceRGB = TSUCGColorCreateDeviceRGB();
-      [v21 setBackgroundColor:DeviceRGB];
+      [layer setBackgroundColor:DeviceRGB];
       CGColorRelease(DeviceRGB);
-      [v21 setEdgeAntialiasingMask:0];
-      [(CALayer *)self->mMaskLayer addSublayer:v21];
+      [layer setEdgeAntialiasingMask:0];
+      [(CALayer *)self->mMaskLayer addSublayer:layer];
     }
   }
 
   if (self->mAdornment)
   {
-    v23 = [MEMORY[0x277CD9ED0] layer];
-    [v23 setContentsScale:v10];
-    [v23 setContents:{-[TSDBitmapImageProvider CGImageForNaturalSize](self->mAdornment, "CGImageForNaturalSize")}];
-    [a3 addSublayer:v23];
+    layer2 = [MEMORY[0x277CD9ED0] layer];
+    [layer2 setContentsScale:v10];
+    [layer2 setContents:{-[TSDBitmapImageProvider CGImageForNaturalSize](self->mAdornment, "CGImageForNaturalSize")}];
+    [layer addSublayer:layer2];
   }
 
   return self->mMaskLayer;
 }
 
-- (void)updateCALayer:(id)a3 toRect:(CGRect)a4 withRepLayer:(id)a5 maskLayer:(id)a6 viewScale:(double)a7 maskLayerTransform:(CGAffineTransform *)a8
+- (void)updateCALayer:(id)layer toRect:(CGRect)rect withRepLayer:(id)repLayer maskLayer:(id)maskLayer viewScale:(double)scale maskLayerTransform:(CGAffineTransform *)transform
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (a8->a == 0.0 && a8->b == 0.0 || a8->c == 0.0 && a8->d == 0.0)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (transform->a == 0.0 && transform->b == 0.0 || transform->c == 0.0 && transform->d == 0.0)
   {
-    v17 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameRep updateCALayer:toRect:withRepLayer:maskLayer:viewScale:maskLayerTransform:]"];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"];
-    v20 = *&a8->c;
-    *&transform.a = *&a8->a;
+    v20 = *&transform->c;
+    *&transform.a = *&transform->a;
     *&transform.c = v20;
-    *&transform.tx = *&a8->tx;
-    [v17 handleFailureInFunction:v18 file:v19 lineNumber:270 description:{@"bad maskLayerTransform: %@", NSStringFromCGAffineTransform(&transform)}];
+    *&transform.tx = *&transform->tx;
+    [currentHandler handleFailureInFunction:v18 file:v19 lineNumber:270 description:{@"bad maskLayerTransform: %@", NSStringFromCGAffineTransform(&transform)}];
   }
 
   if ([(TSDFrame *)self->mFrame shouldRender])
@@ -329,34 +329,34 @@
     {
       [MEMORY[0x277CD9FF0] begin];
       [MEMORY[0x277CD9FF0] setDisableActions:1];
-      v24 = [a3 sublayers];
+      sublayers = [layer sublayers];
       mMasks = self->mMasks;
       if (mMasks)
       {
         if (!self->mMaskLayer)
         {
-          v26 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
           v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameRep updateCALayer:toRect:withRepLayer:maskLayer:viewScale:maskLayerTransform:]"];
-          [v26 handleFailureInFunction:v27 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 284, @"invalid nil value for '%s'", "mMaskLayer"}];
+          [currentHandler2 handleFailureInFunction:v27 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 284, @"invalid nil value for '%s'", "mMaskLayer"}];
         }
 
-        if (([objc_msgSend(a6 "sublayers")] & 1) == 0)
+        if (([objc_msgSend(maskLayer "sublayers")] & 1) == 0)
         {
-          v28 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
           v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameRep updateCALayer:toRect:withRepLayer:maskLayer:viewScale:maskLayerTransform:]"];
-          [v28 handleFailureInFunction:v29 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 285, @"TSDFrameRep's mask layer is not a sublayer of the mask layer passed in"}];
+          [currentHandler3 handleFailureInFunction:v29 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 285, @"TSDFrameRep's mask layer is not a sublayer of the mask layer passed in"}];
         }
       }
 
       v30 = [(TSDFrame *)self->mFrame i_willRenderForRect:x, y, width, height]^ 1;
       if (v30)
       {
-        [a3 bounds];
+        [layer bounds];
         v42 = v41;
         v31 = v43;
         DeviceRGB = TSUCGColorCreateDeviceRGB();
         v45 = DeviceRGB;
-        if ([a3 isHidden])
+        if ([layer isHidden])
         {
 LABEL_19:
           mMaskLayer = self->mMaskLayer;
@@ -412,16 +412,16 @@ LABEL_19:
               memset(&transform, 0, sizeof(transform));
             }
 
-            v68 = *&a8->c;
-            *&t1.a = *&a8->a;
+            v68 = *&transform->c;
+            *&t1.a = *&transform->a;
             *&t1.c = v68;
-            *&t1.tx = *&a8->tx;
+            *&t1.tx = *&transform->tx;
             if (!CGAffineTransformEqualToTransform(&t1, &transform))
             {
-              v69 = *&a8->c;
-              *&transform.a = *&a8->a;
+              v69 = *&transform->c;
+              *&transform.a = *&transform->a;
               *&transform.c = v69;
-              *&transform.tx = *&a8->tx;
+              *&transform.tx = *&transform->tx;
               [(CALayer *)self->mMaskLayer setAffineTransform:&transform];
             }
           }
@@ -432,7 +432,7 @@ LABEL_19:
         }
 
 LABEL_18:
-        [a3 setHidden:v30];
+        [layer setHidden:v30];
         v45 = DeviceRGB;
         goto LABEL_19;
       }
@@ -444,14 +444,14 @@ LABEL_18:
       v148 = v33;
       v146 = v34;
       v149 = v35;
-      v36 = TSDMultiplyRectScalar(v32, v34, v35, v33, a7);
+      v36 = TSDMultiplyRectScalar(v32, v34, v35, v33, scale);
       if (self->mImages)
       {
         if (mMasks)
         {
           v38 = v36;
           v39 = v37;
-          v40 = [(CALayer *)self->mMaskLayer sublayers];
+          sublayers2 = [(CALayer *)self->mMaskLayer sublayers];
           v145 = v39;
           v150 = v38;
         }
@@ -459,7 +459,7 @@ LABEL_18:
         else
         {
           v145 = v31;
-          v40 = 0;
+          sublayers2 = 0;
         }
 
         [(TSDFrame *)self->mFrame i_leftWidth];
@@ -469,17 +469,17 @@ LABEL_18:
         [(TSDFrame *)self->mFrame i_topHeight];
         v75 = v74;
         [(TSDFrame *)self->mFrame i_bottomHeight];
-        v77 = v71 * a7;
-        v78 = v75 * a7;
-        v79 = (v148 - v76) * a7;
-        if (v77 == v73 * a7)
+        v77 = v71 * scale;
+        v78 = v75 * scale;
+        v79 = (v148 - v76) * scale;
+        if (v77 == v73 * scale)
         {
           v80 = v77 + 1.0;
         }
 
         else
         {
-          v80 = v73 * a7;
+          v80 = v73 * scale;
         }
 
         if (v78 == v79)
@@ -494,31 +494,31 @@ LABEL_18:
 
         if ([(TSDFrameSpec *)[(TSDFrame *)self->mFrame frameSpec] i_tilingMode]== 2)
         {
-          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:0 sublayers:v24 maskLayers:v40 toRect:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v77, v78];
-          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:1 sublayers:v24 maskLayers:v40 toRect:v77, 0.0];
+          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:0 sublayers:sublayers maskLayers:sublayers2 toRect:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v77, v78];
+          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:1 sublayers:sublayers maskLayers:sublayers2 toRect:v77, 0.0];
           [(TSDFrame *)self->mFrame i_rightWidth];
-          v83 = v82 * a7;
+          v83 = v82 * scale;
           [(TSDFrame *)self->mFrame i_topHeight];
-          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:2 sublayers:v24 maskLayers:v40 toRect:v80, 0.0, v83, v84 * a7];
+          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:2 sublayers:sublayers maskLayers:sublayers2 toRect:v80, 0.0, v83, v84 * scale];
           [(TSDFrame *)self->mFrame i_rightWidth];
-          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:3 sublayers:v24 maskLayers:v40 toRect:v80, v78, v85 * a7, v81 - v78];
+          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:3 sublayers:sublayers maskLayers:sublayers2 toRect:v80, v78, v85 * scale, v81 - v78];
           [(TSDFrame *)self->mFrame i_rightWidth];
-          v87 = v86 * a7;
+          v87 = v86 * scale;
           [(TSDFrame *)self->mFrame i_bottomHeight];
           v89 = v87;
           v90 = v80 - v77;
-          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:4 sublayers:v24 maskLayers:v40 toRect:v80, v81, v89, v88 * a7];
+          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:4 sublayers:sublayers maskLayers:sublayers2 toRect:v80, v81, v89, v88 * scale];
           [(TSDFrame *)self->mFrame i_bottomHeight];
-          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:5 sublayers:v24 maskLayers:v40 toRect:v77, v81, v80 - v77, v91 * a7];
+          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:5 sublayers:sublayers maskLayers:sublayers2 toRect:v77, v81, v80 - v77, v91 * scale];
           [(TSDFrame *)self->mFrame i_leftWidth];
-          v93 = v92 * a7;
+          v93 = v92 * scale;
           [(TSDFrame *)self->mFrame i_bottomHeight];
-          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:6 sublayers:v24 maskLayers:v40 toRect:0.0, v81, v93, v94 * a7];
+          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:6 sublayers:sublayers maskLayers:sublayers2 toRect:0.0, v81, v93, v94 * scale];
           [(TSDFrame *)self->mFrame i_leftWidth];
-          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:7 sublayers:v24 maskLayers:v40 toRect:0.0, v78, v95 * a7, v81 - v78];
+          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:7 sublayers:sublayers maskLayers:sublayers2 toRect:0.0, v78, v95 * scale, v81 - v78];
           if (mMasks)
           {
-            v96 = [(NSArray *)v40 objectAtIndex:8];
+            v96 = [(NSArray *)sublayers2 objectAtIndex:8];
             v154.origin.x = v77;
             v154.origin.y = v78;
             v154.size.width = v90;
@@ -549,20 +549,20 @@ LABEL_18:
           [(TSDFrame *)self->mFrame assetScale];
           v102 = v101;
           v144 = v101;
-          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:0 sublayers:v24 maskLayers:v40 toRect:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v77, v78];
+          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:0 sublayers:sublayers maskLayers:sublayers2 toRect:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v77, v78];
           [-[NSArray objectAtIndex:](self->mImages objectAtIndex:{1), "dpiAdjustedFillSize"}];
           if (v103 > 1.0)
           {
             v103 = v102 * v103;
           }
 
-          v104 = v103 * a7;
+          v104 = v103 * scale;
           [(TSDFrame *)self->mFrame i_topHeight];
-          [(TSDFrameRep *)self p_setRepeatingLayerWithIndex:1 sublayers:v24 maskLayers:v40 toRect:v77 start:0.0 end:v104, v105 * a7, v77, v80];
+          [(TSDFrameRep *)self p_setRepeatingLayerWithIndex:1 sublayers:sublayers maskLayers:sublayers2 toRect:v77 start:0.0 end:v104, v105 * scale, v77, v80];
           [(TSDFrame *)self->mFrame i_rightWidth];
-          v107 = v106 * a7;
+          v107 = v106 * scale;
           [(TSDFrame *)self->mFrame i_topHeight];
-          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:2 sublayers:v24 maskLayers:v40 toRect:v80, 0.0, v107, v108 * a7];
+          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:2 sublayers:sublayers maskLayers:sublayers2 toRect:v80, 0.0, v107, v108 * scale];
           [-[NSArray objectAtIndex:](self->mImages objectAtIndex:{3), "dpiAdjustedFillSize"}];
           if (v109 <= 1.0)
           {
@@ -575,24 +575,24 @@ LABEL_18:
           }
 
           [(TSDFrame *)self->mFrame i_rightWidth];
-          [(TSDFrameRep *)self p_setRepeatingLayerWithIndex:3 sublayers:v24 maskLayers:v40 toRect:v80 start:v78 end:v111 * a7, v110 * a7, v78, v81];
+          [(TSDFrameRep *)self p_setRepeatingLayerWithIndex:3 sublayers:sublayers maskLayers:sublayers2 toRect:v80 start:v78 end:v111 * scale, v110 * scale, v78, v81];
           [(TSDFrame *)self->mFrame i_rightWidth];
-          v113 = v112 * a7;
+          v113 = v112 * scale;
           [(TSDFrame *)self->mFrame i_bottomHeight];
-          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:4 sublayers:v24 maskLayers:v40 toRect:v80, v81, v113, v114 * a7];
+          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:4 sublayers:sublayers maskLayers:sublayers2 toRect:v80, v81, v113, v114 * scale];
           [-[NSArray objectAtIndex:](self->mImages objectAtIndex:{5), "dpiAdjustedFillSize"}];
           if (v115 > 1.0)
           {
             v115 = v144 * v115;
           }
 
-          v116 = v115 * a7 + 1.0;
+          v116 = v115 * scale + 1.0;
           [(TSDFrame *)self->mFrame i_bottomHeight];
-          [(TSDFrameRep *)self p_setRepeatingLayerWithIndex:5 sublayers:v24 maskLayers:v40 toRect:v77 start:v81 end:v116, v117 * a7, v77, v80];
+          [(TSDFrameRep *)self p_setRepeatingLayerWithIndex:5 sublayers:sublayers maskLayers:sublayers2 toRect:v77 start:v81 end:v116, v117 * scale, v77, v80];
           [(TSDFrame *)self->mFrame i_leftWidth];
-          v119 = v118 * a7;
+          v119 = v118 * scale;
           [(TSDFrame *)self->mFrame i_bottomHeight];
-          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:6 sublayers:v24 maskLayers:v40 toRect:0.0, v81, v119, v120 * a7];
+          [(TSDFrameRep *)self p_setUnreplicatedLayerWithIndex:6 sublayers:sublayers maskLayers:sublayers2 toRect:0.0, v81, v119, v120 * scale];
           [-[NSArray objectAtIndex:](self->mImages objectAtIndex:{7), "dpiAdjustedFillSize"}];
           if (v121 <= 1.0)
           {
@@ -605,10 +605,10 @@ LABEL_18:
           }
 
           [(TSDFrame *)self->mFrame i_leftWidth];
-          [(TSDFrameRep *)self p_setRepeatingLayerWithIndex:7 sublayers:v24 maskLayers:v40 toRect:0.0 start:v78 end:v123 * a7, v122 * a7, v78, v81];
+          [(TSDFrameRep *)self p_setRepeatingLayerWithIndex:7 sublayers:sublayers maskLayers:sublayers2 toRect:0.0 start:v78 end:v123 * scale, v122 * scale, v78, v81];
           if (mMasks)
           {
-            v124 = [(NSArray *)v40 objectAtIndex:8];
+            v124 = [(NSArray *)sublayers2 objectAtIndex:8];
             v158.size.width = v80 - v77;
             v158.size.height = v81 - v78;
             v158.origin.x = v77;
@@ -644,14 +644,14 @@ LABEL_64:
         v136 = v135;
         v137 = TSDSubtractPoints(x, y, v147);
         v138 = TSDAddPoints(v130, v132, v137);
-        v140 = TSDMultiplyRectScalar(v138, v139, v134, v136, a7);
-        [objc_msgSend(v24 objectAtIndex:{8 * (self->mImages != 0)), "setFrame:", v140, v141, v142, v143}];
+        v140 = TSDMultiplyRectScalar(v138, v139, v134, v136, scale);
+        [objc_msgSend(sublayers objectAtIndex:{8 * (self->mImages != 0)), "setFrame:", v140, v141, v142, v143}];
       }
 
       DeviceRGB = 0;
       v45 = 0;
       v42 = v150;
-      if (([a3 isHidden] & 1) == 0)
+      if (([layer isHidden] & 1) == 0)
       {
         goto LABEL_19;
       }
@@ -661,21 +661,21 @@ LABEL_64:
   }
 }
 
-- (CGImage)p_newFrameForMask:(BOOL)a3 size:(CGSize)a4 forCALayer:(BOOL)a5 viewScale:(double)a6
+- (CGImage)p_newFrameForMask:(BOOL)mask size:(CGSize)size forCALayer:(BOOL)layer viewScale:(double)scale
 {
-  v7 = a5;
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
+  layerCopy = layer;
+  height = size.height;
+  width = size.width;
+  maskCopy = mask;
   v12 = +[TSDFrameImageCache sharedFrameImageCache];
-  result = [v12 newCachedImageForFrame:self->mFrame size:v7 viewScale:v10 forCALayer:width mask:{height, a6}];
+  result = [v12 newCachedImageForFrame:self->mFrame size:layerCopy viewScale:maskCopy forCALayer:width mask:{height, scale}];
   if (!result)
   {
-    result = [(TSDFrameRep *)self p_newRenderedFrameForMask:v10 size:v7 forCALayer:width viewScale:height, a6];
+    result = [(TSDFrameRep *)self p_newRenderedFrameForMask:maskCopy size:layerCopy forCALayer:width viewScale:height, scale];
     if (result)
     {
       v14 = result;
-      v15 = [v12 setCachedImage:result forFrame:self->mFrame size:v7 viewScale:v10 forCALayer:width mask:{height, a6}];
+      v15 = [v12 setCachedImage:result forFrame:self->mFrame size:layerCopy viewScale:maskCopy forCALayer:width mask:{height, scale}];
       CGImageRelease(v14);
       return v15;
     }
@@ -684,12 +684,12 @@ LABEL_64:
   return result;
 }
 
-- (CGImage)p_newRenderedFrameForMask:(BOOL)a3 size:(CGSize)a4 forCALayer:(BOOL)a5 viewScale:(double)a6
+- (CGImage)p_newRenderedFrameForMask:(BOOL)mask size:(CGSize)size forCALayer:(BOOL)layer viewScale:(double)scale
 {
-  v7 = a5;
-  v8 = a3;
+  layerCopy = layer;
+  maskCopy = mask;
   v44 = *MEMORY[0x277D85DE8];
-  if (TSDMultiplySizeScalar(a4.width, a4.height, a6) >= 4096.0 || v10 >= 4096.0)
+  if (TSDMultiplySizeScalar(size.width, size.height, scale) >= 4096.0 || v10 >= 4096.0)
   {
     return 0;
   }
@@ -699,13 +699,13 @@ LABEL_64:
   TSURound();
   v16 = v15;
   v17 = 16;
-  if (v8)
+  if (maskCopy)
   {
     v17 = 24;
   }
 
   v18 = *(&self->super.isa + v17);
-  if (v8)
+  if (maskCopy)
   {
     AlignedBytesPerRow = TSUBitmapGetAlignedBytesPerRow();
     v20 = TSUDeviceGrayColorSpace();
@@ -769,13 +769,13 @@ LABEL_20:
   if (v29)
   {
     v30 = v29;
-    if (v7)
+    if (layerCopy)
     {
       CGContextTranslateCTM(v29, 0.0, v16);
       CGContextScaleCTM(v30, 1.0, -1.0);
     }
 
-    if (v8)
+    if (maskCopy)
     {
       CGContextSetGrayFillColor(v30, 1.0, 1.0);
       v31 = v14;
@@ -793,14 +793,14 @@ LABEL_20:
       v31 = v14;
     }
 
-    [(TSDFrameRep *)self p_drawFrameIntoRect:v30 inContext:v18 withImages:v8 atViewScale:0.0 isMask:0.0, v31 / a6, v32 / a6, a6];
-    if (v8)
+    [(TSDFrameRep *)self p_drawFrameIntoRect:v30 inContext:v18 withImages:maskCopy atViewScale:0.0 isMask:0.0, v31 / scale, v32 / scale, scale];
+    if (maskCopy)
     {
       CGContextRelease(v30);
       v33 = CGDataProviderCreateWithCFData(Mutable);
       v12 = CGImageMaskCreate(v14, v16, 8uLL, 8uLL, AlignedBytesPerRow, v33, 0, 1);
       CGDataProviderRelease(v33);
-      if (v7)
+      if (layerCopy)
       {
         v34 = TSDBitmapContextCreate(3, v31);
         v35 = *MEMORY[0x277CBF348];
@@ -843,10 +843,10 @@ LABEL_20:
   return v12;
 }
 
-- (void)p_drawFrameIntoRect:(CGRect)a3 inContext:(CGContext *)a4 withImages:(id)a5 atViewScale:(double)a6 isMask:(BOOL)a7
+- (void)p_drawFrameIntoRect:(CGRect)rect inContext:(CGContext *)context withImages:(id)images atViewScale:(double)scale isMask:(BOOL)mask
 {
-  v7 = a7;
-  v57.origin.x = TSDRoundedRect(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  maskCopy = mask;
+  v57.origin.x = TSDRoundedRect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   x = v57.origin.x;
   y = v57.origin.y;
   width = v57.size.width;
@@ -909,65 +909,65 @@ LABEL_20:
 
   [(TSDFrame *)self->mFrame assetScale];
   v53 = v19;
-  [objc_msgSend(a5 objectAtIndex:{0), "drawImageInContext:rect:", a4, MinX, v19, v54, v55}];
+  [objc_msgSend(images objectAtIndex:{0), "drawImageInContext:rect:", context, MinX, v19, v54, v55}];
   v29 = TSDRoundedSize();
-  [objc_msgSend(a5 objectAtIndex:{6), "drawImageInContext:rect:", a4, MinX, v28, v29, v30}];
+  [objc_msgSend(images objectAtIndex:{6), "drawImageInContext:rect:", context, MinX, v28, v29, v30}];
   v31 = TSDRoundedSize();
   v33 = v32;
-  v34 = [a5 objectAtIndex:2];
+  v34 = [images objectAtIndex:2];
   v35 = v19;
   v36 = v52;
-  [v34 drawImageInContext:a4 rect:{v51, v35, v31, v33}];
+  [v34 drawImageInContext:context rect:{v51, v35, v31, v33}];
   v37 = TSDRoundedSize();
-  [objc_msgSend(a5 objectAtIndex:{4), "drawImageInContext:rect:", a4, v51, v28, v37, v38}];
-  [objc_msgSend(a5 objectAtIndex:{7), "dpiAdjustedFillSize"}];
+  [objc_msgSend(images objectAtIndex:{4), "drawImageInContext:rect:", context, v51, v28, v37, v38}];
+  [objc_msgSend(images objectAtIndex:{7), "dpiAdjustedFillSize"}];
   v39 = TSDRoundedSize();
-  -[TSDFrameRep p_drawTiles:inContext:rect:start:end:vertical:](self, "p_drawTiles:inContext:rect:start:end:vertical:", [a5 objectAtIndex:7], a4, 1, MinX, v25, v39, v40, v25, v28);
-  [objc_msgSend(a5 objectAtIndex:{3), "dpiAdjustedFillSize"}];
+  -[TSDFrameRep p_drawTiles:inContext:rect:start:end:vertical:](self, "p_drawTiles:inContext:rect:start:end:vertical:", [images objectAtIndex:7], context, 1, MinX, v25, v39, v40, v25, v28);
+  [objc_msgSend(images objectAtIndex:{3), "dpiAdjustedFillSize"}];
   v41 = TSDRoundedSize();
-  -[TSDFrameRep p_drawTiles:inContext:rect:start:end:vertical:](self, "p_drawTiles:inContext:rect:start:end:vertical:", [a5 objectAtIndex:3], a4, 1, v51, v25, v41, v42, v25, v28);
-  [objc_msgSend(a5 objectAtIndex:{1), "dpiAdjustedFillSize"}];
+  -[TSDFrameRep p_drawTiles:inContext:rect:start:end:vertical:](self, "p_drawTiles:inContext:rect:start:end:vertical:", [images objectAtIndex:3], context, 1, v51, v25, v41, v42, v25, v28);
+  [objc_msgSend(images objectAtIndex:{1), "dpiAdjustedFillSize"}];
   v43 = TSDRoundedSize();
-  -[TSDFrameRep p_drawTiles:inContext:rect:start:end:vertical:](self, "p_drawTiles:inContext:rect:start:end:vertical:", [a5 objectAtIndex:1], a4, 0, v36, v53, v43, v44, v36, v51);
-  [objc_msgSend(a5 objectAtIndex:{5), "dpiAdjustedFillSize"}];
+  -[TSDFrameRep p_drawTiles:inContext:rect:start:end:vertical:](self, "p_drawTiles:inContext:rect:start:end:vertical:", [images objectAtIndex:1], context, 0, v36, v53, v43, v44, v36, v51);
+  [objc_msgSend(images objectAtIndex:{5), "dpiAdjustedFillSize"}];
   v45 = TSDRoundedSize();
-  -[TSDFrameRep p_drawTiles:inContext:rect:start:end:vertical:](self, "p_drawTiles:inContext:rect:start:end:vertical:", [a5 objectAtIndex:5], a4, 0, v36, v28, v45, v46, v36, v51);
-  if (v7)
+  -[TSDFrameRep p_drawTiles:inContext:rect:start:end:vertical:](self, "p_drawTiles:inContext:rect:start:end:vertical:", [images objectAtIndex:5], context, 0, v36, v28, v45, v46, v36, v51);
+  if (maskCopy)
   {
-    CGContextSetGrayFillColor(a4, 0.0, 1.0);
+    CGContextSetGrayFillColor(context, 0.0, 1.0);
     v49 = v52;
     v50 = v25;
 
     v47 = v51 - v52;
     v48 = v28 - v25;
-    CGContextFillRect(a4, *&v49);
+    CGContextFillRect(context, *&v49);
   }
 }
 
-- (void)p_drawTiles:(id)a3 inContext:(CGContext *)a4 rect:(CGRect)a5 start:(double)a6 end:(double)a7 vertical:(BOOL)a8
+- (void)p_drawTiles:(id)tiles inContext:(CGContext *)context rect:(CGRect)rect start:(double)start end:(double)end vertical:(BOOL)vertical
 {
-  v8 = a8;
-  v32 = CGRectIntegral(a5);
+  verticalCopy = vertical;
+  v32 = CGRectIntegral(rect);
   x = v32.origin.x;
   y = v32.origin.y;
   width = v32.size.width;
   height = v32.size.height;
   if (!CGRectIsEmpty(v32))
   {
-    v18 = a7 - a6;
-    if (v8)
+    v18 = end - start;
+    if (verticalCopy)
     {
       v19 = width;
     }
 
     else
     {
-      v19 = a7 - a6;
+      v19 = end - start;
     }
 
-    if (v8)
+    if (verticalCopy)
     {
-      v20 = a7 - a6;
+      v20 = end - start;
     }
 
     else
@@ -978,12 +978,12 @@ LABEL_20:
     if ([(TSDFrameSpec *)[(TSDFrame *)self->mFrame frameSpec] i_tilingMode]== 2)
     {
 
-      [a3 drawImageInContext:a4 rect:{x, y, v19, v20}];
+      [tiles drawImageInContext:context rect:{x, y, v19, v20}];
     }
 
     else
     {
-      if (v8)
+      if (verticalCopy)
       {
         v21 = height;
       }
@@ -1002,17 +1002,17 @@ LABEL_20:
           v24 = v18 / v23;
           do
           {
-            a6 = v24 + a6;
+            start = v24 + start;
             TSURound();
             v26 = v25;
             v27 = x;
             v28 = y;
             v29 = width;
             v30 = height;
-            if (v8)
+            if (verticalCopy)
             {
               height = v26 - CGRectGetMinY(*&v27);
-              [a3 drawImageInContext:a4 rect:{x, y, width, height}];
+              [tiles drawImageInContext:context rect:{x, y, width, height}];
               v33.origin.x = x;
               v33.origin.y = y;
               v33.size.width = width;
@@ -1023,7 +1023,7 @@ LABEL_20:
             else
             {
               width = v26 - CGRectGetMinX(*&v27);
-              [a3 drawImageInContext:a4 rect:{x, y, width, height}];
+              [tiles drawImageInContext:context rect:{x, y, width, height}];
               v34.origin.x = x;
               v34.origin.y = y;
               v34.size.width = width;
@@ -1040,18 +1040,18 @@ LABEL_20:
 
       else
       {
-        CGContextSaveGState(a4);
+        CGContextSaveGState(context);
         v35.origin.x = x;
         v35.origin.y = y;
         v35.size.width = v19;
         v35.size.height = v20;
-        CGContextClipToRect(a4, v35);
+        CGContextClipToRect(context, v35);
         if (v23 >= 1)
         {
           do
           {
-            [a3 drawImageInContext:a4 rect:{x, y, width, height}];
-            if (v8)
+            [tiles drawImageInContext:context rect:{x, y, width, height}];
+            if (verticalCopy)
             {
               y = height + y;
             }
@@ -1067,93 +1067,93 @@ LABEL_20:
           while (v23);
         }
 
-        CGContextRestoreGState(a4);
+        CGContextRestoreGState(context);
       }
     }
   }
 }
 
-- (void)p_addUnreplicatedLayerForIndex:(unsigned int)a3 toLayer:(id)a4 maskLayer:(id)a5
+- (void)p_addUnreplicatedLayerForIndex:(unsigned int)index toLayer:(id)layer maskLayer:(id)maskLayer
 {
-  v8 = p_addUnreplicatedLayerForIndex_toLayer_maskLayer__edgeAAMasks[a3];
-  v9 = a3;
-  [a4 contentsScale];
+  v8 = p_addUnreplicatedLayerForIndex_toLayer_maskLayer__edgeAAMasks[index];
+  indexCopy = index;
+  [layer contentsScale];
   v11 = v10;
-  v12 = [MEMORY[0x277CD9ED0] layer];
-  v13 = [-[NSArray objectAtIndex:](self->mImages objectAtIndex:{v9), "CGImageForNaturalSize"}];
-  [v12 setContents:v13];
+  layer = [MEMORY[0x277CD9ED0] layer];
+  v13 = [-[NSArray objectAtIndex:](self->mImages objectAtIndex:{indexCopy), "CGImageForNaturalSize"}];
+  [layer setContents:v13];
   Width = CGImageGetWidth(v13);
   Height = CGImageGetHeight(v13);
   if (Width > 0x7FF || Height >= 0x800)
   {
     v16 = Height;
     v17 = Width;
-    v18 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameRep p_addUnreplicatedLayerForIndex:toLayer:maskLayer:]"];
-    [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 937, @"frame image is too big for %@ (%f, %f)", -[TSDFrame frameName](self->mFrame, "frameName"), *&v17, *&v16}];
+    [currentHandler handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 937, @"frame image is too big for %@ (%f, %f)", -[TSDFrame frameName](self->mFrame, "frameName"), *&v17, *&v16}];
   }
 
-  [v12 setEdgeAntialiasingMask:v8];
-  [v12 setContentsScale:v11];
-  [a4 addSublayer:v12];
-  if (a5)
+  [layer setEdgeAntialiasingMask:v8];
+  [layer setContentsScale:v11];
+  [layer addSublayer:layer];
+  if (maskLayer)
   {
-    v20 = [MEMORY[0x277CD9ED0] layer];
-    [v20 setContents:{objc_msgSend(-[NSArray objectAtIndex:](self->mMasks, "objectAtIndex:", v9), "CGImageForNaturalSize")}];
-    [v20 setContentsScale:v11];
-    [v20 setEdgeAntialiasingMask:v8];
+    layer2 = [MEMORY[0x277CD9ED0] layer];
+    [layer2 setContents:{objc_msgSend(-[NSArray objectAtIndex:](self->mMasks, "objectAtIndex:", indexCopy), "CGImageForNaturalSize")}];
+    [layer2 setContentsScale:v11];
+    [layer2 setEdgeAntialiasingMask:v8];
 
-    [a5 addSublayer:v20];
+    [maskLayer addSublayer:layer2];
   }
 }
 
-- (void)p_addEdgeLayerForIndex:(unsigned int)a3 toLayer:(id)a4 maskLayer:(id)a5
+- (void)p_addEdgeLayerForIndex:(unsigned int)index toLayer:(id)layer maskLayer:(id)maskLayer
 {
-  v7 = *&a3;
+  v7 = *&index;
   if ([(TSDFrameSpec *)[(TSDFrame *)self->mFrame frameSpec] i_tilingMode]== 2)
   {
 
-    [(TSDFrameRep *)self p_addUnreplicatedLayerForIndex:v7 toLayer:a4 maskLayer:a5];
+    [(TSDFrameRep *)self p_addUnreplicatedLayerForIndex:v7 toLayer:layer maskLayer:maskLayer];
   }
 
   else
   {
     v9 = v7 & 0xFFFFFFFB;
     v10 = [-[NSArray objectAtIndex:](self->mImages objectAtIndex:{v7), "CGImageForNaturalSize"}];
-    [a4 contentsScale];
-    [a4 addSublayer:{-[TSDFrameRep p_createRepeatingLayerWithImage:vertical:screenScale:](self, "p_createRepeatingLayerWithImage:vertical:screenScale:", v10, (v7 & 0xFFFFFFFB) == 3)}];
-    if (a5)
+    [layer contentsScale];
+    [layer addSublayer:{-[TSDFrameRep p_createRepeatingLayerWithImage:vertical:screenScale:](self, "p_createRepeatingLayerWithImage:vertical:screenScale:", v10, (v7 & 0xFFFFFFFB) == 3)}];
+    if (maskLayer)
     {
       v11 = [-[NSArray objectAtIndex:](self->mMasks objectAtIndex:{v7), "CGImageForNaturalSize"}];
-      [a4 contentsScale];
+      [layer contentsScale];
       v12 = [(TSDFrameRep *)self p_createRepeatingLayerWithImage:v11 vertical:v9 == 3 screenScale:?];
 
-      [a5 addSublayer:v12];
+      [maskLayer addSublayer:v12];
     }
   }
 }
 
-- (id)p_createRepeatingLayerWithImage:(CGImage *)a3 vertical:(BOOL)a4 screenScale:(double)a5
+- (id)p_createRepeatingLayerWithImage:(CGImage *)image vertical:(BOOL)vertical screenScale:(double)scale
 {
-  v6 = a4;
-  v9 = [MEMORY[0x277CD9FF8] layer];
-  v10 = [MEMORY[0x277CD9ED0] layer];
-  [v10 setAnchorPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
-  [v10 setContentsScale:a5];
-  [v9 addSublayer:v10];
-  [v10 setContents:a3];
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  verticalCopy = vertical;
+  layer = [MEMORY[0x277CD9FF8] layer];
+  layer2 = [MEMORY[0x277CD9ED0] layer];
+  [layer2 setAnchorPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  [layer2 setContentsScale:scale];
+  [layer addSublayer:layer2];
+  [layer2 setContents:image];
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   if (Width > 0x7FF || Height >= 0x800)
   {
     v13 = Height;
     v14 = Width;
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameRep p_createRepeatingLayerWithImage:vertical:screenScale:]"];
-    [v15 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 994, @"frame image is too big for %@ (%f, %f)", -[TSDFrame frameName](self->mFrame, "frameName"), *&v14, *&v13}];
+    [currentHandler handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 994, @"frame image is too big for %@ (%f, %f)", -[TSDFrame frameName](self->mFrame, "frameName"), *&v14, *&v13}];
   }
 
-  if (v6)
+  if (verticalCopy)
   {
     v17 = 3;
   }
@@ -1163,18 +1163,18 @@ LABEL_20:
     v17 = 12;
   }
 
-  [v10 setEdgeAntialiasingMask:v17];
-  return v9;
+  [layer2 setEdgeAntialiasingMask:v17];
+  return layer;
 }
 
-- (void)p_setUnreplicatedLayerWithIndex:(unsigned int)a3 sublayers:(id)a4 maskLayers:(id)a5 toRect:(CGRect)a6
+- (void)p_setUnreplicatedLayerWithIndex:(unsigned int)index sublayers:(id)sublayers maskLayers:(id)layers toRect:(CGRect)rect
 {
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v9 = fmax(a6.size.width, 1.0);
-  v10 = fmax(a6.size.height, 1.0);
-  v11 = a3;
-  v12 = [a4 objectAtIndex:a3];
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = fmax(rect.size.width, 1.0);
+  v10 = fmax(rect.size.height, 1.0);
+  indexCopy = index;
+  v12 = [sublayers objectAtIndex:index];
   [v12 frame];
   v17.origin.x = x;
   v17.origin.y = y;
@@ -1185,9 +1185,9 @@ LABEL_20:
     [v12 setFrame:{x, y, v9, v10}];
   }
 
-  if (a5)
+  if (layers)
   {
-    v13 = [a5 objectAtIndex:v11];
+    v13 = [layers objectAtIndex:indexCopy];
     [v13 frame];
     v18.origin.x = x;
     v18.origin.y = y;
@@ -1201,42 +1201,42 @@ LABEL_20:
   }
 }
 
-- (void)p_setRepeatingLayerWithIndex:(unsigned int)a3 sublayers:(id)a4 maskLayers:(id)a5 toRect:(CGRect)a6 start:(double)a7 end:(double)a8
+- (void)p_setRepeatingLayerWithIndex:(unsigned int)index sublayers:(id)sublayers maskLayers:(id)layers toRect:(CGRect)rect start:(double)start end:(double)end
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v16 = a3 & 0xFFFFFFFB;
-  v17 = a3;
-  -[TSDFrameRep p_adjustRepeatingLayer:withImageRect:start:end:vertical:](self, "p_adjustRepeatingLayer:withImageRect:start:end:vertical:", [a4 objectAtIndex:a3], (a3 & 0xFFFFFFFB) == 3, a6.origin.x, a6.origin.y, a6.size.width, a6.size.height, a7, a8);
-  if (a5)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v16 = index & 0xFFFFFFFB;
+  indexCopy = index;
+  -[TSDFrameRep p_adjustRepeatingLayer:withImageRect:start:end:vertical:](self, "p_adjustRepeatingLayer:withImageRect:start:end:vertical:", [sublayers objectAtIndex:index], (index & 0xFFFFFFFB) == 3, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, start, end);
+  if (layers)
   {
-    v18 = [a5 objectAtIndex:v17];
+    v18 = [layers objectAtIndex:indexCopy];
 
-    [(TSDFrameRep *)self p_adjustRepeatingLayer:v18 withImageRect:v16 == 3 start:x end:y vertical:width, height, a7, a8];
+    [(TSDFrameRep *)self p_adjustRepeatingLayer:v18 withImageRect:v16 == 3 start:x end:y vertical:width, height, start, end];
   }
 }
 
-- (void)p_adjustRepeatingLayer:(id)a3 withImageRect:(CGRect)a4 start:(double)a5 end:(double)a6 vertical:(BOOL)a7
+- (void)p_adjustRepeatingLayer:(id)layer withImageRect:(CGRect)rect start:(double)start end:(double)end vertical:(BOOL)vertical
 {
-  v7 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  verticalCopy = vertical;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v88 = *MEMORY[0x277D85DE8];
-  v15 = [objc_msgSend(a3 "sublayers")];
-  v16 = [objc_msgSend(a3 "sublayers")];
+  v15 = [objc_msgSend(layer "sublayers")];
+  v16 = [objc_msgSend(layer "sublayers")];
   [v15 bounds];
   v71 = v18;
   v72 = v17;
   v69 = v20;
   v70 = v19;
-  [a3 contentsScale];
+  [layer contentsScale];
   v22 = v21;
-  v23 = a6 - a5;
-  if (v7)
+  v23 = end - start;
+  if (verticalCopy)
   {
     v24 = height;
   }
@@ -1246,9 +1246,9 @@ LABEL_20:
     v24 = width;
   }
 
-  if (v7)
+  if (verticalCopy)
   {
-    v25 = a6 - a5;
+    v25 = end - start;
   }
 
   else
@@ -1256,14 +1256,14 @@ LABEL_20:
     v25 = height;
   }
 
-  if (v7)
+  if (verticalCopy)
   {
     v26 = width;
   }
 
   else
   {
-    v26 = a6 - a5;
+    v26 = end - start;
   }
 
   v74 = v26;
@@ -1272,16 +1272,16 @@ LABEL_20:
   v28 = vcvtps_u32_f32(v27);
   if (!v28)
   {
-    v29 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameRep p_adjustRepeatingLayer:withImageRect:start:end:vertical:]"];
-    [v29 handleFailureInFunction:v30 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 1070, @"Need at least one tile for a frame"}];
+    [currentHandler handleFailureInFunction:v30 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 1070, @"Need at least one tile for a frame"}];
   }
 
   if (v16 <= v28)
   {
     if (v16 < v28)
     {
-      if (v7)
+      if (verticalCopy)
       {
         v32 = 3;
       }
@@ -1291,18 +1291,18 @@ LABEL_20:
         v32 = 12;
       }
 
-      v33 = [v15 contents];
+      contents = [v15 contents];
       v34 = *MEMORY[0x277CBF348];
       v35 = *(MEMORY[0x277CBF348] + 8);
       v36 = v28 - v16;
       do
       {
-        v37 = [MEMORY[0x277CD9ED0] layer];
-        [v37 setAnchorPoint:{v34, v35}];
-        [v37 setContentsScale:v22];
-        [a3 addSublayer:v37];
-        [v37 setContents:v33];
-        [v37 setEdgeAntialiasingMask:v32];
+        layer = [MEMORY[0x277CD9ED0] layer];
+        [layer setAnchorPoint:{v34, v35}];
+        [layer setContentsScale:v22];
+        [layer addSublayer:layer];
+        [layer setContents:contents];
+        [layer setEdgeAntialiasingMask:v32];
         --v36;
       }
 
@@ -1312,16 +1312,16 @@ LABEL_20:
 
   else
   {
-    v31 = [MEMORY[0x277CBEB18] arrayWithArray:{objc_msgSend(a3, "sublayers")}];
+    v31 = [MEMORY[0x277CBEB18] arrayWithArray:{objc_msgSend(layer, "sublayers")}];
     [v31 removeObjectsInRange:{v28, v16 - v28}];
-    [a3 setSublayers:v31];
+    [layer setSublayers:v31];
   }
 
-  if ([objc_msgSend(a3 "sublayers")] != v28)
+  if ([objc_msgSend(layer "sublayers")] != v28)
   {
-    v38 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameRep p_adjustRepeatingLayer:withImageRect:start:end:vertical:]"];
-    [v38 handleFailureInFunction:v39 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 1093, @"Wrong number of layers: %li when expected %li", objc_msgSend(objc_msgSend(a3, "sublayers"), "count"), v28}];
+    [currentHandler2 handleFailureInFunction:v39 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameRep.m"), 1093, @"Wrong number of layers: %li when expected %li", objc_msgSend(objc_msgSend(layer, "sublayers"), "count"), v28}];
   }
 
   v77 = y;
@@ -1349,8 +1349,8 @@ LABEL_20:
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v47 = [a3 sublayers];
-    v48 = [v47 countByEnumeratingWithState:&v82 objects:v87 count:16];
+    sublayers = [layer sublayers];
+    v48 = [sublayers countByEnumeratingWithState:&v82 objects:v87 count:16];
     if (v48)
     {
       v49 = v48;
@@ -1361,20 +1361,20 @@ LABEL_20:
         {
           if (*v83 != v50)
           {
-            objc_enumerationMutation(v47);
+            objc_enumerationMutation(sublayers);
           }
 
           [*(*(&v82 + 1) + 8 * i) setBounds:{v40, v42, v44, v46}];
         }
 
-        v49 = [v47 countByEnumeratingWithState:&v82 objects:v87 count:16];
+        v49 = [sublayers countByEnumeratingWithState:&v82 objects:v87 count:16];
       }
 
       while (v49);
     }
   }
 
-  if (v7)
+  if (verticalCopy)
   {
     v52 = 0.0;
   }
@@ -1386,7 +1386,7 @@ LABEL_20:
 
   v80 = 0u;
   v81 = 0u;
-  if (v7)
+  if (verticalCopy)
   {
     v53 = v24;
   }
@@ -1398,14 +1398,14 @@ LABEL_20:
 
   v78 = 0uLL;
   v79 = 0uLL;
-  v54 = [a3 sublayers];
-  v55 = [v54 countByEnumeratingWithState:&v78 objects:v86 count:16];
+  sublayers2 = [layer sublayers];
+  v55 = [sublayers2 countByEnumeratingWithState:&v78 objects:v86 count:16];
   if (v55)
   {
     v56 = v55;
     v57 = 0;
     v58 = *v79;
-    if (v7)
+    if (verticalCopy)
     {
       v59 = width;
     }
@@ -1415,7 +1415,7 @@ LABEL_20:
       v59 = v24;
     }
 
-    if (v7)
+    if (verticalCopy)
     {
       v60 = v24;
     }
@@ -1431,7 +1431,7 @@ LABEL_20:
       {
         if (*v79 != v58)
         {
-          objc_enumerationMutation(v54);
+          objc_enumerationMutation(sublayers2);
         }
 
         v62 = *(*(&v78 + 1) + 8 * j);
@@ -1441,19 +1441,19 @@ LABEL_20:
         ++v57;
       }
 
-      v56 = [v54 countByEnumeratingWithState:&v78 objects:v86 count:16];
+      v56 = [sublayers2 countByEnumeratingWithState:&v78 objects:v86 count:16];
     }
 
     while (v56);
   }
 
-  v63 = [objc_msgSend(a3 "sublayers")];
+  v63 = [objc_msgSend(layer "sublayers")];
   v64 = v24 * v73;
   if (v24 * v73 > v23)
   {
     v65 = v63;
     v66 = -(v23 - v73 * v24);
-    if (v7)
+    if (verticalCopy)
     {
       v67 = 1.0;
     }
@@ -1463,7 +1463,7 @@ LABEL_20:
       v67 = 1.0 - v66 / v24;
     }
 
-    if (v7)
+    if (verticalCopy)
     {
       v68 = 1.0 - v66 / v24;
     }
@@ -1478,14 +1478,14 @@ LABEL_20:
     [v65 setBounds:?];
   }
 
-  [a3 frame];
+  [layer frame];
   v92.origin.x = x;
   v92.origin.y = v77;
   v92.size.width = v74;
   v92.size.height = v75;
   if (!CGRectEqualToRect(v90, v92))
   {
-    [a3 setFrame:{x, v77, v74, v75}];
+    [layer setFrame:{x, v77, v74, v75}];
   }
 }
 

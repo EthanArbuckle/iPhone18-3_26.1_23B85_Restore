@@ -9,13 +9,13 @@
 
 - (BOOL)tc_doesURLHostContainWhitespace
 {
-  v1 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:a1];
-  v2 = [v1 host];
-  if (v2)
+  v1 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:self];
+  host = [v1 host];
+  if (host)
   {
-    v3 = [v1 host];
-    v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v5 = [v3 rangeOfCharacterFromSet:v4] != 0x7FFFFFFFFFFFFFFFLL;
+    host2 = [v1 host];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v5 = [host2 rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -28,9 +28,9 @@
 
 - (uint64_t)nulTerminatedUTF8
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 UTF8String];
+  return [selfCopy UTF8String];
 }
 
 + (uint64_t)tc_fixUnpairedSurrogateCharactersInBuffer:()TCStringAdditions
@@ -88,7 +88,7 @@ LABEL_7:
   v5 = [v4 length];
   std::vector<unsigned short>::vector[abi:ne200100](__p, v5);
   [v4 getCharacters:__p[0]];
-  v6 = [a1 tc_fixUnpairedSurrogateCharactersInBuffer:__p];
+  v6 = [self tc_fixUnpairedSurrogateCharactersInBuffer:__p];
   v7 = v4;
   if (v6)
   {

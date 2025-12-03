@@ -4,11 +4,11 @@
 - (CGImage)sourceCGImage;
 - (PXGImageTexture)init;
 - (__CVBuffer)sourceCVPixelBuffer;
-- (id)copyWithOrientationTransform:(float)a3 alpha:(float)a4 suppressContentsRect:;
+- (id)copyWithOrientationTransform:(float)transform alpha:(float)alpha suppressContentsRect:;
 - (void)dealloc;
-- (void)getTextureInfos:(id *)a3 forSpriteIndexes:(const unsigned int *)a4 geometries:(id *)a5 spriteStyles:(id *)a6 spriteInfos:(id *)a7 screenScale:(double)a8 count:(unsigned int)a9;
-- (void)setSourceCGImage:(CGImage *)a3;
-- (void)setSourceCVPixelBuffer:(__CVBuffer *)a3;
+- (void)getTextureInfos:(id *)infos forSpriteIndexes:(const unsigned int *)indexes geometries:(id *)geometries spriteStyles:(id *)styles spriteInfos:(id *)spriteInfos screenScale:(double)scale count:(unsigned int)count;
+- (void)setSourceCGImage:(CGImage *)image;
+- (void)setSourceCVPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation PXGImageTexture
@@ -27,15 +27,15 @@
   return v2;
 }
 
-- (void)getTextureInfos:(id *)a3 forSpriteIndexes:(const unsigned int *)a4 geometries:(id *)a5 spriteStyles:(id *)a6 spriteInfos:(id *)a7 screenScale:(double)a8 count:(unsigned int)a9
+- (void)getTextureInfos:(id *)infos forSpriteIndexes:(const unsigned int *)indexes geometries:(id *)geometries spriteStyles:(id *)styles spriteInfos:(id *)spriteInfos screenScale:(double)scale count:(unsigned int)count
 {
-  LODWORD(v9) = a9;
-  v13 = a4;
-  v14 = a3;
-  if ([(PXGBaseTexture *)self spriteCount:a3]< a9)
+  LODWORD(v9) = count;
+  indexesCopy = indexes;
+  infosCopy = infos;
+  if ([(PXGBaseTexture *)self spriteCount:infos]< count)
   {
-    v33 = [MEMORY[0x277CCA890] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PXGImageTexture.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"count <= self.spriteCount"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGImageTexture.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"count <= self.spriteCount"}];
   }
 
   [(PXGBaseTexture *)self pixelSize];
@@ -55,16 +55,16 @@
     v34 = v29;
     do
     {
-      v30 = *v13++;
-      PXGCreateTextureInfo(*(&a6[1].var3 + 160 * v30 + 2), v35, v18, v20, v22, v24, a8, 0.0, 0.0, COERCE_FLOAT(*(&a5[1].var0.var0 + 4 * v30)), COERCE_FLOAT(HIDWORD(*(&a5[1].var0.var0 + 4 * v30))), v29, v26, v28);
+      v30 = *indexesCopy++;
+      PXGCreateTextureInfo(*(&styles[1].var3 + 160 * v30 + 2), v35, v18, v20, v22, v24, scale, 0.0, 0.0, COERCE_FLOAT(*(&geometries[1].var0.var0 + 4 * v30)), COERCE_FLOAT(HIDWORD(*(&geometries[1].var0.var0 + 4 * v30))), v29, v26, v28);
       v29 = v34;
       v31 = v35[1];
-      *&v14->var0 = v35[0];
-      *&v14[2].var0 = v31;
+      *&infosCopy->var0 = v35[0];
+      *&infosCopy[2].var0 = v31;
       v32 = v35[3];
-      *&v14[4].var0 = v35[2];
-      *&v14[6].var0 = v32;
-      v14 += 8;
+      *&infosCopy[4].var0 = v35[2];
+      *&infosCopy[6].var0 = v32;
+      infosCopy += 8;
       --v9;
     }
 
@@ -99,9 +99,9 @@
     v13 = 0;
     v7 = [v5 imageByApplyingTransform:v12];
 
-    v8 = [objc_opt_class() _sharedCIContext];
+    _sharedCIContext = [objc_opt_class() _sharedCIContext];
     [v7 extent];
-    v9 = [v8 createCGImage:v7 fromRect:?];
+    v9 = [_sharedCIContext createCGImage:v7 fromRect:?];
     if (v9)
     {
       v10 = CFAutorelease(v9);
@@ -116,12 +116,12 @@
   }
 }
 
-- (id)copyWithOrientationTransform:(float)a3 alpha:(float)a4 suppressContentsRect:
+- (id)copyWithOrientationTransform:(float)transform alpha:(float)alpha suppressContentsRect:
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXGImageTexture.m" lineNumber:70 description:{@"Method %s is a responsibility of subclass %@", "-[PXGImageTexture copyWithOrientationTransform:alpha:suppressContentsRect:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGImageTexture.m" lineNumber:70 description:{@"Method %s is a responsibility of subclass %@", "-[PXGImageTexture copyWithOrientationTransform:alpha:suppressContentsRect:]", v8}];
 
   abort();
 }
@@ -150,13 +150,13 @@
   return result;
 }
 
-- (void)setSourceCVPixelBuffer:(__CVBuffer *)a3
+- (void)setSourceCVPixelBuffer:(__CVBuffer *)buffer
 {
   sourceCVPixelBuffer = self->_sourceCVPixelBuffer;
-  if (sourceCVPixelBuffer != a3)
+  if (sourceCVPixelBuffer != buffer)
   {
     CVPixelBufferRelease(sourceCVPixelBuffer);
-    self->_sourceCVPixelBuffer = CVPixelBufferRetain(a3);
+    self->_sourceCVPixelBuffer = CVPixelBufferRetain(buffer);
   }
 }
 
@@ -172,13 +172,13 @@
   return result;
 }
 
-- (void)setSourceCGImage:(CGImage *)a3
+- (void)setSourceCGImage:(CGImage *)image
 {
   sourceCGImage = self->_sourceCGImage;
-  if (sourceCGImage != a3)
+  if (sourceCGImage != image)
   {
     CGImageRelease(sourceCGImage);
-    self->_sourceCGImage = CGImageRetain(a3);
+    self->_sourceCGImage = CGImageRetain(image);
   }
 }
 

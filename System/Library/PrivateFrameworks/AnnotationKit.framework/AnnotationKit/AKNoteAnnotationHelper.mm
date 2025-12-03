@@ -1,15 +1,15 @@
 @interface AKNoteAnnotationHelper
-+ (CGRect)_boundsForClosedPopupAnnotation:(id)a3 havingParent:(id)a4 onPageController:(id)a5;
-+ (CGRect)_boundsForOpenPopupAnnotation:(id)a3 withClosedBounds:(CGRect)a4 havingParent:(id)a5 onPageController:(id)a6;
-+ (id)newPopupAnnotationWithParent:(id)a3 onPageController:(id)a4;
++ (CGRect)_boundsForClosedPopupAnnotation:(id)annotation havingParent:(id)parent onPageController:(id)controller;
++ (CGRect)_boundsForOpenPopupAnnotation:(id)annotation withClosedBounds:(CGRect)bounds havingParent:(id)parent onPageController:(id)controller;
++ (id)newPopupAnnotationWithParent:(id)parent onPageController:(id)controller;
 @end
 
 @implementation AKNoteAnnotationHelper
 
-+ (id)newPopupAnnotationWithParent:(id)a3 onPageController:(id)a4
++ (id)newPopupAnnotationWithParent:(id)parent onPageController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  parentCopy = parent;
+  controllerCopy = controller;
   v8 = objc_opt_new();
   v9 = objc_opt_self();
   [v8 setVisualStyle:objc_opt_isKindOfClass() & 1];
@@ -34,7 +34,7 @@
     if (v17)
     {
       [v8 setVisualStyle:1];
-      [a1 _boundsForClosedPopupAnnotation:v8 havingParent:v6 onPageController:v7];
+      [self _boundsForClosedPopupAnnotation:v8 havingParent:parentCopy onPageController:controllerCopy];
       v12 = v18;
       v13 = v19;
       v14 = v20;
@@ -52,16 +52,16 @@
   }
 
   [v8 setRectangle:{v12, v13, v14, v15}];
-  [a1 _boundsForOpenPopupAnnotation:v8 withClosedBounds:v6 havingParent:v7 onPageController:{v12, v13, v14, v15}];
+  [self _boundsForOpenPopupAnnotation:v8 withClosedBounds:parentCopy havingParent:controllerCopy onPageController:{v12, v13, v14, v15}];
   [v8 setOpenRectangle:?];
 
   return v8;
 }
 
-+ (CGRect)_boundsForClosedPopupAnnotation:(id)a3 havingParent:(id)a4 onPageController:(id)a5
++ (CGRect)_boundsForClosedPopupAnnotation:(id)annotation havingParent:(id)parent onPageController:(id)controller
 {
-  v6 = a5;
-  [a4 drawingBounds];
+  controllerCopy = controller;
+  [parent drawingBounds];
   x = v24.origin.x;
   y = v24.origin.y;
   width = v24.size.width;
@@ -72,7 +72,7 @@
   v25.size.width = width;
   v25.size.height = height;
   CGRectGetMaxY(v25);
-  [v6 maxPageRect];
+  [controllerCopy maxPageRect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -92,13 +92,13 @@
   return result;
 }
 
-+ (CGRect)_boundsForOpenPopupAnnotation:(id)a3 withClosedBounds:(CGRect)a4 havingParent:(id)a5 onPageController:(id)a6
++ (CGRect)_boundsForOpenPopupAnnotation:(id)annotation withClosedBounds:(CGRect)bounds havingParent:(id)parent onPageController:(id)controller
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a6;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  controllerCopy = controller;
   v24.origin.x = x;
   v24.origin.y = y;
   v24.size.width = width;
@@ -109,7 +109,7 @@
   v25.size.width = width;
   v25.size.height = height;
   CGRectGetMinY(v25);
-  [v10 maxPageRect];
+  [controllerCopy maxPageRect];
   v12 = v11;
   v14 = v13;
   v16 = v15;

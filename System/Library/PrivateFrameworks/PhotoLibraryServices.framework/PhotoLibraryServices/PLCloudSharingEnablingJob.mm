@@ -1,10 +1,10 @@
 @interface PLCloudSharingEnablingJob
-+ (void)deleteAllLocalSharedAlbumsInLibrary:(id)a3 keepPendingAlbums:(BOOL)a4 withReason:(id)a5;
-+ (void)disableCloudSharingWithLibraryServicesManager:(id)a3;
-+ (void)enableCloudSharing:(BOOL)a3 withPathManager:(id)a4;
++ (void)deleteAllLocalSharedAlbumsInLibrary:(id)library keepPendingAlbums:(BOOL)albums withReason:(id)reason;
++ (void)disableCloudSharingWithLibraryServicesManager:(id)manager;
++ (void)enableCloudSharing:(BOOL)sharing withPathManager:(id)manager;
 - (id)description;
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4;
-- (void)encodeToXPCObject:(id)a3;
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager;
+- (void)encodeToXPCObject:(id)object;
 - (void)runDaemonSide;
 @end
 
@@ -13,7 +13,7 @@
 - (void)runDaemonSide
 {
   v3 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudSharingEnablingJob runDaemonSide]"];
-  v4 = [objc_opt_class() lowPriorityOperationQueue];
+  lowPriorityOperationQueue = [objc_opt_class() lowPriorityOperationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__PLCloudSharingEnablingJob_runDaemonSide__block_invoke;
@@ -21,7 +21,7 @@
   v6[4] = self;
   v7 = v3;
   v5 = v3;
-  [v4 addOperationWithBlock:v6];
+  [lowPriorityOperationQueue addOperationWithBlock:v6];
 }
 
 void __42__PLCloudSharingEnablingJob_runDaemonSide__block_invoke(uint64_t a1)
@@ -144,42 +144,42 @@ void __42__PLCloudSharingEnablingJob_runDaemonSide__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager
 {
-  v6 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = PLCloudSharingEnablingJob;
-  v7 = [(PLCloudSharingJob *)&v9 initFromXPCObject:v6 libraryServicesManager:a4];
+  v7 = [(PLCloudSharingJob *)&v9 initFromXPCObject:objectCopy libraryServicesManager:manager];
   if (v7)
   {
-    [v7 setEnableSharing:{xpc_dictionary_get_BOOL(v6, "enableSharing")}];
+    [v7 setEnableSharing:{xpc_dictionary_get_BOOL(objectCopy, "enableSharing")}];
   }
 
   return v7;
 }
 
-- (void)encodeToXPCObject:(id)a3
+- (void)encodeToXPCObject:(id)object
 {
   v5.receiver = self;
   v5.super_class = PLCloudSharingEnablingJob;
-  v4 = a3;
-  [(PLDaemonJob *)&v5 encodeToXPCObject:v4];
-  xpc_dictionary_set_BOOL(v4, "enableSharing", [(PLCloudSharingEnablingJob *)self enableSharing:v5.receiver]);
+  objectCopy = object;
+  [(PLDaemonJob *)&v5 encodeToXPCObject:objectCopy];
+  xpc_dictionary_set_BOOL(objectCopy, "enableSharing", [(PLCloudSharingEnablingJob *)self enableSharing:v5.receiver]);
 }
 
-+ (void)deleteAllLocalSharedAlbumsInLibrary:(id)a3 keepPendingAlbums:(BOOL)a4 withReason:(id)a5
++ (void)deleteAllLocalSharedAlbumsInLibrary:(id)library keepPendingAlbums:(BOOL)albums withReason:(id)reason
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  libraryCopy = library;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:a1 file:@"PLCloudSharingEnablingJob.m" lineNumber:190 description:@"deleteAllLocalSharedAlbumsInLibrary only valid in assetsd!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudSharingEnablingJob.m" lineNumber:190 description:@"deleteAllLocalSharedAlbumsInLibrary only valid in assetsd!"];
   }
 
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"collectionShareKind", 2];
-  v10 = [v8 managedObjectContext];
-  v11 = [(PLShare *)PLCollectionShare sharesWithPredicate:v9 fetchLimit:0 inManagedObjectContext:v10];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  v11 = [(PLShare *)PLCollectionShare sharesWithPredicate:v9 fetchLimit:0 inManagedObjectContext:managedObjectContext];
 
   if ([v11 count])
   {
@@ -192,15 +192,15 @@ void __42__PLCloudSharingEnablingJob_runDaemonSide__block_invoke(uint64_t a1)
     }
 
     v13 = +[PLNotificationManager sharedManager];
-    v14 = [v8 managedObjectContext];
+    managedObjectContext2 = [libraryCopy managedObjectContext];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __94__PLCloudSharingEnablingJob_deleteAllLocalSharedAlbumsInLibrary_keepPendingAlbums_withReason___block_invoke;
     v35[3] = &unk_1E75748A8;
-    v37 = a4;
+    albumsCopy = albums;
     v36 = v13;
     v15 = v13;
-    v16 = [v14 enumerateWithIncrementalSaveUsingObjects:v11 withBlock:v35];
+    v16 = [managedObjectContext2 enumerateWithIncrementalSaveUsingObjects:v11 withBlock:v35];
 
     if (v16)
     {
@@ -214,7 +214,7 @@ void __42__PLCloudSharingEnablingJob_runDaemonSide__block_invoke(uint64_t a1)
     }
   }
 
-  v18 = [PLCloudSharedAlbum allCloudSharedAlbumsInLibrary:v8];
+  v18 = [PLCloudSharedAlbum allCloudSharedAlbumsInLibrary:libraryCopy];
   if ([v18 count])
   {
     v19 = PLPhotoSharingGetLog();
@@ -227,15 +227,15 @@ void __42__PLCloudSharingEnablingJob_runDaemonSide__block_invoke(uint64_t a1)
     }
 
     v21 = +[PLNotificationManager sharedManager];
-    v22 = [v8 managedObjectContext];
+    managedObjectContext3 = [libraryCopy managedObjectContext];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __94__PLCloudSharingEnablingJob_deleteAllLocalSharedAlbumsInLibrary_keepPendingAlbums_withReason___block_invoke_78;
     v32[3] = &unk_1E75748D0;
-    v34 = a4;
+    albumsCopy2 = albums;
     v33 = v21;
     v23 = v21;
-    v24 = [v22 enumerateWithIncrementalSaveUsingObjects:v18 withBlock:v32];
+    v24 = [managedObjectContext3 enumerateWithIncrementalSaveUsingObjects:v18 withBlock:v32];
 
     if (v24)
     {
@@ -249,7 +249,7 @@ void __42__PLCloudSharingEnablingJob_runDaemonSide__block_invoke(uint64_t a1)
     }
   }
 
-  v26 = [PLManagedAsset allCloudSharedAssetsInLibrary:v8];
+  v26 = [PLManagedAsset allCloudSharedAssetsInLibrary:libraryCopy];
   if ([v26 count])
   {
     v27 = PLPhotoSharingGetLog();
@@ -261,8 +261,8 @@ void __42__PLCloudSharingEnablingJob_runDaemonSide__block_invoke(uint64_t a1)
       _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_DEFAULT, "PLCloudSharingEnablingJob will delete all %lu orphaned shared assets", buf, 0xCu);
     }
 
-    v29 = [v8 managedObjectContext];
-    v30 = [v29 deleteObjectsWithIncrementalSave:v26];
+    managedObjectContext4 = [libraryCopy managedObjectContext];
+    v30 = [managedObjectContext4 deleteObjectsWithIncrementalSave:v26];
   }
 }
 
@@ -286,10 +286,10 @@ void __94__PLCloudSharingEnablingJob_deleteAllLocalSharedAlbumsInLibrary_keepPen
   }
 }
 
-+ (void)disableCloudSharingWithLibraryServicesManager:(id)a3
++ (void)disableCloudSharingWithLibraryServicesManager:(id)manager
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  managerCopy = manager;
   v4 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -298,8 +298,8 @@ void __94__PLCloudSharingEnablingJob_deleteAllLocalSharedAlbumsInLibrary_keepPen
   }
 
   [PLPhotoSharingHelper forgetSharingPersonID:0];
-  v5 = [v3 pathManager];
-  v6 = [v5 photoDirectoryWithType:23 additionalPathComponents:@"recentlyUsedGUIDS"];
+  pathManager = [managerCopy pathManager];
+  v6 = [pathManager photoDirectoryWithType:23 additionalPathComponents:@"recentlyUsedGUIDS"];
   v7 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -308,9 +308,9 @@ void __94__PLCloudSharingEnablingJob_deleteAllLocalSharedAlbumsInLibrary_keepPen
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "Removing recently used GUIDs from %@", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v41 = 0;
-  v9 = [v8 removeItemAtPath:v6 error:&v41];
+  v9 = [defaultManager removeItemAtPath:v6 error:&v41];
   v10 = v41;
 
   if ((v9 & 1) == 0)
@@ -328,7 +328,7 @@ void __94__PLCloudSharingEnablingJob_deleteAllLocalSharedAlbumsInLibrary_keepPen
     v10 = 0;
   }
 
-  v12 = [v5 photoDirectoryWithType:24];
+  v12 = [pathManager photoDirectoryWithType:24];
   if ([v12 length])
   {
     v13 = PLPhotoSharingGetLog();
@@ -339,9 +339,9 @@ void __94__PLCloudSharingEnablingJob_deleteAllLocalSharedAlbumsInLibrary_keepPen
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Removing cloud sharing metadata %@", buf, 0xCu);
     }
 
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v40 = v10;
-    v15 = [v14 removeItemAtPath:v12 error:&v40];
+    v15 = [defaultManager2 removeItemAtPath:v12 error:&v40];
     v16 = v40;
 
     if (v15)
@@ -365,7 +365,7 @@ void __94__PLCloudSharingEnablingJob_deleteAllLocalSharedAlbumsInLibrary_keepPen
     }
   }
 
-  v18 = [PLPhotoSharingHelper temporaryUploadDerivativesBasePathWithPathManager:v5];
+  v18 = [PLPhotoSharingHelper temporaryUploadDerivativesBasePathWithPathManager:pathManager];
   if ([v18 length])
   {
     v19 = PLPhotoSharingGetLog();
@@ -376,9 +376,9 @@ void __94__PLCloudSharingEnablingJob_deleteAllLocalSharedAlbumsInLibrary_keepPen
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "Removing temporary generated upload derivatives %@", buf, 0xCu);
     }
 
-    v20 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
     v39 = v10;
-    v21 = [v20 removeItemAtPath:v18 error:&v39];
+    v21 = [defaultManager3 removeItemAtPath:v18 error:&v39];
     v22 = v39;
 
     if (v21)
@@ -409,12 +409,12 @@ void __94__PLCloudSharingEnablingJob_deleteAllLocalSharedAlbumsInLibrary_keepPen
     _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEFAULT, "Removing persisted person info", buf, 2u);
   }
 
-  v25 = [v3 libraryBundle];
-  v26 = [v25 personInfoManager];
-  [v26 removePersistedInfo];
+  libraryBundle = [managerCopy libraryBundle];
+  personInfoManager = [libraryBundle personInfoManager];
+  [personInfoManager removePersistedInfo];
 
-  v27 = [v3 databaseContext];
-  v28 = [v27 newShortLivedLibraryWithName:"+[PLCloudSharingEnablingJob disableCloudSharingWithLibraryServicesManager:]"];
+  databaseContext = [managerCopy databaseContext];
+  v28 = [databaseContext newShortLivedLibraryWithName:"+[PLCloudSharingEnablingJob disableCloudSharingWithLibraryServicesManager:]"];
 
   v34 = MEMORY[0x1E69E9820];
   v35 = 3221225472;
@@ -457,16 +457,16 @@ void __75__PLCloudSharingEnablingJob_disableCloudSharingWithLibraryServicesManag
   [PLCloudSharingEnablingJob deleteAllLocalSharedAlbumsInLibrary:*(a1 + 32) keepPendingAlbums:0 withReason:v3];
 }
 
-+ (void)enableCloudSharing:(BOOL)a3 withPathManager:(id)a4
++ (void)enableCloudSharing:(BOOL)sharing withPathManager:(id)manager
 {
-  v4 = a3;
+  sharingCopy = sharing;
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  managerCopy = manager;
   v7 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"Disabling";
-    if (v4)
+    if (sharingCopy)
     {
       v8 = @"Enabling";
     }
@@ -476,9 +476,9 @@ void __75__PLCloudSharingEnablingJob_disableCloudSharingWithLibraryServicesManag
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "%@ shared album", &v11, 0xCu);
   }
 
-  [a1 deleteAllRecoveryEventsWithPathManager:v6];
+  [self deleteAllRecoveryEventsWithPathManager:managerCopy];
   v9 = objc_opt_new();
-  [v9 setEnableSharing:v4];
+  [v9 setEnableSharing:sharingCopy];
   [v9 runAndWaitForMessageToBeSent];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mobileslideshow.PreferenceChanged", 0, 0, 1u);

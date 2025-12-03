@@ -7,17 +7,17 @@
 - (id)coreAnalyticsPayload
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(SignpostObject *)self subsystem];
-  [v3 setObject:v4 forKeyedSubscript:@"Subsystem"];
+  subsystem = [(SignpostObject *)self subsystem];
+  [v3 setObject:subsystem forKeyedSubscript:@"Subsystem"];
 
-  v5 = [(SignpostObject *)self category];
-  [v3 setObject:v5 forKeyedSubscript:@"Category"];
+  category = [(SignpostObject *)self category];
+  [v3 setObject:category forKeyedSubscript:@"Category"];
 
-  v6 = [(SignpostObject *)self name];
-  if (v6)
+  name = [(SignpostObject *)self name];
+  if (name)
   {
-    v7 = [(SignpostObject *)self name];
-    [v3 setObject:v7 forKeyedSubscript:@"Name"];
+    name2 = [(SignpostObject *)self name];
+    [v3 setObject:name2 forKeyedSubscript:@"Name"];
   }
 
   else
@@ -25,52 +25,52 @@
     [v3 setObject:@"Unknown" forKeyedSubscript:@"Name"];
   }
 
-  v8 = [(SignpostObject *)self string1Name];
+  string1Name = [(SignpostObject *)self string1Name];
 
-  if (v8)
+  if (string1Name)
   {
-    v9 = [(SignpostObject *)self string1Name];
-    [v3 setObject:v9 forKeyedSubscript:@"String1Name"];
+    string1Name2 = [(SignpostObject *)self string1Name];
+    [v3 setObject:string1Name2 forKeyedSubscript:@"String1Name"];
 
-    v10 = [(SignpostObject *)self string1Value];
-    [v3 setObject:v10 forKeyedSubscript:@"String1Value"];
+    string1Value = [(SignpostObject *)self string1Value];
+    [v3 setObject:string1Value forKeyedSubscript:@"String1Value"];
   }
 
-  v11 = [(SignpostObject *)self string2Name];
+  string2Name = [(SignpostObject *)self string2Name];
 
-  if (v11)
+  if (string2Name)
   {
-    v12 = [(SignpostObject *)self string2Name];
-    [v3 setObject:v12 forKeyedSubscript:@"String2Name"];
+    string2Name2 = [(SignpostObject *)self string2Name];
+    [v3 setObject:string2Name2 forKeyedSubscript:@"String2Name"];
 
-    v13 = [(SignpostObject *)self string2Value];
-    [v3 setObject:v13 forKeyedSubscript:@"String2Value"];
+    string2Value = [(SignpostObject *)self string2Value];
+    [v3 setObject:string2Value forKeyedSubscript:@"String2Value"];
   }
 
-  v14 = [(SignpostObject *)self number1Name];
+  number1Name = [(SignpostObject *)self number1Name];
 
-  if (v14)
+  if (number1Name)
   {
-    v15 = [(SignpostObject *)self number1Name];
-    [v3 setObject:v15 forKeyedSubscript:@"Number1Name"];
+    number1Name2 = [(SignpostObject *)self number1Name];
+    [v3 setObject:number1Name2 forKeyedSubscript:@"Number1Name"];
 
-    v16 = [(SignpostObject *)self number1Value];
-    [v3 setObject:v16 forKeyedSubscript:@"Number1Value"];
+    number1Value = [(SignpostObject *)self number1Value];
+    [v3 setObject:number1Value forKeyedSubscript:@"Number1Value"];
   }
 
-  v17 = [(SignpostObject *)self number2Name];
+  number2Name = [(SignpostObject *)self number2Name];
 
-  if (v17)
+  if (number2Name)
   {
-    v18 = [(SignpostObject *)self number2Name];
-    [v3 setObject:v18 forKeyedSubscript:@"Number2Name"];
+    number2Name2 = [(SignpostObject *)self number2Name];
+    [v3 setObject:number2Name2 forKeyedSubscript:@"Number2Name"];
 
-    v19 = [(SignpostObject *)self number2Value];
-    [v3 setObject:v19 forKeyedSubscript:@"Number2Value"];
+    number2Value = [(SignpostObject *)self number2Value];
+    [v3 setObject:number2Value forKeyedSubscript:@"Number2Value"];
   }
 
-  v20 = [(SignpostObject *)self signpostType];
-  [v3 setObject:v20 forKeyedSubscript:@"IntervalType"];
+  signpostType = [(SignpostObject *)self signpostType];
+  [v3 setObject:signpostType forKeyedSubscript:@"IntervalType"];
 
   [(SignpostObject *)self durationSeconds];
   v21 = [NSNumber numberWithFloat:?];

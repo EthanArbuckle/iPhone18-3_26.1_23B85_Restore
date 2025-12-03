@@ -2,23 +2,23 @@
 + (id)sharedController;
 - (NSString)description;
 - (SBLiftToWakeController)init;
-- (SBLiftToWakeController)initWithBacklightController:(id)a3 idleTimerDefaults:(id)a4;
-- (id)acquireBumpToWakeEnableAssertionForReason:(id)a3;
-- (void)_handleBacklightLevelChanged:(id)a3;
-- (void)_ignoredTransition:(int64_t)a3;
+- (SBLiftToWakeController)initWithBacklightController:(id)controller idleTimerDefaults:(id)defaults;
+- (id)acquireBumpToWakeEnableAssertionForReason:(id)reason;
+- (void)_handleBacklightLevelChanged:(id)changed;
+- (void)_ignoredTransition:(int64_t)transition;
 - (void)_reconsiderEnablement;
 - (void)_screenTurnedOff;
 - (void)_screenTurnedOn;
-- (void)_sendIgnoredTransitionToObservers:(int64_t)a3;
-- (void)_sendTransitionToObservers:(int64_t)a3 deviceOrientation:(int64_t)a4;
+- (void)_sendIgnoredTransitionToObservers:(int64_t)observers;
+- (void)_sendTransitionToObservers:(int64_t)observers deviceOrientation:(int64_t)orientation;
 - (void)_startObservingBumpsIfNecessary;
 - (void)_startObservingIfNecessary;
 - (void)_stopObservingBumpsIfNecessary;
 - (void)_stopObservingIfNecessary;
-- (void)addObserver:(id)a3;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGestureEvent:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
+- (void)removeObserver:(id)observer;
+- (void)wakeGestureManager:(id)manager didUpdateWakeGestureEvent:(id)event;
 @end
 
 @implementation SBLiftToWakeController
@@ -60,30 +60,30 @@ void __42__SBLiftToWakeController_sharedController__block_invoke()
 {
   v3 = +[SBBacklightController sharedInstanceIfExists];
   v4 = +[SBDefaults localDefaults];
-  v5 = [v4 idleTimerDefaults];
-  v6 = [(SBLiftToWakeController *)self initWithBacklightController:v3 idleTimerDefaults:v5];
+  idleTimerDefaults = [v4 idleTimerDefaults];
+  v6 = [(SBLiftToWakeController *)self initWithBacklightController:v3 idleTimerDefaults:idleTimerDefaults];
 
   return v6;
 }
 
-- (SBLiftToWakeController)initWithBacklightController:(id)a3 idleTimerDefaults:(id)a4
+- (SBLiftToWakeController)initWithBacklightController:(id)controller idleTimerDefaults:(id)defaults
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  defaultsCopy = defaults;
   v25.receiver = self;
   v25.super_class = SBLiftToWakeController;
   v8 = [(SBLiftToWakeController *)&v25 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v8 selector:sel__handleBacklightLevelChanged_ name:*MEMORY[0x277D67A20] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__handleBacklightLevelChanged_ name:*MEMORY[0x277D67A20] object:0];
 
-    v10 = [MEMORY[0x277CF0880] sharedBacklight];
-    [v10 addObserver:v8];
+    mEMORY[0x277CF0880] = [MEMORY[0x277CF0880] sharedBacklight];
+    [mEMORY[0x277CF0880] addObserver:v8];
 
-    v8->_screenOn = [v6 screenIsOn];
+    v8->_screenOn = [controllerCopy screenIsOn];
     objc_initWeak(&location, v8);
-    objc_storeStrong(&v8->_idleTimerDefaults, a4);
+    objc_storeStrong(&v8->_idleTimerDefaults, defaults);
     idleTimerDefaults = v8->_idleTimerDefaults;
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"supportLiftToWake"];
     v13 = MEMORY[0x277D85CD0];
@@ -123,14 +123,14 @@ void __72__SBLiftToWakeController_initWithBacklightController_idleTimerDefaults_
   v6 = [v3 appendBool:self->_isEnabled withName:@"enabled"];
   v7 = [v3 appendBool:self->_observingCMWakeGestureManager withName:@"observingCMWakeGestureManager"];
   v8 = [v3 appendObject:self->_observers withName:@"observers"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
   observers = self->_observers;
   if (!observers)
@@ -142,18 +142,18 @@ void __72__SBLiftToWakeController_initWithBacklightController_idleTimerDefaults_
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v7];
+  [(NSHashTable *)observers addObject:observerCopy];
   if (self->_isEnabled)
   {
     [(SBLiftToWakeController *)self _startObservingIfNecessary];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   if (![(NSHashTable *)self->_observers count])
   {
@@ -162,9 +162,9 @@ void __72__SBLiftToWakeController_initWithBacklightController_idleTimerDefaults_
   }
 }
 
-- (id)acquireBumpToWakeEnableAssertionForReason:(id)a3
+- (id)acquireBumpToWakeEnableAssertionForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   bumpToWakeAssertions = self->_bumpToWakeAssertions;
   if (!bumpToWakeAssertions)
   {
@@ -184,7 +184,7 @@ void __72__SBLiftToWakeController_initWithBacklightController_idleTimerDefaults_
     bumpToWakeAssertions = self->_bumpToWakeAssertions;
   }
 
-  v9 = [(BSCompoundAssertion *)bumpToWakeAssertions acquireForReason:v4, v11, v12, v13, v14];
+  v9 = [(BSCompoundAssertion *)bumpToWakeAssertions acquireForReason:reasonCopy, v11, v12, v13, v14];
 
   return v9;
 }
@@ -195,20 +195,20 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
   [WeakRetained _reconsiderEnablement];
 }
 
-- (void)_ignoredTransition:(int64_t)a3
+- (void)_ignoredTransition:(int64_t)transition
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = SBLogLiftToWake();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if ((a3 - 1) > 3)
+    if ((transition - 1) > 3)
     {
       v6 = @"<unknown>";
     }
 
     else
     {
-      v6 = off_2783B69A8[a3 - 1];
+      v6 = off_2783B69A8[transition - 1];
     }
 
     v7 = 138543362;
@@ -216,7 +216,7 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "SBLiftToWakeController: intentionally ignored transition: %{public}@", &v7, 0xCu);
   }
 
-  [(SBLiftToWakeController *)self _sendIgnoredTransitionToObservers:a3];
+  [(SBLiftToWakeController *)self _sendIgnoredTransitionToObservers:transition];
 }
 
 - (void)_screenTurnedOff
@@ -238,21 +238,21 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
 {
   v28 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
-  v3 = [MEMORY[0x277CC1D78] isWakeGestureAvailable];
-  if (v3)
+  isWakeGestureAvailable = [MEMORY[0x277CC1D78] isWakeGestureAvailable];
+  if (isWakeGestureAvailable)
   {
     if (([(SBIdleTimerDefaults *)self->_idleTimerDefaults supportLiftToWake]& 1) != 0)
     {
-      v3 = 1;
+      isWakeGestureAvailable = 1;
     }
 
     else
     {
-      v3 = [(BSCompoundAssertion *)self->_bumpToWakeAssertions isActive];
+      isWakeGestureAvailable = [(BSCompoundAssertion *)self->_bumpToWakeAssertions isActive];
     }
   }
 
-  if (self->_isEnabled == v3)
+  if (self->_isEnabled == isWakeGestureAvailable)
   {
     if ([(BSCompoundAssertion *)self->_bumpToWakeAssertions isActive])
     {
@@ -269,7 +269,7 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
 
   else
   {
-    self->_isEnabled = v3;
+    self->_isEnabled = isWakeGestureAvailable;
     v4 = SBLogLiftToWake();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -278,7 +278,7 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
       v6 = NSStringFromBOOL();
       [(SBIdleTimerDefaults *)self->_idleTimerDefaults supportLiftToWake];
       v7 = NSStringFromBOOL();
-      v8 = [(BSCompoundAssertion *)self->_bumpToWakeAssertions isActive];
+      isActive = [(BSCompoundAssertion *)self->_bumpToWakeAssertions isActive];
       *buf = 138544130;
       v21 = v5;
       v22 = 2114;
@@ -286,7 +286,7 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
       v24 = 2114;
       v25 = v7;
       v26 = 1024;
-      v27 = v8;
+      v27 = isActive;
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "Lift to wake enablement changed to: %{public}@ (Available: %{public}@, UserPref: %{public}@, Bump: %{BOOL}u)", buf, 0x26u);
     }
 
@@ -337,29 +337,29 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
   }
 }
 
-- (void)_handleBacklightLevelChanged:(id)a3
+- (void)_handleBacklightLevelChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x277D67A30]];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D67A30]];
   [v6 floatValue];
   v8 = v7;
 
-  v9 = [v5 objectForKey:*MEMORY[0x277D67A28]];
+  v9 = [userInfo objectForKey:*MEMORY[0x277D67A28]];
   [v9 floatValue];
   v11 = v10;
 
-  v12 = [v5 objectForKey:*MEMORY[0x277D67A10]];
-  v13 = [v12 intValue];
+  v12 = [userInfo objectForKey:*MEMORY[0x277D67A10]];
+  intValue = [v12 intValue];
 
   v14 = SBLogLiftToWake();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    [(SBLiftToWakeController *)v4 _handleBacklightLevelChanged:v14];
+    [(SBLiftToWakeController *)changedCopy _handleBacklightLevelChanged:v14];
   }
 
   v16 = v11 > 0.0 && v8 <= 0.0;
-  if (v13 != 13)
+  if (intValue != 13)
   {
     if (v8 <= 0.0 || v11 > 0.0)
     {
@@ -389,9 +389,9 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
     }
 
     self->_observingCMWakeGestureManager = 1;
-    v4 = [MEMORY[0x277CC1D78] sharedManager];
+    mEMORY[0x277CC1D78] = [MEMORY[0x277CC1D78] sharedManager];
     wakeGestureManager = self->_wakeGestureManager;
-    self->_wakeGestureManager = v4;
+    self->_wakeGestureManager = mEMORY[0x277CC1D78];
 
     [(CMWakeGestureManager *)self->_wakeGestureManager setDelegate:self];
     [(CMWakeGestureManager *)self->_wakeGestureManager startWakeGestureUpdates];
@@ -424,16 +424,16 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
   v6 = *MEMORY[0x277D85DE8];
   if (self->_observingCMWakeGestureManager)
   {
-    v3 = [(BSCompoundAssertion *)self->_bumpToWakeAssertions isActive];
+    isActive = [(BSCompoundAssertion *)self->_bumpToWakeAssertions isActive];
     v4 = SBLogLiftToWake();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5[0] = 67109120;
-      v5[1] = v3;
+      v5[1] = isActive;
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_INFO, "Setting nightStandWakeEnabled to %{BOOL}u.", v5, 8u);
     }
 
-    [(CMWakeGestureManager *)self->_wakeGestureManager setNightStandWakeEnabled:v3 withConfiguration:2];
+    [(CMWakeGestureManager *)self->_wakeGestureManager setNightStandWakeEnabled:isActive withConfiguration:2];
   }
 }
 
@@ -449,21 +449,21 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
   [(CMWakeGestureManager *)self->_wakeGestureManager setNightStandWakeEnabled:0 withConfiguration:2];
 }
 
-- (void)_sendTransitionToObservers:(int64_t)a3 deviceOrientation:(int64_t)a4
+- (void)_sendTransitionToObservers:(int64_t)observers deviceOrientation:(int64_t)orientation
 {
   v22 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
   v7 = SBLogLiftToWake();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if ((a3 - 1) > 3)
+    if ((observers - 1) > 3)
     {
       v8 = @"<unknown>";
     }
 
     else
     {
-      v8 = off_2783B69A8[a3 - 1];
+      v8 = off_2783B69A8[observers - 1];
     }
 
     *buf = 138412290;
@@ -494,7 +494,7 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
         v14 = *(*(&v15 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          [v14 liftToWakeController:self didObserveTransition:a3 deviceOrientation:a4];
+          [v14 liftToWakeController:self didObserveTransition:observers deviceOrientation:orientation];
         }
 
         ++v13;
@@ -508,21 +508,21 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
   }
 }
 
-- (void)_sendIgnoredTransitionToObservers:(int64_t)a3
+- (void)_sendIgnoredTransitionToObservers:(int64_t)observers
 {
   v20 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
   v5 = SBLogLiftToWake();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if ((a3 - 1) > 3)
+    if ((observers - 1) > 3)
     {
       v6 = @"<unknown>";
     }
 
     else
     {
-      v6 = off_2783B69A8[a3 - 1];
+      v6 = off_2783B69A8[observers - 1];
     }
 
     *buf = 138412290;
@@ -553,7 +553,7 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 liftToWakeController:self didIgnoreTransition:a3];
+          [v12 liftToWakeController:self didIgnoreTransition:observers];
         }
 
         ++v11;
@@ -567,25 +567,25 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
   }
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
-  if (a4 > 3)
+  if (state > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_21F8A6BE0[a4];
+    v5 = qword_21F8A6BE0[state];
   }
 
   [(CMWakeGestureManager *)self->_wakeGestureManager setBacklightState:v5];
 }
 
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGestureEvent:(id)a4
+- (void)wakeGestureManager:(id)manager didUpdateWakeGestureEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  eventCopy = event;
   v8 = wakeGestureManager_didUpdateWakeGestureEvent__secondsToTicksScaleFactor;
   if (*&wakeGestureManager_didUpdateWakeGestureEvent__secondsToTicksScaleFactor == 0.0)
   {
@@ -599,25 +599,25 @@ void __68__SBLiftToWakeController_acquireBumpToWakeEnableAssertionForReason___bl
     }
   }
 
-  v10 = [v7 orientation];
-  v11 = [v7 state];
-  [v7 timestamp];
-  if (v11 == 1)
+  orientation = [eventCopy orientation];
+  state = [eventCopy state];
+  [eventCopy timestamp];
+  if (state == 1)
   {
     v13 = (v12 * *&wakeGestureManager_didUpdateWakeGestureEvent__secondsToTicksScaleFactor);
-    v14 = [MEMORY[0x277D66010] sharedInstance];
-    [v14 wakeMayBegin:2 withTimestamp:v13];
+    mEMORY[0x277D66010] = [MEMORY[0x277D66010] sharedInstance];
+    [mEMORY[0x277D66010] wakeMayBegin:2 withTimestamp:v13];
   }
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__SBLiftToWakeController_wakeGestureManager_didUpdateWakeGestureEvent___block_invoke;
   block[3] = &unk_2783B6988;
-  v19 = v10;
-  v17 = v7;
-  v18 = v11;
+  v19 = orientation;
+  v17 = eventCopy;
+  v18 = state;
   block[4] = self;
-  v15 = v7;
+  v15 = eventCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

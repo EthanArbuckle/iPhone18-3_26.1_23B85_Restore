@@ -1,5 +1,5 @@
 @interface MinimumLayoutMarginsReader.MarginsTrackingViewController
-- (_TtCV7MusicUI26MinimumLayoutMarginsReader29MarginsTrackingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtCV7MusicUI26MinimumLayoutMarginsReader29MarginsTrackingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewLayoutMarginsDidChange;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)viewLayoutMarginsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_216EE47F0();
 }
 
-- (_TtCV7MusicUI26MinimumLayoutMarginsReader29MarginsTrackingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCV7MusicUI26MinimumLayoutMarginsReader29MarginsTrackingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_21700E514();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_216EE48F0();
 }
 

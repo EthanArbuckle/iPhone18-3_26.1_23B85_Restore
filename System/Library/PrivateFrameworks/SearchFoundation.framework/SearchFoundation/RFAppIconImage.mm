@@ -1,41 +1,41 @@
 @interface RFAppIconImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFAppIconImage)initWithCoder:(id)a3;
-- (RFAppIconImage)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFAppIconImage)initWithCoder:(id)coder;
+- (RFAppIconImage)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFAppIconImage
 
 - (unint64_t)hash
 {
-  v3 = [(RFAppIconImage *)self application_bundle_identifier];
-  v4 = [v3 hash];
-  v5 = [(RFAppIconImage *)self image_style];
+  application_bundle_identifier = [(RFAppIconImage *)self application_bundle_identifier];
+  v4 = [application_bundle_identifier hash];
+  image_style = [(RFAppIconImage *)self image_style];
 
-  return v4 ^ v5;
+  return v4 ^ image_style;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFAppIconImage *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(RFAppIconImage *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v7 = v6;
-      v8 = [(RFAppIconImage *)self application_bundle_identifier];
-      v9 = [(RFAppIconImage *)v7 application_bundle_identifier];
-      if ((v8 != 0) == (v9 == 0))
+      v7 = equalCopy;
+      application_bundle_identifier = [(RFAppIconImage *)self application_bundle_identifier];
+      application_bundle_identifier2 = [(RFAppIconImage *)v7 application_bundle_identifier];
+      if ((application_bundle_identifier != 0) == (application_bundle_identifier2 == 0))
       {
         v11 = 0;
 LABEL_13:
@@ -43,12 +43,12 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v10 = [(RFAppIconImage *)self application_bundle_identifier];
-      if (!v10 || (-[RFAppIconImage application_bundle_identifier](self, "application_bundle_identifier"), v3 = objc_claimAutoreleasedReturnValue(), -[RFAppIconImage application_bundle_identifier](v7, "application_bundle_identifier"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+      application_bundle_identifier3 = [(RFAppIconImage *)self application_bundle_identifier];
+      if (!application_bundle_identifier3 || (-[RFAppIconImage application_bundle_identifier](self, "application_bundle_identifier"), v3 = objc_claimAutoreleasedReturnValue(), -[RFAppIconImage application_bundle_identifier](v7, "application_bundle_identifier"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
-        v12 = [(RFAppIconImage *)self image_style];
-        v11 = v12 == [(RFAppIconImage *)v7 image_style];
-        if (!v10)
+        image_style = [(RFAppIconImage *)self image_style];
+        v11 = image_style == [(RFAppIconImage *)v7 image_style];
+        if (!application_bundle_identifier3)
         {
 LABEL_12:
 
@@ -72,11 +72,11 @@ LABEL_14:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(RFAppIconImage *)self application_bundle_identifier];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  application_bundle_identifier = [(RFAppIconImage *)self application_bundle_identifier];
+  v6 = [application_bundle_identifier copy];
   [v4 setApplication_bundle_identifier:v6];
 
   [v4 setImage_style:{-[RFAppIconImage image_style](self, "image_style")}];
@@ -86,31 +86,31 @@ LABEL_14:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFAppIconImage alloc] initWithFacade:self];
-  v3 = [(_SFPBRFAppIconImage *)v2 jsonData];
+  jsonData = [(_SFPBRFAppIconImage *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFAppIconImage alloc] initWithFacade:self];
-  v3 = [(_SFPBRFAppIconImage *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFAppIconImage *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFAppIconImage alloc] initWithFacade:self];
-  v5 = [(_SFPBRFAppIconImage *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFAppIconImage *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFAppIconImage)initWithCoder:(id)a3
+- (RFAppIconImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFAppIconImage alloc] initWithData:v5];
   v7 = [(RFAppIconImage *)self initWithProtobuf:v6];
@@ -118,25 +118,25 @@ LABEL_14:
   return v7;
 }
 
-- (RFAppIconImage)initWithProtobuf:(id)a3
+- (RFAppIconImage)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = RFAppIconImage;
   v5 = [(RFAppIconImage *)&v10 init];
   if (v5)
   {
-    v6 = [v4 application_bundle_identifier];
+    application_bundle_identifier = [protobufCopy application_bundle_identifier];
 
-    if (v6)
+    if (application_bundle_identifier)
     {
-      v7 = [v4 application_bundle_identifier];
-      [(RFAppIconImage *)v5 setApplication_bundle_identifier:v7];
+      application_bundle_identifier2 = [protobufCopy application_bundle_identifier];
+      [(RFAppIconImage *)v5 setApplication_bundle_identifier:application_bundle_identifier2];
     }
 
-    if ([v4 image_style])
+    if ([protobufCopy image_style])
     {
-      -[RFAppIconImage setImage_style:](v5, "setImage_style:", [v4 image_style]);
+      -[RFAppIconImage setImage_style:](v5, "setImage_style:", [protobufCopy image_style]);
     }
 
     v8 = v5;

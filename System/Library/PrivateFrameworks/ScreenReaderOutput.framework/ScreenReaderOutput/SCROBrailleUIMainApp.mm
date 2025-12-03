@@ -1,35 +1,35 @@
 @interface SCROBrailleUIMainApp
 - (BOOL)_hasPopUp;
-- (BOOL)_isInputBraille:(id)a3 partOfText:(id)a4;
+- (BOOL)_isInputBraille:(id)braille partOfText:(id)text;
 - (BOOL)_isOpen;
 - (BOOL)_isShowingInlineResult;
 - (id)_calculatorFormatter;
-- (id)_currentDateTimeListItemWithDetails:(BOOL)a3;
-- (id)_mathCodeForPrintNumber:(id)a3;
-- (id)_nemethForPrintNumber:(id)a3;
-- (id)_stringBySanitizingWhitespaces:(id)a3;
-- (id)_uebMathForPrintNumber:(id)a3;
+- (id)_currentDateTimeListItemWithDetails:(BOOL)details;
+- (id)_mathCodeForPrintNumber:(id)number;
+- (id)_nemethForPrintNumber:(id)number;
+- (id)_stringBySanitizingWhitespaces:(id)whitespaces;
+- (id)_uebMathForPrintNumber:(id)number;
 - (id)views;
-- (int64_t)_indexForMenuItem:(unint64_t)a3;
+- (int64_t)_indexForMenuItem:(unint64_t)item;
 - (void)_closeInLineResult;
 - (void)_closePopUp;
-- (void)_handleActionInAppList:(id)a3;
-- (void)_handleActionInChooseItemResult:(id)a3;
-- (void)_handleActionInLaunchAppResult:(id)a3;
-- (void)_handleActionInNemethCalculatorResult:(id)a3;
-- (void)_handleActionInPopUp:(id)a3;
-- (void)_replaceCalculatorListItemContentWith:(id)a3;
+- (void)_handleActionInAppList:(id)list;
+- (void)_handleActionInChooseItemResult:(id)result;
+- (void)_handleActionInLaunchAppResult:(id)result;
+- (void)_handleActionInNemethCalculatorResult:(id)result;
+- (void)_handleActionInPopUp:(id)up;
+- (void)_replaceCalculatorListItemContentWith:(id)with;
 - (void)_runTimerUpdate;
 - (void)_sendAnalytics;
 - (void)_setUpDateTimeTimer;
-- (void)_showInlineResultWithIdentifier:(id)a3 items:(id)a4;
-- (void)_showMatchingResultWithIdentifier:(id)a3 fromArray:(id)a4 withDecodingMap:(id)a5;
-- (void)_showPopUpWithIdentifier:(id)a3 Key:(id)a4;
+- (void)_showInlineResultWithIdentifier:(id)identifier items:(id)items;
+- (void)_showMatchingResultWithIdentifier:(id)identifier fromArray:(id)array withDecodingMap:(id)map;
+- (void)_showPopUpWithIdentifier:(id)identifier Key:(id)key;
 - (void)_updateDateTimeView;
 - (void)close;
-- (void)handleAction:(id)a3;
-- (void)handleResponse:(id)a3 forRequest:(id)a4;
-- (void)navigateToMenuItem:(unint64_t)a3;
+- (void)handleAction:(id)action;
+- (void)handleResponse:(id)response forRequest:(id)request;
+- (void)navigateToMenuItem:(unint64_t)item;
 - (void)open;
 @end
 
@@ -76,7 +76,7 @@
     v19 = SCROBrailleUILocString(@"live.captions.label");
     v20 = [(SCROBrailleUIListItem *)v18 initWithIdentifier:@"live.captions" label:v19 isInline:0];
 
-    v34 = self;
+    selfCopy = self;
     v35 = [(SCROBrailleUIMainApp *)self _currentDateTimeListItemWithDetails:0];
     v21 = objc_opt_new();
     v38 = 0u;
@@ -84,9 +84,9 @@
     v40 = 0u;
     v41 = 0u;
     v22 = +[SCROBrailleUISettingsManager sharedInstance];
-    v23 = [v22 enabledMainMenuItems];
+    enabledMainMenuItems = [v22 enabledMainMenuItems];
 
-    v24 = [v23 countByEnumeratingWithState:&v38 objects:v42 count:16];
+    v24 = [enabledMainMenuItems countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v24)
     {
       v25 = v24;
@@ -98,18 +98,18 @@
         {
           if (*v39 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(enabledMainMenuItems);
           }
 
-          v28 = [*(*(&v38 + 1) + 8 * v27) integerValue];
-          if (v28 > 2)
+          integerValue = [*(*(&v38 + 1) + 8 * v27) integerValue];
+          if (integerValue > 2)
           {
-            if (v28 > 4)
+            if (integerValue > 4)
             {
               v29 = v20;
-              if (v28 != 5)
+              if (integerValue != 5)
               {
-                if (v28 != 6)
+                if (integerValue != 6)
                 {
                   goto LABEL_22;
                 }
@@ -121,7 +121,7 @@
             else
             {
               v29 = v13;
-              if (v28 != 3)
+              if (integerValue != 3)
               {
                 v29 = v17;
               }
@@ -133,19 +133,19 @@ LABEL_21:
           }
 
           v29 = v5;
-          if (!v28)
+          if (!integerValue)
           {
             goto LABEL_21;
           }
 
           v29 = v8;
-          if (v28 == 1)
+          if (integerValue == 1)
           {
             goto LABEL_21;
           }
 
           v29 = v36;
-          if (v28 == 2)
+          if (integerValue == 2)
           {
             goto LABEL_21;
           }
@@ -155,22 +155,22 @@ LABEL_22:
         }
 
         while (v25 != v27);
-        v25 = [v23 countByEnumeratingWithState:&v38 objects:v42 count:16];
+        v25 = [enabledMainMenuItems countByEnumeratingWithState:&v38 objects:v42 count:16];
       }
 
       while (v25);
     }
 
     v30 = [[SCROBrailleUIListView alloc] initWithIdentifier:@"com.apple.scrod.braille.ui.main.menu" items:v21];
-    [(SCROBrailleUIMainApp *)v34 setAppsListView:v30];
+    [(SCROBrailleUIMainApp *)selfCopy setAppsListView:v30];
 
-    v31 = [(SCROBrailleUIMainApp *)v34 appsListView];
-    [v31 display];
+    appsListView = [(SCROBrailleUIMainApp *)selfCopy appsListView];
+    [appsListView display];
 
     +[SCROBrailleUIFinderApp ensureBRFContainerExists];
-    [(SCROBrailleUIMainApp *)v34 _sendAnalytics];
-    [(SCROBrailleUIMainApp *)v34 _setUpDateTimeTimer];
-    v37.receiver = v34;
+    [(SCROBrailleUIMainApp *)selfCopy _sendAnalytics];
+    [(SCROBrailleUIMainApp *)selfCopy _setUpDateTimeTimer];
+    v37.receiver = selfCopy;
     v37.super_class = SCROBrailleUIMainApp;
     [(SCROBrailleUIApp *)&v37 open];
   }
@@ -198,14 +198,14 @@ LABEL_22:
   v20[6] = &unk_287651C80;
   v21[6] = @"dateTime";
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:7];
-  v4 = [v2 enabledMainMenuItems];
-  v5 = [v4 count];
+  enabledMainMenuItems = [v2 enabledMainMenuItems];
+  v5 = [enabledMainMenuItems count];
 
   if (v5)
   {
-    v6 = [v2 enabledMainMenuItems];
-    v7 = [v6 firstObject];
-    v8 = [v3 objectForKey:v7];
+    enabledMainMenuItems2 = [v2 enabledMainMenuItems];
+    firstObject = [enabledMainMenuItems2 firstObject];
+    v8 = [v3 objectForKey:firstObject];
   }
 
   else
@@ -213,21 +213,21 @@ LABEL_22:
     v8 = @"none";
   }
 
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v9 localeIdentifier];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v11 = [v2 calculatorUsesUEBMath];
+  calculatorUsesUEBMath = [v2 calculatorUsesUEBMath];
   v12 = @"Nemeth";
-  if (v11)
+  if (calculatorUsesUEBMath)
   {
     v12 = @"UEB";
   }
 
   v17 = v8;
-  v18 = v10;
+  v18 = localeIdentifier;
   v19 = v12;
   v13 = v19;
-  v14 = v10;
+  v14 = localeIdentifier;
   v15 = v8;
   AnalyticsSendEventLazy();
 
@@ -254,13 +254,13 @@ id __38__SCROBrailleUIMainApp__sendAnalytics__block_invoke(uint64_t a1)
 
 - (void)close
 {
-  v3 = [(SCROBrailleUIApp *)self delegate];
-  [v3 handleDidBrailleUIEnd];
+  delegate = [(SCROBrailleUIApp *)self delegate];
+  [delegate handleDidBrailleUIEnd];
 
   [(SCROBrailleUIMainApp *)self _closePopUp];
   [(SCROBrailleUIMainApp *)self _closeInLineResult];
-  v4 = [(SCROBrailleUIMainApp *)self appsListView];
-  [v4 dismiss];
+  appsListView = [(SCROBrailleUIMainApp *)self appsListView];
+  [appsListView dismiss];
 
   [(SCROBrailleUIMainApp *)self setAppsListView:0];
   v5.receiver = self;
@@ -268,31 +268,31 @@ id __38__SCROBrailleUIMainApp__sendAnalytics__block_invoke(uint64_t a1)
   [(SCROBrailleUIApp *)&v5 close];
 }
 
-- (void)navigateToMenuItem:(unint64_t)a3
+- (void)navigateToMenuItem:(unint64_t)item
 {
   [objc_opt_class() closeAllAppsExceptTheLowerMostView];
-  v5 = [(SCROBrailleUIMainApp *)self _indexForMenuItem:a3];
+  v5 = [(SCROBrailleUIMainApp *)self _indexForMenuItem:item];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v5;
-    v7 = [(SCROBrailleUIMainApp *)self appsListView];
-    [v7 setFocusedIndex:v6];
+    appsListView = [(SCROBrailleUIMainApp *)self appsListView];
+    [appsListView setFocusedIndex:v6];
 
-    v8 = [(SCROBrailleUIMainApp *)self appsListView];
-    v9 = [v8 focusedItem];
-    v10 = [v9 isInline];
+    appsListView2 = [(SCROBrailleUIMainApp *)self appsListView];
+    focusedItem = [appsListView2 focusedItem];
+    isInline = [focusedItem isInline];
 
-    if (a3 == 6 || (v10 & 1) == 0)
+    if (item == 6 || (isInline & 1) == 0)
     {
       v11 = [SCROBrailleUIAction alloc];
-      v13 = [(SCROBrailleUIMainApp *)self appsListView];
-      v12 = [(SCROBrailleUIAction *)v11 initWithType:1 originator:v13];
+      appsListView3 = [(SCROBrailleUIMainApp *)self appsListView];
+      v12 = [(SCROBrailleUIAction *)v11 initWithType:1 originator:appsListView3];
       [(SCROBrailleUIMainApp *)self handleAction:v12];
     }
   }
 }
 
-- (int64_t)_indexForMenuItem:(unint64_t)a3
+- (int64_t)_indexForMenuItem:(unint64_t)item
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -300,9 +300,9 @@ id __38__SCROBrailleUIMainApp__sendAnalytics__block_invoke(uint64_t a1)
   v16 = 0u;
   v17 = 0u;
   v4 = +[SCROBrailleUISettingsManager sharedInstance];
-  v5 = [v4 enabledMainMenuItems];
+  enabledMainMenuItems = [v4 enabledMainMenuItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [enabledMainMenuItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -316,10 +316,10 @@ LABEL_3:
     {
       if (*v15 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(enabledMainMenuItems);
       }
 
-      if ([*(*(&v14 + 1) + 8 * v10) integerValue] == a3)
+      if ([*(*(&v14 + 1) + 8 * v10) integerValue] == item)
       {
         break;
       }
@@ -327,7 +327,7 @@ LABEL_3:
       ++v11;
       if (v7 == ++v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [enabledMainMenuItems countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -351,74 +351,74 @@ LABEL_9:
 - (id)views
 {
   v3 = objc_opt_new();
-  v4 = [(SCROBrailleUIMainApp *)self popUpView];
+  popUpView = [(SCROBrailleUIMainApp *)self popUpView];
 
-  if (v4)
+  if (popUpView)
   {
-    v5 = [(SCROBrailleUIMainApp *)self popUpView];
-    [v3 addObject:v5];
+    popUpView2 = [(SCROBrailleUIMainApp *)self popUpView];
+    [v3 addObject:popUpView2];
   }
 
-  v6 = [(SCROBrailleUIMainApp *)self inlineResultView];
+  inlineResultView = [(SCROBrailleUIMainApp *)self inlineResultView];
 
-  if (v6)
+  if (inlineResultView)
   {
-    v7 = [(SCROBrailleUIMainApp *)self inlineResultView];
-    [v3 addObject:v7];
+    inlineResultView2 = [(SCROBrailleUIMainApp *)self inlineResultView];
+    [v3 addObject:inlineResultView2];
   }
 
-  v8 = [(SCROBrailleUIMainApp *)self appsListView];
+  appsListView = [(SCROBrailleUIMainApp *)self appsListView];
 
-  if (v8)
+  if (appsListView)
   {
-    v9 = [(SCROBrailleUIMainApp *)self appsListView];
-    [v3 addObject:v9];
+    appsListView2 = [(SCROBrailleUIMainApp *)self appsListView];
+    [v3 addObject:appsListView2];
   }
 
   return v3;
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
-  v13 = a3;
+  actionCopy = action;
   if ([(SCROBrailleUIMainApp *)self _isOpen])
   {
     if ([(SCROBrailleUIMainApp *)self _hasPopUp])
     {
-      [(SCROBrailleUIMainApp *)self _handleActionInPopUp:v13];
+      [(SCROBrailleUIMainApp *)self _handleActionInPopUp:actionCopy];
     }
 
     else if ([(SCROBrailleUIMainApp *)self _isShowingInlineResult])
     {
-      v4 = [v13 originator];
-      v5 = [v4 identifier];
-      v6 = [v5 isEqualToString:@"launch.app"];
+      originator = [actionCopy originator];
+      identifier = [originator identifier];
+      v6 = [identifier isEqualToString:@"launch.app"];
 
       if (v6)
       {
-        [(SCROBrailleUIMainApp *)self _handleActionInLaunchAppResult:v13];
+        [(SCROBrailleUIMainApp *)self _handleActionInLaunchAppResult:actionCopy];
       }
 
       else
       {
-        v7 = [v13 originator];
-        v8 = [v7 identifier];
-        v9 = [v8 isEqualToString:@"choose.item"];
+        originator2 = [actionCopy originator];
+        identifier2 = [originator2 identifier];
+        v9 = [identifier2 isEqualToString:@"choose.item"];
 
         if (v9)
         {
-          [(SCROBrailleUIMainApp *)self _handleActionInChooseItemResult:v13];
+          [(SCROBrailleUIMainApp *)self _handleActionInChooseItemResult:actionCopy];
         }
 
         else
         {
-          v10 = [v13 originator];
-          v11 = [v10 identifier];
-          v12 = [v11 isEqualToString:@"nemeth.calculator"];
+          originator3 = [actionCopy originator];
+          identifier3 = [originator3 identifier];
+          v12 = [identifier3 isEqualToString:@"nemeth.calculator"];
 
           if (v12)
           {
-            [(SCROBrailleUIMainApp *)self _handleActionInNemethCalculatorResult:v13];
+            [(SCROBrailleUIMainApp *)self _handleActionInNemethCalculatorResult:actionCopy];
           }
         }
       }
@@ -426,22 +426,22 @@ LABEL_9:
 
     else
     {
-      [(SCROBrailleUIMainApp *)self _handleActionInAppList:v13];
+      [(SCROBrailleUIMainApp *)self _handleActionInAppList:actionCopy];
     }
   }
 }
 
-- (void)_handleActionInAppList:(id)a3
+- (void)_handleActionInAppList:(id)list
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 type] == 1)
+  listCopy = list;
+  if ([listCopy type] == 1)
   {
-    v5 = [(SCROBrailleUIMainApp *)self appsListView];
-    v6 = [v5 focusedItem];
-    v7 = [v6 identifier];
+    appsListView = [(SCROBrailleUIMainApp *)self appsListView];
+    focusedItem = [appsListView focusedItem];
+    identifier = [focusedItem identifier];
 
-    if ([v7 isEqualToString:@"launch.app"])
+    if ([identifier isEqualToString:@"launch.app"])
     {
       v54 = kSCROBrailleUIRequestTypeKey[0];
       v55[0] = &unk_287651C20;
@@ -452,47 +452,47 @@ LABEL_9:
 
     else
     {
-      if (![v7 isEqualToString:@"choose.item"])
+      if (![identifier isEqualToString:@"choose.item"])
       {
-        if ([v7 isEqualToString:@"braille.notes"])
+        if ([identifier isEqualToString:@"braille.notes"])
         {
           v13 = SCROBrailleUIBrailleNotesApp;
         }
 
-        else if ([v7 isEqualToString:@"finder"])
+        else if ([identifier isEqualToString:@"finder"])
         {
           v13 = SCROBrailleUIFinderApp;
         }
 
         else
         {
-          if ([v7 isEqualToString:@"nemeth.calculator"])
+          if ([identifier isEqualToString:@"nemeth.calculator"])
           {
-            v17 = [(SCROBrailleUIMainApp *)self appsListView];
-            v18 = [v17 value];
+            appsListView2 = [(SCROBrailleUIMainApp *)self appsListView];
+            value = [appsListView2 value];
 
             v19 = +[SCROBrailleUISettingsManager sharedInstance];
-            v20 = [v19 calculatorUsesUEBMath];
+            calculatorUsesUEBMath = [v19 calculatorUsesUEBMath];
 
             v21 = [SCROBrailleUIMathString alloc];
-            v46 = v18;
-            if (v20)
+            v46 = value;
+            if (calculatorUsesUEBMath)
             {
-              v22 = [(SCROBrailleUIMathString *)v21 initWithUEBMath:v18];
+              v22 = [(SCROBrailleUIMathString *)v21 initWithUEBMath:value];
             }
 
             else
             {
-              v22 = [(SCROBrailleUIMathString *)v21 initWithNemeth:v18];
+              v22 = [(SCROBrailleUIMathString *)v21 initWithNemeth:value];
             }
 
             v45 = v22;
-            v23 = [(SCROBrailleUIMathString *)v22 calculateRepresentation];
+            calculateRepresentation = [(SCROBrailleUIMathString *)v22 calculateRepresentation];
             CalculateClass = getCalculateClass();
             v24 = getCalculateKeyNumberFormatter();
             v50[0] = v24;
-            v25 = [(SCROBrailleUIMainApp *)self _calculatorFormatter];
-            v51[0] = v25;
+            _calculatorFormatter = [(SCROBrailleUIMainApp *)self _calculatorFormatter];
+            v51[0] = _calculatorFormatter;
             v26 = getCalculateKeyAssumeDegrees();
             v50[1] = v26;
             v27 = MEMORY[0x277CBEC38];
@@ -505,16 +505,16 @@ LABEL_9:
             v51[3] = &unk_287651BF0;
             v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:4];
             v31 = CalculateClass;
-            v44 = v23;
-            v32 = [(objc_class *)v31 evaluate:v23 options:v30];
+            v44 = calculateRepresentation;
+            v32 = [(objc_class *)v31 evaluate:calculateRepresentation options:v30];
 
             if (v32)
             {
-              v33 = [v32 formattedResult];
-              [(SCROBrailleUIMainApp *)self setCalculatorResultCache:v33];
-              v34 = [(SCROBrailleUIMainApp *)self _mathCodeForPrintNumber:v33];
+              formattedResult = [v32 formattedResult];
+              [(SCROBrailleUIMainApp *)self setCalculatorResultCache:formattedResult];
+              v34 = [(SCROBrailleUIMainApp *)self _mathCodeForPrintNumber:formattedResult];
               v35 = [[SCROBrailleUIListItem alloc] initWithIdentifier:@"nemeth.calculator.output" brailleLabel:v34 isInline:0];
-              [(SCROBrailleUIListItem *)v35 setManualCaption:v33];
+              [(SCROBrailleUIListItem *)v35 setManualCaption:formattedResult];
               v36 = [SCROBrailleUIListItem alloc];
               v37 = SCROBrailleUILocString(@"nemeth.calculator.copy.label");
               v38 = [(SCROBrailleUIListItem *)v36 initWithIdentifier:@"nemeth.calculator.copy" label:v37 isInline:0];
@@ -533,9 +533,9 @@ LABEL_9:
             goto LABEL_15;
           }
 
-          if (![v7 isEqualToString:@"live.captions"])
+          if (![identifier isEqualToString:@"live.captions"])
           {
-            if (![v7 isEqualToString:@"date.time"])
+            if (![identifier isEqualToString:@"date.time"])
             {
               goto LABEL_15;
             }
@@ -547,8 +547,8 @@ LABEL_9:
             v42 = [(SCROBrailleUIListView *)v40 initWithIdentifier:@"date.time" items:v41];
             [(SCROBrailleUIMainApp *)self setPopUpView:v42];
 
-            v12 = [(SCROBrailleUIMainApp *)self popUpView];
-            [v12 display];
+            popUpView = [(SCROBrailleUIMainApp *)self popUpView];
+            [popUpView display];
             goto LABEL_8;
           }
 
@@ -556,8 +556,8 @@ LABEL_9:
         }
 
         v14 = [v13 alloc];
-        v15 = [(SCROBrailleUIApp *)self delegate];
-        v11 = [v14 initWithDelegate:v15];
+        delegate = [(SCROBrailleUIApp *)self delegate];
+        v11 = [v14 initWithDelegate:delegate];
 
         [v11 open];
         goto LABEL_14;
@@ -571,8 +571,8 @@ LABEL_9:
     }
 
     v11 = [v8 dictionaryWithObjects:v9 forKeys:v10 count:1];
-    v12 = [(SCROBrailleUIApp *)self delegate];
-    [v12 handleBrailleUIRequest:v11];
+    popUpView = [(SCROBrailleUIApp *)self delegate];
+    [popUpView handleBrailleUIRequest:v11];
 LABEL_8:
 
 LABEL_14:
@@ -583,35 +583,35 @@ LABEL_15:
 
   v47.receiver = self;
   v47.super_class = SCROBrailleUIMainApp;
-  [(SCROBrailleUIApp *)&v47 handleAction:v4];
+  [(SCROBrailleUIApp *)&v47 handleAction:listCopy];
 LABEL_16:
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActionInLaunchAppResult:(id)a3
+- (void)_handleActionInLaunchAppResult:(id)result
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 2)
+  resultCopy = result;
+  type = [resultCopy type];
+  if (type == 2)
   {
     [(SCROBrailleUIMainApp *)self _closeInLineResult];
   }
 
-  else if (v5 == 1)
+  else if (type == 1)
   {
-    v6 = [(SCROBrailleUIMainApp *)self inlineResultView];
-    v7 = [v6 focusedItem];
-    v8 = [v7 identifier];
+    inlineResultView = [(SCROBrailleUIMainApp *)self inlineResultView];
+    focusedItem = [inlineResultView focusedItem];
+    identifier = [focusedItem identifier];
 
     v13[0] = kSCROBrailleUIRequestTypeKey[0];
     v13[1] = kSCROBrailleUIRequestLaunchAppIDKey[0];
     v14[0] = &unk_287651C38;
-    v14[1] = v8;
+    v14[1] = identifier;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
-    v10 = [(SCROBrailleUIApp *)self delegate];
-    [v10 handleBrailleUIRequest:v9];
+    delegate = [(SCROBrailleUIApp *)self delegate];
+    [delegate handleBrailleUIRequest:v9];
 
     +[SCROBrailleUIApp closeAllApps];
   }
@@ -620,37 +620,37 @@ LABEL_16:
   {
     v12.receiver = self;
     v12.super_class = SCROBrailleUIMainApp;
-    [(SCROBrailleUIApp *)&v12 handleAction:v4];
+    [(SCROBrailleUIApp *)&v12 handleAction:resultCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActionInChooseItemResult:(id)a3
+- (void)_handleActionInChooseItemResult:(id)result
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 2)
+  resultCopy = result;
+  type = [resultCopy type];
+  if (type == 2)
   {
     [(SCROBrailleUIMainApp *)self _closeInLineResult];
   }
 
-  else if (v5 == 1)
+  else if (type == 1)
   {
-    v6 = [(SCROBrailleUIMainApp *)self inlineResultView];
-    v7 = [v6 focusedItem];
-    v8 = [v7 identifier];
+    inlineResultView = [(SCROBrailleUIMainApp *)self inlineResultView];
+    focusedItem = [inlineResultView focusedItem];
+    identifier = [focusedItem identifier];
 
     v14[0] = kSCROBrailleUIRequestTypeKey[0];
     v14[1] = kSCROBrailleUIRequestChooseElementIDKey[0];
     v15[0] = &unk_287651C68;
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "integerValue")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(identifier, "integerValue")}];
     v15[1] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-    v11 = [(SCROBrailleUIApp *)self delegate];
-    [v11 handleBrailleUIRequest:v10];
+    delegate = [(SCROBrailleUIApp *)self delegate];
+    [delegate handleBrailleUIRequest:v10];
 
     +[SCROBrailleUIApp closeAllApps];
   }
@@ -659,24 +659,24 @@ LABEL_16:
   {
     v13.receiver = self;
     v13.super_class = SCROBrailleUIMainApp;
-    [(SCROBrailleUIApp *)&v13 handleAction:v4];
+    [(SCROBrailleUIApp *)&v13 handleAction:resultCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActionInNemethCalculatorResult:(id)a3
+- (void)_handleActionInNemethCalculatorResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 type];
-  switch(v5)
+  resultCopy = result;
+  type = [resultCopy type];
+  switch(type)
   {
     case 4:
-      v11 = [(SCROBrailleUIMainApp *)self inlineResultView];
-      v12 = [v11 focusedItem];
-      v8 = [v12 identifier];
+      inlineResultView = [(SCROBrailleUIMainApp *)self inlineResultView];
+      focusedItem = [inlineResultView focusedItem];
+      identifier = [focusedItem identifier];
 
-      if (![v8 isEqualToString:@"nemeth.calculator.output"])
+      if (![identifier isEqualToString:@"nemeth.calculator.output"])
       {
 LABEL_15:
 
@@ -689,36 +689,36 @@ LABEL_15:
       [(SCROBrailleUIMainApp *)self _closeInLineResult];
       break;
     case 1:
-      v6 = [(SCROBrailleUIMainApp *)self inlineResultView];
-      v7 = [v6 focusedItem];
-      v8 = [v7 identifier];
+      inlineResultView2 = [(SCROBrailleUIMainApp *)self inlineResultView];
+      focusedItem2 = [inlineResultView2 focusedItem];
+      identifier = [focusedItem2 identifier];
 
-      if ([v8 isEqualToString:@"nemeth.calculator.output"])
+      if ([identifier isEqualToString:@"nemeth.calculator.output"])
       {
-        v9 = [(SCROBrailleUIMainApp *)self calculatorResultCache];
-        v10 = [(SCROBrailleUIMainApp *)self _mathCodeForPrintNumber:v9];
-        [(SCROBrailleUIMainApp *)self _replaceCalculatorListItemContentWith:v10];
+        calculatorResultCache = [(SCROBrailleUIMainApp *)self calculatorResultCache];
+        calculatorResultCache3 = [(SCROBrailleUIMainApp *)self _mathCodeForPrintNumber:calculatorResultCache];
+        [(SCROBrailleUIMainApp *)self _replaceCalculatorListItemContentWith:calculatorResultCache3];
       }
 
       else
       {
-        if (![v8 isEqualToString:@"nemeth.calculator.copy"])
+        if (![identifier isEqualToString:@"nemeth.calculator.copy"])
         {
           goto LABEL_14;
         }
 
-        v13 = [(SCROBrailleUIMainApp *)self calculatorResultCache];
+        calculatorResultCache2 = [(SCROBrailleUIMainApp *)self calculatorResultCache];
 
-        if (!v13)
+        if (!calculatorResultCache2)
         {
           goto LABEL_14;
         }
 
-        v9 = +[SCROBrailleUIPasteBoard sharedBoard];
-        v10 = [(SCROBrailleUIMainApp *)self calculatorResultCache];
-        v14 = [(SCROBrailleUIMainApp *)self calculatorResultCache];
-        v15 = [(SCROBrailleUIMainApp *)self _mathCodeForPrintNumber:v14];
-        [v9 writeText:v10 withBraille:v15];
+        calculatorResultCache = +[SCROBrailleUIPasteBoard sharedBoard];
+        calculatorResultCache3 = [(SCROBrailleUIMainApp *)self calculatorResultCache];
+        calculatorResultCache4 = [(SCROBrailleUIMainApp *)self calculatorResultCache];
+        v15 = [(SCROBrailleUIMainApp *)self _mathCodeForPrintNumber:calculatorResultCache4];
+        [calculatorResultCache writeText:calculatorResultCache3 withBraille:v15];
       }
 
 LABEL_14:
@@ -727,40 +727,40 @@ LABEL_14:
     default:
       v16.receiver = self;
       v16.super_class = SCROBrailleUIMainApp;
-      [(SCROBrailleUIApp *)&v16 handleAction:v4];
+      [(SCROBrailleUIApp *)&v16 handleAction:resultCopy];
       break;
   }
 }
 
-- (void)_replaceCalculatorListItemContentWith:(id)a3
+- (void)_replaceCalculatorListItemContentWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v5 = [SCROBrailleUIListItem alloc];
-  v6 = [(SCROBrailleUIMainApp *)self appsListView];
-  v7 = [v6 focusedItem];
-  v8 = [v7 identifier];
-  v9 = [(SCROBrailleUIMainApp *)self appsListView];
-  v10 = [v9 focusedItem];
-  v11 = [v10 label];
-  v15 = [(SCROBrailleUIListItem *)v5 initWithIdentifier:v8 label:v11 prepopulatedBraille:v4 shouldBulkSelect:0];
+  appsListView = [(SCROBrailleUIMainApp *)self appsListView];
+  focusedItem = [appsListView focusedItem];
+  identifier = [focusedItem identifier];
+  appsListView2 = [(SCROBrailleUIMainApp *)self appsListView];
+  focusedItem2 = [appsListView2 focusedItem];
+  label = [focusedItem2 label];
+  v15 = [(SCROBrailleUIListItem *)v5 initWithIdentifier:identifier label:label prepopulatedBraille:withCopy shouldBulkSelect:0];
 
   [(SCROBrailleUIListItem *)v15 setIsNemeth:1];
-  v12 = [(SCROBrailleUIMainApp *)self appsListView];
-  v13 = [(SCROBrailleUIMainApp *)self appsListView];
-  [v12 replaceItemAtIndex:objc_msgSend(v13 with:{"focusedIndex"), v15}];
+  appsListView3 = [(SCROBrailleUIMainApp *)self appsListView];
+  appsListView4 = [(SCROBrailleUIMainApp *)self appsListView];
+  [appsListView3 replaceItemAtIndex:objc_msgSend(appsListView4 with:{"focusedIndex"), v15}];
 
-  v14 = [(SCROBrailleUIMainApp *)self appsListView];
-  [v14 display];
+  appsListView5 = [(SCROBrailleUIMainApp *)self appsListView];
+  [appsListView5 display];
 }
 
-- (void)_handleActionInPopUp:(id)a3
+- (void)_handleActionInPopUp:(id)up
 {
-  v4 = a3;
-  if (([v4 type] - 1) > 1)
+  upCopy = up;
+  if (([upCopy type] - 1) > 1)
   {
     v5.receiver = self;
     v5.super_class = SCROBrailleUIMainApp;
-    [(SCROBrailleUIApp *)&v5 handleAction:v4];
+    [(SCROBrailleUIApp *)&v5 handleAction:upCopy];
   }
 
   else
@@ -769,17 +769,17 @@ LABEL_14:
   }
 }
 
-- (void)handleResponse:(id)a3 forRequest:(id)a4
+- (void)handleResponse:(id)response forRequest:(id)request
 {
-  v11 = a3;
-  v6 = a4;
+  responseCopy = response;
+  requestCopy = request;
   if ([(SCROBrailleUIMainApp *)self _isOpen]&& ![(SCROBrailleUIMainApp *)self _isShowingInlineResult])
   {
     [(SCROBrailleUIMainApp *)self _closePopUp];
-    v7 = [v6 objectForKeyedSubscript:kSCROBrailleUIRequestTypeKey[0]];
-    v8 = [v7 unsignedIntegerValue];
+    v7 = [requestCopy objectForKeyedSubscript:kSCROBrailleUIRequestTypeKey[0]];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    if (v8 == 2)
+    if (unsignedIntegerValue == 2)
     {
       v9 = @"launch.app";
       v10 = &__block_literal_global_14;
@@ -787,7 +787,7 @@ LABEL_14:
 
     else
     {
-      if (v8 != 4)
+      if (unsignedIntegerValue != 4)
       {
         goto LABEL_8;
       }
@@ -796,7 +796,7 @@ LABEL_14:
       v10 = &__block_literal_global_146;
     }
 
-    [(SCROBrailleUIMainApp *)self _showMatchingResultWithIdentifier:v9 fromArray:v11 withDecodingMap:v10];
+    [(SCROBrailleUIMainApp *)self _showMatchingResultWithIdentifier:v9 fromArray:responseCopy withDecodingMap:v10];
   }
 
 LABEL_8:
@@ -841,25 +841,25 @@ id __50__SCROBrailleUIMainApp_handleResponse_forRequest___block_invoke_2(uint64_
   return v7;
 }
 
-- (void)_showMatchingResultWithIdentifier:(id)a3 fromArray:(id)a4 withDecodingMap:(id)a5
+- (void)_showMatchingResultWithIdentifier:(id)identifier fromArray:(id)array withDecodingMap:(id)map
 {
   v47 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  arrayCopy = array;
+  mapCopy = map;
   v34 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v9 = v7;
-  v10 = v8;
+  v9 = arrayCopy;
+  v10 = mapCopy;
   obj = v9;
   v37 = [v9 countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v37)
   {
     v11 = *v39;
-    v12 = v8 + 16;
+    v12 = mapCopy + 16;
     do
     {
       for (i = 0; i != v37; ++i)
@@ -885,8 +885,8 @@ id __50__SCROBrailleUIMainApp_handleResponse_forRequest___block_invoke_2(uint64_
 
         if (!v18)
         {
-          v19 = [(SCROBrailleUIMainApp *)self appsListView];
-          [v19 value];
+          appsListView = [(SCROBrailleUIMainApp *)self appsListView];
+          [appsListView value];
           v20 = v12;
           v21 = v11;
           v23 = v22 = v10;
@@ -912,18 +912,18 @@ id __50__SCROBrailleUIMainApp_handleResponse_forRequest___block_invoke_2(uint64_
 
   if ([v34 count])
   {
-    v26 = v33;
+    v26 = identifierCopy;
     if ([v34 count] == 1)
     {
       v27 = [v34 objectAtIndex:0];
-      v28 = [v27 identifier];
+      identifier = [v27 identifier];
 
-      if ([v33 isEqualToString:@"launch.app"])
+      if ([identifierCopy isEqualToString:@"launch.app"])
       {
         v44[0] = kSCROBrailleUIRequestTypeKey[0];
         v44[1] = kSCROBrailleUIRequestLaunchAppIDKey[0];
         v45[0] = &unk_287651C38;
-        v45[1] = v28;
+        v45[1] = identifier;
         v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:2];
         if (!v29)
         {
@@ -933,7 +933,7 @@ id __50__SCROBrailleUIMainApp_handleResponse_forRequest___block_invoke_2(uint64_
 
       else
       {
-        if (![v33 isEqualToString:@"choose.item"])
+        if (![identifierCopy isEqualToString:@"choose.item"])
         {
           goto LABEL_24;
         }
@@ -941,7 +941,7 @@ id __50__SCROBrailleUIMainApp_handleResponse_forRequest___block_invoke_2(uint64_
         v42[0] = kSCROBrailleUIRequestTypeKey[0];
         v42[1] = kSCROBrailleUIRequestChooseElementIDKey[0];
         v43[0] = &unk_287651C68;
-        v30 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v28, "integerValue")}];
+        v30 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(identifier, "integerValue")}];
         v43[1] = v30;
         v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:2];
 
@@ -951,8 +951,8 @@ id __50__SCROBrailleUIMainApp_handleResponse_forRequest___block_invoke_2(uint64_
         }
       }
 
-      v31 = [(SCROBrailleUIApp *)self delegate];
-      [v31 handleBrailleUIRequest:v29];
+      delegate = [(SCROBrailleUIApp *)self delegate];
+      [delegate handleBrailleUIRequest:v29];
 
       +[SCROBrailleUIApp closeAllApps];
 LABEL_24:
@@ -960,13 +960,13 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    [(SCROBrailleUIMainApp *)self _showInlineResultWithIdentifier:v33 items:v34];
+    [(SCROBrailleUIMainApp *)self _showInlineResultWithIdentifier:identifierCopy items:v34];
   }
 
   else
   {
     [(SCROBrailleUIMainApp *)self _showPopUpWithIdentifier:@"no.match" Key:@"no.match"];
-    v26 = v33;
+    v26 = identifierCopy;
   }
 
 LABEL_25:
@@ -976,52 +976,52 @@ LABEL_25:
 
 - (BOOL)_isOpen
 {
-  v2 = [(SCROBrailleUIMainApp *)self appsListView];
-  v3 = v2 != 0;
+  appsListView = [(SCROBrailleUIMainApp *)self appsListView];
+  v3 = appsListView != 0;
 
   return v3;
 }
 
 - (BOOL)_isShowingInlineResult
 {
-  v2 = [(SCROBrailleUIMainApp *)self inlineResultView];
-  v3 = v2 != 0;
+  inlineResultView = [(SCROBrailleUIMainApp *)self inlineResultView];
+  v3 = inlineResultView != 0;
 
   return v3;
 }
 
 - (BOOL)_hasPopUp
 {
-  v2 = [(SCROBrailleUIMainApp *)self popUpView];
-  v3 = v2 != 0;
+  popUpView = [(SCROBrailleUIMainApp *)self popUpView];
+  v3 = popUpView != 0;
 
   return v3;
 }
 
-- (void)_showInlineResultWithIdentifier:(id)a3 items:(id)a4
+- (void)_showInlineResultWithIdentifier:(id)identifier items:(id)items
 {
-  v9 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  itemsCopy = items;
   if ([(SCROBrailleUIMainApp *)self _isOpen]&& ![(SCROBrailleUIMainApp *)self _isShowingInlineResult]&& ![(SCROBrailleUIMainApp *)self _hasPopUp])
   {
-    v7 = [[SCROBrailleUIListView alloc] initWithIdentifier:v9 items:v6];
+    v7 = [[SCROBrailleUIListView alloc] initWithIdentifier:identifierCopy items:itemsCopy];
     [(SCROBrailleUIMainApp *)self setInlineResultView:v7];
 
-    v8 = [(SCROBrailleUIMainApp *)self inlineResultView];
-    [v8 display];
+    inlineResultView = [(SCROBrailleUIMainApp *)self inlineResultView];
+    [inlineResultView display];
   }
 }
 
-- (void)_showPopUpWithIdentifier:(id)a3 Key:(id)a4
+- (void)_showPopUpWithIdentifier:(id)identifier Key:(id)key
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  keyCopy = key;
   if ([(SCROBrailleUIMainApp *)self _isOpen]&& ![(SCROBrailleUIMainApp *)self _hasPopUp])
   {
     v8 = [SCROBrailleUIListItem alloc];
-    v9 = SCROBrailleUILocString(v7);
-    v10 = [(SCROBrailleUIListItem *)v8 initWithIdentifier:v6 label:v9 isInline:0];
+    v9 = SCROBrailleUILocString(keyCopy);
+    v10 = [(SCROBrailleUIListItem *)v8 initWithIdentifier:identifierCopy label:v9 isInline:0];
 
     v11 = [SCROBrailleUIListView alloc];
     v16[0] = v10;
@@ -1029,8 +1029,8 @@ LABEL_25:
     v13 = [(SCROBrailleUIListView *)v11 initWithIdentifier:@"launch.app" items:v12];
     [(SCROBrailleUIMainApp *)self setPopUpView:v13];
 
-    v14 = [(SCROBrailleUIMainApp *)self popUpView];
-    [v14 display];
+    popUpView = [(SCROBrailleUIMainApp *)self popUpView];
+    [popUpView display];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -1038,39 +1038,39 @@ LABEL_25:
 
 - (void)_closeInLineResult
 {
-  v3 = [(SCROBrailleUIMainApp *)self inlineResultView];
-  [v3 dismiss];
+  inlineResultView = [(SCROBrailleUIMainApp *)self inlineResultView];
+  [inlineResultView dismiss];
 
   [(SCROBrailleUIMainApp *)self setInlineResultView:0];
 }
 
 - (void)_closePopUp
 {
-  v3 = [(SCROBrailleUIMainApp *)self popUpView];
-  [v3 dismiss];
+  popUpView = [(SCROBrailleUIMainApp *)self popUpView];
+  [popUpView dismiss];
 
   [(SCROBrailleUIMainApp *)self setPopUpView:0];
 }
 
-- (BOOL)_isInputBraille:(id)a3 partOfText:(id)a4
+- (BOOL)_isInputBraille:(id)braille partOfText:(id)text
 {
-  v5 = a3;
-  v6 = a4;
+  brailleCopy = braille;
+  textCopy = text;
   v7 = +[SCROBrailleTranslationManager inputManager];
   v8 = 1;
-  v9 = [v7 textForPrintBraille:v5 language:0 mode:1 locations:0];
+  v9 = [v7 textForPrintBraille:brailleCopy language:0 mode:1 locations:0];
 
   v10 = +[SCROBrailleTranslationManager inputManager];
-  v11 = [v6 lowercaseString];
-  v12 = [v10 printBrailleForText:v11 language:0 mode:1 textPositionsRange:0x7FFFFFFFFFFFFFFFLL locations:0 textFormattingRanges:{0, 0}];
+  lowercaseString = [textCopy lowercaseString];
+  v12 = [v10 printBrailleForText:lowercaseString language:0 mode:1 textPositionsRange:0x7FFFFFFFFFFFFFFFLL locations:0 textFormattingRanges:{0, 0}];
 
-  if ([v5 length])
+  if ([brailleCopy length])
   {
-    if ([v9 length] && (objc_msgSend(v12, "hasPrefix:", v5) & 1) == 0)
+    if ([v9 length] && (objc_msgSend(v12, "hasPrefix:", brailleCopy) & 1) == 0)
     {
-      v13 = [v6 localizedLowercaseString];
-      v14 = [v9 localizedLowercaseString];
-      v8 = [v13 hasPrefix:v14];
+      localizedLowercaseString = [textCopy localizedLowercaseString];
+      localizedLowercaseString2 = [v9 localizedLowercaseString];
+      v8 = [localizedLowercaseString hasPrefix:localizedLowercaseString2];
     }
 
     else
@@ -1109,36 +1109,36 @@ uint64_t __44__SCROBrailleUIMainApp__calculatorFormatter__block_invoke()
   return [v2 setMaximumFractionDigits:15];
 }
 
-- (id)_mathCodeForPrintNumber:(id)a3
+- (id)_mathCodeForPrintNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v5 = +[SCROBrailleUISettingsManager sharedInstance];
-  v6 = [v5 calculatorUsesUEBMath];
+  calculatorUsesUEBMath = [v5 calculatorUsesUEBMath];
 
-  if (v6)
+  if (calculatorUsesUEBMath)
   {
-    [(SCROBrailleUIMainApp *)self _uebMathForPrintNumber:v4];
+    [(SCROBrailleUIMainApp *)self _uebMathForPrintNumber:numberCopy];
   }
 
   else
   {
-    [(SCROBrailleUIMainApp *)self _nemethForPrintNumber:v4];
+    [(SCROBrailleUIMainApp *)self _nemethForPrintNumber:numberCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)_nemethForPrintNumber:(id)a3
+- (id)_nemethForPrintNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = objc_opt_new();
-  if ([v3 length])
+  if ([numberCopy length])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 substringWithRange:{v5, 1}];
+      v6 = [numberCopy substringWithRange:{v5, 1}];
       v7 = [&unk_2876523D8 objectForKeyedSubscript:v6];
       if (v7)
       {
@@ -1148,28 +1148,28 @@ uint64_t __44__SCROBrailleUIMainApp__calculatorFormatter__block_invoke()
       ++v5;
     }
 
-    while (v5 < [v3 length]);
+    while (v5 < [numberCopy length]);
   }
 
   return v4;
 }
 
-- (id)_uebMathForPrintNumber:(id)a3
+- (id)_uebMathForPrintNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = objc_opt_new();
-  if ([v3 length] && objc_msgSend(v3, "characterAtIndex:", 0) == 45)
+  if ([numberCopy length] && objc_msgSend(numberCopy, "characterAtIndex:", 0) == 45)
   {
     [v4 appendString:@"⠐⠤"];
   }
 
   [v4 appendString:@"⠼"];
-  if ([v3 length])
+  if ([numberCopy length])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 substringWithRange:{v5, 1}];
+      v6 = [numberCopy substringWithRange:{v5, 1}];
       v7 = [&unk_287652400 objectForKeyedSubscript:v6];
       if (v7)
       {
@@ -1179,7 +1179,7 @@ uint64_t __44__SCROBrailleUIMainApp__calculatorFormatter__block_invoke()
       ++v5;
     }
 
-    while (v5 < [v3 length]);
+    while (v5 < [numberCopy length]);
   }
 
   return v4;
@@ -1233,42 +1233,42 @@ void __39__SCROBrailleUIMainApp__runTimerUpdate__block_invoke(uint64_t a1)
 
 - (void)_updateDateTimeView
 {
-  v3 = [(SCROBrailleUIMainApp *)self appsListView];
-  v4 = [v3 focusedItem];
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"date.time"];
+  appsListView = [(SCROBrailleUIMainApp *)self appsListView];
+  focusedItem = [appsListView focusedItem];
+  identifier = [focusedItem identifier];
+  v6 = [identifier isEqualToString:@"date.time"];
 
   if (v6)
   {
     v7 = [(SCROBrailleUIMainApp *)self _currentDateTimeListItemWithDetails:0];
-    v8 = [(SCROBrailleUIMainApp *)self appsListView];
-    v9 = [(SCROBrailleUIMainApp *)self appsListView];
-    [v8 replaceItemAtIndex:objc_msgSend(v9 with:{"focusedIndex"), v7}];
+    appsListView2 = [(SCROBrailleUIMainApp *)self appsListView];
+    appsListView3 = [(SCROBrailleUIMainApp *)self appsListView];
+    [appsListView2 replaceItemAtIndex:objc_msgSend(appsListView3 with:{"focusedIndex"), v7}];
 
-    v10 = [(SCROBrailleUIMainApp *)self appsListView];
-    [v10 displaySilently:1];
+    appsListView4 = [(SCROBrailleUIMainApp *)self appsListView];
+    [appsListView4 displaySilently:1];
   }
 
-  v11 = [(SCROBrailleUIMainApp *)self popUpView];
-  v12 = [v11 focusedItem];
-  v13 = [v12 identifier];
-  v14 = [v13 isEqualToString:@"date.time"];
+  popUpView = [(SCROBrailleUIMainApp *)self popUpView];
+  focusedItem2 = [popUpView focusedItem];
+  identifier2 = [focusedItem2 identifier];
+  v14 = [identifier2 isEqualToString:@"date.time"];
 
   if (v14)
   {
     v18 = [(SCROBrailleUIMainApp *)self _currentDateTimeListItemWithDetails:1];
-    v15 = [(SCROBrailleUIMainApp *)self popUpView];
-    v16 = [(SCROBrailleUIMainApp *)self popUpView];
-    [v15 replaceItemAtIndex:objc_msgSend(v16 with:{"focusedIndex"), v18}];
+    popUpView2 = [(SCROBrailleUIMainApp *)self popUpView];
+    popUpView3 = [(SCROBrailleUIMainApp *)self popUpView];
+    [popUpView2 replaceItemAtIndex:objc_msgSend(popUpView3 with:{"focusedIndex"), v18}];
 
-    v17 = [(SCROBrailleUIMainApp *)self popUpView];
-    [v17 displaySilently:1];
+    popUpView4 = [(SCROBrailleUIMainApp *)self popUpView];
+    [popUpView4 displaySilently:1];
   }
 }
 
-- (id)_currentDateTimeListItemWithDetails:(BOOL)a3
+- (id)_currentDateTimeListItemWithDetails:(BOOL)details
 {
-  v3 = a3;
+  detailsCopy = details;
   if (!self->_currentDateTime)
   {
     v5 = [MEMORY[0x277CBEAA8] now];
@@ -1282,14 +1282,14 @@ void __39__SCROBrailleUIMainApp__runTimerUpdate__block_invoke(uint64_t a1)
   }
 
   v7 = &_currentDateTimeListItemWithDetails__expandedFormatter;
-  if (!v3)
+  if (!detailsCopy)
   {
     v7 = &_currentDateTimeListItemWithDetails__formatter;
   }
 
   v8 = *v7;
-  v9 = [(SCROBrailleUIMainApp *)self currentDateTime];
-  v10 = [v8 stringFromDate:v9];
+  currentDateTime = [(SCROBrailleUIMainApp *)self currentDateTime];
+  v10 = [v8 stringFromDate:currentDateTime];
 
   v11 = [(SCROBrailleUIMainApp *)self _stringBySanitizingWhitespaces:v10];
 
@@ -1336,12 +1336,12 @@ uint64_t __60__SCROBrailleUIMainApp__currentDateTimeListItemWithDetails___block_
   return [v12 setDateStyle:3];
 }
 
-- (id)_stringBySanitizingWhitespaces:(id)a3
+- (id)_stringBySanitizingWhitespaces:(id)whitespaces
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceNewlineAndSpecialCharacterSet];
-  v6 = [v4 scrStringByReplacingCharactersInSet:v5 withString:@" "];
+  whitespacesCopy = whitespaces;
+  whitespaceNewlineAndSpecialCharacterSet = [v3 whitespaceNewlineAndSpecialCharacterSet];
+  v6 = [whitespacesCopy scrStringByReplacingCharactersInSet:whitespaceNewlineAndSpecialCharacterSet withString:@" "];
 
   return v6;
 }

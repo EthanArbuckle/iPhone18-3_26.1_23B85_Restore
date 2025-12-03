@@ -1,6 +1,6 @@
 @interface HMDHH2MigrationLogEventsAnalyzer
-- (HMDHH2MigrationLogEventsAnalyzer)initWithDataSource:(id)a3;
-- (void)observeEvent:(id)a3;
+- (HMDHH2MigrationLogEventsAnalyzer)initWithDataSource:(id)source;
+- (void)observeEvent:(id)event;
 - (void)runDailyTask;
 @end
 
@@ -8,13 +8,13 @@
 
 - (void)runDailyTask
 {
-  v3 = [(HMDHH2MigrationLogEventsAnalyzer *)self queue];
+  queue = [(HMDHH2MigrationLogEventsAnalyzer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__HMDHH2MigrationLogEventsAnalyzer_runDailyTask__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __48__HMDHH2MigrationLogEventsAnalyzer_runDailyTask__block_invoke(uint64_t a1)
@@ -23,13 +23,13 @@ void __48__HMDHH2MigrationLogEventsAnalyzer_runDailyTask__block_invoke(uint64_t 
   [v1 resetEventCounters];
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HMDHH2MigrationLogEventsAnalyzer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  queue = [(HMDHH2MigrationLogEventsAnalyzer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v19 = v4;
+  v19 = eventCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -47,20 +47,20 @@ void __48__HMDHH2MigrationLogEventsAnalyzer_runDailyTask__block_invoke(uint64_t 
   {
     if ([v7 migrationEventType] >= 4)
     {
-      v8 = [v7 error];
-      if (v8)
+      error = [v7 error];
+      if (error)
       {
-        v9 = v8;
-        v10 = [v7 error];
-        v11 = [v10 domain];
-        v12 = [v11 isEqualToString:*MEMORY[0x277CCFD28]];
+        counterGroup = error;
+        error2 = [v7 error];
+        domain = [error2 domain];
+        v12 = [domain isEqualToString:*MEMORY[0x277CCFD28]];
 
         if (v12)
         {
-          v13 = [v10 code];
-          if ((v13 - 2704) <= 0x1C)
+          code = [error2 code];
+          if ((code - 2704) <= 0x1C)
           {
-            if (((1 << (v13 + 112)) & 0x1F718102) != 0)
+            if (((1 << (code + 112)) & 0x1F718102) != 0)
             {
 LABEL_10:
 
@@ -68,10 +68,10 @@ LABEL_21:
               goto LABEL_22;
             }
 
-            if (v13 == 2704)
+            if (code == 2704)
             {
-              v14 = [v10 userInfo];
-              v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+              userInfo = [error2 userInfo];
+              v15 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
               objc_opt_class();
               if (objc_opt_isKindOfClass())
@@ -96,15 +96,15 @@ LABEL_21:
             }
           }
 
-          if ((v13 - 75) < 2 || v13 == 2013)
+          if ((code - 75) < 2 || code == 2013)
           {
             goto LABEL_10;
           }
         }
 
 LABEL_20:
-        v9 = [(HMDHH2MigrationLogEventsAnalyzer *)self counterGroup];
-        [v9 incrementEventCounterForEventName:@"migrationFailureToTriggerTTRCounter"];
+        counterGroup = [(HMDHH2MigrationLogEventsAnalyzer *)self counterGroup];
+        [counterGroup incrementEventCounterForEventName:@"migrationFailureToTriggerTTRCounter"];
         goto LABEL_21;
       }
     }
@@ -113,43 +113,43 @@ LABEL_20:
 LABEL_22:
 }
 
-- (HMDHH2MigrationLogEventsAnalyzer)initWithDataSource:(id)a3
+- (HMDHH2MigrationLogEventsAnalyzer)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v21.receiver = self;
   v21.super_class = HMDHH2MigrationLogEventsAnalyzer;
   v5 = [(HMDHH2MigrationLogEventsAnalyzer *)&v21 init];
   if (v5)
   {
-    v6 = [v4 legacyCountersManager];
-    v7 = [v6 counterGroupForName:@"HMDHH2MigrationLogEventsAnalyzerGroupName"];
+    legacyCountersManager = [sourceCopy legacyCountersManager];
+    v7 = [legacyCountersManager counterGroupForName:@"HMDHH2MigrationLogEventsAnalyzerGroupName"];
     counterGroup = v5->_counterGroup;
     v5->_counterGroup = v7;
 
-    v9 = [v4 logEventDispatcher];
-    v10 = [v9 clientQueue];
+    logEventDispatcher = [sourceCopy logEventDispatcher];
+    clientQueue = [logEventDispatcher clientQueue];
     queue = v5->_queue;
-    v5->_queue = v10;
+    v5->_queue = clientQueue;
 
-    v12 = [v4 logEventDispatcher];
-    [v12 addObserver:v5 forEventClass:objc_opt_class()];
+    logEventDispatcher2 = [sourceCopy logEventDispatcher];
+    [logEventDispatcher2 addObserver:v5 forEventClass:objc_opt_class()];
 
-    v13 = [v4 radarInitiator];
+    radarInitiator = [sourceCopy radarInitiator];
 
-    if (v13)
+    if (radarInitiator)
     {
       v14 = [HMDCounterThresholdTTRTrigger alloc];
-      v15 = [v4 radarInitiator];
-      v16 = [(HMDCounterThresholdTTRTrigger *)v14 initWithThreshold:1 displayReason:@"HH2 migration failed" radarInitiator:v15];
+      radarInitiator2 = [sourceCopy radarInitiator];
+      v16 = [(HMDCounterThresholdTTRTrigger *)v14 initWithThreshold:1 displayReason:@"HH2 migration failed" radarInitiator:radarInitiator2];
       migrationFailureTTRTrigger = v5->_migrationFailureTTRTrigger;
       v5->_migrationFailureTTRTrigger = v16;
 
-      v18 = [v4 legacyCountersManager];
-      [v18 addObserver:v5->_migrationFailureTTRTrigger forEventName:@"migrationFailureToTriggerTTRCounter" requestGroup:@"HMDHH2MigrationLogEventsAnalyzerGroupName"];
+      legacyCountersManager2 = [sourceCopy legacyCountersManager];
+      [legacyCountersManager2 addObserver:v5->_migrationFailureTTRTrigger forEventName:@"migrationFailureToTriggerTTRCounter" requestGroup:@"HMDHH2MigrationLogEventsAnalyzerGroupName"];
     }
 
-    v19 = [v4 dailyScheduler];
-    [v19 registerDailyTaskRunner:v5];
+    dailyScheduler = [sourceCopy dailyScheduler];
+    [dailyScheduler registerDailyTaskRunner:v5];
   }
 
   return v5;

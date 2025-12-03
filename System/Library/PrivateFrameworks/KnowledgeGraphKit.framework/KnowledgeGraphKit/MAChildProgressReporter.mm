@@ -1,32 +1,32 @@
 @interface MAChildProgressReporter
-- (MAChildProgressReporter)initWithParentProgress:(id)a3 offset:(double)a4 scale:(double)a5;
-- (id)childProgressWithOffset:(double)a3 scale:(double)a4;
+- (MAChildProgressReporter)initWithParentProgress:(id)progress offset:(double)offset scale:(double)scale;
+- (id)childProgressWithOffset:(double)offset scale:(double)scale;
 @end
 
 @implementation MAChildProgressReporter
 
-- (id)childProgressWithOffset:(double)a3 scale:(double)a4
+- (id)childProgressWithOffset:(double)offset scale:(double)scale
 {
   scale = self->_scale;
-  v5 = [[MAChildProgressReporter alloc] initWithParentProgress:self->_parentProgress offset:self->_offset + a3 * scale scale:scale * a4];
+  scale = [[MAChildProgressReporter alloc] initWithParentProgress:self->_parentProgress offset:self->_offset + offset * scale scale:scale * scale];
 
-  return v5;
+  return scale;
 }
 
-- (MAChildProgressReporter)initWithParentProgress:(id)a3 offset:(double)a4 scale:(double)a5
+- (MAChildProgressReporter)initWithParentProgress:(id)progress offset:(double)offset scale:(double)scale
 {
-  v9 = a3;
+  progressCopy = progress;
   v14.receiver = self;
   v14.super_class = MAChildProgressReporter;
-  v10 = [(MAProgressReporter *)&v14 initForSubclasses];
-  v11 = v10;
-  if (v10)
+  initForSubclasses = [(MAProgressReporter *)&v14 initForSubclasses];
+  v11 = initForSubclasses;
+  if (initForSubclasses)
   {
-    objc_storeStrong(v10 + 2, a3);
-    v11->_offset = a4;
-    v11->_scale = a5;
-    v12 = [v9 throughputReportBlock];
-    [(MAProgressReporter *)v11 setThroughputReportBlock:v12];
+    objc_storeStrong(initForSubclasses + 2, progress);
+    v11->_offset = offset;
+    v11->_scale = scale;
+    throughputReportBlock = [progressCopy throughputReportBlock];
+    [(MAProgressReporter *)v11 setThroughputReportBlock:throughputReportBlock];
   }
 
   return v11;

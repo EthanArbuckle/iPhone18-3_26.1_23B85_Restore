@@ -1,29 +1,29 @@
 @interface INFERENCESchemaINFERENCEResolutionQueryInfoGenerated
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEResolutionQueryInfoGenerated)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEResolutionQueryInfoGenerated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEResolutionQueryInfoGenerated)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEResolutionQueryInfoGenerated)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAnonymizedRecommendedEntityIdentifier:(id)a3;
-- (void)setHasForcePromptType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnonymizedRecommendedEntityIdentifier:(id)identifier;
+- (void)setHasForcePromptType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEResolutionQueryInfoGenerated
 
-- (INFERENCESchemaINFERENCEResolutionQueryInfoGenerated)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEResolutionQueryInfoGenerated)initWithDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = INFERENCESchemaINFERENCEResolutionQueryInfoGenerated;
   v5 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalResolutionContextId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalResolutionContextId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)v5 setOriginalResolutionContextId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"queryId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"queryId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,21 +39,21 @@
       [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)v5 setQueryId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"resolutionState"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"resolutionState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEResolutionQueryInfoGenerated setResolutionState:](v5, "setResolutionState:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"forcePromptType"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"forcePromptType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEResolutionQueryInfoGenerated setForcePromptType:](v5, "setForcePromptType:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"recommenderModelVersion"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"recommenderModelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
       [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)v5 setRecommenderModelVersion:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"anonymizedRecommendedEntityIdentifier"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"anonymizedRecommendedEntityIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,30 +119,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEResolutionQueryInfoGenerated)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEResolutionQueryInfoGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -155,12 +155,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_anonymizedRecommendedEntityIdentifiers)
   {
-    v4 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self anonymizedRecommendedEntityIdentifiers];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"anonymizedRecommendedEntityIdentifier"];
+    anonymizedRecommendedEntityIdentifiers = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self anonymizedRecommendedEntityIdentifiers];
+    v5 = [anonymizedRecommendedEntityIdentifiers copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"anonymizedRecommendedEntityIdentifier"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -176,46 +176,46 @@
       v7 = off_1E78D8AD0[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"forcePromptType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"forcePromptType"];
   }
 
   if (self->_originalResolutionContextId)
   {
-    v8 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    originalResolutionContextId = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
+    dictionaryRepresentation = [originalResolutionContextId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"originalResolutionContextId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"originalResolutionContextId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"originalResolutionContextId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"originalResolutionContextId"];
     }
   }
 
   if (self->_queryId)
   {
-    v11 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    queryId = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
+    dictionaryRepresentation2 = [queryId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"queryId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"queryId"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"queryId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"queryId"];
     }
   }
 
   if (self->_recommenderModelVersion)
   {
-    v14 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self recommenderModelVersion];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"recommenderModelVersion"];
+    recommenderModelVersion = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self recommenderModelVersion];
+    v15 = [recommenderModelVersion copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"recommenderModelVersion"];
   }
 
   if (*&self->_has)
@@ -231,12 +231,12 @@
       v17 = off_1E78D8B10[v16];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"resolutionState"];
+    [dictionary setObject:v17 forKeyedSubscript:@"resolutionState"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -269,28 +269,28 @@ LABEL_6:
   return v7 ^ [(NSArray *)self->_anonymizedRecommendedEntityIdentifiers hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
-  v6 = [v4 originalResolutionContextId];
-  if ((v5 != 0) == (v6 == 0))
+  originalResolutionContextId = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
+  originalResolutionContextId2 = [equalCopy originalResolutionContextId];
+  if ((originalResolutionContextId != 0) == (originalResolutionContextId2 == 0))
   {
     goto LABEL_28;
   }
 
-  v7 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
-  if (v7)
+  originalResolutionContextId3 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
+  if (originalResolutionContextId3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
-    v10 = [v4 originalResolutionContextId];
-    v11 = [v9 isEqual:v10];
+    v8 = originalResolutionContextId3;
+    originalResolutionContextId4 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
+    originalResolutionContextId5 = [equalCopy originalResolutionContextId];
+    v11 = [originalResolutionContextId4 isEqual:originalResolutionContextId5];
 
     if (!v11)
     {
@@ -302,20 +302,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
-  v6 = [v4 queryId];
-  if ((v5 != 0) == (v6 == 0))
+  originalResolutionContextId = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
+  originalResolutionContextId2 = [equalCopy queryId];
+  if ((originalResolutionContextId != 0) == (originalResolutionContextId2 == 0))
   {
     goto LABEL_28;
   }
 
-  v12 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
-  if (v12)
+  queryId = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
+  if (queryId)
   {
-    v13 = v12;
-    v14 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
-    v15 = [v4 queryId];
-    v16 = [v14 isEqual:v15];
+    v13 = queryId;
+    queryId2 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
+    queryId3 = [equalCopy queryId];
+    v16 = [queryId2 isEqual:queryId3];
 
     if (!v16)
     {
@@ -328,7 +328,7 @@ LABEL_6:
   }
 
   has = self->_has;
-  v18 = v4[48];
+  v18 = equalCopy[48];
   if ((*&has & 1) != (v18 & 1))
   {
     goto LABEL_29;
@@ -337,13 +337,13 @@ LABEL_6:
   if (*&has)
   {
     resolutionState = self->_resolutionState;
-    if (resolutionState != [v4 resolutionState])
+    if (resolutionState != [equalCopy resolutionState])
     {
       goto LABEL_29;
     }
 
     has = self->_has;
-    v18 = v4[48];
+    v18 = equalCopy[48];
   }
 
   v20 = (*&has >> 1) & 1;
@@ -355,26 +355,26 @@ LABEL_6:
   if (v20)
   {
     forcePromptType = self->_forcePromptType;
-    if (forcePromptType != [v4 forcePromptType])
+    if (forcePromptType != [equalCopy forcePromptType])
     {
       goto LABEL_29;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self recommenderModelVersion];
-  v6 = [v4 recommenderModelVersion];
-  if ((v5 != 0) == (v6 == 0))
+  originalResolutionContextId = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self recommenderModelVersion];
+  originalResolutionContextId2 = [equalCopy recommenderModelVersion];
+  if ((originalResolutionContextId != 0) == (originalResolutionContextId2 == 0))
   {
     goto LABEL_28;
   }
 
-  v22 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self recommenderModelVersion];
-  if (v22)
+  recommenderModelVersion = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self recommenderModelVersion];
+  if (recommenderModelVersion)
   {
-    v23 = v22;
-    v24 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self recommenderModelVersion];
-    v25 = [v4 recommenderModelVersion];
-    v26 = [v24 isEqual:v25];
+    v23 = recommenderModelVersion;
+    recommenderModelVersion2 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self recommenderModelVersion];
+    recommenderModelVersion3 = [equalCopy recommenderModelVersion];
+    v26 = [recommenderModelVersion2 isEqual:recommenderModelVersion3];
 
     if (!v26)
     {
@@ -386,17 +386,17 @@ LABEL_6:
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self anonymizedRecommendedEntityIdentifiers];
-  v6 = [v4 anonymizedRecommendedEntityIdentifiers];
-  if ((v5 != 0) == (v6 == 0))
+  originalResolutionContextId = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self anonymizedRecommendedEntityIdentifiers];
+  originalResolutionContextId2 = [equalCopy anonymizedRecommendedEntityIdentifiers];
+  if ((originalResolutionContextId != 0) == (originalResolutionContextId2 == 0))
   {
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  v27 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self anonymizedRecommendedEntityIdentifiers];
-  if (!v27)
+  anonymizedRecommendedEntityIdentifiers = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self anonymizedRecommendedEntityIdentifiers];
+  if (!anonymizedRecommendedEntityIdentifiers)
   {
 
 LABEL_32:
@@ -404,10 +404,10 @@ LABEL_32:
     goto LABEL_30;
   }
 
-  v28 = v27;
-  v29 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self anonymizedRecommendedEntityIdentifiers];
-  v30 = [v4 anonymizedRecommendedEntityIdentifiers];
-  v31 = [v29 isEqual:v30];
+  v28 = anonymizedRecommendedEntityIdentifiers;
+  anonymizedRecommendedEntityIdentifiers2 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self anonymizedRecommendedEntityIdentifiers];
+  anonymizedRecommendedEntityIdentifiers3 = [equalCopy anonymizedRecommendedEntityIdentifiers];
+  v31 = [anonymizedRecommendedEntityIdentifiers2 isEqual:anonymizedRecommendedEntityIdentifiers3];
 
   if (v31)
   {
@@ -421,23 +421,23 @@ LABEL_30:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
+  toCopy = to;
+  originalResolutionContextId = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
 
-  if (v5)
+  if (originalResolutionContextId)
   {
-    v6 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
+    originalResolutionContextId2 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
+  queryId = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
 
-  if (v7)
+  if (queryId)
   {
-    v8 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
+    queryId2 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -453,9 +453,9 @@ LABEL_30:
     PBDataWriterWriteInt32Field();
   }
 
-  v10 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self recommenderModelVersion];
+  recommenderModelVersion = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self recommenderModelVersion];
 
-  if (v10)
+  if (recommenderModelVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -489,27 +489,27 @@ LABEL_30:
   }
 }
 
-- (void)addAnonymizedRecommendedEntityIdentifier:(id)a3
+- (void)addAnonymizedRecommendedEntityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   anonymizedRecommendedEntityIdentifiers = self->_anonymizedRecommendedEntityIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!anonymizedRecommendedEntityIdentifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_anonymizedRecommendedEntityIdentifiers;
-    self->_anonymizedRecommendedEntityIdentifiers = v6;
+    self->_anonymizedRecommendedEntityIdentifiers = array;
 
-    v4 = v8;
+    identifierCopy = v8;
     anonymizedRecommendedEntityIdentifiers = self->_anonymizedRecommendedEntityIdentifiers;
   }
 
-  [(NSArray *)anonymizedRecommendedEntityIdentifiers addObject:v4];
+  [(NSArray *)anonymizedRecommendedEntityIdentifiers addObject:identifierCopy];
 }
 
-- (void)setHasForcePromptType:(BOOL)a3
+- (void)setHasForcePromptType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -522,26 +522,26 @@ LABEL_30:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = INFERENCESchemaINFERENCEResolutionQueryInfoGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  originalResolutionContextId = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self originalResolutionContextId];
+  v7 = [originalResolutionContextId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self deleteOriginalResolutionContextId];
   }
 
-  v9 = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  queryId = [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self queryId];
+  v10 = [queryId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCEResolutionQueryInfoGenerated *)self deleteQueryId];
   }

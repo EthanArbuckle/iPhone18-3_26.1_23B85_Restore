@@ -15,9 +15,9 @@
   if (v2)
   {
     v3 = +[GEOPlatform sharedPlatform];
-    v4 = [v3 isInternalInstall];
+    isInternalInstall = [v3 isInternalInstall];
 
-    if (v4)
+    if (isInternalInstall)
     {
       _GEOConfigAddDelegateListenerForKey();
       _GEOConfigAddDelegateListenerForKey();
@@ -60,8 +60,8 @@ LABEL_6:
 
   else
   {
-    v7 = [(EnvironmentObserver *)self mapView];
-    if ([v7 _isUsingDevResourceStyleSheet])
+    mapView = [(EnvironmentObserver *)self mapView];
+    if ([mapView _isUsingDevResourceStyleSheet])
     {
       BOOL = 1;
     }
@@ -82,8 +82,8 @@ LABEL_6:
   }
 
 LABEL_15:
-  v9 = [(EnvironmentObserver *)self mapView];
-  [v9 _setShowsCurrentEnvironmentName:BOOL];
+  mapView2 = [(EnvironmentObserver *)self mapView];
+  [mapView2 _setShowsCurrentEnvironmentName:BOOL];
 }
 
 - (MKMapView)mapView

@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneSearchConstantScoreQuery_ConstantBulkScorer_$1
-- (OrgApacheLuceneSearchConstantScoreQuery_ConstantBulkScorer_$1)initWithOrgApacheLuceneSearchConstantScoreQuery_ConstantBulkScorer:(id)a3 withOrgApacheLuceneSearchLeafCollector:(id)a4;
+- (OrgApacheLuceneSearchConstantScoreQuery_ConstantBulkScorer_$1)initWithOrgApacheLuceneSearchConstantScoreQuery_ConstantBulkScorer:(id)scorer withOrgApacheLuceneSearchLeafCollector:(id)collector;
 - (void)dealloc;
-- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)a3;
+- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)scorer;
 @end
 
 @implementation OrgApacheLuceneSearchConstantScoreQuery_ConstantBulkScorer_$1
 
-- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)a3
+- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)scorer
 {
   in = self->super.in_;
   if (!in)
@@ -16,16 +16,16 @@
 
   v6 = [OrgApacheLuceneSearchConstantScoreQuery_ConstantBulkScorer__1__1 alloc];
   JreStrongAssign(&v6->this$0_, self);
-  OrgApacheLuceneSearchFilterScorer_initWithOrgApacheLuceneSearchScorer_(v6, a3);
+  OrgApacheLuceneSearchFilterScorer_initWithOrgApacheLuceneSearchScorer_(v6, scorer);
   v7 = v6;
 
   [(OrgApacheLuceneSearchLeafCollector *)in setScorerWithOrgApacheLuceneSearchScorer:v7];
 }
 
-- (OrgApacheLuceneSearchConstantScoreQuery_ConstantBulkScorer_$1)initWithOrgApacheLuceneSearchConstantScoreQuery_ConstantBulkScorer:(id)a3 withOrgApacheLuceneSearchLeafCollector:(id)a4
+- (OrgApacheLuceneSearchConstantScoreQuery_ConstantBulkScorer_$1)initWithOrgApacheLuceneSearchConstantScoreQuery_ConstantBulkScorer:(id)scorer withOrgApacheLuceneSearchLeafCollector:(id)collector
 {
-  JreStrongAssign(&self->this$0_, a3);
-  OrgApacheLuceneSearchFilterLeafCollector_initWithOrgApacheLuceneSearchLeafCollector_(self, a4);
+  JreStrongAssign(&self->this$0_, scorer);
+  OrgApacheLuceneSearchFilterLeafCollector_initWithOrgApacheLuceneSearchLeafCollector_(self, collector);
   return self;
 }
 

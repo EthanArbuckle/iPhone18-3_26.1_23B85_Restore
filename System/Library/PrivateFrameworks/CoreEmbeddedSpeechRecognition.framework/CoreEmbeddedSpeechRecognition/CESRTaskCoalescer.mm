@@ -1,8 +1,8 @@
 @interface CESRTaskCoalescer
 + (BOOL)isTaskCoalescenceDisabled;
-- (BOOL)_didIncomingTask:(id)a3 arriveInCoalescingWindowWithLastTask:(id)a4;
+- (BOOL)_didIncomingTask:(id)task arriveInCoalescingWindowWithLastTask:(id)lastTask;
 - (CESRTaskCoalescer)init;
-- (CESRTaskCoalescer)initWithManagerName:(id)a3 coalescenceInterval:(double)a4 coalescenceDelay:(double)a5 executionQueue:(id)a6;
+- (CESRTaskCoalescer)initWithManagerName:(id)name coalescenceInterval:(double)interval coalescenceDelay:(double)delay executionQueue:(id)queue;
 - (void)_beginTransaction;
 - (void)_endTransaction;
 - (void)wait;
@@ -10,15 +10,15 @@
 
 @implementation CESRTaskCoalescer
 
-- (BOOL)_didIncomingTask:(id)a3 arriveInCoalescingWindowWithLastTask:(id)a4
+- (BOOL)_didIncomingTask:(id)task arriveInCoalescingWindowWithLastTask:(id)lastTask
 {
-  v6 = a4;
-  v7 = [a3 date];
-  [v7 timeIntervalSince1970];
+  lastTaskCopy = lastTask;
+  date = [task date];
+  [date timeIntervalSince1970];
   v9 = v8;
-  v10 = [v6 date];
+  date2 = [lastTaskCopy date];
 
-  [v10 timeIntervalSince1970];
+  [date2 timeIntervalSince1970];
   v12 = v9 - v11;
 
   return v12 < self->_coalescenceInterval;
@@ -27,17 +27,17 @@
 - (void)_endTransaction
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_transactionCounter - 1;
-  v2->_transactionCounter = v3;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_transactionCounter - 1;
+  selfCopy->_transactionCounter = v3;
   if (!v3)
   {
     v4 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
     {
-      managerName = v2->_managerName;
-      transaction = v2->_transaction;
+      managerName = selfCopy->_managerName;
+      transaction = selfCopy->_transaction;
       v9 = 136315650;
       v10 = "[CESRTaskCoalescer _endTransaction]";
       v11 = 2112;
@@ -47,11 +47,11 @@
       _os_log_debug_impl(&dword_225EEB000, v4, OS_LOG_TYPE_DEBUG, "%s (%@) Releasing OS transaction: %@", &v9, 0x20u);
     }
 
-    v5 = v2->_transaction;
-    v2->_transaction = 0;
+    v5 = selfCopy->_transaction;
+    selfCopy->_transaction = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -59,21 +59,21 @@
 - (void)_beginTransaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  transactionCounter = v2->_transactionCounter;
-  v2->_transactionCounter = transactionCounter + 1;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  transactionCounter = selfCopy->_transactionCounter;
+  selfCopy->_transactionCounter = transactionCounter + 1;
   if (!transactionCounter)
   {
     v4 = os_transaction_create();
-    transaction = v2->_transaction;
-    v2->_transaction = v4;
+    transaction = selfCopy->_transaction;
+    selfCopy->_transaction = v4;
 
     v6 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
     {
-      managerName = v2->_managerName;
-      v9 = v2->_transaction;
+      managerName = selfCopy->_managerName;
+      v9 = selfCopy->_transaction;
       v10 = 136315650;
       v11 = "[CESRTaskCoalescer _beginTransaction]";
       v12 = 2112;
@@ -84,7 +84,7 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -228,11 +228,11 @@ void __59__CESRTaskCoalescer_submitTaskWithId_taskBlock_completion___block_invok
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (CESRTaskCoalescer)initWithManagerName:(id)a3 coalescenceInterval:(double)a4 coalescenceDelay:(double)a5 executionQueue:(id)a6
+- (CESRTaskCoalescer)initWithManagerName:(id)name coalescenceInterval:(double)interval coalescenceDelay:(double)delay executionQueue:(id)queue
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  nameCopy = name;
+  queueCopy = queue;
   v34.receiver = self;
   v34.super_class = CESRTaskCoalescer;
   v12 = [(CESRTaskCoalescer *)&v34 init];
@@ -241,7 +241,7 @@ void __59__CESRTaskCoalescer_submitTaskWithId_taskBlock_completion___block_invok
     goto LABEL_6;
   }
 
-  v13 = [v10 copy];
+  v13 = [nameCopy copy];
   managerName = v12->_managerName;
   v12->_managerName = v13;
 
@@ -270,8 +270,8 @@ void __59__CESRTaskCoalescer_submitTaskWithId_taskBlock_completion___block_invok
   v12->_transaction = 0;
 
   v12->_transactionCounter = 0;
-  v12->_coalescenceInterval = a4;
-  if (a4 <= 0.0)
+  v12->_coalescenceInterval = interval;
+  if (interval <= 0.0)
   {
     v25 = *MEMORY[0x277CEF0E8];
     if (!os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_ERROR))
@@ -283,7 +283,7 @@ LABEL_12:
 
     v26 = MEMORY[0x277CCABB0];
     v27 = v25;
-    v28 = [v26 numberWithDouble:a4];
+    v28 = [v26 numberWithDouble:interval];
     *buf = 136315394;
     v36 = "[CESRTaskCoalescer initWithManagerName:coalescenceInterval:coalescenceDelay:executionQueue:]";
     v37 = 2112;
@@ -295,8 +295,8 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  v12->_coalescenceDelay = a5;
-  if (a5 <= 0.0)
+  v12->_coalescenceDelay = delay;
+  if (delay <= 0.0)
   {
     v30 = *MEMORY[0x277CEF0E8];
     if (!os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_ERROR))
@@ -306,7 +306,7 @@ LABEL_15:
 
     v33 = MEMORY[0x277CCABB0];
     v27 = v30;
-    v28 = [v33 numberWithDouble:a5];
+    v28 = [v33 numberWithDouble:delay];
     *buf = 136315394;
     v36 = "[CESRTaskCoalescer initWithManagerName:coalescenceInterval:coalescenceDelay:executionQueue:]";
     v37 = 2112;
@@ -321,7 +321,7 @@ LABEL_15:
   taskRegistryQueue = v12->_taskRegistryQueue;
   v12->_taskRegistryQueue = v20;
 
-  objc_storeStrong(&v12->_taskExecutionQueue, a6);
+  objc_storeStrong(&v12->_taskExecutionQueue, queue);
 LABEL_6:
   v22 = v12;
 LABEL_13:
@@ -343,20 +343,20 @@ LABEL_13:
     return 0;
   }
 
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"Disable Coalescence"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"Disable Coalescence"];
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v2 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

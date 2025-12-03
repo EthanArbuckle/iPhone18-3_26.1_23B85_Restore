@@ -1,14 +1,14 @@
 @interface ASVVelocitySample3D
-- (ASVVelocitySample3D)initWithStart:(ASVVelocitySample3D *)self end:(SEL)a2 deltaTime:(double)a3;
+- (ASVVelocitySample3D)initWithStart:(ASVVelocitySample3D *)self end:(SEL)end deltaTime:(double)time;
 - (double)velocity;
 @end
 
 @implementation ASVVelocitySample3D
 
-- (ASVVelocitySample3D)initWithStart:(ASVVelocitySample3D *)self end:(SEL)a2 deltaTime:(double)a3
+- (ASVVelocitySample3D)initWithStart:(ASVVelocitySample3D *)self end:(SEL)end deltaTime:(double)time
 {
   v5 = v4;
-  v7 = *&a3;
+  v7 = *&time;
   v8 = v3;
   v9.receiver = self;
   v9.super_class = ASVVelocitySample3D;
@@ -25,16 +25,16 @@
 
 - (double)velocity
 {
-  [a1 deltaTime];
+  [self deltaTime];
   v3 = v2;
   result = 0.0;
   if (v3 >= 0.00000011920929)
   {
-    [a1 end];
+    [self end];
     v8 = v5;
-    [a1 start];
+    [self start];
     v9 = vsubq_f32(v8, v6);
-    [a1 deltaTime];
+    [self deltaTime];
     *&v7 = v7;
     *&result = vdivq_f32(v9, vdupq_lane_s32(*&v7, 0)).u64[0];
   }

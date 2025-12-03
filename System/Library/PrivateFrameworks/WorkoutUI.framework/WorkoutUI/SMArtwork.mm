@@ -1,5 +1,5 @@
 @interface SMArtwork
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SMArtwork)init;
 - (int64_t)hash;
 @end
@@ -18,7 +18,7 @@
   Hasher.init()();
   type metadata accessor for Artwork();
   lazy protocol witness table accessor for type Artwork and conformance Artwork();
-  v3 = self;
+  selfCopy = self;
   dispatch thunk of Hashable.hash(into:)();
   Artwork.backgroundColor.getter();
   String.hash(into:)();
@@ -34,11 +34,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -47,7 +47,7 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   outlined init with copy of Any?(v11, v9);

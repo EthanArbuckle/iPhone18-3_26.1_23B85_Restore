@@ -6,28 +6,28 @@
 - (double)_Car_etaAge;
 - (void)_Car_cancelUpdateETA;
 - (void)_Car_queueUpdateETA;
-- (void)set_Car_isVisible:(BOOL)a3;
-- (void)set_Car_refreshOperation:(id)a3;
+- (void)set_Car_isVisible:(BOOL)visible;
+- (void)set_Car_refreshOperation:(id)operation;
 @end
 
 @implementation _MKQuickRouteManager
 
 - (void)_Car_cancelUpdateETA
 {
-  v3 = [(_MKQuickRouteManager *)self _Car_refreshOperation];
-  [v3 cancel];
+  _Car_refreshOperation = [(_MKQuickRouteManager *)self _Car_refreshOperation];
+  [_Car_refreshOperation cancel];
 
   [(_MKQuickRouteManager *)self set_Car_refreshOperation:0];
 }
 
 - (void)_Car_queueUpdateETA
 {
-  v3 = [(_MKQuickRouteManager *)self _Car_shouldDelayOperation];
-  v4 = [(_MKQuickRouteManager *)self _Car_refreshOperation];
+  _Car_shouldDelayOperation = [(_MKQuickRouteManager *)self _Car_shouldDelayOperation];
+  _Car_refreshOperation = [(_MKQuickRouteManager *)self _Car_refreshOperation];
 
-  if (v4)
+  if (_Car_refreshOperation)
   {
-    if (v3 != [(_MKQuickRouteManager *)self _Car_isPrimaryRefreshQueue])
+    if (_Car_shouldDelayOperation != [(_MKQuickRouteManager *)self _Car_isPrimaryRefreshQueue])
     {
       return;
     }
@@ -38,15 +38,15 @@
   v5 = [[CarQuickRouteRefreshOperation alloc] initWithQuickRoute:self];
   v8 = v5;
   v6 = &qword_10195CD28;
-  if (!v3)
+  if (!_Car_shouldDelayOperation)
   {
     v6 = &qword_10195CD20;
   }
 
   [(CarQuickRouteRefreshOperation *)v5 setOperationQueue:*v6];
   [(_MKQuickRouteManager *)self set_Car_refreshOperation:v8];
-  v7 = [(CarQuickRouteRefreshOperation *)v8 operationQueue];
-  [v7 addOperation:v8];
+  operationQueue = [(CarQuickRouteRefreshOperation *)v8 operationQueue];
+  [operationQueue addOperation:v8];
 }
 
 - (BOOL)_Car_shouldDelayOperation
@@ -86,9 +86,9 @@
 
 - (BOOL)_Car_isPrimaryRefreshQueue
 {
-  v2 = [(_MKQuickRouteManager *)self _Car_refreshOperation];
-  v3 = [v2 operationQueue];
-  v4 = v3 == qword_10195CD20;
+  _Car_refreshOperation = [(_MKQuickRouteManager *)self _Car_refreshOperation];
+  operationQueue = [_Car_refreshOperation operationQueue];
+  v4 = operationQueue == qword_10195CD20;
 
   return v4;
 }
@@ -96,24 +96,24 @@
 - (CarQuickRouteRefreshOperation)_Car_refreshOperation
 {
   v3 = objc_getAssociatedObject(self, "_Car_refreshOperation");
-  v4 = [v3 weakObject];
+  weakObject = [v3 weakObject];
 
-  if (!v4)
+  if (!weakObject)
   {
     objc_setAssociatedObject(self, "_Car_refreshOperation", 0, 0x301);
   }
 
-  v5 = [v3 weakObject];
+  weakObject2 = [v3 weakObject];
 
-  return v5;
+  return weakObject2;
 }
 
-- (void)set_Car_refreshOperation:(id)a3
+- (void)set_Car_refreshOperation:(id)operation
 {
-  if (a3)
+  if (operation)
   {
-    v4 = a3;
-    value = [[WeakWrapper alloc] initWithWeakObject:v4];
+    operationCopy = operation;
+    value = [[WeakWrapper alloc] initWithWeakObject:operationCopy];
   }
 
   else
@@ -127,14 +127,14 @@
 - (BOOL)_Car_isVisible
 {
   v2 = objc_getAssociatedObject(self, "_Car_isVisible");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)set_Car_isVisible:(BOOL)a3
+- (void)set_Car_isVisible:(BOOL)visible
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:visible];
   objc_setAssociatedObject(self, "_Car_isVisible", v4, 0x301);
 }
 

@@ -1,18 +1,18 @@
 @interface WFAXSDSettings
-+ (BOOL)isApplianceSoundDetectionType:(id)a3;
++ (BOOL)isApplianceSoundDetectionType:(id)type;
 + (BOOL)soundDetectionEnabled;
 + (id)allBMApplianceTypes;
-+ (id)localizedNameForSoundDetectionType:(id)a3;
-+ (id)mapLocalizedSupportedSoundDetectionTypesUsingBlock:(id)a3;
++ (id)localizedNameForSoundDetectionType:(id)type;
++ (id)mapLocalizedSupportedSoundDetectionTypesUsingBlock:(id)block;
 @end
 
 @implementation WFAXSDSettings
 
-+ (id)mapLocalizedSupportedSoundDetectionTypesUsingBlock:(id)a3
++ (id)mapLocalizedSupportedSoundDetectionTypesUsingBlock:(id)block
 {
-  v3 = a3;
-  v4 = [getAXSDSettingsClass() sharedInstance];
-  v5 = [v4 supportedSoundDetectionTypes];
+  blockCopy = block;
+  sharedInstance = [getAXSDSettingsClass() sharedInstance];
+  supportedSoundDetectionTypes = [sharedInstance supportedSoundDetectionTypes];
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -22,12 +22,12 @@
   v12[2] = __69__WFAXSDSettings_mapLocalizedSupportedSoundDetectionTypesUsingBlock___block_invoke;
   v12[3] = &unk_1E8375838;
   v12[4] = v13;
-  v6 = [v5 if_objectsPassingTest:v12];
+  v6 = [supportedSoundDetectionTypes if_objectsPassingTest:v12];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__WFAXSDSettings_mapLocalizedSupportedSoundDetectionTypesUsingBlock___block_invoke_2;
   v10[3] = &unk_1E8375860;
-  v7 = v3;
+  v7 = blockCopy;
   v11 = v7;
   v8 = [v6 if_map:v10];
 
@@ -82,36 +82,36 @@ id __69__WFAXSDSettings_mapLocalizedSupportedSoundDetectionTypesUsingBlock___blo
   return v8;
 }
 
-+ (BOOL)isApplianceSoundDetectionType:(id)a3
++ (BOOL)isApplianceSoundDetectionType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = getAXSDSoundDetectionTypeApplianceBeeps();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [typeCopy isEqualToString:v4];
 
   v6 = getAXSDSoundDetectionTypeApplianceBuzzes();
-  v7 = [v3 isEqualToString:v6];
+  v7 = [typeCopy isEqualToString:v6];
 
   v8 = getAXSDSoundDetectionTypeApplianceBellDings();
-  v9 = [v3 isEqualToString:v8];
+  v9 = [typeCopy isEqualToString:v8];
 
   return (v5 | v7 | v9) & 1;
 }
 
-+ (id)localizedNameForSoundDetectionType:(id)a3
++ (id)localizedNameForSoundDetectionType:(id)type
 {
-  v3 = a3;
-  v4 = [getAXSDSettingsClass() sharedInstance];
-  v5 = [v4 localizedNameForSoundDetectionType:v3];
+  typeCopy = type;
+  sharedInstance = [getAXSDSettingsClass() sharedInstance];
+  v5 = [sharedInstance localizedNameForSoundDetectionType:typeCopy];
 
   return v5;
 }
 
 + (BOOL)soundDetectionEnabled
 {
-  v2 = [getAXSDSettingsClass() sharedInstance];
-  v3 = [v2 soundDetectionEnabled];
+  sharedInstance = [getAXSDSettingsClass() sharedInstance];
+  soundDetectionEnabled = [sharedInstance soundDetectionEnabled];
 
-  return v3;
+  return soundDetectionEnabled;
 }
 
 @end

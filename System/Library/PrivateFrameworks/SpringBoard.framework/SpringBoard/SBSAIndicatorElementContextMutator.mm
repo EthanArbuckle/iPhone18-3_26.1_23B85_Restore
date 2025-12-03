@@ -1,21 +1,21 @@
 @interface SBSAIndicatorElementContextMutator
 - (CGSize)indicatorSize;
 - (NSDirectionalEdgeInsets)preferredEdgeOutsets;
-- (SBSAIndicatorElementContextMutator)initWithSystemApertureElementContext:(id)a3;
+- (SBSAIndicatorElementContextMutator)initWithSystemApertureElementContext:(id)context;
 @end
 
 @implementation SBSAIndicatorElementContextMutator
 
-- (SBSAIndicatorElementContextMutator)initWithSystemApertureElementContext:(id)a3
+- (SBSAIndicatorElementContextMutator)initWithSystemApertureElementContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SBSAIndicatorElementContextMutator;
   v6 = [(SBSAIndicatorElementContextMutator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_systemApertureElementContext, a3);
+    objc_storeStrong(&v6->_systemApertureElementContext, context);
   }
 
   return v7;

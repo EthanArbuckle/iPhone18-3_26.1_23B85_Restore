@@ -1,11 +1,11 @@
 @interface HKSHSleepApneaNotificationsBridgeSettingsFactory
 - (BOOL)_areNotificationsOnboarded;
-- (BOOL)_isFeatureOnboardedAndAvailableWithIsOnboarded:(BOOL)a3 requirementsEvaluation:(id)a4;
-- (HKSHSleepApneaNotificationsBridgeSettingsFactory)initWithFeatureStatus:(id)a3;
+- (BOOL)_isFeatureOnboardedAndAvailableWithIsOnboarded:(BOOL)onboarded requirementsEvaluation:(id)evaluation;
+- (HKSHSleepApneaNotificationsBridgeSettingsFactory)initWithFeatureStatus:(id)status;
 - (id)_genericBridgeSettingFooter;
 - (id)_regionGatedBridgeSettingFooter;
 - (id)_remoteDisabledBridgeSettingFooter;
-- (id)_requirementsEvaluationForIsOnboarded:(BOOL)a3;
+- (id)_requirementsEvaluationForIsOnboarded:(BOOL)onboarded;
 - (id)_seedExpiredBridgeSettingFooter;
 - (id)_sleepTrackingDisabledBridgeSettingFooter;
 - (id)_wristDetectionDisabledBridgeSettingFooter;
@@ -14,16 +14,16 @@
 
 @implementation HKSHSleepApneaNotificationsBridgeSettingsFactory
 
-- (HKSHSleepApneaNotificationsBridgeSettingsFactory)initWithFeatureStatus:(id)a3
+- (HKSHSleepApneaNotificationsBridgeSettingsFactory)initWithFeatureStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v8.receiver = self;
   v8.super_class = HKSHSleepApneaNotificationsBridgeSettingsFactory;
   v5 = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)v5 setFeatureStatus:v4];
+    [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)v5 setFeatureStatus:statusCopy];
   }
 
   return v6;
@@ -32,13 +32,13 @@
 - (id)bridgeSettings
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _areNotificationsOnboarded];
-  v4 = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _requirementsEvaluationForIsOnboarded:v3];
-  if ([(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _isFeatureOnboardedAndAvailableWithIsOnboarded:v3 requirementsEvaluation:v4])
+  _areNotificationsOnboarded = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _areNotificationsOnboarded];
+  v4 = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _requirementsEvaluationForIsOnboarded:_areNotificationsOnboarded];
+  if ([(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _isFeatureOnboardedAndAvailableWithIsOnboarded:_areNotificationsOnboarded requirementsEvaluation:v4])
   {
     v5 = [HKSHSleepApneaNotificationsBridgeSettings alloc];
-    v6 = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _genericBridgeSettingFooter];
-    v7 = [(HKSHSleepApneaNotificationsBridgeSettings *)v5 initWithSettingVisible:1 settingEnabled:1 showOnboarding:0 footer:v6];
+    _genericBridgeSettingFooter = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _genericBridgeSettingFooter];
+    v7 = [(HKSHSleepApneaNotificationsBridgeSettings *)v5 initWithSettingVisible:1 settingEnabled:1 showOnboarding:0 footer:_genericBridgeSettingFooter];
 
     goto LABEL_31;
   }
@@ -63,13 +63,13 @@
   }
 
   v12 = MEMORY[0x277CCBF08];
-  if (!v3)
+  if (!_areNotificationsOnboarded)
   {
     v12 = MEMORY[0x277CCBF20];
   }
 
   v13 = *v12;
-  if (v3)
+  if (_areNotificationsOnboarded)
   {
     v14 = MEMORY[0x277CCBF00];
   }
@@ -91,14 +91,14 @@
   v23 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFC0]];
   if (!v18 || (v19 & 1) == 0)
   {
-    v25 = v3 | v17;
+    v25 = _areNotificationsOnboarded | v17;
     v26 = [HKSHSleepApneaNotificationsBridgeSettings alloc];
-    v27 = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _regionGatedBridgeSettingFooter];
+    _regionGatedBridgeSettingFooter = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _regionGatedBridgeSettingFooter];
     v28 = v25;
-    v29 = v3 ^ 1;
+    v29 = _areNotificationsOnboarded ^ 1;
     v30 = v26;
 LABEL_29:
-    v7 = [(HKSHSleepApneaNotificationsBridgeSettings *)v30 initWithSettingVisible:v28 settingEnabled:0 showOnboarding:v29 footer:v27];
+    v7 = [(HKSHSleepApneaNotificationsBridgeSettings *)v30 initWithSettingVisible:v28 settingEnabled:0 showOnboarding:v29 footer:_regionGatedBridgeSettingFooter];
 
     goto LABEL_30;
   }
@@ -106,10 +106,10 @@ LABEL_29:
   if ((v20 & 1) == 0)
   {
     v31 = [HKSHSleepApneaNotificationsBridgeSettings alloc];
-    v32 = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _remoteDisabledBridgeSettingFooter];
+    _remoteDisabledBridgeSettingFooter = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _remoteDisabledBridgeSettingFooter];
 LABEL_28:
-    v27 = v32;
-    v29 = v3 ^ 1;
+    _regionGatedBridgeSettingFooter = _remoteDisabledBridgeSettingFooter;
+    v29 = _areNotificationsOnboarded ^ 1;
     v30 = v31;
     v28 = 1;
     goto LABEL_29;
@@ -118,25 +118,25 @@ LABEL_28:
   if ((v21 & 1) == 0)
   {
     v31 = [HKSHSleepApneaNotificationsBridgeSettings alloc];
-    v32 = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _seedExpiredBridgeSettingFooter];
+    _remoteDisabledBridgeSettingFooter = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _seedExpiredBridgeSettingFooter];
     goto LABEL_28;
   }
 
   if ((v23 & 1) == 0)
   {
     v31 = [HKSHSleepApneaNotificationsBridgeSettings alloc];
-    v32 = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _sleepTrackingDisabledBridgeSettingFooter];
+    _remoteDisabledBridgeSettingFooter = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _sleepTrackingDisabledBridgeSettingFooter];
     goto LABEL_28;
   }
 
   if ((v22 & 1) == 0)
   {
     v31 = [HKSHSleepApneaNotificationsBridgeSettings alloc];
-    v32 = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _wristDetectionDisabledBridgeSettingFooter];
+    _remoteDisabledBridgeSettingFooter = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _wristDetectionDisabledBridgeSettingFooter];
     goto LABEL_28;
   }
 
-  if (v3)
+  if (_areNotificationsOnboarded)
   {
     _HKInitializeLogging();
     v24 = *MEMORY[0x277CCC320];
@@ -168,8 +168,8 @@ LABEL_38:
   }
 
   v34 = [HKSHSleepApneaNotificationsBridgeSettings alloc];
-  v35 = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _genericBridgeSettingFooter];
-  v7 = [(HKSHSleepApneaNotificationsBridgeSettings *)v34 initWithSettingVisible:1 settingEnabled:1 showOnboarding:1 footer:v35];
+  _genericBridgeSettingFooter2 = [(HKSHSleepApneaNotificationsBridgeSettingsFactory *)self _genericBridgeSettingFooter];
+  v7 = [(HKSHSleepApneaNotificationsBridgeSettings *)v34 initWithSettingVisible:1 settingEnabled:1 showOnboarding:1 footer:_genericBridgeSettingFooter2];
 
 LABEL_30:
 LABEL_31:
@@ -184,42 +184,42 @@ LABEL_31:
     return 0;
   }
 
-  v3 = [(HKFeatureStatus *)self->_featureStatus onboardingRecord];
-  v4 = [v3 onboardingState] != 1;
+  onboardingRecord = [(HKFeatureStatus *)self->_featureStatus onboardingRecord];
+  v4 = [onboardingRecord onboardingState] != 1;
 
   return v4;
 }
 
-- (id)_requirementsEvaluationForIsOnboarded:(BOOL)a3
+- (id)_requirementsEvaluationForIsOnboarded:(BOOL)onboarded
 {
-  v3 = a3;
-  v4 = [(HKFeatureStatus *)self->_featureStatus requirementsEvaluationByContext];
-  v5 = v4;
+  onboardedCopy = onboarded;
+  requirementsEvaluationByContext = [(HKFeatureStatus *)self->_featureStatus requirementsEvaluationByContext];
+  v5 = requirementsEvaluationByContext;
   v6 = MEMORY[0x277CCBEA0];
-  if (!v3)
+  if (!onboardedCopy)
   {
     v6 = MEMORY[0x277CCBE38];
   }
 
-  v7 = [v4 objectForKeyedSubscript:*v6];
+  v7 = [requirementsEvaluationByContext objectForKeyedSubscript:*v6];
 
   return v7;
 }
 
-- (BOOL)_isFeatureOnboardedAndAvailableWithIsOnboarded:(BOOL)a3 requirementsEvaluation:(id)a4
+- (BOOL)_isFeatureOnboardedAndAvailableWithIsOnboarded:(BOOL)onboarded requirementsEvaluation:(id)evaluation
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!onboarded)
   {
     return 0;
   }
 
-  v4 = [a4 unsatisfiedRequirementIdentifiers];
-  if ([v4 count])
+  unsatisfiedRequirementIdentifiers = [evaluation unsatisfiedRequirementIdentifiers];
+  if ([unsatisfiedRequirementIdentifiers count])
   {
     v8[0] = *MEMORY[0x277CCBF38];
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-    v6 = [v4 isEqualToArray:v5];
+    v6 = [unsatisfiedRequirementIdentifiers isEqualToArray:v5];
   }
 
   else
@@ -244,8 +244,8 @@ LABEL_31:
 
   v10 = [HKSHSleepApneaNotificationsFooter alloc];
   v11 = HKSPSleepURL();
-  v12 = [v11 absoluteString];
-  v13 = [(HKSHSleepApneaNotificationsFooter *)v10 initWithText:v9 link:v3 url:v12];
+  absoluteString = [v11 absoluteString];
+  v13 = [(HKSHSleepApneaNotificationsFooter *)v10 initWithText:v9 link:v3 url:absoluteString];
 
   return v13;
 }

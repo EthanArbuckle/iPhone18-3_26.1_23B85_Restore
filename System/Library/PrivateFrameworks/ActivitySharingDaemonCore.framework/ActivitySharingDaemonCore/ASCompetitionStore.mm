@@ -1,41 +1,41 @@
 @interface ASCompetitionStore
-- (ASCompetitionStore)initWithDatabaseClient:(id)a3;
-- (BOOL)_removeCompetitionsWithFriendFromDatabase:(id)a3 type:(int64_t)a4 error:(id *)a5;
-- (BOOL)_saveCompetitionListToDatabase:(id)a3 owner:(int64_t)a4 error:(id *)a5;
-- (BOOL)_saveCompetitionLists:(id)a3 owner:(int64_t)a4;
-- (BOOL)_saveCompetitionsToDatabase:(id)a3 friendUUID:(id)a4 type:(int64_t)a5 error:(id *)a6;
+- (ASCompetitionStore)initWithDatabaseClient:(id)client;
+- (BOOL)_removeCompetitionsWithFriendFromDatabase:(id)database type:(int64_t)type error:(id *)error;
+- (BOOL)_saveCompetitionListToDatabase:(id)database owner:(int64_t)owner error:(id *)error;
+- (BOOL)_saveCompetitionLists:(id)lists owner:(int64_t)owner;
+- (BOOL)_saveCompetitionsToDatabase:(id)database friendUUID:(id)d type:(int64_t)type error:(id *)error;
 - (BOOL)loadCachedCompetitions;
-- (BOOL)saveRemoteCompetitionList:(id)a3;
-- (id)_cachedCompetitionListForFriendWithUUID:(id)a3 type:(int64_t)a4 owner:(int64_t)a5;
-- (id)_queue_competitionListCacheForType:(int64_t)a3 owner:(int64_t)a4;
-- (id)currentRemoteCompetitionForContact:(id)a3;
-- (void)_queue_saveCompetitionListsToCache:(id)a3 owner:(int64_t)a4;
+- (BOOL)saveRemoteCompetitionList:(id)list;
+- (id)_cachedCompetitionListForFriendWithUUID:(id)d type:(int64_t)type owner:(int64_t)owner;
+- (id)_queue_competitionListCacheForType:(int64_t)type owner:(int64_t)owner;
+- (id)currentRemoteCompetitionForContact:(id)contact;
+- (void)_queue_saveCompetitionListsToCache:(id)cache owner:(int64_t)owner;
 - (void)deleteCachedCompetitions;
 @end
 
 @implementation ASCompetitionStore
 
-- (ASCompetitionStore)initWithDatabaseClient:(id)a3
+- (ASCompetitionStore)initWithDatabaseClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v17.receiver = self;
   v17.super_class = ASCompetitionStore;
   v6 = [(ASCompetitionStore *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_databaseClient, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_databaseClient, client);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     currentCompetitionListCache = v7->_currentCompetitionListCache;
-    v7->_currentCompetitionListCache = v8;
+    v7->_currentCompetitionListCache = dictionary;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     archivedCompetitionListCache = v7->_archivedCompetitionListCache;
-    v7->_archivedCompetitionListCache = v10;
+    v7->_archivedCompetitionListCache = dictionary2;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     remoteCompetitionListCache = v7->_remoteCompetitionListCache;
-    v7->_remoteCompetitionListCache = v12;
+    v7->_remoteCompetitionListCache = dictionary3;
 
     v14 = HKCreateSerialUtilityDispatchQueue();
     serialQueue = v7->_serialQueue;
@@ -321,41 +321,41 @@ uint64_t __46__ASCompetitionStore_deleteCachedCompetitions__block_invoke(uint64_
   return v5 & v8;
 }
 
-- (id)currentRemoteCompetitionForContact:(id)a3
+- (id)currentRemoteCompetitionForContact:(id)contact
 {
-  v4 = [a3 primaryRemoteRelationship];
-  v5 = [v4 UUID];
-  v6 = [(ASCompetitionStore *)self _cachedCompetitionListForFriendWithUUID:v5 type:0 owner:1];
+  primaryRemoteRelationship = [contact primaryRemoteRelationship];
+  uUID = [primaryRemoteRelationship UUID];
+  v6 = [(ASCompetitionStore *)self _cachedCompetitionListForFriendWithUUID:uUID type:0 owner:1];
 
-  v7 = [v6 currentCompetition];
+  currentCompetition = [v6 currentCompetition];
 
-  return v7;
+  return currentCompetition;
 }
 
-- (BOOL)saveRemoteCompetitionList:(id)a3
+- (BOOL)saveRemoteCompetitionList:(id)list
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  listCopy = list;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  listCopy2 = list;
+  v6 = [v4 arrayWithObjects:&listCopy count:1];
 
-  LOBYTE(self) = [(ASCompetitionStore *)self _saveCompetitionLists:v6 owner:1, v9, v10];
+  LOBYTE(self) = [(ASCompetitionStore *)self _saveCompetitionLists:v6 owner:1, listCopy, v10];
   v7 = *MEMORY[0x277D85DE8];
   return self;
 }
 
-- (BOOL)_saveCompetitionLists:(id)a3 owner:(int64_t)a4
+- (BOOL)_saveCompetitionLists:(id)lists owner:(int64_t)owner
 {
-  v6 = a3;
+  listsCopy = lists;
   dispatch_assert_queue_not_V2(self->_serialQueue);
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __50__ASCompetitionStore__saveCompetitionLists_owner___block_invoke;
   v27[3] = &unk_278C4CC60;
-  v7 = v6;
-  v29 = self;
-  v30 = a4;
+  v7 = listsCopy;
+  selfCopy = self;
+  ownerCopy = owner;
   v28 = v7;
   v8 = MEMORY[0x23EF0EB00](v27);
   databaseClient = self->_databaseClient;
@@ -380,7 +380,7 @@ uint64_t __46__ASCompetitionStore_deleteCachedCompetitions__block_invoke(uint64_
   block[3] = &unk_278C4B608;
   block[4] = self;
   v24 = v7;
-  v25 = a4;
+  ownerCopy2 = owner;
   v21 = v7;
   dispatch_async(serialQueue, block);
 
@@ -532,21 +532,21 @@ void __50__ASCompetitionStore__saveCompetitionLists_owner___block_invoke_303(uin
   [v2 _queue_saveCompetitionListsToCache:v3 owner:*(a1 + 48)];
 }
 
-- (BOOL)_saveCompetitionListToDatabase:(id)a3 owner:(int64_t)a4 error:(id *)a5
+- (BOOL)_saveCompetitionListToDatabase:(id)database owner:(int64_t)owner error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [v8 codableDatabaseCompetitionListEntryForOwner:a4];
-  v10 = [(ASDatabaseClient *)self->_databaseClient saveCodableDatabaseCompetitionListEntry:v9 error:a5];
+  databaseCopy = database;
+  v9 = [databaseCopy codableDatabaseCompetitionListEntryForOwner:owner];
+  v10 = [(ASDatabaseClient *)self->_databaseClient saveCodableDatabaseCompetitionListEntry:v9 error:error];
   if (!v10)
   {
     ASLoggingInitialize();
     v11 = *MEMORY[0x277CE8FE0];
     if (os_log_type_enabled(*MEMORY[0x277CE8FE0], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = *a5;
+      v12 = *error;
       v15 = 138412546;
-      v16 = v8;
+      v16 = databaseCopy;
       v17 = 2112;
       v18 = v12;
       _os_log_impl(&dword_23E5E3000, v11, OS_LOG_TYPE_DEFAULT, "CompetitionStore: Persisting competition list [%@] failed with error [%@]", &v15, 0x16u);
@@ -557,22 +557,22 @@ void __50__ASCompetitionStore__saveCompetitionLists_owner___block_invoke_303(uin
   return v10;
 }
 
-- (BOOL)_removeCompetitionsWithFriendFromDatabase:(id)a3 type:(int64_t)a4 error:(id *)a5
+- (BOOL)_removeCompetitionsWithFriendFromDatabase:(id)database type:(int64_t)type error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(ASDatabaseClient *)self->_databaseClient removeCodableDatabaseCompetitionsWithFriendUUID:v8 type:a4 error:a5];
+  databaseCopy = database;
+  v9 = [(ASDatabaseClient *)self->_databaseClient removeCodableDatabaseCompetitionsWithFriendUUID:databaseCopy type:type error:error];
   if (!v9)
   {
     ASLoggingInitialize();
     v10 = *MEMORY[0x277CE8FE0];
     if (os_log_type_enabled(*MEMORY[0x277CE8FE0], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = *a5;
+      v11 = *error;
       v14 = 134218498;
-      v15 = a4;
+      typeCopy = type;
       v16 = 2112;
-      v17 = v8;
+      v17 = databaseCopy;
       v18 = 2112;
       v19 = v11;
       _os_log_impl(&dword_23E5E3000, v10, OS_LOG_TYPE_DEFAULT, "CompetitionStore: Removing competitions of type %lu for friend with UUID [%@] failed with error [%@]", &v14, 0x20u);
@@ -583,21 +583,21 @@ void __50__ASCompetitionStore__saveCompetitionLists_owner___block_invoke_303(uin
   return v9;
 }
 
-- (BOOL)_saveCompetitionsToDatabase:(id)a3 friendUUID:(id)a4 type:(int64_t)a5 error:(id *)a6
+- (BOOL)_saveCompetitionsToDatabase:(id)database friendUUID:(id)d type:(int64_t)type error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = [MEMORY[0x277CE90D8] codableDatabaseCompetitionsFromCompetitions:v10 withFriendWithUUID:a4 withType:a5];
-  v12 = [(ASDatabaseClient *)self->_databaseClient saveCodableDatabaseCompetitions:v11 error:a6];
+  databaseCopy = database;
+  v11 = [MEMORY[0x277CE90D8] codableDatabaseCompetitionsFromCompetitions:databaseCopy withFriendWithUUID:d withType:type];
+  v12 = [(ASDatabaseClient *)self->_databaseClient saveCodableDatabaseCompetitions:v11 error:error];
   if (!v12)
   {
     ASLoggingInitialize();
     v13 = *MEMORY[0x277CE8FE0];
     if (os_log_type_enabled(*MEMORY[0x277CE8FE0], OS_LOG_TYPE_DEFAULT))
     {
-      v14 = *a6;
+      v14 = *error;
       v17 = 138412546;
-      v18 = v10;
+      v18 = databaseCopy;
       v19 = 2112;
       v20 = v14;
       _os_log_impl(&dword_23E5E3000, v13, OS_LOG_TYPE_DEFAULT, "CompetitionStore: Persisting competitions to database [%@] failed with error [%@]", &v17, 0x16u);
@@ -608,16 +608,16 @@ void __50__ASCompetitionStore__saveCompetitionLists_owner___block_invoke_303(uin
   return v12;
 }
 
-- (void)_queue_saveCompetitionListsToCache:(id)a3 owner:(int64_t)a4
+- (void)_queue_saveCompetitionListsToCache:(id)cache owner:(int64_t)owner
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cacheCopy = cache;
   dispatch_assert_queue_V2(self->_serialQueue);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v6;
+  v7 = cacheCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v8)
   {
@@ -636,13 +636,13 @@ void __50__ASCompetitionStore__saveCompetitionLists_owner___block_invoke_303(uin
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 friendUUID];
+        friendUUID = [v14 friendUUID];
 
-        if (v15)
+        if (friendUUID)
         {
-          v16 = -[ASCompetitionStore _queue_competitionListCacheForType:owner:](self, "_queue_competitionListCacheForType:owner:", [v14 type], a4);
-          v17 = [v14 friendUUID];
-          [v16 setObject:v14 forKeyedSubscript:v17];
+          v16 = -[ASCompetitionStore _queue_competitionListCacheForType:owner:](self, "_queue_competitionListCacheForType:owner:", [v14 type], owner);
+          friendUUID2 = [v14 friendUUID];
+          [v16 setObject:v14 forKeyedSubscript:friendUUID2];
         }
 
         else
@@ -667,9 +667,9 @@ void __50__ASCompetitionStore__saveCompetitionLists_owner___block_invoke_303(uin
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_cachedCompetitionListForFriendWithUUID:(id)a3 type:(int64_t)a4 owner:(int64_t)a5
+- (id)_cachedCompetitionListForFriendWithUUID:(id)d type:(int64_t)type owner:(int64_t)owner
 {
-  v8 = a3;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -681,12 +681,12 @@ void __50__ASCompetitionStore__saveCompetitionLists_owner___block_invoke_303(uin
   block[1] = 3221225472;
   block[2] = __73__ASCompetitionStore__cachedCompetitionListForFriendWithUUID_type_owner___block_invoke;
   block[3] = &unk_278C4CC88;
-  v16 = a4;
-  v17 = a5;
-  v14 = v8;
+  typeCopy = type;
+  ownerCopy = owner;
+  v14 = dCopy;
   v15 = &v18;
   block[4] = self;
-  v10 = v8;
+  v10 = dCopy;
   dispatch_sync(serialQueue, block);
   v11 = v19[5];
 
@@ -705,24 +705,24 @@ void __73__ASCompetitionStore__cachedCompetitionListForFriendWithUUID_type_owner
   *(v4 + 40) = v3;
 }
 
-- (id)_queue_competitionListCacheForType:(int64_t)a3 owner:(int64_t)a4
+- (id)_queue_competitionListCacheForType:(int64_t)type owner:(int64_t)owner
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (a4 != 1)
+  if (owner != 1)
   {
-    if (a4)
+    if (owner)
     {
       goto LABEL_14;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       archivedCompetitionListCache = self->_archivedCompetitionListCache;
     }
 
     else
     {
-      if (a3)
+      if (type)
       {
         goto LABEL_14;
       }
@@ -731,13 +731,13 @@ void __73__ASCompetitionStore__cachedCompetitionListForFriendWithUUID_type_owner
     }
 
 LABEL_10:
-    v7 = archivedCompetitionListCache;
+    dictionary = archivedCompetitionListCache;
     goto LABEL_14;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_14;
     }
@@ -753,10 +753,10 @@ LABEL_10:
     [ASCompetitionStore _queue_competitionListCacheForType:v9 owner:?];
   }
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
 LABEL_14:
 
-  return v7;
+  return dictionary;
 }
 
 void __44__ASCompetitionStore_loadCachedCompetitions__block_invoke_cold_1(uint8_t *a1, void *a2, void *a3, void *a4)

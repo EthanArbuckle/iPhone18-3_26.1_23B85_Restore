@@ -1,31 +1,31 @@
 @interface WBSFormTelemetryDataMonitor
-+ (int64_t)formFieldTypeForFormControlMetadata:(id)a3 formMetadata:(id)a4;
-- (BOOL)_isMonitoringTextFieldWithID:(id)a3 forFormID:(int64_t)a4;
-- (WBSFormTelemetryDataMonitor)initWithWebpageLocale:(id)a3;
-- (unint64_t)_elementTypeForFormControlMetadata:(id)a3;
++ (int64_t)formFieldTypeForFormControlMetadata:(id)metadata formMetadata:(id)formMetadata;
+- (BOOL)_isMonitoringTextFieldWithID:(id)d forFormID:(int64_t)iD;
+- (WBSFormTelemetryDataMonitor)initWithWebpageLocale:(id)locale;
+- (unint64_t)_elementTypeForFormControlMetadata:(id)metadata;
 - (void)_sendModificationTelemetryEventsPerForm;
 - (void)_sendModificationTelemetryEventsPerFormField;
 - (void)_sendUsageTelemetryEventsPerForm;
-- (void)_updateAutoFillOfferedType:(unint64_t)a3 forTextFieldWithID:(id)a4 forFormID:(int64_t)a5;
-- (void)_updateMonitorDataWithFormMetadata:(id)a3;
-- (void)_updateMonitorDataWithTextFieldMetadata:(id)a3 textFieldValueLength:(unint64_t)a4 forFormID:(int64_t)a5;
-- (void)_updateTelemetryFieldData:(id)a3 withTextFieldMetadata:(id)a4 textFieldValueLength:(unint64_t)a5;
+- (void)_updateAutoFillOfferedType:(unint64_t)type forTextFieldWithID:(id)d forFormID:(int64_t)iD;
+- (void)_updateMonitorDataWithFormMetadata:(id)metadata;
+- (void)_updateMonitorDataWithTextFieldMetadata:(id)metadata textFieldValueLength:(unint64_t)length forFormID:(int64_t)d;
+- (void)_updateTelemetryFieldData:(id)data withTextFieldMetadata:(id)metadata textFieldValueLength:(unint64_t)length;
 - (void)sendTelemetryEventsOnFormSubmission;
-- (void)updateAutoFillOfferedType:(unint64_t)a3 forTextFieldWithID:(id)a4 forFormMetadata:(id)a5;
-- (void)updateFormTelemetryWithFormMetadata:(id)a3 textFieldMetadata:(id)a4 textFieldValueLength:(unint64_t)a5;
+- (void)updateAutoFillOfferedType:(unint64_t)type forTextFieldWithID:(id)d forFormMetadata:(id)metadata;
+- (void)updateFormTelemetryWithFormMetadata:(id)metadata textFieldMetadata:(id)fieldMetadata textFieldValueLength:(unint64_t)length;
 @end
 
 @implementation WBSFormTelemetryDataMonitor
 
-- (WBSFormTelemetryDataMonitor)initWithWebpageLocale:(id)a3
+- (WBSFormTelemetryDataMonitor)initWithWebpageLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v10.receiver = self;
   v10.super_class = WBSFormTelemetryDataMonitor;
   v5 = [(WBSFormTelemetryDataMonitor *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [localeCopy copy];
     webpageLocale = v5->_webpageLocale;
     v5->_webpageLocale = v6;
 
@@ -35,55 +35,55 @@
   return v5;
 }
 
-- (void)updateFormTelemetryWithFormMetadata:(id)a3 textFieldMetadata:(id)a4 textFieldValueLength:(unint64_t)a5
+- (void)updateFormTelemetryWithFormMetadata:(id)metadata textFieldMetadata:(id)fieldMetadata textFieldValueLength:(unint64_t)length
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  metadataCopy = metadata;
+  fieldMetadataCopy = fieldMetadata;
+  v9 = fieldMetadataCopy;
+  if (fieldMetadataCopy)
   {
-    v10 = [v8 uniqueID];
-    v11 = -[WBSFormTelemetryDataMonitor _isMonitoringTextFieldWithID:forFormID:](self, "_isMonitoringTextFieldWithID:forFormID:", v10, [v12 uniqueID]);
+    uniqueID = [fieldMetadataCopy uniqueID];
+    v11 = -[WBSFormTelemetryDataMonitor _isMonitoringTextFieldWithID:forFormID:](self, "_isMonitoringTextFieldWithID:forFormID:", uniqueID, [metadataCopy uniqueID]);
 
     if (!v11)
     {
-      [(WBSFormTelemetryDataMonitor *)self _updateMonitorDataWithFormMetadata:v12];
+      [(WBSFormTelemetryDataMonitor *)self _updateMonitorDataWithFormMetadata:metadataCopy];
     }
 
-    -[WBSFormTelemetryDataMonitor _updateMonitorDataWithTextFieldMetadata:textFieldValueLength:forFormID:](self, "_updateMonitorDataWithTextFieldMetadata:textFieldValueLength:forFormID:", v9, a5, [v12 uniqueID]);
+    -[WBSFormTelemetryDataMonitor _updateMonitorDataWithTextFieldMetadata:textFieldValueLength:forFormID:](self, "_updateMonitorDataWithTextFieldMetadata:textFieldValueLength:forFormID:", v9, length, [metadataCopy uniqueID]);
   }
 
   else
   {
-    [(WBSFormTelemetryDataMonitor *)self _updateMonitorDataWithFormMetadata:v12];
+    [(WBSFormTelemetryDataMonitor *)self _updateMonitorDataWithFormMetadata:metadataCopy];
   }
 }
 
-- (void)_updateMonitorDataWithFormMetadata:(id)a3
+- (void)_updateMonitorDataWithFormMetadata:(id)metadata
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metadataCopy = metadata;
   if (!self->_formIDToFormData)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     formIDToFormData = self->_formIDToFormData;
-    self->_formIDToFormData = v5;
+    self->_formIDToFormData = dictionary;
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "uniqueID")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(metadataCopy, "uniqueID")}];
   v8 = [(NSMutableDictionary *)self->_formIDToFormData objectForKeyedSubscript:v7];
 
   if (!v8)
   {
-    v9 = -[WBSFormTelemetryData initWithFormType:formID:]([WBSFormTelemetryData alloc], "initWithFormType:formID:", [v4 type], objc_msgSend(v7, "intValue"));
+    v9 = -[WBSFormTelemetryData initWithFormType:formID:]([WBSFormTelemetryData alloc], "initWithFormType:formID:", [metadataCopy type], objc_msgSend(v7, "intValue"));
     [(NSMutableDictionary *)self->_formIDToFormData setObject:v9 forKeyedSubscript:v7];
   }
 
-  v10 = [v4 controls];
-  v11 = [v10 count];
+  controls = [metadataCopy controls];
+  v11 = [controls count];
   v12 = [(NSMutableDictionary *)self->_formIDToFormData objectForKeyedSubscript:v7];
-  v13 = [v12 fieldIDToSingleFieldData];
-  v14 = [v13 count];
+  fieldIDToSingleFieldData = [v12 fieldIDToSingleFieldData];
+  v14 = [fieldIDToSingleFieldData count];
 
   if (v11 == v14)
   {
@@ -91,8 +91,8 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v15 = [v4 controls];
-    v16 = [v15 countByEnumeratingWithState:&v38 objects:v46 count:16];
+    controls2 = [metadataCopy controls];
+    v16 = [controls2 countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v16)
     {
       v17 = v16;
@@ -103,15 +103,15 @@
         {
           if (*v39 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(controls2);
           }
 
           v20 = *(*(&v38 + 1) + 8 * i);
-          v21 = [v20 value];
-          -[WBSFormTelemetryDataMonitor _updateMonitorDataWithTextFieldMetadata:textFieldValueLength:forFormID:](self, "_updateMonitorDataWithTextFieldMetadata:textFieldValueLength:forFormID:", v20, [v21 length], objc_msgSend(v7, "intValue"));
+          value = [v20 value];
+          -[WBSFormTelemetryDataMonitor _updateMonitorDataWithTextFieldMetadata:textFieldValueLength:forFormID:](self, "_updateMonitorDataWithTextFieldMetadata:textFieldValueLength:forFormID:", v20, [value length], objc_msgSend(v7, "intValue"));
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        v17 = [controls2 countByEnumeratingWithState:&v38 objects:v46 count:16];
       }
 
       while (v17);
@@ -120,13 +120,13 @@
 
   else
   {
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    controls2 = [MEMORY[0x1E695DF90] dictionary];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v35 = v4;
-    obj = [v4 controls];
+    v35 = metadataCopy;
+    obj = [metadataCopy controls];
     v22 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v22)
     {
@@ -142,26 +142,26 @@
           }
 
           v25 = *(*(&v42 + 1) + 8 * j);
-          v26 = [v25 uniqueID];
+          uniqueID = [v25 uniqueID];
           v27 = v7;
           v28 = [(NSMutableDictionary *)self->_formIDToFormData objectForKeyedSubscript:v7];
-          v29 = [v28 fieldIDToSingleFieldData];
-          v30 = [v29 objectForKeyedSubscript:v26];
+          fieldIDToSingleFieldData2 = [v28 fieldIDToSingleFieldData];
+          v30 = [fieldIDToSingleFieldData2 objectForKeyedSubscript:uniqueID];
 
           if (v30)
           {
-            [v15 setObject:v30 forKeyedSubscript:v26];
+            [controls2 setObject:v30 forKeyedSubscript:uniqueID];
           }
 
           else
           {
-            v31 = -[WBSSingleFieldTelemetryData initWithFieldType:fieldID:elementType:]([WBSSingleFieldTelemetryData alloc], "initWithFieldType:fieldID:elementType:", [objc_opt_class() formFieldTypeForFormControlMetadata:v25 formMetadata:v35], v26, -[WBSFormTelemetryDataMonitor _elementTypeForFormControlMetadata:](self, "_elementTypeForFormControlMetadata:", v25));
-            [v15 setObject:v31 forKeyedSubscript:v26];
+            v31 = -[WBSSingleFieldTelemetryData initWithFieldType:fieldID:elementType:]([WBSSingleFieldTelemetryData alloc], "initWithFieldType:fieldID:elementType:", [objc_opt_class() formFieldTypeForFormControlMetadata:v25 formMetadata:v35], uniqueID, -[WBSFormTelemetryDataMonitor _elementTypeForFormControlMetadata:](self, "_elementTypeForFormControlMetadata:", v25));
+            [controls2 setObject:v31 forKeyedSubscript:uniqueID];
           }
 
-          v32 = [v15 objectForKeyedSubscript:v26];
-          v33 = [v25 value];
-          -[WBSFormTelemetryDataMonitor _updateTelemetryFieldData:withTextFieldMetadata:textFieldValueLength:](self, "_updateTelemetryFieldData:withTextFieldMetadata:textFieldValueLength:", v32, v25, [v33 length]);
+          v32 = [controls2 objectForKeyedSubscript:uniqueID];
+          value2 = [v25 value];
+          -[WBSFormTelemetryDataMonitor _updateTelemetryFieldData:withTextFieldMetadata:textFieldValueLength:](self, "_updateTelemetryFieldData:withTextFieldMetadata:textFieldValueLength:", v32, v25, [value2 length]);
 
           v7 = v27;
         }
@@ -173,25 +173,25 @@
     }
 
     v34 = [(NSMutableDictionary *)self->_formIDToFormData objectForKeyedSubscript:v7];
-    [v34 setFieldIDToSingleFieldData:v15];
+    [v34 setFieldIDToSingleFieldData:controls2];
 
-    v4 = v35;
+    metadataCopy = v35;
   }
 }
 
-- (BOOL)_isMonitoringTextFieldWithID:(id)a3 forFormID:(int64_t)a4
+- (BOOL)_isMonitoringTextFieldWithID:(id)d forFormID:(int64_t)iD
 {
-  v6 = a3;
+  dCopy = d;
   formIDToFormData = self->_formIDToFormData;
   if (formIDToFormData)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:iD];
     v9 = [(NSMutableDictionary *)formIDToFormData objectForKeyedSubscript:v8];
 
     if (v9)
     {
-      v10 = [v9 fieldIDToSingleFieldData];
-      v11 = [v10 objectForKeyedSubscript:v6];
+      fieldIDToSingleFieldData = [v9 fieldIDToSingleFieldData];
+      v11 = [fieldIDToSingleFieldData objectForKeyedSubscript:dCopy];
       LOBYTE(formIDToFormData) = v11 != 0;
     }
 
@@ -204,50 +204,50 @@
   return formIDToFormData;
 }
 
-- (void)_updateMonitorDataWithTextFieldMetadata:(id)a3 textFieldValueLength:(unint64_t)a4 forFormID:(int64_t)a5
+- (void)_updateMonitorDataWithTextFieldMetadata:(id)metadata textFieldValueLength:(unint64_t)length forFormID:(int64_t)d
 {
   formIDToFormData = self->_formIDToFormData;
   v9 = MEMORY[0x1E696AD98];
-  v10 = a3;
-  v11 = [v9 numberWithInteger:a5];
+  metadataCopy = metadata;
+  v11 = [v9 numberWithInteger:d];
   v12 = [(NSMutableDictionary *)formIDToFormData objectForKeyedSubscript:v11];
-  v13 = [v12 fieldIDToSingleFieldData];
-  v14 = [v10 uniqueID];
-  v15 = [v13 objectForKeyedSubscript:v14];
+  fieldIDToSingleFieldData = [v12 fieldIDToSingleFieldData];
+  uniqueID = [metadataCopy uniqueID];
+  v15 = [fieldIDToSingleFieldData objectForKeyedSubscript:uniqueID];
 
-  [(WBSFormTelemetryDataMonitor *)self _updateTelemetryFieldData:v15 withTextFieldMetadata:v10 textFieldValueLength:a4];
+  [(WBSFormTelemetryDataMonitor *)self _updateTelemetryFieldData:v15 withTextFieldMetadata:metadataCopy textFieldValueLength:length];
 }
 
-- (void)_updateTelemetryFieldData:(id)a3 withTextFieldMetadata:(id)a4 textFieldValueLength:(unint64_t)a5
+- (void)_updateTelemetryFieldData:(id)data withTextFieldMetadata:(id)metadata textFieldValueLength:(unint64_t)length
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = [v15 wasPreviouslyAutoFilled];
-  v9 = [v7 isAutoFilledTextField];
-  v10 = [v7 isUserEditedTextField];
+  dataCopy = data;
+  metadataCopy = metadata;
+  wasPreviouslyAutoFilled = [dataCopy wasPreviouslyAutoFilled];
+  isAutoFilledTextField = [metadataCopy isAutoFilledTextField];
+  isUserEditedTextField = [metadataCopy isUserEditedTextField];
   v11 = 1;
-  if (!v10)
+  if (!isUserEditedTextField)
   {
     v11 = 2;
   }
 
-  if (!a5)
+  if (!length)
   {
     v11 = 0;
   }
 
   v12 = 4;
-  if (a5)
+  if (length)
   {
     v12 = 5;
   }
 
-  if (v8)
+  if (wasPreviouslyAutoFilled)
   {
     v11 = v12;
   }
 
-  if (v9)
+  if (isAutoFilledTextField)
   {
     v13 = 3;
   }
@@ -257,11 +257,11 @@
     v13 = v11;
   }
 
-  [v15 setModificationType:v13];
-  [v15 setIsAutoFilled:v9];
-  if (a5)
+  [dataCopy setModificationType:v13];
+  [dataCopy setIsAutoFilled:isAutoFilledTextField];
+  if (length)
   {
-    v14 = v10;
+    v14 = isUserEditedTextField;
   }
 
   else
@@ -269,41 +269,41 @@
     v14 = 0;
   }
 
-  [v15 setIsManuallyFilledByUser:v14];
-  if (![v15 fieldType] && objc_msgSend(v7, "looksLikeOneTimeCodeField"))
+  [dataCopy setIsManuallyFilledByUser:v14];
+  if (![dataCopy fieldType] && objc_msgSend(metadataCopy, "looksLikeOneTimeCodeField"))
   {
-    [v15 setFieldType:24];
+    [dataCopy setFieldType:24];
   }
 
-  if (v9 && [v15 fieldType] == 24)
+  if (isAutoFilledTextField && [dataCopy fieldType] == 24)
   {
-    [v15 setAutoFillOfferedType:2];
+    [dataCopy setAutoFillOfferedType:2];
   }
 }
 
-- (void)updateAutoFillOfferedType:(unint64_t)a3 forTextFieldWithID:(id)a4 forFormMetadata:(id)a5
+- (void)updateAutoFillOfferedType:(unint64_t)type forTextFieldWithID:(id)d forFormMetadata:(id)metadata
 {
-  v9 = a4;
-  v8 = a5;
-  if (!-[WBSFormTelemetryDataMonitor _isMonitoringTextFieldWithID:forFormID:](self, "_isMonitoringTextFieldWithID:forFormID:", v9, [v8 uniqueID]))
+  dCopy = d;
+  metadataCopy = metadata;
+  if (!-[WBSFormTelemetryDataMonitor _isMonitoringTextFieldWithID:forFormID:](self, "_isMonitoringTextFieldWithID:forFormID:", dCopy, [metadataCopy uniqueID]))
   {
-    [(WBSFormTelemetryDataMonitor *)self _updateMonitorDataWithFormMetadata:v8];
+    [(WBSFormTelemetryDataMonitor *)self _updateMonitorDataWithFormMetadata:metadataCopy];
   }
 
-  -[WBSFormTelemetryDataMonitor _updateAutoFillOfferedType:forTextFieldWithID:forFormID:](self, "_updateAutoFillOfferedType:forTextFieldWithID:forFormID:", a3, v9, [v8 uniqueID]);
+  -[WBSFormTelemetryDataMonitor _updateAutoFillOfferedType:forTextFieldWithID:forFormID:](self, "_updateAutoFillOfferedType:forTextFieldWithID:forFormID:", type, dCopy, [metadataCopy uniqueID]);
 }
 
-- (void)_updateAutoFillOfferedType:(unint64_t)a3 forTextFieldWithID:(id)a4 forFormID:(int64_t)a5
+- (void)_updateAutoFillOfferedType:(unint64_t)type forTextFieldWithID:(id)d forFormID:(int64_t)iD
 {
   formIDToFormData = self->_formIDToFormData;
   v8 = MEMORY[0x1E696AD98];
-  v9 = a4;
-  v10 = [v8 numberWithInteger:a5];
+  dCopy = d;
+  v10 = [v8 numberWithInteger:iD];
   v11 = [(NSMutableDictionary *)formIDToFormData objectForKeyedSubscript:v10];
-  v12 = [v11 fieldIDToSingleFieldData];
-  v13 = [v12 objectForKeyedSubscript:v9];
+  fieldIDToSingleFieldData = [v11 fieldIDToSingleFieldData];
+  v13 = [fieldIDToSingleFieldData objectForKeyedSubscript:dCopy];
 
-  [v13 setAutoFillOfferedType:a3];
+  [v13 setAutoFillOfferedType:type];
 }
 
 - (void)sendTelemetryEventsOnFormSubmission
@@ -724,15 +724,15 @@ LABEL_17:
 LABEL_18:
 }
 
-+ (int64_t)formFieldTypeForFormControlMetadata:(id)a3 formMetadata:(id)a4
++ (int64_t)formFieldTypeForFormControlMetadata:(id)metadata formMetadata:(id)formMetadata
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v5 looksLikeOneTimeCodeField] & 1) == 0)
+  metadataCopy = metadata;
+  formMetadataCopy = formMetadata;
+  if (([metadataCopy looksLikeOneTimeCodeField] & 1) == 0)
   {
-    v8 = [v6 type] - 3;
-    v9 = [v5 classification];
-    if ([v5 isSecureTextField] & 1) != 0 || (WBSIsEqual())
+    v8 = [formMetadataCopy type] - 3;
+    classification = [metadataCopy classification];
+    if ([metadataCopy isSecureTextField] & 1) != 0 || (WBSIsEqual())
     {
       if (v8 >= 3)
       {
@@ -746,7 +746,7 @@ LABEL_18:
       if (v8 > 2 || (v10 & 1) == 0)
       {
 LABEL_6:
-        if ([WBSFormDataController isFieldUnidentified:v5]|| [WBSFormDataController textFieldLooksLikeCreditCardFormField:v5])
+        if ([WBSFormDataController isFieldUnidentified:metadataCopy]|| [WBSFormDataController textFieldLooksLikeCreditCardFormField:metadataCopy])
         {
           if (WBSIsEqual())
           {
@@ -781,19 +781,19 @@ LABEL_13:
           }
         }
 
-        v12 = [v5 addressBookLabel];
-        v13 = [v12 isEqualToString:@"email"];
+        addressBookLabel = [metadataCopy addressBookLabel];
+        v13 = [addressBookLabel isEqualToString:@"email"];
 
-        v14 = [v5 isLabeledUsernameField];
-        if ([v6 type] == 4 && ((v13 | v14) & 1) != 0)
+        isLabeledUsernameField = [metadataCopy isLabeledUsernameField];
+        if ([formMetadataCopy type] == 4 && ((v13 | isLabeledUsernameField) & 1) != 0)
         {
           v7 = 23;
           goto LABEL_13;
         }
 
-        v15 = [v6 userNameElementUniqueID];
-        v16 = [v5 uniqueID];
-        if ([v6 type] == 3 && (objc_msgSend(v15, "isEqualToString:", v16) & 1) != 0)
+        userNameElementUniqueID = [formMetadataCopy userNameElementUniqueID];
+        uniqueID = [metadataCopy uniqueID];
+        if ([formMetadataCopy type] == 3 && (objc_msgSend(userNameElementUniqueID, "isEqualToString:", uniqueID) & 1) != 0)
         {
           v7 = 23;
 LABEL_63:
@@ -801,15 +801,15 @@ LABEL_63:
           goto LABEL_13;
         }
 
-        v17 = [v5 addressBookLabel];
-        v18 = v17;
-        if (v17)
+        addressBookLabel2 = [metadataCopy addressBookLabel];
+        v18 = addressBookLabel2;
+        if (addressBookLabel2)
         {
-          v19 = [v17 lowercaseString];
-          v20 = [WBSFormDataController specifierForAddressBookLabel:v19];
+          lowercaseString = [addressBookLabel2 lowercaseString];
+          v20 = [WBSFormDataController specifierForAddressBookLabel:lowercaseString];
 
-          v21 = [v20 property];
-          v22 = [v21 isEqualToString:*MEMORY[0x1E69C8AD8]];
+          property = [v20 property];
+          v22 = [property isEqualToString:*MEMORY[0x1E69C8AD8]];
 
           if (v22)
           {
@@ -820,8 +820,8 @@ LABEL_62:
             goto LABEL_63;
           }
 
-          v23 = [v20 property];
-          v24 = [v23 isEqualToString:*MEMORY[0x1E69C8AC0]];
+          property2 = [v20 property];
+          v24 = [property2 isEqualToString:*MEMORY[0x1E69C8AC0]];
 
           if (v24)
           {
@@ -829,8 +829,8 @@ LABEL_62:
             goto LABEL_48;
           }
 
-          v25 = [v20 property];
-          v26 = [v25 isEqualToString:*MEMORY[0x1E69C8AD0]];
+          property3 = [v20 property];
+          v26 = [property3 isEqualToString:*MEMORY[0x1E69C8AD0]];
 
           if (v26)
           {
@@ -838,8 +838,8 @@ LABEL_62:
             goto LABEL_48;
           }
 
-          v27 = [v20 property];
-          v28 = [v27 isEqualToString:*MEMORY[0x1E69C8AC8]];
+          property4 = [v20 property];
+          v28 = [property4 isEqualToString:*MEMORY[0x1E69C8AC8]];
 
           if (v28)
           {
@@ -847,8 +847,8 @@ LABEL_62:
             goto LABEL_48;
           }
 
-          v29 = [v20 property];
-          v30 = [v29 isEqualToString:*MEMORY[0x1E69C8AA0]];
+          property5 = [v20 property];
+          v30 = [property5 isEqualToString:*MEMORY[0x1E69C8AA0]];
 
           if (v30)
           {
@@ -856,8 +856,8 @@ LABEL_62:
             goto LABEL_48;
           }
 
-          v31 = [v20 property];
-          v32 = [v31 isEqualToString:*MEMORY[0x1E69C8AB8]];
+          property6 = [v20 property];
+          v32 = [property6 isEqualToString:*MEMORY[0x1E69C8AB8]];
 
           if (v32)
           {
@@ -865,8 +865,8 @@ LABEL_62:
             goto LABEL_48;
           }
 
-          v33 = [v20 property];
-          v34 = [v33 isEqualToString:*MEMORY[0x1E69C8A98]];
+          property7 = [v20 property];
+          v34 = [property7 isEqualToString:*MEMORY[0x1E69C8A98]];
 
           if (v34)
           {
@@ -874,8 +874,8 @@ LABEL_62:
             goto LABEL_48;
           }
 
-          v35 = [v20 property];
-          v36 = [v35 isEqualToString:*MEMORY[0x1E69C8AB0]];
+          property8 = [v20 property];
+          v36 = [property8 isEqualToString:*MEMORY[0x1E69C8AB0]];
 
           if (v36)
           {
@@ -883,8 +883,8 @@ LABEL_62:
             goto LABEL_48;
           }
 
-          v37 = [v20 property];
-          v38 = [v37 isEqualToString:@"URLs"];
+          property9 = [v20 property];
+          v38 = [property9 isEqualToString:@"URLs"];
 
           if (v38)
           {
@@ -892,13 +892,13 @@ LABEL_62:
             goto LABEL_48;
           }
 
-          v39 = [v20 property];
-          v40 = [v39 isEqualToString:*MEMORY[0x1E69C8A90]];
+          property10 = [v20 property];
+          v40 = [property10 isEqualToString:*MEMORY[0x1E69C8A90]];
 
           if (v40)
           {
-            v41 = [v20 component];
-            v42 = [v41 isEqualToString:@"Street"];
+            component = [v20 component];
+            v42 = [component isEqualToString:@"Street"];
 
             if (v42)
             {
@@ -906,8 +906,8 @@ LABEL_62:
               goto LABEL_48;
             }
 
-            v43 = [v20 component];
-            v44 = [v43 isEqualToString:@"City"];
+            component2 = [v20 component];
+            v44 = [component2 isEqualToString:@"City"];
 
             if (v44)
             {
@@ -915,8 +915,8 @@ LABEL_62:
               goto LABEL_48;
             }
 
-            v45 = [v20 component];
-            v46 = [v45 isEqualToString:@"State"];
+            component3 = [v20 component];
+            v46 = [component3 isEqualToString:@"State"];
 
             if (v46)
             {
@@ -924,8 +924,8 @@ LABEL_62:
               goto LABEL_48;
             }
 
-            v47 = [v20 component];
-            v48 = [v47 isEqualToString:@"Country"];
+            component4 = [v20 component];
+            v48 = [component4 isEqualToString:@"Country"];
 
             if (v48)
             {
@@ -933,8 +933,8 @@ LABEL_62:
               goto LABEL_48;
             }
 
-            v49 = [v20 component];
-            v50 = [v49 isEqualToString:@"ZIP"];
+            component5 = [v20 component];
+            v50 = [component5 isEqualToString:@"ZIP"];
 
             if (v50)
             {
@@ -959,13 +959,13 @@ LABEL_14:
   return v7;
 }
 
-- (unint64_t)_elementTypeForFormControlMetadata:(id)a3
+- (unint64_t)_elementTypeForFormControlMetadata:(id)metadata
 {
-  v3 = a3;
-  if ([v3 isTextField])
+  metadataCopy = metadata;
+  if ([metadataCopy isTextField])
   {
-    v4 = [v3 tagName];
-    if ([v4 isEqualToString:@"TEXTAREA"])
+    tagName = [metadataCopy tagName];
+    if ([tagName isEqualToString:@"TEXTAREA"])
     {
       v5 = 4;
     }
@@ -978,18 +978,18 @@ LABEL_14:
 
   else
   {
-    v6 = [v3 radioButtonInfo];
+    radioButtonInfo = [metadataCopy radioButtonInfo];
 
-    if (v6)
+    if (radioButtonInfo)
     {
       v5 = 2;
     }
 
     else
     {
-      v7 = [v3 selectElementInfo];
+      selectElementInfo = [metadataCopy selectElementInfo];
 
-      v5 = v7 != 0;
+      v5 = selectElementInfo != 0;
     }
   }
 

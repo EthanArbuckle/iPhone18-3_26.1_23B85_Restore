@@ -2,7 +2,7 @@
 - (BOOL)isGroupMessage;
 - (BOOL)isMessageSenderFavorite;
 - (BOOL)isMessageSenderInContacts;
-- (OSMNotificationFeatureMap)initWithNotification:(id)a3;
+- (OSMNotificationFeatureMap)initWithNotification:(id)notification;
 - (double)senderScore;
 - (double)timeSinceMostRecentInteractionWithSender;
 - (id)_messageSender;
@@ -10,7 +10,7 @@
 - (id)_recent;
 - (id)contactId;
 - (id)recentInteractionsWithSender;
-- (unint64_t)numberOfInteractionsBetweenDate:(id)a3 andDate:(id)a4;
+- (unint64_t)numberOfInteractionsBetweenDate:(id)date andDate:(id)andDate;
 - (unint64_t)numberOfRecentInteractionsWithSender;
 @end
 
@@ -22,14 +22,14 @@
   if (!recentContactRecord)
   {
     v4 = dispatch_semaphore_create(0);
-    v5 = [(OSMNotificationFeatureMap *)self _messageSender];
-    v6 = [v5 displayName];
+    _messageSender = [(OSMNotificationFeatureMap *)self _messageSender];
+    displayName = [_messageSender displayName];
     v16[0] = CRAddressKindPhoneNumber;
     v16[1] = CRAddressKindEmail;
     v16[2] = CRAddressKindInstantMessage;
     v16[3] = CRAddressKindGroup;
     v7 = [NSArray arrayWithObjects:v16 count:4];
-    v8 = [CRSearchQuery searchQueryForSearchTerm:v6 preferredKinds:v7 sendingAddress:0 recentsDomain:CRRecentsDomainMessages];
+    v8 = [CRSearchQuery searchQueryForSearchTerm:displayName preferredKinds:v7 sendingAddress:0 recentsDomain:CRRecentsDomainMessages];
 
     v9 = +[CRRecentContactsLibrary defaultInstance];
     backgroundQueue = self->_backgroundQueue;
@@ -56,12 +56,12 @@
   sender = self->_sender;
   if (!sender)
   {
-    v4 = [(UNNotification *)self->_notification request];
-    v5 = [v4 content];
-    v6 = [v5 title];
+    request = [(UNNotification *)self->_notification request];
+    content = [request content];
+    title = [content title];
 
     contactStore = self->_contactStore;
-    v8 = [CNContact predicateForContactsMatchingName:v6];
+    v8 = [CNContact predicateForContactsMatchingName:title];
     v25 = CNContactIdentifierKey;
     v9 = [NSArray arrayWithObjects:&v25 count:1];
     v10 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v8 keysToFetch:v9 error:0];
@@ -72,17 +72,17 @@
       v19 = 136315650;
       v20 = "[OSMNotificationFeatureMap _messageSender]";
       v21 = 2112;
-      v22 = v6;
+      v22 = title;
       v23 = 2112;
       v24 = v10;
       _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s Found matching contacts for %@: %@", &v19, 0x20u);
     }
 
-    v12 = [[INPersonHandle alloc] initWithValue:v6 type:0];
+    v12 = [[INPersonHandle alloc] initWithValue:title type:0];
     v13 = [INPerson alloc];
-    v14 = [v10 firstObject];
-    v15 = [v14 identifier];
-    v16 = [v13 initWithPersonHandle:v12 nameComponents:0 displayName:v6 image:0 contactIdentifier:v15 customIdentifier:0];
+    firstObject = [v10 firstObject];
+    identifier = [firstObject identifier];
+    v16 = [v13 initWithPersonHandle:v12 nameComponents:0 displayName:title image:0 contactIdentifier:identifier customIdentifier:0];
     v17 = self->_sender;
     self->_sender = v16;
 
@@ -94,10 +94,10 @@
 
 - (id)contactId
 {
-  v2 = [(OSMNotificationFeatureMap *)self _messageSender];
-  v3 = [v2 contactIdentifier];
+  _messageSender = [(OSMNotificationFeatureMap *)self _messageSender];
+  contactIdentifier = [_messageSender contactIdentifier];
 
-  return v3;
+  return contactIdentifier;
 }
 
 - (double)senderScore
@@ -108,9 +108,9 @@
   v20 = 0;
   v3 = objc_alloc_init(PPContactStore);
   v4 = [NSSet alloc];
-  v5 = [(OSMNotificationFeatureMap *)self _messageSender];
-  v6 = [v5 displayName];
-  v7 = [v6 componentsSeparatedByString:@" "];
+  _messageSender = [(OSMNotificationFeatureMap *)self _messageSender];
+  displayName = [_messageSender displayName];
+  v7 = [displayName componentsSeparatedByString:@" "];
   v8 = [v4 initWithArray:v7];
 
   v16 = 0;
@@ -129,18 +129,18 @@
   return v11;
 }
 
-- (unint64_t)numberOfInteractionsBetweenDate:(id)a3 andDate:(id)a4
+- (unint64_t)numberOfInteractionsBetweenDate:(id)date andDate:(id)andDate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(OSMNotificationFeatureMap *)self _recent];
-  v9 = [v8 recentDates];
+  dateCopy = date;
+  andDateCopy = andDate;
+  _recent = [(OSMNotificationFeatureMap *)self _recent];
+  recentDates = [_recent recentDates];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v9;
+  v10 = recentDates;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -157,7 +157,7 @@
         }
 
         v16 = *(*(&v18 + 1) + 8 * i);
-        if ([v16 compare:{v6, v18}] == 1 && objc_msgSend(v16, "compare:", v7) == -1)
+        if ([v16 compare:{dateCopy, v18}] == 1 && objc_msgSend(v16, "compare:", andDateCopy) == -1)
         {
           ++v13;
         }
@@ -179,8 +179,8 @@
 
 - (double)timeSinceMostRecentInteractionWithSender
 {
-  v2 = [(OSMNotificationFeatureMap *)self recentInteractionsWithSender];
-  v3 = [v2 count];
+  recentInteractionsWithSender = [(OSMNotificationFeatureMap *)self recentInteractionsWithSender];
+  v3 = [recentInteractionsWithSender count];
   v4 = +[NSDate date];
   v5 = v4;
   if (v3 < 2)
@@ -191,7 +191,7 @@
 
   else
   {
-    v6 = [v2 objectAtIndex:1];
+    v6 = [recentInteractionsWithSender objectAtIndex:1];
     [v5 timeIntervalSinceDate:v6];
     v8 = v7;
   }
@@ -201,20 +201,20 @@
 
 - (unint64_t)numberOfRecentInteractionsWithSender
 {
-  v2 = [(OSMNotificationFeatureMap *)self _recent];
-  v3 = [v2 countOfRecents];
+  _recent = [(OSMNotificationFeatureMap *)self _recent];
+  countOfRecents = [_recent countOfRecents];
 
-  return v3;
+  return countOfRecents;
 }
 
 - (id)recentInteractionsWithSender
 {
-  v2 = [(OSMNotificationFeatureMap *)self _recent];
-  v3 = [v2 recentDates];
+  _recent = [(OSMNotificationFeatureMap *)self _recent];
+  recentDates = [_recent recentDates];
 
-  if (v3)
+  if (recentDates)
   {
-    v4 = v3;
+    v4 = recentDates;
   }
 
   else
@@ -227,25 +227,25 @@
 
 - (BOOL)isGroupMessage
 {
-  v2 = [(UNNotification *)self->_notification request];
-  v3 = [v2 content];
-  v4 = [v3 subtitle];
+  request = [(UNNotification *)self->_notification request];
+  content = [request content];
+  subtitle = [content subtitle];
 
-  LOBYTE(v2) = [v4 length] != 0;
-  return v2;
+  LOBYTE(request) = [subtitle length] != 0;
+  return request;
 }
 
 - (id)_messageSenderCNContact
 {
-  v3 = [(OSMNotificationFeatureMap *)self _messageSender];
-  v4 = [v3 contactIdentifier];
+  _messageSender = [(OSMNotificationFeatureMap *)self _messageSender];
+  contactIdentifier = [_messageSender contactIdentifier];
 
-  if (v4)
+  if (contactIdentifier)
   {
     contactStore = self->_contactStore;
     v9 = CNContactIdentifierKey;
     v6 = [NSArray arrayWithObjects:&v9 count:1];
-    v7 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:v4 keysToFetch:v6 error:0];
+    v7 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:contactIdentifier keysToFetch:v6 error:0];
   }
 
   else
@@ -258,10 +258,10 @@
 
 - (BOOL)isMessageSenderFavorite
 {
-  v3 = [(OSMNotificationFeatureMap *)self _messageSenderCNContact];
-  if (v3)
+  _messageSenderCNContact = [(OSMNotificationFeatureMap *)self _messageSenderCNContact];
+  if (_messageSenderCNContact)
   {
-    v4 = [(CNFavorites *)self->_contactFavorites entriesForContact:v3];
+    v4 = [(CNFavorites *)self->_contactFavorites entriesForContact:_messageSenderCNContact];
     v5 = [v4 count] != 0;
   }
 
@@ -275,22 +275,22 @@
 
 - (BOOL)isMessageSenderInContacts
 {
-  v2 = [(OSMNotificationFeatureMap *)self _messageSenderCNContact];
-  v3 = v2 != 0;
+  _messageSenderCNContact = [(OSMNotificationFeatureMap *)self _messageSenderCNContact];
+  v3 = _messageSenderCNContact != 0;
 
   return v3;
 }
 
-- (OSMNotificationFeatureMap)initWithNotification:(id)a3
+- (OSMNotificationFeatureMap)initWithNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   v16.receiver = self;
   v16.super_class = OSMNotificationFeatureMap;
   v6 = [(OSMNotificationFeatureMap *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notification, a3);
+    objc_storeStrong(&v6->_notification, notification);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("OSMNotificationFeatureMapBackgroundQueue", v8);
     backgroundQueue = v7->_backgroundQueue;

@@ -1,6 +1,6 @@
 @interface HMDCharacteristicUpdateTuple
-- (BOOL)isEqual:(id)a3;
-- (HMDCharacteristicUpdateTuple)initWithCharacteristic:(id)a3 updatedValue:(id)a4 isBroadcast:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (HMDCharacteristicUpdateTuple)initWithCharacteristic:(id)characteristic updatedValue:(id)value isBroadcast:(BOOL)broadcast;
 - (id)attributeDescriptions;
 - (id)updatedValue;
 - (unint64_t)hash;
@@ -12,11 +12,11 @@
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDCharacteristicUpdateTuple *)self characteristic];
-  v5 = [v3 initWithName:@"characteristic" value:v4];
+  characteristic = [(HMDCharacteristicUpdateTuple *)self characteristic];
+  v5 = [v3 initWithName:@"characteristic" value:characteristic];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDCharacteristicUpdateTuple *)self value];
-  v8 = [v6 initWithName:@"value" value:v7];
+  value = [(HMDCharacteristicUpdateTuple *)self value];
+  v8 = [v6 initWithName:@"value" value:value];
   v15[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDCharacteristicUpdateTuple *)self isBroadcast];
@@ -32,19 +32,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDCharacteristicUpdateTuple *)self characteristic];
-  v3 = [v2 hash];
+  characteristic = [(HMDCharacteristicUpdateTuple *)self characteristic];
+  v3 = [characteristic hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -55,16 +55,16 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDCharacteristicUpdateTuple *)self characteristic];
-    v8 = [v6 characteristic];
-    if ([v7 isEqual:v8])
+    characteristic = [(HMDCharacteristicUpdateTuple *)self characteristic];
+    characteristic2 = [v6 characteristic];
+    if ([characteristic isEqual:characteristic2])
     {
-      v9 = [(HMDCharacteristicUpdateTuple *)self value];
-      v10 = [v6 value];
-      if ([v9 isEqual:v10])
+      value = [(HMDCharacteristicUpdateTuple *)self value];
+      value2 = [v6 value];
+      if ([value isEqual:value2])
       {
-        v11 = [(HMDCharacteristicUpdateTuple *)self isBroadcast];
-        v12 = v11 ^ [v6 isBroadcast] ^ 1;
+        isBroadcast = [(HMDCharacteristicUpdateTuple *)self isBroadcast];
+        v12 = isBroadcast ^ [v6 isBroadcast] ^ 1;
       }
 
       else
@@ -90,28 +90,28 @@
 - (id)updatedValue
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCharacteristicUpdateTuple *)self characteristicResponse];
-  v4 = [v3 request];
-  v5 = [v4 isMemberOfClass:objc_opt_class()];
+  characteristicResponse = [(HMDCharacteristicUpdateTuple *)self characteristicResponse];
+  request = [characteristicResponse request];
+  v5 = [request isMemberOfClass:objc_opt_class()];
 
   if (v5)
   {
-    v6 = [(HMDCharacteristicUpdateTuple *)self characteristic];
-    v7 = [v6 lastKnownValue];
+    characteristic = [(HMDCharacteristicUpdateTuple *)self characteristic];
+    lastKnownValue = [characteristic lastKnownValue];
 
-    v8 = [(HMDCharacteristicUpdateTuple *)self characteristic];
-    v9 = [v8 lastKnownValueUpdateTime];
-    v10 = [(HMDCharacteristicUpdateTuple *)self characteristicResponse];
-    v11 = [v10 valueUpdatedTime];
-    if ([v9 compare:v11] == 1)
+    characteristic2 = [(HMDCharacteristicUpdateTuple *)self characteristic];
+    lastKnownValueUpdateTime = [characteristic2 lastKnownValueUpdateTime];
+    characteristicResponse2 = [(HMDCharacteristicUpdateTuple *)self characteristicResponse];
+    valueUpdatedTime = [characteristicResponse2 valueUpdatedTime];
+    if ([lastKnownValueUpdateTime compare:valueUpdatedTime] == 1)
     {
-      v12 = [(HMDCharacteristicUpdateTuple *)self value];
-      v13 = [v7 isEqual:v12];
+      value = [(HMDCharacteristicUpdateTuple *)self value];
+      v13 = [lastKnownValue isEqual:value];
 
       if ((v13 & 1) == 0)
       {
         v14 = objc_autoreleasePoolPush();
-        v15 = self;
+        selfCopy = self;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
@@ -119,14 +119,14 @@
           v21 = 138543874;
           v22 = v17;
           v23 = 2112;
-          v24 = v15;
+          v24 = selfCopy;
           v25 = 2112;
-          v26 = v7;
+          v26 = lastKnownValue;
           _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_INFO, "%{public}@Updating tuple to last known characteristic value %@ -> %@", &v21, 0x20u);
         }
 
         objc_autoreleasePoolPop(v14);
-        [(HMDCharacteristicUpdateTuple *)v15 setValue:v7];
+        [(HMDCharacteristicUpdateTuple *)selfCopy setValue:lastKnownValue];
       }
     }
 
@@ -135,25 +135,25 @@
     }
   }
 
-  v18 = [(HMDCharacteristicUpdateTuple *)self value];
+  value2 = [(HMDCharacteristicUpdateTuple *)self value];
   v19 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return value2;
 }
 
-- (HMDCharacteristicUpdateTuple)initWithCharacteristic:(id)a3 updatedValue:(id)a4 isBroadcast:(BOOL)a5
+- (HMDCharacteristicUpdateTuple)initWithCharacteristic:(id)characteristic updatedValue:(id)value isBroadcast:(BOOL)broadcast
 {
-  v9 = a3;
-  v10 = a4;
+  characteristicCopy = characteristic;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = HMDCharacteristicUpdateTuple;
   v11 = [(HMDCharacteristicUpdateTuple *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_characteristic, a3);
-    objc_storeStrong(&v12->_value, a4);
-    v12->_broadcast = a5;
+    objc_storeStrong(&v11->_characteristic, characteristic);
+    objc_storeStrong(&v12->_value, value);
+    v12->_broadcast = broadcast;
   }
 
   return v12;

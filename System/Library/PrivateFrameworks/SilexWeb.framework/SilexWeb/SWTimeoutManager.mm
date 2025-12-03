@@ -1,19 +1,19 @@
 @interface SWTimeoutManager
-- (SWTimeoutManager)initWithTimeout:(double)a3 messageHandlerManager:(id)a4 documentStateProvider:(id)a5;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
-- (void)onTimeout:(id)a3;
+- (SWTimeoutManager)initWithTimeout:(double)timeout messageHandlerManager:(id)manager documentStateProvider:(id)provider;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
+- (void)onTimeout:(id)timeout;
 @end
 
 @implementation SWTimeoutManager
 
-- (SWTimeoutManager)initWithTimeout:(double)a3 messageHandlerManager:(id)a4 documentStateProvider:(id)a5
+- (SWTimeoutManager)initWithTimeout:(double)timeout messageHandlerManager:(id)manager documentStateProvider:(id)provider
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3 < 0.0 || v8 == 0 || v9 == 0)
+  managerCopy = manager;
+  providerCopy = provider;
+  v10 = providerCopy;
+  if (timeout < 0.0 || managerCopy == 0 || providerCopy == 0)
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -24,14 +24,14 @@
     v15 = v14;
     if (v14)
     {
-      v16 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       timeoutBlocks = v15->_timeoutBlocks;
-      v15->_timeoutBlocks = v16;
+      v15->_timeoutBlocks = array;
 
       v42 = [SWWeakMessageHandler handlerWithMessageHandler:v15];
-      [v8 addMessageHandler:v42 name:@"presentable"];
-      [v8 addMessageHandler:v42 name:@"loading"];
-      [v8 addMessageHandler:v42 name:@"update"];
+      [managerCopy addMessageHandler:v42 name:@"presentable"];
+      [managerCopy addMessageHandler:v42 name:@"loading"];
+      [managerCopy addMessageHandler:v42 name:@"update"];
       v44 = [objc_alloc(MEMORY[0x1E69B6918]) initWithName:@"idle"];
       v18 = [objc_alloc(MEMORY[0x1E69B6918]) initWithName:@"waiting"];
       v19 = [objc_alloc(MEMORY[0x1E69B6918]) initWithName:@"timeout"];
@@ -56,7 +56,7 @@
       v51[1] = 3221225472;
       v51[2] = __80__SWTimeoutManager_initWithTimeout_messageHandlerManager_documentStateProvider___block_invoke;
       v51[3] = &__block_descriptor_40_e55_v24__0__NFStateMachineTransition_8__SWTimeoutManager_16l;
-      *&v51[4] = a3;
+      *&v51[4] = timeout;
       v29 = [v18 onWillEnter:v51];
       v30 = [v18 onWillExit:&__block_literal_global_7];
       v31 = [v19 onWillEnter:&__block_literal_global_21];
@@ -95,10 +95,10 @@
     }
 
     self = v15;
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 void __80__SWTimeoutManager_initWithTimeout_messageHandlerManager_documentStateProvider___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -179,21 +179,21 @@ uint64_t __80__SWTimeoutManager_initWithTimeout_messageHandlerManager_documentSt
   return [v3 deactivateIfNeeded];
 }
 
-- (void)onTimeout:(id)a3
+- (void)onTimeout:(id)timeout
 {
-  if (a3)
+  if (timeout)
   {
-    v4 = a3;
-    v6 = [(SWTimeoutManager *)self timeoutBlocks];
-    v5 = MEMORY[0x1DA6FDA60](v4);
+    timeoutCopy = timeout;
+    timeoutBlocks = [(SWTimeoutManager *)self timeoutBlocks];
+    v5 = MEMORY[0x1DA6FDA60](timeoutCopy);
 
-    [v6 addObject:v5];
+    [timeoutBlocks addObject:v5];
   }
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
-  v5 = [(SWTimeoutManager *)self stateMachine:a3];
+  v5 = [(SWTimeoutManager *)self stateMachine:message];
   v4 = [v5 fireEventWithName:@"loaded" withContext:0];
 }
 

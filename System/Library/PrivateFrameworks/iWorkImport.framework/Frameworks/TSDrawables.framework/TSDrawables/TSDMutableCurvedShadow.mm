@@ -1,47 +1,47 @@
 @interface TSDMutableCurvedShadow
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAngle:(double)a3;
-- (void)setColor:(id)a3;
-- (void)setOffset:(double)a3;
-- (void)setOpacity:(double)a3;
-- (void)setRadius:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAngle:(double)angle;
+- (void)setColor:(id)color;
+- (void)setOffset:(double)offset;
+- (void)setOpacity:(double)opacity;
+- (void)setRadius:(double)radius;
 @end
 
 @implementation TSDMutableCurvedShadow
 
-- (void)setAngle:(double)a3
+- (void)setAngle:(double)angle
 {
   TSUNormalizeAngleInDegrees();
 
   objc_msgSend_i_setAngle_(self, v4, v5);
 }
 
-- (void)setOffset:(double)a3
+- (void)setOffset:(double)offset
 {
-  objc_msgSend_clampOffset_(self, a2, v3, a3);
+  objc_msgSend_clampOffset_(self, a2, v3, offset);
 
   objc_msgSend_i_setOffset_(self, v5, v6);
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
-  objc_msgSend_clampRadius_(self, a2, v3, a3);
+  objc_msgSend_clampRadius_(self, a2, v3, radius);
 
   objc_msgSend_i_setRadius_(self, v5, v6);
 }
 
-- (void)setOpacity:(double)a3
+- (void)setOpacity:(double)opacity
 {
-  objc_msgSend_clampOpacity_(self, a2, v3, a3);
+  objc_msgSend_clampOpacity_(self, a2, v3, opacity);
 
   objc_msgSend_i_setOpacity_(self, v5, v6);
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
-  v12 = v4;
-  if (!v4)
+  colorCopy = color;
+  v12 = colorCopy;
+  if (!colorCopy)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], 0, "[TSDMutableCurvedShadow setColor:]");
@@ -49,15 +49,15 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 35, 0, "invalid nil value for '%{public}s'", "color");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
-    v4 = 0;
+    colorCopy = 0;
   }
 
-  objc_msgSend_i_setColor_(self, v4, v4);
+  objc_msgSend_i_setColor_(self, colorCopy, colorCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSDCurvedShadow, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSDCurvedShadow, a2, zone);
   objc_msgSend_offset(self, v5, v6);
   v8 = v7;
   objc_msgSend_angle(self, v9, v10);

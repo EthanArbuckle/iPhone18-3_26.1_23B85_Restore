@@ -1,19 +1,19 @@
 @interface NTKComplicationLayout
-+ (id)layoutWithDefaultRule:(id)a3;
++ (id)layoutWithDefaultRule:(id)rule;
 - (NTKComplicationLayout)init;
-- (id)defaultLayoutRuleForState:(int64_t)a3;
-- (id)layoutRuleForComplicationState:(int64_t)a3 layoutOverride:(int64_t)a4;
-- (void)setDefaultLayoutRule:(id)a3 forState:(int64_t)a4;
-- (void)setOverrideLayoutRule:(id)a3 forState:(int64_t)a4 layoutOverride:(int64_t)a5;
+- (id)defaultLayoutRuleForState:(int64_t)state;
+- (id)layoutRuleForComplicationState:(int64_t)state layoutOverride:(int64_t)override;
+- (void)setDefaultLayoutRule:(id)rule forState:(int64_t)state;
+- (void)setOverrideLayoutRule:(id)rule forState:(int64_t)state layoutOverride:(int64_t)override;
 @end
 
 @implementation NTKComplicationLayout
 
-+ (id)layoutWithDefaultRule:(id)a3
++ (id)layoutWithDefaultRule:(id)rule
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setDefaultLayoutRule:v4 forState:0];
+  ruleCopy = rule;
+  v5 = objc_alloc_init(self);
+  [v5 setDefaultLayoutRule:ruleCopy forState:0];
 
   return v5;
 }
@@ -25,9 +25,9 @@
   v2 = [(NTKComplicationLayout *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     stateLayouts = v2->_stateLayouts;
-    v2->_stateLayouts = v3;
+    v2->_stateLayouts = array;
 
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -47,23 +47,23 @@ void __29__NTKComplicationLayout_init__block_invoke(uint64_t a1)
   [v1 addObject:v2];
 }
 
-- (void)setDefaultLayoutRule:(id)a3 forState:(int64_t)a4
+- (void)setDefaultLayoutRule:(id)rule forState:(int64_t)state
 {
-  v6 = a3;
-  v7 = [(NTKComplicationLayout *)self _layoutForState:a4];
-  [v7 setDefaultRule:v6];
+  ruleCopy = rule;
+  v7 = [(NTKComplicationLayout *)self _layoutForState:state];
+  [v7 setDefaultRule:ruleCopy];
 }
 
-- (void)setOverrideLayoutRule:(id)a3 forState:(int64_t)a4 layoutOverride:(int64_t)a5
+- (void)setOverrideLayoutRule:(id)rule forState:(int64_t)state layoutOverride:(int64_t)override
 {
-  v8 = a3;
-  v9 = [(NTKComplicationLayout *)self _layoutForState:a4];
-  [v9 setRule:v8 forLayoutOverride:a5];
+  ruleCopy = rule;
+  v9 = [(NTKComplicationLayout *)self _layoutForState:state];
+  [v9 setRule:ruleCopy forLayoutOverride:override];
 }
 
-- (id)layoutRuleForComplicationState:(int64_t)a3 layoutOverride:(int64_t)a4
+- (id)layoutRuleForComplicationState:(int64_t)state layoutOverride:(int64_t)override
 {
-  if (a3 < 0)
+  if (state < 0)
   {
 LABEL_6:
     v8 = 0;
@@ -71,18 +71,18 @@ LABEL_6:
 
   else
   {
-    v5 = a3;
+    stateCopy = state;
     while (1)
     {
-      v7 = [(NTKComplicationLayout *)self _layoutForState:v5];
-      v8 = [v7 ruleForLayoutOverride:a4];
+      v7 = [(NTKComplicationLayout *)self _layoutForState:stateCopy];
+      v8 = [v7 ruleForLayoutOverride:override];
 
       if (v8)
       {
         break;
       }
 
-      if (v5-- < 1)
+      if (stateCopy-- < 1)
       {
         goto LABEL_6;
       }
@@ -92,35 +92,35 @@ LABEL_6:
   return v8;
 }
 
-- (id)defaultLayoutRuleForState:(int64_t)a3
+- (id)defaultLayoutRuleForState:(int64_t)state
 {
-  if (a3 < 0)
+  if (state < 0)
   {
 LABEL_6:
-    v6 = 0;
+    defaultRule = 0;
   }
 
   else
   {
-    v3 = a3;
+    stateCopy = state;
     while (1)
     {
-      v5 = [(NTKComplicationLayout *)self _layoutForState:v3];
-      v6 = [v5 defaultRule];
+      v5 = [(NTKComplicationLayout *)self _layoutForState:stateCopy];
+      defaultRule = [v5 defaultRule];
 
-      if (v6)
+      if (defaultRule)
       {
         break;
       }
 
-      if (v3-- < 1)
+      if (stateCopy-- < 1)
       {
         goto LABEL_6;
       }
     }
   }
 
-  return v6;
+  return defaultRule;
 }
 
 @end

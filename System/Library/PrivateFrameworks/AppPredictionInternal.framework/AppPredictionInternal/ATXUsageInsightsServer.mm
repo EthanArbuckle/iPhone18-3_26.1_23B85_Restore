@@ -1,15 +1,15 @@
 @interface ATXUsageInsightsServer
 + (id)sharedInstance;
 - (ATXUsageInsightsServer)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)fetchAllContinuousUsageSessionsWithCompletion:(id)a3;
-- (void)fetchAllDeliveredNotificationsWithCompletion:(id)a3;
-- (void)fetchAllInterruptingAppSessionsWithCompletion:(id)a3;
-- (void)fetchAllMindlessCyclingSessionsWithCompletion:(id)a3;
-- (void)fetchAllPhubbingSessionsWithCompletion:(id)a3;
-- (void)fetchSuggestedBundleIDsForAllowListForAllModesWithCompletion:(id)a3;
-- (void)fetchSuggestedBundleIDsForDenyListForAllModesWithCompletion:(id)a3;
-- (void)fetchUsageInsightsInferredATXModeEventsWithCompletion:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)fetchAllContinuousUsageSessionsWithCompletion:(id)completion;
+- (void)fetchAllDeliveredNotificationsWithCompletion:(id)completion;
+- (void)fetchAllInterruptingAppSessionsWithCompletion:(id)completion;
+- (void)fetchAllMindlessCyclingSessionsWithCompletion:(id)completion;
+- (void)fetchAllPhubbingSessionsWithCompletion:(id)completion;
+- (void)fetchSuggestedBundleIDsForAllowListForAllModesWithCompletion:(id)completion;
+- (void)fetchSuggestedBundleIDsForDenyListForAllModesWithCompletion:(id)completion;
+- (void)fetchUsageInsightsInferredATXModeEventsWithCompletion:(id)completion;
 @end
 
 @implementation ATXUsageInsightsServer
@@ -70,11 +70,11 @@ void __40__ATXUsageInsightsServer_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = __atxlog_handle_usage_insights();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -83,7 +83,7 @@ void __40__ATXUsageInsightsServer_sharedInstance__block_invoke()
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_INFO, "%s: Connection attempted", buf, 0xCu);
   }
 
-  v9 = [v7 valueForEntitlement:@"com.apple.proactive.UsageInsights"];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.proactive.UsageInsights"];
   if (v9 && (objc_opt_respondsToSelector() & 1) != 0 && ([v9 BOOLValue] & 1) != 0)
   {
     v10 = __atxlog_handle_usage_insights();
@@ -95,23 +95,23 @@ void __40__ATXUsageInsightsServer_sharedInstance__block_invoke()
     }
 
     v11 = ATXUsageInsightsInterface();
-    [v7 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
-    [v7 setExportedObject:self];
-    objc_initWeak(buf, v7);
+    [connectionCopy setExportedObject:self];
+    objc_initWeak(buf, connectionCopy);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __61__ATXUsageInsightsServer_listener_shouldAcceptNewConnection___block_invoke;
     v27[3] = &unk_2785977B0;
     objc_copyWeak(&v28, buf);
-    [v7 setInterruptionHandler:v27];
+    [connectionCopy setInterruptionHandler:v27];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __61__ATXUsageInsightsServer_listener_shouldAcceptNewConnection___block_invoke_23;
     v25 = &unk_2785977B0;
     objc_copyWeak(&v26, buf);
-    [v7 setInvalidationHandler:&v22];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:&v22];
+    [connectionCopy resume];
     objc_destroyWeak(&v26);
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
@@ -123,7 +123,7 @@ void __40__ATXUsageInsightsServer_sharedInstance__block_invoke()
     v13 = __atxlog_handle_usage_insights();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(ATXUsageInsightsServer *)v7 listener:v13 shouldAcceptNewConnection:v14, v15, v16, v17, v18, v19];
+      [(ATXUsageInsightsServer *)connectionCopy listener:v13 shouldAcceptNewConnection:v14, v15, v16, v17, v18, v19];
     }
 
     v12 = 0;
@@ -153,103 +153,103 @@ void __61__ATXUsageInsightsServer_listener_shouldAcceptNewConnection___block_inv
   }
 }
 
-- (void)fetchAllDeliveredNotificationsWithCompletion:(id)a3
+- (void)fetchAllDeliveredNotificationsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v8 = objc_opt_new();
   [v8 successfullyAccumulatedNotificationEvents];
   v4 = objc_alloc(MEMORY[0x277CEB4D0]);
-  v5 = [v8 allDeliveredNotifications];
-  v6 = [v4 initWithAllDeliveredNotifications:v5 allInterruptingAppSessions:0];
+  allDeliveredNotifications = [v8 allDeliveredNotifications];
+  v6 = [v4 initWithAllDeliveredNotifications:allDeliveredNotifications allInterruptingAppSessions:0];
 
-  v7 = [v6 allDeliveredNotifications];
-  v3[2](v3, v7, 0);
+  allDeliveredNotifications2 = [v6 allDeliveredNotifications];
+  completionCopy[2](completionCopy, allDeliveredNotifications2, 0);
 }
 
-- (void)fetchSuggestedBundleIDsForAllowListForAllModesWithCompletion:(id)a3
+- (void)fetchSuggestedBundleIDsForAllowListForAllModesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_opt_new();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __87__ATXUsageInsightsServer_fetchSuggestedBundleIDsForAllowListForAllModesWithCompletion___block_invoke;
   v6[3] = &unk_27859A2B8;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 suggestedBundleIDsForAllowListWithCompletion:v6];
 }
 
-- (void)fetchSuggestedBundleIDsForDenyListForAllModesWithCompletion:(id)a3
+- (void)fetchSuggestedBundleIDsForDenyListForAllModesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_opt_new();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __86__ATXUsageInsightsServer_fetchSuggestedBundleIDsForDenyListForAllModesWithCompletion___block_invoke;
   v6[3] = &unk_27859A2B8;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 suggestedBundleIDsForDenyListWithCompletion:v6];
 }
 
-- (void)fetchUsageInsightsInferredATXModeEventsWithCompletion:(id)a3
+- (void)fetchUsageInsightsInferredATXModeEventsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
-  v4 = [v5 usageInsightsInferredATXModeEvents];
-  v3[2](v3, v4, 0);
+  usageInsightsInferredATXModeEvents = [v5 usageInsightsInferredATXModeEvents];
+  completionCopy[2](completionCopy, usageInsightsInferredATXModeEvents, 0);
 }
 
-- (void)fetchAllInterruptingAppSessionsWithCompletion:(id)a3
+- (void)fetchAllInterruptingAppSessionsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v8 = objc_opt_new();
   [v8 successfullyAccumulatedInterruptingSessions];
   v4 = objc_alloc(MEMORY[0x277CEB4D0]);
-  v5 = [v8 allInterruptingAppSessions];
-  v6 = [v4 initWithAllDeliveredNotifications:0 allInterruptingAppSessions:v5];
+  allInterruptingAppSessions = [v8 allInterruptingAppSessions];
+  v6 = [v4 initWithAllDeliveredNotifications:0 allInterruptingAppSessions:allInterruptingAppSessions];
 
-  v7 = [v6 allInterruptingAppSessions];
-  v3[2](v3, v7, 0);
+  allInterruptingAppSessions2 = [v6 allInterruptingAppSessions];
+  completionCopy[2](completionCopy, allInterruptingAppSessions2, 0);
 }
 
-- (void)fetchAllPhubbingSessionsWithCompletion:(id)a3
+- (void)fetchAllPhubbingSessionsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v8 = objc_opt_new();
   [v8 successfullyAccumulatedPhubbingEvents];
   v4 = objc_alloc(MEMORY[0x277CEB798]);
-  v5 = [v8 phubbingSessions];
-  v6 = [v4 initWithPhubbingSessions:v5];
+  phubbingSessions = [v8 phubbingSessions];
+  v6 = [v4 initWithPhubbingSessions:phubbingSessions];
 
-  v7 = [v6 phubbingSessions];
-  v3[2](v3, v7, 0);
+  phubbingSessions2 = [v6 phubbingSessions];
+  completionCopy[2](completionCopy, phubbingSessions2, 0);
 }
 
-- (void)fetchAllMindlessCyclingSessionsWithCompletion:(id)a3
+- (void)fetchAllMindlessCyclingSessionsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v8 = objc_opt_new();
   [v8 accumulateMindlessCyclingEvents];
   v4 = objc_alloc(MEMORY[0x277CEB488]);
-  v5 = [v8 mindlessCyclingEvents];
-  v6 = [v4 initWithContinuousDeviceUsageEvent:0 mindlessCyclingEvents:v5];
+  mindlessCyclingEvents = [v8 mindlessCyclingEvents];
+  v6 = [v4 initWithContinuousDeviceUsageEvent:0 mindlessCyclingEvents:mindlessCyclingEvents];
 
-  v7 = [v6 mindlessCyclingEvents];
-  v3[2](v3, v7, 0);
+  mindlessCyclingEvents2 = [v6 mindlessCyclingEvents];
+  completionCopy[2](completionCopy, mindlessCyclingEvents2, 0);
 }
 
-- (void)fetchAllContinuousUsageSessionsWithCompletion:(id)a3
+- (void)fetchAllContinuousUsageSessionsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v8 = objc_opt_new();
   [v8 successfullyAccumulatedContinuousUseEvents];
   v4 = objc_alloc(MEMORY[0x277CEB488]);
-  v5 = [v8 continuousUseSessions];
-  v6 = [v4 initWithContinuousDeviceUsageEvent:v5 mindlessCyclingEvents:0];
+  continuousUseSessions = [v8 continuousUseSessions];
+  v6 = [v4 initWithContinuousDeviceUsageEvent:continuousUseSessions mindlessCyclingEvents:0];
 
-  v7 = [v6 continuousDeviceUsageEvents];
-  v3[2](v3, v7, 0);
+  continuousDeviceUsageEvents = [v6 continuousDeviceUsageEvents];
+  completionCopy[2](completionCopy, continuousDeviceUsageEvents, 0);
 }
 
 - (void)listener:(uint64_t)a3 shouldAcceptNewConnection:(uint64_t)a4 .cold.1(uint64_t a1, NSObject *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)

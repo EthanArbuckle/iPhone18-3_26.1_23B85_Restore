@@ -1,24 +1,24 @@
 @interface SBKSyncResponseData
-+ (id)deserializedResponseBodyWithTransaction:(id)a3 responseDictionary:(id)a4 response:(id)a5;
-- (SBKSyncResponseData)initWithTransaction:(id)a3 responseDictionary:(id)a4 response:(id)a5;
++ (id)deserializedResponseBodyWithTransaction:(id)transaction responseDictionary:(id)dictionary response:(id)response;
+- (SBKSyncResponseData)initWithTransaction:(id)transaction responseDictionary:(id)dictionary response:(id)response;
 - (id)description;
-- (id)payloadDataForUpdateResponseKey:(id)a3;
-- (void)_deserializeResponseDictionary:(id)a3 response:(id)a4;
+- (id)payloadDataForUpdateResponseKey:(id)key;
+- (void)_deserializeResponseDictionary:(id)dictionary response:(id)response;
 @end
 
 @implementation SBKSyncResponseData
 
-- (void)_deserializeResponseDictionary:(id)a3 response:(id)a4
+- (void)_deserializeResponseDictionary:(id)dictionary response:(id)response
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (dictionaryCopy)
   {
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __63__SBKSyncResponseData__deserializeResponseDictionary_response___block_invoke;
     v22[3] = &unk_279D22998;
-    v7 = v5;
+    v7 = dictionaryCopy;
     v23 = v7;
     v8 = MEMORY[0x26D6917A0](v22);
     (v8)[2](v8, self->_deletedKeys, @"peer-ops", @"deletes", &__block_literal_global_201);
@@ -57,16 +57,16 @@
       v17 = self->_syncAnchor;
       if (v16)
       {
-        v18 = [(NSString *)v17 stringValue];
+        stringValue = [(NSString *)v17 stringValue];
         v17 = self->_syncAnchor;
       }
 
       else
       {
-        v18 = 0;
+        stringValue = 0;
       }
 
-      self->_syncAnchor = v18;
+      self->_syncAnchor = stringValue;
     }
   }
 }
@@ -204,18 +204,18 @@ uint64_t __63__SBKSyncResponseData__deserializeResponseDictionary_response___blo
   }
 }
 
-- (id)payloadDataForUpdateResponseKey:(id)a3
+- (id)payloadDataForUpdateResponseKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_responseOpEntiesByKey objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_responseOpEntiesByKey objectForKey:key];
   v4 = [v3 objectForKey:@"value"];
 
-  v5 = [v4 SBKDataByInflatingWithNoZipHeader];
-  if (!v5)
+  sBKDataByInflatingWithNoZipHeader = [v4 SBKDataByInflatingWithNoZipHeader];
+  if (!sBKDataByInflatingWithNoZipHeader)
   {
-    v5 = v4;
+    sBKDataByInflatingWithNoZipHeader = v4;
   }
 
-  return v5;
+  return sBKDataByInflatingWithNoZipHeader;
 }
 
 - (id)description
@@ -238,54 +238,54 @@ uint64_t __63__SBKSyncResponseData__deserializeResponseDictionary_response___blo
   return v13;
 }
 
-- (SBKSyncResponseData)initWithTransaction:(id)a3 responseDictionary:(id)a4 response:(id)a5
+- (SBKSyncResponseData)initWithTransaction:(id)transaction responseDictionary:(id)dictionary response:(id)response
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  transactionCopy = transaction;
+  dictionaryCopy = dictionary;
+  responseCopy = response;
   v27.receiver = self;
   v27.super_class = SBKSyncResponseData;
   v12 = [(SBKSyncResponseData *)&v27 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_transaction, a3);
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v12->_transaction, transaction);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     responseOpEntiesByKey = v13->_responseOpEntiesByKey;
-    v13->_responseOpEntiesByKey = v14;
+    v13->_responseOpEntiesByKey = dictionary;
 
-    v16 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     updatedKeys = v13->_updatedKeys;
-    v13->_updatedKeys = v16;
+    v13->_updatedKeys = array;
 
-    v18 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     deletedKeys = v13->_deletedKeys;
-    v13->_deletedKeys = v18;
+    v13->_deletedKeys = array2;
 
-    v20 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     conflictedKeys = v13->_conflictedKeys;
-    v13->_conflictedKeys = v20;
+    v13->_conflictedKeys = array3;
 
-    v22 = [MEMORY[0x277CBEB18] array];
+    array4 = [MEMORY[0x277CBEB18] array];
     successfullyUpdatedKeys = v13->_successfullyUpdatedKeys;
-    v13->_successfullyUpdatedKeys = v22;
+    v13->_successfullyUpdatedKeys = array4;
 
-    v24 = [MEMORY[0x277CBEB18] array];
+    array5 = [MEMORY[0x277CBEB18] array];
     successfullyDeletedKeys = v13->_successfullyDeletedKeys;
-    v13->_successfullyDeletedKeys = v24;
+    v13->_successfullyDeletedKeys = array5;
 
-    [(SBKSyncResponseData *)v13 _deserializeResponseDictionary:v10 response:v11];
+    [(SBKSyncResponseData *)v13 _deserializeResponseDictionary:dictionaryCopy response:responseCopy];
   }
 
   return v13;
 }
 
-+ (id)deserializedResponseBodyWithTransaction:(id)a3 responseDictionary:(id)a4 response:(id)a5
++ (id)deserializedResponseBodyWithTransaction:(id)transaction responseDictionary:(id)dictionary response:(id)response
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithTransaction:v9 responseDictionary:v8 response:v7];
+  responseCopy = response;
+  dictionaryCopy = dictionary;
+  transactionCopy = transaction;
+  v10 = [objc_alloc(objc_opt_class()) initWithTransaction:transactionCopy responseDictionary:dictionaryCopy response:responseCopy];
 
   return v10;
 }

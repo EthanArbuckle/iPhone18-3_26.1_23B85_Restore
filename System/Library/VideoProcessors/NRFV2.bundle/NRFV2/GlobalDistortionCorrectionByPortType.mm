@@ -1,12 +1,12 @@
 @interface GlobalDistortionCorrectionByPortType
-- (GlobalDistortionCorrectionByPortType)initWithDictionary:(id)a3;
+- (GlobalDistortionCorrectionByPortType)initWithDictionary:(id)dictionary;
 @end
 
 @implementation GlobalDistortionCorrectionByPortType
 
-- (GlobalDistortionCorrectionByPortType)initWithDictionary:(id)a3
+- (GlobalDistortionCorrectionByPortType)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v81.receiver = self;
   v81.super_class = GlobalDistortionCorrectionByPortType;
   v5 = [(GlobalDistortionCorrectionByPortType *)&v81 init];
@@ -18,7 +18,7 @@ LABEL_39:
   }
 
   v6 = objc_alloc(MEMORY[0x29EDB8E00]);
-  v10 = objc_msgSend_count(v4, v7, v8, v9);
+  v10 = objc_msgSend_count(dictionaryCopy, v7, v8, v9);
   v13 = objc_msgSend_initWithCapacity_(v6, v11, v10, v12);
   gdcByPortType = v5->_gdcByPortType;
   v73 = v5;
@@ -28,8 +28,8 @@ LABEL_39:
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v69 = v4;
-  v15 = v4;
+  v69 = dictionaryCopy;
+  v15 = dictionaryCopy;
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v77, v76, 16);
   if (!v17)
   {
@@ -160,7 +160,7 @@ LABEL_21:
       if (!v52)
       {
 
-        v4 = v69;
+        dictionaryCopy = v69;
         v5 = v73;
         if (v30)
         {
@@ -186,7 +186,7 @@ LABEL_21:
 
 LABEL_36:
 
-  v4 = v69;
+  dictionaryCopy = v69;
   v5 = v73;
 LABEL_37:
   if (!v74)

@@ -1,6 +1,6 @@
 @interface _PXPlacesImageCacheKey
-- (BOOL)isEqual:(id)a3;
-- (_PXPlacesImageCacheKey)initWithGeotaggable:(id)a3 andKey:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_PXPlacesImageCacheKey)initWithGeotaggable:(id)geotaggable andKey:(id)key;
 - (unint64_t)hash;
 @end
 
@@ -18,22 +18,22 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     geotaggable = self->_geotaggable;
     key = self->_key;
-    v9 = [(_PXPlacesImageCacheKey *)v6 geotaggable];
-    v10 = [(PXPlacesGeotaggable *)geotaggable isEqual:v9];
+    geotaggable = [(_PXPlacesImageCacheKey *)v6 geotaggable];
+    v10 = [(PXPlacesGeotaggable *)geotaggable isEqual:geotaggable];
     v11 = (key == 0) & v10;
     if (key && (v10 & 1) != 0)
     {
@@ -46,18 +46,18 @@
   return v11;
 }
 
-- (_PXPlacesImageCacheKey)initWithGeotaggable:(id)a3 andKey:(id)a4
+- (_PXPlacesImageCacheKey)initWithGeotaggable:(id)geotaggable andKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  geotaggableCopy = geotaggable;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = _PXPlacesImageCacheKey;
   v9 = [(_PXPlacesImageCacheKey *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_geotaggable, a3);
-    objc_storeStrong(&v10->_key, a4);
+    objc_storeStrong(&v9->_geotaggable, geotaggable);
+    objc_storeStrong(&v10->_key, key);
   }
 
   return v10;

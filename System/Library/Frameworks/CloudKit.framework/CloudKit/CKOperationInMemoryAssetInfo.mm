@@ -1,8 +1,8 @@
 @interface CKOperationInMemoryAssetInfo
 - (BOOL)isContiguous;
 - (CKOperationInMemoryAssetInfo)init;
-- (id)assetContentWithExpectedSignature:(id)a3 verificationKey:(id)a4 error:(id *)a5;
-- (void)writeData:(id)a3 atOffset:(unint64_t)a4;
+- (id)assetContentWithExpectedSignature:(id)signature verificationKey:(id)key error:(id *)error;
+- (void)writeData:(id)data atOffset:(unint64_t)offset;
 @end
 
 @implementation CKOperationInMemoryAssetInfo
@@ -26,15 +26,15 @@
   return v2;
 }
 
-- (void)writeData:(id)a3 atOffset:(unint64_t)a4
+- (void)writeData:(id)data atOffset:(unint64_t)offset
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = v6;
-  if (v6)
+  dataCopy = data;
+  v9 = dataCopy;
+  if (dataCopy)
   {
-    v10 = objc_msgSend_length(v6, v7, v8);
-    if (objc_msgSend_containsIndexesInRange_(self->_byteRanges, v11, a4, v10))
+    v10 = objc_msgSend_length(dataCopy, v7, v8);
+    if (objc_msgSend_containsIndexesInRange_(self->_byteRanges, v11, offset, v10))
     {
       if (ck_log_initialization_predicate != -1)
       {
@@ -45,7 +45,7 @@
       if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
       {
         v30 = v13;
-        v35.location = a4;
+        v35.location = offset;
         v35.length = v10;
         v31 = NSStringFromRange(v35);
         v32 = 138543362;
@@ -54,8 +54,8 @@
       }
     }
 
-    objc_msgSend_addIndexesInRange_(self->_byteRanges, v12, a4, v10);
-    v16 = objc_msgSend_length(v9, v14, v15) + a4;
+    objc_msgSend_addIndexesInRange_(self->_byteRanges, v12, offset, v10);
+    v16 = objc_msgSend_length(v9, v14, v15) + offset;
     if (objc_msgSend_length(self->_assetContent, v17, v18) < v16)
     {
       objc_msgSend_setLength_(self->_assetContent, v19, v16);
@@ -65,7 +65,7 @@
     v21 = v9;
     v24 = objc_msgSend_bytes(v21, v22, v23);
     v27 = objc_msgSend_length(v9, v25, v26);
-    objc_msgSend_replaceBytesInRange_withBytes_length_(assetContent, v28, a4, v10, v24, v27);
+    objc_msgSend_replaceBytesInRange_withBytes_length_(assetContent, v28, offset, v10, v24, v27);
   }
 
   v29 = *MEMORY[0x1E69E9840];
@@ -90,10 +90,10 @@
   return (byteRanges & 1) == 0;
 }
 
-- (id)assetContentWithExpectedSignature:(id)a3 verificationKey:(id)a4 error:(id *)a5
+- (id)assetContentWithExpectedSignature:(id)signature verificationKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  signatureCopy = signature;
+  keyCopy = key;
   if ((objc_msgSend_isContiguous(self, v10, v11) & 1) == 0)
   {
     if (ck_log_initialization_predicate != -1)
@@ -106,29 +106,29 @@
     {
       *buf = 0;
       _os_log_error_impl(&dword_1883EA000, v18, OS_LOG_TYPE_ERROR, "assetContent did not consist of contiguous bytes ranges", buf, 2u);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_27;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
       goto LABEL_27;
     }
 
     objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v19, @"CKInternalErrorDomain", 3006, @"assetContent did not consist of contiguous bytes ranges");
 LABEL_10:
-    *a5 = v20 = 0;
+    *error = v20 = 0;
     goto LABEL_28;
   }
 
-  if (v8)
+  if (signatureCopy)
   {
-    if (v9)
+    if (keyCopy)
     {
       v14 = [CKSignatureGenerator alloc];
-      v16 = objc_msgSend_initWithVerificationKey_(v14, v15, v9);
+      v16 = objc_msgSend_initWithVerificationKey_(v14, v15, keyCopy);
     }
 
     else
@@ -139,7 +139,7 @@ LABEL_10:
     v23 = v16;
     objc_msgSend_updateWithData_(v16, v17, self->_assetContent);
     v26 = objc_msgSend_dataByFinishingSignature(v23, v24, v25);
-    if (objc_msgSend_isEqual_(v26, v27, v8))
+    if (objc_msgSend_isEqual_(v26, v27, signatureCopy))
     {
 
       goto LABEL_20;
@@ -155,20 +155,20 @@ LABEL_10:
     {
       *v32 = 0;
       _os_log_error_impl(&dword_1883EA000, v28, OS_LOG_TYPE_ERROR, "assetContent did not match expected signature", v32, 2u);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_26;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
 LABEL_26:
 
       goto LABEL_27;
     }
 
-    *a5 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v29, @"CKInternalErrorDomain", 3006, @"assetContent did not match expected signature");
+    *error = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v29, @"CKInternalErrorDomain", 3006, @"assetContent did not match expected signature");
     goto LABEL_26;
   }
 
@@ -189,7 +189,7 @@ LABEL_20:
   {
     *v31 = 0;
     _os_log_error_impl(&dword_1883EA000, v21, OS_LOG_TYPE_ERROR, "assetContent length 0", v31, 2u);
-    if (!a5)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -197,7 +197,7 @@ LABEL_20:
     goto LABEL_16;
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_16:
     objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v22, @"CKInternalErrorDomain", 3006, @"assetContent length 0");

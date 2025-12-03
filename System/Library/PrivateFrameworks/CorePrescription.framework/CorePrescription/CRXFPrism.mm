@@ -1,5 +1,5 @@
 @interface CRXFPrism
-- (BOOL)isPrismEnabledForLocation:(id)a3;
+- (BOOL)isPrismEnabledForLocation:(id)location;
 - (CRXFPrism)init;
 @end
 
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (BOOL)isPrismEnabledForLocation:(id)a3
+- (BOOL)isPrismEnabledForLocation:(id)location
 {
-  v3 = [(NSDictionary *)self->_prismActivationList objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_prismActivationList objectForKeyedSubscript:location];
   v4 = [v3 objectForKeyedSubscript:@"enabled"];
   v5 = [v4 isEqual:@"YES"];
 

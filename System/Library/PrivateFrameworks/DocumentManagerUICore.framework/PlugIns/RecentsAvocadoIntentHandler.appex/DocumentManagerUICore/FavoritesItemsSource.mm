@@ -1,19 +1,19 @@
 @interface FavoritesItemsSource
-- (void)collection:(id)a3 didPerformBatchUpdateWithReplayBlock:(id)a4;
-- (void)dataForCollectionShouldBeReloaded:(id)a3;
+- (void)collection:(id)collection didPerformBatchUpdateWithReplayBlock:(id)block;
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded;
 @end
 
 @implementation FavoritesItemsSource
 
-- (void)dataForCollectionShouldBeReloaded:(id)a3
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded
 {
-  v3 = self;
+  selfCopy = self;
   sub_1000033C0(1);
 }
 
-- (void)collection:(id)a3 didPerformBatchUpdateWithReplayBlock:(id)a4
+- (void)collection:(id)collection didPerformBatchUpdateWithReplayBlock:(id)block
 {
-  v4 = self;
+  selfCopy = self;
   sub_1000033C0(1);
 }
 

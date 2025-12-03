@@ -1,14 +1,14 @@
 @interface FIUIDefaultSecondPlatterMetrics
-+ (id)metricsForActivityType:(id)a3 metricsVersion:(int64_t)a4;
++ (id)metricsForActivityType:(id)type metricsVersion:(int64_t)version;
 @end
 
 @implementation FIUIDefaultSecondPlatterMetrics
 
-+ (id)metricsForActivityType:(id)a3 metricsVersion:(int64_t)a4
++ (id)metricsForActivityType:(id)type metricsVersion:(int64_t)version
 {
   v5 = MEMORY[0x1E699C9C0];
-  v6 = [a3 workoutActivityType];
-  v7 = [v5 metricsForActivityType:v6 metricsVersion:a4];
+  workoutActivityType = [type workoutActivityType];
+  v7 = [v5 metricsForActivityType:workoutActivityType metricsVersion:version];
 
   return v7;
 }

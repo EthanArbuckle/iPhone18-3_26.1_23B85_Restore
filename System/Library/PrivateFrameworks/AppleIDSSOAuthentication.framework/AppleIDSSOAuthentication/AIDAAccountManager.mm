@@ -1,17 +1,17 @@
 @interface AIDAAccountManager
 + (id)_accountStoreChangeQueue;
 - (AIDAAccountManager)init;
-- (AIDAAccountManager)initWithAccountStore:(id)a3;
+- (AIDAAccountManager)initWithAccountStore:(id)store;
 - (AIDAAccountManagerDelegate)delegate;
 - (NSDictionary)accounts;
 - (id)_delegate_accountsForAccountManager;
-- (id)aidaAccountForService:(id)a3;
-- (void)_accountStoreDidChange:(id)a3;
+- (id)aidaAccountForService:(id)service;
+- (void)_accountStoreDidChange:(id)change;
 - (void)_delegate_accountsForAccountManager;
-- (void)addAccountChangeObserver:(id)a3 handler:(id)a4;
+- (void)addAccountChangeObserver:(id)observer handler:(id)handler;
 - (void)dealloc;
-- (void)removeAccountChangeObserver:(id)a3;
-- (void)setAccounts:(id)a3;
+- (void)removeAccountChangeObserver:(id)observer;
+- (void)setAccounts:(id)accounts;
 @end
 
 @implementation AIDAAccountManager
@@ -43,27 +43,27 @@ void __46__AIDAAccountManager__accountStoreChangeQueue__block_invoke()
   return 0;
 }
 
-- (AIDAAccountManager)initWithAccountStore:(id)a3
+- (AIDAAccountManager)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = AIDAAccountManager;
   v6 = [(AIDAAccountManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountStore, a3);
-    v8 = [[AIDAServiceOwnersManager alloc] initWithAccountStore:v5];
+    objc_storeStrong(&v6->_accountStore, store);
+    v8 = [[AIDAServiceOwnersManager alloc] initWithAccountStore:storeCopy];
     serviceOwnersManager = v7->_serviceOwnersManager;
     v7->_serviceOwnersManager = v8;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     handlerByObserver = v7->_handlerByObserver;
-    v7->_handlerByObserver = v10;
+    v7->_handlerByObserver = dictionary;
 
     v7->_accountManagerLock._os_unfair_lock_opaque = 0;
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v7 selector:sel__accountStoreDidChange_ name:*MEMORY[0x1E69597D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__accountStoreDidChange_ name:*MEMORY[0x1E69597D8] object:0];
   }
 
   return v7;
@@ -71,8 +71,8 @@ void __46__AIDAAccountManager__accountStoreChangeQueue__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AIDAAccountManager;
@@ -85,8 +85,8 @@ void __46__AIDAAccountManager__accountStoreChangeQueue__block_invoke()
   accounts = self->_accounts;
   if (!accounts)
   {
-    v4 = [(AIDAAccountManager *)self _delegate_accountsForAccountManager];
-    v5 = [v4 copy];
+    _delegate_accountsForAccountManager = [(AIDAAccountManager *)self _delegate_accountsForAccountManager];
+    v5 = [_delegate_accountsForAccountManager copy];
     v6 = self->_accounts;
     self->_accounts = v5;
 
@@ -99,29 +99,29 @@ void __46__AIDAAccountManager__accountStoreChangeQueue__block_invoke()
   return v7;
 }
 
-- (void)setAccounts:(id)a3
+- (void)setAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   os_unfair_lock_lock(&self->_accountManagerLock);
   accounts = self->_accounts;
-  self->_accounts = v4;
+  self->_accounts = accountsCopy;
 
   os_unfair_lock_unlock(&self->_accountManagerLock);
 }
 
-- (id)aidaAccountForService:(id)a3
+- (id)aidaAccountForService:(id)service
 {
-  v4 = a3;
-  v5 = [(AIDAAccountManager *)self accounts];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  serviceCopy = service;
+  accounts = [(AIDAAccountManager *)self accounts];
+  v6 = [accounts objectForKeyedSubscript:serviceCopy];
 
   if (v6)
   {
-    v7 = [(AIDAServiceOwnerProtocol *)self->_serviceOwnersManager altDSIDForAccount:v6 service:v4];
+    v7 = [(AIDAServiceOwnerProtocol *)self->_serviceOwnersManager altDSIDForAccount:v6 service:serviceCopy];
     if (v7)
     {
-      v8 = [(AIDAAccountManager *)self accountStore];
-      v9 = [v8 aida_accountForAltDSID:v7];
+      accountStore = [(AIDAAccountManager *)self accountStore];
+      v9 = [accountStore aida_accountForAltDSID:v7];
     }
 
     else
@@ -140,13 +140,13 @@ void __46__AIDAAccountManager__accountStoreChangeQueue__block_invoke()
 
 - (id)_delegate_accountsForAccountManager
 {
-  v3 = [(AIDAAccountManager *)self delegate];
+  delegate = [(AIDAAccountManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AIDAAccountManager *)self delegate];
-    v6 = [v5 accountsForAccountManager:self];
+    delegate2 = [(AIDAAccountManager *)self delegate];
+    v6 = [delegate2 accountsForAccountManager:self];
   }
 
   else
@@ -163,7 +163,7 @@ void __46__AIDAAccountManager__accountStoreChangeQueue__block_invoke()
   return v6;
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
   v4 = +[AIDAAccountManager _accountStoreChangeQueue];
   block[0] = MEMORY[0x1E69E9820];
@@ -224,20 +224,20 @@ void __45__AIDAAccountManager__accountStoreDidChange___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addAccountChangeObserver:(id)a3 handler:(id)a4
+- (void)addAccountChangeObserver:(id)observer handler:(id)handler
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696B098] valueWithNonretainedObject:a3];
+  handlerCopy = handler;
+  v7 = [MEMORY[0x1E696B098] valueWithNonretainedObject:observer];
   v8 = +[AIDAAccountManager _accountStoreChangeQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__AIDAAccountManager_addAccountChangeObserver_handler___block_invoke;
   block[3] = &unk_1E8683448;
   v12 = v7;
-  v13 = v6;
+  v13 = handlerCopy;
   block[4] = self;
   v9 = v7;
-  v10 = v6;
+  v10 = handlerCopy;
   dispatch_async(v8, block);
 }
 
@@ -248,9 +248,9 @@ void __55__AIDAAccountManager_addAccountChangeObserver_handler___block_invoke(vo
   [v2 setObject:v3 forKey:a1[5]];
 }
 
-- (void)removeAccountChangeObserver:(id)a3
+- (void)removeAccountChangeObserver:(id)observer
 {
-  v4 = [MEMORY[0x1E696B098] valueWithNonretainedObject:a3];
+  v4 = [MEMORY[0x1E696B098] valueWithNonretainedObject:observer];
   v5 = +[AIDAAccountManager _accountStoreChangeQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -272,9 +272,9 @@ void __55__AIDAAccountManager_addAccountChangeObserver_handler___block_invoke(vo
 - (void)_delegate_accountsForAccountManager
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 delegate];
+  delegate = [self delegate];
   v5 = 138543362;
-  v6 = v3;
+  v6 = delegate;
   _os_log_error_impl(&dword_1DEB1B000, a2, OS_LOG_TYPE_ERROR, "Delegate %{public}@ failed respond to -accountsForAccountManager: !", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];

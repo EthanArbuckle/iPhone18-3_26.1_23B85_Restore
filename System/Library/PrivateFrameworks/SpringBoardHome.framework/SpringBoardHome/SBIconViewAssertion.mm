@@ -1,7 +1,7 @@
 @interface SBIconViewAssertion
-- (SBIconViewAssertion)initWithAssertionType:(int64_t)a3 iconView:(id)a4 extraInfo:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBIconViewAssertion)initWithAssertionType:(int64_t)type iconView:(id)view extraInfo:(id)info;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -9,19 +9,19 @@
 
 @implementation SBIconViewAssertion
 
-- (SBIconViewAssertion)initWithAssertionType:(int64_t)a3 iconView:(id)a4 extraInfo:(id)a5
+- (SBIconViewAssertion)initWithAssertionType:(int64_t)type iconView:(id)view extraInfo:(id)info
 {
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  infoCopy = info;
   v16.receiver = self;
   v16.super_class = SBIconViewAssertion;
   v11 = [(SBIconViewAssertion *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_assertionType = a3;
-    objc_storeStrong(&v11->_iconView, a4);
-    v13 = [v10 copy];
+    v11->_assertionType = type;
+    objc_storeStrong(&v11->_iconView, view);
+    v13 = [infoCopy copy];
     extraInfo = v12->_extraInfo;
     v12->_extraInfo = v13;
   }
@@ -46,8 +46,8 @@
 {
   if (![(SBIconViewAssertion *)self isInvalidated])
   {
-    v3 = [(SBIconViewAssertion *)self iconView];
-    [v3 removeAssertion:self];
+    iconView = [(SBIconViewAssertion *)self iconView];
+    [iconView removeAssertion:self];
 
     [(SBIconViewAssertion *)self setInvalidated:1];
   }
@@ -55,31 +55,31 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconViewAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconViewAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconViewAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconViewAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBIconViewAssertion *)self succinctDescriptionBuilder];
-  v5 = [v4 appendInteger:-[SBIconViewAssertion assertionType](self withName:{"assertionType"), @"assertionType"}];
-  v6 = [(SBIconViewAssertion *)self extraInfo];
-  v7 = [v4 appendObject:v6 withName:@"extraInfo"];
+  succinctDescriptionBuilder = [(SBIconViewAssertion *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendInteger:-[SBIconViewAssertion assertionType](self withName:{"assertionType"), @"assertionType"}];
+  extraInfo = [(SBIconViewAssertion *)self extraInfo];
+  v7 = [succinctDescriptionBuilder appendObject:extraInfo withName:@"extraInfo"];
 
-  v8 = [(SBIconViewAssertion *)self iconView];
-  v9 = [v4 appendPointer:v8 withName:@"iconView"];
+  iconView = [(SBIconViewAssertion *)self iconView];
+  v9 = [succinctDescriptionBuilder appendPointer:iconView withName:@"iconView"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

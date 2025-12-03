@@ -7,8 +7,8 @@
 - (NSString)previewTooltip;
 - (NSURL)url;
 - (_TtC8Freeform8CRLAsset)metadataPayload;
-- (id)promisedDataForPublicType:(id)a3;
-- (void)updateGeometryToReplaceBoardItem:(id)a3;
+- (id)promisedDataForPublicType:(id)type;
+- (void)updateGeometryToReplaceBoardItem:(id)item;
 @end
 
 @implementation CRLFileItem
@@ -18,7 +18,7 @@
   v3 = sub_1005B981C(&unk_1019F33C0);
   __chkstk_darwin(v3 - 8);
   v5 = &v14 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_100BEBAE8(v5);
 
   v7 = type metadata accessor for URL();
@@ -38,7 +38,7 @@
 
 - (_TtC8Freeform8CRLAsset)metadataPayload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BEBD9C();
 
   return v3;
@@ -83,7 +83,7 @@
 
 - (NSArray)customPublicTypesToPromiseWhenCopyingSingleBoardItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_100BEED74();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -91,14 +91,14 @@
   return v3.super.isa;
 }
 
-- (id)promisedDataForPublicType:(id)a3
+- (id)promisedDataForPublicType:(id)type
 {
   v5 = type metadata accessor for UTType();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v17 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v10 = self;
+  typeCopy = type;
+  selfCopy = self;
   static UTType._unconditionallyBridgeFromObjectiveC(_:)();
 
   v11 = sub_100D8E064(v8);
@@ -116,16 +116,16 @@
   return v14;
 }
 
-- (void)updateGeometryToReplaceBoardItem:(id)a3
+- (void)updateGeometryToReplaceBoardItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_100BEF42C(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_100BEF42C(itemCopy);
 }
 
 - (BOOL)placeHolderDataNeedsDownload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BEBD9C();
   v4 = *&v3[OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24];
   v5 = *&v3[OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 32];

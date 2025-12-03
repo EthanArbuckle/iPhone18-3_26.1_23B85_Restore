@@ -1,9 +1,9 @@
 @interface VOTUIMapsExplorationViewController
-- (void)highlightExplorationSegmentWithIndex:(int64_t)a3;
+- (void)highlightExplorationSegmentWithIndex:(int64_t)index;
 - (void)loadView;
-- (void)updateUIWithCenter:(CGPoint)a3;
-- (void)updateUIWithCenter:(CGPoint)a3 andExplorationSegments:(id)a4;
-- (void)updateUIWithCurrentLocation:(CGPoint)a3;
+- (void)updateUIWithCenter:(CGPoint)center;
+- (void)updateUIWithCenter:(CGPoint)center andExplorationSegments:(id)segments;
+- (void)updateUIWithCurrentLocation:(CGPoint)location;
 @end
 
 @implementation VOTUIMapsExplorationViewController
@@ -14,35 +14,35 @@
   [(VOTUIMapsExplorationViewController *)self setView:v3];
 }
 
-- (void)updateUIWithCenter:(CGPoint)a3 andExplorationSegments:(id)a4
+- (void)updateUIWithCenter:(CGPoint)center andExplorationSegments:(id)segments
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(VOTUIMapsExplorationViewController *)self view];
-  [v8 updateUIWithCenter:v7 andExplorationSegments:{x, y}];
+  y = center.y;
+  x = center.x;
+  segmentsCopy = segments;
+  view = [(VOTUIMapsExplorationViewController *)self view];
+  [view updateUIWithCenter:segmentsCopy andExplorationSegments:{x, y}];
 }
 
-- (void)updateUIWithCenter:(CGPoint)a3
+- (void)updateUIWithCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VOTUIMapsExplorationViewController *)self view];
-  [v5 updateUIWithCenter:{x, y}];
+  y = center.y;
+  x = center.x;
+  view = [(VOTUIMapsExplorationViewController *)self view];
+  [view updateUIWithCenter:{x, y}];
 }
 
-- (void)updateUIWithCurrentLocation:(CGPoint)a3
+- (void)updateUIWithCurrentLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(VOTUIMapsExplorationViewController *)self view];
-  [v5 updateUIWithCurrentLocation:{x, y}];
+  y = location.y;
+  x = location.x;
+  view = [(VOTUIMapsExplorationViewController *)self view];
+  [view updateUIWithCurrentLocation:{x, y}];
 }
 
-- (void)highlightExplorationSegmentWithIndex:(int64_t)a3
+- (void)highlightExplorationSegmentWithIndex:(int64_t)index
 {
-  v4 = [(VOTUIMapsExplorationViewController *)self view];
-  [v4 highlightExplorationSegmentWithIndex:a3];
+  view = [(VOTUIMapsExplorationViewController *)self view];
+  [view highlightExplorationSegmentWithIndex:index];
 }
 
 @end

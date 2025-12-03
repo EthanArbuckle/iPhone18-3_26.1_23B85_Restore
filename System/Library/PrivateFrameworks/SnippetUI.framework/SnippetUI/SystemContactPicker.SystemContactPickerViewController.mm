@@ -1,7 +1,7 @@
 @interface SystemContactPicker.SystemContactPickerViewController
-- (_TtCV9SnippetUI19SystemContactPicker33SystemContactPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (_TtCV9SnippetUI19SystemContactPicker33SystemContactPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
 - (void)viewDidLoad;
 @end
 
@@ -9,33 +9,33 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_26A521E08();
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   sub_26A521F48();
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_26A522064(v8, v7);
+  pickerCopy = picker;
+  contactCopy = contact;
+  selfCopy = self;
+  sub_26A522064(selfCopy, contactCopy);
 }
 
-- (_TtCV9SnippetUI19SystemContactPicker33SystemContactPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCV9SnippetUI19SystemContactPicker33SystemContactPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_26A8517B8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_26A5221B0();
 }
 

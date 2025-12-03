@@ -1,22 +1,22 @@
 @interface CLSFaultProcessor
 + (id)rootClasses;
-- (BOOL)_isRootObject:(id)a3;
-- (BOOL)_isRootObject:(id)a3 withRelation:(id)a4;
-- (BOOL)waitUntilDone:(double)a3;
-- (CLSFaultProcessor)initWithDelegate:(id)a3;
+- (BOOL)_isRootObject:(id)object;
+- (BOOL)_isRootObject:(id)object withRelation:(id)relation;
+- (BOOL)waitUntilDone:(double)done;
+- (CLSFaultProcessor)initWithDelegate:(id)delegate;
 - (CLSFaultProcessorDelegate)delegate;
-- (id)_childParentRelationForObject:(id)a3;
-- (void)_addObject:(id)a3;
-- (void)_descendIntoObject:(id)a3 idsToProcess:(id)a4 enumerationBlock:(id)a5;
-- (void)_faultObjectsBatch:(id)a3;
-- (void)_inGroup:(id)a3;
-- (void)_insertRootObject:(id)a3;
-- (void)_insertRootObjectID:(id)a3 withChildren:(id)a4;
-- (void)clientRemote_deliverObject:(id)a3;
-- (void)completionNotify:(id)a3;
-- (void)enumerate:(id)a3;
-- (void)faultObject:(id)a3;
-- (void)faultObjects:(id)a3;
+- (id)_childParentRelationForObject:(id)object;
+- (void)_addObject:(id)object;
+- (void)_descendIntoObject:(id)object idsToProcess:(id)process enumerationBlock:(id)block;
+- (void)_faultObjectsBatch:(id)batch;
+- (void)_inGroup:(id)group;
+- (void)_insertRootObject:(id)object;
+- (void)_insertRootObjectID:(id)d withChildren:(id)children;
+- (void)clientRemote_deliverObject:(id)object;
+- (void)completionNotify:(id)notify;
+- (void)enumerate:(id)enumerate;
+- (void)faultObject:(id)object;
+- (void)faultObjects:(id)objects;
 @end
 
 @implementation CLSFaultProcessor
@@ -33,16 +33,16 @@
   return v3;
 }
 
-- (CLSFaultProcessor)initWithDelegate:(id)a3
+- (CLSFaultProcessor)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v29.receiver = self;
   v29.super_class = CLSFaultProcessor;
   v5 = [(CLSFaultProcessor *)&v29 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = CLSDispatchQueueName(v6, 0);
     v10 = objc_msgSend_UTF8String(v7, v8, v9);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -80,34 +80,34 @@
   return v6;
 }
 
-- (void)faultObject:(id)a3
+- (void)faultObject:(id)object
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  objectCopy = object;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v7 = objc_msgSend_arrayWithObjects_count_(v4, v6, &v10, 1);
+  objectCopy2 = object;
+  v7 = objc_msgSend_arrayWithObjects_count_(v4, v6, &objectCopy, 1);
 
-  objc_msgSend_faultObjects_(self, v8, v7, v10, v11);
+  objc_msgSend_faultObjects_(self, v8, v7, objectCopy, v11);
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)faultObjects:(id)a3
+- (void)faultObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_236FC7BD0;
   v7[3] = &unk_278A18F48;
-  v8 = v4;
-  v5 = v4;
+  v8 = objectsCopy;
+  v5 = objectsCopy;
   objc_msgSend__inGroup_(self, v6, v7);
 }
 
-- (void)enumerate:(id)a3
+- (void)enumerate:(id)enumerate
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enumerateCopy = enumerate;
   v5 = objc_opt_new();
   v8 = objc_msgSend_keyEnumerator(self->_objects, v6, v7);
   v11 = objc_msgSend_allObjects(v8, v9, v10);
@@ -138,7 +138,7 @@
         v23 = objc_msgSend_objectForKey_(self->_objects, v21, v19);
         if (v23)
         {
-          objc_msgSend__descendIntoObject_idsToProcess_enumerationBlock_(self, v22, v23, v5, v4);
+          objc_msgSend__descendIntoObject_idsToProcess_enumerationBlock_(self, v22, v23, v5, enumerateCopy);
         }
 
         objc_autoreleasePoolPop(v20);
@@ -177,7 +177,7 @@
         v34 = objc_msgSend_objectForKey_(self->_objects, v33, v31, v37);
         if (v34)
         {
-          v4[2](v4, v34);
+          enumerateCopy[2](enumerateCopy, v34);
         }
 
         objc_autoreleasePoolPop(v32);
@@ -194,17 +194,17 @@
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_descendIntoObject:(id)a3 idsToProcess:(id)a4 enumerationBlock:(id)a5
+- (void)_descendIntoObject:(id)object idsToProcess:(id)process enumerationBlock:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = objc_msgSend_identity(v8, v11, v12);
-  v16 = objc_msgSend_identity(v8, v14, v15);
-  objc_msgSend_removeObject_(v9, v17, v16);
+  objectCopy = object;
+  processCopy = process;
+  blockCopy = block;
+  v13 = objc_msgSend_identity(objectCopy, v11, v12);
+  v16 = objc_msgSend_identity(objectCopy, v14, v15);
+  objc_msgSend_removeObject_(processCopy, v17, v16);
 
-  v10[2](v10, v8);
+  blockCopy[2](blockCopy, objectCopy);
   v32 = v13;
   objc_msgSend_objectForKey_(self->_objectsIdsByParentID, v18, v13);
   v33 = 0u;
@@ -231,7 +231,7 @@
         v29 = objc_msgSend_objectForKey_(self->_objects, v27, v25);
         if (v29)
         {
-          objc_msgSend__descendIntoObject_idsToProcess_enumerationBlock_(self, v28, v29, v9, v10);
+          objc_msgSend__descendIntoObject_idsToProcess_enumerationBlock_(self, v28, v29, processCopy, blockCopy);
         }
 
         objc_autoreleasePoolPop(v26);
@@ -248,19 +248,19 @@
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)completionNotify:(id)a3
+- (void)completionNotify:(id)notify
 {
-  v4 = a3;
+  notifyCopy = notify;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_236FC8088;
   v7[3] = &unk_278A18F70;
-  v8 = v4;
-  v5 = v4;
+  v8 = notifyCopy;
+  v5 = notifyCopy;
   objc_msgSend__inGroup_(self, v6, v7);
 }
 
-- (BOOL)waitUntilDone:(double)a3
+- (BOOL)waitUntilDone:(double)done
 {
   v5 = dispatch_block_create(0, &unk_284A07FC8);
   v10[0] = MEMORY[0x277D85DD0];
@@ -270,22 +270,22 @@
   v11 = v5;
   v6 = v5;
   objc_msgSend_completionNotify_(self, v7, v10);
-  v8 = dispatch_time(0, (a3 * 1000000000.0));
+  v8 = dispatch_time(0, (done * 1000000000.0));
   LOBYTE(self) = dispatch_block_wait(v6, v8) != 0;
 
   return self;
 }
 
-- (void)_faultObjectsBatch:(id)a3
+- (void)_faultObjectsBatch:(id)batch
 {
   v124 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  batchCopy = batch;
   v95 = objc_opt_new();
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
-  obj = v3;
+  obj = batchCopy;
   v90 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v116, v123, 16);
   if (v90)
   {
@@ -502,22 +502,22 @@ LABEL_39:
   v87 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addObject:(id)a3
+- (void)_addObject:(id)object
 {
-  v21 = a3;
-  v5 = objc_msgSend__childParentRelationForObject_(self, v4, v21);
-  isRootObject_withRelation = objc_msgSend__isRootObject_withRelation_(self, v6, v21, v5);
-  v10 = objc_msgSend_identity(v21, v8, v9);
-  objc_msgSend_setObject_forKey_(self->_objects, v11, v21, v10);
+  objectCopy = object;
+  v5 = objc_msgSend__childParentRelationForObject_(self, v4, objectCopy);
+  isRootObject_withRelation = objc_msgSend__isRootObject_withRelation_(self, v6, objectCopy, v5);
+  v10 = objc_msgSend_identity(objectCopy, v8, v9);
+  objc_msgSend_setObject_forKey_(self->_objects, v11, objectCopy, v10);
   if (isRootObject_withRelation)
   {
-    objc_msgSend__insertRootObject_(self, v12, v21);
+    objc_msgSend__insertRootObject_(self, v12, objectCopy);
   }
 
   else
   {
     v14 = objc_msgSend_fromKey(v5, v12, v13);
-    v16 = objc_msgSend_valueForKey_(v21, v15, v14);
+    v16 = objc_msgSend_valueForKey_(objectCopy, v15, v14);
 
     v19 = objc_msgSend_objectForKey_(self->_objectsIdsByParentID, v17, v16);
     if (!v19)
@@ -530,27 +530,27 @@ LABEL_39:
   }
 }
 
-- (void)_insertRootObject:(id)a3
+- (void)_insertRootObject:(id)object
 {
-  v20 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_identity(v20, v5, v6);
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_identity(objectCopy, v5, v6);
   v10 = objc_msgSend_rootClasses(CLSFaultProcessor, v8, v9);
   v11 = objc_opt_class();
   v13 = objc_msgSend_containsObject_(v10, v12, v11);
 
   if (v13)
   {
-    v16 = objc_msgSend_objectForKey_(v4->_objectsIdsByParentID, v14, v7);
+    v16 = objc_msgSend_objectForKey_(selfCopy->_objectsIdsByParentID, v14, v7);
     if (v16)
     {
-      objc_msgSend__insertRootObjectID_withChildren_(v4, v15, v7, v16);
+      objc_msgSend__insertRootObjectID_withChildren_(selfCopy, v15, v7, v16);
     }
 
     else
     {
-      objc_msgSend_addObject_(v4->_rootObjectIDs, v15, v7);
+      objc_msgSend_addObject_(selfCopy->_rootObjectIDs, v15, v7);
     }
   }
 
@@ -558,7 +558,7 @@ LABEL_39:
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    rootObjectIDs = v4->_rootObjectIDs;
+    rootObjectIDs = selfCopy->_rootObjectIDs;
     if (isKindOfClass)
     {
       objc_msgSend_insertObject_atIndex_(rootObjectIDs, v17, v7, 0);
@@ -570,14 +570,14 @@ LABEL_39:
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_insertRootObjectID:(id)a3 withChildren:(id)a4
+- (void)_insertRootObjectID:(id)d withChildren:(id)children
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  childrenCopy = children;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -601,7 +601,7 @@ LABEL_39:
           objc_enumerationMutation(v8);
         }
 
-        if (objc_msgSend_containsObject_(v7, v11, *(*(&v22 + 1) + 8 * v15), v22))
+        if (objc_msgSend_containsObject_(childrenCopy, v11, *(*(&v22 + 1) + 8 * v15), v22))
         {
           v13 = v16;
           goto LABEL_12;
@@ -632,38 +632,38 @@ LABEL_12:
   v19 = objc_msgSend_count(self->_rootObjectIDs, v17, v18);
   if (v13 >= v19 - 1)
   {
-    objc_msgSend_insertObject_atIndex_(self->_rootObjectIDs, v20, v6, v19 - 1, v22);
+    objc_msgSend_insertObject_atIndex_(self->_rootObjectIDs, v20, dCopy, v19 - 1, v22);
   }
 
   else
   {
-    objc_msgSend_insertObject_atIndex_(self->_rootObjectIDs, v20, v6, v13, v22);
+    objc_msgSend_insertObject_atIndex_(self->_rootObjectIDs, v20, dCopy, v13, v22);
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isRootObject:(id)a3
+- (BOOL)_isRootObject:(id)object
 {
-  v4 = a3;
-  v6 = objc_msgSend__childParentRelationForObject_(self, v5, v4);
-  LOBYTE(self) = objc_msgSend__isRootObject_withRelation_(self, v7, v4, v6);
+  objectCopy = object;
+  v6 = objc_msgSend__childParentRelationForObject_(self, v5, objectCopy);
+  LOBYTE(self) = objc_msgSend__isRootObject_withRelation_(self, v7, objectCopy, v6);
 
   return self;
 }
 
-- (BOOL)_isRootObject:(id)a3 withRelation:(id)a4
+- (BOOL)_isRootObject:(id)object withRelation:(id)relation
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  relationCopy = relation;
   v9 = objc_msgSend_rootClasses(CLSFaultProcessor, v7, v8);
   v10 = objc_opt_class();
   v12 = objc_msgSend_containsObject_(v9, v11, v10);
 
-  if (v6)
+  if (relationCopy)
   {
-    v15 = objc_msgSend_fromKey(v6, v13, v14);
-    v17 = objc_msgSend_valueForKey_(v5, v16, v15);
+    v15 = objc_msgSend_fromKey(relationCopy, v13, v14);
+    v17 = objc_msgSend_valueForKey_(objectCopy, v16, v15);
     v18 = v17 == 0;
 
     v19 = v18 | v12;
@@ -677,7 +677,7 @@ LABEL_12:
   return v19 & 1;
 }
 
-- (id)_childParentRelationForObject:(id)a3
+- (id)_childParentRelationForObject:(id)object
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
@@ -725,9 +725,9 @@ LABEL_11:
   return v8;
 }
 
-- (void)_inGroup:(id)a3
+- (void)_inGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   objc_initWeak(&location, self);
   p_queue = &self->_queue;
   queue = self->_queue;
@@ -737,23 +737,23 @@ LABEL_11:
   block[2] = sub_236FC8F60;
   block[3] = &unk_278A18E98;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v8 = v4;
+  v10 = groupCopy;
+  v8 = groupCopy;
   dispatch_group_async(v6, queue, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)clientRemote_deliverObject:(id)a3
+- (void)clientRemote_deliverObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_236FC9058;
   v7[3] = &unk_278A18F48;
-  v8 = v4;
-  v5 = v4;
+  v8 = objectCopy;
+  v5 = objectCopy;
   objc_msgSend__inGroup_(self, v6, v7);
 }
 

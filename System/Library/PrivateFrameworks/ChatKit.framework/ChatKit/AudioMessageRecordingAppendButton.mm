@@ -1,5 +1,5 @@
 @interface AudioMessageRecordingAppendButton
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -7,17 +7,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190CCB59C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_190CCB724();
-  [*(&v5->super.super.super.isa + OBJC_IVAR____TtC7ChatKit33AudioMessageRecordingAppendButton_durationButton) sizeThatFits_];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC7ChatKit33AudioMessageRecordingAppendButton_durationButton) sizeThatFits_];
   v7 = v6;
   v9 = v8;
 

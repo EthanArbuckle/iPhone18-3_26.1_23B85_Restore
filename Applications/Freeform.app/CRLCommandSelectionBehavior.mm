@@ -1,117 +1,117 @@
 @interface CRLCommandSelectionBehavior
-- (CRLCommandSelectionBehavior)initWithCommitSelectionPath:(id)a3 forwardSelectionPath:(id)a4 reverseSelectionPath:(id)a5 usePersistableCommitSelectionPath:(BOOL)a6;
-- (CRLCommandSelectionBehavior)initWithForwardSelectionPath:(id)a3 reverseSelectionPath:(id)a4 selectionFlags:(unint64_t)a5 commitSelectionFlags:(unint64_t)a6 forwardSelectionFlags:(unint64_t)a7 reverseSelectionFlags:(unint64_t)a8;
-- (CRLCommandSelectionBehavior)initWithPersistableForwardSelectionPath:(id)a3 persistableReverseSelectionPath:(id)a4 commitSelectionPath:(id)a5 selectionFlags:(unint64_t)a6 commitSelectionFlags:(unint64_t)a7 forwardSelectionFlags:(unint64_t)a8 reverseSelectionFlags:(unint64_t)a9;
-- (id)commandSelectionBehaviorByCoalescingWithCommandSelectionBehavior:(id)a3;
-- (void)setCommitSelectionPath:(id)a3;
-- (void)setForwardSelectionPath:(id)a3;
-- (void)setReverseSelectionPath:(id)a3;
+- (CRLCommandSelectionBehavior)initWithCommitSelectionPath:(id)path forwardSelectionPath:(id)selectionPath reverseSelectionPath:(id)reverseSelectionPath usePersistableCommitSelectionPath:(BOOL)commitSelectionPath;
+- (CRLCommandSelectionBehavior)initWithForwardSelectionPath:(id)path reverseSelectionPath:(id)selectionPath selectionFlags:(unint64_t)flags commitSelectionFlags:(unint64_t)selectionFlags forwardSelectionFlags:(unint64_t)forwardSelectionFlags reverseSelectionFlags:(unint64_t)reverseSelectionFlags;
+- (CRLCommandSelectionBehavior)initWithPersistableForwardSelectionPath:(id)path persistableReverseSelectionPath:(id)selectionPath commitSelectionPath:(id)commitSelectionPath selectionFlags:(unint64_t)flags commitSelectionFlags:(unint64_t)selectionFlags forwardSelectionFlags:(unint64_t)forwardSelectionFlags reverseSelectionFlags:(unint64_t)reverseSelectionFlags;
+- (id)commandSelectionBehaviorByCoalescingWithCommandSelectionBehavior:(id)behavior;
+- (void)setCommitSelectionPath:(id)path;
+- (void)setForwardSelectionPath:(id)path;
+- (void)setReverseSelectionPath:(id)path;
 @end
 
 @implementation CRLCommandSelectionBehavior
 
-- (CRLCommandSelectionBehavior)initWithPersistableForwardSelectionPath:(id)a3 persistableReverseSelectionPath:(id)a4 commitSelectionPath:(id)a5 selectionFlags:(unint64_t)a6 commitSelectionFlags:(unint64_t)a7 forwardSelectionFlags:(unint64_t)a8 reverseSelectionFlags:(unint64_t)a9
+- (CRLCommandSelectionBehavior)initWithPersistableForwardSelectionPath:(id)path persistableReverseSelectionPath:(id)selectionPath commitSelectionPath:(id)commitSelectionPath selectionFlags:(unint64_t)flags commitSelectionFlags:(unint64_t)selectionFlags forwardSelectionFlags:(unint64_t)forwardSelectionFlags reverseSelectionFlags:(unint64_t)reverseSelectionFlags
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
+  pathCopy = path;
+  selectionPathCopy = selectionPath;
+  commitSelectionPathCopy = commitSelectionPath;
   v22.receiver = self;
   v22.super_class = CRLCommandSelectionBehavior;
   v19 = [(CRLCommandSelectionBehavior *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_persistableForwardSelectionPath, a3);
-    objc_storeStrong(&v20->_persistableReverseSelectionPath, a4);
-    objc_storeStrong(&v20->_commitSelectionPath, a5);
-    v20->_selectionFlags = a6;
-    v20->_additionalForwardSelectionFlags = a8;
-    v20->_additionalReverseSelectionFlags = a9;
-    v20->_additionalCommitSelectionFlags = a7;
+    objc_storeStrong(&v19->_persistableForwardSelectionPath, path);
+    objc_storeStrong(&v20->_persistableReverseSelectionPath, selectionPath);
+    objc_storeStrong(&v20->_commitSelectionPath, commitSelectionPath);
+    v20->_selectionFlags = flags;
+    v20->_additionalForwardSelectionFlags = forwardSelectionFlags;
+    v20->_additionalReverseSelectionFlags = reverseSelectionFlags;
+    v20->_additionalCommitSelectionFlags = selectionFlags;
     v20->_usePersistableCommitSelectionPath = 0;
   }
 
   return v20;
 }
 
-- (CRLCommandSelectionBehavior)initWithForwardSelectionPath:(id)a3 reverseSelectionPath:(id)a4 selectionFlags:(unint64_t)a5 commitSelectionFlags:(unint64_t)a6 forwardSelectionFlags:(unint64_t)a7 reverseSelectionFlags:(unint64_t)a8
+- (CRLCommandSelectionBehavior)initWithForwardSelectionPath:(id)path reverseSelectionPath:(id)selectionPath selectionFlags:(unint64_t)flags commitSelectionFlags:(unint64_t)selectionFlags forwardSelectionFlags:(unint64_t)forwardSelectionFlags reverseSelectionFlags:(unint64_t)reverseSelectionFlags
 {
-  v14 = a4;
-  v15 = a3;
-  v16 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:v15];
-  v17 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:v14];
+  selectionPathCopy = selectionPath;
+  pathCopy = path;
+  v16 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:pathCopy];
+  v17 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:selectionPathCopy];
 
-  v18 = [(CRLCommandSelectionBehavior *)self initWithPersistableForwardSelectionPath:v16 persistableReverseSelectionPath:v17 commitSelectionPath:v15 selectionFlags:a5 commitSelectionFlags:a6 forwardSelectionFlags:a7 reverseSelectionFlags:a8];
+  v18 = [(CRLCommandSelectionBehavior *)self initWithPersistableForwardSelectionPath:v16 persistableReverseSelectionPath:v17 commitSelectionPath:pathCopy selectionFlags:flags commitSelectionFlags:selectionFlags forwardSelectionFlags:forwardSelectionFlags reverseSelectionFlags:reverseSelectionFlags];
   return v18;
 }
 
-- (CRLCommandSelectionBehavior)initWithCommitSelectionPath:(id)a3 forwardSelectionPath:(id)a4 reverseSelectionPath:(id)a5 usePersistableCommitSelectionPath:(BOOL)a6
+- (CRLCommandSelectionBehavior)initWithCommitSelectionPath:(id)path forwardSelectionPath:(id)selectionPath reverseSelectionPath:(id)reverseSelectionPath usePersistableCommitSelectionPath:(BOOL)commitSelectionPath
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = [(CRLCommandSelectionBehavior *)self initWithForwardSelectionPath:a4 reverseSelectionPath:a5];
+  commitSelectionPathCopy = commitSelectionPath;
+  pathCopy = path;
+  v11 = [(CRLCommandSelectionBehavior *)self initWithForwardSelectionPath:selectionPath reverseSelectionPath:reverseSelectionPath];
   v12 = v11;
   if (v11)
   {
-    [(CRLCommandSelectionBehavior *)v11 setUsePersistableCommitSelectionPath:v6];
-    [(CRLCommandSelectionBehavior *)v12 setCommitSelectionPath:v10];
+    [(CRLCommandSelectionBehavior *)v11 setUsePersistableCommitSelectionPath:commitSelectionPathCopy];
+    [(CRLCommandSelectionBehavior *)v12 setCommitSelectionPath:pathCopy];
   }
 
   return v12;
 }
 
-- (void)setCommitSelectionPath:(id)a3
+- (void)setCommitSelectionPath:(id)path
 {
-  v7 = a3;
-  if (self->_commitSelectionPath != v7)
+  pathCopy = path;
+  if (self->_commitSelectionPath != pathCopy)
   {
-    objc_storeStrong(&self->_commitSelectionPath, a3);
+    objc_storeStrong(&self->_commitSelectionPath, path);
   }
 
   if ([(CRLCommandSelectionBehavior *)self usePersistableCommitSelectionPath])
   {
-    v5 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:v7];
+    v5 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:pathCopy];
     persistableCommitSelectionPath = self->_persistableCommitSelectionPath;
     self->_persistableCommitSelectionPath = v5;
   }
 }
 
-- (void)setForwardSelectionPath:(id)a3
+- (void)setForwardSelectionPath:(id)path
 {
-  v6 = a3;
-  v4 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:v6];
+  pathCopy = path;
+  v4 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:pathCopy];
   if (v4 != self->_persistableForwardSelectionPath)
   {
     v5 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:self->_commitSelectionPath];
     if (v5 == self->_persistableForwardSelectionPath)
     {
-      [(CRLCommandSelectionBehavior *)self setCommitSelectionPath:v6];
+      [(CRLCommandSelectionBehavior *)self setCommitSelectionPath:pathCopy];
     }
 
     objc_storeStrong(&self->_persistableForwardSelectionPath, v4);
   }
 }
 
-- (void)setReverseSelectionPath:(id)a3
+- (void)setReverseSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:v4];
+  pathCopy = path;
+  v5 = [[_TtC8Freeform27CRLPersistableSelectionPath alloc] initWithSelectionPath:pathCopy];
 
   persistableReverseSelectionPath = self->_persistableReverseSelectionPath;
   self->_persistableReverseSelectionPath = v5;
 }
 
-- (id)commandSelectionBehaviorByCoalescingWithCommandSelectionBehavior:(id)a3
+- (id)commandSelectionBehaviorByCoalescingWithCommandSelectionBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   v5 = [CRLCommandSelectionBehavior alloc];
-  v6 = [v4 persistableForwardSelectionPath];
-  v7 = [(CRLCommandSelectionBehavior *)self persistableReverseSelectionPath];
-  v8 = [(CRLCommandSelectionBehavior *)self commitSelectionPath];
-  v9 = [(CRLCommandSelectionBehavior *)self selectionFlags];
-  v10 = [v4 additionalForwardSelectionFlags];
+  persistableForwardSelectionPath = [behaviorCopy persistableForwardSelectionPath];
+  persistableReverseSelectionPath = [(CRLCommandSelectionBehavior *)self persistableReverseSelectionPath];
+  commitSelectionPath = [(CRLCommandSelectionBehavior *)self commitSelectionPath];
+  selectionFlags = [(CRLCommandSelectionBehavior *)self selectionFlags];
+  additionalForwardSelectionFlags = [behaviorCopy additionalForwardSelectionFlags];
 
-  v11 = [(CRLCommandSelectionBehavior *)v5 initWithPersistableForwardSelectionPath:v6 persistableReverseSelectionPath:v7 commitSelectionPath:v8 selectionFlags:v9 commitSelectionFlags:0 forwardSelectionFlags:v10 reverseSelectionFlags:[(CRLCommandSelectionBehavior *)self additionalReverseSelectionFlags]];
+  v11 = [(CRLCommandSelectionBehavior *)v5 initWithPersistableForwardSelectionPath:persistableForwardSelectionPath persistableReverseSelectionPath:persistableReverseSelectionPath commitSelectionPath:commitSelectionPath selectionFlags:selectionFlags commitSelectionFlags:0 forwardSelectionFlags:additionalForwardSelectionFlags reverseSelectionFlags:[(CRLCommandSelectionBehavior *)self additionalReverseSelectionFlags]];
 
   return v11;
 }

@@ -1,41 +1,41 @@
 @interface WFCategoryJudgement
-+ (id)categoryJudgementWithCategory:(int64_t)a3 score:(float)a4;
-- (int64_t)compareByCategory:(id)a3;
-- (int64_t)compareByScore:(id)a3;
++ (id)categoryJudgementWithCategory:(int64_t)category score:(float)score;
+- (int64_t)compareByCategory:(id)category;
+- (int64_t)compareByScore:(id)score;
 @end
 
 @implementation WFCategoryJudgement
 
-+ (id)categoryJudgementWithCategory:(int64_t)a3 score:(float)a4
++ (id)categoryJudgementWithCategory:(int64_t)category score:(float)score
 {
   v6 = objc_alloc_init(objc_opt_class());
-  *&v7 = a4;
+  *&v7 = score;
   [v6 setScore:v7];
-  [v6 setCategory:a3];
+  [v6 setCategory:category];
 
   return v6;
 }
 
-- (int64_t)compareByCategory:(id)a3
+- (int64_t)compareByCategory:(id)category
 {
-  v4 = [(WFCategoryJudgement *)self category];
-  v5 = [a3 category];
-  if (v4 < v5)
+  category = [(WFCategoryJudgement *)self category];
+  category2 = [category category];
+  if (category < category2)
   {
     return -1;
   }
 
   else
   {
-    return v4 > v5;
+    return category > category2;
   }
 }
 
-- (int64_t)compareByScore:(id)a3
+- (int64_t)compareByScore:(id)score
 {
   [(WFCategoryJudgement *)self score];
   v5 = v4;
-  [a3 score];
+  [score score];
   if (v5 > v6)
   {
     return -1;

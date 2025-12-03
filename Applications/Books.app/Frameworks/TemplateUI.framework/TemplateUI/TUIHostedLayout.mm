@@ -1,28 +1,28 @@
 @interface TUIHostedLayout
-- (BOOL)collectHostingPropertiesWithCollector:(id)a3;
+- (BOOL)collectHostingPropertiesWithCollector:(id)collector;
 - (CGSize)hostingRequestedSize;
 - (CGSize)requestedSize;
-- (TUIHostedLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
-- (id)axModelTreeWithCustomActionsCollector:(id)a3 scrollAncestorLayout:(id)a4 scrollAncestorTranslation:(CGPoint)a5 liveTransformAncestorLayout:(id)a6;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (TUIHostedLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
+- (id)axModelTreeWithCustomActionsCollector:(id)collector scrollAncestorLayout:(id)layout scrollAncestorTranslation:(CGPoint)translation liveTransformAncestorLayout:(id)ancestorLayout;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 - (void)computeLayout;
 - (void)onInvalidate;
 @end
 
 @implementation TUIHostedLayout
 
-- (TUIHostedLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUIHostedLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
-  v8 = a5;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = TUIHostedLayout;
-  v9 = [(TUILayout *)&v14 initWithModel:a3 parent:a4 controller:v8];
+  v9 = [(TUILayout *)&v14 initWithModel:model parent:parent controller:controllerCopy];
   v10 = v9;
   if (v9)
   {
     v11 = [(TUILayout *)v9 box];
-    v12 = [v11 hostingIdentifier];
-    [v8 registerHostingLayout:v10 forIdentifier:v12];
+    hostingIdentifier = [v11 hostingIdentifier];
+    [controllerCopy registerHostingLayout:v10 forIdentifier:hostingIdentifier];
   }
 
   return v10;
@@ -45,10 +45,10 @@
   v6 = v5;
   self->_requestedSize.width = v4;
   self->_requestedSize.height = v5;
-  v7 = [(TUILayout *)self controller];
+  controller = [(TUILayout *)self controller];
   v8 = [(TUILayout *)self box];
-  v9 = [v8 hostingIdentifier];
-  v10 = [v7 hostingGeometryForIdentifier:v9 requestedSize:{self->_requestedSize.width, self->_requestedSize.height}];
+  hostingIdentifier = [v8 hostingIdentifier];
+  v10 = [controller hostingGeometryForIdentifier:hostingIdentifier requestedSize:{self->_requestedSize.width, self->_requestedSize.height}];
 
   hostingGeometry = self->_hostingGeometry;
   self->_hostingGeometry = 0;
@@ -68,18 +68,18 @@
   v17 = TUIHostingLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(TUILayout *)self controller];
-    v19 = [v18 feedId];
+    controller2 = [(TUILayout *)self controller];
+    feedId = [controller2 feedId];
     v20 = [(TUILayout *)self box];
-    v21 = [v20 hostingIdentifier];
+    hostingIdentifier2 = [v20 hostingIdentifier];
     v34.width = v4;
     v34.height = v6;
     v22 = NSStringFromCGSize(v34);
     v23 = self->_hostingGeometry;
     v24 = 134219010;
-    v25 = v19;
+    v25 = feedId;
     v26 = 2112;
-    v27 = v21;
+    v27 = hostingIdentifier2;
     v28 = 2112;
     v29 = v10;
     v30 = 2112;
@@ -101,44 +101,44 @@
   self->_hostingGeometry = 0;
 }
 
-- (BOOL)collectHostingPropertiesWithCollector:(id)a3
+- (BOOL)collectHostingPropertiesWithCollector:(id)collector
 {
-  v4 = a3;
+  collectorCopy = collector;
   v5 = [(TUILayout *)self box];
-  v6 = [v5 hostingIdentifier];
+  hostingIdentifier = [v5 hostingIdentifier];
 
-  if (v6)
+  if (hostingIdentifier)
   {
-    v7 = [v5 hostingProperties];
-    v8 = [v5 hostingIdentifier];
-    [v4 hostingCollectorAddProperties:v7 forIdentifier:v8];
+    hostingProperties = [v5 hostingProperties];
+    hostingIdentifier2 = [v5 hostingIdentifier];
+    [collectorCopy hostingCollectorAddProperties:hostingProperties forIdentifier:hostingIdentifier2];
   }
 
   return 0;
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = [(TUILayout *)self box];
-  v8 = [v7 hostingIdentifier];
+  hostingIdentifier = [v7 hostingIdentifier];
 
   v9 = 0;
-  if (a3 >= 4 && v8)
+  if (kind >= 4 && hostingIdentifier)
   {
-    v10 = [v7 anchorRefId];
-    v11 = [v10 length];
+    anchorRefId = [v7 anchorRefId];
+    v11 = [anchorRefId length];
 
     if (v11)
     {
-      v12 = [v7 anchorRefId];
-      v13 = sub_5308C(self, 0, 1, v12);
+      anchorRefId2 = [v7 anchorRefId];
+      v13 = sub_5308C(self, 0, 1, anchorRefId2);
 
       if (v13)
       {
-        v14 = self;
+        selfCopy = self;
         v67 = v13;
-        v15 = v13;
+        layoutAncestor = v13;
         v133 = 0u;
         v132 = 0u;
         v131 = 0u;
@@ -198,21 +198,21 @@
         v76 = 0u;
         v77 = 0u;
         memset(&v75, 0, sizeof(v75));
-        v66 = v14;
+        v66 = selfCopy;
         v16 = 0;
-        if (v14)
+        if (selfCopy)
         {
           do
           {
-            v17 = v14;
+            v17 = selfCopy;
             v18 = v16++;
-            *&buf[8 * v18] = v14;
-            v14 = [(TUILayout *)v14 layoutAncestor];
+            *&buf[8 * v18] = selfCopy;
+            selfCopy = [(TUILayout *)selfCopy layoutAncestor];
 
-            v19 = v14 != 0;
+            v19 = selfCopy != 0;
           }
 
-          while (v18 <= 0x3E && v14);
+          while (v18 <= 0x3E && selfCopy);
         }
 
         else
@@ -222,12 +222,12 @@
 
         v21 = 0;
         p_ty = &v74.ty;
-        v65 = v15;
+        v65 = layoutAncestor;
         do
         {
-          v23 = v15;
-          *(p_ty++ + 1) = v15;
-          v15 = [v15 layoutAncestor];
+          v23 = layoutAncestor;
+          *(p_ty++ + 1) = layoutAncestor;
+          layoutAncestor = [layoutAncestor layoutAncestor];
 
           if (v21 > 0x3E)
           {
@@ -237,9 +237,9 @@
           ++v21;
         }
 
-        while (v15);
+        while (layoutAncestor);
         v24 = 0;
-        if (v15)
+        if (layoutAncestor)
         {
           v25 = 1;
         }
@@ -328,8 +328,8 @@
       v68.i64[0] = 0x7FF8000000000000;
     }
 
-    v41 = [v7 identifier];
-    [(TUILayout *)self renderModelSizeWithContext:v6];
+    identifier = [v7 identifier];
+    [(TUILayout *)self renderModelSizeWithContext:contextCopy];
     v43 = v42;
     v45 = v44;
     p_requestedSize = &self->_requestedSize;
@@ -339,24 +339,24 @@
     v51 = v50;
     v53 = v52;
     v55 = v54;
-    v56 = [v7 hostingIdentifier];
-    v57 = [v7 hostingProperties];
-    v9 = [TUIHostingView renderModelIdentifier:v41 size:v47 requestedSize:v56 usingGeometry:v57 insets:v43 hostingIdentifier:v45 hostingProperties:self->_requestedSize.width anchorPoint:self->_requestedSize.height, v49, v51, v53, v55, v68.i64[0], v20];
+    hostingIdentifier2 = [v7 hostingIdentifier];
+    hostingProperties = [v7 hostingProperties];
+    v9 = [TUIHostingView renderModelIdentifier:identifier size:v47 requestedSize:hostingIdentifier2 usingGeometry:hostingProperties insets:v43 hostingIdentifier:v45 hostingProperties:self->_requestedSize.width anchorPoint:self->_requestedSize.height, v49, v51, v53, v55, v68.i64[0], v20];
 
     v58 = TUIHostingLog();
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
     {
-      v71 = [(TUILayout *)self controller];
-      v60 = [v71 feedId];
+      controller = [(TUILayout *)self controller];
+      feedId = [controller feedId];
       v61 = [(TUILayout *)self box];
-      v62 = [v61 hostingIdentifier];
+      hostingIdentifier3 = [v61 hostingIdentifier];
       [v9 size];
       v63 = NSStringFromCGSize(v134);
       v64 = NSStringFromCGSize(*p_requestedSize);
       *buf = 134219010;
-      *&buf[4] = v60;
+      *&buf[4] = feedId;
       *&buf[12] = 2112;
-      *&buf[14] = v62;
+      *&buf[14] = hostingIdentifier3;
       *&buf[22] = 2112;
       *&buf[24] = v63;
       *&buf[32] = 2112;
@@ -370,11 +370,11 @@
   return v9;
 }
 
-- (id)axModelTreeWithCustomActionsCollector:(id)a3 scrollAncestorLayout:(id)a4 scrollAncestorTranslation:(CGPoint)a5 liveTransformAncestorLayout:(id)a6
+- (id)axModelTreeWithCustomActionsCollector:(id)collector scrollAncestorLayout:(id)layout scrollAncestorTranslation:(CGPoint)translation liveTransformAncestorLayout:(id)ancestorLayout
 {
   v8.receiver = self;
   v8.super_class = TUIHostedLayout;
-  v6 = [(TUILayout *)&v8 axModelTreeWithCustomActionsCollector:a3 scrollAncestorLayout:a4 scrollAncestorTranslation:a6 liveTransformAncestorLayout:a5.x, a5.y];
+  v6 = [(TUILayout *)&v8 axModelTreeWithCustomActionsCollector:collector scrollAncestorLayout:layout scrollAncestorTranslation:ancestorLayout liveTransformAncestorLayout:translation.x, translation.y];
   [v6 setShouldVendControlView:1];
 
   return v6;

@@ -11,9 +11,9 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(ICCRRegisterMultiValue *)self values];
+  values = [(ICCRRegisterMultiValue *)self values];
   v3 = 0;
-  v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [values countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -23,7 +23,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(values);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -35,7 +35,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [values countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);

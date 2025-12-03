@@ -1,6 +1,6 @@
 @interface SSSDebugAssetManager
 + (id)newTestScreenshot;
-- (void)imageForPreviouslyRegisteredIdentifier:(id)a3 imageHandler:(id)a4;
+- (void)imageForPreviouslyRegisteredIdentifier:(id)identifier imageHandler:(id)handler;
 @end
 
 @implementation SSSDebugAssetManager
@@ -18,24 +18,24 @@
   v16.height = v10;
   UIGraphicsBeginImageContext(v16);
   v11 = +[UIApplication sharedApplication];
-  v12 = [v11 windows];
-  v13 = [v12 firstObject];
-  [v13 drawViewHierarchyInRect:0 afterScreenUpdates:{v4, v6, v8, v10}];
+  windows = [v11 windows];
+  firstObject = [windows firstObject];
+  [firstObject drawViewHierarchyInRect:0 afterScreenUpdates:{v4, v6, v8, v10}];
 
   v14 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   return v14;
 }
 
-- (void)imageForPreviouslyRegisteredIdentifier:(id)a3 imageHandler:(id)a4
+- (void)imageForPreviouslyRegisteredIdentifier:(id)identifier imageHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10002A4F4;
   v5[3] = &unk_1000BA0F8;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 

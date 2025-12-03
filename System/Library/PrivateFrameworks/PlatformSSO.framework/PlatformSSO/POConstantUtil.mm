@@ -1,22 +1,22 @@
 @interface POConstantUtil
-+ (id)stringForDeviceAction:(int64_t)a3;
-+ (id)stringForRegistrationStatus:(int64_t)a3;
-+ (id)stringForTokenStatus:(int64_t)a3;
-+ (id)stringForUserAction:(int64_t)a3;
++ (id)stringForDeviceAction:(int64_t)action;
++ (id)stringForRegistrationStatus:(int64_t)status;
++ (id)stringForTokenStatus:(int64_t)status;
++ (id)stringForUserAction:(int64_t)action;
 @end
 
 @implementation POConstantUtil
 
-+ (id)stringForDeviceAction:(int64_t)a3
++ (id)stringForDeviceAction:(int64_t)action
 {
-  if (a3 > 2)
+  if (action > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_279A3A168[a3];
+    v3 = off_279A3A168[action];
   }
 
   v4 = MEMORY[0x277CCACA8];
@@ -26,16 +26,16 @@
   return v6;
 }
 
-+ (id)stringForUserAction:(int64_t)a3
++ (id)stringForUserAction:(int64_t)action
 {
-  if (a3 > 3)
+  if (action > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_279A3A180[a3];
+    v3 = off_279A3A180[action];
   }
 
   v4 = MEMORY[0x277CCACA8];
@@ -45,16 +45,16 @@
   return v6;
 }
 
-+ (id)stringForRegistrationStatus:(int64_t)a3
++ (id)stringForRegistrationStatus:(int64_t)status
 {
-  if (a3 > 3)
+  if (status > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_279A3A1A0[a3];
+    v3 = off_279A3A1A0[status];
   }
 
   v4 = MEMORY[0x277CCACA8];
@@ -64,16 +64,16 @@
   return v6;
 }
 
-+ (id)stringForTokenStatus:(int64_t)a3
++ (id)stringForTokenStatus:(int64_t)status
 {
-  if (a3 > 2)
+  if (status > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_279A3A1C0[a3];
+    v3 = off_279A3A1C0[status];
   }
 
   v4 = MEMORY[0x277CCACA8];

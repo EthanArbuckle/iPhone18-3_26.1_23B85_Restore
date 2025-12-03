@@ -3,7 +3,7 @@
 - (id)autoFocusEventMarkerImage;
 - (id)userInitiatedFocusEventMarkerImage;
 - (void)_PXUIFocusTimelineView_commonInit;
-- (void)_handleTap:(id)a3;
+- (void)_handleTap:(id)tap;
 @end
 
 @implementation PXUIFocusTimelineView
@@ -18,24 +18,24 @@
 
 - (id)autoFocusEventMarkerImage
 {
-  v3 = [(PXUIFocusTimelineView *)self traitCollection];
-  v4 = [(PXUIFocusTimelineView *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  traitCollection = [(PXUIFocusTimelineView *)self traitCollection];
+  traitCollection2 = [(PXUIFocusTimelineView *)self traitCollection];
+  userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
-  v6 = [(PXUIFocusTimelineView *)self autoFocusMarkerImage];
-  if (!v6 || (v7 = v6, v8 = [(PXUIFocusTimelineView *)self autoFocusImageInterfaceStyle], v7, v5 != v8))
+  autoFocusMarkerImage = [(PXUIFocusTimelineView *)self autoFocusMarkerImage];
+  if (!autoFocusMarkerImage || (v7 = autoFocusMarkerImage, v8 = [(PXUIFocusTimelineView *)self autoFocusImageInterfaceStyle], v7, userInterfaceStyle != v8))
   {
     v18.width = 14.0;
     v18.height = 14.0;
     UIGraphicsBeginImageContextWithOptions(v18, 0, 0.0);
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSaveGState(CurrentContext);
-    v10 = [MEMORY[0x1E69DC888] labelColor];
-    v11 = [v10 resolvedColorWithTraitCollection:v3];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v11 = [labelColor resolvedColorWithTraitCollection:traitCollection];
     CGContextSetFillColorWithColor(CurrentContext, [v11 CGColor]);
 
-    v12 = [MEMORY[0x1E69DC888] systemGray5Color];
-    v13 = [v12 resolvedColorWithTraitCollection:v3];
+    systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+    v13 = [systemGray5Color resolvedColorWithTraitCollection:traitCollection];
     CGContextSetStrokeColorWithColor(CurrentContext, [v13 CGColor]);
 
     CGContextSetLineWidth(CurrentContext, 1.0);
@@ -50,17 +50,17 @@
     [(PXUIFocusTimelineView *)self setAutoFocusMarkerImage:v14];
 
     UIGraphicsEndImageContext();
-    [(PXUIFocusTimelineView *)self setAutoFocusImageInterfaceStyle:v5];
+    [(PXUIFocusTimelineView *)self setAutoFocusImageInterfaceStyle:userInterfaceStyle];
   }
 
-  v15 = [(PXUIFocusTimelineView *)self autoFocusMarkerImage];
+  autoFocusMarkerImage2 = [(PXUIFocusTimelineView *)self autoFocusMarkerImage];
 
-  return v15;
+  return autoFocusMarkerImage2;
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  [a3 locationInView:self];
+  [tap locationInView:self];
 
   [(PXFocusTimelineView *)self handleEventSelectedAtLocation:?];
 }

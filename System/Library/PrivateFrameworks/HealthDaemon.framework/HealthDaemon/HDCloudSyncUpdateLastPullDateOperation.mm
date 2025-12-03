@@ -1,42 +1,42 @@
 @interface HDCloudSyncUpdateLastPullDateOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDCloudSyncUpdateLastPullDateOperation)initWithCoder:(id)a3;
-- (HDCloudSyncUpdateLastPullDateOperation)initWithPullCompleteDate:(id)a3 lastSuccessfulPullKey:(id)a4;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDCloudSyncUpdateLastPullDateOperation)initWithCoder:(id)coder;
+- (HDCloudSyncUpdateLastPullDateOperation)initWithPullCompleteDate:(id)date lastSuccessfulPullKey:(id)key;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDCloudSyncUpdateLastPullDateOperation
 
-- (HDCloudSyncUpdateLastPullDateOperation)initWithPullCompleteDate:(id)a3 lastSuccessfulPullKey:(id)a4
+- (HDCloudSyncUpdateLastPullDateOperation)initWithPullCompleteDate:(id)date lastSuccessfulPullKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = HDCloudSyncUpdateLastPullDateOperation;
   v9 = [(HDCloudSyncUpdateLastPullDateOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pullCompleteDate, a3);
-    objc_storeStrong(&v10->_lastSuccessfulPullKey, a4);
+    objc_storeStrong(&v9->_pullCompleteDate, date);
+    objc_storeStrong(&v10->_lastSuccessfulPullKey, key);
   }
 
   return v10;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = HDCloudSyncKeyValueDomainWithProfile(v7);
+  profileCopy = profile;
+  v8 = HDCloudSyncKeyValueDomainWithProfile(profileCopy);
   _HKInitializeLogging();
   v9 = MEMORY[0x277CCC328];
   v10 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Recording successful cloud sync pull", buf, 0xCu);
   }
 
@@ -47,8 +47,8 @@
   v14 = v20;
   if (v13)
   {
-    v15 = [v7 cloudSyncManager];
-    [(HDCloudSyncUpdateLastPullDateOperation *)v15 didCompleteSuccessfulPullWithDate:self->_pullCompleteDate];
+    cloudSyncManager = [profileCopy cloudSyncManager];
+    [(HDCloudSyncUpdateLastPullDateOperation *)cloudSyncManager didCompleteSuccessfulPullWithDate:self->_pullCompleteDate];
   }
 
   else
@@ -58,17 +58,17 @@
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v22 = v14;
+      selfCopy = v14;
       _os_log_error_impl(&dword_228986000, v16, OS_LOG_TYPE_ERROR, "Failed to record successful pull: %{public}@.", buf, 0xCu);
     }
 
-    v15 = v14;
-    if (v15)
+    cloudSyncManager = v14;
+    if (cloudSyncManager)
     {
-      if (a5)
+      if (error)
       {
-        v17 = v15;
-        *a5 = v15;
+        v17 = cloudSyncManager;
+        *error = cloudSyncManager;
       }
 
       else
@@ -82,22 +82,22 @@
   return v13;
 }
 
-- (HDCloudSyncUpdateLastPullDateOperation)initWithCoder:(id)a3
+- (HDCloudSyncUpdateLastPullDateOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pullCompleteDate"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastSuccessfulPullKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pullCompleteDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastSuccessfulPullKey"];
 
   v7 = [(HDCloudSyncUpdateLastPullDateOperation *)self initWithPullCompleteDate:v5 lastSuccessfulPullKey:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pullCompleteDate = self->_pullCompleteDate;
-  v5 = a3;
-  [v5 encodeObject:pullCompleteDate forKey:@"pullCompleteDate"];
-  [v5 encodeObject:self->_lastSuccessfulPullKey forKey:@"lastSuccessfulPullKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:pullCompleteDate forKey:@"pullCompleteDate"];
+  [coderCopy encodeObject:self->_lastSuccessfulPullKey forKey:@"lastSuccessfulPullKey"];
 }
 
 - (id)description

@@ -1,39 +1,39 @@
 @interface PKEducationalMessageTableCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKEducationalMessageTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKEducationalMessageTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)layoutSubviews;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation PKEducationalMessageTableCell
 
-- (PKEducationalMessageTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PKEducationalMessageTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v12.receiver = self;
   v12.super_class = PKEducationalMessageTableCell;
-  v9 = [(PSTableCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v9 = [(PSTableCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
-    [(PKEducationalMessageTableCell *)v9 setSpecifier:v8];
+    [(PKEducationalMessageTableCell *)v9 setSpecifier:specifierCopy];
     [(PKEducationalMessageTableCell *)v10 setAutoresizingMask:18];
   }
 
   return v10;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + *MEMORY[0x1E69C57F8]));
-  v6 = [WeakRetained isEqual:v4];
+  v6 = [WeakRetained isEqual:specifierCopy];
 
   if ((v6 & 1) == 0)
   {
     v13.receiver = self;
     v13.super_class = PKEducationalMessageTableCell;
-    [(PSTableCell *)&v13 setSpecifier:v4];
+    [(PSTableCell *)&v13 setSpecifier:specifierCopy];
     messageView = self->_messageView;
     if (messageView)
     {
@@ -42,15 +42,15 @@
       self->_messageView = 0;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"messageViewConfigurationKey"];
+    v9 = [specifierCopy objectForKeyedSubscript:@"messageViewConfigurationKey"];
     if (v9)
     {
       v10 = [[PKEducationalMessageView alloc] initWithConfiguration:v9];
       v11 = self->_messageView;
       self->_messageView = v10;
 
-      v12 = [(PKEducationalMessageTableCell *)self contentView];
-      [v12 addSubview:self->_messageView];
+      contentView = [(PKEducationalMessageTableCell *)self contentView];
+      [contentView addSubview:self->_messageView];
     }
   }
 }
@@ -61,14 +61,14 @@
   v5.super_class = PKEducationalMessageTableCell;
   [(PSTableCell *)&v5 layoutSubviews];
   messageView = self->_messageView;
-  v4 = [(PKEducationalMessageTableCell *)self contentView];
-  [v4 bounds];
+  contentView = [(PKEducationalMessageTableCell *)self contentView];
+  [contentView bounds];
   [(PKEducationalMessageView *)messageView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKEducationalMessageView *)self->_messageView sizeThatFits:a3.width, a3.height];
+  [(PKEducationalMessageView *)self->_messageView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

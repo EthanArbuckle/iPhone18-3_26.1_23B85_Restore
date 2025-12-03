@@ -1,24 +1,24 @@
 @interface HDSPEventRecordMessage
-- (HDSPEventRecordMessage)initWithCoder:(id)a3;
-- (HDSPEventRecordMessage)initWithDate:(id)a3;
+- (HDSPEventRecordMessage)initWithCoder:(id)coder;
+- (HDSPEventRecordMessage)initWithDate:(id)date;
 - (NSString)identifier;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation HDSPEventRecordMessage
 
-- (HDSPEventRecordMessage)initWithDate:(id)a3
+- (HDSPEventRecordMessage)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = HDSPEventRecordMessage;
   v6 = [(HDSPEventRecordMessage *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_date, a3);
+    objc_storeStrong(&v6->_date, date);
     v8 = v7;
   }
 
@@ -32,15 +32,15 @@
   return NSStringFromClass(v2);
 }
 
-- (HDSPEventRecordMessage)initWithCoder:(id)a3
+- (HDSPEventRecordMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HDSPEventRecordMessage;
   v5 = [(HDSPEventRecordMessage *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v6;
 
@@ -52,28 +52,28 @@
 
 - (id)succinctDescription
 {
-  v2 = [(HDSPEventRecordMessage *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HDSPEventRecordMessage *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(HDSPEventRecordMessage *)self date];
-  v5 = [(HDSPEventRecordMessage *)self dateDescription];
-  v6 = [v3 appendObject:v4 withName:v5];
+  date = [(HDSPEventRecordMessage *)self date];
+  dateDescription = [(HDSPEventRecordMessage *)self dateDescription];
+  v6 = [v3 appendObject:date withName:dateDescription];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HDSPEventRecordMessage *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HDSPEventRecordMessage *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

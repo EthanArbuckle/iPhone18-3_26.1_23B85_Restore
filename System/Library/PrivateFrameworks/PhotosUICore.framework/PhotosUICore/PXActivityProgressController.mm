@@ -11,14 +11,14 @@
 - (void)_updateSecondaryText;
 - (void)dealloc;
 - (void)handleShowingProgressView;
-- (void)hideAnimated:(BOOL)a3 allowDelay:(BOOL)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setFractionCompleted:(double)a3;
-- (void)setMessage:(id)a3;
-- (void)setProgress:(id)a3;
-- (void)setShouldUseProgressText:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)showAnimated:(BOOL)a3 allowDelay:(BOOL)a4;
+- (void)hideAnimated:(BOOL)animated allowDelay:(BOOL)delay;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setFractionCompleted:(double)completed;
+- (void)setMessage:(id)message;
+- (void)setProgress:(id)progress;
+- (void)setShouldUseProgressText:(BOOL)text;
+- (void)setTitle:(id)title;
+- (void)showAnimated:(BOOL)animated allowDelay:(BOOL)delay;
 @end
 
 @implementation PXActivityProgressController
@@ -37,24 +37,24 @@
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = v10;
-  if (PXActivityProgressControllerProgressObserverContext == a6)
+  pathCopy = path;
+  v11 = pathCopy;
+  if (PXActivityProgressControllerProgressObserverContext == context)
   {
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __79__PXActivityProgressController_observeValueForKeyPath_ofObject_change_context___block_invoke;
     v16 = &unk_1E774C620;
-    v17 = v10;
-    v18 = self;
+    v17 = pathCopy;
+    selfCopy = self;
     px_dispatch_on_main_queue();
   }
 
   v12.receiver = self;
   v12.super_class = PXActivityProgressController;
-  [(PXActivityProgressController *)&v12 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+  [(PXActivityProgressController *)&v12 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
 }
 
 void __79__PXActivityProgressController_observeValueForKeyPath_ofObject_change_context___block_invoke(uint64_t a1)
@@ -108,7 +108,7 @@ void __79__PXActivityProgressController_observeValueForKeyPath_ofObject_change_c
   [(PXActivityProgressViewController *)progressViewController reset];
 }
 
-- (void)hideAnimated:(BOOL)a3 allowDelay:(BOOL)a4
+- (void)hideAnimated:(BOOL)animated allowDelay:(BOOL)delay
 {
   if (self->_didShow)
   {
@@ -118,9 +118,9 @@ void __79__PXActivityProgressController_observeValueForKeyPath_ofObject_change_c
     v14[11] = v5;
     if (!self->_didHide)
     {
-      v9 = a3;
+      animatedCopy = animated;
       self->_didHide = 1;
-      if (a4 && self->_whenDidShow > 0.0)
+      if (delay && self->_whenDidShow > 0.0)
       {
         v10 = CFAbsoluteTimeGetCurrent() - self->_whenDidShow;
         if (v10 >= 1.0)
@@ -139,7 +139,7 @@ void __79__PXActivityProgressController_observeValueForKeyPath_ofObject_change_c
         v11 = 0;
       }
 
-      if (v9)
+      if (animatedCopy)
       {
         v12 = 0.3;
       }
@@ -187,27 +187,27 @@ void __56__PXActivityProgressController_hideAnimated_allowDelay___block_invoke_3
   [WeakRetained _didFinishHiding];
 }
 
-- (void)showAnimated:(BOOL)a3 allowDelay:(BOOL)a4
+- (void)showAnimated:(BOOL)animated allowDelay:(BOOL)delay
 {
   if (!self->_didShow && !self->_didHide)
   {
-    v5 = a4;
-    v6 = a3;
+    delayCopy = delay;
+    animatedCopy = animated;
     self->_didShow = 1;
-    v7 = [(PXActivityProgressController *)self window];
-    v8 = v7;
-    if (v7)
+    window = [(PXActivityProgressController *)self window];
+    v8 = window;
+    if (window)
     {
-      v9 = v7;
+      px_firstKeyWindow = window;
     }
 
     else
     {
-      v10 = [MEMORY[0x1E69DC668] sharedApplication];
-      v9 = [v10 px_firstKeyWindow];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
     }
 
-    [v9 bounds];
+    [px_firstKeyWindow bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -218,7 +218,7 @@ void __56__PXActivityProgressController_hideAnimated_allowDelay___block_invoke_3
 
     [(UIView *)self->_containerView setAutoresizingMask:18];
     [(UIView *)self->_containerView setAlpha:1.0];
-    [v9 addSubview:self->_containerView];
+    [px_firstKeyWindow addSubview:self->_containerView];
     v21 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v12, v14, v16, v18}];
     dimmingView = self->_dimmingView;
     self->_dimmingView = v21;
@@ -227,16 +227,16 @@ void __56__PXActivityProgressController_hideAnimated_allowDelay___block_invoke_3
     v23 = 0.0;
     [(UIView *)self->_dimmingView setAlpha:0.0];
     v24 = self->_dimmingView;
-    v25 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v24 setBackgroundColor:v25];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v24 setBackgroundColor:blackColor];
 
     [(UIView *)self->_containerView addSubview:self->_dimmingView];
-    if (v6)
+    if (animatedCopy)
     {
       v23 = 0.3;
     }
 
-    if (v5)
+    if (delayCopy)
     {
       v26 = 1000000000;
     }
@@ -300,9 +300,9 @@ uint64_t __56__PXActivityProgressController_showAnimated_allowDelay___block_invo
   if (!self->_didHide)
   {
     self->_whenDidShow = CFAbsoluteTimeGetCurrent();
-    v4 = [(PXActivityProgressController *)self _newProgressContainerView];
+    _newProgressContainerView = [(PXActivityProgressController *)self _newProgressContainerView];
     progressContainerView = self->_progressContainerView;
-    self->_progressContainerView = v4;
+    self->_progressContainerView = _newProgressContainerView;
 
     [(UIView *)self->_progressContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
     WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
@@ -312,11 +312,11 @@ uint64_t __56__PXActivityProgressController_showAnimated_allowDelay___block_invo
 
 - (void)_cancel
 {
-  v3 = [(PXActivityProgressController *)self cancellationHandler];
+  cancellationHandler = [(PXActivityProgressController *)self cancellationHandler];
   [(PXActivityProgressController *)self setCancellationHandler:0];
-  if (v3)
+  if (cancellationHandler)
   {
-    v3[2](v3);
+    cancellationHandler[2](cancellationHandler);
   }
 
   if ([(PXActivityProgressController *)self shouldAutoDisplay])
@@ -339,11 +339,11 @@ uint64_t __56__PXActivityProgressController_showAnimated_allowDelay___block_invo
   [v3 _addActionWithTitle:v4 style:1 handler:&v7 shouldDismissHandler:&__block_literal_global_212432];
 
   [v3 setContentViewController:{self->_progressViewController, v7, v8, v9, v10}];
-  v5 = [v3 view];
+  view = [v3 view];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 
-  return v5;
+  return view;
 }
 
 void __57__PXActivityProgressController__newProgressContainerView__block_invoke(uint64_t a1)
@@ -356,14 +356,14 @@ void __57__PXActivityProgressController__newProgressContainerView__block_invoke(
 {
   if ([(PXActivityProgressController *)self shouldUseProgressText])
   {
-    v4 = [(PXActivityProgressController *)self progress];
-    v3 = [v4 localizedAdditionalDescription];
-    [(PXActivityProgressViewController *)self->_progressViewController setSecondaryText:v3];
+    progress = [(PXActivityProgressController *)self progress];
+    localizedAdditionalDescription = [progress localizedAdditionalDescription];
+    [(PXActivityProgressViewController *)self->_progressViewController setSecondaryText:localizedAdditionalDescription];
   }
 
   else
   {
-    v4 = [(PXActivityProgressController *)self message];
+    progress = [(PXActivityProgressController *)self message];
     [(PXActivityProgressViewController *)self->_progressViewController setSecondaryText:?];
   }
 }
@@ -372,23 +372,23 @@ void __57__PXActivityProgressController__newProgressContainerView__block_invoke(
 {
   if ([(PXActivityProgressController *)self shouldUseProgressText])
   {
-    v4 = [(PXActivityProgressController *)self progress];
-    v3 = [v4 localizedDescription];
-    [(PXActivityProgressViewController *)self->_progressViewController setPrimaryText:v3];
+    progress = [(PXActivityProgressController *)self progress];
+    localizedDescription = [progress localizedDescription];
+    [(PXActivityProgressViewController *)self->_progressViewController setPrimaryText:localizedDescription];
   }
 
   else
   {
-    v4 = [(PXActivityProgressController *)self title];
+    progress = [(PXActivityProgressController *)self title];
     [(PXActivityProgressViewController *)self->_progressViewController setPrimaryText:?];
   }
 }
 
-- (void)setShouldUseProgressText:(BOOL)a3
+- (void)setShouldUseProgressText:(BOOL)text
 {
-  if (self->_shouldUseProgressText != a3)
+  if (self->_shouldUseProgressText != text)
   {
-    self->_shouldUseProgressText = a3;
+    self->_shouldUseProgressText = text;
     [(PXActivityProgressController *)self _updatePrimaryText];
 
     [(PXActivityProgressController *)self _updateSecondaryText];
@@ -397,18 +397,18 @@ void __57__PXActivityProgressController__newProgressContainerView__block_invoke(
 
 - (BOOL)isCancelled
 {
-  v2 = [(PXActivityProgressController *)self cancellationHandler];
-  v3 = v2 == 0;
+  cancellationHandler = [(PXActivityProgressController *)self cancellationHandler];
+  v3 = cancellationHandler == 0;
 
   return v3;
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v8 = a3;
+  messageCopy = message;
   v5 = self->_message;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == messageCopy)
   {
   }
 
@@ -418,18 +418,18 @@ void __57__PXActivityProgressController__newProgressContainerView__block_invoke(
 
     if (!v7)
     {
-      objc_storeStrong(&self->_message, a3);
+      objc_storeStrong(&self->_message, message);
       [(PXActivityProgressController *)self _updateSecondaryText];
     }
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v8 = a3;
+  titleCopy = title;
   v5 = self->_title;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == titleCopy)
   {
   }
 
@@ -439,18 +439,18 @@ void __57__PXActivityProgressController__newProgressContainerView__block_invoke(
 
     if (!v7)
     {
-      objc_storeStrong(&self->_title, a3);
+      objc_storeStrong(&self->_title, title);
       [(PXActivityProgressController *)self _updatePrimaryText];
     }
   }
 }
 
-- (void)setFractionCompleted:(double)a3
+- (void)setFractionCompleted:(double)completed
 {
   [(PXActivityProgressViewController *)self->_progressViewController setFractionCompleted:?];
   if ([(PXActivityProgressController *)self shouldAutoDisplay])
   {
-    v5 = a3 > 0.0 && a3 < 1.0;
+    v5 = completed > 0.0 && completed < 1.0;
     if (v5 && ![(PXActivityProgressController *)self isCancelled])
     {
 
@@ -467,26 +467,26 @@ void __57__PXActivityProgressController__newProgressContainerView__block_invoke(
 
 - (void)_updateFractionCompletedFromProgress
 {
-  v3 = [(PXActivityProgressController *)self progress];
-  [v3 fractionCompleted];
+  progress = [(PXActivityProgressController *)self progress];
+  [progress fractionCompleted];
   [(PXActivityProgressController *)self setFractionCompleted:?];
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   progress = self->_progress;
-  if (progress != v5)
+  if (progress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)progress removeObserver:self forKeyPath:@"fractionCompleted" context:PXActivityProgressControllerProgressObserverContext];
     [(NSProgress *)self->_progress removeObserver:self forKeyPath:@"localizedDescription" context:PXActivityProgressControllerProgressObserverContext];
     [(NSProgress *)self->_progress removeObserver:self forKeyPath:@"localizedAdditionalDescription" context:PXActivityProgressControllerProgressObserverContext];
-    objc_storeStrong(&self->_progress, a3);
+    objc_storeStrong(&self->_progress, progress);
     [(NSProgress *)self->_progress addObserver:self forKeyPath:@"fractionCompleted" options:4 context:PXActivityProgressControllerProgressObserverContext];
     [(NSProgress *)self->_progress addObserver:self forKeyPath:@"localizedDescription" options:4 context:PXActivityProgressControllerProgressObserverContext];
     [(NSProgress *)self->_progress addObserver:self forKeyPath:@"localizedAdditionalDescription" options:4 context:PXActivityProgressControllerProgressObserverContext];
-    v5 = v7;
+    progressCopy = v7;
   }
 }
 

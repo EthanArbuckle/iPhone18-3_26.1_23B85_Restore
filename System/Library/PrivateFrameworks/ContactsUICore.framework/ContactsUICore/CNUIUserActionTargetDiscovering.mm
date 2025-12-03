@@ -1,11 +1,11 @@
 @interface CNUIUserActionTargetDiscovering
-+ (BOOL)isSkypeAvailableWithEnvironment:(id)a3;
-+ (BOOL)shouldIgnoreApplicationProxy:(id)a3;
-+ (id)applicationProxiesForIntent:(id)a3 applicationWorkspace:(id)a4;
++ (BOOL)isSkypeAvailableWithEnvironment:(id)environment;
++ (BOOL)shouldIgnoreApplicationProxy:(id)proxy;
++ (id)applicationProxiesForIntent:(id)intent applicationWorkspace:(id)workspace;
 + (id)os_log;
-- (CNUIUserActionTargetDiscovering)initWithApplicationWorkspace:(id)a3 callProviderManager:(id)a4 profileConnection:(id)a5 schedulerProvider:(id)a6 highLatencySchedulerProvider:(id)a7 capabilities:(id)a8;
-- (id)_targetsForActionType:(id)a3;
-- (id)observableForTargetsChangedForActionType:(id)a3 schedulerProvider:(id)a4;
+- (CNUIUserActionTargetDiscovering)initWithApplicationWorkspace:(id)workspace callProviderManager:(id)manager profileConnection:(id)connection schedulerProvider:(id)provider highLatencySchedulerProvider:(id)schedulerProvider capabilities:(id)capabilities;
+- (id)_targetsForActionType:(id)type;
+- (id)observableForTargetsChangedForActionType:(id)type schedulerProvider:(id)provider;
 - (id)targetForTextWithMessages;
 - (id)targetForTextWithSkype;
 - (id)targetForVideoWithFaceTime;
@@ -13,7 +13,7 @@
 - (id)targetForVoiceWithFaceTime;
 - (id)targetForVoiceWithSkype;
 - (id)targetForVoiceWithTelephony;
-- (id)targetsForActionType:(id)a3;
+- (id)targetsForActionType:(id)type;
 - (id)targetsForDirections;
 - (id)targetsForEmail;
 - (id)targetsForPay;
@@ -26,12 +26,12 @@
 - (id)targetsForVideoWithThirdPartyCallProviders;
 - (id)targetsForVoice;
 - (id)targetsForVoiceWithThirdPartyCallProviders;
-- (id)thirdPartyTargetsForActionTypes:(id)a3;
-- (id)thirdPartyTargetsForBundleIdentifier:(id)a3;
-- (void)createDefaultMessagingAppsBundleIdentifierScorer:(id)a3;
+- (id)thirdPartyTargetsForActionTypes:(id)types;
+- (id)thirdPartyTargetsForBundleIdentifier:(id)identifier;
+- (void)createDefaultMessagingAppsBundleIdentifierScorer:(id)scorer;
 - (void)dealloc;
 - (void)emptyDefaultAppsCaches;
-- (void)resetTargetsForActionType:(id)a3;
+- (void)resetTargetsForActionType:(id)type;
 @end
 
 @implementation CNUIUserActionTargetDiscovering
@@ -55,28 +55,28 @@ uint64_t __41__CNUIUserActionTargetDiscovering_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (CNUIUserActionTargetDiscovering)initWithApplicationWorkspace:(id)a3 callProviderManager:(id)a4 profileConnection:(id)a5 schedulerProvider:(id)a6 highLatencySchedulerProvider:(id)a7 capabilities:(id)a8
+- (CNUIUserActionTargetDiscovering)initWithApplicationWorkspace:(id)workspace callProviderManager:(id)manager profileConnection:(id)connection schedulerProvider:(id)provider highLatencySchedulerProvider:(id)schedulerProvider capabilities:(id)capabilities
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  workspaceCopy = workspace;
+  managerCopy = manager;
+  connectionCopy = connection;
+  providerCopy = provider;
+  schedulerProviderCopy = schedulerProvider;
+  capabilitiesCopy = capabilities;
   v29.receiver = self;
   v29.super_class = CNUIUserActionTargetDiscovering;
   v18 = [(CNUIUserActionTargetDiscovering *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_applicationWorkspace, a3);
-    objc_storeStrong(&v19->_callProviderManager, a4);
-    objc_storeStrong(&v19->_capabilities, a8);
-    objc_storeStrong(&v19->_highLatencySchedulerProvider, a7);
-    objc_storeStrong(&v19->_profileConnection, a5);
-    objc_storeStrong(&v19->_schedulerProvider, a6);
+    objc_storeStrong(&v18->_applicationWorkspace, workspace);
+    objc_storeStrong(&v19->_callProviderManager, manager);
+    objc_storeStrong(&v19->_capabilities, capabilities);
+    objc_storeStrong(&v19->_highLatencySchedulerProvider, schedulerProvider);
+    objc_storeStrong(&v19->_profileConnection, connection);
+    objc_storeStrong(&v19->_schedulerProvider, provider);
     v20 = [CNUIUserActionTargetDiscoveryCache alloc];
-    v21 = [v15 newSynchronousSerialSchedulerWithName:@"com.apple.contacts.ContactsUICore.CNUIUserActionTargetDiscoveringResourceLock"];
+    v21 = [providerCopy newSynchronousSerialSchedulerWithName:@"com.apple.contacts.ContactsUICore.CNUIUserActionTargetDiscoveringResourceLock"];
     v22 = [(CNCache *)v20 initWithResourceScheduler:v21];
     cache = v19->_cache;
     v19->_cache = v22;
@@ -89,46 +89,46 @@ uint64_t __41__CNUIUserActionTargetDiscovering_os_log__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(CNUIUserActionTargetDiscovering *)v4 cache];
-  v6 = [v5 allObjects];
-  v7 = [v6 _cn_map:&__block_literal_global_22_1];
-  [v3 setArray:v7];
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cache = [(CNUIUserActionTargetDiscovering *)selfCopy cache];
+  allObjects = [cache allObjects];
+  v7 = [allObjects _cn_map:&__block_literal_global_22_1];
+  [array setArray:v7];
 
-  v8 = [(CNUIUserActionTargetDiscovering *)v4 cache];
-  [v8 removeAllObjects];
+  cache2 = [(CNUIUserActionTargetDiscovering *)selfCopy cache];
+  [cache2 removeAllObjects];
 
-  objc_sync_exit(v4);
-  [v3 _cn_each:*MEMORY[0x1E6996470]];
+  objc_sync_exit(selfCopy);
+  [array _cn_each:*MEMORY[0x1E6996470]];
 
-  v9.receiver = v4;
+  v9.receiver = selfCopy;
   v9.super_class = CNUIUserActionTargetDiscovering;
   [(CNUIUserActionTargetDiscovering *)&v9 dealloc];
 }
 
-- (id)targetsForActionType:(id)a3
+- (id)targetsForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(CNUIUserActionTargetDiscovering *)self schedulerProvider];
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(CNUIUserActionTargetDiscovering *)v6 cache];
+  typeCopy = type;
+  schedulerProvider = [(CNUIUserActionTargetDiscovering *)self schedulerProvider];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cache = [(CNUIUserActionTargetDiscovering *)selfCopy cache];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __56__CNUIUserActionTargetDiscovering_targetsForActionType___block_invoke;
   v15 = &unk_1E76E9F88;
-  v16 = v6;
-  v8 = v5;
+  v16 = selfCopy;
+  v8 = schedulerProvider;
   v17 = v8;
-  v9 = [v7 objectForKey:v4 onCacheMiss:&v12];
+  v9 = [cache objectForKey:typeCopy onCacheMiss:&v12];
 
-  v10 = [v9 first];
+  first = [v9 first];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  return v10;
+  return first;
 }
 
 id __56__CNUIUserActionTargetDiscovering_targetsForActionType___block_invoke(uint64_t a1, uint64_t a2)
@@ -141,99 +141,99 @@ id __56__CNUIUserActionTargetDiscovering_targetsForActionType___block_invoke(uin
   return v6;
 }
 
-- (id)observableForTargetsChangedForActionType:(id)a3 schedulerProvider:(id)a4
+- (id)observableForTargetsChangedForActionType:(id)type schedulerProvider:(id)provider
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 | *MEMORY[0x1E695C150] && ([v6 isEqual:?] & 1) == 0 && v6 | *MEMORY[0x1E695C1B8] && (objc_msgSend(v6, "isEqual:") & 1) == 0 && v6 | *MEMORY[0x1E695C178] && !objc_msgSend(v6, "isEqual:"))
+  typeCopy = type;
+  providerCopy = provider;
+  if (typeCopy | *MEMORY[0x1E695C150] && ([typeCopy isEqual:?] & 1) == 0 && typeCopy | *MEMORY[0x1E695C1B8] && (objc_msgSend(typeCopy, "isEqual:") & 1) == 0 && typeCopy | *MEMORY[0x1E695C178] && !objc_msgSend(typeCopy, "isEqual:"))
   {
-    v18 = [MEMORY[0x1E6996798] emptyObservable];
+    emptyObservable = [MEMORY[0x1E6996798] emptyObservable];
   }
 
   else
   {
     v8 = MEMORY[0x1E6996798];
-    v9 = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
-    v10 = [v9 observableForApplicationsChangedWithSchedulerProvider:v7];
+    applicationWorkspace = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
+    v10 = [applicationWorkspace observableForApplicationsChangedWithSchedulerProvider:providerCopy];
     v23[0] = v10;
-    v11 = [(CNUIUserActionTargetDiscovering *)self callProviderManager];
-    v12 = [v11 observableForCallProvidersChangedWithSchedulerProvider:v7];
+    callProviderManager = [(CNUIUserActionTargetDiscovering *)self callProviderManager];
+    v12 = [callProviderManager observableForCallProvidersChangedWithSchedulerProvider:providerCopy];
     v23[1] = v12;
-    v13 = [(CNUIUserActionTargetDiscovering *)self profileConnection];
-    v14 = [v13 observableForManagedConfigChanged];
-    v23[2] = v14;
+    profileConnection = [(CNUIUserActionTargetDiscovering *)self profileConnection];
+    observableForManagedConfigChanged = [profileConnection observableForManagedConfigChanged];
+    v23[2] = observableForManagedConfigChanged;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:3];
-    v20 = self;
-    v16 = v15 = v6;
-    v17 = [v8 merge:v16 schedulerProvider:v7];
+    selfCopy = self;
+    v16 = v15 = typeCopy;
+    v17 = [v8 merge:v16 schedulerProvider:providerCopy];
 
-    v6 = v15;
+    typeCopy = v15;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __94__CNUIUserActionTargetDiscovering_observableForTargetsChangedForActionType_schedulerProvider___block_invoke;
     v21[3] = &unk_1E76E83B8;
-    v21[4] = v20;
+    v21[4] = selfCopy;
     v22 = v15;
-    v18 = [v17 doOnNext:v21];
+    emptyObservable = [v17 doOnNext:v21];
   }
 
-  return v18;
+  return emptyObservable;
 }
 
-- (void)resetTargetsForActionType:(id)a3
+- (void)resetTargetsForActionType:(id)type
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
-    [(CNUIUserActionTargetDiscovering *)v4 resetTargetsForActionType:v6];
+    [(CNUIUserActionTargetDiscovering *)typeCopy resetTargetsForActionType:os_log];
   }
 
-  v7 = [(CNUIUserActionTargetDiscovering *)v5 cache];
-  v8 = [v7 objectForKeyedSubscript:v4];
-  v9 = [v8 second];
+  cache = [(CNUIUserActionTargetDiscovering *)selfCopy cache];
+  v8 = [cache objectForKeyedSubscript:typeCopy];
+  second = [v8 second];
 
-  v10 = [(CNUIUserActionTargetDiscovering *)v5 cache];
-  [v10 setObject:0 forKeyedSubscript:v4];
+  cache2 = [(CNUIUserActionTargetDiscovering *)selfCopy cache];
+  [cache2 setObject:0 forKeyedSubscript:typeCopy];
 
-  objc_sync_exit(v5);
-  [v9 cancel];
+  objc_sync_exit(selfCopy);
+  [second cancel];
 }
 
-- (id)_targetsForActionType:(id)a3
+- (id)_targetsForActionType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x1E695C178]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x1E695C178]])
   {
-    v5 = [(CNUIUserActionTargetDiscovering *)self targetsForText];
+    targetsForText = [(CNUIUserActionTargetDiscovering *)self targetsForText];
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x1E695C150]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E695C150]])
   {
-    v5 = [(CNUIUserActionTargetDiscovering *)self targetsForVoice];
+    targetsForText = [(CNUIUserActionTargetDiscovering *)self targetsForVoice];
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x1E695C1B8]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E695C1B8]])
   {
-    v5 = [(CNUIUserActionTargetDiscovering *)self targetsForVideo];
+    targetsForText = [(CNUIUserActionTargetDiscovering *)self targetsForVideo];
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x1E695C170]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E695C170]])
   {
-    v5 = [(CNUIUserActionTargetDiscovering *)self targetsForEmail];
+    targetsForText = [(CNUIUserActionTargetDiscovering *)self targetsForEmail];
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x1E695C188]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E695C188]])
   {
-    v5 = [(CNUIUserActionTargetDiscovering *)self targetsForPay];
+    targetsForText = [(CNUIUserActionTargetDiscovering *)self targetsForPay];
   }
 
   else
   {
-    if ([v4 isEqualToString:*MEMORY[0x1E695C160]])
+    if ([typeCopy isEqualToString:*MEMORY[0x1E695C160]])
     {
       [(CNUIUserActionTargetDiscovering *)self targetsForDirections];
     }
@@ -242,10 +242,10 @@ id __56__CNUIUserActionTargetDiscovering_targetsForActionType___block_invoke(uin
     {
       [MEMORY[0x1E6996798] emptyObservable];
     }
-    v5 = ;
+    targetsForText = ;
   }
 
-  v6 = v5;
+  v6 = targetsForText;
 
   return v6;
 }
@@ -280,37 +280,37 @@ id __56__CNUIUserActionTargetDiscovering_targetsForActionType___block_invoke(uin
 - (id)targetsForVoice
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNUIUserActionTargetDiscovering *)self targetForVoiceWithTelephony];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(CNUIUserActionTargetDiscovering *)self targetForVoiceWithFaceTime];
-  [v4 addObject:v5];
+  targetForVoiceWithTelephony = [(CNUIUserActionTargetDiscovering *)self targetForVoiceWithTelephony];
+  array = [MEMORY[0x1E695DF70] array];
+  targetForVoiceWithFaceTime = [(CNUIUserActionTargetDiscovering *)self targetForVoiceWithFaceTime];
+  [array addObject:targetForVoiceWithFaceTime];
 
-  v6 = [(CNUIUserActionTargetDiscovering *)self targetForVoiceWithSkype];
-  [v4 addObject:v6];
+  targetForVoiceWithSkype = [(CNUIUserActionTargetDiscovering *)self targetForVoiceWithSkype];
+  [array addObject:targetForVoiceWithSkype];
 
-  v7 = [(CNUIUserActionTargetDiscovering *)self targetsForVoiceWithThirdPartyCallProviders];
-  [v4 addObject:v7];
+  targetsForVoiceWithThirdPartyCallProviders = [(CNUIUserActionTargetDiscovering *)self targetsForVoiceWithThirdPartyCallProviders];
+  [array addObject:targetsForVoiceWithThirdPartyCallProviders];
 
-  v8 = [(CNUIUserActionTargetDiscovering *)self schedulerProvider];
-  v9 = [(CNUIUserActionTargetDiscovering *)self highLatencySchedulerProvider];
+  schedulerProvider = [(CNUIUserActionTargetDiscovering *)self schedulerProvider];
+  highLatencySchedulerProvider = [(CNUIUserActionTargetDiscovering *)self highLatencySchedulerProvider];
   v10 = MEMORY[0x1E6996798];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __50__CNUIUserActionTargetDiscovering_targetsForVoice__block_invoke;
   v23 = &unk_1E76E9FB0;
-  v24 = v9;
-  v25 = v4;
-  v26 = v8;
-  v11 = v8;
-  v12 = v4;
-  v13 = v9;
+  v24 = highLatencySchedulerProvider;
+  v25 = array;
+  v26 = schedulerProvider;
+  v11 = schedulerProvider;
+  v12 = array;
+  v13 = highLatencySchedulerProvider;
   v14 = [v10 observableWithBlock:&v20];
   v15 = MEMORY[0x1E6996798];
-  v27[0] = v3;
+  v27[0] = targetForVoiceWithTelephony;
   v27[1] = v14;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:{2, v20, v21, v22, v23}];
-  v17 = [(CNUIUserActionTargetDiscovering *)self schedulerProvider];
-  v18 = [v15 merge:v16 schedulerProvider:v17];
+  schedulerProvider2 = [(CNUIUserActionTargetDiscovering *)self schedulerProvider];
+  v18 = [v15 merge:v16 schedulerProvider:schedulerProvider2];
 
   return v18;
 }
@@ -346,29 +346,29 @@ void __50__CNUIUserActionTargetDiscovering_targetsForVoice__block_invoke_2(void 
 
 - (id)targetsForVideo
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CNUIUserActionTargetDiscovering *)self targetForVideoWithFaceTime];
-  [v3 addObject:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  targetForVideoWithFaceTime = [(CNUIUserActionTargetDiscovering *)self targetForVideoWithFaceTime];
+  [array addObject:targetForVideoWithFaceTime];
 
-  v5 = [(CNUIUserActionTargetDiscovering *)self targetForVideoWithSkype];
-  [v3 addObject:v5];
+  targetForVideoWithSkype = [(CNUIUserActionTargetDiscovering *)self targetForVideoWithSkype];
+  [array addObject:targetForVideoWithSkype];
 
-  v6 = [(CNUIUserActionTargetDiscovering *)self targetsForVideoWithThirdPartyCallProviders];
-  [v3 addObject:v6];
+  targetsForVideoWithThirdPartyCallProviders = [(CNUIUserActionTargetDiscovering *)self targetsForVideoWithThirdPartyCallProviders];
+  [array addObject:targetsForVideoWithThirdPartyCallProviders];
 
-  v7 = [(CNUIUserActionTargetDiscovering *)self schedulerProvider];
-  v8 = [(CNUIUserActionTargetDiscovering *)self highLatencySchedulerProvider];
+  schedulerProvider = [(CNUIUserActionTargetDiscovering *)self schedulerProvider];
+  highLatencySchedulerProvider = [(CNUIUserActionTargetDiscovering *)self highLatencySchedulerProvider];
   v9 = MEMORY[0x1E6996798];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __50__CNUIUserActionTargetDiscovering_targetsForVideo__block_invoke;
   v15[3] = &unk_1E76E9FB0;
-  v16 = v8;
-  v17 = v3;
-  v18 = v7;
-  v10 = v7;
-  v11 = v3;
-  v12 = v8;
+  v16 = highLatencySchedulerProvider;
+  v17 = array;
+  v18 = schedulerProvider;
+  v10 = schedulerProvider;
+  v11 = array;
+  v12 = highLatencySchedulerProvider;
   v13 = [v9 observableWithBlock:v15];
 
   return v13;
@@ -406,37 +406,37 @@ void __50__CNUIUserActionTargetDiscovering_targetsForVideo__block_invoke_2(void 
 - (id)targetsForText
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNUIUserActionTargetDiscovering *)self targetForTextWithMessages];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(CNUIUserActionTargetDiscovering *)self targetsForTextWithDefaultMessagingApps];
-  [v4 addObject:v5];
+  targetForTextWithMessages = [(CNUIUserActionTargetDiscovering *)self targetForTextWithMessages];
+  array = [MEMORY[0x1E695DF70] array];
+  targetsForTextWithDefaultMessagingApps = [(CNUIUserActionTargetDiscovering *)self targetsForTextWithDefaultMessagingApps];
+  [array addObject:targetsForTextWithDefaultMessagingApps];
 
-  v6 = [(CNUIUserActionTargetDiscovering *)self targetForTextWithSkype];
-  [v4 addObject:v6];
+  targetForTextWithSkype = [(CNUIUserActionTargetDiscovering *)self targetForTextWithSkype];
+  [array addObject:targetForTextWithSkype];
 
-  v7 = [(CNUIUserActionTargetDiscovering *)self targetsForSendMessageIntent];
-  [v4 addObject:v7];
+  targetsForSendMessageIntent = [(CNUIUserActionTargetDiscovering *)self targetsForSendMessageIntent];
+  [array addObject:targetsForSendMessageIntent];
 
-  v8 = [(CNUIUserActionTargetDiscovering *)self schedulerProvider];
-  v9 = [(CNUIUserActionTargetDiscovering *)self highLatencySchedulerProvider];
+  schedulerProvider = [(CNUIUserActionTargetDiscovering *)self schedulerProvider];
+  highLatencySchedulerProvider = [(CNUIUserActionTargetDiscovering *)self highLatencySchedulerProvider];
   v10 = MEMORY[0x1E6996798];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __49__CNUIUserActionTargetDiscovering_targetsForText__block_invoke;
   v23 = &unk_1E76E9FB0;
-  v24 = v9;
-  v25 = v4;
-  v26 = v8;
-  v11 = v8;
-  v12 = v4;
-  v13 = v9;
+  v24 = highLatencySchedulerProvider;
+  v25 = array;
+  v26 = schedulerProvider;
+  v11 = schedulerProvider;
+  v12 = array;
+  v13 = highLatencySchedulerProvider;
   v14 = [v10 observableWithBlock:&v20];
   v15 = MEMORY[0x1E6996798];
-  v27[0] = v3;
+  v27[0] = targetForTextWithMessages;
   v27[1] = v14;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:{2, v20, v21, v22, v23}];
-  v17 = [(CNUIUserActionTargetDiscovering *)self schedulerProvider];
-  v18 = [v15 merge:v16 schedulerProvider:v17];
+  schedulerProvider2 = [(CNUIUserActionTargetDiscovering *)self schedulerProvider];
+  v18 = [v15 merge:v16 schedulerProvider:schedulerProvider2];
 
   return v18;
 }
@@ -472,14 +472,14 @@ void __49__CNUIUserActionTargetDiscovering_targetsForText__block_invoke_2(void *
 
 - (id)targetForVoiceWithTelephony
 {
-  v2 = [(CNUIUserActionTargetDiscovering *)self capabilities];
+  capabilities = [(CNUIUserActionTargetDiscovering *)self capabilities];
   v3 = MEMORY[0x1E6996798];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__CNUIUserActionTargetDiscovering_targetForVoiceWithTelephony__block_invoke;
   v7[3] = &unk_1E76E9FD8;
-  v8 = v2;
-  v4 = v2;
+  v8 = capabilities;
+  v4 = capabilities;
   v5 = [v3 observableWithBlock:v7];
 
   return v5;
@@ -502,14 +502,14 @@ CNUIUserActionTargetDiscoveringObservableCancelationToken *__62__CNUIUserActionT
 
 - (id)targetForTextWithMessages
 {
-  v2 = [(CNUIUserActionTargetDiscovering *)self capabilities];
+  capabilities = [(CNUIUserActionTargetDiscovering *)self capabilities];
   v3 = MEMORY[0x1E6996798];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__CNUIUserActionTargetDiscovering_targetForTextWithMessages__block_invoke;
   v7[3] = &unk_1E76E9FD8;
-  v8 = v2;
-  v4 = v2;
+  v8 = capabilities;
+  v4 = capabilities;
   v5 = [v3 observableWithBlock:v7];
 
   return v5;
@@ -532,14 +532,14 @@ CNUIUserActionTargetDiscoveringObservableCancelationToken *__60__CNUIUserActionT
 
 - (id)targetForVoiceWithFaceTime
 {
-  v2 = [(CNUIUserActionTargetDiscovering *)self capabilities];
+  capabilities = [(CNUIUserActionTargetDiscovering *)self capabilities];
   v3 = MEMORY[0x1E6996798];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__CNUIUserActionTargetDiscovering_targetForVoiceWithFaceTime__block_invoke;
   v7[3] = &unk_1E76E9FD8;
-  v8 = v2;
-  v4 = v2;
+  v8 = capabilities;
+  v4 = capabilities;
   v5 = [v3 observableWithBlock:v7];
 
   return v5;
@@ -562,14 +562,14 @@ CNUIUserActionTargetDiscoveringObservableCancelationToken *__61__CNUIUserActionT
 
 - (id)targetForVideoWithFaceTime
 {
-  v2 = [(CNUIUserActionTargetDiscovering *)self capabilities];
+  capabilities = [(CNUIUserActionTargetDiscovering *)self capabilities];
   v3 = MEMORY[0x1E6996798];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__CNUIUserActionTargetDiscovering_targetForVideoWithFaceTime__block_invoke;
   v7[3] = &unk_1E76E9FD8;
-  v8 = v2;
-  v4 = v2;
+  v8 = capabilities;
+  v4 = capabilities;
   v5 = [v3 observableWithBlock:v7];
 
   return v5;
@@ -592,14 +592,14 @@ CNUIUserActionTargetDiscoveringObservableCancelationToken *__61__CNUIUserActionT
 
 - (id)targetForVoiceWithSkype
 {
-  v2 = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
+  applicationWorkspace = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
   v3 = MEMORY[0x1E6996798];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__CNUIUserActionTargetDiscovering_targetForVoiceWithSkype__block_invoke;
   v7[3] = &unk_1E76E9FD8;
-  v8 = v2;
-  v4 = v2;
+  v8 = applicationWorkspace;
+  v4 = applicationWorkspace;
   v5 = [v3 observableWithBlock:v7];
 
   return v5;
@@ -622,14 +622,14 @@ CNUIUserActionTargetDiscoveringObservableCancelationToken *__58__CNUIUserActionT
 
 - (id)targetForVideoWithSkype
 {
-  v2 = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
+  applicationWorkspace = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
   v3 = MEMORY[0x1E6996798];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__CNUIUserActionTargetDiscovering_targetForVideoWithSkype__block_invoke;
   v7[3] = &unk_1E76E9FD8;
-  v8 = v2;
-  v4 = v2;
+  v8 = applicationWorkspace;
+  v4 = applicationWorkspace;
   v5 = [v3 observableWithBlock:v7];
 
   return v5;
@@ -652,14 +652,14 @@ CNUIUserActionTargetDiscoveringObservableCancelationToken *__58__CNUIUserActionT
 
 - (id)targetForTextWithSkype
 {
-  v2 = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
+  applicationWorkspace = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
   v3 = MEMORY[0x1E6996798];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__CNUIUserActionTargetDiscovering_targetForTextWithSkype__block_invoke;
   v7[3] = &unk_1E76E9FD8;
-  v8 = v2;
-  v4 = v2;
+  v8 = applicationWorkspace;
+  v4 = applicationWorkspace;
   v5 = [v3 observableWithBlock:v7];
 
   return v5;
@@ -682,14 +682,14 @@ CNUIUserActionTargetDiscoveringObservableCancelationToken *__57__CNUIUserActionT
 
 - (id)targetsForVoiceWithThirdPartyCallProviders
 {
-  v2 = [(CNUIUserActionTargetDiscovering *)self callProviderManager];
+  callProviderManager = [(CNUIUserActionTargetDiscovering *)self callProviderManager];
   v3 = MEMORY[0x1E6996798];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__CNUIUserActionTargetDiscovering_targetsForVoiceWithThirdPartyCallProviders__block_invoke;
   v7[3] = &unk_1E76E9FD8;
-  v8 = v2;
-  v4 = v2;
+  v8 = callProviderManager;
+  v4 = callProviderManager;
   v5 = [v3 observableWithBlock:v7];
 
   return v5;
@@ -722,14 +722,14 @@ void __77__CNUIUserActionTargetDiscovering_targetsForVoiceWithThirdPartyCallProv
 
 - (id)targetsForVideoWithThirdPartyCallProviders
 {
-  v2 = [(CNUIUserActionTargetDiscovering *)self callProviderManager];
+  callProviderManager = [(CNUIUserActionTargetDiscovering *)self callProviderManager];
   v3 = MEMORY[0x1E6996798];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__CNUIUserActionTargetDiscovering_targetsForVideoWithThirdPartyCallProviders__block_invoke;
   v7[3] = &unk_1E76E9FD8;
-  v8 = v2;
-  v4 = v2;
+  v8 = callProviderManager;
+  v4 = callProviderManager;
   v5 = [v3 observableWithBlock:v7];
 
   return v5;
@@ -762,14 +762,14 @@ void __77__CNUIUserActionTargetDiscovering_targetsForVideoWithThirdPartyCallProv
 
 - (id)targetsForStartAudioCallIntent
 {
-  v2 = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
+  applicationWorkspace = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
   v3 = MEMORY[0x1E6996798];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__CNUIUserActionTargetDiscovering_targetsForStartAudioCallIntent__block_invoke;
   v7[3] = &unk_1E76E9FD8;
-  v8 = v2;
-  v4 = v2;
+  v8 = applicationWorkspace;
+  v4 = applicationWorkspace;
   v5 = [v3 observableWithBlock:v7];
 
   return v5;
@@ -803,14 +803,14 @@ void __65__CNUIUserActionTargetDiscovering_targetsForStartAudioCallIntent__block
 
 - (id)targetsForStartVideoCallIntent
 {
-  v2 = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
+  applicationWorkspace = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
   v3 = MEMORY[0x1E6996798];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__CNUIUserActionTargetDiscovering_targetsForStartVideoCallIntent__block_invoke;
   v7[3] = &unk_1E76E9FD8;
-  v8 = v2;
-  v4 = v2;
+  v8 = applicationWorkspace;
+  v4 = applicationWorkspace;
   v5 = [v3 observableWithBlock:v7];
 
   return v5;
@@ -844,14 +844,14 @@ void __65__CNUIUserActionTargetDiscovering_targetsForStartVideoCallIntent__block
 
 - (id)targetsForSendMessageIntent
 {
-  v2 = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
+  applicationWorkspace = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
   v3 = MEMORY[0x1E6996798];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__CNUIUserActionTargetDiscovering_targetsForSendMessageIntent__block_invoke;
   v7[3] = &unk_1E76E9FD8;
-  v8 = v2;
-  v4 = v2;
+  v8 = applicationWorkspace;
+  v4 = applicationWorkspace;
   v5 = [v3 observableWithBlock:v7];
 
   return v5;
@@ -885,15 +885,15 @@ void __62__CNUIUserActionTargetDiscovering_targetsForSendMessageIntent__block_in
 
 - (id)targetsForTextWithDefaultMessagingApps
 {
-  v3 = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
+  applicationWorkspace = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
   v4 = MEMORY[0x1E6996798];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __73__CNUIUserActionTargetDiscovering_targetsForTextWithDefaultMessagingApps__block_invoke;
   v8[3] = &unk_1E76E96D8;
-  v9 = v3;
-  v10 = self;
-  v5 = v3;
+  v9 = applicationWorkspace;
+  selfCopy = self;
+  v5 = applicationWorkspace;
   v6 = [v4 observableWithBlock:v8];
 
   return v6;
@@ -951,18 +951,18 @@ void __73__CNUIUserActionTargetDiscovering_targetsForTextWithDefaultMessagingApp
   }
 }
 
-- (void)createDefaultMessagingAppsBundleIdentifierScorer:(id)a3
+- (void)createDefaultMessagingAppsBundleIdentifierScorer:(id)scorer
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  scorerCopy = scorer;
+  v6 = [[v4 alloc] initWithCapacity:{objc_msgSend(scorerCopy, "count")}];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __84__CNUIUserActionTargetDiscovering_createDefaultMessagingAppsBundleIdentifierScorer___block_invoke;
   v8[3] = &unk_1E76E9688;
   v9 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [scorerCopy enumerateObjectsUsingBlock:v8];
 
   [(CNUIUserActionTargetDiscovering *)self setDefaultMessagingAppsBundleIdentifierScorerCache:v7];
 }
@@ -986,25 +986,25 @@ void __84__CNUIUserActionTargetDiscovering_createDefaultMessagingAppsBundleIdent
   [(CNUIUserActionTargetDiscovering *)self resetTargetsForActionType:v3];
 }
 
-- (id)thirdPartyTargetsForActionTypes:(id)a3
+- (id)thirdPartyTargetsForActionTypes:(id)types
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
+  typesCopy = types;
+  array = [v4 array];
+  applicationWorkspace = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __67__CNUIUserActionTargetDiscovering_thirdPartyTargetsForActionTypes___block_invoke;
   v17 = &unk_1E76EA078;
-  v18 = v7;
-  v19 = v6;
-  v8 = v6;
-  v9 = v7;
-  [v5 _cn_each:&v14];
+  v18 = applicationWorkspace;
+  v19 = array;
+  v8 = array;
+  v9 = applicationWorkspace;
+  [typesCopy _cn_each:&v14];
 
   v10 = MEMORY[0x1E6996720];
-  v11 = [v8 _cn_distinctObjects];
-  v12 = [v10 futureWithResult:v11];
+  _cn_distinctObjects = [v8 _cn_distinctObjects];
+  v12 = [v10 futureWithResult:_cn_distinctObjects];
 
   return v12;
 }
@@ -1034,10 +1034,10 @@ void __67__CNUIUserActionTargetDiscovering_thirdPartyTargetsForActionTypes___blo
   [v2 addObject:v7];
 }
 
-- (id)thirdPartyTargetsForBundleIdentifier:(id)a3
+- (id)thirdPartyTargetsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  identifierCopy = identifier;
+  array = [MEMORY[0x1E695DF70] array];
   if (thirdPartyTargetsForBundleIdentifier__cn_once_token_3 != -1)
   {
     [CNUIUserActionTargetDiscovering thirdPartyTargetsForBundleIdentifier:];
@@ -1045,13 +1045,13 @@ void __67__CNUIUserActionTargetDiscovering_thirdPartyTargetsForActionTypes___blo
 
   v6 = thirdPartyTargetsForBundleIdentifier__cn_once_object_3;
   v7 = [MEMORY[0x1E695DF70] arrayWithArray:v6];
-  v8 = [(CNUIUserActionTargetDiscovering *)self callProviderManager];
-  v9 = [v8 thirdPartyCallProviderWithBundleIdentifier:v4];
+  callProviderManager = [(CNUIUserActionTargetDiscovering *)self callProviderManager];
+  v9 = [callProviderManager thirdPartyCallProviderWithBundleIdentifier:identifierCopy];
 
   if ([v9 supportsAudio])
   {
     v10 = [CNUIUserActionTarget targetForVoiceWithCallProvider:v9];
-    [v5 addObject:v10];
+    [array addObject:v10];
 
     [v7 removeObject:*MEMORY[0x1E695C150]];
   }
@@ -1059,21 +1059,21 @@ void __67__CNUIUserActionTargetDiscovering_thirdPartyTargetsForActionTypes___blo
   if ([v9 supportsVideo])
   {
     v11 = [CNUIUserActionTarget targetForVideoWithCallProvider:v9];
-    [v5 addObject:v11];
+    [array addObject:v11];
 
     [v7 removeObject:*MEMORY[0x1E695C1B8]];
   }
 
-  v12 = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
-  v13 = [v12 applicationForBundleIdentifier:v4];
+  applicationWorkspace = [(CNUIUserActionTargetDiscovering *)self applicationWorkspace];
+  v13 = [applicationWorkspace applicationForBundleIdentifier:identifierCopy];
 
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __72__CNUIUserActionTargetDiscovering_thirdPartyTargetsForBundleIdentifier___block_invoke_2;
   v21 = &unk_1E76EA078;
   v22 = v13;
-  v23 = v5;
-  v14 = v5;
+  v23 = array;
+  v14 = array;
   v15 = v13;
   [v7 _cn_each:&v18];
   v16 = [MEMORY[0x1E6996720] futureWithResult:{v14, v18, v19, v20, v21}];
@@ -1134,37 +1134,37 @@ LABEL_6:
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)applicationProxiesForIntent:(id)a3 applicationWorkspace:(id)a4
++ (id)applicationProxiesForIntent:(id)intent applicationWorkspace:(id)workspace
 {
-  v5 = [a4 applicationsForUserActivityType:a3];
+  v5 = [workspace applicationsForUserActivityType:intent];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __84__CNUIUserActionTargetDiscovering_applicationProxiesForIntent_applicationWorkspace___block_invoke;
   v8[3] = &__block_descriptor_40_e28_B16__0__CNApplicationProxy_8l;
-  v8[4] = a1;
+  v8[4] = self;
   v6 = [v5 _cn_filter:v8];
 
   return v6;
 }
 
-+ (BOOL)shouldIgnoreApplicationProxy:(id)a3
++ (BOOL)shouldIgnoreApplicationProxy:(id)proxy
 {
-  v3 = [a3 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.internal.suiuntool"];
+  bundleIdentifier = [proxy bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.internal.suiuntool"];
 
   return v4;
 }
 
-+ (BOOL)isSkypeAvailableWithEnvironment:(id)a3
++ (BOOL)isSkypeAvailableWithEnvironment:(id)environment
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E6996888] standardPreferences];
-  v5 = [v4 userHasOptedInToPreference:@"SkypeURLActions"];
+  environmentCopy = environment;
+  standardPreferences = [MEMORY[0x1E6996888] standardPreferences];
+  v5 = [standardPreferences userHasOptedInToPreference:@"SkypeURLActions"];
 
   if (v5)
   {
     v6 = *MEMORY[0x1E6996530];
-    v7 = [v3 applicationsAvailableForHandlingURLScheme:@"skype"];
+    v7 = [environmentCopy applicationsAvailableForHandlingURLScheme:@"skype"];
     v8 = (*(v6 + 16))(v6, v7) ^ 1;
   }
 

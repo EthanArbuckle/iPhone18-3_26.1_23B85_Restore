@@ -9,15 +9,15 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 accessibilityLabel];
+    accessibilityLabel = [self accessibilityLabel];
   }
 
   else
   {
-    v2 = 0;
+    accessibilityLabel = 0;
   }
 
-  return v2;
+  return accessibilityLabel;
 }
 
 - (void)_swiftui_setAccessibilityLabel:()CoreAX
@@ -25,7 +25,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    [a1 setAccessibilityLabel:v4];
+    [self setAccessibilityLabel:v4];
   }
 }
 

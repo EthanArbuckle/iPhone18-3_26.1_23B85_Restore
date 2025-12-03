@@ -1,19 +1,19 @@
 @interface PUAssetTransitionInfo
-+ (PUAssetTransitionInfo)assetTransitionInfoWithConfigurationBlock:(id)a3;
++ (PUAssetTransitionInfo)assetTransitionInfoWithConfigurationBlock:(id)block;
 - (CGRect)frame;
-- (PUAssetTransitionInfo)assetTransitionInfoWithModifications:(id)a3;
+- (PUAssetTransitionInfo)assetTransitionInfoWithModifications:(id)modifications;
 - (PUAssetTransitionInfo)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_applyConfigurationBlock:(id)a3;
-- (void)setSeekTime:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_applyConfigurationBlock:(id)block;
+- (void)setSeekTime:(id *)time;
 @end
 
 @implementation PUAssetTransitionInfo
 
-- (void)setSeekTime:(id *)a3
+- (void)setSeekTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_seekTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_seekTime.epoch = time->var3;
   *&self->_seekTime.value = v3;
 }
 
@@ -30,14 +30,14 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PUAssetTransitionInfo);
-  v5 = [(PUAssetTransitionInfo *)self snapshotView];
-  [(PUAssetTransitionInfo *)v4 setSnapshotView:v5];
+  snapshotView = [(PUAssetTransitionInfo *)self snapshotView];
+  [(PUAssetTransitionInfo *)v4 setSnapshotView:snapshotView];
 
-  v6 = [(PUAssetTransitionInfo *)self image];
-  [(PUAssetTransitionInfo *)v4 setImage:v6];
+  image = [(PUAssetTransitionInfo *)self image];
+  [(PUAssetTransitionInfo *)v4 setImage:image];
 
   [(PUAssetTransitionInfo *)self seekTime];
   v12 = v14;
@@ -48,26 +48,26 @@
   [(PUAssetTransitionInfo *)v4 setAllowAutoPlay:[(PUAssetTransitionInfo *)self allowAutoPlay]];
   [(PUAssetTransitionInfo *)self cornerRadius];
   [(PUAssetTransitionInfo *)v4 setCornerRadius:?];
-  v7 = [(PUAssetTransitionInfo *)self asset];
-  [(PUAssetTransitionInfo *)v4 setAsset:v7];
+  asset = [(PUAssetTransitionInfo *)self asset];
+  [(PUAssetTransitionInfo *)v4 setAsset:asset];
 
-  v8 = [(PUAssetTransitionInfo *)self badgeTransitionInfos];
-  [(PUAssetTransitionInfo *)v4 setBadgeTransitionInfos:v8];
+  badgeTransitionInfos = [(PUAssetTransitionInfo *)self badgeTransitionInfos];
+  [(PUAssetTransitionInfo *)v4 setBadgeTransitionInfos:badgeTransitionInfos];
 
-  v9 = [(PUAssetTransitionInfo *)self contentHelper];
-  [(PUAssetTransitionInfo *)v4 setContentHelper:v9];
+  contentHelper = [(PUAssetTransitionInfo *)self contentHelper];
+  [(PUAssetTransitionInfo *)v4 setContentHelper:contentHelper];
 
-  v10 = [(PUAssetTransitionInfo *)self imageLayerModulator];
-  [(PUAssetTransitionInfo *)v4 setImageLayerModulator:v10];
+  imageLayerModulator = [(PUAssetTransitionInfo *)self imageLayerModulator];
+  [(PUAssetTransitionInfo *)v4 setImageLayerModulator:imageLayerModulator];
 
   return v4;
 }
 
-- (void)_applyConfigurationBlock:(id)a3
+- (void)_applyConfigurationBlock:(id)block
 {
-  (*(a3 + 2))(a3, self);
-  v4 = [(PUAssetTransitionInfo *)self snapshotView];
-  if (v4 || ([(PUAssetTransitionInfo *)self image], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  (*(block + 2))(block, self);
+  snapshotView = [(PUAssetTransitionInfo *)self snapshotView];
+  if (snapshotView || ([(PUAssetTransitionInfo *)self image], (snapshotView = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
@@ -86,11 +86,11 @@
   }
 }
 
-- (PUAssetTransitionInfo)assetTransitionInfoWithModifications:(id)a3
+- (PUAssetTransitionInfo)assetTransitionInfoWithModifications:(id)modifications
 {
-  v4 = a3;
+  modificationsCopy = modifications;
   v5 = [(PUAssetTransitionInfo *)self copy];
-  [v5 _applyConfigurationBlock:v4];
+  [v5 _applyConfigurationBlock:modificationsCopy];
 
   return v5;
 }
@@ -110,11 +110,11 @@
   return result;
 }
 
-+ (PUAssetTransitionInfo)assetTransitionInfoWithConfigurationBlock:(id)a3
++ (PUAssetTransitionInfo)assetTransitionInfoWithConfigurationBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_opt_new();
-  [v4 _applyConfigurationBlock:v3];
+  [v4 _applyConfigurationBlock:blockCopy];
 
   return v4;
 }

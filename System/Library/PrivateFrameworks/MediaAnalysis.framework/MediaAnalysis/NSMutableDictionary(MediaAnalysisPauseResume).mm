@@ -8,7 +8,7 @@
 {
   v5 = *a3;
   v4 = CMTimeCopyAsDictionary(&v5, 0);
-  [a1 setObject:v4 forKey:@"SyncPoint"];
+  [self setObject:v4 forKey:@"SyncPoint"];
 }
 
 @end

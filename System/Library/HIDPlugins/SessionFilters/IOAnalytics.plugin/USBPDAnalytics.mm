@@ -1,7 +1,7 @@
 @interface USBPDAnalytics
 - (BOOL)_startEventMonitoring;
 - (USBPDAnalytics)init;
-- (void)_handleServiceMatched:(unsigned int)a3;
+- (void)_handleServiceMatched:(unsigned int)matched;
 - (void)_startEventMonitoring;
 - (void)_stopEventMonitoring;
 - (void)start;
@@ -47,13 +47,13 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Starting %@...", buf, 0xCu);
   }
 
-  v6 = [(USBPDAnalytics *)self queue];
+  queue = [(USBPDAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __23__USBPDAnalytics_start__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue, block);
 }
 
 void __23__USBPDAnalytics_start__block_invoke(uint64_t a1)
@@ -90,13 +90,13 @@ void __23__USBPDAnalytics_start__block_invoke(uint64_t a1)
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Stopping %@...", buf, 0xCu);
   }
 
-  v6 = [(USBPDAnalytics *)self queue];
+  queue = [(USBPDAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __22__USBPDAnalytics_stop__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue, block);
 }
 
 void __22__USBPDAnalytics_stop__block_invoke(uint64_t a1)
@@ -141,9 +141,9 @@ void __22__USBPDAnalytics_stop__block_invoke(uint64_t a1)
 
     [(USBPDAnalytics *)self setMonitoring:1];
     [(USBPDAnalytics *)self setIoNotificationPort:IONotificationPortCreate(kIOMainPortDefault)];
-    v5 = [(USBPDAnalytics *)self ioNotificationPort];
-    v6 = [(USBPDAnalytics *)self queue];
-    IONotificationPortSetDispatchQueue(v5, v6);
+    ioNotificationPort = [(USBPDAnalytics *)self ioNotificationPort];
+    queue = [(USBPDAnalytics *)self queue];
+    IONotificationPortSetDispatchQueue(ioNotificationPort, queue);
 
     v7 = IOServiceMatching("IOPortTransportComponentCCUSBPD");
     v8 = v7;
@@ -206,12 +206,12 @@ LABEL_12:
   }
 }
 
-- (void)_handleServiceMatched:(unsigned int)a3
+- (void)_handleServiceMatched:(unsigned int)matched
 {
-  if (a3)
+  if (matched)
   {
     memset(name, 0, sizeof(name));
-    IORegistryEntryGetName(a3, name);
+    IORegistryEntryGetName(matched, name);
     v5 = [(USBPDAnalytics *)self log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -232,7 +232,7 @@ LABEL_12:
       goto LABEL_79;
     }
 
-    if (!IOObjectConformsTo(a3, "IOPortTransportComponentCCUSBPD"))
+    if (!IOObjectConformsTo(matched, "IOPortTransportComponentCCUSBPD"))
     {
       v14 = [(USBPDAnalytics *)self log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -258,7 +258,7 @@ LABEL_12:
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      OUTLINED_FUNCTION_2_4(&dword_0, &_os_log_default, v15, "Could not find parent port type!", v16, v17, v18, v19, v121, v122, v123, v124, v125, v126, v127, v129, v130, v131, v133, v135, v137, v138, v139, v140, v141, cf, v143, v144, v145, v146, 0);
+      OUTLINED_FUNCTION_2_4(&dword_0, &_os_log_default, v15, "Could not find parent port type!", v16, v17, v18, v19, v121, v122, v123, v124, v125, v126, v127, v129, v130, selfCopy, v133, v135, v137, v138, v139, v140, v141, cf, v143, v144, v145, v146, 0);
     }
 
     v20 = OUTLINED_FUNCTION_0();
@@ -294,7 +294,7 @@ LABEL_12:
         {
           v31 = MatchingService;
           v130 = v25;
-          v131 = self;
+          selfCopy = self;
           v32 = IORegistryEntryCreateCFProperty(MatchingService, @"BuiltIn", kCFAllocatorDefault, 0);
           objc_opt_class();
           v33 = castNSObjectToType(v32);
@@ -321,18 +321,18 @@ LABEL_12:
 
           else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
-            OUTLINED_FUNCTION_2_4(&dword_0, &_os_log_default, v57, "Could not find parent port connection UUID!", v58, v59, v60, v61, v121, v122, v123, v124, v125, v126, v127, v129, v130, v131, v133, v136, v137, v138, v139, v140, v141, cf, v143, v144, v145, v146, 0);
+            OUTLINED_FUNCTION_2_4(&dword_0, &_os_log_default, v57, "Could not find parent port connection UUID!", v58, v59, v60, v61, v121, v122, v123, v124, v125, v126, v127, v129, v130, selfCopy, v133, v136, v137, v138, v139, v140, v141, cf, v143, v144, v145, v146, 0);
           }
 
           IOObjectRelease(v31);
 
           v25 = v130;
-          self = v131;
+          self = selfCopy;
         }
 
         else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
-          OUTLINED_FUNCTION_2_4(&dword_0, &_os_log_default, v44, "Could not find parent port!", v45, v46, v47, v48, v121, v122, v123, v124, v125, v126, v127, v129, v130, v131, v133, v13, v137, v138, v139, v140, v141, cf, v143, v144, v145, v146, 0);
+          OUTLINED_FUNCTION_2_4(&dword_0, &_os_log_default, v44, "Could not find parent port!", v45, v46, v47, v48, v121, v122, v123, v124, v125, v126, v127, v129, v130, selfCopy, v133, v13, v137, v138, v139, v140, v141, cf, v143, v144, v145, v146, 0);
         }
 
 LABEL_36:
@@ -350,7 +350,7 @@ LABEL_36:
 
         else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
-          OUTLINED_FUNCTION_2_4(&dword_0, &_os_log_default, v69, "Could not find component address!", v70, v71, v72, v73, v121, v122, v123, v124, v125, v126, v127, v129, v130, v131, v133, v136, v137, v138, v139, v140, v141, cf, v143, v144, v145, v146, 0);
+          OUTLINED_FUNCTION_2_4(&dword_0, &_os_log_default, v69, "Could not find component address!", v70, v71, v72, v73, v121, v122, v123, v124, v125, v126, v127, v129, v130, selfCopy, v133, v136, v137, v138, v139, v140, v141, cf, v143, v144, v145, v146, 0);
         }
 
         v74 = OUTLINED_FUNCTION_0();
@@ -367,7 +367,7 @@ LABEL_36:
 
         else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
-          OUTLINED_FUNCTION_2_4(&dword_0, &_os_log_default, v80, "Could not find specification revision!", v81, v82, v83, v84, v121, v122, v123, v124, v125, v126, v127, v129, v130, v131, 0, v136, v137, v138, v139, v140, v141, cf, v143, v144, v145, v146, 0);
+          OUTLINED_FUNCTION_2_4(&dword_0, &_os_log_default, v80, "Could not find specification revision!", v81, v82, v83, v84, v121, v122, v123, v124, v125, v126, v127, v129, v130, selfCopy, 0, v136, v137, v138, v139, v140, v141, cf, v143, v144, v145, v146, 0);
         }
 
         v85 = OUTLINED_FUNCTION_0();
@@ -417,7 +417,7 @@ LABEL_36:
             OUTLINED_FUNCTION_7_0();
           }
 
-          v132 = self;
+          selfCopy2 = self;
           if (v68 == &dword_0 + 2)
           {
             [v93 objectForKeyedSubscript:@"Product Type"];
@@ -503,7 +503,7 @@ LABEL_64:
 
           v94 = v136;
           v6 = v104;
-          self = v132;
+          self = selfCopy2;
           v93 = v128;
         }
 
@@ -541,7 +541,7 @@ LABEL_79:
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      OUTLINED_FUNCTION_2_4(&dword_0, &_os_log_default, v34, "Could not find parent port number!", v35, v36, v37, v38, v121, v122, v123, v124, v125, v126, v127, v129, v130, v131, v133, v13, v137, v138, v139, v140, v141, cf, v143, v144, v145, v146, 0);
+      OUTLINED_FUNCTION_2_4(&dword_0, &_os_log_default, v34, "Could not find parent port number!", v35, v36, v37, v38, v121, v122, v123, v124, v125, v126, v127, v129, v130, selfCopy, v133, v13, v137, v138, v139, v140, v141, cf, v143, v144, v145, v146, 0);
     }
 
     cf = 0;
@@ -560,7 +560,7 @@ LABEL_79:
 
 - (void)_startEventMonitoring
 {
-  v1 = [a1 log];
+  v1 = [self log];
   if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
   {
     *v2 = 0;

@@ -1,17 +1,17 @@
 @interface GTMTLReplayActivityHarvestResourceObject
-- (GTMTLReplayActivityHarvestResourceObject)initWithAttributes:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GTMTLReplayActivityHarvestResourceObject)initWithAttributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)jsonObject;
 - (id)summary;
-- (void)outputToLog:(id)a3;
+- (void)outputToLog:(id)log;
 @end
 
 @implementation GTMTLReplayActivityHarvestResourceObject
 
-- (void)outputToLog:(id)a3
+- (void)outputToLog:(id)log
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (os_log_type_enabled(a3, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     activityType = self->super._activityType;
     attributes = self->_attributes;
@@ -19,7 +19,7 @@
     v9 = activityType;
     v10 = 2114;
     v11 = attributes;
-    _os_log_impl(&dword_24D764000, a3, OS_LOG_TYPE_INFO, "%{public}@:\t%{public}@", &v8, 0x16u);
+    _os_log_impl(&dword_24D764000, log, OS_LOG_TYPE_INFO, "%{public}@:\t%{public}@", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -99,18 +99,18 @@ LABEL_9:
     goto LABEL_21;
   }
 
-  v4 = [v2 unsignedLongLongValue];
-  if (v4 > 23)
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
+  if (unsignedLongLongValue > 23)
   {
-    if (v4 == 24)
+    if (unsignedLongLongValue == 24)
     {
       v5 = "Indirect command buffer";
       goto LABEL_19;
     }
 
-    if (v4 != 39)
+    if (unsignedLongLongValue != 39)
     {
-      if (v4 == 48)
+      if (unsignedLongLongValue == 48)
       {
         v5 = "Pipeline Binaries";
         goto LABEL_19;
@@ -124,15 +124,15 @@ LABEL_9:
 
   else
   {
-    if (v4 == 1)
+    if (unsignedLongLongValue == 1)
     {
       v5 = "Texture";
       goto LABEL_19;
     }
 
-    if (v4 != 2)
+    if (unsignedLongLongValue != 2)
     {
-      if (v4 == 22)
+      if (unsignedLongLongValue == 22)
       {
         v5 = "Threadgroup buffer";
         goto LABEL_19;
@@ -148,7 +148,7 @@ LABEL_16:
 
 LABEL_19:
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:v5];
-  if (v4 == 24)
+  if (unsignedLongLongValue == 24)
   {
     v3 = @"an";
   }
@@ -159,11 +159,11 @@ LABEL_21:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = GTMTLReplayActivityHarvestResourceObject;
-  v4 = [(GTMTLReplayActivity *)&v7 copyWithZone:a3];
+  v4 = [(GTMTLReplayActivity *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -173,16 +173,16 @@ LABEL_21:
   return v5;
 }
 
-- (GTMTLReplayActivityHarvestResourceObject)initWithAttributes:(id)a3
+- (GTMTLReplayActivityHarvestResourceObject)initWithAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v9.receiver = self;
   v9.super_class = GTMTLReplayActivityHarvestResourceObject;
   v6 = [(GTMTLReplayActivity *)&v9 initWithType:@"harvestResourceObject"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attributes, a3);
+    objc_storeStrong(&v6->_attributes, attributes);
   }
 
   return v7;

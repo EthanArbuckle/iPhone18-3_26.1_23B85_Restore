@@ -1,19 +1,19 @@
 @interface LivePhotoAssetView
 - (CGRect)bounds;
 - (CGRect)frame;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation LivePhotoAssetView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_1000734B4(&selRef_setFrame_, x, y, width, height);
 }
 
@@ -37,13 +37,13 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_1000734B4(&selRef_setBounds_, x, y, width, height);
 }
 

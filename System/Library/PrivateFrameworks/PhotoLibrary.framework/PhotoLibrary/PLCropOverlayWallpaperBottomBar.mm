@@ -1,8 +1,8 @@
 @interface PLCropOverlayWallpaperBottomBar
-- (CGSize)_sizeForString:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PLCropOverlayWallpaperBottomBar)initWithCoder:(id)a3;
-- (PLCropOverlayWallpaperBottomBar)initWithFrame:(CGRect)a3;
+- (CGSize)_sizeForString:(id)string;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PLCropOverlayWallpaperBottomBar)initWithCoder:(id)coder;
+- (PLCropOverlayWallpaperBottomBar)initWithFrame:(CGRect)frame;
 - (double)widthForToggleText;
 - (void)_commonPLCropOverlayWallpaperBottomBarInitialization;
 - (void)_commonPLCropOverlayWallpaperBottomBarInitializationPad;
@@ -11,48 +11,48 @@
 - (void)_layoutSubviewsPhone;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
-- (void)updateForChangedSettings:(id)a3;
+- (void)setText:(id)text;
+- (void)updateForChangedSettings:(id)settings;
 @end
 
 @implementation PLCropOverlayWallpaperBottomBar
 
-- (void)updateForChangedSettings:(id)a3
+- (void)updateForChangedSettings:(id)settings
 {
-  v4 = [(PLCropOverlayWallpaperBottomBar *)self titleLabel];
+  titleLabel = [(PLCropOverlayWallpaperBottomBar *)self titleLabel];
 
-  [(_UILegibilityLabel *)v4 updateForChangedSettings:a3];
+  [(_UILegibilityLabel *)titleLabel updateForChangedSettings:settings];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(_UILegibilityLabel *)[(PLCropOverlayWallpaperBottomBar *)self titleLabel:a3.width] string];
+  string = [(_UILegibilityLabel *)[(PLCropOverlayWallpaperBottomBar *)self titleLabel:fits.width] string];
 
-  [(PLCropOverlayWallpaperBottomBar *)self _sizeForString:v4];
+  [(PLCropOverlayWallpaperBottomBar *)self _sizeForString:string];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (CGSize)_sizeForString:(id)a3
+- (CGSize)_sizeForString:(id)string
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_UILegibilityLabel *)[(PLCropOverlayWallpaperBottomBar *)self titleLabel] font];
+  font = [(_UILegibilityLabel *)[(PLCropOverlayWallpaperBottomBar *)self titleLabel] font];
   v7 = *MEMORY[0x277D740A8];
-  v8[0] = v4;
-  [a3 sizeWithAttributes:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v8, &v7, 1)}];
+  v8[0] = font;
+  [string sizeWithAttributes:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v8, &v7, 1)}];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v5 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
   [(PLCropOverlayWallpaperBottomBar *)self _sizeForString:?];
   [(_UILegibilityLabel *)[(PLCropOverlayWallpaperBottomBar *)self titleLabel] setFrame:v5, v6, v7, v8];
-  [(_UILegibilityLabel *)[(PLCropOverlayWallpaperBottomBar *)self titleLabel] setString:a3];
+  [(_UILegibilityLabel *)[(PLCropOverlayWallpaperBottomBar *)self titleLabel] setString:text];
 
   [(PLCropOverlayWallpaperBottomBar *)self setNeedsLayout];
 }
@@ -113,24 +113,24 @@
   v24.size.width = v8;
   v24.size.height = v10;
   [(_UILegibilityLabel *)[(PLCropOverlayWallpaperBottomBar *)self titleLabel] setFrame:v19, CGRectGetMaxY(v24) - v17 + 10.0, v18, ceil(v14)];
-  v20 = [(PLCropOverlayWallpaperBottomBar *)self backdropView];
+  backdropView = [(PLCropOverlayWallpaperBottomBar *)self backdropView];
   [(PLCropOverlayWallpaperBottomBar *)self bounds];
-  [(_UIBackdropView *)v20 setFrame:?];
-  v21 = [(PLCropOverlayWallpaperBottomBar *)self backdropView];
+  [(_UIBackdropView *)backdropView setFrame:?];
+  backdropView2 = [(PLCropOverlayWallpaperBottomBar *)self backdropView];
 
-  [(PLCropOverlayWallpaperBottomBar *)self sendSubviewToBack:v21];
+  [(PLCropOverlayWallpaperBottomBar *)self sendSubviewToBack:backdropView2];
 }
 
 - (void)_layoutSubviewsPhone
 {
-  v3 = [(PLCropOverlayWallpaperBottomBar *)self window];
-  [v3 bounds];
+  window = [(PLCropOverlayWallpaperBottomBar *)self window];
+  [window bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
-  [(PLCropOverlayWallpaperBottomBar *)self convertRect:v3 fromCoordinateSpace:v5 + v15, v7 + v12, v9 - (v15 + v13), v11 - (v12 + v14)];
+  [window safeAreaInsets];
+  [(PLCropOverlayWallpaperBottomBar *)self convertRect:window fromCoordinateSpace:v5 + v15, v7 + v12, v9 - (v15 + v13), v11 - (v12 + v14)];
   MinY = CGRectGetMinY(v32);
   [(PLCropOverlayWallpaperBottomBar *)self bounds];
   v18 = v17;
@@ -145,9 +145,9 @@
   v33.size.width = v22;
   v33.size.height = v24;
   v29 = floor(CGRectGetMidX(v33) + v26 * -0.5);
-  v30 = [(PLCropOverlayWallpaperBottomBar *)self titleLabel];
+  titleLabel = [(PLCropOverlayWallpaperBottomBar *)self titleLabel];
 
-  [(_UILegibilityLabel *)v30 setFrame:v29, MinY + 6.0, v26, v28];
+  [(_UILegibilityLabel *)titleLabel setFrame:v29, MinY + 6.0, v26, v28];
 }
 
 - (void)layoutSubviews
@@ -181,11 +181,11 @@
   [(PLCropOverlayWallpaperBottomBar *)&v3 dealloc];
 }
 
-- (PLCropOverlayWallpaperBottomBar)initWithCoder:(id)a3
+- (PLCropOverlayWallpaperBottomBar)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PLCropOverlayWallpaperBottomBar;
-  v3 = [(PLCropOverlayWallpaperBottomBar *)&v6 initWithCoder:a3];
+  v3 = [(PLCropOverlayWallpaperBottomBar *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -195,11 +195,11 @@
   return v4;
 }
 
-- (PLCropOverlayWallpaperBottomBar)initWithFrame:(CGRect)a3
+- (PLCropOverlayWallpaperBottomBar)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PLCropOverlayWallpaperBottomBar;
-  v3 = [(PLCropOverlayWallpaperBottomBar *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLCropOverlayWallpaperBottomBar *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

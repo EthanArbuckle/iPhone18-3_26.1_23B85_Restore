@@ -1,28 +1,28 @@
 @interface INParameterContexts
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
 - (BOOL)_isEmpty;
-- (id)_initWithIntent:(id)a3 decoder:(id)a4 JSONDictionary:(id)a5;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (void)_updateOperatorsForIntent:(id)a3 JSONDictionary:(id)a4;
-- (void)_updateSuggestedValuesForIntent:(id)a3 decoder:(id)a4 JSONDictionary:(id)a5;
+- (id)_initWithIntent:(id)intent decoder:(id)decoder JSONDictionary:(id)dictionary;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)valueForUndefinedKey:(id)key;
+- (void)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (void)_updateOperatorsForIntent:(id)intent JSONDictionary:(id)dictionary;
+- (void)_updateSuggestedValuesForIntent:(id)intent decoder:(id)decoder JSONDictionary:(id)dictionary;
 @end
 
 @implementation INParameterContexts
 
-- (void)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
+- (void)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
   v42 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v31 = a4;
-  v7 = a5;
-  if (v7)
+  decoderCopy = decoder;
+  descriptionCopy = description;
+  fromCopy = from;
+  if (fromCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = fromCopy;
     }
 
     else
@@ -38,7 +38,7 @@
 
   v27 = v8;
   v9 = [v27 objectForKey:@"suggestedValues"];
-  v29 = v7;
+  v29 = fromCopy;
   if (v9)
   {
     objc_opt_class();
@@ -107,8 +107,8 @@
         v33[1] = 3221225472;
         v33[2] = __78__INParameterContexts__intents_decodeWithJSONDecoder_codableDescription_from___block_invoke;
         v33[3] = &unk_1E7280440;
-        v34 = v32;
-        v35 = v31;
+        v34 = decoderCopy;
+        v35 = descriptionCopy;
         v36 = v17;
         v21 = [v20 if_map:v33];
 
@@ -144,11 +144,11 @@ id __78__INParameterContexts__intents_decodeWithJSONDecoder_codableDescription_f
   return v7;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v26 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v6 = a4;
+  encoderCopy = encoder;
+  descriptionCopy = description;
   v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v21 = 0u;
@@ -172,8 +172,8 @@ id __78__INParameterContexts__intents_decodeWithJSONDecoder_codableDescription_f
 
         v12 = *(*(&v21 + 1) + 8 * i);
         v13 = [(NSDictionary *)self->_suggestedValuesDictionary objectForKeyedSubscript:v12];
-        v14 = [v6 attributeByName:v12];
-        v15 = [v20 encodeObject:v13 withCodableAttribute:v14];
+        v14 = [descriptionCopy attributeByName:v12];
+        v15 = [encoderCopy encodeObject:v13 withCodableAttribute:v14];
 
         [v7 if_setObjectIfNonNil:v15 forKey:v12];
       }
@@ -192,27 +192,27 @@ id __78__INParameterContexts__intents_decodeWithJSONDecoder_codableDescription_f
   return v18;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 hasPrefix:@"suggestedValuesFor"])
+  keyCopy = key;
+  if ([keyCopy hasPrefix:@"suggestedValuesFor"])
   {
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"suggestedValuesFor", "length")}];
-    v6 = [v5 if_ASCIIStringByLowercasingFirstCharacter];
+    v5 = [keyCopy substringFromIndex:{objc_msgSend(@"suggestedValuesFor", "length")}];
+    if_ASCIIStringByLowercasingFirstCharacter = [v5 if_ASCIIStringByLowercasingFirstCharacter];
 
     typedSuggestedValuesDictionary = self->_typedSuggestedValuesDictionary;
     if (!typedSuggestedValuesDictionary)
     {
-      v26 = v6;
-      v27 = v4;
+      v26 = if_ASCIIStringByLowercasingFirstCharacter;
+      v27 = keyCopy;
       v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSDictionary count](self->_suggestedValuesDictionary, "count")}];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v9 = [(NSDictionary *)self->_suggestedValuesDictionary allKeys];
-      v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      allKeys = [(NSDictionary *)self->_suggestedValuesDictionary allKeys];
+      v10 = [allKeys countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v10)
       {
         v11 = v10;
@@ -223,7 +223,7 @@ id __78__INParameterContexts__intents_decodeWithJSONDecoder_codableDescription_f
           {
             if (*v30 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allKeys);
             }
 
             v14 = *(*(&v29 + 1) + 8 * i);
@@ -254,7 +254,7 @@ id __78__INParameterContexts__intents_decodeWithJSONDecoder_codableDescription_f
             [v8 setValue:v18 forKey:v14];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+          v11 = [allKeys countByEnumeratingWithState:&v29 objects:v33 count:16];
         }
 
         while (v11);
@@ -265,26 +265,26 @@ id __78__INParameterContexts__intents_decodeWithJSONDecoder_codableDescription_f
       self->_typedSuggestedValuesDictionary = v19;
 
       typedSuggestedValuesDictionary = self->_typedSuggestedValuesDictionary;
-      v6 = v26;
-      v4 = v27;
+      if_ASCIIStringByLowercasingFirstCharacter = v26;
+      keyCopy = v27;
     }
 
-    v21 = [(NSDictionary *)typedSuggestedValuesDictionary objectForKey:v6, v26, v27];
+    v21 = [(NSDictionary *)typedSuggestedValuesDictionary objectForKey:if_ASCIIStringByLowercasingFirstCharacter, v26, v27];
   }
 
-  else if ([v4 hasPrefix:@"operatorsFor"])
+  else if ([keyCopy hasPrefix:@"operatorsFor"])
   {
-    v22 = [v4 substringFromIndex:{objc_msgSend(@"operatorsFor", "length")}];
-    v23 = [v22 if_ASCIIStringByLowercasingFirstCharacter];
+    v22 = [keyCopy substringFromIndex:{objc_msgSend(@"operatorsFor", "length")}];
+    if_ASCIIStringByLowercasingFirstCharacter2 = [v22 if_ASCIIStringByLowercasingFirstCharacter];
 
-    v21 = [(NSDictionary *)self->_operatorsDictionary objectForKey:v23];
+    v21 = [(NSDictionary *)self->_operatorsDictionary objectForKey:if_ASCIIStringByLowercasingFirstCharacter2];
   }
 
   else
   {
     v28.receiver = self;
     v28.super_class = INParameterContexts;
-    v21 = [(INParameterContexts *)&v28 valueForUndefinedKey:v4];
+    v21 = [(INParameterContexts *)&v28 valueForUndefinedKey:keyCopy];
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -313,47 +313,47 @@ id __44__INParameterContexts_valueForUndefinedKey___block_invoke(uint64_t a1, vo
 
 - (BOOL)_isEmpty
 {
-  v3 = [(NSDictionary *)self->_suggestedValuesDictionary allKeys];
-  if ([v3 count])
+  allKeys = [(NSDictionary *)self->_suggestedValuesDictionary allKeys];
+  if ([allKeys count])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(NSDictionary *)self->_operatorsDictionary allKeys];
-    v4 = [v5 count] == 0;
+    allKeys2 = [(NSDictionary *)self->_operatorsDictionary allKeys];
+    v4 = [allKeys2 count] == 0;
   }
 
   return v4;
 }
 
-- (void)_updateSuggestedValuesForIntent:(id)a3 decoder:(id)a4 JSONDictionary:(id)a5
+- (void)_updateSuggestedValuesForIntent:(id)intent decoder:(id)decoder JSONDictionary:(id)dictionary
 {
   v58 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  intentCopy = intent;
+  decoderCopy = decoder;
+  dictionaryCopy = dictionary;
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = __78__INParameterContexts__updateSuggestedValuesForIntent_decoder_JSONDictionary___block_invoke;
   v55[3] = &unk_1E72803D0;
-  v39 = v8;
+  v39 = decoderCopy;
   v56 = v39;
   v42 = MEMORY[0x193AD7780](v55);
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v11 = [v7 _codableDescription];
-  v12 = [v11 attributes];
-  v13 = [v12 allValues];
+  _codableDescription = [intentCopy _codableDescription];
+  attributes = [_codableDescription attributes];
+  allValues = [attributes allValues];
 
-  v44 = [v13 countByEnumeratingWithState:&v51 objects:v57 count:16];
+  v44 = [allValues countByEnumeratingWithState:&v51 objects:v57 count:16];
   if (v44)
   {
-    v41 = v13;
+    v41 = allValues;
     v43 = *v52;
     do
     {
@@ -362,18 +362,18 @@ id __44__INParameterContexts_valueForUndefinedKey___block_invoke(uint64_t a1, vo
       {
         if (*v52 != v43)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allValues);
         }
 
         v15 = *(*(&v51 + 1) + 8 * v14);
-        v16 = [v15 propertyName];
-        v17 = [v9 objectForKeyedSubscript:v16];
+        propertyName = [v15 propertyName];
+        v17 = [dictionaryCopy objectForKeyedSubscript:propertyName];
 
         if (v17)
         {
           if ([v15 modifier])
           {
-            v18 = [v9 objectForKeyedSubscript:v16];
+            v18 = [dictionaryCopy objectForKeyedSubscript:propertyName];
             if (v18)
             {
               objc_opt_class();
@@ -397,13 +397,13 @@ id __44__INParameterContexts_valueForUndefinedKey___block_invoke(uint64_t a1, vo
 
             v27 = (v42)[2](v42, v26, v15);
 
-            v28 = [v15 objectClass];
-            if (v28 != objc_opt_class())
+            objectClass = [v15 objectClass];
+            if (objectClass != objc_opt_class())
             {
               goto LABEL_31;
             }
 
-            v29 = [v7 valueForKey:v16];
+            v29 = [intentCopy valueForKey:propertyName];
             if (v29)
             {
               objc_opt_class();
@@ -427,10 +427,10 @@ id __44__INParameterContexts_valueForUndefinedKey___block_invoke(uint64_t a1, vo
           else
           {
             v20 = v10;
-            v21 = v7;
+            v21 = intentCopy;
             v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
             v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
-            v24 = [v9 objectForKeyedSubscript:v16];
+            v24 = [dictionaryCopy objectForKeyedSubscript:propertyName];
             if (v24)
             {
               objc_opt_class();
@@ -460,9 +460,9 @@ id __44__INParameterContexts_valueForUndefinedKey___block_invoke(uint64_t a1, vo
             v45[4] = v15;
             v32 = v22;
             v46 = v32;
-            v7 = v21;
+            intentCopy = v21;
             v47 = v21;
-            v48 = v16;
+            v48 = propertyName;
             v33 = v23;
             v49 = v33;
             [v31 enumerateObjectsUsingBlock:v45];
@@ -478,7 +478,7 @@ id __44__INParameterContexts_valueForUndefinedKey___block_invoke(uint64_t a1, vo
             }
 
             v10 = v20;
-            v13 = v41;
+            allValues = v41;
             if ([v33 count])
             {
               v34 = [v33 copy];
@@ -495,17 +495,17 @@ id __44__INParameterContexts_valueForUndefinedKey___block_invoke(uint64_t a1, vo
             }
           }
 
-          [v7 setValue:v34 forKey:v16];
+          [intentCopy setValue:v34 forKey:propertyName];
 
 LABEL_31:
-          [v10 if_setObjectIfNonNil:v27 forKey:v16];
+          [v10 if_setObjectIfNonNil:v27 forKey:propertyName];
         }
 
         ++v14;
       }
 
       while (v44 != v14);
-      v35 = [v13 countByEnumeratingWithState:&v51 objects:v57 count:16];
+      v35 = [allValues countByEnumeratingWithState:&v51 objects:v57 count:16];
       v44 = v35;
     }
 
@@ -689,25 +689,25 @@ void __78__INParameterContexts__updateSuggestedValuesForIntent_decoder_JSONDicti
   }
 }
 
-- (void)_updateOperatorsForIntent:(id)a3 JSONDictionary:(id)a4
+- (void)_updateOperatorsForIntent:(id)intent JSONDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  intentCopy = intent;
+  dictionaryCopy = dictionary;
   v7 = MEMORY[0x1E695DF90];
-  v8 = [v5 _codableDescription];
-  v9 = [v8 attributes];
-  v24 = [v7 dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+  _codableDescription = [intentCopy _codableDescription];
+  attributes = [_codableDescription attributes];
+  v24 = [v7 dictionaryWithCapacity:{objc_msgSend(attributes, "count")}];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [v5 _codableDescription];
-  v11 = [v10 attributes];
-  v12 = [v11 allValues];
+  _codableDescription2 = [intentCopy _codableDescription];
+  attributes2 = [_codableDescription2 attributes];
+  allValues = [attributes2 allValues];
 
-  v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v13 = [allValues countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v13)
   {
     v14 = v13;
@@ -718,11 +718,11 @@ void __78__INParameterContexts__updateSuggestedValuesForIntent_decoder_JSONDicti
       {
         if (*v26 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allValues);
         }
 
-        v17 = [*(*(&v25 + 1) + 8 * i) propertyName];
-        v18 = [v6 objectForKeyedSubscript:v17];
+        propertyName = [*(*(&v25 + 1) + 8 * i) propertyName];
+        v18 = [dictionaryCopy objectForKeyedSubscript:propertyName];
         if (v18)
         {
           objc_opt_class();
@@ -734,14 +734,14 @@ void __78__INParameterContexts__updateSuggestedValuesForIntent_decoder_JSONDicti
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [v24 setObject:v19 forKey:v17];
+                [v24 setObject:v19 forKey:propertyName];
               }
             }
           }
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v14 = [allValues countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v14);
@@ -754,31 +754,31 @@ void __78__INParameterContexts__updateSuggestedValuesForIntent_decoder_JSONDicti
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithIntent:(id)a3 decoder:(id)a4 JSONDictionary:(id)a5
+- (id)_initWithIntent:(id)intent decoder:(id)decoder JSONDictionary:(id)dictionary
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intentCopy = intent;
+  decoderCopy = decoder;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = INParameterContexts;
   v11 = [(INParameterContexts *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(INParameterContexts *)v11 _updateSuggestedValuesForIntent:v8 decoder:v9 JSONDictionary:v10];
-    [(INParameterContexts *)v12 _updateOperatorsForIntent:v8 JSONDictionary:v10];
+    [(INParameterContexts *)v11 _updateSuggestedValuesForIntent:intentCopy decoder:decoderCopy JSONDictionary:dictionaryCopy];
+    [(INParameterContexts *)v12 _updateOperatorsForIntent:intentCopy JSONDictionary:dictionaryCopy];
   }
 
   return v12;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = objc_alloc_init(a1);
-  [v11 _intents_decodeWithJSONDecoder:v10 codableDescription:v9 from:v8];
+  fromCopy = from;
+  descriptionCopy = description;
+  decoderCopy = decoder;
+  v11 = objc_alloc_init(self);
+  [v11 _intents_decodeWithJSONDecoder:decoderCopy codableDescription:descriptionCopy from:fromCopy];
 
   return v11;
 }

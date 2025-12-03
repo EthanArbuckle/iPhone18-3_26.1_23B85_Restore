@@ -1,16 +1,16 @@
 @interface NTKWorldClockMapLocationView
-- (NTKWorldClockMapLocationView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)positionAtPoint:(CGPoint)a3 withinBounds:(CGRect)a4;
+- (NTKWorldClockMapLocationView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)positionAtPoint:(CGPoint)point withinBounds:(CGRect)bounds;
 @end
 
 @implementation NTKWorldClockMapLocationView
 
-- (NTKWorldClockMapLocationView)initWithFrame:(CGRect)a3
+- (NTKWorldClockMapLocationView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NTKWorldClockMapLocationView;
-  v3 = [(NTKWorldClockMapLocationView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKWorldClockMapLocationView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -20,15 +20,15 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  CGContextSetFillColorWithColor(CurrentContext, [v8 CGColor]);
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  CGContextSetFillColorWithColor(CurrentContext, [whiteColor CGColor]);
 
   v10.origin.x = x;
   v10.origin.y = y;
@@ -39,12 +39,12 @@
   CGContextFillPath(CurrentContext);
 }
 
-- (void)positionAtPoint:(CGPoint)a3 withinBounds:(CGRect)a4
+- (void)positionAtPoint:(CGPoint)point withinBounds:(CGRect)bounds
 {
-  rect = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  rect = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(NTKWorldClockMapLocationView *)self frame];
   UIRectCenteredAboutPointScale();
   v8 = v18.origin.x;

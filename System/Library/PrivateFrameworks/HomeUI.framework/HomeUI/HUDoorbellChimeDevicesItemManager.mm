@@ -1,23 +1,23 @@
 @interface HUDoorbellChimeDevicesItemManager
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)enableDoorbellChime:(BOOL)a3 forItem:(id)a4;
-- (void)mediaProfileContainer:(id)a3 didUpdateSettingKeypath:(id)a4 value:(id)a5;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)enableDoorbellChime:(BOOL)chime forItem:(id)item;
+- (void)mediaProfileContainer:(id)container didUpdateSettingKeypath:(id)keypath value:(id)value;
 @end
 
 @implementation HUDoorbellChimeDevicesItemManager
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = objc_alloc(MEMORY[0x277D147F0]);
-  v6 = [(HFItemManager *)self home];
-  v7 = [v5 initWithHome:v6];
+  home = [(HFItemManager *)self home];
+  v7 = [v5 initWithHome:home];
 
   [v7 setFilter:&__block_literal_global_194];
   v8 = [objc_alloc(MEMORY[0x277D14C38]) initWithSourceProvider:v7 transformationBlock:&__block_literal_global_256];
   v9 = objc_alloc(MEMORY[0x277D142F0]);
-  v10 = [(HFItemManager *)self home];
-  v11 = [v9 initWithHome:v10];
+  home2 = [(HFItemManager *)self home];
+  v11 = [v9 initWithHome:home2];
 
   [v11 setFilter:&__block_literal_global_263_0];
   v12 = objc_alloc(MEMORY[0x277D14C38]);
@@ -27,10 +27,10 @@
   v15[3] = &unk_277DC0A98;
   v15[4] = self;
   v13 = [v12 initWithSourceProvider:v11 transformationBlock:v15];
-  [v4 addObject:v8];
-  [v4 addObject:v13];
+  [array addObject:v8];
+  [array addObject:v13];
 
-  return v4;
+  return array;
 }
 
 uint64_t __64__HUDoorbellChimeDevicesItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1, void *a2)
@@ -233,13 +233,13 @@ id __64__HUDoorbellChimeDevicesItemManager__buildItemProvidersForHome___block_in
   return v6;
 }
 
-- (id)enableDoorbellChime:(BOOL)a3 forItem:(id)a4
+- (id)enableDoorbellChime:(BOOL)chime forItem:(id)item
 {
-  v5 = [a4 sourceItem];
+  sourceItem = [item sourceItem];
   v6 = &unk_28251AE08;
-  if ([v5 conformsToProtocol:v6])
+  if ([sourceItem conformsToProtocol:v6])
   {
-    v7 = v5;
+    v7 = sourceItem;
   }
 
   else
@@ -257,16 +257,16 @@ id __64__HUDoorbellChimeDevicesItemManager__buildItemProvidersForHome___block_in
     v12[2] = __65__HUDoorbellChimeDevicesItemManager_enableDoorbellChime_forItem___block_invoke;
     v12[3] = &unk_277DBB320;
     v13 = v8;
-    v14 = a3;
-    v10 = [v9 futureWithBlock:v12];
+    chimeCopy = chime;
+    futureWithNoResult = [v9 futureWithBlock:v12];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v10;
+  return futureWithNoResult;
 }
 
 void __65__HUDoorbellChimeDevicesItemManager_enableDoorbellChime_forItem___block_invoke(uint64_t a1, void *a2)
@@ -302,18 +302,18 @@ void __65__HUDoorbellChimeDevicesItemManager_enableDoorbellChime_forItem___block
   [*(a1 + 32) finishWithNoResult];
 }
 
-- (void)mediaProfileContainer:(id)a3 didUpdateSettingKeypath:(id)a4 value:(id)a5
+- (void)mediaProfileContainer:(id)container didUpdateSettingKeypath:(id)keypath value:(id)value
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  keypathCopy = keypath;
+  valueCopy = value;
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v8;
+    v13 = keypathCopy;
     v14 = 2112;
-    v15 = v9;
+    v15 = valueCopy;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "Received update for setting keypath %@ value = %@", &v12, 0x16u);
   }
 

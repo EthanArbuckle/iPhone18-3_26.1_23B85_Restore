@@ -1,44 +1,44 @@
 @interface NFStateMachineState
-- (BOOL)canTry:(id)a3 withOwner:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (NFStateMachineState)initWithName:(id)a3;
+- (BOOL)canTry:(id)try withOwner:(id)owner;
+- (BOOL)isEqual:(id)equal;
+- (NFStateMachineState)initWithName:(id)name;
 - (id)description;
-- (id)didEnter:(id)a3 withOwner:(id)a4;
-- (id)didExit:(id)a3 withOwner:(id)a4;
+- (id)didEnter:(id)enter withOwner:(id)owner;
+- (id)didExit:(id)exit withOwner:(id)owner;
 - (unint64_t)hash;
-- (void)willEnter:(id)a3 withOwner:(id)a4;
-- (void)willExit:(id)a3 withOwner:(id)a4;
+- (void)willEnter:(id)enter withOwner:(id)owner;
+- (void)willExit:(id)exit withOwner:(id)owner;
 @end
 
 @implementation NFStateMachineState
 
 - (unint64_t)hash
 {
-  v2 = [(NFStateMachineState *)self name];
-  v3 = [v2 hash];
+  name = [(NFStateMachineState *)self name];
+  v3 = [name hash];
 
   return v3;
 }
 
-- (NFStateMachineState)initWithName:(id)a3
+- (NFStateMachineState)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = NFStateMachineState;
   v6 = [(NFStateMachineState *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -48,11 +48,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(NFStateMachineState *)self name];
-      v7 = [(NFStateMachineState *)v5 name];
+      v5 = equalCopy;
+      name = [(NFStateMachineState *)self name];
+      name2 = [(NFStateMachineState *)v5 name];
 
-      v8 = [v6 isEqualToString:v7];
+      v8 = [name isEqualToString:name2];
     }
 
     else
@@ -67,22 +67,22 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NFStateMachineState *)self name];
-  v5 = [v3 stringWithFormat:@"{%p name=%@}", self, v4];
+  name = [(NFStateMachineState *)self name];
+  v5 = [v3 stringWithFormat:@"{%p name=%@}", self, name];
 
   return v5;
 }
 
-- (BOOL)canTry:(id)a3 withOwner:(id)a4
+- (BOOL)canTry:(id)try withOwner:(id)owner
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NFStateMachineState *)self canTryBlock];
+  tryCopy = try;
+  ownerCopy = owner;
+  canTryBlock = [(NFStateMachineState *)self canTryBlock];
 
-  if (v8)
+  if (canTryBlock)
   {
-    v9 = [(NFStateMachineState *)self canTryBlock];
-    v10 = (v9)[2](v9, v6, v7);
+    canTryBlock2 = [(NFStateMachineState *)self canTryBlock];
+    v10 = (canTryBlock2)[2](canTryBlock2, tryCopy, ownerCopy);
   }
 
   else
@@ -93,42 +93,42 @@
   return v10;
 }
 
-- (void)willExit:(id)a3 withOwner:(id)a4
+- (void)willExit:(id)exit withOwner:(id)owner
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(NFStateMachineState *)self willExitBlock];
+  exitCopy = exit;
+  ownerCopy = owner;
+  willExitBlock = [(NFStateMachineState *)self willExitBlock];
 
-  if (v7)
+  if (willExitBlock)
   {
-    v8 = [(NFStateMachineState *)self willExitBlock];
-    (v8)[2](v8, v9, v6);
+    willExitBlock2 = [(NFStateMachineState *)self willExitBlock];
+    (willExitBlock2)[2](willExitBlock2, exitCopy, ownerCopy);
   }
 }
 
-- (void)willEnter:(id)a3 withOwner:(id)a4
+- (void)willEnter:(id)enter withOwner:(id)owner
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(NFStateMachineState *)self willEnterBlock];
+  enterCopy = enter;
+  ownerCopy = owner;
+  willEnterBlock = [(NFStateMachineState *)self willEnterBlock];
 
-  if (v7)
+  if (willEnterBlock)
   {
-    v8 = [(NFStateMachineState *)self willEnterBlock];
-    (v8)[2](v8, v9, v6);
+    willEnterBlock2 = [(NFStateMachineState *)self willEnterBlock];
+    (willEnterBlock2)[2](willEnterBlock2, enterCopy, ownerCopy);
   }
 }
 
-- (id)didExit:(id)a3 withOwner:(id)a4
+- (id)didExit:(id)exit withOwner:(id)owner
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NFStateMachineState *)self didExitBlock];
+  exitCopy = exit;
+  ownerCopy = owner;
+  didExitBlock = [(NFStateMachineState *)self didExitBlock];
 
-  if (v8)
+  if (didExitBlock)
   {
-    v9 = [(NFStateMachineState *)self didExitBlock];
-    v10 = (v9)[2](v9, v6, v7);
+    didExitBlock2 = [(NFStateMachineState *)self didExitBlock];
+    v10 = (didExitBlock2)[2](didExitBlock2, exitCopy, ownerCopy);
   }
 
   else
@@ -139,16 +139,16 @@
   return v10;
 }
 
-- (id)didEnter:(id)a3 withOwner:(id)a4
+- (id)didEnter:(id)enter withOwner:(id)owner
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NFStateMachineState *)self didEnterBlock];
+  enterCopy = enter;
+  ownerCopy = owner;
+  didEnterBlock = [(NFStateMachineState *)self didEnterBlock];
 
-  if (v8)
+  if (didEnterBlock)
   {
-    v9 = [(NFStateMachineState *)self didEnterBlock];
-    v10 = (v9)[2](v9, v6, v7);
+    didEnterBlock2 = [(NFStateMachineState *)self didEnterBlock];
+    v10 = (didEnterBlock2)[2](didEnterBlock2, enterCopy, ownerCopy);
   }
 
   else

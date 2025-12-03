@@ -1,29 +1,29 @@
 @interface MPModelPlaylist
 - (NSString)ownerName;
 - (NSString)sortStorageKeyDomain;
-- (id)pickableObjectFor:(uint64_t)a3;
+- (id)pickableObjectFor:(uint64_t)for;
 @end
 
 @implementation MPModelPlaylist
 
-- (id)pickableObjectFor:(uint64_t)a3
+- (id)pickableObjectFor:(uint64_t)for
 {
-  if ((a3 - 2) > 2)
+  if ((for - 2) > 2)
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (NSString)ownerName
 {
-  v2 = self;
+  selfCopy = self;
   sub_C3030();
   v4 = v3;
 
@@ -42,7 +42,7 @@
 
 - (NSString)sortStorageKeyDomain
 {
-  v2 = self;
+  selfCopy = self;
   MPModelPlaylist.sortStorageKeyDomain.getter();
   v4 = v3;
 

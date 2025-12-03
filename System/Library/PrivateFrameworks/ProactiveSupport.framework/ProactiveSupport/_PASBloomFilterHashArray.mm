@@ -1,6 +1,6 @@
 @interface _PASBloomFilterHashArray
-- (_PASBloomFilterHashArray)initWithCapacity:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_PASBloomFilterHashArray)initWithCapacity:(unint64_t)capacity;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initInternal;
 - (void)dealloc;
 @end
@@ -15,7 +15,7 @@
   [(_PASBloomFilterHashArray *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_PASBloomFilterHashArray allocWithZone:?]];
   if (v4)
@@ -34,15 +34,15 @@
   return v4;
 }
 
-- (_PASBloomFilterHashArray)initWithCapacity:(unint64_t)a3
+- (_PASBloomFilterHashArray)initWithCapacity:(unint64_t)capacity
 {
   v8.receiver = self;
   v8.super_class = _PASBloomFilterHashArray;
   v4 = [(_PASBloomFilterHashArray *)&v8 init];
   if (v4)
   {
-    v4->_size = 4 * a3;
-    v5 = malloc_type_malloc(4 * a3, 0xA39E7793uLL);
+    v4->_size = 4 * capacity;
+    v5 = malloc_type_malloc(4 * capacity, 0xA39E7793uLL);
     if (!v5)
     {
       v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA18] reason:@"malloc failed" userInfo:0];

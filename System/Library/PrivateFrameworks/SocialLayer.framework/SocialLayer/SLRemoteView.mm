@@ -1,17 +1,17 @@
 @interface SLRemoteView
-- (SLRemoteView)initWithServiceProxyClass:(Class)a3 maxWidth:(double)a4;
+- (SLRemoteView)initWithServiceProxyClass:(Class)class maxWidth:(double)width;
 - (id)_contentProviderForCurrentConfiguration;
-- (void)_provideContentForLayerContextID:(unint64_t)a3 style:(id)a4 yield:(id)a5;
-- (void)serviceProxyDidConnect:(id)a3;
-- (void)serviceProxyDidDisconnect:(id)a3;
-- (void)setMaxWidth:(double)a3;
-- (void)setRemoteContentIsLoaded:(BOOL)a3;
-- (void)setRemoteRenderingEnabled:(BOOL)a3;
+- (void)_provideContentForLayerContextID:(unint64_t)d style:(id)style yield:(id)yield;
+- (void)serviceProxyDidConnect:(id)connect;
+- (void)serviceProxyDidDisconnect:(id)disconnect;
+- (void)setMaxWidth:(double)width;
+- (void)setRemoteContentIsLoaded:(BOOL)loaded;
+- (void)setRemoteRenderingEnabled:(BOOL)enabled;
 @end
 
 @implementation SLRemoteView
 
-- (SLRemoteView)initWithServiceProxyClass:(Class)a3 maxWidth:(double)a4
+- (SLRemoteView)initWithServiceProxyClass:(Class)class maxWidth:(double)width
 {
   v43[4] = *MEMORY[0x277D85DE8];
   v42.receiver = self;
@@ -20,41 +20,41 @@
   v6 = v5;
   if (v5)
   {
-    v5->_maxWidth = a4;
+    v5->_maxWidth = width;
     v5->_remoteRenderingEnabled = 0;
     v7 = objc_alloc_init(MEMORY[0x277D76260]);
     slotView = v6->_slotView;
     v6->_slotView = v7;
 
-    v9 = [(SLRemoteView *)v6 _contentProviderForCurrentConfiguration];
-    [(_UISlotView *)v6->_slotView _setSlotAnyContentProvider:v9];
+    _contentProviderForCurrentConfiguration = [(SLRemoteView *)v6 _contentProviderForCurrentConfiguration];
+    [(_UISlotView *)v6->_slotView _setSlotAnyContentProvider:_contentProviderForCurrentConfiguration];
 
     [(_UISlotView *)v6->_slotView setUserInteractionEnabled:0];
     [(_UISlotView *)v6->_slotView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SLRemoteView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [(SLRemoteView *)v6 slotView];
-    [(SLRemoteView *)v6 addSubview:v10];
+    slotView = [(SLRemoteView *)v6 slotView];
+    [(SLRemoteView *)v6 addSubview:slotView];
 
     v29 = MEMORY[0x277CCAAD0];
-    v38 = [(SLRemoteView *)v6 slotView];
-    v37 = [v38 centerXAnchor];
-    v36 = [(SLRemoteView *)v6 centerXAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    slotView2 = [(SLRemoteView *)v6 slotView];
+    centerXAnchor = [slotView2 centerXAnchor];
+    centerXAnchor2 = [(SLRemoteView *)v6 centerXAnchor];
+    v35 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v43[0] = v35;
-    v34 = [(SLRemoteView *)v6 slotView];
-    v33 = [v34 centerYAnchor];
-    v32 = [(SLRemoteView *)v6 centerYAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    slotView3 = [(SLRemoteView *)v6 slotView];
+    centerYAnchor = [slotView3 centerYAnchor];
+    centerYAnchor2 = [(SLRemoteView *)v6 centerYAnchor];
+    v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v43[1] = v31;
-    v11 = [(SLRemoteView *)v6 heightAnchor];
-    v12 = [(SLRemoteView *)v6 slotView];
-    v13 = [v12 heightAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    heightAnchor = [(SLRemoteView *)v6 heightAnchor];
+    slotView4 = [(SLRemoteView *)v6 slotView];
+    heightAnchor2 = [slotView4 heightAnchor];
+    v14 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v43[2] = v14;
-    v15 = [(SLRemoteView *)v6 widthAnchor];
-    v16 = [(SLRemoteView *)v6 slotView];
-    v17 = [v16 widthAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17];
+    widthAnchor = [(SLRemoteView *)v6 widthAnchor];
+    slotView5 = [(SLRemoteView *)v6 slotView];
+    widthAnchor2 = [slotView5 widthAnchor];
+    v18 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v43[3] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:4];
     [v29 activateConstraints:v19];
@@ -66,18 +66,18 @@
     remoteRenderingQueue = v6->_remoteRenderingQueue;
     v6->_remoteRenderingQueue = v22;
 
-    v24 = [SLDServiceProxy proxyForServiceClass:a3 targetSerialQueue:v6->_remoteRenderingQueue delegate:v6];
+    v24 = [SLDServiceProxy proxyForServiceClass:class targetSerialQueue:v6->_remoteRenderingQueue delegate:v6];
     serviceProxy = v6->_serviceProxy;
     v6->_serviceProxy = v24;
 
     objc_initWeak(&location, v6);
-    v26 = [(SLRemoteView *)v6 remoteRenderingQueue];
+    remoteRenderingQueue = [(SLRemoteView *)v6 remoteRenderingQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__SLRemoteView_initWithServiceProxyClass_maxWidth___block_invoke;
     block[3] = &unk_278925C50;
     objc_copyWeak(&v40, &location);
-    dispatch_async(v26, block);
+    dispatch_async(remoteRenderingQueue, block);
 
     objc_destroyWeak(&v40);
     objc_destroyWeak(&location);
@@ -94,39 +94,39 @@ void __51__SLRemoteView_initWithServiceProxyClass_maxWidth___block_invoke(uint64
   [v1 connect];
 }
 
-- (void)setMaxWidth:(double)a3
+- (void)setMaxWidth:(double)width
 {
-  if (!SL_CGFloatApproximatelyEqualToFloat(a3, self->_maxWidth))
+  if (!SL_CGFloatApproximatelyEqualToFloat(width, self->_maxWidth))
   {
     v5 = SLFrameworkLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(SLRemoteView *)self setMaxWidth:v5, a3];
+      [(SLRemoteView *)self setMaxWidth:v5, width];
     }
 
-    self->_maxWidth = a3;
-    v6 = [(SLRemoteView *)self slotView];
-    [v6 _updateContent];
+    self->_maxWidth = width;
+    slotView = [(SLRemoteView *)self slotView];
+    [slotView _updateContent];
 
     [(SLRemoteView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setRemoteContentIsLoaded:(BOOL)a3
+- (void)setRemoteContentIsLoaded:(BOOL)loaded
 {
-  if (self->_remoteContentIsLoaded != a3)
+  if (self->_remoteContentIsLoaded != loaded)
   {
-    self->_remoteContentIsLoaded = a3;
+    self->_remoteContentIsLoaded = loaded;
     [(SLRemoteView *)self remoteContentIsLoadedValueChanged];
   }
 }
 
-- (void)setRemoteRenderingEnabled:(BOOL)a3
+- (void)setRemoteRenderingEnabled:(BOOL)enabled
 {
-  if (self->_remoteRenderingEnabled != a3)
+  if (self->_remoteRenderingEnabled != enabled)
   {
-    self->_remoteRenderingEnabled = a3;
-    if (a3)
+    self->_remoteRenderingEnabled = enabled;
+    if (enabled)
     {
       v4 = SLFrameworkLogHandle();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -134,8 +134,8 @@ void __51__SLRemoteView_initWithServiceProxyClass_maxWidth___block_invoke(uint64
         [(SLRemoteView *)self setRemoteRenderingEnabled:v4];
       }
 
-      v5 = [(SLRemoteView *)self slotView];
-      [v5 _updateContent];
+      slotView = [(SLRemoteView *)self slotView];
+      [slotView _updateContent];
     }
   }
 }
@@ -163,42 +163,42 @@ void __55__SLRemoteView__contentProviderForCurrentConfiguration__block_invoke(ui
   [WeakRetained _provideContentForLayerContextID:a2 style:v8 yield:v7];
 }
 
-- (void)_provideContentForLayerContextID:(unint64_t)a3 style:(id)a4 yield:(id)a5
+- (void)_provideContentForLayerContextID:(unint64_t)d style:(id)style yield:(id)yield
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SLRemoteView *)self remoteContentIsLoaded];
+  styleCopy = style;
+  yieldCopy = yield;
+  remoteContentIsLoaded = [(SLRemoteView *)self remoteContentIsLoaded];
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__5;
   v36 = __Block_byref_object_dispose__5;
-  v37 = [(SLRemoteView *)self _finalSlotStyleForStyle:v8];
-  v11 = [(SLRemoteView *)self placeholderSlotContent];
-  if ([(SLRemoteView *)self shouldInvalidatePreviousPlaceHolderSlotContent:v11 forStyle:v33[5]])
+  v37 = [(SLRemoteView *)self _finalSlotStyleForStyle:styleCopy];
+  placeholderSlotContent = [(SLRemoteView *)self placeholderSlotContent];
+  if ([(SLRemoteView *)self shouldInvalidatePreviousPlaceHolderSlotContent:placeholderSlotContent forStyle:v33[5]])
   {
     v12 = [(SLRemoteView *)self makePlaceholderSlotContentForStyle:v33[5]];
     [(SLRemoteView *)self setPlaceholderSlotContent:v12];
   }
 
-  if (!v10)
+  if (!remoteContentIsLoaded)
   {
     goto LABEL_6;
   }
 
-  [v11 contentSize];
+  [placeholderSlotContent contentSize];
   v14 = v13;
   v16 = v15;
-  v17 = [(SLRemoteView *)self placeholderSlotContent];
-  [v17 contentSize];
+  placeholderSlotContent2 = [(SLRemoteView *)self placeholderSlotContent];
+  [placeholderSlotContent2 contentSize];
   v19 = v18;
   v21 = v20;
 
   if (v14 != v19 || v16 != v21)
   {
 LABEL_6:
-    v22 = [(SLRemoteView *)self placeholderSlotContent];
-    v9[2](v9, v22);
+    placeholderSlotContent3 = [(SLRemoteView *)self placeholderSlotContent];
+    yieldCopy[2](yieldCopy, placeholderSlotContent3);
   }
 
   if ([(SLRemoteView *)self remoteRenderingEnabled]&& ([(SLRemoteView *)self maxWidth], v23 <= 0.0))
@@ -212,28 +212,28 @@ LABEL_6:
 
   else if ([(SLRemoteView *)self remoteRenderingEnabled])
   {
-    v24 = [(SLRemoteView *)self serviceProxy];
-    v25 = [v24 connectionActive];
+    serviceProxy = [(SLRemoteView *)self serviceProxy];
+    connectionActive = [serviceProxy connectionActive];
 
-    if (v25)
+    if (connectionActive)
     {
-      v26 = [(SLRemoteView *)self remoteRenderingQueue];
+      remoteRenderingQueue = [(SLRemoteView *)self remoteRenderingQueue];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __61__SLRemoteView__provideContentForLayerContextID_style_yield___block_invoke;
       v28[3] = &unk_2789264F0;
       v28[4] = self;
       v30 = &v32;
-      v31 = a3;
-      v29 = v9;
-      dispatch_async(v26, v28);
+      dCopy = d;
+      v29 = yieldCopy;
+      dispatch_async(remoteRenderingQueue, v28);
     }
   }
 
   _Block_object_dispose(&v32, 8);
 }
 
-- (void)serviceProxyDidConnect:(id)a3
+- (void)serviceProxyDidConnect:(id)connect
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -249,7 +249,7 @@ void __39__SLRemoteView_serviceProxyDidConnect___block_invoke(uint64_t a1)
   [v1 _updateContent];
 }
 
-- (void)serviceProxyDidDisconnect:(id)a3
+- (void)serviceProxyDidDisconnect:(id)disconnect
 {
   [(SLRemoteView *)self setLastRenderedSlotStyle:0];
 

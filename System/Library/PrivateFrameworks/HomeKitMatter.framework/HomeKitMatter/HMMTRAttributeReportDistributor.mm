@@ -1,9 +1,9 @@
 @interface HMMTRAttributeReportDistributor
 - (HMMTRAttributeReportDistributor)init;
-- (id)registerHandlerForAttributePath:(id)a3 queue:(id)a4 handler:(id)a5;
+- (id)registerHandlerForAttributePath:(id)path queue:(id)queue handler:(id)handler;
 - (void)allAttributesReady;
-- (void)deregisterHandlerForAttributePath:(id)a3 registry:(id)a4;
-- (void)distributeAttributeReport:(id)a3;
+- (void)deregisterHandlerForAttributePath:(id)path registry:(id)registry;
+- (void)distributeAttributeReport:(id)report;
 @end
 
 @implementation HMMTRAttributeReportDistributor
@@ -12,8 +12,8 @@
 {
   v30 = *MEMORY[0x277D85DE8];
   [(HMMTRAttributeReportDistributor *)self setAllAttributesReported:1];
-  v3 = [(HMMTRAttributeReportDistributor *)self receivers];
-  v4 = [v3 copy];
+  receivers = [(HMMTRAttributeReportDistributor *)self receivers];
+  v4 = [receivers copy];
 
   v26 = 0u;
   v27 = 0u;
@@ -56,13 +56,13 @@
               }
 
               v13 = *(*(&v20 + 1) + 8 * j);
-              v14 = [v13 queue];
+              queue = [v13 queue];
               block[0] = MEMORY[0x277D85DD0];
               block[1] = 3221225472;
               block[2] = __53__HMMTRAttributeReportDistributor_allAttributesReady__block_invoke;
               block[3] = &unk_2786F0CA8;
               block[4] = v13;
-              dispatch_async(v14, block);
+              dispatch_async(queue, block);
             }
 
             v10 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -87,11 +87,11 @@ void __53__HMMTRAttributeReportDistributor_allAttributesReady__block_invoke(uint
   v1[2](v1, 0);
 }
 
-- (void)distributeAttributeReport:(id)a3
+- (void)distributeAttributeReport:(id)report
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
+  reportCopy = report;
+  v5 = [reportCopy objectForKeyedSubscript:*MEMORY[0x277CD50B8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -107,8 +107,8 @@ void __53__HMMTRAttributeReportDistributor_allAttributesReady__block_invoke(uint
 
   if (v7)
   {
-    v8 = [(HMMTRAttributeReportDistributor *)self receivers];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    receivers = [(HMMTRAttributeReportDistributor *)self receivers];
+    v9 = [receivers objectForKeyedSubscript:v7];
     v10 = [v9 copy];
 
     if (v10)
@@ -135,14 +135,14 @@ void __53__HMMTRAttributeReportDistributor_allAttributesReady__block_invoke(uint
             }
 
             v16 = *(*(&v23 + 1) + 8 * i);
-            v17 = [v16 queue];
+            queue = [v16 queue];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __61__HMMTRAttributeReportDistributor_distributeAttributeReport___block_invoke;
             block[3] = &unk_2786EF328;
             block[4] = v16;
-            v22 = v4;
-            dispatch_async(v17, block);
+            v22 = reportCopy;
+            dispatch_async(queue, block);
           }
 
           v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -165,38 +165,38 @@ void __61__HMMTRAttributeReportDistributor_distributeAttributeReport___block_inv
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)deregisterHandlerForAttributePath:(id)a3 registry:(id)a4
+- (void)deregisterHandlerForAttributePath:(id)path registry:(id)registry
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(HMMTRAttributeReportDistributor *)self receivers];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  registryCopy = registry;
+  pathCopy = path;
+  receivers = [(HMMTRAttributeReportDistributor *)self receivers];
+  v8 = [receivers objectForKeyedSubscript:pathCopy];
 
   if (v8)
   {
-    [v8 removeObject:v9];
+    [v8 removeObject:registryCopy];
   }
 }
 
-- (id)registerHandlerForAttributePath:(id)a3 queue:(id)a4 handler:(id)a5
+- (id)registerHandlerForAttributePath:(id)path queue:(id)queue handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(HMMTRAttributeReportDistributor *)self receivers];
-  v12 = [v11 objectForKeyedSubscript:v8];
+  pathCopy = path;
+  handlerCopy = handler;
+  queueCopy = queue;
+  receivers = [(HMMTRAttributeReportDistributor *)self receivers];
+  v12 = [receivers objectForKeyedSubscript:pathCopy];
 
   if (!v12)
   {
-    v13 = [MEMORY[0x277CBEB18] array];
-    v14 = [(HMMTRAttributeReportDistributor *)self receivers];
-    [v14 setObject:v13 forKeyedSubscript:v8];
+    array = [MEMORY[0x277CBEB18] array];
+    receivers2 = [(HMMTRAttributeReportDistributor *)self receivers];
+    [receivers2 setObject:array forKeyedSubscript:pathCopy];
   }
 
-  v15 = [[HMMTRAttributeReportDistributorRegistry alloc] initWithQueue:v10 receiver:v9];
+  v15 = [[HMMTRAttributeReportDistributorRegistry alloc] initWithQueue:queueCopy receiver:handlerCopy];
 
-  v16 = [(HMMTRAttributeReportDistributor *)self receivers];
-  v17 = [v16 objectForKeyedSubscript:v8];
+  receivers3 = [(HMMTRAttributeReportDistributor *)self receivers];
+  v17 = [receivers3 objectForKeyedSubscript:pathCopy];
   [v17 addObject:v15];
 
   if ([(HMMTRAttributeReportDistributor *)self allAttributesReported])
@@ -214,9 +214,9 @@ void __61__HMMTRAttributeReportDistributor_distributeAttributeReport___block_inv
   v2 = [(HMMTRAttributeReportDistributor *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     receivers = v2->_receivers;
-    v2->_receivers = v3;
+    v2->_receivers = dictionary;
   }
 
   return v2;

@@ -1,9 +1,9 @@
 @interface HDSummarySharingDiagnosticOperation
-- (void)_reportDiagnosticsForProfileIdentifier:(id)a3;
-- (void)_reportHeaderWithProfileIdentifiers:(id)a3;
+- (void)_reportDiagnosticsForProfileIdentifier:(id)identifier;
+- (void)_reportHeaderWithProfileIdentifiers:(id)identifiers;
 - (void)_reportInvitationsForPrimaryProfile;
-- (void)_reportProfileInformationForProfileIdentifier:(id)a3;
-- (void)_reportSharedSummariesForProfileIdentifier:(id)a3 committedTransactions:(BOOL)a4;
+- (void)_reportProfileInformationForProfileIdentifier:(id)identifier;
+- (void)_reportSharedSummariesForProfileIdentifier:(id)identifier committedTransactions:(BOOL)transactions;
 - (void)run;
 @end
 
@@ -86,10 +86,10 @@ void __42__HDSummarySharingDiagnosticOperation_run__block_invoke(uint64_t a1, vo
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)_reportHeaderWithProfileIdentifiers:(id)a3
+- (void)_reportHeaderWithProfileIdentifiers:(id)identifiers
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(HDDiagnosticOperation *)self appendString:@"Active invitations:"];
   v5 = dispatch_semaphore_create(0);
   v6 = objc_alloc_init(MEMORY[0x277CCD4D8]);
@@ -100,7 +100,7 @@ void __42__HDSummarySharingDiagnosticOperation_run__block_invoke(uint64_t a1, vo
   v24[3] = &unk_2796C0DC0;
   v8 = v7;
   v25 = v8;
-  v26 = self;
+  selfCopy = self;
   v9 = v5;
   v27 = v9;
   [v8 fetchSharingEntriesWithCompletion:v24];
@@ -116,7 +116,7 @@ void __42__HDSummarySharingDiagnosticOperation_run__block_invoke(uint64_t a1, vo
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v4;
+  v11 = identifiersCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (!v12)
   {
@@ -227,15 +227,15 @@ LABEL_18:
   return result;
 }
 
-- (void)_reportDiagnosticsForProfileIdentifier:(id)a3
+- (void)_reportDiagnosticsForProfileIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(HDDiagnosticOperation *)self appendNewline];
   [(HDDiagnosticOperation *)self appendString:@"    ****"];
-  [(HDDiagnosticOperation *)self appendFormat:@"    **** %@", v4];
+  [(HDDiagnosticOperation *)self appendFormat:@"    **** %@", identifierCopy];
   [(HDDiagnosticOperation *)self appendString:@"    ****"];
   [(HDDiagnosticOperation *)self appendNewline];
-  if ([v4 type] == 1)
+  if ([identifierCopy type] == 1)
   {
     [(HDDiagnosticOperation *)self appendSeparator];
     [(HDSummarySharingDiagnosticOperation *)self _reportInvitationsForPrimaryProfile];
@@ -243,18 +243,18 @@ LABEL_18:
 
   else
   {
-    [(HDSummarySharingDiagnosticOperation *)self _reportProfileInformationForProfileIdentifier:v4];
+    [(HDSummarySharingDiagnosticOperation *)self _reportProfileInformationForProfileIdentifier:identifierCopy];
   }
 
   [(HDDiagnosticOperation *)self appendSeparator];
-  [(HDSummarySharingDiagnosticOperation *)self _reportSharedSummariesForProfileIdentifier:v4 committedTransactions:1];
-  [(HDSummarySharingDiagnosticOperation *)self _reportSharedSummariesForProfileIdentifier:v4 committedTransactions:0];
+  [(HDSummarySharingDiagnosticOperation *)self _reportSharedSummariesForProfileIdentifier:identifierCopy committedTransactions:1];
+  [(HDSummarySharingDiagnosticOperation *)self _reportSharedSummariesForProfileIdentifier:identifierCopy committedTransactions:0];
   [(HDDiagnosticOperation *)self appendStrongSeparator];
 }
 
-- (void)_reportProfileInformationForProfileIdentifier:(id)a3
+- (void)_reportProfileInformationForProfileIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = dispatch_semaphore_create(0);
   v6 = objc_alloc_init(MEMORY[0x277CCD4D8]);
   v7 = [objc_alloc(MEMORY[0x277CCD7D0]) initWithHealthStore:v6];
@@ -262,15 +262,15 @@ LABEL_18:
   v11 = 3221225472;
   v12 = __85__HDSummarySharingDiagnosticOperation__reportProfileInformationForProfileIdentifier___block_invoke;
   v13 = &unk_2796C0DE8;
-  v14 = self;
+  selfCopy = self;
   v8 = v5;
   v15 = v8;
-  [v7 fetchSharingInformationForProfileIdentifier:v4 completion:&v10];
+  [v7 fetchSharingInformationForProfileIdentifier:identifierCopy completion:&v10];
 
   v9 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v8, v9))
   {
-    [(HDDiagnosticOperation *)self log:@"ERROR: Timed out attempting to fetch profile sharing information", v10, v11, v12, v13, v14];
+    [(HDDiagnosticOperation *)self log:@"ERROR: Timed out attempting to fetch profile sharing information", v10, v11, v12, v13, selfCopy];
   }
 }
 
@@ -329,7 +329,7 @@ LABEL_7:
   v49 = v50;
   v25 = v3;
   v46 = v25;
-  v47 = self;
+  selfCopy = self;
   v27 = v4;
   v48 = v27;
   v24 = v43;
@@ -556,14 +556,14 @@ void __74__HDSummarySharingDiagnosticOperation__reportInvitationsForPrimaryProfi
   dispatch_group_leave(*(a1 + 56));
 }
 
-- (void)_reportSharedSummariesForProfileIdentifier:(id)a3 committedTransactions:(BOOL)a4
+- (void)_reportSharedSummariesForProfileIdentifier:(id)identifier committedTransactions:(BOOL)transactions
 {
-  v4 = a4;
+  transactionsCopy = transactions;
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = @"Uncommitted";
-  v36 = v4;
-  if (v4)
+  v36 = transactionsCopy;
+  if (transactionsCopy)
   {
     v7 = @"Committed";
   }
@@ -578,10 +578,10 @@ void __74__HDSummarySharingDiagnosticOperation__reportInvitationsForPrimaryProfi
   v9 = dispatch_group_create();
   dispatch_group_enter(v9);
   v10 = objc_alloc_init(MEMORY[0x277CCD4D8]);
-  [v10 setProfileIdentifier:v6];
+  [v10 setProfileIdentifier:identifierCopy];
   [v10 resume];
   v11 = @"uncommitted";
-  if (v4)
+  if (transactionsCopy)
   {
     v11 = @"committed";
   }
@@ -595,7 +595,7 @@ void __74__HDSummarySharingDiagnosticOperation__reportInvitationsForPrimaryProfi
   v45[4] = self;
   v33 = v12;
   v46 = v33;
-  v31 = v6;
+  v31 = identifierCopy;
   v47 = v31;
   group = v9;
   v48 = group;
@@ -639,8 +639,8 @@ void __74__HDSummarySharingDiagnosticOperation__reportInvitationsForPrimaryProfi
         v21 = *(*(&v41 + 1) + 8 * i);
         if (v36)
         {
-          v22 = [*(*(&v41 + 1) + 8 * i) metadata];
-          v23 = [v22 objectForKeyedSubscript:@"HKSharedSummaryTransactionMetadataKeyDateCommitted"];
+          metadata = [*(*(&v41 + 1) + 8 * i) metadata];
+          v23 = [metadata objectForKeyedSubscript:@"HKSharedSummaryTransactionMetadataKeyDateCommitted"];
 
           v24 = [(HDDiagnosticOperation *)self stringFromDate:v23];
           [(HDDiagnosticOperation *)self appendFormat:@"%@ commit date=%@", v21, v24, v31, v32];

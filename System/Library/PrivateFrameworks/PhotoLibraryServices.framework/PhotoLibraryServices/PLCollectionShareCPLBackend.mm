@@ -1,25 +1,25 @@
 @interface PLCollectionShareCPLBackend
-+ (BOOL)shouldAllowFetchURLWithScopeChange:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-+ (id)insertOrUpdateShareWithCPLScopeChange:(id)a3 inPhotoLibrary:(id)a4;
-- (BOOL)isSyncableChangeForCollectionShare:(id)a3;
-- (BOOL)supportsCloudUploadForCollectionShare:(id)a3;
++ (BOOL)shouldAllowFetchURLWithScopeChange:(id)change photoLibrary:(id)library error:(id *)error;
++ (id)insertOrUpdateShareWithCPLScopeChange:(id)change inPhotoLibrary:(id)library;
+- (BOOL)isSyncableChangeForCollectionShare:(id)share;
+- (BOOL)supportsCloudUploadForCollectionShare:(id)share;
 - (id)_listOfSyncedProperties;
-- (id)cplScopeChangeForCollectionShare:(id)a3;
-- (id)createOwnedShareWithUUID:(id)a3 creationDate:(id)a4 title:(id)a5 inPhotoLibrary:(id)a6;
-- (void)declineCollectionShare:(id)a3 completionHandler:(id)a4;
-- (void)insertOwnedParticipantInLibrary:(id)a3 collectionShare:(id)a4 unitTestMode:(BOOL)a5;
-- (void)publishCollectionShare:(id)a3 completionHandler:(id)a4;
-- (void)sendInvitationsForParticipants:(id)a3 collectionShare:(id)a4 completionHandler:(id)a5;
-- (void)trashCollectionShare:(id)a3;
+- (id)cplScopeChangeForCollectionShare:(id)share;
+- (id)createOwnedShareWithUUID:(id)d creationDate:(id)date title:(id)title inPhotoLibrary:(id)library;
+- (void)declineCollectionShare:(id)share completionHandler:(id)handler;
+- (void)insertOwnedParticipantInLibrary:(id)library collectionShare:(id)share unitTestMode:(BOOL)mode;
+- (void)publishCollectionShare:(id)share completionHandler:(id)handler;
+- (void)sendInvitationsForParticipants:(id)participants collectionShare:(id)share completionHandler:(id)handler;
+- (void)trashCollectionShare:(id)share;
 @end
 
 @implementation PLCollectionShareCPLBackend
 
-+ (BOOL)shouldAllowFetchURLWithScopeChange:(id)a3 photoLibrary:(id)a4 error:(id *)a5
++ (BOOL)shouldAllowFetchURLWithScopeChange:(id)change photoLibrary:(id)library error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 scopeType];
-  if (v6 == 7)
+  scopeType = [change scopeType];
+  if (scopeType == 7)
   {
     v7 = MEMORY[0x1E696ABC0];
     v8 = *MEMORY[0x1E69BFF48];
@@ -27,26 +27,26 @@
     v13[0] = @"Not allowed to url fetch owned CollectionShares";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v10 = [v7 errorWithDomain:v8 code:81001 userInfo:v9];
-    if (a5)
+    if (error)
     {
       v10 = v10;
-      *a5 = v10;
+      *error = v10;
     }
   }
 
-  return v6 != 7;
+  return scopeType != 7;
 }
 
-+ (id)insertOrUpdateShareWithCPLScopeChange:(id)a3 inPhotoLibrary:(id)a4
++ (id)insertOrUpdateShareWithCPLScopeChange:(id)change inPhotoLibrary:(id)library
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 scopeIdentifier];
-  v8 = [v6 managedObjectContext];
-  v9 = [(PLShare *)PLCollectionShare shareWithScopeIdentifier:v7 includeTrashed:1 inManagedObjectContext:v8];
+  changeCopy = change;
+  libraryCopy = library;
+  scopeIdentifier = [changeCopy scopeIdentifier];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  v9 = [(PLShare *)PLCollectionShare shareWithScopeIdentifier:scopeIdentifier includeTrashed:1 inManagedObjectContext:managedObjectContext];
 
-  if ([(PLShare *)PLCollectionShare validateCPLScopeChange:v5])
+  if ([(PLShare *)PLCollectionShare validateCPLScopeChange:changeCopy])
   {
     if (!v9)
     {
@@ -54,47 +54,47 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *&buf[4] = v7;
+        *&buf[4] = scopeIdentifier;
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_INFO, "Creating collection share with scope identifier %@", buf, 0xCu);
       }
 
-      v9 = [(PLShare *)PLCollectionShare insertInPhotoLibrary:v6];
+      v9 = [(PLShare *)PLCollectionShare insertInPhotoLibrary:libraryCopy];
       [v9 setStatus:2];
-      [v9 setScopeIdentifier:v7];
-      v11 = [v5 title];
-      [v9 setTitle:v11];
+      [v9 setScopeIdentifier:scopeIdentifier];
+      title = [changeCopy title];
+      [v9 setTitle:title];
     }
 
     v12 = PLBackendSharingGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v9 uuid];
+      uuid = [v9 uuid];
       *buf = 138412546;
-      *&buf[4] = v13;
+      *&buf[4] = uuid;
       *&buf[12] = 2112;
-      *&buf[14] = v5;
+      *&buf[14] = changeCopy;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_INFO, "Updating library scope %@ with CPLlibraryScopeScopeChange %@", buf, 0x16u);
     }
 
-    v14 = [v5 scopeType];
-    v15 = v14;
+    scopeType = [changeCopy scopeType];
+    v15 = scopeType;
     v16 = 0;
-    if (v14 <= 9)
+    if (scopeType <= 9)
     {
-      if (((1 << v14) & 0x23F) != 0)
+      if (((1 << scopeType) & 0x23F) != 0)
       {
         v17 = PLBackendSharingGetLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          *&buf[4] = v5;
+          *&buf[4] = changeCopy;
           _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "Unexpected scopeType for library scope from scopeChange %@", buf, 0xCu);
         }
 
         v16 = 0;
       }
 
-      else if (((1 << v14) & 0x180) != 0)
+      else if (((1 << scopeType) & 0x180) != 0)
       {
         v16 = 2;
       }
@@ -102,26 +102,26 @@
 
     [v9 setScopeType:v15];
     [v9 setLocalPublishState:v16];
-    v19 = [v5 share];
-    if (v19)
+    share = [changeCopy share];
+    if (share)
     {
-      [v9 updateShareWithCPLShare:v19 inPhotoLibrary:v6];
-      v20 = [v19 creationDate];
-      [v9 setCreationDate:v20];
+      [v9 updateShareWithCPLShare:share inPhotoLibrary:libraryCopy];
+      creationDate = [share creationDate];
+      [v9 setCreationDate:creationDate];
     }
 
     else
     {
-      v20 = PLBackendSharingGetLog();
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      creationDate = PLBackendSharingGetLog();
+      if (os_log_type_enabled(creationDate, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *&buf[4] = v5;
-        _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "CPLShare missing on scopeChange %@", buf, 0xCu);
+        *&buf[4] = changeCopy;
+        _os_log_impl(&dword_19BF1F000, creationDate, OS_LOG_TYPE_ERROR, "CPLShare missing on scopeChange %@", buf, 0xCu);
       }
     }
 
-    v21 = [v5 assetCountPerType];
+    assetCountPerType = [changeCopy assetCountPerType];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
@@ -141,7 +141,7 @@
     v23[4] = buf;
     v23[5] = &v28;
     v23[6] = &v24;
-    [v21 enumerateKeysAndObjectsUsingBlock:v23];
+    [assetCountPerType enumerateKeysAndObjectsUsingBlock:v23];
     [v9 setCloudPhotoCount:*(*&buf[8] + 24)];
     [v9 setCloudVideoCount:*(v29 + 6)];
     [v9 setCloudItemCount:*(v25 + 6)];
@@ -204,85 +204,85 @@ void __54__PLCollectionShareCPLBackend__listOfSyncedProperties__block_invoke()
   _listOfSyncedProperties_result = v0;
 }
 
-- (void)sendInvitationsForParticipants:(id)a3 collectionShare:(id)a4 completionHandler:(id)a5
+- (void)sendInvitationsForParticipants:(id)participants collectionShare:(id)share completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  participantsCopy = participants;
+  shareCopy = share;
+  handlerCopy = handler;
   _PFAssertFailHandler();
   JUMPOUT(0x19C437BFCLL);
 }
 
-- (void)declineCollectionShare:(id)a3 completionHandler:(id)a4
+- (void)declineCollectionShare:(id)share completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   _PFAssertFailHandler();
   JUMPOUT(0x19C437C44);
 }
 
-- (void)insertOwnedParticipantInLibrary:(id)a3 collectionShare:(id)a4 unitTestMode:(BOOL)a5
+- (void)insertOwnedParticipantInLibrary:(id)library collectionShare:(id)share unitTestMode:(BOOL)mode
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  shareCopy = share;
   v9 = +[PLAccountStore pl_sharedAccountStore];
-  v10 = [v9 cachedPrimaryAppleAccount];
-  v11 = v10;
-  if (a5)
+  cachedPrimaryAppleAccount = [v9 cachedPrimaryAppleAccount];
+  v11 = cachedPrimaryAppleAccount;
+  if (mode)
   {
-    v12 = @"owner@unittest.com";
+    username = @"owner@unittest.com";
     goto LABEL_5;
   }
 
-  if (!v10)
+  if (!cachedPrimaryAppleAccount)
   {
-    v12 = PLBackendSharingGetLog();
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    username = PLBackendSharingGetLog();
+    if (!os_log_type_enabled(username, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_9;
     }
 
-    v14 = [v8 compactDescription];
+    compactDescription = [shareCopy compactDescription];
     v22 = 138412290;
-    v23 = v14;
-    _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Failed to fetch account store to insert owner participant into collection share %@", &v22, 0xCu);
+    v23 = compactDescription;
+    _os_log_impl(&dword_19BF1F000, username, OS_LOG_TYPE_ERROR, "Failed to fetch account store to insert owner participant into collection share %@", &v22, 0xCu);
 LABEL_8:
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [v10 username];
-  if (v12)
+  username = [cachedPrimaryAppleAccount username];
+  if (username)
   {
 LABEL_5:
-    v13 = [v7 managedObjectContext];
-    v14 = [PLShareParticipant insertInManagedObjectContext:v13];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    compactDescription = [PLShareParticipant insertInManagedObjectContext:managedObjectContext];
 
-    [v14 setEmailAddress:v12];
-    v15 = [MEMORY[0x1E696AFB0] UUID];
-    v16 = [v15 UUIDString];
-    [v14 setUuid:v16];
+    [compactDescription setEmailAddress:username];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [compactDescription setUuid:uUIDString];
 
-    [v14 setIsCurrentUser:1];
-    [v14 setRole:1];
-    [v14 setPermission:3];
-    [v14 setParticipantKind:0];
+    [compactDescription setIsCurrentUser:1];
+    [compactDescription setRole:1];
+    [compactDescription setPermission:3];
+    [compactDescription setParticipantKind:0];
     v17 = MEMORY[0x1E695DFD8];
-    v26[0] = v14;
+    v26[0] = compactDescription;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
     v19 = [v17 setWithArray:v18];
-    [v8 setParticipants:v19];
+    [shareCopy setParticipants:v19];
 
     v20 = PLBackendSharingGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v8 compactDescription];
+      compactDescription2 = [shareCopy compactDescription];
       v22 = 138412546;
-      v23 = v14;
+      v23 = compactDescription;
       v24 = 2112;
-      v25 = v21;
+      v25 = compactDescription2;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Inserted owner participant %@ into collection share %@", &v22, 0x16u);
     }
 
@@ -292,47 +292,47 @@ LABEL_5:
 LABEL_10:
 }
 
-- (void)trashCollectionShare:(id)a3
+- (void)trashCollectionShare:(id)share
 {
-  v3 = a3;
-  [v3 recordTrashDate];
-  [v3 recordCloudDeletionIfNeeded];
+  shareCopy = share;
+  [shareCopy recordTrashDate];
+  [shareCopy recordCloudDeletionIfNeeded];
 }
 
-- (void)publishCollectionShare:(id)a3 completionHandler:(id)a4
+- (void)publishCollectionShare:(id)share completionHandler:(id)handler
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 photoLibrary];
-  v8 = [v7 libraryServicesManager];
-  v9 = [v8 cloudPhotoLibraryManager];
+  shareCopy = share;
+  handlerCopy = handler;
+  photoLibrary = [shareCopy photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
+  cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-  if (v9)
+  if (cloudPhotoLibraryManager)
   {
-    v10 = [v5 localPublishState];
+    localPublishState = [shareCopy localPublishState];
     v11 = PLBackendSharingGetLog();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
-    if (v10 == 2)
+    if (localPublishState == 2)
     {
       if (v12)
       {
-        v13 = [v5 compactDescription];
+        compactDescription = [shareCopy compactDescription];
         *buf = 138412290;
-        v32 = v13;
+        v32 = compactDescription;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "Updating Collection Share since it's already published %@", buf, 0xCu);
       }
 
-      v14 = [v5 cplScopeChange];
+      cplScopeChange = [shareCopy cplScopeChange];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __72__PLCollectionShareCPLBackend_publishCollectionShare_completionHandler___block_invoke;
       v26[3] = &unk_1E7572C00;
-      v27 = v9;
-      v28 = v7;
-      v29 = v5;
-      v30 = v6;
-      [v27 updateLibraryScopeWithCPLScopeChange:v14 completionHandler:v26];
+      v27 = cloudPhotoLibraryManager;
+      v28 = photoLibrary;
+      v29 = shareCopy;
+      v30 = handlerCopy;
+      [v27 updateLibraryScopeWithCPLScopeChange:cplScopeChange completionHandler:v26];
 
       v15 = v27;
     }
@@ -341,23 +341,23 @@ LABEL_10:
     {
       if (v12)
       {
-        v19 = [v5 compactDescription];
+        compactDescription2 = [shareCopy compactDescription];
         *buf = 138412290;
-        v32 = v19;
+        v32 = compactDescription2;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "Publishing Collection Share %@", buf, 0xCu);
       }
 
-      [v5 setLocalPublishState:1];
-      v20 = [v5 cplScopeChange];
+      [shareCopy setLocalPublishState:1];
+      cplScopeChange2 = [shareCopy cplScopeChange];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __72__PLCollectionShareCPLBackend_publishCollectionShare_completionHandler___block_invoke_41;
       v21[3] = &unk_1E7572C00;
-      v22 = v9;
-      v23 = v7;
-      v24 = v5;
-      v25 = v6;
-      [v22 publishCPLScopeChange:v20 completionHandler:v21];
+      v22 = cloudPhotoLibraryManager;
+      v23 = photoLibrary;
+      v24 = shareCopy;
+      v25 = handlerCopy;
+      [v22 publishCPLScopeChange:cplScopeChange2 completionHandler:v21];
 
       v15 = v22;
     }
@@ -371,7 +371,7 @@ LABEL_10:
     v34[0] = @"PLCloudPhotoLibraryManager is not available";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     v18 = [v16 errorWithDomain:v17 code:41004 userInfo:v15];
-    (*(v6 + 2))(v6, 0, 0, v18);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v18);
   }
 }
 
@@ -562,20 +562,20 @@ void __72__PLCollectionShareCPLBackend_publishCollectionShare_completionHandler_
   }
 }
 
-- (id)cplScopeChangeForCollectionShare:(id)a3
+- (id)cplScopeChangeForCollectionShare:(id)share
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  shareCopy = share;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v3 scopeIdentifier];
-    if (v4)
+    scopeIdentifier = [shareCopy scopeIdentifier];
+    if (scopeIdentifier)
     {
-      v5 = [MEMORY[0x1E6994A90] newScopeChangeWithScopeIdentifier:v4 type:{objc_msgSend(v3, "scopeType")}];
-      v6 = [v3 cplShare];
-      [v5 setShare:v6];
-      v7 = [v3 title];
-      [v5 setTitle:v7];
+      v5 = [MEMORY[0x1E6994A90] newScopeChangeWithScopeIdentifier:scopeIdentifier type:{objc_msgSend(shareCopy, "scopeType")}];
+      cplShare = [shareCopy cplShare];
+      [v5 setShare:cplShare];
+      title = [shareCopy title];
+      [v5 setTitle:title];
     }
 
     else
@@ -589,9 +589,9 @@ void __72__PLCollectionShareCPLBackend_publishCollectionShare_completionHandler_
     v8 = PLBackendSharingGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v3 scopeIdentifier];
+      scopeIdentifier2 = [shareCopy scopeIdentifier];
       v11 = 138412290;
-      v12 = v9;
+      v12 = scopeIdentifier2;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Not pushing CollectionShare scope %@ as FF is disabled", &v11, 0xCu);
     }
 
@@ -601,24 +601,24 @@ void __72__PLCollectionShareCPLBackend_publishCollectionShare_completionHandler_
   return v5;
 }
 
-- (BOOL)supportsCloudUploadForCollectionShare:(id)a3
+- (BOOL)supportsCloudUploadForCollectionShare:(id)share
 {
-  v3 = a3;
-  v4 = [v3 status] == 1 && objc_msgSend(v3, "localPublishState") == 2 || objc_msgSend(v3, "status") == 3 && objc_msgSend(v3, "localPublishState") == 2;
+  shareCopy = share;
+  v4 = [shareCopy status] == 1 && objc_msgSend(shareCopy, "localPublishState") == 2 || objc_msgSend(shareCopy, "status") == 3 && objc_msgSend(shareCopy, "localPublishState") == 2;
 
   return v4;
 }
 
-- (BOOL)isSyncableChangeForCollectionShare:(id)a3
+- (BOOL)isSyncableChangeForCollectionShare:(id)share
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [a3 changedValues];
+  changedValues = [share changedValues];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(PLCollectionShareCPLBackend *)self _listOfSyncedProperties];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _listOfSyncedProperties = [(PLCollectionShareCPLBackend *)self _listOfSyncedProperties];
+  v6 = [_listOfSyncedProperties countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -628,10 +628,10 @@ void __72__PLCollectionShareCPLBackend_publishCollectionShare_completionHandler_
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_listOfSyncedProperties);
         }
 
-        v9 = [v4 objectForKey:*(*(&v11 + 1) + 8 * i)];
+        v9 = [changedValues objectForKey:*(*(&v11 + 1) + 8 * i)];
 
         if (v9)
         {
@@ -640,7 +640,7 @@ void __72__PLCollectionShareCPLBackend_publishCollectionShare_completionHandler_
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [_listOfSyncedProperties countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -655,9 +655,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)createOwnedShareWithUUID:(id)a3 creationDate:(id)a4 title:(id)a5 inPhotoLibrary:(id)a6
+- (id)createOwnedShareWithUUID:(id)d creationDate:(id)date title:(id)title inPhotoLibrary:(id)library
 {
-  v6 = [(PLShare *)PLCollectionShare createOwnedShareWithUUID:a3 creationDate:a4 title:a5 inPhotoLibrary:a6];
+  v6 = [(PLShare *)PLCollectionShare createOwnedShareWithUUID:d creationDate:date title:title inPhotoLibrary:library];
   [v6 setPublicPermission:1];
   [v6 setScopeType:7];
   [v6 setCustomSortAscending:0];

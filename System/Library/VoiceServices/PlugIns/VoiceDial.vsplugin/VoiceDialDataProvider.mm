@@ -1,22 +1,22 @@
 @interface VoiceDialDataProvider
-- (BOOL)_sequenceNumberIsValid:(int)a3;
+- (BOOL)_sequenceNumberIsValid:(int)valid;
 - (BOOL)_shouldUseCompositeNamesOnly;
-- (BOOL)getValue:(id *)a3 weight:(int64_t *)a4 atIndex:(int64_t)a5 forClassWithIdentifier:(id)a6 inModelWithIdentifier:(id)a7;
-- (BOOL)isCacheValidityIdentifierValid:(id)a3;
+- (BOOL)getValue:(id *)value weight:(int64_t *)weight atIndex:(int64_t)index forClassWithIdentifier:(id)identifier inModelWithIdentifier:(id)withIdentifier;
+- (BOOL)isCacheValidityIdentifierValid:(id)valid;
 - (VoiceDialDataProvider)init;
 - (id)_facetimeLabels;
 - (id)_namesSource;
 - (id)_phoneLabels;
 - (id)cacheValidityIdentifier;
-- (id)phoneticValueAtIndex:(int64_t)a3 forClassWithIdentifier:(id)a4 inModelWithIdentifier:(id)a5;
+- (id)phoneticValueAtIndex:(int64_t)index forClassWithIdentifier:(id)identifier inModelWithIdentifier:(id)withIdentifier;
 - (int64_t)_totalPeople;
-- (int64_t)valueCountForClassWithIdentifier:(id)a3 inModelWithIdentifier:(id)a4;
+- (int64_t)valueCountForClassWithIdentifier:(id)identifier inModelWithIdentifier:(id)withIdentifier;
 - (void)_addressBook;
 - (void)_handleAddressBookChanged;
-- (void)_voiceDialRecordAtIndex:(int64_t)a3;
+- (void)_voiceDialRecordAtIndex:(int64_t)index;
 - (void)beginReportingChanges;
 - (void)dealloc;
-- (void)getLabels:(id *)a3 andWeightedLabels:(id *)a4 ForABProperty:(int)a5;
+- (void)getLabels:(id *)labels andWeightedLabels:(id *)weightedLabels ForABProperty:(int)property;
 - (void)stopReportingChanges;
 @end
 
@@ -43,8 +43,8 @@
       v2[104] |= 4u;
     }
 
-    v7 = [MEMORY[0x29EDC1128] sharedInstance];
-    [v7 addListenerID:@"com.apple.voicedial" forService:0];
+    mEMORY[0x29EDC1128] = [MEMORY[0x29EDC1128] sharedInstance];
+    [mEMORY[0x29EDC1128] addListenerID:@"com.apple.voicedial" forService:0];
   }
 
   return v2;
@@ -52,8 +52,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDC1128] sharedInstance];
-  [v3 removeListenerID:@"com.apple.voicedial" forService:0];
+  mEMORY[0x29EDC1128] = [MEMORY[0x29EDC1128] sharedInstance];
+  [mEMORY[0x29EDC1128] removeListenerID:@"com.apple.voicedial" forService:0];
 
   addressBook = self->_addressBook;
   if (addressBook)
@@ -126,7 +126,7 @@
   return namesSource;
 }
 
-- (void)getLabels:(id *)a3 andWeightedLabels:(id *)a4 ForABProperty:(int)a5
+- (void)getLabels:(id *)labels andWeightedLabels:(id *)weightedLabels ForABProperty:(int)property
 {
   v69 = *MEMORY[0x29EDCA608];
   v61 = 0;
@@ -147,7 +147,7 @@
   v53[3] = __Block_byref_object_copy_;
   v53[4] = __Block_byref_object_dispose_;
   v54 = 0;
-  if (!a3)
+  if (!labels)
   {
     v22 = 0;
     v23 = 0;
@@ -159,8 +159,8 @@
   }
 
   v6 = objc_alloc_init(MEMORY[0x29EDB8E20]);
-  v7 = [(VoiceDialDataProvider *)self _addressBook];
-  v8 = [(VoiceDialDataProvider *)self serialQueue];
+  _addressBook = [(VoiceDialDataProvider *)self _addressBook];
+  serialQueue = [(VoiceDialDataProvider *)self serialQueue];
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __67__VoiceDialDataProvider_getLabels_andWeightedLabels_ForABProperty___block_invoke;
@@ -168,8 +168,8 @@
   block[4] = v53;
   block[5] = &v55;
   block[6] = &v61;
-  block[7] = v7;
-  dispatch_sync(v8, block);
+  block[7] = _addressBook;
+  dispatch_sync(serialQueue, block);
 
   v50 = 0u;
   v51 = 0u;
@@ -417,11 +417,11 @@ LABEL_52:
     v23 = 0;
   }
 
-  *a3 = [v6 allObjects];
-  if (a4)
+  *labels = [v6 allObjects];
+  if (weightedLabels)
   {
     v40 = v11;
-    *a4 = v11;
+    *weightedLabels = v11;
   }
 
 LABEL_72:
@@ -530,9 +530,9 @@ void __67__VoiceDialDataProvider_getLabels_andWeightedLabels_ForABProperty___blo
     [v3 addObjectsFromArray:v6];
     v4 = [objc_alloc(MEMORY[0x29EDB8E20]) initWithSet:v7];
     [v4 unionSet:v8];
-    v10 = [v3 allObjects];
+    allObjects = [v3 allObjects];
     v11 = self->_facetimeLabels;
-    self->_facetimeLabels = v10;
+    self->_facetimeLabels = allObjects;
 
     objc_storeStrong(&self->_weightedFacetimeLabels, v4);
     facetimeLabels = self->_facetimeLabels;
@@ -548,15 +548,15 @@ void __67__VoiceDialDataProvider_getLabels_andWeightedLabels_ForABProperty___blo
   result = self->_totalPeople;
   if (result == -1)
   {
-    v4 = [(VoiceDialDataProvider *)self _addressBook];
-    v5 = [(VoiceDialDataProvider *)self serialQueue];
+    _addressBook = [(VoiceDialDataProvider *)self _addressBook];
+    serialQueue = [(VoiceDialDataProvider *)self serialQueue];
     v6[0] = MEMORY[0x29EDCA5F8];
     v6[1] = 3221225472;
     v6[2] = __37__VoiceDialDataProvider__totalPeople__block_invoke;
     v6[3] = &unk_29EDEC178;
     v6[4] = self;
-    v6[5] = v4;
-    dispatch_sync(v5, v6);
+    v6[5] = _addressBook;
+    dispatch_sync(serialQueue, v6);
 
     return self->_totalPeople;
   }
@@ -576,28 +576,28 @@ const void *__37__VoiceDialDataProvider__totalPeople__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_voiceDialRecordAtIndex:(int64_t)a3
+- (void)_voiceDialRecordAtIndex:(int64_t)index
 {
-  v5 = [(VoiceDialDataProvider *)self _totalPeople];
-  v6 = v5 - a3;
-  if (v5 <= a3)
+  _totalPeople = [(VoiceDialDataProvider *)self _totalPeople];
+  v6 = _totalPeople - index;
+  if (_totalPeople <= index)
   {
     return 0;
   }
 
-  v7 = [(VoiceDialDataProvider *)self _addressBook];
+  _addressBook = [(VoiceDialDataProvider *)self _addressBook];
   result = self->_people;
   if (result)
   {
     location = self->_peopleRange.location;
-    if (location == -1 || location <= a3 && self->_peopleRange.length + location > a3)
+    if (location == -1 || location <= index && self->_peopleRange.length + location > index)
     {
-      return CFArrayGetValueAtIndex(result, a3 - self->_peopleRange.location);
+      return CFArrayGetValueAtIndex(result, index - self->_peopleRange.location);
     }
 
     CFRelease(result);
     self->_people = 0;
-    if (!v7)
+    if (!_addressBook)
     {
       v17 = 50;
       if (v6 < 50)
@@ -607,22 +607,22 @@ const void *__37__VoiceDialDataProvider__totalPeople__block_invoke(uint64_t a1)
 
       self->_peopleRange.length = v17;
       p_length = &self->_peopleRange.length;
-      self->_peopleRange.location = a3;
+      self->_peopleRange.location = index;
       goto LABEL_22;
     }
 
-    v10 = [(VoiceDialDataProvider *)self serialQueue];
+    serialQueue = [(VoiceDialDataProvider *)self serialQueue];
     block[0] = MEMORY[0x29EDCA5F8];
     block[1] = 3221225472;
     block[2] = __49__VoiceDialDataProvider__voiceDialRecordAtIndex___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = v7;
-    dispatch_sync(v10, block);
+    block[4] = _addressBook;
+    dispatch_sync(serialQueue, block);
 
     result = self->_people;
     if (result)
     {
-      return CFArrayGetValueAtIndex(result, a3 - self->_peopleRange.location);
+      return CFArrayGetValueAtIndex(result, index - self->_peopleRange.location);
     }
 
     v11 = 50;
@@ -633,7 +633,7 @@ const void *__37__VoiceDialDataProvider__totalPeople__block_invoke(uint64_t a1)
 
     self->_peopleRange.length = v11;
     p_length = &self->_peopleRange.length;
-    self->_peopleRange.location = a3;
+    self->_peopleRange.location = index;
   }
 
   else
@@ -646,21 +646,21 @@ const void *__37__VoiceDialDataProvider__totalPeople__block_invoke(uint64_t a1)
 
     self->_peopleRange.length = v13;
     p_length = &self->_peopleRange.length;
-    self->_peopleRange.location = a3;
-    if (!v7)
+    self->_peopleRange.location = index;
+    if (!_addressBook)
     {
       goto LABEL_22;
     }
   }
 
-  v14 = [(VoiceDialDataProvider *)self serialQueue];
+  serialQueue2 = [(VoiceDialDataProvider *)self serialQueue];
   v18[0] = MEMORY[0x29EDCA5F8];
   v18[1] = 3221225472;
   v18[2] = __49__VoiceDialDataProvider__voiceDialRecordAtIndex___block_invoke_2;
   v18[3] = &unk_29EDEC178;
   v18[4] = self;
-  v18[5] = v7;
-  dispatch_sync(v14, v18);
+  v18[5] = _addressBook;
+  dispatch_sync(serialQueue2, v18);
 
   people = self->_people;
   if (!people)
@@ -688,7 +688,7 @@ LABEL_23:
 
   if (result)
   {
-    return CFArrayGetValueAtIndex(result, a3 - self->_peopleRange.location);
+    return CFArrayGetValueAtIndex(result, index - self->_peopleRange.location);
   }
 
   return result;
@@ -705,9 +705,9 @@ uint64_t __49__VoiceDialDataProvider__voiceDialRecordAtIndex___block_invoke_2(ui
   return result;
 }
 
-- (int64_t)valueCountForClassWithIdentifier:(id)a3 inModelWithIdentifier:(id)a4
+- (int64_t)valueCountForClassWithIdentifier:(id)identifier inModelWithIdentifier:(id)withIdentifier
 {
-  if ([a3 isEqualToString:{@"label", a4}])
+  if ([identifier isEqualToString:{@"label", withIdentifier}])
   {
     if ((*&self->_voiceDialProviderFlags & 4) != 0)
     {
@@ -718,31 +718,31 @@ uint64_t __49__VoiceDialDataProvider__voiceDialRecordAtIndex___block_invoke_2(ui
     {
       [(VoiceDialDataProvider *)self _phoneLabels];
     }
-    v6 = ;
-    v7 = [v6 count];
+    _namesSource = ;
+    v7 = [_namesSource count];
   }
 
   else
   {
-    v5 = [(VoiceDialDataProvider *)self _totalPeople];
-    v6 = [(VoiceDialDataProvider *)self _namesSource];
-    v7 = [v6 personNameCount] * v5;
+    _totalPeople = [(VoiceDialDataProvider *)self _totalPeople];
+    _namesSource = [(VoiceDialDataProvider *)self _namesSource];
+    v7 = [_namesSource personNameCount] * _totalPeople;
   }
 
   return v7;
 }
 
-- (BOOL)getValue:(id *)a3 weight:(int64_t *)a4 atIndex:(int64_t)a5 forClassWithIdentifier:(id)a6 inModelWithIdentifier:(id)a7
+- (BOOL)getValue:(id *)value weight:(int64_t *)weight atIndex:(int64_t)index forClassWithIdentifier:(id)identifier inModelWithIdentifier:(id)withIdentifier
 {
-  if (![a6 isEqualToString:@"label"])
+  if (![identifier isEqualToString:@"label"])
   {
-    v11 = [(VoiceDialDataProvider *)self _namesSource];
-    v12 = [v11 personNameCount];
-    v13 = [(VoiceDialDataProvider *)self _voiceDialRecordAtIndex:a5 / v12];
+    _namesSource = [(VoiceDialDataProvider *)self _namesSource];
+    personNameCount = [_namesSource personNameCount];
+    v13 = [(VoiceDialDataProvider *)self _voiceDialRecordAtIndex:index / personNameCount];
     if (v13)
     {
       v21 = 0;
-      [v11 getName:&v21 phoneticName:0 atIndex:a5 % v12 forPerson:v13];
+      [_namesSource getName:&v21 phoneticName:0 atIndex:index % personNameCount forPerson:v13];
       v14 = v21;
     }
 
@@ -754,7 +754,7 @@ uint64_t __49__VoiceDialDataProvider__voiceDialRecordAtIndex___block_invoke_2(ui
     v15 = 0;
     v17 = 0;
     v18 = 0;
-    if (!a3)
+    if (!value)
     {
       goto LABEL_21;
     }
@@ -779,10 +779,10 @@ uint64_t __49__VoiceDialDataProvider__voiceDialRecordAtIndex___block_invoke_2(ui
   }
 
   v17 = *(&self->super.isa + v16);
-  if (v15 && [v15 count] > a5)
+  if (v15 && [v15 count] > index)
   {
-    v14 = [v15 objectAtIndex:a5];
-    v11 = 0;
+    v14 = [v15 objectAtIndex:index];
+    _namesSource = 0;
     if ([v17 containsObject:v14])
     {
       v18 = -15;
@@ -793,7 +793,7 @@ uint64_t __49__VoiceDialDataProvider__voiceDialRecordAtIndex___block_invoke_2(ui
       v18 = 0;
     }
 
-    if (!a3)
+    if (!value)
     {
       goto LABEL_21;
     }
@@ -803,34 +803,34 @@ uint64_t __49__VoiceDialDataProvider__voiceDialRecordAtIndex___block_invoke_2(ui
 
   v14 = 0;
   v18 = 0;
-  v11 = 0;
-  if (a3)
+  _namesSource = 0;
+  if (value)
   {
 LABEL_20:
     v19 = v14;
-    *a3 = v14;
+    *value = v14;
   }
 
 LABEL_21:
-  if (a4)
+  if (weight)
   {
-    *a4 = v18;
+    *weight = v18;
   }
 
   return v14 != 0;
 }
 
-- (id)phoneticValueAtIndex:(int64_t)a3 forClassWithIdentifier:(id)a4 inModelWithIdentifier:(id)a5
+- (id)phoneticValueAtIndex:(int64_t)index forClassWithIdentifier:(id)identifier inModelWithIdentifier:(id)withIdentifier
 {
-  if ([a4 isEqualToString:@"name"])
+  if ([identifier isEqualToString:@"name"])
   {
-    v7 = [(VoiceDialDataProvider *)self _namesSource];
-    v8 = [v7 personNameCount];
-    v9 = [(VoiceDialDataProvider *)self _voiceDialRecordAtIndex:a3 / v8];
+    _namesSource = [(VoiceDialDataProvider *)self _namesSource];
+    personNameCount = [_namesSource personNameCount];
+    v9 = [(VoiceDialDataProvider *)self _voiceDialRecordAtIndex:index / personNameCount];
     if (v9)
     {
       v12 = 0;
-      [v7 getName:0 phoneticName:&v12 atIndex:a3 % v8 forPerson:v9];
+      [_namesSource getName:0 phoneticName:&v12 atIndex:index % personNameCount forPerson:v9];
       v10 = v12;
     }
 
@@ -843,7 +843,7 @@ LABEL_21:
   else
   {
     v10 = 0;
-    v7 = 0;
+    _namesSource = 0;
   }
 
   return v10;
@@ -880,16 +880,16 @@ LABEL_21:
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = 0;
-  v3 = [(VoiceDialDataProvider *)self _addressBook];
-  v4 = [(VoiceDialDataProvider *)self serialQueue];
+  _addressBook = [(VoiceDialDataProvider *)self _addressBook];
+  serialQueue = [(VoiceDialDataProvider *)self serialQueue];
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __48__VoiceDialDataProvider_cacheValidityIdentifier__block_invoke;
   block[3] = &unk_29EDEC1C0;
   block[4] = self;
   block[5] = &v8;
-  block[6] = v3;
-  dispatch_sync(v4, block);
+  block[6] = _addressBook;
+  dispatch_sync(serialQueue, block);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -921,7 +921,7 @@ void __48__VoiceDialDataProvider_cacheValidityIdentifier__block_invoke(uint64_t 
   }
 }
 
-- (BOOL)_sequenceNumberIsValid:(int)a3
+- (BOOL)_sequenceNumberIsValid:(int)valid
 {
   if (![(VoiceDialDataProvider *)self _addressBook])
   {
@@ -954,10 +954,10 @@ void __48__VoiceDialDataProvider_cacheValidityIdentifier__block_invoke(uint64_t 
   return v5;
 }
 
-- (BOOL)isCacheValidityIdentifierValid:(id)a3
+- (BOOL)isCacheValidityIdentifierValid:(id)valid
 {
-  v4 = a3;
-  v5 = v4;
+  validCopy = valid;
+  v5 = validCopy;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -982,27 +982,27 @@ void __48__VoiceDialDataProvider_cacheValidityIdentifier__block_invoke(uint64_t 
   v21[3] = __Block_byref_object_copy_;
   v21[4] = __Block_byref_object_dispose_;
   v22 = 0;
-  if (v4)
+  if (validCopy)
   {
-    v6 = [v4 objectForKey:@"dbid"];
+    v6 = [validCopy objectForKey:@"dbid"];
     if (v6)
     {
-      v7 = [(VoiceDialDataProvider *)self _addressBook];
-      v8 = [(VoiceDialDataProvider *)self serialQueue];
+      _addressBook = [(VoiceDialDataProvider *)self _addressBook];
+      serialQueue = [(VoiceDialDataProvider *)self serialQueue];
       block[0] = MEMORY[0x29EDCA5F8];
       block[1] = 3221225472;
       block[2] = __56__VoiceDialDataProvider_isCacheValidityIdentifierValid___block_invoke;
       block[3] = &unk_29EDEC1E8;
-      v19 = v7;
+      v19 = _addressBook;
       v20 = v6;
       v14 = v25;
       v15 = v23;
       v12 = v5;
-      v13 = self;
+      selfCopy = self;
       v16 = v26;
       v17 = v21;
       v18 = &v28;
-      dispatch_sync(v8, block);
+      dispatch_sync(serialQueue, block);
     }
   }
 
@@ -1072,15 +1072,15 @@ void __56__VoiceDialDataProvider_isCacheValidityIdentifierValid___block_invoke(u
 
 - (void)beginReportingChanges
 {
-  v3 = [(VoiceDialDataProvider *)self _addressBook];
-  v4 = [(VoiceDialDataProvider *)self serialQueue];
+  _addressBook = [(VoiceDialDataProvider *)self _addressBook];
+  serialQueue = [(VoiceDialDataProvider *)self serialQueue];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __46__VoiceDialDataProvider_beginReportingChanges__block_invoke;
   v5[3] = &unk_29EDEC178;
   v5[4] = self;
-  v5[5] = v3;
-  dispatch_async(v4, v5);
+  v5[5] = _addressBook;
+  dispatch_async(serialQueue, v5);
 }
 
 void __46__VoiceDialDataProvider_beginReportingChanges__block_invoke(uint64_t a1)
@@ -1104,16 +1104,16 @@ void __46__VoiceDialDataProvider_beginReportingChanges__block_invoke(uint64_t a1
 - (void)stopReportingChanges
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  v4 = [(VoiceDialDataProvider *)self _addressBook];
-  v5 = [(VoiceDialDataProvider *)self serialQueue];
+  _addressBook = [(VoiceDialDataProvider *)self _addressBook];
+  serialQueue = [(VoiceDialDataProvider *)self serialQueue];
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __45__VoiceDialDataProvider_stopReportingChanges__block_invoke;
   block[3] = &unk_29EDEC210;
   block[4] = self;
-  block[5] = v4;
+  block[5] = _addressBook;
   block[6] = DarwinNotifyCenter;
-  dispatch_async(v5, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __45__VoiceDialDataProvider_stopReportingChanges__block_invoke(uint64_t a1)
@@ -1142,15 +1142,15 @@ void __45__VoiceDialDataProvider_stopReportingChanges__block_invoke(uint64_t a1)
 
 - (void)_handleAddressBookChanged
 {
-  v3 = [(VoiceDialDataProvider *)self _addressBook];
-  v4 = [(VoiceDialDataProvider *)self serialQueue];
+  _addressBook = [(VoiceDialDataProvider *)self _addressBook];
+  serialQueue = [(VoiceDialDataProvider *)self serialQueue];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __50__VoiceDialDataProvider__handleAddressBookChanged__block_invoke;
   v5[3] = &unk_29EDEC178;
   v5[4] = self;
-  v5[5] = v3;
-  dispatch_async(v4, v5);
+  v5[5] = _addressBook;
+  dispatch_async(serialQueue, v5);
 }
 
 void __50__VoiceDialDataProvider__handleAddressBookChanged__block_invoke(uint64_t a1)

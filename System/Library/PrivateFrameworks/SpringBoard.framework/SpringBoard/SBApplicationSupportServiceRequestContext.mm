@@ -1,15 +1,15 @@
 @interface SBApplicationSupportServiceRequestContext
-+ (BOOL)shouldOverrideClientInitialization:(id)a3;
-+ (id)_hostProcessForProcess:(id)a3;
-+ (id)hostingApplicationBundleIDForPid:(int)a3;
-+ (void)initializationContextForClient:(id)a3 completion:(id)a4;
-- (SBApplicationSupportServiceRequestContext)initWithApplication:(id)a3 launchDisplayConfiguration:(id)a4 persistenceIdentifierProvider:(id)a5 sceneIdentityProvider:(id)a6 sceneIdentityTokenProvider:(id)a7;
-- (SBApplicationSupportServiceRequestContext)initWithClient:(id)a3 host:(id)a4;
++ (BOOL)shouldOverrideClientInitialization:(id)initialization;
++ (id)_hostProcessForProcess:(id)process;
++ (id)hostingApplicationBundleIDForPid:(int)pid;
++ (void)initializationContextForClient:(id)client completion:(id)completion;
+- (SBApplicationSupportServiceRequestContext)initWithApplication:(id)application launchDisplayConfiguration:(id)configuration persistenceIdentifierProvider:(id)provider sceneIdentityProvider:(id)identityProvider sceneIdentityTokenProvider:(id)tokenProvider;
+- (SBApplicationSupportServiceRequestContext)initWithClient:(id)client host:(id)host;
 - (id)_main_appPersistenceIDProvider;
 - (id)_main_appSceneIdentityProvider;
 - (id)_main_applicationInitializationContext;
 - (id)_main_deviceContext;
-- (id)_main_displayContextForDisplayConfiguration:(id)a3;
+- (id)_main_displayContextForDisplayConfiguration:(id)configuration;
 - (id)_main_effectiveApplicationForCompatibility;
 - (id)_main_embeddedDisplayContext;
 - (id)_main_launchDisplayContext;
@@ -17,8 +17,8 @@
 - (id)_main_sceneIdentityTokenProvider;
 - (int64_t)_main_effectiveClassicMode;
 - (unint64_t)_main_effectiveScreenType;
-- (void)_main_applyClassicModeLiesIfNecessaryToDisplayContext:(id)a3;
-- (void)applicationInitializationContextWithCompletion:(id)a3;
+- (void)_main_applyClassicModeLiesIfNecessaryToDisplayContext:(id)context;
+- (void)applicationInitializationContextWithCompletion:(id)completion;
 @end
 
 @implementation SBApplicationSupportServiceRequestContext
@@ -28,9 +28,9 @@
   BSDispatchQueueAssertMain();
   if (self->_app)
   {
-    v3 = [(SBApplicationSupportServiceRequestContext *)self _main_appPersistenceIDProvider];
-    v4 = [(SBApplication *)self->_app bundleIdentifier];
-    v5 = [v3 _persistenceIdentifiersForBundleIdentifier:v4 onlyIncludeLaunchableIdentifiers:0];
+    _main_appPersistenceIDProvider = [(SBApplicationSupportServiceRequestContext *)self _main_appPersistenceIDProvider];
+    bundleIdentifier = [(SBApplication *)self->_app bundleIdentifier];
+    v5 = [_main_appPersistenceIDProvider _persistenceIdentifiersForBundleIdentifier:bundleIdentifier onlyIncludeLaunchableIdentifiers:0];
     v6 = [v5 set];
   }
 
@@ -45,31 +45,31 @@
 - (id)_main_embeddedDisplayContext
 {
   BSDispatchQueueAssertMain();
-  v3 = [MEMORY[0x277D777A0] sb_embeddedDisplayDefaultContext];
-  [(SBApplicationSupportServiceRequestContext *)self _main_applyClassicModeLiesIfNecessaryToDisplayContext:v3];
+  sb_embeddedDisplayDefaultContext = [MEMORY[0x277D777A0] sb_embeddedDisplayDefaultContext];
+  [(SBApplicationSupportServiceRequestContext *)self _main_applyClassicModeLiesIfNecessaryToDisplayContext:sb_embeddedDisplayDefaultContext];
 
-  return v3;
+  return sb_embeddedDisplayDefaultContext;
 }
 
 - (id)_main_deviceContext
 {
   BSDispatchQueueAssertMain();
-  v3 = [(SBApplicationSupportServiceRequestContext *)self _main_effectiveClassicMode];
-  if (_SBApplicationClassicModeIsClassic(v3))
+  _main_effectiveClassicMode = [(SBApplicationSupportServiceRequestContext *)self _main_effectiveClassicMode];
+  if (_SBApplicationClassicModeIsClassic(_main_effectiveClassicMode))
   {
-    v4 = [MEMORY[0x277D77798] defaultContext];
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    defaultContext = [MEMORY[0x277D77798] defaultContext];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1 && SBApplicationClassicModeRepresentsPhone(v3))
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && SBApplicationClassicModeRepresentsPhone(_main_effectiveClassicMode))
     {
-      [v4 setDeviceInfoValue:&unk_283371948 forKey:*MEMORY[0x277D77808]];
+      [defaultContext setDeviceInfoValue:&unk_283371948 forKey:*MEMORY[0x277D77808]];
     }
 
-    if (SBFEffectiveHomeButtonType() == 2 && !SBApplicationClassicModeExpectsRoundedCorners(v3))
+    if (SBFEffectiveHomeButtonType() == 2 && !SBApplicationClassicModeExpectsRoundedCorners(_main_effectiveClassicMode))
     {
-      [v4 setDeviceInfoValue:&unk_283371960 forKey:*MEMORY[0x277D77818]];
-      [v4 setDeviceInfoValue:&unk_283371948 forKey:*MEMORY[0x277D77810]];
+      [defaultContext setDeviceInfoValue:&unk_283371960 forKey:*MEMORY[0x277D77818]];
+      [defaultContext setDeviceInfoValue:&unk_283371948 forKey:*MEMORY[0x277D77810]];
     }
 
     else
@@ -78,16 +78,16 @@
       [(SBApplicationSupportServiceRequestContext *)self _main_effectiveScreenType];
       SBHDisplayCornerRadiusForScreenType();
       v8 = [v7 numberWithDouble:?];
-      [v4 setDeviceInfoValue:v8 forKey:*MEMORY[0x277D77810]];
+      [defaultContext setDeviceInfoValue:v8 forKey:*MEMORY[0x277D77810]];
     }
   }
 
   else
   {
-    v4 = [MEMORY[0x277D77770] sb_defaultContext];
+    defaultContext = [MEMORY[0x277D77770] sb_defaultContext];
   }
 
-  return v4;
+  return defaultContext;
 }
 
 - (int64_t)_main_effectiveClassicMode
@@ -101,15 +101,15 @@ LABEL_4:
     extensionContainingApp = self->_extensionContainingApp;
     if (extensionContainingApp)
     {
-      v6 = [(SBApplication *)v4 _classicModeForHostingExtensionContainedInApplication:?];
+      _classicMode = [(SBApplication *)v4 _classicModeForHostingExtensionContainedInApplication:?];
     }
 
     else
     {
-      v6 = [(SBApplication *)v4 _classicMode];
+      _classicMode = [(SBApplication *)v4 _classicMode];
     }
 
-    v7 = v6;
+    v7 = _classicMode;
 
     return v7;
   }
@@ -145,28 +145,28 @@ LABEL_4:
 - (id)_main_applicationInitializationContext
 {
   BSDispatchQueueAssertMain();
-  v3 = [(SBApplicationSupportServiceRequestContext *)self _main_embeddedDisplayContext];
-  v4 = [(SBApplicationSupportServiceRequestContext *)self _main_launchDisplayContext];
-  v5 = [(SBApplicationSupportServiceRequestContext *)self _main_deviceContext];
-  v6 = [(SBApplicationSupportServiceRequestContext *)self _main_persistenceIDs];
+  _main_embeddedDisplayContext = [(SBApplicationSupportServiceRequestContext *)self _main_embeddedDisplayContext];
+  _main_launchDisplayContext = [(SBApplicationSupportServiceRequestContext *)self _main_launchDisplayContext];
+  _main_deviceContext = [(SBApplicationSupportServiceRequestContext *)self _main_deviceContext];
+  _main_persistenceIDs = [(SBApplicationSupportServiceRequestContext *)self _main_persistenceIDs];
   v7 = objc_alloc(MEMORY[0x277D77790]);
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v10 = [v7 initWithMainDisplayContext:v3 launchDisplayContext:v4 deviceContext:v5 persistedSceneIdentifiers:v6 supportAppSceneRequests:(v9 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  v10 = [v7 initWithMainDisplayContext:_main_embeddedDisplayContext launchDisplayContext:_main_launchDisplayContext deviceContext:_main_deviceContext persistedSceneIdentifiers:_main_persistenceIDs supportAppSceneRequests:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
   app = self->_app;
   if (app)
   {
-    v12 = [(SBApplication *)app info];
-    v13 = [v12 supportsMultiwindow];
+    info = [(SBApplication *)app info];
+    supportsMultiwindow = [info supportsMultiwindow];
 
-    if ((v13 & 1) == 0)
+    if ((supportsMultiwindow & 1) == 0)
     {
-      v14 = [(SBApplicationSupportServiceRequestContext *)self _main_appSceneIdentityProvider];
-      v15 = [v14 newSceneIdentityForApplication:self->_app];
+      _main_appSceneIdentityProvider = [(SBApplicationSupportServiceRequestContext *)self _main_appSceneIdentityProvider];
+      v15 = [_main_appSceneIdentityProvider newSceneIdentityForApplication:self->_app];
 
-      v16 = [(SBApplicationSupportServiceRequestContext *)self _main_sceneIdentityTokenProvider];
-      v17 = [v16 newSceneIdentityTokenForIdentity:v15];
+      _main_sceneIdentityTokenProvider = [(SBApplicationSupportServiceRequestContext *)self _main_sceneIdentityTokenProvider];
+      v17 = [_main_sceneIdentityTokenProvider newSceneIdentityTokenForIdentity:v15];
 
       [v10 setDefaultSceneToken:v17];
     }
@@ -178,9 +178,9 @@ LABEL_4:
 - (id)_main_launchDisplayContext
 {
   BSDispatchQueueAssertMain();
-  v3 = [(SBApplicationSupportServiceRequestContext *)self _main_effectiveApplicationForCompatibility];
+  _main_effectiveApplicationForCompatibility = [(SBApplicationSupportServiceRequestContext *)self _main_effectiveApplicationForCompatibility];
   launchDisplayConfiguration = self->_launchDisplayConfiguration;
-  if (launchDisplayConfiguration && (-[FBSDisplayConfiguration isMainRootDisplay](launchDisplayConfiguration, "isMainRootDisplay") & 1) == 0 && [v3 supportsChamoisOnExternalDisplay] && !_SBApplicationClassicModeIsClassic(-[SBApplicationSupportServiceRequestContext _main_effectiveClassicMode](self, "_main_effectiveClassicMode")))
+  if (launchDisplayConfiguration && (-[FBSDisplayConfiguration isMainRootDisplay](launchDisplayConfiguration, "isMainRootDisplay") & 1) == 0 && [_main_effectiveApplicationForCompatibility supportsChamoisOnExternalDisplay] && !_SBApplicationClassicModeIsClassic(-[SBApplicationSupportServiceRequestContext _main_effectiveClassicMode](self, "_main_effectiveClassicMode")))
   {
     v5 = [(SBApplicationSupportServiceRequestContext *)self _main_displayContextForDisplayConfiguration:self->_launchDisplayConfiguration];
   }
@@ -208,13 +208,13 @@ LABEL_4:
 - (id)_main_sceneIdentityTokenProvider
 {
   BSDispatchQueueAssertMain();
-  v3 = self->_preferredSceneIdentityTokenProvider;
-  if (!v3)
+  mEMORY[0x277D0AAD8] = self->_preferredSceneIdentityTokenProvider;
+  if (!mEMORY[0x277D0AAD8])
   {
-    v3 = [MEMORY[0x277D0AAD8] sharedInstance];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
   }
 
-  return v3;
+  return mEMORY[0x277D0AAD8];
 }
 
 - (id)_main_effectiveApplicationForCompatibility
@@ -233,48 +233,48 @@ LABEL_4:
   return extensionContainingApp;
 }
 
-+ (id)hostingApplicationBundleIDForPid:(int)a3
++ (id)hostingApplicationBundleIDForPid:(int)pid
 {
-  v3 = *&a3;
-  v5 = [MEMORY[0x277D0AAC0] sharedInstance];
-  v6 = [v5 processForPID:v3];
+  v3 = *&pid;
+  mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstance];
+  v6 = [mEMORY[0x277D0AAC0] processForPID:v3];
 
-  v7 = [a1 _hostProcessForProcess:v6];
+  v7 = [self _hostProcessForProcess:v6];
   if ([v7 sb_isProbablyUIApplication])
   {
-    v8 = [v7 sb_bundleIdentifierWithFallback];
+    sb_bundleIdentifierWithFallback = [v7 sb_bundleIdentifierWithFallback];
   }
 
   else
   {
-    v8 = 0;
+    sb_bundleIdentifierWithFallback = 0;
   }
 
-  return v8;
+  return sb_bundleIdentifierWithFallback;
 }
 
-+ (id)_hostProcessForProcess:(id)a3
++ (id)_hostProcessForProcess:(id)process
 {
-  v3 = a3;
-  v4 = v3;
-  if ([v3 isExtensionProcess])
+  processCopy = process;
+  hostProcess = processCopy;
+  if ([processCopy isExtensionProcess])
   {
-    v4 = v3;
+    hostProcess = processCopy;
     do
     {
-      v5 = v4;
-      v4 = [v5 hostProcess];
+      v5 = hostProcess;
+      hostProcess = [v5 hostProcess];
     }
 
-    while (([v4 isExtensionProcess] & 1) != 0);
+    while (([hostProcess isExtensionProcess] & 1) != 0);
   }
 
-  return v4;
+  return hostProcess;
 }
 
-+ (BOOL)shouldOverrideClientInitialization:(id)a3
++ (BOOL)shouldOverrideClientInitialization:(id)initialization
 {
-  v3 = [MEMORY[0x277D46F50] identifierWithPid:{objc_msgSend(a3, "pid")}];
+  v3 = [MEMORY[0x277D46F50] identifierWithPid:{objc_msgSend(initialization, "pid")}];
   v4 = [MEMORY[0x277D46F48] handleForIdentifier:v3 error:0];
   if (v4)
   {
@@ -289,24 +289,24 @@ LABEL_4:
   return v5;
 }
 
-+ (void)initializationContextForClient:(id)a3 completion:(id)a4
++ (void)initializationContextForClient:(id)client completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  completionCopy = completion;
   BSDispatchQueueAssertNotMain();
-  if (!v7)
+  if (!clientCopy)
   {
-    [SBApplicationSupportServiceRequestContext initializationContextForClient:a2 completion:a1];
+    [SBApplicationSupportServiceRequestContext initializationContextForClient:a2 completion:self];
   }
 
-  v9 = [v7 pid];
+  v9 = [clientCopy pid];
   v10 = [MEMORY[0x277D46F50] identifierWithPid:v9];
   v11 = [MEMORY[0x277D46F48] handleForIdentifier:v10 error:0];
   if (!v11 || ![SBSystemUIScenesCoordinator shouldHandleSceneRequestsForProcess:v11 withOptions:0])
   {
-    v13 = +[SBApplicationController sharedInstance];
-    v14 = [v13 applicationWithPid:v9];
+    sb_embeddedDisplayDefaultContextForSystemUIScenes = +[SBApplicationController sharedInstance];
+    v14 = [sb_embeddedDisplayDefaultContextForSystemUIScenes applicationWithPid:v9];
     v15 = v14;
     if (v14)
     {
@@ -315,16 +315,16 @@ LABEL_4:
 
     else
     {
-      v17 = [v7 bundleIdentifier];
-      v16 = [v13 applicationWithBundleIdentifier:v17];
+      bundleIdentifier = [clientCopy bundleIdentifier];
+      v16 = [sb_embeddedDisplayDefaultContextForSystemUIScenes applicationWithBundleIdentifier:bundleIdentifier];
     }
 
     v18 = SBLogCommon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v16 bundleIdentifier];
+      bundleIdentifier2 = [v16 bundleIdentifier];
       *buf = 138543362;
-      v30 = v19;
+      v30 = bundleIdentifier2;
       _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "Fetching initialization context for: %{public}@", buf, 0xCu);
     }
 
@@ -332,15 +332,15 @@ LABEL_4:
     {
       if (([v16 isSpotlight] & 1) != 0 || objc_msgSend(v16, "isPaperBoard"))
       {
-        v20 = [MEMORY[0x277D77738] sb_embeddedDisplayDefaultContext];
-        v8[2](v8, v20);
+        sb_embeddedDisplayDefaultContext = [MEMORY[0x277D77738] sb_embeddedDisplayDefaultContext];
+        completionCopy[2](completionCopy, sb_embeddedDisplayDefaultContext);
 LABEL_21:
 
         goto LABEL_22;
       }
 
-      v20 = [v16 _initializationRequestContext];
-      [v20 applicationInitializationContextWithCompletion:v8];
+      sb_embeddedDisplayDefaultContext = [v16 _initializationRequestContext];
+      [sb_embeddedDisplayDefaultContext applicationInitializationContextWithCompletion:completionCopy];
       v25 = SBLogClassicMode();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
@@ -350,16 +350,16 @@ LABEL_21:
 
     else
     {
-      v21 = [MEMORY[0x277D0AAC0] sharedInstance];
-      v22 = [v21 processForPID:v9];
+      mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstance];
+      v22 = [mEMORY[0x277D0AAC0] processForPID:v9];
 
       v23 = [objc_opt_class() _hostProcessForProcess:v22];
-      v26 = [[a1 alloc] initWithClient:v22 host:v23];
-      v28 = v8;
+      v26 = [[self alloc] initWithClient:v22 host:v23];
+      v28 = completionCopy;
       v27 = v22;
       v24 = v23;
       v25 = v22;
-      v20 = v26;
+      sb_embeddedDisplayDefaultContext = v26;
       BSDispatchMain();
     }
 
@@ -370,12 +370,12 @@ LABEL_21:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v30 = v7;
+    v30 = clientCopy;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Providing init context for SystemUI Scene client: %{public}@", buf, 0xCu);
   }
 
-  v13 = [MEMORY[0x277D77738] sb_embeddedDisplayDefaultContextForSystemUIScenes];
-  v8[2](v8, v13);
+  sb_embeddedDisplayDefaultContextForSystemUIScenes = [MEMORY[0x277D77738] sb_embeddedDisplayDefaultContextForSystemUIScenes];
+  completionCopy[2](completionCopy, sb_embeddedDisplayDefaultContextForSystemUIScenes);
 LABEL_22:
 }
 
@@ -396,14 +396,14 @@ void __87__SBApplicationSupportServiceRequestContext_initializationContextForCli
   }
 }
 
-- (SBApplicationSupportServiceRequestContext)initWithApplication:(id)a3 launchDisplayConfiguration:(id)a4 persistenceIdentifierProvider:(id)a5 sceneIdentityProvider:(id)a6 sceneIdentityTokenProvider:(id)a7
+- (SBApplicationSupportServiceRequestContext)initWithApplication:(id)application launchDisplayConfiguration:(id)configuration persistenceIdentifierProvider:(id)provider sceneIdentityProvider:(id)identityProvider sceneIdentityTokenProvider:(id)tokenProvider
 {
-  v13 = a3;
-  v21 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v13)
+  applicationCopy = application;
+  configurationCopy = configuration;
+  providerCopy = provider;
+  identityProviderCopy = identityProvider;
+  tokenProviderCopy = tokenProvider;
+  if (!applicationCopy)
   {
     [SBApplicationSupportServiceRequestContext initWithApplication:a2 launchDisplayConfiguration:self persistenceIdentifierProvider:? sceneIdentityProvider:? sceneIdentityTokenProvider:?];
   }
@@ -414,27 +414,27 @@ void __87__SBApplicationSupportServiceRequestContext_initializationContextForCli
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_app, a3);
-    objc_storeStrong(&v18->_launchDisplayConfiguration, a4);
-    objc_storeStrong(&v18->_preferredAppPersistenceIDProvider, a5);
-    objc_storeStrong(&v18->_preferredAppSceneIdentityProvider, a6);
-    objc_storeStrong(&v18->_preferredSceneIdentityTokenProvider, a7);
+    objc_storeStrong(&v17->_app, application);
+    objc_storeStrong(&v18->_launchDisplayConfiguration, configuration);
+    objc_storeStrong(&v18->_preferredAppPersistenceIDProvider, provider);
+    objc_storeStrong(&v18->_preferredAppSceneIdentityProvider, identityProvider);
+    objc_storeStrong(&v18->_preferredSceneIdentityTokenProvider, tokenProvider);
   }
 
   return v18;
 }
 
-- (SBApplicationSupportServiceRequestContext)initWithClient:(id)a3 host:(id)a4
+- (SBApplicationSupportServiceRequestContext)initWithClient:(id)client host:(id)host
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 pid];
+  clientCopy = client;
+  hostCopy = host;
+  v8 = [hostCopy pid];
   v9 = getpid();
   if (v8 == v9)
   {
-    v10 = FBSystemAppBundleID();
+    sb_bundleIdentifierWithFallback = FBSystemAppBundleID();
 
-    if (v7 == v6)
+    if (hostCopy == clientCopy)
     {
       goto LABEL_13;
     }
@@ -442,11 +442,11 @@ void __87__SBApplicationSupportServiceRequestContext_initializationContextForCli
 
   else
   {
-    v10 = [v7 sb_bundleIdentifierWithFallback];
-    v11 = [v7 sb_isProbablyUIApplication];
-    if (v7)
+    sb_bundleIdentifierWithFallback = [hostCopy sb_bundleIdentifierWithFallback];
+    sb_isProbablyUIApplication = [hostCopy sb_isProbablyUIApplication];
+    if (hostCopy)
     {
-      v12 = v11;
+      v12 = sb_isProbablyUIApplication;
     }
 
     else
@@ -454,41 +454,41 @@ void __87__SBApplicationSupportServiceRequestContext_initializationContextForCli
       v12 = 1;
     }
 
-    v13 = 0;
-    if (v7 == v6 || (v12 & 1) == 0)
+    bundleIdentifier = 0;
+    if (hostCopy == clientCopy || (v12 & 1) == 0)
     {
       goto LABEL_16;
     }
   }
 
-  if (![v6 isExtensionProcess])
+  if (![clientCopy isExtensionProcess])
   {
 LABEL_13:
-    v13 = 0;
+    bundleIdentifier = 0;
     goto LABEL_16;
   }
 
-  v14 = [v6 sb_bundleIdentifierWithFallback];
-  v15 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:v14];
-  v16 = [v15 containingBundle];
+  sb_bundleIdentifierWithFallback2 = [clientCopy sb_bundleIdentifierWithFallback];
+  v15 = [MEMORY[0x277CC1ED8] pluginKitProxyForIdentifier:sb_bundleIdentifierWithFallback2];
+  containingBundle = [v15 containingBundle];
 
-  v17 = [v16 bundleType];
-  v18 = [v17 isEqualToString:*MEMORY[0x277CC1E40]];
+  bundleType = [containingBundle bundleType];
+  v18 = [bundleType isEqualToString:*MEMORY[0x277CC1E40]];
 
   if (v18)
   {
-    v13 = [v16 bundleIdentifier];
+    bundleIdentifier = [containingBundle bundleIdentifier];
   }
 
   else
   {
-    v13 = 0;
+    bundleIdentifier = 0;
   }
 
 LABEL_16:
   v19 = +[SBApplicationController sharedInstance];
-  v20 = [v19 applicationWithBundleIdentifier:v10];
-  v21 = [v19 applicationWithBundleIdentifier:v13];
+  v20 = [v19 applicationWithBundleIdentifier:sb_bundleIdentifierWithFallback];
+  v21 = [v19 applicationWithBundleIdentifier:bundleIdentifier];
   v22 = v21;
   if (v8 == v9 || v20 || v21)
   {
@@ -504,35 +504,35 @@ LABEL_16:
     }
 
     self = v25;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
-- (void)applicationInitializationContextWithCompletion:(id)a3
+- (void)applicationInitializationContextWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_selfLock_applicationInitializationContext)
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_selfLock_applicationInitializationContext)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SBApplication *)v5->_app bundleIdentifier];
+      bundleIdentifier = [(SBApplication *)selfCopy->_app bundleIdentifier];
       *buf = 138543362;
-      v11 = v7;
+      v11 = bundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Returning cached initialization context for %{public}@", buf, 0xCu);
     }
 
-    v8 = v5->_selfLock_applicationInitializationContext;
+    v8 = selfCopy->_selfLock_applicationInitializationContext;
   }
 
   else
@@ -540,16 +540,16 @@ LABEL_16:
     v8 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   if (v8)
   {
-    v4[2](v4, v8);
+    completionCopy[2](completionCopy, v8);
   }
 
   else
   {
-    v9 = v4;
+    v9 = completionCopy;
     BSDispatchMain();
   }
 }
@@ -581,10 +581,10 @@ void __92__SBApplicationSupportServiceRequestContext_applicationInitializationCo
 - (unint64_t)_main_effectiveScreenType
 {
   BSDispatchQueueAssertMain();
-  v3 = [(SBApplicationSupportServiceRequestContext *)self _main_effectiveApplicationForCompatibility];
-  if (v3)
+  _main_effectiveApplicationForCompatibility = [(SBApplicationSupportServiceRequestContext *)self _main_effectiveApplicationForCompatibility];
+  if (_main_effectiveApplicationForCompatibility)
   {
-    v4 = [(SBApplication *)v3 _screenTypeForClassicMode:?];
+    v4 = [(SBApplication *)_main_effectiveApplicationForCompatibility _screenTypeForClassicMode:?];
   }
 
   else
@@ -597,9 +597,9 @@ void __92__SBApplicationSupportServiceRequestContext_applicationInitializationCo
   return v5;
 }
 
-- (id)_main_displayContextForDisplayConfiguration:(id)a3
+- (id)_main_displayContextForDisplayConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
     v4 = [MEMORY[0x277D777A0] sb_defaultContextForDisplayConfiguration:?];
     [(SBApplicationSupportServiceRequestContext *)self _main_applyClassicModeLiesIfNecessaryToDisplayContext:v4];
@@ -613,22 +613,22 @@ void __92__SBApplicationSupportServiceRequestContext_applicationInitializationCo
   return v4;
 }
 
-- (void)_main_applyClassicModeLiesIfNecessaryToDisplayContext:(id)a3
+- (void)_main_applyClassicModeLiesIfNecessaryToDisplayContext:(id)context
 {
-  v10 = a3;
-  v4 = [(SBApplicationSupportServiceRequestContext *)self _main_effectiveClassicMode];
-  if (_SBApplicationClassicModeIsClassic(v4))
+  contextCopy = context;
+  _main_effectiveClassicMode = [(SBApplicationSupportServiceRequestContext *)self _main_effectiveClassicMode];
+  if (_SBApplicationClassicModeIsClassic(_main_effectiveClassicMode))
   {
-    v5 = [v10 displayConfiguration];
-    v6 = [SBApplication restrictedClassicModeDisplayConfigurationForDisplayConfiguration:v5 classicMode:v4];
+    displayConfiguration = [contextCopy displayConfiguration];
+    v6 = [SBApplication restrictedClassicModeDisplayConfigurationForDisplayConfiguration:displayConfiguration classicMode:_main_effectiveClassicMode];
 
-    [v10 setDisplayConfiguration:v6];
-    v7 = [(SBApplicationSupportServiceRequestContext *)self _main_effectiveScreenType];
-    v8 = [MEMORY[0x277D77750] sb_displayEdgeInfoForScreenTypeConsideringCurrentDevice:v7];
-    [v10 setDisplayEdgeInfo:v8];
+    [contextCopy setDisplayConfiguration:v6];
+    _main_effectiveScreenType = [(SBApplicationSupportServiceRequestContext *)self _main_effectiveScreenType];
+    v8 = [MEMORY[0x277D77750] sb_displayEdgeInfoForScreenTypeConsideringCurrentDevice:_main_effectiveScreenType];
+    [contextCopy setDisplayEdgeInfo:v8];
 
-    v9 = [MEMORY[0x277D77780] sb_displayShapeForScreenType:v7];
-    [v10 setExclusionArea:v9];
+    v9 = [MEMORY[0x277D77780] sb_displayShapeForScreenType:_main_effectiveScreenType];
+    [contextCopy setExclusionArea:v9];
   }
 }
 

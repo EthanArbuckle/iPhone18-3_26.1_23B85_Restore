@@ -1,79 +1,79 @@
 @interface MTTimeInBedSession
-+ (id)timeInBedSessionWithStartDate:(id)a3 endDate:(id)a4 intervals:(id)a5 endReason:(unint64_t)a6 metadata:(id)a7;
-- (MTTimeInBedSession)initWithCoder:(id)a3;
-- (MTTimeInBedSession)initWithStartDate:(id)a3 endDate:(id)a4 intervals:(id)a5 endReason:(unint64_t)a6 metadata:(id)a7;
++ (id)timeInBedSessionWithStartDate:(id)date endDate:(id)endDate intervals:(id)intervals endReason:(unint64_t)reason metadata:(id)metadata;
+- (MTTimeInBedSession)initWithCoder:(id)coder;
+- (MTTimeInBedSession)initWithStartDate:(id)date endDate:(id)endDate intervals:(id)intervals endReason:(unint64_t)reason metadata:(id)metadata;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTTimeInBedSession
 
-+ (id)timeInBedSessionWithStartDate:(id)a3 endDate:(id)a4 intervals:(id)a5 endReason:(unint64_t)a6 metadata:(id)a7
++ (id)timeInBedSessionWithStartDate:(id)date endDate:(id)endDate intervals:(id)intervals endReason:(unint64_t)reason metadata:(id)metadata
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[a1 alloc] initWithStartDate:v15 endDate:v14 intervals:v13 endReason:a6 metadata:v12];
+  metadataCopy = metadata;
+  intervalsCopy = intervals;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v16 = [[self alloc] initWithStartDate:dateCopy endDate:endDateCopy intervals:intervalsCopy endReason:reason metadata:metadataCopy];
 
   return v16;
 }
 
-- (MTTimeInBedSession)initWithStartDate:(id)a3 endDate:(id)a4 intervals:(id)a5 endReason:(unint64_t)a6 metadata:(id)a7
+- (MTTimeInBedSession)initWithStartDate:(id)date endDate:(id)endDate intervals:(id)intervals endReason:(unint64_t)reason metadata:(id)metadata
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  dateCopy = date;
+  endDateCopy = endDate;
+  intervalsCopy = intervals;
+  metadataCopy = metadata;
   v20.receiver = self;
   v20.super_class = MTTimeInBedSession;
   v17 = [(MTTimeInBedSession *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_startDate, a3);
-    objc_storeStrong(&v18->_endDate, a4);
-    objc_storeStrong(&v18->_intervals, a5);
-    v18->_endReason = a6;
-    objc_storeStrong(&v18->_metadata, a7);
+    objc_storeStrong(&v17->_startDate, date);
+    objc_storeStrong(&v18->_endDate, endDate);
+    objc_storeStrong(&v18->_intervals, intervals);
+    v18->_endReason = reason;
+    objc_storeStrong(&v18->_metadata, metadata);
   }
 
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(MTTimeInBedSession *)self startDate];
-  [v8 encodeObject:v4 forKey:@"StartDate"];
+  coderCopy = coder;
+  startDate = [(MTTimeInBedSession *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"StartDate"];
 
-  v5 = [(MTTimeInBedSession *)self endDate];
-  [v8 encodeObject:v5 forKey:@"EndDate"];
+  endDate = [(MTTimeInBedSession *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"EndDate"];
 
-  v6 = [(MTTimeInBedSession *)self intervals];
-  [v8 encodeObject:v6 forKey:@"Intervals"];
+  intervals = [(MTTimeInBedSession *)self intervals];
+  [coderCopy encodeObject:intervals forKey:@"Intervals"];
 
-  [v8 encodeInteger:-[MTTimeInBedSession endReason](self forKey:{"endReason"), @"EndReason"}];
-  v7 = [(MTTimeInBedSession *)self metadata];
-  [v8 encodeObject:v7 forKey:@"MetaData"];
+  [coderCopy encodeInteger:-[MTTimeInBedSession endReason](self forKey:{"endReason"), @"EndReason"}];
+  metadata = [(MTTimeInBedSession *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"MetaData"];
 
-  [v8 encodeBool:-[MTTimeInBedSession needsAdditionalProcessing](self forKey:{"needsAdditionalProcessing"), @"NeedsAdditionalProcessing"}];
+  [coderCopy encodeBool:-[MTTimeInBedSession needsAdditionalProcessing](self forKey:{"needsAdditionalProcessing"), @"NeedsAdditionalProcessing"}];
 }
 
-- (MTTimeInBedSession)initWithCoder:(id)a3
+- (MTTimeInBedSession)initWithCoder:(id)coder
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = MTTimeInBedSession;
   v5 = [(MTTimeInBedSession *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StartDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StartDate"];
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EndDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EndDate"];
     endDate = v5->_endDate;
     v5->_endDate = v8;
 
@@ -82,22 +82,22 @@
     v24[1] = objc_opt_class();
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"Intervals"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"Intervals"];
     intervals = v5->_intervals;
     v5->_intervals = v13;
 
-    v5->_endReason = [v4 decodeIntegerForKey:@"EndReason"];
+    v5->_endReason = [coderCopy decodeIntegerForKey:@"EndReason"];
     v15 = MEMORY[0x1E695DFD8];
     v23[0] = objc_opt_class();
     v23[1] = objc_opt_class();
     v23[2] = objc_opt_class();
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:3];
     v17 = [v15 setWithArray:v16];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"MetaData"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"MetaData"];
     metadata = v5->_metadata;
     v5->_metadata = v18;
 
-    v5->_needsAdditionalProcessing = [v4 decodeBoolForKey:@"NeedsAdditionalProcessing"];
+    v5->_needsAdditionalProcessing = [coderCopy decodeBoolForKey:@"NeedsAdditionalProcessing"];
   }
 
   v20 = *MEMORY[0x1E69E9840];

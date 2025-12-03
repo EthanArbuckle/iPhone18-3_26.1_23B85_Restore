@@ -1,29 +1,29 @@
 @interface APMetricPurpose
-- (APMetricPurpose)initWithPurposeDefinition:(id)a3;
-- (APMetricPurpose)initWithPurposeJSON:(id)a3;
-- (BOOL)_validateMetric:(id)a3 forKey:(id)a4 fromDictionary:(id)a5;
-- (BOOL)_validateMetric:(id)a3 withMetrics:(id)a4;
-- (BOOL)_validateRouteDefinition:(id)a3;
-- (BOOL)metricIsDefined:(int64_t)a3;
-- (BOOL)metricIsDiagnosticsAndUsage:(int64_t)a3;
-- (BOOL)metricIsDisabled:(int64_t)a3;
-- (id)_metricsByNumber:(id)a3;
-- (id)stringForMetric:(int64_t)a3;
+- (APMetricPurpose)initWithPurposeDefinition:(id)definition;
+- (APMetricPurpose)initWithPurposeJSON:(id)n;
+- (BOOL)_validateMetric:(id)metric forKey:(id)key fromDictionary:(id)dictionary;
+- (BOOL)_validateMetric:(id)metric withMetrics:(id)metrics;
+- (BOOL)_validateRouteDefinition:(id)definition;
+- (BOOL)metricIsDefined:(int64_t)defined;
+- (BOOL)metricIsDiagnosticsAndUsage:(int64_t)usage;
+- (BOOL)metricIsDisabled:(int64_t)disabled;
+- (id)_metricsByNumber:(id)number;
+- (id)stringForMetric:(int64_t)metric;
 @end
 
 @implementation APMetricPurpose
 
-- (BOOL)_validateMetric:(id)a3 forKey:(id)a4 fromDictionary:(id)a5
+- (BOOL)_validateMetric:(id)metric forKey:(id)key fromDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  metricCopy = metric;
+  keyCopy = key;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 objectForKeyedSubscript:@"value"];
-    v11 = [v9 objectForKeyedSubscript:@"dnu"];
-    v12 = [v9 objectForKeyedSubscript:@"disabled"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"value"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"dnu"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"disabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass())))
     {
@@ -39,9 +39,9 @@
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 138543874;
-          v19 = v7;
+          v19 = metricCopy;
           v20 = 2114;
-          v21 = v8;
+          v21 = keyCopy;
           v22 = 2114;
           v23 = v10;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "The purpose (%{public}@) metric (%{public}@) value (%{public}@) isn't a number!", &v18, 0x20u);
@@ -57,9 +57,9 @@
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             v18 = 138543874;
-            v19 = v7;
+            v19 = metricCopy;
             v20 = 2114;
-            v21 = v8;
+            v21 = keyCopy;
             v22 = 2114;
             v23 = v11;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "The purpose (%{public}@) metric (%{public}@) dnu (%{public}@) isn't a number!", &v18, 0x20u);
@@ -76,9 +76,9 @@
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             v18 = 138543874;
-            v19 = v7;
+            v19 = metricCopy;
             v20 = 2114;
-            v21 = v8;
+            v21 = keyCopy;
             v22 = 2114;
             v23 = v12;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "The purpose (%{public}@) metric (%{public}@) dnu (%{public}@) isn't a number!", &v18, 0x20u);
@@ -96,9 +96,9 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138543618;
-      v19 = v7;
+      v19 = metricCopy;
       v20 = 2114;
-      v21 = v8;
+      v21 = keyCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "The purpose (%{public}@) value for metric (%{public}@) isn't a dictionary!", &v18, 0x16u);
     }
 
@@ -108,17 +108,17 @@
   return v13;
 }
 
-- (BOOL)_validateMetric:(id)a3 withMetrics:(id)a4
+- (BOOL)_validateMetric:(id)metric withMetrics:(id)metrics
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  metricCopy = metric;
+  metricsCopy = metrics;
+  if (!metricsCopy)
   {
     v8 = APLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v6;
+      v25 = metricCopy;
       v17 = "The purpose (%{public}@) metrics are nil!";
 LABEL_19:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v17, buf, 0xCu);
@@ -136,7 +136,7 @@ LABEL_20:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v6;
+      v25 = metricCopy;
       v17 = "The purpose (%{public}@) metrics in the definition isn't a dictionary!";
       goto LABEL_19;
     }
@@ -148,12 +148,12 @@ LABEL_20:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v7;
+  v8 = metricsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
-    v19 = v7;
+    v19 = metricsCopy;
     v11 = *v21;
     v12 = 1;
     do
@@ -173,7 +173,7 @@ LABEL_20:
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v25 = v6;
+            v25 = metricCopy;
             v26 = 2114;
             v27 = v14;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "The purpose (%{public}@) has a metric key (%{public}@) that is not a string!", buf, 0x16u);
@@ -183,14 +183,14 @@ LABEL_20:
         }
 
         v16 = [v8 objectForKeyedSubscript:v14];
-        v12 &= [(APMetricPurpose *)self _validateMetric:v6 forKey:v14 fromDictionary:v16];
+        v12 &= [(APMetricPurpose *)self _validateMetric:metricCopy forKey:v14 fromDictionary:v16];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v10);
-    v7 = v19;
+    metricsCopy = v19;
   }
 
   else
@@ -203,10 +203,10 @@ LABEL_21:
   return v12;
 }
 
-- (BOOL)_validateRouteDefinition:(id)a3
+- (BOOL)_validateRouteDefinition:(id)definition
 {
-  v4 = a3;
-  if (!v4)
+  definitionCopy = definition;
+  if (!definitionCopy)
   {
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -231,7 +231,7 @@ LABEL_22:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *v23 = 138543362;
-      *&v23[4] = v4;
+      *&v23[4] = definitionCopy;
       v14 = "The purpose definition is not a dictionary! %{public}@";
       v15 = v5;
       v16 = 12;
@@ -241,7 +241,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"name"];
+  v5 = [definitionCopy objectForKeyedSubscript:@"name"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if ((isKindOfClass & 1) == 0)
@@ -255,7 +255,7 @@ LABEL_22:
     }
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"purpose"];
+  v8 = [definitionCopy objectForKeyedSubscript:@"purpose"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -272,10 +272,10 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v9 = [v8 integerValue];
-  v10 = [v4 objectForKeyedSubscript:@"dest"];
+  integerValue = [v8 integerValue];
+  v10 = [definitionCopy objectForKeyedSubscript:@"dest"];
   v11 = v10;
-  if ((v9 & 0x8000000000000000) == 0)
+  if ((integerValue & 0x8000000000000000) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -336,7 +336,7 @@ LABEL_29:
   }
 
 LABEL_32:
-  v21 = [v4 objectForKeyedSubscript:{@"metrics", *v23, *&v23[16]}];
+  v21 = [definitionCopy objectForKeyedSubscript:{@"metrics", *v23, *&v23[16]}];
   v18 = isKindOfClass & [(APMetricPurpose *)self _validateMetric:v5 withMetrics:v21];
   if ((v18 & 1) == 0)
   {
@@ -344,7 +344,7 @@ LABEL_32:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *v23 = 138543362;
-      *&v23[4] = v4;
+      *&v23[4] = definitionCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "There were type errors in the purpose definition: %{public}@", v23, 0xCu);
     }
   }
@@ -353,15 +353,15 @@ LABEL_23:
   return v18;
 }
 
-- (id)_metricsByNumber:(id)a3
+- (id)_metricsByNumber:(id)number
 {
-  v3 = a3;
-  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v3 count]);
+  numberCopy = number;
+  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [numberCopy count]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = numberCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -404,10 +404,10 @@ LABEL_23:
   return v15;
 }
 
-- (APMetricPurpose)initWithPurposeJSON:(id)a3
+- (APMetricPurpose)initWithPurposeJSON:(id)n
 {
   v11 = 0;
-  v4 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v11];
+  v4 = [NSJSONSerialization JSONObjectWithData:n options:0 error:&v11];
   v5 = v11;
   if (v5)
   {
@@ -430,7 +430,7 @@ LABEL_23:
     if (objc_opt_isKindOfClass())
     {
       self = [(APMetricPurpose *)self initWithPurposeDefinition:v4];
-      v8 = self;
+      selfCopy = self;
       goto LABEL_6;
     }
 
@@ -457,49 +457,49 @@ LABEL_14:
 
 LABEL_5:
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_6:
 
-  return v8;
+  return selfCopy;
 }
 
-- (APMetricPurpose)initWithPurposeDefinition:(id)a3
+- (APMetricPurpose)initWithPurposeDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"purpose"];
-  v6 = [v5 integerValue];
+  definitionCopy = definition;
+  v5 = [definitionCopy objectForKeyedSubscript:@"purpose"];
+  integerValue = [v5 integerValue];
 
-  v7 = [APMetricPurposeRegistry metricRouteForPurpose:v6];
+  v7 = [APMetricPurposeRegistry metricRouteForPurpose:integerValue];
   if (v7)
   {
-    v8 = [NSString stringWithFormat:@"Metric Route (%d) should not be created more than once, exiting!", v6];
+    v8 = [NSString stringWithFormat:@"Metric Route (%d) should not be created more than once, exiting!", integerValue];
     v9 = APLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v27 = v6;
+      v27 = integerValue;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Metric Route (%d) should not be created more than once, exiting!", buf, 8u);
     }
 
     APSimulateCrash();
   }
 
-  if ([(APMetricPurpose *)self _validateRouteDefinition:v4])
+  if ([(APMetricPurpose *)self _validateRouteDefinition:definitionCopy])
   {
     v25.receiver = self;
     v25.super_class = APMetricPurpose;
     v10 = [(APMetricPurpose *)&v25 init];
     if (v10)
     {
-      v11 = [v4 objectForKeyedSubscript:@"name"];
+      v11 = [definitionCopy objectForKeyedSubscript:@"name"];
       name = v10->_name;
       v10->_name = v11;
 
-      v13 = [v4 objectForKeyedSubscript:@"purpose"];
+      v13 = [definitionCopy objectForKeyedSubscript:@"purpose"];
       v10->_purpose = [v13 integerValue];
 
       v14 = [APDestination alloc];
-      v15 = [v4 objectForKeyedSubscript:@"dest"];
+      v15 = [definitionCopy objectForKeyedSubscript:@"dest"];
       v16 = [(APDestination *)v14 initWithString:v15];
       destination = v10->_destination;
       v10->_destination = v16;
@@ -508,7 +508,7 @@ LABEL_6:
       channel = v10->_channel;
       v10->_channel = v18;
 
-      v20 = [v4 objectForKeyedSubscript:@"metrics"];
+      v20 = [definitionCopy objectForKeyedSubscript:@"metrics"];
       v21 = [(APMetricPurpose *)v10 _metricsByNumber:v20];
       metrics = v10->_metrics;
       v10->_metrics = v21;
@@ -517,49 +517,49 @@ LABEL_6:
     }
 
     self = v10;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
-- (BOOL)metricIsDefined:(int64_t)a3
+- (BOOL)metricIsDefined:(int64_t)defined
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:defined];
   v5 = [(NSDictionary *)self->_metrics objectForKeyedSubscript:v4];
   LOBYTE(self) = v5 != 0;
 
   return self;
 }
 
-- (BOOL)metricIsDiagnosticsAndUsage:(int64_t)a3
+- (BOOL)metricIsDiagnosticsAndUsage:(int64_t)usage
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:usage];
   v5 = [(NSDictionary *)self->_metrics objectForKeyedSubscript:v4];
   v6 = [v5 objectForKeyedSubscript:@"dnu"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)metricIsDisabled:(int64_t)a3
+- (BOOL)metricIsDisabled:(int64_t)disabled
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:disabled];
   v5 = [(NSDictionary *)self->_metrics objectForKeyedSubscript:v4];
   v6 = [v5 objectForKeyedSubscript:@"disabled"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (id)stringForMetric:(int64_t)a3
+- (id)stringForMetric:(int64_t)metric
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:metric];
   v5 = [(NSDictionary *)self->_metrics objectForKeyedSubscript:v4];
   v6 = [v5 objectForKeyedSubscript:@"name"];
 

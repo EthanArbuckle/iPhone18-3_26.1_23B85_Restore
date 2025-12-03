@@ -1,10 +1,10 @@
 @interface IFTSchemaIFTActionFailureFailure
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IFTSchemaIFTActionFailureDeveloperDefinedError)actionFailureDeveloperDefinedError;
-- (IFTSchemaIFTActionFailureFailure)initWithDictionary:(id)a3;
-- (IFTSchemaIFTActionFailureFailure)initWithJSON:(id)a3;
+- (IFTSchemaIFTActionFailureFailure)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTActionFailureFailure)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -28,61 +28,61 @@
 - (void)deleteUnsupportedOnDevice;
 - (void)deleteValueDisambiguationRejected;
 - (void)deleteWifiDisabled;
-- (void)setActionCanceled:(BOOL)a3;
-- (void)setActionFailureDeveloperDefinedError:(id)a3;
-- (void)setActionNotAllowed:(BOOL)a3;
-- (void)setBluetoothDisabled:(BOOL)a3;
-- (void)setDeveloperDefinedError:(BOOL)a3;
-- (void)setEntityNotFound:(BOOL)a3;
-- (void)setFeatureCurrentlyRestricted:(BOOL)a3;
-- (void)setLocationDisabled:(BOOL)a3;
-- (void)setNetworkFailure:(BOOL)a3;
-- (void)setNoMatchingTool:(BOOL)a3;
-- (void)setPartialFailure:(BOOL)a3;
-- (void)setPreciseLocationDisabled:(BOOL)a3;
-- (void)setPreflightCheckFailure:(BOOL)a3;
-- (void)setSearchSucceededNoMatchingTool:(BOOL)a3;
-- (void)setUnableToCancel:(BOOL)a3;
-- (void)setUnableToHandleRequest:(BOOL)a3;
-- (void)setUnableToUndo:(BOOL)a3;
-- (void)setUnsupportedOnDevice:(BOOL)a3;
-- (void)setValueDisambiguationRejected:(BOOL)a3;
-- (void)setWifiDisabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setActionCanceled:(BOOL)canceled;
+- (void)setActionFailureDeveloperDefinedError:(id)error;
+- (void)setActionNotAllowed:(BOOL)allowed;
+- (void)setBluetoothDisabled:(BOOL)disabled;
+- (void)setDeveloperDefinedError:(BOOL)error;
+- (void)setEntityNotFound:(BOOL)found;
+- (void)setFeatureCurrentlyRestricted:(BOOL)restricted;
+- (void)setLocationDisabled:(BOOL)disabled;
+- (void)setNetworkFailure:(BOOL)failure;
+- (void)setNoMatchingTool:(BOOL)tool;
+- (void)setPartialFailure:(BOOL)failure;
+- (void)setPreciseLocationDisabled:(BOOL)disabled;
+- (void)setPreflightCheckFailure:(BOOL)failure;
+- (void)setSearchSucceededNoMatchingTool:(BOOL)tool;
+- (void)setUnableToCancel:(BOOL)cancel;
+- (void)setUnableToHandleRequest:(BOOL)request;
+- (void)setUnableToUndo:(BOOL)undo;
+- (void)setUnsupportedOnDevice:(BOOL)device;
+- (void)setValueDisambiguationRejected:(BOOL)rejected;
+- (void)setWifiDisabled:(BOOL)disabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTActionFailureFailure
 
-- (IFTSchemaIFTActionFailureFailure)initWithDictionary:(id)a3
+- (IFTSchemaIFTActionFailureFailure)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v45.receiver = self;
   v45.super_class = IFTSchemaIFTActionFailureFailure;
   v5 = [(IFTSchemaIFTActionFailureFailure *)&v45 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"preflightCheckFailure"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"preflightCheckFailure"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionFailureFailure setPreflightCheckFailure:](v5, "setPreflightCheckFailure:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"preciseLocationDisabled"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"preciseLocationDisabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionFailureFailure setPreciseLocationDisabled:](v5, "setPreciseLocationDisabled:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"locationDisabled"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"locationDisabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionFailureFailure setLocationDisabled:](v5, "setLocationDisabled:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"wifiDisabled"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"wifiDisabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,14 +90,14 @@
     }
 
     v35 = v9;
-    v10 = [v4 objectForKeyedSubscript:@"bluetoothDisabled"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"bluetoothDisabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionFailureFailure setBluetoothDisabled:](v5, "setBluetoothDisabled:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"networkFailure"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"networkFailure"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,14 +105,14 @@
     }
 
     v12 = v8;
-    v13 = [v4 objectForKeyedSubscript:@"partialFailure"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"partialFailure"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionFailureFailure setPartialFailure:](v5, "setPartialFailure:", [v13 BOOLValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"unsupportedOnDevice"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"unsupportedOnDevice"];
     objc_opt_class();
     v44 = v14;
     if (objc_opt_isKindOfClass())
@@ -120,7 +120,7 @@
       -[IFTSchemaIFTActionFailureFailure setUnsupportedOnDevice:](v5, "setUnsupportedOnDevice:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"featureCurrentlyRestricted"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"featureCurrentlyRestricted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
     }
 
     v34 = v15;
-    v16 = [v4 objectForKeyedSubscript:@"entityNotFound"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"entityNotFound"];
     objc_opt_class();
     v43 = v16;
     v39 = v12;
@@ -138,14 +138,14 @@
     }
 
     v17 = v6;
-    v18 = [v4 objectForKeyedSubscript:@"actionNotAllowed"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"actionNotAllowed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionFailureFailure setActionNotAllowed:](v5, "setActionNotAllowed:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"unableToUndo"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"unableToUndo"];
     objc_opt_class();
     v42 = v19;
     if (objc_opt_isKindOfClass())
@@ -153,7 +153,7 @@
       -[IFTSchemaIFTActionFailureFailure setUnableToUndo:](v5, "setUnableToUndo:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"actionCanceled"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"actionCanceled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -161,7 +161,7 @@
     }
 
     v37 = v11;
-    v21 = [v4 objectForKeyedSubscript:@"valueDisambiguationRejected"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"valueDisambiguationRejected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -170,7 +170,7 @@
 
     v32 = v21;
     v36 = v13;
-    v22 = [v4 objectForKeyedSubscript:@"noMatchingTool"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"noMatchingTool"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -180,14 +180,14 @@
     v33 = v20;
     v40 = v7;
     v41 = v17;
-    v23 = [v4 objectForKeyedSubscript:@"developerDefinedError"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"developerDefinedError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionFailureFailure setDeveloperDefinedError:](v5, "setDeveloperDefinedError:", [v23 BOOLValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"actionFailureDeveloperDefinedError"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"actionFailureDeveloperDefinedError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -196,7 +196,7 @@
     }
 
     v38 = v10;
-    v26 = [v4 objectForKeyedSubscript:@"unableToCancel"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"unableToCancel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -204,14 +204,14 @@
     }
 
     v27 = v18;
-    v28 = [v4 objectForKeyedSubscript:@"searchSucceededNoMatchingTool"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"searchSucceededNoMatchingTool"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTActionFailureFailure setSearchSucceededNoMatchingTool:](v5, "setSearchSucceededNoMatchingTool:", [v28 BOOLValue]);
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"unableToHandleRequest"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"unableToHandleRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -224,30 +224,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTActionFailureFailure)initWithJSON:(id)a3
+- (IFTSchemaIFTActionFailureFailure)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTActionFailureFailure *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTActionFailureFailure *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTActionFailureFailure *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -260,26 +260,26 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_whichOneof_Actionfailurefailure == 13)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure actionCanceled](self, "actionCanceled")}];
-    [v3 setObject:v4 forKeyedSubscript:@"actionCanceled"];
+    [dictionary setObject:v4 forKeyedSubscript:@"actionCanceled"];
   }
 
   if (self->_actionFailureDeveloperDefinedError)
   {
-    v5 = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    actionFailureDeveloperDefinedError = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError];
+    dictionaryRepresentation = [actionFailureDeveloperDefinedError dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"actionFailureDeveloperDefinedError"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"actionFailureDeveloperDefinedError"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"actionFailureDeveloperDefinedError"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"actionFailureDeveloperDefinedError"];
     }
   }
 
@@ -287,7 +287,7 @@
   if (whichOneof_Actionfailurefailure == 11)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure actionNotAllowed](self, "actionNotAllowed")}];
-    [v3 setObject:v9 forKeyedSubscript:@"actionNotAllowed"];
+    [dictionary setObject:v9 forKeyedSubscript:@"actionNotAllowed"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -295,7 +295,7 @@
   if (whichOneof_Actionfailurefailure == 5)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure bluetoothDisabled](self, "bluetoothDisabled")}];
-    [v3 setObject:v10 forKeyedSubscript:@"bluetoothDisabled"];
+    [dictionary setObject:v10 forKeyedSubscript:@"bluetoothDisabled"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -303,7 +303,7 @@
   if (whichOneof_Actionfailurefailure == 16)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure developerDefinedError](self, "developerDefinedError")}];
-    [v3 setObject:v11 forKeyedSubscript:@"developerDefinedError"];
+    [dictionary setObject:v11 forKeyedSubscript:@"developerDefinedError"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -311,7 +311,7 @@
   if (whichOneof_Actionfailurefailure == 10)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure entityNotFound](self, "entityNotFound")}];
-    [v3 setObject:v12 forKeyedSubscript:@"entityNotFound"];
+    [dictionary setObject:v12 forKeyedSubscript:@"entityNotFound"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -319,7 +319,7 @@
   if (whichOneof_Actionfailurefailure == 9)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure featureCurrentlyRestricted](self, "featureCurrentlyRestricted")}];
-    [v3 setObject:v13 forKeyedSubscript:@"featureCurrentlyRestricted"];
+    [dictionary setObject:v13 forKeyedSubscript:@"featureCurrentlyRestricted"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -327,7 +327,7 @@
   if (whichOneof_Actionfailurefailure == 3)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure locationDisabled](self, "locationDisabled")}];
-    [v3 setObject:v14 forKeyedSubscript:@"locationDisabled"];
+    [dictionary setObject:v14 forKeyedSubscript:@"locationDisabled"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -335,7 +335,7 @@
   if (whichOneof_Actionfailurefailure == 6)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure networkFailure](self, "networkFailure")}];
-    [v3 setObject:v15 forKeyedSubscript:@"networkFailure"];
+    [dictionary setObject:v15 forKeyedSubscript:@"networkFailure"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -343,7 +343,7 @@
   if (whichOneof_Actionfailurefailure == 15)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure noMatchingTool](self, "noMatchingTool")}];
-    [v3 setObject:v16 forKeyedSubscript:@"noMatchingTool"];
+    [dictionary setObject:v16 forKeyedSubscript:@"noMatchingTool"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -351,7 +351,7 @@
   if (whichOneof_Actionfailurefailure == 7)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure partialFailure](self, "partialFailure")}];
-    [v3 setObject:v17 forKeyedSubscript:@"partialFailure"];
+    [dictionary setObject:v17 forKeyedSubscript:@"partialFailure"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -359,7 +359,7 @@
   if (whichOneof_Actionfailurefailure == 2)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure preciseLocationDisabled](self, "preciseLocationDisabled")}];
-    [v3 setObject:v18 forKeyedSubscript:@"preciseLocationDisabled"];
+    [dictionary setObject:v18 forKeyedSubscript:@"preciseLocationDisabled"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -367,7 +367,7 @@
   if (whichOneof_Actionfailurefailure == 1)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure preflightCheckFailure](self, "preflightCheckFailure")}];
-    [v3 setObject:v19 forKeyedSubscript:@"preflightCheckFailure"];
+    [dictionary setObject:v19 forKeyedSubscript:@"preflightCheckFailure"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -375,7 +375,7 @@
   if (whichOneof_Actionfailurefailure == 19)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure searchSucceededNoMatchingTool](self, "searchSucceededNoMatchingTool")}];
-    [v3 setObject:v20 forKeyedSubscript:@"searchSucceededNoMatchingTool"];
+    [dictionary setObject:v20 forKeyedSubscript:@"searchSucceededNoMatchingTool"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -383,7 +383,7 @@
   if (whichOneof_Actionfailurefailure == 18)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure unableToCancel](self, "unableToCancel")}];
-    [v3 setObject:v21 forKeyedSubscript:@"unableToCancel"];
+    [dictionary setObject:v21 forKeyedSubscript:@"unableToCancel"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -391,7 +391,7 @@
   if (whichOneof_Actionfailurefailure == 20)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure unableToHandleRequest](self, "unableToHandleRequest")}];
-    [v3 setObject:v22 forKeyedSubscript:@"unableToHandleRequest"];
+    [dictionary setObject:v22 forKeyedSubscript:@"unableToHandleRequest"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -399,7 +399,7 @@
   if (whichOneof_Actionfailurefailure == 12)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure unableToUndo](self, "unableToUndo")}];
-    [v3 setObject:v23 forKeyedSubscript:@"unableToUndo"];
+    [dictionary setObject:v23 forKeyedSubscript:@"unableToUndo"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -407,7 +407,7 @@
   if (whichOneof_Actionfailurefailure == 8)
   {
     v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure unsupportedOnDevice](self, "unsupportedOnDevice")}];
-    [v3 setObject:v24 forKeyedSubscript:@"unsupportedOnDevice"];
+    [dictionary setObject:v24 forKeyedSubscript:@"unsupportedOnDevice"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -415,7 +415,7 @@
   if (whichOneof_Actionfailurefailure == 14)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure valueDisambiguationRejected](self, "valueDisambiguationRejected")}];
-    [v3 setObject:v25 forKeyedSubscript:@"valueDisambiguationRejected"];
+    [dictionary setObject:v25 forKeyedSubscript:@"valueDisambiguationRejected"];
 
     whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   }
@@ -423,12 +423,12 @@
   if (whichOneof_Actionfailurefailure == 4)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTActionFailureFailure wifiDisabled](self, "wifiDisabled")}];
-    [v3 setObject:v26 forKeyedSubscript:@"wifiDisabled"];
+    [dictionary setObject:v26 forKeyedSubscript:@"wifiDisabled"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -772,120 +772,120 @@
   return v23 ^ v24 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v12 ^ v14 ^ v10 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
-  if (whichOneof_Actionfailurefailure != [v4 whichOneof_Actionfailurefailure])
+  if (whichOneof_Actionfailurefailure != [equalCopy whichOneof_Actionfailurefailure])
   {
     goto LABEL_28;
   }
 
   preflightCheckFailure = self->_preflightCheckFailure;
-  if (preflightCheckFailure != [v4 preflightCheckFailure])
+  if (preflightCheckFailure != [equalCopy preflightCheckFailure])
   {
     goto LABEL_28;
   }
 
   preciseLocationDisabled = self->_preciseLocationDisabled;
-  if (preciseLocationDisabled != [v4 preciseLocationDisabled])
+  if (preciseLocationDisabled != [equalCopy preciseLocationDisabled])
   {
     goto LABEL_28;
   }
 
   locationDisabled = self->_locationDisabled;
-  if (locationDisabled != [v4 locationDisabled])
+  if (locationDisabled != [equalCopy locationDisabled])
   {
     goto LABEL_28;
   }
 
   wifiDisabled = self->_wifiDisabled;
-  if (wifiDisabled != [v4 wifiDisabled])
+  if (wifiDisabled != [equalCopy wifiDisabled])
   {
     goto LABEL_28;
   }
 
   bluetoothDisabled = self->_bluetoothDisabled;
-  if (bluetoothDisabled != [v4 bluetoothDisabled])
+  if (bluetoothDisabled != [equalCopy bluetoothDisabled])
   {
     goto LABEL_28;
   }
 
   networkFailure = self->_networkFailure;
-  if (networkFailure != [v4 networkFailure])
+  if (networkFailure != [equalCopy networkFailure])
   {
     goto LABEL_28;
   }
 
   partialFailure = self->_partialFailure;
-  if (partialFailure != [v4 partialFailure])
+  if (partialFailure != [equalCopy partialFailure])
   {
     goto LABEL_28;
   }
 
   unsupportedOnDevice = self->_unsupportedOnDevice;
-  if (unsupportedOnDevice != [v4 unsupportedOnDevice])
+  if (unsupportedOnDevice != [equalCopy unsupportedOnDevice])
   {
     goto LABEL_28;
   }
 
   featureCurrentlyRestricted = self->_featureCurrentlyRestricted;
-  if (featureCurrentlyRestricted != [v4 featureCurrentlyRestricted])
+  if (featureCurrentlyRestricted != [equalCopy featureCurrentlyRestricted])
   {
     goto LABEL_28;
   }
 
   entityNotFound = self->_entityNotFound;
-  if (entityNotFound != [v4 entityNotFound])
+  if (entityNotFound != [equalCopy entityNotFound])
   {
     goto LABEL_28;
   }
 
   actionNotAllowed = self->_actionNotAllowed;
-  if (actionNotAllowed != [v4 actionNotAllowed])
+  if (actionNotAllowed != [equalCopy actionNotAllowed])
   {
     goto LABEL_28;
   }
 
   unableToUndo = self->_unableToUndo;
-  if (unableToUndo != [v4 unableToUndo])
+  if (unableToUndo != [equalCopy unableToUndo])
   {
     goto LABEL_28;
   }
 
   actionCanceled = self->_actionCanceled;
-  if (actionCanceled != [v4 actionCanceled])
+  if (actionCanceled != [equalCopy actionCanceled])
   {
     goto LABEL_28;
   }
 
   valueDisambiguationRejected = self->_valueDisambiguationRejected;
-  if (valueDisambiguationRejected != [v4 valueDisambiguationRejected])
+  if (valueDisambiguationRejected != [equalCopy valueDisambiguationRejected])
   {
     goto LABEL_28;
   }
 
   noMatchingTool = self->_noMatchingTool;
-  if (noMatchingTool != [v4 noMatchingTool])
+  if (noMatchingTool != [equalCopy noMatchingTool])
   {
     goto LABEL_28;
   }
 
   developerDefinedError = self->_developerDefinedError;
-  if (developerDefinedError != [v4 developerDefinedError])
+  if (developerDefinedError != [equalCopy developerDefinedError])
   {
     goto LABEL_28;
   }
 
-  v22 = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError];
-  v23 = [v4 actionFailureDeveloperDefinedError];
-  v24 = v23;
-  if ((v22 != 0) == (v23 == 0))
+  actionFailureDeveloperDefinedError = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError];
+  actionFailureDeveloperDefinedError2 = [equalCopy actionFailureDeveloperDefinedError];
+  v24 = actionFailureDeveloperDefinedError2;
+  if ((actionFailureDeveloperDefinedError != 0) == (actionFailureDeveloperDefinedError2 == 0))
   {
 
 LABEL_28:
@@ -893,13 +893,13 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v25 = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError];
-  if (v25)
+  actionFailureDeveloperDefinedError3 = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError];
+  if (actionFailureDeveloperDefinedError3)
   {
-    v26 = v25;
-    v27 = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError];
-    v28 = [v4 actionFailureDeveloperDefinedError];
-    v29 = [v27 isEqual:v28];
+    v26 = actionFailureDeveloperDefinedError3;
+    actionFailureDeveloperDefinedError4 = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError];
+    actionFailureDeveloperDefinedError5 = [equalCopy actionFailureDeveloperDefinedError];
+    v29 = [actionFailureDeveloperDefinedError4 isEqual:actionFailureDeveloperDefinedError5];
 
     if (!v29)
     {
@@ -912,27 +912,27 @@ LABEL_28:
   }
 
   unableToCancel = self->_unableToCancel;
-  if (unableToCancel != [v4 unableToCancel])
+  if (unableToCancel != [equalCopy unableToCancel])
   {
     goto LABEL_28;
   }
 
   searchSucceededNoMatchingTool = self->_searchSucceededNoMatchingTool;
-  if (searchSucceededNoMatchingTool != [v4 searchSucceededNoMatchingTool])
+  if (searchSucceededNoMatchingTool != [equalCopy searchSucceededNoMatchingTool])
   {
     goto LABEL_28;
   }
 
   unableToHandleRequest = self->_unableToHandleRequest;
-  v33 = unableToHandleRequest == [v4 unableToHandleRequest];
+  v33 = unableToHandleRequest == [equalCopy unableToHandleRequest];
 LABEL_29:
 
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   whichOneof_Actionfailurefailure = self->_whichOneof_Actionfailurefailure;
   if (whichOneof_Actionfailurefailure == 1)
   {
@@ -1029,11 +1029,11 @@ LABEL_29:
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError];
+  actionFailureDeveloperDefinedError = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError];
 
-  if (v5)
+  if (actionFailureDeveloperDefinedError)
   {
-    v6 = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError];
+    actionFailureDeveloperDefinedError2 = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1065,7 +1065,7 @@ LABEL_29:
   }
 }
 
-- (void)setUnableToHandleRequest:(BOOL)a3
+- (void)setUnableToHandleRequest:(BOOL)request
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1089,7 +1089,7 @@ LABEL_29:
   self->_unableToCancel = 0;
   self->_searchSucceededNoMatchingTool = 0;
   self->_whichOneof_Actionfailurefailure = 20;
-  self->_unableToHandleRequest = a3;
+  self->_unableToHandleRequest = request;
 }
 
 - (void)deleteSearchSucceededNoMatchingTool
@@ -1101,7 +1101,7 @@ LABEL_29:
   }
 }
 
-- (void)setSearchSucceededNoMatchingTool:(BOOL)a3
+- (void)setSearchSucceededNoMatchingTool:(BOOL)tool
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1125,7 +1125,7 @@ LABEL_29:
   self->_unableToCancel = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 19;
-  self->_searchSucceededNoMatchingTool = a3;
+  self->_searchSucceededNoMatchingTool = tool;
 }
 
 - (void)deleteUnableToCancel
@@ -1137,7 +1137,7 @@ LABEL_29:
   }
 }
 
-- (void)setUnableToCancel:(BOOL)a3
+- (void)setUnableToCancel:(BOOL)cancel
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1161,7 +1161,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 18;
-  self->_unableToCancel = a3;
+  self->_unableToCancel = cancel;
 }
 
 - (void)deleteActionFailureDeveloperDefinedError
@@ -1189,7 +1189,7 @@ LABEL_29:
   return v3;
 }
 
-- (void)setActionFailureDeveloperDefinedError:(id)a3
+- (void)setActionFailureDeveloperDefinedError:(id)error
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1211,13 +1211,13 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   v3 = 17;
-  if (!a3)
+  if (!error)
   {
     v3 = 0;
   }
 
   self->_whichOneof_Actionfailurefailure = v3;
-  objc_storeStrong(&self->_actionFailureDeveloperDefinedError, a3);
+  objc_storeStrong(&self->_actionFailureDeveloperDefinedError, error);
 }
 
 - (void)deleteDeveloperDefinedError
@@ -1229,7 +1229,7 @@ LABEL_29:
   }
 }
 
-- (void)setDeveloperDefinedError:(BOOL)a3
+- (void)setDeveloperDefinedError:(BOOL)error
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1253,7 +1253,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 16;
-  self->_developerDefinedError = a3;
+  self->_developerDefinedError = error;
 }
 
 - (void)deleteNoMatchingTool
@@ -1265,7 +1265,7 @@ LABEL_29:
   }
 }
 
-- (void)setNoMatchingTool:(BOOL)a3
+- (void)setNoMatchingTool:(BOOL)tool
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1289,7 +1289,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 15;
-  self->_noMatchingTool = a3;
+  self->_noMatchingTool = tool;
 }
 
 - (void)deleteValueDisambiguationRejected
@@ -1301,7 +1301,7 @@ LABEL_29:
   }
 }
 
-- (void)setValueDisambiguationRejected:(BOOL)a3
+- (void)setValueDisambiguationRejected:(BOOL)rejected
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1325,7 +1325,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 14;
-  self->_valueDisambiguationRejected = a3;
+  self->_valueDisambiguationRejected = rejected;
 }
 
 - (void)deleteActionCanceled
@@ -1337,7 +1337,7 @@ LABEL_29:
   }
 }
 
-- (void)setActionCanceled:(BOOL)a3
+- (void)setActionCanceled:(BOOL)canceled
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1361,7 +1361,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 13;
-  self->_actionCanceled = a3;
+  self->_actionCanceled = canceled;
 }
 
 - (void)deleteUnableToUndo
@@ -1373,7 +1373,7 @@ LABEL_29:
   }
 }
 
-- (void)setUnableToUndo:(BOOL)a3
+- (void)setUnableToUndo:(BOOL)undo
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1397,7 +1397,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 12;
-  self->_unableToUndo = a3;
+  self->_unableToUndo = undo;
 }
 
 - (void)deleteActionNotAllowed
@@ -1409,7 +1409,7 @@ LABEL_29:
   }
 }
 
-- (void)setActionNotAllowed:(BOOL)a3
+- (void)setActionNotAllowed:(BOOL)allowed
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1433,7 +1433,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 11;
-  self->_actionNotAllowed = a3;
+  self->_actionNotAllowed = allowed;
 }
 
 - (void)deleteEntityNotFound
@@ -1445,7 +1445,7 @@ LABEL_29:
   }
 }
 
-- (void)setEntityNotFound:(BOOL)a3
+- (void)setEntityNotFound:(BOOL)found
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1469,7 +1469,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 10;
-  self->_entityNotFound = a3;
+  self->_entityNotFound = found;
 }
 
 - (void)deleteFeatureCurrentlyRestricted
@@ -1481,7 +1481,7 @@ LABEL_29:
   }
 }
 
-- (void)setFeatureCurrentlyRestricted:(BOOL)a3
+- (void)setFeatureCurrentlyRestricted:(BOOL)restricted
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1505,7 +1505,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 9;
-  self->_featureCurrentlyRestricted = a3;
+  self->_featureCurrentlyRestricted = restricted;
 }
 
 - (void)deleteUnsupportedOnDevice
@@ -1517,7 +1517,7 @@ LABEL_29:
   }
 }
 
-- (void)setUnsupportedOnDevice:(BOOL)a3
+- (void)setUnsupportedOnDevice:(BOOL)device
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1541,7 +1541,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 8;
-  self->_unsupportedOnDevice = a3;
+  self->_unsupportedOnDevice = device;
 }
 
 - (void)deletePartialFailure
@@ -1553,7 +1553,7 @@ LABEL_29:
   }
 }
 
-- (void)setPartialFailure:(BOOL)a3
+- (void)setPartialFailure:(BOOL)failure
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1577,7 +1577,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 7;
-  self->_partialFailure = a3;
+  self->_partialFailure = failure;
 }
 
 - (void)deleteNetworkFailure
@@ -1589,7 +1589,7 @@ LABEL_29:
   }
 }
 
-- (void)setNetworkFailure:(BOOL)a3
+- (void)setNetworkFailure:(BOOL)failure
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1613,7 +1613,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 6;
-  self->_networkFailure = a3;
+  self->_networkFailure = failure;
 }
 
 - (void)deleteBluetoothDisabled
@@ -1625,7 +1625,7 @@ LABEL_29:
   }
 }
 
-- (void)setBluetoothDisabled:(BOOL)a3
+- (void)setBluetoothDisabled:(BOOL)disabled
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1649,7 +1649,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 5;
-  self->_bluetoothDisabled = a3;
+  self->_bluetoothDisabled = disabled;
 }
 
 - (void)deleteWifiDisabled
@@ -1661,7 +1661,7 @@ LABEL_29:
   }
 }
 
-- (void)setWifiDisabled:(BOOL)a3
+- (void)setWifiDisabled:(BOOL)disabled
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1685,7 +1685,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 4;
-  self->_wifiDisabled = a3;
+  self->_wifiDisabled = disabled;
 }
 
 - (void)deleteLocationDisabled
@@ -1697,7 +1697,7 @@ LABEL_29:
   }
 }
 
-- (void)setLocationDisabled:(BOOL)a3
+- (void)setLocationDisabled:(BOOL)disabled
 {
   self->_preflightCheckFailure = 0;
   self->_preciseLocationDisabled = 0;
@@ -1721,7 +1721,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 3;
-  self->_locationDisabled = a3;
+  self->_locationDisabled = disabled;
 }
 
 - (void)deletePreciseLocationDisabled
@@ -1733,7 +1733,7 @@ LABEL_29:
   }
 }
 
-- (void)setPreciseLocationDisabled:(BOOL)a3
+- (void)setPreciseLocationDisabled:(BOOL)disabled
 {
   self->_preflightCheckFailure = 0;
   self->_locationDisabled = 0;
@@ -1757,7 +1757,7 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 2;
-  self->_preciseLocationDisabled = a3;
+  self->_preciseLocationDisabled = disabled;
 }
 
 - (void)deletePreflightCheckFailure
@@ -1769,7 +1769,7 @@ LABEL_29:
   }
 }
 
-- (void)setPreflightCheckFailure:(BOOL)a3
+- (void)setPreflightCheckFailure:(BOOL)failure
 {
   self->_preciseLocationDisabled = 0;
   self->_locationDisabled = 0;
@@ -1793,20 +1793,20 @@ LABEL_29:
   self->_searchSucceededNoMatchingTool = 0;
   self->_unableToHandleRequest = 0;
   self->_whichOneof_Actionfailurefailure = 1;
-  self->_preflightCheckFailure = a3;
+  self->_preflightCheckFailure = failure;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IFTSchemaIFTActionFailureFailure;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaIFTActionFailureFailure *)self actionFailureDeveloperDefinedError:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(IFTSchemaIFTActionFailureFailure *)self deleteActionFailureDeveloperDefinedError];
   }

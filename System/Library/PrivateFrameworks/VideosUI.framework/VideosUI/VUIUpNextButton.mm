@@ -1,11 +1,11 @@
 @interface VUIUpNextButton
 - (BOOL)hasLabel;
 - (CGSize)intrinsicContentSize;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (VUIUpNextButton)initWithType:(unint64_t)a3 interfaceStyle:(unint64_t)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (VUIUpNextButton)initWithType:(unint64_t)type interfaceStyle:(unint64_t)style;
 - (id)largeContentTitle;
-- (void)selectButtonAction:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)selectButtonAction:(id)action;
+- (void)setTintColor:(id)color;
 - (void)upNextStateChangedToAdded;
 - (void)upNextStateChangedToRemoved;
 - (void)updateAccessibilityIdentifierAfterStateChanged;
@@ -13,11 +13,11 @@
 
 @implementation VUIUpNextButton
 
-- (VUIUpNextButton)initWithType:(unint64_t)a3 interfaceStyle:(unint64_t)a4
+- (VUIUpNextButton)initWithType:(unint64_t)type interfaceStyle:(unint64_t)style
 {
   v10.receiver = self;
   v10.super_class = VUIUpNextButton;
-  v4 = [(VUIButton *)&v10 initWithType:a3 interfaceStyle:a4];
+  v4 = [(VUIButton *)&v10 initWithType:type interfaceStyle:style];
   if (v4)
   {
     v5 = objc_alloc_init(VUIUpNextButtonProperties);
@@ -43,18 +43,18 @@ void __47__VUIUpNextButton_initWithType_interfaceStyle___block_invoke(uint64_t a
   [WeakRetained selectButtonAction:@"select"];
 }
 
-- (void)selectButtonAction:(id)a3
+- (void)selectButtonAction:(id)action
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"VUIDidSelectUpNextButtonNotification" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"VUIDidSelectUpNextButtonNotification" object:self userInfo:0];
 
-  v5 = [(VUIUpNextButton *)self properties];
-  [v5 callAPIAndToggleUpNextState];
+  properties = [(VUIUpNextButton *)self properties];
+  [properties callAPIAndToggleUpNextState];
 
-  v6 = [(VUIUpNextButton *)self properties];
-  LODWORD(v5) = [v6 dismissOnSelect];
+  properties2 = [(VUIUpNextButton *)self properties];
+  LODWORD(properties) = [properties2 dismissOnSelect];
 
-  if (v5)
+  if (properties)
   {
 
     +[VUIApplicationRouter dismissPresentedViewController];
@@ -69,72 +69,72 @@ void __47__VUIUpNextButton_initWithType_interfaceStyle___block_invoke(uint64_t a
   return result;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v7.receiver = self;
   v7.super_class = VUIUpNextButton;
-  [(VUIButton *)&v7 setTintColor:v4];
+  [(VUIButton *)&v7 setTintColor:colorCopy];
   if ([(VUIUpNextButton *)self tintAdjustmentMode]!= 2)
   {
-    v5 = [(VUIUpNextButton *)self properties];
-    v6 = [v5 currentImageView];
+    properties = [(VUIUpNextButton *)self properties];
+    currentImageView = [properties currentImageView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 _setTintColor:v4];
+      [currentImageView _setTintColor:colorCopy];
     }
 
-    [(VUIButton *)self setImageTintColor:v4];
+    [(VUIButton *)self setImageTintColor:colorCopy];
   }
 }
 
 - (void)upNextStateChangedToAdded
 {
-  v3 = [(VUIUpNextButton *)self properties];
-  v4 = [v3 addedStateView];
-  v5 = [v4 label];
-  [(VUIButton *)self setTextContentView:v5];
+  properties = [(VUIUpNextButton *)self properties];
+  addedStateView = [properties addedStateView];
+  label = [addedStateView label];
+  [(VUIButton *)self setTextContentView:label];
 
-  v6 = [(VUIUpNextButton *)self properties];
-  v19 = [v6 currentImageView];
+  properties2 = [(VUIUpNextButton *)self properties];
+  currentImageView = [properties2 currentImageView];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(VUIButton *)self imageView];
+    imageView = [(VUIButton *)self imageView];
 
-    if (!v7)
+    if (!imageView)
     {
-      [(VUIButton *)self setImageView:v19];
+      [(VUIButton *)self setImageView:currentImageView];
     }
 
-    v8 = [(VUIUpNextButton *)self properties];
-    v9 = [v8 addedStateView];
-    v10 = [v9 image];
+    properties3 = [(VUIUpNextButton *)self properties];
+    addedStateView2 = [properties3 addedStateView];
+    image = [addedStateView2 image];
 
-    v11 = [v19 image];
-    if (v11 && ([MEMORY[0x1E69DF6F0] isMac] & 1) == 0)
+    image2 = [currentImageView image];
+    if (image2 && ([MEMORY[0x1E69DF6F0] isMac] & 1) == 0)
     {
-      v16 = [MEMORY[0x1E69DF6F0] isTV];
+      isTV = [MEMORY[0x1E69DF6F0] isTV];
 
-      if ((v16 & 1) == 0)
+      if ((isTV & 1) == 0)
       {
-        v17 = [v19 image];
+        image3 = [currentImageView image];
 
-        if (v17 != v10)
+        if (image3 != image)
         {
           if ([(VUIUpNextButton *)self hasLabel])
           {
-            v18 = 0;
+            symbolReplaceContentTransition = 0;
           }
 
           else
           {
-            v18 = [MEMORY[0x1E69DF798] symbolReplaceContentTransition];
+            symbolReplaceContentTransition = [MEMORY[0x1E69DF798] symbolReplaceContentTransition];
           }
 
-          [v19 setSymbolImage:v10 withSymbolTransition:v18];
+          [currentImageView setSymbolImage:image withSymbolTransition:symbolReplaceContentTransition];
         }
 
         goto LABEL_8;
@@ -145,59 +145,59 @@ void __47__VUIUpNextButton_initWithType_interfaceStyle___block_invoke(uint64_t a
     {
     }
 
-    [v19 setImage:v10];
+    [currentImageView setImage:image];
 LABEL_8:
     v12 = +[VUILocalizationManager sharedInstance];
     v13 = [v12 localizedStringForKey:@"TV.Button.Watchlist.Remove"];
-    [v19 setAccessibilityLabel:v13];
+    [currentImageView setAccessibilityLabel:v13];
   }
 
   [(VUIUpNextButton *)self invalidateIntrinsicContentSize];
   [(VUIUpNextButton *)self updateAccessibilityIdentifierAfterStateChanged];
-  v14 = [(VUIUpNextButton *)self stateDidChangeHandler];
+  stateDidChangeHandler = [(VUIUpNextButton *)self stateDidChangeHandler];
 
-  if (v14)
+  if (stateDidChangeHandler)
   {
-    v15 = [(VUIUpNextButton *)self stateDidChangeHandler];
-    (v15)[2](v15, self);
+    stateDidChangeHandler2 = [(VUIUpNextButton *)self stateDidChangeHandler];
+    (stateDidChangeHandler2)[2](stateDidChangeHandler2, self);
   }
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
+  height = subviews.height;
+  width = subviews.width;
   v25.receiver = self;
   v25.super_class = VUIUpNextButton;
   [VUIButton vui_layoutSubviews:sel_vui_layoutSubviews_computationOnly_ computationOnly:?];
   v9 = v8;
   v11 = v10;
-  if (!a4)
+  if (!only)
   {
-    v12 = [(VUIUpNextButton *)self properties];
-    if ([v12 removeTitleForSquareAspectRatio])
+    properties = [(VUIUpNextButton *)self properties];
+    if ([properties removeTitleForSquareAspectRatio])
     {
-      v13 = [(VUIUpNextButton *)self properties];
-      v14 = [v13 addedStateView];
-      v15 = [v14 label];
-      if (v15)
+      properties2 = [(VUIUpNextButton *)self properties];
+      addedStateView = [properties2 addedStateView];
+      label = [addedStateView label];
+      if (label)
       {
       }
 
       else
       {
-        v16 = [(VUIUpNextButton *)self properties];
-        v17 = [v16 removedStateView];
-        v18 = [v17 label];
+        properties3 = [(VUIUpNextButton *)self properties];
+        removedStateView = [properties3 removedStateView];
+        label2 = [removedStateView label];
 
-        if (!v18)
+        if (!label2)
         {
           goto LABEL_14;
         }
       }
 
-      v19 = [(VUIButton *)self textContentView];
-      v20 = v19;
+      textContentView = [(VUIButton *)self textContentView];
+      v20 = textContentView;
       if (round(width) == round(height))
       {
 
@@ -212,10 +212,10 @@ LABEL_8:
 
         if (!v20)
         {
-          v21 = [(VUIUpNextButton *)self properties];
-          v22 = [v21 isWatchListed];
+          properties4 = [(VUIUpNextButton *)self properties];
+          isWatchListed = [properties4 isWatchListed];
 
-          if (v22)
+          if (isWatchListed)
           {
             [(VUIUpNextButton *)self upNextStateChangedToAdded];
           }
@@ -243,50 +243,50 @@ LABEL_14:
 
 - (void)upNextStateChangedToRemoved
 {
-  v3 = [(VUIUpNextButton *)self properties];
-  v4 = [v3 removedStateView];
-  v5 = [v4 label];
-  [(VUIButton *)self setTextContentView:v5];
+  properties = [(VUIUpNextButton *)self properties];
+  removedStateView = [properties removedStateView];
+  label = [removedStateView label];
+  [(VUIButton *)self setTextContentView:label];
 
-  v6 = [(VUIUpNextButton *)self properties];
-  v19 = [v6 currentImageView];
+  properties2 = [(VUIUpNextButton *)self properties];
+  currentImageView = [properties2 currentImageView];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(VUIButton *)self imageView];
+    imageView = [(VUIButton *)self imageView];
 
-    if (!v7)
+    if (!imageView)
     {
-      [(VUIButton *)self setImageView:v19];
+      [(VUIButton *)self setImageView:currentImageView];
     }
 
-    v8 = [(VUIUpNextButton *)self properties];
-    v9 = [v8 removedStateView];
-    v10 = [v9 image];
+    properties3 = [(VUIUpNextButton *)self properties];
+    removedStateView2 = [properties3 removedStateView];
+    image = [removedStateView2 image];
 
-    v11 = [v19 image];
-    if (v11 && ([MEMORY[0x1E69DF6F0] isMac] & 1) == 0)
+    image2 = [currentImageView image];
+    if (image2 && ([MEMORY[0x1E69DF6F0] isMac] & 1) == 0)
     {
-      v16 = [MEMORY[0x1E69DF6F0] isTV];
+      isTV = [MEMORY[0x1E69DF6F0] isTV];
 
-      if ((v16 & 1) == 0)
+      if ((isTV & 1) == 0)
       {
-        v17 = [v19 image];
+        image3 = [currentImageView image];
 
-        if (v17 != v10)
+        if (image3 != image)
         {
           if ([(VUIUpNextButton *)self hasLabel])
           {
-            v18 = 0;
+            symbolReplaceContentTransition = 0;
           }
 
           else
           {
-            v18 = [MEMORY[0x1E69DF798] symbolReplaceContentTransition];
+            symbolReplaceContentTransition = [MEMORY[0x1E69DF798] symbolReplaceContentTransition];
           }
 
-          [v19 setSymbolImage:v10 withSymbolTransition:v18];
+          [currentImageView setSymbolImage:image withSymbolTransition:symbolReplaceContentTransition];
         }
 
         goto LABEL_8;
@@ -297,31 +297,31 @@ LABEL_14:
     {
     }
 
-    [v19 setImage:v10];
+    [currentImageView setImage:image];
 LABEL_8:
     v12 = +[VUILocalizationManager sharedInstance];
     v13 = [v12 localizedStringForKey:@"TV.Button.Watchlist.Add"];
-    [v19 setAccessibilityLabel:v13];
+    [currentImageView setAccessibilityLabel:v13];
   }
 
   [(VUIUpNextButton *)self invalidateIntrinsicContentSize];
   [(VUIUpNextButton *)self updateAccessibilityIdentifierAfterStateChanged];
-  v14 = [(VUIUpNextButton *)self stateDidChangeHandler];
+  stateDidChangeHandler = [(VUIUpNextButton *)self stateDidChangeHandler];
 
-  if (v14)
+  if (stateDidChangeHandler)
   {
-    v15 = [(VUIUpNextButton *)self stateDidChangeHandler];
-    (v15)[2](v15, self);
+    stateDidChangeHandler2 = [(VUIUpNextButton *)self stateDidChangeHandler];
+    (stateDidChangeHandler2)[2](stateDidChangeHandler2, self);
   }
 }
 
 - (void)updateAccessibilityIdentifierAfterStateChanged
 {
-  v3 = [(VUIUpNextButton *)self vuiAccessibilityIdentifier];
-  v4 = [(VUIUpNextButton *)self properties];
-  v5 = [v4 isWatchListed];
+  vuiAccessibilityIdentifier = [(VUIUpNextButton *)self vuiAccessibilityIdentifier];
+  properties = [(VUIUpNextButton *)self properties];
+  isWatchListed = [properties isWatchListed];
 
-  if (v5)
+  if (isWatchListed)
   {
     v6 = @"removed";
     v7 = @"added";
@@ -333,26 +333,26 @@ LABEL_8:
     v7 = @"removed";
   }
 
-  v8 = [v3 stringByReplacingOccurrencesOfString:v6 withString:v7];
+  v8 = [vuiAccessibilityIdentifier stringByReplacingOccurrencesOfString:v6 withString:v7];
 
   [(VUIUpNextButton *)self setVuiAccessibilityIdentifier:v8];
 }
 
 - (BOOL)hasLabel
 {
-  v3 = [(VUIUpNextButton *)self properties];
-  v4 = [v3 removedStateView];
-  v5 = [v4 label];
+  properties = [(VUIUpNextButton *)self properties];
+  removedStateView = [properties removedStateView];
+  label = [removedStateView label];
 
-  v6 = [(VUIUpNextButton *)self properties];
-  v7 = [v6 addedStateView];
-  v8 = [v7 label];
+  properties2 = [(VUIUpNextButton *)self properties];
+  addedStateView = [properties2 addedStateView];
+  label2 = [addedStateView label];
 
-  v9 = [v5 vuiText];
-  if ([v9 length])
+  vuiText = [label vuiText];
+  if ([vuiText length])
   {
-    v10 = [v8 vuiText];
-    v11 = [v10 length] != 0;
+    vuiText2 = [label2 vuiText];
+    v11 = [vuiText2 length] != 0;
   }
 
   else
@@ -365,12 +365,12 @@ LABEL_8:
 
 - (id)largeContentTitle
 {
-  v2 = [(VUIUpNextButton *)self properties];
-  v3 = [v2 isWatchListed];
+  properties = [(VUIUpNextButton *)self properties];
+  isWatchListed = [properties isWatchListed];
 
   v4 = +[VUILocalizationManager sharedInstance];
   v5 = v4;
-  if (v3)
+  if (isWatchListed)
   {
     v6 = @"TV.Button.Watchlist.Remove";
   }

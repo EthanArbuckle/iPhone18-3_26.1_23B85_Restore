@@ -1,37 +1,37 @@
 @interface UARPSuperBinaryBackDeploy
-- (BOOL)expandMetaData:(UARPSuperBinaryHeader *)a3;
+- (BOOL)expandMetaData:(UARPSuperBinaryHeader *)data;
 - (BOOL)expandSuperBinary;
 - (BOOL)expandTLVs;
-- (BOOL)generateTatsuMeasurements:(unint64_t)a3 relativeURL:(id)a4;
-- (BOOL)preparePayload:(UARPPayloadHeader2 *)a3;
-- (BOOL)queryTatsuSigningServer:(id)a3 ssoOnly:(BOOL)a4 error:(id *)a5;
-- (UARPSuperBinaryBackDeploy)initWithData:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
-- (UARPSuperBinaryBackDeploy)initWithFilePath:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
-- (UARPSuperBinaryBackDeploy)initWithURL:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
-- (id)composeTSSRequest:(unint64_t)a3 asMeasurement:(BOOL)a4;
-- (id)generatePersonalizedSuperBinaryInternal:(id)a3;
+- (BOOL)generateTatsuMeasurements:(unint64_t)measurements relativeURL:(id)l;
+- (BOOL)preparePayload:(UARPPayloadHeader2 *)payload;
+- (BOOL)queryTatsuSigningServer:(id)server ssoOnly:(BOOL)only error:(id *)error;
+- (UARPSuperBinaryBackDeploy)initWithData:(id)data delegate:(id)delegate delegateQueue:(id)queue;
+- (UARPSuperBinaryBackDeploy)initWithFilePath:(id)path delegate:(id)delegate delegateQueue:(id)queue;
+- (UARPSuperBinaryBackDeploy)initWithURL:(id)l delegate:(id)delegate delegateQueue:(id)queue;
+- (id)composeTSSRequest:(unint64_t)request asMeasurement:(BOOL)measurement;
+- (id)generatePersonalizedSuperBinaryInternal:(id)internal;
 - (id)generatePersonalizedSuperBinaryWithoutRRKO;
-- (id)getDataBlock:(unint64_t)a3 offset:(unint64_t)a4;
-- (id)payloadWith4ccTag:(id)a3;
-- (id)payloadsWithout4ccTag:(id)a3;
+- (id)getDataBlock:(unint64_t)block offset:(unint64_t)offset;
+- (id)payloadWith4ccTag:(id)tag;
+- (id)payloadsWithout4ccTag:(id)tag;
 - (id)personalizedMetaData;
 - (id)requiredTSSOptions;
-- (id)tatsuMeasurements:(unint64_t)a3;
-- (id)tssKeyName:(id)a3 unitNumber:(unint64_t)a4;
-- (void)generateTatsuMeasurements:(unint64_t)a3;
-- (void)generateTatsuMeasurementsPerPayload:(unint64_t)a3;
-- (void)logInternal:(id)a3 arguments:(char *)a4;
-- (void)processMeasurementsForTSSOptions:(id)a3 unitNumber:(unint64_t)a4 asMeasurement:(BOOL)a5;
+- (id)tatsuMeasurements:(unint64_t)measurements;
+- (id)tssKeyName:(id)name unitNumber:(unint64_t)number;
+- (void)generateTatsuMeasurements:(unint64_t)measurements;
+- (void)generateTatsuMeasurementsPerPayload:(unint64_t)payload;
+- (void)logInternal:(id)internal arguments:(char *)arguments;
+- (void)processMeasurementsForTSSOptions:(id)options unitNumber:(unint64_t)number asMeasurement:(BOOL)measurement;
 - (void)processTLVsForPersonalization;
 @end
 
 @implementation UARPSuperBinaryBackDeploy
 
-- (UARPSuperBinaryBackDeploy)initWithData:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (UARPSuperBinaryBackDeploy)initWithData:(id)data delegate:(id)delegate delegateQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = UARPSuperBinaryBackDeploy;
   v11 = [(UARPSuperBinaryBackDeploy *)&v23 init];
@@ -41,14 +41,14 @@
     goto LABEL_4;
   }
 
-  if (!v8)
+  if (!dataCopy)
   {
     goto LABEL_5;
   }
 
-  objc_storeWeak(&v11->_delegate, v9);
-  objc_storeStrong(&v12->_delegateQueue, a5);
-  v13 = [v8 copy];
+  objc_storeWeak(&v11->_delegate, delegateCopy);
+  objc_storeStrong(&v12->_delegateQueue, queue);
+  v13 = [dataCopy copy];
   data = v12->_data;
   v12->_data = v13;
 
@@ -80,23 +80,23 @@ LABEL_5:
   return v21;
 }
 
-- (UARPSuperBinaryBackDeploy)initWithFilePath:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (UARPSuperBinaryBackDeploy)initWithFilePath:(id)path delegate:(id)delegate delegateQueue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 stringByExpandingTildeInPath];
-  v11 = [NSData dataWithContentsOfFile:v10];
-  v12 = [(UARPSuperBinaryBackDeploy *)self initWithData:v11 delegate:v9 delegateQueue:v8];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  stringByExpandingTildeInPath = [path stringByExpandingTildeInPath];
+  v11 = [NSData dataWithContentsOfFile:stringByExpandingTildeInPath];
+  v12 = [(UARPSuperBinaryBackDeploy *)self initWithData:v11 delegate:delegateCopy delegateQueue:queueCopy];
 
   return v12;
 }
 
-- (UARPSuperBinaryBackDeploy)initWithURL:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (UARPSuperBinaryBackDeploy)initWithURL:(id)l delegate:(id)delegate delegateQueue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [NSData dataWithContentsOfURL:a3];
-  v11 = [(UARPSuperBinaryBackDeploy *)self initWithData:v10 delegate:v9 delegateQueue:v8];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  v10 = [NSData dataWithContentsOfURL:l];
+  v11 = [(UARPSuperBinaryBackDeploy *)self initWithData:v10 delegate:delegateCopy delegateQueue:queueCopy];
 
   return v11;
 }
@@ -161,37 +161,37 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)expandMetaData:(UARPSuperBinaryHeader *)a3
+- (BOOL)expandMetaData:(UARPSuperBinaryHeader *)data
 {
-  var5 = a3->var5;
+  var5 = data->var5;
   if (!var5)
   {
     return 1;
   }
 
-  v6 = a3->var4 + var5;
+  v6 = data->var4 + var5;
   if ([(NSData *)self->_data length]< v6)
   {
     return 0;
   }
 
-  v8 = [(NSData *)self->_data subdataWithRange:a3->var4, a3->var5];
+  v8 = [(NSData *)self->_data subdataWithRange:data->var4, data->var5];
   metaData = self->_metaData;
   self->_metaData = v8;
 
   return [(UARPSuperBinaryBackDeploy *)self expandTLVs];
 }
 
-- (BOOL)preparePayload:(UARPPayloadHeader2 *)a3
+- (BOOL)preparePayload:(UARPPayloadHeader2 *)payload
 {
-  v5 = [[UARPAssetTagBackDeploy alloc] initWithChar1:a3->var1.var0 char2:a3->var1.var1 char3:a3->var1.var2 char4:a3->var1.var3];
-  v6 = [[UARPAssetVersionBackDeploy alloc] initWithMajorVersion:a3->var2.var0 minorVersion:a3->var2.var1 releaseVersion:a3->var2.var2 buildVersion:a3->var2.var3];
-  v7 = a3->var4 + a3->var3;
+  v5 = [[UARPAssetTagBackDeploy alloc] initWithChar1:payload->var1.var0 char2:payload->var1.var1 char3:payload->var1.var2 char4:payload->var1.var3];
+  v6 = [[UARPAssetVersionBackDeploy alloc] initWithMajorVersion:payload->var2.var0 minorVersion:payload->var2.var1 releaseVersion:payload->var2.var2 buildVersion:payload->var2.var3];
+  v7 = payload->var4 + payload->var3;
   if ([(NSData *)self->_data length]>= v7)
   {
-    if (a3->var4)
+    if (payload->var4)
     {
-      v9 = [(NSData *)self->_data subdataWithRange:a3->var3];
+      v9 = [(NSData *)self->_data subdataWithRange:payload->var3];
     }
 
     else
@@ -199,12 +199,12 @@ LABEL_5:
       v9 = 0;
     }
 
-    v10 = a3->var6 + a3->var5;
+    v10 = payload->var6 + payload->var5;
     if ([(NSData *)self->_data length]>= v10)
     {
-      if (a3->var6)
+      if (payload->var6)
       {
-        v11 = [(NSData *)self->_data subdataWithRange:a3->var5];
+        v11 = [(NSData *)self->_data subdataWithRange:payload->var5];
       }
 
       else
@@ -240,9 +240,9 @@ LABEL_5:
   return v8;
 }
 
-- (id)payloadWith4ccTag:(id)a3
+- (id)payloadWith4ccTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -263,7 +263,7 @@ LABEL_5:
 
         v9 = *(*(&v13 + 1) + 8 * i);
         v10 = [v9 tag];
-        v11 = [v10 isEqual:v4];
+        v11 = [v10 isEqual:tagCopy];
 
         if (v11)
         {
@@ -287,9 +287,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)payloadsWithout4ccTag:(id)a3
+- (id)payloadsWithout4ccTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
@@ -312,7 +312,7 @@ LABEL_11:
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [v11 tag];
-        v13 = [v12 isEqual:v4];
+        v13 = [v12 isEqual:tagCopy];
 
         if ((v13 & 1) == 0)
         {
@@ -338,7 +338,7 @@ LABEL_11:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v20 = self;
+  selfCopy = self;
   v3 = self->_tlvs;
   v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v4)
@@ -376,7 +376,7 @@ LABEL_11:
                     objc_opt_class();
                     if ((objc_opt_isKindOfClass() & 1) == 0)
                     {
-                      [(NSMutableArray *)v20->_trimmedTlvs addObject:v8];
+                      [(NSMutableArray *)selfCopy->_trimmedTlvs addObject:v8];
                     }
                   }
                 }
@@ -392,13 +392,13 @@ LABEL_11:
     while (v5);
   }
 
-  manifest = v20->_manifest;
+  manifest = selfCopy->_manifest;
   if (manifest)
   {
-    v10 = [UARPMetaDataTLVBackDeploy tlvFromType:2293403952 length:[(NSData *)manifest length] value:[(NSData *)v20->_manifest bytes]];
+    v10 = [UARPMetaDataTLVBackDeploy tlvFromType:2293403952 length:[(NSData *)manifest length] value:[(NSData *)selfCopy->_manifest bytes]];
     if (v10)
     {
-      [(NSMutableArray *)v20->_trimmedTlvs addObject:v10];
+      [(NSMutableArray *)selfCopy->_trimmedTlvs addObject:v10];
     }
   }
 
@@ -407,7 +407,7 @@ LABEL_11:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = v20->_trimmedTlvs;
+  v12 = selfCopy->_trimmedTlvs;
   v13 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v13)
   {
@@ -422,8 +422,8 @@ LABEL_11:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v21 + 1) + 8 * j) generateTLV];
-        [v11 appendData:v17];
+        generateTLV = [*(*(&v21 + 1) + 8 * j) generateTLV];
+        [v11 appendData:generateTLV];
       }
 
       v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -439,7 +439,7 @@ LABEL_11:
 
 - (BOOL)expandTLVs
 {
-  v3 = [(NSData *)self->_metaData bytes];
+  bytes = [(NSData *)self->_metaData bytes];
   if ([(NSData *)self->_metaData length])
   {
     v4 = 0;
@@ -450,21 +450,21 @@ LABEL_11:
         break;
       }
 
-      v5 = uarpNtohl(*&v3[v4]);
+      v5 = uarpNtohl(*&bytes[v4]);
       v6 = v4 + 8;
       if (v4 + 8 > [(NSData *)self->_metaData length])
       {
         break;
       }
 
-      v7 = uarpNtohl(*&v3[v4 + 4]);
+      v7 = uarpNtohl(*&bytes[v4 + 4]);
       v4 = v6 + v7;
       if (v4 > [(NSData *)self->_metaData length])
       {
         break;
       }
 
-      v8 = [UARPMetaDataTLVBackDeploy tlvFromType:v5 length:v7 value:&v3[v6]];
+      v8 = [UARPMetaDataTLVBackDeploy tlvFromType:v5 length:v7 value:&bytes[v6]];
       if (!v8)
       {
         break;
@@ -481,24 +481,24 @@ LABEL_11:
   return 1;
 }
 
-- (BOOL)queryTatsuSigningServer:(id)a3 ssoOnly:(BOOL)a4 error:(id *)a5
+- (BOOL)queryTatsuSigningServer:(id)server ssoOnly:(BOOL)only error:(id *)error
 {
-  v5 = a4;
-  v7 = a3;
-  if (!v7)
+  onlyCopy = only;
+  serverCopy = server;
+  if (!serverCopy)
   {
-    v7 = [NSURL URLWithString:@"https://gs.apple.com:443"];
+    serverCopy = [NSURL URLWithString:@"https://gs.apple.com:443"];
   }
 
   tssRequest = self->_tssRequest;
-  if (v5)
+  if (onlyCopy)
   {
-    v9 = UARPPersonalizationTSSRequestWithSigningServerSSO(tssRequest, v7);
+    v9 = UARPPersonalizationTSSRequestWithSigningServerSSO(tssRequest, serverCopy);
   }
 
   else
   {
-    v9 = UARPPersonalizationTSSRequestWithSigningServer(tssRequest, v7);
+    v9 = UARPPersonalizationTSSRequestWithSigningServer(tssRequest, serverCopy);
   }
 
   v10 = v9;
@@ -516,7 +516,7 @@ LABEL_11:
 {
   v3 = [[UARPAssetTagBackDeploy alloc] initWithString:@"RRKO"];
   v4 = [[UARPAssetTagBackDeploy alloc] initWithString:@"rrko"];
-  v16 = self;
+  selfCopy = self;
   v17 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
@@ -561,42 +561,42 @@ LABEL_11:
     while (v7);
   }
 
-  v14 = [(UARPSuperBinaryBackDeploy *)v16 generatePersonalizedSuperBinaryInternal:v17];
+  v14 = [(UARPSuperBinaryBackDeploy *)selfCopy generatePersonalizedSuperBinaryInternal:v17];
 
   return v14;
 }
 
-- (id)generatePersonalizedSuperBinaryInternal:(id)a3
+- (id)generatePersonalizedSuperBinaryInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v33 = objc_opt_new();
   v34[0] = self->_formatVersion;
   v34[1] = 44;
-  v36 = [(UARPAssetVersionBackDeploy *)self->_version majorVersion];
-  v37 = [(UARPAssetVersionBackDeploy *)self->_version minorVersion];
-  v38 = [(UARPAssetVersionBackDeploy *)self->_version releaseVersion];
-  v39 = [(UARPAssetVersionBackDeploy *)self->_version buildVersion];
+  majorVersion = [(UARPAssetVersionBackDeploy *)self->_version majorVersion];
+  minorVersion = [(UARPAssetVersionBackDeploy *)self->_version minorVersion];
+  releaseVersion = [(UARPAssetVersionBackDeploy *)self->_version releaseVersion];
+  buildVersion = [(UARPAssetVersionBackDeploy *)self->_version buildVersion];
   v42 = 44;
-  v43 = 40 * [v4 count];
-  v7 = [(UARPSuperBinaryBackDeploy *)self personalizedMetaData];
+  v43 = 40 * [internalCopy count];
+  personalizedMetaData = [(UARPSuperBinaryBackDeploy *)self personalizedMetaData];
   v40 = v43 + 44;
-  v8 = [v7 length];
+  v8 = [personalizedMetaData length];
   v9 = v43 + 44 + v8;
   v41 = v8;
   v35 = v9;
-  v32 = v7;
-  [v6 appendData:v7];
-  v10 = calloc([v4 count], 0x28uLL);
-  if ([v4 count])
+  v32 = personalizedMetaData;
+  [v6 appendData:personalizedMetaData];
+  v10 = calloc([internalCopy count], 0x28uLL);
+  if ([internalCopy count])
   {
     v11 = 0;
     v12 = v10 + 4;
     do
     {
-      v13 = [v4 objectAtIndex:v11];
-      v14 = [v13 personalizedMetaData];
+      v13 = [internalCopy objectAtIndex:v11];
+      personalizedMetaData2 = [v13 personalizedMetaData];
       *(v12 - 4) = 40;
       v15 = [v13 tag];
       *(v12 - 12) = [v15 char1];
@@ -610,51 +610,51 @@ LABEL_11:
       v18 = [v13 tag];
       *(v12 - 9) = [v18 char4];
 
-      v19 = [v13 version];
-      *(v12 - 2) = [v19 majorVersion];
+      version = [v13 version];
+      *(v12 - 2) = [version majorVersion];
 
-      v20 = [v13 version];
-      *(v12 - 1) = [v20 minorVersion];
+      version2 = [v13 version];
+      *(v12 - 1) = [version2 minorVersion];
 
-      v21 = [v13 version];
-      *v12 = [v21 releaseVersion];
+      version3 = [v13 version];
+      *v12 = [version3 releaseVersion];
 
-      v22 = [v13 version];
-      v12[1] = [v22 buildVersion];
+      version4 = [v13 version];
+      v12[1] = [version4 buildVersion];
 
       v12[2] = v9;
-      v23 = [v14 length];
+      v23 = [personalizedMetaData2 length];
       v12[3] = v23;
       v9 += v23;
-      [v6 appendData:v14];
+      [v6 appendData:personalizedMetaData2];
 
       ++v11;
       v12 += 10;
     }
 
-    while (v11 < [v4 count]);
+    while (v11 < [internalCopy count]);
   }
 
-  if ([v4 count])
+  if ([internalCopy count])
   {
     v24 = 0;
     v25 = v10 + 9;
     v26 = v33;
     do
     {
-      v27 = [v4 objectAtIndex:v24];
-      v28 = [v27 personalizedData];
+      v27 = [internalCopy objectAtIndex:v24];
+      personalizedData = [v27 personalizedData];
       *(v25 - 1) = v9;
-      v29 = [v28 length];
+      v29 = [personalizedData length];
       *v25 = v29;
       v25 += 10;
       v9 += v29;
-      [v33 appendData:v28];
+      [v33 appendData:personalizedData];
 
       ++v24;
     }
 
-    while (v24 < [v4 count]);
+    while (v24 < [internalCopy count]);
   }
 
   else
@@ -665,7 +665,7 @@ LABEL_11:
   v35 = v9;
   uarpSuperBinaryHeaderEndianSwap(v34, v34);
   [v5 appendBytes:v34 length:44];
-  if ([v4 count])
+  if ([internalCopy count])
   {
     v30 = 0;
     do
@@ -676,7 +676,7 @@ LABEL_11:
       v10 += 10;
     }
 
-    while (v30 < [v4 count]);
+    while (v30 < [internalCopy count]);
   }
 
   [v5 appendData:v6];
@@ -685,9 +685,9 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)generateTatsuMeasurements:(unint64_t)a3 relativeURL:(id)a4
+- (BOOL)generateTatsuMeasurements:(unint64_t)measurements relativeURL:(id)l
 {
-  v6 = a4;
+  lCopy = l;
   v7 = objc_opt_new();
   tatsuMeasurements = self->_tatsuMeasurements;
   self->_tatsuMeasurements = v7;
@@ -699,25 +699,25 @@ LABEL_11:
 
   if (self->_needsHostPersonalization)
   {
-    [(UARPSuperBinaryBackDeploy *)self generateTatsuMeasurements:a3];
+    [(UARPSuperBinaryBackDeploy *)self generateTatsuMeasurements:measurements];
   }
 
   else
   {
-    [(UARPSuperBinaryBackDeploy *)self generateTatsuMeasurementsPerPayload:a3];
+    [(UARPSuperBinaryBackDeploy *)self generateTatsuMeasurementsPerPayload:measurements];
   }
 
-  v9 = [v6 lastPathComponent];
-  v10 = [NSString stringWithFormat:@"%@.plist", v9];
+  lastPathComponent = [lCopy lastPathComponent];
+  v10 = [NSString stringWithFormat:@"%@.plist", lastPathComponent];
 
-  v11 = [v6 URLByDeletingLastPathComponent];
-  v12 = [NSURL fileURLWithPath:v10 isDirectory:0 relativeToURL:v11];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  v12 = [NSURL fileURLWithPath:v10 isDirectory:0 relativeToURL:uRLByDeletingLastPathComponent];
 
   v13 = [(NSMutableDictionary *)self->_tatsuMeasurements writeToURL:v12 error:0];
   return v13;
 }
 
-- (void)generateTatsuMeasurementsPerPayload:(unint64_t)a3
+- (void)generateTatsuMeasurementsPerPayload:(unint64_t)payload
 {
   v13 = 0u;
   v14 = 0u;
@@ -739,7 +739,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if (a3)
+        if (payload)
         {
           v10 = *(*(&v13 + 1) + 8 * v9);
           v11 = 1;
@@ -754,7 +754,7 @@ LABEL_11:
             ++v11;
           }
 
-          while (v11 <= a3);
+          while (v11 <= payload);
         }
 
         v9 = v9 + 1;
@@ -768,7 +768,7 @@ LABEL_11:
   }
 }
 
-- (void)generateTatsuMeasurements:(unint64_t)a3
+- (void)generateTatsuMeasurements:(unint64_t)measurements
 {
   manifest = self->_manifest;
   self->_manifest = 0;
@@ -777,7 +777,7 @@ LABEL_11:
   tssRequest = self->_tssRequest;
   self->_tssRequest = v6;
 
-  if (a3)
+  if (measurements)
   {
     v8 = 0;
     do
@@ -791,7 +791,7 @@ LABEL_11:
       ++v8;
     }
 
-    while (a3 != v8);
+    while (measurements != v8);
   }
 }
 
@@ -829,9 +829,9 @@ LABEL_11:
         if (objc_opt_isKindOfClass())
         {
           v9 = v8;
-          v10 = [v9 ticketPrefix];
+          ticketPrefix = [v9 ticketPrefix];
           ticketPrefix = self->_ticketPrefix;
-          self->_ticketPrefix = v10;
+          self->_ticketPrefix = ticketPrefix;
 LABEL_12:
 
           goto LABEL_13;
@@ -841,9 +841,9 @@ LABEL_12:
         if (objc_opt_isKindOfClass())
         {
           v9 = v8;
-          v12 = [v9 manifestSuffix];
+          manifestSuffix = [v9 manifestSuffix];
           ticketPrefix = self->_ticketSuffix;
-          self->_ticketSuffix = v12;
+          self->_ticketSuffix = manifestSuffix;
           goto LABEL_12;
         }
 
@@ -911,20 +911,20 @@ LABEL_13:
   }
 }
 
-- (id)tatsuMeasurements:(unint64_t)a3
+- (id)tatsuMeasurements:(unint64_t)measurements
 {
   v5 = [(NSMutableArray *)self->_tlvs count];
   if (v5)
   {
-    v5 = [(UARPSuperBinaryBackDeploy *)self composeTSSRequest:a3 asMeasurement:1];
+    v5 = [(UARPSuperBinaryBackDeploy *)self composeTSSRequest:measurements asMeasurement:1];
   }
 
   return v5;
 }
 
-- (id)composeTSSRequest:(unint64_t)a3 asMeasurement:(BOOL)a4
+- (id)composeTSSRequest:(unint64_t)request asMeasurement:(BOOL)measurement
 {
-  v30 = a4;
+  measurementCopy = measurement;
   manifest = self->_manifest;
   self->_manifest = 0;
 
@@ -932,7 +932,7 @@ LABEL_13:
   tssRequest = self->_tssRequest;
   self->_tssRequest = v7;
 
-  v9 = [(UARPSuperBinaryBackDeploy *)self requiredTSSOptions];
+  requiredTSSOptions = [(UARPSuperBinaryBackDeploy *)self requiredTSSOptions];
   v10 = objc_opt_new();
   keyManifest = self->_keyManifest;
   self->_keyManifest = v10;
@@ -940,7 +940,7 @@ LABEL_13:
   [(NSMutableString *)self->_keyManifest appendFormat:@"%@", self->_ticketPrefix];
   if (self->_ticketNeedsUnitNumber)
   {
-    [(NSMutableString *)self->_keyManifest appendFormat:@"%lu", a3];
+    [(NSMutableString *)self->_keyManifest appendFormat:@"%lu", request];
   }
 
   [(NSMutableString *)self->_keyManifest appendFormat:@", Ticket"];
@@ -951,7 +951,7 @@ LABEL_13:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v13 = v9;
+  v13 = requiredTSSOptions;
   v14 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v14)
   {
@@ -967,56 +967,56 @@ LABEL_13:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v31 + 1) + 8 * v17) unsignedLongValue];
-        if (v18 <= 9)
+        unsignedLongValue = [*(*(&v31 + 1) + 8 * v17) unsignedLongValue];
+        if (unsignedLongValue <= 9)
         {
-          if (v18 <= 6)
+          if (unsignedLongValue <= 6)
           {
-            if (v18 == 4)
+            if (unsignedLongValue == 4)
             {
-              v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"BoardID" unitNumber:a3];
-              v23 = [(UARPSuperBinaryBackDeploy *)self boardID];
+              v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"BoardID" unitNumber:request];
+              boardID = [(UARPSuperBinaryBackDeploy *)self boardID];
             }
 
             else
             {
-              if (v18 != 5)
+              if (unsignedLongValue != 5)
               {
                 goto LABEL_40;
               }
 
-              v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"ChipID" unitNumber:a3];
-              v23 = [(UARPSuperBinaryBackDeploy *)self chipID];
+              v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"ChipID" unitNumber:request];
+              boardID = [(UARPSuperBinaryBackDeploy *)self chipID];
             }
 
-            v24 = [NSNumber numberWithUnsignedInt:v23];
+            nonce = [NSNumber numberWithUnsignedInt:boardID];
             goto LABEL_32;
           }
 
-          if (v18 == 7)
+          if (unsignedLongValue == 7)
           {
-            v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"ECID" unitNumber:a3];
-            v24 = [NSNumber numberWithUnsignedLongLong:[(UARPSuperBinaryBackDeploy *)self ecID]];
+            v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"ECID" unitNumber:request];
+            nonce = [NSNumber numberWithUnsignedLongLong:[(UARPSuperBinaryBackDeploy *)self ecID]];
             goto LABEL_32;
           }
 
-          if (v18 != 8)
+          if (unsignedLongValue != 8)
           {
-            v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"SecurityMode" unitNumber:a3];
-            v21 = [(UARPSuperBinaryBackDeploy *)self securityMode];
+            v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"SecurityMode" unitNumber:request];
+            securityMode = [(UARPSuperBinaryBackDeploy *)self securityMode];
             goto LABEL_34;
           }
 
-          v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"SecurityDomain" unitNumber:a3];
-          v20 = [(UARPSuperBinaryBackDeploy *)self securityDomain];
+          v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"SecurityDomain" unitNumber:request];
+          securityDomain = [(UARPSuperBinaryBackDeploy *)self securityDomain];
           goto LABEL_30;
         }
 
-        if (v18 > 25)
+        if (unsignedLongValue > 25)
         {
-          if (v18 == 26)
+          if (unsignedLongValue == 26)
           {
-            v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"Provisioning" unitNumber:a3];
+            v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"Provisioning" unitNumber:request];
             if (![(UARPSuperBinaryBackDeploy *)self provisioning])
             {
               goto LABEL_39;
@@ -1027,14 +1027,14 @@ LABEL_13:
             goto LABEL_38;
           }
 
-          if (v18 != 27)
+          if (unsignedLongValue != 27)
           {
-            if (v18 != 29)
+            if (unsignedLongValue != 29)
             {
               goto LABEL_40;
             }
 
-            v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"ECID" unitNumber:a3];
+            v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"ECID" unitNumber:request];
             ecidData = self->_ecidData;
 LABEL_37:
             v26 = self->_tssRequest;
@@ -1043,17 +1043,17 @@ LABEL_38:
             goto LABEL_39;
           }
 
-          v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"ManifestEpoch" unitNumber:a3];
-          v20 = [(UARPSuperBinaryBackDeploy *)self manifestEpoch];
+          v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"ManifestEpoch" unitNumber:request];
+          securityDomain = [(UARPSuperBinaryBackDeploy *)self manifestEpoch];
           goto LABEL_30;
         }
 
-        if (v18 == 10)
+        if (unsignedLongValue == 10)
         {
-          v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"ProductionMode" unitNumber:a3];
-          v21 = [(UARPSuperBinaryBackDeploy *)self productionMode];
+          v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"ProductionMode" unitNumber:request];
+          securityMode = [(UARPSuperBinaryBackDeploy *)self productionMode];
 LABEL_34:
-          if (v21)
+          if (securityMode)
           {
             ecidData = &__kCFBooleanTrue;
           }
@@ -1066,25 +1066,25 @@ LABEL_34:
           goto LABEL_37;
         }
 
-        if (v18 != 24)
+        if (unsignedLongValue != 24)
         {
-          if (v18 != 25)
+          if (unsignedLongValue != 25)
           {
             goto LABEL_40;
           }
 
-          v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"Life" unitNumber:a3];
-          v20 = [(UARPSuperBinaryBackDeploy *)self life];
+          v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"Life" unitNumber:request];
+          securityDomain = [(UARPSuperBinaryBackDeploy *)self life];
 LABEL_30:
-          v24 = [NSNumber numberWithUnsignedChar:v20];
+          nonce = [NSNumber numberWithUnsignedChar:securityDomain];
           goto LABEL_32;
         }
 
-        v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"Nonce" unitNumber:a3];
-        v24 = [(UARPSuperBinaryBackDeploy *)self nonce];
+        v19 = [(UARPSuperBinaryBackDeploy *)self tssKeyName:@"Nonce" unitNumber:request];
+        nonce = [(UARPSuperBinaryBackDeploy *)self nonce];
 LABEL_32:
-        v25 = v24;
-        [(NSMutableDictionary *)self->_tssRequest setObject:v24 forKeyedSubscript:v19];
+        v25 = nonce;
+        [(NSMutableDictionary *)self->_tssRequest setObject:nonce forKeyedSubscript:v19];
 
 LABEL_39:
 LABEL_40:
@@ -1099,26 +1099,26 @@ LABEL_40:
     while (v27);
   }
 
-  [(UARPSuperBinaryBackDeploy *)self processMeasurementsForTSSOptions:self->_tssRequest unitNumber:a3 asMeasurement:v30];
+  [(UARPSuperBinaryBackDeploy *)self processMeasurementsForTSSOptions:self->_tssRequest unitNumber:request asMeasurement:measurementCopy];
   v28 = [NSDictionary dictionaryWithDictionary:self->_tssRequest];
 
   return v28;
 }
 
-- (id)tssKeyName:(id)a3 unitNumber:(unint64_t)a4
+- (id)tssKeyName:(id)name unitNumber:(unint64_t)number
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = objc_opt_new();
   [v7 appendFormat:@"%@", self->_ticketPrefix];
   if (self->_prefixNeedsUnitNumber)
   {
-    [v7 appendFormat:@"%lu", a4];
+    [v7 appendFormat:@"%lu", number];
   }
 
-  [v7 appendFormat:@", %@", v6];
+  [v7 appendFormat:@", %@", nameCopy];
   if (self->_suffixNeedsUnitNumber)
   {
-    [v7 appendFormat:@", %lu", a4];
+    [v7 appendFormat:@", %lu", number];
   }
 
   v8 = [NSString stringWithString:v7];
@@ -1126,10 +1126,10 @@ LABEL_40:
   return v8;
 }
 
-- (void)processMeasurementsForTSSOptions:(id)a3 unitNumber:(unint64_t)a4 asMeasurement:(BOOL)a5
+- (void)processMeasurementsForTSSOptions:(id)options unitNumber:(unint64_t)number asMeasurement:(BOOL)measurement
 {
-  v25 = a3;
-  v34 = self;
+  optionsCopy = options;
+  selfCopy = self;
   v35 = objc_opt_new();
   v45 = 0u;
   v46 = 0u;
@@ -1149,13 +1149,13 @@ LABEL_40:
           objc_enumerationMutation(obj);
         }
 
-        v7 = [*(*(&v45 + 1) + 8 * i) measurements];
+        measurements = [*(*(&v45 + 1) + 8 * i) measurements];
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v30 = v7;
-        v32 = [v7 countByEnumeratingWithState:&v41 objects:v50 count:16];
+        v30 = measurements;
+        v32 = [measurements countByEnumeratingWithState:&v41 objects:v50 count:16];
         if (v32)
         {
           v29 = i;
@@ -1178,8 +1178,8 @@ LABEL_40:
               v38 = 0u;
               v39 = 0u;
               v40 = 0u;
-              v12 = [v11 tlvs];
-              v13 = [v12 countByEnumeratingWithState:&v37 objects:v49 count:16];
+              tlvs = [v11 tlvs];
+              v13 = [tlvs countByEnumeratingWithState:&v37 objects:v49 count:16];
               if (v13)
               {
                 v14 = v13;
@@ -1190,7 +1190,7 @@ LABEL_40:
                   {
                     if (*v38 != v15)
                     {
-                      objc_enumerationMutation(v12);
+                      objc_enumerationMutation(tlvs);
                     }
 
                     v17 = *(*(&v37 + 1) + 8 * j);
@@ -1198,9 +1198,9 @@ LABEL_40:
                     if (objc_opt_isKindOfClass())
                     {
                       v18 = v17;
-                      v19 = [v18 longname];
+                      longname = [v18 longname];
 
-                      v9 = v19;
+                      v9 = longname;
                     }
 
                     else
@@ -1209,17 +1209,17 @@ LABEL_40:
                       if (objc_opt_isKindOfClass())
                       {
                         v20 = v17;
-                        v21 = [v20 digest];
+                        digest = [v20 digest];
 
-                        v8 = v21;
+                        v8 = digest;
                       }
 
                       else
                       {
                         objc_opt_class();
-                        if ((objc_opt_isKindOfClass() & 1) != 0 && !a5)
+                        if ((objc_opt_isKindOfClass() & 1) != 0 && !measurement)
                         {
-                          if ([(UARPSuperBinaryBackDeploy *)v34 productionMode])
+                          if ([(UARPSuperBinaryBackDeploy *)selfCopy productionMode])
                           {
                             v22 = &__kCFBooleanTrue;
                           }
@@ -1235,7 +1235,7 @@ LABEL_40:
                     }
                   }
 
-                  v14 = [v12 countByEnumeratingWithState:&v37 objects:v49 count:16];
+                  v14 = [tlvs countByEnumeratingWithState:&v37 objects:v49 count:16];
                 }
 
                 while (v14);
@@ -1278,14 +1278,14 @@ LABEL_40:
   }
 
   v23 = objc_opt_new();
-  [v23 appendFormat:@"%@", v34->_ticketPrefix];
-  if (v34->_prefixNeedsUnitNumber)
+  [v23 appendFormat:@"%@", selfCopy->_ticketPrefix];
+  if (selfCopy->_prefixNeedsUnitNumber)
   {
-    [v23 appendFormat:@"%lu", a4];
+    [v23 appendFormat:@"%lu", number];
   }
 
-  [v23 appendFormat:@", %@", v34->_ticketSuffix];
-  [v25 setObject:v35 forKeyedSubscript:v23];
+  [v23 appendFormat:@", %@", selfCopy->_ticketSuffix];
+  [optionsCopy setObject:v35 forKeyedSubscript:v23];
 }
 
 - (id)requiredTSSOptions
@@ -1396,18 +1396,18 @@ LABEL_29:
   return v3;
 }
 
-- (id)getDataBlock:(unint64_t)a3 offset:(unint64_t)a4
+- (id)getDataBlock:(unint64_t)block offset:(unint64_t)offset
 {
-  v5 = [(NSData *)self->_data subdataWithRange:a4, a3];
-  self->_totalBytesRequested += [(NSData *)v5 length];
+  block = [(NSData *)self->_data subdataWithRange:offset, block];
+  self->_totalBytesRequested += [(NSData *)block length];
 
-  return v5;
+  return block;
 }
 
-- (void)logInternal:(id)a3 arguments:(char *)a4
+- (void)logInternal:(id)internal arguments:(char *)arguments
 {
-  v6 = a3;
-  v7 = [[NSMutableString alloc] initWithFormat:v6 arguments:a4];
+  internalCopy = internal;
+  v7 = [[NSMutableString alloc] initWithFormat:internalCopy arguments:arguments];
 
   [v7 appendString:@"\n"];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);

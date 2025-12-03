@@ -1,31 +1,31 @@
 @interface AXEventTapManager
 + (id)sharedManager;
 - (AXEventTapManager)init;
-- (BOOL)_accessibilityShouldIgnoreHIDServiceForContinuity:(__IOHIDServiceClient *)a3;
-- (BOOL)_processHIDEvent:(__IOHIDEvent *)a3 taskPort:(unsigned int)a4 bundleId:(id)a5;
+- (BOOL)_accessibilityShouldIgnoreHIDServiceForContinuity:(__IOHIDServiceClient *)continuity;
+- (BOOL)_processHIDEvent:(__IOHIDEvent *)event taskPort:(unsigned int)port bundleId:(id)id;
 - (id)_copyCurrentEventTapPairs;
-- (id)_hidFilterListForPair:(id)a3 filterEvents:(id)a4;
+- (id)_hidFilterListForPair:(id)pair filterEvents:(id)events;
 - (id)description;
-- (id)installEventTap:(id)a3 identifier:(id)a4 type:(int)a5;
-- (id)installEventTap:(id)a3 identifier:(id)a4 type:(int)a5 skipDeviceMatching:(BOOL)a6 filterEvents:(id)a7 matchingServiceHandler:(id)a8;
-- (id)installKeyboardEventTap:(id)a3 identifier:(id)a4 matchingServiceHandler:(id)a5;
-- (void)_enumerateEventTapPairsUsingBlock:(id)a3;
-- (void)_handleTestIOHIDEvent:(__IOHIDEvent *)a3;
-- (void)_installEventTap:(id)a3 skipDeviceMatching:(BOOL)a4 filterEvents:(id)a5;
-- (void)_installHIDFilter:(id)a3 skipDeviceMatching:(BOOL)a4 filterEvents:(id)a5;
-- (void)_installSystemEventTap:(id)a3;
-- (void)_removeHIDEventTapFilter:(id)a3;
+- (id)installEventTap:(id)tap identifier:(id)identifier type:(int)type;
+- (id)installEventTap:(id)tap identifier:(id)identifier type:(int)type skipDeviceMatching:(BOOL)matching filterEvents:(id)events matchingServiceHandler:(id)handler;
+- (id)installKeyboardEventTap:(id)tap identifier:(id)identifier matchingServiceHandler:(id)handler;
+- (void)_enumerateEventTapPairsUsingBlock:(id)block;
+- (void)_handleTestIOHIDEvent:(__IOHIDEvent *)event;
+- (void)_installEventTap:(id)tap skipDeviceMatching:(BOOL)matching filterEvents:(id)events;
+- (void)_installHIDFilter:(id)filter skipDeviceMatching:(BOOL)matching filterEvents:(id)events;
+- (void)_installSystemEventTap:(id)tap;
+- (void)_removeHIDEventTapFilter:(id)filter;
 - (void)_reorderEventTaps;
-- (void)_runMatchingServiceHandler:(id)a3;
-- (void)_setEventTapPriority:(id)a3 priority:(int)a4;
-- (void)_setHIDEventTapCallback:(void *)a3;
+- (void)_runMatchingServiceHandler:(id)handler;
+- (void)_setEventTapPriority:(id)priority priority:(int)a4;
+- (void)_setHIDEventTapCallback:(void *)callback;
 - (void)dealloc;
-- (void)removeEventTap:(id)a3;
-- (void)runMatchingServiceHandlerForEventTap:(id)a3;
-- (void)sendEvent:(id)a3 afterTap:(id)a4 useGSEvent:(BOOL)a5 namedTaps:(id)a6 options:(unint64_t)a7;
-- (void)sendHIDSystemEvent:(id)a3 repostCreatorHIDEvent:(BOOL)a4 senderID:(unint64_t)a5;
-- (void)setEventTapPriority:(id)a3 priority:(int)a4;
-- (void)setFailedToProcessInTimeCallback:(id)a3 callback:(id)a4;
+- (void)removeEventTap:(id)tap;
+- (void)runMatchingServiceHandlerForEventTap:(id)tap;
+- (void)sendEvent:(id)event afterTap:(id)tap useGSEvent:(BOOL)sEvent namedTaps:(id)taps options:(unint64_t)options;
+- (void)sendHIDSystemEvent:(id)event repostCreatorHIDEvent:(BOOL)dEvent senderID:(unint64_t)d;
+- (void)setEventTapPriority:(id)priority priority:(int)a4;
+- (void)setFailedToProcessInTimeCallback:(id)callback callback:(id)a4;
 @end
 
 @implementation AXEventTapManager
@@ -72,9 +72,9 @@ uint64_t __34__AXEventTapManager_sharedManager__block_invoke()
     eventTapLock = v2->_eventTapLock;
     v2->_eventTapLock = v9;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     disabledIDMappingRegistry = v2->_disabledIDMappingRegistry;
-    v2->_disabledIDMappingRegistry = v11;
+    v2->_disabledIDMappingRegistry = dictionary;
 
     v13 = v2;
   }
@@ -120,9 +120,9 @@ uint64_t __34__AXEventTapManager_sharedManager__block_invoke()
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v9 priority];
-        [v3 appendFormat:@"\t%@. Priority:%d\n", v10, v11, v13];
+        identifier = [v9 identifier];
+        priority = [v9 priority];
+        [v3 appendFormat:@"\t%@. Priority:%d\n", identifier, priority, v13];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -134,12 +134,12 @@ uint64_t __34__AXEventTapManager_sharedManager__block_invoke()
   return v3;
 }
 
-- (void)_setHIDEventTapCallback:(void *)a3
+- (void)_setHIDEventTapCallback:(void *)callback
 {
   installationHIDCallback = self->_installationHIDCallback;
   if (installationHIDCallback)
   {
-    installationHIDCallback[2](installationHIDCallback, a3);
+    installationHIDCallback[2](installationHIDCallback, callback);
   }
 }
 
@@ -184,10 +184,10 @@ void __46__AXEventTapManager__copyCurrentEventTapPairs__block_invoke(uint64_t a1
   [v4 addObject:v3];
 }
 
-- (void)_enumerateEventTapPairsUsingBlock:(id)a3
+- (void)_enumerateEventTapPairsUsingBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   isEnumeratingEventTaps = self->_isEnumeratingEventTaps;
   self->_isEnumeratingEventTaps = 1;
   v28 = 0;
@@ -210,7 +210,7 @@ LABEL_3:
         objc_enumerationMutation(v6);
       }
 
-      (*(v4 + 2))(v4, *(*(&v24 + 1) + 8 * v10), 0, &v28);
+      (*(blockCopy + 2))(blockCopy, *(*(&v24 + 1) + 8 * v10), 0, &v28);
       if (v28)
       {
         break;
@@ -300,21 +300,21 @@ uint64_t __55__AXEventTapManager__enumerateEventTapPairsUsingBlock___block_invok
   return v4;
 }
 
-- (void)sendHIDSystemEvent:(id)a3 repostCreatorHIDEvent:(BOOL)a4 senderID:(unint64_t)a5
+- (void)sendHIDSystemEvent:(id)event repostCreatorHIDEvent:(BOOL)dEvent senderID:(unint64_t)d
 {
-  v5 = a4;
-  v7 = a3;
-  v21 = v7;
+  dEventCopy = dEvent;
+  eventCopy = event;
+  v21 = eventCopy;
   if (!self->_ioSystemPostBackClient)
   {
     self->_ioSystemPostBackClient = IOHIDEventSystemClientCreate();
-    v7 = v21;
+    eventCopy = v21;
   }
 
-  v8 = [v7 newHIDEventRef];
-  if (v8)
+  newHIDEventRef = [eventCopy newHIDEventRef];
+  if (newHIDEventRef)
   {
-    v9 = v8;
+    v9 = newHIDEventRef;
     Children = IOHIDEventGetChildren();
     if (Children)
     {
@@ -337,15 +337,15 @@ uint64_t __55__AXEventTapManager__enumerateEventTapPairsUsingBlock___block_invok
           }
         }
 
-        v14 = [v21 handInfo];
-        v15 = [v14 paths];
-        v16 = [v15 count];
+        handInfo = [v21 handInfo];
+        paths = [handInfo paths];
+        v16 = [paths count];
 
         if (v12 < v16)
         {
-          v17 = [v21 handInfo];
-          v18 = [v17 paths];
-          v19 = [v18 objectAtIndex:v12];
+          handInfo2 = [v21 handInfo];
+          paths2 = [handInfo2 paths];
+          v19 = [paths2 objectAtIndex:v12];
           [v19 setShouldSetTouchFlag:1];
         }
       }
@@ -355,23 +355,23 @@ LABEL_12:
     CFRelease(v9);
   }
 
-  if (v5)
+  if (dEventCopy)
   {
-    v20 = [v21 creatorHIDEvent];
-    CFRetain(v20);
+    creatorHIDEvent = [v21 creatorHIDEvent];
+    CFRetain(creatorHIDEvent);
   }
 
   else
   {
-    v20 = [v21 newHIDEventRef];
+    creatorHIDEvent = [v21 newHIDEventRef];
   }
 
   [v21 type];
-  if (v20)
+  if (creatorHIDEvent)
   {
     IOHIDEventSetSenderID();
     IOHIDEventSystemClientDispatchEvent();
-    CFRelease(v20);
+    CFRelease(creatorHIDEvent);
   }
 
   else
@@ -380,23 +380,23 @@ LABEL_12:
   }
 }
 
-- (void)sendEvent:(id)a3 afterTap:(id)a4 useGSEvent:(BOOL)a5 namedTaps:(id)a6 options:(unint64_t)a7
+- (void)sendEvent:(id)event afterTap:(id)tap useGSEvent:(BOOL)sEvent namedTaps:(id)taps options:(unint64_t)options
 {
   v33 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v10 = a4;
-  v11 = a6;
-  v26 = self;
+  eventCopy = event;
+  tapCopy = tap;
+  tapsCopy = taps;
+  selfCopy = self;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = [(AXEventTapManager *)self _copyCurrentEventTapPairs];
-  v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  _copyCurrentEventTapPairs = [(AXEventTapManager *)self _copyCurrentEventTapPairs];
+  v13 = [_copyCurrentEventTapPairs countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v13)
   {
     v14 = v13;
-    v15 = v10 == 0;
+    v15 = tapCopy == 0;
     v16 = *v29;
     do
     {
@@ -405,21 +405,21 @@ LABEL_12:
       {
         if (*v29 != v16)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(_copyCurrentEventTapPairs);
         }
 
         v18 = *(*(&v28 + 1) + 8 * v17);
-        if (v10 && ([*(*(&v28 + 1) + 8 * v17) identifier], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", v10), v19, (v20 & 1) != 0))
+        if (tapCopy && ([*(*(&v28 + 1) + 8 * v17) identifier], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", tapCopy), v19, (v20 & 1) != 0))
         {
           v15 = 1;
         }
 
-        else if (v15 || ([v18 identifier], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v11, "containsObject:", v21), v21, v22))
+        else if (v15 || ([v18 identifier], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(tapsCopy, "containsObject:", v21), v21, v22))
         {
           if (![v18 type])
           {
-            v23 = [v18 handler];
-            v24 = (v23)[2](v23, v27);
+            handler = [v18 handler];
+            v24 = (handler)[2](handler, eventCopy);
 
             if (v24)
             {
@@ -438,31 +438,31 @@ LABEL_12:
       }
 
       while (v14 != v17);
-      v14 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v14 = [_copyCurrentEventTapPairs countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v14);
   }
 
-  installationEventRepPost = v26->_installationEventRepPost;
+  installationEventRepPost = selfCopy->_installationEventRepPost;
   if (installationEventRepPost)
   {
-    installationEventRepPost[2](installationEventRepPost, v27);
+    installationEventRepPost[2](installationEventRepPost, eventCopy);
   }
 
 LABEL_19:
 }
 
-- (void)_handleTestIOHIDEvent:(__IOHIDEvent *)a3
+- (void)_handleTestIOHIDEvent:(__IOHIDEvent *)event
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [AXEventRepresentation representationWithHIDEvent:a3 hidStreamIdentifier:@"AXEventTapManager" clientID:0 taskPort:0];
+  v4 = [AXEventRepresentation representationWithHIDEvent:event hidStreamIdentifier:@"AXEventTapManager" clientID:0 taskPort:0];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(AXEventTapManager *)self _copyCurrentEventTapPairs];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _copyCurrentEventTapPairs = [(AXEventTapManager *)self _copyCurrentEventTapPairs];
+  v6 = [_copyCurrentEventTapPairs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -473,14 +473,14 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(_copyCurrentEventTapPairs);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       if ([v10 type])
       {
-        v11 = [v10 handler];
-        v12 = (v11)[2](v11, v4);
+        handler = [v10 handler];
+        v12 = (handler)[2](handler, v4);
         [v10 identifier];
 
         if (v12)
@@ -491,7 +491,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [_copyCurrentEventTapPairs countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -503,10 +503,10 @@ LABEL_3:
   }
 }
 
-- (BOOL)_processHIDEvent:(__IOHIDEvent *)a3 taskPort:(unsigned int)a4 bundleId:(id)a5
+- (BOOL)_processHIDEvent:(__IOHIDEvent *)event taskPort:(unsigned int)port bundleId:(id)id
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = [AXEventRepresentation representationWithHIDEvent:a3 hidStreamIdentifier:@"AXEventTapManager" clientID:a5 taskPort:*&a4];
+  v6 = [AXEventRepresentation representationWithHIDEvent:event hidStreamIdentifier:@"AXEventTapManager" clientID:id taskPort:*&port];
   if (AXEventTypeIsTouch([v6 type]) && (objc_msgSend(v6, "handInfo"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "paths"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "indexOfObjectPassingTest:", &__block_literal_global_140), v8, v7, v9 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v18 = 1;
@@ -518,8 +518,8 @@ LABEL_3:
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = [(AXEventTapManager *)self _copyCurrentEventTapPairs];
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    _copyCurrentEventTapPairs = [(AXEventTapManager *)self _copyCurrentEventTapPairs];
+    v11 = [_copyCurrentEventTapPairs countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -530,14 +530,14 @@ LABEL_3:
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(_copyCurrentEventTapPairs);
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
           if (![v15 type])
           {
-            v16 = [v15 handler];
-            v17 = (v16)[2](v16, v6);
+            handler = [v15 handler];
+            v17 = (handler)[2](handler, v6);
             [v15 identifier];
 
             if (v17)
@@ -548,7 +548,7 @@ LABEL_3:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v12 = [_copyCurrentEventTapPairs countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v12)
         {
           continue;
@@ -604,19 +604,19 @@ uint64_t __38__AXEventTapManager__reorderEventTaps__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)setFailedToProcessInTimeCallback:(id)a3 callback:(id)a4
+- (void)setFailedToProcessInTimeCallback:(id)callback callback:(id)a4
 {
-  v6 = a3;
+  callbackCopy = callback;
   v7 = a4;
   [(NSRecursiveLock *)self->_eventTapLock lock];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __63__AXEventTapManager_setFailedToProcessInTimeCallback_callback___block_invoke;
   v13 = &unk_1E71EA088;
-  v14 = v6;
+  v14 = callbackCopy;
   v15 = v7;
   v8 = v7;
-  v9 = v6;
+  v9 = callbackCopy;
   [(AXEventTapManager *)self _enumerateEventTapPairsUsingBlock:&v10];
   [(NSRecursiveLock *)self->_eventTapLock unlock:v10];
 }
@@ -634,18 +634,18 @@ void __63__AXEventTapManager_setFailedToProcessInTimeCallback_callback___block_i
   }
 }
 
-- (void)setEventTapPriority:(id)a3 priority:(int)a4
+- (void)setEventTapPriority:(id)priority priority:(int)a4
 {
-  v6 = a3;
+  priorityCopy = priority;
   [(NSRecursiveLock *)self->_eventTapLock lock];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__AXEventTapManager_setEventTapPriority_priority___block_invoke;
   v8[3] = &unk_1E71EA0B0;
-  v9 = v6;
-  v10 = self;
+  v9 = priorityCopy;
+  selfCopy = self;
   v11 = a4;
-  v7 = v6;
+  v7 = priorityCopy;
   [(AXEventTapManager *)self _enumerateEventTapPairsUsingBlock:v8];
   [(AXEventTapManager *)self _reorderEventTaps];
   [(NSRecursiveLock *)self->_eventTapLock unlock];
@@ -664,41 +664,41 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
   }
 }
 
-- (BOOL)_accessibilityShouldIgnoreHIDServiceForContinuity:(__IOHIDServiceClient *)a3
+- (BOOL)_accessibilityShouldIgnoreHIDServiceForContinuity:(__IOHIDServiceClient *)continuity
 {
-  v5 = [(AXEventTapManager *)self ignoreEventsForContinuitySession];
-  LOBYTE(v6) = 0;
-  if (a3 && v5)
+  ignoreEventsForContinuitySession = [(AXEventTapManager *)self ignoreEventsForContinuitySession];
+  LOBYTE(bOOLValue) = 0;
+  if (continuity && ignoreEventsForContinuitySession)
   {
-    v7 = IOHIDServiceClientGetRegistryID(a3);
+    v7 = IOHIDServiceClientGetRegistryID(continuity);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(AXEventTapManager *)self disabledIDMappingRegistry];
-      v9 = [v8 objectForKeyedSubscript:v7];
+      disabledIDMappingRegistry = [(AXEventTapManager *)self disabledIDMappingRegistry];
+      v9 = [disabledIDMappingRegistry objectForKeyedSubscript:v7];
 
       if (v9)
       {
-        LOBYTE(v6) = [v9 BOOLValue];
+        LOBYTE(bOOLValue) = [v9 BOOLValue];
       }
 
       else
       {
-        v11 = IOHIDServiceClientCopyProperty(a3, @"DisableAccessibilityEventTranslation");
+        v11 = IOHIDServiceClientCopyProperty(continuity, @"DisableAccessibilityEventTranslation");
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v6 = [v11 BOOLValue];
+          bOOLValue = [v11 BOOLValue];
         }
 
         else
         {
-          v6 = 0;
+          bOOLValue = 0;
         }
 
-        v12 = [(AXEventTapManager *)self disabledIDMappingRegistry];
-        v13 = [MEMORY[0x1E696AD98] numberWithBool:v6];
-        [v12 setObject:v13 forKey:v7];
+        disabledIDMappingRegistry2 = [(AXEventTapManager *)self disabledIDMappingRegistry];
+        v13 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
+        [disabledIDMappingRegistry2 setObject:v13 forKey:v7];
       }
     }
 
@@ -710,73 +710,73 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
         [(AXEventTapManager *)v7 _accessibilityShouldIgnoreHIDServiceForContinuity:v10];
       }
 
-      LOBYTE(v6) = 0;
+      LOBYTE(bOOLValue) = 0;
     }
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)_setEventTapPriority:(id)a3 priority:(int)a4
+- (void)_setEventTapPriority:(id)priority priority:(int)a4
 {
   v4 = *&a4;
-  v5 = a3;
-  [v5 setPriority:v4];
-  if ([v5 type] == 1)
+  priorityCopy = priority;
+  [priorityCopy setPriority:v4];
+  if ([priorityCopy type] == 1)
   {
-    if (![v5 systemClient])
+    if (![priorityCopy systemClient])
     {
       _AXAssert();
     }
 
-    [v5 systemClient];
+    [priorityCopy systemClient];
     IOHIDEventSystemClientRegisterEventFilterCallbackWithPriority();
   }
 
-  else if ([v5 type] == 2)
+  else if ([priorityCopy type] == 2)
   {
-    if (![v5 systemClient])
+    if (![priorityCopy systemClient])
     {
       _AXAssert();
     }
 
-    [v5 systemClient];
+    [priorityCopy systemClient];
     IOHIDEventSystemClientRegisterEventCallback();
   }
 }
 
-- (void)_installEventTap:(id)a3 skipDeviceMatching:(BOOL)a4 filterEvents:(id)a5
+- (void)_installEventTap:(id)tap skipDeviceMatching:(BOOL)matching filterEvents:(id)events
 {
-  v6 = a4;
+  matchingCopy = matching;
   v14 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  tapCopy = tap;
+  eventsCopy = events;
   v10 = AXLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 identifier];
+    identifier = [tapCopy identifier];
     v12 = 138412290;
-    v13 = v11;
+    v13 = identifier;
     _os_log_impl(&dword_18B15E000, v10, OS_LOG_TYPE_DEFAULT, "Installing event filter for: %@", &v12, 0xCu);
   }
 
-  if ([v8 type] == 1 || objc_msgSend(v8, "type") == 2)
+  if ([tapCopy type] == 1 || objc_msgSend(tapCopy, "type") == 2)
   {
-    [(AXEventTapManager *)self _installHIDFilter:v8 skipDeviceMatching:v6 filterEvents:v9];
+    [(AXEventTapManager *)self _installHIDFilter:tapCopy skipDeviceMatching:matchingCopy filterEvents:eventsCopy];
   }
 
   else
   {
-    [(AXEventTapManager *)self _installSystemEventTap:v8];
+    [(AXEventTapManager *)self _installSystemEventTap:tapCopy];
   }
 }
 
-- (id)_hidFilterListForPair:(id)a3 filterEvents:(id)a4
+- (id)_hidFilterListForPair:(id)pair filterEvents:(id)events
 {
   v132[2] = *MEMORY[0x1E69E9840];
-  v4 = a4;
-  v5 = [MEMORY[0x1E695DF70] array];
-  if ([v4 wantsDigitizerEvents])
+  eventsCopy = events;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([eventsCopy wantsDigitizerEvents])
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v131[0] = v6;
@@ -785,7 +785,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v131[1] = v7;
     v132[1] = &unk_1EFE95FC8;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v132 forKeys:v131 count:2];
-    [v5 addObject:v8];
+    [array addObject:v8];
 
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v129[0] = v9;
@@ -794,7 +794,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v129[1] = v10;
     v130[1] = &unk_1EFE95FE0;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v130 forKeys:v129 count:2];
-    [v5 addObject:v11];
+    [array addObject:v11];
 
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v127[0] = v12;
@@ -803,7 +803,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v127[1] = v13;
     v128[1] = &unk_1EFE95FF8;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v128 forKeys:v127 count:2];
-    [v5 addObject:v14];
+    [array addObject:v14];
 
     v15 = +[AXSettings sharedInstance];
     LODWORD(v13) = [v15 automationTrueTouch];
@@ -817,11 +817,11 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
       v125[1] = v17;
       v126[1] = &unk_1EFE96010;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v126 forKeys:v125 count:2];
-      [v5 addObject:v18];
+      [array addObject:v18];
     }
   }
 
-  if ([v4 wantsKeyboardEvents])
+  if ([eventsCopy wantsKeyboardEvents])
   {
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v123[0] = v19;
@@ -830,7 +830,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v123[1] = v20;
     v124[1] = &unk_1EFE96040;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v124 forKeys:v123 count:2];
-    [v5 addObject:v21];
+    [array addObject:v21];
 
     v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v121[0] = v22;
@@ -839,7 +839,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v121[1] = v23;
     v122[1] = &unk_1EFE96058;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v122 forKeys:v121 count:2];
-    [v5 addObject:v24];
+    [array addObject:v24];
 
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v119[0] = v25;
@@ -848,7 +848,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v119[1] = v26;
     v120[1] = &unk_1EFE96070;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v120 forKeys:v119 count:2];
-    [v5 addObject:v27];
+    [array addObject:v27];
 
     v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v117[0] = v28;
@@ -857,7 +857,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v117[1] = v29;
     v118[1] = &unk_1EFE96088;
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v118 forKeys:v117 count:2];
-    [v5 addObject:v30];
+    [array addObject:v30];
 
     v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v115[0] = v31;
@@ -866,7 +866,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v115[1] = v32;
     v116[1] = &unk_1EFE96088;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v116 forKeys:v115 count:2];
-    [v5 addObject:v33];
+    [array addObject:v33];
 
     if (AXDeviceIsAudioAccessory())
     {
@@ -877,7 +877,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
       v113[1] = v35;
       v114[1] = &unk_1EFE96040;
       v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v114 forKeys:v113 count:2];
-      [v5 addObject:v36];
+      [array addObject:v36];
     }
 
     if ((AXDeviceIsWatch() & 1) != 0 || _AXSMossdeepEnabled())
@@ -886,7 +886,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
       v111 = v37;
       v112 = &unk_1EFE960B8;
       v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
-      [v5 addObject:v38];
+      [array addObject:v38];
     }
 
     v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
@@ -896,7 +896,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v109[1] = v40;
     v110[1] = &unk_1EFE96070;
     v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v110 forKeys:v109 count:2];
-    [v5 addObject:v41];
+    [array addObject:v41];
 
     v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v107[0] = v42;
@@ -905,10 +905,10 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v107[1] = v43;
     v108[1] = &unk_1EFE96088;
     v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v108 forKeys:v107 count:2];
-    [v5 addObject:v44];
+    [array addObject:v44];
   }
 
-  if ([v4 wantsLisaEvents])
+  if ([eventsCopy wantsLisaEvents])
   {
     v45 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v105[0] = v45;
@@ -917,7 +917,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v105[1] = v46;
     v106[1] = &unk_1EFE96040;
     v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v106 forKeys:v105 count:2];
-    [v5 addObject:v47];
+    [array addObject:v47];
 
     v48 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v103[0] = v48;
@@ -926,10 +926,10 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v103[1] = v49;
     v104[1] = &unk_1EFE96100;
     v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v104 forKeys:v103 count:2];
-    [v5 addObject:v50];
+    [array addObject:v50];
   }
 
-  if ([v4 wantsATVRemoteEvents])
+  if ([eventsCopy wantsATVRemoteEvents])
   {
     v51 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v101[0] = v51;
@@ -938,7 +938,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v101[1] = v52;
     v102[1] = &unk_1EFE96118;
     v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:v101 count:2];
-    [v5 addObject:v53];
+    [array addObject:v53];
 
     v54 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v99[0] = v54;
@@ -947,7 +947,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v99[1] = v55;
     v100[1] = &unk_1EFE96130;
     v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v100 forKeys:v99 count:2];
-    [v5 addObject:v56];
+    [array addObject:v56];
 
     v57 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v97[0] = v57;
@@ -956,7 +956,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v97[1] = v58;
     v98[1] = &unk_1EFE96148;
     v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v98 forKeys:v97 count:2];
-    [v5 addObject:v59];
+    [array addObject:v59];
 
     v60 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v95[0] = v60;
@@ -965,10 +965,10 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v95[1] = v61;
     v96[1] = &unk_1EFE96160;
     v62 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v96 forKeys:v95 count:2];
-    [v5 addObject:v62];
+    [array addObject:v62];
   }
 
-  if ([v4 wantsMouseEvents])
+  if ([eventsCopy wantsMouseEvents])
   {
     v63 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v93[0] = v63;
@@ -977,7 +977,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v93[1] = v64;
     v94[1] = &unk_1EFE96058;
     v65 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v94 forKeys:v93 count:2];
-    [v5 addObject:v65];
+    [array addObject:v65];
 
     v66 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v91[0] = v66;
@@ -986,7 +986,7 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v91[1] = v67;
     v92[1] = &unk_1EFE96040;
     v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v92 forKeys:v91 count:2];
-    [v5 addObject:v68];
+    [array addObject:v68];
 
     v69 = +[AXSettings sharedInstance];
     LODWORD(v67) = [v69 laserEnabled];
@@ -1000,11 +1000,11 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
       v89[1] = v71;
       v90[1] = &unk_1EFE95FC8;
       v72 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v90 forKeys:v89 count:2];
-      [v5 addObject:v72];
+      [array addObject:v72];
     }
   }
 
-  if ([v4 wantsStylusEvents])
+  if ([eventsCopy wantsStylusEvents])
   {
     v73 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v87[0] = v73;
@@ -1013,10 +1013,10 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v87[1] = v74;
     v88[1] = &unk_1EFE95FE0;
     v75 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v88 forKeys:v87 count:2];
-    [v5 addObject:v75];
+    [array addObject:v75];
   }
 
-  if ([v4 wantsAccessibilityEvents])
+  if ([eventsCopy wantsAccessibilityEvents])
   {
     v76 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v85[0] = v76;
@@ -1025,10 +1025,10 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v85[1] = v77;
     v86[1] = &unk_1EFE96190;
     v78 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v86 forKeys:v85 count:2];
-    [v5 addObject:v78];
+    [array addObject:v78];
   }
 
-  if ([v4 wantsVolumeButtonEvents])
+  if ([eventsCopy wantsVolumeButtonEvents])
   {
     v79 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"DeviceUsagePage"];
     v84[0] = &unk_1EFE960B8;
@@ -1036,20 +1036,20 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v83[1] = v80;
     v84[1] = &unk_1EFE96040;
     v81 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v84 forKeys:v83 count:2];
-    [v5 addObject:v81];
+    [array addObject:v81];
   }
 
-  return v5;
+  return array;
 }
 
-- (void)_installHIDFilter:(id)a3 skipDeviceMatching:(BOOL)a4 filterEvents:(id)a5
+- (void)_installHIDFilter:(id)filter skipDeviceMatching:(BOOL)matching filterEvents:(id)events
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (![v8 systemClient])
+  filterCopy = filter;
+  eventsCopy = events;
+  if (![filterCopy systemClient])
   {
-    if ([v8 type] == 2)
+    if ([filterCopy type] == 2)
     {
       v10 = IOHIDEventSystemClientCreateWithType();
     }
@@ -1062,9 +1062,9 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
     v11 = v10;
     CFRunLoopGetCurrent();
     IOHIDEventSystemClientScheduleWithRunLoop();
-    if (!a4)
+    if (!matching)
     {
-      v12 = [(AXEventTapManager *)self _hidFilterListForPair:v8 filterEvents:v9];
+      v12 = [(AXEventTapManager *)self _hidFilterListForPair:filterCopy filterEvents:eventsCopy];
       if ([v12 count] < 2)
       {
         if ([v12 count] == 1)
@@ -1079,9 +1079,9 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
         IOHIDEventSystemClientSetMatchingMultiple();
       }
 
-      v14 = [v8 matchingServiceHandler];
+      matchingServiceHandler = [filterCopy matchingServiceHandler];
 
-      if (v14)
+      if (matchingServiceHandler)
       {
         v22 = v12;
         v28 = 0u;
@@ -1105,8 +1105,8 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
               }
 
               v20 = *(*(&v28 + 1) + 8 * v19);
-              v21 = [v8 matchingServiceHandler];
-              v21[2](v21, v20);
+              matchingServiceHandler2 = [filterCopy matchingServiceHandler];
+              matchingServiceHandler2[2](matchingServiceHandler2, v20);
 
               ++v19;
             }
@@ -1122,21 +1122,21 @@ void __50__AXEventTapManager_setEventTapPriority_priority___block_invoke(uint64_
         v24 = 3221225472;
         v25 = __71__AXEventTapManager__installHIDFilter_skipDeviceMatching_filterEvents___block_invoke;
         v26 = &unk_1E71EA0D8;
-        v27 = v8;
+        v27 = filterCopy;
         IOHIDEventSystemClientRegisterDeviceMatchingBlock();
 
         v12 = v22;
       }
     }
 
-    [v8 setSystemClient:{v11, v22, v23, v24, v25, v26}];
+    [filterCopy setSystemClient:{v11, v22, v23, v24, v25, v26}];
     if (v11)
     {
       CFRelease(v11);
     }
 
     [(NSRecursiveLock *)self->_eventTapLock lock];
-    [(NSMutableArray *)self->_eventTaps insertObject:v8 atIndex:0];
+    [(NSMutableArray *)self->_eventTaps insertObject:filterCopy atIndex:0];
     [(NSRecursiveLock *)self->_eventTapLock unlock];
   }
 }
@@ -1147,19 +1147,19 @@ void __71__AXEventTapManager__installHIDFilter_skipDeviceMatching_filterEvents__
   v5[2](v5, a4);
 }
 
-- (void)_installSystemEventTap:(id)a3
+- (void)_installSystemEventTap:(id)tap
 {
   eventTapLock = self->_eventTapLock;
-  v5 = a3;
+  tapCopy = tap;
   [(NSRecursiveLock *)eventTapLock lock];
   if (self->_isEnumeratingEventTaps)
   {
-    [(NSMutableArray *)self->_addedEventTapPairs addObject:v5];
+    [(NSMutableArray *)self->_addedEventTapPairs addObject:tapCopy];
   }
 
   else
   {
-    [(NSMutableArray *)self->_eventTaps insertObject:v5 atIndex:0];
+    [(NSMutableArray *)self->_eventTaps insertObject:tapCopy atIndex:0];
 
     if ([(NSMutableArray *)self->_eventTaps count]== 1)
     {
@@ -1173,35 +1173,35 @@ void __71__AXEventTapManager__installHIDFilter_skipDeviceMatching_filterEvents__
   [(NSRecursiveLock *)v6 unlock];
 }
 
-- (id)installEventTap:(id)a3 identifier:(id)a4 type:(int)a5
+- (id)installEventTap:(id)tap identifier:(id)identifier type:(int)type
 {
-  v5 = *&a5;
-  v8 = a4;
-  v9 = a3;
+  v5 = *&type;
+  identifierCopy = identifier;
+  tapCopy = tap;
   v10 = objc_opt_new();
-  v11 = [(AXEventTapManager *)self installEventTap:v9 identifier:v8 type:v5 skipDeviceMatching:0 filterEvents:v10 matchingServiceHandler:0];
+  v11 = [(AXEventTapManager *)self installEventTap:tapCopy identifier:identifierCopy type:v5 skipDeviceMatching:0 filterEvents:v10 matchingServiceHandler:0];
 
   return v11;
 }
 
-- (id)installEventTap:(id)a3 identifier:(id)a4 type:(int)a5 skipDeviceMatching:(BOOL)a6 filterEvents:(id)a7 matchingServiceHandler:(id)a8
+- (id)installEventTap:(id)tap identifier:(id)identifier type:(int)type skipDeviceMatching:(BOOL)matching filterEvents:(id)events matchingServiceHandler:(id)handler
 {
-  v10 = a6;
-  v11 = *&a5;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = a3;
+  matchingCopy = matching;
+  v11 = *&type;
+  identifierCopy = identifier;
+  eventsCopy = events;
+  handlerCopy = handler;
+  tapCopy = tap;
   v18 = objc_alloc_init(AXEventTapPair);
-  [(AXEventTapPair *)v18 setHandler:v17];
+  [(AXEventTapPair *)v18 setHandler:tapCopy];
 
-  [(AXEventTapPair *)v18 setMatchingServiceHandler:v16];
+  [(AXEventTapPair *)v18 setMatchingServiceHandler:handlerCopy];
   [(AXEventTapPair *)v18 setType:v11];
   v19 = *MEMORY[0x1E695E480];
   v20 = CFUUIDCreate(*MEMORY[0x1E695E480]);
-  if (v14)
+  if (identifierCopy)
   {
-    [(AXEventTapPair *)v18 setIdentifier:v14];
+    [(AXEventTapPair *)v18 setIdentifier:identifierCopy];
   }
 
   else
@@ -1216,33 +1216,33 @@ void __71__AXEventTapManager__installHIDFilter_skipDeviceMatching_filterEvents__
     CFRelease(v20);
   }
 
-  [(AXEventTapManager *)self _installEventTap:v18 skipDeviceMatching:v10 filterEvents:v15];
-  v22 = [(AXEventTapPair *)v18 identifier];
+  [(AXEventTapManager *)self _installEventTap:v18 skipDeviceMatching:matchingCopy filterEvents:eventsCopy];
+  identifier = [(AXEventTapPair *)v18 identifier];
 
-  return v22;
+  return identifier;
 }
 
-- (id)installKeyboardEventTap:(id)a3 identifier:(id)a4 matchingServiceHandler:(id)a5
+- (id)installKeyboardEventTap:(id)tap identifier:(id)identifier matchingServiceHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  tapCopy = tap;
   v11 = objc_opt_new();
   [v11 setWantsKeyboardEvents:1];
-  v12 = [(AXEventTapManager *)self installEventTap:v10 identifier:v9 type:1 skipDeviceMatching:0 filterEvents:v11 matchingServiceHandler:v8];
+  v12 = [(AXEventTapManager *)self installEventTap:tapCopy identifier:identifierCopy type:1 skipDeviceMatching:0 filterEvents:v11 matchingServiceHandler:handlerCopy];
 
   return v12;
 }
 
-- (void)removeEventTap:(id)a3
+- (void)removeEventTap:(id)tap
 {
-  v4 = a3;
-  if (v4)
+  tapCopy = tap;
+  if (tapCopy)
   {
     [(NSRecursiveLock *)self->_eventTapLock lock];
     if (self->_isEnumeratingEventTaps)
     {
-      [(NSMutableSet *)self->_removedEventTapIdentifiers addObject:v4];
+      [(NSMutableSet *)self->_removedEventTapIdentifiers addObject:tapCopy];
     }
 
     else
@@ -1252,8 +1252,8 @@ void __71__AXEventTapManager__installHIDFilter_skipDeviceMatching_filterEvents__
       v8 = 3221225472;
       v9 = __36__AXEventTapManager_removeEventTap___block_invoke;
       v10 = &unk_1E71EA100;
-      v11 = v4;
-      v12 = self;
+      v11 = tapCopy;
+      selfCopy = self;
       v6 = [(NSMutableArray *)eventTaps indexesOfObjectsPassingTest:&v7];
       [(NSMutableArray *)eventTaps removeObjectsAtIndexes:v6, v7, v8, v9, v10];
 
@@ -1283,44 +1283,44 @@ uint64_t __36__AXEventTapManager_removeEventTap___block_invoke(uint64_t a1, void
   return v8;
 }
 
-- (void)_removeHIDEventTapFilter:(id)a3
+- (void)_removeHIDEventTapFilter:(id)filter
 {
-  v3 = a3;
-  if ([v3 systemClient])
+  filterCopy = filter;
+  if ([filterCopy systemClient])
   {
-    if ([v3 type] != 1 && objc_msgSend(v3, "type") != 2)
+    if ([filterCopy type] != 1 && objc_msgSend(filterCopy, "type") != 2)
     {
       _AXAssert();
     }
 
-    if ([v3 type] == 1)
+    if ([filterCopy type] == 1)
     {
-      [v3 systemClient];
+      [filterCopy systemClient];
       IOHIDEventSystemClientUnregisterEventFilterCallback();
     }
 
-    else if ([v3 type] == 2)
+    else if ([filterCopy type] == 2)
     {
-      [v3 systemClient];
+      [filterCopy systemClient];
       IOHIDEventSystemClientUnregisterEventCallback();
     }
 
-    [v3 systemClient];
+    [filterCopy systemClient];
     CFRunLoopGetCurrent();
     IOHIDEventSystemClientUnscheduleWithRunLoop();
   }
 }
 
-- (void)runMatchingServiceHandlerForEventTap:(id)a3
+- (void)runMatchingServiceHandlerForEventTap:(id)tap
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tapCopy = tap;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(AXEventTapManager *)self _copyCurrentEventTapPairs];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _copyCurrentEventTapPairs = [(AXEventTapManager *)self _copyCurrentEventTapPairs];
+  v6 = [_copyCurrentEventTapPairs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1331,12 +1331,12 @@ uint64_t __36__AXEventTapManager_removeEventTap___block_invoke(uint64_t a1, void
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_copyCurrentEventTapPairs);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:tapCopy];
 
         if (v12)
         {
@@ -1345,7 +1345,7 @@ uint64_t __36__AXEventTapManager_removeEventTap___block_invoke(uint64_t a1, void
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [_copyCurrentEventTapPairs countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -1358,26 +1358,26 @@ uint64_t __36__AXEventTapManager_removeEventTap___block_invoke(uint64_t a1, void
 LABEL_11:
 }
 
-- (void)_runMatchingServiceHandler:(id)a3
+- (void)_runMatchingServiceHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 matchingServiceHandler];
+  handlerCopy = handler;
+  matchingServiceHandler = [handlerCopy matchingServiceHandler];
 
-  if (!v4)
+  if (!matchingServiceHandler)
   {
     _AXAssert();
   }
 
-  v5 = [v3 matchingServiceHandler];
+  matchingServiceHandler2 = [handlerCopy matchingServiceHandler];
 
-  if (v5)
+  if (matchingServiceHandler2)
   {
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = IOHIDEventSystemClientCopyServices([v3 systemClient]);
+    v6 = IOHIDEventSystemClientCopyServices([handlerCopy systemClient]);
     v7 = [(__CFArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -1394,8 +1394,8 @@ LABEL_11:
           }
 
           v11 = *(*(&v13 + 1) + 8 * v10);
-          v12 = [v3 matchingServiceHandler];
-          v12[2](v12, v11);
+          matchingServiceHandler3 = [handlerCopy matchingServiceHandler];
+          matchingServiceHandler3[2](matchingServiceHandler3, v11);
 
           ++v10;
         }

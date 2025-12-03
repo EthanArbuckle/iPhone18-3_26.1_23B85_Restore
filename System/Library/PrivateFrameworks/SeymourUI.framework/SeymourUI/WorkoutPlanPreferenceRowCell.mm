@@ -12,13 +12,13 @@
   v6 = type metadata accessor for WorkoutPlanPreferenceRowCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(WorkoutPlanPreferenceRowCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI28WorkoutPlanPreferenceRowCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 

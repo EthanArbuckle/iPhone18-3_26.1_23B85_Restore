@@ -1,29 +1,29 @@
 @interface VCBitrateArbiter
-+ (void)updateMaxAllowedBitratePerConnection:(unsigned int *)a3 connectionType:(int)a4 negotiatedSettings:(id)a5;
-- (VCBitrateArbiter)initWithDeviceRole:(int)a3 callLogFile:(void *)a4;
-- (id)maxAllowedBitrateRuleForConnection:(int)a3;
-- (int)storeBagBitrateForKey:(id)a3;
-- (unsigned)maxAllowedAudioOnlyBitrateForConnection:(int)a3;
-- (unsigned)maxAllowedBitrateForConnectionType:(int)a3;
-- (unsigned)maxAllowedBitrateForConnectionType:(int)a3 arbiterMode:(unsigned __int8)a4;
-- (unsigned)maxAllowedBitrateForVCConnection:(id)a3 forLocalInterface:(BOOL)a4 arbiterMode:(unsigned __int8)a5 encodeRule:(id)a6;
-- (unsigned)maxAllowedBitrateForVCConnection:(id)a3 forLocalInterface:(BOOL)a4 encodeRule:(id)a5;
-- (unsigned)maxAllowedImmersiveVideoBitrateForConnectionType:(int)a3;
-- (unsigned)maxAllowedScreenShareBitrateForConnection:(int)a3;
++ (void)updateMaxAllowedBitratePerConnection:(unsigned int *)connection connectionType:(int)type negotiatedSettings:(id)settings;
+- (VCBitrateArbiter)initWithDeviceRole:(int)role callLogFile:(void *)file;
+- (id)maxAllowedBitrateRuleForConnection:(int)connection;
+- (int)storeBagBitrateForKey:(id)key;
+- (unsigned)maxAllowedAudioOnlyBitrateForConnection:(int)connection;
+- (unsigned)maxAllowedBitrateForConnectionType:(int)type;
+- (unsigned)maxAllowedBitrateForConnectionType:(int)type arbiterMode:(unsigned __int8)mode;
+- (unsigned)maxAllowedBitrateForVCConnection:(id)connection forLocalInterface:(BOOL)interface arbiterMode:(unsigned __int8)mode encodeRule:(id)rule;
+- (unsigned)maxAllowedBitrateForVCConnection:(id)connection forLocalInterface:(BOOL)interface encodeRule:(id)rule;
+- (unsigned)maxAllowedImmersiveVideoBitrateForConnectionType:(int)type;
+- (unsigned)maxAllowedScreenShareBitrateForConnection:(int)connection;
 - (unsigned)maxAllowedScreenShareCellularBitrate;
-- (void)addRuleForBitrate:(unsigned int)a3 connectionType:(int)a4 limitingRule:(id)a5;
+- (void)addRuleForBitrate:(unsigned int)bitrate connectionType:(int)type limitingRule:(id)rule;
 - (void)createSupportedBitrateRuleSets;
 - (void)dealloc;
 - (void)readCarrierBundleValues;
 - (void)readHardwareValues;
-- (void)readStoreBagValues:(void *)a3;
-- (void)updateMaxAllowedBitrate:(unsigned int *)a3 key:(__CFString *)a4 type:(id)a5 isAudio:(BOOL)a6 carrierBundleBitrates:(__CFDictionary *)a7;
-- (void)updateNegotiatedSettings:(id)a3;
+- (void)readStoreBagValues:(void *)values;
+- (void)updateMaxAllowedBitrate:(unsigned int *)bitrate key:(__CFString *)key type:(id)type isAudio:(BOOL)audio carrierBundleBitrates:(__CFDictionary *)bitrates;
+- (void)updateNegotiatedSettings:(id)settings;
 @end
 
 @implementation VCBitrateArbiter
 
-- (VCBitrateArbiter)initWithDeviceRole:(int)a3 callLogFile:(void *)a4
+- (VCBitrateArbiter)initWithDeviceRole:(int)role callLogFile:(void *)file
 {
   v22 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -33,7 +33,7 @@
   if (v5)
   {
     [(VCBitrateArbiter *)v5 readHardwareValues];
-    [(VCBitrateArbiter *)v6 readStoreBagValues:a4];
+    [(VCBitrateArbiter *)v6 readStoreBagValues:file];
     [(VCBitrateArbiter *)v6 readCarrierBundleValues];
     [(VCBitrateArbiter *)v6 createSupportedBitrateRuleSets];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -55,9 +55,9 @@
       }
     }
 
-    v10 = [(VCBitrateArbiter *)v6 maxAllowedCellularBitrate];
+    maxAllowedCellularBitrate = [(VCBitrateArbiter *)v6 maxAllowedCellularBitrate];
     maxAllowedBitrateWifi = v6->_maxAllowedBitrateWifi;
-    if (v10 > maxAllowedBitrateWifi)
+    if (maxAllowedCellularBitrate > maxAllowedBitrateWifi)
     {
       maxAllowedBitrateWifi = [(VCBitrateArbiter *)v6 maxAllowedCellularBitrate];
     }
@@ -125,9 +125,9 @@
   [(NSMutableArray *)supportedBitrateRules sortUsingSelector:sel_compare_];
 }
 
-- (void)addRuleForBitrate:(unsigned int)a3 connectionType:(int)a4 limitingRule:(id)a5
+- (void)addRuleForBitrate:(unsigned int)bitrate connectionType:(int)type limitingRule:(id)rule
 {
-  v6 = [[VCBitrateRule alloc] initWithBitrate:*&a3 connectionType:*&a4 limitingRule:a5];
+  v6 = [[VCBitrateRule alloc] initWithBitrate:*&bitrate connectionType:*&type limitingRule:rule];
   [(NSMutableArray *)self->supportedBitrateRules addObject:v6];
 }
 
@@ -135,7 +135,7 @@
 {
   v8 = *MEMORY[0x1E69E9840];
   v2 = 136315650;
-  v3 = a1;
+  selfCopy = self;
   v4 = 2080;
   v5 = "[VCBitrateArbiter readHardwareValues]";
   v6 = 1024;
@@ -143,7 +143,7 @@
   _os_log_error_impl(&dword_1DB56E000, a2, OS_LOG_TYPE_ERROR, " [%s] %s:%d VCVideoRuleCollectionsCamera bitrateConfiguration returned NULL", &v2, 0x1Cu);
 }
 
-- (int)storeBagBitrateForKey:(id)a3
+- (int)storeBagBitrateForKey:(id)key
 {
   v4 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
   if (!v4)
@@ -151,12 +151,12 @@
     v4 = [objc_msgSend(MEMORY[0x1E69A53F0] "sharedInstance")];
   }
 
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  return v5;
+  return intValue;
 }
 
-- (void)readStoreBagValues:(void *)a3
+- (void)readStoreBagValues:(void *)values
 {
   v353 = *MEMORY[0x1E69E9840];
   v5 = +[GKSConnectivitySettings getAllSettings];
@@ -170,7 +170,7 @@
     v12 = "<nil>";
   }
 
-  VRLogfilePrintWithTimestamp(a3, "Current bag settings: %s\n", v6, v7, v8, v9, v10, v11, v12);
+  VRLogfilePrintWithTimestamp(values, "Current bag settings: %s\n", v6, v7, v8, v9, v10, v11, v12);
   v13 = [(VCBitrateArbiter *)self storeBagBitrateForKey:@"gk-p2p-bitrate-max-2g"];
   if (rangeCheck(v13))
   {
@@ -201,7 +201,7 @@
 
       v19 = objc_opt_class();
       v20 = class_getName(v19);
-      VRLogfilePrintWithTimestamp(a3, "%s: overriding 2G bitrate with storebag value of %d\n", v21, v22, v23, v24, v25, v26, v20);
+      VRLogfilePrintWithTimestamp(values, "%s: overriding 2G bitrate with storebag value of %d\n", v21, v22, v23, v24, v25, v26, v20);
       self->_maxAllowedBitrate2G = v13;
     }
 
@@ -230,7 +230,7 @@
 
       v30 = objc_opt_class();
       v31 = class_getName(v30);
-      VRLogfilePrintWithTimestamp(a3, "%s: hardware does not support 2G, ignored storebag value of %d\n", v32, v33, v34, v35, v36, v37, v31);
+      VRLogfilePrintWithTimestamp(values, "%s: hardware does not support 2G, ignored storebag value of %d\n", v32, v33, v34, v35, v36, v37, v31);
     }
   }
 
@@ -268,7 +268,7 @@
 
         v46 = objc_opt_class();
         v47 = class_getName(v46);
-        VRLogfilePrintWithTimestamp(a3, "%s: overriding ScreenShare 2G bitrate with storebag value of %d\n", v48, v49, v50, v51, v52, v53, v47);
+        VRLogfilePrintWithTimestamp(values, "%s: overriding ScreenShare 2G bitrate with storebag value of %d\n", v48, v49, v50, v51, v52, v53, v47);
         self->_maxAllowedScreenShareBitrate2G = v39;
       }
 
@@ -298,7 +298,7 @@
 
         v58 = objc_opt_class();
         v59 = class_getName(v58);
-        VRLogfilePrintWithTimestamp(a3, "%s: hardware does not support 2G, ignored storebag value of %d\n", v60, v61, v62, v63, v64, v65, v59);
+        VRLogfilePrintWithTimestamp(values, "%s: hardware does not support 2G, ignored storebag value of %d\n", v60, v61, v62, v63, v64, v65, v59);
       }
     }
   }
@@ -342,7 +342,7 @@
 
         v74 = objc_opt_class();
         v75 = class_getName(v74);
-        VRLogfilePrintWithTimestamp(a3, "%s: overriding 2G AppleCalling bitrate with storebag value of %d\n", v76, v77, v78, v79, v80, v81, v75);
+        VRLogfilePrintWithTimestamp(values, "%s: overriding 2G AppleCalling bitrate with storebag value of %d\n", v76, v77, v78, v79, v80, v81, v75);
         self->_maxAllowedAudioOnlyBitrate2G = v67;
       }
 
@@ -372,7 +372,7 @@
 
         v86 = objc_opt_class();
         v87 = class_getName(v86);
-        VRLogfilePrintWithTimestamp(a3, "%s: hardware does not support 2G, ignored storebag value of %d\n", v88, v89, v90, v91, v92, v93, v87);
+        VRLogfilePrintWithTimestamp(values, "%s: hardware does not support 2G, ignored storebag value of %d\n", v88, v89, v90, v91, v92, v93, v87);
       }
     }
   }
@@ -413,7 +413,7 @@
 
       v101 = objc_opt_class();
       v102 = class_getName(v101);
-      VRLogfilePrintWithTimestamp(a3, "%s: overriding 3G bitrate with storebag value of %d\n", v103, v104, v105, v106, v107, v108, v102);
+      VRLogfilePrintWithTimestamp(values, "%s: overriding 3G bitrate with storebag value of %d\n", v103, v104, v105, v106, v107, v108, v102);
       self->_maxAllowedBitrate3G = v94;
     }
 
@@ -443,7 +443,7 @@
 
       v113 = objc_opt_class();
       v114 = class_getName(v113);
-      VRLogfilePrintWithTimestamp(a3, "%s: hardware does not support 3G, ignored storebag value of %d\n", v115, v116, v117, v118, v119, v120, v114);
+      VRLogfilePrintWithTimestamp(values, "%s: hardware does not support 3G, ignored storebag value of %d\n", v115, v116, v117, v118, v119, v120, v114);
     }
   }
 
@@ -481,7 +481,7 @@
 
         v129 = objc_opt_class();
         v130 = class_getName(v129);
-        VRLogfilePrintWithTimestamp(a3, "%s: overriding 3G ScreenShare bitrate with storebag value of %d\n", v131, v132, v133, v134, v135, v136, v130);
+        VRLogfilePrintWithTimestamp(values, "%s: overriding 3G ScreenShare bitrate with storebag value of %d\n", v131, v132, v133, v134, v135, v136, v130);
         self->_maxAllowedScreenShareBitrate3G = v122;
       }
 
@@ -511,7 +511,7 @@
 
         v141 = objc_opt_class();
         v142 = class_getName(v141);
-        VRLogfilePrintWithTimestamp(a3, "%s: hardware does not support 3G, ignored storebag value of %d\n", v143, v144, v145, v146, v147, v148, v142);
+        VRLogfilePrintWithTimestamp(values, "%s: hardware does not support 3G, ignored storebag value of %d\n", v143, v144, v145, v146, v147, v148, v142);
       }
     }
   }
@@ -555,7 +555,7 @@
 
         v157 = objc_opt_class();
         v158 = class_getName(v157);
-        VRLogfilePrintWithTimestamp(a3, "%s: overriding 3G AppleCalling bitrate with storebag value of %d\n", v159, v160, v161, v162, v163, v164, v158);
+        VRLogfilePrintWithTimestamp(values, "%s: overriding 3G AppleCalling bitrate with storebag value of %d\n", v159, v160, v161, v162, v163, v164, v158);
         self->_maxAllowedAudioOnlyBitrate3G = v150;
       }
 
@@ -585,7 +585,7 @@
 
         v169 = objc_opt_class();
         v170 = class_getName(v169);
-        VRLogfilePrintWithTimestamp(a3, "%s: hardware does not support 3G, ignored storebag value of %d\n", v171, v172, v173, v174, v175, v176, v170);
+        VRLogfilePrintWithTimestamp(values, "%s: hardware does not support 3G, ignored storebag value of %d\n", v171, v172, v173, v174, v175, v176, v170);
       }
     }
   }
@@ -626,7 +626,7 @@
 
         v182 = objc_opt_class();
         v183 = class_getName(v182);
-        VRLogfilePrintWithTimestamp(a3, "%s: overriding LTE bitrate with storebag value of %d\n", v184, v185, v186, v187, v188, v189, v183);
+        VRLogfilePrintWithTimestamp(values, "%s: overriding LTE bitrate with storebag value of %d\n", v184, v185, v186, v187, v188, v189, v183);
         self->_maxAllowedBitrateLTE = v177;
       }
     }
@@ -657,7 +657,7 @@
 
       v194 = objc_opt_class();
       v195 = class_getName(v194);
-      VRLogfilePrintWithTimestamp(a3, "%s: hardware does not support LTE, ignored storebag value of %d\n", v196, v197, v198, v199, v200, v201, v195);
+      VRLogfilePrintWithTimestamp(values, "%s: hardware does not support LTE, ignored storebag value of %d\n", v196, v197, v198, v199, v200, v201, v195);
     }
   }
 
@@ -692,7 +692,7 @@
 
       v209 = objc_opt_class();
       v210 = class_getName(v209);
-      VRLogfilePrintWithTimestamp(a3, "%s: overriding 5G bitrate with storebag value of %d\n", v211, v212, v213, v214, v215, v216, v210);
+      VRLogfilePrintWithTimestamp(values, "%s: overriding 5G bitrate with storebag value of %d\n", v211, v212, v213, v214, v215, v216, v210);
       self->_maxAllowedBitrateHighRat = v202;
     }
 
@@ -722,7 +722,7 @@
 
       v221 = objc_opt_class();
       v222 = class_getName(v221);
-      VRLogfilePrintWithTimestamp(a3, "%s: hardware does not support 5G, ignored storebag value of %d\n", v223, v224, v225, v226, v227, v228, v222);
+      VRLogfilePrintWithTimestamp(values, "%s: hardware does not support 5G, ignored storebag value of %d\n", v223, v224, v225, v226, v227, v228, v222);
     }
   }
 
@@ -757,7 +757,7 @@
 
       v236 = objc_opt_class();
       v237 = class_getName(v236);
-      VRLogfilePrintWithTimestamp(a3, "%s: overriding Wi-Fi bitrate with storebag value of %d\n", v238, v239, v240, v241, v242, v243, v237);
+      VRLogfilePrintWithTimestamp(values, "%s: overriding Wi-Fi bitrate with storebag value of %d\n", v238, v239, v240, v241, v242, v243, v237);
       self->_maxAllowedBitrateWifi = v229;
     }
 
@@ -787,7 +787,7 @@
 
       v248 = objc_opt_class();
       v249 = class_getName(v248);
-      VRLogfilePrintWithTimestamp(a3, "%s: hardware does not support Wi-Fi, ignored storebag value of %d\n", v250, v251, v252, v253, v254, v255, v249);
+      VRLogfilePrintWithTimestamp(values, "%s: hardware does not support Wi-Fi, ignored storebag value of %d\n", v250, v251, v252, v253, v254, v255, v249);
     }
   }
 
@@ -825,7 +825,7 @@
 
         v264 = objc_opt_class();
         v265 = class_getName(v264);
-        VRLogfilePrintWithTimestamp(a3, "%s: overriding LTE ScreenShare bitrate with storebag value of %d\n", v266, v267, v268, v269, v270, v271, v265);
+        VRLogfilePrintWithTimestamp(values, "%s: overriding LTE ScreenShare bitrate with storebag value of %d\n", v266, v267, v268, v269, v270, v271, v265);
         self->_maxAllowedScreenShareBitrateLTE = v257;
       }
 
@@ -855,7 +855,7 @@
 
         v276 = objc_opt_class();
         v277 = class_getName(v276);
-        VRLogfilePrintWithTimestamp(a3, "%s: hardware does not support LTE, ignored storebag value of %d\n", v278, v279, v280, v281, v282, v283, v277);
+        VRLogfilePrintWithTimestamp(values, "%s: hardware does not support LTE, ignored storebag value of %d\n", v278, v279, v280, v281, v282, v283, v277);
       }
     }
   }
@@ -899,7 +899,7 @@
 
         v292 = objc_opt_class();
         v293 = class_getName(v292);
-        VRLogfilePrintWithTimestamp(a3, "%s: overriding LTE AppleCalling bitrate with storebag value of %d\n", v294, v295, v296, v297, v298, v299, v293);
+        VRLogfilePrintWithTimestamp(values, "%s: overriding LTE AppleCalling bitrate with storebag value of %d\n", v294, v295, v296, v297, v298, v299, v293);
         self->_maxAllowedAudioOnlyBitrateLTE = v285;
       }
 
@@ -929,7 +929,7 @@
 
         v304 = objc_opt_class();
         v305 = class_getName(v304);
-        VRLogfilePrintWithTimestamp(a3, "%s: hardware does not support LTE, ignored storebag value of %d\n", v306, v307, v308, v309, v310, v311, v305);
+        VRLogfilePrintWithTimestamp(values, "%s: hardware does not support LTE, ignored storebag value of %d\n", v306, v307, v308, v309, v310, v311, v305);
       }
     }
   }
@@ -968,7 +968,7 @@
 
     v318 = objc_opt_class();
     v319 = class_getName(v318);
-    VRLogfilePrintWithTimestamp(a3, "%s: overriding TCP Relay bitrate with storebag value of %d\n", v320, v321, v322, v323, v324, v325, v319);
+    VRLogfilePrintWithTimestamp(values, "%s: overriding TCP Relay bitrate with storebag value of %d\n", v320, v321, v322, v323, v324, v325, v319);
   }
 
   v326 = [GKSConnectivitySettings isFeatureEnabledForStorebagKey:@"vc-raise-u-one-bandwidth-limit-when-constrained" exceptionKey:@"vc-raise-u-one-bandwidth-limit-when-constrained-exceptions" userDefaultKey:@"raiseU1BandwidthLimitWhenConstrained" featureFlagDomain:"AVConference" featureFlagName:"RaiseU1BandwidthLimitWhenContrained"];
@@ -1010,19 +1010,19 @@
 
   v333 = objc_opt_class();
   v334 = class_getName(v333);
-  VRLogfilePrintWithTimestamp(a3, "%s: max bitrate for constrained wifi set to %d, enabled setting=%d\n", v335, v336, v337, v338, v339, v340, v334);
+  VRLogfilePrintWithTimestamp(values, "%s: max bitrate for constrained wifi set to %d, enabled setting=%d\n", v335, v336, v337, v338, v339, v340, v334);
 }
 
-- (void)updateMaxAllowedBitrate:(unsigned int *)a3 key:(__CFString *)a4 type:(id)a5 isAudio:(BOOL)a6 carrierBundleBitrates:(__CFDictionary *)a7
+- (void)updateMaxAllowedBitrate:(unsigned int *)bitrate key:(__CFString *)key type:(id)type isAudio:(BOOL)audio carrierBundleBitrates:(__CFDictionary *)bitrates
 {
-  v7 = a6;
+  audioCopy = audio;
   v28 = *MEMORY[0x1E69E9840];
-  Value = CFDictionaryGetValue(a7, a4);
+  Value = CFDictionaryGetValue(bitrates, key);
   if (Value)
   {
     valuePtr = -1431655766;
     CFNumberGetValue(Value, kCFNumberIntType, &valuePtr);
-    if (v7)
+    if (audioCopy)
     {
       if (!IsValidAudioBitrateRange(valuePtr))
       {
@@ -1035,7 +1035,7 @@
       return;
     }
 
-    v11 = *a3;
+    v11 = *bitrate;
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     if (v11)
     {
@@ -1052,14 +1052,14 @@
           v22 = 1024;
           v23 = 505;
           v24 = 2112;
-          v25 = a5;
+          typeCopy2 = type;
           v26 = 1024;
           v27 = valuePtr;
           _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCBitrateArbiter: overriding %@ bitrate with carrier bundle value of %d", buf, 0x2Cu);
         }
       }
 
-      *a3 = valuePtr;
+      *bitrate = valuePtr;
     }
 
     else if (ErrorLogLevelForModule >= 7)
@@ -1075,7 +1075,7 @@
         v22 = 1024;
         v23 = 508;
         v24 = 2112;
-        v25 = a5;
+        typeCopy2 = type;
         v26 = 1024;
         v27 = valuePtr;
         _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCBitrateArbiter: hardware does not support %@, ignored carrier bundle value of %d", buf, 0x2Cu);
@@ -1155,7 +1155,7 @@
   }
 }
 
-- (unsigned)maxAllowedBitrateForConnectionType:(int)a3
+- (unsigned)maxAllowedBitrateForConnectionType:(int)type
 {
   v16 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1171,24 +1171,24 @@
       v12 = 1024;
       v13 = 563;
       v14 = 1024;
-      v15 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCBitrateArbiter: received connectionType %d", &v8, 0x22u);
     }
   }
 
-  if (a3 > 3)
+  if (type > 3)
   {
-    if ((a3 - 4) < 2)
+    if ((type - 4) < 2)
     {
       return 40000000;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       return self->_maxAllowedBitrateHighRat;
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
       return 60000000;
     }
@@ -1196,14 +1196,14 @@
     return 100;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       return self->_maxAllowedBitrate2G;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       return self->_maxAllowedBitrate3G;
     }
@@ -1211,7 +1211,7 @@
     return 100;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return self->_maxAllowedBitrateLTE;
   }
@@ -1222,34 +1222,34 @@
   }
 }
 
-- (unsigned)maxAllowedBitrateForVCConnection:(id)a3 forLocalInterface:(BOOL)a4 encodeRule:(id)a5
+- (unsigned)maxAllowedBitrateForVCConnection:(id)connection forLocalInterface:(BOOL)interface encodeRule:(id)rule
 {
-  v6 = a4;
+  interfaceCopy = interface;
   v38 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (interface)
   {
-    v9 = [a3 localConnectionType];
+    localConnectionType = [connection localConnectionType];
   }
 
   else
   {
-    v9 = [a3 remoteConnectionType];
+    localConnectionType = [connection remoteConnectionType];
   }
 
-  v10 = v9;
+  v10 = localConnectionType;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v6)
+    if (interfaceCopy)
     {
-      IsLocalExpensive = VCConnection_IsLocalExpensive(a3);
-      IsLocalConstrained = VCConnection_IsLocalConstrained(a3);
+      IsLocalExpensive = VCConnection_IsLocalExpensive(connection);
+      IsLocalConstrained = VCConnection_IsLocalConstrained(connection);
     }
 
     else
     {
-      IsLocalExpensive = VCConnection_IsRemoteExpensive(a3);
-      IsLocalConstrained = VCConnection_IsRemoteConstrained(a3);
+      IsLocalExpensive = VCConnection_IsRemoteExpensive(connection);
+      IsLocalConstrained = VCConnection_IsRemoteConstrained(connection);
     }
 
     v13 = IsLocalConstrained;
@@ -1352,7 +1352,7 @@ LABEL_35:
     v17 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (v6)
+      if (interfaceCopy)
       {
         v18 = "Local";
       }
@@ -1379,7 +1379,7 @@ LABEL_35:
       v34 = 1024;
       v35 = IsLocalExpensive;
       v36 = 1024;
-      v37 = [a5 isVideoFullHD];
+      isVideoFullHD = [rule isVideoFullHD];
       _os_log_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Bitrate = %d. received connection for %s, connectionType = %d, constraint %d, expensive %d, videoFullHD %d", &v20, 0x44u);
     }
   }
@@ -1387,7 +1387,7 @@ LABEL_35:
   return maxAllowedBitrate3G;
 }
 
-- (unsigned)maxAllowedScreenShareBitrateForConnection:(int)a3
+- (unsigned)maxAllowedScreenShareBitrateForConnection:(int)connection
 {
   v16 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1403,14 +1403,14 @@ LABEL_35:
       v12 = 1024;
       v13 = 671;
       v14 = 1024;
-      v15 = a3;
+      connectionCopy = connection;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Received connection type %d", &v8, 0x22u);
     }
   }
 
-  if (a3 <= 6 && ((0x4Fu >> a3) & 1) != 0)
+  if (connection <= 6 && ((0x4Fu >> connection) & 1) != 0)
   {
-    return *(&self->super.isa + qword_1DBD50E40[a3]);
+    return *(&self->super.isa + qword_1DBD50E40[connection]);
   }
 
   else
@@ -1419,10 +1419,10 @@ LABEL_35:
   }
 }
 
-- (unsigned)maxAllowedImmersiveVideoBitrateForConnectionType:(int)a3
+- (unsigned)maxAllowedImmersiveVideoBitrateForConnectionType:(int)type
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3 == 7)
+  if (type == 7)
   {
     v4 = 100000000;
   }
@@ -1432,7 +1432,7 @@ LABEL_35:
     v4 = 20000000;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     v5 = 75000000;
   }
@@ -1457,7 +1457,7 @@ LABEL_35:
       v15 = 1024;
       v16 = v5;
       v17 = 1024;
-      v18 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Immersive Video maxBitrate=%u for connectionType %d", &v9, 0x28u);
     }
   }
@@ -1465,7 +1465,7 @@ LABEL_35:
   return v5;
 }
 
-- (unsigned)maxAllowedAudioOnlyBitrateForConnection:(int)a3
+- (unsigned)maxAllowedAudioOnlyBitrateForConnection:(int)connection
 {
   v16 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1481,14 +1481,14 @@ LABEL_35:
       v12 = 1024;
       v13 = 711;
       v14 = 1024;
-      v15 = a3;
+      connectionCopy = connection;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Received connection type %d", &v8, 0x22u);
     }
   }
 
-  if (a3 <= 6 && ((0x4Fu >> a3) & 1) != 0)
+  if (connection <= 6 && ((0x4Fu >> connection) & 1) != 0)
   {
-    return *(&self->super.isa + qword_1DBD50E78[a3]);
+    return *(&self->super.isa + qword_1DBD50E78[connection]);
   }
 
   else
@@ -1497,7 +1497,7 @@ LABEL_35:
   }
 }
 
-- (id)maxAllowedBitrateRuleForConnection:(int)a3
+- (id)maxAllowedBitrateRuleForConnection:(int)connection
 {
   v27 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1513,7 +1513,7 @@ LABEL_35:
       v23 = 1024;
       v24 = 735;
       v25 = 1024;
-      v26 = a3;
+      connectionCopy = connection;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Received connection type %d", buf, 0x22u);
     }
   }
@@ -1541,7 +1541,7 @@ LABEL_6:
     }
 
     v12 = *(*(&v15 + 1) + 8 * v11);
-    if ([v12 connectionType] == a3)
+    if ([v12 connectionType] == connection)
     {
       return v12;
     }
@@ -1559,28 +1559,28 @@ LABEL_6:
   }
 }
 
-- (unsigned)maxAllowedBitrateForVCConnection:(id)a3 forLocalInterface:(BOOL)a4 arbiterMode:(unsigned __int8)a5 encodeRule:(id)a6
+- (unsigned)maxAllowedBitrateForVCConnection:(id)connection forLocalInterface:(BOOL)interface arbiterMode:(unsigned __int8)mode encodeRule:(id)rule
 {
-  v7 = a5;
-  v8 = a4;
+  modeCopy = mode;
+  interfaceCopy = interface;
   v28 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (interface)
   {
-    v11 = [a3 localConnectionType];
+    localConnectionType = [connection localConnectionType];
   }
 
   else
   {
-    v11 = [a3 remoteConnectionType];
+    localConnectionType = [connection remoteConnectionType];
   }
 
-  if (v7 > 3)
+  if (modeCopy > 3)
   {
-    if (v7 <= 6)
+    if (modeCopy <= 6)
     {
-      if ((v7 - 4) >= 2)
+      if ((modeCopy - 4) >= 2)
       {
-        if (v7 == 6)
+        if (modeCopy == 6)
         {
           return 20000000;
         }
@@ -1590,15 +1590,15 @@ LABEL_6:
 
 LABEL_12:
 
-      return [(VCBitrateArbiter *)self maxAllowedBitrateForVCConnection:a3 forLocalInterface:v8 encodeRule:a6];
+      return [(VCBitrateArbiter *)self maxAllowedBitrateForVCConnection:connection forLocalInterface:interfaceCopy encodeRule:rule];
     }
 
-    if (v7 != 7)
+    if (modeCopy != 7)
     {
-      if (v7 == 8)
+      if (modeCopy == 8)
       {
 
-        return [(VCBitrateArbiter *)self maxAllowedImmersiveVideoBitrateForConnectionType:v11];
+        return [(VCBitrateArbiter *)self maxAllowedImmersiveVideoBitrateForConnectionType:localConnectionType];
       }
 
       goto LABEL_27;
@@ -1606,26 +1606,26 @@ LABEL_12:
 
 LABEL_24:
 
-    return [(VCBitrateArbiter *)self maxAllowedAudioOnlyBitrateForConnection:v11];
+    return [(VCBitrateArbiter *)self maxAllowedAudioOnlyBitrateForConnection:localConnectionType];
   }
 
-  if (v7 > 1)
+  if (modeCopy > 1)
   {
-    if (v7 != 2)
+    if (modeCopy != 2)
     {
 
-      return [(VCBitrateArbiter *)self maxAllowedScreenShareBitrateForConnection:v11];
+      return [(VCBitrateArbiter *)self maxAllowedScreenShareBitrateForConnection:localConnectionType];
     }
 
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!modeCopy)
   {
     goto LABEL_24;
   }
 
-  if (v7 == 1)
+  if (modeCopy == 1)
   {
     goto LABEL_12;
   }
@@ -1677,9 +1677,9 @@ LABEL_27:
       v22 = 2112;
       v23 = v13;
       v24 = 2048;
-      v25 = self;
+      selfCopy = self;
       v26 = 1024;
-      v27 = v7;
+      v27 = modeCopy;
       _os_log_error_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unexpected arbiterMode=%hhu", &v16, 0x36u);
     }
   }
@@ -1687,31 +1687,31 @@ LABEL_27:
   return 0;
 }
 
-- (unsigned)maxAllowedBitrateForConnectionType:(int)a3 arbiterMode:(unsigned __int8)a4
+- (unsigned)maxAllowedBitrateForConnectionType:(int)type arbiterMode:(unsigned __int8)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v22 = *MEMORY[0x1E69E9840];
-  if (a4 > 3)
+  if (mode > 3)
   {
-    if (a4 > 6)
+    if (mode > 6)
     {
-      if (a4 == 7)
+      if (mode == 7)
       {
         return 6000000;
       }
 
-      if (a4 == 8)
+      if (mode == 8)
       {
 
-        return [(VCBitrateArbiter *)self maxAllowedImmersiveVideoBitrateForConnectionType:*&a3];
+        return [(VCBitrateArbiter *)self maxAllowedImmersiveVideoBitrateForConnectionType:*&type];
       }
 
       goto LABEL_25;
     }
 
-    if ((a4 - 4) >= 2)
+    if ((mode - 4) >= 2)
     {
-      if (a4 == 6)
+      if (mode == 6)
       {
         return 20000000;
       }
@@ -1721,28 +1721,28 @@ LABEL_27:
 
 LABEL_9:
 
-    return [(VCBitrateArbiter *)self maxAllowedBitrateForConnectionType:*&a3];
+    return [(VCBitrateArbiter *)self maxAllowedBitrateForConnectionType:*&type];
   }
 
-  if (a4 > 1)
+  if (mode > 1)
   {
-    if (a4 != 2)
+    if (mode != 2)
     {
 
-      return [(VCBitrateArbiter *)self maxAllowedScreenShareBitrateForConnection:*&a3];
+      return [(VCBitrateArbiter *)self maxAllowedScreenShareBitrateForConnection:*&type];
     }
 
 LABEL_21:
 
-    return [(VCBitrateArbiter *)self maxAllowedAudioOnlyBitrateForConnection:*&a3];
+    return [(VCBitrateArbiter *)self maxAllowedAudioOnlyBitrateForConnection:*&type];
   }
 
-  if (!a4)
+  if (!mode)
   {
     goto LABEL_21;
   }
 
-  if (a4 == 1)
+  if (mode == 1)
   {
     goto LABEL_9;
   }
@@ -1794,9 +1794,9 @@ LABEL_25:
       v16 = 2112;
       v17 = v7;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 1024;
-      v21 = v4;
+      v21 = modeCopy;
       _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unexpected arbiterMode=%hhu", &v10, 0x36u);
     }
   }
@@ -1804,23 +1804,23 @@ LABEL_25:
   return 0;
 }
 
-+ (void)updateMaxAllowedBitratePerConnection:(unsigned int *)a3 connectionType:(int)a4 negotiatedSettings:(id)a5
++ (void)updateMaxAllowedBitratePerConnection:(unsigned int *)connection connectionType:(int)type negotiatedSettings:(id)settings
 {
-  v6 = [a5 maxBandwidthWithArbiterMode:1 connectionType:*&a4];
+  v6 = [settings maxBandwidthWithArbiterMode:1 connectionType:*&type];
   if (v6)
   {
-    *a3 = v6;
+    *connection = v6;
   }
 }
 
-- (void)updateNegotiatedSettings:(id)a3
+- (void)updateNegotiatedSettings:(id)settings
 {
   v28 = *MEMORY[0x1E69E9840];
-  [VCBitrateArbiter updateMaxAllowedBitratePerConnection:&self->_maxAllowedBitrate2G connectionType:0 negotiatedSettings:a3];
-  [VCBitrateArbiter updateMaxAllowedBitratePerConnection:&self->_maxAllowedBitrate3G connectionType:1 negotiatedSettings:a3];
-  [VCBitrateArbiter updateMaxAllowedBitratePerConnection:&self->_maxAllowedBitrateLTE connectionType:2 negotiatedSettings:a3];
-  [VCBitrateArbiter updateMaxAllowedBitratePerConnection:&self->_maxAllowedBitrateHighRat connectionType:6 negotiatedSettings:a3];
-  [VCBitrateArbiter updateMaxAllowedBitratePerConnection:&self->_maxAllowedBitrateWifi connectionType:3 negotiatedSettings:a3];
+  [VCBitrateArbiter updateMaxAllowedBitratePerConnection:&self->_maxAllowedBitrate2G connectionType:0 negotiatedSettings:settings];
+  [VCBitrateArbiter updateMaxAllowedBitratePerConnection:&self->_maxAllowedBitrate3G connectionType:1 negotiatedSettings:settings];
+  [VCBitrateArbiter updateMaxAllowedBitratePerConnection:&self->_maxAllowedBitrateLTE connectionType:2 negotiatedSettings:settings];
+  [VCBitrateArbiter updateMaxAllowedBitratePerConnection:&self->_maxAllowedBitrateHighRat connectionType:6 negotiatedSettings:settings];
+  [VCBitrateArbiter updateMaxAllowedBitratePerConnection:&self->_maxAllowedBitrateWifi connectionType:3 negotiatedSettings:settings];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v5 = VRTraceErrorLogLevelToCSTR();

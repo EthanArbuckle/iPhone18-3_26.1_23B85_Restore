@@ -1,31 +1,31 @@
 @interface NUGenericComposition
 - (NSDictionary)contents;
-- (NUGenericComposition)initWithCompositionSchema:(id)a3;
-- (void)setContents:(id)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (NUGenericComposition)initWithCompositionSchema:(id)schema;
+- (void)setContents:(id)contents;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation NUGenericComposition
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   contents = self->_contents;
-  if (a3)
+  if (value)
   {
-    [(NSMutableDictionary *)contents setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)contents setObject:value forKey:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)contents removeObjectForKey:a4];
+    [(NSMutableDictionary *)contents removeObjectForKey:key];
   }
 }
 
-- (NUGenericComposition)initWithCompositionSchema:(id)a3
+- (NUGenericComposition)initWithCompositionSchema:(id)schema
 {
   v7.receiver = self;
   v7.super_class = NUGenericComposition;
-  v3 = [(NUComposition *)&v7 initWithCompositionSchema:a3];
+  v3 = [(NUComposition *)&v7 initWithCompositionSchema:schema];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   contents = v3->_contents;
   v3->_contents = v4;
@@ -33,11 +33,11 @@
   return v3;
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  contentsCopy = contents;
+  if (!contentsCopy)
   {
     v5 = NUAssertLogger_70();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -58,8 +58,8 @@
         v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v13 = MEMORY[0x1E696AF00];
         v14 = v12;
-        v15 = [v13 callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v13 callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v23 = v12;
         v24 = 2114;
@@ -70,8 +70,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v23 = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -80,8 +80,8 @@
     _NUAssertFailHandler("[NUGenericComposition setContents:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUComposition.m", 199, @"Invalid parameter not satisfying: %s", v17, v18, v19, v20, "contents");
   }
 
-  v21 = v4;
-  [(NSMutableDictionary *)self->_contents setDictionary:v4];
+  v21 = contentsCopy;
+  [(NSMutableDictionary *)self->_contents setDictionary:contentsCopy];
 }
 
 - (NSDictionary)contents

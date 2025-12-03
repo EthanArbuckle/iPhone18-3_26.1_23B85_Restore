@@ -1,19 +1,19 @@
 @interface DAAccount
-- (BOOL)isConsideredTheSame:(id)a3;
+- (BOOL)isConsideredTheSame:(id)same;
 @end
 
 @implementation DAAccount
 
-- (BOOL)isConsideredTheSame:(id)a3
+- (BOOL)isConsideredTheSame:(id)same
 {
-  v4 = a3;
-  v5 = [(DAAccount *)self emailAddress];
-  v6 = [v4 emailAddress];
-  if ([v5 isEqualToString:v6])
+  sameCopy = same;
+  emailAddress = [(DAAccount *)self emailAddress];
+  emailAddress2 = [sameCopy emailAddress];
+  if ([emailAddress isEqualToString:emailAddress2])
   {
-    v7 = [(DAAccount *)self host];
-    v8 = [v4 host];
-    if (![v7 isEqualToString:v8] || (v9 = kDAExchangeOAuthSupportedKey, v10 = -[DAAccount accountBoolPropertyForKey:](self, "accountBoolPropertyForKey:", kDAExchangeOAuthSupportedKey), v10 != objc_msgSend(v4, "accountBoolPropertyForKey:", v9)))
+    host = [(DAAccount *)self host];
+    host2 = [sameCopy host];
+    if (![host isEqualToString:host2] || (v9 = kDAExchangeOAuthSupportedKey, v10 = -[DAAccount accountBoolPropertyForKey:](self, "accountBoolPropertyForKey:", kDAExchangeOAuthSupportedKey), v10 != objc_msgSend(sameCopy, "accountBoolPropertyForKey:", v9)))
     {
       v11 = 0;
 LABEL_24:
@@ -23,10 +23,10 @@ LABEL_24:
 
     v12 = kDAExchangeOAuthURI;
     v13 = [(DAAccount *)self accountPropertyForKey:kDAExchangeOAuthURI];
-    if (v13 || ([v4 accountPropertyForKey:v12], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v13 || ([sameCopy accountPropertyForKey:v12], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v14 = [(DAAccount *)self accountPropertyForKey:v12];
-      v15 = [v4 accountPropertyForKey:v12];
+      v15 = [sameCopy accountPropertyForKey:v12];
       if (![v14 isEqual:v15])
       {
         v11 = 0;
@@ -48,11 +48,11 @@ LABEL_20:
 
     v17 = kDAExchangeTokenRequestURI;
     v18 = [(DAAccount *)self accountPropertyForKey:kDAExchangeTokenRequestURI];
-    if (v18 || ([v4 accountPropertyForKey:v17], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v18 || ([sameCopy accountPropertyForKey:v17], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v26 = v16;
       v19 = [(DAAccount *)self accountPropertyForKey:v17];
-      v20 = [v4 accountPropertyForKey:v17];
+      v20 = [sameCopy accountPropertyForKey:v17];
       v11 = [v19 isEqual:v20];
 
       if (v18)

@@ -17,8 +17,8 @@
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -26,17 +26,17 @@
     v11 = v5;
     v12 = 2114;
     v13 = v6;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Updating Universal Links rules", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Updating Universal Links rules", buf, 0x16u);
   }
 
   v7 = objc_alloc_init(AMSUniversalLinks);
-  v8 = [(AMSUniversalLinks *)v7 updateUniversalLinks];
+  updateUniversalLinks = [(AMSUniversalLinks *)v7 updateUniversalLinks];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __27__AMSUniversalLinks_update__block_invoke;
   v9[3] = &__block_descriptor_40_e51_v24__0__AMSUniversalLinksUpdateResult_8__NSError_16l;
-  v9[4] = a1;
-  [v8 addFinishBlock:v9];
+  v9[4] = self;
+  [updateUniversalLinks addFinishBlock:v9];
 }
 
 void __27__AMSUniversalLinks_update__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -85,7 +85,7 @@ void __27__AMSUniversalLinks_update__block_invoke(uint64_t a1, void *a2, void *a
 - (id)updateUniversalLinks
 {
   v3 = [[AMSMutablePromise alloc] initWithTimeout:3.0];
-  v4 = [objc_opt_class() _privateQueue];
+  _privateQueue = [objc_opt_class() _privateQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __41__AMSUniversalLinks_updateUniversalLinks__block_invoke;
@@ -102,7 +102,7 @@ void __27__AMSUniversalLinks_update__block_invoke(uint64_t a1, void *a2, void *a
   v15 = v7;
   v16 = v6;
   v8 = v7;
-  dispatch_async(v4, block);
+  dispatch_async(_privateQueue, block);
 
   v9 = v13;
   v10 = v5;
@@ -172,7 +172,7 @@ void __34__AMSUniversalLinks__privateQueue__block_invoke()
 
 + (id)_connection
 {
-  v2 = [a1 _privateQueue];
+  _privateQueue = [self _privateQueue];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -185,7 +185,7 @@ void __34__AMSUniversalLinks__privateQueue__block_invoke()
   v9[3] = &unk_1E73B3880;
   v9[4] = &v10;
   v3 = v9;
-  v4 = v2;
+  v4 = _privateQueue;
   v5 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

@@ -1,32 +1,32 @@
 @interface MADDeferredProcessingEntry
-+ (id)entryWithLocalIdentifier:(id)a3 requestDate:(id)a4;
-- (MADDeferredProcessingEntry)initWithLocalIdentifier:(id)a3 requestDate:(id)a4;
++ (id)entryWithLocalIdentifier:(id)identifier requestDate:(id)date;
+- (MADDeferredProcessingEntry)initWithLocalIdentifier:(id)identifier requestDate:(id)date;
 @end
 
 @implementation MADDeferredProcessingEntry
 
-- (MADDeferredProcessingEntry)initWithLocalIdentifier:(id)a3 requestDate:(id)a4
+- (MADDeferredProcessingEntry)initWithLocalIdentifier:(id)identifier requestDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = MADDeferredProcessingEntry;
   v9 = [(MADDeferredProcessingEntry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_localIdentifier, a3);
-    objc_storeStrong(&v10->_requestDate, a4);
+    objc_storeStrong(&v9->_localIdentifier, identifier);
+    objc_storeStrong(&v10->_requestDate, date);
   }
 
   return v10;
 }
 
-+ (id)entryWithLocalIdentifier:(id)a3 requestDate:(id)a4
++ (id)entryWithLocalIdentifier:(id)identifier requestDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithLocalIdentifier:v6 requestDate:v5];
+  dateCopy = date;
+  identifierCopy = identifier;
+  v7 = [objc_alloc(objc_opt_class()) initWithLocalIdentifier:identifierCopy requestDate:dateCopy];
 
   return v7;
 }

@@ -1,23 +1,23 @@
 @interface PAESlicedScale
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputBounds:(CGRect *)a3 withInputBounds:(CGRect)a4 withInputInfo:(id *)a5 withRenderInfo:(id *)a6;
-- (PAESlicedScale)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputBounds:(CGRect *)bounds withInputBounds:(CGRect)inputBounds withInputInfo:(id *)info withRenderInfo:(id *)renderInfo;
+- (PAESlicedScale)initWithAPIManager:(id)manager;
 - (id)properties;
-- (void)additionalObjectDownScale:(void *)a3 objectScale:(PCVector2<double>)a4 innerScale:(PCVector2<double>)a5 xLeft:(double)a6 xRight:(double)a7 yTop:(double)a8 yBottom:(double)a9;
-- (void)calculateBounds:(CGRect *)a3 fromOrigin:(PCVector2<double>)a4 mode:(int)a5 inputSize:(PCVector2<double>)a6 ignoreOffsets:(BOOL)a7 xLeft:(double)a8 xRight:(double)a9 yBottom:(double)a10 yTop:(double)a11 objectScale:(PCVector2<double>)a12 offset:(PCVector2<double>)a13;
-- (void)innerScaleFromObjectScale:(PCVector2<double>)a3 innerScale:(void *)a4 xLeft:(double)a5 xRight:(double)a6 yTop:(double)a7 yBottom:(double)a8 inputSize:(PCVector2<double>)a9 newObjectSize:(void *)a10 mode:(int)a11;
-- (void)wholeTileExpandLeftScale:(double *)a3 expandRightScale:(double *)a4 expandBottomScale:(double *)a5 expandTopScale:(double *)a6 objectScale:(void *)a7 xLeft:(double)a8 xRight:(double)a9 yBottom:(double)a10 yTop:(double)a11;
+- (void)additionalObjectDownScale:(void *)scale objectScale:(PCVector2<double>)objectScale innerScale:(PCVector2<double>)innerScale xLeft:(double)left xRight:(double)right yTop:(double)top yBottom:(double)bottom;
+- (void)calculateBounds:(CGRect *)bounds fromOrigin:(PCVector2<double>)origin mode:(int)mode inputSize:(PCVector2<double>)size ignoreOffsets:(BOOL)offsets xLeft:(double)left xRight:(double)right yBottom:(double)self0 yTop:(double)self1 objectScale:(PCVector2<double>)self2 offset:(PCVector2<double>)self3;
+- (void)innerScaleFromObjectScale:(PCVector2<double>)scale innerScale:(void *)innerScale xLeft:(double)left xRight:(double)right yTop:(double)top yBottom:(double)bottom inputSize:(PCVector2<double>)size newObjectSize:(void *)self0 mode:(int)self1;
+- (void)wholeTileExpandLeftScale:(double *)scale expandRightScale:(double *)rightScale expandBottomScale:(double *)bottomScale expandTopScale:(double *)topScale objectScale:(void *)objectScale xLeft:(double)left xRight:(double)right yBottom:(double)self0 yTop:(double)self1;
 @end
 
 @implementation PAESlicedScale
 
-- (PAESlicedScale)initWithAPIManager:(id)a3
+- (PAESlicedScale)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAESlicedScale;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -85,7 +85,7 @@
   v6 = !v5;
   if (!v5)
   {
-    v7 = [v4 versionAtCreation];
+    versionAtCreation = [v4 versionAtCreation];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     [v3 addToggleButtonWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultValue:@"SlicedScale::editSlices" parmFlags:{0, 0), 1, 0, 1}];
     [v3 addPointParameterWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultX:@"SlicedScale::sliceRightTop" defaultY:0 parmFlags:{0), 2, 34, 0.75, 0.75}];
@@ -95,7 +95,7 @@
     [v3 addPointParameterWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultX:@"SlicedScale::offset" defaultY:0 parmFlags:{0), 6, 32, 0.5, 0.5}];
     [v3 startParameterSubGroup:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" parmFlags:{@"SlicedScale::expandGroup", 0, 0), 7, 40}];
     v9 = [v8 localizedStringForKey:@"SlicedScale::expandLeft" value:0 table:0];
-    if (v7 < 2)
+    if (versionAtCreation < 2)
     {
       [v3 addFloatSliderWithName:v9 parmId:8 defaultValue:0 parameterMin:0.0 parameterMax:0.0 sliderMin:1.0 sliderMax:0.0 delta:1.0 parmFlags:0.01];
       [v3 addFloatSliderWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultValue:@"SlicedScale::expandRight" parameterMin:0 parameterMax:0) sliderMin:10 sliderMax:0 delta:0.0 parmFlags:{0.0, 1.0, 0.0, 1.0, 0.01}];
@@ -121,15 +121,15 @@
   return v6;
 }
 
-- (void)innerScaleFromObjectScale:(PCVector2<double>)a3 innerScale:(void *)a4 xLeft:(double)a5 xRight:(double)a6 yTop:(double)a7 yBottom:(double)a8 inputSize:(PCVector2<double>)a9 newObjectSize:(void *)a10 mode:(int)a11
+- (void)innerScaleFromObjectScale:(PCVector2<double>)scale innerScale:(void *)innerScale xLeft:(double)left xRight:(double)right yTop:(double)top yBottom:(double)bottom inputSize:(PCVector2<double>)size newObjectSize:(void *)self0 mode:(int)self1
 {
   v13 = vdupq_n_s64(0x3EE4F8B588E368F1uLL);
-  v14 = vmaxnmq_f64(*a4, v13);
-  *a4 = v14;
+  v14 = vmaxnmq_f64(*innerScale, v13);
+  *innerScale = v14;
   __asm { FMOV            V3.2D, #1.0 }
 
-  v22 = vmulq_f64(vsubq_f64(*&a3.var1, a3), **&a11);
-  v23 = vmaxnmq_f64(vdivq_f64(vsubq_f64(vaddq_f64(v22, vmaxnmq_f64(vmulq_f64(v14, **&a11), _Q3)), **&a11), v22), v13);
+  v22 = vmulq_f64(vsubq_f64(*&scale.var1, scale), **&mode);
+  v23 = vmaxnmq_f64(vdivq_f64(vsubq_f64(vaddq_f64(v22, vmaxnmq_f64(vmulq_f64(v14, **&mode), _Q3)), **&mode), v22), v13);
   if (v12 == 2)
   {
     v24 = floor(v23.f64[0] + 0.0000001);
@@ -150,26 +150,26 @@
     }
   }
 
-  *v11 = vaddq_f64(**&a11, vsubq_f64(vmulq_f64(v22, v23), v22));
-  *a10 = v23;
+  *v11 = vaddq_f64(**&mode, vsubq_f64(vmulq_f64(v22, v23), v22));
+  *objectSize = v23;
 }
 
-- (void)wholeTileExpandLeftScale:(double *)a3 expandRightScale:(double *)a4 expandBottomScale:(double *)a5 expandTopScale:(double *)a6 objectScale:(void *)a7 xLeft:(double)a8 xRight:(double)a9 yBottom:(double)a10 yTop:(double)a11
+- (void)wholeTileExpandLeftScale:(double *)scale expandRightScale:(double *)rightScale expandBottomScale:(double *)bottomScale expandTopScale:(double *)topScale objectScale:(void *)objectScale xLeft:(double)left xRight:(double)right yBottom:(double)self0 yTop:(double)self1
 {
-  v11.f64[0] = a9;
-  v11.f64[1] = a11;
-  v12.f64[0] = a8;
-  v12.f64[1] = a10;
+  v11.f64[0] = right;
+  v11.f64[1] = top;
+  v12.f64[0] = left;
+  v12.f64[1] = bottom;
   v13 = vsubq_f64(v11, v12);
   v14 = vdupq_n_s64(0x3EE4F8B588E368F1uLL);
-  v15 = vaddq_f64(vbslq_s8(vcgtq_f64(v14, *a7), v14, *a7), v11);
-  v16 = *a3 + 1.0;
+  v15 = vaddq_f64(vbslq_s8(vcgtq_f64(v14, *objectScale), v14, *objectScale), v11);
+  v16 = *scale + 1.0;
   if (v16 < 0.00001)
   {
     v16 = 0.00001;
   }
 
-  v17 = (v16 + a9 - a8 + -1.0) / v13.f64[0];
+  v17 = (v16 + right - left + -1.0) / v13.f64[0];
   if (v17 < 0.00001)
   {
     v17 = 0.00001;
@@ -181,13 +181,13 @@
     v17 = v18;
   }
 
-  v19 = *a5 + 1.0;
+  v19 = *bottomScale + 1.0;
   if (v19 < 0.00001)
   {
     v19 = 0.00001;
   }
 
-  v20 = (v19 + a11 - a10 + -1.0) / v13.f64[1];
+  v20 = (v19 + top - bottom + -1.0) / v13.f64[1];
   if (v20 < 0.00001)
   {
     v20 = 0.00001;
@@ -199,13 +199,13 @@
     v20 = v21;
   }
 
-  v22 = *a4 + 1.0;
+  v22 = *rightScale + 1.0;
   if (v22 < 0.00001)
   {
     v22 = 0.00001;
   }
 
-  v23 = (v22 + a9 - a8 + -1.0) / v13.f64[0];
+  v23 = (v22 + right - left + -1.0) / v13.f64[0];
   if (v23 < 0.00001)
   {
     v23 = 0.00001;
@@ -217,13 +217,13 @@
     v23 = v24;
   }
 
-  v25 = *a6 + 1.0;
+  v25 = *topScale + 1.0;
   if (v25 < 0.00001)
   {
     v25 = 0.00001;
   }
 
-  v26 = (v25 + a11 - a10 + -1.0) / v13.f64[1];
+  v26 = (v25 + top - bottom + -1.0) / v13.f64[1];
   if (v26 < 0.00001)
   {
     v26 = 0.00001;
@@ -244,73 +244,73 @@
     v31 = 0.0;
   }
 
-  *a3 = v31;
+  *scale = v31;
   v32 = v29 + -1.0;
   if (v32 < 0.0)
   {
     v32 = 0.0;
   }
 
-  *a4 = v32;
+  *rightScale = v32;
   v33 = v28 + -1.0;
   if (v28 + -1.0 < 0.0)
   {
     v33 = 0.0;
   }
 
-  *a5 = v33;
+  *bottomScale = v33;
   v34 = v30 + -1.0;
   if (v30 + -1.0 < 0.0)
   {
     v34 = 0.0;
   }
 
-  *a6 = v34;
+  *topScale = v34;
   __asm { FMOV            V1.2D, #-1.0 }
 
   v40 = vdivq_f64(vaddq_f64(vsubq_f64(v15, v12), _Q1), v13);
   v41 = vbslq_s8(vcgtq_f64(v14, v40), v14, v40);
   __asm { FMOV            V2.2D, #1.0 }
 
-  *a7 = vbslq_s8(vcgeq_f64(*a7, _Q2), vaddq_f64(vmulq_f64(v13, vaddq_f64(vbslq_s8(vcgtq_f64(v41, _Q2), vrndmq_f64(vaddq_f64(v41, vdupq_n_s64(0x3E7AD7F29ABCAF48uLL))), v41), _Q1)), _Q2), *a7);
+  *objectScale = vbslq_s8(vcgeq_f64(*objectScale, _Q2), vaddq_f64(vmulq_f64(v13, vaddq_f64(vbslq_s8(vcgtq_f64(v41, _Q2), vrndmq_f64(vaddq_f64(v41, vdupq_n_s64(0x3E7AD7F29ABCAF48uLL))), v41), _Q1)), _Q2), *objectScale);
 }
 
-- (void)additionalObjectDownScale:(void *)a3 objectScale:(PCVector2<double>)a4 innerScale:(PCVector2<double>)a5 xLeft:(double)a6 xRight:(double)a7 yTop:(double)a8 yBottom:(double)a9
+- (void)additionalObjectDownScale:(void *)scale objectScale:(PCVector2<double>)objectScale innerScale:(PCVector2<double>)innerScale xLeft:(double)left xRight:(double)right yTop:(double)top yBottom:(double)bottom
 {
   __asm { FMOV            V4.2D, #1.0 }
 
-  *a3 = _Q4;
+  *scale = _Q4;
   v16 = vmaxnmq_f64(*v9, vdupq_n_s64(0x3EE4F8B588E368F1uLL));
   *v9 = v16;
   if (*v10 <= 0.00001)
   {
-    *a3 = v16.f64[0] / (*v10 * a4.var1 - *v10 * a4.var0 + a4.var0 - a4.var1 + 1.0);
+    *scale = v16.f64[0] / (*v10 * objectScale.var1 - *v10 * objectScale.var0 + objectScale.var0 - objectScale.var1 + 1.0);
   }
 
   v17 = v10[1];
   if (v17 <= 0.00001)
   {
-    *(a3 + 1) = v16.f64[1] / (v17 * a5.var0 - v17 * a5.var1 + a5.var1 - a5.var0 + 1.0);
+    *(scale + 1) = v16.f64[1] / (v17 * innerScale.var0 - v17 * innerScale.var1 + innerScale.var1 - innerScale.var0 + 1.0);
   }
 }
 
-- (void)calculateBounds:(CGRect *)a3 fromOrigin:(PCVector2<double>)a4 mode:(int)a5 inputSize:(PCVector2<double>)a6 ignoreOffsets:(BOOL)a7 xLeft:(double)a8 xRight:(double)a9 yBottom:(double)a10 yTop:(double)a11 objectScale:(PCVector2<double>)a12 offset:(PCVector2<double>)a13
+- (void)calculateBounds:(CGRect *)bounds fromOrigin:(PCVector2<double>)origin mode:(int)mode inputSize:(PCVector2<double>)size ignoreOffsets:(BOOL)offsets xLeft:(double)left xRight:(double)right yBottom:(double)self0 yTop:(double)self1 objectScale:(PCVector2<double>)self2 offset:(PCVector2<double>)self3
 {
   v14 = v13;
-  var1_low = LOBYTE(a12.var1);
-  var0 = a12.var0;
-  v17 = *&a5;
-  var1 = a6.var1;
-  v19 = a6.var0;
-  v20 = a4.var1;
-  v21 = a4.var0;
+  var1_low = LOBYTE(scale.var1);
+  var0 = scale.var0;
+  v17 = *&mode;
+  var1 = size.var1;
+  v19 = size.var0;
+  v20 = origin.var1;
+  v21 = origin.var0;
   v55 = 0.0;
   v56 = 0.0;
   v54 = 0uLL;
   v24 = *v13;
-  v52 = **&a12.var0;
+  v52 = **&scale.var0;
   v53 = v24;
-  [(PAESlicedScale *)self innerScaleFromObjectScale:&v53 innerScale:&v55 xLeft:&v52 xRight:&v54 yTop:a7 yBottom:a4.var0 inputSize:a4.var1 newObjectSize:a6.var1 mode:a6.var0];
+  [(PAESlicedScale *)self innerScaleFromObjectScale:&v53 innerScale:&v55 xLeft:&v52 xRight:&v54 yTop:offsets yBottom:origin.var0 inputSize:origin.var1 newObjectSize:size.var1 mode:size.var0];
   v49 = v17[1];
   v50 = *v17;
   v26 = **&var0;
@@ -361,8 +361,8 @@
     v42.f32[1] = v44;
     __asm { FMOV            V3.2D, #-0.5 }
 
-    v47 = vaddq_f64(**&a13.var0, _Q3);
-    **&a13.var0 = v47;
+    v47 = vaddq_f64(**&offset.var0, _Q3);
+    **&offset.var0 = v47;
     v35 = vcvtq_f64_f32(vcvt_f32_f64(vmulq_f64(**&var0, vcvtq_f64_f32(vcvt_f32_f64(vaddq_f64(v47, vcvtq_f64_f32(v42)))))));
     *v17 = v35;
     *&v29.f64[0] = v54;
@@ -371,20 +371,20 @@
 
   __asm { FMOV            V1.2D, #1.0 }
 
-  a3->origin = v35;
-  a3->size = vbslq_s8(vcgtq_f64(_Q1, v29), _Q1, v29);
+  bounds->origin = v35;
+  bounds->size = vbslq_s8(vcgtq_f64(_Q1, v29), _Q1, v29);
 }
 
-- (BOOL)getOutputBounds:(CGRect *)a3 withInputBounds:(CGRect)a4 withInputInfo:(id *)a5 withRenderInfo:(id *)a6
+- (BOOL)getOutputBounds:(CGRect *)bounds withInputBounds:(CGRect)inputBounds withInputInfo:(id *)info withRenderInfo:(id *)renderInfo
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258, a5];
-  if (a3)
+  height = inputBounds.size.height;
+  width = inputBounds.size.width;
+  y = inputBounds.origin.y;
+  x = inputBounds.origin.x;
+  info = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258, info];
+  if (bounds)
   {
-    _ZF = v13 == 0;
+    _ZF = info == 0;
   }
 
   else
@@ -395,17 +395,17 @@
   v15 = !_ZF;
   if (!_ZF)
   {
-    v16 = v13;
+    v16 = info;
     v37 = 0;
-    [v13 getBoolValue:&v37 fromParm:1 atFxTime:a6->var0.var1];
+    [info getBoolValue:&v37 fromParm:1 atFxTime:renderInfo->var0.var1];
     if ((v37 & 1) == 0)
     {
       v35 = 0.0;
       v36 = 0.0;
       v33 = 0.0;
       v34 = 0.0;
-      [v16 getXValue:&v35 YValue:&v33 fromParm:3 atFxTime:a6->var0.var1];
-      [v16 getXValue:&v36 YValue:&v34 fromParm:2 atFxTime:a6->var0.var1];
+      [v16 getXValue:&v35 YValue:&v33 fromParm:3 atFxTime:renderInfo->var0.var1];
+      [v16 getXValue:&v36 YValue:&v34 fromParm:2 atFxTime:renderInfo->var0.var1];
       v35 = v35 + -0.5;
       v36 = v36 + -0.5;
       v33 = v33 + -0.5;
@@ -413,16 +413,16 @@
       __asm { FMOV            V0.2D, #1.0 }
 
       v32 = _Q0;
-      [v16 getXValue:&v32 YValue:&v32.f64[1] fromParm:5 atFxTime:a6->var0.var1];
+      [v16 getXValue:&v32 YValue:&v32.f64[1] fromParm:5 atFxTime:renderInfo->var0.var1];
       v32 = vmaxnmq_f64(v32, vdupq_n_s64(0x3EE4F8B588E368F1uLL));
       v31 = 0;
-      [v16 getIntValue:&v31 fromParm:4 atFxTime:a6->var0.var1];
+      [v16 getIntValue:&v31 fromParm:4 atFxTime:renderInfo->var0.var1];
       v30 = 0;
-      [v16 getBoolValue:&v30 fromParm:15 atFxTime:a6->var0.var1];
+      [v16 getBoolValue:&v30 fromParm:15 atFxTime:renderInfo->var0.var1];
       __asm { FMOV            V0.2D, #0.5 }
 
       v29 = _Q0;
-      [v16 getXValue:&v29 YValue:&v29 + 8 fromParm:6 atFxTime:a6->var0.var1];
+      [v16 getXValue:&v29 YValue:&v29 + 8 fromParm:6 atFxTime:renderInfo->var0.var1];
       *v27 = x;
       *&v27[1] = y;
       *v26 = width;
@@ -431,15 +431,15 @@
       v25 = v32;
       [(PAESlicedScale *)self calculateBounds:v28 fromOrigin:v27 mode:v31 inputSize:v26 ignoreOffsets:v30 xLeft:&v25 xRight:v35 yBottom:v36 yTop:v33 objectScale:v34 offset:&v24];
       v22 = v28[1];
-      a3->origin = v28[0];
-      a3->size = v22;
+      bounds->origin = v28[0];
+      bounds->size = v22;
     }
   }
 
   return v15;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
@@ -456,13 +456,13 @@
   v12 = !_ZF;
   if (!_ZF)
   {
-    v13 = [v10 versionAtCreation];
-    v14 = [a4 width];
-    v15 = [a4 height];
-    [(PAESharedDefaultBase *)self getImageBoundary:a4];
+    versionAtCreation = [v10 versionAtCreation];
+    width = [input width];
+    height = [input height];
+    [(PAESharedDefaultBase *)self getImageBoundary:input];
     v16 = v51;
-    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a3];
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
+    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:output];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
     v17 = v86;
     v18 = v87;
     v19 = v82;
@@ -477,10 +477,10 @@
     v76 = 0;
     v75 = 0uLL;
     v74 = 0;
-    [v9 getBoolValue:&v74 fromParm:1 atFxTime:a5->var0.var1];
-    if (a4)
+    [v9 getBoolValue:&v74 fromParm:1 atFxTime:info->var0.var1];
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -495,25 +495,25 @@
       __asm { FMOV            V0.2D, #1.0 }
 
       v72 = _Q0;
-      [v9 getXValue:&v72 YValue:&v72.f64[1] fromParm:5 atFxTime:a5->var0.var1];
+      [v9 getXValue:&v72 YValue:&v72.f64[1] fromParm:5 atFxTime:info->var0.var1];
       v72 = vmaxnmq_f64(v72, vdupq_n_s64(0x3EE4F8B588E368F1uLL));
-      [v9 getXValue:&v79 YValue:&v77 fromParm:3 atFxTime:a5->var0.var1];
-      [v9 getXValue:&v80 YValue:&v78 fromParm:2 atFxTime:a5->var0.var1];
-      v27 = v14;
-      v28 = v15;
-      v29 = 1.0 / v14;
-      v30 = 1.0 / v15;
+      [v9 getXValue:&v79 YValue:&v77 fromParm:3 atFxTime:info->var0.var1];
+      [v9 getXValue:&v80 YValue:&v78 fromParm:2 atFxTime:info->var0.var1];
+      v27 = width;
+      v28 = height;
+      v29 = 1.0 / width;
+      v30 = 1.0 / height;
       v31 = v79;
       if (v29 >= v79)
       {
-        v31 = 1.0 / v14;
+        v31 = 1.0 / width;
       }
 
       v32 = v31 + -0.5;
       v33 = v77;
       if (v30 >= v77)
       {
-        v33 = 1.0 / v15;
+        v33 = 1.0 / height;
       }
 
       v34 = 1.0 - v29;
@@ -532,20 +532,20 @@
 
       v77 = v33 + -0.5;
       v78 = v35 + -0.5;
-      [v9 getBoolValue:&v76 fromParm:15 atFxTime:a5->var0.var1];
-      [v9 getXValue:&v75 YValue:&v75.f64[1] fromParm:6 atFxTime:a5->var0.var1];
+      [v9 getBoolValue:&v76 fromParm:15 atFxTime:info->var0.var1];
+      [v9 getXValue:&v75 YValue:&v75.f64[1] fromParm:6 atFxTime:info->var0.var1];
       v71 = 0;
-      [v9 getIntValue:&v71 fromParm:4 atFxTime:a5->var0.var1];
+      [v9 getIntValue:&v71 fromParm:4 atFxTime:info->var0.var1];
       v69 = 0.0;
       v70 = 0.0;
       v67 = 0.0;
       v68 = 0.0;
-      [v9 getFloatValue:&v70 fromParm:8 atFxTime:a5->var0.var1];
-      [v9 getFloatValue:&v68 fromParm:9 atFxTime:a5->var0.var1];
-      [v9 getFloatValue:&v69 fromParm:10 atFxTime:a5->var0.var1];
-      [v9 getFloatValue:&v67 fromParm:11 atFxTime:a5->var0.var1];
+      [v9 getFloatValue:&v70 fromParm:8 atFxTime:info->var0.var1];
+      [v9 getFloatValue:&v68 fromParm:9 atFxTime:info->var0.var1];
+      [v9 getFloatValue:&v69 fromParm:10 atFxTime:info->var0.var1];
+      [v9 getFloatValue:&v67 fromParm:11 atFxTime:info->var0.var1];
       v36 = v71;
-      if (v71 == 2 && v13 >= 2)
+      if (v71 == 2 && versionAtCreation >= 2)
       {
         [(PAESlicedScale *)self wholeTileExpandLeftScale:&v70 expandRightScale:&v69 expandBottomScale:&v68 expandTopScale:&v67 objectScale:&v72 xLeft:v79 xRight:v80 yBottom:v77 yTop:v78];
         v36 = v71;
@@ -559,8 +559,8 @@
       v66[1] = 0;
       v51 = v37;
       v52 = v38;
-      *&v56 = v14;
-      *(&v56 + 1) = v15;
+      *&v56 = width;
+      *(&v56 + 1) = height;
       [(PAESlicedScale *)self innerScaleFromObjectScale:&v51 innerScale:&v81 xLeft:&v56 xRight:v66 yTop:v36 yBottom:v79 inputSize:v80 newObjectSize:v78 mode:v77];
       v64 = 0.0;
       v65 = 0.0;
@@ -604,7 +604,7 @@
       HGSolidColor::HGSolidColor(v45, v88);
     }
 
-    [a3 setHeliumRef:&v73];
+    [output setHeliumRef:&v73];
     if (v73)
     {
       (*(*v73 + 24))(v73);
@@ -614,15 +614,15 @@
   return v12;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

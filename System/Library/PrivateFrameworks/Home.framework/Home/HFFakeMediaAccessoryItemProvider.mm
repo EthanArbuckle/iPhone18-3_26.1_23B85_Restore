@@ -30,17 +30,17 @@
 
 - (id)items
 {
-  v2 = [(HFFakeMediaAccessoryItemProvider *)self mediaAccessoryItems];
-  v3 = [v2 copy];
+  mediaAccessoryItems = [(HFFakeMediaAccessoryItemProvider *)self mediaAccessoryItems];
+  v3 = [mediaAccessoryItems copy];
 
   return v3;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HFFakeMediaAccessoryItemProvider *)self mediaAccessoryItemTypes];
-  v4 = [v3 allObjects];
-  v5 = [(HFItemProvider *)self reloadItemsWithObjects:v4 keyAdaptor:&__block_literal_global_240 itemAdaptor:&__block_literal_global_4_17 filter:&__block_literal_global_7_14 itemMap:&__block_literal_global_10_13];
+  mediaAccessoryItemTypes = [(HFFakeMediaAccessoryItemProvider *)self mediaAccessoryItemTypes];
+  allObjects = [mediaAccessoryItemTypes allObjects];
+  v5 = [(HFItemProvider *)self reloadItemsWithObjects:allObjects keyAdaptor:&__block_literal_global_240 itemAdaptor:&__block_literal_global_4_17 filter:&__block_literal_global_7_14 itemMap:&__block_literal_global_10_13];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__HFFakeMediaAccessoryItemProvider_reloadItems__block_invoke_5;

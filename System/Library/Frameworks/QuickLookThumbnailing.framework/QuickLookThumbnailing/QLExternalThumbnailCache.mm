@@ -1,30 +1,30 @@
 @interface QLExternalThumbnailCache
-+ (id)writeThumbnailImage:(CGImage *)a3 inInboxAtURL:(id)a4;
-- (BOOL)_createDirectoryWithURL:(id)a3 error:(id *)a4;
-- (BOOL)_freeDiskSpaceToSaveThumbnailRepresentingFPItem:(id)a3 withFileAtURL:(id)a4 error:(id *)a5;
-- (BOOL)_saveOrUpdateCachedThumbnailRepresentingFPItem:(id)a3 withFileAtURL:(id)a4 error:(id *)a5;
-- (BOOL)_saveToDiskCachedThumbnailRepresentingFPItem:(id)a3 withFileAtURL:(id)a4 error:(id *)a5;
-- (BOOL)_updateDatabaseWithCachedThumbnailRepresentingFPItem:(id)a3 withFileAtURL:(id)a4 error:(id *)a5;
-- (BOOL)removeAllThumbnails:(id *)a3;
-- (QLExternalThumbnailCache)initWithDirectoryURL:(id)a3 maximumCacheSize:(unint64_t)a4 error:(id *)a5;
++ (id)writeThumbnailImage:(CGImage *)image inInboxAtURL:(id)l;
+- (BOOL)_createDirectoryWithURL:(id)l error:(id *)error;
+- (BOOL)_freeDiskSpaceToSaveThumbnailRepresentingFPItem:(id)item withFileAtURL:(id)l error:(id *)error;
+- (BOOL)_saveOrUpdateCachedThumbnailRepresentingFPItem:(id)item withFileAtURL:(id)l error:(id *)error;
+- (BOOL)_saveToDiskCachedThumbnailRepresentingFPItem:(id)item withFileAtURL:(id)l error:(id *)error;
+- (BOOL)_updateDatabaseWithCachedThumbnailRepresentingFPItem:(id)item withFileAtURL:(id)l error:(id *)error;
+- (BOOL)removeAllThumbnails:(id *)thumbnails;
+- (QLExternalThumbnailCache)initWithDirectoryURL:(id)l maximumCacheSize:(unint64_t)size error:(id *)error;
 - (QLExternalThumbnailCacheDatabase)db;
-- (id)_urlForThumbnailWithFPItem:(id)a3 originalThumbnailURL:(id)a4;
-- (id)_urlForThumbnailWithFPItemIdentifier:(id)a3 fileExtension:(id)a4;
+- (id)_urlForThumbnailWithFPItem:(id)item originalThumbnailURL:(id)l;
+- (id)_urlForThumbnailWithFPItemIdentifier:(id)identifier fileExtension:(id)extension;
 - (id)inboxDirectoryURL;
-- (id)thumbnailURLForItem:(id)a3 error:(id *)a4;
-- (id)writeThumbnailImageInInbox:(CGImage *)a3;
+- (id)thumbnailURLForItem:(id)item error:(id *)error;
+- (id)writeThumbnailImageInInbox:(CGImage *)inbox;
 - (void)dealloc;
-- (void)getThumbnailCacheURLWrappersWithCompletion:(id)a3;
-- (void)getThumbnailURLForItem:(id)a3 completion:(id)a4;
+- (void)getThumbnailCacheURLWrappersWithCompletion:(id)completion;
+- (void)getThumbnailURLForItem:(id)item completion:(id)completion;
 - (void)inboxDirectoryURL;
-- (void)storeThumbnailAtURL:(id)a3 forItem:(id)a4 completion:(id)a5;
+- (void)storeThumbnailAtURL:(id)l forItem:(id)item completion:(id)completion;
 @end
 
 @implementation QLExternalThumbnailCache
 
-- (QLExternalThumbnailCache)initWithDirectoryURL:(id)a3 maximumCacheSize:(unint64_t)a4 error:(id *)a5
+- (QLExternalThumbnailCache)initWithDirectoryURL:(id)l maximumCacheSize:(unint64_t)size error:(id *)error
 {
-  v9 = a3;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = QLExternalThumbnailCache;
   v10 = [(QLExternalThumbnailCache *)&v18 init];
@@ -34,22 +34,22 @@
     goto LABEL_4;
   }
 
-  v10->_maximumCacheSize = a4;
-  objc_storeStrong(&v10->_directoryURL, a3);
-  v12 = [v9 URLByAppendingPathComponent:@"thumbnails" isDirectory:1];
+  v10->_maximumCacheSize = size;
+  objc_storeStrong(&v10->_directoryURL, l);
+  v12 = [lCopy URLByAppendingPathComponent:@"thumbnails" isDirectory:1];
   thumbnailsDirectoryURL = v11->_thumbnailsDirectoryURL;
   v11->_thumbnailsDirectoryURL = v12;
 
-  v14 = [v9 URLByAppendingPathComponent:@"thumbnails.db"];
+  v14 = [lCopy URLByAppendingPathComponent:@"thumbnails.db"];
   databaseURL = v11->_databaseURL;
   v11->_databaseURL = v14;
 
-  if (![(QLExternalThumbnailCache *)v11 _createDirectoryWithURL:v11->_thumbnailsDirectoryURL error:a5])
+  if (![(QLExternalThumbnailCache *)v11 _createDirectoryWithURL:v11->_thumbnailsDirectoryURL error:error])
   {
     goto LABEL_5;
   }
 
-  if ([(QLExternalThumbnailCache *)v11 _createDirectoryWithURL:v11->_directoryURL error:a5])
+  if ([(QLExternalThumbnailCache *)v11 _createDirectoryWithURL:v11->_directoryURL error:error])
   {
 LABEL_4:
     v16 = v11;
@@ -72,34 +72,34 @@ LABEL_5:
   [(QLExternalThumbnailCache *)&v3 dealloc];
 }
 
-- (id)thumbnailURLForItem:(id)a3 error:(id *)a4
+- (id)thumbnailURLForItem:(id)item error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemCopy = item;
   v7 = [(QLExternalThumbnailCache *)self db];
   if ([v7 open])
   {
     v15 = 0;
-    v8 = [v7 pathExtensionForItem:v6 error:&v15];
+    v8 = [v7 pathExtensionForItem:itemCopy error:&v15];
     v9 = v15;
     v10 = v9;
     if (v8)
     {
-      v11 = [v6 itemIdentifier];
-      v12 = [(QLExternalThumbnailCache *)self _urlForThumbnailWithFPItemIdentifier:v11 fileExtension:v8];
+      itemIdentifier = [itemCopy itemIdentifier];
+      v12 = [(QLExternalThumbnailCache *)self _urlForThumbnailWithFPItemIdentifier:itemIdentifier fileExtension:v8];
     }
 
     else
     {
       if (v9)
       {
-        if (a4)
+        if (error)
         {
-          *a4 = errorWithCodeAndUnderlyingError(1, v9);
+          *error = errorWithCodeAndUnderlyingError(1, v9);
         }
 
-        v11 = _log_1();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+        itemIdentifier = _log_1();
+        if (os_log_type_enabled(itemIdentifier, OS_LOG_TYPE_ERROR))
         {
           [QLExternalThumbnailCache thumbnailURLForItem:error:];
         }
@@ -107,12 +107,12 @@ LABEL_5:
 
       else
       {
-        v11 = _log_1();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+        itemIdentifier = _log_1();
+        if (os_log_type_enabled(itemIdentifier, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v17 = v6;
-          _os_log_impl(&dword_1CA1E7000, v11, OS_LOG_TYPE_INFO, "No path extension found from DB for item: %@.", buf, 0xCu);
+          v17 = itemCopy;
+          _os_log_impl(&dword_1CA1E7000, itemIdentifier, OS_LOG_TYPE_INFO, "No path extension found from DB for item: %@.", buf, 0xCu);
         }
       }
 
@@ -122,9 +122,9 @@ LABEL_5:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = errorWithCodeAndUnderlyingError(0, 0);
+      *error = errorWithCodeAndUnderlyingError(0, 0);
     }
 
     v10 = _log_1();
@@ -141,33 +141,33 @@ LABEL_5:
   return v12;
 }
 
-- (void)storeThumbnailAtURL:(id)a3 forItem:(id)a4 completion:(id)a5
+- (void)storeThumbnailAtURL:(id)l forItem:(id)item completion:(id)completion
 {
   v10 = 0;
-  v8 = a5;
-  [(QLExternalThumbnailCache *)self storeThumbnailAtURL:a3 forItem:a4 error:&v10];
+  completionCopy = completion;
+  [(QLExternalThumbnailCache *)self storeThumbnailAtURL:l forItem:item error:&v10];
   v9 = v10;
-  v8[2](v8, v9);
+  completionCopy[2](completionCopy, v9);
 }
 
-- (void)getThumbnailURLForItem:(id)a3 completion:(id)a4
+- (void)getThumbnailURLForItem:(id)item completion:(id)completion
 {
   v9 = 0;
-  v6 = a4;
-  v7 = [(QLExternalThumbnailCache *)self thumbnailURLForItem:a3 error:&v9];
+  completionCopy = completion;
+  v7 = [(QLExternalThumbnailCache *)self thumbnailURLForItem:item error:&v9];
   v8 = v9;
-  v6[2](v6, v7, v8);
+  completionCopy[2](completionCopy, v7, v8);
 }
 
-- (BOOL)removeAllThumbnails:(id *)a3
+- (BOOL)removeAllThumbnails:(id *)thumbnails
 {
   v35 = *MEMORY[0x1E69E9840];
   v5 = [(QLExternalThumbnailCache *)self db];
   if (([v5 open] & 1) == 0)
   {
-    if (a3)
+    if (thumbnails)
     {
-      *a3 = errorWithCodeAndUnderlyingError(0, 0);
+      *thumbnails = errorWithCodeAndUnderlyingError(0, 0);
     }
 
     v7 = _log_1();
@@ -186,20 +186,20 @@ LABEL_17:
   v7 = v33;
   if ((v6 & 1) == 0)
   {
-    if (a3)
+    if (thumbnails)
     {
       errorWithCodeAndUnderlyingError(1, v7);
-      *a3 = v20 = 0;
+      *thumbnails = v20 = 0;
       goto LABEL_33;
     }
 
     goto LABEL_17;
   }
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   thumbnailsDirectoryURL = self->_thumbnailsDirectoryURL;
   v32 = v7;
-  v10 = [v8 contentsOfDirectoryAtURL:thumbnailsDirectoryURL includingPropertiesForKeys:0 options:0 error:&v32];
+  v10 = [defaultManager contentsOfDirectoryAtURL:thumbnailsDirectoryURL includingPropertiesForKeys:0 options:0 error:&v32];
   v11 = v32;
 
   if (v10)
@@ -213,7 +213,7 @@ LABEL_17:
     if (v13)
     {
       v14 = v13;
-      v25 = a3;
+      thumbnailsCopy = thumbnails;
       v26 = v10;
       v15 = *v29;
       while (2)
@@ -229,7 +229,7 @@ LABEL_17:
 
           v18 = *(*(&v28 + 1) + 8 * v16);
           v27 = v17;
-          v19 = [v8 removeItemAtURL:v18 error:&v27];
+          v19 = [defaultManager removeItemAtURL:v18 error:&v27];
           v11 = v27;
 
           if ((v19 & 1) == 0)
@@ -240,10 +240,10 @@ LABEL_17:
               [QLExternalThumbnailCache removeAllThumbnails:];
             }
 
-            if (v25)
+            if (thumbnailsCopy)
             {
               errorWithCodeAndUnderlyingError(3, v11);
-              *v25 = v20 = 0;
+              *thumbnailsCopy = v20 = 0;
             }
 
             else
@@ -287,10 +287,10 @@ LABEL_30:
       [QLExternalThumbnailCache removeAllThumbnails:];
     }
 
-    if (a3)
+    if (thumbnails)
     {
       errorWithCodeAndUnderlyingError(3, v11);
-      *a3 = v20 = 0;
+      *thumbnails = v20 = 0;
     }
 
     else
@@ -306,26 +306,26 @@ LABEL_33:
   return v20;
 }
 
-- (BOOL)_saveOrUpdateCachedThumbnailRepresentingFPItem:(id)a3 withFileAtURL:(id)a4 error:(id *)a5
+- (BOOL)_saveOrUpdateCachedThumbnailRepresentingFPItem:(id)item withFileAtURL:(id)l error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(QLExternalThumbnailCache *)self _freeDiskSpaceToSaveThumbnailRepresentingFPItem:v8 withFileAtURL:v9 error:a5]&& [(QLExternalThumbnailCache *)self _updateDatabaseWithCachedThumbnailRepresentingFPItem:v8 withFileAtURL:v9 error:a5]&& [(QLExternalThumbnailCache *)self _saveToDiskCachedThumbnailRepresentingFPItem:v8 withFileAtURL:v9 error:a5];
+  itemCopy = item;
+  lCopy = l;
+  v10 = [(QLExternalThumbnailCache *)self _freeDiskSpaceToSaveThumbnailRepresentingFPItem:itemCopy withFileAtURL:lCopy error:error]&& [(QLExternalThumbnailCache *)self _updateDatabaseWithCachedThumbnailRepresentingFPItem:itemCopy withFileAtURL:lCopy error:error]&& [(QLExternalThumbnailCache *)self _saveToDiskCachedThumbnailRepresentingFPItem:itemCopy withFileAtURL:lCopy error:error];
 
   return v10;
 }
 
-- (BOOL)_freeDiskSpaceToSaveThumbnailRepresentingFPItem:(id)a3 withFileAtURL:(id)a4 error:(id *)a5
+- (BOOL)_freeDiskSpaceToSaveThumbnailRepresentingFPItem:(id)item withFileAtURL:(id)l error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  lCopy = l;
   v10 = [(QLExternalThumbnailCache *)self db];
   if (([v10 open] & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = errorWithCodeAndUnderlyingError(0, 0);
+      *error = errorWithCodeAndUnderlyingError(0, 0);
     }
 
     v15 = _log_1();
@@ -337,16 +337,16 @@ LABEL_33:
     goto LABEL_11;
   }
 
-  v11 = [(QLExternalThumbnailCache *)self maximumCacheSize];
-  v12 = [v10 totalThumbnailsSize];
-  v13 = [v9 _QLFileSize];
-  v14 = [v13 longLongValue];
+  maximumCacheSize = [(QLExternalThumbnailCache *)self maximumCacheSize];
+  totalThumbnailsSize = [v10 totalThumbnailsSize];
+  _QLFileSize = [lCopy _QLFileSize];
+  longLongValue = [_QLFileSize longLongValue];
 
-  if (v14 > v11)
+  if (longLongValue > maximumCacheSize)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = errorWithCodeAndUnderlyingError(4, 0);
+      *error = errorWithCodeAndUnderlyingError(4, 0);
     }
 
     v15 = _log_1();
@@ -360,7 +360,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v19 = v14 + v12 - v11;
+  v19 = longLongValue + totalThumbnailsSize - maximumCacheSize;
   if (v19 < 1)
   {
     v16 = 1;
@@ -372,7 +372,7 @@ LABEL_11:
   v15 = v46;
   if (v20)
   {
-    v21 = v8;
+    v21 = itemCopy;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
@@ -383,9 +383,9 @@ LABEL_11:
     {
       v23 = v22;
       v35 = v20;
-      v36 = a5;
+      errorCopy = error;
       v37 = v10;
-      v38 = v9;
+      v38 = lCopy;
       v39 = v21;
       v24 = *v43;
       v16 = 1;
@@ -401,13 +401,13 @@ LABEL_11:
           }
 
           v27 = *(*(&v42 + 1) + 8 * v25);
-          v28 = [v27 itemIdentifier];
-          v29 = [v27 fileExtension];
-          v30 = [(QLExternalThumbnailCache *)self _urlForThumbnailWithFPItemIdentifier:v28 fileExtension:v29];
+          itemIdentifier = [v27 itemIdentifier];
+          fileExtension = [v27 fileExtension];
+          v30 = [(QLExternalThumbnailCache *)self _urlForThumbnailWithFPItemIdentifier:itemIdentifier fileExtension:fileExtension];
 
-          v31 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
           v41 = v26;
-          v32 = [v31 removeItemAtURL:v30 error:&v41];
+          v32 = [defaultManager removeItemAtURL:v30 error:&v41];
           v15 = v41;
 
           if ((v32 & 1) == 0)
@@ -434,9 +434,9 @@ LABEL_11:
       }
 
       while (v23);
-      v9 = v38;
-      v8 = v39;
-      a5 = v36;
+      lCopy = v38;
+      itemCopy = v39;
+      error = errorCopy;
       v10 = v37;
       v20 = v35;
     }
@@ -453,9 +453,9 @@ LABEL_11:
     if (os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v49 = v8;
+      v49 = itemCopy;
       v50 = 2112;
-      v51 = v9;
+      v51 = lCopy;
       v52 = 2112;
       v53 = v15;
       _os_log_error_impl(&dword_1CA1E7000, obj, OS_LOG_TYPE_ERROR, "_freeDiskSpaceToSaveThumbnailRepresentingFPItem (item: %@, url: %@) failed. Error: %@", buf, 0x20u);
@@ -464,10 +464,10 @@ LABEL_11:
     v16 = 0;
   }
 
-  if (a5)
+  if (error)
   {
     v34 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
 LABEL_12:
@@ -477,38 +477,38 @@ LABEL_13:
   return v16 & 1;
 }
 
-- (BOOL)_updateDatabaseWithCachedThumbnailRepresentingFPItem:(id)a3 withFileAtURL:(id)a4 error:(id *)a5
+- (BOOL)_updateDatabaseWithCachedThumbnailRepresentingFPItem:(id)item withFileAtURL:(id)l error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  lCopy = l;
   v10 = [(QLExternalThumbnailCache *)self db];
   if ([v10 open])
   {
-    v11 = [v9 _QLFileSize];
-    v12 = [v11 longLongValue];
+    _QLFileSize = [lCopy _QLFileSize];
+    longLongValue = [_QLFileSize longLongValue];
 
-    v13 = [MEMORY[0x1E695DF00] date];
-    v14 = [v9 pathExtension];
+    date = [MEMORY[0x1E695DF00] date];
+    pathExtension = [lCopy pathExtension];
     v21 = 0;
-    v15 = [v10 insertOrReplaceThumbnailRepresentingFPItem:v8 size:v12 modificationDate:v13 fileExtension:v14 error:&v21];
+    v15 = [v10 insertOrReplaceThumbnailRepresentingFPItem:itemCopy size:longLongValue modificationDate:date fileExtension:pathExtension error:&v21];
     v16 = v21;
 
     if ((v15 & 1) == 0)
     {
-      if (a5)
+      if (error)
       {
         v17 = v16;
-        *a5 = v16;
+        *error = v16;
       }
 
       v18 = _log_1();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v23 = v8;
+        v23 = itemCopy;
         v24 = 2112;
-        v25 = v9;
+        v25 = lCopy;
         v26 = 2112;
         v27 = v16;
         _os_log_error_impl(&dword_1CA1E7000, v18, OS_LOG_TYPE_ERROR, "_updateDatabaseWithCachedThumbnailRepresentingFPItem (item: %@, url: %@) failed. Error: %@", buf, 0x20u);
@@ -518,9 +518,9 @@ LABEL_13:
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = errorWithCodeAndUnderlyingError(0, 0);
+      *error = errorWithCodeAndUnderlyingError(0, 0);
     }
 
     v16 = _log_1();
@@ -536,27 +536,27 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)_saveToDiskCachedThumbnailRepresentingFPItem:(id)a3 withFileAtURL:(id)a4 error:(id *)a5
+- (BOOL)_saveToDiskCachedThumbnailRepresentingFPItem:(id)item withFileAtURL:(id)l error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [(QLExternalThumbnailCache *)self _urlForThumbnailWithFPItem:a3 originalThumbnailURL:v8];
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v9 path];
-  v12 = [v10 fileExistsAtPath:v11];
+  lCopy = l;
+  v9 = [(QLExternalThumbnailCache *)self _urlForThumbnailWithFPItem:item originalThumbnailURL:lCopy];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v9 path];
+  v12 = [defaultManager fileExistsAtPath:path];
 
   if (v12)
   {
     v26 = 0;
-    v13 = [v10 removeItemAtURL:v9 error:&v26];
+    v13 = [defaultManager removeItemAtURL:v9 error:&v26];
     v14 = v26;
     v15 = v14;
     if ((v13 & 1) == 0)
     {
-      if (a5)
+      if (error)
       {
         v16 = v14;
-        *a5 = v15;
+        *error = v15;
       }
 
       v17 = _log_1();
@@ -578,24 +578,24 @@ LABEL_14:
   }
 
   v18 = v15;
-  v19 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v25 = v15;
-  v20 = [v19 moveItemAtURL:v8 toURL:v9 error:&v25];
+  v20 = [defaultManager2 moveItemAtURL:lCopy toURL:v9 error:&v25];
   v15 = v25;
 
   if ((v20 & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v22 = v15;
-      *a5 = v15;
+      *error = v15;
     }
 
     v17 = _log_1();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v28 = v8;
+      v28 = lCopy;
       v29 = 2112;
       v30 = v9;
       v31 = 2112;
@@ -613,12 +613,12 @@ LABEL_15:
   return v21;
 }
 
-- (BOOL)_createDirectoryWithURL:(id)a3 error:(id *)a4
+- (BOOL)_createDirectoryWithURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v11 = 0;
-  v7 = [v6 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v11];
+  v7 = [defaultManager createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:&v11];
   v8 = v11;
 
   if ((v7 & 1) == 0)
@@ -629,33 +629,33 @@ LABEL_15:
       [QLExternalThumbnailCache _createDirectoryWithURL:error:];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = errorWithCodeAndUnderlyingError(2, v8);
+      *error = errorWithCodeAndUnderlyingError(2, v8);
     }
   }
 
   return v7;
 }
 
-- (id)_urlForThumbnailWithFPItem:(id)a3 originalThumbnailURL:(id)a4
+- (id)_urlForThumbnailWithFPItem:(id)item originalThumbnailURL:(id)l
 {
-  v6 = a4;
-  v7 = [a3 itemIdentifier];
-  v8 = [v6 pathExtension];
+  lCopy = l;
+  itemIdentifier = [item itemIdentifier];
+  pathExtension = [lCopy pathExtension];
 
-  v9 = [(QLExternalThumbnailCache *)self _urlForThumbnailWithFPItemIdentifier:v7 fileExtension:v8];
+  v9 = [(QLExternalThumbnailCache *)self _urlForThumbnailWithFPItemIdentifier:itemIdentifier fileExtension:pathExtension];
 
   return v9;
 }
 
-- (id)_urlForThumbnailWithFPItemIdentifier:(id)a3 fileExtension:(id)a4
+- (id)_urlForThumbnailWithFPItemIdentifier:(id)identifier fileExtension:(id)extension
 {
   thumbnailsDirectoryURL = self->_thumbnailsDirectoryURL;
-  v6 = a4;
-  v7 = [a3 stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
+  extensionCopy = extension;
+  v7 = [identifier stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
   v8 = [(NSURL *)thumbnailsDirectoryURL URLByAppendingPathComponent:v7];
-  v9 = [v8 URLByAppendingPathExtension:v6];
+  v9 = [v8 URLByAppendingPathExtension:extensionCopy];
 
   return v9;
 }
@@ -680,9 +680,9 @@ LABEL_15:
   v2 = [(NSURL *)self->_directoryURL URLByAppendingPathComponent:@"inbox"];
   if (([v2 checkResourceIsReachableAndReturnError:0] & 1) == 0)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v8 = 0;
-    v4 = [v3 createDirectoryAtURL:v2 withIntermediateDirectories:1 attributes:0 error:&v8];
+    v4 = [defaultManager createDirectoryAtURL:v2 withIntermediateDirectories:1 attributes:0 error:&v8];
     v5 = v8;
 
     if ((v4 & 1) == 0)
@@ -698,33 +698,33 @@ LABEL_15:
   return v2;
 }
 
-- (void)getThumbnailCacheURLWrappersWithCompletion:(id)a3
+- (void)getThumbnailCacheURLWrappersWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   FPSandboxingURLWrapperClass = getFPSandboxingURLWrapperClass();
-  v11 = [(QLExternalThumbnailCache *)self inboxDirectoryURL];
-  v7 = [FPSandboxingURLWrapperClass wrapperWithURL:v11 readonly:0 error:0];
+  inboxDirectoryURL = [(QLExternalThumbnailCache *)self inboxDirectoryURL];
+  v7 = [FPSandboxingURLWrapperClass wrapperWithURL:inboxDirectoryURL readonly:0 error:0];
   v8 = getFPSandboxingURLWrapperClass();
-  v9 = [(QLExternalThumbnailCache *)self thumbnailsDirectoryURL];
-  v10 = [v8 wrapperWithURL:v9 readonly:1 error:0];
-  (*(a3 + 2))(v5, v7, v10);
+  thumbnailsDirectoryURL = [(QLExternalThumbnailCache *)self thumbnailsDirectoryURL];
+  v10 = [v8 wrapperWithURL:thumbnailsDirectoryURL readonly:1 error:0];
+  (*(completion + 2))(completionCopy, v7, v10);
 }
 
-+ (id)writeThumbnailImage:(CGImage *)a3 inInboxAtURL:(id)a4
++ (id)writeThumbnailImage:(CGImage *)image inInboxAtURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   if (writeThumbnailImage_inInboxAtURL__once != -1)
   {
     +[QLExternalThumbnailCache writeThumbnailImage:inInboxAtURL:];
   }
 
-  v6 = [v5 startAccessingSecurityScopedResource];
-  v7 = [MEMORY[0x1E695DFF8] _QLTemporaryURLWithExtension:writeThumbnailImage_inInboxAtURL__fileExtension openingFileHandle:0 inDirectoryAtURL:v5];
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
+  v7 = [MEMORY[0x1E695DFF8] _QLTemporaryURLWithExtension:writeThumbnailImage_inInboxAtURL__fileExtension openingFileHandle:0 inDirectoryAtURL:lCopy];
   v8 = CGImageDestinationCreateWithURL(v7, writeThumbnailImage_inInboxAtURL__encodingUTI, 1uLL, 0);
   if (v8)
   {
     v9 = v8;
-    CGImageDestinationAddImage(v8, a3, 0);
+    CGImageDestinationAddImage(v8, image, 0);
     if (!CGImageDestinationFinalize(v9))
     {
       v10 = _log_1();
@@ -733,14 +733,14 @@ LABEL_15:
         +[QLExternalThumbnailCache writeThumbnailImage:inInboxAtURL:];
       }
 
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
-      [v11 removeItemAtURL:v7 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager removeItemAtURL:v7 error:0];
 
       v7 = 0;
     }
 
     CFRelease(v9);
-    if (v6)
+    if (startAccessingSecurityScopedResource)
     {
       goto LABEL_9;
     }
@@ -748,14 +748,14 @@ LABEL_15:
 
   else
   {
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    [v13 removeItemAtURL:v7 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 removeItemAtURL:v7 error:0];
 
     v7 = 0;
-    if (v6)
+    if (startAccessingSecurityScopedResource)
     {
 LABEL_9:
-      [v5 stopAccessingSecurityScopedResource];
+      [lCopy stopAccessingSecurityScopedResource];
     }
   }
 
@@ -851,11 +851,11 @@ LABEL_14:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)writeThumbnailImageInInbox:(CGImage *)a3
+- (id)writeThumbnailImageInInbox:(CGImage *)inbox
 {
   v5 = objc_opt_class();
-  v6 = [(QLExternalThumbnailCache *)self inboxDirectoryURL];
-  v7 = [v5 writeThumbnailImage:a3 inInboxAtURL:v6];
+  inboxDirectoryURL = [(QLExternalThumbnailCache *)self inboxDirectoryURL];
+  v7 = [v5 writeThumbnailImage:inbox inInboxAtURL:inboxDirectoryURL];
 
   return v7;
 }

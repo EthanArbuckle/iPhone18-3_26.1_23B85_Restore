@@ -1,34 +1,34 @@
 @interface STUIStatusBarActionGestureRecognizer
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation STUIStatusBarActionGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  [(STUIStatusBarActionGestureRecognizer *)self setHighlighted:1, a4];
+  [(STUIStatusBarActionGestureRecognizer *)self setHighlighted:1, event];
 
   [(STUIStatusBarActionGestureRecognizer *)self setState:1];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v10 = a3;
-  v6 = a4;
-  if ([v10 count] < 2)
+  movedCopy = moved;
+  eventCopy = event;
+  if ([movedCopy count] < 2)
   {
-    v7 = [v10 anyObject];
-    v8 = [(STUIStatusBarActionGestureRecognizer *)self view];
-    v9 = [(STUIStatusBarActionGestureRecognizer *)self view];
-    [v7 locationInView:v9];
-    -[STUIStatusBarActionGestureRecognizer setHighlighted:](self, "setHighlighted:", [v8 pointInside:v6 withEvent:?]);
+    anyObject = [movedCopy anyObject];
+    view = [(STUIStatusBarActionGestureRecognizer *)self view];
+    view2 = [(STUIStatusBarActionGestureRecognizer *)self view];
+    [anyObject locationInView:view2];
+    -[STUIStatusBarActionGestureRecognizer setHighlighted:](self, "setHighlighted:", [view pointInside:eventCopy withEvent:?]);
   }
 
   else
@@ -37,9 +37,9 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(STUIStatusBarActionGestureRecognizer *)self highlighted:a3])
+  if ([(STUIStatusBarActionGestureRecognizer *)self highlighted:ended])
   {
     v5 = 3;
   }
@@ -52,22 +52,22 @@
   [(STUIStatusBarActionGestureRecognizer *)self setState:v5];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(STUIStatusBarActionGestureRecognizer *)self setHighlighted:0, a4];
+  [(STUIStatusBarActionGestureRecognizer *)self setHighlighted:0, event];
 
   [(STUIStatusBarActionGestureRecognizer *)self setState:4];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  beganCopy = began;
+  v6 = [beganCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -78,7 +78,7 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(beganCopy);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) type] == 4)
@@ -89,7 +89,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [beganCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v7)
       {
         continue;
@@ -102,15 +102,15 @@
 LABEL_11:
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  endedCopy = ended;
+  v6 = [endedCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -121,7 +121,7 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(endedCopy);
         }
 
         if ([*(*(&v11 + 1) + 8 * i) type] == 4)
@@ -141,7 +141,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [endedCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         continue;
@@ -154,18 +154,18 @@ LABEL_11:
 LABEL_14:
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(STUIStatusBarActionGestureRecognizer *)self setHighlighted:0, a4];
+  [(STUIStatusBarActionGestureRecognizer *)self setHighlighted:0, event];
 
   [(STUIStatusBarActionGestureRecognizer *)self setState:4];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     if ([(STUIStatusBarActionGestureRecognizer *)self state]>= 1)
     {
 

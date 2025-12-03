@@ -1,12 +1,12 @@
 @interface GTDownloadPoint
-- (void)createContext:(apr_array_header_t *)a3;
+- (void)createContext:(apr_array_header_t *)context;
 @end
 
 @implementation GTDownloadPoint
 
-- (void)createContext:(apr_array_header_t *)a3
+- (void)createContext:(apr_array_header_t *)context
 {
-  v4 = [[GTDownloadContext alloc] initWithQueue:self->_downloadQueue forRequest:a3];
+  v4 = [[GTDownloadContext alloc] initWithQueue:self->_downloadQueue forRequest:context];
   downloadContext = self->_downloadContext;
   self->_downloadContext = v4;
 

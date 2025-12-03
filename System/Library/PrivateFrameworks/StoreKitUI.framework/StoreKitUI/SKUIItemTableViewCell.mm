@@ -1,18 +1,18 @@
 @interface SKUIItemTableViewCell
-- (void)configureForItem:(id)a3 rowIndex:(int64_t)a4;
+- (void)configureForItem:(id)item rowIndex:(int64_t)index;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 - (void)setCellLayoutNeedsLayout;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation SKUIItemTableViewCell
 
-- (void)configureForItem:(id)a3 rowIndex:(int64_t)a4
+- (void)configureForItem:(id)item rowIndex:(int64_t)index
 {
-  v6 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -25,7 +25,7 @@
     }
   }
 
-  [(SKUIItemTableViewCell *)self configureForItem:v6 clientContext:0 rowIndex:a4];
+  [(SKUIItemTableViewCell *)self configureForItem:itemCopy clientContext:0 rowIndex:index];
 }
 
 - (void)setCellLayoutNeedsLayout
@@ -60,18 +60,18 @@
     }
   }
 
-  v11 = [(SKUIItemTableViewCell *)self layout];
-  [v11 prepareForReuse];
+  layout = [(SKUIItemTableViewCell *)self layout];
+  [layout prepareForReuse];
 
   v12.receiver = self;
   v12.super_class = SKUIItemTableViewCell;
   [(SKUITableViewCell *)&v12 prepareForReuse];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -84,18 +84,18 @@
     }
   }
 
-  v15 = [(SKUIItemTableViewCell *)self layout];
-  [v15 setHighlighted:v5];
+  layout = [(SKUIItemTableViewCell *)self layout];
+  [layout setHighlighted:highlightedCopy];
 
   v16.receiver = self;
   v16.super_class = SKUIItemTableViewCell;
-  [(SKUITableViewCell *)&v16 setHighlighted:v5 animated:v4];
+  [(SKUITableViewCell *)&v16 setHighlighted:highlightedCopy animated:animatedCopy];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -108,12 +108,12 @@
     }
   }
 
-  v15 = [(SKUIItemTableViewCell *)self layout];
-  [v15 setSelected:v5];
+  layout = [(SKUIItemTableViewCell *)self layout];
+  [layout setSelected:selectedCopy];
 
   v16.receiver = self;
   v16.super_class = SKUIItemTableViewCell;
-  [(SKUITableViewCell *)&v16 setSelected:v5 animated:v4];
+  [(SKUITableViewCell *)&v16 setSelected:selectedCopy animated:animatedCopy];
 }
 
 - (void)layoutSubviews
@@ -130,25 +130,25 @@
     }
   }
 
-  v11 = [(SKUIItemTableViewCell *)self contentView];
-  [v11 frame];
+  contentView = [(SKUIItemTableViewCell *)self contentView];
+  [contentView frame];
   v13 = v12;
   v15 = v14;
   v19.receiver = self;
   v19.super_class = SKUIItemTableViewCell;
   [(SKUITableViewCell *)&v19 layoutSubviews];
-  if (self->_layoutNeedsLayout || ([v11 frame], v18 != v13) || v17 != v15)
+  if (self->_layoutNeedsLayout || ([contentView frame], v18 != v13) || v17 != v15)
   {
-    v16 = [(SKUIItemTableViewCell *)self layout];
-    [v16 layoutSubviews];
+    layout = [(SKUIItemTableViewCell *)self layout];
+    [layout layoutSubviews];
   }
 
   self->_layoutNeedsLayout = 0;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -161,12 +161,12 @@
     }
   }
 
-  v13 = [(SKUIItemTableViewCell *)self layout];
-  [v13 setBackgroundColor:v4];
+  layout = [(SKUIItemTableViewCell *)self layout];
+  [layout setBackgroundColor:colorCopy];
 
   v14.receiver = self;
   v14.super_class = SKUIItemTableViewCell;
-  [(SKUIItemTableViewCell *)&v14 setBackgroundColor:v4];
+  [(SKUIItemTableViewCell *)&v14 setBackgroundColor:colorCopy];
 }
 
 @end

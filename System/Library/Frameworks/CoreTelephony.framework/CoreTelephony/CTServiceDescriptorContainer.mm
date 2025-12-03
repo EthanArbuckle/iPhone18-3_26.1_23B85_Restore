@@ -1,8 +1,8 @@
 @interface CTServiceDescriptorContainer
-- (BOOL)isEqual:(id)a3;
-- (CTServiceDescriptorContainer)initWithCoder:(id)a3;
-- (CTServiceDescriptorContainer)initWithDescriptors:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTServiceDescriptorContainer)initWithCoder:(id)coder;
+- (CTServiceDescriptorContainer)initWithDescriptors:(id)descriptors;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -11,33 +11,33 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTServiceDescriptorContainer *)self descriptors];
-  [v3 appendFormat:@" descriptors=%@", v4];
+  descriptors = [(CTServiceDescriptorContainer *)self descriptors];
+  [v3 appendFormat:@" descriptors=%@", descriptors];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (CTServiceDescriptorContainer)initWithDescriptors:(id)a3
+- (CTServiceDescriptorContainer)initWithDescriptors:(id)descriptors
 {
-  v5 = a3;
+  descriptorsCopy = descriptors;
   v9.receiver = self;
   v9.super_class = CTServiceDescriptorContainer;
   v6 = [(CTServiceDescriptorContainer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_descriptors, a3);
+    objc_storeStrong(&v6->_descriptors, descriptors);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_8;
   }
@@ -45,21 +45,21 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CTServiceDescriptorContainer *)self descriptors];
-    if (v5)
+    descriptors = [(CTServiceDescriptorContainer *)self descriptors];
+    if (descriptors)
     {
 
 LABEL_7:
-      v8 = [(CTServiceDescriptorContainer *)self descriptors];
-      v9 = [(CTServiceDescriptorContainer *)v4 descriptors];
-      v6 = [v8 isEqualToArray:v9];
+      descriptors2 = [(CTServiceDescriptorContainer *)self descriptors];
+      descriptors3 = [(CTServiceDescriptorContainer *)equalCopy descriptors];
+      v6 = [descriptors2 isEqualToArray:descriptors3];
 
       goto LABEL_9;
     }
 
-    v7 = [(CTServiceDescriptorContainer *)v4 descriptors];
+    descriptors4 = [(CTServiceDescriptorContainer *)equalCopy descriptors];
 
-    if (v7)
+    if (descriptors4)
     {
       goto LABEL_7;
     }
@@ -75,19 +75,19 @@ LABEL_9:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSArray *)self->_descriptors copy];
   [v4 setDescriptors:v5];
 
   return v4;
 }
 
-- (CTServiceDescriptorContainer)initWithCoder:(id)a3
+- (CTServiceDescriptorContainer)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CTServiceDescriptorContainer;
   v5 = [(CTServiceDescriptorContainer *)&v13 init];
@@ -99,7 +99,7 @@ LABEL_9:
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"descriptors"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"descriptors"];
     descriptors = v5->_descriptors;
     v5->_descriptors = v9;
   }

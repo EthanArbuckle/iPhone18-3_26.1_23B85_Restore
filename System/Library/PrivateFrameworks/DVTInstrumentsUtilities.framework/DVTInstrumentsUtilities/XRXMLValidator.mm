@@ -1,25 +1,25 @@
 @interface XRXMLValidator
 - (BOOL)validate;
-- (XRXMLValidator)initWithSourceURL:(id)a3 schemaURL:(id)a4;
-- (id)findErrorMessageForErrorPtr:(_xmlError *)a3;
+- (XRXMLValidator)initWithSourceURL:(id)l schemaURL:(id)rL;
+- (id)findErrorMessageForErrorPtr:(_xmlError *)ptr;
 @end
 
 @implementation XRXMLValidator
 
-- (XRXMLValidator)initWithSourceURL:(id)a3 schemaURL:(id)a4
+- (XRXMLValidator)initWithSourceURL:(id)l schemaURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v34.receiver = self;
   v34.super_class = XRXMLValidator;
   v12 = [(XRXMLValidator *)&v34 init];
   if (v12)
   {
-    v13 = objc_msgSend_copy(v6, v8, v9, v10, v11);
+    v13 = objc_msgSend_copy(lCopy, v8, v9, v10, v11);
     url = v12->_url;
     v12->_url = v13;
 
-    v19 = objc_msgSend_copy(v7, v15, v16, v17, v18);
+    v19 = objc_msgSend_copy(rLCopy, v15, v16, v17, v18);
     schemaURL = v12->_schemaURL;
     v12->_schemaURL = v19;
 
@@ -37,7 +37,7 @@
   return v12;
 }
 
-- (id)findErrorMessageForErrorPtr:(_xmlError *)a3
+- (id)findErrorMessageForErrorPtr:(_xmlError *)ptr
 {
   v54 = *MEMORY[0x277D85DE8];
   v49 = 0u;
@@ -60,7 +60,7 @@ LABEL_3:
       }
 
       v14 = *(*(&v49 + 1) + 8 * v13);
-      code = a3->code;
+      code = ptr->code;
       if (code == 1839)
       {
         break;
@@ -71,8 +71,8 @@ LABEL_3:
         v16 = objc_msgSend_name(*(*(&v49 + 1) + 8 * v13), v7, v8, v9, v10);
         isEqualToString = objc_msgSend_isEqualToString_(v16, v17, @"xs:unique", v18, v19);
 
-        p_str2 = &a3->str2;
-        if ((isEqualToString & 1) != 0 || (objc_msgSend_name(v14, v7, v21, v9, v10), v23 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend_isEqualToString_(v23, v24, @"xs:keyref", v25, v26), v23, p_str2 = &a3->str3, v27))
+        p_str2 = &ptr->str2;
+        if ((isEqualToString & 1) != 0 || (objc_msgSend_name(v14, v7, v21, v9, v10), v23 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend_isEqualToString_(v23, v24, @"xs:keyref", v25, v26), v23, p_str2 = &ptr->str3, v27))
         {
           v8 = *p_str2;
           if (*p_str2)
@@ -105,7 +105,7 @@ LABEL_13:
       }
     }
 
-    v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, a3->str2, v9, v10);
+    v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, ptr->str2, v9, v10);
     v33 = objc_msgSend_key(v14, v38, v39, v40, v41);
     v37 = objc_msgSend_isEqualToString_(v28, v42, v33, v43, v44);
     goto LABEL_13;

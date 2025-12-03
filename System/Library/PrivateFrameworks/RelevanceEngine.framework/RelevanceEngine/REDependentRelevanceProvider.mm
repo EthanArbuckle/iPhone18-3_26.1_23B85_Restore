@@ -1,19 +1,19 @@
 @interface REDependentRelevanceProvider
-+ (id)_dependentConditionWithRelevanceProvider:(id)a3 invertsRelevance:(BOOL)a4;
++ (id)_dependentConditionWithRelevanceProvider:(id)provider invertsRelevance:(BOOL)relevance;
 @end
 
 @implementation REDependentRelevanceProvider
 
-+ (id)_dependentConditionWithRelevanceProvider:(id)a3 invertsRelevance:(BOOL)a4
++ (id)_dependentConditionWithRelevanceProvider:(id)provider invertsRelevance:(BOOL)relevance
 {
-  v5 = a3;
+  providerCopy = provider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __90__REDependentRelevanceProvider__dependentConditionWithRelevanceProvider_invertsRelevance___block_invoke;
   v9[3] = &unk_2785FC760;
-  v10 = v5;
-  v11 = a4;
-  v6 = v5;
+  v10 = providerCopy;
+  relevanceCopy = relevance;
+  v6 = providerCopy;
   v7 = [RERelevanceCondition conditionWithBlock:v9];
 
   return v7;

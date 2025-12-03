@@ -1,31 +1,31 @@
 @interface _ICLexiconManager
-+ (unint64_t)countWords:(id)a3;
-- (_ICLexiconManager)initWithLexiconSources:(id)a3;
-- (id)addContactObserver:(id)a3;
-- (id)addNamedEntitiesUpdateObserver:(id)a3;
++ (unint64_t)countWords:(id)words;
+- (_ICLexiconManager)initWithLexiconSources:(id)sources;
+- (id)addContactObserver:(id)observer;
+- (id)addNamedEntitiesUpdateObserver:(id)observer;
 - (id)loadLexicons;
-- (id)loadLexicons:(id)a3;
-- (id)stateName:(int)a3;
+- (id)loadLexicons:(id)lexicons;
+- (id)stateName:(int)name;
 - (int)debugEntityLoadState;
 - (unint64_t)getContactCount;
 - (void)_actuallyLoadLexicons;
 - (void)_notifyNamedEntitiesUpdateObservers;
-- (void)addContact:(id)a3;
+- (void)addContact:(id)contact;
 - (void)completeContacts;
 - (void)completeNamedEntities;
 - (void)completeRecentContacts;
 - (void)completeRecentNamedEntities;
 - (void)dealloc;
 - (void)doLoadLexicon;
-- (void)handleContact:(id)a3;
-- (void)handleNamedEntity:(id)a3;
-- (void)handleRecentContact:(id)a3;
-- (void)handleRecentNamedEntity:(id)a3;
+- (void)handleContact:(id)contact;
+- (void)handleNamedEntity:(id)entity;
+- (void)handleRecentContact:(id)contact;
+- (void)handleRecentNamedEntity:(id)entity;
 - (void)hibernate;
-- (void)printLexiconToNSLog:(_LXLexicon *)a3;
-- (void)removeContact:(id)a3;
-- (void)removeContactObserver:(id)a3;
-- (void)removeNamedEntitiesUpdateObserver:(id)a3;
+- (void)printLexiconToNSLog:(_LXLexicon *)log;
+- (void)removeContact:(id)contact;
+- (void)removeContactObserver:(id)observer;
+- (void)removeNamedEntitiesUpdateObserver:(id)observer;
 - (void)resetNamedEntities;
 - (void)setupContacts;
 - (void)setupNamedEntities;
@@ -37,10 +37,10 @@
 
 @implementation _ICLexiconManager
 
-- (_ICLexiconManager)initWithLexiconSources:(id)a3
+- (_ICLexiconManager)initWithLexiconSources:(id)sources
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  sourcesCopy = sources;
   v27.receiver = self;
   v27.super_class = _ICLexiconManager;
   v6 = [(_ICLexiconManager *)&v27 init];
@@ -52,15 +52,15 @@
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_UTILITY, 0);
 
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v10 UUIDString];
-    v12 = [@"com.apple.inputcontext.lexiconmanager." stringByAppendingString:v11];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v12 = [@"com.apple.inputcontext.lexiconmanager." stringByAppendingString:uUIDString];
 
     v13 = dispatch_queue_create([v12 UTF8String], v9);
     serialQueue = v7->_serialQueue;
     v7->_serialQueue = v13;
 
-    objc_storeStrong(&v7->_sources, a3);
+    objc_storeStrong(&v7->_sources, sources);
     v15 = objc_opt_new();
     contacts = v7->_contacts;
     v7->_contacts = v15;
@@ -82,7 +82,7 @@
     v23 = _ICPersNamedEntityOSLogFacility();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v5 count];
+      v24 = [sourcesCopy count];
       *buf = 134218242;
       v29 = v24;
       v30 = 2112;
@@ -149,16 +149,16 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)stateName:(int)a3
+- (id)stateName:(int)name
 {
-  if ((a3 - 1) > 3)
+  if ((name - 1) > 3)
   {
     return @"Unloaded";
   }
 
   else
   {
-    return off_2797ADD50[a3 - 1];
+    return off_2797ADD50[name - 1];
   }
 }
 
@@ -176,9 +176,9 @@
   objc_destroyWeak(&location);
 }
 
-- (id)loadLexicons:(id)a3
+- (id)loadLexicons:(id)lexicons
 {
-  v4 = a3;
+  lexiconsCopy = lexicons;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -204,10 +204,10 @@
 {
   v8[2] = *MEMORY[0x277D85DE8];
   [(_ICLexiconManager *)self _actuallyLoadLexicons];
-  v3 = [(_ICNamedEntityStore *)self->_namedEntityStore wordLexicon];
-  v8[0] = v3;
-  v4 = [(_ICNamedEntityStore *)self->_namedEntityStore phraseLexicon];
-  v8[1] = v4;
+  wordLexicon = [(_ICNamedEntityStore *)self->_namedEntityStore wordLexicon];
+  v8[0] = wordLexicon;
+  phraseLexicon = [(_ICNamedEntityStore *)self->_namedEntityStore phraseLexicon];
+  v8[1] = phraseLexicon;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -241,10 +241,10 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addContactObserver:(id)a3
+- (id)addContactObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  observerCopy = observer;
+  v5 = [observerCopy copy];
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -254,8 +254,8 @@
   objc_copyWeak(&v14, &location);
   block[4] = self;
   v12 = v5;
-  v13 = v4;
-  v7 = v4;
+  v13 = observerCopy;
+  v7 = observerCopy;
   v8 = v5;
   dispatch_async(serialQueue, block);
   v9 = MEMORY[0x259C27030](v8);
@@ -266,9 +266,9 @@
   return v9;
 }
 
-- (void)removeContactObserver:(id)a3
+- (void)removeContactObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -276,17 +276,17 @@
   block[2] = __43___ICLexiconManager_removeContactObserver___block_invoke;
   block[3] = &unk_2797ADCC0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (id)addNamedEntitiesUpdateObserver:(id)a3
+- (id)addNamedEntitiesUpdateObserver:(id)observer
 {
-  v4 = [a3 copy];
+  v4 = [observer copy];
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -305,9 +305,9 @@
   return v7;
 }
 
-- (void)removeNamedEntitiesUpdateObserver:(id)a3
+- (void)removeNamedEntitiesUpdateObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -315,8 +315,8 @@
   block[2] = __55___ICLexiconManager_removeNamedEntitiesUpdateObserver___block_invoke;
   block[3] = &unk_2797ADCC0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
@@ -331,7 +331,7 @@
   {
     v4 = [(NSMutableArray *)self->_namedEntitiesUpdateObservers count];
     *buf = 134218240;
-    v17 = self;
+    selfCopy = self;
     v18 = 2048;
     v19 = v4;
     _os_log_impl(&dword_254BD0000, v3, OS_LOG_TYPE_DEFAULT, "%p Calling %ld named entities update observers", buf, 0x16u);
@@ -371,43 +371,43 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addContact:(id)a3
+- (void)addContact:(id)contact
 {
-  v4 = a3;
-  v5 = [v4 source];
-  v6 = _ICPersNamedEntityOSLogFacility();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (v5 == 1)
+  contactCopy = contact;
+  source = [contactCopy source];
+  contact = _ICPersNamedEntityOSLogFacility();
+  v7 = os_log_type_enabled(contact, OS_LOG_TYPE_DEBUG);
+  if (source == 1)
   {
     if (v7)
     {
-      [(_ICLexiconManager *)v4 addContact:v6, v8, v9, v10, v11, v12, v13];
+      [(_ICLexiconManager *)contactCopy addContact:contact, v8, v9, v10, v11, v12, v13];
     }
 
-    v6 = [v4 contact];
+    contact = [contactCopy contact];
     contacts = self->_contacts;
-    v15 = [v4 identifier];
-    [(NSMutableDictionary *)contacts setObject:v6 forKeyedSubscript:v15];
+    identifier = [contactCopy identifier];
+    [(NSMutableDictionary *)contacts setObject:contact forKeyedSubscript:identifier];
   }
 
   else if (v7)
   {
-    [(_ICLexiconManager *)v4 addContact:v6, v8, v9, v10, v11, v12, v13];
+    [(_ICLexiconManager *)contactCopy addContact:contact, v8, v9, v10, v11, v12, v13];
   }
 }
 
-- (void)removeContact:(id)a3
+- (void)removeContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = _ICPersNamedEntityOSLogFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(_ICLexiconManager *)v4 removeContact:v5, v6, v7, v8, v9, v10, v11];
+    [(_ICLexiconManager *)contactCopy removeContact:v5, v6, v7, v8, v9, v10, v11];
   }
 
   contacts = self->_contacts;
-  v13 = [v4 identifier];
-  [(NSMutableDictionary *)contacts removeObjectForKey:v13];
+  identifier = [contactCopy identifier];
+  [(NSMutableDictionary *)contacts removeObjectForKey:identifier];
 }
 
 - (void)resetNamedEntities
@@ -441,17 +441,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)handleNamedEntity:(id)a3
+- (void)handleNamedEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39___ICLexiconManager_handleNamedEntity___block_invoke;
   block[3] = &unk_2797ADCE8;
-  v8 = v4;
-  v6 = v4;
+  v8 = entityCopy;
+  v6 = entityCopy;
   objc_copyWeak(&v9, &location);
   dispatch_async(serialQueue, block);
   objc_destroyWeak(&v9);
@@ -489,17 +489,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)handleRecentNamedEntity:(id)a3
+- (void)handleRecentNamedEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45___ICLexiconManager_handleRecentNamedEntity___block_invoke;
   block[3] = &unk_2797ADCE8;
-  v8 = v4;
-  v6 = v4;
+  v8 = entityCopy;
+  v6 = entityCopy;
   objc_copyWeak(&v9, &location);
   dispatch_async(serialQueue, block);
   objc_destroyWeak(&v9);
@@ -537,17 +537,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)handleContact:(id)a3
+- (void)handleContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35___ICLexiconManager_handleContact___block_invoke;
   block[3] = &unk_2797ADCE8;
-  v8 = v4;
-  v6 = v4;
+  v8 = contactCopy;
+  v6 = contactCopy;
   objc_copyWeak(&v9, &location);
   dispatch_async(serialQueue, block);
   objc_destroyWeak(&v9);
@@ -586,9 +586,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)handleRecentContact:(id)a3
+- (void)handleRecentContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -597,8 +597,8 @@
   v7[3] = &unk_2797ADB08;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contactCopy;
+  v6 = contactCopy;
   dispatch_async(serialQueue, v7);
 
   objc_destroyWeak(&v9);
@@ -693,7 +693,7 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)printLexiconToNSLog:(_LXLexicon *)a3
+- (void)printLexiconToNSLog:(_LXLexicon *)log
 {
   RootCursor = LXLexiconCreateRootCursor();
   v5 = 0;
@@ -713,12 +713,12 @@
   _Block_object_dispose(&v5, 8);
 }
 
-+ (unint64_t)countWords:(id)a3
++ (unint64_t)countWords:(id)words
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceAndNewlineCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  wordsCopy = words;
+  whitespaceAndNewlineCharacterSet = [v3 whitespaceAndNewlineCharacterSet];
+  v6 = [wordsCopy componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v7 = [v6 indexesOfObjectsPassingTest:&__block_literal_global_2];
   v8 = [v6 count];

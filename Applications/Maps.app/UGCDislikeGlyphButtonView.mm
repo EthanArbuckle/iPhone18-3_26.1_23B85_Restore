@@ -1,33 +1,33 @@
 @interface UGCDislikeGlyphButtonView
-- (void)animateWithBeginTime:(double)a3 completionDelay:(double)a4 completion:(id)a5;
+- (void)animateWithBeginTime:(double)time completionDelay:(double)delay completion:(id)completion;
 @end
 
 @implementation UGCDislikeGlyphButtonView
 
-- (void)animateWithBeginTime:(double)a3 completionDelay:(double)a4 completion:(id)a5
+- (void)animateWithBeginTime:(double)time completionDelay:(double)delay completion:(id)completion
 {
-  v7 = a5;
-  v8 = [(UGCGlyphButtonView *)self animationLayer];
-  [v8 setHidden:1];
+  completionCopy = completion;
+  animationLayer = [(UGCGlyphButtonView *)self animationLayer];
+  [animationLayer setHidden:1];
 
   +[CATransaction begin];
   [(UGCGlyphButtonView *)self animationDuration];
   [CATransaction setAnimationDuration:?];
-  v9 = [(UGCGlyphButtonView *)self glyph];
-  v10 = [v9 layer];
-  [v10 position];
+  glyph = [(UGCGlyphButtonView *)self glyph];
+  layer = [glyph layer];
+  [layer position];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(UGCGlyphButtonView *)self glyph];
-  [v15 bounds];
+  glyph2 = [(UGCGlyphButtonView *)self glyph];
+  [glyph2 bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  v24 = [(UGCGlyphButtonView *)self glyph];
-  [v24 setHidden:1];
+  glyph3 = [(UGCGlyphButtonView *)self glyph];
+  [glyph3 setHidden:1];
 
   v25 = +[CALayer layer];
   [(UGCGlyphButtonView *)self setAnimationLayer:v25];
@@ -35,8 +35,8 @@
   v76 = v21;
   [v25 setBounds:{v17, v19, v21, v23}];
   [v25 setPosition:{v12, v14}];
-  v27 = [(UGCDislikeGlyphButtonView *)self layer];
-  [v27 addSublayer:v25];
+  layer2 = [(UGCDislikeGlyphButtonView *)self layer];
+  [layer2 addSublayer:v25];
 
   v88[0] = _NSConcreteStackBlock;
   v88[1] = 3221225472;
@@ -47,18 +47,18 @@
   v89 = v28;
   v79 = objc_retainBlock(v88);
   [CATransaction setCompletionBlock:?];
-  if (v7)
+  if (completionCopy)
   {
-    v29 = dispatch_time(0, (a4 * 1000000000.0));
+    v29 = dispatch_time(0, (delay * 1000000000.0));
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100CC8608;
     block[3] = &unk_101661760;
-    v87 = v7;
+    v87 = completionCopy;
     dispatch_after(v29, &_dispatch_main_q, block);
   }
 
-  v81 = v7;
+  v81 = completionCopy;
   v30 = +[CALayer layer];
   [v28 bounds];
   x = v90.origin.x;
@@ -88,7 +88,7 @@
   [v37 setSpeed:v39];
   [v37 setDuration:0.25];
   v84 = v19;
-  [v37 setBeginTime:a3];
+  [v37 setBeginTime:time];
   [v37 setFillMode:kCAFillModeBoth];
   [v30 addAnimation:v37 forKey:@"transform.rotation.z"];
   v40 = +[CALayer layer];
@@ -117,11 +117,11 @@
   LODWORD(v49) = 1.0;
   [v47 setSpeed:v49];
   [v47 setDuration:0.22];
-  [v47 setBeginTime:a3 + 0.0299999993];
+  [v47 setBeginTime:time + 0.0299999993];
   [v47 setFillMode:kCAFillModeBoth];
   [v40 addAnimation:v47 forKey:@"transform.rotation.z"];
-  v50 = [(UGCGlyphButtonView *)self glyph];
-  v51 = [v50 image];
+  glyph4 = [(UGCGlyphButtonView *)self glyph];
+  image = [glyph4 image];
 
   v52 = +[CALayer layer];
   v82 = v40;
@@ -140,53 +140,53 @@
   [v52 setPosition:{0.0, v57}];
   if ([(UGCGlyphButtonView *)self isSelected])
   {
-    v58 = [(UGCGlyphButtonView *)self glyphAppearance];
-    v59 = [v58 selectedGlyphName];
+    glyphAppearance = [(UGCGlyphButtonView *)self glyphAppearance];
+    selectedGlyphName = [glyphAppearance selectedGlyphName];
   }
 
   else
   {
-    v60 = [(UGCGlyphButtonView *)self isMuted];
-    v61 = [(UGCGlyphButtonView *)self glyphAppearance];
-    v58 = v61;
-    if (v60)
+    isMuted = [(UGCGlyphButtonView *)self isMuted];
+    glyphAppearance2 = [(UGCGlyphButtonView *)self glyphAppearance];
+    glyphAppearance = glyphAppearance2;
+    if (isMuted)
     {
-      [v61 mutedGlyphName];
+      [glyphAppearance2 mutedGlyphName];
     }
 
     else
     {
-      [v61 unselectedGlyphName];
+      [glyphAppearance2 unselectedGlyphName];
     }
-    v59 = ;
+    selectedGlyphName = ;
   }
 
-  v62 = v59;
+  v62 = selectedGlyphName;
 
   if ([(UGCGlyphButtonView *)self isSelected])
   {
-    v63 = [(UGCGlyphButtonView *)self glyphAppearance];
-    v64 = [v63 selectedGlyphColor];
+    glyphAppearance3 = [(UGCGlyphButtonView *)self glyphAppearance];
+    selectedGlyphColor = [glyphAppearance3 selectedGlyphColor];
   }
 
   else
   {
-    v65 = [(UGCGlyphButtonView *)self isMuted];
-    v66 = [(UGCGlyphButtonView *)self glyphAppearance];
-    v63 = v66;
-    if (v65)
+    isMuted2 = [(UGCGlyphButtonView *)self isMuted];
+    glyphAppearance4 = [(UGCGlyphButtonView *)self glyphAppearance];
+    glyphAppearance3 = glyphAppearance4;
+    if (isMuted2)
     {
-      [v66 mutedGlyphColor];
+      [glyphAppearance4 mutedGlyphColor];
     }
 
     else
     {
-      [v66 unselectedGlyphColor];
+      [glyphAppearance4 unselectedGlyphColor];
     }
-    v64 = ;
+    selectedGlyphColor = ;
   }
 
-  v85 = v64;
+  v85 = selectedGlyphColor;
 
   if (![(UGCGlyphButtonView *)self isEnabled])
   {
@@ -212,7 +212,7 @@
   v72 = [v71 _flatImageWithColor:v85];
 
   [v52 setContents:{objc_msgSend(v72, "CGImage")}];
-  [v51 scale];
+  [image scale];
   [v52 setContentsScale:?];
   [v52 setContentsGravity:kCAGravityCenter];
   [(UGCGlyphButtonView *)self setContentLayer:v52];
@@ -222,12 +222,12 @@
     v73 = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale.xy"];
     [v73 setValues:&off_1016ED8C8];
     [v73 setKeyTimes:&off_1016ED8E0];
-    [v73 setBeginTime:a3];
+    [v73 setBeginTime:time];
     [v73 setFillMode:kCAFillModeBoth];
     [(UGCGlyphButtonView *)self animationDuration];
     [v73 setDuration:v74 * 0.5];
-    v75 = [(UGCDislikeGlyphButtonView *)self layer];
-    [v75 addAnimation:v73 forKey:@"backgroundScaleAnimation"];
+    layer3 = [(UGCDislikeGlyphButtonView *)self layer];
+    [layer3 addAnimation:v73 forKey:@"backgroundScaleAnimation"];
   }
 
   +[CATransaction commit];

@@ -1,21 +1,21 @@
 @interface MobileCalDAVAttachmentDownloader
 + (id)progressQueue;
-- (MobileCalDAVAttachmentDownloader)initWithAttachmentUUID:(id)a3 forAccount:(id)a4;
-- (void)_didFinishDownloadingWithError:(id)a3;
-- (void)_didShowProgressDownloadedByteCount:(int64_t)a3;
-- (void)addConsumer:(id)a3;
+- (MobileCalDAVAttachmentDownloader)initWithAttachmentUUID:(id)d forAccount:(id)account;
+- (void)_didFinishDownloadingWithError:(id)error;
+- (void)_didShowProgressDownloadedByteCount:(int64_t)count;
+- (void)addConsumer:(id)consumer;
 - (void)beginDownload;
 - (void)dealloc;
-- (void)removeConsumer:(id)a3;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
+- (void)removeConsumer:(id)consumer;
+- (void)task:(id)task didFinishWithError:(id)error;
 @end
 
 @implementation MobileCalDAVAttachmentDownloader
 
 + (id)progressQueue
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!qword_26A70)
   {
     v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -24,29 +24,29 @@
     qword_26A70 = v4;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v6 = qword_26A70;
 
   return v6;
 }
 
-- (MobileCalDAVAttachmentDownloader)initWithAttachmentUUID:(id)a3 forAccount:(id)a4
+- (MobileCalDAVAttachmentDownloader)initWithAttachmentUUID:(id)d forAccount:(id)account
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  accountCopy = account;
   v20.receiver = self;
   v20.super_class = MobileCalDAVAttachmentDownloader;
   v9 = [(MobileCalDAVAttachmentDownloader *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attachmentUUID, a3);
-    v11 = [NSString stringWithFormat:@"com.apple.dataaccess.caldav.attachmentDownload.%@", v7];
+    objc_storeStrong(&v9->_attachmentUUID, d);
+    dCopy = [NSString stringWithFormat:@"com.apple.dataaccess.caldav.attachmentDownload.%@", dCopy];
     waiterID = v10->_waiterID;
-    v10->_waiterID = v11;
+    v10->_waiterID = dCopy;
 
-    objc_storeWeak(&v10->_account, v8);
+    objc_storeWeak(&v10->_account, accountCopy);
     v13 = [DACoreDAVTaskManager alloc];
     WeakRetained = objc_loadWeakRetained(&v10->_account);
     v15 = [v13 initWithAccount:WeakRetained];
@@ -70,21 +70,21 @@
   [(MobileCalDAVAttachmentDownloader *)&v3 dealloc];
 }
 
-- (void)addConsumer:(id)a3
+- (void)addConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   v4 = self->_consumers;
   objc_sync_enter(v4);
-  [(NSMutableSet *)self->_consumers addObject:v5];
+  [(NSMutableSet *)self->_consumers addObject:consumerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeConsumer:(id)a3
+- (void)removeConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   v4 = self->_consumers;
   objc_sync_enter(v4);
-  [(NSMutableSet *)self->_consumers removeObject:v5];
+  [(NSMutableSet *)self->_consumers removeObject:consumerCopy];
   if (![(NSMutableSet *)self->_consumers count])
   {
     [(DACoreDAVTaskManager *)self->_taskManager cancelAllTasks];
@@ -95,21 +95,21 @@
   objc_sync_exit(v4);
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v7)
+    if (errorCopy)
     {
-      v8 = [v7 domain];
-      if ([v8 isEqualToString:CoreDAVHTTPStatusErrorDomain])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:CoreDAVHTTPStatusErrorDomain])
       {
-        v9 = [v7 code];
+        code = [errorCopy code];
 
-        if (v9 == &stru_108.size)
+        if (code == &stru_108.size)
         {
           v10 = DALoggingwithCategory();
           v11 = _CPLog_to_os_log_type[6];
@@ -121,10 +121,10 @@
             _os_log_impl(&dword_0, v10, v11, "The attachment at %@ hasn't been modified since we last saw it.", &v35, 0xCu);
           }
 
-          v13 = self;
+          selfCopy2 = self;
           v14 = 0;
 LABEL_21:
-          [(MobileCalDAVAttachmentDownloader *)v13 _didFinishDownloadingWithError:v14];
+          [(MobileCalDAVAttachmentDownloader *)selfCopy2 _didFinishDownloadingWithError:v14];
           goto LABEL_22;
         }
       }
@@ -141,12 +141,12 @@ LABEL_21:
         v35 = 138412546;
         v36 = v34;
         v37 = 2112;
-        v38 = v7;
+        v38 = errorCopy;
         _os_log_impl(&dword_0, v32, v33, "Couldn't download the attachment at %@: %@", &v35, 0x16u);
       }
 
-      v13 = self;
-      v14 = v7;
+      selfCopy2 = self;
+      v14 = errorCopy;
       goto LABEL_21;
     }
 
@@ -160,8 +160,8 @@ LABEL_21:
       _os_log_impl(&dword_0, v15, v16, "Finished downloading the file at %@. Saving to the database.", &v35, 0xCu);
     }
 
-    v18 = [v6 responseHeaders];
-    v19 = [v18 DAObjectForKeyCaseInsensitive:CoreDAVHTTPHeader_ETag];
+    responseHeaders = [taskCopy responseHeaders];
+    v19 = [responseHeaders DAObjectForKeyCaseInsensitive:CoreDAVHTTPHeader_ETag];
 
     v20 = DALoggingwithCategory();
     if (os_log_type_enabled(v20, v16))
@@ -178,13 +178,13 @@ LABEL_21:
     self->_etag = v19;
     v23 = v19;
 
-    v24 = [v6 responseHeaders];
-    v25 = [v24 DAObjectForKeyCaseInsensitive:@"X-ANTICIPATED-CONTENT-LENGTH"];
+    responseHeaders2 = [taskCopy responseHeaders];
+    v25 = [responseHeaders2 DAObjectForKeyCaseInsensitive:@"X-ANTICIPATED-CONTENT-LENGTH"];
 
     if (!v25)
     {
-      v26 = [v6 responseHeaders];
-      v25 = [v26 DAObjectForKeyCaseInsensitive:CoreDAVHTTPHeader_ContentLength];
+      responseHeaders3 = [taskCopy responseHeaders];
+      v25 = [responseHeaders3 DAObjectForKeyCaseInsensitive:CoreDAVHTTPHeader_ContentLength];
     }
 
     self->_attachmentSize = [v25 longLongValue];
@@ -197,8 +197,8 @@ LABEL_21:
       _os_log_impl(&dword_0, v27, v16, "Downloading attachment of size %lld", &v35, 0xCu);
     }
 
-    v29 = [v6 responseHeaders];
-    v30 = [v29 DAObjectForKeyCaseInsensitive:CoreDAVHTTPHeader_ContentType];
+    responseHeaders4 = [taskCopy responseHeaders];
+    v30 = [responseHeaders4 DAObjectForKeyCaseInsensitive:CoreDAVHTTPHeader_ContentType];
     attachmentType = self->_attachmentType;
     self->_attachmentType = v30;
 
@@ -219,7 +219,7 @@ LABEL_22:
   }
 }
 
-- (void)_didShowProgressDownloadedByteCount:(int64_t)a3
+- (void)_didShowProgressDownloadedByteCount:(int64_t)count
 {
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[7];
@@ -227,7 +227,7 @@ LABEL_22:
   {
     attachmentSize = self->_attachmentSize;
     *buf = 134218240;
-    v19 = a3;
+    countCopy = count;
     v20 = 2048;
     v21 = attachmentSize;
     _os_log_impl(&dword_0, v5, v6, "Notifying consumers of progress: %lld/%lld", buf, 0x16u);
@@ -253,7 +253,7 @@ LABEL_22:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v13 + 1) + 8 * i) downloadProgressDownloadedByteCount:a3 totalByteCount:{self->_attachmentSize, v13}];
+        [*(*(&v13 + 1) + 8 * i) downloadProgressDownloadedByteCount:count totalByteCount:{self->_attachmentSize, v13}];
       }
 
       v10 = [(NSMutableSet *)v9 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -265,16 +265,16 @@ LABEL_22:
   objc_sync_exit(v8);
 }
 
-- (void)_didFinishDownloadingWithError:(id)a3
+- (void)_didFinishDownloadingWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     attachmentUUID = self->_attachmentUUID;
     v8 = &stru_20990;
-    if (v4)
+    if (errorCopy)
     {
       v9 = @" Error was: ";
     }
@@ -284,9 +284,9 @@ LABEL_22:
       v9 = &stru_20990;
     }
 
-    if (v4)
+    if (errorCopy)
     {
-      v8 = [v4 description];
+      v8 = [errorCopy description];
     }
 
     *buf = 138412802;
@@ -296,7 +296,7 @@ LABEL_22:
     v27 = 2112;
     v28 = v8;
     _os_log_impl(&dword_0, v5, v6, "Done downloading attachment %@.%@%@", buf, 0x20u);
-    if (v4)
+    if (errorCopy)
     {
     }
   }
@@ -321,7 +321,7 @@ LABEL_22:
           objc_enumerationMutation(v11);
         }
 
-        [*(*(&v18 + 1) + 8 * i) downloadFinishedError:v4];
+        [*(*(&v18 + 1) + 8 * i) downloadFinishedError:errorCopy];
       }
 
       v12 = [(NSMutableSet *)v11 countByEnumeratingWithState:&v18 objects:v22 count:16];

@@ -1,6 +1,6 @@
 @interface ICAudioAttachmentView
-- (ICAudioAttachmentView)initWithFrame:(CGRect)a3 textAttachment:(id)a4 textContainer:(id)a5 forManualRendering:(BOOL)a6;
-- (ICAudioAttachmentView)initWithTextAttachment:(id)a3 textContainer:(id)a4 forManualRendering:(BOOL)a5;
+- (ICAudioAttachmentView)initWithFrame:(CGRect)frame textAttachment:(id)attachment textContainer:(id)container forManualRendering:(BOOL)rendering;
+- (ICAudioAttachmentView)initWithTextAttachment:(id)attachment textContainer:(id)container forManualRendering:(BOOL)rendering;
 - (NSObject)icaxAudioPlayerViewAccessibilityElement;
 - (UIViewController)contextMenuPreviewController;
 - (id)_playerViewAccessibilityElement;
@@ -14,107 +14,107 @@
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAttachment:(id)a3;
-- (void)setHighlightColor:(id)a3;
+- (void)setAttachment:(id)attachment;
+- (void)setHighlightColor:(id)color;
 @end
 
 @implementation ICAudioAttachmentView
 
 - (id)accessibilityLabel
 {
-  v2 = [(ICAudioAttachmentView *)self _playerViewAccessibilityElement];
-  v3 = [v2 accessibilityLabel];
+  _playerViewAccessibilityElement = [(ICAudioAttachmentView *)self _playerViewAccessibilityElement];
+  accessibilityLabel = [_playerViewAccessibilityElement accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(ICAudioAttachmentView *)self _playerViewAccessibilityElement];
-  v3 = [v2 accessibilityValue];
+  _playerViewAccessibilityElement = [(ICAudioAttachmentView *)self _playerViewAccessibilityElement];
+  accessibilityValue = [_playerViewAccessibilityElement accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityUserInputLabels
 {
-  v2 = [(ICAudioAttachmentView *)self _playerViewAccessibilityElement];
-  v3 = [v2 accessibilityUserInputLabels];
+  _playerViewAccessibilityElement = [(ICAudioAttachmentView *)self _playerViewAccessibilityElement];
+  accessibilityUserInputLabels = [_playerViewAccessibilityElement accessibilityUserInputLabels];
 
-  return v3;
+  return accessibilityUserInputLabels;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(ICAudioAttachmentView *)self _playerViewAccessibilityElement];
-  v3 = [v2 accessibilityTraits];
+  _playerViewAccessibilityElement = [(ICAudioAttachmentView *)self _playerViewAccessibilityElement];
+  accessibilityTraits = [_playerViewAccessibilityElement accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v8.receiver = self;
   v8.super_class = ICAudioAttachmentView;
-  v4 = [(ICAttachmentView *)&v8 accessibilityCustomActions];
-  [v3 ic_addObjectsFromNonNilArray:v4];
+  accessibilityCustomActions = [(ICAttachmentView *)&v8 accessibilityCustomActions];
+  [array ic_addObjectsFromNonNilArray:accessibilityCustomActions];
 
-  v5 = [(ICAudioAttachmentView *)self _playerViewAccessibilityElement];
-  v6 = [v5 accessibilityCustomActions];
-  [v3 ic_addObjectsFromNonNilArray:v6];
+  _playerViewAccessibilityElement = [(ICAudioAttachmentView *)self _playerViewAccessibilityElement];
+  accessibilityCustomActions2 = [_playerViewAccessibilityElement accessibilityCustomActions];
+  [array ic_addObjectsFromNonNilArray:accessibilityCustomActions2];
 
-  return v3;
+  return array;
 }
 
 - (id)accessibilityCustomContent
 {
-  v2 = [(ICAudioAttachmentView *)self _playerViewAccessibilityElement];
-  v3 = [v2 accessibilityCustomContent];
+  _playerViewAccessibilityElement = [(ICAudioAttachmentView *)self _playerViewAccessibilityElement];
+  accessibilityCustomContent = [_playerViewAccessibilityElement accessibilityCustomContent];
 
-  return v3;
+  return accessibilityCustomContent;
 }
 
 - (id)_playerViewAccessibilityElement
 {
-  v2 = [(ICAudioAttachmentView *)self icaxAudioPlayerViewAccessibilityElement];
+  icaxAudioPlayerViewAccessibilityElement = [(ICAudioAttachmentView *)self icaxAudioPlayerViewAccessibilityElement];
   NSClassFromString(&cfstr_SwiftuiAccessi.isa);
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"[swiftUIAccessibilityElement isKindOfClass:NSClassFromString(@SwiftUI.AccessibilityNode)]" functionName:"-[ICAudioAttachmentView(ICAccessibility_iOS) _playerViewAccessibilityElement]" simulateCrash:1 showAlert:0 format:@"Unexpected accessibility element type for SwiftUI representation"];
   }
 
-  if (!v2)
+  if (!icaxAudioPlayerViewAccessibilityElement)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((swiftUIAccessibilityElement) != nil)" functionName:"-[ICAudioAttachmentView(ICAccessibility_iOS) _playerViewAccessibilityElement]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "swiftUIAccessibilityElement"}];
   }
 
-  return v2;
+  return icaxAudioPlayerViewAccessibilityElement;
 }
 
 - (void)didChangeMedia
 {
-  v2 = self;
+  selfCopy = self;
   sub_21543D614();
 }
 
-- (void)setAttachment:(id)a3
+- (void)setAttachment:(id)attachment
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for AudioAttachmentView();
-  v4 = a3;
+  attachmentCopy = attachment;
   v5 = v6.receiver;
-  [(ICAudioAttachmentView *)&v6 setAttachment:v4];
+  [(ICAudioAttachmentView *)&v6 setAttachment:attachmentCopy];
   sub_21543D9C0();
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AudioAttachmentView();
   v4 = v7.receiver;
-  v5 = a3;
-  [(ICAudioAttachmentView *)&v7 setHighlightColor:v5];
+  colorCopy = color;
+  [(ICAudioAttachmentView *)&v7 setHighlightColor:colorCopy];
   if ([v4 highlightColor])
   {
     v6 = sub_2154A0C8C();
@@ -158,16 +158,16 @@
   v5.super_class = type metadata accessor for AudioAttachmentView();
   v2 = v5.receiver;
   [(ICAudioAttachmentView *)&v5 layoutSubviews];
-  v3 = [v2 layer];
-  [v3 setCornerRadius_];
+  layer = [v2 layer];
+  [layer setCornerRadius_];
 
-  v4 = [v2 layer];
-  [v4 setCornerCurve_];
+  layer2 = [v2 layer];
+  [layer2 setCornerCurve_];
 }
 
 - (UIViewController)contextMenuPreviewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21543E8F8();
 
   return v3;
@@ -175,30 +175,30 @@
 
 - (NSObject)icaxAudioPlayerViewAccessibilityElement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21543EFFC();
 
   return v3;
 }
 
-- (ICAudioAttachmentView)initWithFrame:(CGRect)a3 textAttachment:(id)a4 textContainer:(id)a5 forManualRendering:(BOOL)a6
+- (ICAudioAttachmentView)initWithFrame:(CGRect)frame textAttachment:(id)attachment textContainer:(id)container forManualRendering:(BOOL)rendering
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a5;
-  v15 = sub_21544C5BC(a4, a5, a6, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  attachmentCopy = attachment;
+  containerCopy = container;
+  v15 = sub_21544C5BC(attachment, container, rendering, x, y, width, height);
 
   return v15;
 }
 
-- (ICAudioAttachmentView)initWithTextAttachment:(id)a3 textContainer:(id)a4 forManualRendering:(BOOL)a5
+- (ICAudioAttachmentView)initWithTextAttachment:(id)attachment textContainer:(id)container forManualRendering:(BOOL)rendering
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = sub_21544C700(a3, a4, a5);
+  attachmentCopy = attachment;
+  containerCopy = container;
+  v10 = sub_21544C700(attachment, container, rendering);
 
   return v10;
 }

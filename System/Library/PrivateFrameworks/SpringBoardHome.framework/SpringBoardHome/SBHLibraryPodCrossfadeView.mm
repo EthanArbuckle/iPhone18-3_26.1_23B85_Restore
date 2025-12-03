@@ -1,30 +1,30 @@
 @interface SBHLibraryPodCrossfadeView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBHLibraryPodCrossfadeView)initWithBackgroundView:(id)a3 podIconView:(id)a4;
-- (SBHLibraryPodCrossfadeView)initWithForegroundView:(id)a3 podIconView:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBHLibraryPodCrossfadeView)initWithBackgroundView:(id)view podIconView:(id)iconView;
+- (SBHLibraryPodCrossfadeView)initWithForegroundView:(id)view podIconView:(id)iconView;
 - (void)layoutSubviews;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setPodIconViewCrossfadeFraction:(double)a3;
-- (void)setSourceViewCrossfadeFraction:(double)a3;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setPodIconViewCrossfadeFraction:(double)fraction;
+- (void)setSourceViewCrossfadeFraction:(double)fraction;
 @end
 
 @implementation SBHLibraryPodCrossfadeView
 
-- (SBHLibraryPodCrossfadeView)initWithForegroundView:(id)a3 podIconView:(id)a4
+- (SBHLibraryPodCrossfadeView)initWithForegroundView:(id)view podIconView:(id)iconView
 {
-  v7 = a3;
-  v8 = a4;
-  [v8 bounds];
+  viewCopy = view;
+  iconViewCopy = iconView;
+  [iconViewCopy bounds];
   v16.receiver = self;
   v16.super_class = SBHLibraryPodCrossfadeView;
   v9 = [(SBHLibraryPodCrossfadeView *)&v16 initWithFrame:?];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_podIconView, a4);
-    objc_storeStrong(&v10->_foregroundView, a3);
-    [v8 iconImageInfo];
+    objc_storeStrong(&v9->_podIconView, iconView);
+    objc_storeStrong(&v10->_foregroundView, view);
+    [iconViewCopy iconImageInfo];
     v10->_iconImageInfo.size.width = v11;
     v10->_iconImageInfo.size.height = v12;
     v10->_iconImageInfo.scale = v13;
@@ -34,20 +34,20 @@
   return v10;
 }
 
-- (SBHLibraryPodCrossfadeView)initWithBackgroundView:(id)a3 podIconView:(id)a4
+- (SBHLibraryPodCrossfadeView)initWithBackgroundView:(id)view podIconView:(id)iconView
 {
-  v7 = a3;
-  v8 = a4;
-  [v8 bounds];
+  viewCopy = view;
+  iconViewCopy = iconView;
+  [iconViewCopy bounds];
   v16.receiver = self;
   v16.super_class = SBHLibraryPodCrossfadeView;
   v9 = [(SBHLibraryPodCrossfadeView *)&v16 initWithFrame:?];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_podIconView, a4);
-    objc_storeStrong(&v10->_backgroundView, a3);
-    [v8 iconImageInfo];
+    objc_storeStrong(&v9->_podIconView, iconView);
+    objc_storeStrong(&v10->_backgroundView, view);
+    [iconViewCopy iconImageInfo];
     v10->_iconImageInfo.size.width = v11;
     v10->_iconImageInfo.size.height = v12;
     v10->_iconImageInfo.scale = v13;
@@ -57,7 +57,7 @@
   return v10;
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -75,15 +75,15 @@
   }
 }
 
-- (void)setPodIconViewCrossfadeFraction:(double)a3
+- (void)setPodIconViewCrossfadeFraction:(double)fraction
 {
   if (self->_foregroundView)
   {
-    [(SBIconView *)self->_podIconView setIconImageAlpha:a3];
+    [(SBIconView *)self->_podIconView setIconImageAlpha:fraction];
   }
 }
 
-- (void)setSourceViewCrossfadeFraction:(double)a3
+- (void)setSourceViewCrossfadeFraction:(double)fraction
 {
   foregroundView = self->_foregroundView;
   if (!foregroundView)
@@ -91,7 +91,7 @@
     foregroundView = self->_backgroundView;
   }
 
-  [(SBHLibraryCategoryStackView *)foregroundView setAlpha:1.0 - a3];
+  [(SBHLibraryCategoryStackView *)foregroundView setAlpha:1.0 - fraction];
 }
 
 - (CGSize)intrinsicContentSize
@@ -102,9 +102,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SBIconView *)self->_podIconView sizeThatFits:a3.width, a3.height];
+  [(SBIconView *)self->_podIconView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -119,18 +119,18 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 superview];
+    superview = [(UIView *)v3 superview];
 
-    if (v5 != self)
+    if (superview != self)
     {
       [(SBHLibraryPodCrossfadeView *)self addSubview:v4];
     }
   }
 
   v6 = self->_podIconView;
-  v7 = [(SBIconView *)v6 superview];
+  superview2 = [(SBIconView *)v6 superview];
 
-  if (v7 != self)
+  if (superview2 != self)
   {
     [(SBHLibraryPodCrossfadeView *)self addSubview:v6];
   }
@@ -140,10 +140,10 @@
   v10 = v4;
   if (v8)
   {
-    v11 = [(SBHLibraryCategoryStackView *)v8 superview];
+    superview3 = [(SBHLibraryCategoryStackView *)v8 superview];
 
     v10 = v9;
-    if (v11 != self)
+    if (superview3 != self)
     {
       [(SBHLibraryPodCrossfadeView *)self addSubview:v9];
       v10 = v9;

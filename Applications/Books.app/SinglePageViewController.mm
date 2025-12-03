@@ -1,6 +1,6 @@
 @interface SinglePageViewController
 - (NSString)description;
-- (_TtC5Books24SinglePageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5Books24SinglePageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
@@ -9,7 +9,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10053B4D4();
 
   v3 = sub_1007A2214();
@@ -21,18 +21,18 @@
 {
   type metadata accessor for AlwaysPassthroughView();
   v3 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(SinglePageViewController *)v5 setView:v4];
+  [(SinglePageViewController *)selfCopy setView:v4];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10053B6A4();
 }
 
-- (_TtC5Books24SinglePageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Books24SinglePageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

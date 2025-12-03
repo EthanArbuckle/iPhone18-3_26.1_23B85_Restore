@@ -52,32 +52,32 @@
 
           v11 = *(*(&v33 + 1) + 8 * i);
           v12 = MEMORY[0x277D1A8F8];
-          v13 = [v11 phoneNumber];
-          v14 = [v11 labelID];
-          v15 = [v12 IMUniqueIdentifierForPhoneNumber:v13 simID:v14];
+          phoneNumber = [v11 phoneNumber];
+          labelID = [v11 labelID];
+          v15 = [v12 IMUniqueIdentifierForPhoneNumber:phoneNumber simID:labelID];
 
           if (v15)
           {
             v16 = MEMORY[0x277D3FAD8];
-            v17 = [v11 label];
-            v18 = [v16 preferenceSpecifierNamed:v17 target:self set:sel_setEnabledForSubscription_specifier_ get:sel_isEnabledForSubscription_ detail:0 cell:6 edit:0];
+            label = [v11 label];
+            v18 = [v16 preferenceSpecifierNamed:label target:self set:sel_setEnabledForSubscription_specifier_ get:sel_isEnabledForSubscription_ detail:0 cell:6 edit:0];
 
             v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", self->_defaultsKey, v15];
             [v18 setIdentifier:v19];
-            v20 = [v11 labelID];
+            labelID2 = [v11 labelID];
 
-            if (v20)
+            if (labelID2)
             {
-              v21 = [v11 labelID];
-              [v18 setProperty:v21 forKey:@"simID"];
+              labelID3 = [v11 labelID];
+              [v18 setProperty:labelID3 forKey:@"simID"];
             }
 
-            v22 = [v11 phoneNumber];
+            phoneNumber2 = [v11 phoneNumber];
 
-            if (v22)
+            if (phoneNumber2)
             {
-              v23 = [v11 phoneNumber];
-              [v18 setProperty:v23 forKey:@"phoneNumber"];
+              phoneNumber3 = [v11 phoneNumber];
+              [v18 setProperty:phoneNumber3 forKey:@"phoneNumber"];
             }
 
             [v32 addObject:v18];

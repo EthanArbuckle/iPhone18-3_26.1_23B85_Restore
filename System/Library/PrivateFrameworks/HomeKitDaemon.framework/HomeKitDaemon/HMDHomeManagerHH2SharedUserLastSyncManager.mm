@@ -2,8 +2,8 @@
 + (id)shortDescription;
 - (BOOL)_shouldExpire;
 - (BOOL)_shouldPushNow;
-- (BOOL)isManagingUserWithMergeID:(id)a3;
-- (HMDHomeManagerHH2SharedUserLastSyncManager)initWithHomeManager:(id)a3 archivePaths:(id)a4;
+- (BOOL)isManagingUserWithMergeID:(id)d;
+- (HMDHomeManagerHH2SharedUserLastSyncManager)initWithHomeManager:(id)manager archivePaths:(id)paths;
 - (double)_expireInterval;
 - (double)_interval;
 - (double)_nextInterval;
@@ -13,9 +13,9 @@
 - (void)_removeAllUserLastSyncData;
 - (void)_scheduleNextPush;
 - (void)configure;
-- (void)removeUserLastSyncData:(id)a3;
+- (void)removeUserLastSyncData:(id)data;
 - (void)scheduleNextPush;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDHomeManagerHH2SharedUserLastSyncManager
@@ -27,10 +27,10 @@
   return [v2 shortDescription];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fireCopy = fire;
   if (self)
   {
     Property = objc_getProperty(self, v4, 64, 1);
@@ -41,10 +41,10 @@
     Property = 0;
   }
 
-  if (Property == v5)
+  if (Property == fireCopy)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -57,7 +57,7 @@
     objc_autoreleasePoolPop(v7);
     if (self)
     {
-      workQueue = v8->_workQueue;
+      workQueue = selfCopy->_workQueue;
     }
 
     else
@@ -69,7 +69,7 @@
     block[1] = 3221225472;
     block[2] = __59__HMDHomeManagerHH2SharedUserLastSyncManager_timerDidFire___block_invoke;
     block[3] = &unk_27868A728;
-    block[4] = v8;
+    block[4] = selfCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -146,24 +146,24 @@
 
               v8 = *(*(&v26 + 1) + 8 * v7);
               v9 = objc_autoreleasePoolPush();
-              v10 = self;
+              selfCopy = self;
               v11 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
               {
                 v12 = HMFGetLogIdentifier();
-                v13 = [v8 user];
+                user = [v8 user];
                 *buf = 138543618;
                 v35 = v12;
                 v36 = 2112;
-                v37 = v13;
+                v37 = user;
                 _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Pushing last sync for %@", buf, 0x16u);
               }
 
               objc_autoreleasePoolPop(v9);
-              objc_initWeak(buf, v10);
+              objc_initWeak(buf, selfCopy);
               if (self)
               {
-                WeakRetained = objc_loadWeakRetained(&v10->_homeManager);
+                WeakRetained = objc_loadWeakRetained(&selfCopy->_homeManager);
               }
 
               else
@@ -221,9 +221,9 @@ void __66__HMDHomeManagerHH2SharedUserLastSyncManager__pushAllUserSyncData__bloc
   }
 }
 
-- (void)removeUserLastSyncData:(id)a3
+- (void)removeUserLastSyncData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -239,8 +239,8 @@ void __66__HMDHomeManagerHH2SharedUserLastSyncManager__pushAllUserSyncData__bloc
   v7[2] = __69__HMDHomeManagerHH2SharedUserLastSyncManager_removeUserLastSyncData___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -398,16 +398,16 @@ void __69__HMDHomeManagerHH2SharedUserLastSyncManager_removeUserLastSyncData___b
 
               v11 = *(*(&v24 + 1) + 8 * i);
               v12 = objc_autoreleasePoolPush();
-              v13 = self;
+              selfCopy = self;
               v14 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
               {
                 v15 = HMFGetLogIdentifier();
-                v16 = [v11 user];
+                user = [v11 user];
                 *buf = 138543618;
                 v33 = v15;
                 v34 = 2112;
-                v35 = v16;
+                v35 = user;
                 _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Removing last sync for %@", buf, 0x16u);
               }
 
@@ -443,7 +443,7 @@ void __69__HMDHomeManagerHH2SharedUserLastSyncManager_removeUserLastSyncData___b
 
 - (void)_scheduleNextPush
 {
-  v2 = self;
+  selfCopy = self;
   v26 = *MEMORY[0x277D85DE8];
   if (self)
   {
@@ -452,7 +452,7 @@ void __69__HMDHomeManagerHH2SharedUserLastSyncManager_removeUserLastSyncData___b
 
   dispatch_assert_queue_V2(&self->super.super);
   v3 = objc_autoreleasePoolPush();
-  v4 = v2;
+  v4 = selfCopy;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -486,7 +486,7 @@ void __69__HMDHomeManagerHH2SharedUserLastSyncManager_removeUserLastSyncData___b
     [(HMDHomeManagerHH2SharedUserLastSyncManager *)v4 _nextInterval];
     v12 = [v11 initWithTimeInterval:1 options:?];
     v14 = v12;
-    if (v2)
+    if (selfCopy)
     {
       objc_setProperty_atomic(v4, v13, v12, 64);
 
@@ -518,7 +518,7 @@ void __69__HMDHomeManagerHH2SharedUserLastSyncManager_removeUserLastSyncData___b
     }
 
     objc_autoreleasePoolPop(v18);
-    if (v2)
+    if (selfCopy)
     {
       objc_setProperty_atomic(v19, v22, 0, 64);
     }
@@ -568,7 +568,7 @@ LABEL_7:
   [objc_getProperty(self v6];
   v8 = -(v7 - ((v7 / v5) + 1) * v5);
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -607,7 +607,7 @@ LABEL_7:
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -640,11 +640,11 @@ LABEL_8:
       v10 = v5 * (v9 / v5);
       v12 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:objc_getProperty(self sinceDate:{v11, 56, 1), v10}];
       v14 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:objc_getProperty(self sinceDate:{v13, 56, 1), v7 + v10}];
-      v15 = [MEMORY[0x277CBEAA8] date];
-      if ([v15 compare:v12] == 1 && objc_msgSend(v15, "compare:", v14) == -1)
+      date = [MEMORY[0x277CBEAA8] date];
+      if ([date compare:v12] == 1 && objc_msgSend(date, "compare:", v14) == -1)
       {
         v16 = objc_autoreleasePoolPush();
-        v21 = self;
+        selfCopy = self;
         v18 = HMFGetOSLogHandle();
         v20 = 1;
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -663,7 +663,7 @@ LABEL_8:
       else
       {
         v16 = objc_autoreleasePoolPush();
-        v17 = self;
+        selfCopy2 = self;
         v18 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
@@ -691,7 +691,7 @@ LABEL_8:
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy3 = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
@@ -710,10 +710,10 @@ LABEL_15:
 
 - (double)_pushInterval
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"hh2SharedUserLastSyncPushInterval"];
-  v4 = [v3 numberValue];
-  [v4 doubleValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"hh2SharedUserLastSyncPushInterval"];
+  numberValue = [v3 numberValue];
+  [numberValue doubleValue];
   v6 = v5;
 
   return v6;
@@ -721,10 +721,10 @@ LABEL_15:
 
 - (double)_expireInterval
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"hh2SharedUserLastSyncExpire"];
-  v4 = [v3 numberValue];
-  [v4 doubleValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"hh2SharedUserLastSyncExpire"];
+  numberValue = [v3 numberValue];
+  [numberValue doubleValue];
   v6 = v5;
 
   return v6;
@@ -732,30 +732,30 @@ LABEL_15:
 
 - (double)_interval
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"hh2SharedUserLastSyncInterval"];
-  v4 = [v3 numberValue];
-  [v4 doubleValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"hh2SharedUserLastSyncInterval"];
+  numberValue = [v3 numberValue];
+  [numberValue doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (BOOL)isManagingUserWithMergeID:(id)a3
+- (BOOL)isManagingUserWithMergeID:(id)d
 {
   if (self)
   {
     self = self->_managedMergeIDs;
   }
 
-  return [(HMDHomeManagerHH2SharedUserLastSyncManager *)self containsObject:a3];
+  return [(HMDHomeManagerHH2SharedUserLastSyncManager *)self containsObject:d];
 }
 
 - (void)configure
 {
   v61 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -770,9 +770,9 @@ LABEL_15:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  if (v4)
+  if (selfCopy)
   {
-    userLastSyncs = v4->_userLastSyncs;
+    userLastSyncs = selfCopy->_userLastSyncs;
   }
 
   else
@@ -806,15 +806,15 @@ LABEL_15:
         [v15 configure];
         if ([v15 isValid])
         {
-          v16 = [v15 user];
-          v17 = [v16 accountIdentifier];
-          v18 = [v17 senderCorrelationIdentifier];
+          user = [v15 user];
+          accountIdentifier = [user accountIdentifier];
+          senderCorrelationIdentifier = [accountIdentifier senderCorrelationIdentifier];
 
-          if (v18)
+          if (senderCorrelationIdentifier)
           {
-            if (v4)
+            if (selfCopy)
             {
-              managedMergeIDs = v4->_managedMergeIDs;
+              managedMergeIDs = selfCopy->_managedMergeIDs;
             }
 
             else
@@ -822,12 +822,12 @@ LABEL_15:
               managedMergeIDs = 0;
             }
 
-            [(NSMutableSet *)managedMergeIDs addObject:v18];
+            [(NSMutableSet *)managedMergeIDs addObject:senderCorrelationIdentifier];
           }
 
-          if (v4)
+          if (selfCopy)
           {
-            v20 = *(&v4->super.super.isa + v11[633]);
+            v20 = *(&selfCopy->super.super.isa + v11[633]);
           }
 
           else
@@ -836,15 +836,15 @@ LABEL_15:
           }
 
           v21 = v20;
-          v22 = [v15 homeUUID];
-          v23 = [v21 objectForKeyedSubscript:v22];
+          homeUUID = [v15 homeUUID];
+          array = [v21 objectForKeyedSubscript:homeUUID];
 
-          if (!v23)
+          if (!array)
           {
-            v23 = [MEMORY[0x277CBEB18] array];
-            if (v4)
+            array = [MEMORY[0x277CBEB18] array];
+            if (selfCopy)
             {
-              v24 = *(&v4->super.super.isa + v11[633]);
+              v24 = *(&selfCopy->super.super.isa + v11[633]);
             }
 
             else
@@ -853,24 +853,24 @@ LABEL_15:
             }
 
             v25 = v24;
-            v26 = [v15 homeUUID];
-            [v25 setObject:v23 forKeyedSubscript:v26];
+            homeUUID2 = [v15 homeUUID];
+            [v25 setObject:array forKeyedSubscript:homeUUID2];
           }
 
-          [v23 addObject:v15];
-          if (!v4 || !objc_getProperty(v4, v27, 56, 1))
+          [array addObject:v15];
+          if (!selfCopy || !objc_getProperty(selfCopy, v27, 56, 1))
           {
             v28 = objc_autoreleasePoolPush();
-            v29 = v4;
+            v29 = selfCopy;
             v30 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
             {
               v31 = HMFGetLogIdentifier();
-              v32 = [v15 creationDate];
+              creationDate = [v15 creationDate];
               *buf = v47;
               v57 = v31;
               v58 = 2112;
-              v59 = v32;
+              v59 = creationDate;
               _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_INFO, "%{public}@Using creationDate from %@", buf, 0x16u);
 
               v13 = v49;
@@ -878,10 +878,10 @@ LABEL_15:
             }
 
             objc_autoreleasePoolPop(v28);
-            v34 = [v15 creationDate];
-            if (v4)
+            creationDate2 = [v15 creationDate];
+            if (selfCopy)
             {
-              objc_setProperty_atomic(v29, v33, v34, 56);
+              objc_setProperty_atomic(v29, v33, creationDate2, 56);
             }
 
             v11 = &OBJC_IVAR___HMDHomeActivityStateManagerDataSource__queue;
@@ -893,7 +893,7 @@ LABEL_15:
         else
         {
           v35 = objc_autoreleasePoolPush();
-          v36 = v4;
+          v36 = selfCopy;
           v37 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
           {
@@ -920,10 +920,10 @@ LABEL_15:
     while (v39);
   }
 
-  if (v4)
+  if (selfCopy)
   {
-    objc_storeStrong(&v4->_userLastSyncs, 0);
-    v40 = *(&v4->super.super.isa + v11[633]);
+    objc_storeStrong(&selfCopy->_userLastSyncs, 0);
+    v40 = *(&selfCopy->super.super.isa + v11[633]);
   }
 
   else
@@ -933,10 +933,10 @@ LABEL_15:
 
   if ([v40 count])
   {
-    if (v4)
+    if (selfCopy)
     {
-      v4->_valid = 1;
-      workQueue = v4->_workQueue;
+      selfCopy->_valid = 1;
+      workQueue = selfCopy->_workQueue;
     }
 
     else
@@ -948,14 +948,14 @@ LABEL_15:
     block[1] = 3221225472;
     block[2] = __55__HMDHomeManagerHH2SharedUserLastSyncManager_configure__block_invoke;
     block[3] = &unk_27868A728;
-    block[4] = v4;
+    block[4] = selfCopy;
     dispatch_async(workQueue, block);
   }
 
   else
   {
     v42 = objc_autoreleasePoolPush();
-    v43 = v4;
+    v43 = selfCopy;
     v44 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
     {
@@ -1011,31 +1011,31 @@ uint64_t __55__HMDHomeManagerHH2SharedUserLastSyncManager_configure__block_invok
   return result;
 }
 
-- (HMDHomeManagerHH2SharedUserLastSyncManager)initWithHomeManager:(id)a3 archivePaths:(id)a4
+- (HMDHomeManagerHH2SharedUserLastSyncManager)initWithHomeManager:(id)manager archivePaths:(id)paths
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  pathsCopy = paths;
   v34.receiver = self;
   v34.super_class = HMDHomeManagerHH2SharedUserLastSyncManager;
   v8 = [(HMDHomeManagerHH2SharedUserLastSyncManager *)&v34 init];
   if (v8)
   {
     v9 = HMDispatchQueueNameString();
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     workQueue = v8->_workQueue;
     v8->_workQueue = v12;
 
-    objc_storeWeak(&v8->_homeManager, v6);
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeWeak(&v8->_homeManager, managerCopy);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     homeToUserMap = v8->_homeToUserMap;
-    v8->_homeToUserMap = v14;
+    v8->_homeToUserMap = dictionary;
 
-    v16 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     userLastSyncs = v8->_userLastSyncs;
-    v8->_userLastSyncs = v16;
+    v8->_userLastSyncs = array;
 
     v18 = [MEMORY[0x277CBEB58] set];
     managedMergeIDs = v8->_managedMergeIDs;
@@ -1045,7 +1045,7 @@ uint64_t __55__HMDHomeManagerHH2SharedUserLastSyncManager_configure__block_invok
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v20 = v7;
+    v20 = pathsCopy;
     v21 = [v20 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v21)
     {

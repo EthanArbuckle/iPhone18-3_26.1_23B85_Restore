@@ -1,26 +1,26 @@
 @interface MOSharedWithYouManager
 - (BOOL)_sharedWithYouEnabled;
-- (MOSharedWithYouManager)initWithUniverse:(id)a3;
+- (MOSharedWithYouManager)initWithUniverse:(id)universe;
 - (SWHighlightCenter)swHighlightCenter;
-- (id)createEventFromHighlight:(id)a3;
-- (id)redactURL:(id)a3;
-- (id)rehydratedSharedContentEvents:(id)a3;
-- (void)_updateSharedContentsDeletedAtSource:(id)a3 handler:(id)a4;
-- (void)fetchAndSaveSharedContentBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5;
-- (void)fetchSharedContentBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
-- (void)highlightCenterHighlightsDidChange:(id)a3;
-- (void)saveHighlights:(id)a3 handler:(id)a4;
-- (void)updateSharedContentsDeletedAtSource:(id)a3 handler:(id)a4;
+- (id)createEventFromHighlight:(id)highlight;
+- (id)redactURL:(id)l;
+- (id)rehydratedSharedContentEvents:(id)events;
+- (void)_updateSharedContentsDeletedAtSource:(id)source handler:(id)handler;
+- (void)fetchAndSaveSharedContentBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler;
+- (void)fetchSharedContentBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
+- (void)highlightCenterHighlightsDidChange:(id)change;
+- (void)saveHighlights:(id)highlights handler:(id)handler;
+- (void)updateSharedContentsDeletedAtSource:(id)source handler:(id)handler;
 @end
 
 @implementation MOSharedWithYouManager
 
-- (MOSharedWithYouManager)initWithUniverse:(id)a3
+- (MOSharedWithYouManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 getService:v7];
+  v8 = [universeCopy getService:v7];
 
   if (!v8)
   {
@@ -37,7 +37,7 @@
 
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v5 getService:v10];
+  v11 = [universeCopy getService:v10];
 
   if (!v11)
   {
@@ -51,7 +51,7 @@
     [v26 handleFailureInMethod:a2 object:self file:@"MOSharedWithYouManager.m" lineNumber:73 description:@"Invalid parameter not satisfying: configurationManager"];
 
 LABEL_13:
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
@@ -67,7 +67,7 @@ LABEL_13:
 
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    v18 = [v5 getService:v17];
+    v18 = [universeCopy getService:v17];
     momentStore = v12->_momentStore;
     v12->_momentStore = v18;
 
@@ -85,10 +85,10 @@ LABEL_13:
   }
 
   self = v12;
-  v23 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v23;
+  return selfCopy;
 }
 
 - (BOOL)_sharedWithYouEnabled
@@ -141,11 +141,11 @@ LABEL_14:
   return v5;
 }
 
-- (void)fetchSharedContentBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)fetchSharedContentBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   if ([(MOSharedWithYouManager *)self _sharedWithYouEnabled]&& ([(MOSharedWithYouManager *)self swHighlightCenter], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
     v12 = _mo_log_facility_get_os_log(&MOLogFacilitySharedWithYou);
@@ -155,7 +155,7 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "#swy,fetchSharedContentBetweenStartDate", buf, 2u);
     }
 
-    v38 = v10;
+    v38 = handlerCopy;
     if (self->_highlightsCacheNotificationPending)
     {
       v13 = [NSString stringWithFormat:@"%@ - [%s] - %d - %s", @"MOSemaphoreWait", "/Library/Caches/com.apple.xbs/Sources/Moments/momentsd/PromptEngine/PromptSource/SharedWithYou/MOSharedWithYouManager.m", 139, "[MOSharedWithYouManager fetchSharedContentBetweenStartDate:EndDate:CompletionHandler:]"];
@@ -183,15 +183,15 @@ LABEL_14:
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v18 = [(MOSharedWithYouManager *)self swHighlightCenter];
-    v19 = [v18 highlights];
+    swHighlightCenter = [(MOSharedWithYouManager *)self swHighlightCenter];
+    highlights = [swHighlightCenter highlights];
 
-    v43 = [v19 countByEnumeratingWithState:&v44 objects:v55 count:16];
+    v43 = [highlights countByEnumeratingWithState:&v44 objects:v55 count:16];
     if (v43)
     {
       v20 = *v45;
       v39 = v17;
-      v40 = v8;
+      v40 = dateCopy;
       v42 = *v45;
       do
       {
@@ -199,13 +199,13 @@ LABEL_14:
         {
           if (*v45 != v20)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(highlights);
           }
 
           v22 = *(*(&v44 + 1) + 8 * i);
-          v23 = [v22 slHighlight];
-          v24 = [v23 timestamp];
-          v25 = [v24 betweenDate:v8 andDate:v9];
+          slHighlight = [v22 slHighlight];
+          timestamp = [slHighlight timestamp];
+          v25 = [timestamp betweenDate:dateCopy andDate:endDateCopy];
 
           if (v25)
           {
@@ -213,25 +213,25 @@ LABEL_14:
             if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
             {
               v41 = [v22 URL];
-              v27 = [v41 absoluteString];
-              v28 = [v22 slHighlight];
-              v29 = [v28 identifier];
-              v30 = [v22 slHighlight];
-              [v30 timestamp];
-              v31 = v19;
-              v33 = v32 = v9;
+              absoluteString = [v41 absoluteString];
+              slHighlight2 = [v22 slHighlight];
+              identifier = [slHighlight2 identifier];
+              slHighlight3 = [v22 slHighlight];
+              [slHighlight3 timestamp];
+              v31 = highlights;
+              v33 = v32 = endDateCopy;
               *buf = 138412802;
-              v50 = v27;
+              v50 = absoluteString;
               v51 = 2112;
-              v52 = v29;
+              v52 = identifier;
               v53 = 2112;
               v54 = v33;
               _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "#swy,found highlight within timeperiod,url,%@,identifier,%@,timestamp,%@", buf, 0x20u);
 
-              v9 = v32;
-              v19 = v31;
+              endDateCopy = v32;
+              highlights = v31;
 
-              v8 = v40;
+              dateCopy = v40;
               v17 = v39;
             }
 
@@ -242,7 +242,7 @@ LABEL_14:
           }
         }
 
-        v43 = [v19 countByEnumeratingWithState:&v44 objects:v55 count:16];
+        v43 = [highlights countByEnumeratingWithState:&v44 objects:v55 count:16];
       }
 
       while (v43);
@@ -257,17 +257,17 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "#swy,highlights returned from fetch,%lu", buf, 0xCu);
     }
 
-    v10 = v38;
+    handlerCopy = v38;
     v38[2](v38, v17, 0);
   }
 
   else
   {
-    v10[2](v10, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
   }
 }
 
-- (void)highlightCenterHighlightsDidChange:(id)a3
+- (void)highlightCenterHighlightsDidChange:(id)change
 {
   v4 = _mo_log_facility_get_os_log(&MOLogFacilitySharedWithYou);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -287,56 +287,56 @@ LABEL_14:
   }
 }
 
-- (id)createEventFromHighlight:(id)a3
+- (id)createEventFromHighlight:(id)highlight
 {
-  v4 = a3;
+  highlightCopy = highlight;
   v5 = [MOEvent alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v4 timestamp];
-  v8 = [v4 timestamp];
+  timestamp = [highlightCopy timestamp];
+  timestamp2 = [highlightCopy timestamp];
   v9 = +[NSDate date];
-  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:v7 endDate:v8 creationDate:v9 provider:11 category:9];
+  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:timestamp endDate:timestamp2 creationDate:v9 provider:11 category:9];
 
-  v11 = [v4 timestamp];
-  v12 = [(MOSharedWithYouManager *)self configurationManager];
+  timestamp3 = [highlightCopy timestamp];
+  configurationManager = [(MOSharedWithYouManager *)self configurationManager];
   LODWORD(v13) = 1242802176;
-  [v12 getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v13];
-  v15 = [v11 dateByAddingTimeInterval:v14];
+  [configurationManager getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v13];
+  v15 = [timestamp3 dateByAddingTimeInterval:v14];
   [(MOEvent *)v10 setExpirationDate:v15];
 
-  v16 = [v4 slHighlight];
+  slHighlight = [highlightCopy slHighlight];
 
-  v17 = [v16 identifier];
-  [(MOEvent *)v10 setIdentifierFromProvider:v17];
+  identifier = [slHighlight identifier];
+  [(MOEvent *)v10 setIdentifierFromProvider:identifier];
 
   v18 = _mo_log_facility_get_os_log(&MOLogFacilitySharedWithYou);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = [(MOEvent *)v10 identifierFromProvider];
-    v20 = [(MOEvent *)v10 startDate];
-    v21 = [(MOEvent *)v10 endDate];
+    identifierFromProvider = [(MOEvent *)v10 identifierFromProvider];
+    startDate = [(MOEvent *)v10 startDate];
+    endDate = [(MOEvent *)v10 endDate];
     v23 = 138412802;
-    v24 = v19;
+    v24 = identifierFromProvider;
     v25 = 2112;
-    v26 = v20;
+    v26 = startDate;
     v27 = 2112;
-    v28 = v21;
+    v28 = endDate;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "#swy,identifierFromProvider, %@, startDate, %@, endDate,%@,", &v23, 0x20u);
   }
 
   return v10;
 }
 
-- (void)saveHighlights:(id)a3 handler:(id)a4
+- (void)saveHighlights:(id)highlights handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  highlightsCopy = highlights;
+  handlerCopy = handler;
   v8 = +[NSDate distantFuture];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v6;
+  v9 = highlightsCopy;
   v10 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v10)
   {
@@ -351,14 +351,14 @@ LABEL_14:
         }
 
         v13 = *(*(&v34 + 1) + 8 * i);
-        v14 = [v13 timestamp];
-        v15 = [v8 isAfterDate:v14];
+        timestamp = [v13 timestamp];
+        v15 = [v8 isAfterDate:timestamp];
 
         if (v15)
         {
-          v16 = [v13 timestamp];
+          timestamp2 = [v13 timestamp];
 
-          v8 = v16;
+          v8 = timestamp2;
         }
       }
 
@@ -380,14 +380,14 @@ LABEL_14:
   v29[3] = __Block_byref_object_copy__21;
   v29[4] = __Block_byref_object_dispose__21;
   v30 = 0;
-  v17 = [(MOSharedWithYouManager *)self momentStore];
+  momentStore = [(MOSharedWithYouManager *)self momentStore];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = __49__MOSharedWithYouManager_saveHighlights_handler___block_invoke;
   v28[3] = &unk_100337768;
   v28[4] = &v31;
   v28[5] = v29;
-  [v17 fetchEventsWithStartDateAfter:v8 Category:9 CompletionHandler:v28];
+  [momentStore fetchEventsWithStartDateAfter:v8 Category:9 CompletionHandler:v28];
 
   if (*(v32[0] + 40))
   {
@@ -404,9 +404,9 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "#swy,no shared content will be saved this round", buf, 2u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, *(v32[0] + 40), &__NSDictionary0__struct);
+      handlerCopy[2](handlerCopy, *(v32[0] + 40), &__NSDictionary0__struct);
     }
   }
 
@@ -432,7 +432,7 @@ LABEL_14:
     v24[3] = &unk_1003377B8;
     v23 = v20;
     v25 = v23;
-    v26 = v7;
+    v26 = handlerCopy;
     [(MOEventStore *)momentStore storeEvents:v23 CompletionHandler:v24];
   }
 
@@ -505,20 +505,20 @@ void __49__MOSharedWithYouManager_saveHighlights_handler___block_invoke_146(uint
   }
 }
 
-- (void)fetchAndSaveSharedContentBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5
+- (void)fetchAndSaveSharedContentBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   if ([(MOSharedWithYouManager *)self _sharedWithYouEnabled])
   {
     v11 = _mo_log_facility_get_os_log(&MOLogFacilitySharedWithYou);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v17 = v8;
+      v17 = dateCopy;
       v18 = 2112;
-      v19 = v9;
+      v19 = endDateCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, " #swy,fetchAndSaveSharedContentBetweenStartDate,%@,endDate,%@", buf, 0x16u);
     }
 
@@ -527,8 +527,8 @@ void __49__MOSharedWithYouManager_saveHighlights_handler___block_invoke_146(uint
     v14[2] = __84__MOSharedWithYouManager_fetchAndSaveSharedContentBetweenStartDate_EndDate_handler___block_invoke;
     v14[3] = &unk_100337850;
     v14[4] = self;
-    v15 = v10;
-    [(MOSharedWithYouManager *)self fetchSharedContentBetweenStartDate:v8 EndDate:v9 CompletionHandler:v14];
+    v15 = handlerCopy;
+    [(MOSharedWithYouManager *)self fetchSharedContentBetweenStartDate:dateCopy EndDate:endDateCopy CompletionHandler:v14];
     v12 = v15;
   }
 
@@ -539,7 +539,7 @@ void __49__MOSharedWithYouManager_saveHighlights_handler___block_invoke_146(uint
     v13 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v12 = [NSError errorWithDomain:@"MOErrorDomain" code:5 userInfo:v13];
 
-    (*(v10 + 2))(v10, v12, 0);
+    (*(handlerCopy + 2))(handlerCopy, v12, 0);
   }
 }
 
@@ -579,9 +579,9 @@ uint64_t __84__MOSharedWithYouManager_fetchAndSaveSharedContentBetweenStartDate_
   return result;
 }
 
-- (id)rehydratedSharedContentEvents:(id)a3
+- (id)rehydratedSharedContentEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   if ([(MOSharedWithYouManager *)self _sharedWithYouEnabled])
   {
     v5 = _mo_log_facility_get_os_log(&MOLogFacilitySharedWithYou);
@@ -591,17 +591,17 @@ uint64_t __84__MOSharedWithYouManager_fetchAndSaveSharedContentBetweenStartDate_
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#swy,rehydratedSharedContentEvents", buf, 2u);
     }
 
-    v6 = [v4 getDurationOfMOEventArray];
+    getDurationOfMOEventArray = [eventsCopy getDurationOfMOEventArray];
     *buf = 0;
     v18 = buf;
     v19 = 0x3032000000;
     v20 = __Block_byref_object_copy__21;
     v21 = __Block_byref_object_dispose__21;
     v22 = objc_opt_new();
-    v7 = [v6 startDate];
-    v8 = [v7 dateByAddingTimeInterval:-1.0];
-    v9 = [v6 endDate];
-    v10 = [v9 dateByAddingTimeInterval:1.0];
+    startDate = [getDurationOfMOEventArray startDate];
+    v8 = [startDate dateByAddingTimeInterval:-1.0];
+    endDate = [getDurationOfMOEventArray endDate];
+    v10 = [endDate dateByAddingTimeInterval:1.0];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = __56__MOSharedWithYouManager_rehydratedSharedContentEvents___block_invoke;
@@ -618,7 +618,7 @@ uint64_t __84__MOSharedWithYouManager_fetchAndSaveSharedContentBetweenStartDate_
       v14[3] = &unk_10033AB38;
       v14[4] = self;
       v14[5] = buf;
-      v11 = [v4 _pas_mappedArrayWithTransform:v14];
+      v11 = [eventsCopy _pas_mappedArrayWithTransform:v14];
     }
 
     else
@@ -1065,11 +1065,11 @@ LABEL_65:
   return v73;
 }
 
-- (id)redactURL:(id)a3
+- (id)redactURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  lCopy = l;
+  v4 = lCopy;
+  if (lCopy && [lCopy length])
   {
     v5 = [v4 length];
     if (v5 >> 1 >= 5)
@@ -1094,24 +1094,24 @@ LABEL_65:
   return v8;
 }
 
-- (void)updateSharedContentsDeletedAtSource:(id)a3 handler:(id)a4
+- (void)updateSharedContentsDeletedAtSource:(id)source handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  handlerCopy = handler;
   if ([(MOSharedWithYouManager *)self _sharedWithYouEnabled])
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = __70__MOSharedWithYouManager_updateSharedContentsDeletedAtSource_handler___block_invoke;
     v8[3] = &unk_100336198;
-    v9 = v7;
-    [(MOSharedWithYouManager *)self _updateSharedContentsDeletedAtSource:v6 handler:v8];
+    v9 = handlerCopy;
+    [(MOSharedWithYouManager *)self _updateSharedContentsDeletedAtSource:sourceCopy handler:v8];
     [(MOSharedWithYouManager *)self waitForQueueEmpty];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, &__NSDictionary0__struct);
+    (*(handlerCopy + 2))(handlerCopy, 0, &__NSDictionary0__struct);
   }
 }
 
@@ -1126,10 +1126,10 @@ uint64_t __70__MOSharedWithYouManager_updateSharedContentsDeletedAtSource_handle
   return result;
 }
 
-- (void)_updateSharedContentsDeletedAtSource:(id)a3 handler:(id)a4
+- (void)_updateSharedContentsDeletedAtSource:(id)source handler:(id)handler
 {
-  v41 = a3;
-  v38 = a4;
+  sourceCopy = source;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilitySharedWithYou);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1137,7 +1137,7 @@ uint64_t __70__MOSharedWithYouManager_updateSharedContentsDeletedAtSource_handle
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#swy,_updateSharedContentsDeletedAtSource", buf, 2u);
   }
 
-  v40 = [v41 getDurationOfMOEventArray];
+  getDurationOfMOEventArray = [sourceCopy getDurationOfMOEventArray];
   *buf = 0;
   v62 = buf;
   v63 = 0x3032000000;
@@ -1150,15 +1150,15 @@ uint64_t __70__MOSharedWithYouManager_updateSharedContentsDeletedAtSource_handle
   v58 = __Block_byref_object_copy__21;
   v59 = __Block_byref_object_dispose__21;
   v60 = 0;
-  v6 = [v40 startDate];
-  v7 = [v40 endDate];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v54[0] = _NSConcreteStackBlock;
   v54[1] = 3221225472;
   v54[2] = __71__MOSharedWithYouManager__updateSharedContentsDeletedAtSource_handler___block_invoke;
   v54[3] = &unk_100337768;
   v54[4] = buf;
   v54[5] = &v55;
-  [(MOSharedWithYouManager *)self fetchSharedContentBetweenStartDate:v6 EndDate:v7 CompletionHandler:v54];
+  [(MOSharedWithYouManager *)self fetchSharedContentBetweenStartDate:startDate EndDate:endDate CompletionHandler:v54];
 
   [(MOSharedWithYouManager *)self waitForQueueEmpty];
   if (*(v62 + 5))
@@ -1169,7 +1169,7 @@ uint64_t __70__MOSharedWithYouManager_updateSharedContentsDeletedAtSource_handle
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v8 = v41;
+    v8 = sourceCopy;
     v9 = [v8 countByEnumeratingWithState:&v49 objects:v69 count:16];
     if (v9)
     {
@@ -1185,8 +1185,8 @@ uint64_t __70__MOSharedWithYouManager_updateSharedContentsDeletedAtSource_handle
 
           v12 = *(*(&v49 + 1) + 8 * i);
           v13 = *(v62 + 5);
-          v14 = [v12 identifierFromProvider];
-          v15 = [v13 objectForKeyedSubscript:v14];
+          identifierFromProvider = [v12 identifierFromProvider];
+          v15 = [v13 objectForKeyedSubscript:identifierFromProvider];
 
           if (v15)
           {
@@ -1233,10 +1233,10 @@ uint64_t __70__MOSharedWithYouManager_updateSharedContentsDeletedAtSource_handle
     }
 
     v22 = [MORehydrationMetrics alloc];
-    v23 = [v8 firstObject];
-    v24 = [v23 category];
-    v25 = [v8 firstObject];
-    v26 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v22, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v24, [v25 provider], 1, 0, objc_msgSend(v8, "count"), 1, objc_msgSend(v42, "count"), objc_msgSend(v43, "count"));
+    firstObject = [v8 firstObject];
+    category = [firstObject category];
+    firstObject2 = [v8 firstObject];
+    v26 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v22, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category, [firstObject2 provider], 1, 0, objc_msgSend(v8, "count"), 1, objc_msgSend(v42, "count"), objc_msgSend(v43, "count"));
 
     v47 = 0;
     [(MORehydrationMetrics *)v26 submitMetricsWithError:&v47];
@@ -1244,15 +1244,15 @@ uint64_t __70__MOSharedWithYouManager_updateSharedContentsDeletedAtSource_handle
     v28 = [v42 copy];
     [v43 addObjectsFromArray:v28];
 
-    v29 = [(MOSharedWithYouManager *)self momentStore];
+    momentStore = [(MOSharedWithYouManager *)self momentStore];
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = __71__MOSharedWithYouManager__updateSharedContentsDeletedAtSource_handler___block_invoke_161;
     v44[3] = &unk_1003377B8;
     v30 = v43;
     v45 = v30;
-    v46 = v38;
-    [v29 storeEvents:v30 CompletionHandler:v44];
+    v46 = handlerCopy;
+    [momentStore storeEvents:v30 CompletionHandler:v44];
   }
 
   else
@@ -1264,18 +1264,18 @@ uint64_t __70__MOSharedWithYouManager_updateSharedContentsDeletedAtSource_handle
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "#swy,nil query result from shared content fetching, no events updated.", v67, 2u);
     }
 
-    if (v38)
+    if (handlerCopy)
     {
-      (*(v38 + 2))(v38, v56[5], &__NSDictionary0__struct);
+      (*(handlerCopy + 2))(handlerCopy, v56[5], &__NSDictionary0__struct);
     }
 
     v32 = [MORehydrationMetrics alloc];
-    v33 = [v41 firstObject];
-    v34 = [v33 category];
-    v35 = [v41 firstObject];
-    v36 = [v35 provider];
+    firstObject3 = [sourceCopy firstObject];
+    category2 = [firstObject3 category];
+    firstObject4 = [sourceCopy firstObject];
+    provider = [firstObject4 provider];
     v37 = [v56[5] description];
-    v30 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v32, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v34, v36, 0, v37, [v41 count], 1, objc_msgSend(v41, "count"), 0.0);
+    v30 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v32, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category2, provider, 0, v37, [sourceCopy count], 1, objc_msgSend(sourceCopy, "count"), 0.0);
 
     v53 = 0;
     [(MORehydrationMetrics *)v30 submitMetricsWithError:&v53];

@@ -1,7 +1,7 @@
 @interface CRCarPlayOptionsController
 - (BOOL)isCarPlayEnabled;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CRCarPlayOptionsController
@@ -12,9 +12,9 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(CRCarPlayOptionsController *)self specifier];
-    v6 = [v5 userInfo];
-    [(CRCarPlayOptionsController *)self setVehicleSettingManager:v6];
+    specifier = [(CRCarPlayOptionsController *)self specifier];
+    userInfo = [specifier userInfo];
+    [(CRCarPlayOptionsController *)self setVehicleSettingManager:userInfo];
 
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"CARPLAY_OPTIONS_PAGE_TITLE" value:&stru_6FD90 table:?];
@@ -39,10 +39,10 @@
     [v17 setIdentifier:@"OPTIONS_DISABLE"];
     [v17 setProperty:@"NoClusterDrawing" forKey:@"CRCarPlayOptionImageNameKey"];
     [v17 setProperty:objc_opt_class() forKey:v14];
-    v18 = [(CRCarPlayOptionsController *)self vehicleSettingManager];
-    v19 = [v18 isCarPlayUltraEnabled];
+    vehicleSettingManager = [(CRCarPlayOptionsController *)self vehicleSettingManager];
+    isCarPlayUltraEnabled = [vehicleSettingManager isCarPlayUltraEnabled];
 
-    if (v19)
+    if (isCarPlayUltraEnabled)
     {
       v20 = v12;
     }
@@ -52,7 +52,7 @@
       v20 = v17;
     }
 
-    if (v19)
+    if (isCarPlayUltraEnabled)
     {
       v21 = @"CARPLAY_OPTIONS_CARPLAY_ULTRA_FOOTER";
     }
@@ -91,26 +91,26 @@
 
 - (BOOL)isCarPlayEnabled
 {
-  v2 = [(CRCarPlayOptionsController *)self vehicleSettingManager];
-  v3 = [v2 vehicle];
+  vehicleSettingManager = [(CRCarPlayOptionsController *)self vehicleSettingManager];
+  vehicle = [vehicleSettingManager vehicle];
 
-  LOBYTE(v2) = [v3 isPaired];
-  return v2;
+  LOBYTE(vehicleSettingManager) = [vehicle isPaired];
+  return vehicleSettingManager;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CRCarPlayOptionsController *)self vehicleSettingManager];
-  v7 = [v6 isCarPlayUltraEnabled];
+  pathCopy = path;
+  vehicleSettingManager = [(CRCarPlayOptionsController *)self vehicleSettingManager];
+  isCarPlayUltraEnabled = [vehicleSettingManager isCarPlayUltraEnabled];
 
-  v12 = [(CRCarPlayOptionsController *)self specifierAtIndexPath:v5];
+  v12 = [(CRCarPlayOptionsController *)self specifierAtIndexPath:pathCopy];
 
-  v8 = [v12 identifier];
-  v9 = v8;
-  if ((v7 & 1) == 0)
+  identifier = [v12 identifier];
+  v9 = identifier;
+  if ((isCarPlayUltraEnabled & 1) == 0)
   {
-    v11 = [v8 isEqualToString:@"OPTIONS_ENABLE"];
+    v11 = [identifier isEqualToString:@"OPTIONS_ENABLE"];
 
     if ((v11 & 1) == 0)
     {
@@ -120,12 +120,12 @@
     goto LABEL_5;
   }
 
-  v10 = [v8 isEqualToString:@"OPTIONS_DISABLE"];
+  v10 = [identifier isEqualToString:@"OPTIONS_DISABLE"];
 
   if (v10)
   {
 LABEL_5:
-    [(CRCarPlayOptionsController *)self _showCarPlayUltraConfirmation:v7 ^ 1];
+    [(CRCarPlayOptionsController *)self _showCarPlayUltraConfirmation:isCarPlayUltraEnabled ^ 1];
   }
 
 LABEL_6:

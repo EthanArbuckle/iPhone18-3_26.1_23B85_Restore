@@ -1,26 +1,26 @@
 @interface CHMultiLocaleResultProcessor
-+ (id)combineMultiLocaleResults:(id)a3 locales:(id)a4 topLocaleIndex:(int64_t)a5 mergedResultPostprocessingBlock:(id)a6 changeableColumnCountBlock:(id)a7;
-+ (void)updateMultiLocaleResultDictionary:(id)a3 locales:(id)a4;
++ (id)combineMultiLocaleResults:(id)results locales:(id)locales topLocaleIndex:(int64_t)index mergedResultPostprocessingBlock:(id)block changeableColumnCountBlock:(id)countBlock;
++ (void)updateMultiLocaleResultDictionary:(id)dictionary locales:(id)locales;
 @end
 
 @implementation CHMultiLocaleResultProcessor
 
-+ (void)updateMultiLocaleResultDictionary:(id)a3 locales:(id)a4
++ (void)updateMultiLocaleResultDictionary:(id)dictionary locales:(id)locales
 {
   v92 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v82 = a4;
+  dictionaryCopy = dictionary;
+  localesCopy = locales;
   v6 = MEMORY[0x1E695DF70];
-  v12 = objc_msgSend_count(v5, v7, v8, v9, v10, v11);
+  v12 = objc_msgSend_count(dictionaryCopy, v7, v8, v9, v10, v11);
   v84 = objc_msgSend_arrayWithCapacity_(v6, v13, v12, v14, v15, v16);
   v17 = MEMORY[0x1E695DF70];
-  v23 = objc_msgSend_count(v5, v18, v19, v20, v21, v22);
+  v23 = objc_msgSend_count(dictionaryCopy, v18, v19, v20, v21, v22);
   v28 = objc_msgSend_arrayWithCapacity_(v17, v24, v23, v25, v26, v27);
   v87 = 0u;
   v88 = 0u;
   v85 = 0u;
   v86 = 0u;
-  obj = v82;
+  obj = localesCopy;
   v35 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v29, &v85, v91, 16, v30);
   if (v35)
   {
@@ -36,10 +36,10 @@
         }
 
         v38 = *(*(&v85 + 1) + 8 * v37);
-        v43 = objc_msgSend_objectForKey_(v5, v31, v38, v32, v33, v34);
+        v43 = objc_msgSend_objectForKey_(dictionaryCopy, v31, v38, v32, v33, v34);
         if (v43)
         {
-          v44 = objc_msgSend_objectForKeyedSubscript_(v5, v39, v38, v40, v41, v42);
+          v44 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v39, v38, v40, v41, v42);
           v50 = objc_msgSend_copy(v44, v45, v46, v47, v48, v49);
           objc_msgSend_addObject_(v84, v51, v50, v52, v53, v54);
 
@@ -112,35 +112,35 @@ LABEL_15:
     v68 = sub_183869B50(CHMultiLocaleResultProcessor, v84, v28, i, 0, 0);
     v73 = objc_msgSend_objectAtIndexedSubscript_(v68, v69, i, v70, v71, v72);
     v78 = objc_msgSend_objectAtIndexedSubscript_(v28, v74, i, v75, v76, v77);
-    objc_msgSend_setObject_forKeyedSubscript_(v5, v79, v73, v78, v80, v81);
+    objc_msgSend_setObject_forKeyedSubscript_(dictionaryCopy, v79, v73, v78, v80, v81);
   }
 }
 
-+ (id)combineMultiLocaleResults:(id)a3 locales:(id)a4 topLocaleIndex:(int64_t)a5 mergedResultPostprocessingBlock:(id)a6 changeableColumnCountBlock:(id)a7
++ (id)combineMultiLocaleResults:(id)results locales:(id)locales topLocaleIndex:(int64_t)index mergedResultPostprocessingBlock:(id)block changeableColumnCountBlock:(id)countBlock
 {
   v71 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v63 = a7;
+  resultsCopy = results;
+  localesCopy = locales;
+  blockCopy = block;
+  countBlockCopy = countBlock;
   v69 = 0;
   v68 = 0;
-  v61 = v11;
-  v62 = sub_183869B50(CHMultiLocaleResultProcessor, v11, v12, a5, &v69, &v68);
+  v61 = resultsCopy;
+  v62 = sub_183869B50(CHMultiLocaleResultProcessor, resultsCopy, localesCopy, index, &v69, &v68);
   v60 = v68;
   shouldPerformStrictCandidateFiltering = objc_msgSend_shouldPerformStrictCandidateFiltering_(CHRecognizerConfiguration, v14, v60, v15, v16, v17);
-  v59 = a5;
-  v23 = objc_msgSend_objectAtIndexedSubscript_(v12, v19, a5, v20, v21, v22);
+  indexCopy = index;
+  v23 = objc_msgSend_objectAtIndexedSubscript_(localesCopy, v19, index, v20, v21, v22);
   isSupportedCyrillicScriptLocale_withMode = objc_msgSend_isSupportedCyrillicScriptLocale_withMode_(CHRecognizerConfiguration, v24, v23, 4, v25, v26);
 
   v34 = objc_msgSend_tokenizedTextResultFromResults_shouldPerformStrictFiltering_doesTopLocaleRequireSpecialHandling_hasSwap_(CHTokenizedTextResult, v28, v62, shouldPerformStrictCandidateFiltering & 1, isSupportedCyrillicScriptLocale_withMode, v69);
-  if (v13 && (objc_msgSend_count(v11, v29, v30, v31, v32, v33) > 1) | isSupportedCyrillicScriptLocale_withMode & 1)
+  if (blockCopy && (objc_msgSend_count(resultsCopy, v29, v30, v31, v32, v33) > 1) | isSupportedCyrillicScriptLocale_withMode & 1)
   {
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v35 = v12;
+    v35 = localesCopy;
     v40 = objc_msgSend_countByEnumeratingWithState_objects_count_(v35, v36, &v64, v70, 16, v37);
     if (v40)
     {
@@ -159,9 +159,9 @@ LABEL_15:
             }
 
             ++v42;
-            if (v59 - 1 != v44 || v69)
+            if (indexCopy - 1 != v44 || v69)
             {
-              v45 = v13[2](v13, v44 + 1, *(*(&v64 + 1) + 8 * i), v34);
+              v45 = blockCopy[2](blockCopy, v44 + 1, *(*(&v64 + 1) + 8 * i), v34);
 
               v34 = v45;
             }
@@ -187,7 +187,7 @@ LABEL_15:
               objc_enumerationMutation(v35);
             }
 
-            v34 = v13[2](v13, ++v46, *(*(&v64 + 1) + 8 * v47), v48);
+            v34 = blockCopy[2](blockCopy, ++v46, *(*(&v64 + 1) + 8 * v47), v48);
 
             ++v47;
             v48 = v34;
@@ -202,12 +202,12 @@ LABEL_15:
     }
   }
 
-  if (v63)
+  if (countBlockCopy)
   {
     v51 = objc_msgSend_changeableTokenColumnCount(v34, v29, v30, v31, v32, v33);
     if (v51 < objc_msgSend_tokenColumnCount(v34, v52, v53, v54, v55, v56))
     {
-      v57 = v63[2](v63, v59, v60, v34);
+      v57 = countBlockCopy[2](countBlockCopy, indexCopy, v60, v34);
 
       v34 = v57;
     }

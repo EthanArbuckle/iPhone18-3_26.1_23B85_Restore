@@ -1,5 +1,5 @@
 @interface CardViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axCollapseCard;
 - (BOOL)_axExpandCard;
 - (BOOL)accessibilityPerformEscape;
@@ -12,18 +12,18 @@
 
 @implementation CardViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ContainerViewController" hasInstanceMethod:@"setLayoutIfSupported: animated:" withFullSignature:{"v", "Q", "B", 0}];
-  [v3 validateClass:@"ModalContaineeViewController" hasInstanceMethod:@"_dismissContainee" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ContaineeViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ContainerViewController" hasInstanceMethod:@"setLayoutIfSupported: animated:" withFullSignature:{"v", "Q", "B", 0}];
+  [validationsCopy validateClass:@"ModalContaineeViewController" hasInstanceMethod:@"_dismissContainee" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ContaineeViewController"];
 }
 
 - (BOOL)_axExpandCard
 {
-  v2 = [(CardViewAccessibility *)self _accessibilityContainerViewController];
-  v3 = [v2 safeIntegerForKey:@"containeeLayout"];
+  _accessibilityContainerViewController = [(CardViewAccessibility *)self _accessibilityContainerViewController];
+  v3 = [_accessibilityContainerViewController safeIntegerForKey:@"containeeLayout"];
   if (v3 == 2)
   {
     v4 = v8;
@@ -48,7 +48,7 @@
 
   v4[2] = v5;
   v4[3] = &unk_29F2CC3B0;
-  v4[4] = v2;
+  v4[4] = _accessibilityContainerViewController;
   AXPerformSafeBlock();
 
   v6 = 1;
@@ -59,8 +59,8 @@ LABEL_7:
 
 - (BOOL)_axCollapseCard
 {
-  v2 = [(CardViewAccessibility *)self _accessibilityContainerViewController];
-  v3 = [v2 safeIntegerForKey:@"containeeLayout"];
+  _accessibilityContainerViewController = [(CardViewAccessibility *)self _accessibilityContainerViewController];
+  v3 = [_accessibilityContainerViewController safeIntegerForKey:@"containeeLayout"];
   if ((v3 - 3) >= 2)
   {
     if (v3 != 2)
@@ -85,7 +85,7 @@ LABEL_7:
 
   v4[2] = v5;
   v4[3] = &unk_29F2CC3B0;
-  v4[4] = v2;
+  v4[4] = _accessibilityContainerViewController;
   AXPerformSafeBlock();
 
   v6 = 1;
@@ -100,8 +100,8 @@ LABEL_7:
   v4.super_class = CardViewAccessibility;
   [(CardViewAccessibility *)&v4 layoutSubviews];
   [(CardViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 postNotificationName:@"AXMapVisibleRegionDidChange" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:@"AXMapVisibleRegionDidChange" object:0];
 }
 
 - (id)_accessibilityContainerViewController
@@ -124,10 +124,10 @@ LABEL_7:
         }
       }
 
-      v5 = [v2 superview];
+      superview = [v2 superview];
 
-      v2 = v5;
-      if (!v5)
+      v2 = superview;
+      if (!superview)
       {
         goto LABEL_5;
       }
@@ -145,19 +145,19 @@ LABEL_5:
 
 - (id)_accessibilityContaineeViewController
 {
-  v2 = [(CardViewAccessibility *)self _accessibilityContainerViewController];
-  v3 = [v2 safeValueForKey:@"currentViewController"];
+  _accessibilityContainerViewController = [(CardViewAccessibility *)self _accessibilityContainerViewController];
+  v3 = [_accessibilityContainerViewController safeValueForKey:@"currentViewController"];
 
   return v3;
 }
 
 - (unint64_t)_accessibilityContaineeLayout
 {
-  v2 = [(CardViewAccessibility *)self _accessibilityContainerViewController];
-  v3 = v2;
-  if (v2)
+  _accessibilityContainerViewController = [(CardViewAccessibility *)self _accessibilityContainerViewController];
+  v3 = _accessibilityContainerViewController;
+  if (_accessibilityContainerViewController)
   {
-    v4 = [v2 safeIntegerForKey:@"containeeLayout"];
+    v4 = [_accessibilityContainerViewController safeIntegerForKey:@"containeeLayout"];
   }
 
   else
@@ -189,7 +189,7 @@ LABEL_5:
     return 0;
   }
 
-  v4 = [(CardViewAccessibility *)self _accessibilityContaineeViewController];
+  _accessibilityContaineeViewController = [(CardViewAccessibility *)self _accessibilityContaineeViewController];
   NSClassFromString(&cfstr_Collectioncrea.isa);
   v3 = (objc_opt_isKindOfClass() & 1) != 0 || [(CardViewAccessibility *)self _accessibilityContaineeLayout]== 3;
 

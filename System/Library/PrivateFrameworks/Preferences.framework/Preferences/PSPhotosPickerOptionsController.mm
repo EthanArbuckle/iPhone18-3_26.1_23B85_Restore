@@ -1,11 +1,11 @@
 @interface PSPhotosPickerOptionsController
-- (id)_metadataSetting:(id)a3;
+- (id)_metadataSetting:(id)setting;
 - (id)specifiers;
 - (unint64_t)_formatSetting;
-- (void)_setFormatSetting:(unint64_t)a3;
-- (void)_setMetadataSetting:(id)a3 specifier:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_setFormatSetting:(unint64_t)setting;
+- (void)_setMetadataSetting:(id)setting specifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -18,13 +18,13 @@
   [(PSListController *)&v2 viewDidLoad];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = PSPhotosPickerOptionsController;
-  v4 = a3;
-  [(PSListController *)&v7 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"appBundleID", v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(PSListController *)&v7 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"appBundleID", v7.receiver, v7.super_class}];
 
   clientIdentifier = self->_clientIdentifier;
   self->_clientIdentifier = v5;
@@ -32,27 +32,27 @@
 
 - (id)specifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->super._specifiers)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->super._specifiers)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v4 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_PICKER_OPTIONS_METADATA_TITLE");
     v5 = [PSSpecifier groupSpecifierWithName:v4];
 
     [v5 setIdentifier:@"metadataGroupID"];
     [v5 setProperty:@"metadataGroupID" forKey:@"id"];
-    [v3 addObject:v5];
+    [array addObject:v5];
     v6 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_PICKER_OPTIONS_METADATA_LOCATION");
-    v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:v2 set:sel__setMetadataSetting_specifier_ get:sel__metadataSetting_ detail:0 cell:6 edit:0];
+    v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:selfCopy set:sel__setMetadataSetting_specifier_ get:sel__metadataSetting_ detail:0 cell:6 edit:0];
 
     [v7 setProperty:@"pickerShouldStripLocation" forKey:@"pickerOptionsPropertyKey"];
-    [v3 addObject:v7];
+    [array addObject:v7];
     v8 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_PICKER_OPTIONS_METADATA_CAPTION");
-    v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:v2 set:sel__setMetadataSetting_specifier_ get:sel__metadataSetting_ detail:0 cell:6 edit:0];
+    v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:selfCopy set:sel__setMetadataSetting_specifier_ get:sel__metadataSetting_ detail:0 cell:6 edit:0];
 
     [v9 setProperty:@"pickerShouldStripCaption" forKey:@"pickerOptionsPropertyKey"];
-    [v3 addObject:v9];
+    [array addObject:v9];
     v10 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_PICKER_OPTIONS_FORMAT_TITLE");
     v11 = [PSSpecifier groupSpecifierWithName:v10];
 
@@ -62,38 +62,38 @@
     v12 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_PICKER_OPTIONS_FORMAT_FOOTER");
     [v11 setProperty:v12 forKey:@"footerText"];
 
-    [v3 addObject:v11];
+    [array addObject:v11];
     v13 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_PICKER_OPTIONS_FORMAT_AUTOMATIC");
-    v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+    v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
     [v14 setIdentifier:@"PhotosPickerFormatOptionAutomatic"];
     [v14 setProperty:&unk_1EFE65A60 forKey:@"pickerFormatOptionPropertyKey"];
-    [v3 addObject:v14];
+    [array addObject:v14];
     v15 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_PICKER_OPTIONS_FORMAT_CURRENT");
-    v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+    v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
     [v16 setIdentifier:@"PhotosPickerFormatOptionCurrent"];
     [v16 setProperty:&unk_1EFE65A78 forKey:@"pickerFormatOptionPropertyKey"];
-    [v3 addObject:v16];
+    [array addObject:v16];
     v17 = PS_LocalizedStringForSystemPolicy(@"PHOTOS_PICKER_OPTIONS_FORMAT_COMPATIBLE");
-    v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+    v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
     [v18 setIdentifier:@"PhotosPickerFormatOptionCompatible"];
     [v18 setProperty:&unk_1EFE65A90 forKey:@"pickerFormatOptionPropertyKey"];
-    [v3 addObject:v18];
-    v19 = [(PSPhotosPickerOptionsController *)v2 _formatSetting];
+    [array addObject:v18];
+    _formatSetting = [(PSPhotosPickerOptionsController *)selfCopy _formatSetting];
     v20 = v14;
-    if (v19)
+    if (_formatSetting)
     {
       v20 = v16;
-      if (v19 != 1)
+      if (_formatSetting != 1)
       {
-        if (v19 != 2)
+        if (_formatSetting != 2)
         {
 LABEL_7:
-          v21 = [v3 copy];
-          specifiers = v2->super._specifiers;
-          v2->super._specifiers = v21;
+          v21 = [array copy];
+          specifiers = selfCopy->super._specifiers;
+          selfCopy->super._specifiers = v21;
 
           goto LABEL_8;
         }
@@ -107,18 +107,18 @@ LABEL_7:
   }
 
 LABEL_8:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v23 = v2->super._specifiers;
+  v23 = selfCopy->super._specifiers;
 
   return v23;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [(PSListController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = [(PSListController *)self indexForIndexPath:pathCopy];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -126,14 +126,14 @@ LABEL_8:
   }
 
   v15 = [(PSListController *)self specifierAtIndex:v7];
-  v8 = [v15 identifier];
-  if (([v8 isEqualToString:@"PhotosPickerFormatOptionAutomatic"] & 1) == 0)
+  identifier = [v15 identifier];
+  if (([identifier isEqualToString:@"PhotosPickerFormatOptionAutomatic"] & 1) == 0)
   {
-    v9 = [v15 identifier];
-    if (![v9 isEqualToString:@"PhotosPickerFormatOptionCurrent"])
+    identifier2 = [v15 identifier];
+    if (![identifier2 isEqualToString:@"PhotosPickerFormatOptionCurrent"])
     {
-      v13 = [v15 identifier];
-      v14 = [v13 isEqualToString:@"PhotosPickerFormatOptionCompatible"];
+      identifier3 = [v15 identifier];
+      v14 = [identifier3 isEqualToString:@"PhotosPickerFormatOptionCompatible"];
 
       if ((v14 & 1) == 0)
       {
@@ -146,9 +146,9 @@ LABEL_8:
 
 LABEL_6:
   v10 = [v15 propertyForKey:@"pickerFormatOptionPropertyKey"];
-  v11 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  [(PSPhotosPickerOptionsController *)self _setFormatSetting:v11];
+  [(PSPhotosPickerOptionsController *)self _setFormatSetting:unsignedIntegerValue];
   v12 = [(PSListController *)self specifierForID:@"formatGroupID"];
   [v12 setProperty:v15 forKey:@"radioGroupCheckedSpecifier"];
   [(PSListController *)self reloadSpecifier:v12 animated:1];
@@ -156,11 +156,11 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_setMetadataSetting:(id)a3 specifier:(id)a4
+- (void)_setMetadataSetting:(id)setting specifier:(id)specifier
 {
   v6 = MEMORY[0x1E695E000];
-  v7 = a4;
-  v8 = a3;
+  specifierCopy = specifier;
+  settingCopy = setting;
   v22 = [[v6 alloc] initWithSuiteName:@"com.apple.photos.picker"];
   v9 = [v22 dictionaryForKey:@"metadata"];
   v10 = v9;
@@ -181,45 +181,45 @@ LABEL_7:
 
   v15 = [v13 mutableCopy];
 
-  v16 = [v7 propertyForKey:@"pickerOptionsPropertyKey"];
+  v16 = [specifierCopy propertyForKey:@"pickerOptionsPropertyKey"];
 
   v17 = MEMORY[0x1E696AD98];
-  v18 = [v8 BOOLValue];
+  bOOLValue = [settingCopy BOOLValue];
 
-  v19 = [v17 numberWithInt:v18 ^ 1u];
+  v19 = [v17 numberWithInt:bOOLValue ^ 1u];
   [v15 setObject:v19 forKeyedSubscript:v16];
 
   [v12 setObject:v15 forKeyedSubscript:self->_clientIdentifier];
   [v22 setObject:v12 forKey:@"metadata"];
-  v20 = [(PSViewController *)self parentController];
+  parentController = [(PSViewController *)self parentController];
   objc_opt_class();
   LOBYTE(v19) = objc_opt_isKindOfClass();
 
   if (v19)
   {
-    v21 = [(PSViewController *)self parentController];
-    [v21 reloadSpecifiers];
+    parentController2 = [(PSViewController *)self parentController];
+    [parentController2 reloadSpecifiers];
   }
 }
 
-- (id)_metadataSetting:(id)a3
+- (id)_metadataSetting:(id)setting
 {
   v4 = MEMORY[0x1E695E000];
-  v5 = a3;
+  settingCopy = setting;
   v6 = [[v4 alloc] initWithSuiteName:@"com.apple.photos.picker"];
   v7 = [v6 dictionaryForKey:@"metadata"];
   v8 = [v7 objectForKeyedSubscript:self->_clientIdentifier];
-  v9 = [v5 propertyForKey:@"pickerOptionsPropertyKey"];
+  v9 = [settingCopy propertyForKey:@"pickerOptionsPropertyKey"];
 
   v10 = [v8 objectForKeyedSubscript:v9];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [MEMORY[0x1E696AD98] numberWithInt:v11 ^ 1u];
+  v12 = [MEMORY[0x1E696AD98] numberWithInt:bOOLValue ^ 1u];
 
   return v12;
 }
 
-- (void)_setFormatSetting:(unint64_t)a3
+- (void)_setFormatSetting:(unint64_t)setting
 {
   v9 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.photos.picker"];
   v5 = [v9 dictionaryForKey:@"format"];
@@ -231,7 +231,7 @@ LABEL_7:
 
   v7 = [v5 mutableCopy];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:setting];
   [v7 setObject:v8 forKeyedSubscript:self->_clientIdentifier];
 
   [v9 setObject:v7 forKey:@"format"];
@@ -242,16 +242,16 @@ LABEL_7:
   v3 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.photos.picker"];
   v4 = [v3 dictionaryForKey:@"format"];
   v5 = [v4 objectForKeyedSubscript:self->_clientIdentifier];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (v6 >= 3)
+  if (unsignedIntegerValue >= 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v6;
+    v7 = unsignedIntegerValue;
   }
 
   return v7;

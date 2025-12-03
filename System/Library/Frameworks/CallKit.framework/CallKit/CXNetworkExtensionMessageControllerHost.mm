@@ -1,11 +1,11 @@
 @interface CXNetworkExtensionMessageControllerHost
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CXNetworkExtensionMessageControllerHost)init;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)networkExtensionMessageControllerHostConnection:(id)a3 didReceiveIncomingMessage:(id)a4 forBundleIdentifier:(id)a5;
-- (void)networkExtensionMessageControllerHostConnection:(id)a3 didReceiveIncomingPushToTalkMessage:(id)a4 forBundleIdentifier:(id)a5;
-- (void)networkExtensionMessageControllerHostConnectionInvalidated:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)networkExtensionMessageControllerHostConnection:(id)connection didReceiveIncomingMessage:(id)message forBundleIdentifier:(id)identifier;
+- (void)networkExtensionMessageControllerHostConnection:(id)connection didReceiveIncomingPushToTalkMessage:(id)message forBundleIdentifier:(id)identifier;
+- (void)networkExtensionMessageControllerHostConnectionInvalidated:(id)invalidated;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation CXNetworkExtensionMessageControllerHost
@@ -23,9 +23,9 @@
     connections = v3->_connections;
     v3->_connections = v4;
 
-    v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     delegateToQueue = v3->_delegateToQueue;
-    v3->_delegateToQueue = v6;
+    v3->_delegateToQueue = weakToStrongObjectsMapTable;
 
     v8 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:@"com.apple.callkit.networkextension.messagecontrollerhost"];
     xpcListener = v3->_xpcListener;
@@ -38,15 +38,15 @@
   return v3;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v9 = a4;
-  v6 = a3;
+  queueCopy = queue;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_accessorLock);
-  v7 = [(CXNetworkExtensionMessageControllerHost *)self delegateToQueue];
-  if (v9)
+  delegateToQueue = [(CXNetworkExtensionMessageControllerHost *)self delegateToQueue];
+  if (queueCopy)
   {
-    v8 = v9;
+    v8 = queueCopy;
   }
 
   else
@@ -54,36 +54,36 @@
     v8 = MEMORY[0x1E69E96A0];
   }
 
-  [v7 setObject:v8 forKey:v6];
+  [delegateToQueue setObject:v8 forKey:delegateCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(CXNetworkExtensionMessageControllerHost *)self delegateToQueue];
-  [v5 removeObjectForKey:v4];
+  delegateToQueue = [(CXNetworkExtensionMessageControllerHost *)self delegateToQueue];
+  [delegateToQueue removeObjectForKey:delegateCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)networkExtensionMessageControllerHostConnectionInvalidated:(id)a3
+- (void)networkExtensionMessageControllerHostConnectionInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(CXNetworkExtensionMessageControllerHost *)self connections];
-  [v5 removeObject:v4];
+  connections = [(CXNetworkExtensionMessageControllerHost *)self connections];
+  [connections removeObject:invalidatedCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)networkExtensionMessageControllerHostConnection:(id)a3 didReceiveIncomingMessage:(id)a4 forBundleIdentifier:(id)a5
+- (void)networkExtensionMessageControllerHostConnection:(id)connection didReceiveIncomingMessage:(id)message forBundleIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
   v23 = 0u;
   v24 = 0u;
@@ -106,8 +106,8 @@
         }
 
         v13 = *(*(&v21 + 1) + 8 * v12);
-        v14 = [(CXNetworkExtensionMessageControllerHost *)self delegateToQueue];
-        v15 = [v14 objectForKey:v13];
+        delegateToQueue = [(CXNetworkExtensionMessageControllerHost *)self delegateToQueue];
+        v15 = [delegateToQueue objectForKey:v13];
 
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
@@ -115,8 +115,8 @@
         block[3] = &unk_1E7C06F98;
         block[4] = v13;
         block[5] = self;
-        v19 = v7;
-        v20 = v8;
+        v19 = messageCopy;
+        v20 = identifierCopy;
         dispatch_async(v15, block);
 
         ++v12;
@@ -133,11 +133,11 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)networkExtensionMessageControllerHostConnection:(id)a3 didReceiveIncomingPushToTalkMessage:(id)a4 forBundleIdentifier:(id)a5
+- (void)networkExtensionMessageControllerHostConnection:(id)connection didReceiveIncomingPushToTalkMessage:(id)message forBundleIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
   v23 = 0u;
   v24 = 0u;
@@ -160,8 +160,8 @@
         }
 
         v13 = *(*(&v21 + 1) + 8 * v12);
-        v14 = [(CXNetworkExtensionMessageControllerHost *)self delegateToQueue];
-        v15 = [v14 objectForKey:v13];
+        delegateToQueue = [(CXNetworkExtensionMessageControllerHost *)self delegateToQueue];
+        v15 = [delegateToQueue objectForKey:v13];
 
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
@@ -169,8 +169,8 @@
         block[3] = &unk_1E7C06F98;
         block[4] = v13;
         block[5] = self;
-        v19 = v7;
-        v20 = v8;
+        v19 = messageCopy;
+        v20 = identifierCopy;
         dispatch_async(v15, block);
 
         ++v12;
@@ -187,23 +187,23 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = CXDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = connectionCopy;
     _os_log_impl(&dword_1B47F3000, v6, OS_LOG_TYPE_DEFAULT, "Asked to accept new connection from %@", &v11, 0xCu);
   }
 
-  v7 = [[CXNetworkExtensionMessageControllerHostConnection alloc] initWithConnection:v5];
+  v7 = [[CXNetworkExtensionMessageControllerHostConnection alloc] initWithConnection:connectionCopy];
   [(CXNetworkExtensionMessageControllerHostConnection *)v7 setDelegate:self];
   os_unfair_lock_lock(&self->_accessorLock);
-  v8 = [(CXNetworkExtensionMessageControllerHost *)self connections];
-  [v8 addObject:v7];
+  connections = [(CXNetworkExtensionMessageControllerHost *)self connections];
+  [connections addObject:v7];
 
   os_unfair_lock_unlock(&self->_accessorLock);
   v9 = *MEMORY[0x1E69E9840];

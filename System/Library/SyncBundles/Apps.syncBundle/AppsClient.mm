@@ -1,179 +1,179 @@
 @interface AppsClient
-+ (BOOL)_makeIconFromBundlePath:(id)a3 saveTo:(id)a4;
-+ (id)_loadDemotedAppsPlist:(id)a3 withError:(id *)a4;
-+ (id)_loadPlist:(id)a3 withError:(id *)a4;
-+ (id)_orderTheItems:(id)a3;
-+ (void)_notifySpringBoard:(BOOL)a3;
++ (BOOL)_makeIconFromBundlePath:(id)path saveTo:(id)to;
++ (id)_loadDemotedAppsPlist:(id)plist withError:(id *)error;
++ (id)_loadPlist:(id)plist withError:(id *)error;
++ (id)_orderTheItems:(id)items;
++ (void)_notifySpringBoard:(BOOL)board;
 - (AppsClient)init;
 - (BOOL)_isATCDaemon;
-- (BOOL)_isRecoverableError:(id)a3;
-- (BOOL)_prepareDemotedAppForRestoreWithBundleId:(id)a3 iTunesMetadata:(id)a4 sinfData:(id)a5 iconData:(id)a6 demotionStatus:(unint64_t)a7;
-- (BOOL)_prepareNonDemotedAppForRestoreWithBundleId:(id)a3 iTunesMetadata:(id)a4 sinfData:(id)a5 iconData:(id)a6;
+- (BOOL)_isRecoverableError:(id)error;
+- (BOOL)_prepareDemotedAppForRestoreWithBundleId:(id)id iTunesMetadata:(id)metadata sinfData:(id)data iconData:(id)iconData demotionStatus:(unint64_t)status;
+- (BOOL)_prepareNonDemotedAppForRestoreWithBundleId:(id)id iTunesMetadata:(id)metadata sinfData:(id)data iconData:(id)iconData;
 - (BOOL)_processItunesRestoreInfo;
-- (BOOL)createPlaceHolderPath:(id)a3 forBundleIdentifier:(id)a4 withAttributes:(id)a5;
-- (BOOL)prepareAppForRestoreUsingCoordination:(id)a3 iTunesMetadata:(id)a4 sinfData:(id)a5 iconData:(id)a6 demotionStatus:(unint64_t)a7;
-- (BOOL)reconcileRestoreOfType:(int)a3 withError:(id *)a4;
-- (BOOL)writeIconData:(id)a3 atPath:(id)a4 returningFileSize:(unint64_t *)a5 forBundleIdentifier:(id)a6 withAttributes:(id)a7;
-- (id)_createAppAssetPromiseForBundleIdentifier:(id)a3 atPath:(id)a4 andAddToCoordinatinator:(id)a5;
-- (id)_createIconPromiseForBundleIdentifier:(id)a3 transferPath:(id)a4 diskSpaceNeeded:(unint64_t)a5 andAddToPlaceHolder:(id)a6 forAppInstall:(BOOL)a7;
+- (BOOL)createPlaceHolderPath:(id)path forBundleIdentifier:(id)identifier withAttributes:(id)attributes;
+- (BOOL)prepareAppForRestoreUsingCoordination:(id)coordination iTunesMetadata:(id)metadata sinfData:(id)data iconData:(id)iconData demotionStatus:(unint64_t)status;
+- (BOOL)reconcileRestoreOfType:(int)type withError:(id *)error;
+- (BOOL)writeIconData:(id)data atPath:(id)path returningFileSize:(unint64_t *)size forBundleIdentifier:(id)identifier withAttributes:(id)attributes;
+- (id)_createAppAssetPromiseForBundleIdentifier:(id)identifier atPath:(id)path andAddToCoordinatinator:(id)coordinatinator;
+- (id)_createIconPromiseForBundleIdentifier:(id)identifier transferPath:(id)path diskSpaceNeeded:(unint64_t)needed andAddToPlaceHolder:(id)holder forAppInstall:(BOOL)install;
 - (id)_getSystemAppPlaceholders;
-- (id)_operationStateForIdentifier:(id)a3;
-- (id)_placeHolderForBundleIdentifier:(id)a3 name:(id)a4 installType:(unint64_t)a5;
-- (id)_placeHolderForBundleIdentifier:(id)a3 withiTunesMetadata:(id)a4 sinfData:(id)a5 iconData:(id)a6 demotionStatus:(unint64_t)a7;
-- (id)_progressForAssetIdentifier:(id)a3;
-- (id)_restoreStatePropertyForKey:(id)a3 identifier:(id)a4 version:(id)a5;
-- (id)_userDataPromiseForBundleIdentifier:(id)a3;
+- (id)_operationStateForIdentifier:(id)identifier;
+- (id)_placeHolderForBundleIdentifier:(id)identifier name:(id)name installType:(unint64_t)type;
+- (id)_placeHolderForBundleIdentifier:(id)identifier withiTunesMetadata:(id)metadata sinfData:(id)data iconData:(id)iconData demotionStatus:(unint64_t)status;
+- (id)_progressForAssetIdentifier:(id)identifier;
+- (id)_restoreStatePropertyForKey:(id)key identifier:(id)identifier version:(id)version;
+- (id)_userDataPromiseForBundleIdentifier:(id)identifier;
 - (id)accountsForAssets;
 - (id)appleIDsForAssets;
 - (id)disabledAssetTypes;
 - (id)installedAssetMetrics;
 - (id)installedAssets;
 - (id)outstandingAssetTransfers;
-- (id)placeholderAppPathForBundleIdentifier:(id)a3;
+- (id)placeholderAppPathForBundleIdentifier:(id)identifier;
 - (int)_getAndResetNumAppInstallsAttempted;
-- (void)_enumeratePlaceholdersWithBlock:(id)a3;
-- (void)_setRestoreStatePropertyValue:(id)a3 forKey:(id)a4 identifier:(id)a5 version:(id)a6;
-- (void)assetInstallFailed:(id)a3 withError:(id)a4;
-- (void)assetInstallSucceeded:(id)a3;
-- (void)assetSyncFinishedWithStatus:(BOOL)a3 outstandingItems:(id)a4;
-- (void)assetTransfer:(id)a3 succeeded:(BOOL)a4 withError:(id)a5;
-- (void)assetTransfer:(id)a3 updatedProgress:(double)a4;
-- (void)changeAssetID:(id)a3 toDo:(id)a4;
-- (void)cleanRestoreStateForIdentifier:(id)a3;
+- (void)_enumeratePlaceholdersWithBlock:(id)block;
+- (void)_setRestoreStatePropertyValue:(id)value forKey:(id)key identifier:(id)identifier version:(id)version;
+- (void)assetInstallFailed:(id)failed withError:(id)error;
+- (void)assetInstallSucceeded:(id)succeeded;
+- (void)assetSyncFinishedWithStatus:(BOOL)status outstandingItems:(id)items;
+- (void)assetTransfer:(id)transfer succeeded:(BOOL)succeeded withError:(id)error;
+- (void)assetTransfer:(id)transfer updatedProgress:(double)progress;
+- (void)changeAssetID:(id)d toDo:(id)do;
+- (void)cleanRestoreStateForIdentifier:(id)identifier;
 - (void)clearSyncData;
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5;
-- (void)coordinatorDidCompleteSuccessfully:(id)a3;
-- (void)coordinatorDidInstallPlaceholder:(id)a3;
-- (void)coordinatorShouldPrioritize:(id)a3;
-- (void)dataMigratorCancelledCoordinatorForRestoreAppBundle:(id)a3;
-- (void)dataMigratorSetPlaceHolderPromiseForRestoreAppBundle:(id)a3;
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client;
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully;
+- (void)coordinatorDidInstallPlaceholder:(id)placeholder;
+- (void)coordinatorShouldPrioritize:(id)prioritize;
+- (void)dataMigratorCancelledCoordinatorForRestoreAppBundle:(id)bundle;
+- (void)dataMigratorSetPlaceHolderPromiseForRestoreAppBundle:(id)bundle;
 - (void)dealloc;
-- (void)icDidInstallPlaceHolderForAppBundle:(id)a3;
+- (void)icDidInstallPlaceHolderForAppBundle:(id)bundle;
 - (void)prepareForBackup;
-- (void)promiseDidBeginFulfillmentWithIdentifier:(unint64_t)a3;
+- (void)promiseDidBeginFulfillmentWithIdentifier:(unint64_t)identifier;
 - (void)setupInstallCoordinatorObserver;
-- (void)syncEndedWithSuccess:(BOOL)a3;
-- (void)uninstallAppUsingCoordination:(id)a3;
+- (void)syncEndedWithSuccess:(BOOL)success;
+- (void)uninstallAppUsingCoordination:(id)coordination;
 @end
 
 @implementation AppsClient
 
-- (void)promiseDidBeginFulfillmentWithIdentifier:(unint64_t)a3
+- (void)promiseDidBeginFulfillmentWithIdentifier:(unint64_t)identifier
 {
   v4 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = a3;
+    identifierCopy = identifier;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "promiseDidBeginFulfillmentWithIdentifier %lu", &v5, 0xCu);
   }
 }
 
-- (void)coordinatorDidInstallPlaceholder:(id)a3
+- (void)coordinatorDidInstallPlaceholder:(id)placeholder
 {
-  v4 = a3;
+  placeholderCopy = placeholder;
   v5 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 bundleID];
-    v7 = [v4 error];
+    bundleID = [placeholderCopy bundleID];
+    error = [placeholderCopy error];
     v9 = 138543618;
-    v10 = v6;
+    v10 = bundleID;
     v11 = 2114;
-    v12 = v7;
+    v12 = error;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "coordinatorDidInstallPlaceholder for %{public}@ with error %{public}@", &v9, 0x16u);
   }
 
-  v8 = [v4 bundleID];
-  [(AppsClient *)self icDidInstallPlaceHolderForAppBundle:v8];
+  bundleID2 = [placeholderCopy bundleID];
+  [(AppsClient *)self icDidInstallPlaceHolderForAppBundle:bundleID2];
 }
 
-- (void)coordinatorDidCompleteSuccessfully:(id)a3
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully
 {
-  v4 = a3;
+  successfullyCopy = successfully;
   v5 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 bundleID];
-    v7 = [v4 error];
+    bundleID = [successfullyCopy bundleID];
+    error = [successfullyCopy error];
     v13 = 138543618;
-    v14 = v6;
+    v14 = bundleID;
     v15 = 2114;
-    v16 = v7;
+    v16 = error;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "coordinatorDidCompleteSuccessfully for %{public}@ with error %{public}@", &v13, 0x16u);
   }
 
-  v8 = [v4 error];
+  error2 = [successfullyCopy error];
   v9 = @"FAILED";
-  if (!v8)
+  if (!error2)
   {
     v9 = @"INSTALLED";
   }
 
   v10 = v9;
 
-  v11 = [v4 bundleID];
-  [(AppsClient *)self changeAssetID:v11 toDo:v10];
+  bundleID2 = [successfullyCopy bundleID];
+  [(AppsClient *)self changeAssetID:bundleID2 toDo:v10];
 
-  v12 = [v4 bundleID];
-  [(AppsClient *)self cleanRestoreStateForIdentifier:v12];
+  bundleID3 = [successfullyCopy bundleID];
+  [(AppsClient *)self cleanRestoreStateForIdentifier:bundleID3];
 }
 
-- (void)uninstallAppUsingCoordination:(id)a3
+- (void)uninstallAppUsingCoordination:(id)coordination
 {
-  v3 = a3;
-  [AITransactionLog logStep:7 byParty:1 phase:1 success:1 forBundleID:v3 description:@"Uninstall app"];
+  coordinationCopy = coordination;
+  [AITransactionLog logStep:7 byParty:1 phase:1 success:1 forBundleID:coordinationCopy description:@"Uninstall app"];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_232C;
   v5[3] = &unk_18438;
-  v6 = v3;
-  v4 = v3;
+  v6 = coordinationCopy;
+  v4 = coordinationCopy;
   [IXAppInstallCoordinator uninstallAppWithBundleID:v4 requestUserConfirmation:0 completion:v5];
 }
 
-- (BOOL)prepareAppForRestoreUsingCoordination:(id)a3 iTunesMetadata:(id)a4 sinfData:(id)a5 iconData:(id)a6 demotionStatus:(unint64_t)a7
+- (BOOL)prepareAppForRestoreUsingCoordination:(id)coordination iTunesMetadata:(id)metadata sinfData:(id)data iconData:(id)iconData demotionStatus:(unint64_t)status
 {
-  if (a7)
+  if (status)
   {
-    return [(AppsClient *)self _prepareDemotedAppForRestoreWithBundleId:a3 iTunesMetadata:a4 sinfData:a5 iconData:a6 demotionStatus:?];
+    return [(AppsClient *)self _prepareDemotedAppForRestoreWithBundleId:coordination iTunesMetadata:metadata sinfData:data iconData:iconData demotionStatus:?];
   }
 
   else
   {
-    return [(AppsClient *)self _prepareNonDemotedAppForRestoreWithBundleId:a3 iTunesMetadata:a4 sinfData:a5 iconData:a6];
+    return [(AppsClient *)self _prepareNonDemotedAppForRestoreWithBundleId:coordination iTunesMetadata:metadata sinfData:data iconData:iconData];
   }
 }
 
-- (BOOL)_prepareDemotedAppForRestoreWithBundleId:(id)a3 iTunesMetadata:(id)a4 sinfData:(id)a5 iconData:(id)a6 demotionStatus:(unint64_t)a7
+- (BOOL)_prepareDemotedAppForRestoreWithBundleId:(id)id iTunesMetadata:(id)metadata sinfData:(id)data iconData:(id)iconData demotionStatus:(unint64_t)status
 {
-  v12 = a3;
-  v13 = a5;
-  v36 = a6;
+  idCopy = id;
+  dataCopy = data;
+  iconDataCopy = iconData;
   v41 = 0;
-  v14 = a4;
+  metadataCopy = metadata;
   v15 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v43 = v12;
+    v43 = idCopy;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "processing app restore for demoted bundle '%{public}@' with install coordination", buf, 0xCu);
   }
 
-  [AITransactionLog logStep:2 byParty:1 phase:1 success:1 forBundleID:v12 description:@"Restore demoted app"];
+  [AITransactionLog logStep:2 byParty:1 phase:1 success:1 forBundleID:idCopy description:@"Restore demoted app"];
   v40 = 0;
-  v16 = [NSPropertyListSerialization propertyListWithData:v14 options:0 format:0 error:&v40];
+  v16 = [NSPropertyListSerialization propertyListWithData:metadataCopy options:0 format:0 error:&v40];
 
   v17 = v40;
-  v34 = self;
-  v35 = v13;
+  selfCopy = self;
+  v35 = dataCopy;
   if (!v16)
   {
     v20 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v43 = v12;
+      v43 = idCopy;
       v44 = 2114;
       v45[0] = v17;
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_ERROR, "failed to parse itunes metadata for '%{public}@'. err=%{public}@", buf, 0x16u);
@@ -186,7 +186,7 @@
   }
 
   v39 = v17;
-  v18 = [IXRestoringDemotedAppInstallCoordinator coordinatorForAppWithBundleID:v12 withClientID:3 createIfNotExisting:1 created:&v41 error:&v39];
+  v18 = [IXRestoringDemotedAppInstallCoordinator coordinatorForAppWithBundleID:idCopy withClientID:3 createIfNotExisting:1 created:&v41 error:&v39];
   v19 = v39;
 
   if (!v18)
@@ -197,7 +197,7 @@
       *buf = 138543618;
       v43 = v19;
       v44 = 2114;
-      v45[0] = v12;
+      v45[0] = idCopy;
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_ERROR, "Error %{public}@ creating restore coordinator for %{public}@", buf, 0x16u);
     }
 
@@ -216,7 +216,7 @@
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v43 = v12;
+      v43 = idCopy;
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Coordinator for %{public}@ has a valid user data promise", buf, 0xCu);
     }
 
@@ -228,7 +228,7 @@ LABEL_9:
     goto LABEL_21;
   }
 
-  v21 = [(AppsClient *)self _userDataPromiseForBundleIdentifier:v12];
+  v21 = [(AppsClient *)self _userDataPromiseForBundleIdentifier:idCopy];
   if (v21)
   {
     v38 = v19;
@@ -242,7 +242,7 @@ LABEL_9:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v43 = v12;
+        v43 = idCopy;
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Added out of band user data promise for for %{public}@", buf, 0xCu);
       }
 
@@ -254,7 +254,7 @@ LABEL_9:
       *buf = 138543618;
       v43 = v17;
       v44 = 2114;
-      v45[0] = v12;
+      v45[0] = idCopy;
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_ERROR, "Error %{public}@ adding out of band data promise for '%{public}@'", buf, 0x16u);
     }
 
@@ -275,7 +275,7 @@ LABEL_21:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v43 = v12;
+      v43 = idCopy;
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Coordinator for %{public}@ has a valid placeholder promise", buf, 0xCu);
     }
 
@@ -287,7 +287,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v22 = [(AppsClient *)v34 _placeHolderForBundleIdentifier:v12 withiTunesMetadata:v16 sinfData:v13 iconData:v36 demotionStatus:a7];
+  v22 = [(AppsClient *)selfCopy _placeHolderForBundleIdentifier:idCopy withiTunesMetadata:v16 sinfData:dataCopy iconData:iconDataCopy demotionStatus:status];
   if (v22)
   {
     v37 = v19;
@@ -296,12 +296,12 @@ LABEL_25:
 
     if (v33)
     {
-      [(AppsClient *)v34 dataMigratorSetPlaceHolderPromiseForRestoreAppBundle:v12];
+      [(AppsClient *)selfCopy dataMigratorSetPlaceHolderPromiseForRestoreAppBundle:idCopy];
       v20 = _ATLogCategorySyncBundle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v43 = v12;
+        v43 = idCopy;
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "added placeholder promise for %{public}@", buf, 0xCu);
       }
 
@@ -316,7 +316,7 @@ LABEL_25:
       *buf = 138543618;
       v43 = v17;
       v44 = 2114;
-      v45[0] = v12;
+      v45[0] = idCopy;
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_ERROR, "Error %{public}@ setting placeholder promise for '%{public}@'", buf, 0x16u);
     }
 
@@ -330,7 +330,7 @@ LABEL_27:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v43 = v12;
+    v43 = idCopy;
     v44 = 1024;
     LODWORD(v45[0]) = v24;
     WORD2(v45[0]) = 2114;
@@ -338,7 +338,7 @@ LABEL_27:
     _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "processing app restore for demoted app %{public}@ finished with status %d error %{public}@", buf, 0x1Cu);
   }
 
-  [AITransactionLog logStep:2 byParty:1 phase:2 success:v24 forBundleID:v12 description:@"Restore demoted app"];
+  [AITransactionLog logStep:2 byParty:1 phase:2 success:v24 forBundleID:idCopy description:@"Restore demoted app"];
   if (!v24)
   {
     v28 = [NSError errorWithDomain:@"ATError" code:29 userInfo:0];
@@ -348,7 +348,7 @@ LABEL_27:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v43 = v12;
+        v43 = idCopy;
         _os_log_impl(&dword_0, v29, OS_LOG_TYPE_DEFAULT, "Cancelling coordinator for appBundleIdentifier:%{public}@", buf, 0xCu);
       }
 
@@ -371,49 +371,49 @@ LABEL_27:
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v43 = v12;
+        v43 = idCopy;
         _os_log_impl(&dword_0, v31, OS_LOG_TYPE_DEFAULT, "Cancelling placeholder for appBundleIdentifier:%{public}@", buf, 0xCu);
       }
 
       [v22 cancelForReason:v28 client:3 error:0];
     }
 
-    [(AppsClient *)v34 dataMigratorCancelledCoordinatorForRestoreAppBundle:v12, v34];
+    [(AppsClient *)selfCopy dataMigratorCancelledCoordinatorForRestoreAppBundle:idCopy, selfCopy];
   }
 
   return v24;
 }
 
-- (BOOL)_prepareNonDemotedAppForRestoreWithBundleId:(id)a3 iTunesMetadata:(id)a4 sinfData:(id)a5 iconData:(id)a6
+- (BOOL)_prepareNonDemotedAppForRestoreWithBundleId:(id)id iTunesMetadata:(id)metadata sinfData:(id)data iconData:(id)iconData
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  idCopy = id;
+  dataCopy = data;
+  iconDataCopy = iconData;
   v47 = 0;
-  v13 = a4;
+  metadataCopy = metadata;
   v14 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v49 = v10;
+    v49 = idCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "processing app restore for non demoted bundle '%{public}@' with install coordination", buf, 0xCu);
   }
 
-  [AITransactionLog logStep:2 byParty:1 phase:1 success:1 forBundleID:v10 description:@"Restore app"];
+  [AITransactionLog logStep:2 byParty:1 phase:1 success:1 forBundleID:idCopy description:@"Restore app"];
   v46 = 0;
-  v15 = [NSPropertyListSerialization propertyListWithData:v13 options:0 format:0 error:&v46];
+  v15 = [NSPropertyListSerialization propertyListWithData:metadataCopy options:0 format:0 error:&v46];
 
   v16 = v46;
-  v41 = v12;
+  v41 = iconDataCopy;
   if (!v15)
   {
-    v39 = self;
-    v40 = v11;
+    selfCopy3 = self;
+    v40 = dataCopy;
     v23 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v49 = v10;
+      v49 = idCopy;
       v50 = 2114;
       v51[0] = v16;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_ERROR, "failed to parse itunes metadata for '%{public}@'. err=%{public}@", buf, 0x16u);
@@ -426,20 +426,20 @@ LABEL_27:
   }
 
   v45 = v16;
-  v17 = [IXRestoringAppInstallCoordinator coordinatorForAppWithBundleID:v10 withClientID:3 createIfNotExisting:1 created:&v47 error:&v45];
+  v17 = [IXRestoringAppInstallCoordinator coordinatorForAppWithBundleID:idCopy withClientID:3 createIfNotExisting:1 created:&v47 error:&v45];
   v18 = v45;
 
   if (!v17)
   {
-    v39 = self;
-    v40 = v11;
+    selfCopy3 = self;
+    v40 = dataCopy;
     v23 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       v49 = v18;
       v50 = 2114;
-      v51[0] = v10;
+      v51[0] = idCopy;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_ERROR, "Error %{public}@ creating restore coordinator for %{public}@", buf, 0x16u);
     }
 
@@ -447,7 +447,7 @@ LABEL_27:
     v17 = 0;
     v22 = 0;
     v24 = 0;
-    v25 = 1;
+    hasPlaceholderPromise = 1;
     v16 = v18;
     goto LABEL_16;
   }
@@ -458,29 +458,29 @@ LABEL_27:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v49 = v10;
+      v49 = idCopy;
       v50 = 2048;
       v51[0] = 1;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "App asset DRI for %{public}@ is set to %lu - nothing more for atc to do", buf, 0x16u);
     }
 
     v20 = 1;
-    [AITransactionLog logStep:2 byParty:1 phase:2 success:1 forBundleID:v10 description:@"Restore app"];
+    [AITransactionLog logStep:2 byParty:1 phase:2 success:1 forBundleID:idCopy description:@"Restore app"];
     v21 = 0;
     v22 = 0;
     goto LABEL_32;
   }
 
   [v17 setObserver:self];
-  v39 = self;
-  v40 = v11;
+  selfCopy3 = self;
+  v40 = dataCopy;
   if ([v17 hasUserDataPromise])
   {
     v23 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v49 = v10;
+      v49 = idCopy;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "Coordinator for %{public}@ has a valid user data promise", buf, 0xCu);
     }
 
@@ -490,7 +490,7 @@ LABEL_27:
 
   else
   {
-    v22 = [(AppsClient *)self _userDataPromiseForBundleIdentifier:v10];
+    v22 = [(AppsClient *)self _userDataPromiseForBundleIdentifier:idCopy];
     if (!v22)
     {
       goto LABEL_42;
@@ -509,7 +509,7 @@ LABEL_27:
         *buf = 138543618;
         v49 = v16;
         v50 = 2114;
-        v51[0] = v10;
+        v51[0] = idCopy;
         _os_log_impl(&dword_0, v23, OS_LOG_TYPE_ERROR, "Error %{public}@ adding out of band data promise for '%{public}@'", buf, 0x16u);
       }
 
@@ -520,21 +520,21 @@ LABEL_27:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v49 = v10;
+      v49 = idCopy;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "Added out of band user data promise for for %{public}@", buf, 0xCu);
     }
   }
 
   v18 = v16;
 LABEL_42:
-  v25 = [v17 hasPlaceholderPromise];
-  if (v25)
+  hasPlaceholderPromise = [v17 hasPlaceholderPromise];
+  if (hasPlaceholderPromise)
   {
     v34 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v49 = v10;
+      v49 = idCopy;
       _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "Coordinator for %{public}@ has a valid placeholder promise", buf, 0xCu);
     }
 
@@ -554,7 +554,7 @@ LABEL_46:
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v49 = v10;
+        v49 = idCopy;
         _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "set IXClientAppStore to satisfy app asset promise for %{public}@", buf, 0xCu);
       }
 
@@ -568,7 +568,7 @@ LABEL_46:
         *buf = 138543618;
         v49 = v16;
         v50 = 2114;
-        v51[0] = v10;
+        v51[0] = idCopy;
         _os_log_impl(&dword_0, v23, OS_LOG_TYPE_ERROR, "Error %{public}@ setting IXClientAppStore to satisfy app data promise for '%{public}@'", buf, 0x16u);
       }
 
@@ -578,11 +578,11 @@ LABEL_46:
     goto LABEL_16;
   }
 
-  v21 = [(AppsClient *)v39 _placeHolderForBundleIdentifier:v10 withiTunesMetadata:v15 sinfData:v40 iconData:v12 demotionStatus:0];
+  v21 = [(AppsClient *)selfCopy3 _placeHolderForBundleIdentifier:idCopy withiTunesMetadata:v15 sinfData:v40 iconData:iconDataCopy demotionStatus:0];
   if (!v21)
   {
     v24 = 0;
-    v25 = 1;
+    hasPlaceholderPromise = 1;
     goto LABEL_17;
   }
 
@@ -592,12 +592,12 @@ LABEL_46:
 
   if (v38)
   {
-    [(AppsClient *)v39 dataMigratorSetPlaceHolderPromiseForRestoreAppBundle:v10];
+    [(AppsClient *)selfCopy3 dataMigratorSetPlaceHolderPromiseForRestoreAppBundle:idCopy];
     v34 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v49 = v10;
+      v49 = idCopy;
       _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "added placeholder promise for %{public}@", buf, 0xCu);
     }
 
@@ -610,13 +610,13 @@ LABEL_46:
     *buf = 138543618;
     v49 = v16;
     v50 = 2114;
-    v51[0] = v10;
+    v51[0] = idCopy;
     _os_log_impl(&dword_0, v23, OS_LOG_TYPE_ERROR, "Error %{public}@ setting placeholder promise for '%{public}@'", buf, 0x16u);
   }
 
 LABEL_12:
   v24 = 0;
-  v25 = 1;
+  hasPlaceholderPromise = 1;
 LABEL_16:
 
   v18 = v16;
@@ -625,7 +625,7 @@ LABEL_17:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v49 = v10;
+    v49 = idCopy;
     v50 = 1024;
     LODWORD(v51[0]) = v24;
     WORD2(v51[0]) = 2114;
@@ -634,10 +634,10 @@ LABEL_17:
   }
 
   v20 = 1;
-  [AITransactionLog logStep:2 byParty:1 phase:2 success:v24 forBundleID:v10 description:@"Restore app"];
+  [AITransactionLog logStep:2 byParty:1 phase:2 success:v24 forBundleID:idCopy description:@"Restore app"];
   if (v24)
   {
-    v11 = v40;
+    dataCopy = v40;
   }
 
   else
@@ -649,34 +649,34 @@ LABEL_17:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v49 = v10;
+        v49 = idCopy;
         _os_log_impl(&dword_0, v28, OS_LOG_TYPE_DEFAULT, "Cancelling coordinator for appBundleIdentifier:%{public}@", buf, 0xCu);
       }
 
       [v17 cancelForReason:v27 client:3 error:0];
     }
 
-    v29 = v25 ^ 1;
+    v29 = hasPlaceholderPromise ^ 1;
     if (!v21)
     {
       v29 = 1;
     }
 
-    v11 = v40;
+    dataCopy = v40;
     if ((v29 & 1) == 0)
     {
       v30 = _ATLogCategorySyncBundle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v49 = v10;
+        v49 = idCopy;
         _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "Cancelling placeholder for appBundleIdentifier:%{public}@", buf, 0xCu);
       }
 
       [v21 cancelForReason:v27 client:3 error:0];
     }
 
-    [(AppsClient *)v39 dataMigratorCancelledCoordinatorForRestoreAppBundle:v10];
+    [(AppsClient *)selfCopy3 dataMigratorCancelledCoordinatorForRestoreAppBundle:idCopy];
 
     v20 = 0;
   }
@@ -686,13 +686,13 @@ LABEL_32:
   return v20;
 }
 
-- (void)assetSyncFinishedWithStatus:(BOOL)a3 outstandingItems:(id)a4
+- (void)assetSyncFinishedWithStatus:(BOOL)status outstandingItems:(id)items
 {
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a4;
+  obj = items;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v5)
   {
@@ -714,7 +714,7 @@ LABEL_32:
         v17 = 0;
         v11 = [IXAppInstallCoordinator coordinatorForAppWithBundleID:v10 withClientID:3 createIfNotExisting:0 created:0 error:&v17, v15];
         v12 = v17;
-        if (v11 && !a3)
+        if (v11 && !status)
         {
           v13 = [NSError errorWithDomain:@"ATError" code:30 userInfo:0];
           v14 = _ATLogCategorySyncBundle();
@@ -741,19 +741,19 @@ LABEL_32:
   }
 }
 
-- (id)_createIconPromiseForBundleIdentifier:(id)a3 transferPath:(id)a4 diskSpaceNeeded:(unint64_t)a5 andAddToPlaceHolder:(id)a6 forAppInstall:(BOOL)a7
+- (id)_createIconPromiseForBundleIdentifier:(id)identifier transferPath:(id)path diskSpaceNeeded:(unint64_t)needed andAddToPlaceHolder:(id)holder forAppInstall:(BOOL)install
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v13)
+  installCopy = install;
+  identifierCopy = identifier;
+  pathCopy = path;
+  holderCopy = holder;
+  if (!holderCopy)
   {
     v19 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v28 = v11;
+      v28 = identifierCopy;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_ERROR, "Placeholder to add icon promise is nil for '%{public}@'", buf, 0xCu);
     }
 
@@ -762,16 +762,16 @@ LABEL_32:
   }
 
   v14 = [IXPromisedTransferToPath alloc];
-  v15 = [v11 stringByAppendingString:@"-Icon"];
-  v16 = [NSURL fileURLWithPath:v12];
-  v17 = [v14 initWithName:v15 client:3 transferPath:v16 diskSpaceNeeded:a5];
+  v15 = [identifierCopy stringByAppendingString:@"-Icon"];
+  v16 = [NSURL fileURLWithPath:pathCopy];
+  v17 = [v14 initWithName:v15 client:3 transferPath:v16 diskSpaceNeeded:needed];
 
   if (v17)
   {
     [v17 setPercentComplete:1.0];
     [v17 setComplete:1];
     v26 = 0;
-    v18 = [v13 setIconPromise:v17 error:&v26];
+    v18 = [holderCopy setIconPromise:v17 error:&v26];
     v19 = v26;
     v20 = _ATLogCategorySyncBundle();
     v21 = v20;
@@ -780,7 +780,7 @@ LABEL_32:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v28 = v11;
+        v28 = identifierCopy;
         _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "Added icon promise to placeholder for '%{public}@'", buf, 0xCu);
       }
 
@@ -793,11 +793,11 @@ LABEL_32:
       *buf = 138543618;
       v28 = v19;
       v29 = 2114;
-      v30 = v11;
+      v30 = identifierCopy;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "Error %{public}@ adding icon promise to placeholder for '%{public}@'", buf, 0x16u);
     }
 
-    if (v7)
+    if (installCopy)
     {
       v23 = 30;
     }
@@ -823,41 +823,41 @@ LABEL_19:
   return v22;
 }
 
-- (id)_placeHolderForBundleIdentifier:(id)a3 name:(id)a4 installType:(unint64_t)a5
+- (id)_placeHolderForBundleIdentifier:(id)identifier name:(id)name installType:(unint64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  [AITransactionLog logStep:4 byParty:1 phase:1 success:1 forBundleID:v7 description:@"Create placeholder"];
-  v9 = [[IXPlaceholder alloc] initAppPlaceholderWithBundleName:v8 bundleID:v7 installType:a5 client:3];
+  identifierCopy = identifier;
+  nameCopy = name;
+  [AITransactionLog logStep:4 byParty:1 phase:1 success:1 forBundleID:identifierCopy description:@"Create placeholder"];
+  v9 = [[IXPlaceholder alloc] initAppPlaceholderWithBundleName:nameCopy bundleID:identifierCopy installType:type client:3];
 
-  [AITransactionLog logStep:4 byParty:1 phase:2 success:v9 != 0 forBundleID:v7 description:@"Finished creating placeholder"];
+  [AITransactionLog logStep:4 byParty:1 phase:2 success:v9 != 0 forBundleID:identifierCopy description:@"Finished creating placeholder"];
   v10 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543874;
     v13 = v9;
     v14 = 2114;
-    v15 = v7;
+    v15 = identifierCopy;
     v16 = 2048;
-    v17 = a5;
+    typeCopy = type;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Created placeholder %{public}@ for '%{public}@' of type %lu", &v12, 0x20u);
   }
 
   return v9;
 }
 
-- (id)_createAppAssetPromiseForBundleIdentifier:(id)a3 atPath:(id)a4 andAddToCoordinatinator:(id)a5
+- (id)_createAppAssetPromiseForBundleIdentifier:(id)identifier atPath:(id)path andAddToCoordinatinator:(id)coordinatinator
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  pathCopy = path;
+  coordinatinatorCopy = coordinatinator;
+  if (coordinatinatorCopy)
   {
     v10 = [IXPromisedTransferToPath alloc];
-    v11 = [v7 stringByAppendingString:@"-Asset"];
-    if (v8)
+    v11 = [identifierCopy stringByAppendingString:@"-Asset"];
+    if (pathCopy)
     {
-      v12 = [NSURL fileURLWithPath:v8];
+      v12 = [NSURL fileURLWithPath:pathCopy];
       v13 = [v10 initWithName:v11 client:3 transferPath:v12 diskSpaceNeeded:0];
     }
 
@@ -869,7 +869,7 @@ LABEL_19:
     if (v13)
     {
       v22 = 0;
-      v16 = [v9 setAppAssetPromise:v13 error:&v22];
+      v16 = [coordinatinatorCopy setAppAssetPromise:v13 error:&v22];
       v14 = v22;
       v17 = _ATLogCategorySyncBundle();
       v18 = v17;
@@ -878,7 +878,7 @@ LABEL_19:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v24 = v7;
+          v24 = identifierCopy;
           _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Added app asset promise to coordinator for '%{public}@'", buf, 0xCu);
         }
 
@@ -891,9 +891,9 @@ LABEL_19:
         *buf = 138543874;
         v24 = v14;
         v25 = 2114;
-        v26 = v8;
+        v26 = pathCopy;
         v27 = 2114;
-        v28 = v7;
+        v28 = identifierCopy;
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "Error %{public}@ adding app asset promise at %{public}@ to '%{public}@'", buf, 0x20u);
       }
 
@@ -901,7 +901,7 @@ LABEL_19:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v24 = v7;
+        v24 = identifierCopy;
         _os_log_impl(&dword_0, v19, OS_LOG_TYPE_ERROR, "Cancelling asset promise for '%{public}@'", buf, 0xCu);
       }
 
@@ -915,7 +915,7 @@ LABEL_19:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v24 = v7;
+        v24 = identifierCopy;
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "Error creating asset promise for '%{public}@'", buf, 0xCu);
       }
 
@@ -938,11 +938,11 @@ LABEL_21:
   return v15;
 }
 
-- (id)_userDataPromiseForBundleIdentifier:(id)a3
+- (id)_userDataPromiseForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [IXPromisedOutOfBandTransfer alloc];
-  v5 = [v3 stringByAppendingString:@"-UserData"];
+  v5 = [identifierCopy stringByAppendingString:@"-UserData"];
 
   v6 = [v4 initWithName:v5 client:3 diskSpaceNeeded:0];
   if (v6)
@@ -954,53 +954,53 @@ LABEL_21:
   return v6;
 }
 
-- (id)_placeHolderForBundleIdentifier:(id)a3 withiTunesMetadata:(id)a4 sinfData:(id)a5 iconData:(id)a6 demotionStatus:(unint64_t)a7
+- (id)_placeHolderForBundleIdentifier:(id)identifier withiTunesMetadata:(id)metadata sinfData:(id)data iconData:(id)iconData demotionStatus:(unint64_t)status
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  dataCopy = data;
+  iconDataCopy = iconData;
   v60 = 0;
-  v15 = [v12 objectForKey:@"title"];
+  v15 = [metadataCopy objectForKey:@"title"];
   if (!v15)
   {
-    v15 = [v12 objectForKey:@"itemName"];
+    v15 = [metadataCopy objectForKey:@"itemName"];
     if (!v15)
     {
-      v15 = v11;
+      v15 = identifierCopy;
     }
   }
 
-  v54 = v14;
+  v54 = iconDataCopy;
   v55 = v15;
-  v53 = [v12 objectForKey:@"bundleVersion"];
-  v16 = [(AppsClient *)self placeholderAppPathForBundleIdentifier:v11];
-  v17 = [v12 objectForKey:@"LSApplicationLaunchProhibited"];
+  v53 = [metadataCopy objectForKey:@"bundleVersion"];
+  v16 = [(AppsClient *)self placeholderAppPathForBundleIdentifier:identifierCopy];
+  v17 = [metadataCopy objectForKey:@"LSApplicationLaunchProhibited"];
   if (!v17)
   {
-    v17 = [v12 objectForKey:@"launchProhibited"];
+    v17 = [metadataCopy objectForKey:@"launchProhibited"];
   }
 
   v50 = v17;
-  v51 = v12;
-  v47 = [v17 BOOLValue];
+  v51 = metadataCopy;
+  bOOLValue = [v17 BOOLValue];
   v67[0] = NSFileOwnerAccountName;
   v67[1] = NSFileGroupOwnerAccountName;
   v68[0] = @"mobile";
   v68[1] = @"mobile";
   v18 = [NSDictionary dictionaryWithObjects:v68 forKeys:v67 count:2];
-  v19 = [(AppsClient *)self createPlaceHolderPath:v16 forBundleIdentifier:v11 withAttributes:v18];
+  v19 = [(AppsClient *)self createPlaceHolderPath:v16 forBundleIdentifier:identifierCopy withAttributes:v18];
 
   v52 = v16;
   if (!v19)
   {
-    v25 = v11;
+    v25 = identifierCopy;
     v31 = 0;
     v20 = 0;
     v26 = 0;
     v41 = 0;
     v34 = v51;
-    v27 = v13;
+    v27 = dataCopy;
     v22 = v54;
     goto LABEL_40;
   }
@@ -1012,15 +1012,15 @@ LABEL_21:
   v20 = v66[1] = @"mobile";
   v21 = [NSDictionary dictionaryWithObjects:v66 forKeys:v65 count:2];
   v22 = v54;
-  [(AppsClient *)self writeIconData:v54 atPath:v20 returningFileSize:&v60 forBundleIdentifier:v11 withAttributes:v21];
+  [(AppsClient *)self writeIconData:v54 atPath:v20 returningFileSize:&v60 forBundleIdentifier:identifierCopy withAttributes:v21];
 
   v23 = 7;
-  if (a7 != 2)
+  if (status != 2)
   {
     v23 = 2;
   }
 
-  if (a7 == 1)
+  if (status == 1)
   {
     v24 = 8;
   }
@@ -1030,22 +1030,22 @@ LABEL_21:
     v24 = v23;
   }
 
-  v25 = v11;
-  v26 = [(AppsClient *)self _placeHolderForBundleIdentifier:v11 name:v55 installType:v24];
+  v25 = identifierCopy;
+  v26 = [(AppsClient *)self _placeHolderForBundleIdentifier:identifierCopy name:v55 installType:v24];
   if (!v26)
   {
     v31 = 0;
     v41 = 0;
     v34 = v51;
-    v27 = v13;
+    v27 = dataCopy;
     goto LABEL_40;
   }
 
-  v27 = v13;
+  v27 = dataCopy;
   if (!v60 || ([(AppsClient *)self _createIconPromiseForBundleIdentifier:v25 transferPath:v20 diskSpaceNeeded:v60 andAddToPlaceHolder:v26 forAppInstall:0], v28 = objc_claimAutoreleasedReturnValue(), v28, v28))
   {
     v29 = objc_alloc_init(IXPlaceholderAttributes);
-    [v29 setLaunchProhibited:v47];
+    [v29 setLaunchProhibited:bOOLValue];
     [v29 setBundleVersion:v53];
     v59 = 0;
     v30 = [v26 setPlaceholderAttributes:v29 error:&v59];
@@ -1183,7 +1183,7 @@ LABEL_37:
   }
 
   v31 = 0;
-  v34 = v12;
+  v34 = metadataCopy;
 LABEL_38:
   v29 = [NSError errorWithDomain:@"ATError" code:29 userInfo:0];
   [v26 cancelForReason:v29 client:3 error:0];
@@ -1243,7 +1243,7 @@ LABEL_40:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2048;
       v15 = v4;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_ERROR, "%{public}@ getting dealloc'd with %lu outstanding AFC transfers!", buf, 0x16u);
@@ -1257,7 +1257,7 @@ LABEL_40:
     {
       placeholdersForRestoringApps = self->_placeholdersForRestoringApps;
       *buf = 138543618;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2114;
       v15 = placeholdersForRestoringApps;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "%{public}@ getting dealloc'd with %{public}@pending placeholder install complete notifications", buf, 0x16u);
@@ -1289,16 +1289,16 @@ LABEL_40:
   [(AppsClient *)&v11 dealloc];
 }
 
-- (void)coordinatorShouldPrioritize:(id)a3
+- (void)coordinatorShouldPrioritize:(id)prioritize
 {
-  v5 = [a3 bundleID];
-  if ([(AppsClient *)self _isATCDaemon]&& v5)
+  bundleID = [prioritize bundleID];
+  if ([(AppsClient *)self _isATCDaemon]&& bundleID)
   {
     v6 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = [a3 bundleID];
+      bundleID2 = [prioritize bundleID];
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Prioritize %{public}@", buf, 0xCu);
     }
 
@@ -1309,8 +1309,8 @@ LABEL_40:
       v9[1] = 3221225472;
       v9[2] = sub_597C;
       v9[3] = &unk_18460;
-      v9[4] = v5;
-      [(ATDeviceService *)v7 prioritizeAsset:[ATAsset withCompletion:"downloadAssetWithIdentifier:dataclass:prettyName:" downloadAssetWithIdentifier:v5 dataclass:@"Application" prettyName:0], v9];
+      v9[4] = bundleID;
+      [(ATDeviceService *)v7 prioritizeAsset:[ATAsset withCompletion:"downloadAssetWithIdentifier:dataclass:prettyName:" downloadAssetWithIdentifier:bundleID dataclass:@"Application" prettyName:0], v9];
     }
 
     else
@@ -1319,17 +1319,17 @@ LABEL_40:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v11 = v5;
+        bundleID2 = bundleID;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "Cannot prioritize %{public}@ as it's not supported", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client
 {
-  v6 = [a3 bundleID];
-  if ([(AppsClient *)self _isATCDaemon]&& v6)
+  bundleID = [coordinator bundleID];
+  if ([(AppsClient *)self _isATCDaemon]&& bundleID)
   {
     v7 = +[ATDeviceService sharedInstance];
     v15 = 0;
@@ -1341,7 +1341,7 @@ LABEL_40:
     block[1] = 3221225472;
     block[2] = sub_5CA4;
     block[3] = &unk_18488;
-    block[5] = v6;
+    block[5] = bundleID;
     block[6] = &v15;
     block[4] = self;
     dispatch_sync(accessQueue, block);
@@ -1351,7 +1351,7 @@ LABEL_40:
     v13[2] = sub_5CF4;
     v13[3] = &unk_184B0;
     v13[4] = self;
-    v13[5] = v6;
+    v13[5] = bundleID;
     dispatch_sync(restoreQueue, v13);
     if ((v16[3] & 1) != 0 || (objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -1360,7 +1360,7 @@ LABEL_40:
       {
         v12 = *(v16 + 24);
         *buf = 138543618;
-        v20 = v6;
+        v20 = bundleID;
         v21 = 1024;
         v22 = v12;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "Cannot cancel %{public}@ as it's already cancelled %d OR the call is not supported", buf, 0x12u);
@@ -1373,11 +1373,11 @@ LABEL_40:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v20 = v6;
+        v20 = bundleID;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Cancelling asset sync for %{public}@", buf, 0xCu);
       }
 
-      [(ATDeviceService *)v7 cancelAssetTransferForFailedAsset:[ATAsset downloadAssetWithIdentifier:v6 dataclass:@"Application" prettyName:0]];
+      [(ATDeviceService *)v7 cancelAssetTransferForFailedAsset:[ATAsset downloadAssetWithIdentifier:bundleID dataclass:@"Application" prettyName:0]];
     }
 
     _Block_object_dispose(&v15, 8);
@@ -1399,14 +1399,14 @@ LABEL_40:
   v5 = [AppsClient _loadPlist:@"/var/mobile/Library/ApplicationSync/LastSyncAppState.plist" withError:0];
   v6 = +[NSMutableSet set];
   v7 = MobileInstallationLookupUninstalled();
-  v37 = self;
+  selfCopy = self;
   if (v7)
   {
     v8 = v7;
 
-    v9 = [v8 allKeys];
-    self->_uninstalledApps = v9;
-    [v6 addObjectsFromArray:v9];
+    allKeys = [v8 allKeys];
+    self->_uninstalledApps = allKeys;
+    [v6 addObjectsFromArray:allKeys];
     CFRelease(v8);
   }
 
@@ -1577,7 +1577,7 @@ LABEL_35:
   v33 = _ATLogCategorySyncBundle_Oversize();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
-    uninstalledApps = v37->_uninstalledApps;
+    uninstalledApps = selfCopy->_uninstalledApps;
     *buf = 138543874;
     v54 = v4;
     v55 = 2114;
@@ -1590,20 +1590,20 @@ LABEL_35:
   return v38;
 }
 
-- (BOOL)reconcileRestoreOfType:(int)a3 withError:(id *)a4
+- (BOOL)reconcileRestoreOfType:(int)type withError:(id *)error
 {
   v7 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v12 = a3;
+    typeCopy2 = type;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "reconcileRestoreOfType %d", buf, 8u);
   }
 
   [AppsClient _notifySpringBoard:1];
   v10 = 0;
-  [+[NSFileManager defaultManager](NSFileManager createDirectoryAtPath:"createDirectoryAtPath:withIntermediateDirectories:attributes:error:" withIntermediateDirectories:@"/var/mobile/Library/ApplicationSync" attributes:1 error:0, a4];
-  if ((a3 & 0xFFFFFFFE) == 2)
+  [+[NSFileManager defaultManager](NSFileManager createDirectoryAtPath:"createDirectoryAtPath:withIntermediateDirectories:attributes:error:" withIntermediateDirectories:@"/var/mobile/Library/ApplicationSync" attributes:1 error:0, error];
+  if ((type & 0xFFFFFFFE) == 2)
   {
     if ([(MBManager *)self->_backupManager airTrafficShouldCreateAppPlaceholdersWithError:&v10])
     {
@@ -1616,7 +1616,7 @@ LABEL_35:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109378;
-        v12 = a3;
+        typeCopy2 = type;
         v13 = 2114;
         v14 = v10;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Will not reconcile restore of type %d - error %{public}@", buf, 0x12u);
@@ -1624,21 +1624,21 @@ LABEL_35:
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v10;
+    *error = v10;
   }
 
   return 1;
 }
 
-- (void)syncEndedWithSuccess:(BOOL)a3
+- (void)syncEndedWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v5 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3)
+    if (successCopy)
     {
       v6 = 121;
     }
@@ -1653,7 +1653,7 @@ LABEL_35:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "sync ended with success: %c", &v14, 8u);
   }
 
-  if (v3)
+  if (successCopy)
   {
     if (utimes("/var/mobile/Library/ApplicationSync", 0))
     {
@@ -1703,9 +1703,9 @@ LABEL_35:
   }
 }
 
-- (void)assetTransfer:(id)a3 succeeded:(BOOL)a4 withError:(id)a5
+- (void)assetTransfer:(id)transfer succeeded:(BOOL)succeeded withError:(id)error
 {
-  v6 = a4;
+  succeededCopy = succeeded;
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -1720,12 +1720,12 @@ LABEL_35:
   block[2] = sub_76AC;
   block[3] = &unk_18500;
   block[4] = self;
-  block[5] = a3;
+  block[5] = transfer;
   block[6] = &v42;
   block[7] = &v38;
   dispatch_sync(accessQueue, block);
-  -[NSMutableSet removeObject:](self->_outstandingAFCTransfers, "removeObject:", [a3 identifier]);
-  if (a5)
+  -[NSMutableSet removeObject:](self->_outstandingAFCTransfers, "removeObject:", [transfer identifier]);
+  if (error)
   {
     v10 = _ATLogCategorySyncBundle();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1734,9 +1734,9 @@ LABEL_35:
     }
 
     v11 = *(v43 + 24);
-    v12 = [a5 msv_description];
+    msv_description = [error msv_description];
     *buf = 138544130;
-    if (v6)
+    if (succeededCopy)
     {
       v13 = 121;
     }
@@ -1746,13 +1746,13 @@ LABEL_35:
       v13 = 110;
     }
 
-    v47 = a3;
+    transferCopy3 = transfer;
     v48 = 1024;
     *v49 = v13;
     *&v49[4] = 1024;
     *&v49[6] = v11;
     v50 = 2114;
-    v51 = v12;
+    v51 = msv_description;
     v14 = "transfer for asset %{public}@ ended with success %c existingApp:%d error=%{public}@";
     v15 = v10;
     v16 = OS_LOG_TYPE_ERROR;
@@ -1767,7 +1767,7 @@ LABEL_35:
       goto LABEL_13;
     }
 
-    if (v6)
+    if (succeededCopy)
     {
       v19 = 121;
     }
@@ -1779,7 +1779,7 @@ LABEL_35:
 
     v20 = *(v43 + 24);
     *buf = 138543874;
-    v47 = a3;
+    transferCopy3 = transfer;
     v48 = 1024;
     *v49 = v19;
     *&v49[4] = 1024;
@@ -1792,66 +1792,66 @@ LABEL_35:
 
   _os_log_impl(&dword_0, v15, v16, v14, buf, v17);
 LABEL_13:
-  v21 = -[AppsClient _progressForAssetIdentifier:](self, "_progressForAssetIdentifier:", [a3 identifier]);
-  if (v6)
+  v21 = -[AppsClient _progressForAssetIdentifier:](self, "_progressForAssetIdentifier:", [transfer identifier]);
+  if (succeededCopy)
   {
     v22 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [a3 identifier];
+      identifier = [transfer identifier];
       *buf = 138543362;
-      v47 = v23;
+      transferCopy3 = identifier;
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "asset transfer succeeded for %{public}@", buf, 0xCu);
     }
 
-    if ([a3 path])
+    if ([transfer path])
     {
-      if ([objc_msgSend(a3 "path")])
+      if ([objc_msgSend(transfer "path")])
       {
         goto LABEL_35;
       }
 
-      v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s/%@", "/var/mobile/Media/PublicStaging", [a3 path]);
+      v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%s/%@", "/var/mobile/Media/PublicStaging", [transfer path]);
     }
 
     else
     {
-      v24 = -[AppsClient _restoreStatePropertyForKey:identifier:version:](self, "_restoreStatePropertyForKey:identifier:version:", @"path", [a3 identifier], objc_msgSend(objc_msgSend(a3, "variantOptions"), "objectForKeyedSubscript:", @"Version"));
+      v24 = -[AppsClient _restoreStatePropertyForKey:identifier:version:](self, "_restoreStatePropertyForKey:identifier:version:", @"path", [transfer identifier], objc_msgSend(objc_msgSend(transfer, "variantOptions"), "objectForKeyedSubscript:", @"Version"));
     }
 
-    [a3 setPath:v24];
+    [transfer setPath:v24];
 LABEL_35:
-    if (sub_6A3C([a3 path]))
+    if (sub_6A3C([transfer path]))
     {
-      if ([a3 isDownload])
+      if ([transfer isDownload])
       {
         v32 = _ATLogCategorySyncBundle();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [a3 path];
+          path = [transfer path];
           *buf = 138543362;
-          v47 = v33;
+          transferCopy3 = path;
           _os_log_impl(&dword_0, v32, OS_LOG_TYPE_DEFAULT, "Received file at %{public}@", buf, 0xCu);
         }
 
-        -[AppsClient changeAssetID:toDo:](self, "changeAssetID:toDo:", [a3 identifier], @"DOWNLOADED");
-        if (([a3 isRestore] & 1) == 0)
+        -[AppsClient changeAssetID:toDo:](self, "changeAssetID:toDo:", [transfer identifier], @"DOWNLOADED");
+        if (([transfer isRestore] & 1) == 0)
         {
           v34 = _ATLogCategorySyncBundle();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v47 = a3;
+            transferCopy3 = transfer;
             _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "Installing synced asset %{public}@", buf, 0xCu);
           }
 
-          [(AppsClient *)self transferCompleteForApp:a3 withError:0 isExistingApp:*(v43 + 24)];
+          [(AppsClient *)self transferCompleteForApp:transfer withError:0 isExistingApp:*(v43 + 24)];
         }
       }
 
       else
       {
-        -[AppsClient changeAssetID:toDo:](self, "changeAssetID:toDo:", [a3 identifier], @"SENT");
+        -[AppsClient changeAssetID:toDo:](self, "changeAssetID:toDo:", [transfer identifier], @"SENT");
       }
     }
 
@@ -1860,9 +1860,9 @@ LABEL_35:
       v35 = _ATLogCategorySyncBundle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [a3 path];
+        path2 = [transfer path];
         *buf = 138543362;
-        v47 = v36;
+        transferCopy3 = path2;
         _os_log_impl(&dword_0, v35, OS_LOG_TYPE_DEFAULT, "Ignoring invalid path: %{public}@", buf, 0xCu);
       }
     }
@@ -1871,16 +1871,16 @@ LABEL_35:
   }
 
   v25 = v21;
-  if ([(AppsClient *)self _isRecoverableError:a5])
+  if ([(AppsClient *)self _isRecoverableError:error])
   {
     v26 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [a3 identifier];
+      identifier2 = [transfer identifier];
       *buf = 138543618;
-      v47 = v27;
+      transferCopy3 = identifier2;
       v48 = 2114;
-      *v49 = a5;
+      *v49 = error;
       _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "Failed to transfer asset %{public}@ with recoverable error=%{public}@", buf, 0x16u);
     }
 
@@ -1892,15 +1892,15 @@ LABEL_35:
     v28 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v29 = [a3 identifier];
+      identifier3 = [transfer identifier];
       *buf = 138543618;
-      v47 = v29;
+      transferCopy3 = identifier3;
       v48 = 2114;
-      *v49 = a5;
+      *v49 = error;
       _os_log_impl(&dword_0, v28, OS_LOG_TYPE_ERROR, "Failed to transfer asset %{public}@ with unrecoverable error=%{public}@", buf, 0x16u);
     }
 
-    if ([+[LSApplicationWorkspace defaultWorkspace](LSApplicationWorkspace "defaultWorkspace")] && (objc_msgSend(a3, "isRestore") & 1) == 0)
+    if ([+[LSApplicationWorkspace defaultWorkspace](LSApplicationWorkspace "defaultWorkspace")] && (objc_msgSend(transfer, "isRestore") & 1) == 0)
     {
       if ([v25 installState] < 3)
       {
@@ -1910,15 +1910,15 @@ LABEL_35:
       v30 = _ATLogCategorySyncBundle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [a3 identifier];
+        identifier4 = [transfer identifier];
         *buf = 138543362;
-        v47 = v31;
+        transferCopy3 = identifier4;
         _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "Uninstalling placeholder %{public}@", buf, 0xCu);
       }
 
       if ((v39[3] & 1) == 0)
       {
-        [(AppsClient *)self transferCompleteForApp:a3 withError:a5 isExistingApp:*(v43 + 24)];
+        [(AppsClient *)self transferCompleteForApp:transfer withError:error isExistingApp:*(v43 + 24)];
       }
     }
   }
@@ -1928,35 +1928,35 @@ LABEL_46:
   _Block_object_dispose(&v42, 8);
 }
 
-- (void)assetInstallSucceeded:(id)a3
+- (void)assetInstallSucceeded:(id)succeeded
 {
   v5 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = [a3 identifier];
+    identifier = [succeeded identifier];
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ install succeeded", &v6, 0xCu);
   }
 
-  -[AppsClient changeAssetID:toDo:](self, "changeAssetID:toDo:", [a3 identifier], @"INSTALLED");
-  -[AppsClient cleanRestoreStateForIdentifier:](self, "cleanRestoreStateForIdentifier:", [a3 identifier]);
+  -[AppsClient changeAssetID:toDo:](self, "changeAssetID:toDo:", [succeeded identifier], @"INSTALLED");
+  -[AppsClient cleanRestoreStateForIdentifier:](self, "cleanRestoreStateForIdentifier:", [succeeded identifier]);
 }
 
-- (void)assetInstallFailed:(id)a3 withError:(id)a4
+- (void)assetInstallFailed:(id)failed withError:(id)error
 {
-  if (-[AppsClient _isRecoverableError:](self, "_isRecoverableError:", a4) || ([a3 isRestore] & 1) != 0)
+  if (-[AppsClient _isRecoverableError:](self, "_isRecoverableError:", error) || ([failed isRestore] & 1) != 0)
   {
     v7 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543618;
-      v12 = [a3 identifier];
+      identifier = [failed identifier];
       v13 = 2114;
-      v14 = a4;
+      errorCopy2 = error;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ install failed but was recoverable: %{public}@", &v11, 0x16u);
     }
 
-    +[AITransactionLog logScenario:step:success:forBundleID:description:](AITransactionLog, "logScenario:step:success:forBundleID:description:", @"iCloud restore", 0, 0, [a3 identifier], @"install failed recoverably");
+    +[AITransactionLog logScenario:step:success:forBundleID:description:](AITransactionLog, "logScenario:step:success:forBundleID:description:", @"iCloud restore", 0, 0, [failed identifier], @"install failed recoverably");
   }
 
   else
@@ -1965,38 +1965,38 @@ LABEL_46:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v11 = 138543618;
-      v12 = [a3 identifier];
+      identifier = [failed identifier];
       v13 = 2114;
-      v14 = a4;
+      errorCopy2 = error;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "%{public}@ install failed unrecoverably: %{public}@", &v11, 0x16u);
     }
 
-    -[AppsClient changeAssetID:toDo:](self, "changeAssetID:toDo:", [a3 identifier], @"FAILED");
-    if ([a3 isRestore])
+    -[AppsClient changeAssetID:toDo:](self, "changeAssetID:toDo:", [failed identifier], @"FAILED");
+    if ([failed isRestore])
     {
       v9 = _ATLogCategorySyncBundle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [a3 identifier];
+        identifier2 = [failed identifier];
         v11 = 138543362;
-        v12 = v10;
+        identifier = identifier2;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "not uninstalling restore asset %{public}@ as install coordination is enabled", &v11, 0xCu);
       }
     }
 
     else
     {
-      -[AppsClient uninstallAppUsingCoordination:](self, "uninstallAppUsingCoordination:", [a3 identifier]);
+      -[AppsClient uninstallAppUsingCoordination:](self, "uninstallAppUsingCoordination:", [failed identifier]);
     }
   }
 
-  -[AppsClient cleanRestoreStateForIdentifier:](self, "cleanRestoreStateForIdentifier:", [a3 identifier]);
+  -[AppsClient cleanRestoreStateForIdentifier:](self, "cleanRestoreStateForIdentifier:", [failed identifier]);
 }
 
 - (id)outstandingAssetTransfers
 {
   v88 = [NSMutableArray arrayWithCapacity:16];
-  v97 = [(AppsClient *)self _appInstallationAllowed];
+  _appInstallationAllowed = [(AppsClient *)self _appInstallationAllowed];
   v3 = [AppsClient _loadPlist:@"/var/mobile/Library/ApplicationSync/iTunesStuff/ApplicationsSync.plist" withError:0];
   v92 = +[NSMutableSet set];
   v4 = _ATLogCategorySyncBundle_Oversize();
@@ -2010,13 +2010,13 @@ LABEL_46:
   v99 = v3;
   v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v3 count]);
   v6 = objc_opt_new();
-  v91 = [(AppsClient *)self _getSystemAppPlaceholders];
+  _getSystemAppPlaceholders = [(AppsClient *)self _getSystemAppPlaceholders];
   v115[0] = _NSConcreteStackBlock;
   v115[1] = 3221225472;
   v115[2] = sub_8A78;
   v115[3] = &unk_18528;
   v115[4] = v6;
-  v93 = self;
+  selfCopy = self;
   [(AppsClient *)self _enumeratePlaceholdersWithBlock:v115];
   [(NSMutableDictionary *)v5 addEntriesFromDictionary:v6];
   v7 = _ATLogCategorySyncBundle_Oversize();
@@ -2214,48 +2214,48 @@ LABEL_36:
         v43 = [v38 valueForKey:@"IsRestore"];
         if (objc_opt_respondsToSelector())
         {
-          v44 = [v43 BOOLValue];
+          bOOLValue = [v43 BOOLValue];
         }
 
         else
         {
-          v44 = 0;
+          bOOLValue = 0;
         }
 
         v45 = [v38 valueForKey:@"auto_demoted_app"];
         if (objc_opt_respondsToSelector())
         {
-          v46 = [v45 BOOLValue];
+          bOOLValue2 = [v45 BOOLValue];
         }
 
         else
         {
-          v46 = 0;
+          bOOLValue2 = 0;
         }
 
         v47 = [v38 valueForKey:@"intentional_demoted_app"];
         if (objc_opt_respondsToSelector())
         {
-          v48 = [v47 BOOLValue];
+          bOOLValue3 = [v47 BOOLValue];
         }
 
         else
         {
-          v48 = 0;
+          bOOLValue3 = 0;
         }
 
         v49 = [v38 valueForKey:@"system_app"];
         if (objc_opt_respondsToSelector())
         {
-          v50 = [v49 BOOLValue];
+          bOOLValue4 = [v49 BOOLValue];
         }
 
         else
         {
-          v50 = 0;
+          bOOLValue4 = 0;
         }
 
-        if (((v97 | v44) & 1) == 0)
+        if (((_appInstallationAllowed | bOOLValue) & 1) == 0)
         {
           v56 = _ATLogCategorySyncBundle();
           if (!os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
@@ -2270,9 +2270,9 @@ LABEL_36:
           goto LABEL_64;
         }
 
-        if (v44)
+        if (bOOLValue)
         {
-          v51 = [(NSMutableSet *)v93->_vppAppsToIgnore containsObject:v101];
+          v51 = [(NSMutableSet *)selfCopy->_vppAppsToIgnore containsObject:v101];
           v52 = _ATLogCategorySyncBundle();
           v53 = os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT);
           if (v51)
@@ -2303,7 +2303,7 @@ LABEL_65:
           }
         }
 
-        else if (v50)
+        else if (bOOLValue4)
         {
           v58 = _ATLogCategorySyncBundle();
           if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
@@ -2311,9 +2311,9 @@ LABEL_65:
             *buf = 138544130;
             v117 = v101;
             v118 = 1024;
-            *v119 = v46;
+            *v119 = bOOLValue2;
             *&v119[4] = 1024;
-            *&v119[6] = v48;
+            *&v119[6] = bOOLValue3;
             LOWORD(v120) = 1024;
             *(&v120 + 2) = 1;
             v54 = v58;
@@ -2323,7 +2323,7 @@ LABEL_65:
           }
         }
 
-        else if ([v91 containsObject:v101])
+        else if ([_getSystemAppPlaceholders containsObject:v101])
         {
           v59 = _ATLogCategorySyncBundle();
           if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
@@ -2338,7 +2338,7 @@ LABEL_65:
 
         else
         {
-          if (((v46 | v48) & 1) == 0)
+          if (((bOOLValue2 | bOOLValue3) & 1) == 0)
           {
             goto LABEL_80;
           }
@@ -2353,14 +2353,14 @@ LABEL_65:
               *buf = 138543874;
               v117 = v101;
               v118 = 1024;
-              *v119 = v46;
+              *v119 = bOOLValue2;
               *&v119[4] = 1024;
-              *&v119[6] = v48;
+              *&v119[6] = bOOLValue3;
               _os_log_impl(&dword_0, v61, OS_LOG_TYPE_DEFAULT, "%{public}@ is currenlty demoted (manual:%d, auto:%d) - but will be installed as it's requested by client", buf, 0x18u);
             }
 
 LABEL_80:
-            v63 = v93;
+            v63 = selfCopy;
             if (!v42)
             {
               v42 = [v38 objectForKey:@"NameFromItunes"];
@@ -2388,7 +2388,7 @@ LABEL_80:
             [v66 setIcon:v65];
             [v66 setIsRestore:0];
             v67 = objc_opt_new();
-            v68 = [(AppsClient *)v93 _restoreStatePropertyForKey:@"path" identifier:v101 version:v100];
+            v68 = [(AppsClient *)selfCopy _restoreStatePropertyForKey:@"path" identifier:v101 version:v100];
             if (v68)
             {
               v69 = v68;
@@ -2406,9 +2406,9 @@ LABEL_80:
                   _os_log_impl(&dword_0, v71, OS_LOG_TYPE_DEFAULT, "Recovered download path for %{public}@ at %{public}@", buf, 0x16u);
                 }
 
-                v73 = [v66 isRestore];
+                isRestore = [v66 isRestore];
                 v74 = &off_19620;
-                if (v73)
+                if (isRestore)
                 {
                   goto LABEL_101;
                 }
@@ -2456,12 +2456,12 @@ LABEL_101:
             v75 = _ATLogCategorySyncBundle();
             if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
             {
-              v76 = [v66 storePlist];
-              v77 = [v66 infoPlist];
-              v78 = [v66 storePID];
-              v79 = [v66 isRestore];
+              storePlist = [v66 storePlist];
+              infoPlist = [v66 infoPlist];
+              storePID = [v66 storePID];
+              isRestore2 = [v66 isRestore];
               *buf = 138545410;
-              if (v79)
+              if (isRestore2)
               {
                 v80 = 121;
               }
@@ -2481,12 +2481,12 @@ LABEL_101:
               v123 = 2114;
               v124 = v40;
               v125 = 2114;
-              v126 = v76;
+              v126 = storePlist;
               v127 = 2114;
-              v128 = v77;
+              v128 = infoPlist;
               v129 = 2048;
-              v130 = v78;
-              v63 = v93;
+              v130 = storePID;
+              v63 = selfCopy;
               v131 = 1024;
               v132 = v80;
               _os_log_impl(&dword_0, v75, OS_LOG_TYPE_DEFAULT, "Asset %{public}@ (pretty=%{public}@, version=%{public}@) prepped with icon %{public}@, at %{public}@, meta at %{public}@, info at %{public}@, storePid=%lld, isRestore=%c", buf, 0x58u);
@@ -2550,9 +2550,9 @@ LABEL_101:
             *buf = 138543874;
             v117 = v101;
             v118 = 1024;
-            *v119 = v46;
+            *v119 = bOOLValue2;
             *&v119[4] = 1024;
-            *&v119[6] = v48;
+            *&v119[6] = bOOLValue3;
             v54 = v61;
             v55 = "%{public}@ is currenlty demoted (manual:%d, auto:%d) - skipping";
             v57 = 24;
@@ -2716,15 +2716,15 @@ LABEL_66:
   return v2;
 }
 
-- (void)assetTransfer:(id)a3 updatedProgress:(double)a4
+- (void)assetTransfer:(id)transfer updatedProgress:(double)progress
 {
   v7 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    *&buf[4] = a4;
+    *&buf[4] = progress;
     *&buf[12] = 2114;
-    *&buf[14] = [a3 identifier];
+    *&buf[14] = [transfer identifier];
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "finished transferring %lf for %{public}@", buf, 0x16u);
   }
 
@@ -2737,12 +2737,12 @@ LABEL_66:
   block[1] = 3221225472;
   block[2] = sub_99FC;
   block[3] = &unk_18488;
-  block[5] = a3;
+  block[5] = transfer;
   block[6] = buf;
   block[4] = self;
   dispatch_sync(accessQueue, block);
-  [(AppsClient *)self updateTransferProgressForApp:a3 existingApp:*(*&buf[8] + 24)];
-  -[NSMutableSet addObject:](self->_outstandingAFCTransfers, "addObject:", [a3 identifier]);
+  [(AppsClient *)self updateTransferProgressForApp:transfer existingApp:*(*&buf[8] + 24)];
+  -[NSMutableSet addObject:](self->_outstandingAFCTransfers, "addObject:", [transfer identifier]);
   _Block_object_dispose(buf, 8);
 }
 
@@ -2777,16 +2777,16 @@ LABEL_66:
   }
 }
 
-+ (void)_notifySpringBoard:(BOOL)a3
++ (void)_notifySpringBoard:(BOOL)board
 {
-  v3 = a3;
+  boardCopy = board;
   out_token = 0;
   v4 = notify_register_check("com.apple.springboard.atc.wsyncnotify", &out_token);
   v5 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "done";
-    if (v3)
+    if (boardCopy)
     {
       v6 = "starting";
     }
@@ -2810,22 +2810,22 @@ LABEL_66:
 
   else
   {
-    notify_set_state(out_token, v3);
+    notify_set_state(out_token, boardCopy);
     notify_post("com.apple.springboard.atc.wsyncnotify");
   }
 }
 
-+ (BOOL)_makeIconFromBundlePath:(id)a3 saveTo:(id)a4
++ (BOOL)_makeIconFromBundlePath:(id)path saveTo:(id)to
 {
   v6 = +[NSMutableData data];
-  if (!a3)
+  if (!path)
   {
     sub_C29C(&v24);
     return v24;
   }
 
   v7 = v6;
-  v8 = CFURLCreateWithFileSystemPath(0, a3, kCFURLPOSIXPathStyle, 1u);
+  v8 = CFURLCreateWithFileSystemPath(0, path, kCFURLPOSIXPathStyle, 1u);
   if (!v8)
   {
     sub_C244(&v24);
@@ -2894,13 +2894,13 @@ LABEL_28:
   }
 
   v15 = 1;
-  if (([(__CFData *)v7 writeToFile:a4 atomically:1]& 1) == 0)
+  if (([(__CFData *)v7 writeToFile:to atomically:1]& 1) == 0)
   {
     v23 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       v24 = 138543362;
-      v25 = a4;
+      toCopy = to;
       v20 = "Couldn't save image file to %{public}@";
       v21 = v23;
       v22 = 12;
@@ -2926,10 +2926,10 @@ LABEL_8:
   return v15;
 }
 
-+ (id)_orderTheItems:(id)a3
++ (id)_orderTheItems:(id)items
 {
   memset(size, 0, sizeof(size));
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [a3 count]);
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [items count]);
   SBSSpringBoardBlockableServerPort();
   SBGetFlattenedIconState();
   v5 = _ATLogCategorySyncBundle();
@@ -2960,7 +2960,7 @@ LABEL_8:
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
-        v12 = [a3 objectForKey:{v11, v24}];
+        v12 = [items objectForKey:{v11, v24}];
         if (v12)
         {
           v13 = v12;
@@ -2973,7 +2973,7 @@ LABEL_8:
           }
 
           [(NSMutableArray *)v4 addObject:v13];
-          [a3 removeObjectForKey:v11];
+          [items removeObjectForKey:v11];
         }
       }
 
@@ -2987,7 +2987,7 @@ LABEL_8:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = [a3 countByEnumeratingWithState:&v26 objects:v35 count:16];
+  v15 = [items countByEnumeratingWithState:&v26 objects:v35 count:16];
   if (v15)
   {
     v17 = v15;
@@ -3000,11 +3000,11 @@ LABEL_8:
       {
         if (*v27 != v18)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(items);
         }
 
         v20 = *(*(&v26 + 1) + 8 * j);
-        v21 = [a3 objectForKey:{v20, v25}];
+        v21 = [items objectForKey:{v20, v25}];
         v22 = _ATLogCategorySyncBundle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
@@ -3016,7 +3016,7 @@ LABEL_8:
         [(NSMutableArray *)v4 addObject:v21];
       }
 
-      v17 = [a3 countByEnumeratingWithState:&v26 objects:v35 count:16];
+      v17 = [items countByEnumeratingWithState:&v26 objects:v35 count:16];
     }
 
     while (v17);
@@ -3027,12 +3027,12 @@ LABEL_8:
 
 - (BOOL)_isATCDaemon
 {
-  v2 = [+[NSBundle mainBundle](NSBundle bundleIdentifier];
+  bundleIdentifier = [+[NSBundle mainBundle](NSBundle bundleIdentifier];
 
-  return [(NSString *)v2 isEqualToString:@"com.apple.atc"];
+  return [(NSString *)bundleIdentifier isEqualToString:@"com.apple.atc"];
 }
 
-- (id)_restoreStatePropertyForKey:(id)a3 identifier:(id)a4 version:(id)a5
+- (id)_restoreStatePropertyForKey:(id)key identifier:(id)identifier version:(id)version
 {
   v10 = 0;
   result = [NSData dataWithContentsOfFile:@"/var/mobile/Library/ApplicationSync/RestoreState.plist" options:2 error:&v10];
@@ -3045,7 +3045,7 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        return [objc_msgSend(objc_msgSend(v9 objectForKeyedSubscript:{a4), "objectForKeyedSubscript:", a5), "objectForKeyedSubscript:", a3}];
+        return [objc_msgSend(objc_msgSend(v9 objectForKeyedSubscript:{identifier), "objectForKeyedSubscript:", version), "objectForKeyedSubscript:", key}];
       }
 
       else
@@ -3058,7 +3058,7 @@ LABEL_8:
   return result;
 }
 
-- (void)_setRestoreStatePropertyValue:(id)a3 forKey:(id)a4 identifier:(id)a5 version:(id)a6
+- (void)_setRestoreStatePropertyValue:(id)value forKey:(id)key identifier:(id)identifier version:(id)version
 {
   v13 = 0;
   v10 = [NSData dataWithContentsOfFile:@"/var/mobile/Library/ApplicationSync/RestoreState.plist" options:2 error:&v13];
@@ -3073,28 +3073,28 @@ LABEL_8:
   }
 
   v12 = v11;
-  if (![v11 objectForKeyedSubscript:a5])
+  if (![v11 objectForKeyedSubscript:identifier])
   {
-    [v12 setObject:+[NSMutableDictionary dictionary](NSMutableDictionary forKeyedSubscript:{"dictionary"), a5}];
+    [v12 setObject:+[NSMutableDictionary dictionary](NSMutableDictionary forKeyedSubscript:{"dictionary"), identifier}];
   }
 
-  if (![objc_msgSend(v12 objectForKeyedSubscript:{a5), "objectForKeyedSubscript:", a6}])
+  if (![objc_msgSend(v12 objectForKeyedSubscript:{identifier), "objectForKeyedSubscript:", version}])
   {
-    [objc_msgSend(v12 objectForKeyedSubscript:{a5), "setObject:forKeyedSubscript:", +[NSMutableDictionary dictionary](NSMutableDictionary, "dictionary"), a6}];
+    [objc_msgSend(v12 objectForKeyedSubscript:{identifier), "setObject:forKeyedSubscript:", +[NSMutableDictionary dictionary](NSMutableDictionary, "dictionary"), version}];
   }
 
-  [objc_msgSend(objc_msgSend(v12 objectForKeyedSubscript:{a5), "objectForKeyedSubscript:", a6), "setObject:forKeyedSubscript:", a3, a4}];
+  [objc_msgSend(objc_msgSend(v12 objectForKeyedSubscript:{identifier), "objectForKeyedSubscript:", version), "setObject:forKeyedSubscript:", value, key}];
   [v12 writeToFile:@"/var/mobile/Library/ApplicationSync/RestoreState.plist" atomically:1];
 }
 
-- (void)cleanRestoreStateForIdentifier:(id)a3
+- (void)cleanRestoreStateForIdentifier:(id)identifier
 {
   v6 = 0;
   v4 = [NSData dataWithContentsOfFile:@"/var/mobile/Library/ApplicationSync/RestoreState.plist" options:2 error:&v6];
   if (v4)
   {
     v5 = [NSPropertyListSerialization propertyListWithData:v4 options:1 format:0 error:&v6];
-    [v5 removeObjectForKey:a3];
+    [v5 removeObjectForKey:identifier];
     if ([v5 count])
     {
       [v5 writeToFile:@"/var/mobile/Library/ApplicationSync/RestoreState.plist" atomically:1];
@@ -3107,7 +3107,7 @@ LABEL_8:
   }
 }
 
-- (void)changeAssetID:(id)a3 toDo:(id)a4
+- (void)changeAssetID:(id)d toDo:(id)do
 {
   v6 = [AppsClient _loadPlist:@"/var/mobile/Library/ApplicationSync/iTunesStuff/ApplicationsSync.plist" withError:0];
   if ([v6 count])
@@ -3116,7 +3116,7 @@ LABEL_8:
     while (1)
     {
       v8 = [v6 objectAtIndex:v7];
-      if ([objc_msgSend(v8 objectForKey:{@"identifier", "isEqualToString:", a3}])
+      if ([objc_msgSend(v8 objectForKey:{@"identifier", "isEqualToString:", d}])
       {
         break;
       }
@@ -3131,20 +3131,20 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543874;
-      v11 = a3;
+      dCopy = d;
       v12 = 2114;
       v13 = [v8 objectForKey:@"operation"];
       v14 = 2114;
-      v15 = a4;
+      doCopy = do;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Changing %{public}@ from %{public}@ to %{public}@", &v10, 0x20u);
     }
 
-    [v8 setObject:a4 forKey:@"operation"];
+    [v8 setObject:do forKey:@"operation"];
     [(NSData *)[NSPropertyListSerialization dataWithPropertyList:0 format:0 options:? error:?], "writeToFile:atomically:", @"/var/mobile/Library/ApplicationSync/iTunesStuff/ApplicationsSync.plist", 1];
   }
 }
 
-- (void)dataMigratorSetPlaceHolderPromiseForRestoreAppBundle:(id)a3
+- (void)dataMigratorSetPlaceHolderPromiseForRestoreAppBundle:(id)bundle
 {
   restoreQueue = self->_restoreQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -3152,11 +3152,11 @@ LABEL_8:
   v4[2] = sub_A954;
   v4[3] = &unk_184B0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = bundle;
   dispatch_sync(restoreQueue, v4);
 }
 
-- (void)dataMigratorCancelledCoordinatorForRestoreAppBundle:(id)a3
+- (void)dataMigratorCancelledCoordinatorForRestoreAppBundle:(id)bundle
 {
   restoreQueue = self->_restoreQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -3164,11 +3164,11 @@ LABEL_8:
   v4[2] = sub_AAB0;
   v4[3] = &unk_184B0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = bundle;
   dispatch_sync(restoreQueue, v4);
 }
 
-- (void)icDidInstallPlaceHolderForAppBundle:(id)a3
+- (void)icDidInstallPlaceHolderForAppBundle:(id)bundle
 {
   restoreQueue = self->_restoreQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -3176,11 +3176,11 @@ LABEL_8:
   v4[2] = sub_AC0C;
   v4[3] = &unk_184B0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = bundle;
   dispatch_sync(restoreQueue, v4);
 }
 
-- (id)_operationStateForIdentifier:(id)a3
+- (id)_operationStateForIdentifier:(id)identifier
 {
   v4 = [AppsClient _loadPlist:@"/var/mobile/Library/ApplicationSync/iTunesStuff/ApplicationsSync.plist" withError:0];
   v10 = 0u;
@@ -3203,7 +3203,7 @@ LABEL_8:
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
-        if ([objc_msgSend(v9 objectForKeyedSubscript:{@"identifier", "isEqualToString:", a3}])
+        if ([objc_msgSend(v9 objectForKeyedSubscript:{@"identifier", "isEqualToString:", identifier}])
         {
           return [v9 objectForKeyedSubscript:@"operation"];
         }
@@ -3226,22 +3226,22 @@ LABEL_8:
   return result;
 }
 
-- (id)_progressForAssetIdentifier:(id)a3
+- (id)_progressForAssetIdentifier:(id)identifier
 {
   v4 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = a3;
+    identifierCopy = identifier;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Not returning NSProgress * for %{public}@ as installcoordination is enabled", &v6, 0xCu);
   }
 
   return 0;
 }
 
-- (id)placeholderAppPathForBundleIdentifier:(id)a3
+- (id)placeholderAppPathForBundleIdentifier:(id)identifier
 {
-  v3 = [[NSArray alloc] initWithObjects:{NSTemporaryDirectory(), @"com.apple.atc.Apps", a3, 0}];
+  v3 = [[NSArray alloc] initWithObjects:{NSTemporaryDirectory(), @"com.apple.atc.Apps", identifier, 0}];
   v4 = [[NSString pathWithComponents:?], "stringByAppendingPathExtension:", @"app"];
 
   return v4;
@@ -3476,20 +3476,20 @@ LABEL_46:
   return v12 & 1;
 }
 
-- (BOOL)createPlaceHolderPath:(id)a3 forBundleIdentifier:(id)a4 withAttributes:(id)a5
+- (BOOL)createPlaceHolderPath:(id)path forBundleIdentifier:(id)identifier withAttributes:(id)attributes
 {
   v17 = 0;
-  v7 = [+[NSFileManager defaultManager](NSFileManager createDirectoryAtPath:"createDirectoryAtPath:withIntermediateDirectories:attributes:error:" withIntermediateDirectories:a3 attributes:1 error:a5, &v17];
+  v7 = [+[NSFileManager defaultManager](NSFileManager createDirectoryAtPath:"createDirectoryAtPath:withIntermediateDirectories:attributes:error:" withIntermediateDirectories:path attributes:1 error:attributes, &v17];
   v8 = v7 && v17 == 0;
-  if (v8 || ([AITransactionLog logScenario:@"iTunes App Restore" step:0 success:0 forBundleID:a4 description:@"Failed to create app directory"], !v17))
+  if (v8 || ([AITransactionLog logScenario:@"iTunes App Restore" step:0 success:0 forBundleID:identifier description:@"Failed to create app directory"], !v17))
   {
     v15 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v19 = a4;
+      identifierCopy2 = identifier;
       v20 = 2114;
-      v21 = a3;
+      pathCopy2 = path;
       v11 = "Created app directory for '%{public}@' at %{public}@.";
       v12 = v15;
       v13 = OS_LOG_TYPE_DEFAULT;
@@ -3503,13 +3503,13 @@ LABEL_46:
     v9 = _ATLogCategorySyncBundle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v17 msv_description];
+      msv_description = [v17 msv_description];
       *buf = 138543874;
-      v19 = a4;
+      identifierCopy2 = identifier;
       v20 = 2114;
-      v21 = a3;
+      pathCopy2 = path;
       v22 = 2114;
-      v23 = v10;
+      v23 = msv_description;
       v11 = "Created app directory for '%{public}@' at %{public}@. error=%{public}@";
       v12 = v9;
       v13 = OS_LOG_TYPE_ERROR;
@@ -3522,20 +3522,20 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)writeIconData:(id)a3 atPath:(id)a4 returningFileSize:(unint64_t *)a5 forBundleIdentifier:(id)a6 withAttributes:(id)a7
+- (BOOL)writeIconData:(id)data atPath:(id)path returningFileSize:(unint64_t *)size forBundleIdentifier:(id)identifier withAttributes:(id)attributes
 {
   v21 = 0;
-  if (a3)
+  if (data)
   {
     v12 = +[NSFileManager defaultManager];
-    v13 = [(NSFileManager *)v12 createFileAtPath:a4 contents:a3 attributes:a7];
-    if (v13 && ((v14 = [(NSFileManager *)v12 attributesOfItemAtPath:a4 error:&v21]) != 0 ? (v15 = v21 == 0) : (v15 = 0), v15))
+    v13 = [(NSFileManager *)v12 createFileAtPath:path contents:data attributes:attributes];
+    if (v13 && ((v14 = [(NSFileManager *)v12 attributesOfItemAtPath:path error:&v21]) != 0 ? (v15 = v21 == 0) : (v15 = 0), v15))
     {
-      v20 = [(NSDictionary *)v14 fileSize];
-      v16 = v20;
-      if (a5)
+      fileSize = [(NSDictionary *)v14 fileSize];
+      v16 = fileSize;
+      if (size)
       {
-        *a5 = v20;
+        *size = fileSize;
       }
     }
 
@@ -3548,9 +3548,9 @@ LABEL_10:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544130;
-      v23 = a6;
+      identifierCopy2 = identifier;
       v24 = 2114;
-      v25 = a4;
+      pathCopy = path;
       v26 = 1024;
       v27 = v13;
       v28 = 2048;
@@ -3565,7 +3565,7 @@ LABEL_10:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v23 = a6;
+      identifierCopy2 = identifier;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "no icon data for '%{public}@'", buf, 0xCu);
     }
 
@@ -3575,26 +3575,26 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)_isRecoverableError:(id)a3
+- (BOOL)_isRecoverableError:(id)error
 {
   v4 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = a3;
+    errorCopy = error;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Treating error %{public}@ as non recoverable", &v6, 0xCu);
   }
 
   return 0;
 }
 
-- (void)_enumeratePlaceholdersWithBlock:(id)a3
+- (void)_enumeratePlaceholdersWithBlock:(id)block
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_BB68;
   v3[3] = &unk_18630;
-  v3[4] = a3;
+  v3[4] = block;
   [+[LSApplicationWorkspace defaultWorkspace](LSApplicationWorkspace "defaultWorkspace")];
 }
 
@@ -3634,16 +3634,16 @@ LABEL_10:
   }
 }
 
-+ (id)_loadPlist:(id)a3 withError:(id *)a4
++ (id)_loadPlist:(id)plist withError:(id *)error
 {
-  v4 = a4;
-  v5 = [NSData dataWithContentsOfFile:a3 options:2 error:a4];
+  errorCopy = error;
+  v5 = [NSData dataWithContentsOfFile:plist options:2 error:error];
   if (![(NSData *)v5 length])
   {
     return 0;
   }
 
-  v6 = [NSPropertyListSerialization propertyListWithData:v5 options:1 format:0 error:v4];
+  v6 = [NSPropertyListSerialization propertyListWithData:v5 options:1 format:0 error:errorCopy];
   if (!v6)
   {
     v8 = _ATLogCategorySyncBundle();
@@ -3653,13 +3653,13 @@ LABEL_10:
       v9 = "couldn't parse todo list";
       v10 = &v13;
 LABEL_9:
-      _os_log_impl(&dword_0, v4, OS_LOG_TYPE_ERROR, v9, v10, 2u);
+      _os_log_impl(&dword_0, errorCopy, OS_LOG_TYPE_ERROR, v9, v10, 2u);
     }
 
     return 0;
   }
 
-  v4 = v6;
+  errorCopy = v6;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -3675,19 +3675,19 @@ LABEL_9:
     return 0;
   }
 
-  return v4;
+  return errorCopy;
 }
 
-+ (id)_loadDemotedAppsPlist:(id)a3 withError:(id *)a4
++ (id)_loadDemotedAppsPlist:(id)plist withError:(id *)error
 {
-  v4 = a4;
-  v5 = [NSData dataWithContentsOfFile:a3 options:2 error:a4];
+  errorCopy = error;
+  v5 = [NSData dataWithContentsOfFile:plist options:2 error:error];
   if (![(NSData *)v5 length])
   {
     return 0;
   }
 
-  v6 = [NSPropertyListSerialization propertyListWithData:v5 options:0 format:0 error:v4];
+  v6 = [NSPropertyListSerialization propertyListWithData:v5 options:0 format:0 error:errorCopy];
   if (!v6)
   {
     v8 = _ATLogCategorySyncBundle();
@@ -3697,13 +3697,13 @@ LABEL_9:
       v9 = "couldn't parse demoted apps list";
       v10 = &v13;
 LABEL_9:
-      _os_log_impl(&dword_0, v4, OS_LOG_TYPE_ERROR, v9, v10, 2u);
+      _os_log_impl(&dword_0, errorCopy, OS_LOG_TYPE_ERROR, v9, v10, 2u);
     }
 
     return 0;
   }
 
-  v4 = v6;
+  errorCopy = v6;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -3719,7 +3719,7 @@ LABEL_9:
     return 0;
   }
 
-  return v4;
+  return errorCopy;
 }
 
 @end

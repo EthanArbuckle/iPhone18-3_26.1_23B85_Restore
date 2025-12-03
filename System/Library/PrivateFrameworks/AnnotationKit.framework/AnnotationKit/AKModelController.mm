@@ -1,16 +1,16 @@
 @interface AKModelController
 - (AKModelController)init;
 - (BOOL)hasHDRAnnotation;
-- (BOOL)populateFromArchivedPageModelControllers:(id)a3;
+- (BOOL)populateFromArchivedPageModelControllers:(id)controllers;
 - (double)annotationHeadroom;
 - (id)allSelectedAnnotations;
 - (id)archivedPageModelControllers;
-- (id)pageModelControllerForAnnotation:(id)a3;
-- (id)pageModelControllerForPage:(unint64_t)a3;
+- (id)pageModelControllerForAnnotation:(id)annotation;
+- (id)pageModelControllerForPage:(unint64_t)page;
 - (void)deleteAllSelectedAnnotations;
 - (void)deselectAllAnnotations;
-- (void)insertPageModelControllers:(id)a3 atIndexes:(id)a4;
-- (void)replacePageModelControllersAtIndexes:(id)a3 withPageModelControllers:(id)a4;
+- (void)insertPageModelControllers:(id)controllers atIndexes:(id)indexes;
+- (void)replacePageModelControllersAtIndexes:(id)indexes withPageModelControllers:(id)controllers;
 @end
 
 @implementation AKModelController
@@ -30,19 +30,19 @@
   return v2;
 }
 
-- (void)insertPageModelControllers:(id)a3 atIndexes:(id)a4
+- (void)insertPageModelControllers:(id)controllers atIndexes:(id)indexes
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([(AKSparseMutableControllerArray *)self->_mutablePageModelControllers containsObject:v6]& 1) != 0)
+  controllersCopy = controllers;
+  indexesCopy = indexes;
+  if (([(AKSparseMutableControllerArray *)self->_mutablePageModelControllers containsObject:controllersCopy]& 1) != 0)
   {
-    v8 = [v7 firstIndex];
+    firstIndex = [indexesCopy firstIndex];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = v6;
+    v9 = controllersCopy;
     v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
@@ -58,8 +58,8 @@
             objc_enumerationMutation(v9);
           }
 
-          [(AKModelController *)self insertObject:*(*(&v14 + 1) + 8 * v13) inPageModelControllersAtIndex:v8, v14];
-          v8 = [v7 indexGreaterThanIndex:v8];
+          [(AKModelController *)self insertObject:*(*(&v14 + 1) + 8 * v13) inPageModelControllersAtIndex:firstIndex, v14];
+          firstIndex = [indexesCopy indexGreaterThanIndex:firstIndex];
           ++v13;
         }
 
@@ -73,23 +73,23 @@
 
   else
   {
-    [(AKSparseMutableControllerArray *)self->_mutablePageModelControllers insertObjects:v6 atIndexes:v7];
+    [(AKSparseMutableControllerArray *)self->_mutablePageModelControllers insertObjects:controllersCopy atIndexes:indexesCopy];
   }
 }
 
-- (void)replacePageModelControllersAtIndexes:(id)a3 withPageModelControllers:(id)a4
+- (void)replacePageModelControllersAtIndexes:(id)indexes withPageModelControllers:(id)controllers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([(AKSparseMutableControllerArray *)self->_mutablePageModelControllers containsObject:v7]& 1) != 0)
+  indexesCopy = indexes;
+  controllersCopy = controllers;
+  if (([(AKSparseMutableControllerArray *)self->_mutablePageModelControllers containsObject:controllersCopy]& 1) != 0)
   {
-    v8 = [v6 firstIndex];
+    firstIndex = [indexesCopy firstIndex];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = v7;
+    v9 = controllersCopy;
     v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
@@ -105,8 +105,8 @@
             objc_enumerationMutation(v9);
           }
 
-          [(AKModelController *)self replaceObjectInPageModelControllersAtIndex:v8 withObject:*(*(&v14 + 1) + 8 * v13), v14];
-          v8 = [v6 indexGreaterThanIndex:v8];
+          [(AKModelController *)self replaceObjectInPageModelControllersAtIndex:firstIndex withObject:*(*(&v14 + 1) + 8 * v13), v14];
+          firstIndex = [indexesCopy indexGreaterThanIndex:firstIndex];
           ++v13;
         }
 
@@ -120,28 +120,28 @@
 
   else
   {
-    [(AKSparseMutableControllerArray *)self->_mutablePageModelControllers replaceObjectsAtIndexes:v6 withObjects:v7];
+    [(AKSparseMutableControllerArray *)self->_mutablePageModelControllers replaceObjectsAtIndexes:indexesCopy withObjects:controllersCopy];
   }
 }
 
-- (id)pageModelControllerForPage:(unint64_t)a3
+- (id)pageModelControllerForPage:(unint64_t)page
 {
-  v4 = [(AKModelController *)self pageModelControllers];
-  v5 = [v4 objectAtIndex:a3];
+  pageModelControllers = [(AKModelController *)self pageModelControllers];
+  v5 = [pageModelControllers objectAtIndex:page];
 
   return v5;
 }
 
-- (id)pageModelControllerForAnnotation:(id)a3
+- (id)pageModelControllerForAnnotation:(id)annotation
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  annotationCopy = annotation;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AKModelController *)self pageModelControllers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  pageModelControllers = [(AKModelController *)self pageModelControllers];
+  v6 = [pageModelControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -151,18 +151,18 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pageModelControllers);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 containsAnnotation:v4])
+        if ([v9 containsAnnotation:annotationCopy])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [pageModelControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -180,7 +180,7 @@ LABEL_11:
 - (id)allSelectedAnnotations
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -201,17 +201,17 @@ LABEL_11:
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [v8 annotations];
-        v10 = [v8 selectedAnnotations];
+        annotations = [v8 annotations];
+        selectedAnnotations = [v8 selectedAnnotations];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = sub_23F4592CC;
         v16[3] = &unk_278C7BDA0;
-        v17 = v10;
-        v11 = v10;
-        v12 = [v9 indexesOfObjectsPassingTest:v16];
-        v13 = [v9 objectsAtIndexes:v12];
-        [v3 addObjectsFromArray:v13];
+        v17 = selectedAnnotations;
+        v11 = selectedAnnotations;
+        v12 = [annotations indexesOfObjectsPassingTest:v16];
+        v13 = [annotations objectsAtIndexes:v12];
+        [array addObjectsFromArray:v13];
       }
 
       v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -220,7 +220,7 @@ LABEL_11:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)deleteAllSelectedAnnotations
@@ -246,15 +246,15 @@ LABEL_11:
         }
 
         v6 = *(*(&v15 + 1) + 8 * i);
-        v7 = [v6 annotations];
-        v8 = [v6 selectedAnnotations];
+        annotations = [v6 annotations];
+        selectedAnnotations = [v6 selectedAnnotations];
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = sub_23F45949C;
         v13[3] = &unk_278C7BDA0;
-        v14 = v8;
-        v9 = v8;
-        v10 = [v7 indexesOfObjectsPassingTest:v13];
+        v14 = selectedAnnotations;
+        v9 = selectedAnnotations;
+        v10 = [annotations indexesOfObjectsPassingTest:v13];
         v11 = [v6 mutableArrayValueForKey:@"annotations"];
         [v11 removeObjectsAtIndexes:v10];
       }
@@ -273,8 +273,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(AKModelController *)self pageModelControllers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  pageModelControllers = [(AKModelController *)self pageModelControllers];
+  v3 = [pageModelControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -284,7 +284,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(pageModelControllers);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) hasHDRAnnotation])
@@ -294,7 +294,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [pageModelControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -316,8 +316,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AKModelController *)self pageModelControllers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  pageModelControllers = [(AKModelController *)self pageModelControllers];
+  v3 = [pageModelControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -329,7 +329,7 @@ LABEL_11:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(pageModelControllers);
         }
 
         [*(*(&v10 + 1) + 8 * i) annotationHeadroom];
@@ -339,7 +339,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [pageModelControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -360,8 +360,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(AKModelController *)self pageModelControllers];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  pageModelControllers = [(AKModelController *)self pageModelControllers];
+  v3 = [pageModelControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -372,12 +372,12 @@ LABEL_11:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(pageModelControllers);
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [v7 selectedAnnotations];
-        v9 = [v8 count];
+        selectedAnnotations = [v7 selectedAnnotations];
+        v9 = [selectedAnnotations count];
 
         if (v9)
         {
@@ -387,7 +387,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [pageModelControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -397,13 +397,13 @@ LABEL_11:
 - (id)archivedPageModelControllers
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(AKModelController *)self pageModelControllers];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  pageModelControllers = [(AKModelController *)self pageModelControllers];
+  v5 = [pageModelControllers countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -414,20 +414,20 @@ LABEL_11:
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pageModelControllers);
         }
 
-        v9 = [*(*(&v23 + 1) + 8 * i) archivableRepresentation];
-        [v3 addObject:v9];
+        archivableRepresentation = [*(*(&v23 + 1) + 8 * i) archivableRepresentation];
+        [array addObject:archivableRepresentation];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      v6 = [pageModelControllers countByEnumeratingWithState:&v23 objects:v29 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [MEMORY[0x277CBEA60] arrayWithArray:v3];
+  v10 = [MEMORY[0x277CBEA60] arrayWithArray:array];
   v11 = [AKSecureSerializationHelper dataForSecureCodingCompliantObject:v10 withOptionalKey:qword_27E399D98];
   v12 = [v11 length];
   v13 = malloc_type_calloc(v12, 1uLL, 0x100004077774924uLL);
@@ -461,17 +461,17 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)populateFromArchivedPageModelControllers:(id)a3
+- (BOOL)populateFromArchivedPageModelControllers:(id)controllers
 {
   v32[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllersCopy = controllers;
   v5 = objc_autoreleasePoolPush();
-  v6 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v4 error:0];
+  v6 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:controllersCopy error:0];
   v7 = v6;
   if (v6 && (([v6 containsValueForKey:qword_27E399DA0] & 1) != 0 || (objc_msgSend(v7, "containsValueForKey:", qword_27E399D98) & 1) != 0))
   {
     v8 = 0x278C7A000uLL;
-    v9 = v4;
+    v9 = controllersCopy;
     if (![v7 containsValueForKey:qword_27E399DA0])
     {
 LABEL_24:
@@ -511,7 +511,7 @@ LABEL_24:
     v32[2] = objc_opt_class();
     v32[3] = objc_opt_class();
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:4];
-    v11 = [AKSecureSerializationHelper secureCodingCompliantObjectForData:v4 ofClasses:v10 withOptionalKey:qword_27E399DA0];
+    v11 = [AKSecureSerializationHelper secureCodingCompliantObjectForData:controllersCopy ofClasses:v10 withOptionalKey:qword_27E399DA0];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -529,29 +529,29 @@ LABEL_24:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v13 unsignedIntegerValue];
+        unsignedIntegerValue = [v13 unsignedIntegerValue];
 
         v9 = 0;
-        if (!v12 || !v14)
+        if (!v12 || !unsignedIntegerValue)
         {
           goto LABEL_23;
         }
 
         v15 = [v12 length];
         src_buffer = [v12 bytes];
-        v16 = malloc_type_calloc(v14, 1uLL, 0x4383102FuLL);
+        v16 = malloc_type_calloc(unsignedIntegerValue, 1uLL, 0x4383102FuLL);
         if (v16)
         {
           v27 = v16;
-          v17 = compression_decode_buffer(v16, v14, src_buffer, v15, 0, COMPRESSION_LZMA);
-          if (v17 && v17 == v14)
+          v17 = compression_decode_buffer(v16, unsignedIntegerValue, src_buffer, v15, 0, COMPRESSION_LZMA);
+          if (v17 && v17 == unsignedIntegerValue)
           {
-            v9 = [MEMORY[0x277CBEA90] dataWithBytes:v27 length:v14];
+            v9 = [MEMORY[0x277CBEA90] dataWithBytes:v27 length:unsignedIntegerValue];
           }
 
           else
           {
-            NSLog(&cfstr_SDecompressing.isa, "[AKModelController populateFromArchivedPageModelControllers:]", v15, v14, v17);
+            NSLog(&cfstr_SDecompressing.isa, "[AKModelController populateFromArchivedPageModelControllers:]", v15, unsignedIntegerValue, v17);
             v9 = 0;
           }
 
@@ -589,7 +589,7 @@ LABEL_23:
 
   objc_autoreleasePoolPop(v5);
   v19 = 0;
-  v9 = v4;
+  v9 = controllersCopy;
 LABEL_29:
 
   return v19;

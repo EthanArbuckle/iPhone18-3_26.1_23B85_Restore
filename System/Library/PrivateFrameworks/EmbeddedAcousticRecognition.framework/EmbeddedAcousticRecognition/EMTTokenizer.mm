@@ -1,14 +1,14 @@
 @interface EMTTokenizer
-- (EMTTokenizer)initWithModelURL:(id)a3;
-- (id)format:(id)a3;
-- (id)format:(id)a3 preToPostItnMap:(id)a4;
+- (EMTTokenizer)initWithModelURL:(id)l;
+- (id)format:(id)format;
+- (id)format:(id)format preToPostItnMap:(id)map;
 @end
 
 @implementation EMTTokenizer
 
-- (EMTTokenizer)initWithModelURL:(id)a3
+- (EMTTokenizer)initWithModelURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = EMTTokenizer;
   v5 = [(EMTTokenizer *)&v13 init];
@@ -23,7 +23,7 @@
     v10[1] = 3221225472;
     v10[2] = __33__EMTTokenizer_initWithModelURL___block_invoke;
     v10[3] = &unk_1E7C1A5C0;
-    v11 = v4;
+    v11 = lCopy;
     v12 = v5;
     dispatch_async(v8, v10);
   }
@@ -63,18 +63,18 @@ void __33__EMTTokenizer_initWithModelURL___block_invoke(uint64_t a1)
   }
 }
 
-- (id)format:(id)a3 preToPostItnMap:(id)a4
+- (id)format:(id)format preToPostItnMap:(id)map
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 tokens];
-  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  formatCopy = format;
+  mapCopy = map;
+  tokens = [formatCopy tokens];
+  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(tokens, "count")}];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = v8;
+  v10 = tokens;
   v11 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v11)
   {
@@ -88,8 +88,8 @@ void __33__EMTTokenizer_initWithModelURL___block_invoke(uint64_t a1)
           objc_enumerationMutation(v10);
         }
 
-        v14 = [*(*(&v30 + 1) + 8 * i) text];
-        [v9 addObject:v14];
+        text = [*(*(&v30 + 1) + 8 * i) text];
+        [v9 addObject:text];
       }
 
       v11 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -111,9 +111,9 @@ void __33__EMTTokenizer_initWithModelURL___block_invoke(uint64_t a1)
   v20[3] = &unk_1E7C1B7E0;
   v20[4] = self;
   v21 = v9;
-  v22 = v7;
+  v22 = mapCopy;
   v23 = &v24;
-  v16 = v7;
+  v16 = mapCopy;
   v17 = v9;
   dispatch_sync(queue, v20);
   v18 = v25[5];
@@ -131,17 +131,17 @@ void __39__EMTTokenizer_format_preToPostItnMap___block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (id)format:(id)a3
+- (id)format:(id)format
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 tokens];
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  formatCopy = format;
+  tokens = [formatCopy tokens];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(tokens, "count")}];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v5;
+  v7 = tokens;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
@@ -155,8 +155,8 @@ void __39__EMTTokenizer_format_preToPostItnMap___block_invoke(void *a1)
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v25 + 1) + 8 * i) text];
-        [v6 addObject:v11];
+        text = [*(*(&v25 + 1) + 8 * i) text];
+        [v6 addObject:text];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];

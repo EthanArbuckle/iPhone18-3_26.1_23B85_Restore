@@ -1,21 +1,21 @@
 @interface _WKActivatedElementInfo
-+ (_WKActivatedElementInfo)activatedElementInfoWithInteractionInformationAtPosition:(const void *)a3 userInfo:(id)a4;
++ (_WKActivatedElementInfo)activatedElementInfoWithInteractionInformationAtPosition:(const void *)position userInfo:(id)info;
 - (CGRect)boundingRect;
 - (UIImage)image;
 - (id).cxx_construct;
-- (id)_initWithInteractionInformationAtPosition:(const void *)a3 isUsingAlternateURLForImage:(BOOL)a4 userInfo:(id)a5;
-- (id)_initWithType:(int64_t)a3 URL:(id)a4 image:(void *)a5 information:(const void *)a6;
-- (id)_initWithType:(int64_t)a3 URL:(id)a4 imageURL:(id)a5 image:(void *)a6 userInfo:(id)a7 information:(const void *)a8;
-- (id)_initWithType:(int64_t)a3 URL:(id)a4 imageURL:(id)a5 location:(const IntPoint *)a6 title:(id)a7 ID:(id)a8 rect:(CGRect)a9 image:(void *)a10 imageMIMEType:(id)a11 isAnimatedImage:(BOOL)a12 isAnimating:(BOOL)a13 canShowAnimationControls:(BOOL)a14 animationsUnderElement:()Vector<WebCore:()0UL :()WTF:()16UL :(WTF:(id)a16 :FastMalloc>)a15 CrashOnOverflow ElementAnimationContext userInfo:;
-- (id)_initWithType:(int64_t)a3 URL:(id)a4 information:(const void *)a5;
-- (id)_initWithType:(int64_t)a3 image:(void *)a4 information:(const void *)a5;
+- (id)_initWithInteractionInformationAtPosition:(const void *)position isUsingAlternateURLForImage:(BOOL)image userInfo:(id)info;
+- (id)_initWithType:(int64_t)type URL:(id)l image:(void *)image information:(const void *)information;
+- (id)_initWithType:(int64_t)type URL:(id)l imageURL:(id)rL image:(void *)image userInfo:(id)info information:(const void *)information;
+- (id)_initWithType:(int64_t)type URL:(id)l imageURL:(id)rL location:(const IntPoint *)location title:(id)title ID:(id)d rect:(CGRect)rect image:(void *)self0 imageMIMEType:(id)self1 isAnimatedImage:(BOOL)self2 isAnimating:(BOOL)self3 canShowAnimationControls:(BOOL)self4 animationsUnderElement:()Vector<WebCore:()0UL :()WTF:()16UL :(WTF:(id)self6 :FastMalloc>)self5 CrashOnOverflow ElementAnimationContext userInfo:;
+- (id)_initWithType:(int64_t)type URL:(id)l information:(const void *)information;
+- (id)_initWithType:(int64_t)type image:(void *)image information:(const void *)information;
 @end
 
 @implementation _WKActivatedElementInfo
 
-+ (_WKActivatedElementInfo)activatedElementInfoWithInteractionInformationAtPosition:(const void *)a3 userInfo:(id)a4
++ (_WKActivatedElementInfo)activatedElementInfoWithInteractionInformationAtPosition:(const void *)position userInfo:(id)info
 {
-  v4 = [[a1 alloc] _initWithInteractionInformationAtPosition:a3 isUsingAlternateURLForImage:0 userInfo:a4];
+  v4 = [[self alloc] _initWithInteractionInformationAtPosition:position isUsingAlternateURLForImage:0 userInfo:info];
   v5 = v4;
   if (v4)
   {
@@ -25,7 +25,7 @@
   return v5;
 }
 
-- (id)_initWithInteractionInformationAtPosition:(const void *)a3 isUsingAlternateURLForImage:(BOOL)a4 userInfo:(id)a5
+- (id)_initWithInteractionInformationAtPosition:(const void *)position isUsingAlternateURLForImage:(BOOL)image userInfo:(id)info
 {
   v48.receiver = self;
   v48.super_class = _WKActivatedElementInfo;
@@ -35,7 +35,7 @@
     return v8;
   }
 
-  WTF::URL::createCFURL(&v47, (a3 + 72));
+  WTF::URL::createCFURL(&v47, (position + 72));
   v9 = v47;
   v47 = 0;
   v10 = *(v8 + 1);
@@ -50,7 +50,7 @@
     }
   }
 
-  WTF::URL::createCFURL(&v47, (a3 + 112));
+  WTF::URL::createCFURL(&v47, (position + 112));
   v12 = v47;
   v47 = 0;
   v13 = *(v8 + 2);
@@ -65,7 +65,7 @@
     }
   }
 
-  v15 = *(a3 + 19);
+  v15 = *(position + 19);
   if (v15)
   {
     atomic_fetch_add_explicit(v15, 2u, memory_order_relaxed);
@@ -100,8 +100,8 @@
   {
   }
 
-  *(v8 + 4) = *a3;
-  v22 = *(a3 + 20);
+  *(v8 + 4) = *position;
+  v22 = *(position + 20);
   if (v22)
   {
     atomic_fetch_add_explicit(v22, 2u, memory_order_relaxed);
@@ -141,20 +141,20 @@
   *(v8 + 16) = v31;
   *(v8 + 17) = v32;
   *(v8 + 18) = v33;
-  if (*(a3 + 26) == 1)
+  if (*(position + 26) == 1)
   {
     v34 = 2;
   }
 
   else
   {
-    if (*(a3 + 24) == 1)
+    if (*(position + 24) == 1)
     {
       *(v8 + 14) = 0;
       goto LABEL_33;
     }
 
-    if (*(a3 + 25) == 1)
+    if (*(position + 25) == 1)
     {
       v34 = 1;
     }
@@ -167,7 +167,7 @@
 
   *(v8 + 14) = v34;
 LABEL_33:
-  v35 = *(a3 + 24);
+  v35 = *(position + 24);
   if (v35)
   {
     atomic_fetch_add(v35, 1u);
@@ -180,7 +180,7 @@ LABEL_33:
     WTF::ThreadSafeRefCounted<WebCore::ShareableBitmap,(WTF::DestructionThread)0>::deref(v36, v29);
   }
 
-  v37 = *(a3 + 21);
+  v37 = *(position + 21);
   if (v37)
   {
     atomic_fetch_add_explicit(v37, 2u, memory_order_relaxed);
@@ -215,30 +215,30 @@ LABEL_33:
   {
   }
 
-  *(v8 + 104) = *(a3 + 27);
-  *(v8 + 80) = *(a3 + 28);
-  *(v8 + 81) = *(a3 + 29);
-  *(v8 + 105) = *(a3 + 25);
-  *(v8 + 106) = a4;
-  if (a5)
+  *(v8 + 104) = *(position + 27);
+  *(v8 + 80) = *(position + 28);
+  *(v8 + 81) = *(position + 29);
+  *(v8 + 105) = *(position + 25);
+  *(v8 + 106) = image;
+  if (info)
   {
-    v44 = a5;
+    infoCopy = info;
   }
 
   v45 = *(v8 + 9);
-  *(v8 + 9) = a5;
+  *(v8 + 9) = info;
   if (v45)
   {
   }
 
-  WTF::Vector<WebCore::ElementAnimationContext,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::operator=(v8 + 88, a3 + 512);
+  WTF::Vector<WebCore::ElementAnimationContext,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::operator=(v8 + 88, position + 512);
   return v8;
 }
 
-- (id)_initWithType:(int64_t)a3 URL:(id)a4 information:(const void *)a5
+- (id)_initWithType:(int64_t)type URL:(id)l information:(const void *)information
 {
-  WTF::URL::createCFURL(&v12, (a5 + 112));
-  v9 = [(_WKActivatedElementInfo *)self _initWithType:a3 URL:a4 imageURL:v12 information:a5];
+  WTF::URL::createCFURL(&v12, (information + 112));
+  v9 = [(_WKActivatedElementInfo *)self _initWithType:type URL:l imageURL:v12 information:information];
   v10 = v12;
   v12 = 0;
   if (v10)
@@ -248,12 +248,12 @@ LABEL_33:
   return v9;
 }
 
-- (id)_initWithType:(int64_t)a3 image:(void *)a4 information:(const void *)a5
+- (id)_initWithType:(int64_t)type image:(void *)image information:(const void *)information
 {
-  WTF::URL::createCFURL(&v15, (a5 + 72));
+  WTF::URL::createCFURL(&v15, (information + 72));
   v9 = v15;
-  WTF::URL::createCFURL(&v14, (a5 + 112));
-  v10 = [(_WKActivatedElementInfo *)self _initWithType:a3 URL:v9 imageURL:v14 image:a4 userInfo:0 information:a5];
+  WTF::URL::createCFURL(&v14, (information + 112));
+  v10 = [(_WKActivatedElementInfo *)self _initWithType:type URL:v9 imageURL:v14 image:image userInfo:0 information:information];
   v11 = v14;
   v14 = 0;
   if (v11)
@@ -269,10 +269,10 @@ LABEL_33:
   return v10;
 }
 
-- (id)_initWithType:(int64_t)a3 URL:(id)a4 image:(void *)a5 information:(const void *)a6
+- (id)_initWithType:(int64_t)type URL:(id)l image:(void *)image information:(const void *)information
 {
-  WTF::URL::createCFURL(&v14, (a6 + 112));
-  v11 = [(_WKActivatedElementInfo *)self _initWithType:a3 URL:a4 imageURL:v14 image:a5 userInfo:0 information:a6];
+  WTF::URL::createCFURL(&v14, (information + 112));
+  v11 = [(_WKActivatedElementInfo *)self _initWithType:type URL:l imageURL:v14 image:image userInfo:0 information:information];
   v12 = v14;
   v14 = 0;
   if (v12)
@@ -282,10 +282,10 @@ LABEL_33:
   return v11;
 }
 
-- (id)_initWithType:(int64_t)a3 URL:(id)a4 imageURL:(id)a5 image:(void *)a6 userInfo:(id)a7 information:(const void *)a8
+- (id)_initWithType:(int64_t)type URL:(id)l imageURL:(id)rL image:(void *)image userInfo:(id)info information:(const void *)information
 {
-  WTF::Vector<WebCore::ElementAnimationContext,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(&v58, a8 + 512);
-  v15 = *(a8 + 20);
+  WTF::Vector<WebCore::ElementAnimationContext,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(&v58, information + 512);
+  v15 = *(information + 20);
   if (v15)
   {
     atomic_fetch_add_explicit(v15, 2u, memory_order_relaxed);
@@ -303,7 +303,7 @@ LABEL_33:
   }
 
   v18 = v57;
-  v19 = *(a8 + 21);
+  v19 = *(information + 21);
   if (v19)
   {
     atomic_fetch_add_explicit(v19, 2u, memory_order_relaxed);
@@ -326,17 +326,17 @@ LABEL_33:
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = *(a8 + 19);
+  v31 = *(information + 19);
   v51 = v18;
-  v52 = self;
+  selfCopy = self;
   v50 = v22;
   if (v31)
   {
     atomic_fetch_add_explicit(v31, 2u, memory_order_relaxed);
     MEMORY[0x19EB00B70](&v55, v31);
-    v33 = a6;
-    v34 = a4;
-    v35 = a5;
+    imageCopy2 = image;
+    lCopy2 = l;
+    rLCopy2 = rL;
     if (atomic_fetch_add_explicit(v31, 0xFFFFFFFE, memory_order_relaxed) == 2)
     {
       WTF::StringImpl::destroy(v31, v32);
@@ -345,22 +345,22 @@ LABEL_33:
 
   else
   {
-    v33 = a6;
-    v34 = a4;
-    v35 = a5;
+    imageCopy2 = image;
+    lCopy2 = l;
+    rLCopy2 = rL;
     v55 = &stru_1F1147748;
     v36 = &stru_1F1147748;
   }
 
   v37 = v55;
-  v38 = *(a8 + 27);
-  v39 = *(a8 + 28);
-  v40 = *(a8 + 29);
+  v38 = *(information + 27);
+  v39 = *(information + 28);
+  v40 = *(information + 29);
   WTF::Vector<WebCore::ElementAnimationContext,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(&v53, &v58);
   BYTE2(v49) = v40;
   BYTE1(v49) = v39;
   LOBYTE(v49) = v38;
-  v42 = [(_WKActivatedElementInfo *)v52 _initWithType:a3 URL:v34 imageURL:v35 location:a8 title:v51 ID:v50 rect:v24 image:v26 imageMIMEType:v28 isAnimatedImage:v30 isAnimating:v33 canShowAnimationControls:v37 animationsUnderElement:v49 userInfo:&v53, a7];
+  info = [(_WKActivatedElementInfo *)selfCopy _initWithType:type URL:lCopy2 imageURL:rLCopy2 location:information title:v51 ID:v50 rect:v24 image:v26 imageMIMEType:v28 isAnimatedImage:v30 isAnimating:imageCopy2 canShowAnimationControls:v37 animationsUnderElement:v49 userInfo:&v53, info];
   v43 = v53;
   if (v53)
   {
@@ -395,43 +395,43 @@ LABEL_33:
     WTF::fastFree(v47, v41);
   }
 
-  return v42;
+  return info;
 }
 
-- (id)_initWithType:(int64_t)a3 URL:(id)a4 imageURL:(id)a5 location:(const IntPoint *)a6 title:(id)a7 ID:(id)a8 rect:(CGRect)a9 image:(void *)a10 imageMIMEType:(id)a11 isAnimatedImage:(BOOL)a12 isAnimating:(BOOL)a13 canShowAnimationControls:(BOOL)a14 animationsUnderElement:()Vector<WebCore:()0UL :()WTF:()16UL :(WTF:(id)a16 :FastMalloc>)a15 CrashOnOverflow ElementAnimationContext userInfo:
+- (id)_initWithType:(int64_t)type URL:(id)l imageURL:(id)rL location:(const IntPoint *)location title:(id)title ID:(id)d rect:(CGRect)rect image:(void *)self0 imageMIMEType:(id)self1 isAnimatedImage:(BOOL)self2 isAnimating:(BOOL)self3 canShowAnimationControls:(BOOL)self4 animationsUnderElement:()Vector<WebCore:()0UL :()WTF:()16UL :(WTF:(id)self6 :FastMalloc>)self5 CrashOnOverflow ElementAnimationContext userInfo:
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v42.receiver = self;
   v42.super_class = _WKActivatedElementInfo;
   v26 = [(_WKActivatedElementInfo *)&v42 init];
   if (v26)
   {
-    v27 = [a4 copy];
+    v27 = [l copy];
     v28 = *(v26 + 1);
     *(v26 + 1) = v27;
     if (v28)
     {
     }
 
-    v29 = [a5 copy];
+    v29 = [rL copy];
     v30 = *(v26 + 2);
     *(v26 + 2) = v29;
     if (v30)
     {
     }
 
-    v31 = [a11 copy];
+    v31 = [eType copy];
     v32 = *(v26 + 7);
     *(v26 + 7) = v31;
     if (v32)
     {
     }
 
-    *(v26 + 4) = *a6;
-    v33 = [a7 copy];
+    *(v26 + 4) = *location;
+    v33 = [title copy];
     v35 = *(v26 + 3);
     *(v26 + 3) = v33;
     if (v35)
@@ -442,26 +442,26 @@ LABEL_33:
     *(v26 + 16) = y;
     *(v26 + 17) = width;
     *(v26 + 18) = height;
-    *(v26 + 14) = a3;
-    if (a10)
+    *(v26 + 14) = type;
+    if (image)
     {
-      atomic_fetch_add(a10, 1u);
+      atomic_fetch_add(image, 1u);
     }
 
     v36 = *(v26 + 6);
-    *(v26 + 6) = a10;
+    *(v26 + 6) = image;
     if (v36)
     {
       WTF::ThreadSafeRefCounted<WebCore::ShareableBitmap,(WTF::DestructionThread)0>::deref(v36, v34);
     }
 
-    if (a8)
+    if (d)
     {
-      v37 = a8;
+      dCopy = d;
     }
 
     v38 = *(v26 + 5);
-    *(v26 + 5) = a8;
+    *(v26 + 5) = d;
     if (v38)
     {
     }
@@ -473,10 +473,10 @@ LABEL_33:
     {
     }
 
-    *(v26 + 80) = a13;
-    *(v26 + 81) = a14;
+    *(v26 + 80) = animating;
+    *(v26 + 81) = controls;
     WTF::Vector<WebCore::ElementAnimationContext,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::operator=(v26 + 88, a15.m_buffer);
-    *(v26 + 104) = a12;
+    *(v26 + 104) = animatedImage;
   }
 
   return v26;

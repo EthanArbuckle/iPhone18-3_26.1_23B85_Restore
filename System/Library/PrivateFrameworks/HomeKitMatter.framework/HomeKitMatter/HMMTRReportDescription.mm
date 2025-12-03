@@ -1,23 +1,23 @@
 @interface HMMTRReportDescription
-- (HMMTRReportDescription)initWithClusterId:(id)a3 attributeIds:(id)a4 eventIds:(id)a5;
+- (HMMTRReportDescription)initWithClusterId:(id)id attributeIds:(id)ids eventIds:(id)eventIds;
 @end
 
 @implementation HMMTRReportDescription
 
-- (HMMTRReportDescription)initWithClusterId:(id)a3 attributeIds:(id)a4 eventIds:(id)a5
+- (HMMTRReportDescription)initWithClusterId:(id)id attributeIds:(id)ids eventIds:(id)eventIds
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  idsCopy = ids;
+  eventIdsCopy = eventIds;
   v15.receiver = self;
   v15.super_class = HMMTRReportDescription;
   v12 = [(HMMTRReportDescription *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clusterId, a3);
-    objc_storeStrong(&v13->_attributeIds, a4);
-    objc_storeStrong(&v13->_eventIds, a5);
+    objc_storeStrong(&v12->_clusterId, id);
+    objc_storeStrong(&v13->_attributeIds, ids);
+    objc_storeStrong(&v13->_eventIds, eventIds);
   }
 
   return v13;

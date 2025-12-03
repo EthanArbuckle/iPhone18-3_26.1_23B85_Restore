@@ -1,9 +1,9 @@
 @interface PXPlacesMapLayoutItemImpl
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLayoutItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLayoutItem:(id)item;
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)description;
-- (PXPlacesMapLayoutItemImpl)initWithCoordinate:(CLLocationCoordinate2D)a3;
+- (PXPlacesMapLayoutItemImpl)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
 - (unint64_t)hash;
 @end
 
@@ -32,31 +32,31 @@
   v7 = v6;
   [(PXPlacesMapLayoutItemImpl *)self coordinate];
   [v5 appendFormat:@"- Location: %f, %f:\n", v7, v8];
-  v9 = [(PXPlacesMapLayoutItemImpl *)self geotaggables];
-  [v5 appendFormat:@"- Geotaggables: %@:\n", v9];
+  geotaggables = [(PXPlacesMapLayoutItemImpl *)self geotaggables];
+  [v5 appendFormat:@"- Geotaggables: %@:\n", geotaggables];
 
   return v5;
 }
 
-- (BOOL)isEqualToLayoutItem:(id)a3
+- (BOOL)isEqualToLayoutItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(PXPlacesMapLayoutItemImpl *)self coordinate];
   v6 = v5;
-  [v4 coordinate];
-  if (vabdd_f64(v6, v7) >= 2.22044605e-16 || (-[PXPlacesMapLayoutItemImpl coordinate](self, "coordinate"), v9 = v8, [v4 coordinate], vabdd_f64(v9, v10) >= 2.22044605e-16))
+  [itemCopy coordinate];
+  if (vabdd_f64(v6, v7) >= 2.22044605e-16 || (-[PXPlacesMapLayoutItemImpl coordinate](self, "coordinate"), v9 = v8, [itemCopy coordinate], vabdd_f64(v9, v10) >= 2.22044605e-16))
   {
     v14 = 0;
   }
 
   else
   {
-    v11 = [(PXPlacesMapLayoutItemImpl *)self geotaggables];
-    v12 = [v4 geotaggables];
-    v13 = [v11 count];
-    if (v13 == [v12 count])
+    geotaggables = [(PXPlacesMapLayoutItemImpl *)self geotaggables];
+    geotaggables2 = [itemCopy geotaggables];
+    v13 = [geotaggables count];
+    if (v13 == [geotaggables2 count])
     {
-      v14 = [v11 isEqualToOrderedSet:v12];
+      v14 = [geotaggables isEqualToOrderedSet:geotaggables2];
     }
 
     else
@@ -68,18 +68,18 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PXPlacesMapLayoutItemImpl *)self isEqualToLayoutItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PXPlacesMapLayoutItemImpl *)self isEqualToLayoutItem:v5];
   }
 
   return v6;
@@ -93,10 +93,10 @@
   return fabs(v5 * 1000.0 + v4 * 1000.0);
 }
 
-- (PXPlacesMapLayoutItemImpl)initWithCoordinate:(CLLocationCoordinate2D)a3
+- (PXPlacesMapLayoutItemImpl)initWithCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v9.receiver = self;
   v9.super_class = PXPlacesMapLayoutItemImpl;
   v5 = [(PXPlacesMapLayoutItemImpl *)&v9 init];
@@ -104,8 +104,8 @@
   if (v5)
   {
     [(PXPlacesMapLayoutItemImpl *)v5 setCoordinate:latitude, longitude];
-    v7 = [MEMORY[0x1E695DFA0] orderedSet];
-    [(PXPlacesMapLayoutItemImpl *)v6 setLayoutGeotaggables:v7];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+    [(PXPlacesMapLayoutItemImpl *)v6 setLayoutGeotaggables:orderedSet];
   }
 
   return v6;

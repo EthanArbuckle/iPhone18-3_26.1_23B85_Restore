@@ -1,6 +1,6 @@
 @interface BKFont
 + (id)_fontDescriptorLookupQueue;
-+ (void)_lookupLocalizedNameForAttrs:(id)a3 withCompletion:(id)a4;
++ (void)_lookupLocalizedNameForAttrs:(id)attrs withCompletion:(id)completion;
 - (BOOL)isInstalled;
 - (BOOL)isOriginalFont;
 - (NSString)description;
@@ -8,9 +8,9 @@
 - (NSString)postscriptBoldName;
 - (id)localizedName;
 - (void)cancelDownload;
-- (void)checkStateSynchronously:(BOOL)a3 completion:(id)a4;
+- (void)checkStateSynchronously:(BOOL)synchronously completion:(id)completion;
 - (void)dealloc;
-- (void)downloadWithAllowCellular:(BOOL)a3;
+- (void)downloadWithAllowCellular:(BOOL)cellular;
 - (void)registerFiles;
 - (void)unregisterFiles;
 @end
@@ -40,8 +40,8 @@
 - (NSString)displayName
 {
   p_displayName = &self->_displayName;
-  v4 = self->_displayName;
-  if (!v4)
+  localizedName = self->_displayName;
+  if (!localizedName)
   {
     kind = self->_kind;
     if (kind == 3)
@@ -56,10 +56,10 @@
         v7 = 0;
 LABEL_10:
 
-        v4 = [(BKFont *)self localizedName];
-        if (!v4)
+        localizedName = [(BKFont *)self localizedName];
+        if (!localizedName)
         {
-          v4 = [(BKFont *)self familyName];
+          localizedName = [(BKFont *)self familyName];
         }
 
         goto LABEL_12;
@@ -87,7 +87,7 @@ LABEL_10:
   }
 
 LABEL_12:
-  v10 = v4;
+  v10 = localizedName;
 LABEL_13:
 
   return v10;
@@ -95,26 +95,26 @@ LABEL_13:
 
 - (BOOL)isOriginalFont
 {
-  v2 = [(BKFont *)self familyName];
-  v3 = [v2 isEqualToString:&stru_1E7188];
+  familyName = [(BKFont *)self familyName];
+  v3 = [familyName isEqualToString:&stru_1E7188];
 
   return v3;
 }
 
-+ (void)_lookupLocalizedNameForAttrs:(id)a3 withCompletion:(id)a4
++ (void)_lookupLocalizedNameForAttrs:(id)attrs withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() _fontDescriptorLookupQueue];
+  attrsCopy = attrs;
+  completionCopy = completion;
+  _fontDescriptorLookupQueue = [objc_opt_class() _fontDescriptorLookupQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_FBB74;
   v10[3] = &unk_1E3438;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
-  dispatch_async(v7, v10);
+  v11 = attrsCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = attrsCopy;
+  dispatch_async(_fontDescriptorLookupQueue, v10);
 }
 
 - (id)localizedName
@@ -122,21 +122,21 @@ LABEL_13:
   localizedName = self->_localizedName;
   if (!localizedName)
   {
-    v4 = [(BKFont *)self postscriptName];
+    postscriptName = [(BKFont *)self postscriptName];
 
-    if (v4)
+    if (postscriptName)
     {
-      v5 = [(BKFont *)self postscriptName];
+      postscriptName2 = [(BKFont *)self postscriptName];
       v6 = &kCTFontNameAttribute;
     }
 
     else
     {
-      v5 = [(BKFont *)self familyName];
+      postscriptName2 = [(BKFont *)self familyName];
       v6 = &kCTFontFamilyNameAttribute;
     }
 
-    v7 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v5, *v6, 0];
+    v7 = [NSMutableDictionary dictionaryWithObjectsAndKeys:postscriptName2, *v6, 0];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -156,8 +156,8 @@ LABEL_13:
   postscriptBoldName = self->_postscriptBoldName;
   if (!postscriptBoldName)
   {
-    v4 = [(BKFont *)self familyName];
-    v5 = [NSMutableDictionary dictionaryWithObject:v4 forKey:kCTFontFamilyNameAttribute];
+    familyName = [(BKFont *)self familyName];
+    v5 = [NSMutableDictionary dictionaryWithObject:familyName forKey:kCTFontFamilyNameAttribute];
 
     v6 = [NSNumber numberWithInteger:2];
     v7 = [NSDictionary dictionaryWithObject:v6 forKey:kCTFontSymbolicTrait];
@@ -178,8 +178,8 @@ LABEL_10:
     {
       v11 = v10;
       v12 = CTFontCopyFamilyName(v10);
-      v13 = [(BKFont *)self familyName];
-      v14 = [v13 isEqualToString:v12];
+      familyName2 = [(BKFont *)self familyName];
+      v14 = [familyName2 isEqualToString:v12];
 
       CFRelease(v12);
       if (v14)
@@ -230,8 +230,8 @@ LABEL_11:
   {
     v3 = objc_alloc_init(NSMutableArray);
     v4 = +[NSBundle mainBundle];
-    v5 = [(BKFont *)self fileExtension];
-    v6 = [v4 URLsForResourcesWithExtension:v5 subdirectory:0];
+    fileExtension = [(BKFont *)self fileExtension];
+    v6 = [v4 URLsForResourcesWithExtension:fileExtension subdirectory:0];
 
     v23 = 0u;
     v24 = 0u;
@@ -255,9 +255,9 @@ LABEL_11:
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [v13 lastPathComponent];
-          v15 = [(BKFont *)self fileNamePrefix];
-          v16 = [v14 hasPrefix:v15];
+          lastPathComponent = [v13 lastPathComponent];
+          fileNamePrefix = [(BKFont *)self fileNamePrefix];
+          v16 = [lastPathComponent hasPrefix:fileNamePrefix];
 
           if (v16)
           {
@@ -330,19 +330,19 @@ LABEL_11:
 
 - (BOOL)isInstalled
 {
-  v3 = [(BKFont *)self kind];
-  if (v3 - 1 < 4)
+  kind = [(BKFont *)self kind];
+  if (kind - 1 < 4)
   {
     return 1;
   }
 
-  if (v3)
+  if (kind)
   {
     return 0;
   }
 
-  v5 = [(BKFont *)self familyName];
-  v6 = [NSDictionary dictionaryWithObjectsAndKeys:v5, kCTFontNameAttribute, 0];
+  familyName = [(BKFont *)self familyName];
+  v6 = [NSDictionary dictionaryWithObjectsAndKeys:familyName, kCTFontNameAttribute, 0];
   v7 = CTFontDescriptorCreateWithAttributes(v6);
   if (v7)
   {
@@ -365,14 +365,14 @@ LABEL_11:
   return v4;
 }
 
-- (void)checkStateSynchronously:(BOOL)a3 completion:(id)a4
+- (void)checkStateSynchronously:(BOOL)synchronously completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  synchronouslyCopy = synchronously;
+  completionCopy = completion;
   if ([(BKFont *)self kind]- 1 > &dword_0 + 3)
   {
-    v9 = [(BKFont *)self familyName];
-    v8 = [NSDictionary dictionaryWithObjectsAndKeys:v9, kCTFontFamilyNameAttribute, 0];
+    familyName = [(BKFont *)self familyName];
+    v8 = [NSDictionary dictionaryWithObjectsAndKeys:familyName, kCTFontFamilyNameAttribute, 0];
 
     v10 = CTFontDescriptorCreateWithAttributes(v8);
     if (v10)
@@ -381,18 +381,18 @@ LABEL_11:
       v12 = [NSMutableArray arrayWithObject:v10];
       [v12 addObject:v11];
       CFRelease(v11);
-      if (v6 || v4)
+      if (completionCopy || synchronouslyCopy)
       {
         v13 = dispatch_group_create();
         dispatch_group_enter(v13);
-        if (v6)
+        if (completionCopy)
         {
           v14 = dispatch_get_global_queue(0, 0);
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_FC81C;
           block[3] = &unk_1E2E08;
-          v22 = v6;
+          v22 = completionCopy;
           dispatch_group_notify(v13, v14, block);
         }
       }
@@ -402,8 +402,8 @@ LABEL_11:
         v13 = 0;
       }
 
-      v15 = [(__CFDictionary *)v8 allKeys];
-      v16 = [NSSet setWithArray:v15];
+      allKeys = [(__CFDictionary *)v8 allKeys];
+      v16 = [NSSet setWithArray:allKeys];
       progressBlock[0] = _NSConcreteStackBlock;
       progressBlock[1] = 3221225472;
       progressBlock[2] = sub_FC82C;
@@ -413,7 +413,7 @@ LABEL_11:
       v20 = v17;
       CTFontDescriptorMatchFontDescriptorsWithProgressHandler(v12, v16, progressBlock);
 
-      if (v4)
+      if (synchronouslyCopy)
       {
         v18 = dispatch_time(0, 2000000000);
         if (dispatch_group_wait(v17, v18))
@@ -423,16 +423,16 @@ LABEL_11:
       }
     }
 
-    else if (v6)
+    else if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
     [(BKFont *)self setState:1];
-    v7 = objc_retainBlock(v6);
+    v7 = objc_retainBlock(completionCopy);
     v8 = v7;
     if (v7)
     {
@@ -441,12 +441,12 @@ LABEL_11:
   }
 }
 
-- (void)downloadWithAllowCellular:(BOOL)a3
+- (void)downloadWithAllowCellular:(BOOL)cellular
 {
-  v3 = a3;
-  v5 = [(BKFont *)self familyName];
-  v6 = [NSNumber numberWithBool:v3];
-  v7 = [NSDictionary dictionaryWithObjectsAndKeys:v5, kCTFontFamilyNameAttribute, v6, kCTFontAllowCellularDownloadAttribute, 0];
+  cellularCopy = cellular;
+  familyName = [(BKFont *)self familyName];
+  v6 = [NSNumber numberWithBool:cellularCopy];
+  v7 = [NSDictionary dictionaryWithObjectsAndKeys:familyName, kCTFontFamilyNameAttribute, v6, kCTFontAllowCellularDownloadAttribute, 0];
 
   v8 = [NSMutableArray arrayWithCapacity:0];
   v9 = CTFontDescriptorCreateWithAttributes(v7);
@@ -455,10 +455,10 @@ LABEL_11:
     v10 = v9;
     [v8 addObject:v9];
     CFRelease(v10);
-    v11 = [(BKFont *)self state];
+    state = [(BKFont *)self state];
     [(BKFont *)self setState:3];
     [(BKFont *)self setContinueDownloading:1];
-    if ([(BKFont *)self state]!= v11)
+    if ([(BKFont *)self state]!= state)
     {
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
@@ -490,7 +490,7 @@ LABEL_11:
     progressBlock[2] = sub_FCE20;
     progressBlock[3] = &unk_1E5EF0;
     progressBlock[4] = self;
-    v14 = v11;
+    v14 = state;
     CTFontDescriptorMatchFontDescriptorsWithProgressHandler(v8, 0, progressBlock);
   }
 }
@@ -543,12 +543,12 @@ LABEL_11:
     v7 = off_1E5F78[v6];
   }
 
-  v8 = [(BKFont *)self systemName];
-  v9 = [(BKFont *)self familyName];
-  v10 = [(BKFont *)self displayName];
-  v11 = [(BKFont *)self postscriptName];
-  v12 = [(BKFont *)self postscriptBoldName];
-  v13 = [NSString stringWithFormat:@"<%@: %p> kind: %@, state: %@, systemName: %@, familyName: %@, displayName: %@, postscriptName: %@, postscriptBoldName: %@", v4, self, v5, v7, v8, v9, v10, v11, v12];
+  systemName = [(BKFont *)self systemName];
+  familyName = [(BKFont *)self familyName];
+  displayName = [(BKFont *)self displayName];
+  postscriptName = [(BKFont *)self postscriptName];
+  postscriptBoldName = [(BKFont *)self postscriptBoldName];
+  v13 = [NSString stringWithFormat:@"<%@: %p> kind: %@, state: %@, systemName: %@, familyName: %@, displayName: %@, postscriptName: %@, postscriptBoldName: %@", v4, self, v5, v7, systemName, familyName, displayName, postscriptName, postscriptBoldName];
 
   return v13;
 }

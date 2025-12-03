@@ -1,15 +1,15 @@
 @interface AudiobookTOCToolbarButton
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
+- (void)setImage:(id)image forState:(unint64_t)state;
 - (void)tintColorDidChange;
 @end
 
 @implementation AudiobookTOCToolbarButton
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for AudiobookTOCToolbarButton();
-  [(AudiobookTOCToolbarButton *)&v6 setImage:a3 forState:a4];
+  [(AudiobookTOCToolbarButton *)&v6 setImage:image forState:state];
 }
 
 - (void)tintColorDidChange
@@ -19,8 +19,8 @@
   v2 = v5.receiver;
   [(AudiobookTOCToolbarButton *)&v5 tintColorDidChange];
   v3 = *&v2[OBJC_IVAR____TtC5Books25AudiobookTOCToolbarButton_supplementalBackgroundView];
-  v4 = [v2 tintColor];
-  [v3 setTintColor:v4];
+  tintColor = [v2 tintColor];
+  [v3 setTintColor:tintColor];
 }
 
 @end

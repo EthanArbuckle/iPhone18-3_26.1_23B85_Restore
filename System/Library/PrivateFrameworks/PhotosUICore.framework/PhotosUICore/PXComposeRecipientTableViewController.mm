@@ -1,36 +1,36 @@
 @interface PXComposeRecipientTableViewController
-+ (id)contactViewControllerToPresentForRecipientViewController:(id)a3;
++ (id)contactViewControllerToPresentForRecipientViewController:(id)controller;
 - (BOOL)_updateFooterHeight;
 - (BOOL)_updateHeaderHeight;
-- (BOOL)isValidAddressForComposeRecipient:(id)a3;
+- (BOOL)isValidAddressForComposeRecipient:(id)recipient;
 - (PXComposeRecipientTableViewController)init;
-- (PXComposeRecipientTableViewController)initWithCoder:(id)a3;
-- (PXComposeRecipientTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PXComposeRecipientTableViewController)initWithStyle:(int64_t)a3;
-- (PXComposeRecipientTableViewController)initWithViewModel:(id)a3;
+- (PXComposeRecipientTableViewController)initWithCoder:(id)coder;
+- (PXComposeRecipientTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PXComposeRecipientTableViewController)initWithStyle:(int64_t)style;
+- (PXComposeRecipientTableViewController)initWithViewModel:(id)model;
 - (PXComposeRecipientTableViewControllerDelegate)delegate;
 - (id)_footerView;
-- (id)_tableView:(id)a3 participantCellForRowAtIndexPath:(id)a4;
-- (id)cellModelAtIndex:(unint64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_contactViewController:(id)a3 didSelectContact:(id)a4;
-- (void)_contentSizeCategoryDidChange:(id)a3;
-- (void)_dismissRecipientViewController:(id)a3;
-- (void)_handleAddRecipient:(id)a3;
-- (void)bootstrapPersonSuggestion:(id)a3 withContact:(id)a4;
-- (void)composeRecipientDataSourceManager:(id)a3 didUpdateDataSourceWithChangeDetails:(id)a4;
-- (void)composeRecipientSelectionManager:(id)a3 didUpdateSelectionSnapshotWithChangeDetails:(id)a4;
-- (void)composeRecipientValidationManager:(id)a3 didUpdateValidationWithChangedIndexes:(id)a4;
-- (void)configureCellModel:(id)a3 withComposeRecipient:(id)a4;
-- (void)configureWithViewModel:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (id)_tableView:(id)view participantCellForRowAtIndexPath:(id)path;
+- (id)cellModelAtIndex:(unint64_t)index;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_contactViewController:(id)controller didSelectContact:(id)contact;
+- (void)_contentSizeCategoryDidChange:(id)change;
+- (void)_dismissRecipientViewController:(id)controller;
+- (void)_handleAddRecipient:(id)recipient;
+- (void)bootstrapPersonSuggestion:(id)suggestion withContact:(id)contact;
+- (void)composeRecipientDataSourceManager:(id)manager didUpdateDataSourceWithChangeDetails:(id)details;
+- (void)composeRecipientSelectionManager:(id)manager didUpdateSelectionSnapshotWithChangeDetails:(id)details;
+- (void)composeRecipientValidationManager:(id)manager didUpdateValidationWithChangedIndexes:(id)indexes;
+- (void)configureCellModel:(id)model withComposeRecipient:(id)recipient;
+- (void)configureWithViewModel:(id)model;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 - (void)loadView;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photoRecipientViewController:(id)a3 didCompleteWithRecipients:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photoRecipientViewController:(id)controller didCompleteWithRecipients:(id)recipients;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateTableViewHeight;
 - (void)viewWillLayoutSubviews;
 @end
@@ -44,24 +44,24 @@
   return WeakRetained;
 }
 
-- (void)_contactViewController:(id)a3 didSelectContact:(id)a4
+- (void)_contactViewController:(id)controller didSelectContact:(id)contact
 {
-  v11 = a4;
-  if (v11)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v5 = self->_personSuggestionForBootstrapping;
     if (+[PXPeopleUtilities isGreenTeaAndContactsAccessDenied])
     {
-      v6 = [[PXComposeRecipient alloc] initWithPersonSuggestion:v5 contact:v11];
-      v7 = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager];
-      [v7 replaceComposeRecipientAtIndex:-[NSIndexPath row](self->_indexPathForBootstrapping withNewComposeRecipient:{"row"), v6}];
-      v8 = [(PXComposeRecipientTableViewController *)self tableView];
-      [v8 reloadData];
+      v6 = [[PXComposeRecipient alloc] initWithPersonSuggestion:v5 contact:contactCopy];
+      composeRecipientDataSourceManager = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager];
+      [composeRecipientDataSourceManager replaceComposeRecipientAtIndex:-[NSIndexPath row](self->_indexPathForBootstrapping withNewComposeRecipient:{"row"), v6}];
+      tableView = [(PXComposeRecipientTableViewController *)self tableView];
+      [tableView reloadData];
     }
 
     else
     {
-      [(PXComposeRecipientTableViewController *)self bootstrapPersonSuggestion:v5 withContact:v11];
+      [(PXComposeRecipientTableViewController *)self bootstrapPersonSuggestion:v5 withContact:contactCopy];
     }
   }
 
@@ -72,19 +72,19 @@
   self->_indexPathForBootstrapping = 0;
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  [(PXComposeRecipientTableViewController *)self _contactViewController:a3 didSelectContact:a4];
-  v5 = [(PXComposeRecipientTableViewController *)self delegate];
-  [v5 dismissPresentedViewControllerAnimated:1 forComposeRecipientTableViewController:self];
+  [(PXComposeRecipientTableViewController *)self _contactViewController:controller didSelectContact:contact];
+  delegate = [(PXComposeRecipientTableViewController *)self delegate];
+  [delegate dismissPresentedViewControllerAnimated:1 forComposeRecipientTableViewController:self];
 }
 
-- (void)_dismissRecipientViewController:(id)a3
+- (void)_dismissRecipientViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   bootstrapRecipientViewController = self->_bootstrapRecipientViewController;
-  v12 = v5;
-  if (bootstrapRecipientViewController == v5)
+  v12 = controllerCopy;
+  if (bootstrapRecipientViewController == controllerCopy)
   {
     self->_bootstrapRecipientViewController = 0;
 
@@ -99,10 +99,10 @@
   {
     p_indexPathForBootstrapping = &self->_addPeopleRecipientViewController;
     indexPathForBootstrapping = self->_addPeopleRecipientViewController;
-    if (indexPathForBootstrapping != v5)
+    if (indexPathForBootstrapping != controllerCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:497 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:497 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -110,45 +110,45 @@
 
   *p_indexPathForBootstrapping = 0;
 
-  v11 = [(PXComposeRecipientTableViewController *)self delegate];
-  [v11 dismissPresentedViewControllerAnimated:1 forComposeRecipientTableViewController:self];
+  delegate = [(PXComposeRecipientTableViewController *)self delegate];
+  [delegate dismissPresentedViewControllerAnimated:1 forComposeRecipientTableViewController:self];
 }
 
-- (void)photoRecipientViewController:(id)a3 didCompleteWithRecipients:(id)a4
+- (void)photoRecipientViewController:(id)controller didCompleteWithRecipients:(id)recipients
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (![v8 count])
+  controllerCopy = controller;
+  recipientsCopy = recipients;
+  if (![recipientsCopy count])
   {
     goto LABEL_16;
   }
 
-  if (self->_bootstrapRecipientViewController == v7)
+  if (self->_bootstrapRecipientViewController == controllerCopy)
   {
-    if ([v8 count] != 1)
+    if ([recipientsCopy count] != 1)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:447 description:{@"Invalid parameter not satisfying: %@", @"recipients.count == 1"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:447 description:{@"Invalid parameter not satisfying: %@", @"recipients.count == 1"}];
     }
 
-    v11 = [v8 firstObject];
+    firstObject = [recipientsCopy firstObject];
     v12 = self->_personSuggestionForBootstrapping;
-    v13 = [v11 contact];
-    v10 = v13 != 0;
-    if (v13)
+    contact = [firstObject contact];
+    v10 = contact != 0;
+    if (contact)
     {
       if (!+[PXPeopleUtilities isGreenTeaAndContactsAccessDenied])
       {
-        [(PXComposeRecipientTableViewController *)self bootstrapPersonSuggestion:v12 withContact:v13];
+        [(PXComposeRecipientTableViewController *)self bootstrapPersonSuggestion:v12 withContact:contact];
         goto LABEL_14;
       }
 
-      v14 = [[PXComposeRecipient alloc] initWithPersonSuggestion:v12 contact:v13];
-      v15 = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager];
-      [v15 replaceComposeRecipientAtIndex:-[NSIndexPath row](self->_indexPathForBootstrapping withNewComposeRecipient:{"row"), v14}];
-      v16 = [(PXComposeRecipientTableViewController *)self tableView];
-      [v16 reloadData];
+      v14 = [[PXComposeRecipient alloc] initWithPersonSuggestion:v12 contact:contact];
+      composeRecipientDataSourceManager = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager];
+      [composeRecipientDataSourceManager replaceComposeRecipientAtIndex:-[NSIndexPath row](self->_indexPathForBootstrapping withNewComposeRecipient:{"row"), v14}];
+      tableView = [(PXComposeRecipientTableViewController *)self tableView];
+      [tableView reloadData];
     }
 
     else
@@ -159,7 +159,7 @@
         *buf = 138412546;
         v26 = v12;
         v27 = 2112;
-        v28 = v11;
+        v28 = firstObject;
         _os_log_impl(&dword_1A3C1C000, &v14->super, OS_LOG_TYPE_ERROR, "Failed to bootstrap Person Suggestion %@ with recipient %@ because of no associated contact", buf, 0x16u);
       }
     }
@@ -168,35 +168,35 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (self->_addPeopleRecipientViewController != v7)
+  if (self->_addPeopleRecipientViewController != controllerCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:469 description:@"Code which should be unreachable has been reached"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:469 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v9 = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager];
-  [v9 addRecipients:v8];
+  composeRecipientDataSourceManager2 = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager];
+  [composeRecipientDataSourceManager2 addRecipients:recipientsCopy];
 
   v10 = 1;
 LABEL_15:
-  v17 = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager];
-  v18 = [v17 dataSource];
+  composeRecipientDataSourceManager3 = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager];
+  dataSource = [composeRecipientDataSourceManager3 dataSource];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __96__PXComposeRecipientTableViewController_photoRecipientViewController_didCompleteWithRecipients___block_invoke;
   v22[3] = &unk_1E7735C48;
-  v23 = v18;
-  v24 = self;
-  v19 = v18;
-  [v8 enumerateObjectsUsingBlock:v22];
+  v23 = dataSource;
+  selfCopy = self;
+  v19 = dataSource;
+  [recipientsCopy enumerateObjectsUsingBlock:v22];
 
   if (v10)
   {
 LABEL_16:
-    [(PXComposeRecipientTableViewController *)self _dismissRecipientViewController:v7];
+    [(PXComposeRecipientTableViewController *)self _dismissRecipientViewController:controllerCopy];
   }
 }
 
@@ -214,33 +214,33 @@ uint64_t __96__PXComposeRecipientTableViewController_photoRecipientViewControlle
   return result;
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
-  v4 = [(PXComposeRecipientTableViewController *)self _updateHeaderHeight];
-  v5 = [(PXComposeRecipientTableViewController *)self _updateFooterHeight];
-  v6 = [(PXComposeRecipientTableViewController *)self _updateRowHeight];
-  if (v4 || v5 || v6)
+  _updateHeaderHeight = [(PXComposeRecipientTableViewController *)self _updateHeaderHeight];
+  _updateFooterHeight = [(PXComposeRecipientTableViewController *)self _updateFooterHeight];
+  _updateRowHeight = [(PXComposeRecipientTableViewController *)self _updateRowHeight];
+  if (_updateHeaderHeight || _updateFooterHeight || _updateRowHeight)
   {
     [(PXComposeRecipientTableViewController *)self updateTableViewHeight];
-    v7 = [(PXComposeRecipientTableViewController *)self tableView];
-    [v7 reloadData];
+    tableView = [(PXComposeRecipientTableViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXComposeRecipientTableViewModelObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXComposeRecipientTableViewModelObservationContext != context)
   {
     goto LABEL_9;
   }
 
-  v13 = v8;
-  if ((v6 & 0x20) != 0)
+  v13 = observableCopy;
+  if ((changeCopy & 0x20) != 0)
   {
-    v9 = [(PXComposeRecipientTableViewController *)self _updateHeaderHeight];
-    if ((v6 & 0x40) != 0)
+    _updateHeaderHeight = [(PXComposeRecipientTableViewController *)self _updateHeaderHeight];
+    if ((changeCopy & 0x40) != 0)
     {
       goto LABEL_4;
     }
@@ -248,54 +248,54 @@ uint64_t __96__PXComposeRecipientTableViewController_photoRecipientViewControlle
 
   else
   {
-    v9 = 0;
-    if ((v6 & 0x40) != 0)
+    _updateHeaderHeight = 0;
+    if ((changeCopy & 0x40) != 0)
     {
 LABEL_4:
-      v10 = [(PXComposeRecipientTableViewController *)self _updateFooterHeight];
+      _updateFooterHeight = [(PXComposeRecipientTableViewController *)self _updateFooterHeight];
       goto LABEL_7;
     }
   }
 
-  v10 = 0;
+  _updateFooterHeight = 0;
 LABEL_7:
-  v11 = v9 || v10;
-  v8 = v13;
+  v11 = _updateHeaderHeight || _updateFooterHeight;
+  observableCopy = v13;
   if (v11)
   {
     [(PXComposeRecipientTableViewController *)self updateTableViewHeight];
-    v12 = [(PXComposeRecipientTableViewController *)self tableView];
-    [v12 reloadData];
+    tableView = [(PXComposeRecipientTableViewController *)self tableView];
+    [tableView reloadData];
 
-    v8 = v13;
+    observableCopy = v13;
   }
 
 LABEL_9:
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
     viewModel = self->_viewModel;
-    v7 = a5;
-    v9 = [(PXComposeRecipientTableViewModel *)viewModel composeRecipientDataSourceManager];
-    v8 = [v7 item];
+    pathCopy = path;
+    composeRecipientDataSourceManager = [(PXComposeRecipientTableViewModel *)viewModel composeRecipientDataSourceManager];
+    item = [pathCopy item];
 
-    [v9 deleteComposeRecipientAtIndex:v8];
+    [composeRecipientDataSourceManager deleteComposeRecipientAtIndex:item];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 item];
-  v10 = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager];
-  v11 = [v10 dataSource];
+  viewCopy = view;
+  pathCopy = path;
+  item = [pathCopy item];
+  composeRecipientDataSourceManager = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager];
+  dataSource = [composeRecipientDataSourceManager dataSource];
 
-  v12 = [v11 composeRecipients];
-  if (v9 >= [v12 count])
+  composeRecipients = [dataSource composeRecipients];
+  if (item >= [composeRecipients count])
   {
     [(PXComposeRecipientTableViewController *)self _handleAddRecipient:0];
   }
@@ -303,42 +303,42 @@ LABEL_9:
   else
   {
     v48 = a2;
-    v13 = [v12 objectAtIndexedSubscript:v9];
-    v14 = [v13 recipient];
-    v15 = [v13 personSuggestion];
-    v49 = v15;
-    v50 = v14;
-    if (v14)
+    v13 = [composeRecipients objectAtIndexedSubscript:item];
+    recipient = [v13 recipient];
+    personSuggestion = [v13 personSuggestion];
+    v49 = personSuggestion;
+    v50 = recipient;
+    if (recipient)
     {
       v16 = self->_selectionManager;
-      v17 = [(PXComposeRecipientSelectionManager *)v16 selectionSnapshot];
-      v18 = [v17 selectedComposeRecipients];
-      v19 = [v18 containsObject:v13] ^ 1;
+      selectionSnapshot = [(PXComposeRecipientSelectionManager *)v16 selectionSnapshot];
+      selectedComposeRecipients = [selectionSnapshot selectedComposeRecipients];
+      v19 = [selectedComposeRecipients containsObject:v13] ^ 1;
 
-      [(PXComposeRecipientSelectionManager *)v16 setSelectedState:v19 atIndex:v9];
-      v20 = [v7 cellForRowAtIndexPath:v8];
+      [(PXComposeRecipientSelectionManager *)v16 setSelectedState:v19 atIndex:item];
+      v20 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
-      v21 = [v20 cellModel];
+      cellModel = [v20 cellModel];
       v60[0] = MEMORY[0x1E69E9820];
       v60[1] = 3221225472;
       v60[2] = __75__PXComposeRecipientTableViewController_tableView_didSelectRowAtIndexPath___block_invoke;
       v60[3] = &__block_descriptor_33_e51_v16__0___PXComposeRecipientMutableTableCellModel__8l;
       v61 = v19;
-      [v21 performChanges:v60];
+      [cellModel performChanges:v60];
     }
 
     else
     {
-      v22 = v15;
-      if (!v15)
+      v22 = personSuggestion;
+      if (!personSuggestion)
       {
-        v47 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v47 handleFailureInMethod:v48 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"personSuggestion"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:v48 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"personSuggestion"}];
       }
 
       objc_storeStrong(&self->_personSuggestionForBootstrapping, v22);
-      objc_storeStrong(&self->_indexPathForBootstrapping, a4);
-      v17 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
+      objc_storeStrong(&self->_indexPathForBootstrapping, path);
+      selectionSnapshot = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
       v23 = MEMORY[0x1E69DC648];
       v24 = PXLocalizedStringFromTable(@"PXComposeRecipientActionSheetCancelTitle", @"PhotosUICore");
       v59[0] = MEMORY[0x1E69E9820];
@@ -347,7 +347,7 @@ LABEL_9:
       v59[3] = &unk_1E7749600;
       v59[4] = self;
       v25 = [v23 actionWithTitle:v24 style:1 handler:v59];
-      [v17 addAction:v25];
+      [selectionSnapshot addAction:v25];
 
       v26 = MEMORY[0x1E69DC648];
       v27 = PXLocalizedStringFromTable(@"PXComposeRecipientActionSheetCreateNewContactTitle", @"PhotosUICore");
@@ -357,10 +357,10 @@ LABEL_9:
       v55[3] = &unk_1E7740CA8;
       v28 = v22;
       v56 = v28;
-      v57 = self;
+      selfCopy = self;
       v58 = v48;
       v29 = [v26 actionWithTitle:v27 style:0 handler:v55];
-      [v17 addAction:v29];
+      [selectionSnapshot addAction:v29];
 
       v30 = MEMORY[0x1E69DC648];
       v31 = PXLocalizedStringFromTable(@"PXComposeRecipientActionSheetAddToExistingContactTitle", @"PhotosUICore");
@@ -369,40 +369,40 @@ LABEL_9:
       v51[2] = __75__PXComposeRecipientTableViewController_tableView_didSelectRowAtIndexPath___block_invoke_4;
       v51[3] = &unk_1E7740CA8;
       v52 = v28;
-      v53 = self;
+      selfCopy2 = self;
       v54 = v48;
       v32 = [v30 actionWithTitle:v31 style:0 handler:v51];
-      [v17 addAction:v32];
+      [selectionSnapshot addAction:v32];
 
-      v33 = [v7 cellForRowAtIndexPath:v8];
+      v33 = [viewCopy cellForRowAtIndexPath:pathCopy];
       v34 = v33;
       if (v33)
       {
-        v35 = [v33 popoverSourceView];
+        popoverSourceView = [v33 popoverSourceView];
       }
 
       else
       {
-        v35 = 0;
+        popoverSourceView = 0;
       }
 
-      v36 = [v17 popoverPresentationController];
-      [v36 setSourceView:v35];
+      popoverPresentationController = [selectionSnapshot popoverPresentationController];
+      [popoverPresentationController setSourceView:popoverSourceView];
 
-      [v35 bounds];
+      [popoverSourceView bounds];
       v38 = v37;
       v40 = v39;
       v42 = v41;
       v44 = v43;
-      v45 = [v17 popoverPresentationController];
-      [v45 setSourceRect:{v38, v40, v42, v44}];
+      popoverPresentationController2 = [selectionSnapshot popoverPresentationController];
+      [popoverPresentationController2 setSourceRect:{v38, v40, v42, v44}];
 
-      v46 = [(PXComposeRecipientTableViewController *)self delegate];
-      [v46 presentViewController:v17 animated:1 forComposeRecipientTableViewController:self];
+      delegate = [(PXComposeRecipientTableViewController *)self delegate];
+      [delegate presentViewController:selectionSnapshot animated:1 forComposeRecipientTableViewController:self];
     }
   }
 
-  [v7 deselectRowAtIndexPath:v8 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 void __75__PXComposeRecipientTableViewController_tableView_didSelectRowAtIndexPath___block_invoke_2(uint64_t a1)
@@ -466,62 +466,62 @@ void __75__PXComposeRecipientTableViewController_tableView_didSelectRowAtIndexPa
   [v9 presentViewController:v8 animated:1 forComposeRecipientTableViewController:*(a1 + 40)];
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v5 = [(PXComposeRecipientTableViewController *)self _footerView:a3];
-  v6 = [(PXComposeRecipientTableViewModel *)self->_viewModel footerTitle];
-  _ConfigureFooterView(v5, v6);
+  v5 = [(PXComposeRecipientTableViewController *)self _footerView:view];
+  footerTitle = [(PXComposeRecipientTableViewModel *)self->_viewModel footerTitle];
+  _ConfigureFooterView(v5, footerTitle);
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   viewModel = self->_viewModel;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PXComposeRecipientTableViewModel *)viewModel composeRecipientDataSourceManager];
-  v10 = [v9 dataSource];
+  pathCopy = path;
+  viewCopy = view;
+  composeRecipientDataSourceManager = [(PXComposeRecipientTableViewModel *)viewModel composeRecipientDataSourceManager];
+  dataSource = [composeRecipientDataSourceManager dataSource];
 
-  v11 = [v10 composeRecipients];
-  v12 = [v11 count];
+  composeRecipients = [dataSource composeRecipients];
+  v12 = [composeRecipients count];
 
-  if ([v7 item] >= v12)
+  if ([pathCopy item] >= v12)
   {
-    [v8 dequeueReusableCellWithIdentifier:@"PXComposeRecipientAddRecipientTableViewCellReuseIdentifier" forIndexPath:v7];
+    [viewCopy dequeueReusableCellWithIdentifier:@"PXComposeRecipientAddRecipientTableViewCellReuseIdentifier" forIndexPath:pathCopy];
   }
 
   else
   {
-    [(PXComposeRecipientTableViewController *)self _tableView:v8 participantCellForRowAtIndexPath:v7];
+    [(PXComposeRecipientTableViewController *)self _tableView:viewCopy participantCellForRowAtIndexPath:pathCopy];
   }
   v13 = ;
 
   if ([(PXComposeRecipientTableViewModel *)self->_viewModel useGroupedBackgroundColor])
   {
-    v14 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v13 setBackgroundColor:v14];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [v13 setBackgroundColor:secondarySystemBackgroundColor];
   }
 
   return v13;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager:a3];
-  v6 = [v5 dataSource];
+  v5 = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager:view];
+  dataSource = [v5 dataSource];
 
-  v7 = [v6 composeRecipients];
-  v8 = [v7 count];
+  composeRecipients = [dataSource composeRecipients];
+  v8 = [composeRecipients count];
 
   v9 = v8 + [(PXComposeRecipientTableViewModel *)self->_viewModel canAddRecipients];
   return v9;
 }
 
-- (id)_tableView:(id)a3 participantCellForRowAtIndexPath:(id)a4
+- (id)_tableView:(id)view participantCellForRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [a3 dequeueReusableCellWithIdentifier:@"PXComposeRecipientTableViewCellReuseIdentifier" forIndexPath:v7];
+  pathCopy = path;
+  v8 = [view dequeueReusableCellWithIdentifier:@"PXComposeRecipientTableViewCellReuseIdentifier" forIndexPath:pathCopy];
   if (v8)
   {
     objc_opt_class();
@@ -530,65 +530,65 @@ void __75__PXComposeRecipientTableViewController_tableView_didSelectRowAtIndexPa
       goto LABEL_3;
     }
 
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = objc_opt_class();
     v18 = NSStringFromClass(v19);
-    v20 = [v8 px_descriptionForAssertionMessage];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:236 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[tableView dequeueReusableCellWithIdentifier:PXComposeRecipientTableViewCellReuseIdentifier forIndexPath:indexPath]", v18, v20}];
+    px_descriptionForAssertionMessage = [v8 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:236 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[tableView dequeueReusableCellWithIdentifier:PXComposeRecipientTableViewCellReuseIdentifier forIndexPath:indexPath]", v18, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    [v16 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:236 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[tableView dequeueReusableCellWithIdentifier:PXComposeRecipientTableViewCellReuseIdentifier forIndexPath:indexPath]", v18}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:236 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[tableView dequeueReusableCellWithIdentifier:PXComposeRecipientTableViewCellReuseIdentifier forIndexPath:indexPath]", v18}];
   }
 
 LABEL_3:
-  v9 = [v8 cellModel];
-  v10 = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager];
-  v11 = [v10 dataSource];
+  cellModel = [v8 cellModel];
+  composeRecipientDataSourceManager = [(PXComposeRecipientTableViewModel *)self->_viewModel composeRecipientDataSourceManager];
+  dataSource = [composeRecipientDataSourceManager dataSource];
 
-  v12 = [v11 composeRecipients];
-  v13 = [v7 item];
+  composeRecipients = [dataSource composeRecipients];
+  item = [pathCopy item];
 
-  v14 = [v12 objectAtIndexedSubscript:v13];
+  v14 = [composeRecipients objectAtIndexedSubscript:item];
 
-  [(PXComposeRecipientTableViewController *)self configureCellModel:v9 withComposeRecipient:v14];
+  [(PXComposeRecipientTableViewController *)self configureCellModel:cellModel withComposeRecipient:v14];
 
   return v8;
 }
 
 - (BOOL)_updateFooterHeight
 {
-  v3 = [(PXComposeRecipientTableViewController *)self _footerView];
-  v4 = [v3 superview];
+  _footerView = [(PXComposeRecipientTableViewController *)self _footerView];
+  superview = [_footerView superview];
 
-  if (!v4)
+  if (!superview)
   {
-    v5 = [(PXComposeRecipientTableViewController *)self tableView];
-    [v5 frame];
-    [v3 setFrame:{0.0, 0.0}];
+    tableView = [(PXComposeRecipientTableViewController *)self tableView];
+    [tableView frame];
+    [_footerView setFrame:{0.0, 0.0}];
   }
 
-  v6 = [(PXComposeRecipientTableViewModel *)self->_viewModel footerTitle];
-  _ConfigureFooterView(v3, v6);
+  footerTitle = [(PXComposeRecipientTableViewModel *)self->_viewModel footerTitle];
+  _ConfigureFooterView(_footerView, footerTitle);
 
-  v7 = v3;
+  v7 = _footerView;
   [v7 frame];
   v8 = 0.0;
   if (v9 > 0.0)
   {
-    v10 = [v7 textLabel];
-    v11 = [v10 text];
-    v12 = [v11 length];
+    textLabel = [v7 textLabel];
+    text = [textLabel text];
+    v12 = [text length];
 
     if (v12)
     {
       [v7 layoutIfNeeded];
-      [v10 bounds];
-      [v10 sizeThatFits:{v13, 1.79769313e308}];
+      [textLabel bounds];
+      [textLabel sizeThatFits:{v13, 1.79769313e308}];
       v8 = v14 + 16.0;
     }
   }
@@ -625,8 +625,8 @@ LABEL_3:
     dispatch_once(&_updateHeaderHeight_onceToken, &__block_literal_global_81330);
   }
 
-  v3 = [(PXComposeRecipientTableViewModel *)self->_viewModel headerTitle];
-  [_updateHeaderHeight_measuringLabel setText:v3];
+  headerTitle = [(PXComposeRecipientTableViewModel *)self->_viewModel headerTitle];
+  [_updateHeaderHeight_measuringLabel setText:headerTitle];
 
   PXCappedFontWithTextStyle();
 }
@@ -647,17 +647,17 @@ uint64_t __60__PXComposeRecipientTableViewController__updateHeaderHeight__block_
   v6.receiver = self;
   v6.super_class = PXComposeRecipientTableViewController;
   [(PXComposeRecipientTableViewController *)&v6 viewWillLayoutSubviews];
-  v3 = [(PXComposeRecipientTableViewController *)self _updateHeaderHeight];
-  v4 = [(PXComposeRecipientTableViewController *)self _updateFooterHeight];
-  if (v3 || v4)
+  _updateHeaderHeight = [(PXComposeRecipientTableViewController *)self _updateHeaderHeight];
+  _updateFooterHeight = [(PXComposeRecipientTableViewController *)self _updateFooterHeight];
+  if (_updateHeaderHeight || _updateFooterHeight)
   {
     [(PXComposeRecipientTableViewController *)self updateTableViewHeight];
-    v5 = [(PXComposeRecipientTableViewController *)self tableView];
-    [v5 reloadData];
+    tableView = [(PXComposeRecipientTableViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)_handleAddRecipient:(id)a3
+- (void)_handleAddRecipient:(id)recipient
 {
   v4 = objc_alloc_init(PXPhotoRecipientViewController);
   v5 = PXLocalizedStringFromTable(@"PXPhotoRecipientAddLabelTitle", @"PhotosUICore");
@@ -671,10 +671,10 @@ uint64_t __60__PXComposeRecipientTableViewController__updateHeaderHeight__block_
   self->_addPeopleRecipientViewController = v4;
   v8 = v4;
 
-  v10 = [(PXComposeRecipientTableViewController *)self delegate];
+  delegate = [(PXComposeRecipientTableViewController *)self delegate];
   v9 = [PXComposeRecipientTableViewController contactViewControllerToPresentForRecipientViewController:v8];
 
-  [v10 presentViewController:v9 animated:1 forComposeRecipientTableViewController:self];
+  [delegate presentViewController:v9 animated:1 forComposeRecipientTableViewController:self];
 }
 
 - (void)loadView
@@ -686,8 +686,8 @@ uint64_t __60__PXComposeRecipientTableViewController__updateHeaderHeight__block_
   [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"PXComposeRecipientTableViewCellReuseIdentifier"];
   [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"PXComposeRecipientAddRecipientTableViewCellReuseIdentifier"];
   [(PXComposeRecipientTableViewController *)self setView:v5];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
   [(PXComposeRecipientTableViewController *)self _updateHeaderHeight];
   [(PXComposeRecipientTableViewController *)self _updateFooterHeight];
@@ -695,13 +695,13 @@ uint64_t __60__PXComposeRecipientTableViewController__updateHeaderHeight__block_
   [(PXComposeRecipientTableViewController *)self updateTableViewHeight];
 }
 
-- (PXComposeRecipientTableViewController)initWithViewModel:(id)a3
+- (PXComposeRecipientTableViewController)initWithViewModel:(id)model
 {
-  v5 = a3;
-  if (!v5)
+  modelCopy = model;
+  if (!modelCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
   }
 
   v10.receiver = self;
@@ -710,56 +710,56 @@ uint64_t __60__PXComposeRecipientTableViewController__updateHeaderHeight__block_
   v7 = v6;
   if (v6)
   {
-    [(PXComposeRecipientTableViewController *)v6 configureWithViewModel:v5];
+    [(PXComposeRecipientTableViewController *)v6 configureWithViewModel:modelCopy];
   }
 
   return v7;
 }
 
-- (PXComposeRecipientTableViewController)initWithCoder:(id)a3
+- (PXComposeRecipientTableViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:80 description:{@"%s is not available as initializer", "-[PXComposeRecipientTableViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:80 description:{@"%s is not available as initializer", "-[PXComposeRecipientTableViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PXComposeRecipientTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXComposeRecipientTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:76 description:{@"%s is not available as initializer", "-[PXComposeRecipientTableViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:76 description:{@"%s is not available as initializer", "-[PXComposeRecipientTableViewController initWithNibName:bundle:]"}];
 
   abort();
 }
 
-- (PXComposeRecipientTableViewController)initWithStyle:(int64_t)a3
+- (PXComposeRecipientTableViewController)initWithStyle:(int64_t)style
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:72 description:{@"%s is not available as initializer", "-[PXComposeRecipientTableViewController initWithStyle:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:72 description:{@"%s is not available as initializer", "-[PXComposeRecipientTableViewController initWithStyle:]"}];
 
   abort();
 }
 
 - (PXComposeRecipientTableViewController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:68 description:{@"%s is not available as initializer", "-[PXComposeRecipientTableViewController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+iOS.m" lineNumber:68 description:{@"%s is not available as initializer", "-[PXComposeRecipientTableViewController init]"}];
 
   abort();
 }
 
-+ (id)contactViewControllerToPresentForRecipientViewController:(id)a3
++ (id)contactViewControllerToPresentForRecipientViewController:(id)controller
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  controllerCopy = controller;
   if (+[PXPeopleUtilities isGreenTeaAndContactsAccessDenied])
   {
     v4 = objc_alloc_init(MEMORY[0x1E695D120]);
     [v4 setMode:1];
-    [v4 setDelegate:v3];
+    [v4 setDelegate:controllerCopy];
     v5 = *MEMORY[0x1E695C208];
     v10[0] = *MEMORY[0x1E695C330];
     v10[1] = v5;
@@ -770,13 +770,13 @@ uint64_t __60__PXComposeRecipientTableViewController__updateHeaderHeight__block_
     [v4 setPrompt:v7];
     v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(emailAddresses.@count == 1 AND phoneNumbers.@count == 0) OR (emailAddresses.@count == 0 AND phoneNumbers.@count == 1)"];
     [v4 setPredicateForSelectionOfContact:v8];
-    [v3 setContactPickerViewController:v4];
-    [v3 setContactPickerPresentedExternally:1];
+    [controllerCopy setContactPickerViewController:v4];
+    [controllerCopy setContactPickerPresentedExternally:1];
   }
 
   else
   {
-    v4 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v3];
+    v4 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:controllerCopy];
 
     [v4 setModalPresentationStyle:2];
   }
@@ -784,14 +784,14 @@ uint64_t __60__PXComposeRecipientTableViewController__updateHeaderHeight__block_
   return v4;
 }
 
-- (void)composeRecipientValidationManager:(id)a3 didUpdateValidationWithChangedIndexes:(id)a4
+- (void)composeRecipientValidationManager:(id)manager didUpdateValidationWithChangedIndexes:(id)indexes
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __123__PXComposeRecipientTableViewController_Internal__composeRecipientValidationManager_didUpdateValidationWithChangedIndexes___block_invoke;
   v4[3] = &unk_1E774C138;
   v4[4] = self;
-  [a4 enumerateIndexesUsingBlock:v4];
+  [indexes enumerateIndexesUsingBlock:v4];
 }
 
 void __123__PXComposeRecipientTableViewController_Internal__composeRecipientValidationManager_didUpdateValidationWithChangedIndexes___block_invoke(uint64_t a1, uint64_t a2)
@@ -813,48 +813,48 @@ void __123__PXComposeRecipientTableViewController_Internal__composeRecipientVali
   [v9 performChanges:v10];
 }
 
-- (void)composeRecipientDataSourceManager:(id)a3 didUpdateDataSourceWithChangeDetails:(id)a4
+- (void)composeRecipientDataSourceManager:(id)manager didUpdateDataSourceWithChangeDetails:(id)details
 {
-  v6 = a4;
-  v10 = [a3 dataSource];
-  v7 = [(PXComposeRecipientTableViewController *)self selectionManager];
-  [v7 setDataSource:v10 changeDetails:v6];
+  detailsCopy = details;
+  dataSource = [manager dataSource];
+  selectionManager = [(PXComposeRecipientTableViewController *)self selectionManager];
+  [selectionManager setDataSource:dataSource changeDetails:detailsCopy];
 
-  v8 = [(PXComposeRecipientTableViewController *)self validationManager];
-  [v8 setDataSource:v10 changeDetails:v6];
+  validationManager = [(PXComposeRecipientTableViewController *)self validationManager];
+  [validationManager setDataSource:dataSource changeDetails:detailsCopy];
 
-  v9 = [(PXComposeRecipientTableViewController *)self tableView];
-  [v9 reloadData];
+  tableView = [(PXComposeRecipientTableViewController *)self tableView];
+  [tableView reloadData];
 
   [(PXComposeRecipientTableViewController *)self updateTableViewHeight];
 }
 
-- (void)composeRecipientSelectionManager:(id)a3 didUpdateSelectionSnapshotWithChangeDetails:(id)a4
+- (void)composeRecipientSelectionManager:(id)manager didUpdateSelectionSnapshotWithChangeDetails:(id)details
 {
-  v5 = [a3 selectionSnapshot];
-  v6 = [v5 selectedComposeRecipients];
-  v7 = [(PXComposeRecipientTableViewController *)self viewModel];
+  selectionSnapshot = [manager selectionSnapshot];
+  selectedComposeRecipients = [selectionSnapshot selectedComposeRecipients];
+  viewModel = [(PXComposeRecipientTableViewController *)self viewModel];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __128__PXComposeRecipientTableViewController_Internal__composeRecipientSelectionManager_didUpdateSelectionSnapshotWithChangeDetails___block_invoke;
   v17[3] = &unk_1E773B238;
-  v18 = v5;
-  v8 = v6;
+  v18 = selectionSnapshot;
+  v8 = selectedComposeRecipients;
   v19 = v8;
-  v9 = v5;
-  [v7 performChanges:v17];
-  v10 = [v7 composeRecipientDataSourceManager];
-  v11 = [v10 dataSource];
+  v9 = selectionSnapshot;
+  [viewModel performChanges:v17];
+  composeRecipientDataSourceManager = [viewModel composeRecipientDataSourceManager];
+  dataSource = [composeRecipientDataSourceManager dataSource];
 
-  v12 = [v11 composeRecipients];
+  composeRecipients = [dataSource composeRecipients];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __128__PXComposeRecipientTableViewController_Internal__composeRecipientSelectionManager_didUpdateSelectionSnapshotWithChangeDetails___block_invoke_2;
   v14[3] = &unk_1E773B2F8;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v13 = v8;
-  [v12 enumerateObjectsUsingBlock:v14];
+  [composeRecipients enumerateObjectsUsingBlock:v14];
 }
 
 void __128__PXComposeRecipientTableViewController_Internal__composeRecipientSelectionManager_didUpdateSelectionSnapshotWithChangeDetails___block_invoke(uint64_t a1, void *a2)
@@ -881,13 +881,13 @@ void __128__PXComposeRecipientTableViewController_Internal__composeRecipientSele
 
 - (void)updateTableViewHeight
 {
-  v3 = [(PXComposeRecipientTableViewController *)self tableView];
-  v4 = [(PXComposeRecipientTableViewController *)self tableView:v3 numberOfRowsInSection:0];
+  tableView = [(PXComposeRecipientTableViewController *)self tableView];
+  v4 = [(PXComposeRecipientTableViewController *)self tableView:tableView numberOfRowsInSection:0];
 
   [(PXComposeRecipientTableViewController *)self headerHeight];
   v6 = v5;
-  v7 = [(PXComposeRecipientTableViewController *)self tableView];
-  [v7 rowHeight];
+  tableView2 = [(PXComposeRecipientTableViewController *)self tableView];
+  [tableView2 rowHeight];
   v9 = v6 + fmax(v8, 0.0) * v4;
   [(PXComposeRecipientTableViewController *)self footerHeight];
   v11 = v10 + v9;
@@ -896,11 +896,11 @@ void __128__PXComposeRecipientTableViewController_Internal__composeRecipientSele
   if (v12 != v11)
   {
     [(PXComposeRecipientTableViewController *)self setTableViewHeight:v11];
-    v13 = [(PXComposeRecipientTableViewController *)self delegate];
-    v14 = v13;
-    if (v13)
+    delegate = [(PXComposeRecipientTableViewController *)self delegate];
+    v14 = delegate;
+    if (delegate)
     {
-      v16 = v13;
+      v16 = delegate;
       v15 = objc_opt_respondsToSelector();
       v14 = v16;
       if (v15)
@@ -912,19 +912,19 @@ void __128__PXComposeRecipientTableViewController_Internal__composeRecipientSele
   }
 }
 
-- (void)bootstrapPersonSuggestion:(id)a3 withContact:(id)a4
+- (void)bootstrapPersonSuggestion:(id)suggestion withContact:(id)contact
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  suggestionCopy = suggestion;
+  contactCopy = contact;
+  v9 = contactCopy;
+  if (suggestionCopy)
   {
-    if (v8)
+    if (contactCopy)
     {
 LABEL_3:
       v17 = 0;
-      v10 = v7;
+      v10 = suggestionCopy;
       v11 = v9;
       goto LABEL_4;
     }
@@ -932,8 +932,8 @@ LABEL_3:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+Internal.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"personSuggestion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+Internal.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"personSuggestion"}];
 
     if (v9)
     {
@@ -941,11 +941,11 @@ LABEL_3:
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+Internal.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+Internal.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
 
   v17 = 0;
-  v10 = v7;
+  v10 = suggestionCopy;
   v11 = 0;
 LABEL_4:
   v12 = PXBootstrapPersonSuggestionWithContact(v10, v11, &v17);
@@ -956,7 +956,7 @@ LABEL_4:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v19 = v7;
+      v19 = suggestionCopy;
       v20 = 2112;
       v21 = v9;
       v22 = 2112;
@@ -966,15 +966,15 @@ LABEL_4:
   }
 }
 
-- (void)configureCellModel:(id)a3 withComposeRecipient:(id)a4
+- (void)configureCellModel:(id)model withComposeRecipient:(id)recipient
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v45 = v7;
-  if (v7)
+  modelCopy = model;
+  recipientCopy = recipient;
+  v9 = recipientCopy;
+  v45 = modelCopy;
+  if (modelCopy)
   {
-    if (v8)
+    if (recipientCopy)
     {
       goto LABEL_3;
     }
@@ -982,8 +982,8 @@ LABEL_4:
 
   else
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+Internal.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"cellModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+Internal.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"cellModel"}];
 
     if (v9)
     {
@@ -991,8 +991,8 @@ LABEL_4:
     }
   }
 
-  v41 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v41 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+Internal.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"composeRecipient"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+Internal.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"composeRecipient"}];
 
 LABEL_3:
   v68[0] = 0;
@@ -1005,22 +1005,22 @@ LABEL_3:
   v65 = &v64;
   v66 = 0x2020000000;
   v67 = -1;
-  v10 = [v9 recipient];
-  v43 = [(PXComposeRecipientTableViewController *)self viewModel];
-  v11 = [v9 personSuggestion];
-  v12 = v11;
-  if (v11)
+  recipient = [v9 recipient];
+  viewModel = [(PXComposeRecipientTableViewController *)self viewModel];
+  personSuggestion = [v9 personSuggestion];
+  v12 = personSuggestion;
+  if (personSuggestion)
   {
-    v44 = [v11 localizedName];
-    v13 = [(PXComposeRecipientTableViewController *)self traitCollection];
-    [v13 displayScale];
+    localizedName = [personSuggestion localizedName];
+    traitCollection = [(PXComposeRecipientTableViewController *)self traitCollection];
+    [traitCollection displayScale];
     v15 = v14;
 
     v60 = 0;
     v61 = &v60;
     v62 = 0x2020000000;
     v63 = 1;
-    v16 = [v43 peopleSuggestionsMediaProvider];
+    peopleSuggestionsMediaProvider = [viewModel peopleSuggestionsMediaProvider];
     +[PXComposeRecipientTableCellModel imageDiameter];
     v18 = v17;
     +[PXComposeRecipientTableCellModel imageDiameter];
@@ -1033,23 +1033,23 @@ LABEL_3:
     v58 = v68;
     v59 = &v64;
     v56 = v45;
-    v21 = [v16 requestImageForPersonSuggestion:v12 targetSize:0 displayScale:0 cropFactor:v55 cornerStyle:v18 resultHandler:{v20, v15}];
+    v21 = [peopleSuggestionsMediaProvider requestImageForPersonSuggestion:v12 targetSize:0 displayScale:0 cropFactor:v55 cornerStyle:v18 resultHandler:{v20, v15}];
     v65[3] = v21;
     *(v61 + 24) = 0;
 
     _Block_object_dispose(&v60, 8);
-    v42 = 0;
+    contact = 0;
   }
 
   else
   {
-    v42 = [v10 contact];
-    v44 = 0;
+    contact = [recipient contact];
+    localizedName = 0;
   }
 
-  v22 = [v10 suggestedTransport];
-  v23 = [v22 address];
-  if ([v23 length])
+  suggestedTransport = [recipient suggestedTransport];
+  address = [suggestedTransport address];
+  if ([address length])
   {
     v24 = [(PXComposeRecipientTableViewController *)self isValidAddressForComposeRecipient:v9];
   }
@@ -1059,12 +1059,12 @@ LABEL_3:
     v24 = 0;
   }
 
-  v25 = [v10 localizedName];
-  v26 = v25;
-  v27 = v44;
-  if (v25)
+  localizedName2 = [recipient localizedName];
+  v26 = localizedName2;
+  v27 = localizedName;
+  if (localizedName2)
   {
-    v27 = v25;
+    v27 = localizedName2;
   }
 
   v28 = v27;
@@ -1072,7 +1072,7 @@ LABEL_3:
   if (v28 && [v28 length] || (PXLocalizedStringFromTable(@"PXComposeRecipientTableViewMissingLocalizedNameMessage", @"PhotosUICore"), v29 = objc_claimAutoreleasedReturnValue(), v28, (v28 = v29) != 0))
   {
     v28 = v28;
-    v30 = v23;
+    v30 = address;
     v31 = v30;
     if (v28 == v30)
     {
@@ -1092,11 +1092,11 @@ LABEL_3:
   }
 
 LABEL_19:
-  v33 = [(PXComposeRecipientTableViewController *)self selectionManager];
-  v34 = [v33 selectionSnapshot];
+  selectionManager = [(PXComposeRecipientTableViewController *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  v35 = [v34 selectedComposeRecipients];
-  LOBYTE(v33) = [v35 containsObject:v9];
+  selectedComposeRecipients = [selectionSnapshot selectedComposeRecipients];
+  LOBYTE(selectionManager) = [selectedComposeRecipients containsObject:v9];
 
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
@@ -1106,13 +1106,13 @@ LABEL_19:
   v52 = &v64;
   v36 = v28;
   v47 = v36;
-  v37 = v23;
+  v37 = address;
   v48 = v37;
   v53 = v24;
-  v54 = v33;
-  v38 = v43;
+  v54 = selectionManager;
+  v38 = viewModel;
   v49 = v38;
-  v39 = v42;
+  v39 = contact;
   v50 = v39;
   [v45 performChanges:v46];
 
@@ -1166,59 +1166,59 @@ void __91__PXComposeRecipientTableViewController_Internal__configureCellModel_wi
   }
 }
 
-- (id)cellModelAtIndex:(unint64_t)a3
+- (id)cellModelAtIndex:(unint64_t)index
 {
-  v4 = [MEMORY[0x1E696AC88] px_indexPathForItem:a3 inSection:0];
-  v5 = [(PXComposeRecipientTableViewController *)self tableView];
-  v6 = [v5 cellForRowAtIndexPath:v4];
+  v4 = [MEMORY[0x1E696AC88] px_indexPathForItem:index inSection:0];
+  tableView = [(PXComposeRecipientTableViewController *)self tableView];
+  v6 = [tableView cellForRowAtIndexPath:v4];
 
-  v7 = [v6 cellModel];
+  cellModel = [v6 cellModel];
 
-  return v7;
+  return cellModel;
 }
 
-- (BOOL)isValidAddressForComposeRecipient:(id)a3
+- (BOOL)isValidAddressForComposeRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [(PXComposeRecipientTableViewController *)self validationManager];
-  v6 = [v5 validationTypeForComposeRecipient:v4];
+  recipientCopy = recipient;
+  validationManager = [(PXComposeRecipientTableViewController *)self validationManager];
+  v6 = [validationManager validationTypeForComposeRecipient:recipientCopy];
 
   return v6 == 1;
 }
 
-- (void)configureWithViewModel:(id)a3
+- (void)configureWithViewModel:(id)model
 {
-  v5 = a3;
-  if (!v5)
+  modelCopy = model;
+  if (!modelCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+Internal.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientTableViewController+Internal.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
   }
 
-  [(PXComposeRecipientTableViewController *)self setViewModel:v5];
-  [v5 registerChangeObserver:self context:PXComposeRecipientTableViewModelObservationContext];
-  v6 = [v5 composeRecipientDataSourceManager];
-  v7 = [v5 recipients];
-  [v6 addRecipients:v7];
+  [(PXComposeRecipientTableViewController *)self setViewModel:modelCopy];
+  [modelCopy registerChangeObserver:self context:PXComposeRecipientTableViewModelObservationContext];
+  composeRecipientDataSourceManager = [modelCopy composeRecipientDataSourceManager];
+  recipients = [modelCopy recipients];
+  [composeRecipientDataSourceManager addRecipients:recipients];
 
-  [v6 setDelegate:self];
-  v8 = [v6 dataSource];
-  v9 = [[PXComposeRecipientSelectionManager alloc] initWithDataSource:v8];
+  [composeRecipientDataSourceManager setDelegate:self];
+  dataSource = [composeRecipientDataSourceManager dataSource];
+  v9 = [[PXComposeRecipientSelectionManager alloc] initWithDataSource:dataSource];
   [(PXComposeRecipientSelectionManager *)v9 selectAll];
   [(PXComposeRecipientSelectionManager *)v9 setDelegate:self];
   [(PXComposeRecipientTableViewController *)self setSelectionManager:v9];
-  v10 = [(PXComposeRecipientSelectionManager *)v9 selectionSnapshot];
-  v11 = [v10 selectedComposeRecipients];
+  selectionSnapshot = [(PXComposeRecipientSelectionManager *)v9 selectionSnapshot];
+  selectedComposeRecipients = [selectionSnapshot selectedComposeRecipients];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __74__PXComposeRecipientTableViewController_Internal__configureWithViewModel___block_invoke;
   v16[3] = &unk_1E773B238;
-  v17 = v10;
-  v18 = v11;
-  v12 = v11;
-  v13 = v10;
-  [v5 performChanges:v16];
-  v14 = [[PXComposeRecipientValidationManager alloc] initWithDataSource:v8];
+  v17 = selectionSnapshot;
+  v18 = selectedComposeRecipients;
+  v12 = selectedComposeRecipients;
+  v13 = selectionSnapshot;
+  [modelCopy performChanges:v16];
+  v14 = [[PXComposeRecipientValidationManager alloc] initWithDataSource:dataSource];
   [(PXComposeRecipientValidationManager *)v14 setDelegate:self];
   [(PXComposeRecipientTableViewController *)self setValidationManager:v14];
 }

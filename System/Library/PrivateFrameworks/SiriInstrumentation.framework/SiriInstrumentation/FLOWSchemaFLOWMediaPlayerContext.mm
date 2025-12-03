@@ -1,30 +1,30 @@
 @interface FLOWSchemaFLOWMediaPlayerContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWMediaPlayerContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWMediaPlayerContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWMediaPlayerContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWMediaPlayerContext)initWithJSON:(id)n;
 - (FLOWSchemaFLOWMediaPlayerPlaybackContext)mediaPlayerPlaybackContext;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)activeSubscriptionsAtIndex:(unint64_t)a3;
+- (int)activeSubscriptionsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addActiveSubscriptions:(int)a3;
+- (void)addActiveSubscriptions:(int)subscriptions;
 - (void)deleteMediaPlayerPlaybackContext;
-- (void)setHasAirPlayRouteSettingStatus:(BOOL)a3;
-- (void)setHasAirPlaySuccessfullyPlayingDevicesCount:(BOOL)a3;
-- (void)setHasAirPlayTargetedDevicesCount:(BOOL)a3;
-- (void)setHasAppleMusicVoicePreviewOfferNotShown:(BOOL)a3;
-- (void)setHasAppleMusicVoiceUserSubscriptionState:(BOOL)a3;
-- (void)setHasIsAppleMusicVoiceEligible:(BOOL)a3;
-- (void)setHasIsMusicSubscriber:(BOOL)a3;
-- (void)setHasIsSiriForAirPlayRequest:(BOOL)a3;
-- (void)setHasIsWholeHouseAudio:(BOOL)a3;
-- (void)setHasMediaType:(BOOL)a3;
-- (void)setHasUserPersona:(BOOL)a3;
-- (void)setHasWasOnScreenItemSelected:(BOOL)a3;
-- (void)setMediaPlayerPlaybackContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAirPlayRouteSettingStatus:(BOOL)status;
+- (void)setHasAirPlaySuccessfullyPlayingDevicesCount:(BOOL)count;
+- (void)setHasAirPlayTargetedDevicesCount:(BOOL)count;
+- (void)setHasAppleMusicVoicePreviewOfferNotShown:(BOOL)shown;
+- (void)setHasAppleMusicVoiceUserSubscriptionState:(BOOL)state;
+- (void)setHasIsAppleMusicVoiceEligible:(BOOL)eligible;
+- (void)setHasIsMusicSubscriber:(BOOL)subscriber;
+- (void)setHasIsSiriForAirPlayRequest:(BOOL)request;
+- (void)setHasIsWholeHouseAudio:(BOOL)audio;
+- (void)setHasMediaType:(BOOL)type;
+- (void)setHasUserPersona:(BOOL)persona;
+- (void)setHasWasOnScreenItemSelected:(BOOL)selected;
+- (void)setMediaPlayerPlaybackContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWMediaPlayerContext
@@ -44,23 +44,23 @@
   return v3;
 }
 
-- (FLOWSchemaFLOWMediaPlayerContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWMediaPlayerContext)initWithDictionary:(id)dictionary
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v46.receiver = self;
   v46.super_class = FLOWSchemaFLOWMediaPlayerContext;
   v5 = [(FLOWSchemaFLOWMediaPlayerContext *)&v46 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"taskType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"taskType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMediaPlayerContext setTaskType:](v5, "setTaskType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"mediaType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"mediaType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
 
     v38 = v7;
     v39 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"isWholeHouseAudio"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isWholeHouseAudio"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
     }
 
     v37 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"wholeHouseAudioDestinationContext"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"wholeHouseAudioDestinationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
       [(FLOWSchemaFLOWMediaPlayerContext *)v5 setWholeHouseAudioDestinationContext:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isMusicSubscriber"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isMusicSubscriber"];
     objc_opt_class();
     v41 = v11;
     if (objc_opt_isKindOfClass())
@@ -93,7 +93,7 @@
       -[FLOWSchemaFLOWMediaPlayerContext setIsMusicSubscriber:](v5, "setIsMusicSubscriber:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"activeSubscriptions"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"activeSubscriptions"];
     objc_opt_class();
     v40 = v12;
     if (objc_opt_isKindOfClass())
@@ -132,21 +132,21 @@
       }
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"appleMusicVoiceUserSubscriptionState"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"appleMusicVoiceUserSubscriptionState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMediaPlayerContext setAppleMusicVoiceUserSubscriptionState:](v5, "setAppleMusicVoiceUserSubscriptionState:", [v19 intValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"appleMusicVoicePreviewOfferNotShown"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"appleMusicVoicePreviewOfferNotShown"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMediaPlayerContext setAppleMusicVoicePreviewOfferNotShown:](v5, "setAppleMusicVoicePreviewOfferNotShown:", [v20 intValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"isAppleMusicVoiceEligible"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"isAppleMusicVoiceEligible"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -154,7 +154,7 @@
     }
 
     v34 = v21;
-    v22 = [v4 objectForKeyedSubscript:@"mediaPlayerPlaybackContext"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"mediaPlayerPlaybackContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -163,14 +163,14 @@
     }
 
     v36 = v19;
-    v24 = [v4 objectForKeyedSubscript:@"isSiriForAirPlayRequest"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"isSiriForAirPlayRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMediaPlayerContext setIsSiriForAirPlayRequest:](v5, "setIsSiriForAirPlayRequest:", [v24 BOOLValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"airPlayTargetedDevicesCount"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"airPlayTargetedDevicesCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -178,7 +178,7 @@
     }
 
     v33 = v22;
-    v26 = [v4 objectForKeyedSubscript:@"airPlaySuccessfullyPlayingDevicesCount"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"airPlaySuccessfullyPlayingDevicesCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -186,7 +186,7 @@
     }
 
     v35 = v20;
-    v27 = [v4 objectForKeyedSubscript:@"airPlayRouteSettingStatus"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"airPlayRouteSettingStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -194,14 +194,14 @@
     }
 
     v28 = v9;
-    v29 = [v4 objectForKeyedSubscript:@"userPersona"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"userPersona"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWMediaPlayerContext setUserPersona:](v5, "setUserPersona:", [v29 intValue]);
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"wasOnScreenItemSelected"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"wasOnScreenItemSelected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -214,30 +214,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWMediaPlayerContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWMediaPlayerContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWMediaPlayerContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWMediaPlayerContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWMediaPlayerContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -250,12 +250,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_activeSubscriptions count])
   {
-    v4 = [(FLOWSchemaFLOWMediaPlayerContext *)self activeSubscriptions];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"activeSubscriptions"];
+    activeSubscriptions = [(FLOWSchemaFLOWMediaPlayerContext *)self activeSubscriptions];
+    v5 = [activeSubscriptions copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"activeSubscriptions"];
   }
 
   v6 = *(&self->_wasOnScreenItemSelected + 1);
@@ -272,14 +272,14 @@
       v8 = off_1E78D5AA0[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"airPlayRouteSettingStatus"];
+    [dictionary setObject:v8 forKeyedSubscript:@"airPlayRouteSettingStatus"];
     v6 = *(&self->_wasOnScreenItemSelected + 1);
   }
 
   if ((v6 & 0x200) != 0)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWMediaPlayerContext airPlaySuccessfullyPlayingDevicesCount](self, "airPlaySuccessfullyPlayingDevicesCount")}];
-    [v3 setObject:v12 forKeyedSubscript:@"airPlaySuccessfullyPlayingDevicesCount"];
+    [dictionary setObject:v12 forKeyedSubscript:@"airPlaySuccessfullyPlayingDevicesCount"];
 
     v6 = *(&self->_wasOnScreenItemSelected + 1);
     if ((v6 & 0x100) == 0)
@@ -300,7 +300,7 @@ LABEL_10:
   }
 
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWMediaPlayerContext airPlayTargetedDevicesCount](self, "airPlayTargetedDevicesCount")}];
-  [v3 setObject:v13 forKeyedSubscript:@"airPlayTargetedDevicesCount"];
+  [dictionary setObject:v13 forKeyedSubscript:@"airPlayTargetedDevicesCount"];
 
   v6 = *(&self->_wasOnScreenItemSelected + 1);
   if ((v6 & 0x20) == 0)
@@ -326,7 +326,7 @@ LABEL_22:
     v15 = off_1E78D5AD0[v14];
   }
 
-  [v3 setObject:v15 forKeyedSubscript:@"appleMusicVoicePreviewOfferNotShown"];
+  [dictionary setObject:v15 forKeyedSubscript:@"appleMusicVoicePreviewOfferNotShown"];
   v6 = *(&self->_wasOnScreenItemSelected + 1);
   if ((v6 & 0x10) == 0)
   {
@@ -351,7 +351,7 @@ LABEL_26:
     v17 = off_1E78D5B80[v16];
   }
 
-  [v3 setObject:v17 forKeyedSubscript:@"appleMusicVoiceUserSubscriptionState"];
+  [dictionary setObject:v17 forKeyedSubscript:@"appleMusicVoiceUserSubscriptionState"];
   v6 = *(&self->_wasOnScreenItemSelected + 1);
   if ((v6 & 0x40) == 0)
   {
@@ -366,7 +366,7 @@ LABEL_13:
 
 LABEL_30:
   v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMediaPlayerContext isAppleMusicVoiceEligible](self, "isAppleMusicVoiceEligible")}];
-  [v3 setObject:v18 forKeyedSubscript:@"isAppleMusicVoiceEligible"];
+  [dictionary setObject:v18 forKeyedSubscript:@"isAppleMusicVoiceEligible"];
 
   v6 = *(&self->_wasOnScreenItemSelected + 1);
   if ((v6 & 8) == 0)
@@ -382,7 +382,7 @@ LABEL_14:
 
 LABEL_31:
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMediaPlayerContext isMusicSubscriber](self, "isMusicSubscriber")}];
-  [v3 setObject:v19 forKeyedSubscript:@"isMusicSubscriber"];
+  [dictionary setObject:v19 forKeyedSubscript:@"isMusicSubscriber"];
 
   v6 = *(&self->_wasOnScreenItemSelected + 1);
   if ((v6 & 0x80) == 0)
@@ -398,29 +398,29 @@ LABEL_15:
 
 LABEL_32:
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMediaPlayerContext isSiriForAirPlayRequest](self, "isSiriForAirPlayRequest")}];
-  [v3 setObject:v20 forKeyedSubscript:@"isSiriForAirPlayRequest"];
+  [dictionary setObject:v20 forKeyedSubscript:@"isSiriForAirPlayRequest"];
 
   if ((*(&self->_wasOnScreenItemSelected + 1) & 4) != 0)
   {
 LABEL_16:
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMediaPlayerContext isWholeHouseAudio](self, "isWholeHouseAudio")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isWholeHouseAudio"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isWholeHouseAudio"];
   }
 
 LABEL_17:
   if (self->_mediaPlayerPlaybackContext)
   {
-    v10 = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    mediaPlayerPlaybackContext = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
+    dictionaryRepresentation = [mediaPlayerPlaybackContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"mediaPlayerPlaybackContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"mediaPlayerPlaybackContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"mediaPlayerPlaybackContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"mediaPlayerPlaybackContext"];
     }
   }
 
@@ -438,7 +438,7 @@ LABEL_17:
       v27 = off_1E78D5BA0[v26];
     }
 
-    [v3 setObject:v27 forKeyedSubscript:@"mediaType"];
+    [dictionary setObject:v27 forKeyedSubscript:@"mediaType"];
     v22 = *(&self->_wasOnScreenItemSelected + 1);
     if ((v22 & 1) == 0)
     {
@@ -468,7 +468,7 @@ LABEL_38:
     v29 = off_1E78D5C80[v28];
   }
 
-  [v3 setObject:v29 forKeyedSubscript:@"taskType"];
+  [dictionary setObject:v29 forKeyedSubscript:@"taskType"];
   v22 = *(&self->_wasOnScreenItemSelected + 1);
   if ((v22 & 0x800) == 0)
   {
@@ -493,35 +493,35 @@ LABEL_52:
     v31 = off_1E78D5D98[v30];
   }
 
-  [v3 setObject:v31 forKeyedSubscript:@"userPersona"];
+  [dictionary setObject:v31 forKeyedSubscript:@"userPersona"];
   if ((*(&self->_wasOnScreenItemSelected + 1) & 0x1000) != 0)
   {
 LABEL_40:
     v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWMediaPlayerContext wasOnScreenItemSelected](self, "wasOnScreenItemSelected")}];
-    [v3 setObject:v23 forKeyedSubscript:@"wasOnScreenItemSelected"];
+    [dictionary setObject:v23 forKeyedSubscript:@"wasOnScreenItemSelected"];
   }
 
 LABEL_41:
   if (self->_wholeHouseAudioDestinationContext)
   {
-    v24 = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
-    v25 = [v24 dictionaryRepresentation];
-    if (v25)
+    wholeHouseAudioDestinationContext = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
+    dictionaryRepresentation2 = [wholeHouseAudioDestinationContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v25 forKeyedSubscript:@"wholeHouseAudioDestinationContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"wholeHouseAudioDestinationContext"];
     }
 
     else
     {
-      v32 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v32 forKeyedSubscript:@"wholeHouseAudioDestinationContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"wholeHouseAudioDestinationContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v33 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v33 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -693,22 +693,22 @@ LABEL_24:
   return v21 ^ v22 ^ v4 ^ v6 ^ v5 ^ v7 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
   whichMediaplayertaskcontext = self->_whichMediaplayertaskcontext;
-  if (whichMediaplayertaskcontext != [v4 whichMediaplayertaskcontext])
+  if (whichMediaplayertaskcontext != [equalCopy whichMediaplayertaskcontext])
   {
     goto LABEL_43;
   }
 
   v6 = *(&self->_wasOnScreenItemSelected + 1);
-  v7 = *(v4 + 93);
+  v7 = *(equalCopy + 93);
   if ((v6 & 1) != (v7 & 1))
   {
     goto LABEL_43;
@@ -717,13 +717,13 @@ LABEL_24:
   if (v6)
   {
     taskType = self->_taskType;
-    if (taskType != [v4 taskType])
+    if (taskType != [equalCopy taskType])
     {
       goto LABEL_43;
     }
 
     v6 = *(&self->_wasOnScreenItemSelected + 1);
-    v7 = *(v4 + 93);
+    v7 = *(equalCopy + 93);
   }
 
   v9 = (v6 >> 1) & 1;
@@ -735,13 +735,13 @@ LABEL_24:
   if (v9)
   {
     mediaType = self->_mediaType;
-    if (mediaType != [v4 mediaType])
+    if (mediaType != [equalCopy mediaType])
     {
       goto LABEL_43;
     }
 
     v6 = *(&self->_wasOnScreenItemSelected + 1);
-    v7 = *(v4 + 93);
+    v7 = *(equalCopy + 93);
   }
 
   v11 = (v6 >> 2) & 1;
@@ -753,26 +753,26 @@ LABEL_24:
   if (v11)
   {
     isWholeHouseAudio = self->_isWholeHouseAudio;
-    if (isWholeHouseAudio != [v4 isWholeHouseAudio])
+    if (isWholeHouseAudio != [equalCopy isWholeHouseAudio])
     {
       goto LABEL_43;
     }
   }
 
-  v13 = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
-  v14 = [v4 wholeHouseAudioDestinationContext];
-  if ((v13 != 0) == (v14 == 0))
+  wholeHouseAudioDestinationContext = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
+  wholeHouseAudioDestinationContext2 = [equalCopy wholeHouseAudioDestinationContext];
+  if ((wholeHouseAudioDestinationContext != 0) == (wholeHouseAudioDestinationContext2 == 0))
   {
     goto LABEL_42;
   }
 
-  v15 = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
-  if (v15)
+  wholeHouseAudioDestinationContext3 = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
+  if (wholeHouseAudioDestinationContext3)
   {
-    v16 = v15;
-    v17 = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
-    v18 = [v4 wholeHouseAudioDestinationContext];
-    v19 = [v17 isEqual:v18];
+    v16 = wholeHouseAudioDestinationContext3;
+    wholeHouseAudioDestinationContext4 = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
+    wholeHouseAudioDestinationContext5 = [equalCopy wholeHouseAudioDestinationContext];
+    v19 = [wholeHouseAudioDestinationContext4 isEqual:wholeHouseAudioDestinationContext5];
 
     if (!v19)
     {
@@ -785,7 +785,7 @@ LABEL_24:
   }
 
   v20 = (*(&self->_wasOnScreenItemSelected + 1) >> 3) & 1;
-  if (v20 != ((*(v4 + 93) >> 3) & 1))
+  if (v20 != ((*(equalCopy + 93) >> 3) & 1))
   {
     goto LABEL_43;
   }
@@ -793,26 +793,26 @@ LABEL_24:
   if (v20)
   {
     isMusicSubscriber = self->_isMusicSubscriber;
-    if (isMusicSubscriber != [v4 isMusicSubscriber])
+    if (isMusicSubscriber != [equalCopy isMusicSubscriber])
     {
       goto LABEL_43;
     }
   }
 
-  v13 = [(FLOWSchemaFLOWMediaPlayerContext *)self activeSubscriptions];
-  v14 = [v4 activeSubscriptions];
-  if ((v13 != 0) == (v14 == 0))
+  wholeHouseAudioDestinationContext = [(FLOWSchemaFLOWMediaPlayerContext *)self activeSubscriptions];
+  wholeHouseAudioDestinationContext2 = [equalCopy activeSubscriptions];
+  if ((wholeHouseAudioDestinationContext != 0) == (wholeHouseAudioDestinationContext2 == 0))
   {
     goto LABEL_42;
   }
 
-  v22 = [(FLOWSchemaFLOWMediaPlayerContext *)self activeSubscriptions];
-  if (v22)
+  activeSubscriptions = [(FLOWSchemaFLOWMediaPlayerContext *)self activeSubscriptions];
+  if (activeSubscriptions)
   {
-    v23 = v22;
-    v24 = [(FLOWSchemaFLOWMediaPlayerContext *)self activeSubscriptions];
-    v25 = [v4 activeSubscriptions];
-    v26 = [v24 isEqual:v25];
+    v23 = activeSubscriptions;
+    activeSubscriptions2 = [(FLOWSchemaFLOWMediaPlayerContext *)self activeSubscriptions];
+    activeSubscriptions3 = [equalCopy activeSubscriptions];
+    v26 = [activeSubscriptions2 isEqual:activeSubscriptions3];
 
     if (!v26)
     {
@@ -826,7 +826,7 @@ LABEL_24:
 
   v27 = *(&self->_wasOnScreenItemSelected + 1);
   v28 = (v27 >> 4) & 1;
-  v29 = *(v4 + 93);
+  v29 = *(equalCopy + 93);
   if (v28 != ((v29 >> 4) & 1))
   {
     goto LABEL_43;
@@ -835,13 +835,13 @@ LABEL_24:
   if (v28)
   {
     appleMusicVoiceUserSubscriptionState = self->_appleMusicVoiceUserSubscriptionState;
-    if (appleMusicVoiceUserSubscriptionState != [v4 appleMusicVoiceUserSubscriptionState])
+    if (appleMusicVoiceUserSubscriptionState != [equalCopy appleMusicVoiceUserSubscriptionState])
     {
       goto LABEL_43;
     }
 
     v27 = *(&self->_wasOnScreenItemSelected + 1);
-    v29 = *(v4 + 93);
+    v29 = *(equalCopy + 93);
   }
 
   v31 = (v27 >> 5) & 1;
@@ -853,13 +853,13 @@ LABEL_24:
   if (v31)
   {
     appleMusicVoicePreviewOfferNotShown = self->_appleMusicVoicePreviewOfferNotShown;
-    if (appleMusicVoicePreviewOfferNotShown != [v4 appleMusicVoicePreviewOfferNotShown])
+    if (appleMusicVoicePreviewOfferNotShown != [equalCopy appleMusicVoicePreviewOfferNotShown])
     {
       goto LABEL_43;
     }
 
     v27 = *(&self->_wasOnScreenItemSelected + 1);
-    v29 = *(v4 + 93);
+    v29 = *(equalCopy + 93);
   }
 
   v33 = (v27 >> 6) & 1;
@@ -871,28 +871,28 @@ LABEL_24:
   if (v33)
   {
     isAppleMusicVoiceEligible = self->_isAppleMusicVoiceEligible;
-    if (isAppleMusicVoiceEligible != [v4 isAppleMusicVoiceEligible])
+    if (isAppleMusicVoiceEligible != [equalCopy isAppleMusicVoiceEligible])
     {
       goto LABEL_43;
     }
   }
 
-  v13 = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
-  v14 = [v4 mediaPlayerPlaybackContext];
-  if ((v13 != 0) == (v14 == 0))
+  wholeHouseAudioDestinationContext = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
+  wholeHouseAudioDestinationContext2 = [equalCopy mediaPlayerPlaybackContext];
+  if ((wholeHouseAudioDestinationContext != 0) == (wholeHouseAudioDestinationContext2 == 0))
   {
 LABEL_42:
 
     goto LABEL_43;
   }
 
-  v35 = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
-  if (v35)
+  mediaPlayerPlaybackContext = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
+  if (mediaPlayerPlaybackContext)
   {
-    v36 = v35;
-    v37 = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
-    v38 = [v4 mediaPlayerPlaybackContext];
-    v39 = [v37 isEqual:v38];
+    v36 = mediaPlayerPlaybackContext;
+    mediaPlayerPlaybackContext2 = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
+    mediaPlayerPlaybackContext3 = [equalCopy mediaPlayerPlaybackContext];
+    v39 = [mediaPlayerPlaybackContext2 isEqual:mediaPlayerPlaybackContext3];
 
     if (!v39)
     {
@@ -906,19 +906,19 @@ LABEL_42:
 
   v42 = *(&self->_wasOnScreenItemSelected + 1);
   v43 = (v42 >> 7) & 1;
-  v44 = *(v4 + 93);
+  v44 = *(equalCopy + 93);
   if (v43 == ((v44 >> 7) & 1))
   {
     if (v43)
     {
       isSiriForAirPlayRequest = self->_isSiriForAirPlayRequest;
-      if (isSiriForAirPlayRequest != [v4 isSiriForAirPlayRequest])
+      if (isSiriForAirPlayRequest != [equalCopy isSiriForAirPlayRequest])
       {
         goto LABEL_43;
       }
 
       v42 = *(&self->_wasOnScreenItemSelected + 1);
-      v44 = *(v4 + 93);
+      v44 = *(equalCopy + 93);
     }
 
     v46 = (v42 >> 8) & 1;
@@ -927,13 +927,13 @@ LABEL_42:
       if (v46)
       {
         airPlayTargetedDevicesCount = self->_airPlayTargetedDevicesCount;
-        if (airPlayTargetedDevicesCount != [v4 airPlayTargetedDevicesCount])
+        if (airPlayTargetedDevicesCount != [equalCopy airPlayTargetedDevicesCount])
         {
           goto LABEL_43;
         }
 
         v42 = *(&self->_wasOnScreenItemSelected + 1);
-        v44 = *(v4 + 93);
+        v44 = *(equalCopy + 93);
       }
 
       v48 = (v42 >> 9) & 1;
@@ -942,13 +942,13 @@ LABEL_42:
         if (v48)
         {
           airPlaySuccessfullyPlayingDevicesCount = self->_airPlaySuccessfullyPlayingDevicesCount;
-          if (airPlaySuccessfullyPlayingDevicesCount != [v4 airPlaySuccessfullyPlayingDevicesCount])
+          if (airPlaySuccessfullyPlayingDevicesCount != [equalCopy airPlaySuccessfullyPlayingDevicesCount])
           {
             goto LABEL_43;
           }
 
           v42 = *(&self->_wasOnScreenItemSelected + 1);
-          v44 = *(v4 + 93);
+          v44 = *(equalCopy + 93);
         }
 
         v50 = (v42 >> 10) & 1;
@@ -957,13 +957,13 @@ LABEL_42:
           if (v50)
           {
             airPlayRouteSettingStatus = self->_airPlayRouteSettingStatus;
-            if (airPlayRouteSettingStatus != [v4 airPlayRouteSettingStatus])
+            if (airPlayRouteSettingStatus != [equalCopy airPlayRouteSettingStatus])
             {
               goto LABEL_43;
             }
 
             v42 = *(&self->_wasOnScreenItemSelected + 1);
-            v44 = *(v4 + 93);
+            v44 = *(equalCopy + 93);
           }
 
           v52 = (v42 >> 11) & 1;
@@ -972,19 +972,19 @@ LABEL_42:
             if (v52)
             {
               userPersona = self->_userPersona;
-              if (userPersona != [v4 userPersona])
+              if (userPersona != [equalCopy userPersona])
               {
                 goto LABEL_43;
               }
 
               v42 = *(&self->_wasOnScreenItemSelected + 1);
-              v44 = *(v4 + 93);
+              v44 = *(equalCopy + 93);
             }
 
             v54 = (v42 >> 12) & 1;
             if (v54 == ((v44 >> 12) & 1))
             {
-              if (!v54 || (wasOnScreenItemSelected = self->_wasOnScreenItemSelected, wasOnScreenItemSelected == [v4 wasOnScreenItemSelected]))
+              if (!v54 || (wasOnScreenItemSelected = self->_wasOnScreenItemSelected, wasOnScreenItemSelected == [equalCopy wasOnScreenItemSelected]))
               {
                 v40 = 1;
                 goto LABEL_44;
@@ -1003,10 +1003,10 @@ LABEL_44:
   return v40;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_wasOnScreenItemSelected + 1);
   if (v5)
   {
@@ -1037,11 +1037,11 @@ LABEL_4:
   }
 
 LABEL_5:
-  v6 = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
+  wholeHouseAudioDestinationContext = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
 
-  if (v6)
+  if (wholeHouseAudioDestinationContext)
   {
-    v7 = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
+    wholeHouseAudioDestinationContext2 = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1109,11 +1109,11 @@ LABEL_19:
   }
 
 LABEL_20:
-  v14 = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
+  mediaPlayerPlaybackContext = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
 
-  if (v14)
+  if (mediaPlayerPlaybackContext)
   {
-    v15 = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
+    mediaPlayerPlaybackContext2 = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1191,9 +1191,9 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)setHasWasOnScreenItemSelected:(BOOL)a3
+- (void)setHasWasOnScreenItemSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     v3 = 4096;
   }
@@ -1206,9 +1206,9 @@ LABEL_29:
   *(&self->_wasOnScreenItemSelected + 1) = *(&self->_wasOnScreenItemSelected + 1) & 0xEFFF | v3;
 }
 
-- (void)setHasUserPersona:(BOOL)a3
+- (void)setHasUserPersona:(BOOL)persona
 {
-  if (a3)
+  if (persona)
   {
     v3 = 2048;
   }
@@ -1221,9 +1221,9 @@ LABEL_29:
   *(&self->_wasOnScreenItemSelected + 1) = *(&self->_wasOnScreenItemSelected + 1) & 0xF7FF | v3;
 }
 
-- (void)setHasAirPlayRouteSettingStatus:(BOOL)a3
+- (void)setHasAirPlayRouteSettingStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 1024;
   }
@@ -1236,9 +1236,9 @@ LABEL_29:
   *(&self->_wasOnScreenItemSelected + 1) = *(&self->_wasOnScreenItemSelected + 1) & 0xFBFF | v3;
 }
 
-- (void)setHasAirPlaySuccessfullyPlayingDevicesCount:(BOOL)a3
+- (void)setHasAirPlaySuccessfullyPlayingDevicesCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 512;
   }
@@ -1251,9 +1251,9 @@ LABEL_29:
   *(&self->_wasOnScreenItemSelected + 1) = *(&self->_wasOnScreenItemSelected + 1) & 0xFDFF | v3;
 }
 
-- (void)setHasAirPlayTargetedDevicesCount:(BOOL)a3
+- (void)setHasAirPlayTargetedDevicesCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -1266,9 +1266,9 @@ LABEL_29:
   *(&self->_wasOnScreenItemSelected + 1) = *(&self->_wasOnScreenItemSelected + 1) & 0xFEFF | v3;
 }
 
-- (void)setHasIsSiriForAirPlayRequest:(BOOL)a3
+- (void)setHasIsSiriForAirPlayRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 128;
   }
@@ -1291,21 +1291,21 @@ LABEL_29:
   }
 }
 
-- (void)setMediaPlayerPlaybackContext:(id)a3
+- (void)setMediaPlayerPlaybackContext:(id)context
 {
   v3 = 11;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
 
   self->_whichMediaplayertaskcontext = v3;
-  objc_storeStrong(&self->_mediaPlayerPlaybackContext, a3);
+  objc_storeStrong(&self->_mediaPlayerPlaybackContext, context);
 }
 
-- (void)setHasIsAppleMusicVoiceEligible:(BOOL)a3
+- (void)setHasIsAppleMusicVoiceEligible:(BOOL)eligible
 {
-  if (a3)
+  if (eligible)
   {
     v3 = 64;
   }
@@ -1318,9 +1318,9 @@ LABEL_29:
   *(&self->_wasOnScreenItemSelected + 1) = *(&self->_wasOnScreenItemSelected + 1) & 0xFFBF | v3;
 }
 
-- (void)setHasAppleMusicVoicePreviewOfferNotShown:(BOOL)a3
+- (void)setHasAppleMusicVoicePreviewOfferNotShown:(BOOL)shown
 {
-  if (a3)
+  if (shown)
   {
     v3 = 32;
   }
@@ -1333,9 +1333,9 @@ LABEL_29:
   *(&self->_wasOnScreenItemSelected + 1) = *(&self->_wasOnScreenItemSelected + 1) & 0xFFDF | v3;
 }
 
-- (void)setHasAppleMusicVoiceUserSubscriptionState:(BOOL)a3
+- (void)setHasAppleMusicVoiceUserSubscriptionState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 16;
   }
@@ -1348,23 +1348,23 @@ LABEL_29:
   *(&self->_wasOnScreenItemSelected + 1) = *(&self->_wasOnScreenItemSelected + 1) & 0xFFEF | v3;
 }
 
-- (int)activeSubscriptionsAtIndex:(unint64_t)a3
+- (int)activeSubscriptionsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_activeSubscriptions objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_activeSubscriptions objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addActiveSubscriptions:(int)a3
+- (void)addActiveSubscriptions:(int)subscriptions
 {
-  v3 = *&a3;
+  v3 = *&subscriptions;
   activeSubscriptions = self->_activeSubscriptions;
   if (!activeSubscriptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_activeSubscriptions;
-    self->_activeSubscriptions = v6;
+    self->_activeSubscriptions = array;
 
     activeSubscriptions = self->_activeSubscriptions;
   }
@@ -1373,9 +1373,9 @@ LABEL_29:
   [(NSArray *)activeSubscriptions addObject:v8];
 }
 
-- (void)setHasIsMusicSubscriber:(BOOL)a3
+- (void)setHasIsMusicSubscriber:(BOOL)subscriber
 {
-  if (a3)
+  if (subscriber)
   {
     v3 = 8;
   }
@@ -1388,9 +1388,9 @@ LABEL_29:
   *(&self->_wasOnScreenItemSelected + 1) = *(&self->_wasOnScreenItemSelected + 1) & 0xFFF7 | v3;
 }
 
-- (void)setHasIsWholeHouseAudio:(BOOL)a3
+- (void)setHasIsWholeHouseAudio:(BOOL)audio
 {
-  if (a3)
+  if (audio)
   {
     v3 = 4;
   }
@@ -1403,9 +1403,9 @@ LABEL_29:
   *(&self->_wasOnScreenItemSelected + 1) = *(&self->_wasOnScreenItemSelected + 1) & 0xFFFB | v3;
 }
 
-- (void)setHasMediaType:(BOOL)a3
+- (void)setHasMediaType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -1418,26 +1418,26 @@ LABEL_29:
   *(&self->_wasOnScreenItemSelected + 1) = *(&self->_wasOnScreenItemSelected + 1) & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = FLOWSchemaFLOWMediaPlayerContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  wholeHouseAudioDestinationContext = [(FLOWSchemaFLOWMediaPlayerContext *)self wholeHouseAudioDestinationContext];
+  v7 = [wholeHouseAudioDestinationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWMediaPlayerContext *)self deleteWholeHouseAudioDestinationContext];
   }
 
-  v9 = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  mediaPlayerPlaybackContext = [(FLOWSchemaFLOWMediaPlayerContext *)self mediaPlayerPlaybackContext];
+  v10 = [mediaPlayerPlaybackContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWMediaPlayerContext *)self deleteMediaPlayerPlaybackContext];
   }

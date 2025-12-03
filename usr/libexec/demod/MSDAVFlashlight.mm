@@ -1,12 +1,12 @@
 @interface MSDAVFlashlight
 + (id)sharedInstance;
-- (BOOL)_setFlashlightLevel:(float)a3;
+- (BOOL)_setFlashlightLevel:(float)level;
 - (BOOL)_turnPowerOn;
-- (BOOL)flash:(unsigned int)a3;
+- (BOOL)flash:(unsigned int)flash;
 - (MSDAVFlashlight)init;
-- (void)_setFlashTimer:(unsigned int)a3;
+- (void)_setFlashTimer:(unsigned int)timer;
 - (void)_startFlash;
-- (void)_stopFlash:(id)a3;
+- (void)_stopFlash:(id)flash;
 - (void)_turnPowerOff;
 @end
 
@@ -43,19 +43,19 @@
   return v2;
 }
 
-- (BOOL)flash:(unsigned int)a3
+- (BOOL)flash:(unsigned int)flash
 {
   if (+[AVFlashlight hasFlashlight]&& [(MSDAVFlashlight *)self available])
   {
-    if (!a3)
+    if (!flash)
     {
-      a3 = 20;
+      flash = 20;
     }
 
     v5 = sub_100063A54();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000D0138(a3, v5);
+      sub_1000D0138(flash, v5);
     }
 
     objc_initWeak(&location, self);
@@ -65,7 +65,7 @@
     block[2] = sub_100040670;
     block[3] = &unk_10016AB58;
     objc_copyWeak(&v9, &location);
-    v10 = a3;
+    flashCopy = flash;
     dispatch_async(flashQueue, block);
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -79,18 +79,18 @@
   }
 }
 
-- (void)_setFlashTimer:(unsigned int)a3
+- (void)_setFlashTimer:(unsigned int)timer
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10004074C;
   v3[3] = &unk_10016AB80;
-  v4 = a3;
+  timerCopy = timer;
   v3[4] = self;
   dispatch_sync(&_dispatch_main_q, v3);
 }
 
-- (BOOL)_setFlashlightLevel:(float)a3
+- (BOOL)_setFlashlightLevel:(float)level
 {
   flashlight = self->_flashlight;
   v8 = 0;
@@ -128,7 +128,7 @@
   [(AVFlashlight *)flashlight turnPowerOff];
 }
 
-- (void)_stopFlash:(id)a3
+- (void)_stopFlash:(id)flash
 {
   if (!self->_flashDone)
   {

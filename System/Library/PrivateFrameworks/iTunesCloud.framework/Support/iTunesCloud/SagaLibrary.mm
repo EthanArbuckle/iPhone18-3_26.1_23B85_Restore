@@ -1,7 +1,7 @@
 @interface SagaLibrary
 + (id)logCategory;
 + (id)oversizeLogCategory;
-- (SagaLibrary)initWithConfiguration:(id)a3;
+- (SagaLibrary)initWithConfiguration:(id)configuration;
 - (id)_userIdentity;
 @end
 
@@ -11,19 +11,19 @@
 {
   v5.receiver = self;
   v5.super_class = SagaLibrary;
-  v2 = [(CloudLibrary *)&v5 configuration];
-  v3 = [v2 userIdentity];
+  configuration = [(CloudLibrary *)&v5 configuration];
+  userIdentity = [configuration userIdentity];
 
-  return v3;
+  return userIdentity;
 }
 
-- (SagaLibrary)initWithConfiguration:(id)a3
+- (SagaLibrary)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[CloudPendingChangesCoordinator alloc] initWithConfiguration:v4 prefix:@"Saga" loggable:objc_opt_class()];
+  configurationCopy = configuration;
+  v5 = [[CloudPendingChangesCoordinator alloc] initWithConfiguration:configurationCopy prefix:@"Saga" loggable:objc_opt_class()];
   v8.receiver = self;
   v8.super_class = SagaLibrary;
-  v6 = [(CloudLibrary *)&v8 _initWithConfiguration:v4 pendingChangesCoordinator:v5];
+  v6 = [(CloudLibrary *)&v8 _initWithConfiguration:configurationCopy pendingChangesCoordinator:v5];
 
   return v6;
 }

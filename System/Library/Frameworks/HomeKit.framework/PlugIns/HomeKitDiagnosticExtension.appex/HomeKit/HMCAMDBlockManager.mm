@@ -1,32 +1,32 @@
 @interface HMCAMDBlockManager
-- (HMCAMDBlockManager)initWithService:(id)a3;
-- (id)forwardingBlockWithArgumentCount:(unint64_t)a3 forKey:(id)a4;
-- (id)keyForBlock:(id)a3;
-- (void)addBlock:(id)a3 forKey:(id)a4;
-- (void)addBlockNoCopy:(id)a3 forKey:(id)a4;
-- (void)invokeForwardedBlockWithArguments:(id)a3 forKey:(id)a4;
-- (void)removeBlock:(id)a3;
+- (HMCAMDBlockManager)initWithService:(id)service;
+- (id)forwardingBlockWithArgumentCount:(unint64_t)count forKey:(id)key;
+- (id)keyForBlock:(id)block;
+- (void)addBlock:(id)block forKey:(id)key;
+- (void)addBlockNoCopy:(id)copy forKey:(id)key;
+- (void)invokeForwardedBlockWithArguments:(id)arguments forKey:(id)key;
+- (void)removeBlock:(id)block;
 @end
 
 @implementation HMCAMDBlockManager
 
-- (id)forwardingBlockWithArgumentCount:(unint64_t)a3 forKey:(id)a4
+- (id)forwardingBlockWithArgumentCount:(unint64_t)count forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v7 = +[NSNull null];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_100015018;
   v33[3] = &unk_100030C90;
   v33[4] = self;
-  v8 = v6;
+  v8 = keyCopy;
   v34 = v8;
   v9 = objc_retainBlock(v33);
   v10 = v9;
   v11 = 0;
-  if (a3 > 2)
+  if (count > 2)
   {
-    switch(a3)
+    switch(count)
     {
       case 3uLL:
         v22[0] = _NSConcreteStackBlock;
@@ -68,9 +68,9 @@
     goto LABEL_14;
   }
 
-  if (a3)
+  if (count)
   {
-    if (a3 == 1)
+    if (count == 1)
     {
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
@@ -85,7 +85,7 @@
 
     else
     {
-      if (a3 != 2)
+      if (count != 2)
       {
         goto LABEL_16;
       }
@@ -121,21 +121,21 @@ LABEL_16:
   return v14;
 }
 
-- (void)invokeForwardedBlockWithArguments:(id)a3 forKey:(id)a4
+- (void)invokeForwardedBlockWithArguments:(id)arguments forKey:(id)key
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_blockHandlerMap objectForKey:a4];
+  argumentsCopy = arguments;
+  v7 = [(NSMutableDictionary *)self->_blockHandlerMap objectForKey:key];
   v8 = v7;
   if (v7)
   {
     v9 = [NSMethodSignature signatureWithObjCTypes:_Block_signature(v7)];
-    v10 = [v9 numberOfArguments];
+    numberOfArguments = [v9 numberOfArguments];
     v11 = [NSInvocation invocationWithMethodSignature:v9];
-    if (v10 >= 2)
+    if (numberOfArguments >= 2)
     {
-      for (i = 1; i != v10; ++i)
+      for (i = 1; i != numberOfArguments; ++i)
       {
-        v13 = [v6 objectAtIndex:i - 1];
+        v13 = [argumentsCopy objectAtIndex:i - 1];
         v16 = v13;
         v14 = +[NSNull null];
 
@@ -154,9 +154,9 @@ LABEL_16:
   }
 }
 
-- (id)keyForBlock:(id)a3
+- (id)keyForBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -168,7 +168,7 @@ LABEL_16:
   v9[1] = 3221225472;
   v9[2] = sub_1000159E0;
   v9[3] = &unk_100030C40;
-  v6 = v4;
+  v6 = blockCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableDictionary *)blockHandlerMap enumerateKeysAndObjectsUsingBlock:v9];
@@ -179,9 +179,9 @@ LABEL_16:
   return v7;
 }
 
-- (void)removeBlock:(id)a3
+- (void)removeBlock:(id)block
 {
-  v4 = [(HMCAMDBlockManager *)self keyForBlock:a3];
+  v4 = [(HMCAMDBlockManager *)self keyForBlock:block];
   if (v4)
   {
     [(HMCAMDBlockManager *)self removeBlockForKey:v4];
@@ -196,32 +196,32 @@ LABEL_16:
   }
 }
 
-- (void)addBlock:(id)a3 forKey:(id)a4
+- (void)addBlock:(id)block forKey:(id)key
 {
   blockHandlerMap = self->_blockHandlerMap;
-  v6 = a4;
-  v7 = [a3 copy];
-  [(NSMutableDictionary *)blockHandlerMap setObject:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [block copy];
+  [(NSMutableDictionary *)blockHandlerMap setObject:v7 forKey:keyCopy];
 }
 
-- (void)addBlockNoCopy:(id)a3 forKey:(id)a4
+- (void)addBlockNoCopy:(id)copy forKey:(id)key
 {
-  if (a3)
+  if (copy)
   {
-    [(NSMutableDictionary *)self->_blockHandlerMap setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)self->_blockHandlerMap setObject:copy forKey:key];
   }
 }
 
-- (HMCAMDBlockManager)initWithService:(id)a3
+- (HMCAMDBlockManager)initWithService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = HMCAMDBlockManager;
   v6 = [(HMCAMDBlockManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_service, a3);
+    objc_storeStrong(&v6->_service, service);
     v8 = objc_opt_new();
     blockHandlerMap = v7->_blockHandlerMap;
     v7->_blockHandlerMap = v8;

@@ -1,27 +1,27 @@
 @interface BUEncodedBlockInfoInternal
-- (BOOL)isEqual:(id)a3;
-- (BUEncodedBlockInfoInternal)initWithEncodedLength:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BUEncodedBlockInfoInternal)initWithEncodedLength:(unint64_t)length;
 - (NSString)description;
 @end
 
 @implementation BUEncodedBlockInfoInternal
 
-- (BUEncodedBlockInfoInternal)initWithEncodedLength:(unint64_t)a3
+- (BUEncodedBlockInfoInternal)initWithEncodedLength:(unint64_t)length
 {
   v5.receiver = self;
   v5.super_class = BUEncodedBlockInfoInternal;
   result = [(BUEncodedBlockInfoInternal *)&v5 init];
   if (result)
   {
-    result->_encodedLength = a3;
+    result->_encodedLength = length;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = BUProtocolCast(&unk_2853FED10, a3);
+  v4 = BUProtocolCast(&unk_2853FED10, equal);
   if (v4)
   {
     v5 = BUEncodedBlockInfoAreEqual(self, v4);

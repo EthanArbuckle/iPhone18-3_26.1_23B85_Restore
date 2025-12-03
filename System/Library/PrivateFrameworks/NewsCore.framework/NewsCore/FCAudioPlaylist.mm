@@ -1,23 +1,23 @@
 @interface FCAudioPlaylist
 + (id)backingRecordZoneIDs;
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4;
-+ (void)populateLocalStoreClassRegistry:(id)a3;
-- (BOOL)containsArticleID:(id)a3;
-- (FCAudioPlaylist)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5;
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory;
++ (void)populateLocalStoreClassRegistry:(id)registry;
+- (BOOL)containsArticleID:(id)d;
+- (FCAudioPlaylist)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory;
 - (NSArray)articleIDs;
-- (id)_itemWithArticleID:(uint64_t)a1;
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3;
-- (id)dateAddedForArticleID:(id)a3;
+- (id)_itemWithArticleID:(uint64_t)d;
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d;
+- (id)dateAddedForArticleID:(id)d;
 - (id)localStoreMigrator;
-- (id)recordsForRestoringZoneName:(id)a3;
-- (void)_modifyWithInsertedOrChangedItems:(void *)a3 removedArticleIDs:;
+- (id)recordsForRestoringZoneName:(id)name;
+- (void)_modifyWithInsertedOrChangedItems:(void *)items removedArticleIDs:;
 - (void)_regenerateOrderedArticleIDs;
-- (void)addObserver:(id)a3;
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4;
-- (void)insertArticleID:(id)a3 atIndex:(unint64_t)a4;
+- (void)addObserver:(id)observer;
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names;
+- (void)insertArticleID:(id)d atIndex:(unint64_t)index;
 - (void)loadLocalCachesFromStore;
-- (void)removeArticleID:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)removeArticleID:(id)d;
+- (void)removeObserver:(id)observer;
 - (void)save;
 @end
 
@@ -78,23 +78,23 @@ void __43__FCAudioPlaylist_loadLocalCachesFromStore__block_invoke(uint64_t a1)
 
 - (void)_regenerateOrderedArticleIDs
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 88) allValues];
-    v6 = [v2 sortedArrayUsingComparator:&__block_literal_global_30_1];
+    allValues = [*(self + 88) allValues];
+    v6 = [allValues sortedArrayUsingComparator:&__block_literal_global_30_1];
 
     v3 = [v6 fc_arrayByTransformingWithBlock:&__block_literal_global_33_1];
     v4 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v3];
-    v5 = *(a1 + 96);
-    *(a1 + 96) = v4;
+    v5 = *(self + 96);
+    *(self + 96) = v4;
   }
 }
 
-- (FCAudioPlaylist)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5
+- (FCAudioPlaylist)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory
 {
   v9.receiver = self;
   v9.super_class = FCAudioPlaylist;
-  v5 = [(FCPrivateDataController *)&v9 initWithContext:a3 pushNotificationCenter:a4 storeDirectory:a5];
+  v5 = [(FCPrivateDataController *)&v9 initWithContext:context pushNotificationCenter:center storeDirectory:directory];
   if (v5)
   {
     v6 = objc_alloc_init(FCMTWriterLock);
@@ -118,19 +118,19 @@ void __43__FCAudioPlaylist_loadLocalCachesFromStore__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 allKeys];
+  cloudCopy = cloud;
+  allKeys = [cloudCopy allKeys];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___block_invoke;
   v17 = &unk_1E7C42840;
-  v18 = v5;
-  v19 = a1;
-  v7 = v5;
-  v8 = [v6 fc_arrayByTransformingWithBlock:&v14];
+  v18 = cloudCopy;
+  selfCopy = self;
+  v7 = cloudCopy;
+  v8 = [allKeys fc_arrayByTransformingWithBlock:&v14];
 
   v9 = [FCModifyAudioPlaylistCommand alloc];
   v10 = [(FCModifyAudioPlaylistCommand *)v9 initWithItems:v8 merge:1, v14, v15, v16, v17];
@@ -158,11 +158,11 @@ id __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___
   return v4;
 }
 
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  recordsCopy = records;
+  namesCopy = names;
   [MEMORY[0x1E696AF00] isMainThread];
   v8 = objc_opt_new();
   v9 = objc_opt_new();
@@ -170,7 +170,7 @@ id __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = v6;
+  v10 = recordsCopy;
   v11 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v11)
   {
@@ -202,7 +202,7 @@ id __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v16 = v7;
+  v16 = namesCopy;
   v17 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v17)
   {
@@ -229,12 +229,12 @@ id __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___
         }
 
         v22 = [(NSMutableDictionary *)itemsByID objectForKeyedSubscript:*(*(&v27 + 1) + 8 * v20)];
-        v23 = [v22 articleID];
+        articleID = [v22 articleID];
 
-        if (v23)
+        if (articleID)
         {
-          v24 = [v22 articleID];
-          [v9 addObject:v24];
+          articleID2 = [v22 articleID];
+          [v9 addObject:articleID2];
         }
 
         ++v20;
@@ -252,12 +252,12 @@ id __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_modifyWithInsertedOrChangedItems:(void *)a3 removedArticleIDs:
+- (void)_modifyWithInsertedOrChangedItems:(void *)items removedArticleIDs:
 {
   v48 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v32 = a3;
-  if (a1 && ([v5 count] || objc_msgSend(v32, "count")))
+  itemsCopy = items;
+  if (self && ([v5 count] || objc_msgSend(itemsCopy, "count")))
   {
     v43 = 0u;
     v44 = 0u;
@@ -282,13 +282,13 @@ id __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___
           }
 
           v12 = *(*(&v41 + 1) + 8 * v11);
-          v13 = a1[11];
-          v14 = [v12 identifier];
-          [v13 setObject:v12 forKeyedSubscript:v14];
+          v13 = self[11];
+          identifier = [v12 identifier];
+          [v13 setObject:v12 forKeyedSubscript:identifier];
 
-          v15 = [a1 localStore];
-          v16 = [v12 identifier];
-          [v15 setObject:v12 forKeyedSubscript:v16];
+          localStore = [self localStore];
+          identifier2 = [v12 identifier];
+          [localStore setObject:v12 forKeyedSubscript:identifier2];
 
           ++v11;
         }
@@ -304,7 +304,7 @@ id __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v17 = v32;
+    v17 = itemsCopy;
     v18 = [v17 countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (v18)
     {
@@ -321,14 +321,14 @@ id __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___
           }
 
           v22 = [MEMORY[0x1E69B6D18] identifierFromArticleID:{*(*(&v37 + 1) + 8 * v21), v31}];
-          v23 = [a1[11] objectForKeyedSubscript:v22];
+          v23 = [self[11] objectForKeyedSubscript:v22];
 
           if (v23)
           {
-            v24 = [a1 localStore];
-            [v24 removeObjectForKey:v22];
+            localStore2 = [self localStore];
+            [localStore2 removeObjectForKey:v22];
 
-            [a1[11] removeObjectForKey:v22];
+            [self[11] removeObjectForKey:v22];
             v8 = 1;
           }
 
@@ -345,13 +345,13 @@ id __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___
     v5 = v31;
     if (v8)
     {
-      [(FCAudioPlaylist *)a1 _regenerateOrderedArticleIDs];
+      [(FCAudioPlaylist *)self _regenerateOrderedArticleIDs];
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v25 = [a1 observers];
-      v26 = [v25 countByEnumeratingWithState:&v33 objects:v45 count:16];
+      observers = [self observers];
+      v26 = [observers countByEnumeratingWithState:&v33 objects:v45 count:16];
       if (v26)
       {
         v27 = v26;
@@ -363,14 +363,14 @@ id __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___
           {
             if (*v34 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(observers);
             }
 
-            [*(*(&v33 + 1) + 8 * v29++) audioPlaylistDidChange:{a1, v31}];
+            [*(*(&v33 + 1) + 8 * v29++) audioPlaylistDidChange:{self, v31}];
           }
 
           while (v27 != v29);
-          v27 = [v25 countByEnumeratingWithState:&v33 objects:v45 count:16];
+          v27 = [observers countByEnumeratingWithState:&v33 objects:v45 count:16];
         }
 
         while (v27);
@@ -381,7 +381,7 @@ id __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d
 {
   if (self)
   {
@@ -391,15 +391,15 @@ id __72__FCAudioPlaylist_commandsToMergeLocalDataToCloud_privateDataDirectory___
   return [(FCAudioPlaylist *)self allKeys];
 }
 
-+ (void)populateLocalStoreClassRegistry:(id)a3
++ (void)populateLocalStoreClassRegistry:(id)registry
 {
-  v3 = a3;
-  [v3 registerClass:objc_opt_class()];
+  registryCopy = registry;
+  [registryCopy registerClass:objc_opt_class()];
 }
 
-- (id)recordsForRestoringZoneName:(id)a3
+- (id)recordsForRestoringZoneName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -496,9 +496,9 @@ void __29__FCAudioPlaylist_articleIDs__block_invoke(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-- (BOOL)containsArticleID:(id)a3
+- (BOOL)containsArticleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -520,7 +520,7 @@ void __29__FCAudioPlaylist_articleIDs__block_invoke(uint64_t a1)
   v10[3] = &unk_1E7C37138;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v11 = v7;
   [(FCMTWriterLock *)v6 performReadSync:v10];
 
@@ -543,10 +543,10 @@ void __37__FCAudioPlaylist_containsArticleID___block_invoke(void *a1)
   *(*(a1[6] + 8) + 24) = [v4 containsObject:v3];
 }
 
-- (id)dateAddedForArticleID:(id)a3
+- (id)dateAddedForArticleID:(id)d
 {
-  v4 = a3;
-  if ([(FCAudioPlaylist *)self containsArticleID:v4])
+  dCopy = d;
+  if ([(FCAudioPlaylist *)self containsArticleID:dCopy])
   {
     v12 = 0;
     v13 = &v12;
@@ -570,7 +570,7 @@ void __37__FCAudioPlaylist_containsArticleID___block_invoke(void *a1)
     v9[2] = __41__FCAudioPlaylist_dateAddedForArticleID___block_invoke_2;
     v9[3] = &unk_1E7C37408;
     v9[4] = self;
-    v10 = v4;
+    v10 = dCopy;
     v11 = &v12;
     [(FCMTWriterLock *)v6 performReadSync:v9];
 
@@ -600,12 +600,12 @@ void __41__FCAudioPlaylist_dateAddedForArticleID___block_invoke_2(uint64_t *a1)
   }
 }
 
-- (id)_itemWithArticleID:(uint64_t)a1
+- (id)_itemWithArticleID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
     v3 = MEMORY[0x1E69B6D18];
-    v4 = *(a1 + 88);
+    v4 = *(d + 88);
     v5 = [v3 identifierFromArticleID:a2];
     v6 = [v4 objectForKeyedSubscript:v5];
   }
@@ -618,9 +618,9 @@ void __41__FCAudioPlaylist_dateAddedForArticleID___block_invoke_2(uint64_t *a1)
   return v6;
 }
 
-- (void)insertArticleID:(id)a3 atIndex:(unint64_t)a4
+- (void)insertArticleID:(id)d atIndex:(unint64_t)index
 {
-  v6 = a3;
+  dCopy = d;
   [MEMORY[0x1E696AF00] isMainThread];
   if (self)
   {
@@ -637,9 +637,9 @@ void __41__FCAudioPlaylist_dateAddedForArticleID___block_invoke_2(uint64_t *a1)
   v9[2] = __43__FCAudioPlaylist_insertArticleID_atIndex___block_invoke;
   v9[3] = &unk_1E7C393F8;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = dCopy;
+  indexCopy = index;
+  v8 = dCopy;
   [(FCMTWriterLock *)itemsLock performWriteSync:v9];
 }
 
@@ -790,9 +790,9 @@ void __43__FCAudioPlaylist_insertArticleID_atIndex___block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)removeArticleID:(id)a3
+- (void)removeArticleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [MEMORY[0x1E696AF00] isMainThread];
   if (self)
   {
@@ -809,8 +809,8 @@ void __43__FCAudioPlaylist_insertArticleID_atIndex___block_invoke_2(uint64_t a1,
   v7[2] = __35__FCAudioPlaylist_removeArticleID___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   [(FCMTWriterLock *)itemsLock performWriteSync:v7];
 }
 
@@ -828,24 +828,24 @@ void __35__FCAudioPlaylist_removeArticleID___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FCAudioPlaylist;
-  [(FCPrivateDataController *)&v3 addObserver:a3];
+  [(FCPrivateDataController *)&v3 addObserver:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FCAudioPlaylist;
-  [(FCPrivateDataController *)&v3 removeObserver:a3];
+  [(FCPrivateDataController *)&v3 removeObserver:observer];
 }
 
 - (void)save
 {
-  v2 = [(FCPrivateDataController *)self localStore];
-  [v2 save];
+  localStore = [(FCPrivateDataController *)self localStore];
+  [localStore save];
 }
 
 uint64_t __47__FCAudioPlaylist__regenerateOrderedArticleIDs__block_invoke(uint64_t a1, void *a2, void *a3)

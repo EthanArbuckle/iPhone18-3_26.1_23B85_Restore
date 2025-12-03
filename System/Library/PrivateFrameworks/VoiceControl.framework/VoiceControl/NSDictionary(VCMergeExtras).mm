@@ -10,13 +10,13 @@
   v4 = a3;
   if (v4)
   {
-    v5 = objc_opt_new();
+    selfCopy2 = objc_opt_new();
     v6 = objc_opt_new();
-    v7 = [a1 allKeys];
-    [v6 addObjectsFromArray:v7];
+    allKeys = [self allKeys];
+    [v6 addObjectsFromArray:allKeys];
 
-    v8 = [v4 allKeys];
-    [v6 addObjectsFromArray:v8];
+    allKeys2 = [v4 allKeys];
+    [v6 addObjectsFromArray:allKeys2];
 
     v45 = 0u;
     v46 = 0u;
@@ -33,8 +33,8 @@
     v12 = *v44;
     v36 = v4;
     v37 = *v44;
-    v34 = a1;
-    v35 = v5;
+    selfCopy = self;
+    v35 = selfCopy2;
     v33 = v9;
     while (1)
     {
@@ -48,7 +48,7 @@
         }
 
         v14 = *(*(&v43 + 1) + 8 * v13);
-        v15 = [a1 objectForKeyedSubscript:{v14, v33, v34}];
+        v15 = [self objectForKeyedSubscript:{v14, v33, selfCopy}];
         v16 = [v4 objectForKeyedSubscript:v14];
         if (!v16)
         {
@@ -72,7 +72,7 @@
             [v22 unionOrderedSet:v21];
 
             v11 = v38;
-            [v5 setObject:v22 forKeyedSubscript:v14];
+            [selfCopy2 setObject:v22 forKeyedSubscript:v14];
 
             v12 = v37;
             goto LABEL_31;
@@ -115,13 +115,13 @@
               while (v27);
             }
 
-            v5 = v35;
+            selfCopy2 = v35;
             [v35 setObject:v24 forKeyedSubscript:v14];
 
             v4 = v36;
             v12 = v37;
             v9 = v33;
-            a1 = v34;
+            self = selfCopy;
             goto LABEL_12;
           }
 
@@ -131,7 +131,7 @@
             v17 = [v15 dictionaryByMergingEntriesFromDictionary:v16];
 LABEL_11:
             v18 = v17;
-            [v5 setObject:v17 forKeyedSubscript:v14];
+            [selfCopy2 setObject:v17 forKeyedSubscript:v14];
 
 LABEL_12:
             v11 = v38;
@@ -139,12 +139,12 @@ LABEL_12:
           }
 
 LABEL_29:
-          v19 = v5;
+          v19 = selfCopy2;
           v20 = v15;
           goto LABEL_30;
         }
 
-        v19 = v5;
+        v19 = selfCopy2;
         v20 = v16;
 LABEL_30:
         [v19 setObject:v20 forKeyedSubscript:v14];
@@ -164,12 +164,12 @@ LABEL_33:
     }
   }
 
-  v5 = a1;
+  selfCopy2 = self;
 LABEL_35:
 
   v31 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return selfCopy2;
 }
 
 @end

@@ -7,12 +7,12 @@
 - (id)icon
 {
   v2 = MEMORY[0x277CFC320];
-  v3 = [a1 identifier];
-  v4 = [v2 sfSymbolNameForContentLocationWithIdentifier:v3];
+  identifier = [self identifier];
+  v4 = [v2 sfSymbolNameForContentLocationWithIdentifier:identifier];
 
   v5 = MEMORY[0x277CFC320];
-  v6 = [a1 identifier];
-  v7 = [v5 symbolBackgroundColorForContentLocationWithIdentifier:v6];
+  identifier2 = [self identifier];
+  v7 = [v5 symbolBackgroundColorForContentLocationWithIdentifier:identifier2];
 
   v8 = objc_alloc(MEMORY[0x277D7A158]);
   v9 = objc_alloc(MEMORY[0x277D79FB8]);

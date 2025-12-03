@@ -1,21 +1,21 @@
 @interface PLSearchDonationProgress
-- (PLSearchDonationProgress)initWithPathManager:(id)a3 contextProviderBlock:(id)a4;
-- (id)_newSearchQueryForTaskID:(unint64_t)a3 completionHandler:(id)a4;
-- (id)_setupProgressForTaskID:(unint64_t)a3 completionHandler:(id)a4;
-- (id)_updateProgressForTaskID:(unint64_t)a3;
-- (id)donationProgressForMediaProcessingTaskID:(unint64_t)a3 completionHandler:(id)a4;
-- (id)donationProgressForMediaProcessingTaskIDs:(id)a3 completionHandler:(id)a4;
-- (void)_lock_removeQueryForTaskID:(unint64_t)a3;
-- (void)_lock_storeQuery:(id)a3 forTaskID:(unint64_t)a4;
+- (PLSearchDonationProgress)initWithPathManager:(id)manager contextProviderBlock:(id)block;
+- (id)_newSearchQueryForTaskID:(unint64_t)d completionHandler:(id)handler;
+- (id)_setupProgressForTaskID:(unint64_t)d completionHandler:(id)handler;
+- (id)_updateProgressForTaskID:(unint64_t)d;
+- (id)donationProgressForMediaProcessingTaskID:(unint64_t)d completionHandler:(id)handler;
+- (id)donationProgressForMediaProcessingTaskIDs:(id)ds completionHandler:(id)handler;
+- (void)_lock_removeQueryForTaskID:(unint64_t)d;
+- (void)_lock_storeQuery:(id)query forTaskID:(unint64_t)d;
 - (void)dealloc;
 @end
 
 @implementation PLSearchDonationProgress
 
-- (void)_lock_removeQueryForTaskID:(unint64_t)a3
+- (void)_lock_removeQueryForTaskID:(unint64_t)d
 {
   lock_queryByTaskID = self->_lock_queryByTaskID;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
   [(NSMutableDictionary *)lock_queryByTaskID removeObjectForKey:v5];
 
   if (![(NSMutableDictionary *)self->_lock_queryByTaskID count])
@@ -25,14 +25,14 @@
   }
 }
 
-- (void)_lock_storeQuery:(id)a3 forTaskID:(unint64_t)a4
+- (void)_lock_storeQuery:(id)query forTaskID:(unint64_t)d
 {
   lock_queryByTaskID = self->_lock_queryByTaskID;
-  v7 = a3;
+  queryCopy = query;
   v8 = [(NSMutableDictionary *)lock_queryByTaskID count];
   v9 = self->_lock_queryByTaskID;
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [(NSMutableDictionary *)v9 setObject:v7 forKeyedSubscript:v10];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
+  [(NSMutableDictionary *)v9 setObject:queryCopy forKeyedSubscript:v10];
 
   if (!v8 && [(NSMutableDictionary *)self->_lock_queryByTaskID count]== 1)
   {
@@ -42,7 +42,7 @@
   }
 }
 
-- (id)_updateProgressForTaskID:(unint64_t)a3
+- (id)_updateProgressForTaskID:(unint64_t)d
 {
   v5 = 0;
   v6 = &v5;
@@ -105,15 +105,15 @@ void __53__PLSearchDonationProgress__updateProgressForTaskID___block_invoke(uint
   [*(a1 + 32) _lock_removeQueryForTaskID:*(a1 + 48)];
 }
 
-- (id)_setupProgressForTaskID:(unint64_t)a3 completionHandler:(id)a4
+- (id)_setupProgressForTaskID:(unint64_t)d completionHandler:(id)handler
 {
   v81[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
 
-  v10 = PLInternalPredicateForMediaProcessingTaskID(a3, 0, 0, 0, 0, 0.0);
+  v10 = PLInternalPredicateForMediaProcessingTaskID(d, 0, 0, 0, 0, 0.0);
   [v9 setPredicate:v10];
 
   v68 = 0;
@@ -185,11 +185,11 @@ LABEL_12:
   v25 = v9;
   v58 = v25;
   v60 = &v62;
-  v61 = a3;
+  dCopy = d;
   [v24 performBlockAndWait:v56];
   if (v69[3] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6[2](v6, 0, v63[5]);
+    handlerCopy[2](handlerCopy, 0, v63[5]);
     v26 = 0;
   }
 
@@ -208,9 +208,9 @@ LABEL_12:
     v48 = __Block_byref_object_dispose__60975;
     v49 = 0;
     v40 = MEMORY[0x1E69E9820];
-    v41 = self;
-    v43 = a3;
-    v27 = v6;
+    selfCopy = self;
+    dCopy2 = d;
+    v27 = handlerCopy;
     v42 = v27;
     PLRunWithUnfairLock();
     if (v45[5])
@@ -218,10 +218,10 @@ LABEL_12:
       v28 = PLSearchBackendDonationProgressGetLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{a3, v40, 3221225472, __70__PLSearchDonationProgress__setupProgressForTaskID_completionHandler___block_invoke_79, &unk_1E756E988, v41, v27, buf, &v68, &v44, a3}];
+        v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{d, v40, 3221225472, __70__PLSearchDonationProgress__setupProgressForTaskID_completionHandler___block_invoke_79, &unk_1E756E988, selfCopy, v27, buf, &v68, &v44, d}];
         v30 = MEMORY[0x1E696AD98];
-        v31 = [v45[5] queryContext];
-        v32 = [v30 numberWithInteger:{objc_msgSend(v31, "queryID")}];
+        queryContext = [v45[5] queryContext];
+        v32 = [v30 numberWithInteger:{objc_msgSend(queryContext, "queryID")}];
         *v74 = 138412546;
         v75 = v29;
         v76 = 2112;
@@ -254,7 +254,7 @@ LABEL_12:
       v36 = MEMORY[0x1E696ABC0];
       v72 = *MEMORY[0x1E696A278];
       v73 = @"nil CSSearchQuery";
-      v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:{1, v40, 3221225472, __70__PLSearchDonationProgress__setupProgressForTaskID_completionHandler___block_invoke_79, &unk_1E756E988, self, v27, buf, &v68, &v44, v43}];
+      v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:{1, v40, 3221225472, __70__PLSearchDonationProgress__setupProgressForTaskID_completionHandler___block_invoke_79, &unk_1E756E988, self, v27, buf, &v68, &v44, dCopy2}];
       v38 = [v36 errorWithDomain:*MEMORY[0x1E69BFF48] code:41003 userInfo:v37];
 
       v27[2](v27, 0, v38);
@@ -351,14 +351,14 @@ uint64_t __70__PLSearchDonationProgress__setupProgressForTaskID_completionHandle
   return [*(a1 + 32) _lock_storeQuery:*(*(*(a1 + 64) + 8) + 40) forTaskID:*(a1 + 72)];
 }
 
-- (id)_newSearchQueryForTaskID:(unint64_t)a3 completionHandler:(id)a4
+- (id)_newSearchQueryForTaskID:(unint64_t)d completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = 0;
-  if (a3 <= 2)
+  if (d <= 2)
   {
-    if (a3 == 1)
+    if (d == 1)
     {
       v7 = *MEMORY[0x1E69647D8];
       v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PLSearchDonationProgressVersionProvider mediaAnalysisVersion](self->_versionProvider, "mediaAnalysisVersion")}];
@@ -367,7 +367,7 @@ uint64_t __70__PLSearchDonationProgress__setupProgressForTaskID_completionHandle
     else
     {
       v8 = 0;
-      if (a3 != 2)
+      if (d != 2)
       {
         goto LABEL_17;
       }
@@ -377,13 +377,13 @@ uint64_t __70__PLSearchDonationProgress__setupProgressForTaskID_completionHandle
     }
   }
 
-  else if (a3 == 3)
+  else if (d == 3)
   {
     v7 = *MEMORY[0x1E6964790];
     v9 = [MEMORY[0x1E696AD98] numberWithShort:{-[PLSearchDonationProgressVersionProvider faceAnalysisVersion](self->_versionProvider, "faceAnalysisVersion")}];
   }
 
-  else if (a3 == 10)
+  else if (d == 10)
   {
     v7 = *MEMORY[0x1E6964758];
     v9 = [MEMORY[0x1E696AD98] numberWithShort:{-[PLSearchDonationProgressVersionProvider characterRecognitionAlgorithmVersion](self->_versionProvider, "characterRecognitionAlgorithmVersion")}];
@@ -392,7 +392,7 @@ uint64_t __70__PLSearchDonationProgress__setupProgressForTaskID_completionHandle
   else
   {
     v8 = 0;
-    if (a3 != 17)
+    if (d != 17)
     {
       goto LABEL_17;
     }
@@ -419,14 +419,14 @@ uint64_t __70__PLSearchDonationProgress__setupProgressForTaskID_completionHandle
     v14 = [v12 stringWithFormat:@"%@ == %@ && %@ >= %@", *MEMORY[0x1E6963D40], v13, v7, v8];
 
     v15 = objc_alloc_init(MEMORY[0x1E6964E70]);
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLSearchDonationProgress:%tu:%@", a3, v7];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLSearchDonationProgress:%tu:%@", d, v7];
     [v15 setReason:v16];
 
     [v15 setDisableBlockingOnIndex:1];
     if (+[PLSpotlightDonationUtilities spotlightPrivateIndexEnabled])
     {
-      v17 = [(PLPhotoLibraryPathManager *)self->_pathManager spotlightSearchIndexPath];
-      v11 = [objc_alloc(MEMORY[0x1E6964E30]) initWithPath:v17 queryString:v14 context:v15];
+      spotlightSearchIndexPath = [(PLPhotoLibraryPathManager *)self->_pathManager spotlightSearchIndexPath];
+      v11 = [objc_alloc(MEMORY[0x1E6964E30]) initWithPath:spotlightSearchIndexPath queryString:v14 context:v15];
     }
 
     else
@@ -443,7 +443,7 @@ uint64_t __70__PLSearchDonationProgress__setupProgressForTaskID_completionHandle
     v26[2] = __71__PLSearchDonationProgress__newSearchQueryForTaskID_completionHandler___block_invoke;
     v26[3] = &unk_1E756E910;
     v26[4] = &buf;
-    v26[5] = a3;
+    v26[5] = d;
     [v11 setFoundItemsHandler:v26];
     objc_initWeak(&location, self);
     objc_initWeak(&from, v11);
@@ -451,11 +451,11 @@ uint64_t __70__PLSearchDonationProgress__setupProgressForTaskID_completionHandle
     v19[1] = 3221225472;
     v19[2] = __71__PLSearchDonationProgress__newSearchQueryForTaskID_completionHandler___block_invoke_69;
     v19[3] = &unk_1E756E938;
-    v23[1] = a3;
+    v23[1] = d;
     objc_copyWeak(&v22, &from);
     p_buf = &buf;
     objc_copyWeak(v23, &location);
-    v20 = v6;
+    v20 = handlerCopy;
     [v11 setCompletionHandler:v19];
 
     objc_destroyWeak(v23);
@@ -472,7 +472,7 @@ LABEL_17:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = d;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "No search query for taskID %tu", &buf, 0xCu);
   }
 
@@ -561,11 +561,11 @@ void __71__PLSearchDonationProgress__newSearchQueryForTaskID_completionHandler__
   }
 }
 
-- (id)donationProgressForMediaProcessingTaskIDs:(id)a3 completionHandler:(id)a4
+- (id)donationProgressForMediaProcessingTaskIDs:(id)ds completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v19 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v7 = dispatch_group_create();
   v33[0] = 0;
   v33[1] = v33;
@@ -578,7 +578,7 @@ void __71__PLSearchDonationProgress__newSearchQueryForTaskID_completionHandler__
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v6;
+  obj = dsCopy;
   v8 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v8)
   {
@@ -593,7 +593,7 @@ void __71__PLSearchDonationProgress__newSearchQueryForTaskID_completionHandler__
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [v11 unsignedIntegerValue];
+        unsignedIntegerValue = [v11 unsignedIntegerValue];
         dispatch_group_enter(v7);
         v26[0] = MEMORY[0x1E69E9820];
         v26[1] = 3221225472;
@@ -601,7 +601,7 @@ void __71__PLSearchDonationProgress__newSearchQueryForTaskID_completionHandler__
         v26[3] = &unk_1E7575F00;
         v28 = v33;
         v27 = v7;
-        v13 = [(PLSearchDonationProgress *)self donationProgressForMediaProcessingTaskID:v12 completionHandler:v26];
+        v13 = [(PLSearchDonationProgress *)self donationProgressForMediaProcessingTaskID:unsignedIntegerValue completionHandler:v26];
         if (v13)
         {
           [v21 setObject:v13 forKeyedSubscript:v11];
@@ -619,7 +619,7 @@ void __71__PLSearchDonationProgress__newSearchQueryForTaskID_completionHandler__
   block[1] = 3221225472;
   block[2] = __88__PLSearchDonationProgress_donationProgressForMediaProcessingTaskIDs_completionHandler___block_invoke_2;
   block[3] = &unk_1E7577918;
-  v15 = v19;
+  v15 = handlerCopy;
   v24 = v15;
   v16 = v21;
   v23 = v16;
@@ -667,17 +667,17 @@ void __88__PLSearchDonationProgress_donationProgressForMediaProcessingTaskIDs_co
   }
 }
 
-- (id)donationProgressForMediaProcessingTaskID:(unint64_t)a3 completionHandler:(id)a4
+- (id)donationProgressForMediaProcessingTaskID:(unint64_t)d completionHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = [(PLSearchDonationProgress *)self _setupProgressForTaskID:a3 completionHandler:a4];
+  v5 = [(PLSearchDonationProgress *)self _setupProgressForTaskID:d completionHandler:handler];
   v6 = PLPhotosSearchGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
     v9 = v5;
     v10 = 2048;
-    v11 = a3;
+    dCopy = d;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "PLSearchDonationProgress - donationProgress is %@ for taskID %lu", &v8, 0x16u);
   }
 
@@ -742,18 +742,18 @@ void __38__PLSearchDonationProgress_invalidate__block_invoke(uint64_t a1)
   [(PLSearchDonationProgress *)&v3 dealloc];
 }
 
-- (PLSearchDonationProgress)initWithPathManager:(id)a3 contextProviderBlock:(id)a4
+- (PLSearchDonationProgress)initWithPathManager:(id)manager contextProviderBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = PLSearchDonationProgress;
   v9 = [(PLSearchDonationProgress *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pathManager, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_pathManager, manager);
+    v11 = _Block_copy(blockCopy);
     contextProviderBlock = v10->_contextProviderBlock;
     v10->_contextProviderBlock = v11;
 

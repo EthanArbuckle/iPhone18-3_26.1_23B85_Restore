@@ -1,23 +1,23 @@
 @interface _MapDataSubscriptionStateObserverRegistry
 - (_MapDataSubscriptionStateObserverRegistry)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _MapDataSubscriptionStateObserverRegistry
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  v11 = v10;
-  if (off_10192DE80 == a6)
+  objectCopy = object;
+  v11 = objectCopy;
+  if (off_10192DE80 == context)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1009381B0;
     block[3] = &unk_101661A90;
     block[4] = self;
-    v14 = v10;
+    v14 = objectCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 
@@ -25,14 +25,14 @@
   {
     v12.receiver = self;
     v12.super_class = _MapDataSubscriptionStateObserverRegistry;
-    [(_MapDataSubscriptionStateObserverRegistry *)&v12 observeValueForKeyPath:a3 ofObject:v10 change:a5 context:a6];
+    [(_MapDataSubscriptionStateObserverRegistry *)&v12 observeValueForKeyPath:path ofObject:objectCopy change:change context:context];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(NSMutableDictionary *)self->_observing allKeys];
-  v4 = [v3 copy];
+  allKeys = [(NSMutableDictionary *)self->_observing allKeys];
+  v4 = [allKeys copy];
 
   v13 = 0u;
   v14 = 0u;

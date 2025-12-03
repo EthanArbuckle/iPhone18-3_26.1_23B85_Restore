@@ -1,49 +1,49 @@
 @interface MAKVGroupDB
-- (BOOL)addBaseStoreToTable:(id)a3 baseGroup:(id)a4 baseStore:(id)a5 baseProfile:(id)a6 error:(id *)a7;
-- (BOOL)addTable:(id)a3 fields:(id)a4 attributes:(id)a5 error:(id *)a6;
-- (BOOL)batchDeleteData:(id)a3 batchKeys:(id)a4 error:(id *)a5;
-- (BOOL)batchQuery:(id)a3 batchKeys:(id)a4 attributes:(id)a5 records:(id *)a6 error:(id *)a7;
-- (BOOL)deleteData:(id)a3 keys:(id)a4 error:(id *)a5;
-- (BOOL)deleteTable:(id)a3 error:(id *)a4;
-- (BOOL)executePreparedStatement:(sqlite3_stmt *)a3 error:(id *)a4;
-- (BOOL)fetchQueryResultFor:(sqlite3_stmt *)a3 prependColumnName:(BOOL)a4 results:(id)a5 numCol:(int *)a6 seenSet:(id)a7 error:(id *)a8;
-- (BOOL)getBaseStoreNameFor:(id)a3 baseGroup:(id *)a4 baseStore:(id *)a5 baseProfile:(id *)a6 error:(id *)a7;
-- (BOOL)hasTableWithError:(id *)a3;
-- (BOOL)query:(id)a3 keys:(id)a4 desiredKeys:(id)a5 nonNullKeys:(id)a6 records:(id *)a7 error:(id *)a8;
-- (BOOL)tableExists:(id)a3 error:(id *)a4;
-- (BOOL)updateData:(id)a3 key:(id)a4 value:(id)a5 tsOptions:(unint64_t)a6 error:(id *)a7;
-- (BOOL)upgradeTable:(id)a3 fields:(id)a4 attributes:(id)a5 missingNewColumn:(id)a6 hasDeletedColumn:(id)a7 migrateData:(BOOL *)a8 error:(id *)a9;
-- (BOOL)upsert:(id)a3 records:(id)a4 tsOptions:(unint64_t)a5 error:(id *)a6;
-- (BOOL)verifyTableName:(id)a3 error:(id *)a4;
-- (MAKVGroupDB)initWithFile:(id)a3 identifier:(id)a4 attributes:(id)a5 dbShouldExist:(BOOL)a6 readOnly:(BOOL)a7 isBase:(BOOL)a8 error:(id *)a9;
-- (id)queryColumnNames:(id)a3 orignalColumnsOut:(id *)a4 error:(id *)a5;
-- (id)queryTablesWithError:(id *)a3;
-- (int)buildStatementWithKeyValues:(id)a3 nonNullKeys:(id)a4 openingStatement:(id)a5 placeHolderOffset:(int)a6 preparedStatement:(sqlite3_stmt *)a7 error:(id *)a8;
-- (int)execSqlStatement:(id)a3 error:(id *)a4 rowReader:(id)a5;
+- (BOOL)addBaseStoreToTable:(id)table baseGroup:(id)group baseStore:(id)store baseProfile:(id)profile error:(id *)error;
+- (BOOL)addTable:(id)table fields:(id)fields attributes:(id)attributes error:(id *)error;
+- (BOOL)batchDeleteData:(id)data batchKeys:(id)keys error:(id *)error;
+- (BOOL)batchQuery:(id)query batchKeys:(id)keys attributes:(id)attributes records:(id *)records error:(id *)error;
+- (BOOL)deleteData:(id)data keys:(id)keys error:(id *)error;
+- (BOOL)deleteTable:(id)table error:(id *)error;
+- (BOOL)executePreparedStatement:(sqlite3_stmt *)statement error:(id *)error;
+- (BOOL)fetchQueryResultFor:(sqlite3_stmt *)for prependColumnName:(BOOL)name results:(id)results numCol:(int *)col seenSet:(id)set error:(id *)error;
+- (BOOL)getBaseStoreNameFor:(id)for baseGroup:(id *)group baseStore:(id *)store baseProfile:(id *)profile error:(id *)error;
+- (BOOL)hasTableWithError:(id *)error;
+- (BOOL)query:(id)query keys:(id)keys desiredKeys:(id)desiredKeys nonNullKeys:(id)nullKeys records:(id *)records error:(id *)error;
+- (BOOL)tableExists:(id)exists error:(id *)error;
+- (BOOL)updateData:(id)data key:(id)key value:(id)value tsOptions:(unint64_t)options error:(id *)error;
+- (BOOL)upgradeTable:(id)table fields:(id)fields attributes:(id)attributes missingNewColumn:(id)column hasDeletedColumn:(id)deletedColumn migrateData:(BOOL *)data error:(id *)error;
+- (BOOL)upsert:(id)upsert records:(id)records tsOptions:(unint64_t)options error:(id *)error;
+- (BOOL)verifyTableName:(id)name error:(id *)error;
+- (MAKVGroupDB)initWithFile:(id)file identifier:(id)identifier attributes:(id)attributes dbShouldExist:(BOOL)exist readOnly:(BOOL)only isBase:(BOOL)base error:(id *)error;
+- (id)queryColumnNames:(id)names orignalColumnsOut:(id *)out error:(id *)error;
+- (id)queryTablesWithError:(id *)error;
+- (int)buildStatementWithKeyValues:(id)values nonNullKeys:(id)keys openingStatement:(id)statement placeHolderOffset:(int)offset preparedStatement:(sqlite3_stmt *)preparedStatement error:(id *)error;
+- (int)execSqlStatement:(id)statement error:(id *)error rowReader:(id)reader;
 - (void)close;
 @end
 
 @implementation MAKVGroupDB
 
-- (MAKVGroupDB)initWithFile:(id)a3 identifier:(id)a4 attributes:(id)a5 dbShouldExist:(BOOL)a6 readOnly:(BOOL)a7 isBase:(BOOL)a8 error:(id *)a9
+- (MAKVGroupDB)initWithFile:(id)file identifier:(id)identifier attributes:(id)attributes dbShouldExist:(BOOL)exist readOnly:(BOOL)only isBase:(BOOL)base error:(id *)error
 {
-  v9 = a7;
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  onlyCopy = only;
+  existCopy = exist;
+  fileCopy = file;
+  identifierCopy = identifier;
+  attributesCopy = attributes;
   v49.receiver = self;
   v49.super_class = MAKVGroupDB;
   v17 = [(MAKVGroupDB *)&v49 init];
   if (v17)
   {
-    v48 = v9;
-    v18 = [v14 copy];
+    v48 = onlyCopy;
+    v18 = [fileCopy copy];
     p_dbPath = &v17->_dbPath;
     dbPath = v17->_dbPath;
     v17->_dbPath = v18;
 
-    v21 = [v15 copy];
+    v21 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v21;
 
@@ -52,10 +52,10 @@
     v25 = v24;
     if (v24)
     {
-      [MAUtilityHelper validatePathMatchingRealpath:*p_dbPath error:a9];
-      if (!*a9)
+      [MAUtilityHelper validatePathMatchingRealpath:*p_dbPath error:error];
+      if (!*error)
       {
-        v47 = v16;
+        v47 = attributesCopy;
         v26 = 0;
         if (v48)
         {
@@ -77,7 +77,7 @@ LABEL_26:
           v53 = v36;
           v37 = [NSDictionary dictionaryWithObjects:&v53 forKeys:&v52 count:1];
           v44 = *p_dbPath;
-          *a9 = createManagedAssetError();
+          *error = createManagedAssetError();
 
           if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
           {
@@ -85,7 +85,7 @@ LABEL_26:
           }
         }
 
-        else if ((v25 & 1) != 0 || ([MAUtilityHelper validatePathMatchingRealpath:*p_dbPath error:a9], !*a9))
+        else if ((v25 & 1) != 0 || ([MAUtilityHelper validatePathMatchingRealpath:*p_dbPath error:error], !*error))
         {
           v39 = off_100127CE8;
           if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_INFO))
@@ -98,8 +98,8 @@ LABEL_26:
             _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "opened sqliteDb:%@ protflag:%u", buf, 0x12u);
           }
 
-          v16 = v47;
-          if (v48 || (v41 = [(MAKVGroupDB *)v17 execSqlStatement:@"pragma journal_mode = WAL;" error:a9 rowReader:0], !v41))
+          attributesCopy = v47;
+          if (v48 || (v41 = [(MAKVGroupDB *)v17 execSqlStatement:@"pragma journal_mode = WAL;" error:error rowReader:0], !v41))
           {
             v28 = v17;
             goto LABEL_30;
@@ -110,7 +110,7 @@ LABEL_26:
           v51 = v42;
           v43 = [NSDictionary dictionaryWithObjects:&v51 forKeys:&v50 count:1];
           v45 = *p_dbPath;
-          *a9 = createManagedAssetError();
+          *error = createManagedAssetError();
 
           if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
           {
@@ -120,16 +120,16 @@ LABEL_26:
 
         sqlite3_close(v17->_db);
         v28 = 0;
-        v16 = v47;
+        attributesCopy = v47;
 LABEL_30:
 
         goto LABEL_31;
       }
     }
 
-    else if (v10)
+    else if (existCopy)
     {
-      *a9 = createManagedAssetError();
+      *error = createManagedAssetError();
       if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
       {
         sub_1000258F4(&v17->_dbPath);
@@ -139,15 +139,15 @@ LABEL_30:
     else
     {
       v17->_flags = 2;
-      v29 = [(NSString *)v17->_dbPath stringByDeletingLastPathComponent];
-      if ([v23 fileExistsAtPath:v29] & 1) != 0 || (objc_msgSend(v23, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v29, 1, 0, a9))
+      stringByDeletingLastPathComponent = [(NSString *)v17->_dbPath stringByDeletingLastPathComponent];
+      if ([v23 fileExistsAtPath:stringByDeletingLastPathComponent] & 1) != 0 || (objc_msgSend(v23, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", stringByDeletingLastPathComponent, 1, 0, error))
       {
-        [MAUtilityHelper validatePathMatchingRealpath:v29 error:a9];
-        if (!*a9)
+        [MAUtilityHelper validatePathMatchingRealpath:stringByDeletingLastPathComponent error:error];
+        if (!*error)
         {
-          v30 = [v16 objectForKeyedSubscript:NSFileProtectionKey];
+          v30 = [attributesCopy objectForKeyedSubscript:NSFileProtectionKey];
           v46 = v30;
-          v47 = v16;
+          v47 = attributesCopy;
           if (v30 && (v31 = v30, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             if ([v31 isEqualToString:NSFileProtectionComplete])
@@ -197,7 +197,7 @@ LABEL_30:
 
       else
       {
-        *a9 = createManagedAssetError();
+        *error = createManagedAssetError();
       }
     }
 
@@ -246,12 +246,12 @@ LABEL_31:
   self->_db = 0;
 }
 
-- (int)execSqlStatement:(id)a3 error:(id *)a4 rowReader:(id)a5
+- (int)execSqlStatement:(id)statement error:(id *)error rowReader:(id)reader
 {
-  v8 = a3;
-  v9 = a5;
+  statementCopy = statement;
+  readerCopy = reader;
   ppStmt = 0;
-  v10 = sqlite3_prepare_v2(self->_db, [v8 UTF8String], objc_msgSend(v8, "lengthOfBytesUsingEncoding:", 4), &ppStmt, 0);
+  v10 = sqlite3_prepare_v2(self->_db, [statementCopy UTF8String], objc_msgSend(statementCopy, "lengthOfBytesUsingEncoding:", 4), &ppStmt, 0);
   if (v10)
   {
     v11 = v10;
@@ -265,7 +265,7 @@ LABEL_31:
     v40 = v12;
     v13 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     sqlite3_errmsg(self->_db);
-    *a4 = createManagedAssetError();
+    *error = createManagedAssetError();
   }
 
   else
@@ -274,12 +274,12 @@ LABEL_31:
     {
       v14 = sqlite3_step(ppStmt);
       v15 = v14;
-      if (!v9 || v14 != 100)
+      if (!readerCopy || v14 != 100)
       {
         break;
       }
 
-      if ((v9[2](v9, ppStmt) & 1) == 0)
+      if ((readerCopy[2](readerCopy, ppStmt) & 1) == 0)
       {
         goto LABEL_13;
       }
@@ -298,8 +298,8 @@ LABEL_31:
       v17 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
       v26 = v15;
       v27 = sqlite3_errmsg(self->_db);
-      v25 = v8;
-      *a4 = createManagedAssetError();
+      v25 = statementCopy;
+      *error = createManagedAssetError();
     }
 
 LABEL_13:
@@ -313,7 +313,7 @@ LABEL_13:
         v23 = v18;
         v24 = sqlite3_errmsg(db);
         *buf = 138412802;
-        v32 = v8;
+        v32 = statementCopy;
         v33 = 1024;
         v34 = v11;
         v35 = 2080;
@@ -321,14 +321,14 @@ LABEL_13:
         _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "failed to sqlite3_finalize stmt:%@ errorCode:%d error:%s", buf, 0x1Cu);
       }
 
-      if (!*a4)
+      if (!*error)
       {
         v29 = ManagedAssetsSqliteErrorKey;
         v19 = [NSNumber numberWithInt:v11, v25, v26, v27];
         v30 = v19;
         v20 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
         sqlite3_errmsg(self->_db);
-        *a4 = createManagedAssetError();
+        *error = createManagedAssetError();
       }
     }
 
@@ -341,9 +341,9 @@ LABEL_13:
   return v11;
 }
 
-- (id)queryColumnNames:(id)a3 orignalColumnsOut:(id *)a4 error:(id *)a5
+- (id)queryColumnNames:(id)names orignalColumnsOut:(id *)out error:(id *)error
 {
-  v8 = a3;
+  namesCopy = names;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -356,22 +356,22 @@ LABEL_13:
   v21 = sub_10001E2EC;
   v22 = sub_10001E2FC;
   v23 = +[NSMutableArray array];
-  v9 = [NSString stringWithFormat:@"PRAGMA table_info(%@)", v8];;
+  namesCopy = [NSString stringWithFormat:@"PRAGMA table_info(%@)", namesCopy];;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10001E304;
   v17[3] = &unk_100116160;
   v17[4] = &v24;
   v17[5] = &v18;
-  v10 = [(MAKVGroupDB *)self execSqlStatement:v9 error:a5 rowReader:v17];
+  v10 = [(MAKVGroupDB *)self execSqlStatement:namesCopy error:error rowReader:v17];
   v11 = off_100127CE8;
   if (v10)
   {
     if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
     {
-      v14 = *a5;
+      v14 = *error;
       *buf = 138412802;
-      v31 = v8;
+      v31 = namesCopy;
       v32 = 1024;
       *v33 = v10;
       *&v33[4] = 2112;
@@ -391,13 +391,13 @@ LABEL_13:
       *buf = 138412802;
       v31 = identifier;
       v32 = 2112;
-      *v33 = v8;
+      *v33 = namesCopy;
       *&v33[8] = 2112;
       *&v33[10] = v16;
       _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "db: %@ table: %@ has columns: %@", buf, 0x20u);
     }
 
-    *a4 = v19[5];
+    *out = v19[5];
     v12 = [NSSet setWithArray:v25[5]];
   }
 
@@ -407,16 +407,16 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)hasTableWithError:(id *)a3
+- (BOOL)hasTableWithError:(id *)error
 {
   v4 = [(MAKVGroupDB *)self queryTablesWithError:?];
   v5 = v4;
-  v6 = *a3 || !v4 || [v4 count] && (objc_msgSend(v5, "count") != 1 || (objc_msgSend(v5, "containsObject:", @"__masd_meta") & 1) == 0);
+  v6 = *error || !v4 || [v4 count] && (objc_msgSend(v5, "count") != 1 || (objc_msgSend(v5, "containsObject:", @"__masd_meta") & 1) == 0);
 
   return v6;
 }
 
-- (id)queryTablesWithError:(id *)a3
+- (id)queryTablesWithError:(id *)error
 {
   v5 = [NSString stringWithFormat:@"SELECT name FROM sqlite_master WHERE type = 'table'"];;
   v13 = 0;
@@ -430,14 +430,14 @@ LABEL_13:
   v12[2] = sub_10001E64C;
   v12[3] = &unk_100116188;
   v12[4] = &v13;
-  v6 = [(MAKVGroupDB *)self execSqlStatement:v5 error:a3 rowReader:v12];
+  v6 = [(MAKVGroupDB *)self execSqlStatement:v5 error:error rowReader:v12];
   v7 = off_100127CE8;
   if (v6)
   {
     if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
     {
       v10 = v14[5];
-      v11 = *a3;
+      v11 = *error;
       *buf = 138412802;
       v20 = v10;
       v21 = 1024;
@@ -465,17 +465,17 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)upgradeTable:(id)a3 fields:(id)a4 attributes:(id)a5 missingNewColumn:(id)a6 hasDeletedColumn:(id)a7 migrateData:(BOOL *)a8 error:(id *)a9
+- (BOOL)upgradeTable:(id)table fields:(id)fields attributes:(id)attributes missingNewColumn:(id)column hasDeletedColumn:(id)deletedColumn migrateData:(BOOL *)data error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  if (a8)
+  tableCopy = table;
+  fieldsCopy = fields;
+  attributesCopy = attributes;
+  columnCopy = column;
+  deletedColumnCopy = deletedColumn;
+  if (data)
   {
-    v20 = *a8;
-    *a8 = 0;
+    v20 = *data;
+    *data = 0;
   }
 
   else
@@ -488,14 +488,14 @@ LABEL_13:
   v22 = v77;
   v23 = &selRef_queryInUseStatusWithAuditToken_completion_;
   v64 = v21;
-  v65 = v19;
+  v65 = deletedColumnCopy;
   if (v22)
   {
     v24 = v22;
     v25 = 0;
     v26 = 0;
 LABEL_6:
-    v27 = v18;
+    v27 = columnCopy;
     if (os_log_type_enabled(v23[413], OS_LOG_TYPE_ERROR))
     {
       sub_100025C1C();
@@ -503,16 +503,16 @@ LABEL_6:
 
     v28 = v24;
     v29 = 0;
-    *a9 = v24;
+    *error = v24;
     goto LABEL_9;
   }
 
-  v31 = [v15 lowercaseString];
-  v32 = [v21 containsObject:v31];
+  lowercaseString = [tableCopy lowercaseString];
+  v32 = [v21 containsObject:lowercaseString];
 
   if (v32)
   {
-    if (!(v18 | v19))
+    if (!(columnCopy | deletedColumnCopy))
     {
       v26 = 0;
       v25 = 0;
@@ -522,8 +522,8 @@ LABEL_6:
 
     v75 = 0;
     v76 = 0;
-    [(MAKVGroupDB *)self queryColumnNames:v15 orignalColumnsOut:&v76 error:&v75];
-    v25 = v63 = self;
+    [(MAKVGroupDB *)self queryColumnNames:tableCopy orignalColumnsOut:&v76 error:&v75];
+    v25 = selfCopy = self;
     v33 = v76;
     v34 = v75;
     if (v34)
@@ -535,43 +535,43 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v62 = v18;
-    if (v18)
+    v62 = columnCopy;
+    if (columnCopy)
     {
-      v41 = [v18 lowercaseString];
-      LODWORD(v18) = [v25 containsObject:v41] ^ 1;
+      lowercaseString2 = [columnCopy lowercaseString];
+      LODWORD(columnCopy) = [v25 containsObject:lowercaseString2] ^ 1;
     }
 
     v42 = 0;
-    if (v19 && !v18)
+    if (deletedColumnCopy && !columnCopy)
     {
-      [v19 lowercaseString];
-      v44 = v43 = v17;
+      [deletedColumnCopy lowercaseString];
+      v44 = v43 = attributesCopy;
       v42 = [v25 containsObject:v44];
 
-      v17 = v43;
+      attributesCopy = v43;
     }
 
-    if ((v18 | v42) != 1)
+    if ((columnCopy | v42) != 1)
     {
       v26 = 0;
       v24 = 0;
       v29 = 1;
-      v18 = v62;
+      columnCopy = v62;
       goto LABEL_10;
     }
 
-    v61 = v17;
+    v61 = attributesCopy;
     if (v20)
     {
-      v60 = v15;
-      v45 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v16 count]);
+      v60 = tableCopy;
+      v45 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [fieldsCopy count]);
       v71 = 0u;
       v72 = 0u;
       v73 = 0u;
       v74 = 0u;
-      v59 = v16;
-      v46 = v16;
+      v59 = fieldsCopy;
+      v46 = fieldsCopy;
       v47 = [v46 countByEnumeratingWithState:&v71 objects:v80 count:16];
       if (v47)
       {
@@ -590,8 +590,8 @@ LABEL_6:
             if ([v51 count])
             {
               v52 = [v51 objectAtIndexedSubscript:0];
-              v53 = [v52 lowercaseString];
-              v54 = [v25 containsObject:v53];
+              lowercaseString3 = [v52 lowercaseString];
+              v54 = [v25 containsObject:lowercaseString3];
 
               if (v54)
               {
@@ -608,16 +608,16 @@ LABEL_6:
 
       v69 = 0;
       v70 = 0;
-      v15 = v60;
-      v55 = [(MAKVGroupDB *)v63 query:v60 keys:&__NSDictionary0__struct desiredKeys:v45 nonNullKeys:0 records:&v70 error:&v69];
+      tableCopy = v60;
+      v55 = [(MAKVGroupDB *)selfCopy query:v60 keys:&__NSDictionary0__struct desiredKeys:v45 nonNullKeys:0 records:&v70 error:&v69];
       v26 = v70;
       v24 = v69;
 
-      v16 = v59;
-      v18 = v62;
+      fieldsCopy = v59;
+      columnCopy = v62;
       if (!v55)
       {
-        v17 = v61;
+        attributesCopy = v61;
         goto LABEL_47;
       }
     }
@@ -626,23 +626,23 @@ LABEL_6:
     {
       v26 = 0;
       v24 = 0;
-      v18 = v62;
+      columnCopy = v62;
     }
 
     v57 = off_100127CE8;
     if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v79 = v15;
+      v79 = tableCopy;
       _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "deleting incompatible store %@, to be receated", buf, 0xCu);
     }
 
     v68 = v24;
-    [(MAKVGroupDB *)v63 deleteTable:v15 error:&v68];
+    [(MAKVGroupDB *)selfCopy deleteTable:tableCopy error:&v68];
     v58 = v68;
 
     v24 = v58;
-    v17 = v61;
+    attributesCopy = v61;
     v23 = &selRef_queryInUseStatusWithAuditToken_completion_;
     if (v58)
     {
@@ -652,7 +652,7 @@ LABEL_6:
 
   else
   {
-    v63 = self;
+    selfCopy = self;
     v26 = 0;
     v25 = 0;
     v23 = &selRef_queryInUseStatusWithAuditToken_completion_;
@@ -662,12 +662,12 @@ LABEL_6:
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v79 = v15;
+    v79 = tableCopy;
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "creating store %@", buf, 0xCu);
   }
 
   v67 = 0;
-  v36 = [(MAKVGroupDB *)v63 addTable:v15 fields:v16 attributes:v17 error:&v67];
+  v36 = [(MAKVGroupDB *)selfCopy addTable:tableCopy fields:fieldsCopy attributes:attributesCopy error:&v67];
   v24 = v67;
   if (!v36)
   {
@@ -681,25 +681,25 @@ LABEL_25:
     goto LABEL_10;
   }
 
-  v27 = v18;
-  v37 = v17;
+  v27 = columnCopy;
+  v37 = attributesCopy;
   v38 = off_100127CE8;
   if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v79 = v15;
+    v79 = tableCopy;
     _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "migrating data for store %@", buf, 0xCu);
   }
 
   v66 = v24;
-  v39 = [(MAKVGroupDB *)v63 upsert:v15 records:v26 tsOptions:0 error:&v66];
+  v39 = [(MAKVGroupDB *)selfCopy upsert:tableCopy records:v26 tsOptions:0 error:&v66];
   v40 = v66;
 
   if (!v39)
   {
     v24 = v40;
-    v17 = v37;
-    v18 = v27;
+    attributesCopy = v37;
+    columnCopy = v27;
 LABEL_47:
     v23 = &selRef_queryInUseStatusWithAuditToken_completion_;
     if (!v24)
@@ -713,21 +713,21 @@ LABEL_47:
   }
 
   v29 = 1;
-  *a8 = 1;
+  *data = 1;
   v24 = v40;
-  v17 = v37;
+  attributesCopy = v37;
 LABEL_9:
-  v18 = v27;
+  columnCopy = v27;
 LABEL_10:
 
   return v29;
 }
 
-- (BOOL)addTable:(id)a3 fields:(id)a4 attributes:(id)a5 error:(id *)a6
+- (BOOL)addTable:(id)table fields:(id)fields attributes:(id)attributes error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  tableCopy = table;
+  fieldsCopy = fields;
+  attributesCopy = attributes;
   v13 = off_100127CE8;
   if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_DEBUG))
   {
@@ -735,16 +735,16 @@ LABEL_10:
     *buf = 138413058;
     v72 = identifier;
     v73 = 2112;
-    v74 = v10;
+    v74 = tableCopy;
     v75 = 2112;
-    v76 = v11;
+    v76 = fieldsCopy;
     v77 = 2112;
-    v78 = v12;
+    v78 = attributesCopy;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "db: %@ start to add table name:%@ fields:%@ attributes:%@", buf, 0x2Au);
   }
 
   p_prots = &OBJC_PROTOCOL___CKRecordValue.prots;
-  if ([qword_100129400 numberOfMatchesInString:v10 options:0 range:{0, objc_msgSend(v10, "length")}])
+  if ([qword_100129400 numberOfMatchesInString:tableCopy options:0 range:{0, objc_msgSend(tableCopy, "length")}])
   {
     if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
     {
@@ -752,22 +752,22 @@ LABEL_10:
     }
 
     createManagedAssetError();
-    *a6 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
   {
-    v58 = self;
+    selfCopy = self;
     v59 = +[NSMutableArray array];
     v16 = +[NSMutableString string];
     v17 = +[NSMutableString string];
-    if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (fieldsCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v67 = 0u;
       v68 = 0u;
       v65 = 0u;
       v66 = 0u;
-      obj = v11;
+      obj = fieldsCopy;
       v60 = v16;
       v51 = v17;
       v54 = [obj countByEnumeratingWithState:&v65 objects:v70 count:16];
@@ -775,9 +775,9 @@ LABEL_10:
       {
         v18 = &_s8CloudKit12CKSyncEngineC5EventO13AccountChangeV0G4TypeO6signInyAISo10CKRecordIDC_tcAImFWC_ptr;
         v56 = *v66;
-        v50 = v12;
-        v52 = v10;
-        v53 = v11;
+        v50 = attributesCopy;
+        v52 = tableCopy;
+        v53 = fieldsCopy;
         while (2)
         {
           v19 = 0;
@@ -792,12 +792,12 @@ LABEL_10:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0 || [v20 count] <= 2)
             {
-              *a6 = createManagedAssetError();
-              v12 = v50;
+              *error = createManagedAssetError();
+              attributesCopy = v50;
               goto LABEL_64;
             }
 
-            v21 = a6;
+            errorCopy = error;
             v22 = v18;
             v23 = [v20 objectAtIndexedSubscript:0];
             objc_opt_class();
@@ -815,10 +815,10 @@ LABEL_10:
 
 LABEL_60:
               createManagedAssetError();
-              v12 = v50;
-              *v21 = v17 = v51;
+              attributesCopy = v50;
+              *errorCopy = v17 = v51;
 
-              v11 = v53;
+              fieldsCopy = v53;
 LABEL_65:
 
               v15 = 0;
@@ -830,32 +830,32 @@ LABEL_65:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              *v21 = createManagedAssetError();
+              *errorCopy = createManagedAssetError();
 
-              v12 = v50;
+              attributesCopy = v50;
               goto LABEL_63;
             }
 
-            v26 = [v24 intValue];
+            intValue = [v24 intValue];
             v27 = [v20 objectAtIndexedSubscript:2];
             v28 = v18[81];
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              *v21 = createManagedAssetError();
+              *errorCopy = createManagedAssetError();
 
-              v12 = v50;
+              attributesCopy = v50;
               v16 = v60;
 LABEL_63:
-              v11 = v53;
+              fieldsCopy = v53;
 LABEL_64:
               v17 = v51;
               goto LABEL_65;
             }
 
             v29 = p_prots;
-            v30 = [v27 intValue];
-            if ((v30 & 2) != 0)
+            intValue2 = [v27 intValue];
+            if ((intValue2 & 2) != 0)
             {
               [v59 addObject:v23];
             }
@@ -866,32 +866,32 @@ LABEL_64:
             }
 
             v31 = &stru_10011AC38;
-            if (v26 - 1 <= 3)
+            if (intValue - 1 <= 3)
             {
-              v31 = *(&off_100116270 + v26 - 1);
+              v31 = *(&off_100116270 + intValue - 1);
             }
 
             v32 = &stru_10011AC38;
             v33 = @"NOT NULL";
-            if ((v30 & 8) == 0)
+            if ((intValue2 & 8) == 0)
             {
               v33 = &stru_10011AC38;
             }
 
             v34 = @"UNIQUE";
-            if ((v30 & 4) == 0)
+            if ((intValue2 & 4) == 0)
             {
               v34 = &stru_10011AC38;
             }
 
-            if ((v30 & 0x10) != 0)
+            if ((intValue2 & 0x10) != 0)
             {
               v32 = @"DEFAULT 0";
             }
 
             v16 = v60;
             [v60 appendFormat:@"%@ %@ %@ %@ %@", v23, v31, v33, v34, v32];
-            if (v30)
+            if (intValue2)
             {
               if ([v51 length])
               {
@@ -902,15 +902,15 @@ LABEL_64:
             }
 
             v19 = v19 + 1;
-            v11 = v53;
+            fieldsCopy = v53;
             p_prots = v29;
-            v10 = v52;
+            tableCopy = v52;
             v18 = v22;
-            a6 = v21;
+            error = errorCopy;
           }
 
           while (v54 != v19);
-          v12 = v50;
+          attributesCopy = v50;
           v17 = v51;
           v54 = [obj countByEnumeratingWithState:&v65 objects:v70 count:16];
           if (v54)
@@ -925,16 +925,16 @@ LABEL_64:
       if (![v17 length])
       {
         v49 = obj;
-        *a6 = createManagedAssetError();
+        *error = createManagedAssetError();
       }
 
       if (![v16 length])
       {
-        *a6 = createManagedAssetError();
+        *error = createManagedAssetError();
       }
 
-      v35 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@, PRIMARY KEY(%@))", v10, v16, v17];;
-      if ([(MAKVGroupDB *)v58 execSqlStatement:v35 error:a6 rowReader:&stru_1001161C8])
+      v35 = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@, PRIMARY KEY(%@))", tableCopy, v16, v17];;
+      if ([(MAKVGroupDB *)selfCopy execSqlStatement:v35 error:error rowReader:&stru_1001161C8])
       {
         v15 = 0;
       }
@@ -943,9 +943,9 @@ LABEL_64:
       {
         v57 = v35;
         v37 = v17;
-        v38 = a6;
-        v39 = v11;
-        v40 = v12;
+        errorCopy2 = error;
+        v39 = fieldsCopy;
+        v40 = attributesCopy;
         v63 = 0u;
         v64 = 0u;
         v61 = 0u;
@@ -965,17 +965,17 @@ LABEL_64:
                 objc_enumerationMutation(v41);
               }
 
-              v46 = [NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS %@_masd_idx ON %@ (%@)", *(*(&v61 + 1) + 8 * i), v10, *(*(&v61 + 1) + 8 * i)];;
-              v47 = [(MAKVGroupDB *)v58 execSqlStatement:v46 error:v38 rowReader:&stru_1001161E8];
+              v46 = [NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS %@_masd_idx ON %@ (%@)", *(*(&v61 + 1) + 8 * i), tableCopy, *(*(&v61 + 1) + 8 * i)];;
+              v47 = [(MAKVGroupDB *)selfCopy execSqlStatement:v46 error:errorCopy2 rowReader:&stru_1001161E8];
 
               if (v47)
               {
 
                 v15 = 0;
-                v12 = v40;
+                attributesCopy = v40;
                 v16 = v60;
                 v17 = v51;
-                v11 = v39;
+                fieldsCopy = v39;
                 goto LABEL_67;
               }
 
@@ -995,12 +995,12 @@ LABEL_64:
 
         if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_DEBUG))
         {
-          sub_100025D68(v58);
+          sub_100025D68(selfCopy);
         }
 
         v15 = 1;
-        v12 = v40;
-        v11 = v39;
+        attributesCopy = v40;
+        fieldsCopy = v39;
         v17 = v37;
 LABEL_67:
         v35 = v57;
@@ -1010,7 +1010,7 @@ LABEL_67:
     else
     {
       createManagedAssetError();
-      *a6 = v15 = 0;
+      *error = v15 = 0;
     }
 
 LABEL_69:
@@ -1019,24 +1019,24 @@ LABEL_69:
   return v15;
 }
 
-- (BOOL)addBaseStoreToTable:(id)a3 baseGroup:(id)a4 baseStore:(id)a5 baseProfile:(id)a6 error:(id *)a7
+- (BOOL)addBaseStoreToTable:(id)table baseGroup:(id)group baseStore:(id)store baseProfile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if ([(MAKVGroupDB *)self tableExists:@"__masd_meta" error:a7])
+  tableCopy = table;
+  groupCopy = group;
+  storeCopy = store;
+  profileCopy = profile;
+  if ([(MAKVGroupDB *)self tableExists:@"__masd_meta" error:error])
   {
     goto LABEL_6;
   }
 
-  v16 = [(MAKVGroupDB *)self execSqlStatement:@"CREATE TABLE IF NOT EXISTS __masd_meta (tablename TEXT PRIMARY KEY error:basegroup TEXT rowReader:basestore TEXT, baseprofile TEXT);", a7, &stru_100116208];
+  v16 = [(MAKVGroupDB *)self execSqlStatement:@"CREATE TABLE IF NOT EXISTS __masd_meta (tablename TEXT PRIMARY KEY error:basegroup TEXT rowReader:basestore TEXT, baseprofile TEXT);", error, &stru_100116208];
   if (!v16)
   {
     if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_DEBUG))
     {
       sub_100025DE8(self);
-      if (v15)
+      if (profileCopy)
       {
         goto LABEL_7;
       }
@@ -1045,22 +1045,22 @@ LABEL_69:
     }
 
 LABEL_6:
-    if (v15)
+    if (profileCopy)
     {
 LABEL_7:
-      v18 = v15;
+      v18 = profileCopy;
 LABEL_11:
       v19 = v18;
       v24[3] = v18;
       v25[0] = &off_10011E4A0;
-      v24[0] = v12;
-      v24[1] = v13;
-      v24[2] = v14;
+      v24[0] = tableCopy;
+      v24[1] = groupCopy;
+      v24[2] = storeCopy;
       v21 = [NSArray arrayWithObjects:v24 count:4];
       v25[1] = v21;
       v20 = [NSArray arrayWithObjects:v25 count:2];
 
-      v17 = [(MAKVGroupDB *)self upsert:@"__masd_meta" records:v20 tsOptions:0 error:a7];
+      v17 = [(MAKVGroupDB *)self upsert:@"__masd_meta" records:v20 tsOptions:0 error:error];
       goto LABEL_12;
     }
 
@@ -1069,7 +1069,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!*a7)
+  if (!*error)
   {
     v26 = ManagedAssetsSqliteErrorKey;
     v19 = [NSNumber numberWithInt:v16];
@@ -1077,7 +1077,7 @@ LABEL_10:
     v20 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     dbPath = self->_dbPath;
     createManagedAssetError();
-    *a7 = v17 = 0;
+    *error = v17 = 0;
 LABEL_12:
 
     goto LABEL_13;
@@ -1089,16 +1089,16 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)getBaseStoreNameFor:(id)a3 baseGroup:(id *)a4 baseStore:(id *)a5 baseProfile:(id *)a6 error:(id *)a7
+- (BOOL)getBaseStoreNameFor:(id)for baseGroup:(id *)group baseStore:(id *)store baseProfile:(id *)profile error:(id *)error
 {
-  v12 = a3;
-  if ([(MAKVGroupDB *)self tableExists:@"__masd_meta" error:a7])
+  forCopy = for;
+  if ([(MAKVGroupDB *)self tableExists:@"__masd_meta" error:error])
   {
     v22 = @"tablename";
-    v23 = v12;
+    v23 = forCopy;
     v13 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v21 = 0;
-    [(MAKVGroupDB *)self query:@"__masd_meta" keys:v13 desiredKeys:0 nonNullKeys:0 records:&v21 error:a7];
+    [(MAKVGroupDB *)self query:@"__masd_meta" keys:v13 desiredKeys:0 nonNullKeys:0 records:&v21 error:error];
     v14 = v21;
 
     v15 = [v14 count];
@@ -1106,38 +1106,38 @@ LABEL_13:
     if (v15 == 2)
     {
       v17 = [v14 objectAtIndexedSubscript:1];
-      *a4 = [v17 objectAtIndexedSubscript:1];
+      *group = [v17 objectAtIndexedSubscript:1];
 
       v18 = [v14 objectAtIndexedSubscript:1];
-      *a5 = [v18 objectAtIndexedSubscript:2];
+      *store = [v18 objectAtIndexedSubscript:2];
 
       v19 = [v14 objectAtIndexedSubscript:1];
-      *a6 = [v19 objectAtIndexedSubscript:3];
+      *profile = [v19 objectAtIndexedSubscript:3];
     }
 
     else
     {
-      *a4 = 0;
-      *a5 = 0;
-      *a6 = 0;
+      *group = 0;
+      *store = 0;
+      *profile = 0;
     }
   }
 
   else
   {
     v16 = 0;
-    *a4 = 0;
-    *a5 = 0;
-    *a6 = 0;
+    *group = 0;
+    *store = 0;
+    *profile = 0;
   }
 
   return v16;
 }
 
-- (BOOL)upsert:(id)a3 records:(id)a4 tsOptions:(unint64_t)a5 error:(id *)a6
+- (BOOL)upsert:(id)upsert records:(id)records tsOptions:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  upsertCopy = upsert;
+  recordsCopy = records;
   v10 = off_100127CE8;
   if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_DEBUG))
   {
@@ -1147,27 +1147,27 @@ LABEL_13:
     v121 = 2112;
     *v122 = identifier;
     *&v122[8] = 2112;
-    *&v122[10] = v8;
+    *&v122[10] = upsertCopy;
     *&v122[18] = 2112;
-    *&v122[20] = v9;
+    *&v122[20] = recordsCopy;
     v123 = 2048;
-    v124 = a5;
+    optionsCopy = options;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s db: %@ name:%@ values:%@ tsOptions:%lu", buf, 0x34u);
   }
 
-  v11 = [v9 count];
+  v11 = [recordsCopy count];
   if (v11 <= 1)
   {
     createManagedAssetError();
-    *a6 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_73;
   }
 
   v88 = v11;
   v13 = +[NSMutableString string];
   v14 = +[NSMutableString string];
-  v94 = self;
-  if ((a5 & 7) != 0)
+  selfCopy = self;
+  if ((options & 7) != 0)
   {
     v15 = +[NSDate date];
     [v15 timeIntervalSinceReferenceDate];
@@ -1179,11 +1179,11 @@ LABEL_13:
     v16 = 0;
   }
 
-  v91 = v8;
+  v91 = upsertCopy;
   v93 = v16;
   v104 = v13;
-  v89 = v9;
-  v17 = [v9 objectAtIndexedSubscript:0];
+  v89 = recordsCopy;
+  v17 = [recordsCopy objectAtIndexedSubscript:0];
   v95 = [v17 count];
   v108 = 0u;
   v109 = 0u;
@@ -1221,13 +1221,13 @@ LABEL_13:
 
         [v14 appendString:v25];
         [v104 appendString:@"?"];
-        if ((a5 & 1) != 0 && [v100 isEqual:v25])
+        if ((options & 1) != 0 && [v100 isEqual:v25])
         {
           v23 = v20;
         }
 
         v14 = v103;
-        if ((a5 & 2) != 0 && [v99 isEqual:v25])
+        if ((options & 2) != 0 && [v99 isEqual:v25])
         {
           v22 = v20;
         }
@@ -1251,11 +1251,11 @@ LABEL_13:
     v23 = -1;
   }
 
-  if (a5)
+  if (options)
   {
-    v8 = v91;
+    upsertCopy = v91;
     v26 = v93;
-    v27 = self;
+    selfCopy2 = self;
     if (v23 < 0)
     {
       v28 = v104;
@@ -1282,13 +1282,13 @@ LABEL_13:
   {
     v101 = v20;
     v20 = v23;
-    v8 = v91;
+    upsertCopy = v91;
     v26 = v93;
     v28 = v104;
-    v27 = v94;
+    selfCopy2 = selfCopy;
   }
 
-  if ((a5 & 2) != 0 && v22 < 0)
+  if ((options & 2) != 0 && v22 < 0)
   {
     if ([v14 length])
     {
@@ -1309,14 +1309,14 @@ LABEL_13:
     v101 = v22;
   }
 
-  v9 = v89;
+  recordsCopy = v89;
   v30 = +[NSMutableString string];
-  [v30 appendFormat:@"INSERT OR REPLACE INTO %@(%@) VALUES(%@);", v8, v14, v28];
+  [v30 appendFormat:@"INSERT OR REPLACE INTO %@(%@) VALUES(%@);", upsertCopy, v14, v28];
   v31 = off_100127CE8;
   if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_INFO))
   {
     v32 = v30;
-    v33 = v27->_identifier;
+    v33 = selfCopy2->_identifier;
     v34 = v31;
     v35 = [v32 length];
     *buf = 138412802;
@@ -1330,20 +1330,20 @@ LABEL_13:
   }
 
   ppStmt = 0;
-  v36 = sqlite3_prepare_v2(v27->_db, [v30 UTF8String], objc_msgSend(v30, "length"), &ppStmt, 0);
+  v36 = sqlite3_prepare_v2(selfCopy2->_db, [v30 UTF8String], objc_msgSend(v30, "length"), &ppStmt, 0);
   if (v36)
   {
     v116 = ManagedAssetsSqliteErrorKey;
     v65 = [NSNumber numberWithInt:v36];
     v117 = v65;
     v66 = [NSDictionary dictionaryWithObjects:&v117 forKeys:&v116 count:1];
-    sqlite3_errmsg(v27->_db);
-    *a6 = createManagedAssetError();
+    sqlite3_errmsg(selfCopy2->_db);
+    *error = createManagedAssetError();
 
     v67 = off_100127CE8;
     if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
     {
-      db = v27->_db;
+      db = selfCopy2->_db;
       v71 = v67;
       v72 = sqlite3_errmsg(db);
       *buf = 138412802;
@@ -1366,12 +1366,12 @@ LABEL_70:
   v90 = v30;
   v37 = v98;
   v38 = 1;
-  v39 = (a5 >> 2) & 1;
+  v39 = (options >> 2) & 1;
   v87 = ManagedAssetsSqliteErrorKey;
   do
   {
     v92 = v38;
-    v106 = [v9 objectAtIndexedSubscript:{v82, v83, v84}];
+    v106 = [recordsCopy objectAtIndexedSubscript:{v82, v83, v84}];
     if (v37 >= 1)
     {
       for (i = 0; v98 != i; ++i)
@@ -1398,7 +1398,7 @@ LABEL_70:
           if (((v101 == i) & v41) != 1)
           {
             v45 = [v106 objectAtIndexedSubscript:i];
-            v46 = sub_1000205FC(v44, i + 1, v45, a6);
+            v46 = sub_1000205FC(v44, i + 1, v45, error);
 
             if (v46)
             {
@@ -1412,7 +1412,7 @@ LABEL_70:
           v42 = ppStmt;
         }
 
-        if (sub_1000205FC(v42, v43, v26, a6))
+        if (sub_1000205FC(v42, v43, v26, error))
         {
           goto LABEL_71;
         }
@@ -1422,7 +1422,7 @@ LABEL_70:
     v47 = off_100127CE8;
     if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_DEBUG))
     {
-      v58 = v94->_identifier;
+      v58 = selfCopy->_identifier;
       *buf = 138412802;
       v120 = v58;
       v121 = 2112;
@@ -1441,16 +1441,16 @@ LABEL_70:
       v115 = v50;
       v51 = [NSDictionary dictionaryWithObjects:&v115 forKeys:&v114 count:1];
       v83 = v49;
-      v84 = sqlite3_errmsg(v94->_db);
+      v84 = sqlite3_errmsg(selfCopy->_db);
       v82 = v30;
-      *a6 = createManagedAssetError();
+      *error = createManagedAssetError();
 
       v52 = off_100127CE8;
       v26 = v93;
       if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
       {
-        v59 = v94->_db;
-        v85 = v94->_identifier;
+        v59 = selfCopy->_db;
+        v85 = selfCopy->_identifier;
         v60 = v52;
         v61 = sqlite3_errmsg(v59);
         *buf = 138413058;
@@ -1469,16 +1469,16 @@ LABEL_70:
     if (v53)
     {
       v54 = v53;
-      if (!*a6)
+      if (!*error)
       {
         v112 = v87;
         v55 = [NSNumber numberWithInt:v53, v82];
         v113 = v55;
         v56 = [NSDictionary dictionaryWithObjects:&v113 forKeys:&v112 count:1];
         v83 = v54;
-        v84 = sqlite3_errmsg(v94->_db);
+        v84 = sqlite3_errmsg(selfCopy->_db);
         v82 = v30;
-        *a6 = createManagedAssetError();
+        *error = createManagedAssetError();
 
         v26 = v93;
       }
@@ -1486,8 +1486,8 @@ LABEL_70:
       v57 = off_100127CE8;
       if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
       {
-        v62 = v94->_db;
-        v86 = v94->_identifier;
+        v62 = selfCopy->_db;
+        v86 = selfCopy->_identifier;
         v63 = v57;
         v64 = sqlite3_errmsg(v62);
         *buf = 138413058;
@@ -1502,7 +1502,7 @@ LABEL_70:
       }
     }
 
-    if (*a6)
+    if (*error)
     {
 LABEL_71:
       sqlite3_finalize(ppStmt);
@@ -1525,8 +1525,8 @@ LABEL_71:
     v78 = off_100127CE8;
     if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
     {
-      v79 = v94->_identifier;
-      v80 = v94->_db;
+      v79 = selfCopy->_identifier;
+      v80 = selfCopy->_db;
       v71 = v78;
       v81 = sqlite3_errmsg(v80);
       *buf = 138413058;
@@ -1555,22 +1555,22 @@ LABEL_73:
   return v12;
 }
 
-- (int)buildStatementWithKeyValues:(id)a3 nonNullKeys:(id)a4 openingStatement:(id)a5 placeHolderOffset:(int)a6 preparedStatement:(sqlite3_stmt *)a7 error:(id *)a8
+- (int)buildStatementWithKeyValues:(id)values nonNullKeys:(id)keys openingStatement:(id)statement placeHolderOffset:(int)offset preparedStatement:(sqlite3_stmt *)preparedStatement error:(id *)error
 {
-  v11 = a3;
-  v55 = a4;
-  v12 = a5;
-  if ([v11 count] || objc_msgSend(v55, "count"))
+  valuesCopy = values;
+  keysCopy = keys;
+  statementCopy = statement;
+  if ([valuesCopy count] || objc_msgSend(keysCopy, "count"))
   {
-    v52 = self;
-    v56 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
-    [v12 appendString:@" WHERE "];
+    selfCopy = self;
+    v56 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [valuesCopy count]);
+    [statementCopy appendString:@" WHERE "];
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v53 = v11;
-    v13 = v11;
+    v53 = valuesCopy;
+    v13 = valuesCopy;
     v14 = [v13 countByEnumeratingWithState:&v62 objects:v75 count:16];
     v15 = v14 != 0;
     if (v14)
@@ -1590,7 +1590,7 @@ LABEL_73:
           v20 = *(*(&v62 + 1) + 8 * i);
           if (v17)
           {
-            [v12 appendString:@" AND "];
+            [statementCopy appendString:@" AND "];
           }
 
           v21 = [v13 objectForKeyedSubscript:v20];
@@ -1607,7 +1607,7 @@ LABEL_73:
             v23 = @"%@ = ?";
           }
 
-          [v12 appendFormat:v23, v20];
+          [statementCopy appendFormat:v23, v20];
           v24 = [v13 objectForKeyedSubscript:v20];
           [v56 addObject:v24];
 
@@ -1624,7 +1624,7 @@ LABEL_73:
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v25 = v55;
+    v25 = keysCopy;
     v26 = [v25 countByEnumeratingWithState:&v58 objects:v74 count:16];
     if (v26)
     {
@@ -1642,10 +1642,10 @@ LABEL_73:
           v30 = *(*(&v58 + 1) + 8 * j);
           if (v15)
           {
-            [v12 appendString:@" AND "];
+            [statementCopy appendString:@" AND "];
           }
 
-          [v12 appendFormat:@"%@ IS NOT NULL", v30];
+          [statementCopy appendFormat:@"%@ IS NOT NULL", v30];
           v15 = 1;
         }
 
@@ -1655,8 +1655,8 @@ LABEL_73:
       while (v27);
     }
 
-    self = v52;
-    v11 = v53;
+    self = selfCopy;
+    valuesCopy = v53;
   }
 
   else
@@ -1664,26 +1664,26 @@ LABEL_73:
     v56 = 0;
   }
 
-  [v12 appendString:@";"];
+  [statementCopy appendString:@";"];
   v31 = off_100127CE8;
   if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_INFO))
   {
     identifier = self->_identifier;
     v33 = v31;
-    v34 = [v12 length];
+    v34 = [statementCopy length];
     *buf = 138413058;
     v69 = identifier;
     v70 = 2048;
     v71 = v34;
     v72 = 2112;
-    *v73 = v12;
+    *v73 = statementCopy;
     *&v73[8] = 2112;
-    *&v73[10] = v11;
+    *&v73[10] = valuesCopy;
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "db: %@ generated stmt-size:%lu stmt:%@ keys:%@", buf, 0x2Au);
   }
 
   ppStmt = 0;
-  v35 = sqlite3_prepare_v2(self->_db, [v12 UTF8String], objc_msgSend(v12, "length"), &ppStmt, 0);
+  v35 = sqlite3_prepare_v2(self->_db, [statementCopy UTF8String], objc_msgSend(statementCopy, "length"), &ppStmt, 0);
   if (v35)
   {
     v36 = v35;
@@ -1692,20 +1692,20 @@ LABEL_73:
     v67 = v37;
     v38 = [NSDictionary dictionaryWithObjects:&v67 forKeys:&v66 count:1];
     sqlite3_errmsg(self->_db);
-    *a8 = createManagedAssetError();
+    *error = createManagedAssetError();
 
-    v39 = self;
+    selfCopy2 = self;
     v40 = off_100127CE8;
     if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
     {
-      v46 = v39->_identifier;
-      db = v39->_db;
+      v46 = selfCopy2->_identifier;
+      db = selfCopy2->_db;
       v48 = v40;
       v49 = sqlite3_errmsg(db);
       *buf = 138413058;
       v69 = v46;
       v70 = 2112;
-      v71 = v12;
+      v71 = statementCopy;
       v72 = 1024;
       *v73 = v36;
       *&v73[4] = 2080;
@@ -1726,7 +1726,7 @@ LABEL_73:
       {
         v43 = ppStmt;
         v44 = [v56 objectAtIndexedSubscript:v42];
-        v36 = sub_1000205FC(v43, a6 + 1 + v42, v44, a8);
+        v36 = sub_1000205FC(v43, offset + 1 + v42, v44, error);
 
         ++v42;
         if (v36)
@@ -1738,7 +1738,7 @@ LABEL_73:
     }
 
     v36 = 0;
-    *a7 = ppStmt;
+    *preparedStatement = ppStmt;
   }
 
 LABEL_37:
@@ -1746,9 +1746,9 @@ LABEL_37:
   return v36;
 }
 
-- (BOOL)executePreparedStatement:(sqlite3_stmt *)a3 error:(id *)a4
+- (BOOL)executePreparedStatement:(sqlite3_stmt *)statement error:(id *)error
 {
-  v7 = sqlite3_step(a3);
+  v7 = sqlite3_step(statement);
   if ((v7 - 102) <= 0xFFFFFFFD)
   {
     v8 = v7;
@@ -1758,7 +1758,7 @@ LABEL_37:
     v10 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v20 = v8;
     v21 = sqlite3_errmsg(self->_db);
-    *a4 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     v11 = off_100127CE8;
     if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
@@ -1776,16 +1776,16 @@ LABEL_37:
     }
   }
 
-  v12 = sqlite3_finalize(a3);
+  v12 = sqlite3_finalize(statement);
   if (v12)
   {
-    if (!*a4)
+    if (!*error)
     {
-      v13 = [NSNumber numberWithInt:v12, v20, v21, ManagedAssetsSqliteErrorKey];
-      v23 = v13;
+      managedAssetsSqliteErrorKey = [NSNumber numberWithInt:v12, v20, v21, ManagedAssetsSqliteErrorKey];
+      v23 = managedAssetsSqliteErrorKey;
       v14 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       sqlite3_errmsg(self->_db);
-      *a4 = createManagedAssetError();
+      *error = createManagedAssetError();
     }
 
     v15 = off_100127CE8;
@@ -1795,18 +1795,18 @@ LABEL_37:
     }
   }
 
-  return *a4 == 0;
+  return *error == 0;
 }
 
-- (BOOL)fetchQueryResultFor:(sqlite3_stmt *)a3 prependColumnName:(BOOL)a4 results:(id)a5 numCol:(int *)a6 seenSet:(id)a7 error:(id *)a8
+- (BOOL)fetchQueryResultFor:(sqlite3_stmt *)for prependColumnName:(BOOL)name results:(id)results numCol:(int *)col seenSet:(id)set error:(id *)error
 {
-  v12 = a5;
-  v13 = a7;
-  v14 = v13;
-  v32 = self;
-  if (a6)
+  resultsCopy = results;
+  setCopy = set;
+  v14 = setCopy;
+  selfCopy = self;
+  if (col)
   {
-    v15 = *a6;
+    v15 = *col;
   }
 
   else
@@ -1814,24 +1814,24 @@ LABEL_37:
     v15 = 0;
   }
 
-  v16 = v13 != 0;
-  if (sqlite3_step(a3) == 100)
+  v16 = setCopy != 0;
+  if (sqlite3_step(for) == 100)
   {
     *&v17 = 138412290;
     v31 = v17;
-    v18 = a4;
+    nameCopy = name;
     while (1)
     {
-      if (v18)
+      if (nameCopy)
       {
-        v15 = sqlite3_column_count(a3);
+        v15 = sqlite3_column_count(for);
         v19 = [NSMutableArray arrayWithCapacity:v15];
         v20 = v14 != 0;
         if (v15 > v16)
         {
           do
           {
-            v21 = [NSString stringWithUTF8String:sqlite3_column_name(a3, v20)];
+            v21 = [NSString stringWithUTF8String:sqlite3_column_name(for, v20)];
             [v19 addObject:v21];
 
             ++v20;
@@ -1840,10 +1840,10 @@ LABEL_37:
           while (v15 != v20);
         }
 
-        [v12 addObject:{v19, v31}];
-        if (a6)
+        [resultsCopy addObject:{v19, v31}];
+        if (col)
         {
-          *a6 = v15;
+          *col = v15;
         }
       }
 
@@ -1852,15 +1852,15 @@ LABEL_37:
         goto LABEL_19;
       }
 
-      v22 = sub_1000214A4(a3, 0);
+      v22 = sub_1000214A4(for, 0);
       v23 = v22;
-      if (*a8)
+      if (*error)
       {
 
         goto LABEL_28;
       }
 
-      if (a4 || ![v14 containsObject:v22])
+      if (name || ![v14 containsObject:v22])
       {
         break;
       }
@@ -1875,8 +1875,8 @@ LABEL_37:
 
 LABEL_22:
 
-      v27 = sqlite3_step(a3);
-      v18 = 0;
+      v27 = sqlite3_step(for);
+      nameCopy = 0;
       if (v27 != 100)
       {
         goto LABEL_23;
@@ -1892,7 +1892,7 @@ LABEL_19:
     {
       do
       {
-        v26 = sub_1000214A4(a3, v25);
+        v26 = sub_1000214A4(for, v25);
         [v23 addObject:v26];
 
         ++v25;
@@ -1901,17 +1901,17 @@ LABEL_19:
       while (v15 != v25);
     }
 
-    [v12 addObject:v23];
+    [resultsCopy addObject:v23];
     goto LABEL_22;
   }
 
 LABEL_23:
-  if (sqlite3_finalize(a3))
+  if (sqlite3_finalize(for))
   {
     v28 = off_100127CE8;
     if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_ERROR))
     {
-      sub_100025EFC(v32, v28);
+      sub_100025EFC(selfCopy, v28);
     }
 
 LABEL_28:
@@ -1926,19 +1926,19 @@ LABEL_28:
   return v29;
 }
 
-- (BOOL)query:(id)a3 keys:(id)a4 desiredKeys:(id)a5 nonNullKeys:(id)a6 records:(id *)a7 error:(id *)a8
+- (BOOL)query:(id)query keys:(id)keys desiredKeys:(id)desiredKeys nonNullKeys:(id)nullKeys records:(id *)records error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queryCopy = query;
+  keysCopy = keys;
+  desiredKeysCopy = desiredKeys;
+  nullKeysCopy = nullKeys;
   if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_DEBUG))
   {
     sub_100025F90();
   }
 
-  v31 = v12;
-  v15 = v11;
+  v31 = keysCopy;
+  v15 = queryCopy;
   v36 = 0;
   v16 = +[NSMutableArray array];
   v17 = +[NSMutableString string];
@@ -1946,7 +1946,7 @@ LABEL_28:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v18 = v13;
+  v18 = desiredKeysCopy;
   v19 = [v18 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v19)
   {
@@ -1984,51 +1984,51 @@ LABEL_28:
   v24 = +[NSMutableString string];
   [v24 appendFormat:@"SELECT %@ FROM %@", v17, v15];
   v25 = 0;
-  if (![(MAKVGroupDB *)self buildStatementWithKeyValues:v31 nonNullKeys:v14 openingStatement:v24 placeHolderOffset:0 preparedStatement:&v36 error:a8])
+  if (![(MAKVGroupDB *)self buildStatementWithKeyValues:v31 nonNullKeys:nullKeysCopy openingStatement:v24 placeHolderOffset:0 preparedStatement:&v36 error:error])
   {
-    v25 = [(MAKVGroupDB *)self fetchQueryResultFor:v36 prependColumnName:1 results:v16 numCol:0 seenSet:0 error:a8];
+    v25 = [(MAKVGroupDB *)self fetchQueryResultFor:v36 prependColumnName:1 results:v16 numCol:0 seenSet:0 error:error];
     v26 = v16;
-    *a7 = v16;
+    *records = v16;
   }
 
   return v25;
 }
 
-- (BOOL)batchQuery:(id)a3 batchKeys:(id)a4 attributes:(id)a5 records:(id *)a6 error:(id *)a7
+- (BOOL)batchQuery:(id)query batchKeys:(id)keys attributes:(id)attributes records:(id *)records error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
+  queryCopy = query;
+  keysCopy = keys;
   v13 = +[NSMutableArray array];
-  if (![v12 count])
+  if (![keysCopy count])
   {
-    v14 = [NSString stringWithFormat:@"SELECT * FROM %@", v11];;
+    queryCopy = [NSString stringWithFormat:@"SELECT * FROM %@", queryCopy];;
     ppStmt = 0;
-    if (sqlite3_prepare_v2(self->_db, [v14 UTF8String], objc_msgSend(v14, "length"), &ppStmt, 0))
+    if (sqlite3_prepare_v2(self->_db, [queryCopy UTF8String], objc_msgSend(queryCopy, "length"), &ppStmt, 0))
     {
       goto LABEL_5;
     }
 
-    [(MAKVGroupDB *)self fetchQueryResultFor:ppStmt prependColumnName:1 results:v13 numCol:0 seenSet:0 error:a7];
+    [(MAKVGroupDB *)self fetchQueryResultFor:ppStmt prependColumnName:1 results:v13 numCol:0 seenSet:0 error:error];
 
 LABEL_17:
     v24 = v13;
-    *a6 = v13;
+    *records = v13;
     v15 = 1;
     goto LABEL_18;
   }
 
-  if ([v12 count] != 1)
+  if ([keysCopy count] != 1)
   {
-    v26 = a6;
-    v16 = v11;
+    recordsCopy = records;
+    v16 = queryCopy;
     v33 = 0;
     v17 = +[NSMutableSet set];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v27 = v12;
-    obj = v12;
+    v27 = keysCopy;
+    obj = keysCopy;
     v18 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v18)
     {
@@ -2047,16 +2047,16 @@ LABEL_17:
           v23 = +[NSMutableString string];
           [v23 appendFormat:@"SELECT rowid, * FROM %@", v16];
           ppStmt = 0;
-          if ([(MAKVGroupDB *)self buildStatementWithKeyValues:v22 nonNullKeys:0 openingStatement:v23 placeHolderOffset:0 preparedStatement:&ppStmt error:a7])
+          if ([(MAKVGroupDB *)self buildStatementWithKeyValues:v22 nonNullKeys:0 openingStatement:v23 placeHolderOffset:0 preparedStatement:&ppStmt error:error])
           {
 
             v15 = 0;
-            v11 = v16;
-            v12 = v27;
+            queryCopy = v16;
+            keysCopy = v27;
             goto LABEL_18;
           }
 
-          -[MAKVGroupDB fetchQueryResultFor:prependColumnName:results:numCol:seenSet:error:](self, "fetchQueryResultFor:prependColumnName:results:numCol:seenSet:error:", ppStmt, [v13 count] == 0, v13, &v33, v17, a7);
+          -[MAKVGroupDB fetchQueryResultFor:prependColumnName:results:numCol:seenSet:error:](self, "fetchQueryResultFor:prependColumnName:results:numCol:seenSet:error:", ppStmt, [v13 count] == 0, v13, &v33, v17, error);
         }
 
         v19 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
@@ -2069,14 +2069,14 @@ LABEL_17:
       }
     }
 
-    v11 = v16;
-    a6 = v26;
-    v12 = v27;
+    queryCopy = v16;
+    records = recordsCopy;
+    keysCopy = v27;
     goto LABEL_17;
   }
 
-  v14 = [v12 objectAtIndexedSubscript:0];
-  [(MAKVGroupDB *)self query:v11 keys:v14 desiredKeys:0 nonNullKeys:0 records:a6 error:a7];
+  queryCopy = [keysCopy objectAtIndexedSubscript:0];
+  [(MAKVGroupDB *)self query:queryCopy keys:queryCopy desiredKeys:0 nonNullKeys:0 records:records error:error];
 LABEL_5:
 
   v15 = 0;
@@ -2085,11 +2085,11 @@ LABEL_18:
   return v15;
 }
 
-- (BOOL)updateData:(id)a3 key:(id)a4 value:(id)a5 tsOptions:(unint64_t)a6 error:(id *)a7
+- (BOOL)updateData:(id)data key:(id)key value:(id)value tsOptions:(unint64_t)options error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dataCopy = data;
+  keyCopy = key;
+  valueCopy = value;
   v14 = off_100127CE8;
   if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_DEBUG))
   {
@@ -2099,20 +2099,20 @@ LABEL_18:
     v51 = 2112;
     v52 = identifier;
     v53 = 2112;
-    v54 = v11;
+    v54 = dataCopy;
     v55 = 2112;
-    v56 = v12;
+    v56 = keyCopy;
     v57 = 2112;
-    v58 = v13;
+    v58 = valueCopy;
     v59 = 2048;
-    v60 = a6;
+    optionsCopy = options;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%s db: %@ name:%@ key:%@ value:%@ tsOptions:%lu", buf, 0x3Eu);
   }
 
-  v42 = self;
+  selfCopy = self;
   v15 = +[NSMutableString string];
-  v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v13 count] + 1);
-  if ((a6 & 6) != 0)
+  v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [valueCopy count] + 1);
+  if ((options & 6) != 0)
   {
     v17 = +[NSDate date];
     [v17 timeIntervalSinceReferenceDate];
@@ -2124,18 +2124,18 @@ LABEL_18:
     v18 = 0;
   }
 
-  v40 = v12;
-  v41 = v11;
+  v40 = keyCopy;
+  v41 = dataCopy;
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v19 = v13;
+  v19 = valueCopy;
   v20 = [v19 countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v20)
   {
     v21 = v20;
-    v44 = a6;
+    optionsCopy2 = options;
     v22 = *v46;
     v23 = kMAKVCol_updatedDate;
     do
@@ -2156,7 +2156,7 @@ LABEL_18:
         [v15 appendFormat:@"%@ = ?", v25];
         if (v18 && [v23 isEqual:v25])
         {
-          if ((v44 & 4) != 0)
+          if ((optionsCopy2 & 4) != 0)
           {
             [v16 addObject:v18];
           }
@@ -2196,13 +2196,13 @@ LABEL_18:
     v28 = off_100127CE8;
     if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_INFO))
     {
-      v29 = v42->_identifier;
+      v29 = selfCopy->_identifier;
       *buf = 136315906;
       *&buf[4] = "[MAKVGroupDB updateData:key:value:tsOptions:error:]";
       v51 = 2112;
       v52 = v29;
       v53 = 2112;
-      v54 = v11;
+      v54 = dataCopy;
       v55 = 2112;
       v56 = v18;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "%s db: %@ name:%@ auto append updatedDate: %@", buf, 0x2Au);
@@ -2210,9 +2210,9 @@ LABEL_18:
   }
 
   v30 = +[NSMutableString string];
-  [v30 appendFormat:@"UPDATE %@ SET %@", v11, v15];
+  [v30 appendFormat:@"UPDATE %@ SET %@", dataCopy, v15];
   *buf = 0;
-  if (-[MAKVGroupDB buildStatementWithKeyValues:nonNullKeys:openingStatement:placeHolderOffset:preparedStatement:error:](v42, "buildStatementWithKeyValues:nonNullKeys:openingStatement:placeHolderOffset:preparedStatement:error:", v40, 0, v30, [v16 count], buf, a7))
+  if (-[MAKVGroupDB buildStatementWithKeyValues:nonNullKeys:openingStatement:placeHolderOffset:preparedStatement:error:](selfCopy, "buildStatementWithKeyValues:nonNullKeys:openingStatement:placeHolderOffset:preparedStatement:error:", v40, 0, v30, [v16 count], buf, error))
   {
 LABEL_32:
     v37 = 0;
@@ -2232,7 +2232,7 @@ LABEL_32:
 
       v34 = v31 + 1;
       v35 = [v16 objectAtIndexedSubscript:v31];
-      v36 = sub_1000205FC(v33, v34, v35, a7);
+      v36 = sub_1000205FC(v33, v34, v35, error);
 
       v31 = v34;
       if (v36)
@@ -2242,46 +2242,46 @@ LABEL_32:
       }
     }
 
-    v37 = [(MAKVGroupDB *)v42 executePreparedStatement:*buf error:a7];
+    v37 = [(MAKVGroupDB *)selfCopy executePreparedStatement:*buf error:error];
   }
 
   return v37;
 }
 
-- (BOOL)deleteData:(id)a3 keys:(id)a4 error:(id *)a5
+- (BOOL)deleteData:(id)data keys:(id)keys error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  keysCopy = keys;
+  dataCopy = data;
   v10 = +[NSMutableString string];
-  [v10 appendFormat:@"DELETE FROM %@", v9];
+  [v10 appendFormat:@"DELETE FROM %@", dataCopy];
 
   v13 = 0;
-  LODWORD(v9) = [(MAKVGroupDB *)self buildStatementWithKeyValues:v8 nonNullKeys:0 openingStatement:v10 placeHolderOffset:0 preparedStatement:&v13 error:a5];
+  LODWORD(dataCopy) = [(MAKVGroupDB *)self buildStatementWithKeyValues:keysCopy nonNullKeys:0 openingStatement:v10 placeHolderOffset:0 preparedStatement:&v13 error:error];
 
   v11 = 0;
-  if (!v9)
+  if (!dataCopy)
   {
-    v11 = [(MAKVGroupDB *)self executePreparedStatement:v13 error:a5];
+    v11 = [(MAKVGroupDB *)self executePreparedStatement:v13 error:error];
   }
 
   return v11;
 }
 
-- (BOOL)batchDeleteData:(id)a3 batchKeys:(id)a4 error:(id *)a5
+- (BOOL)batchDeleteData:(id)data batchKeys:(id)keys error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v9 count])
+  dataCopy = data;
+  keysCopy = keys;
+  if (![keysCopy count])
   {
-    v10 = [NSString stringWithFormat:@"DELETE FROM %@", v8];;
+    dataCopy = [NSString stringWithFormat:@"DELETE FROM %@", dataCopy];;
     ppStmt = 0;
-    if (sqlite3_prepare_v2(self->_db, [v10 UTF8String], objc_msgSend(v10, "length"), &ppStmt, 0))
+    if (sqlite3_prepare_v2(self->_db, [dataCopy UTF8String], objc_msgSend(dataCopy, "length"), &ppStmt, 0))
     {
       v18 = 0;
       goto LABEL_19;
     }
 
-    [(MAKVGroupDB *)self executePreparedStatement:ppStmt error:a5];
+    [(MAKVGroupDB *)self executePreparedStatement:ppStmt error:error];
 LABEL_18:
     v18 = 1;
     goto LABEL_19;
@@ -2291,15 +2291,15 @@ LABEL_18:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v9;
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  dataCopy = keysCopy;
+  v11 = [dataCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (!v11)
   {
     goto LABEL_18;
   }
 
   v12 = v11;
-  v20 = v9;
+  v20 = keysCopy;
   v13 = *v22;
   while (2)
   {
@@ -2307,14 +2307,14 @@ LABEL_18:
     {
       if (*v22 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(dataCopy);
       }
 
       v15 = *(*(&v21 + 1) + 8 * i);
       v16 = +[NSMutableString string];
-      [v16 appendFormat:@"DELETE FROM %@", v8];
+      [v16 appendFormat:@"DELETE FROM %@", dataCopy];
       ppStmt = 0;
-      if ([(MAKVGroupDB *)self buildStatementWithKeyValues:v15 nonNullKeys:0 openingStatement:v16 placeHolderOffset:0 preparedStatement:&ppStmt error:a5])
+      if ([(MAKVGroupDB *)self buildStatementWithKeyValues:v15 nonNullKeys:0 openingStatement:v16 placeHolderOffset:0 preparedStatement:&ppStmt error:error])
       {
 
 LABEL_15:
@@ -2322,8 +2322,8 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      [(MAKVGroupDB *)self executePreparedStatement:ppStmt error:a5];
-      v17 = *a5;
+      [(MAKVGroupDB *)self executePreparedStatement:ppStmt error:error];
+      v17 = *error;
 
       if (v17)
       {
@@ -2331,7 +2331,7 @@ LABEL_15:
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    v12 = [dataCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
     v18 = 1;
     if (v12)
     {
@@ -2342,17 +2342,17 @@ LABEL_15:
   }
 
 LABEL_16:
-  v9 = v20;
+  keysCopy = v20;
 LABEL_19:
 
   return v18;
 }
 
-- (BOOL)deleteTable:(id)a3 error:(id *)a4
+- (BOOL)deleteTable:(id)table error:(id *)error
 {
-  v6 = a3;
-  v7 = [NSString stringWithFormat:@"DROP TABLE %@", v6];;
-  if ([(MAKVGroupDB *)self execSqlStatement:v7 error:a4 rowReader:&stru_100116228])
+  tableCopy = table;
+  tableCopy = [NSString stringWithFormat:@"DROP TABLE %@", tableCopy];;
+  if ([(MAKVGroupDB *)self execSqlStatement:tableCopy error:error rowReader:&stru_100116228])
   {
     v8 = 0;
   }
@@ -2364,36 +2364,36 @@ LABEL_19:
       sub_100026020(self);
     }
 
-    v8 = *a4 == 0;
+    v8 = *error == 0;
   }
 
   return v8;
 }
 
-- (BOOL)verifyTableName:(id)a3 error:(id *)a4
+- (BOOL)verifyTableName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MAKVGroupDB *)self queryTablesWithError:a4];
-  v8 = [v6 lowercaseString];
-  v9 = [v7 containsObject:v8];
+  nameCopy = name;
+  v7 = [(MAKVGroupDB *)self queryTablesWithError:error];
+  lowercaseString = [nameCopy lowercaseString];
+  v9 = [v7 containsObject:lowercaseString];
 
-  if ((v9 & 1) == 0 && !*a4)
+  if ((v9 & 1) == 0 && !*error)
   {
-    *a4 = createManagedAssetError();
+    *error = createManagedAssetError();
   }
 
   return v9;
 }
 
-- (BOOL)tableExists:(id)a3 error:(id *)a4
+- (BOOL)tableExists:(id)exists error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MAKVGroupDB *)self queryTablesWithError:a4];
+  existsCopy = exists;
+  v7 = [(MAKVGroupDB *)self queryTablesWithError:error];
   v8 = off_100127CE8;
   if (os_log_type_enabled(off_100127CE8, OS_LOG_TYPE_DEBUG))
   {
     identifier = self->_identifier;
-    v13 = *a4;
+    v13 = *error;
     v14 = 138412802;
     v15 = identifier;
     v16 = 2112;
@@ -2403,9 +2403,9 @@ LABEL_19:
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "db: %@ tables:%@ error:%@", &v14, 0x20u);
   }
 
-  v9 = [v6 lowercaseString];
+  lowercaseString = [existsCopy lowercaseString];
 
-  v10 = [v7 containsObject:v9];
+  v10 = [v7 containsObject:lowercaseString];
   return v10;
 }
 

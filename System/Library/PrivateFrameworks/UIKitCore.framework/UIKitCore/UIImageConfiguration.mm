@@ -1,27 +1,27 @@
 @interface UIImageConfiguration
 + (UIImageConfiguration)configurationWithLocale:(NSLocale *)locale;
 + (UIImageConfiguration)configurationWithTraitCollection:(UITraitCollection *)traitCollection;
-+ (id)_completeConfiguration:(void *)a3 fromConfiguration:;
++ (id)_completeConfiguration:(void *)configuration fromConfiguration:;
 + (id)_unspecifiedConfiguration;
-- (BOOL)_isEquivalentToConfiguration:(id)a3;
-- (BOOL)_shouldApplyConfiguration:(id)a3;
-- (BOOL)isEqualToConfiguration:(id)a3;
+- (BOOL)_isEquivalentToConfiguration:(id)configuration;
+- (BOOL)_shouldApplyConfiguration:(id)configuration;
+- (BOOL)isEqualToConfiguration:(id)configuration;
 - (NSString)debugDescription;
 - (NSString)description;
 - (UIImageConfiguration)configurationByApplyingConfiguration:(UIImageConfiguration *)otherConfiguration;
 - (UIImageConfiguration)configurationWithLocale:(NSLocale *)locale;
 - (UIImageConfiguration)configurationWithTraitCollection:(UITraitCollection *)traitCollection;
-- (UIImageConfiguration)initWithCoder:(id)a3;
+- (UIImageConfiguration)initWithCoder:(id)coder;
 - (UITraitCollection)_effectiveTraitCollectionForImageLookup;
 - (_UISystemIconAppearance)_systemIconAppearance;
 - (id)_configurationIgnoringDynamicType;
-- (id)_configurationWithSystemIconAppearance:(id)a3;
-- (id)_initWithTraitCollection:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (uint64_t)_initWithConfiguration:(void *)a1;
-- (void)_applyConfigurationValuesTo:(id)a3;
-- (void)_setSystemIconAppearance:(_BYTE *)a1;
-- (void)encodeWithCoder:(id)a3;
+- (id)_configurationWithSystemIconAppearance:(id)appearance;
+- (id)_initWithTraitCollection:(id)collection;
+- (id)copyWithZone:(_NSZone *)zone;
+- (uint64_t)_initWithConfiguration:(void *)configuration;
+- (void)_applyConfigurationValuesTo:(id)to;
+- (void)_setSystemIconAppearance:(_BYTE *)appearance;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIImageConfiguration
@@ -56,29 +56,29 @@
   return v5;
 }
 
-- (id)_initWithTraitCollection:(id)a3
+- (id)_initWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = UIImageConfiguration;
   v5 = [(UIImageConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [(UITraitCollection *)v4 _traitCollectionRelevantForImageConfiguration];
+    _traitCollectionRelevantForImageConfiguration = [(UITraitCollection *)collectionCopy _traitCollectionRelevantForImageConfiguration];
     traitCollection = v5->_traitCollection;
-    v5->_traitCollection = v6;
+    v5->_traitCollection = _traitCollectionRelevantForImageConfiguration;
   }
 
   return v5;
 }
 
-- (uint64_t)_initWithConfiguration:(void *)a1
+- (uint64_t)_initWithConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
     v3 = a2;
-    v4 = [objc_opt_class() _unspecifiedConfiguration];
-    v5 = [v4 configurationByApplyingConfiguration:v3];
+    _unspecifiedConfiguration = [objc_opt_class() _unspecifiedConfiguration];
+    v5 = [_unspecifiedConfiguration configurationByApplyingConfiguration:v3];
   }
 
   else
@@ -110,9 +110,9 @@ void __49__UIImageConfiguration__unspecifiedConfiguration__block_invoke()
 
 - (UIImageConfiguration)configurationWithTraitCollection:(UITraitCollection *)traitCollection
 {
-  v4 = [(UITraitCollection *)traitCollection _traitCollectionRelevantForImageConfiguration];
+  _traitCollectionRelevantForImageConfiguration = [(UITraitCollection *)traitCollection _traitCollectionRelevantForImageConfiguration];
   v5 = self->_traitCollection;
-  v6 = v4;
+  v6 = _traitCollectionRelevantForImageConfiguration;
   v7 = v5;
   v8 = v7;
   if (v6 == v7)
@@ -131,22 +131,22 @@ void __49__UIImageConfiguration__unspecifiedConfiguration__block_invoke()
     }
 
 LABEL_7:
-    v10 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
 LABEL_9:
-  v10 = [(UIImageConfiguration *)self copy];
-  objc_storeStrong(&v10->_traitCollection, v4);
+  selfCopy = [(UIImageConfiguration *)self copy];
+  objc_storeStrong(&selfCopy->_traitCollection, _traitCollectionRelevantForImageConfiguration);
 LABEL_10:
 
-  return v10;
+  return selfCopy;
 }
 
 + (UIImageConfiguration)configurationWithTraitCollection:(UITraitCollection *)traitCollection
 {
   v4 = traitCollection;
-  v5 = [[a1 alloc] _initWithTraitCollection:v4];
+  v5 = [[self alloc] _initWithTraitCollection:v4];
 
   return v5;
 }
@@ -174,59 +174,59 @@ LABEL_10:
     }
 
 LABEL_7:
-    v11 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
 LABEL_9:
-  v11 = [(UIImageConfiguration *)self copy];
-  objc_storeStrong(&v11->_locale, locale);
+  selfCopy = [(UIImageConfiguration *)self copy];
+  objc_storeStrong(&selfCopy->_locale, locale);
 LABEL_10:
 
-  return v11;
+  return selfCopy;
 }
 
 + (UIImageConfiguration)configurationWithLocale:(NSLocale *)locale
 {
   v4 = locale;
-  v5 = [[a1 alloc] _init];
-  v6 = v5[3];
-  v5[3] = v4;
+  _init = [[self alloc] _init];
+  v6 = _init[3];
+  _init[3] = v4;
 
-  return v5;
+  return _init;
 }
 
 - (id)_configurationIgnoringDynamicType
 {
   if (self->_ignoresDynamicType)
   {
-    v2 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [(UIImageConfiguration *)self copy];
-    v2->_ignoresDynamicType = 1;
+    selfCopy = [(UIImageConfiguration *)self copy];
+    selfCopy->_ignoresDynamicType = 1;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)_configurationWithSystemIconAppearance:(id)a3
+- (id)_configurationWithSystemIconAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = [(UIImageConfiguration *)self _systemIconAppearance];
-  v6 = v4;
+  appearanceCopy = appearance;
+  _systemIconAppearance = [(UIImageConfiguration *)self _systemIconAppearance];
+  v6 = appearanceCopy;
   v7 = v6;
-  if (v5 == v6)
+  if (_systemIconAppearance == v6)
   {
 
     goto LABEL_7;
   }
 
-  if (v6 && v5)
+  if (v6 && _systemIconAppearance)
   {
-    v8 = [v5 isEqual:v6];
+    v8 = [_systemIconAppearance isEqual:v6];
 
     if (!v8)
     {
@@ -234,34 +234,34 @@ LABEL_10:
     }
 
 LABEL_7:
-    v9 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
 LABEL_9:
-  v9 = [(UIImageConfiguration *)self copy];
-  [(UIImageConfiguration *)v9 _setSystemIconAppearance:v7];
+  selfCopy = [(UIImageConfiguration *)self copy];
+  [(UIImageConfiguration *)selfCopy _setSystemIconAppearance:v7];
 LABEL_10:
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)_setSystemIconAppearance:(_BYTE *)a1
+- (void)_setSystemIconAppearance:(_BYTE *)appearance
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && (v3 || (a1[8] & 1) != 0))
+  if (appearance && (v3 || (appearance[8] & 1) != 0))
   {
     v6 = v3;
-    objc_setAssociatedObject(a1, &_UIImageConfigurationSystemIconAppearanceKey, v3, 1);
+    objc_setAssociatedObject(appearance, &_UIImageConfigurationSystemIconAppearanceKey, v3, 1);
     v4 = v6;
-    v5 = a1[8] & 0xFE;
+    v5 = appearance[8] & 0xFE;
     if (v6)
     {
       ++v5;
     }
 
-    a1[8] = v5;
+    appearance[8] = v5;
   }
 }
 
@@ -280,31 +280,31 @@ LABEL_10:
   return v3;
 }
 
-- (BOOL)isEqualToConfiguration:(id)a3
+- (BOOL)isEqualToConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (self != v4)
+  configurationCopy = configuration;
+  if (self != configurationCopy)
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && v4->_ignoresDynamicType == self->_ignoresDynamicType)
+    if (v5 == objc_opt_class() && configurationCopy->_ignoresDynamicType == self->_ignoresDynamicType)
     {
-      traitCollection = v4->_traitCollection;
-      v7 = self->_traitCollection;
+      traitCollection = configurationCopy->_traitCollection;
+      _systemIconAppearance = self->_traitCollection;
       v8 = traitCollection;
-      v9 = v8;
-      if (v7 == v8)
+      _systemIconAppearance2 = v8;
+      if (_systemIconAppearance == v8)
       {
       }
 
       else
       {
         LOBYTE(v10) = 0;
-        if (!v7 || !v8)
+        if (!_systemIconAppearance || !v8)
         {
           goto LABEL_19;
         }
 
-        v10 = [(UITraitCollection *)v7 isEqual:v8];
+        v10 = [(UITraitCollection *)_systemIconAppearance isEqual:v8];
 
         if (!v10)
         {
@@ -312,23 +312,23 @@ LABEL_10:
         }
       }
 
-      locale = v4->_locale;
-      v7 = self->_locale;
+      locale = configurationCopy->_locale;
+      _systemIconAppearance = self->_locale;
       v12 = locale;
-      v9 = v12;
-      if (v7 == v12)
+      _systemIconAppearance2 = v12;
+      if (_systemIconAppearance == v12)
       {
       }
 
       else
       {
         LOBYTE(v10) = 0;
-        if (!v7 || !v12)
+        if (!_systemIconAppearance || !v12)
         {
           goto LABEL_19;
         }
 
-        v10 = [(UITraitCollection *)v7 isEqual:v12];
+        v10 = [(UITraitCollection *)_systemIconAppearance isEqual:v12];
 
         if (!v10)
         {
@@ -336,11 +336,11 @@ LABEL_10:
         }
       }
 
-      if (((*&v4->_flags ^ *&self->_flags) & 1) == 0)
+      if (((*&configurationCopy->_flags ^ *&self->_flags) & 1) == 0)
       {
-        v7 = [(UIImageConfiguration *)self _systemIconAppearance];
-        v9 = [(UIImageConfiguration *)v4 _systemIconAppearance];
-        LOBYTE(v10) = _deferringTokenEqualToToken(v7, v9);
+        _systemIconAppearance = [(UIImageConfiguration *)self _systemIconAppearance];
+        _systemIconAppearance2 = [(UIImageConfiguration *)configurationCopy _systemIconAppearance];
+        LOBYTE(v10) = _deferringTokenEqualToToken(_systemIconAppearance, _systemIconAppearance2);
 LABEL_19:
 
         goto LABEL_21;
@@ -357,51 +357,51 @@ LABEL_21:
   return v10;
 }
 
-- (BOOL)_isEquivalentToConfiguration:(id)a3
+- (BOOL)_isEquivalentToConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     goto LABEL_29;
   }
 
-  v5 = [(UIImageConfiguration *)self traitCollection];
-  if (v5)
+  traitCollection = [(UIImageConfiguration *)self traitCollection];
+  if (traitCollection)
   {
-    v6 = [v4 traitCollection];
+    traitCollection2 = [configurationCopy traitCollection];
 
-    if (v6)
+    if (traitCollection2)
     {
-      v7 = [(UIImageConfiguration *)self traitCollection];
-      v8 = [v4 traitCollection];
-      v9 = [(UITraitCollection *)v7 _matchesIntersectionWithTraitCollectionConsideringTraitsThatCanRepresentUnspecifiedOnly:v8];
+      traitCollection3 = [(UIImageConfiguration *)self traitCollection];
+      traitCollection4 = [configurationCopy traitCollection];
+      v9 = [(UITraitCollection *)traitCollection3 _matchesIntersectionWithTraitCollectionConsideringTraitsThatCanRepresentUnspecifiedOnly:traitCollection4];
 
       if (!v9)
       {
         goto LABEL_29;
       }
 
-      LODWORD(v5) = 1;
+      LODWORD(traitCollection) = 1;
     }
 
     else
     {
-      LODWORD(v5) = 0;
+      LODWORD(traitCollection) = 0;
     }
   }
 
-  v10 = [(UIImageConfiguration *)self locale];
-  if (v10)
+  locale = [(UIImageConfiguration *)self locale];
+  if (locale)
   {
-    v11 = v10;
-    v12 = [v4 locale];
+    v11 = locale;
+    locale2 = [configurationCopy locale];
 
-    if (v12)
+    if (locale2)
     {
-      v13 = [(UIImageConfiguration *)self locale];
-      v14 = [v4 locale];
-      v15 = v13;
-      v16 = v14;
+      locale3 = [(UIImageConfiguration *)self locale];
+      locale4 = [configurationCopy locale];
+      v15 = locale3;
+      v16 = locale4;
       v17 = v16;
       if (v15 == v16)
       {
@@ -423,27 +423,27 @@ LABEL_21:
         }
       }
 
-      LODWORD(v5) = 1;
+      LODWORD(traitCollection) = 1;
     }
   }
 
   if ([(UIImageConfiguration *)self _ignoresDynamicType])
   {
-    LODWORD(v5) = v5 | [v4 _ignoresDynamicType];
+    LODWORD(traitCollection) = traitCollection | [configurationCopy _ignoresDynamicType];
   }
 
-  if (*&self->_flags & 1) != 0 && (v4[8])
+  if (*&self->_flags & 1) != 0 && (configurationCopy[8])
   {
-    v19 = [(UIImageConfiguration *)self _systemIconAppearance];
-    v20 = [v4 _systemIconAppearance];
-    v21 = v19;
-    v22 = v20;
+    _systemIconAppearance = [(UIImageConfiguration *)self _systemIconAppearance];
+    _systemIconAppearance2 = [configurationCopy _systemIconAppearance];
+    v21 = _systemIconAppearance;
+    v22 = _systemIconAppearance2;
     v23 = v22;
     if (v21 == v22)
     {
 
 LABEL_27:
-      LOBYTE(v5) = 1;
+      LOBYTE(traitCollection) = 1;
       goto LABEL_30;
     }
 
@@ -460,49 +460,49 @@ LABEL_27:
     }
 
 LABEL_29:
-    LOBYTE(v5) = 0;
+    LOBYTE(traitCollection) = 0;
   }
 
 LABEL_30:
 
-  return v5;
+  return traitCollection;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_alloc(objc_opt_class()) _init];
-  objc_storeStrong((v4 + 16), self->_traitCollection);
-  objc_storeStrong((v4 + 24), self->_locale);
-  *(v4 + 12) = self->_ignoresDynamicType;
-  v5 = [(UIImageConfiguration *)self _systemIconAppearance];
-  [(UIImageConfiguration *)v4 _setSystemIconAppearance:v5];
+  _init = [objc_alloc(objc_opt_class()) _init];
+  objc_storeStrong((_init + 16), self->_traitCollection);
+  objc_storeStrong((_init + 24), self->_locale);
+  *(_init + 12) = self->_ignoresDynamicType;
+  _systemIconAppearance = [(UIImageConfiguration *)self _systemIconAppearance];
+  [(UIImageConfiguration *)_init _setSystemIconAppearance:_systemIconAppearance];
 
-  return v4;
+  return _init;
 }
 
-- (UIImageConfiguration)initWithCoder:(id)a3
+- (UIImageConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"UITraitCollection"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"UITraitCollection"];
 
   v7 = [(UIImageConfiguration *)self _initWithTraitCollection:v6];
   if (v7)
   {
     v8 = objc_opt_self();
-    v9 = [v4 decodeObjectOfClass:v8 forKey:@"NSLocale"];
+    v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"NSLocale"];
     locale = v7->_locale;
     v7->_locale = v9;
 
-    if ([v4 containsValueForKey:@"UIIgnoresDynamicType"])
+    if ([coderCopy containsValueForKey:@"UIIgnoresDynamicType"])
     {
-      v7->_ignoresDynamicType = [v4 decodeBoolForKey:@"UIIgnoresDynamicType"];
+      v7->_ignoresDynamicType = [coderCopy decodeBoolForKey:@"UIIgnoresDynamicType"];
     }
 
-    if ([v4 containsValueForKey:@"_UISystemIconAppearance"])
+    if ([coderCopy containsValueForKey:@"_UISystemIconAppearance"])
     {
       v11 = objc_opt_self();
-      v12 = [v4 decodeObjectOfClass:v11 forKey:@"_UISystemIconAppearance"];
+      v12 = [coderCopy decodeObjectOfClass:v11 forKey:@"_UISystemIconAppearance"];
       [(UIImageConfiguration *)v7 _setSystemIconAppearance:v12];
     }
   }
@@ -510,30 +510,30 @@ LABEL_30:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   traitCollection = self->_traitCollection;
   if (traitCollection)
   {
-    [v7 encodeObject:traitCollection forKey:@"UITraitCollection"];
+    [coderCopy encodeObject:traitCollection forKey:@"UITraitCollection"];
   }
 
   locale = self->_locale;
   if (locale)
   {
-    [v7 encodeObject:locale forKey:@"NSLocale"];
+    [coderCopy encodeObject:locale forKey:@"NSLocale"];
   }
 
   if ([(UIImageConfiguration *)self _ignoresDynamicType])
   {
-    [v7 encodeBool:self->_ignoresDynamicType forKey:@"UIIgnoresDynamicType"];
+    [coderCopy encodeBool:self->_ignoresDynamicType forKey:@"UIIgnoresDynamicType"];
   }
 
   if (*&self->_flags)
   {
-    v6 = [(UIImageConfiguration *)self _systemIconAppearance];
-    [v7 encodeObject:v6 forKey:@"_UISystemIconAppearance"];
+    _systemIconAppearance = [(UIImageConfiguration *)self _systemIconAppearance];
+    [coderCopy encodeObject:_systemIconAppearance forKey:@"_UISystemIconAppearance"];
   }
 }
 
@@ -542,23 +542,23 @@ LABEL_30:
   v4 = otherConfiguration;
   if ([(UIImageConfiguration *)self _shouldApplyConfiguration:v4])
   {
-    v5 = [(UIImageConfiguration *)self copy];
-    [(UIImageConfiguration *)v4 _applyConfigurationValuesTo:v5];
+    selfCopy = [(UIImageConfiguration *)self copy];
+    [(UIImageConfiguration *)v4 _applyConfigurationValuesTo:selfCopy];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (BOOL)_shouldApplyConfiguration:(id)a3
+- (BOOL)_shouldApplyConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
-    return [a3 _isUnspecified] ^ 1;
+    return [configuration _isUnspecified] ^ 1;
   }
 
   else
@@ -567,28 +567,28 @@ LABEL_30:
   }
 }
 
-- (void)_applyConfigurationValuesTo:(id)a3
+- (void)_applyConfigurationValuesTo:(id)to
 {
-  v14 = a3;
-  v4 = [v14 traitCollection];
+  toCopy = to;
+  traitCollection = [toCopy traitCollection];
   v5 = self->_traitCollection;
   v6 = v5;
-  if (v4 && v5)
+  if (traitCollection && v5)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __96__UITraitCollection__traitCollectionByPopulatingUnspecifiedTraitsWithValuesFromTraitCollection___block_invoke;
     v15[3] = &unk_1E710D508;
     v15[4] = v5;
-    v15[5] = v4;
+    v15[5] = traitCollection;
     v7 = [(UITraitCollection *)v5 _traitCollectionByModifyingTraitsCopyOnWrite:v15];
   }
 
   else
   {
-    if (v4)
+    if (traitCollection)
     {
-      v8 = v4;
+      v8 = traitCollection;
     }
 
     else
@@ -599,13 +599,13 @@ LABEL_30:
     v7 = v8;
   }
 
-  v9 = v14[2];
-  v14[2] = v7;
+  v9 = toCopy[2];
+  toCopy[2] = v7;
 
   locale = self->_locale;
   if (locale)
   {
-    objc_storeStrong(v14 + 3, locale);
+    objc_storeStrong(toCopy + 3, locale);
   }
 
   v11 = dyld_program_sdk_at_least();
@@ -620,21 +620,21 @@ LABEL_30:
     ignoresDynamicType = 1;
   }
 
-  *(v14 + 12) = ignoresDynamicType;
+  *(toCopy + 12) = ignoresDynamicType;
 LABEL_14:
   if (*&self->_flags)
   {
-    v13 = [(UIImageConfiguration *)self _systemIconAppearance];
-    [(UIImageConfiguration *)v14 _setSystemIconAppearance:v13];
+    _systemIconAppearance = [(UIImageConfiguration *)self _systemIconAppearance];
+    [(UIImageConfiguration *)toCopy _setSystemIconAppearance:_systemIconAppearance];
   }
 }
 
-+ (id)_completeConfiguration:(void *)a3 fromConfiguration:
++ (id)_completeConfiguration:(void *)configuration fromConfiguration:
 {
   v4 = a2;
-  v5 = a3;
+  configurationCopy = configuration;
   objc_opt_self();
-  if (v5)
+  if (configurationCopy)
   {
     if (v4)
     {
@@ -642,13 +642,13 @@ LABEL_14:
     }
 
 LABEL_10:
-    v13 = v5;
+    v13 = configurationCopy;
     v10 = v13;
     goto LABEL_16;
   }
 
   v12 = _UICurrentImageTraitCollection();
-  v5 = [v12 imageConfiguration];
+  configurationCopy = [v12 imageConfiguration];
 
   if (!v4)
   {
@@ -660,13 +660,13 @@ LABEL_3:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v6 = objc_alloc(objc_opt_class());
-    v7 = [(UIImageConfiguration *)v6 _initWithConfiguration:v5];
+    v7 = [(UIImageConfiguration *)v6 _initWithConfiguration:configurationCopy];
 
-    v5 = v7;
+    configurationCopy = v7;
   }
 
   v8 = v4;
-  v9 = v5;
+  v9 = configurationCopy;
   v10 = v9;
   if (v9 == v8)
   {
@@ -711,41 +711,41 @@ LABEL_16:
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (![(UIImageConfiguration *)self _isUnspecified])
   {
     traitCollection = self->_traitCollection;
     if (traitCollection)
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = [(UITraitCollection *)traitCollection _traitsDescription];
-      v7 = [v5 stringWithFormat:@"traits=(%@)", v6];
-      [v3 addObject:v7];
+      _traitsDescription = [(UITraitCollection *)traitCollection _traitsDescription];
+      v7 = [v5 stringWithFormat:@"traits=(%@)", _traitsDescription];
+      [array addObject:v7];
     }
 
     if (self->_locale)
     {
       v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"locale=(%@)", self->_locale];
-      [v3 addObject:v8];
+      [array addObject:v8];
     }
 
     if (self->_ignoresDynamicType)
     {
-      [v3 addObject:@"ignores dynamic type"];
+      [array addObject:@"ignores dynamic type"];
     }
 
     if (*&self->_flags)
     {
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [(UIImageConfiguration *)self _systemIconAppearance];
-      v11 = [v9 stringWithFormat:@"_systemIconAppearance=(%@)", v10];
-      [v3 addObject:v11];
+      _systemIconAppearance = [(UIImageConfiguration *)self _systemIconAppearance];
+      v11 = [v9 stringWithFormat:@"_systemIconAppearance=(%@)", _systemIconAppearance];
+      [array addObject:v11];
     }
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v12 = [v3 componentsJoinedByString:{@", "}];
+    v12 = [array componentsJoinedByString:{@", "}];
   }
 
   else

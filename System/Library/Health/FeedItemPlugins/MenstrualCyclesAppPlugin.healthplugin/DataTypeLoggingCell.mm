@@ -1,13 +1,13 @@
 @interface DataTypeLoggingCell
-- (_TtC24MenstrualCyclesAppPlugin19DataTypeLoggingCell)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin19DataTypeLoggingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC24MenstrualCyclesAppPlugin19DataTypeLoggingCell)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin19DataTypeLoggingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation DataTypeLoggingCell
 
-- (_TtC24MenstrualCyclesAppPlugin19DataTypeLoggingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin19DataTypeLoggingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   }
@@ -21,7 +21,7 @@
   return sub_29E02E330(v4, v5);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin19DataTypeLoggingCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin19DataTypeLoggingCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin19DataTypeLoggingCell_configuration;
   *v3 = 0u;

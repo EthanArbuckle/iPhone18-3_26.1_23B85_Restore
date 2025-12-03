@@ -7,17 +7,17 @@
 - (id)svx_speakableDurationStringWithLanguageCode:()SVXSpeechSynthesis gender:
 {
   v6 = a3;
-  [a1 duration];
+  [self duration];
   v8 = v7;
   v9 = v7 / 0x3C;
   v10 = (v7 / 60.0) % 0x3C;
   v11 = (v7 / 3600.0);
-  v12 = [a1 _getBundleUtils];
-  v13 = [v12 getSiriVOXFramework];
-  v50 = v13;
+  _getBundleUtils = [self _getBundleUtils];
+  getSiriVOXFramework = [_getBundleUtils getSiriVOXFramework];
+  v50 = getSiriVOXFramework;
   if (v11)
   {
-    v14 = v13;
+    v14 = getSiriVOXFramework;
     v49 = v9;
     v15 = MEMORY[0x277CCACA8];
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
@@ -26,7 +26,7 @@
     v18 = v14;
     v19 = v6;
     v20 = a4;
-    v21 = [v12 getLocalizedStringWithBundle:v18 table:@"Clock" key:v17 languageCode:v6 gender:a4];
+    v21 = [_getBundleUtils getLocalizedStringWithBundle:v18 table:@"Clock" key:v17 languageCode:v6 gender:a4];
     v22 = MEMORY[0x277CCACA8];
     v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
     v11 = [v22 stringWithFormat:v21, v23];
@@ -47,7 +47,7 @@
     v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
     v27 = [v25 stringWithFormat:@"SIRI_VOX_FIRING_TIMER_ANNOUNCEMENT_DURATION_UNIT_MINUTE_%@", v26];
 
-    v28 = [v12 getLocalizedStringWithBundle:v50 table:@"Clock" key:v27 languageCode:v19 gender:v20];
+    v28 = [_getBundleUtils getLocalizedStringWithBundle:v50 table:@"Clock" key:v27 languageCode:v19 gender:v20];
     v29 = MEMORY[0x277CCACA8];
     v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
     v10 = [v29 stringWithFormat:v28, v30];
@@ -59,7 +59,7 @@
     v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
     v37 = [v35 stringWithFormat:@"SIRI_VOX_FIRING_TIMER_ANNOUNCEMENT_DURATION_UNIT_SECOND_%@", v36];
 
-    v38 = [v12 getLocalizedStringWithBundle:v50 table:@"Clock" key:v37 languageCode:v19 gender:v20];
+    v38 = [_getBundleUtils getLocalizedStringWithBundle:v50 table:@"Clock" key:v37 languageCode:v19 gender:v20];
     v39 = MEMORY[0x277CCACA8];
     v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
     v34 = [v39 stringWithFormat:v38, v40];
@@ -74,8 +74,8 @@
     if (v41 && v34)
     {
       v32 = v50;
-      v33 = v12;
-      v42 = [v12 getLocalizedStringWithBundle:v50 table:@"Clock" key:@"SIRI_VOX_FIRING_TIMER_ANNOUNCEMENT_DURATION_HOURS_MINUTES_SECONDS" languageCode:v19 gender:v20];
+      v33 = _getBundleUtils;
+      v42 = [_getBundleUtils getLocalizedStringWithBundle:v50 table:@"Clock" key:@"SIRI_VOX_FIRING_TIMER_ANNOUNCEMENT_DURATION_HOURS_MINUTES_SECONDS" languageCode:v19 gender:v20];
       v43 = MEMORY[0x277CCACA8];
       v48 = v34;
 LABEL_19:
@@ -90,15 +90,15 @@ LABEL_20:
     if (v41)
     {
       v32 = v50;
-      v33 = v12;
+      v33 = _getBundleUtils;
       goto LABEL_18;
     }
 
     v32 = v50;
-    v33 = v12;
+    v33 = _getBundleUtils;
     if (v11 && v34)
     {
-      v42 = [v12 getLocalizedStringWithBundle:v50 table:@"Clock" key:@"SIRI_VOX_FIRING_TIMER_ANNOUNCEMENT_DURATION_HOURS_SECONDS" languageCode:v19 gender:v20];
+      v42 = [_getBundleUtils getLocalizedStringWithBundle:v50 table:@"Clock" key:@"SIRI_VOX_FIRING_TIMER_ANNOUNCEMENT_DURATION_HOURS_SECONDS" languageCode:v19 gender:v20];
       v43 = MEMORY[0x277CCACA8];
       v47 = v34;
       goto LABEL_20;
@@ -106,7 +106,7 @@ LABEL_20:
 
     if (v10 && v34)
     {
-      v42 = [v12 getLocalizedStringWithBundle:v50 table:@"Clock" key:@"SIRI_VOX_FIRING_TIMER_ANNOUNCEMENT_DURATION_MINUTES_SECONDS" languageCode:v19 gender:v20];
+      v42 = [_getBundleUtils getLocalizedStringWithBundle:v50 table:@"Clock" key:@"SIRI_VOX_FIRING_TIMER_ANNOUNCEMENT_DURATION_MINUTES_SECONDS" languageCode:v19 gender:v20];
       [MEMORY[0x277CCACA8] stringWithFormat:v42, v10, v34, v48];
       goto LABEL_21;
     }
@@ -132,7 +132,7 @@ LABEL_34:
   }
 
   v32 = v50;
-  v33 = v12;
+  v33 = _getBundleUtils;
   if (v11 && v10)
   {
     v34 = 0;

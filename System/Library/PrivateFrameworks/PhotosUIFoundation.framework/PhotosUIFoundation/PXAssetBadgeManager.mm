@@ -1,7 +1,7 @@
 @interface PXAssetBadgeManager
 + (PXAssetBadgeManager)defaultManager;
-- (PXAssetBadgeInfo)badgeInfoForAsset:(SEL)a3 inCollection:(id)a4 options:(id)a5;
-- (PXAssetBadgeInfo)badgeInfoForCollection:(SEL)a3 options:(id)a4;
+- (PXAssetBadgeInfo)badgeInfoForAsset:(SEL)asset inCollection:(id)collection options:(id)options;
+- (PXAssetBadgeInfo)badgeInfoForCollection:(SEL)collection options:(id)options;
 @end
 
 @implementation PXAssetBadgeManager
@@ -35,12 +35,12 @@ uint64_t __37__PXAssetBadgeManager_defaultManager__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (PXAssetBadgeInfo)badgeInfoForCollection:(SEL)a3 options:(id)a4
+- (PXAssetBadgeInfo)badgeInfoForCollection:(SEL)collection options:(id)options
 {
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
-  v6 = a4;
-  if ([v6 px_isFavoritesSmartAlbum])
+  optionsCopy = options;
+  if ([optionsCopy px_isFavoritesSmartAlbum])
   {
     retstr->var0 = 1;
     v7 = 3;
@@ -51,9 +51,9 @@ uint64_t __37__PXAssetBadgeManager_defaultManager__block_invoke()
     v7 = 2;
   }
 
-  v8 = [v6 px_isPanoramasSmartAlbum];
+  px_isPanoramasSmartAlbum = [optionsCopy px_isPanoramasSmartAlbum];
 
-  if (v8)
+  if (px_isPanoramasSmartAlbum)
   {
     retstr->var0 = v7;
   }
@@ -61,59 +61,59 @@ uint64_t __37__PXAssetBadgeManager_defaultManager__block_invoke()
   return result;
 }
 
-- (PXAssetBadgeInfo)badgeInfoForAsset:(SEL)a3 inCollection:(id)a4 options:(id)a5
+- (PXAssetBadgeInfo)badgeInfoForAsset:(SEL)asset inCollection:(id)collection options:(id)options
 {
   v6 = a6;
-  v19 = a4;
-  v9 = a5;
+  collectionCopy = collection;
+  optionsCopy = options;
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
-  if (!v19)
+  if (!collectionCopy)
   {
     goto LABEL_31;
   }
 
-  v10 = [v19 mediaSubtypes];
+  mediaSubtypes = [collectionCopy mediaSubtypes];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v19 playbackStyle];
+    playbackStyle = [collectionCopy playbackStyle];
   }
 
   else
   {
-    v11 = 0;
+    playbackStyle = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v19 playbackVariation];
+    playbackVariation = [collectionCopy playbackVariation];
   }
 
   else
   {
-    v12 = 0;
+    playbackVariation = 0;
   }
 
-  v13 = [v19 isFavorite];
-  v14 = v13 & 0xFFFFFFF9 | (2 * (v10 & 3)) | (v10 >> 10) & 0x400 | v10 & 0x10;
-  if ((v13 & 1) != 0 || (v10 & 0x100013) != 0)
+  isFavorite = [collectionCopy isFavorite];
+  v14 = isFavorite & 0xFFFFFFF9 | (2 * (mediaSubtypes & 3)) | (mediaSubtypes >> 10) & 0x400 | mediaSubtypes & 0x10;
+  if ((isFavorite & 1) != 0 || (mediaSubtypes & 0x100013) != 0)
   {
     retstr->var0 = v14;
   }
 
-  if ((v6 & 4) == 0 && v11 == 4)
+  if ((v6 & 4) == 0 && playbackStyle == 4)
   {
-    [v19 duration];
+    [collectionCopy duration];
     retstr->var1 = v15;
   }
 
-  if ((v6 & 8) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v19 isSpatialMedia])
+  if ((v6 & 8) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [collectionCopy isSpatialMedia])
   {
     v14 |= 0x20000000000uLL;
     retstr->var0 = v14;
   }
 
-  if (v12 == 1 && v11 == 5)
+  if (playbackVariation == 1 && playbackStyle == 5)
   {
     v16 = 128;
 LABEL_26:
@@ -122,20 +122,20 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (v12 == 2 && v11 == 5)
+  if (playbackVariation == 2 && playbackStyle == 5)
   {
     v16 = 256;
     goto LABEL_26;
   }
 
-  if (v12 == 3)
+  if (playbackVariation == 3)
   {
     v16 = 512;
     goto LABEL_26;
   }
 
   v16 = 64;
-  if (v11 == 3 || (v10 & 8) != 0)
+  if (playbackStyle == 3 || (mediaSubtypes & 8) != 0)
   {
     goto LABEL_26;
   }
@@ -143,11 +143,11 @@ LABEL_26:
 LABEL_27:
   if (v6 & 2) != 0 && (objc_opt_respondsToSelector())
   {
-    v17 = [v19 originalFileSize];
-    if (v17 >= 1)
+    originalFileSize = [collectionCopy originalFileSize];
+    if (originalFileSize >= 1)
     {
       retstr->var0 = v14 | 0x10000000000;
-      retstr->var3 = v17;
+      retstr->var3 = originalFileSize;
     }
   }
 

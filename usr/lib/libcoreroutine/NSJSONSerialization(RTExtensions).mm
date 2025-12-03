@@ -16,8 +16,8 @@
     if (v7)
     {
       v18[0] = *MEMORY[0x277CCA450];
-      v8 = [MEMORY[0x277CCA8D8] mainBundle];
-      v9 = [v8 localizedStringForKey:@"NSJSONSerialization failed" value:&stru_284528390 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v9 = [mainBundle localizedStringForKey:@"NSJSONSerialization failed" value:&stru_284528390 table:0];
       v18[1] = *MEMORY[0x277CCA7E8];
       v19[0] = v9;
       v19[1] = v7;
@@ -28,24 +28,24 @@
         *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.routined.NSJSONSerializationRTExtensions" code:0 userInfo:v10];
       }
 
-      v11 = [MEMORY[0x277CCACA8] string];
+      string = [MEMORY[0x277CCACA8] string];
     }
 
     else
     {
-      v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
+      string = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
     }
   }
 
   else
   {
     v20[0] = *MEMORY[0x277CCA450];
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = [v12 localizedStringForKey:@"Invalid dictionary for JSON serialization" value:&stru_284528390 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v13 = [mainBundle2 localizedStringForKey:@"Invalid dictionary for JSON serialization" value:&stru_284528390 table:0];
     v21[0] = v13;
     v20[1] = *MEMORY[0x277CCA498];
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"Refer to NSJSONSerialization spec for valid dictionaries" value:&stru_284528390 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle3 localizedStringForKey:@"Refer to NSJSONSerialization spec for valid dictionaries" value:&stru_284528390 table:0];
     v21[1] = v15;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
 
@@ -54,10 +54,10 @@
       *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.routined.NSJSONSerializationRTExtensions" code:0 userInfo:v7];
     }
 
-    v11 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
-  return v11;
+  return string;
 }
 
 @end

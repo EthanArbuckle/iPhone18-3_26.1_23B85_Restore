@@ -1,25 +1,25 @@
 @interface SLDCloudKitSyncPersistence
-- (SLDCloudKitSyncPersistence)initWithName:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
+- (SLDCloudKitSyncPersistence)initWithName:(id)name;
+- (id)objectForKeyedSubscript:(id)subscript;
 - (void)reset;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation SLDCloudKitSyncPersistence
 
-- (SLDCloudKitSyncPersistence)initWithName:(id)a3
+- (SLDCloudKitSyncPersistence)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = SLDCloudKitSyncPersistence;
   v5 = [(SLDCloudKitSyncPersistence *)&v17 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [@"com.apple.sociallayerd.CloudKit." stringByAppendingString:v4];
+    v8 = [@"com.apple.sociallayerd.CloudKit." stringByAppendingString:nameCopy];
     suiteName = v5->_suiteName;
     v5->_suiteName = v8;
 
@@ -39,13 +39,13 @@
   return v5;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
+  subscriptCopy = subscript;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = subscriptCopy;
     v6 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v5];
     if (v6 == self->_nilValue)
     {
@@ -72,15 +72,15 @@
   return v7;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v10 = a3;
-  v6 = a4;
+  objectCopy = object;
+  subscriptCopy = subscript;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [v10 copy];
+    v7 = subscriptCopy;
+    v8 = [objectCopy copy];
     nilValue = v8;
     if (!v8)
     {
@@ -89,7 +89,7 @@
 
     [(NSMutableDictionary *)self->_cache setObject:nilValue forKeyedSubscript:v7];
 
-    [(NSUserDefaults *)self->_defaults setObject:v10 forKey:v7];
+    [(NSUserDefaults *)self->_defaults setObject:objectCopy forKey:v7];
   }
 }
 
@@ -108,8 +108,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(NSMutableDictionary *)self->_cache allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)self->_cache allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -121,14 +121,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         [(NSMutableDictionary *)self->_cache setObject:self->_nilValue forKeyedSubscript:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);

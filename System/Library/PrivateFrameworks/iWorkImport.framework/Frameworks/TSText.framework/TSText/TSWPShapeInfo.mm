@@ -1,6 +1,6 @@
 @interface TSWPShapeInfo
-+ (id)defaultPlaceholderTextForLocale:(id)a3;
-+ (id)p_newEmptyStorageWithContext:(id)a3 paragraphStyle:(id)a4;
++ (id)defaultPlaceholderTextForLocale:(id)locale;
++ (id)p_newEmptyStorageWithContext:(id)context paragraphStyle:(id)style;
 - (BOOL)allowsCaption;
 - (BOOL)allowsTitle;
 - (BOOL)displaysInstructionalText;
@@ -14,16 +14,16 @@
 - (BOOL)p_growsAutomatically;
 - (BOOL)p_isEmptyList;
 - (BOOL)p_isEmptyParagraphWithFillOrBorders;
-- (BOOL)p_isNonTopicParagraphBreakAtParagraphIndex:(unint64_t)a3;
+- (BOOL)p_isNonTopicParagraphBreakAtParagraphIndex:(unint64_t)index;
 - (BOOL)shouldDisplayTextAsTypeName;
 - (BOOL)shouldIgnoreWPContent;
 - (BOOL)shrinkTextToFit;
 - (BOOL)supportsParentRotation;
 - (BOOL)textIsVertical;
-- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)a3 size:(id)a4;
+- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)geometry size:(id)size;
 - (CGPoint)autosizePositionOffset;
-- (CGPoint)autosizePositionOffsetForGeometry:(id)a3 dynamicallyDraggedLayout:(id)a4;
-- (CGPoint)autosizePositionOffsetForGeometry:(id)a3 size:(CGSize)a4;
+- (CGPoint)autosizePositionOffsetForGeometry:(id)geometry dynamicallyDraggedLayout:(id)layout;
+- (CGPoint)autosizePositionOffsetForGeometry:(id)geometry size:(CGSize)size;
 - (CGPoint)transformableObjectAnchorPoint;
 - (Class)layoutClass;
 - (Class)repClass;
@@ -32,17 +32,17 @@
 - (TSWPColumns)columns;
 - (TSWPFlowInfo)textFlow;
 - (TSWPPadding)padding;
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5;
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6;
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6 wpStorage:(id)a7;
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 wpStorage:(id)a6;
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style;
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source;
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source wpStorage:(id)storage;
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style wpStorage:(id)storage;
 - (TSWPShapeStyle)tswpShapeStyle;
 - (TSWPStorage)textStorage;
-- (double)pOffsetForParagraphAlignment:(CGSize)a3;
-- (double)pOffsetForVerticalAlignment:(CGSize)a3;
+- (double)pOffsetForParagraphAlignment:(CGSize)alignment;
+- (double)pOffsetForVerticalAlignment:(CGSize)alignment;
 - (id)childEnumerator;
 - (id)childEnumeratorForUserSearch;
-- (id)copyAcceptingTrackedChangesWithContext:(id)a3;
+- (id)copyAcceptingTrackedChangesWithContext:(id)context;
 - (id)defaultDescriptiveName;
 - (id)displayableContainedText;
 - (id)presetKind;
@@ -50,46 +50,46 @@
 - (id)replicateForReinsertion;
 - (id)stylesForCopyStyle;
 - (id)textStorageForHeadOfTextFlow;
-- (id)textureDeliveryStylesLocalized:(BOOL)a3 animationFilter:(id)a4;
+- (id)textureDeliveryStylesLocalized:(BOOL)localized animationFilter:(id)filter;
 - (id)typeName;
 - (int)columnDirection;
 - (int)verticalAlignment;
 - (int64_t)contentWritingDirection;
 - (int64_t)nestedTextboxDepth;
-- (unint64_t)chunkCountForTextureDeliveryStyle:(unint64_t)a3 byGlyphStyle:(int)a4 animationFilter:(id)a5;
+- (unint64_t)chunkCountForTextureDeliveryStyle:(unint64_t)style byGlyphStyle:(int)glyphStyle animationFilter:(id)filter;
 - (unint64_t)maxInlineNestingDepth;
 - (unint64_t)p_chunkCountForByBullet;
 - (unint64_t)p_chunkCountForByBulletGroup;
 - (unint64_t)p_nonTopicParagraphBreakCount;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
 - (void)dealloc;
 - (void)fixPositionOfImportedAutosizedShape;
-- (void)i_setOwnedTextStorage:(id)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_setOwnedTextStorage:(id)a3;
-- (void)processSelectedStoragesWithStatisticsController:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setAutogrowsForLocalization:(BOOL)a3;
-- (void)setContentWritingDirection:(int64_t)a3;
-- (void)setShrinkTextToFit:(BOOL)a3;
-- (void)setTextFlow:(id)a3;
-- (void)setTextIsVertical:(BOOL)a3;
-- (void)setVerticalAlignment:(int)a3;
-- (void)upgradeOwnedStorageWithFileFormatVersion:(unint64_t)a3;
+- (void)i_setOwnedTextStorage:(id)storage;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_setOwnedTextStorage:(id)storage;
+- (void)processSelectedStoragesWithStatisticsController:(id)controller;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setAutogrowsForLocalization:(BOOL)localization;
+- (void)setContentWritingDirection:(int64_t)direction;
+- (void)setShrinkTextToFit:(BOOL)fit;
+- (void)setTextFlow:(id)flow;
+- (void)setTextIsVertical:(BOOL)vertical;
+- (void)setVerticalAlignment:(int)alignment;
+- (void)upgradeOwnedStorageWithFileFormatVersion:(unint64_t)version;
 - (void)upgradeWithNewOwnedStorage;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSWPShapeInfo
 
-+ (id)defaultPlaceholderTextForLocale:(id)a3
++ (id)defaultPlaceholderTextForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Type to enter text", &stru_28860A0F0, @"TSText");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Type to enter text", &stru_28860A0F0, @"TSText");
 
   return v3;
 }
@@ -147,10 +147,10 @@
   return WeakRetained;
 }
 
-- (void)p_setOwnedTextStorage:(id)a3
+- (void)p_setOwnedTextStorage:(id)storage
 {
-  v16 = a3;
-  objc_storeStrong(&self->_containedStorage, a3);
+  storageCopy = storage;
+  objc_storeStrong(&self->_containedStorage, storage);
   v7 = objc_msgSend_parentInfo(self->_containedStorage, v5, v6);
 
   if (v7)
@@ -166,9 +166,9 @@
   objc_msgSend_setParentInfo_(self->_containedStorage, v8, self);
 }
 
-- (void)i_setOwnedTextStorage:(id)a3
+- (void)i_setOwnedTextStorage:(id)storage
 {
-  v35 = a3;
+  storageCopy = storage;
   v6 = objc_msgSend_textFlow(self, v4, v5);
 
   if (v6)
@@ -181,10 +181,10 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  if (self->_containedStorage != v35)
+  if (self->_containedStorage != storageCopy)
   {
     objc_msgSend_willModify(self, v7, v8);
-    v17 = v35;
+    v17 = storageCopy;
     if (!v17)
     {
       v18 = objc_opt_class();
@@ -207,9 +207,9 @@
   }
 }
 
-- (void)setTextFlow:(id)a3
+- (void)setTextFlow:(id)flow
 {
-  obj = a3;
+  obj = flow;
   WeakRetained = objc_loadWeakRetained(&self->_textFlow);
 
   v7 = obj;
@@ -296,8 +296,8 @@
 
 - (int64_t)nestedTextboxDepth
 {
-  v2 = self;
-  objc_msgSend_parentInfo(v2, v3, v4);
+  selfCopy = self;
+  objc_msgSend_parentInfo(selfCopy, v3, v4);
   while (1)
     v5 = {;
     objc_opt_class();
@@ -308,14 +308,14 @@
       break;
     }
 
-    v9 = objc_msgSend_parentInfo(v2, v7, v8);
+    v9 = objc_msgSend_parentInfo(selfCopy, v7, v8);
 
-    v2 = v9;
+    selfCopy = v9;
     objc_msgSend_parentInfo(v9, v10, v11);
   }
 
   objc_opt_class();
-  v14 = objc_msgSend_owningAttachmentNoRecurse(v2, v12, v13);
+  v14 = objc_msgSend_owningAttachmentNoRecurse(selfCopy, v12, v13);
   v15 = TSUDynamicCast();
 
   if (v15 && (objc_msgSend_isAnchored(v15, v16, v17) & 1) == 0)
@@ -410,9 +410,9 @@ LABEL_12:
   return v5;
 }
 
-- (void)setShrinkTextToFit:(BOOL)a3
+- (void)setShrinkTextToFit:(BOOL)fit
 {
-  v5 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], a2, a3);
+  v5 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], a2, fit);
   objc_msgSend_setBoxedValue_forProperty_(self, v4, v5, 152);
 }
 
@@ -424,18 +424,18 @@ LABEL_12:
   return v5;
 }
 
-- (void)setTextIsVertical:(BOOL)a3
+- (void)setTextIsVertical:(BOOL)vertical
 {
-  v5 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], a2, a3);
+  v5 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], a2, vertical);
   objc_msgSend_setBoxedValue_forProperty_(self, v4, v5, 153);
 }
 
-- (void)setAutogrowsForLocalization:(BOOL)a3
+- (void)setAutogrowsForLocalization:(BOOL)localization
 {
-  if (self->_autogrowsForLocalization != a3)
+  if (self->_autogrowsForLocalization != localization)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_autogrowsForLocalization = a3;
+    objc_msgSend_willModify(self, a2, localization);
+    self->_autogrowsForLocalization = localization;
   }
 }
 
@@ -447,9 +447,9 @@ LABEL_12:
   return v5;
 }
 
-- (void)setVerticalAlignment:(int)a3
+- (void)setVerticalAlignment:(int)alignment
 {
-  v5 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], a2, *&a3);
+  v5 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], a2, *&alignment);
   objc_msgSend_setBoxedValue_forProperty_(self, v4, v5, 149);
 }
 
@@ -489,10 +489,10 @@ LABEL_12:
 
 - (BOOL)isCaptionOrContainedByCaption
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v3 = v2;
+    v3 = selfCopy;
     while (1)
     {
       objc_opt_class();
@@ -508,15 +508,15 @@ LABEL_12:
       v3 = v10;
       if (!v10)
       {
-        LOBYTE(v2) = 0;
-        return v2;
+        LOBYTE(selfCopy) = 0;
+        return selfCopy;
       }
     }
 
-    LOBYTE(v2) = 1;
+    LOBYTE(selfCopy) = 1;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)hasVisibleContents
@@ -567,10 +567,10 @@ LABEL_12:
   return hasEmptyParagraphFillOrBordersAtCharIndex;
 }
 
-- (void)setContentWritingDirection:(int64_t)a3
+- (void)setContentWritingDirection:(int64_t)direction
 {
-  v13 = objc_msgSend_textStorage(self, a2, a3);
-  v5 = NStoTSWPWritingDirection(a3);
+  v13 = objc_msgSend_textStorage(self, a2, direction);
+  v5 = NStoTSWPWritingDirection(direction);
   v8 = objc_msgSend_textStorage(self, v6, v7);
   v11 = objc_msgSend_range(v8, v9, v10);
   objc_msgSend_setParagraphWritingDirection_forCharRange_undoTransaction_(v13, v12, v5, v11, v12, 0);
@@ -616,20 +616,20 @@ LABEL_12:
   [(TSWPShapeInfo *)&v19 dealloc];
 }
 
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6 wpStorage:(id)a7
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source wpStorage:(id)storage
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  contextCopy = context;
+  geometryCopy = geometry;
+  styleCopy = style;
+  sourceCopy = source;
+  storageCopy = storage;
   v25.receiver = self;
   v25.super_class = TSWPShapeInfo;
-  v17 = [(TSWPShapeInfo *)&v25 initWithContext:v12 geometry:v13 style:v14 pathSource:v15];
+  v17 = [(TSWPShapeInfo *)&v25 initWithContext:contextCopy geometry:geometryCopy style:styleCopy pathSource:sourceCopy];
   v19 = v17;
   if (v17)
   {
-    objc_msgSend_i_setOwnedTextStorage_(v17, v18, v16);
+    objc_msgSend_i_setOwnedTextStorage_(v17, v18, storageCopy);
     v22 = objc_msgSend_presetKind(v19, v20, v21);
     v19->_isTextBox = objc_msgSend_isEqual_(v22, v23, *MEMORY[0x277D80BB8]);
   }
@@ -637,70 +637,70 @@ LABEL_12:
   return v19;
 }
 
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 wpStorage:(id)a6
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style wpStorage:(id)storage
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  geometryCopy = geometry;
+  styleCopy = style;
+  storageCopy = storage;
   v14 = MEMORY[0x277D803A0];
-  objc_msgSend_size(v11, v15, v16);
+  objc_msgSend_size(geometryCopy, v15, v16);
   v20 = objc_msgSend_roundedRectangleWithScalar_naturalSize_continuousCurve_(v14, v17, 0, 0.0, v18, v19);
-  v22 = objc_msgSend_initWithContext_geometry_style_pathSource_wpStorage_(self, v21, v10, v11, v12, v20, v13);
+  v22 = objc_msgSend_initWithContext_geometry_style_pathSource_wpStorage_(self, v21, contextCopy, geometryCopy, styleCopy, v20, storageCopy);
 
   return v22;
 }
 
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 pathSource:(id)a6
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style pathSource:(id)source
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  geometryCopy = geometry;
+  styleCopy = style;
+  sourceCopy = source;
   objc_opt_class();
   v14 = TSUDynamicCast();
   v17 = objc_msgSend_defaultParagraphStyle(v14, v15, v16);
   v18 = objc_opt_class();
-  v20 = objc_msgSend_p_newEmptyStorageWithContext_paragraphStyle_(v18, v19, v10, v17);
-  v22 = objc_msgSend_initWithContext_geometry_style_pathSource_wpStorage_(self, v21, v10, v11, v12, v13, v20);
+  v20 = objc_msgSend_p_newEmptyStorageWithContext_paragraphStyle_(v18, v19, contextCopy, v17);
+  v22 = objc_msgSend_initWithContext_geometry_style_pathSource_wpStorage_(self, v21, contextCopy, geometryCopy, styleCopy, sourceCopy, v20);
 
   return v22;
 }
 
-- (TSWPShapeInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5
+- (TSWPShapeInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  geometryCopy = geometry;
+  styleCopy = style;
   v11 = MEMORY[0x277D803A0];
-  objc_msgSend_size(v9, v12, v13);
+  objc_msgSend_size(geometryCopy, v12, v13);
   v17 = objc_msgSend_roundedRectangleWithScalar_naturalSize_continuousCurve_(v11, v14, 0, 0.0, v15, v16);
-  v19 = objc_msgSend_initWithContext_geometry_style_pathSource_(self, v18, v8, v9, v10, v17);
+  v19 = objc_msgSend_initWithContext_geometry_style_pathSource_(self, v18, contextCopy, geometryCopy, styleCopy, v17);
 
   return v19;
 }
 
-+ (id)p_newEmptyStorageWithContext:(id)a3 paragraphStyle:(id)a4
++ (id)p_newEmptyStorageWithContext:(id)context paragraphStyle:(id)style
 {
-  v5 = a3;
-  v6 = a4;
-  v11 = objc_msgSend_documentRoot(v5, v7, v8);
-  if (!v6)
+  contextCopy = context;
+  styleCopy = style;
+  v11 = objc_msgSend_documentRoot(contextCopy, v7, v8);
+  if (!styleCopy)
   {
-    v12 = objc_msgSend_documentRoot(v5, v9, v10);
+    v12 = objc_msgSend_documentRoot(contextCopy, v9, v10);
     v15 = objc_msgSend_theme(v12, v13, v14);
 
     objc_opt_class();
     v17 = objc_msgSend_presetOfKind_index_(v15, v16, *MEMORY[0x277D80BB8], 0);
     v18 = TSUDynamicCast();
 
-    v6 = objc_msgSend_defaultParagraphStyle(v18, v19, v20);
+    styleCopy = objc_msgSend_defaultParagraphStyle(v18, v19, v20);
   }
 
   v21 = [TSWPStorage alloc];
   v24 = objc_msgSend_stylesheet(v11, v22, v23);
-  v27 = objc_msgSend_initialListStyle(v6, v25, v26);
-  v29 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_(v21, v28, v5, 0, 3, v24, v6, v27, 0, 0);
+  v27 = objc_msgSend_initialListStyle(styleCopy, v25, v26);
+  v29 = objc_msgSend_initWithContext_string_kind_stylesheet_paragraphStyle_listStyle_section_columnStyle_(v21, v28, contextCopy, 0, 3, v24, styleCopy, v27, 0, 0);
 
   return v29;
 }
@@ -722,21 +722,21 @@ LABEL_12:
   return v3;
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  v6 = a3;
-  v7 = a4;
+  stylesheetCopy = stylesheet;
+  mapperCopy = mapper;
   v10 = objc_msgSend_presetKind(self, v8, v9);
   isEqualToString = objc_msgSend_isEqualToString_(v10, v11, *MEMORY[0x277D80B40]);
 
   if ((isEqualToString & 1) == 0)
   {
-    objc_msgSend_pushMappingContext_(v7, v13, self);
+    objc_msgSend_pushMappingContext_(mapperCopy, v13, self);
     v16.receiver = self;
     v16.super_class = TSWPShapeInfo;
-    [(TSWPShapeInfo *)&v16 adoptStylesheet:v6 withMapper:v7];
-    objc_msgSend_adoptStylesheet_withMapper_(self->_containedStorage, v14, v6, v7);
-    objc_msgSend_popMappingContext_(v7, v15, self);
+    [(TSWPShapeInfo *)&v16 adoptStylesheet:stylesheetCopy withMapper:mapperCopy];
+    objc_msgSend_adoptStylesheet_withMapper_(self->_containedStorage, v14, stylesheetCopy, mapperCopy);
+    objc_msgSend_popMappingContext_(mapperCopy, v15, self);
   }
 }
 
@@ -803,10 +803,10 @@ LABEL_9:
   return v6;
 }
 
-- (double)pOffsetForParagraphAlignment:(CGSize)a3
+- (double)pOffsetForParagraphAlignment:(CGSize)alignment
 {
-  height = a3.height;
-  width = a3.width;
+  height = alignment.height;
+  width = alignment.width;
   v7 = objc_msgSend_textStorage(self, a2, v3);
   IsVertical = objc_msgSend_textIsVertical(self, v8, v9);
   v14 = 0.0;
@@ -875,10 +875,10 @@ LABEL_9:
   return v14;
 }
 
-- (double)pOffsetForVerticalAlignment:(CGSize)a3
+- (double)pOffsetForVerticalAlignment:(CGSize)alignment
 {
-  height = a3.height;
-  width = a3.width;
+  height = alignment.height;
+  width = alignment.width;
   IsVertical = objc_msgSend_textIsVertical(self, a2, v3);
   objc_opt_class();
   v10 = objc_msgSend_style(self, v8, v9);
@@ -932,14 +932,14 @@ LABEL_14:
   return height;
 }
 
-- (CGPoint)autosizePositionOffsetForGeometry:(id)a3 dynamicallyDraggedLayout:(id)a4
+- (CGPoint)autosizePositionOffsetForGeometry:(id)geometry dynamicallyDraggedLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  geometryCopy = geometry;
+  layoutCopy = layout;
   objc_opt_class();
   v8 = TSUCheckedDynamicCast();
   objc_msgSend_pathBoundsWithoutStroke(v8, v9, v10);
-  objc_msgSend_autosizePositionOffsetForGeometry_size_(self, v11, v6, v12, v13);
+  objc_msgSend_autosizePositionOffsetForGeometry_size_(self, v11, geometryCopy, v12, v13);
   v15 = v14;
   v17 = v16;
 
@@ -950,15 +950,15 @@ LABEL_14:
   return result;
 }
 
-- (CGPoint)autosizePositionOffsetForGeometry:(id)a3 size:(CGSize)a4
+- (CGPoint)autosizePositionOffsetForGeometry:(id)geometry size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  geometryCopy = geometry;
   v8 = *MEMORY[0x277CBF348];
   v9 = *(MEMORY[0x277CBF348] + 8);
   IsVertical = objc_msgSend_textIsVertical(self, v10, v11);
-  if ((objc_msgSend_widthValid(v7, v13, v14) & 1) == 0)
+  if ((objc_msgSend_widthValid(geometryCopy, v13, v14) & 1) == 0)
   {
     if (IsVertical)
     {
@@ -973,7 +973,7 @@ LABEL_14:
     v8 = v17;
   }
 
-  if ((objc_msgSend_heightValid(v7, v15, v16) & 1) == 0)
+  if ((objc_msgSend_heightValid(geometryCopy, v15, v16) & 1) == 0)
   {
     if (IsVertical)
     {
@@ -995,14 +995,14 @@ LABEL_14:
   return result;
 }
 
-- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)a3 size:(id)a4
+- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)geometry size:(id)size
 {
   height = a5.height;
   width = a5.width;
-  v9 = a4;
+  sizeCopy = size;
   v10 = *MEMORY[0x277CBF348];
   v11 = *(MEMORY[0x277CBF348] + 8);
-  if (objc_msgSend_widthValid(v9, v12, v13))
+  if (objc_msgSend_widthValid(sizeCopy, v12, v13))
   {
     v16 = width;
   }
@@ -1012,22 +1012,22 @@ LABEL_14:
     v16 = 0.0;
   }
 
-  v17 = objc_msgSend_heightValid(v9, v14, v15);
+  v17 = objc_msgSend_heightValid(sizeCopy, v14, v15);
   memset(&v23[1], 0, sizeof(CGAffineTransform));
-  if (v9)
+  if (sizeCopy)
   {
     if (v17)
     {
-      objc_msgSend_transformBasedOnRect_(v9, v18, v19, v10, v11, v16, height);
+      objc_msgSend_transformBasedOnRect_(sizeCopy, v18, v19, v10, v11, v16, height);
     }
 
     else
     {
-      objc_msgSend_transformBasedOnRect_(v9, v18, v19, v10, v11, v16, 0.0);
+      objc_msgSend_transformBasedOnRect_(sizeCopy, v18, v19, v10, v11, v16, 0.0);
     }
   }
 
-  objc_msgSend_autosizePositionOffsetForGeometry_size_(self, v18, v9, width, height);
+  objc_msgSend_autosizePositionOffsetForGeometry_size_(self, v18, sizeCopy, width, height);
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
@@ -1072,46 +1072,46 @@ LABEL_14:
   }
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = TSWPShapeInfo;
-  [(TSWPShapeInfo *)&v9 willBeAddedToDocumentRoot:v6 dolcContext:v7];
-  objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(self->_containedStorage, v8, v6, v7);
+  [(TSWPShapeInfo *)&v9 willBeAddedToDocumentRoot:rootCopy dolcContext:contextCopy];
+  objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(self->_containedStorage, v8, rootCopy, contextCopy);
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = TSWPShapeInfo;
-  [(TSWPShapeInfo *)&v13 wasAddedToDocumentRoot:v6 dolcContext:v7];
-  objc_msgSend_wasAddedToDocumentRoot_dolcContext_(self->_containedStorage, v8, v6, v7);
+  [(TSWPShapeInfo *)&v13 wasAddedToDocumentRoot:rootCopy dolcContext:contextCopy];
+  objc_msgSend_wasAddedToDocumentRoot_dolcContext_(self->_containedStorage, v8, rootCopy, contextCopy);
   v11 = objc_msgSend_threadCollector(MEMORY[0x277D80630], v9, v10);
-  objc_msgSend_registerChange_details_forChangeSource_(v11, v12, 50005, self, v6);
+  objc_msgSend_registerChange_details_forChangeSource_(v11, v12, 50005, self, rootCopy);
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v6.receiver = self;
   v6.super_class = TSWPShapeInfo;
-  [(TSWPShapeInfo *)&v6 willBeRemovedFromDocumentRoot:v4];
-  objc_msgSend_willBeRemovedFromDocumentRoot_(self->_containedStorage, v5, v4);
+  [(TSWPShapeInfo *)&v6 willBeRemovedFromDocumentRoot:rootCopy];
+  objc_msgSend_willBeRemovedFromDocumentRoot_(self->_containedStorage, v5, rootCopy);
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v10.receiver = self;
   v10.super_class = TSWPShapeInfo;
-  [(TSWPShapeInfo *)&v10 wasRemovedFromDocumentRoot:v4];
-  objc_msgSend_wasRemovedFromDocumentRoot_(self->_containedStorage, v5, v4);
+  [(TSWPShapeInfo *)&v10 wasRemovedFromDocumentRoot:rootCopy];
+  objc_msgSend_wasRemovedFromDocumentRoot_(self->_containedStorage, v5, rootCopy);
   v8 = objc_msgSend_threadCollector(MEMORY[0x277D80630], v6, v7);
-  objc_msgSend_registerChange_details_forChangeSource_(v8, v9, 50006, self, v4);
+  objc_msgSend_registerChange_details_forChangeSource_(v8, v9, 50006, self, rootCopy);
 }
 
 - (id)childEnumeratorForUserSearch
@@ -1119,8 +1119,8 @@ LABEL_14:
   v25[1] = *MEMORY[0x277D85DE8];
   v24.receiver = self;
   v24.super_class = TSWPShapeInfo;
-  v4 = [(TSWPShapeInfo *)&v24 childEnumeratorForUserSearch];
-  if (!v4)
+  childEnumeratorForUserSearch = [(TSWPShapeInfo *)&v24 childEnumeratorForUserSearch];
+  if (!childEnumeratorForUserSearch)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v3, "[TSWPShapeInfo childEnumeratorForUserSearch]");
@@ -1136,7 +1136,7 @@ LABEL_14:
     v25[0] = self->_containedStorage;
     v13 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v3, v25, 1);
     v16 = objc_msgSend_objectEnumerator(v13, v14, v15);
-    v18 = objc_msgSend_aggregateEnumeratorWithObjects_(v12, v17, v4, v16, 0);
+    v18 = objc_msgSend_aggregateEnumeratorWithObjects_(v12, v17, childEnumeratorForUserSearch, v16, 0);
 
     if (objc_opt_respondsToSelector())
     {
@@ -1147,7 +1147,7 @@ LABEL_14:
 
   else
   {
-    v18 = v4;
+    v18 = childEnumeratorForUserSearch;
   }
 
   return v18;
@@ -1157,7 +1157,7 @@ LABEL_14:
 {
   v24.receiver = self;
   v24.super_class = TSWPShapeInfo;
-  v3 = [(TSWPShapeInfo *)&v24 childEnumerator];
+  childEnumerator = [(TSWPShapeInfo *)&v24 childEnumerator];
   v6 = objc_msgSend_childInfos(self, v4, v5);
   v7 = v6;
   v8 = MEMORY[0x277CBEBF8];
@@ -1168,7 +1168,7 @@ LABEL_14:
 
   v9 = v8;
 
-  if (!v3)
+  if (!childEnumerator)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSWPShapeInfo childEnumerator]");
@@ -1180,7 +1180,7 @@ LABEL_14:
 
   v19 = MEMORY[0x277D81148];
   v20 = objc_msgSend_objectEnumerator(v9, v10, v11);
-  v22 = objc_msgSend_aggregateEnumeratorWithObjects_(v19, v21, v3, v20, 0);
+  v22 = objc_msgSend_aggregateEnumeratorWithObjects_(v19, v21, childEnumerator, v20, 0);
 
   return v22;
 }
@@ -1191,17 +1191,17 @@ LABEL_14:
 
   if (WeakRetained || self->_containedStorage && (objc_msgSend_shouldIgnoreWPContent(self, v4, v5) & 1) == 0)
   {
-    v6 = objc_opt_class();
+    layoutClass = objc_opt_class();
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = TSWPShapeInfo;
-    v6 = [(TSWPShapeInfo *)&v8 layoutClass];
+    layoutClass = [(TSWPShapeInfo *)&v8 layoutClass];
   }
 
-  return v6;
+  return layoutClass;
 }
 
 - (Class)repClass
@@ -1211,7 +1211,7 @@ LABEL_14:
   {
 
 LABEL_3:
-    v6 = objc_opt_class();
+    repClass = objc_opt_class();
     goto LABEL_7;
   }
 
@@ -1222,30 +1222,30 @@ LABEL_3:
 
   v8.receiver = self;
   v8.super_class = TSWPShapeInfo;
-  v6 = [(TSWPShapeInfo *)&v8 repClass];
+  repClass = [(TSWPShapeInfo *)&v8 repClass];
 LABEL_7:
 
-  return v6;
+  return repClass;
 }
 
 - (id)replicateForReinsertion
 {
   v4.receiver = self;
   v4.super_class = TSWPShapeInfo;
-  v2 = [(TSWPShapeInfo *)&v4 replicateForReinsertion];
-  objc_storeWeak(v2 + 30, 0);
-  return v2;
+  replicateForReinsertion = [(TSWPShapeInfo *)&v4 replicateForReinsertion];
+  objc_storeWeak(replicateForReinsertion + 30, 0);
+  return replicateForReinsertion;
 }
 
-- (id)copyAcceptingTrackedChangesWithContext:(id)a3
+- (id)copyAcceptingTrackedChangesWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v7 = objc_msgSend_replicateForReinsertion(self, v5, v6);
   if (objc_msgSend_hasTrackedChanges(self->_containedStorage, v8, v9))
   {
     containedStorage = self->_containedStorage;
     v13 = objc_msgSend_range(containedStorage, v10, v11);
-    v15 = objc_msgSend_newSubstorageWithRange_context_flags_(containedStorage, v14, v13, v14, v4, 7);
+    v15 = objc_msgSend_newSubstorageWithRange_context_flags_(containedStorage, v14, v13, v14, contextCopy, 7);
     v16 = MEMORY[0x277D81490];
     v24 = *MEMORY[0x277D81490];
     v25 = v24;
@@ -1375,9 +1375,9 @@ LABEL_7:
   {
     v10.receiver = self;
     v10.super_class = TSWPShapeInfo;
-    v8 = [(TSWPShapeInfo *)&v10 defaultDescriptiveName];
+    defaultDescriptiveName = [(TSWPShapeInfo *)&v10 defaultDescriptiveName];
 
-    v7 = v8;
+    v7 = defaultDescriptiveName;
   }
 
   return v7;
@@ -1389,17 +1389,17 @@ LABEL_7:
   if (shouldDisplayTextAsTypeName)
   {
     v7 = sub_276E32640(shouldDisplayTextAsTypeName, v5, v6);
-    v9 = objc_msgSend_localizedStringForKey_value_table_(v7, v8, @"Text", &stru_28860A0F0, @"TSText");
+    typeName = objc_msgSend_localizedStringForKey_value_table_(v7, v8, @"Text", &stru_28860A0F0, @"TSText");
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = TSWPShapeInfo;
-    v9 = [(TSWPShapeInfo *)&v11 typeName];
+    typeName = [(TSWPShapeInfo *)&v11 typeName];
   }
 
-  return v9;
+  return typeName;
 }
 
 - (NSArray)childInfos
@@ -1423,38 +1423,38 @@ LABEL_7:
 {
   v7.receiver = self;
   v7.super_class = TSWPShapeInfo;
-  v3 = [(TSWPShapeInfo *)&v7 allowsCaption];
-  if (v3)
+  allowsCaption = [(TSWPShapeInfo *)&v7 allowsCaption];
+  if (allowsCaption)
   {
-    LOBYTE(v3) = objc_msgSend_isLinked(self, v4, v5) ^ 1;
+    LOBYTE(allowsCaption) = objc_msgSend_isLinked(self, v4, v5) ^ 1;
   }
 
-  return v3;
+  return allowsCaption;
 }
 
 - (BOOL)allowsTitle
 {
   v7.receiver = self;
   v7.super_class = TSWPShapeInfo;
-  v3 = [(TSWPShapeInfo *)&v7 allowsTitle];
-  if (v3)
+  allowsTitle = [(TSWPShapeInfo *)&v7 allowsTitle];
+  if (allowsTitle)
   {
-    LOBYTE(v3) = objc_msgSend_isLinked(self, v4, v5) ^ 1;
+    LOBYTE(allowsTitle) = objc_msgSend_isLinked(self, v4, v5) ^ 1;
   }
 
-  return v3;
+  return allowsTitle;
 }
 
-- (id)textureDeliveryStylesLocalized:(BOOL)a3 animationFilter:(id)a4
+- (id)textureDeliveryStylesLocalized:(BOOL)localized animationFilter:(id)filter
 {
-  v4 = a3;
+  localizedCopy = localized;
   v6 = MEMORY[0x277CBEB18];
   v67.receiver = self;
   v67.super_class = TSWPShapeInfo;
-  v7 = [(TSWPShapeInfo *)&v67 textureDeliveryStylesLocalized:a3 animationFilter:a4];
+  v7 = [(TSWPShapeInfo *)&v67 textureDeliveryStylesLocalized:localized animationFilter:filter];
   v9 = objc_msgSend_arrayWithArray_(v6, v8, v7);
 
-  if (v4)
+  if (localizedCopy)
   {
     if (objc_msgSend_isLinked(self, v10, v11))
     {
@@ -1579,8 +1579,8 @@ LABEL_7:
   v3 = MEMORY[0x277CBEB18];
   v25.receiver = self;
   v25.super_class = TSWPShapeInfo;
-  v4 = [(TSWPShapeInfo *)&v25 stylesForCopyStyle];
-  v6 = objc_msgSend_arrayWithArray_(v3, v5, v4);
+  stylesForCopyStyle = [(TSWPShapeInfo *)&v25 stylesForCopyStyle];
+  v6 = objc_msgSend_arrayWithArray_(v3, v5, stylesForCopyStyle);
 
   v9 = objc_msgSend_textStorage(self, v7, v8);
   v11 = objc_msgSend_listStyleAtParIndex_effectiveRange_(v9, v10, 0, 0);
@@ -1648,10 +1648,10 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)p_isNonTopicParagraphBreakAtParagraphIndex:(unint64_t)a3
+- (BOOL)p_isNonTopicParagraphBreakAtParagraphIndex:(unint64_t)index
 {
-  v4 = objc_msgSend_textStorage(self, a2, a3);
-  v6 = objc_msgSend_textRangeForParagraphAtIndex_(v4, v5, a3);
+  v4 = objc_msgSend_textStorage(self, a2, index);
+  v6 = objc_msgSend_textRangeForParagraphAtIndex_(v4, v5, index);
   if (v7)
   {
     v8 = objc_msgSend_characterAtIndex_(v4, v7, &v7[v6 - 1]) == 11;
@@ -1665,27 +1665,27 @@ LABEL_7:
   return v8;
 }
 
-- (unint64_t)chunkCountForTextureDeliveryStyle:(unint64_t)a3 byGlyphStyle:(int)a4 animationFilter:(id)a5
+- (unint64_t)chunkCountForTextureDeliveryStyle:(unint64_t)style byGlyphStyle:(int)glyphStyle animationFilter:(id)filter
 {
-  v8 = objc_msgSend_textStorage(self, a2, a3, *&a4, a5);
+  v8 = objc_msgSend_textStorage(self, a2, style, *&glyphStyle, filter);
   v11 = v8;
-  if (a4 == 2)
+  if (glyphStyle == 2)
   {
     v13 = objc_msgSend_wordCount(v8, v9, v10);
   }
 
-  else if (a4 == 1)
+  else if (glyphStyle == 1)
   {
     objc_msgSend_range(v8, v9, v10);
     v13 = v12;
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
     v13 = objc_msgSend_p_chunkCountForByBulletGroup(self, v9, v10);
   }
 
-  else if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  else if ((style & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     v13 = objc_msgSend_p_chunkCountForByBullet(self, v9, v10);
   }
@@ -1725,13 +1725,13 @@ LABEL_7:
   return v12;
 }
 
-- (void)processSelectedStoragesWithStatisticsController:(id)a3
+- (void)processSelectedStoragesWithStatisticsController:(id)controller
 {
-  v10 = a3;
+  controllerCopy = controller;
   if ((objc_msgSend_isLinked(self, v4, v5) & 1) == 0)
   {
     v8 = objc_msgSend_textStorage(self, v6, v7);
-    objc_msgSend_processStorageForStatistics_processSelection_(v10, v9, v8, 0);
+    objc_msgSend_processStorageForStatistics_processSelection_(controllerCopy, v9, v8, 0);
   }
 }
 
@@ -1804,9 +1804,9 @@ LABEL_7:
   _Block_object_dispose(&v51, 8);
 }
 
-- (void)upgradeOwnedStorageWithFileFormatVersion:(unint64_t)a3
+- (void)upgradeOwnedStorageWithFileFormatVersion:(unint64_t)version
 {
-  v43 = objc_msgSend_i_ownedTextStorage(self, a2, a3);
+  v43 = objc_msgSend_i_ownedTextStorage(self, a2, version);
   objc_msgSend_range(v43, v5, v6);
   if (v8)
   {
@@ -1816,7 +1816,7 @@ LABEL_7:
   v9 = objc_msgSend_presetKind(self, 0, v7);
   isEqual = objc_msgSend_isEqual_(v9, v10, *MEMORY[0x277D80BB8]);
 
-  v14 = *MEMORY[0x277D80958] > a3 ? isEqual : 0;
+  v14 = *MEMORY[0x277D80958] > version ? isEqual : 0;
   if (v14 != 1)
   {
     goto LABEL_11;
@@ -1853,21 +1853,21 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812DC408[112]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[112]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 3))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(archive + 3);
   }
 
   else
@@ -1877,22 +1877,22 @@ LABEL_11:
 
   v54.receiver = self;
   v54.super_class = TSWPShapeInfo;
-  [(TSWPShapeInfo *)&v54 loadFromArchive:v7 unarchiver:v6];
-  v10 = *(a3 + 4);
+  [(TSWPShapeInfo *)&v54 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  v10 = *(archive + 4);
   if ((v10 & 4) == 0)
   {
     if ((v10 & 8) == 0)
     {
       if ((v10 & 2) != 0)
       {
-        v40 = objc_msgSend_fileFormatVersion(v6, v8, v9);
-        v41 = *(a3 + 4);
+        v40 = objc_msgSend_fileFormatVersion(unarchiverCopy, v8, v9);
+        v41 = *(archive + 4);
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
         v49[2] = sub_276DD60E8;
         v49[3] = &unk_27A6F46C0;
         v49[4] = self;
-        v42 = v6;
+        v42 = unarchiverCopy;
         v44 = objc_opt_class();
         if (v41)
         {
@@ -1915,7 +1915,7 @@ LABEL_11:
 
       else
       {
-        if (objc_msgSend_fileFormatVersion(v6, v8, v9) >= *MEMORY[0x277D80978])
+        if (objc_msgSend_fileFormatVersion(unarchiverCopy, v8, v9) >= *MEMORY[0x277D80978])
         {
           v12 = MEMORY[0x277D81150];
           v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSWPShapeInfo(PersistenceAdditions) loadFromArchive:unarchiver:]");
@@ -1930,19 +1930,19 @@ LABEL_11:
         v47[2] = sub_276DD6100;
         v47[3] = &unk_27A6F46E8;
         v47[4] = self;
-        objc_msgSend_addFinalizeHandler_(v6, v11, v47);
+        objc_msgSend_addFinalizeHandler_(unarchiverCopy, v11, v47);
       }
 
       goto LABEL_17;
     }
 
-    v32 = *(a3 + 6);
+    v32 = *(archive + 6);
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = sub_276DD60DC;
     v50[3] = &unk_27A6F46C0;
     v50[4] = self;
-    v33 = v6;
+    v33 = unarchiverCopy;
     v34 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v33, v35, v32, v34, 0, v50);
 LABEL_16:
@@ -1950,28 +1950,28 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v21 = *(a3 + 5);
+  v21 = *(archive + 5);
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = sub_276DD60BC;
   v53[3] = &unk_27A6F4698;
   v53[4] = self;
-  sub_276DD6010(v6, v21, &unk_28864DE38, v53);
-  if ((*(a3 + 16) & 8) != 0)
+  sub_276DD6010(unarchiverCopy, v21, &unk_28864DE38, v53);
+  if ((*(archive + 16) & 8) != 0)
   {
-    v36 = *(a3 + 6);
+    v36 = *(archive + 6);
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = sub_276DD60C8;
     v52[3] = &unk_27A6F46C0;
     v52[4] = self;
-    v33 = v6;
+    v33 = unarchiverCopy;
     v37 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v33, v38, v36, v37, 0, v52);
     goto LABEL_16;
   }
 
-  if (objc_msgSend_fileFormatVersion(v6, v22, v23) >= *MEMORY[0x277D80980])
+  if (objc_msgSend_fileFormatVersion(unarchiverCopy, v22, v23) >= *MEMORY[0x277D80980])
   {
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v24, "[TSWPShapeInfo(PersistenceAdditions) loadFromArchive:unarchiver:]");
@@ -1986,9 +1986,9 @@ LABEL_16:
   v51[2] = sub_276DD60D4;
   v51[3] = &unk_27A6F46E8;
   v51[4] = self;
-  objc_msgSend_addFinalizeHandler_(v6, v24, v51);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v24, v51);
 LABEL_17:
-  if ((*(a3 + 16) & 0x10) == 0)
+  if ((*(archive + 16) & 0x10) == 0)
   {
 LABEL_18:
     v46[0] = MEMORY[0x277D85DD0];
@@ -1996,70 +1996,70 @@ LABEL_18:
     v46[2] = sub_276DD6108;
     v46[3] = &unk_27A6F46E8;
     v46[4] = self;
-    objc_msgSend_addFinalizeHandler_(v6, v19, v46);
+    objc_msgSend_addFinalizeHandler_(unarchiverCopy, v19, v46);
     goto LABEL_23;
   }
 
-  if (*(a3 + 56))
+  if (*(archive + 56))
   {
     objc_msgSend_setIsTextBoxForPersistence_(self, v19, 1);
   }
 
   else
   {
-    if (objc_msgSend_fileFormatVersion(v6, v19, v20) < 0x2000400000001)
+    if (objc_msgSend_fileFormatVersion(unarchiverCopy, v19, v20) < 0x2000400000001)
     {
       goto LABEL_18;
     }
 
-    objc_msgSend_setIsTextBoxForPersistence_(self, v19, *(a3 + 56) & 1);
+    objc_msgSend_setIsTextBoxForPersistence_(self, v19, *(archive + 56) & 1);
   }
 
 LABEL_23:
-  if ((*(a3 + 16) & 0x20) != 0)
+  if ((*(archive + 16) & 0x20) != 0)
   {
-    objc_msgSend_setAutogrowsForLocalizationForPersistence_(self, v39, *(a3 + 57));
+    objc_msgSend_setAutogrowsForLocalizationForPersistence_(self, v39, *(archive + 57));
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276DD65A4, off_2812DC408[112]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276DD65A4, off_2812DC408[112]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = sub_276DD651C;
   v45[3] = &unk_27A6F3E30;
-  v48 = a3;
-  v7 = v6;
+  archiveCopy = archive;
+  v7 = archiverCopy;
   v46 = v7;
-  v47 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, v45);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, archive, v45);
   v11 = objc_msgSend_i_ownedTextStorage(self, v9, v10);
   v16 = objc_msgSend_textFlow(self, v12, v13);
   if (v16)
   {
-    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v14, 3, a3);
-    *(a3 + 4) |= 4u;
-    v18 = *(a3 + 5);
+    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v14, 3, archive);
+    *(archive + 4) |= 4u;
+    v18 = *(archive + 5);
     if (!v18)
     {
-      v19 = *(a3 + 1);
+      v19 = *(archive + 1);
       if (v19)
       {
         v19 = *(v19 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v18 = MEMORY[0x277CA3250](v19);
-      *(a3 + 5) = v18;
+      *(archive + 5) = v18;
     }
 
     objc_msgSend_setWeakReference_message_(v7, v17, v16, v18);
@@ -2075,41 +2075,41 @@ LABEL_23:
   }
 
   v28 = objc_msgSend_i_ownedTextStorage(self, v14, v15);
-  *(a3 + 4) |= 8u;
-  v29 = *(a3 + 6);
+  *(archive + 4) |= 8u;
+  v29 = *(archive + 6);
   if (!v29)
   {
-    v30 = *(a3 + 1);
+    v30 = *(archive + 1);
     if (v30)
     {
       v30 = *(v30 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v29 = MEMORY[0x277CA3250](v30);
-    *(a3 + 6) = v29;
+    *(archive + 6) = v29;
   }
 
   objc_msgSend_setStrongReference_message_(v7, v27, v28, v29);
 
-  *(a3 + 4) |= 2u;
-  v32 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v32 = *(archive + 4);
   if (!v32)
   {
-    v33 = *(a3 + 1);
+    v33 = *(archive + 1);
     if (v33)
     {
       v33 = *(v33 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v32 = MEMORY[0x277CA3250](v33);
-    *(a3 + 4) = v32;
+    *(archive + 4) = v32;
   }
 
   objc_msgSend_setStrongReference_message_(v7, v31, v11, v32);
-  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v34, 6, a3);
+  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v7, v34, 6, archive);
   isTextBox = objc_msgSend_isTextBox(self, v35, v36);
-  *(a3 + 4) |= 0x10u;
-  *(a3 + 56) = isTextBox;
+  *(archive + 4) |= 0x10u;
+  *(archive + 56) = isTextBox;
   if (objc_msgSend_textIsVertical(self, v38, v39))
   {
     objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(v7, v40, *MEMORY[0x277D80968], *MEMORY[0x277D809A8], @"TSWPVerticalText");
@@ -2118,8 +2118,8 @@ LABEL_23:
   if (objc_msgSend_autogrowsForLocalization(self, v40, v41))
   {
     v44 = objc_msgSend_autogrowsForLocalization(self, v42, v43);
-    *(a3 + 4) |= 0x20u;
-    *(a3 + 57) = v44;
+    *(archive + 4) |= 0x20u;
+    *(archive + 57) = v44;
   }
 }
 
@@ -2128,9 +2128,9 @@ LABEL_23:
   v34 = *MEMORY[0x277D85DE8];
   v32.receiver = self;
   v32.super_class = TSWPShapeInfo;
-  v3 = [(TSDDrawableInfo *)&v32 maxInlineNestingDepth];
+  maxInlineNestingDepth = [(TSDDrawableInfo *)&v32 maxInlineNestingDepth];
   v6 = objc_msgSend_textStorage(self, v4, v5);
-  v27 = v3;
+  v27 = maxInlineNestingDepth;
   v11 = objc_msgSend_length(v6, v7, v8) || objc_msgSend_isTextBox(self, v9, v10);
   v30 = 0u;
   v31 = 0u;

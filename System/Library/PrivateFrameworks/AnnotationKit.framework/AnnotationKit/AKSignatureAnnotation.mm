@@ -1,19 +1,19 @@
 @interface AKSignatureAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 + (id)keyPathsForValuesAffectingDrawingBounds;
 + (id)keyPathsForValuesAffectingHitTestBounds;
-- (AKSignatureAnnotation)initWithCoder:(id)a3;
+- (AKSignatureAnnotation)initWithCoder:(id)coder;
 - (CGRect)hitTestBounds;
 - (CGRect)rectangle;
 - (id)displayName;
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
-- (id)strokeColorForOptions:(id)a3;
+- (id)strokeColorForOptions:(id)options;
 - (void)adjustModelToCompensateForOriginalExif;
-- (void)encodeWithCoder:(id)a3;
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4;
-- (void)setStrokeColor:(id)a3;
-- (void)translateBy:(CGPoint)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size;
+- (void)setStrokeColor:(id)color;
+- (void)translateBy:(CGPoint)by;
 @end
 
 @implementation AKSignatureAnnotation
@@ -21,7 +21,7 @@
 + (id)keyPathsForValuesAffectingHitTestBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKSignatureAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingHitTestBounds);
   v4 = [v2 setWithSet:v3];
@@ -34,7 +34,7 @@
 + (id)keyPathsForValuesAffectingDrawingBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKSignatureAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingDrawingBounds);
   v4 = [v2 setWithSet:v3];
@@ -44,22 +44,22 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"rectangle"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"rectangle"])
   {
     v5 = @"Bounds";
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"signature"])
+  if ([keyCopy isEqualToString:@"signature"])
   {
     v5 = @"Signature Shape";
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"strokeColor"])
+  if ([keyCopy isEqualToString:@"strokeColor"])
   {
     v5 = @"Signature Color";
 LABEL_7:
@@ -72,76 +72,76 @@ LABEL_7:
     }
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___AKSignatureAnnotation;
-  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
 LABEL_9:
 
   return v7;
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v5 = a3;
-  if (v5 && [v5 akIsEDR])
+  colorCopy = color;
+  if (colorCopy && [colorCopy akIsEDR])
   {
-    [(AKSignatureAnnotation *)self setStrokeColorHDR:v5];
-    v4 = [v5 akToSDR];
-    [(AKSignatureAnnotation *)self setStrokeColorSDR:v4];
+    [(AKSignatureAnnotation *)self setStrokeColorHDR:colorCopy];
+    akToSDR = [colorCopy akToSDR];
+    [(AKSignatureAnnotation *)self setStrokeColorSDR:akToSDR];
   }
 
   else
   {
     [(AKSignatureAnnotation *)self setStrokeColorHDR:0];
-    [(AKSignatureAnnotation *)self setStrokeColorSDR:v5];
+    [(AKSignatureAnnotation *)self setStrokeColorSDR:colorCopy];
   }
 }
 
-- (id)strokeColorForOptions:(id)a3
+- (id)strokeColorForOptions:(id)options
 {
-  v4 = a3;
-  if (!v4)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v4 = +[AKAnnotationRendererOptions defaultOptions];
+    optionsCopy = +[AKAnnotationRendererOptions defaultOptions];
   }
 
-  [v4 scaleFactor];
+  [optionsCopy scaleFactor];
   v6 = v5;
-  v7 = [(AKSignatureAnnotation *)self strokeColorHDR];
-  v8 = v7;
+  strokeColorHDR = [(AKSignatureAnnotation *)self strokeColorHDR];
+  v8 = strokeColorHDR;
   if (v6 == 0.0)
   {
-    if (v7 && ([v4 allowHDR] & 1) != 0)
+    if (strokeColorHDR && ([optionsCopy allowHDR] & 1) != 0)
     {
-      v13 = [(AKSignatureAnnotation *)self strokeColorHDR];
+      strokeColorHDR2 = [(AKSignatureAnnotation *)self strokeColorHDR];
     }
 
     else
     {
-      v13 = [(AKSignatureAnnotation *)self strokeColorSDR];
+      strokeColorHDR2 = [(AKSignatureAnnotation *)self strokeColorSDR];
     }
 
-    v12 = v13;
+    v12 = strokeColorHDR2;
   }
 
   else
   {
-    if (v7 && [v4 allowHDR])
+    if (strokeColorHDR && [optionsCopy allowHDR])
     {
-      v9 = [(AKSignatureAnnotation *)self strokeColorHDR];
+      strokeColorHDR3 = [(AKSignatureAnnotation *)self strokeColorHDR];
       v10 = 0;
       v11 = 1;
     }
 
     else
     {
-      v9 = [(AKSignatureAnnotation *)self strokeColorSDR];
+      strokeColorHDR3 = [(AKSignatureAnnotation *)self strokeColorSDR];
       v11 = 0;
       v10 = 1;
     }
 
-    [v4 scaleFactor];
-    v12 = [v9 akScale:?];
+    [optionsCopy scaleFactor];
+    v12 = [strokeColorHDR3 akScale:?];
     if (v10)
     {
     }
@@ -156,28 +156,28 @@ LABEL_9:
 
 - (id)displayName
 {
-  v3 = [(AKSignatureAnnotation *)self signature];
-  v4 = [v3 descriptionTag];
+  signature = [(AKSignatureAnnotation *)self signature];
+  descriptionTag = [signature descriptionTag];
 
-  if (v4)
+  if (descriptionTag)
   {
-    v5 = [(AKSignatureAnnotation *)self signature];
-    if (v4 == -1)
+    signature2 = [(AKSignatureAnnotation *)self signature];
+    if (descriptionTag == -1)
     {
-      [v5 customDescription];
+      [signature2 customDescription];
     }
 
     else
     {
-      +[AKSignatureDescription stringValueForSignatureDescriptionTag:](AKSignatureDescription, "stringValueForSignatureDescriptionTag:", [v5 descriptionTag]);
+      +[AKSignatureDescription stringValueForSignatureDescriptionTag:](AKSignatureDescription, "stringValueForSignatureDescriptionTag:", [signature2 descriptionTag]);
     }
     v6 = ;
   }
 
   else
   {
-    v5 = +[AKController akBundle];
-    v6 = [v5 localizedStringForKey:@"Signature" value:&stru_28519E870 table:@"AnnotationStrings"];
+    signature2 = +[AKController akBundle];
+    v6 = [signature2 localizedStringForKey:@"Signature" value:&stru_28519E870 table:@"AnnotationStrings"];
   }
 
   v7 = v6;
@@ -190,8 +190,8 @@ LABEL_9:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKSignatureAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BA830];
 
@@ -203,8 +203,8 @@ LABEL_9:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKSignatureAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BA848];
 
@@ -259,18 +259,18 @@ LABEL_9:
   [(AKSignatureAnnotation *)self setRectangle:?];
 }
 
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:a3];
+  height = size.height;
+  width = size.width;
+  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:orientation];
   [(AKSignatureAnnotation *)self rectangle];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   memset(&v16[1], 0, sizeof(CGAffineTransform));
-  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:a3 withOriginalModelSize:width, height];
+  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:orientation withOriginalModelSize:width, height];
   v16[0] = v16[1];
   v17.origin.x = v9;
   v17.origin.y = v11;
@@ -280,85 +280,85 @@ LABEL_9:
   [(AKSignatureAnnotation *)self setRectangle:v18.origin.x, v18.origin.y, v18.size.width, v18.size.height];
 }
 
-- (void)translateBy:(CGPoint)a3
+- (void)translateBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = by.y;
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
-    v7 = [(AKAnnotation *)self isTranslating];
+    isTranslating = [(AKAnnotation *)self isTranslating];
     [(AKAnnotation *)self setIsTranslating:1];
     [(AKSignatureAnnotation *)self rectangle];
     [(AKSignatureAnnotation *)self setRectangle:x + v8, y + v9];
 
-    [(AKAnnotation *)self setIsTranslating:v7];
+    [(AKAnnotation *)self setIsTranslating:isTranslating];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = AKSignatureAnnotation;
-  [(AKAnnotation *)&v10 encodeWithCoder:v4];
+  [(AKAnnotation *)&v10 encodeWithCoder:coderCopy];
   [(AKSignatureAnnotation *)self rectangle];
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v11);
-  [v4 encodeObject:DictionaryRepresentation forKey:@"rectangle"];
-  v6 = [(AKSignatureAnnotation *)self signature];
-  [v4 encodeObject:v6 forKey:@"signature"];
+  [coderCopy encodeObject:DictionaryRepresentation forKey:@"rectangle"];
+  signature = [(AKSignatureAnnotation *)self signature];
+  [coderCopy encodeObject:signature forKey:@"signature"];
 
-  v7 = [(AKSignatureAnnotation *)self strokeColorSDR];
-  [v4 akEncodeColor:v7 forKey:@"strokeColorString"];
+  strokeColorSDR = [(AKSignatureAnnotation *)self strokeColorSDR];
+  [coderCopy akEncodeColor:strokeColorSDR forKey:@"strokeColorString"];
 
-  v8 = [(AKSignatureAnnotation *)self strokeColorHDR];
+  strokeColorHDR = [(AKSignatureAnnotation *)self strokeColorHDR];
 
-  if (v8)
+  if (strokeColorHDR)
   {
-    v9 = [(AKSignatureAnnotation *)self strokeColorHDR];
-    [v4 akEncodeColor:v9 forKey:@"strokeColorHDRString"];
+    strokeColorHDR2 = [(AKSignatureAnnotation *)self strokeColorHDR];
+    [coderCopy akEncodeColor:strokeColorHDR2 forKey:@"strokeColorHDRString"];
   }
 }
 
-- (AKSignatureAnnotation)initWithCoder:(id)a3
+- (AKSignatureAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = AKSignatureAnnotation;
-  v5 = [(AKAnnotation *)&v16 initWithCoder:v4];
+  v5 = [(AKAnnotation *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"rectangle"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"rectangle"];
 
     CGRectMakeWithDictionaryRepresentation(v10, &v5->_rectangle);
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     [(AKSignatureAnnotation *)v5 setSignature:v11];
 
-    if ([v4 containsValueForKey:@"strokeColorHDRString"])
+    if ([coderCopy containsValueForKey:@"strokeColorHDRString"])
     {
-      v12 = [v4 akDecodeColorForKey:@"strokeColorHDRString"];
+      v12 = [coderCopy akDecodeColorForKey:@"strokeColorHDRString"];
       [(AKSignatureAnnotation *)v5 setStrokeColorHDR:v12];
     }
 
-    if ([v4 containsValueForKey:@"strokeColorString"])
+    if ([coderCopy containsValueForKey:@"strokeColorString"])
     {
-      v13 = [v4 akDecodeColorForKey:@"strokeColorSDRString"];
+      v13 = [coderCopy akDecodeColorForKey:@"strokeColorSDRString"];
       [(AKSignatureAnnotation *)v5 setStrokeColorSDR:v13];
     }
 
     else
     {
-      if (![v4 containsValueForKey:@"strokeColor"])
+      if (![coderCopy containsValueForKey:@"strokeColor"])
       {
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"strokeColor"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"strokeColor"];
       if (v13)
       {
         v14 = [MEMORY[0x277D75348] akColorWithCIColor:v13];

@@ -1,21 +1,21 @@
 @interface DYContextInfo
-- (BOOL)supportsCapabilitiesOfGraphicsAPI:(id)a3;
+- (BOOL)supportsCapabilitiesOfGraphicsAPI:(id)i;
 - (DYContextInfo)init;
-- (DYContextInfo)initWithCoder:(id)a3;
-- (DYContextInfo)initWithIdentifier:(unint64_t)a3 sharegroupIdentifier:(unint64_t)a4 renderers:(id)a5 currentRendererIndex:(unsigned int)a6 api:(int)a7;
+- (DYContextInfo)initWithCoder:(id)coder;
+- (DYContextInfo)initWithIdentifier:(unint64_t)identifier sharegroupIdentifier:(unint64_t)sharegroupIdentifier renderers:(id)renderers currentRendererIndex:(unsigned int)index api:(int)api;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)descriptionForBugReport;
 - (int)rendererType;
-- (int)valueForLimit:(id)a3;
+- (int)valueForLimit:(id)limit;
 - (void)dealloc;
-- (void)determineTextureUnitLimitsForRendererAtIndex:(unsigned int)a3 limits:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateBufferTargets:(id)a3;
-- (void)enumerateFramebufferAttachments:(id)a3;
-- (void)enumerateFramebufferColorAttachments:(id)a3;
-- (void)enumerateFramebufferDrawBuffers:(id)a3;
-- (void)enumerateTextureTargets:(id)a3;
+- (void)determineTextureUnitLimitsForRendererAtIndex:(unsigned int)index limits:(id *)limits;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateBufferTargets:(id)targets;
+- (void)enumerateFramebufferAttachments:(id)attachments;
+- (void)enumerateFramebufferColorAttachments:(id)attachments;
+- (void)enumerateFramebufferDrawBuffers:(id)buffers;
+- (void)enumerateTextureTargets:(id)targets;
 @end
 
 @implementation DYContextInfo
@@ -27,9 +27,9 @@
   return 0;
 }
 
-- (DYContextInfo)initWithIdentifier:(unint64_t)a3 sharegroupIdentifier:(unint64_t)a4 renderers:(id)a5 currentRendererIndex:(unsigned int)a6 api:(int)a7
+- (DYContextInfo)initWithIdentifier:(unint64_t)identifier sharegroupIdentifier:(unint64_t)sharegroupIdentifier renderers:(id)renderers currentRendererIndex:(unsigned int)index api:(int)api
 {
-  if ([a5 count] <= a6)
+  if ([renderers count] <= index)
   {
     [DYContextInfo initWithIdentifier:sharegroupIdentifier:renderers:currentRendererIndex:api:];
   }
@@ -40,43 +40,43 @@
   v14 = v13;
   if (v13)
   {
-    v13->_identifier = a3;
-    v13->_sharegroupIdentifier = a4;
-    v13->_renderers = [a5 copy];
-    v14->_currentRendererIndex = a6;
-    v14->_api = a7;
+    v13->_identifier = identifier;
+    v13->_sharegroupIdentifier = sharegroupIdentifier;
+    v13->_renderers = [renderers copy];
+    v14->_currentRendererIndex = index;
+    v14->_api = api;
   }
 
   return v14;
 }
 
-- (DYContextInfo)initWithCoder:(id)a3
+- (DYContextInfo)initWithCoder:(id)coder
 {
   if (self)
   {
-    self->_identifier = [a3 decodeInt64ForKey:@"identifier"];
-    self->_sharegroupIdentifier = [a3 decodeInt64ForKey:@"sharegroupIdentifier"];
+    self->_identifier = [coder decodeInt64ForKey:@"identifier"];
+    self->_sharegroupIdentifier = [coder decodeInt64ForKey:@"sharegroupIdentifier"];
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
-    self->_renderers = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"renderers"}];
-    self->_currentRendererIndex = [a3 decodeInt32ForKey:@"currentRendererIndex"];
-    self->_api = [a3 decodeInt32ForKey:@"api"];
-    self->_debugLabel = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"debugLabel"];
+    self->_renderers = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"renderers"}];
+    self->_currentRendererIndex = [coder decodeInt32ForKey:@"currentRendererIndex"];
+    self->_api = [coder decodeInt32ForKey:@"api"];
+    self->_debugLabel = [coder decodeObjectOfClass:objc_opt_class() forKey:@"debugLabel"];
   }
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt64:self->_identifier forKey:@"identifier"];
-  [a3 encodeInt64:self->_sharegroupIdentifier forKey:@"sharegroupIdentifier"];
-  [a3 encodeObject:self->_renderers forKey:@"renderers"];
-  [a3 encodeInt32:self->_currentRendererIndex forKey:@"currentRendererIndex"];
-  [a3 encodeInt32:self->_api forKey:@"api"];
+  [coder encodeInt64:self->_identifier forKey:@"identifier"];
+  [coder encodeInt64:self->_sharegroupIdentifier forKey:@"sharegroupIdentifier"];
+  [coder encodeObject:self->_renderers forKey:@"renderers"];
+  [coder encodeInt32:self->_currentRendererIndex forKey:@"currentRendererIndex"];
+  [coder encodeInt32:self->_api forKey:@"api"];
   debugLabel = self->_debugLabel;
 
-  [a3 encodeObject:debugLabel forKey:@"debugLabel"];
+  [coder encodeObject:debugLabel forKey:@"debugLabel"];
 }
 
 - (NSString)debugDescription
@@ -128,9 +128,9 @@
   [(DYContextInfo *)&v3 dealloc];
 }
 
-- (void)determineTextureUnitLimitsForRendererAtIndex:(unsigned int)a3 limits:(id *)a4
+- (void)determineTextureUnitLimitsForRendererAtIndex:(unsigned int)index limits:(id *)limits
 {
-  v6 = [-[NSArray objectAtIndex:](self->_renderers objectAtIndex:{a3), "limits"}];
+  v6 = [-[NSArray objectAtIndex:](self->_renderers objectAtIndex:{index), "limits"}];
   v7 = v6;
   api = self->_api;
   if ((api - 2) >= 3)
@@ -143,8 +143,8 @@
       }
 
       v10 = [objc_msgSend(v6 objectForKey:{@"GL_MAX_TEXTURE_UNITS", "unsignedIntValue"}];
-      a4->var2 = v10;
-      a4->var0 = v10;
+      limits->var2 = v10;
+      limits->var0 = v10;
       v11 = 34018;
       v12 = 12;
       v13 = 34018;
@@ -152,8 +152,8 @@
 
     else
     {
-      a4->var0 = [objc_msgSend(v6 objectForKey:{@"GL_MAX_TEXTURE_COORDS", "unsignedIntValue"}];
-      a4->var2 = [objc_msgSend(v7 objectForKey:{@"GL_MAX_TEXTURE_UNITS", "unsignedIntValue"}];
+      limits->var0 = [objc_msgSend(v6 objectForKey:{@"GL_MAX_TEXTURE_COORDS", "unsignedIntValue"}];
+      limits->var2 = [objc_msgSend(v7 objectForKey:{@"GL_MAX_TEXTURE_UNITS", "unsignedIntValue"}];
       v10 = [objc_msgSend(v7 objectForKey:{@"GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS", "unsignedIntValue"}];
       v13 = 35661;
       v11 = 34929;
@@ -165,23 +165,23 @@
   {
     v9 = [objc_msgSend(v6 objectForKey:{@"GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS", "unsignedIntValue"}];
     v10 = 0;
-    a4->var3 = v9;
-    a4->var0 = 0;
+    limits->var3 = v9;
+    limits->var0 = 0;
     v11 = 35661;
     v12 = 8;
     v13 = 35661;
   }
 
-  *(&a4->var0 + v12) = v10;
-  a4->var1 = v11;
-  a4->var4 = v13;
+  *(&limits->var0 + v12) = v10;
+  limits->var1 = v11;
+  limits->var4 = v13;
 }
 
-- (BOOL)supportsCapabilitiesOfGraphicsAPI:(id)a3
+- (BOOL)supportsCapabilitiesOfGraphicsAPI:(id)i
 {
   v28 = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (api = self->_api, api == [a3 api]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (api = self->_api, api == [i api]))
   {
     v24 = 0u;
     v25 = 0u;
@@ -207,8 +207,8 @@
           v19 = 0u;
           v20 = 0u;
           v21 = 0u;
-          v12 = [a3 renderers];
-          v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+          renderers = [i renderers];
+          v13 = [renderers countByEnumeratingWithState:&v18 objects:v26 count:16];
           if (v13)
           {
             v14 = v13;
@@ -220,7 +220,7 @@
               {
                 if (*v19 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(renderers);
                 }
 
                 if ([v11 supportsCapabilitiesOfRenderer:*(*(&v18 + 1) + 8 * v16)])
@@ -233,7 +233,7 @@
               }
 
               while (v14 != v16);
-              v14 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+              v14 = [renderers countByEnumeratingWithState:&v18 objects:v26 count:16];
               if (v14)
               {
                 continue;
@@ -260,9 +260,9 @@
   return v7;
 }
 
-- (int)valueForLimit:(id)a3
+- (int)valueForLimit:(id)limit
 {
-  v4 = [objc_msgSend(-[NSArray objectAtIndex:](self->_renderers objectAtIndex:{self->_currentRendererIndex), "limits"), "objectForKey:", a3}];
+  v4 = [objc_msgSend(-[NSArray objectAtIndex:](self->_renderers objectAtIndex:{self->_currentRendererIndex), "limits"), "objectForKey:", limit}];
   if (v4)
   {
 
@@ -271,12 +271,12 @@
 
   else
   {
-    if ([a3 isEqualToString:@"GL_MAX_COLOR_ATTACHMENTS"])
+    if ([limit isEqualToString:@"GL_MAX_COLOR_ATTACHMENTS"])
     {
       return 1;
     }
 
-    result = [a3 isEqualToString:@"GL_MAX_DRAW_BUFFERS"];
+    result = [limit isEqualToString:@"GL_MAX_DRAW_BUFFERS"];
     if (result)
     {
       return 1;
@@ -286,7 +286,7 @@
   return result;
 }
 
-- (void)enumerateBufferTargets:(id)a3
+- (void)enumerateBufferTargets:(id)targets
 {
   v9 = 0;
   v10 = 0;
@@ -327,7 +327,7 @@
   {
     do
     {
-      (*(a3 + 2))(a3, *v6++);
+      (*(targets + 2))(targets, *v6++);
     }
 
     while (v6 != v7);
@@ -341,16 +341,16 @@
   }
 }
 
-- (void)enumerateFramebufferAttachments:(id)a3
+- (void)enumerateFramebufferAttachments:(id)attachments
 {
   [(DYContextInfo *)self enumerateFramebufferColorAttachments:?];
-  (*(a3 + 2))(a3, 36096);
-  v4 = *(a3 + 2);
+  (*(attachments + 2))(attachments, 36096);
+  v4 = *(attachments + 2);
 
-  v4(a3, 36128);
+  v4(attachments, 36128);
 }
 
-- (void)enumerateFramebufferColorAttachments:(id)a3
+- (void)enumerateFramebufferColorAttachments:(id)attachments
 {
   v4 = [(DYContextInfo *)self valueForLimit:@"GL_MAX_COLOR_ATTACHMENTS"];
   if (v4 >= 1)
@@ -359,7 +359,7 @@
     v6 = 36064;
     do
     {
-      (*(a3 + 2))(a3, v6);
+      (*(attachments + 2))(attachments, v6);
       v6 = (v6 + 1);
       --v5;
     }
@@ -368,7 +368,7 @@
   }
 }
 
-- (void)enumerateFramebufferDrawBuffers:(id)a3
+- (void)enumerateFramebufferDrawBuffers:(id)buffers
 {
   v4 = [(DYContextInfo *)self valueForLimit:@"GL_MAX_DRAW_BUFFERS"];
   if (v4 >= 1)
@@ -377,7 +377,7 @@
     v6 = 34853;
     do
     {
-      (*(a3 + 2))(a3, v6);
+      (*(buffers + 2))(buffers, v6);
       v6 = (v6 + 1);
       --v5;
     }
@@ -386,7 +386,7 @@
   }
 }
 
-- (void)enumerateTextureTargets:(id)a3
+- (void)enumerateTextureTargets:(id)targets
 {
   v10 = 0;
   v11 = 0;
@@ -482,7 +482,7 @@
   {
     do
     {
-      (*(a3 + 2))(a3, *v7++);
+      (*(targets + 2))(targets, *v7++);
     }
 
     while (v7 != v8);

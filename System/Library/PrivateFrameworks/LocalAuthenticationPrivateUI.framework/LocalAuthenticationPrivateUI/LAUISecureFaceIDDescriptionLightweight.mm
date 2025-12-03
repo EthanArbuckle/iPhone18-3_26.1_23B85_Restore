@@ -1,25 +1,25 @@
 @interface LAUISecureFaceIDDescriptionLightweight
 + (id)_stateMap;
 + (id)_transitions;
-- (BOOL)isSequenceFrom:(id)a3 to:(id)a4 supportedConcurrentlyWithContainerSequence:(id)a5 toContainerState:(id)a6;
-- (BOOL)isSequenceSecure:(id)a3 toState:(id)a4;
+- (BOOL)isSequenceFrom:(id)from to:(id)to supportedConcurrentlyWithContainerSequence:(id)sequence toContainerState:(id)state;
+- (BOOL)isSequenceSecure:(id)secure toState:(id)state;
 - (CGRect)captureBounds;
-- (LAUISecureFaceIDDescriptionLightweight)initWithContainerView:(id)a3;
+- (LAUISecureFaceIDDescriptionLightweight)initWithContainerView:(id)view;
 - (NSArray)states;
-- (double)maximumLatencyToExitLoopingState:(id)a3;
-- (id)allowedNextStatesForState:(id)a3;
-- (unint64_t)_resetSettleFramesForState:(int64_t)a3;
-- (void)resetToState:(id)a3 completion:(id)a4;
-- (void)transitionToState:(id)a3 completion:(id)a4;
+- (double)maximumLatencyToExitLoopingState:(id)state;
+- (id)allowedNextStatesForState:(id)state;
+- (unint64_t)_resetSettleFramesForState:(int64_t)state;
+- (void)resetToState:(id)state completion:(id)completion;
+- (void)transitionToState:(id)state completion:(id)completion;
 @end
 
 @implementation LAUISecureFaceIDDescriptionLightweight
 
-- (LAUISecureFaceIDDescriptionLightweight)initWithContainerView:(id)a3
+- (LAUISecureFaceIDDescriptionLightweight)initWithContainerView:(id)view
 {
   v7.receiver = self;
   v7.super_class = LAUISecureFaceIDDescriptionLightweight;
-  v3 = [(LAUISecureFaceIDDescription *)&v7 initWithContainerView:a3];
+  v3 = [(LAUISecureFaceIDDescription *)&v7 initWithContainerView:view];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D241C0]) initWithInitialState:0];
@@ -77,21 +77,21 @@
 
 - (NSArray)states
 {
-  v2 = [objc_opt_class() _stateMap];
-  v3 = [v2 allValues];
+  _stateMap = [objc_opt_class() _stateMap];
+  allValues = [_stateMap allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)allowedNextStatesForState:(id)a3
+- (id)allowedNextStatesForState:(id)state
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stateCopy = state;
   v4 = objc_opt_new();
-  v5 = CaptureStateFromNSString(v3);
-  v6 = [objc_opt_class() _transitions];
+  v5 = CaptureStateFromNSString(stateCopy);
+  _transitions = [objc_opt_class() _transitions];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [_transitions objectForKeyedSubscript:v7];
 
   v19 = 0u;
   v20 = 0u;
@@ -127,18 +127,18 @@
   return v15;
 }
 
-- (BOOL)isSequenceSecure:(id)a3 toState:(id)a4
+- (BOOL)isSequenceSecure:(id)secure toState:(id)state
 {
-  v5 = a4;
-  v6 = CaptureStateFromNSString(a3);
-  v7 = CaptureStateFromNSString(v5);
+  stateCopy = state;
+  v6 = CaptureStateFromNSString(secure);
+  v7 = CaptureStateFromNSString(stateCopy);
 
   return v6 < 2 && v7 == 1;
 }
 
-- (double)maximumLatencyToExitLoopingState:(id)a3
+- (double)maximumLatencyToExitLoopingState:(id)state
 {
-  v3 = CaptureStateFromNSString(a3);
+  v3 = CaptureStateFromNSString(state);
   result = 1.79769313e308;
   if (v3 == 1)
   {
@@ -150,15 +150,15 @@
 
 - (CGRect)captureBounds
 {
-  v3 = [(LAUISecureFaceIDDescription *)self containerView];
-  [v3 layoutIfNeeded];
+  containerView = [(LAUISecureFaceIDDescription *)self containerView];
+  [containerView layoutIfNeeded];
 
   [(LACUIFaceIDSpinnerView *)self->_spinnerView bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(LAUISecureFaceIDDescription *)self containerView];
+  containerView2 = [(LAUISecureFaceIDDescription *)self containerView];
   [(LACUIFaceIDSpinnerView *)self->_spinnerView frame];
-  [v8 convertPoint:self->_spinnerView fromView:?];
+  [containerView2 convertPoint:self->_spinnerView fromView:?];
   v10 = v9;
   v12 = v11;
 
@@ -173,27 +173,27 @@
   return result;
 }
 
-- (void)resetToState:(id)a3 completion:(id)a4
+- (void)resetToState:(id)state completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   v8 = LACLogFaceIDUI();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138543618;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
-    v24 = v6;
+    v24 = stateCopy;
     _os_log_impl(&dword_2560E6000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ resetToState: %{public}@", &v21, 0x16u);
   }
 
-  v9 = [(LAUISecureFaceIDDescription *)self observer];
-  v10 = [(LAUISecureFaceIDDescriptionLightweight *)self flipBookName];
-  [v9 recordingResettingToDescriptionOfFlipbook:v10];
+  observer = [(LAUISecureFaceIDDescription *)self observer];
+  flipBookName = [(LAUISecureFaceIDDescriptionLightweight *)self flipBookName];
+  [observer recordingResettingToDescriptionOfFlipbook:flipBookName];
 
-  v11 = [(LAUISecureFaceIDDescription *)self observer];
-  v12 = CaptureStateFromNSString(v6);
+  observer2 = [(LAUISecureFaceIDDescription *)self observer];
+  v12 = CaptureStateFromNSString(stateCopy);
   v13 = 7;
   if (v12 == 1)
   {
@@ -210,9 +210,9 @@
     v14 = v13;
   }
 
-  [v11 recordingUpdatedGlyphState:v14];
+  [observer2 recordingUpdatedGlyphState:v14];
 
-  v15 = CaptureStateFromNSString(v6);
+  v15 = CaptureStateFromNSString(stateCopy);
   self->_resetState = v15;
   v16 = 1.0;
   if (!v15)
@@ -223,7 +223,7 @@
   [(LACUIFaceIDSpinnerView *)self->_spinnerView setAlpha:v16];
   v17 = [(LAUISecureFaceIDDescriptionLightweight *)self _resetSettleFramesForState:self->_resetState];
   spinnerView = self->_spinnerView;
-  v19 = CaptureStateFromNSString(v6);
+  v19 = CaptureStateFromNSString(stateCopy);
   if (v19 == 2)
   {
     v20 = 2;
@@ -237,18 +237,18 @@
   if (v17)
   {
     [(LACUIFaceIDSpinnerView *)spinnerView setState:v20 animated:0 completion:&__block_literal_global_3];
-    [(LAUISecureFaceIDDescription *)self dispatchAfterFrames:v17 block:v7];
+    [(LAUISecureFaceIDDescription *)self dispatchAfterFrames:v17 block:completionCopy];
   }
 
   else
   {
-    [(LACUIFaceIDSpinnerView *)spinnerView setState:v20 animated:0 completion:v7];
+    [(LACUIFaceIDSpinnerView *)spinnerView setState:v20 animated:0 completion:completionCopy];
   }
 }
 
-- (unint64_t)_resetSettleFramesForState:(int64_t)a3
+- (unint64_t)_resetSettleFramesForState:(int64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 20;
   }
@@ -259,25 +259,25 @@
   }
 }
 
-- (void)transitionToState:(id)a3 completion:(id)a4
+- (void)transitionToState:(id)state completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   v8 = LACLogFaceIDUI();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138543618;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2114;
-    v26 = v6;
+    v26 = stateCopy;
     _os_log_impl(&dword_2560E6000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ transitionToState: %{public}@", &v23, 0x16u);
   }
 
-  v9 = CaptureStateFromNSString(v6);
-  v10 = [objc_opt_class() _transitions];
+  v9 = CaptureStateFromNSString(stateCopy);
+  _transitions = [objc_opt_class() _transitions];
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:self->_resetState];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  v12 = [_transitions objectForKeyedSubscript:v11];
 
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
   v14 = [v12 objectForKeyedSubscript:v13];
@@ -289,11 +289,11 @@
     {
       v22 = NSStringFromCaptureState(self->_resetState);
       v23 = 138543874;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2114;
       v26 = v22;
       v27 = 2114;
-      v28 = v6;
+      v28 = stateCopy;
       _os_log_fault_impl(&dword_2560E6000, v15, OS_LOG_TYPE_FAULT, "%{public}@ requested to perform invalid transition from '%{public}@' to '%{public}@", &v23, 0x20u);
     }
   }
@@ -301,7 +301,7 @@
   if (v9)
   {
     spinnerView = self->_spinnerView;
-    v17 = CaptureStateFromNSString(v6);
+    v17 = CaptureStateFromNSString(stateCopy);
     if (v17 == 2)
     {
       v18 = 2;
@@ -337,23 +337,23 @@
   }
 
   -[LAUISecureFaceIDDescription fadeIn:orOut:view:frames:](self, "fadeIn:orOut:view:frames:", v20, v21, self->_spinnerView, [v14 unsignedIntegerValue]);
-  -[LAUISecureFaceIDDescription dispatchAfterFrames:block:](self, "dispatchAfterFrames:block:", [v14 unsignedIntegerValue], v7);
+  -[LAUISecureFaceIDDescription dispatchAfterFrames:block:](self, "dispatchAfterFrames:block:", [v14 unsignedIntegerValue], completionCopy);
 }
 
-- (BOOL)isSequenceFrom:(id)a3 to:(id)a4 supportedConcurrentlyWithContainerSequence:(id)a5 toContainerState:(id)a6
+- (BOOL)isSequenceFrom:(id)from to:(id)to supportedConcurrentlyWithContainerSequence:(id)sequence toContainerState:(id)state
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(LAUISecureFaceIDDescriptionLightweight *)self allowedNextStatesForState:v10];
-  v15 = [v14 containsObject:v11];
+  fromCopy = from;
+  toCopy = to;
+  sequenceCopy = sequence;
+  stateCopy = state;
+  v14 = [(LAUISecureFaceIDDescriptionLightweight *)self allowedNextStatesForState:fromCopy];
+  v15 = [v14 containsObject:toCopy];
 
   if (v15)
   {
-    v16 = CaptureStateFromNSString(v10);
-    v17 = CaptureStateFromNSString(v11);
-    v18 = ContainerStateFromTwoStates(v12, v13);
+    v16 = CaptureStateFromNSString(fromCopy);
+    v17 = CaptureStateFromNSString(toCopy);
+    v18 = ContainerStateFromTwoStates(sequenceCopy, stateCopy);
     if (v18)
     {
       v19 = 1;

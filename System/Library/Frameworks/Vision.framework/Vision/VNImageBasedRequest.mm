@@ -1,57 +1,57 @@
 @interface VNImageBasedRequest
-- (BOOL)getOptionalValidatedInputDetectedObjectObservations:(id *)a3 forObservationClass:(Class)a4 relationWithRegionOfInterest:(unint64_t)a5 error:(id *)a6;
-- (BOOL)getOptionalValidatedInputFaceObservations:(id *)a3 clippedToRegionOfInterest:(BOOL)a4 error:(id *)a5;
+- (BOOL)getOptionalValidatedInputDetectedObjectObservations:(id *)observations forObservationClass:(Class)class relationWithRegionOfInterest:(unint64_t)interest error:(id *)error;
+- (BOOL)getOptionalValidatedInputFaceObservations:(id *)observations clippedToRegionOfInterest:(BOOL)interest error:(id *)error;
 - (BOOL)isFullCoverageRegionOfInterest;
-- (BOOL)validateConfigurationAndReturnError:(id *)a3;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)validateConfigurationAndReturnError:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (CGRect)regionOfInterest;
-- (CGRect)regionOfInterestNonIntegralPixelRectForWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (CGRect)regionOfInterestPixelRectForWidth:(unint64_t)a3 height:(unint64_t)a4;
+- (CGRect)regionOfInterestNonIntegralPixelRectForWidth:(unint64_t)width height:(unint64_t)height;
+- (CGRect)regionOfInterestPixelRectForWidth:(unint64_t)width height:(unint64_t)height;
 - (NSArray)inputDetectedObjectObservations;
 - (NSArray)inputFaceObservations;
 - (NSArray)supportedImageSizeSet;
 - (NSString)description;
-- (id)VNCoreMLTransformerDetectionprintAndReturnError:(id *)a3;
-- (id)VNCoreMLTransformerSceneprintsAndReturnError:(id *)a3;
-- (id)_detectedObjectObservationsForRegionOfInterestContainingDetectedObjectObservations:(id)a3 relationWithRegionOfInterest:(unint64_t)a4;
-- (id)_faceObservationsForRegionOfInterestContainingFaceObservations:(id)a3;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)setInputDetectedObjectObservations:(id)a3;
-- (void)setInputFaceObservations:(id)a3;
+- (id)VNCoreMLTransformerDetectionprintAndReturnError:(id *)error;
+- (id)VNCoreMLTransformerSceneprintsAndReturnError:(id *)error;
+- (id)_detectedObjectObservationsForRegionOfInterestContainingDetectedObjectObservations:(id)observations relationWithRegionOfInterest:(unint64_t)interest;
+- (id)_faceObservationsForRegionOfInterestContainingFaceObservations:(id)observations;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)setInputDetectedObjectObservations:(id)observations;
+- (void)setInputFaceObservations:(id)observations;
 - (void)setRegionOfInterest:(CGRect)regionOfInterest;
 @end
 
 @implementation VNImageBasedRequest
 
-- (BOOL)getOptionalValidatedInputDetectedObjectObservations:(id *)a3 forObservationClass:(Class)a4 relationWithRegionOfInterest:(unint64_t)a5 error:(id *)a6
+- (BOOL)getOptionalValidatedInputDetectedObjectObservations:(id *)observations forObservationClass:(Class)class relationWithRegionOfInterest:(unint64_t)interest error:(id *)error
 {
-  v11 = [(VNImageBasedRequest *)self inputDetectedObjectObservations];
-  if (v11)
+  inputDetectedObjectObservations = [(VNImageBasedRequest *)self inputDetectedObjectObservations];
+  if (inputDetectedObjectObservations)
   {
-    if (![VNValidationUtilities validateOptionalDetectedObjectObservations:v11 forObservationClass:a4 forRequest:self error:a6])
+    if (![VNValidationUtilities validateOptionalDetectedObjectObservations:inputDetectedObjectObservations forObservationClass:class forRequest:self error:error])
     {
       v14 = 0;
       goto LABEL_10;
     }
 
-    v12 = [(VNImageBasedRequest *)self _detectedObjectObservationsForRegionOfInterestContainingDetectedObjectObservations:v11 relationWithRegionOfInterest:a5];
+    v12 = [(VNImageBasedRequest *)self _detectedObjectObservationsForRegionOfInterestContainingDetectedObjectObservations:inputDetectedObjectObservations relationWithRegionOfInterest:interest];
 
-    if (!a3)
+    if (!observations)
     {
       v14 = 1;
-      v11 = v12;
+      inputDetectedObjectObservations = v12;
       goto LABEL_10;
     }
 
     v13 = v12;
-    v11 = v12;
+    inputDetectedObjectObservations = v12;
     goto LABEL_6;
   }
 
-  if (a3)
+  if (observations)
   {
 LABEL_6:
-    *a3 = v11;
+    *observations = inputDetectedObjectObservations;
   }
 
   v14 = 1;
@@ -60,12 +60,12 @@ LABEL_10:
   return v14;
 }
 
-- (id)_detectedObjectObservationsForRegionOfInterestContainingDetectedObjectObservations:(id)a3 relationWithRegionOfInterest:(unint64_t)a4
+- (id)_detectedObjectObservationsForRegionOfInterestContainingDetectedObjectObservations:(id)observations relationWithRegionOfInterest:(unint64_t)interest
 {
-  v6 = a3;
+  observationsCopy = observations;
   if ([(VNImageBasedRequest *)self isFullCoverageRegionOfInterest])
   {
-    v7 = v6;
+    v7 = observationsCopy;
   }
 
   else
@@ -75,13 +75,13 @@ LABEL_10:
     v14[1] = 3221225472;
     v14[2] = __135__VNImageBasedRequest__detectedObjectObservationsForRegionOfInterestContainingDetectedObjectObservations_relationWithRegionOfInterest___block_invoke;
     v14[3] = &__block_descriptor_72_e44_B32__0__VNDetectedObjectObservation_8Q16_B24l;
-    v14[4] = a4;
+    v14[4] = interest;
     v14[5] = v8;
     v14[6] = v9;
     v14[7] = v10;
     v14[8] = v11;
-    v12 = [v6 indexesOfObjectsPassingTest:v14];
-    v7 = [v6 objectsAtIndexes:v12];
+    v12 = [observationsCopy indexesOfObjectsPassingTest:v14];
+    v7 = [observationsCopy objectsAtIndexes:v12];
   }
 
   return v7;
@@ -118,51 +118,51 @@ LABEL_7:
   return v14;
 }
 
-- (void)setInputDetectedObjectObservations:(id)a3
+- (void)setInputDetectedObjectObservations:(id)observations
 {
-  v4 = a3;
-  v6 = [v4 copy];
+  observationsCopy = observations;
+  v6 = [observationsCopy copy];
 
-  v5 = [(VNRequest *)self configuration];
-  [v5 setInputDetectedObjectObservations:v6];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setInputDetectedObjectObservations:v6];
 }
 
 - (NSArray)inputDetectedObjectObservations
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 inputDetectedObjectObservations];
+  configuration = [(VNRequest *)self configuration];
+  inputDetectedObjectObservations = [configuration inputDetectedObjectObservations];
 
-  return v3;
+  return inputDetectedObjectObservations;
 }
 
-- (BOOL)getOptionalValidatedInputFaceObservations:(id *)a3 clippedToRegionOfInterest:(BOOL)a4 error:(id *)a5
+- (BOOL)getOptionalValidatedInputFaceObservations:(id *)observations clippedToRegionOfInterest:(BOOL)interest error:(id *)error
 {
-  v6 = a4;
-  v9 = [(VNImageBasedRequest *)self inputFaceObservations];
-  if (v9)
+  interestCopy = interest;
+  inputFaceObservations = [(VNImageBasedRequest *)self inputFaceObservations];
+  if (inputFaceObservations)
   {
-    if (![VNValidationUtilities validateOptionalFaceObservations:v9 forRequest:self error:a5])
+    if (![VNValidationUtilities validateOptionalFaceObservations:inputFaceObservations forRequest:self error:error])
     {
       v12 = 0;
       goto LABEL_11;
     }
 
-    if (v6)
+    if (interestCopy)
     {
-      v10 = [(VNImageBasedRequest *)self _faceObservationsForRegionOfInterestContainingFaceObservations:v9];
+      v10 = [(VNImageBasedRequest *)self _faceObservationsForRegionOfInterestContainingFaceObservations:inputFaceObservations];
 
-      v9 = v10;
+      inputFaceObservations = v10;
     }
 
-    if (a3)
+    if (observations)
     {
-      v11 = v9;
+      v11 = inputFaceObservations;
 LABEL_8:
-      *a3 = v9;
+      *observations = inputFaceObservations;
     }
   }
 
-  else if (a3)
+  else if (observations)
   {
     goto LABEL_8;
   }
@@ -173,12 +173,12 @@ LABEL_11:
   return v12;
 }
 
-- (id)_faceObservationsForRegionOfInterestContainingFaceObservations:(id)a3
+- (id)_faceObservationsForRegionOfInterestContainingFaceObservations:(id)observations
 {
-  v4 = a3;
+  observationsCopy = observations;
   if ([(VNImageBasedRequest *)self isFullCoverageRegionOfInterest])
   {
-    v5 = v4;
+    v5 = observationsCopy;
   }
 
   else
@@ -192,8 +192,8 @@ LABEL_11:
     v12[5] = v7;
     v12[6] = v8;
     v12[7] = v9;
-    v10 = [v4 indexesOfObjectsPassingTest:v12];
-    v5 = [v4 objectsAtIndexes:v10];
+    v10 = [observationsCopy indexesOfObjectsPassingTest:v12];
+    v5 = [observationsCopy objectsAtIndexes:v10];
   }
 
   return v5;
@@ -212,21 +212,21 @@ BOOL __86__VNImageBasedRequest__faceObservationsForRegionOfInterestContainingFac
   return v8;
 }
 
-- (void)setInputFaceObservations:(id)a3
+- (void)setInputFaceObservations:(id)observations
 {
-  v4 = a3;
-  v6 = [v4 copy];
+  observationsCopy = observations;
+  v6 = [observationsCopy copy];
 
-  v5 = [(VNRequest *)self configuration];
-  [v5 setInputFaceObservations:v6];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setInputFaceObservations:v6];
 }
 
 - (NSArray)inputFaceObservations
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 inputFaceObservations];
+  configuration = [(VNRequest *)self configuration];
+  inputFaceObservations = [configuration inputFaceObservations];
 
-  return v3;
+  return inputFaceObservations;
 }
 
 - (NSArray)supportedImageSizeSet
@@ -252,20 +252,20 @@ BOOL __86__VNImageBasedRequest__faceObservationsForRegionOfInterestContainingFac
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%g, %g, %g, %g]", v5, v6, v7, v8];
   [v3 appendFormat:@"%@ ROI=%@", v4, v9];
 
-  v10 = [(VNImageBasedRequest *)self inputFaceObservations];
-  v11 = v10;
-  if (v10)
+  inputFaceObservations = [(VNImageBasedRequest *)self inputFaceObservations];
+  v11 = inputFaceObservations;
+  if (inputFaceObservations)
   {
-    v12 = [v10 valueForKey:@"description"];
+    v12 = [inputFaceObservations valueForKey:@"description"];
     v13 = [v12 componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" inputFaceObservations=[%@]", v13];
   }
 
-  v14 = [(VNImageBasedRequest *)self inputDetectedObjectObservations];
-  v15 = v14;
-  if (v14)
+  inputDetectedObjectObservations = [(VNImageBasedRequest *)self inputDetectedObjectObservations];
+  v15 = inputDetectedObjectObservations;
+  if (inputDetectedObjectObservations)
   {
-    v16 = [v14 valueForKey:@"uuid"];
+    v16 = [inputDetectedObjectObservations valueForKey:@"uuid"];
     v17 = [v16 componentsJoinedByString:{@", "}];
     [v3 appendFormat:@" inputDetectedObjectObservations=[%@]", v17];
   }
@@ -273,46 +273,46 @@ BOOL __86__VNImageBasedRequest__faceObservationsForRegionOfInterestContainingFac
   return v3;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v7.receiver = self;
     v7.super_class = VNImageBasedRequest;
-    [(VNRequest *)&v7 applyConfigurationOfRequest:v4];
+    [(VNRequest *)&v7 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(VNImageBasedRequest *)v4 regionOfInterest];
+      [(VNImageBasedRequest *)requestCopy regionOfInterest];
       [(VNImageBasedRequest *)self setRegionOfInterest:?];
-      v5 = [(VNImageBasedRequest *)v4 inputFaceObservations];
-      [(VNImageBasedRequest *)self setInputFaceObservations:v5];
+      inputFaceObservations = [(VNImageBasedRequest *)requestCopy inputFaceObservations];
+      [(VNImageBasedRequest *)self setInputFaceObservations:inputFaceObservations];
 
-      v6 = [(VNImageBasedRequest *)v4 inputDetectedObjectObservations];
-      [(VNImageBasedRequest *)self setInputDetectedObjectObservations:v6];
+      inputDetectedObjectObservations = [(VNImageBasedRequest *)requestCopy inputDetectedObjectObservations];
+      [(VNImageBasedRequest *)self setInputDetectedObjectObservations:inputDetectedObjectObservations];
     }
   }
 }
 
-- (CGRect)regionOfInterestPixelRectForWidth:(unint64_t)a3 height:(unint64_t)a4
+- (CGRect)regionOfInterestPixelRectForWidth:(unint64_t)width height:(unint64_t)height
 {
   [(VNImageBasedRequest *)self regionOfInterest];
-  v7 = v6 * a3;
-  v9 = v8 * a3;
-  v11 = v10 * a4;
-  v13 = v12 * a4;
+  v7 = v6 * width;
+  v9 = v8 * width;
+  v11 = v10 * height;
+  v13 = v12 * height;
 
   return CGRectIntegral(*&v7);
 }
 
-- (CGRect)regionOfInterestNonIntegralPixelRectForWidth:(unint64_t)a3 height:(unint64_t)a4
+- (CGRect)regionOfInterestNonIntegralPixelRectForWidth:(unint64_t)width height:(unint64_t)height
 {
   [(VNImageBasedRequest *)self regionOfInterest];
-  v7 = v6 * a3;
-  v9 = v8 * a3;
-  v11 = v10 * a4;
-  v13 = v12 * a4;
+  v7 = v6 * width;
+  v9 = v8 * width;
+  v11 = v10 * height;
+  v13 = v12 * height;
   result.size.height = v13;
   result.size.width = v9;
   result.origin.y = v11;
@@ -331,7 +331,7 @@ BOOL __86__VNImageBasedRequest__faceObservationsForRegionOfInterestContainingFac
   return CGRectEqualToRect(*&v2, *&v6);
 }
 
-- (BOOL)validateConfigurationAndReturnError:(id *)a3
+- (BOOL)validateConfigurationAndReturnError:(id *)error
 {
   v16.receiver = self;
   v16.super_class = VNImageBasedRequest;
@@ -352,12 +352,12 @@ BOOL __86__VNImageBasedRequest__faceObservationsForRegionOfInterestContainingFac
     v18.size.width = v11;
     v18.size.height = v13;
     LOBYTE(v5) = CGRectContainsRect(v17, v18);
-    if (a3)
+    if (error)
     {
       if (!v5)
       {
         v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The region of interest [%g, %g, %g, %g] is not within the normalized bounds of [0 0 1 1]", *&v7, *&v9, *&v11, *&v13];
-        *a3 = [VNError errorWithCode:14 message:v14];
+        *error = [VNError errorWithCode:14 message:v14];
 
         LOBYTE(v5) = 0;
       }
@@ -374,14 +374,14 @@ BOOL __86__VNImageBasedRequest__faceObservationsForRegionOfInterestContainingFac
   y = v10.origin.y;
   width = v10.size.width;
   height = v10.size.height;
-  v8 = [(VNRequest *)self configuration];
-  [v8 setRegionOfInterest:{x, y, width, height}];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setRegionOfInterest:{x, y, width, height}];
 }
 
 - (CGRect)regionOfInterest
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 regionOfInterest];
+  configuration = [(VNRequest *)self configuration];
+  [configuration regionOfInterest];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -398,16 +398,16 @@ BOOL __86__VNImageBasedRequest__faceObservationsForRegionOfInterestContainingFac
   return result;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   [(VNImageBasedRequest *)self regionOfInterest];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 regionOfInterest];
+  [configurationCopy regionOfInterest];
   v55.origin.x = v13;
   v55.origin.y = v14;
   v55.size.width = v15;
@@ -421,19 +421,19 @@ BOOL __86__VNImageBasedRequest__faceObservationsForRegionOfInterestContainingFac
     goto LABEL_12;
   }
 
-  v17 = [(VNImageBasedRequest *)self inputFaceObservations];
-  v18 = [v4 inputFaceObservations];
-  IsSubsetOfFaceObservationsCollection = VNFaceObservationsCollectionIsSubsetOfFaceObservationsCollection(v17, v18);
+  inputFaceObservations = [(VNImageBasedRequest *)self inputFaceObservations];
+  inputFaceObservations2 = [configurationCopy inputFaceObservations];
+  IsSubsetOfFaceObservationsCollection = VNFaceObservationsCollectionIsSubsetOfFaceObservationsCollection(inputFaceObservations, inputFaceObservations2);
 
   if ((IsSubsetOfFaceObservationsCollection & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v20 = [(VNImageBasedRequest *)self inputDetectedObjectObservations];
-  v21 = [v4 inputDetectedObjectObservations];
-  v22 = v20;
-  v23 = v21;
+  inputDetectedObjectObservations = [(VNImageBasedRequest *)self inputDetectedObjectObservations];
+  inputDetectedObjectObservations2 = [configurationCopy inputDetectedObjectObservations];
+  v22 = inputDetectedObjectObservations;
+  v23 = inputDetectedObjectObservations2;
   v40 = v22;
   v41 = v23;
   if (v22 == v23)
@@ -468,8 +468,8 @@ LABEL_8:
             objc_enumerationMutation(v29);
           }
 
-          v33 = [*(*(&v47 + 1) + 8 * i) uuid];
-          [v28 addObject:v33];
+          uuid = [*(*(&v47 + 1) + 8 * i) uuid];
+          [v28 addObject:uuid];
         }
 
         v30 = [v29 countByEnumeratingWithState:&v47 objects:v52 count:16];
@@ -496,8 +496,8 @@ LABEL_8:
             objc_enumerationMutation(v34);
           }
 
-          v38 = [*(*(&v43 + 1) + 8 * j) uuid];
-          v39 = [v28 containsObject:v38];
+          uuid2 = [*(*(&v43 + 1) + 8 * j) uuid];
+          v39 = [v28 containsObject:uuid2];
 
           if ((v39 & 1) == 0)
           {
@@ -517,8 +517,8 @@ LABEL_8:
     }
   }
 
-  v25 = [(VNRequest *)self maximumProcessingDimensionOnTheLongSide];
-  if (v25 != [v4 maximumProcessingDimensionOnTheLongSide])
+  maximumProcessingDimensionOnTheLongSide = [(VNRequest *)self maximumProcessingDimensionOnTheLongSide];
+  if (maximumProcessingDimensionOnTheLongSide != [configurationCopy maximumProcessingDimensionOnTheLongSide])
   {
 LABEL_12:
     v26 = 0;
@@ -527,32 +527,32 @@ LABEL_12:
 
   v42.receiver = self;
   v42.super_class = VNImageBasedRequest;
-  v26 = [(VNRequest *)&v42 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+  v26 = [(VNRequest *)&v42 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
 LABEL_13:
 
   return v26;
 }
 
-- (id)VNCoreMLTransformerDetectionprintAndReturnError:(id *)a3
+- (id)VNCoreMLTransformerDetectionprintAndReturnError:(id *)error
 {
-  v5 = [(VNRequest *)self results];
-  if ([v5 count])
+  results = [(VNRequest *)self results];
+  if ([results count])
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 VNCoreMLTransformerDetectionprintAndReturnError:a3];
+    firstObject = [results firstObject];
+    v7 = [firstObject VNCoreMLTransformerDetectionprintAndReturnError:error];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (a3)
+  if (error)
   {
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = [(VNRequest *)self specifier];
-    v6 = [v8 initWithFormat:@"%@ did not produce any results", v9];
+    specifier = [(VNRequest *)self specifier];
+    firstObject = [v8 initWithFormat:@"%@ did not produce any results", specifier];
 
-    [VNError errorForDataUnavailableWithLocalizedDescription:v6];
-    *a3 = v7 = 0;
+    [VNError errorForDataUnavailableWithLocalizedDescription:firstObject];
+    *error = v7 = 0;
     goto LABEL_5;
   }
 
@@ -562,26 +562,26 @@ LABEL_6:
   return v7;
 }
 
-- (id)VNCoreMLTransformerSceneprintsAndReturnError:(id *)a3
+- (id)VNCoreMLTransformerSceneprintsAndReturnError:(id *)error
 {
-  v5 = [(VNRequest *)self results];
-  if ([v5 count])
+  results = [(VNRequest *)self results];
+  if ([results count])
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 VNCoreMLTransformerSceneprintsAndReturnError:a3];
+    firstObject = [results firstObject];
+    v7 = [firstObject VNCoreMLTransformerSceneprintsAndReturnError:error];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (a3)
+  if (error)
   {
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = [(VNRequest *)self specifier];
-    v6 = [v8 initWithFormat:@"%@ did not produce any results", v9];
+    specifier = [(VNRequest *)self specifier];
+    firstObject = [v8 initWithFormat:@"%@ did not produce any results", specifier];
 
-    [VNError errorForDataUnavailableWithLocalizedDescription:v6];
-    *a3 = v7 = 0;
+    [VNError errorForDataUnavailableWithLocalizedDescription:firstObject];
+    *error = v7 = 0;
     goto LABEL_5;
   }
 

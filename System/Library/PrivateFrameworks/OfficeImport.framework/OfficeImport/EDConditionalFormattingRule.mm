@@ -1,27 +1,27 @@
 @interface EDConditionalFormattingRule
-+ (id)conditionalFormattingRuleWithResources:(id)a3;
-- (EDConditionalFormattingRule)initWithResources:(id)a3;
++ (id)conditionalFormattingRuleWithResources:(id)resources;
+- (EDConditionalFormattingRule)initWithResources:(id)resources;
 - (id)description;
 - (id)differentialStyle;
-- (id)formulaAtIndex:(unint64_t)a3;
-- (int64_t)compareToOtherRuleUsingPriority:(id)a3;
-- (void)addFormula:(id)a3 worksheet:(id)a4;
-- (void)setDifferentialStyle:(id)a3;
-- (void)setText:(id)a3;
+- (id)formulaAtIndex:(unint64_t)index;
+- (int64_t)compareToOtherRuleUsingPriority:(id)priority;
+- (void)addFormula:(id)formula worksheet:(id)worksheet;
+- (void)setDifferentialStyle:(id)style;
+- (void)setText:(id)text;
 @end
 
 @implementation EDConditionalFormattingRule
 
-- (EDConditionalFormattingRule)initWithResources:(id)a3
+- (EDConditionalFormattingRule)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v10.receiver = self;
   v10.super_class = EDConditionalFormattingRule;
   v5 = [(EDConditionalFormattingRule *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mFormulas = v6->mFormulas;
     v6->mFormulas = v7;
@@ -39,24 +39,24 @@
   return v6;
 }
 
-+ (id)conditionalFormattingRuleWithResources:(id)a3
++ (id)conditionalFormattingRuleWithResources:(id)resources
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithResources:v3];
+  resourcesCopy = resources;
+  v4 = [objc_alloc(objc_opt_class()) initWithResources:resourcesCopy];
 
   return v4;
 }
 
-- (int64_t)compareToOtherRuleUsingPriority:(id)a3
+- (int64_t)compareToOtherRuleUsingPriority:(id)priority
 {
-  v4 = a3;
+  priorityCopy = priority;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 priority];
+    priority = [priorityCopy priority];
     mPriority = self->mPriority;
-    v7 = mPriority < v5;
-    v8 = mPriority > v5;
+    v7 = mPriority < priority;
+    v8 = mPriority > priority;
     if (v7)
     {
       v9 = -1;
@@ -76,62 +76,62 @@
   return v9;
 }
 
-- (id)formulaAtIndex:(unint64_t)a3
+- (id)formulaAtIndex:(unint64_t)index
 {
-  if ([(EDConditionalFormattingRule *)self formulaCount]<= a3)
+  if ([(EDConditionalFormattingRule *)self formulaCount]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->mFormulas objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->mFormulas objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (void)addFormula:(id)a3 worksheet:(id)a4
+- (void)addFormula:(id)formula worksheet:(id)worksheet
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8)
+  formulaCopy = formula;
+  worksheetCopy = worksheet;
+  if (formulaCopy)
   {
     [(NSMutableArray *)self->mFormulas addObject:?];
-    v7 = [v6 processors];
-    [v7 markObject:v8 processor:objc_opt_class()];
+    processors = [worksheetCopy processors];
+    [processors markObject:formulaCopy processor:objc_opt_class()];
   }
 }
 
 - (id)differentialStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  v5 = [v4 objectAtIndex:self->mDifferentialStyleIndex];
+  v5 = [differentialStyles objectAtIndex:self->mDifferentialStyleIndex];
 
   return v5;
 }
 
-- (void)setDifferentialStyle:(id)a3
+- (void)setDifferentialStyle:(id)style
 {
-  v6 = a3;
+  styleCopy = style;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  self->mDifferentialStyleIndex = [v5 addObject:v6];
+  self->mDifferentialStyleIndex = [differentialStyles addObject:styleCopy];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   mText = self->mText;
   p_mText = &self->mText;
-  if (mText != v5)
+  if (mText != textCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mText, a3);
-    v5 = v8;
+    v8 = textCopy;
+    objc_storeStrong(p_mText, text);
+    textCopy = v8;
   }
 }
 

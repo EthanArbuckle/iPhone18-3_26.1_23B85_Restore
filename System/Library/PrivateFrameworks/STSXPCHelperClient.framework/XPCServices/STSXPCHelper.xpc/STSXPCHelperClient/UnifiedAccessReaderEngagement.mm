@@ -1,14 +1,14 @@
 @interface UnifiedAccessReaderEngagement
 - (id)cipherSuites;
-- (void)setCipherSuites:(id)a3;
+- (void)setCipherSuites:(id)suites;
 @end
 
 @implementation UnifiedAccessReaderEngagement
 
-- (void)setCipherSuites:(id)a3
+- (void)setCipherSuites:(id)suites
 {
-  v4 = a3;
-  v5 = [[NSMutableArray alloc] initWithArray:v4];
+  suitesCopy = suites;
+  v5 = [[NSMutableArray alloc] initWithArray:suitesCopy];
 
   sub_10001B088(self, v5);
 

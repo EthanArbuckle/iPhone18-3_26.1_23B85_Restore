@@ -1,29 +1,29 @@
 @interface STReservableSpacePolicy
-+ (id)processPolicyWithErrorPtr:(id *)a3;
-+ (id)threadPolicyWithErrorPtr:(id *)a3;
-+ (void)__setErrorForPtr:(id *)a3 code:(unint64_t)a4;
-- (STReservableSpacePolicy)initWithPolicyType:(unint64_t)a3 errorPtr:(id *)a4;
++ (id)processPolicyWithErrorPtr:(id *)ptr;
++ (id)threadPolicyWithErrorPtr:(id *)ptr;
++ (void)__setErrorForPtr:(id *)ptr code:(unint64_t)code;
+- (STReservableSpacePolicy)initWithPolicyType:(unint64_t)type errorPtr:(id *)ptr;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation STReservableSpacePolicy
 
-+ (id)threadPolicyWithErrorPtr:(id *)a3
++ (id)threadPolicyWithErrorPtr:(id *)ptr
 {
-  v3 = [[STReservableSpacePolicy alloc] initWithPolicyType:0 errorPtr:a3];
+  v3 = [[STReservableSpacePolicy alloc] initWithPolicyType:0 errorPtr:ptr];
 
   return v3;
 }
 
-+ (id)processPolicyWithErrorPtr:(id *)a3
++ (id)processPolicyWithErrorPtr:(id *)ptr
 {
-  v3 = [[STReservableSpacePolicy alloc] initWithPolicyType:1 errorPtr:a3];
+  v3 = [[STReservableSpacePolicy alloc] initWithPolicyType:1 errorPtr:ptr];
 
   return v3;
 }
 
-- (STReservableSpacePolicy)initWithPolicyType:(unint64_t)a3 errorPtr:(id *)a4
+- (STReservableSpacePolicy)initWithPolicyType:(unint64_t)type errorPtr:(id *)ptr
 {
   v15.receiver = self;
   v15.super_class = STReservableSpacePolicy;
@@ -34,14 +34,14 @@
     goto LABEL_17;
   }
 
-  v6->_policyType = a3;
-  if (a3 == 1)
+  v6->_policyType = type;
+  if (type == 1)
   {
     v12 = getiopolicy_np(14, 0);
     if (v12 < 0)
     {
       v9 = objc_opt_class();
-      v10 = a4;
+      ptrCopy6 = ptr;
       v11 = 1;
       goto LABEL_16;
     }
@@ -49,7 +49,7 @@
     if (v12 == 1)
     {
       v9 = objc_opt_class();
-      v10 = a4;
+      ptrCopy6 = ptr;
       v11 = 5;
       goto LABEL_16;
     }
@@ -57,7 +57,7 @@
     if (setiopolicy_np(14, 0, 1))
     {
       v9 = objc_opt_class();
-      v10 = a4;
+      ptrCopy6 = ptr;
       v11 = 3;
       goto LABEL_16;
     }
@@ -67,7 +67,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a3)
+  if (type)
   {
     goto LABEL_17;
   }
@@ -76,7 +76,7 @@ LABEL_17:
   if (v8 < 0)
   {
     v9 = objc_opt_class();
-    v10 = a4;
+    ptrCopy6 = ptr;
     v11 = 0;
     goto LABEL_16;
   }
@@ -86,7 +86,7 @@ LABEL_17:
     if (setiopolicy_np(14, 1, 1))
     {
       v9 = objc_opt_class();
-      v10 = a4;
+      ptrCopy6 = ptr;
       v11 = 2;
       goto LABEL_16;
     }
@@ -95,10 +95,10 @@ LABEL_17:
   }
 
   v9 = objc_opt_class();
-  v10 = a4;
+  ptrCopy6 = ptr;
   v11 = 4;
 LABEL_16:
-  [v9 __setErrorForPtr:v10 code:v11];
+  [v9 __setErrorForPtr:ptrCopy6 code:v11];
   v13 = 0;
 LABEL_18:
 
@@ -109,9 +109,9 @@ LABEL_18:
 {
   if ((atomic_exchange(&self->_invalidated, 1u) & 1) == 0)
   {
-    v2 = [(STReservableSpacePolicy *)self policyType];
+    policyType = [(STReservableSpacePolicy *)self policyType];
     v3 = 2;
-    if (v2)
+    if (policyType)
     {
       v3 = 0;
       v4 = -1;
@@ -122,7 +122,7 @@ LABEL_18:
       v4 = 1;
     }
 
-    if (v2 == 1)
+    if (policyType == 1)
     {
       v5 = 3;
     }
@@ -132,7 +132,7 @@ LABEL_18:
       v5 = v3;
     }
 
-    if (v2 == 1)
+    if (policyType == 1)
     {
       v6 = 0;
     }
@@ -166,18 +166,18 @@ LABEL_18:
   [(STReservableSpacePolicy *)&v3 dealloc];
 }
 
-+ (void)__setErrorForPtr:(id *)a3 code:(unint64_t)a4
++ (void)__setErrorForPtr:(id *)ptr code:(unint64_t)code
 {
-  if (a3)
+  if (ptr)
   {
-    if (a4 > 5)
+    if (code > 5)
     {
       v6 = @"<nil>";
     }
 
     else
     {
-      v6 = *(&off_C260 + a4);
+      v6 = *(&off_C260 + code);
     }
 
     v9[0] = NSUnderlyingErrorKey;
@@ -187,7 +187,7 @@ LABEL_18:
     v10[1] = v6;
     v8 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
 
-    *a3 = [NSError errorWithDomain:@"STReservableSpacePolicyErrorDomain" code:a4 userInfo:v8];
+    *ptr = [NSError errorWithDomain:@"STReservableSpacePolicyErrorDomain" code:code userInfo:v8];
   }
 }
 

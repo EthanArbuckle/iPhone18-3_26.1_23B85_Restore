@@ -5,9 +5,9 @@
 - (NSDictionary)dictionaryValue;
 - (NSError)error;
 - (NSString)stringValue;
-- (WCAKeyValueItem)initWithCoder:(id)a3;
-- (WCAKeyValueItem)initWithKey:(id)a3 error:(id)a4;
-- (WCAKeyValueItem)initWithKey:(id)a3 value:(id)a4;
+- (WCAKeyValueItem)initWithCoder:(id)coder;
+- (WCAKeyValueItem)initWithKey:(id)key error:(id)error;
+- (WCAKeyValueItem)initWithKey:(id)key value:(id)value;
 - (double)doubleValue;
 - (float)floatValue;
 - (id)description;
@@ -15,41 +15,41 @@
 - (int64_t)int64Value;
 - (unint64_t)uint64Value;
 - (unsigned)uint32Value;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WCAKeyValueItem
 
-- (WCAKeyValueItem)initWithKey:(id)a3 value:(id)a4
+- (WCAKeyValueItem)initWithKey:(id)key value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = WCAKeyValueItem;
   v8 = [(WCAKeyValueItem *)&v13 init];
   key = v8->_key;
-  v8->_key = v6;
-  v10 = v6;
+  v8->_key = keyCopy;
+  v10 = keyCopy;
 
   value = v8->_value;
-  v8->_value = v7;
+  v8->_value = valueCopy;
 
   return v8;
 }
 
-- (WCAKeyValueItem)initWithKey:(id)a3 error:(id)a4
+- (WCAKeyValueItem)initWithKey:(id)key error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  errorCopy = error;
   v13.receiver = self;
   v13.super_class = WCAKeyValueItem;
   v8 = [(WCAKeyValueItem *)&v13 init];
   key = v8->_key;
-  v8->_key = v6;
-  v10 = v6;
+  v8->_key = keyCopy;
+  v10 = keyCopy;
 
   value = v8->_value;
-  v8->_value = v7;
+  v8->_value = errorCopy;
 
   return v8;
 }
@@ -70,21 +70,21 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   key = self->_key;
-  v5 = a3;
-  [v5 encodeObject:key forKey:@"_key"];
-  [v5 encodeObject:self->_value forKey:@"_value"];
+  coderCopy = coder;
+  [coderCopy encodeObject:key forKey:@"_key"];
+  [coderCopy encodeObject:self->_value forKey:@"_value"];
 }
 
-- (WCAKeyValueItem)initWithCoder:(id)a3
+- (WCAKeyValueItem)initWithCoder:(id)coder
 {
   v17.receiver = self;
   v17.super_class = WCAKeyValueItem;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(WCAKeyValueItem *)&v17 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"_key"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_key"];
   key = v4->_key;
   v4->_key = v5;
 
@@ -95,7 +95,7 @@
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v7 setWithObjects:{v8, v9, v10, v11, v12, objc_opt_class(), 0, v17.receiver, v17.super_class}];
-  v14 = [v3 decodeObjectOfClasses:v13 forKey:@"_value"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_value"];
 
   value = v4->_value;
   v4->_value = v14;
@@ -106,9 +106,9 @@
 - (NSDictionary)dictionaryValue
 {
   value = self->_value;
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v4;
-  if (value == v4)
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = null;
+  if (value == null)
   {
   }
 
@@ -132,9 +132,9 @@
 - (NSArray)arrayValue
 {
   value = self->_value;
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v4;
-  if (value == v4)
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = null;
+  if (value == null)
   {
   }
 
@@ -158,9 +158,9 @@
 - (double)doubleValue
 {
   value = self->_value;
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v4;
-  if (value == v4)
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = null;
+  if (value == null)
   {
   }
 
@@ -185,9 +185,9 @@
 - (float)floatValue
 {
   value = self->_value;
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v4;
-  if (value == v4)
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = null;
+  if (value == null)
   {
   }
 
@@ -212,9 +212,9 @@
 - (int)int32Value
 {
   value = self->_value;
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v4;
-  if (value == v4)
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = null;
+  if (value == null)
   {
   }
 
@@ -238,9 +238,9 @@
 - (int64_t)int64Value
 {
   value = self->_value;
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v4;
-  if (value == v4)
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = null;
+  if (value == null)
   {
   }
 
@@ -264,9 +264,9 @@
 - (unsigned)uint32Value
 {
   value = self->_value;
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v4;
-  if (value == v4)
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = null;
+  if (value == null)
   {
   }
 
@@ -290,9 +290,9 @@
 - (unint64_t)uint64Value
 {
   value = self->_value;
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v4;
-  if (value == v4)
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = null;
+  if (value == null)
   {
   }
 
@@ -316,9 +316,9 @@
 - (BOOL)BOOLValue
 {
   value = self->_value;
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v4;
-  if (value == v4)
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = null;
+  if (value == null)
   {
   }
 
@@ -342,9 +342,9 @@
 - (NSString)stringValue
 {
   value = self->_value;
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v4;
-  if (value == v4)
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = null;
+  if (value == null)
   {
   }
 
@@ -368,9 +368,9 @@
 - (NSData)bytesValue
 {
   value = self->_value;
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v4;
-  if (value == v4)
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = null;
+  if (value == null)
   {
   }
 
@@ -394,9 +394,9 @@
 - (NSError)error
 {
   value = self->_value;
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v4;
-  if (value == v4)
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = null;
+  if (value == null)
   {
   }
 

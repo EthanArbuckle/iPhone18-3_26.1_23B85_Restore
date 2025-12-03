@@ -1,35 +1,35 @@
 @interface CKDPRequestedFields
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)_CKLogToFileHandle:(id)a3 atDepth:(int)a4;
-- (void)addFields:(id)a3;
-- (void)addListField:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)_CKLogToFileHandle:(id)handle atDepth:(int)depth;
+- (void)addFields:(id)fields;
+- (void)addListField:(id)field;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRequestedFields
 
-- (void)_CKLogToFileHandle:(id)a3 atDepth:(int)a4
+- (void)_CKLogToFileHandle:(id)handle atDepth:(int)depth
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handleCopy = handle;
   v9 = objc_msgSend_fields(self, v7, v8);
   v12 = objc_msgSend_count(v9, v10, v11);
   v15 = objc_msgSend_listFields(self, v13, v14);
   v18 = objc_msgSend_count(v15, v16, v17) + v12;
 
   v19 = sub_225199CCC();
-  objc_msgSend_writeData_(v6, v20, v19);
+  objc_msgSend_writeData_(handleCopy, v20, v19);
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v49 = self;
+  selfCopy = self;
   v23 = objc_msgSend_fields(self, v21, v22);
   v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(v23, v24, &v54, v59, 16);
   if (v25)
@@ -48,11 +48,11 @@
           objc_enumerationMutation(v23);
         }
 
-        objc_msgSend__CKLogToFileHandle_atDepth_(*(*(&v54 + 1) + 8 * v30), v26, v6, (a4 + 1));
+        objc_msgSend__CKLogToFileHandle_atDepth_(*(*(&v54 + 1) + 8 * v30), v26, handleCopy, (depth + 1));
         if (v31 < v18)
         {
           v32 = sub_225199D20();
-          objc_msgSend_writeData_(v6, v33, v32);
+          objc_msgSend_writeData_(handleCopy, v33, v32);
         }
 
         ++v30;
@@ -76,7 +76,7 @@
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v36 = objc_msgSend_listFields(v49, v34, v35);
+  v36 = objc_msgSend_listFields(selfCopy, v34, v35);
   v38 = objc_msgSend_countByEnumeratingWithState_objects_count_(v36, v37, &v50, v58, 16);
   if (v38)
   {
@@ -93,11 +93,11 @@
           objc_enumerationMutation(v36);
         }
 
-        objc_msgSend__CKLogToFileHandle_atDepth_(*(*(&v50 + 1) + 8 * v42), v39, v6, (a4 + 1));
+        objc_msgSend__CKLogToFileHandle_atDepth_(*(*(&v50 + 1) + 8 * v42), v39, handleCopy, (depth + 1));
         if (v43 < v18)
         {
           v44 = sub_225199D20();
-          objc_msgSend_writeData_(v6, v45, v44);
+          objc_msgSend_writeData_(handleCopy, v45, v44);
         }
 
         ++v42;
@@ -113,45 +113,45 @@
   }
 
   v46 = sub_225199D74();
-  objc_msgSend_writeData_(v6, v47, v46);
+  objc_msgSend_writeData_(handleCopy, v47, v46);
 
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addFields:(id)a3
+- (void)addFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   fields = self->_fields;
-  v8 = v4;
+  v8 = fieldsCopy;
   if (!fields)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_fields;
     self->_fields = v6;
 
-    v4 = v8;
+    fieldsCopy = v8;
     fields = self->_fields;
   }
 
-  objc_msgSend_addObject_(fields, v4, v4);
+  objc_msgSend_addObject_(fields, fieldsCopy, fieldsCopy);
 }
 
-- (void)addListField:(id)a3
+- (void)addListField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   listFields = self->_listFields;
-  v8 = v4;
+  v8 = fieldCopy;
   if (!listFields)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_listFields;
     self->_listFields = v6;
 
-    v4 = v8;
+    fieldCopy = v8;
     listFields = self->_listFields;
   }
 
-  objc_msgSend_addObject_(listFields, v4, v4);
+  objc_msgSend_addObject_(listFields, fieldCopy, fieldCopy);
 }
 
 - (id)description
@@ -249,10 +249,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -320,12 +320,12 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v25 = a3;
+  toCopy = to;
   if (objc_msgSend_fieldsCount(self, v4, v5))
   {
-    objc_msgSend_clearFields(v25, v6, v7);
+    objc_msgSend_clearFields(toCopy, v6, v7);
     v10 = objc_msgSend_fieldsCount(self, v8, v9);
     if (v10)
     {
@@ -333,14 +333,14 @@
       for (i = 0; i != v11; ++i)
       {
         v13 = objc_msgSend_fieldsAtIndex_(self, v6, i);
-        objc_msgSend_addFields_(v25, v14, v13);
+        objc_msgSend_addFields_(toCopy, v14, v13);
       }
     }
   }
 
   if (objc_msgSend_listFieldsCount(self, v6, v7))
   {
-    objc_msgSend_clearListFields(v25, v15, v16);
+    objc_msgSend_clearListFields(toCopy, v15, v16);
     v19 = objc_msgSend_listFieldsCount(self, v17, v18);
     if (v19)
     {
@@ -348,17 +348,17 @@
       for (j = 0; j != v21; ++j)
       {
         v23 = objc_msgSend_listFieldAtIndex_(self, v20, j);
-        objc_msgSend_addListField_(v25, v24, v23);
+        objc_msgSend_addListField_(toCopy, v24, v23);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v41 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v35 = 0u;
   v36 = 0u;
@@ -380,7 +380,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v35 + 1) + 8 * v17), v14, a3);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v35 + 1) + 8 * v17), v14, zone);
         objc_msgSend_addFields_(v10, v19, v18);
 
         ++v17;
@@ -413,7 +413,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v27 = objc_msgSend_copyWithZone_(*(*(&v31 + 1) + 8 * v26), v23, a3, v31);
+        v27 = objc_msgSend_copyWithZone_(*(*(&v31 + 1) + 8 * v26), v23, zone, v31);
         objc_msgSend_addListField_(v10, v28, v27);
 
         ++v26;
@@ -430,14 +430,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((fields = self->_fields, v9 = v4[1], !(fields | v9)) || objc_msgSend_isEqual_(fields, v7, v9)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((fields = self->_fields, v9 = equalCopy[1], !(fields | v9)) || objc_msgSend_isEqual_(fields, v7, v9)))
   {
     listFields = self->_listFields;
-    v11 = v4[2];
+    v11 = equalCopy[2];
     if (listFields | v11)
     {
       isEqual = objc_msgSend_isEqual_(listFields, v7, v11);
@@ -457,15 +457,15 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v24, v29, 16);
   if (v7)
   {
@@ -495,7 +495,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = v4[2];
+  v12 = fromCopy[2];
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v20, v28, 16);
   if (v14)
   {

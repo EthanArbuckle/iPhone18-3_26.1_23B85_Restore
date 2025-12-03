@@ -1,20 +1,20 @@
 @interface HUNearbyAccessoriesViewController
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginPresentationWithContext:(id)a4;
-- (BOOL)shouldShowHeaderForSection:(id)a3;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUNearbyAccessoriesViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4;
-- (HUNearbyAccessoriesViewController)initWithSourceItem:(id)a3 supportsQuickControls:(BOOL)a4;
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginPresentationWithContext:(id)context;
+- (BOOL)shouldShowHeaderForSection:(id)section;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUNearbyAccessoriesViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout;
+- (HUNearbyAccessoriesViewController)initWithSourceItem:(id)item supportsQuickControls:(BOOL)controls;
 - (HUPresentationDelegate)presentationDelegate;
-- (id)displayedItemsInSection:(id)a3;
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4;
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3;
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)itemManager:(id)a3 didUpdateResultsForSourceItem:(id)a4;
-- (void)itemManagerDidFinishUpdate:(id)a3;
+- (id)displayedItemsInSection:(id)section;
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated;
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager;
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)itemManager:(id)manager didUpdateResultsForSourceItem:(id)item;
+- (void)itemManagerDidFinishUpdate:(id)update;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUNearbyAccessoriesViewController
@@ -27,30 +27,30 @@
   return Strong;
 }
 
-- (HUNearbyAccessoriesViewController)initWithSourceItem:(id)a3 supportsQuickControls:(BOOL)a4
+- (HUNearbyAccessoriesViewController)initWithSourceItem:(id)item supportsQuickControls:(BOOL)controls
 {
-  v5 = a3;
-  v6 = sub_20CF3E378(v5, a4);
+  itemCopy = item;
+  v6 = sub_20CF3E378(itemCopy, controls);
 
   return v6;
 }
 
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   swift_getObjectType();
-  if (swift_conformsToProtocol2() && a3)
+  if (swift_conformsToProtocol2() && presentation)
   {
-    v7 = a3;
-    v8 = self;
-    v9 = [v7 hu:-[HUControllableItemCollectionViewController controlsWantSystemPresentationAnimations](v8 dismissViewControllerAnimated:sel_controlsWantSystemPresentationAnimations)];
+    presentationCopy = presentation;
+    selfCopy = self;
+    v9 = [presentationCopy hu:-[HUControllableItemCollectionViewController controlsWantSystemPresentationAnimations](selfCopy dismissViewControllerAnimated:sel_controlsWantSystemPresentationAnimations)];
 
     v10 = v9;
   }
 
   else
   {
-    v10 = [(UIViewController *)self hu_dismissViewControllerAnimated:v4];
+    v10 = [(UIViewController *)self hu_dismissViewControllerAnimated:animatedCopy];
   }
 
   return v10;
@@ -58,46 +58,46 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CF3C458();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for NearbyAccessoriesViewController();
   v4 = v5.receiver;
-  [(HUControllableItemCollectionViewController *)&v5 viewDidAppear:v3];
+  [(HUControllableItemCollectionViewController *)&v5 viewDidAppear:appearCopy];
   sub_20CF3D0D8();
 }
 
 - (void)updateViewConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CF3C944();
 }
 
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_20CF3D4A4(a3, a4);
+  selfCopy = self;
+  v8 = sub_20CF3D4A4(section, environment);
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
   v5 = sub_20D5638C8();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D563878();
-  v9 = [a3 conformsToProtocol_];
+  conformsToProtocol_ = [item conformsToProtocol_];
   (*(v6 + 8))(v8, v5);
-  if (v9)
+  if (conformsToProtocol_)
   {
     type metadata accessor for AccessoryTileCell();
   }
@@ -110,32 +110,32 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20CF3D760(v6, v7);
+  cellCopy = cell;
+  itemCopy = item;
+  selfCopy = self;
+  sub_20CF3D760(cellCopy, itemCopy);
 }
 
-- (void)itemManager:(id)a3 didUpdateResultsForSourceItem:(id)a4
+- (void)itemManager:(id)manager didUpdateResultsForSourceItem:(id)item
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for NearbyAccessoriesViewController();
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  itemCopy = item;
   v8 = v9.receiver;
-  [(HUItemCollectionViewController *)&v9 itemManager:v6 didUpdateResultsForSourceItem:v7];
+  [(HUItemCollectionViewController *)&v9 itemManager:managerCopy didUpdateResultsForSourceItem:itemCopy];
   sub_20CF3D0D8();
 }
 
-- (void)itemManagerDidFinishUpdate:(id)a3
+- (void)itemManagerDidFinishUpdate:(id)update
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for NearbyAccessoriesViewController();
-  v4 = a3;
+  updateCopy = update;
   v5 = v9.receiver;
-  [(HUItemCollectionViewController *)&v9 itemManagerDidFinishUpdate:v4];
+  [(HUItemCollectionViewController *)&v9 itemManagerDidFinishUpdate:updateCopy];
   v6 = &v5[OBJC_IVAR___HUNearbyAccessoriesViewController_nearbyAccessoriesDelegate];
   swift_beginAccess();
   if (swift_unknownObjectWeakLoadStrong())
@@ -147,12 +147,12 @@
   }
 }
 
-- (id)displayedItemsInSection:(id)a3
+- (id)displayedItemsInSection:(id)section
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(HUItemCollectionViewController *)v5 itemManager];
-  v7 = [(HFItemManager *)v6 displayedItemsInSectionWithIdentifier:v4];
+  sectionCopy = section;
+  selfCopy = self;
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
+  v7 = [(HFItemManager *)itemManager displayedItemsInSectionWithIdentifier:sectionCopy];
 
   if (!v7)
   {
@@ -164,16 +164,16 @@
   return v7;
 }
 
-- (BOOL)shouldShowHeaderForSection:(id)a3
+- (BOOL)shouldShowHeaderForSection:(id)section
 {
   sub_20D567838();
-  v4 = self;
-  v5 = [(HUItemCollectionViewController *)v4 itemManager];
+  selfCopy = self;
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
   v6 = sub_20D5677F8();
-  v7 = [(HFItemManager *)v5 sectionIndexForDisplayedSectionIdentifier:v6];
+  v7 = [(HFItemManager *)itemManager sectionIndexForDisplayedSectionIdentifier:v6];
 
-  v8 = [(HUItemCollectionViewController *)v4 itemManager];
-  v9 = [(HFItemManager *)v8 titleForSection:v7];
+  itemManager2 = [(HUItemCollectionViewController *)selfCopy itemManager];
+  v9 = [(HFItemManager *)itemManager2 titleForSection:v7];
 
   if (v9)
   {
@@ -182,12 +182,12 @@
   return v9 != 0;
 }
 
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginPresentationWithContext:(id)a4
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginPresentationWithContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for NearbyAccessoriesViewController();
   v6 = v9.receiver;
-  if ([(HUControllableItemCollectionViewController *)&v9 presentationCoordinator:a3 shouldBeginPresentationWithContext:a4])
+  if ([(HUControllableItemCollectionViewController *)&v9 presentationCoordinator:coordinator shouldBeginPresentationWithContext:context])
   {
     v7 = v6[OBJC_IVAR___HUNearbyAccessoriesViewController_supportsQuickControls];
   }
@@ -200,14 +200,14 @@
   return v7;
 }
 
-- (HUNearbyAccessoriesViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4
+- (HUNearbyAccessoriesViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

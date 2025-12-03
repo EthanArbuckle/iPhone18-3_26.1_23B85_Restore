@@ -1,38 +1,38 @@
 @interface RDUserData
-+ (void)fetchUserDataWithLanguage:(id)a3 keepGoing:(id)a4 completion:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (RDUserData)initWithCoder:(id)a3;
-- (id)_initWithLanguage:(id)a3;
++ (void)fetchUserDataWithLanguage:(id)language keepGoing:(id)going completion:(id)completion;
+- (BOOL)isEqual:(id)equal;
+- (RDUserData)initWithCoder:(id)coder;
+- (id)_initWithLanguage:(id)language;
 - (id)debugDescription;
 - (id)description;
-- (void)_fetchContactsWithKeepGoing:(id)a3;
+- (void)_fetchContactsWithKeepGoing:(id)going;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RDUserData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   language = self->_language;
-  v5 = a3;
-  [v5 encodeObject:language forKey:@"_language"];
-  [v5 encodeObject:self->_contactsWords forKey:@"_contactsWords"];
+  coderCopy = coder;
+  [coderCopy encodeObject:language forKey:@"_language"];
+  [coderCopy encodeObject:self->_contactsWords forKey:@"_contactsWords"];
 }
 
-- (RDUserData)initWithCoder:(id)a3
+- (RDUserData)initWithCoder:(id)coder
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RDUserData *)self init];
   if (v5)
   {
-    v21 = v4;
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_language"];
+    v21 = coderCopy;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_language"];
     language = v5->_language;
     v5->_language = v6;
 
-    v19 = v4;
+    v19 = coderCopy;
     v20 = [v19 decodePropertyListForKey:@"_contactsWords"];
     objc_opt_class();
     v8 = v20;
@@ -107,7 +107,7 @@ LABEL_15:
     contactsWords = v5->_contactsWords;
     v5->_contactsWords = v15;
 
-    v4 = v21;
+    coderCopy = v21;
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -134,10 +134,10 @@ LABEL_15:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -147,7 +147,7 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       language = self->_language;
       if (language == v5->_language || [(NSString *)language isEqual:?])
       {
@@ -178,10 +178,10 @@ LABEL_15:
   return v8;
 }
 
-- (void)_fetchContactsWithKeepGoing:(id)a3
+- (void)_fetchContactsWithKeepGoing:(id)going
 {
   v51[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  goingCopy = going;
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
@@ -206,7 +206,7 @@ LABEL_15:
   v37[1] = 3221225472;
   v37[2] = sub_272362C20;
   v37[3] = &unk_279E40588;
-  v11 = v4;
+  v11 = goingCopy;
   v39 = v11;
   v40 = &v43;
   v12 = v5;
@@ -241,9 +241,9 @@ LABEL_15:
 
   else
   {
-    v18 = [v14 localizedFailureReason];
-    v19 = v18;
-    printf("Could not get contacts for offline recognition: %s\n", [v18 UTF8String]);
+    localizedFailureReason = [v14 localizedFailureReason];
+    v19 = localizedFailureReason;
+    printf("Could not get contacts for offline recognition: %s\n", [localizedFailureReason UTF8String]);
   }
 
   v20 = v34[3];
@@ -274,15 +274,15 @@ LABEL_15:
   [(RDUserData *)&v5 dealloc];
 }
 
-- (id)_initWithLanguage:(id)a3
+- (id)_initWithLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v10.receiver = self;
   v10.super_class = RDUserData;
   v5 = [(RDUserData *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [languageCopy copy];
     language = v5->_language;
     v5->_language = v6;
 
@@ -293,17 +293,17 @@ LABEL_15:
   return v5;
 }
 
-+ (void)fetchUserDataWithLanguage:(id)a3 keepGoing:(id)a4 completion:(id)a5
++ (void)fetchUserDataWithLanguage:(id)language keepGoing:(id)going completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[RDUserData alloc] _initWithLanguage:v7];
+  languageCopy = language;
+  goingCopy = going;
+  completionCopy = completion;
+  v10 = [[RDUserData alloc] _initWithLanguage:languageCopy];
   v11 = dispatch_group_create();
   v12 = MEMORY[0x277CCACA8];
   v13 = objc_opt_class();
-  v14 = [v12 stringWithFormat:@"%s.%@", class_getName(v13), v7];
-  v15 = dispatch_queue_create([v14 UTF8String], 0);
+  languageCopy = [v12 stringWithFormat:@"%s.%@", class_getName(v13), languageCopy];
+  v15 = dispatch_queue_create([languageCopy UTF8String], 0);
 
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
@@ -311,7 +311,7 @@ LABEL_15:
   v40[3] = &unk_279E405F8;
   v16 = v10;
   v41 = v16;
-  v17 = v8;
+  v17 = goingCopy;
   v42 = v17;
   v18 = v11;
   v19 = v15;
@@ -339,8 +339,8 @@ LABEL_15:
 
   else
   {
-    v34 = v9;
-    v35 = v7;
+    v34 = completionCopy;
+    v35 = languageCopy;
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = sub_272363924;
@@ -351,8 +351,8 @@ LABEL_15:
     v56[1] = v56;
     v56[2] = 0x2020000000;
     v57 = 0;
-    v22 = [MEMORY[0x277CCAC38] processInfo];
-    [v22 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v24 = v23;
 
     v25 = dispatch_time(0, 15000000000);
@@ -385,8 +385,8 @@ LABEL_15:
     dispatch_async(v28, v43);
 
     _Block_object_dispose(v56, 8);
-    v9 = v34;
-    v7 = v35;
+    completionCopy = v34;
+    languageCopy = v35;
   }
 
   _Block_object_dispose(&v63, 8);
@@ -394,12 +394,12 @@ LABEL_15:
   v36[1] = 3221225472;
   v36[2] = sub_272363B14;
   v36[3] = &unk_279E40620;
-  v38 = v9;
+  v38 = completionCopy;
   v39 = v17;
   v37 = v16;
   v31 = v16;
   v32 = v17;
-  v33 = v9;
+  v33 = completionCopy;
   dispatch_group_notify(v18, v19, v36);
 }
 

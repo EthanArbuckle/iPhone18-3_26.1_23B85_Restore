@@ -1,12 +1,12 @@
 @interface AAWalrusRecoveryKeyRemovalViewModel
-- (id)initWhenAccountHasRecoveryContact:(BOOL)a3;
+- (id)initWhenAccountHasRecoveryContact:(BOOL)contact;
 @end
 
 @implementation AAWalrusRecoveryKeyRemovalViewModel
 
-- (id)initWhenAccountHasRecoveryContact:(BOOL)a3
+- (id)initWhenAccountHasRecoveryContact:(BOOL)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v17.receiver = self;
   v17.super_class = AAWalrusRecoveryKeyRemovalViewModel;
   v4 = [(AAAccountContactPromptModel *)&v17 init];
@@ -18,7 +18,7 @@
 
     v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     v8 = v7;
-    if (v3)
+    if (contactCopy)
     {
       v9 = [v7 localizedStringForKey:@"REMOVE_RECOVERY_KEY_DETAIL_HAS_RC" value:0 table:@"Localizable-Walrus"];
       [(AAAccountContactPromptModel *)v4 setDetailsSubtitle:v9];

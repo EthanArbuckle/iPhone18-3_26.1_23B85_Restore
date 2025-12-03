@@ -1,18 +1,18 @@
 @interface PXDuplicateAssetsAction
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection;
 - (NSString)extractStillConfirmationAlertAsLiveButtonTitle;
 - (NSString)extractStillConfirmationAlertAsStillButtonTitle;
 - (NSString)extractStillConfirmationAlertTitle;
 - (PHFetchResult)createdAssets;
-- (PXDuplicateAssetsAction)initWithSelectionSnapshot:(id)a3;
+- (PXDuplicateAssetsAction)initWithSelectionSnapshot:(id)snapshot;
 - (void)_checkDuplicateCapabilities;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
-- (void)setActionProgress:(id)a3;
-- (void)setDownloadCompletionHandler:(id)a3;
-- (void)setDuplicatesAsStill:(BOOL)a3;
-- (void)setDuplicatesOriginal:(BOOL)a3;
-- (void)setStillImageTime:(id *)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
+- (void)setActionProgress:(id)progress;
+- (void)setDownloadCompletionHandler:(id)handler;
+- (void)setDuplicatesAsStill:(BOOL)still;
+- (void)setDuplicatesOriginal:(BOOL)original;
+- (void)setStillImageTime:(id *)time;
 @end
 
 @implementation PXDuplicateAssetsAction
@@ -23,8 +23,8 @@
   {
     v3 = MEMORY[0x1E6978630];
     createdAssetLocalIdentifiers = self->_createdAssetLocalIdentifiers;
-    v5 = [(PXPhotosAction *)self standardFetchOptions];
-    v6 = [v3 fetchAssetsWithLocalIdentifiers:createdAssetLocalIdentifiers options:v5];
+    standardFetchOptions = [(PXPhotosAction *)self standardFetchOptions];
+    v6 = [v3 fetchAssetsWithLocalIdentifiers:createdAssetLocalIdentifiers options:standardFetchOptions];
     createdAssets = self->_createdAssets;
     self->_createdAssets = v6;
   }
@@ -34,19 +34,19 @@
   return v8;
 }
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   v4 = MEMORY[0x1E6978630];
   createdAssetLocalIdentifiers = self->_createdAssetLocalIdentifiers;
-  v6 = a3;
-  v7 = [(PXPhotosAction *)self standardFetchOptions];
-  v13 = [v4 fetchAssetsWithLocalIdentifiers:createdAssetLocalIdentifiers options:v7];
+  undoCopy = undo;
+  standardFetchOptions = [(PXPhotosAction *)self standardFetchOptions];
+  v13 = [v4 fetchAssetsWithLocalIdentifiers:createdAssetLocalIdentifiers options:standardFetchOptions];
 
   v8 = objc_alloc_init(MEMORY[0x1E69786A0]);
   [v8 setExpungeSource:4];
   v9 = MEMORY[0x1E6978648];
-  v10 = [(PXPhotosAction *)self photoLibrary];
-  [v9 performBatchExpungeWithAssets:v13 deleteOptions:v8 photoLibrary:v10 completionHandler:v6];
+  photoLibrary = [(PXPhotosAction *)self photoLibrary];
+  [v9 performBatchExpungeWithAssets:v13 deleteOptions:v8 photoLibrary:photoLibrary completionHandler:undoCopy];
 
   v11 = self->_createdAssetLocalIdentifiers;
   self->_createdAssetLocalIdentifiers = 0;
@@ -55,9 +55,9 @@
   self->_createdAssets = 0;
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   [(PXDuplicateAssetsAction *)self _checkDuplicateCapabilities];
   v6 = [[PXPhotoKitAssetLocalAvailabilityHelper alloc] initWithAssets:self->_originalAssets treatLivePhotoAsStill:self->_duplicatesAsStill];
   v7 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
@@ -65,18 +65,18 @@
   v14 = 3221225472;
   v15 = __41__PXDuplicateAssetsAction_performAction___block_invoke;
   v16 = &unk_1E7746F80;
-  v17 = self;
+  selfCopy = self;
   v18 = v7;
-  v19 = v5;
+  v19 = actionCopy;
   v20 = a2;
-  v8 = v5;
+  v8 = actionCopy;
   v9 = v7;
   v10 = [(PXPhotoKitAssetLocalAvailabilityHelper *)v6 ensureLocalAvailabilityOfAssetsWithCompletionHandler:&v13];
   v11 = [(PXDuplicateAssetsAction *)self assetCount:v13];
-  v12 = [(PXDuplicateAssetsAction *)self actionProgress];
-  [v12 setTotalUnitCount:100 * v11];
-  [v12 addChild:v10 withPendingUnitCount:75 * v11];
-  [v12 addChild:v9 withPendingUnitCount:25 * v11];
+  actionProgress = [(PXDuplicateAssetsAction *)self actionProgress];
+  [actionProgress setTotalUnitCount:100 * v11];
+  [actionProgress addChild:v10 withPendingUnitCount:75 * v11];
+  [actionProgress addChild:v9 withPendingUnitCount:25 * v11];
 }
 
 void __41__PXDuplicateAssetsAction_performAction___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -224,59 +224,59 @@ void __41__PXDuplicateAssetsAction_performAction___block_invoke_5(uint64_t a1)
   *(v3 + 128) = v2;
 }
 
-- (void)setDownloadCompletionHandler:(id)a3
+- (void)setDownloadCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   downloadCompletionHandler = self->_downloadCompletionHandler;
   self->_downloadCompletionHandler = v4;
 }
 
-- (void)setActionProgress:(id)a3
+- (void)setActionProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   if ([(PXAction *)self executionStarted])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXDuplicateAssetsAction.m" lineNumber:148 description:{@"%s cannot be called after the receiver has started executing.", "-[PXDuplicateAssetsAction setActionProgress:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDuplicateAssetsAction.m" lineNumber:148 description:{@"%s cannot be called after the receiver has started executing.", "-[PXDuplicateAssetsAction setActionProgress:]"}];
   }
 
   actionProgress = self->_actionProgress;
-  self->_actionProgress = v5;
+  self->_actionProgress = progressCopy;
 }
 
-- (void)setStillImageTime:(id *)a3
+- (void)setStillImageTime:(id *)time
 {
   if ([(PXAction *)self executionStarted])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXDuplicateAssetsAction.m" lineNumber:143 description:{@"%s cannot be called after the receiver has started executing.", "-[PXDuplicateAssetsAction setStillImageTime:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDuplicateAssetsAction.m" lineNumber:143 description:{@"%s cannot be called after the receiver has started executing.", "-[PXDuplicateAssetsAction setStillImageTime:]"}];
   }
 
-  var3 = a3->var3;
-  *&self->_stillImageTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_stillImageTime.value = *&time->var0;
   self->_stillImageTime.epoch = var3;
 }
 
-- (void)setDuplicatesAsStill:(BOOL)a3
+- (void)setDuplicatesAsStill:(BOOL)still
 {
   if ([(PXAction *)self executionStarted])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXDuplicateAssetsAction.m" lineNumber:138 description:{@"%s cannot be called after the receiver has started executing.", "-[PXDuplicateAssetsAction setDuplicatesAsStill:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDuplicateAssetsAction.m" lineNumber:138 description:{@"%s cannot be called after the receiver has started executing.", "-[PXDuplicateAssetsAction setDuplicatesAsStill:]"}];
   }
 
-  self->_duplicatesAsStill = a3;
+  self->_duplicatesAsStill = still;
 }
 
-- (void)setDuplicatesOriginal:(BOOL)a3
+- (void)setDuplicatesOriginal:(BOOL)original
 {
   if ([(PXAction *)self executionStarted])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXDuplicateAssetsAction.m" lineNumber:133 description:{@"%s cannot be called after the receiver has started executing.", "-[PXDuplicateAssetsAction setDuplicatesOriginal:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDuplicateAssetsAction.m" lineNumber:133 description:{@"%s cannot be called after the receiver has started executing.", "-[PXDuplicateAssetsAction setDuplicatesOriginal:]"}];
   }
 
-  self->_duplicatesOriginal = a3;
+  self->_duplicatesOriginal = original;
 }
 
 - (NSString)extractStillConfirmationAlertAsStillButtonTitle
@@ -484,11 +484,11 @@ LABEL_26:
   }
 }
 
-- (PXDuplicateAssetsAction)initWithSelectionSnapshot:(id)a3
+- (PXDuplicateAssetsAction)initWithSelectionSnapshot:(id)snapshot
 {
   v8.receiver = self;
   v8.super_class = PXDuplicateAssetsAction;
-  v3 = [(PXAssetsSelectionAction *)&v8 initWithSelectionSnapshot:a3];
+  v3 = [(PXAssetsSelectionAction *)&v8 initWithSelectionSnapshot:snapshot];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -503,21 +503,21 @@ LABEL_26:
   return v3;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v4 = a3;
-  if (([v4 isTrashed] & 1) != 0 || (objc_msgSend(v4, "isRecoveredAsset") & 1) != 0 || objc_msgSend(v4, "sourceType") == 2 || objc_msgSend(v4, "sourceType") == 8)
+  assetCopy = asset;
+  if (([assetCopy isTrashed] & 1) != 0 || (objc_msgSend(assetCopy, "isRecoveredAsset") & 1) != 0 || objc_msgSend(assetCopy, "sourceType") == 2 || objc_msgSend(assetCopy, "sourceType") == 8)
   {
     goto LABEL_5;
   }
 
-  if (![v4 px_isSyndicatedAsset])
+  if (![assetCopy px_isSyndicatedAsset])
   {
     LOBYTE(v5) = 1;
     goto LABEL_6;
   }
 
-  if (![v4 px_isUnsavedSyndicatedAsset])
+  if (![assetCopy px_isUnsavedSyndicatedAsset])
   {
 LABEL_5:
     LOBYTE(v5) = 0;
@@ -525,7 +525,7 @@ LABEL_5:
 
   else
   {
-    v5 = [v4 px_isSyndicationPhotoLibraryAsset] ^ 1;
+    v5 = [assetCopy px_isSyndicationPhotoLibraryAsset] ^ 1;
   }
 
 LABEL_6:

@@ -1,5 +1,5 @@
 @interface _UIWebHighlightLongPressGestureRecognizer
-- (_UIWebHighlightLongPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_UIWebHighlightLongPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)cancel;
 @end
 
@@ -11,10 +11,10 @@
   {
     if ((*(&self->super.super._gestureFlags + 4) & 8) != 0)
     {
-      v3 = [(UIGestureRecognizer *)self state];
-      if (v3 <= UIGestureRecognizerStateChanged)
+      state = [(UIGestureRecognizer *)self state];
+      if (state <= UIGestureRecognizerStateChanged)
       {
-        v4 = qword_18A683E40[v3];
+        v4 = qword_18A683E40[state];
 
         [(UIGestureRecognizer *)self setState:v4];
       }
@@ -22,11 +22,11 @@
   }
 }
 
-- (_UIWebHighlightLongPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIWebHighlightLongPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UIWebHighlightLongPressGestureRecognizer;
-  v4 = [(UILongPressGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UILongPressGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {

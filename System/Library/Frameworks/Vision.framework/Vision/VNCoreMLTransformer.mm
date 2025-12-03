@@ -1,17 +1,17 @@
 @interface VNCoreMLTransformer
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (VNCoreMLTransformer)initWithOptions:(id)a3 model:(id)a4 error:(id *)a5;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (VNCoreMLTransformer)initWithOptions:(id)options model:(id)model error:(id *)error;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNCoreMLTransformer
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v185[16] = *MEMORY[0x1E69E9840];
-  v171 = a5;
-  v173 = a8;
+  optionsCopy = options;
+  errorCopy = error;
   v170 = [VNValidationUtilities originatingRequestSpecifierInOptions:"originatingRequestSpecifierInOptions:error:" error:?];
   if (!v170)
   {
@@ -19,36 +19,36 @@
     goto LABEL_117;
   }
 
-  v12 = [(VNCoreMLTransformer *)self model];
-  v13 = v171;
-  v172 = v12;
+  model = [(VNCoreMLTransformer *)self model];
+  v13 = optionsCopy;
+  v172 = model;
   if (self)
   {
-    v14 = [v12 scenePrintRequestSpecifier];
+    scenePrintRequestSpecifier = [model scenePrintRequestSpecifier];
 
-    if (v14)
+    if (scenePrintRequestSpecifier)
     {
       v185[0] = 0;
-      v15 = [VNValidationUtilities getArray:v185 forKey:@"VNDetectorProcessOption_ScenePrints" inOptions:v13 withElementsOfClass:objc_opt_class() requiredMinimumCount:1 allowedMaximumCount:1 error:v173];
+      v15 = [VNValidationUtilities getArray:v185 forKey:@"VNDetectorProcessOption_ScenePrints" inOptions:v13 withElementsOfClass:objc_opt_class() requiredMinimumCount:1 allowedMaximumCount:1 error:errorCopy];
       v16 = v185[0];
       v17 = v16;
       if (v15)
       {
         v18 = [v16 objectAtIndexedSubscript:0];
         v19 = v13;
-        if (v12)
+        if (model)
         {
           v20 = [VNSceneprintMLFeatureProvider alloc];
           v22 = v172[13];
           v21 = v172[14];
-          v23 = [v172 featureProvider];
-          v24 = [(VNSceneprintMLFeatureProvider *)v20 initWithSceneprint:v18 dataType:v21 forKey:v22 originalFeatureProvider:v23];
+          featureProvider = [v172 featureProvider];
+          v24 = [(VNSceneprintMLFeatureProvider *)v20 initWithSceneprint:v18 dataType:v21 forKey:v22 originalFeatureProvider:featureProvider];
 
-          v25 = [(VNCoreMLModel *)v172 _configuredMLPredictionOptionsForOptions:v19 error:v173];
+          v25 = [(VNCoreMLModel *)v172 _configuredMLPredictionOptionsForOptions:v19 error:errorCopy];
           if (v25)
           {
-            v26 = [v172 model];
-            v169 = [v26 predictionFromFeatures:v24 options:v25 error:v173];
+            model2 = [v172 model];
+            v169 = [model2 predictionFromFeatures:v24 options:v25 error:errorCopy];
           }
 
           else
@@ -71,28 +71,28 @@
 
     else
     {
-      v28 = [v12 detectionPrintRequestSpecifier];
+      detectionPrintRequestSpecifier = [model detectionPrintRequestSpecifier];
 
-      if (v28)
+      if (detectionPrintRequestSpecifier)
       {
-        v29 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNCoreMLTransformerProcessOption_Detectionprint" inOptions:v13 error:v173];
+        v29 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNCoreMLTransformerProcessOption_Detectionprint" inOptions:v13 error:errorCopy];
         v30 = v29;
         if (v29)
         {
           v31 = v29;
           v32 = v13;
-          if (v12)
+          if (model)
           {
             v33 = [VNDetectionprintMLFeatureProvider alloc];
-            v34 = [v172 detectionPrintInputDescriptions];
-            v35 = [v172 featureProvider];
-            v36 = [(VNDetectionprintMLFeatureProvider *)v33 initWithDetectionprint:v31 featureDescriptions:v34 originalFeatureProvider:v35];
+            detectionPrintInputDescriptions = [v172 detectionPrintInputDescriptions];
+            featureProvider2 = [v172 featureProvider];
+            v36 = [(VNDetectionprintMLFeatureProvider *)v33 initWithDetectionprint:v31 featureDescriptions:detectionPrintInputDescriptions originalFeatureProvider:featureProvider2];
 
-            v37 = [(VNCoreMLModel *)v172 _configuredMLPredictionOptionsForOptions:v32 error:v173];
+            v37 = [(VNCoreMLModel *)v172 _configuredMLPredictionOptionsForOptions:v32 error:errorCopy];
             if (v37)
             {
-              v38 = [v172 model];
-              v169 = [v38 predictionFromFeatures:v36 options:v37 error:v173];
+              model3 = [v172 model];
+              v169 = [model3 predictionFromFeatures:v36 options:v37 error:errorCopy];
             }
 
             else
@@ -115,7 +115,7 @@
 
       else
       {
-        v169 = [v12 predictWithCVPixelBuffer:a4 options:v13 error:v173];
+        v169 = [model predictWithCVPixelBuffer:buffer options:v13 error:errorCopy];
       }
     }
   }
@@ -127,12 +127,12 @@
 
   if (v169)
   {
-    v39 = [v172 modelType];
-    if (v39 > 3)
+    modelType = [v172 modelType];
+    if (modelType > 3)
     {
-      if (v39 != 4)
+      if (modelType != 4)
       {
-        if (v39 != 5)
+        if (modelType != 5)
         {
           goto LABEL_29;
         }
@@ -145,37 +145,37 @@ LABEL_48:
         v158 = v53;
         if (self)
         {
-          v54 = [v53 boundingBoxOutputDescription];
-          v55 = [v54 coordinatesFeatureName];
-          v155 = [v164 featureValueForName:v55];
+          boundingBoxOutputDescription = [v53 boundingBoxOutputDescription];
+          coordinatesFeatureName = [boundingBoxOutputDescription coordinatesFeatureName];
+          v155 = [v164 featureValueForName:coordinatesFeatureName];
 
-          v56 = [v158 boundingBoxOutputDescription];
-          v57 = [v56 confidenceFeatureName];
-          v153 = [v164 featureValueForName:v57];
+          boundingBoxOutputDescription2 = [v158 boundingBoxOutputDescription];
+          confidenceFeatureName = [boundingBoxOutputDescription2 confidenceFeatureName];
+          v153 = [v164 featureValueForName:confidenceFeatureName];
 
           if ([v155 type] == 5 && objc_msgSend(v153, "type") == 5)
           {
-            v146 = [v155 multiArrayValue];
-            v161 = [v153 multiArrayValue];
-            v143 = [v146 shape];
-            v142 = [v161 shape];
-            v58 = [v146 strides];
-            v59 = [v58 objectAtIndexedSubscript:0];
-            v140 = [v59 unsignedIntegerValue];
+            multiArrayValue = [v155 multiArrayValue];
+            multiArrayValue2 = [v153 multiArrayValue];
+            shape = [multiArrayValue shape];
+            shape2 = [multiArrayValue2 shape];
+            strides = [multiArrayValue strides];
+            v59 = [strides objectAtIndexedSubscript:0];
+            unsignedIntegerValue = [v59 unsignedIntegerValue];
 
-            v144 = [v161 strides];
+            strides2 = [multiArrayValue2 strides];
 
-            v60 = [v144 objectAtIndexedSubscript:0];
-            v139 = [v60 unsignedIntegerValue];
+            v60 = [strides2 objectAtIndexedSubscript:0];
+            unsignedIntegerValue2 = [v60 unsignedIntegerValue];
 
-            v61 = [v143 objectAtIndexedSubscript:0];
-            v141 = [v61 unsignedIntegerValue];
+            v61 = [shape objectAtIndexedSubscript:0];
+            unsignedIntegerValue3 = [v61 unsignedIntegerValue];
 
-            v62 = [v158 boundingBoxOutputDescription];
-            v145 = [v62 labelNames];
+            boundingBoxOutputDescription3 = [v158 boundingBoxOutputDescription];
+            labelNames = [boundingBoxOutputDescription3 labelNames];
 
-            v63 = [v145 count];
-            v64 = [v142 objectAtIndexedSubscript:1];
+            v63 = [labelNames count];
+            v64 = [shape2 objectAtIndexedSubscript:1];
             LOBYTE(v63) = v63 == [v64 unsignedIntegerValue];
 
             if (v63)
@@ -189,11 +189,11 @@ LABEL_48:
               v69 = v68;
 
               v70 = [v147 objectForKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
-              v136 = [v70 intValue];
+              intValue = [v70 intValue];
 
-              v149 = [v158 operationPoints];
-              v138 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v141];
-              if (v141)
+              operationPoints = [v158 operationPoints];
+              v138 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:unsignedIntegerValue3];
+              if (unsignedIntegerValue3)
               {
                 v148 = 0;
                 v71 = 0;
@@ -202,28 +202,28 @@ LABEL_48:
                 do
                 {
                   v135 = v71;
-                  v73 = v71 * v140;
-                  v74 = [v146 objectAtIndexedSubscript:v71 * v140 + 2];
+                  v73 = v71 * unsignedIntegerValue;
+                  v74 = [multiArrayValue objectAtIndexedSubscript:v71 * unsignedIntegerValue + 2];
                   [v74 doubleValue];
                   v76 = v75;
 
-                  v77 = [v146 objectAtIndexedSubscript:v73 + 3];
+                  v77 = [multiArrayValue objectAtIndexedSubscript:v73 + 3];
                   [v77 doubleValue];
                   v79 = v78;
 
-                  v80 = [v146 objectAtIndexedSubscript:v73];
+                  v80 = [multiArrayValue objectAtIndexedSubscript:v73];
                   [v80 doubleValue];
                   v82 = v81;
 
-                  v83 = [v146 objectAtIndexedSubscript:v73 + 1];
+                  v83 = [multiArrayValue objectAtIndexedSubscript:v73 + 1];
                   [v83 doubleValue];
                   v85 = v84;
 
                   v86 = v82 + v76 * -0.5;
                   v87 = v85 + v79 * -0.5;
-                  if (v136)
+                  if (intValue)
                   {
-                    if (v136 == 1)
+                    if (intValue == 1)
                     {
                       v86 = (v86 - v137) / v134;
                       v87 = (v87 - v69) / v72;
@@ -240,12 +240,12 @@ LABEL_48:
                     v87 = v69 + v72 * v87;
                   }
 
-                  v151 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v145, "count")}];
+                  v151 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(labelNames, "count")}];
                   v182 = 0u;
                   v183 = 0u;
                   v180 = 0u;
                   v181 = 0u;
-                  v88 = v145;
+                  v88 = labelNames;
                   v89 = [v88 countByEnumeratingWithState:&v180 objects:v185 count:16];
                   if (v89)
                   {
@@ -262,12 +262,12 @@ LABEL_48:
                         }
 
                         v94 = *(*(&v180 + 1) + 8 * i);
-                        v95 = [v161 objectAtIndexedSubscript:v148 + v90];
+                        v95 = [multiArrayValue2 objectAtIndexedSubscript:v148 + v90];
                         [v95 doubleValue];
                         v97 = v96;
 
                         v179 = 0;
-                        v98 = [v149 getClassificationMetrics:&v179 forClassificationIdentifier:v94 error:v173];
+                        v98 = [operationPoints getClassificationMetrics:&v179 forClassificationIdentifier:v94 error:errorCopy];
                         v99 = v179;
                         v100 = v99;
                         if ((v98 & 1) == 0)
@@ -318,14 +318,14 @@ LABEL_48:
 
                   v105 = [VNRecognizedObjectObservation alloc];
                   *&v106 = v92;
-                  v107 = [(VNRecognizedObjectObservation *)v105 initWithOriginatingRequestSpecifier:v167 boundingBox:v151 confidence:0 labels:0 segmentationMask:v86 groupId:1.0 - v87 - v79, v76, v79, v106];
-                  [v138 addObject:v107];
+                  v106 = [(VNRecognizedObjectObservation *)v105 initWithOriginatingRequestSpecifier:v167 boundingBox:v151 confidence:0 labels:0 segmentationMask:v86 groupId:1.0 - v87 - v79, v76, v79, v106];
+                  [v138 addObject:v106];
 
                   v71 = v135 + 1;
-                  v148 += v139;
+                  v148 += unsignedIntegerValue2;
                 }
 
-                while (v135 + 1 != v141);
+                while (v135 + 1 != unsignedIntegerValue3);
               }
 
               v108 = v138;
@@ -333,10 +333,10 @@ LABEL_48:
 LABEL_102:
             }
 
-            else if (v173)
+            else if (errorCopy)
             {
               [VNError errorForInvalidModelWithLocalizedDescription:@"The confidence scores don't line up with the labels"];
-              *v173 = v27 = 0;
+              *errorCopy = v27 = 0;
             }
 
             else
@@ -345,10 +345,10 @@ LABEL_102:
             }
           }
 
-          else if (v173)
+          else if (errorCopy)
           {
             [VNError errorForInvalidModelWithLocalizedDescription:@"The outputs of the model are of unexpected types"];
-            *v173 = v27 = 0;
+            *errorCopy = v27 = 0;
           }
 
           else
@@ -397,9 +397,9 @@ LABEL_107:
       }
     }
 
-    else if (v39)
+    else if (modelType)
     {
-      if (v39 != 3)
+      if (modelType != 3)
       {
 LABEL_29:
         v40 = v172;
@@ -409,15 +409,15 @@ LABEL_29:
         if (self)
         {
           v163 = objc_alloc_init(MEMORY[0x1E695DF70]);
-          v41 = [v40 model];
-          v42 = [v41 modelDescription];
-          v43 = [v42 outputDescriptionsByName];
+          model4 = [v40 model];
+          modelDescription = [model4 modelDescription];
+          outputDescriptionsByName = [modelDescription outputDescriptionsByName];
 
           v182 = 0u;
           v183 = 0u;
           v180 = 0u;
           v181 = 0u;
-          v44 = v43;
+          v44 = outputDescriptionsByName;
           v45 = [v44 countByEnumeratingWithState:&v180 objects:v185 count:16];
           if (v45)
           {
@@ -436,10 +436,10 @@ LABEL_32:
               v50 = [v166 featureValueForName:v48];
               if (!v50)
               {
-                if (v173)
+                if (errorCopy)
                 {
                   v129 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"could not obtain a feature value for key %@", v48];
-                  *v173 = [VNError errorForInvalidModelWithLocalizedDescription:v129];
+                  *errorCopy = [VNError errorForInvalidModelWithLocalizedDescription:v129];
                 }
 
                 v27 = 0;
@@ -451,10 +451,10 @@ LABEL_32:
                 break;
               }
 
-              v51 = [v50 imageBufferValue];
-              if (v51)
+              imageBufferValue = [v50 imageBufferValue];
+              if (imageBufferValue)
               {
-                v52 = [[VNPixelBufferObservation alloc] initWithOriginatingRequestSpecifier:v160 featureName:v48 CVPixelBuffer:v51];
+                v52 = [[VNPixelBufferObservation alloc] initWithOriginatingRequestSpecifier:v160 featureName:v48 CVPixelBuffer:imageBufferValue];
                 [v163 addObject:v52];
 LABEL_41:
               }
@@ -499,19 +499,19 @@ LABEL_93:
     v154 = v109;
     if (self)
     {
-      v168 = [v109 operationPoints];
-      v110 = [v109 predictedProbabilitiesKey];
-      v156 = v110;
-      if (v110)
+      operationPoints2 = [v109 operationPoints];
+      predictedProbabilitiesKey = [v109 predictedProbabilitiesKey];
+      v156 = predictedProbabilitiesKey;
+      if (predictedProbabilitiesKey)
       {
-        v152 = [v159 featureValueForName:v110];
-        v150 = [v152 dictionaryValue];
-        v162 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v150, "count")}];
+        v152 = [v159 featureValueForName:predictedProbabilitiesKey];
+        dictionaryValue = [v152 dictionaryValue];
+        v162 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dictionaryValue, "count")}];
         v182 = 0u;
         v183 = 0u;
         v180 = 0u;
         v181 = 0u;
-        v111 = v150;
+        v111 = dictionaryValue;
         v112 = [v111 countByEnumeratingWithState:&v180 objects:v185 count:16];
         if (v112)
         {
@@ -533,13 +533,13 @@ LABEL_93:
               v119 = objc_opt_class();
               if (([v119 isSubclassOfClass:objc_opt_class()] & 1) == 0)
               {
-                v120 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@", v115];
+                v115 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@", v115];
 
-                v115 = v120;
+                v115 = v115;
               }
 
               v178[0] = 0;
-              v121 = [v168 getClassificationMetrics:v178 forClassificationIdentifier:v115 error:v173];
+              v121 = [operationPoints2 getClassificationMetrics:v178 forClassificationIdentifier:v115 error:errorCopy];
               v122 = v178[0];
               v123 = v122;
               if ((v121 & 1) == 0)
@@ -574,10 +574,10 @@ LABEL_93:
 LABEL_87:
       }
 
-      else if (v173)
+      else if (errorCopy)
       {
         [VNError errorForInvalidModelWithLocalizedDescription:@"predicted probabilities key is not available"];
-        *v173 = v27 = 0;
+        *errorCopy = v27 = 0;
       }
 
       else
@@ -611,19 +611,19 @@ void __119__VNCoreMLTransformer__recognizedObjectObservationsFromModel_outputFea
   [v5 setConfidence:v4];
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = [(VNCoreMLTransformer *)self model];
-  v18 = [v17 scenePrintRequestSpecifier];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  model = [(VNCoreMLTransformer *)self model];
+  scenePrintRequestSpecifier = [model scenePrintRequestSpecifier];
 
-  if (!v18)
+  if (!scenePrintRequestSpecifier)
   {
-    v20 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a8];
+    v20 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
     if (!v20)
     {
       v19 = 0;
@@ -633,58 +633,58 @@ LABEL_21:
     }
 
     v43 = v20;
-    v21 = [v16 objectForKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
-    v22 = [v21 intValue];
+    v21 = [optionsCopy objectForKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
+    intValue = [v21 intValue];
 
     v47 = *MEMORY[0x1E695EFF8];
     v45 = 0x3FF0000000000000;
     v46 = 0x3FF0000000000000;
-    v23 = [v20 width];
-    v24 = [v20 height];
-    v48.origin.x = x * v23;
-    v48.size.width = width * v23;
-    v48.origin.y = y * v24;
-    v48.size.height = height * v24;
+    width = [v20 width];
+    height = [v20 height];
+    v48.origin.x = x * width;
+    v48.size.width = width * width;
+    v48.origin.y = y * height;
+    v48.size.height = height * height;
     v49 = CGRectIntegral(v48);
     v25 = v49.origin.x;
     v26 = v49.origin.y;
     v27 = v49.size.width;
     v28 = v49.size.height;
-    if (v17 && v23 && v24 && *(v17 + 48))
+    if (model && width && height && *(model + 48))
     {
-      [*(v17 + 40) modelDescription];
-      v42 = v40 = v22;
-      v41 = [v42 inputDescriptionsByName];
-      v29 = [v41 objectForKeyedSubscript:*(v17 + 48)];
-      v30 = [v29 imageConstraint];
-      v31 = [v30 sizeConstraint];
+      [*(model + 40) modelDescription];
+      v42 = v40 = intValue;
+      inputDescriptionsByName = [v42 inputDescriptionsByName];
+      v29 = [inputDescriptionsByName objectForKeyedSubscript:*(model + 48)];
+      imageConstraint = [v29 imageConstraint];
+      sizeConstraint = [imageConstraint sizeConstraint];
 
-      v22 = v40;
-      if (v31)
+      intValue = v40;
+      if (sizeConstraint)
       {
-        v32 = [v31 allowedImageSizeClosestToPixelsWide:v23 pixelsHigh:v24 preferDownScaling:1 preferInputAspectRatio:1];
-        *(v17 + 80) = [v32 pixelsWide];
-        *(v17 + 88) = [v32 pixelsHigh];
+        v32 = [sizeConstraint allowedImageSizeClosestToPixelsWide:width pixelsHigh:height preferDownScaling:1 preferInputAspectRatio:1];
+        *(model + 80) = [v32 pixelsWide];
+        *(model + 88) = [v32 pixelsHigh];
       }
     }
 
-    v33 = [v17 inputImageWidth];
-    v34 = [v17 inputImageHeight];
-    if (v33 && v34)
+    inputImageWidth = [model inputImageWidth];
+    inputImageHeight = [model inputImageHeight];
+    if (inputImageWidth && inputImageHeight)
     {
       v44 = 0;
-      v35 = [v43 cropAndScaleBufferWithWidth:v33 height:v34 cropRect:objc_msgSend(v17 format:"inputImageFormat") imageCropAndScaleOption:v22 options:v16 error:a8 calculatedNormalizedOriginOffset:v25 calculatedScaleX:v26 calculatedScaleY:v27 pixelBufferRepsCacheKey:{v28, &v47, &v46, &v45, &v44}];
+      v35 = [v43 cropAndScaleBufferWithWidth:inputImageWidth height:inputImageHeight cropRect:objc_msgSend(model format:"inputImageFormat") imageCropAndScaleOption:intValue options:optionsCopy error:error calculatedNormalizedOriginOffset:v25 calculatedScaleX:v26 calculatedScaleY:v27 pixelBufferRepsCacheKey:{v28, &v47, &v46, &v45, &v44}];
       v36 = v44;
-      *a7 = v35;
+      *buffer = v35;
       if (v35)
       {
         v37 = [MEMORY[0x1E696AD98] numberWithDouble:*&v47];
-        [v16 setObject:v37 forKey:@"VNVNCoreMLTransformerProcessOption_NormalizedOriginOffsetX"];
+        [optionsCopy setObject:v37 forKey:@"VNVNCoreMLTransformerProcessOption_NormalizedOriginOffsetX"];
 
         v38 = [MEMORY[0x1E696AD98] numberWithDouble:*(&v47 + 1)];
-        [v16 setObject:v38 forKey:@"VNVNCoreMLTransformerProcessOption_NormalizedOriginOffsetY"];
+        [optionsCopy setObject:v38 forKey:@"VNVNCoreMLTransformerProcessOption_NormalizedOriginOffsetY"];
 
-        [(VNDetector *)self recordImageCropQuickLookInfoToOptions:v16 cacheKey:v36 imageBuffer:v43];
+        [(VNDetector *)self recordImageCropQuickLookInfoToOptions:optionsCopy cacheKey:v36 imageBuffer:v43];
         v19 = 1;
 LABEL_20:
 
@@ -695,11 +695,11 @@ LABEL_20:
 
     else
     {
-      if (a8)
+      if (error)
       {
         [VNError errorForInvalidModelWithLocalizedDescription:@"The inputImageFeatureName does not point to a MLFeatureTypeImage input."];
         v36 = 0;
-        *a8 = v19 = 0;
+        *error = v19 = 0;
         goto LABEL_20;
       }
 
@@ -716,21 +716,21 @@ LABEL_22:
   return v19;
 }
 
-- (VNCoreMLTransformer)initWithOptions:(id)a3 model:(id)a4 error:(id *)a5
+- (VNCoreMLTransformer)initWithOptions:(id)options model:(id)model error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v9 && (v10 = objc_opt_class(), ([v10 isSubclassOfClass:objc_opt_class()] & 1) != 0))
+  optionsCopy = options;
+  modelCopy = model;
+  if (modelCopy && (v10 = objc_opt_class(), ([v10 isSubclassOfClass:objc_opt_class()] & 1) != 0))
   {
     v16.receiver = self;
     v16.super_class = VNCoreMLTransformer;
-    v11 = [(VNDetector *)&v16 initWithConfigurationOptions:v8];
-    v12 = v11;
+    v11 = [(VNDetector *)&v16 initWithConfigurationOptions:optionsCopy];
+    selfCopy = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_model, a4);
-      v13 = [VNValidationUtilities requiredSessionInOptions:v8 error:a5];
-      if (!v13 || ![(VNDetector *)v12 completeInitializationForSession:v13 error:a5])
+      objc_storeStrong(&v11->_model, model);
+      v13 = [VNValidationUtilities requiredSessionInOptions:optionsCopy error:error];
+      if (!v13 || ![(VNDetector *)selfCopy completeInitializationForSession:v13 error:error])
       {
 
         v14 = 0;
@@ -738,16 +738,16 @@ LABEL_22:
       }
     }
 
-    v12 = v12;
-    v14 = v12;
+    selfCopy = selfCopy;
+    v14 = selfCopy;
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       [VNError errorWithCode:5 message:@"No valid VNCoreMLModel found in passed in options"];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -755,7 +755,7 @@ LABEL_22:
       v14 = 0;
     }
 
-    v12 = self;
+    selfCopy = self;
   }
 
 LABEL_12:
@@ -763,11 +763,11 @@ LABEL_12:
   return v14;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 

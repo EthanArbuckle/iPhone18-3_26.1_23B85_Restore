@@ -1,15 +1,15 @@
 @interface SBSwitcherModifierStackSnapshot
-- (SBSwitcherModifierStackSnapshot)initWithRootModifier:(id)a3;
+- (SBSwitcherModifierStackSnapshot)initWithRootModifier:(id)modifier;
 - (unint64_t)countOfAllChildSnapshots;
-- (void)_enumerateModifierSnapshots:(id)a3 stop:(BOOL *)a4;
+- (void)_enumerateModifierSnapshots:(id)snapshots stop:(BOOL *)stop;
 @end
 
 @implementation SBSwitcherModifierStackSnapshot
 
-- (SBSwitcherModifierStackSnapshot)initWithRootModifier:(id)a3
+- (SBSwitcherModifierStackSnapshot)initWithRootModifier:(id)modifier
 {
-  v4 = a3;
-  if (!v4)
+  modifierCopy = modifier;
+  if (!modifierCopy)
   {
     [SBSwitcherModifierStackSnapshot initWithRootModifier:];
   }
@@ -19,22 +19,22 @@
   v5 = [(SBSwitcherModifierStackSnapshot *)&v18 init];
   if (v5)
   {
-    v6 = [v4 displayName];
-    v7 = [v6 copy];
+    displayName = [modifierCopy displayName];
+    v7 = [displayName copy];
     modifierName = v5->_modifierName;
     v5->_modifierName = v7;
 
-    v9 = [v4 description];
+    v9 = [modifierCopy description];
     v10 = [v9 copy];
     modifierDescription = v5->_modifierDescription;
     v5->_modifierDescription = v10;
 
-    v12 = [[SBSwitcherModifierQuerySnapshot alloc] initWithModifier:v4];
+    v12 = [[SBSwitcherModifierQuerySnapshot alloc] initWithModifier:modifierCopy];
     querySnapshot = v5->_querySnapshot;
     v5->_querySnapshot = v12;
 
-    v14 = [v4 debugPotentialChildModifiers];
-    v15 = [v14 bs_map:&__block_literal_global_413];
+    debugPotentialChildModifiers = [modifierCopy debugPotentialChildModifiers];
+    v15 = [debugPotentialChildModifiers bs_map:&__block_literal_global_413];
     childSnapshots = v5->_childSnapshots;
     v5->_childSnapshots = v15;
   }
@@ -50,14 +50,14 @@ SBSwitcherModifierStackSnapshot *__56__SBSwitcherModifierStackSnapshot_initWithR
   return v3;
 }
 
-- (void)_enumerateModifierSnapshots:(id)a3 stop:(BOOL *)a4
+- (void)_enumerateModifierSnapshots:(id)snapshots stop:(BOOL *)stop
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!*a4)
+  snapshotsCopy = snapshots;
+  v7 = snapshotsCopy;
+  if (!*stop)
   {
-    (*(v6 + 2))(v6, self, a4);
+    (*(snapshotsCopy + 2))(snapshotsCopy, self, stop);
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
@@ -78,7 +78,7 @@ SBSwitcherModifierStackSnapshot *__56__SBSwitcherModifierStackSnapshot_initWithR
             objc_enumerationMutation(v8);
           }
 
-          [*(*(&v13 + 1) + 8 * v12++) _enumerateModifierSnapshots:v7 stop:{a4, v13}];
+          [*(*(&v13 + 1) + 8 * v12++) _enumerateModifierSnapshots:v7 stop:{stop, v13}];
         }
 
         while (v10 != v12);

@@ -1,30 +1,30 @@
 @interface SHAMSEndpointRequester
-- (BOOL)isTokenFailureError:(id)a3;
-- (SHAMSEndpointRequester)initWithClientIdentifier:(id)a3 clientType:(int64_t)a4;
-- (id)buildEncoderForSession:(id)a3 clientType:(int64_t)a4 clientIdentifier:(id)a5;
+- (BOOL)isTokenFailureError:(id)error;
+- (SHAMSEndpointRequester)initWithClientIdentifier:(id)identifier clientType:(int64_t)type;
+- (id)buildEncoderForSession:(id)session clientType:(int64_t)type clientIdentifier:(id)identifier;
 - (id)sessionConfiguration;
-- (void)handleResultData:(id)a3 forResponse:(id)a4 callback:(id)a5 error:(id)a6;
+- (void)handleResultData:(id)data forResponse:(id)response callback:(id)callback error:(id)error;
 - (void)invalidate;
-- (void)performDownloadRequest:(id)a3 filename:(id)a4 fileType:(id)a5 reply:(id)a6;
-- (void)performRequest:(id)a3 withReply:(id)a4;
+- (void)performDownloadRequest:(id)request filename:(id)filename fileType:(id)type reply:(id)reply;
+- (void)performRequest:(id)request withReply:(id)reply;
 @end
 
 @implementation SHAMSEndpointRequester
 
-- (SHAMSEndpointRequester)initWithClientIdentifier:(id)a3 clientType:(int64_t)a4
+- (SHAMSEndpointRequester)initWithClientIdentifier:(id)identifier clientType:(int64_t)type
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = SHAMSEndpointRequester;
   v8 = [(SHAMSEndpointRequester *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_clientIdentifier, a3);
-    v9->_clientType = a4;
+    objc_storeStrong(&v8->_clientIdentifier, identifier);
+    v9->_clientType = type;
     v10 = [AMSURLSession alloc];
-    v11 = [(SHAMSEndpointRequester *)v9 sessionConfiguration];
-    v12 = [v10 initWithConfiguration:v11];
+    sessionConfiguration = [(SHAMSEndpointRequester *)v9 sessionConfiguration];
+    v12 = [v10 initWithConfiguration:sessionConfiguration];
     session = v9->_session;
     v9->_session = v12;
 
@@ -38,61 +38,61 @@
 
 - (void)invalidate
 {
-  v2 = [(SHAMSEndpointRequester *)self session];
-  [v2 invalidateAndCancel];
+  session = [(SHAMSEndpointRequester *)self session];
+  [session invalidateAndCancel];
 }
 
-- (void)handleResultData:(id)a3 forResponse:(id)a4 callback:(id)a5 error:(id)a6
+- (void)handleResultData:(id)data forResponse:(id)response callback:(id)callback error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
+  if (dataCopy)
   {
-    v13 = a5;
-    v14 = [[SHNetworkResponse alloc] initWithData:v10 urlResponse:v11 error:0];
-    (*(a5 + 2))(v13, v14);
+    callbackCopy = callback;
+    v14 = [[SHNetworkResponse alloc] initWithData:dataCopy urlResponse:responseCopy error:0];
+    (*(callback + 2))(callbackCopy, v14);
   }
 
   else
   {
-    v15 = a5;
+    callbackCopy2 = callback;
     v16 = sh_log_object();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v23 = v12;
+      v23 = errorCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to fetch data task %@", buf, 0xCu);
     }
 
-    if ([(SHAMSEndpointRequester *)self isTokenFailureError:v12])
+    if ([(SHAMSEndpointRequester *)self isTokenFailureError:errorCopy])
     {
-      v17 = [(SHAMSEndpointRequester *)self clientIdentifier];
-      v18 = [NSString stringWithFormat:@"Please check that you have enabled the ShazamKit App Service for this app identifier (%@)", v17];
+      clientIdentifier = [(SHAMSEndpointRequester *)self clientIdentifier];
+      v18 = [NSString stringWithFormat:@"Please check that you have enabled the ShazamKit App Service for this app identifier (%@)", clientIdentifier];
 
       v20 = NSDebugDescriptionErrorKey;
       v21 = v18;
       v19 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-      v14 = [SHError errorWithCode:202 underlyingError:v12 keyOverrides:v19];
+      v14 = [SHError errorWithCode:202 underlyingError:errorCopy keyOverrides:v19];
     }
 
     else
     {
-      v14 = [SHError errorWithCode:500 underlyingError:v12];
+      v14 = [SHError errorWithCode:500 underlyingError:errorCopy];
     }
 
-    v13 = [[SHNetworkResponse alloc] initWithData:0 urlResponse:0 error:v14];
-    v15[2](v15, v13);
+    callbackCopy = [[SHNetworkResponse alloc] initWithData:0 urlResponse:0 error:v14];
+    callbackCopy2[2](callbackCopy2, callbackCopy);
   }
 }
 
-- (BOOL)isTokenFailureError:(id)a3
+- (BOOL)isTokenFailureError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:AMSErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:AMSErrorDomain])
   {
-    v5 = [v3 code] == 306;
+    v5 = [errorCopy code] == 306;
   }
 
   else
@@ -103,18 +103,18 @@
   return v5;
 }
 
-- (void)performRequest:(id)a3 withReply:(id)a4
+- (void)performRequest:(id)request withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v8 = [(SHAMSEndpointRequester *)self encoder];
-  v9 = [v8 requestByEncodingRequest:v6 parameters:0];
+  encoder = [(SHAMSEndpointRequester *)self encoder];
+  v9 = [encoder requestByEncodingRequest:requestCopy parameters:0];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000D60C;
   v11[3] = &unk_10007D0D0;
-  v10 = v7;
+  v10 = replyCopy;
   v12 = v10;
   objc_copyWeak(&v13, &location);
   [v9 addFinishBlock:v11];
@@ -123,25 +123,25 @@
   objc_destroyWeak(&location);
 }
 
-- (void)performDownloadRequest:(id)a3 filename:(id)a4 fileType:(id)a5 reply:(id)a6
+- (void)performDownloadRequest:(id)request filename:(id)filename fileType:(id)type reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  filenameCopy = filename;
+  typeCopy = type;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v14 = [(SHAMSEndpointRequester *)self encoder];
-  v15 = [v14 requestByEncodingRequest:v10 parameters:0];
+  encoder = [(SHAMSEndpointRequester *)self encoder];
+  v15 = [encoder requestByEncodingRequest:requestCopy parameters:0];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10000DA48;
   v19[3] = &unk_10007D120;
-  v16 = v13;
+  v16 = replyCopy;
   v22 = v16;
   objc_copyWeak(&v23, &location);
-  v17 = v11;
+  v17 = filenameCopy;
   v20 = v17;
-  v18 = v12;
+  v18 = typeCopy;
   v21 = v18;
   [v15 addFinishBlock:v19];
 
@@ -159,24 +159,24 @@
   return v2;
 }
 
-- (id)buildEncoderForSession:(id)a3 clientType:(int64_t)a4 clientIdentifier:(id)a5
+- (id)buildEncoderForSession:(id)session clientType:(int64_t)type clientIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a5;
+  sessionCopy = session;
+  identifierCopy = identifier;
   v9 = [AMSMediaTokenService alloc];
   v10 = +[SHRemoteConfiguration sharedInstance];
-  v11 = [v10 amsBag];
-  v12 = [v9 initWithClientIdentifier:v8 bag:v11];
+  amsBag = [v10 amsBag];
+  v12 = [v9 initWithClientIdentifier:identifierCopy bag:amsBag];
 
-  [v12 setSession:v7];
-  if (a4 == 1)
+  [v12 setSession:sessionCopy];
+  if (type == 1)
   {
     v13 = 0;
   }
 
   else
   {
-    if (a4 != 2)
+    if (type != 2)
     {
       goto LABEL_6;
     }
@@ -187,11 +187,11 @@
   [v12 setClientType:v13];
 LABEL_6:
   v14 = [[AMSMediaProtocolHandler alloc] initWithTokenService:v12];
-  [v7 setProtocolHandler:v14];
+  [sessionCopy setProtocolHandler:v14];
   v15 = [AMSMediaRequestEncoder alloc];
   v16 = +[SHRemoteConfiguration sharedInstance];
-  v17 = [v16 amsBag];
-  v18 = [v15 initWithTokenService:v12 bag:v17];
+  amsBag2 = [v16 amsBag];
+  v18 = [v15 initWithTokenService:v12 bag:amsBag2];
 
   return v18;
 }

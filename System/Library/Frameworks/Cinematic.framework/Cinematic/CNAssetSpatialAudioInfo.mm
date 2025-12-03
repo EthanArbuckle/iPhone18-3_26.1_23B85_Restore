@@ -1,37 +1,37 @@
 @interface CNAssetSpatialAudioInfo
 + (BOOL)isSupported;
-+ (void)checkIfContainsSpatialAudio:(id)a3 completionHandler:(id)a4;
-+ (void)findAssociatedRemixMetadata:(id)a3 completionHandler:(id)a4;
-+ (void)loadFromAsset:(id)a3 completionHandler:(id)a4;
-- (CNAssetSpatialAudioInfo)initWithSpatialAudioTrack:(id)a3 metadataBlob:(id)a4;
-- (id)assetReaderOutputSettingsForContentType:(int64_t)a3;
-- (id)assetWriterInputSettingsForContentType:(int64_t)a3;
-- (id)audioMixWithEffectIntensity:(float)a3 renderingStyle:(int64_t)a4;
++ (void)checkIfContainsSpatialAudio:(id)audio completionHandler:(id)handler;
++ (void)findAssociatedRemixMetadata:(id)metadata completionHandler:(id)handler;
++ (void)loadFromAsset:(id)asset completionHandler:(id)handler;
+- (CNAssetSpatialAudioInfo)initWithSpatialAudioTrack:(id)track metadataBlob:(id)blob;
+- (id)assetReaderOutputSettingsForContentType:(int64_t)type;
+- (id)assetWriterInputSettingsForContentType:(int64_t)type;
+- (id)audioMixWithEffectIntensity:(float)intensity renderingStyle:(int64_t)style;
 @end
 
 @implementation CNAssetSpatialAudioInfo
 
-+ (void)findAssociatedRemixMetadata:(id)a3 completionHandler:(id)a4
++ (void)findAssociatedRemixMetadata:(id)metadata completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 asset];
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  asset = [metadataCopy asset];
   v18 = 0;
-  v8 = [v5 formatDescriptions];
-  getEligibleCinematicAudioVersion(v8);
+  formatDescriptions = [metadataCopy formatDescriptions];
+  getEligibleCinematicAudioVersion(formatDescriptions);
 
   v9 = *MEMORY[0x277CE5E70];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__CNAssetSpatialAudioInfo_findAssociatedRemixMetadata_completionHandler___block_invoke;
   v13[3] = &unk_278A16070;
-  v15 = v5;
-  v16 = v6;
+  v15 = metadataCopy;
+  v16 = handlerCopy;
   v17 = 0;
-  v14 = v7;
-  v10 = v5;
-  v11 = v7;
-  v12 = v6;
+  v14 = asset;
+  v10 = metadataCopy;
+  v11 = asset;
+  v12 = handlerCopy;
   [v11 loadTracksWithMediaType:v9 completionHandler:v13];
 }
 
@@ -355,27 +355,27 @@ void __38__CNAssetSpatialAudioInfo_isSupported__block_invoke()
   }
 }
 
-- (CNAssetSpatialAudioInfo)initWithSpatialAudioTrack:(id)a3 metadataBlob:(id)a4
+- (CNAssetSpatialAudioInfo)initWithSpatialAudioTrack:(id)track metadataBlob:(id)blob
 {
-  v7 = a3;
-  v8 = a4;
+  trackCopy = track;
+  blobCopy = blob;
   v12.receiver = self;
   v12.super_class = CNAssetSpatialAudioInfo;
   v9 = [(CNAssetSpatialAudioInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_spatialAudioTrack, a3);
-    objc_storeStrong(&v10->_metadataBlob, a4);
+    objc_storeStrong(&v9->_spatialAudioTrack, track);
+    objc_storeStrong(&v10->_metadataBlob, blob);
   }
 
   return v10;
 }
 
-+ (void)loadFromAsset:(id)a3 completionHandler:(id)a4
++ (void)loadFromAsset:(id)asset completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  handlerCopy = handler;
   if (!+[CNAssetSpatialAudioInfo isSupported])
   {
     v9 = _CNLogSystem();
@@ -399,7 +399,7 @@ void __38__CNAssetSpatialAudioInfo_isSupported__block_invoke()
 LABEL_8:
 
     v8 = _CNCinematicError(5, 0);
-    v6[2](v6, 0, v8);
+    handlerCopy[2](handlerCopy, 0, v8);
     goto LABEL_9;
   }
 
@@ -408,8 +408,8 @@ LABEL_8:
   v10[1] = 3221225472;
   v10[2] = __59__CNAssetSpatialAudioInfo_loadFromAsset_completionHandler___block_invoke;
   v10[3] = &unk_278A16018;
-  v11 = v5;
-  v12 = v6;
+  v11 = assetCopy;
+  v12 = handlerCopy;
   [v11 loadTracksWithMediaType:v7 completionHandler:v10];
 
   v8 = v11;
@@ -592,16 +592,16 @@ void __59__CNAssetSpatialAudioInfo_loadFromAsset_completionHandler___block_invok
   }
 }
 
-+ (void)checkIfContainsSpatialAudio:(id)a3 completionHandler:(id)a4
++ (void)checkIfContainsSpatialAudio:(id)audio completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__CNAssetSpatialAudioInfo_checkIfContainsSpatialAudio_completionHandler___block_invoke;
   v7[3] = &unk_278A16108;
-  v8 = v5;
-  v6 = v5;
-  [CNAssetSpatialAudioInfo loadFromAsset:a3 completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [CNAssetSpatialAudioInfo loadFromAsset:audio completionHandler:v7];
 }
 
 uint64_t __73__CNAssetSpatialAudioInfo_checkIfContainsSpatialAudio_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -621,18 +621,18 @@ uint64_t __73__CNAssetSpatialAudioInfo_checkIfContainsSpatialAudio_completionHan
   return (*(v3 + 16))(v3, v5);
 }
 
-- (id)audioMixWithEffectIntensity:(float)a3 renderingStyle:(int64_t)a4
+- (id)audioMixWithEffectIntensity:(float)intensity renderingStyle:(int64_t)style
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CE6538] audioMix];
+  audioMix = [MEMORY[0x277CE6538] audioMix];
   v8 = objc_alloc_init(MEMORY[0x277CE6540]);
   [v8 setTrackID:{-[AVAssetTrack trackID](self->_spatialAudioTrack, "trackID")}];
   v16 = *MEMORY[0x277CC08F0];
   v15 = v16;
   v17 = *(MEMORY[0x277CC08F0] + 16);
   v9 = v17;
-  [v8 setDialogMixBias:&v16 atTime:{COERCE_DOUBLE(__PAIR64__(DWORD1(v16), LODWORD(a3)))}];
-  *&v10 = a4;
+  [v8 setDialogMixBias:&v16 atTime:{COERCE_DOUBLE(__PAIR64__(DWORD1(v16), LODWORD(intensity)))}];
+  *&v10 = style;
   v16 = v15;
   v17 = v9;
   [v8 setRenderingStyle:&v16 atTime:v10];
@@ -641,19 +641,19 @@ uint64_t __73__CNAssetSpatialAudioInfo_checkIfContainsSpatialAudio_completionHan
 
   v18[0] = v8;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  [v7 setInputParameters:v12];
+  [audioMix setInputParameters:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return audioMix;
 }
 
-- (id)assetReaderOutputSettingsForContentType:(int64_t)a3
+- (id)assetReaderOutputSettingsForContentType:(int64_t)type
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (a3)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
@@ -669,46 +669,46 @@ uint64_t __73__CNAssetSpatialAudioInfo_checkIfContainsSpatialAudio_completionHan
   }
 
   v6 = v5;
-  [v4 setValue:v5 forKey:*MEMORY[0x277CB8250]];
+  [dictionary setValue:v5 forKey:*MEMORY[0x277CB8250]];
 
 LABEL_6:
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1819304813];
-  [v4 setValue:v7 forKey:*MEMORY[0x277CB8280]];
+  [dictionary setValue:v7 forKey:*MEMORY[0x277CB8280]];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:32];
-  [v4 setValue:v8 forKey:*MEMORY[0x277CB8288]];
+  [dictionary setValue:v8 forKey:*MEMORY[0x277CB8288]];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v4 setValue:v9 forKey:*MEMORY[0x277CB82A0]];
+  [dictionary setValue:v9 forKey:*MEMORY[0x277CB82A0]];
 
-  return v4;
+  return dictionary;
 }
 
-- (id)assetWriterInputSettingsForContentType:(int64_t)a3
+- (id)assetWriterInputSettingsForContentType:(int64_t)type
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(AVAssetTrack *)self->_spatialAudioTrack formatDescriptions];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  formatDescriptions = [(AVAssetTrack *)self->_spatialAudioTrack formatDescriptions];
+  v7 = [formatDescriptions objectAtIndexedSubscript:0];
 
   StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(v7);
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
 
     v9 = FOAPlusDialogChannelLayoutAsData();
-    [v5 setValue:v9 forKey:*MEMORY[0x277CB8250]];
+    [dictionary setValue:v9 forKey:*MEMORY[0x277CB8250]];
 
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:StreamBasicDescription->mFormatID];
-    [v5 setValue:v10 forKey:*MEMORY[0x277CB8280]];
+    [dictionary setValue:v10 forKey:*MEMORY[0x277CB8280]];
 
     v11 = [MEMORY[0x277CCABB0] numberWithDouble:StreamBasicDescription->mSampleRate];
-    [v5 setValue:v11 forKey:*MEMORY[0x277CB82E0]];
+    [dictionary setValue:v11 forKey:*MEMORY[0x277CB82E0]];
 
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:480000];
-    [v5 setValue:v12 forKey:*MEMORY[0x277CB8258]];
+    [dictionary setValue:v12 forKey:*MEMORY[0x277CB8258]];
 
     v13 = [MEMORY[0x277CCABB0] numberWithInteger:3];
     v14 = MEMORY[0x277CB8270];
@@ -719,23 +719,23 @@ LABEL_6:
     v19[0] = xmmword_236F67F70;
     v19[1] = unk_236F67F80;
     v15 = [MEMORY[0x277CBEA90] dataWithBytes:v19 length:32];
-    [v5 setValue:v15 forKey:*MEMORY[0x277CB8250]];
+    [dictionary setValue:v15 forKey:*MEMORY[0x277CB8250]];
 
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1633772320];
-    [v5 setValue:v16 forKey:*MEMORY[0x277CB8280]];
+    [dictionary setValue:v16 forKey:*MEMORY[0x277CB8280]];
 
     v17 = [MEMORY[0x277CCABB0] numberWithDouble:StreamBasicDescription->mSampleRate];
-    [v5 setValue:v17 forKey:*MEMORY[0x277CB82E0]];
+    [dictionary setValue:v17 forKey:*MEMORY[0x277CB82E0]];
 
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:128000];
     v14 = MEMORY[0x277CB8258];
   }
 
-  [v5 setValue:v13 forKey:*v14];
+  [dictionary setValue:v13 forKey:*v14];
 
 LABEL_6:
 
-  return v5;
+  return dictionary;
 }
 
 void __73__CNAssetSpatialAudioInfo_findAssociatedRemixMetadata_completionHandler___block_invoke_cold_1()

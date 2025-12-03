@@ -9,21 +9,21 @@
   locationOfInterest = self->_locationOfInterest;
   if (locationOfInterest)
   {
-    v4 = [(MapsLocationOfInterest *)locationOfInterest name];
+    name = [(MapsLocationOfInterest *)locationOfInterest name];
   }
 
   else
   {
     if ([(ContactPlaceItem *)self isMeCard])
     {
-      v5 = [(ContactPlaceItem *)self selectedAddress];
+      selectedAddress = [(ContactPlaceItem *)self selectedAddress];
 
-      if (v5)
+      if (selectedAddress)
       {
-        v6 = [(ContactPlaceItem *)self selectedAddress];
-        v7 = [v6 label];
-        v8 = [CNLabeledValue localizedStringForLabel:v7];
-        v9 = [v8 capitalizedString];
+        selectedAddress2 = [(ContactPlaceItem *)self selectedAddress];
+        label = [selectedAddress2 label];
+        v8 = [CNLabeledValue localizedStringForLabel:label];
+        capitalizedString = [v8 capitalizedString];
 
         goto LABEL_8;
       }
@@ -31,13 +31,13 @@
 
     v11.receiver = self;
     v11.super_class = ContactPlaceItem;
-    v4 = [(ContactPlaceItem *)&v11 name];
+    name = [(ContactPlaceItem *)&v11 name];
   }
 
-  v9 = v4;
+  capitalizedString = name;
 LABEL_8:
 
-  return v9;
+  return capitalizedString;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface FCRecipeItem
-+ (id)keysForRecipeRecordWithRecordSource:(id)a3;
++ (id)keysForRecipeRecordWithRecordSource:(id)source;
 - (BOOL)isBundlePaid;
 - (BOOL)isPaid;
-- (FCRecipeItem)initWithData:(id)a3 error:(id *)a4;
-- (FCRecipeItem)initWithRecipeRecord:(id)a3 surfacedBy:(id)a4 error:(id *)a5;
+- (FCRecipeItem)initWithData:(id)data error:(id *)error;
+- (FCRecipeItem)initWithRecipeRecord:(id)record surfacedBy:(id)by error:(id *)error;
 - (NSArray)articleIDs;
 - (NSArray)topicIDs;
 - (NSArray)topics;
@@ -24,12 +24,12 @@
 
 @implementation FCRecipeItem
 
-+ (id)keysForRecipeRecordWithRecordSource:(id)a3
++ (id)keysForRecipeRecordWithRecordSource:(id)source
 {
   v23[11] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 localizedKeysByOriginalKey];
-  v5 = [v4 objectForKeyedSubscript:@"topicFlags"];
+  sourceCopy = source;
+  localizedKeysByOriginalKey = [sourceCopy localizedKeysByOriginalKey];
+  v5 = [localizedKeysByOriginalKey objectForKeyedSubscript:@"topicFlags"];
   v6 = v5;
   if (v5)
   {
@@ -42,8 +42,8 @@
   }
 
   v23[7] = v7;
-  v8 = [v3 localizedKeysByOriginalKey];
-  v9 = [v8 objectForKeyedSubscript:@"personalizationData"];
+  localizedKeysByOriginalKey2 = [sourceCopy localizedKeysByOriginalKey];
+  v9 = [localizedKeysByOriginalKey2 objectForKeyedSubscript:@"personalizationData"];
   v10 = v9;
   if (v9)
   {
@@ -56,8 +56,8 @@
   }
 
   v23[8] = v11;
-  v12 = [v3 localizedKeysByOriginalKey];
-  v13 = [v12 objectForKeyedSubscript:@"rapidUpdatePersonalizationData"];
+  localizedKeysByOriginalKey3 = [sourceCopy localizedKeysByOriginalKey];
+  v13 = [localizedKeysByOriginalKey3 objectForKeyedSubscript:@"rapidUpdatePersonalizationData"];
   v14 = v13;
   if (v13)
   {
@@ -70,9 +70,9 @@
   }
 
   v23[9] = v15;
-  v16 = [v3 localizedKeysByOriginalKey];
+  localizedKeysByOriginalKey4 = [sourceCopy localizedKeysByOriginalKey];
 
-  v17 = [v16 objectForKeyedSubscript:@"eventAggregationPersonalizationData"];
+  v17 = [localizedKeysByOriginalKey4 objectForKeyedSubscript:@"eventAggregationPersonalizationData"];
   v18 = v17;
   if (v17)
   {
@@ -92,14 +92,14 @@
   return v20;
 }
 
-- (FCRecipeItem)initWithRecipeRecord:(id)a3 surfacedBy:(id)a4 error:(id *)a5
+- (FCRecipeItem)initWithRecipeRecord:(id)record surfacedBy:(id)by error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 base];
-  v11 = [v10 identifier];
+  recordCopy = record;
+  byCopy = by;
+  base = [recordCopy base];
+  identifier = [base identifier];
 
-  if (v11)
+  if (identifier)
   {
     v17.receiver = self;
     v17.super_class = FCRecipeItem;
@@ -110,33 +110,33 @@
       pbRecipeItem = v12->_pbRecipeItem;
       v12->_pbRecipeItem = v13;
 
-      [(NTPBRecipeItem *)v12->_pbRecipeItem setRecipeRecord:v8];
-      [(NTPBRecipeItem *)v12->_pbRecipeItem setSurfacedBy:v9];
+      [(NTPBRecipeItem *)v12->_pbRecipeItem setRecipeRecord:recordCopy];
+      [(NTPBRecipeItem *)v12->_pbRecipeItem setSurfacedBy:byCopy];
     }
 
     self = v12;
-    v15 = self;
+    selfCopy = self;
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] fc_errorWithCode:16 description:@"Can't create recipe item from a record without an identifier"];
-    *a5 = v15 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (FCRecipeItem)initWithData:(id)a3 error:(id *)a4
+- (FCRecipeItem)initWithData:(id)data error:(id *)error
 {
   v6 = MEMORY[0x1E69B6F80];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithData:v7];
+  dataCopy = data;
+  v8 = [[v6 alloc] initWithData:dataCopy];
 
   if (v8)
   {
@@ -150,171 +150,171 @@
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] fc_errorWithCode:16 description:@"Failed to create recipe item from data"];
-    *a4 = v11 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (NSString)surfacedBy
 {
-  v2 = [(FCRecipeItem *)self pbRecipeItem];
-  v3 = [v2 surfacedBy];
+  pbRecipeItem = [(FCRecipeItem *)self pbRecipeItem];
+  surfacedBy = [pbRecipeItem surfacedBy];
 
-  return v3;
+  return surfacedBy;
 }
 
 - (NSData)data
 {
-  v2 = [(FCRecipeItem *)self pbRecipeItem];
-  v3 = [v2 data];
+  pbRecipeItem = [(FCRecipeItem *)self pbRecipeItem];
+  data = [pbRecipeItem data];
 
-  return v3;
+  return data;
 }
 
 - (NSString)identifier
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 base];
-  v4 = [v3 identifier];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  base = [recipeRecord base];
+  identifier = [base identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (NSData)personalizationData
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 personalizationData];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  personalizationData = [recipeRecord personalizationData];
 
-  return v3;
+  return personalizationData;
 }
 
 - (NSData)rapidUpdatePersonalizationData
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 rapidUpdatePersonalizationData];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  rapidUpdatePersonalizationData = [recipeRecord rapidUpdatePersonalizationData];
 
-  return v3;
+  return rapidUpdatePersonalizationData;
 }
 
 - (NSData)eventAggregationPersonalizationData
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 eventAggregationPersonalizationData];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  eventAggregationPersonalizationData = [recipeRecord eventAggregationPersonalizationData];
 
-  return v3;
+  return eventAggregationPersonalizationData;
 }
 
 - (NSDate)lastReferenceDate
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 lastReferenceDate];
-  v4 = [v3 nsDate];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  lastReferenceDate = [recipeRecord lastReferenceDate];
+  nsDate = [lastReferenceDate nsDate];
 
-  return v4;
+  return nsDate;
 }
 
 - (NSArray)articleIDs
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 articleIDs];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  articleIDs = [recipeRecord articleIDs];
 
-  return v3;
+  return articleIDs;
 }
 
 - (BOOL)isPaid
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 isPaid];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  isPaid = [recipeRecord isPaid];
 
-  return v3;
+  return isPaid;
 }
 
 - (BOOL)isBundlePaid
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 isPaid];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  isPaid = [recipeRecord isPaid];
 
-  return v3;
+  return isPaid;
 }
 
 - (NSString)itemID
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 base];
-  v4 = [v3 identifier];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  base = [recipeRecord base];
+  identifier = [base identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (NSString)publisherID
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 sourceChannelTagID];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  sourceChannelTagID = [recipeRecord sourceChannelTagID];
 
-  return v3;
+  return sourceChannelTagID;
 }
 
 - (NSArray)topicIDs
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 topicTagIDs];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  topicTagIDs = [recipeRecord topicTagIDs];
 
-  return v3;
+  return topicTagIDs;
 }
 
 - (NSArray)topics
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 topics];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  topics = [recipeRecord topics];
 
-  return v3;
+  return topics;
 }
 
 - (NSDate)publishDate
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 publishDate];
-  v4 = [v3 nsDate];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  publishDate = [recipeRecord publishDate];
+  nsDate = [publishDate nsDate];
 
-  return v4;
+  return nsDate;
 }
 
 - (NSDate)lastModifiedDate
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 base];
-  v4 = [v3 modificationDate];
-  v5 = [v4 nsDate];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  base = [recipeRecord base];
+  modificationDate = [base modificationDate];
+  nsDate = [modificationDate nsDate];
 
-  return v5;
+  return nsDate;
 }
 
 - (NSData)thumbnailPerceptualHash
 {
-  v2 = [(FCRecipeItem *)self recipeRecord];
-  v3 = [v2 thumbnailPerceptualHash];
+  recipeRecord = [(FCRecipeItem *)self recipeRecord];
+  thumbnailPerceptualHash = [recipeRecord thumbnailPerceptualHash];
 
-  return v3;
+  return thumbnailPerceptualHash;
 }
 
 - (id)recipeRecord
 {
-  v2 = [(FCRecipeItem *)self pbRecipeItem];
-  v3 = [v2 recipeRecord];
+  pbRecipeItem = [(FCRecipeItem *)self pbRecipeItem];
+  recipeRecord = [pbRecipeItem recipeRecord];
 
-  return v3;
+  return recipeRecord;
 }
 
 @end

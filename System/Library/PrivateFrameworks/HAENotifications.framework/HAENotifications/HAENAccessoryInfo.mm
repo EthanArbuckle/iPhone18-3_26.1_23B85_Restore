@@ -1,13 +1,13 @@
 @interface HAENAccessoryInfo
-+ (id)getAccessoryInfo:(id *)a3;
-+ (id)getAccessoryInfoFromIOAccesoryManager:(id *)a3;
-+ (id)getAccessoryInfoFromIOKitDirectly:(id *)a3;
++ (id)getAccessoryInfo:(id *)info;
++ (id)getAccessoryInfoFromIOAccesoryManager:(id *)manager;
++ (id)getAccessoryInfoFromIOKitDirectly:(id *)directly;
 - (id)description;
 @end
 
 @implementation HAENAccessoryInfo
 
-+ (id)getAccessoryInfoFromIOAccesoryManager:(id *)a3
++ (id)getAccessoryInfoFromIOAccesoryManager:(id *)manager
 {
   v49 = *MEMORY[0x277D85DE8];
   if (!+[HAENDefaults isRunningCITests])
@@ -123,7 +123,7 @@
                       v43 = *MEMORY[0x277CCA450];
                       v44 = v37;
                       v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-                      *a3 = makeError(v38, 4u);
+                      *manager = makeError(v38, 4u);
 
                       v39 = HAENotificationsLog();
                       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -182,11 +182,11 @@ LABEL_12:
         }
 
         v5 = 0;
-        if (a3 && name)
+        if (manager && name)
         {
           v14 = name;
           v5 = 0;
-          *a3 = name;
+          *manager = name;
         }
 
 LABEL_17:
@@ -240,7 +240,7 @@ LABEL_18:
   return v5;
 }
 
-+ (id)getAccessoryInfoFromIOKitDirectly:(id *)a3
++ (id)getAccessoryInfoFromIOKitDirectly:(id *)directly
 {
   v31 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(HAENAccessoryInfo);
@@ -355,11 +355,11 @@ LABEL_28:
 
   if (v16)
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"IOMikeyBus: required fields are missing, manufacturer %@, serialNumber %@", v4->_manufacturer, serialNumber];
+    serialNumber = [MEMORY[0x277CCACA8] stringWithFormat:@"IOMikeyBus: required fields are missing, manufacturer %@, serialNumber %@", v4->_manufacturer, serialNumber];
     v25 = *MEMORY[0x277CCA450];
-    v26 = v17;
+    v26 = serialNumber;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-    *a3 = makeError(v18, 4u);
+    *directly = makeError(v18, 4u);
 
     v19 = HAENotificationsLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -376,11 +376,11 @@ LABEL_28:
   return v4;
 }
 
-+ (id)getAccessoryInfo:(id *)a3
++ (id)getAccessoryInfo:(id *)info
 {
   v4 = [HAENAccessoryInfo getAccessoryInfoFromIOAccesoryManager:?];
   v5 = v4;
-  if (v4 && !*a3)
+  if (v4 && !*info)
   {
     v13 = v4;
   }
@@ -390,18 +390,18 @@ LABEL_28:
     v6 = HAENotificationsLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(HAENAccessoryInfo *)a3 getAccessoryInfo:v6, v7, v8, v9, v10, v11, v12];
+      [(HAENAccessoryInfo *)info getAccessoryInfo:v6, v7, v8, v9, v10, v11, v12];
     }
 
-    *a3 = 0;
-    v13 = [HAENAccessoryInfo getAccessoryInfoFromIOKitDirectly:a3];
+    *info = 0;
+    v13 = [HAENAccessoryInfo getAccessoryInfoFromIOKitDirectly:info];
 
-    if (*a3)
+    if (*info)
     {
       v14 = HAENotificationsLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(HAENAccessoryInfo *)a3 getAccessoryInfo:v14, v15, v16, v17, v18, v19, v20];
+        [(HAENAccessoryInfo *)info getAccessoryInfo:v14, v15, v16, v17, v18, v19, v20];
       }
     }
   }

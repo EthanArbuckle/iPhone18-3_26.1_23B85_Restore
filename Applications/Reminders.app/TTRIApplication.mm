@@ -1,5 +1,5 @@
 @interface TTRIApplication
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)runTest:(id)test options:(id)options;
 - (_TtC9Reminders15TTRIApplication)init;
 - (id)_extendLaunchTest;
 @end
@@ -25,11 +25,11 @@
   return v4;
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  if (!a3)
+  if (!test)
   {
-    if (!a4)
+    if (!options)
     {
       goto LABEL_12;
     }
@@ -39,10 +39,10 @@
     goto LABEL_11;
   }
 
-  v6 = self;
+  selfCopy = self;
   self = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v4 = v7;
-  if (!a4)
+  if (!options)
   {
 LABEL_11:
     if (v4)
@@ -55,7 +55,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = self;
+  selfCopy2 = self;
   self = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   if (!v4)
   {
@@ -69,8 +69,8 @@ LABEL_13:
     return self;
   }
 
-  v9 = v6;
-  if (sub_1005C5050(v8, v4, v9))
+  v9 = selfCopy;
+  if (sub_1005C5050(selfCopy2, v4, v9))
   {
 
     LOBYTE(self) = 1;

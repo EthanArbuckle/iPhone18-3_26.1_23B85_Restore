@@ -1,55 +1,55 @@
 @interface FMOOSPredictor
-+ (id)getElementFromSortedArray:(id)a3 forPercentile:(unint64_t)a4;
-+ (id)getOutOfServiceRecoveryPredictionWithFMCoreData:(id)a3 prevVisit:(id)a4 curVisit:(id)a5 subscriptionID:(id)a6 prevCells:(id)a7 startTime:(id)a8 entryLocation:(id)a9;
-+ (id)outOfServiceAreaToFMOOSRecoveryPredictionsWithContext:(id)a3 WithOutOfServiceArea:(id)a4 FromTimestamp:(id)a5;
++ (id)getElementFromSortedArray:(id)array forPercentile:(unint64_t)percentile;
++ (id)getOutOfServiceRecoveryPredictionWithFMCoreData:(id)data prevVisit:(id)visit curVisit:(id)curVisit subscriptionID:(id)d prevCells:(id)cells startTime:(id)time entryLocation:(id)location;
++ (id)outOfServiceAreaToFMOOSRecoveryPredictionsWithContext:(id)context WithOutOfServiceArea:(id)area FromTimestamp:(id)timestamp;
 @end
 
 @implementation FMOOSPredictor
 
-+ (id)getOutOfServiceRecoveryPredictionWithFMCoreData:(id)a3 prevVisit:(id)a4 curVisit:(id)a5 subscriptionID:(id)a6 prevCells:(id)a7 startTime:(id)a8 entryLocation:(id)a9
++ (id)getOutOfServiceRecoveryPredictionWithFMCoreData:(id)data prevVisit:(id)visit curVisit:(id)curVisit subscriptionID:(id)d prevCells:(id)cells startTime:(id)time entryLocation:(id)location
 {
-  v41 = a3;
-  v40 = a4;
-  v39 = a5;
-  v38 = a6;
-  v15 = a7;
-  v37 = a8;
-  v16 = [v15 count];
+  dataCopy = data;
+  visitCopy = visit;
+  curVisitCopy = curVisit;
+  dCopy = d;
+  cellsCopy = cells;
+  timeCopy = time;
+  v16 = [cellsCopy count];
   p_info = &OBJC_METACLASS___WISTrialExperimentsManager.info;
   v18 = +[FMConfiguration sharedInstance];
-  v19 = [v18 OOSPrevCellsInDatabase];
-  if (v16 <= v19)
+  oOSPrevCellsInDatabase = [v18 OOSPrevCellsInDatabase];
+  if (v16 <= oOSPrevCellsInDatabase)
   {
     v21 = 0;
   }
 
   else
   {
-    v20 = [v15 count];
+    v20 = [cellsCopy count];
     v9 = +[FMConfiguration sharedInstance];
     v21 = v20 - [v9 OOSPrevCellsInDatabase];
   }
 
-  v22 = [v15 count];
+  v22 = [cellsCopy count];
   v23 = +[FMConfiguration sharedInstance];
-  v24 = [v23 OOSPrevCellsInDatabase];
-  if (v22 >= v24)
+  oOSPrevCellsInDatabase2 = [v23 OOSPrevCellsInDatabase];
+  if (v22 >= oOSPrevCellsInDatabase2)
   {
     p_info = +[FMConfiguration sharedInstance];
-    v25 = [p_info OOSPrevCellsInDatabase];
+    oOSPrevCellsInDatabase3 = [p_info OOSPrevCellsInDatabase];
   }
 
   else
   {
-    v25 = [v15 count];
+    oOSPrevCellsInDatabase3 = [cellsCopy count];
   }
 
-  v26 = [v15 subarrayWithRange:{v21, v25}];
-  if (v22 >= v24)
+  v26 = [cellsCopy subarrayWithRange:{v21, oOSPrevCellsInDatabase3}];
+  if (v22 >= oOSPrevCellsInDatabase2)
   {
   }
 
-  if (v16 > v19)
+  if (v16 > oOSPrevCellsInDatabase)
   {
   }
 
@@ -68,20 +68,20 @@
   v42[1] = 3221225472;
   v42[2] = sub_100080D94;
   v42[3] = &unk_1002AD8C0;
-  v27 = v41;
+  v27 = dataCopy;
   v43 = v27;
-  v28 = v37;
+  v28 = timeCopy;
   v44 = v28;
-  v29 = v40;
+  v29 = visitCopy;
   v45 = v29;
-  v30 = v39;
+  v30 = curVisitCopy;
   v46 = v30;
   v31 = v26;
   v47 = v31;
   v49 = &v51;
-  v32 = v38;
+  v32 = dCopy;
   v48 = v32;
-  v50 = a1;
+  selfCopy = self;
   if ([v27 backgroundContextPerformBlockAndWait:v42])
   {
     v33 = v52[5];
@@ -105,20 +105,20 @@ LABEL_19:
   return v34;
 }
 
-+ (id)outOfServiceAreaToFMOOSRecoveryPredictionsWithContext:(id)a3 WithOutOfServiceArea:(id)a4 FromTimestamp:(id)a5
++ (id)outOfServiceAreaToFMOOSRecoveryPredictionsWithContext:(id)context WithOutOfServiceArea:(id)area FromTimestamp:(id)timestamp
 {
-  v6 = a4;
-  v47 = a5;
-  v42 = v6;
-  v7 = [v6 durations];
-  v8 = [v7 count];
+  areaCopy = area;
+  timestampCopy = timestamp;
+  v42 = areaCopy;
+  durations = [areaCopy durations];
+  v8 = [durations count];
 
   if (v8)
   {
     v9 = [NSMutableArray alloc];
-    v10 = [v42 durations];
-    v11 = [v10 array];
-    v12 = [v9 initWithArray:v11];
+    durations2 = [v42 durations];
+    array = [durations2 array];
+    v12 = [v9 initWithArray:array];
 
     [v12 sortUsingComparator:&stru_1002AD900];
     v48 = objc_alloc_init(NSMutableArray);
@@ -166,9 +166,9 @@ LABEL_19:
       sub_100202030(v19, v20);
     }
 
-    v21 = [v42 nextCells];
-    v22 = [v21 allObjects];
-    v23 = v22;
+    nextCells = [v42 nextCells];
+    allObjects = [nextCells allObjects];
+    v23 = allObjects;
     if (v19)
     {
       v24 = v41;
@@ -179,7 +179,7 @@ LABEL_19:
       v24 = &stru_1002AD940;
     }
 
-    v40 = [v22 sortedArrayUsingComparator:v24];
+    v40 = [allObjects sortedArrayUsingComparator:v24];
 
     v45 = objc_alloc_init(NSMutableArray);
     v55 = 0u;
@@ -203,18 +203,18 @@ LABEL_19:
 
           v27 = *(*(&v53 + 1) + 8 * j);
           v28 = [FMServingCell alloc];
-          v52 = [v27 subscriptionID];
-          v51 = [v27 radioAccessTechnology];
-          v50 = [v27 cellID];
+          subscriptionID = [v27 subscriptionID];
+          radioAccessTechnology = [v27 radioAccessTechnology];
+          cellID = [v27 cellID];
           v29 = [v27 mnc];
           v30 = [v27 mcc];
-          v31 = [v27 bandInfo];
-          v32 = [v27 tacOrLac];
-          v33 = [v27 arfcnOrUarfcn];
-          v34 = [v27 bandwidth];
+          bandInfo = [v27 bandInfo];
+          tacOrLac = [v27 tacOrLac];
+          arfcnOrUarfcn = [v27 arfcnOrUarfcn];
+          bandwidth = [v27 bandwidth];
           v35 = [v27 pci];
-          v36 = [v27 deploymentType];
-          v37 = [(FMServingCell *)v28 init:v47 subscriptionID:v52 radioAccessTechnology:v51 cellID:v50 mnc:v29 mcc:v30 bandInfo:v31 tacOrLac:v32 arfcnOrUarfcn:v33 bandwidth:v34 pci:v35 deploymentType:v36];
+          deploymentType = [v27 deploymentType];
+          v37 = [(FMServingCell *)v28 init:timestampCopy subscriptionID:subscriptionID radioAccessTechnology:radioAccessTechnology cellID:cellID mnc:v29 mcc:v30 bandInfo:bandInfo tacOrLac:tacOrLac arfcnOrUarfcn:arfcnOrUarfcn bandwidth:bandwidth pci:v35 deploymentType:deploymentType];
 
           if (v37)
           {
@@ -244,27 +244,27 @@ LABEL_19:
   return v38;
 }
 
-+ (id)getElementFromSortedArray:(id)a3 forPercentile:(unint64_t)a4
++ (id)getElementFromSortedArray:(id)array forPercentile:(unint64_t)percentile
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  arrayCopy = array;
+  v6 = arrayCopy;
+  if (arrayCopy && [arrayCopy count])
   {
-    if (!a4)
+    if (!percentile)
     {
-      v7 = [v6 firstObject];
+      firstObject = [v6 firstObject];
       goto LABEL_7;
     }
 
-    if (a4 >= 0x65)
+    if (percentile >= 0x65)
     {
-      v7 = [v6 lastObject];
+      firstObject = [v6 lastObject];
 LABEL_7:
-      v8 = v7;
+      v8 = firstObject;
       goto LABEL_16;
     }
 
-    *v9.i64 = ([v6 count] - 1) / (100.0 / a4);
+    *v9.i64 = ([v6 count] - 1) / (100.0 / percentile);
     *v10.i64 = *v9.i64 - trunc(*v9.i64);
     v11.f64[0] = NAN;
     v11.f64[1] = NAN;
@@ -273,7 +273,7 @@ LABEL_7:
       v19 = llround(*v9.i64);
       if ((v19 & 0x8000000000000000) == 0 && v19 < [v6 count])
       {
-        v7 = [v6 objectAtIndexedSubscript:v19];
+        firstObject = [v6 objectAtIndexedSubscript:v19];
         goto LABEL_7;
       }
     }

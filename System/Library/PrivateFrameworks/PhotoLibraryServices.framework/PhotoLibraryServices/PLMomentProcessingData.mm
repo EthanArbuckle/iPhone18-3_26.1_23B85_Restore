@@ -1,6 +1,6 @@
 @interface PLMomentProcessingData
 - (CLLocationCoordinate2D)pl_coordinate;
-- (PLMomentProcessingData)initWithMoment:(id)a3;
+- (PLMomentProcessingData)initWithMoment:(id)moment;
 @end
 
 @implementation PLMomentProcessingData
@@ -14,36 +14,36 @@
   return result;
 }
 
-- (PLMomentProcessingData)initWithMoment:(id)a3
+- (PLMomentProcessingData)initWithMoment:(id)moment
 {
-  v4 = a3;
+  momentCopy = moment;
   v17.receiver = self;
   v17.super_class = PLMomentProcessingData;
   v5 = [(PLMomentProcessingData *)&v17 init];
   if (v5)
   {
-    v6 = [v4 pl_uuid];
+    pl_uuid = [momentCopy pl_uuid];
     pl_uuid = v5->_pl_uuid;
-    v5->_pl_uuid = v6;
+    v5->_pl_uuid = pl_uuid;
 
-    v8 = [v4 pl_startDate];
+    pl_startDate = [momentCopy pl_startDate];
     pl_startDate = v5->_pl_startDate;
-    v5->_pl_startDate = v8;
+    v5->_pl_startDate = pl_startDate;
 
-    v10 = [v4 pl_endDate];
+    pl_endDate = [momentCopy pl_endDate];
     pl_endDate = v5->_pl_endDate;
-    v5->_pl_endDate = v10;
+    v5->_pl_endDate = pl_endDate;
 
-    v5->_pl_numberOfAssets = [v4 pl_numberOfAssets];
-    v12 = [v4 pl_location];
+    v5->_pl_numberOfAssets = [momentCopy pl_numberOfAssets];
+    pl_location = [momentCopy pl_location];
     pl_location = v5->_pl_location;
-    v5->_pl_location = v12;
+    v5->_pl_location = pl_location;
 
-    [v4 pl_coordinate];
+    [momentCopy pl_coordinate];
     v5->_pl_coordinate.latitude = v14;
     v5->_pl_coordinate.longitude = v15;
-    v5->_pl_originatorState = [v4 pl_originatorState];
-    v5->_pl_locationType = [v4 pl_locationType];
+    v5->_pl_originatorState = [momentCopy pl_originatorState];
+    v5->_pl_locationType = [momentCopy pl_locationType];
   }
 
   return v5;

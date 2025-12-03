@@ -1,14 +1,14 @@
 @interface _UIFloatingTabBarParser
-- (BOOL)_canDisplayTabInBar:(id)a3;
-- (BOOL)containsDescendantOfTab:(_BOOL8)a1;
-- (id)_listItemsForTabs:(id)a3 customizableOnly:(BOOL)a4;
+- (BOOL)_canDisplayTabInBar:(id)bar;
+- (BOOL)containsDescendantOfTab:(_BOOL8)tab;
+- (id)_listItemsForTabs:(id)tabs customizableOnly:(BOOL)only;
 - (id)_listItemsFromFavoriteOrder;
 - (id)_listItemsFromOverrideFavoriteOrder;
 - (id)sourceTabIdentifiers;
-- (id)validateFavoriteOrder:(id *)a1;
-- (uint64_t)containsTab:(uint64_t)a1;
-- (void)_insertIdentifiersFromItems:(id)a3 intoSet:(id)a4;
-- (void)_parseTabs:(id)a3 fixedTabs:(id)a4 sourceTabs:(id)a5 pinnedTabs:(id)a6 sourceIdentifiers:(id)a7;
+- (id)validateFavoriteOrder:(id *)order;
+- (uint64_t)containsTab:(uint64_t)tab;
+- (void)_insertIdentifiersFromItems:(id)items intoSet:(id)set;
+- (void)_parseTabs:(id)tabs fixedTabs:(id)fixedTabs sourceTabs:(id)sourceTabs pinnedTabs:(id)pinnedTabs sourceIdentifiers:(id)identifiers;
 - (void)currentFavoriteOrder;
 - (void)fixedItems;
 - (void)invalidateFavorites;
@@ -16,134 +16,134 @@
 - (void)items;
 - (void)pinnedItems;
 - (void)reloadItems;
-- (void)setIgnoredFavoriteOrderItems:(uint64_t)a1;
+- (void)setIgnoredFavoriteOrderItems:(uint64_t)items;
 @end
 
 @implementation _UIFloatingTabBarParser
 
 - (void)fixedItems
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[1];
+    selfCopy = self;
+    v3 = self[1];
     if (!v3)
     {
-      v4 = [a1 fixedTabs];
-      v5 = [v2 _listItemsForTabs:v4 customizableOnly:0];
-      v6 = v2[1];
-      v2[1] = v5;
+      fixedTabs = [self fixedTabs];
+      v5 = [selfCopy _listItemsForTabs:fixedTabs customizableOnly:0];
+      v6 = selfCopy[1];
+      selfCopy[1] = v5;
 
-      v7 = v2[4];
-      v2[4] = 0;
+      v7 = selfCopy[4];
+      selfCopy[4] = 0;
 
-      v3 = v2[1];
+      v3 = selfCopy[1];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)pinnedItems
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[2];
+    selfCopy = self;
+    v3 = self[2];
     if (!v3)
     {
-      v4 = [a1 pinnedTabs];
-      v5 = [v2 _listItemsForTabs:v4 customizableOnly:0];
-      v6 = v2[2];
-      v2[2] = v5;
+      pinnedTabs = [self pinnedTabs];
+      v5 = [selfCopy _listItemsForTabs:pinnedTabs customizableOnly:0];
+      v6 = selfCopy[2];
+      selfCopy[2] = v5;
 
-      v7 = v2[4];
-      v2[4] = 0;
+      v7 = selfCopy[4];
+      selfCopy[4] = 0;
 
-      v3 = v2[2];
+      v3 = selfCopy[2];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)items
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[3];
+    selfCopy = self;
+    v3 = self[3];
     if (v3)
     {
 LABEL_9:
-      a1 = v3;
+      self = v3;
       v1 = vars8;
       goto LABEL_10;
     }
 
-    if (a1[8])
+    if (self[8])
     {
-      v4 = [a1 _listItemsFromOverrideFavoriteOrder];
+      _listItemsFromOverrideFavoriteOrder = [self _listItemsFromOverrideFavoriteOrder];
     }
 
     else
     {
-      v5 = [a1 favoriteOrder];
+      favoriteOrder = [self favoriteOrder];
 
-      if (!v5)
+      if (!favoriteOrder)
       {
-        v6 = [v2 sourceTabs];
-        v10 = [v2 _listItemsForTabs:v6 customizableOnly:1];
-        v11 = v2[3];
-        v2[3] = v10;
+        sourceTabs = [selfCopy sourceTabs];
+        v10 = [selfCopy _listItemsForTabs:sourceTabs customizableOnly:1];
+        v11 = selfCopy[3];
+        selfCopy[3] = v10;
 
         goto LABEL_8;
       }
 
-      v4 = [v2 _listItemsFromFavoriteOrder];
+      _listItemsFromOverrideFavoriteOrder = [selfCopy _listItemsFromFavoriteOrder];
     }
 
-    v6 = v2[3];
-    v2[3] = v4;
+    sourceTabs = selfCopy[3];
+    selfCopy[3] = _listItemsFromOverrideFavoriteOrder;
 LABEL_8:
 
-    v7 = v2[4];
-    v2[4] = 0;
+    v7 = selfCopy[4];
+    selfCopy[4] = 0;
 
-    v8 = v2[5];
-    v2[5] = 0;
+    v8 = selfCopy[5];
+    selfCopy[5] = 0;
 
-    v3 = v2[3];
+    v3 = selfCopy[3];
     goto LABEL_9;
   }
 
 LABEL_10:
 
-  return a1;
+  return self;
 }
 
 - (void)currentFavoriteOrder
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = a1[5];
+    selfCopy = self;
+    v2 = self[5];
     if (!v2)
     {
-      v3 = [(_UIFloatingTabBarParser *)a1 items];
-      v4 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:{objc_msgSend(v3, "count")}];
+      items = [(_UIFloatingTabBarParser *)self items];
+      v4 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:{objc_msgSend(items, "count")}];
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v5 = v3;
+      v5 = items;
       v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
@@ -159,10 +159,10 @@ LABEL_10:
               objc_enumerationMutation(v5);
             }
 
-            v10 = [*(*(&v15 + 1) + 8 * v9) tabForSelection];
-            v11 = [v10 identifier];
+            tabForSelection = [*(*(&v15 + 1) + 8 * v9) tabForSelection];
+            identifier = [tabForSelection identifier];
 
-            [v4 addObject:v11];
+            [v4 addObject:identifier];
             ++v9;
           }
 
@@ -174,24 +174,24 @@ LABEL_10:
       }
 
       v12 = [MEMORY[0x1E695DFB8] orderedSetWithOrderedSet:v4];
-      v13 = v1[5];
-      v1[5] = v12;
+      v13 = selfCopy[5];
+      selfCopy[5] = v12;
 
-      v2 = v1[5];
+      v2 = selfCopy[5];
     }
 
-    a1 = v2;
+    self = v2;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setIgnoredFavoriteOrderItems:(uint64_t)a1
+- (void)setIgnoredFavoriteOrderItems:(uint64_t)items
 {
   v9 = a2;
-  if (a1)
+  if (items)
   {
-    v3 = *(a1 + 80);
+    v3 = *(items + 80);
     v4 = v9;
     v5 = v4;
     if (v3 == v4)
@@ -215,11 +215,11 @@ LABEL_10:
       }
 
       v7 = [v5 copy];
-      v8 = *(a1 + 80);
-      *(a1 + 80) = v7;
+      v8 = *(items + 80);
+      *(items + 80) = v7;
 
-      v3 = *(a1 + 24);
-      *(a1 + 24) = 0;
+      v3 = *(items + 24);
+      *(items + 24) = 0;
     }
   }
 
@@ -228,21 +228,21 @@ LABEL_11:
 
 - (id)sourceTabIdentifiers
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(_UIFloatingTabBarParser *)a1 validateFavoriteOrder:?];
+    self = [(_UIFloatingTabBarParser *)self validateFavoriteOrder:?];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)validateFavoriteOrder:(id *)a1
+- (id)validateFavoriteOrder:(id *)order
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (order)
   {
     v16 = 0u;
     v17 = 0u;
@@ -264,8 +264,8 @@ LABEL_11:
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [a1[7] tabForIdentifier:v10];
-          if (![v11 _hasCustomizablePlacement] || (objc_msgSend(a1, "_canDisplayTabInBar:", v11) & 1) == 0)
+          v11 = [order[7] tabForIdentifier:v10];
+          if (![v11 _hasCustomizablePlacement] || (objc_msgSend(order, "_canDisplayTabInBar:", v11) & 1) == 0)
           {
             if (!v7)
             {
@@ -297,173 +297,173 @@ LABEL_11:
       v12 = v4;
     }
 
-    a1 = v12;
+    order = v12;
   }
 
-  return a1;
+  return order;
 }
 
 - (void)invalidateFavorites
 {
-  if (a1)
+  if (self)
   {
-    v6 = [*(a1 + 56) customizationStore];
-    v2 = [(_UIFloatingTabBarParser *)a1 sourceTabIdentifiers];
-    v3 = [v6 favoriteOrderForDefaultIdentifiers:v2];
-    v4 = *(a1 + 112);
-    *(a1 + 112) = v3;
+    customizationStore = [*(self + 56) customizationStore];
+    sourceTabIdentifiers = [(_UIFloatingTabBarParser *)self sourceTabIdentifiers];
+    v3 = [customizationStore favoriteOrderForDefaultIdentifiers:sourceTabIdentifiers];
+    v4 = *(self + 112);
+    *(self + 112) = v3;
 
-    v5 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v5 = *(self + 24);
+    *(self + 24) = 0;
   }
 }
 
 - (void)itemIdentifiers
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[4];
+    selfCopy = self;
+    v3 = self[4];
     if (!v3)
     {
       v4 = objc_alloc(MEMORY[0x1E695DFA8]);
-      v5 = [(_UIFloatingTabBarParser *)v2 fixedItems];
-      v6 = [v5 count];
-      v7 = [(_UIFloatingTabBarParser *)v2 pinnedItems];
-      v8 = [v7 count] + v6;
-      v9 = [(_UIFloatingTabBarParser *)v2 items];
-      v10 = [v4 initWithCapacity:{v8 + objc_msgSend(v9, "count")}];
+      fixedItems = [(_UIFloatingTabBarParser *)selfCopy fixedItems];
+      v6 = [fixedItems count];
+      pinnedItems = [(_UIFloatingTabBarParser *)selfCopy pinnedItems];
+      v8 = [pinnedItems count] + v6;
+      items = [(_UIFloatingTabBarParser *)selfCopy items];
+      v10 = [v4 initWithCapacity:{v8 + objc_msgSend(items, "count")}];
 
-      v11 = [(_UIFloatingTabBarParser *)v2 fixedItems];
-      [v2 _insertIdentifiersFromItems:v11 intoSet:v10];
+      fixedItems2 = [(_UIFloatingTabBarParser *)selfCopy fixedItems];
+      [selfCopy _insertIdentifiersFromItems:fixedItems2 intoSet:v10];
 
-      v12 = [(_UIFloatingTabBarParser *)v2 items];
-      [v2 _insertIdentifiersFromItems:v12 intoSet:v10];
+      items2 = [(_UIFloatingTabBarParser *)selfCopy items];
+      [selfCopy _insertIdentifiersFromItems:items2 intoSet:v10];
 
-      v13 = [(_UIFloatingTabBarParser *)v2 pinnedItems];
-      [v2 _insertIdentifiersFromItems:v13 intoSet:v10];
+      pinnedItems2 = [(_UIFloatingTabBarParser *)selfCopy pinnedItems];
+      [selfCopy _insertIdentifiersFromItems:pinnedItems2 intoSet:v10];
 
       v14 = [v10 copy];
-      v15 = v2[4];
-      v2[4] = v14;
+      v15 = selfCopy[4];
+      selfCopy[4] = v14;
 
-      v3 = v2[4];
+      v3 = selfCopy[4];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)containsTab:(uint64_t)a1
+- (uint64_t)containsTab:(uint64_t)tab
 {
   v3 = a2;
-  if (a1)
+  if (tab)
   {
-    v4 = [(_UIFloatingTabBarParser *)a1 fixedItems];
-    IsRepresentedInListItems = _UITabIsRepresentedInListItems(v3, v4);
+    fixedItems = [(_UIFloatingTabBarParser *)tab fixedItems];
+    IsRepresentedInListItems = _UITabIsRepresentedInListItems(v3, fixedItems);
 
-    if (IsRepresentedInListItems & 1) != 0 || ([(_UIFloatingTabBarParser *)a1 items], v6 = objc_claimAutoreleasedReturnValue(), v7 = _UITabIsRepresentedInListItems(v3, v6), v6, (v7))
+    if (IsRepresentedInListItems & 1) != 0 || ([(_UIFloatingTabBarParser *)tab items], v6 = objc_claimAutoreleasedReturnValue(), v7 = _UITabIsRepresentedInListItems(v3, v6), v6, (v7))
     {
-      a1 = 1;
+      tab = 1;
     }
 
     else
     {
-      v8 = [(_UIFloatingTabBarParser *)a1 pinnedItems];
-      a1 = _UITabIsRepresentedInListItems(v3, v8);
+      pinnedItems = [(_UIFloatingTabBarParser *)tab pinnedItems];
+      tab = _UITabIsRepresentedInListItems(v3, pinnedItems);
     }
   }
 
-  return a1;
+  return tab;
 }
 
-- (BOOL)containsDescendantOfTab:(_BOOL8)a1
+- (BOOL)containsDescendantOfTab:(_BOOL8)tab
 {
   v3 = a2;
-  if (a1)
+  if (tab)
   {
-    v4 = [(_UIFloatingTabBarParser *)a1 fixedItems];
-    IsAncestorOfTabsInListItems = _UITabIsAncestorOfTabsInListItems(v3, v4);
+    fixedItems = [(_UIFloatingTabBarParser *)tab fixedItems];
+    IsAncestorOfTabsInListItems = _UITabIsAncestorOfTabsInListItems(v3, fixedItems);
 
-    if (IsAncestorOfTabsInListItems || ([(_UIFloatingTabBarParser *)a1 items], v6 = objc_claimAutoreleasedReturnValue(), v7 = _UITabIsAncestorOfTabsInListItems(v3, v6), v6, v7))
+    if (IsAncestorOfTabsInListItems || ([(_UIFloatingTabBarParser *)tab items], v6 = objc_claimAutoreleasedReturnValue(), v7 = _UITabIsAncestorOfTabsInListItems(v3, v6), v6, v7))
     {
-      a1 = 1;
+      tab = 1;
     }
 
     else
     {
-      v8 = [(_UIFloatingTabBarParser *)a1 pinnedItems];
-      a1 = _UITabIsAncestorOfTabsInListItems(v3, v8);
+      pinnedItems = [(_UIFloatingTabBarParser *)tab pinnedItems];
+      tab = _UITabIsAncestorOfTabsInListItems(v3, pinnedItems);
     }
   }
 
-  return a1;
+  return tab;
 }
 
 - (void)reloadItems
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v20 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-    v5 = [*(a1 + 56) tabItems];
-    v6 = v5;
+    tabItems = [*(self + 56) tabItems];
+    v6 = tabItems;
     v7 = MEMORY[0x1E695E0F0];
-    if (v5)
+    if (tabItems)
     {
-      v7 = v5;
+      v7 = tabItems;
     }
 
     v8 = v7;
 
-    [a1 _parseTabs:v8 fixedTabs:v2 sourceTabs:v3 pinnedTabs:v4 sourceIdentifiers:v20];
-    v9 = *(a1 + 88);
-    *(a1 + 88) = v2;
+    [self _parseTabs:v8 fixedTabs:v2 sourceTabs:v3 pinnedTabs:v4 sourceIdentifiers:v20];
+    v9 = *(self + 88);
+    *(self + 88) = v2;
     v10 = v2;
 
-    v11 = *(a1 + 96);
-    *(a1 + 96) = v3;
+    v11 = *(self + 96);
+    *(self + 96) = v3;
     v12 = v3;
 
-    v13 = *(a1 + 104);
-    *(a1 + 104) = v4;
+    v13 = *(self + 104);
+    *(self + 104) = v4;
     v14 = v4;
 
     v15 = [v20 copy];
-    v16 = *(a1 + 48);
-    *(a1 + 48) = v15;
+    v16 = *(self + 48);
+    *(self + 48) = v15;
 
-    v17 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v17 = *(self + 8);
+    *(self + 8) = 0;
 
-    v18 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v18 = *(self + 24);
+    *(self + 24) = 0;
 
-    v19 = *(a1 + 16);
-    *(a1 + 16) = 0;
+    v19 = *(self + 16);
+    *(self + 16) = 0;
 
-    [(_UIFloatingTabBarParser *)a1 invalidateFavorites];
+    [(_UIFloatingTabBarParser *)self invalidateFavorites];
   }
 }
 
-- (void)_parseTabs:(id)a3 fixedTabs:(id)a4 sourceTabs:(id)a5 pinnedTabs:(id)a6 sourceIdentifiers:(id)a7
+- (void)_parseTabs:(id)tabs fixedTabs:(id)fixedTabs sourceTabs:(id)sourceTabs pinnedTabs:(id)pinnedTabs sourceIdentifiers:(id)identifiers
 {
   v32 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  tabsCopy = tabs;
+  fixedTabsCopy = fixedTabs;
+  sourceTabsCopy = sourceTabs;
+  pinnedTabsCopy = pinnedTabs;
+  identifiersCopy = identifiers;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v16 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v16 = [tabsCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v16)
   {
     v17 = v16;
@@ -474,63 +474,63 @@ LABEL_11:
       {
         if (*v28 != v18)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(tabsCopy);
         }
 
         v20 = *(*(&v27 + 1) + 8 * i);
-        v21 = [v20 _tabPlacement];
-        if (v21 > 3)
+        _tabPlacement = [v20 _tabPlacement];
+        if (_tabPlacement > 3)
         {
-          if (v21 == 5)
+          if (_tabPlacement == 5)
           {
-            v24 = v12;
+            v24 = fixedTabsCopy;
           }
 
           else
           {
-            if (v21 != 4)
+            if (_tabPlacement != 4)
             {
               goto LABEL_18;
             }
 
-            v24 = v14;
+            v24 = pinnedTabsCopy;
           }
 
           [v24 addObject:v20];
         }
 
-        else if (v21 == 1 || v21 == 3)
+        else if (_tabPlacement == 1 || _tabPlacement == 3)
         {
-          [v13 addObject:v20];
-          v23 = [v20 identifier];
-          [v15 addObject:v23];
+          [sourceTabsCopy addObject:v20];
+          identifier = [v20 identifier];
+          [identifiersCopy addObject:identifier];
         }
 
 LABEL_18:
         if ([v20 _isGroup])
         {
-          v25 = [v20 children];
-          [(_UIFloatingTabBarParser *)self _parseTabs:v25 fixedTabs:v12 sourceTabs:v13 pinnedTabs:v14 sourceIdentifiers:v15];
+          children = [v20 children];
+          [(_UIFloatingTabBarParser *)self _parseTabs:children fixedTabs:fixedTabsCopy sourceTabs:sourceTabsCopy pinnedTabs:pinnedTabsCopy sourceIdentifiers:identifiersCopy];
         }
       }
 
-      v17 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v17 = [tabsCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v17);
   }
 }
 
-- (void)_insertIdentifiersFromItems:(id)a3 intoSet:(id)a4
+- (void)_insertIdentifiersFromItems:(id)items intoSet:(id)set
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  setCopy = set;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [itemsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -541,38 +541,38 @@ LABEL_18:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 tabForSelection];
+        tabForSelection = [v11 tabForSelection];
 
-        if (v12)
+        if (tabForSelection)
         {
-          v13 = [v11 tabForSelection];
-          v14 = [v13 identifier];
-          [v6 addObject:v14];
+          tabForSelection2 = [v11 tabForSelection];
+          identifier = [tabForSelection2 identifier];
+          [setCopy addObject:identifier];
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [itemsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)_listItemsForTabs:(id)a3 customizableOnly:(BOOL)a4
+- (id)_listItemsForTabs:(id)tabs customizableOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  tabsCopy = tabs;
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(tabsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = tabsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -588,7 +588,7 @@ LABEL_18:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if (-[_UIFloatingTabBarParser _canDisplayTabInBar:](self, "_canDisplayTabInBar:", v13, v17) && (!v4 || [v13 _hasCustomizablePlacement]))
+        if (-[_UIFloatingTabBarParser _canDisplayTabInBar:](self, "_canDisplayTabInBar:", v13, v17) && (!onlyCopy || [v13 _hasCustomizablePlacement]))
         {
           v14 = [[_UIFloatingTabBarListItem alloc] initWithTab:v13];
           [v7 addObject:v14];
@@ -741,15 +741,15 @@ LABEL_28:
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(_UIFloatingTabBarParser *)self favoriteOrder];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  favoriteOrder = [(_UIFloatingTabBarParser *)self favoriteOrder];
+  v5 = [v3 initWithCapacity:{objc_msgSend(favoriteOrder, "count")}];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(_UIFloatingTabBarParser *)self favoriteOrder];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  favoriteOrder2 = [(_UIFloatingTabBarParser *)self favoriteOrder];
+  v7 = [favoriteOrder2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -761,7 +761,7 @@ LABEL_28:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(favoriteOrder2);
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
@@ -796,7 +796,7 @@ LABEL_13:
       }
 
       while (v8 != v10);
-      v15 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v15 = [favoriteOrder2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       v8 = v15;
     }
 
@@ -808,9 +808,9 @@ LABEL_13:
   return v16;
 }
 
-- (BOOL)_canDisplayTabInBar:(id)a3
+- (BOOL)_canDisplayTabInBar:(id)bar
 {
-  v4 = a3;
+  barCopy = bar;
   if (self)
   {
     tabModel = self->_tabModel;
@@ -821,7 +821,7 @@ LABEL_13:
     tabModel = 0;
   }
 
-  v6 = !-[_UITabModel isTabHidden:](tabModel, "isTabHidden:", v4) && [v4 _tabPlacement] != 6;
+  v6 = !-[_UITabModel isTabHidden:](tabModel, "isTabHidden:", barCopy) && [barCopy _tabPlacement] != 6;
 
   return v6;
 }

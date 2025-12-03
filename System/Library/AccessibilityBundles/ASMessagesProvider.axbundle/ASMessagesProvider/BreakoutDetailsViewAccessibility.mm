@@ -1,6 +1,6 @@
 @interface BreakoutDetailsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityPerformCallToAction:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityPerformCallToAction:(id)action;
 - (id)accessibilityCustomActions;
 - (id)accessibilityElements;
 - (id)accessibilityLabel;
@@ -9,33 +9,33 @@
 
 @implementation BreakoutDetailsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ASMessagesProvider.BreakoutDetailsView" hasInstanceMethod:@"accessibilityBadgeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASMessagesProvider.BreakoutDetailsView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASMessagesProvider.BreakoutDetailsView" hasInstanceMethod:@"accessibilityDescriptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASMessagesProvider.BreakoutDetailsView" hasInstanceMethod:@"accessibilityCallToActionButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ASMessagesProvider.BreakoutDetailsView" hasInstanceMethod:@"accessibilityBadgeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASMessagesProvider.BreakoutDetailsView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASMessagesProvider.BreakoutDetailsView" hasInstanceMethod:@"accessibilityDescriptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASMessagesProvider.BreakoutDetailsView" hasInstanceMethod:@"accessibilityCallToActionButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(BreakoutDetailsViewAccessibility *)self _axDescriptionLabel];
-  v4 = [v3 accessibilityLabel];
+  _axDescriptionLabel = [(BreakoutDetailsViewAccessibility *)self _axDescriptionLabel];
+  accessibilityLabel = [_axDescriptionLabel accessibilityLabel];
 
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"/" withString:@" / "];
+  v5 = [accessibilityLabel stringByReplacingOccurrencesOfString:@"/" withString:@" / "];
 
-  v6 = [(BreakoutDetailsViewAccessibility *)self _axBadgeLabel];
-  v9 = [(BreakoutDetailsViewAccessibility *)self _axTitleLabel];
+  _axBadgeLabel = [(BreakoutDetailsViewAccessibility *)self _axBadgeLabel];
+  _axTitleLabel = [(BreakoutDetailsViewAccessibility *)self _axTitleLabel];
   v7 = __UIAXStringForVariables();
 
   return v7;
 }
 
-- (BOOL)_accessibilityPerformCallToAction:(id)a3
+- (BOOL)_accessibilityPerformCallToAction:(id)action
 {
-  v3 = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
-  [v3 accessibilityActivate];
+  _axCallToActionButton = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
+  [_axCallToActionButton accessibilityActivate];
 
   return 1;
 }
@@ -45,15 +45,15 @@
   v3 = MEMORY[0x29EDB8DE8];
   v10.receiver = self;
   v10.super_class = BreakoutDetailsViewAccessibility;
-  v4 = [(BreakoutDetailsViewAccessibility *)&v10 accessibilityCustomActions];
-  v5 = [v3 arrayWithArray:v4];
+  accessibilityCustomActions = [(BreakoutDetailsViewAccessibility *)&v10 accessibilityCustomActions];
+  v5 = [v3 arrayWithArray:accessibilityCustomActions];
 
-  v6 = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
-  v7 = [v6 accessibilityLabel];
+  _axCallToActionButton = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
+  accessibilityLabel = [_axCallToActionButton accessibilityLabel];
 
-  if ([v7 length])
+  if ([accessibilityLabel length])
   {
-    v8 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v7 target:self selector:sel__accessibilityPerformCallToAction_];
+    v8 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:accessibilityLabel target:self selector:sel__accessibilityPerformCallToAction_];
     [v5 axSafelyAddObject:v8];
   }
 
@@ -64,67 +64,67 @@
 {
   v10.receiver = self;
   v10.super_class = BreakoutDetailsViewAccessibility;
-  v3 = [(BreakoutDetailsViewAccessibility *)&v10 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(BreakoutDetailsViewAccessibility *)&v10 automationElements];
+  v4 = [automationElements mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
-  v8 = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
-  [v7 axSafelyAddObject:v8];
+  _axCallToActionButton = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
+  [v7 axSafelyAddObject:_axCallToActionButton];
 
   return v7;
 }
 
 - (id)accessibilityElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(BreakoutDetailsViewAccessibility *)self _axBadgeLabel];
-  [v4 setIsAccessibilityElement:1];
+  array = [MEMORY[0x29EDB8DE8] array];
+  _axBadgeLabel = [(BreakoutDetailsViewAccessibility *)self _axBadgeLabel];
+  [_axBadgeLabel setIsAccessibilityElement:1];
 
-  v5 = [(BreakoutDetailsViewAccessibility *)self _axBadgeLabel];
-  [v3 axSafelyAddObject:v5];
+  _axBadgeLabel2 = [(BreakoutDetailsViewAccessibility *)self _axBadgeLabel];
+  [array axSafelyAddObject:_axBadgeLabel2];
 
-  v6 = [(BreakoutDetailsViewAccessibility *)self _axTitleLabel];
-  [v6 setIsAccessibilityElement:1];
+  _axTitleLabel = [(BreakoutDetailsViewAccessibility *)self _axTitleLabel];
+  [_axTitleLabel setIsAccessibilityElement:1];
 
-  v7 = [(BreakoutDetailsViewAccessibility *)self _axTitleLabel];
-  [v7 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
+  _axTitleLabel2 = [(BreakoutDetailsViewAccessibility *)self _axTitleLabel];
+  [_axTitleLabel2 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
 
-  v8 = [(BreakoutDetailsViewAccessibility *)self _axTitleLabel];
-  [v3 axSafelyAddObject:v8];
+  _axTitleLabel3 = [(BreakoutDetailsViewAccessibility *)self _axTitleLabel];
+  [array axSafelyAddObject:_axTitleLabel3];
 
-  v9 = [(BreakoutDetailsViewAccessibility *)self _axDescriptionLabel];
-  [v9 setIsAccessibilityElement:1];
+  _axDescriptionLabel = [(BreakoutDetailsViewAccessibility *)self _axDescriptionLabel];
+  [_axDescriptionLabel setIsAccessibilityElement:1];
 
-  v10 = [(BreakoutDetailsViewAccessibility *)self _axDescriptionLabel];
-  [v3 axSafelyAddObject:v10];
+  _axDescriptionLabel2 = [(BreakoutDetailsViewAccessibility *)self _axDescriptionLabel];
+  [array axSafelyAddObject:_axDescriptionLabel2];
 
-  v11 = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
-  [v11 setIsAccessibilityElement:1];
+  _axCallToActionButton = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
+  [_axCallToActionButton setIsAccessibilityElement:1];
 
-  v12 = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
-  [v12 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
+  _axCallToActionButton2 = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
+  [_axCallToActionButton2 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
 
-  v13 = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
-  v14 = [v13 accessibilityLabel];
+  _axCallToActionButton3 = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
+  accessibilityLabel = [_axCallToActionButton3 accessibilityLabel];
 
-  if (v14)
+  if (accessibilityLabel)
   {
-    v15 = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
-    [v3 axSafelyAddObject:v15];
+    _axCallToActionButton4 = [(BreakoutDetailsViewAccessibility *)self _axCallToActionButton];
+    [array axSafelyAddObject:_axCallToActionButton4];
   }
 
-  return v3;
+  return array;
 }
 
 @end

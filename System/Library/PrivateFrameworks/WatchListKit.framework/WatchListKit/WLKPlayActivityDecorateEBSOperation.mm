@@ -1,37 +1,37 @@
 @interface WLKPlayActivityDecorateEBSOperation
-- (WLKPlayActivityDecorateEBSOperation)initWithChannelID:(id)a3 externalContentID:(id)a4 playablePassthrough:(id)a5;
+- (WLKPlayActivityDecorateEBSOperation)initWithChannelID:(id)d externalContentID:(id)iD playablePassthrough:(id)passthrough;
 @end
 
 @implementation WLKPlayActivityDecorateEBSOperation
 
-- (WLKPlayActivityDecorateEBSOperation)initWithChannelID:(id)a3 externalContentID:(id)a4 playablePassthrough:(id)a5
+- (WLKPlayActivityDecorateEBSOperation)initWithChannelID:(id)d externalContentID:(id)iD playablePassthrough:(id)passthrough
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dCopy = d;
+  iDCopy = iD;
+  passthroughCopy = passthrough;
+  if (!dCopy)
   {
     [WLKPlayActivityDecorateEBSOperation initWithChannelID:externalContentID:playablePassthrough:];
   }
 
-  if (!v9)
+  if (!iDCopy)
   {
     [WLKPlayActivityDecorateEBSOperation initWithChannelID:externalContentID:playablePassthrough:];
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = passthroughCopy;
+  if (!passthroughCopy)
   {
     v12 = WLKSystemLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [WLKPlayActivityDecorateEBSOperation initWithChannelID:v8 externalContentID:v9 playablePassthrough:v12];
+      [WLKPlayActivityDecorateEBSOperation initWithChannelID:dCopy externalContentID:iDCopy playablePassthrough:v12];
     }
   }
 
   v13 = objc_opt_new();
-  [v13 setObject:v8 forKey:@"brandId"];
-  [v13 setObject:v9 forKey:@"externalId"];
+  [v13 setObject:dCopy forKey:@"brandId"];
+  [v13 setObject:iDCopy forKey:@"externalId"];
   [v13 wlk_setObjectUnlessNil:v11 forKey:@"playablePassthrough"];
   v14 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"contents/play-metadata/ebs" queryParameters:v13 httpMethod:0 headers:0 caller:0 timeout:0 apiVersion:0 options:0];
   v23.receiver = self;
@@ -39,11 +39,11 @@
   v15 = [(WLKUTSNetworkRequestOperation *)&v23 initWithRequestProperties:v14];
   if (v15)
   {
-    v16 = [v8 copy];
+    v16 = [dCopy copy];
     channelID = v15->_channelID;
     v15->_channelID = v16;
 
-    v18 = [v9 copy];
+    v18 = [iDCopy copy];
     externalContentID = v15->_externalContentID;
     v15->_externalContentID = v18;
 

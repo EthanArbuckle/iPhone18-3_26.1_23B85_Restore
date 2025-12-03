@@ -1,12 +1,12 @@
 @interface PBBProtoPushControllerType
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PBBProtoPushControllerType
@@ -17,32 +17,32 @@
   v8.receiver = self;
   v8.super_class = PBBProtoPushControllerType;
   v4 = [(PBBProtoPushControllerType *)&v8 description];
-  v5 = [(PBBProtoPushControllerType *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PBBProtoPushControllerType *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_controllerType];
-  [v3 setObject:v4 forKey:@"controllerType"];
+  [dictionary setObject:v4 forKey:@"controllerType"];
 
   if (*&self->_has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_intendedFireDate];
-    [v3 setObject:v5 forKey:@"intendedFireDate"];
+    [dictionary setObject:v5 forKey:@"intendedFireDate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   controllerType = self->_controllerType;
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteUint32Field();
   if (*&self->_has)
   {
@@ -51,19 +51,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 4) = self->_controllerType;
+  *(to + 4) = self->_controllerType;
   if (*&self->_has)
   {
-    *(a3 + 1) = *&self->_intendedFireDate;
-    *(a3 + 20) |= 1u;
+    *(to + 1) = *&self->_intendedFireDate;
+    *(to + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 4) = self->_controllerType;
   if (*&self->_has)
   {
@@ -74,18 +74,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_controllerType != *(v4 + 4))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_controllerType != *(equalCopy + 4))
   {
     goto LABEL_7;
   }
 
-  v5 = (*(v4 + 20) & 1) == 0;
+  v5 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_intendedFireDate == *(v4 + 1))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_intendedFireDate == *(equalCopy + 1))
     {
       v5 = 1;
       goto LABEL_8;
@@ -138,12 +138,12 @@ LABEL_8:
   return v4 ^ (2654435761 * self->_controllerType);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_controllerType = *(a3 + 4);
-  if (*(a3 + 20))
+  self->_controllerType = *(from + 4);
+  if (*(from + 20))
   {
-    self->_intendedFireDate = *(a3 + 1);
+    self->_intendedFireDate = *(from + 1);
     *&self->_has |= 1u;
   }
 }

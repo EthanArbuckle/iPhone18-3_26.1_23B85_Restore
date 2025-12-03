@@ -1,12 +1,12 @@
 @interface CARSilentModePanel
 - (BOOL)_shouldShowThreeWaySwitch;
-- (CARSilentModePanel)initWithPanelController:(id)a3;
-- (id)_modeForSilentModeType:(unint64_t)a3;
+- (CARSilentModePanel)initWithPanelController:(id)controller;
+- (id)_modeForSilentModeType:(unint64_t)type;
 - (id)_silentModeDebugDescription;
 - (id)cellSpecifier;
 - (id)specifierSections;
 - (void)_externalProcessChangedSilentMode;
-- (void)_updateCarPlaySilentModePreference:(BOOL)a3;
+- (void)_updateCarPlaySilentModePreference:(BOOL)preference;
 - (void)_updateCurrentMode;
 - (void)dealloc;
 - (void)setupObservers;
@@ -43,12 +43,12 @@
   return v9;
 }
 
-- (CARSilentModePanel)initWithPanelController:(id)a3
+- (CARSilentModePanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v34.receiver = self;
   v34.super_class = CARSilentModePanel;
-  v5 = [(CARSettingsPanel *)&v34 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v34 initWithPanelController:controllerCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -76,21 +76,21 @@
 
     for (i = 0; ; ++i)
     {
-      v17 = [(CARSettingsGroupCellSpecifier *)v5->_groupSpecifier groupSpecifiers];
-      v18 = [v17 count];
+      groupSpecifiers = [(CARSettingsGroupCellSpecifier *)v5->_groupSpecifier groupSpecifiers];
+      v18 = [groupSpecifiers count];
 
       if (i >= v18)
       {
         break;
       }
 
-      v19 = [(CARSettingsGroupCellSpecifier *)v5->_groupSpecifier groupSpecifiers];
-      v20 = [v19 objectAtIndexedSubscript:i];
+      groupSpecifiers2 = [(CARSettingsGroupCellSpecifier *)v5->_groupSpecifier groupSpecifiers];
+      v20 = [groupSpecifiers2 objectAtIndexedSubscript:i];
 
-      v21 = [(CARSilentModePanel *)v5 silentModeOptions];
-      v22 = [v21 objectAtIndexedSubscript:i];
-      v23 = [v22 accessibilityIdentifier];
-      [v20 setAccessibilityIdentifier:v23];
+      silentModeOptions = [(CARSilentModePanel *)v5 silentModeOptions];
+      v22 = [silentModeOptions objectAtIndexedSubscript:i];
+      accessibilityIdentifier = [v22 accessibilityIdentifier];
+      [v20 setAccessibilityIdentifier:accessibilityIdentifier];
     }
 
     v24 = [CARSettingsButtonCellSpecifier alloc];
@@ -116,19 +116,19 @@
 
 - (id)specifierSections
 {
-  v3 = [(CARSilentModePanel *)self silentModeOptions];
-  v4 = [(CARSilentModePanel *)self groupSpecifier];
-  v5 = [v3 objectAtIndexedSubscript:{objc_msgSend(v4, "selectedIndex")}];
+  silentModeOptions = [(CARSilentModePanel *)self silentModeOptions];
+  groupSpecifier = [(CARSilentModePanel *)self groupSpecifier];
+  v5 = [silentModeOptions objectAtIndexedSubscript:{objc_msgSend(groupSpecifier, "selectedIndex")}];
 
-  LODWORD(v3) = [(CARSilentModePanel *)self showThreeWaySwitch];
+  LODWORD(silentModeOptions) = [(CARSilentModePanel *)self showThreeWaySwitch];
   v6 = [CARSettingsCellSpecifierSection alloc];
-  if (v3)
+  if (silentModeOptions)
   {
     v7 = sub_10001C80C(@"CARPLAY_SILENT_MODE_HEADER");
-    v8 = [v5 footer];
-    v9 = [(CARSilentModePanel *)self groupSpecifier];
-    v10 = [v9 groupSpecifiers];
-    v11 = [(CARSettingsCellSpecifierSection *)v6 initWithTitle:v7 footer:v8 specifiers:v10];
+    footer = [v5 footer];
+    groupSpecifier2 = [(CARSilentModePanel *)self groupSpecifier];
+    groupSpecifiers = [groupSpecifier2 groupSpecifiers];
+    v11 = [(CARSettingsCellSpecifierSection *)v6 initWithTitle:v7 footer:footer specifiers:groupSpecifiers];
     v16 = v11;
     v12 = [NSArray arrayWithObjects:&v16 count:1];
   }
@@ -136,11 +136,11 @@
   else
   {
     v7 = sub_10001C80C(@"RESTORE_SILENT_MODE_FOOTER");
-    v8 = [(CARSilentModePanel *)self switchBackButtonSpecifier];
-    v14 = v8;
-    v9 = [NSArray arrayWithObjects:&v14 count:1];
-    v10 = [(CARSettingsCellSpecifierSection *)v6 initWithFooter:v7 specifiers:v9];
-    v15 = v10;
+    footer = [(CARSilentModePanel *)self switchBackButtonSpecifier];
+    v14 = footer;
+    groupSpecifier2 = [NSArray arrayWithObjects:&v14 count:1];
+    groupSpecifiers = [(CARSettingsCellSpecifierSection *)v6 initWithFooter:v7 specifiers:groupSpecifier2];
+    v15 = groupSpecifiers;
     v12 = [NSArray arrayWithObjects:&v15 count:1];
   }
 
@@ -152,30 +152,30 @@
   v3 = sub_10001C784();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CARSilentModePanel *)self _silentModeDebugDescription];
+    _silentModeDebugDescription = [(CARSilentModePanel *)self _silentModeDebugDescription];
     v9 = 138543362;
-    v10 = v4;
+    v10 = _silentModeDebugDescription;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[Settings] Silent mode panel: updating specifier to: %{public}@", &v9, 0xCu);
   }
 
   v5 = [(CARSilentModePanel *)self _modeForSilentModeType:[(CRSessionSilentModeStatus *)self->_silentModeStatus getCarPlaySilentModePreference]];
   if (v5)
   {
-    v6 = [(CARSilentModePanel *)self silentModeOptions];
-    v7 = [v6 indexOfObject:v5];
-    v8 = [(CARSilentModePanel *)self groupSpecifier];
-    [v8 setSelectedIndex:v7];
+    silentModeOptions = [(CARSilentModePanel *)self silentModeOptions];
+    v7 = [silentModeOptions indexOfObject:v5];
+    groupSpecifier = [(CARSilentModePanel *)self groupSpecifier];
+    [groupSpecifier setSelectedIndex:v7];
   }
 }
 
-- (id)_modeForSilentModeType:(unint64_t)a3
+- (id)_modeForSilentModeType:(unint64_t)type
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CARSilentModePanel *)self silentModeOptions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  silentModeOptions = [(CARSilentModePanel *)self silentModeOptions];
+  v5 = [silentModeOptions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -186,18 +186,18 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(silentModeOptions);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 silentModeType] == a3)
+        if ([v9 silentModeType] == type)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [silentModeOptions countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -213,21 +213,21 @@ LABEL_11:
   return v10;
 }
 
-- (void)_updateCarPlaySilentModePreference:(BOOL)a3
+- (void)_updateCarPlaySilentModePreference:(BOOL)preference
 {
-  v3 = a3;
+  preferenceCopy = preference;
   v5 = sub_10001C784();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CARSilentModePanel *)self _silentModeDebugDescription];
+    _silentModeDebugDescription = [(CARSilentModePanel *)self _silentModeDebugDescription];
     v10 = 138543362;
-    v11 = v6;
+    v11 = _silentModeDebugDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[Settings] Silent mode panel: updating preference to: %{public}@", &v10, 0xCu);
   }
 
-  v7 = [(CARSilentModePanel *)self silentModeStatus];
-  v8 = v7;
-  if (v3)
+  silentModeStatus = [(CARSilentModePanel *)self silentModeStatus];
+  v8 = silentModeStatus;
+  if (preferenceCopy)
   {
     v9 = 1;
   }
@@ -237,22 +237,22 @@ LABEL_11:
     v9 = 2;
   }
 
-  [v7 setCarPlaySilentModePreference:v9];
+  [silentModeStatus setCarPlaySilentModePreference:v9];
 }
 
 - (id)_silentModeDebugDescription
 {
-  v2 = [(CARSilentModePanel *)self silentModeStatus];
-  v3 = [v2 getCarPlaySilentModePreference];
+  silentModeStatus = [(CARSilentModePanel *)self silentModeStatus];
+  getCarPlaySilentModePreference = [silentModeStatus getCarPlaySilentModePreference];
 
-  if (v3 > 2)
+  if (getCarPlaySilentModePreference > 2)
   {
     return &stru_1000DE3D8;
   }
 
   else
   {
-    return *(&off_1000DB078 + v3);
+    return *(&off_1000DB078 + getCarPlaySilentModePreference);
   }
 }
 
@@ -287,21 +287,21 @@ LABEL_11:
 
 - (BOOL)_shouldShowThreeWaySwitch
 {
-  v3 = [(CRSessionSilentModeStatus *)self->_silentModeStatus isDeviceSilentModeOn];
-  v4 = [(CARSilentModePanel *)self silentModeStatus];
-  v5 = [v4 getCarPlaySilentModePreference];
+  isDeviceSilentModeOn = [(CRSessionSilentModeStatus *)self->_silentModeStatus isDeviceSilentModeOn];
+  silentModeStatus = [(CARSilentModePanel *)self silentModeStatus];
+  getCarPlaySilentModePreference = [silentModeStatus getCarPlaySilentModePreference];
 
-  if (v5 == 2)
+  if (getCarPlaySilentModePreference == 2)
   {
-    v3 ^= 1u;
+    isDeviceSilentModeOn ^= 1u;
   }
 
-  else if (v5 != 1)
+  else if (getCarPlaySilentModePreference != 1)
   {
     return 1;
   }
 
-  return v3;
+  return isDeviceSilentModeOn;
 }
 
 @end

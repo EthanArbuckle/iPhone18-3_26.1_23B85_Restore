@@ -1,35 +1,35 @@
 @interface DDCallerIdViewControllerProvider
-- (void)createViewControllerWithCompletionHandler:(id)a3;
+- (void)createViewControllerWithCompletionHandler:(id)handler;
 @end
 
 @implementation DDCallerIdViewControllerProvider
 
-- (void)createViewControllerWithCompletionHandler:(id)a3
+- (void)createViewControllerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(UIViewController);
   v6 = objc_alloc_init(DDContactPreviewContainer);
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   objc_storeStrong(&self->_contentView, v6);
   [v5 setView:v6];
   v34 = 0;
-  v7 = [(DDCallerIdViewControllerProvider *)self actionContext];
-  v8 = [v7 createContact:&v34];
+  actionContext = [(DDCallerIdViewControllerProvider *)self actionContext];
+  v8 = [actionContext createContact:&v34];
 
   if (v34 != 1 || !v8)
   {
 LABEL_8:
-    v13 = [(DDCallerIdViewControllerProvider *)self actionContext];
-    v9 = [v13 contactHandle];
+    actionContext2 = [(DDCallerIdViewControllerProvider *)self actionContext];
+    contactHandle = [actionContext2 contactHandle];
 
-    if ([v9 length])
+    if ([contactHandle length])
     {
-      [v6 updateContactWithTitle:v9 subtitle:0 image:0 person:0];
-      v4[2](v4, v5);
+      [v6 updateContactWithTitle:contactHandle subtitle:0 image:0 person:0];
+      handlerCopy[2](handlerCopy, v5);
       v14 = TUNetworkCountryCode();
       if (v14)
       {
-        v15 = [TUHandle normalizedPhoneNumberHandleForValue:v9 isoCountryCode:v14];
+        v15 = [TUHandle normalizedPhoneNumberHandleForValue:contactHandle isoCountryCode:v14];
 
         if (!v15)
         {
@@ -40,7 +40,7 @@ LABEL_8:
       else
       {
         v16 = TUHomeCountryCode();
-        v15 = [TUHandle normalizedPhoneNumberHandleForValue:v9 isoCountryCode:v16];
+        v15 = [TUHandle normalizedPhoneNumberHandleForValue:contactHandle isoCountryCode:v16];
 
         if (!v15)
         {
@@ -78,8 +78,8 @@ LABEL_8:
             v30 = v24;
             v31 = v18;
             v32 = v6;
-            v9 = v9;
-            v33 = v9;
+            contactHandle = contactHandle;
+            v33 = contactHandle;
             v26 = v18;
             v27 = v24;
             dispatch_async(v25, block);
@@ -91,12 +91,12 @@ LABEL_8:
     }
 
 LABEL_27:
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_28;
   }
 
-  v9 = [CNContactFormatter stringFromContact:v8 style:0];
-  if (![v9 length])
+  contactHandle = [CNContactFormatter stringFromContact:v8 style:0];
+  if (![contactHandle length])
   {
 
     goto LABEL_8;
@@ -104,28 +104,28 @@ LABEL_27:
 
   if (![v8 imageDataAvailable])
   {
-    v10 = 0;
+    thumbnailImageData = 0;
     v11 = dd_applicationNameWithBundleIdentifier();
     goto LABEL_20;
   }
 
-  v10 = [v8 thumbnailImageData];
+  thumbnailImageData = [v8 thumbnailImageData];
   v11 = dd_applicationNameWithBundleIdentifier();
-  if (!v10)
+  if (!thumbnailImageData)
   {
 LABEL_20:
     v12 = 0;
     goto LABEL_21;
   }
 
-  v12 = [UIImage imageWithData:v10];
+  v12 = [UIImage imageWithData:thumbnailImageData];
 LABEL_21:
-  [v6 updateContactWithTitle:v9 subtitle:v11 image:v12 person:{objc_msgSend(v8, "contactType") == 0}];
-  if (v10)
+  [v6 updateContactWithTitle:contactHandle subtitle:v11 image:v12 person:{objc_msgSend(v8, "contactType") == 0}];
+  if (thumbnailImageData)
   {
   }
 
-  v4[2](v4, v5);
+  handlerCopy[2](handlerCopy, v5);
 LABEL_28:
 }
 

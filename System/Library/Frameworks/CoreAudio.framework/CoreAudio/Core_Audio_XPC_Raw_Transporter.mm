@@ -1,36 +1,36 @@
 @interface Core_Audio_XPC_Raw_Transporter
-+ (id)object:(id)a3;
-- (Core_Audio_XPC_Raw_Transporter)initWithCoder:(id)a3;
-- (Core_Audio_XPC_Raw_Transporter)initWithObject:(id)a3;
++ (id)object:(id)object;
+- (Core_Audio_XPC_Raw_Transporter)initWithCoder:(id)coder;
+- (Core_Audio_XPC_Raw_Transporter)initWithObject:(id)object;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation Core_Audio_XPC_Raw_Transporter
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [MEMORY[0x1E695DF38] raise:*MEMORY[0x1E695D938] format:@"This object may only be decoded by an NSXPCCoder."];
   }
 
-  v7 = v4;
-  v5 = [(Core_Audio_XPC_Raw_Transporter *)self object];
+  v7 = coderCopy;
+  object = [(Core_Audio_XPC_Raw_Transporter *)self object];
 
-  if (v5)
+  if (object)
   {
-    v6 = [(Core_Audio_XPC_Raw_Transporter *)self object];
+    object2 = [(Core_Audio_XPC_Raw_Transporter *)self object];
   }
 
   else
   {
-    v6 = xpc_null_create();
+    object2 = xpc_null_create();
   }
 
-  [v7 encodeXPCObject:v6 forKey:@"Core_Audio_XPC_Raw_Transporter"];
+  [v7 encodeXPCObject:object2 forKey:@"Core_Audio_XPC_Raw_Transporter"];
 }
 
 - (void)dealloc
@@ -43,9 +43,9 @@
   [(Core_Audio_XPC_Raw_Transporter *)&v4 dealloc];
 }
 
-- (Core_Audio_XPC_Raw_Transporter)initWithCoder:(id)a3
+- (Core_Audio_XPC_Raw_Transporter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -57,7 +57,7 @@
   v5 = [(Core_Audio_XPC_Raw_Transporter *)&v12 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     v7 = [v6 decodeXPCObjectForKey:@"Core_Audio_XPC_Raw_Transporter"];
     object = v5->_object;
     v5->_object = v7;
@@ -82,25 +82,25 @@ LABEL_10:
   return v10;
 }
 
-- (Core_Audio_XPC_Raw_Transporter)initWithObject:(id)a3
+- (Core_Audio_XPC_Raw_Transporter)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = Core_Audio_XPC_Raw_Transporter;
   v6 = [(Core_Audio_XPC_Raw_Transporter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
   }
 
   return v7;
 }
 
-+ (id)object:(id)a3
++ (id)object:(id)object
 {
-  v3 = a3;
-  v4 = [[Core_Audio_XPC_Raw_Transporter alloc] initWithObject:v3];
+  objectCopy = object;
+  v4 = [[Core_Audio_XPC_Raw_Transporter alloc] initWithObject:objectCopy];
 
   return v4;
 }

@@ -6,13 +6,13 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(UIButtonAccessibility__ChatKit__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"CKTranscriptStatusButton"];
+  accessibilityIdentification = [(UIButtonAccessibility__ChatKit__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"CKTranscriptStatusButton"];
 
   if (v4)
   {
-    v5 = [(UIButtonAccessibility__ChatKit__UIKit *)self accessibilityLabel];
-    v6 = [v5 length];
+    accessibilityLabel = [(UIButtonAccessibility__ChatKit__UIKit *)self accessibilityLabel];
+    v6 = [accessibilityLabel length];
 
     if (!v6)
     {

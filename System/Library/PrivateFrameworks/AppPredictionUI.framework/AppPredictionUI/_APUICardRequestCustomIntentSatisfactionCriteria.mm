@@ -1,15 +1,15 @@
 @interface _APUICardRequestCustomIntentSatisfactionCriteria
-- (BOOL)canSatisfyCardRequest:(id)a3;
-- (unint64_t)servicePriorityForRequest:(id)a3;
+- (BOOL)canSatisfyCardRequest:(id)request;
+- (unint64_t)servicePriorityForRequest:(id)request;
 @end
 
 @implementation _APUICardRequestCustomIntentSatisfactionCriteria
 
-- (BOOL)canSatisfyCardRequest:(id)a3
+- (BOOL)canSatisfyCardRequest:(id)request
 {
-  v3 = [a3 content];
+  content = [request content];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 apui_intent], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([content apui_intent], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = [v4 _type] == 2;
@@ -23,10 +23,10 @@
   return v6;
 }
 
-- (unint64_t)servicePriorityForRequest:(id)a3
+- (unint64_t)servicePriorityForRequest:(id)request
 {
-  v4 = a3;
-  if ([(_APUICardRequestCustomIntentSatisfactionCriteria *)self canSatisfyCardRequest:v4])
+  requestCopy = request;
+  if ([(_APUICardRequestCustomIntentSatisfactionCriteria *)self canSatisfyCardRequest:requestCopy])
   {
     v5 = 2;
   }
@@ -35,7 +35,7 @@
   {
     v7.receiver = self;
     v7.super_class = _APUICardRequestCustomIntentSatisfactionCriteria;
-    v5 = [(APUICardRequestSatisfactionCriteria *)&v7 servicePriorityForRequest:v4];
+    v5 = [(APUICardRequestSatisfactionCriteria *)&v7 servicePriorityForRequest:requestCopy];
   }
 
   return v5;

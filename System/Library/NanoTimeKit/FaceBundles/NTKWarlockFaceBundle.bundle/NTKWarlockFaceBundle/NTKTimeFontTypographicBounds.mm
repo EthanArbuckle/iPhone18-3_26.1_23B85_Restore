@@ -1,16 +1,16 @@
 @interface NTKTimeFontTypographicBounds
 - (NTKTimeFontTypographicBounds)init;
-- (NTKTimeFontTypographicBounds)initWithText:(id)a3 font:(id)a4;
+- (NTKTimeFontTypographicBounds)initWithText:(id)text font:(id)font;
 @end
 
 @implementation NTKTimeFontTypographicBounds
 
-- (NTKTimeFontTypographicBounds)initWithText:(id)a3 font:(id)a4
+- (NTKTimeFontTypographicBounds)initWithText:(id)text font:(id)font
 {
   v5 = sub_37530();
   v7 = v6;
-  v8 = a4;
-  v9 = sub_1C78C(v5, v7, v8);
+  fontCopy = font;
+  v9 = sub_1C78C(v5, v7, fontCopy);
 
   return v9;
 }

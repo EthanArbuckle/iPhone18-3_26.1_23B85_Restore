@@ -1,6 +1,6 @@
 @interface TCCDAccessIndirectObject
 + (id)unusedIndirectObject;
-- (TCCDAccessIndirectObject)initWithType:(int64_t)a3;
+- (TCCDAccessIndirectObject)initWithType:(int64_t)type;
 - (id)description;
 @end
 
@@ -18,7 +18,7 @@
   return v3;
 }
 
-- (TCCDAccessIndirectObject)initWithType:(int64_t)a3
+- (TCCDAccessIndirectObject)initWithType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = TCCDAccessIndirectObject;
@@ -26,7 +26,7 @@
   v5 = v4;
   if (v4)
   {
-    [(TCCDAccessIndirectObject *)v4 setType:a3];
+    [(TCCDAccessIndirectObject *)v4 setType:type];
   }
 
   return v5;

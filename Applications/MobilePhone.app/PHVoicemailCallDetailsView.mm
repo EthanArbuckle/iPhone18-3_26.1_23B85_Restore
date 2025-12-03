@@ -1,26 +1,26 @@
 @interface PHVoicemailCallDetailsView
 - (id)callOccurrences;
-- (void)setCallOccurrence:(id)a3;
+- (void)setCallOccurrence:(id)occurrence;
 @end
 
 @implementation PHVoicemailCallDetailsView
 
-- (void)setCallOccurrence:(id)a3
+- (void)setCallOccurrence:(id)occurrence
 {
-  v5 = a3;
-  if (self->_callOccurrence != v5)
+  occurrenceCopy = occurrence;
+  if (self->_callOccurrence != occurrenceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_callOccurrence, a3);
+    v6 = occurrenceCopy;
+    objc_storeStrong(&self->_callOccurrence, occurrence);
     [(PHRecentCallDetailsView *)self loadSubviews];
-    v5 = v6;
+    occurrenceCopy = v6;
   }
 }
 
 - (id)callOccurrences
 {
-  v2 = [(PHVoicemailCallDetailsView *)self callOccurrence];
-  v5 = v2;
+  callOccurrence = [(PHVoicemailCallDetailsView *)self callOccurrence];
+  v5 = callOccurrence;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;

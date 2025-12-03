@@ -1,5 +1,5 @@
 @interface CAMDrawerLivePhotoButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -8,16 +8,16 @@
 
 @implementation CAMDrawerLivePhotoButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMDrawerLivePhotoButton" hasInstanceMethod:@"livePhotoMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerLivePhotoButton" isKindOfClass:@"CAMControlDrawerButton"];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerLivePhotoButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMDrawerLivePhotoButton" hasInstanceMethod:@"livePhotoMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerLivePhotoButton" isKindOfClass:@"CAMControlDrawerButton"];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerLivePhotoButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
 }
 
 - (BOOL)accessibilityActivate
@@ -25,19 +25,19 @@
   if (AXRequestingClient() == 3)
   {
     v3 = [(CAMDrawerLivePhotoButtonAccessibility *)self safeValueForKey:@"livePhotoMode"];
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
 
-    v5 = 2 * (v4 != 1);
+    v5 = 2 * (integerValue != 1);
     v8 = MEMORY[0x29EDCA5F8];
     v9 = 3221225472;
     v10 = __62__CAMDrawerLivePhotoButtonAccessibility_accessibilityActivate__block_invoke;
     v11 = &unk_29F2ACC58;
-    if (v4 == 2)
+    if (integerValue == 2)
     {
       v5 = 1;
     }
 
-    v12 = self;
+    selfCopy = self;
     v13 = v5;
     AXPerformSafeBlock();
     return 1;
@@ -61,16 +61,16 @@ void __62__CAMDrawerLivePhotoButtonAccessibility_accessibilityActivate__block_in
 - (id)accessibilityValue
 {
   v2 = [(CAMDrawerLivePhotoButtonAccessibility *)self safeValueForKey:@"livePhotoMode"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  if (v3 > 2)
+  if (integerValue > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityCameraUILocalizedString(off_29F2AD0F0[v3]);
+    v4 = accessibilityCameraUILocalizedString(off_29F2AD0F0[integerValue]);
   }
 
   return v4;

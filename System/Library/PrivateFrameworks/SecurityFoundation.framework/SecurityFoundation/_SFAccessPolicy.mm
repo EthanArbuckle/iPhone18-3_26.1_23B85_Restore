@@ -1,21 +1,21 @@
 @interface _SFAccessPolicy
-+ (id)accessPolicyWithSecAccessibility:(__CFString *)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)accessPolicyWithSecAccessibility:(__CFString *)accessibility error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (_SFAccessPolicy)init;
-- (_SFAccessPolicy)initWithAccessibility:(id *)a3 sharingPolicy:(int64_t)a4;
-- (_SFAccessPolicy)initWithCoder:(id)a3;
+- (_SFAccessPolicy)initWithAccessibility:(id *)accessibility sharingPolicy:(int64_t)policy;
+- (_SFAccessPolicy)initWithCoder:(id)coder;
 - (__CFDictionary)secAccessibilityAttributes;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccessibility:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccessibility:(id *)accessibility;
 @end
 
 @implementation _SFAccessPolicy
 
-+ (id)accessPolicyWithSecAccessibility:(__CFString *)a3 error:(id *)a4
++ (id)accessPolicyWithSecAccessibility:(__CFString *)accessibility error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  if (CFEqual(a3, *MEMORY[0x277CDBF10]))
+  if (CFEqual(accessibility, *MEMORY[0x277CDBF10]))
   {
     v7 = 2;
 LABEL_3:
@@ -24,38 +24,38 @@ LABEL_6:
     v17 = 0uLL;
     v15 = v8;
     v16 = 0uLL;
-    v9 = [[a1 alloc] initWithAccessibility:&v15 sharingPolicy:v7];
+    v9 = [[self alloc] initWithAccessibility:&v15 sharingPolicy:v7];
     goto LABEL_7;
   }
 
-  if (CFEqual(a3, *MEMORY[0x277CDBEE0]))
+  if (CFEqual(accessibility, *MEMORY[0x277CDBEE0]))
   {
     v8 = 0;
     v7 = 2;
     goto LABEL_6;
   }
 
-  if (CFEqual(a3, *MEMORY[0x277CDBF18]))
+  if (CFEqual(accessibility, *MEMORY[0x277CDBF18]))
   {
     v7 = 0;
     goto LABEL_3;
   }
 
-  if (CFEqual(a3, *MEMORY[0x277CDBEE8]))
+  if (CFEqual(accessibility, *MEMORY[0x277CDBEE8]))
   {
     v8 = 0;
     v7 = 0;
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
     v12 = MEMORY[0x277CCA9B8];
     v18 = *MEMORY[0x277CCA450];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"invalid secAccessibility for SFAccessPolicy: %@", a3];
-    v19[0] = v13;
+    accessibility = [MEMORY[0x277CCACA8] stringWithFormat:@"invalid secAccessibility for SFAccessPolicy: %@", accessibility];
+    v19[0] = accessibility;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-    *a4 = [v12 errorWithDomain:@"SFKeychainErrorDomain" code:10 userInfo:v14];
+    *error = [v12 errorWithDomain:@"SFKeychainErrorDomain" code:10 userInfo:v14];
   }
 
   v9 = 0;
@@ -73,34 +73,34 @@ LABEL_7:
   return [(_SFAccessPolicy *)self initWithAccessibility:v3 sharingPolicy:2];
 }
 
-- (_SFAccessPolicy)initWithAccessibility:(id *)a3 sharingPolicy:(int64_t)a4
+- (_SFAccessPolicy)initWithAccessibility:(id *)accessibility sharingPolicy:(int64_t)policy
 {
   v8.receiver = self;
   v8.super_class = _SFAccessPolicy;
   result = [(_SFAccessPolicy *)&v8 init];
   if (result)
   {
-    var1 = a3->var1.var1;
-    *&result->_accessibility.mode = *&a3->var0;
+    var1 = accessibility->var1.var1;
+    *&result->_accessibility.mode = *&accessibility->var0;
     result->_accessibility.authenticationPolicy.subsetCount = var1;
-    result->_sharingPolicy = a4;
+    result->_sharingPolicy = policy;
   }
 
   return result;
 }
 
-- (_SFAccessPolicy)initWithCoder:(id)a3
+- (_SFAccessPolicy)initWithCoder:(id)coder
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = _SFAccessPolicy;
   v5 = [(_SFAccessPolicy *)&v16 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"SFAccessPolicyAccessibilityMode"])
+    if ([coderCopy containsValueForKey:@"SFAccessPolicyAccessibilityMode"])
     {
-      v6 = [v4 decodeIntegerForKey:@"SFAccessPolicyAccessibilityMode"];
+      v6 = [coderCopy decodeIntegerForKey:@"SFAccessPolicyAccessibilityMode"];
     }
 
     else
@@ -108,14 +108,14 @@ LABEL_7:
       v6 = -1;
     }
 
-    if (![v4 containsValueForKey:@"SFAccessPolicySharingMode"] || (v7 = objc_msgSend(v4, "decodeIntegerForKey:", @"SFAccessPolicySharingMode"), v6 < 0) || v7 < 0)
+    if (![coderCopy containsValueForKey:@"SFAccessPolicySharingMode"] || (v7 = objc_msgSend(coderCopy, "decodeIntegerForKey:", @"SFAccessPolicySharingMode"), v6 < 0) || v7 < 0)
     {
       v11 = MEMORY[0x277CCA9B8];
       v17 = *MEMORY[0x277CCA450];
       v18[0] = @"failed to deserialize SFAccessPolicy instance";
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
       v13 = [v11 errorWithDomain:@"SFKeychainErrorDomain" code:4 userInfo:v12];
-      [v4 failWithError:v13];
+      [coderCopy failWithError:v13];
 
       v10 = 0;
       goto LABEL_11;
@@ -125,7 +125,7 @@ LABEL_7:
     v5->_accessibility.authenticationPolicy.authenticationRequirements = 0;
     v5->_accessibility.authenticationPolicy.subsetCount = 0;
     v5->_sharingPolicy = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SFAccessPolicyAccessGroup"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SFAccessPolicyAccessGroup"];
     accessGroup = v5->_accessGroup;
     v5->_accessGroup = v8;
   }
@@ -137,21 +137,21 @@ LABEL_11:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:self->_accessibility.mode forKey:@"SFAccessPolicyAccessibilityMode"];
-  [v5 encodeInteger:self->_sharingPolicy forKey:@"SFAccessPolicySharingMode"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_accessibility.mode forKey:@"SFAccessPolicyAccessibilityMode"];
+  [coderCopy encodeInteger:self->_sharingPolicy forKey:@"SFAccessPolicySharingMode"];
   accessGroup = self->_accessGroup;
   if (accessGroup)
   {
-    [v5 encodeObject:accessGroup forKey:@"SFAccessPolicyAccessGroup"];
+    [coderCopy encodeObject:accessGroup forKey:@"SFAccessPolicyAccessGroup"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v8 = *&self->_accessibility.mode;
   sharingPolicy = self->_sharingPolicy;
   subsetCount = self->_accessibility.authenticationPolicy.subsetCount;
@@ -161,18 +161,18 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -198,8 +198,8 @@ LABEL_17:
             v10 = self->_accessGroup;
           }
 
-          v11 = [(_SFAccessPolicy *)v6 accessGroup];
-          v12 = [(NSString *)v10 isEqualToString:v11];
+          accessGroup = [(_SFAccessPolicy *)v6 accessGroup];
+          v12 = [(NSString *)v10 isEqualToString:accessGroup];
 
           if (!accessGroup)
           {
@@ -286,10 +286,10 @@ LABEL_16:
   return v4;
 }
 
-- (void)setAccessibility:(id *)a3
+- (void)setAccessibility:(id *)accessibility
 {
-  v3 = *&a3->var0;
-  self->_accessibility.authenticationPolicy.subsetCount = a3->var1.var1;
+  v3 = *&accessibility->var0;
+  self->_accessibility.authenticationPolicy.subsetCount = accessibility->var1.var1;
   *&self->_accessibility.mode = v3;
 }
 

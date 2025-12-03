@@ -1,17 +1,17 @@
 @interface BCAuthenticationLabels
-- (BCAuthenticationLabels)initWithCoder:(id)a3;
-- (BCAuthenticationLabels)initWithDictionary:(id)a3;
-- (BCAuthenticationLabels)initWithTitle:(id)a3 subtitle:(id)a4 action:(id)a5;
+- (BCAuthenticationLabels)initWithCoder:(id)coder;
+- (BCAuthenticationLabels)initWithDictionary:(id)dictionary;
+- (BCAuthenticationLabels)initWithTitle:(id)title subtitle:(id)subtitle action:(id)action;
 - (NSDictionary)dictionaryValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCAuthenticationLabels
 
-- (BCAuthenticationLabels)initWithDictionary:(id)a3
+- (BCAuthenticationLabels)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = BCAuthenticationLabels;
   v5 = [(BCAuthenticationLabels *)&v23 init];
@@ -21,44 +21,44 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v4;
+      v25 = dictionaryCopy;
       _os_log_impl(&dword_236EA0000, v6, OS_LOG_TYPE_DEFAULT, "BCAuthenticationLabels: initWithDictionary %@", buf, 0xCu);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"title"];
-    v8 = [MEMORY[0x277CBEB68] null];
-    if (v7 == v8)
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"title"];
+    null = [MEMORY[0x277CBEB68] null];
+    if (v7 == null)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = [v4 objectForKeyedSubscript:@"title"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"subtitle"];
-    v11 = [MEMORY[0x277CBEB68] null];
-    if (v10 == v11)
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
+    null2 = [MEMORY[0x277CBEB68] null];
+    if (v10 == null2)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = [v4 objectForKeyedSubscript:@"subtitle"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"action"];
-    v14 = [MEMORY[0x277CBEB68] null];
-    if (v13 == v14)
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"action"];
+    null3 = [MEMORY[0x277CBEB68] null];
+    if (v13 == null3)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = [v4 objectForKeyedSubscript:@"action"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"action"];
     }
 
     title = v5->_title;
@@ -77,12 +77,12 @@
   return v5;
 }
 
-- (BCAuthenticationLabels)initWithTitle:(id)a3 subtitle:(id)a4 action:(id)a5
+- (BCAuthenticationLabels)initWithTitle:(id)title subtitle:(id)subtitle action:(id)action
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  actionCopy = action;
   v16.receiver = self;
   v16.super_class = BCAuthenticationLabels;
   v12 = [(BCAuthenticationLabels *)&v16 init];
@@ -92,49 +92,49 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v18 = v9;
+      v18 = titleCopy;
       v19 = 2112;
-      v20 = v10;
+      v20 = subtitleCopy;
       v21 = 2112;
-      v22 = v11;
+      v22 = actionCopy;
       _os_log_impl(&dword_236EA0000, v13, OS_LOG_TYPE_DEFAULT, "BCAuthenticationLabels: initWithTitle: %@, subtitle: %@, action: %@", buf, 0x20u);
     }
 
-    objc_storeStrong(&v12->_title, a3);
-    objc_storeStrong(&v12->_subtitle, a4);
-    objc_storeStrong(&v12->_action, a5);
+    objc_storeStrong(&v12->_title, title);
+    objc_storeStrong(&v12->_subtitle, subtitle);
+    objc_storeStrong(&v12->_action, action);
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeObject:self->_action forKey:@"action"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_action forKey:@"action"];
 }
 
-- (BCAuthenticationLabels)initWithCoder:(id)a3
+- (BCAuthenticationLabels)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = BCAuthenticationLabels;
   v5 = [(BCAuthenticationLabels *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     action = v5->_action;
     v5->_action = v10;
   }

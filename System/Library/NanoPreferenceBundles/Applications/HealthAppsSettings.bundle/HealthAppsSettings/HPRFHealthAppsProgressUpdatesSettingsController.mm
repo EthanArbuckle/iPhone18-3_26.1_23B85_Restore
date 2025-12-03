@@ -6,7 +6,7 @@
 - (id)bundle;
 - (id)localizedPaneTitle;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation HPRFHealthAppsProgressUpdatesSettingsController
@@ -14,13 +14,13 @@
 + (id)progressUpdateFrequency
 {
   v2 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nanolifestyle"];
-  v3 = [v2 synchronize];
+  synchronize = [v2 synchronize];
   v4 = [v2 objectForKey:@"ProgressUpdateFrequency"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
-    if (!v6)
+    integerValue = [v4 integerValue];
+    if (!integerValue)
     {
       v7 = [NSBundle bundleForClass:objc_opt_class()];
       v8 = [v7 localizedStringForKey:@"PROGRESS_UPDATE_NONE" value:&stru_86F0 table:@"ProgressUpdateFrequency"];
@@ -30,11 +30,11 @@
 
   else
   {
-    v6 = 14400;
+    integerValue = 14400;
   }
 
-  v9 = [NSNumber numberWithInteger:v6 / 3600];
-  v7 = [NSNumberFormatter localizedStringFromNumber:v9 numberStyle:0];
+  3600 = [NSNumber numberWithInteger:integerValue / 3600];
+  v7 = [NSNumberFormatter localizedStringFromNumber:3600 numberStyle:0];
 
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"SELECTED_PROGRESS_UPDATE_%@" value:&stru_86F0 table:@"ProgressUpdateFrequency"];
@@ -121,26 +121,26 @@ LABEL_6:
     v29 = v24;
     v45 = v28;
     [v24 setName:v28];
-    v30 = [(HPRFHealthAppsProgressUpdatesSettingsController *)self domainAccessor];
-    v31 = [v30 synchronize];
-    v32 = [v30 objectForKey:@"ProgressUpdateFrequency"];
+    domainAccessor = [(HPRFHealthAppsProgressUpdatesSettingsController *)self domainAccessor];
+    synchronize = [domainAccessor synchronize];
+    v32 = [domainAccessor objectForKey:@"ProgressUpdateFrequency"];
     v33 = v32;
     if (v32)
     {
-      v34 = [v32 integerValue];
+      integerValue = [v32 integerValue];
     }
 
     else
     {
-      v34 = &loc_3840;
+      integerValue = &loc_3840;
     }
 
     v35 = [NSBundle bundleForClass:objc_opt_class()];
     v36 = [v35 localizedStringForKey:@"PROGRESS_UPDATE_GROUP_FOOTER_FORMAT_%@" value:&stru_86F0 table:@"ProgressUpdateFrequency"];
 
-    if (v34 <= 14399)
+    if (integerValue <= 14399)
     {
-      if (!v34)
+      if (!integerValue)
       {
         v39 = [NSBundle bundleForClass:objc_opt_class()];
         v37 = [v39 localizedStringForKey:@"PROGRESS_UPDATE_GROUP_FOOTER_NONE" value:&stru_86F0 table:@"ProgressUpdateFrequency"];
@@ -149,7 +149,7 @@ LABEL_6:
         goto LABEL_16;
       }
 
-      if (v34 == &loc_1C20)
+      if (integerValue == &loc_1C20)
       {
         v37 = [NSString stringWithFormat:v36, v56];
         v38 = v57;
@@ -159,21 +159,21 @@ LABEL_6:
 
     else
     {
-      if (v34 == &loc_3840)
+      if (integerValue == &loc_3840)
       {
         v37 = [NSString stringWithFormat:v36, v54];
         v38 = v55;
         goto LABEL_16;
       }
 
-      if (v34 == objc_msgSend_meterUnitWithMetricPrefix_)
+      if (integerValue == objc_msgSend_meterUnitWithMetricPrefix_)
       {
         v37 = [NSString stringWithFormat:v36, v20];
         v38 = v53;
         goto LABEL_16;
       }
 
-      if (v34 == "HealthAppsSettingsController failed to load FitnessJr value; semaphore timed out")
+      if (integerValue == "HealthAppsSettingsController failed to load FitnessJr value; semaphore timed out")
       {
         v37 = [NSString stringWithFormat:v36, v51];
         v38 = v29;
@@ -182,8 +182,8 @@ LABEL_16:
         v41 = [v4 specifierForID:@"PROGRESS_UPDATE_GROUP_ID"];
         [v41 setProperty:v40 forKey:PSRadioGroupCheckedSpecifierKey];
         [v41 setProperty:v37 forKey:PSFooterTextGroupKey];
-        v42 = [(HPRFHealthAppsProgressUpdatesSettingsController *)self localizedPaneTitle];
-        [(HPRFHealthAppsProgressUpdatesSettingsController *)self setTitle:v42];
+        localizedPaneTitle = [(HPRFHealthAppsProgressUpdatesSettingsController *)self localizedPaneTitle];
+        [(HPRFHealthAppsProgressUpdatesSettingsController *)self setTitle:localizedPaneTitle];
 
         v43 = *&self->BPSNotificationAppController_opaque[v47];
         *&self->BPSNotificationAppController_opaque[v47] = v4;
@@ -216,26 +216,26 @@ LABEL_17:
   return domainAccessor;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HPRFHealthAppsProgressUpdatesSettingsController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(HPRFHealthAppsProgressUpdatesSettingsController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [(HPRFHealthAppsProgressUpdatesSettingsController *)self domainAccessor];
-  v11 = [v9 identifier];
-  v12 = [v11 isEqualToString:@"ZERO_HOURS_ID"];
+  domainAccessor = [(HPRFHealthAppsProgressUpdatesSettingsController *)self domainAccessor];
+  identifier = [v9 identifier];
+  v12 = [identifier isEqualToString:@"ZERO_HOURS_ID"];
 
-  v31 = v6;
+  v31 = pathCopy;
   if (v12)
   {
-    v13 = v7;
+    v13 = viewCopy;
     v14 = 0;
 LABEL_11:
     v23 = [NSNumber numberWithInteger:v14];
-    [v10 setObject:v23 forKey:@"ProgressUpdateFrequency"];
+    [domainAccessor setObject:v23 forKey:@"ProgressUpdateFrequency"];
 
-    v24 = [v10 synchronize];
+    synchronize = [domainAccessor synchronize];
     syncManager = self->_syncManager;
     v33 = @"ProgressUpdateFrequency";
     v26 = [NSArray arrayWithObjects:&v33 count:1];
@@ -245,47 +245,47 @@ LABEL_11:
     v28 = [NSNumber numberWithBool:v12 ^ 1];
     FIActivityAnalyticsSubmission();
 
-    v7 = v13;
-    v6 = v31;
+    viewCopy = v13;
+    pathCopy = v31;
     goto LABEL_12;
   }
 
-  v15 = [v9 identifier];
-  v16 = [v15 isEqualToString:@"TWO_HOURS_ID"];
+  identifier2 = [v9 identifier];
+  v16 = [identifier2 isEqualToString:@"TWO_HOURS_ID"];
 
   if (v16)
   {
-    v13 = v7;
+    v13 = viewCopy;
     v14 = 7200;
     goto LABEL_11;
   }
 
-  v17 = [v9 identifier];
-  v18 = [v17 isEqualToString:@"FOUR_HOURS_ID"];
+  identifier3 = [v9 identifier];
+  v18 = [identifier3 isEqualToString:@"FOUR_HOURS_ID"];
 
   if (v18)
   {
-    v13 = v7;
+    v13 = viewCopy;
     v14 = 14400;
     goto LABEL_11;
   }
 
-  v19 = [v9 identifier];
-  v20 = [v19 isEqualToString:@"SIX_HOURS_ID"];
+  identifier4 = [v9 identifier];
+  v20 = [identifier4 isEqualToString:@"SIX_HOURS_ID"];
 
   if (v20)
   {
-    v13 = v7;
+    v13 = viewCopy;
     v14 = 21600;
     goto LABEL_11;
   }
 
-  v21 = [v9 identifier];
-  v22 = [v21 isEqualToString:@"EIGHT_HOURS_ID"];
+  identifier5 = [v9 identifier];
+  v22 = [identifier5 isEqualToString:@"EIGHT_HOURS_ID"];
 
   if (v22)
   {
-    v13 = v7;
+    v13 = viewCopy;
     v14 = 28800;
     goto LABEL_11;
   }
@@ -293,12 +293,12 @@ LABEL_11:
 LABEL_12:
   [(HPRFHealthAppsProgressUpdatesSettingsController *)self reloadSpecifiers];
   WeakRetained = objc_loadWeakRetained(&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v30 = [(HPRFHealthAppsProgressUpdatesSettingsController *)self specifier];
-  [WeakRetained reloadSpecifier:v30];
+  specifier = [(HPRFHealthAppsProgressUpdatesSettingsController *)self specifier];
+  [WeakRetained reloadSpecifier:specifier];
 
   v32.receiver = self;
   v32.super_class = HPRFHealthAppsProgressUpdatesSettingsController;
-  [(HPRFHealthAppsProgressUpdatesSettingsController *)&v32 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(HPRFHealthAppsProgressUpdatesSettingsController *)&v32 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (id)bundle
@@ -310,10 +310,10 @@ LABEL_12:
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFHealthAppsProgressUpdatesSettingsController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFHealthAppsProgressUpdatesSettingsController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

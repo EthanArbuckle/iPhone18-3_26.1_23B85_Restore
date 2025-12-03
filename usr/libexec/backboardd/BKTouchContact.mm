@@ -1,8 +1,8 @@
 @interface BKTouchContact
 - (BKTouchContact)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation BKTouchContact
@@ -22,10 +22,10 @@
   return v2;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v5 = [a3 appendInteger:self->_pathIndex withName:@"pathIndex"];
-  v6 = [a3 appendInteger:self->_touchIdentifier withName:@"touchIdentifier"];
+  v5 = [formatter appendInteger:self->_pathIndex withName:@"pathIndex"];
+  v6 = [formatter appendInteger:self->_touchIdentifier withName:@"touchIdentifier"];
   presence = self->_presence;
   if (presence > 2)
   {
@@ -37,7 +37,7 @@
     v8 = *(&off_1000FCC90 + presence);
   }
 
-  [a3 appendString:v8 withName:0];
+  [formatter appendString:v8 withName:0];
   hitTestPolicy = self->_hitTestPolicy;
   if (hitTestPolicy <= 1)
   {
@@ -76,28 +76,28 @@ LABEL_14:
 
   v10 = @"avoid";
 LABEL_15:
-  [a3 appendString:v10 withName:0];
+  [formatter appendString:v10 withName:0];
 LABEL_16:
   if (self->_hitTestContextCategory)
   {
     v11 = NSStringFromBKSTouchHitTestContextCategory();
-    [a3 appendString:v11 withName:@"hitTestCategory"];
+    [formatter appendString:v11 withName:@"hitTestCategory"];
   }
 
-  v12 = [a3 appendBool:self->_touchDetached withName:@"detached" ifEqualTo:1];
+  v12 = [formatter appendBool:self->_touchDetached withName:@"detached" ifEqualTo:1];
   userIdentifier = self->_userIdentifier;
   if (userIdentifier)
   {
-    v14 = [a3 appendUInt64:userIdentifier withName:@"userIdentifier" format:1];
+    v14 = [formatter appendUInt64:userIdentifier withName:@"userIdentifier" format:1];
   }
 
   v15 = objc_opt_class();
-  v16 = a3;
+  formatterCopy = formatter;
   if (v15)
   {
     if (objc_opt_isKindOfClass())
     {
-      v17 = v16;
+      v17 = formatterCopy;
     }
 
     else
@@ -125,15 +125,15 @@ LABEL_16:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
-  v6 = a3;
+  equalCopy = equal;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = equalCopy;
     }
 
     else

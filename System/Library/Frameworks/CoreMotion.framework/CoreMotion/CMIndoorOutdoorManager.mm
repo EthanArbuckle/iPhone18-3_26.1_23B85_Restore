@@ -2,8 +2,8 @@
 + (BOOL)isIndoorOutdoorStateAvailable;
 - (CMIndoorOutdoorManager)init;
 - (void)dealloc;
-- (void)lastKnownIndoorOutdoorStateWithHandler:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)lastKnownIndoorOutdoorStateWithHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
 - (void)startIndoorOutdoorUpdates;
 - (void)stopIndoorOutdoorUpdates;
 @end
@@ -46,10 +46,10 @@
   [(CMIndoorOutdoorManager *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
-  self->_internal->_delegate = a3;
+  objc_storeWeak(&self->_delegate, delegate);
+  self->_internal->_delegate = delegate;
   self->_internal->_sender = self;
 }
 
@@ -141,7 +141,7 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)lastKnownIndoorOutdoorStateWithHandler:(id)a3
+- (void)lastKnownIndoorOutdoorStateWithHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2A78 != -1)
@@ -176,13 +176,13 @@
   v8 = objc_opt_class();
   if (objc_msgSend_isIndoorOutdoorStateAvailable(v8, v9, v10))
   {
-    objc_msgSend__lastKnownIndoorOutdoorStateWithHandler_(self->_internal, v11, a3);
+    objc_msgSend__lastKnownIndoorOutdoorStateWithHandler_(self->_internal, v11, handler);
   }
 
   else
   {
     v12 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v11, @"CMErrorDomain", 109, 0);
-    (*(a3 + 2))(a3, 0, v12);
+    (*(handler + 2))(handler, 0, v12);
   }
 
   v13 = *MEMORY[0x1E69E9840];

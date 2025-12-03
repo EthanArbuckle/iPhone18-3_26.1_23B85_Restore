@@ -3,19 +3,19 @@
 - (BOOL)deferredAttach;
 - (BOOL)detach;
 - (BOOL)resolveCommonBufferFormat;
-- (BWNodeConnection)initWithOutput:(id)a3 input:(id)a4 pipelineStage:(id)a5;
+- (BWNodeConnection)initWithOutput:(id)output input:(id)input pipelineStage:(id)stage;
 - (NSString)description;
 - (OS_dispatch_queue)messageDispatchQueue;
-- (id)_messageDispatchQueueOfNodeOutput:(uint64_t)a1;
+- (id)_messageDispatchQueueOfNodeOutput:(uint64_t)output;
 - (uint64_t)_messageShouldBeConsumed:(uint64_t)result;
 - (uint64_t)_resolveCommonVideoBufferFormatForAttachedMediaKey:(uint64_t)result;
 - (void)attachNow;
 - (void)connectBypassInput;
-- (void)consumeMessage:(id)a3 fromOutput:(id)a4;
+- (void)consumeMessage:(id)message fromOutput:(id)output;
 - (void)dealloc;
-- (void)discardMessagesBeforeLiveConfigurationID:(int64_t)a3;
-- (void)resumeForEventsOnly:(BOOL)a3;
-- (void)suspendWithMessageCachingAllowed:(BOOL)a3 overrideCachingEnabled:(BOOL)a4 bypassed:(BOOL)a5 afterHandlingMessageWithType:(int)a6;
+- (void)discardMessagesBeforeLiveConfigurationID:(int64_t)d;
+- (void)resumeForEventsOnly:(BOOL)only;
+- (void)suspendWithMessageCachingAllowed:(BOOL)allowed overrideCachingEnabled:(BOOL)enabled bypassed:(BOOL)bypassed afterHandlingMessageWithType:(int)type;
 @end
 
 @implementation BWNodeConnection
@@ -48,18 +48,18 @@ LABEL_19:
   [(BWNodeInput *)self->_input setConnection:self];
   if (self->_pipelineStage)
   {
-    v3 = [(BWNodeInput *)self->_input node];
-    if (v3)
+    node = [(BWNodeInput *)self->_input node];
+    if (node)
     {
-      v4 = v3;
-      if (![(BWNode *)v3 supportsConcurrentLiveInputCallbacks])
+      v4 = node;
+      if (![(BWNode *)node supportsConcurrentLiveInputCallbacks])
       {
         v26 = 0u;
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v5 = [(BWNode *)v4 inputs];
-        v6 = [(NSArray *)v5 countByEnumeratingWithState:&v24 objects:v23 count:16];
+        inputs = [(BWNode *)v4 inputs];
+        v6 = [(NSArray *)inputs countByEnumeratingWithState:&v24 objects:v23 count:16];
         if (v6)
         {
           v7 = v6;
@@ -70,19 +70,19 @@ LABEL_19:
             {
               if (*v25 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(inputs);
               }
 
               v10 = *(*(&v24 + 1) + 8 * i);
               if (v10 != self->_input)
               {
-                v11 = [*(*(&v24 + 1) + 8 * i) connection];
-                if (v11)
+                connection = [*(*(&v24 + 1) + 8 * i) connection];
+                if (connection)
                 {
-                  v12 = *(v11 + 32);
+                  v12 = *(connection + 32);
                   if (v12)
                   {
-                    if (([*(v11 + 32) isEqual:self->_pipelineStage] & 1) == 0)
+                    if (([*(connection + 32) isEqual:self->_pipelineStage] & 1) == 0)
                     {
                       v14 = MEMORY[0x1E696AEC0];
                       v21 = v10;
@@ -98,7 +98,7 @@ LABEL_19:
               }
             }
 
-            v7 = [(NSArray *)v5 countByEnumeratingWithState:&v24 objects:v23 count:16];
+            v7 = [(NSArray *)inputs countByEnumeratingWithState:&v24 objects:v23 count:16];
           }
 
           while (v7);
@@ -112,10 +112,10 @@ LABEL_19:
 
 - (BOOL)resolveCommonBufferFormat
 {
-  v3 = [(BWNodeOutput *)self->_output mediaType];
-  if (v3 <= 1885564003)
+  mediaType = [(BWNodeOutput *)self->_output mediaType];
+  if (mediaType <= 1885564003)
   {
-    if (v3 != 1667326820 && v3 != 1835365473 && v3 != 1836016234)
+    if (mediaType != 1667326820 && mediaType != 1835365473 && mediaType != 1836016234)
     {
       goto LABEL_48;
     }
@@ -132,9 +132,9 @@ LABEL_51:
     goto LABEL_12;
   }
 
-  if (v3 != 1885564004 && v3 != 1986618469)
+  if (mediaType != 1885564004 && mediaType != 1986618469)
   {
-    if (v3 != 1936684398)
+    if (mediaType != 1936684398)
     {
 LABEL_48:
       v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid mediatype for node output %@", self->_output];
@@ -145,15 +145,15 @@ LABEL_48:
   }
 
   v8 = [(BWNodeConnection *)self _resolveCommonVideoBufferFormatForAttachedMediaKey:?];
-  v9 = [(BWNodeOutput *)self->_output specifiedAttachedMediaKeys];
+  specifiedAttachedMediaKeys = [(BWNodeOutput *)self->_output specifiedAttachedMediaKeys];
   if (v8)
   {
-    v10 = v9;
+    v10 = specifiedAttachedMediaKeys;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v11 = [(NSArray *)v9 countByEnumeratingWithState:&v40 objects:v39 count:16];
+    v11 = [(NSArray *)specifiedAttachedMediaKeys countByEnumeratingWithState:&v40 objects:v39 count:16];
     if (v11)
     {
       v12 = v11;
@@ -193,8 +193,8 @@ LABEL_28:
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v15 = [(BWNodeOutput *)self->_output resolvedAttachedMediaKeys];
-      v16 = [(NSArray *)v15 countByEnumeratingWithState:&v35 objects:v34 count:16];
+      resolvedAttachedMediaKeys = [(BWNodeOutput *)self->_output resolvedAttachedMediaKeys];
+      v16 = [(NSArray *)resolvedAttachedMediaKeys countByEnumeratingWithState:&v35 objects:v34 count:16];
       if (v16)
       {
         v17 = v16;
@@ -205,7 +205,7 @@ LABEL_30:
         {
           if (*v36 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(resolvedAttachedMediaKeys);
           }
 
           v20 = *(*(&v35 + 1) + 8 * v19);
@@ -220,7 +220,7 @@ LABEL_30:
 
           if (v17 == ++v19)
           {
-            v17 = [(NSArray *)v15 countByEnumeratingWithState:&v35 objects:v34 count:16];
+            v17 = [(NSArray *)resolvedAttachedMediaKeys countByEnumeratingWithState:&v35 objects:v34 count:16];
             if (v17)
             {
               goto LABEL_30;
@@ -238,8 +238,8 @@ LABEL_37:
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v21 = [(BWNodeInput *)self->_input specifiedAttachedMediaKeys];
-        v22 = [(NSArray *)v21 countByEnumeratingWithState:&v30 objects:v29 count:16];
+        specifiedAttachedMediaKeys2 = [(BWNodeInput *)self->_input specifiedAttachedMediaKeys];
+        v22 = [(NSArray *)specifiedAttachedMediaKeys2 countByEnumeratingWithState:&v30 objects:v29 count:16];
         if (!v22)
         {
 LABEL_12:
@@ -255,7 +255,7 @@ LABEL_39:
         {
           if (*v31 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(specifiedAttachedMediaKeys2);
           }
 
           v26 = *(*(&v30 + 1) + 8 * v25);
@@ -270,7 +270,7 @@ LABEL_39:
 
           if (v23 == ++v25)
           {
-            v23 = [(NSArray *)v21 countByEnumeratingWithState:&v30 objects:v29 count:16];
+            v23 = [(NSArray *)specifiedAttachedMediaKeys2 countByEnumeratingWithState:&v30 objects:v29 count:16];
             LOBYTE(v6) = 1;
             if (v23)
             {
@@ -302,21 +302,21 @@ LABEL_39:
     goto LABEL_8;
   }
 
-  v3 = [(BWNodeInput *)self->_input node];
-  if ([(BWNodeOutput *)[(BWNode *)v3 output] connection][65] == 1)
+  node = [(BWNodeInput *)self->_input node];
+  if ([(BWNodeOutput *)[(BWNode *)node output] connection][65] == 1)
   {
     do
     {
-      v3 = [(BWNodeInput *)[(BWNodeConnection *)[(BWNodeOutput *)[(BWNode *)v3 output] connection] input] node];
+      node = [(BWNodeInput *)[(BWNodeConnection *)[(BWNodeOutput *)[(BWNode *)node output] connection] input] node];
     }
 
-    while (([(BWNodeOutput *)[(BWNode *)v3 output] connection][65] & 1) != 0);
+    while (([(BWNodeOutput *)[(BWNode *)node output] connection][65] & 1) != 0);
   }
 
-  self->_bypassInput = [[(BWNodeInput *)[(BWNodeConnection *)[(BWNodeOutput *)[(BWNode *)v3 output] connection] input] node] input];
-  v4 = [(BWNodeOutput *)[(BWNode *)v3 output] connection];
-  self->_bypassConnection = v4;
-  if (![(BWNodeConnection *)v4 pipelineStage])
+  self->_bypassInput = [[(BWNodeInput *)[(BWNodeConnection *)[(BWNodeOutput *)[(BWNode *)node output] connection] input] node] input];
+  connection = [(BWNodeOutput *)[(BWNode *)node output] connection];
+  self->_bypassConnection = connection;
+  if (![(BWNodeConnection *)connection pipelineStage])
   {
     v5 = MEMORY[0x1E695DF30];
     v6 = *MEMORY[0x1E695D940];
@@ -346,9 +346,9 @@ LABEL_8:
   }
 }
 
-- (BWNodeConnection)initWithOutput:(id)a3 input:(id)a4 pipelineStage:(id)a5
+- (BWNodeConnection)initWithOutput:(id)output input:(id)input pipelineStage:(id)stage
 {
-  if (a3 && a4)
+  if (output && input)
   {
     v11.receiver = self;
     v11.super_class = BWNodeConnection;
@@ -356,9 +356,9 @@ LABEL_8:
     v9 = v8;
     if (v8)
     {
-      v8->_input = a4;
-      v8->_output = a3;
-      v8->_pipelineStage = a5;
+      v8->_input = input;
+      v8->_output = output;
+      v8->_pipelineStage = stage;
       v9->_suspensionLock._os_unfair_lock_opaque = 0;
       v9->_messagesToPropagate = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -418,18 +418,18 @@ LABEL_8:
   self->_waitingForDeferredAttach = 1;
   if (self->_pipelineStage)
   {
-    v3 = [(BWNodeInput *)self->_input node];
-    if (v3)
+    node = [(BWNodeInput *)self->_input node];
+    if (node)
     {
-      v4 = v3;
-      if (![(BWNode *)v3 supportsConcurrentLiveInputCallbacks])
+      v4 = node;
+      if (![(BWNode *)node supportsConcurrentLiveInputCallbacks])
       {
         v18 = 0u;
         v19 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v5 = [(BWNode *)v4 inputs];
-        v6 = [(NSArray *)v5 countByEnumeratingWithState:&v16 objects:v15 count:16];
+        inputs = [(BWNode *)v4 inputs];
+        v6 = [(NSArray *)inputs countByEnumeratingWithState:&v16 objects:v15 count:16];
         if (v6)
         {
           v7 = v6;
@@ -440,19 +440,19 @@ LABEL_8:
             {
               if (*v17 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(inputs);
               }
 
               v10 = *(*(&v16 + 1) + 8 * i);
               if (v10 != self->_input)
               {
-                v11 = [*(*(&v16 + 1) + 8 * i) connection];
-                if (v11)
+                connection = [*(*(&v16 + 1) + 8 * i) connection];
+                if (connection)
                 {
-                  v12 = *(v11 + 32);
+                  v12 = *(connection + 32);
                   if (v12)
                   {
-                    if (([*(v11 + 32) isEqual:self->_pipelineStage] & 1) == 0)
+                    if (([*(connection + 32) isEqual:self->_pipelineStage] & 1) == 0)
                     {
                       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Attempting to attach connection '%@' to input '%@' with pipeline stage '%@' but node doesn't support concurrent input callbacks (node input '%@' has pipeline stage '%@')", self, self->_input, self->_pipelineStage, v10, v12];
                       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v14 userInfo:0]);
@@ -462,7 +462,7 @@ LABEL_8:
               }
             }
 
-            v7 = [(NSArray *)v5 countByEnumeratingWithState:&v16 objects:v15 count:16];
+            v7 = [(NSArray *)inputs countByEnumeratingWithState:&v16 objects:v15 count:16];
           }
 
           while (v7);
@@ -524,10 +524,10 @@ LABEL_51:
 LABEL_8:
   if ([*(v3 + 16) _passthroughModeForAttachedMediaKey:v2])
   {
-    v6 = [(BWNodeOutputMediaProperties *)v4 resolvedFormat];
-    if (v6)
+    resolvedFormat = [(BWNodeOutputMediaProperties *)v4 resolvedFormat];
+    if (resolvedFormat)
     {
-      v7 = v6;
+      v7 = resolvedFormat;
       v8 = v5;
 LABEL_11:
       [(BWNodeInputMediaProperties *)v8 setResolvedFormat:v7];
@@ -560,12 +560,12 @@ LABEL_11:
       v70 = 0;
       v12 = *(v3 + 8);
       objc_opt_self();
-      v13 = [*(v11 + 3952) array];
-      nc_addRequirementsForInputToMutableArray(v12, v2, v13, 0, &v70, &v69);
+      array = [*(v11 + 3952) array];
+      nc_addRequirementsForInputToMutableArray(v12, v2, array, 0, &v70, &v69);
       v14 = [*(v11 + 3952) arrayWithObject:v10];
-      [v14 addObjectsFromArray:v13];
-      v15 = [v10 formatClass];
-      v16 = [v15 formatByResolvingRequirements:v14 printErrors:v70 == 0];
+      [v14 addObjectsFromArray:array];
+      formatClass = [v10 formatClass];
+      v16 = [formatClass formatByResolvingRequirements:v14 printErrors:v70 == 0];
       if (v16)
       {
         goto LABEL_58;
@@ -576,23 +576,23 @@ LABEL_11:
       {
         v44 = *(v3 + 8);
         objc_opt_self();
-        v45 = [*(v11 + 3952) array];
-        nc_addRequirementsForInputToMutableArray(v44, v2, v45, 1, 0, 0);
-        [v45 insertObject:v10 atIndex:0];
-        [v45 insertObject:*(v3 + 16) atIndex:0];
+        array2 = [*(v11 + 3952) array];
+        nc_addRequirementsForInputToMutableArray(v44, v2, array2, 1, 0, 0);
+        [array2 insertObject:v10 atIndex:0];
+        [array2 insertObject:*(v3 + 16) atIndex:0];
         return 0;
       }
 
       v18 = v69;
-      v19 = [v70 node];
+      node = [v70 node];
       v62 = v17;
       [objc_msgSend(v17 mediaConfigurationForAttachedMediaKey:{v18), "setPassthroughMode:", 0}];
       v84 = 0u;
       v85 = 0u;
       v82 = 0u;
       v83 = 0u;
-      v56 = v19;
-      obj = [v19 outputs];
+      v56 = node;
+      obj = [node outputs];
       v55 = [obj countByEnumeratingWithState:&v82 objects:v81 count:16];
       if (v55)
       {
@@ -625,8 +625,8 @@ LABEL_11:
             v80 = 0u;
             v77 = 0u;
             v78 = 0u;
-            v58 = [v56 inputs];
-            v60 = [v58 countByEnumeratingWithState:&v77 objects:v76 count:16];
+            inputs = [v56 inputs];
+            v60 = [inputs countByEnumeratingWithState:&v77 objects:v76 count:16];
             if (v60)
             {
               v59 = *v78;
@@ -637,7 +637,7 @@ LABEL_11:
                 {
                   if (*v78 != v59)
                   {
-                    objc_enumerationMutation(v58);
+                    objc_enumerationMutation(inputs);
                   }
 
                   v61 = v24;
@@ -690,7 +690,7 @@ LABEL_11:
                 }
 
                 while (v61 + 1 != v60);
-                v60 = [v58 countByEnumeratingWithState:&v77 objects:v76 count:16];
+                v60 = [inputs countByEnumeratingWithState:&v77 objects:v76 count:16];
               }
 
               while (v60);
@@ -717,11 +717,11 @@ LABEL_11:
   v37 = [objc_msgSend(*(v3 + 8) mediaConfigurationForAttachedMediaKey:{v2), "formatRequirements"}];
   if (v37)
   {
-    v38 = v37;
-    v39 = [v10 formatClass];
+    null = v37;
+    formatClass2 = [v10 formatClass];
     v68[0] = v10;
-    v68[1] = v38;
-    v16 = [v39 formatByResolvingRequirements:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v68, 2)}];
+    v68[1] = null;
+    v16 = [formatClass2 formatByResolvingRequirements:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v68, 2)}];
     if (!v16)
     {
       v40 = *(v3 + 8);
@@ -748,9 +748,9 @@ LABEL_52:
     objc_exception_throw([v35 exceptionWithName:v36 reason:v34 userInfo:0]);
   }
 
-  v41 = [v10 formatClass];
+  formatClass3 = [v10 formatClass];
   v67 = v10;
-  v16 = [v41 formatByResolvingRequirements:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v67, 1)}];
+  v16 = [formatClass3 formatByResolvingRequirements:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v67, 1)}];
   if (v16)
   {
     goto LABEL_58;
@@ -760,9 +760,9 @@ LABEL_52:
   v63 = *(v3 + 16);
   v64 = v10;
   v65 = v43;
-  v38 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 LABEL_60:
-  v66 = v38;
+  v66 = null;
   [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:4];
   return 0;
 }
@@ -791,9 +791,9 @@ LABEL_60:
   }
 }
 
-- (void)suspendWithMessageCachingAllowed:(BOOL)a3 overrideCachingEnabled:(BOOL)a4 bypassed:(BOOL)a5 afterHandlingMessageWithType:(int)a6
+- (void)suspendWithMessageCachingAllowed:(BOOL)allowed overrideCachingEnabled:(BOOL)enabled bypassed:(BOOL)bypassed afterHandlingMessageWithType:(int)type
 {
-  v9 = a3;
+  allowedCopy = allowed;
   if (self->_allowsSuspensionWithoutPipelineStage)
   {
     if (![(BWNodeConnection *)self messageDispatchQueue])
@@ -814,10 +814,10 @@ LABEL_14:
     objc_exception_throw([v11 exceptionWithName:v12 reason:v13 userInfo:0]);
   }
 
-  if (a6)
+  if (type)
   {
-    atomic_store(a6, &self->_messageTypeToWaitForBeforeSuspension);
-    if (!v9)
+    atomic_store(type, &self->_messageTypeToWaitForBeforeSuspension);
+    if (!allowedCopy)
     {
       goto LABEL_11;
     }
@@ -826,7 +826,7 @@ LABEL_14:
   else
   {
     atomic_store(1u, &self->_suspended);
-    if (!v9)
+    if (!allowedCopy)
     {
 LABEL_11:
       waitingForDeferredAttach = self->_waitingForDeferredAttach;
@@ -835,19 +835,19 @@ LABEL_11:
   }
 
   waitingForDeferredAttach = 1;
-  if (!self->_wantsMessageCachingWhileSuspended && !a4)
+  if (!self->_wantsMessageCachingWhileSuspended && !enabled)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
   self->_messageCachingEnabled = waitingForDeferredAttach;
-  self->_bypassed = a5;
+  self->_bypassed = bypassed;
 }
 
-- (void)resumeForEventsOnly:(BOOL)a3
+- (void)resumeForEventsOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   os_unfair_lock_lock(&self->_suspensionLock);
   atomic_store(0, &self->_messageTypeToWaitForBeforeSuspension);
   explicit = atomic_load_explicit(&self->_suspended, memory_order_acquire);
@@ -855,7 +855,7 @@ LABEL_12:
   os_unfair_lock_unlock(&self->_suspensionLock);
   if ((explicit & 1) != 0 && !resuming)
   {
-    if (self->_bypassed && v3)
+    if (self->_bypassed && onlyCopy)
     {
       os_unfair_lock_lock(&self->_suspensionLock);
       self->_resumedForEventsOnly = 1;
@@ -865,20 +865,20 @@ LABEL_12:
     if (self->_waitingForDeferredAttach)
     {
       self->_waitingForDeferredResume = 1;
-      self->_waitingForDeferredResumeForEventsOnly = v3;
+      self->_waitingForDeferredResumeForEventsOnly = onlyCopy;
     }
 
-    else if (!self->_bypassed || !v3)
+    else if (!self->_bypassed || !onlyCopy)
     {
       os_unfair_lock_lock(&self->_suspensionLock);
-      self->_resumedForEventsOnly = v3;
+      self->_resumedForEventsOnly = onlyCopy;
       self->_resuming = 1;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __40__BWNodeConnection_resumeForEventsOnly___block_invoke;
       v11[3] = &unk_1E799B8D8;
       v11[4] = self;
-      v12 = v3;
+      v12 = onlyCopy;
       pipelineStage = self->_pipelineStage;
       if (pipelineStage)
       {
@@ -936,32 +936,32 @@ void __40__BWNodeConnection_resumeForEventsOnly___block_invoke_3(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)discardMessagesBeforeLiveConfigurationID:(int64_t)a3
+- (void)discardMessagesBeforeLiveConfigurationID:(int64_t)d
 {
-  atomic_store(a3, &self->_allowedLiveConfigurationID);
+  atomic_store(d, &self->_allowedLiveConfigurationID);
   os_unfair_lock_lock(&self->_suspensionLock);
-  v4 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   if ([(NSMutableArray *)self->_messagesToPropagate count])
   {
-    [(BWNodeConnection *)&self->_messagesToPropagate discardMessagesBeforeLiveConfigurationID:v4];
+    [(BWNodeConnection *)&self->_messagesToPropagate discardMessagesBeforeLiveConfigurationID:indexSet];
   }
 
-  [(NSMutableArray *)self->_messagesToPropagate removeObjectsAtIndexes:v4];
+  [(NSMutableArray *)self->_messagesToPropagate removeObjectsAtIndexes:indexSet];
 
   os_unfair_lock_unlock(&self->_suspensionLock);
 }
 
-- (void)consumeMessage:(id)a3 fromOutput:(id)a4
+- (void)consumeMessage:(id)message fromOutput:(id)output
 {
-  if (a3)
+  if (message)
   {
-    [BWNodeConnection consumeMessage:a3 fromOutput:?];
+    [BWNodeConnection consumeMessage:message fromOutput:?];
   }
 }
 
-- (id)_messageDispatchQueueOfNodeOutput:(uint64_t)a1
+- (id)_messageDispatchQueueOfNodeOutput:(uint64_t)output
 {
-  if (!a1)
+  if (!output)
   {
     return 0;
   }
@@ -976,18 +976,18 @@ void __40__BWNodeConnection_resumeForEventsOnly___block_invoke_3(uint64_t a1)
     }
 
     v5 = [objc_msgSend(objc_msgSend(v2 "node")];
-    v6 = [v5 connection];
-    if (!v6)
+    connection = [v5 connection];
+    if (!connection)
     {
       return 0;
     }
 
-    v7 = v6;
-    if ([v6 pipelineStage])
+    v7 = connection;
+    if ([connection pipelineStage])
     {
-      v10 = [v7 pipelineStage];
+      pipelineStage = [v7 pipelineStage];
 
-      return [v10 queue];
+      return [pipelineStage queue];
     }
 
     i = [objc_msgSend(v5 "connection")];

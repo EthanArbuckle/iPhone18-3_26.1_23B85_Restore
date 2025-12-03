@@ -1,40 +1,40 @@
 @interface EDMessageQueryTransformer
-- (BOOL)_predicateIsToOrCC:(id)a3 addressExpression:(id *)a4 operatorType:(unint64_t *)a5;
+- (BOOL)_predicateIsToOrCC:(id)c addressExpression:(id *)expression operatorType:(unint64_t *)type;
 - (EDMessagePersistence)messagePersistence;
-- (EDMessageQueryTransformer)initWithAccountsProvider:(id)a3 mailboxPersistence:(id)a4 messagePersistence:(id)a5 vipManager:(id)a6;
-- (id)transformComparisonPredicate:(id)a3;
-- (id)transformCompoundPredicate:(id)a3;
-- (id)transformPredicate:(id)a3;
-- (id)transformSubpredicates:(id)a3;
+- (EDMessageQueryTransformer)initWithAccountsProvider:(id)provider mailboxPersistence:(id)persistence messagePersistence:(id)messagePersistence vipManager:(id)manager;
+- (id)transformComparisonPredicate:(id)predicate;
+- (id)transformCompoundPredicate:(id)predicate;
+- (id)transformPredicate:(id)predicate;
+- (id)transformSubpredicates:(id)subpredicates;
 @end
 
 @implementation EDMessageQueryTransformer
 
-- (EDMessageQueryTransformer)initWithAccountsProvider:(id)a3 mailboxPersistence:(id)a4 messagePersistence:(id)a5 vipManager:(id)a6
+- (EDMessageQueryTransformer)initWithAccountsProvider:(id)provider mailboxPersistence:(id)persistence messagePersistence:(id)messagePersistence vipManager:(id)manager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  persistenceCopy = persistence;
+  messagePersistenceCopy = messagePersistence;
+  managerCopy = manager;
   v18.receiver = self;
   v18.super_class = EDMessageQueryTransformer;
   v15 = [(EDMessageQueryTransformer *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accountsProvider, a3);
-    objc_storeStrong(&v16->_mailboxPersistence, a4);
-    objc_storeWeak(&v16->_messagePersistence, v13);
-    objc_storeStrong(&v16->_vipManager, a6);
+    objc_storeStrong(&v15->_accountsProvider, provider);
+    objc_storeStrong(&v16->_mailboxPersistence, persistence);
+    objc_storeWeak(&v16->_messagePersistence, messagePersistenceCopy);
+    objc_storeStrong(&v16->_vipManager, manager);
   }
 
   return v16;
 }
 
-- (id)transformPredicate:(id)a3
+- (id)transformPredicate:(id)predicate
 {
-  v4 = a3;
-  if ([v4 ef_matchesEverything] & 1) != 0 || (objc_msgSend(v4, "ef_matchesNothing"))
+  predicateCopy = predicate;
+  if ([predicateCopy ef_matchesEverything] & 1) != 0 || (objc_msgSend(predicateCopy, "ef_matchesNothing"))
   {
     goto LABEL_3;
   }
@@ -42,7 +42,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(EDMessageQueryTransformer *)self transformCompoundPredicate:v4];
+    v5 = [(EDMessageQueryTransformer *)self transformCompoundPredicate:predicateCopy];
   }
 
   else
@@ -51,11 +51,11 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_3:
-      v5 = v4;
+      v5 = predicateCopy;
       goto LABEL_4;
     }
 
-    v5 = [(EDMessageQueryTransformer *)self transformComparisonPredicate:v4];
+    v5 = [(EDMessageQueryTransformer *)self transformComparisonPredicate:predicateCopy];
   }
 
 LABEL_4:
@@ -64,37 +64,37 @@ LABEL_4:
   return v6;
 }
 
-- (id)transformCompoundPredicate:(id)a3
+- (id)transformCompoundPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v11 = 0;
   v12 = 0;
-  v5 = [(EDMessageQueryTransformer *)self _predicateIsToOrCC:v4 addressExpression:&v11 operatorType:&v12];
+  v5 = [(EDMessageQueryTransformer *)self _predicateIsToOrCC:predicateCopy addressExpression:&v11 operatorType:&v12];
   v6 = v11;
   if (v5)
   {
-    v7 = [EDMessageListItemPredicates predicateForMessagesWithRecipientExpression:v6 operatorType:v12];
+    ef_simplifiedPredicate = [EDMessageListItemPredicates predicateForMessagesWithRecipientExpression:v6 operatorType:v12];
   }
 
   else
   {
-    v8 = [(EDMessageQueryTransformer *)self transformSubpredicates:v4];
-    v9 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:objc_msgSend(v4 subpredicates:{"compoundPredicateType"), v8}];
-    v7 = [v9 ef_simplifiedPredicate];
+    v8 = [(EDMessageQueryTransformer *)self transformSubpredicates:predicateCopy];
+    v9 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:objc_msgSend(predicateCopy subpredicates:{"compoundPredicateType"), v8}];
+    ef_simplifiedPredicate = [v9 ef_simplifiedPredicate];
   }
 
-  return v7;
+  return ef_simplifiedPredicate;
 }
 
-- (id)transformSubpredicates:(id)a3
+- (id)transformSubpredicates:(id)subpredicates
 {
-  v4 = [a3 subpredicates];
+  subpredicates = [subpredicates subpredicates];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__EDMessageQueryTransformer_transformSubpredicates___block_invoke;
   v7[3] = &unk_1E82547B8;
   v7[4] = self;
-  v5 = [v4 ef_map:v7];
+  v5 = [subpredicates ef_map:v7];
 
   return v5;
 }
@@ -106,12 +106,12 @@ id __52__EDMessageQueryTransformer_transformSubpredicates___block_invoke(uint64_
   return v2;
 }
 
-- (id)transformComparisonPredicate:(id)a3
+- (id)transformComparisonPredicate:(id)predicate
 {
   v51[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E699ADA0] predicateForNotifyMessages];
-  v6 = [v4 isEqual:v5];
+  predicateCopy = predicate;
+  predicateForNotifyMessages = [MEMORY[0x1E699ADA0] predicateForNotifyMessages];
+  v6 = [predicateCopy isEqual:predicateForNotifyMessages];
 
   if (v6)
   {
@@ -123,10 +123,10 @@ id __52__EDMessageQueryTransformer_transformSubpredicates___block_invoke(uint64_
 
   else
   {
-    v11 = [MEMORY[0x1E699ADA0] predicateForMuteMessages];
-    v12 = [v4 isEqual:v11];
+    predicateForMuteMessages = [MEMORY[0x1E699ADA0] predicateForMuteMessages];
+    v12 = [predicateCopy isEqual:predicateForMuteMessages];
 
-    v13 = v4;
+    v13 = predicateCopy;
     if (!v12)
     {
       goto LABEL_6;
@@ -141,29 +141,29 @@ id __52__EDMessageQueryTransformer_transformSubpredicates___block_invoke(uint64_
   v13 = v10;
 
 LABEL_6:
-  v15 = [v4 leftExpression];
-  v16 = [v15 expressionType];
+  leftExpression = [predicateCopy leftExpression];
+  expressionType = [leftExpression expressionType];
 
-  if (v16 != 3)
+  if (expressionType != 3)
   {
     goto LABEL_19;
   }
 
-  v17 = [v4 leftExpression];
-  v18 = [v17 keyPath];
+  leftExpression2 = [predicateCopy leftExpression];
+  keyPath = [leftExpression2 keyPath];
 
-  if ([v18 isEqualToString:*MEMORY[0x1E699AB20]])
+  if ([keyPath isEqualToString:*MEMORY[0x1E699AB20]])
   {
-    v19 = [(EDMessageQueryTransformer *)self messagePersistence];
-    v20 = [EDMessageListItemPredicates predicateForMessagesWithObjectIDsPredicate:v4 objectIDConverter:v19];
+    messagePersistence = [(EDMessageQueryTransformer *)self messagePersistence];
+    v20 = [EDMessageListItemPredicates predicateForMessagesWithObjectIDsPredicate:predicateCopy objectIDConverter:messagePersistence];
   }
 
   else
   {
-    if ([v18 isEqualToString:*MEMORY[0x1E699A910]])
+    if ([keyPath isEqualToString:*MEMORY[0x1E699A910]])
     {
-      v22 = [v4 rightExpression];
-      v41 = [v22 constantValue];
+      rightExpression = [predicateCopy rightExpression];
+      constantValue = [rightExpression constantValue];
 
       v45 = 0;
       v46 = &v45;
@@ -171,26 +171,26 @@ LABEL_6:
       v48 = __Block_byref_object_copy__28;
       v49 = __Block_byref_object_dispose__28;
       v50 = 0;
-      v23 = [(EDMessageQueryTransformer *)self accountsProvider];
-      v24 = [v23 mailAccounts];
+      accountsProvider = [(EDMessageQueryTransformer *)self accountsProvider];
+      mailAccounts = [accountsProvider mailAccounts];
       v42[0] = MEMORY[0x1E69E9820];
       v42[1] = 3221225472;
       v42[2] = __58__EDMessageQueryTransformer_transformComparisonPredicate___block_invoke;
       v42[3] = &unk_1E8255390;
-      v25 = v41;
+      v25 = constantValue;
       v43 = v25;
       v44 = &v45;
-      [v24 enumerateObjectsUsingBlock:v42];
+      [mailAccounts enumerateObjectsUsingBlock:v42];
 
       v26 = v46[5];
       if ((objc_opt_respondsToSelector() & 1) != 0 && ([v46[5] accountURL], v27 = objc_claimAutoreleasedReturnValue(), (v28 = v27) != 0))
       {
-        v29 = [v27 absoluteString];
-        v40 = [v29 stringByAppendingString:@"{"];
+        absoluteString = [v27 absoluteString];
+        v40 = [absoluteString stringByAppendingString:@"{"];
         v30 = MEMORY[0x1E696AB18];
         v31 = [MEMORY[0x1E696ABC8] expressionForKeyPath:*MEMORY[0x1E699A920]];
         v32 = MEMORY[0x1E696ABC8];
-        v51[0] = v29;
+        v51[0] = absoluteString;
         v51[1] = v40;
         v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:2];
         v34 = [v32 expressionForConstantValue:v33];
@@ -209,34 +209,34 @@ LABEL_6:
       goto LABEL_18;
     }
 
-    if ([v18 isEqualToString:*MEMORY[0x1E699A928]])
+    if ([keyPath isEqualToString:*MEMORY[0x1E699A928]])
     {
-      v19 = [(EDMessageQueryTransformer *)self mailboxPersistence];
-      v20 = [EDMessageListItemPredicates predicateForMailboxTypePredicate:v4 mailboxPersistence:v19];
+      messagePersistence = [(EDMessageQueryTransformer *)self mailboxPersistence];
+      v20 = [EDMessageListItemPredicates predicateForMailboxTypePredicate:predicateCopy mailboxPersistence:messagePersistence];
     }
 
     else
     {
-      if (![v18 isEqualToString:*MEMORY[0x1E699A920]])
+      if (![keyPath isEqualToString:*MEMORY[0x1E699A920]])
       {
-        if ([v18 isEqualToString:*MEMORY[0x1E699A960]])
+        if ([keyPath isEqualToString:*MEMORY[0x1E699A960]])
         {
-          v38 = [EDMessageListItemPredicates expandedPredicateForReadLaterIsActivePredicate:v4];
+          v38 = [EDMessageListItemPredicates expandedPredicateForReadLaterIsActivePredicate:predicateCopy];
         }
 
-        else if ([v18 isEqualToString:*MEMORY[0x1E699A8B0]])
+        else if ([keyPath isEqualToString:*MEMORY[0x1E699A8B0]])
         {
-          v38 = [EDMessageListItemPredicates expandedPredicateForFollowUpIsActivePredicate:v4];
+          v38 = [EDMessageListItemPredicates expandedPredicateForFollowUpIsActivePredicate:predicateCopy];
         }
 
         else
         {
-          if (![v18 isEqualToString:*MEMORY[0x1E699A850]])
+          if (![keyPath isEqualToString:*MEMORY[0x1E699A850]])
           {
             goto LABEL_18;
           }
 
-          v38 = [EDMessageListItemPredicates expandedPredicateForCategoryTypePredicate:v4];
+          v38 = [EDMessageListItemPredicates expandedPredicateForCategoryTypePredicate:predicateCopy];
         }
 
         v39 = v38;
@@ -245,8 +245,8 @@ LABEL_6:
         goto LABEL_18;
       }
 
-      v19 = [(EDMessageQueryTransformer *)self mailboxPersistence];
-      v20 = [EDMessageListItemPredicates predicateForMailboxURLPredicate:v4 mailboxPersistence:v19];
+      messagePersistence = [(EDMessageQueryTransformer *)self mailboxPersistence];
+      v20 = [EDMessageListItemPredicates predicateForMailboxURLPredicate:predicateCopy mailboxPersistence:messagePersistence];
     }
   }
 
@@ -274,11 +274,11 @@ void __58__EDMessageQueryTransformer_transformComparisonPredicate___block_invoke
   }
 }
 
-- (BOOL)_predicateIsToOrCC:(id)a3 addressExpression:(id *)a4 operatorType:(unint64_t *)a5
+- (BOOL)_predicateIsToOrCC:(id)c addressExpression:(id *)expression operatorType:(unint64_t *)type
 {
   v35 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  if ([v28 compoundPredicateType] != 2)
+  cCopy = c;
+  if ([cCopy compoundPredicateType] != 2)
   {
     v22 = 0;
     goto LABEL_32;
@@ -288,8 +288,8 @@ void __58__EDMessageQueryTransformer_transformComparisonPredicate___block_invoke
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = [v28 subpredicates];
-  v8 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  subpredicates = [cCopy subpredicates];
+  v8 = [subpredicates countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (!v8)
   {
 
@@ -297,14 +297,14 @@ void __58__EDMessageQueryTransformer_transformComparisonPredicate___block_invoke
     goto LABEL_30;
   }
 
-  v25 = a4;
-  v26 = a5;
+  expressionCopy = expression;
+  typeCopy = type;
   v27 = 0;
   v9 = 0;
   v10 = 0;
-  v11 = 0;
+  predicateOperatorType = 0;
   v12 = *v31;
-  obj = v7;
+  obj = subpredicates;
   while (2)
   {
     for (i = 0; i != v8; ++i)
@@ -322,24 +322,24 @@ void __58__EDMessageQueryTransformer_transformComparisonPredicate___block_invoke
       }
 
       v15 = v14;
-      v16 = [v15 leftExpression];
-      v17 = [v16 keyPath];
+      leftExpression = [v15 leftExpression];
+      keyPath = [leftExpression keyPath];
 
-      if ([v17 isEqualToString:@"toList.emailAddressValue.simpleAddress"])
+      if ([keyPath isEqualToString:@"toList.emailAddressValue.simpleAddress"])
       {
-        v18 = [v15 rightExpression];
-        v19 = v18;
+        rightExpression = [v15 rightExpression];
+        v19 = rightExpression;
         if (!v10)
         {
-          v10 = v18;
-          v11 = [v15 predicateOperatorType];
+          v10 = rightExpression;
+          predicateOperatorType = [v15 predicateOperatorType];
           v27 = 1;
 LABEL_20:
           v19 = v10;
           goto LABEL_21;
         }
 
-        if (![v10 isEqual:v18] || v11 != objc_msgSend(v15, "predicateOperatorType"))
+        if (![v10 isEqual:rightExpression] || predicateOperatorType != objc_msgSend(v15, "predicateOperatorType"))
         {
           goto LABEL_27;
         }
@@ -349,22 +349,22 @@ LABEL_20:
 
       else
       {
-        if (![v17 isEqualToString:@"ccList.emailAddressValue.simpleAddress"])
+        if (![keyPath isEqualToString:@"ccList.emailAddressValue.simpleAddress"])
         {
           goto LABEL_28;
         }
 
-        v20 = [v15 rightExpression];
-        v19 = v20;
+        rightExpression2 = [v15 rightExpression];
+        v19 = rightExpression2;
         if (!v10)
         {
-          v10 = v20;
-          v11 = [v15 predicateOperatorType];
+          v10 = rightExpression2;
+          predicateOperatorType = [v15 predicateOperatorType];
           v9 = 1;
           goto LABEL_20;
         }
 
-        if (![v10 isEqual:v20] || v11 != objc_msgSend(v15, "predicateOperatorType"))
+        if (![v10 isEqual:rightExpression2] || predicateOperatorType != objc_msgSend(v15, "predicateOperatorType"))
         {
 LABEL_27:
 
@@ -392,8 +392,8 @@ LABEL_21:
   if (v27 & v9)
   {
     v21 = v10;
-    *v25 = v10;
-    *v26 = v11;
+    *expressionCopy = v10;
+    *typeCopy = predicateOperatorType;
     v22 = 1;
     goto LABEL_31;
   }

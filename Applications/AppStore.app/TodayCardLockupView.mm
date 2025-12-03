@@ -1,17 +1,17 @@
 @interface TodayCardLockupView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation TodayCardLockupView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  v5 = [(TodayCardLockupView *)v4 traitCollection];
-  v6 = sub_100775508(v5, width);
+  width = fits.width;
+  selfCopy = self;
+  traitCollection = [(TodayCardLockupView *)selfCopy traitCollection];
+  v6 = sub_100775508(traitCollection, width);
   v8 = v7;
 
   v9 = v6;
@@ -23,7 +23,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100775870();
   v5 = v4;
 
@@ -43,7 +43,7 @@
   sub_100775C34(v4);
   sub_10002A400(v4, v4[3]);
   LayoutMarginsAware<>.layoutFrame.getter();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   dispatch thunk of Placeable.place(at:with:)();
 
   sub_100007000(v4);

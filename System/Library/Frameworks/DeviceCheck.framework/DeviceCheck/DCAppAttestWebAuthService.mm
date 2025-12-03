@@ -3,7 +3,7 @@
 - (BOOL)hasEntitlement;
 - (BOOL)isSupported;
 - (DCAppAttestController)appAttestController;
-- (void)attestKey:(__SecKey *)a3 clientDataHash:(id)a4 authData:(id)a5 completionHandler:(id)a6;
+- (void)attestKey:(__SecKey *)key clientDataHash:(id)hash authData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation DCAppAttestWebAuthService
@@ -47,11 +47,11 @@ uint64_t __42__DCAppAttestWebAuthService_sharedService__block_invoke()
   v19 = *MEMORY[0x277D85DE8];
   if ([(DCAppAttestWebAuthService *)self hasEntitlement])
   {
-    v3 = [(DCAppAttestWebAuthService *)self appAttestController];
-    v4 = [v3 isSupported];
+    appAttestController = [(DCAppAttestWebAuthService *)self appAttestController];
+    isSupported = [appAttestController isSupported];
 
     v5 = *MEMORY[0x277D85DE8];
-    return v4;
+    return isSupported;
   }
 
   else
@@ -105,25 +105,25 @@ uint64_t __42__DCAppAttestWebAuthService_sharedService__block_invoke()
   }
 }
 
-- (void)attestKey:(__SecKey *)a3 clientDataHash:(id)a4 authData:(id)a5 completionHandler:(id)a6
+- (void)attestKey:(__SecKey *)key clientDataHash:(id)hash authData:(id)data completionHandler:(id)handler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  hashCopy = hash;
+  dataCopy = data;
+  handlerCopy = handler;
   if ([(DCAppAttestWebAuthService *)self isSupported])
   {
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v13 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
     v34 = 0;
-    v15 = store_keychain_item(a3, @"appattest-webauthn", v14, &v34);
+    v15 = store_keychain_item(key, @"appattest-webauthn", uUIDString, &v34);
     v16 = v34;
     if (v15)
     {
-      v17 = SecKeyCopyAttributes(a3);
-      v18 = [(DCAppAttestWebAuthService *)self appAttestController];
-      [v18 attestKey:v14 keyAttributes:v17 clientDataHash:v10 authData:v11 options:0 completionHandler:v12];
+      v17 = SecKeyCopyAttributes(key);
+      appAttestController = [(DCAppAttestWebAuthService *)self appAttestController];
+      [appAttestController attestKey:uUIDString keyAttributes:v17 clientDataHash:hashCopy authData:dataCopy options:0 completionHandler:handlerCopy];
     }
 
     else
@@ -167,18 +167,18 @@ uint64_t __42__DCAppAttestWebAuthService_sharedService__block_invoke()
           v31 = "/Library/Caches/com.apple.xbs/Sources/TwoBit/DeviceCheck/Source/Interfaces/Private/DCAppAttestWebAuthService.m";
         }
 
-        v32 = [v16 localizedDescription];
+        localizedDescription = [v16 localizedDescription];
         *buf = 136315650;
         v36 = v31;
         v37 = 1024;
         v38 = 83;
         v39 = 2112;
-        v40 = v32;
+        v40 = localizedDescription;
         _os_log_impl(&dword_238044000, v26, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to save key to keychain. { error=%@ }", buf, 0x1Cu);
       }
 
       v17 = [MEMORY[0x277CCA9B8] dc_errorWithCode:0];
-      v12[2](v12, 0, v17);
+      handlerCopy[2](handlerCopy, 0, v17);
     }
   }
 

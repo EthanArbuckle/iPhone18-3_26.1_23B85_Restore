@@ -1,26 +1,26 @@
 @interface CACCommandRecognizerDictation
-- (__RXLanguageObject)_adLibLanguageObjectFromLanguageModel:(__RXLanguageObject *)a3;
-- (id)_attributedStringFromResult:(__RXLanguageObject *)a3;
-- (void)handleDictation:(id)a3;
-- (void)speechRecognizer:(id)a3 didRecognize:(id)a4;
+- (__RXLanguageObject)_adLibLanguageObjectFromLanguageModel:(__RXLanguageObject *)model;
+- (id)_attributedStringFromResult:(__RXLanguageObject *)result;
+- (void)handleDictation:(id)dictation;
+- (void)speechRecognizer:(id)recognizer didRecognize:(id)recognize;
 @end
 
 @implementation CACCommandRecognizerDictation
 
-- (void)speechRecognizer:(id)a3 didRecognize:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognize:(id)recognize
 {
   v50[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 languageObject];
-  if (v6)
+  recognizeCopy = recognize;
+  languageObject = [recognizeCopy languageObject];
+  if (languageObject)
   {
-    v7 = v6;
+    v7 = languageObject;
     Type = RXLanguageObjectGetType();
     if (Type == 6)
     {
       v10 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-      v11 = [(CACCommandRecognizer *)self speechRecognizer];
-      [v10 registerSignPostEndProcessingForSpeechRecognizer:v11 message:@"Close Result."];
+      speechRecognizer = [(CACCommandRecognizer *)self speechRecognizer];
+      [v10 registerSignPostEndProcessingForSpeechRecognizer:speechRecognizer message:@"Close Result."];
       goto LABEL_17;
     }
 
@@ -34,9 +34,9 @@
         goto LABEL_18;
       }
 
-      v11 = [(CACCommandRecognizerDictation *)self _attributedStringFromResult:v7];
-      v12 = [v11 string];
-      v13 = [v12 length];
+      speechRecognizer = [(CACCommandRecognizerDictation *)self _attributedStringFromResult:v7];
+      string = [speechRecognizer string];
+      v13 = [string length];
 
       if (v13)
       {
@@ -44,10 +44,10 @@
         v14 = CFCopyDescription(v7);
         v15 = +[CACMessageTracerUtilities sharedCACMessageTracerUtilities];
         v49[0] = @"Text";
-        v37 = v11;
-        v16 = [v11 string];
+        v37 = speechRecognizer;
+        string2 = [speechRecognizer string];
         v49[1] = @"RXResultDescription";
-        v50[0] = v16;
+        v50[0] = string2;
         v35 = v14;
         v50[1] = v14;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:2];
@@ -76,9 +76,9 @@
               }
 
               v24 = *(*(&v42 + 1) + 8 * i);
-              v25 = [v24 identifier];
-              v26 = [v19 identifier];
-              v27 = [v25 isEqualToString:v26];
+              identifier = [v24 identifier];
+              identifier2 = [v19 identifier];
+              v27 = [identifier isEqualToString:identifier2];
 
               if (v27)
               {
@@ -89,7 +89,7 @@
                 [v28 setObject:v29 forKey:*MEMORY[0x277D655C8]];
 
                 v30 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-                v31 = [v30 commandExecutionDispatchQueue];
+                commandExecutionDispatchQueue = [v30 commandExecutionDispatchQueue];
                 block[0] = MEMORY[0x277D85DD0];
                 block[1] = 3221225472;
                 block[2] = __63__CACCommandRecognizerDictation_speechRecognizer_didRecognize___block_invoke;
@@ -97,16 +97,16 @@
                 block[4] = v24;
                 v32 = v28;
                 v40 = v32;
-                v41 = v5;
-                dispatch_async(v31, block);
+                v41 = recognizeCopy;
+                dispatch_async(commandExecutionDispatchQueue, block);
 
                 v33 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
                 [v33 handleRecognizedCommand:v24];
 
                 v34 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-                LODWORD(v31) = [v34 dictationRecognizerMode];
+                LODWORD(commandExecutionDispatchQueue) = [v34 dictationRecognizerMode];
 
-                if (v31 == 3)
+                if (commandExecutionDispatchQueue == 3)
                 {
                   +[CACCommandRecognizer suspendCloseMatchAccumulatorForCommand];
                 }
@@ -128,7 +128,7 @@
 LABEL_24:
 
         v10 = v36;
-        v11 = v37;
+        speechRecognizer = v37;
       }
 
 LABEL_17:
@@ -147,14 +147,14 @@ uint64_t __63__CACCommandRecognizerDictation_speechRecognizer_didRecognize___blo
   return [v2 setLanguageObject:v3];
 }
 
-- (void)handleDictation:(id)a3
+- (void)handleDictation:(id)dictation
 {
   v105 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictationCopy = dictation;
   v4 = +[CACSystemStatusManager sharedManager];
-  v5 = [v4 isSystemDictationRunning];
+  isSystemDictationRunning = [v4 isSystemDictationRunning];
 
-  if (v5)
+  if (isSystemDictationRunning)
   {
     v6 = CACLogDictationCommands();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -166,9 +166,9 @@ uint64_t __63__CACCommandRecognizerDictation_speechRecognizer_didRecognize___blo
   }
 
   v7 = objc_alloc(MEMORY[0x277CCAB48]);
-  v72 = v3;
-  v8 = [v3 recognizedParameters];
-  v9 = [v8 objectForKey:*MEMORY[0x277D655C8]];
+  v72 = dictationCopy;
+  recognizedParameters = [dictationCopy recognizedParameters];
+  v9 = [recognizedParameters objectForKey:*MEMORY[0x277D655C8]];
   v10 = [v9 objectForKey:kCACCommandParameterAttributedText];
   v6 = [v7 initWithAttributedString:v10];
 
@@ -205,11 +205,11 @@ uint64_t __63__CACCommandRecognizerDictation_speechRecognizer_didRecognize___blo
     while (v14);
   }
 
-  v3 = v72;
-  v20 = [v72 recognizedParameters];
-  v21 = [v20 objectForKey:kCACCommandParameterTextSequence];
-  v22 = [v21 firstObject];
-  v23 = [v22 objectForKey:kCACCommandParameterTextVariants];
+  dictationCopy = v72;
+  recognizedParameters2 = [v72 recognizedParameters];
+  v21 = [recognizedParameters2 objectForKey:kCACCommandParameterTextSequence];
+  firstObject = [v21 firstObject];
+  v23 = [firstObject objectForKey:kCACCommandParameterTextVariants];
 
   v24 = CACLogDictationCommands();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -315,7 +315,7 @@ LABEL_28:
 
   while (v81);
 
-  v3 = v72;
+  dictationCopy = v72;
   if (v78)
   {
     v41 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v78];
@@ -326,42 +326,42 @@ LABEL_28:
 
   v78 = 0;
 LABEL_37:
-  v43 = [v3 languageObject];
-  v44 = [v43 transcriptionResult];
-  v45 = [v44 isPartialResult];
+  languageObject = [dictationCopy languageObject];
+  transcriptionResult = [languageObject transcriptionResult];
+  isPartialResult = [transcriptionResult isPartialResult];
 
-  if ((v45 & 1) == 0)
+  if ((isPartialResult & 1) == 0)
   {
     v46 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v47 = [v46 stagedTextInsertionSpecifier];
-    [v47 setInsertedCategoryID:*MEMORY[0x277D655C8]];
+    stagedTextInsertionSpecifier = [v46 stagedTextInsertionSpecifier];
+    [stagedTextInsertionSpecifier setInsertedCategoryID:*MEMORY[0x277D655C8]];
   }
 
   v48 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v49 = [v48 dictationRecognizerMode];
+  dictationRecognizerMode = [v48 dictationRecognizerMode];
 
-  if ((v49 - 4) <= 0xFFFFFFFD)
+  if ((dictationRecognizerMode - 4) <= 0xFFFFFFFD)
   {
     v50 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v51 = [v50 doesCurrentLanguageSupportInterWordSpaces];
+    doesCurrentLanguageSupportInterWordSpaces = [v50 doesCurrentLanguageSupportInterWordSpaces];
 
-    if (v51)
+    if (doesCurrentLanguageSupportInterWordSpaces)
     {
       v76 = v12;
       v52 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-      v53 = [v52 leadingTextForCurrentSelection];
+      leadingTextForCurrentSelection = [v52 leadingTextForCurrentSelection];
 
-      v54 = [v3 languageObject];
-      v55 = [v54 transcriptionResult];
-      v56 = [v55 preITN_nBestResults];
-      v57 = [v56 firstObject];
+      languageObject2 = [dictationCopy languageObject];
+      transcriptionResult2 = [languageObject2 transcriptionResult];
+      preITN_nBestResults = [transcriptionResult2 preITN_nBestResults];
+      firstObject2 = [preITN_nBestResults firstObject];
 
-      v58 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v84 = 0u;
       v85 = 0u;
       v86 = 0u;
       v87 = 0u;
-      v59 = v57;
+      v59 = firstObject2;
       v60 = [v59 countByEnumeratingWithState:&v84 objects:v101 count:16];
       if (v60)
       {
@@ -376,8 +376,8 @@ LABEL_37:
               objc_enumerationMutation(v59);
             }
 
-            v64 = [*(*(&v84 + 1) + 8 * m) tokenName];
-            [v58 addObject:v64];
+            tokenName = [*(*(&v84 + 1) + 8 * m) tokenName];
+            [array addObject:tokenName];
           }
 
           v61 = [v59 countByEnumeratingWithState:&v84 objects:v101 count:16];
@@ -388,28 +388,28 @@ LABEL_37:
 
       v65 = [v76 copy];
       v66 = +[CACSpeechSystem speechSystem];
-      v67 = [v66 recognitionLocaleIdentifier];
-      [v6 adjustCapsAndSpacingUsingLeadingText:v53 preITNTokens:v58 customVocabularies:v65 localeIdentifier:v67];
+      recognitionLocaleIdentifier = [v66 recognitionLocaleIdentifier];
+      [v6 adjustCapsAndSpacingUsingLeadingText:leadingTextForCurrentSelection preITNTokens:array customVocabularies:v65 localeIdentifier:recognitionLocaleIdentifier];
 
       v12 = v76;
-      v3 = v72;
+      dictationCopy = v72;
       v25 = v77;
     }
   }
 
   v68 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v69 = [v6 string];
-  v70 = [v3 languageObject];
-  v71 = [v70 transcriptionResult];
-  [v68 insertDictatedString:v69 provisionally:{objc_msgSend(v71, "isPartialResult")}];
+  string = [v6 string];
+  languageObject3 = [dictationCopy languageObject];
+  transcriptionResult3 = [languageObject3 transcriptionResult];
+  [v68 insertDictatedString:string provisionally:{objc_msgSend(transcriptionResult3, "isPartialResult")}];
 
 LABEL_50:
 }
 
-- (id)_attributedStringFromResult:(__RXLanguageObject *)a3
+- (id)_attributedStringFromResult:(__RXLanguageObject *)result
 {
   v5 = objc_opt_new();
-  if ([(CACCommandRecognizerDictation *)self _adLibLanguageObjectFromLanguageModel:a3])
+  if ([(CACCommandRecognizerDictation *)self _adLibLanguageObjectFromLanguageModel:result])
   {
     v6 = +[CACSpeechSystem speechSystem];
     v7 = CFLocaleCreate(0, [v6 recognitionLocaleIdentifier]);
@@ -430,10 +430,10 @@ LABEL_50:
   return v5;
 }
 
-- (__RXLanguageObject)_adLibLanguageObjectFromLanguageModel:(__RXLanguageObject *)a3
+- (__RXLanguageObject)_adLibLanguageObjectFromLanguageModel:(__RXLanguageObject *)model
 {
-  v3 = a3;
-  if (a3 && RXLanguageObjectGetType() != 4)
+  modelCopy = model;
+  if (model && RXLanguageObjectGetType() != 4)
   {
     Count = RXLanguageObjectGetCount();
     if (Count < 1)
@@ -463,7 +463,7 @@ LABEL_50:
     }
   }
 
-  return v3;
+  return modelCopy;
 }
 
 - (void)handleDictation:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

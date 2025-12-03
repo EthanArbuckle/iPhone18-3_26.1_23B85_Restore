@@ -1,35 +1,35 @@
 @interface IDEGaugeDataProviderService_SceneKit
-- (id)sampleAttributes:(id)a3 forPIDs:(id)a4;
-- (id)startSamplingForPIDs:(id)a3;
-- (id)stopSamplingForPIDs:(id)a3;
+- (id)sampleAttributes:(id)attributes forPIDs:(id)ds;
+- (id)startSamplingForPIDs:(id)ds;
+- (id)stopSamplingForPIDs:(id)ds;
 @end
 
 @implementation IDEGaugeDataProviderService_SceneKit
 
-- (id)startSamplingForPIDs:(id)a3
+- (id)startSamplingForPIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[IDEDataProvider_SceneKit sharedDataProvider];
-  v5 = [v4 startSamplingForPIDs:v3];
+  v5 = [v4 startSamplingForPIDs:dsCopy];
 
   return v5;
 }
 
-- (id)sampleAttributes:(id)a3 forPIDs:(id)a4
+- (id)sampleAttributes:(id)attributes forPIDs:(id)ds
 {
-  v5 = a4;
-  v6 = a3;
+  dsCopy = ds;
+  attributesCopy = attributes;
   v7 = +[IDEDataProvider_SceneKit sharedDataProvider];
-  v8 = [v7 captureAttributes:v6 forPIDs:v5];
+  v8 = [v7 captureAttributes:attributesCopy forPIDs:dsCopy];
 
   return v8;
 }
 
-- (id)stopSamplingForPIDs:(id)a3
+- (id)stopSamplingForPIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[IDEDataProvider_SceneKit sharedDataProvider];
-  v5 = [v4 stopSamplingForPIDs:v3];
+  v5 = [v4 stopSamplingForPIDs:dsCopy];
 
   return v5;
 }

@@ -1,24 +1,24 @@
 @interface _WKWebAuthenticationPanel
-+ (PublicKeyCredentialCreationOptions)convertToCoreCreationOptionsWithOptions:(SEL)a3;
-+ (PublicKeyCredentialRequestOptions)convertToCoreRequestOptionsWithOptions:(SEL)a3;
-+ (id)encodeGetAssertionCommandWithClientDataHash:(id)a3 options:(id)a4 userVerificationAvailability:(int64_t)a5 authenticatorSupportedExtensions:(id)a6;
-+ (id)encodeGetAssertionCommandWithClientDataJSON:(id)a3 options:(id)a4 userVerificationAvailability:(int64_t)a5 authenticatorSupportedExtensions:(id)a6;
-+ (id)encodeMakeCredentialCommandWithClientDataHash:(id)a3 options:(id)a4 userVerificationAvailability:(int64_t)a5 authenticatorSupportedCredentialParameters:(id)a6;
-+ (id)encodeMakeCredentialCommandWithClientDataHash:(id)a3 options:(id)a4 userVerificationAvailability:(int64_t)a5 authenticatorSupportedExtensions:(id)a6;
-+ (id)encodeMakeCredentialCommandWithClientDataJSON:(id)a3 options:(id)a4 userVerificationAvailability:(int64_t)a5 authenticatorSupportedExtensions:(id)a6;
-+ (id)exportLocalAuthenticatorCredentialWithGroupAndID:(id)a3 credential:(id)a4 error:(id *)a5;
++ (PublicKeyCredentialCreationOptions)convertToCoreCreationOptionsWithOptions:(SEL)options;
++ (PublicKeyCredentialRequestOptions)convertToCoreRequestOptionsWithOptions:(SEL)options;
++ (id)encodeGetAssertionCommandWithClientDataHash:(id)hash options:(id)options userVerificationAvailability:(int64_t)availability authenticatorSupportedExtensions:(id)extensions;
++ (id)encodeGetAssertionCommandWithClientDataJSON:(id)n options:(id)options userVerificationAvailability:(int64_t)availability authenticatorSupportedExtensions:(id)extensions;
++ (id)encodeMakeCredentialCommandWithClientDataHash:(id)hash options:(id)options userVerificationAvailability:(int64_t)availability authenticatorSupportedCredentialParameters:(id)parameters;
++ (id)encodeMakeCredentialCommandWithClientDataHash:(id)hash options:(id)options userVerificationAvailability:(int64_t)availability authenticatorSupportedExtensions:(id)extensions;
++ (id)encodeMakeCredentialCommandWithClientDataJSON:(id)n options:(id)options userVerificationAvailability:(int64_t)availability authenticatorSupportedExtensions:(id)extensions;
++ (id)exportLocalAuthenticatorCredentialWithGroupAndID:(id)d credential:(id)credential error:(id *)error;
 + (id)getAllLocalAuthenticatorCredentials;
-+ (id)getAllLocalAuthenticatorCredentialsWithAccessGroup:(id)a3;
-+ (id)getAllLocalAuthenticatorCredentialsWithCredentialID:(id)a3;
-+ (id)getAllLocalAuthenticatorCredentialsWithCredentialIDAndAccessGroup:(id)a3 credentialID:(id)a4;
-+ (id)getAllLocalAuthenticatorCredentialsWithRPID:(id)a3;
-+ (id)getAllLocalAuthenticatorCredentialsWithRPIDAndAccessGroup:(id)a3 rpID:(id)a4;
-+ (id)getClientDataJSONForAuthenticationType:(int64_t)a3 challenge:(id)a4 origin:(id)a5;
-+ (id)getClientDataJSONWithTopOrigin:(int64_t)a3 challenge:(id)a4 origin:(id)a5 topOrigin:(id)a6 crossOrigin:(BOOL)a7;
-+ (id)importLocalAuthenticatorWithAccessGroup:(id)a3 credential:(id)a4 error:(id *)a5;
-+ (void)deleteLocalAuthenticatorCredentialWithGroupAndID:(id)a3 credential:(id)a4;
-+ (void)setDisplayNameForLocalCredentialWithGroupAndID:(id)a3 credential:(id)a4 displayName:(id)a5;
-+ (void)setNameForLocalCredentialWithGroupAndID:(id)a3 credential:(id)a4 name:(id)a5;
++ (id)getAllLocalAuthenticatorCredentialsWithAccessGroup:(id)group;
++ (id)getAllLocalAuthenticatorCredentialsWithCredentialID:(id)d;
++ (id)getAllLocalAuthenticatorCredentialsWithCredentialIDAndAccessGroup:(id)group credentialID:(id)d;
++ (id)getAllLocalAuthenticatorCredentialsWithRPID:(id)d;
++ (id)getAllLocalAuthenticatorCredentialsWithRPIDAndAccessGroup:(id)group rpID:(id)d;
++ (id)getClientDataJSONForAuthenticationType:(int64_t)type challenge:(id)challenge origin:(id)origin;
++ (id)getClientDataJSONWithTopOrigin:(int64_t)origin challenge:(id)challenge origin:(id)a5 topOrigin:(id)topOrigin crossOrigin:(BOOL)crossOrigin;
++ (id)importLocalAuthenticatorWithAccessGroup:(id)group credential:(id)credential error:(id *)error;
++ (void)deleteLocalAuthenticatorCredentialWithGroupAndID:(id)d credential:(id)credential;
++ (void)setDisplayNameForLocalCredentialWithGroupAndID:(id)d credential:(id)credential displayName:(id)name;
++ (void)setNameForLocalCredentialWithGroupAndID:(id)d credential:(id)credential name:(id)name;
 - (NSSet)transports;
 - (NSString)relyingPartyID;
 - (NSString)userName;
@@ -26,24 +26,24 @@
 - (_WKWebAuthenticationPanel)init;
 - (_WKWebAuthenticationPanelDelegate)delegate;
 - (id).cxx_construct;
-- (uint64_t)getAssertionWithChallenge:(uint64_t)a1 origin:options:completionHandler:;
-- (uint64_t)getAssertionWithMediationRequirement:(const void *)a1 clientDataHash:options:completionHandler:;
-- (uint64_t)getAssertionWithMediationRequirement:(uint64_t)a1 clientDataHash:options:completionHandler:;
-- (uint64_t)makeCredentialWithChallenge:(uint64_t)a1 origin:options:completionHandler:;
-- (uint64_t)makeCredentialWithMediationRequirement:(const void *)a1 clientDataHash:options:completionHandler:;
-- (uint64_t)makeCredentialWithMediationRequirement:(uint64_t)a1 clientDataHash:options:completionHandler:;
+- (uint64_t)getAssertionWithChallenge:(uint64_t)challenge origin:options:completionHandler:;
+- (uint64_t)getAssertionWithMediationRequirement:(const void *)requirement clientDataHash:options:completionHandler:;
+- (uint64_t)getAssertionWithMediationRequirement:(uint64_t)requirement clientDataHash:options:completionHandler:;
+- (uint64_t)makeCredentialWithChallenge:(uint64_t)challenge origin:options:completionHandler:;
+- (uint64_t)makeCredentialWithMediationRequirement:(const void *)requirement clientDataHash:options:completionHandler:;
+- (uint64_t)makeCredentialWithMediationRequirement:(uint64_t)requirement clientDataHash:options:completionHandler:;
 - (void)cancel;
 - (void)dealloc;
-- (void)getAssertionWithChallenge:(id)a3 origin:(id)a4 options:(id)a5 completionHandler:(id)a6;
-- (void)getAssertionWithChallenge:(mpark *)a1 origin:(unsigned __int8 *)a2 options:completionHandler:;
-- (void)getAssertionWithMediationRequirement:(int64_t)a3 clientDataHash:(id)a4 options:(id)a5 completionHandler:(id)a6;
-- (void)getAssertionWithMediationRequirement:(mpark *)a1 clientDataHash:(unsigned __int8 *)a2 options:completionHandler:;
-- (void)makeCredentialWithChallenge:(id)a3 origin:(id)a4 options:(id)a5 completionHandler:(id)a6;
-- (void)makeCredentialWithChallenge:(mpark *)a1 origin:(unsigned __int8 *)a2 options:completionHandler:;
-- (void)makeCredentialWithMediationRequirement:(int64_t)a3 clientDataHash:(id)a4 options:(id)a5 completionHandler:(id)a6;
-- (void)makeCredentialWithMediationRequirement:(mpark *)a1 clientDataHash:(unsigned __int8 *)a2 options:completionHandler:;
-- (void)setDelegate:(id)a3;
-- (void)setMockConfiguration:(id)a3;
+- (void)getAssertionWithChallenge:(id)challenge origin:(id)origin options:(id)options completionHandler:(id)handler;
+- (void)getAssertionWithChallenge:(mpark *)challenge origin:(unsigned __int8 *)origin options:completionHandler:;
+- (void)getAssertionWithMediationRequirement:(int64_t)requirement clientDataHash:(id)hash options:(id)options completionHandler:(id)handler;
+- (void)getAssertionWithMediationRequirement:(mpark *)requirement clientDataHash:(unsigned __int8 *)hash options:completionHandler:;
+- (void)makeCredentialWithChallenge:(id)challenge origin:(id)origin options:(id)options completionHandler:(id)handler;
+- (void)makeCredentialWithChallenge:(mpark *)challenge origin:(unsigned __int8 *)origin options:completionHandler:;
+- (void)makeCredentialWithMediationRequirement:(int64_t)requirement clientDataHash:(id)hash options:(id)options completionHandler:(id)handler;
+- (void)makeCredentialWithMediationRequirement:(mpark *)requirement clientDataHash:(unsigned __int8 *)hash options:completionHandler:;
+- (void)setDelegate:(id)delegate;
+- (void)setMockConfiguration:(id)configuration;
 @end
 
 @implementation _WKWebAuthenticationPanel
@@ -57,9 +57,9 @@
   if (v2)
   {
     v4 = API::Object::apiObjectsUnderConstruction(v2);
-    v5 = [(_WKWebAuthenticationPanel *)v3 _apiObject];
+    _apiObject = [(_WKWebAuthenticationPanel *)v3 _apiObject];
     v9 = v3;
-    v10 = v5;
+    v10 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &v10, &v9, v8);
     API::WebAuthenticationPanel::WebAuthenticationPanel([(_WKWebAuthenticationPanel *)v3 _apiObject]);
   }
@@ -142,9 +142,9 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  WebKit::WebAuthenticationPanelClient::create(self, a3, &v12);
+  WebKit::WebAuthenticationPanelClient::create(self, delegate, &v12);
   v5 = v12;
   if (v12)
   {
@@ -374,9 +374,9 @@ LABEL_10:
   return v2;
 }
 
-+ (id)getAllLocalAuthenticatorCredentialsWithAccessGroup:(id)a3
++ (id)getAllLocalAuthenticatorCredentialsWithAccessGroup:(id)group
 {
-  getAllLocalAuthenticatorCredentialsImpl(&v6, a3, 0, 0);
+  getAllLocalAuthenticatorCredentialsImpl(&v6, group, 0, 0);
   v3 = v6;
   if (v6)
   {
@@ -386,9 +386,9 @@ LABEL_10:
   return v3;
 }
 
-+ (id)getAllLocalAuthenticatorCredentialsWithRPID:(id)a3
++ (id)getAllLocalAuthenticatorCredentialsWithRPID:(id)d
 {
-  getAllLocalAuthenticatorCredentialsImpl(&v6, &cfstr_ComAppleWebkit_19.isa, a3, 0);
+  getAllLocalAuthenticatorCredentialsImpl(&v6, &cfstr_ComAppleWebkit_19.isa, d, 0);
   v3 = v6;
   if (v6)
   {
@@ -398,9 +398,9 @@ LABEL_10:
   return v3;
 }
 
-+ (id)getAllLocalAuthenticatorCredentialsWithCredentialID:(id)a3
++ (id)getAllLocalAuthenticatorCredentialsWithCredentialID:(id)d
 {
-  getAllLocalAuthenticatorCredentialsImpl(&v6, &cfstr_ComAppleWebkit_19.isa, 0, a3);
+  getAllLocalAuthenticatorCredentialsImpl(&v6, &cfstr_ComAppleWebkit_19.isa, 0, d);
   v3 = v6;
   if (v6)
   {
@@ -410,9 +410,9 @@ LABEL_10:
   return v3;
 }
 
-+ (id)getAllLocalAuthenticatorCredentialsWithRPIDAndAccessGroup:(id)a3 rpID:(id)a4
++ (id)getAllLocalAuthenticatorCredentialsWithRPIDAndAccessGroup:(id)group rpID:(id)d
 {
-  getAllLocalAuthenticatorCredentialsImpl(&v7, a3, a4, 0);
+  getAllLocalAuthenticatorCredentialsImpl(&v7, group, d, 0);
   v4 = v7;
   if (v7)
   {
@@ -422,9 +422,9 @@ LABEL_10:
   return v4;
 }
 
-+ (id)getAllLocalAuthenticatorCredentialsWithCredentialIDAndAccessGroup:(id)a3 credentialID:(id)a4
++ (id)getAllLocalAuthenticatorCredentialsWithCredentialIDAndAccessGroup:(id)group credentialID:(id)d
 {
-  getAllLocalAuthenticatorCredentialsImpl(&v7, a3, 0, a4);
+  getAllLocalAuthenticatorCredentialsImpl(&v7, group, 0, d);
   v4 = v7;
   if (v7)
   {
@@ -434,10 +434,10 @@ LABEL_10:
   return v4;
 }
 
-+ (void)deleteLocalAuthenticatorCredentialWithGroupAndID:(id)a3 credential:(id)a4
++ (void)deleteLocalAuthenticatorCredentialWithGroupAndID:(id)d credential:(id)credential
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  shouldUseAlternateKeychainAttribute = WebKit::shouldUseAlternateKeychainAttribute(a1);
+  shouldUseAlternateKeychainAttribute = WebKit::shouldUseAlternateKeychainAttribute(self);
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = *MEMORY[0x1E697B020];
   v9 = *MEMORY[0x1E697B390];
@@ -448,9 +448,9 @@ LABEL_10:
   v13[2] = *MEMORY[0x1E697AEB0];
   v14[2] = *MEMORY[0x1E697AEB8];
   [v7 setDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v14, v13, 3)}];
-  if (a3)
+  if (d)
   {
-    [v7 setObject:a3 forKey:*MEMORY[0x1E697AE90]];
+    [v7 setObject:d forKey:*MEMORY[0x1E697AE90]];
   }
 
   v10 = *MEMORY[0x1E697AC38];
@@ -465,12 +465,12 @@ LABEL_10:
     v12 = *MEMORY[0x1E697AC40];
   }
 
-  [v7 setObject:a4 forKey:v12];
+  [v7 setObject:credential forKey:v12];
   SecItemDelete(v7);
   if (shouldUseAlternateKeychainAttribute)
   {
     [v7 removeObjectForKey:v10];
-    [v7 setObject:a4 forKey:v11];
+    [v7 setObject:credential forKey:v11];
     SecItemDelete(v7);
   }
 
@@ -479,10 +479,10 @@ LABEL_10:
   }
 }
 
-+ (void)setDisplayNameForLocalCredentialWithGroupAndID:(id)a3 credential:(id)a4 displayName:(id)a5
++ (void)setDisplayNameForLocalCredentialWithGroupAndID:(id)d credential:(id)credential displayName:(id)name
 {
   v68[5] = *MEMORY[0x1E69E9840];
-  shouldUseAlternateKeychainAttribute = WebKit::shouldUseAlternateKeychainAttribute(a1);
+  shouldUseAlternateKeychainAttribute = WebKit::shouldUseAlternateKeychainAttribute(self);
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v10 = *MEMORY[0x1E697AFF8];
   v11 = *MEMORY[0x1E697B020];
@@ -503,9 +503,9 @@ LABEL_10:
   v67[4] = *MEMORY[0x1E697B390];
   v68[4] = MEMORY[0x1E695E118];
   [v9 setDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v68, v67, 5)}];
-  if (a3)
+  if (d)
   {
-    [v9 setObject:a3 forKey:*MEMORY[0x1E697AE90]];
+    [v9 setObject:d forKey:*MEMORY[0x1E697AE90]];
   }
 
   v16 = *MEMORY[0x1E697AC38];
@@ -520,7 +520,7 @@ LABEL_10:
     v18 = *MEMORY[0x1E697AC40];
   }
 
-  [v9 setObject:a4 forKey:v18];
+  [v9 setObject:credential forKey:v18];
   result = 0;
   v19 = SecItemCopyMatching(v9, &result);
   if (v19 == -25300)
@@ -536,7 +536,7 @@ LABEL_10:
   if (v20 == 1)
   {
     [v9 removeObjectForKey:v16];
-    [v9 setObject:a4 forKey:v17];
+    [v9 setObject:credential forKey:v17];
     v19 = SecItemCopyMatching(v9, &result);
   }
 
@@ -551,7 +551,7 @@ LABEL_10:
   v24 = v23;
   if (v23)
   {
-    v25 = [v23 bytes];
+    bytes = [v23 bytes];
     v26 = [v24 length];
     v27 = v26;
     if (v26)
@@ -567,7 +567,7 @@ LABEL_10:
       v29 = 0;
       do
       {
-        *(v28 + v29) = *(v25 + v29);
+        *(v28 + v29) = *(bytes + v29);
         ++v29;
       }
 
@@ -616,9 +616,9 @@ LABEL_10:
       {
         if (*(v34 + 8) == 3 && (String = cbor::CBORValue::getString((v34 + 4)), MEMORY[0x19EB01EF0](*String, "displayName", 11)))
         {
-          if (a5)
+          if (name)
           {
-            MEMORY[0x19EB02040](&v55, a5);
+            MEMORY[0x19EB02040](&v55, name);
             cbor::CBORValue::CBORValue();
             cbor::CBORValue::clone(&v51, (v34 + 4));
             v62 = &v51;
@@ -681,11 +681,11 @@ LABEL_10:
       while (v40 != v33);
     }
 
-    if (a5)
+    if (name)
     {
       if ((v35 & 1) == 0)
       {
-        MEMORY[0x19EB02040](&v55, a5);
+        MEMORY[0x19EB02040](&v55, name);
         cbor::CBORValue::CBORValue();
         cbor::CBORValue::CBORValue();
         v62 = &v51;
@@ -724,9 +724,9 @@ LABEL_10:
     v63[2] = v50;
     v64[2] = v49;
     [v9 setDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v64, v63, 3)}];
-    if (a3)
+    if (d)
     {
-      [v9 setObject:a3 forKey:*MEMORY[0x1E697AE90]];
+      [v9 setObject:d forKey:*MEMORY[0x1E697AE90]];
     }
 
     SecItemUpdate(v9, v44);
@@ -769,10 +769,10 @@ LABEL_28:
   }
 }
 
-+ (void)setNameForLocalCredentialWithGroupAndID:(id)a3 credential:(id)a4 name:(id)a5
++ (void)setNameForLocalCredentialWithGroupAndID:(id)d credential:(id)credential name:(id)name
 {
   v68[5] = *MEMORY[0x1E69E9840];
-  shouldUseAlternateKeychainAttribute = WebKit::shouldUseAlternateKeychainAttribute(a1);
+  shouldUseAlternateKeychainAttribute = WebKit::shouldUseAlternateKeychainAttribute(self);
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v10 = *MEMORY[0x1E697AFF8];
   v11 = *MEMORY[0x1E697B020];
@@ -793,9 +793,9 @@ LABEL_28:
   v67[4] = *MEMORY[0x1E697B390];
   v68[4] = MEMORY[0x1E695E118];
   [v9 setDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v68, v67, 5)}];
-  if (a3)
+  if (d)
   {
-    [v9 setObject:a3 forKey:*MEMORY[0x1E697AE90]];
+    [v9 setObject:d forKey:*MEMORY[0x1E697AE90]];
   }
 
   v16 = *MEMORY[0x1E697AC38];
@@ -810,7 +810,7 @@ LABEL_28:
     v18 = *MEMORY[0x1E697AC40];
   }
 
-  [v9 setObject:a4 forKey:v18];
+  [v9 setObject:credential forKey:v18];
   result = 0;
   v19 = SecItemCopyMatching(v9, &result);
   if (v19 == -25300)
@@ -826,7 +826,7 @@ LABEL_28:
   if (v20 == 1)
   {
     [v9 removeObjectForKey:v16];
-    [v9 setObject:a4 forKey:v17];
+    [v9 setObject:credential forKey:v17];
     v19 = SecItemCopyMatching(v9, &result);
   }
 
@@ -841,7 +841,7 @@ LABEL_28:
   v24 = v23;
   if (v23)
   {
-    v25 = [v23 bytes];
+    bytes = [v23 bytes];
     v26 = [v24 length];
     v27 = v26;
     if (v26)
@@ -857,7 +857,7 @@ LABEL_28:
       v29 = 0;
       do
       {
-        *(v28 + v29) = *(v25 + v29);
+        *(v28 + v29) = *(bytes + v29);
         ++v29;
       }
 
@@ -906,9 +906,9 @@ LABEL_28:
       {
         if (*(v34 + 8) == 3 && (String = cbor::CBORValue::getString((v34 + 4)), MEMORY[0x19EB01EF0](*String, "name", 4)))
         {
-          if (a5)
+          if (name)
           {
-            MEMORY[0x19EB02040](&v55, a5);
+            MEMORY[0x19EB02040](&v55, name);
             cbor::CBORValue::CBORValue();
             cbor::CBORValue::clone(&v51, (v34 + 4));
             v62 = &v51;
@@ -971,11 +971,11 @@ LABEL_28:
       while (v40 != v33);
     }
 
-    if (a5)
+    if (name)
     {
       if ((v35 & 1) == 0)
       {
-        MEMORY[0x19EB02040](&v55, a5);
+        MEMORY[0x19EB02040](&v55, name);
         cbor::CBORValue::CBORValue();
         cbor::CBORValue::CBORValue();
         v62 = &v51;
@@ -1014,9 +1014,9 @@ LABEL_28:
     v63[2] = v50;
     v64[2] = v49;
     [v9 setDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v64, v63, 3)}];
-    if (a3)
+    if (d)
     {
-      [v9 setObject:a3 forKey:*MEMORY[0x1E697AE90]];
+      [v9 setObject:d forKey:*MEMORY[0x1E697AE90]];
     }
 
     SecItemUpdate(v9, v44);
@@ -1059,14 +1059,14 @@ LABEL_28:
   }
 }
 
-+ (id)importLocalAuthenticatorWithAccessGroup:(id)a3 credential:(id)a4 error:(id *)a5
++ (id)importLocalAuthenticatorWithAccessGroup:(id)group credential:(id)credential error:(id *)error
 {
-  v6 = a4;
+  credentialCopy = credential;
   v98[3] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (credential)
   {
-    v8 = [a4 bytes];
-    result = [v6 length];
+    bytes = [credential bytes];
+    result = [credentialCopy length];
     v10 = result;
     if (result)
     {
@@ -1077,11 +1077,11 @@ LABEL_28:
       }
 
       v11 = WTF::fastMalloc(result);
-      v6 = v11;
+      credentialCopy = v11;
       v12 = 0;
       do
       {
-        v12[v11] = v12[v8];
+        v12[v11] = v12[bytes];
         ++v12;
       }
 
@@ -1090,7 +1090,7 @@ LABEL_28:
 
     else
     {
-      v6 = 0;
+      credentialCopy = 0;
     }
   }
 
@@ -1099,12 +1099,12 @@ LABEL_28:
     v10 = 0;
   }
 
-  v93 = v6;
+  v93 = credentialCopy;
   v94 = v10;
   cbor::CBORReader::read();
-  if (v6)
+  if (credentialCopy)
   {
-    WTF::fastFree(v6, v13);
+    WTF::fastFree(credentialCopy, v13);
   }
 
   if (v96 == 1 && v95[0] == 5)
@@ -1116,7 +1116,7 @@ LABEL_28:
     v18 = Map + 8;
     if (Map + 8 == v17 || (v20 = *(v17 + 64), v19 = (v17 + 64), v20 != 2))
     {
-      if (a5)
+      if (error)
       {
         v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
         goto LABEL_35;
@@ -1134,7 +1134,7 @@ LABEL_36:
     cbor::CBORValue::~CBORValue(&v93);
     if (v18 == v23 || (v25 = *(v23 + 64), v24 = (v23 + 64), v25 >= 2))
     {
-      if (!a5)
+      if (!error)
       {
         goto LABEL_44;
       }
@@ -1174,9 +1174,9 @@ LABEL_36:
               if (v18 == v35 || (v38 = *(v35 + 64), v37 = (v35 + 64), v38 != 5))
               {
                 v49 = 0;
-                if (a5)
+                if (error)
                 {
-                  *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
+                  *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
                 }
 
                 goto LABEL_124;
@@ -1215,9 +1215,9 @@ LABEL_36:
               if (error)
               {
                 v49 = 0;
-                if (a5)
+                if (error)
                 {
-                  *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
+                  *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
                 }
 
 LABEL_119:
@@ -1255,9 +1255,9 @@ LABEL_124:
               if (error)
               {
                 v49 = 0;
-                if (a5)
+                if (error)
                 {
-                  *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
+                  *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
                 }
 
                 v53 = v83;
@@ -1333,9 +1333,9 @@ LABEL_115:
               }
 
               [(__CFDictionary *)query setObject:v49 forKey:v61];
-              if (a3)
+              if (group)
               {
-                [(__CFDictionary *)query setObject:a3 forKey:*MEMORY[0x1E697ABD0]];
+                [(__CFDictionary *)query setObject:group forKey:*MEMORY[0x1E697ABD0]];
               }
 
               result = SecItemCopyMatching(query, 0);
@@ -1358,9 +1358,9 @@ LABEL_115:
 
               if (!result)
               {
-                if (a5)
+                if (error)
                 {
-                  *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:15 userInfo:0];
+                  *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:15 userInfo:0];
                 }
 
                 v66 = v49;
@@ -1402,16 +1402,16 @@ LABEL_115:
                   [(WebKit *)v69 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E697AEB0]];
                 }
 
-                if (a3)
+                if (group)
                 {
-                  [(WebKit *)v69 setObject:a3 forKey:*MEMORY[0x1E697ABD0]];
+                  [(WebKit *)v69 setObject:group forKey:*MEMORY[0x1E697ABD0]];
                 }
 
                 if (SecItemAdd(v69, 0))
                 {
-                  if (a5)
+                  if (error)
                   {
-                    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:1 userInfo:0];
+                    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:1 userInfo:0];
                   }
 
                   v66 = v49;
@@ -1472,7 +1472,7 @@ LABEL_132:
             }
           }
 
-          if (a5)
+          if (error)
           {
             goto LABEL_43;
           }
@@ -1488,7 +1488,7 @@ LABEL_45:
         }
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_44;
       }
@@ -1496,11 +1496,11 @@ LABEL_45:
 
 LABEL_43:
     v49 = 0;
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
     goto LABEL_45;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_36;
   }
@@ -1508,7 +1508,7 @@ LABEL_43:
   v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
 LABEL_35:
   v49 = 0;
-  *a5 = v15;
+  *error = v15;
 LABEL_47:
   if (v96 == 1)
   {
@@ -1518,16 +1518,16 @@ LABEL_47:
   return v49;
 }
 
-+ (id)exportLocalAuthenticatorCredentialWithGroupAndID:(id)a3 credential:(id)a4 error:(id *)a5
++ (id)exportLocalAuthenticatorCredentialWithGroupAndID:(id)d credential:(id)credential error:(id *)error
 {
-  shouldUseAlternateKeychainAttribute = WebKit::shouldUseAlternateKeychainAttribute(a1);
+  shouldUseAlternateKeychainAttribute = WebKit::shouldUseAlternateKeychainAttribute(self);
   v9 = objc_alloc(MEMORY[0x1E695DF90]);
   v10 = *MEMORY[0x1E697B328];
   v11 = [v9 initWithObjectsAndKeys:{*MEMORY[0x1E697B020], *MEMORY[0x1E697AFF8], MEMORY[0x1E695E118], *MEMORY[0x1E697B328], MEMORY[0x1E695E118], *MEMORY[0x1E697B390], *MEMORY[0x1E697AEB8], *MEMORY[0x1E697AEB0], 0}];
   v12 = v11;
-  if (a3)
+  if (d)
   {
-    [v11 setObject:a3 forKey:*MEMORY[0x1E697AE90]];
+    [v11 setObject:d forKey:*MEMORY[0x1E697AE90]];
   }
 
   v13 = *MEMORY[0x1E697AC38];
@@ -1542,7 +1542,7 @@ LABEL_47:
     v15 = *MEMORY[0x1E697AC40];
   }
 
-  [v12 setObject:a4 forKey:v15];
+  [v12 setObject:credential forKey:v15];
   result = 0;
   v16 = SecItemCopyMatching(v12, &result);
   if (v16 == -25300)
@@ -1558,16 +1558,16 @@ LABEL_47:
   if (v17 == 1)
   {
     [v12 removeObjectForKey:v13];
-    [v12 setObject:a4 forKey:v14];
+    [v12 setObject:credential forKey:v14];
     v16 = SecItemCopyMatching(v12, &result);
   }
 
   if (v16 != -25300 && v16)
   {
     v21 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:17 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:17 userInfo:0];
     }
 
     goto LABEL_68;
@@ -1576,7 +1576,7 @@ LABEL_47:
   v18 = result;
   error = 0;
   v19 = SecKeyCopyExternalRepresentation(result, &error);
-  v20 = error;
+  errorCopy = error;
   if (!error)
   {
     [v12 removeObjectForKey:v10];
@@ -1585,9 +1585,9 @@ LABEL_47:
     v22 = SecItemCopyMatching(v12, &v53);
     if (v22 != -25300 && v22)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:17 userInfo:0];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:17 userInfo:0];
       }
 
       goto LABEL_17;
@@ -1670,7 +1670,7 @@ LABEL_47:
           goto LABEL_36;
         }
 
-        v31 = [v29 bytes];
+        bytes = [v29 bytes];
         v32 = [v30 length];
         v33 = v32;
         if (!v32)
@@ -1689,7 +1689,7 @@ LABEL_47:
         v35 = 0;
         do
         {
-          v35[v34] = v35[v31];
+          v35[v34] = v35[bytes];
           ++v35;
         }
 
@@ -1708,16 +1708,16 @@ LABEL_36:
           if (v46 != 1 || v45[0] != 5)
           {
             v21 = 0;
-            if (a5)
+            if (error)
             {
-              *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
+              *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
             }
 
             goto LABEL_59;
           }
 
           cbor::CBORValue::CBORValue();
-          a5 = &v43;
+          error = &v43;
           cbor::CBORValue::CBORValue(&v43, "tag");
           v56 = &v43;
           std::__tree<std::__value_type<cbor::CBORValue,cbor::CBORValue>,std::__map_value_compare<cbor::CBORValue,std::__value_type<cbor::CBORValue,cbor::CBORValue>,cbor::CBORValue::CTAPLess,true>,WTF::FastAllocator<std::__value_type<cbor::CBORValue,cbor::CBORValue>>>::__emplace_unique_key_args<cbor::CBORValue,std::piecewise_construct_t const&,std::tuple<cbor::CBORValue&&>,std::tuple<>>(&v49, &v43);
@@ -1765,19 +1765,19 @@ LABEL_59:
         goto LABEL_62;
       }
 
-      if (a5)
+      if (error)
       {
         v38 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
         goto LABEL_51;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v38 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:16 userInfo:0];
 LABEL_51:
       v21 = 0;
-      *a5 = v38;
+      *error = v38;
       goto LABEL_62;
     }
 
@@ -1790,12 +1790,12 @@ LABEL_62:
     goto LABEL_64;
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:17 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:17 userInfo:0];
   }
 
-  CFRelease(v20);
+  CFRelease(errorCopy);
 LABEL_17:
   v21 = 0;
 LABEL_64:
@@ -1839,7 +1839,7 @@ LABEL_68:
   }
 }
 
-+ (PublicKeyCredentialCreationOptions)convertToCoreCreationOptionsWithOptions:(SEL)a3
++ (PublicKeyCredentialCreationOptions)convertToCoreCreationOptionsWithOptions:(SEL)options
 {
   retstr->var3.var0 = 0;
   p_var3 = &retstr->var3;
@@ -1861,12 +1861,12 @@ LABEL_68:
   retstr->var4.var0.__null_state_ = 0;
   *&retstr->var5.var1 = 0;
   retstr->var6.var0.var0 = 0;
-  v9 = [a4 relyingParty];
-  MEMORY[0x19EB02040](&v59, [v9 name]);
+  relyingParty = [a4 relyingParty];
+  MEMORY[0x19EB02040](&v59, [relyingParty name]);
   v10 = v59;
-  MEMORY[0x19EB02040](&v59, [v9 icon]);
+  MEMORY[0x19EB02040](&v59, [relyingParty icon]);
   v11 = v59;
-  MEMORY[0x19EB02040](&v59, [v9 identifier]);
+  MEMORY[0x19EB02040](&v59, [relyingParty identifier]);
   v13 = v59;
   m_ptr = retstr->var0.var0.m_impl.m_ptr;
   retstr->var0.var0.m_impl.m_ptr = v10;
@@ -1889,19 +1889,19 @@ LABEL_68:
     WTF::StringImpl::destroy(v16, v12);
   }
 
-  v17 = [a4 user];
+  user = [a4 user];
   v63 = 0;
   v61 = 0;
   v62 = 0;
-  MEMORY[0x19EB02040](&v79, [v17 name]);
+  MEMORY[0x19EB02040](&v79, [user name]);
   v59 = v79;
-  MEMORY[0x19EB02040](&v79, [v17 icon]);
+  MEMORY[0x19EB02040](&v79, [user icon]);
   v60 = v79;
-  v18 = [v17 identifier];
-  v19 = v18;
-  if (v18)
+  identifier = [user identifier];
+  v19 = identifier;
+  if (identifier)
   {
-    [v18 bytes];
+    [identifier bytes];
     [v19 length];
   }
 
@@ -1955,7 +1955,7 @@ LABEL_68:
 
   mpark::detail::move_constructor<mpark::detail::traits<WTF::RefPtr<JSC::ArrayBufferView,WTF::RawPtrTraits<JSC::ArrayBufferView>,WTF::DefaultRefDerefTraits<JSC::ArrayBufferView>>,WTF::RefPtr<JSC::ArrayBuffer,WTF::RawPtrTraits<JSC::ArrayBuffer>,WTF::DefaultRefDerefTraits<JSC::ArrayBuffer>>>,(mpark::detail::Trait)1>::~move_constructor(&v76);
   mpark::detail::move_constructor<mpark::detail::traits<WTF::RefPtr<JSC::ArrayBufferView,WTF::RawPtrTraits<JSC::ArrayBufferView>,WTF::DefaultRefDerefTraits<JSC::ArrayBufferView>>,WTF::RefPtr<JSC::ArrayBuffer,WTF::RawPtrTraits<JSC::ArrayBuffer>,WTF::DefaultRefDerefTraits<JSC::ArrayBuffer>>>,(mpark::detail::Trait)1>::~move_constructor(&v74);
-  MEMORY[0x19EB02040](&v79, [v17 displayName]);
+  MEMORY[0x19EB02040](&v79, [user displayName]);
   v26 = v79;
   v79 = 0;
   v27 = v63;
@@ -2042,16 +2042,16 @@ LABEL_68:
 
   if ([a4 authenticatorSelection])
   {
-    v40 = [a4 authenticatorSelection];
-    v41 = [v40 authenticatorAttachment];
-    if (v41 == 2)
+    authenticatorSelection = [a4 authenticatorSelection];
+    authenticatorAttachment = [authenticatorSelection authenticatorAttachment];
+    if (authenticatorAttachment == 2)
     {
       v42 = 1;
     }
 
     else
     {
-      if (v41 != 1)
+      if (authenticatorAttachment != 1)
       {
         v42 = 0;
         v43 = 0;
@@ -2063,18 +2063,18 @@ LABEL_68:
 
     v43 = 1;
 LABEL_54:
-    v44 = [v40 residentKey];
-    v45 = [v40 requireResidentKey];
-    v46 = [v40 userVerification];
-    v47 = v46 << 40;
-    if (v46 >= 3)
+    residentKey = [authenticatorSelection residentKey];
+    requireResidentKey = [authenticatorSelection requireResidentKey];
+    userVerification = [authenticatorSelection userVerification];
+    v47 = userVerification << 40;
+    if (userVerification >= 3)
     {
       WORD2(v47) = 256;
     }
 
-    v48 = WORD2(v47) | (v45 != 0);
-    v49 = ((0x2010000u >> (8 * v44)) & 3 | ((0x1010100u >> (8 * v44)) << 8)) << 16;
-    if (v44 >= 4)
+    v48 = WORD2(v47) | (requireResidentKey != 0);
+    v49 = ((0x2010000u >> (8 * residentKey)) & 3 | ((0x1010100u >> (8 * residentKey)) << 8)) << 16;
+    if (residentKey >= 4)
     {
       v49 = 16842752;
     }
@@ -2088,27 +2088,27 @@ LABEL_54:
     }
   }
 
-  v51 = [a4 attestation];
-  if (v51 >= 4)
+  attestation = [a4 attestation];
+  if (attestation >= 4)
   {
     v52 = 0;
   }
 
   else
   {
-    v52 = v51;
+    v52 = attestation;
   }
 
   retstr->var8.var0.var0 = v52;
   if (![a4 extensionsCBOR])
   {
-    v57 = [a4 extensions];
+    extensions = [a4 extensions];
     LOWORD(v60) = 0;
     LOBYTE(v61) = 0;
     v65 = 0;
     v66[0] = 0;
     v72 = 0;
-    MEMORY[0x19EB02040](&v79, [v57 appid]);
+    MEMORY[0x19EB02040](&v79, [extensions appid]);
     v59 = v79;
     std::optional<WebCore::AuthenticationExtensionsClientInputs>::operator=[abi:sn200100]<WebCore::AuthenticationExtensionsClientInputs,void>(p_var1, &v59);
     if (v72 != 1)
@@ -2134,11 +2134,11 @@ LABEL_54:
     goto LABEL_80;
   }
 
-  v53 = [a4 extensionsCBOR];
-  v54 = v53;
-  if (v53)
+  extensionsCBOR = [a4 extensionsCBOR];
+  v54 = extensionsCBOR;
+  if (extensionsCBOR)
   {
-    [v53 bytes];
+    [extensionsCBOR bytes];
     [v54 length];
   }
 
@@ -2198,13 +2198,13 @@ LABEL_81:
   return result;
 }
 
-- (void)makeCredentialWithChallenge:(id)a3 origin:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)makeCredentialWithChallenge:(id)challenge origin:(id)origin options:(id)options completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  produceClientDataJson(&v22, 0, a3, a4, 0);
+  produceClientDataJson(&v22, 0, challenge, origin, 0);
   v9 = v22;
   produceClientDataJsonHash(&v20, v22);
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v22 = 0;
   if (self)
   {
@@ -2222,7 +2222,7 @@ LABEL_81:
   v20.super.isa = 0;
   v21 = 0;
   v23[1] = v11;
-  [_WKWebAuthenticationPanel convertToCoreCreationOptionsWithOptions:a5];
+  [_WKWebAuthenticationPanel convertToCoreCreationOptionsWithOptions:options];
   WebCore::PublicKeyCredentialCreationOptions::PublicKeyCredentialCreationOptions(v24, v18);
   v24[288] = 0;
   v25 = 0;
@@ -2268,15 +2268,15 @@ LABEL_81:
   }
 }
 
-- (void)makeCredentialWithMediationRequirement:(int64_t)a3 clientDataHash:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)makeCredentialWithMediationRequirement:(int64_t)requirement clientDataHash:(id)hash options:(id)options completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   if (self)
   {
     [(_WKWebAuthenticationPanel *)self _protectedPanel];
     self = v22;
-    if (a4)
+    if (hash)
     {
       goto LABEL_3;
     }
@@ -2288,14 +2288,14 @@ LABEL_16:
   }
 
   v22 = 0;
-  if (!a4)
+  if (!hash)
   {
     goto LABEL_16;
   }
 
 LABEL_3:
-  v11 = [a4 bytes];
-  v12 = [a4 length];
+  bytes = [hash bytes];
+  v12 = [hash length];
   v13 = v12;
   v23 = 0;
   LODWORD(v24) = 0;
@@ -2314,7 +2314,7 @@ LABEL_3:
     v23 = v14;
     do
     {
-      *(v14 + v15) = *(v11 + v15);
+      *(v14 + v15) = *(bytes + v15);
       ++v15;
     }
 
@@ -2322,7 +2322,7 @@ LABEL_3:
   }
 
 LABEL_7:
-  [_WKWebAuthenticationPanel convertToCoreCreationOptionsWithOptions:a5];
+  [_WKWebAuthenticationPanel convertToCoreCreationOptionsWithOptions:options];
   WebCore::PublicKeyCredentialCreationOptions::PublicKeyCredentialCreationOptions(v25, v21);
   v25[288] = 0;
   v26 = 0;
@@ -2333,17 +2333,17 @@ LABEL_7:
   v31 = 0;
   v32 = 0;
   v33 = 0u;
-  if (a3 >= 4)
+  if (requirement >= 4)
   {
-    v16 = 1;
+    requirementCopy = 1;
   }
 
   else
   {
-    v16 = a3;
+    requirementCopy = requirement;
   }
 
-  v34 = v16;
+  v34 = requirementCopy;
   v35 = 1;
   v36 = 0;
   v37 = 0;
@@ -2371,7 +2371,7 @@ LABEL_7:
   _Block_release(0);
 }
 
-+ (PublicKeyCredentialRequestOptions)convertToCoreRequestOptionsWithOptions:(SEL)a3
++ (PublicKeyCredentialRequestOptions)convertToCoreRequestOptionsWithOptions:(SEL)options
 {
   retstr->var0.var0.var0.var0.var1.var0.var0 = 0;
   retstr->var0.var0.var0.var1 = 0;
@@ -2441,13 +2441,13 @@ LABEL_7:
 
   if (![a4 extensionsCBOR])
   {
-    v18 = [a4 extensions];
+    extensions = [a4 extensions];
     LOWORD(v27) = 0;
     LOBYTE(v28) = 0;
     v30 = 0;
     v31[0] = 0;
     v37 = 0;
-    MEMORY[0x19EB02040](&v39, [v18 appid]);
+    MEMORY[0x19EB02040](&v39, [extensions appid]);
     v26 = v39;
     std::optional<WebCore::AuthenticationExtensionsClientInputs>::operator=[abi:sn200100]<WebCore::AuthenticationExtensionsClientInputs,void>(&retstr->var5, &v26);
     if (v37 != 1)
@@ -2473,11 +2473,11 @@ LABEL_7:
     goto LABEL_33;
   }
 
-  v15 = [a4 extensionsCBOR];
-  v16 = v15;
-  if (v15)
+  extensionsCBOR = [a4 extensionsCBOR];
+  v16 = extensionsCBOR;
+  if (extensionsCBOR)
   {
-    [v15 bytes];
+    [extensionsCBOR bytes];
     [v16 length];
   }
 
@@ -2531,15 +2531,15 @@ LABEL_34:
     }
   }
 
-  v21 = [a4 userVerification];
-  if (v21 >= 3)
+  userVerification = [a4 userVerification];
+  if (userVerification >= 3)
   {
     v22 = 1;
   }
 
   else
   {
-    v22 = v21;
+    v22 = userVerification;
   }
 
   retstr->var4 = v22;
@@ -2567,13 +2567,13 @@ LABEL_52:
   return result;
 }
 
-- (void)getAssertionWithChallenge:(id)a3 origin:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)getAssertionWithChallenge:(id)challenge origin:(id)origin options:(id)options completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  produceClientDataJson(&v22, 1, a3, a4, 0);
+  produceClientDataJson(&v22, 1, challenge, origin, 0);
   v9 = v22;
   produceClientDataJsonHash(&v20, v22);
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v22 = 0;
   if (self)
   {
@@ -2591,7 +2591,7 @@ LABEL_52:
   v20.super.isa = 0;
   v21 = 0;
   v23[1] = v11;
-  [_WKWebAuthenticationPanel convertToCoreRequestOptionsWithOptions:a5];
+  [_WKWebAuthenticationPanel convertToCoreRequestOptionsWithOptions:options];
   WebCore::PublicKeyCredentialRequestOptions::PublicKeyCredentialRequestOptions(v24, v18);
   v24[288] = 1;
   v25 = 0;
@@ -2637,15 +2637,15 @@ LABEL_52:
   }
 }
 
-- (void)getAssertionWithMediationRequirement:(int64_t)a3 clientDataHash:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)getAssertionWithMediationRequirement:(int64_t)requirement clientDataHash:(id)hash options:(id)options completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   if (self)
   {
     [(_WKWebAuthenticationPanel *)self _protectedPanel];
     self = v22;
-    if (a4)
+    if (hash)
     {
       goto LABEL_3;
     }
@@ -2657,14 +2657,14 @@ LABEL_16:
   }
 
   v22 = 0;
-  if (!a4)
+  if (!hash)
   {
     goto LABEL_16;
   }
 
 LABEL_3:
-  v11 = [a4 bytes];
-  v12 = [a4 length];
+  bytes = [hash bytes];
+  v12 = [hash length];
   v13 = v12;
   v23 = 0;
   LODWORD(v24) = 0;
@@ -2683,7 +2683,7 @@ LABEL_3:
     v23 = v14;
     do
     {
-      *(v14 + v15) = *(v11 + v15);
+      *(v14 + v15) = *(bytes + v15);
       ++v15;
     }
 
@@ -2691,7 +2691,7 @@ LABEL_3:
   }
 
 LABEL_7:
-  [_WKWebAuthenticationPanel convertToCoreRequestOptionsWithOptions:a5];
+  [_WKWebAuthenticationPanel convertToCoreRequestOptionsWithOptions:options];
   WebCore::PublicKeyCredentialRequestOptions::PublicKeyCredentialRequestOptions(v25, v21);
   v25[288] = 1;
   v26 = 0;
@@ -2702,17 +2702,17 @@ LABEL_7:
   v31 = 0;
   v32 = 0;
   v33 = 0u;
-  if (a3 >= 4)
+  if (requirement >= 4)
   {
-    v16 = 1;
+    requirementCopy = 1;
   }
 
   else
   {
-    v16 = a3;
+    requirementCopy = requirement;
   }
 
-  v34 = v16;
+  v34 = requirementCopy;
   v35 = 1;
   v36 = 0;
   v37 = 0;
@@ -2740,9 +2740,9 @@ LABEL_7:
   _Block_release(0);
 }
 
-+ (id)getClientDataJSONForAuthenticationType:(int64_t)a3 challenge:(id)a4 origin:(id)a5
++ (id)getClientDataJSONForAuthenticationType:(int64_t)type challenge:(id)challenge origin:(id)origin
 {
-  produceClientDataJson(&v8, a3, a4, a5, 0);
+  produceClientDataJson(&v8, type, challenge, origin, 0);
   v5 = v8;
   if (v8)
   {
@@ -2752,9 +2752,9 @@ LABEL_7:
   return v5;
 }
 
-+ (id)getClientDataJSONWithTopOrigin:(int64_t)a3 challenge:(id)a4 origin:(id)a5 topOrigin:(id)a6 crossOrigin:(BOOL)a7
++ (id)getClientDataJSONWithTopOrigin:(int64_t)origin challenge:(id)challenge origin:(id)a5 topOrigin:(id)topOrigin crossOrigin:(BOOL)crossOrigin
 {
-  produceClientDataJson(&v10, a3, a4, a5, a6);
+  produceClientDataJson(&v10, origin, challenge, a5, topOrigin);
   v7 = v10;
   if (v10)
   {
@@ -2764,16 +2764,16 @@ LABEL_7:
   return v7;
 }
 
-+ (id)encodeMakeCredentialCommandWithClientDataJSON:(id)a3 options:(id)a4 userVerificationAvailability:(int64_t)a5 authenticatorSupportedExtensions:(id)a6
++ (id)encodeMakeCredentialCommandWithClientDataJSON:(id)n options:(id)options userVerificationAvailability:(int64_t)availability authenticatorSupportedExtensions:(id)extensions
 {
-  produceClientDataJsonHash(&v32, a3);
-  [_WKWebAuthenticationPanel convertToCoreCreationOptionsWithOptions:a4];
-  v20 = a6;
-  v18[0] = &v20;
-  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v27, [a6 count], v18, 0);
+  produceClientDataJsonHash(&v32, n);
+  [_WKWebAuthenticationPanel convertToCoreCreationOptionsWithOptions:options];
+  extensionsCopy = extensions;
+  v18[0] = &extensionsCopy;
+  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v27, [extensions count], v18, 0);
   v23 = 0;
   v26 = 0;
-  LOBYTE(v20) = 0;
+  LOBYTE(extensionsCopy) = 0;
   v22 = 0;
   LOBYTE(v18[0]) = 0;
   v19 = 0;
@@ -2785,10 +2785,10 @@ LABEL_7:
 
   if (v22 == 1)
   {
-    v9 = v20;
-    if (v20)
+    v9 = extensionsCopy;
+    if (extensionsCopy)
     {
-      v20 = 0;
+      extensionsCopy = 0;
       v21 = 0;
       WTF::fastFree(v9, v8);
     }
@@ -2833,12 +2833,12 @@ LABEL_7:
   return v13;
 }
 
-+ (id)encodeGetAssertionCommandWithClientDataJSON:(id)a3 options:(id)a4 userVerificationAvailability:(int64_t)a5 authenticatorSupportedExtensions:(id)a6
++ (id)encodeGetAssertionCommandWithClientDataJSON:(id)n options:(id)options userVerificationAvailability:(int64_t)availability authenticatorSupportedExtensions:(id)extensions
 {
-  produceClientDataJsonHash(&v29, a3);
-  [_WKWebAuthenticationPanel convertToCoreRequestOptionsWithOptions:a4];
-  v18[0] = a6;
-  v8 = [a6 count];
+  produceClientDataJsonHash(&v29, n);
+  [_WKWebAuthenticationPanel convertToCoreRequestOptionsWithOptions:options];
+  v18[0] = extensions;
+  v8 = [extensions count];
   v31 = v18;
   WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v24, v8, &v31, 0);
   v20 = 0;
@@ -2890,12 +2890,12 @@ LABEL_7:
   return v13;
 }
 
-+ (id)encodeMakeCredentialCommandWithClientDataHash:(id)a3 options:(id)a4 userVerificationAvailability:(int64_t)a5 authenticatorSupportedExtensions:(id)a6
++ (id)encodeMakeCredentialCommandWithClientDataHash:(id)hash options:(id)options userVerificationAvailability:(int64_t)availability authenticatorSupportedExtensions:(id)extensions
 {
-  if (a3)
+  if (hash)
   {
-    v9 = [a3 bytes];
-    result = [a3 length];
+    bytes = [hash bytes];
+    result = [hash length];
     v11 = result;
     v35 = 0;
     LODWORD(v36) = 0;
@@ -2913,7 +2913,7 @@ LABEL_7:
       v35 = v12;
       do
       {
-        v13 = *v9++;
+        v13 = *bytes++;
         *v12 = v13;
         v12 = (v12 + 1);
         --v11;
@@ -2929,13 +2929,13 @@ LABEL_7:
     v36 = 0;
   }
 
-  [_WKWebAuthenticationPanel convertToCoreCreationOptionsWithOptions:a4];
-  v26 = a6;
-  v24[0] = &v26;
-  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v33, [a6 count], v24, 0);
+  [_WKWebAuthenticationPanel convertToCoreCreationOptionsWithOptions:options];
+  extensionsCopy = extensions;
+  v24[0] = &extensionsCopy;
+  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v33, [extensions count], v24, 0);
   v29 = 0;
   v32 = 0;
-  LOBYTE(v26) = 0;
+  LOBYTE(extensionsCopy) = 0;
   v28 = 0;
   LOBYTE(v24[0]) = 0;
   v25 = 0;
@@ -2947,10 +2947,10 @@ LABEL_7:
 
   if (v28 == 1)
   {
-    v15 = v26;
-    if (v26)
+    v15 = extensionsCopy;
+    if (extensionsCopy)
     {
-      v26 = 0;
+      extensionsCopy = 0;
       v27 = 0;
       WTF::fastFree(v15, v14);
     }
@@ -2995,12 +2995,12 @@ LABEL_7:
   return v21;
 }
 
-+ (id)encodeMakeCredentialCommandWithClientDataHash:(id)a3 options:(id)a4 userVerificationAvailability:(int64_t)a5 authenticatorSupportedCredentialParameters:(id)a6
++ (id)encodeMakeCredentialCommandWithClientDataHash:(id)hash options:(id)options userVerificationAvailability:(int64_t)availability authenticatorSupportedCredentialParameters:(id)parameters
 {
-  if (a3)
+  if (hash)
   {
-    v9 = [a3 bytes];
-    result = [a3 length];
+    bytes = [hash bytes];
+    result = [hash length];
     v11 = result;
     v39 = 0;
     LODWORD(v40) = 0;
@@ -3018,7 +3018,7 @@ LABEL_7:
       v39 = v12;
       do
       {
-        v13 = *v9++;
+        v13 = *bytes++;
         *v12 = v13;
         v12 = (v12 + 1);
         --v11;
@@ -3034,12 +3034,12 @@ LABEL_7:
     v40 = 0;
   }
 
-  [_WKWebAuthenticationPanel convertToCoreCreationOptionsWithOptions:a4];
+  [_WKWebAuthenticationPanel convertToCoreCreationOptionsWithOptions:options];
   v37[0] = 0;
   v37[1] = 0;
   v33 = 0;
   v36 = 0;
-  publicKeyCredentialParameters(v29, a6);
+  publicKeyCredentialParameters(v29, parameters);
   v30 = v29[0];
   v31 = v29[1];
   v32 = 1;
@@ -3099,12 +3099,12 @@ LABEL_7:
   return v24;
 }
 
-+ (id)encodeGetAssertionCommandWithClientDataHash:(id)a3 options:(id)a4 userVerificationAvailability:(int64_t)a5 authenticatorSupportedExtensions:(id)a6
++ (id)encodeGetAssertionCommandWithClientDataHash:(id)hash options:(id)options userVerificationAvailability:(int64_t)availability authenticatorSupportedExtensions:(id)extensions
 {
-  if (a3)
+  if (hash)
   {
-    v9 = [a3 bytes];
-    result = [a3 length];
+    bytes = [hash bytes];
+    result = [hash length];
     v11 = result;
     v32 = 0;
     LODWORD(v33) = 0;
@@ -3123,7 +3123,7 @@ LABEL_7:
       v32 = v12;
       do
       {
-        v13[v12] = v13[v9];
+        v13[v12] = v13[bytes];
         ++v13;
       }
 
@@ -3137,9 +3137,9 @@ LABEL_7:
     v33 = 0;
   }
 
-  [_WKWebAuthenticationPanel convertToCoreRequestOptionsWithOptions:a4];
-  v24[0] = a6;
-  v14 = [a6 count];
+  [_WKWebAuthenticationPanel convertToCoreRequestOptionsWithOptions:options];
+  v24[0] = extensions;
+  v14 = [extensions count];
   v37 = v24;
   WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(v30, v14, &v37, 0);
   v26 = 0;
@@ -3191,11 +3191,11 @@ LABEL_7:
   return v21;
 }
 
-- (void)setMockConfiguration:(id)a3
+- (void)setMockConfiguration:(id)configuration
 {
-  if ([a3 objectForKeyedSubscript:@"privateKeyBase64"])
+  if ([configuration objectForKeyedSubscript:@"privateKeyBase64"])
   {
-    MEMORY[0x19EB02040](&v9, [a3 objectForKeyedSubscript:@"privateKeyBase64"]);
+    MEMORY[0x19EB02040](&v9, [configuration objectForKeyedSubscript:@"privateKeyBase64"]);
     v5 = v9;
   }
 
@@ -3245,41 +3245,28 @@ LABEL_7:
   return self;
 }
 
-- (uint64_t)makeCredentialWithChallenge:(uint64_t)a1 origin:options:completionHandler:
+- (uint64_t)makeCredentialWithChallenge:(uint64_t)challenge origin:options:completionHandler:
 {
-  *a1 = &unk_1F10FC340;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *challenge = &unk_1F10FC340;
+  v2 = *(challenge + 16);
+  *(challenge + 16) = 0;
   if (v2)
   {
   }
 
-  _Block_release(*(a1 + 8));
-  return a1;
+  _Block_release(*(challenge + 8));
+  return challenge;
 }
 
-{
-  *a1 = &unk_1F10FC340;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
-  if (v2)
-  {
-  }
-
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v3);
-}
-
-- (void)makeCredentialWithChallenge:(mpark *)a1 origin:(unsigned __int8 *)a2 options:completionHandler:
+- (void)makeCredentialWithChallenge:(mpark *)challenge origin:(unsigned __int8 *)origin options:completionHandler:
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  if (a2[16] == 1)
+  if (origin[16] == 1)
   {
     v8 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v9 = *a2;
+    v9 = *origin;
     v17[0] = *MEMORY[0x1E696A578];
-    v10 = *(a2 + 1);
+    v10 = *(origin + 1);
     if (v10)
     {
       atomic_fetch_add_explicit(v10, 2u, memory_order_relaxed);
@@ -3298,7 +3285,7 @@ LABEL_7:
 
     v16[0] = v15;
     v13 = [v8 initWithDomain:@"WKErrorDomain" code:v9 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v16, v17, 1)}];
-    (*(*(a1 + 1) + 16))();
+    (*(*(challenge + 1) + 16))();
     if (v13)
     {
     }
@@ -3312,17 +3299,17 @@ LABEL_7:
 
   else
   {
-    if (a2[16])
+    if (origin[16])
     {
-      mpark::throw_bad_variant_access(a1);
+      mpark::throw_bad_variant_access(challenge);
     }
 
-    (*(**a2 + 24))(v16);
-    v4 = *(a1 + 2);
-    v5 = WebCore::AuthenticatorResponse::attachment(*a2);
+    (*(**origin + 24))(v16);
+    v4 = *(challenge + 2);
+    v5 = WebCore::AuthenticatorResponse::attachment(*origin);
     wkAuthenticatorAttestationResponse(v17, v16, v4, v5);
     v6 = v17[0];
-    (*(*(a1 + 1) + 16))();
+    (*(*(challenge + 1) + 16))();
     if (v6)
     {
     }
@@ -3331,30 +3318,30 @@ LABEL_7:
   }
 }
 
-- (uint64_t)makeCredentialWithMediationRequirement:(uint64_t)a1 clientDataHash:options:completionHandler:
+- (uint64_t)makeCredentialWithMediationRequirement:(uint64_t)requirement clientDataHash:options:completionHandler:
 {
-  *a1 = &unk_1F10FC368;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *requirement = &unk_1F10FC368;
+  _Block_release(*(requirement + 8));
+  return requirement;
 }
 
-- (uint64_t)makeCredentialWithMediationRequirement:(const void *)a1 clientDataHash:options:completionHandler:
+- (uint64_t)makeCredentialWithMediationRequirement:(const void *)requirement clientDataHash:options:completionHandler:
 {
-  *a1 = &unk_1F10FC368;
-  _Block_release(a1[1]);
+  *requirement = &unk_1F10FC368;
+  _Block_release(requirement[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(requirement, v2);
 }
 
-- (void)makeCredentialWithMediationRequirement:(mpark *)a1 clientDataHash:(unsigned __int8 *)a2 options:completionHandler:
+- (void)makeCredentialWithMediationRequirement:(mpark *)requirement clientDataHash:(unsigned __int8 *)hash options:completionHandler:
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a2[16] == 1)
+  if (hash[16] == 1)
   {
     v7 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v8 = *a2;
+    v8 = *hash;
     v16[0] = *MEMORY[0x1E696A578];
-    v9 = *(a2 + 1);
+    v9 = *(hash + 1);
     if (v9)
     {
       atomic_fetch_add_explicit(v9, 2u, memory_order_relaxed);
@@ -3373,7 +3360,7 @@ LABEL_7:
 
     v15[0] = v14;
     v12 = [v7 initWithDomain:@"WKErrorDomain" code:v8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v15, v16, 1)}];
-    (*(*(a1 + 1) + 16))();
+    (*(*(requirement + 1) + 16))();
     if (v12)
     {
     }
@@ -3387,16 +3374,16 @@ LABEL_7:
 
   else
   {
-    if (a2[16])
+    if (hash[16])
     {
-      mpark::throw_bad_variant_access(a1);
+      mpark::throw_bad_variant_access(requirement);
     }
 
-    (*(**a2 + 24))(v15);
-    v4 = WebCore::AuthenticatorResponse::attachment(*a2);
+    (*(**hash + 24))(v15);
+    v4 = WebCore::AuthenticatorResponse::attachment(*hash);
     wkAuthenticatorAttestationResponse(v16, v15, 0, v4);
     v5 = v16[0];
-    (*(*(a1 + 1) + 16))();
+    (*(*(requirement + 1) + 16))();
     if (v5)
     {
     }
@@ -3405,41 +3392,28 @@ LABEL_7:
   }
 }
 
-- (uint64_t)getAssertionWithChallenge:(uint64_t)a1 origin:options:completionHandler:
+- (uint64_t)getAssertionWithChallenge:(uint64_t)challenge origin:options:completionHandler:
 {
-  *a1 = &unk_1F10FC390;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  *challenge = &unk_1F10FC390;
+  v2 = *(challenge + 16);
+  *(challenge + 16) = 0;
   if (v2)
   {
   }
 
-  _Block_release(*(a1 + 8));
-  return a1;
+  _Block_release(*(challenge + 8));
+  return challenge;
 }
 
-{
-  *a1 = &unk_1F10FC390;
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
-  if (v2)
-  {
-  }
-
-  _Block_release(*(a1 + 8));
-
-  return WTF::fastFree(a1, v3);
-}
-
-- (void)getAssertionWithChallenge:(mpark *)a1 origin:(unsigned __int8 *)a2 options:completionHandler:
+- (void)getAssertionWithChallenge:(mpark *)challenge origin:(unsigned __int8 *)origin options:completionHandler:
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  if (a2[16] == 1)
+  if (origin[16] == 1)
   {
     v8 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v9 = *a2;
+    v9 = *origin;
     v17[0] = *MEMORY[0x1E696A578];
-    v10 = *(a2 + 1);
+    v10 = *(origin + 1);
     if (v10)
     {
       atomic_fetch_add_explicit(v10, 2u, memory_order_relaxed);
@@ -3458,7 +3432,7 @@ LABEL_7:
 
     v16[0] = v15;
     v13 = [v8 initWithDomain:@"WKErrorDomain" code:v9 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v16, v17, 1)}];
-    (*(*(a1 + 1) + 16))();
+    (*(*(challenge + 1) + 16))();
     if (v13)
     {
     }
@@ -3472,17 +3446,17 @@ LABEL_7:
 
   else
   {
-    if (a2[16])
+    if (origin[16])
     {
-      mpark::throw_bad_variant_access(a1);
+      mpark::throw_bad_variant_access(challenge);
     }
 
-    (*(**a2 + 24))(v16);
-    v4 = *(a1 + 2);
-    v5 = WebCore::AuthenticatorResponse::attachment(*a2);
+    (*(**origin + 24))(v16);
+    v4 = *(challenge + 2);
+    v5 = WebCore::AuthenticatorResponse::attachment(*origin);
     wkAuthenticatorAssertionResponse(v17, v16, v4, v5);
     v6 = v17[0];
-    (*(*(a1 + 1) + 16))();
+    (*(*(challenge + 1) + 16))();
     if (v6)
     {
     }
@@ -3491,30 +3465,30 @@ LABEL_7:
   }
 }
 
-- (uint64_t)getAssertionWithMediationRequirement:(uint64_t)a1 clientDataHash:options:completionHandler:
+- (uint64_t)getAssertionWithMediationRequirement:(uint64_t)requirement clientDataHash:options:completionHandler:
 {
-  *a1 = &unk_1F10FC3B8;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *requirement = &unk_1F10FC3B8;
+  _Block_release(*(requirement + 8));
+  return requirement;
 }
 
-- (uint64_t)getAssertionWithMediationRequirement:(const void *)a1 clientDataHash:options:completionHandler:
+- (uint64_t)getAssertionWithMediationRequirement:(const void *)requirement clientDataHash:options:completionHandler:
 {
-  *a1 = &unk_1F10FC3B8;
-  _Block_release(a1[1]);
+  *requirement = &unk_1F10FC3B8;
+  _Block_release(requirement[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(requirement, v2);
 }
 
-- (void)getAssertionWithMediationRequirement:(mpark *)a1 clientDataHash:(unsigned __int8 *)a2 options:completionHandler:
+- (void)getAssertionWithMediationRequirement:(mpark *)requirement clientDataHash:(unsigned __int8 *)hash options:completionHandler:
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a2[16] == 1)
+  if (hash[16] == 1)
   {
     v7 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v8 = *a2;
+    v8 = *hash;
     v16[0] = *MEMORY[0x1E696A578];
-    v9 = *(a2 + 1);
+    v9 = *(hash + 1);
     if (v9)
     {
       atomic_fetch_add_explicit(v9, 2u, memory_order_relaxed);
@@ -3533,7 +3507,7 @@ LABEL_7:
 
     v15[0] = v14;
     v12 = [v7 initWithDomain:@"WKErrorDomain" code:v8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v15, v16, 1)}];
-    (*(*(a1 + 1) + 16))();
+    (*(*(requirement + 1) + 16))();
     if (v12)
     {
     }
@@ -3547,16 +3521,16 @@ LABEL_7:
 
   else
   {
-    if (a2[16])
+    if (hash[16])
     {
-      mpark::throw_bad_variant_access(a1);
+      mpark::throw_bad_variant_access(requirement);
     }
 
-    (*(**a2 + 24))(v15);
-    v4 = WebCore::AuthenticatorResponse::attachment(*a2);
+    (*(**hash + 24))(v15);
+    v4 = WebCore::AuthenticatorResponse::attachment(*hash);
     wkAuthenticatorAssertionResponse(v16, v15, 0, v4);
     v5 = v16[0];
-    (*(*(a1 + 1) + 16))();
+    (*(*(requirement + 1) + 16))();
     if (v5)
     {
     }

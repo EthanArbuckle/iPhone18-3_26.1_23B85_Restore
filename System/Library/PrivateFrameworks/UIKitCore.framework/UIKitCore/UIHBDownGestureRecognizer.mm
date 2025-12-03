@@ -1,21 +1,21 @@
 @interface UIHBDownGestureRecognizer
-- (UIHBDownGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (UIHBDownGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)_fail;
-- (void)_processPresses:(id)a3;
+- (void)_processPresses:(id)presses;
 - (void)_resetGestureRecognizer;
 - (void)_succeed;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)setAllowedPressTypes:(id)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)setAllowedPressTypes:(id)types;
 @end
 
 @implementation UIHBDownGestureRecognizer
 
-- (UIHBDownGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIHBDownGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v11.receiver = self;
   v11.super_class = UIHBDownGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v11 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v11 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -35,12 +35,12 @@
   return v5;
 }
 
-- (void)setAllowedPressTypes:(id)a3
+- (void)setAllowedPressTypes:(id)types
 {
   v7.receiver = self;
   v7.super_class = UIHBDownGestureRecognizer;
   [(UIGestureRecognizer *)&v7 setAllowedPressTypes:?];
-  v5 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v5 = [MEMORY[0x1E695DFD8] setWithArray:types];
   requiredPressTypes = self->_requiredPressTypes;
   self->_requiredPressTypes = v5;
 }
@@ -53,9 +53,9 @@
   [(NSMutableSet *)self->_currentlyPressedTypes removeAllObjects];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  if ([(NSSet *)self->_requiredPressTypes count:a3]&& !self->_delayedAction)
+  if ([(NSSet *)self->_requiredPressTypes count:began]&& !self->_delayedAction)
   {
     v6 = [UIDelayedAction alloc];
     v7 = [(UIDelayedAction *)v6 initWithTarget:self action:sel__fail userInfo:0 delay:*MEMORY[0x1E695DA28] mode:self->_maximumIntervalBetweenPresses];
@@ -63,12 +63,12 @@
     self->_delayedAction = v7;
   }
 
-  [(UIHBDownGestureRecognizer *)self _processPresses:a3];
+  [(UIHBDownGestureRecognizer *)self _processPresses:began];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  if ([(UIGestureRecognizer *)self state:a3]> UIGestureRecognizerStatePossible)
+  if ([(UIGestureRecognizer *)self state:cancelled]> UIGestureRecognizerStatePossible)
   {
     v5 = 4;
   }
@@ -102,15 +102,15 @@
   }
 }
 
-- (void)_processPresses:(id)a3
+- (void)_processPresses:(id)presses
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  pressesCopy = presses;
+  v5 = [pressesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -121,7 +121,7 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pressesCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -145,7 +145,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [pressesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

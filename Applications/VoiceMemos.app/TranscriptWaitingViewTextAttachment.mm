@@ -1,9 +1,9 @@
 @interface TranscriptWaitingViewTextAttachment
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC10VoiceMemos35TranscriptWaitingViewTextAttachment)init;
-- (_TtC10VoiceMemos35TranscriptWaitingViewTextAttachment)initWithCoder:(id)a3;
-- (_TtC10VoiceMemos35TranscriptWaitingViewTextAttachment)initWithData:(id)a3 ofType:(id)a4;
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5;
+- (_TtC10VoiceMemos35TranscriptWaitingViewTextAttachment)initWithCoder:(id)coder;
+- (_TtC10VoiceMemos35TranscriptWaitingViewTextAttachment)initWithData:(id)data ofType:(id)type;
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container;
 @end
 
 @implementation TranscriptWaitingViewTextAttachment
@@ -22,7 +22,7 @@
   return v4;
 }
 
-- (_TtC10VoiceMemos35TranscriptWaitingViewTextAttachment)initWithCoder:(id)a3
+- (_TtC10VoiceMemos35TranscriptWaitingViewTextAttachment)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC10VoiceMemos35TranscriptWaitingViewTextAttachment_textAttachmentViewProvider) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -30,24 +30,24 @@
   return result;
 }
 
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container
 {
-  v9 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v10 = a5;
-  v11 = self;
-  v12 = sub_10010D228(a3, a4, a5);
+  containerCopy = container;
+  selfCopy = self;
+  v12 = sub_10010D228(view, location, container);
 
   swift_unknownObjectRelease();
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -56,7 +56,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_10010CE3C(v8);
@@ -65,11 +65,11 @@
   return v6;
 }
 
-- (_TtC10VoiceMemos35TranscriptWaitingViewTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_TtC10VoiceMemos35TranscriptWaitingViewTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     sub_1000D4388(v5, v6);
   }

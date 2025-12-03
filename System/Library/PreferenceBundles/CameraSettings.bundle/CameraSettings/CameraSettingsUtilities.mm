@@ -1,22 +1,22 @@
 @interface CameraSettingsUtilities
-+ (id)appConfigurationCoordinatorForController:(id)a3;
-+ (id)displayNameForBundleID:(id)a3;
++ (id)appConfigurationCoordinatorForController:(id)controller;
++ (id)displayNameForBundleID:(id)d;
 @end
 
 @implementation CameraSettingsUtilities
 
-+ (id)displayNameForBundleID:(id)a3
++ (id)displayNameForBundleID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v12 = 0;
-    v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v12];
+    v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:dCopy allowPlaceholder:1 error:&v12];
     v5 = v12;
     if (v4)
     {
-      v6 = [v4 localizedName];
-      v7 = v3;
+      localizedName = [v4 localizedName];
+      v7 = dCopy;
     }
 
     else
@@ -24,13 +24,13 @@
       v7 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        sub_1B8F0(v3, v5, v7);
+        sub_1B8F0(dCopy, v5, v7);
       }
 
-      v6 = v3;
+      localizedName = dCopy;
     }
 
-    v10 = v6;
+    v10 = localizedName;
     v9 = v10;
   }
 
@@ -60,30 +60,30 @@
   return v9;
 }
 
-+ (id)appConfigurationCoordinatorForController:(id)a3
++ (id)appConfigurationCoordinatorForController:(id)controller
 {
-  v3 = [a3 parentController];
-  if (v3)
+  parentController = [controller parentController];
+  if (parentController)
   {
-    v4 = v3;
+    v4 = parentController;
     while (1)
     {
-      v5 = [v4 captureButtonAppConfigurationCoordinator];
-      if (v5)
+      captureButtonAppConfigurationCoordinator = [v4 captureButtonAppConfigurationCoordinator];
+      if (captureButtonAppConfigurationCoordinator)
       {
         break;
       }
 
-      v6 = [v4 parentController];
+      parentController2 = [v4 parentController];
 
-      v4 = v6;
-      if (!v6)
+      v4 = parentController2;
+      if (!parentController2)
       {
         goto LABEL_5;
       }
     }
 
-    v8 = v5;
+    v8 = captureButtonAppConfigurationCoordinator;
   }
 
   else

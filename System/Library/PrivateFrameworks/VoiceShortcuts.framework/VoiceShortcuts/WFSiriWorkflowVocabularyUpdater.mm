@@ -1,5 +1,5 @@
 @interface WFSiriWorkflowVocabularyUpdater
-- (WFSiriWorkflowVocabularyUpdater)initWithDatabaseProvider:(id)a3;
+- (WFSiriWorkflowVocabularyUpdater)initWithDatabaseProvider:(id)provider;
 - (void)updateIfPossible;
 @end
 
@@ -8,23 +8,23 @@
 - (void)updateIfPossible
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(WFSiriWorkflowVocabularyUpdater *)self databaseProvider];
+  databaseProvider = [(WFSiriWorkflowVocabularyUpdater *)self databaseProvider];
   v20 = 0;
-  v4 = [v3 databaseWithError:&v20];
+  v4 = [databaseProvider databaseWithError:&v20];
   v5 = v20;
 
   if (v4)
   {
     v6 = objc_autoreleasePoolPush();
     v7 = [v4 sortedVisibleWorkflowsByLastRunOrModificationDateWithLimit:1000];
-    v8 = [v7 descriptors];
+    descriptors = [v7 descriptors];
 
     v9 = objc_alloc(MEMORY[0x277CBEB70]);
-    v10 = [v8 if_map:&__block_literal_global_183];
+    v10 = [descriptors if_map:&__block_literal_global_183];
     v11 = [v9 initWithArray:v10];
 
-    v12 = [(WFSiriWorkflowVocabularyUpdater *)self speakableStrings];
-    v13 = [v12 isEqualToOrderedSet:v11];
+    speakableStrings = [(WFSiriWorkflowVocabularyUpdater *)self speakableStrings];
+    v13 = [speakableStrings isEqualToOrderedSet:v11];
 
     if (v13)
     {
@@ -59,8 +59,8 @@
       }
 
       [(WFSiriWorkflowVocabularyUpdater *)self setSpeakableStrings:v11];
-      v18 = [MEMORY[0x277CD43E0] sharedVocabulary];
-      [v18 setVocabulary:v11 ofType:50000];
+      mEMORY[0x277CD43E0] = [MEMORY[0x277CD43E0] sharedVocabulary];
+      [mEMORY[0x277CD43E0] setVocabulary:v11 ofType:50000];
 
       notify_post([*MEMORY[0x277D7A360] UTF8String]);
     }
@@ -97,13 +97,13 @@ id __51__WFSiriWorkflowVocabularyUpdater_updateIfPossible__block_invoke(uint64_t
   return v7;
 }
 
-- (WFSiriWorkflowVocabularyUpdater)initWithDatabaseProvider:(id)a3
+- (WFSiriWorkflowVocabularyUpdater)initWithDatabaseProvider:(id)provider
 {
-  v6 = a3;
-  if (!v6)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFSiriWorkflowVocabularyUpdater.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSiriWorkflowVocabularyUpdater.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
   }
 
   v14.receiver = self;
@@ -112,7 +112,7 @@ id __51__WFSiriWorkflowVocabularyUpdater_updateIfPossible__block_invoke(uint64_t
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_databaseProvider, a3);
+    objc_storeStrong(&v7->_databaseProvider, provider);
     v9 = objc_opt_new();
     speakableStrings = v8->_speakableStrings;
     v8->_speakableStrings = v9;

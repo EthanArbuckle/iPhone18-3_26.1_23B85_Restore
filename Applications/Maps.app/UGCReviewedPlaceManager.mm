@@ -1,28 +1,28 @@
 @interface UGCReviewedPlaceManager
 + (id)_sharedInstance;
-+ (id)locallyCachedReviewedPlaceForMUID:(unint64_t)a3;
-+ (void)addOrEditReviewedPlace:(id)a3 completion:(id)a4;
++ (id)locallyCachedReviewedPlaceForMUID:(unint64_t)d;
++ (void)addOrEditReviewedPlace:(id)place completion:(id)completion;
 + (void)clearAllUserData;
-+ (void)fetchAllHistoryObjectsFromStorageWithCompletion:(id)a3;
-+ (void)fetchAllHistoryObjectsWithPhotosFromStorageWithCompletion:(id)a3;
-+ (void)fetchReviewedPlaceForMUID:(unint64_t)a3 withIdentifierHistory:(id)a4 completion:(id)a5;
-+ (void)removeReviewedPlaceForMUID:(unint64_t)a3 completion:(id)a4;
-+ (void)updateLocalCacheWithReviewedPlace:(id)a3 completion:(id)a4;
-- (UGCReviewedPlaceManager)initWithSyncedCache:(id)a3 localCache:(id)a4;
-- (void)_addOrEditReviewedPlace:(id)a3 completion:(id)a4;
++ (void)fetchAllHistoryObjectsFromStorageWithCompletion:(id)completion;
++ (void)fetchAllHistoryObjectsWithPhotosFromStorageWithCompletion:(id)completion;
++ (void)fetchReviewedPlaceForMUID:(unint64_t)d withIdentifierHistory:(id)history completion:(id)completion;
++ (void)removeReviewedPlaceForMUID:(unint64_t)d completion:(id)completion;
++ (void)updateLocalCacheWithReviewedPlace:(id)place completion:(id)completion;
+- (UGCReviewedPlaceManager)initWithSyncedCache:(id)cache localCache:(id)localCache;
+- (void)_addOrEditReviewedPlace:(id)place completion:(id)completion;
 - (void)_clearAllUserData;
-- (void)_fetchAllHistoryObjectsFromStorageWithCompletion:(id)a3;
-- (void)_fetchAllHistoryObjectsWithPhotosFromStorageWithCompletion:(id)a3;
-- (void)_fetchReviewedPlaceForMUID:(unint64_t)a3 withIdentifierHistory:(id)a4 completion:(id)a5;
-- (void)_removeReviewedPlaceForMUID:(unint64_t)a3 completion:(id)a4;
-- (void)_updateLocalCacheWithReviewedPlace:(id)a3 completion:(id)a4;
+- (void)_fetchAllHistoryObjectsFromStorageWithCompletion:(id)completion;
+- (void)_fetchAllHistoryObjectsWithPhotosFromStorageWithCompletion:(id)completion;
+- (void)_fetchReviewedPlaceForMUID:(unint64_t)d withIdentifierHistory:(id)history completion:(id)completion;
+- (void)_removeReviewedPlaceForMUID:(unint64_t)d completion:(id)completion;
+- (void)_updateLocalCacheWithReviewedPlace:(id)place completion:(id)completion;
 @end
 
 @implementation UGCReviewedPlaceManager
 
-- (void)_fetchAllHistoryObjectsWithPhotosFromStorageWithCompletion:(id)a3
+- (void)_fetchAllHistoryObjectsWithPhotosFromStorageWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -39,16 +39,16 @@
   v9[2] = sub_100703AA8;
   v9[3] = &unk_101632468;
   v11 = &v12;
-  v8 = v4;
+  v8 = completionCopy;
   v10 = v8;
   [(UGCReviewedPlaceMapsSync *)syncedCache fetchAllHistoryObjectsFromStorageWithCompletion:v9];
 
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)_fetchAllHistoryObjectsFromStorageWithCompletion:(id)a3
+- (void)_fetchAllHistoryObjectsFromStorageWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -65,79 +65,79 @@
   v9[2] = sub_100703E70;
   v9[3] = &unk_101632468;
   v11 = &v12;
-  v8 = v4;
+  v8 = completionCopy;
   v10 = v8;
   [(UGCReviewedPlaceMapsSync *)syncedCache fetchAllHistoryObjectsFromStorageWithCompletion:v9];
 
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)_updateLocalCacheWithReviewedPlace:(id)a3 completion:(id)a4
+- (void)_updateLocalCacheWithReviewedPlace:(id)place completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   localCache = self->_localCache;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100704214;
   v9[3] = &unk_1016610B8;
-  v10 = v6;
-  v8 = v6;
-  [(UGCReviewedPlaceCache *)localCache addOrEditReviewedPlace:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(UGCReviewedPlaceCache *)localCache addOrEditReviewedPlace:place completion:v9];
 }
 
-- (void)_removeReviewedPlaceForMUID:(unint64_t)a3 completion:(id)a4
+- (void)_removeReviewedPlaceForMUID:(unint64_t)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   syncedCache = self->_syncedCache;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1007043D4;
   v9[3] = &unk_101627440;
-  v8 = v6;
+  v8 = completionCopy;
   v10 = v8;
   objc_copyWeak(v11, &location);
-  v11[1] = a3;
-  [(UGCReviewedPlaceMapsSync *)syncedCache removeReviewedPlaceWithMUID:a3 completion:v9];
+  v11[1] = d;
+  [(UGCReviewedPlaceMapsSync *)syncedCache removeReviewedPlaceWithMUID:d completion:v9];
   objc_destroyWeak(v11);
 
   objc_destroyWeak(&location);
 }
 
-- (void)_fetchReviewedPlaceForMUID:(unint64_t)a3 withIdentifierHistory:(id)a4 completion:(id)a5
+- (void)_fetchReviewedPlaceForMUID:(unint64_t)d withIdentifierHistory:(id)history completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_100021DB0(v8, &stru_1016273F0);
+  historyCopy = history;
+  completionCopy = completion;
+  v10 = sub_100021DB0(historyCopy, &stru_1016273F0);
   objc_initWeak(&location, self);
   syncedCache = self->_syncedCache;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100704708;
   v13[3] = &unk_101650298;
-  v12 = v9;
+  v12 = completionCopy;
   v14 = v12;
   objc_copyWeak(&v15, &location);
-  [(UGCReviewedPlaceMapsSync *)syncedCache fetchReviewedPlaceForMUID:a3 muidHistory:v10 completion:v13];
+  [(UGCReviewedPlaceMapsSync *)syncedCache fetchReviewedPlaceForMUID:d muidHistory:v10 completion:v13];
   objc_destroyWeak(&v15);
 
   objc_destroyWeak(&location);
 }
 
-- (void)_addOrEditReviewedPlace:(id)a3 completion:(id)a4
+- (void)_addOrEditReviewedPlace:(id)place completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  placeCopy = place;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   syncedCache = self->_syncedCache;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100704B00;
   v11[3] = &unk_101660FD8;
-  v9 = v7;
+  v9 = completionCopy;
   v13 = v9;
   objc_copyWeak(&v14, &location);
-  v10 = v6;
+  v10 = placeCopy;
   v12 = v10;
   [(UGCReviewedPlaceMapsSync *)syncedCache addOrEditReviewedPlace:v10 completion:v11];
 
@@ -153,18 +153,18 @@
   [(UGCReviewedPlaceCache *)localCache clearAllUserData];
 }
 
-- (UGCReviewedPlaceManager)initWithSyncedCache:(id)a3 localCache:(id)a4
+- (UGCReviewedPlaceManager)initWithSyncedCache:(id)cache localCache:(id)localCache
 {
-  v7 = a3;
-  v8 = a4;
+  cacheCopy = cache;
+  localCacheCopy = localCache;
   v12.receiver = self;
   v12.super_class = UGCReviewedPlaceManager;
   v9 = [(UGCReviewedPlaceManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_syncedCache, a3);
-    objc_storeStrong(&v10->_localCache, a4);
+    objc_storeStrong(&v9->_syncedCache, cache);
+    objc_storeStrong(&v10->_localCache, localCache);
   }
 
   return v10;
@@ -182,63 +182,63 @@
   return v3;
 }
 
-+ (void)fetchAllHistoryObjectsWithPhotosFromStorageWithCompletion:(id)a3
++ (void)fetchAllHistoryObjectsWithPhotosFromStorageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _sharedInstance];
-  [v5 _fetchAllHistoryObjectsWithPhotosFromStorageWithCompletion:v4];
+  completionCopy = completion;
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _fetchAllHistoryObjectsWithPhotosFromStorageWithCompletion:completionCopy];
 }
 
-+ (void)fetchAllHistoryObjectsFromStorageWithCompletion:(id)a3
++ (void)fetchAllHistoryObjectsFromStorageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _sharedInstance];
-  [v5 _fetchAllHistoryObjectsFromStorageWithCompletion:v4];
+  completionCopy = completion;
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _fetchAllHistoryObjectsFromStorageWithCompletion:completionCopy];
 }
 
-+ (void)updateLocalCacheWithReviewedPlace:(id)a3 completion:(id)a4
++ (void)updateLocalCacheWithReviewedPlace:(id)place completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _sharedInstance];
-  [v8 _updateLocalCacheWithReviewedPlace:v7 completion:v6];
+  completionCopy = completion;
+  placeCopy = place;
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _updateLocalCacheWithReviewedPlace:placeCopy completion:completionCopy];
 }
 
-+ (void)removeReviewedPlaceForMUID:(unint64_t)a3 completion:(id)a4
++ (void)removeReviewedPlaceForMUID:(unint64_t)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a1 _sharedInstance];
-  [v7 _removeReviewedPlaceForMUID:a3 completion:v6];
+  completionCopy = completion;
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _removeReviewedPlaceForMUID:d completion:completionCopy];
 }
 
-+ (id)locallyCachedReviewedPlaceForMUID:(unint64_t)a3
++ (id)locallyCachedReviewedPlaceForMUID:(unint64_t)d
 {
-  v4 = [a1 _sharedInstance];
-  v5 = [v4 _locallyCachedReviewedPlaceForMUID:a3];
+  _sharedInstance = [self _sharedInstance];
+  v5 = [_sharedInstance _locallyCachedReviewedPlaceForMUID:d];
 
   return v5;
 }
 
-+ (void)fetchReviewedPlaceForMUID:(unint64_t)a3 withIdentifierHistory:(id)a4 completion:(id)a5
++ (void)fetchReviewedPlaceForMUID:(unint64_t)d withIdentifierHistory:(id)history completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 _sharedInstance];
-  [v10 _fetchReviewedPlaceForMUID:a3 withIdentifierHistory:v9 completion:v8];
+  completionCopy = completion;
+  historyCopy = history;
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _fetchReviewedPlaceForMUID:d withIdentifierHistory:historyCopy completion:completionCopy];
 }
 
-+ (void)addOrEditReviewedPlace:(id)a3 completion:(id)a4
++ (void)addOrEditReviewedPlace:(id)place completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _sharedInstance];
-  [v8 _addOrEditReviewedPlace:v7 completion:v6];
+  completionCopy = completion;
+  placeCopy = place;
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _addOrEditReviewedPlace:placeCopy completion:completionCopy];
 }
 
 + (void)clearAllUserData
 {
-  v2 = [a1 _sharedInstance];
-  [v2 _clearAllUserData];
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _clearAllUserData];
 }
 
 @end

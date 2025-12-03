@@ -1,31 +1,31 @@
 @interface CRKUser
-+ (id)customUserFromMeCardUser:(id)a3;
++ (id)customUserFromMeCardUser:(id)user;
 + (id)makeMeCardUserProvider;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUser:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUser:(id)user;
 - (BOOL)isMeCardUser;
 - (BOOL)isValid;
-- (CRKUser)initWithCoder:(id)a3;
-- (CRKUser)initWithDictionary:(id)a3;
+- (CRKUser)initWithCoder:(id)coder;
+- (CRKUser)initWithDictionary:(id)dictionary;
 - (NSPersonNameComponents)nameComponents;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKUser
 
-- (CRKUser)initWithDictionary:(id)a3
+- (CRKUser)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v69.receiver = self;
   v69.super_class = CRKUser;
   v5 = [(CRKUser *)&v69 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"UserIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"UserIdentifier"];
     v7 = [v6 copy];
     v8 = v7;
     if (v7)
@@ -37,7 +37,7 @@
 
     else
     {
-      userIdentifier = [v4 objectForKeyedSubscript:@"Identifier"];
+      userIdentifier = [dictionaryCopy objectForKeyedSubscript:@"Identifier"];
       v11 = [userIdentifier copy];
       v12 = v11;
       if (v11)
@@ -53,7 +53,7 @@
       objc_storeStrong(&v5->_userIdentifier, v13);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"Name"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"Name"];
     v15 = [v14 copy];
     v16 = v15;
     if (v15)
@@ -65,13 +65,13 @@
 
     else
     {
-      displayName = [v4 objectForKeyedSubscript:@"Name"];
+      displayName = [dictionaryCopy objectForKeyedSubscript:@"Name"];
       v19 = [displayName copy];
       v20 = v5->_displayName;
       v5->_displayName = v19;
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"GivenName"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"GivenName"];
     v22 = [v21 copy];
     v23 = v22;
     if (v22)
@@ -83,13 +83,13 @@
 
     else
     {
-      givenName = [v4 objectForKeyedSubscript:@"GivenName"];
+      givenName = [dictionaryCopy objectForKeyedSubscript:@"GivenName"];
       v26 = [givenName copy];
       v27 = v5->_givenName;
       v5->_givenName = v26;
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"FamilyName"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"FamilyName"];
     v29 = [v28 copy];
     v30 = v29;
     if (v29)
@@ -101,13 +101,13 @@
 
     else
     {
-      familyName = [v4 objectForKeyedSubscript:@"FamilyName"];
+      familyName = [dictionaryCopy objectForKeyedSubscript:@"FamilyName"];
       v33 = [familyName copy];
       v34 = v5->_familyName;
       v5->_familyName = v33;
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"PhoneticGivenName"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"PhoneticGivenName"];
     v36 = [v35 copy];
     v37 = v36;
     if (v36)
@@ -119,13 +119,13 @@
 
     else
     {
-      phoneticGivenName = [v4 objectForKeyedSubscript:@"PhoneticGivenName"];
+      phoneticGivenName = [dictionaryCopy objectForKeyedSubscript:@"PhoneticGivenName"];
       v40 = [phoneticGivenName copy];
       v41 = v5->_phoneticGivenName;
       v5->_phoneticGivenName = v40;
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"PhoneticFamilyName"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"PhoneticFamilyName"];
     v43 = [v42 copy];
     v44 = v43;
     if (v43)
@@ -137,13 +137,13 @@
 
     else
     {
-      phoneticFamilyName = [v4 objectForKeyedSubscript:@"PhoneticFamilyName"];
+      phoneticFamilyName = [dictionaryCopy objectForKeyedSubscript:@"PhoneticFamilyName"];
       v47 = [phoneticFamilyName copy];
       v48 = v5->_phoneticFamilyName;
       v5->_phoneticFamilyName = v47;
     }
 
-    v49 = [v4 objectForKeyedSubscript:@"ImageURL"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"ImageURL"];
     v50 = [v49 copy];
     v51 = v50;
     if (v50)
@@ -155,31 +155,31 @@
 
     else
     {
-      imageURL = [v4 objectForKeyedSubscript:@"ImageURL"];
+      imageURL = [dictionaryCopy objectForKeyedSubscript:@"ImageURL"];
       v54 = [imageURL copy];
       v55 = v5->_imageURL;
       v5->_imageURL = v54;
     }
 
-    v56 = [v4 objectForKeyedSubscript:@"ImageIdentifier"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"ImageIdentifier"];
     v57 = [v56 copy];
     imageIdentifier = v5->_imageIdentifier;
     v5->_imageIdentifier = v57;
 
-    v59 = [v4 objectForKeyedSubscript:@"UserSource"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"UserSource"];
     v60 = [v59 copy];
     userSource = v5->_userSource;
     v5->_userSource = v60;
 
-    v62 = [v4 objectForKeyedSubscript:@"ImageData"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"ImageData"];
     v63 = [v62 copy];
     userImageData = v5->_userImageData;
     v5->_userImageData = v63;
 
-    v65 = [v4 objectForKeyedSubscript:@"Role"];
+    v65 = [dictionaryCopy objectForKeyedSubscript:@"Role"];
     if (v65)
     {
-      v66 = [v4 objectForKeyedSubscript:@"Role"];
+      v66 = [dictionaryCopy objectForKeyedSubscript:@"Role"];
       v5->_role = [v66 unsignedIntegerValue];
     }
 
@@ -188,7 +188,7 @@
       v5->_role = 0;
     }
 
-    v67 = [v4 objectForKeyedSubscript:@"UseMeCardIfAvailable"];
+    v67 = [dictionaryCopy objectForKeyedSubscript:@"UseMeCardIfAvailable"];
     v5->_useMeCardIfAvailable = [v67 BOOLValue];
   }
 
@@ -202,18 +202,18 @@
   return v2;
 }
 
-+ (id)customUserFromMeCardUser:(id)a3
++ (id)customUserFromMeCardUser:(id)user
 {
-  v3 = a3;
-  if ([v3 isMeCardUser])
+  userCopy = user;
+  if ([userCopy isMeCardUser])
   {
     v4 = [CRKUser alloc];
-    v5 = [v3 dictionaryValue];
-    v6 = [(CRKUser *)v4 initWithDictionary:v5];
+    dictionaryValue = [userCopy dictionaryValue];
+    v6 = [(CRKUser *)v4 initWithDictionary:dictionaryValue];
 
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v7 UUIDString];
-    [(CRKUser *)v6 setUserIdentifier:v8];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(CRKUser *)v6 setUserIdentifier:uUIDString];
 
     [(CRKUser *)v6 setUserSource:@"Custom"];
   }
@@ -229,40 +229,40 @@
 - (NSPersonNameComponents)nameComponents
 {
   v3 = objc_opt_new();
-  v4 = [(CRKUser *)self givenName];
-  if (v4)
+  givenName = [(CRKUser *)self givenName];
+  if (givenName)
   {
 
 LABEL_4:
-    v6 = [(CRKUser *)self givenName];
-    [v3 setGivenName:v6];
+    givenName2 = [(CRKUser *)self givenName];
+    [v3 setGivenName:givenName2];
 
-    v7 = [(CRKUser *)self familyName];
-    [v3 setFamilyName:v7];
+    familyName = [(CRKUser *)self familyName];
+    [v3 setFamilyName:familyName];
     goto LABEL_5;
   }
 
-  v5 = [(CRKUser *)self familyName];
+  familyName2 = [(CRKUser *)self familyName];
 
-  if (v5)
+  if (familyName2)
   {
     goto LABEL_4;
   }
 
-  v7 = [(CRKUser *)self displayName];
-  [v3 setGivenName:v7];
+  familyName = [(CRKUser *)self displayName];
+  [v3 setGivenName:familyName];
 LABEL_5:
 
-  v8 = [(CRKUser *)self phoneticGivenName];
-  if (v8)
+  phoneticGivenName = [(CRKUser *)self phoneticGivenName];
+  if (phoneticGivenName)
   {
   }
 
   else
   {
-    v9 = [(CRKUser *)self phoneticFamilyName];
+    phoneticFamilyName = [(CRKUser *)self phoneticFamilyName];
 
-    if (!v9)
+    if (!phoneticFamilyName)
     {
       goto LABEL_9;
     }
@@ -271,13 +271,13 @@ LABEL_5:
   v10 = objc_opt_new();
   [v3 setPhoneticRepresentation:v10];
 
-  v11 = [(CRKUser *)self phoneticGivenName];
-  v12 = [v3 phoneticRepresentation];
-  [v12 setGivenName:v11];
+  phoneticGivenName2 = [(CRKUser *)self phoneticGivenName];
+  phoneticRepresentation = [v3 phoneticRepresentation];
+  [phoneticRepresentation setGivenName:phoneticGivenName2];
 
-  v13 = [(CRKUser *)self phoneticFamilyName];
-  v14 = [v3 phoneticRepresentation];
-  [v14 setFamilyName:v13];
+  phoneticFamilyName2 = [(CRKUser *)self phoneticFamilyName];
+  phoneticRepresentation2 = [v3 phoneticRepresentation];
+  [phoneticRepresentation2 setFamilyName:phoneticFamilyName2];
 
 LABEL_9:
 
@@ -287,84 +287,84 @@ LABEL_9:
 - (id)dictionaryValue
 {
   v3 = objc_opt_new();
-  v4 = [(CRKUser *)self userIdentifier];
+  userIdentifier = [(CRKUser *)self userIdentifier];
 
-  if (v4)
+  if (userIdentifier)
   {
-    v5 = [(CRKUser *)self userIdentifier];
-    [v3 setObject:v5 forKeyedSubscript:@"Identifier"];
+    userIdentifier2 = [(CRKUser *)self userIdentifier];
+    [v3 setObject:userIdentifier2 forKeyedSubscript:@"Identifier"];
   }
 
-  v6 = [(CRKUser *)self displayName];
+  displayName = [(CRKUser *)self displayName];
 
-  if (v6)
+  if (displayName)
   {
-    v7 = [(CRKUser *)self displayName];
-    [v3 setObject:v7 forKeyedSubscript:@"Name"];
+    displayName2 = [(CRKUser *)self displayName];
+    [v3 setObject:displayName2 forKeyedSubscript:@"Name"];
   }
 
-  v8 = [(CRKUser *)self givenName];
+  givenName = [(CRKUser *)self givenName];
 
-  if (v8)
+  if (givenName)
   {
-    v9 = [(CRKUser *)self givenName];
-    [v3 setObject:v9 forKeyedSubscript:@"GivenName"];
+    givenName2 = [(CRKUser *)self givenName];
+    [v3 setObject:givenName2 forKeyedSubscript:@"GivenName"];
   }
 
-  v10 = [(CRKUser *)self familyName];
+  familyName = [(CRKUser *)self familyName];
 
-  if (v10)
+  if (familyName)
   {
-    v11 = [(CRKUser *)self familyName];
-    [v3 setObject:v11 forKeyedSubscript:@"FamilyName"];
+    familyName2 = [(CRKUser *)self familyName];
+    [v3 setObject:familyName2 forKeyedSubscript:@"FamilyName"];
   }
 
-  v12 = [(CRKUser *)self phoneticGivenName];
+  phoneticGivenName = [(CRKUser *)self phoneticGivenName];
 
-  if (v12)
+  if (phoneticGivenName)
   {
-    v13 = [(CRKUser *)self phoneticGivenName];
-    [v3 setObject:v13 forKeyedSubscript:@"PhoneticGivenName"];
+    phoneticGivenName2 = [(CRKUser *)self phoneticGivenName];
+    [v3 setObject:phoneticGivenName2 forKeyedSubscript:@"PhoneticGivenName"];
   }
 
-  v14 = [(CRKUser *)self phoneticFamilyName];
+  phoneticFamilyName = [(CRKUser *)self phoneticFamilyName];
 
-  if (v14)
+  if (phoneticFamilyName)
   {
-    v15 = [(CRKUser *)self phoneticFamilyName];
-    [v3 setObject:v15 forKeyedSubscript:@"PhoneticFamilyName"];
+    phoneticFamilyName2 = [(CRKUser *)self phoneticFamilyName];
+    [v3 setObject:phoneticFamilyName2 forKeyedSubscript:@"PhoneticFamilyName"];
   }
 
-  v16 = [(CRKUser *)self imageURL];
+  imageURL = [(CRKUser *)self imageURL];
 
-  if (v16)
+  if (imageURL)
   {
-    v17 = [(CRKUser *)self imageURL];
-    [v3 setObject:v17 forKeyedSubscript:@"ImageURL"];
+    imageURL2 = [(CRKUser *)self imageURL];
+    [v3 setObject:imageURL2 forKeyedSubscript:@"ImageURL"];
   }
 
-  v18 = [(CRKUser *)self userSource];
+  userSource = [(CRKUser *)self userSource];
 
-  if (v18)
+  if (userSource)
   {
-    v19 = [(CRKUser *)self userSource];
-    [v3 setObject:v19 forKeyedSubscript:@"UserSource"];
+    userSource2 = [(CRKUser *)self userSource];
+    [v3 setObject:userSource2 forKeyedSubscript:@"UserSource"];
   }
 
-  v20 = [(CRKUser *)self userImageData];
+  userImageData = [(CRKUser *)self userImageData];
 
-  if (v20)
+  if (userImageData)
   {
-    v21 = [(CRKUser *)self userImageData];
-    [v3 setObject:v21 forKeyedSubscript:@"ImageData"];
+    userImageData2 = [(CRKUser *)self userImageData];
+    [v3 setObject:userImageData2 forKeyedSubscript:@"ImageData"];
   }
 
-  v22 = [(CRKUser *)self imageIdentifier];
+  imageIdentifier = [(CRKUser *)self imageIdentifier];
 
-  if (v22)
+  if (imageIdentifier)
   {
-    v23 = [(CRKUser *)self imageIdentifier];
-    [v3 setObject:v23 forKeyedSubscript:@"ImageIdentifier"];
+    imageIdentifier2 = [(CRKUser *)self imageIdentifier];
+    [v3 setObject:imageIdentifier2 forKeyedSubscript:@"ImageIdentifier"];
   }
 
   v24 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CRKUser role](self, "role")}];
@@ -378,24 +378,24 @@ LABEL_9:
 
 - (BOOL)isMeCardUser
 {
-  v2 = [(CRKUser *)self userSource];
-  v3 = [v2 isEqualToString:@"MeCard"];
+  userSource = [(CRKUser *)self userSource];
+  v3 = [userSource isEqualToString:@"MeCard"];
 
   return v3;
 }
 
 - (BOOL)isValid
 {
-  v3 = [(CRKUser *)self givenName];
-  if ([v3 length])
+  givenName = [(CRKUser *)self givenName];
+  if ([givenName length])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CRKUser *)self familyName];
-    v4 = [v5 length] != 0;
+    familyName = [(CRKUser *)self familyName];
+    v4 = [familyName length] != 0;
   }
 
   return v4;
@@ -405,27 +405,27 @@ LABEL_9:
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  v6 = [(CRKUser *)self userIdentifier];
-  v7 = [(CRKUser *)self displayName];
-  v8 = [(CRKUser *)self givenName];
-  v9 = [(CRKUser *)self familyName];
+  userIdentifier = [(CRKUser *)self userIdentifier];
+  displayName = [(CRKUser *)self displayName];
+  givenName = [(CRKUser *)self givenName];
+  familyName = [(CRKUser *)self familyName];
   v10 = MEMORY[0x277CCABB0];
-  v11 = [(CRKUser *)self imageURL];
-  if (v11)
+  imageURL = [(CRKUser *)self imageURL];
+  if (imageURL)
   {
     v12 = 1;
   }
 
   else
   {
-    v2 = [(CRKUser *)self imageIdentifier];
-    v12 = v2 != 0;
+    imageIdentifier = [(CRKUser *)self imageIdentifier];
+    v12 = imageIdentifier != 0;
   }
 
   v13 = [v10 numberWithInt:v12];
-  v14 = [v4 stringWithFormat:@"<%@: %p {identifier = %@, displayName = %@, given = %@, family = %@, hasImage = %@ }>", v5, self, v6, v7, v8, v9, v13];
+  v14 = [v4 stringWithFormat:@"<%@: %p {identifier = %@, displayName = %@, given = %@, family = %@, hasImage = %@ }>", v5, self, userIdentifier, displayName, givenName, familyName, v13];
 
-  if (!v11)
+  if (!imageURL)
   {
   }
 
@@ -434,61 +434,61 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v23 = [(CRKUser *)self userIdentifier];
-  v3 = [v23 hash];
-  v22 = [(CRKUser *)self displayName];
-  v4 = [v22 hash] ^ v3;
-  v5 = [(CRKUser *)self givenName];
-  v6 = [v5 hash];
-  v7 = [(CRKUser *)self familyName];
-  v8 = v4 ^ v6 ^ [v7 hash];
-  v9 = [(CRKUser *)self phoneticGivenName];
-  v10 = [v9 hash];
-  v11 = [(CRKUser *)self phoneticFamilyName];
-  v12 = v10 ^ [v11 hash];
-  v13 = [(CRKUser *)self imageURL];
-  v14 = v8 ^ v12 ^ [v13 hash];
-  v15 = [(CRKUser *)self imageIdentifier];
-  v16 = [v15 hash];
-  v17 = [(CRKUser *)self userSource];
-  v18 = v16 ^ [v17 hash];
+  userIdentifier = [(CRKUser *)self userIdentifier];
+  v3 = [userIdentifier hash];
+  displayName = [(CRKUser *)self displayName];
+  v4 = [displayName hash] ^ v3;
+  givenName = [(CRKUser *)self givenName];
+  v6 = [givenName hash];
+  familyName = [(CRKUser *)self familyName];
+  v8 = v4 ^ v6 ^ [familyName hash];
+  phoneticGivenName = [(CRKUser *)self phoneticGivenName];
+  v10 = [phoneticGivenName hash];
+  phoneticFamilyName = [(CRKUser *)self phoneticFamilyName];
+  v12 = v10 ^ [phoneticFamilyName hash];
+  imageURL = [(CRKUser *)self imageURL];
+  v14 = v8 ^ v12 ^ [imageURL hash];
+  imageIdentifier = [(CRKUser *)self imageIdentifier];
+  v16 = [imageIdentifier hash];
+  userSource = [(CRKUser *)self userSource];
+  v18 = v16 ^ [userSource hash];
   v19 = v18 ^ [(CRKUser *)self role];
   v20 = v19 ^ [(CRKUser *)self shouldUseMeCardIfAvailable];
 
   return v14 ^ v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CRKUser *)self isEqualToUser:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CRKUser *)self isEqualToUser:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToUser:(id)a3
+- (BOOL)isEqualToUser:(id)user
 {
-  v10 = a3;
-  if (!v10)
+  userCopy = user;
+  if (!userCopy)
   {
     [(CRKUser *)a2 isEqualToUser:?];
   }
 
-  v11 = [(CRKUser *)self userIdentifier];
-  if (v11 || ([v10 userIdentifier], (v58 = objc_claimAutoreleasedReturnValue()) != 0))
+  userIdentifier = [(CRKUser *)self userIdentifier];
+  if (userIdentifier || ([userCopy userIdentifier], (v58 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(CRKUser *)self userIdentifier];
-    v5 = [v10 userIdentifier];
-    if (![v4 isEqual:v5])
+    userIdentifier2 = [(CRKUser *)self userIdentifier];
+    userIdentifier3 = [userCopy userIdentifier];
+    if (![userIdentifier2 isEqual:userIdentifier3])
     {
       LOBYTE(v13) = 0;
 LABEL_83:
@@ -505,40 +505,40 @@ LABEL_83:
     v12 = 0;
   }
 
-  v14 = [(CRKUser *)self displayName];
-  if (v14 || ([v10 displayName], (v53 = objc_claimAutoreleasedReturnValue()) != 0))
+  displayName = [(CRKUser *)self displayName];
+  if (displayName || ([userCopy displayName], (v53 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = [(CRKUser *)self displayName];
-    v7 = [v10 displayName];
-    if (![v6 isEqual:v7])
+    displayName2 = [(CRKUser *)self displayName];
+    displayName3 = [userCopy displayName];
+    if (![displayName2 isEqual:displayName3])
     {
       LOBYTE(v13) = 0;
       goto LABEL_81;
     }
 
-    v59 = v10;
+    v59 = userCopy;
     v56 = 1;
     v57 = v12;
   }
 
   else
   {
-    v59 = v10;
+    v59 = userCopy;
     v56 = 0;
     v57 = v12;
     v53 = 0;
   }
 
-  v15 = [(CRKUser *)self givenName];
-  if (v15 || ([v59 givenName], (v48 = objc_claimAutoreleasedReturnValue()) != 0))
+  givenName = [(CRKUser *)self givenName];
+  if (givenName || ([v59 givenName], (v48 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(CRKUser *)self givenName];
-    v54 = [v59 givenName];
-    v55 = v3;
-    if (![v3 isEqual:?])
+    givenName2 = [(CRKUser *)self givenName];
+    givenName3 = [v59 givenName];
+    v55 = givenName2;
+    if (![givenName2 isEqual:?])
     {
       LOBYTE(v13) = 0;
-      v10 = v59;
+      userCopy = v59;
       goto LABEL_77;
     }
 
@@ -552,13 +552,13 @@ LABEL_83:
   }
 
   [(CRKUser *)self familyName];
-  v51 = v10 = v59;
+  v51 = userCopy = v59;
   if (v51 || ([v59 familyName], (v43 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(CRKUser *)self familyName];
-    v49 = [v59 familyName];
-    v50 = v3;
-    if (![v3 isEqual:v49])
+    givenName2 = [(CRKUser *)self familyName];
+    familyName = [v59 familyName];
+    v50 = givenName2;
+    if (![givenName2 isEqual:familyName])
     {
       LOBYTE(v13) = 0;
       goto LABEL_74;
@@ -573,13 +573,13 @@ LABEL_83:
     v47 = 0;
   }
 
-  v46 = [(CRKUser *)self phoneticGivenName];
-  if (v46 || ([v59 phoneticGivenName], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
+  phoneticGivenName = [(CRKUser *)self phoneticGivenName];
+  if (phoneticGivenName || ([v59 phoneticGivenName], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(CRKUser *)self phoneticGivenName];
-    v44 = [v59 phoneticGivenName];
-    v45 = v3;
-    if (![v3 isEqual:v44])
+    givenName2 = [(CRKUser *)self phoneticGivenName];
+    phoneticGivenName2 = [v59 phoneticGivenName];
+    v45 = givenName2;
+    if (![givenName2 isEqual:phoneticGivenName2])
     {
       LOBYTE(v13) = 0;
       goto LABEL_71;
@@ -594,13 +594,13 @@ LABEL_83:
     v42 = 0;
   }
 
-  v41 = [(CRKUser *)self phoneticFamilyName];
-  if (v41 || ([v59 phoneticFamilyName], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
+  phoneticFamilyName = [(CRKUser *)self phoneticFamilyName];
+  if (phoneticFamilyName || ([v59 phoneticFamilyName], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(CRKUser *)self phoneticFamilyName];
-    v39 = [v59 phoneticFamilyName];
-    v40 = v3;
-    if (![v3 isEqual:v39])
+    givenName2 = [(CRKUser *)self phoneticFamilyName];
+    phoneticFamilyName2 = [v59 phoneticFamilyName];
+    v40 = givenName2;
+    if (![givenName2 isEqual:phoneticFamilyName2])
     {
       LOBYTE(v13) = 0;
       goto LABEL_68;
@@ -615,13 +615,13 @@ LABEL_83:
     v37 = 0;
   }
 
-  v36 = [(CRKUser *)self imageURL];
-  if (v36 || ([v59 imageURL], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
+  imageURL = [(CRKUser *)self imageURL];
+  if (imageURL || ([v59 imageURL], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(CRKUser *)self imageURL];
-    v34 = [v59 imageURL];
-    v35 = v3;
-    if (![v3 isEqual:v34])
+    givenName2 = [(CRKUser *)self imageURL];
+    imageURL2 = [v59 imageURL];
+    v35 = givenName2;
+    if (![givenName2 isEqual:imageURL2])
     {
       LOBYTE(v13) = 0;
       goto LABEL_65;
@@ -636,13 +636,13 @@ LABEL_83:
     v32 = 0;
   }
 
-  v31 = [(CRKUser *)self imageIdentifier];
-  if (v31 || ([v59 imageIdentifier], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
+  imageIdentifier = [(CRKUser *)self imageIdentifier];
+  if (imageIdentifier || ([v59 imageIdentifier], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(CRKUser *)self imageIdentifier];
-    v29 = [v59 imageIdentifier];
-    v30 = v3;
-    if (![v3 isEqual:v29])
+    givenName2 = [(CRKUser *)self imageIdentifier];
+    imageIdentifier2 = [v59 imageIdentifier];
+    v30 = givenName2;
+    if (![givenName2 isEqual:imageIdentifier2])
     {
       LOBYTE(v13) = 0;
       goto LABEL_62;
@@ -657,15 +657,15 @@ LABEL_83:
     v27 = 0;
   }
 
-  v26 = [(CRKUser *)self userSource];
-  if (v26 || ([v59 userSource], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+  userSource = [(CRKUser *)self userSource];
+  if (userSource || ([v59 userSource], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v16 = [(CRKUser *)self userSource];
-    v17 = [v59 userSource];
-    v25 = v16;
-    v18 = v16;
-    v3 = v17;
-    if (![v18 isEqual:v17])
+    userSource2 = [(CRKUser *)self userSource];
+    userSource3 = [v59 userSource];
+    v25 = userSource2;
+    v18 = userSource2;
+    givenName2 = userSource3;
+    if (![v18 isEqual:userSource3])
     {
       LOBYTE(v13) = 0;
       goto LABEL_59;
@@ -680,11 +680,11 @@ LABEL_83:
     v23 = 0;
   }
 
-  v22 = [(CRKUser *)self role];
-  if (v22 == [v59 role])
+  role = [(CRKUser *)self role];
+  if (role == [v59 role])
   {
-    v19 = [(CRKUser *)self shouldUseMeCardIfAvailable];
-    v13 = v19 ^ [v59 shouldUseMeCardIfAvailable] ^ 1;
+    shouldUseMeCardIfAvailable = [(CRKUser *)self shouldUseMeCardIfAvailable];
+    v13 = shouldUseMeCardIfAvailable ^ [v59 shouldUseMeCardIfAvailable] ^ 1;
     if ((v23 & 1) == 0)
     {
       goto LABEL_60;
@@ -700,7 +700,7 @@ LABEL_59:
   }
 
 LABEL_60:
-  if (v26)
+  if (userSource)
   {
 
     if (!v27)
@@ -717,7 +717,7 @@ LABEL_62:
   }
 
 LABEL_63:
-  if (v31)
+  if (imageIdentifier)
   {
 
     if (!v32)
@@ -734,7 +734,7 @@ LABEL_65:
   }
 
 LABEL_66:
-  if (v36)
+  if (imageURL)
   {
 
     if (!v37)
@@ -751,7 +751,7 @@ LABEL_68:
   }
 
 LABEL_69:
-  if (v41)
+  if (phoneticFamilyName)
   {
 
     if (!v42)
@@ -768,7 +768,7 @@ LABEL_71:
   }
 
 LABEL_72:
-  if (v46)
+  if (phoneticGivenName)
   {
 
     if (!v47)
@@ -802,7 +802,7 @@ LABEL_77:
   }
 
 LABEL_78:
-  if (v15)
+  if (givenName)
   {
 
     if (v56)
@@ -811,7 +811,7 @@ LABEL_80:
       v12 = v57;
 LABEL_81:
 
-      if (v14)
+      if (displayName)
       {
         goto LABEL_82;
       }
@@ -830,7 +830,7 @@ LABEL_81:
   }
 
   v12 = v57;
-  if (v14)
+  if (displayName)
   {
 LABEL_82:
 
@@ -850,57 +850,57 @@ LABEL_89:
   }
 
 LABEL_84:
-  if (!v11)
+  if (!userIdentifier)
   {
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [(CRKUser *)self userIdentifier];
-  [v4 setUserIdentifier:v5];
+  userIdentifier = [(CRKUser *)self userIdentifier];
+  [v4 setUserIdentifier:userIdentifier];
 
-  v6 = [(CRKUser *)self displayName];
-  [v4 setDisplayName:v6];
+  displayName = [(CRKUser *)self displayName];
+  [v4 setDisplayName:displayName];
 
-  v7 = [(CRKUser *)self givenName];
-  [v4 setGivenName:v7];
+  givenName = [(CRKUser *)self givenName];
+  [v4 setGivenName:givenName];
 
-  v8 = [(CRKUser *)self familyName];
-  [v4 setFamilyName:v8];
+  familyName = [(CRKUser *)self familyName];
+  [v4 setFamilyName:familyName];
 
-  v9 = [(CRKUser *)self phoneticGivenName];
-  [v4 setPhoneticGivenName:v9];
+  phoneticGivenName = [(CRKUser *)self phoneticGivenName];
+  [v4 setPhoneticGivenName:phoneticGivenName];
 
-  v10 = [(CRKUser *)self phoneticFamilyName];
-  [v4 setPhoneticFamilyName:v10];
+  phoneticFamilyName = [(CRKUser *)self phoneticFamilyName];
+  [v4 setPhoneticFamilyName:phoneticFamilyName];
 
-  v11 = [(CRKUser *)self userImageData];
-  v12 = [v11 copy];
+  userImageData = [(CRKUser *)self userImageData];
+  v12 = [userImageData copy];
   [v4 setUserImageData:v12];
 
-  v13 = [(CRKUser *)self imageIdentifier];
-  [v4 setImageIdentifier:v13];
+  imageIdentifier = [(CRKUser *)self imageIdentifier];
+  [v4 setImageIdentifier:imageIdentifier];
 
-  v14 = [(CRKUser *)self imageURL];
-  [v4 setImageURL:v14];
+  imageURL = [(CRKUser *)self imageURL];
+  [v4 setImageURL:imageURL];
 
-  v15 = [(CRKUser *)self userSource];
-  [v4 setUserSource:v15];
+  userSource = [(CRKUser *)self userSource];
+  [v4 setUserSource:userSource];
 
   [v4 setRole:{-[CRKUser role](self, "role")}];
   [v4 setUseMeCardIfAvailable:{-[CRKUser shouldUseMeCardIfAvailable](self, "shouldUseMeCardIfAvailable")}];
   return v4;
 }
 
-- (CRKUser)initWithCoder:(id)a3
+- (CRKUser)initWithCoder:(id)coder
 {
-  v5 = a3;
-  if (!v5)
+  coderCopy = coder;
+  if (!coderCopy)
   {
     [(CRKUser *)a2 initWithCoder:?];
   }
@@ -911,100 +911,100 @@ LABEL_84:
   if (v6)
   {
     v7 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v8 = [v5 decodeObjectOfClasses:v7 forKey:@"userIdentifier"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"userIdentifier"];
     userIdentifier = v6->_userIdentifier;
     v6->_userIdentifier = v8;
 
     v10 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v11 = [v5 decodeObjectOfClasses:v10 forKey:@"displayName"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"displayName"];
     displayName = v6->_displayName;
     v6->_displayName = v11;
 
     v13 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v14 = [v5 decodeObjectOfClasses:v13 forKey:@"givenName"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"givenName"];
     givenName = v6->_givenName;
     v6->_givenName = v14;
 
     v16 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v17 = [v5 decodeObjectOfClasses:v16 forKey:@"familyName"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"familyName"];
     familyName = v6->_familyName;
     v6->_familyName = v17;
 
     v19 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v20 = [v5 decodeObjectOfClasses:v19 forKey:@"phoneticGivenName"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"phoneticGivenName"];
     phoneticGivenName = v6->_phoneticGivenName;
     v6->_phoneticGivenName = v20;
 
     v22 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v23 = [v5 decodeObjectOfClasses:v22 forKey:@"phoneticFamilyName"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"phoneticFamilyName"];
     phoneticFamilyName = v6->_phoneticFamilyName;
     v6->_phoneticFamilyName = v23;
 
     v25 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v26 = [v5 decodeObjectOfClasses:v25 forKey:@"imageURL"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"imageURL"];
     imageURL = v6->_imageURL;
     v6->_imageURL = v26;
 
     v28 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v29 = [v5 decodeObjectOfClasses:v28 forKey:@"imageIdentifier"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"imageIdentifier"];
     imageIdentifier = v6->_imageIdentifier;
     v6->_imageIdentifier = v29;
 
     v31 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v32 = [v5 decodeObjectOfClasses:v31 forKey:@"userSource"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"userSource"];
     userSource = v6->_userSource;
     v6->_userSource = v32;
 
-    v34 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"role"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"role"];
     v6->_role = [v34 unsignedIntegerValue];
 
-    v35 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"useMeCardIfAvailable"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"useMeCardIfAvailable"];
     v6->_useMeCardIfAvailable = [v35 BOOLValue];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
-  if (!v16)
+  coderCopy = coder;
+  if (!coderCopy)
   {
     [(CRKUser *)a2 encodeWithCoder:?];
   }
 
-  v5 = [(CRKUser *)self userIdentifier];
-  [v16 encodeObject:v5 forKey:@"userIdentifier"];
+  userIdentifier = [(CRKUser *)self userIdentifier];
+  [coderCopy encodeObject:userIdentifier forKey:@"userIdentifier"];
 
-  v6 = [(CRKUser *)self displayName];
-  [v16 encodeObject:v6 forKey:@"displayName"];
+  displayName = [(CRKUser *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v7 = [(CRKUser *)self givenName];
-  [v16 encodeObject:v7 forKey:@"givenName"];
+  givenName = [(CRKUser *)self givenName];
+  [coderCopy encodeObject:givenName forKey:@"givenName"];
 
-  v8 = [(CRKUser *)self familyName];
-  [v16 encodeObject:v8 forKey:@"familyName"];
+  familyName = [(CRKUser *)self familyName];
+  [coderCopy encodeObject:familyName forKey:@"familyName"];
 
-  v9 = [(CRKUser *)self phoneticGivenName];
-  [v16 encodeObject:v9 forKey:@"phoneticGivenName"];
+  phoneticGivenName = [(CRKUser *)self phoneticGivenName];
+  [coderCopy encodeObject:phoneticGivenName forKey:@"phoneticGivenName"];
 
-  v10 = [(CRKUser *)self phoneticFamilyName];
-  [v16 encodeObject:v10 forKey:@"phoneticFamilyName"];
+  phoneticFamilyName = [(CRKUser *)self phoneticFamilyName];
+  [coderCopy encodeObject:phoneticFamilyName forKey:@"phoneticFamilyName"];
 
-  v11 = [(CRKUser *)self imageURL];
-  [v16 encodeObject:v11 forKey:@"imageURL"];
+  imageURL = [(CRKUser *)self imageURL];
+  [coderCopy encodeObject:imageURL forKey:@"imageURL"];
 
-  v12 = [(CRKUser *)self imageIdentifier];
-  [v16 encodeObject:v12 forKey:@"imageIdentifier"];
+  imageIdentifier = [(CRKUser *)self imageIdentifier];
+  [coderCopy encodeObject:imageIdentifier forKey:@"imageIdentifier"];
 
-  v13 = [(CRKUser *)self userSource];
-  [v16 encodeObject:v13 forKey:@"userSource"];
+  userSource = [(CRKUser *)self userSource];
+  [coderCopy encodeObject:userSource forKey:@"userSource"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CRKUser role](self, "role")}];
-  [v16 encodeObject:v14 forKey:@"role"];
+  [coderCopy encodeObject:v14 forKey:@"role"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKUser shouldUseMeCardIfAvailable](self, "shouldUseMeCardIfAvailable")}];
-  [v16 encodeObject:v15 forKey:@"useMeCardIfAvailable"];
+  [coderCopy encodeObject:v15 forKey:@"useMeCardIfAvailable"];
 }
 
 - (void)isEqualToUser:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

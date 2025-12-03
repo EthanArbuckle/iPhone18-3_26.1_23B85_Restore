@@ -1,7 +1,7 @@
 @interface SummaryBurnBarViewAccessibility
-- (int64_t)_positionForPersonalScore:(float)a3 low:(float)a4 lowMiddle:(float)a5 highMiddle:(float)a6 high:(float)a7;
+- (int64_t)_positionForPersonalScore:(float)score low:(float)low lowMiddle:(float)middle highMiddle:(float)highMiddle high:(float)high;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)updateBurnBarAccessibility:(id)a3 personalScore:(float)a4 low:(float)a5 lowMiddle:(float)a6 highMiddle:(float)a7 high:(float)a8;
+- (void)updateBurnBarAccessibility:(id)accessibility personalScore:(float)score low:(float)low lowMiddle:(float)middle highMiddle:(float)highMiddle high:(float)high;
 @end
 
 @implementation SummaryBurnBarViewAccessibility
@@ -23,54 +23,54 @@
   v7 = *MEMORY[0x29EDCA608];
 }
 
-- (void)updateBurnBarAccessibility:(id)a3 personalScore:(float)a4 low:(float)a5 lowMiddle:(float)a6 highMiddle:(float)a7 high:(float)a8
+- (void)updateBurnBarAccessibility:(id)accessibility personalScore:(float)score low:(float)low lowMiddle:(float)middle highMiddle:(float)highMiddle high:(float)high
 {
   v32.receiver = self;
   v32.super_class = SummaryBurnBarViewAccessibility;
-  v14 = a3;
-  *&v15 = a4;
-  *&v16 = a5;
-  *&v17 = a6;
-  *&v18 = a7;
-  *&v19 = a8;
-  [(SummaryBurnBarViewAccessibility *)&v32 updateBurnBarAccessibility:v14 personalScore:v15 low:v16 lowMiddle:v17 highMiddle:v18 high:v19];
+  accessibilityCopy = accessibility;
+  *&v15 = score;
+  *&v16 = low;
+  *&v17 = middle;
+  *&v18 = highMiddle;
+  *&v19 = high;
+  [(SummaryBurnBarViewAccessibility *)&v32 updateBurnBarAccessibility:accessibilityCopy personalScore:v15 low:v16 lowMiddle:v17 highMiddle:v18 high:v19];
   v20 = accessibilityLocalizedString(@"burn.bar.title");
-  *&v21 = a4;
-  *&v22 = a5;
-  *&v23 = a6;
-  *&v24 = a7;
-  *&v25 = a8;
+  *&v21 = score;
+  *&v22 = low;
+  *&v23 = middle;
+  *&v24 = highMiddle;
+  *&v25 = high;
   v26 = _accessibilityStringForBurnBarPosition([(SummaryBurnBarViewAccessibility *)self _positionForPersonalScore:v21 low:v22 lowMiddle:v23 highMiddle:v24 high:v25], 0);
   v27 = MEMORY[0x29EDBA0F8];
   v28 = accessibilityLocalizedString(@"burn.bar.community.scores");
-  v29 = [v27 stringWithFormat:v28, a5, a8, a6, a7, v32.receiver, v32.super_class];
+  v29 = [v27 stringWithFormat:v28, low, high, middle, highMiddle, v32.receiver, v32.super_class];
 
-  v30 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{4, v20, v14, v26, v29}];
+  v30 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{4, v20, accessibilityCopy, v26, v29}];
 
   v31 = AXLabelForElements();
   [(SummaryBurnBarViewAccessibility *)self setAccessibilityLabel:v31];
 }
 
-- (int64_t)_positionForPersonalScore:(float)a3 low:(float)a4 lowMiddle:(float)a5 highMiddle:(float)a6 high:(float)a7
+- (int64_t)_positionForPersonalScore:(float)score low:(float)low lowMiddle:(float)middle highMiddle:(float)highMiddle high:(float)high
 {
-  if (a3 < a4)
+  if (score < low)
   {
     return 0;
   }
 
-  if (a3 < a5)
+  if (score < middle)
   {
     return 1;
   }
 
-  if (a3 < a6)
+  if (score < highMiddle)
   {
     return 2;
   }
 
-  if (a3 >= a7)
+  if (score >= high)
   {
-    return 4 * (a3 >= a7);
+    return 4 * (score >= high);
   }
 
   return 3;

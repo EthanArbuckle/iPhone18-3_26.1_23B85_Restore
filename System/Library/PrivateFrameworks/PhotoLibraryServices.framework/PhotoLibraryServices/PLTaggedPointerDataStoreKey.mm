@@ -1,19 +1,19 @@
 @interface PLTaggedPointerDataStoreKey
-+ (id)keyWithKeyStruct:(const void *)a3 keyLength:(unint64_t)a4 forStoreClassID:(unsigned __int16)a5 inLibraryWithID:(id)a6;
++ (id)keyWithKeyStruct:(const void *)struct keyLength:(unint64_t)length forStoreClassID:(unsigned __int16)d inLibraryWithID:(id)iD;
 - (BOOL)isDerivative;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)representsSquareResource;
-- (PLTaggedPointerDataStoreKey)initWithKeyStruct:(const void *)a3;
-- (id)_heapAllocatedRepresentationInLibraryWithID:(id)a3;
-- (id)descriptionForAssetID:(id)a3;
-- (id)fileURLForAssetID:(id)a3;
+- (PLTaggedPointerDataStoreKey)initWithKeyStruct:(const void *)struct;
+- (id)_heapAllocatedRepresentationInLibraryWithID:(id)d;
+- (id)descriptionForAssetID:(id)d;
+- (id)fileURLForAssetID:(id)d;
 - (id)keyData;
 - (id)uniformTypeIdentifier;
-- (id)validateForAssetID:(id)a3 resourceIdentity:(id)a4;
-- (unsigned)recipeIDForAssetID:(id)a3;
+- (id)validateForAssetID:(id)d resourceIdentity:(id)identity;
+- (unsigned)recipeIDForAssetID:(id)d;
 - (unsigned)resourceType;
 - (unsigned)resourceVersion;
-- (void)tableType:(unsigned int *)a3 index:(int *)a4;
+- (void)tableType:(unsigned int *)type index:(int *)index;
 @end
 
 @implementation PLTaggedPointerDataStoreKey
@@ -21,7 +21,7 @@
 - (unsigned)resourceType
 {
   v4 = [(PLTaggedPointer *)self payload]>> 50;
-  v5 = [(PLTaggedPointer *)self payload];
+  payload = [(PLTaggedPointer *)self payload];
   if (v4 == 1)
   {
     return 0;
@@ -29,11 +29,11 @@
 
   if (!v4)
   {
-    return (v5 >> 12) & 0x1F;
+    return (payload >> 12) & 0x1F;
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"PLTaggedPointerDataStoreKey.m" lineNumber:227 description:{@"Unsupported store type: %ld", v4}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLTaggedPointerDataStoreKey.m" lineNumber:227 description:{@"Unsupported store type: %ld", v4}];
 
   return 31;
 }
@@ -48,8 +48,8 @@
       return ([(PLTaggedPointer *)self payload]>> 10) & 3;
     }
 
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLTaggedPointerDataStoreKey.m" lineNumber:244 description:{@"Unsupported store type: %ld", v4}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLTaggedPointerDataStoreKey.m" lineNumber:244 description:{@"Unsupported store type: %ld", v4}];
   }
 
   return 3;
@@ -72,8 +72,8 @@
 
   else if (v4)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLTaggedPointerDataStoreKey.m" lineNumber:261 description:{@"Unsupported store type: %ld", v4}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLTaggedPointerDataStoreKey.m" lineNumber:261 description:{@"Unsupported store type: %ld", v4}];
 
     LOBYTE(v5) = 0;
   }
@@ -86,11 +86,11 @@
   return v5;
 }
 
-- (id)descriptionForAssetID:(id)a3
+- (id)descriptionForAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 libraryID];
-  v6 = [(PLTaggedPointerDataStoreKey *)self _heapAllocatedRepresentationInLibraryWithID:v5];
+  dCopy = d;
+  libraryID = [dCopy libraryID];
+  v6 = [(PLTaggedPointerDataStoreKey *)self _heapAllocatedRepresentationInLibraryWithID:libraryID];
 
   v7 = [(PLTaggedPointer *)self payload]>> 50;
   v8 = [(PLTaggedPointer *)self payload]& 0x3FFFFFFFFFFFFLL;
@@ -98,17 +98,17 @@
   v14.receiver = self;
   v14.super_class = PLTaggedPointerDataStoreKey;
   v10 = [(PLTaggedPointerDataStoreKey *)&v14 description];
-  v11 = [v6 descriptionForAssetID:v4];
+  v11 = [v6 descriptionForAssetID:dCopy];
 
   v12 = [v9 stringWithFormat:@"<%@>, storeID: %d, keyPayload: %llu, interpreted: %@", v10, v7, v8, v11];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -116,26 +116,26 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0 && [(PLTaggedPointerDataStoreKey *)self isEqualToKey:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0 && [(PLTaggedPointerDataStoreKey *)self isEqualToKey:equalCopy];
   }
 
   return v5;
 }
 
-- (unsigned)recipeIDForAssetID:(id)a3
+- (unsigned)recipeIDForAssetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(PLTaggedPointer *)self payload]>> 50;
-  v6 = [(PLTaggedPointer *)self payload];
-  v7 = v6;
+  payload = [(PLTaggedPointer *)self payload];
+  v7 = payload;
   if (v5 == 1)
   {
-    v8 = [v4 libraryID];
+    libraryID = [dCopy libraryID];
 
-    if (v8)
+    if (libraryID)
     {
-      v9 = [v4 libraryID];
-      v10 = PLDataStoreForClassIDAndLibraryID(1, v9);
+      libraryID2 = [dCopy libraryID];
+      v10 = PLDataStoreForClassIDAndLibraryID(1, libraryID2);
 
       v11 = [PLThumbnailResourceDataStoreKey recipeIDForTableType:(v7 >> 2) & 7 inStore:v10];
       goto LABEL_12;
@@ -153,20 +153,20 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    if (BYTE2(v6) > 9u)
+    if (BYTE2(payload) > 9u)
     {
       v11 = 65741;
     }
 
     else
     {
-      v11 = dword_19C60B898[BYTE2(v6)];
+      v11 = dword_19C60B898[BYTE2(payload)];
     }
   }
 
-  else if (v6 == 3)
+  else if (payload == 3)
   {
-    v11 = (v6 >> 1) & 0xF0000 | (v6 >> 20) & 0xFFFE | (v6 >> 36) & 1;
+    v11 = (payload >> 1) & 0xF0000 | (payload >> 20) & 0xFFFE | (payload >> 36) & 1;
   }
 
   else
@@ -179,54 +179,54 @@ LABEL_12:
   return v11;
 }
 
-- (void)tableType:(unsigned int *)a3 index:(int *)a4
+- (void)tableType:(unsigned int *)type index:(int *)index
 {
-  v6 = [(PLTaggedPointer *)self payload];
-  if (a3)
+  payload = [(PLTaggedPointer *)self payload];
+  if (type)
   {
-    *a3 = (v6 >> 2) & 7;
+    *type = (payload >> 2) & 7;
   }
 
-  if (a4)
+  if (index)
   {
-    *a4 = (v6 >> 6) & 0x7FFFFFF;
+    *index = (payload >> 6) & 0x7FFFFFF;
   }
 }
 
 - (id)uniformTypeIdentifier
 {
-  v4 = [(PLTaggedPointer *)self payload];
+  payload = [(PLTaggedPointer *)self payload];
   v5 = [(PLTaggedPointer *)self payload]>> 50;
   if (v5)
   {
     if (v5 == 1)
     {
-      v6 = [*MEMORY[0x1E6982E30] identifier];
+      identifier = [*MEMORY[0x1E6982E30] identifier];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"PLTaggedPointerDataStoreKey.m" lineNumber:122 description:{@"Unsupported store type: %ld", v5}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLTaggedPointerDataStoreKey.m" lineNumber:122 description:{@"Unsupported store type: %ld", v5}];
 
-      v6 = 0;
+      identifier = 0;
     }
   }
 
   else
   {
-    v7 = PLUTTypeFromUniformFileType((v4 >> 39));
-    v6 = [v7 identifier];
+    v7 = PLUTTypeFromUniformFileType((payload >> 39));
+    identifier = [v7 identifier];
   }
 
-  return v6;
+  return identifier;
 }
 
 - (id)keyData
 {
-  v3 = [(PLTaggedPointer *)self payload];
-  v4 = v3;
-  v8 = v3 & 0x3FFFFFFFFFFFFLL;
+  payload = [(PLTaggedPointer *)self payload];
+  v4 = payload;
+  v8 = payload & 0x3FFFFFFFFFFFFLL;
   v5 = PLDataStoreClassForID([(PLTaggedPointer *)self payload]>> 50);
   if (v5)
   {
@@ -237,18 +237,18 @@ LABEL_12:
   return v5;
 }
 
-- (PLTaggedPointerDataStoreKey)initWithKeyStruct:(const void *)a3
+- (PLTaggedPointerDataStoreKey)initWithKeyStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PLTaggedPointerDataStoreKey.m" lineNumber:70 description:@"initing a tagged pointer key class directly is not supported."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLTaggedPointerDataStoreKey.m" lineNumber:70 description:@"initing a tagged pointer key class directly is not supported."];
 
   return 0;
 }
 
-- (id)fileURLForAssetID:(id)a3
+- (id)fileURLForAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(PLTaggedPointer *)self payload];
+  dCopy = d;
+  payload = [(PLTaggedPointer *)self payload];
   if ([(PLTaggedPointer *)self payload]>> 50)
   {
     v7 = 0;
@@ -256,8 +256,8 @@ LABEL_12:
 
   else
   {
-    v6 = v5;
-    if ((v5 & 0xF0) != 0)
+    v6 = payload;
+    if ((payload & 0xF0) != 0)
     {
       v6 = 16;
     }
@@ -272,45 +272,45 @@ LABEL_12:
       v8 = 0;
     }
 
-    v7 = [v8 fileURLForPayloadKeyData:v5 & 0x3FFFFFFFFFFFFLL assetID:v4];
+    v7 = [v8 fileURLForPayloadKeyData:payload & 0x3FFFFFFFFFFFFLL assetID:dCopy];
   }
 
   return v7;
 }
 
-- (id)validateForAssetID:(id)a3 resourceIdentity:(id)a4
+- (id)validateForAssetID:(id)d resourceIdentity:(id)identity
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 libraryID];
-  v9 = [(PLTaggedPointerDataStoreKey *)self _heapAllocatedRepresentationInLibraryWithID:v8];
+  identityCopy = identity;
+  dCopy = d;
+  libraryID = [dCopy libraryID];
+  v9 = [(PLTaggedPointerDataStoreKey *)self _heapAllocatedRepresentationInLibraryWithID:libraryID];
 
-  v10 = [v9 validateForAssetID:v7 resourceIdentity:v6];
+  v10 = [v9 validateForAssetID:dCopy resourceIdentity:identityCopy];
 
   return v10;
 }
 
-- (id)_heapAllocatedRepresentationInLibraryWithID:(id)a3
+- (id)_heapAllocatedRepresentationInLibraryWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(PLTaggedPointer *)self payload]>> 50;
-  v6 = [(PLTaggedPointerDataStoreKey *)self keyData];
-  v7 = PLDataStoreForClassIDAndLibraryID(v5, v4);
+  keyData = [(PLTaggedPointerDataStoreKey *)self keyData];
+  v7 = PLDataStoreForClassIDAndLibraryID(v5, dCopy);
 
-  v8 = [v7 keyFromKeyStruct:{objc_msgSend(v6, "bytes")}];
+  v8 = [v7 keyFromKeyStruct:{objc_msgSend(keyData, "bytes")}];
 
   return v8;
 }
 
-+ (id)keyWithKeyStruct:(const void *)a3 keyLength:(unint64_t)a4 forStoreClassID:(unsigned __int16)a5 inLibraryWithID:(id)a6
++ (id)keyWithKeyStruct:(const void *)struct keyLength:(unint64_t)length forStoreClassID:(unsigned __int16)d inLibraryWithID:(id)iD
 {
-  v6 = a5;
-  v11 = a6;
-  v12 = v11;
-  if (!a3)
+  dCopy = d;
+  iDCopy = iD;
+  v12 = iDCopy;
+  if (!struct)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PLTaggedPointerDataStoreKey.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"keyStruct"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLTaggedPointerDataStoreKey.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"keyStruct"}];
 
     if (v12)
     {
@@ -318,22 +318,22 @@ LABEL_12:
     }
 
 LABEL_10:
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"PLTaggedPointerDataStoreKey.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"libraryID"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLTaggedPointerDataStoreKey.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"libraryID"}];
 
     goto LABEL_3;
   }
 
-  if (!v11)
+  if (!iDCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (a4 > 6 || (__memcpy_chk(), (v13 = [a1 newInstanceWithPayload:v6 << 50]) == 0))
+  if (length > 6 || (__memcpy_chk(), (v13 = [self newInstanceWithPayload:dCopy << 50]) == 0))
   {
-    v14 = PLDataStoreForClassIDAndLibraryID(v6, v12);
-    v13 = [v14 keyFromKeyStruct:a3];
+    v14 = PLDataStoreForClassIDAndLibraryID(dCopy, v12);
+    v13 = [v14 keyFromKeyStruct:struct];
   }
 
   return v13;

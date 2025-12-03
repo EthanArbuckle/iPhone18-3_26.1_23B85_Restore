@@ -1,38 +1,38 @@
 @interface MCAudioPlaylist
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (MCAudioPlaylist)init;
-- (MCAudioPlaylist)initWithImprint:(id)a3 andMontage:(id)a4;
+- (MCAudioPlaylist)initWithImprint:(id)imprint andMontage:(id)montage;
 - (NSArray)orderedSongs;
 - (NSSet)songs;
-- (id)addSongForAsset:(id)a3;
-- (id)addSongsForAssets:(id)a3;
+- (id)addSongForAsset:(id)asset;
+- (id)addSongsForAssets:(id)assets;
 - (id)imprint;
-- (id)insertSongForAsset:(id)a3 atIndex:(unint64_t)a4;
-- (id)insertSongsForAssets:(id)a3 atIndex:(unint64_t)a4;
-- (id)songAtIndex:(unint64_t)a3;
+- (id)insertSongForAsset:(id)asset atIndex:(unint64_t)index;
+- (id)insertSongsForAssets:(id)assets atIndex:(unint64_t)index;
+- (id)songAtIndex:(unint64_t)index;
 - (unint64_t)countOfSongs;
 - (void)demolish;
-- (void)moveSongsAtIndices:(id)a3 toIndex:(unint64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)moveSongsAtIndices:(id)indices toIndex:(unint64_t)index;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeAllSongs;
-- (void)removeSongsAtIndices:(id)a3;
+- (void)removeSongsAtIndices:(id)indices;
 @end
 
 @implementation MCAudioPlaylist
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"orderedSongs"])
+  if ([key isEqualToString:@"orderedSongs"])
   {
     return [NSSet setWithObjects:@"songs", 0, v7, v8, v9, v10, v11];
   }
 
-  if ([a3 isEqualToString:@"builtVolume"])
+  if ([key isEqualToString:@"builtVolume"])
   {
     return [NSSet setWithObjects:@"volume", @"fadeInDuration", @"fadeOutDuration", @"duckLevel", @"duckInDuration", @"duckOutDuration", 0];
   }
 
-  if ([a3 isEqualToString:@"builtAudio"])
+  if ([key isEqualToString:@"builtAudio"])
   {
     v6 = @"builtVolume";
     v7 = 0;
@@ -40,11 +40,11 @@
 
   else
   {
-    if (![a3 isEqualToString:@"audioNoVolume"])
+    if (![key isEqualToString:@"audioNoVolume"])
     {
-      v12.receiver = a1;
+      v12.receiver = self;
       v12.super_class = &OBJC_METACLASS___MCAudioPlaylist;
-      return objc_msgSendSuper2(&v12, "keyPathsForValuesAffectingValueForKey:", a3);
+      return objc_msgSendSuper2(&v12, "keyPathsForValuesAffectingValueForKey:", key);
     }
 
     v6 = 0;
@@ -68,7 +68,7 @@
   return v2;
 }
 
-- (MCAudioPlaylist)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCAudioPlaylist)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v26.receiver = self;
   v26.super_class = MCAudioPlaylist;
@@ -79,7 +79,7 @@
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = [a3 objectForKey:@"songs"];
+    obj = [imprint objectForKey:@"songs"];
     v7 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v7)
     {
@@ -94,7 +94,7 @@
             objc_enumerationMutation(obj);
           }
 
-          v11 = [MCObject objectWithImprint:*(*(&v22 + 1) + 8 * i) andMontage:a4];
+          v11 = [MCObject objectWithImprint:*(*(&v22 + 1) + 8 * i) andMontage:montage];
           [(NSMutableSet *)v6->mSongs addObject:v11];
           [(MCObject *)v11 setAudioPlaylistIfAudioPlaylistSong:v6];
           if (![(MCObject *)v6 isSnapshot])
@@ -103,29 +103,29 @@
             [(MCObject *)v11 addObserver:v6 forKeyPath:@"builtAudio" options:0 context:0];
           }
 
-          v12 = [a3 objectForKey:@"volume"];
+          v12 = [imprint objectForKey:@"volume"];
           v13 = 1.0;
           LODWORD(v14) = 1.0;
           if (v12)
           {
-            [objc_msgSend(a3 objectForKey:{@"volume", v14), "floatValue"}];
+            [objc_msgSend(imprint objectForKey:{@"volume", v14), "floatValue"}];
           }
 
           v6->mVolume = *&v14;
-          [objc_msgSend(a3 objectForKey:{@"fadeInDuration", "doubleValue"}];
+          [objc_msgSend(imprint objectForKey:{@"fadeInDuration", "doubleValue"}];
           v6->mFadeInDuration = v15;
-          [objc_msgSend(a3 objectForKey:{@"fadeOutDuration", "doubleValue"}];
+          [objc_msgSend(imprint objectForKey:{@"fadeOutDuration", "doubleValue"}];
           v6->mFadeOutDuration = v16;
-          if ([a3 objectForKey:@"duckLevel"])
+          if ([imprint objectForKey:@"duckLevel"])
           {
-            [objc_msgSend(a3 objectForKey:{@"duckLevel", "floatValue"}];
+            [objc_msgSend(imprint objectForKey:{@"duckLevel", "floatValue"}];
             v13 = v17;
           }
 
           v6->mDuckLevel = v13;
-          [objc_msgSend(a3 objectForKey:{@"duckInDuration", "doubleValue"}];
+          [objc_msgSend(imprint objectForKey:{@"duckInDuration", "doubleValue"}];
           v6->mDuckInDuration = v18;
-          [objc_msgSend(a3 objectForKey:{@"duckOutDuration", "doubleValue"}];
+          [objc_msgSend(imprint objectForKey:{@"duckOutDuration", "doubleValue"}];
           v6->mDuckOutDuration = v19;
         }
 
@@ -190,17 +190,17 @@
 {
   v18.receiver = self;
   v18.super_class = MCAudioPlaylist;
-  v3 = [(MCObject *)&v18 imprint];
+  imprint = [(MCObject *)&v18 imprint];
   v4 = objc_autoreleasePoolPush();
-  v5 = [(MCAudioPlaylist *)self songs];
-  if ([(NSSet *)v5 count])
+  songs = [(MCAudioPlaylist *)self songs];
+  if ([(NSSet *)songs count])
   {
     v6 = +[NSMutableArray array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(NSSet *)v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    v7 = [(NSSet *)songs countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -211,65 +211,65 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(songs);
           }
 
           [v6 addObject:{objc_msgSend(*(*(&v14 + 1) + 8 * i), "imprint")}];
         }
 
-        v8 = [(NSSet *)v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v8 = [(NSSet *)songs countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v8);
     }
 
-    [v3 setObject:v6 forKey:@"songs"];
+    [imprint setObject:v6 forKey:@"songs"];
   }
 
   mVolume = self->mVolume;
   if (mVolume != 1.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", mVolume), @"volume"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", mVolume), @"volume"}];
   }
 
   if (self->mFadeInDuration > 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"fadeInDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"fadeInDuration"}];
   }
 
   if (self->mFadeOutDuration > 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"fadeOutDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"fadeOutDuration"}];
   }
 
   mDuckLevel = self->mDuckLevel;
   if (mDuckLevel != 1.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", mDuckLevel), @"duckLevel"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", mDuckLevel), @"duckLevel"}];
   }
 
   if (self->mDuckInDuration > 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"duckInDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"duckInDuration"}];
   }
 
   if (self->mDuckOutDuration > 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"duckOutDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"duckOutDuration"}];
   }
 
   objc_autoreleasePoolPop(v4);
-  return v3;
+  return imprint;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MCAudioPlaylist *)self willChangeValueForKey:a3];
+    [(MCAudioPlaylist *)self willChangeValueForKey:path];
 
-    [(MCAudioPlaylist *)self didChangeValueForKey:a3];
+    [(MCAudioPlaylist *)self didChangeValueForKey:path];
   }
 }
 
@@ -300,14 +300,14 @@
   return v4;
 }
 
-- (id)songAtIndex:(unint64_t)a3
+- (id)songAtIndex:(unint64_t)index
 {
   mSongs = self->mSongs;
   objc_sync_enter(mSongs);
   mCachedOrderedSongs = self->mCachedOrderedSongs;
   if (mCachedOrderedSongs)
   {
-    v7 = [(NSArray *)mCachedOrderedSongs objectAtIndex:a3];
+    v7 = [(NSArray *)mCachedOrderedSongs objectAtIndex:index];
 LABEL_13:
     v13 = v7;
   }
@@ -333,7 +333,7 @@ LABEL_13:
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          if ([v12 index] == a3)
+          if ([v12 index] == index)
           {
             v7 = v12;
             goto LABEL_13;
@@ -361,36 +361,36 @@ LABEL_13:
   return v13;
 }
 
-- (id)addSongForAsset:(id)a3
+- (id)addSongForAsset:(id)asset
 {
-  v3 = [(MCAudioPlaylist *)self insertSongsForAssets:[NSArray atIndex:"arrayWithObject:" arrayWithObject:a3], [(MCAudioPlaylist *)self countOfSongs]];
+  v3 = [(MCAudioPlaylist *)self insertSongsForAssets:[NSArray atIndex:"arrayWithObject:" arrayWithObject:asset], [(MCAudioPlaylist *)self countOfSongs]];
 
   return [v3 objectAtIndex:0];
 }
 
-- (id)addSongsForAssets:(id)a3
+- (id)addSongsForAssets:(id)assets
 {
-  v5 = [(MCAudioPlaylist *)self countOfSongs];
+  countOfSongs = [(MCAudioPlaylist *)self countOfSongs];
 
-  return [(MCAudioPlaylist *)self insertSongsForAssets:a3 atIndex:v5];
+  return [(MCAudioPlaylist *)self insertSongsForAssets:assets atIndex:countOfSongs];
 }
 
-- (id)insertSongForAsset:(id)a3 atIndex:(unint64_t)a4
+- (id)insertSongForAsset:(id)asset atIndex:(unint64_t)index
 {
-  v4 = [(MCAudioPlaylist *)self insertSongsForAssets:[NSArray atIndex:"arrayWithObject:" arrayWithObject:a3], a4];
+  index = [(MCAudioPlaylist *)self insertSongsForAssets:[NSArray atIndex:"arrayWithObject:" arrayWithObject:asset], index];
 
-  return [v4 objectAtIndex:0];
+  return [index objectAtIndex:0];
 }
 
-- (id)insertSongsForAssets:(id)a3 atIndex:(unint64_t)a4
+- (id)insertSongsForAssets:(id)assets atIndex:(unint64_t)index
 {
   v7 = +[NSMutableArray array];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = a3;
-  v8 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  obj = assets;
+  v8 = [assets countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v8)
   {
     v9 = *v30;
@@ -406,7 +406,7 @@ LABEL_13:
         v11 = *(*(&v29 + 1) + 8 * i);
         v12 = [(MCObject *)[MCSong alloc] initFromScratchWithMontage:self->super.mMontage];
         [v12 setAsset:v11];
-        [v12 setIndex:{objc_msgSend(v7, "count") + a4}];
+        [v12 setIndex:{objc_msgSend(v7, "count") + index}];
         [v7 addObject:v12];
         [v12 setAudioPlaylistIfAudioPlaylistSong:self];
         [v12 addObserver:self forKeyPath:@"builtVolume" options:0 context:0];
@@ -448,7 +448,7 @@ LABEL_13:
           }
 
           v19 = *(*(&v25 + 1) + 8 * j);
-          if ([v19 index] >= a4)
+          if ([v19 index] >= index)
           {
             [v19 setIndex:{&v14[objc_msgSend(v19, "index")]}];
           }
@@ -468,7 +468,7 @@ LABEL_13:
   return v7;
 }
 
-- (void)removeSongsAtIndices:(id)a3
+- (void)removeSongsAtIndices:(id)indices
 {
   obj = self->mSongs;
   objc_sync_enter(obj);
@@ -492,7 +492,7 @@ LABEL_13:
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        if ([a3 containsIndex:{objc_msgSend(v10, "index")}])
+        if ([indices containsIndex:{objc_msgSend(v10, "index")}])
         {
           [v5 addObject:v10];
           [v10 removeObserver:self forKeyPath:@"builtVolume"];
@@ -501,7 +501,7 @@ LABEL_13:
 
         else
         {
-          [v10 setIndex:{objc_msgSend(v10, "index") - objc_msgSend(a3, "countOfIndexesInRange:", 0, objc_msgSend(v10, "index"))}];
+          [v10 setIndex:{objc_msgSend(v10, "index") - objc_msgSend(indices, "countOfIndexesInRange:", 0, objc_msgSend(v10, "index"))}];
         }
       }
 
@@ -554,7 +554,7 @@ LABEL_13:
   [(MCAudioPlaylist *)self removeSongsAtIndices:v3];
 }
 
-- (void)moveSongsAtIndices:(id)a3 toIndex:(unint64_t)a4
+- (void)moveSongsAtIndices:(id)indices toIndex:(unint64_t)index
 {
   [(MCAudioPlaylist *)self willChangeValueForKey:@"orderedSongs"];
   mSongs = self->mSongs;
@@ -580,18 +580,18 @@ LABEL_13:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([a3 containsIndex:{objc_msgSend(v12, "index")}])
+        if ([indices containsIndex:{objc_msgSend(v12, "index")}])
         {
-          [v12 setIndex:{objc_msgSend(a3, "countOfIndexesInRange:", 0, objc_msgSend(v12, "index")) + a4}];
+          [v12 setIndex:{objc_msgSend(indices, "countOfIndexesInRange:", 0, objc_msgSend(v12, "index")) + index}];
         }
 
         else
         {
-          v13 = [v12 index];
-          v14 = v13 - [a3 countOfIndexesInRange:{0, objc_msgSend(v12, "index")}];
-          if (v14 >= a4)
+          index = [v12 index];
+          v14 = index - [indices countOfIndexesInRange:{0, objc_msgSend(v12, "index")}];
+          if (v14 >= index)
           {
-            v14 += [a3 count];
+            v14 += [indices count];
           }
 
           [v12 setIndex:v14];

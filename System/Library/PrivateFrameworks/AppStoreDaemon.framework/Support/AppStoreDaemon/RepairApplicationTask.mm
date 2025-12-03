@@ -1,37 +1,37 @@
 @interface RepairApplicationTask
-- (void)mainWithCompletionHandler:(id)a3;
-- (void)repair:(id)a3 needsToReleaseBlockingCallerWithReason:(id)a4;
-- (void)repair:(id)a3 wantsToRelaunchApplication:(id)a4;
+- (void)mainWithCompletionHandler:(id)handler;
+- (void)repair:(id)repair needsToReleaseBlockingCallerWithReason:(id)reason;
+- (void)repair:(id)repair wantsToRelaunchApplication:(id)application;
 @end
 
 @implementation RepairApplicationTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [[KeepAlive alloc] initWithName:@"com.apple.appstored.RepairRequest"];
   +[NSDate timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [*(&self->_applicationRepair + 2) bundleID];
+  bundleID = [*(&self->_applicationRepair + 2) bundleID];
 
-  if (v8)
+  if (bundleID)
   {
-    v9 = [*(&self->_applicationRepair + 2) bundleID];
-    v10 = [ApplicationProxy proxyForBundleID:v9];
+    bundleID2 = [*(&self->_applicationRepair + 2) bundleID];
+    v10 = [ApplicationProxy proxyForBundleID:bundleID2];
   }
 
   else
   {
-    v11 = [*(&self->_applicationRepair + 2) bundlePath];
+    bundlePath = [*(&self->_applicationRepair + 2) bundlePath];
 
-    if (!v11)
+    if (!bundlePath)
     {
       goto LABEL_8;
     }
 
     v12 = [ApplicationProxy alloc];
-    v9 = [*(&self->_applicationRepair + 2) bundlePath];
-    v10 = [(ApplicationProxy *)v12 initWithBundlePath:v9];
+    bundleID2 = [*(&self->_applicationRepair + 2) bundlePath];
+    v10 = [(ApplicationProxy *)v12 initWithBundlePath:bundleID2];
   }
 
   p_isa = &v10->super.isa;
@@ -39,14 +39,14 @@
   if (p_isa)
   {
     v14 = [_TtC9appstored6LogKey alloc];
-    v15 = [p_isa[15] bundleIdentifier];
-    v16 = [(LogKey *)v14 initWithCategory:v15];
+    bundleIdentifier = [p_isa[15] bundleIdentifier];
+    v16 = [(LogKey *)v14 initWithCategory:bundleIdentifier];
 
     if ([FactoryApplicationRepair shouldAttemptToRepairApplication:p_isa options:*(&self->_applicationRepair + 2) logKey:v16])
     {
       v17 = [FactoryApplicationRepair alloc];
-      v18 = [*(&self->_options + 2) processInfo];
-      v19 = sub_100261F20(&v17->super.isa, p_isa, v18);
+      processInfo = [*(&self->_options + 2) processInfo];
+      v19 = sub_100261F20(&v17->super.isa, p_isa, processInfo);
       v20 = *(&self->super._finished + 1);
       *(&self->super._finished + 1) = v19;
     }
@@ -100,7 +100,7 @@
     v34 = *(&self->super._finished + 1);
     if (v34)
     {
-      v35 = [v34 repairType];
+      repairType = [v34 repairType];
       v36 = +[NSNotificationCenter defaultCenter];
       v53[0] = _NSConcreteStackBlock;
       v53[1] = 3221225472;
@@ -119,10 +119,10 @@
       v46[4] = self;
       v47 = v36;
       v48 = v37;
-      v39 = v35;
+      v39 = repairType;
       v49 = v39;
       v51 = v7;
-      v50 = v4;
+      v50 = handlerCopy;
       v40 = v37;
       v41 = v36;
       [v38 repairApplication:p_isa completionHandler:v46];
@@ -146,7 +146,7 @@
 
       v41 = ASDErrorWithTitleAndMessage();
       v39 = @"Unknown";
-      sub_1002797A0(self, v41, 0, @"Unknown", 0, v4, v7);
+      sub_1002797A0(self, v41, 0, @"Unknown", 0, handlerCopy, v7);
     }
 
     goto LABEL_33;
@@ -159,32 +159,32 @@ LABEL_8:
     (*(v21 + 16))(v21, 0, 0, 0);
   }
 
-  (*(v4 + 2))(v4, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_33:
 }
 
-- (void)repair:(id)a3 wantsToRelaunchApplication:(id)a4
+- (void)repair:(id)repair wantsToRelaunchApplication:(id)application
 {
-  v5 = a4;
-  v6 = sub_100214C6C([ApplicationContext alloc], v5);
+  applicationCopy = application;
+  v6 = sub_100214C6C([ApplicationContext alloc], applicationCopy);
 
-  v7 = [*(&self->_applicationRepair + 2) relaunchOptions];
+  relaunchOptions = [*(&self->_applicationRepair + 2) relaunchOptions];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100279AC0;
   v8[3] = &unk_10051B5C0;
   v8[4] = self;
-  [v6 launchApplicationWithOptions:v7 completionHandler:v8];
+  [v6 launchApplicationWithOptions:relaunchOptions completionHandler:v8];
 }
 
-- (void)repair:(id)a3 needsToReleaseBlockingCallerWithReason:(id)a4
+- (void)repair:(id)repair needsToReleaseBlockingCallerWithReason:(id)reason
 {
-  v11 = a3;
-  v7 = a4;
+  repairCopy = repair;
+  reasonCopy = reason;
   if (self && objc_getProperty(self, v6, 66, 1))
   {
     Property = objc_getProperty(self, v8, 66, 1);
-    (*(Property + 2))(Property, 0, 0, v7);
+    (*(Property + 2))(Property, 0, 0, reasonCopy);
     v10 = *(&self->_requestToken + 2);
     *(&self->_requestToken + 2) = 0;
   }

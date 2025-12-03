@@ -24,7 +24,7 @@
   {
     v7.receiver = self;
     v7.super_class = ArtworkViewAccessibility;
-    v3 = [(ArtworkViewAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(ArtworkViewAccessibility *)&v7 accessibilityLabel];
   }
 
   else
@@ -41,10 +41,10 @@
       v5 = @"artwork.view";
     }
 
-    v3 = accessibilityAppStoreLocalizedString(v5);
+    accessibilityLabel = accessibilityAppStoreLocalizedString(v5);
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

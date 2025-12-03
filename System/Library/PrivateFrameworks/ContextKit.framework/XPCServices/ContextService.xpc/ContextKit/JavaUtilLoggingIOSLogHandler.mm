@@ -1,44 +1,44 @@
 @interface JavaUtilLoggingIOSLogHandler
-- (void)publishWithJavaUtilLoggingLogRecord:(id)a3;
+- (void)publishWithJavaUtilLoggingLogRecord:(id)record;
 @end
 
 @implementation JavaUtilLoggingIOSLogHandler
 
-- (void)publishWithJavaUtilLoggingLogRecord:(id)a3
+- (void)publishWithJavaUtilLoggingLogRecord:(id)record
 {
   if (![(JavaUtilLoggingHandler *)self isLoggableWithJavaUtilLoggingLogRecord:?])
   {
     return;
   }
 
-  if (!a3)
+  if (!record)
   {
     goto LABEL_21;
   }
 
-  v5 = [a3 getLevel];
-  if (!v5)
+  getLevel = [record getLevel];
+  if (!getLevel)
   {
     goto LABEL_21;
   }
 
-  v6 = [v5 intValue];
-  if (v6 > 899)
+  intValue = [getLevel intValue];
+  if (intValue > 899)
   {
-    if (v6 == 1000)
+    if (intValue == 1000)
     {
       v7 = OS_LOG_TYPE_ERROR;
       goto LABEL_14;
     }
 
-    if (v6 == 900)
+    if (intValue == 900)
     {
       v7 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_14;
     }
   }
 
-  else if (v6 == 700 || v6 == 800)
+  else if (intValue == 700 || intValue == 800)
   {
     v7 = OS_LOG_TYPE_INFO;
     goto LABEL_14;
@@ -51,21 +51,21 @@
   }
 
 LABEL_14:
-  v8 = [(JavaUtilLoggingHandler *)self getFormatter];
-  if (!v8)
+  getFormatter = [(JavaUtilLoggingHandler *)self getFormatter];
+  if (!getFormatter)
   {
     goto LABEL_21;
   }
 
-  v9 = new_JavaLangStringBuilder_initWithNSString_([v8 formatWithJavaUtilLoggingLogRecord:a3]);
-  if ([a3 getThrown])
+  v9 = new_JavaLangStringBuilder_initWithNSString_([getFormatter formatWithJavaUtilLoggingLogRecord:record]);
+  if ([record getThrown])
   {
     [(JavaLangStringBuilder *)v9 appendWithChar:10];
     v10 = new_JavaIoStringWriter_init();
-    v11 = [a3 getThrown];
-    if (v11)
+    getThrown = [record getThrown];
+    if (getThrown)
     {
-      [v11 printStackTraceWithJavaIoPrintWriter:new_JavaIoPrintWriter_initWithJavaIoWriter_(v10)];
+      [getThrown printStackTraceWithJavaIoPrintWriter:new_JavaIoPrintWriter_initWithJavaIoWriter_(v10)];
       [(JavaLangStringBuilder *)v9 appendWithNSString:[(JavaIoStringWriter *)v10 description]];
       goto LABEL_18;
     }

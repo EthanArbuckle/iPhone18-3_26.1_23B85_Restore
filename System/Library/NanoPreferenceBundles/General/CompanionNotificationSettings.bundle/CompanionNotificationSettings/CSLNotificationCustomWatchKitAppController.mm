@@ -1,39 +1,39 @@
 @interface CSLNotificationCustomWatchKitAppController
 - (BOOL)suppressMirrorOption;
-- (id)criticalAlertEnabled:(id)a3;
+- (id)criticalAlertEnabled:(id)enabled;
 - (id)notificationApplicationSpecifiers;
-- (id)soundValue:(id)a3;
-- (void)setCriticalAlertEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setSoundValue:(id)a3 forSpecifier:(id)a4;
-- (void)setSpecifier:(id)a3;
+- (id)soundValue:(id)value;
+- (void)setCriticalAlertEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setSoundValue:(id)value forSpecifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation CSLNotificationCustomWatchKitAppController
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"companionAppBundleID"];
+  specifierCopy = specifier;
+  v5 = [specifierCopy propertyForKey:@"companionAppBundleID"];
   v6 = [v5 copy];
   companionAppBundleID = self->_companionAppBundleID;
   self->_companionAppBundleID = v6;
 
   v8.receiver = self;
   v8.super_class = CSLNotificationCustomWatchKitAppController;
-  [(CSLNotificationsOnlyAppListController *)&v8 setSpecifier:v4];
+  [(CSLNotificationsOnlyAppListController *)&v8 setSpecifier:specifierCopy];
 }
 
 - (BOOL)suppressMirrorOption
 {
-  v3 = [(CSLNotificationCustomWatchKitAppController *)self companionAppBundleID];
-  v4 = [v3 length];
+  companionAppBundleID = [(CSLNotificationCustomWatchKitAppController *)self companionAppBundleID];
+  v4 = [companionAppBundleID length];
 
   if (v4)
   {
     v5 = [LSApplicationRecord alloc];
-    v6 = [(CSLNotificationCustomWatchKitAppController *)self companionAppBundleID];
+    companionAppBundleID2 = [(CSLNotificationCustomWatchKitAppController *)self companionAppBundleID];
     v12 = 0;
-    v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v12];
+    v7 = [v5 initWithBundleIdentifier:companionAppBundleID2 allowPlaceholder:0 error:&v12];
     v8 = v12;
 
     if (v8)
@@ -48,8 +48,8 @@
 
     else
     {
-      v10 = [v7 applicationState];
-      v9 = [v10 isInstalled] ^ 1;
+      applicationState = [v7 applicationState];
+      v9 = [applicationState isInstalled] ^ 1;
     }
   }
 
@@ -69,8 +69,8 @@
     specifiers = self->_specifiers;
     self->_specifiers = v3;
 
-    v5 = [(CSLNotificationCustomWatchKitAppController *)self sectionInfo];
-    v6 = [v5 objectForKeyedSubscript:BPSNanoBulletinSoundEnabled];
+    sectionInfo = [(CSLNotificationCustomWatchKitAppController *)self sectionInfo];
+    v6 = [sectionInfo objectForKeyedSubscript:BPSNanoBulletinSoundEnabled];
 
     if (v6)
     {
@@ -88,8 +88,8 @@
       [(NSMutableArray *)v12 addObject:v13];
     }
 
-    v14 = [(CSLNotificationCustomWatchKitAppController *)self sectionInfo];
-    v15 = [v14 objectForKeyedSubscript:BPSNanoBulletinCriticalAlertEnabled];
+    sectionInfo2 = [(CSLNotificationCustomWatchKitAppController *)self sectionInfo];
+    v15 = [sectionInfo2 objectForKeyedSubscript:BPSNanoBulletinCriticalAlertEnabled];
 
     if (v15)
     {
@@ -106,36 +106,36 @@
   return v19;
 }
 
-- (void)setSoundValue:(id)a3 forSpecifier:(id)a4
+- (void)setSoundValue:(id)value forSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(CSLNotificationCustomWatchKitAppController *)self sectionInfo];
-  [v6 setObject:v5 forKeyedSubscript:BPSNanoBulletinSoundEnabled];
+  valueCopy = value;
+  sectionInfo = [(CSLNotificationCustomWatchKitAppController *)self sectionInfo];
+  [sectionInfo setObject:valueCopy forKeyedSubscript:BPSNanoBulletinSoundEnabled];
 
   [(CSLNotificationCustomWatchKitAppController *)self writeSectionState];
 }
 
-- (id)soundValue:(id)a3
+- (id)soundValue:(id)value
 {
-  v3 = [(CSLNotificationCustomWatchKitAppController *)self sectionInfo];
-  v4 = [v3 objectForKeyedSubscript:BPSNanoBulletinSoundEnabled];
+  sectionInfo = [(CSLNotificationCustomWatchKitAppController *)self sectionInfo];
+  v4 = [sectionInfo objectForKeyedSubscript:BPSNanoBulletinSoundEnabled];
 
   return v4;
 }
 
-- (void)setCriticalAlertEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setCriticalAlertEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(CSLNotificationCustomWatchKitAppController *)self sectionInfo];
-  [v6 setObject:v5 forKeyedSubscript:BPSNanoBulletinCriticalAlertEnabled];
+  enabledCopy = enabled;
+  sectionInfo = [(CSLNotificationCustomWatchKitAppController *)self sectionInfo];
+  [sectionInfo setObject:enabledCopy forKeyedSubscript:BPSNanoBulletinCriticalAlertEnabled];
 
   [(CSLNotificationCustomWatchKitAppController *)self writeSectionState];
 }
 
-- (id)criticalAlertEnabled:(id)a3
+- (id)criticalAlertEnabled:(id)enabled
 {
-  v3 = [(CSLNotificationCustomWatchKitAppController *)self sectionInfo];
-  v4 = [v3 objectForKeyedSubscript:BPSNanoBulletinCriticalAlertEnabled];
+  sectionInfo = [(CSLNotificationCustomWatchKitAppController *)self sectionInfo];
+  v4 = [sectionInfo objectForKeyedSubscript:BPSNanoBulletinCriticalAlertEnabled];
 
   return v4;
 }

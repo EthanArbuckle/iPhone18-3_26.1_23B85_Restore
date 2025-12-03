@@ -1,21 +1,21 @@
 @interface _EXExtensionPoint
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)reset;
 @end
 
 @implementation _EXExtensionPoint
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [(_EXExtensionPoint *)self identifier];
+  identifier = [(_EXExtensionPoint *)self identifier];
   v6 = *(v4 + 16);
-  *(v4 + 16) = v5;
+  *(v4 + 16) = identifier;
 
-  v7 = [(_EXExtensionPoint *)self SDKDictionary];
+  sDKDictionary = [(_EXExtensionPoint *)self SDKDictionary];
   v8 = *(v4 + 24);
-  *(v4 + 24) = v7;
+  *(v4 + 24) = sDKDictionary;
 
   *(v4 + 8) = [(_EXExtensionPoint *)self platform];
   *(v4 + 32) = [(_EXExtensionPoint *)self variant];

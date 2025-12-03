@@ -1,30 +1,30 @@
 @interface SBFFluidBehaviorSettings
-+ (id)_moduleWithSectionTitle:(id)a3;
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_moduleWithSectionTitle:(id)title;
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState;
+- (BOOL)isEqual:(id)equal;
 - (CAFrameRateRange)frameRateRange;
 - (double)_effectiveTrackingDampingRatio;
 - (double)_effectiveTrackingResponse;
 - (double)_effectiveTrackingRetargetImpulse;
 - (double)settlingDuration;
 - (id)BSAnimationSettings;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
 - (void)setDefaultCriticallyDampedValues;
 - (void)setDefaultValues;
-- (void)setFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4;
+- (void)setFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason;
 @end
 
 @implementation SBFFluidBehaviorSettings
 
 - (CAFrameRateRange)frameRateRange
 {
-  v2 = [(SBFFluidBehaviorSettings *)self preferredFrameRateRange];
-  [v2 frameRateRange];
+  preferredFrameRateRange = [(SBFFluidBehaviorSettings *)self preferredFrameRateRange];
+  [preferredFrameRateRange frameRateRange];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -66,16 +66,16 @@
 
 - (double)settlingDuration
 {
-  v3 = [MEMORY[0x1E69794A8] animation];
-  [v3 setMass:1.0];
+  animation = [MEMORY[0x1E69794A8] animation];
+  [animation setMass:1.0];
   [(SBFFluidBehaviorSettings *)self dampingRatio];
   v5 = v4;
   [(SBFFluidBehaviorSettings *)self response];
   v7 = sqrt(6.28318531 / v6 * (6.28318531 / v6));
   v8 = v5 * (v7 + v7);
-  [v3 setStiffness:?];
-  [v3 setDamping:v8];
-  [v3 settlingDuration];
+  [animation setStiffness:?];
+  [animation setDamping:v8];
+  [animation settlingDuration];
   v10 = v9;
 
   return v10;
@@ -141,9 +141,9 @@
   return [v3 settingsWithMass:1.0 stiffness:? damping:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (![(SBFFluidBehaviorSettings *)self isEqual:v4])
   {
     objc_storeStrong((v4 + 64), self->_name);
@@ -170,7 +170,7 @@
   return v4;
 }
 
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState
 {
   *&retstr->var7 = 0u;
   *&retstr->var9 = 0u;
@@ -191,7 +191,7 @@
       trackingResponseSmoothing = self->_trackingResponseSmoothing;
       retstr->var6 = self->_trackingDampingRatioSmoothing;
       retstr->var7 = trackingResponseSmoothing;
-      if (!a4)
+      if (!toState)
       {
         *&retstr->var2 = 257;
         retstr->var4 = self->_dampingRatio;
@@ -215,7 +215,7 @@ LABEL_8:
       responseSmoothing = self->_responseSmoothing;
       retstr->var6 = self->_dampingRatioSmoothing;
       retstr->var7 = responseSmoothing;
-      if (a4 == 1)
+      if (toState == 1)
       {
         retstr->var9 = self->_inertialProjectionDeceleration;
         response = self->_inertialTargetSmoothingRatio * self->_response;
@@ -228,16 +228,16 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v54 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v54 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   behaviorType = self->_behaviorType;
   v85[0] = MEMORY[0x1E69E9820];
   v85[1] = 3221225472;
   v85[2] = __36__SBFFluidBehaviorSettings_isEqual___block_invoke;
   v85[3] = &unk_1E8080228;
-  v6 = v4;
+  v6 = equalCopy;
   v86 = v6;
   v53 = [v54 appendInteger:behaviorType counterpart:v85];
   name = self->_name;
@@ -367,8 +367,8 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v21 = [MEMORY[0x1E698E6B8] builder];
-  v20 = [v21 appendInteger:self->_behaviorType];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v20 = [builder appendInteger:self->_behaviorType];
   v19 = [v20 appendString:self->_name];
   v18 = [v19 appendDouble:self->_deceleration];
   v17 = [v18 appendCGFloat:self->_dampingRatio];
@@ -391,10 +391,10 @@ LABEL_8:
 
 - (id)succinctDescription
 {
-  v2 = [(SBFFluidBehaviorSettings *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFFluidBehaviorSettings *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -408,24 +408,24 @@ LABEL_8:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFFluidBehaviorSettings *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFFluidBehaviorSettings *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBFFluidBehaviorSettings *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBFFluidBehaviorSettings *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__SBFFluidBehaviorSettings_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E807F290;
-  v5 = v4;
+  v5 = succinctDescriptionBuilder;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = [v5 modifyBody:v9];
   v7 = v5;
 
@@ -443,119 +443,119 @@ void __66__SBFFluidBehaviorSettings_descriptionBuilderWithMultilinePrefix___bloc
   v6 = [v5 appendObject:v7 withName:@"preferredFrameRateRange"];
 }
 
-- (void)setFrameRateRange:(CAFrameRateRange)a3 highFrameRateReason:(unsigned int)a4
+- (void)setFrameRateRange:(CAFrameRateRange)range highFrameRateReason:(unsigned int)reason
 {
-  v4 = *&a4;
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
-  v11 = [(SBFFluidBehaviorSettings *)self preferredFrameRateRange];
+  v4 = *&reason;
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
+  preferredFrameRateRange = [(SBFFluidBehaviorSettings *)self preferredFrameRateRange];
   *&v8 = minimum;
   *&v9 = maximum;
   *&v10 = preferred;
-  [v11 setFrameRateRange:v4 highFrameRateReason:{v8, v9, v10}];
+  [preferredFrameRateRange setFrameRateRange:v4 highFrameRateReason:{v8, v9, v10}];
 }
 
-+ (id)_moduleWithSectionTitle:(id)a3
++ (id)_moduleWithSectionTitle:(id)title
 {
   v71[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AE18];
-  v70 = a3;
+  titleCopy = title;
   v69 = [v3 predicateWithFormat:@"behaviorType == %d", 0];
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"behaviorType == %d OR behaviorType == %d", 1, 2];
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"behaviorType == %d", 2];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"behaviorType == %d AND smoothingAndProjectionEnabled = YES", 2];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"behaviorType == %d AND smoothingAndProjectionEnabled = YES", 2];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9 = [MEMORY[0x1E69C65F0] rowWithTitle:@"Behavior Type" valueKeyPath:@"behaviorType"];
   v10 = [v9 possibleValues:&unk_1F3D3ED60 titles:&unk_1F3D3ED78];
-  [v8 addObject:v10];
+  [array addObject:v10];
 
   v11 = [MEMORY[0x1E69C6620] rowWithTitle:@"Deceleration" valueKeyPath:@"deceleration"];
   v12 = [v11 between:0.0 and:1.0];
   v13 = [v12 condition:v69];
-  [v8 addObject:v13];
+  [array addObject:v13];
 
   v14 = [MEMORY[0x1E69C6620] rowWithTitle:@"Damping Ratio" valueKeyPath:@"dampingRatio"];
   v15 = [v14 between:0.001 and:10.0];
   v16 = [v15 precision:3];
   v17 = [v16 condition:v4];
-  [v8 addObject:v17];
+  [array addObject:v17];
 
   v18 = [MEMORY[0x1E69C6620] rowWithTitle:@"Response" valueKeyPath:@"response"];
   v19 = [v18 between:0.0 and:1000.0];
   v20 = [v19 precision:3];
   v21 = [v20 condition:v4];
-  [v8 addObject:v21];
+  [array addObject:v21];
 
   v22 = [MEMORY[0x1E69C6620] rowWithTitle:@"Retarget Impulse" valueKeyPath:@"retargetImpulse"];
   v23 = [v22 between:0.0 and:1.0];
   v24 = [v23 precision:3];
   v25 = [v24 condition:v4];
-  [v8 addObject:v25];
+  [array addObject:v25];
 
   v26 = [MEMORY[0x1E69C6620] rowWithTitle:@"Tracking Damping Ratio" valueKeyPath:@"trackingDampingRatio"];
   v27 = [v26 between:0.001 and:10.0];
   v28 = [v27 precision:3];
   v29 = [v28 condition:v5];
-  [v8 addObject:v29];
+  [array addObject:v29];
 
   v30 = [MEMORY[0x1E69C6620] rowWithTitle:@"Tracking Response" valueKeyPath:@"trackingResponse"];
   v31 = [v30 between:0.0 and:1000.0];
   v32 = [v31 precision:3];
   v33 = [v32 condition:v5];
-  [v8 addObject:v33];
+  [array addObject:v33];
 
   v34 = [MEMORY[0x1E69C6620] rowWithTitle:@"Tracking Retarget Impulse" valueKeyPath:@"trackingRetargetImpulse"];
   v35 = [v34 between:0.0 and:1.0];
   v36 = [v35 precision:3];
   v37 = [v36 condition:v4];
-  [v8 addObject:v37];
+  [array addObject:v37];
 
   v38 = [MEMORY[0x1E69C66B0] rowWithTitle:@"Use Smoothing and Projection" valueKeyPath:@"smoothingAndProjectionEnabled"];
-  [v8 addObject:v38];
+  [array addObject:v38];
 
   v39 = [MEMORY[0x1E69C6620] rowWithTitle:@"Damping Ratio Smoothing" valueKeyPath:@"dampingRatioSmoothing"];
   v40 = [v39 between:0.0 and:1.0];
   v41 = [v40 precision:3];
   v42 = [v41 condition:v6];
-  [v8 addObject:v42];
+  [array addObject:v42];
 
   v43 = [MEMORY[0x1E69C6620] rowWithTitle:@"Response Smoothing" valueKeyPath:@"responseSmoothing"];
   v44 = [v43 between:0.0 and:1.0];
   v45 = [v44 precision:3];
   v46 = [v45 condition:v6];
-  [v8 addObject:v46];
+  [array addObject:v46];
 
   v47 = [MEMORY[0x1E69C6620] rowWithTitle:@"Tracking Damping Ratio Smoothing" valueKeyPath:@"trackingDampingRatioSmoothing"];
   v48 = [v47 between:0.0 and:1.0];
   v49 = [v48 precision:3];
   v50 = [v49 condition:v7];
-  [v8 addObject:v50];
+  [array addObject:v50];
 
   v51 = [MEMORY[0x1E69C6620] rowWithTitle:@"Tracking Response Smoothing" valueKeyPath:@"trackingResponseSmoothing"];
   v52 = [v51 between:0.0 and:1.0];
   v53 = [v52 precision:3];
   v54 = [v53 condition:v7];
-  [v8 addObject:v54];
+  [array addObject:v54];
 
   v55 = [MEMORY[0x1E69C6620] rowWithTitle:@"Target Smoothing Ratio" valueKeyPath:@"inertialTargetSmoothingRatio"];
   v56 = [v55 between:0.0 and:1.0];
   v57 = [v56 precision:3];
   v58 = [v57 condition:v7];
-  [v8 addObject:v58];
+  [array addObject:v58];
 
   v59 = [MEMORY[0x1E69C6620] rowWithTitle:@"Projection Deceleration" valueKeyPath:@"inertialProjectionDeceleration"];
   v60 = [v59 between:0.0 and:1.0];
   v61 = [v60 precision:7];
   v62 = [v61 condition:v7];
-  [v8 addObject:v62];
+  [array addObject:v62];
 
   v63 = [MEMORY[0x1E69C6608] rowWithTitle:@"Frame Rate Range" childSettingsKeyPath:@"preferredFrameRateRange"];
-  [v8 addObject:v63];
+  [array addObject:v63];
 
   v64 = MEMORY[0x1E69C6630];
-  v65 = [MEMORY[0x1E69C6630] sectionWithRows:v8 title:v70];
+  v65 = [MEMORY[0x1E69C6630] sectionWithRows:array title:titleCopy];
 
   v71[0] = v65;
   v66 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:1];

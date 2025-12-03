@@ -1,8 +1,8 @@
 @interface PUPhotoMarkupViewController
-- (PUPhotoMarkupViewController)initWithReviewAsset:(id)a3 mediaProvider:(id)a4;
-- (id)controller:(id)a3 willSetToolbarItems:(id)a4;
-- (void)_handleDoneButton:(id)a3;
-- (void)_notifyObserversDidFinishWithSavedAsset:(id)a3;
+- (PUPhotoMarkupViewController)initWithReviewAsset:(id)asset mediaProvider:(id)provider;
+- (id)controller:(id)controller willSetToolbarItems:(id)items;
+- (void)_handleDoneButton:(id)button;
+- (void)_notifyObserversDidFinishWithSavedAsset:(id)asset;
 - (void)_updateUndoRedoButtons;
 - (void)dealloc;
 - (void)viewDidLoad;
@@ -10,21 +10,21 @@
 
 @implementation PUPhotoMarkupViewController
 
-- (id)controller:(id)a3 willSetToolbarItems:(id)a4
+- (id)controller:(id)controller willSetToolbarItems:(id)items
 {
-  v4 = a4;
-  v5 = v4;
-  if (v4)
+  itemsCopy = items;
+  v5 = itemsCopy;
+  if (itemsCopy)
   {
-    v6 = v4;
+    array = itemsCopy;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
   return v7;
 }
@@ -34,28 +34,28 @@
   if (![(PUPhotoMarkupViewController *)self updatingUndoButtons])
   {
     [(PUPhotoMarkupViewController *)self setUpdatingUndoButtons:1];
-    v3 = [(NSUndoManager *)self->_undoManager canUndo];
-    v4 = [(PUPhotoMarkupViewController *)self undoButton];
-    [v4 setEnabled:v3];
+    canUndo = [(NSUndoManager *)self->_undoManager canUndo];
+    undoButton = [(PUPhotoMarkupViewController *)self undoButton];
+    [undoButton setEnabled:canUndo];
 
-    v5 = [(NSUndoManager *)self->_undoManager canRedo];
-    v6 = [(PUPhotoMarkupViewController *)self redoButton];
-    [v6 setEnabled:v5];
+    canRedo = [(NSUndoManager *)self->_undoManager canRedo];
+    redoButton = [(PUPhotoMarkupViewController *)self redoButton];
+    [redoButton setEnabled:canRedo];
 
     [(PUPhotoMarkupViewController *)self setUpdatingUndoButtons:0];
   }
 }
 
-- (void)_notifyObserversDidFinishWithSavedAsset:(id)a3
+- (void)_notifyObserversDidFinishWithSavedAsset:(id)asset
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUPhotoMarkupViewController *)self _workaroundInputWriteURL];
-  if (v5)
+  assetCopy = asset;
+  _workaroundInputWriteURL = [(PUPhotoMarkupViewController *)self _workaroundInputWriteURL];
+  if (_workaroundInputWriteURL)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v13 = 0;
-    [v6 removeItemAtURL:v5 error:&v13];
+    [defaultManager removeItemAtURL:_workaroundInputWriteURL error:&v13];
     v7 = v13;
 
     if (v7)
@@ -64,7 +64,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v15 = v5;
+        v15 = _workaroundInputWriteURL;
         v16 = 2114;
         v17 = v7;
         _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_ERROR, "Failed to remove file %{public}@: %{public}@", buf, 0x16u);
@@ -80,73 +80,73 @@
   v11[2] = __71__PUPhotoMarkupViewController__notifyObserversDidFinishWithSavedAsset___block_invoke;
   v11[3] = &unk_1E7B7C098;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = assetCopy;
+  v10 = assetCopy;
   [(PUObserverRegistry *)observerRegistry enumerateObserversWithBlock:v11];
 }
 
-- (void)_handleDoneButton:(id)a3
+- (void)_handleDoneButton:(id)button
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = [(PUPhotoMarkupViewController *)self reviewAsset];
-  v5 = [(PUPhotoMarkupViewController *)self _sourceImageVersion];
-  v6 = [(PUPhotoMarkupViewController *)self _markupViewController];
-  v7 = [v6 createArchivedModelData];
-  v8 = [v4 adjustmentOutputForInputBaseVersion:v5 withLivePhotoSupport:0];
-  v9 = [v8 renderedImageFileURL];
+  reviewAsset = [(PUPhotoMarkupViewController *)self reviewAsset];
+  _sourceImageVersion = [(PUPhotoMarkupViewController *)self _sourceImageVersion];
+  _markupViewController = [(PUPhotoMarkupViewController *)self _markupViewController];
+  createArchivedModelData = [_markupViewController createArchivedModelData];
+  v8 = [reviewAsset adjustmentOutputForInputBaseVersion:_sourceImageVersion withLivePhotoSupport:0];
+  renderedImageFileURL = [v8 renderedImageFileURL];
   v31 = 0;
-  LOBYTE(v5) = [v6 writeToURL:v9 embeddingSourceImageAndEditModel:0 error:&v31];
+  LOBYTE(_sourceImageVersion) = [_markupViewController writeToURL:renderedImageFileURL embeddingSourceImageAndEditModel:0 error:&v31];
   v10 = v31;
-  if ((v5 & 1) == 0)
+  if ((_sourceImageVersion & 1) == 0)
   {
     v11 = PLAssetExplorerGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v33 = v9;
+      v33 = renderedImageFileURL;
       v34 = 2114;
       v35 = v10;
       _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_ERROR, "Failed to write image to disk %{public}@: %{public}@", buf, 0x16u);
     }
   }
 
-  if (([v4 mediaSubtypes] & 8) != 0)
+  if (([reviewAsset mediaSubtypes] & 8) != 0)
   {
     v12 = [PUReviewAsset alloc];
-    v25 = [v4 providedPreviewImage];
-    v27 = [v4 mediaSubtypes];
-    v23 = [v4 pixelWidth];
-    v22 = [v4 pixelHeight];
-    v21 = [v4 creationDate];
-    v20 = [v4 providedImageMetadata];
-    [v4 burstIdentifier];
-    v13 = v29 = v7;
-    v28 = v9;
-    v14 = [v4 numberOfRepresentedAssets];
-    v15 = [v4 providedFullsizeRenderImageURL];
-    [v4 providedFullsizeImageURL];
-    v16 = v30 = v6;
-    [v4 assetAdjustments];
+    providedPreviewImage = [reviewAsset providedPreviewImage];
+    mediaSubtypes = [reviewAsset mediaSubtypes];
+    pixelWidth = [reviewAsset pixelWidth];
+    pixelHeight = [reviewAsset pixelHeight];
+    creationDate = [reviewAsset creationDate];
+    providedImageMetadata = [reviewAsset providedImageMetadata];
+    [reviewAsset burstIdentifier];
+    v13 = v29 = createArchivedModelData;
+    v28 = renderedImageFileURL;
+    numberOfRepresentedAssets = [reviewAsset numberOfRepresentedAssets];
+    providedFullsizeRenderImageURL = [reviewAsset providedFullsizeRenderImageURL];
+    [reviewAsset providedFullsizeImageURL];
+    v16 = v30 = _markupViewController;
+    [reviewAsset assetAdjustments];
     v17 = v26 = v10;
-    v18 = [v4 identifier];
-    v24 = [(PUReviewAsset *)v12 initWithPhoto:v25 mediaSubtypes:v27 & 0xFFFFFFFFFFFFFFF7 width:v23 height:v22 captureDate:v21 metadata:v20 burstIdentifier:v13 representedCount:v14 fullsizeImageURL:v15 fullsizeUnadjustedImageURL:v16 assetAdjustments:v17 identifier:v18];
+    identifier = [reviewAsset identifier];
+    v24 = [(PUReviewAsset *)v12 initWithPhoto:providedPreviewImage mediaSubtypes:mediaSubtypes & 0xFFFFFFFFFFFFFFF7 width:pixelWidth height:pixelHeight captureDate:creationDate metadata:providedImageMetadata burstIdentifier:v13 representedCount:numberOfRepresentedAssets fullsizeImageURL:providedFullsizeRenderImageURL fullsizeUnadjustedImageURL:v16 assetAdjustments:v17 identifier:identifier];
 
     v10 = v26;
-    v6 = v30;
+    _markupViewController = v30;
 
-    v7 = v29;
-    v9 = v28;
-    v4 = v24;
+    createArchivedModelData = v29;
+    renderedImageFileURL = v28;
+    reviewAsset = v24;
   }
 
-  v19 = [v4 reviewAssetWithAdjustmentOutput:v8 adjustmentData:v7 formatIdentifier:@"com.apple.Markup" version:@"1.0"];
+  v19 = [reviewAsset reviewAssetWithAdjustmentOutput:v8 adjustmentData:createArchivedModelData formatIdentifier:@"com.apple.Markup" version:@"1.0"];
   [(PUPhotoMarkupViewController *)self _notifyObserversDidFinishWithSavedAsset:v19];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PUPhotoMarkupViewController;
@@ -159,10 +159,10 @@
   v46.receiver = self;
   v46.super_class = PUPhotoMarkupViewController;
   [(PUPhotoMarkupViewController *)&v46 viewDidLoad];
-  v45 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v3 = [(PUPhotoMarkupViewController *)self view];
-  [v3 setBackgroundColor:v45];
-  [v3 bounds];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(PUPhotoMarkupViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -191,7 +191,7 @@
 
   if (objc_opt_respondsToSelector())
   {
-    [v14 setBackgroundColor:v45];
+    [v14 setBackgroundColor:systemBackgroundColor];
   }
 
   [v14 setAnnotationEditingEnabled:1];
@@ -203,24 +203,24 @@
   self->__markupViewController = v14;
   v17 = v14;
 
-  v44 = [(PUPhotoMarkupViewController *)self reviewAsset];
-  v18 = [(PUPhotoMarkupViewController *)self mediaProvider];
-  v19 = [v44 inputForAdjustmentWithMediaProvider:v18 canHandleAdjustments:&__block_literal_global_60806];
+  reviewAsset = [(PUPhotoMarkupViewController *)self reviewAsset];
+  mediaProvider = [(PUPhotoMarkupViewController *)self mediaProvider];
+  v19 = [reviewAsset inputForAdjustmentWithMediaProvider:mediaProvider canHandleAdjustments:&__block_literal_global_60806];
 
-  v43 = [v19 baseImageFileURL];
-  v20 = [v19 knownAdjustmentData];
-  v21 = [v19 currentPreviewImage];
-  [v17 setFileURL:v43 withArchivedModelData:v20 placeholderImage:v21];
+  baseImageFileURL = [v19 baseImageFileURL];
+  knownAdjustmentData = [v19 knownAdjustmentData];
+  currentPreviewImage = [v19 currentPreviewImage];
+  [v17 setFileURL:baseImageFileURL withArchivedModelData:knownAdjustmentData placeholderImage:currentPreviewImage];
 
   -[PUPhotoMarkupViewController _setSourceImageVersion:](self, "_setSourceImageVersion:", [v19 adjustmentBaseVersion]);
   v22 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__handleCancelButton_];
   v23 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:3 target:self action:sel__handleDoneButton_];
-  v24 = [v17 navigationItem];
-  [v24 setRightBarButtonItem:v23];
+  navigationItem = [v17 navigationItem];
+  [navigationItem setRightBarButtonItem:v23];
 
-  v25 = [v17 undoManager];
+  undoManager = [v17 undoManager];
   undoManager = self->_undoManager;
-  self->_undoManager = v25;
+  self->_undoManager = undoManager;
 
   v27 = objc_alloc(MEMORY[0x1E69DC708]);
   v28 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.uturn.backward.circle"];
@@ -233,30 +233,30 @@
   [(PUPhotoMarkupViewController *)self setRedoButton:v32];
 
   v54[0] = v22;
-  v33 = [(PUPhotoMarkupViewController *)self undoButton];
-  v54[1] = v33;
-  v34 = [(PUPhotoMarkupViewController *)self redoButton];
-  v54[2] = v34;
+  undoButton = [(PUPhotoMarkupViewController *)self undoButton];
+  v54[1] = undoButton;
+  redoButton = [(PUPhotoMarkupViewController *)self redoButton];
+  v54[2] = redoButton;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:3];
-  v36 = [v17 navigationItem];
-  [v36 setLeftBarButtonItems:v35];
+  navigationItem2 = [v17 navigationItem];
+  [navigationItem2 setLeftBarButtonItems:v35];
 
   v37 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v17];
   [(PUPhotoMarkupViewController *)self addChildViewController:v37];
   v52 = *MEMORY[0x1E69DB650];
-  v38 = [MEMORY[0x1E69DC888] labelColor];
-  v53 = v38;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v53 = labelColor;
   v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-  v40 = [v37 navigationBar];
-  [v40 setTitleTextAttributes:v39];
+  navigationBar = [v37 navigationBar];
+  [navigationBar setTitleTextAttributes:v39];
 
-  v41 = [v37 view];
-  [v41 setFrame:{v5, v7, v9, v11}];
-  [v41 setAutoresizingMask:18];
-  [v3 addSubview:v41];
+  view2 = [v37 view];
+  [view2 setFrame:{v5, v7, v9, v11}];
+  [view2 setAutoresizingMask:18];
+  [view addSubview:view2];
   [v37 didMoveToParentViewController:self];
-  v42 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v42 addObserver:self selector:sel__undoManagerCheckpoint_ name:*MEMORY[0x1E696AA10] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__undoManagerCheckpoint_ name:*MEMORY[0x1E696AA10] object:0];
 }
 
 uint64_t __42__PUPhotoMarkupViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)
@@ -285,23 +285,23 @@ uint64_t __42__PUPhotoMarkupViewController_viewDidLoad__block_invoke(uint64_t a1
   return v7;
 }
 
-- (PUPhotoMarkupViewController)initWithReviewAsset:(id)a3 mediaProvider:(id)a4
+- (PUPhotoMarkupViewController)initWithReviewAsset:(id)asset mediaProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
+  assetCopy = asset;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = PUPhotoMarkupViewController;
   v10 = [(PUPhotoMarkupViewController *)&v15 initWithNibName:0 bundle:0];
   if (v10)
   {
-    if (!v8)
+    if (!assetCopy)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:v10 file:@"PUPhotoMarkupViewController.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"reviewAsset"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PUPhotoMarkupViewController.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"reviewAsset"}];
     }
 
-    objc_storeStrong(&v10->_reviewAsset, a3);
-    objc_storeStrong(&v10->_mediaProvider, a4);
+    objc_storeStrong(&v10->_reviewAsset, asset);
+    objc_storeStrong(&v10->_mediaProvider, provider);
     v11 = objc_alloc_init(PUObserverRegistry);
     observerRegistry = v10->__observerRegistry;
     v10->__observerRegistry = v11;

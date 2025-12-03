@@ -1,24 +1,24 @@
 @interface ActivityPickerServiceViewController
-- (ActivityPickerServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ActivityPickerServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)cleanupViewAndExtension;
-- (void)configureWithIsEmbedded:(BOOL)a3 headerText:(id)a4 footerText:(id)a5 includeEntireCategory:(BOOL)a6 selectedApplications:(id)a7 selectedCategories:(id)a8 selectedWebDomains:(id)a9 selectedUntokenizedApplications:(id)a10 selectedUntokenizedCategories:(id)a11 selectedUntokenizedWebDomains:(id)a12;
+- (void)configureWithIsEmbedded:(BOOL)embedded headerText:(id)text footerText:(id)footerText includeEntireCategory:(BOOL)category selectedApplications:(id)applications selectedCategories:(id)categories selectedWebDomains:(id)domains selectedUntokenizedApplications:(id)self0 selectedUntokenizedCategories:(id)self1 selectedUntokenizedWebDomains:(id)self2;
 @end
 
 @implementation ActivityPickerServiceViewController
 
-- (void)configureWithIsEmbedded:(BOOL)a3 headerText:(id)a4 footerText:(id)a5 includeEntireCategory:(BOOL)a6 selectedApplications:(id)a7 selectedCategories:(id)a8 selectedWebDomains:(id)a9 selectedUntokenizedApplications:(id)a10 selectedUntokenizedCategories:(id)a11 selectedUntokenizedWebDomains:(id)a12
+- (void)configureWithIsEmbedded:(BOOL)embedded headerText:(id)text footerText:(id)footerText includeEntireCategory:(BOOL)category selectedApplications:(id)applications selectedCategories:(id)categories selectedWebDomains:(id)domains selectedUntokenizedApplications:(id)self0 selectedUntokenizedCategories:(id)self1 selectedUntokenizedWebDomains:(id)self2
 {
-  v23 = a3;
-  v24 = a6;
-  v12 = a5;
-  if (a4)
+  embeddedCopy = embedded;
+  categoryCopy = category;
+  footerTextCopy = footerText;
+  if (text)
   {
     v21 = sub_100033D34();
     v14 = v13;
-    if (v12)
+    if (footerTextCopy)
     {
 LABEL_3:
-      v12 = sub_100033D34();
+      footerTextCopy = sub_100033D34();
       v16 = v15;
       goto LABEL_6;
     }
@@ -28,7 +28,7 @@ LABEL_3:
   {
     v21 = 0;
     v14 = 0;
-    if (a5)
+    if (footerText)
     {
       goto LABEL_3;
     }
@@ -42,17 +42,17 @@ LABEL_6:
   sub_100033DF4();
   sub_100033DF4();
   sub_100033DF4();
-  v20 = self;
-  sub_100013F80(v23, v21, v14, v12, v16, v24, v17, v18, v19);
+  selfCopy = self;
+  sub_100013F80(embeddedCopy, v21, v14, footerTextCopy, v16, categoryCopy, v17, v18, v19);
 }
 
 - (void)cleanupViewAndExtension
 {
-  v2 = self;
+  selfCopy = self;
   sub_100017EF8();
 }
 
-- (ActivityPickerServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ActivityPickerServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

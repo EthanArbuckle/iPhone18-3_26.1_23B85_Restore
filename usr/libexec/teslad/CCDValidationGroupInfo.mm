@@ -1,21 +1,21 @@
 @interface CCDValidationGroupInfo
-- (BOOL)validateSelfUsingValidationInfoWithDictionary:(id)a3 resultsDictionary:(id)a4;
-- (CCDValidationGroupInfo)initWithName:(id)a3 validationInfo:(id)a4;
-- (id)_mutableKeyInfoArrayFromValidationInfo:(id)a3;
+- (BOOL)validateSelfUsingValidationInfoWithDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary;
+- (CCDValidationGroupInfo)initWithName:(id)name validationInfo:(id)info;
+- (id)_mutableKeyInfoArrayFromValidationInfo:(id)info;
 @end
 
 @implementation CCDValidationGroupInfo
 
-- (CCDValidationGroupInfo)initWithName:(id)a3 validationInfo:(id)a4
+- (CCDValidationGroupInfo)initWithName:(id)name validationInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = CCDValidationGroupInfo;
-  v7 = [(CCDValidationInfo *)&v12 initWithName:a3 validationInfo:v6];
+  v7 = [(CCDValidationInfo *)&v12 initWithName:name validationInfo:infoCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [(CCDValidationGroupInfo *)v7 _mutableKeyInfoArrayFromValidationInfo:v6];
+    v9 = [(CCDValidationGroupInfo *)v7 _mutableKeyInfoArrayFromValidationInfo:infoCopy];
     keyInfo = v8->_keyInfo;
     v8->_keyInfo = v9;
   }
@@ -23,11 +23,11 @@
   return v8;
 }
 
-- (id)_mutableKeyInfoArrayFromValidationInfo:(id)a3
+- (id)_mutableKeyInfoArrayFromValidationInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:@"keyInfo"];
+  v5 = [infoCopy objectForKeyedSubscript:@"keyInfo"];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -61,19 +61,19 @@
   return v4;
 }
 
-- (BOOL)validateSelfUsingValidationInfoWithDictionary:(id)a3 resultsDictionary:(id)a4
+- (BOOL)validateSelfUsingValidationInfoWithDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CCDValidationInfo *)self name];
-  v9 = [v6 objectForKeyedSubscript:v8];
+  dictionaryCopy = dictionary;
+  resultsDictionaryCopy = resultsDictionary;
+  name = [(CCDValidationInfo *)self name];
+  v9 = [dictionaryCopy objectForKeyedSubscript:name];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [(CCDValidationGroupInfo *)self keyInfo];
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  keyInfo = [(CCDValidationGroupInfo *)self keyInfo];
+  v11 = [keyInfo countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v11)
   {
     v12 = v11;
@@ -84,11 +84,11 @@
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(keyInfo);
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        if (([v15 validateSelfWithDictionary:v9 resultsDictionary:v7] & 1) == 0)
+        if (([v15 validateSelfWithDictionary:v9 resultsDictionary:resultsDictionaryCopy] & 1) == 0)
         {
           v17 = *(DEPLogObjects() + 8);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -108,7 +108,7 @@
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v12 = [keyInfo countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v12)
       {
         continue;

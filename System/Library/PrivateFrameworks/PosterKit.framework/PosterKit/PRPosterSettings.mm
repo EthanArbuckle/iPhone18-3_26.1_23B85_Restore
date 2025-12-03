@@ -39,8 +39,8 @@
   v9 = [v7 sectionWithRows:v8 title:@"Wallpaper Linear Wake Animation"];
 
   v10 = MEMORY[0x1E69C65E8];
-  v11 = [MEMORY[0x1E69C6640] action];
-  v12 = [v10 rowWithTitle:@"Restore Defaults" action:v11];
+  action = [MEMORY[0x1E69C6640] action];
+  v12 = [v10 rowWithTitle:@"Restore Defaults" action:action];
 
   v13 = MEMORY[0x1E69C6638];
   v24 = v12;

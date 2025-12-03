@@ -1,21 +1,21 @@
 @interface GDSiriPersonOrganization
-- (GDSiriPersonOrganization)initWithOrganizationName:(id)a3 phoneticOrganizationName:(id)a4;
+- (GDSiriPersonOrganization)initWithOrganizationName:(id)name phoneticOrganizationName:(id)organizationName;
 @end
 
 @implementation GDSiriPersonOrganization
 
-- (GDSiriPersonOrganization)initWithOrganizationName:(id)a3 phoneticOrganizationName:(id)a4
+- (GDSiriPersonOrganization)initWithOrganizationName:(id)name phoneticOrganizationName:(id)organizationName
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  organizationNameCopy = organizationName;
   v12.receiver = self;
   v12.super_class = GDSiriPersonOrganization;
   v9 = [(GDSiriPersonOrganization *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_organizationName, a3);
-    objc_storeStrong(&v10->_phoneticOrganizationName, a4);
+    objc_storeStrong(&v9->_organizationName, name);
+    objc_storeStrong(&v10->_phoneticOrganizationName, organizationName);
   }
 
   return v10;

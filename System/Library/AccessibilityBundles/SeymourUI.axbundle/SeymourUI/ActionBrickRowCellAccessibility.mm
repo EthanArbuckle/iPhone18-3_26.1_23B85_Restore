@@ -26,8 +26,8 @@
 {
   v11[1] = *MEMORY[0x29EDCA608];
   v2 = [(ActionBrickRowCellAccessibility *)self _accessibilityDescendantOfType:MEMORY[0x29ED34A70](@"SeymourUI.DownloadButton", a2)];
-  v3 = [v2 accessibilityLabel];
-  if ([v3 length])
+  accessibilityLabel = [v2 accessibilityLabel];
+  if ([accessibilityLabel length])
   {
     v4 = objc_alloc(MEMORY[0x29EDC78E0]);
     v9[0] = MEMORY[0x29EDCA5F8];
@@ -35,7 +35,7 @@
     v9[2] = __62__ActionBrickRowCellAccessibility__accessibilityCustomActions__block_invoke;
     v9[3] = &unk_29F2F66E0;
     v10 = v2;
-    v5 = [v4 initWithName:v3 actionHandler:v9];
+    v5 = [v4 initWithName:accessibilityLabel actionHandler:v9];
     v11[0] = v5;
     v6 = [MEMORY[0x29EDB8D80] arrayWithObjects:v11 count:1];
   }

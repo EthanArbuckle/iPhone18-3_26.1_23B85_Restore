@@ -26,13 +26,13 @@
 
 - (void)_updateLinkAndNotifyObservers
 {
-  v5 = [(UserProfileLinkOfflineMapsProvider *)self retrieveSubtitleText];
-  v3 = [(UserProfileLink *)self->_newLink subtitle];
-  v4 = [v3 isEqualToString:v5];
+  retrieveSubtitleText = [(UserProfileLinkOfflineMapsProvider *)self retrieveSubtitleText];
+  subtitle = [(UserProfileLink *)self->_newLink subtitle];
+  v4 = [subtitle isEqualToString:retrieveSubtitleText];
 
   if ((v4 & 1) == 0)
   {
-    [(UserProfileLink *)self->_newLink setSubtitle:v5];
+    [(UserProfileLink *)self->_newLink setSubtitle:retrieveSubtitleText];
     [(GEOObserverHashTable *)self->_observers dataDidUpdateForUserProfileLinkType:[(UserProfileLinkOfflineMapsProvider *)self userProfileLinkType]];
   }
 }
@@ -42,8 +42,8 @@
   if (GEOSupportsOfflineMaps())
   {
     v2 = +[MapsOfflineUIHelper sharedHelper];
-    v3 = [v2 subscriptions];
-    v4 = [v3 count];
+    subscriptions = [v2 subscriptions];
+    v4 = [subscriptions count];
 
     if (v4)
     {
@@ -88,8 +88,8 @@ LABEL_7:
   self->_newLink = v11;
 
   [(UserProfileLink *)self->_newLink setUserProfileLinkType:[(UserProfileLinkOfflineMapsProvider *)self userProfileLinkType]];
-  v13 = [(UserProfileLinkOfflineMapsProvider *)self retrieveSubtitleText];
-  [(UserProfileLink *)self->_newLink setSubtitle:v13];
+  retrieveSubtitleText = [(UserProfileLinkOfflineMapsProvider *)self retrieveSubtitleText];
+  [(UserProfileLink *)self->_newLink setSubtitle:retrieveSubtitleText];
 
   v14 = self->_newLink;
   v15 = v14;

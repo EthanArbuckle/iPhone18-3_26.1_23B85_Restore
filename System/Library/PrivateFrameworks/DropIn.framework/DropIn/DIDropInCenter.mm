@@ -2,21 +2,21 @@
 - (DIAudioPowerController)audioPowerController;
 - (DIAudioSystemController)audioSystemController;
 - (DIDeviceManager)deviceManager;
-- (DIDropInCenter)initWithNullableHomeIdentifier:(id)a3 queue:(id)a4;
+- (DIDropInCenter)initWithNullableHomeIdentifier:(id)identifier queue:(id)queue;
 - (DIDropInCenterDelegate)delegate;
 - (DIDropInSessionManager)sessionManager;
 - (void)dealloc;
-- (void)managerDidInterruptConnection:(id)a3;
-- (void)startSessionWithRequest:(id)a3 completionHandler:(id)a4;
+- (void)managerDidInterruptConnection:(id)connection;
+- (void)startSessionWithRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation DIDropInCenter
 
-- (DIDropInCenter)initWithNullableHomeIdentifier:(id)a3 queue:(id)a4
+- (DIDropInCenter)initWithNullableHomeIdentifier:(id)identifier queue:(id)queue
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = DIDropInCenter;
   v9 = [(DIDropInCenter *)&v18 init];
@@ -28,14 +28,14 @@
       *buf = 138412546;
       v20 = &stru_285D02BA8;
       v21 = 2112;
-      v22 = v7;
+      v22 = identifierCopy;
       _os_log_impl(&dword_249DA7000, v10, OS_LOG_TYPE_DEFAULT, "%@Creating Drop In Center with Home Identifier %@", buf, 0x16u);
     }
 
-    objc_storeStrong(&v9->_homeIdentifier, a3);
+    objc_storeStrong(&v9->_homeIdentifier, identifier);
     v11 = [[DIClientContext alloc] initWithHomeIdentifier:v9->_homeIdentifier];
     v12 = [[DIXPCDispatcher alloc] initWithClientContext:v11];
-    v13 = [[DIXPCManager alloc] initWithClientContext:v11 dispatcher:v12 clientQueue:v8];
+    v13 = [[DIXPCManager alloc] initWithClientContext:v11 dispatcher:v12 clientQueue:queueCopy];
     [(DIXPCManager *)v13 setDelegate:v9];
     v14 = [[DIXPCConnectionManager alloc] initWithXPCManager:v13 dispatcher:v12];
     connectionManager = v9->_connectionManager;
@@ -69,8 +69,8 @@
   if (!deviceManager)
   {
     v4 = [DIDeviceManager alloc];
-    v5 = [(DIDropInCenter *)self connectionManager];
-    v6 = [(DIDeviceManager *)v4 initWithConnectionManager:v5];
+    connectionManager = [(DIDropInCenter *)self connectionManager];
+    v6 = [(DIDeviceManager *)v4 initWithConnectionManager:connectionManager];
     v7 = self->_deviceManager;
     self->_deviceManager = v6;
 
@@ -86,8 +86,8 @@
   if (!sessionManager)
   {
     v4 = [DIDropInSessionManager alloc];
-    v5 = [(DIDropInCenter *)self connectionManager];
-    v6 = [(DIDropInSessionManager *)v4 initWithConnectionManager:v5];
+    connectionManager = [(DIDropInCenter *)self connectionManager];
+    v6 = [(DIDropInSessionManager *)v4 initWithConnectionManager:connectionManager];
     v7 = self->_sessionManager;
     self->_sessionManager = v6;
 
@@ -103,8 +103,8 @@
   if (!audioPowerController)
   {
     v4 = [DIAudioPowerController alloc];
-    v5 = [(DIDropInCenter *)self connectionManager];
-    v6 = [(DIAudioPowerController *)v4 initWithConnectionManager:v5];
+    connectionManager = [(DIDropInCenter *)self connectionManager];
+    v6 = [(DIAudioPowerController *)v4 initWithConnectionManager:connectionManager];
     v7 = self->_audioPowerController;
     self->_audioPowerController = v6;
 
@@ -120,8 +120,8 @@
   if (!audioSystemController)
   {
     v4 = [DIAudioSystemController alloc];
-    v5 = [(DIDropInCenter *)self connectionManager];
-    v6 = [(DIAudioSystemController *)v4 initWithConnectionManager:v5];
+    connectionManager = [(DIDropInCenter *)self connectionManager];
+    v6 = [(DIAudioSystemController *)v4 initWithConnectionManager:connectionManager];
     v7 = self->_audioSystemController;
     self->_audioSystemController = v6;
 
@@ -131,14 +131,14 @@
   return audioSystemController;
 }
 
-- (void)startSessionWithRequest:(id)a3 completionHandler:(id)a4
+- (void)startSessionWithRequest:(id)request completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DIDropInCenter *)self connectionManager];
-  v9 = [v8 manager];
-  v10 = [v9 clientContext];
+  requestCopy = request;
+  handlerCopy = handler;
+  connectionManager = [(DIDropInCenter *)self connectionManager];
+  manager = [connectionManager manager];
+  clientContext = [manager clientContext];
 
   v11 = DILogHandleDropInCenter();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -146,21 +146,21 @@
     *buf = 138412546;
     v24 = &stru_285D02BA8;
     v25 = 2112;
-    v26 = v6;
+    v26 = requestCopy;
     _os_log_impl(&dword_249DA7000, v11, OS_LOG_TYPE_DEFAULT, "%@Start session with request %@", buf, 0x16u);
   }
 
-  v12 = [(DIDropInCenter *)self connectionManager];
-  v13 = [v12 manager];
-  v14 = [v13 connection];
+  connectionManager2 = [(DIDropInCenter *)self connectionManager];
+  manager2 = [connectionManager2 manager];
+  connection = [manager2 connection];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __60__DIDropInCenter_startSessionWithRequest_completionHandler___block_invoke;
   v21[3] = &unk_278FB8D18;
   v21[4] = self;
-  v15 = v7;
+  v15 = handlerCopy;
   v22 = v15;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v21];
+  v16 = [connection remoteObjectProxyWithErrorHandler:v21];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __60__DIDropInCenter_startSessionWithRequest_completionHandler___block_invoke_2;
@@ -168,7 +168,7 @@
   v19[4] = self;
   v20 = v15;
   v17 = v15;
-  [v16 startSessionWithContext:v10 request:v6 completionHandler:v19];
+  [v16 startSessionWithContext:clientContext request:requestCopy completionHandler:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -262,22 +262,22 @@ LABEL_6:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)managerDidInterruptConnection:(id)a3
+- (void)managerDidInterruptConnection:(id)connection
 {
-  v4 = [(DIDropInCenter *)self delegate];
+  delegate = [(DIDropInCenter *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DIDropInCenter *)self connectionManager];
-    v7 = [v6 manager];
-    v8 = [v7 clientQueue];
+    connectionManager = [(DIDropInCenter *)self connectionManager];
+    manager = [connectionManager manager];
+    clientQueue = [manager clientQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __48__DIDropInCenter_managerDidInterruptConnection___block_invoke;
     v9[3] = &unk_278FB8F78;
     v9[4] = self;
-    [DIUtilities onQueue:v8 block:v9];
+    [DIUtilities onQueue:clientQueue block:v9];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface MapsSuggestionsShortcutAtMapItemDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
-- (MapsSuggestionsShortcutAtMapItemDeduper)initWithSacrificedTypes:(const void *)a3;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
+- (MapsSuggestionsShortcutAtMapItemDeduper)initWithSacrificedTypes:(const void *)types;
 - (id).cxx_construct;
 @end
 
@@ -14,7 +14,7 @@
   return self;
 }
 
-- (MapsSuggestionsShortcutAtMapItemDeduper)initWithSacrificedTypes:(const void *)a3
+- (MapsSuggestionsShortcutAtMapItemDeduper)initWithSacrificedTypes:(const void *)types
 {
   v8.receiver = self;
   v8.super_class = MapsSuggestionsShortcutAtMapItemDeduper;
@@ -23,22 +23,22 @@
   if (v4)
   {
     p_types = &v4->_types;
-    if (&v5->_types != a3)
+    if (&v5->_types != types)
     {
-      std::vector<MapsSuggestionsEntryType>::__assign_with_size[abi:ne200100]<MapsSuggestionsEntryType*,MapsSuggestionsEntryType*>(p_types, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 3);
+      std::vector<MapsSuggestionsEntryType>::__assign_with_size[abi:ne200100]<MapsSuggestionsEntryType*,MapsSuggestionsEntryType*>(p_types, *types, *(types + 1), (*(types + 1) - *types) >> 3);
     }
   }
 
   return v5;
 }
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v8 = withEntryCopy;
+  if (!entryCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -63,7 +63,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!withEntryCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -83,9 +83,9 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (([v6 hasMultipleWaypointsLeft] & 1) == 0 && (objc_msgSend(v8, "hasMultipleWaypointsLeft") & 1) == 0)
+  if (([entryCopy hasMultipleWaypointsLeft] & 1) == 0 && (objc_msgSend(v8, "hasMultipleWaypointsLeft") & 1) == 0)
   {
-    v13 = v6;
+    v13 = entryCopy;
     v14 = v8;
     if ([v13 isShortcut]&& (v10 = v13, v15 = v14, ([v14 isShortcut]& 1) == 0) || [v14 isShortcut]&& (v10 = v14, v15 = v13, ![v13 isShortcut]))
     {
@@ -106,9 +106,9 @@ LABEL_12:
         do
         {
           v19 = *(v18 - 1);
-          v20 = [v16 type];
-          v22 = v19 == v20;
-          v21 = v19 != v20;
+          type = [v16 type];
+          v22 = v19 == type;
+          v21 = v19 != type;
           v22 = v22 || v18 == v17;
           v18 += 8;
         }
@@ -124,17 +124,17 @@ LABEL_12:
 
       if (!v21)
       {
-        v23 = [v13 geoMapItem];
-        if (v23)
+        geoMapItem = [v13 geoMapItem];
+        if (geoMapItem)
         {
-          v24 = [v14 geoMapItem];
-          v25 = v24 == 0;
+          geoMapItem2 = [v14 geoMapItem];
+          v25 = geoMapItem2 == 0;
 
           if (!v25)
           {
-            v26 = [v13 geoMapItem];
-            v27 = [v14 geoMapItem];
-            v28 = MapsSuggestionsMapItemsAreEqual(v26, v27, 0, 0, 0);
+            geoMapItem3 = [v13 geoMapItem];
+            geoMapItem4 = [v14 geoMapItem];
+            v28 = MapsSuggestionsMapItemsAreEqual(geoMapItem3, geoMapItem4, 0, 0, 0);
 
             if (v28)
             {

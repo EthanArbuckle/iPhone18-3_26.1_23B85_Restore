@@ -1,16 +1,16 @@
 @interface BMFileAttributes
-- (BMFileAttributes)initWithCoder:(id)a3;
-- (BMFileAttributes)initWithPath:(id)a3 mode:(unint64_t)a4 protectionClass:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BMFileAttributes)initWithCoder:(id)coder;
+- (BMFileAttributes)initWithPath:(id)path mode:(unint64_t)mode protectionClass:(unint64_t)class;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMFileAttributes
 
-- (BMFileAttributes)initWithPath:(id)a3 mode:(unint64_t)a4 protectionClass:(unint64_t)a5
+- (BMFileAttributes)initWithPath:(id)path mode:(unint64_t)mode protectionClass:(unint64_t)class
 {
-  v8 = a3;
-  if (![v8 length])
+  pathCopy = path;
+  if (![pathCopy length])
   {
     [BMFileAttributes initWithPath:mode:protectionClass:];
   }
@@ -20,33 +20,33 @@
   v9 = [(BMFileAttributes *)&v15 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [pathCopy copy];
     path = v9->_path;
     v9->_path = v10;
 
-    v12 = [(NSString *)v9->_path lastPathComponent];
+    lastPathComponent = [(NSString *)v9->_path lastPathComponent];
     filename = v9->_filename;
-    v9->_filename = v12;
+    v9->_filename = lastPathComponent;
 
-    v9->_mode = a4;
-    v9->_protectionClass = a5;
+    v9->_mode = mode;
+    v9->_protectionClass = class;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     v7 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)v6->_path isEqual:self->_path]&& v6->_mode == self->_mode;
   }
@@ -54,19 +54,19 @@
   return v7;
 }
 
-- (BMFileAttributes)initWithCoder:(id)a3
+- (BMFileAttributes)initWithCoder:(id)coder
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
   path = self->_path;
   self->_path = v5;
 
-  v7 = [(NSString *)self->_path lastPathComponent];
+  lastPathComponent = [(NSString *)self->_path lastPathComponent];
   filename = self->_filename;
-  self->_filename = v7;
+  self->_filename = lastPathComponent;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mode"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mode"];
   v10 = v9;
   if (!v9 || [v9 unsignedIntegerValue] >= 4)
   {
@@ -79,16 +79,16 @@
 LABEL_8:
     v19 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:1];
     v20 = [v15 errorWithDomain:@"BiomeStorageError" code:2 userInfo:v19];
-    [v4 failWithError:v20];
+    [coderCopy failWithError:v20];
 
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
-  v11 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  self->_mode = v11;
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mode"];
+  self->_mode = unsignedIntegerValue;
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mode"];
   v10 = v12;
   if (!v12 || [v12 unsignedIntegerValue] >= 7)
   {
@@ -101,26 +101,26 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v13 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
-  self->_protectionClass = v13;
-  v14 = self;
+  self->_protectionClass = unsignedIntegerValue2;
+  selfCopy = self;
 LABEL_9:
 
   v21 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   path = self->_path;
-  v5 = a3;
-  [v5 encodeObject:path forKey:@"path"];
+  coderCopy = coder;
+  [coderCopy encodeObject:path forKey:@"path"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_mode];
-  [v5 encodeObject:v6 forKey:@"mode"];
+  [coderCopy encodeObject:v6 forKey:@"mode"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_protectionClass];
-  [v5 encodeObject:v7 forKey:@"prot"];
+  [coderCopy encodeObject:v7 forKey:@"prot"];
 }
 
 - (void)initWithPath:mode:protectionClass:.cold.1()

@@ -1,18 +1,18 @@
 @interface SCATMenuItemFactory
-+ (id)actionMenuItemForItem:(id)a3 menu:(id)a4 delegate:(id)a5;
-+ (id)menuItemsForItem:(id)a3 menu:(id)a4 delegate:(id)a5;
++ (id)actionMenuItemForItem:(id)item menu:(id)menu delegate:(id)delegate;
++ (id)menuItemsForItem:(id)item menu:(id)menu delegate:(id)delegate;
 @end
 
 @implementation SCATMenuItemFactory
 
-+ (id)menuItemsForItem:(id)a3 menu:(id)a4 delegate:(id)a5
++ (id)menuItemsForItem:(id)item menu:(id)menu delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  menuCopy = menu;
+  delegateCopy = delegate;
   v10 = +[AXSettings sharedInstance];
-  v11 = [v10 gestureKeys];
-  v12 = [v11 containsObject:v7];
+  gestureKeys = [v10 gestureKeys];
+  v12 = [gestureKeys containsObject:itemCopy];
 
   if (v12)
   {
@@ -21,8 +21,8 @@
 
   else
   {
-    v14 = [v10 settingsKeys];
-    v15 = [v14 containsObject:v7];
+    settingsKeys = [v10 settingsKeys];
+    v15 = [settingsKeys containsObject:itemCopy];
 
     if (v15)
     {
@@ -31,8 +31,8 @@
 
     else
     {
-      v16 = [v10 deviceKeys];
-      v17 = [v16 containsObject:v7];
+      deviceKeys = [v10 deviceKeys];
+      v17 = [deviceKeys containsObject:itemCopy];
 
       if (v17)
       {
@@ -41,8 +41,8 @@
 
       else
       {
-        v18 = [v10 mediaControlsKeys];
-        v19 = [v18 containsObject:v7];
+        mediaControlsKeys = [v10 mediaControlsKeys];
+        v19 = [mediaControlsKeys containsObject:itemCopy];
 
         v13 = off_1001D1A20;
         if (v19)
@@ -53,17 +53,17 @@
     }
   }
 
-  v20 = [(__objc2_class *)*v13 menuItemsForItem:v7 menu:v8 delegate:v9];
+  v20 = [(__objc2_class *)*v13 menuItemsForItem:itemCopy menu:menuCopy delegate:delegateCopy];
 
   return v20;
 }
 
-+ (id)actionMenuItemForItem:(id)a3 menu:(id)a4 delegate:(id)a5
++ (id)actionMenuItemForItem:(id)item menu:(id)menu delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  menuCopy = menu;
   swift_unknownObjectRetain();
-  v9 = sub_10010222C(v7, a5);
+  v9 = sub_10010222C(itemCopy, delegate);
 
   swift_unknownObjectRelease();
 

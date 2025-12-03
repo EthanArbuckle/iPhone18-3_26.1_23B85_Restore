@@ -1,10 +1,10 @@
 @interface CKAppSearchResultsTableViewController
 - (CKBrowserAppManagerViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)searchEnded;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -15,37 +15,37 @@
   v8.receiver = self;
   v8.super_class = CKAppSearchResultsTableViewController;
   [(CKAppSearchResultsTableViewController *)&v8 viewDidLoad];
-  v3 = [(CKAppSearchResultsTableViewController *)self tableView];
+  tableView = [(CKAppSearchResultsTableViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = +[CKAppManagerAppTableViewCell reuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [tableView registerClass:v4 forCellReuseIdentifier:v5];
 
   [(CKAppSearchResultsTableViewController *)self setClearsSelectionOnViewWillAppear:0];
-  v6 = [(CKAppSearchResultsTableViewController *)self editButtonItem];
-  v7 = [(CKAppSearchResultsTableViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v6];
+  editButtonItem = [(CKAppSearchResultsTableViewController *)self editButtonItem];
+  navigationItem = [(CKAppSearchResultsTableViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:editButtonItem];
 }
 
 - (void)searchEnded
 {
   [(CKAppSearchResultsTableViewController *)self setSearchResults:0];
-  v3 = [(CKAppSearchResultsTableViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(CKAppSearchResultsTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(CKAppSearchResultsTableViewController *)self searchResults:a3];
+  v4 = [(CKAppSearchResultsTableViewController *)self searchResults:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = [a4 row];
-  v6 = [(CKAppSearchResultsTableViewController *)self searchResults];
-  v7 = [v6 objectAtIndex:v5];
+  v5 = [path row];
+  searchResults = [(CKAppSearchResultsTableViewController *)self searchResults];
+  v7 = [searchResults objectAtIndex:v5];
 
   if (v7)
   {
@@ -64,32 +64,32 @@
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && [v7 row] != 0x7FFFFFFFFFFFFFFFLL)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (pathCopy && [pathCopy row] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [(CKAppSearchResultsTableViewController *)self searchResults];
-    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v8, "row")}];
+    searchResults = [(CKAppSearchResultsTableViewController *)self searchResults];
+    v10 = [searchResults objectAtIndexedSubscript:{objc_msgSend(v8, "row")}];
 
     if (v10)
     {
       v11 = +[CKBalloonPluginManager sharedInstance];
-      v12 = [v11 visibleDrawerPlugins];
-      v13 = [v12 containsObject:v10];
+      visibleDrawerPlugins = [v11 visibleDrawerPlugins];
+      v13 = [visibleDrawerPlugins containsObject:v10];
 
       if ((v13 & 1) == 0)
       {
-        v14 = [v10 identifier];
-        [v11 updateInteractionTimeForPlugin:v14];
+        identifier = [v10 identifier];
+        [v11 updateInteractionTimeForPlugin:identifier];
 
         [v11 commitInteractionTimeOrderingChanges];
       }
 
-      v15 = [(CKAppSearchResultsTableViewController *)self delegate];
-      [v15 browserAppManagerDidSelectPlugin:v10];
+      delegate = [(CKAppSearchResultsTableViewController *)self delegate];
+      [delegate browserAppManagerDidSelectPlugin:v10];
     }
 
     else
@@ -103,31 +103,31 @@
     }
   }
 
-  v16 = [(CKAppSearchResultsTableViewController *)self tableView];
-  [v16 deselectRowAtIndexPath:v8 animated:1];
+  tableView = [(CKAppSearchResultsTableViewController *)self tableView];
+  [tableView deselectRowAtIndexPath:v8 animated:1];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v9 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
-  if ([v9 length])
+  if ([text length])
   {
-    v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"browserDisplayName contains[cd] %@", v9];
-    v6 = [(CKAppSearchResultsTableViewController *)self allPlugins];
-    v7 = [v6 filteredArrayUsingPredicate:v5];
+    tableView2 = [MEMORY[0x1E696AE18] predicateWithFormat:@"browserDisplayName contains[cd] %@", text];
+    allPlugins = [(CKAppSearchResultsTableViewController *)self allPlugins];
+    v7 = [allPlugins filteredArrayUsingPredicate:tableView2];
 
     [(CKAppSearchResultsTableViewController *)self setSearchResults:v7];
-    v8 = [(CKAppSearchResultsTableViewController *)self tableView];
-    [v8 reloadData];
+    tableView = [(CKAppSearchResultsTableViewController *)self tableView];
+    [tableView reloadData];
   }
 
   else
   {
     [(CKAppSearchResultsTableViewController *)self setSearchResults:0];
-    v5 = [(CKAppSearchResultsTableViewController *)self tableView];
-    [v5 reloadData];
+    tableView2 = [(CKAppSearchResultsTableViewController *)self tableView];
+    [tableView2 reloadData];
   }
 }
 

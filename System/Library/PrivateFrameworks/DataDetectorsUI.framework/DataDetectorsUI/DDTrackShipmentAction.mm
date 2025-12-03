@@ -1,24 +1,24 @@
 @interface DDTrackShipmentAction
-- (DDTrackShipmentAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
+- (DDTrackShipmentAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context;
 - (id)notificationTitle;
 - (id)quickActionTitle;
-- (void)performFromView:(id)a3;
+- (void)performFromView:(id)view;
 @end
 
 @implementation DDTrackShipmentAction
 
-- (DDTrackShipmentAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
+- (DDTrackShipmentAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v8 && a4)
+  lCopy = l;
+  contextCopy = context;
+  if (!lCopy && result)
   {
-    v8 = DDShipmentTrackingUrlForResult();
+    lCopy = DDShipmentTrackingUrlForResult();
   }
 
   v12.receiver = self;
   v12.super_class = DDTrackShipmentAction;
-  v10 = [(DDAction *)&v12 initWithURL:v8 result:a4 context:v9];
+  v10 = [(DDAction *)&v12 initWithURL:lCopy result:result context:contextCopy];
 
   return v10;
 }
@@ -84,29 +84,29 @@ LABEL_5:
       CFArrayGetValueAtIndex(SubResults, 0);
       v13 = DDResultGetMatchedString();
       v14 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"];
-      v15 = [v14 invertedSet];
-      v16 = [v13 componentsSeparatedByCharactersInSet:v15];
+      invertedSet = [v14 invertedSet];
+      v16 = [v13 componentsSeparatedByCharactersInSet:invertedSet];
       v17 = [v16 componentsJoinedByString:&stru_282C1E0A8];
 
-      v18 = v17;
+      localizedName = v17;
       goto LABEL_15;
     }
   }
 
 LABEL_14:
 
-  v18 = [(DDTrackShipmentAction *)self localizedName];
+  localizedName = [(DDTrackShipmentAction *)self localizedName];
 LABEL_15:
   v19 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return localizedName;
 }
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
   if (self->super._url)
   {
-    [(DDAction *)self _performFromView:a3 byOpeningURL:?];
+    [(DDAction *)self _performFromView:view byOpeningURL:?];
   }
 }
 

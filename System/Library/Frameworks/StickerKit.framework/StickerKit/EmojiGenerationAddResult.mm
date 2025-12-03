@@ -1,15 +1,15 @@
 @interface EmojiGenerationAddResult
 - (_TtC10StickerKitP33_05A313237EDA246051A5A9ECF50D6C3A24EmojiGenerationAddResult)init;
-- (void)setSticker:(id)a3;
+- (void)setSticker:(id)sticker;
 @end
 
 @implementation EmojiGenerationAddResult
 
-- (void)setSticker:(id)a3
+- (void)setSticker:(id)sticker
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC10StickerKitP33_05A313237EDA246051A5A9ECF50D6C3A24EmojiGenerationAddResult_sticker);
-  *(&self->super.isa + OBJC_IVAR____TtC10StickerKitP33_05A313237EDA246051A5A9ECF50D6C3A24EmojiGenerationAddResult_sticker) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC10StickerKitP33_05A313237EDA246051A5A9ECF50D6C3A24EmojiGenerationAddResult_sticker) = sticker;
+  stickerCopy = sticker;
 }
 
 - (_TtC10StickerKitP33_05A313237EDA246051A5A9ECF50D6C3A24EmojiGenerationAddResult)init

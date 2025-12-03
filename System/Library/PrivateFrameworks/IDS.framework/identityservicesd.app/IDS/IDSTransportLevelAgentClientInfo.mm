@@ -1,13 +1,13 @@
 @interface IDSTransportLevelAgentClientInfo
-- (IDSTransportLevelAgentClientInfo)initWithAgentClient:(id)a3 assign:(id)a4 parameters:(id)a5;
-- (IDSTransportLevelAgentClientInfo)initWithClientUUID:(id)a3;
+- (IDSTransportLevelAgentClientInfo)initWithAgentClient:(id)client assign:(id)assign parameters:(id)parameters;
+- (IDSTransportLevelAgentClientInfo)initWithClientUUID:(id)d;
 @end
 
 @implementation IDSTransportLevelAgentClientInfo
 
-- (IDSTransportLevelAgentClientInfo)initWithClientUUID:(id)a3
+- (IDSTransportLevelAgentClientInfo)initWithClientUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = IDSTransportLevelAgentClientInfo;
   v6 = [(IDSTransportLevelAgentClientInfo *)&v25 init];
@@ -17,10 +17,10 @@
     goto LABEL_17;
   }
 
-  objc_storeStrong(&v6->_clientUUID, a3);
+  objc_storeStrong(&v6->_clientUUID, d);
   v28[0] = 0xAAAAAAAAAAAAAAAALL;
   v28[1] = 0xAAAAAAAAAAAAAAAALL;
-  [v5 getUUIDBytes:v28];
+  [dCopy getUUIDBytes:v28];
   v8 = nw_path_copy_path_for_client();
   if (!v8)
   {
@@ -28,7 +28,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v5;
+      v27 = dCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "nw_path_copy_path_for_client failed for client %@", buf, 0xCu);
     }
 
@@ -94,17 +94,17 @@ LABEL_18:
   return v22;
 }
 
-- (IDSTransportLevelAgentClientInfo)initWithAgentClient:(id)a3 assign:(id)a4 parameters:(id)a5
+- (IDSTransportLevelAgentClientInfo)initWithAgentClient:(id)client assign:(id)assign parameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clientCopy = client;
+  assignCopy = assign;
+  parametersCopy = parameters;
   v23.receiver = self;
   v23.super_class = IDSTransportLevelAgentClientInfo;
   v11 = [(IDSTransportLevelAgentClientInfo *)&v23 init];
   if (v11)
   {
-    v12 = objc_retainBlock(v9);
+    v12 = objc_retainBlock(assignCopy);
     assign = v11->_assign;
     v11->_assign = v12;
 
@@ -116,7 +116,7 @@ LABEL_18:
     path = v11->_path;
     v11->_path = v16;
 
-    v18 = [[IDSGroupSessionConnectionParameters alloc] initWithStringRepresentation:v10];
+    v18 = [[IDSGroupSessionConnectionParameters alloc] initWithStringRepresentation:parametersCopy];
     multiplexerParams = v11->_multiplexerParams;
     v11->_multiplexerParams = v18;
 

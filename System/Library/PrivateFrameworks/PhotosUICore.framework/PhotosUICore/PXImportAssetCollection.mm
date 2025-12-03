@@ -1,21 +1,21 @@
 @interface PXImportAssetCollection
 + (id)dayFormatter;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXImportAssetCollection)init;
 - (id)arrangedObjects;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)itemAtIndex:(unint64_t)a3;
+- (id)itemAtIndex:(unint64_t)index;
 - (id)localizedTitle;
 - (id)unsortedObjects;
-- (int64_t)indexOfItem:(id)a3;
+- (int64_t)indexOfItem:(id)item;
 - (int64_t)numberOfItems;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
-- (void)arrangedObjects:(id)a3;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
+- (void)arrangedObjects:(id)objects;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
-- (void)removeObjectsInRange:(_NSRange)a3;
+- (void)removeObject:(id)object;
+- (void)removeObjectsInRange:(_NSRange)range;
 @end
 
 @implementation PXImportAssetCollection
@@ -45,8 +45,8 @@
     dispatch_sync(assetQueue, v7);
     if (v9[5])
     {
-      v5 = [objc_opt_class() dayFormatter];
-      v3 = [v5 stringFromDate:v9[5]];
+      dayFormatter = [objc_opt_class() dayFormatter];
+      v3 = [dayFormatter stringFromDate:v9[5]];
     }
 
     else
@@ -77,9 +77,9 @@ void __41__PXImportAssetCollection_localizedTitle__block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)indexOfItem:(id)a3
+- (int64_t)indexOfItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -89,10 +89,10 @@ void __41__PXImportAssetCollection_localizedTitle__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__PXImportAssetCollection_indexOfItem___block_invoke;
   block[3] = &unk_1E7746448;
-  v10 = v4;
+  v10 = itemCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = itemCopy;
   dispatch_sync(assetQueue, block);
   v7 = v13[3];
 
@@ -106,7 +106,7 @@ void __39__PXImportAssetCollection_indexOfItem___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [v2 indexOfObject:*(a1 + 40)];
 }
 
-- (id)itemAtIndex:(unint64_t)a3
+- (id)itemAtIndex:(unint64_t)index
 {
   v19 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -121,7 +121,7 @@ void __39__PXImportAssetCollection_indexOfItem___block_invoke(uint64_t a1)
   block[2] = __39__PXImportAssetCollection_itemAtIndex___block_invoke;
   block[3] = &unk_1E77477B8;
   block[5] = &v9;
-  block[6] = a3;
+  block[6] = index;
   block[4] = self;
   dispatch_sync(assetQueue, block);
   v4 = _importDataLog();
@@ -196,11 +196,11 @@ void __42__PXImportAssetCollection_unsortedObjects__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)arrangedObjects:(id)a3
+- (void)arrangedObjects:(id)objects
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  objectsCopy = objects;
+  v5 = objectsCopy;
+  if (objectsCopy)
   {
     assetQueue = self->_assetQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -208,7 +208,7 @@ void __42__PXImportAssetCollection_unsortedObjects__block_invoke(uint64_t a1)
     v7[2] = __43__PXImportAssetCollection_arrangedObjects___block_invoke;
     v7[3] = &unk_1E774C2F0;
     v7[4] = self;
-    v8 = v4;
+    v8 = objectsCopy;
     dispatch_sync(assetQueue, v7);
   }
 }
@@ -228,9 +228,9 @@ void __43__PXImportAssetCollection_arrangedObjects___block_invoke(uint64_t a1)
     v3 = [(NSMutableArray *)self->_assetList mutableCopy];
     [v3 sortUsingComparator:&__block_literal_global_14_144910];
     v4 = +[PXImportExpansionPlaceholderViewModel sharedInstance];
-    v5 = [v3 firstObject];
+    firstObject = [v3 firstObject];
 
-    if (v5 == v4)
+    if (firstObject == v4)
     {
       [v3 removeObject:v4];
       [v3 insertObject:v4 atIndex:{objc_msgSend(v3, "count") / 2}];
@@ -294,10 +294,10 @@ uint64_t __40__PXImportAssetCollection_numberOfItems__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeObjectsInRange:(_NSRange)a3
+- (void)removeObjectsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v14 = *MEMORY[0x1E69E9840];
   v6 = _importDataLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -401,17 +401,17 @@ uint64_t __43__PXImportAssetCollection_removeAllObjects__block_invoke(uint64_t a
   return result;
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v5 = _importDataLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v11 = "[PXImportAssetCollection removeObject:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = objectCopy;
     _os_log_debug_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "%s: %@", buf, 0x16u);
   }
 
@@ -421,8 +421,8 @@ uint64_t __43__PXImportAssetCollection_removeAllObjects__block_invoke(uint64_t a
   v8[2] = __40__PXImportAssetCollection_removeObject___block_invoke;
   v8[3] = &unk_1E774C620;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = objectCopy;
+  v7 = objectCopy;
   dispatch_sync(assetQueue, v8);
 }
 
@@ -458,17 +458,17 @@ void __40__PXImportAssetCollection_removeObject___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v5 = _importDataLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v12 = "[PXImportAssetCollection addObjectsFromArray:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = arrayCopy;
     _os_log_debug_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "%s: %@", buf, 0x16u);
   }
 
@@ -477,9 +477,9 @@ void __40__PXImportAssetCollection_removeObject___block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __47__PXImportAssetCollection_addObjectsFromArray___block_invoke;
   v8[3] = &unk_1E774C620;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = arrayCopy;
+  selfCopy = self;
+  v7 = arrayCopy;
   dispatch_sync(assetQueue, v8);
 }
 
@@ -544,17 +544,17 @@ void __47__PXImportAssetCollection_addObjectsFromArray___block_invoke(uint64_t a
   *(*(a1 + 40) + 40) = 1;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v5 = _importDataLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v11 = "[PXImportAssetCollection addObject:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = objectCopy;
     _os_log_debug_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "%s: %@", buf, 0x16u);
   }
 
@@ -564,8 +564,8 @@ void __47__PXImportAssetCollection_addObjectsFromArray___block_invoke(uint64_t a
   v8[2] = __37__PXImportAssetCollection_addObject___block_invoke;
   v8[3] = &unk_1E774C620;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = objectCopy;
+  v7 = objectCopy;
   dispatch_sync(assetQueue, v8);
 }
 
@@ -605,38 +605,38 @@ void __37__PXImportAssetCollection_addObject___block_invoke(uint64_t a1)
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PXImportAssetCollection *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ <%p> %@ (%ld items)", v4, self, v5, -[PXImportAssetCollection numberOfItems](self, "numberOfItems")];
+  identifier = [(PXImportAssetCollection *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ <%p> %@ (%ld items)", v4, self, identifier, -[PXImportAssetCollection numberOfItems](self, "numberOfItems")];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXImportAssetCollection *)self identifier];
-    v7 = [v5 identifier];
+    v5 = equalCopy;
+    identifier = [(PXImportAssetCollection *)self identifier];
+    identifier2 = [v5 identifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [identifier isEqualToString:identifier2];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = PXImportAssetCollection;
-    v8 = [(PXImportAssetCollection *)&v10 isEqual:v4];
+    v8 = [(PXImportAssetCollection *)&v10 isEqual:equalCopy];
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableArray *)self->_assetList mutableCopy];
   v6 = *(v4 + 16);
   *(v4 + 16) = v5;

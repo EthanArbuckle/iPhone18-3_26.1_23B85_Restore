@@ -1,34 +1,34 @@
 @interface BWStillImageScalerNode
 + (void)initialize;
-- (BWStillImageScalerNode)initWithBasePoolCapacity:(int)a3 nodeConfiguration:(id)a4;
+- (BWStillImageScalerNode)initWithBasePoolCapacity:(int)capacity nodeConfiguration:(id)configuration;
 - (uint64_t)_buildPrimaryFormatScalingSession;
-- (uint64_t)_outputDimensionsForAttachedMediaKey:(unint64_t)a3 attachedMediaMainImageDownscalingFactor:(unint64_t)a4 primaryMediaWidth:(unint64_t)a5 primaryMediaHeight:(unint64_t)a6 requestedWidth:(int)a7 requestedHeight:(int)a8 zoomWithoutUpscalingEnabled:(float)a9 aspectRatio:(double)a10 inputDimensions:(double)a11 normalizedZoomRect:(double)a12 optimizedEnhancedResolutionDepthCapture:(double)a13;
-- (uint64_t)_removeUnmodifiedAttachedMedias:(uint64_t)a1;
-- (uint64_t)_resolveScalerModeWithSettings:(uint64_t)a3 inputDimensions:(int)a4 inputPixelFormat:(unint64_t)a5 outputDimensions:(void *)a6 normalizedInputCropRect:(int *)a7 attachedMediaThatRequiresDifferentScalingThanPrimaryMedia:(CGFloat *)a8 stillImageScalerModeOut:(double)a9 scaledDenormalizedInputCropRectOut:(double)a10 mediaToProcessOut:(double)a11;
-- (uint64_t)_resolvedPoolCapacityForSettings:(uint64_t)a3 inputDimensions:(uint64_t)a4 outputDimensions:;
+- (uint64_t)_outputDimensionsForAttachedMediaKey:(unint64_t)key attachedMediaMainImageDownscalingFactor:(unint64_t)factor primaryMediaWidth:(unint64_t)width primaryMediaHeight:(unint64_t)height requestedWidth:(int)requestedWidth requestedHeight:(int)requestedHeight zoomWithoutUpscalingEnabled:(float)enabled aspectRatio:(double)self0 inputDimensions:(double)self1 normalizedZoomRect:(double)self2 optimizedEnhancedResolutionDepthCapture:(double)self3;
+- (uint64_t)_removeUnmodifiedAttachedMedias:(uint64_t)medias;
+- (uint64_t)_resolveScalerModeWithSettings:(uint64_t)settings inputDimensions:(int)dimensions inputPixelFormat:(unint64_t)format outputDimensions:(void *)outputDimensions normalizedInputCropRect:(int *)rect attachedMediaThatRequiresDifferentScalingThanPrimaryMedia:(CGFloat *)media stillImageScalerModeOut:(double)out scaledDenormalizedInputCropRectOut:(double)self0 mediaToProcessOut:(double)self1;
+- (uint64_t)_resolvedPoolCapacityForSettings:(uint64_t)settings inputDimensions:(uint64_t)dimensions outputDimensions:;
 - (uint64_t)_shouldPurgeAllResourcesAfterProcessingSettings:(uint64_t)result;
-- (uint64_t)mainImageDownscalingFactorForAttachedMediaKey:(void *)a3 attachedMediaMetadata:;
-- (unint64_t)_resolveOutputDimensionsForSampleBuffer:(void *)a3 settings:(uint64_t)a4 inputDimensions:;
+- (uint64_t)mainImageDownscalingFactorForAttachedMediaKey:(void *)key attachedMediaMetadata:;
+- (unint64_t)_resolveOutputDimensionsForSampleBuffer:(void *)buffer settings:(uint64_t)settings inputDimensions:;
 - (void)_attachedMediaKeysThatRequireDifferentScalingThanPrimaryMediaSampleBuffer:primaryMediaNormalizedInputCropRect:primaryMediaRequestedOutputWidth:primaryMediaRequestedOutputHeight:;
 - (void)_blackenBorderForAttachedMedia:sampleBuffer:normalizedInputCropRect:requestedSettings:;
-- (void)_purgeResourcesLeavingThemForMediaToProcess:(uint64_t)a1;
-- (void)_rebuildBufferPoolForAttachedMediaKey:(uint64_t)a3 attachedMediaMainImageDownscalingFactor:(uint64_t)a4 inputDimensions:(void *)a5 outputDimensions:(float)a6 settings:;
-- (void)_rebuildPrimaryFormatBufferPoolForInputDimensions:(uint64_t)a3 inputPixelFormat:(uint64_t)a4 outputDimensions:(void *)a5 settings:;
+- (void)_purgeResourcesLeavingThemForMediaToProcess:(uint64_t)process;
+- (void)_rebuildBufferPoolForAttachedMediaKey:(uint64_t)key attachedMediaMainImageDownscalingFactor:(uint64_t)factor inputDimensions:(void *)dimensions outputDimensions:(float)outputDimensions settings:;
+- (void)_rebuildPrimaryFormatBufferPoolForInputDimensions:(uint64_t)dimensions inputPixelFormat:(uint64_t)format outputDimensions:(void *)outputDimensions settings:;
 - (void)_zoomAttachedMedia:sampleBuffer:;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setBlackFillingRequired:(BOOL)a3;
-- (void)setMainImageDownscalingFactorByAttachedMediaKey:(id)a3;
-- (void)setOutputSizeByAttachedMediaKey:(id)a3;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setBlackFillingRequired:(BOOL)required;
+- (void)setMainImageDownscalingFactorByAttachedMediaKey:(id)key;
+- (void)setOutputSizeByAttachedMediaKey:(id)key;
 @end
 
 @implementation BWStillImageScalerNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -37,9 +37,9 @@
   }
 }
 
-- (BWStillImageScalerNode)initWithBasePoolCapacity:(int)a3 nodeConfiguration:(id)a4
+- (BWStillImageScalerNode)initWithBasePoolCapacity:(int)capacity nodeConfiguration:(id)configuration
 {
-  if (a3 <= 0)
+  if (capacity <= 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"baseCapacity must be >= 1" userInfo:0]);
   }
@@ -51,7 +51,7 @@
   if (v6)
   {
     [(BWNode *)v6 setSupportsLiveReconfiguration:1];
-    v7->_nodeConfiguration = a4;
+    v7->_nodeConfiguration = configuration;
     v8 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v7];
     [(BWNodeInput *)v8 setFormatRequirements:+[BWVideoFormatRequirements formatRequirements]];
     [(BWNodeInput *)v8 setPassthroughMode:2];
@@ -61,7 +61,7 @@
     [(BWNodeOutput *)v9 setPassthroughMode:2];
     [(BWNodeOutput *)v9 setProvidesPixelBufferPool:0];
     [(BWNode *)v7 addOutput:v9];
-    v7->_poolBaseCapacity = a3;
+    v7->_poolBaseCapacity = capacity;
   }
 
   return v7;
@@ -92,16 +92,16 @@
   [(BWNode *)&v6 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
   v6 = objc_alloc_init(BWVideoFormatRequirements);
-  v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "pixelFormat")}];
+  v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(format, "pixelFormat")}];
   -[BWVideoFormatRequirements setSupportedPixelFormats:](v6, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1]);
   resizedOutputDimensions = self->_resizedOutputDimensions;
   if (resizedOutputDimensions.width < 1 || resizedOutputDimensions.height < 1)
   {
-    -[BWVideoFormatRequirements setWidth:](v6, "setWidth:", [a3 width]);
-    height = [a3 height];
+    -[BWVideoFormatRequirements setWidth:](v6, "setWidth:", [format width]);
+    height = [format height];
   }
 
   else
@@ -112,9 +112,9 @@
 
   [(BWVideoFormatRequirements *)v6 setHeight:height];
   [(BWVideoFormatRequirements *)v6 setSupportedCacheModes:+[BWVideoFormatRequirements cacheModesForOptimizedHWAccess]];
-  if ([a3 colorSpaceProperties])
+  if ([format colorSpaceProperties])
   {
-    v29 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a3, "colorSpaceProperties")}];
+    v29 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(format, "colorSpaceProperties")}];
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
   }
 
@@ -127,27 +127,27 @@
   [(BWNodeOutput *)self->super._output setFormatRequirements:v6];
   [(BWNodeInput *)self->super._input setPassthroughMode:0];
   [(BWNodeOutput *)self->super._output setPassthroughMode:0];
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSDictionary *)self->_mainImageDownscalingFactorByAttachedMediaKey count])
   {
-    [v11 addObjectsFromArray:{-[NSDictionary allKeys](self->_mainImageDownscalingFactorByAttachedMediaKey, "allKeys")}];
+    [array addObjectsFromArray:{-[NSDictionary allKeys](self->_mainImageDownscalingFactorByAttachedMediaKey, "allKeys")}];
   }
 
   if ([(NSDictionary *)self->_outputSizeByAttachedMediaKey count])
   {
-    [v11 addObjectsFromArray:{-[NSDictionary allKeys](self->_outputSizeByAttachedMediaKey, "allKeys")}];
+    [array addObjectsFromArray:{-[NSDictionary allKeys](self->_outputSizeByAttachedMediaKey, "allKeys")}];
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v25 objects:v24 count:16];
+  v12 = [array countByEnumeratingWithState:&v25 objects:v24 count:16];
   if (v12)
   {
     v13 = v12;
     v14 = *v26;
-    obj = v11;
+    obj = array;
     do
     {
       v15 = 0;
@@ -197,13 +197,13 @@
   }
 }
 
-- (void)setBlackFillingRequired:(BOOL)a3
+- (void)setBlackFillingRequired:(BOOL)required
 {
-  v3 = a3;
+  requiredCopy = required;
   if (FigCapturePlatformSupportsUniversalCompression())
   {
-    v5 = [(BWNodeInput *)self->super._input formatRequirements];
-    if (v3)
+    formatRequirements = [(BWNodeInput *)self->super._input formatRequirements];
+    if (requiredCopy)
     {
       v6 = &unk_1F2248388;
     }
@@ -213,33 +213,33 @@
       v6 = 0;
     }
 
-    [(BWFormatRequirements *)v5 setSupportedPixelFormats:v6];
+    [(BWFormatRequirements *)formatRequirements setSupportedPixelFormats:v6];
   }
 
-  self->_blackFillingRequired = v3;
+  self->_blackFillingRequired = requiredCopy;
 }
 
-- (void)setMainImageDownscalingFactorByAttachedMediaKey:(id)a3
+- (void)setMainImageDownscalingFactorByAttachedMediaKey:(id)key
 {
   mainImageDownscalingFactorByAttachedMediaKey = self->_mainImageDownscalingFactorByAttachedMediaKey;
-  if (mainImageDownscalingFactorByAttachedMediaKey != a3)
+  if (mainImageDownscalingFactorByAttachedMediaKey != key)
   {
 
-    self->_mainImageDownscalingFactorByAttachedMediaKey = [a3 copy];
+    self->_mainImageDownscalingFactorByAttachedMediaKey = [key copy];
   }
 }
 
-- (void)setOutputSizeByAttachedMediaKey:(id)a3
+- (void)setOutputSizeByAttachedMediaKey:(id)key
 {
   outputSizeByAttachedMediaKey = self->_outputSizeByAttachedMediaKey;
-  if (outputSizeByAttachedMediaKey != a3)
+  if (outputSizeByAttachedMediaKey != key)
   {
 
-    self->_outputSizeByAttachedMediaKey = [a3 copy];
+    self->_outputSizeByAttachedMediaKey = [key copy];
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   if (dword_1ED8444F0)
   {
@@ -253,10 +253,10 @@
   [(BWStillImageScalerNode *)self _purgeResourcesLeavingThemForMediaToProcess:?];
   v8.receiver = self;
   v8.super_class = BWStillImageScalerNode;
-  [(BWNode *)&v8 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWNode *)&v8 didReachEndOfDataForConfigurationID:d input:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -264,19 +264,19 @@
   }
 
   target = 0;
-  v96 = self;
-  if (!a3 || (ImageBuffer = CMSampleBufferGetImageBuffer(a3)) == 0 || (v7 = ImageBuffer, Width = CVPixelBufferGetWidth(ImageBuffer), Height = CVPixelBufferGetHeight(v7), PixelFormatType = CVPixelBufferGetPixelFormatType(v7), (v11 = CMGetAttachment(a3, *off_1E798A3C8, 0)) == 0))
+  selfCopy = self;
+  if (!buffer || (ImageBuffer = CMSampleBufferGetImageBuffer(buffer)) == 0 || (v7 = ImageBuffer, Width = CVPixelBufferGetWidth(ImageBuffer), Height = CVPixelBufferGetHeight(v7), PixelFormatType = CVPixelBufferGetPixelFormatType(v7), (v11 = CMGetAttachment(buffer, *off_1E798A3C8, 0)) == 0))
   {
     v44 = 0;
     v93 = 0;
 LABEL_78:
-    v42 = 0;
+    newPixelBuffer = 0;
     LOBYTE(v40) = 1;
     goto LABEL_41;
   }
 
   v12 = v11;
-  v13 = CMGetAttachment(a3, @"StillSettings", 0);
+  v13 = CMGetAttachment(buffer, @"StillSettings", 0);
   v93 = v12;
   if (!v13)
   {
@@ -287,8 +287,8 @@ LABEL_78:
   sourceBuffer = v7;
   v14 = Width | (Height << 32);
   v95 = v13;
-  v15 = [v13 requestedSettings];
-  v16 = [(BWStillImageScalerNode *)self _resolveOutputDimensionsForSampleBuffer:a3 settings:v15 inputDimensions:v14];
+  requestedSettings = [v13 requestedSettings];
+  v16 = [(BWStillImageScalerNode *)self _resolveOutputDimensionsForSampleBuffer:buffer settings:requestedSettings inputDimensions:v14];
   FinalCropRect = FigCaptureMetadataUtilitiesGetFinalCropRect();
   v19 = v18;
   v21 = v20;
@@ -313,11 +313,11 @@ LABEL_78:
   v98.size.width = v28;
   v98.size.height = v29;
   v97 = 0;
-  v30 = [(BWStillImageScalerNode *)self _resolveScalerModeWithSettings:v15 inputDimensions:v14 inputPixelFormat:PixelFormatType outputDimensions:v16 normalizedInputCropRect:v26 attachedMediaThatRequiresDifferentScalingThanPrimaryMedia:&v99 stillImageScalerModeOut:&v98.origin.x scaledDenormalizedInputCropRectOut:FinalCropRect mediaToProcessOut:v19, v21, v23, &v97];
+  v30 = [(BWStillImageScalerNode *)self _resolveScalerModeWithSettings:requestedSettings inputDimensions:v14 inputPixelFormat:PixelFormatType outputDimensions:v16 normalizedInputCropRect:v26 attachedMediaThatRequiresDifferentScalingThanPrimaryMedia:&v99 stillImageScalerModeOut:&v98.origin.x scaledDenormalizedInputCropRectOut:FinalCropRect mediaToProcessOut:v19, v21, v23, &v97];
   if (v30)
   {
     v43 = v30;
-    v42 = 0;
+    newPixelBuffer = 0;
     LOBYTE(v40) = 1;
     goto LABEL_82;
   }
@@ -342,7 +342,7 @@ LABEL_78:
         }
 
         v37 = *(v107[1] + 8 * i);
-        if (([v37 isEqualToString:@"PrimaryFormat"] & 1) == 0 && !BWSampleBufferGetAttachedMedia(a3, v37))
+        if (([v37 isEqualToString:@"PrimaryFormat"] & 1) == 0 && !BWSampleBufferGetAttachedMedia(buffer, v37))
         {
           [v32 removeObject:v37];
         }
@@ -356,7 +356,7 @@ LABEL_78:
 
   v90 = v16;
   v97 = [v32 copy];
-  v38 = [CMGetAttachment(a3 @"NonProcessedReferenceFrame"];
+  v38 = [CMGetAttachment(buffer @"NonProcessedReferenceFrame"];
   if (v38)
   {
     v39 = [MEMORY[0x1E695DF70] arrayWithArray:v97];
@@ -364,7 +364,7 @@ LABEL_78:
     v97 = v39;
   }
 
-  if ([CMGetAttachment(a3 @"StillImageBufferFrameType"] == 40)
+  if ([CMGetAttachment(buffer @"StillImageBufferFrameType"] == 40)
   {
     v40 = 1;
   }
@@ -374,19 +374,19 @@ LABEL_78:
     v40 = v38 ^ 1;
   }
 
-  v41 = v96;
+  v41 = selfCopy;
   if (v40 == 1)
   {
-    [(BWStillImageScalerNode *)v96 _purgeResourcesLeavingThemForMediaToProcess:v97];
+    [(BWStillImageScalerNode *)selfCopy _purgeResourcesLeavingThemForMediaToProcess:v97];
   }
 
-  v42 = 0;
+  newPixelBuffer = 0;
   v43 = 0;
   if (v99 > 2)
   {
     if ((v99 - 3) < 2)
     {
-      if (CMSampleBufferGetImageBuffer(a3))
+      if (CMSampleBufferGetImageBuffer(buffer))
       {
         if (dword_1ED8444F0)
         {
@@ -425,15 +425,15 @@ LABEL_78:
         v51 = VTFillPixelBufferBorderWithBlack();
         if (!v51)
         {
-          CMSetAttachment(a3, *off_1E798A5E0, MEMORY[0x1E695E118], 1u);
+          CMSetAttachment(buffer, *off_1E798A5E0, MEMORY[0x1E695E118], 1u);
           [objc_msgSend(MEMORY[0x1E695DF70] arrayWithArray:{v97), "removeObject:", @"PrimaryFormat"}];
           [BWStillImageScalerNode _blackenBorderForAttachedMedia:sampleBuffer:normalizedInputCropRect:requestedSettings:];
           if (v99 != 4)
           {
-            v42 = 0;
+            newPixelBuffer = 0;
             v44 = v95;
 LABEL_50:
-            [(BWNodeOutput *)v96->super._output emitSampleBuffer:a3, v84, v85];
+            [(BWNodeOutput *)selfCopy->super._output emitSampleBuffer:buffer, v84, v85];
             v59 = MEMORY[0x1E695FF58];
             if (!v40)
             {
@@ -452,12 +452,12 @@ LABEL_50:
         }
 
         v43 = v51;
-        v42 = 0;
+        newPixelBuffer = 0;
       }
 
       else
       {
-        v42 = 0;
+        newPixelBuffer = 0;
         v43 = 4294954516;
       }
     }
@@ -470,7 +470,7 @@ LABEL_82:
   v44 = v95;
   if (!v99)
   {
-    v42 = 0;
+    newPixelBuffer = 0;
 LABEL_41:
     v43 = 4294954516;
     goto LABEL_83;
@@ -492,7 +492,7 @@ LABEL_46:
     v58 = v57;
     if (!v56)
     {
-      v42 = 0;
+      newPixelBuffer = 0;
       if (!v57)
       {
 LABEL_48:
@@ -506,31 +506,31 @@ LABEL_73:
       goto LABEL_48;
     }
 
-    if (v87 == [(BWPixelBufferPool *)v96->_pool width]&& v86 == [(BWPixelBufferPool *)v96->_pool height])
+    if (v87 == [(BWPixelBufferPool *)selfCopy->_pool width]&& v86 == [(BWPixelBufferPool *)selfCopy->_pool height])
     {
-      v60 = [(BWStillImageScalerNode *)v96 _resolvedPoolCapacityForSettings:v95 inputDimensions:v14 outputDimensions:v90];
-      if ([(BWPixelBufferPool *)v96->_pool capacity]!= v60)
+      v60 = [(BWStillImageScalerNode *)selfCopy _resolvedPoolCapacityForSettings:v95 inputDimensions:v14 outputDimensions:v90];
+      if ([(BWPixelBufferPool *)selfCopy->_pool capacity]!= v60)
       {
-        [(BWPixelBufferPool *)v96->_pool setCapacity:v60];
+        [(BWPixelBufferPool *)selfCopy->_pool setCapacity:v60];
       }
     }
 
     else
     {
-      [(BWStillImageScalerNode *)v96 _rebuildPrimaryFormatBufferPoolForInputDimensions:v14 inputPixelFormat:v91 outputDimensions:v90 settings:v95];
+      [(BWStillImageScalerNode *)selfCopy _rebuildPrimaryFormatBufferPoolForInputDimensions:v14 inputPixelFormat:v91 outputDimensions:v90 settings:v95];
       if (v61)
       {
         goto LABEL_76;
       }
     }
 
-    if (v96->_scalingSession || (v61 = [(BWStillImageScalerNode *)v96 _buildPrimaryFormatScalingSession], !v61))
+    if (selfCopy->_scalingSession || (v61 = [(BWStillImageScalerNode *)selfCopy _buildPrimaryFormatScalingSession], !v61))
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"NewPixelBuffer-%@", @"PrimaryFormat"];
-      v42 = [(BWPixelBufferPool *)v96->_pool newPixelBuffer];
-      if (v42)
+      newPixelBuffer = [(BWPixelBufferPool *)selfCopy->_pool newPixelBuffer];
+      if (newPixelBuffer)
       {
-        CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(a3, v42, &v96->_outputFormatDescription, &target);
+        CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(buffer, newPixelBuffer, &selfCopy->_outputFormatDescription, &target);
         if (!CopyWithNewPixelBuffer)
         {
           v63 = BWCMSampleBufferCopyReattachAndReturnMutableMetadata(target);
@@ -541,7 +541,7 @@ LABEL_73:
             goto LABEL_101;
           }
 
-          CopyWithNewPixelBuffer = VTSessionSetProperty(v96->_scalingSession, *MEMORY[0x1E6983E40], v64);
+          CopyWithNewPixelBuffer = VTSessionSetProperty(selfCopy->_scalingSession, *MEMORY[0x1E6983E40], v64);
           if (!CopyWithNewPixelBuffer)
           {
             if (dword_1ED8444F0)
@@ -585,15 +585,15 @@ LABEL_73:
               v63 = v92;
             }
 
-            CopyWithNewPixelBuffer = VTPixelTransferSessionTransferImage(v96->_scalingSession, sourceBuffer, v42);
+            CopyWithNewPixelBuffer = VTPixelTransferSessionTransferImage(selfCopy->_scalingSession, sourceBuffer, newPixelBuffer);
             if (!CopyWithNewPixelBuffer)
             {
-              CVBufferRemoveAttachment(v42, *MEMORY[0x1E6965D70]);
+              CVBufferRemoveAttachment(newPixelBuffer, *MEMORY[0x1E6965D70]);
               FigCaptureMetadataUtilitiesUpdateMetadataForStillImageCrop(v63, v14, v90, v98.origin.x, v98.origin.y, v98.size.width, v98.size.height, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
               FigCaptureMetadataUtilitiesUpdateMetadataForNewFinalDimensions(v63, v14, v90);
               BWUpdateLandmarksForStillImageCrop();
               FigCaptureMetadataUtilitiesPreventFurtherCropping(v63, v70);
-              [(BWMemoryAnalyticsPayload *)[(BWGraph *)[(BWNode *)v96 graph] memoryAnalyticsPayload] setScaledStillCaptureTaken:1];
+              [(BWMemoryAnalyticsPayload *)[(BWGraph *)[(BWNode *)selfCopy graph] memoryAnalyticsPayload] setScaledStillCaptureTaken:1];
               v110.width = v90;
               v110.height = SHIDWORD(v90);
               DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(v110);
@@ -601,7 +601,7 @@ LABEL_73:
 
               v72 = FigCaptureRectFromDimensions();
               BWUpdateCameraIntrinsicsMatrixOnSampleBuffer(target, @"OriginalCameraIntrinsicMatrix", 0, 0, v98.origin.x, v98.origin.y, v98.size.width, v98.size.height, v72, v73, v74, v75);
-              a3 = target;
+              buffer = target;
               if (!v58)
               {
                 goto LABEL_48;
@@ -629,12 +629,12 @@ LABEL_101:
 
 LABEL_76:
     v43 = v61;
-    v42 = 0;
+    newPixelBuffer = 0;
     goto LABEL_101;
   }
 
 LABEL_49:
-  if (a3)
+  if (buffer)
   {
     goto LABEL_50;
   }
@@ -677,9 +677,9 @@ LABEL_83:
   v82 = _os_log_send_and_compose_impl();
   FigCapturePleaseFileRadar(FrameworkRadarComponent, v82, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWStillImageScalerNode.m", 589, @"LastShownDate:BWStillImageScalerNode.m:589", @"LastShownBuild:BWStillImageScalerNode.m:589", 0);
   free(v82);
-  v41 = v96;
-  v83 = [BWNodeError newError:v43 sourceNode:v96 stillImageSettings:v44 metadata:v93];
-  [(BWNodeOutput *)v96->super._output emitNodeError:v83];
+  v41 = selfCopy;
+  v83 = [BWNodeError newError:v43 sourceNode:selfCopy stillImageSettings:v44 metadata:v93];
+  [(BWNodeOutput *)selfCopy->super._output emitNodeError:v83];
 
   v59 = MEMORY[0x1E695FF58];
   if (v40)
@@ -692,9 +692,9 @@ LABEL_96:
   }
 
 LABEL_89:
-  if (v42)
+  if (newPixelBuffer)
   {
-    CFRelease(v42);
+    CFRelease(newPixelBuffer);
   }
 
   if (target)
@@ -708,12 +708,12 @@ LABEL_89:
   }
 }
 
-- (uint64_t)mainImageDownscalingFactorForAttachedMediaKey:(void *)a3 attachedMediaMetadata:
+- (uint64_t)mainImageDownscalingFactorForAttachedMediaKey:(void *)key attachedMediaMetadata:
 {
   if (result)
   {
     v4 = result;
-    result = [objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798A788), "floatValue"}];
+    result = [objc_msgSend(key objectForKeyedSubscript:{*off_1E798A788), "floatValue"}];
     if (*(v4 + 220) != 1 || v5 == 0.0)
     {
       v6 = [*(v4 + 176) objectForKeyedSubscript:a2];
@@ -725,30 +725,30 @@ LABEL_89:
   return result;
 }
 
-- (void)_purgeResourcesLeavingThemForMediaToProcess:(uint64_t)a1
+- (void)_purgeResourcesLeavingThemForMediaToProcess:(uint64_t)process
 {
-  if (a1 && (*(a1 + 152) || [*(a1 + 192) count]))
+  if (process && (*(process + 152) || [*(process + 192) count]))
   {
     [a2 count];
     if (([a2 containsObject:@"PrimaryFormat"] & 1) == 0)
     {
-      v4 = *(a1 + 152);
+      v4 = *(process + 152);
       if (v4)
       {
 
-        *(a1 + 152) = 0;
-        v5 = *(a1 + 160);
+        *(process + 152) = 0;
+        v5 = *(process + 160);
         if (v5)
         {
           CFRelease(v5);
-          *(a1 + 160) = 0;
+          *(process + 160) = 0;
         }
       }
     }
 
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = *(a1 + 192);
-    v15 = OUTLINED_FUNCTION_4_2(v6, v8, v9, v10, v11, v12, v13, v14, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, 0);
+    array = [MEMORY[0x1E695DF70] array];
+    v7 = *(process + 192);
+    v15 = OUTLINED_FUNCTION_4_2(array, v8, v9, v10, v11, v12, v13, v14, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, 0);
     if (v15)
     {
       v16 = v15;
@@ -766,7 +766,7 @@ LABEL_89:
           v20 = [a2 containsObject:v19];
           if ((v20 & 1) == 0)
           {
-            v20 = [v6 addObject:v19];
+            v20 = [array addObject:v19];
           }
         }
 
@@ -776,22 +776,22 @@ LABEL_89:
       while (v16);
     }
 
-    [*(a1 + 192) removeObjectsForKeys:v6];
-    if (![*(a1 + 192) count])
+    [*(process + 192) removeObjectsForKeys:array];
+    if (![*(process + 192) count])
     {
-      v28 = *(a1 + 200);
+      v28 = *(process + 200);
       if (v28)
       {
         CFRelease(v28);
-        *(a1 + 200) = 0;
+        *(process + 200) = 0;
       }
     }
   }
 }
 
-- (unint64_t)_resolveOutputDimensionsForSampleBuffer:(void *)a3 settings:(uint64_t)a4 inputDimensions:
+- (unint64_t)_resolveOutputDimensionsForSampleBuffer:(void *)buffer settings:(uint64_t)settings inputDimensions:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -800,8 +800,8 @@ LABEL_89:
   v9 = [CMGetAttachment(target @"StillImageBufferFrameType"];
   v10 = [v8 objectForKeyedSubscript:*off_1E798A780];
   v11 = BWStillImageProcessingFlagsForSampleBuffer(target);
-  v12 = [a3 outputDimensions];
-  if ([*(a1 + 128) optimizedEnhancedResolutionDepthPipelineEnabled])
+  outputDimensions = [buffer outputDimensions];
+  if ([*(self + 128) optimizedEnhancedResolutionDepthPipelineEnabled])
   {
     v13 = v9 == 13;
   }
@@ -813,28 +813,28 @@ LABEL_89:
 
   if (v13)
   {
-    v28 = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(a4, [a3 outputWidth] / objc_msgSend(a3, "outputHeight"));
+    stereoPhotoOutputDimensions2 = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(settings, [buffer outputWidth] / objc_msgSend(buffer, "outputHeight"));
   }
 
   else
   {
-    v14 = [*(a1 + 128) stereoPhotoOutputDimensions];
-    if (v14 < 1 || SHIDWORD(v14) < 1 || (v11 & 0x100000) == 0)
+    stereoPhotoOutputDimensions = [*(self + 128) stereoPhotoOutputDimensions];
+    if (stereoPhotoOutputDimensions < 1 || SHIDWORD(stereoPhotoOutputDimensions) < 1 || (v11 & 0x100000) == 0)
     {
-      v17 = *(a1 + 212);
+      v17 = *(self + 212);
       v18 = HIDWORD(v17);
       if (v17 < 1 || SHIDWORD(v17) <= 0)
       {
-        v18 = HIDWORD(v12);
+        v18 = HIDWORD(outputDimensions);
         if (v10)
         {
           [v10 floatValue];
-          v21 = FigCaptureScaledDimensions(v12, v20);
+          v21 = FigCaptureScaledDimensions(outputDimensions, v20);
           v22 = v21;
           v23 = HIDWORD(v21);
-          if (v12 < SHIDWORD(v12))
+          if (outputDimensions < SHIDWORD(outputDimensions))
           {
-            LODWORD(v12) = v21;
+            LODWORD(outputDimensions) = v21;
           }
 
           else
@@ -842,36 +842,36 @@ LABEL_89:
             v18 = HIDWORD(v21);
           }
 
-          v24 = FigCaptureAspectRatioForDimensions([a3 outputDimensions]);
-          v25 = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(v12 | (v18 << 32), v24);
-          if (v22 != 2016 && a4 == 0x5E8000007E0 && v23 == 1512)
+          v24 = FigCaptureAspectRatioForDimensions([buffer outputDimensions]);
+          v25 = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(outputDimensions | (v18 << 32), v24);
+          if (v22 != 2016 && settings == 0x5E8000007E0 && v23 == 1512)
           {
-            v12 = 0x5E8000007E0;
+            outputDimensions = 0x5E8000007E0;
           }
 
           else
           {
-            v12 = v25;
+            outputDimensions = v25;
           }
 
-          v18 = HIDWORD(v12);
+          v18 = HIDWORD(outputDimensions);
         }
       }
 
       else
       {
-        v12 = *(a1 + 212);
+        outputDimensions = *(self + 212);
       }
 
-      return v12 | (v18 << 32);
+      return outputDimensions | (v18 << 32);
     }
 
-    v28 = [*(a1 + 128) stereoPhotoOutputDimensions];
+    stereoPhotoOutputDimensions2 = [*(self + 128) stereoPhotoOutputDimensions];
   }
 
-  LODWORD(v12) = v28;
-  v18 = HIDWORD(v28);
-  return v12 | (v18 << 32);
+  LODWORD(outputDimensions) = stereoPhotoOutputDimensions2;
+  v18 = HIDWORD(stereoPhotoOutputDimensions2);
+  return outputDimensions | (v18 << 32);
 }
 
 - (void)_attachedMediaKeysThatRequireDifferentScalingThanPrimaryMediaSampleBuffer:primaryMediaNormalizedInputCropRect:primaryMediaRequestedOutputWidth:primaryMediaRequestedOutputHeight:
@@ -887,9 +887,9 @@ LABEL_89:
     v9 = v2;
     v10 = v1;
     v11 = v0;
-    v60 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v61 = CMGetAttachment(v10, @"StillSettings", 0);
-    v12 = [v61 requestedSettings];
+    requestedSettings = [v61 requestedSettings];
     BWSampleBufferCopyDictionaryOfAttachedMedia(v10);
     v13 = OUTLINED_FUNCTION_14_9();
     obj = v14;
@@ -935,7 +935,7 @@ LABEL_89:
         v30 = v29;
         v32 = v31;
         v33 = BWPixelBufferDimensionsFromSampleBuffer(AttachedMedia);
-        v34 = -[BWStillImageScalerNode _outputDimensionsForAttachedMediaKey:attachedMediaMainImageDownscalingFactor:primaryMediaWidth:primaryMediaHeight:requestedWidth:requestedHeight:zoomWithoutUpscalingEnabled:aspectRatio:inputDimensions:normalizedZoomRect:optimizedEnhancedResolutionDepthCapture:](v11, v20, v68, v69, [v12 outputWidth], objc_msgSend(v12, "outputHeight"), objc_msgSend(v12, "isZoomWithoutUpscalingEnabled"), objc_msgSend(v12, "aspectRatio"), v24, FinalCropRect, v28, v30, v32, v33, v25);
+        v34 = -[BWStillImageScalerNode _outputDimensionsForAttachedMediaKey:attachedMediaMainImageDownscalingFactor:primaryMediaWidth:primaryMediaHeight:requestedWidth:requestedHeight:zoomWithoutUpscalingEnabled:aspectRatio:inputDimensions:normalizedZoomRect:optimizedEnhancedResolutionDepthCapture:](v11, v20, v68, v69, [requestedSettings outputWidth], objc_msgSend(requestedSettings, "outputHeight"), objc_msgSend(requestedSettings, "isZoomWithoutUpscalingEnabled"), objc_msgSend(requestedSettings, "aspectRatio"), v24, FinalCropRect, v28, v30, v32, v33, v25);
         if (([v20 isEqualToString:0x1F21AAF70] & 1) == 0 && (objc_msgSend(v20, "isEqualToString:", 0x1F21AAFF0) & 1) == 0 && (objc_msgSend(v20, "isEqualToString:", 0x1F21AAFB0) & 1) == 0 && (objc_msgSend(v20, "isEqualToString:", 0x1F21AB010) & 1) == 0 && (objc_msgSend(v20, "isEqualToString:", 0x1F21AB030) & 1) == 0)
         {
           v74.origin.x = OUTLINED_FUNCTION_1_10();
@@ -1001,7 +1001,7 @@ LABEL_24:
 
         if (!sis_encoderCanCropDenormalizedZoomRect(v34, v55, v56, v57, v58))
         {
-          [v60 addObject:v20];
+          [array addObject:v20];
         }
 
 LABEL_32:
@@ -1016,7 +1016,7 @@ LABEL_32:
       {
 LABEL_39:
 
-        [v60 count];
+        [array count];
         break;
       }
     }
@@ -1025,15 +1025,15 @@ LABEL_39:
   OUTLINED_FUNCTION_5_5();
 }
 
-- (uint64_t)_resolveScalerModeWithSettings:(uint64_t)a3 inputDimensions:(int)a4 inputPixelFormat:(unint64_t)a5 outputDimensions:(void *)a6 normalizedInputCropRect:(int *)a7 attachedMediaThatRequiresDifferentScalingThanPrimaryMedia:(CGFloat *)a8 stillImageScalerModeOut:(double)a9 scaledDenormalizedInputCropRectOut:(double)a10 mediaToProcessOut:(double)a11
+- (uint64_t)_resolveScalerModeWithSettings:(uint64_t)settings inputDimensions:(int)dimensions inputPixelFormat:(unint64_t)format outputDimensions:(void *)outputDimensions normalizedInputCropRect:(int *)rect attachedMediaThatRequiresDifferentScalingThanPrimaryMedia:(CGFloat *)media stillImageScalerModeOut:(double)out scaledDenormalizedInputCropRectOut:(double)self0 mediaToProcessOut:(double)self1
 {
   if (result)
   {
     v13 = result;
     result = 0;
-    if (a7)
+    if (rect)
     {
-      if (a8 && a13)
+      if (media && a13)
       {
         v23 = [objc_msgSend(a2 "bravoConstituentImageDeliveryDeviceTypes")];
         OUTLINED_FUNCTION_12_13();
@@ -1047,7 +1047,7 @@ LABEL_39:
           v27 = v25;
         }
 
-        v28 = FigCapturePixelFormatGetCompressionType(a4) != 0;
+        v28 = FigCapturePixelFormatGetCompressionType(dimensions) != 0;
         v29 = [a2 outputFormat] == 1785750887 || objc_msgSend(a2, "outputFormat") == 1752589105;
         v30 = FigCapturePixelFormatIsDemosaicedRaw([a2 rawOutputFormat]) && objc_msgSend(a2, "outputFormat") == 0;
         if (*(v13 + 169) == 1)
@@ -1060,8 +1060,8 @@ LABEL_39:
           LOBYTE(v31) = 1;
         }
 
-        v32 = FigCaptureAspectRatioForDimensions(a5);
-        FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(a3, a3 >> 32, a9, a10, a11, a12, v32);
+        v32 = FigCaptureAspectRatioForDimensions(format);
+        FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(settings, settings >> 32, out, rectOut, processOut, a12, v32);
         x = v54.origin.x;
         y = v54.origin.y;
         width = v54.size.width;
@@ -1082,8 +1082,8 @@ LABEL_39:
           if (v29 || v30)
           {
             v39 = OUTLINED_FUNCTION_3();
-            v43 = !sis_encoderCanCropDenormalizedZoomRect(a5, v39, v40, v41, v42);
-            if (a3 == a5)
+            v43 = !sis_encoderCanCropDenormalizedZoomRect(format, v39, v40, v41, v42);
+            if (settings == format)
             {
               LOBYTE(v43) = 1;
             }
@@ -1101,18 +1101,18 @@ LABEL_39:
             v44 = 0;
           }
 
-          v45 = a3 == a5 && v38;
+          v45 = settings == format && v38;
           if (v45 & (v37 ^ 1) & 1) != 0 || (v44)
           {
-            v50 = [a6 count];
+            v50 = [outputDimensions count];
             if (v50)
             {
-              v49 = a6;
+              outputDimensionsCopy = outputDimensions;
             }
 
             else
             {
-              v49 = 0;
+              outputDimensionsCopy = 0;
             }
 
             if (v50)
@@ -1125,15 +1125,15 @@ LABEL_39:
               v47 = 1;
             }
 
-            v46 = a7;
+            rectCopy2 = rect;
           }
 
           else
           {
-            v46 = a7;
+            rectCopy2 = rect;
             if (v23)
             {
-              if (a3 == a5)
+              if (settings == format)
               {
                 v47 = 3;
               }
@@ -1148,7 +1148,7 @@ LABEL_39:
               [*(v13 + 184) allKeys];
               [OUTLINED_FUNCTION_7() addObjectsFromArray:?];
               [v48 addObject:@"PrimaryFormat"];
-              v49 = [v48 allObjects];
+              outputDimensionsCopy = [v48 allObjects];
             }
 
             else
@@ -1158,18 +1158,18 @@ LABEL_39:
               [*(v13 + 184) allKeys];
               [OUTLINED_FUNCTION_7() addObjectsFromArray:?];
               [v51 addObject:@"PrimaryFormat"];
-              v49 = [v51 allObjects];
+              outputDimensionsCopy = [v51 allObjects];
               v47 = 2;
             }
           }
 
           result = 0;
-          *v46 = v47;
-          *a8 = x;
-          a8[1] = y;
-          a8[2] = width;
-          a8[3] = height;
-          *a13 = v49;
+          *rectCopy2 = v47;
+          *media = x;
+          media[1] = y;
+          media[2] = width;
+          media[3] = height;
+          *a13 = outputDimensionsCopy;
         }
       }
     }
@@ -1230,8 +1230,8 @@ LABEL_33:
             goto LABEL_31;
           }
 
-          v25 = [v8 outputWidth];
-          v26 = v25 / [v8 outputHeight];
+          outputWidth = [v8 outputWidth];
+          v26 = outputWidth / [v8 outputHeight];
           if (v24 == 0.0)
           {
             v30 = *(MEMORY[0x1E695F050] + 16);
@@ -1347,15 +1347,15 @@ LABEL_36:
   OUTLINED_FUNCTION_5_5();
 }
 
-- (void)_rebuildPrimaryFormatBufferPoolForInputDimensions:(uint64_t)a3 inputPixelFormat:(uint64_t)a4 outputDimensions:(void *)a5 settings:
+- (void)_rebuildPrimaryFormatBufferPoolForInputDimensions:(uint64_t)dimensions inputPixelFormat:(uint64_t)format outputDimensions:(void *)outputDimensions settings:
 {
-  if (a1)
+  if (self)
   {
     v10 = objc_alloc_init(BWVideoFormatRequirements);
-    v11 = [a1 name];
-    if (v11)
+    name = [self name];
+    if (name)
     {
-      v12 = v11;
+      v12 = name;
     }
 
     else
@@ -1363,10 +1363,10 @@ LABEL_36:
       v12 = @"StillImageScaler";
     }
 
-    v13 = *(a1 + 144);
-    [objc_msgSend(a5 "requestedSettings")];
-    v14 = [objc_msgSend(objc_msgSend(a5 "requestedSettings")];
-    if (a2 != a4 && v14 >= 2)
+    v13 = *(self + 144);
+    [objc_msgSend(outputDimensions "requestedSettings")];
+    v14 = [objc_msgSend(objc_msgSend(outputDimensions "requestedSettings")];
+    if (a2 != format && v14 >= 2)
     {
       v16 = v14;
     }
@@ -1387,16 +1387,16 @@ LABEL_36:
       v20 = v18;
     }
 
-    if (FigCapturePixelFormatGetCompressionType(a3) && v20)
+    if (FigCapturePixelFormatGetCompressionType(dimensions) && v20)
     {
-      a3 = FigCaptureUncompressedPixelFormatForPixelFormat(a3);
+      dimensions = FigCaptureUncompressedPixelFormatForPixelFormat(dimensions);
     }
 
-    v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3];
+    v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:dimensions];
     [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
     [OUTLINED_FUNCTION_8() setSupportedPixelFormats:?];
-    [(BWVideoFormatRequirements *)v10 setWidth:a4];
-    [(BWVideoFormatRequirements *)v10 setHeight:a4 >> 32];
+    [(BWVideoFormatRequirements *)v10 setWidth:format];
+    [(BWVideoFormatRequirements *)v10 setHeight:format >> 32];
     [(BWVideoFormatRequirements *)v10 setBytesPerRowAlignment:64];
     [(BWVideoFormatRequirements *)v10 setPlaneAlignment:64];
     [BWVideoFormatRequirements cacheModesForCacheProfile:2];
@@ -1409,23 +1409,23 @@ LABEL_36:
       v22 = v21;
 
       v23 = [BWPixelBufferPool alloc];
-      v24 = [*(a1 + 16) memoryPool];
-      LOBYTE(v25) = *(a1 + 208);
-      *(a1 + 152) = [(BWPixelBufferPool *)v23 initWithVideoFormat:v22 capacity:v16 * v13 name:v12 clientProvidesPool:0 memoryPool:v24 providesBackPressure:v25 reportSlowBackPressureAllocations:?];
+      memoryPool = [*(self + 16) memoryPool];
+      LOBYTE(v25) = *(self + 208);
+      *(self + 152) = [(BWPixelBufferPool *)v23 initWithVideoFormat:v22 capacity:v16 * v13 name:v12 clientProvidesPool:0 memoryPool:memoryPool providesBackPressure:v25 reportSlowBackPressureAllocations:?];
     }
 
     OUTLINED_FUNCTION_18_9();
   }
 }
 
-- (uint64_t)_resolvedPoolCapacityForSettings:(uint64_t)a3 inputDimensions:(uint64_t)a4 outputDimensions:
+- (uint64_t)_resolvedPoolCapacityForSettings:(uint64_t)settings inputDimensions:(uint64_t)dimensions outputDimensions:
 {
   if (result)
   {
     v7 = *(result + 144);
     [objc_msgSend(a2 "requestedSettings")];
     v8 = [objc_msgSend(objc_msgSend(a2 "requestedSettings")];
-    if (a3 != a4 && v8 >= 2)
+    if (settings != dimensions && v8 >= 2)
     {
       v10 = v8;
     }
@@ -1468,7 +1468,7 @@ LABEL_36:
     v4 = v2;
     v5 = v1;
     v112 = CMGetAttachment(v2, @"StillSettings", 0);
-    v113 = [v112 requestedSettings];
+    requestedSettings = [v112 requestedSettings];
     v6 = [v5 countByEnumeratingWithState:OUTLINED_FUNCTION_14_9() objects:? count:?];
     if (!v6)
     {
@@ -1547,7 +1547,7 @@ LABEL_36:
             destinationBuffer = Width;
             v102 = v115;
             v116 = Width | (Height << 32);
-            v34 = -[BWStillImageScalerNode _outputDimensionsForAttachedMediaKey:attachedMediaMainImageDownscalingFactor:primaryMediaWidth:primaryMediaHeight:requestedWidth:requestedHeight:zoomWithoutUpscalingEnabled:aspectRatio:inputDimensions:normalizedZoomRect:optimizedEnhancedResolutionDepthCapture:](v126, v12, [v113 outputWidth], objc_msgSend(v113, "outputHeight"), objc_msgSend(v113, "outputWidth"), objc_msgSend(v113, "outputHeight"), objc_msgSend(v113, "isZoomWithoutUpscalingEnabled"), objc_msgSend(v113, "aspectRatio"), v21, FinalCropRect, v28, v30, v32, v116, v102);
+            v34 = -[BWStillImageScalerNode _outputDimensionsForAttachedMediaKey:attachedMediaMainImageDownscalingFactor:primaryMediaWidth:primaryMediaHeight:requestedWidth:requestedHeight:zoomWithoutUpscalingEnabled:aspectRatio:inputDimensions:normalizedZoomRect:optimizedEnhancedResolutionDepthCapture:](v126, v12, [requestedSettings outputWidth], objc_msgSend(requestedSettings, "outputHeight"), objc_msgSend(requestedSettings, "outputWidth"), objc_msgSend(requestedSettings, "outputHeight"), objc_msgSend(requestedSettings, "isZoomWithoutUpscalingEnabled"), objc_msgSend(requestedSettings, "aspectRatio"), v21, FinalCropRect, v28, v30, v32, v116, v102);
             if (([v12 isEqualToString:@"Depth"] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", 0x1F21AAF70))
             {
               v35 = OUTLINED_FUNCTION_4_27();
@@ -1585,7 +1585,7 @@ LABEL_36:
             {
               if (*(v126 + 169) == 1)
               {
-                v47 = BWCIFilterArrayContainsPortraitFilters([v113 processedImageFilters]) ^ 1;
+                v47 = BWCIFilterArrayContainsPortraitFilters([requestedSettings processedImageFilters]) ^ 1;
               }
 
               else
@@ -1786,32 +1786,32 @@ LABEL_86:
   return result;
 }
 
-- (uint64_t)_outputDimensionsForAttachedMediaKey:(unint64_t)a3 attachedMediaMainImageDownscalingFactor:(unint64_t)a4 primaryMediaWidth:(unint64_t)a5 primaryMediaHeight:(unint64_t)a6 requestedWidth:(int)a7 requestedHeight:(int)a8 zoomWithoutUpscalingEnabled:(float)a9 aspectRatio:(double)a10 inputDimensions:(double)a11 normalizedZoomRect:(double)a12 optimizedEnhancedResolutionDepthCapture:(double)a13
+- (uint64_t)_outputDimensionsForAttachedMediaKey:(unint64_t)key attachedMediaMainImageDownscalingFactor:(unint64_t)factor primaryMediaWidth:(unint64_t)width primaryMediaHeight:(unint64_t)height requestedWidth:(int)requestedWidth requestedHeight:(int)requestedHeight zoomWithoutUpscalingEnabled:(float)enabled aspectRatio:(double)self0 inputDimensions:(double)self1 normalizedZoomRect:(double)self2 optimizedEnhancedResolutionDepthCapture:(double)self3
 {
-  if (!a1)
+  if (!self)
   {
     goto LABEL_24;
   }
 
   if (a15 && [a2 isEqual:0x1F217BF50])
   {
-    a4 = a6;
-    a3 = a5;
+    factor = height;
+    key = width;
   }
 
-  if (a9 != 0.0)
+  if (enabled != 0.0)
   {
-    v24 = OUTLINED_FUNCTION_21_7(a3);
-    v25 = OUTLINED_FUNCTION_21_7(a4) << 32;
-    return v25 | v24;
+    widthCopy = OUTLINED_FUNCTION_21_7(key);
+    v25 = OUTLINED_FUNCTION_21_7(factor) << 32;
+    return v25 | widthCopy;
   }
 
   if (!OUTLINED_FUNCTION_10_14())
   {
 LABEL_24:
     v25 = 0;
-    v24 = 0;
-    return v25 | v24;
+    widthCopy = 0;
+    return v25 | widthCopy;
   }
 
   v26 = MEMORY[0x1E695F060];
@@ -1839,9 +1839,9 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (a7)
+  if (requestedWidth)
   {
-    if (a8)
+    if (requestedHeight)
     {
       v31 = FigCaptureAspectRatioForDimensions(a14);
       width = size.width;
@@ -1852,70 +1852,70 @@ LABEL_24:
         v34 = v31 / v32;
         if (v33)
         {
-          a13 = a13 * v34;
+          capture = capture * v34;
         }
 
         else
         {
-          a12 = a12 * v34;
+          rect = rect * v34;
         }
       }
     }
 
-    v35 = a12 * width;
+    v35 = rect * width;
     width = FigCaptureRoundFloatToMultipleOf(2, v35);
-    v36 = a13 * size.height;
+    v36 = capture * size.height;
     height = FigCaptureRoundFloatToMultipleOf(2, v36);
   }
 
-  v24 = width;
+  widthCopy = width;
   v25 = height << 32;
-  return v25 | v24;
+  return v25 | widthCopy;
 }
 
-- (void)_rebuildBufferPoolForAttachedMediaKey:(uint64_t)a3 attachedMediaMainImageDownscalingFactor:(uint64_t)a4 inputDimensions:(void *)a5 outputDimensions:(float)a6 settings:
+- (void)_rebuildBufferPoolForAttachedMediaKey:(uint64_t)key attachedMediaMainImageDownscalingFactor:(uint64_t)factor inputDimensions:(void *)dimensions outputDimensions:(float)outputDimensions settings:
 {
-  if (!a1 || a6 == 0.0 && ![*(a1 + 184) objectForKeyedSubscript:a2])
+  if (!self || outputDimensions == 0.0 && ![*(self + 184) objectForKeyedSubscript:a2])
   {
     goto LABEL_29;
   }
 
-  v11 = *(a1 + 192);
+  v11 = *(self + 192);
   if (!v11)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    *(a1 + 192) = v11;
+    *(self + 192) = v11;
   }
 
   v12 = [v11 objectForKeyedSubscript:a2];
-  if (a4 != [v12 width] || objc_msgSend(v12, "height") != a4 >> 32)
+  if (factor != [v12 width] || objc_msgSend(v12, "height") != factor >> 32)
   {
     v19 = MEMORY[0x1E696AEC0];
-    v20 = [a1 name];
+    name = [self name];
     v21 = @"StillImageScaler";
-    if (v20)
+    if (name)
     {
-      v21 = v20;
+      v21 = name;
     }
 
     v22 = [v19 stringWithFormat:@"%@-%@", v21, a2];
-    v23 = *(a1 + 144);
-    [objc_msgSend(a5 "requestedSettings")];
-    v24 = [objc_msgSend(objc_msgSend(a5 "requestedSettings")];
-    v25 = [objc_msgSend(*(a1 + 16) mediaPropertiesForAttachedMediaKey:{a2), "resolvedVideoFormat"}];
-    v26 = [v25 pixelFormat];
-    if (v26)
+    v23 = *(self + 144);
+    [objc_msgSend(dimensions "requestedSettings")];
+    v24 = [objc_msgSend(objc_msgSend(dimensions "requestedSettings")];
+    v25 = [objc_msgSend(*(self + 16) mediaPropertiesForAttachedMediaKey:{a2), "resolvedVideoFormat"}];
+    pixelFormat = [v25 pixelFormat];
+    if (pixelFormat)
     {
-      v27 = v26;
-      v28 = a3 != a4 && v24 >= 2;
+      v27 = pixelFormat;
+      v28 = key != factor && v24 >= 2;
       v29 = v28 ? v24 : 1;
       v30 = v29 * v23;
       v31 = objc_alloc_init(BWVideoFormatRequirements);
       v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v27];
       [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
       [OUTLINED_FUNCTION_15() setSupportedPixelFormats:?];
-      [(BWVideoFormatRequirements *)v31 setWidth:a4];
-      [(BWVideoFormatRequirements *)v31 setHeight:a4 >> 32];
+      [(BWVideoFormatRequirements *)v31 setWidth:factor];
+      [(BWVideoFormatRequirements *)v31 setHeight:factor >> 32];
       +[BWVideoFormatRequirements cacheModesForCacheProfile:](BWVideoFormatRequirements, "cacheModesForCacheProfile:", [v25 cacheMode]);
       [OUTLINED_FUNCTION_15() setSupportedCacheModes:?];
       [(BWVideoFormatRequirements *)v31 setWidthAlignment:16];
@@ -1929,23 +1929,23 @@ LABEL_24:
       [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
       v32 = [OUTLINED_FUNCTION_8() formatByResolvingRequirements:?];
       v33 = [BWPixelBufferPool alloc];
-      v34 = [*(a1 + 16) memoryPool];
-      LOBYTE(v37) = *(a1 + 208);
-      v35 = [(BWPixelBufferPool *)v33 initWithVideoFormat:v32 capacity:v30 name:v22 clientProvidesPool:0 memoryPool:v34 providesBackPressure:v37 reportSlowBackPressureAllocations:?];
+      memoryPool = [*(self + 16) memoryPool];
+      LOBYTE(v37) = *(self + 208);
+      v35 = [(BWPixelBufferPool *)v33 initWithVideoFormat:v32 capacity:v30 name:v22 clientProvidesPool:0 memoryPool:memoryPool providesBackPressure:v37 reportSlowBackPressureAllocations:?];
       if (v35)
       {
         v36 = v35;
-        [*(a1 + 192) setObject:v35 forKeyedSubscript:a2];
+        [*(self + 192) setObject:v35 forKeyedSubscript:a2];
       }
     }
 
     goto LABEL_29;
   }
 
-  v13 = *(a1 + 144);
-  [objc_msgSend(a5 "requestedSettings")];
-  v14 = [objc_msgSend(objc_msgSend(a5 "requestedSettings")];
-  v15 = a3 != a4 && v14 >= 2;
+  v13 = *(self + 144);
+  [objc_msgSend(dimensions "requestedSettings")];
+  v14 = [objc_msgSend(objc_msgSend(dimensions "requestedSettings")];
+  v15 = key != factor && v14 >= 2;
   v16 = v15 ? v14 : 1;
   if ([v12 capacity] == v16 * v13)
   {
@@ -1959,15 +1959,15 @@ LABEL_29:
   [v17 setCapacity:?];
 }
 
-- (uint64_t)_removeUnmodifiedAttachedMedias:(uint64_t)a1
+- (uint64_t)_removeUnmodifiedAttachedMedias:(uint64_t)medias
 {
-  if (a1)
+  if (medias)
   {
     v3 = BWSampleBufferCopyDictionaryOfAttachedMedia(a2);
     v4 = v3 ? v3 : MEMORY[0x1E695E0F8];
-    [*(a1 + 176) allKeys];
+    [*(medias + 176) allKeys];
     v5 = [OUTLINED_FUNCTION_8() setWithArray:?];
-    [*(a1 + 184) allKeys];
+    [*(medias + 184) allKeys];
     [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
     v6 = [MEMORY[0x1E695DFA8] setWithArray:{objc_msgSend(v4, "allKeys")}];
     v7 = [v6 minusSet:v5];

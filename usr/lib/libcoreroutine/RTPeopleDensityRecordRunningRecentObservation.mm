@@ -1,7 +1,7 @@
 @interface RTPeopleDensityRecordRunningRecentObservation
 - (RTPeopleDensityRecordRunningRecentObservation)init;
 - (id)getHistogram;
-- (void)trimRunningRecordsBeforeRef:(id)a3;
+- (void)trimRunningRecordsBeforeRef:(id)ref;
 @end
 
 @implementation RTPeopleDensityRecordRunningRecentObservation
@@ -96,21 +96,21 @@
   return v16;
 }
 
-- (void)trimRunningRecordsBeforeRef:(id)a3
+- (void)trimRunningRecordsBeforeRef:(id)ref
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  refCopy = ref;
   v5 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [(NSMutableArray *)self->_runningRecords count];
-    v7 = [(NSMutableArray *)self->_runningRecords firstObject];
-    v8 = [v7 startDatetime];
+    firstObject = [(NSMutableArray *)self->_runningRecords firstObject];
+    startDatetime = [firstObject startDatetime];
     currentObservationIntervalSeconds = self->_currentObservationIntervalSeconds;
     *buf = 134218498;
     v20 = v6;
     v21 = 2112;
-    v22 = v8;
+    v22 = startDatetime;
     v23 = 2048;
     v24 = currentObservationIntervalSeconds;
     _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEFAULT, "#RTPeopleDensityRecord trimRunningRecords count:%lu, startDatetime: %@, currentObservationInterval(s): %f", buf, 0x20u);
@@ -122,9 +122,9 @@
     v18 = v10;
     do
     {
-      v11 = [(NSMutableArray *)self->_runningRecords firstObject];
-      v12 = [v11 startDatetime];
-      [v4 timeIntervalSinceDate:v12];
+      firstObject2 = [(NSMutableArray *)self->_runningRecords firstObject];
+      startDatetime2 = [firstObject2 startDatetime];
+      [refCopy timeIntervalSinceDate:startDatetime2];
       v14 = v13;
       v15 = self->_currentObservationIntervalSeconds;
 
@@ -136,9 +136,9 @@
       v16 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(NSMutableArray *)self->_runningRecords firstObject];
+        firstObject3 = [(NSMutableArray *)self->_runningRecords firstObject];
         *buf = v18;
-        v20 = v17;
+        v20 = firstObject3;
         _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_DEFAULT, "#RTPeopleDensityRecord trimRunningRecords old bundle: %@", buf, 0xCu);
       }
 

@@ -1,63 +1,63 @@
 @interface ATSocket
-+ (id)createBoundPair:(id)a3[2];
++ (id)createBoundPair:(id)pair[2];
 - (ATSocket)init;
-- (ATSocket)initWithCoder:(id)a3;
+- (ATSocket)initWithCoder:(id)coder;
 - (BOOL)open;
-- (BOOL)writeAllData:(id)a3 error:(id *)a4;
+- (BOOL)writeAllData:(id)data error:(id *)error;
 - (id)_flush;
 - (id)description;
 - (id)flush;
-- (int)_send:(const char *)a3 offset:(unsigned int)a4 len:(unsigned int)a5 error:(id *)a6;
-- (int)recv:(char *)a3 offset:(unsigned int)a4 len:(unsigned int)a5 error:(id *)a6;
-- (int)send:(const char *)a3 offset:(unsigned int)a4 len:(unsigned int)a5 error:(id *)a6;
-- (void)addDelegate:(id)a3;
+- (int)_send:(const char *)_send offset:(unsigned int)offset len:(unsigned int)len error:(id *)error;
+- (int)recv:(char *)recv offset:(unsigned int)offset len:(unsigned int)len error:(id *)error;
+- (int)send:(const char *)send offset:(unsigned int)offset len:(unsigned int)len error:(id *)error;
+- (void)addDelegate:(id)delegate;
 - (void)close;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)notifyHasDataAvailable:(const char *)a3 length:(int64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)notifyHasDataAvailable:(const char *)available length:(int64_t)length;
 - (void)notifySocketDidClose;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 - (void)removeTransportUpgradeException;
-- (void)setWriteBufferSize:(unsigned int)a3;
-- (void)writeData:(id)a3 withCompletion:(id)a4;
+- (void)setWriteBufferSize:(unsigned int)size;
+- (void)writeData:(id)data withCompletion:(id)completion;
 @end
 
 @implementation ATSocket
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = xpc_fd_create(self->_descriptor);
-    [v5 encodeXPCObject:v4 forKey:@"fd"];
+    [coderCopy encodeXPCObject:v4 forKey:@"fd"];
   }
 }
 
-- (ATSocket)initWithCoder:(id)a3
+- (ATSocket)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [(ATSocket *)self init];
     if (v5)
     {
-      v6 = [v4 decodeXPCObjectOfType:MEMORY[0x277D86488] forKey:@"fd"];
+      v6 = [coderCopy decodeXPCObjectOfType:MEMORY[0x277D86488] forKey:@"fd"];
       v5->_descriptor = xpc_fd_dup(v6);
     }
 
     self = v5;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)_flush
@@ -118,39 +118,39 @@ LABEL_19:
   return v8;
 }
 
-- (int)_send:(const char *)a3 offset:(unsigned int)a4 len:(unsigned int)a5 error:(id *)a6
+- (int)_send:(const char *)_send offset:(unsigned int)offset len:(unsigned int)len error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (len)
   {
     v9 = 0;
     v10 = &self->_readBuffer[65512];
-    v11 = &a3[a4];
+    v11 = &_send[offset];
     while (1)
     {
       v12 = *(v10 + 8);
       v13 = *(v10 + 20) - v12;
-      v14 = a5 - v9 >= v13 ? v13 : a5 - v9;
+      v14 = len - v9 >= v13 ? v13 : len - v9;
       memcpy((*(v10 + 3) + v12), &v11[v9], v14);
       v15 = *(v10 + 8) + v14;
       *(v10 + 8) = v15;
       if (v15 >= *(v10 + 20))
       {
-        v16 = [(ATSocket *)self _flush];
-        if (v16)
+        _flush = [(ATSocket *)self _flush];
+        if (_flush)
         {
           break;
         }
       }
 
       v9 += v14;
-      if (v9 >= a5)
+      if (v9 >= len)
       {
         goto LABEL_11;
       }
     }
 
-    v18 = v16;
+    v18 = _flush;
     v19 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -159,13 +159,13 @@ LABEL_19:
       _os_log_impl(&dword_22392A000, v19, OS_LOG_TYPE_ERROR, "failed to flush socket. err=%{public}@", &v23, 0xCu);
     }
 
-    if (a6)
+    if (error)
     {
       v17 = v18;
-      *a6 = v18;
+      *error = v18;
 LABEL_17:
       v20 = v17;
-      *a6 = v20;
+      *error = v20;
       v18 = v20;
     }
   }
@@ -176,7 +176,7 @@ LABEL_17:
 LABEL_11:
     v17 = 0;
     v18 = 0;
-    if (a6)
+    if (error)
     {
       goto LABEL_17;
     }
@@ -186,14 +186,14 @@ LABEL_11:
   return v9;
 }
 
-- (void)setWriteBufferSize:(unsigned int)a3
+- (void)setWriteBufferSize:(unsigned int)size
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __31__ATSocket_setWriteBufferSize___block_invoke;
   v4[3] = &unk_2784E9328;
-  v5 = a3;
+  sizeCopy = size;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
@@ -253,13 +253,13 @@ void __31__ATSocket_setWriteBufferSize___block_invoke(uint64_t a1)
   }
 }
 
-- (void)notifyHasDataAvailable:(const char *)a3 length:(int64_t)a4
+- (void)notifyHasDataAvailable:(const char *)available length:(int64_t)length
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(NSMutableArray *)v6->_delegates copy];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(NSMutableArray *)selfCopy->_delegates copy];
+  objc_sync_exit(selfCopy);
 
   v17 = 0u;
   v18 = 0u;
@@ -286,7 +286,7 @@ void __31__ATSocket_setWriteBufferSize___block_invoke(uint64_t a1)
           v13 = *(*(&v15 + 1) + 8 * v11);
           if (objc_opt_respondsToSelector())
           {
-            [v12 socket:v6 hasDataAvailable:a3 length:{a4, v15}];
+            [v12 socket:selfCopy hasDataAvailable:available length:{length, v15}];
           }
         }
 
@@ -306,10 +306,10 @@ void __31__ATSocket_setWriteBufferSize___block_invoke(uint64_t a1)
 - (void)notifySocketDidClose
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_delegates copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_delegates copy];
+  objc_sync_exit(selfCopy);
 
   v12 = 0u;
   v13 = 0u;
@@ -333,7 +333,7 @@ void __31__ATSocket_setWriteBufferSize___block_invoke(uint64_t a1)
         v8 = *(*(&v10 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          [v8 socketDidClose:{v2, v10}];
+          [v8 socketDidClose:{selfCopy, v10}];
         }
 
         ++v7;
@@ -381,7 +381,7 @@ uint64_t __17__ATSocket_flush__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (int)recv:(char *)a3 offset:(unsigned int)a4 len:(unsigned int)a5 error:(id *)a6
+- (int)recv:(char *)recv offset:(unsigned int)offset len:(unsigned int)len error:(id *)error
 {
   v10 = &self->_readBuffer[65512];
   memset(&v19, 0, sizeof(v19));
@@ -393,7 +393,7 @@ uint64_t __17__ATSocket_flush__block_invoke(uint64_t a1)
 
   v18 = xmmword_22394E540;
   v12 = 0;
-  if (a5)
+  if (len)
   {
     while (1)
     {
@@ -407,7 +407,7 @@ uint64_t __17__ATSocket_flush__block_invoke(uint64_t a1)
 
         else
         {
-          v14 = recv(*(v10 + 18), &a3[a4 + v12], a5 - v12, 0);
+          v14 = recv(*(v10 + 18), &recv[offset + v12], len - v12, 0);
           if (v14 > 0)
           {
             v15 = 0;
@@ -427,7 +427,7 @@ uint64_t __17__ATSocket_flush__block_invoke(uint64_t a1)
       }
 
 LABEL_12:
-      if (v12 >= a5 || v15)
+      if (v12 >= len || v15)
       {
         goto LABEL_16;
       }
@@ -436,16 +436,16 @@ LABEL_12:
 
   v15 = 0;
 LABEL_16:
-  if (a6)
+  if (error)
   {
     v15 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   return v12;
 }
 
-- (int)send:(const char *)a3 offset:(unsigned int)a4 len:(unsigned int)a5 error:(id *)a6
+- (int)send:(const char *)send offset:(unsigned int)offset len:(unsigned int)len error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -464,17 +464,17 @@ LABEL_16:
   block[3] = &unk_2784E8E50;
   block[4] = self;
   block[5] = &v20;
-  v12 = a4;
-  v13 = a5;
+  offsetCopy = offset;
+  lenCopy = len;
   block[6] = &v14;
-  block[7] = a3;
+  block[7] = send;
   dispatch_sync(queue, block);
-  if (a6)
+  if (error)
   {
     v8 = v15[5];
     if (v8)
     {
-      *a6 = v8;
+      *error = v8;
     }
   }
 
@@ -498,20 +498,20 @@ void __34__ATSocket_send_offset_len_error___block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v7;
 }
 
-- (void)writeData:(id)a3 withCompletion:(id)a4
+- (void)writeData:(id)data withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__ATSocket_writeData_withCompletion___block_invoke;
   block[3] = &unk_2784E96A8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dataCopy;
   dispatch_async(queue, block);
 }
 
@@ -542,9 +542,9 @@ void __37__ATSocket_writeData_withCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)writeAllData:(id)a3 error:(id *)a4
+- (BOOL)writeAllData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -557,13 +557,13 @@ void __37__ATSocket_writeData_withCompletion___block_invoke(uint64_t a1)
   block[2] = __31__ATSocket_writeAllData_error___block_invoke;
   block[3] = &unk_2784E9590;
   block[4] = self;
-  v8 = v6;
+  v8 = dataCopy;
   v12 = v8;
   v13 = &v14;
   dispatch_sync(queue, block);
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v9 = v15[5] == 0;
@@ -611,7 +611,7 @@ void __31__ATSocket_writeAllData_error___block_invoke(uint64_t a1)
     v5 = *(v3 + 5);
     v6 = *(v3 + 6);
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
     v14 = v5;
     v15 = 2048;
@@ -755,22 +755,22 @@ void __16__ATSocket_open__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_delegates removeObject:v5];
-  objc_sync_exit(v4);
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_delegates removeObject:delegateCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_delegates addObject:v5];
-  objc_sync_exit(v4);
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_delegates addObject:delegateCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (id)description
@@ -825,7 +825,7 @@ void __16__ATSocket_open__block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)createBoundPair:(id)a3[2]
++ (id)createBoundPair:(id)pair[2]
 {
   v13 = *MEMORY[0x277D85DE8];
   if (socketpair(1, 1, 0, v12))
@@ -839,12 +839,12 @@ void __16__ATSocket_open__block_invoke(uint64_t a1)
     v6 = objc_alloc_init(ATSocket);
     [(ATSocket *)v5 setDescriptor:v12[0]];
     [(ATSocket *)v6 setDescriptor:v12[1]];
-    v7 = *a3;
-    *a3 = v5;
+    v7 = *pair;
+    *pair = v5;
     v8 = v5;
 
-    v9 = a3[1];
-    a3[1] = v6;
+    v9 = pair[1];
+    pair[1] = v6;
 
     v4 = 0;
   }

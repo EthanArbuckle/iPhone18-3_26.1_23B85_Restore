@@ -1,6 +1,6 @@
 @interface RTTRelayController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)suspend;
 @end
 
@@ -13,14 +13,14 @@
   if (!v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v7 = settingsLocString(@"TTY_RELAY_FOOTER", @"RTTSettings");
-    [v6 setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
+    [emptyGroupSpecifier setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
 
-    [v5 addObject:v6];
+    [v5 addObject:emptyGroupSpecifier];
     v8 = MEMORY[0x277D3FAD8];
-    v9 = [(RTTRelayController *)self parentController];
-    v10 = [v8 preferenceSpecifierNamed:0 target:v9 set:sel_setRTTRelayNumber_specifier_ get:sel_rttRelayNumber_ detail:0 cell:8 edit:0];
+    parentController = [(RTTRelayController *)self parentController];
+    v10 = [v8 preferenceSpecifierNamed:0 target:parentController set:sel_setRTTRelayNumber_specifier_ get:sel_rttRelayNumber_ detail:0 cell:8 edit:0];
 
     [v10 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D40070]];
     *&v10[*MEMORY[0x277D3FCC0]] = 2;
@@ -36,27 +36,27 @@
 
 - (void)suspend
 {
-  v3 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) firstResponder];
-  [v3 resignFirstResponder];
+  firstResponder = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) firstResponder];
+  [firstResponder resignFirstResponder];
 
   v4.receiver = self;
   v4.super_class = RTTRelayController;
   [(RTTRelayController *)&v4 suspend];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = RTTRelayController;
-  v4 = [(RTTRelayController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(RTTRelayController *)&v7 tableView:view cellForRowAtIndexPath:path];
   if ([v4 tag] == 8)
   {
-    v5 = [v4 editableTextField];
-    [v5 setAutocapitalizationType:2];
-    [v5 setAutocorrectionType:1];
-    [v5 setAdjustsFontSizeToFitWidth:1];
-    [v5 setReturnKeyType:9];
-    [v5 setClearButtonMode:3];
+    editableTextField = [v4 editableTextField];
+    [editableTextField setAutocapitalizationType:2];
+    [editableTextField setAutocorrectionType:1];
+    [editableTextField setAdjustsFontSizeToFitWidth:1];
+    [editableTextField setReturnKeyType:9];
+    [editableTextField setClearButtonMode:3];
   }
 
   return v4;

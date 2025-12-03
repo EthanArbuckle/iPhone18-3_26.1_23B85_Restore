@@ -1,8 +1,8 @@
 @interface HintViewControllerBanner
 - (UIEdgeInsets)bannerContentOutsets;
 - (void)pillTapped;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
 - (void)update;
 - (void)viewDidLoad;
 @end
@@ -11,39 +11,39 @@
 
 - (void)update
 {
-  v2 = self;
+  selfCopy = self;
   sub_10010DBD0();
 }
 
 - (void)pillTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_10010DD74();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10010E060();
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1000CBE90(a3);
+  selfCopy = self;
+  sub_1000CBE90(banner);
   swift_getKeyPath();
   swift_getKeyPath();
   static Published.subscript.setter();
   swift_unknownObjectRelease();
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  sub_1000CBA70(a3, a4);
+  reasonCopy = reason;
+  selfCopy = self;
+  sub_1000CBA70(banner, reason);
   swift_getKeyPath();
   swift_getKeyPath();
   static Published.subscript.setter();
@@ -52,7 +52,7 @@
 
 - (UIEdgeInsets)bannerContentOutsets
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10010E530();
   v5 = v4;
   v7 = v6;

@@ -1,18 +1,18 @@
 @interface AKAnnotationTheme
-+ (id)blueTheme:(int)a3;
-+ (id)colorForAnnotationStyle:(int)a3 propertyName:(id)a4 pageTheme:(int)a5;
-+ (id)colorForThemeItem:(id)a3 pageTheme:(int)a4;
-+ (id)greenTheme:(int)a3;
-+ (id)highlightTextColor:(int)a3;
-+ (id)pinkTheme:(int)a3;
-+ (id)purpleTheme:(int)a3;
-+ (id)theme:(int)a3;
++ (id)blueTheme:(int)theme;
++ (id)colorForAnnotationStyle:(int)style propertyName:(id)name pageTheme:(int)theme;
++ (id)colorForThemeItem:(id)item pageTheme:(int)theme;
++ (id)greenTheme:(int)theme;
++ (id)highlightTextColor:(int)color;
++ (id)pinkTheme:(int)theme;
++ (id)purpleTheme:(int)theme;
++ (id)theme:(int)theme;
 + (id)themeDescriptions;
-+ (id)themeForAnnotationStyle:(int)a3 pageTheme:(int)a4;
-+ (id)themeForAnnotationStyle:(int)a3 pageTheme:(int)a4 isUnderline:(BOOL)a5;
-+ (id)themeItemForAnnotationStyle:(int)a3 propertyName:(id)a4;
-+ (id)underlineTheme:(int)a3;
-+ (id)yellowTheme:(int)a3;
++ (id)themeForAnnotationStyle:(int)style pageTheme:(int)theme;
++ (id)themeForAnnotationStyle:(int)style pageTheme:(int)theme isUnderline:(BOOL)underline;
++ (id)themeItemForAnnotationStyle:(int)style propertyName:(id)name;
++ (id)underlineTheme:(int)theme;
++ (id)yellowTheme:(int)theme;
 - (CGSize)noteShadowOffset;
 - (UIColor)noteMarkerStrikethroughColor;
 - (UIColor)noteShadowColor;
@@ -37,38 +37,38 @@
   return v3;
 }
 
-+ (id)themeItemForAnnotationStyle:(int)a3 propertyName:(id)a4
++ (id)themeItemForAnnotationStyle:(int)style propertyName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v7 = 0;
-  if (v6 && a3 <= 6)
+  if (nameCopy && style <= 6)
   {
-    v8 = off_278C7B5A0[a3];
-    v9 = [a1 themeDescriptions];
-    v10 = [v9 objectForKey:@"themes"];
+    v8 = off_278C7B5A0[style];
+    themeDescriptions = [self themeDescriptions];
+    v10 = [themeDescriptions objectForKey:@"themes"];
 
     v11 = [v10 objectForKey:v8];
-    v7 = [v11 objectForKey:v6];
+    v7 = [v11 objectForKey:nameCopy];
   }
 
   return v7;
 }
 
-+ (id)colorForThemeItem:(id)a3 pageTheme:(int)a4
++ (id)colorForThemeItem:(id)item pageTheme:(int)theme
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 > 4)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (theme > 4)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v5 objectForKey:off_278C7B5D8[a4]];
+    v7 = [itemCopy objectForKey:off_278C7B5D8[theme]];
   }
 
-  if (a4 != 4 && !v7)
+  if (theme != 4 && !v7)
   {
     v7 = [v6 objectForKey:@"default"];
   }
@@ -86,16 +86,16 @@
   return v8;
 }
 
-+ (id)colorForAnnotationStyle:(int)a3 propertyName:(id)a4 pageTheme:(int)a5
++ (id)colorForAnnotationStyle:(int)style propertyName:(id)name pageTheme:(int)theme
 {
-  v5 = *&a5;
-  v7 = [a1 themeItemForAnnotationStyle:*&a3 propertyName:a4];
-  if (!v7 || ([a1 colorForThemeItem:v7 pageTheme:v5], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  v5 = *&theme;
+  v7 = [self themeItemForAnnotationStyle:*&style propertyName:name];
+  if (!v7 || ([self colorForThemeItem:v7 pageTheme:v5], (blackColor = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  return v8;
+  return blackColor;
 }
 
 - (UIColor)noteMarkerStrikethroughColor
@@ -122,14 +122,14 @@
   return v3;
 }
 
-+ (id)greenTheme:(int)a3
++ (id)greenTheme:(int)theme
 {
   v3 = 0;
-  if (a3 <= 1)
+  if (theme <= 1)
   {
-    if (a3)
+    if (theme)
     {
-      if (a3 != 1)
+      if (theme != 1)
       {
         goto LABEL_23;
       }
@@ -165,7 +165,7 @@
 
   else
   {
-    switch(a3)
+    switch(theme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
@@ -217,14 +217,14 @@ LABEL_23:
   return v3;
 }
 
-+ (id)blueTheme:(int)a3
++ (id)blueTheme:(int)theme
 {
   v3 = 0;
-  if (a3 <= 1)
+  if (theme <= 1)
   {
-    if (a3)
+    if (theme)
     {
-      if (a3 != 1)
+      if (theme != 1)
       {
         goto LABEL_23;
       }
@@ -260,7 +260,7 @@ LABEL_23:
 
   else
   {
-    switch(a3)
+    switch(theme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
@@ -312,14 +312,14 @@ LABEL_23:
   return v3;
 }
 
-+ (id)yellowTheme:(int)a3
++ (id)yellowTheme:(int)theme
 {
   v3 = 0;
-  if (a3 <= 1)
+  if (theme <= 1)
   {
-    if (a3)
+    if (theme)
     {
-      if (a3 != 1)
+      if (theme != 1)
       {
         goto LABEL_23;
       }
@@ -355,7 +355,7 @@ LABEL_23:
 
   else
   {
-    switch(a3)
+    switch(theme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
@@ -407,14 +407,14 @@ LABEL_23:
   return v3;
 }
 
-+ (id)pinkTheme:(int)a3
++ (id)pinkTheme:(int)theme
 {
   v3 = 0;
-  if (a3 <= 1)
+  if (theme <= 1)
   {
-    if (a3)
+    if (theme)
     {
-      if (a3 != 1)
+      if (theme != 1)
       {
         goto LABEL_23;
       }
@@ -450,7 +450,7 @@ LABEL_23:
 
   else
   {
-    switch(a3)
+    switch(theme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
@@ -502,14 +502,14 @@ LABEL_23:
   return v3;
 }
 
-+ (id)purpleTheme:(int)a3
++ (id)purpleTheme:(int)theme
 {
   v3 = 0;
-  if (a3 <= 1)
+  if (theme <= 1)
   {
-    if (a3)
+    if (theme)
     {
-      if (a3 != 1)
+      if (theme != 1)
       {
         goto LABEL_23;
       }
@@ -545,7 +545,7 @@ LABEL_23:
 
   else
   {
-    switch(a3)
+    switch(theme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
@@ -597,14 +597,14 @@ LABEL_23:
   return v3;
 }
 
-+ (id)underlineTheme:(int)a3
++ (id)underlineTheme:(int)theme
 {
   v3 = 0;
-  if (a3 <= 1)
+  if (theme <= 1)
   {
-    if (a3)
+    if (theme)
     {
-      if (a3 != 1)
+      if (theme != 1)
       {
         goto LABEL_23;
       }
@@ -640,7 +640,7 @@ LABEL_23:
 
   else
   {
-    switch(a3)
+    switch(theme)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
@@ -692,43 +692,43 @@ LABEL_23:
   return v3;
 }
 
-+ (id)theme:(int)a3
++ (id)theme:(int)theme
 {
-  v3 = *&a3;
-  v4 = objc_alloc_init(a1);
+  v3 = *&theme;
+  v4 = objc_alloc_init(self);
   [v4 setPageTheme:v3];
 
   return v4;
 }
 
-+ (id)themeForAnnotationStyle:(int)a3 pageTheme:(int)a4
++ (id)themeForAnnotationStyle:(int)style pageTheme:(int)theme
 {
   v4 = 0;
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
-      v4 = [AKAnnotationTheme greenTheme:*&a4];
+      v4 = [AKAnnotationTheme greenTheme:*&theme];
     }
 
-    else if (a3 == 2)
+    else if (style == 2)
     {
-      v4 = [AKAnnotationTheme blueTheme:*&a4];
+      v4 = [AKAnnotationTheme blueTheme:*&theme];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(style)
     {
       case 3:
-        v4 = [AKAnnotationTheme yellowTheme:*&a4];
+        v4 = [AKAnnotationTheme yellowTheme:*&theme];
         break;
       case 4:
-        v4 = [AKAnnotationTheme pinkTheme:*&a4];
+        v4 = [AKAnnotationTheme pinkTheme:*&theme];
         break;
       case 5:
-        v4 = [AKAnnotationTheme purpleTheme:*&a4];
+        v4 = [AKAnnotationTheme purpleTheme:*&theme];
         break;
     }
   }
@@ -736,12 +736,12 @@ LABEL_23:
   return v4;
 }
 
-+ (id)themeForAnnotationStyle:(int)a3 pageTheme:(int)a4 isUnderline:(BOOL)a5
++ (id)themeForAnnotationStyle:(int)style pageTheme:(int)theme isUnderline:(BOOL)underline
 {
-  v6 = *&a4;
-  v7 = [a1 themeForAnnotationStyle:*&a3 pageTheme:?];
+  v6 = *&theme;
+  v7 = [self themeForAnnotationStyle:*&style pageTheme:?];
   v8 = v7;
-  if (v7 || !a5)
+  if (v7 || !underline)
   {
     v9 = v7;
   }
@@ -756,14 +756,14 @@ LABEL_23:
   return v10;
 }
 
-+ (id)highlightTextColor:(int)a3
++ (id)highlightTextColor:(int)color
 {
   v3 = 0;
-  if (a3 <= 1)
+  if (color <= 1)
   {
-    if (a3)
+    if (color)
     {
-      if (a3 != 1)
+      if (color != 1)
       {
         goto LABEL_23;
       }
@@ -772,7 +772,7 @@ LABEL_23:
       v10[1] = 3221225472;
       v10[2] = sub_23F4092C4;
       v10[3] = &unk_278C7B580;
-      v10[4] = a1;
+      v10[4] = self;
       v11 = 1;
       if (qword_27E39B4D0 != -1)
       {
@@ -788,7 +788,7 @@ LABEL_23:
       v12[1] = 3221225472;
       v12[2] = sub_23F40920C;
       v12[3] = &unk_278C7B580;
-      v12[4] = a1;
+      v12[4] = self;
       v13 = 0;
       if (qword_27E39B4C0 != -1)
       {
@@ -801,14 +801,14 @@ LABEL_23:
 
   else
   {
-    switch(a3)
+    switch(color)
     {
       case 2:
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = sub_23F40937C;
         block[3] = &unk_278C7B580;
-        block[4] = a1;
+        block[4] = self;
         v9 = 2;
         if (qword_27E39B4E0 != -1)
         {
@@ -822,7 +822,7 @@ LABEL_23:
         v6[1] = 3221225472;
         v6[2] = sub_23F409434;
         v6[3] = &unk_278C7B580;
-        v6[4] = a1;
+        v6[4] = self;
         v7 = 3;
         if (qword_27E39B4F0 != -1)
         {
@@ -836,7 +836,7 @@ LABEL_23:
         v14[1] = 3221225472;
         v14[2] = sub_23F409154;
         v14[3] = &unk_278C7B580;
-        v14[4] = a1;
+        v14[4] = self;
         v15 = 4;
         if (qword_27E39B4B0 != -1)
         {

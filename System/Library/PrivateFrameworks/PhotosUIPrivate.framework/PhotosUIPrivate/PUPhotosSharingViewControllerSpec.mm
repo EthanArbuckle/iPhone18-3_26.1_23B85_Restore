@@ -1,5 +1,5 @@
 @interface PUPhotosSharingViewControllerSpec
-- (BOOL)embedsActivityViewForBounds:(CGRect)a3 horizontalSizeClass:(int64_t)a4 verticalSizeClass:(int64_t)a5;
+- (BOOL)embedsActivityViewForBounds:(CGRect)bounds horizontalSizeClass:(int64_t)class verticalSizeClass:(int64_t)sizeClass;
 - (CGSize)optionBadgeSize;
 - (CGSize)selectionBadgeSize;
 - (UIOffset)selectionBadgeOffset;
@@ -7,10 +7,10 @@
 
 @implementation PUPhotosSharingViewControllerSpec
 
-- (BOOL)embedsActivityViewForBounds:(CGRect)a3 horizontalSizeClass:(int64_t)a4 verticalSizeClass:(int64_t)a5
+- (BOOL)embedsActivityViewForBounds:(CGRect)bounds horizontalSizeClass:(int64_t)class verticalSizeClass:(int64_t)sizeClass
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   if (!_isPhone())
   {
     return 1;

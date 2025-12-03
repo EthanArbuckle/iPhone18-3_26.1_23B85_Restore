@@ -1,13 +1,13 @@
 @interface ASDViewPresentationRequest
-- (ASDViewPresentationRequest)initWithCoder:(id)a3;
-- (ASDViewPresentationRequest)initWithViewIdentifier:(int64_t)a3;
-- (ASDViewPresentationRequest)initWithViewIdentifier:(int64_t)a3 configuration:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (ASDViewPresentationRequest)initWithCoder:(id)coder;
+- (ASDViewPresentationRequest)initWithViewIdentifier:(int64_t)identifier;
+- (ASDViewPresentationRequest)initWithViewIdentifier:(int64_t)identifier configuration:(id)configuration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDViewPresentationRequest
 
-- (ASDViewPresentationRequest)initWithViewIdentifier:(int64_t)a3
+- (ASDViewPresentationRequest)initWithViewIdentifier:(int64_t)identifier
 {
   v8.receiver = self;
   v8.super_class = ASDViewPresentationRequest;
@@ -18,31 +18,31 @@
     configuration = v4->_configuration;
     v4->_configuration = MEMORY[0x1E695E0F8];
 
-    v5->_viewIdentifier = a3;
+    v5->_viewIdentifier = identifier;
   }
 
   return v5;
 }
 
-- (ASDViewPresentationRequest)initWithViewIdentifier:(int64_t)a3 configuration:(id)a4
+- (ASDViewPresentationRequest)initWithViewIdentifier:(int64_t)identifier configuration:(id)configuration
 {
-  v7 = a4;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = ASDViewPresentationRequest;
   v8 = [(ASDViewPresentationRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_configuration, a4);
-    v9->_viewIdentifier = a3;
+    objc_storeStrong(&v8->_configuration, configuration);
+    v9->_viewIdentifier = identifier;
   }
 
   return v9;
 }
 
-- (ASDViewPresentationRequest)initWithCoder:(id)a3
+- (ASDViewPresentationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = ASDViewPresentationRequest;
   v5 = [(ASDViewPresentationRequest *)&v16 init];
@@ -55,22 +55,22 @@
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v6 setWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"C"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"C"];
     configuration = v5->_configuration;
     v5->_configuration = v13;
 
-    v5->_viewIdentifier = [v4 decodeIntegerForKey:@"V"];
+    v5->_viewIdentifier = [coderCopy decodeIntegerForKey:@"V"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   configuration = self->_configuration;
-  v5 = a3;
-  [v5 encodeObject:configuration forKey:@"C"];
-  [v5 encodeInteger:self->_viewIdentifier forKey:@"V"];
+  coderCopy = coder;
+  [coderCopy encodeObject:configuration forKey:@"C"];
+  [coderCopy encodeInteger:self->_viewIdentifier forKey:@"V"];
 }
 
 @end

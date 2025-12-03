@@ -1,23 +1,23 @@
 @interface SSRSpeakerRecognitionModelContext
-- (SSRSpeakerRecognitionModelContext)initWithConfigFilePath:(id)a3 withModelFilePaths:(id)a4 withModelFilePathsExclave:(id)a5;
+- (SSRSpeakerRecognitionModelContext)initWithConfigFilePath:(id)path withModelFilePaths:(id)paths withModelFilePathsExclave:(id)exclave;
 @end
 
 @implementation SSRSpeakerRecognitionModelContext
 
-- (SSRSpeakerRecognitionModelContext)initWithConfigFilePath:(id)a3 withModelFilePaths:(id)a4 withModelFilePathsExclave:(id)a5
+- (SSRSpeakerRecognitionModelContext)initWithConfigFilePath:(id)path withModelFilePaths:(id)paths withModelFilePathsExclave:(id)exclave
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  pathsCopy = paths;
+  exclaveCopy = exclave;
   v15.receiver = self;
   v15.super_class = SSRSpeakerRecognitionModelContext;
   v12 = [(SSRSpeakerRecognitionModelContext *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_configFilePath, a3);
-    objc_storeStrong(&v13->_voiceProfilesModelFilePaths, a4);
-    objc_storeStrong(&v13->_voiceProfilesModelFilePathsExclave, a5);
+    objc_storeStrong(&v12->_configFilePath, path);
+    objc_storeStrong(&v13->_voiceProfilesModelFilePaths, paths);
+    objc_storeStrong(&v13->_voiceProfilesModelFilePathsExclave, exclave);
   }
 
   return v13;

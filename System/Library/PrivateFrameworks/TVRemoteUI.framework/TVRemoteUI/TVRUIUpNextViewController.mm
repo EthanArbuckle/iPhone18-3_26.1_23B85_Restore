@@ -6,25 +6,25 @@
 - (TVRUIUpNextProviding)upNextProvider;
 - (id)_layout;
 - (void)_configureHierarchy;
-- (void)_confirmOkToPlayUpNextInfo:(id)a3 withHandler:(id)a4;
+- (void)_confirmOkToPlayUpNextInfo:(id)info withHandler:(id)handler;
 - (void)_refreshAsNeededIfVisible;
-- (void)_refreshUIAnimated:(BOOL)a3;
+- (void)_refreshUIAnimated:(BOOL)animated;
 - (void)_updateEmptyStateAndActivityIndicatorForCurrentState;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)markItemAsWatched:(id)a3;
-- (void)openURL:(id)a3;
-- (void)playItem:(id)a3 animated:(BOOL)a4;
-- (void)removeItemFromUpNext:(id)a3;
-- (void)requestImageForInfo:(id)a3 completion:(id)a4;
-- (void)requestImageForURLTemplate:(id)a3 size:(CGSize)a4 identifier:(id)a5 completion:(id)a6;
+- (void)markItemAsWatched:(id)watched;
+- (void)openURL:(id)l;
+- (void)playItem:(id)item animated:(BOOL)animated;
+- (void)removeItemFromUpNext:(id)next;
+- (void)requestImageForInfo:(id)info completion:(id)completion;
+- (void)requestImageForURLTemplate:(id)template size:(CGSize)size identifier:(id)identifier completion:(id)completion;
 - (void)resetContent;
-- (void)shareEpisodeForInfo:(id)a3 sourceView:(id)a4;
-- (void)sharePrimaryForInfo:(id)a3 sourceView:(id)a4;
-- (void)shareShowForInfo:(id)a3 sourceView:(id)a4;
+- (void)shareEpisodeForInfo:(id)info sourceView:(id)view;
+- (void)sharePrimaryForInfo:(id)info sourceView:(id)view;
+- (void)shareShowForInfo:(id)info sourceView:(id)view;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TVRUIUpNextViewController
@@ -32,8 +32,8 @@
 - (void)resetContent
 {
   v4 = objc_alloc_init(MEMORY[0x277CFB890]);
-  v3 = [(TVRUIUpNextViewController *)self dataSource];
-  [v3 applySnapshot:v4 animatingDifferences:0];
+  dataSource = [(TVRUIUpNextViewController *)self dataSource];
+  [dataSource applySnapshot:v4 animatingDifferences:0];
 }
 
 - (void)viewDidLoad
@@ -46,28 +46,28 @@
   self->_imageFetcher = v3;
 
   [(TVRUIUpNextViewController *)self _configureHierarchy];
-  v5 = [(TVRUIUpNextViewController *)self upNextProvider];
-  v6 = [v5 infos];
-  [(TVRUIUpNextViewController *)self setInfos:v6];
+  upNextProvider = [(TVRUIUpNextViewController *)self upNextProvider];
+  infos = [upNextProvider infos];
+  [(TVRUIUpNextViewController *)self setInfos:infos];
 
   [(TVRUIUpNextViewController *)self _refreshUIAnimated:0];
   objc_initWeak(&location, self);
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __40__TVRUIUpNextViewController_viewDidLoad__block_invoke;
   v13[3] = &unk_279D87E10;
   objc_copyWeak(&v14, &location);
-  v8 = [v7 addObserverForName:@"TVRUIUpNextInfosRequestedNotification" object:0 queue:0 usingBlock:v13];
+  v8 = [defaultCenter addObserverForName:@"TVRUIUpNextInfosRequestedNotification" object:0 queue:0 usingBlock:v13];
   [(TVRUIUpNextViewController *)self setInfosRequestedNotificationObserver:v8];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_3;
   v11[3] = &unk_279D87E10;
   objc_copyWeak(&v12, &location);
-  v10 = [v9 addObserverForName:@"TVRUIUpNextInfosDidChangeNotification" object:0 queue:0 usingBlock:v11];
+  v10 = [defaultCenter2 addObserverForName:@"TVRUIUpNextInfosDidChangeNotification" object:0 queue:0 usingBlock:v11];
   [(TVRUIUpNextViewController *)self setInfosDidChangeNotificationObserver:v10];
 
   objc_destroyWeak(&v12);
@@ -147,19 +147,19 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = TVRUIUpNextViewController;
-  [(TVRUIUpNextViewController *)&v9 viewWillAppear:a3];
+  [(TVRUIUpNextViewController *)&v9 viewWillAppear:appear];
   v4 = [MEMORY[0x277CBEAA8] now];
   [(TVRUIUpNextViewController *)self setDidAppearTimestamp:v4];
 
   [(TVRUIUpNextViewController *)self _updateEmptyStateAndActivityIndicatorForCurrentState];
-  v5 = [(TVRUIUpNextViewController *)self upNextProvider];
-  v6 = [v5 hasFetchedInfos];
+  upNextProvider = [(TVRUIUpNextViewController *)self upNextProvider];
+  hasFetchedInfos = [upNextProvider hasFetchedInfos];
 
-  if ((v6 & 1) == 0)
+  if ((hasFetchedInfos & 1) == 0)
   {
     v7 = dispatch_time(0, 2000000000);
     block[0] = MEMORY[0x277D85DD0];
@@ -171,22 +171,22 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = TVRUIUpNextViewController;
-  [(TVRUIUpNextViewController *)&v18 viewWillDisappear:a3];
+  [(TVRUIUpNextViewController *)&v18 viewWillDisappear:disappear];
   if ([(TVRUIUpNextViewController *)self _isHorizontalMode])
   {
-    v4 = [(TVRUIUpNextViewController *)self collectionView];
-    v5 = [v4 visibleCells];
+    collectionView = [(TVRUIUpNextViewController *)self collectionView];
+    visibleCells = [collectionView visibleCells];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v5;
+    v6 = visibleCells;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
@@ -206,10 +206,10 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [v11 actionButton];
-            v13 = [v12 contextMenuInteraction];
+            actionButton = [v11 actionButton];
+            contextMenuInteraction = [actionButton contextMenuInteraction];
 
-            [v13 dismissMenu];
+            [contextMenuInteraction dismissMenu];
           }
 
           ++v10;
@@ -226,26 +226,26 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(TVRUIUpNextViewController *)self infosDidChangeNotificationObserver];
+  infosDidChangeNotificationObserver = [(TVRUIUpNextViewController *)self infosDidChangeNotificationObserver];
 
-  if (v3)
+  if (infosDidChangeNotificationObserver)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    v5 = [(TVRUIUpNextViewController *)self infosDidChangeNotificationObserver];
-    [v4 removeObserver:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    infosDidChangeNotificationObserver2 = [(TVRUIUpNextViewController *)self infosDidChangeNotificationObserver];
+    [defaultCenter removeObserver:infosDidChangeNotificationObserver2];
   }
 
-  v6 = [(TVRUIUpNextViewController *)self infosRequestedNotificationObserver];
+  infosRequestedNotificationObserver = [(TVRUIUpNextViewController *)self infosRequestedNotificationObserver];
 
-  if (v6)
+  if (infosRequestedNotificationObserver)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    v8 = [(TVRUIUpNextViewController *)self infosRequestedNotificationObserver];
-    [v7 removeObserver:v8];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    infosRequestedNotificationObserver2 = [(TVRUIUpNextViewController *)self infosRequestedNotificationObserver];
+    [defaultCenter2 removeObserver:infosRequestedNotificationObserver2];
   }
 
-  v9 = [(TVRUIUpNextViewController *)self refreshTimer];
-  [v9 invalidate];
+  refreshTimer = [(TVRUIUpNextViewController *)self refreshTimer];
+  [refreshTimer invalidate];
 
   v10.receiver = self;
   v10.super_class = TVRUIUpNextViewController;
@@ -258,13 +258,13 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   v92 = +[TVRUIFeatures isSolariumEnabled];
   v3 = objc_alloc(MEMORY[0x277D752A0]);
   val = self;
-  v4 = [(TVRUIUpNextViewController *)self _layout];
-  v5 = [v3 initWithFrame:v4 collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  _layout = [(TVRUIUpNextViewController *)self _layout];
+  v5 = [v3 initWithFrame:_layout collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
 
   obj = v5;
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [v5 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v5 setBackgroundColor:clearColor];
 
   [v5 setPrefetchingEnabled:0];
   [v5 setDelegate:val];
@@ -322,13 +322,13 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   v173[3] = &unk_279D884A0;
   objc_copyWeak(&v174, &location);
   v23 = [v21 registrationWithCellClass:v22 configurationHandler:v173];
-  v148 = [(TVRUIUpNextViewController *)val _isHorizontalMode];
+  _isHorizontalMode = [(TVRUIUpNextViewController *)val _isHorizontalMode];
   v24 = objc_alloc(MEMORY[0x277D752D0]);
   v166[0] = MEMORY[0x277D85DD0];
   v166[1] = 3221225472;
   v166[2] = __48__TVRUIUpNextViewController__configureHierarchy__block_invoke_7;
   v166[3] = &unk_279D884C8;
-  v172 = v148;
+  v172 = _isHorizontalMode;
   v90 = v23;
   v167 = v90;
   v89 = v20;
@@ -343,9 +343,9 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   dataSource = val->_dataSource;
   val->_dataSource = v25;
 
-  v27 = [(TVRUIUpNextViewController *)val view];
-  [v27 addSubview:obj];
-  v156 = v27;
+  view = [(TVRUIUpNextViewController *)val view];
+  [view addSubview:obj];
+  v156 = view;
   v28 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:101];
   [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v28 setHidden:1];
@@ -369,8 +369,8 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   v35 = [v34 localizedStringForKey:@"TVRUIUpNextEmptyTitle" value:&stru_287E6AEF8 table:@"Localizable"];
   [v151 setText:v35];
 
-  v36 = [MEMORY[0x277D75348] labelColor];
-  [v151 setTextColor:v36];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v151 setTextColor:labelColor];
 
   v154 = objc_alloc_init(MEMORY[0x277D756B8]);
   v37 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D769C0] design:v31 variant:0 maximumContentSizeCategory:v32 compatibleWithTraitCollection:0];
@@ -382,8 +382,8 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   v39 = [v38 localizedStringForKey:@"TVRUIUpNextEmptySubheading" value:&stru_287E6AEF8 table:@"Localizable"];
   [v154 setText:v39];
 
-  v40 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v154 setTextColor:v40];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v154 setTextColor:secondaryLabelColor];
 
   v164 = 0u;
   v165 = 0u;
@@ -417,8 +417,8 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
     while (v42);
   }
 
-  v46 = [(TVRUIUpNextViewController *)val mode];
-  if (v46)
+  mode = [(TVRUIUpNextViewController *)val mode];
+  if (mode)
   {
     v47 = 10.0;
   }
@@ -428,7 +428,7 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
     v47 = 2.0;
   }
 
-  if (v46)
+  if (mode)
   {
     v48 = -80.0;
   }
@@ -439,45 +439,45 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   }
 
   v102 = MEMORY[0x277CCAAD0];
-  v146 = [v30 centerXAnchor];
-  v144 = [v153 centerXAnchor];
-  v142 = [v146 constraintEqualToAnchor:v144];
+  centerXAnchor = [v30 centerXAnchor];
+  centerXAnchor2 = [v153 centerXAnchor];
+  v142 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v188[0] = v142;
-  v140 = [v30 centerYAnchor];
-  v138 = [v153 centerYAnchor];
-  v136 = [v140 constraintEqualToAnchor:v138 constant:v48];
+  centerYAnchor = [v30 centerYAnchor];
+  centerYAnchor2 = [v153 centerYAnchor];
+  v136 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:v48];
   v188[1] = v136;
-  v134 = [v30 widthAnchor];
-  v132 = [v153 widthAnchor];
-  v130 = [v134 constraintEqualToAnchor:v132 constant:-40.0];
+  widthAnchor = [v30 widthAnchor];
+  widthAnchor2 = [v153 widthAnchor];
+  v130 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:-40.0];
   v188[2] = v130;
-  v128 = [v151 topAnchor];
-  v126 = [v30 topAnchor];
-  v124 = [v128 constraintEqualToAnchor:v126];
+  topAnchor = [v151 topAnchor];
+  topAnchor2 = [v30 topAnchor];
+  v124 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v188[3] = v124;
-  v122 = [v151 leadingAnchor];
-  v120 = [v30 leadingAnchor];
-  v118 = [v122 constraintEqualToAnchor:v120];
+  leadingAnchor = [v151 leadingAnchor];
+  leadingAnchor2 = [v30 leadingAnchor];
+  v118 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v188[4] = v118;
-  v116 = [v151 trailingAnchor];
-  v114 = [v30 trailingAnchor];
-  v112 = [v116 constraintEqualToAnchor:v114];
+  trailingAnchor = [v151 trailingAnchor];
+  trailingAnchor2 = [v30 trailingAnchor];
+  v112 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v188[5] = v112;
-  v110 = [v154 topAnchor];
-  v108 = [v151 bottomAnchor];
-  v106 = [v110 constraintEqualToAnchor:v108 constant:v47];
+  topAnchor3 = [v154 topAnchor];
+  bottomAnchor = [v151 bottomAnchor];
+  v106 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:v47];
   v188[6] = v106;
-  v104 = [v154 leadingAnchor];
-  v49 = [v30 leadingAnchor];
-  v50 = [v104 constraintEqualToAnchor:v49];
+  leadingAnchor3 = [v154 leadingAnchor];
+  leadingAnchor4 = [v30 leadingAnchor];
+  v50 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v188[7] = v50;
-  v51 = [v154 trailingAnchor];
-  v52 = [v30 trailingAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52];
+  trailingAnchor3 = [v154 trailingAnchor];
+  trailingAnchor4 = [v30 trailingAnchor];
+  v53 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v188[8] = v53;
-  v54 = [v154 bottomAnchor];
-  v55 = [v30 bottomAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55];
+  bottomAnchor2 = [v154 bottomAnchor];
+  bottomAnchor3 = [v30 bottomAnchor];
+  v56 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v188[9] = v56;
   v57 = [MEMORY[0x277CBEA60] arrayWithObjects:v188 count:10];
   [v102 activateConstraints:v57];
@@ -491,61 +491,61 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
 
   [v156 addSubview:v155];
   v85 = MEMORY[0x277CCAAD0];
-  v152 = [v149 centerYAnchor];
-  v147 = [v156 centerYAnchor];
-  v145 = [v152 constraintEqualToAnchor:v147 constant:-80.0];
+  centerYAnchor3 = [v149 centerYAnchor];
+  centerYAnchor4 = [v156 centerYAnchor];
+  v145 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:-80.0];
   v187[0] = v145;
-  v143 = [v149 centerXAnchor];
-  v141 = [v156 centerXAnchor];
-  v139 = [v143 constraintEqualToAnchor:v141];
+  centerXAnchor3 = [v149 centerXAnchor];
+  centerXAnchor4 = [v156 centerXAnchor];
+  v139 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v187[1] = v139;
-  v137 = [v153 topAnchor];
-  v135 = [v156 topAnchor];
-  v133 = [v137 constraintEqualToAnchor:v135];
+  topAnchor4 = [v153 topAnchor];
+  topAnchor5 = [v156 topAnchor];
+  v133 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v187[2] = v133;
-  v131 = [v153 leadingAnchor];
-  v129 = [v156 leadingAnchor];
-  v127 = [v131 constraintEqualToAnchor:v129];
+  leadingAnchor5 = [v153 leadingAnchor];
+  leadingAnchor6 = [v156 leadingAnchor];
+  v127 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v187[3] = v127;
-  v125 = [v153 trailingAnchor];
-  v123 = [v156 trailingAnchor];
-  v121 = [v125 constraintEqualToAnchor:v123];
+  trailingAnchor5 = [v153 trailingAnchor];
+  trailingAnchor6 = [v156 trailingAnchor];
+  v121 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v187[4] = v121;
-  v119 = [v153 bottomAnchor];
-  v117 = [v156 bottomAnchor];
-  v115 = [v119 constraintEqualToAnchor:v117];
+  bottomAnchor4 = [v153 bottomAnchor];
+  bottomAnchor5 = [v156 bottomAnchor];
+  v115 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v187[5] = v115;
-  v113 = [(TVRUILoadingView *)v155 topAnchor];
-  v111 = [v156 topAnchor];
-  v109 = [v113 constraintEqualToAnchor:v111];
+  topAnchor6 = [(TVRUILoadingView *)v155 topAnchor];
+  topAnchor7 = [v156 topAnchor];
+  v109 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
   v187[6] = v109;
-  v107 = [(TVRUILoadingView *)v155 leadingAnchor];
-  v105 = [v156 leadingAnchor];
-  v103 = [v107 constraintEqualToAnchor:v105];
+  leadingAnchor7 = [(TVRUILoadingView *)v155 leadingAnchor];
+  leadingAnchor8 = [v156 leadingAnchor];
+  v103 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v187[7] = v103;
-  v101 = [(TVRUILoadingView *)v155 trailingAnchor];
-  v100 = [v156 trailingAnchor];
-  v99 = [v101 constraintEqualToAnchor:v100];
+  trailingAnchor7 = [(TVRUILoadingView *)v155 trailingAnchor];
+  trailingAnchor8 = [v156 trailingAnchor];
+  v99 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v187[8] = v99;
-  v98 = [(TVRUILoadingView *)v155 bottomAnchor];
-  v97 = [v156 bottomAnchor];
-  v96 = [v98 constraintEqualToAnchor:v97];
+  bottomAnchor6 = [(TVRUILoadingView *)v155 bottomAnchor];
+  bottomAnchor7 = [v156 bottomAnchor];
+  v96 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v187[9] = v96;
-  v95 = [obj topAnchor];
-  v94 = [v156 topAnchor];
-  v93 = [v95 constraintEqualToAnchor:v94];
+  topAnchor8 = [obj topAnchor];
+  topAnchor9 = [v156 topAnchor];
+  v93 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
   v187[10] = v93;
-  v60 = [obj bottomAnchor];
-  v61 = [v156 bottomAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61];
+  bottomAnchor8 = [obj bottomAnchor];
+  bottomAnchor9 = [v156 bottomAnchor];
+  v62 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
   v187[11] = v62;
-  v63 = [obj leadingAnchor];
-  v64 = [v156 leadingAnchor];
-  v65 = [v63 constraintEqualToAnchor:v64];
+  leadingAnchor9 = [obj leadingAnchor];
+  leadingAnchor10 = [v156 leadingAnchor];
+  v65 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v187[12] = v65;
-  v66 = [obj trailingAnchor];
-  v67 = [v156 trailingAnchor];
-  v68 = [v66 constraintEqualToAnchor:v67];
+  trailingAnchor9 = [obj trailingAnchor];
+  trailingAnchor10 = [v156 trailingAnchor];
+  v68 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v187[13] = v68;
   v69 = [MEMORY[0x277CBEA60] arrayWithObjects:v187 count:14];
   [v85 activateConstraints:v69];
@@ -554,19 +554,19 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
   objc_storeStrong(&val->_activityIndicatorView, v149);
   objc_storeStrong(&val->_emptyStateView, v153);
   objc_storeStrong(&val->_loadingView, v155);
-  [(TVRUILoadingView *)val->_loadingView setHidden:!v148];
+  [(TVRUILoadingView *)val->_loadingView setHidden:!_isHorizontalMode];
   v70 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v71 = [v70 localizedStringForKey:@"TVRemoteUIUpNextTab" value:&stru_287E6AEF8 table:@"Localizable"];
 
   if ([(TVRUIUpNextViewController *)val _isStandaloneMode])
   {
     [(TVRUIUpNextViewController *)val setIsVisibleInParentUI:1];
-    v72 = [MEMORY[0x277D75348] blackColor];
-    v73 = [(TVRUIUpNextViewController *)val view];
-    [v73 setBackgroundColor:v72];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    view2 = [(TVRUIUpNextViewController *)val view];
+    [view2 setBackgroundColor:blackColor];
 
-    v74 = [(TVRUIUpNextViewController *)val navigationItem];
-    [v74 setTitle:v71];
+    navigationItem = [(TVRUIUpNextViewController *)val navigationItem];
+    [navigationItem setTitle:v71];
 
     v75 = objc_alloc(MEMORY[0x277D751E0]);
     v76 = MEMORY[0x277D750C8];
@@ -578,11 +578,11 @@ void __40__TVRUIUpNextViewController_viewDidLoad__block_invoke_4(uint64_t a1)
     v77 = [v76 actionWithHandler:v160];
     v78 = [v75 initWithBarButtonSystemItem:0 primaryAction:v77];
 
-    v79 = [MEMORY[0x277D75348] whiteColor];
-    [v78 setTintColor:v79];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v78 setTintColor:whiteColor];
 
-    v80 = [(TVRUIUpNextViewController *)val navigationItem];
-    [v80 setRightBarButtonItem:v78];
+    navigationItem2 = [(TVRUIUpNextViewController *)val navigationItem];
+    [navigationItem2 setRightBarButtonItem:v78];
 
     objc_destroyWeak(&v161);
   }
@@ -831,28 +831,28 @@ id __36__TVRUIUpNextViewController__layout__block_invoke_2(uint64_t a1)
 {
   if ([(TVRUIUpNextViewController *)self isVisibleInParentUI])
   {
-    v3 = [(TVRUIUpNextViewController *)self upNextProvider];
-    [v3 refreshIfNeeded];
+    upNextProvider = [(TVRUIUpNextViewController *)self upNextProvider];
+    [upNextProvider refreshIfNeeded];
   }
 }
 
-- (void)_refreshUIAnimated:(BOOL)a3
+- (void)_refreshUIAnimated:(BOOL)animated
 {
-  v64 = a3;
+  animatedCopy = animated;
   v86 = *MEMORY[0x277D85DE8];
   [(TVRUIUpNextViewController *)self _updateEmptyStateAndActivityIndicatorForCurrentState];
-  v4 = [(TVRUIUpNextViewController *)self dataSource];
-  v5 = [v4 snapshot];
+  dataSource = [(TVRUIUpNextViewController *)self dataSource];
+  snapshot = [dataSource snapshot];
 
-  v63 = [v5 numberOfItems];
+  numberOfItems = [snapshot numberOfItems];
   v6 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v66 = self;
-  v7 = [(TVRUIUpNextViewController *)self infos];
-  v8 = [v7 countByEnumeratingWithState:&v78 objects:v85 count:16];
+  selfCopy = self;
+  infos = [(TVRUIUpNextViewController *)self infos];
+  v8 = [infos countByEnumeratingWithState:&v78 objects:v85 count:16];
   if (v8)
   {
     v9 = v8;
@@ -863,29 +863,29 @@ id __36__TVRUIUpNextViewController__layout__block_invoke_2(uint64_t a1)
       {
         if (*v79 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(infos);
         }
 
         v12 = [_TVRUIUpNextItem itemWithUpNextInfo:*(*(&v78 + 1) + 8 * i)];
         [v6 addObject:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v78 objects:v85 count:16];
+      v9 = [infos countByEnumeratingWithState:&v78 objects:v85 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [v6 array];
+  array = [v6 array];
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v67 = v5;
-  v15 = [v5 itemIdentifiers];
+  v67 = snapshot;
+  itemIdentifiers = [snapshot itemIdentifiers];
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v16 = [v15 countByEnumeratingWithState:&v74 objects:v84 count:16];
+  v16 = [itemIdentifiers countByEnumeratingWithState:&v74 objects:v84 count:16];
   if (v16)
   {
     v17 = v16;
@@ -896,32 +896,32 @@ id __36__TVRUIUpNextViewController__layout__block_invoke_2(uint64_t a1)
       {
         if (*v75 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(itemIdentifiers);
         }
 
         v20 = *(*(&v74 + 1) + 8 * j);
         if (([v20 isMoreItem] & 1) == 0)
         {
-          v21 = [v20 upNextInfo];
-          v22 = [v21 mediaInfo];
-          v23 = [v22 identifier];
-          [v14 setObject:v20 forKeyedSubscript:v23];
+          upNextInfo = [v20 upNextInfo];
+          mediaInfo = [upNextInfo mediaInfo];
+          identifier = [mediaInfo identifier];
+          [v14 setObject:v20 forKeyedSubscript:identifier];
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v74 objects:v84 count:16];
+      v17 = [itemIdentifiers countByEnumeratingWithState:&v74 objects:v84 count:16];
     }
 
     while (v17);
   }
 
-  v65 = v15;
+  v65 = itemIdentifiers;
   v68 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = v13;
+  obj = array;
   v24 = [obj countByEnumeratingWithState:&v70 objects:v83 count:16];
   if (v24)
   {
@@ -938,22 +938,22 @@ id __36__TVRUIUpNextViewController__layout__block_invoke_2(uint64_t a1)
         }
 
         v28 = *(*(&v70 + 1) + 8 * v27);
-        v29 = [v28 upNextInfo];
-        v30 = [v29 mediaInfo];
-        v31 = [v30 identifier];
-        v32 = [v14 objectForKeyedSubscript:v31];
+        upNextInfo2 = [v28 upNextInfo];
+        mediaInfo2 = [upNextInfo2 mediaInfo];
+        identifier2 = [mediaInfo2 identifier];
+        v32 = [v14 objectForKeyedSubscript:identifier2];
 
         if (v32)
         {
-          v33 = [v28 upNextInfo];
-          v34 = [v33 timestamp];
+          upNextInfo3 = [v28 upNextInfo];
+          timestamp = [upNextInfo3 timestamp];
 
-          v35 = [v32 upNextInfo];
-          v36 = [v35 timestamp];
-          v37 = v36;
-          if (v34)
+          upNextInfo4 = [v32 upNextInfo];
+          timestamp2 = [upNextInfo4 timestamp];
+          v37 = timestamp2;
+          if (timestamp)
           {
-            v38 = [v36 isEqualToNumber:v34];
+            v38 = [timestamp2 isEqualToNumber:timestamp];
 
             if ((v38 & 1) == 0)
             {
@@ -986,18 +986,18 @@ LABEL_25:
   v40 = objc_alloc_init(MEMORY[0x277CFB890]);
   [v40 appendSectionsWithIdentifiers:&unk_287E84AF8];
   [v40 appendItemsWithIdentifiers:obj];
-  v41 = [(TVRUIUpNextViewController *)v66 dataSource];
-  v42 = [v41 snapshot];
-  v43 = [v40 isEqual:v42];
+  dataSource2 = [(TVRUIUpNextViewController *)selfCopy dataSource];
+  snapshot2 = [dataSource2 snapshot];
+  v43 = [v40 isEqual:snapshot2];
 
   [v40 reconfigureItemsWithIdentifiers:v68];
   v44 = [v68 count];
   if ([obj count])
   {
-    v45 = [(TVRUIUpNextViewController *)v66 upNextProvider];
-    v46 = [v45 hasMoreInfo];
+    upNextProvider = [(TVRUIUpNextViewController *)selfCopy upNextProvider];
+    hasMoreInfo = [upNextProvider hasMoreInfo];
 
-    if (v46)
+    if (hasMoreInfo)
     {
       v47 = +[_TVRUIUpNextItem moreItem];
       v82 = v47;
@@ -1006,7 +1006,7 @@ LABEL_25:
     }
   }
 
-  v49 = [v40 numberOfItems];
+  numberOfItems2 = [v40 numberOfItems];
   if (v44)
   {
     v50 = 0;
@@ -1019,27 +1019,27 @@ LABEL_25:
 
   if ((v50 & 1) == 0)
   {
-    v51 = v63 <= v49;
-    v52 = [(TVRUIUpNextViewController *)v66 isVisibleInParentUI];
-    v53 = v52;
-    v54 = v52 && v64;
-    v55 = [(TVRUIUpNextViewController *)v66 dataSource];
-    [v55 applySnapshot:v40 animatingDifferences:v54 & v51];
+    v51 = numberOfItems <= numberOfItems2;
+    isVisibleInParentUI = [(TVRUIUpNextViewController *)selfCopy isVisibleInParentUI];
+    v53 = isVisibleInParentUI;
+    v54 = isVisibleInParentUI && animatedCopy;
+    dataSource3 = [(TVRUIUpNextViewController *)selfCopy dataSource];
+    [dataSource3 applySnapshot:v40 animatingDifferences:v54 & v51];
 
     if (!v53)
     {
-      v56 = [(TVRUIUpNextViewController *)v66 collectionView];
-      [v56 contentInset];
+      collectionView = [(TVRUIUpNextViewController *)selfCopy collectionView];
+      [collectionView contentInset];
       v58 = v57;
 
       if (fabs(v58) > 0.1)
       {
-        v59 = [(TVRUIUpNextViewController *)v66 collectionView];
-        [v59 contentInset];
+        collectionView2 = [(TVRUIUpNextViewController *)selfCopy collectionView];
+        [collectionView2 contentInset];
         v61 = -v60;
 
-        v62 = [(TVRUIUpNextViewController *)v66 collectionView];
-        [v62 setContentOffset:{0.0, v61}];
+        collectionView3 = [(TVRUIUpNextViewController *)selfCopy collectionView];
+        [collectionView3 setContentOffset:{0.0, v61}];
       }
     }
   }
@@ -1047,26 +1047,26 @@ LABEL_25:
 
 - (BOOL)_currentTraitsSizeCategoryRequiresStackedLayout
 {
-  v2 = [(TVRUIUpNextViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(TVRUIUpNextViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  LOBYTE(v2) = UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x277D767F8]) == NSOrderedDescending;
-  return v2;
+  LOBYTE(traitCollection) = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D767F8]) == NSOrderedDescending;
+  return traitCollection;
 }
 
 - (void)_updateEmptyStateAndActivityIndicatorForCurrentState
 {
   if (![(TVRUIUpNextViewController *)self _isHorizontalMode])
   {
-    v3 = [(TVRUIUpNextViewController *)self upNextProvider];
-    v4 = [v3 hasFetchedInfos];
+    upNextProvider = [(TVRUIUpNextViewController *)self upNextProvider];
+    hasFetchedInfos = [upNextProvider hasFetchedInfos];
 
-    v5 = [(TVRUIUpNextViewController *)self upNextProvider];
-    v6 = [v5 infos];
-    v7 = [v6 count];
+    upNextProvider2 = [(TVRUIUpNextViewController *)self upNextProvider];
+    infos = [upNextProvider2 infos];
+    v7 = [infos count];
 
-    v8 = [(TVRUIUpNextViewController *)self didAppearTimestamp];
-    [v8 timeIntervalSinceNow];
+    didAppearTimestamp = [(TVRUIUpNextViewController *)self didAppearTimestamp];
+    [didAppearTimestamp timeIntervalSinceNow];
     v10 = fabs(v9);
 
     if (v10 < 1.75)
@@ -1076,7 +1076,7 @@ LABEL_25:
 
     else
     {
-      v11 = v4;
+      v11 = hasFetchedInfos;
     }
 
     if (v7)
@@ -1086,82 +1086,82 @@ LABEL_25:
 
     else
     {
-      v12 = v4 ^ 1;
+      v12 = hasFetchedInfos ^ 1;
     }
 
-    v13 = [(TVRUIUpNextViewController *)self activityIndicatorView];
-    v14 = v13;
+    activityIndicatorView = [(TVRUIUpNextViewController *)self activityIndicatorView];
+    v14 = activityIndicatorView;
     if (v11)
     {
-      [v13 stopAnimating];
+      [activityIndicatorView stopAnimating];
     }
 
     else
     {
-      [v13 startAnimating];
+      [activityIndicatorView startAnimating];
     }
 
-    v15 = [(TVRUIUpNextViewController *)self activityIndicatorView];
-    [v15 setHidden:v11];
+    activityIndicatorView2 = [(TVRUIUpNextViewController *)self activityIndicatorView];
+    [activityIndicatorView2 setHidden:v11];
 
-    v16 = [(TVRUIUpNextViewController *)self emptyStateView];
-    [v16 setHidden:v12];
+    emptyStateView = [(TVRUIUpNextViewController *)self emptyStateView];
+    [emptyStateView setHidden:v12];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __69__TVRUIUpNextViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
   v17 = &unk_279D88230;
-  v18 = v6;
-  v8 = v7;
+  v18 = viewCopy;
+  v8 = pathCopy;
   v19 = v8;
-  v9 = v6;
+  v9 = viewCopy;
   dispatch_async(MEMORY[0x277D85CD0], &v14);
   v10 = [(TVRUIUpNextViewController *)self dataSource:v14];
   v11 = [v10 itemIdentifierForIndexPath:v8];
 
-  v12 = [v11 upNextInfo];
-  v13 = [v12 mediaInfo];
+  upNextInfo = [v11 upNextInfo];
+  mediaInfo = [upNextInfo mediaInfo];
 
-  if (v13)
+  if (mediaInfo)
   {
-    [(TVRUIUpNextViewController *)self playItem:v12 animated:1];
+    [(TVRUIUpNextViewController *)self playItem:upNextInfo animated:1];
   }
 }
 
-- (void)_confirmOkToPlayUpNextInfo:(id)a3 withHandler:(id)a4
+- (void)_confirmOkToPlayUpNextInfo:(id)info withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  handlerCopy = handler;
   if ([(TVRUIUpNextViewController *)self isCurrentlyPlayingMedia])
   {
-    v8 = [(TVRUIUpNextViewController *)self nowPlayingProvider];
-    v9 = [v8 nowPlayingInfo];
-    v10 = [v9 metadata];
+    nowPlayingProvider = [(TVRUIUpNextViewController *)self nowPlayingProvider];
+    nowPlayingInfo = [nowPlayingProvider nowPlayingInfo];
+    metadata = [nowPlayingInfo metadata];
 
-    v11 = [v6 mediaInfo];
-    v12 = [v10 showID];
-    v52 = [v11 showIdentifier];
-    v53 = v12;
-    v54 = v6;
-    v55 = v10;
-    if ([v12 isEqualToString:?])
+    mediaInfo = [infoCopy mediaInfo];
+    showID = [metadata showID];
+    showIdentifier = [mediaInfo showIdentifier];
+    v53 = showID;
+    v54 = infoCopy;
+    v55 = metadata;
+    if ([showID isEqualToString:?])
     {
-      v13 = [v10 seasonNumber];
-      if (v13 && (v14 = v13, [v10 episodeNumber], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+      seasonNumber = [metadata seasonNumber];
+      if (seasonNumber && (v14 = seasonNumber, [metadata episodeNumber], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
       {
         v16 = MEMORY[0x277CCACA8];
         v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v18 = [v17 localizedStringForKey:@"TVRUINowPlayingTitleSeasonEpisode" value:&stru_287E6AEF8 table:@"Localizable"];
-        v19 = [v10 title];
-        v20 = [v10 seasonNumber];
-        v21 = [v55 episodeNumber];
-        v22 = [v16 stringWithFormat:v18, v19, v20, v21];
+        title = [metadata title];
+        seasonNumber2 = [metadata seasonNumber];
+        episodeNumber = [v55 episodeNumber];
+        v22 = [v16 stringWithFormat:v18, title, seasonNumber2, episodeNumber];
       }
 
       else
@@ -1169,25 +1169,25 @@ LABEL_25:
         v30 = MEMORY[0x277CCACA8];
         v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v18 = [v17 localizedStringForKey:@"TVRUINowPlayingFormatted" value:&stru_287E6AEF8 table:@"Localizable"];
-        v19 = [v10 title];
-        v22 = [v30 stringWithFormat:v18, v19];
+        title = [metadata title];
+        v22 = [v30 stringWithFormat:v18, title];
       }
 
-      v31 = [v11 seasonNumber];
-      if (v31)
+      seasonNumber3 = [mediaInfo seasonNumber];
+      if (seasonNumber3)
       {
-        v32 = v31;
-        v33 = [v11 episodeNumber];
+        v32 = seasonNumber3;
+        episodeNumber2 = [mediaInfo episodeNumber];
 
-        if (v33)
+        if (episodeNumber2)
         {
           v34 = MEMORY[0x277CCACA8];
           v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v35 = [v29 localizedStringForKey:@"TVRUIReplaceNowPlayingTitleSeasonEpisode" value:&stru_287E6AEF8 table:@"Localizable"];
-          v36 = [v11 primaryTitle];
-          v37 = [v11 seasonNumber];
-          v38 = [v11 episodeNumber];
-          v39 = [v34 stringWithFormat:v35, v36, v37, v38];
+          primaryTitle = [mediaInfo primaryTitle];
+          seasonNumber4 = [mediaInfo seasonNumber];
+          episodeNumber3 = [mediaInfo episodeNumber];
+          v39 = [v34 stringWithFormat:v35, primaryTitle, seasonNumber4, episodeNumber3];
 
           v40 = v39;
 LABEL_14:
@@ -1208,12 +1208,12 @@ LABEL_14:
           v56[1] = 3221225472;
           v56[2] = __68__TVRUIUpNextViewController__confirmOkToPlayUpNextInfo_withHandler___block_invoke_2;
           v56[3] = &unk_279D88098;
-          v57 = v7;
+          v57 = handlerCopy;
           v50 = [v47 actionWithTitle:v49 style:0 handler:v56];
           [v42 addAction:v50];
 
           [(TVRUIUpNextViewController *)self presentViewController:v42 animated:1 completion:0];
-          v6 = v54;
+          infoCopy = v54;
           goto LABEL_15;
         }
       }
@@ -1228,8 +1228,8 @@ LABEL_14:
       v23 = MEMORY[0x277CCACA8];
       v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v25 = [v24 localizedStringForKey:@"TVRUINowPlayingFormatted" value:&stru_287E6AEF8 table:@"Localizable"];
-      v26 = [v10 title];
-      v22 = [v23 stringWithFormat:v25, v26];
+      title2 = [metadata title];
+      v22 = [v23 stringWithFormat:v25, title2];
 
       v27 = MEMORY[0x277CCACA8];
       v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1237,28 +1237,28 @@ LABEL_14:
     }
 
     v35 = [v28 localizedStringForKey:@"TVRUIReplaceNowPlayingTitle" value:&stru_287E6AEF8 table:@"Localizable"];
-    v36 = [v11 primaryTitle];
-    v40 = [v27 stringWithFormat:v35, v36];
+    primaryTitle = [mediaInfo primaryTitle];
+    v40 = [v27 stringWithFormat:v35, primaryTitle];
     goto LABEL_14;
   }
 
-  v7[2](v7);
+  handlerCopy[2](handlerCopy);
 LABEL_15:
 }
 
-- (void)markItemAsWatched:(id)a3
+- (void)markItemAsWatched:(id)watched
 {
-  v4 = [a3 mediaInfo];
-  v5 = [v4 identifier];
+  mediaInfo = [watched mediaInfo];
+  identifier = [mediaInfo identifier];
 
-  v6 = [(TVRUIUpNextViewController *)self upNextProvider];
+  upNextProvider = [(TVRUIUpNextViewController *)self upNextProvider];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__TVRUIUpNextViewController_markItemAsWatched___block_invoke;
   v8[3] = &unk_279D88208;
-  v9 = v5;
-  v7 = v5;
-  [v6 markAsWatchedWithMediaIdentifier:v7 completion:v8];
+  v9 = identifier;
+  v7 = identifier;
+  [upNextProvider markAsWatchedWithMediaIdentifier:v7 completion:v8];
 }
 
 void __47__TVRUIUpNextViewController_markItemAsWatched___block_invoke(uint64_t a1, void *a2)
@@ -1274,17 +1274,17 @@ void __47__TVRUIUpNextViewController_markItemAsWatched___block_invoke(uint64_t a
   }
 }
 
-- (void)removeItemFromUpNext:(id)a3
+- (void)removeItemFromUpNext:(id)next
 {
-  v4 = [a3 tvruiupnextvc_favoritesIdentifier];
-  v5 = [(TVRUIUpNextViewController *)self upNextProvider];
+  tvruiupnextvc_favoritesIdentifier = [next tvruiupnextvc_favoritesIdentifier];
+  upNextProvider = [(TVRUIUpNextViewController *)self upNextProvider];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__TVRUIUpNextViewController_removeItemFromUpNext___block_invoke;
   v7[3] = &unk_279D88208;
-  v8 = v4;
-  v6 = v4;
-  [v5 removeItemWithMediaIdentifier:v6 completion:v7];
+  v8 = tvruiupnextvc_favoritesIdentifier;
+  v6 = tvruiupnextvc_favoritesIdentifier;
+  [upNextProvider removeItemWithMediaIdentifier:v6 completion:v7];
 }
 
 void __50__TVRUIUpNextViewController_removeItemFromUpNext___block_invoke(uint64_t a1, void *a2)
@@ -1300,83 +1300,83 @@ void __50__TVRUIUpNextViewController_removeItemFromUpNext___block_invoke(uint64_
   }
 }
 
-- (void)requestImageForInfo:(id)a3 completion:(id)a4
+- (void)requestImageForInfo:(id)info completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TVRUIUpNextViewController *)self upNextProvider];
-  [v8 fetchImageForUpNextInfo:v7 completion:v6];
+  completionCopy = completion;
+  infoCopy = info;
+  upNextProvider = [(TVRUIUpNextViewController *)self upNextProvider];
+  [upNextProvider fetchImageForUpNextInfo:infoCopy completion:completionCopy];
 }
 
-- (void)requestImageForURLTemplate:(id)a3 size:(CGSize)a4 identifier:(id)a5 completion:(id)a6
+- (void)requestImageForURLTemplate:(id)template size:(CGSize)size identifier:(id)identifier completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(TVRUIUpNextViewController *)self imageFetcher];
-  [v14 fetchImageWithTemplateString:v13 size:v12 identifier:v11 completion:{width, height}];
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  templateCopy = template;
+  imageFetcher = [(TVRUIUpNextViewController *)self imageFetcher];
+  [imageFetcher fetchImageWithTemplateString:templateCopy size:identifierCopy identifier:completionCopy completion:{width, height}];
 }
 
-- (void)shareEpisodeForInfo:(id)a3 sourceView:(id)a4
+- (void)shareEpisodeForInfo:(id)info sourceView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
+  viewCopy = view;
+  infoCopy = info;
   v8 = [TVRUIUpNextActivityItem alloc];
-  v9 = [(TVRUIUpNextViewController *)self upNextProvider];
-  v11 = [(TVRUIUpNextActivityItem *)v8 initWithUpNextInfo:v7 upNextProvider:v9 shareShow:0];
+  upNextProvider = [(TVRUIUpNextViewController *)self upNextProvider];
+  v11 = [(TVRUIUpNextActivityItem *)v8 initWithUpNextInfo:infoCopy upNextProvider:upNextProvider shareShow:0];
 
-  v10 = [(TVRUIUpNextViewController *)self actionProvider];
-  [v10 shareItem:v11 presentingViewController:self sourceView:v6];
+  actionProvider = [(TVRUIUpNextViewController *)self actionProvider];
+  [actionProvider shareItem:v11 presentingViewController:self sourceView:viewCopy];
 }
 
-- (void)shareShowForInfo:(id)a3 sourceView:(id)a4
+- (void)shareShowForInfo:(id)info sourceView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
+  viewCopy = view;
+  infoCopy = info;
   v8 = [TVRUIUpNextActivityItem alloc];
-  v9 = [(TVRUIUpNextViewController *)self upNextProvider];
-  v11 = [(TVRUIUpNextActivityItem *)v8 initWithUpNextInfo:v7 upNextProvider:v9 shareShow:1];
+  upNextProvider = [(TVRUIUpNextViewController *)self upNextProvider];
+  v11 = [(TVRUIUpNextActivityItem *)v8 initWithUpNextInfo:infoCopy upNextProvider:upNextProvider shareShow:1];
 
-  v10 = [(TVRUIUpNextViewController *)self actionProvider];
-  [v10 shareItem:v11 presentingViewController:self sourceView:v6];
+  actionProvider = [(TVRUIUpNextViewController *)self actionProvider];
+  [actionProvider shareItem:v11 presentingViewController:self sourceView:viewCopy];
 }
 
-- (void)sharePrimaryForInfo:(id)a3 sourceView:(id)a4
+- (void)sharePrimaryForInfo:(id)info sourceView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
+  viewCopy = view;
+  infoCopy = info;
   v8 = [TVRUIUpNextActivityItem alloc];
-  v9 = [(TVRUIUpNextViewController *)self upNextProvider];
-  v11 = [(TVRUIUpNextActivityItem *)v8 initWithUpNextInfo:v7 upNextProvider:v9 shareShow:0];
+  upNextProvider = [(TVRUIUpNextViewController *)self upNextProvider];
+  v11 = [(TVRUIUpNextActivityItem *)v8 initWithUpNextInfo:infoCopy upNextProvider:upNextProvider shareShow:0];
 
-  v10 = [(TVRUIUpNextViewController *)self actionProvider];
-  [v10 shareItem:v11 presentingViewController:self sourceView:v6];
+  actionProvider = [(TVRUIUpNextViewController *)self actionProvider];
+  [actionProvider shareItem:v11 presentingViewController:self sourceView:viewCopy];
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v4 = a3;
-  v5 = [(TVRUIUpNextViewController *)self actionProvider];
-  [v5 openURL:v4];
+  lCopy = l;
+  actionProvider = [(TVRUIUpNextViewController *)self actionProvider];
+  [actionProvider openURL:lCopy];
 }
 
-- (void)playItem:(id)a3 animated:(BOOL)a4
+- (void)playItem:(id)item animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = [v5 mediaInfo];
-  v7 = [v6 identifier];
-  if ([v7 length])
+  itemCopy = item;
+  mediaInfo = [itemCopy mediaInfo];
+  identifier = [mediaInfo identifier];
+  if ([identifier length])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __47__TVRUIUpNextViewController_playItem_animated___block_invoke;
     v8[3] = &unk_279D88050;
-    v9 = v6;
-    v10 = v5;
-    v11 = v7;
-    v12 = self;
+    v9 = mediaInfo;
+    v10 = itemCopy;
+    v11 = identifier;
+    selfCopy = self;
     [(TVRUIUpNextViewController *)self _confirmOkToPlayUpNextInfo:v10 withHandler:v8];
   }
 }
@@ -1487,13 +1487,13 @@ uint64_t __47__TVRUIUpNextViewController_playItem_animated___block_invoke_3(uint
 
 - (BOOL)isCurrentlyPlayingMedia
 {
-  v2 = [(TVRUIUpNextViewController *)self nowPlayingProvider];
-  v3 = [v2 nowPlayingInfo];
+  nowPlayingProvider = [(TVRUIUpNextViewController *)self nowPlayingProvider];
+  nowPlayingInfo = [nowPlayingProvider nowPlayingInfo];
 
-  if (v3)
+  if (nowPlayingInfo)
   {
-    v4 = [v3 playbackRate];
-    [v4 floatValue];
+    playbackRate = [nowPlayingInfo playbackRate];
+    [playbackRate floatValue];
     if (v5 == 0.0)
     {
       v7 = 0;
@@ -1501,8 +1501,8 @@ uint64_t __47__TVRUIUpNextViewController_playItem_animated___block_invoke_3(uint
 
     else
     {
-      v6 = [v3 playbackState];
-      v7 = [v6 integerValue] == 1;
+      playbackState = [nowPlayingInfo playbackState];
+      v7 = [playbackState integerValue] == 1;
     }
   }
 

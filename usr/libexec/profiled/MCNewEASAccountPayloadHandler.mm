@@ -1,36 +1,36 @@
 @interface MCNewEASAccountPayloadHandler
 - (BOOL)_isConfiguredWithSCEP;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (BOOL)isInstalled;
-- (BOOL)preflightUserInputResponses:(id)a3 outError:(id *)a4;
-- (BOOL)stageForInstallationWithInstaller:(id)a3 interactionClient:(id)a4 outError:(id *)a5;
-- (id)_accountFromPayloadWithUserInputResponses:(id)a3 identityPersistentID:(id)a4 SMIMESigningIdentityPersistentID:(id)a5 SMIMEEncryptionIdentityPersistentID:(id)a6;
-- (id)_endPointFQDNForPayload:(id)a3;
-- (id)_errorFromPolicyPreflightError:(id)a3;
-- (id)_errorFromValidationError:(id)a3;
-- (id)_getClientRestrictionsFromServerCertificatePersistentID:(id)a3 SMIMESigningIdentityPersistentID:(id)a4 SMIMEEncryptionIdentityPersistentID:(id)a5 outError:(id *)a6;
-- (id)_installTimePersistentIDForIdentityCertificateOutError:(id *)a3;
+- (BOOL)preflightUserInputResponses:(id)responses outError:(id *)error;
+- (BOOL)stageForInstallationWithInstaller:(id)installer interactionClient:(id)client outError:(id *)error;
+- (id)_accountFromPayloadWithUserInputResponses:(id)responses identityPersistentID:(id)d SMIMESigningIdentityPersistentID:(id)iD SMIMEEncryptionIdentityPersistentID:(id)persistentID;
+- (id)_endPointFQDNForPayload:(id)payload;
+- (id)_errorFromPolicyPreflightError:(id)error;
+- (id)_errorFromValidationError:(id)error;
+- (id)_getClientRestrictionsFromServerCertificatePersistentID:(id)d SMIMESigningIdentityPersistentID:(id)iD SMIMEEncryptionIdentityPersistentID:(id)persistentID outError:(id *)error;
+- (id)_installTimePersistentIDForIdentityCertificateOutError:(id *)error;
 - (id)_installedACAccountOtherThanSelf;
-- (id)_preflightTimePersistentIDForIdentityCertificateUserInputResponses:(id)a3 outError:(id *)a4;
+- (id)_preflightTimePersistentIDForIdentityCertificateUserInputResponses:(id)responses outError:(id *)error;
 - (id)accountTypeIdentifiers;
 - (id)unhashedAccountIdentifier;
 - (id)userInputFields;
-- (void)_preflightWithAccount:(id)a3 completionHandler:(id)a4;
-- (void)_preflightWithPreflighter:(id)a3 completionHandler:(id)a4;
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5;
-- (void)preflighter:(id)a3 error:(id)a4;
-- (void)preflighter:(id)a3 needsComplianceWithMCFeatures:(id)a4 perAccountPolicies:(id)a5;
-- (void)preflighter:(id)a3 successWithMCFeatures:(id)a4 perAccountPolicies:(id)a5 policyKey:(id)a6;
-- (void)preflighterAccountOnlyRemoteWipeRequestResponseAcknowledged:(id)a3;
-- (void)preflighterAccountOnlyRemoteWipeRequested:(id)a3;
-- (void)preflighterRemoteWipeRequestResponseAcknowledged:(id)a3;
-- (void)preflighterRemoteWipeRequested:(id)a3;
-- (void)preflighterSuccessWithoutPolicyUpdate:(id)a3;
+- (void)_preflightWithAccount:(id)account completionHandler:(id)handler;
+- (void)_preflightWithPreflighter:(id)preflighter completionHandler:(id)handler;
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error;
+- (void)preflighter:(id)preflighter error:(id)error;
+- (void)preflighter:(id)preflighter needsComplianceWithMCFeatures:(id)features perAccountPolicies:(id)policies;
+- (void)preflighter:(id)preflighter successWithMCFeatures:(id)features perAccountPolicies:(id)policies policyKey:(id)key;
+- (void)preflighterAccountOnlyRemoteWipeRequestResponseAcknowledged:(id)acknowledged;
+- (void)preflighterAccountOnlyRemoteWipeRequested:(id)requested;
+- (void)preflighterRemoteWipeRequestResponseAcknowledged:(id)acknowledged;
+- (void)preflighterRemoteWipeRequested:(id)requested;
+- (void)preflighterSuccessWithoutPolicyUpdate:(id)update;
 - (void)remove;
-- (void)setAsideWithInstaller:(id)a3;
-- (void)setUserInputResponses:(id)a3;
+- (void)setAsideWithInstaller:(id)installer;
+- (void)setUserInputResponses:(id)responses;
 - (void)unsetAside;
-- (void)unstageFromInstallationWithInstaller:(id)a3;
+- (void)unstageFromInstallationWithInstaller:(id)installer;
 @end
 
 @implementation MCNewEASAccountPayloadHandler
@@ -39,24 +39,24 @@
 {
   v54.receiver = self;
   v54.super_class = MCNewEASAccountPayloadHandler;
-  v3 = [(MCNewPayloadHandler *)&v54 userInputFields];
-  v4 = [v3 mutableCopy];
+  userInputFields = [(MCNewPayloadHandler *)&v54 userInputFields];
+  v4 = [userInputFields mutableCopy];
 
-  v5 = [(MCNewPayloadHandler *)self payload];
-  v6 = [v5 accountDescription];
-  v7 = v6;
-  if (v6)
+  payload = [(MCNewPayloadHandler *)self payload];
+  accountDescription = [payload accountDescription];
+  v7 = accountDescription;
+  if (accountDescription)
   {
-    v8 = v6;
+    v8 = accountDescription;
   }
 
   else
   {
-    v9 = [v5 hostname];
-    v10 = v9;
-    if (v9)
+    hostname = [payload hostname];
+    v10 = hostname;
+    if (hostname)
     {
-      v11 = v9;
+      v11 = hostname;
     }
 
     else
@@ -67,9 +67,9 @@
     v8 = v11;
   }
 
-  v12 = [v5 emailAddress];
+  emailAddress = [payload emailAddress];
 
-  if (!v12)
+  if (!emailAddress)
   {
     v13 = MCLocalizedString();
     v14 = MCLocalizedFormat();
@@ -78,11 +78,11 @@
     [v4 addObject:v16];
   }
 
-  v17 = [v5 embeddedCertificate];
-  if (v17)
+  embeddedCertificate = [payload embeddedCertificate];
+  if (embeddedCertificate)
   {
-    v18 = [v5 certificateUUID];
-    v19 = v18 == 0;
+    certificateUUID = [payload certificateUUID];
+    v19 = certificateUUID == 0;
   }
 
   else
@@ -90,17 +90,17 @@
     v19 = 0;
   }
 
-  v20 = [v5 hasCertificate];
-  v21 = [v5 useOAuth];
-  if (v21)
+  hasCertificate = [payload hasCertificate];
+  useOAuth = [payload useOAuth];
+  if (useOAuth)
   {
     v22 = 0;
   }
 
-  else if ([v5 hasCertificate])
+  else if ([payload hasCertificate])
   {
-    v23 = [v5 username];
-    v22 = [v23 length] != 0;
+    username = [payload username];
+    v22 = [username length] != 0;
   }
 
   else
@@ -108,9 +108,9 @@
     v22 = 1;
   }
 
-  if (!v19 || ([v5 embeddedCertificatePassword], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "length"), v24, v25))
+  if (!v19 || ([payload embeddedCertificatePassword], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "length"), v24, v25))
   {
-    if (v20)
+    if (hasCertificate)
     {
       goto LABEL_28;
     }
@@ -118,24 +118,24 @@
     goto LABEL_20;
   }
 
-  v32 = [v5 embeddedCertificateName];
-  v33 = [v32 length];
+  embeddedCertificateName = [payload embeddedCertificateName];
+  v33 = [embeddedCertificateName length];
 
   if (v33)
   {
-    v34 = [v5 embeddedCertificateName];
+    embeddedCertificateName2 = [payload embeddedCertificateName];
 LABEL_26:
     v37 = MCLocalizedFormat();
 
     goto LABEL_27;
   }
 
-  v35 = [v5 emailAddress];
-  v36 = [v35 length];
+  emailAddress2 = [payload emailAddress];
+  v36 = [emailAddress2 length];
 
   if (v36)
   {
-    v34 = [v5 emailAddress];
+    embeddedCertificateName2 = [payload emailAddress];
     goto LABEL_26;
   }
 
@@ -146,14 +146,14 @@ LABEL_27:
   v40 = [MCNewPayloadHandler promptDictionaryForKey:@"kEASCertPasswordKey" title:v38 description:v37 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:v39 minimumLength:0 fieldType:3 flags:?];
   [v4 addObject:v40];
 
-  if (v20)
+  if (hasCertificate)
   {
     goto LABEL_28;
   }
 
 LABEL_20:
-  v26 = [v5 username];
-  v27 = [v26 length];
+  username2 = [payload username];
+  v27 = [username2 length];
 
   if (!v27)
   {
@@ -167,28 +167,28 @@ LABEL_20:
 LABEL_28:
   if (v22)
   {
-    v41 = [v5 password];
-    v42 = [v41 length];
+    password = [payload password];
+    v42 = [password length];
 
     if (!v42)
     {
-      v43 = [v5 emailAddress];
-      v44 = [v43 length];
+      emailAddress3 = [payload emailAddress];
+      v44 = [emailAddress3 length];
 
       if (v44)
       {
-        v52 = [v5 emailAddress];
+        emailAddress4 = [payload emailAddress];
         v45 = MCLocalizedFormat();
       }
 
       else
       {
-        v52 = v8;
+        emailAddress4 = v8;
         v45 = MCLocalizedFormat();
       }
 
       v46 = MCLocalizedString();
-      if ([v5 hasCertificate])
+      if ([payload hasCertificate])
       {
         v47 = MCLocalizedString();
 
@@ -212,16 +212,16 @@ LABEL_28:
   return v4;
 }
 
-- (void)setUserInputResponses:(id)a3
+- (void)setUserInputResponses:(id)responses
 {
-  v4 = a3;
-  v20 = self;
-  v5 = [(MCNewPayloadHandler *)self payload];
+  responsesCopy = responses;
+  selfCopy = self;
+  payload = [(MCNewPayloadHandler *)self payload];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = responsesCopy;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v6)
   {
@@ -245,22 +245,22 @@ LABEL_28:
         v15 = [v13 objectForKey:v11];
         if ([v14 isEqualToString:@"kEASEmailAddressKey"])
         {
-          [v5 setEmailAddress:v15];
+          [payload setEmailAddress:v15];
         }
 
         else if ([v14 isEqualToString:@"kEASCertPasswordKey"])
         {
-          [v5 setEmbeddedCertificatePassword:v15];
+          [payload setEmbeddedCertificatePassword:v15];
         }
 
         else if ([v14 isEqualToString:@"kEASUsernameKey"])
         {
-          [v5 setUsername:v15];
+          [payload setUsername:v15];
         }
 
         else if ([v14 isEqualToString:@"kEASPasswordKey"])
         {
-          [v5 setPassword:v15];
+          [payload setPassword:v15];
         }
 
         else
@@ -286,18 +286,18 @@ LABEL_28:
     while (v8);
   }
 
-  v23.receiver = v20;
+  v23.receiver = selfCopy;
   v23.super_class = MCNewEASAccountPayloadHandler;
   [(MCNewPayloadHandler *)&v23 setUserInputResponses:obj];
 }
 
 - (id)unhashedAccountIdentifier
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 emailAddress];
-  if (v3)
+  payload = [(MCNewPayloadHandler *)self payload];
+  emailAddress = [payload emailAddress];
+  if (emailAddress)
   {
-    v4 = [NSString stringWithFormat:@"eas|%@", v3];
+    v4 = [NSString stringWithFormat:@"eas|%@", emailAddress];
   }
 
   else
@@ -305,20 +305,20 @@ LABEL_28:
     v4 = 0;
   }
 
-  v5 = [v2 hostname];
-  v6 = v5;
-  if (v4 && v5)
+  hostname = [payload hostname];
+  v6 = hostname;
+  if (v4 && hostname)
   {
-    v7 = [v4 stringByAppendingFormat:@"|%@", v5];
+    v7 = [v4 stringByAppendingFormat:@"|%@", hostname];
 
     v4 = v7;
   }
 
-  v8 = [v2 username];
-  v9 = v8;
-  if (v4 && v8)
+  username = [payload username];
+  v9 = username;
+  if (v4 && username)
   {
-    v10 = [v4 stringByAppendingFormat:@"|%@", v8];
+    v10 = [v4 stringByAppendingFormat:@"|%@", username];
 
     v4 = v10;
   }
@@ -326,19 +326,19 @@ LABEL_28:
   return v4;
 }
 
-- (id)_accountFromPayloadWithUserInputResponses:(id)a3 identityPersistentID:(id)a4 SMIMESigningIdentityPersistentID:(id)a5 SMIMEEncryptionIdentityPersistentID:(id)a6
+- (id)_accountFromPayloadWithUserInputResponses:(id)responses identityPersistentID:(id)d SMIMESigningIdentityPersistentID:(id)iD SMIMEEncryptionIdentityPersistentID:(id)persistentID
 {
-  v10 = a3;
-  v11 = a4;
-  v150 = a5;
-  v12 = a6;
-  v149 = v12;
+  responsesCopy = responses;
+  dCopy = d;
+  iDCopy = iD;
+  persistentIDCopy = persistentID;
+  v149 = persistentIDCopy;
   if (!self->_account)
   {
-    v13 = [(MCNewPayloadHandler *)self payload];
+    payload = [(MCNewPayloadHandler *)self payload];
     v14 = ACAccountTypeIdentifierExchange;
-    v15 = [v13 hostname];
-    v16 = [v15 isEqualToString:@"m.hotmail.com"];
+    hostname = [payload hostname];
+    v16 = [hostname isEqualToString:@"m.hotmail.com"];
 
     if (v16)
     {
@@ -353,40 +353,40 @@ LABEL_28:
 
     v20 = [[ACAccount alloc] initWithAccountType:v19];
     [v20 setManagingOwnerIdentifier:kMCAccountManagingOwnerIdentifier];
-    v21 = [v13 friendlyName];
-    [v20 setManagingSourceName:v21];
+    friendlyName = [payload friendlyName];
+    [v20 setManagingSourceName:friendlyName];
 
     v22 = +[MDMCloudConfiguration sharedConfiguration];
-    v23 = [v22 userMode];
+    userMode = [v22 userMode];
 
-    if (v23 == 1)
+    if (userMode == 1)
     {
-      v24 = [(MCACAccountPayloadHandler *)self MCACAccountIdentifier];
-      if (v24)
+      mCACAccountIdentifier = [(MCACAccountPayloadHandler *)self MCACAccountIdentifier];
+      if (mCACAccountIdentifier)
       {
-        v25 = [v20 identifier];
-        [v20 setAccountProperty:v25 forKey:@"MCAccountIdentifer"];
+        identifier = [v20 identifier];
+        [v20 setAccountProperty:identifier forKey:@"MCAccountIdentifer"];
 
-        v26 = [v20 identifier];
-        [v20 setAccountProperty:v26 forKey:@"MCNativeAccountIdentifer"];
+        identifier2 = [v20 identifier];
+        [v20 setAccountProperty:identifier2 forKey:@"MCNativeAccountIdentifer"];
 
-        [v20 setIdentifier:v24];
+        [v20 setIdentifier:mCACAccountIdentifier];
       }
 
       v27 = sharedDAAccountStore();
-      v28 = [v20 identifier];
-      v29 = [v27 accountWithIdentifier:v28];
+      identifier3 = [v20 identifier];
+      v29 = [v27 accountWithIdentifier:identifier3];
 
       if (v29)
       {
-        v30 = [v29 objectID];
-        [v20 performSelector:"_setObjectID:" withObject:v30];
+        objectID = [v29 objectID];
+        [v20 performSelector:"_setObjectID:" withObject:objectID];
       }
     }
 
     v157 = v19;
-    v31 = [v19 supportedDataclasses];
-    v32 = [v31 mutableCopy];
+    supportedDataclasses = [v19 supportedDataclasses];
+    v32 = [supportedDataclasses mutableCopy];
 
     v33 = kAccountDataclassNotes;
     [v32 removeObject:kAccountDataclassNotes];
@@ -428,83 +428,83 @@ LABEL_28:
       goto LABEL_74;
     }
 
-    -[ASAccount setEnabled:forDADataclass:](v41, "setEnabled:forDADataclass:", [v13 enableMail], 1);
-    -[ASAccount setEnabled:forDADataclass:](self->_account, "setEnabled:forDADataclass:", [v13 enableContacts], 2);
-    -[ASAccount setEnabled:forDADataclass:](self->_account, "setEnabled:forDADataclass:", [v13 enableCalendars], 4);
-    -[ASAccount setEnabled:forDADataclass:](self->_account, "setEnabled:forDADataclass:", [v13 enableContacts], 8);
-    -[ASAccount setEnabled:forDADataclass:](self->_account, "setEnabled:forDADataclass:", [v13 enableReminders], 16);
-    v42 = [v20 provisionedDataclasses];
-    v43 = [v42 containsObject:v33];
+    -[ASAccount setEnabled:forDADataclass:](v41, "setEnabled:forDADataclass:", [payload enableMail], 1);
+    -[ASAccount setEnabled:forDADataclass:](self->_account, "setEnabled:forDADataclass:", [payload enableContacts], 2);
+    -[ASAccount setEnabled:forDADataclass:](self->_account, "setEnabled:forDADataclass:", [payload enableCalendars], 4);
+    -[ASAccount setEnabled:forDADataclass:](self->_account, "setEnabled:forDADataclass:", [payload enableContacts], 8);
+    -[ASAccount setEnabled:forDADataclass:](self->_account, "setEnabled:forDADataclass:", [payload enableReminders], 16);
+    provisionedDataclasses = [v20 provisionedDataclasses];
+    v43 = [provisionedDataclasses containsObject:v33];
 
     if (v43)
     {
-      -[ASAccount setEnabled:forDADataclass:](self->_account, "setEnabled:forDADataclass:", [v13 enableNotes], 32);
+      -[ASAccount setEnabled:forDADataclass:](self->_account, "setEnabled:forDADataclass:", [payload enableNotes], 32);
     }
 
-    v44 = [(ASAccount *)self->_account backingAccountInfo];
-    v45 = [(MCNewPayloadHandler *)self payload];
-    v46 = [v45 UUID];
-    [v44 setMcPayloadUUID:v46];
+    backingAccountInfo = [(ASAccount *)self->_account backingAccountInfo];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    uUID = [payload2 UUID];
+    [backingAccountInfo setMcPayloadUUID:uUID];
 
-    v47 = [(ASAccount *)self->_account backingAccountInfo];
-    v48 = [(MCNewPayloadHandler *)self payload];
-    v49 = [v48 profile];
-    v50 = [v49 UUID];
-    [v47 setMcProfileUUID:v50];
+    backingAccountInfo2 = [(ASAccount *)self->_account backingAccountInfo];
+    payload3 = [(MCNewPayloadHandler *)self payload];
+    profile = [payload3 profile];
+    uUID2 = [profile UUID];
+    [backingAccountInfo2 setMcProfileUUID:uUID2];
 
-    v51 = [(ASAccount *)self->_account backingAccountInfo];
-    v52 = [v13 communicationServiceRules];
-    [v51 setCommunicationServiceRules:v52];
+    backingAccountInfo3 = [(ASAccount *)self->_account backingAccountInfo];
+    communicationServiceRules = [payload communicationServiceRules];
+    [backingAccountInfo3 setCommunicationServiceRules:communicationServiceRules];
 
-    v53 = [(ASAccount *)self->_account backingAccountInfo];
-    v54 = [v13 identifier];
-    [v53 setMcAccountIdentifier:v54];
+    backingAccountInfo4 = [(ASAccount *)self->_account backingAccountInfo];
+    identifier4 = [payload identifier];
+    [backingAccountInfo4 setMcAccountIdentifier:identifier4];
 
-    if (([v13 enableNotes] & 1) == 0)
+    if (([payload enableNotes] & 1) == 0)
     {
-      v55 = [(ASAccount *)self->_account backingAccountInfo];
-      [v55 setMcEASAccountEnableNotes:&__kCFBooleanFalse];
+      backingAccountInfo5 = [(ASAccount *)self->_account backingAccountInfo];
+      [backingAccountInfo5 setMcEASAccountEnableNotes:&__kCFBooleanFalse];
     }
 
-    if (([v13 enableMailUserOverridable] & 1) == 0)
+    if (([payload enableMailUserOverridable] & 1) == 0)
     {
-      v56 = [(ASAccount *)self->_account backingAccountInfo];
-      [v56 setMcEnableMailUserOverridable:&__kCFBooleanFalse];
+      backingAccountInfo6 = [(ASAccount *)self->_account backingAccountInfo];
+      [backingAccountInfo6 setMcEnableMailUserOverridable:&__kCFBooleanFalse];
     }
 
-    if (([v13 enableContactsUserOverridable] & 1) == 0)
+    if (([payload enableContactsUserOverridable] & 1) == 0)
     {
-      v57 = [(ASAccount *)self->_account backingAccountInfo];
-      [v57 setMcEnableContactsUserOverridable:&__kCFBooleanFalse];
+      backingAccountInfo7 = [(ASAccount *)self->_account backingAccountInfo];
+      [backingAccountInfo7 setMcEnableContactsUserOverridable:&__kCFBooleanFalse];
     }
 
-    if (([v13 enableCalendarsUserOverridable] & 1) == 0)
+    if (([payload enableCalendarsUserOverridable] & 1) == 0)
     {
-      v58 = [(ASAccount *)self->_account backingAccountInfo];
-      [v58 setMcEnableCalendarsUserOverridable:&__kCFBooleanFalse];
+      backingAccountInfo8 = [(ASAccount *)self->_account backingAccountInfo];
+      [backingAccountInfo8 setMcEnableCalendarsUserOverridable:&__kCFBooleanFalse];
     }
 
-    if (([v13 enableRemindersUserOverridable] & 1) == 0)
+    if (([payload enableRemindersUserOverridable] & 1) == 0)
     {
-      v59 = [(ASAccount *)self->_account backingAccountInfo];
-      [v59 setMcEnableRemindersUserOverridable:&__kCFBooleanFalse];
+      backingAccountInfo9 = [(ASAccount *)self->_account backingAccountInfo];
+      [backingAccountInfo9 setMcEnableRemindersUserOverridable:&__kCFBooleanFalse];
     }
 
-    v147 = v11;
-    if (([v13 enableNotesUserOverridable] & 1) == 0)
+    v147 = dCopy;
+    if (([payload enableNotesUserOverridable] & 1) == 0)
     {
-      v60 = [(ASAccount *)self->_account backingAccountInfo];
-      [v60 setMcEnableNotesUserOverridable:&__kCFBooleanFalse];
+      backingAccountInfo10 = [(ASAccount *)self->_account backingAccountInfo];
+      [backingAccountInfo10 setMcEnableNotesUserOverridable:&__kCFBooleanFalse];
     }
 
-    v61 = [(MCNewPayloadHandler *)self payload];
-    v62 = [v61 profile];
-    v63 = [v62 identifier];
+    payload4 = [(MCNewPayloadHandler *)self payload];
+    profile2 = [payload4 profile];
+    identifier5 = [profile2 identifier];
 
-    if (v63)
+    if (identifier5)
     {
-      v64 = [(ASAccount *)self->_account backingAccountInfo];
-      [v64 setMcConfigurationProfileIdentifier:v63];
+      backingAccountInfo11 = [(ASAccount *)self->_account backingAccountInfo];
+      [backingAccountInfo11 setMcConfigurationProfileIdentifier:identifier5];
     }
 
     else
@@ -517,206 +517,206 @@ LABEL_28:
       }
     }
 
-    v155 = v63;
+    v155 = identifier5;
     v66 = self->_account;
-    v67 = [v13 username];
-    [(ASAccount *)v66 setUsername:v67];
+    username = [payload username];
+    [(ASAccount *)v66 setUsername:username];
 
     v68 = self->_account;
-    v69 = [v13 hostname];
-    [(ASAccount *)v68 setHost:v69];
+    hostname2 = [payload hostname];
+    [(ASAccount *)v68 setHost:hostname2];
 
     v70 = self->_account;
-    v71 = [v13 useSSL];
-    -[ASAccount setUseSSL:](v70, "setUseSSL:", [v71 BOOLValue]);
+    useSSL = [payload useSSL];
+    -[ASAccount setUseSSL:](v70, "setUseSSL:", [useSSL BOOLValue]);
 
-    v72 = [v13 mailNumberOfPastDaysToSync];
+    mailNumberOfPastDaysToSync = [payload mailNumberOfPastDaysToSync];
 
-    if (v72)
+    if (mailNumberOfPastDaysToSync)
     {
       v73 = self->_account;
-      v74 = [v13 mailNumberOfPastDaysToSync];
-      -[ASAccount setMailNumberOfPastDaysToSync:](v73, "setMailNumberOfPastDaysToSync:", [v74 intValue]);
+      mailNumberOfPastDaysToSync2 = [payload mailNumberOfPastDaysToSync];
+      -[ASAccount setMailNumberOfPastDaysToSync:](v73, "setMailNumberOfPastDaysToSync:", [mailNumberOfPastDaysToSync2 intValue]);
     }
 
     v75 = self->_account;
-    v76 = [v13 accountDescription];
-    [(ASAccount *)v75 setAccountDescription:v76];
+    accountDescription = [payload accountDescription];
+    [(ASAccount *)v75 setAccountDescription:accountDescription];
 
     v77 = self->_account;
-    v78 = [v13 emailAddress];
-    [(ASAccount *)v77 setEmailAddress:v78];
+    emailAddress = [payload emailAddress];
+    [(ASAccount *)v77 setEmailAddress:emailAddress];
 
-    v79 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v13 mustNotUseSynchronizableCredential]);
-    v80 = [(ASAccount *)self->_account backingAccountInfo];
+    v79 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payload mustNotUseSynchronizableCredential]);
+    backingAccountInfo12 = [(ASAccount *)self->_account backingAccountInfo];
     v153 = v79;
-    [v80 setAccountProperty:v79 forKey:ACAccountPropertyShouldNeverUseSyncableCredential];
+    [backingAccountInfo12 setAccountProperty:v79 forKey:ACAccountPropertyShouldNeverUseSyncableCredential];
 
-    v81 = [v13 useOAuth];
-    v82 = [v81 BOOLValue];
+    useOAuth = [payload useOAuth];
+    bOOLValue = [useOAuth BOOLValue];
 
     v83 = self->_account;
-    if (v82)
+    if (bOOLValue)
     {
       [(ASAccount *)self->_account setAccountBoolProperty:1 forKey:kDAExchangeOAuthSupportedKey];
       v84 = [[ACAccountCredential alloc] initWithOAuth2Token:&stru_10011E740 refreshToken:0 expiryDate:0];
-      v85 = self;
-      v86 = [(ASAccount *)self->_account backingAccountInfo];
-      [v86 setCredential:v84];
+      selfCopy2 = self;
+      backingAccountInfo13 = [(ASAccount *)self->_account backingAccountInfo];
+      [backingAccountInfo13 setCredential:v84];
 
-      v87 = [v13 OAuthSignInURL];
+      oAuthSignInURL = [payload OAuthSignInURL];
 
-      if (v87)
+      if (oAuthSignInURL)
       {
         v88 = self->_account;
-        v89 = [v13 OAuthSignInURL];
-        [(ASAccount *)v88 setAccountProperty:v89 forKey:kDAExchangeOAuthURI];
+        oAuthSignInURL2 = [payload OAuthSignInURL];
+        [(ASAccount *)v88 setAccountProperty:oAuthSignInURL2 forKey:kDAExchangeOAuthURI];
 
-        v90 = [(MCNewEASAccountPayloadHandler *)self _endPointFQDNForPayload:v13];
+        v90 = [(MCNewEASAccountPayloadHandler *)self _endPointFQDNForPayload:payload];
         if (v90)
         {
           [(ASAccount *)self->_account setAccountProperty:v90 forKey:kDAEASEndPointFQDN];
         }
       }
 
-      v91 = [v13 OAuthTokenRequestURL];
+      oAuthTokenRequestURL = [payload OAuthTokenRequestURL];
 
       v92 = v155;
-      if (!v91)
+      if (!oAuthTokenRequestURL)
       {
 LABEL_47:
-        if ([v13 preventMove])
+        if ([payload preventMove])
         {
-          v95 = v85->_account;
-          v96 = [v13 preventMove];
-          [(ASAccount *)v95 setAccountBoolProperty:v96 forKey:MFMailAccountRestrictMessageTransfersToOtherAccounts];
+          v95 = selfCopy2->_account;
+          preventMove = [payload preventMove];
+          [(ASAccount *)v95 setAccountBoolProperty:preventMove forKey:MFMailAccountRestrictMessageTransfersToOtherAccounts];
         }
 
-        if ([v13 preventAppSheet])
+        if ([payload preventAppSheet])
         {
-          v97 = v85->_account;
-          v98 = [v13 preventAppSheet];
-          [(ASAccount *)v97 setAccountBoolProperty:v98 forKey:MFMailAccountRestrictSendingFromExternalProcesses];
+          v97 = selfCopy2->_account;
+          preventAppSheet = [payload preventAppSheet];
+          [(ASAccount *)v97 setAccountBoolProperty:preventAppSheet forKey:MFMailAccountRestrictSendingFromExternalProcesses];
         }
 
-        if (![v13 SMIMEEnabled])
+        if (![payload SMIMEEnabled])
         {
           goto LABEL_67;
         }
 
-        if (v150)
+        if (iDCopy)
         {
-          [(ASAccount *)v85->_account setSigningIdentityPersistentReference:?];
+          [(ASAccount *)selfCopy2->_account setSigningIdentityPersistentReference:?];
         }
 
-        v99 = [v13 SMIMESigningEnabled];
-        v100 = v99;
-        if (v99)
+        sMIMESigningEnabled = [payload SMIMESigningEnabled];
+        v100 = sMIMESigningEnabled;
+        if (sMIMESigningEnabled)
         {
-          v101 = v85->_account;
-          v102 = [v99 BOOLValue];
+          v101 = selfCopy2->_account;
+          bOOLValue2 = [sMIMESigningEnabled BOOLValue];
           v103 = MFMailAccountSigningEnabled;
           v104 = v101;
         }
 
         else
         {
-          if (!v150)
+          if (!iDCopy)
           {
             goto LABEL_59;
           }
 
-          v104 = v85->_account;
+          v104 = selfCopy2->_account;
           v103 = MFMailAccountSigningEnabled;
-          v102 = 1;
+          bOOLValue2 = 1;
         }
 
-        [(ASAccount *)v104 setAccountBoolProperty:v102 forKey:v103];
+        [(ASAccount *)v104 setAccountBoolProperty:bOOLValue2 forKey:v103];
 LABEL_59:
         if (v149)
         {
-          [(ASAccount *)v85->_account setEncryptionIdentityPersistentReference:?];
+          [(ASAccount *)selfCopy2->_account setEncryptionIdentityPersistentReference:?];
         }
 
-        v105 = [v13 SMIMEEncryptionEnabled];
-        v106 = v105;
-        if (v105)
+        sMIMEEncryptionEnabled = [payload SMIMEEncryptionEnabled];
+        v106 = sMIMEEncryptionEnabled;
+        if (sMIMEEncryptionEnabled)
         {
-          v107 = v85;
-          v108 = v85->_account;
-          v109 = [v105 BOOLValue];
+          v107 = selfCopy2;
+          v108 = selfCopy2->_account;
+          bOOLValue3 = [sMIMEEncryptionEnabled BOOLValue];
           v110 = MFMailAccountEncryptionEnabled;
           v111 = v108;
         }
 
         else
         {
-          v107 = v85;
+          v107 = selfCopy2;
           if (!v149)
           {
 LABEL_66:
             v112 = v107->_account;
-            v113 = [v13 SMIMEEncryptByDefaultUserOverrideable];
-            [(ASAccount *)v112 setAccountBoolProperty:v113 forKey:MFMailAccountEncryptByDefaultUserOverrideable];
+            sMIMEEncryptByDefaultUserOverrideable = [payload SMIMEEncryptByDefaultUserOverrideable];
+            [(ASAccount *)v112 setAccountBoolProperty:sMIMEEncryptByDefaultUserOverrideable forKey:MFMailAccountEncryptByDefaultUserOverrideable];
             v114 = v107->_account;
-            v115 = [v13 SMIMEPerMessageSwitchEnabled];
-            [(ASAccount *)v114 setAccountBoolProperty:v115 forKey:MFMailAccountPerMessageEncryptionEnabled];
+            sMIMEPerMessageSwitchEnabled = [payload SMIMEPerMessageSwitchEnabled];
+            [(ASAccount *)v114 setAccountBoolProperty:sMIMEPerMessageSwitchEnabled forKey:MFMailAccountPerMessageEncryptionEnabled];
             v116 = v107->_account;
-            v117 = [v13 SMIMESigningUserOverrideable];
-            [(ASAccount *)v116 setAccountBoolProperty:v117 forKey:MFMailAccountSigningUserOverrideable];
+            sMIMESigningUserOverrideable = [payload SMIMESigningUserOverrideable];
+            [(ASAccount *)v116 setAccountBoolProperty:sMIMESigningUserOverrideable forKey:MFMailAccountSigningUserOverrideable];
             v118 = v107->_account;
-            v119 = [v13 SMIMESigningIdentityUserOverrideable];
-            [(ASAccount *)v118 setAccountBoolProperty:v119 forKey:MFMailAccountSigningIdentityUserOverrideable];
-            v85 = v107;
+            sMIMESigningIdentityUserOverrideable = [payload SMIMESigningIdentityUserOverrideable];
+            [(ASAccount *)v118 setAccountBoolProperty:sMIMESigningIdentityUserOverrideable forKey:MFMailAccountSigningIdentityUserOverrideable];
+            selfCopy2 = v107;
             v120 = v107->_account;
-            v121 = [v13 SMIMEEncryptionIdentityUserOverrideable];
-            [(ASAccount *)v120 setAccountBoolProperty:v121 forKey:MFMailAccountEncryptionIdentityUserOverrideable];
+            sMIMEEncryptionIdentityUserOverrideable = [payload SMIMEEncryptionIdentityUserOverrideable];
+            [(ASAccount *)v120 setAccountBoolProperty:sMIMEEncryptionIdentityUserOverrideable forKey:MFMailAccountEncryptionIdentityUserOverrideable];
 
 LABEL_67:
-            if ([v13 syncDefaultFoldersOnly])
+            if ([payload syncDefaultFoldersOnly])
             {
-              v122 = v85->_account;
+              v122 = selfCopy2->_account;
               v123 = MCkASSyncDefaultFoldersOnly();
               [(ASAccount *)v122 setAccountBoolProperty:1 forKey:v123];
             }
 
-            if ([v13 isRecentsSyncingDisabled])
+            if ([payload isRecentsSyncingDisabled])
             {
-              [(ASAccount *)v85->_account setAccountBoolProperty:1 forKey:MFMailAccountRestrictRecentsSyncing];
+              [(ASAccount *)selfCopy2->_account setAccountBoolProperty:1 forKey:MFMailAccountRestrictRecentsSyncing];
             }
 
-            if ([v13 isMailDropEnabled])
+            if ([payload isMailDropEnabled])
             {
-              [(ASAccount *)v85->_account setAccountBoolProperty:1 forKey:MFMailAccountSupportsMailDrop];
+              [(ASAccount *)selfCopy2->_account setAccountBoolProperty:1 forKey:MFMailAccountSupportsMailDrop];
             }
 
-            v11 = v147;
-            self = v85;
+            dCopy = v147;
+            self = selfCopy2;
 LABEL_74:
 
-            v12 = v149;
+            persistentIDCopy = v149;
             goto LABEL_75;
           }
 
-          v111 = v85->_account;
+          v111 = selfCopy2->_account;
           v110 = MFMailAccountEncryptionEnabled;
-          v109 = 1;
+          bOOLValue3 = 1;
         }
 
-        [(ASAccount *)v111 setAccountBoolProperty:v109 forKey:v110];
+        [(ASAccount *)v111 setAccountBoolProperty:bOOLValue3 forKey:v110];
         goto LABEL_66;
       }
 
       v93 = self->_account;
-      v94 = [v13 OAuthTokenRequestURL];
-      [(ASAccount *)v93 setAccountProperty:v94 forKey:kDAExchangeTokenRequestURI];
+      oAuthTokenRequestURL2 = [payload OAuthTokenRequestURL];
+      [(ASAccount *)v93 setAccountProperty:oAuthTokenRequestURL2 forKey:kDAExchangeTokenRequestURI];
     }
 
     else
     {
-      v85 = self;
-      v94 = [v13 password];
-      [(ASAccount *)v83 setPassword:v94];
+      selfCopy2 = self;
+      oAuthTokenRequestURL2 = [payload password];
+      [(ASAccount *)v83 setPassword:oAuthTokenRequestURL2];
       v92 = v155;
     }
 
@@ -724,27 +724,27 @@ LABEL_74:
   }
 
 LABEL_75:
-  if (v11)
+  if (dCopy)
   {
-    [(ASAccount *)self->_account setIdentityCertificatePersistentID:v11 managedByProfile:1];
+    [(ASAccount *)self->_account setIdentityCertificatePersistentID:dCopy managedByProfile:1];
   }
 
-  if (v10)
+  if (responsesCopy)
   {
-    v148 = v11;
-    v151 = self;
-    v124 = [(MCNewPayloadHandler *)self payload];
-    v125 = [v124 emailAddress];
-    v158 = [v124 embeddedCertificatePassword];
-    v156 = [v124 username];
-    v145 = v124;
-    v154 = [v124 password];
+    v148 = dCopy;
+    selfCopy3 = self;
+    payload5 = [(MCNewPayloadHandler *)self payload];
+    emailAddress2 = [payload5 emailAddress];
+    embeddedCertificatePassword = [payload5 embeddedCertificatePassword];
+    username2 = [payload5 username];
+    v145 = payload5;
+    password = [payload5 password];
     v161 = 0u;
     v162 = 0u;
     v163 = 0u;
     v164 = 0u;
-    v146 = v10;
-    obja = v10;
+    v146 = responsesCopy;
+    obja = responsesCopy;
     v126 = [obja countByEnumeratingWithState:&v161 objects:v173 count:16];
     if (v126)
     {
@@ -768,28 +768,28 @@ LABEL_75:
           {
             v135 = v134;
 
-            v125 = v135;
+            emailAddress2 = v135;
           }
 
           else if ([v133 isEqualToString:@"kEASCertPasswordKey"])
           {
             v136 = v134;
 
-            v158 = v136;
+            embeddedCertificatePassword = v136;
           }
 
           else if ([v133 isEqualToString:@"kEASUsernameKey"])
           {
             v137 = v134;
 
-            v156 = v137;
+            username2 = v137;
           }
 
           else if ([v133 isEqualToString:@"kEASPasswordKey"])
           {
             v138 = v134;
 
-            v154 = v138;
+            password = v138;
           }
 
           else
@@ -815,14 +815,14 @@ LABEL_75:
       while (v127);
     }
 
-    self = v151;
-    [(ASAccount *)v151->_account setEmailAddress:v125];
-    [(ASAccount *)v151->_account setUsername:v156];
-    [(ASAccount *)v151->_account setPassword:v154];
+    self = selfCopy3;
+    [(ASAccount *)selfCopy3->_account setEmailAddress:emailAddress2];
+    [(ASAccount *)selfCopy3->_account setUsername:username2];
+    [(ASAccount *)selfCopy3->_account setPassword:password];
 
-    v10 = v146;
-    v11 = v148;
-    v12 = v149;
+    responsesCopy = v146;
+    dCopy = v148;
+    persistentIDCopy = v149;
   }
 
   v142 = self->_account;
@@ -831,12 +831,12 @@ LABEL_75:
   return v142;
 }
 
-- (id)_endPointFQDNForPayload:(id)a3
+- (id)_endPointFQDNForPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = objc_alloc_init(NSURLComponents);
-  v5 = [v3 useSSL];
-  if ([v5 BOOLValue])
+  useSSL = [payloadCopy useSSL];
+  if ([useSSL BOOLValue])
   {
     v6 = @"https";
   }
@@ -848,39 +848,39 @@ LABEL_75:
 
   [v4 setScheme:v6];
 
-  v7 = [v3 hostname];
+  hostname = [payloadCopy hostname];
 
-  [v4 setHost:v7];
-  v8 = [v4 string];
+  [v4 setHost:hostname];
+  string = [v4 string];
 
-  return v8;
+  return string;
 }
 
-- (id)_errorFromValidationError:(id)a3
+- (id)_errorFromValidationError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code];
-  if (v4 == 102)
+  errorCopy = error;
+  code = [errorCopy code];
+  if (code == 102)
   {
     v11 = MCDAErrorDomain;
     v6 = MCErrorArray();
     v7 = MCLocalizedErrorString();
     v8 = MCUSEnglishErrorString();
-    [NSError MCErrorWithDomain:v11 code:18002 descriptionArray:v6 suggestion:v7 USEnglishSuggestion:v8 underlyingError:v3 errorType:MCErrorTypeRetryable];
+    [NSError MCErrorWithDomain:v11 code:18002 descriptionArray:v6 suggestion:v7 USEnglishSuggestion:v8 underlyingError:errorCopy errorType:MCErrorTypeRetryable];
   }
 
-  else if (v4 == 101)
+  else if (code == 101)
   {
     v10 = MCDAErrorDomain;
     v6 = MCErrorArray();
     v7 = MCLocalizedErrorString();
     v8 = MCUSEnglishErrorString();
-    [NSError MCErrorWithDomain:v10 code:18001 descriptionArray:v6 suggestion:v7 USEnglishSuggestion:v8 underlyingError:v3 errorType:MCErrorTypeSkippable];
+    [NSError MCErrorWithDomain:v10 code:18001 descriptionArray:v6 suggestion:v7 USEnglishSuggestion:v8 underlyingError:errorCopy errorType:MCErrorTypeSkippable];
   }
 
   else
   {
-    if (v4 == 100)
+    if (code == 100)
     {
       v5 = MCDAErrorDomain;
       v6 = MCErrorArray();
@@ -891,14 +891,14 @@ LABEL_75:
 
     else
     {
-      v12 = [v3 localizedDescription];
-      v13 = [v12 length];
+      localizedDescription = [errorCopy localizedDescription];
+      v13 = [localizedDescription length];
 
       v5 = MCDAErrorDomain;
       v6 = MCErrorArray();
       if (v13)
       {
-        v14 = [NSError MCErrorWithDomain:v5 code:18000 descriptionArray:v6 underlyingError:v3 errorType:MCErrorTypeFatal, 0];
+        v14 = [NSError MCErrorWithDomain:v5 code:18000 descriptionArray:v6 underlyingError:errorCopy errorType:MCErrorTypeFatal, 0];
         goto LABEL_12;
       }
 
@@ -907,7 +907,7 @@ LABEL_75:
       v9 = &MCErrorTypeFatal;
     }
 
-    [NSError MCErrorWithDomain:v5 code:18000 descriptionArray:v6 suggestion:v7 USEnglishSuggestion:v8 underlyingError:v3 errorType:*v9];
+    [NSError MCErrorWithDomain:v5 code:18000 descriptionArray:v6 suggestion:v7 USEnglishSuggestion:v8 underlyingError:errorCopy errorType:*v9];
   }
   v14 = ;
 
@@ -916,94 +916,94 @@ LABEL_12:
   return v14;
 }
 
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  validCopy = valid;
+  accountCopy = account;
+  errorCopy = error;
   v10 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [v9 MCVerboseDescription];
+    mCVerboseDescription = [errorCopy MCVerboseDescription];
     v15 = 138543874;
-    v16 = v8;
+    v16 = accountCopy;
     v17 = 1024;
-    v18 = v6;
+    v18 = validCopy;
     v19 = 2114;
-    v20 = v12;
+    v20 = mCVerboseDescription;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "account %{public}@ is valid %d with error %{public}@", &v15, 0x1Cu);
   }
 
-  if (!v9 && !v6)
+  if (!errorCopy && !validCopy)
   {
-    v9 = [NSError errorWithDomain:DAAccountValidationDomain code:102 userInfo:0];
+    errorCopy = [NSError errorWithDomain:DAAccountValidationDomain code:102 userInfo:0];
   }
 
-  v13 = [(MCNewEASAccountPayloadHandler *)self accountValidationCompletionHandler];
+  accountValidationCompletionHandler = [(MCNewEASAccountPayloadHandler *)self accountValidationCompletionHandler];
 
-  if (v13)
+  if (accountValidationCompletionHandler)
   {
-    v14 = [(MCNewEASAccountPayloadHandler *)self accountValidationCompletionHandler];
-    (v14)[2](v14, v9);
+    accountValidationCompletionHandler2 = [(MCNewEASAccountPayloadHandler *)self accountValidationCompletionHandler];
+    (accountValidationCompletionHandler2)[2](accountValidationCompletionHandler2, errorCopy);
 
     [(MCNewEASAccountPayloadHandler *)self setAccountValidationCompletionHandler:0];
   }
 }
 
-- (void)_preflightWithAccount:(id)a3 completionHandler:(id)a4
+- (void)_preflightWithAccount:(id)account completionHandler:(id)handler
 {
-  v6 = a3;
-  [(MCNewEASAccountPayloadHandler *)self setAccountValidationCompletionHandler:a4];
+  accountCopy = account;
+  [(MCNewEASAccountPayloadHandler *)self setAccountValidationCompletionHandler:handler];
   v8 = sharedDAAccountStore();
   v7 = dataaccess_get_global_queue();
-  [v6 checkValidityOnAccountStore:v8 withConsumer:self inQueue:v7];
+  [accountCopy checkValidityOnAccountStore:v8 withConsumer:self inQueue:v7];
 }
 
-- (id)_preflightTimePersistentIDForIdentityCertificateUserInputResponses:(id)a3 outError:(id *)a4
+- (id)_preflightTimePersistentIDForIdentityCertificateUserInputResponses:(id)responses outError:(id *)error
 {
-  v6 = a3;
-  v7 = [(MCNewPayloadHandler *)self payload];
-  v8 = [v7 certificateUUID];
+  responsesCopy = responses;
+  payload = [(MCNewPayloadHandler *)self payload];
+  certificateUUID = [payload certificateUUID];
 
-  if (v8)
+  if (certificateUUID)
   {
-    v9 = [(MCNewPayloadHandler *)self profileHandler];
-    v10 = [v7 certificateUUID];
-    v11 = [v9 payloadHandlerWithUUID:v10];
+    profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+    certificateUUID2 = [payload certificateUUID];
+    embeddedCertificate2 = [profileHandler payloadHandlerWithUUID:certificateUUID2];
 
-    if (v11)
+    if (embeddedCertificate2)
     {
       v43 = 0;
-      v12 = [v11 copyIdentityImmediatelyWithInteractionClient:0 outError:&v43];
+      v12 = [embeddedCertificate2 copyIdentityImmediatelyWithInteractionClient:0 outError:&v43];
       v13 = v43;
       v14 = 0;
       if (!v13 && v12)
       {
-        v39 = a4;
-        v41 = v6;
-        v15 = [v11 accessibility];
+        errorCopy = error;
+        v41 = responsesCopy;
+        accessibility = [embeddedCertificate2 accessibility];
         v16 = _MCLogObjects[0];
         if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v45 = v15;
+          v45 = accessibility;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Preflighting EAS identity, storing with accessibility %@", buf, 0xCu);
         }
 
-        v17 = [v7 UUID];
+        uUID = [payload UUID];
         v18 = kMCAppleIdentitiesKeychainGroup;
-        v19 = [(MCNewPayloadHandler *)self profileHandler];
-        v20 = [v19 profile];
-        v14 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v12, v17, v18, [v20 isInstalledForSystem], v15);
+        profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+        profile = [profileHandler2 profile];
+        v14 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v12, uUID, v18, [profile isInstalledForSystem], accessibility);
 
-        v21 = [v7 UUID];
-        [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v14 andUUID:v21];
+        uUID2 = [payload UUID];
+        [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v14 andUUID:uUID2];
 
         CFRelease(v12);
         v13 = 0;
-        a4 = v39;
-        v6 = v41;
+        error = errorCopy;
+        responsesCopy = v41;
       }
     }
 
@@ -1016,9 +1016,9 @@ LABEL_12:
 
   else
   {
-    v22 = [v7 embeddedCertificate];
+    embeddedCertificate = [payload embeddedCertificate];
 
-    if (!v22)
+    if (!embeddedCertificate)
     {
 
       v14 = 0;
@@ -1029,32 +1029,32 @@ LABEL_18:
       goto LABEL_20;
     }
 
-    v11 = [v7 embeddedCertificate];
-    v23 = [v7 embeddedCertificatePassword];
-    v24 = [MCNewPayloadHandler prioritizeUserInput:v6 key:@"kEASCertPasswordKey" overField:v23];
+    embeddedCertificate2 = [payload embeddedCertificate];
+    embeddedCertificatePassword = [payload embeddedCertificatePassword];
+    v24 = [MCNewPayloadHandler prioritizeUserInput:responsesCopy key:@"kEASCertPasswordKey" overField:embeddedCertificatePassword];
 
     v25 = MCKeychainCopyIdentityFromPKCS12();
     if (v25)
     {
       v26 = v25;
-      v27 = [v7 UUID];
+      uUID3 = [payload UUID];
       v28 = kMCAppleIdentitiesKeychainGroup;
       [(MCNewPayloadHandler *)self profileHandler];
-      v40 = v11;
-      v29 = v42 = v6;
+      v40 = embeddedCertificate2;
+      v29 = v42 = responsesCopy;
       [v29 profile];
       v30 = v24;
-      v32 = v31 = a4;
-      v14 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:", v26, v27, v28, [v32 isInstalledForSystem]);
+      v32 = v31 = error;
+      v14 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:", v26, uUID3, v28, [v32 isInstalledForSystem]);
 
-      a4 = v31;
+      error = v31;
       v24 = v30;
 
-      v11 = v40;
-      v6 = v42;
+      embeddedCertificate2 = v40;
+      responsesCopy = v42;
 
-      v33 = [v7 UUID];
-      [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v14 andUUID:v33];
+      uUID4 = [payload UUID];
+      [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v14 andUUID:uUID4];
 
       CFRelease(v26);
       v13 = 0;
@@ -1075,11 +1075,11 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (a4)
+  if (error)
   {
     v36 = v13;
     v37 = 0;
-    *a4 = v13;
+    *error = v13;
   }
 
   else
@@ -1092,38 +1092,38 @@ LABEL_20:
   return v37;
 }
 
-- (id)_installTimePersistentIDForIdentityCertificateOutError:(id *)a3
+- (id)_installTimePersistentIDForIdentityCertificateOutError:(id *)error
 {
-  v5 = [(MCNewPayloadHandler *)self payload];
-  v6 = [v5 certificateUUID];
+  payload = [(MCNewPayloadHandler *)self payload];
+  certificateUUID = [payload certificateUUID];
 
-  if (v6)
+  if (certificateUUID)
   {
-    v7 = [(MCNewPayloadHandler *)self profileHandler];
-    v8 = [v5 certificateUUID];
-    v9 = [v7 persistentIDForCertificateUUID:v8];
+    profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+    certificateUUID2 = [payload certificateUUID];
+    v9 = [profileHandler persistentIDForCertificateUUID:certificateUUID2];
 
 LABEL_3:
     v10 = 0;
     goto LABEL_4;
   }
 
-  v12 = [v5 embeddedCertificate];
+  embeddedCertificate = [payload embeddedCertificate];
 
-  if (!v12)
+  if (!embeddedCertificate)
   {
     v9 = 0;
     goto LABEL_3;
   }
 
-  v13 = [v5 embeddedCertificate];
-  v14 = [v5 embeddedCertificatePassword];
+  embeddedCertificate2 = [payload embeddedCertificate];
+  embeddedCertificatePassword = [payload embeddedCertificatePassword];
   v15 = MCKeychainCopyIdentityFromPKCS12();
   if (v15)
   {
     v16 = v15;
-    v26 = v14;
-    v27 = v13;
+    v26 = embeddedCertificatePassword;
+    v27 = embeddedCertificate2;
     v17 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
     {
@@ -1132,19 +1132,19 @@ LABEL_3:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Storing embedded identity for EAS, storing with accessibility %@", buf, 0xCu);
     }
 
-    v18 = [v5 UUID];
+    uUID = [payload UUID];
     v19 = kMCAppleIdentitiesKeychainGroup;
-    v20 = [(MCNewPayloadHandler *)self profileHandler];
-    v21 = [v20 profile];
-    v9 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v16, v18, v19, [v21 isInstalledForSystem], kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly);
+    profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+    profile = [profileHandler2 profile];
+    v9 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v16, uUID, v19, [profile isInstalledForSystem], kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly);
 
-    v22 = [v5 UUID];
-    [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v9 andUUID:v22];
+    uUID2 = [payload UUID];
+    [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v9 andUUID:uUID2];
 
     CFRelease(v16);
     v10 = 0;
-    v14 = v26;
-    v13 = v27;
+    embeddedCertificatePassword = v26;
+    embeddedCertificate2 = v27;
   }
 
   else
@@ -1156,10 +1156,10 @@ LABEL_3:
     v9 = 0;
   }
 
-  if (a3 && v10)
+  if (error && v10)
   {
     v25 = v10;
-    *a3 = v10;
+    *error = v10;
   }
 
 LABEL_4:
@@ -1169,22 +1169,22 @@ LABEL_4:
 
 - (BOOL)_isConfiguredWithSCEP
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 certificateUUID];
+  payload = [(MCNewPayloadHandler *)self payload];
+  certificateUUID = [payload certificateUUID];
 
-  if (!v3)
+  if (!certificateUUID)
   {
     goto LABEL_4;
   }
 
-  v4 = [v2 profile];
-  v5 = [v2 certificateUUID];
-  v6 = [v4 payloadWithUUID:v5];
+  profile = [payload profile];
+  certificateUUID2 = [payload certificateUUID];
+  v6 = [profile payloadWithUUID:certificateUUID2];
 
   objc_opt_class();
-  LOBYTE(v4) = objc_opt_isKindOfClass();
+  LOBYTE(profile) = objc_opt_isKindOfClass();
 
-  if (v4)
+  if (profile)
   {
     v7 = 1;
   }
@@ -1198,10 +1198,10 @@ LABEL_4:
   return v7;
 }
 
-- (BOOL)preflightUserInputResponses:(id)a3 outError:(id *)a4
+- (BOOL)preflightUserInputResponses:(id)responses outError:(id *)error
 {
-  v6 = a3;
-  v7 = [(MCNewPayloadHandler *)self payload];
+  responsesCopy = responses;
+  payload = [(MCNewPayloadHandler *)self payload];
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -1218,7 +1218,7 @@ LABEL_4:
 
   v11 = (v32 + 5);
   obj = v32[5];
-  v8 = [(MCNewEASAccountPayloadHandler *)self _preflightTimePersistentIDForIdentityCertificateUserInputResponses:v6 outError:&obj];
+  v8 = [(MCNewEASAccountPayloadHandler *)self _preflightTimePersistentIDForIdentityCertificateUserInputResponses:responsesCopy outError:&obj];
   objc_storeStrong(v11, obj);
   if (v32[5])
   {
@@ -1229,16 +1229,16 @@ LABEL_4:
 
   if (v8)
   {
-    v12 = [v7 UUID];
-    [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v8 andUUID:v12];
+    uUID = [payload UUID];
+    [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v8 andUUID:uUID];
   }
 
-  if (![v7 SMIMEEnabled])
+  if (![payload SMIMEEnabled])
   {
     v10 = 0;
     v9 = 0;
 LABEL_11:
-    v15 = [(MCNewEASAccountPayloadHandler *)self _accountFromPayloadWithUserInputResponses:v6 identityPersistentID:v8 SMIMESigningIdentityPersistentID:v9 SMIMEEncryptionIdentityPersistentID:v10];
+    v15 = [(MCNewEASAccountPayloadHandler *)self _accountFromPayloadWithUserInputResponses:responsesCopy identityPersistentID:v8 SMIMESigningIdentityPersistentID:v9 SMIMEEncryptionIdentityPersistentID:v10];
     if (v15)
     {
       v25[0] = _NSConcreteStackBlock;
@@ -1265,10 +1265,10 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v13 = [v7 SMIMESigningIdentityUUID];
+  sMIMESigningIdentityUUID = [payload SMIMESigningIdentityUUID];
   v14 = (v32 + 5);
   v29 = v32[5];
-  v9 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:v13 outError:&v29];
+  v9 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:sMIMESigningIdentityUUID outError:&v29];
   objc_storeStrong(v14, v29);
 
   if (v32[5])
@@ -1277,10 +1277,10 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v23 = [v7 SMIMEEncryptionIdentityUUID];
+  sMIMEEncryptionIdentityUUID = [payload SMIMEEncryptionIdentityUUID];
   v24 = (v32 + 5);
   v28 = v32[5];
-  v10 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:v23 outError:&v28];
+  v10 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:sMIMEEncryptionIdentityUUID outError:&v28];
   objc_storeStrong(v24, v28);
 
   if (!v32[5])
@@ -1291,24 +1291,24 @@ LABEL_11:
 LABEL_15:
   if (v8)
   {
-    v20 = [v7 UUID];
-    [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v8 andUUID:v20];
+    uUID2 = [payload UUID];
+    [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v8 andUUID:uUID2];
   }
 
 LABEL_17:
-  if (a4 && v32[5])
+  if (error && v32[5])
   {
     v21 = MCErrorArray();
-    *a4 = [NSError MCErrorWithDomain:MCEASErrorDomain code:21007 descriptionArray:v21 underlyingError:v32[5] errorType:MCErrorTypeSkippable, 0];
+    *error = [NSError MCErrorWithDomain:MCEASErrorDomain code:21007 descriptionArray:v21 underlyingError:v32[5] errorType:MCErrorTypeSkippable, 0];
   }
 
   _Block_object_dispose(&v31, 8);
   return 1;
 }
 
-- (id)_errorFromPolicyPreflightError:(id)a3
+- (id)_errorFromPolicyPreflightError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = MCEASOverSimplifiedStatusForError();
   v5 = _MCLogObjects[0];
   v6 = os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR);
@@ -1317,7 +1317,7 @@ LABEL_17:
     if (v6)
     {
       v13 = 138543362;
-      v14 = v3;
+      v14 = errorCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Got a network error during policy preflight: %{public}@", &v13, 0xCu);
     }
 
@@ -1329,7 +1329,7 @@ LABEL_17:
     if (v6)
     {
       v13 = 138543362;
-      v14 = v3;
+      v14 = errorCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Got an unknown error back from my policy preflight: %{public}@", &v13, 0xCu);
     }
 
@@ -1339,28 +1339,28 @@ LABEL_17:
   v8 = MCEASErrorDomain;
   v9 = MCLocalizedErrorString();
   v10 = [NSArray arrayWithObject:v9];
-  v11 = [NSError MCErrorWithDomain:v8 code:21000 descriptionArray:v10 underlyingError:v3 errorType:*v7];
+  v11 = [NSError MCErrorWithDomain:v8 code:21000 descriptionArray:v10 underlyingError:errorCopy errorType:*v7];
 
   return v11;
 }
 
-- (void)_preflightWithPreflighter:(id)a3 completionHandler:(id)a4
+- (void)_preflightWithPreflighter:(id)preflighter completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  preflighterCopy = preflighter;
+  handlerCopy = handler;
   account = self->_account;
   v9 = +[DASharedAccountProperties DAAccountDoNotSaveReason];
   [(ASAccount *)account setAccountProperty:@"Preflighting for payload handler" forKey:v9];
 
-  [v6 setDelegate:self];
-  [v6 startPreflight];
+  [preflighterCopy setDelegate:self];
+  [preflighterCopy startPreflight];
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100073178;
   v11[3] = &unk_10011CA98;
   objc_copyWeak(&v13, &location);
-  v10 = v7;
+  v10 = handlerCopy;
   v12 = v10;
   [(MCNewEASAccountPayloadHandler *)self setPreflightCompletionHandler:v11];
 
@@ -1368,13 +1368,13 @@ LABEL_17:
   objc_destroyWeak(&location);
 }
 
-- (id)_getClientRestrictionsFromServerCertificatePersistentID:(id)a3 SMIMESigningIdentityPersistentID:(id)a4 SMIMEEncryptionIdentityPersistentID:(id)a5 outError:(id *)a6
+- (id)_getClientRestrictionsFromServerCertificatePersistentID:(id)d SMIMESigningIdentityPersistentID:(id)iD SMIMEEncryptionIdentityPersistentID:(id)persistentID outError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  persistentIDCopy = persistentID;
   v13 = objc_alloc(MCASPolicyPreflighterClass());
-  v14 = [(MCNewEASAccountPayloadHandler *)self _accountFromPayloadWithUserInputResponses:0 identityPersistentID:v10 SMIMESigningIdentityPersistentID:v11 SMIMEEncryptionIdentityPersistentID:v12];
+  v14 = [(MCNewEASAccountPayloadHandler *)self _accountFromPayloadWithUserInputResponses:0 identityPersistentID:dCopy SMIMESigningIdentityPersistentID:iDCopy SMIMEEncryptionIdentityPersistentID:persistentIDCopy];
   v15 = [v13 initWithAccount:v14 policyKey:0];
 
   v33 = 0;
@@ -1405,9 +1405,9 @@ LABEL_17:
   v19 = dispatch_time(0, 60000000000);
   dispatch_semaphore_wait(v18, v19);
   [v17 invalidate];
-  if (a6)
+  if (error)
   {
-    *a6 = v34[5];
+    *error = v34[5];
   }
 
   v20 = v28[5];
@@ -1418,9 +1418,9 @@ LABEL_17:
   return v20;
 }
 
-- (BOOL)stageForInstallationWithInstaller:(id)a3 interactionClient:(id)a4 outError:(id *)a5
+- (BOOL)stageForInstallationWithInstaller:(id)installer interactionClient:(id)client outError:(id *)error
 {
-  v6 = [(MCNewPayloadHandler *)self payload:a3];
+  v6 = [(MCNewPayloadHandler *)self payload:installer];
   if ([(MCNewEASAccountPayloadHandler *)self _isConfiguredWithSCEP])
   {
     v7 = 0;
@@ -1444,9 +1444,9 @@ LABEL_24:
 
   if (v9)
   {
-    v12 = [(MCNewPayloadHandler *)self payload];
-    v13 = [v12 UUID];
-    [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v9 andUUID:v13];
+    payload = [(MCNewPayloadHandler *)self payload];
+    uUID = [payload UUID];
+    [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v9 andUUID:uUID];
   }
 
   if (![v6 SMIMEEnabled])
@@ -1462,29 +1462,29 @@ LABEL_11:
       if (v15)
       {
         v42 = [(MCNewEASAccountPayloadHandler *)self _accountFromPayloadWithUserInputResponses:0 identityPersistentID:v9 SMIMESigningIdentityPersistentID:v8 SMIMEEncryptionIdentityPersistentID:v7];
-        v16 = [v6 profile];
-        v40 = [v16 installType] != 2;
+        profile = [v6 profile];
+        v40 = [profile installType] != 2;
 
-        v38 = [(MCNewPayloadHandler *)self profileHandler];
-        v36 = [v38 profile];
-        v17 = [v36 identifier];
-        v18 = [(MCNewPayloadHandler *)self profileHandler];
-        v19 = [v18 profile];
-        v20 = [v19 UUID];
-        v41 = [NSString stringWithFormat:@"%@-%@", v17, v20];
+        profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+        profile2 = [profileHandler profile];
+        identifier = [profile2 identifier];
+        profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+        profile3 = [profileHandler2 profile];
+        uUID2 = [profile3 UUID];
+        v41 = [NSString stringWithFormat:@"%@-%@", identifier, uUID2];
 
         v32 = +[MCRestrictionManagerWriter sharedManager];
         v35 = kEASAccountClientType;
-        v34 = [v42 persistentUUID];
-        v39 = [(MCNewPayloadHandler *)self payload];
-        v37 = [v39 friendlyName];
+        persistentUUID = [v42 persistentUUID];
+        payload2 = [(MCNewPayloadHandler *)self payload];
+        friendlyName = [payload2 friendlyName];
         v31 = MCLocalizedFormat();
-        v33 = [(MCNewPayloadHandler *)self payload];
-        v21 = [v33 friendlyName];
+        payload3 = [(MCNewPayloadHandler *)self payload];
+        friendlyName2 = [payload3 friendlyName];
         v22 = MCLocalizedFormat();
         v43 = 0;
         LOBYTE(v30) = 0;
-        [v32 setClientRestrictions:v15 overrideRestrictions:0 appsAndOptions:0 system:v40 clientType:v35 clientUUID:v34 sender:v41 localizedClientDescription:v31 localizedWarning:v22 shouldRecomputeNag:v30 outRestrictionsChanged:0 outEffectiveSettingsChanged:0 outRecomputedNag:0 outError:&v43];
+        [v32 setClientRestrictions:v15 overrideRestrictions:0 appsAndOptions:0 system:v40 clientType:v35 clientUUID:persistentUUID sender:v41 localizedClientDescription:v31 localizedWarning:v22 shouldRecomputeNag:v30 outRestrictionsChanged:0 outEffectiveSettingsChanged:0 outRecomputedNag:0 outError:&v43];
         v11 = v43;
       }
 
@@ -1497,9 +1497,9 @@ LABEL_11:
     goto LABEL_18;
   }
 
-  v14 = [v6 SMIMESigningIdentityUUID];
+  sMIMESigningIdentityUUID = [v6 SMIMESigningIdentityUUID];
   v46 = 0;
-  v8 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:v14 outError:&v46];
+  v8 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:sMIMESigningIdentityUUID outError:&v46];
   v11 = v46;
 
   if (v11)
@@ -1508,9 +1508,9 @@ LABEL_11:
     goto LABEL_18;
   }
 
-  v23 = [v6 SMIMEEncryptionIdentityUUID];
+  sMIMEEncryptionIdentityUUID = [v6 SMIMEEncryptionIdentityUUID];
   v45 = 0;
-  v7 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:v23 outError:&v45];
+  v7 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:sMIMEEncryptionIdentityUUID outError:&v45];
   v11 = v45;
 
   if (!v11)
@@ -1521,8 +1521,8 @@ LABEL_11:
 LABEL_18:
   if (v9)
   {
-    v24 = [v6 UUID];
-    [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v9 andUUID:v24];
+    uUID3 = [v6 UUID];
+    [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v9 andUUID:uUID3];
   }
 
   if (!v11)
@@ -1534,9 +1534,9 @@ LABEL_18:
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
   {
     v26 = v25;
-    v27 = [v11 MCVerboseDescription];
+    mCVerboseDescription = [v11 MCVerboseDescription];
     *buf = 138543362;
-    v49 = v27;
+    v49 = mCVerboseDescription;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Error retrieving server policy for account. Error: %{public}@", buf, 0xCu);
   }
 
@@ -1546,59 +1546,59 @@ LABEL_25:
   return v28;
 }
 
-- (void)unstageFromInstallationWithInstaller:(id)a3
+- (void)unstageFromInstallationWithInstaller:(id)installer
 {
   if (![(MCNewEASAccountPayloadHandler *)self _isConfiguredWithSCEP])
   {
-    v4 = [(MCNewPayloadHandler *)self payload];
+    payload = [(MCNewPayloadHandler *)self payload];
     v5 = [(MCNewEASAccountPayloadHandler *)self _preflightTimePersistentIDForIdentityCertificateUserInputResponses:0 outError:0];
     v6 = 0;
     v7 = 0;
-    if ([v4 SMIMEEnabled])
+    if ([payload SMIMEEnabled])
     {
-      v8 = [v4 SMIMESigningIdentityUUID];
-      v7 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:v8 outError:0];
+      sMIMESigningIdentityUUID = [payload SMIMESigningIdentityUUID];
+      v7 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:sMIMESigningIdentityUUID outError:0];
 
-      v9 = [v4 SMIMEEncryptionIdentityUUID];
-      v6 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:v9 outError:0];
+      sMIMEEncryptionIdentityUUID = [payload SMIMEEncryptionIdentityUUID];
+      v6 = [(MCNewPayloadHandler *)self _temporaryPersistentIDForIdentityUUID:sMIMEEncryptionIdentityUUID outError:0];
     }
 
     if (v5)
     {
-      v10 = [v4 UUID];
-      [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v5 andUUID:v10];
+      uUID = [payload UUID];
+      [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v5 andUUID:uUID];
     }
 
     v11 = [(MCNewEASAccountPayloadHandler *)self _accountFromPayloadWithUserInputResponses:0 identityPersistentID:v5 SMIMESigningIdentityPersistentID:v7 SMIMEEncryptionIdentityPersistentID:v6];
-    v12 = [(MCNewPayloadHandler *)self payload];
-    v13 = [v12 profile];
-    v14 = [v13 installType];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    profile = [payload2 profile];
+    installType = [profile installType];
 
     if (v11)
     {
-      v30 = v14 != 2;
-      v15 = [(MCNewPayloadHandler *)self profileHandler];
-      [v15 profile];
+      v30 = installType != 2;
+      profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+      [profileHandler profile];
       v31 = v11;
       v17 = v16 = v7;
-      v18 = [v17 identifier];
+      identifier = [v17 identifier];
       [(MCNewPayloadHandler *)self profileHandler];
-      v19 = v33 = v4;
+      v19 = v33 = payload;
       [v19 profile];
       v20 = v32 = v6;
-      v21 = [v20 UUID];
-      v22 = [NSString stringWithFormat:@"%@-%@", v18, v21];
+      uUID2 = [v20 UUID];
+      v22 = [NSString stringWithFormat:@"%@-%@", identifier, uUID2];
 
       v7 = v16;
       v11 = v31;
 
       v23 = +[MCRestrictionManagerWriter sharedManager];
       v24 = kEASAccountClientType;
-      v25 = [v31 persistentUUID];
+      persistentUUID = [v31 persistentUUID];
       LOBYTE(v29) = 1;
       v26 = v24;
-      v4 = v33;
-      [v23 setClientRestrictions:0 overrideRestrictions:0 appsAndOptions:0 system:v30 clientType:v26 clientUUID:v25 sender:v22 localizedClientDescription:0 localizedWarning:0 shouldRecomputeNag:v29 outRestrictionsChanged:0 outEffectiveSettingsChanged:0 outRecomputedNag:0 outError:0];
+      payload = v33;
+      [v23 setClientRestrictions:0 overrideRestrictions:0 appsAndOptions:0 system:v30 clientType:v26 clientUUID:persistentUUID sender:v22 localizedClientDescription:0 localizedWarning:0 shouldRecomputeNag:v29 outRestrictionsChanged:0 outEffectiveSettingsChanged:0 outRecomputedNag:0 outError:0];
 
       v6 = v32;
     }
@@ -1615,39 +1615,39 @@ LABEL_25:
 
     if (v5)
     {
-      v28 = [v4 UUID];
-      [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v5 andUUID:v28];
+      uUID3 = [payload UUID];
+      [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v5 andUUID:uUID3];
     }
   }
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v75 = a3;
-  v9 = a4;
-  v73 = a5;
-  v10 = [(MCNewPayloadHandler *)self payload];
+  installerCopy = installer;
+  optionsCopy = options;
+  clientCopy = client;
+  payload = [(MCNewPayloadHandler *)self payload];
   v93 = 0;
   v94 = &v93;
   v95 = 0x3032000000;
   v96 = sub_100072E1C;
   v97 = sub_100072E2C;
   v98 = 0;
-  v11 = [v9 objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
-  v12 = [v11 BOOLValue];
+  v11 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
+  bOOLValue = [v11 BOOLValue];
 
-  if (!v12)
+  if (!bOOLValue)
   {
     v76 = 0;
     goto LABEL_5;
   }
 
   v13 = kMDMPersonaKey;
-  v14 = [v9 objectForKeyedSubscript:kMDMPersonaKey];
+  v14 = [optionsCopy objectForKeyedSubscript:kMDMPersonaKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v76 = [v9 objectForKeyedSubscript:v13];
+    v76 = [optionsCopy objectForKeyedSubscript:v13];
   }
 
   else
@@ -1656,34 +1656,34 @@ LABEL_25:
   }
 
   v15 = kMCInstallProfileOptionManagingProfileIdentifier;
-  v16 = [v9 objectForKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
+  v16 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionManagingProfileIdentifier];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v74 = 0;
+    identifier = 0;
     goto LABEL_11;
   }
 
-  v17 = [v9 objectForKeyedSubscript:v15];
+  v17 = [optionsCopy objectForKeyedSubscript:v15];
 
   if (!v17)
   {
 LABEL_5:
-    v74 = 0;
+    identifier = 0;
     goto LABEL_12;
   }
 
   v18 = +[ACAccountStore defaultStore];
   v19 = [v18 dmc_remoteManagementAccountForManagementProfileIdentifier:v17];
 
-  v74 = [v19 identifier];
+  identifier = [v19 identifier];
 
   v16 = v17;
 LABEL_11:
 
 LABEL_12:
-  v20 = [v10 hostname];
-  if (v20)
+  hostname = [payload hostname];
+  if (hostname)
   {
 
 LABEL_15:
@@ -1698,34 +1698,34 @@ LABEL_15:
 LABEL_50:
       if (v24)
       {
-        v66 = [v10 UUID];
-        [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v24 andUUID:v66];
+        uUID = [payload UUID];
+        [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v24 andUUID:uUID];
       }
 
       if (v25)
       {
-        v67 = [v10 UUID];
-        [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v25 andUUID:v67];
+        uUID2 = [payload UUID];
+        [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v25 andUUID:uUID2];
       }
 
       if (v26)
       {
-        v68 = [v10 UUID];
-        [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v26 andUUID:v68];
+        uUID3 = [payload UUID];
+        [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v26 andUUID:uUID3];
       }
 
       goto LABEL_56;
     }
 
-    if ([v10 SMIMEEnabled])
+    if ([payload SMIMEEnabled])
     {
-      v27 = [(MCNewPayloadHandler *)self profileHandler];
-      v28 = [v10 SMIMESigningIdentityUUID];
-      v25 = [v27 persistentIDForCertificateUUID:v28];
+      profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+      sMIMESigningIdentityUUID = [payload SMIMESigningIdentityUUID];
+      v25 = [profileHandler persistentIDForCertificateUUID:sMIMESigningIdentityUUID];
 
-      v29 = [(MCNewPayloadHandler *)self profileHandler];
-      v30 = [v10 SMIMEEncryptionIdentityUUID];
-      v26 = [v29 persistentIDForCertificateUUID:v30];
+      profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+      sMIMEEncryptionIdentityUUID = [payload SMIMEEncryptionIdentityUUID];
+      v26 = [profileHandler2 persistentIDForCertificateUUID:sMIMEEncryptionIdentityUUID];
     }
 
     else
@@ -1738,19 +1738,19 @@ LABEL_50:
     v35 = v34;
     if (v34)
     {
-      if (v12)
+      if (bOOLValue)
       {
         [v34 setAccountBoolProperty:1 forKey:@"MCAccountIsManaged"];
-        if (v74)
+        if (identifier)
         {
-          [v35 setAccountProperty:v74 forKey:ACAccountPropertyRemoteManagingAccountIdentifier];
+          [v35 setAccountProperty:identifier forKey:ACAccountPropertyRemoteManagingAccountIdentifier];
         }
       }
 
-      if ([v10 overridePreviousPassword])
+      if ([payload overridePreviousPassword])
       {
-        v36 = [v35 backingAccountInfo];
-        [v36 setAccountProperty:&__kCFBooleanFalse forKey:@"EASPayloadShouldPreserveOldPassword"];
+        backingAccountInfo = [v35 backingAccountInfo];
+        [backingAccountInfo setAccountProperty:&__kCFBooleanFalse forKey:@"EASPayloadShouldPreserveOldPassword"];
 
         v37 = _MCLogObjects[0];
         if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
@@ -1762,16 +1762,16 @@ LABEL_50:
 
       else
       {
-        v41 = [v35 backingAccountInfo];
-        [v41 setAccountProperty:&__kCFBooleanTrue forKey:@"EASPayloadShouldPreserveOldPassword"];
+        backingAccountInfo2 = [v35 backingAccountInfo];
+        [backingAccountInfo2 setAccountProperty:&__kCFBooleanTrue forKey:@"EASPayloadShouldPreserveOldPassword"];
       }
 
       v71 = +[MDMConfiguration sharedConfiguration];
-      if (([v71 isUserEnrollment] & 1) != 0 || (objc_msgSend(v10, "profile"), v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "isUserEnrollmentProfile"), v42, v43))
+      if (([v71 isUserEnrollment] & 1) != 0 || (objc_msgSend(payload, "profile"), v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "isUserEnrollmentProfile"), v42, v43))
       {
-        v44 = [v71 easEnrollmentID];
+        easEnrollmentID = [v71 easEnrollmentID];
         v45 = MCkESExchangeDeviceID();
-        [v35 setObject:v44 forKeyedSubscript:v45];
+        [v35 setObject:easEnrollmentID forKeyedSubscript:v45];
 
         v46 = MCkESExchangeAccountWipeOnly();
         [v35 setObject:&__kCFBooleanTrue forKeyedSubscript:v46];
@@ -1781,8 +1781,8 @@ LABEL_50:
         [v35 setObject:&__kCFBooleanTrue forKeyedSubscript:v47];
       }
 
-      v48 = [v35 backingAccountInfo];
-      [(MCACAccountPayloadHandler *)self markIfUpdatingOverInstalledAccount:v48];
+      backingAccountInfo3 = [v35 backingAccountInfo];
+      [(MCACAccountPayloadHandler *)self markIfUpdatingOverInstalledAccount:backingAccountInfo3];
 
       *buf = 0;
       v87 = buf;
@@ -1794,29 +1794,29 @@ LABEL_50:
       v83 = &v82;
       v84 = 0x2020000000;
       v85 = 1;
-      v49 = [v75 setAsideAccountIdentifiersForPayloadClass:objc_opt_class()];
+      v49 = [installerCopy setAsideAccountIdentifiersForPayloadClass:objc_opt_class()];
       if ([v49 count])
       {
-        v50 = [v35 backingAccountInfo];
+        backingAccountInfo4 = [v35 backingAccountInfo];
         v51 = +[DASharedAccountProperties DAAccountIdentifiersToIgnoreForUniquenessCheck];
-        [v50 setAccountProperty:v49 forKey:v51];
+        [backingAccountInfo4 setAccountProperty:v49 forKey:v51];
       }
 
       v52 = sharedDAAccountStore();
-      v53 = [v35 backingAccountInfo];
+      backingAccountInfo5 = [v35 backingAccountInfo];
       v81[0] = _NSConcreteStackBlock;
       v81[1] = 3221225472;
       v81[2] = sub_100074868;
       v81[3] = &unk_10011C8E0;
       v81[4] = &v82;
       v81[5] = buf;
-      [v52 canSaveAccount:v53 withCompletionHandler:v81];
+      [v52 canSaveAccount:backingAccountInfo5 withCompletionHandler:v81];
 
       dispatch_semaphore_wait(*(v87 + 5), 0xFFFFFFFFFFFFFFFFLL);
       if (*(v83 + 24) == 1)
       {
-        v54 = [v35 backingAccountInfo];
-        [v54 setAuthenticated:1];
+        backingAccountInfo6 = [v35 backingAccountInfo];
+        [backingAccountInfo6 setAuthenticated:1];
 
         v77[0] = _NSConcreteStackBlock;
         v77[1] = 3221225472;
@@ -1843,9 +1843,9 @@ LABEL_50:
       {
         v57 = MCErrorArray();
         v58 = [NSError MCErrorWithDomain:MCEASErrorDomain code:21005 descriptionArray:v57 errorType:MCErrorTypeFatal, 0];
-        v59 = [v58 MCCopyAsPrimaryError];
+        mCCopyAsPrimaryError = [v58 MCCopyAsPrimaryError];
         v60 = v94[5];
-        v94[5] = v59;
+        v94[5] = mCCopyAsPrimaryError;
       }
 
       _Block_object_dispose(&v82, 8);
@@ -1861,26 +1861,26 @@ LABEL_50:
       v94[5] = v39;
     }
 
-    v61 = [v35 backingAccountInfo];
-    v62 = [v61 identifier];
-    [v10 setAcAccountIdentifier:v62];
+    backingAccountInfo7 = [v35 backingAccountInfo];
+    identifier2 = [backingAccountInfo7 identifier];
+    [payload setAcAccountIdentifier:identifier2];
 
     if (v24)
     {
-      v63 = [v10 UUID];
-      [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v24 andUUID:v63];
+      uUID4 = [payload UUID];
+      [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v24 andUUID:uUID4];
     }
 
     if (v25)
     {
-      v64 = [v10 UUID];
-      [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v25 andUUID:v64];
+      uUID5 = [payload UUID];
+      [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v25 andUUID:uUID5];
     }
 
     if (v26)
     {
-      v65 = [v10 UUID];
-      [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v26 andUUID:v65];
+      uUID6 = [payload UUID];
+      [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v26 andUUID:uUID6];
     }
 
     if (v94[5])
@@ -1889,17 +1889,17 @@ LABEL_50:
     }
 
 LABEL_59:
-    [v10 setCertificatePersistentID:v24];
-    [v10 setSMIMESigningIdentityPersistentID:v25];
-    [v10 setSMIMEEncryptionIdentityPersistentID:v26];
+    [payload setCertificatePersistentID:v24];
+    [payload setSMIMESigningIdentityPersistentID:v25];
+    [payload setSMIMEEncryptionIdentityPersistentID:v26];
     v69 = 1;
     goto LABEL_60;
   }
 
-  v21 = [v10 useOAuth];
-  v22 = [v21 BOOLValue];
+  useOAuth = [payload useOAuth];
+  bOOLValue2 = [useOAuth BOOLValue];
 
-  if (v22)
+  if (bOOLValue2)
   {
     goto LABEL_15;
   }
@@ -1919,9 +1919,9 @@ LABEL_59:
 
 LABEL_56:
   v69 = 0;
-  if (a6)
+  if (error)
   {
-    *a6 = v94[5];
+    *error = v94[5];
   }
 
 LABEL_60:
@@ -1941,33 +1941,33 @@ LABEL_60:
 
 - (BOOL)isInstalled
 {
-  v2 = [(MCACAccountPayloadHandler *)self _installedDAAccount];
-  v3 = v2 != 0;
+  _installedDAAccount = [(MCACAccountPayloadHandler *)self _installedDAAccount];
+  v3 = _installedDAAccount != 0;
 
   return v3;
 }
 
-- (void)setAsideWithInstaller:(id)a3
+- (void)setAsideWithInstaller:(id)installer
 {
-  v4 = a3;
+  installerCopy = installer;
   v12.receiver = self;
   v12.super_class = MCNewEASAccountPayloadHandler;
-  [(MCNewPayloadHandler *)&v12 setAsideWithInstaller:v4];
-  v5 = [(MCACAccountPayloadHandler *)self _installedDAAccount];
-  v6 = v5;
-  if (v5)
+  [(MCNewPayloadHandler *)&v12 setAsideWithInstaller:installerCopy];
+  _installedDAAccount = [(MCACAccountPayloadHandler *)self _installedDAAccount];
+  v6 = _installedDAAccount;
+  if (_installedDAAccount)
   {
-    v7 = [v5 backingAccountInfo];
-    [(MCACAccountPayloadHandler *)self setSetAsideAccount:v7];
+    backingAccountInfo = [_installedDAAccount backingAccountInfo];
+    [(MCACAccountPayloadHandler *)self setSetAsideAccount:backingAccountInfo];
 
-    v8 = [v6 backingAccountInfo];
-    v9 = [v8 credential];
-    [(MCNewEASAccountPayloadHandler *)self setSetAsideAccountCredential:v9];
+    backingAccountInfo2 = [v6 backingAccountInfo];
+    credential = [backingAccountInfo2 credential];
+    [(MCNewEASAccountPayloadHandler *)self setSetAsideAccountCredential:credential];
 
     [(MCNewEASAccountPayloadHandler *)self setSetAsideDAAccount:v6];
-    v10 = [v6 backingAccountInfo];
-    v11 = [v10 identifier];
-    [v4 addSetAsideAccountIdentifier:v11 forPayloadClass:objc_opt_class()];
+    backingAccountInfo3 = [v6 backingAccountInfo];
+    identifier = [backingAccountInfo3 identifier];
+    [installerCopy addSetAsideAccountIdentifier:identifier forPayloadClass:objc_opt_class()];
   }
 }
 
@@ -1976,31 +1976,31 @@ LABEL_60:
   v14 = +[MDMCloudConfiguration sharedConfiguration];
   if ([v14 userMode] == 1)
   {
-    v3 = [(MCACAccountPayloadHandler *)self setAsideAccount];
+    setAsideAccount = [(MCACAccountPayloadHandler *)self setAsideAccount];
 
-    if (v3)
+    if (setAsideAccount)
     {
-      v4 = [(MCACAccountPayloadHandler *)self _installedDAAccount];
-      v5 = [(MCACAccountPayloadHandler *)self setAsideAccount];
-      v6 = [v5 accountPropertyForKey:@"MCAccountIdentifer"];
+      _installedDAAccount = [(MCACAccountPayloadHandler *)self _installedDAAccount];
+      setAsideAccount2 = [(MCACAccountPayloadHandler *)self setAsideAccount];
+      v6 = [setAsideAccount2 accountPropertyForKey:@"MCAccountIdentifer"];
 
-      v7 = [v4 backingAccountInfo];
-      v8 = [v7 accountPropertyForKey:@"MCAccountIdentifer"];
+      backingAccountInfo = [_installedDAAccount backingAccountInfo];
+      v8 = [backingAccountInfo accountPropertyForKey:@"MCAccountIdentifer"];
 
       if (v6 && (!v8 || ([v6 isEqualToString:v8] & 1) == 0))
       {
-        v9 = [(MCACAccountPayloadHandler *)self setAsideAccount];
-        [v9 markAllPropertiesDirty];
+        setAsideAccount3 = [(MCACAccountPayloadHandler *)self setAsideAccount];
+        [setAsideAccount3 markAllPropertiesDirty];
         v10 = dispatch_semaphore_create(0);
         v11 = sharedDAAccountStore();
         v15[0] = _NSConcreteStackBlock;
         v15[1] = 3221225472;
         v15[2] = sub_100074E18;
         v15[3] = &unk_10011C908;
-        v16 = v9;
+        v16 = setAsideAccount3;
         v17 = v10;
         v12 = v10;
-        v13 = v9;
+        v13 = setAsideAccount3;
         [v11 saveVerifiedAccount:v13 withCompletionHandler:v15];
 
         dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
@@ -2018,27 +2018,27 @@ LABEL_60:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if (v4)
+  if (isSetAside)
   {
-    v54 = [(MCNewEASAccountPayloadHandler *)self setAsideDAAccount];
-    v53 = [(MCNewEASAccountPayloadHandler *)self setAsideAccountCredential];
+    setAsideDAAccount = [(MCNewEASAccountPayloadHandler *)self setAsideDAAccount];
+    setAsideAccountCredential = [(MCNewEASAccountPayloadHandler *)self setAsideAccountCredential];
     v5 = +[MDMCloudConfiguration sharedConfiguration];
-    v6 = [v5 userMode];
+    userMode = [v5 userMode];
 
-    if (v6 == 1)
+    if (userMode == 1)
     {
-      v7 = [(MCACAccountPayloadHandler *)self _installedSetAsideACAccount];
-      v8 = [(MCACAccountPayloadHandler *)self setAsideAccount];
-      v9 = [v8 accountPropertyForKey:@"MCNativeAccountIdentifer"];
-      v10 = [v7 accountPropertyForKey:@"MCNativeAccountIdentifer"];
+      _installedSetAsideACAccount = [(MCACAccountPayloadHandler *)self _installedSetAsideACAccount];
+      setAsideAccount = [(MCACAccountPayloadHandler *)self setAsideAccount];
+      v9 = [setAsideAccount accountPropertyForKey:@"MCNativeAccountIdentifer"];
+      v10 = [_installedSetAsideACAccount accountPropertyForKey:@"MCNativeAccountIdentifer"];
       v11 = [v9 isEqualToString:v10];
 
       if (v11)
       {
-        v52 = v7;
+        backingAccountInfo = _installedSetAsideACAccount;
       }
 
       else
@@ -2047,11 +2047,11 @@ LABEL_60:
         if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315138;
-          v63 = "[MCNewEASAccountPayloadHandler remove]";
+          selfCopy2 = "[MCNewEASAccountPayloadHandler remove]";
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s On Shared iPad, and current payload doesn't own any ACAccount.", buf, 0xCu);
         }
 
-        v52 = 0;
+        backingAccountInfo = 0;
       }
 
       v13 = v11 ^ 1;
@@ -2059,33 +2059,33 @@ LABEL_60:
 
     else
     {
-      v52 = [v54 backingAccountInfo];
+      backingAccountInfo = [setAsideDAAccount backingAccountInfo];
       v13 = 0;
     }
   }
 
   else
   {
-    v12 = [(MCACAccountPayloadHandler *)self updatedOverInstalledAccount];
-    v54 = [(MCACAccountPayloadHandler *)self _installedDAAccount];
-    if (v12)
+    updatedOverInstalledAccount = [(MCACAccountPayloadHandler *)self updatedOverInstalledAccount];
+    setAsideDAAccount = [(MCACAccountPayloadHandler *)self _installedDAAccount];
+    if (updatedOverInstalledAccount)
     {
       v13 = 0;
-      v52 = 0;
-      v53 = 0;
+      backingAccountInfo = 0;
+      setAsideAccountCredential = 0;
     }
 
     else
     {
-      v52 = [v54 backingAccountInfo];
+      backingAccountInfo = [setAsideDAAccount backingAccountInfo];
       v13 = 0;
-      v53 = 0;
+      setAsideAccountCredential = 0;
     }
   }
 
-  if (v54)
+  if (setAsideDAAccount)
   {
-    if (v53)
+    if (setAsideAccountCredential)
     {
       if (v13)
       {
@@ -2098,45 +2098,45 @@ LABEL_60:
       }
       v15 = ;
       v16 = [DAAccount daAccountSubclassWithBackingAccountInfo:v15];
-      v17 = [v15 credential];
-      v18 = [v16 backingAccountInfo];
-      v19 = [v18 accountPropertyForKey:@"EASPayloadShouldPreserveOldPassword"];
-      v20 = [v19 BOOLValue];
+      credential = [v15 credential];
+      backingAccountInfo2 = [v16 backingAccountInfo];
+      v19 = [backingAccountInfo2 accountPropertyForKey:@"EASPayloadShouldPreserveOldPassword"];
+      bOOLValue = [v19 BOOLValue];
 
       v21 = _MCLogObjects[0];
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
       {
         v22 = v21;
-        v23 = [(MCNewEASAccountPayloadHandler *)self setAsideDAAccount];
-        v24 = [v23 backingAccountInfo];
+        setAsideDAAccount2 = [(MCNewEASAccountPayloadHandler *)self setAsideDAAccount];
+        backingAccountInfo3 = [setAsideDAAccount2 backingAccountInfo];
         *buf = 134219522;
-        v63 = self;
+        selfCopy2 = self;
         v64 = 2080;
         v65 = "[MCNewEASAccountPayloadHandler remove]";
         v66 = 2112;
-        v67 = v53;
+        v67 = setAsideAccountCredential;
         v68 = 2112;
         v69 = v15;
         v70 = 1024;
-        v71 = v20;
+        v71 = bOOLValue;
         v72 = 2112;
-        v73 = v24;
+        v73 = backingAccountInfo3;
         v74 = 1024;
         v75 = v13;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%p %s - accountCredential %@, installedAccount %@ shouldPreservePassword %d setAsideDAAccount %@ lostAccountOwnership %d", buf, 0x40u);
       }
 
-      if ((v13 & v20 & 1) != 0 || (!v16 ? (v25 = 1) : (v25 = v13), (v25 & 1) == 0 && (-[MCNewEASAccountPayloadHandler setAsideDAAccount](self, "setAsideDAAccount"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 isConsideredTheSame:v16], v26, v27)))
+      if ((v13 & bOOLValue & 1) != 0 || (!v16 ? (v25 = 1) : (v25 = v13), (v25 & 1) == 0 && (-[MCNewEASAccountPayloadHandler setAsideDAAccount](self, "setAsideDAAccount"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 isConsideredTheSame:v16], v26, v27)))
       {
         v56[0] = _NSConcreteStackBlock;
         v56[1] = 3221225472;
         v56[2] = sub_100075768;
         v56[3] = &unk_10011CB10;
         v57 = v15;
-        v61 = v20;
+        v61 = bOOLValue;
         v58 = v16;
-        v59 = v53;
-        v60 = v17;
+        v59 = setAsideAccountCredential;
+        v60 = credential;
         v51 = objc_retainBlock(v56);
       }
 
@@ -2151,37 +2151,37 @@ LABEL_60:
       v51 = 0;
     }
 
-    v28 = [(MCNewPayloadHandler *)self payload];
-    v29 = [v28 certificatePersistentID];
-    if (v29)
+    payload = [(MCNewPayloadHandler *)self payload];
+    certificatePersistentID = [payload certificatePersistentID];
+    if (certificatePersistentID)
     {
-      v30 = [v28 UUID];
-      [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v29 andUUID:v30];
+      uUID = [payload UUID];
+      [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:certificatePersistentID andUUID:uUID];
     }
 
     else
     {
-      [v54 removeClientCertificateData];
+      [setAsideDAAccount removeClientCertificateData];
     }
 
-    v31 = [v28 SMIMESigningIdentityPersistentID];
-    if (v31)
+    sMIMESigningIdentityPersistentID = [payload SMIMESigningIdentityPersistentID];
+    if (sMIMESigningIdentityPersistentID)
     {
-      v32 = [v28 UUID];
-      [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v31 andUUID:v32];
+      uUID2 = [payload UUID];
+      [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:sMIMESigningIdentityPersistentID andUUID:uUID2];
     }
 
-    v33 = [v28 SMIMEEncryptionIdentityPersistentID];
-    if (v33)
+    sMIMEEncryptionIdentityPersistentID = [payload SMIMEEncryptionIdentityPersistentID];
+    if (sMIMEEncryptionIdentityPersistentID)
     {
-      v34 = [v28 UUID];
-      [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v33 andUUID:v34];
+      uUID3 = [payload UUID];
+      [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:sMIMEEncryptionIdentityPersistentID andUUID:uUID3];
     }
 
-    if (v52)
+    if (backingAccountInfo)
     {
       [MCFeatureOverrides accountRemovalTimeoutWithDefaultValue:600.0];
-      [(MCACAccountPayloadHandler *)self _synchronouslyDeleteAccountAndAssociatedData:v52 timeout:v51 completion:?];
+      [(MCACAccountPayloadHandler *)self _synchronouslyDeleteAccountAndAssociatedData:backingAccountInfo timeout:v51 completion:?];
     }
 
     else if (v51)
@@ -2190,34 +2190,34 @@ LABEL_60:
     }
 
     v35 = +[MCRestrictionManagerWriter sharedManager];
-    v36 = [(MCNewPayloadHandler *)self payload];
-    v37 = [v36 profile];
-    v38 = [v37 installType];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    profile = [payload2 profile];
+    installType = [profile installType];
 
-    v39 = [(MCNewPayloadHandler *)self profileHandler];
-    v40 = [v39 profile];
-    v41 = [v40 identifier];
-    v42 = [(MCNewPayloadHandler *)self profileHandler];
-    v43 = [v42 profile];
-    v44 = [v43 UUID];
-    v45 = [NSString stringWithFormat:@"%@-%@", v41, v44];
+    profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+    profile2 = [profileHandler2 profile];
+    identifier = [profile2 identifier];
+    profileHandler3 = [(MCNewPayloadHandler *)self profileHandler];
+    profile3 = [profileHandler3 profile];
+    uUID4 = [profile3 UUID];
+    v45 = [NSString stringWithFormat:@"%@-%@", identifier, uUID4];
 
-    v46 = [v54 persistentUUID];
+    persistentUUID = [setAsideDAAccount persistentUUID];
     v55 = 0;
     LOBYTE(v50) = 1;
-    LOBYTE(v44) = [v35 setClientRestrictions:0 overrideRestrictions:0 appsAndOptions:0 system:v38 != 2 clientType:kEASAccountClientType clientUUID:v46 sender:v45 localizedClientDescription:0 localizedWarning:0 shouldRecomputeNag:v50 outRestrictionsChanged:0 outEffectiveSettingsChanged:0 outRecomputedNag:0 outError:&v55];
+    LOBYTE(uUID4) = [v35 setClientRestrictions:0 overrideRestrictions:0 appsAndOptions:0 system:installType != 2 clientType:kEASAccountClientType clientUUID:persistentUUID sender:v45 localizedClientDescription:0 localizedWarning:0 shouldRecomputeNag:v50 outRestrictionsChanged:0 outEffectiveSettingsChanged:0 outRecomputedNag:0 outError:&v55];
     v47 = v55;
 
-    if ((v44 & 1) == 0)
+    if ((uUID4 & 1) == 0)
     {
       v48 = _MCLogObjects[0];
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
       {
-        v49 = [v47 MCVerboseDescription];
+        mCVerboseDescription = [v47 MCVerboseDescription];
         *buf = 138543618;
-        v63 = self;
+        selfCopy2 = self;
         v64 = 2114;
-        v65 = v49;
+        v65 = mCVerboseDescription;
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "Error removing client restrictions: %{public}@, %{public}@", buf, 0x16u);
       }
     }
@@ -2226,17 +2226,17 @@ LABEL_60:
 
 - (id)_installedACAccountOtherThanSelf
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if (v4)
+  if (isSetAside)
   {
-    v5 = [(MCACAccountPayloadHandler *)self installedACAccounts];
+    installedACAccounts = [(MCACAccountPayloadHandler *)self installedACAccounts];
     v6 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v26 = v5;
+      v26 = installedACAccounts;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Installed accounts %@", buf, 0xCu);
     }
 
@@ -2244,7 +2244,7 @@ LABEL_60:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v5;
+    v7 = installedACAccounts;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
@@ -2260,10 +2260,10 @@ LABEL_60:
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = [(MCACAccountPayloadHandler *)self setAsideAccount];
-          v15 = [v14 identifier];
-          v16 = [v13 isEqualToString:v15];
+          identifier = [v12 identifier];
+          setAsideAccount = [(MCACAccountPayloadHandler *)self setAsideAccount];
+          identifier2 = [setAsideAccount identifier];
+          v16 = [identifier isEqualToString:identifier2];
 
           if ((v16 & 1) == 0)
           {
@@ -2302,89 +2302,89 @@ LABEL_17:
   return v17;
 }
 
-- (void)preflighterSuccessWithoutPolicyUpdate:(id)a3
+- (void)preflighterSuccessWithoutPolicyUpdate:(id)update
 {
-  v4 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+  preflightCompletionHandler = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
 
-  if (v4)
+  if (preflightCompletionHandler)
   {
-    v5 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
-    v5[2](v5, 0, 0);
+    preflightCompletionHandler2 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+    preflightCompletionHandler2[2](preflightCompletionHandler2, 0, 0);
 
     [(MCNewEASAccountPayloadHandler *)self setPreflightCompletionHandler:0];
   }
 }
 
-- (void)preflighter:(id)a3 needsComplianceWithMCFeatures:(id)a4 perAccountPolicies:(id)a5
+- (void)preflighter:(id)preflighter needsComplianceWithMCFeatures:(id)features perAccountPolicies:(id)policies
 {
-  v8 = a4;
-  v6 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+  featuresCopy = features;
+  preflightCompletionHandler = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
 
-  if (v6)
+  if (preflightCompletionHandler)
   {
-    v7 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
-    (v7)[2](v7, v8, 0);
+    preflightCompletionHandler2 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+    (preflightCompletionHandler2)[2](preflightCompletionHandler2, featuresCopy, 0);
 
     [(MCNewEASAccountPayloadHandler *)self setPreflightCompletionHandler:0];
   }
 }
 
-- (void)preflighter:(id)a3 successWithMCFeatures:(id)a4 perAccountPolicies:(id)a5 policyKey:(id)a6
+- (void)preflighter:(id)preflighter successWithMCFeatures:(id)features perAccountPolicies:(id)policies policyKey:(id)key
 {
-  v9 = a4;
-  v7 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+  featuresCopy = features;
+  preflightCompletionHandler = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
 
-  if (v7)
+  if (preflightCompletionHandler)
   {
-    v8 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
-    (v8)[2](v8, v9, 0);
+    preflightCompletionHandler2 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+    (preflightCompletionHandler2)[2](preflightCompletionHandler2, featuresCopy, 0);
 
     [(MCNewEASAccountPayloadHandler *)self setPreflightCompletionHandler:0];
   }
 }
 
-- (void)preflighterRemoteWipeRequested:(id)a3
+- (void)preflighterRemoteWipeRequested:(id)requested
 {
   v4 = MCEASErrorDomain;
   v5 = MCErrorArray();
   v8 = [NSError MCErrorWithDomain:v4 code:21001 descriptionArray:v5 errorType:MCErrorTypeFatal, 0];
 
-  v6 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+  preflightCompletionHandler = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
 
-  if (v6)
+  if (preflightCompletionHandler)
   {
-    v7 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
-    (v7)[2](v7, 0, v8);
+    preflightCompletionHandler2 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+    (preflightCompletionHandler2)[2](preflightCompletionHandler2, 0, v8);
 
     [(MCNewEASAccountPayloadHandler *)self setPreflightCompletionHandler:0];
   }
 }
 
-- (void)preflighterRemoteWipeRequestResponseAcknowledged:(id)a3
+- (void)preflighterRemoteWipeRequestResponseAcknowledged:(id)acknowledged
 {
-  v4 = a3;
+  acknowledgedCopy = acknowledged;
   v5 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "My policy preflighter is wigging out. %{public}@", &v8, 0xCu);
   }
 
-  v6 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+  preflightCompletionHandler = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
 
-  if (v6)
+  if (preflightCompletionHandler)
   {
-    v7 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
-    v7[2](v7, 0, 0);
+    preflightCompletionHandler2 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+    preflightCompletionHandler2[2](preflightCompletionHandler2, 0, 0);
 
     [(MCNewEASAccountPayloadHandler *)self setPreflightCompletionHandler:0];
   }
 }
 
-- (void)preflighterAccountOnlyRemoteWipeRequested:(id)a3
+- (void)preflighterAccountOnlyRemoteWipeRequested:(id)requested
 {
-  v4 = a3;
+  requestedCopy = requested;
   v5 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
   {
@@ -2396,25 +2396,25 @@ LABEL_17:
   v7 = MCErrorArray();
   v8 = [NSError MCErrorWithDomain:v6 code:21008 descriptionArray:v7 errorType:MCErrorTypeFatal, 0];
 
-  v9 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+  preflightCompletionHandler = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
 
-  if (v9)
+  if (preflightCompletionHandler)
   {
-    v10 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
-    (v10)[2](v10, 0, v8);
+    preflightCompletionHandler2 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+    (preflightCompletionHandler2)[2](preflightCompletionHandler2, 0, v8);
 
     [(MCNewEASAccountPayloadHandler *)self setPreflightCompletionHandler:0];
   }
 }
 
-- (void)preflighterAccountOnlyRemoteWipeRequestResponseAcknowledged:(id)a3
+- (void)preflighterAccountOnlyRemoteWipeRequestResponseAcknowledged:(id)acknowledged
 {
-  v4 = a3;
+  acknowledgedCopy = acknowledged;
   v5 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Account is being wiped per server account-only wipe request. My policy preflighter is wigging out. %{public}@", buf, 0xCu);
   }
 
@@ -2422,27 +2422,27 @@ LABEL_17:
   v7 = MCErrorArray();
   v8 = [NSError MCErrorWithDomain:v6 code:21008 descriptionArray:v7 errorType:MCErrorTypeFatal, 0];
 
-  v9 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+  preflightCompletionHandler = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
 
-  if (v9)
+  if (preflightCompletionHandler)
   {
-    v10 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
-    (v10)[2](v10, 0, v8);
+    preflightCompletionHandler2 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+    (preflightCompletionHandler2)[2](preflightCompletionHandler2, 0, v8);
 
     [(MCNewEASAccountPayloadHandler *)self setPreflightCompletionHandler:0];
   }
 }
 
-- (void)preflighter:(id)a3 error:(id)a4
+- (void)preflighter:(id)preflighter error:(id)error
 {
-  v8 = a4;
-  v5 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+  errorCopy = error;
+  preflightCompletionHandler = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
 
-  if (v5)
+  if (preflightCompletionHandler)
   {
-    v6 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
-    v7 = [(MCNewEASAccountPayloadHandler *)self _errorFromPolicyPreflightError:v8];
-    (v6)[2](v6, 0, v7);
+    preflightCompletionHandler2 = [(MCNewEASAccountPayloadHandler *)self preflightCompletionHandler];
+    v7 = [(MCNewEASAccountPayloadHandler *)self _errorFromPolicyPreflightError:errorCopy];
+    (preflightCompletionHandler2)[2](preflightCompletionHandler2, 0, v7);
 
     [(MCNewEASAccountPayloadHandler *)self setPreflightCompletionHandler:0];
   }

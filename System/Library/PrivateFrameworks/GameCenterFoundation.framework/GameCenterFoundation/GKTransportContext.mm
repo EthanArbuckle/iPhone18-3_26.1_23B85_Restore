@@ -3,54 +3,54 @@
 + (id)syncQueue;
 - (BOOL)allowEarlyConnection;
 - (BOOL)inviteeShouldAwaitInviteUpdate;
-- (BOOL)shouldDelayConnectionForMatchResponse:(id)a3;
+- (BOOL)shouldDelayConnectionForMatchResponse:(id)response;
 - (BOOL)shouldFilterGuestWhenSendingToAll;
 - (BOOL)shouldSendInviteUpdate;
-- (BOOL)supportsTransportRequiredInTheInvite:(id)a3;
-- (BOOL)supportsTransportVersion:(id)a3;
+- (BOOL)supportsTransportRequiredInTheInvite:(id)invite;
+- (BOOL)supportsTransportVersion:(id)version;
 - (BOOL)validTransportSelected;
-- (GKTransportContext)initWithLocalPlayerID:(id)a3 localPseudonym:(id)a4 sessionID:(id)a5;
-- (GKTransportContext)initWithSupportedTransports:(id)a3;
-- (GKTransportContext)initWithValidTransports:(id)a3 localPlayerID:(id)a4;
+- (GKTransportContext)initWithLocalPlayerID:(id)d localPseudonym:(id)pseudonym sessionID:(id)iD;
+- (GKTransportContext)initWithSupportedTransports:(id)transports;
+- (GKTransportContext)initWithValidTransports:(id)transports localPlayerID:(id)d;
 - (NSArray)representedPlayerIDs;
 - (NSNumber)defaultInviteVersionFromMinimumSupportedTransportVersion;
 - (id)formAnInviteUpdate;
-- (id)gameParticipantsServerRepresentationsWithSelfPseudonym:(id)a3;
+- (id)gameParticipantsServerRepresentationsWithSelfPseudonym:(id)pseudonym;
 - (id)supportedTransportVersions;
-- (id)updatedParticipantsAfterRemoving:(id)a3 fromOldParticipants:(id)a4;
-- (void)addGameParticipants:(id)a3;
-- (void)addLobbyParticipants:(id)a3;
-- (void)addTTRMultiplayerParticipant:(id)a3;
-- (void)enrichConnectionDictionary:(id)a3 inviteResponse:(id)a4;
-- (void)enrichServerRequest:(id)a3 andInviteResponse:(id)a4;
-- (void)enrichServerRequest:(id)a3 withMatchRequest:(id)a4 selfPseudonym:(id)a5;
-- (void)enrichServerRequestWithConnectionData:(id)a3;
-- (void)performUpdateSync:(id)a3;
-- (void)removeGameParticipantsIfExists:(id)a3;
-- (void)removeLobbyParticipantsIfExists:(id)a3;
+- (id)updatedParticipantsAfterRemoving:(id)removing fromOldParticipants:(id)participants;
+- (void)addGameParticipants:(id)participants;
+- (void)addLobbyParticipants:(id)participants;
+- (void)addTTRMultiplayerParticipant:(id)participant;
+- (void)enrichConnectionDictionary:(id)dictionary inviteResponse:(id)response;
+- (void)enrichServerRequest:(id)request andInviteResponse:(id)response;
+- (void)enrichServerRequest:(id)request withMatchRequest:(id)matchRequest selfPseudonym:(id)pseudonym;
+- (void)enrichServerRequestWithConnectionData:(id)data;
+- (void)performUpdateSync:(id)sync;
+- (void)removeGameParticipantsIfExists:(id)exists;
+- (void)removeLobbyParticipantsIfExists:(id)exists;
 - (void)selectDefaultTransport;
-- (void)selectTransportWith:(id)a3;
-- (void)updateAfterAcceptingRemoveInvite:(id)a3 acceptedResponse:(id)a4;
-- (void)updateAfterInviteeAcceptedUserInfo:(id)a3;
-- (void)updateForInviteAcceptWithConnectionData:(id)a3;
-- (void)updateForInviteInitiationWithOnlineConnectionData:(id)a3;
+- (void)selectTransportWith:(id)with;
+- (void)updateAfterAcceptingRemoveInvite:(id)invite acceptedResponse:(id)response;
+- (void)updateAfterInviteeAcceptedUserInfo:(id)info;
+- (void)updateForInviteAcceptWithConnectionData:(id)data;
+- (void)updateForInviteInitiationWithOnlineConnectionData:(id)data;
 - (void)updateForLegacyNearbyInvite;
-- (void)updateForMatchRequestWithConnectionData:(id)a3;
-- (void)updateForMatchResponse:(id)a3 serverHosted:(BOOL)a4;
-- (void)updateWithForceEnabledTransports:(id)a3 forceDisabledTransports:(id)a4 andHealthMonitorEnabled:(BOOL)a5;
-- (void)updateWithInfoFromTransport:(id)a3;
-- (void)updateWithInviteInitiateResponse:(id)a3;
-- (void)updateWithInviteUpdateInfo:(id)a3;
+- (void)updateForMatchRequestWithConnectionData:(id)data;
+- (void)updateForMatchResponse:(id)response serverHosted:(BOOL)hosted;
+- (void)updateWithForceEnabledTransports:(id)transports forceDisabledTransports:(id)disabledTransports andHealthMonitorEnabled:(BOOL)enabled;
+- (void)updateWithInfoFromTransport:(id)transport;
+- (void)updateWithInviteInitiateResponse:(id)response;
+- (void)updateWithInviteUpdateInfo:(id)info;
 @end
 
 @implementation GKTransportContext
 
-- (GKTransportContext)initWithSupportedTransports:(id)a3
+- (GKTransportContext)initWithSupportedTransports:(id)transports
 {
-  v4 = a3;
+  transportsCopy = transports;
   if (+[GKEntitledContextProvider hasBooleanPublicGameCenterEntitlement])
   {
-    v5 = [(GKTransportContext *)self initWithValidTransports:v4 localPlayerID:0];
+    v5 = [(GKTransportContext *)self initWithValidTransports:transportsCopy localPlayerID:0];
   }
 
   else
@@ -62,7 +62,7 @@
     v9[3] = &unk_2785E11B0;
     v10 = v6;
     v7 = v6;
-    [v4 enumerateObjectsUsingBlock:v9];
+    [transportsCopy enumerateObjectsUsingBlock:v9];
     v5 = [(GKTransportContext *)self initWithValidTransports:v7 localPlayerID:0];
   }
 
@@ -93,29 +93,29 @@ void __50__GKTransportContext_initWithSupportedTransports___block_invoke(uint64_
   }
 }
 
-- (GKTransportContext)initWithValidTransports:(id)a3 localPlayerID:(id)a4
+- (GKTransportContext)initWithValidTransports:(id)transports localPlayerID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
+  transportsCopy = transports;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = GKTransportContext;
   v10 = [(GKTransportContext *)&v17 init];
   if (v10)
   {
-    v11 = v9;
-    if (!v9)
+    playerID = dCopy;
+    if (!dCopy)
     {
       v4 = +[GKLocalPlayer local];
-      v5 = [v4 internal];
-      v11 = [v5 playerID];
+      internal = [v4 internal];
+      playerID = [internal playerID];
     }
 
-    objc_storeStrong(&v10->_localPlayerID, v11);
-    if (!v9)
+    objc_storeStrong(&v10->_localPlayerID, playerID);
+    if (!dCopy)
     {
     }
 
-    v12 = [v8 copy];
+    v12 = [transportsCopy copy];
     supportedTransports = v10->_supportedTransports;
     v10->_supportedTransports = v12;
 
@@ -127,20 +127,20 @@ void __50__GKTransportContext_initWithSupportedTransports___block_invoke(uint64_
   return v10;
 }
 
-- (GKTransportContext)initWithLocalPlayerID:(id)a3 localPseudonym:(id)a4 sessionID:(id)a5
+- (GKTransportContext)initWithLocalPlayerID:(id)d localPseudonym:(id)pseudonym sessionID:(id)iD
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  pseudonymCopy = pseudonym;
+  iDCopy = iD;
+  dCopy = d;
   v12 = [[GKSupportedTransport alloc] initWithVersionNumber:&unk_283B333D0];
   v13 = [MEMORY[0x277CBEB98] setWithObject:v12];
-  v14 = [(GKTransportContext *)self initWithValidTransports:v13 localPlayerID:v11];
+  v14 = [(GKTransportContext *)self initWithValidTransports:v13 localPlayerID:dCopy];
 
   if (v14)
   {
     objc_storeStrong(&v14->_selectedTransport, v12);
-    objc_storeStrong(&v14->_sessionID, a5);
-    objc_storeStrong(&v14->_pseudonym, a4);
+    objc_storeStrong(&v14->_sessionID, iD);
+    objc_storeStrong(&v14->_pseudonym, pseudonym);
   }
 
   return v14;
@@ -231,60 +231,60 @@ void __31__GKTransportContext_syncQueue__block_invoke()
   syncQueue_sSyncQueue_1 = v0;
 }
 
-- (void)performUpdateSync:(id)a3
+- (void)performUpdateSync:(id)sync
 {
-  block = a3;
-  v3 = [objc_opt_class() syncQueue];
+  block = sync;
+  syncQueue = [objc_opt_class() syncQueue];
   v4 = dispatch_get_current_queue();
 
-  if (v4 == v3)
+  if (v4 == syncQueue)
   {
     v5 = MEMORY[0x277CCACA8];
-    label = dispatch_queue_get_label(v3);
-    v7 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v8 = [v5 stringWithFormat:@"%s invoked on the same queue(%s, would deadlock at %@"), "-[GKTransportContext performUpdateSync:]", label, v7];
+    label = dispatch_queue_get_label(syncQueue);
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v8 = [v5 stringWithFormat:@"%s invoked on the same queue(%s, would deadlock at %@"), "-[GKTransportContext performUpdateSync:]", label, callStackSymbols];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/Transport/GKTransportContext.m"];
-    v10 = [v9 lastPathComponent];
-    v11 = [v5 stringWithFormat:@"%@ (dispatch_get_current_queue() != queue)\n[%s (%s:%d)]", v8, "-[GKTransportContext performUpdateSync:]", objc_msgSend(v10, "UTF8String"), 116];
+    lastPathComponent = [v9 lastPathComponent];
+    v11 = [v5 stringWithFormat:@"%@ (dispatch_get_current_queue() != queue)\n[%s (%s:%d)]", v8, "-[GKTransportContext performUpdateSync:]", objc_msgSend(lastPathComponent, "UTF8String"), 116];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v11}];
   }
 
-  dispatch_sync(v3, block);
+  dispatch_sync(syncQueue, block);
 }
 
 - (BOOL)allowEarlyConnection
 {
-  v2 = [(GKTransportContext *)self selectedTransport];
-  v3 = [v2 version] == 2;
+  selectedTransport = [(GKTransportContext *)self selectedTransport];
+  v3 = [selectedTransport version] == 2;
 
   return v3;
 }
 
 - (BOOL)inviteeShouldAwaitInviteUpdate
 {
-  v2 = [(GKTransportContext *)self selectedTransport];
-  v3 = [v2 version] == 2;
+  selectedTransport = [(GKTransportContext *)self selectedTransport];
+  v3 = [selectedTransport version] == 2;
 
   return v3;
 }
 
 - (BOOL)shouldFilterGuestWhenSendingToAll
 {
-  v2 = [(GKTransportContext *)self selectedTransport];
-  v3 = [v2 version] != 2;
+  selectedTransport = [(GKTransportContext *)self selectedTransport];
+  v3 = [selectedTransport version] != 2;
 
   return v3;
 }
 
-- (BOOL)shouldDelayConnectionForMatchResponse:(id)a3
+- (BOOL)shouldDelayConnectionForMatchResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = +[GKPreferences shared];
-  v6 = [v5 multiplayerQRAllocationDelayDisabled];
+  multiplayerQRAllocationDelayDisabled = [v5 multiplayerQRAllocationDelayDisabled];
 
-  if ((v6 & 1) != 0 || (-[GKTransportContext selectedTransport](self, "selectedTransport"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 version], v7, v8 != 2))
+  if ((multiplayerQRAllocationDelayDisabled & 1) != 0 || (-[GKTransportContext selectedTransport](self, "selectedTransport"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 version], v7, v8 != 2))
   {
     LOBYTE(v27) = 0;
   }
@@ -292,21 +292,21 @@ void __31__GKTransportContext_syncQueue__block_invoke()
   else
   {
     v9 = [MEMORY[0x277CBEB58] set];
-    v10 = [(GKTransportContext *)self pseudonym];
+    pseudonym = [(GKTransportContext *)self pseudonym];
 
-    if (v10)
+    if (pseudonym)
     {
-      v34 = self;
-      v11 = [(GKTransportContext *)self pseudonym];
-      [v9 addObject:v11];
+      selfCopy = self;
+      pseudonym2 = [(GKTransportContext *)self pseudonym];
+      [v9 addObject:pseudonym2];
 
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v35 = v4;
-      v12 = [v4 matches];
-      v13 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v35 = responseCopy;
+      matches = [responseCopy matches];
+      v13 = [matches countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v13)
       {
         v14 = v13;
@@ -317,7 +317,7 @@ void __31__GKTransportContext_syncQueue__block_invoke()
           {
             if (*v37 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(matches);
             }
 
             v17 = *(*(&v36 + 1) + 8 * i);
@@ -331,7 +331,7 @@ void __31__GKTransportContext_syncQueue__block_invoke()
               }
 
               v29 = os_log_GKMatch;
-              v4 = v35;
+              responseCopy = v35;
               if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_ERROR))
               {
                 [(GKTransportContext *)v17 shouldDelayConnectionForMatchResponse:v29];
@@ -344,7 +344,7 @@ void __31__GKTransportContext_syncQueue__block_invoke()
             [v9 addObject:v19];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
+          v14 = [matches countByEnumeratingWithState:&v36 objects:v40 count:16];
           if (v14)
           {
             continue;
@@ -354,8 +354,8 @@ void __31__GKTransportContext_syncQueue__block_invoke()
         }
       }
 
-      v21 = [v9 allObjects];
-      v22 = [v21 sortedArrayUsingComparator:&__block_literal_global_81_0];
+      allObjects = [v9 allObjects];
+      v22 = [allObjects sortedArrayUsingComparator:&__block_literal_global_81_0];
 
       if (!os_log_GKGeneral)
       {
@@ -365,14 +365,14 @@ void __31__GKTransportContext_syncQueue__block_invoke()
       v24 = os_log_GKMatch;
       if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_DEBUG))
       {
-        [(GKTransportContext *)v22 shouldDelayConnectionForMatchResponse:v24, v34];
+        [(GKTransportContext *)v22 shouldDelayConnectionForMatchResponse:v24, selfCopy];
       }
 
-      v25 = [(GKTransportContext *)v34 pseudonym];
-      v26 = [v22 firstObject];
-      v27 = [v25 isEqualToString:v26] ^ 1;
+      pseudonym3 = [(GKTransportContext *)selfCopy pseudonym];
+      firstObject = [v22 firstObject];
+      v27 = [pseudonym3 isEqualToString:firstObject] ^ 1;
 
-      v4 = v35;
+      responseCopy = v35;
     }
 
     else
@@ -399,11 +399,11 @@ LABEL_27:
 
 - (BOOL)validTransportSelected
 {
-  v3 = [(GKTransportContext *)self selectedTransport];
-  if (v3)
+  selectedTransport = [(GKTransportContext *)self selectedTransport];
+  if (selectedTransport)
   {
-    v4 = [(GKTransportContext *)self selectedTransport];
-    v5 = [v4 version] != 0;
+    selectedTransport2 = [(GKTransportContext *)self selectedTransport];
+    v5 = [selectedTransport2 version] != 0;
   }
 
   else
@@ -417,29 +417,29 @@ LABEL_27:
 - (id)supportedTransportVersions
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v3 = [(GKTransportContext *)self selectedTransport];
-  if (v3 && (v4 = v3, -[GKTransportContext selectedTransport](self, "selectedTransport"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 version], v5, v4, v6))
+  selectedTransport = [(GKTransportContext *)self selectedTransport];
+  if (selectedTransport && (v4 = selectedTransport, -[GKTransportContext selectedTransport](self, "selectedTransport"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 version], v5, v4, v6))
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = [(GKTransportContext *)self selectedTransport];
-    v9 = [v7 numberWithInteger:{objc_msgSend(v8, "version")}];
+    selectedTransport2 = [(GKTransportContext *)self selectedTransport];
+    v9 = [v7 numberWithInteger:{objc_msgSend(selectedTransport2, "version")}];
     v17[0] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEB18] array];
-    v12 = [(GKTransportContext *)self supportedTransports];
+    array = [MEMORY[0x277CBEB18] array];
+    supportedTransports = [(GKTransportContext *)self supportedTransports];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __48__GKTransportContext_supportedTransportVersions__block_invoke;
     v15[3] = &unk_2785E11B0;
-    v10 = v11;
+    v10 = array;
     v16 = v10;
-    [v12 enumerateObjectsUsingBlock:v15];
+    [supportedTransports enumerateObjectsUsingBlock:v15];
 
-    v8 = v16;
+    selectedTransport2 = v16;
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -456,28 +456,28 @@ void __48__GKTransportContext_supportedTransportVersions__block_invoke(uint64_t 
 
 - (NSNumber)defaultInviteVersionFromMinimumSupportedTransportVersion
 {
-  v2 = [(GKTransportContext *)self supportedTransportVersions];
-  v3 = [v2 valueForKeyPath:@"@min.self"];
+  supportedTransportVersions = [(GKTransportContext *)self supportedTransportVersions];
+  v3 = [supportedTransportVersions valueForKeyPath:@"@min.self"];
 
   return v3;
 }
 
-- (BOOL)supportsTransportRequiredInTheInvite:(id)a3
+- (BOOL)supportsTransportRequiredInTheInvite:(id)invite
 {
-  v4 = a3;
-  v5 = [v4 transportVersionToUse];
-  v6 = [v5 integerValue];
+  inviteCopy = invite;
+  transportVersionToUse = [inviteCopy transportVersionToUse];
+  integerValue = [transportVersionToUse integerValue];
 
-  if (v6)
+  if (integerValue)
   {
-    v7 = [(GKTransportContext *)self supportedTransports];
-    v8 = [v7 allObjects];
+    supportedTransports = [(GKTransportContext *)self supportedTransports];
+    allObjects = [supportedTransports allObjects];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __59__GKTransportContext_supportsTransportRequiredInTheInvite___block_invoke;
     v12[3] = &unk_2785E11F8;
-    v13 = v4;
-    v9 = [v8 _gkFilterWithBlock:v12];
+    v13 = inviteCopy;
+    v9 = [allObjects _gkFilterWithBlock:v12];
 
     v10 = [v9 count] != 0;
   }
@@ -510,13 +510,13 @@ void *__59__GKTransportContext_supportsTransportRequiredInTheInvite___block_invo
   return v6;
 }
 
-- (void)selectTransportWith:(id)a3
+- (void)selectTransportWith:(id)with
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(GKTransportContext *)self selectedTransport];
+  withCopy = with;
+  selectedTransport = [(GKTransportContext *)self selectedTransport];
 
-  if (v6)
+  if (selectedTransport)
   {
     if (!os_log_GKGeneral)
     {
@@ -530,14 +530,14 @@ void *__59__GKTransportContext_supportsTransportRequiredInTheInvite___block_invo
     }
   }
 
-  else if ([v5 version])
+  else if ([withCopy version])
   {
     v9 = +[GKPreferences shared];
-    v10 = [v9 fastSyncTransportEnabled];
+    fastSyncTransportEnabled = [v9 fastSyncTransportEnabled];
 
-    if (v10)
+    if (fastSyncTransportEnabled)
     {
-      objc_storeStrong(&self->_selectedTransport, a3);
+      objc_storeStrong(&self->_selectedTransport, with);
     }
 
     else
@@ -557,15 +557,15 @@ void *__59__GKTransportContext_supportsTransportRequiredInTheInvite___block_invo
       *buf = 138412546;
       v22 = selectedTransport;
       v23 = 2112;
-      v24 = self;
+      selfCopy = self;
       _os_log_impl(&dword_227904000, v14, OS_LOG_TYPE_INFO, "Transport has been selected as: %@ for context: %@", buf, 0x16u);
     }
 
-    v16 = [(GKTransportContext *)self daemonProxy];
+    daemonProxy = [(GKTransportContext *)self daemonProxy];
     v17 = MEMORY[0x277CCACA8];
-    v18 = [(GKSupportedTransport *)self->_selectedTransport name];
-    v19 = [v17 stringWithFormat:@"Transport Selected: %@", v18];
-    [v16 emitMultiplayerMessage:v19];
+    name = [(GKSupportedTransport *)self->_selectedTransport name];
+    v19 = [v17 stringWithFormat:@"Transport Selected: %@", name];
+    [daemonProxy emitMultiplayerMessage:v19];
   }
 
   else
@@ -587,9 +587,9 @@ void *__59__GKTransportContext_supportsTransportRequiredInTheInvite___block_invo
 
 - (void)selectDefaultTransport
 {
-  v6 = [MEMORY[0x277CBEA60] array];
-  v3 = [MEMORY[0x277CBEA60] array];
-  v4 = [(GKTransportContext *)self defaultTransportWithForceEnabledTransports:v6 forceDisabledTransports:v3 andHealthMonitorEnabled:0];
+  array = [MEMORY[0x277CBEA60] array];
+  array2 = [MEMORY[0x277CBEA60] array];
+  v4 = [(GKTransportContext *)self defaultTransportWithForceEnabledTransports:array forceDisabledTransports:array2 andHealthMonitorEnabled:0];
   selectedTransport = self->_selectedTransport;
   self->_selectedTransport = v4;
 }
@@ -637,16 +637,16 @@ void __49__GKTransportContext_updateForLegacyNearbyInvite__block_invoke(uint64_t
   }
 }
 
-- (void)updateForInviteInitiationWithOnlineConnectionData:(id)a3
+- (void)updateForInviteInitiationWithOnlineConnectionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__GKTransportContext_updateForInviteInitiationWithOnlineConnectionData___block_invoke;
   v6[3] = &unk_2785DEBA8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = dataCopy;
+  selfCopy = self;
+  v5 = dataCopy;
   [(GKTransportContext *)self performUpdateSync:v6];
 }
 
@@ -684,16 +684,16 @@ void __72__GKTransportContext_updateForInviteInitiationWithOnlineConnectionData_
   }
 }
 
-- (void)updateWithInviteInitiateResponse:(id)a3
+- (void)updateWithInviteInitiateResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__GKTransportContext_updateWithInviteInitiateResponse___block_invoke;
   v6[3] = &unk_2785DEBA8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = responseCopy;
+  selfCopy = self;
+  v5 = responseCopy;
   [(GKTransportContext *)self performUpdateSync:v6];
 }
 
@@ -764,16 +764,16 @@ void __55__GKTransportContext_updateWithInviteInitiateResponse___block_invoke(ui
   [v28 addGameParticipants:v29];
 }
 
-- (void)updateForInviteAcceptWithConnectionData:(id)a3
+- (void)updateForInviteAcceptWithConnectionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__GKTransportContext_updateForInviteAcceptWithConnectionData___block_invoke;
   v6[3] = &unk_2785DEBA8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = dataCopy;
+  selfCopy = self;
+  v5 = dataCopy;
   [(GKTransportContext *)self performUpdateSync:v6];
 }
 
@@ -795,19 +795,19 @@ void __62__GKTransportContext_updateForInviteAcceptWithConnectionData___block_in
   objc_storeStrong(v4, v3);
 }
 
-- (void)updateAfterAcceptingRemoveInvite:(id)a3 acceptedResponse:(id)a4
+- (void)updateAfterAcceptingRemoveInvite:(id)invite acceptedResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  inviteCopy = invite;
+  responseCopy = response;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__GKTransportContext_updateAfterAcceptingRemoveInvite_acceptedResponse___block_invoke;
   v10[3] = &unk_2785DDB40;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = inviteCopy;
+  v12 = responseCopy;
+  selfCopy = self;
+  v8 = responseCopy;
+  v9 = inviteCopy;
   [(GKTransportContext *)self performUpdateSync:v10];
 }
 
@@ -969,16 +969,16 @@ LABEL_20:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAfterInviteeAcceptedUserInfo:(id)a3
+- (void)updateAfterInviteeAcceptedUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__GKTransportContext_updateAfterInviteeAcceptedUserInfo___block_invoke;
   v6[3] = &unk_2785DEBA8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = infoCopy;
+  selfCopy = self;
+  v5 = infoCopy;
   [(GKTransportContext *)self performUpdateSync:v6];
 }
 
@@ -1092,16 +1092,16 @@ void __57__GKTransportContext_updateAfterInviteeAcceptedUserInfo___block_invoke(
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateForMatchRequestWithConnectionData:(id)a3
+- (void)updateForMatchRequestWithConnectionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__GKTransportContext_updateForMatchRequestWithConnectionData___block_invoke;
   v6[3] = &unk_2785DEBA8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = dataCopy;
+  selfCopy = self;
+  v5 = dataCopy;
   [(GKTransportContext *)self performUpdateSync:v6];
 }
 
@@ -1132,17 +1132,17 @@ void __62__GKTransportContext_updateForMatchRequestWithConnectionData___block_in
   }
 }
 
-- (void)updateForMatchResponse:(id)a3 serverHosted:(BOOL)a4
+- (void)updateForMatchResponse:(id)response serverHosted:(BOOL)hosted
 {
-  v6 = a3;
+  responseCopy = response;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__GKTransportContext_updateForMatchResponse_serverHosted___block_invoke;
   v8[3] = &unk_2785E0F78;
-  v11 = a4;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
+  hostedCopy = hosted;
+  v9 = responseCopy;
+  selfCopy = self;
+  v7 = responseCopy;
   [(GKTransportContext *)self performUpdateSync:v8];
 }
 
@@ -1362,16 +1362,16 @@ LABEL_42:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithInviteUpdateInfo:(id)a3
+- (void)updateWithInviteUpdateInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__GKTransportContext_updateWithInviteUpdateInfo___block_invoke;
   v6[3] = &unk_2785DEBA8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = infoCopy;
+  selfCopy = self;
+  v5 = infoCopy;
   [(GKTransportContext *)self performUpdateSync:v6];
 }
 
@@ -1432,20 +1432,20 @@ void __49__GKTransportContext_updateWithInviteUpdateInfo___block_invoke(uint64_t
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithForceEnabledTransports:(id)a3 forceDisabledTransports:(id)a4 andHealthMonitorEnabled:(BOOL)a5
+- (void)updateWithForceEnabledTransports:(id)transports forceDisabledTransports:(id)disabledTransports andHealthMonitorEnabled:(BOOL)enabled
 {
-  v8 = a3;
-  v9 = a4;
+  transportsCopy = transports;
+  disabledTransportsCopy = disabledTransports;
   if (!self->_selectedTransport)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __103__GKTransportContext_updateWithForceEnabledTransports_forceDisabledTransports_andHealthMonitorEnabled___block_invoke;
     v10[3] = &unk_2785DFFC8;
-    v11 = v8;
-    v14 = a5;
-    v12 = v9;
-    v13 = self;
+    v11 = transportsCopy;
+    enabledCopy = enabled;
+    v12 = disabledTransportsCopy;
+    selfCopy = self;
     [(GKTransportContext *)self performUpdateSync:v10];
   }
 }
@@ -1641,150 +1641,150 @@ LABEL_12:
 - (id)formAnInviteUpdate
 {
   v3 = objc_alloc_init(GKUpdateInviteInfo);
-  v4 = [(GKTransportContext *)self gameParticipants];
-  [(GKUpdateInviteInfo *)v3 setGameParticipants:v4];
+  gameParticipants = [(GKTransportContext *)self gameParticipants];
+  [(GKUpdateInviteInfo *)v3 setGameParticipants:gameParticipants];
 
-  v5 = [(GKTransportContext *)self lobbyParticipants];
-  [(GKUpdateInviteInfo *)v3 setLobbyParticipants:v5];
+  lobbyParticipants = [(GKTransportContext *)self lobbyParticipants];
+  [(GKUpdateInviteInfo *)v3 setLobbyParticipants:lobbyParticipants];
 
-  v6 = [(GKTransportContext *)self playerTokenMap];
-  [(GKUpdateInviteInfo *)v3 setPlayerTokenMap:v6];
+  playerTokenMap = [(GKTransportContext *)self playerTokenMap];
+  [(GKUpdateInviteInfo *)v3 setPlayerTokenMap:playerTokenMap];
 
-  v7 = [(GKTransportContext *)self sessionID];
-  [(GKUpdateInviteInfo *)v3 setSessionID:v7];
+  sessionID = [(GKTransportContext *)self sessionID];
+  [(GKUpdateInviteInfo *)v3 setSessionID:sessionID];
 
-  v8 = [(GKTransportContext *)self sessionToken];
-  [(GKUpdateInviteInfo *)v3 setSessionToken:v8];
+  sessionToken = [(GKTransportContext *)self sessionToken];
+  [(GKUpdateInviteInfo *)v3 setSessionToken:sessionToken];
 
-  v9 = [(GKTransportContext *)self matchID];
+  matchID = [(GKTransportContext *)self matchID];
 
-  if (v9)
+  if (matchID)
   {
-    v10 = [(GKTransportContext *)self matchID];
-    [(GKUpdateInviteInfo *)v3 setMatchID:v10];
+    matchID2 = [(GKTransportContext *)self matchID];
+    [(GKUpdateInviteInfo *)v3 setMatchID:matchID2];
   }
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [(GKTransportContext *)self selectedTransport];
-  v13 = [v11 numberWithInteger:{objc_msgSend(v12, "version")}];
+  selectedTransport = [(GKTransportContext *)self selectedTransport];
+  v13 = [v11 numberWithInteger:{objc_msgSend(selectedTransport, "version")}];
   [(GKUpdateInviteInfo *)v3 setTransportVersionToUse:v13];
 
   return v3;
 }
 
-- (void)addGameParticipants:(id)a3
+- (void)addGameParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   gameParticipants = self->_gameParticipants;
-  v10 = v4;
+  v10 = participantsCopy;
   if (!gameParticipants)
   {
     v6 = [MEMORY[0x277CBEB98] set];
     v7 = self->_gameParticipants;
     self->_gameParticipants = v6;
 
-    v4 = v10;
+    participantsCopy = v10;
     gameParticipants = self->_gameParticipants;
   }
 
-  v8 = [(NSSet *)gameParticipants setByAddingObjectsFromSet:v4];
+  v8 = [(NSSet *)gameParticipants setByAddingObjectsFromSet:participantsCopy];
   v9 = self->_gameParticipants;
   self->_gameParticipants = v8;
 }
 
-- (void)addLobbyParticipants:(id)a3
+- (void)addLobbyParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   lobbyParticipants = self->_lobbyParticipants;
-  v10 = v4;
+  v10 = participantsCopy;
   if (!lobbyParticipants)
   {
     v6 = [MEMORY[0x277CBEB98] set];
     v7 = self->_lobbyParticipants;
     self->_lobbyParticipants = v6;
 
-    v4 = v10;
+    participantsCopy = v10;
     lobbyParticipants = self->_lobbyParticipants;
   }
 
-  v8 = [(NSSet *)lobbyParticipants setByAddingObjectsFromSet:v4];
+  v8 = [(NSSet *)lobbyParticipants setByAddingObjectsFromSet:participantsCopy];
   v9 = self->_lobbyParticipants;
   self->_lobbyParticipants = v8;
 }
 
-- (void)addTTRMultiplayerParticipant:(id)a3
+- (void)addTTRMultiplayerParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   playersAndPushTokens = self->_playersAndPushTokens;
-  v10 = v4;
+  v10 = participantCopy;
   if (!playersAndPushTokens)
   {
     v6 = [MEMORY[0x277CBEB98] set];
     v7 = self->_playersAndPushTokens;
     self->_playersAndPushTokens = v6;
 
-    v4 = v10;
+    participantCopy = v10;
     playersAndPushTokens = self->_playersAndPushTokens;
   }
 
-  v8 = [(NSSet *)playersAndPushTokens setByAddingObject:v4];
+  v8 = [(NSSet *)playersAndPushTokens setByAddingObject:participantCopy];
   v9 = self->_playersAndPushTokens;
   self->_playersAndPushTokens = v8;
 }
 
-- (id)updatedParticipantsAfterRemoving:(id)a3 fromOldParticipants:(id)a4
+- (id)updatedParticipantsAfterRemoving:(id)removing fromOldParticipants:(id)participants
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6 && [v5 count])
+  removingCopy = removing;
+  participantsCopy = participants;
+  if (participantsCopy && [removingCopy count])
   {
-    v7 = [v6 mutableCopy];
-    [v7 minusSet:v5];
+    v7 = [participantsCopy mutableCopy];
+    [v7 minusSet:removingCopy];
     v8 = [v7 copy];
   }
 
   else
   {
-    v8 = v6;
+    v8 = participantsCopy;
   }
 
   return v8;
 }
 
-- (void)removeGameParticipantsIfExists:(id)a3
+- (void)removeGameParticipantsIfExists:(id)exists
 {
-  v4 = [(GKTransportContext *)self updatedParticipantsAfterRemoving:a3 fromOldParticipants:self->_gameParticipants];
+  v4 = [(GKTransportContext *)self updatedParticipantsAfterRemoving:exists fromOldParticipants:self->_gameParticipants];
   gameParticipants = self->_gameParticipants;
   self->_gameParticipants = v4;
 
   MEMORY[0x2821F96F8](v4, gameParticipants);
 }
 
-- (void)removeLobbyParticipantsIfExists:(id)a3
+- (void)removeLobbyParticipantsIfExists:(id)exists
 {
-  v4 = [(GKTransportContext *)self updatedParticipantsAfterRemoving:a3 fromOldParticipants:self->_lobbyParticipants];
+  v4 = [(GKTransportContext *)self updatedParticipantsAfterRemoving:exists fromOldParticipants:self->_lobbyParticipants];
   lobbyParticipants = self->_lobbyParticipants;
   self->_lobbyParticipants = v4;
 
   MEMORY[0x2821F96F8](v4, lobbyParticipants);
 }
 
-- (void)enrichServerRequest:(id)a3 withMatchRequest:(id)a4 selfPseudonym:(id)a5
+- (void)enrichServerRequest:(id)request withMatchRequest:(id)matchRequest selfPseudonym:(id)pseudonym
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  matchRequestCopy = matchRequest;
+  pseudonymCopy = pseudonym;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__GKTransportContext_enrichServerRequest_withMatchRequest_selfPseudonym___block_invoke;
   v14[3] = &unk_2785DF3E0;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = requestCopy;
+  selfCopy = self;
+  v17 = matchRequestCopy;
+  v18 = pseudonymCopy;
+  v11 = pseudonymCopy;
+  v12 = matchRequestCopy;
+  v13 = requestCopy;
   [(GKTransportContext *)self performUpdateSync:v14];
 }
 
@@ -1838,22 +1838,22 @@ void __73__GKTransportContext_enrichServerRequest_withMatchRequest_selfPseudonym
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)gameParticipantsServerRepresentationsWithSelfPseudonym:(id)a3
+- (id)gameParticipantsServerRepresentationsWithSelfPseudonym:(id)pseudonym
 {
-  v4 = a3;
+  pseudonymCopy = pseudonym;
   v5 = [GKTransportParticipant alloc];
-  v6 = [(GKTransportContext *)self localPlayerID];
-  v7 = [(GKTransportParticipant *)v5 initWithPlayerID:v6 pseudonym:v4];
+  localPlayerID = [(GKTransportContext *)self localPlayerID];
+  v7 = [(GKTransportParticipant *)v5 initWithPlayerID:localPlayerID pseudonym:pseudonymCopy];
 
   v8 = MEMORY[0x277CBEB18];
-  v9 = [(GKTransportParticipant *)v7 serverRepresentation];
-  v10 = [v8 arrayWithObject:v9];
+  serverRepresentation = [(GKTransportParticipant *)v7 serverRepresentation];
+  v10 = [v8 arrayWithObject:serverRepresentation];
 
   v11 = MEMORY[0x277CBEB58];
-  v12 = [(GKTransportContext *)self localPlayerID];
-  v13 = [v11 setWithObject:v12];
+  localPlayerID2 = [(GKTransportContext *)self localPlayerID];
+  v13 = [v11 setWithObject:localPlayerID2];
 
-  v14 = [(GKTransportContext *)self gameParticipants];
+  gameParticipants = [(GKTransportContext *)self gameParticipants];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __77__GKTransportContext_gameParticipantsServerRepresentationsWithSelfPseudonym___block_invoke;
@@ -1862,7 +1862,7 @@ void __73__GKTransportContext_enrichServerRequest_withMatchRequest_selfPseudonym
   v15 = v10;
   v22 = v15;
   v16 = v13;
-  [v14 enumerateObjectsUsingBlock:v20];
+  [gameParticipants enumerateObjectsUsingBlock:v20];
 
   v17 = v22;
   v18 = v15;
@@ -1890,19 +1890,19 @@ void __77__GKTransportContext_gameParticipantsServerRepresentationsWithSelfPseud
   }
 }
 
-- (void)enrichConnectionDictionary:(id)a3 inviteResponse:(id)a4
+- (void)enrichConnectionDictionary:(id)dictionary inviteResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  responseCopy = response;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__GKTransportContext_enrichConnectionDictionary_inviteResponse___block_invoke;
   v10[3] = &unk_2785DDB40;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dictionaryCopy;
+  v12 = responseCopy;
+  v8 = responseCopy;
+  v9 = dictionaryCopy;
   [(GKTransportContext *)self performUpdateSync:v10];
 }
 
@@ -1954,16 +1954,16 @@ void __64__GKTransportContext_enrichConnectionDictionary_inviteResponse___block_
   [*(a1 + 48) setSessionID:v22];
 }
 
-- (void)enrichServerRequestWithConnectionData:(id)a3
+- (void)enrichServerRequestWithConnectionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__GKTransportContext_enrichServerRequestWithConnectionData___block_invoke;
   v6[3] = &unk_2785DEBA8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dataCopy;
+  v5 = dataCopy;
   [(GKTransportContext *)self performUpdateSync:v6];
 }
 
@@ -2004,20 +2004,20 @@ void __60__GKTransportContext_enrichServerRequestWithConnectionData___block_invo
   }
 }
 
-- (void)enrichServerRequest:(id)a3 andInviteResponse:(id)a4
+- (void)enrichServerRequest:(id)request andInviteResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  [(GKTransportContext *)self enrichServerRequestWithConnectionData:v6];
+  requestCopy = request;
+  responseCopy = response;
+  [(GKTransportContext *)self enrichServerRequestWithConnectionData:requestCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__GKTransportContext_enrichServerRequest_andInviteResponse___block_invoke;
   v10[3] = &unk_2785DDB40;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestCopy;
+  selfCopy = self;
+  v13 = responseCopy;
+  v8 = responseCopy;
+  v9 = requestCopy;
   [(GKTransportContext *)self performUpdateSync:v10];
 }
 
@@ -2114,19 +2114,19 @@ void __60__GKTransportContext_enrichServerRequest_andInviteResponse___block_invo
   [v2 addObject:v3];
 }
 
-- (BOOL)supportsTransportVersion:(id)a3
+- (BOOL)supportsTransportVersion:(id)version
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKTransportContext *)self supportedTransports];
-  v6 = [v5 allObjects];
+  versionCopy = version;
+  supportedTransports = [(GKTransportContext *)self supportedTransports];
+  allObjects = [supportedTransports allObjects];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __47__GKTransportContext_supportsTransportVersion___block_invoke;
   v14[3] = &unk_2785E1298;
-  v7 = v4;
+  v7 = versionCopy;
   v15 = v7;
-  v8 = [v6 _gkContainsObjectPassingTest:v14];
+  v8 = [allObjects _gkContainsObjectPassingTest:v14];
 
   if (!os_log_GKGeneral)
   {
@@ -2207,16 +2207,16 @@ id __42__GKTransportContext_representedPlayerIDs__block_invoke_2(uint64_t a1, vo
   return v6;
 }
 
-- (void)updateWithInfoFromTransport:(id)a3
+- (void)updateWithInfoFromTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__GKTransportContext_updateWithInfoFromTransport___block_invoke;
   v6[3] = &unk_2785DEBA8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = transportCopy;
+  selfCopy = self;
+  v5 = transportCopy;
   [(GKTransportContext *)self performUpdateSync:v6];
 }
 

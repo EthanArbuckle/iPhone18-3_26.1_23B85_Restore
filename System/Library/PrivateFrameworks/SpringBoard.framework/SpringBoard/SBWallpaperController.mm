@@ -7,118 +7,118 @@
 - (BOOL)adaptiveTimeHonorsPreferredSalientContentRectangle;
 - (BOOL)homeScreenPosterMirrorsLock;
 - (BOOL)homeScreenWallpaperDimming;
-- (BOOL)isWindowIgnoredForReachability:(id)a3;
+- (BOOL)isWindowIgnoredForReachability:(id)reachability;
 - (BOOL)posterHandlesWakeAnimation;
 - (BOOL)posterHasRequestedDeviceMotionEvents;
 - (BOOL)posterHidesDimmingLayer;
 - (BOOL)posterWantsDefaultParallax;
-- (BOOL)setWallpaperStyleTransitionState:(id *)a3 forPriority:(int64_t)a4 forVariant:(int64_t)a5 withAnimationFactory:(id)a6;
-- (BOOL)updateCurrentPosterWithUpdates:(id)a3 error:(id *)a4;
+- (BOOL)setWallpaperStyleTransitionState:(id *)state forPriority:(int64_t)priority forVariant:(int64_t)variant withAnimationFactory:(id)factory;
+- (BOOL)updateCurrentPosterWithUpdates:(id)updates error:(id *)error;
 - (BOOL)updateIrisWallpaperForStaticMode;
-- (CGRect)_screenBoundsForOrientation:(int64_t)a3;
+- (CGRect)_screenBoundsForOrientation:(int64_t)orientation;
 - (CGRect)preferredSalientContentRectangle;
 - (PBUIHomeVariantStyleState)currentHomeVariantStyleState;
 - (PBUIIrisWallpaperPlaying)irisWallpaperPlayer;
 - (PBUIWallpaperPresentingDelegate)wallpaperPresentingDelegate;
 - (SBFWallpaperCoreAnalyticsLogger)wallpaperCoreAnalyticsLogger;
 - (SBWallpaperController)init;
-- (SBWallpaperController)initWithWallpaperConfigurationManager:(id)a3;
-- (SBWallpaperController)initWithWallpaperConfigurationManager:(id)a3 cachingIdentifier:(id)a4;
-- (SBWallpaperController)initWithWindowScene:(id)a3 orientation:(int64_t)a4 variant:(int64_t)a5 wallpaperConfigurationManager:(id)a6 cachingIdentifier:(id)a7;
+- (SBWallpaperController)initWithWallpaperConfigurationManager:(id)manager;
+- (SBWallpaperController)initWithWallpaperConfigurationManager:(id)manager cachingIdentifier:(id)identifier;
+- (SBWallpaperController)initWithWindowScene:(id)scene orientation:(int64_t)orientation variant:(int64_t)variant wallpaperConfigurationManager:(id)manager cachingIdentifier:(id)identifier;
 - (SBWindowScene)windowScene;
 - (UIGestureRecognizer)wallpaperGestureRecognizer;
 - (double)effectiveReachabilityYOffset;
-- (id)_controlIdentityForExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 kind:(id)a5;
-- (id)_posterQuickActionsConfigurationFromConfigurationRequest:(id)a3;
-- (id)acquireDuckHomeScreenWallpaperDimAssertionWithReason:(id)a3;
+- (id)_controlIdentityForExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier kind:(id)kind;
+- (id)_posterQuickActionsConfigurationFromConfigurationRequest:(id)request;
+- (id)acquireDuckHomeScreenWallpaperDimAssertionWithReason:(id)reason;
 - (id)activeInterfaceOrientationSourcesDescriptions;
-- (id)createWallpaperFloatingViewForReason:(id)a3 ignoreReplica:(BOOL)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)createWallpaperFloatingViewForReason:(id)reason ignoreReplica:(BOOL)replica;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)embeddedWindowScene;
-- (id)newFakeBlurViewForVariant:(int64_t)a3 style:(int64_t)a4 transformOptions:(unint64_t)a5;
+- (id)newFakeBlurViewForVariant:(int64_t)variant style:(int64_t)style transformOptions:(unint64_t)options;
 - (id)scenesForBacklightSession;
-- (id)setWallpaperFloatingLayerContainerView:(id)a3 forReason:(id)a4 withAnimationFactory:(id)a5;
+- (id)setWallpaperFloatingLayerContainerView:(id)view forReason:(id)reason withAnimationFactory:(id)factory;
 - (id)succinctDescription;
-- (id)wallpaperView:(id)a3 wallpaperConfigurationIncludingValueTypes:(unint64_t)a4;
+- (id)wallpaperView:(id)view wallpaperConfigurationIncludingValueTypes:(unint64_t)types;
 - (int64_t)activeOrientationSource;
-- (int64_t)defaultInterfaceOrientationForSource:(int64_t)a3;
-- (int64_t)wallpaperPresenter:(id)a3 requestsOrientationWithRefresh:(BOOL)a4;
-- (uint64_t)updateWallpaperAnimationWithRotation:(_OWORD *)a3;
+- (int64_t)defaultInterfaceOrientationForSource:(int64_t)source;
+- (int64_t)wallpaperPresenter:(id)presenter requestsOrientationWithRefresh:(BOOL)refresh;
+- (uint64_t)updateWallpaperAnimationWithRotation:(_OWORD *)rotation;
 - (unint64_t)posterDeviceMotionMode;
-- (void)_batterySaverModeChanged:(id)a3;
-- (void)_fetchUserTapEventsRequestedWithCompletionHandler:(id)a3;
-- (void)_ingestPrimaryWallpaperLayersSnapshotIOSurface:(id)a3 floatingWallpaperLayerSnapshotIOSurface:(id)a4 snapshotScale:(double)a5 traitCollection:(id)a6 withCompletion:(id)a7;
+- (void)_batterySaverModeChanged:(id)changed;
+- (void)_fetchUserTapEventsRequestedWithCompletionHandler:(id)handler;
+- (void)_ingestPrimaryWallpaperLayersSnapshotIOSurface:(id)surface floatingWallpaperLayerSnapshotIOSurface:(id)oSurface snapshotScale:(double)scale traitCollection:(id)collection withCompletion:(id)completion;
 - (void)_loadLastActiveConfigurations;
 - (void)_motionEffectsChanged;
-- (void)_noteSignificantTimeChanged:(id)a3;
-- (void)_persistLastActiveHomeScreenPosterConfiguration:(id)a3;
-- (void)_persistLastActiveLockScreenPosterConfiguration:(id)a3;
-- (void)_reloadWallpaperAndFlushCaches:(BOOL)a3 completionHandler:(id)a4;
-- (void)_saveWallpaperCoreAnalyticsForLocations:(int64_t)a3 withConfiguration:(id)a4;
-- (void)_updateForLockScreenPosterConfiguration:(id)a3 homeScreenPosterConfiguration:(id)a4;
+- (void)_noteSignificantTimeChanged:(id)changed;
+- (void)_persistLastActiveHomeScreenPosterConfiguration:(id)configuration;
+- (void)_persistLastActiveLockScreenPosterConfiguration:(id)configuration;
+- (void)_reloadWallpaperAndFlushCaches:(BOOL)caches completionHandler:(id)handler;
+- (void)_saveWallpaperCoreAnalyticsForLocations:(int64_t)locations withConfiguration:(id)configuration;
+- (void)_updateForLockScreenPosterConfiguration:(id)configuration homeScreenPosterConfiguration:(id)posterConfiguration;
 - (void)_updateScreenBlanked;
-- (void)activateOrientationSource:(int64_t)a3;
-- (void)activeActivityDidChangeForManager:(id)a3;
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5;
-- (void)addReachabilityObserver:(id)a3;
-- (void)addWallpaperUnlockProgressObserver:(id)a3;
-- (void)availableActivitiesDidChangeForManager:(id)a3;
+- (void)activateOrientationSource:(int64_t)source;
+- (void)activeActivityDidChangeForManager:(id)manager;
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation;
+- (void)addReachabilityObserver:(id)observer;
+- (void)addWallpaperUnlockProgressObserver:(id)observer;
+- (void)availableActivitiesDidChangeForManager:(id)manager;
 - (void)beginActiveVariantTransition;
-- (void)deactivateOrientationSource:(int64_t)a3;
+- (void)deactivateOrientationSource:(int64_t)source;
 - (void)dealloc;
 - (void)endActiveVariantTransition;
 - (void)hostDidEndDeviceMotionEventGeneration;
 - (void)hostWillStartDeviceMotionEventGeneration;
 - (void)noteHomeVariantStyleStateMayHaveUpdated;
-- (void)orientationSource:(int64_t)a3 didRotateFromInterfaceOrientation:(int64_t)a4;
-- (void)orientationSource:(int64_t)a3 willAnimateRotationToInterfaceOrientation:(int64_t)a4 duration:(double)a5;
-- (void)preheatWallpaperForVariant:(int64_t)a3;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)removeReachabilityObserver:(id)a3;
-- (void)setExternalDisplayConfiguration:(id)a3;
-- (void)setHomeScreenWallpaperDimmed:(BOOL)a3;
-- (void)setLockscreenOnlyWallpaperAlpha:(double)a3;
-- (void)setOrientationProvider:(id)a3 forSource:(int64_t)a4;
-- (void)setWallpaperHidden:(BOOL)a3 variant:(int64_t)a4 reason:(id)a5;
-- (void)setWallpaperObscured:(BOOL)a3;
-- (void)setWindowScene:(id)a3;
+- (void)orientationSource:(int64_t)source didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)orientationSource:(int64_t)source willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)preheatWallpaperForVariant:(int64_t)variant;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)removeReachabilityObserver:(id)observer;
+- (void)setExternalDisplayConfiguration:(id)configuration;
+- (void)setHomeScreenWallpaperDimmed:(BOOL)dimmed;
+- (void)setLockscreenOnlyWallpaperAlpha:(double)alpha;
+- (void)setOrientationProvider:(id)provider forSource:(int64_t)source;
+- (void)setWallpaperHidden:(BOOL)hidden variant:(int64_t)variant reason:(id)reason;
+- (void)setWallpaperObscured:(BOOL)obscured;
+- (void)setWindowScene:(id)scene;
 - (void)triggerPosterSignificantEvent;
-- (void)triggerPosterTapEvent:(id)a3;
-- (void)updateActiveVariantTransitionProgress:(double)a3;
+- (void)triggerPosterTapEvent:(id)event;
+- (void)updateActiveVariantTransitionProgress:(double)progress;
 - (void)updateIrisWallpaperForInteractiveMode;
 - (void)updateOrientationAfterSourceChange;
 - (void)updatePosterSwitcherSnapshots;
-- (void)updateSalientContentRectangle:(CGRect)a3;
-- (void)updateWallpaperAnimationWithIconFlyInTension:(double)a3 friction:(double)a4;
-- (void)updateWallpaperAnimationWithProgress:(double)a3;
-- (void)updateWallpaperAnimationWithWakeSourceIsSwipeToUnlock:(BOOL)a3;
-- (void)updateWallpaperForLocations:(int64_t)a3 wallpaperMode:(int64_t)a4 withCompletion:(id)a5;
-- (void)updateWallpaperForLocations:(int64_t)a3 withCompletion:(id)a4;
-- (void)wallpaperPresenter:(id)a3 didChangeWallpaperForLocations:(int64_t)a4 withConfiguration:(id)a5;
-- (void)wallpaperPresenterDidCompleteWallpaperChange:(id)a3;
-- (void)wallpaperServer:(id)a3 fetchAdaptiveTimeBoundsForContext:(id)a4 timeHeight:(double)a5 completionHandler:(id)a6;
-- (void)wallpaperServer:(id)a3 fetchAdaptiveTimeHeightLimitsForContext:(id)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 fetchContentCutoutBoundsForVariant:(int64_t)a4 orientation:(int64_t)a5 completionHandler:(id)a6;
-- (void)wallpaperServer:(id)a3 fetchLimitedOcclusionBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 fetchLockScreenContentCutoutBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 fetchLockScreenExtendedContentCutoutBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 fetchLockScreenMaximalContentCutoutBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 fetchLockScreenSubtitleBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 fetchLockScreenTimeBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 fetchObscurableBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 fetchOriginalImageDataForVariant:(int64_t)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 fetchOriginalVideoURLDataForVariant:(int64_t)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 fetchSignificantEventsCounterForPosterWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 fetchThumbnailDataForVariant:(int64_t)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 handleQuickActionConfigurationRequest:(id)a4 completionHandler:(id)a5;
-- (void)wallpaperServer:(id)a3 restoreDefaultWallpaperWithCompletionHandler:(id)a4;
-- (void)wallpaperServer:(id)a3 setWallpaperColor:(id)a4 darkColor:(id)a5 forVariants:(int64_t)a6 completionHandler:(id)a7;
-- (void)wallpaperServer:(id)a3 setWallpaperColorName:(id)a4 forVariants:(int64_t)a5 completionHandler:(id)a6;
-- (void)wallpaperServer:(id)a3 setWallpaperGradient:(id)a4 forVariants:(int64_t)a5 completionHandler:(id)a6;
-- (void)wallpaperServer:(id)a3 setWallpaperVideoWithWallpaperMode:(id)a4 cropRect:(CGRect)a5 wallpaperMode:(int64_t)a6 completionHandler:(id)a7;
-- (void)wallpaperServer:(id)a3 triggerPosterSignificantEventCompletionHandler:(id)a4;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)updateSalientContentRectangle:(CGRect)rectangle;
+- (void)updateWallpaperAnimationWithIconFlyInTension:(double)tension friction:(double)friction;
+- (void)updateWallpaperAnimationWithProgress:(double)progress;
+- (void)updateWallpaperAnimationWithWakeSourceIsSwipeToUnlock:(BOOL)unlock;
+- (void)updateWallpaperForLocations:(int64_t)locations wallpaperMode:(int64_t)mode withCompletion:(id)completion;
+- (void)updateWallpaperForLocations:(int64_t)locations withCompletion:(id)completion;
+- (void)wallpaperPresenter:(id)presenter didChangeWallpaperForLocations:(int64_t)locations withConfiguration:(id)configuration;
+- (void)wallpaperPresenterDidCompleteWallpaperChange:(id)change;
+- (void)wallpaperServer:(id)server fetchAdaptiveTimeBoundsForContext:(id)context timeHeight:(double)height completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchAdaptiveTimeHeightLimitsForContext:(id)context completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchContentCutoutBoundsForVariant:(int64_t)variant orientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchLimitedOcclusionBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchLockScreenContentCutoutBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchLockScreenExtendedContentCutoutBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchLockScreenMaximalContentCutoutBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchLockScreenSubtitleBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchLockScreenTimeBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchObscurableBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchOriginalImageDataForVariant:(int64_t)variant completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchOriginalVideoURLDataForVariant:(int64_t)variant completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchSignificantEventsCounterForPosterWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server fetchThumbnailDataForVariant:(int64_t)variant completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server handleQuickActionConfigurationRequest:(id)request completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server restoreDefaultWallpaperWithCompletionHandler:(id)handler;
+- (void)wallpaperServer:(id)server setWallpaperColor:(id)color darkColor:(id)darkColor forVariants:(int64_t)variants completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server setWallpaperColorName:(id)name forVariants:(int64_t)variants completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server setWallpaperGradient:(id)gradient forVariants:(int64_t)variants completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server setWallpaperVideoWithWallpaperMode:(id)mode cropRect:(CGRect)rect wallpaperMode:(int64_t)wallpaperMode completionHandler:(id)handler;
+- (void)wallpaperServer:(id)server triggerPosterSignificantEventCompletionHandler:(id)handler;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation SBWallpaperController
@@ -129,7 +129,7 @@
   block[1] = 3221225472;
   block[2] = __39__SBWallpaperController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance___once_2 != -1)
   {
     dispatch_once(&sharedInstance___once_2, block);
@@ -142,10 +142,10 @@
 
 - (void)updateOrientationAfterSourceChange
 {
-  v3 = [(SBWallpaperController *)self activeOrientationSource];
-  if ([(SBWallpaperController *)self _isAcceptingOrientationChangesFromSource:v3])
+  activeOrientationSource = [(SBWallpaperController *)self activeOrientationSource];
+  if ([(SBWallpaperController *)self _isAcceptingOrientationChangesFromSource:activeOrientationSource])
   {
-    v4 = [(SBWallpaperController *)self defaultInterfaceOrientationForSource:v3];
+    v4 = [(SBWallpaperController *)self defaultInterfaceOrientationForSource:activeOrientationSource];
     if (v4)
     {
 
@@ -177,10 +177,10 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) integerValue];
-        if (v8 > v5)
+        integerValue = [*(*(&v10 + 1) + 8 * i) integerValue];
+        if (integerValue > v5)
         {
-          v5 = v8;
+          v5 = integerValue;
         }
       }
 
@@ -240,8 +240,8 @@
 
     else
     {
-      v10 = [v6 lockPosterAppearance];
-      v9 = [v10 isLegibilityBlurEnabled] ^ 1;
+      lockPosterAppearance = [v6 lockPosterAppearance];
+      v9 = [lockPosterAppearance isLegibilityBlurEnabled] ^ 1;
     }
 
     return v9;
@@ -296,42 +296,42 @@
 
 - (PBUIHomeVariantStyleState)currentHomeVariantStyleState
 {
-  v3 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter currentHomeVariantStyleState];
-  if (!v3)
+  currentHomeVariantStyleState = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter currentHomeVariantStyleState];
+  if (!currentHomeVariantStyleState)
   {
-    v4 = [(PRSPosterConfigurationCacheProviding *)self->_posterCacheProvider lastActiveLockPoster];
-    if (v4)
+    lastActiveLockPoster = [(PRSPosterConfigurationCacheProviding *)self->_posterCacheProvider lastActiveLockPoster];
+    if (lastActiveLockPoster)
     {
       v9 = 0;
-      v5 = [MEMORY[0x277D3E968] decodeFromPersistableRepresentation:v4 error:&v9];
+      v5 = [MEMORY[0x277D3E968] decodeFromPersistableRepresentation:lastActiveLockPoster error:&v9];
       v6 = v5;
       if (v5)
       {
         v7 = [v5 pr_loadHomeScreenConfigurationWithError:0];
         if (v7)
         {
-          v3 = PBUIHomeVariantStyleStateFromPRPosterHomeScreenConfiguration();
+          currentHomeVariantStyleState = PBUIHomeVariantStyleStateFromPRPosterHomeScreenConfiguration();
         }
 
         else
         {
-          v3 = 0;
+          currentHomeVariantStyleState = 0;
         }
       }
 
       else
       {
-        v3 = 0;
+        currentHomeVariantStyleState = 0;
       }
     }
 
     else
     {
-      v3 = 0;
+      currentHomeVariantStyleState = 0;
     }
   }
 
-  return v3;
+  return currentHomeVariantStyleState;
 }
 
 - (void)endActiveVariantTransition
@@ -380,52 +380,52 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter irisWallpaperPlayer];
+    irisWallpaperPlayer = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter irisWallpaperPlayer];
   }
 
   else
   {
-    v3 = 0;
+    irisWallpaperPlayer = 0;
   }
 
-  return v3;
+  return irisWallpaperPlayer;
 }
 
 - (UIGestureRecognizer)wallpaperGestureRecognizer
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_triggerPosterTapEvent_];
-    [v3 setName:@"WallpaperTap"];
+    irisGestureRecognizer = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_triggerPosterTapEvent_];
+    [irisGestureRecognizer setName:@"WallpaperTap"];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v4 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter irisWallpaperPlayer];
-    v3 = [v4 irisGestureRecognizer];
+    irisWallpaperPlayer = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter irisWallpaperPlayer];
+    irisGestureRecognizer = [irisWallpaperPlayer irisGestureRecognizer];
   }
 
   else
   {
-    v3 = 0;
+    irisGestureRecognizer = 0;
   }
 
-  return v3;
+  return irisGestureRecognizer;
 }
 
 - (id)scenesForBacklightSession
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter scenesForBacklightSession];
+    scenesForBacklightSession = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter scenesForBacklightSession];
   }
 
   else
   {
-    v3 = 0;
+    scenesForBacklightSession = 0;
   }
 
-  return v3;
+  return scenesForBacklightSession;
 }
 
 void __39__SBWallpaperController_sharedInstance__block_invoke(uint64_t a1)
@@ -461,11 +461,11 @@ void __44__SBWallpaperController_accessAuthenticator__block_invoke()
   accessAuthenticator___WallpaperAuthenticator = v0;
 }
 
-- (SBWallpaperController)initWithWindowScene:(id)a3 orientation:(int64_t)a4 variant:(int64_t)a5 wallpaperConfigurationManager:(id)a6 cachingIdentifier:(id)a7
+- (SBWallpaperController)initWithWindowScene:(id)scene orientation:(int64_t)orientation variant:(int64_t)variant wallpaperConfigurationManager:(id)manager cachingIdentifier:(id)identifier
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  sceneCopy = scene;
+  managerCopy = manager;
+  identifierCopy = identifier;
   v88.receiver = self;
   v88.super_class = SBWallpaperController;
   v15 = [(SBWallpaperController *)&v88 init];
@@ -475,22 +475,22 @@ void __44__SBWallpaperController_accessAuthenticator__block_invoke()
     goto LABEL_23;
   }
 
-  objc_storeWeak(&v15->_windowScene, v12);
-  v80 = a4;
-  v16->_orientation = a4;
+  objc_storeWeak(&v15->_windowScene, sceneCopy);
+  orientationCopy = orientation;
+  v16->_orientation = orientation;
   v16->_displayedVariant = -1;
-  v17 = [v14 copy];
+  v17 = [identifierCopy copy];
   cachingIdentifier = v16->_cachingIdentifier;
   v16->_cachingIdentifier = v17;
 
-  objc_storeStrong(&v16->_wallpaperConfigurationManager, a6);
-  v78 = [MEMORY[0x277D37C78] rootSettings];
-  [v78 addKeyObserver:v16];
-  v19 = [[_SBWallpaperSecureWindow alloc] initWithWindowScene:v12];
-  v20 = [MEMORY[0x277D75418] currentDevice];
-  v21 = [v20 userInterfaceIdiom];
+  objc_storeStrong(&v16->_wallpaperConfigurationManager, manager);
+  rootSettings = [MEMORY[0x277D37C78] rootSettings];
+  [rootSettings addKeyObserver:v16];
+  v19 = [[_SBWallpaperSecureWindow alloc] initWithWindowScene:sceneCopy];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v21 & 0xFFFFFFFFFFFFFFFBLL) == 1 && _os_feature_enabled_impl())
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && _os_feature_enabled_impl())
   {
     [(_SBWallpaperSecureWindow *)v19 _setRoleHint:@"SBTraitsParticipantRoleWallpaper"];
   }
@@ -499,8 +499,8 @@ void __44__SBWallpaperController_accessAuthenticator__block_invoke()
   [(SBFWindow *)v19 setHidden:0];
   [(_SBWallpaperSecureWindow *)v19 setUserInteractionEnabled:0];
   objc_storeStrong(&v16->_wallpaperWindow, v19);
-  v22 = [MEMORY[0x277D75348] blackColor];
-  [(_SBWallpaperSecureWindow *)v19 setBackgroundColor:v22];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(_SBWallpaperSecureWindow *)v19 setBackgroundColor:blackColor];
 
   if (CSAutobahnEnabledForPlatform())
   {
@@ -522,7 +522,7 @@ LABEL_9:
 
   v23 = objc_alloc_init(MEMORY[0x277D37CA0]);
   [(UIViewController *)v23 setWallpaperConfigurationManager:v16->_wallpaperConfigurationManager];
-  [(UIViewController *)v23 setCachingIdentifier:v14];
+  [(UIViewController *)v23 setCachingIdentifier:identifierCopy];
   [(UIViewController *)v23 setReachabilityCoordinator:v16];
   if (![(SBWallpaperController *)v16 _isTraitsArbiterWallpaperActive])
   {
@@ -538,10 +538,10 @@ LABEL_13:
   v16->_rootWallpaperViewController = v23;
 
   [(UIWindow *)v16->_wallpaperWindow setRootViewController:v16->_rootWallpaperViewController];
-  v25 = [(UIWindow *)v16->_wallpaperWindow traitCollection];
-  v26 = [v25 userInterfaceStyle];
+  traitCollection = [(UIWindow *)v16->_wallpaperWindow traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v26 == 1)
+  if (userInterfaceStyle == 1)
   {
     v27 = 1;
     v28 = 0x277D37000;
@@ -550,29 +550,29 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v29 = [(UIWindow *)v16->_wallpaperWindow traitCollection];
-  v30 = [v29 userInterfaceStyle];
+  traitCollection2 = [(UIWindow *)v16->_wallpaperWindow traitCollection];
+  userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
   v28 = 0x277D37000;
-  if (v30 == 2)
+  if (userInterfaceStyle2 == 2)
   {
     v27 = 2;
     goto LABEL_17;
   }
 
 LABEL_18:
-  v79 = v14;
+  v79 = identifierCopy;
   v31 = +[SBReachabilityManager sharedInstance];
   [v31 ignoreWindowForReachability:v16->_wallpaperWindow];
 
-  v32 = [(UIViewController *)v16->_rootWallpaperViewController view];
+  view = [(UIViewController *)v16->_rootWallpaperViewController view];
   wallpaperContainerView = v16->_wallpaperContainerView;
-  v16->_wallpaperContainerView = v32;
+  v16->_wallpaperContainerView = view;
 
-  v34 = [(UIView *)v16->_wallpaperContainerView layer];
-  v35 = [MEMORY[0x277D759A0] mainScreen];
-  [v35 scale];
-  [v34 setRasterizationScale:?];
+  layer = [(UIView *)v16->_wallpaperContainerView layer];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  [layer setRasterizationScale:?];
 
   [(UIView *)v16->_wallpaperContainerView setClipsToBounds:1];
   v36 = objc_alloc(MEMORY[0x277D75D18]);
@@ -582,33 +582,33 @@ LABEL_18:
   v16->_wallpaperOverlayContainerView = v37;
 
   v39 = v16->_wallpaperOverlayContainerView;
-  v40 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)v39 setBackgroundColor:v40];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)v39 setBackgroundColor:clearColor];
 
   [(UIWindow *)v16->_wallpaperWindow addSubview:v16->_wallpaperOverlayContainerView];
   v41 = objc_alloc_init(MEMORY[0x277CBEB58]);
   activeOrientationSources = v16->_activeOrientationSources;
   v16->_activeOrientationSources = v41;
 
-  [(SBWallpaperController *)v16 setActiveVariant:a5];
+  [(SBWallpaperController *)v16 setActiveVariant:variant];
   [SBApp addActiveOrientationObserver:v16];
-  v43 = [SBApp backlightEnvironmentSessionProvider];
-  [v43 registerBacklightEnvironmentSceneProvider:v16];
+  backlightEnvironmentSessionProvider = [SBApp backlightEnvironmentSessionProvider];
+  [backlightEnvironmentSessionProvider registerBacklightEnvironmentSceneProvider:v16];
 
-  v44 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v44 addObserver:v16 selector:sel__updateScreenBlanked name:@"SBBlankScreenStateChangeNotification" object:0];
-  [v44 addObserver:v16 selector:sel__motionEffectsChanged name:*MEMORY[0x277D77508] object:0];
-  [v44 addObserver:v16 selector:sel__batterySaverModeChanged_ name:@"SBBatterySaverModeDidChangeNotification" object:SBApp];
-  [v44 addObserver:v16 selector:sel__noteSignificantTimeChanged_ name:@"SBSignificantTimeChangedNotification" object:0];
-  [v44 addObserver:v16 selector:sel__applicationDidFinishLaunching_ name:*MEMORY[0x277D76668] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v16 selector:sel__updateScreenBlanked name:@"SBBlankScreenStateChangeNotification" object:0];
+  [defaultCenter addObserver:v16 selector:sel__motionEffectsChanged name:*MEMORY[0x277D77508] object:0];
+  [defaultCenter addObserver:v16 selector:sel__batterySaverModeChanged_ name:@"SBBatterySaverModeDidChangeNotification" object:SBApp];
+  [defaultCenter addObserver:v16 selector:sel__noteSignificantTimeChanged_ name:@"SBSignificantTimeChangedNotification" object:0];
+  [defaultCenter addObserver:v16 selector:sel__applicationDidFinishLaunching_ name:*MEMORY[0x277D76668] object:0];
   if (_os_feature_enabled_impl())
   {
     v45 = objc_alloc_init(SBBootDefaultsPosterCacheProvider);
-    v46 = [MEMORY[0x277D77BF8] sharedManager];
-    v47 = [v46 isSharedIPad];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    isSharedIPad = [mEMORY[0x277D77BF8] isSharedIPad];
 
-    v77 = v13;
-    if (v47)
+    v77 = managerCopy;
+    if (isSharedIPad)
     {
       v48 = [objc_alloc(MEMORY[0x277D3E970]) initWithCachingReason:@"SharediPad"];
 
@@ -646,7 +646,7 @@ LABEL_18:
     v52->_posterBoardService = v59;
 
     v61 = +[SBPosterBoardUpdateManager sharedInstance];
-    v13 = v77;
+    managerCopy = v77;
     v28 = 0x277D37000uLL;
   }
 
@@ -654,14 +654,14 @@ LABEL_18:
   posterBoardModalEditingManager = v16->_posterBoardModalEditingManager;
   v16->_posterBoardModalEditingManager = v62;
 
-  v64 = [MEMORY[0x277D0A9E8] sharedActivityManager];
+  mEMORY[0x277D0A9E8] = [MEMORY[0x277D0A9E8] sharedActivityManager];
   activityManager = v16->_activityManager;
-  v16->_activityManager = v64;
+  v16->_activityManager = mEMORY[0x277D0A9E8];
 
   [(FCActivityManager *)v16->_activityManager addObserver:v16];
-  v66 = [*(v28 + 3192) rootSettings];
-  v67 = [v66 resetWallpaperOutlet];
-  v68 = [v67 addAction:&__block_literal_global_110];
+  rootSettings2 = [*(v28 + 3192) rootSettings];
+  resetWallpaperOutlet = [rootSettings2 resetWallpaperOutlet];
+  v68 = [resetWallpaperOutlet addAction:&__block_literal_global_110];
 
   objc_initWeak(&location, v16);
   v69 = MEMORY[0x277D43280];
@@ -687,16 +687,16 @@ LABEL_18:
 
   [*(v28 + 3192) registerTestRecipe:v16->_reloadTestRecipe];
   v16->_orientation = 0;
-  [(SBWallpaperController *)v16 willAnimateRotationToInterfaceOrientation:v80 duration:0.0];
-  v75 = [MEMORY[0x277D262A0] sharedConnection];
-  [v75 registerObserver:v16];
-  [(SBWallpaperController *)v16 profileConnectionDidReceiveEffectiveSettingsChangedNotification:v75 userInfo:0];
+  [(SBWallpaperController *)v16 willAnimateRotationToInterfaceOrientation:orientationCopy duration:0.0];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] registerObserver:v16];
+  [(SBWallpaperController *)v16 profileConnectionDidReceiveEffectiveSettingsChangedNotification:mEMORY[0x277D262A0] userInfo:0];
 
   objc_destroyWeak(&v82);
   objc_destroyWeak(&v84);
   objc_destroyWeak(&location);
 
-  v14 = v79;
+  identifierCopy = v79;
 LABEL_23:
 
   return v16;
@@ -864,20 +864,20 @@ void __54__SBWallpaperController__loadLastActiveConfigurations__block_invoke(uin
   }
 }
 
-- (void)_persistLastActiveLockScreenPosterConfiguration:(id)a3
+- (void)_persistLastActiveLockScreenPosterConfiguration:(id)configuration
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  configurationCopy = configuration;
+  v6 = configurationCopy;
   if (self->_loadedLastActiveConfigurations)
   {
     p_lastActiveLockScreenPosterConfiguration = &self->_lastActiveLockScreenPosterConfiguration;
     lastActiveLockScreenPosterConfiguration = self->_lastActiveLockScreenPosterConfiguration;
-    if (v5)
+    if (configurationCopy)
     {
-      if ([v5 isEqualToPersistable:lastActiveLockScreenPosterConfiguration])
+      if ([configurationCopy isEqualToPersistable:lastActiveLockScreenPosterConfiguration])
       {
-        objc_storeStrong(&self->_lastActiveLockScreenPosterConfiguration, a3);
+        objc_storeStrong(&self->_lastActiveLockScreenPosterConfiguration, configuration);
       }
 
       else
@@ -942,20 +942,20 @@ void __54__SBWallpaperController__loadLastActiveConfigurations__block_invoke(uin
   }
 }
 
-- (void)_persistLastActiveHomeScreenPosterConfiguration:(id)a3
+- (void)_persistLastActiveHomeScreenPosterConfiguration:(id)configuration
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  configurationCopy = configuration;
+  v6 = configurationCopy;
   if (self->_loadedLastActiveConfigurations)
   {
     p_lastActiveHomeScreenPosterConfiguration = &self->_lastActiveHomeScreenPosterConfiguration;
     lastActiveHomeScreenPosterConfiguration = self->_lastActiveHomeScreenPosterConfiguration;
-    if (v5)
+    if (configurationCopy)
     {
-      if ([v5 isEqualToPersistable:lastActiveHomeScreenPosterConfiguration])
+      if ([configurationCopy isEqualToPersistable:lastActiveHomeScreenPosterConfiguration])
       {
-        objc_storeStrong(&self->_lastActiveHomeScreenPosterConfiguration, a3);
+        objc_storeStrong(&self->_lastActiveHomeScreenPosterConfiguration, configuration);
       }
 
       else
@@ -1020,21 +1020,21 @@ void __54__SBWallpaperController__loadLastActiveConfigurations__block_invoke(uin
   }
 }
 
-- (SBWallpaperController)initWithWallpaperConfigurationManager:(id)a3
+- (SBWallpaperController)initWithWallpaperConfigurationManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(SBWallpaperController *)self embeddedWindowScene];
-  v6 = [(SBWallpaperController *)self initWithWindowScene:v5 orientation:1 variant:1 wallpaperConfigurationManager:v4 cachingIdentifier:@"wallpaperController"];
+  managerCopy = manager;
+  embeddedWindowScene = [(SBWallpaperController *)self embeddedWindowScene];
+  v6 = [(SBWallpaperController *)self initWithWindowScene:embeddedWindowScene orientation:1 variant:1 wallpaperConfigurationManager:managerCopy cachingIdentifier:@"wallpaperController"];
 
   return v6;
 }
 
-- (SBWallpaperController)initWithWallpaperConfigurationManager:(id)a3 cachingIdentifier:(id)a4
+- (SBWallpaperController)initWithWallpaperConfigurationManager:(id)manager cachingIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBWallpaperController *)self embeddedWindowScene];
-  v9 = [(SBWallpaperController *)self initWithWindowScene:v8 orientation:1 variant:1 wallpaperConfigurationManager:v7 cachingIdentifier:v6];
+  identifierCopy = identifier;
+  managerCopy = manager;
+  embeddedWindowScene = [(SBWallpaperController *)self embeddedWindowScene];
+  v9 = [(SBWallpaperController *)self initWithWindowScene:embeddedWindowScene orientation:1 variant:1 wallpaperConfigurationManager:managerCopy cachingIdentifier:identifierCopy];
 
   return v9;
 }
@@ -1042,17 +1042,17 @@ void __54__SBWallpaperController__loadLastActiveConfigurations__block_invoke(uin
 - (SBWallpaperController)init
 {
   v3 = objc_alloc_init(MEMORY[0x277D37C70]);
-  v4 = [(SBWallpaperController *)self embeddedWindowScene];
-  v5 = [(SBWallpaperController *)self embeddedWindowScene];
-  if (v5)
+  embeddedWindowScene = [(SBWallpaperController *)self embeddedWindowScene];
+  embeddedWindowScene2 = [(SBWallpaperController *)self embeddedWindowScene];
+  if (embeddedWindowScene2)
   {
-    v6 = [(SBWallpaperController *)self embeddedWindowScene];
-    v7 = -[SBWallpaperController initWithWindowScene:orientation:variant:wallpaperConfigurationManager:cachingIdentifier:](self, "initWithWindowScene:orientation:variant:wallpaperConfigurationManager:cachingIdentifier:", v4, [v6 interfaceOrientation], 1, v3, @"wallpaperController");
+    embeddedWindowScene3 = [(SBWallpaperController *)self embeddedWindowScene];
+    v7 = -[SBWallpaperController initWithWindowScene:orientation:variant:wallpaperConfigurationManager:cachingIdentifier:](self, "initWithWindowScene:orientation:variant:wallpaperConfigurationManager:cachingIdentifier:", embeddedWindowScene, [embeddedWindowScene3 interfaceOrientation], 1, v3, @"wallpaperController");
   }
 
   else
   {
-    v7 = [(SBWallpaperController *)self initWithWindowScene:v4 orientation:1 variant:1 wallpaperConfigurationManager:v3 cachingIdentifier:@"wallpaperController"];
+    v7 = [(SBWallpaperController *)self initWithWindowScene:embeddedWindowScene orientation:1 variant:1 wallpaperConfigurationManager:v3 cachingIdentifier:@"wallpaperController"];
   }
 
   return v7;
@@ -1060,11 +1060,11 @@ void __54__SBWallpaperController__loadLastActiveConfigurations__block_invoke(uin
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  [v4 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   [SBApp removeActiveOrientationObserver:self];
   v5.receiver = self;
@@ -1072,27 +1072,27 @@ void __54__SBWallpaperController__loadLastActiveConfigurations__block_invoke(uin
   [(SBWallpaperController *)&v5 dealloc];
 }
 
-- (void)updateActiveVariantTransitionProgress:(double)a3
+- (void)updateActiveVariantTransitionProgress:(double)progress
 {
   if (objc_opt_respondsToSelector())
   {
     wallpaperPresenter = self->_wallpaperPresenter;
 
-    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter updateActiveVariantTransitionProgress:a3];
+    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter updateActiveVariantTransitionProgress:progress];
   }
 }
 
 - (id)embeddedWindowScene
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  return v3;
+  return embeddedDisplayWindowScene;
 }
 
-- (void)setWindowScene:(id)a3
+- (void)setWindowScene:(id)scene
 {
-  obj = a3;
+  obj = scene;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
 
   if (WeakRetained != obj)
@@ -1102,10 +1102,10 @@ void __54__SBWallpaperController__loadLastActiveConfigurations__block_invoke(uin
   }
 }
 
-- (void)_updateForLockScreenPosterConfiguration:(id)a3 homeScreenPosterConfiguration:(id)a4
+- (void)_updateForLockScreenPosterConfiguration:(id)configuration homeScreenPosterConfiguration:(id)posterConfiguration
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  posterConfigurationCopy = posterConfiguration;
   self->_updatedActiveConfigurations = 1;
   v9 = BSEqualObjects();
   if (v9)
@@ -1121,18 +1121,18 @@ void __54__SBWallpaperController__loadLastActiveConfigurations__block_invoke(uin
 
   v47 = v9;
 
-  objc_storeStrong(&self->_activeLockScreenPosterConfiguration, a3);
+  objc_storeStrong(&self->_activeLockScreenPosterConfiguration, configuration);
   [(SBWallpaperController *)self _persistLastActiveLockScreenPosterConfiguration:self->_activeLockScreenPosterConfiguration];
   if (objc_opt_respondsToSelector())
   {
-    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter setConfiguration:v7 withAnimationSettings:0];
+    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter setConfiguration:configurationCopy withAnimationSettings:0];
   }
 
-  v11 = [SBApp backlightEnvironmentSessionProvider];
-  [v11 invalidateBacklightScenesForProvider:self];
+  backlightEnvironmentSessionProvider = [SBApp backlightEnvironmentSessionProvider];
+  [backlightEnvironmentSessionProvider invalidateBacklightScenesForProvider:self];
 
   v51 = 0;
-  v12 = [v7 pr_loadTitleStyleConfigurationWithError:&v51];
+  v12 = [configurationCopy pr_loadTitleStyleConfigurationWithError:&v51];
   v13 = v51;
   if (!v12)
   {
@@ -1145,12 +1145,12 @@ void __54__SBWallpaperController__loadLastActiveConfigurations__block_invoke(uin
     v12 = objc_alloc_init(MEMORY[0x277D3EE30]);
   }
 
-  v15 = [v7 pr_posterProvider];
-  v48 = v8;
-  v45 = v15;
-  v46 = a4;
+  pr_posterProvider = [configurationCopy pr_posterProvider];
+  v48 = posterConfigurationCopy;
+  v45 = pr_posterProvider;
+  posterConfigurationCopy2 = posterConfiguration;
   v43 = v13;
-  if (!v15)
+  if (!pr_posterProvider)
   {
     v20 = SBLogWallpaper();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1161,7 +1161,7 @@ void __54__SBWallpaperController__loadLastActiveConfigurations__block_invoke(uin
     goto LABEL_16;
   }
 
-  v16 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v15 error:0];
+  v16 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:pr_posterProvider error:0];
   v17 = [v16 URL];
 
   if (!v17)
@@ -1173,49 +1173,49 @@ LABEL_16:
       [SBWallpaperController _updateForLockScreenPosterConfiguration:homeScreenPosterConfiguration:];
     }
 
-    v18 = [MEMORY[0x277D3EE30] defaultTimeFont];
+    defaultTimeFont = [MEMORY[0x277D3EE30] defaultTimeFont];
     v22 = SBLogWallpaper();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
       [SBWallpaperController _updateForLockScreenPosterConfiguration:homeScreenPosterConfiguration:];
     }
 
-    v19 = [v12 vibrancyConfiguration];
+    vibrancyConfiguration = [v12 vibrancyConfiguration];
     goto LABEL_21;
   }
 
-  v18 = [v12 effectiveTimeFontWithExtensionBundleURL:v17];
-  v19 = [v12 vibrancyConfigurationWithExtensionBundleURL:v17];
+  defaultTimeFont = [v12 effectiveTimeFontWithExtensionBundleURL:v17];
+  vibrancyConfiguration = [v12 vibrancyConfigurationWithExtensionBundleURL:v17];
 
 LABEL_21:
   [v12 preferredTimeMaxYPortrait];
   v24 = v23;
   [v12 preferredTimeMaxYLandscape];
   v26 = v25;
-  v27 = [v12 timeNumberingSystem];
+  timeNumberingSystem = [v12 timeNumberingSystem];
   v28 = +[SBLockScreenManager sharedInstance];
-  v29 = [v28 coverSheetViewController];
+  coverSheetViewController = [v28 coverSheetViewController];
 
-  v30 = [v12 titleContentStyle];
-  [v29 updateFont:v18 preferredTimeMaxYPortrait:v19 preferredTimeMaxYLandscape:v27 vibrancyConfiguration:v30 numberingSystem:v24 contentStyle:v26];
+  titleContentStyle = [v12 titleContentStyle];
+  [coverSheetViewController updateFont:defaultTimeFont preferredTimeMaxYPortrait:vibrancyConfiguration preferredTimeMaxYLandscape:timeNumberingSystem vibrancyConfiguration:titleContentStyle numberingSystem:v24 contentStyle:v26];
 
-  [v29 updateFloatingLayerOrdering];
-  [v29 setAlternateDateEnabled:{objc_msgSend(v12, "isAlternateDateEnabled")}];
+  [coverSheetViewController updateFloatingLayerOrdering];
+  [coverSheetViewController setAlternateDateEnabled:{objc_msgSend(v12, "isAlternateDateEnabled")}];
   v50 = 0;
-  v31 = [v7 pr_loadConfiguredPropertiesWithError:&v50];
+  v31 = [configurationCopy pr_loadConfiguredPropertiesWithError:&v50];
   v32 = v50;
 
-  v44 = v18;
+  v44 = defaultTimeFont;
   if (v31)
   {
-    v33 = [v31 renderingConfiguration];
-    [v29 setDepthEffectDisabled:{objc_msgSend(v33, "isDepthEffectDisabled")}];
+    renderingConfiguration = [v31 renderingConfiguration];
+    [coverSheetViewController setDepthEffectDisabled:{objc_msgSend(renderingConfiguration, "isDepthEffectDisabled")}];
 
     v34 = objc_alloc(MEMORY[0x277D02C70]);
-    v35 = [v31 quickActionsConfiguration];
-    v36 = [v34 initWithPosterActionsConfiguration:v35];
+    quickActionsConfiguration = [v31 quickActionsConfiguration];
+    v36 = [v34 initWithPosterActionsConfiguration:quickActionsConfiguration];
 
-    [v29 setQuickActionsConfiguration:v36];
+    [coverSheetViewController setQuickActionsConfiguration:v36];
   }
 
   else
@@ -1227,17 +1227,17 @@ LABEL_21:
     }
   }
 
-  v37 = [v7 providerBundleIdentifier];
-  v38 = [v37 isEqualToString:@"com.apple.NanoUniverse.AegirProxyApp.AegirPoster"];
+  providerBundleIdentifier = [configurationCopy providerBundleIdentifier];
+  v38 = [providerBundleIdentifier isEqualToString:@"com.apple.NanoUniverse.AegirProxyApp.AegirPoster"];
 
-  [v29 setFloatingLayerFullscreen:v38 ^ 1u];
+  [coverSheetViewController setFloatingLayerFullscreen:v38 ^ 1u];
   v49 = 0;
-  v39 = [v7 pr_loadComplicationLayoutWithError:&v49];
+  v39 = [configurationCopy pr_loadComplicationLayoutWithError:&v49];
   v40 = v49;
 
   if (v39)
   {
-    [v29 setComplicationContainerUsesBottomPosition:{objc_msgSend(v39, "complicationsUseBottomLayout")}];
+    [coverSheetViewController setComplicationContainerUsesBottomPosition:{objc_msgSend(v39, "complicationsUseBottomLayout")}];
   }
 
   else
@@ -1249,9 +1249,9 @@ LABEL_21:
     }
   }
 
-  v8 = v48;
+  posterConfigurationCopy = v48;
   v9 = v47;
-  a4 = v46;
+  posterConfiguration = posterConfigurationCopy2;
 LABEL_31:
   if (BSEqualObjects())
   {
@@ -1264,11 +1264,11 @@ LABEL_31:
     [SBWallpaperController _updateForLockScreenPosterConfiguration:homeScreenPosterConfiguration:];
   }
 
-  objc_storeStrong(&self->_activeHomeScreenPosterConfiguration, a4);
+  objc_storeStrong(&self->_activeHomeScreenPosterConfiguration, posterConfiguration);
   [(SBWallpaperController *)self _persistLastActiveHomeScreenPosterConfiguration:self->_activeHomeScreenPosterConfiguration];
   if (objc_opt_respondsToSelector())
   {
-    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter setAssociatedPosterConfiguration:v8 withAnimationSettings:0];
+    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter setAssociatedPosterConfiguration:posterConfigurationCopy withAnimationSettings:0];
   }
 
   if (v9)
@@ -1281,13 +1281,13 @@ LABEL_37:
   }
 }
 
-- (id)acquireDuckHomeScreenWallpaperDimAssertionWithReason:(id)a3
+- (id)acquireDuckHomeScreenWallpaperDimAssertionWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter acquireDuckHomeScreenWallpaperDimAssertionWithReason:v4];
+    v5 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter acquireDuckHomeScreenWallpaperDimAssertionWithReason:reasonCopy];
   }
 
   else
@@ -1308,12 +1308,12 @@ LABEL_37:
   }
 }
 
-- (BOOL)updateCurrentPosterWithUpdates:(id)a3 error:(id *)a4
+- (BOOL)updateCurrentPosterWithUpdates:(id)updates error:(id *)error
 {
-  v6 = a3;
+  updatesCopy = updates;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter updateCurrentPosterWithUpdates:v6 error:a4];
+    v7 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter updateCurrentPosterWithUpdates:updatesCopy error:error];
   }
 
   else
@@ -1324,14 +1324,14 @@ LABEL_37:
   return v7;
 }
 
-- (void)setHomeScreenWallpaperDimmed:(BOOL)a3
+- (void)setHomeScreenWallpaperDimmed:(BOOL)dimmed
 {
-  v3 = a3;
+  dimmedCopy = dimmed;
   if (objc_opt_respondsToSelector())
   {
     wallpaperPresenter = self->_wallpaperPresenter;
 
-    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter setHomeScreenWallpaperDimmed:v3];
+    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter setHomeScreenWallpaperDimmed:dimmedCopy];
   }
 }
 
@@ -1347,13 +1347,13 @@ LABEL_37:
   return [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter isHomeScreenWallpaperDimmed];
 }
 
-- (void)setLockscreenOnlyWallpaperAlpha:(double)a3
+- (void)setLockscreenOnlyWallpaperAlpha:(double)alpha
 {
   if (objc_opt_respondsToSelector())
   {
     wallpaperPresenter = self->_wallpaperPresenter;
 
-    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter setLockscreenOnlyWallpaperAlpha:a3];
+    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter setLockscreenOnlyWallpaperAlpha:alpha];
   }
 }
 
@@ -1381,9 +1381,9 @@ LABEL_37:
   }
 }
 
-- (void)triggerPosterTapEvent:(id)a3
+- (void)triggerPosterTapEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (objc_opt_respondsToSelector())
   {
     [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter triggerPosterSignificantEvent];
@@ -1391,7 +1391,7 @@ LABEL_37:
 
   if (objc_opt_respondsToSelector())
   {
-    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter triggerPosterTapEvent:v4];
+    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter triggerPosterTapEvent:eventCopy];
   }
 
   [(SBWallpaperController *)self _fetchUserTapEventsRequestedWithCompletionHandler:&__block_literal_global_170];
@@ -1408,35 +1408,35 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
   }
 }
 
-- (void)_fetchUserTapEventsRequestedWithCompletionHandler:(id)a3
+- (void)_fetchUserTapEventsRequestedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = v4;
+    v6 = handlerCopy;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter userTapEventsRequested];
+      userTapEventsRequested = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter userTapEventsRequested];
     }
 
     else
     {
-      v5 = 0;
+      userTapEventsRequested = 0;
     }
 
-    v6[2](v6, v5);
-    v4 = v6;
+    v6[2](v6, userTapEventsRequested);
+    handlerCopy = v6;
   }
 }
 
-- (id)setWallpaperFloatingLayerContainerView:(id)a3 forReason:(id)a4 withAnimationFactory:(id)a5
+- (id)setWallpaperFloatingLayerContainerView:(id)view forReason:(id)reason withAnimationFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  reasonCopy = reason;
+  factoryCopy = factory;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter setWallpaperFloatingLayerContainerView:v8 forReason:v9 withAnimationFactory:v10];
+    v11 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter setWallpaperFloatingLayerContainerView:viewCopy forReason:reasonCopy withAnimationFactory:factoryCopy];
   }
 
   else
@@ -1447,13 +1447,13 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
   return v11;
 }
 
-- (id)createWallpaperFloatingViewForReason:(id)a3 ignoreReplica:(BOOL)a4
+- (id)createWallpaperFloatingViewForReason:(id)reason ignoreReplica:(BOOL)replica
 {
-  v4 = a4;
-  v6 = a3;
+  replicaCopy = replica;
+  reasonCopy = reason;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter createWallpaperFloatingViewForReason:v6 ignoreReplica:v4];
+    v7 = [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter createWallpaperFloatingViewForReason:reasonCopy ignoreReplica:replicaCopy];
   }
 
   else
@@ -1464,27 +1464,27 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
   return v7;
 }
 
-- (BOOL)setWallpaperStyleTransitionState:(id *)a3 forPriority:(int64_t)a4 forVariant:(int64_t)a5 withAnimationFactory:(id)a6
+- (BOOL)setWallpaperStyleTransitionState:(id *)state forPriority:(int64_t)priority forVariant:(int64_t)variant withAnimationFactory:(id)factory
 {
   wallpaperPresenter = self->_wallpaperPresenter;
-  v8 = *a3;
-  return [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter setWallpaperStyleTransitionState:&v8 forPriority:a4 forVariant:a5 withAnimationFactory:a6];
+  v8 = *state;
+  return [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter setWallpaperStyleTransitionState:&v8 forPriority:priority forVariant:variant withAnimationFactory:factory];
 }
 
-- (void)updateWallpaperAnimationWithProgress:(double)a3
+- (void)updateWallpaperAnimationWithProgress:(double)progress
 {
   v15 = *MEMORY[0x277D85DE8];
   if (objc_opt_respondsToSelector())
   {
-    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter updateWallpaperAnimationWithProgress:a3];
+    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter updateWallpaperAnimationWithProgress:progress];
   }
 
-  v5 = [(NSHashTable *)self->_wallpaperUnlockProgressObservers allObjects];
+  allObjects = [(NSHashTable *)self->_wallpaperUnlockProgressObservers allObjects];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1496,28 +1496,28 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) wallpaperUnlockProgressDidUpdate:a3];
+        [*(*(&v10 + 1) + 8 * v9++) wallpaperUnlockProgressDidUpdate:progress];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (uint64_t)updateWallpaperAnimationWithRotation:(_OWORD *)a3
+- (uint64_t)updateWallpaperAnimationWithRotation:(_OWORD *)rotation
 {
   result = objc_opt_respondsToSelector();
   if (result)
   {
-    v6 = *(a1 + 104);
-    v7 = a3[1];
-    v8[0] = *a3;
+    v6 = *(self + 104);
+    v7 = rotation[1];
+    v8[0] = *rotation;
     v8[1] = v7;
     return [v6 updateWallpaperAnimationWithRotation:v8];
   }
@@ -1525,24 +1525,24 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
   return result;
 }
 
-- (void)updateWallpaperAnimationWithIconFlyInTension:(double)a3 friction:(double)a4
+- (void)updateWallpaperAnimationWithIconFlyInTension:(double)tension friction:(double)friction
 {
   if (objc_opt_respondsToSelector())
   {
     wallpaperPresenter = self->_wallpaperPresenter;
 
-    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter updateWallpaperAnimationWithIconFlyInTension:a3 friction:a4];
+    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter updateWallpaperAnimationWithIconFlyInTension:tension friction:friction];
   }
 }
 
-- (void)updateWallpaperAnimationWithWakeSourceIsSwipeToUnlock:(BOOL)a3
+- (void)updateWallpaperAnimationWithWakeSourceIsSwipeToUnlock:(BOOL)unlock
 {
-  v3 = a3;
+  unlockCopy = unlock;
   if (objc_opt_respondsToSelector())
   {
     wallpaperPresenter = self->_wallpaperPresenter;
 
-    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter updateWallpaperAnimationWithWakeSourceIsSwipeToUnlock:v3];
+    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter updateWallpaperAnimationWithWakeSourceIsSwipeToUnlock:unlockCopy];
   }
 }
 
@@ -1614,28 +1614,28 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
   }
 }
 
-- (void)setWallpaperObscured:(BOOL)a3
+- (void)setWallpaperObscured:(BOOL)obscured
 {
-  if (self->_wallpaperObscured != a3)
+  if (self->_wallpaperObscured != obscured)
   {
-    v4 = a3;
-    self->_wallpaperObscured = a3;
+    obscuredCopy = obscured;
+    self->_wallpaperObscured = obscured;
     if (objc_opt_respondsToSelector())
     {
-      [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter setWallpaperObscured:v4];
+      [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter setWallpaperObscured:obscuredCopy];
     }
 
     v6 = +[SBLockScreenDeviceMotionEffectController sharedInstance];
-    [v6 setWallpaperObscured:v4];
+    [v6 setWallpaperObscured:obscuredCopy];
   }
 }
 
-- (void)updateSalientContentRectangle:(CGRect)a3
+- (void)updateSalientContentRectangle:(CGRect)rectangle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   if (objc_opt_respondsToSelector())
   {
     wallpaperPresenter = self->_wallpaperPresenter;
@@ -1644,26 +1644,26 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
   }
 }
 
-- (void)setWallpaperHidden:(BOOL)a3 variant:(int64_t)a4 reason:(id)a5
+- (void)setWallpaperHidden:(BOOL)hidden variant:(int64_t)variant reason:(id)reason
 {
-  v6 = a3;
-  v8 = a5;
+  hiddenCopy = hidden;
+  reasonCopy = reason;
   if (objc_opt_respondsToSelector())
   {
-    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter setWallpaperHidden:v6 variant:a4 reason:v8];
+    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter setWallpaperHidden:hiddenCopy variant:variant reason:reasonCopy];
   }
 }
 
-- (void)setExternalDisplayConfiguration:(id)a3
+- (void)setExternalDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if (objc_opt_respondsToSelector())
   {
-    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter setExternalDisplayConfiguration:v4];
+    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter setExternalDisplayConfiguration:configurationCopy];
   }
 }
 
-- (id)newFakeBlurViewForVariant:(int64_t)a3 style:(int64_t)a4 transformOptions:(unint64_t)a5
+- (id)newFakeBlurViewForVariant:(int64_t)variant style:(int64_t)style transformOptions:(unint64_t)options
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -1672,43 +1672,43 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
 
   wallpaperPresenter = self->_wallpaperPresenter;
 
-  return [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter newFakeBlurViewForVariant:a3 style:a4 transformOptions:a5];
+  return [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter newFakeBlurViewForVariant:variant style:style transformOptions:options];
 }
 
-- (void)updateWallpaperForLocations:(int64_t)a3 withCompletion:(id)a4
+- (void)updateWallpaperForLocations:(int64_t)locations withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
-    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter updateWallpaperForLocations:a3 withCompletion:v6];
+    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter updateWallpaperForLocations:locations withCompletion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)updateWallpaperForLocations:(int64_t)a3 wallpaperMode:(int64_t)a4 withCompletion:(id)a5
+- (void)updateWallpaperForLocations:(int64_t)locations wallpaperMode:(int64_t)mode withCompletion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
-    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter updateWallpaperForLocations:a3 wallpaperMode:a4 withCompletion:v8];
+    [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter updateWallpaperForLocations:locations wallpaperMode:mode withCompletion:completionCopy];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)_batterySaverModeChanged:(id)a3
+- (void)_batterySaverModeChanged:(id)changed
 {
-  v4 = [SBApp isBatterySaverModeActive];
+  isBatterySaverModeActive = [SBApp isBatterySaverModeActive];
   v5 = SBLogCommon();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (isBatterySaverModeActive)
   {
     if (v6)
     {
@@ -1716,8 +1716,8 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Disabling dynamic wallpapers and parallax for battery saver mode", buf, 2u);
     }
 
-    v7 = [(SBWallpaperController *)self batterySaverAnimationAssertion];
-    [v7 invalidate];
+    batterySaverAnimationAssertion = [(SBWallpaperController *)self batterySaverAnimationAssertion];
+    [batterySaverAnimationAssertion invalidate];
 
     v8 = [(SBWallpaperController *)self suspendWallpaperAnimationForReason:@"SBWallpaperViewBatterySaverReason"];
     [(SBWallpaperController *)self setBatterySaverAnimationAssertion:v8];
@@ -1733,8 +1733,8 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "Re-enabling dynamic wallpapers and parallax for battery saver mode", v10, 2u);
     }
 
-    v9 = [(SBWallpaperController *)self batterySaverAnimationAssertion];
-    [v9 invalidate];
+    batterySaverAnimationAssertion2 = [(SBWallpaperController *)self batterySaverAnimationAssertion];
+    [batterySaverAnimationAssertion2 invalidate];
 
     [(SBWallpaperController *)self setBatterySaverAnimationAssertion:0];
     [MEMORY[0x277D75D18] _endSuspendingMotionEffectsForReason:@"SBWallpaperViewBatterySaverReason"];
@@ -1743,8 +1743,8 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
 
 - (void)_motionEffectsChanged
 {
-  v2 = [(SBWallpaperController *)self wallpaperConfigurationManager];
-  [v2 regenerateStaticWallpaperThumbnailImages];
+  wallpaperConfigurationManager = [(SBWallpaperController *)self wallpaperConfigurationManager];
+  [wallpaperConfigurationManager regenerateStaticWallpaperThumbnailImages];
 }
 
 - (void)_updateScreenBlanked
@@ -1755,37 +1755,37 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
   [(SBWallpaperController *)self setWallpaperHidden:IsBlanked variant:1 reason:@"ScreenIsBlanked"];
 }
 
-- (void)preheatWallpaperForVariant:(int64_t)a3
+- (void)preheatWallpaperForVariant:(int64_t)variant
 {
   if (objc_opt_respondsToSelector())
   {
     wallpaperPresenter = self->_wallpaperPresenter;
 
-    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter preheatWallpaperForVariant:a3];
+    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter preheatWallpaperForVariant:variant];
   }
 }
 
-- (void)_reloadWallpaperAndFlushCaches:(BOOL)a3 completionHandler:(id)a4
+- (void)_reloadWallpaperAndFlushCaches:(BOOL)caches completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  cachesCopy = caches;
+  handlerCopy = handler;
   v7 = SBLogWallpaper();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (cachesCopy)
   {
     if (v8)
     {
       [SBWallpaperController _reloadWallpaperAndFlushCaches:completionHandler:];
     }
 
-    v9 = [MEMORY[0x277D37C68] wallpaperCache];
+    wallpaperCache = [MEMORY[0x277D37C68] wallpaperCache];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __74__SBWallpaperController__reloadWallpaperAndFlushCaches_completionHandler___block_invoke;
     v10[3] = &unk_2783A98A0;
     v10[4] = self;
-    v11 = v6;
-    [v9 removeEverythingWithCompletion:v10];
+    v11 = handlerCopy;
+    [wallpaperCache removeEverythingWithCompletion:v10];
   }
 
   else
@@ -1795,7 +1795,7 @@ void __47__SBWallpaperController_triggerPosterTapEvent___block_invoke(uint64_t a
       [SBWallpaperController _reloadWallpaperAndFlushCaches:completionHandler:];
     }
 
-    [(SBWallpaperController *)self _updateWallpaperForLocations:3 options:0 withCompletion:v6];
+    [(SBWallpaperController *)self _updateWallpaperForLocations:3 options:0 withCompletion:handlerCopy];
   }
 }
 
@@ -1820,34 +1820,34 @@ uint64_t __74__SBWallpaperController__reloadWallpaperAndFlushCaches_completionHa
   return [v2 _updateWallpaperForLocations:3 options:0 withCompletion:v3];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBWallpaperController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBWallpaperController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v5 = BSInterfaceOrientationDescription();
   v6 = [v4 appendObject:v5 withName:@"interfaceOrientation"];
 
-  v7 = [(SBWallpaperController *)self activeOrientationSource];
-  if (v7 > 3)
+  activeOrientationSource = [(SBWallpaperController *)self activeOrientationSource];
+  if (activeOrientationSource > 3)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = off_2783B6388[v7];
+    v8 = off_2783B6388[activeOrientationSource];
   }
 
   v9 = [v4 appendObject:v8 withName:@"activeOrientationSource"];
-  v10 = [(SBWallpaperController *)self activeInterfaceOrientationSourcesDescriptions];
-  [v4 appendArraySection:v10 withName:@"ActiveInterfaceOrientationSources" skipIfEmpty:0];
+  activeInterfaceOrientationSourcesDescriptions = [(SBWallpaperController *)self activeInterfaceOrientationSourcesDescriptions];
+  [v4 appendArraySection:activeInterfaceOrientationSourcesDescriptions withName:@"ActiveInterfaceOrientationSources" skipIfEmpty:0];
 
   v11 = [v4 appendObject:self->_wallpaperConfigurationManager withName:@"wallpaperConfigurationManager"];
 
@@ -1856,10 +1856,10 @@ uint64_t __74__SBWallpaperController__reloadWallpaperAndFlushCaches_completionHa
 
 - (id)succinctDescription
 {
-  v2 = [(SBWallpaperController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBWallpaperController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)activeInterfaceOrientationSourcesDescriptions
@@ -1885,15 +1885,15 @@ uint64_t __74__SBWallpaperController__reloadWallpaperAndFlushCaches_completionHa
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) integerValue];
-        if (v9 > 3)
+        integerValue = [*(*(&v12 + 1) + 8 * i) integerValue];
+        if (integerValue > 3)
         {
           v10 = 0;
         }
 
         else
         {
-          v10 = off_2783B6388[v9];
+          v10 = off_2783B6388[integerValue];
         }
 
         [v3 addObject:v10];
@@ -1908,17 +1908,17 @@ uint64_t __74__SBWallpaperController__reloadWallpaperAndFlushCaches_completionHa
   return v3;
 }
 
-- (void)wallpaperPresenter:(id)a3 didChangeWallpaperForLocations:(int64_t)a4 withConfiguration:(id)a5
+- (void)wallpaperPresenter:(id)presenter didChangeWallpaperForLocations:(int64_t)locations withConfiguration:(id)configuration
 {
-  v7 = a5;
-  [(SBWallpaperController *)self _saveWallpaperCoreAnalyticsForLocations:a4 withConfiguration:v7];
+  configurationCopy = configuration;
+  [(SBWallpaperController *)self _saveWallpaperCoreAnalyticsForLocations:locations withConfiguration:configurationCopy];
   WeakRetained = objc_loadWeakRetained(&self->_wallpaperPresentingDelegate);
-  [WeakRetained wallpaperPresenter:self didChangeWallpaperForLocations:a4 withConfiguration:v7];
+  [WeakRetained wallpaperPresenter:self didChangeWallpaperForLocations:locations withConfiguration:configurationCopy];
 }
 
-- (int64_t)wallpaperPresenter:(id)a3 requestsOrientationWithRefresh:(BOOL)a4
+- (int64_t)wallpaperPresenter:(id)presenter requestsOrientationWithRefresh:(BOOL)refresh
 {
-  if (a4)
+  if (refresh)
   {
     [(SBWallpaperController *)self updateOrientationAfterSourceChange];
   }
@@ -1926,7 +1926,7 @@ uint64_t __74__SBWallpaperController__reloadWallpaperAndFlushCaches_completionHa
   return self->_orientation;
 }
 
-- (void)wallpaperPresenterDidCompleteWallpaperChange:(id)a3
+- (void)wallpaperPresenterDidCompleteWallpaperChange:(id)change
 {
   PBUIPostExternalWallpaperChangeNotificationAsSystemShell();
   WeakRetained = objc_loadWeakRetained(&self->_wallpaperPresentingDelegate);
@@ -1948,50 +1948,50 @@ uint64_t __74__SBWallpaperController__reloadWallpaperAndFlushCaches_completionHa
   return wallpaperCoreAnalyticsLogger;
 }
 
-- (void)_saveWallpaperCoreAnalyticsForLocations:(int64_t)a3 withConfiguration:(id)a4
+- (void)_saveWallpaperCoreAnalyticsForLocations:(int64_t)locations withConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = [v6 wallpaperOptions];
-  v10 = [v7 name];
+  configurationCopy = configuration;
+  wallpaperOptions = [configurationCopy wallpaperOptions];
+  name = [wallpaperOptions name];
 
-  v8 = [v6 videoURL];
+  videoURL = [configurationCopy videoURL];
 
-  v9 = [(SBWallpaperController *)self wallpaperCoreAnalyticsLogger];
-  [v9 saveStateOfWallpaperToCoreAnalytics:a3 withHasVideo:v8 != 0 hasProcedural:0 name:v10];
+  wallpaperCoreAnalyticsLogger = [(SBWallpaperController *)self wallpaperCoreAnalyticsLogger];
+  [wallpaperCoreAnalyticsLogger saveStateOfWallpaperToCoreAnalytics:locations withHasVideo:videoURL != 0 hasProcedural:0 name:name];
 }
 
-- (void)_noteSignificantTimeChanged:(id)a3
+- (void)_noteSignificantTimeChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBSignificantTimeChangeWasMidnight"];
-  v6 = [v5 BOOLValue];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:@"SBSignificantTimeChangeWasMidnight"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7 = [(SBWallpaperController *)self wallpaperCoreAnalyticsLogger];
-    [v7 sendStateOfWallpaperToCoreAnalytics];
+    wallpaperCoreAnalyticsLogger = [(SBWallpaperController *)self wallpaperCoreAnalyticsLogger];
+    [wallpaperCoreAnalyticsLogger sendStateOfWallpaperToCoreAnalytics];
   }
 }
 
-- (void)activateOrientationSource:(int64_t)a3
+- (void)activateOrientationSource:(int64_t)source
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = [(NSMutableSet *)self->_activeOrientationSources count];
   activeOrientationSources = self->_activeOrientationSources;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:source];
   [(NSMutableSet *)activeOrientationSources addObject:v7];
 
   v8 = BKLogOrientationGlobal();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 3)
+    if (source > 3)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = off_2783B6388[a3];
+      v9 = off_2783B6388[source];
     }
 
     v10 = 138543362;
@@ -2005,25 +2005,25 @@ uint64_t __74__SBWallpaperController__reloadWallpaperAndFlushCaches_completionHa
   }
 }
 
-- (void)deactivateOrientationSource:(int64_t)a3
+- (void)deactivateOrientationSource:(int64_t)source
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = [(NSMutableSet *)self->_activeOrientationSources count];
   activeOrientationSources = self->_activeOrientationSources;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:source];
   [(NSMutableSet *)activeOrientationSources removeObject:v7];
 
   v8 = BKLogOrientationGlobal();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 3)
+    if (source > 3)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = off_2783B6388[a3];
+      v9 = off_2783B6388[source];
     }
 
     v10 = 138543362;
@@ -2037,7 +2037,7 @@ uint64_t __74__SBWallpaperController__reloadWallpaperAndFlushCaches_completionHa
   }
 }
 
-- (int64_t)defaultInterfaceOrientationForSource:(int64_t)a3
+- (int64_t)defaultInterfaceOrientationForSource:(int64_t)source
 {
   orientationProviders = self->_orientationProviders;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -2045,50 +2045,50 @@ uint64_t __74__SBWallpaperController__reloadWallpaperAndFlushCaches_completionHa
 
   if (v7)
   {
-    v8 = [v7 interfaceOrientationForWallpaperController:self];
+    activeInterfaceOrientation = [v7 interfaceOrientationForWallpaperController:self];
   }
 
   else
   {
-    if (a3 != 1)
+    if (source != 1)
     {
       v9 = 0;
       goto LABEL_6;
     }
 
-    v8 = [SBApp activeInterfaceOrientation];
+    activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
   }
 
-  v9 = v8;
+  v9 = activeInterfaceOrientation;
 LABEL_6:
 
   return v9;
 }
 
-- (void)setOrientationProvider:(id)a3 forSource:(int64_t)a4
+- (void)setOrientationProvider:(id)provider forSource:(int64_t)source
 {
-  v10 = a3;
+  providerCopy = provider;
   orientationProviders = self->_orientationProviders;
   if (!orientationProviders)
   {
-    v7 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     v8 = self->_orientationProviders;
-    self->_orientationProviders = v7;
+    self->_orientationProviders = strongToWeakObjectsMapTable;
 
     orientationProviders = self->_orientationProviders;
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [(NSMapTable *)orientationProviders setObject:v10 forKey:v9];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:source];
+  [(NSMapTable *)orientationProviders setObject:providerCopy forKey:v9];
 }
 
-- (void)orientationSource:(int64_t)a3 willAnimateRotationToInterfaceOrientation:(int64_t)a4 duration:(double)a5
+- (void)orientationSource:(int64_t)source willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v13 = *MEMORY[0x277D85DE8];
   if ([(SBWallpaperController *)self _isAcceptingOrientationChangesFromSource:?])
   {
 
-    [(SBWallpaperController *)self willAnimateRotationToInterfaceOrientation:a4 duration:a5];
+    [(SBWallpaperController *)self willAnimateRotationToInterfaceOrientation:orientation duration:duration];
   }
 
   else
@@ -2096,14 +2096,14 @@ LABEL_6:
     v9 = BKLogOrientationGlobal();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3 > 3)
+      if (source > 3)
       {
         v10 = 0;
       }
 
       else
       {
-        v10 = off_2783B6388[a3];
+        v10 = off_2783B6388[source];
       }
 
       v11 = 138543362;
@@ -2113,22 +2113,22 @@ LABEL_6:
   }
 }
 
-- (void)orientationSource:(int64_t)a3 didRotateFromInterfaceOrientation:(int64_t)a4
+- (void)orientationSource:(int64_t)source didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   if (objc_opt_respondsToSelector())
   {
     wallpaperPresenter = self->_wallpaperPresenter;
 
-    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter noteDidRotateFromInterfaceOrientation:a4];
+    [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter noteDidRotateFromInterfaceOrientation:orientation];
   }
 }
 
 - (BOOL)_isMaglevActive
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 0;
   }
@@ -2141,10 +2141,10 @@ LABEL_6:
   v3 = _os_feature_enabled_impl();
   if (v3)
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       LOBYTE(v3) = ![(SBWallpaperController *)self _isMaglevActive];
     }
@@ -2158,13 +2158,13 @@ LABEL_6:
   return v3;
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v26 = *MEMORY[0x277D85DE8];
   orientation = self->_orientation;
   v8 = BKLogOrientationGlobal();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (orientation == a3)
+  if (orientation == orientation)
   {
     if (v9)
     {
@@ -2172,7 +2172,7 @@ LABEL_6:
       *buf = 138543618;
       v23 = v10;
       v24 = 2048;
-      v25 = a4;
+      durationCopy2 = duration;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Not animating wallpaper orientation to %{public}@ in %1.2f because it's already in that orientation", buf, 0x16u);
     }
   }
@@ -2185,17 +2185,17 @@ LABEL_6:
       *buf = 138543618;
       v23 = v11;
       v24 = 2048;
-      v25 = a4;
+      durationCopy2 = duration;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Animating wallpaper orientation to %{public}@ in %1.2f", buf, 0x16u);
     }
 
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(SBWallpaperController *)self cancelInProcessAnimations];
     if (!-[SBWallpaperController _isTraitsArbiterWallpaperActive](self, "_isTraitsArbiterWallpaperActive") && [MEMORY[0x277D37C60] supportsLandscapeWallpaperContents])
     {
       if ([(SBWallpaperController *)self _isMaglevActive])
       {
-        switch(a3)
+        switch(orientation)
         {
           case 1:
             v12 = 0.0;
@@ -2211,7 +2211,7 @@ LABEL_6:
             break;
           default:
             v12 = 3.14159265;
-            if (a3 != 2)
+            if (orientation != 2)
             {
               v12 = 0.0;
             }
@@ -2224,8 +2224,8 @@ LABEL_6:
         UIIntegralTransform();
         [(UIView *)wallpaperContainerView setTransform:buf];
         v16 = self->_wallpaperContainerView;
-        v17 = [MEMORY[0x277D759A0] mainScreen];
-        [v17 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
         [(UIView *)v16 setBounds:?];
 
         v18 = self->_wallpaperContainerView;
@@ -2238,7 +2238,7 @@ LABEL_6:
       else
       {
         v13 = self->_wallpaperContainerView;
-        switch(a3)
+        switch(orientation)
         {
           case 1:
             v14 = 0.0;
@@ -2251,7 +2251,7 @@ LABEL_6:
             break;
           default:
             v14 = 3.14159265;
-            if (a3 != 2)
+            if (orientation != 2)
             {
               v14 = 0.0;
             }
@@ -2270,17 +2270,17 @@ LABEL_6:
 
     if (objc_opt_respondsToSelector())
     {
-      [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter noteWillAnimateToInterfaceOrientation:a3 duration:a4];
+      [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter noteWillAnimateToInterfaceOrientation:orientation duration:duration];
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter noteWillAnimateToInterfaceOrientation:a3];
+      [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter noteWillAnimateToInterfaceOrientation:orientation];
     }
   }
 }
 
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation
 {
   v17 = 0;
   v18 = &v17;
@@ -2307,28 +2307,28 @@ LABEL_6:
     }
   }
 
-  else if (self->_orientation == a3)
+  else if (self->_orientation == orientation)
   {
     goto LABEL_7;
   }
 
   if ([(SBWallpaperController *)self _isAcceptingOrientationChangesFromSource:1])
   {
-    [(SBWallpaperController *)self orientationSource:1 willRotateToInterfaceOrientation:a3 duration:a4];
+    [(SBWallpaperController *)self orientationSource:1 willRotateToInterfaceOrientation:orientation duration:duration];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __114__SBWallpaperController_activeInterfaceOrientationDidChangeToOrientation_willAnimateWithDuration_fromOrientation___block_invoke_2;
     v11[3] = &unk_2783A8C40;
     v11[4] = self;
-    v11[5] = a3;
-    *&v11[6] = a4;
+    v11[5] = orientation;
+    *&v11[6] = duration;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __114__SBWallpaperController_activeInterfaceOrientationDidChangeToOrientation_willAnimateWithDuration_fromOrientation___block_invoke_3;
     v10[3] = &unk_2783B3C38;
     v10[4] = self;
-    v10[5] = a5;
-    [MEMORY[0x277D75D18] animateWithDuration:v11 animations:v10 completion:a4];
+    v10[5] = fromOrientation;
+    [MEMORY[0x277D75D18] animateWithDuration:v11 animations:v10 completion:duration];
   }
 
 LABEL_7:
@@ -2348,25 +2348,25 @@ void __114__SBWallpaperController_activeInterfaceOrientationDidChangeToOrientati
   }
 }
 
-- (id)wallpaperView:(id)a3 wallpaperConfigurationIncludingValueTypes:(unint64_t)a4
+- (id)wallpaperView:(id)view wallpaperConfigurationIncludingValueTypes:(unint64_t)types
 {
-  v5 = [(SBWallpaperController *)self wallpaperConfigurationManager];
-  v6 = [v5 wallpaperConfigurationForVariant:1 includingValuesForTypes:a4];
+  wallpaperConfigurationManager = [(SBWallpaperController *)self wallpaperConfigurationManager];
+  v6 = [wallpaperConfigurationManager wallpaperConfigurationForVariant:1 includingValuesForTypes:types];
 
   return v6;
 }
 
-- (void)wallpaperServer:(id)a3 fetchThumbnailDataForVariant:(int64_t)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server fetchThumbnailDataForVariant:(int64_t)variant completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__SBWallpaperController_wallpaperServer_fetchThumbnailDataForVariant_completionHandler___block_invoke;
   block[3] = &unk_2783AB990;
-  v10 = v7;
-  v11 = a4;
+  v10 = handlerCopy;
+  variantCopy = variant;
   block[4] = self;
-  v8 = v7;
+  v8 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -2382,17 +2382,17 @@ void __88__SBWallpaperController_wallpaperServer_fetchThumbnailDataForVariant_co
   }
 }
 
-- (void)wallpaperServer:(id)a3 fetchOriginalImageDataForVariant:(int64_t)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server fetchOriginalImageDataForVariant:(int64_t)variant completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __92__SBWallpaperController_wallpaperServer_fetchOriginalImageDataForVariant_completionHandler___block_invoke;
   block[3] = &unk_2783AB990;
-  v10 = v7;
-  v11 = a4;
+  v10 = handlerCopy;
+  variantCopy = variant;
   block[4] = self;
-  v8 = v7;
+  v8 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -2409,17 +2409,17 @@ void __92__SBWallpaperController_wallpaperServer_fetchOriginalImageDataForVarian
   }
 }
 
-- (void)wallpaperServer:(id)a3 fetchOriginalVideoURLDataForVariant:(int64_t)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server fetchOriginalVideoURLDataForVariant:(int64_t)variant completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95__SBWallpaperController_wallpaperServer_fetchOriginalVideoURLDataForVariant_completionHandler___block_invoke;
   block[3] = &unk_2783AB990;
-  v10 = v7;
-  v11 = a4;
+  v10 = handlerCopy;
+  variantCopy = variant;
   block[4] = self;
-  v8 = v7;
+  v8 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -2436,16 +2436,16 @@ void __95__SBWallpaperController_wallpaperServer_fetchOriginalVideoURLDataForVar
   }
 }
 
-- (void)wallpaperServer:(id)a3 fetchContentCutoutBoundsForVariant:(int64_t)a4 orientation:(int64_t)a5 completionHandler:(id)a6
+- (void)wallpaperServer:(id)server fetchContentCutoutBoundsForVariant:(int64_t)variant orientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __106__SBWallpaperController_wallpaperServer_fetchContentCutoutBoundsForVariant_orientation_completionHandler___block_invoke;
   v9[3] = &unk_2783B2E30;
-  v10 = v7;
-  v11 = a5;
-  v8 = v7;
+  v10 = handlerCopy;
+  orientationCopy = orientation;
+  v8 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 
@@ -2463,19 +2463,19 @@ uint64_t __106__SBWallpaperController_wallpaperServer_fetchContentCutoutBoundsFo
   return result;
 }
 
-- (void)wallpaperServer:(id)a3 fetchLockScreenContentCutoutBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server fetchLockScreenContentCutoutBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = v7;
-  if (v7)
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
     posterBoardService = self->_posterBoardService;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __108__SBWallpaperController_wallpaperServer_fetchLockScreenContentCutoutBoundsForOrientation_completionHandler___block_invoke;
     v10[3] = &unk_2783B6208;
-    v11 = v7;
-    [(PRSService *)posterBoardService fetchContentCutoutBoundsForActivePosterWithOrientation:a4 completionHandler:v10];
+    v11 = handlerCopy;
+    [(PRSService *)posterBoardService fetchContentCutoutBoundsForActivePosterWithOrientation:orientation completionHandler:v10];
   }
 }
 
@@ -2495,19 +2495,19 @@ uint64_t __108__SBWallpaperController_wallpaperServer_fetchLockScreenContentCuto
   return v8(a4, a5, a6, a7);
 }
 
-- (void)wallpaperServer:(id)a3 fetchLockScreenMaximalContentCutoutBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server fetchLockScreenMaximalContentCutoutBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = v7;
-  if (v7)
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
     posterBoardService = self->_posterBoardService;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __115__SBWallpaperController_wallpaperServer_fetchLockScreenMaximalContentCutoutBoundsForOrientation_completionHandler___block_invoke;
     v10[3] = &unk_2783B6208;
-    v11 = v7;
-    [(PRSService *)posterBoardService fetchMaximalContentCutoutBoundsForOrientation:a4 completionHandler:v10];
+    v11 = handlerCopy;
+    [(PRSService *)posterBoardService fetchMaximalContentCutoutBoundsForOrientation:orientation completionHandler:v10];
   }
 }
 
@@ -2527,19 +2527,19 @@ uint64_t __115__SBWallpaperController_wallpaperServer_fetchLockScreenMaximalCont
   return v8(a4, a5, a6, a7);
 }
 
-- (void)wallpaperServer:(id)a3 fetchLockScreenExtendedContentCutoutBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server fetchLockScreenExtendedContentCutoutBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = v7;
-  if (v7)
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
     posterBoardService = self->_posterBoardService;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __116__SBWallpaperController_wallpaperServer_fetchLockScreenExtendedContentCutoutBoundsForOrientation_completionHandler___block_invoke;
     v10[3] = &unk_2783B6208;
-    v11 = v7;
-    [(PRSService *)posterBoardService fetchExtendedContentCutoutBoundsForOrientation:a4 completionHandler:v10];
+    v11 = handlerCopy;
+    [(PRSService *)posterBoardService fetchExtendedContentCutoutBoundsForOrientation:orientation completionHandler:v10];
   }
 }
 
@@ -2559,11 +2559,11 @@ uint64_t __116__SBWallpaperController_wallpaperServer_fetchLockScreenExtendedCon
   return v8(a4, a5, a6, a7);
 }
 
-- (void)wallpaperServer:(id)a3 fetchObscurableBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server fetchObscurableBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = v7;
-  if (v7)
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
     posterBoardService = self->_posterBoardService;
     v10[0] = MEMORY[0x277D85DD0];
@@ -2571,8 +2571,8 @@ uint64_t __116__SBWallpaperController_wallpaperServer_fetchLockScreenExtendedCon
     v10[2] = __95__SBWallpaperController_wallpaperServer_fetchObscurableBoundsForOrientation_completionHandler___block_invoke;
     v10[3] = &unk_2783B6230;
     v10[4] = self;
-    v12 = a4;
-    v11 = v7;
+    orientationCopy = orientation;
+    v11 = handlerCopy;
     [(PRSService *)posterBoardService fetchActivePosterConfiguration:v10];
   }
 }
@@ -2620,11 +2620,11 @@ uint64_t __95__SBWallpaperController_wallpaperServer_fetchObscurableBoundsForOri
   return v8(a4, a5, a6, a7);
 }
 
-- (void)wallpaperServer:(id)a3 fetchLimitedOcclusionBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server fetchLimitedOcclusionBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = v7;
-  if (v7)
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
     posterBoardService = self->_posterBoardService;
     v10[0] = MEMORY[0x277D85DD0];
@@ -2632,8 +2632,8 @@ uint64_t __95__SBWallpaperController_wallpaperServer_fetchObscurableBoundsForOri
     v10[2] = __101__SBWallpaperController_wallpaperServer_fetchLimitedOcclusionBoundsForOrientation_completionHandler___block_invoke;
     v10[3] = &unk_2783B6230;
     v10[4] = self;
-    v12 = a4;
-    v11 = v7;
+    orientationCopy = orientation;
+    v11 = handlerCopy;
     [(PRSService *)posterBoardService fetchActivePosterConfiguration:v10];
   }
 }
@@ -2681,20 +2681,20 @@ uint64_t __101__SBWallpaperController_wallpaperServer_fetchLimitedOcclusionBound
   return v8(a4, a5, a6, a7);
 }
 
-- (void)wallpaperServer:(id)a3 fetchLockScreenTimeBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server fetchLockScreenTimeBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v17 = a3;
-  v7 = a5;
-  v12 = v7;
-  if (v7)
+  serverCopy = server;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (handlerCopy)
   {
-    if ((a4 - 1) > 1)
+    if ((orientation - 1) > 1)
     {
       v8.n128_u64[0] = *MEMORY[0x277CBF398];
       v9.n128_u64[0] = *(MEMORY[0x277CBF398] + 8);
       v10.n128_u64[0] = *(MEMORY[0x277CBF398] + 16);
       v11.n128_u64[0] = *(MEMORY[0x277CBF398] + 24);
-      v7[2](v7, v8, v9, v10, v11);
+      handlerCopy[2](handlerCopy, v8, v9, v10, v11);
     }
 
     else
@@ -2705,20 +2705,20 @@ uint64_t __101__SBWallpaperController_wallpaperServer_fetchLimitedOcclusionBound
   }
 }
 
-- (void)wallpaperServer:(id)a3 fetchLockScreenSubtitleBoundsForOrientation:(int64_t)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server fetchLockScreenSubtitleBoundsForOrientation:(int64_t)orientation completionHandler:(id)handler
 {
-  v17 = a3;
-  v7 = a5;
-  v12 = v7;
-  if (v7)
+  serverCopy = server;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (handlerCopy)
   {
-    if ((a4 - 1) > 1)
+    if ((orientation - 1) > 1)
     {
       v8.n128_u64[0] = *MEMORY[0x277CBF398];
       v9.n128_u64[0] = *(MEMORY[0x277CBF398] + 8);
       v10.n128_u64[0] = *(MEMORY[0x277CBF398] + 16);
       v11.n128_u64[0] = *(MEMORY[0x277CBF398] + 24);
-      v7[2](v7, v8, v9, v10, v11);
+      handlerCopy[2](handlerCopy, v8, v9, v10, v11);
     }
 
     else
@@ -2729,50 +2729,50 @@ uint64_t __101__SBWallpaperController_wallpaperServer_fetchLimitedOcclusionBound
   }
 }
 
-- (void)wallpaperServer:(id)a3 fetchAdaptiveTimeHeightLimitsForContext:(id)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server fetchAdaptiveTimeHeightLimitsForContext:(id)context completionHandler:(id)handler
 {
-  v6 = a5;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v7 = MEMORY[0x277D02CE8];
-    v8 = a4;
+    contextCopy = context;
     v9 = objc_alloc_init(v7);
-    [v9 setOrientation:{objc_msgSend(v8, "orientation")}];
-    v10 = [v8 hasSidebarContents];
+    [v9 setOrientation:{objc_msgSend(contextCopy, "orientation")}];
+    hasSidebarContents = [contextCopy hasSidebarContents];
 
-    [v9 setHasSidebarContents:v10];
+    [v9 setHasSidebarContents:hasSidebarContents];
     v11 = MEMORY[0x277D02CF0];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __99__SBWallpaperController_wallpaperServer_fetchAdaptiveTimeHeightLimitsForContext_completionHandler___block_invoke;
     v12[3] = &unk_2783B6258;
-    v13 = v6;
+    v13 = handlerCopy;
     [v11 minimumAndMaximumAdaptiveTimeHeightForContext:v9 result:v12];
   }
 }
 
-- (void)wallpaperServer:(id)a3 fetchAdaptiveTimeBoundsForContext:(id)a4 timeHeight:(double)a5 completionHandler:(id)a6
+- (void)wallpaperServer:(id)server fetchAdaptiveTimeBoundsForContext:(id)context timeHeight:(double)height completionHandler:(id)handler
 {
-  if (a6)
+  if (handler)
   {
     v8 = MEMORY[0x277D02CE8];
-    v9 = a6;
-    v10 = a4;
+    handlerCopy = handler;
+    contextCopy = context;
     v12 = objc_alloc_init(v8);
-    [v12 setOrientation:{objc_msgSend(v10, "orientation")}];
-    v11 = [v10 hasSidebarContents];
+    [v12 setOrientation:{objc_msgSend(contextCopy, "orientation")}];
+    hasSidebarContents = [contextCopy hasSidebarContents];
 
-    [v12 setHasSidebarContents:v11];
-    [MEMORY[0x277D02CF0] adaptiveTimeFrameForContext:v12 timeHeight:a5];
-    v9[2](v9);
+    [v12 setHasSidebarContents:hasSidebarContents];
+    [MEMORY[0x277D02CF0] adaptiveTimeFrameForContext:v12 timeHeight:height];
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (CGRect)_screenBoundsForOrientation:(int64_t)a3
+- (CGRect)_screenBoundsForOrientation:(int64_t)orientation
 {
-  v3 = a3 - 1;
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  v3 = orientation - 1;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -2842,14 +2842,14 @@ uint64_t __101__SBWallpaperController_wallpaperServer_fetchLimitedOcclusionBound
   return result;
 }
 
-- (void)wallpaperServer:(id)a3 setWallpaperVideoWithWallpaperMode:(id)a4 cropRect:(CGRect)a5 wallpaperMode:(int64_t)a6 completionHandler:(id)a7
+- (void)wallpaperServer:(id)server setWallpaperVideoWithWallpaperMode:(id)mode cropRect:(CGRect)rect wallpaperMode:(int64_t)wallpaperMode completionHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a4;
-  v15 = a7;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  modeCopy = mode;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __117__SBWallpaperController_wallpaperServer_setWallpaperVideoWithWallpaperMode_cropRect_wallpaperMode_completionHandler___block_invoke;
@@ -2858,12 +2858,12 @@ uint64_t __101__SBWallpaperController_wallpaperServer_fetchLimitedOcclusionBound
   v23 = y;
   v24 = width;
   v25 = height;
-  v19 = v14;
-  v20 = self;
-  v26 = a6;
-  v21 = v15;
-  v16 = v15;
-  v17 = v14;
+  v19 = modeCopy;
+  selfCopy = self;
+  wallpaperModeCopy = wallpaperMode;
+  v21 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = modeCopy;
   dispatch_async(MEMORY[0x277D85CD0], v18);
 }
 
@@ -2877,20 +2877,20 @@ void __117__SBWallpaperController_wallpaperServer_setWallpaperVideoWithWallpaper
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)wallpaperServer:(id)a3 setWallpaperColorName:(id)a4 forVariants:(int64_t)a5 completionHandler:(id)a6
+- (void)wallpaperServer:(id)server setWallpaperColorName:(id)name forVariants:(int64_t)variants completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a6;
+  nameCopy = name;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __93__SBWallpaperController_wallpaperServer_setWallpaperColorName_forVariants_completionHandler___block_invoke;
   v13[3] = &unk_2783AB780;
   v13[4] = self;
-  v14 = v9;
-  v15 = v10;
-  v16 = a5;
-  v11 = v10;
-  v12 = v9;
+  v14 = nameCopy;
+  v15 = handlerCopy;
+  variantsCopy = variants;
+  v11 = handlerCopy;
+  v12 = nameCopy;
   dispatch_async(MEMORY[0x277D85CD0], v13);
 }
 
@@ -2904,23 +2904,23 @@ uint64_t __93__SBWallpaperController_wallpaperServer_setWallpaperColorName_forVa
   return v3();
 }
 
-- (void)wallpaperServer:(id)a3 setWallpaperColor:(id)a4 darkColor:(id)a5 forVariants:(int64_t)a6 completionHandler:(id)a7
+- (void)wallpaperServer:(id)server setWallpaperColor:(id)color darkColor:(id)darkColor forVariants:(int64_t)variants completionHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
+  colorCopy = color;
+  darkColorCopy = darkColor;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __99__SBWallpaperController_wallpaperServer_setWallpaperColor_darkColor_forVariants_completionHandler___block_invoke;
   block[3] = &unk_2783AA4F8;
-  v18 = v11;
-  v19 = v12;
-  v21 = v13;
-  v22 = a6;
-  v20 = self;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
+  v18 = colorCopy;
+  v19 = darkColorCopy;
+  v21 = handlerCopy;
+  variantsCopy = variants;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v15 = darkColorCopy;
+  v16 = colorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -2962,20 +2962,20 @@ id __99__SBWallpaperController_wallpaperServer_setWallpaperColor_darkColor_forVa
   return v5;
 }
 
-- (void)wallpaperServer:(id)a3 setWallpaperGradient:(id)a4 forVariants:(int64_t)a5 completionHandler:(id)a6
+- (void)wallpaperServer:(id)server setWallpaperGradient:(id)gradient forVariants:(int64_t)variants completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a6;
+  gradientCopy = gradient;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __92__SBWallpaperController_wallpaperServer_setWallpaperGradient_forVariants_completionHandler___block_invoke;
   v13[3] = &unk_2783AB780;
   v13[4] = self;
-  v14 = v9;
-  v15 = v10;
-  v16 = a5;
-  v11 = v10;
-  v12 = v9;
+  v14 = gradientCopy;
+  v15 = handlerCopy;
+  variantsCopy = variants;
+  v11 = handlerCopy;
+  v12 = gradientCopy;
   dispatch_async(MEMORY[0x277D85CD0], v13);
 }
 
@@ -2989,16 +2989,16 @@ uint64_t __92__SBWallpaperController_wallpaperServer_setWallpaperGradient_forVar
   return v3();
 }
 
-- (void)wallpaperServer:(id)a3 restoreDefaultWallpaperWithCompletionHandler:(id)a4
+- (void)wallpaperServer:(id)server restoreDefaultWallpaperWithCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __86__SBWallpaperController_wallpaperServer_restoreDefaultWallpaperWithCompletionHandler___block_invoke;
   v7[3] = &unk_2783A98A0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -3012,16 +3012,16 @@ uint64_t __86__SBWallpaperController_wallpaperServer_restoreDefaultWallpaperWith
   return v3();
 }
 
-- (void)wallpaperServer:(id)a3 triggerPosterSignificantEventCompletionHandler:(id)a4
+- (void)wallpaperServer:(id)server triggerPosterSignificantEventCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __88__SBWallpaperController_wallpaperServer_triggerPosterSignificantEventCompletionHandler___block_invoke;
   v7[3] = &unk_2783A98A0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -3033,19 +3033,19 @@ uint64_t __88__SBWallpaperController_wallpaperServer_triggerPosterSignificantEve
   return v2();
 }
 
-- (void)wallpaperServer:(id)a3 fetchSignificantEventsCounterForPosterWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server fetchSignificantEventsCounterForPosterWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __112__SBWallpaperController_wallpaperServer_fetchSignificantEventsCounterForPosterWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_2783AA1E8;
-  v12 = v7;
-  v13 = self;
-  v14 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -3066,19 +3066,19 @@ uint64_t __112__SBWallpaperController_wallpaperServer_fetchSignificantEventsCoun
   return v2();
 }
 
-- (void)wallpaperServer:(id)a3 handleQuickActionConfigurationRequest:(id)a4 completionHandler:(id)a5
+- (void)wallpaperServer:(id)server handleQuickActionConfigurationRequest:(id)request completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__SBWallpaperController_wallpaperServer_handleQuickActionConfigurationRequest_completionHandler___block_invoke;
   block[3] = &unk_2783AA1E8;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -3095,32 +3095,32 @@ void __97__SBWallpaperController_wallpaperServer_handleQuickActionConfigurationR
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)_posterQuickActionsConfigurationFromConfigurationRequest:(id)a3
+- (id)_posterQuickActionsConfigurationFromConfigurationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 leadingQuickActionControlRequest];
-  v6 = [v4 trailingQuickActionControlRequest];
+  requestCopy = request;
+  leadingQuickActionControlRequest = [requestCopy leadingQuickActionControlRequest];
+  trailingQuickActionControlRequest = [requestCopy trailingQuickActionControlRequest];
 
-  if ([v5 quickActionCategory] == 3)
+  if ([leadingQuickActionControlRequest quickActionCategory] == 3)
   {
-    v7 = [v5 extensionBundleIdentifier];
-    v8 = [v5 containerBundleIdentifier];
-    v9 = [v5 kind];
-    v10 = [(SBWallpaperController *)self _controlIdentityForExtensionBundleIdentifier:v7 containerBundleIdentifier:v8 kind:v9];
+    extensionBundleIdentifier = [leadingQuickActionControlRequest extensionBundleIdentifier];
+    containerBundleIdentifier = [leadingQuickActionControlRequest containerBundleIdentifier];
+    kind = [leadingQuickActionControlRequest kind];
+    v10 = [(SBWallpaperController *)self _controlIdentityForExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier kind:kind];
 
     v11 = objc_alloc(MEMORY[0x277D3EE48]);
     v12 = v11;
     if (v10)
     {
-      v13 = [v5 type];
-      if ((v13 - 1) >= 3)
+      type = [leadingQuickActionControlRequest type];
+      if ((type - 1) >= 3)
       {
         v14 = 0;
       }
 
       else
       {
-        v14 = v13;
+        v14 = type;
       }
 
       v15 = [v12 initWithControlIdentity:v10 type:v14];
@@ -3137,40 +3137,40 @@ void __97__SBWallpaperController_wallpaperServer_handleQuickActionConfigurationR
   else
   {
     v16 = objc_alloc(MEMORY[0x277D3EE48]);
-    v17 = [v5 quickActionCategory];
-    if ((v17 - 1) >= 3)
+    quickActionCategory = [leadingQuickActionControlRequest quickActionCategory];
+    if ((quickActionCategory - 1) >= 3)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = v17;
+      v18 = quickActionCategory;
     }
 
     v19 = [v16 initWithCategory:v18];
   }
 
-  if ([v6 quickActionCategory] == 3)
+  if ([trailingQuickActionControlRequest quickActionCategory] == 3)
   {
-    v20 = [v6 extensionBundleIdentifier];
-    v21 = [v6 containerBundleIdentifier];
-    v22 = [v6 kind];
-    v23 = [(SBWallpaperController *)self _controlIdentityForExtensionBundleIdentifier:v20 containerBundleIdentifier:v21 kind:v22];
+    extensionBundleIdentifier2 = [trailingQuickActionControlRequest extensionBundleIdentifier];
+    containerBundleIdentifier2 = [trailingQuickActionControlRequest containerBundleIdentifier];
+    kind2 = [trailingQuickActionControlRequest kind];
+    v23 = [(SBWallpaperController *)self _controlIdentityForExtensionBundleIdentifier:extensionBundleIdentifier2 containerBundleIdentifier:containerBundleIdentifier2 kind:kind2];
 
     v24 = objc_alloc(MEMORY[0x277D3EE48]);
     v25 = v24;
     if (v23)
     {
-      v26 = [v6 type];
-      if ((v26 - 1) >= 3)
+      type2 = [trailingQuickActionControlRequest type];
+      if ((type2 - 1) >= 3)
       {
         v27 = 0;
       }
 
       else
       {
-        v27 = v26;
+        v27 = type2;
       }
 
       v28 = [v25 initWithControlIdentity:v23 type:v27];
@@ -3187,15 +3187,15 @@ void __97__SBWallpaperController_wallpaperServer_handleQuickActionConfigurationR
   else
   {
     v29 = objc_alloc(MEMORY[0x277D3EE48]);
-    v30 = [v6 quickActionCategory];
-    if ((v30 - 1) >= 3)
+    quickActionCategory2 = [trailingQuickActionControlRequest quickActionCategory];
+    if ((quickActionCategory2 - 1) >= 3)
     {
       v31 = 0;
     }
 
     else
     {
-      v31 = v30;
+      v31 = quickActionCategory2;
     }
 
     v32 = [v29 initWithCategory:v31];
@@ -3206,64 +3206,64 @@ void __97__SBWallpaperController_wallpaperServer_handleQuickActionConfigurationR
   return v33;
 }
 
-- (id)_controlIdentityForExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 kind:(id)a5
+- (id)_controlIdentityForExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier kind:(id)kind
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v27 = v8;
-  v10 = [objc_alloc(MEMORY[0x277CFA258]) initWithExtensionBundleIdentifier:v7 containerBundleIdentifier:v8 deviceIdentifier:0];
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  kindCopy = kind;
+  v27 = bundleIdentifierCopy;
+  v10 = [objc_alloc(MEMORY[0x277CFA258]) initWithExtensionBundleIdentifier:identifierCopy containerBundleIdentifier:bundleIdentifierCopy deviceIdentifier:0];
   v11 = [objc_alloc(MEMORY[0x277CFA218]) initIncludingVisible:1 hidden:1];
   v12 = objc_alloc(MEMORY[0x277CFA3C0]);
   v13 = objc_alloc_init(MEMORY[0x277CFA390]);
   v14 = [v12 initWithWidgetsPredicate:v13 controlsPredicate:v11 includeIntents:1];
 
   v15 = [objc_alloc(MEMORY[0x277CFA3B8]) initWithOptions:v14];
-  v16 = [v15 extensions];
+  extensions = [v15 extensions];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __101__SBWallpaperController__controlIdentityForExtensionBundleIdentifier_containerBundleIdentifier_kind___block_invoke;
   v30[3] = &unk_2783B62D0;
   v17 = v10;
   v31 = v17;
-  v18 = [v16 bs_firstObjectPassingTest:v30];
+  v18 = [extensions bs_firstObjectPassingTest:v30];
 
-  v19 = [v18 orderedControlDescriptors];
+  orderedControlDescriptors = [v18 orderedControlDescriptors];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __101__SBWallpaperController__controlIdentityForExtensionBundleIdentifier_containerBundleIdentifier_kind___block_invoke_2;
   v28[3] = &unk_2783B62F8;
-  v20 = v9;
+  v20 = kindCopy;
   v29 = v20;
-  v21 = [v19 bs_firstObjectPassingTest:v28];
+  v21 = [orderedControlDescriptors bs_firstObjectPassingTest:v28];
 
   if (v21)
   {
-    v22 = v7;
+    v22 = identifierCopy;
     v23 = objc_alloc(MEMORY[0x277CFA228]);
-    v24 = [v21 defaultIntentReference];
-    v25 = [v23 initWithExtensionIdentity:v17 kind:v20 intentReference:v24];
+    defaultIntentReference = [v21 defaultIntentReference];
+    v25 = [v23 initWithExtensionIdentity:v17 kind:v20 intentReference:defaultIntentReference];
   }
 
   else
   {
-    v24 = SBLogWallpaper();
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    defaultIntentReference = SBLogWallpaper();
+    if (os_log_type_enabled(defaultIntentReference, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v22 = v7;
-      v33 = v7;
+      v22 = identifierCopy;
+      v33 = identifierCopy;
       v34 = 2112;
       v35 = v27;
       v36 = 2112;
       v37 = v20;
-      _os_log_error_impl(&dword_21ED4E000, v24, OS_LOG_TYPE_ERROR, "Could not find CHSControlIdentity for extensionBundleIdentifier:%@ containerBundleIdentifier:%@ kind:%@", buf, 0x20u);
+      _os_log_error_impl(&dword_21ED4E000, defaultIntentReference, OS_LOG_TYPE_ERROR, "Could not find CHSControlIdentity for extensionBundleIdentifier:%@ containerBundleIdentifier:%@ kind:%@", buf, 0x20u);
     }
 
     else
     {
-      v22 = v7;
+      v22 = identifierCopy;
     }
 
     v25 = 0;
@@ -3288,14 +3288,14 @@ uint64_t __101__SBWallpaperController__controlIdentityForExtensionBundleIdentifi
   return v4;
 }
 
-- (void)activeActivityDidChangeForManager:(id)a3
+- (void)activeActivityDidChangeForManager:(id)manager
 {
-  if (self->_activityManager == a3)
+  if (self->_activityManager == manager)
   {
     posterBoardService = self->_posterBoardService;
-    v6 = [a3 activeActivity];
-    v5 = [v6 activityUniqueIdentifier];
-    [(PRSService *)posterBoardService notifyFocusModeDidChange:v5 completion:&__block_literal_global_287];
+    activeActivity = [manager activeActivity];
+    activityUniqueIdentifier = [activeActivity activityUniqueIdentifier];
+    [(PRSService *)posterBoardService notifyFocusModeDidChange:activityUniqueIdentifier completion:&__block_literal_global_287];
   }
 }
 
@@ -3319,12 +3319,12 @@ void __59__SBWallpaperController_activeActivityDidChangeForManager___block_invok
   }
 }
 
-- (void)availableActivitiesDidChangeForManager:(id)a3
+- (void)availableActivitiesDidChangeForManager:(id)manager
 {
-  if (self->_activityManager == a3)
+  if (self->_activityManager == manager)
   {
-    v5 = [a3 availableActivities];
-    v6 = [v5 bs_map:&__block_literal_global_290];
+    availableActivities = [manager availableActivities];
+    v6 = [availableActivities bs_map:&__block_literal_global_290];
 
     [(PRSService *)self->_posterBoardService notifyAvailableFocusModesDidChange:v6 completion:&__block_literal_global_292];
   }
@@ -3350,54 +3350,54 @@ void __64__SBWallpaperController_availableActivitiesDidChangeForManager___block_
   }
 }
 
-- (void)addReachabilityObserver:(id)a3
+- (void)addReachabilityObserver:(id)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   v4 = +[SBReachabilityManager sharedInstance];
-  [v4 addObserver:v3];
+  [v4 addObserver:observerCopy];
 }
 
-- (void)removeReachabilityObserver:(id)a3
+- (void)removeReachabilityObserver:(id)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   v4 = +[SBReachabilityManager sharedInstance];
-  [v4 removeObserver:v3];
+  [v4 removeObserver:observerCopy];
 }
 
-- (BOOL)isWindowIgnoredForReachability:(id)a3
+- (BOOL)isWindowIgnoredForReachability:(id)reachability
 {
-  v3 = a3;
+  reachabilityCopy = reachability;
   v4 = +[SBReachabilityManager sharedInstance];
-  v5 = [v4 ignoredWindows];
-  v6 = [v5 containsObject:v3];
+  ignoredWindows = [v4 ignoredWindows];
+  v6 = [ignoredWindows containsObject:reachabilityCopy];
 
   return v6;
 }
 
 - (void)updatePosterSwitcherSnapshots
 {
-  v3 = [(SBWallpaperController *)self scenesForBacklightSession];
-  v4 = [v3 anyObject];
+  scenesForBacklightSession = [(SBWallpaperController *)self scenesForBacklightSession];
+  anyObject = [scenesForBacklightSession anyObject];
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v6 = [WeakRetained screen];
-  v7 = v6;
-  if (v6)
+  screen = [WeakRetained screen];
+  v7 = screen;
+  if (screen)
   {
-    v8 = v6;
+    mainScreen = screen;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D759A0] mainScreen];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
   }
 
-  v9 = v8;
+  v9 = mainScreen;
 
-  v10 = [v9 traitCollection];
-  v11 = [v4 settings];
-  v12 = [v11 displayConfiguration];
-  [v12 pointScale];
+  traitCollection = [v9 traitCollection];
+  settings = [anyObject settings];
+  displayConfiguration = [settings displayConfiguration];
+  [displayConfiguration pointScale];
   v14 = v13;
   if (v13 == 0.0)
   {
@@ -3409,12 +3409,12 @@ void __64__SBWallpaperController_availableActivitiesDidChangeForManager___block_
   v18[1] = 3221225472;
   v18[2] = __54__SBWallpaperController_updatePosterSwitcherSnapshots__block_invoke;
   v18[3] = &unk_2783B6368;
-  v19 = v4;
-  v20 = v10;
-  v21 = self;
+  v19 = anyObject;
+  v20 = traitCollection;
+  selfCopy = self;
   v22 = v14;
-  v16 = v10;
-  v17 = v4;
+  v16 = traitCollection;
+  v17 = anyObject;
   [v17 pruis_snapshotSceneWithOptions:24 traitCollection:v16 completion:v18];
 }
 
@@ -3510,47 +3510,47 @@ void __54__SBWallpaperController_updatePosterSwitcherSnapshots__block_invoke_301
   }
 }
 
-- (void)_ingestPrimaryWallpaperLayersSnapshotIOSurface:(id)a3 floatingWallpaperLayerSnapshotIOSurface:(id)a4 snapshotScale:(double)a5 traitCollection:(id)a6 withCompletion:(id)a7
+- (void)_ingestPrimaryWallpaperLayersSnapshotIOSurface:(id)surface floatingWallpaperLayerSnapshotIOSurface:(id)oSurface snapshotScale:(double)scale traitCollection:(id)collection withCompletion:(id)completion
 {
-  v12 = a7;
+  completionCopy = completion;
   v13 = MEMORY[0x277D3E9B0];
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[v13 alloc] initWithIOSurface:v16];
+  collectionCopy = collection;
+  oSurfaceCopy = oSurface;
+  surfaceCopy = surface;
+  v17 = [[v13 alloc] initWithIOSurface:surfaceCopy];
 
-  v18 = [objc_alloc(MEMORY[0x277D3E9B0]) initWithIOSurface:v15];
+  v18 = [objc_alloc(MEMORY[0x277D3E9B0]) initWithIOSurface:oSurfaceCopy];
   v19 = objc_alloc(MEMORY[0x277D3E9B8]);
-  v20 = [v14 prs_interfaceStyle];
-  v21 = [v14 prs_accessibilityContrast];
+  prs_interfaceStyle = [collectionCopy prs_interfaceStyle];
+  prs_accessibilityContrast = [collectionCopy prs_accessibilityContrast];
 
-  v22 = [v19 initWithPrimaryLayersSnapshot:v17 floatingLayerSnapshot:v18 snapshotScale:v20 interfaceStyle:v21 accessibilityContrast:a5];
+  v22 = [v19 initWithPrimaryLayersSnapshot:v17 floatingLayerSnapshot:v18 snapshotScale:prs_interfaceStyle interfaceStyle:prs_accessibilityContrast accessibilityContrast:scale];
   posterBoardService = self->_posterBoardService;
   activeLockScreenPosterConfiguration = self->_activeLockScreenPosterConfiguration;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __157__SBWallpaperController__ingestPrimaryWallpaperLayersSnapshotIOSurface_floatingWallpaperLayerSnapshotIOSurface_snapshotScale_traitCollection_withCompletion___block_invoke;
   v26[3] = &unk_2783A9FC8;
-  v27 = v12;
-  v25 = v12;
+  v27 = completionCopy;
+  v25 = completionCopy;
   [(PRSService *)posterBoardService ingestSnapshotCollection:v22 forPosterConfiguration:activeLockScreenPosterConfiguration completion:v26];
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   v6 = SBLogWallpaper();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = [v5 isWallpaperAllowed];
+    v9[1] = [notificationCopy isWallpaperAllowed];
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Profile connection settings changed, isWallpaperAllowed: %{BOOL}u", v9, 8u);
   }
 
-  v7 = [v5 isWallpaperAllowed];
+  isWallpaperAllowed = [notificationCopy isWallpaperAllowed];
   wallpaperPresenter = self->_wallpaperPresenter;
-  if (v7)
+  if (isWallpaperAllowed)
   {
     [(PBUIWallpaperPresenting_Staged *)wallpaperPresenter removeWallpaperStyleForPriority:2 forVariant:1 withAnimationFactory:0];
     [(PBUIWallpaperPresenting_Staged *)self->_wallpaperPresenter removeWallpaperStyleForPriority:2 forVariant:0 withAnimationFactory:0];
@@ -3563,22 +3563,22 @@ void __54__SBWallpaperController_updatePosterSwitcherSnapshots__block_invoke_301
   }
 }
 
-- (void)addWallpaperUnlockProgressObserver:(id)a3
+- (void)addWallpaperUnlockProgressObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   wallpaperUnlockProgressObservers = self->_wallpaperUnlockProgressObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!wallpaperUnlockProgressObservers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_wallpaperUnlockProgressObservers;
-    self->_wallpaperUnlockProgressObservers = v6;
+    self->_wallpaperUnlockProgressObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     wallpaperUnlockProgressObservers = self->_wallpaperUnlockProgressObservers;
   }
 
-  [(NSHashTable *)wallpaperUnlockProgressObservers addObject:v4];
+  [(NSHashTable *)wallpaperUnlockProgressObservers addObject:observerCopy];
 }
 
 - (PBUIWallpaperPresentingDelegate)wallpaperPresentingDelegate

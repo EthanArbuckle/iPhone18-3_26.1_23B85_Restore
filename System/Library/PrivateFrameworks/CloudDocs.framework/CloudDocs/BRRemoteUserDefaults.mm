@@ -70,21 +70,21 @@ uint64_t __38__BRRemoteUserDefaults_sharedDefaults__block_invoke()
   }
 
   v5 = +[BRDaemonConnection defaultConnection];
-  v6 = [v5 newSyncProxy];
+  newSyncProxy = [v5 newSyncProxy];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__BRRemoteUserDefaults_excludedFilenamesWorthWarningAtLogout__block_invoke;
   v11[3] = &unk_1E7A14808;
-  v7 = v6;
+  v7 = newSyncProxy;
   v12 = v7;
   [v7 lookupExcludedFilenamesForLogoutWithReply:v11];
-  v8 = [v7 result];
-  [(NSMutableDictionary *)self->_userDictionaryCache setObject:v8 forKeyedSubscript:@"excluded-filenames-worth-warning-at-logout"];
+  result = [v7 result];
+  [(NSMutableDictionary *)self->_userDictionaryCache setObject:result forKeyedSubscript:@"excluded-filenames-worth-warning-at-logout"];
 
-  v9 = [v7 error];
+  error = [v7 error];
 
-  if (!v9)
+  if (!error)
   {
 
 LABEL_2:
@@ -109,21 +109,21 @@ LABEL_5:
   }
 
   v5 = +[BRDaemonConnection defaultConnection];
-  v6 = [v5 newSyncProxy];
+  newSyncProxy = [v5 newSyncProxy];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__BRRemoteUserDefaults_excludedExtensionsWorthPreserving__block_invoke;
   v11[3] = &unk_1E7A14808;
-  v7 = v6;
+  v7 = newSyncProxy;
   v12 = v7;
   [v7 lookupExcludedExtensionsForLogoutWithReply:v11];
-  v8 = [v7 result];
-  [(NSMutableDictionary *)self->_userDictionaryCache setObject:v8 forKeyedSubscript:@"excluded-extensions-worth-preserving"];
+  result = [v7 result];
+  [(NSMutableDictionary *)self->_userDictionaryCache setObject:result forKeyedSubscript:@"excluded-extensions-worth-preserving"];
 
-  v9 = [v7 error];
+  error = [v7 error];
 
-  if (!v9)
+  if (!error)
   {
 
 LABEL_2:
@@ -148,30 +148,30 @@ LABEL_5:
   }
 
   v6 = +[BRDaemonConnection defaultConnection];
-  v7 = [v6 newSyncProxy];
+  newSyncProxy = [v6 newSyncProxy];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55__BRRemoteUserDefaults_minFileSizeForThumbnailTransfer__block_invoke;
   v12[3] = &unk_1E7A15D60;
-  v13 = v7;
-  v8 = v7;
+  v13 = newSyncProxy;
+  v8 = newSyncProxy;
   [v8 lookupMinFileSizeForThumbnailTransferWithReply:v12];
-  v9 = [v8 result];
-  [(NSMutableDictionary *)self->_userDictionaryCache setObject:v9 forKeyedSubscript:@"min-file-size-for-thumb-transfer"];
+  result = [v8 result];
+  [(NSMutableDictionary *)self->_userDictionaryCache setObject:result forKeyedSubscript:@"min-file-size-for-thumb-transfer"];
 
-  v10 = [v8 error];
+  error = [v8 error];
 
-  if (v10)
+  if (error)
   {
     return 0x100000;
   }
 
 LABEL_2:
   v4 = [(NSMutableDictionary *)self->_userDictionaryCache objectForKeyedSubscript:@"min-file-size-for-thumb-transfer"];
-  v5 = [v4 longLongValue];
+  longLongValue = [v4 longLongValue];
 
-  return v5;
+  return longLongValue;
 }
 
 - (double)collectionGathererPacerMinFireInterval
@@ -184,29 +184,29 @@ LABEL_2:
   }
 
   v6 = +[BRDaemonConnection defaultConnection];
-  v7 = [v6 newSyncProxy];
+  newSyncProxy = [v6 newSyncProxy];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__BRRemoteUserDefaults_collectionGathererPacerMinFireInterval__block_invoke;
   v12[3] = &unk_1E7A15D60;
-  v13 = v7;
-  v8 = v7;
+  v13 = newSyncProxy;
+  v8 = newSyncProxy;
   [v8 lookupCollectionGathererPacerMinFireInterval:v12];
-  v9 = [v8 result];
-  [(NSMutableDictionary *)self->_userDictionaryCache setObject:v9 forKeyedSubscript:@"collection-gatherer-pacer-min-fire-interval"];
+  result = [v8 result];
+  [(NSMutableDictionary *)self->_userDictionaryCache setObject:result forKeyedSubscript:@"collection-gatherer-pacer-min-fire-interval"];
 
-  v10 = [v8 error];
+  error = [v8 error];
 
-  v5 = 1.0;
-  if (!v10)
+  longLongValue = 1.0;
+  if (!error)
   {
 LABEL_2:
     v4 = [(NSMutableDictionary *)self->_userDictionaryCache objectForKeyedSubscript:@"collection-gatherer-pacer-min-fire-interval"];
-    v5 = [v4 longLongValue];
+    longLongValue = [v4 longLongValue];
   }
 
-  return v5;
+  return longLongValue;
 }
 
 + (id)defaultExcludedFilenamesWorthWarningAtLogout
@@ -221,8 +221,8 @@ LABEL_2:
 
 + (id)defaultExcludedFilenamesWorthPreserving
 {
-  v2 = [a1 defaultExcludedFilenamesWorthWarningAtLogout];
-  v3 = [v2 mutableCopy];
+  defaultExcludedFilenamesWorthWarningAtLogout = [self defaultExcludedFilenamesWorthWarningAtLogout];
+  v3 = [defaultExcludedFilenamesWorthWarningAtLogout mutableCopy];
 
   [v3 addObject:@"Microsoft User Data"];
   [v3 addObject:@"iPhoto Library"];
@@ -247,7 +247,7 @@ LABEL_2:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1AE2A9000, a2, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: use sharedDefaults%@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

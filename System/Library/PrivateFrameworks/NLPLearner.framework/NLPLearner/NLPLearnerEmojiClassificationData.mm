@@ -1,20 +1,20 @@
 @interface NLPLearnerEmojiClassificationData
 + (void)initialize;
-- (BOOL)addExamples:(id)a3;
-- (BOOL)loadFromCoreDuet:(id)a3 limitSamplesTo:(unint64_t)a4;
-- (NLPLearnerEmojiClassificationData)initWithLocale:(id)a3;
+- (BOOL)addExamples:(id)examples;
+- (BOOL)loadFromCoreDuet:(id)duet limitSamplesTo:(unint64_t)to;
+- (NLPLearnerEmojiClassificationData)initWithLocale:(id)locale;
 - (id)nextEvaluationDataPoint;
-- (id)nextTrainingDataBatch:(unint64_t)a3;
+- (id)nextTrainingDataBatch:(unint64_t)batch;
 - (unint64_t)numOutputClasses;
-- (void)addResource:(id)a3;
-- (void)sampleNoneClassExample:(id)a3;
+- (void)addResource:(id)resource;
+- (void)sampleNoneClassExample:(id)example;
 @end
 
 @implementation NLPLearnerEmojiClassificationData
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog = os_log_create("com.apple.NLP", "NLPLearnerEmojiClassificationData");
 
@@ -22,13 +22,13 @@
   }
 }
 
-- (NLPLearnerEmojiClassificationData)initWithLocale:(id)a3
+- (NLPLearnerEmojiClassificationData)initWithLocale:(id)locale
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  localeCopy = locale;
   v18.receiver = self;
   v18.super_class = NLPLearnerEmojiClassificationData;
-  v5 = [(NLPLearnerTextData *)&v18 initWithLocale:v4];
+  v5 = [(NLPLearnerTextData *)&v18 initWithLocale:localeCopy];
   if (!v5)
   {
     goto LABEL_4;
@@ -36,9 +36,9 @@
 
   -[NLPLearnerTextData setMaxSequenceLength:](v5, "setMaxSequenceLength:", [objc_opt_class() defaultMaxSequenceLength]);
   v20[0] = *MEMORY[0x277D00370];
-  v6 = [(NLPLearnerTextData *)v5 locale];
+  locale = [(NLPLearnerTextData *)v5 locale];
   v20[1] = *MEMORY[0x277D00378];
-  v21[0] = v6;
+  v21[0] = locale;
   v21[1] = *MEMORY[0x277D00388];
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
 
@@ -62,9 +62,9 @@ LABEL_4:
   v13 = sLog;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v14 = [(NLPLearnerTextData *)v5 locale];
-    v15 = [v14 languageCode];
-    [(NLPLearnerEmojiClassificationData *)v15 initWithLocale:buf, v13, v14];
+    locale2 = [(NLPLearnerTextData *)v5 locale];
+    languageCode = [locale2 languageCode];
+    [(NLPLearnerEmojiClassificationData *)languageCode initWithLocale:buf, v13, locale2];
   }
 
   v12 = 0;
@@ -74,10 +74,10 @@ LABEL_8:
   return v12;
 }
 
-- (void)sampleNoneClassExample:(id)a3
+- (void)sampleNoneClassExample:(id)example
 {
-  v12 = a3;
-  if ([v12 count])
+  exampleCopy = example;
+  if ([exampleCopy count])
   {
     v4 = arc4random_uniform(0x64u);
     [(NSNumber *)self->_noneClassProbability floatValue];
@@ -87,28 +87,28 @@ LABEL_8:
       v7 = [MEMORY[0x277CCABB0] numberWithInt:0];
       [(NSMutableArray *)labels addObject:v7];
 
-      LODWORD(v7) = [v12 count];
+      LODWORD(v7) = [exampleCopy count];
       if (v7 >= [(NLPLearnerTextData *)self maxSequenceLength])
       {
-        v8 = [(NLPLearnerTextData *)self maxSequenceLength];
+        maxSequenceLength = [(NLPLearnerTextData *)self maxSequenceLength];
       }
 
       else
       {
-        v8 = [v12 count];
+        maxSequenceLength = [exampleCopy count];
       }
 
-      v9 = arc4random_uniform(v8);
-      v10 = [(NLPLearnerTextData *)self sentences];
-      v11 = [v12 subarrayWithRange:{0, (v9 + 1)}];
-      [v10 addObject:v11];
+      v9 = arc4random_uniform(maxSequenceLength);
+      sentences = [(NLPLearnerTextData *)self sentences];
+      v11 = [exampleCopy subarrayWithRange:{0, (v9 + 1)}];
+      [sentences addObject:v11];
     }
   }
 }
 
-- (BOOL)loadFromCoreDuet:(id)a3 limitSamplesTo:(unint64_t)a4
+- (BOOL)loadFromCoreDuet:(id)duet limitSamplesTo:(unint64_t)to
 {
-  v6 = a3;
+  duetCopy = duet;
   labelClasses = self->_labelClasses;
   if (labelClasses)
   {
@@ -125,8 +125,8 @@ LABEL_8:
     v12[2] = 0x3032000000;
     v12[3] = __Block_byref_object_copy_;
     v12[4] = __Block_byref_object_dispose_;
-    v13 = [MEMORY[0x277CBEB18] array];
-    v8 = [(NLPLearnerTextData *)self locale];
+    array = [MEMORY[0x277CBEB18] array];
+    locale = [(NLPLearnerTextData *)self locale];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __69__NLPLearnerEmojiClassificationData_loadFromCoreDuet_limitSamplesTo___block_invoke;
@@ -137,7 +137,7 @@ LABEL_8:
     v11[7] = v16;
     v10.receiver = self;
     v10.super_class = NLPLearnerEmojiClassificationData;
-    [(NLPLearnerTextData *)&v10 loadFromCoreDuet:v6 limitSamplesTo:a4 withLocale:v8 andLMStreamTokenizationBlock:v11];
+    [(NLPLearnerTextData *)&v10 loadFromCoreDuet:duetCopy limitSamplesTo:to withLocale:locale andLMStreamTokenizationBlock:v11];
 
     _Block_object_dispose(v12, 8);
     _Block_object_dispose(v14, 8);
@@ -221,16 +221,16 @@ void __69__NLPLearnerEmojiClassificationData_loadFromCoreDuet_limitSamplesTo___b
   }
 }
 
-- (id)nextTrainingDataBatch:(unint64_t)a3
+- (id)nextTrainingDataBatch:(unint64_t)batch
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v5 = [(NLPLearnerTextData *)self iterator]+ a3;
+  v5 = [(NLPLearnerTextData *)self iterator]+ batch;
   if (v5 <= [(NLPLearnerTextData *)self numSamples])
   {
-    v7 = [(NLPLearnerTextData *)self sentences];
-    v8 = [v7 subarrayWithRange:{-[NLPLearnerTextData iterator](self, "iterator"), a3}];
+    sentences = [(NLPLearnerTextData *)self sentences];
+    v8 = [sentences subarrayWithRange:{-[NLPLearnerTextData iterator](self, "iterator"), batch}];
 
-    v9 = 4 * a3 * [(NLPLearnerTextData *)self maxSequenceLength]* self->_embeddingDimension;
+    v9 = 4 * batch * [(NLPLearnerTextData *)self maxSequenceLength]* self->_embeddingDimension;
     v10 = malloc_type_malloc(v9, 0x100004052888210uLL);
     std::vector<float>::vector[abi:ne200100](__p, self->_embeddingDimension);
     m_ref = self->_embedding.m_ref;
@@ -242,11 +242,11 @@ void __69__NLPLearnerEmojiClassificationData_loadFromCoreDuet_limitSamplesTo___b
     v14 = *MEMORY[0x277D2A220];
     v19[0] = v13;
     v19[1] = v14;
-    v15 = [(NSMutableArray *)self->_labels subarrayWithRange:[(NLPLearnerTextData *)self iterator], a3];
-    v20[1] = v15;
+    batch = [(NSMutableArray *)self->_labels subarrayWithRange:[(NLPLearnerTextData *)self iterator], batch];
+    v20[1] = batch;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
 
-    [(NLPLearnerTextData *)self setIterator:[(NLPLearnerTextData *)self iterator]+ a3];
+    [(NLPLearnerTextData *)self setIterator:[(NLPLearnerTextData *)self iterator]+ batch];
     if (__p[0])
     {
       __p[1] = __p[0];
@@ -267,16 +267,16 @@ void __69__NLPLearnerEmojiClassificationData_loadFromCoreDuet_limitSamplesTo___b
 - (id)nextEvaluationDataPoint
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v3 = [(NLPLearnerTextData *)self iterator];
-  if (v3 >= [(NLPLearnerTextData *)self numSamples])
+  iterator = [(NLPLearnerTextData *)self iterator];
+  if (iterator >= [(NLPLearnerTextData *)self numSamples])
   {
     v15 = 0;
   }
 
   else
   {
-    v4 = [(NLPLearnerTextData *)self sentences];
-    v5 = [v4 objectAtIndexedSubscript:{-[NLPLearnerTextData iterator](self, "iterator")}];
+    sentences = [(NLPLearnerTextData *)self sentences];
+    v5 = [sentences objectAtIndexedSubscript:{-[NLPLearnerTextData iterator](self, "iterator")}];
     v22[0] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
 
@@ -314,17 +314,17 @@ void __69__NLPLearnerEmojiClassificationData_loadFromCoreDuet_limitSamplesTo___b
 - (unint64_t)numOutputClasses
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(NSDictionary *)self->_labelClasses allValues];
-  v4 = [v2 setWithArray:v3];
+  allValues = [(NSDictionary *)self->_labelClasses allValues];
+  v4 = [v2 setWithArray:allValues];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)addResource:(id)a3
+- (void)addResource:(id)resource
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v4];
+  resourceCopy = resource;
+  v5 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:resourceCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -368,7 +368,7 @@ void __69__NLPLearnerEmojiClassificationData_loadFromCoreDuet_limitSamplesTo___b
       v9 = sLog;
       if (os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
       {
-        [(NLPLearnerEmojiClassificationData *)v4 addResource:v9, v10, v11, v12, v13, v14, v15];
+        [(NLPLearnerEmojiClassificationData *)resourceCopy addResource:v9, v10, v11, v12, v13, v14, v15];
       }
     }
 
@@ -377,7 +377,7 @@ void __69__NLPLearnerEmojiClassificationData_loadFromCoreDuet_limitSamplesTo___b
       v23 = sLog;
       if (os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
       {
-        [(NLPLearnerEmojiClassificationData *)v4 addResource:v23, v24, v25, v26, v27, v28, v29];
+        [(NLPLearnerEmojiClassificationData *)resourceCopy addResource:v23, v24, v25, v26, v27, v28, v29];
       }
     }
 
@@ -393,7 +393,7 @@ LABEL_13:
   v16 = sLog;
   if (os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
   {
-    [(NLPLearnerEmojiClassificationData *)v4 addResource:v16, v17, v18, v19, v20, v21, v22];
+    [(NLPLearnerEmojiClassificationData *)resourceCopy addResource:v16, v17, v18, v19, v20, v21, v22];
   }
 
 LABEL_14:
@@ -431,14 +431,14 @@ void __49__NLPLearnerEmojiClassificationData_addResource___block_invoke_15(uint6
   }
 }
 
-- (BOOL)addExamples:(id)a3
+- (BOOL)addExamples:(id)examples
 {
   v25 = *MEMORY[0x277D85DE8];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = a3;
+  obj = examples;
   v4 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
@@ -465,14 +465,14 @@ void __49__NLPLearnerEmojiClassificationData_addResource___block_invoke_15(uint6
           v13 = [v8 objectForKeyedSubscript:@"label"];
           v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(v13, "unsignedIntegerValue") - 1}];
 
-          v15 = [(NSDictionary *)self->_labelClasses allValues];
-          LODWORD(v12) = [v15 containsObject:v14];
+          allValues = [(NSDictionary *)self->_labelClasses allValues];
+          LODWORD(v12) = [allValues containsObject:v14];
 
           if (v12)
           {
             [(NSMutableArray *)self->_labels addObject:v14];
-            v16 = [(NLPLearnerTextData *)self sentences];
-            [v16 addObject:v5];
+            sentences = [(NLPLearnerTextData *)self sentences];
+            [sentences addObject:v5];
           }
         }
       }

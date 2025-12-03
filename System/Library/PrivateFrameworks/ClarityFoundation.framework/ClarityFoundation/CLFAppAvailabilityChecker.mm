@@ -1,10 +1,10 @@
 @interface CLFAppAvailabilityChecker
 + (CLFAppAvailabilityChecker)sharedInstance;
-- (BOOL)isAppAvailableForBundleIdentifier:(id)a3;
-- (BOOL)isHiddenByUserForBundleIdentifier:(id)a3;
-- (BOOL)requiresPreflightForBundleIdentifier:(id)a3;
+- (BOOL)isAppAvailableForBundleIdentifier:(id)identifier;
+- (BOOL)isHiddenByUserForBundleIdentifier:(id)identifier;
+- (BOOL)requiresPreflightForBundleIdentifier:(id)identifier;
 - (CLFAppAvailabilityChecker)init;
-- (id)observeUpdatesWithHandler:(id)a3;
+- (id)observeUpdatesWithHandler:(id)handler;
 @end
 
 @implementation CLFAppAvailabilityChecker
@@ -62,25 +62,25 @@ uint64_t __43__CLFAppAvailabilityChecker_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)isAppAvailableForBundleIdentifier:(id)a3
+- (BOOL)isAppAvailableForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(CLFAppAvailabilityChecker *)self requiresPreflightForBundleIdentifier:v4])
+  identifierCopy = identifier;
+  if ([(CLFAppAvailabilityChecker *)self requiresPreflightForBundleIdentifier:identifierCopy])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v5 = ![(CLFAppAvailabilityChecker *)self isHiddenByUserForBundleIdentifier:v4];
+    v5 = ![(CLFAppAvailabilityChecker *)self isHiddenByUserForBundleIdentifier:identifierCopy];
   }
 
   return v5;
 }
 
-- (BOOL)requiresPreflightForBundleIdentifier:(id)a3
+- (BOOL)requiresPreflightForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -100,17 +100,17 @@ uint64_t __43__CLFAppAvailabilityChecker_sharedInstance__block_invoke()
   v6 = v5;
   _Block_object_dispose(&v16, 8);
   v7 = [v5 alloc];
-  v8 = [(CLFAppAvailabilityChecker *)self standardBundleIdentifierForClarityBundleIdentifier:v4];
+  v8 = [(CLFAppAvailabilityChecker *)self standardBundleIdentifierForClarityBundleIdentifier:identifierCopy];
   v14 = 0;
   v9 = [v7 initWithBundleIdentifier:v8 allowPlaceholder:0 error:&v14];
   v10 = v14;
 
   if (v10)
   {
-    v11 = +[CLFLog commonLog];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    privacyPreflightManager = +[CLFLog commonLog];
+    if (os_log_type_enabled(privacyPreflightManager, OS_LOG_TYPE_ERROR))
     {
-      [(CLFAppAvailabilityChecker *)v4 requiresPreflightForBundleIdentifier:v10, v11];
+      [(CLFAppAvailabilityChecker *)identifierCopy requiresPreflightForBundleIdentifier:v10, privacyPreflightManager];
     }
   }
 
@@ -118,15 +118,15 @@ uint64_t __43__CLFAppAvailabilityChecker_sharedInstance__block_invoke()
   {
     if (v9)
     {
-      v11 = [(CLFAppAvailabilityChecker *)self privacyPreflightManager];
-      v12 = [v11 requiresPreflightForApplicationRecord:v9];
+      privacyPreflightManager = [(CLFAppAvailabilityChecker *)self privacyPreflightManager];
+      v12 = [privacyPreflightManager requiresPreflightForApplicationRecord:v9];
       goto LABEL_9;
     }
 
-    v11 = +[CLFLog commonLog];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    privacyPreflightManager = +[CLFLog commonLog];
+    if (os_log_type_enabled(privacyPreflightManager, OS_LOG_TYPE_ERROR))
     {
-      [(CLFAppAvailabilityChecker *)v4 requiresPreflightForBundleIdentifier:v11];
+      [(CLFAppAvailabilityChecker *)identifierCopy requiresPreflightForBundleIdentifier:privacyPreflightManager];
     }
   }
 
@@ -136,9 +136,9 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)isHiddenByUserForBundleIdentifier:(id)a3
+- (BOOL)isHiddenByUserForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -157,17 +157,17 @@ LABEL_9:
 
   v6 = v5;
   _Block_object_dispose(&v12, 8);
-  v7 = [(CLFAppAvailabilityChecker *)self standardBundleIdentifierForClarityBundleIdentifier:v4];
+  v7 = [(CLFAppAvailabilityChecker *)self standardBundleIdentifierForClarityBundleIdentifier:identifierCopy];
   v8 = [v5 applicationWithBundleIdentifier:v7];
-  v9 = [v8 isHidden];
+  isHidden = [v8 isHidden];
 
-  return v9;
+  return isHidden;
 }
 
-- (id)observeUpdatesWithHandler:(id)a3
+- (id)observeUpdatesWithHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [[_CLFAppAvailabilityObserver alloc] initWithHandler:v3];
+  handlerCopy = handler;
+  v4 = [[_CLFAppAvailabilityObserver alloc] initWithHandler:handlerCopy];
 
   return v4;
 }

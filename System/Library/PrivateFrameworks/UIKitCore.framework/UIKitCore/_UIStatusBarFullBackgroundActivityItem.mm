@@ -1,37 +1,37 @@
 @interface _UIStatusBarFullBackgroundActivityItem
 - (_UIStatusBarStringView)detailStringView;
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_backgroundView;
 - (void)_create_detailStringView;
 @end
 
 @implementation _UIStatusBarFullBackgroundActivityItem
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = _UIStatusBarFullBackgroundActivityItem;
-  v7 = a3;
-  v8 = [(_UIStatusBarBackgroundActivityItem *)&v20 applyUpdate:v7 toDisplayItem:v6];
-  v9 = [v7 data];
-  v10 = [v9 backgroundActivityEntry];
+  updateCopy = update;
+  v8 = [(_UIStatusBarBackgroundActivityItem *)&v20 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  data = [updateCopy data];
+  backgroundActivityEntry = [data backgroundActivityEntry];
 
-  LODWORD(v9) = [v7 dataChanged];
-  if (v9)
+  LODWORD(data) = [updateCopy dataChanged];
+  if (data)
   {
-    v11 = [v6 identifier];
-    v12 = [objc_opt_class() detailDisplayIdentifier];
+    identifier = [itemCopy identifier];
+    detailDisplayIdentifier = [objc_opt_class() detailDisplayIdentifier];
 
-    if (v11 == v12)
+    if (identifier == detailDisplayIdentifier)
     {
-      v16 = [v10 detailString];
-      if ([v6 isEnabled])
+      detailString = [backgroundActivityEntry detailString];
+      if ([itemCopy isEnabled])
       {
-        v17 = [v16 length] != 0;
+        v17 = [detailString length] != 0;
       }
 
       else
@@ -39,27 +39,27 @@
         v17 = 0;
       }
 
-      [v6 setEnabled:v17];
-      if ([v6 isEnabled])
+      [itemCopy setEnabled:v17];
+      if ([itemCopy isEnabled])
       {
-        v18 = [(_UIStatusBarFullBackgroundActivityItem *)self detailStringView];
-        [v18 setText:v16];
+        detailStringView = [(_UIStatusBarFullBackgroundActivityItem *)self detailStringView];
+        [detailStringView setText:detailString];
       }
     }
 
     else
     {
-      v13 = [v10 type];
-      v14 = [v6 identifier];
-      v15 = [objc_opt_class() backgroundDisplayIdentifier];
+      type = [backgroundActivityEntry type];
+      identifier2 = [itemCopy identifier];
+      backgroundDisplayIdentifier = [objc_opt_class() backgroundDisplayIdentifier];
 
-      if (v14 != v15)
+      if (identifier2 != backgroundDisplayIdentifier)
       {
         goto LABEL_11;
       }
 
-      v16 = [_UIStatusBarActivityAction actionForBackgroundActivityType:v13];
-      [v6 setAction:v16];
+      detailString = [_UIStatusBarActivityAction actionForBackgroundActivityType:type];
+      [itemCopy setAction:detailString];
     }
   }
 
@@ -93,38 +93,38 @@ LABEL_11:
   v4.receiver = self;
   v4.super_class = _UIStatusBarFullBackgroundActivityItem;
   [(_UIStatusBarBackgroundActivityItem *)&v4 _create_backgroundView];
-  v3 = [(_UIStatusBarBackgroundActivityItem *)self backgroundView];
-  [v3 setCornerRadius:0.0];
+  backgroundView = [(_UIStatusBarBackgroundActivityItem *)self backgroundView];
+  [backgroundView setCornerRadius:0.0];
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() detailDisplayIdentifier];
+  identifierCopy = identifier;
+  detailDisplayIdentifier = [objc_opt_class() detailDisplayIdentifier];
 
-  if (v5 == v4)
+  if (detailDisplayIdentifier == identifierCopy)
   {
-    v6 = [(_UIStatusBarFullBackgroundActivityItem *)self detailStringView];
+    detailStringView = [(_UIStatusBarFullBackgroundActivityItem *)self detailStringView];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = _UIStatusBarFullBackgroundActivityItem;
-    v6 = [(_UIStatusBarBackgroundActivityItem *)&v9 viewForIdentifier:v4];
+    detailStringView = [(_UIStatusBarBackgroundActivityItem *)&v9 viewForIdentifier:identifierCopy];
   }
 
-  v7 = v6;
+  v7 = detailStringView;
 
   return v7;
 }
 
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() backgroundDisplayIdentifier];
+  identifierCopy = identifier;
+  backgroundDisplayIdentifier = [objc_opt_class() backgroundDisplayIdentifier];
 
-  if (v5 == v4)
+  if (backgroundDisplayIdentifier == identifierCopy)
   {
     v8 = _UIStatusBar_Log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -138,9 +138,9 @@ LABEL_11:
 
   else
   {
-    v6 = [objc_opt_class() detailDisplayIdentifier];
+    detailDisplayIdentifier = [objc_opt_class() detailDisplayIdentifier];
 
-    if (v6 == v4)
+    if (detailDisplayIdentifier == identifierCopy)
     {
       v9 = _UIStatusBar_Log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -156,7 +156,7 @@ LABEL_11:
     {
       v12.receiver = self;
       v12.super_class = _UIStatusBarFullBackgroundActivityItem;
-      v7 = [(_UIStatusBarBackgroundActivityItem *)&v12 additionAnimationForDisplayItemWithIdentifier:v4];
+      v7 = [(_UIStatusBarBackgroundActivityItem *)&v12 additionAnimationForDisplayItemWithIdentifier:identifierCopy];
     }
   }
 
@@ -165,12 +165,12 @@ LABEL_11:
   return v10;
 }
 
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() backgroundDisplayIdentifier];
+  identifierCopy = identifier;
+  backgroundDisplayIdentifier = [objc_opt_class() backgroundDisplayIdentifier];
 
-  if (v5 == v4)
+  if (backgroundDisplayIdentifier == identifierCopy)
   {
     v8 = _UIStatusBar_Log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -184,13 +184,13 @@ LABEL_8:
 
   else
   {
-    v6 = [objc_opt_class() detailDisplayIdentifier];
+    detailDisplayIdentifier = [objc_opt_class() detailDisplayIdentifier];
 
-    if (v6 != v4)
+    if (detailDisplayIdentifier != identifierCopy)
     {
       v12.receiver = self;
       v12.super_class = _UIStatusBarFullBackgroundActivityItem;
-      v7 = [(_UIStatusBarBackgroundActivityItem *)&v12 removalAnimationForDisplayItemWithIdentifier:v4];
+      v7 = [(_UIStatusBarBackgroundActivityItem *)&v12 removalAnimationForDisplayItemWithIdentifier:identifierCopy];
       goto LABEL_10;
     }
 

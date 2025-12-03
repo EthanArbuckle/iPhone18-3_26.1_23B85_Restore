@@ -1,18 +1,18 @@
 @interface ENQueryFilter
-- (BOOL)shouldIgnoreRPI:(const void *)a3;
-- (ENQueryFilter)initWithBufferSize:(unint64_t)a3 hashCount:(unint64_t)a4;
-- (void)addPossibleRPI:(const void *)a3;
+- (BOOL)shouldIgnoreRPI:(const void *)i;
+- (ENQueryFilter)initWithBufferSize:(unint64_t)size hashCount:(unint64_t)count;
+- (void)addPossibleRPI:(const void *)i;
 - (void)dealloc;
 @end
 
 @implementation ENQueryFilter
 
-- (ENQueryFilter)initWithBufferSize:(unint64_t)a3 hashCount:(unint64_t)a4
+- (ENQueryFilter)initWithBufferSize:(unint64_t)size hashCount:(unint64_t)count
 {
   v7 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v8 = [v7 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v7 isSensitiveLoggingAllowed];
 
-  if (v8 && gLogCategory_ENQueryFilter <= 50 && (gLogCategory_ENQueryFilter != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENQueryFilter <= 50 && (gLogCategory_ENQueryFilter != -1 || _LogCategory_Initialize()))
   {
     [ENQueryFilter initWithBufferSize:hashCount:];
   }
@@ -26,8 +26,8 @@
     goto LABEL_11;
   }
 
-  v9->_bufferSize = a3;
-  v11 = malloc_type_calloc(a3, 1uLL, 0x100004077774924uLL);
+  v9->_bufferSize = size;
+  v11 = malloc_type_calloc(size, 1uLL, 0x100004077774924uLL);
   v10->_filterBuffer = v11;
   if (!v11)
   {
@@ -39,8 +39,8 @@
     goto LABEL_19;
   }
 
-  v10->_hashCount = a4;
-  v12 = malloc_type_malloc(8 * a4, 0x100004000313F17uLL);
+  v10->_hashCount = count;
+  v12 = malloc_type_malloc(8 * count, 0x100004000313F17uLL);
   v10->_hashSalts = v12;
   if (!v12)
   {
@@ -81,14 +81,14 @@ LABEL_20:
   [(ENQueryFilter *)&v3 dealloc];
 }
 
-- (void)addPossibleRPI:(const void *)a3
+- (void)addPossibleRPI:(const void *)i
 {
   if (self->_hashCount)
   {
     v3 = 0;
     do
     {
-      v4 = (*a3 ^ *(a3 + 1) ^ self->_hashSalts[v3]) % (8 * self->_bufferSize);
+      v4 = (*i ^ *(i + 1) ^ self->_hashSalts[v3]) % (8 * self->_bufferSize);
       self->_filterBuffer[v4 >> 3] |= 1 << (v4 & 7);
       ++v3;
     }
@@ -97,7 +97,7 @@ LABEL_20:
   }
 }
 
-- (BOOL)shouldIgnoreRPI:(const void *)a3
+- (BOOL)shouldIgnoreRPI:(const void *)i
 {
   hashCount = self->_hashCount;
   if (!hashCount)
@@ -108,7 +108,7 @@ LABEL_20:
   hashSalts = self->_hashSalts;
   v5 = 8 * self->_bufferSize;
   filterBuffer = self->_filterBuffer;
-  v7 = *a3 ^ *(a3 + 1);
+  v7 = *i ^ *(i + 1);
   if (((filterBuffer[((v7 ^ *hashSalts) % v5) >> 3] >> (((v7 ^ *hashSalts) % v5) & 7)) & 1) == 0)
   {
     return 1;

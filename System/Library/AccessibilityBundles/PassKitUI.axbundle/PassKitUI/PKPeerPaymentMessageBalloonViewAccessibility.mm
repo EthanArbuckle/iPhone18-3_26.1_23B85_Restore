@@ -1,17 +1,17 @@
 @interface PKPeerPaymentMessageBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation PKPeerPaymentMessageBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPeerPaymentMessageBalloonView" hasInstanceMethod:@"bubbleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPeerPaymentMessageBalloonView" hasInstanceMethod:@"peerPaymentType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"_messageText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"_statusText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPeerPaymentMessageBalloonView" hasInstanceMethod:@"bubbleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPeerPaymentMessageBalloonView" hasInstanceMethod:@"peerPaymentType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"_messageText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView" hasInstanceMethod:@"_statusText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

@@ -1,31 +1,31 @@
 @interface PRXCardBottomTray
 - (BOOL)containsContents;
-- (PRXCardBottomTray)initWithFrame:(CGRect)a3;
+- (PRXCardBottomTray)initWithFrame:(CGRect)frame;
 - (PRXCardBottomTrayDelegate)delegate;
 - (void)layoutSubviews;
-- (void)setActionButtons:(id)a3;
-- (void)setActivityIndicator:(id)a3;
-- (void)setAttributedTitle:(id)a3;
-- (void)setImageView:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setActionButtons:(id)buttons;
+- (void)setActivityIndicator:(id)indicator;
+- (void)setAttributedTitle:(id)title;
+- (void)setImageView:(id)view;
+- (void)setTitle:(id)title;
 - (void)updateConstraints;
 @end
 
 @implementation PRXCardBottomTray
 
-- (PRXCardBottomTray)initWithFrame:(CGRect)a3
+- (PRXCardBottomTray)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PRXCardBottomTray;
-  v3 = [(PRXCardBottomTray *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PRXCardBottomTray *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PRXCardBottomTray *)v3 setAccessibilityIdentifier:@"PRXCardBottomTray"];
   v4 = objc_alloc_init(MEMORY[0x277D756B8]);
   titleLabel = v3->_titleLabel;
   v3->_titleLabel = v4;
 
   [(UILabel *)v3->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)v3->_titleLabel setTextColor:v6];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)v3->_titleLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)v3->_titleLabel setTextAlignment:1];
   v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76940]];
@@ -40,94 +40,94 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   v90[4] = *MEMORY[0x277D85DE8];
-  v3 = [(PRXCardBottomTray *)self activityIndicator];
+  activityIndicator = [(PRXCardBottomTray *)self activityIndicator];
 
-  v4 = [(PRXCardBottomTray *)v2 actionButtons];
-  v5 = [v4 count];
+  actionButtons = [(PRXCardBottomTray *)selfCopy actionButtons];
+  v5 = [actionButtons count];
 
-  v6 = [(PRXCardBottomTray *)v2 title];
-  if (v6)
+  title = [(PRXCardBottomTray *)selfCopy title];
+  if (title)
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(PRXCardBottomTray *)v2 attributedTitle];
-    v7 = v8 != 0;
+    attributedTitle = [(PRXCardBottomTray *)selfCopy attributedTitle];
+    v7 = attributedTitle != 0;
   }
 
-  if (!v3)
+  if (!activityIndicator)
   {
-    v9 = [(PRXCardBottomTray *)v2 titleConstraints];
-    v10 = v9 == 0 && v7;
+    titleConstraints = [(PRXCardBottomTray *)selfCopy titleConstraints];
+    v10 = titleConstraints == 0 && v7;
 
-    v74 = v2;
+    v74 = selfCopy;
     if (v10 == 1)
     {
-      v11 = [(PRXCardBottomTray *)v2 titleLabel];
-      v12 = [v11 bottomAnchor];
+      titleLabel = [(PRXCardBottomTray *)selfCopy titleLabel];
+      bottomAnchor = [titleLabel bottomAnchor];
       v81 = v5;
       if (v5)
       {
-        v13 = [(PRXCardBottomTray *)v2 actionButtons];
-        v14 = [v13 firstObject];
-        v15 = [v14 topAnchor];
-        v16 = [v12 constraintLessThanOrEqualToAnchor:v15 constant:-8.0];
+        actionButtons2 = [(PRXCardBottomTray *)selfCopy actionButtons];
+        firstObject = [actionButtons2 firstObject];
+        topAnchor = [firstObject topAnchor];
+        v16 = [bottomAnchor constraintLessThanOrEqualToAnchor:topAnchor constant:-8.0];
       }
 
       else
       {
-        v13 = [(PRXCardBottomTray *)v2 layoutMarginsGuide];
-        v14 = [v13 bottomAnchor];
-        v16 = [v12 constraintEqualToAnchor:v14];
+        actionButtons2 = [(PRXCardBottomTray *)selfCopy layoutMarginsGuide];
+        firstObject = [actionButtons2 bottomAnchor];
+        v16 = [bottomAnchor constraintEqualToAnchor:firstObject];
       }
 
       v66 = v16;
 
-      v79 = [(PRXCardBottomTray *)v2 titleLabel];
-      v75 = [v79 leadingAnchor];
-      v77 = [(PRXCardBottomTray *)v2 layoutMarginsGuide];
-      v72 = [v77 leadingAnchor];
-      obja = [v75 constraintEqualToAnchor:v72];
+      titleLabel2 = [(PRXCardBottomTray *)selfCopy titleLabel];
+      leadingAnchor = [titleLabel2 leadingAnchor];
+      layoutMarginsGuide = [(PRXCardBottomTray *)selfCopy layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      obja = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v90[0] = obja;
-      v68 = [(PRXCardBottomTray *)v2 titleLabel];
-      v17 = [v68 trailingAnchor];
-      v18 = [(PRXCardBottomTray *)v2 layoutMarginsGuide];
-      v19 = [v18 trailingAnchor];
-      v20 = [v17 constraintEqualToAnchor:v19];
+      titleLabel3 = [(PRXCardBottomTray *)selfCopy titleLabel];
+      trailingAnchor = [titleLabel3 trailingAnchor];
+      layoutMarginsGuide2 = [(PRXCardBottomTray *)selfCopy layoutMarginsGuide];
+      trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+      v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v90[1] = v20;
-      v21 = [(PRXCardBottomTray *)v2 titleLabel];
-      v22 = [v21 topAnchor];
-      v23 = [(PRXCardBottomTray *)v2 topAnchor];
-      v24 = [v22 constraintGreaterThanOrEqualToAnchor:v23 constant:20.0];
+      titleLabel4 = [(PRXCardBottomTray *)selfCopy titleLabel];
+      topAnchor2 = [titleLabel4 topAnchor];
+      topAnchor3 = [(PRXCardBottomTray *)selfCopy topAnchor];
+      v24 = [topAnchor2 constraintGreaterThanOrEqualToAnchor:topAnchor3 constant:20.0];
       v90[2] = v24;
       v90[3] = v16;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v90 count:4];
       [(PRXCardBottomTray *)v74 setTitleConstraints:v25];
 
-      v2 = v74;
+      selfCopy = v74;
       v26 = MEMORY[0x277CCAAD0];
-      v27 = [(PRXCardBottomTray *)v74 titleConstraints];
-      [v26 activateConstraints:v27];
+      titleConstraints2 = [(PRXCardBottomTray *)v74 titleConstraints];
+      [v26 activateConstraints:titleConstraints2];
 
       v5 = v81;
     }
 
-    v28 = [(PRXCardBottomTray *)v2 buttonConstraints];
+    buttonConstraints = [(PRXCardBottomTray *)selfCopy buttonConstraints];
 
-    if (!v28 && v5)
+    if (!buttonConstraints && v5)
     {
-      v29 = [(PRXCardBottomTray *)v2 actionButtons];
-      v30 = [v29 firstObject];
+      actionButtons3 = [(PRXCardBottomTray *)selfCopy actionButtons];
+      firstObject2 = [actionButtons3 firstObject];
 
-      v31 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (!v7)
       {
         v32 = 20.0;
-        if ([v30 proximityButtonType])
+        if ([firstObject2 proximityButtonType])
         {
           v33 = 20.0;
         }
@@ -142,72 +142,72 @@
           v32 = v33;
         }
 
-        if ([v30 proximityButtonType] == 6)
+        if ([firstObject2 proximityButtonType] == 6)
         {
           v32 = 0.0;
         }
 
-        v34 = [v30 proximityButtonType];
-        v35 = [v30 topAnchor];
-        v36 = [(PRXCardBottomTray *)v2 topAnchor];
-        if (v34 == 6)
+        proximityButtonType = [firstObject2 proximityButtonType];
+        topAnchor4 = [firstObject2 topAnchor];
+        topAnchor5 = [(PRXCardBottomTray *)selfCopy topAnchor];
+        if (proximityButtonType == 6)
         {
-          [v35 constraintEqualToAnchor:v36 constant:v32];
+          [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:v32];
         }
 
         else
         {
-          [v35 constraintGreaterThanOrEqualToAnchor:v36 constant:v32];
+          [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5 constant:v32];
         }
         v37 = ;
 
-        [v31 addObject:v37];
+        [array addObject:v37];
       }
 
-      v38 = [(PRXCardBottomTray *)v2 actionButtons];
-      v39 = [v38 lastObject];
+      actionButtons4 = [(PRXCardBottomTray *)selfCopy actionButtons];
+      lastObject = [actionButtons4 lastObject];
 
-      if (v30 == v39 && [v39 proximityButtonType] != 6)
+      if (firstObject2 == lastObject && [lastObject proximityButtonType] != 6)
       {
-        v63 = [(PRXCardBottomTray *)v2 layoutMarginsGuide];
-        v40 = [v63 bottomAnchor];
+        layoutMarginsGuide3 = [(PRXCardBottomTray *)selfCopy layoutMarginsGuide];
+        bottomAnchor2 = [layoutMarginsGuide3 bottomAnchor];
 
         v41 = 0.0;
       }
 
       else
       {
-        v40 = [(PRXCardBottomTray *)v2 bottomAnchor];
+        bottomAnchor2 = [(PRXCardBottomTray *)selfCopy bottomAnchor];
         v41 = -PRXLastButtonOfMultipleToBottomMargin();
       }
 
-      v42 = [v39 proximityButtonType];
-      v43 = [v39 bottomAnchor];
-      v44 = v43;
-      if (v30 == v39 && v42 == 6)
+      proximityButtonType2 = [lastObject proximityButtonType];
+      bottomAnchor3 = [lastObject bottomAnchor];
+      v44 = bottomAnchor3;
+      if (firstObject2 == lastObject && proximityButtonType2 == 6)
       {
-        v45 = [v43 constraintEqualToAnchor:v40 constant:v41];
+        v45 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor2 constant:v41];
       }
 
       else
       {
-        v45 = [v43 constraintLessThanOrEqualToAnchor:v40 constant:v41];
+        v45 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:v41];
       }
 
       v46 = v45;
-      v65 = v40;
-      v69 = v30;
+      v65 = bottomAnchor2;
+      v69 = firstObject2;
 
-      v78 = v31;
+      v78 = array;
       v64 = v46;
-      [v31 addObject:v46];
+      [array addObject:v46];
       v86 = 0u;
       v87 = 0u;
       v84 = 0u;
       v85 = 0u;
-      obj = [(PRXCardBottomTray *)v2 actionButtons];
+      obj = [(PRXCardBottomTray *)selfCopy actionButtons];
       v76 = [obj countByEnumeratingWithState:&v84 objects:v89 count:16];
-      v67 = v39;
+      v67 = lastObject;
       v47 = 0;
       if (v76)
       {
@@ -224,24 +224,24 @@
             }
 
             v50 = *(*(&v84 + 1) + 8 * v48);
-            v80 = [v50 leadingAnchor];
-            v82 = [(PRXCardBottomTray *)v2 layoutMarginsGuide];
-            v51 = [v82 leadingAnchor];
-            v52 = [v80 constraintEqualToAnchor:v51];
+            leadingAnchor3 = [v50 leadingAnchor];
+            layoutMarginsGuide4 = [(PRXCardBottomTray *)selfCopy layoutMarginsGuide];
+            leadingAnchor4 = [layoutMarginsGuide4 leadingAnchor];
+            v52 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
             v88[0] = v52;
-            v53 = [v50 trailingAnchor];
-            v54 = [(PRXCardBottomTray *)v2 layoutMarginsGuide];
-            v55 = [v54 trailingAnchor];
-            v56 = [v53 constraintEqualToAnchor:v55];
+            trailingAnchor3 = [v50 trailingAnchor];
+            layoutMarginsGuide5 = [(PRXCardBottomTray *)selfCopy layoutMarginsGuide];
+            trailingAnchor4 = [layoutMarginsGuide5 trailingAnchor];
+            v56 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
             v88[1] = v56;
             v57 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:2];
             [v78 addObjectsFromArray:v57];
 
             if (v49)
             {
-              v58 = [v50 topAnchor];
-              v59 = [v49 bottomAnchor];
-              v60 = [v58 constraintEqualToAnchor:v59 constant:PRXButtonToButtonMargin()];
+              topAnchor6 = [v50 topAnchor];
+              bottomAnchor4 = [v49 bottomAnchor];
+              v60 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4 constant:PRXButtonToButtonMargin()];
               [v78 addObject:v60];
             }
 
@@ -249,7 +249,7 @@
 
             ++v48;
             v49 = v47;
-            v2 = v74;
+            selfCopy = v74;
           }
 
           while (v76 != v48);
@@ -259,14 +259,14 @@
         while (v76);
       }
 
-      [(PRXCardBottomTray *)v2 setButtonConstraints:v78];
+      [(PRXCardBottomTray *)selfCopy setButtonConstraints:v78];
       v61 = MEMORY[0x277CCAAD0];
-      v62 = [(PRXCardBottomTray *)v2 buttonConstraints];
-      [v61 activateConstraints:v62];
+      buttonConstraints2 = [(PRXCardBottomTray *)selfCopy buttonConstraints];
+      [v61 activateConstraints:buttonConstraints2];
     }
   }
 
-  v83.receiver = v2;
+  v83.receiver = selfCopy;
   v83.super_class = PRXCardBottomTray;
   [(PRXCardBottomTray *)&v83 updateConstraints];
 }
@@ -275,16 +275,16 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_260F65000, a2, OS_LOG_TYPE_DEBUG, "%@", &v2, 0xCu);
 }
 
-- (void)setActionButtons:(id)a3
+- (void)setActionButtons:(id)buttons
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  buttonsCopy = buttons;
   actionButtons = self->_actionButtons;
-  if (actionButtons != v4 && ![(NSArray *)actionButtons isEqualToArray:v4])
+  if (actionButtons != buttonsCopy && ![(NSArray *)actionButtons isEqualToArray:buttonsCopy])
   {
     v32 = 0u;
     v33 = 0u;
@@ -314,7 +314,7 @@
       while (v8);
     }
 
-    v11 = [(NSArray *)v4 copy];
+    v11 = [(NSArray *)buttonsCopy copy];
     v12 = self->_actionButtons;
     self->_actionButtons = v11;
 
@@ -348,43 +348,43 @@
       while (v15);
     }
 
-    v19 = [(PRXCardBottomTray *)self titleConstraints];
+    titleConstraints = [(PRXCardBottomTray *)self titleConstraints];
 
-    if (v19)
+    if (titleConstraints)
     {
       v20 = MEMORY[0x277CCAAD0];
-      v21 = [(PRXCardBottomTray *)self titleConstraints];
-      [v20 deactivateConstraints:v21];
+      titleConstraints2 = [(PRXCardBottomTray *)self titleConstraints];
+      [v20 deactivateConstraints:titleConstraints2];
 
       [(PRXCardBottomTray *)self setTitleConstraints:0];
     }
 
-    v22 = [(PRXCardBottomTray *)self buttonConstraints];
+    buttonConstraints = [(PRXCardBottomTray *)self buttonConstraints];
 
-    if (v22)
+    if (buttonConstraints)
     {
       v23 = MEMORY[0x277CCAAD0];
-      v24 = [(PRXCardBottomTray *)self buttonConstraints];
-      [v23 deactivateConstraints:v24];
+      buttonConstraints2 = [(PRXCardBottomTray *)self buttonConstraints];
+      [v23 deactivateConstraints:buttonConstraints2];
 
       [(PRXCardBottomTray *)self setButtonConstraints:0];
     }
 
     [(PRXCardBottomTray *)self setNeedsUpdateConstraints];
-    v25 = [(PRXCardBottomTray *)self delegate];
-    [v25 didChangeContentsOfBottomTray:self];
+    delegate = [(PRXCardBottomTray *)self delegate];
+    [delegate didChangeContentsOfBottomTray:self];
   }
 }
 
-- (void)setActivityIndicator:(id)a3
+- (void)setActivityIndicator:(id)indicator
 {
   v42[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  indicatorCopy = indicator;
   activityIndicator = self->_activityIndicator;
-  if (activityIndicator != v5)
+  if (activityIndicator != indicatorCopy)
   {
     [(UIView *)activityIndicator removeFromSuperview];
-    objc_storeStrong(&self->_activityIndicator, a3);
+    objc_storeStrong(&self->_activityIndicator, indicator);
     v7 = self->_activityIndicator;
     if (v7)
     {
@@ -401,28 +401,28 @@
         v8 = -14.0;
       }
 
-      v36 = [(UIView *)self->_activityIndicator centerXAnchor];
-      v35 = [(PRXCardBottomTray *)self centerXAnchor];
-      v34 = [v36 constraintEqualToAnchor:v35];
+      centerXAnchor = [(UIView *)self->_activityIndicator centerXAnchor];
+      centerXAnchor2 = [(PRXCardBottomTray *)self centerXAnchor];
+      v34 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v42[0] = v34;
-      v32 = [(UIView *)self->_activityIndicator leadingAnchor];
-      v33 = [(PRXCardBottomTray *)self layoutMarginsGuide];
-      v31 = [v33 leadingAnchor];
-      v30 = [v32 constraintGreaterThanOrEqualToAnchor:v31];
+      leadingAnchor = [(UIView *)self->_activityIndicator leadingAnchor];
+      layoutMarginsGuide = [(PRXCardBottomTray *)self layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v30 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
       v42[1] = v30;
-      v28 = [(UIView *)self->_activityIndicator trailingAnchor];
-      v29 = [(PRXCardBottomTray *)self layoutMarginsGuide];
-      v27 = [v29 trailingAnchor];
-      v26 = [v28 constraintLessThanOrEqualToAnchor:v27];
+      trailingAnchor = [(UIView *)self->_activityIndicator trailingAnchor];
+      layoutMarginsGuide2 = [(PRXCardBottomTray *)self layoutMarginsGuide];
+      trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+      v26 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
       v42[2] = v26;
-      v9 = [(UIView *)self->_activityIndicator topAnchor];
-      v10 = [(PRXCardBottomTray *)self topAnchor];
-      v11 = [v9 constraintGreaterThanOrEqualToAnchor:v10 constant:20.0];
+      topAnchor = [(UIView *)self->_activityIndicator topAnchor];
+      topAnchor2 = [(PRXCardBottomTray *)self topAnchor];
+      v11 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:20.0];
       v42[3] = v11;
-      v12 = [(UIView *)self->_activityIndicator bottomAnchor];
-      v13 = [(PRXCardBottomTray *)self layoutMarginsGuide];
-      v14 = [v13 bottomAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14 constant:v8];
+      bottomAnchor = [(UIView *)self->_activityIndicator bottomAnchor];
+      layoutMarginsGuide3 = [(PRXCardBottomTray *)self layoutMarginsGuide];
+      bottomAnchor2 = [layoutMarginsGuide3 bottomAnchor];
+      v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v8];
       v42[4] = v15;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:5];
 
@@ -433,8 +433,8 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v16 = [(PRXCardBottomTray *)self actionButtons];
-    v17 = [v16 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    actionButtons = [(PRXCardBottomTray *)self actionButtons];
+    v17 = [actionButtons countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v17)
     {
       v18 = v17;
@@ -445,13 +445,13 @@
         {
           if (*v38 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(actionButtons);
           }
 
           [*(*(&v37 + 1) + 8 * i) setHidden:v7 != 0];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v18 = [actionButtons countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v18);
@@ -459,45 +459,45 @@
 
     v21 = v7 != 0;
 
-    v22 = [(PRXCardBottomTray *)self titleLabel];
-    [v22 setHidden:v21];
+    titleLabel = [(PRXCardBottomTray *)self titleLabel];
+    [titleLabel setHidden:v21];
 
-    v23 = [(PRXCardBottomTray *)self imageView];
-    [v23 setHidden:v21];
+    imageView = [(PRXCardBottomTray *)self imageView];
+    [imageView setHidden:v21];
 
     [(PRXCardBottomTray *)self setNeedsUpdateConstraints];
-    v24 = [(PRXCardBottomTray *)self delegate];
-    [v24 didChangeContentsOfBottomTray:self];
+    delegate = [(PRXCardBottomTray *)self delegate];
+    [delegate didChangeContentsOfBottomTray:self];
   }
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
   v34[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (self->_imageView != v5)
+  viewCopy = view;
+  v6 = viewCopy;
+  if (self->_imageView != viewCopy)
   {
-    [(UIImageView *)v5 removeFromSuperview];
-    objc_storeStrong(&self->_imageView, a3);
+    [(UIImageView *)viewCopy removeFromSuperview];
+    objc_storeStrong(&self->_imageView, view);
     imageView = self->_imageView;
     if (imageView)
     {
       [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(PRXCardBottomTray *)self addSubview:self->_imageView];
       v24 = MEMORY[0x277CCAAD0];
-      v28 = [(UIImageView *)self->_imageView centerXAnchor];
-      v27 = [(PRXCardBottomTray *)self centerXAnchor];
-      v26 = [v28 constraintEqualToAnchor:v27];
+      centerXAnchor = [(UIImageView *)self->_imageView centerXAnchor];
+      centerXAnchor2 = [(PRXCardBottomTray *)self centerXAnchor];
+      v26 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v34[0] = v26;
-      v25 = [(UIImageView *)self->_imageView topAnchor];
-      v8 = [(PRXCardBottomTray *)self topAnchor];
-      v9 = [v25 constraintGreaterThanOrEqualToAnchor:v8 constant:20.0];
+      topAnchor = [(UIImageView *)self->_imageView topAnchor];
+      topAnchor2 = [(PRXCardBottomTray *)self topAnchor];
+      v9 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:20.0];
       v34[1] = v9;
-      v10 = [(UIImageView *)self->_imageView bottomAnchor];
-      v11 = [(PRXCardBottomTray *)self layoutMarginsGuide];
-      v12 = [v11 bottomAnchor];
-      v13 = [v10 constraintLessThanOrEqualToAnchor:v12 constant:-8.0];
+      bottomAnchor = [(UIImageView *)self->_imageView bottomAnchor];
+      layoutMarginsGuide = [(PRXCardBottomTray *)self layoutMarginsGuide];
+      bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+      v13 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-8.0];
       v34[2] = v13;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:3];
       [v24 activateConstraints:v14];
@@ -507,8 +507,8 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v15 = [(PRXCardBottomTray *)self actionButtons];
-    v16 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    actionButtons = [(PRXCardBottomTray *)self actionButtons];
+    v16 = [actionButtons countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v16)
     {
       v17 = v16;
@@ -519,13 +519,13 @@
         {
           if (*v30 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(actionButtons);
           }
 
           [*(*(&v29 + 1) + 8 * i) setHidden:imageView != 0];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v17 = [actionButtons countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v17);
@@ -533,118 +533,118 @@
 
     v20 = imageView != 0;
 
-    v21 = [(PRXCardBottomTray *)self titleLabel];
-    [v21 setHidden:v20];
+    titleLabel = [(PRXCardBottomTray *)self titleLabel];
+    [titleLabel setHidden:v20];
 
-    v22 = [(PRXCardBottomTray *)self activityIndicator];
-    [v22 setHidden:v20];
+    activityIndicator = [(PRXCardBottomTray *)self activityIndicator];
+    [activityIndicator setHidden:v20];
 
-    v23 = [(PRXCardBottomTray *)self delegate];
-    [v23 didChangeContentsOfBottomTray:self];
+    delegate = [(PRXCardBottomTray *)self delegate];
+    [delegate didChangeContentsOfBottomTray:self];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  titleCopy = title;
+  v5 = [titleCopy copy];
   title = self->_title;
   self->_title = v5;
 
-  v7 = [(PRXCardBottomTray *)self titleLabel];
-  [v7 setText:v4];
+  titleLabel = [(PRXCardBottomTray *)self titleLabel];
+  [titleLabel setText:titleCopy];
 
-  v8 = [(PRXCardBottomTray *)self titleConstraints];
+  titleConstraints = [(PRXCardBottomTray *)self titleConstraints];
 
-  if (v8)
+  if (titleConstraints)
   {
     v9 = MEMORY[0x277CCAAD0];
-    v10 = [(PRXCardBottomTray *)self titleConstraints];
-    [v9 deactivateConstraints:v10];
+    titleConstraints2 = [(PRXCardBottomTray *)self titleConstraints];
+    [v9 deactivateConstraints:titleConstraints2];
 
     [(PRXCardBottomTray *)self setTitleConstraints:0];
   }
 
-  v11 = [(PRXCardBottomTray *)self buttonConstraints];
+  buttonConstraints = [(PRXCardBottomTray *)self buttonConstraints];
 
-  if (v11)
+  if (buttonConstraints)
   {
     v12 = MEMORY[0x277CCAAD0];
-    v13 = [(PRXCardBottomTray *)self buttonConstraints];
-    [v12 deactivateConstraints:v13];
+    buttonConstraints2 = [(PRXCardBottomTray *)self buttonConstraints];
+    [v12 deactivateConstraints:buttonConstraints2];
 
     [(PRXCardBottomTray *)self setButtonConstraints:0];
   }
 
   [(PRXCardBottomTray *)self setNeedsUpdateConstraints];
-  v14 = [(PRXCardBottomTray *)self delegate];
-  [v14 didChangeContentsOfBottomTray:self];
+  delegate = [(PRXCardBottomTray *)self delegate];
+  [delegate didChangeContentsOfBottomTray:self];
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  titleCopy = title;
+  v5 = [titleCopy copy];
   attributedTitle = self->_attributedTitle;
   self->_attributedTitle = v5;
 
-  v7 = [(PRXCardBottomTray *)self titleLabel];
-  [v7 setAttributedText:v4];
+  titleLabel = [(PRXCardBottomTray *)self titleLabel];
+  [titleLabel setAttributedText:titleCopy];
 
-  v8 = [(PRXCardBottomTray *)self titleConstraints];
+  titleConstraints = [(PRXCardBottomTray *)self titleConstraints];
 
-  if (v8)
+  if (titleConstraints)
   {
     v9 = MEMORY[0x277CCAAD0];
-    v10 = [(PRXCardBottomTray *)self titleConstraints];
-    [v9 deactivateConstraints:v10];
+    titleConstraints2 = [(PRXCardBottomTray *)self titleConstraints];
+    [v9 deactivateConstraints:titleConstraints2];
 
     [(PRXCardBottomTray *)self setTitleConstraints:0];
   }
 
-  v11 = [(PRXCardBottomTray *)self buttonConstraints];
+  buttonConstraints = [(PRXCardBottomTray *)self buttonConstraints];
 
-  if (v11)
+  if (buttonConstraints)
   {
     v12 = MEMORY[0x277CCAAD0];
-    v13 = [(PRXCardBottomTray *)self buttonConstraints];
-    [v12 deactivateConstraints:v13];
+    buttonConstraints2 = [(PRXCardBottomTray *)self buttonConstraints];
+    [v12 deactivateConstraints:buttonConstraints2];
 
     [(PRXCardBottomTray *)self setButtonConstraints:0];
   }
 
   [(PRXCardBottomTray *)self setNeedsUpdateConstraints];
-  v14 = [(PRXCardBottomTray *)self delegate];
-  [v14 didChangeContentsOfBottomTray:self];
+  delegate = [(PRXCardBottomTray *)self delegate];
+  [delegate didChangeContentsOfBottomTray:self];
 }
 
 - (BOOL)containsContents
 {
-  v4 = [(PRXCardBottomTray *)self title];
-  if (v4)
+  title = [(PRXCardBottomTray *)self title];
+  if (title)
   {
-    v2 = [(PRXCardBottomTray *)self title];
-    if ([v2 length])
+    title2 = [(PRXCardBottomTray *)self title];
+    if ([title2 length])
     {
       v5 = 1;
       goto LABEL_9;
     }
   }
 
-  v6 = [(PRXCardBottomTray *)self imageView];
-  if (v6)
+  imageView = [(PRXCardBottomTray *)self imageView];
+  if (imageView)
   {
   }
 
   else
   {
-    v7 = [(PRXCardBottomTray *)self actionButtons];
-    if (![v7 count])
+    actionButtons = [(PRXCardBottomTray *)self actionButtons];
+    if (![actionButtons count])
     {
-      v9 = [(PRXCardBottomTray *)self activityIndicator];
-      v5 = v9 != 0;
+      activityIndicator = [(PRXCardBottomTray *)self activityIndicator];
+      v5 = activityIndicator != 0;
 
-      if (!v4)
+      if (!title)
       {
         goto LABEL_10;
       }
@@ -654,7 +654,7 @@
   }
 
   v5 = 1;
-  if (v4)
+  if (title)
   {
 LABEL_9:
   }

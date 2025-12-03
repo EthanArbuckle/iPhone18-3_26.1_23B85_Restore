@@ -1,23 +1,23 @@
 @interface HMPBCharacteristicReference
-+ (id)characteristicReferenceWithCharacteristic:(id)a3;
-+ (id)characteristicReferenceWithData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)characteristicReferenceWithCharacteristic:(id)characteristic;
++ (id)characteristicReferenceWithData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMPBCharacteristicReference
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   serviceReference = self->_serviceReference;
-  v6 = v4[1];
-  v7 = v4;
+  v6 = fromCopy[1];
+  v7 = fromCopy;
   if (serviceReference)
   {
     if (!v6)
@@ -38,24 +38,24 @@
     serviceReference = [(HMPBCharacteristicReference *)self setServiceReference:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[2])
+  if (fromCopy[2])
   {
     serviceReference = [(HMPBCharacteristicReference *)self setUniqueIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](serviceReference, v4);
+  MEMORY[0x1EEE66BB8](serviceReference, fromCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((serviceReference = self->_serviceReference, !(serviceReference | v4[1])) || -[HMPBServiceReference isEqual:](serviceReference, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((serviceReference = self->_serviceReference, !(serviceReference | equalCopy[1])) || -[HMPBServiceReference isEqual:](serviceReference, "isEqual:")))
   {
     uniqueIdentifier = self->_uniqueIdentifier;
-    if (uniqueIdentifier | v4[2])
+    if (uniqueIdentifier | equalCopy[2])
     {
       v7 = [(NSData *)uniqueIdentifier isEqual:?];
     }
@@ -74,71 +74,71 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HMPBServiceReference *)self->_serviceReference copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HMPBServiceReference *)self->_serviceReference copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_uniqueIdentifier copyWithZone:a3];
+  v8 = [(NSData *)self->_uniqueIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_serviceReference)
   {
-    [v4 setServiceReference:?];
-    v4 = v5;
+    [toCopy setServiceReference:?];
+    toCopy = v5;
   }
 
   if (self->_uniqueIdentifier)
   {
     [v5 setUniqueIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_serviceReference)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_uniqueIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   serviceReference = self->_serviceReference;
   if (serviceReference)
   {
-    v5 = [(HMPBServiceReference *)serviceReference dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"serviceReference"];
+    dictionaryRepresentation = [(HMPBServiceReference *)serviceReference dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"serviceReference"];
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
   if (uniqueIdentifier)
   {
-    [v3 setObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
+    [dictionary setObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -147,32 +147,32 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = HMPBCharacteristicReference;
   v4 = [(HMPBCharacteristicReference *)&v8 description];
-  v5 = [(HMPBCharacteristicReference *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMPBCharacteristicReference *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-+ (id)characteristicReferenceWithCharacteristic:(id)a3
++ (id)characteristicReferenceWithCharacteristic:(id)characteristic
 {
-  v3 = a3;
-  v4 = [v3 service];
-  v5 = [HMPBServiceReference serviceReferenceWithService:v4];
+  characteristicCopy = characteristic;
+  service = [characteristicCopy service];
+  v5 = [HMPBServiceReference serviceReferenceWithService:service];
   v6 = objc_alloc_init(HMPBCharacteristicReference);
-  v7 = [v3 uniqueIdentifier];
+  uniqueIdentifier = [characteristicCopy uniqueIdentifier];
 
-  v8 = [v7 hm_convertToData];
-  [(HMPBCharacteristicReference *)v6 setUniqueIdentifier:v8];
+  hm_convertToData = [uniqueIdentifier hm_convertToData];
+  [(HMPBCharacteristicReference *)v6 setUniqueIdentifier:hm_convertToData];
 
   [(HMPBCharacteristicReference *)v6 setServiceReference:v5];
 
   return v6;
 }
 
-+ (id)characteristicReferenceWithData:(id)a3
++ (id)characteristicReferenceWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HMPBCharacteristicReference alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HMPBCharacteristicReference alloc] initWithData:dataCopy];
 
   return v4;
 }

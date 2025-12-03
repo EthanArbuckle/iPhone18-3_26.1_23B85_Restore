@@ -1,22 +1,22 @@
 @interface VMDAccountManager
 - (NSArray)accounts;
-- (VMDAccountManager)initWithDataSource:(id)a3;
-- (void)accountsDidChangeForAccountDataSource:(id)a3;
+- (VMDAccountManager)initWithDataSource:(id)source;
+- (void)accountsDidChangeForAccountDataSource:(id)source;
 @end
 
 @implementation VMDAccountManager
 
 - (NSArray)accounts
 {
-  v2 = [(VMDAccountManager *)self dataSource];
-  v3 = [v2 accounts];
+  dataSource = [(VMDAccountManager *)self dataSource];
+  accounts = [dataSource accounts];
 
-  return v3;
+  return accounts;
 }
 
-- (VMDAccountManager)initWithDataSource:(id)a3
+- (VMDAccountManager)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = VMDAccountManager;
   v6 = [(VMManager *)&v11 init];
@@ -26,10 +26,10 @@
     dataSourceDelegateQueue = v6->_dataSourceDelegateQueue;
     v6->_dataSourceDelegateQueue = v7;
 
-    v9 = [(VMManager *)v6 queue];
-    [(NSOperationQueue *)v6->_dataSourceDelegateQueue setUnderlyingQueue:v9];
+    queue = [(VMManager *)v6 queue];
+    [(NSOperationQueue *)v6->_dataSourceDelegateQueue setUnderlyingQueue:queue];
 
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     [(VMAccountDataSource *)v6->_dataSource setDelegateQueue:v6->_dataSourceDelegateQueue];
     [(VMAccountDataSource *)v6->_dataSource setDelegate:v6];
   }
@@ -37,15 +37,15 @@
   return v6;
 }
 
-- (void)accountsDidChangeForAccountDataSource:(id)a3
+- (void)accountsDidChangeForAccountDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(VMManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  sourceCopy = source;
+  queue = [(VMManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(VMDAccountManager *)self dataSource];
+  dataSource = [(VMDAccountManager *)self dataSource];
 
-  if (v6 == v4)
+  if (dataSource == sourceCopy)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;

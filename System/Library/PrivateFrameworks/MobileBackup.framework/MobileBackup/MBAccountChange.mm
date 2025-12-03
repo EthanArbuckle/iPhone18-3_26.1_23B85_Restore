@@ -1,59 +1,59 @@
 @interface MBAccountChange
-- (MBAccountChange)initWithAccountIdentifier:(id)a3 personaIdentifier:(id)a4 isPrimaryAccount:(BOOL)a5 changeType:(int64_t)a6;
-- (MBAccountChange)initWithCoder:(id)a3;
+- (MBAccountChange)initWithAccountIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier isPrimaryAccount:(BOOL)account changeType:(int64_t)type;
+- (MBAccountChange)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MBAccountChange
 
-- (MBAccountChange)initWithAccountIdentifier:(id)a3 personaIdentifier:(id)a4 isPrimaryAccount:(BOOL)a5 changeType:(int64_t)a6
+- (MBAccountChange)initWithAccountIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier isPrimaryAccount:(BOOL)account changeType:(int64_t)type
 {
-  v11 = a3;
-  v12 = a4;
+  identifierCopy = identifier;
+  personaIdentifierCopy = personaIdentifier;
   v16.receiver = self;
   v16.super_class = MBAccountChange;
   v13 = [(MBAccountChange *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_accountIdentifier, a3);
-    objc_storeStrong(&v14->_personaIdentifier, a4);
-    v14->_isPrimaryAccount = a5;
-    v14->_changeType = a6;
+    objc_storeStrong(&v13->_accountIdentifier, identifier);
+    objc_storeStrong(&v14->_personaIdentifier, personaIdentifier);
+    v14->_isPrimaryAccount = account;
+    v14->_changeType = type;
   }
 
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accountIdentifier = self->_accountIdentifier;
-  v5 = a3;
-  [v5 encodeObject:accountIdentifier forKey:@"accountIdentifier"];
-  [v5 encodeObject:self->_personaIdentifier forKey:@"personaIdentifier"];
-  [v5 encodeBool:self->_isPrimaryAccount forKey:@"isPrimaryAccount"];
-  [v5 encodeInteger:self->_changeType forKey:@"changeType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeObject:self->_personaIdentifier forKey:@"personaIdentifier"];
+  [coderCopy encodeBool:self->_isPrimaryAccount forKey:@"isPrimaryAccount"];
+  [coderCopy encodeInteger:self->_changeType forKey:@"changeType"];
 }
 
-- (MBAccountChange)initWithCoder:(id)a3
+- (MBAccountChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MBAccountChange;
   v5 = [(MBAccountChange *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"accountIdentifier"];
+    v6 = [coderCopy decodeObjectForKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v6;
 
-    v8 = [v4 decodeObjectForKey:@"personaIdentifier"];
+    v8 = [coderCopy decodeObjectForKey:@"personaIdentifier"];
     personaIdentifier = v5->_personaIdentifier;
     v5->_personaIdentifier = v8;
 
-    v5->_isPrimaryAccount = [v4 decodeBoolForKey:@"isPrimaryAccount"];
-    v5->_changeType = [v4 decodeIntegerForKey:@"changeType"];
+    v5->_isPrimaryAccount = [coderCopy decodeBoolForKey:@"isPrimaryAccount"];
+    v5->_changeType = [coderCopy decodeIntegerForKey:@"changeType"];
   }
 
   return v5;

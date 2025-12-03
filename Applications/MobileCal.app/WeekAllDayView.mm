@@ -1,122 +1,122 @@
 @interface WeekAllDayView
-+ (UIEdgeInsets)occurrencePaddingForSizeClass:(int64_t)a3;
-+ (double)_compactRoundedRectHeightForSizeClass:(int64_t)a3;
-+ (double)_fontSizeForSizeClass:(int64_t)a3;
-+ (double)_heightForWeekdayLabelsForSizeClass:(int64_t)a3;
++ (UIEdgeInsets)occurrencePaddingForSizeClass:(int64_t)class;
++ (double)_compactRoundedRectHeightForSizeClass:(int64_t)class;
++ (double)_fontSizeForSizeClass:(int64_t)class;
++ (double)_heightForWeekdayLabelsForSizeClass:(int64_t)class;
 + (double)_overlayFontSize;
-+ (double)_yOffsetForWeekdayLabelsWithSizeClass:(int64_t)a3;
-+ (double)baselineForWeekdayLabelsWithSizeClass:(int64_t)a3;
-+ (double)dayLabelHeightWithSizeClass:(int64_t)a3 usesMultiDay:(BOOL)a4;
-+ (double)occurrenceInsetIntoScrollerWithSizeClassRegular:(BOOL)a3;
-+ (id)_dayLabelFontForSizeClass:(int64_t)a3;
-+ (id)_todayDayLabelFontForSizeClass:(int64_t)a3;
-- (BOOL)_shouldAnnotateAppEntitiesForDay:(id)a3;
-- (BOOL)dateIsWeekend:(id)a3;
++ (double)_yOffsetForWeekdayLabelsWithSizeClass:(int64_t)class;
++ (double)baselineForWeekdayLabelsWithSizeClass:(int64_t)class;
++ (double)dayLabelHeightWithSizeClass:(int64_t)class usesMultiDay:(BOOL)day;
++ (double)occurrenceInsetIntoScrollerWithSizeClassRegular:(BOOL)regular;
++ (id)_dayLabelFontForSizeClass:(int64_t)class;
++ (id)_todayDayLabelFontForSizeClass:(int64_t)class;
+- (BOOL)_shouldAnnotateAppEntitiesForDay:(id)day;
+- (BOOL)dateIsWeekend:(id)weekend;
 - (BOOL)hasOccurrences;
-- (BOOL)scrollerIsParentOfView:(id)a3;
+- (BOOL)scrollerIsParentOfView:(id)view;
 - (CGPoint)contentOffset;
-- (CGRect)_frameForOccurrenceBlock:(id)a3 index:(unint64_t)a4 yPos:(double)a5 padding:(double)a6;
-- (CGRect)_numberFrameForDayIndex:(int64_t)a3;
-- (CGRect)_weekdayFrameForDayIndex:(int64_t)a3;
+- (CGRect)_frameForOccurrenceBlock:(id)block index:(unint64_t)index yPos:(double)pos padding:(double)padding;
+- (CGRect)_numberFrameForDayIndex:(int64_t)index;
+- (CGRect)_weekdayFrameForDayIndex:(int64_t)index;
 - (CGSize)_circleSize;
 - (CGSize)scrollerContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (Class)weekViewClass;
 - (NSArray)occurrenceViews;
 - (UIEdgeInsets)_occurrencePadding;
-- (WeekAllDayView)initWithFrame:(CGRect)a3 orientation:(int64_t)a4 numberOfDaysToDisplay:(unint64_t)a5 opaque:(BOOL)a6 backgroundColor:(id)a7 rightClickDelegate:(id)a8;
+- (WeekAllDayView)initWithFrame:(CGRect)frame orientation:(int64_t)orientation numberOfDaysToDisplay:(unint64_t)display opaque:(BOOL)opaque backgroundColor:(id)color rightClickDelegate:(id)delegate;
 - (WeekAllDayViewDelegate)delegate;
-- (double)_dateForPoint:(CGPoint)a3;
+- (double)_dateForPoint:(CGPoint)point;
 - (double)_dayWidth;
 - (double)baselineForWeekdayNumbers;
 - (double)firstEventYOffset;
-- (double)heightForNumberOfOccurrences:(unint64_t)a3;
+- (double)heightForNumberOfOccurrences:(unint64_t)occurrences;
 - (double)heightWithNoAllDayOccurrences;
-- (double)multiDayAllDayHeightWithUserVisibleEarliestDate:(id)a3 latestDate:(id)a4;
+- (double)multiDayAllDayHeightWithUserVisibleEarliestDate:(id)date latestDate:(id)latestDate;
 - (double)naturalHeight;
-- (double)nextAvailableOccurrenceViewYOriginForDay:(id)a3;
+- (double)nextAvailableOccurrenceViewYOriginForDay:(id)day;
 - (double)occurrenceHeight;
 - (double)occurrenceInsetIntoScroller;
-- (double)scrollerContentHeightWithUserVisibleEarliestDate:(id)a3 latestDate:(id)a4 withoutScroller:(BOOL)a5;
-- (id)_allDayOccurrenceBlocksForEvents:(id)a3 rangeStart:(id)a4 rangeEnd:(id)a5;
+- (double)scrollerContentHeightWithUserVisibleEarliestDate:(id)date latestDate:(id)latestDate withoutScroller:(BOOL)scroller;
+- (id)_allDayOccurrenceBlocksForEvents:(id)events rangeStart:(id)start rangeEnd:(id)end;
 - (id)_calendarOrderSortDescriptor;
-- (id)_dayLabelColorAtDayIndex:(int64_t)a3 isWeekend:(BOOL)a4;
-- (id)_dayOccurrenceViewForEvent:(id)a3 block:(id)a4;
-- (id)_extractEventsEndingAfterTimeframeFrom:(id)a3;
-- (id)_extractEventsStartingBeforeTimeframeFrom:(id)a3;
-- (id)_getSortedBlocksFromOccurrenceBlocks:(id)a3;
+- (id)_dayLabelColorAtDayIndex:(int64_t)index isWeekend:(BOOL)weekend;
+- (id)_dayOccurrenceViewForEvent:(id)event block:(id)block;
+- (id)_extractEventsEndingAfterTimeframeFrom:(id)from;
+- (id)_extractEventsStartingBeforeTimeframeFrom:(id)from;
+- (id)_getSortedBlocksFromOccurrenceBlocks:(id)blocks;
 - (id)_numberOfDaysSortDescriptor;
 - (id)_rangeEnd;
 - (id)_rangeStart;
-- (id)_sortBlocks:(id)a3 intoRowsUsingDataFrom:(id)a4;
-- (id)occurrenceViewForEvent:(id)a3;
-- (id)occurrenceViewForEvent:(id)a3 occurrenceDate:(id)a4;
-- (id)occurrenceViewForOccurrence:(id)a3;
+- (id)_sortBlocks:(id)blocks intoRowsUsingDataFrom:(id)from;
+- (id)occurrenceViewForEvent:(id)event;
+- (id)occurrenceViewForEvent:(id)event occurrenceDate:(id)date;
+- (id)occurrenceViewForOccurrence:(id)occurrence;
 - (id)presentationControllerForEditMenu;
 - (id)selectedEventsForEditMenu;
 - (int64_t)_dayIndexForToday;
-- (int64_t)_specialDayTypeForOccurrence:(id)a3;
-- (int64_t)dayIndexForCalendarDate:(id)a3;
+- (int64_t)_specialDayTypeForOccurrence:(id)occurrence;
+- (int64_t)dayIndexForCalendarDate:(id)date;
 - (int64_t)daysToDisplay;
-- (int64_t)rowIndexOfOccurrence:(id)a3;
-- (unint64_t)_calendarOrderForCalendar:(id)a3;
+- (int64_t)rowIndexOfOccurrence:(id)occurrence;
+- (unint64_t)_calendarOrderForCalendar:(id)calendar;
 - (unint64_t)maxOccurrencesWithoutScroller;
 - (void)_buildDayNumberViews;
 - (void)_buildVerticalDaySeparators;
 - (void)_computeDayStartsAndEndDate;
-- (void)_contentSizeCategoryChanged:(id)a3;
-- (void)_fadeInOccurrenceView:(id)a3 animated:(BOOL)a4;
+- (void)_contentSizeCategoryChanged:(id)changed;
+- (void)_fadeInOccurrenceView:(id)view animated:(BOOL)animated;
 - (void)_layoutDayNumberCells;
 - (void)_layoutVerticalDaySeparators;
-- (void)_localeChanged:(id)a3;
-- (void)_tapReceived:(id)a3;
-- (void)_updateCell:(id)a3 withBadgeDataIndex:(unint64_t)a4;
+- (void)_localeChanged:(id)changed;
+- (void)_tapReceived:(id)received;
+- (void)_updateCell:(id)cell withBadgeDataIndex:(unint64_t)index;
 - (void)_updateDayBadges;
 - (void)_updateHeaderViewsIfNeeded;
 - (void)_updateShouldAnnotateByDay;
-- (void)addViewToScroller:(id)a3;
+- (void)addViewToScroller:(id)scroller;
 - (void)attemptDisplayReviewPrompt;
 - (void)clearTemporaryViews;
-- (void)dayOccurrenceViewSelected:(id)a3 source:(unint64_t)a4;
+- (void)dayOccurrenceViewSelected:(id)selected source:(unint64_t)source;
 - (void)dealloc;
-- (void)emptySpaceClickForCalendarWeekDayEventContent:(id)a3 atPoint:(CGPoint)a4;
-- (void)iterateThroughEachAllDayRow:(id)a3;
-- (void)iterateThroughEachOccurrence:(id)a3;
+- (void)emptySpaceClickForCalendarWeekDayEventContent:(id)content atPoint:(CGPoint)point;
+- (void)iterateThroughEachAllDayRow:(id)row;
+- (void)iterateThroughEachOccurrence:(id)occurrence;
 - (void)layedOutRowsRemoveAllObjects;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)rectBecameVisible:(CGRect)a3;
+- (void)rectBecameVisible:(CGRect)visible;
 - (void)saveTemporaryViews;
-- (void)scrollToEvent:(id)a3 animating:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)selectEvent:(id)a3;
-- (void)setAllowsOccurrenceSelection:(BOOL)a3;
-- (void)setCalendar:(id)a3;
-- (void)setDimmedOccurrence:(id)a3;
-- (void)setFixedDayWidth:(double)a3;
-- (void)setOccurrences:(id)a3 animated:(BOOL)a4;
-- (void)setOrientation:(int64_t)a3;
-- (void)setReceiveTapsInHeader:(BOOL)a3;
-- (void)setStartDate:(id)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setUseMultiDayHeaderStyle:(BOOL)a3;
-- (void)setUsesSmallText:(BOOL)a3;
-- (void)setViewsDimmed:(BOOL)a3 forEvent:(id)a4;
+- (void)scrollToEvent:(id)event animating:(BOOL)animating;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)selectEvent:(id)event;
+- (void)setAllowsOccurrenceSelection:(BOOL)selection;
+- (void)setCalendar:(id)calendar;
+- (void)setDimmedOccurrence:(id)occurrence;
+- (void)setFixedDayWidth:(double)width;
+- (void)setOccurrences:(id)occurrences animated:(BOOL)animated;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setReceiveTapsInHeader:(BOOL)header;
+- (void)setStartDate:(id)date;
+- (void)setTimeZone:(id)zone;
+- (void)setUseMultiDayHeaderStyle:(BOOL)style;
+- (void)setUsesSmallText:(BOOL)text;
+- (void)setViewsDimmed:(BOOL)dimmed forEvent:(id)event;
 - (void)shouldAnnotateAppEntitiesChanged;
-- (void)showOverlayMonthInCellAtOffset:(double)a3 animated:(BOOL)a4;
+- (void)showOverlayMonthInCellAtOffset:(double)offset animated:(BOOL)animated;
 - (void)updateSeparatorVisibility;
-- (void)updateTotalRowCountWithContainerRect:(CGRect)a3;
+- (void)updateTotalRowCountWithContainerRect:(CGRect)rect;
 @end
 
 @implementation WeekAllDayView
 
 - (int64_t)daysToDisplay
 {
-  v2 = [(WeekAllDayView *)self weekViewClass];
+  weekViewClass = [(WeekAllDayView *)self weekViewClass];
 
-  return [(objc_class *)v2 numMultiDays];
+  return [(objc_class *)weekViewClass numMultiDays];
 }
 
 - (Class)weekViewClass
@@ -127,29 +127,29 @@
   return v2;
 }
 
-- (WeekAllDayView)initWithFrame:(CGRect)a3 orientation:(int64_t)a4 numberOfDaysToDisplay:(unint64_t)a5 opaque:(BOOL)a6 backgroundColor:(id)a7 rightClickDelegate:(id)a8
+- (WeekAllDayView)initWithFrame:(CGRect)frame orientation:(int64_t)orientation numberOfDaysToDisplay:(unint64_t)display opaque:(BOOL)opaque backgroundColor:(id)color rightClickDelegate:(id)delegate
 {
-  v9 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a7;
-  v18 = a8;
+  opaqueCopy = opaque;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
+  delegateCopy = delegate;
   v50.receiver = self;
   v50.super_class = WeekAllDayView;
-  v19 = [(WeekAllDayView *)&v50 initWithFrame:x, y, width, height];
-  v20 = v19;
-  if (v19)
+  height = [(WeekAllDayView *)&v50 initWithFrame:x, y, width, height];
+  v20 = height;
+  if (height)
   {
-    [(WeekAllDayView *)v19 setAutoresizingMask:2];
-    [(WeekAllDayView *)v20 setBackgroundColor:v17];
-    [(WeekAllDayView *)v20 setOpaque:v9];
+    [(WeekAllDayView *)height setAutoresizingMask:2];
+    [(WeekAllDayView *)v20 setBackgroundColor:colorCopy];
+    [(WeekAllDayView *)v20 setOpaque:opaqueCopy];
     v21 = CUIKCalendar();
     calendar = v20->_calendar;
     v20->_calendar = v21;
 
-    v20->_orientation = a4;
+    v20->_orientation = orientation;
     v23 = objc_alloc_init(NSMutableArray);
     layedOutRows = v20->_layedOutRows;
     v20->_layedOutRows = v23;
@@ -158,7 +158,7 @@
     layedOutRowsForEachDay = v20->_layedOutRowsForEachDay;
     v20->_layedOutRowsForEachDay = v25;
 
-    v20->_daysToDisplay = a5;
+    v20->_daysToDisplay = display;
     v20->_allowsOccurrenceSelection = 1;
     v27 = [UIScrollView alloc];
     [(WeekViewAllDayContents *)v20->_contentView bounds];
@@ -195,7 +195,7 @@
     }
 
     v35 = v20->_contentView;
-    v36 = [[EKUIRightClickEmptySpaceInteraction alloc] initWithDelegate:v18];
+    v36 = [[EKUIRightClickEmptySpaceInteraction alloc] initWithDelegate:delegateCopy];
     [(WeekViewAllDayContents *)v35 addInteraction:v36];
 
     [(UIScrollView *)v20->_scroller addSubview:v20->_contentView];
@@ -254,7 +254,7 @@
   [(WeekAllDayView *)&v4 dealloc];
 }
 
-- (void)_localeChanged:(id)a3
+- (void)_localeChanged:(id)changed
 {
   if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy())
   {
@@ -295,7 +295,7 @@
   [(WeekAllDayView *)self _setNeedsHeaderUpdate];
 }
 
-- (void)_contentSizeCategoryChanged:(id)a3
+- (void)_contentSizeCategoryChanged:(id)changed
 {
   IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy();
   v5 = off_10020D4E0;
@@ -309,9 +309,9 @@
   [(WeekAllDayView *)self _setNeedsHeaderUpdate];
 }
 
-- (void)iterateThroughEachAllDayRow:(id)a3
+- (void)iterateThroughEachAllDayRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   if ([(WeekAllDayView *)self splitMultiDayEvents])
   {
     v35 = 0uLL;
@@ -356,7 +356,7 @@
                   objc_enumerationMutation(v10);
                 }
 
-                v4[2](v4, v6, *(*(&v28 + 1) + 8 * j), v13, &v32);
+                rowCopy[2](rowCopy, v6, *(*(&v28 + 1) + 8 * j), v13, &v32);
                 if (v32)
                 {
 
@@ -411,7 +411,7 @@ LABEL_20:
 
         v21 = *(*(&v24 + 1) + 8 * v20);
         v32 = 0;
-        v4[2](v4, -1, v21, v18, &v32);
+        rowCopy[2](rowCopy, -1, v21, v18, &v32);
         if (v32)
         {
           break;
@@ -435,22 +435,22 @@ LABEL_20:
 LABEL_28:
 }
 
-- (void)iterateThroughEachOccurrence:(id)a3
+- (void)iterateThroughEachOccurrence:(id)occurrence
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100028B40;
   v5[3] = &unk_10020EF70;
-  v6 = a3;
-  v4 = v6;
+  occurrenceCopy = occurrence;
+  v4 = occurrenceCopy;
   [(WeekAllDayView *)self iterateThroughEachAllDayRow:v5];
 }
 
-- (void)setUseMultiDayHeaderStyle:(BOOL)a3
+- (void)setUseMultiDayHeaderStyle:(BOOL)style
 {
-  if (self->_useMultiDayHeaderStyle != a3)
+  if (self->_useMultiDayHeaderStyle != style)
   {
-    self->_useMultiDayHeaderStyle = a3;
+    self->_useMultiDayHeaderStyle = style;
     [(WeekAllDayView *)self updateSeparatorVisibility];
   }
 }
@@ -483,18 +483,18 @@ LABEL_7:
   [(UIView *)bottomSeparator setHidden:v6];
 }
 
-- (void)setUsesSmallText:(BOOL)a3
+- (void)setUsesSmallText:(BOOL)text
 {
-  if (self->_usesSmallText != a3)
+  if (self->_usesSmallText != text)
   {
     v7 = v3;
     v8 = v4;
-    self->_usesSmallText = a3;
+    self->_usesSmallText = text;
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100028DB8;
     v5[3] = &unk_10020EF90;
-    v6 = a3;
+    textCopy = text;
     [(WeekAllDayView *)self iterateThroughEachOccurrence:v5];
   }
 }
@@ -543,7 +543,7 @@ LABEL_7:
   }
 }
 
-- (void)showOverlayMonthInCellAtOffset:(double)a3 animated:(BOOL)a4
+- (void)showOverlayMonthInCellAtOffset:(double)offset animated:(BOOL)animated
 {
   if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy())
   {
@@ -553,8 +553,8 @@ LABEL_7:
     v8[2] = sub_100028FFC;
     v8[3] = &unk_10020EFB8;
     v8[4] = self;
-    *&v8[5] = a3;
-    v9 = a4;
+    *&v8[5] = offset;
+    animatedCopy = animated;
     [(NSArray *)dayNumberViews enumerateObjectsUsingBlock:v8];
   }
 }
@@ -567,11 +567,11 @@ LABEL_7:
   return result;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(WeekAllDayView *)self setNeedsLayout];
   }
 }
@@ -628,8 +628,8 @@ LABEL_7:
   if (self->_startDate && self->_calendar)
   {
     obj = [[NSMutableArray alloc] initWithCapacity:self->_daysToDisplay];
-    v3 = [(NSCalendar *)self->_calendar timeZone];
-    v4 = [EKCalendarDate calendarDateWithDateComponents:self->_startDate timeZone:v3];
+    timeZone = [(NSCalendar *)self->_calendar timeZone];
+    v4 = [EKCalendarDate calendarDateWithDateComponents:self->_startDate timeZone:timeZone];
     IsLeftToRight = CalTimeDirectionIsLeftToRight();
     if (IsLeftToRight)
     {
@@ -677,18 +677,18 @@ LABEL_7:
       [obj firstObject];
     }
     v11 = ;
-    v12 = [v11 allComponents];
+    allComponents = [v11 allComponents];
     endDate = self->_endDate;
-    self->_endDate = v12;
+    self->_endDate = allComponents;
 
     [(WeekAllDayView *)self _buildDayNumberViews];
     [(WeekAllDayView *)self _updateShouldAnnotateByDay];
   }
 }
 
-- (BOOL)_shouldAnnotateAppEntitiesForDay:(id)a3
+- (BOOL)_shouldAnnotateAppEntitiesForDay:(id)day
 {
-  v4 = a3;
+  dayCopy = day;
   shouldAnnotateByDay = self->_shouldAnnotateByDay;
   if (!shouldAnnotateByDay)
   {
@@ -696,10 +696,10 @@ LABEL_7:
     shouldAnnotateByDay = self->_shouldAnnotateByDay;
   }
 
-  v6 = [(NSMutableDictionary *)shouldAnnotateByDay objectForKeyedSubscript:v4];
-  v7 = [v6 BOOLValue];
+  v6 = [(NSMutableDictionary *)shouldAnnotateByDay objectForKeyedSubscript:dayCopy];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (void)_updateShouldAnnotateByDay
@@ -748,8 +748,8 @@ LABEL_7:
 
           v15 = [NSNumber numberWithBool:v14];
           v16 = self->_shouldAnnotateByDay;
-          v17 = [v12 date];
-          [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:v17];
+          date = [v12 date];
+          [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:date];
 
           v11 = v11 + 1;
         }
@@ -774,26 +774,26 @@ LABEL_7:
   [(WeekAllDayView *)self iterateThroughEachOccurrence:v3];
 }
 
-- (void)setStartDate:(id)a3
+- (void)setStartDate:(id)date
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_startDate] & 1) == 0)
+  dateCopy = date;
+  if (([dateCopy isEqual:self->_startDate] & 1) == 0)
   {
-    v4 = [v6 dateComponentsForDateOnly];
+    dateComponentsForDateOnly = [dateCopy dateComponentsForDateOnly];
     startDate = self->_startDate;
-    self->_startDate = v4;
+    self->_startDate = dateComponentsForDateOnly;
 
     [(WeekAllDayView *)self _computeDayStartsAndEndDate];
     [(WeekAllDayView *)self _setNeedsHeaderUpdate];
   }
 }
 
-- (void)setCalendar:(id)a3
+- (void)setCalendar:(id)calendar
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_calendar] & 1) == 0)
+  calendarCopy = calendar;
+  if (([calendarCopy isEqual:self->_calendar] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [calendarCopy copy];
     calendar = self->_calendar;
     self->_calendar = v4;
 
@@ -802,35 +802,35 @@ LABEL_7:
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
-  v4 = [(NSCalendar *)self->_calendar timeZone];
-  v5 = [v6 isEqualToTimeZone:v4];
+  zoneCopy = zone;
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
+  v5 = [zoneCopy isEqualToTimeZone:timeZone];
 
   if ((v5 & 1) == 0)
   {
-    [(NSCalendar *)self->_calendar setTimeZone:v6];
+    [(NSCalendar *)self->_calendar setTimeZone:zoneCopy];
     [(WeekAllDayView *)self _computeDayStartsAndEndDate];
     [(WeekAllDayView *)self _setNeedsHeaderUpdate];
   }
 }
 
-- (void)setFixedDayWidth:(double)a3
+- (void)setFixedDayWidth:(double)width
 {
-  if (self->_fixedDayWidth != a3)
+  if (self->_fixedDayWidth != width)
   {
-    self->_fixedDayWidth = a3;
+    self->_fixedDayWidth = width;
     [(WeekAllDayView *)self setNeedsLayout];
   }
 }
 
-- (void)rectBecameVisible:(CGRect)a3
+- (void)rectBecameVisible:(CGRect)visible
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(UIScrollView *)self->_scroller contentSize:a3.origin.x];
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  [(UIScrollView *)self->_scroller contentSize:visible.origin.x];
   v8 = v7;
   [(WeekAllDayView *)self updateTotalRowCountWithContainerRect:x, y, width, v7];
   self->_latestVisibleRect.origin.x = x;
@@ -839,11 +839,11 @@ LABEL_7:
   self->_latestVisibleRect.size.height = v8;
 }
 
-- (id)occurrenceViewForOccurrence:(id)a3
+- (id)occurrenceViewForOccurrence:(id)occurrence
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  occurrenceCopy = occurrence;
+  v5 = occurrenceCopy;
+  if (occurrenceCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -855,7 +855,7 @@ LABEL_7:
     v8[1] = 3221225472;
     v8[2] = sub_100029B50;
     v8[3] = &unk_10020F008;
-    v9 = v4;
+    v9 = occurrenceCopy;
     v10 = &v11;
     [(WeekAllDayView *)self iterateThroughEachOccurrence:v8];
     v6 = v12[5];
@@ -871,34 +871,34 @@ LABEL_7:
   return v6;
 }
 
-- (void)scrollToEvent:(id)a3 animating:(BOOL)a4
+- (void)scrollToEvent:(id)event animating:(BOOL)animating
 {
-  v4 = a4;
-  v7 = a3;
+  animatingCopy = animating;
+  eventCopy = event;
   if (self->_scroller)
   {
-    v10 = v7;
-    if (v4 && !self->_scrollingToOccurrence)
+    v10 = eventCopy;
+    if (animatingCopy && !self->_scrollingToOccurrence)
     {
-      objc_storeStrong(&self->_scrollingToOccurrence, a3);
+      objc_storeStrong(&self->_scrollingToOccurrence, event);
     }
 
     v8 = [(WeekAllDayView *)self occurrenceViewForOccurrence:v10];
     scroller = self->_scroller;
     [v8 frame];
-    [(UIScrollView *)scroller scrollRectToVisible:v4 animated:?];
+    [(UIScrollView *)scroller scrollRectToVisible:animatingCopy animated:?];
   }
 
   _objc_release_x2();
 }
 
-- (void)setAllowsOccurrenceSelection:(BOOL)a3
+- (void)setAllowsOccurrenceSelection:(BOOL)selection
 {
-  if (self->_allowsOccurrenceSelection != a3)
+  if (self->_allowsOccurrenceSelection != selection)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_allowsOccurrenceSelection = a3;
+    self->_allowsOccurrenceSelection = selection;
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100029D44;
@@ -908,15 +908,15 @@ LABEL_7:
   }
 }
 
-- (void)setViewsDimmed:(BOOL)a3 forEvent:(id)a4
+- (void)setViewsDimmed:(BOOL)dimmed forEvent:(id)event
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100029E40;
   v7[3] = &unk_10020F030;
-  v8 = a4;
-  v9 = a3;
-  v6 = v8;
+  eventCopy = event;
+  dimmedCopy = dimmed;
+  v6 = eventCopy;
   [(WeekAllDayView *)self iterateThroughEachOccurrence:v7];
 }
 
@@ -937,11 +937,11 @@ LABEL_7:
   return v2;
 }
 
-- (void)selectEvent:(id)a3
+- (void)selectEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_selectedEvent != v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy && self->_selectedEvent != eventCopy)
   {
     v10 = 0;
     v11 = &v10;
@@ -951,7 +951,7 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = sub_10002A148;
     v7[3] = &unk_10020F008;
-    v8 = v4;
+    v8 = eventCopy;
     v9 = &v10;
     [(WeekAllDayView *)self iterateThroughEachOccurrence:v7];
     if ((v11[3] & 1) == 0)
@@ -969,17 +969,17 @@ LABEL_7:
   }
 }
 
-- (void)setDimmedOccurrence:(id)a3
+- (void)setDimmedOccurrence:(id)occurrence
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_dimmedOccurrence] & 1) == 0)
+  occurrenceCopy = occurrence;
+  if (([occurrenceCopy isEqual:self->_dimmedOccurrence] & 1) == 0)
   {
     if (self->_dimmedOccurrence)
     {
       [(WeekAllDayView *)self setViewsDimmed:0 forEvent:?];
     }
 
-    objc_storeStrong(&self->_dimmedOccurrence, a3);
+    objc_storeStrong(&self->_dimmedOccurrence, occurrence);
     if (self->_dimmedOccurrence)
     {
       [(WeekAllDayView *)self setViewsDimmed:1 forEvent:?];
@@ -1000,7 +1000,7 @@ LABEL_7:
   return v3;
 }
 
-- (id)occurrenceViewForEvent:(id)a3
+- (id)occurrenceViewForEvent:(id)event
 {
   v10 = 0;
   v11 = &v10;
@@ -1012,8 +1012,8 @@ LABEL_7:
   v7[1] = 3221225472;
   v7[2] = sub_10002A48C;
   v7[3] = &unk_10020F008;
-  v4 = a3;
-  v8 = v4;
+  eventCopy = event;
+  v8 = eventCopy;
   v9 = &v10;
   [(WeekAllDayView *)self iterateThroughEachOccurrence:v7];
   v5 = v11[5];
@@ -1023,9 +1023,9 @@ LABEL_7:
   return v5;
 }
 
-- (int64_t)dayIndexForCalendarDate:(id)a3
+- (int64_t)dayIndexForCalendarDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1049,7 +1049,7 @@ LABEL_7:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v14 + 1) + 8 * v11) isEqual:{v4, v14}])
+        if ([*(*(&v14 + 1) + 8 * v11) isEqual:{dateCopy, v14}])
         {
           v10 = v12;
         }
@@ -1074,12 +1074,12 @@ LABEL_7:
   return v10;
 }
 
-- (id)occurrenceViewForEvent:(id)a3 occurrenceDate:(id)a4
+- (id)occurrenceViewForEvent:(id)event occurrenceDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WeekAllDayView *)self useMultiDayHeaderStyle];
-  if (v7 && (v8 & 1) != 0)
+  eventCopy = event;
+  dateCopy = date;
+  useMultiDayHeaderStyle = [(WeekAllDayView *)self useMultiDayHeaderStyle];
+  if (dateCopy && (useMultiDayHeaderStyle & 1) != 0)
   {
     v15 = 0;
     v16 = &v15;
@@ -1091,8 +1091,8 @@ LABEL_7:
     v11[1] = 3221225472;
     v11[2] = sub_10002A9C4;
     v11[3] = &unk_10020F080;
-    v14 = [(WeekAllDayView *)self dayIndexForCalendarDate:v7];
-    v12 = v6;
+    v14 = [(WeekAllDayView *)self dayIndexForCalendarDate:dateCopy];
+    v12 = eventCopy;
     v13 = &v15;
     [(WeekAllDayView *)self iterateThroughEachAllDayRow:v11];
     v9 = v16[5];
@@ -1102,40 +1102,40 @@ LABEL_7:
 
   else
   {
-    v9 = [(WeekAllDayView *)self occurrenceViewForEvent:v6];
+    v9 = [(WeekAllDayView *)self occurrenceViewForEvent:eventCopy];
   }
 
   return v9;
 }
 
-- (id)_getSortedBlocksFromOccurrenceBlocks:(id)a3
+- (id)_getSortedBlocksFromOccurrenceBlocks:(id)blocks
 {
-  v4 = a3;
+  blocksCopy = blocks;
   v5 = [NSArray alloc];
-  v6 = [(WeekAllDayView *)self _calendarOrderSortDescriptor];
-  v7 = [(WeekAllDayView *)self _numberOfDaysSortDescriptor];
-  v8 = [v5 initWithObjects:{v6, v7, 0}];
+  _calendarOrderSortDescriptor = [(WeekAllDayView *)self _calendarOrderSortDescriptor];
+  _numberOfDaysSortDescriptor = [(WeekAllDayView *)self _numberOfDaysSortDescriptor];
+  v8 = [v5 initWithObjects:{_calendarOrderSortDescriptor, _numberOfDaysSortDescriptor, 0}];
 
-  v9 = [v4 sortedArrayUsingDescriptors:v8];
+  v9 = [blocksCopy sortedArrayUsingDescriptors:v8];
 
   return v9;
 }
 
-- (void)addViewToScroller:(id)a3
+- (void)addViewToScroller:(id)scroller
 {
-  v4 = a3;
+  scrollerCopy = scroller;
   if (self->_scroller)
   {
-    v16 = v4;
-    v5 = [v4 superview];
+    v16 = scrollerCopy;
+    superview = [scrollerCopy superview];
     scroller = self->_scroller;
 
-    v4 = v16;
-    if (v5 != scroller)
+    scrollerCopy = v16;
+    if (superview != scroller)
     {
-      v7 = [v16 superview];
+      superview2 = [v16 superview];
       [v16 frame];
-      [v7 convertRect:self->_scroller toView:?];
+      [superview2 convertRect:self->_scroller toView:?];
       v9 = v8;
       v11 = v10;
       v13 = v12;
@@ -1143,16 +1143,16 @@ LABEL_7:
 
       [(UIScrollView *)self->_scroller addSubview:v16];
       [v16 setFrame:{v9, v11, v13, v15}];
-      v4 = v16;
+      scrollerCopy = v16;
     }
   }
 }
 
-- (BOOL)scrollerIsParentOfView:(id)a3
+- (BOOL)scrollerIsParentOfView:(id)view
 {
   scroller = self->_scroller;
-  v4 = [a3 superview];
-  LOBYTE(scroller) = scroller == v4;
+  superview = [view superview];
+  LOBYTE(scroller) = scroller == superview;
 
   return scroller;
 }
@@ -1208,8 +1208,8 @@ LABEL_7:
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v7 = [v6 allKeys];
-        v8 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        allKeys = [v6 allKeys];
+        v8 = [allKeys countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v8)
         {
           v9 = v8;
@@ -1220,7 +1220,7 @@ LABEL_7:
             {
               if (*v17 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allKeys);
               }
 
               v12 = [v6 objectForKeyedSubscript:*(*(&v16 + 1) + 8 * j)];
@@ -1233,7 +1233,7 @@ LABEL_7:
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v9 = [allKeys countByEnumeratingWithState:&v16 objects:v24 count:16];
           }
 
           while (v9);
@@ -1249,36 +1249,36 @@ LABEL_7:
   }
 }
 
-- (id)_allDayOccurrenceBlocksForEvents:(id)a3 rangeStart:(id)a4 rangeEnd:(id)a5
+- (id)_allDayOccurrenceBlocksForEvents:(id)events rangeStart:(id)start rangeEnd:(id)end
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventsCopy = events;
+  startCopy = start;
+  endCopy = end;
   v34 = +[NSMutableArray array];
-  LOBYTE(a5) = [(WeekAllDayView *)self splitMultiDayEvents];
-  v11 = [v8 count];
-  if (a5)
+  LOBYTE(end) = [(WeekAllDayView *)self splitMultiDayEvents];
+  v11 = [eventsCopy count];
+  if (end)
   {
     if (v11)
     {
       v12 = 0;
-      v31 = v8;
+      v31 = eventsCopy;
       do
       {
-        v13 = [v8 objectAtIndex:{v12, v31}];
-        v14 = [v13 startCalendarDate];
+        v13 = [eventsCopy objectAtIndex:{v12, v31}];
+        startCalendarDate = [v13 startCalendarDate];
         v33 = v13;
-        v32 = [v13 endCalendarDate];
-        v15 = [v32 differenceInDays:v14];
+        endCalendarDate = [v13 endCalendarDate];
+        v15 = [endCalendarDate differenceInDays:startCalendarDate];
         if ((v15 & 0x8000000000000000) == 0)
         {
           v16 = 0;
           v17 = (v15 + 1);
           do
           {
-            v18 = [v14 calendarDateByAddingDays:v16];
-            v19 = [v18 calendarDateForEndOfDay];
-            if ([v18 compare:v9] != -1 && objc_msgSend(v19, "compare:", v10) != 1)
+            v18 = [startCalendarDate calendarDateByAddingDays:v16];
+            calendarDateForEndOfDay = [v18 calendarDateForEndOfDay];
+            if ([v18 compare:startCopy] != -1 && objc_msgSend(calendarDateForEndOfDay, "compare:", endCopy) != 1)
             {
               v20 = CUIKDayRangeForOccurenceDates();
               v22 = [[EKAllDayOccurrenceBlock alloc] initWithEventIndex:v12 calendarOrder:v12 dayRange:v20, v21];
@@ -1292,7 +1292,7 @@ LABEL_7:
         }
 
         ++v12;
-        v8 = v31;
+        eventsCopy = v31;
       }
 
       while (v12 < [v31 count]);
@@ -1304,9 +1304,9 @@ LABEL_7:
     v23 = 0;
     do
     {
-      v24 = [v8 objectAtIndex:v23];
-      v25 = [v24 startCalendarDate];
-      v26 = [v24 endCalendarDate];
+      v24 = [eventsCopy objectAtIndex:v23];
+      startCalendarDate2 = [v24 startCalendarDate];
+      endCalendarDate2 = [v24 endCalendarDate];
       v27 = CUIKDayRangeForOccurenceDates();
       v29 = [[EKAllDayOccurrenceBlock alloc] initWithEventIndex:v23 calendarOrder:v23 dayRange:v27, v28];
       [v34 addObject:v29];
@@ -1314,18 +1314,18 @@ LABEL_7:
       ++v23;
     }
 
-    while (v23 < [v8 count]);
+    while (v23 < [eventsCopy count]);
   }
 
   return v34;
 }
 
-- (id)_dayOccurrenceViewForEvent:(id)a3 block:(id)a4
+- (id)_dayOccurrenceViewForEvent:(id)event block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  blockCopy = block;
   temporaryViewCacheByDay = self->_temporaryViewCacheByDay;
-  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 rangeStart]);
+  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [blockCopy rangeStart]);
   v10 = [(NSMutableDictionary *)temporaryViewCacheByDay objectForKeyedSubscript:v9];
 
   if (!v10)
@@ -1333,16 +1333,16 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  v11 = [v6 calendarItemIdentifier];
-  if (!v11 || ([v10 objectForKeyedSubscript:v11], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+  calendarItemIdentifier = [eventCopy calendarItemIdentifier];
+  if (!calendarItemIdentifier || ([v10 objectForKeyedSubscript:calendarItemIdentifier], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
 LABEL_6:
-    v14 = [(NSMutableSet *)self->_reusableViews anyObject];
-    if (v14)
+    anyObject = [(NSMutableSet *)self->_reusableViews anyObject];
+    if (anyObject)
     {
-      v13 = v14;
-      [(NSMutableSet *)self->_reusableViews removeObject:v14];
+      v13 = anyObject;
+      [(NSMutableSet *)self->_reusableViews removeObject:anyObject];
       [v13 prepareForReuse];
     }
 
@@ -1356,17 +1356,17 @@ LABEL_6:
   }
 
   v13 = v12;
-  [v10 setObject:0 forKeyedSubscript:v11];
+  [v10 setObject:0 forKeyedSubscript:calendarItemIdentifier];
 
 LABEL_9:
   [v13 setHidden:0];
   [v13 setUsesSmallText:self->_usesSmallText];
-  [v13 setOccurrence:v6];
-  v15 = [(WeekAllDayView *)self _rangeStart];
-  v16 = [v15 calendarDateByAddingDays:{objc_msgSend(v7, "rangeStart")}];
+  [v13 setOccurrence:eventCopy];
+  _rangeStart = [(WeekAllDayView *)self _rangeStart];
+  v16 = [_rangeStart calendarDateByAddingDays:{objc_msgSend(blockCopy, "rangeStart")}];
 
-  v17 = [v6 startCalendarDate];
-  v18 = [v16 differenceInDays:v17];
+  startCalendarDate = [eventCopy startCalendarDate];
+  v18 = [v16 differenceInDays:startCalendarDate];
 
   [v13 setOccurrenceDateIndex:v18];
   [v13 setDelegate:self];
@@ -1376,44 +1376,44 @@ LABEL_9:
   [v13 setAllDayDrawingStyle:1];
   [v13 setOpaque:1];
   v19 = [(NSArray *)self->_dayStarts count];
-  LOBYTE(v17) = CalTimeDirectionIsLeftToRight();
-  v20 = [v7 rangeStart];
-  v21 = v20;
-  if (v17)
+  LOBYTE(startCalendarDate) = CalTimeDirectionIsLeftToRight();
+  rangeStart = [blockCopy rangeStart];
+  v21 = rangeStart;
+  if (startCalendarDate)
   {
-    v22 = [v7 rangeEnd];
+    rangeEnd = [blockCopy rangeEnd];
   }
 
   else
   {
-    v21 = v19 + ~v20;
-    v22 = (v19 + ~[v7 rangeEnd]);
+    v21 = v19 + ~rangeStart;
+    rangeEnd = (v19 + ~[blockCopy rangeEnd]);
   }
 
-  if (v21 < v19 && v22 < v19)
+  if (v21 < v19 && rangeEnd < v19)
   {
-    v23 = [v6 startCalendarDate];
-    [v23 absoluteTime];
+    startCalendarDate2 = [eventCopy startCalendarDate];
+    [startCalendarDate2 absoluteTime];
     v25 = v24;
     v26 = [(NSArray *)self->_dayStarts objectAtIndexedSubscript:v21];
     [v26 absoluteTime];
-    v42 = v7;
+    v42 = blockCopy;
     v27 = v16;
     v28 = v10;
     v30 = v25 < v29;
 
-    v31 = [v6 endCalendarDate];
-    v32 = [v31 calendarDateForDay];
-    [v32 absoluteTime];
+    endCalendarDate = [eventCopy endCalendarDate];
+    calendarDateForDay = [endCalendarDate calendarDateForDay];
+    [calendarDateForDay absoluteTime];
     v34 = v33;
-    v35 = [(NSArray *)self->_dayStarts objectAtIndexedSubscript:v22];
+    v35 = [(NSArray *)self->_dayStarts objectAtIndexedSubscript:rangeEnd];
     [v35 absoluteTime];
     v37 = v34 > v36;
 
     v38 = v30;
     v10 = v28;
     v16 = v27;
-    v7 = v42;
+    blockCopy = v42;
     [v13 setHasPrecedingDuration:v38];
     [v13 setHasTrailingDuration:v37];
   }
@@ -1421,8 +1421,8 @@ LABEL_9:
   [v13 setMultiAllDayRoundCorners:{-[WeekAllDayView useMultiDayHeaderStyle](self, "useMultiDayHeaderStyle")}];
   [(WeekAllDayView *)self _occurrencePadding];
   [v13 setPadding:?];
-  v39 = [v6 startDate];
-  v40 = [(WeekAllDayView *)self _shouldAnnotateAppEntitiesForDay:v39];
+  startDate = [eventCopy startDate];
+  v40 = [(WeekAllDayView *)self _shouldAnnotateAppEntitiesForDay:startDate];
 
   [v13 setShouldAnnotateAppEntities:v40];
   if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy())
@@ -1438,14 +1438,14 @@ LABEL_9:
   return v13;
 }
 
-- (void)_fadeInOccurrenceView:(id)a3 animated:(BOOL)a4
+- (void)_fadeInOccurrenceView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  animatedCopy = animated;
+  viewCopy = view;
+  v6 = viewCopy;
+  if (animatedCopy)
   {
-    [v5 setAlpha:0.0];
+    [viewCopy setAlpha:0.0];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10002B940;
@@ -1456,7 +1456,7 @@ LABEL_9:
 
   else
   {
-    [v5 setAlpha:1.0];
+    [viewCopy setAlpha:1.0];
   }
 }
 
@@ -1492,15 +1492,15 @@ LABEL_9:
     [(NSArray *)dayStarts firstObject];
   }
   v5 = ;
-  v6 = [v5 calendarDateForEndOfDay];
+  calendarDateForEndOfDay = [v5 calendarDateForEndOfDay];
 
-  return v6;
+  return calendarDateForEndOfDay;
 }
 
-- (void)setOccurrences:(id)a3 animated:(BOOL)a4
+- (void)setOccurrences:(id)occurrences animated:(BOOL)animated
 {
-  v103 = a4;
-  v107 = a3;
+  animatedCopy = animated;
+  occurrencesCopy = occurrences;
   v5 = [NSMutableArray arrayWithCapacity:self->_daysToDisplay];
   v6 = [NSMutableArray arrayWithCapacity:self->_daysToDisplay];
   v7 = [NSMutableArray arrayWithCapacity:self->_daysToDisplay];
@@ -1525,11 +1525,11 @@ LABEL_9:
   v109 = v6;
   v110 = v5;
   v106 = v7;
-  v11 = [(WeekAllDayView *)self _rangeStart];
+  _rangeStart = [(WeekAllDayView *)self _rangeStart];
   [(WeekAllDayView *)self _rangeEnd];
-  v99 = v111 = v11;
-  v12 = [(WeekAllDayView *)self _allDayOccurrenceBlocksForEvents:v107 rangeStart:v11 rangeEnd:?];
-  v108 = self;
+  v99 = v111 = _rangeStart;
+  v12 = [(WeekAllDayView *)self _allDayOccurrenceBlocksForEvents:occurrencesCopy rangeStart:_rangeStart rangeEnd:?];
+  selfCopy = self;
   v105 = v12;
   if ([v12 count])
   {
@@ -1537,12 +1537,12 @@ LABEL_9:
     do
     {
       v14 = [v12 objectAtIndexedSubscript:v13];
-      v15 = [v107 objectAtIndex:{objc_msgSend(v14, "eventIndex")}];
+      v15 = [occurrencesCopy objectAtIndex:{objc_msgSend(v14, "eventIndex")}];
       v16 = [(WeekAllDayView *)self _dayOccurrenceViewForEvent:v15 block:v14];
       [v14 setOccurrenceView:v16];
 
-      v17 = [v14 occurrenceView];
-      [(WeekAllDayView *)self _fadeInOccurrenceView:v17 animated:v103];
+      occurrenceView = [v14 occurrenceView];
+      [(WeekAllDayView *)self _fadeInOccurrenceView:occurrenceView animated:animatedCopy];
 
       v18 = [(WeekAllDayView *)self _specialDayTypeForOccurrence:v15];
       v19 = v110;
@@ -1556,16 +1556,16 @@ LABEL_9:
             v22 = [NSNumber numberWithInteger:v20];
             [(NSArray *)v110 replaceObjectAtIndex:i withObject:v22];
 
-            v23 = [v15 calendar];
-            v24 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v23 CGColor]);
+            calendar = [v15 calendar];
+            v24 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [calendar CGColor]);
             [(NSArray *)v109 replaceObjectAtIndex:i withObject:v24];
 
-            v25 = [v15 calendar];
-            v26 = [v25 locale];
-            v27 = v26;
-            if (v26)
+            calendar2 = [v15 calendar];
+            locale = [calendar2 locale];
+            v27 = locale;
+            if (locale)
             {
-              v28 = v26;
+              v28 = locale;
             }
 
             else
@@ -1582,7 +1582,7 @@ LABEL_9:
 
       ++v13;
       v12 = v105;
-      self = v108;
+      self = selfCopy;
     }
 
     while (v13 < [v105 count]);
@@ -1802,11 +1802,11 @@ LABEL_9:
         }
 
         v62 = v101 + 1;
-        self = v108;
+        self = selfCopy;
         v56 = v104;
       }
 
-      while (v101 + 1 < [(WeekAllDayView *)v108 daysToDisplay]);
+      while (v101 + 1 < [(WeekAllDayView *)selfCopy daysToDisplay]);
     }
 
     [v56 removeAllObjects];
@@ -1886,7 +1886,7 @@ LABEL_9:
 LABEL_88:
       v73 = v102 + 1;
 
-      self = v108;
+      self = selfCopy;
       v56 = v104;
       v74 = &OBJC_IVAR___EventSummaryData__endDate;
     }
@@ -1909,13 +1909,13 @@ LABEL_88:
   [(WeekAllDayView *)self setNeedsLayout];
 }
 
-- (id)_sortBlocks:(id)a3 intoRowsUsingDataFrom:(id)a4
+- (id)_sortBlocks:(id)blocks intoRowsUsingDataFrom:(id)from
 {
-  v6 = a3;
-  v7 = a4;
+  blocksCopy = blocks;
+  fromCopy = from;
   if ([(WeekAllDayView *)self splitMultiDayEvents])
   {
-    v21 = v6;
+    v21 = blocksCopy;
   }
 
   else
@@ -1925,8 +1925,8 @@ LABEL_88:
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v19 = v6;
-    obj = v6;
+    v19 = blocksCopy;
+    obj = blocksCopy;
     v8 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
@@ -1942,9 +1942,9 @@ LABEL_88:
           }
 
           v12 = *(*(&v22 + 1) + 8 * i);
-          v13 = [v12 occurrenceView];
-          v14 = [v13 occurrence];
-          v15 = [v7 rowIndexOfOccurrence:v14];
+          occurrenceView = [v12 occurrenceView];
+          occurrence = [occurrenceView occurrence];
+          v15 = [fromCopy rowIndexOfOccurrence:occurrence];
 
           if ((v15 & 0x8000000000000000) != 0)
           {
@@ -1978,25 +1978,25 @@ LABEL_88:
       while (v9);
     }
 
-    v6 = v19;
+    blocksCopy = v19;
   }
 
   return v21;
 }
 
-- (id)_extractEventsStartingBeforeTimeframeFrom:(id)a3
+- (id)_extractEventsStartingBeforeTimeframeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v5 = +[NSMutableArray array];
   calendar = self->_calendar;
-  v7 = [(WeekAllDayView *)self startDate];
-  v8 = [(NSCalendar *)calendar dateFromComponents:v7];
+  startDate = [(WeekAllDayView *)self startDate];
+  v8 = [(NSCalendar *)calendar dateFromComponents:startDate];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v4;
+  v9 = fromCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -2012,11 +2012,11 @@ LABEL_88:
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v14 occurrenceView];
-        v16 = [v15 occurrence];
-        v17 = [v16 startDate];
+        occurrenceView = [v14 occurrenceView];
+        occurrence = [occurrenceView occurrence];
+        startDate2 = [occurrence startDate];
 
-        if ([v17 compare:v8] == -1)
+        if ([startDate2 compare:v8] == -1)
         {
           [v5 addObject:v14];
         }
@@ -2033,16 +2033,16 @@ LABEL_88:
   return v5;
 }
 
-- (id)_extractEventsEndingAfterTimeframeFrom:(id)a3
+- (id)_extractEventsEndingAfterTimeframeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v5 = +[NSMutableArray array];
   v6 = [(NSCalendar *)self->_calendar dateFromComponents:self->_endDate];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = fromCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -2058,11 +2058,11 @@ LABEL_88:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 occurrenceView];
-        v14 = [v13 occurrence];
-        v15 = [v14 endDate];
+        occurrenceView = [v12 occurrenceView];
+        occurrence = [occurrenceView occurrence];
+        endDate = [occurrence endDate];
 
-        if ([v6 compare:v15] == -1)
+        if ([v6 compare:endDate] == -1)
         {
           [v5 addObject:v12];
         }
@@ -2079,15 +2079,15 @@ LABEL_88:
   return v5;
 }
 
-- (int64_t)_specialDayTypeForOccurrence:(id)a3
+- (int64_t)_specialDayTypeForOccurrence:(id)occurrence
 {
-  v3 = a3;
+  occurrenceCopy = occurrence;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v3 specialDayType];
-    if ((v4 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    specialDayType = [occurrenceCopy specialDayType];
+    if ((specialDayType & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
-      v5 = v4;
+      v5 = specialDayType;
     }
 
     else
@@ -2113,18 +2113,18 @@ LABEL_88:
   return v4 + v6;
 }
 
-- (double)heightForNumberOfOccurrences:(unint64_t)a3
+- (double)heightForNumberOfOccurrences:(unint64_t)occurrences
 {
-  v4 = a3;
-  v5 = [(WeekAllDayView *)self maxOccurrencesWithoutScroller];
-  if (v5 + 0.5 <= v4)
+  occurrencesCopy = occurrences;
+  maxOccurrencesWithoutScroller = [(WeekAllDayView *)self maxOccurrencesWithoutScroller];
+  if (maxOccurrencesWithoutScroller + 0.5 <= occurrencesCopy)
   {
-    v6 = v5 + 0.5;
+    v6 = maxOccurrencesWithoutScroller + 0.5;
   }
 
   else
   {
-    v6 = v4;
+    v6 = occurrencesCopy;
   }
 
   [(WeekAllDayView *)self heightWithNoAllDayOccurrences];
@@ -2142,15 +2142,15 @@ LABEL_88:
 
 - (double)naturalHeight
 {
-  v3 = [(WeekAllDayView *)self totalRowCount];
+  totalRowCount = [(WeekAllDayView *)self totalRowCount];
 
-  [(WeekAllDayView *)self heightForNumberOfOccurrences:v3];
+  [(WeekAllDayView *)self heightForNumberOfOccurrences:totalRowCount];
   return result;
 }
 
-- (double)multiDayAllDayHeightWithUserVisibleEarliestDate:(id)a3 latestDate:(id)a4
+- (double)multiDayAllDayHeightWithUserVisibleEarliestDate:(id)date latestDate:(id)latestDate
 {
-  [(WeekAllDayView *)self scrollerContentHeightWithUserVisibleEarliestDate:a3 latestDate:a4 withoutScroller:1];
+  [(WeekAllDayView *)self scrollerContentHeightWithUserVisibleEarliestDate:date latestDate:latestDate withoutScroller:1];
   EKUISeparatorLineThickness();
   [(WeekAllDayView *)self heightWithNoAllDayOccurrences];
 
@@ -2158,18 +2158,18 @@ LABEL_88:
   return result;
 }
 
-- (double)scrollerContentHeightWithUserVisibleEarliestDate:(id)a3 latestDate:(id)a4 withoutScroller:(BOOL)a5
+- (double)scrollerContentHeightWithUserVisibleEarliestDate:(id)date latestDate:(id)latestDate withoutScroller:(BOOL)scroller
 {
-  v5 = a5;
-  v57 = a3;
-  v59 = a4;
-  v52 = [(WeekAllDayView *)self totalRowCount];
-  if (v5)
+  scrollerCopy = scroller;
+  dateCopy = date;
+  latestDateCopy = latestDate;
+  totalRowCount = [(WeekAllDayView *)self totalRowCount];
+  if (scrollerCopy)
   {
-    v8 = [(WeekAllDayView *)self totalRowCount];
-    if (v8 > [(WeekAllDayView *)self maxOccurrencesWithoutScroller])
+    totalRowCount2 = [(WeekAllDayView *)self totalRowCount];
+    if (totalRowCount2 > [(WeekAllDayView *)self maxOccurrencesWithoutScroller])
     {
-      v52 = [(WeekAllDayView *)self maxOccurrencesWithoutScroller];
+      totalRowCount = [(WeekAllDayView *)self maxOccurrencesWithoutScroller];
     }
   }
 
@@ -2181,11 +2181,11 @@ LABEL_88:
   v49 = [(NSMutableArray *)obj countByEnumeratingWithState:&v68 objects:v74 count:16];
   if (v49)
   {
-    v47 = self;
+    selfCopy = self;
     v48 = *v69;
-    if (v57)
+    if (dateCopy)
     {
-      v9 = v59 == 0;
+      v9 = latestDateCopy == 0;
     }
 
     else
@@ -2243,8 +2243,8 @@ LABEL_88:
             v61 = 0u;
             v62 = 0u;
             v63 = 0u;
-            v21 = [v20 occurrenceBlocks];
-            v22 = [v21 countByEnumeratingWithState:&v60 objects:v72 count:16];
+            occurrenceBlocks = [v20 occurrenceBlocks];
+            v22 = [occurrenceBlocks countByEnumeratingWithState:&v60 objects:v72 count:16];
             if (!v22)
             {
               v25 = 0.0;
@@ -2261,45 +2261,45 @@ LABEL_88:
               {
                 if (*v61 != v24)
                 {
-                  objc_enumerationMutation(v21);
+                  objc_enumerationMutation(occurrenceBlocks);
                 }
 
-                v27 = [*(*(&v60 + 1) + 8 * j) occurrenceView];
-                v28 = v27;
+                occurrenceView = [*(*(&v60 + 1) + 8 * j) occurrenceView];
+                v28 = occurrenceView;
                 if (!v10)
                 {
                   goto LABEL_30;
                 }
 
-                v29 = [v27 occurrence];
-                v30 = [v29 startCalendarDate];
-                if ([v30 compare:v59] != -1)
+                occurrence = [occurrenceView occurrence];
+                startCalendarDate = [occurrence startCalendarDate];
+                if ([startCalendarDate compare:latestDateCopy] != -1)
                 {
 
                   goto LABEL_34;
                 }
 
-                v31 = [v28 occurrence];
-                v32 = [v31 endCalendarDate];
-                v33 = v21;
+                occurrence2 = [v28 occurrence];
+                endCalendarDate = [occurrence2 endCalendarDate];
+                v33 = occurrenceBlocks;
                 v34 = v10;
-                v35 = [v32 compare:v57];
+                v35 = [endCalendarDate compare:dateCopy];
 
                 v24 = v58;
                 v9 = v35 == 1;
                 v10 = v34;
-                v21 = v33;
+                occurrenceBlocks = v33;
                 if (v9)
                 {
 LABEL_30:
-                  v36 = [v28 currentImageState];
-                  v37 = [v36 requiresLanguageAwarePadding];
+                  currentImageState = [v28 currentImageState];
+                  requiresLanguageAwarePadding = [currentImageState requiresLanguageAwarePadding];
 
                   v38 = v15;
-                  if (v37)
+                  if (requiresLanguageAwarePadding)
                   {
-                    v39 = [v28 currentImageState];
-                    [v39 totalLanguageAwareHeightPadding];
+                    currentImageState2 = [v28 currentImageState];
+                    [currentImageState2 totalLanguageAwareHeightPadding];
                     v38 = v15 + v40;
                   }
 
@@ -2312,7 +2312,7 @@ LABEL_30:
 LABEL_34:
               }
 
-              v23 = [v21 countByEnumeratingWithState:&v60 objects:v72 count:16];
+              v23 = [occurrenceBlocks countByEnumeratingWithState:&v60 objects:v72 count:16];
             }
 
             while (v23);
@@ -2325,7 +2325,7 @@ LABEL_38:
               v17 = v56 + 1;
             }
 
-            if (v25 > 0.0 && v56 < v52)
+            if (v25 > 0.0 && v56 < totalRowCount)
             {
               v18 = v18 + v25;
             }
@@ -2341,21 +2341,21 @@ LABEL_38:
 
         if (v17)
         {
-          self = v47;
-          [(WeekAllDayView *)v47 occurrenceInsetIntoScroller];
+          self = selfCopy;
+          [(WeekAllDayView *)selfCopy occurrenceInsetIntoScroller];
           v18 = v18 + v42;
           i = v50;
-          if (v17 > v52)
+          if (v17 > totalRowCount)
           {
-            [(WeekAllDayView *)v47 occurrenceHeight];
-            v44 = v18 + v43 * 0.5 + v52 * 3.0;
+            [(WeekAllDayView *)selfCopy occurrenceHeight];
+            v44 = v18 + v43 * 0.5 + totalRowCount * 3.0;
             goto LABEL_50;
           }
         }
 
         else
         {
-          self = v47;
+          self = selfCopy;
           i = v50;
         }
 
@@ -2382,7 +2382,7 @@ LABEL_56:
   return v11;
 }
 
-- (void)updateTotalRowCountWithContainerRect:(CGRect)a3
+- (void)updateTotalRowCountWithContainerRect:(CGRect)rect
 {
   v6 = 0;
   v7 = &v6;
@@ -2392,16 +2392,16 @@ LABEL_56:
   v4[1] = 3221225472;
   v4[2] = sub_10002D1F0;
   v4[3] = &unk_10020F0A8;
-  v5 = a3;
+  rectCopy = rect;
   v4[4] = &v6;
   [(WeekAllDayView *)self iterateThroughEachAllDayRow:v4];
   [(WeekAllDayView *)self setTotalRowCount:v7[3] + 1];
   _Block_object_dispose(&v6, 8);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   fixedDayHeight = self->_fixedDayHeight;
   if (fixedDayHeight <= 0.0)
   {
@@ -2443,13 +2443,13 @@ LABEL_56:
   return result;
 }
 
-- (void)setReceiveTapsInHeader:(BOOL)a3
+- (void)setReceiveTapsInHeader:(BOOL)header
 {
-  if (self->_receiveTapsInHeader != a3)
+  if (self->_receiveTapsInHeader != header)
   {
-    self->_receiveTapsInHeader = a3;
+    self->_receiveTapsInHeader = header;
     tapGestureRecognizer = self->_tapGestureRecognizer;
-    if (a3)
+    if (header)
     {
       if (!tapGestureRecognizer)
       {
@@ -2472,20 +2472,20 @@ LABEL_56:
   }
 }
 
-- (void)_tapReceived:(id)a3
+- (void)_tapReceived:(id)received
 {
-  [a3 locationInView:self];
+  [received locationInView:self];
 
   [(WeekAllDayView *)self emptySpaceClickForCalendarWeekDayEventContent:0 atPoint:?];
 }
 
-+ (UIEdgeInsets)occurrencePaddingForSizeClass:(int64_t)a3
++ (UIEdgeInsets)occurrencePaddingForSizeClass:(int64_t)class
 {
   +[EKDayOccurrenceView defaultPadding];
   v5 = v4;
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
   v7 = v6;
-  if (a3 == 1)
+  if (class == 1)
   {
     v8 = 0.0;
     [v6 _scaledValueForValue:0.0];
@@ -2534,10 +2534,10 @@ LABEL_56:
   return result;
 }
 
-+ (double)_fontSizeForSizeClass:(int64_t)a3
++ (double)_fontSizeForSizeClass:(int64_t)class
 {
   EKUIMultiwindowAssert();
-  if (a3 == 2)
+  if (class == 2)
   {
     v4 = 17.0;
   }
@@ -2572,14 +2572,14 @@ LABEL_56:
   return result;
 }
 
-+ (double)_compactRoundedRectHeightForSizeClass:(int64_t)a3
++ (double)_compactRoundedRectHeightForSizeClass:(int64_t)class
 {
-  [a1 _fontSizeForSizeClass:a3];
+  [self _fontSizeForSizeClass:class];
   v5 = v4;
   v6 = CUIKGetOverlayCalendar();
   if (v6)
   {
-    [a1 _overlayFontSize];
+    [self _overlayFontSize];
     v8 = v7;
   }
 
@@ -2613,12 +2613,12 @@ LABEL_56:
         else
         {
           v5 = objc_alloc_init(LargeDayNavigationViewCell);
-          v6 = [(WeekAllDayView *)self traitCollection];
+          traitCollection = [(WeekAllDayView *)self traitCollection];
           [(DayNavigationViewCell *)v5 setUsesRoundedRectInsteadOfCircle:EKUIUsesRoundedRectsInsteadOfCircles()];
 
           [(MultiDayNavigationViewCell *)v5 setUserInteractionEnabled:0];
-          v7 = [(WeekAllDayView *)self backgroundColor];
-          [(MultiDayNavigationViewCell *)v5 setBackgroundColor:v7];
+          backgroundColor = [(WeekAllDayView *)self backgroundColor];
+          [(MultiDayNavigationViewCell *)v5 setBackgroundColor:backgroundColor];
         }
 
         [(WeekAllDayView *)self addSubview:v5];
@@ -2638,11 +2638,11 @@ LABEL_56:
 - (void)_buildVerticalDaySeparators
 {
   v3 = self->_daysToDisplay - 1;
-  v7 = [(objc_class *)[(WeekAllDayView *)self weekViewClass] weekSeparatorColor];
+  weekSeparatorColor = [(objc_class *)[(WeekAllDayView *)self weekViewClass] weekSeparatorColor];
   for (i = [NSMutableArray arrayWithCapacity:v3];
   {
     v5 = objc_alloc_init(UIView);
-    [v5 setBackgroundColor:v7];
+    [v5 setBackgroundColor:weekSeparatorColor];
     [(WeekAllDayView *)self addSubview:v5];
     [(NSArray *)i addObject:v5];
   }
@@ -2701,7 +2701,7 @@ LABEL_56:
   }
 }
 
-- (CGRect)_numberFrameForDayIndex:(int64_t)a3
+- (CGRect)_numberFrameForDayIndex:(int64_t)index
 {
   if ([(WeekAllDayView *)self useMultiDayHeaderStyle])
   {
@@ -2727,7 +2727,7 @@ LABEL_3:
     [(WeekAllDayView *)self _dayWidth];
     CalRoundToScreenScale();
     v8 = v12;
-    v13 = [(WeekAllDayView *)self traitCollection];
+    traitCollection = [(WeekAllDayView *)self traitCollection];
     v14 = EKUIUsesRoundedRectsInsteadOfCircles();
 
     if (v14)
@@ -2768,7 +2768,7 @@ LABEL_13:
   [(WeekAllDayView *)self _dayWidth];
   CalCeilToScreenScale();
   v6 = v22;
-  v23 = [(WeekAllDayView *)self traitCollection];
+  traitCollection2 = [(WeekAllDayView *)self traitCollection];
   if (EKUIUsesRoundedRectsInsteadOfCircles())
   {
 
@@ -2800,17 +2800,17 @@ LABEL_14:
   return result;
 }
 
-+ (double)_yOffsetForWeekdayLabelsWithSizeClass:(int64_t)a3
++ (double)_yOffsetForWeekdayLabelsWithSizeClass:(int64_t)class
 {
   EKUIMultiwindowAssert();
   v5 = EKUIUsesRoundedRectsInsteadOfCircles();
-  if (a3 == 1 && v5)
+  if (class == 1 && v5)
   {
     [objc_opt_class() dayLabelHeightWithSizeClass:1 usesMultiDay:0];
     v7 = v6;
     CalRoundToScreenScale();
     v9 = v7 - v8;
-    [a1 _heightForWeekdayLabelsForSizeClass:1];
+    [self _heightForWeekdayLabelsForSizeClass:1];
     return v9 - v10;
   }
 
@@ -2823,14 +2823,14 @@ LABEL_14:
   return result;
 }
 
-+ (double)_heightForWeekdayLabelsForSizeClass:(int64_t)a3
++ (double)_heightForWeekdayLabelsForSizeClass:(int64_t)class
 {
   if (!EKUIUsesRoundedRectsInsteadOfCircles())
   {
     return 20.0;
   }
 
-  v5 = [a1 _dayLabelFontForSizeClass:a3];
+  v5 = [self _dayLabelFontForSizeClass:class];
   [v5 lineHeight];
   CalRoundToScreenScale();
   v7 = v6;
@@ -2838,7 +2838,7 @@ LABEL_14:
   return v7;
 }
 
-+ (double)baselineForWeekdayLabelsWithSizeClass:(int64_t)a3
++ (double)baselineForWeekdayLabelsWithSizeClass:(int64_t)class
 {
   v5 = +[EKUISemiConstantCache sharedInstance];
   [v5 weekAllDayBaselineForLargeFormatWeekView];
@@ -2851,16 +2851,16 @@ LABEL_14:
   if (v7 < 0.0 || v10 < 0.0)
   {
     v11 = objc_opt_new();
-    v12 = [a1 _dayLabelFontForSizeClass:a3];
+    v12 = [self _dayLabelFontForSizeClass:class];
     [v11 setFont:v12];
 
-    [a1 _heightForWeekdayLabelsForSizeClass:a3];
+    [self _heightForWeekdayLabelsForSizeClass:class];
     [v11 setFrame:{0.0, 0.0, 20.0, v13}];
     [v11 _firstLineBaselineOffsetFromBoundsTop];
     v15 = v14;
     if (EKUIUsesRoundedRectsInsteadOfCircles())
     {
-      [a1 _yOffsetForWeekdayLabelsWithSizeClass:a3];
+      [self _yOffsetForWeekdayLabelsWithSizeClass:class];
       v17 = v16;
       +[LargeDayNavigationViewCell roundedRectBaselineOffset];
       v7 = v18;
@@ -2882,7 +2882,7 @@ LABEL_14:
     [v22 setWeekAllDayBaselineForLargeFormatWeekView:v10];
   }
 
-  if (a3 == 2)
+  if (class == 2)
   {
     return v7;
   }
@@ -2893,7 +2893,7 @@ LABEL_14:
   }
 }
 
-- (CGRect)_weekdayFrameForDayIndex:(int64_t)a3
+- (CGRect)_weekdayFrameForDayIndex:(int64_t)index
 {
   [(WeekAllDayView *)self _dayWidth];
   CalRoundToScreenScale();
@@ -2917,10 +2917,10 @@ LABEL_14:
   return result;
 }
 
-- (id)_dayLabelColorAtDayIndex:(int64_t)a3 isWeekend:(BOOL)a4
+- (id)_dayLabelColorAtDayIndex:(int64_t)index isWeekend:(BOOL)weekend
 {
-  v4 = a4;
-  v5 = [(NSArray *)self->_dayStarts objectAtIndexedSubscript:a3];
+  weekendCopy = weekend;
+  v5 = [(NSArray *)self->_dayStarts objectAtIndexedSubscript:index];
   [v5 absoluteTime];
   v7 = v6;
 
@@ -2928,7 +2928,7 @@ LABEL_14:
   [v8 timeIntervalSinceReferenceDate];
   v10 = v9;
 
-  if (!v4 || v7 == v10)
+  if (!weekendCopy || v7 == v10)
   {
     v11 = +[UIColor labelColor];
   }
@@ -2950,12 +2950,12 @@ LABEL_14:
   return result;
 }
 
-+ (id)_dayLabelFontForSizeClass:(int64_t)a3
++ (id)_dayLabelFontForSizeClass:(int64_t)class
 {
   EKUIMultiwindowAssert();
   v4 = +[EKUISemiConstantCache sharedInstance];
   v5 = v4;
-  if (a3 == 1)
+  if (class == 1)
   {
     [v4 weekAllDayLabelFontCompact];
   }
@@ -2969,12 +2969,12 @@ LABEL_14:
   return v6;
 }
 
-+ (id)_todayDayLabelFontForSizeClass:(int64_t)a3
++ (id)_todayDayLabelFontForSizeClass:(int64_t)class
 {
   EKUIMultiwindowAssert();
   v4 = +[EKUISemiConstantCache sharedInstance];
   v5 = v4;
-  if (a3 == 1)
+  if (class == 1)
   {
     [v4 weekAllDayTodayLabelFontCompact];
   }
@@ -3040,24 +3040,24 @@ LABEL_14:
     return -1.0;
   }
 
-  v3 = [(NSArray *)self->_dayNumberViews firstObject];
-  [v3 baselineOffsetFromTop];
+  firstObject = [(NSArray *)self->_dayNumberViews firstObject];
+  [firstObject baselineOffsetFromTop];
   v5 = v4;
-  [v3 frame];
+  [firstObject frame];
   v7 = v6;
   v9 = v8;
-  v10 = [v3 superview];
-  [(WeekAllDayView *)self convertPoint:v10 fromView:v7, v9];
+  superview = [firstObject superview];
+  [(WeekAllDayView *)self convertPoint:superview fromView:v7, v9];
   v12 = v11;
 
   v13 = v5 + v12;
   return v13;
 }
 
-+ (double)occurrenceInsetIntoScrollerWithSizeClassRegular:(BOOL)a3
++ (double)occurrenceInsetIntoScrollerWithSizeClassRegular:(BOOL)regular
 {
   result = 3.0;
-  if (a3)
+  if (regular)
   {
     CalRoundToScreenScale();
     v5 = v4;
@@ -3077,11 +3077,11 @@ LABEL_14:
   return result;
 }
 
-- (unint64_t)_calendarOrderForCalendar:(id)a3
+- (unint64_t)_calendarOrderForCalendar:(id)calendar
 {
-  v3 = a3;
-  v4 = [v3 eventStore];
-  v5 = [v4 calendarsForEntityType:0];
+  calendarCopy = calendar;
+  eventStore = [calendarCopy eventStore];
+  v5 = [eventStore calendarsForEntityType:0];
 
   v16 = 0u;
   v17 = 0u;
@@ -3106,7 +3106,7 @@ LABEL_14:
           objc_enumerationMutation(v6);
         }
 
-        if ([*(*(&v14 + 1) + 8 * v11) isEqual:{v3, v14}])
+        if ([*(*(&v14 + 1) + 8 * v11) isEqual:{calendarCopy, v14}])
         {
           v9 = v12;
           goto LABEL_12;
@@ -3147,14 +3147,14 @@ LABEL_12:
   return result;
 }
 
-- (double)nextAvailableOccurrenceViewYOriginForDay:(id)a3
+- (double)nextAvailableOccurrenceViewYOriginForDay:(id)day
 {
-  v4 = a3;
-  [v4 absoluteTime];
+  dayCopy = day;
+  [dayCopy absoluteTime];
   v6 = v5;
-  v7 = [(WeekAllDayView *)self dayIndexForCalendarDate:v4];
-  v8 = [(NSCalendar *)self->_calendar timeZone];
-  v9 = [EKCalendarDate calendarDateWithAbsoluteTime:v8 timeZone:v6];
+  v7 = [(WeekAllDayView *)self dayIndexForCalendarDate:dayCopy];
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
+  v9 = [EKCalendarDate calendarDateWithAbsoluteTime:timeZone timeZone:v6];
 
   v10 = [(NSArray *)self->_dayStarts objectAtIndex:0];
   [v9 dayOfWeek];
@@ -3186,21 +3186,21 @@ LABEL_12:
   return v12;
 }
 
-- (CGRect)_frameForOccurrenceBlock:(id)a3 index:(unint64_t)a4 yPos:(double)a5 padding:(double)a6
+- (CGRect)_frameForOccurrenceBlock:(id)block index:(unint64_t)index yPos:(double)pos padding:(double)padding
 {
-  v7 = a3;
+  blockCopy = block;
   [(WeekAllDayView *)self _dayWidth];
-  [v7 rangeStart];
+  [blockCopy rangeStart];
   if ((CalTimeDirectionIsLeftToRight() & 1) == 0)
   {
     [(WeekAllDayView *)self frame];
     CGRectGetWidth(v20);
-    [v7 rangeStart];
-    [v7 length];
+    [blockCopy rangeStart];
+    [blockCopy length];
   }
 
   [(WeekAllDayView *)self occurrenceInsetIntoScroller];
-  [v7 length];
+  [blockCopy length];
   [(WeekAllDayView *)self occurrenceHeight];
   CalRoundRectToScreenScale();
   v9 = v8;
@@ -3219,22 +3219,22 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)dateIsWeekend:(id)a3
+- (BOOL)dateIsWeekend:(id)weekend
 {
-  v4 = a3;
+  weekendCopy = weekend;
   v5 = +[CUIKPreferences sharedPreferences];
-  v6 = [v5 overrideLocaleWeekends];
+  overrideLocaleWeekends = [v5 overrideLocaleWeekends];
 
-  if (v6)
+  if (overrideLocaleWeekends)
   {
-    v7 = [v4 dayOfWeek] == 7 || objc_msgSend(v4, "dayOfWeek") == 1;
+    v7 = [weekendCopy dayOfWeek] == 7 || objc_msgSend(weekendCopy, "dayOfWeek") == 1;
   }
 
   else
   {
     calendar = self->_calendar;
-    v9 = [v4 date];
-    v7 = [(NSCalendar *)calendar isDateInWeekend:v9];
+    date = [weekendCopy date];
+    v7 = [(NSCalendar *)calendar isDateInWeekend:date];
   }
 
   return v7;
@@ -3244,10 +3244,10 @@ LABEL_12:
 {
   if (self->_needsHeaderUpdate && self->_dayStarts)
   {
-    v3 = [(WeekAllDayView *)self _dayIndexForToday];
+    _dayIndexForToday = [(WeekAllDayView *)self _dayIndexForToday];
     if (self->_daysToDisplay)
     {
-      v4 = v3;
+      v4 = _dayIndexForToday;
       v5 = 0;
       do
       {
@@ -3256,8 +3256,8 @@ LABEL_12:
         if ([(NSArray *)self->_dayNumberViews count])
         {
           v8 = [(NSArray *)self->_dayNumberViews objectAtIndexedSubscript:v5];
-          v9 = [v6 date];
-          [v8 setDate:v9 forceStringUpdate:1];
+          date = [v6 date];
+          [v8 setDate:date forceStringUpdate:1];
 
           [v8 setIsToday:v4 == v5];
           [v8 setIsWeekend:v7];
@@ -3342,30 +3342,30 @@ LABEL_12:
   }
 }
 
-- (void)_updateCell:(id)a3 withBadgeDataIndex:(unint64_t)a4
+- (void)_updateCell:(id)cell withBadgeDataIndex:(unint64_t)index
 {
-  v10 = a3;
-  if ([(NSArray *)self->_specialDayTypes count]<= a4 || [(NSArray *)self->_dayBadgeColors count]<= a4)
+  cellCopy = cell;
+  if ([(NSArray *)self->_specialDayTypes count]<= index || [(NSArray *)self->_dayBadgeColors count]<= index)
   {
-    [v10 setBadgeType:0];
+    [cellCopy setBadgeType:0];
   }
 
   else
   {
-    v6 = [(NSArray *)self->_specialDayTypes objectAtIndex:a4];
-    v7 = [v6 integerValue];
+    v6 = [(NSArray *)self->_specialDayTypes objectAtIndex:index];
+    integerValue = [v6 integerValue];
 
-    v8 = [(NSArray *)self->_dayBadgeColors objectAtIndex:a4];
-    v9 = [(NSArray *)self->_dayBadgeLocales objectAtIndex:a4];
+    v8 = [(NSArray *)self->_dayBadgeColors objectAtIndex:index];
+    v9 = [(NSArray *)self->_dayBadgeLocales objectAtIndex:index];
     if ([v9 isEqual:&stru_1002133B8])
     {
 
       v9 = 0;
     }
 
-    [v10 setBadgeColor:v8];
-    [v10 setBadgeType:v7];
-    [v10 setBadgeLocale:v9];
+    [cellCopy setBadgeColor:v8];
+    [cellCopy setBadgeType:integerValue];
+    [cellCopy setBadgeLocale:v9];
   }
 }
 
@@ -3380,8 +3380,8 @@ LABEL_12:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [(WeekAllDayView *)self occurrenceViews];
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  occurrenceViews = [(WeekAllDayView *)self occurrenceViews];
+  v4 = [occurrenceViews countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v4)
   {
     v5 = *v34;
@@ -3391,13 +3391,13 @@ LABEL_12:
       {
         if (*v34 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(occurrenceViews);
         }
 
         [*(*(&v33 + 1) + 8 * i) layoutIfNeeded];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v4 = [occurrenceViews countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v4);
@@ -3486,8 +3486,8 @@ LABEL_12:
   if (v26)
   {
     v27 = objc_loadWeakRetained(&self->_delegate);
-    v28 = [(WeekAllDayView *)self occurrenceViews];
-    [v27 weekAllDayView:self didCreateOccurrenceViews:v28];
+    occurrenceViews2 = [(WeekAllDayView *)self occurrenceViews];
+    [v27 weekAllDayView:self didCreateOccurrenceViews:occurrenceViews2];
   }
 
   [(WeekAllDayView *)self rectBecameVisible:self->_latestVisibleRect.origin.x, self->_latestVisibleRect.origin.y, self->_latestVisibleRect.size.width, self->_latestVisibleRect.size.height];
@@ -3495,10 +3495,10 @@ LABEL_12:
   _Block_object_dispose(v31, 8);
 }
 
-- (double)_dateForPoint:(CGPoint)a3
+- (double)_dateForPoint:(CGPoint)point
 {
-  x = a3.x;
-  [(WeekViewAllDayContents *)self->_contentView frame:a3.x];
+  x = point.x;
+  [(WeekViewAllDayContents *)self->_contentView frame:point.x];
   v6 = (x / floor(v5 / self->_daysToDisplay));
   if ((CalTimeDirectionIsLeftToRight() & 1) == 0)
   {
@@ -3522,7 +3522,7 @@ LABEL_12:
   return v10;
 }
 
-- (int64_t)rowIndexOfOccurrence:(id)a3
+- (int64_t)rowIndexOfOccurrence:(id)occurrence
 {
   v10 = 0;
   v11 = &v10;
@@ -3532,8 +3532,8 @@ LABEL_12:
   v7[1] = 3221225472;
   v7[2] = sub_10002FA7C;
   v7[3] = &unk_10020F158;
-  v4 = a3;
-  v8 = v4;
+  occurrenceCopy = occurrence;
+  v8 = occurrenceCopy;
   v9 = &v10;
   [(WeekAllDayView *)self iterateThroughEachAllDayRow:v7];
   v5 = v11[3];
@@ -3572,16 +3572,16 @@ LABEL_12:
   return v2;
 }
 
-+ (double)dayLabelHeightWithSizeClass:(int64_t)a3 usesMultiDay:(BOOL)a4
++ (double)dayLabelHeightWithSizeClass:(int64_t)class usesMultiDay:(BOOL)day
 {
-  if (a4)
+  if (day)
   {
-    [MultiDayNavigationViewCell heightRequiredWithSizeClass:a3];
+    [MultiDayNavigationViewCell heightRequiredWithSizeClass:class];
   }
 
   else
   {
-    [LargeDayNavigationViewCell heightRequiredWithSizeClass:a3 usesMultiDayStyle:?];
+    [LargeDayNavigationViewCell heightRequiredWithSizeClass:class usesMultiDayStyle:?];
   }
 
   CalRoundToScreenScale();
@@ -3596,7 +3596,7 @@ LABEL_12:
   return result;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   if (self->_allowsOccurrenceSelection)
   {
@@ -3611,7 +3611,7 @@ LABEL_12:
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   if (self->_scrollingToOccurrence)
   {
@@ -3629,7 +3629,7 @@ LABEL_12:
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -3641,23 +3641,23 @@ LABEL_12:
   }
 }
 
-- (void)dayOccurrenceViewSelected:(id)a3 source:(unint64_t)a4
+- (void)dayOccurrenceViewSelected:(id)selected source:(unint64_t)source
 {
-  v16 = a3;
-  if (a4 == 1 && EKUICurrentWidthSizeClassIsRegularInViewHierarchy() && (v6 = objc_loadWeakRetained(&self->_delegate), v7 = objc_opt_respondsToSelector(), v6, (v7 & 1) != 0))
+  selectedCopy = selected;
+  if (source == 1 && EKUICurrentWidthSizeClassIsRegularInViewHierarchy() && (v6 = objc_loadWeakRetained(&self->_delegate), v7 = objc_opt_respondsToSelector(), v6, (v7 & 1) != 0))
   {
-    v8 = [v16 isReminderStack];
+    isReminderStack = [selectedCopy isReminderStack];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    if (v8)
+    if (isReminderStack)
     {
-      v10 = [v16 occurrences];
-      [WeakRetained weekAllDayView:self pointerDidTargetOccurrences:v10];
+      occurrences = [selectedCopy occurrences];
+      [WeakRetained weekAllDayView:self pointerDidTargetOccurrences:occurrences];
     }
 
     else
     {
-      v10 = [v16 occurrence];
-      v15 = [NSArray arrayWithObject:v10];
+      occurrences = [selectedCopy occurrence];
+      v15 = [NSArray arrayWithObject:occurrences];
       [WeakRetained weekAllDayView:self pointerDidTargetOccurrences:v15];
     }
   }
@@ -3673,10 +3673,10 @@ LABEL_12:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v10 = [v16 occurrence];
-    v13 = [EKDayOccurrenceView isUserInitiated:a4];
-    v14 = [v16 occurrenceDate];
-    [WeakRetained weekAllDayView:self didSelectEvent:v10 userInitiated:v13 dateSelected:v14];
+    occurrences = [selectedCopy occurrence];
+    v13 = [EKDayOccurrenceView isUserInitiated:source];
+    occurrenceDate = [selectedCopy occurrenceDate];
+    [WeakRetained weekAllDayView:self didSelectEvent:occurrences userInitiated:v13 dateSelected:occurrenceDate];
   }
 
 LABEL_9:
@@ -3685,17 +3685,17 @@ LABEL_9:
 - (id)presentationControllerForEditMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained presentationControllerForEditMenu];
+  presentationControllerForEditMenu = [WeakRetained presentationControllerForEditMenu];
 
-  return v3;
+  return presentationControllerForEditMenu;
 }
 
 - (id)selectedEventsForEditMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained selectedEventsForEditMenu];
+  selectedEventsForEditMenu = [WeakRetained selectedEventsForEditMenu];
 
-  return v3;
+  return selectedEventsForEditMenu;
 }
 
 - (void)attemptDisplayReviewPrompt
@@ -3710,12 +3710,12 @@ LABEL_9:
   }
 }
 
-- (void)emptySpaceClickForCalendarWeekDayEventContent:(id)a3 atPoint:(CGPoint)a4
+- (void)emptySpaceClickForCalendarWeekDayEventContent:(id)content atPoint:(CGPoint)point
 {
   if (self->_allowsOccurrenceSelection)
   {
-    y = a4.y;
-    x = a4.x;
+    y = point.y;
+    x = point.x;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v8 = objc_opt_respondsToSelector();
 

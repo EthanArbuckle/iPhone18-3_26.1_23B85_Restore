@@ -1,24 +1,24 @@
 @interface MASDUserProfile
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualForAllFields:(id)a3;
-- (MASDUserProfile)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initNewProfileWith:(int64_t)a3 name:(id)a4 type:(unint64_t)a5;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualForAllFields:(id)fields;
+- (MASDUserProfile)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initNewProfileWith:(int64_t)with name:(id)name type:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MASDUserProfile
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(MASDUserProfile *)self isEqualForAllFields:v5];
   }
@@ -31,29 +31,29 @@
   return v6;
 }
 
-- (BOOL)isEqualForAllFields:(id)a3
+- (BOOL)isEqualForAllFields:(id)fields
 {
-  v4 = a3;
-  v5 = [(MASDUserProfile *)self isAuthenticated];
-  if (v5 != [v4 isAuthenticated])
+  fieldsCopy = fields;
+  isAuthenticated = [(MASDUserProfile *)self isAuthenticated];
+  if (isAuthenticated != [fieldsCopy isAuthenticated])
   {
     goto LABEL_5;
   }
 
-  v6 = [(MASDUserProfile *)self profileID];
-  if (v6 != [v4 profileID])
+  profileID = [(MASDUserProfile *)self profileID];
+  if (profileID != [fieldsCopy profileID])
   {
     goto LABEL_5;
   }
 
-  v7 = [(MASDUserProfile *)self profileName];
-  v8 = [v4 profileName];
-  v9 = [v7 isEqualToString:v8];
+  profileName = [(MASDUserProfile *)self profileName];
+  profileName2 = [fieldsCopy profileName];
+  v9 = [profileName isEqualToString:profileName2];
 
   if (v9)
   {
-    v10 = [(MASDUserProfile *)self profileType];
-    v11 = v10 == [v4 profileType];
+    profileType = [(MASDUserProfile *)self profileType];
+    v11 = profileType == [fieldsCopy profileType];
   }
 
   else
@@ -65,9 +65,9 @@ LABEL_5:
   return v11;
 }
 
-- (id)initNewProfileWith:(int64_t)a3 name:(id)a4 type:(unint64_t)a5
+- (id)initNewProfileWith:(int64_t)with name:(id)name type:(unint64_t)type
 {
-  v9 = a4;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = MASDUserProfile;
   v10 = [(MASDUserProfile *)&v13 init];
@@ -75,51 +75,51 @@ LABEL_5:
   if (v10)
   {
     v10->_isAuthenticated = 0;
-    v10->_profileID = a3;
-    objc_storeStrong(&v10->_profileName, a4);
-    v11->_profileType = a5;
+    v10->_profileID = with;
+    objc_storeStrong(&v10->_profileName, name);
+    v11->_profileType = type;
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isAuthenticated = self->_isAuthenticated;
-  v5 = a3;
-  [v5 encodeBool:isAuthenticated forKey:@"_isAuthenticated"];
-  [v5 encodeInteger:self->_profileID forKey:@"_profileID"];
-  [v5 encodeObject:self->_profileName forKey:@"_profileName"];
-  [v5 encodeInteger:self->_profileType forKey:@"_profileType"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isAuthenticated forKey:@"_isAuthenticated"];
+  [coderCopy encodeInteger:self->_profileID forKey:@"_profileID"];
+  [coderCopy encodeObject:self->_profileName forKey:@"_profileName"];
+  [coderCopy encodeInteger:self->_profileType forKey:@"_profileType"];
 }
 
-- (MASDUserProfile)initWithCoder:(id)a3
+- (MASDUserProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MASDUserProfile;
   v5 = [(MASDUserProfile *)&v9 init];
   if (v5)
   {
-    v5->_isAuthenticated = [v4 decodeBoolForKey:@"_isAuthenticated"];
-    v5->_profileID = [v4 decodeIntegerForKey:@"_profileID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_profileName"];
+    v5->_isAuthenticated = [coderCopy decodeBoolForKey:@"_isAuthenticated"];
+    v5->_profileID = [coderCopy decodeIntegerForKey:@"_profileID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_profileName"];
     profileName = v5->_profileName;
     v5->_profileName = v6;
 
-    v5->_profileType = [v4 decodeIntegerForKey:@"_profileType"];
+    v5->_profileType = [coderCopy decodeIntegerForKey:@"_profileType"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[8] = self->_isAuthenticated;
   *(v5 + 2) = self->_profileID;
   *(v5 + 4) = self->_profileType;
-  v6 = [(NSString *)self->_profileName copyWithZone:a3];
+  v6 = [(NSString *)self->_profileName copyWithZone:zone];
   v7 = *(v5 + 3);
   *(v5 + 3) = v6;
 

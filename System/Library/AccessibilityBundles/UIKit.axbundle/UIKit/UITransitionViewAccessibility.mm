@@ -1,5 +1,5 @@
 @interface UITransitionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)accessibilityViewIsModal;
 - (id)_accessibilityDimmingView;
@@ -10,15 +10,15 @@
 - (id)_axPresentationController;
 - (id)axAdditionalElements;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axSetPresentationController:(uint64_t)a1;
-- (void)_didCompleteTransition:(BOOL)a3;
+- (void)_axSetPresentationController:(uint64_t)controller;
+- (void)_didCompleteTransition:(BOOL)transition;
 @end
 
 @implementation UITransitionViewAccessibility
 
 - (id)_axPresentationController
 {
-  if (a1)
+  if (self)
   {
     v2 = __UIAccessibilityGetAssociatedNonRetainedObject();
   }
@@ -31,12 +31,12 @@
   return v2;
 }
 
-- (void)_axSetPresentationController:(uint64_t)a1
+- (void)_axSetPresentationController:(uint64_t)controller
 {
-  v3 = a1;
+  controllerCopy = controller;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (controllerCopy)
   {
     __UIAccessibilitySetAssociatedNonRetainedObject();
   }
@@ -44,14 +44,14 @@
   objc_storeStrong(&location, 0);
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v11 = location;
   v10 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UITransitionView";
   v5 = @"UIView";
   [location[0] validateClass:? isKindOfClass:?];
@@ -83,9 +83,9 @@
 
 - (id)_accessibilityRetrieveDelegate
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 safeValueForKey:@"delegate"];
+    v2 = [self safeValueForKey:@"delegate"];
   }
 
   else
@@ -96,29 +96,29 @@
   return v2;
 }
 
-- (void)_didCompleteTransition:(BOOL)a3
+- (void)_didCompleteTransition:(BOOL)transition
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  transitionCopy = transition;
   v3.receiver = self;
   v3.super_class = UITransitionViewAccessibility;
-  [(UITransitionViewAccessibility *)&v3 _didCompleteTransition:a3];
+  [(UITransitionViewAccessibility *)&v3 _didCompleteTransition:transition];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 
 - (id)_accessibilityDimmingView
 {
   v18 = *MEMORY[0x29EDCA608];
-  v15 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     objc_opt_class();
     v7 = __UIAccessibilityCastAsClass();
-    v14 = [v7 subviews];
+    subviews = [v7 subviews];
     MEMORY[0x29EDC9740](v7);
     memset(__b, 0, sizeof(__b));
-    obj = MEMORY[0x29EDC9748](v14);
+    obj = MEMORY[0x29EDC9748](subviews);
     v9 = [obj countByEnumeratingWithState:__b objects:v17 count:16];
     if (v9)
     {
@@ -165,7 +165,7 @@ LABEL_12:
     MEMORY[0x29EDC9740](obj);
     if (!v11)
     {
-      location = [(UITransitionViewAccessibility *)v15 _accessibilityRetrieveDelegate];
+      location = [(UITransitionViewAccessibility *)selfCopy _accessibilityRetrieveDelegate];
       if (objc_opt_respondsToSelector())
       {
         v16 = [location safeValueForKey:@"_dimmingView"];
@@ -180,7 +180,7 @@ LABEL_12:
       objc_storeStrong(&location, 0);
     }
 
-    objc_storeStrong(&v14, 0);
+    objc_storeStrong(&subviews, 0);
   }
 
   else
@@ -195,9 +195,9 @@ LABEL_12:
 
 - (id)_accessibilityPresentationController
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 safeValueForKey:@"_presentationControllerToNotifyOnLayoutSubviews"];
+    v2 = [self safeValueForKey:@"_presentationControllerToNotifyOnLayoutSubviews"];
   }
 
   else
@@ -210,35 +210,35 @@ LABEL_12:
 
 - (id)_accessibilityObscuredScreenAllowedViews
 {
-  v44 = self;
+  selfCopy = self;
   v43[1] = a2;
   v43[0] = [(UITransitionViewAccessibility *)self _axPresentationController];
-  v19 = [v43[0] presentingViewController];
-  v42 = [v19 view];
-  MEMORY[0x29EDC9740](v19);
+  presentingViewController = [v43[0] presentingViewController];
+  view = [presentingViewController view];
+  MEMORY[0x29EDC9740](presentingViewController);
   v41 = objc_opt_new();
-  if (v42)
+  if (view)
   {
-    [v42 accessibilityFrame];
+    [view accessibilityFrame];
     *&v39 = v2;
     *(&v39 + 1) = v3;
     *&v40 = v4;
     *(&v40 + 1) = v5;
-    v16 = [(UITransitionViewAccessibility *)v44 superview];
-    v15 = [v16 _accessibilitySubviews];
-    v14 = [v15 reverseObjectEnumerator];
-    v38 = [v14 allObjects];
-    MEMORY[0x29EDC9740](v14);
-    MEMORY[0x29EDC9740](v15);
-    MEMORY[0x29EDC9740](v16);
-    v17 = v38;
+    superview = [(UITransitionViewAccessibility *)selfCopy superview];
+    _accessibilitySubviews = [superview _accessibilitySubviews];
+    reverseObjectEnumerator = [_accessibilitySubviews reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    MEMORY[0x29EDC9740](reverseObjectEnumerator);
+    MEMORY[0x29EDC9740](_accessibilitySubviews);
+    MEMORY[0x29EDC9740](superview);
+    v17 = allObjects;
     v29 = MEMORY[0x29EDCA5F8];
     v30 = -1073741824;
     v31 = 0;
     v32 = __73__UITransitionViewAccessibility__accessibilityObscuredScreenAllowedViews__block_invoke;
     v33 = &unk_29F30E130;
-    v34 = MEMORY[0x29EDC9748](v44);
-    v35 = MEMORY[0x29EDC9748](v42);
+    v34 = MEMORY[0x29EDC9748](selfCopy);
+    v35 = MEMORY[0x29EDC9748](view);
     v36 = v39;
     v37 = v40;
     v18 = [v17 ax_filteredArrayUsingBlock:&v29];
@@ -249,7 +249,7 @@ LABEL_12:
     MEMORY[0x29EDC9740](v18);
     objc_storeStrong(&v35, 0);
     objc_storeStrong(&v34, 0);
-    objc_storeStrong(&v38, 0);
+    objc_storeStrong(&allObjects, 0);
   }
 
   objc_opt_class();
@@ -295,9 +295,9 @@ LABEL_12:
     if (v27 && ([v27 _accessibilityPresentationControllerModalizes] & 1) == 0)
     {
       v10 = v41;
-      v11 = [v27 containerView];
+      containerView = [v27 containerView];
       [v10 axSafelyAddObject:?];
-      MEMORY[0x29EDC9740](v11);
+      MEMORY[0x29EDC9740](containerView);
     }
 
     objc_storeStrong(&v27, 0);
@@ -305,7 +305,7 @@ LABEL_12:
 
   v9 = MEMORY[0x29EDC9748](v41);
   objc_storeStrong(&v41, 0);
-  objc_storeStrong(&v42, 0);
+  objc_storeStrong(&view, 0);
   objc_storeStrong(v43, 0);
 
   return v9;
@@ -343,29 +343,29 @@ BOOL __73__UITransitionViewAccessibility__accessibilityObscuredScreenAllowedView
 
 - (id)_accessibilityHitTestingObscuredScreenAllowedViews
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITransitionViewAccessibility *)self _accessibilityDimmingView];
   NSClassFromString(&cfstr_Uidimmingview.isa);
   if (objc_opt_isKindOfClass())
   {
-    v6 = [location[0] safeValueForKey:@"passthroughViews"];
+    _accessibilityObscuredScreenAllowedViews = [location[0] safeValueForKey:@"passthroughViews"];
   }
 
   else
   {
-    v6 = [(UITransitionViewAccessibility *)v5 _accessibilityObscuredScreenAllowedViews];
+    _accessibilityObscuredScreenAllowedViews = [(UITransitionViewAccessibility *)selfCopy _accessibilityObscuredScreenAllowedViews];
   }
 
   objc_storeStrong(location, 0);
-  v2 = v6;
+  v2 = _accessibilityObscuredScreenAllowedViews;
 
   return v2;
 }
 
 - (BOOL)accessibilityViewIsModal
 {
-  v18 = self;
+  selfCopy = self;
   v17[1] = a2;
   v17[0] = [(UITransitionViewAccessibility *)self _accessibilityRetrieveDelegate];
   NSClassFromString(&cfstr_Uisearchpresen_0.isa);
@@ -374,11 +374,11 @@ BOOL __73__UITransitionViewAccessibility__accessibilityObscuredScreenAllowedView
     objc_opt_class();
     v7 = [v17[0] safeValueForKey:@"presentedViewController"];
     v6 = __UIAccessibilityCastAsClass();
-    v8 = [v6 searchResultsController];
-    MEMORY[0x29EDC9740](v8);
+    searchResultsController = [v6 searchResultsController];
+    MEMORY[0x29EDC9740](searchResultsController);
     MEMORY[0x29EDC9740](v6);
     MEMORY[0x29EDC9740](v7);
-    if (!v8)
+    if (!searchResultsController)
     {
       v19 = 0;
       v16 = 1;
@@ -396,9 +396,9 @@ BOOL __73__UITransitionViewAccessibility__accessibilityObscuredScreenAllowedView
       goto LABEL_21;
     }
 
-    v4 = [(UITransitionViewAccessibility *)v18 accessibilityIdentifier];
-    v5 = [v4 isEqualToString:@"UIColorPickerView"];
-    MEMORY[0x29EDC9740](v4);
+    accessibilityIdentifier = [(UITransitionViewAccessibility *)selfCopy accessibilityIdentifier];
+    v5 = [accessibilityIdentifier isEqualToString:@"UIColorPickerView"];
+    MEMORY[0x29EDC9740](accessibilityIdentifier);
     if (v5)
     {
       v19 = 1;
@@ -409,30 +409,30 @@ BOOL __73__UITransitionViewAccessibility__accessibilityObscuredScreenAllowedView
 
   v14 = 0;
   objc_opt_class();
-  v3 = [(UITransitionViewAccessibility *)v18 _axPresentationController];
+  _axPresentationController = [(UITransitionViewAccessibility *)selfCopy _axPresentationController];
   v11 = 0;
-  if (!v3)
+  if (!_axPresentationController)
   {
-    v12 = [(UITransitionViewAccessibility *)v18 _accessibilityPresentationController];
+    _accessibilityPresentationController = [(UITransitionViewAccessibility *)selfCopy _accessibilityPresentationController];
     v11 = 1;
   }
 
   v13 = __UIAccessibilityCastAsSafeCategory();
   if (v11)
   {
-    MEMORY[0x29EDC9740](v12);
+    MEMORY[0x29EDC9740](_accessibilityPresentationController);
   }
 
-  MEMORY[0x29EDC9740](v3);
+  MEMORY[0x29EDC9740](_axPresentationController);
   v10 = MEMORY[0x29EDC9748](v13);
   objc_storeStrong(&v13, 0);
   v15 = v10;
   if (!v10 || ([v15 _accessibilityPresentationControllerModalizes] & 1) != 0)
   {
-    v9 = [(UITransitionViewAccessibility *)v18 storedAccessibilityViewIsModal];
-    if (v9)
+    storedAccessibilityViewIsModal = [(UITransitionViewAccessibility *)selfCopy storedAccessibilityViewIsModal];
+    if (storedAccessibilityViewIsModal)
     {
-      v19 = [v9 BOOLValue] & 1;
+      v19 = [storedAccessibilityViewIsModal BOOLValue] & 1;
     }
 
     else
@@ -441,7 +441,7 @@ BOOL __73__UITransitionViewAccessibility__accessibilityObscuredScreenAllowedView
     }
 
     v16 = 1;
-    objc_storeStrong(&v9, 0);
+    objc_storeStrong(&storedAccessibilityViewIsModal, 0);
   }
 
   else
@@ -459,7 +459,7 @@ LABEL_21:
 - (BOOL)accessibilityPerformEscape
 {
   v37 = *MEMORY[0x29EDCA608];
-  v31 = self;
+  selfCopy = self;
   v30[1] = a2;
   v29 = 0;
   objc_opt_class();
@@ -594,9 +594,9 @@ LABEL_25:
   MEMORY[0x29EDC9740](obj);
   if (!v17)
   {
-    v3 = [(UITransitionViewAccessibility *)v31 _accessibilityDimmingView];
-    v32 = [v3 accessibilityActivate] & 1;
-    MEMORY[0x29EDC9740](v3);
+    _accessibilityDimmingView = [(UITransitionViewAccessibility *)selfCopy _accessibilityDimmingView];
+    v32 = [_accessibilityDimmingView accessibilityActivate] & 1;
+    MEMORY[0x29EDC9740](_accessibilityDimmingView);
   }
 
   objc_storeStrong(v30, 0);
@@ -612,43 +612,43 @@ Class __59__UITransitionViewAccessibility_accessibilityPerformEscape__block_invo
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = UITransitionViewAccessibility;
   [(UITransitionViewAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
-  v3 = [(UITransitionViewAccessibility *)v8 _accessibilityPresentationController];
-  [v3 _accessibilityLoadAccessibilityInformation];
-  *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-  v4 = v8;
-  v5 = [(UITransitionViewAccessibility *)v8 axAdditionalElements];
+  _accessibilityPresentationController = [(UITransitionViewAccessibility *)selfCopy _accessibilityPresentationController];
+  [_accessibilityPresentationController _accessibilityLoadAccessibilityInformation];
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityPresentationController).n128_u64[0];
+  v4 = selfCopy;
+  axAdditionalElements = [(UITransitionViewAccessibility *)selfCopy axAdditionalElements];
   [(UITransitionViewAccessibility *)v4 _accessibilitySetAdditionalElements:?];
-  MEMORY[0x29EDC9740](v5);
+  MEMORY[0x29EDC9740](axAdditionalElements);
 }
 
 - (id)axAdditionalElements
 {
-  v40 = self;
+  selfCopy = self;
   v39[1] = a2;
   v39[0] = [MEMORY[0x29EDB8DE8] array];
   v10 = v39[0];
-  v38.receiver = v40;
+  v38.receiver = selfCopy;
   v38.super_class = UITransitionViewAccessibility;
-  v11 = [(UITransitionViewAccessibility *)&v38 accessibilityElements];
+  accessibilityElements = [(UITransitionViewAccessibility *)&v38 accessibilityElements];
   [v10 axSafelyAddObjectsFromArray:?];
-  MEMORY[0x29EDC9740](v11);
-  v12 = [(UITransitionViewAccessibility *)v40 _accessibilityPresentationController];
+  MEMORY[0x29EDC9740](accessibilityElements);
+  _accessibilityPresentationController = [(UITransitionViewAccessibility *)selfCopy _accessibilityPresentationController];
   NSClassFromString(&cfstr_Uipagesheetpre.isa);
   v36 = 0;
   v34 = 0;
-  v13 = 0;
+  _accessibilityShouldAttemptToAddDismissalElement = 0;
   if (objc_opt_isKindOfClass())
   {
-    v37 = [(UITransitionViewAccessibility *)v40 _accessibilityPresentationController];
+    _accessibilityPresentationController2 = [(UITransitionViewAccessibility *)selfCopy _accessibilityPresentationController];
     v36 = 1;
-    v35 = [v37 safeValueForKey:@"delegate"];
+    v35 = [_accessibilityPresentationController2 safeValueForKey:@"delegate"];
     v34 = 1;
-    v13 = [v35 _accessibilityShouldAttemptToAddDismissalElement];
+    _accessibilityShouldAttemptToAddDismissalElement = [v35 _accessibilityShouldAttemptToAddDismissalElement];
   }
 
   if (v34)
@@ -658,15 +658,15 @@ Class __59__UITransitionViewAccessibility_accessibilityPerformEscape__block_invo
 
   if (v36)
   {
-    MEMORY[0x29EDC9740](v37);
+    MEMORY[0x29EDC9740](_accessibilityPresentationController2);
   }
 
-  MEMORY[0x29EDC9740](v12);
-  if (v13)
+  MEMORY[0x29EDC9740](_accessibilityPresentationController);
+  if (_accessibilityShouldAttemptToAddDismissalElement)
   {
     v2 = objc_alloc(MEMORY[0x29EDC78F8]);
-    v33 = [v2 initWithAccessibilityContainer:v40];
-    objc_initWeak(&location, v40);
+    v33 = [v2 initWithAccessibilityContainer:selfCopy];
+    objc_initWeak(&location, selfCopy);
     v9 = v33;
     v26 = MEMORY[0x29EDCA5F8];
     v27 = -1073741824;

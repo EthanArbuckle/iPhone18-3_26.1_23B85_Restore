@@ -1,10 +1,10 @@
 @interface WFPlaylistDescriptor
-- (BOOL)isEqual:(id)a3;
-- (WFPlaylistDescriptor)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFPlaylistDescriptor)initWithCoder:(id)coder;
 - (WFPlaylistDescriptor)initWithEntireMusicLibrary;
-- (WFPlaylistDescriptor)initWithPlaylistName:(id)a3 persistentIdentifier:(id)a4;
+- (WFPlaylistDescriptor)initWithPlaylistName:(id)name persistentIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFPlaylistDescriptor
@@ -21,18 +21,18 @@
     v3 = 3133065982;
   }
 
-  v4 = [(WFPlaylistDescriptor *)self playlistName];
-  v5 = [v4 hash];
-  v6 = [(WFPlaylistDescriptor *)self persistentIdentifier];
-  v7 = v5 ^ [v6 hash];
+  playlistName = [(WFPlaylistDescriptor *)self playlistName];
+  v5 = [playlistName hash];
+  persistentIdentifier = [(WFPlaylistDescriptor *)self persistentIdentifier];
+  v7 = v5 ^ [persistentIdentifier hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -42,23 +42,23 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(WFPlaylistDescriptor *)v5 entireMusicLibrary]&& [(WFPlaylistDescriptor *)self entireMusicLibrary])
       {
         goto LABEL_5;
       }
 
-      v7 = [(WFPlaylistDescriptor *)v5 playlistName];
-      v8 = [(WFPlaylistDescriptor *)self playlistName];
-      if ((v7 != 0) != (v8 == 0))
+      playlistName = [(WFPlaylistDescriptor *)v5 playlistName];
+      playlistName2 = [(WFPlaylistDescriptor *)self playlistName];
+      if ((playlistName != 0) != (playlistName2 == 0))
       {
-        v9 = [(WFPlaylistDescriptor *)v5 playlistName];
-        if (v9)
+        playlistName3 = [(WFPlaylistDescriptor *)v5 playlistName];
+        if (playlistName3)
         {
-          v10 = v9;
-          v11 = [(WFPlaylistDescriptor *)v5 playlistName];
-          v12 = [(WFPlaylistDescriptor *)self playlistName];
-          v13 = [v11 isEqualToString:v12];
+          v10 = playlistName3;
+          playlistName4 = [(WFPlaylistDescriptor *)v5 playlistName];
+          playlistName5 = [(WFPlaylistDescriptor *)self playlistName];
+          v13 = [playlistName4 isEqualToString:playlistName5];
 
           if (!v13)
           {
@@ -70,17 +70,17 @@
         {
         }
 
-        v7 = [(WFPlaylistDescriptor *)v5 persistentIdentifier];
-        v8 = [(WFPlaylistDescriptor *)self persistentIdentifier];
-        if ((v7 != 0) != (v8 == 0))
+        playlistName = [(WFPlaylistDescriptor *)v5 persistentIdentifier];
+        playlistName2 = [(WFPlaylistDescriptor *)self persistentIdentifier];
+        if ((playlistName != 0) != (playlistName2 == 0))
         {
-          v14 = [(WFPlaylistDescriptor *)v5 persistentIdentifier];
-          if (v14)
+          persistentIdentifier = [(WFPlaylistDescriptor *)v5 persistentIdentifier];
+          if (persistentIdentifier)
           {
-            v15 = v14;
-            v16 = [(WFPlaylistDescriptor *)v5 persistentIdentifier];
-            v17 = [(WFPlaylistDescriptor *)self persistentIdentifier];
-            v18 = [v16 isEqualToNumber:v17];
+            v15 = persistentIdentifier;
+            persistentIdentifier2 = [(WFPlaylistDescriptor *)v5 persistentIdentifier];
+            persistentIdentifier3 = [(WFPlaylistDescriptor *)self persistentIdentifier];
+            v18 = [persistentIdentifier2 isEqualToNumber:persistentIdentifier3];
 
             if ((v18 & 1) == 0)
             {
@@ -113,55 +113,55 @@ LABEL_20:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFPlaylistDescriptor *)self playlistName];
-  [v4 encodeObject:v5 forKey:@"playlistName"];
+  coderCopy = coder;
+  playlistName = [(WFPlaylistDescriptor *)self playlistName];
+  [coderCopy encodeObject:playlistName forKey:@"playlistName"];
 
-  v6 = [(WFPlaylistDescriptor *)self persistentIdentifier];
-  [v4 encodeObject:v6 forKey:@"persistentIdentifier"];
+  persistentIdentifier = [(WFPlaylistDescriptor *)self persistentIdentifier];
+  [coderCopy encodeObject:persistentIdentifier forKey:@"persistentIdentifier"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[WFPlaylistDescriptor entireMusicLibrary](self, "entireMusicLibrary")}];
-  [v4 encodeObject:v7 forKey:@"entireMusicLibrary"];
+  [coderCopy encodeObject:v7 forKey:@"entireMusicLibrary"];
 }
 
-- (WFPlaylistDescriptor)initWithCoder:(id)a3
+- (WFPlaylistDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playlistName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persistentIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entireMusicLibrary"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playlistName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persistentIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entireMusicLibrary"];
 
   if ([v7 BOOLValue])
   {
-    v8 = [(WFPlaylistDescriptor *)self initWithEntireMusicLibrary];
+    initWithEntireMusicLibrary = [(WFPlaylistDescriptor *)self initWithEntireMusicLibrary];
   }
 
   else
   {
-    v8 = [(WFPlaylistDescriptor *)self initWithPlaylistName:v5 persistentIdentifier:v6];
+    initWithEntireMusicLibrary = [(WFPlaylistDescriptor *)self initWithPlaylistName:v5 persistentIdentifier:v6];
   }
 
-  v9 = v8;
+  v9 = initWithEntireMusicLibrary;
 
   return v9;
 }
 
-- (WFPlaylistDescriptor)initWithPlaylistName:(id)a3 persistentIdentifier:(id)a4
+- (WFPlaylistDescriptor)initWithPlaylistName:(id)name persistentIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = WFPlaylistDescriptor;
   v8 = [(WFPlaylistDescriptor *)&v13 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     playlistName = v8->_playlistName;
     v8->_playlistName = v9;
 
-    objc_storeStrong(&v8->_persistentIdentifier, a4);
+    objc_storeStrong(&v8->_persistentIdentifier, identifier);
     v11 = v8;
   }
 

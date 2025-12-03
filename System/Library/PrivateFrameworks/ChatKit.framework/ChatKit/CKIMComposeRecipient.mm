@@ -1,26 +1,26 @@
 @interface CKIMComposeRecipient
-- (BOOL)isEqual:(id)a3;
-- (CKIMComposeRecipient)initWithCoder:(id)a3;
-- (CKIMComposeRecipient)initWithHandle:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKIMComposeRecipient)initWithCoder:(id)coder;
+- (CKIMComposeRecipient)initWithHandle:(id)handle;
 - (id)displayString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKIMComposeRecipient
 
-- (CKIMComposeRecipient)initWithHandle:(id)a3
+- (CKIMComposeRecipient)initWithHandle:(id)handle
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handleCopy = handle;
   v19.receiver = self;
   v19.super_class = CKIMComposeRecipient;
   v6 = [(CKIMComposeRecipient *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_handle, a3);
-    v8 = [v5 ID];
+    objc_storeStrong(&v6->_handle, handle);
+    v8 = [handleCopy ID];
     v9 = [v8 length] == 0;
 
     if (v9 && IMOSLoggingEnabled())
@@ -29,16 +29,16 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v21 = v5;
+        v21 = handleCopy;
         _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Handle passed to CKIMComposeRecipient was nil or has no address: %@", buf, 0xCu);
       }
     }
 
-    v11 = [MEMORY[0x1E69A7FD0] sharedInstance];
-    v12 = [v5 ID];
-    v13 = [v11 fetchCNContactForHandleWithID:v12];
+    mEMORY[0x1E69A7FD0] = [MEMORY[0x1E69A7FD0] sharedInstance];
+    v12 = [handleCopy ID];
+    v13 = [mEMORY[0x1E69A7FD0] fetchCNContactForHandleWithID:v12];
 
-    v14 = [v5 ID];
+    v14 = [handleCopy ID];
     if ([v14 _appearsToBePhoneNumber])
     {
       v15 = 1;
@@ -63,25 +63,25 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CKIMComposeRecipient;
-  v4 = a3;
-  [(CKIMComposeRecipient *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CKIMComposeRecipient *)&v6 encodeWithCoder:coderCopy];
   v5 = [(CKIMComposeRecipient *)self handle:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"handle"];
+  [coderCopy encodeObject:v5 forKey:@"handle"];
 }
 
-- (CKIMComposeRecipient)initWithCoder:(id)a3
+- (CKIMComposeRecipient)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CKIMComposeRecipient;
-  v5 = [(CKIMComposeRecipient *)&v9 initWithCoder:v4];
+  v5 = [(CKIMComposeRecipient *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
     handle = v5->_handle;
     v5->_handle = v6;
   }
@@ -93,7 +93,7 @@
 {
   if ([(CKIMComposeRecipient *)self useAbbreviatedDisplayName])
   {
-    v3 = [(IMHandle *)self->_handle _displayNameWithAbbreviation];
+    _displayNameWithAbbreviation = [(IMHandle *)self->_handle _displayNameWithAbbreviation];
   }
 
   else
@@ -109,11 +109,11 @@
     {
       [(IMHandle *)handle fullName];
     }
-    v3 = ;
+    _displayNameWithAbbreviation = ;
   }
 
-  v6 = v3;
-  if (!v3)
+  v6 = _displayNameWithAbbreviation;
+  if (!_displayNameWithAbbreviation)
   {
     v7 = CKFrameworkBundle();
     v6 = [v7 localizedStringForKey:@"NO_NAME" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -122,17 +122,17 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CKIMComposeRecipient *)self handle];
-    v7 = [v5 handle];
+    v5 = equalCopy;
+    handle = [(CKIMComposeRecipient *)self handle];
+    handle2 = [v5 handle];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [handle isEqual:handle2];
   }
 
   else
@@ -145,8 +145,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CKIMComposeRecipient *)self handle];
-  v3 = [v2 hash];
+  handle = [(CKIMComposeRecipient *)self handle];
+  v3 = [handle hash];
 
   return v3;
 }

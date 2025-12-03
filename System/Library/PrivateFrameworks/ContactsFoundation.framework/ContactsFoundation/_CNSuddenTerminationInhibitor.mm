@@ -1,6 +1,6 @@
 @interface _CNSuddenTerminationInhibitor
 - (_CNSuddenTerminationInhibitor)init;
-- (_CNSuddenTerminationInhibitor)initWithProcessInfo:(id)a3;
+- (_CNSuddenTerminationInhibitor)initWithProcessInfo:(id)info;
 - (void)start;
 - (void)stop;
 @end
@@ -9,22 +9,22 @@
 
 - (_CNSuddenTerminationInhibitor)init
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [(_CNSuddenTerminationInhibitor *)self initWithProcessInfo:v3];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v4 = [(_CNSuddenTerminationInhibitor *)self initWithProcessInfo:processInfo];
 
   return v4;
 }
 
-- (_CNSuddenTerminationInhibitor)initWithProcessInfo:(id)a3
+- (_CNSuddenTerminationInhibitor)initWithProcessInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v10.receiver = self;
   v10.super_class = _CNSuddenTerminationInhibitor;
   v6 = [(_CNSuddenTerminationInhibitor *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_processInfo, a3);
+    objc_storeStrong(&v6->_processInfo, info);
     v8 = v7;
   }
 

@@ -1,15 +1,15 @@
 @interface HomePinnedItemModel
 - (_TtC4Maps19HomePinnedItemModel)init;
-- (void)shortcutsRowCellModelDidUpdate:(id)a3;
+- (void)shortcutsRowCellModelDidUpdate:(id)update;
 @end
 
 @implementation HomePinnedItemModel
 
-- (void)shortcutsRowCellModelDidUpdate:(id)a3
+- (void)shortcutsRowCellModelDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_10050311C(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_10050311C(updateCopy);
 }
 
 - (_TtC4Maps19HomePinnedItemModel)init

@@ -1,6 +1,6 @@
 @interface POXSDefinition
 - (POXSDefinition)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation POXSDefinition
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSMutableDictionary *)self->_types mutableCopyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSMutableDictionary *)self->_types mutableCopyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 

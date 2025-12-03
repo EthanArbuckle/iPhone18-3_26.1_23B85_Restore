@@ -1,42 +1,42 @@
 @interface CPLReshareTask
-- (id)enumerateScopesForTaskInTransaction:(id)a3;
-- (id)newScopedTaskWithScope:(id)a3 session:(id)a4 transportScope:(id)a5 clientCacheIdentifier:(id)a6;
-- (id)scopeFilterInTransaction:(id)a3;
+- (id)enumerateScopesForTaskInTransaction:(id)transaction;
+- (id)newScopedTaskWithScope:(id)scope session:(id)session transportScope:(id)transportScope clientCacheIdentifier:(id)identifier;
+- (id)scopeFilterInTransaction:(id)transaction;
 @end
 
 @implementation CPLReshareTask
 
-- (id)newScopedTaskWithScope:(id)a3 session:(id)a4 transportScope:(id)a5 clientCacheIdentifier:(id)a6
+- (id)newScopedTaskWithScope:(id)scope session:(id)session transportScope:(id)transportScope clientCacheIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  identifierCopy = identifier;
+  transportScopeCopy = transportScope;
+  sessionCopy = session;
+  scopeCopy = scope;
   v14 = [CPLReshareScopeTask alloc];
-  v15 = [(CPLEngineSyncTask *)self engineLibrary];
-  v16 = [(CPLReshareScopeTask *)v14 initWithEngineLibrary:v15 session:v12 clientCacheIdentifier:v10 scope:v13 transportScope:v11];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  v16 = [(CPLReshareScopeTask *)v14 initWithEngineLibrary:engineLibrary session:sessionCopy clientCacheIdentifier:identifierCopy scope:scopeCopy transportScope:transportScopeCopy];
 
   return v16;
 }
 
-- (id)enumerateScopesForTaskInTransaction:(id)a3
+- (id)enumerateScopesForTaskInTransaction:(id)transaction
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = [(CPLEngineMultiscopeSyncTask *)self scopes];
-  v5 = [v4 primaryScope];
-  if (v5 && ([v4 valueForFlag:24 forScope:v5] & 1) == 0)
+  scopes = [(CPLEngineMultiscopeSyncTask *)self scopes];
+  primaryScope = [scopes primaryScope];
+  if (primaryScope && ([scopes valueForFlag:24 forScope:primaryScope] & 1) == 0)
   {
-    v6 = [v4 sharingScopeForScope:v5];
+    v6 = [scopes sharingScopeForScope:primaryScope];
     if (v6)
     {
-      if (([v4 valueForFlag:262232 forScope:v6] & 1) == 0)
+      if (([scopes valueForFlag:262232 forScope:v6] & 1) == 0)
       {
-        v7 = [(CPLEngineSyncTask *)self engineLibrary];
-        v8 = [v7 store];
-        v9 = [v8 ignoredRecords];
-        v10 = [v6 scopeIdentifier];
+        engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+        store = [engineLibrary store];
+        ignoredRecords = [store ignoredRecords];
+        scopeIdentifier = [v6 scopeIdentifier];
         v11 = _CPLCutoffDate();
-        v12 = [v9 scopeIdentifier:v10 hasIgnoredRecordsBeforeDate:v11];
+        v12 = [ignoredRecords scopeIdentifier:scopeIdentifier hasIgnoredRecordsBeforeDate:v11];
 
         if (v12)
         {
@@ -57,15 +57,15 @@ LABEL_9:
   return v13;
 }
 
-- (id)scopeFilterInTransaction:(id)a3
+- (id)scopeFilterInTransaction:(id)transaction
 {
-  v4 = [(CPLEngineSyncTask *)self session];
-  v5 = [v4 scopeIdentifiersExcludedFromMingling];
+  session = [(CPLEngineSyncTask *)self session];
+  scopeIdentifiersExcludedFromMingling = [session scopeIdentifiersExcludedFromMingling];
 
-  if (v5)
+  if (scopeIdentifiersExcludedFromMingling)
   {
-    v6 = [(CPLEngineMultiscopeSyncTask *)self scopes];
-    v7 = [v6 filterForExcludedScopeIdentifiers:v5];
+    scopes = [(CPLEngineMultiscopeSyncTask *)self scopes];
+    v7 = [scopes filterForExcludedScopeIdentifiers:scopeIdentifiersExcludedFromMingling];
   }
 
   else

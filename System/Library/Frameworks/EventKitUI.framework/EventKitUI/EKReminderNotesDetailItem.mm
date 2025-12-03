@@ -1,18 +1,18 @@
 @interface EKReminderNotesDetailItem
 + (id)titleForCell;
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
 @end
 
 @implementation EKReminderNotesDetailItem
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
-  v6 = [(REMReminder *)self->super.super.super._reminder notes:a3];
-  v7 = [v6 string];
-  if ([v7 length])
+  v6 = [(REMReminder *)self->super.super.super._reminder notes:event];
+  string = [v6 string];
+  if ([string length])
   {
-    v8 = [(REMReminder *)self->super.super.super._reminder notes];
-    v9 = [v8 string];
+    notes = [(REMReminder *)self->super.super.super._reminder notes];
+    string2 = [notes string];
     v10 = CUIKShouldDisplayNotes();
   }
 

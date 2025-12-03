@@ -1,34 +1,34 @@
 @interface ICNotesCrossProcessChangeCoordinator
-- (ICNotesCrossProcessChangeCoordinator)initWithSourceCoordinator:(id)a3 destinationContext:(id)a4;
-- (id)registerForCrossProcessNotificationName:(id)a3 block:(id)a4;
+- (ICNotesCrossProcessChangeCoordinator)initWithSourceCoordinator:(id)coordinator destinationContext:(id)context;
+- (id)registerForCrossProcessNotificationName:(id)name block:(id)block;
 - (void)dealloc;
-- (void)postCrossProcessNotificationName:(id)a3;
-- (void)removeCrossProcessNotificationObserver:(id)a3;
+- (void)postCrossProcessNotificationName:(id)name;
+- (void)removeCrossProcessNotificationObserver:(id)observer;
 @end
 
 @implementation ICNotesCrossProcessChangeCoordinator
 
-- (ICNotesCrossProcessChangeCoordinator)initWithSourceCoordinator:(id)a3 destinationContext:(id)a4
+- (ICNotesCrossProcessChangeCoordinator)initWithSourceCoordinator:(id)coordinator destinationContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = ICNotesCrossProcessChangeCoordinator;
   v9 = [(ICNotesCrossProcessChangeCoordinator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    if (v7)
+    if (coordinatorCopy)
     {
-      objc_storeStrong(&v9->_sourceCoordinator, a3);
+      objc_storeStrong(&v9->_sourceCoordinator, coordinator);
     }
 
-    if (v8)
+    if (contextCopy)
     {
-      objc_storeStrong(&v10->_destinationContext, a4);
-      v11 = [(ICNotesCrossProcessChangeCoordinator *)v10 registerForAccountNotifications];
+      objc_storeStrong(&v10->_destinationContext, context);
+      registerForAccountNotifications = [(ICNotesCrossProcessChangeCoordinator *)v10 registerForAccountNotifications];
       accountsNotificationsObserver = v10->_accountsNotificationsObserver;
-      v10->_accountsNotificationsObserver = v11;
+      v10->_accountsNotificationsObserver = registerForAccountNotifications;
     }
   }
 
@@ -37,56 +37,56 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = ICNotesCrossProcessChangeCoordinator;
   [(ICNotesCrossProcessChangeCoordinator *)&v5 dealloc];
 }
 
-- (void)postCrossProcessNotificationName:(id)a3
+- (void)postCrossProcessNotificationName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(ICNotesCrossProcessChangeCoordinator *)v3 postCrossProcessNotificationName:v4, v5, v6, v7, v8, v9, v10];
+    [(ICNotesCrossProcessChangeCoordinator *)nameCopy postCrossProcessNotificationName:v4, v5, v6, v7, v8, v9, v10];
   }
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [MEMORY[0x277CCAC38] processInfo];
-  v13 = [v11 numberWithInt:{objc_msgSend(v12, "processIdentifier")}];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  v13 = [v11 numberWithInt:{objc_msgSend(processInfo, "processIdentifier")}];
 
-  v14 = [MEMORY[0x277CCA9A0] defaultCenter];
-  v15 = [v13 stringValue];
-  [v14 postNotificationName:v3 object:v15 userInfo:0 deliverImmediately:1];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  stringValue = [v13 stringValue];
+  [defaultCenter postNotificationName:nameCopy object:stringValue userInfo:0 deliverImmediately:1];
 }
 
-- (id)registerForCrossProcessNotificationName:(id)a3 block:(id)a4
+- (id)registerForCrossProcessNotificationName:(id)name block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  blockCopy = block;
   v7 = os_log_create("com.apple.notes", "Application");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ICNotesCrossProcessChangeCoordinator *)v5 registerForCrossProcessNotificationName:v7 block:v8, v9, v10, v11, v12, v13];
+    [(ICNotesCrossProcessChangeCoordinator *)nameCopy registerForCrossProcessNotificationName:v7 block:v8, v9, v10, v11, v12, v13];
   }
 
-  v14 = [MEMORY[0x277CCA9A0] defaultCenter];
-  v15 = [MEMORY[0x277CCABD8] mainQueue];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __86__ICNotesCrossProcessChangeCoordinator_registerForCrossProcessNotificationName_block___block_invoke;
   v20[3] = &unk_278195080;
-  v21 = v5;
-  v22 = v6;
-  v16 = v6;
-  v17 = v5;
-  v18 = [v14 addObserverForName:v17 object:0 suspensionBehavior:4 queue:v15 usingBlock:v20];
+  v21 = nameCopy;
+  v22 = blockCopy;
+  v16 = blockCopy;
+  v17 = nameCopy;
+  v18 = [defaultCenter addObserverForName:v17 object:0 suspensionBehavior:4 queue:mainQueue usingBlock:v20];
 
   return v18;
 }
@@ -111,14 +111,14 @@ void __86__ICNotesCrossProcessChangeCoordinator_registerForCrossProcessNotificat
   }
 }
 
-- (void)removeCrossProcessNotificationObserver:(id)a3
+- (void)removeCrossProcessNotificationObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     v3 = MEMORY[0x277CCA9A0];
-    v4 = a3;
-    v5 = [v3 defaultCenter];
-    [v5 removeObserver:v4];
+    observerCopy = observer;
+    defaultCenter = [v3 defaultCenter];
+    [defaultCenter removeObserver:observerCopy];
   }
 }
 

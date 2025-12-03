@@ -4,11 +4,11 @@
 - (BOOL)isReflowablePresentation;
 - (BOOL)p_isAutoplayAllowed;
 - (id)layoutForPlayButton;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)layoutGeometryFromProvider;
 - (void)dealloc;
 - (void)updateChildrenFromInfo;
-- (void)wasRemovedFromLayoutController:(id)a3;
+- (void)wasRemovedFromLayoutController:(id)controller;
 @end
 
 @implementation THWMovieLayout
@@ -21,11 +21,11 @@
   [(THWMovieLayout *)&v3 dealloc];
 }
 
-- (void)wasRemovedFromLayoutController:(id)a3
+- (void)wasRemovedFromLayoutController:(id)controller
 {
-  v3 = [(THWMovieLayout *)self mediaListener];
+  mediaListener = [(THWMovieLayout *)self mediaListener];
 
-  [(THWAVMediaListener *)v3 mediaWillBeRemoved];
+  [(THWAVMediaListener *)mediaListener mediaWillBeRemoved];
 }
 
 - (BOOL)isExpanded
@@ -46,16 +46,16 @@
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THWMovieLayout *)self delegate];
+  delegate = [(THWMovieLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THWMovieLayout *)self delegate];
+  delegate = [(THWMovieLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
 - (id)layoutGeometryFromProvider
@@ -63,17 +63,17 @@
   if ([(THWMovieLayout *)self isExpanded]|| [(THWMovieLayout *)self isIntroMedia])
   {
     [(THWWidgetLayoutDelegate *)[(THWMovieLayout *)self delegate] widgetLayoutBounds];
-    v7 = [[TSDLayoutGeometry alloc] initWithFrame:{v3, v4, v5, v6}];
+    layoutGeometryFromProvider = [[TSDLayoutGeometry alloc] initWithFrame:{v3, v4, v5, v6}];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = THWMovieLayout;
-    v7 = [(THWMovieLayout *)&v10 layoutGeometryFromProvider];
+    layoutGeometryFromProvider = [(THWMovieLayout *)&v10 layoutGeometryFromProvider];
   }
 
-  v8 = v7;
+  v8 = layoutGeometryFromProvider;
   if ([(THWMovieLayout *)self usesTransportController]&& ![(THWMovieLayout *)self mediaListener])
   {
     [THWAVTransportController createTransportControllerForLayouts:[NSArray arrayWithObject:self]];
@@ -126,16 +126,16 @@
   return v6;
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   result = TSUProtocolCast();
   if (result)
   {
     if ([(THWMovieLayout *)self usesTransportControllerControls])
     {
-      v5 = [(THWMovieLayout *)self mediaListener];
+      mediaListener = [(THWMovieLayout *)self mediaListener];
 
-      return [(THWAVMediaListener *)v5 layoutGeometryForLayout:?];
+      return [(THWAVMediaListener *)mediaListener layoutGeometryForLayout:?];
     }
 
     else

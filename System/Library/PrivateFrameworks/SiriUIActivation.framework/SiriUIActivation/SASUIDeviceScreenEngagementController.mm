@@ -1,18 +1,18 @@
 @interface SASUIDeviceScreenEngagementController
-- (BOOL)_detectionStartedForType:(unint64_t)a3;
-- (BOOL)_startButtonPressAttentionAwarenessClient:(id *)a3;
-- (BOOL)_startTouchAttentionAwarenessClient:(id *)a3;
-- (BOOL)_stopButtonPressAttentionAwarenessClient:(id *)a3;
-- (BOOL)_stopTouchAttentionAwarenessClient:(id *)a3;
-- (BOOL)startIfNeededForTypes:(unint64_t)a3 error:(id *)a4;
-- (BOOL)stopIfNeededForTypes:(unint64_t)a3 error:(id *)a4;
-- (SASUIDeviceScreenEngagementController)initWithSamplingInterval:(double)a3 attentionLostTimeout:(double)a4;
-- (SASUIDeviceScreenEngagementController)initWithSignalProviderFactory:(id)a3;
+- (BOOL)_detectionStartedForType:(unint64_t)type;
+- (BOOL)_startButtonPressAttentionAwarenessClient:(id *)client;
+- (BOOL)_startTouchAttentionAwarenessClient:(id *)client;
+- (BOOL)_stopButtonPressAttentionAwarenessClient:(id *)client;
+- (BOOL)_stopTouchAttentionAwarenessClient:(id *)client;
+- (BOOL)startIfNeededForTypes:(unint64_t)types error:(id *)error;
+- (BOOL)stopIfNeededForTypes:(unint64_t)types error:(id *)error;
+- (SASUIDeviceScreenEngagementController)initWithSamplingInterval:(double)interval attentionLostTimeout:(double)timeout;
+- (SASUIDeviceScreenEngagementController)initWithSignalProviderFactory:(id)factory;
 - (SASUIDeviceScreenEngagementControllerDelegate)delegate;
-- (void)_handleButtonPressAttentionEvent:(id)a3;
-- (void)_handleTouchAttentionEvent:(id)a3;
+- (void)_handleButtonPressAttentionEvent:(id)event;
+- (void)_handleTouchAttentionEvent:(id)event;
 - (void)dealloc;
-- (void)startIfNeededForTypes:(unint64_t)a3 completionQueue:(id)a4 completion:(id)a5;
+- (void)startIfNeededForTypes:(unint64_t)types completionQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation SASUIDeviceScreenEngagementController
@@ -24,24 +24,24 @@
   return WeakRetained;
 }
 
-- (SASUIDeviceScreenEngagementController)initWithSamplingInterval:(double)a3 attentionLostTimeout:(double)a4
+- (SASUIDeviceScreenEngagementController)initWithSamplingInterval:(double)interval attentionLostTimeout:(double)timeout
 {
-  v5 = [[SASUIUserEngagementProviderFactory alloc] initWithSamplingInterval:a3 attentionLostTimeout:a4];
+  v5 = [[SASUIUserEngagementProviderFactory alloc] initWithSamplingInterval:interval attentionLostTimeout:timeout];
   v6 = [(SASUIDeviceScreenEngagementController *)self initWithSignalProviderFactory:v5];
 
   return v6;
 }
 
-- (SASUIDeviceScreenEngagementController)initWithSignalProviderFactory:(id)a3
+- (SASUIDeviceScreenEngagementController)initWithSignalProviderFactory:(id)factory
 {
-  v5 = a3;
+  factoryCopy = factory;
   v11.receiver = self;
   v11.super_class = SASUIDeviceScreenEngagementController;
   v6 = [(SASUIDeviceScreenEngagementController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userAttentionSignalProviderFactory, a3);
+    objc_storeStrong(&v6->_userAttentionSignalProviderFactory, factory);
     v8 = dispatch_queue_create("com.apple.siri.AttentionAwarenessQueue", 0);
     attentionAwarenessHandlerQueue = v7->_attentionAwarenessHandlerQueue;
     v7->_attentionAwarenessHandlerQueue = v8;
@@ -56,26 +56,26 @@
   v3 = 136315394;
   v4 = "[SASUIDeviceScreenEngagementController dealloc]";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21FEE5000, a2, OS_LOG_TYPE_ERROR, "%s Failed to stop user attention: %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_detectionStartedForType:(unint64_t)a3
+- (BOOL)_detectionStartedForType:(unint64_t)type
 {
   attentionDetectionStatuses = self->_attentionDetectionStatuses;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v5 = [(NSMutableDictionary *)attentionDetectionStatuses objectForKeyedSubscript:v4];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)_startTouchAttentionAwarenessClient:(id *)a3
+- (BOOL)_startTouchAttentionAwarenessClient:(id *)client
 {
-  v5 = [(SASUIUserEngagementProviderFactory *)self->_userAttentionSignalProviderFactory touchAttentionAwarenessClient];
+  touchAttentionAwarenessClient = [(SASUIUserEngagementProviderFactory *)self->_userAttentionSignalProviderFactory touchAttentionAwarenessClient];
   touchAttentionAwarenessClient = self->_touchAttentionAwarenessClient;
-  self->_touchAttentionAwarenessClient = v5;
+  self->_touchAttentionAwarenessClient = touchAttentionAwarenessClient;
 
   objc_initWeak(&location, self);
   v7 = self->_touchAttentionAwarenessClient;
@@ -86,10 +86,10 @@
   v13 = &unk_27842FED8;
   objc_copyWeak(&v14, &location);
   [(AWAttentionAwarenessClient *)v7 setEventHandlerWithQueue:attentionAwarenessHandlerQueue block:&v10];
-  LOBYTE(a3) = [(AWAttentionAwarenessClient *)self->_touchAttentionAwarenessClient resumeWithError:a3, v10, v11, v12, v13];
+  LOBYTE(client) = [(AWAttentionAwarenessClient *)self->_touchAttentionAwarenessClient resumeWithError:client, v10, v11, v12, v13];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
-  return a3;
+  return client;
 }
 
 void __77__SASUIDeviceScreenEngagementController__startTouchAttentionAwarenessClient___block_invoke(uint64_t a1, void *a2)
@@ -99,11 +99,11 @@ void __77__SASUIDeviceScreenEngagementController__startTouchAttentionAwarenessCl
   [WeakRetained _handleTouchAttentionEvent:v3];
 }
 
-- (BOOL)_startButtonPressAttentionAwarenessClient:(id *)a3
+- (BOOL)_startButtonPressAttentionAwarenessClient:(id *)client
 {
-  v5 = [(SASUIUserEngagementProviderFactory *)self->_userAttentionSignalProviderFactory buttonPressAwarenessClient];
+  buttonPressAwarenessClient = [(SASUIUserEngagementProviderFactory *)self->_userAttentionSignalProviderFactory buttonPressAwarenessClient];
   buttonPressAwarenessClient = self->_buttonPressAwarenessClient;
-  self->_buttonPressAwarenessClient = v5;
+  self->_buttonPressAwarenessClient = buttonPressAwarenessClient;
 
   objc_initWeak(&location, self);
   v7 = self->_buttonPressAwarenessClient;
@@ -114,10 +114,10 @@ void __77__SASUIDeviceScreenEngagementController__startTouchAttentionAwarenessCl
   v13 = &unk_27842FED8;
   objc_copyWeak(&v14, &location);
   [(AWAttentionAwarenessClient *)v7 setEventHandlerWithQueue:attentionAwarenessHandlerQueue block:&v10];
-  LOBYTE(a3) = [(AWAttentionAwarenessClient *)self->_buttonPressAwarenessClient resumeWithError:a3, v10, v11, v12, v13];
+  LOBYTE(client) = [(AWAttentionAwarenessClient *)self->_buttonPressAwarenessClient resumeWithError:client, v10, v11, v12, v13];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
-  return a3;
+  return client;
 }
 
 void __83__SASUIDeviceScreenEngagementController__startButtonPressAttentionAwarenessClient___block_invoke(uint64_t a1, void *a2)
@@ -127,17 +127,17 @@ void __83__SASUIDeviceScreenEngagementController__startButtonPressAttentionAware
   [WeakRetained _handleButtonPressAttentionEvent:v3];
 }
 
-- (void)_handleTouchAttentionEvent:(id)a3
+- (void)_handleTouchAttentionEvent:(id)event
 {
-  v4 = [a3 eventMask];
-  if ((v4 & 8) != 0)
+  eventMask = [event eventMask];
+  if ((eventMask & 8) != 0)
   {
     v5 = 3;
   }
 
   else
   {
-    v5 = (v4 >> 7) & 4;
+    v5 = (eventMask >> 7) & 4;
   }
 
   objc_initWeak(&location, self);
@@ -163,9 +163,9 @@ void __68__SASUIDeviceScreenEngagementController__handleTouchAttentionEvent___bl
   }
 }
 
-- (void)_handleButtonPressAttentionEvent:(id)a3
+- (void)_handleButtonPressAttentionEvent:(id)event
 {
-  v4 = (([a3 eventMask] << 62 >> 63) & 5);
+  v4 = (([event eventMask] << 62 >> 63) & 5);
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -189,12 +189,12 @@ void __74__SASUIDeviceScreenEngagementController__handleButtonPressAttentionEven
   }
 }
 
-- (BOOL)startIfNeededForTypes:(unint64_t)a3 error:(id *)a4
+- (BOOL)startIfNeededForTypes:(unint64_t)types error:(id *)error
 {
-  v5 = a3;
-  if ((a3 & 2) != 0 && ![(SASUIDeviceScreenEngagementController *)self _detectionStartedForType:2])
+  typesCopy = types;
+  if ((types & 2) != 0 && ![(SASUIDeviceScreenEngagementController *)self _detectionStartedForType:2])
   {
-    if (![(SASUIDeviceScreenEngagementController *)self _startTouchAttentionAwarenessClient:a4])
+    if (![(SASUIDeviceScreenEngagementController *)self _startTouchAttentionAwarenessClient:error])
     {
       return 0;
     }
@@ -202,9 +202,9 @@ void __74__SASUIDeviceScreenEngagementController__handleButtonPressAttentionEven
     [(SASUIDeviceScreenEngagementController *)self _setDetectionStarted:1 forType:2];
   }
 
-  if ((v5 & 8) != 0 && ![(SASUIDeviceScreenEngagementController *)self _detectionStartedForType:8])
+  if ((typesCopy & 8) != 0 && ![(SASUIDeviceScreenEngagementController *)self _detectionStartedForType:8])
   {
-    if ([(SASUIDeviceScreenEngagementController *)self _startButtonPressAttentionAwarenessClient:a4])
+    if ([(SASUIDeviceScreenEngagementController *)self _startButtonPressAttentionAwarenessClient:error])
     {
       v7 = 1;
       [(SASUIDeviceScreenEngagementController *)self _setDetectionStarted:1 forType:8];
@@ -217,11 +217,11 @@ void __74__SASUIDeviceScreenEngagementController__handleButtonPressAttentionEven
   return 1;
 }
 
-- (BOOL)stopIfNeededForTypes:(unint64_t)a3 error:(id *)a4
+- (BOOL)stopIfNeededForTypes:(unint64_t)types error:(id *)error
 {
   if ([(SASUIDeviceScreenEngagementController *)self _detectionStartedForType:2])
   {
-    v6 = [(SASUIDeviceScreenEngagementController *)self _stopTouchAttentionAwarenessClient:a4];
+    v6 = [(SASUIDeviceScreenEngagementController *)self _stopTouchAttentionAwarenessClient:error];
     if (!v6)
     {
       return v6;
@@ -237,7 +237,7 @@ LABEL_7:
     return v6;
   }
 
-  v6 = [(SASUIDeviceScreenEngagementController *)self _stopButtonPressAttentionAwarenessClient:a4];
+  v6 = [(SASUIDeviceScreenEngagementController *)self _stopButtonPressAttentionAwarenessClient:error];
   if (v6)
   {
     [(SASUIDeviceScreenEngagementController *)self _setDetectionStarted:0 forType:8];
@@ -247,30 +247,30 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_stopTouchAttentionAwarenessClient:(id *)a3
+- (BOOL)_stopTouchAttentionAwarenessClient:(id *)client
 {
-  v4 = [(AWAttentionAwarenessClient *)self->_touchAttentionAwarenessClient invalidateWithError:a3];
+  v4 = [(AWAttentionAwarenessClient *)self->_touchAttentionAwarenessClient invalidateWithError:client];
   touchAttentionAwarenessClient = self->_touchAttentionAwarenessClient;
   self->_touchAttentionAwarenessClient = 0;
 
   return v4;
 }
 
-- (BOOL)_stopButtonPressAttentionAwarenessClient:(id *)a3
+- (BOOL)_stopButtonPressAttentionAwarenessClient:(id *)client
 {
-  v4 = [(AWAttentionAwarenessClient *)self->_buttonPressAwarenessClient invalidateWithError:a3];
+  v4 = [(AWAttentionAwarenessClient *)self->_buttonPressAwarenessClient invalidateWithError:client];
   buttonPressAwarenessClient = self->_buttonPressAwarenessClient;
   self->_buttonPressAwarenessClient = 0;
 
   return v4;
 }
 
-- (void)startIfNeededForTypes:(unint64_t)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)startIfNeededForTypes:(unint64_t)types completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8 && v9)
+  queueCopy = queue;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (queueCopy && completionCopy)
   {
     if (!self->_asynchronousCallQueue)
     {
@@ -286,8 +286,8 @@ LABEL_7:
     block[2] = __111__SASUIDeviceScreenEngagementController_AsynchronousMethods__startIfNeededForTypes_completionQueue_completion___block_invoke;
     block[3] = &unk_27842FF50;
     objc_copyWeak(v17, &location);
-    v17[1] = a3;
-    v15 = v8;
+    v17[1] = types;
+    v15 = queueCopy;
     v16 = v10;
     dispatch_async(v13, block);
 

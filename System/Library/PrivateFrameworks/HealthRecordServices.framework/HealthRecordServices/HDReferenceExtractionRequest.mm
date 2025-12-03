@@ -1,33 +1,33 @@
 @interface HDReferenceExtractionRequest
-- (HDReferenceExtractionRequest)initWithCoder:(id)a3;
-- (HDReferenceExtractionRequest)initWithResources:(id)a3 FHIRResourceData:(id)a4 serverBaseURL:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (HDReferenceExtractionRequest)initWithCoder:(id)coder;
+- (HDReferenceExtractionRequest)initWithResources:(id)resources FHIRResourceData:(id)data serverBaseURL:(id)l;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDReferenceExtractionRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   resources = self->_resources;
-  v5 = a3;
-  [v5 encodeObject:resources forKey:@"Resources"];
-  [v5 encodeObject:self->_FHIRResourceData forKey:@"FHIRResourceData"];
-  [v5 encodeObject:self->_serverBaseURL forKey:@"ServerBaseURL"];
-  [v5 encodeObject:self->_FHIRRelease forKey:@"FHIRRelease"];
+  coderCopy = coder;
+  [coderCopy encodeObject:resources forKey:@"Resources"];
+  [coderCopy encodeObject:self->_FHIRResourceData forKey:@"FHIRResourceData"];
+  [coderCopy encodeObject:self->_serverBaseURL forKey:@"ServerBaseURL"];
+  [coderCopy encodeObject:self->_FHIRRelease forKey:@"FHIRRelease"];
 }
 
-- (HDReferenceExtractionRequest)initWithCoder:(id)a3
+- (HDReferenceExtractionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"Resources"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"Resources"];
   v7 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"FHIRResourceData"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"FHIRResourceData"];
   v9 = [v6 count];
   if (v9 + [v8 count])
   {
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ServerBaseURL"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FHIRRelease"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ServerBaseURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FHIRRelease"];
     v13 = v12;
     if (v11 && v12)
     {
@@ -46,34 +46,34 @@
       }
 
       self = v15;
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
-      v10 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [v4 hrs_failWithCocoaInvalidValueError];
-    v10 = 0;
+    [coderCopy hrs_failWithCocoaInvalidValueError];
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (HDReferenceExtractionRequest)initWithResources:(id)a3 FHIRResourceData:(id)a4 serverBaseURL:(id)a5
+- (HDReferenceExtractionRequest)initWithResources:(id)resources FHIRResourceData:(id)data serverBaseURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 count];
-  if (v11 + [v9 count])
+  resourcesCopy = resources;
+  dataCopy = data;
+  lCopy = l;
+  v11 = [resourcesCopy count];
+  if (v11 + [dataCopy count])
   {
-    v13 = [v8 hk_mapToSet:&__block_literal_global_7];
+    v13 = [resourcesCopy hk_mapToSet:&__block_literal_global_7];
     v14 = v13;
     if (v13)
     {
@@ -87,7 +87,7 @@
 
     v16 = v15;
 
-    v17 = [v9 hk_mapToSet:&__block_literal_global_311];
+    v17 = [dataCopy hk_mapToSet:&__block_literal_global_311];
     v18 = v17;
     if (v17)
     {
@@ -109,39 +109,39 @@
       v22 = [(HDReferenceExtractionRequest *)&v32 init];
       if (v22)
       {
-        v23 = [v8 copy];
+        v23 = [resourcesCopy copy];
         resources = v22->_resources;
         v22->_resources = v23;
 
-        v25 = [v9 copy];
+        v25 = [dataCopy copy];
         FHIRResourceData = v22->_FHIRResourceData;
         v22->_FHIRResourceData = v25;
 
-        v27 = [v10 copy];
+        v27 = [lCopy copy];
         serverBaseURL = v22->_serverBaseURL;
         v22->_serverBaseURL = v27;
 
-        v29 = [v21 anyObject];
+        anyObject = [v21 anyObject];
         FHIRRelease = v22->_FHIRRelease;
-        v22->_FHIRRelease = v29;
+        v22->_FHIRRelease = anyObject;
       }
 
       self = v22;
-      v12 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 id __81__HDReferenceExtractionRequest_initWithResources_FHIRResourceData_serverBaseURL___block_invoke(uint64_t a1, void *a2)

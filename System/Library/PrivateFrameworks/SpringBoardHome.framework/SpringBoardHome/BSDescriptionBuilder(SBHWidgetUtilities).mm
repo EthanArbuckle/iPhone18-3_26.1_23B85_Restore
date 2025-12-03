@@ -16,8 +16,8 @@
   v6 = v5;
   v7 = [v4 bs_map:v9];
 
-  [a1 appendArraySection:v7 withName:@"widgetViewControllers" skipIfEmpty:0];
-  return a1;
+  [self appendArraySection:v7 withName:@"widgetViewControllers" skipIfEmpty:0];
+  return self;
 }
 
 @end

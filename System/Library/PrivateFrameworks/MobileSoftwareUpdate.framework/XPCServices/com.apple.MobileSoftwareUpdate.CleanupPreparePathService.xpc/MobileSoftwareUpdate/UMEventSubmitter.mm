@@ -1,10 +1,10 @@
 @interface UMEventSubmitter
 - (UMEventSubmitter)init;
 - (id)_defaultSession;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 - (void)dealloc;
-- (void)submitEventData:(id)a3 toURL:(id)a4 withOptions:(id)a5 completionHandler:(id)a6;
+- (void)submitEventData:(id)data toURL:(id)l withOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation UMEventSubmitter
@@ -51,7 +51,7 @@
   return [NSURLSession sessionWithConfiguration:v10 delegate:self delegateQueue:0];
 }
 
-- (void)submitEventData:(id)a3 toURL:(id)a4 withOptions:(id)a5 completionHandler:(id)a6
+- (void)submitEventData:(id)data toURL:(id)l withOptions:(id)options completionHandler:(id)handler
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -59,10 +59,10 @@
   block[2] = __72__UMEventSubmitter_submitEventData_toURL_withOptions_completionHandler___block_invoke;
   block[3] = &__block_descriptor_72_e8_32o40o48o56o64b_e5_v8__0l;
   block[4] = self;
-  block[5] = a5;
-  block[6] = a4;
-  block[7] = a3;
-  block[8] = a6;
+  block[5] = options;
+  block[6] = l;
+  block[7] = data;
+  block[8] = handler;
   dispatch_sync(queue, block);
 }
 
@@ -115,26 +115,26 @@ id __72__UMEventSubmitter_submitEventData_toURL_withOptions_completionHandler___
   }
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v9 = [objc_msgSend(a3 "configuration")];
+  v9 = [objc_msgSend(session "configuration")];
   logfunction(", 1, @"session %@ didReceiveChallenge\n"", v10, v11, v12, v13, v14, v9);
   v15 = [(NSDictionary *)self->_options objectForKey:@"URLSessionDelegate"];
   if (v15)
   {
 
-    [v15 URLSession:a3 didReceiveChallenge:a4 completionHandler:a5];
+    [v15 URLSession:session didReceiveChallenge:challenge completionHandler:handler];
   }
 
   else
   {
-    v16 = *(a5 + 2);
+    v16 = *(handler + 2);
 
-    v16(a5, 1, 0);
+    v16(handler, 1, 0);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -142,8 +142,8 @@ id __72__UMEventSubmitter_submitEventData_toURL_withOptions_completionHandler___
   block[2] = __57__UMEventSubmitter_URLSession_task_didCompleteWithError___block_invoke;
   block[3] = &__block_descriptor_56_e8_32o40o48o_e5_v8__0l;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = task;
+  block[6] = error;
   dispatch_sync(queue, block);
 }
 

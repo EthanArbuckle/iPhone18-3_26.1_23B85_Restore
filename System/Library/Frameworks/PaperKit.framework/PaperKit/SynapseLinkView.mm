@@ -1,12 +1,12 @@
 @interface SynapseLinkView
-- (BOOL)_wantsContextMenuPreviewForLinkView:(id)a3;
+- (BOOL)_wantsContextMenuPreviewForLinkView:(id)view;
 - (_TtC8PaperKit15SynapseLinkView)init;
-- (id)_contextMenuActionsForLinkView:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
+- (id)_contextMenuActionsForLinkView:(id)view;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)linkViewNeedsResize:(id)a3;
+- (void)linkViewNeedsResize:(id)resize;
 @end
 
 @implementation SynapseLinkView
@@ -17,8 +17,8 @@
   v4.super_class = type metadata accessor for SynapseLinkView();
   v2 = v4.receiver;
   [(SynapseLinkView *)&v4 didMoveToWindow];
-  v3 = [v2 window];
-  if (v3)
+  window = [v2 window];
+  if (window)
   {
 
     [*(*&v2[OBJC_IVAR____TtC8PaperKit15SynapseLinkView_synapseLink] + OBJC_IVAR____TtC8PaperKit15SynapseLinkItem_synapseItem) loadFullPreviewIfNeeded];
@@ -27,11 +27,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SynapseLinkView.layoutSubviews()();
 }
 
-- (id)_contextMenuActionsForLinkView:(id)a3
+- (id)_contextMenuActionsForLinkView:(id)view
 {
   v5 = self + OBJC_IVAR____TtC8PaperKit8LinkView_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -39,8 +39,8 @@
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 8);
-    v8 = a3;
-    v9 = self;
+    viewCopy = view;
+    selfCopy = self;
     v10 = v7();
     swift_unknownObjectRelease();
     if (v10)
@@ -52,8 +52,8 @@
 
   else
   {
-    v11 = a3;
-    v12 = self;
+    viewCopy2 = view;
+    selfCopy2 = self;
   }
 
 LABEL_6:
@@ -63,20 +63,20 @@ LABEL_6:
   return v13.super.isa;
 }
 
-- (BOOL)_wantsContextMenuPreviewForLinkView:(id)a3
+- (BOOL)_wantsContextMenuPreviewForLinkView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = specialized SynapseLinkView._wantsContextMenuPreview(for:)();
 
   return self & 1;
 }
 
-- (void)linkViewNeedsResize:(id)a3
+- (void)linkViewNeedsResize:(id)resize
 {
-  v4 = a3;
-  v5 = self;
-  SynapseLinkView.linkViewNeedsResize(_:)(v4);
+  resizeCopy = resize;
+  selfCopy = self;
+  SynapseLinkView.linkViewNeedsResize(_:)(resizeCopy);
 }
 
 - (_TtC8PaperKit15SynapseLinkView)init
@@ -86,18 +86,18 @@ LABEL_6:
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  selfCopy = self;
   v9 = SynapseLinkView.linkPresentationView.getter();
-  v10 = [v9 _contextMenuInteractionDelegate];
+  _contextMenuInteractionDelegate = [v9 _contextMenuInteractionDelegate];
 
-  if (v10)
+  if (_contextMenuInteractionDelegate)
   {
-    v11 = [v10 contextMenuInteraction:v7 configurationForMenuAtLocation:{x, y}];
+    v11 = [_contextMenuInteractionDelegate contextMenuInteraction:interactionCopy configurationForMenuAtLocation:{x, y}];
     swift_unknownObjectRelease();
   }
 
@@ -109,20 +109,20 @@ LABEL_6:
   return v11;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = self;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
   swift_unknownObjectRetain();
   v10 = SynapseLinkView.linkPresentationView.getter();
-  v11 = [v10 _contextMenuInteractionDelegate];
+  _contextMenuInteractionDelegate = [v10 _contextMenuInteractionDelegate];
 
-  if (v11)
+  if (_contextMenuInteractionDelegate)
   {
-    if ([v11 respondsToSelector_])
+    if ([_contextMenuInteractionDelegate respondsToSelector_])
     {
-      [v11 contextMenuInteraction:v8 willDisplayMenuForConfiguration:v9 animator:a5];
+      [_contextMenuInteractionDelegate contextMenuInteraction:interactionCopy willDisplayMenuForConfiguration:configurationCopy animator:animator];
     }
 
     swift_unknownObjectRelease();

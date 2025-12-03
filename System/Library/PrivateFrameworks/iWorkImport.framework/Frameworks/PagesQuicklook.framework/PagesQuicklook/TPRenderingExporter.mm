@@ -1,21 +1,21 @@
 @interface TPRenderingExporter
-- (BOOL)drawCurrentPageInContext:(CGContext *)a3 viewScale:(double)a4 unscaledClipRect:(CGRect)a5 createPage:(BOOL)a6;
+- (BOOL)drawCurrentPageInContext:(CGContext *)context viewScale:(double)scale unscaledClipRect:(CGRect)rect createPage:(BOOL)page;
 - (BOOL)incrementPage;
-- (BOOL)preparePage:(unint64_t)a3;
+- (BOOL)preparePage:(unint64_t)page;
 - (CGRect)boundsRect;
 - (CGRect)unscaledClipRect;
 - (NSMutableArray)outputPageList;
 - (TPPaginatedPageController)pageController;
-- (TPRenderingExporter)initWithDocumentRoot:(id)a3;
+- (TPRenderingExporter)initWithDocumentRoot:(id)root;
 - (double)progressForCurrentPage;
 - (double)totalProgess;
 - (id)currentInfos;
 - (unint64_t)pageCount;
 - (void)invalidateOutputPageList;
-- (void)p_addHyperLinksInContext:(CGContext *)a3 forCanvas:(id)a4;
-- (void)setIncludeBackgrounds:(BOOL)a3;
-- (void)setIncludeComments:(BOOL)a3;
-- (void)setOptions:(id)a3;
+- (void)p_addHyperLinksInContext:(CGContext *)context forCanvas:(id)canvas;
+- (void)setIncludeBackgrounds:(BOOL)backgrounds;
+- (void)setIncludeComments:(BOOL)comments;
+- (void)setOptions:(id)options;
 - (void)setup;
 - (void)setupPencilAnnotationsAndHyperlinks;
 - (void)teardown;
@@ -23,12 +23,12 @@
 
 @implementation TPRenderingExporter
 
-- (TPRenderingExporter)initWithDocumentRoot:(id)a3
+- (TPRenderingExporter)initWithDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v34.receiver = self;
   v34.super_class = TPRenderingExporter;
-  v5 = [(TSARenderingExporter *)&v34 initWithDocumentRoot:v4];
+  v5 = [(TSARenderingExporter *)&v34 initWithDocumentRoot:rootCopy];
   v6 = v5;
   if (v5)
   {
@@ -36,14 +36,14 @@
     v5->_startPageIndex = 0;
     v5->_lastPageIndex = -1;
     v7 = [TPPdfHyperlinkController alloc];
-    v13 = objc_msgSend_initWithDocumentRoot_(v7, v8, v9, v10, v11, v12, v4);
+    v13 = objc_msgSend_initWithDocumentRoot_(v7, v8, v9, v10, v11, v12, rootCopy);
     hyperlinkController = v6->_hyperlinkController;
     v6->_hyperlinkController = v13;
 
     v6->_includeComments = 0;
     v6->_includeBackgrounds = 1;
     v6->_includePencilAnnotations = 0;
-    v20 = objc_msgSend_paginatedPageControllerForDelegate_(TPPaginatedPageController, v15, v16, v17, v18, v19, v4);
+    v20 = objc_msgSend_paginatedPageControllerForDelegate_(TPPaginatedPageController, v15, v16, v17, v18, v19, rootCopy);
     pageController = v6->_pageController;
     v6->_pageController = v20;
 
@@ -130,21 +130,21 @@
   objc_msgSend_setInternalPageCount_(self, v7, v8, v9, v10, v11, 0);
 }
 
-- (void)setIncludeComments:(BOOL)a3
+- (void)setIncludeComments:(BOOL)comments
 {
-  if (self->_includeComments != a3)
+  if (self->_includeComments != comments)
   {
     objc_msgSend_invalidateOutputPageList(self, a2, v3, v4, v5, v6);
-    self->_includeComments = a3;
+    self->_includeComments = comments;
   }
 }
 
-- (void)setIncludeBackgrounds:(BOOL)a3
+- (void)setIncludeBackgrounds:(BOOL)backgrounds
 {
-  if (self->_includeBackgrounds != a3)
+  if (self->_includeBackgrounds != backgrounds)
   {
     objc_msgSend_invalidateOutputPageList(self, a2, v3, v4, v5, v6);
-    self->_includeBackgrounds = a3;
+    self->_includeBackgrounds = backgrounds;
     v19 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v9, v10, v11, v12, v13);
     objc_msgSend_postNotificationName_object_(v19, v14, v15, v16, v17, v18, *MEMORY[0x277D81028], *(&self->super.super.isa + *MEMORY[0x277D7FFD8]));
   }
@@ -180,26 +180,26 @@
   [(TSARenderingExporter *)&v12 teardown];
 }
 
-- (BOOL)drawCurrentPageInContext:(CGContext *)a3 viewScale:(double)a4 unscaledClipRect:(CGRect)a5 createPage:(BOOL)a6
+- (BOOL)drawCurrentPageInContext:(CGContext *)context viewScale:(double)scale unscaledClipRect:(CGRect)rect createPage:(BOOL)page
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  if (a6)
+  pageCopy = page;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (page)
   {
     TSURectWithSize();
     mediaBox.origin.x = v14;
     mediaBox.origin.y = v15;
     mediaBox.size.width = v16;
     mediaBox.size.height = v17;
-    CGContextBeginPage(a3, &mediaBox);
+    CGContextBeginPage(context, &mediaBox);
   }
 
-  CGContextSaveGState(a3);
-  CGContextScaleCTM(a3, a4, a4);
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
+  CGContextScaleCTM(context, scale, scale);
+  CGContextSaveGState(context);
   v26[0] = MEMORY[0x277D85DD0];
   v18.n128_u64[0] = 3221225472;
   v26[1] = 3221225472;
@@ -209,21 +209,21 @@
   objc_msgSend_performBlockWithImager_(self, v19, v18, v20, v21, v22, v26);
   v25.receiver = self;
   v25.super_class = TPRenderingExporter;
-  v23 = [(TSARenderingExporter *)&v25 drawCurrentPageInContext:a3 viewScale:0 unscaledClipRect:1.0 createPage:x, y, width, height];
-  CGContextRestoreGState(a3);
-  CGContextRestoreGState(a3);
-  if (v6)
+  height = [(TSARenderingExporter *)&v25 drawCurrentPageInContext:context viewScale:0 unscaledClipRect:1.0 createPage:x, y, width, height];
+  CGContextRestoreGState(context);
+  CGContextRestoreGState(context);
+  if (pageCopy)
   {
-    CGContextEndPage(a3);
+    CGContextEndPage(context);
   }
 
-  return v23;
+  return height;
 }
 
-- (void)p_addHyperLinksInContext:(CGContext *)a3 forCanvas:(id)a4
+- (void)p_addHyperLinksInContext:(CGContext *)context forCanvas:(id)canvas
 {
   v73 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  canvasCopy = canvas;
   objc_opt_class();
   v8 = TSUDynamicCast();
   if (v8)
@@ -236,7 +236,7 @@
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v28 = objc_msgSend_allReps(v6, v24, 0, v25, v26, v27, 0);
+    v28 = objc_msgSend_allReps(canvasCopy, v24, 0, v25, v26, v27, 0);
     v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v29, v30, v31, v32, v33, &v68, v72, 16);
     if (v34)
     {
@@ -274,7 +274,7 @@
     v64.n128_u64[0] = 0;
     v65.n128_u64[0] = v56;
     v66.n128_u64[0] = v58;
-    objc_msgSend_commitHyperlinksToPDF_targetRect_(v62, v67, v63, v64, v65, v66, a3);
+    objc_msgSend_commitHyperlinksToPDF_targetRect_(v62, v67, v63, v64, v65, v66, context);
   }
 }
 
@@ -295,14 +295,14 @@
   return pageController;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   v34.receiver = self;
   v34.super_class = TPRenderingExporter;
-  v4 = a3;
-  [(TSARenderingExporter *)&v34 setOptions:v4];
-  v10 = objc_msgSend_objectForKeyedSubscript_(v4, v5, v6, v7, v8, v9, @"kTPExportFromPage", v34.receiver, v34.super_class);
-  v16 = objc_msgSend_objectForKeyedSubscript_(v4, v11, v12, v13, v14, v15, @"kTPExportToPage");
+  optionsCopy = options;
+  [(TSARenderingExporter *)&v34 setOptions:optionsCopy];
+  v10 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v5, v6, v7, v8, v9, @"kTPExportFromPage", v34.receiver, v34.super_class);
+  v16 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v11, v12, v13, v14, v15, @"kTPExportToPage");
 
   if (v10)
   {
@@ -419,12 +419,12 @@
   return v35;
 }
 
-- (BOOL)preparePage:(unint64_t)a3
+- (BOOL)preparePage:(unint64_t)page
 {
   v9 = objc_msgSend_pageController(self, a2, v3, v4, v5, v6);
   v15 = objc_msgSend_outputPageList(self, v10, v11, v12, v13, v14);
-  v16 = a3 - 1;
-  v22 = objc_msgSend_objectAtIndexedSubscript_(v15, v17, v18, v19, v20, v21, a3 - 1);
+  v16 = page - 1;
+  v22 = objc_msgSend_objectAtIndexedSubscript_(v15, v17, v18, v19, v20, v21, page - 1);
 
   if (objc_msgSend_isDocumentPage(v22, v23, v24, v25, v26, v27) && objc_msgSend_bodyRangeForPageIndex_forcePagination_(v9, v28, v29, v30, v31, v32, v16, 1) == 0x7FFFFFFFFFFFFFFFLL)
   {

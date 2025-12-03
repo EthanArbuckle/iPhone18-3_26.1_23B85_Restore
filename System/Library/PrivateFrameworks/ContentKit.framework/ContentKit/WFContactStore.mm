@@ -7,7 +7,7 @@
 
 + (id)new
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___WFContactStore;
   return objc_msgSendSuper2(&v3, "new");
 }

@@ -1,30 +1,30 @@
 @interface _CNBufferingStrategy
-+ (_CNBufferingStrategy)strategyWithCapacity:(unint64_t)a3;
-+ (_CNBufferingStrategy)strategyWithTimeInterval:(double)a3 scheduler:(id)a4;
-+ (id)combine:(id)a3;
++ (_CNBufferingStrategy)strategyWithCapacity:(unint64_t)capacity;
++ (_CNBufferingStrategy)strategyWithTimeInterval:(double)interval scheduler:(id)scheduler;
++ (id)combine:(id)combine;
 @end
 
 @implementation _CNBufferingStrategy
 
-+ (_CNBufferingStrategy)strategyWithCapacity:(unint64_t)a3
++ (_CNBufferingStrategy)strategyWithCapacity:(unint64_t)capacity
 {
-  v3 = [[_CNSpatialBufferingStrategy alloc] initWithCapacity:a3];
+  v3 = [[_CNSpatialBufferingStrategy alloc] initWithCapacity:capacity];
 
   return v3;
 }
 
-+ (_CNBufferingStrategy)strategyWithTimeInterval:(double)a3 scheduler:(id)a4
++ (_CNBufferingStrategy)strategyWithTimeInterval:(double)interval scheduler:(id)scheduler
 {
-  v5 = a4;
-  v6 = [[_CNTemporalBufferingStrategy alloc] initWithTimeInterval:v5 scheduler:a3];
+  schedulerCopy = scheduler;
+  v6 = [[_CNTemporalBufferingStrategy alloc] initWithTimeInterval:schedulerCopy scheduler:interval];
 
   return v6;
 }
 
-+ (id)combine:(id)a3
++ (id)combine:(id)combine
 {
-  v3 = a3;
-  v4 = [[_CNCombinedBufferingStrategy alloc] initWithStrategies:v3];
+  combineCopy = combine;
+  v4 = [[_CNCombinedBufferingStrategy alloc] initWithStrategies:combineCopy];
 
   return v4;
 }

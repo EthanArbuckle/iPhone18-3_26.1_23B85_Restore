@@ -1,42 +1,42 @@
 @interface DTTapMessageHandler
-- (DTTapMessageHandler)initWithConfig:(id)a3;
-- (id)messageReceived:(id)a3;
+- (DTTapMessageHandler)initWithConfig:(id)config;
+- (id)messageReceived:(id)received;
 @end
 
 @implementation DTTapMessageHandler
 
-- (DTTapMessageHandler)initWithConfig:(id)a3
+- (DTTapMessageHandler)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v9.receiver = self;
   v9.super_class = DTTapMessageHandler;
   v6 = [(DTTapMessageHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!configCopy)
     {
       sub_24802EE6C();
     }
 
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
   }
 
   return v7;
 }
 
-- (id)messageReceived:(id)a3
+- (id)messageReceived:(id)received
 {
-  if (!a3)
+  if (!received)
   {
     v14 = 0;
     goto LABEL_10;
   }
 
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  receivedCopy = received;
   v5 = [v3 setWithObject:objc_opt_class()];
-  v6 = [v4 objectWithAllowedClasses:v5];
+  v6 = [receivedCopy objectWithAllowedClasses:v5];
 
   if (!v6)
   {
@@ -51,9 +51,9 @@
     {
       v15 = v6;
       v16 = [DTTapHeartbeatMemo alloc];
-      v17 = [v15 heartbeatTime];
+      heartbeatTime = [v15 heartbeatTime];
 
-      v13 = [(DTTapHeartbeatMemo *)v16 initWithTimestamp:v17];
+      v13 = [(DTTapHeartbeatMemo *)v16 initWithTimestamp:heartbeatTime];
       goto LABEL_9;
     }
 
@@ -64,12 +64,12 @@ LABEL_8:
 
   v7 = v6;
   v8 = [DTTapStatusMemo alloc];
-  v9 = [v7 status];
-  v10 = [v7 notice];
-  v11 = [v7 info];
-  v12 = [v7 timestamp];
+  status = [v7 status];
+  notice = [v7 notice];
+  info = [v7 info];
+  timestamp = [v7 timestamp];
 
-  v13 = [(DTTapStatusMemo *)v8 initWithStatus:v9 notice:v10 info:v11 timestamp:v12];
+  v13 = [(DTTapStatusMemo *)v8 initWithStatus:status notice:notice info:info timestamp:timestamp];
 LABEL_9:
   v14 = v13;
 

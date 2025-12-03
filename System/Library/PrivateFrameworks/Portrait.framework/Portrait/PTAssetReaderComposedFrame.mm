@@ -1,11 +1,11 @@
 @interface PTAssetReaderComposedFrame
-- (PTAssetReaderComposedFrame)initWithTime:(id *)a3 colorBuffer:(__CVBuffer *)a4 auxBuffer:(__CVBuffer *)a5;
+- (PTAssetReaderComposedFrame)initWithTime:(id *)time colorBuffer:(__CVBuffer *)buffer auxBuffer:(__CVBuffer *)auxBuffer;
 - (void)dealloc;
 @end
 
 @implementation PTAssetReaderComposedFrame
 
-- (PTAssetReaderComposedFrame)initWithTime:(id *)a3 colorBuffer:(__CVBuffer *)a4 auxBuffer:(__CVBuffer *)a5
+- (PTAssetReaderComposedFrame)initWithTime:(id *)time colorBuffer:(__CVBuffer *)buffer auxBuffer:(__CVBuffer *)auxBuffer
 {
   v13.receiver = self;
   v13.super_class = PTAssetReaderComposedFrame;
@@ -13,11 +13,11 @@
   v9 = v8;
   if (v8)
   {
-    v10 = *&a3->var0;
-    *(v8 + 5) = a3->var3;
+    v10 = *&time->var0;
+    *(v8 + 5) = time->var3;
     *(v8 + 24) = v10;
-    *(v8 + 1) = CVPixelBufferRetain(a4);
-    v9->_auxBuffer = CVPixelBufferRetain(a5);
+    *(v8 + 1) = CVPixelBufferRetain(buffer);
+    v9->_auxBuffer = CVPixelBufferRetain(auxBuffer);
     v11 = v9;
   }
 

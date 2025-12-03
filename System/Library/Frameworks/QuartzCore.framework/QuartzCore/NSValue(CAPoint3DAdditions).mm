@@ -9,7 +9,7 @@
 {
   v2[3] = *MEMORY[0x1E69E9840];
   memset(v2, 0, 24);
-  [a1 getValue:v2 size:24];
+  [self getValue:v2 size:24];
   return *v2;
 }
 
@@ -19,7 +19,7 @@
   *v5 = a2;
   *&v5[1] = a3;
   *&v5[2] = a4;
-  return [a1 valueWithBytes:v5 objCType:"{CAPoint3D=ddd}"];
+  return [self valueWithBytes:v5 objCType:"{CAPoint3D=ddd}"];
 }
 
 @end

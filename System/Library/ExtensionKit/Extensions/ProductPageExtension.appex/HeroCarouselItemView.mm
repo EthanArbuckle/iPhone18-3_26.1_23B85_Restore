@@ -1,7 +1,7 @@
 @interface HeroCarouselItemView
 - (NSArray)preferredFocusEnvironments;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HeroCarouselItemView
@@ -11,8 +11,8 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension20HeroCarouselItemView_overlayView);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 preferredFocusEnvironments];
+    selfCopy = self;
+    preferredFocusEnvironments = [v2 preferredFocusEnvironments];
     sub_10000A5D4(&unk_10094B460);
     sub_1007701BC();
   }
@@ -25,15 +25,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001837FC();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_100183D30(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100183D30(change);
 }
 
 @end

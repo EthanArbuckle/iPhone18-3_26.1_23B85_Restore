@@ -1,28 +1,28 @@
 @interface NSTextViewportLayoutController
 + (BOOL)flushesCachedViewportElements;
-- (BOOL)addRenderingSurface:(id)a3 key:(id)a4 group:(int64_t)a5 placement:(int64_t)a6;
+- (BOOL)addRenderingSurface:(id)surface key:(id)key group:(int64_t)group placement:(int64_t)placement;
 - (CGFloat)relocateViewportToTextLocation:(id)textLocation;
 - (CGRect)_viewportBounds;
 - (CGRect)viewportBounds;
 - (NSTextContainer)textContainer;
 - (NSTextRange)viewportRange;
-- (NSTextViewportLayoutController)initWithTextContainer:(id)a3;
+- (NSTextViewportLayoutController)initWithTextContainer:(id)container;
 - (NSTextViewportLayoutController)initWithTextLayoutManager:(NSTextLayoutManager *)textLayoutManager;
-- (id)locationAtPoint:(CGPoint)a3;
-- (id)renderingSurfaceForKey:(id)a3;
-- (id)textViewportElementAtPoint:(CGPoint)a3;
-- (id)textViewportElementForLocation:(id)a3;
-- (id)textViewportElementsInRect:(CGRect)a3;
-- (void)addViewportLayoutObserver:(id)a3;
-- (void)adjustViewport:(double)a3 atLocation:(id)a4 verticalOffsetFromLocation:(double)a5;
+- (id)locationAtPoint:(CGPoint)point;
+- (id)renderingSurfaceForKey:(id)key;
+- (id)textViewportElementAtPoint:(CGPoint)point;
+- (id)textViewportElementForLocation:(id)location;
+- (id)textViewportElementsInRect:(CGRect)rect;
+- (void)addViewportLayoutObserver:(id)observer;
+- (void)adjustViewport:(double)viewport atLocation:(id)location verticalOffsetFromLocation:(double)fromLocation;
 - (void)dealloc;
-- (void)enumerateTextViewportElementsInRect:(CGRect)a3 options:(int64_t)a4 usingBlock:(id)a5;
-- (void)enumerateViewportElementsFromLocation:(id)a3 options:(int64_t)a4 usingBlock:(id)a5;
+- (void)enumerateTextViewportElementsInRect:(CGRect)rect options:(int64_t)options usingBlock:(id)block;
+- (void)enumerateViewportElementsFromLocation:(id)location options:(int64_t)options usingBlock:(id)block;
 - (void)layoutViewport;
-- (void)removeViewportLayoutObserver:(id)a3;
+- (void)removeViewportLayoutObserver:(id)observer;
 - (void)setDelegate:(id)delegate;
 - (void)setNeedsLayout;
-- (void)setRenderingSurface:(id)a3 forKey:(id)a4;
+- (void)setRenderingSurface:(id)surface forKey:(id)key;
 @end
 
 @implementation NSTextViewportLayoutController
@@ -226,8 +226,8 @@ uint64_t __48__NSTextViewportLayoutController_layoutViewport__block_invoke(uint6
 - (void)layoutViewport
 {
   v108 = *MEMORY[0x1E69E9840];
-  v3 = [(NSTextViewportLayoutController *)self delegate];
-  v4 = [(NSTextViewportLayoutController *)self elementProvider];
+  delegate = [(NSTextViewportLayoutController *)self delegate];
+  elementProvider = [(NSTextViewportLayoutController *)self elementProvider];
   v5 = MEMORY[0x1E695EFF8];
   if ((*&self->_viewportLayoutControllerFlags & 4) != 0)
   {
@@ -239,10 +239,10 @@ uint64_t __48__NSTextViewportLayoutController_layoutViewport__block_invoke(uint6
     self->_viewportRange = 0;
   }
 
-  v55 = v4;
+  v55 = elementProvider;
   if (objc_opt_respondsToSelector())
   {
-    [v3 textViewportLayoutControllerWillLayout:self];
+    [delegate textViewportLayoutControllerWillLayout:self];
   }
 
   v104 = 0u;
@@ -265,11 +265,11 @@ uint64_t __48__NSTextViewportLayoutController_layoutViewport__block_invoke(uint6
         }
 
         v12 = *(*(&v102 + 1) + 8 * i);
-        v13 = [v12 object];
-        v14 = v13;
-        if (v13)
+        object = [v12 object];
+        v14 = object;
+        if (object)
         {
-          if (v13 != v3 && (objc_opt_respondsToSelector() & 1) != 0)
+          if (object != delegate && (objc_opt_respondsToSelector() & 1) != 0)
           {
             [v14 textViewportLayoutControllerWillLayout:self];
           }
@@ -314,16 +314,16 @@ uint64_t __48__NSTextViewportLayoutController_layoutViewport__block_invoke(uint6
   v87 = &v86;
   v88 = 0x2020000000;
   v89 = 1;
-  if (v3 && v55)
+  if (delegate && v55)
   {
     if ((*&self->_viewportLayoutControllerFlags & 0x20) != 0)
     {
-      [v3 viewportBoundsForTextViewportLayoutController:{self, v16.x, v17.width}];
+      [delegate viewportBoundsForTextViewportLayoutController:{self, v16.x, v17.width}];
     }
 
     else
     {
-      [v3 viewport];
+      [delegate viewport];
     }
 
     v53 = v23;
@@ -346,7 +346,7 @@ uint64_t __48__NSTextViewportLayoutController_layoutViewport__block_invoke(uint6
     if ((*&self->_viewportLayoutControllerFlags & 0x40) != 0)
     {
       v65 = *MEMORY[0x1E695F060];
-      v25 = [v3 locationForPositionInViewport:&v65 offset:v20];
+      v25 = [delegate locationForPositionInViewport:&v65 offset:v20];
       v26 = v81;
       v81[5] = v25;
       if (v25)
@@ -364,8 +364,8 @@ uint64_t __48__NSTextViewportLayoutController_layoutViewport__block_invoke(uint6
       }
     }
 
-    v30 = [(NSTextRange *)self->_viewportRange location];
-    v81[5] = v30;
+    location = [(NSTextRange *)self->_viewportRange location];
+    v81[5] = location;
     if (v54 < 0.001)
     {
       v75[5] = 0.0;
@@ -398,7 +398,7 @@ LABEL_37:
         v64[8] = &v65;
         v64[9] = &v74;
         v64[4] = self;
-        v64[5] = v3;
+        v64[5] = delegate;
         v64[6] = v15;
         v64[7] = &v96;
         v64[10] = &v86;
@@ -434,9 +434,9 @@ LABEL_37:
     y = self->_viewportBounds.origin.y;
     if (v54 == y)
     {
-      v32 = [(NSTextRange *)self->_viewportRange location];
+      location2 = [(NSTextRange *)self->_viewportRange location];
       v28 = v54;
-      v81[5] = v32;
+      v81[5] = location2;
       goto LABEL_37;
     }
 
@@ -451,7 +451,7 @@ LABEL_37:
       v35 = *(v75 + 5);
       v71[2] = 0x2020000000;
       v71[3] = v35;
-      v36 = [(NSTextRange *)self->_viewportRange location];
+      location3 = [(NSTextRange *)self->_viewportRange location];
       v70[0] = MEMORY[0x1E69E9820];
       v70[1] = 3221225472;
       v70[2] = __48__NSTextViewportLayoutController_layoutViewport__block_invoke_3;
@@ -464,7 +464,7 @@ LABEL_37:
       v70[11] = v53;
       v70[6] = &v74;
       v70[7] = &v65;
-      [(NSTextViewportLayoutController *)self enumerateViewportElementsFromLocation:v36 options:2 usingBlock:v70];
+      [(NSTextViewportLayoutController *)self enumerateViewportElementsFromLocation:location3 options:2 usingBlock:v70];
       _Block_object_dispose(v71, 8);
       if (*(*(&v65 + 1) + 24))
       {
@@ -477,7 +477,7 @@ LABEL_36:
 
     else
     {
-      v33 = [(NSTextRange *)self->_viewportRange location];
+      location4 = [(NSTextRange *)self->_viewportRange location];
       v72[0] = MEMORY[0x1E69E9820];
       v72[1] = 3221225472;
       v72[2] = __48__NSTextViewportLayoutController_layoutViewport__block_invoke_2;
@@ -488,7 +488,7 @@ LABEL_36:
       v72[9] = v53;
       v72[4] = &v74;
       v72[5] = &v80;
-      [(NSTextViewportLayoutController *)self enumerateViewportElementsFromLocation:v33 options:3 usingBlock:v72];
+      [(NSTextViewportLayoutController *)self enumerateViewportElementsFromLocation:location4 options:3 usingBlock:v72];
       v34 = v75[5];
       *(*(&v65 + 1) + 24) = v34 <= v54;
       if (v34 <= v54)
@@ -532,31 +532,31 @@ LABEL_41:
   *&self->_viewportLayoutControllerFlags = viewportLayoutControllerFlags | 1;
   if ((viewportLayoutControllerFlags & 0x100) == 0)
   {
-    v46 = 0;
+    _platformRenderingSurfaceUpdater = 0;
 LABEL_54:
-    v47 = 0;
+    renderingSurfaceUpdater = 0;
     goto LABEL_57;
   }
 
-  v46 = [(NSTextViewportLayoutController *)self _platformRenderingSurfaceUpdater];
+  _platformRenderingSurfaceUpdater = [(NSTextViewportLayoutController *)self _platformRenderingSurfaceUpdater];
   if ((*&self->_viewportLayoutControllerFlags & 0x100) == 0)
   {
     goto LABEL_54;
   }
 
-  v47 = [(NSTextViewportLayoutController *)self renderingSurfaceUpdater];
+  renderingSurfaceUpdater = [(NSTextViewportLayoutController *)self renderingSurfaceUpdater];
 LABEL_57:
-  if (v47 | v46)
+  if (renderingSurfaceUpdater | _platformRenderingSurfaceUpdater)
   {
     *&self->_viewportLayoutControllerFlags |= 8u;
-    if (v46)
+    if (_platformRenderingSurfaceUpdater)
     {
-      (*(v46 + 2))(v46, self, self->_viewportRange, self->_viewportBounds.origin.x, self->_viewportBounds.origin.y, self->_viewportBounds.size.width, self->_viewportBounds.size.height);
+      (*(_platformRenderingSurfaceUpdater + 2))(_platformRenderingSurfaceUpdater, self, self->_viewportRange, self->_viewportBounds.origin.x, self->_viewportBounds.origin.y, self->_viewportBounds.size.width, self->_viewportBounds.size.height);
     }
 
-    if (v47)
+    if (renderingSurfaceUpdater)
     {
-      (*(v47 + 2))(v47, self, self->_viewportRange, self->_viewportBounds.origin.x, self->_viewportBounds.origin.y, self->_viewportBounds.size.width, self->_viewportBounds.size.height);
+      (*(renderingSurfaceUpdater + 2))(renderingSurfaceUpdater, self, self->_viewportRange, self->_viewportBounds.origin.x, self->_viewportBounds.origin.y, self->_viewportBounds.size.width, self->_viewportBounds.size.height);
     }
 
     *&self->_viewportLayoutControllerFlags &= ~8u;
@@ -564,7 +564,7 @@ LABEL_57:
 
   if (objc_opt_respondsToSelector())
   {
-    [v3 textViewportLayoutControllerDidLayout:self];
+    [delegate textViewportLayoutControllerDidLayout:self];
   }
 
   v62 = 0u;
@@ -585,10 +585,10 @@ LABEL_57:
           objc_enumerationMutation(v48);
         }
 
-        v52 = [*(*(&v60 + 1) + 8 * j) object];
-        if (v52 != v3 && (objc_opt_respondsToSelector() & 1) != 0)
+        object2 = [*(*(&v60 + 1) + 8 * j) object];
+        if (object2 != delegate && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v52 textViewportLayoutControllerDidLayout:self];
+          [object2 textViewportLayoutControllerDidLayout:self];
         }
       }
 
@@ -740,13 +740,13 @@ uint64_t __63__NSTextViewportLayoutController_flushesCachedViewportElements__blo
   return v5;
 }
 
-- (NSTextViewportLayoutController)initWithTextContainer:(id)a3
+- (NSTextViewportLayoutController)initWithTextContainer:(id)container
 {
-  v4 = -[NSTextViewportLayoutController initWithTextLayoutManager:](self, "initWithTextLayoutManager:", [a3 textLayoutManager]);
+  v4 = -[NSTextViewportLayoutController initWithTextLayoutManager:](self, "initWithTextLayoutManager:", [container textLayoutManager]);
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_textContainer, a3);
+    objc_storeWeak(&v4->_textContainer, container);
   }
 
   return v5;
@@ -858,18 +858,18 @@ uint64_t __63__NSTextViewportLayoutController_flushesCachedViewportElements__blo
   }
 }
 
-- (void)enumerateViewportElementsFromLocation:(id)a3 options:(int64_t)a4 usingBlock:(id)a5
+- (void)enumerateViewportElementsFromLocation:(id)location options:(int64_t)options usingBlock:(id)block
 {
   if ((*&self->_viewportLayoutControllerFlags & 0x10) != 0)
   {
-    if ((a4 & 4) != 0)
+    if ((options & 4) != 0)
     {
-      v10 = [(NSTextViewportLayoutController *)self textContainer];
+      textContainer = [(NSTextViewportLayoutController *)self textContainer];
     }
 
     else
     {
-      v10 = 0;
+      textContainer = 0;
     }
 
     Weak = objc_loadWeak(&self->_textLayoutManager);
@@ -877,16 +877,16 @@ uint64_t __63__NSTextViewportLayoutController_flushesCachedViewportElements__blo
     v12[1] = 3221225472;
     v12[2] = __91__NSTextViewportLayoutController_enumerateViewportElementsFromLocation_options_usingBlock___block_invoke;
     v12[3] = &unk_1E7268190;
-    v12[4] = v10;
-    v12[5] = a5;
-    [Weak enumerateTextLayoutFragmentsFromLocation:a3 options:a4 | 8 usingBlock:v12];
+    v12[4] = textContainer;
+    v12[5] = block;
+    [Weak enumerateTextLayoutFragmentsFromLocation:location options:options | 8 usingBlock:v12];
   }
 
   else
   {
-    v9 = [(NSTextViewportLayoutController *)self elementProvider];
+    elementProvider = [(NSTextViewportLayoutController *)self elementProvider];
 
-    [(NSTextViewportElementProvider *)v9 enumerateViewportElementsFromLocation:a3 options:a4 usingBlock:a5];
+    [(NSTextViewportElementProvider *)elementProvider enumerateViewportElementsFromLocation:location options:options usingBlock:block];
   }
 }
 
@@ -983,7 +983,7 @@ uint64_t __48__NSTextViewportLayoutController_layoutViewport__block_invoke_2(uin
         v21[1] = v21;
         v21[2] = 0x2020000000;
         v21[3] = 0;
-        v8 = [(NSTextRange *)self->_viewportRange location];
+        location = [(NSTextRange *)self->_viewportRange location];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __65__NSTextViewportLayoutController_relocateViewportToTextLocation___block_invoke_2;
@@ -993,7 +993,7 @@ uint64_t __48__NSTextViewportLayoutController_layoutViewport__block_invoke_2(uin
         v20[8] = &v34;
         v20[4] = textLocation;
         v20[5] = self;
-        [(NSTextViewportLayoutController *)self enumerateViewportElementsFromLocation:v8 options:3 usingBlock:v20];
+        [(NSTextViewportLayoutController *)self enumerateViewportElementsFromLocation:location options:3 usingBlock:v20];
         _Block_object_dispose(v21, 8);
       }
 
@@ -1006,7 +1006,7 @@ uint64_t __48__NSTextViewportLayoutController_layoutViewport__block_invoke_2(uin
       v25 = &v24;
       v26 = 0x2020000000;
       v27 = 0;
-      v9 = [(NSTextRange *)self->_viewportRange endLocation];
+      endLocation = [(NSTextRange *)self->_viewportRange endLocation];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __65__NSTextViewportLayoutController_relocateViewportToTextLocation___block_invoke_3;
@@ -1014,7 +1014,7 @@ uint64_t __48__NSTextViewportLayoutController_layoutViewport__block_invoke_2(uin
       v19[4] = textLocation;
       v19[5] = &v28;
       v19[6] = &v24;
-      [(NSTextViewportLayoutController *)self enumerateViewportElementsFromLocation:v9 options:2 usingBlock:v19];
+      [(NSTextViewportLayoutController *)self enumerateViewportElementsFromLocation:endLocation options:2 usingBlock:v19];
       if (v29[5] || ![textLocation isEqual:{-[NSTextRange endLocation](self->_viewportRange, "endLocation")}])
       {
         v11 = CGRectGetMaxY(self->_viewportBounds) + self->_viewportOffset.y + v25[3];
@@ -1022,9 +1022,9 @@ uint64_t __48__NSTextViewportLayoutController_layoutViewport__block_invoke_2(uin
 
       else
       {
-        v10 = [(NSArray *)self->_viewportElements lastObject];
-        v29[5] = v10;
-        [v10 layoutPoint];
+        lastObject = [(NSArray *)self->_viewportElements lastObject];
+        v29[5] = lastObject;
+        [lastObject layoutPoint];
       }
 
       v35[3] = v11;
@@ -1125,16 +1125,16 @@ double __65__NSTextViewportLayoutController_relocateViewportToTextLocation___blo
   return result;
 }
 
-- (void)adjustViewport:(double)a3 atLocation:(id)a4 verticalOffsetFromLocation:(double)a5
+- (void)adjustViewport:(double)viewport atLocation:(id)location verticalOffsetFromLocation:(double)fromLocation
 {
-  [(NSTextViewportLayoutController *)self adjustViewportByVerticalOffset:a3];
-  if (a4)
+  [(NSTextViewportLayoutController *)self adjustViewportByVerticalOffset:viewport];
+  if (location)
   {
     v8 = self->_viewportRange;
-    self->_viewportRange = [[NSTextRange alloc] initWithLocation:a4];
+    self->_viewportRange = [[NSTextRange alloc] initWithLocation:location];
   }
 
-  self->_viewportOffset.y = a5;
+  self->_viewportOffset.y = fromLocation;
 }
 
 - (CGRect)viewportBounds
@@ -1172,7 +1172,7 @@ double __65__NSTextViewportLayoutController_relocateViewportToTextLocation___blo
   return result;
 }
 
-- (void)setRenderingSurface:(id)a3 forKey:(id)a4
+- (void)setRenderingSurface:(id)surface forKey:(id)key
 {
   objc_sync_enter(self);
   renderingSurfaces = self->_renderingSurfaces;
@@ -1182,20 +1182,20 @@ double __65__NSTextViewportLayoutController_relocateViewportToTextLocation___blo
     self->_renderingSurfaces = renderingSurfaces;
   }
 
-  [(NSMapTable *)renderingSurfaces setObject:a3 forKey:a4];
+  [(NSMapTable *)renderingSurfaces setObject:surface forKey:key];
 
   objc_sync_exit(self);
 }
 
-- (id)renderingSurfaceForKey:(id)a3
+- (id)renderingSurfaceForKey:(id)key
 {
   objc_sync_enter(self);
-  v5 = [(NSMapTable *)self->_renderingSurfaces objectForKey:a3];
+  v5 = [(NSMapTable *)self->_renderingSurfaces objectForKey:key];
   objc_sync_exit(self);
   return v5;
 }
 
-- (BOOL)addRenderingSurface:(id)a3 key:(id)a4 group:(int64_t)a5 placement:(int64_t)a6
+- (BOOL)addRenderingSurface:(id)surface key:(id)key group:(int64_t)group placement:(int64_t)placement
 {
   if ((~*&self->_viewportLayoutControllerFlags & 0x108) != 0)
   {
@@ -1204,10 +1204,10 @@ double __65__NSTextViewportLayoutController_relocateViewportToTextLocation___blo
 
   else
   {
-    v9 = [objc_loadWeak(&self->_delegate) textViewportLayoutController:self addRenderingSurface:a3 group:a5 placement:a6];
+    v9 = [objc_loadWeak(&self->_delegate) textViewportLayoutController:self addRenderingSurface:surface group:group placement:placement];
     if (v9)
     {
-      [(NSTextViewportLayoutController *)self setRenderingSurface:a3 forKey:a4];
+      [(NSTextViewportLayoutController *)self setRenderingSurface:surface forKey:key];
       LOBYTE(v9) = 1;
     }
   }
@@ -1215,7 +1215,7 @@ double __65__NSTextViewportLayoutController_relocateViewportToTextLocation___blo
   return v9;
 }
 
-- (id)textViewportElementAtPoint:(CGPoint)a3
+- (id)textViewportElementAtPoint:(CGPoint)point
 {
   if ((*&self->_viewportLayoutControllerFlags & 1) == 0)
   {
@@ -1223,13 +1223,13 @@ double __65__NSTextViewportLayoutController_relocateViewportToTextLocation___blo
     return 0;
   }
 
-  y = a3.y;
+  y = point.y;
   viewportElements = self->_viewportElements;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v19 = __61__NSTextViewportLayoutController_textViewportElementAtPoint___block_invoke;
   v20 = &__block_descriptor_48_e33_B16__0___NSTextViewportElement__8l;
-  v21 = a3;
+  pointCopy = point;
   v6 = [(NSArray *)viewportElements count];
   if (v6)
   {
@@ -1295,11 +1295,11 @@ BOOL __61__NSTextViewportLayoutController_textViewportElementAtPoint___block_inv
   return v5 + v6 <= *(a1 + 40);
 }
 
-- (id)textViewportElementsInRect:(CGRect)a3
+- (id)textViewportElementsInRect:(CGRect)rect
 {
   if (*&self->_viewportLayoutControllerFlags)
   {
-    v29 = NSIntersectionRect(a3, self->_viewportBounds);
+    v29 = NSIntersectionRect(rect, self->_viewportBounds);
     x = v29.origin.x;
     y = v29.origin.y;
     width = v29.size.width;
@@ -1391,24 +1391,24 @@ BOOL __61__NSTextViewportLayoutController_textViewportElementsInRect___block_inv
   return v5 + v6 <= *(a1 + 40);
 }
 
-- (void)enumerateTextViewportElementsInRect:(CGRect)a3 options:(int64_t)a4 usingBlock:(id)a5
+- (void)enumerateTextViewportElementsInRect:(CGRect)rect options:(int64_t)options usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(NSTextViewportLayoutController *)self textViewportElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  optionsCopy = options;
+  v7 = [(NSTextViewportLayoutController *)self textViewportElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __89__NSTextViewportLayoutController_enumerateTextViewportElementsInRect_options_usingBlock___block_invoke;
   v8[3] = &unk_1E7268310;
-  v8[4] = a5;
-  [v7 enumerateObjectsWithOptions:2 * (v6 & 1) usingBlock:v8];
+  v8[4] = block;
+  [v7 enumerateObjectsWithOptions:2 * (optionsCopy & 1) usingBlock:v8];
 }
 
-- (id)locationAtPoint:(CGPoint)a3
+- (id)locationAtPoint:(CGPoint)point
 {
   if (*&self->_viewportLayoutControllerFlags)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     v6 = [(NSTextViewportLayoutController *)self textViewportElementAtPoint:?];
     [v6 layoutPoint];
     v8 = x - v7;
@@ -1425,7 +1425,7 @@ BOOL __61__NSTextViewportLayoutController_textViewportElementsInRect___block_inv
   }
 }
 
-- (id)textViewportElementForLocation:(id)a3
+- (id)textViewportElementForLocation:(id)location
 {
   if ((*&self->_viewportLayoutControllerFlags & 1) == 0)
   {
@@ -1438,7 +1438,7 @@ BOOL __61__NSTextViewportLayoutController_textViewportElementsInRect___block_inv
   v14[1] = 3221225472;
   v15 = __65__NSTextViewportLayoutController_textViewportElementForLocation___block_invoke;
   v16 = &unk_1E7268338;
-  v17 = a3;
+  locationCopy = location;
   v6 = [(NSArray *)viewportElements count];
   if (v6)
   {
@@ -1484,7 +1484,7 @@ BOOL __61__NSTextViewportLayoutController_textViewportElementsInRect___block_inv
   }
 
   v12 = [(NSArray *)self->_viewportElements objectAtIndexedSubscript:v8];
-  if ([objc_msgSend(objc_msgSend(v12 "representedRange")] == 1 || objc_msgSend(objc_msgSend(objc_msgSend(v12, "representedRange"), "endLocation"), "compare:", a3) == -1)
+  if ([objc_msgSend(objc_msgSend(v12 "representedRange")] == 1 || objc_msgSend(objc_msgSend(objc_msgSend(v12, "representedRange"), "endLocation"), "compare:", location) == -1)
   {
     return 0;
   }
@@ -1492,18 +1492,18 @@ BOOL __61__NSTextViewportLayoutController_textViewportElementsInRect___block_inv
   return v12;
 }
 
-- (void)addViewportLayoutObserver:(id)a3
+- (void)addViewportLayoutObserver:(id)observer
 {
-  v4 = [[_NSTextViewportLayoutObserver alloc] initWithWeakObject:a3];
+  v4 = [[_NSTextViewportLayoutObserver alloc] initWithWeakObject:observer];
   if (([(NSMutableArray *)self->_viewportLayoutObservers containsObject:?]& 1) == 0)
   {
     [(NSMutableArray *)self->_viewportLayoutObservers addObject:v4];
   }
 }
 
-- (void)removeViewportLayoutObserver:(id)a3
+- (void)removeViewportLayoutObserver:(id)observer
 {
-  v4 = [[_NSTextViewportLayoutObserver alloc] initWithWeakObject:a3];
+  v4 = [[_NSTextViewportLayoutObserver alloc] initWithWeakObject:observer];
   [(NSMutableArray *)self->_viewportLayoutObservers removeObject:v4];
 }
 

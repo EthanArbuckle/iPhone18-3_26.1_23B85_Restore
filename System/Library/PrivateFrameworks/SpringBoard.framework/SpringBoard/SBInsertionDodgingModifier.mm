@@ -1,35 +1,35 @@
 @interface SBInsertionDodgingModifier
 - (CGPoint)initialCenter;
 - (CGSize)initialSize;
-- (SBInsertionDodgingModifier)initWithIdentifier:(id)a3 initialCenter:(CGPoint)a4 initialSize:(CGSize)a5;
+- (SBInsertionDodgingModifier)initWithIdentifier:(id)identifier initialCenter:(CGPoint)center initialSize:(CGSize)size;
 - (id)framesForIdentifiers;
-- (id)handleAnimationCompletionEvent:(id)a3;
-- (id)handleCustomEvent:(id)a3;
-- (id)handleInsertionEvent:(id)a3;
-- (id)modelForInvalidatedModel:(id)a3;
-- (int64_t)animationBehaviorModeForIdentifier:(id)a3;
+- (id)handleAnimationCompletionEvent:(id)event;
+- (id)handleCustomEvent:(id)event;
+- (id)handleInsertionEvent:(id)event;
+- (id)modelForInvalidatedModel:(id)model;
+- (int64_t)animationBehaviorModeForIdentifier:(id)identifier;
 @end
 
 @implementation SBInsertionDodgingModifier
 
-- (SBInsertionDodgingModifier)initWithIdentifier:(id)a3 initialCenter:(CGPoint)a4 initialSize:(CGSize)a5
+- (SBInsertionDodgingModifier)initWithIdentifier:(id)identifier initialCenter:(CGPoint)center initialSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  v12 = a3;
+  height = size.height;
+  width = size.width;
+  y = center.y;
+  x = center.x;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = SBInsertionDodgingModifier;
   v13 = [(SBChainableModifier *)&v15 init];
   if (v13)
   {
-    if (!v12)
+    if (!identifierCopy)
     {
       [SBInsertionDodgingModifier initWithIdentifier:a2 initialCenter:v13 initialSize:?];
     }
 
-    objc_storeStrong(&v13->_identifier, a3);
+    objc_storeStrong(&v13->_identifier, identifier);
     v13->_initialCenter.x = x;
     v13->_initialCenter.y = y;
     v13->_initialSize.width = width;
@@ -40,17 +40,17 @@
   return v13;
 }
 
-- (id)handleInsertionEvent:(id)a3
+- (id)handleInsertionEvent:(id)event
 {
   v15.receiver = self;
   v15.super_class = SBInsertionDodgingModifier;
-  v5 = a3;
-  v6 = [(SBDodgingModifier *)&v15 handleInsertionEvent:v5];
+  eventCopy = event;
+  v6 = [(SBDodgingModifier *)&v15 handleInsertionEvent:eventCopy];
   identifier = self->_identifier;
-  v8 = [v5 identifier];
+  identifier = [eventCopy identifier];
 
-  LODWORD(v5) = [(NSString *)identifier isEqual:v8];
-  if (v5)
+  LODWORD(eventCopy) = [(NSString *)identifier isEqual:identifier];
+  if (eventCopy)
   {
     if (self->_phase)
     {
@@ -64,8 +64,8 @@
     v10 = [(SBChainableModifierEventResponse *)SBDodgingModifierEventResponse responseByAppendingResponse:v9 toResponse:v6];
 
     v11 = [SBScheduleEventDodgingModifierEventResponse alloc];
-    v12 = [(SBInsertionDodgingModifier *)self _modelDidUpdateEventName];
-    v13 = [(SBScheduleEventDodgingModifierEventResponse *)v11 initWithName:v12];
+    _modelDidUpdateEventName = [(SBInsertionDodgingModifier *)self _modelDidUpdateEventName];
+    v13 = [(SBScheduleEventDodgingModifierEventResponse *)v11 initWithName:_modelDidUpdateEventName];
 
     v6 = [(SBChainableModifierEventResponse *)SBDodgingModifierEventResponse responseByAppendingResponse:v13 toResponse:v10];
   }
@@ -73,23 +73,23 @@
   return v6;
 }
 
-- (id)handleCustomEvent:(id)a3
+- (id)handleCustomEvent:(id)event
 {
   v13.receiver = self;
   v13.super_class = SBInsertionDodgingModifier;
-  v4 = a3;
-  v5 = [(SBDodgingModifier *)&v13 handleCustomEvent:v4];
-  v6 = [v4 name];
+  eventCopy = event;
+  v5 = [(SBDodgingModifier *)&v13 handleCustomEvent:eventCopy];
+  name = [eventCopy name];
 
-  v7 = [(SBInsertionDodgingModifier *)self _modelDidUpdateEventName];
-  v8 = [v6 isEqualToString:v7];
+  _modelDidUpdateEventName = [(SBInsertionDodgingModifier *)self _modelDidUpdateEventName];
+  v8 = [name isEqualToString:_modelDidUpdateEventName];
 
   if (v8)
   {
     self->_phase = 2;
     v9 = [[SBInvalidationDodgingModifierEventResponse alloc] initWithOptions:2];
-    v10 = [(SBInsertionDodgingModifier *)self _animationDidCompleteEventName];
-    [(SBInvalidationDodgingModifierEventResponse *)v9 setCompletionIdentifier:v10];
+    _animationDidCompleteEventName = [(SBInsertionDodgingModifier *)self _animationDidCompleteEventName];
+    [(SBInvalidationDodgingModifierEventResponse *)v9 setCompletionIdentifier:_animationDidCompleteEventName];
 
     v11 = [(SBChainableModifierEventResponse *)SBDodgingModifierEventResponse responseByAppendingResponse:v9 toResponse:v5];
 
@@ -99,16 +99,16 @@
   return v5;
 }
 
-- (id)handleAnimationCompletionEvent:(id)a3
+- (id)handleAnimationCompletionEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBInsertionDodgingModifier;
-  v4 = a3;
-  v5 = [(SBDodgingModifier *)&v10 handleAnimationCompletionEvent:v4];
-  v6 = [v4 identifier];
+  eventCopy = event;
+  v5 = [(SBDodgingModifier *)&v10 handleAnimationCompletionEvent:eventCopy];
+  identifier = [eventCopy identifier];
 
-  v7 = [(SBInsertionDodgingModifier *)self _animationDidCompleteEventName];
-  v8 = [v6 isEqualToString:v7];
+  _animationDidCompleteEventName = [(SBInsertionDodgingModifier *)self _animationDidCompleteEventName];
+  v8 = [identifier isEqualToString:_animationDidCompleteEventName];
 
   if (v8)
   {
@@ -118,32 +118,32 @@
   return v5;
 }
 
-- (id)modelForInvalidatedModel:(id)a3
+- (id)modelForInvalidatedModel:(id)model
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_phase == 1 && ([v4 identifiers], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "containsObject:", self->_identifier), v6, (v7 & 1) == 0))
+  modelCopy = model;
+  v5 = modelCopy;
+  if (self->_phase == 1 && ([modelCopy identifiers], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "containsObject:", self->_identifier), v6, (v7 & 1) == 0))
   {
     v9 = [(SBInsertionDodgingModifier *)self preferenceForIdentifier:self->_identifier];
-    v10 = [v9 excludedDodgingIdentifiers];
+    excludedDodgingIdentifiers = [v9 excludedDodgingIdentifiers];
 
-    v11 = [v5 identifiers];
+    identifiers = [v5 identifiers];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __55__SBInsertionDodgingModifier_modelForInvalidatedModel___block_invoke;
     v35[3] = &unk_2783A8B78;
-    v12 = v10;
+    v12 = excludedDodgingIdentifiers;
     v36 = v12;
-    v31 = v11;
-    v13 = [v11 bs_filter:v35];
-    v14 = [v5 identifiers];
-    if ([v14 count])
+    v31 = identifiers;
+    v13 = [identifiers bs_filter:v35];
+    identifiers2 = [v5 identifiers];
+    if ([identifiers2 count])
     {
       v15 = 0;
       v16 = 0;
       do
       {
-        v17 = [v14 objectAtIndex:v15];
+        v17 = [identifiers2 objectAtIndex:v15];
         v18 = v15 + 1;
         if ([v13 containsObject:v17])
         {
@@ -153,7 +153,7 @@
         ++v15;
       }
 
-      while (v18 < [v14 count]);
+      while (v18 < [identifiers2 count]);
     }
 
     else
@@ -202,7 +202,7 @@
   v10[1] = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = SBInsertionDodgingModifier;
-  v3 = [(SBInsertionDodgingModifier *)&v8 framesForIdentifiers];
+  framesForIdentifiers = [(SBInsertionDodgingModifier *)&v8 framesForIdentifiers];
   if (self->_phase == 1)
   {
     SBRectWithSize();
@@ -211,19 +211,19 @@
     v4 = [MEMORY[0x277CCAE60] valueWithCGRect:?];
     v10[0] = v4;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&identifier count:1];
-    v6 = [v3 bs_dictionaryByAddingEntriesFromDictionary:v5];
+    v6 = [framesForIdentifiers bs_dictionaryByAddingEntriesFromDictionary:v5];
 
-    v3 = v6;
+    framesForIdentifiers = v6;
   }
 
-  return v3;
+  return framesForIdentifiers;
 }
 
-- (int64_t)animationBehaviorModeForIdentifier:(id)a3
+- (int64_t)animationBehaviorModeForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_phase == 1 && ([v4 isEqual:self->_identifier] & 1) != 0)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (self->_phase == 1 && ([identifierCopy isEqual:self->_identifier] & 1) != 0)
   {
     v6 = 2;
   }

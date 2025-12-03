@@ -9,7 +9,7 @@
   v7 = a5;
   v8 = CTFontDescriptorCreateWithTextStyle();
   [v8 pointSize];
-  v10 = a1 - v9;
+  v10 = self - v9;
   v11 = [MEMORY[0x277D74300] preferredFontForTextStyle:v7];
 
   [v11 pointSize];

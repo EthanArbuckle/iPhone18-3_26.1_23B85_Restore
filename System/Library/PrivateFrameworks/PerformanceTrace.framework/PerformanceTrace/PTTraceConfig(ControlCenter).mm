@@ -24,12 +24,12 @@
 + (void)globalSettingsAreLocked
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [a1 localizedDescription];
-  v4 = v3;
+  localizedDescription = [self localizedDescription];
+  v4 = localizedDescription;
   v5 = @"Unknown";
-  if (v3)
+  if (localizedDescription)
   {
-    v5 = v3;
+    v5 = localizedDescription;
   }
 
   v7 = 138543362;

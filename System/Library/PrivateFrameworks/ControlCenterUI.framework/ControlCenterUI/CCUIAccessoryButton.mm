@@ -1,26 +1,26 @@
 @interface CCUIAccessoryButton
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (CCUIAccessoryButton)initWithCoder:(id)a3;
-- (CCUIAccessoryButton)initWithFrame:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (CCUIAccessoryButton)initWithCoder:(id)coder;
+- (CCUIAccessoryButton)initWithFrame:(CGRect)frame;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation CCUIAccessoryButton
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_21EAA8E00();
     v6 = v5;
-    v7 = self;
+    selfCopy = self;
     v8 = sub_21EAA8DC0();
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0;
     v4 = 0;
     v6 = 0;
@@ -71,43 +71,43 @@ LABEL_8:
   return v11 & 1;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = type metadata accessor for AccessoryButton();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(CCUIAccessoryButton *)&v9 isEnabled];
-  v8.receiver = v6;
+  selfCopy = self;
+  isEnabled = [(CCUIAccessoryButton *)&v9 isEnabled];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(CCUIAccessoryButton *)&v8 setEnabled:v3];
-  sub_21EA52F74(v7);
+  [(CCUIAccessoryButton *)&v8 setEnabled:enabledCopy];
+  sub_21EA52F74(isEnabled);
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_21EA53784(a3);
+  selfCopy = self;
+  sub_21EA53784(highlighted);
 }
 
-- (CCUIAccessoryButton)initWithFrame:(CGRect)a3
+- (CCUIAccessoryButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for AccessoryButton();
   return [(CCUIAccessoryButton *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (CCUIAccessoryButton)initWithCoder:(id)a3
+- (CCUIAccessoryButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AccessoryButton();
-  v4 = a3;
-  v5 = [(CCUIAccessoryButton *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CCUIAccessoryButton *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

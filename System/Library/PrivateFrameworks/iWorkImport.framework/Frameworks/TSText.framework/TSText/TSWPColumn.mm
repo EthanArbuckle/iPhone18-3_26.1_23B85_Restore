@@ -1,118 +1,118 @@
 @interface TSWPColumn
-+ ($10B7A9D486B2AF6DC4FEF2BBDFC96885)pencilAnnotationLineMetricsAtCharIndex:(SEL)a3 withColumns:(unint64_t)a4;
-+ (BOOL)partitionedAttachmentStartsAtCharIndex:(unint64_t)a3 withColumns:(id)a4;
-+ (CGPoint)connectionLinePointForChangeRange:(_NSRange)a3 withColumns:(id)a4 layoutTarget:(id)a5;
-+ (CGPoint)p_pinPoint:(CGPoint)a3 toRect:(CGRect)a4;
-+ (CGPoint)pinPoint:(CGPoint)a3 toBottomOfLineFragmentInColumns:(id)a4;
-+ (CGPoint)pinToNaturalBounds:(CGPoint)a3 andLastLineFragment:(BOOL)a4 inLayoutTarget:(id)a5;
-+ (CGRect)boundsRectForSelection:(id)a3 columnArray:(id)a4;
-+ (CGRect)boundsRectForSelection:(id)a3 columnArray:(id)a4 includeRuby:(BOOL)a5 includePaginatedAttachments:(BOOL)a6;
-+ (CGRect)caretRectForSelection:(id)a3 withColumns:(id)a4;
-+ (CGRect)columnRectForRange:(_NSRange)a3 withColumns:(id)a4;
-+ (CGRect)frameBoundsOfColumns:(id)a3;
-+ (CGRect)labelRectForCharIndex:(unint64_t)a3 withColumns:(id)a4;
-+ (CGRect)rectForSelection:(id)a3 withColumns:(id)a4;
-+ (CGRect)rectForSelection:(id)a3 withColumns:(id)a4 useParagraphModeRects:(BOOL)a5;
-+ (CGRect)searchPositionCaretRectForInsertionPoint:(id)a3 withColumns:(id)a4;
-+ (CGRect)untransformedCaretRectForInsertionPoint:(id)a3 withColumns:(id)a4;
-+ (CGSize)layoutSizeForParagraphEnumerator:(const TSWPParagraphEnumerator *)a3 inColumns:(id)a4 lineCount:(unint64_t *)a5 nextLineOffset:(double *)a6;
-+ (_NSRange)charRangeForPencilAnnotationStartPoint:(CGPoint)a3 toEndPoint:(CGPoint)a4 inLayoutTarget:(id)a5 onSingleLineFragment:(BOOL)a6;
-+ (_NSRange)rangeOfColumns:(id)a3;
-+ (id)closestColumnInColumnsArray:(id)a3 forPoint:(CGPoint)a4 ignoreEmptyColumns:(BOOL)a5 ignoreDrawableOnlyColumns:(BOOL)a6;
-+ (id)columnForCharIndex:(unint64_t)a3 allowEndOfColumn:(BOOL)a4 withColumns:(id)a5;
-+ (id)contentRectsToAvoidPencilAnnotationOverlapWithColumns:(id)a3;
-+ (id)footnoteMarkAttachmentInColumnArray:(id)a3 atPoint:(CGPoint)a4;
-+ (id)footnoteReferenceAttachmentInColumnArray:(id)a3 atPoint:(CGPoint)a4;
-+ (id)pathForHighlightWithRange:(_NSRange)a3 columnArray:(id)a4 pathStyle:(unint64_t)a5;
-+ (id)pathForHighlightWithSelection:(id)a3 columnArray:(id)a4 pathStyle:(unint64_t)a5;
-+ (id)pencilAnnotationRectsForSelection:(id)a3 withColumns:(id)a4 outRanges:(id *)a5;
-+ (id)selectionRectsforColumns:(id)a3 forSelection:(id)a4;
-+ (id)smartFieldWithAttributeKind:(unint64_t)a3 inColumnArray:(id)a4 atPoint:(CGPoint)a5;
-+ (unint64_t)charIndexForPoint:(CGPoint)a3 inColumnsArray:(id)a4 hitTestMode:(int)a5 isAtEndOfLine:(BOOL *)a6 leadingEdge:(BOOL *)a7;
-+ (unint64_t)charIndexForPointWithPinning:(CGPoint)a3 inLayoutTarget:(id)a4;
-+ (unint64_t)charIndexForPointWithPinning:(CGPoint)a3 isTail:(BOOL)a4 selectionType:(int64_t)a5 inLayoutTarget:(id)a6;
-+ (unint64_t)charIndexFromPoint:(CGPoint)a3 hitTestMode:(int)a4 isAtEndOfLine:(BOOL *)a5 leadingEdge:(BOOL *)a6 inLayoutTarget:(id)a7;
-+ (void)enumerateColumns:(id)a3 withBlock:(id)a4;
-- ($10B7A9D486B2AF6DC4FEF2BBDFC96885)lineMetricsAtCharIndex:(SEL)a3 allowEndOfLine:(unint64_t)a4;
-- (BOOL)hasPartitionedAttachmentContinuationAt:(int)a3;
++ ($10B7A9D486B2AF6DC4FEF2BBDFC96885)pencilAnnotationLineMetricsAtCharIndex:(SEL)index withColumns:(unint64_t)columns;
++ (BOOL)partitionedAttachmentStartsAtCharIndex:(unint64_t)index withColumns:(id)columns;
++ (CGPoint)connectionLinePointForChangeRange:(_NSRange)range withColumns:(id)columns layoutTarget:(id)target;
++ (CGPoint)p_pinPoint:(CGPoint)point toRect:(CGRect)rect;
++ (CGPoint)pinPoint:(CGPoint)point toBottomOfLineFragmentInColumns:(id)columns;
++ (CGPoint)pinToNaturalBounds:(CGPoint)bounds andLastLineFragment:(BOOL)fragment inLayoutTarget:(id)target;
++ (CGRect)boundsRectForSelection:(id)selection columnArray:(id)array;
++ (CGRect)boundsRectForSelection:(id)selection columnArray:(id)array includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)attachments;
++ (CGRect)caretRectForSelection:(id)selection withColumns:(id)columns;
++ (CGRect)columnRectForRange:(_NSRange)range withColumns:(id)columns;
++ (CGRect)frameBoundsOfColumns:(id)columns;
++ (CGRect)labelRectForCharIndex:(unint64_t)index withColumns:(id)columns;
++ (CGRect)rectForSelection:(id)selection withColumns:(id)columns;
++ (CGRect)rectForSelection:(id)selection withColumns:(id)columns useParagraphModeRects:(BOOL)rects;
++ (CGRect)searchPositionCaretRectForInsertionPoint:(id)point withColumns:(id)columns;
++ (CGRect)untransformedCaretRectForInsertionPoint:(id)point withColumns:(id)columns;
++ (CGSize)layoutSizeForParagraphEnumerator:(const TSWPParagraphEnumerator *)enumerator inColumns:(id)columns lineCount:(unint64_t *)count nextLineOffset:(double *)offset;
++ (_NSRange)charRangeForPencilAnnotationStartPoint:(CGPoint)point toEndPoint:(CGPoint)endPoint inLayoutTarget:(id)target onSingleLineFragment:(BOOL)fragment;
++ (_NSRange)rangeOfColumns:(id)columns;
++ (id)closestColumnInColumnsArray:(id)array forPoint:(CGPoint)point ignoreEmptyColumns:(BOOL)columns ignoreDrawableOnlyColumns:(BOOL)onlyColumns;
++ (id)columnForCharIndex:(unint64_t)index allowEndOfColumn:(BOOL)column withColumns:(id)columns;
++ (id)contentRectsToAvoidPencilAnnotationOverlapWithColumns:(id)columns;
++ (id)footnoteMarkAttachmentInColumnArray:(id)array atPoint:(CGPoint)point;
++ (id)footnoteReferenceAttachmentInColumnArray:(id)array atPoint:(CGPoint)point;
++ (id)pathForHighlightWithRange:(_NSRange)range columnArray:(id)array pathStyle:(unint64_t)style;
++ (id)pathForHighlightWithSelection:(id)selection columnArray:(id)array pathStyle:(unint64_t)style;
++ (id)pencilAnnotationRectsForSelection:(id)selection withColumns:(id)columns outRanges:(id *)ranges;
++ (id)selectionRectsforColumns:(id)columns forSelection:(id)selection;
++ (id)smartFieldWithAttributeKind:(unint64_t)kind inColumnArray:(id)array atPoint:(CGPoint)point;
++ (unint64_t)charIndexForPoint:(CGPoint)point inColumnsArray:(id)array hitTestMode:(int)mode isAtEndOfLine:(BOOL *)line leadingEdge:(BOOL *)edge;
++ (unint64_t)charIndexForPointWithPinning:(CGPoint)pinning inLayoutTarget:(id)target;
++ (unint64_t)charIndexForPointWithPinning:(CGPoint)pinning isTail:(BOOL)tail selectionType:(int64_t)type inLayoutTarget:(id)target;
++ (unint64_t)charIndexFromPoint:(CGPoint)point hitTestMode:(int)mode isAtEndOfLine:(BOOL *)line leadingEdge:(BOOL *)edge inLayoutTarget:(id)target;
++ (void)enumerateColumns:(id)columns withBlock:(id)block;
+- ($10B7A9D486B2AF6DC4FEF2BBDFC96885)lineMetricsAtCharIndex:(SEL)index allowEndOfLine:(unint64_t)line;
+- (BOOL)hasPartitionedAttachmentContinuationAt:(int)at;
 - (BOOL)isLastLineFragmentPartitioned;
 - (BOOL)lastLineIsEmptyAndHasListLabel;
 - (BOOL)onlyHasAnchoredDrawable;
 - (BOOL)onlyHasPartitionedAttachments;
-- (BOOL)p_isFirstPartitionForCharIndex:(unint64_t)a3;
+- (BOOL)p_isFirstPartitionForCharIndex:(unint64_t)index;
 - (BOOL)requiresGlyphVectorsForHeightMeasurement;
 - (CGAffineTransform)transformFromWP;
-- (CGRect)boundsIncludingDropCapRectsForSelectionType:(int64_t)a3;
-- (CGRect)boundsOfLineFragmentAtIndex:(unint64_t)a3;
-- (CGRect)caretRectForSelection:(id)a3;
-- (CGRect)changeBarRectForLineFragment:(const void *)a3 layoutTarget:(id)a4;
-- (CGRect)columnRectForRange:(_NSRange)a3;
-- (CGRect)erasableBounds:(unint64_t)a3;
-- (CGRect)erasableRectForSelectionRange:(_NSRange)a3;
-- (CGRect)firstRectForSelection:(id)a3 includeSpaceAfter:(BOOL)a4 includeSpaceBefore:(BOOL)a5 includeLeading:(BOOL)a6;
+- (CGRect)boundsIncludingDropCapRectsForSelectionType:(int64_t)type;
+- (CGRect)boundsOfLineFragmentAtIndex:(unint64_t)index;
+- (CGRect)caretRectForSelection:(id)selection;
+- (CGRect)changeBarRectForLineFragment:(const void *)fragment layoutTarget:(id)target;
+- (CGRect)columnRectForRange:(_NSRange)range;
+- (CGRect)erasableBounds:(unint64_t)bounds;
+- (CGRect)erasableRectForSelectionRange:(_NSRange)range;
+- (CGRect)firstRectForSelection:(id)selection includeSpaceAfter:(BOOL)after includeSpaceBefore:(BOOL)before includeLeading:(BOOL)leading;
 - (CGRect)frameBounds;
-- (CGRect)glyphRectForRange:(_NSRange)a3 includingLabel:(BOOL)a4;
-- (CGRect)glyphRectForRubyFieldAtCharIndex:(unint64_t)a3 glyphRange:(_NSRange)a4;
-- (CGRect)p_untransformedCaretRectForSelection:(id)a3;
-- (CGRect)rawGlyphRectOfRange:(_NSRange)a3;
+- (CGRect)glyphRectForRange:(_NSRange)range includingLabel:(BOOL)label;
+- (CGRect)glyphRectForRubyFieldAtCharIndex:(unint64_t)index glyphRange:(_NSRange)range;
+- (CGRect)p_untransformedCaretRectForSelection:(id)selection;
+- (CGRect)rawGlyphRectOfRange:(_NSRange)range;
 - (CGRect)typographicBounds;
 - (CGRect)wpBounds;
 - (CGSize)maxSize;
-- (TSWPColumn)initWithStorage:(id)a3 frameBounds:(CGRect)a4;
-- (TSWPFontHeightInfo)fontHeightInfoAtCharIndex:(SEL)a3;
+- (TSWPColumn)initWithStorage:(id)storage frameBounds:(CGRect)bounds;
+- (TSWPFontHeightInfo)fontHeightInfoAtCharIndex:(SEL)index;
 - (TSWPStyleProvider)styleProvider;
 - (_NSRange)anchoredRange;
 - (_NSRange)range;
-- (_NSRange)rangeOfLineFragmentAtIndex:(unint64_t)a3;
-- (_TSWPCharIndexAndPosition)calcAttachmentPositionForDrawable:(SEL)a3 atPoint:(id)a4 inTextLayoutTarget:(CGPoint)a5 startOfBoundsInfluencingWrap:(id)a6 wrapOutset:(CGPoint)a7 wrapMargin:(CGSize)a8 makeInline:(double)a9;
-- (_TSWPCharIndexAndPosition)p_calcAnchoredPosition:(SEL)a3 forCharIndex:(_TSWPCharIndexAndPosition *)a4 inClosestLineFragment:(unint64_t)a5 atPoint:(const void *)a6 inTextLayoutTarget:(CGPoint)a7 startOfBoundsInfluencingWrap:(id)a8 wrapOutset:(CGPoint)a9 wrapMargin:(CGSize)a10 placeholderField:(double)a11;
-- (_TSWPCharIndexAndPosition)p_calcInlinePosition:(SEL)a3 forCharIndex:(_TSWPCharIndexAndPosition *)a4;
-- (_TSWPCharIndexAndPosition)p_calcPartitionablePosition:(SEL)a3 forCharIndex:(_TSWPCharIndexAndPosition *)a4 inClosestLineFragment:(unint64_t)a5 startOfBoundsInfluencingWrap:(const void *)a6;
-- (const)nearestLineFragmentWithSameVerticalPositionAs:(unint64_t)a3 xPos:(double)a4;
-- (const)pColumnEndingPartitionedLineFragmentInSelectionRange:(_NSRange)a3;
-- (double)horizontalOffsetForCharIndex:(unint64_t)a3 lineFragmentIndex:(unint64_t)a4 bumpPastHyphen:(BOOL)a5 allowPastLineBounds:(BOOL)a6;
+- (_NSRange)rangeOfLineFragmentAtIndex:(unint64_t)index;
+- (_TSWPCharIndexAndPosition)calcAttachmentPositionForDrawable:(SEL)drawable atPoint:(id)point inTextLayoutTarget:(CGPoint)target startOfBoundsInfluencingWrap:(id)wrap wrapOutset:(CGPoint)outset wrapMargin:(CGSize)margin makeInline:(double)inline;
+- (_TSWPCharIndexAndPosition)p_calcAnchoredPosition:(SEL)position forCharIndex:(_TSWPCharIndexAndPosition *)index inClosestLineFragment:(unint64_t)fragment atPoint:(const void *)point inTextLayoutTarget:(CGPoint)target startOfBoundsInfluencingWrap:(id)wrap wrapOutset:(CGPoint)outset wrapMargin:(CGSize)self0 placeholderField:(double)self1;
+- (_TSWPCharIndexAndPosition)p_calcInlinePosition:(SEL)position forCharIndex:(_TSWPCharIndexAndPosition *)index;
+- (_TSWPCharIndexAndPosition)p_calcPartitionablePosition:(SEL)position forCharIndex:(_TSWPCharIndexAndPosition *)index inClosestLineFragment:(unint64_t)fragment startOfBoundsInfluencingWrap:(const void *)wrap;
+- (const)nearestLineFragmentWithSameVerticalPositionAs:(unint64_t)as xPos:(double)pos;
+- (const)pColumnEndingPartitionedLineFragmentInSelectionRange:(_NSRange)range;
+- (double)horizontalOffsetForCharIndex:(unint64_t)index lineFragmentIndex:(unint64_t)fragmentIndex bumpPastHyphen:(BOOL)hyphen allowPastLineBounds:(BOOL)bounds;
 - (double)minimumHeightForLayoutOnPage;
 - (double)textBlockBottom;
 - (double)textHeight;
 - (id).cxx_construct;
-- (id)drawableIntersectionRectsForSelection:(id)a3 inTarget:(id)a4;
-- (id)initForTestingWithStorage:(id)a3 frameBounds:(CGRect)a4;
-- (id)layoutsForInlineDrawables:(id)a3;
-- (id)lineSelectionsForSelection:(id)a3;
-- (id)pMutableRectsForSelectionRanges:(id)a3 selectionType:(int64_t)a4 includeSpaceAfter:(BOOL)a5 includeSpaceBefore:(BOOL)a6 includeLeading:(BOOL)a7 forParagraphMode:(BOOL)a8 includeRuby:(BOOL)a9 includePaginatedAttachments:(BOOL)a10 outranges:(id *)a11;
-- (id)pTransformReturnRects:(id)a3;
-- (id)p_glyphRectsForRange:(_NSRange)a3 includingLabel:(BOOL)a4;
-- (id)partitionedLayoutForInfo:(id)a3;
-- (id)partitionedLayoutOfLineFragmentAtIndex:(unint64_t)a3;
-- (id)rectsForSelection:(id)a3 ranges:(id *)a4;
-- (id)rectsForSelection:(id)a3 ranges:(id *)a4 includePaginatedAttachments:(BOOL)a5;
-- (id)rectsForSelectionRange:(_NSRange)a3 selectionType:(int64_t)a4 forParagraphMode:(BOOL)a5 includeRuby:(BOOL)a6 includePaginatedAttachments:(BOOL)a7;
-- (id)rectsForSelectionRanges:(id)a3 selectionType:(int64_t)a4;
-- (id)rectsForSelectionRanges:(id)a3 selectionType:(int64_t)a4 forParagraphMode:(BOOL)a5 includeRuby:(BOOL)a6 includePaginatedAttachments:(BOOL)a7;
-- (id)singleLinePartitionedInfoAtStart:(BOOL)a3;
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4;
-- (id)textAdornmentOfLineFragmentAtIndex:(unint64_t)a3;
-- (unint64_t)charIndexForSelectionFromPoint:(CGPoint)a3 isTail:(BOOL)a4;
-- (unint64_t)charIndexFromPoint:(CGPoint)a3 hitTestMode:(int)a4 isAtEndOfLine:(BOOL *)a5 outFragment:(const TSWPLineFragment *)a6 leadingEdge:(BOOL *)a7;
-- (unint64_t)charIndexFromWPPoint:(CGPoint)a3 hitTestMode:(int)a4 outFragment:(const TSWPLineFragment *)a5 leadingEdge:(BOOL *)a6;
-- (unint64_t)glyphCountForRubyFieldAtCharIndex:(unint64_t)a3;
-- (unint64_t)lineIndexForCharIndex:(unint64_t)a3 eol:(BOOL)a4;
-- (unint64_t)pRemapCharIndex:(unint64_t)a3 outIsAfterBreak:(BOOL *)a4 outWithTextSource:(id *)a5;
-- (unint64_t)p_charIndexWithTextClosestToWPPoint:(CGPoint)a3 pastCenterGoesToNextChar:(BOOL)a4 outFragment:(const TSWPLineFragment *)a5 leadingEdge:(BOOL *)a6;
-- (unsigned)fontTraitsForRange:(_NSRange)a3 includingLabel:(BOOL)a4;
-- (unsigned)hyphenCharOfLineFragmentAtIndex:(unint64_t)a3;
+- (id)drawableIntersectionRectsForSelection:(id)selection inTarget:(id)target;
+- (id)initForTestingWithStorage:(id)storage frameBounds:(CGRect)bounds;
+- (id)layoutsForInlineDrawables:(id)drawables;
+- (id)lineSelectionsForSelection:(id)selection;
+- (id)pMutableRectsForSelectionRanges:(id)ranges selectionType:(int64_t)type includeSpaceAfter:(BOOL)after includeSpaceBefore:(BOOL)before includeLeading:(BOOL)leading forParagraphMode:(BOOL)mode includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)self0 outranges:(id *)self1;
+- (id)pTransformReturnRects:(id)rects;
+- (id)p_glyphRectsForRange:(_NSRange)range includingLabel:(BOOL)label;
+- (id)partitionedLayoutForInfo:(id)info;
+- (id)partitionedLayoutOfLineFragmentAtIndex:(unint64_t)index;
+- (id)rectsForSelection:(id)selection ranges:(id *)ranges;
+- (id)rectsForSelection:(id)selection ranges:(id *)ranges includePaginatedAttachments:(BOOL)attachments;
+- (id)rectsForSelectionRange:(_NSRange)range selectionType:(int64_t)type forParagraphMode:(BOOL)mode includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)attachments;
+- (id)rectsForSelectionRanges:(id)ranges selectionType:(int64_t)type;
+- (id)rectsForSelectionRanges:(id)ranges selectionType:(int64_t)type forParagraphMode:(BOOL)mode includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)attachments;
+- (id)singleLinePartitionedInfoAtStart:(BOOL)start;
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind;
+- (id)textAdornmentOfLineFragmentAtIndex:(unint64_t)index;
+- (unint64_t)charIndexForSelectionFromPoint:(CGPoint)point isTail:(BOOL)tail;
+- (unint64_t)charIndexFromPoint:(CGPoint)point hitTestMode:(int)mode isAtEndOfLine:(BOOL *)line outFragment:(const TSWPLineFragment *)fragment leadingEdge:(BOOL *)edge;
+- (unint64_t)charIndexFromWPPoint:(CGPoint)point hitTestMode:(int)mode outFragment:(const TSWPLineFragment *)fragment leadingEdge:(BOOL *)edge;
+- (unint64_t)glyphCountForRubyFieldAtCharIndex:(unint64_t)index;
+- (unint64_t)lineIndexForCharIndex:(unint64_t)index eol:(BOOL)eol;
+- (unint64_t)pRemapCharIndex:(unint64_t)index outIsAfterBreak:(BOOL *)break outWithTextSource:(id *)source;
+- (unint64_t)p_charIndexWithTextClosestToWPPoint:(CGPoint)point pastCenterGoesToNextChar:(BOOL)char outFragment:(const TSWPLineFragment *)fragment leadingEdge:(BOOL *)edge;
+- (unsigned)fontTraitsForRange:(_NSRange)range includingLabel:(BOOL)label;
+- (unsigned)hyphenCharOfLineFragmentAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)enumerateParagraphAdornmentsUsingBlock:(id)a3;
-- (void)incrementRanges:(int64_t)a3 startingAt:(unint64_t)a4;
-- (void)makeEmpty:(unint64_t)a3 anchoredRange:(_NSRange)a4 layoutResultFlags:(unint64_t)a5;
-- (void)offsetLineFragmentsBy:(CGSize)a3;
-- (void)pInfoForCharIndex:(unint64_t)a3 isAtStart:(BOOL *)a4 isAtEnd:(BOOL *)a5;
-- (void)renderWithRenderer:(id)a3 currentSelection:(id)a4 limitSelection:(id)a5 listRange:(_NSRange)a6 rubyGlyphRange:(_NSRange)a7 isCanvasInteractive:(BOOL)a8 isInDrawingMode:(BOOL)a9 suppressedMisspellingRange:(_NSRange)a10 blackAndWhite:(BOOL)a11 dictationInterpretations:(id)a12 autocorrections:(id)a13 markedRange:(_NSRange)a14 markedText:(id)a15 renderMode:(unint64_t)a16 pageCount:(unint64_t)a17 suppressInvisibles:(BOOL)a18 currentCanvasSelection:(id)a19;
-- (void)setAnchoredRange:(_NSRange)a3;
-- (void)setLineFragmentArray:(const void *)a3;
-- (void)setRange:(_NSRange)a3;
-- (void)setTransformFromWP:(CGAffineTransform *)a3;
-- (void)trimToCharIndex:(unint64_t)a3 inTarget:(id)a4 removeFootnoteReferenceCount:(unint64_t)a5 removeAutoNumberFootnoteCount:(unint64_t)a6;
+- (void)enumerateParagraphAdornmentsUsingBlock:(id)block;
+- (void)incrementRanges:(int64_t)ranges startingAt:(unint64_t)at;
+- (void)makeEmpty:(unint64_t)empty anchoredRange:(_NSRange)range layoutResultFlags:(unint64_t)flags;
+- (void)offsetLineFragmentsBy:(CGSize)by;
+- (void)pInfoForCharIndex:(unint64_t)index isAtStart:(BOOL *)start isAtEnd:(BOOL *)end;
+- (void)renderWithRenderer:(id)renderer currentSelection:(id)selection limitSelection:(id)limitSelection listRange:(_NSRange)range rubyGlyphRange:(_NSRange)glyphRange isCanvasInteractive:(BOOL)interactive isInDrawingMode:(BOOL)mode suppressedMisspellingRange:(_NSRange)self0 blackAndWhite:(BOOL)self1 dictationInterpretations:(id)self2 autocorrections:(id)self3 markedRange:(_NSRange)self4 markedText:(id)self5 renderMode:(unint64_t)self6 pageCount:(unint64_t)self7 suppressInvisibles:(BOOL)self8 currentCanvasSelection:(id)self9;
+- (void)setAnchoredRange:(_NSRange)range;
+- (void)setLineFragmentArray:(const void *)array;
+- (void)setRange:(_NSRange)range;
+- (void)setTransformFromWP:(CGAffineTransform *)p;
+- (void)trimToCharIndex:(unint64_t)index inTarget:(id)target removeFootnoteReferenceCount:(unint64_t)count removeAutoNumberFootnoteCount:(unint64_t)footnoteCount;
 @end
 
 @implementation TSWPColumn
@@ -132,19 +132,19 @@
   return ptr;
 }
 
-+ (id)contentRectsToAvoidPencilAnnotationOverlapWithColumns:(id)a3
++ (id)contentRectsToAvoidPencilAnnotationOverlapWithColumns:(id)columns
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  columnsCopy = columns;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (objc_msgSend_count(v3, v5, v6))
+  if (objc_msgSend_count(columnsCopy, v5, v6))
   {
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v41 = v3;
-    v9 = v3;
+    v41 = columnsCopy;
+    v9 = columnsCopy;
     v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v42, v46, 16);
     if (v13)
     {
@@ -193,7 +193,7 @@
 
 LABEL_12:
 
-    v3 = v41;
+    columnsCopy = v41;
   }
 
   v39 = objc_msgSend_copy(v4, v7, v8);
@@ -201,13 +201,13 @@ LABEL_12:
   return v39;
 }
 
-+ (id)pencilAnnotationRectsForSelection:(id)a3 withColumns:(id)a4 outRanges:(id *)a5
++ (id)pencilAnnotationRectsForSelection:(id)selection withColumns:(id)columns outRanges:(id *)ranges
 {
   v132 = *MEMORY[0x277D85DE8];
-  v95 = a3;
-  v7 = a4;
-  v91 = a5;
-  if (a5)
+  selectionCopy = selection;
+  columnsCopy = columns;
+  rangesCopy = ranges;
+  if (ranges)
   {
     v98 = objc_alloc_init(MEMORY[0x277CBEB18]);
   }
@@ -218,12 +218,12 @@ LABEL_12:
   }
 
   v97 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = objc_msgSend_firstObject(v7, v8, v9);
+  v10 = objc_msgSend_firstObject(columnsCopy, v8, v9);
   v13 = objc_msgSend_storage(v10, v11, v12);
 
   v96 = v13;
-  isAllWhitespaceInSelection = objc_msgSend_isAllWhitespaceInSelection_(v13, v14, v95);
-  v17 = objc_msgSend_dropCapCharIndexesInSelection_(v13, v16, v95);
+  isAllWhitespaceInSelection = objc_msgSend_isAllWhitespaceInSelection_(v13, v14, selectionCopy);
+  v17 = objc_msgSend_dropCapCharIndexesInSelection_(v13, v16, selectionCopy);
   v127 = 0;
   v128 = &v127;
   v129 = 0x2020000000;
@@ -235,12 +235,12 @@ LABEL_12:
   v126[5] = &v127;
   v90 = v17;
   v126[4] = v17;
-  objc_msgSend_enumerateRanges_(v95, v18, v126);
+  objc_msgSend_enumerateRanges_(selectionCopy, v18, v126);
   v124 = 0u;
   v125 = 0u;
   v122 = 0u;
   v123 = 0u;
-  obj = v7;
+  obj = columnsCopy;
   v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v19, &v122, v131, 16);
   if (v20)
   {
@@ -269,7 +269,7 @@ LABEL_12:
         }
 
         v121 = 0;
-        v29 = objc_msgSend_rectsForSelection_ranges_includePaginatedAttachments_(v24, v27, v95, &v121, 1);
+        v29 = objc_msgSend_rectsForSelection_ranges_includePaginatedAttachments_(v24, v27, selectionCopy, &v121, 1);
         v30 = v121;
         v33 = objc_msgSend_count(v30, v31, v32);
         if (v33 != objc_msgSend_count(v29, v34, v35))
@@ -374,10 +374,10 @@ LABEL_12:
 
 LABEL_26:
 
-  if (v91)
+  if (rangesCopy)
   {
     v81 = v98;
-    *v91 = v98;
+    *rangesCopy = v98;
   }
 
   v82 = objc_msgSend_copy(v97, v79, v80);
@@ -386,9 +386,9 @@ LABEL_26:
   return v82;
 }
 
-+ ($10B7A9D486B2AF6DC4FEF2BBDFC96885)pencilAnnotationLineMetricsAtCharIndex:(SEL)a3 withColumns:(unint64_t)a4
++ ($10B7A9D486B2AF6DC4FEF2BBDFC96885)pencilAnnotationLineMetricsAtCharIndex:(SEL)index withColumns:(unint64_t)columns
 {
-  v7 = objc_msgSend_columnForCharIndex_allowEndOfColumn_withColumns_(TSWPColumn, a3, a4, 0, a5);
+  v7 = objc_msgSend_columnForCharIndex_allowEndOfColumn_withColumns_(TSWPColumn, index, columns, 0, a5);
   retstr->var0.origin = 0u;
   retstr->var0.size = 0u;
   *&retstr->var1 = 0u;
@@ -413,16 +413,16 @@ LABEL_26:
   v10 = v7;
   if (v7)
   {
-    objc_msgSend_lineMetricsAtCharIndex_allowEndOfLine_(v7, v8, a4, 0);
+    objc_msgSend_lineMetricsAtCharIndex_allowEndOfLine_(v7, v8, columns, 0);
   }
 
   return result;
 }
 
-+ (CGRect)frameBoundsOfColumns:(id)a3
++ (CGRect)frameBoundsOfColumns:(id)columns
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  columnsCopy = columns;
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
   width = *(MEMORY[0x277CBF398] + 16);
@@ -431,7 +431,7 @@ LABEL_26:
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = v3;
+  v8 = columnsCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v40, v44, 16);
   if (v12)
   {
@@ -501,11 +501,11 @@ LABEL_11:
   return result;
 }
 
-+ (CGRect)untransformedCaretRectForInsertionPoint:(id)a3 withColumns:(id)a4
++ (CGRect)untransformedCaretRectForInsertionPoint:(id)point withColumns:(id)columns
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  pointCopy = point;
+  columnsCopy = columns;
   v7 = *MEMORY[0x277CBF398];
   v8 = *(MEMORY[0x277CBF398] + 8);
   v9 = *(MEMORY[0x277CBF398] + 16);
@@ -514,7 +514,7 @@ LABEL_11:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v11 = v6;
+  v11 = columnsCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v44, v48, 16);
   if (v13)
   {
@@ -549,7 +549,7 @@ LABEL_11:
           goto LABEL_14;
         }
 
-        objc_msgSend_p_untransformedCaretRectForSelection_(v14, v27, v5);
+        objc_msgSend_p_untransformedCaretRectForSelection_(v14, v27, pointCopy);
         v7 = v30;
         v8 = v31;
         v9 = v29;
@@ -589,32 +589,32 @@ LABEL_14:
   return result;
 }
 
-+ (CGRect)searchPositionCaretRectForInsertionPoint:(id)a3 withColumns:(id)a4
++ (CGRect)searchPositionCaretRectForInsertionPoint:(id)point withColumns:(id)columns
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend_untransformedCaretRectForInsertionPoint_withColumns_(a1, v8, v6, v7);
+  pointCopy = point;
+  columnsCopy = columns;
+  objc_msgSend_untransformedCaretRectForInsertionPoint_withColumns_(self, v8, pointCopy, columnsCopy);
   x = v65.origin.x;
   y = v65.origin.y;
   width = v65.size.width;
   height = v65.size.height;
-  if (!CGRectIsNull(v65) && objc_msgSend_count(v7, v13, v14))
+  if (!CGRectIsNull(v65) && objc_msgSend_count(columnsCopy, v13, v14))
   {
-    if (objc_msgSend_caretLFAffinity(v6, v15, v16) == 1)
+    if (objc_msgSend_caretLFAffinity(pointCopy, v15, v16) == 1)
     {
       v19 = 1;
     }
 
     else
     {
-      v20 = objc_msgSend_end(v6, v17, v18);
-      v22 = objc_msgSend_objectAtIndexedSubscript_(v7, v21, 0);
+      v20 = objc_msgSend_end(pointCopy, v17, v18);
+      v22 = objc_msgSend_objectAtIndexedSubscript_(columnsCopy, v21, 0);
       v25 = objc_msgSend_storage(v22, v23, v24);
       v19 = v20 == objc_msgSend_length(v25, v26, v27);
     }
 
-    v28 = objc_msgSend_start(v6, v17, v18);
-    v32 = objc_msgSend_columnForCharIndex_allowEndOfColumn_withColumns_(TSWPColumn, v29, v28, v19, v7);
+    v28 = objc_msgSend_start(pointCopy, v17, v18);
+    v32 = objc_msgSend_columnForCharIndex_allowEndOfColumn_withColumns_(TSWPColumn, v29, v28, v19, columnsCopy);
     if (v32)
     {
       v64 = 0;
@@ -636,7 +636,7 @@ LABEL_14:
       v49 = 0u;
       v47 = 0u;
       memset(&v46, 0, sizeof(v46));
-      v33 = objc_msgSend_start(v6, v30, v31);
+      v33 = objc_msgSend_start(pointCopy, v30, v31);
       objc_msgSend_lineMetricsAtCharIndex_allowEndOfLine_(v32, v34, v33, v19);
       v66.origin = 0u;
       v66.size = 0u;
@@ -685,16 +685,16 @@ LABEL_14:
   return result;
 }
 
-+ (CGRect)caretRectForSelection:(id)a3 withColumns:(id)a4
++ (CGRect)caretRectForSelection:(id)selection withColumns:(id)columns
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  selectionCopy = selection;
+  columnsCopy = columns;
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
   width = *(MEMORY[0x277CBF398] + 16);
   height = *(MEMORY[0x277CBF398] + 24);
-  if ((objc_msgSend_isInsertionPoint(v5, v11, v12) & 1) == 0)
+  if ((objc_msgSend_isInsertionPoint(selectionCopy, v11, v12) & 1) == 0)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "+[TSWPColumn caretRectForSelection:withColumns:]");
@@ -704,13 +704,13 @@ LABEL_14:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21);
   }
 
-  if (objc_msgSend_isInsertionPoint(v5, v13, v14))
+  if (objc_msgSend_isInsertionPoint(selectionCopy, v13, v14))
   {
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v22 = v6;
+    v22 = columnsCopy;
     v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, &v36, v40, 16);
     if (v25)
     {
@@ -725,7 +725,7 @@ LABEL_14:
             objc_enumerationMutation(v22);
           }
 
-          objc_msgSend_caretRectForSelection_(*(*(&v36 + 1) + 8 * v27), v24, v5, v36);
+          objc_msgSend_caretRectForSelection_(*(*(&v36 + 1) + 8 * v27), v24, selectionCopy, v36);
           v45.origin.x = v28;
           v45.origin.y = v29;
           v45.size.width = v30;
@@ -761,17 +761,17 @@ LABEL_14:
   return result;
 }
 
-+ (CGRect)boundsRectForSelection:(id)a3 columnArray:(id)a4
++ (CGRect)boundsRectForSelection:(id)selection columnArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  selectionCopy = selection;
+  arrayCopy = array;
   v8 = *MEMORY[0x277CBF398];
   v9 = *(MEMORY[0x277CBF398] + 8);
   v10 = *(MEMORY[0x277CBF398] + 16);
   v11 = *(MEMORY[0x277CBF398] + 24);
-  if (objc_msgSend_isInsertionPoint(v6, v12, v13))
+  if (objc_msgSend_isInsertionPoint(selectionCopy, v12, v13))
   {
-    objc_msgSend_caretRectForSelection_withColumns_(a1, v14, v6, v7);
+    objc_msgSend_caretRectForSelection_withColumns_(self, v14, selectionCopy, arrayCopy);
 LABEL_5:
     v8 = v16;
     v9 = v17;
@@ -780,9 +780,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (objc_msgSend_isValid(v6, v14, v15))
+  if (objc_msgSend_isValid(selectionCopy, v14, v15))
   {
-    objc_msgSend_boundsRectForSelection_columnArray_includeRuby_includePaginatedAttachments_(a1, v20, v6, v7, 0, 0);
+    objc_msgSend_boundsRectForSelection_columnArray_includeRuby_includePaginatedAttachments_(self, v20, selectionCopy, arrayCopy, 0, 0);
     goto LABEL_5;
   }
 
@@ -799,9 +799,9 @@ LABEL_6:
   return result;
 }
 
-+ (CGRect)rectForSelection:(id)a3 withColumns:(id)a4
++ (CGRect)rectForSelection:(id)selection withColumns:(id)columns
 {
-  MEMORY[0x2821F9670](a1, sel_rectForSelection_withColumns_useParagraphModeRects_, a3);
+  MEMORY[0x2821F9670](self, sel_rectForSelection_withColumns_useParagraphModeRects_, selection);
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -809,11 +809,11 @@ LABEL_6:
   return result;
 }
 
-+ (CGRect)rectForSelection:(id)a3 withColumns:(id)a4 useParagraphModeRects:(BOOL)a5
++ (CGRect)rectForSelection:(id)selection withColumns:(id)columns useParagraphModeRects:(BOOL)rects
 {
   v146 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  selectionCopy = selection;
+  columnsCopy = columns;
   v137 = 0;
   v138 = &v137;
   v139 = 0x5012000000;
@@ -823,13 +823,13 @@ LABEL_6:
   v8 = *(MEMORY[0x277CBF398] + 16);
   v143 = *MEMORY[0x277CBF398];
   v144 = v8;
-  if (!objc_msgSend_isValid(v6, v9, v10))
+  if (!objc_msgSend_isValid(selectionCopy, v9, v10))
   {
     goto LABEL_42;
   }
 
-  v13 = objc_msgSend_firstObject(v7, v11, v12);
-  v124 = v7;
+  v13 = objc_msgSend_firstObject(columnsCopy, v11, v12);
+  v124 = columnsCopy;
   v14 = v13 == 0;
 
   if (v14)
@@ -845,7 +845,7 @@ LABEL_6:
     goto LABEL_40;
   }
 
-  v22 = objc_msgSend_insertionCharIndex(v6, v20, v21);
+  v22 = objc_msgSend_insertionCharIndex(selectionCopy, v20, v21);
   if (v22 > objc_msgSend_length(v126, v23, v24))
   {
     v27 = MEMORY[0x277D81150];
@@ -856,10 +856,10 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33);
   }
 
-  if (objc_msgSend_isInsertionPoint(v6, v25, v26, v124) && (v36 = objc_msgSend_insertionCharIndex(v6, v34, v35), v36 <= objc_msgSend_length(v126, v37, v38)))
+  if (objc_msgSend_isInsertionPoint(selectionCopy, v25, v26, v124) && (v36 = objc_msgSend_insertionCharIndex(selectionCopy, v34, v35), v36 <= objc_msgSend_length(v126, v37, v38)))
   {
     v42 = v124;
-    Range = objc_msgSend_firstRange(v6, v39, v40);
+    Range = objc_msgSend_firstRange(selectionCopy, v39, v40);
     v92 = objc_msgSend_wordAtCharIndex_includePreviousWord_(v126, v89, Range, 1);
     if (v92 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -868,15 +868,15 @@ LABEL_6:
     }
 
     v93 = v90;
-    v94 = objc_msgSend_firstRange(v6, v90, v91);
-    v97 = objc_msgSend_isAtEndOfLine(v6, v95, v96);
+    v94 = objc_msgSend_firstRange(selectionCopy, v90, v91);
+    v97 = objc_msgSend_isAtEndOfLine(selectionCopy, v95, v96);
     v101 = objc_msgSend_columnForCharIndex_allowEndOfColumn_withColumns_(TSWPColumn, v98, v94, v97, v124);
-    if (v101 && (v102 = objc_msgSend_firstRange(v6, v99, v100), v105 = objc_msgSend_isAtEndOfLine(v6, v103, v104), v107 = objc_msgSend_lineIndexForCharIndex_eol_(v101, v106, v102, v105), v107 == objc_msgSend_lineIndexForCharIndex_eol_(v101, v108, v92, 0)) && (v111 = objc_msgSend_isAtEndOfLine(v6, v109, v110), v107 == objc_msgSend_lineIndexForCharIndex_eol_(v101, v112, &v93[v92], v111)))
+    if (v101 && (v102 = objc_msgSend_firstRange(selectionCopy, v99, v100), v105 = objc_msgSend_isAtEndOfLine(selectionCopy, v103, v104), v107 = objc_msgSend_lineIndexForCharIndex_eol_(v101, v106, v102, v105), v107 == objc_msgSend_lineIndexForCharIndex_eol_(v101, v108, v92, 0)) && (v111 = objc_msgSend_isAtEndOfLine(selectionCopy, v109, v110), v107 == objc_msgSend_lineIndexForCharIndex_eol_(v101, v112, &v93[v92], v111)))
     {
-      v114 = objc_msgSend_copyWithNewRange_(v6, v113, v92, v93);
+      v114 = objc_msgSend_copyWithNewRange_(selectionCopy, v113, v92, v93);
 
       v41 = 1;
-      v6 = v114;
+      selectionCopy = v114;
     }
 
     else
@@ -930,9 +930,9 @@ LABEL_10:
         goto LABEL_39;
       }
 
-      if (objc_msgSend_isInsertionPoint(v6, v58, v59))
+      if (objc_msgSend_isInsertionPoint(selectionCopy, v58, v59))
       {
-        objc_msgSend_caretRectForSelection_(v50, v60, v6);
+        objc_msgSend_caretRectForSelection_(v50, v60, selectionCopy);
         v62 = v138;
         v138[6] = v63;
         v62[7] = v64;
@@ -966,7 +966,7 @@ LABEL_38:
           ++v71;
         }
 
-        v76 = objc_msgSend_ranges(v6, v74, v75);
+        v76 = objc_msgSend_ranges(selectionCopy, v74, v75);
         v78 = objc_msgSend_rangesIntersecting_(v76, v77, v69, v71);
 
         v127[0] = MEMORY[0x277D85DD0];
@@ -974,9 +974,9 @@ LABEL_38:
         v127[2] = sub_276D51E5C;
         v127[3] = &unk_27A6F3F70;
         v127[4] = v50;
-        v128 = v6;
+        v128 = selectionCopy;
         v79 = v126;
-        v131 = a5;
+        rectsCopy = rects;
         v132 = v41;
         v129 = v79;
         v130 = &v137;
@@ -997,7 +997,7 @@ LABEL_39:
 
 LABEL_40:
 LABEL_41:
-  v7 = v124;
+  columnsCopy = v124;
 LABEL_42:
   v116 = *(v138 + 6);
   v117 = *(v138 + 7);
@@ -1016,10 +1016,10 @@ LABEL_42:
   return result;
 }
 
-- (CGRect)boundsIncludingDropCapRectsForSelectionType:(int64_t)a3
+- (CGRect)boundsIncludingDropCapRectsForSelectionType:(int64_t)type
 {
   v45 = *MEMORY[0x277D85DE8];
-  objc_msgSend_frameBounds(self, a2, a3);
+  objc_msgSend_frameBounds(self, a2, type);
   x = v5;
   y = v7;
   width = v9;
@@ -1042,7 +1042,7 @@ LABEL_42:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v28 = objc_msgSend_rectsForSelectionRanges_selectionType_(self, v27, v23, a3, 0);
+    v28 = objc_msgSend_rectsForSelectionRanges_selectionType_(self, v27, v23, type, 0);
     v32 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v29, &v39, v44, 16);
     if (v32)
     {
@@ -1089,18 +1089,18 @@ LABEL_42:
   return result;
 }
 
-+ (id)selectionRectsforColumns:(id)a3 forSelection:(id)a4
++ (id)selectionRectsforColumns:(id)columns forSelection:(id)selection
 {
   v72 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v61 = a4;
+  columnsCopy = columns;
+  selectionCopy = selection;
   v5 = objc_opt_new();
-  v8 = objc_msgSend_type(v61, v6, v7);
+  v8 = objc_msgSend_type(selectionCopy, v6, v7);
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v57;
+  obj = columnsCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v9, &v66, v71, 16);
   if (v10)
   {
@@ -1137,7 +1137,7 @@ LABEL_42:
         v27 = v26;
         v29 = v28;
         v31 = v30;
-        v34 = objc_msgSend_ranges(v61, v32, v33);
+        v34 = objc_msgSend_ranges(selectionCopy, v32, v33);
         v64 = 0u;
         v65 = 0u;
         v62 = 0u;
@@ -1195,10 +1195,10 @@ LABEL_20:
   return v5;
 }
 
-+ (CGPoint)connectionLinePointForChangeRange:(_NSRange)a3 withColumns:(id)a4 layoutTarget:(id)a5
++ (CGPoint)connectionLinePointForChangeRange:(_NSRange)range withColumns:(id)columns layoutTarget:(id)target
 {
-  v6 = a5;
-  if (!v6)
+  targetCopy = target;
+  if (!targetCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "+[TSWPColumn connectionLinePointForChangeRange:withColumns:layoutTarget:]");
@@ -1218,18 +1218,18 @@ LABEL_20:
   return result;
 }
 
-+ (id)closestColumnInColumnsArray:(id)a3 forPoint:(CGPoint)a4 ignoreEmptyColumns:(BOOL)a5 ignoreDrawableOnlyColumns:(BOOL)a6
++ (id)closestColumnInColumnsArray:(id)array forPoint:(CGPoint)point ignoreEmptyColumns:(BOOL)columns ignoreDrawableOnlyColumns:(BOOL)onlyColumns
 {
-  v6 = a6;
-  v7 = a5;
-  y = a4.y;
-  x = a4.x;
+  onlyColumnsCopy = onlyColumns;
+  columnsCopy = columns;
+  y = point.y;
+  x = point.x;
   v55 = *MEMORY[0x277D85DE8];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = a3;
+  obj = array;
   v11 = 0;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v10, &v50, v54, 16);
   if (v14)
@@ -1267,7 +1267,7 @@ LABEL_20:
         v31 = v30;
         v33 = v32;
         v35 = v34;
-        if ((!v7 || objc_msgSend_lineCount(v18, v12, v13)) && (!v6 || objc_msgSend_lineCount(v18, v12, v13) != 1 || (*(objc_msgSend_lineFragmentAtIndex_(v18, v36, 0) + 24) & 0x40) == 0))
+        if ((!columnsCopy || objc_msgSend_lineCount(v18, v12, v13)) && (!onlyColumnsCopy || objc_msgSend_lineCount(v18, v12, v13) != 1 || (*(objc_msgSend_lineFragmentAtIndex_(v18, v36, 0) + 24) & 0x40) == 0))
         {
           v58.origin.x = v29;
           v58.origin.y = v31;
@@ -1311,14 +1311,14 @@ LABEL_20:
   return v11;
 }
 
-+ (_NSRange)charRangeForPencilAnnotationStartPoint:(CGPoint)a3 toEndPoint:(CGPoint)a4 inLayoutTarget:(id)a5 onSingleLineFragment:(BOOL)a6
++ (_NSRange)charRangeForPencilAnnotationStartPoint:(CGPoint)point toEndPoint:(CGPoint)endPoint inLayoutTarget:(id)target onSingleLineFragment:(BOOL)fragment
 {
-  v6 = a6;
-  y = a4.y;
-  x = a4.x;
-  v7 = a3.y;
-  v8 = a3.x;
-  v10 = objc_msgSend_columns(a5, a2, a5);
+  fragmentCopy = fragment;
+  y = endPoint.y;
+  x = endPoint.x;
+  v7 = point.y;
+  v8 = point.x;
+  v10 = objc_msgSend_columns(target, a2, target);
   v36 = 0u;
   v37 = 0u;
   v35 = 0u;
@@ -1340,11 +1340,11 @@ LABEL_20:
   v18 = v36;
   v19 = v37;
   TSUMixPoints();
-  v21 = objc_msgSend_closestColumnInColumnsArray_forPoint_ignoreEmptyColumns_ignoreDrawableOnlyColumns_(a1, v20, v10, 1, 0);
+  v21 = objc_msgSend_closestColumnInColumnsArray_forPoint_ignoreEmptyColumns_ignoreDrawableOnlyColumns_(self, v20, v10, 1, 0);
   v34 = 0;
   v24 = objc_msgSend_p_charIndexWithTextClosestToWPPoint_pastCenterGoesToNextChar_outFragment_leadingEdge_(v21, v22, 1, &v34, 0, *&v19 + v7 * *&v18 + *&v17 * v8, *(&v19 + 1) + v7 * *(&v18 + 1) + *(&v17 + 1) * v8);
   v25 = *&v19 + y * *&v18 + *&v17 * x;
-  if (v6 && v21 && v34)
+  if (fragmentCopy && v21 && v34)
   {
     Char_outFragment_leadingEdge = sub_276D6A99C(v34, 1, 0, 0, 1, v25);
   }
@@ -1383,12 +1383,12 @@ LABEL_20:
   return result;
 }
 
-+ (unint64_t)charIndexForPoint:(CGPoint)a3 inColumnsArray:(id)a4 hitTestMode:(int)a5 isAtEndOfLine:(BOOL *)a6 leadingEdge:(BOOL *)a7
++ (unint64_t)charIndexForPoint:(CGPoint)point inColumnsArray:(id)array hitTestMode:(int)mode isAtEndOfLine:(BOOL *)line leadingEdge:(BOOL *)edge
 {
-  v9 = *&a5;
-  y = a3.y;
-  x = a3.x;
-  v12 = objc_msgSend_closestColumnInColumnsArray_forPoint_ignoreEmptyColumns_ignoreDrawableOnlyColumns_(a1, a2, a4, (a5 >> 5) & 1, 1);
+  v9 = *&mode;
+  y = point.y;
+  x = point.x;
+  v12 = objc_msgSend_closestColumnInColumnsArray_forPoint_ignoreEmptyColumns_ignoreDrawableOnlyColumns_(self, a2, array, (mode >> 5) & 1, 1);
   v15 = v12;
   if ((v9 & 3) == 1 && (objc_msgSend_frameBounds(v12, v13, v14), v18.x = x, v18.y = y, !CGRectContainsPoint(v19, v18)))
   {
@@ -1397,13 +1397,13 @@ LABEL_20:
 
   else
   {
-    v16 = objc_msgSend_charIndexFromPoint_hitTestMode_isAtEndOfLine_leadingEdge_(v15, v13, v9, a6, a7, x, y);
+    v16 = objc_msgSend_charIndexFromPoint_hitTestMode_isAtEndOfLine_leadingEdge_(v15, v13, v9, line, edge, x, y);
   }
 
   return v16;
 }
 
-+ (CGPoint)p_pinPoint:(CGPoint)a3 toRect:(CGRect)a4
++ (CGPoint)p_pinPoint:(CGPoint)point toRect:(CGRect)rect
 {
   TSUClampPointInRect();
   result.y = v5;
@@ -1411,30 +1411,30 @@ LABEL_20:
   return result;
 }
 
-+ (CGPoint)pinToNaturalBounds:(CGPoint)a3 andLastLineFragment:(BOOL)a4 inLayoutTarget:(id)a5
++ (CGPoint)pinToNaturalBounds:(CGPoint)bounds andLastLineFragment:(BOOL)fragment inLayoutTarget:(id)target
 {
-  v5 = a4;
-  y = a3.y;
-  x = a3.x;
+  fragmentCopy = fragment;
+  y = bounds.y;
+  x = bounds.x;
   v87 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v12 = objc_msgSend_geometry(v9, v10, v11);
+  targetCopy = target;
+  v12 = objc_msgSend_geometry(targetCopy, v10, v11);
   objc_msgSend_size(v12, v13, v14);
   TSURectWithSize();
-  objc_msgSend_p_pinPoint_toRect_(a1, v15, v16, x, y, v17, v18, v19, v20);
+  objc_msgSend_p_pinPoint_toRect_(self, v15, v16, x, y, v17, v18, v19, v20);
   v77 = v22;
   v78 = v21;
 
   v25.f64[0] = v78;
   v25.f64[1] = v77;
   v76 = v25;
-  if (v5)
+  if (fragmentCopy)
   {
     v84 = 0u;
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v26 = objc_msgSend_columns(v9, v23, v24);
+    v26 = objc_msgSend_columns(targetCopy, v23, v24);
     v30 = objc_msgSend_countByEnumeratingWithState_objects_count_(v26, v27, &v82, v86, 16);
     if (v30)
     {
@@ -1549,36 +1549,36 @@ LABEL_22:
   return result;
 }
 
-+ (unint64_t)charIndexForPointWithPinning:(CGPoint)a3 inLayoutTarget:(id)a4
++ (unint64_t)charIndexForPointWithPinning:(CGPoint)pinning inLayoutTarget:(id)target
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  objc_msgSend_pinToNaturalBounds_andLastLineFragment_inLayoutTarget_(a1, v8, 1, v7, x, y);
-  v10 = objc_msgSend_charIndexFromPoint_hitTestMode_isAtEndOfLine_leadingEdge_inLayoutTarget_(a1, v9, 4, 0, 0, v7);
+  y = pinning.y;
+  x = pinning.x;
+  targetCopy = target;
+  objc_msgSend_pinToNaturalBounds_andLastLineFragment_inLayoutTarget_(self, v8, 1, targetCopy, x, y);
+  v10 = objc_msgSend_charIndexFromPoint_hitTestMode_isAtEndOfLine_leadingEdge_inLayoutTarget_(self, v9, 4, 0, 0, targetCopy);
 
   return v10;
 }
 
-+ (unint64_t)charIndexForPointWithPinning:(CGPoint)a3 isTail:(BOOL)a4 selectionType:(int64_t)a5 inLayoutTarget:(id)a6
++ (unint64_t)charIndexForPointWithPinning:(CGPoint)pinning isTail:(BOOL)tail selectionType:(int64_t)type inLayoutTarget:(id)target
 {
-  v7 = a4;
-  y = a3.y;
-  x = a3.x;
-  v11 = a6;
-  objc_msgSend_pinToNaturalBounds_andLastLineFragment_inLayoutTarget_(a1, v12, 1, v11, x, y);
+  tailCopy = tail;
+  y = pinning.y;
+  x = pinning.x;
+  targetCopy = target;
+  objc_msgSend_pinToNaturalBounds_andLastLineFragment_inLayoutTarget_(self, v12, 1, targetCopy, x, y);
   v14 = v13;
   v16 = v15;
-  v19 = objc_msgSend_columns(v11, v17, v18);
+  v19 = objc_msgSend_columns(targetCopy, v17, v18);
   v21 = objc_msgSend_closestColumnInColumnsArray_forPoint_ignoreEmptyColumns_ignoreDrawableOnlyColumns_(TSWPColumn, v20, v19, 0, 1, v14, v16);
 
   if (v21)
   {
-    isTail = objc_msgSend_charIndexForSelectionFromPoint_isTail_(v21, v22, v7, x, y);
+    isTail = objc_msgSend_charIndexForSelectionFromPoint_isTail_(v21, v22, tailCopy, x, y);
     CharacterIndex = isTail;
-    if (a5 != 7 && v7 && isTail != 0x7FFFFFFFFFFFFFFFLL)
+    if (type != 7 && tailCopy && isTail != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v27 = objc_msgSend_storage(v11, v24, v25);
+      v27 = objc_msgSend_storage(targetCopy, v24, v25);
       CharacterIndex = objc_msgSend_nextCharacterIndex_(v27, v28, CharacterIndex);
     }
   }
@@ -1591,14 +1591,14 @@ LABEL_22:
   return CharacterIndex;
 }
 
-+ (unint64_t)charIndexFromPoint:(CGPoint)a3 hitTestMode:(int)a4 isAtEndOfLine:(BOOL *)a5 leadingEdge:(BOOL *)a6 inLayoutTarget:(id)a7
++ (unint64_t)charIndexFromPoint:(CGPoint)point hitTestMode:(int)mode isAtEndOfLine:(BOOL *)line leadingEdge:(BOOL *)edge inLayoutTarget:(id)target
 {
-  v9 = *&a4;
-  y = a3.y;
-  x = a3.x;
-  v12 = a7;
-  v15 = v12;
-  if ((v9 & 3) != 1 && (objc_msgSend_layoutIsValid(v12, v13, v14) & 1) == 0)
+  v9 = *&mode;
+  y = point.y;
+  x = point.x;
+  targetCopy = target;
+  v15 = targetCopy;
+  if ((v9 & 3) != 1 && (objc_msgSend_layoutIsValid(targetCopy, v13, v14) & 1) == 0)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "+[TSWPColumn charIndexFromPoint:hitTestMode:isAtEndOfLine:leadingEdge:inLayoutTarget:]");
@@ -1614,7 +1614,7 @@ LABEL_22:
     v28 = objc_msgSend_count(v25, v26, v27);
     if ((v9 & 3) == 1 || v28 || (objc_msgSend_geometry(v15, v29, v30), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend_frame(v31, v32, v33), v41.x = x, v41.y = y, v34 = CGRectContainsPoint(v42, v41), v31, !v34))
     {
-      v39 = objc_msgSend_charIndexForPoint_inColumnsArray_hitTestMode_isAtEndOfLine_leadingEdge_(TSWPColumn, v29, v25, v9, a5, a6, x, y);
+      v39 = objc_msgSend_charIndexForPoint_inColumnsArray_hitTestMode_isAtEndOfLine_leadingEdge_(TSWPColumn, v29, v25, v9, line, edge, x, y);
     }
 
     else
@@ -1622,14 +1622,14 @@ LABEL_22:
       v36 = objc_msgSend_storage(v15, v29, v35);
       v39 = objc_msgSend_length(v36, v37, v38);
 
-      if (a5)
+      if (line)
       {
-        *a5 = 0;
+        *line = 0;
       }
 
-      if (a6)
+      if (edge)
       {
-        *a6 = 1;
+        *edge = 1;
       }
     }
   }
@@ -1642,15 +1642,15 @@ LABEL_22:
   return v39;
 }
 
-+ (id)smartFieldWithAttributeKind:(unint64_t)a3 inColumnArray:(id)a4 atPoint:(CGPoint)a5
++ (id)smartFieldWithAttributeKind:(unint64_t)kind inColumnArray:(id)array atPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = objc_msgSend_closestColumnInColumnsArray_forPoint_ignoreEmptyColumns_ignoreDrawableOnlyColumns_(TSWPColumn, a2, a4, 0, 1);
+  y = point.y;
+  x = point.x;
+  v8 = objc_msgSend_closestColumnInColumnsArray_forPoint_ignoreEmptyColumns_ignoreDrawableOnlyColumns_(TSWPColumn, a2, array, 0, 1);
   v11 = v8;
   if (v8 && (objc_msgSend_frameBounds(v8, v9, v10), v18.x = x, v18.y = y, CGRectContainsPoint(v19, v18)) && (v14 = objc_msgSend_charIndexFromPoint_hitTestMode_isAtEndOfLine_leadingEdge_(v11, v12, 9, 0, 0, x, y), v14 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v15 = objc_msgSend_smartFieldAtCharIndex_attributeKind_(v11, v13, v14, a3);
+    v15 = objc_msgSend_smartFieldAtCharIndex_attributeKind_(v11, v13, v14, kind);
   }
 
   else
@@ -1661,11 +1661,11 @@ LABEL_22:
   return v15;
 }
 
-+ (id)footnoteMarkAttachmentInColumnArray:(id)a3 atPoint:(CGPoint)a4
++ (id)footnoteMarkAttachmentInColumnArray:(id)array atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = objc_msgSend_closestColumnInColumnsArray_forPoint_ignoreEmptyColumns_ignoreDrawableOnlyColumns_(TSWPColumn, a2, a3, 0, 1);
+  y = point.y;
+  x = point.x;
+  v6 = objc_msgSend_closestColumnInColumnsArray_forPoint_ignoreEmptyColumns_ignoreDrawableOnlyColumns_(TSWPColumn, a2, array, 0, 1);
   v9 = v6;
   if (!v6)
   {
@@ -1701,11 +1701,11 @@ LABEL_8:
   return v20;
 }
 
-+ (id)footnoteReferenceAttachmentInColumnArray:(id)a3 atPoint:(CGPoint)a4
++ (id)footnoteReferenceAttachmentInColumnArray:(id)array atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = objc_msgSend_closestColumnInColumnsArray_forPoint_ignoreEmptyColumns_ignoreDrawableOnlyColumns_(TSWPColumn, a2, a3, 0, 1);
+  y = point.y;
+  x = point.x;
+  v6 = objc_msgSend_closestColumnInColumnsArray_forPoint_ignoreEmptyColumns_ignoreDrawableOnlyColumns_(TSWPColumn, a2, array, 0, 1);
   v9 = v6;
   if (v6)
   {
@@ -1741,16 +1741,16 @@ LABEL_8:
   return v15;
 }
 
-+ (id)pathForHighlightWithRange:(_NSRange)a3 columnArray:(id)a4 pathStyle:(unint64_t)a5
++ (id)pathForHighlightWithRange:(_NSRange)range columnArray:(id)array pathStyle:(unint64_t)style
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v9 = objc_msgSend_bezierPath(MEMORY[0x277D81160], v7, v8, v6);
+  arrayCopy = array;
+  v9 = objc_msgSend_bezierPath(MEMORY[0x277D81160], v7, v8, arrayCopy);
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v6;
+  obj = arrayCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v10, &v55, v60, 16);
   if (v11)
   {
@@ -1786,7 +1786,7 @@ LABEL_8:
         v54 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v24 = objc_msgSend_rectsForSelectionRange_selectionType_forParagraphMode_includeRuby_includePaginatedAttachments_(v15, v23, a3.location, a3.length, 8, 0, a5 == 1, 0);
+        v24 = objc_msgSend_rectsForSelectionRange_selectionType_forParagraphMode_includeRuby_includePaginatedAttachments_(v15, v23, range.location, range.length, 8, 0, style == 1, 0);
         v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(v24, v25, &v51, v59, 16);
         if (v28)
         {
@@ -1802,7 +1802,7 @@ LABEL_8:
 
               v31 = *(*(&v51 + 1) + 8 * j);
               objc_msgSend_CGRectValue(v31, v26, v27);
-              if (a5 == 2)
+              if (style == 2)
               {
                 objc_msgSend_CGRectValue(v31, v32, v33);
                 v64 = CGRectInset(v63, -3.0, -3.0);
@@ -1840,10 +1840,10 @@ LABEL_21:
   return v9;
 }
 
-+ (id)pathForHighlightWithSelection:(id)a3 columnArray:(id)a4 pathStyle:(unint64_t)a5
++ (id)pathForHighlightWithSelection:(id)selection columnArray:(id)array pathStyle:(unint64_t)style
 {
-  v8 = a3;
-  v9 = a4;
+  selectionCopy = selection;
+  arrayCopy = array;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1854,12 +1854,12 @@ LABEL_21:
   v16[1] = 3221225472;
   v16[2] = sub_276D53E4C;
   v16[3] = &unk_27A6F3F98;
-  v19 = a1;
-  v12 = v9;
-  v20 = a5;
+  selfCopy = self;
+  v12 = arrayCopy;
+  styleCopy = style;
   v17 = v12;
   v18 = &v21;
-  objc_msgSend_enumerateRanges_(v8, v13, v16);
+  objc_msgSend_enumerateRanges_(selectionCopy, v13, v16);
   v14 = v22[5];
 
   _Block_object_dispose(&v21, 8);
@@ -1867,11 +1867,11 @@ LABEL_21:
   return v14;
 }
 
-+ (CGRect)boundsRectForSelection:(id)a3 columnArray:(id)a4 includeRuby:(BOOL)a5 includePaginatedAttachments:(BOOL)a6
++ (CGRect)boundsRectForSelection:(id)selection columnArray:(id)array includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)attachments
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
+  selectionCopy = selection;
+  arrayCopy = array;
+  v11 = arrayCopy;
   v12 = &v29;
   v29 = 0;
   v30 = &v29;
@@ -1882,16 +1882,16 @@ LABEL_21:
   v13 = *(MEMORY[0x277CBF398] + 16);
   v35 = *MEMORY[0x277CBF398];
   v36 = v13;
-  if (v9)
+  if (selectionCopy)
   {
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = sub_276D5408C;
     v23[3] = &unk_27A6F3FC0;
-    v24 = v10;
-    v27 = a5;
-    v28 = a6;
-    v25 = v9;
+    v24 = arrayCopy;
+    rubyCopy = ruby;
+    attachmentsCopy = attachments;
+    v25 = selectionCopy;
     v26 = &v29;
     objc_msgSend_enumerateRanges_(v25, v14, v23);
 
@@ -1915,22 +1915,22 @@ LABEL_21:
   return result;
 }
 
-+ (id)columnForCharIndex:(unint64_t)a3 allowEndOfColumn:(BOOL)a4 withColumns:(id)a5
++ (id)columnForCharIndex:(unint64_t)index allowEndOfColumn:(BOOL)column withColumns:(id)columns
 {
-  v5 = a4;
+  columnCopy = column;
   v58 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v50 = objc_msgSend_firstObject(v7, v8, v9, v7);
+  columnsCopy = columns;
+  v50 = objc_msgSend_firstObject(columnsCopy, v8, v9, columnsCopy);
   v52 = objc_msgSend_storage(v50, v10, v11);
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v7;
+  obj = columnsCopy;
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, &v53, v57, 16);
   if (v15)
   {
-    v16 = v5;
+    v16 = columnCopy;
     v17 = *v54;
     while (2)
     {
@@ -1972,7 +1972,7 @@ LABEL_21:
         }
 
         v40 = objc_msgSend_range(v19, v38, v39);
-        if (&v13[v16 + v40] > a3)
+        if (&v13[v16 + v40] > index)
         {
           v41 = v19;
           goto LABEL_16;
@@ -2001,23 +2001,23 @@ LABEL_16:
   return v41;
 }
 
-+ (_NSRange)rangeOfColumns:(id)a3
++ (_NSRange)rangeOfColumns:(id)columns
 {
-  v3 = a3;
+  columnsCopy = columns;
   v4 = MEMORY[0x277D81490];
   v5 = *MEMORY[0x277D81490];
   v6 = *(MEMORY[0x277D81490] + 8);
-  if (objc_msgSend_count(v3, v7, v8))
+  if (objc_msgSend_count(columnsCopy, v7, v8))
   {
-    v11 = objc_msgSend_objectAtIndexedSubscript_(v3, v9, 0);
+    v11 = objc_msgSend_objectAtIndexedSubscript_(columnsCopy, v9, 0);
     v5 = objc_msgSend_range(v11, v12, v13);
     v6 = v14;
   }
 
-  if (objc_msgSend_count(v3, v9, v10) >= 2)
+  if (objc_msgSend_count(columnsCopy, v9, v10) >= 2)
   {
-    v17 = objc_msgSend_count(v3, v15, v16);
-    v19 = objc_msgSend_objectAtIndexedSubscript_(v3, v18, v17 - 1);
+    v17 = objc_msgSend_count(columnsCopy, v15, v16);
+    v19 = objc_msgSend_objectAtIndexedSubscript_(columnsCopy, v18, v17 - 1);
     v22 = objc_msgSend_range(v19, v20, v21);
     if (v5 <= v22 + v23)
     {
@@ -2037,7 +2037,7 @@ LABEL_16:
     v6 = v24 - v5;
   }
 
-  v25 = objc_msgSend_firstObject(v3, v15, v16);
+  v25 = objc_msgSend_firstObject(columnsCopy, v15, v16);
   v28 = objc_msgSend_storage(v25, v26, v27);
   v31 = objc_msgSend_length(v28, v29, v30);
   v32 = v6 + v5;
@@ -2059,25 +2059,25 @@ LABEL_16:
   return result;
 }
 
-+ (CGSize)layoutSizeForParagraphEnumerator:(const TSWPParagraphEnumerator *)a3 inColumns:(id)a4 lineCount:(unint64_t *)a5 nextLineOffset:(double *)a6
++ (CGSize)layoutSizeForParagraphEnumerator:(const TSWPParagraphEnumerator *)enumerator inColumns:(id)columns lineCount:(unint64_t *)count nextLineOffset:(double *)offset
 {
   v74 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v68 = a5;
-  *a5 = 0;
-  v66 = a6;
-  *a6 = 0.0;
+  columnsCopy = columns;
+  countCopy = count;
+  *count = 0;
+  offsetCopy = offset;
+  *offset = 0.0;
   v10 = *MEMORY[0x277CBF3A8];
   v11 = *(MEMORY[0x277CBF3A8] + 8);
   v12 = *MEMORY[0x277D814C8];
   v13 = *(MEMORY[0x277D814C8] + 8);
-  v15 = TSWPParagraphEnumerator::paragraphTextRange(a3, v14);
+  v15 = TSWPParagraphEnumerator::paragraphTextRange(enumerator, v14);
   v17 = v16;
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v9;
+  obj = columnsCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v18, &v69, v73, 16);
   if (v21)
   {
@@ -2142,7 +2142,7 @@ LABEL_16:
                   goto LABEL_47;
                 }
 
-                ++*v68;
+                ++*countCopy;
                 v49 = *(v40 + 40);
                 if (v12 == *MEMORY[0x277D814C8] && v13 == *(MEMORY[0x277D814C8] + 8))
                 {
@@ -2166,7 +2166,7 @@ LABEL_16:
                     if (*(v54 + 27))
                     {
 LABEL_47:
-                      *v68 = 0;
+                      *countCopy = 0;
                       v10 = *MEMORY[0x277CBF3A8];
                       v11 = *(MEMORY[0x277CBF3A8] + 8);
                       goto LABEL_49;
@@ -2177,7 +2177,7 @@ LABEL_47:
 
                   v10 = v52 + v49 - v12;
                   v11 = *(v41 + 32) + *(v41 + 136) - v13;
-                  *v66 = v55 - v13;
+                  *offsetCopy = v55 - v13;
                 }
               }
             }
@@ -2200,20 +2200,20 @@ LABEL_49:
   return result;
 }
 
-- (TSWPColumn)initWithStorage:(id)a3 frameBounds:(CGRect)a4
+- (TSWPColumn)initWithStorage:(id)storage frameBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  storageCopy = storage;
   v16.receiver = self;
   v16.super_class = TSWPColumn;
   v11 = [(TSWPColumn *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_storage, a3);
+    objc_storeStrong(&v11->_storage, storage);
     v12->_frameBounds.origin.x = x;
     v12->_frameBounds.origin.y = y;
     v12->_frameBounds.size.width = width;
@@ -2232,14 +2232,14 @@ LABEL_49:
   return 0;
 }
 
-- (id)initForTestingWithStorage:(id)a3 frameBounds:(CGRect)a4
+- (id)initForTestingWithStorage:(id)storage frameBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v11 = objc_msgSend_initWithStorage_frameBounds_(self, v10, v9, x, y, width, height);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  storageCopy = storage;
+  v11 = objc_msgSend_initWithStorage_frameBounds_(self, v10, storageCopy, x, y, width, height);
   v12 = *(MEMORY[0x277CBF2C0] + 16);
   v15[0] = *MEMORY[0x277CBF2C0];
   v15[1] = v12;
@@ -2285,10 +2285,10 @@ LABEL_49:
   return result;
 }
 
-- (void)setRange:(_NSRange)a3
+- (void)setRange:(_NSRange)range
 {
-  length = a3.length;
-  objc_msgSend_setStartCharIndex_(self, a2, a3.location);
+  length = range.length;
+  objc_msgSend_setStartCharIndex_(self, a2, range.location);
 
   objc_msgSend_setCharacterCount_(self, v5, length);
 }
@@ -2302,11 +2302,11 @@ LABEL_49:
   return result;
 }
 
-- (void)setAnchoredRange:(_NSRange)a3
+- (void)setAnchoredRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.length >= 0x7FFFFFFFFFFFFFFFLL)
+  length = range.length;
+  location = range.location;
+  if (range.length >= 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPColumn setAnchoredRange:]");
@@ -2320,17 +2320,17 @@ LABEL_49:
   self->_anchoredAttachmentRange.length = length;
 }
 
-- (void)incrementRanges:(int64_t)a3 startingAt:(unint64_t)a4
+- (void)incrementRanges:(int64_t)ranges startingAt:(unint64_t)at
 {
-  v5 = a3;
-  v7 = objc_msgSend_storage(self, a2, a3);
+  rangesCopy = ranges;
+  v7 = objc_msgSend_storage(self, a2, ranges);
   v10 = objc_msgSend_changeCount(v7, v8, v9);
 
   if (objc_msgSend_storageChangeCount(self, v11, v12) != v10)
   {
     v15 = objc_msgSend_anchoredRange(self, v13, v14);
     v17 = v16;
-    if (-objc_msgSend_startCharIndex(self, v16, v18) > v5)
+    if (-objc_msgSend_startCharIndex(self, v16, v18) > rangesCopy)
     {
       v21 = MEMORY[0x277D81150];
       v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "[TSWPColumn incrementRanges:startingAt:]");
@@ -2340,7 +2340,7 @@ LABEL_49:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27);
     }
 
-    if (-v15 > v5)
+    if (-v15 > rangesCopy)
     {
       v28 = MEMORY[0x277D81150];
       v29 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "[TSWPColumn incrementRanges:startingAt:]");
@@ -2351,28 +2351,28 @@ LABEL_49:
     }
 
     started = objc_msgSend_startCharIndex(self, v19, v20);
-    if (-started > v5)
+    if (-started > rangesCopy)
     {
-      v5 = -started;
+      rangesCopy = -started;
     }
 
-    if (objc_msgSend_startCharIndex(self, v36, v37) >= a4)
+    if (objc_msgSend_startCharIndex(self, v36, v37) >= at)
     {
       v39 = objc_msgSend_startCharIndex(self, v13, v38);
-      objc_msgSend_setStartCharIndex_(self, v40, v39 + v5);
+      objc_msgSend_setStartCharIndex_(self, v40, v39 + rangesCopy);
       WidowPullsDownFromCharIndex = objc_msgSend_nextWidowPullsDownFromCharIndex(self, v41, v42);
-      objc_msgSend_setNextWidowPullsDownFromCharIndex_(self, v44, WidowPullsDownFromCharIndex + v5);
+      objc_msgSend_setNextWidowPullsDownFromCharIndex_(self, v44, WidowPullsDownFromCharIndex + rangesCopy);
     }
 
-    if (v15 >= a4)
+    if (v15 >= at)
     {
-      objc_msgSend_setAnchoredRange_(self, v13, v5 + v15, v17);
+      objc_msgSend_setAnchoredRange_(self, v13, rangesCopy + v15, v17);
     }
 
     ptr = self->_lineFragmentArray.__ptr_;
     if (ptr)
     {
-      sub_276D6FAB4(ptr, v5, a4);
+      sub_276D6FAB4(ptr, rangesCopy, at);
     }
   }
 
@@ -2398,22 +2398,22 @@ LABEL_49:
   return result;
 }
 
-- (void)trimToCharIndex:(unint64_t)a3 inTarget:(id)a4 removeFootnoteReferenceCount:(unint64_t)a5 removeAutoNumberFootnoteCount:(unint64_t)a6
+- (void)trimToCharIndex:(unint64_t)index inTarget:(id)target removeFootnoteReferenceCount:(unint64_t)count removeAutoNumberFootnoteCount:(unint64_t)footnoteCount
 {
-  v40 = a4;
-  if (objc_msgSend_nextWidowPullsDownFromCharIndex(self, v8, v9) < a3 && *MEMORY[0x277D81408] != -1)
+  targetCopy = target;
+  if (objc_msgSend_nextWidowPullsDownFromCharIndex(self, v8, v9) < index && *MEMORY[0x277D81408] != -1)
   {
     sub_276F4F1A8();
   }
 
   v13 = objc_msgSend_range(self, v10, v11);
   v14 = &v12[v13];
-  if ((a3 < v13 || v14 < a3) && *MEMORY[0x277D81408] != -1)
+  if ((index < v13 || v14 < index) && *MEMORY[0x277D81408] != -1)
   {
     sub_276F4F1BC();
   }
 
-  if (!v40)
+  if (!targetCopy)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSWPColumn trimToCharIndex:inTarget:removeFootnoteReferenceCount:removeAutoNumberFootnoteCount:]");
@@ -2423,13 +2423,13 @@ LABEL_49:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21);
   }
 
-  if (a3 >= v13 && v14 > a3)
+  if (index >= v13 && v14 > index)
   {
-    self->_characterCount = a3 - v13;
+    self->_characterCount = index - v13;
     v22 = sub_276D6F7D8(self->_lineFragmentArray.__ptr_);
     if (v22)
     {
-      v23 = sub_276D6FBAC(self->_lineFragmentArray.__ptr_, a3);
+      v23 = sub_276D6FBAC(self->_lineFragmentArray.__ptr_, index);
       if (v22 > v23)
       {
         v24 = v22;
@@ -2470,19 +2470,19 @@ LABEL_49:
       if ((self->_layoutResultFlags & 0x400) == 0)
       {
         objc_msgSend_clearAdornments(self, v12, v33);
-        v35 = objc_msgSend_columnMetricsForCharIndex_outRange_(v40, v34, a3, 0);
-        sub_276D7FC90(self, v35, 0, v40);
+        v35 = objc_msgSend_columnMetricsForCharIndex_outRange_(targetCopy, v34, index, 0);
+        sub_276D7FC90(self, v35, 0, targetCopy);
 
-        v37 = objc_msgSend_columnMetricsForCharIndex_outRange_(v40, v36, a3, 0);
-        sub_276D81034(self, v37, 0, v40);
+        v37 = objc_msgSend_columnMetricsForCharIndex_outRange_(targetCopy, v36, index, 0);
+        sub_276D81034(self, v37, 0, targetCopy);
 
-        v39 = objc_msgSend_columnMetricsForCharIndex_outRange_(v40, v38, a3, 0);
-        sub_276D812E0(self, v39, 0, v40);
+        v39 = objc_msgSend_columnMetricsForCharIndex_outRange_(targetCopy, v38, index, 0);
+        sub_276D812E0(self, v39, 0, targetCopy);
       }
     }
   }
 
-  objc_msgSend_setNextWidowPullsDownFromCharIndex_(self, v12, a3);
+  objc_msgSend_setNextWidowPullsDownFromCharIndex_(self, v12, index);
 }
 
 - (double)minimumHeightForLayoutOnPage
@@ -2517,14 +2517,14 @@ LABEL_49:
   return contentBottom - v15;
 }
 
-- (CGRect)erasableBounds:(unint64_t)a3
+- (CGRect)erasableBounds:(unint64_t)bounds
 {
   v35 = *MEMORY[0x277D85DE8];
   x = self->_frameBounds.origin.x;
   y = self->_frameBounds.origin.y;
   width = self->_frameBounds.size.width;
   height = self->_frameBounds.size.height;
-  v42.origin.x = sub_276D6FA34(self->_lineFragmentArray.__ptr_, a3).n64_f64[0];
+  v42.origin.x = sub_276D6FA34(self->_lineFragmentArray.__ptr_, bounds).n64_f64[0];
   v42.origin.y = v8;
   v42.size.width = v9;
   v42.size.height = v10;
@@ -2655,14 +2655,14 @@ LABEL_49:
   return v4;
 }
 
-- (CGRect)changeBarRectForLineFragment:(const void *)a3 layoutTarget:(id)a4
+- (CGRect)changeBarRectForLineFragment:(const void *)fragment layoutTarget:(id)target
 {
-  v6 = a4;
-  v8 = objc_msgSend_columnMetricsForCharIndex_outRange_(v6, v7, *a3, 0);
+  targetCopy = target;
+  v8 = objc_msgSend_columnMetricsForCharIndex_outRange_(targetCopy, v7, *fragment, 0);
   v11 = v8;
   if (v8)
   {
-    objc_msgSend_adjustedInsetsForTarget_(v8, v9, v6);
+    objc_msgSend_adjustedInsetsForTarget_(v8, v9, targetCopy);
     v13 = v12;
     v15 = v14;
   }
@@ -2676,10 +2676,10 @@ LABEL_49:
   objc_msgSend_wpBounds(self, v9, v10);
   v17 = v16;
   v19 = v18;
-  v20 = *(a3 + 6);
-  v21 = *(a3 + 17);
-  v22 = *(a3 + 20);
-  v23 = *(a3 + 4);
+  v20 = *(fragment + 6);
+  v21 = *(fragment + 17);
+  v22 = *(fragment + 20);
+  v23 = *(fragment + 4);
   v26 = objc_msgSend_storage(self, v24, v25);
   v31 = v22 + v21 + v23 - v20;
   if (objc_msgSend_wpKind(v26, v27, v28))
@@ -2687,7 +2687,7 @@ LABEL_49:
     v32 = objc_msgSend_storage(self, v29, v30);
     v35 = objc_msgSend_wpKind(v32, v33, v34);
 
-    v36 = *(a3 + 3);
+    v36 = *(fragment + 3);
     if (v35 == 2)
     {
       v37 = 12.0;
@@ -2721,7 +2721,7 @@ LABEL_49:
   {
 
     v37 = 12.0;
-    if ((*(a3 + 25) & 0x10) != 0)
+    if ((*(fragment + 25) & 0x10) != 0)
     {
 LABEL_14:
       v46.origin.x = v17;
@@ -2771,17 +2771,17 @@ LABEL_15:
   return CGRectApplyAffineTransform(v8, &v7);
 }
 
-+ (CGPoint)pinPoint:(CGPoint)a3 toBottomOfLineFragmentInColumns:(id)a4
++ (CGPoint)pinPoint:(CGPoint)point toBottomOfLineFragmentInColumns:(id)columns
 {
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   v66 = *MEMORY[0x277D85DE8];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v4 = a4;
-  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v61, v65, 16);
+  columnsCopy = columns;
+  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(columnsCopy, v5, &v61, v65, 16);
   v9.f64[0] = x;
   v9.f64[1] = y;
   v55 = v9;
@@ -2794,7 +2794,7 @@ LABEL_15:
       {
         if (*v62 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(columnsCopy);
         }
 
         v12 = *(*(&v61 + 1) + 8 * i);
@@ -2878,7 +2878,7 @@ LABEL_15:
         }
       }
 
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v6, &v61, v65, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(columnsCopy, v6, &v61, v65, 16);
       if (v8)
       {
         continue;
@@ -2897,10 +2897,10 @@ LABEL_21:
   return result;
 }
 
-- (void)setLineFragmentArray:(const void *)a3
+- (void)setLineFragmentArray:(const void *)array
 {
-  v4 = *a3;
-  v3 = *(a3 + 1);
+  v4 = *array;
+  v3 = *(array + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -2915,35 +2915,35 @@ LABEL_21:
   }
 }
 
-- (void)offsetLineFragmentsBy:(CGSize)a3
+- (void)offsetLineFragmentsBy:(CGSize)by
 {
-  if (a3.width != 0.0 || a3.height != 0.0)
+  if (by.width != 0.0 || by.height != 0.0)
   {
-    v5 = *&a3.height;
-    sub_276D6FB14(self->_lineFragmentArray.__ptr_, a2, v3, a3.width, a3.height);
+    v5 = *&by.height;
+    sub_276D6FB14(self->_lineFragmentArray.__ptr_, a2, v3, by.width, by.height);
     *&self->_contentBottom = vaddq_f64(vdupq_lane_s64(v5, 0), *&self->_contentBottom);
   }
 }
 
-- (void)makeEmpty:(unint64_t)a3 anchoredRange:(_NSRange)a4 layoutResultFlags:(unint64_t)a5
+- (void)makeEmpty:(unint64_t)empty anchoredRange:(_NSRange)range layoutResultFlags:(unint64_t)flags
 {
-  length = a4.length;
-  location = a4.location;
-  objc_msgSend_setStartCharIndex_(self, a2, a3);
+  length = range.length;
+  location = range.location;
+  objc_msgSend_setStartCharIndex_(self, a2, empty);
   objc_msgSend_setCharacterCount_(self, v10, 0);
   objc_msgSend_setAnchoredRange_(self, v11, location, length);
   self->_contentBottom = 0.0;
   self->_erasableContentBottom = 0.0;
-  self->_layoutResultFlags = a5;
-  objc_msgSend_setNextWidowPullsDownFromCharIndex_(self, v12, a3);
+  self->_layoutResultFlags = flags;
+  objc_msgSend_setNextWidowPullsDownFromCharIndex_(self, v12, empty);
   sub_276D6FA30(self->_lineFragmentArray.__ptr_);
 
   objc_msgSend_clearAdornments(self, v13, v14);
 }
 
-- (CGRect)boundsOfLineFragmentAtIndex:(unint64_t)a3
+- (CGRect)boundsOfLineFragmentAtIndex:(unint64_t)index
 {
-  v4 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, a3);
+  v4 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, index);
   v5 = v4[5];
   v6 = v4[6];
   v7 = v4[7];
@@ -2956,29 +2956,29 @@ LABEL_21:
   return CGRectApplyAffineTransform(v12, &v11);
 }
 
-- (id)partitionedLayoutOfLineFragmentAtIndex:(unint64_t)a3
+- (id)partitionedLayoutOfLineFragmentAtIndex:(unint64_t)index
 {
-  v3 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, a3);
+  v3 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, index);
 
   return sub_276D6493C(v3);
 }
 
-- (id)textAdornmentOfLineFragmentAtIndex:(unint64_t)a3
+- (id)textAdornmentOfLineFragmentAtIndex:(unint64_t)index
 {
-  v3 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, a3);
+  v3 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, index);
 
   return sub_276D64990(v3);
 }
 
-- (CGRect)rawGlyphRectOfRange:(_NSRange)a3
+- (CGRect)rawGlyphRectOfRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = *MEMORY[0x277CBF398];
   v7 = *(MEMORY[0x277CBF398] + 8);
   v8 = *(MEMORY[0x277CBF398] + 16);
   v9 = *(MEMORY[0x277CBF398] + 24);
-  v10 = objc_msgSend_lineIndexForCharIndex_eol_(self, a2, a3.location, 0);
+  v10 = objc_msgSend_lineIndexForCharIndex_eol_(self, a2, range.location, 0);
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = objc_msgSend_lineFragmentAtIndex_(self, v11, v10);
@@ -3016,10 +3016,10 @@ LABEL_21:
   return result;
 }
 
-- (TSWPFontHeightInfo)fontHeightInfoAtCharIndex:(SEL)a3
+- (TSWPFontHeightInfo)fontHeightInfoAtCharIndex:(SEL)index
 {
   *retstr = *byte_276F98C20;
-  result = objc_msgSend_lineIndexForCharIndex_eol_(self, a3, a4, 0);
+  result = objc_msgSend_lineIndexForCharIndex_eol_(self, index, a4, 0);
   if (result != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = objc_msgSend_lineFragmentAtIndex_(self, v8, result);
@@ -3030,9 +3030,9 @@ LABEL_21:
   return result;
 }
 
-- (_NSRange)rangeOfLineFragmentAtIndex:(unint64_t)a3
+- (_NSRange)rangeOfLineFragmentAtIndex:(unint64_t)index
 {
-  v3 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, a3);
+  v3 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, index);
   if (*(v3 + 24) < 0)
   {
     v4 = MEMORY[0x277D81490];
@@ -3050,9 +3050,9 @@ LABEL_21:
   return result;
 }
 
-- (unsigned)hyphenCharOfLineFragmentAtIndex:(unint64_t)a3
+- (unsigned)hyphenCharOfLineFragmentAtIndex:(unint64_t)index
 {
-  v3 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, a3);
+  v3 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, index);
   if (!v3)
   {
     return 0;
@@ -3067,12 +3067,12 @@ LABEL_21:
   return sub_276D6C5D0(v4);
 }
 
-- ($10B7A9D486B2AF6DC4FEF2BBDFC96885)lineMetricsAtCharIndex:(SEL)a3 allowEndOfLine:(unint64_t)a4
+- ($10B7A9D486B2AF6DC4FEF2BBDFC96885)lineMetricsAtCharIndex:(SEL)index allowEndOfLine:(unint64_t)line
 {
   v5 = a5;
   v67 = *MEMORY[0x277D85DE8];
   memcpy(retstr, &unk_276FA8A20, sizeof($10B7A9D486B2AF6DC4FEF2BBDFC96885));
-  result = objc_msgSend_lineIndexForCharIndex_eol_(self, v9, a4, v5);
+  result = objc_msgSend_lineIndexForCharIndex_eol_(self, v9, line, v5);
   if (result != 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = objc_msgSend_lineFragmentAtIndex_(self, v11, result);
@@ -3148,7 +3148,7 @@ LABEL_21:
     *&retstr->var2.ascent = *(v14 + 120);
     if (sub_276D648AC(v14))
     {
-      v32 = sub_276D69F48(v14, a4, &v65);
+      v32 = sub_276D69F48(v14, line, &v65);
       retstr->var3 = CTFontGetXHeight(v32);
     }
 
@@ -3200,28 +3200,28 @@ LABEL_21:
   return result;
 }
 
-- (double)horizontalOffsetForCharIndex:(unint64_t)a3 lineFragmentIndex:(unint64_t)a4 bumpPastHyphen:(BOOL)a5 allowPastLineBounds:(BOOL)a6
+- (double)horizontalOffsetForCharIndex:(unint64_t)index lineFragmentIndex:(unint64_t)fragmentIndex bumpPastHyphen:(BOOL)hyphen allowPastLineBounds:(BOOL)bounds
 {
-  v7 = a5;
-  v9 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, a4);
+  hyphenCopy = hyphen;
+  v9 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, fragmentIndex);
 
-  return sub_276D664E4(v9, a3, v7, a6, 0);
+  return sub_276D664E4(v9, index, hyphenCopy, bounds, 0);
 }
 
-- (const)nearestLineFragmentWithSameVerticalPositionAs:(unint64_t)a3 xPos:(double)a4
+- (const)nearestLineFragmentWithSameVerticalPositionAs:(unint64_t)as xPos:(double)pos
 {
-  v5 = a3;
-  v25 = *(sub_276D6F7E8(self->_lineFragmentArray.__ptr_, a3) + 40);
+  asCopy = as;
+  v25 = *(sub_276D6F7E8(self->_lineFragmentArray.__ptr_, as) + 40);
   MinY = CGRectGetMinY(v25);
   do
   {
-    v10 = v5;
-    if (!v5)
+    v10 = asCopy;
+    if (!asCopy)
     {
       break;
     }
 
-    --v5;
+    --asCopy;
     v26 = *(sub_276D6F7E8(self->_lineFragmentArray.__ptr_, v10 - 1) + 40);
   }
 
@@ -3252,12 +3252,12 @@ LABEL_21:
       v28.origin.y = v18;
       v28.size.width = v19;
       v28.size.height = v20;
-      v21 = vabdd_f64(a4, CGRectGetMinX(v28));
+      v21 = vabdd_f64(pos, CGRectGetMinX(v28));
       v29.origin.x = v17;
       v29.origin.y = v18;
       v29.size.width = v19;
       v29.size.height = v20;
-      v22 = vabdd_f64(a4, CGRectGetMaxX(v29));
+      v22 = vabdd_f64(pos, CGRectGetMaxX(v29));
       if (v22 >= v21)
       {
         v22 = v21;
@@ -3278,9 +3278,9 @@ LABEL_21:
   return objc_msgSend_lineFragmentAtIndex_(self, v12, v10);
 }
 
-- (void)pInfoForCharIndex:(unint64_t)a3 isAtStart:(BOOL *)a4 isAtEnd:(BOOL *)a5
+- (void)pInfoForCharIndex:(unint64_t)index isAtStart:(BOOL *)start isAtEnd:(BOOL *)end
 {
-  v9 = objc_msgSend_length(self->_storage, a2, a3);
+  v9 = objc_msgSend_length(self->_storage, a2, index);
   if (objc_msgSend_hasTrackedChanges(self->_storage, v10, v11))
   {
     storage = self->_storage;
@@ -3325,11 +3325,11 @@ LABEL_21:
     v14 = 0;
   }
 
-  *a4 = v14 == a3;
-  *a5 = v9 == a3;
+  *start = v14 == index;
+  *end = v9 == index;
 }
 
-- (unint64_t)pRemapCharIndex:(unint64_t)a3 outIsAfterBreak:(BOOL *)a4 outWithTextSource:(id *)a5
+- (unint64_t)pRemapCharIndex:(unint64_t)index outIsAfterBreak:(BOOL *)break outWithTextSource:(id *)source
 {
   v9 = self->_storage;
   if (objc_msgSend_hasTrackedChanges(self->_storage, v10, v11))
@@ -3337,7 +3337,7 @@ LABEL_21:
     storage = self->_storage;
     if (storage)
     {
-      objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(storage, v12, a3, 0);
+      objc_msgSend_paragraphEnumeratorAtCharIndex_styleProvider_(storage, v12, index, 0);
     }
 
     else
@@ -3366,23 +3366,23 @@ LABEL_21:
     v9 = v23;
   }
 
-  v24 = objc_msgSend_charIndexMappedFromStorage_(v9, v12, a3, *&v34.var0, *&v34.var2, *&v34.var4, *&v34.var6, v34.var7.length);
-  v26 = a3;
+  v24 = objc_msgSend_charIndexMappedFromStorage_(v9, v12, index, *&v34.var0, *&v34.var2, *&v34.var4, *&v34.var6, v34.var7.length);
+  indexCopy = index;
   if (v24)
   {
-    v26 = TSWPPreviousCharIndexFromTextSource(a3, v9);
+    indexCopy = TSWPPreviousCharIndexFromTextSource(index, v9);
   }
 
-  if (a4)
+  if (break)
   {
-    if (v26 == a3)
+    if (indexCopy == index)
     {
       v27 = 0;
     }
 
     else
     {
-      v28 = objc_msgSend_characterAtIndex_(self->_storage, v25, v26);
+      v28 = objc_msgSend_characterAtIndex_(self->_storage, v25, indexCopy);
       v29 = v28;
       v30 = IsParagraphBreakingCharacter(v28);
       if (v29 == 8232)
@@ -3396,26 +3396,26 @@ LABEL_21:
       }
     }
 
-    *a4 = v27;
+    *break = v27;
   }
 
-  if (a5)
+  if (source)
   {
     v31 = v9;
-    *a5 = v9;
+    *source = v9;
   }
 
-  v32 = objc_msgSend_charIndexRemappedFromStorage_(v9, v25, a3);
+  v32 = objc_msgSend_charIndexRemappedFromStorage_(v9, v25, index);
 
   return v32;
 }
 
-- (unint64_t)lineIndexForCharIndex:(unint64_t)a3 eol:(BOOL)a4
+- (unint64_t)lineIndexForCharIndex:(unint64_t)index eol:(BOOL)eol
 {
-  v45 = a4;
+  eolCopy = eol;
   v55 = 0;
   v54 = 0;
-  v4 = objc_msgSend_pRemapCharIndex_outIsAfterBreak_outWithTextSource_(self, a2, a3, &v55, &v54);
+  v4 = objc_msgSend_pRemapCharIndex_outIsAfterBreak_outWithTextSource_(self, a2, index, &v55, &v54);
   v5 = v54;
   v52 = v4;
   if (objc_msgSend_charIndexMappedFromStorage_(v5, v6, v4))
@@ -3517,7 +3517,7 @@ LABEL_21:
       v43 = v55 | v34;
       if (v52 == v39)
       {
-        if ((v45 & (v43 | v29 ^ 1) & 1) != 0 || HIBYTE(v53))
+        if ((eolCopy & (v43 | v29 ^ 1) & 1) != 0 || HIBYTE(v53))
         {
           if ((v23 & 0x100000100) != 0)
           {
@@ -3569,11 +3569,11 @@ LABEL_47:
   return v15;
 }
 
-- (CGRect)p_untransformedCaretRectForSelection:(id)a3
+- (CGRect)p_untransformedCaretRectForSelection:(id)selection
 {
-  v6 = a3;
-  v154 = v6;
-  if (!v6)
+  selectionCopy = selection;
+  v154 = selectionCopy;
+  if (!selectionCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSWPColumn p_untransformedCaretRectForSelection:]");
@@ -3583,7 +3583,7 @@ LABEL_47:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  if ((objc_msgSend_isInsertionPoint(v6, v4, v5) & 1) == 0)
+  if ((objc_msgSend_isInsertionPoint(selectionCopy, v4, v5) & 1) == 0)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSWPColumn p_untransformedCaretRectForSelection:]");
@@ -3597,8 +3597,8 @@ LABEL_47:
   v24 = *(MEMORY[0x277CBF398] + 8);
   v25 = *(MEMORY[0x277CBF398] + 16);
   v26 = *(MEMORY[0x277CBF398] + 24);
-  Range = objc_msgSend_firstRange(v6, v14, v15);
-  v30 = objc_msgSend_caretLFAffinity(v6, v28, v29);
+  Range = objc_msgSend_firstRange(selectionCopy, v14, v15);
+  v30 = objc_msgSend_caretLFAffinity(selectionCopy, v28, v29);
   v33 = objc_msgSend_range(self, v31, v32);
   v35 = v34;
   v38 = objc_msgSend_range(self->_storage, v34, v36);
@@ -3979,9 +3979,9 @@ LABEL_101:
   return result;
 }
 
-- (CGRect)caretRectForSelection:(id)a3
+- (CGRect)caretRectForSelection:(id)selection
 {
-  objc_msgSend_p_untransformedCaretRectForSelection_(self, a2, a3);
+  objc_msgSend_p_untransformedCaretRectForSelection_(self, a2, selection);
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -3994,14 +3994,14 @@ LABEL_101:
   return CGRectApplyAffineTransform(v15, &v14);
 }
 
-- (CGRect)glyphRectForRange:(_NSRange)a3 includingLabel:(BOOL)a4
+- (CGRect)glyphRectForRange:(_NSRange)range includingLabel:(BOOL)label
 {
   v28 = *MEMORY[0x277D85DE8];
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
   width = *(MEMORY[0x277CBF398] + 16);
   height = *(MEMORY[0x277CBF398] + 24);
-  objc_msgSend_p_glyphRectsForRange_includingLabel_(self, a2, a3.location, a3.length, a4);
+  objc_msgSend_p_glyphRectsForRange_includingLabel_(self, a2, range.location, range.length, label);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -4055,11 +4055,11 @@ LABEL_101:
   return result;
 }
 
-- (id)p_glyphRectsForRange:(_NSRange)a3 includingLabel:(BOOL)a4
+- (id)p_glyphRectsForRange:(_NSRange)range includingLabel:(BOOL)label
 {
-  v128 = a4;
+  labelCopy = label;
   v148[2] = *MEMORY[0x277D85DE8];
-  v127 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3.location);
+  v127 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, range.location);
   objc_msgSend_range(self, v5, v6);
   v7 = TSUIntersectionRangeWithEdge();
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
@@ -4092,9 +4092,9 @@ LABEL_101:
         }
 
         v17 = &length[v14];
-        if (&length[v14] >= a3.location + a3.length)
+        if (&length[v14] >= range.location + range.length)
         {
-          v17 = a3.location + a3.length;
+          v17 = range.location + range.length;
         }
 
         v132 = v17;
@@ -4115,7 +4115,7 @@ LABEL_51:
           sub_276D69ADC(v84);
         }
 
-        if (v128)
+        if (labelCopy)
         {
           v85 = sub_276D6492C(*v10);
           if (v85)
@@ -4221,7 +4221,7 @@ LABEL_64:
         v150.location = v130;
         v150.length = range1;
         v151 = NSIntersectionRange(v150, v136);
-        v19 = NSIntersectionRange(v151, a3);
+        v19 = NSIntersectionRange(v151, range);
         length = v19.length;
         if (v19.length)
         {
@@ -4414,9 +4414,9 @@ LABEL_67:
   return v127;
 }
 
-- (unsigned)fontTraitsForRange:(_NSRange)a3 includingLabel:(BOOL)a4
+- (unsigned)fontTraitsForRange:(_NSRange)range includingLabel:(BOOL)label
 {
-  v49 = a4;
+  labelCopy = label;
   v67 = *MEMORY[0x277D85DE8];
   v61 = 0;
   v62 = &v61;
@@ -4483,7 +4483,7 @@ LABEL_67:
 
                     v68.location = v28;
                     v68.length = v30;
-                    length = NSIntersectionRange(v68, a3).length;
+                    length = NSIntersectionRange(v68, range).length;
                     if (length)
                     {
                       v5[2](v5, v24);
@@ -4509,7 +4509,7 @@ LABEL_67:
             sub_276D69ADC(v32);
           }
 
-          if (v49)
+          if (labelCopy)
           {
             v33 = sub_276D6492C(*v11);
             if (v33)
@@ -4569,7 +4569,7 @@ LABEL_67:
   return v46;
 }
 
-- (CGRect)glyphRectForRubyFieldAtCharIndex:(unint64_t)a3 glyphRange:(_NSRange)a4
+- (CGRect)glyphRectForRubyFieldAtCharIndex:(unint64_t)index glyphRange:(_NSRange)range
 {
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
@@ -4586,8 +4586,8 @@ LABEL_67:
       v16 = v13;
       v14 = *v13;
       v15 = v16[1];
-      v18 = a3 >= v14;
-      v17 = a3 - v14;
+      v18 = index >= v14;
+      v17 = index - v14;
       v18 = !v18 || v17 >= v15;
       if (!v18)
       {
@@ -4601,7 +4601,7 @@ LABEL_67:
       }
     }
 
-    v43.origin.x = sub_276D68E18(*v11, a3, a4.location, a4.length);
+    v43.origin.x = sub_276D68E18(*v11, index, range.location, range.length);
     x = v43.origin.x;
     y = v43.origin.y;
     width = v43.size.width;
@@ -4628,7 +4628,7 @@ LABEL_14:
   v46.size.height = height;
   if (!CGRectIsEmpty(v46))
   {
-    v23 = objc_msgSend_valueForProperty_atCharIndex_effectiveRange_(self->_storage, v22, 40, a3, 0);
+    v23 = objc_msgSend_valueForProperty_atCharIndex_effectiveRange_(self->_storage, v22, 40, index, 0);
     if (objc_msgSend_isEnabled(v23, v24, v25))
     {
       objc_msgSend_shadowBoundsForRect_(v23, v26, v27, x, y, width, height);
@@ -4638,7 +4638,7 @@ LABEL_14:
       height = v31;
     }
 
-    v32 = objc_msgSend_valueForProperty_atCharIndex_effectiveRange_(self->_storage, v26, 50, a3, 0);
+    v32 = objc_msgSend_valueForProperty_atCharIndex_effectiveRange_(self->_storage, v26, 50, index, 0);
     v35 = v32;
     if (v32)
     {
@@ -4667,7 +4667,7 @@ LABEL_14:
   return result;
 }
 
-- (unint64_t)glyphCountForRubyFieldAtCharIndex:(unint64_t)a3
+- (unint64_t)glyphCountForRubyFieldAtCharIndex:(unint64_t)index
 {
   ptr = self->_lineFragmentArray.__ptr_;
   v5 = *ptr;
@@ -4680,8 +4680,8 @@ LABEL_14:
       v10 = v7;
       v8 = *v7;
       v9 = v10[1];
-      v12 = a3 >= v8;
-      v11 = a3 - v8;
+      v12 = index >= v8;
+      v11 = index - v8;
       v12 = !v12 || v11 >= v9;
       if (!v12)
       {
@@ -4699,7 +4699,7 @@ LABEL_14:
     v15 = *(sub_276D648E8(*v5) + 8);
     while (v14 != v15)
     {
-      if (*(v14 + 24) == a3)
+      if (*(v14 + 24) == index)
       {
         v16 = sub_276DD1F38(v14);
 
@@ -4713,12 +4713,12 @@ LABEL_14:
   return 0;
 }
 
-+ (CGRect)columnRectForRange:(_NSRange)a3 withColumns:(id)a4
++ (CGRect)columnRectForRange:(_NSRange)range withColumns:(id)columns
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  columnsCopy = columns;
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
   width = *(MEMORY[0x277CBF398] + 16);
@@ -4727,7 +4727,7 @@ LABEL_14:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v11 = v6;
+  v11 = columnsCopy;
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v44, v48, 16);
   if (v15)
   {
@@ -4805,10 +4805,10 @@ LABEL_13:
   return result;
 }
 
-+ (CGRect)labelRectForCharIndex:(unint64_t)a3 withColumns:(id)a4
++ (CGRect)labelRectForCharIndex:(unint64_t)index withColumns:(id)columns
 {
   v86 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  columnsCopy = columns;
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
   width = *(MEMORY[0x277CBF398] + 16);
@@ -4817,7 +4817,7 @@ LABEL_13:
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v10 = v5;
+  v10 = columnsCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v81, v85, 16);
   if (v14)
   {
@@ -4849,10 +4849,10 @@ LABEL_13:
         }
 
         v27 = objc_msgSend_range(v17, v25, v26);
-        v28 = a3 - v27 < v12 && a3 >= v27;
-        if (a3 == v27 || v28)
+        v28 = index - v27 < v12 && index >= v27;
+        if (index == v27 || v28)
         {
-          v37 = objc_msgSend_lineIndexForCharIndex_eol_(v17, v12, a3, 0);
+          v37 = objc_msgSend_lineIndexForCharIndex_eol_(v17, v12, index, 0);
           if (v37 != 0x7FFFFFFFFFFFFFFFLL)
           {
             v39 = objc_msgSend_lineFragmentAtIndex_(v17, v38, v37);
@@ -4868,7 +4868,7 @@ LABEL_13:
                 v41 = v39;
               }
 
-              if (*v41 == a3)
+              if (*v41 == index)
               {
                 v80 = 0;
                 v78 = 0u;
@@ -4893,7 +4893,7 @@ LABEL_13:
                 v61 = 0u;
                 if (v17)
                 {
-                  objc_msgSend_lineMetricsAtCharIndex_allowEndOfLine_(v17, v40, a3, 0);
+                  objc_msgSend_lineMetricsAtCharIndex_allowEndOfLine_(v17, v40, index, 0);
                   v42 = *(&v69 + 1);
                   v43 = *&v69;
                   v44 = *(&v70 + 1);
@@ -4960,15 +4960,15 @@ LABEL_30:
   return result;
 }
 
-- (CGRect)columnRectForRange:(_NSRange)a3
+- (CGRect)columnRectForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
   width = *(MEMORY[0x277CBF398] + 16);
   height = *(MEMORY[0x277CBF398] + 24);
-  v32.location = objc_msgSend_range(self, a2, a3.location);
+  v32.location = objc_msgSend_range(self, a2, range.location);
   v32.length = v10;
   v30.location = location;
   v30.length = length;
@@ -5097,13 +5097,13 @@ LABEL_30:
   return CGRectApplyAffineTransform(v27, &v22);
 }
 
-- (id)lineSelectionsForSelection:(id)a3
+- (id)lineSelectionsForSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v6 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v5, 1);
   v9 = objc_msgSend_range(self, v7, v8);
   v11 = v10;
-  v37.location = objc_msgSend_DEPRECATED_range(v4, v10, v12);
+  v37.location = objc_msgSend_DEPRECATED_range(selectionCopy, v10, v12);
   v38.location = v9;
   v38.length = v11;
   v13 = NSIntersectionRange(v37, v38);
@@ -5154,7 +5154,7 @@ LABEL_30:
 
           else
           {
-            v29 = v4;
+            v29 = selectionCopy;
           }
         }
 
@@ -5174,7 +5174,7 @@ LABEL_30:
         }
 
         v15 += 2;
-        v4 = v29;
+        selectionCopy = v29;
         if (v15 == v16)
         {
           goto LABEL_27;
@@ -5183,22 +5183,22 @@ LABEL_30:
     }
   }
 
-  v29 = v4;
+  v29 = selectionCopy;
 LABEL_27:
 
   return v6;
 }
 
-+ (BOOL)partitionedAttachmentStartsAtCharIndex:(unint64_t)a3 withColumns:(id)a4
++ (BOOL)partitionedAttachmentStartsAtCharIndex:(unint64_t)index withColumns:(id)columns
 {
-  v4 = a3;
-  v5 = objc_msgSend_columnForCharIndex_allowEndOfColumn_withColumns_(TSWPColumn, a2, a3, 1, a4);
-  LOBYTE(v4) = objc_msgSend_p_isFirstPartitionForCharIndex_(v5, v6, v4);
+  indexCopy = index;
+  v5 = objc_msgSend_columnForCharIndex_allowEndOfColumn_withColumns_(TSWPColumn, a2, index, 1, columns);
+  LOBYTE(indexCopy) = objc_msgSend_p_isFirstPartitionForCharIndex_(v5, v6, indexCopy);
 
-  return v4;
+  return indexCopy;
 }
 
-- (BOOL)p_isFirstPartitionForCharIndex:(unint64_t)a3
+- (BOOL)p_isFirstPartitionForCharIndex:(unint64_t)index
 {
   ptr = self->_lineFragmentArray.__ptr_;
   v4 = *ptr;
@@ -5222,9 +5222,9 @@ LABEL_27:
       v10 = v6;
       v8 = *v6;
       v9 = v10[1];
-      v11 = a3 - v8 < v9 && a3 >= v8;
+      v11 = index - v8 < v9 && index >= v8;
       v12 = v8 + v9;
-      if (v11 || v12 == a3)
+      if (v11 || v12 == index)
       {
         break;
       }
@@ -5240,21 +5240,21 @@ LABEL_27:
   return 1;
 }
 
-- (CGRect)firstRectForSelection:(id)a3 includeSpaceAfter:(BOOL)a4 includeSpaceBefore:(BOOL)a5 includeLeading:(BOOL)a6
+- (CGRect)firstRectForSelection:(id)selection includeSpaceAfter:(BOOL)after includeSpaceBefore:(BOOL)before includeLeading:(BOOL)leading
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
+  leadingCopy = leading;
+  beforeCopy = before;
+  afterCopy = after;
+  selectionCopy = selection;
   v11 = *MEMORY[0x277CBF398];
   v12 = *(MEMORY[0x277CBF398] + 8);
   v13 = *(MEMORY[0x277CBF398] + 16);
   v14 = *(MEMORY[0x277CBF398] + 24);
-  v17 = objc_msgSend_DEPRECATED_range(v10, v15, v16);
+  v17 = objc_msgSend_DEPRECATED_range(selectionCopy, v15, v16);
   v19 = objc_msgSend_rangeArrayWithRange_(TSWPRangeArray, v18, v17, v18);
-  v22 = objc_msgSend_type(v10, v20, v21);
+  v22 = objc_msgSend_type(selectionCopy, v20, v21);
   v42 = 0;
-  v24 = objc_msgSend_pMutableRectsForSelectionRanges_selectionType_includeSpaceAfter_includeSpaceBefore_includeLeading_forParagraphMode_includeRuby_includePaginatedAttachments_outranges_(self, v23, v19, v22, v8, v7, v6, 0, v42, 0);
+  v24 = objc_msgSend_pMutableRectsForSelectionRanges_selectionType_includeSpaceAfter_includeSpaceBefore_includeLeading_forParagraphMode_includeRuby_includePaginatedAttachments_outranges_(self, v23, v19, v22, afterCopy, beforeCopy, leadingCopy, 0, v42, 0);
   v26 = objc_msgSend_pTransformReturnRects_(self, v25, v24);
 
   if (objc_msgSend_count(v26, v27, v28))
@@ -5278,11 +5278,11 @@ LABEL_27:
   return result;
 }
 
-- (const)pColumnEndingPartitionedLineFragmentInSelectionRange:(_NSRange)a3
+- (const)pColumnEndingPartitionedLineFragmentInSelectionRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  result = objc_msgSend_lineCount(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  result = objc_msgSend_lineCount(self, a2, range.location);
   if (result)
   {
     result = objc_msgSend_lineFragmentAtIndex_(self, v7, result - 1);
@@ -5303,13 +5303,13 @@ LABEL_27:
   return result;
 }
 
-- (id)pMutableRectsForSelectionRanges:(id)a3 selectionType:(int64_t)a4 includeSpaceAfter:(BOOL)a5 includeSpaceBefore:(BOOL)a6 includeLeading:(BOOL)a7 forParagraphMode:(BOOL)a8 includeRuby:(BOOL)a9 includePaginatedAttachments:(BOOL)a10 outranges:(id *)a11
+- (id)pMutableRectsForSelectionRanges:(id)ranges selectionType:(int64_t)type includeSpaceAfter:(BOOL)after includeSpaceBefore:(BOOL)before includeLeading:(BOOL)leading forParagraphMode:(BOOL)mode includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)self0 outranges:(id *)self1
 {
-  v214 = a8;
-  v221 = a7;
-  v212 = a5;
-  v219 = a3;
-  v14 = objc_msgSend_superRange(v219, v12, v13);
+  modeCopy = mode;
+  leadingCopy = leading;
+  afterCopy = after;
+  rangesCopy = ranges;
+  v14 = objc_msgSend_superRange(rangesCopy, v12, v13);
   v16 = v15;
   v18 = objc_msgSend_length(self->_storage, v15, v17);
   v224 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v19, 1);
@@ -5353,15 +5353,15 @@ LABEL_27:
   v225 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v32, 1);
   v57 = objc_msgSend_range(self, v55, v56);
   v59 = v58;
-  v60 = a11;
+  outrangesCopy3 = outranges;
   v247.length = range;
   v61 = v57;
   v247.location = v14;
   v248.location = v61;
   v248.length = v59;
   v62 = NSIntersectionRange(v247, v248);
-  v63 = a10;
-  if (objc_msgSend_intersectsRange_(v219, v62.length, v61, v59))
+  attachmentsCopy2 = attachments;
+  if (objc_msgSend_intersectsRange_(rangesCopy, v62.length, v61, v59))
   {
     ptr = self->_lineFragmentArray.__ptr_;
     v67 = *ptr;
@@ -5375,7 +5375,7 @@ LABEL_27:
       v69 = 0x277CCA000uLL;
       v213 = 0.0;
       v209 = 0.0;
-      v217 = self;
+      selfCopy = self;
       while (1)
       {
         v70 = *(*v67 + 24);
@@ -5388,7 +5388,7 @@ LABEL_27:
         v74 = v71;
         v72 = *v71;
         v73 = v74[1];
-        if ((v70 & 1) != 0 && !v63)
+        if ((v70 & 1) != 0 && !attachmentsCopy2)
         {
           goto LABEL_81;
         }
@@ -5427,7 +5427,7 @@ LABEL_81:
         }
       }
 
-      if (v214)
+      if (modeCopy)
       {
         v78 = objc_msgSend_valueWithCGRect_(*(v69 + 3680), v77.length, v65, *(*v67 + 40), *(*v67 + 48), *(*v67 + 56), *(*v67 + 64));
         objc_msgSend_addObject_(v225, v79, v78);
@@ -5451,7 +5451,7 @@ LABEL_75:
         if (v208 >= v218.location && v208 - v218.location < v218.length)
         {
 LABEL_82:
-          if (v213 > 0.0 && v212)
+          if (v213 > 0.0 && afterCopy)
           {
             v187 = v215 + v209 + v213;
             while (v68 < objc_msgSend_count(v225, length, v65))
@@ -5511,14 +5511,14 @@ LABEL_82:
       v226[3] = &unk_27A6F4010;
       v229 = v77;
       v230 = v67;
-      v231 = v212;
-      v232 = a6;
-      v233 = a9;
-      v234 = v63;
+      v231 = afterCopy;
+      beforeCopy = before;
+      rubyCopy = ruby;
+      v234 = attachmentsCopy2;
       v86 = v207;
       v227 = v86;
       v228 = &v235;
-      objc_msgSend_enumerateRangesInRange_usingBlock_(v219, v87, v83, v85, v226);
+      objc_msgSend_enumerateRangesInRange_usingBlock_(rangesCopy, v87, v83, v85, v226);
       v220 = v86;
       v205 = objc_msgSend_count(v225, v88, v89);
       v69 = 0x277CCA000uLL;
@@ -5546,10 +5546,10 @@ LABEL_82:
       if (v107 == v106)
       {
 LABEL_65:
-        if (a4 == 2)
+        if (type == 2)
         {
-          v60 = a11;
-          self = v217;
+          outrangesCopy3 = outranges;
+          self = selfCopy;
           v68 = v206;
           v81 = v220;
           v161 = sub_276D69474(*v67);
@@ -5564,8 +5564,8 @@ LABEL_65:
           v163 = *(MEMORY[0x277CBF398] + 8);
           v165 = *(MEMORY[0x277CBF398] + 16);
           v167 = *(MEMORY[0x277CBF398] + 24);
-          v60 = a11;
-          self = v217;
+          outrangesCopy3 = outranges;
+          self = selfCopy;
           v68 = v206;
           v81 = v220;
         }
@@ -5603,7 +5603,7 @@ LABEL_65:
           operator delete(v241);
         }
 
-        v63 = a10;
+        attachmentsCopy2 = attachments;
         goto LABEL_74;
       }
 
@@ -5615,7 +5615,7 @@ LABEL_65:
         y = v107->origin.y;
         width = v107->size.width;
         height = v107->size.height;
-        if (v221)
+        if (leadingCopy)
         {
           v114 = *(*v67 + 32);
           v115 = *(*v67 + 136);
@@ -5634,7 +5634,7 @@ LABEL_65:
           goto LABEL_51;
         }
 
-        v118 = sub_276D6F7E8(v217->_lineFragmentArray.__ptr_, rangea - 1);
+        v118 = sub_276D6F7E8(selfCopy->_lineFragmentArray.__ptr_, rangea - 1);
         objc_opt_class();
         v119 = sub_276D64990(v118);
         v120 = TSUDynamicCast();
@@ -5676,7 +5676,7 @@ LABEL_65:
           goto LABEL_50;
         }
 
-        v139 = objc_msgSend_containsRange_(v219, v90, v125 + *v124 - 1, **v67 + 1);
+        v139 = objc_msgSend_containsRange_(rangesCopy, v90, v125 + *v124 - 1, **v67 + 1);
         v69 = 0x277CCA000;
         if (!v139)
         {
@@ -5790,9 +5790,9 @@ LABEL_51:
   }
 
 LABEL_90:
-  if (v60)
+  if (outrangesCopy3)
   {
-    *v60 = v224;
+    *outrangesCopy3 = v224;
   }
 
 LABEL_8:
@@ -5800,17 +5800,17 @@ LABEL_8:
   return v225;
 }
 
-- (id)pTransformReturnRects:(id)a3
+- (id)pTransformReturnRects:(id)rects
 {
-  v4 = a3;
+  rectsCopy = rects;
   if (objc_msgSend_textIsVertical(self, v5, v6))
   {
-    v10 = objc_msgSend_count(v4, v7, v8);
+    v10 = objc_msgSend_count(rectsCopy, v7, v8);
     if (v10)
     {
       for (i = 0; i != v10; ++i)
       {
-        v12 = objc_msgSend_objectAtIndexedSubscript_(v4, v9, i);
+        v12 = objc_msgSend_objectAtIndexedSubscript_(rectsCopy, v9, i);
         objc_msgSend_CGRectValue(v12, v13, v14);
         v16 = v15;
         v18 = v17;
@@ -5824,38 +5824,38 @@ LABEL_8:
         v32.size.height = v22;
         v33 = CGRectApplyAffineTransform(v32, &v30);
         v27 = objc_msgSend_valueWithCGRect_(MEMORY[0x277CCAE60], v25, v26, v33.origin.x, v33.origin.y, v33.size.width, v33.size.height);
-        objc_msgSend_setObject_atIndexedSubscript_(v4, v28, v27, i);
+        objc_msgSend_setObject_atIndexedSubscript_(rectsCopy, v28, v27, i);
       }
     }
   }
 
-  return v4;
+  return rectsCopy;
 }
 
-- (id)rectsForSelectionRanges:(id)a3 selectionType:(int64_t)a4
+- (id)rectsForSelectionRanges:(id)ranges selectionType:(int64_t)type
 {
   v9 = 0;
-  v5 = objc_msgSend_pMutableRectsForSelectionRanges_selectionType_includeSpaceAfter_includeSpaceBefore_includeLeading_forParagraphMode_includeRuby_includePaginatedAttachments_outranges_(self, a2, a3, a4, 1, 1, 0, 0, v9, 0);
+  v5 = objc_msgSend_pMutableRectsForSelectionRanges_selectionType_includeSpaceAfter_includeSpaceBefore_includeLeading_forParagraphMode_includeRuby_includePaginatedAttachments_outranges_(self, a2, ranges, type, 1, 1, 0, 0, v9, 0);
   v7 = objc_msgSend_pTransformReturnRects_(self, v6, v5);
 
   return v7;
 }
 
-- (id)rectsForSelectionRange:(_NSRange)a3 selectionType:(int64_t)a4 forParagraphMode:(BOOL)a5 includeRuby:(BOOL)a6 includePaginatedAttachments:(BOOL)a7
+- (id)rectsForSelectionRange:(_NSRange)range selectionType:(int64_t)type forParagraphMode:(BOOL)mode includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)attachments
 {
-  v9 = a5;
-  v12 = objc_msgSend_rangeArrayWithRange_(TSWPRangeArray, a2, a3.location, a3.length);
-  HIBYTE(v18) = a7;
-  LOBYTE(v18) = a6;
-  v14 = objc_msgSend_pMutableRectsForSelectionRanges_selectionType_includeSpaceAfter_includeSpaceBefore_includeLeading_forParagraphMode_includeRuby_includePaginatedAttachments_outranges_(self, v13, v12, a4, 1, 1, 0, v9, v18, 0);
+  modeCopy = mode;
+  v12 = objc_msgSend_rangeArrayWithRange_(TSWPRangeArray, a2, range.location, range.length);
+  HIBYTE(v18) = attachments;
+  LOBYTE(v18) = ruby;
+  v14 = objc_msgSend_pMutableRectsForSelectionRanges_selectionType_includeSpaceAfter_includeSpaceBefore_includeLeading_forParagraphMode_includeRuby_includePaginatedAttachments_outranges_(self, v13, v12, type, 1, 1, 0, modeCopy, v18, 0);
   v16 = objc_msgSend_pTransformReturnRects_(self, v15, v14);
 
   return v16;
 }
 
-- (id)rectsForSelectionRanges:(id)a3 selectionType:(int64_t)a4 forParagraphMode:(BOOL)a5 includeRuby:(BOOL)a6 includePaginatedAttachments:(BOOL)a7
+- (id)rectsForSelectionRanges:(id)ranges selectionType:(int64_t)type forParagraphMode:(BOOL)mode includeRuby:(BOOL)ruby includePaginatedAttachments:(BOOL)attachments
 {
-  v12 = a3;
+  rangesCopy = ranges;
   v15 = objc_msgSend_array(MEMORY[0x277CBEB18], v13, v14);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -5863,45 +5863,45 @@ LABEL_8:
   v19[3] = &unk_27A6F4038;
   v19[4] = v15;
   v19[5] = self;
-  v19[6] = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  objc_msgSend_enumerateRanges_(v12, v16, v19);
+  v19[6] = type;
+  modeCopy = mode;
+  rubyCopy = ruby;
+  attachmentsCopy = attachments;
+  objc_msgSend_enumerateRanges_(rangesCopy, v16, v19);
   v17 = v15;
 
   return v15;
 }
 
-- (id)rectsForSelection:(id)a3 ranges:(id *)a4
+- (id)rectsForSelection:(id)selection ranges:(id *)ranges
 {
-  v4 = objc_msgSend_rectsForSelection_ranges_includePaginatedAttachments_(self, a2, a3, a4, 0);
+  v4 = objc_msgSend_rectsForSelection_ranges_includePaginatedAttachments_(self, a2, selection, ranges, 0);
 
   return v4;
 }
 
-- (id)rectsForSelection:(id)a3 ranges:(id *)a4 includePaginatedAttachments:(BOOL)a5
+- (id)rectsForSelection:(id)selection ranges:(id *)ranges includePaginatedAttachments:(BOOL)attachments
 {
-  v8 = a3;
-  v11 = objc_msgSend_ranges(v8, v9, v10);
-  v14 = objc_msgSend_type(v8, v12, v13);
-  HIBYTE(v20) = a5;
+  selectionCopy = selection;
+  v11 = objc_msgSend_ranges(selectionCopy, v9, v10);
+  v14 = objc_msgSend_type(selectionCopy, v12, v13);
+  HIBYTE(v20) = attachments;
   LOBYTE(v20) = 0;
-  v16 = objc_msgSend_pMutableRectsForSelectionRanges_selectionType_includeSpaceAfter_includeSpaceBefore_includeLeading_forParagraphMode_includeRuby_includePaginatedAttachments_outranges_(self, v15, v11, v14, 1, 1, 0, 0, v20, a4);
+  v16 = objc_msgSend_pMutableRectsForSelectionRanges_selectionType_includeSpaceAfter_includeSpaceBefore_includeLeading_forParagraphMode_includeRuby_includePaginatedAttachments_outranges_(self, v15, v11, v14, 1, 1, 0, 0, v20, ranges);
   v18 = objc_msgSend_pTransformReturnRects_(self, v17, v16);
 
   return v18;
 }
 
-- (CGRect)erasableRectForSelectionRange:(_NSRange)a3
+- (CGRect)erasableRectForSelectionRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
   width = *(MEMORY[0x277CBF398] + 16);
   height = *(MEMORY[0x277CBF398] + 24);
-  v21.location = objc_msgSend_range(self, a2, a3.location);
+  v21.location = objc_msgSend_range(self, a2, range.location);
   v21.length = v10;
   v20.location = location;
   v20.length = length;
@@ -5952,14 +5952,14 @@ LABEL_8:
   return CGRectApplyAffineTransform(v23, &v19);
 }
 
-- (id)drawableIntersectionRectsForSelection:(id)a3 inTarget:(id)a4
+- (id)drawableIntersectionRectsForSelection:(id)selection inTarget:(id)target
 {
-  v6 = a3;
-  v128 = a4;
-  v9 = objc_msgSend_ranges(v6, v7, v8);
-  v12 = objc_msgSend_type(v6, v10, v11);
+  selectionCopy = selection;
+  targetCopy = target;
+  v9 = objc_msgSend_ranges(selectionCopy, v7, v8);
+  v12 = objc_msgSend_type(selectionCopy, v10, v11);
   v14 = objc_msgSend_pMutableRectsForSelectionRanges_selectionType_includeSpaceAfter_includeSpaceBefore_includeLeading_forParagraphMode_includeRuby_includePaginatedAttachments_outranges_(self, v13, v9, v12, 1, 1, 0, 0, 0, 0);
-  v15 = v6;
+  v15 = selectionCopy;
 
   v20 = objc_msgSend_count(v14, v16, v17);
   if (v20)
@@ -6134,7 +6134,7 @@ LABEL_8:
       v147.size.width = v109;
       v147.size.height = v111;
       v148 = CGRectApplyAffineTransform(v147, &v132);
-      objc_msgSend_rectInRoot_(v128, v114, v115, v148.origin.x, v148.origin.y, v148.size.width, v148.size.height);
+      objc_msgSend_rectInRoot_(targetCopy, v114, v115, v148.origin.x, v148.origin.y, v148.size.width, v148.size.height);
       v131[0] = v116;
       v131[1] = v117;
       v131[2] = v118;
@@ -6147,18 +6147,18 @@ LABEL_8:
   return v14;
 }
 
-- (unint64_t)charIndexFromPoint:(CGPoint)a3 hitTestMode:(int)a4 isAtEndOfLine:(BOOL *)a5 outFragment:(const TSWPLineFragment *)a6 leadingEdge:(BOOL *)a7
+- (unint64_t)charIndexFromPoint:(CGPoint)point hitTestMode:(int)mode isAtEndOfLine:(BOOL *)line outFragment:(const TSWPLineFragment *)fragment leadingEdge:(BOOL *)edge
 {
-  v10 = *&a4;
-  y = a3.y;
-  x = a3.x;
+  v10 = *&mode;
+  y = point.y;
+  x = point.x;
   v47 = 1;
-  objc_msgSend_transformToWP(self, a2, *&a4);
+  objc_msgSend_transformToWP(self, a2, *&mode);
   v13 = vaddq_f64(v46[2], vmlaq_n_f64(vmulq_n_f64(v46[1], y), v46[0], x));
   v46[0].f64[0] = 0.0;
-  if (a5)
+  if (line)
   {
-    *a5 = 0;
+    *line = 0;
   }
 
   v16 = objc_msgSend_charIndexFromWPPoint_hitTestMode_outFragment_leadingEdge_(self, v12, v10, v46, &v47, *&v13);
@@ -6204,9 +6204,9 @@ LABEL_8:
 
         if ((v10 & 4) != 0 || !v36)
         {
-          if (a5)
+          if (line)
           {
-            *a5 = 1;
+            *line = 1;
           }
         }
 
@@ -6230,15 +6230,15 @@ LABEL_8:
       }
     }
 
-    if (a6)
+    if (fragment)
     {
-      *a6 = *&v46[0].f64[0];
+      *fragment = *&v46[0].f64[0];
     }
   }
 
-  if (a7)
+  if (edge)
   {
-    *a7 = v47;
+    *edge = v47;
     return v16;
   }
 
@@ -6282,16 +6282,16 @@ LABEL_39:
   return v16;
 }
 
-- (unint64_t)charIndexForSelectionFromPoint:(CGPoint)a3 isTail:(BOOL)a4
+- (unint64_t)charIndexForSelectionFromPoint:(CGPoint)point isTail:(BOOL)tail
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  objc_msgSend_transformToWP(self, a2, a4);
+  tailCopy = tail;
+  y = point.y;
+  x = point.x;
+  objc_msgSend_transformToWP(self, a2, tail);
   v79 = vaddq_f64(*&v80.var4, vmlaq_n_f64(vmulq_n_f64(*&v80.var2, y), *&v80.var0, x));
   if (v79.f64[1] < CGRectGetMinY(self->_frameBounds))
   {
-    if (v4)
+    if (tailCopy)
     {
       if (objc_msgSend_startCharIndex(self, v6, v7))
       {
@@ -6470,7 +6470,7 @@ LABEL_39:
       v18 = v35;
     }
 
-    if (v4)
+    if (tailCopy)
     {
       v18 = objc_msgSend_previousCharacterIndex_(self->_storage, v32, v18);
     }
@@ -6510,7 +6510,7 @@ LABEL_56:
   isWritingDirectionRightToLeftForParagraphAtCharIndex = objc_msgSend_isWritingDirectionRightToLeftForParagraphAtCharIndex_(self->_storage, v32, *v19);
   TSUDistanceToRect();
   v54 = v53;
-  v55 = sub_276D6A6EC(v19, (isWritingDirectionRightToLeftForParagraphAtCharIndex ^ v4 ^ 1u), 0, v79.f64[0]);
+  v55 = sub_276D6A6EC(v19, (isWritingDirectionRightToLeftForParagraphAtCharIndex ^ tailCopy ^ 1u), 0, v79.f64[0]);
   v56 = v55;
   if (v54 != 0.0)
   {
@@ -6526,7 +6526,7 @@ LABEL_56:
       v58 = v55;
     }
 
-    if (!v57 || !v4)
+    if (!v57 || !tailCopy)
     {
       v18 = 0x7FFFFFFFFFFFFFFFLL;
       v56 = v58;
@@ -6580,22 +6580,22 @@ LABEL_64:
   return startCharIndex;
 }
 
-- (unint64_t)charIndexFromWPPoint:(CGPoint)a3 hitTestMode:(int)a4 outFragment:(const TSWPLineFragment *)a5 leadingEdge:(BOOL *)a6
+- (unint64_t)charIndexFromWPPoint:(CGPoint)point hitTestMode:(int)mode outFragment:(const TSWPLineFragment *)fragment leadingEdge:(BOOL *)edge
 {
-  v8 = a4;
-  y = a3.y;
-  x = a3.x;
-  if ((a4 & 0x10) != 0)
+  modeCopy = mode;
+  y = point.y;
+  x = point.x;
+  if ((mode & 0x10) != 0)
   {
-    v16 = (a4 & 8) == 0;
+    v16 = (mode & 8) == 0;
 
     return objc_msgSend_p_charIndexWithTextClosestToWPPoint_pastCenterGoesToNextChar_outFragment_leadingEdge_(self, a2, v16);
   }
 
   else
   {
-    v12 = a4 & 3;
-    if (a3.y >= CGRectGetMinY(self->_frameBounds))
+    v12 = mode & 3;
+    if (point.y >= CGRectGetMinY(self->_frameBounds))
     {
       ptr = self->_lineFragmentArray.__ptr_;
       v19 = *ptr;
@@ -6629,7 +6629,7 @@ LABEL_64:
             if (y <= CGRectGetMaxY(v55))
             {
               v30 = *(self->_lineFragmentArray.__ptr_ + 1);
-              v49 = a6;
+              edgeCopy = edge;
               startCharIndex = 0x7FFFFFFFFFFFFFFFLL;
               if (*(v15 + 28))
               {
@@ -6690,10 +6690,10 @@ LABEL_64:
                     if (CGRectContainsPoint(v62, v53))
                     {
                       v50 = 1;
-                      v38 = sub_276D6A99C(v31, ((v8 & 8) == 0), 1, &v50, 1, x);
-                      if (v49)
+                      v38 = sub_276D6A99C(v31, ((modeCopy & 8) == 0), 1, &v50, 1, x);
+                      if (edgeCopy)
                       {
-                        *v49 = v50;
+                        *edgeCopy = v50;
                       }
 
                       if (v38 != 0x7FFFFFFFFFFFFFFFLL)
@@ -6732,10 +6732,10 @@ LABEL_64:
 
 LABEL_68:
                   startCharIndex = 0x7FFFFFFFFFFFFFFFLL;
-                  a6 = v49;
+                  edge = edgeCopy;
                   if (v12 != 1 && v31)
                   {
-                    startCharIndex = sub_276D6A99C(v31, ((v8 & 8) == 0), 0, v49, 1, x);
+                    startCharIndex = sub_276D6A99C(v31, ((modeCopy & 8) == 0), 0, edgeCopy, 1, x);
                     v15 = v31;
                   }
                 }
@@ -6760,7 +6760,7 @@ LABEL_68:
                   v52.y = y;
                   if (CGRectContainsPoint(v57, v52))
                   {
-                    v38 = sub_276D6A99C(v33, ((v8 & 8) == 0), 1, a6, 1, x);
+                    v38 = sub_276D6A99C(v33, ((modeCopy & 8) == 0), 1, edge, 1, x);
                     if (v38 != 0x7FFFFFFFFFFFFFFFLL)
                     {
                       break;
@@ -6798,7 +6798,7 @@ LABEL_68:
                 v15 = v33;
 LABEL_73:
                 startCharIndex = v38;
-                a6 = v49;
+                edge = edgeCopy;
               }
 
               goto LABEL_25;
@@ -6813,7 +6813,7 @@ LABEL_73:
               v56.size.height = v24;
               if (x > CGRectGetMaxX(v56))
               {
-                startCharIndex = sub_276D6A99C(v15, ((v8 & 8) == 0), v12 == 1, a6, 1, x);
+                startCharIndex = sub_276D6A99C(v15, ((modeCopy & 8) == 0), v12 == 1, edge, 1, x);
                 goto LABEL_25;
               }
             }
@@ -6849,9 +6849,9 @@ LABEL_73:
 LABEL_24:
     startCharIndex = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_25:
-    if (a5)
+    if (fragment)
     {
-      *a5 = v15;
+      *fragment = v15;
     }
 
     if (v12 != 1 && startCharIndex == 0x7FFFFFFFFFFFFFFFLL)
@@ -6865,9 +6865,9 @@ LABEL_25:
       }
 
       startCharIndex = *p_characterCount + *p_startCharIndex;
-      if (a6)
+      if (edge)
       {
-        *a6 = 1;
+        *edge = 1;
       }
     }
 
@@ -6875,7 +6875,7 @@ LABEL_25:
   }
 }
 
-- (unint64_t)p_charIndexWithTextClosestToWPPoint:(CGPoint)a3 pastCenterGoesToNextChar:(BOOL)a4 outFragment:(const TSWPLineFragment *)a5 leadingEdge:(BOOL *)a6
+- (unint64_t)p_charIndexWithTextClosestToWPPoint:(CGPoint)point pastCenterGoesToNextChar:(BOOL)char outFragment:(const TSWPLineFragment *)fragment leadingEdge:(BOOL *)edge
 {
   ptr = self->_lineFragmentArray.__ptr_;
   v7 = *ptr;
@@ -6884,7 +6884,7 @@ LABEL_25:
   if (*ptr == v8)
   {
     v16 = 0;
-    if (!a5)
+    if (!fragment)
     {
       return v9;
     }
@@ -6892,16 +6892,16 @@ LABEL_25:
     goto LABEL_22;
   }
 
-  v10 = a4;
-  y = a3.y;
-  x = a3.x;
-  v28 = a5;
+  charCopy = char;
+  y = point.y;
+  x = point.x;
+  fragmentCopy = fragment;
   v14 = 0;
   v15 = INFINITY;
   do
   {
     v16 = *v7;
-    if ((objc_msgSend_p_pencilAnnotationsShouldSkipLineFragment_(self, a2, *v7, v28) & 1) == 0)
+    if ((objc_msgSend_p_pencilAnnotationsShouldSkipLineFragment_(self, a2, *v7, fragmentCopy) & 1) == 0)
     {
       v17 = MEMORY[0x277D81490];
       if (*(v16 + 24) >= 0)
@@ -6933,7 +6933,7 @@ LABEL_25:
       v30.y = y;
       if (CGRectContainsPoint(v31, v30))
       {
-        v25 = sub_276D6A99C(v16, v10, 1, a6, 1, x);
+        v25 = sub_276D6A99C(v16, charCopy, 1, edge, 1, x);
         if (v25 != 0x7FFFFFFFFFFFFFFFLL)
         {
 
@@ -6956,7 +6956,7 @@ LABEL_25:
   while (v7 != v8);
   if (v14)
   {
-    v9 = sub_276D6A99C(v14, v10, 0, a6, 1, x);
+    v9 = sub_276D6A99C(v14, charCopy, 0, edge, 1, x);
     v16 = v14;
   }
 
@@ -6966,26 +6966,26 @@ LABEL_25:
   }
 
 LABEL_21:
-  a5 = v28;
-  if (v28)
+  fragment = fragmentCopy;
+  if (fragmentCopy)
   {
 LABEL_22:
-    *a5 = v16;
+    *fragment = v16;
   }
 
   return v9;
 }
 
-- (_TSWPCharIndexAndPosition)calcAttachmentPositionForDrawable:(SEL)a3 atPoint:(id)a4 inTextLayoutTarget:(CGPoint)a5 startOfBoundsInfluencingWrap:(id)a6 wrapOutset:(CGPoint)a7 wrapMargin:(CGSize)a8 makeInline:(double)a9
+- (_TSWPCharIndexAndPosition)calcAttachmentPositionForDrawable:(SEL)drawable atPoint:(id)point inTextLayoutTarget:(CGPoint)target startOfBoundsInfluencingWrap:(id)wrap wrapOutset:(CGPoint)outset wrapMargin:(CGSize)margin makeInline:(double)inline
 {
-  height = a8.height;
-  width = a8.width;
-  y = a7.y;
-  x = a7.x;
-  v17 = a5.y;
-  v18 = a5.x;
-  v21 = a4;
-  v64 = a6;
+  height = margin.height;
+  width = margin.width;
+  y = outset.y;
+  x = outset.x;
+  v17 = target.y;
+  v18 = target.x;
+  pointCopy = point;
+  wrapCopy = wrap;
   *&retstr->var1 = 0u;
   *&retstr->var3 = 0u;
   retstr->var0 = 0x7FFFFFFFFFFFFFFFLL;
@@ -7119,7 +7119,7 @@ LABEL_29:
       v65 = *&retstr->var0;
       v66 = v61;
       var4 = retstr->var4;
-      objc_msgSend_p_calcAnchoredPosition_forCharIndex_inClosestLineFragment_atPoint_inTextLayoutTarget_startOfBoundsInfluencingWrap_wrapOutset_wrapMargin_placeholderField_(self, v54, &v65, v23, v71, v64, v31, v18, v17, x, y, width, height, a9);
+      objc_msgSend_p_calcAnchoredPosition_forCharIndex_inClosestLineFragment_atPoint_inTextLayoutTarget_startOfBoundsInfluencingWrap_wrapOutset_wrapMargin_placeholderField_(self, v54, &v65, v23, v71, wrapCopy, v31, v18, v17, x, y, width, height, inline);
     }
 
     v62 = v69;
@@ -7131,32 +7131,32 @@ LABEL_29:
   return result;
 }
 
-- (_TSWPCharIndexAndPosition)p_calcAnchoredPosition:(SEL)a3 forCharIndex:(_TSWPCharIndexAndPosition *)a4 inClosestLineFragment:(unint64_t)a5 atPoint:(const void *)a6 inTextLayoutTarget:(CGPoint)a7 startOfBoundsInfluencingWrap:(id)a8 wrapOutset:(CGPoint)a9 wrapMargin:(CGSize)a10 placeholderField:(double)a11
+- (_TSWPCharIndexAndPosition)p_calcAnchoredPosition:(SEL)position forCharIndex:(_TSWPCharIndexAndPosition *)index inClosestLineFragment:(unint64_t)fragment atPoint:(const void *)point inTextLayoutTarget:(CGPoint)target startOfBoundsInfluencingWrap:(id)wrap wrapOutset:(CGPoint)outset wrapMargin:(CGSize)self0 placeholderField:(double)self1
 {
-  height = a10.height;
-  width = a10.width;
-  y = a9.y;
-  x = a9.x;
-  v18 = a7.y;
-  v19 = a7.x;
-  v201 = a8;
+  height = margin.height;
+  width = margin.width;
+  y = outset.y;
+  x = outset.x;
+  v18 = target.y;
+  v19 = target.x;
+  wrapCopy = wrap;
   v25 = a12;
-  v26 = *&a4->var2;
-  *&retstr->var0 = *&a4->var0;
+  v26 = *&index->var2;
+  *&retstr->var0 = *&index->var0;
   *&retstr->var2 = v26;
-  retstr->var4 = a4->var4;
+  retstr->var4 = index->var4;
   v202 = v25;
   v29 = objc_msgSend_range(v25, v27, v28);
   range1 = v30;
   v31 = v29;
   objc_msgSend_transformToWP(self, v30, v32);
   v35 = 0.0;
-  if (*(a6 + 512) == 1)
+  if (*(point + 512) == 1)
   {
-    v35 = *(a6 + 20);
+    v35 = *(point + 20);
   }
 
-  if (__p.ty + y * __p.d + __p.b * x >= *(a6 + 4) + *(a6 + 17) + v35)
+  if (__p.ty + y * __p.d + __p.b * x >= *(point + 4) + *(point + 17) + v35)
   {
     goto LABEL_17;
   }
@@ -7169,7 +7169,7 @@ LABEL_29:
   }
 
   v38 = 0;
-  while (sub_276D6F7E8(*v36, v38) != a6)
+  while (sub_276D6F7E8(*v36, v38) != point)
   {
     if (v37 == ++v38)
     {
@@ -7183,11 +7183,11 @@ LABEL_29:
     v40 = MEMORY[0x277D81490];
     while (1)
     {
-      v41 = sub_276D6F7E8(*v36, v39);
-      MinY = CGRectGetMinY(*(v41 + 40));
-      if (MinY < CGRectGetMinY(*(a6 + 40)))
+      pointCopy = sub_276D6F7E8(*v36, v39);
+      MinY = CGRectGetMinY(*(pointCopy + 40));
+      if (MinY < CGRectGetMinY(*(point + 40)))
       {
-        v43 = *(v41 + 24) < 0 ? v40 : v41;
+        v43 = *(pointCopy + 24) < 0 ? v40 : pointCopy;
         v206.location = v31;
         v206.length = range1;
         length = NSIntersectionRange(v206, *v43).length;
@@ -7203,40 +7203,40 @@ LABEL_29:
       }
     }
 
-    if (*(v41 + 24) < 0)
+    if (*(pointCopy + 24) < 0)
     {
       v187 = v40;
     }
 
     else
     {
-      v187 = v41;
+      v187 = pointCopy;
     }
 
-    a5 = *v187 + v187[1];
+    fragment = *v187 + v187[1];
   }
 
   else
   {
 LABEL_17:
-    v41 = a6;
+    pointCopy = point;
   }
 
   v46 = objc_msgSend_anchoredRange(self, length, v34);
-  if (*v41 >= v46)
+  if (*pointCopy >= v46)
   {
-    v54 = v41;
+    v54 = pointCopy;
   }
 
   else
   {
     v47 = retstr;
     v48 = objc_msgSend_lineFragmentArray(self, v44, v45);
-    v49 = a5;
+    fragmentCopy = fragment;
     v50 = sub_276D6F7D8(*v48);
     if (v50)
     {
-      v197 = self;
+      selfCopy = self;
       v51 = 0;
       v52 = MEMORY[0x277D81490];
       while (1)
@@ -7257,8 +7257,8 @@ LABEL_17:
 
         if (v50 == ++v51)
         {
-          v54 = v41;
-          self = v197;
+          v54 = pointCopy;
+          self = selfCopy;
           goto LABEL_30;
         }
       }
@@ -7273,15 +7273,15 @@ LABEL_17:
         v56 = v54;
       }
 
-      a5 = *v56 + v56[1];
-      self = v197;
+      fragment = *v56 + v56[1];
+      self = selfCopy;
     }
 
     else
     {
-      v54 = v41;
+      v54 = pointCopy;
 LABEL_30:
-      a5 = v49;
+      fragment = fragmentCopy;
     }
 
     retstr = v47;
@@ -7291,7 +7291,7 @@ LABEL_30:
   if ((v57 & 1) == 0)
   {
 LABEL_57:
-    if (!v202 || a5 == 0x7FFFFFFFFFFFFFFFLL)
+    if (!v202 || fragment == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (v57 < 0)
       {
@@ -7303,10 +7303,10 @@ LABEL_57:
         v74 = v54;
       }
 
-      a5 = *v74 + v74[1];
+      fragment = *v74 + v74[1];
     }
 
-    retstr->var0 = a5;
+    retstr->var0 = fragment;
     v75 = sub_276D644CC(v54);
     v77 = objc_msgSend_charIndexRemappedFromStorage_(v75, v76, *v54);
     var0 = retstr->var0;
@@ -7418,7 +7418,7 @@ LABEL_83:
     v195 = width;
     v107 = v19;
     v198 = height;
-    v192 = a11;
+    fieldCopy = field;
     objc_msgSend_transformToWP(self, v103, v104);
     a = __p.a;
     b = __p.b;
@@ -7489,7 +7489,7 @@ LABEL_83:
         v188 = __p.tx;
         v191 = __p.ty;
         v153 = objc_msgSend_textIsVertical(self, v151, v152);
-        v156 = v117 + v199 - (v119 - v192);
+        v156 = v117 + v199 - (v119 - fieldCopy);
         v157 = v148 + v156 * v146 + v143 * 0.0;
         v158 = v147 + v156 * v145 + v144 * 0.0;
         if (v153)
@@ -7510,7 +7510,7 @@ LABEL_83:
   }
 
   v58 = objc_msgSend_lineFragmentArray(self, v44, v45);
-  v59 = self;
+  selfCopy2 = self;
   v60 = sub_276D6FBE4(*v58, v54);
   v62 = v60;
   if (v60)
@@ -7552,8 +7552,8 @@ LABEL_54:
       v73 = v54;
     }
 
-    a5 = *v73 + v73[1];
-    self = v59;
+    fragment = *v73 + v73[1];
+    self = selfCopy2;
     goto LABEL_57;
   }
 
@@ -7602,77 +7602,77 @@ LABEL_98:
   return result;
 }
 
-- (_TSWPCharIndexAndPosition)p_calcPartitionablePosition:(SEL)a3 forCharIndex:(_TSWPCharIndexAndPosition *)a4 inClosestLineFragment:(unint64_t)a5 startOfBoundsInfluencingWrap:(const void *)a6
+- (_TSWPCharIndexAndPosition)p_calcPartitionablePosition:(SEL)position forCharIndex:(_TSWPCharIndexAndPosition *)index inClosestLineFragment:(unint64_t)fragment startOfBoundsInfluencingWrap:(const void *)wrap
 {
   y = a7.y;
-  v12 = *&a4->var2;
-  *&retstr->var0 = *&a4->var0;
+  v12 = *&index->var2;
+  *&retstr->var0 = *&index->var0;
   *&retstr->var2 = v12;
-  retstr->var4 = a4->var4;
-  v13 = objc_msgSend_lineCount(self, a3, a4);
+  retstr->var4 = index->var4;
+  v13 = objc_msgSend_lineCount(self, position, index);
   result = objc_msgSend_lineFragmentAtIndex_(self, v14, v13 - 1);
   v18 = 0.0;
-  if (*(a6 + 512) == 1)
+  if (*(wrap + 512) == 1)
   {
-    v18 = *(a6 + 20);
+    v18 = *(wrap + 20);
   }
 
-  if (result != a6)
+  if (result != wrap)
   {
     goto LABEL_4;
   }
 
-  v19 = *(a6 + 4) + *(a6 + 17) + v18;
-  v20 = *(a6 + 3);
+  v19 = *(wrap + 4) + *(wrap + 17) + v18;
+  v20 = *(wrap + 3);
   if (v20 < 0)
   {
-    v21 = MEMORY[0x277D81490];
+    wrapCopy = MEMORY[0x277D81490];
   }
 
   else
   {
-    v21 = a6;
+    wrapCopy = wrap;
   }
 
-  v24 = v21;
-  v23 = *v21;
+  v24 = wrapCopy;
+  v23 = *wrapCopy;
   v22 = v24[1];
   if ((v20 & 0x800) == 0)
   {
-    if (v23 + v22 == a5 && y >= v19)
+    if (v23 + v22 == fragment && y >= v19)
     {
       goto LABEL_5;
     }
 
 LABEL_4:
-    a5 = *a6;
+    fragment = *wrap;
     goto LABEL_5;
   }
 
-  if (v22 + v23 - 1 != a5 || y < v19)
+  if (v22 + v23 - 1 != fragment || y < v19)
   {
     goto LABEL_4;
   }
 
   v27 = objc_msgSend_storage(self, v16, v17, v19);
-  v29 = objc_msgSend_characterAtIndex_(v27, v28, a5);
+  v29 = objc_msgSend_characterAtIndex_(v27, v28, fragment);
 
   if ((v29 & 0xFFFE) != 4)
   {
-    ++a5;
+    ++fragment;
   }
 
 LABEL_5:
-  retstr->var0 = a5;
+  retstr->var0 = fragment;
   retstr->var2 = 0.0;
   retstr->var4 = 0.0;
   return result;
 }
 
-- (_TSWPCharIndexAndPosition)p_calcInlinePosition:(SEL)a3 forCharIndex:(_TSWPCharIndexAndPosition *)a4
+- (_TSWPCharIndexAndPosition)p_calcInlinePosition:(SEL)position forCharIndex:(_TSWPCharIndexAndPosition *)index
 {
-  v5 = *&a4->var2;
-  *&retstr->var0 = *&a4->var0;
+  v5 = *&index->var2;
+  *&retstr->var0 = *&index->var0;
   *&retstr->var2 = v5;
   retstr->var0 = a5;
   retstr->var2 = 0.0;
@@ -7680,20 +7680,20 @@ LABEL_5:
   return self;
 }
 
-- (void)renderWithRenderer:(id)a3 currentSelection:(id)a4 limitSelection:(id)a5 listRange:(_NSRange)a6 rubyGlyphRange:(_NSRange)a7 isCanvasInteractive:(BOOL)a8 isInDrawingMode:(BOOL)a9 suppressedMisspellingRange:(_NSRange)a10 blackAndWhite:(BOOL)a11 dictationInterpretations:(id)a12 autocorrections:(id)a13 markedRange:(_NSRange)a14 markedText:(id)a15 renderMode:(unint64_t)a16 pageCount:(unint64_t)a17 suppressInvisibles:(BOOL)a18 currentCanvasSelection:(id)a19
+- (void)renderWithRenderer:(id)renderer currentSelection:(id)selection limitSelection:(id)limitSelection listRange:(_NSRange)range rubyGlyphRange:(_NSRange)glyphRange isCanvasInteractive:(BOOL)interactive isInDrawingMode:(BOOL)mode suppressedMisspellingRange:(_NSRange)self0 blackAndWhite:(BOOL)self1 dictationInterpretations:(id)self2 autocorrections:(id)self3 markedRange:(_NSRange)self4 markedText:(id)self5 renderMode:(unint64_t)self6 pageCount:(unint64_t)self7 suppressInvisibles:(BOOL)self8 currentCanvasSelection:(id)self9
 {
-  v155 = a3;
-  v159 = a4;
-  v162 = a5;
-  v158 = a12;
-  v157 = a13;
-  v156 = a15;
-  v154 = a19;
-  objc_msgSend_context(v155, v22, v23);
+  rendererCopy = renderer;
+  selectionCopy = selection;
+  limitSelectionCopy = limitSelection;
+  interpretationsCopy = interpretations;
+  autocorrectionsCopy = autocorrections;
+  textCopy = text;
+  canvasSelectionCopy = canvasSelection;
+  objc_msgSend_context(rendererCopy, v22, v23);
   v24 = TSDCGContextGetPdfTagger();
   v25 = TSUProtocolCast();
 
-  objc_msgSend_beginTextColumn_limitSelection_(v25, v26, self, v162, &unk_28866BEF0);
+  objc_msgSend_beginTextColumn_limitSelection_(v25, v26, self, limitSelectionCopy, &unk_28866BEF0);
   v204 = 0;
   v203 = 0u;
   memset(v202, 0, sizeof(v202));
@@ -7705,33 +7705,33 @@ LABEL_5:
   v196 = 0u;
   v195 = 0u;
   v193 = self->_storage;
-  v194 = self;
-  objc_msgSend_wpBounds(v194, v27, v28);
+  selfCopy = self;
+  objc_msgSend_wpBounds(selfCopy, v27, v28);
   *&v195 = v29;
   *(&v195 + 1) = v30;
   *&v196 = v31;
   *(&v196 + 1) = v32;
-  *&v198 = v194->_scaleTextPercent;
-  objc_storeStrong(&v197, a4);
-  objc_storeStrong(&v197 + 1, a5);
-  *&v202[0].length = a6;
-  *&v202[1].length = a7;
+  *&v198 = selfCopy->_scaleTextPercent;
+  objc_storeStrong(&v197, selection);
+  objc_storeStrong(&v197 + 1, limitSelection);
+  *&v202[0].length = range;
+  *&v202[1].length = glyphRange;
   BYTE12(v199) = 0;
   v35 = objc_msgSend_clearColor(MEMORY[0x277D81180], v33, v34);
-  v161 = v194;
+  v161 = selfCopy;
   v38 = objc_msgSend_CGColor(v35, v36, v37);
   *(&v198 + 1) = CGColorRetain(v38);
 
-  *(&v200 + 1) = a10.location;
-  *&v201 = a10.length;
-  BYTE9(v199) = a11;
-  objc_storeStrong(&v201 + 1, a12);
-  objc_storeStrong(v202, a13);
-  v202[3] = a14;
-  objc_storeStrong(&v203, a15);
-  v202[2].length = a17;
+  *(&v200 + 1) = misspellingRange.location;
+  *&v201 = misspellingRange.length;
+  BYTE9(v199) = white;
+  objc_storeStrong(&v201 + 1, interpretations);
+  objc_storeStrong(v202, autocorrections);
+  v202[3] = markedRange;
+  objc_storeStrong(&v203, text);
+  v202[2].length = count;
   objc_msgSend_parentInfo(self->_storage, v39, v40);
-  v42 = v41 = v194;
+  v42 = v41 = selfCopy;
   if (objc_opt_respondsToSelector())
   {
     v45 = objc_msgSend_parentInfo(self->_storage, v43, v44);
@@ -7743,16 +7743,16 @@ LABEL_5:
     BYTE14(v199) = 0;
   }
 
-  BYTE10(v199) = a8;
-  BYTE11(v199) = a9;
+  BYTE10(v199) = interactive;
+  BYTE11(v199) = mode;
   HIBYTE(v199) = objc_msgSend_wpKind(self->_storage, v48, v49) == 5;
-  objc_storeStrong(&v204, a19);
+  objc_storeStrong(&v204, canvasSelection);
   v192 = 0;
   v190 = 0u;
   v191 = 0u;
   cf = 0u;
   memset(v188, 0, sizeof(v188));
-  if (!v162 && (a7.location != *MEMORY[0x277D81490] || a7.length != *(MEMORY[0x277D81490] + 8)))
+  if (!limitSelectionCopy && (glyphRange.location != *MEMORY[0x277D81490] || glyphRange.length != *(MEMORY[0x277D81490] + 8)))
   {
     v51 = MEMORY[0x277D81150];
     v52 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v50, "[TSWPColumn renderWithRenderer:currentSelection:limitSelection:listRange:rubyGlyphRange:isCanvasInteractive:isInDrawingMode:suppressedMisspellingRange:blackAndWhite:dictationInterpretations:autocorrections:markedRange:markedText:renderMode:pageCount:suppressInvisibles:currentCanvasSelection:]");
@@ -7762,8 +7762,8 @@ LABEL_5:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v56, v57);
   }
 
-  objc_msgSend_willRenderFragmentsWithDrawingState_(v155, v50, &v193);
-  objc_msgSend_getClipBoundingBox(v155, v58, v59);
+  objc_msgSend_willRenderFragmentsWithDrawingState_(rendererCopy, v50, &v193);
+  objc_msgSend_getClipBoundingBox(rendererCopy, v58, v59);
   v61 = v60;
   v63 = v62;
   v65 = v64;
@@ -7788,9 +7788,9 @@ LABEL_5:
   y = v207.origin.y;
   width = v207.size.width;
   height = v207.size.height;
-  if (BYTE14(v199) == 1 && objc_msgSend_isInsertionPoint(v159, v79, v80))
+  if (BYTE14(v199) == 1 && objc_msgSend_isInsertionPoint(selectionCopy, v79, v80))
   {
-    v85 = objc_msgSend_start(v159, v79, v80);
+    v85 = objc_msgSend_start(selectionCopy, v79, v80);
   }
 
   else
@@ -7798,10 +7798,10 @@ LABEL_5:
     v85 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if ((a16 & 2) != 0)
+  if ((renderMode & 2) != 0)
   {
-    objc_msgSend_drawAdornmentRects_forColumn_foreground_drawingState_(v155, v79, v161->_paragraphAdornments, v161, 0, &v193);
-    v86 = (a16 & 4) != 0 ? 4097 : 1;
+    objc_msgSend_drawAdornmentRects_forColumn_foreground_drawingState_(rendererCopy, v79, v161->_paragraphAdornments, v161, 0, &v193);
+    v86 = (renderMode & 4) != 0 ? 4097 : 1;
     *&v200 = 0;
     ptr = v161->_lineFragmentArray.__ptr_;
     v88 = *ptr;
@@ -7809,7 +7809,7 @@ LABEL_5:
     if (*ptr != v89)
     {
       v90 = 0;
-      v91 = v86 & 0xFFFFFFFFFFFFDFFFLL | (((a16 >> 3) & 1) << 13);
+      v91 = v86 & 0xFFFFFFFFFFFFDFFFLL | (((renderMode >> 3) & 1) << 13);
       v92 = MEMORY[0x277D81490];
       do
       {
@@ -7826,9 +7826,9 @@ LABEL_5:
         }
 
         v95 = *v94;
-        if (a6.location > v95 || (v93 < 0 ? (v96 = v92) : (v96 = *v88), a6.location + a6.length < *(v96 + 8) + v95))
+        if (range.location > v95 || (v93 < 0 ? (v96 = v92) : (v96 = *v88), range.location + range.length < *(v96 + 8) + v95))
         {
-          objc_msgSend_drawFragment_updateRect_drawingState_runState_lineDrawFlags_(v155, v79, v80, &v193, v188, v91, x, y, width, height);
+          objc_msgSend_drawFragment_updateRect_drawingState_runState_lineDrawFlags_(rendererCopy, v79, v80, &v193, v188, v91, x, y, width, height);
           v90 = v200;
         }
 
@@ -7840,17 +7840,17 @@ LABEL_5:
     }
   }
 
-  if (a16)
+  if (renderMode)
   {
-    v97 = objc_msgSend_rangeCount(v158, v79, v80);
-    v100 = objc_msgSend_rangeCount(v157, v98, v99);
+    v97 = objc_msgSend_rangeCount(interpretationsCopy, v79, v80);
+    v100 = objc_msgSend_rangeCount(autocorrectionsCopy, v98, v99);
     v102 = 4098;
-    if ((a16 & 4) == 0)
+    if ((renderMode & 4) == 0)
     {
       v102 = 2;
     }
 
-    v103 = v102 & 0xFFFFFFFFFFFFDFFFLL | (((a16 >> 3) & 1) << 13);
+    v103 = v102 & 0xFFFFFFFFFFFFDFFFLL | (((renderMode >> 3) & 1) << 13);
     v104 = v103 | 0x200;
     if (!v97)
     {
@@ -7862,7 +7862,7 @@ LABEL_5:
       v104 |= 0x800uLL;
     }
 
-    if (v156)
+    if (textCopy)
     {
       v105 = v104 | 0x400;
     }
@@ -7896,7 +7896,7 @@ LABEL_5:
         v113 = v111;
         v112 = *v111;
         v114 = v112 + v113[1];
-        if (a6.location <= v112 && a6.location + a6.length >= v114)
+        if (range.location <= v112 && range.location + range.length >= v114)
         {
           goto LABEL_51;
         }
@@ -7923,7 +7923,7 @@ LABEL_51:
 
       v110 = *v107;
 LABEL_50:
-      objc_msgSend_drawFragment_updateRect_drawingState_runState_lineDrawFlags_(v155, v101, v110, &v193, v188, v105, x, y, width, height);
+      objc_msgSend_drawFragment_updateRect_drawingState_runState_lineDrawFlags_(rendererCopy, v101, v110, &v193, v188, v105, x, y, width, height);
       goto LABEL_51;
     }
 
@@ -7937,11 +7937,11 @@ LABEL_52:
       v118 = *(MEMORY[0x277CBF3A0] + 16);
       *&v187.a = *MEMORY[0x277CBF3A0];
       *&v187.c = v118;
-      if (BYTE8(v203) == 1 && objc_msgSend_shouldClipFragment_drawingState_lineDrawFlags_updateRect_outClipRect_(v155, v116, 0, &v193, v105, &v187, x, y, width, height))
+      if (BYTE8(v203) == 1 && objc_msgSend_shouldClipFragment_drawingState_lineDrawFlags_updateRect_outClipRect_(rendererCopy, v116, 0, &v193, v105, &v187, x, y, width, height))
       {
-        v120 = objc_msgSend_context(v155, v116, v119);
+        v120 = objc_msgSend_context(rendererCopy, v116, v119);
         CGContextSaveGState(v120);
-        objc_msgSend_context(v155, v121, v122);
+        objc_msgSend_context(rendererCopy, v121, v122);
         CGContextClipToRectSafe();
         v123 = 1;
       }
@@ -7951,11 +7951,11 @@ LABEL_52:
         v123 = 0;
       }
 
-      objc_msgSend_drawCharacterFillAdornmentRects_forColumn_excludeRange_drawingState_(v155, v116, v161->_paragraphAdornments, v161, a6.location, a6.length, &v193);
-      objc_msgSend_drawCharacterStrokeAdornmentRects_forColumn_excludeRange_drawingState_(v155, v124, v161->_paragraphAdornments, v161, a6.location, a6.length, &v193);
+      objc_msgSend_drawCharacterFillAdornmentRects_forColumn_excludeRange_drawingState_(rendererCopy, v116, v161->_paragraphAdornments, v161, range.location, range.length, &v193);
+      objc_msgSend_drawCharacterStrokeAdornmentRects_forColumn_excludeRange_drawingState_(rendererCopy, v124, v161->_paragraphAdornments, v161, range.location, range.length, &v193);
       if (v123)
       {
-        v125 = objc_msgSend_context(v155, v116, v117);
+        v125 = objc_msgSend_context(rendererCopy, v116, v117);
         CGContextRestoreGState(v125);
       }
     }
@@ -7983,7 +7983,7 @@ LABEL_52:
         v132 = v130;
         v131 = *v130;
         v133 = v131 + v132[1];
-        if (a6.location <= v131 && a6.location + a6.length >= v133)
+        if (range.location <= v131 && range.location + range.length >= v133)
         {
           goto LABEL_72;
         }
@@ -8010,14 +8010,14 @@ LABEL_72:
 
       v117 = *v127;
 LABEL_71:
-      objc_msgSend_drawAdornmentsForFragment_updateRect_drawingState_runState_lineDrawFlags_(v155, v116, v117, &v193, v188, v105, x, y, width, height);
+      objc_msgSend_drawAdornmentsForFragment_updateRect_drawingState_runState_lineDrawFlags_(rendererCopy, v116, v117, &v193, v188, v105, x, y, width, height);
       goto LABEL_72;
     }
 
 LABEL_73:
     if (BYTE12(v199))
     {
-      v135 = objc_msgSend_context(v155, v116, v117);
+      v135 = objc_msgSend_context(rendererCopy, v116, v117);
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3321888768;
       aBlock[2] = sub_276D5DFD4;
@@ -8025,7 +8025,7 @@ LABEL_73:
       aBlock[4] = v161;
       v167 = v135;
       v168 = v193;
-      v169 = v194;
+      v169 = selfCopy;
       v170 = v195;
       v171 = v196;
       v172 = v197;
@@ -8045,7 +8045,7 @@ LABEL_73:
       v184 = v203;
       v185 = BYTE8(v203);
       v186 = v204;
-      v166 = v155;
+      v166 = rendererCopy;
       v138 = _Block_copy(aBlock);
       v141 = objc_msgSend_storage(v161, v139, v140);
       v144 = objc_msgSend_range(v161, v142, v143);
@@ -8067,10 +8067,10 @@ LABEL_73:
       objc_msgSend_enumerateSmartFieldsWithAttributeKind_inRange_usingBlock_(v148, v152, 6, v151, v152, v163);
     }
 
-    objc_msgSend_drawAdornmentRects_forColumn_foreground_drawingState_(v155, v116, v161->_paragraphAdornments, v161, 1, &v193);
+    objc_msgSend_drawAdornmentRects_forColumn_foreground_drawingState_(rendererCopy, v116, v161->_paragraphAdornments, v161, 1, &v193);
   }
 
-  objc_msgSend_didRenderFragments(v155, v79, v80);
+  objc_msgSend_didRenderFragments(rendererCopy, v79, v80);
   if (cf)
   {
     CFRelease(cf);
@@ -8094,17 +8094,17 @@ LABEL_73:
   objc_msgSend_endTextColumn_(v25, v153, v161);
 }
 
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind
 {
-  v6 = objc_msgSend_storage(self, a2, a3);
-  v8 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(v6, v7, a3, a4, 0);
+  v6 = objc_msgSend_storage(self, a2, index);
+  v8 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(v6, v7, index, kind, 0);
 
   return v8;
 }
 
-- (id)partitionedLayoutForInfo:(id)a3
+- (id)partitionedLayoutForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   ptr = self->_lineFragmentArray.__ptr_;
   v6 = *ptr;
   v7 = *(ptr + 1);
@@ -8113,7 +8113,7 @@ LABEL_73:
     v8 = sub_276D6493C(*v6);
     v11 = objc_msgSend_info(v8, v9, v10);
 
-    if (v11 == v4)
+    if (v11 == infoCopy)
     {
       goto LABEL_6;
     }
@@ -8127,11 +8127,11 @@ LABEL_6:
   return v8;
 }
 
-- (id)singleLinePartitionedInfoAtStart:(BOOL)a3
+- (id)singleLinePartitionedInfoAtStart:(BOOL)start
 {
-  if (objc_msgSend_lineCount(self, a2, a3) == 1 && (v6 = objc_msgSend_lineFragmentAtIndex_(self, v5, 0), v7 = *(v6 + 24), (v7 & 1) != 0))
+  if (objc_msgSend_lineCount(self, a2, start) == 1 && (v6 = objc_msgSend_lineFragmentAtIndex_(self, v5, 0), v7 = *(v6 + 24), (v7 & 1) != 0))
   {
-    if ((v7 & 0x200) == 0 && a3 || (v8 = 0, (v7 & 0x100) == 0) && !a3)
+    if ((v7 & 0x200) == 0 && start || (v8 = 0, (v7 & 0x100) == 0) && !start)
     {
       v10 = sub_276D6493C(v6);
       v8 = objc_msgSend_info(v10, v11, v12);
@@ -8190,12 +8190,12 @@ LABEL_6:
   return v4;
 }
 
-- (BOOL)hasPartitionedAttachmentContinuationAt:(int)a3
+- (BOOL)hasPartitionedAttachmentContinuationAt:(int)at
 {
-  v5 = objc_msgSend_lineCount(self, a2, *&a3);
+  v5 = objc_msgSend_lineCount(self, a2, *&at);
   if (v5)
   {
-    if (a3)
+    if (at)
     {
       v7 = objc_msgSend_lineFragmentAtIndex_(self, v6, v5 - 1);
     }
@@ -8209,7 +8209,7 @@ LABEL_6:
     if (v8)
     {
       v9 = 256;
-      if (!a3)
+      if (!at)
       {
         v9 = 512;
       }
@@ -8226,9 +8226,9 @@ LABEL_6:
   return v5;
 }
 
-- (id)layoutsForInlineDrawables:(id)a3
+- (id)layoutsForInlineDrawables:(id)drawables
 {
-  v4 = a3;
+  drawablesCopy = drawables;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v8 = sub_276D6F7D8(self->_lineFragmentArray.__ptr_);
   if (v8)
@@ -8236,7 +8236,7 @@ LABEL_6:
     for (i = 0; i != v8; ++i)
     {
       v10 = sub_276D6F7E8(self->_lineFragmentArray.__ptr_, i);
-      v11 = sub_276D649A0(v10, v4);
+      v11 = sub_276D649A0(v10, drawablesCopy);
       objc_msgSend_unionSet_(v5, v12, v11);
     }
   }
@@ -8246,29 +8246,29 @@ LABEL_6:
   return v13;
 }
 
-- (void)enumerateParagraphAdornmentsUsingBlock:(id)a3
+- (void)enumerateParagraphAdornmentsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   paragraphAdornments = self->_paragraphAdornments;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_276D5E9E0;
   v8[3] = &unk_27A6F4088;
-  v9 = v4;
-  v6 = v4;
+  v9 = blockCopy;
+  v6 = blockCopy;
   objc_msgSend_enumerateObjectsUsingBlock_(paragraphAdornments, v7, v8);
 }
 
-+ (void)enumerateColumns:(id)a3 withBlock:(id)a4
++ (void)enumerateColumns:(id)columns withBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  columnsCopy = columns;
+  blockCopy = block;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = v5;
+  v7 = columnsCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v31, v35, 16);
   if (v11)
   {
@@ -8300,7 +8300,7 @@ LABEL_6:
         }
 
         v30 = 0;
-        v6[2](v6, v14, &v30);
+        blockCopy[2](blockCopy, v14, &v30);
         if (v30)
         {
           goto LABEL_12;
@@ -8333,11 +8333,11 @@ LABEL_12:
   return result;
 }
 
-- (void)setTransformFromWP:(CGAffineTransform *)a3
+- (void)setTransformFromWP:(CGAffineTransform *)p
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_transform.c = *&a3->c;
+  v3 = *&p->a;
+  v4 = *&p->tx;
+  *&self->_transform.c = *&p->c;
   *&self->_transform.tx = v4;
   *&self->_transform.a = v3;
 }

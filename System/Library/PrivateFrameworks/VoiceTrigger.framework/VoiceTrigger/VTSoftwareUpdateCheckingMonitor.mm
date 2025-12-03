@@ -3,45 +3,45 @@
 - (BOOL)_checkSoftwareUpdateCheckingState;
 - (VTSoftwareUpdateCheckingMonitor)init;
 - (unsigned)_softwareUpdateCheckingState;
-- (void)_didReceiveSoftwareUpdateCheckingStateChanged:(BOOL)a3;
-- (void)_didReceiveSoftwareUpdateCheckingStateChangedInQueue:(BOOL)a3;
-- (void)_notifyObserver:(id)a3 withSoftwareUpdateCheckingRunning:(BOOL)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveSoftwareUpdateCheckingStateChanged:(BOOL)changed;
+- (void)_didReceiveSoftwareUpdateCheckingStateChangedInQueue:(BOOL)queue;
+- (void)_notifyObserver:(id)observer withSoftwareUpdateCheckingRunning:(BOOL)running;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation VTSoftwareUpdateCheckingMonitor
 
-- (void)_notifyObserver:(id)a3 withSoftwareUpdateCheckingRunning:(BOOL)a4
+- (void)_notifyObserver:(id)observer withSoftwareUpdateCheckingRunning:(BOOL)running
 {
-  v4 = a4;
-  v6 = a3;
-  [(VTEventMonitor *)self notifyObserver:v6];
+  runningCopy = running;
+  observerCopy = observer;
+  [(VTEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 VTSoftwareUpdateCheckingMonitor:self didReceiveStateChanged:v4];
+    [observerCopy VTSoftwareUpdateCheckingMonitor:self didReceiveStateChanged:runningCopy];
   }
 }
 
-- (void)_didReceiveSoftwareUpdateCheckingStateChanged:(BOOL)a3
+- (void)_didReceiveSoftwareUpdateCheckingStateChanged:(BOOL)changed
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __81__VTSoftwareUpdateCheckingMonitor__didReceiveSoftwareUpdateCheckingStateChanged___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(VTEventMonitor *)self enumerateObservers:v3];
 }
 
-- (void)_didReceiveSoftwareUpdateCheckingStateChangedInQueue:(BOOL)a3
+- (void)_didReceiveSoftwareUpdateCheckingStateChangedInQueue:(BOOL)queue
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __88__VTSoftwareUpdateCheckingMonitor__didReceiveSoftwareUpdateCheckingStateChangedInQueue___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(VTEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
@@ -63,12 +63,12 @@
 - (BOOL)_checkSoftwareUpdateCheckingState
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = [(VTSoftwareUpdateCheckingMonitor *)self _softwareUpdateCheckingState];
+  _softwareUpdateCheckingState = [(VTSoftwareUpdateCheckingMonitor *)self _softwareUpdateCheckingState];
   v3 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v4 = @"NO";
-    if (!v2)
+    if (!_softwareUpdateCheckingState)
     {
       v4 = @"YES";
     }
@@ -78,7 +78,7 @@
     _os_log_impl(&dword_223A31000, v3, OS_LOG_TYPE_DEFAULT, "Software update checking running : %{public}@", &v6, 0xCu);
   }
 
-  return v2 == 0;
+  return _softwareUpdateCheckingState == 0;
 }
 
 - (void)_stopMonitoring
@@ -97,9 +97,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = MEMORY[0x277D85DD0];
@@ -107,7 +107,7 @@
     handler[2] = __61__VTSoftwareUpdateCheckingMonitor__startMonitoringWithQueue___block_invoke;
     handler[3] = &unk_2784ECD80;
     handler[4] = self;
-    notify_register_dispatch("com.apple.duetscheduler.restartCheckNotification", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.duetscheduler.restartCheckNotification", &self->_notifyToken, queueCopy, handler);
     v5 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {

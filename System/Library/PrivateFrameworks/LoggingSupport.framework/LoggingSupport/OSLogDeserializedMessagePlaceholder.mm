@@ -1,5 +1,5 @@
 @interface OSLogDeserializedMessagePlaceholder
-- (OSLogDeserializedMessagePlaceholder)initWithDict:(id)a3 metadata:(id)a4;
+- (OSLogDeserializedMessagePlaceholder)initWithDict:(id)dict metadata:(id)metadata;
 - (id)rawString;
 - (id)tokens;
 - (id)type;
@@ -12,8 +12,8 @@
 
 - (id)type
 {
-  v4 = [(OSLogDeserializedMessagePlaceholder *)self backingDict];
-  v5 = [v4 objectForKeyedSubscript:@"ty"];
+  backingDict = [(OSLogDeserializedMessagePlaceholder *)self backingDict];
+  v5 = [backingDict objectForKeyedSubscript:@"ty"];
 
   if (!v5)
   {
@@ -23,18 +23,18 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = objc_opt_class();
-    [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1347 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1347 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
   }
 
-  v6 = [(OSLogDeserializedMessagePlaceholder *)self metadata];
-  v7 = [v6 stringForIndex:v5];
+  metadata = [(OSLogDeserializedMessagePlaceholder *)self metadata];
+  v7 = [metadata stringForIndex:v5];
 
   if (!v7)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1347 description:{@"Could not look up string for: %s", "type"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1347 description:{@"Could not look up string for: %s", "type"}];
 
 LABEL_6:
     v7 = 0;
@@ -45,8 +45,8 @@ LABEL_6:
 
 - (id)typeNamespace
 {
-  v4 = [(OSLogDeserializedMessagePlaceholder *)self backingDict];
-  v5 = [v4 objectForKeyedSubscript:@"tn"];
+  backingDict = [(OSLogDeserializedMessagePlaceholder *)self backingDict];
+  v5 = [backingDict objectForKeyedSubscript:@"tn"];
 
   if (!v5)
   {
@@ -56,18 +56,18 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = objc_opt_class();
-    [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1346 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1346 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
   }
 
-  v6 = [(OSLogDeserializedMessagePlaceholder *)self metadata];
-  v7 = [v6 stringForIndex:v5];
+  metadata = [(OSLogDeserializedMessagePlaceholder *)self metadata];
+  v7 = [metadata stringForIndex:v5];
 
   if (!v7)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1346 description:{@"Could not look up string for: %s", "typeNamespace"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1346 description:{@"Could not look up string for: %s", "typeNamespace"}];
 
 LABEL_6:
     v7 = 0;
@@ -78,8 +78,8 @@ LABEL_6:
 
 - (id)rawString
 {
-  v4 = [(OSLogDeserializedMessagePlaceholder *)self backingDict];
-  v5 = [v4 objectForKeyedSubscript:@"rs"];
+  backingDict = [(OSLogDeserializedMessagePlaceholder *)self backingDict];
+  v5 = [backingDict objectForKeyedSubscript:@"rs"];
 
   if (!v5)
   {
@@ -89,18 +89,18 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v11 = objc_opt_class();
-    [v10 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1345 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1345 description:{@"Unexpected class: %@. Expected: %@", v11, objc_opt_class()}];
   }
 
-  v6 = [(OSLogDeserializedMessagePlaceholder *)self metadata];
-  v7 = [v6 stringForIndex:v5];
+  metadata = [(OSLogDeserializedMessagePlaceholder *)self metadata];
+  v7 = [metadata stringForIndex:v5];
 
   if (!v7)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1345 description:{@"Could not look up string for: %s", "rawString"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1345 description:{@"Could not look up string for: %s", "rawString"}];
 
 LABEL_6:
     v7 = 0;
@@ -112,12 +112,12 @@ LABEL_6:
 - (id)tokens
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [(OSLogDeserializedMessagePlaceholder *)self backingDict];
-  v5 = [v4 objectForKeyedSubscript:@"t"];
+  backingDict = [(OSLogDeserializedMessagePlaceholder *)self backingDict];
+  v5 = [backingDict objectForKeyedSubscript:@"t"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -142,15 +142,15 @@ LABEL_6:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v15 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
             v18 = objc_opt_class();
-            [v15 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1336 description:{@"Unexpected class: %@. Expected: %@", v18, objc_opt_class()}];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1336 description:{@"Unexpected class: %@. Expected: %@", v18, objc_opt_class()}];
           }
 
-          v13 = [(OSLogDeserializedMessagePlaceholder *)self metadata];
-          v14 = [v13 stringForIndex:v12];
+          metadata = [(OSLogDeserializedMessagePlaceholder *)self metadata];
+          v14 = [metadata stringForIndex:v12];
 
-          [v6 addObject:v14];
+          [array addObject:v14];
           ++v11;
         }
 
@@ -164,78 +164,78 @@ LABEL_6:
 
   else
   {
-    v6 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
 - (int)precision
 {
-  v4 = [(OSLogDeserializedMessagePlaceholder *)self backingDict];
-  v5 = [v4 objectForKeyedSubscript:@"p"];
+  backingDict = [(OSLogDeserializedMessagePlaceholder *)self backingDict];
+  v5 = [backingDict objectForKeyedSubscript:@"p"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1326 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1326 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 longLongValue];
+    longLongValue = [v5 longLongValue];
   }
 
   else
   {
-    v6 = 0;
+    longLongValue = 0;
   }
 
-  return v6;
+  return longLongValue;
 }
 
 - (int)width
 {
-  v4 = [(OSLogDeserializedMessagePlaceholder *)self backingDict];
-  v5 = [v4 objectForKeyedSubscript:@"w"];
+  backingDict = [(OSLogDeserializedMessagePlaceholder *)self backingDict];
+  v5 = [backingDict objectForKeyedSubscript:@"w"];
 
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v9 = objc_opt_class();
-      [v8 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1325 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:1325 description:{@"Unexpected class: %@. Expected: %@", v9, objc_opt_class()}];
     }
 
-    v6 = [v5 longLongValue];
+    longLongValue = [v5 longLongValue];
   }
 
   else
   {
-    v6 = 0;
+    longLongValue = 0;
   }
 
-  return v6;
+  return longLongValue;
 }
 
-- (OSLogDeserializedMessagePlaceholder)initWithDict:(id)a3 metadata:(id)a4
+- (OSLogDeserializedMessagePlaceholder)initWithDict:(id)dict metadata:(id)metadata
 {
-  v7 = a3;
-  v8 = a4;
+  dictCopy = dict;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = OSLogDeserializedMessagePlaceholder;
   v9 = [(OSLogDeserializedMessagePlaceholder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_backingDict, a3);
-    objc_storeStrong(&v10->_metadata, a4);
+    objc_storeStrong(&v9->_backingDict, dict);
+    objc_storeStrong(&v10->_metadata, metadata);
   }
 
   return v10;

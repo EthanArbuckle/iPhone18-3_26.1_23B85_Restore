@@ -43,11 +43,11 @@
   v32 = v13;
   v14 = v6;
   v33 = v14;
-  v34 = a1;
+  selfCopy = self;
   v35 = v12;
   v36 = &__block_literal_global;
   v37 = v42;
-  v15 = a1;
+  selfCopy2 = self;
   v16 = v35;
   v17 = v31;
   v18 = v14;
@@ -61,11 +61,11 @@
   v46[1] = 3221225472;
   v46[2] = __UpdateContainers_block_invoke;
   v46[3] = &unk_279779970;
-  v47 = v15;
+  v47 = selfCopy2;
   v48 = v16;
   v49 = v17;
   v22 = v17;
-  v23 = v15;
+  v23 = selfCopy2;
   v24 = v16;
   [v18 sendRequest:v19 withResponseHandler:v46];
 
@@ -104,7 +104,7 @@
   v10 = &v11;
   v5 = v4;
   v9 = v5;
-  [a1 databaseConnectionAllowingWrites:1 withBlock:v8];
+  [self databaseConnectionAllowingWrites:1 withBlock:v8];
   v6 = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
@@ -117,17 +117,17 @@
   v9 = a5;
   v10 = a4;
   v11 = a3;
-  v16 = objc_getAssociatedObject(a1, v8);
+  v16 = objc_getAssociatedObject(self, v8);
   if (!v16)
   {
     v16 = objc_alloc_init(MEMORY[0x277D2B5E8]);
-    objc_setAssociatedObject(a1, _ML3MusicLibraryHomeSharingImportManagerKey, v16, 1);
+    objc_setAssociatedObject(self, _ML3MusicLibraryHomeSharingImportManagerKey, v16, 1);
   }
 
   v12 = objc_alloc_init(MEMORY[0x277D2B5F0]);
   v13 = objc_alloc(MEMORY[0x277D2B618]);
-  v14 = [MEMORY[0x277D2B5B8] processClient];
-  v15 = [v13 initWithDatabaseImport:v11 library:a1 writer:v12 client:v14];
+  processClient = [MEMORY[0x277D2B5B8] processClient];
+  v15 = [v13 initWithDatabaseImport:v11 library:self writer:v12 client:processClient];
 
   [v16 performImport:v15 fromSource:3 progressBlock:v10 withCompletionHandler:v9];
 }
@@ -142,7 +142,7 @@
   v12[1] = 3221225472;
   v12[2] = __97__ML3MusicLibrary_HSAdditions__fillContainerForHomeSharingLibrary_containerID_completionHandler___block_invoke;
   v12[3] = &unk_2797796D8;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = v8;
   v14 = a4;
   v11 = v8;

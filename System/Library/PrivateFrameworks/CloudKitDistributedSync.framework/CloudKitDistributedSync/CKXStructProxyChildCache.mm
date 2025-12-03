@@ -1,22 +1,22 @@
 @interface CKXStructProxyChildCache
 - (CKXStructProxyBase)proxy;
-- (CKXStructProxyChildCache)initWithProxy:(id)a3;
+- (CKXStructProxyChildCache)initWithProxy:(id)proxy;
 - (id).cxx_construct;
 - (void)reset;
 @end
 
 @implementation CKXStructProxyChildCache
 
-- (CKXStructProxyChildCache)initWithProxy:(id)a3
+- (CKXStructProxyChildCache)initWithProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v8.receiver = self;
   v8.super_class = CKXStructProxyChildCache;
   v5 = [(CKXStructProxyChildCache *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_proxy, v4);
+    objc_storeWeak(&v5->_proxy, proxyCopy);
   }
 
   return v6;

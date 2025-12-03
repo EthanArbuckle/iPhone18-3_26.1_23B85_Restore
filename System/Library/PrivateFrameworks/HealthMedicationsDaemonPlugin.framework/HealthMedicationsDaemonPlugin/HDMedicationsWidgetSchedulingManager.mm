@@ -1,36 +1,36 @@
 @interface HDMedicationsWidgetSchedulingManager
 + (BOOL)_deviceRequiresInvalidationForWidgetRelevance;
-+ (id)_reloadReasonsStringForReasons:(id)a3;
++ (id)_reloadReasonsStringForReasons:(id)reasons;
 + (id)defaultMedicationsWidgetRelevanceController;
-+ (id)defaultMedicationsWidgetTimelineControllerForProfile:(id)a3;
-- (HDMedicationsWidgetSchedulingManager)initWithProfile:(id)a3;
-- (void)_invalidateRelevancesWithReason:(id)a3;
++ (id)defaultMedicationsWidgetTimelineControllerForProfile:(id)profile;
+- (HDMedicationsWidgetSchedulingManager)initWithProfile:(id)profile;
+- (void)_invalidateRelevancesWithReason:(id)reason;
 - (void)_queue_reloadWidgets;
-- (void)_reloadWidgetIfNecessaryWithDoseEvents:(id)a3;
-- (void)_runReloadOperationForReason:(int64_t)a3;
+- (void)_reloadWidgetIfNecessaryWithDoseEvents:(id)events;
+- (void)_runReloadOperationForReason:(int64_t)reason;
 - (void)_startObservingMedicationChanges;
 - (void)_stopObservingMedicationChanges;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
-- (void)scheduleManager:(id)a3 didAddOrModifySchedules:(id)a4;
-- (void)scheduleManager:(id)a3 didPruneScheduleItems:(id)a4;
-- (void)scheduleManagerDidRescheduleMedications:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
+- (void)scheduleManager:(id)manager didAddOrModifySchedules:(id)schedules;
+- (void)scheduleManager:(id)manager didPruneScheduleItems:(id)items;
+- (void)scheduleManagerDidRescheduleMedications:(id)medications;
 @end
 
 @implementation HDMedicationsWidgetSchedulingManager
 
-- (HDMedicationsWidgetSchedulingManager)initWithProfile:(id)a3
+- (HDMedicationsWidgetSchedulingManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v20.receiver = self;
   v20.super_class = HDMedicationsWidgetSchedulingManager;
   v5 = [(HDMedicationsWidgetSchedulingManager *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -75,15 +75,15 @@ void __56__HDMedicationsWidgetSchedulingManager_initWithProfile___block_invoke(u
   [(HDMedicationsWidgetSchedulingManager *)&v3 dealloc];
 }
 
-+ (id)defaultMedicationsWidgetTimelineControllerForProfile:(id)a3
++ (id)defaultMedicationsWidgetTimelineControllerForProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [v3 daemon];
-  v5 = [v4 behavior];
+  profileCopy = profile;
+  daemon = [profileCopy daemon];
+  behavior = [daemon behavior];
 
-  v6 = [v5 isAppleWatch];
+  isAppleWatch = [behavior isAppleWatch];
   v7 = MEMORY[0x277D114D8];
-  if (!v6)
+  if (!isAppleWatch)
   {
     v7 = MEMORY[0x277D114D0];
   }
@@ -133,12 +133,12 @@ void __56__HDMedicationsWidgetSchedulingManager_initWithProfile___block_invoke(u
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 sharedWidgetService];
+  sharedWidgetService = [v2 sharedWidgetService];
 
-  return v4;
+  return sharedWidgetService;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v13 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -154,14 +154,14 @@ void __56__HDMedicationsWidgetSchedulingManager_initWithProfile___block_invoke(u
 
   [(HDMedicationsWidgetSchedulingManager *)self _startObservingMedicationChanges];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained database];
+  database = [WeakRetained database];
   queue = self->_queue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__HDMedicationsWidgetSchedulingManager_profileDidBecomeReady___block_invoke;
   v10[3] = &unk_2796CD998;
   v10[4] = self;
-  [v7 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v10];
+  [database performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -185,30 +185,30 @@ uint64_t __62__HDMedicationsWidgetSchedulingManager_profileDidBecomeReady___bloc
   return result;
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  addedCopy = added;
   _HKInitializeLogging();
   v6 = HKLogMedication();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25181C000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] dose event samples added", &v8, 0xCu);
   }
 
-  [(HDMedicationsWidgetSchedulingManager *)self _reloadWidgetIfNecessaryWithDoseEvents:v5];
+  [(HDMedicationsWidgetSchedulingManager *)self _reloadWidgetIfNecessaryWithDoseEvents:addedCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCD658];
-  v6 = a3;
-  v7 = [v5 medicationDoseEventType];
-  v8 = [v6 containsObject:v7];
+  removedCopy = removed;
+  medicationDoseEventType = [v5 medicationDoseEventType];
+  v8 = [removedCopy containsObject:medicationDoseEventType];
 
   if (v8)
   {
@@ -217,7 +217,7 @@ uint64_t __62__HDMedicationsWidgetSchedulingManager_profileDidBecomeReady___bloc
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25181C000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] dose event samples removed", &v11, 0xCu);
     }
 
@@ -227,7 +227,7 @@ uint64_t __62__HDMedicationsWidgetSchedulingManager_profileDidBecomeReady___bloc
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleManagerDidRescheduleMedications:(id)a3
+- (void)scheduleManagerDidRescheduleMedications:(id)medications
 {
   v8 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -235,7 +235,7 @@ uint64_t __62__HDMedicationsWidgetSchedulingManager_profileDidBecomeReady___bloc
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25181C000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] medications rescheduled", &v6, 0xCu);
   }
 
@@ -243,7 +243,7 @@ uint64_t __62__HDMedicationsWidgetSchedulingManager_profileDidBecomeReady___bloc
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleManager:(id)a3 didPruneScheduleItems:(id)a4
+- (void)scheduleManager:(id)manager didPruneScheduleItems:(id)items
 {
   v9 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -251,7 +251,7 @@ uint64_t __62__HDMedicationsWidgetSchedulingManager_profileDidBecomeReady___bloc
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25181C000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] medication schedules pruned", &v7, 0xCu);
   }
 
@@ -259,7 +259,7 @@ uint64_t __62__HDMedicationsWidgetSchedulingManager_profileDidBecomeReady___bloc
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleManager:(id)a3 didAddOrModifySchedules:(id)a4
+- (void)scheduleManager:(id)manager didAddOrModifySchedules:(id)schedules
 {
   v9 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -267,7 +267,7 @@ uint64_t __62__HDMedicationsWidgetSchedulingManager_profileDidBecomeReady___bloc
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25181C000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] medication schedules added or updated", &v7, 0xCu);
   }
 
@@ -278,30 +278,30 @@ uint64_t __62__HDMedicationsWidgetSchedulingManager_profileDidBecomeReady___bloc
 - (void)_startObservingMedicationChanges
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained dataManager];
-  v5 = [MEMORY[0x277CCD658] medicationDoseEventType];
-  [v4 addObserver:self forDataType:v5];
+  dataManager = [WeakRetained dataManager];
+  medicationDoseEventType = [MEMORY[0x277CCD658] medicationDoseEventType];
+  [dataManager addObserver:self forDataType:medicationDoseEventType];
 
   v8 = objc_loadWeakRetained(&self->_profile);
-  v6 = [v8 healthMedicationsProfileExtension];
-  v7 = [v6 medicationScheduleManager];
-  [v7 registerObserver:self queue:0];
+  healthMedicationsProfileExtension = [v8 healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
+  [medicationScheduleManager registerObserver:self queue:0];
 }
 
 - (void)_stopObservingMedicationChanges
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained dataManager];
-  v5 = [MEMORY[0x277CCD658] medicationDoseEventType];
-  [v4 removeObserver:self forDataType:v5];
+  dataManager = [WeakRetained dataManager];
+  medicationDoseEventType = [MEMORY[0x277CCD658] medicationDoseEventType];
+  [dataManager removeObserver:self forDataType:medicationDoseEventType];
 
   v8 = objc_loadWeakRetained(&self->_profile);
-  v6 = [v8 healthMedicationsProfileExtension];
-  v7 = [v6 medicationScheduleManager];
-  [v7 unregisterObserver:self];
+  healthMedicationsProfileExtension = [v8 healthMedicationsProfileExtension];
+  medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
+  [medicationScheduleManager unregisterObserver:self];
 }
 
-- (void)_runReloadOperationForReason:(int64_t)a3
+- (void)_runReloadOperationForReason:(int64_t)reason
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -309,7 +309,7 @@ uint64_t __62__HDMedicationsWidgetSchedulingManager_profileDidBecomeReady___bloc
   v4[2] = __69__HDMedicationsWidgetSchedulingManager__runReloadOperationForReason___block_invoke;
   v4[3] = &unk_2796CD770;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(queue, v4);
 }
 
@@ -334,19 +334,19 @@ uint64_t __69__HDMedicationsWidgetSchedulingManager__runReloadOperationForReason
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_reloadReasonsStringForReasons:(id)a3
++ (id)_reloadReasonsStringForReasons:(id)reasons
 {
-  v3 = a3;
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+  reasonsCopy = reasons;
+  allObjects = [reasonsCopy allObjects];
+  v5 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   v6 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:@"medications ["];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__HDMedicationsWidgetSchedulingManager__reloadReasonsStringForReasons___block_invoke;
   v9[3] = &unk_2796CEB88;
-  v10 = v3;
-  v7 = v3;
+  v10 = reasonsCopy;
+  v7 = reasonsCopy;
   [v6 hk_appendComponentsJoinedByString:@" container:" componentGenerator:{v5, v9}];
   [v6 appendString:@"]"];
 
@@ -366,19 +366,19 @@ id __71__HDMedicationsWidgetSchedulingManager__reloadReasonsStringForReasons___b
   return v8;
 }
 
-- (void)_reloadWidgetIfNecessaryWithDoseEvents:(id)a3
+- (void)_reloadWidgetIfNecessaryWithDoseEvents:(id)events
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEA80];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
+  eventsCopy = events;
+  currentCalendar = [v4 currentCalendar];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __79__HDMedicationsWidgetSchedulingManager__reloadWidgetIfNecessaryWithDoseEvents___block_invoke;
   v16[3] = &unk_2796CEBB0;
-  v7 = v6;
+  v7 = currentCalendar;
   v17 = v7;
-  v8 = [v5 hk_containsObjectPassingTest:v16];
+  v8 = [eventsCopy hk_containsObjectPassingTest:v16];
 
   _HKInitializeLogging();
   v9 = HKLogMedication();
@@ -451,12 +451,12 @@ unint64_t __79__HDMedicationsWidgetSchedulingManager__reloadWidgetIfNecessaryWit
   return v6;
 }
 
-- (void)_invalidateRelevancesWithReason:(id)a3
+- (void)_invalidateRelevancesWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained healthMedicationsProfileExtension];
-  v7 = [v6 createMedicationsWidgetRelevanceController];
+  healthMedicationsProfileExtension = [WeakRetained healthMedicationsProfileExtension];
+  createMedicationsWidgetRelevanceController = [healthMedicationsProfileExtension createMedicationsWidgetRelevanceController];
 
   v8 = *MEMORY[0x277D114E0];
   v9 = *MEMORY[0x277CCC580];
@@ -465,9 +465,9 @@ unint64_t __79__HDMedicationsWidgetSchedulingManager__reloadWidgetIfNecessaryWit
   v11[2] = __72__HDMedicationsWidgetSchedulingManager__invalidateRelevancesWithReason___block_invoke;
   v11[3] = &unk_2796CEBD8;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [v7 invalidateRelevancesOfKind:v8 inBundle:v9 completion:v11];
+  v12 = reasonCopy;
+  v10 = reasonCopy;
+  [createMedicationsWidgetRelevanceController invalidateRelevancesOfKind:v8 inBundle:v9 completion:v11];
 }
 
 void __72__HDMedicationsWidgetSchedulingManager__invalidateRelevancesWithReason___block_invoke(uint64_t a1, void *a2)
@@ -507,10 +507,10 @@ void __72__HDMedicationsWidgetSchedulingManager__invalidateRelevancesWithReason_
 
 + (BOOL)_deviceRequiresInvalidationForWidgetRelevance
 {
-  v2 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v3 = [v2 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  return v3;
+  return isAppleWatch;
 }
 
 void __72__HDMedicationsWidgetSchedulingManager__invalidateRelevancesWithReason___block_invoke_cold_1(uint64_t *a1)

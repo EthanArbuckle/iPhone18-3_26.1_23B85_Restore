@@ -1,17 +1,17 @@
 @interface REAudioManagerNotificationListener
 - (AVAudioSession)audioSessionToFollow;
-- (REAudioManagerNotificationListener)initWithOwner:(void *)a3;
+- (REAudioManagerNotificationListener)initWithOwner:(void *)owner;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)servicesLost:(id)a3;
-- (void)servicesReset:(id)a3;
-- (void)sessionInterrupted:(id)a3;
+- (void)servicesLost:(id)lost;
+- (void)servicesReset:(id)reset;
+- (void)sessionInterrupted:(id)interrupted;
 - (void)stop;
 @end
 
 @implementation REAudioManagerNotificationListener
 
-- (REAudioManagerNotificationListener)initWithOwner:(void *)a3
+- (REAudioManagerNotificationListener)initWithOwner:(void *)owner
 {
   v18.receiver = self;
   v18.super_class = REAudioManagerNotificationListener;
@@ -19,7 +19,7 @@
   v5 = v4;
   if (v4)
   {
-    *(v4 + 1) = a3;
+    *(v4 + 1) = owner;
     objc_initWeak(&location, v4);
     v6 = dispatch_get_global_queue(33, 0);
     v12 = MEMORY[0x1E69E9820];
@@ -29,17 +29,17 @@
     objc_copyWeak(&v16, &location);
     dispatch_async(v6, &v12);
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v5 selector:sel_servicesLost_ name:*MEMORY[0x1E698D5B0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_servicesLost_ name:*MEMORY[0x1E698D5B0] object:0];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v5 selector:sel_servicesReset_ name:*MEMORY[0x1E698D5C0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel_servicesReset_ name:*MEMORY[0x1E698D5C0] object:0];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v5 selector:sel_sessionInterrupted_ name:*MEMORY[0x1E698D6D0] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v5 selector:sel_sessionInterrupted_ name:*MEMORY[0x1E698D6D0] object:0];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v5 selector:sel_sessionInterrupted_ name:*MEMORY[0x1E698D558] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v5 selector:sel_sessionInterrupted_ name:*MEMORY[0x1E698D558] object:0];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -78,8 +78,8 @@ void __52__REAudioManagerNotificationListener_initWithOwner___block_invoke(uint6
 - (void)stop
 {
   *(self + 1) = 0;
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)dealloc
@@ -91,21 +91,21 @@ void __52__REAudioManagerNotificationListener_initWithOwner___block_invoke(uint6
   [(REAudioManagerNotificationListener *)&v3 dealloc];
 }
 
-- (void)servicesLost:(id)a3
+- (void)servicesLost:(id)lost
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lostCopy = lost;
   v5 = *(self + 1);
   if (v5)
   {
     os_unfair_lock_lock(self + 6);
     v6 = *(self + 2);
     os_unfair_lock_unlock(self + 6);
-    v7 = [v4 object];
+    object = [lostCopy object];
 
     v9 = re::audioLogObjects(v8);
     v10 = *v9;
-    if (v7 == v6)
+    if (object == v6)
     {
       if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -121,7 +121,7 @@ void __52__REAudioManagerNotificationListener_initWithOwner___block_invoke(uint6
       block[3] = &unk_1E871BCF8;
       objc_copyWeak(v16, &buf);
       v16[1] = v5;
-      v15 = v4;
+      v15 = lostCopy;
       dispatch_async(v13, block);
 
       objc_destroyWeak(v16);
@@ -133,9 +133,9 @@ void __52__REAudioManagerNotificationListener_initWithOwner___block_invoke(uint6
       v11 = v10;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v4 object];
+        object2 = [lostCopy object];
         LODWORD(buf) = 67109120;
-        HIDWORD(buf) = [v12 opaqueSessionID];
+        HIDWORD(buf) = [object2 opaqueSessionID];
         _os_log_impl(&dword_1E1C61000, v11, OS_LOG_TYPE_DEFAULT, "[RE/MediaServices] Ignoring media services lost notification for audio session 0x%x", &buf, 8u);
       }
     }
@@ -240,21 +240,21 @@ void __51__REAudioManagerNotificationListener_servicesLost___block_invoke_10(uin
   }
 }
 
-- (void)servicesReset:(id)a3
+- (void)servicesReset:(id)reset
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resetCopy = reset;
   v5 = *(self + 1);
   if (v5)
   {
     os_unfair_lock_lock(self + 6);
     v6 = *(self + 2);
     os_unfair_lock_unlock(self + 6);
-    v7 = [v4 object];
+    object = [resetCopy object];
 
     v9 = re::audioLogObjects(v8);
     v10 = *v9;
-    if (v7 == v6)
+    if (object == v6)
     {
       if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -271,7 +271,7 @@ void __51__REAudioManagerNotificationListener_servicesLost___block_invoke_10(uin
       objc_copyWeak(v16, &buf);
       v16[1] = v5;
       v14[4] = self;
-      v15 = v4;
+      v15 = resetCopy;
       dispatch_async(v13, v14);
 
       objc_destroyWeak(v16);
@@ -283,9 +283,9 @@ void __51__REAudioManagerNotificationListener_servicesLost___block_invoke_10(uin
       v11 = v10;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v4 object];
+        object2 = [resetCopy object];
         LODWORD(buf) = 67109120;
-        HIDWORD(buf) = [v12 opaqueSessionID];
+        HIDWORD(buf) = [object2 opaqueSessionID];
         _os_log_impl(&dword_1E1C61000, v11, OS_LOG_TYPE_DEFAULT, "[RE/MediaServices] Ignoring media services reset notification for audio session 0x%x", &buf, 8u);
       }
     }
@@ -384,28 +384,28 @@ void __52__REAudioManagerNotificationListener_servicesReset___block_invoke_11(ui
   }
 }
 
-- (void)sessionInterrupted:(id)a3
+- (void)sessionInterrupted:(id)interrupted
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interruptedCopy = interrupted;
   os_unfair_lock_lock(self + 6);
   v5 = *(self + 2);
   os_unfair_lock_unlock(self + 6);
-  v6 = [v4 name];
-  if ([v6 isEqualToString:*MEMORY[0x1E698D558]])
+  name = [interruptedCopy name];
+  if ([name isEqualToString:*MEMORY[0x1E698D558]])
   {
-    v7 = [v4 object];
+    object = [interruptedCopy object];
 
-    if (v7 != v5)
+    if (object != v5)
     {
       v9 = *re::audioLogObjects(v8);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v4 object];
+        object2 = [interruptedCopy object];
         *buf = 138412546;
-        v18 = v4;
+        v18 = interruptedCopy;
         v19 = 1024;
-        v20 = [v10 opaqueSessionID];
+        opaqueSessionID = [object2 opaqueSessionID];
         _os_log_impl(&dword_1E1C61000, v9, OS_LOG_TYPE_DEFAULT, "Ignoring interruption notification %@ for audio session 0x%x", buf, 0x12u);
       }
 
@@ -421,7 +421,7 @@ void __52__REAudioManagerNotificationListener_servicesReset___block_invoke_11(ui
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = interruptedCopy;
     _os_log_impl(&dword_1E1C61000, v11, OS_LOG_TYPE_DEFAULT, "Session interrupted %@", buf, 0xCu);
   }
 
@@ -437,7 +437,7 @@ void __52__REAudioManagerNotificationListener_servicesReset___block_invoke_11(ui
     objc_copyWeak(v16, buf);
     v16[1] = v12;
     v14[4] = self;
-    v15 = v4;
+    v15 = interruptedCopy;
     dispatch_async(v13, v14);
 
     objc_destroyWeak(v16);

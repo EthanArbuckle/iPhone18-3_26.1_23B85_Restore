@@ -1,45 +1,45 @@
 @interface VSApplicationController
 - (VSApplicationController)init;
-- (VSApplicationController)initWithIdentityProvider:(id)a3;
+- (VSApplicationController)initWithIdentityProvider:(id)provider;
 - (VSApplicationControllerDelegate)delegate;
-- (id)_applicationControllerAlertForJavascriptAlert:(id)a3;
+- (id)_applicationControllerAlertForJavascriptAlert:(id)alert;
 - (id)_applicationLaunchParams;
 - (id)_bootURL;
-- (id)_errorForJavascriptErrorValueValue:(id)a3 withRequest:(id)a4;
-- (id)_javascriptRequestForRequest:(id)a3 withVerificationData:(id)a4;
+- (id)_errorForJavascriptErrorValueValue:(id)value withRequest:(id)request;
+- (id)_javascriptRequestForRequest:(id)request withVerificationData:(id)data;
 - (id)_makeJavaScriptRequest;
-- (id)activeAppDocumentForApplication:(id)a3;
-- (void)_applicationReadyWithSuccess:(BOOL)a3 javascriptErrorValue:(id)a4;
+- (id)activeAppDocumentForApplication:(id)application;
+- (void)_applicationReadyWithSuccess:(BOOL)success javascriptErrorValue:(id)value;
 - (void)_beginAuthentication;
 - (void)_cancelValidation;
-- (void)_completeRequest:(id)a3 withJavascriptResponse:(id)a4 javascriptErrorValue:(id)a5;
-- (void)_completeRequest:(id)a3 withResult:(id)a4;
-- (void)_makeJavascriptRequestForRequest:(id)a3 withCompletionHandler:(id)a4;
-- (void)_notifyDelegateWithBlock:(id)a3;
-- (void)_notifyDidReceiveViewModel:(id)a3;
-- (void)_notifyDidReceiveViewModelError:(id)a3;
+- (void)_completeRequest:(id)request withJavascriptResponse:(id)response javascriptErrorValue:(id)value;
+- (void)_completeRequest:(id)request withResult:(id)result;
+- (void)_makeJavascriptRequestForRequest:(id)request withCompletionHandler:(id)handler;
+- (void)_notifyDelegateWithBlock:(id)block;
+- (void)_notifyDidReceiveViewModel:(id)model;
+- (void)_notifyDidReceiveViewModelError:(id)error;
 - (void)_notifyDidStart;
-- (void)_notifyDidUpdateLogoViewModel:(id)a3;
-- (void)_notifyRequest:(id)a3 didCompleteWithResponse:(id)a4;
-- (void)_notifyRequest:(id)a3 didFailWithError:(id)a4;
-- (void)_notifyStartDidFailWithError:(id)a3;
-- (void)_presentAlert:(id)a3;
-- (void)_presentDocument:(id)a3;
-- (void)_submitJavascriptRequest:(id)a3 forApplicationControllerRequest:(id)a4;
-- (void)appDocumentController:(id)a3 didFailToUpdateViewModelWithError:(id)a4;
-- (void)appDocumentController:(id)a3 didUpdateLogoViewModel:(id)a4;
-- (void)appDocumentController:(id)a3 didUpdateViewModel:(id)a4;
-- (void)application:(id)a3 evaluateAppJavascriptInContext:(id)a4;
-- (void)application:(id)a3 startDidFailWithError:(id)a4;
-- (void)applicationDidStart:(id)a3;
-- (void)applicationStartSelfValidationWithAuthenticationToken:(id)a3;
+- (void)_notifyDidUpdateLogoViewModel:(id)model;
+- (void)_notifyRequest:(id)request didCompleteWithResponse:(id)response;
+- (void)_notifyRequest:(id)request didFailWithError:(id)error;
+- (void)_notifyStartDidFailWithError:(id)error;
+- (void)_presentAlert:(id)alert;
+- (void)_presentDocument:(id)document;
+- (void)_submitJavascriptRequest:(id)request forApplicationControllerRequest:(id)controllerRequest;
+- (void)appDocumentController:(id)controller didFailToUpdateViewModelWithError:(id)error;
+- (void)appDocumentController:(id)controller didUpdateLogoViewModel:(id)model;
+- (void)appDocumentController:(id)controller didUpdateViewModel:(id)model;
+- (void)application:(id)application evaluateAppJavascriptInContext:(id)context;
+- (void)application:(id)application startDidFailWithError:(id)error;
+- (void)applicationDidStart:(id)start;
+- (void)applicationStartSelfValidationWithAuthenticationToken:(id)token;
 - (void)dealloc;
 - (void)release;
-- (void)sendErrorMessage:(id)a3;
-- (void)showAuthenticationUserInterfaceWithAuthenticationToken:(id)a3;
+- (void)sendErrorMessage:(id)message;
+- (void)showAuthenticationUserInterfaceWithAuthenticationToken:(id)token;
 - (void)start;
 - (void)stop;
-- (void)submitRequest:(id)a3;
+- (void)submitRequest:(id)request;
 - (void)transitionToInvalidState;
 - (void)transitionToWaitingForBootUrlState;
 - (void)transitionToWaitingForBothLaunchCallbacksState;
@@ -74,10 +74,10 @@
   return 0;
 }
 
-- (VSApplicationController)initWithIdentityProvider:(id)a3
+- (VSApplicationController)initWithIdentityProvider:(id)provider
 {
-  v5 = a3;
-  if (!v5)
+  providerCopy = provider;
+  if (!providerCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The identityProvider parameter must not be nil."];
   }
@@ -91,7 +91,7 @@
     preferences = v6->_preferences;
     v6->_preferences = v7;
 
-    objc_storeStrong(&v6->_identityProvider, a3);
+    objc_storeStrong(&v6->_identityProvider, provider);
     v9 = objc_alloc_init(VSApplicationControllerResponseHandler);
     responseHandler = v6->_responseHandler;
     v6->_responseHandler = v9;
@@ -101,7 +101,7 @@
     v6->_privateQueue = v11;
 
     [(NSOperationQueue *)v6->_privateQueue setName:@"VSApplicationController.Queue"];
-    v16 = v5;
+    v16 = providerCopy;
     v13 = objc_alloc_init(MEMORY[0x277CE22E0]);
     [v13 setName:@"VSApplicationController"];
     [v13 setDestinationState:@"Waiting for boot URL" forEvent:@"Start app controller" inState:@"Initial"];
@@ -137,7 +137,7 @@
     [v13 activateWithState:@"Initial"];
     stateMachine = v6->_stateMachine;
     v6->_stateMachine = v13;
-    v5 = v16;
+    providerCopy = v16;
   }
 
   return v6;
@@ -150,7 +150,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_270DD4000, v3, OS_LOG_TYPE_DEFAULT, "Deallocating application controller: %p", buf, 0xCu);
   }
 
@@ -164,29 +164,29 @@
 - (void)transitionToWaitingForBootUrlState
 {
   CFRetain(self);
-  v3 = [(VSApplicationController *)self identityProvider];
-  v4 = [v3 requireAuthenticationURLSystemTrust];
+  identityProvider = [(VSApplicationController *)self identityProvider];
+  requireAuthenticationURLSystemTrust = [identityProvider requireAuthenticationURLSystemTrust];
 
-  v5 = [(VSApplicationController *)self identityProvider];
-  v6 = [v5 authenticationURL];
+  identityProvider2 = [(VSApplicationController *)self identityProvider];
+  authenticationURL = [identityProvider2 authenticationURL];
 
-  if (!v6)
+  if (!authenticationURL)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [[self identityProvider] authenticationURL] parameter must not be nil."];
   }
 
-  v7 = [(VSApplicationController *)self identityProvider];
-  v8 = [v7 authenticationURL];
+  identityProvider3 = [(VSApplicationController *)self identityProvider];
+  authenticationURL2 = [identityProvider3 authenticationURL];
 
-  v9 = [objc_alloc(MEMORY[0x277CE2200]) initWithBootURL:v8 isDeveloper:v4 ^ 1u];
+  v9 = [objc_alloc(MEMORY[0x277CE2200]) initWithBootURL:authenticationURL2 isDeveloper:requireAuthenticationURLSystemTrust ^ 1u];
   objc_initWeak(&location, self);
   objc_copyWeak(&v13, &location);
   v12 = v9;
   v10 = VSMainThreadOperationWithBlock();
   [v10 addDependency:v12];
   VSEnqueueCompletionOperation();
-  v11 = [(VSApplicationController *)self privateQueue];
-  [v11 addOperation:v12];
+  privateQueue = [(VSApplicationController *)self privateQueue];
+  [privateQueue addOperation:v12];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -249,8 +249,8 @@ void __61__VSApplicationController_transitionToWaitingForBootUrlState__block_inv
 - (void)transitionToWaitingForBothLaunchCallbacksState
 {
   v3 = objc_alloc_init(MEMORY[0x277CE2230]);
-  v4 = [(VSApplicationController *)self privateQueue];
-  [v4 addOperation:v3];
+  privateQueue = [(VSApplicationController *)self privateQueue];
+  [privateQueue addOperation:v3];
 
   v7 = MEMORY[0x277D85DD0];
   v8 = v3;
@@ -582,9 +582,9 @@ LABEL_18:
     _os_log_impl(&dword_270DD4000, v3, OS_LOG_TYPE_DEFAULT, "Entering %s", &v6, 0xCu);
   }
 
-  v4 = [(VSApplicationController *)self application];
-  [v4 setDelegate:0];
-  [v4 stop];
+  application = [(VSApplicationController *)self application];
+  [application setDelegate:0];
+  [application stop];
   [(VSApplicationController *)self setApplication:0];
   CFRelease(self);
 
@@ -593,8 +593,8 @@ LABEL_18:
 
 - (void)start
 {
-  v2 = [(VSApplicationController *)self stateMachine];
-  [v2 enqueueEvent:@"Start app controller"];
+  stateMachine = [(VSApplicationController *)self stateMachine];
+  [stateMachine enqueueEvent:@"Start app controller"];
 }
 
 - (void)stop
@@ -608,23 +608,23 @@ LABEL_18:
     _os_log_impl(&dword_270DD4000, v3, OS_LOG_TYPE_DEFAULT, "Entering %s", &v6, 0xCu);
   }
 
-  v4 = [(VSApplicationController *)self stateMachine];
-  [v4 enqueueEvent:@"Stop app controller"];
+  stateMachine = [(VSApplicationController *)self stateMachine];
+  [stateMachine enqueueEvent:@"Stop app controller"];
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendErrorMessage:(id)a3
+- (void)sendErrorMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(VSApplicationController *)self application];
-  [v5 sendErrorWithMessage:v4];
+  messageCopy = message;
+  application = [(VSApplicationController *)self application];
+  [application sendErrorWithMessage:messageCopy];
 }
 
-- (void)showAuthenticationUserInterfaceWithAuthenticationToken:(id)a3
+- (void)showAuthenticationUserInterfaceWithAuthenticationToken:(id)token
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokenCopy = token;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -635,8 +635,8 @@ LABEL_18:
 
   VSRequireMainThread();
   v6 = MEMORY[0x277CE2298];
-  v7 = [v4 body];
-  v8 = [v6 optionalWithObject:v7];
+  body = [tokenCopy body];
+  v8 = [v6 optionalWithObject:body];
   v9 = [v8 unwrapWithFallback:&stru_2880B8BB0];
 
   *&buf = 0;
@@ -644,7 +644,7 @@ LABEL_18:
   v20 = 0x2020000000;
   v21 = 0;
   objc_initWeak(&location, self);
-  v10 = [(VSApplicationController *)self application];
+  application = [(VSApplicationController *)self application];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __82__VSApplicationController_showAuthenticationUserInterfaceWithAuthenticationToken___block_invoke;
@@ -659,7 +659,7 @@ LABEL_18:
   v13[3] = &unk_279E19C60;
   v13[4] = self;
   v13[5] = &buf;
-  [v10 evaluate:v14 completionHandler:v13];
+  [application evaluate:v14 completionHandler:v13];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -725,9 +725,9 @@ void __82__VSApplicationController_showAuthenticationUserInterfaceWithAuthentica
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitRequest:(id)a3
+- (void)submitRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   VSRequireMainThread();
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
@@ -735,7 +735,7 @@ void __82__VSApplicationController_showAuthenticationUserInterfaceWithAuthentica
   v6[2] = __41__VSApplicationController_submitRequest___block_invoke;
   v6[3] = &unk_279E19C88;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = requestCopy;
   v7 = v5;
   [(VSApplicationController *)self _makeJavascriptRequestForRequest:v5 withCompletionHandler:v6];
 
@@ -766,17 +766,17 @@ void __41__VSApplicationController_submitRequest___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)applicationStartSelfValidationWithAuthenticationToken:(id)a3
+- (void)applicationStartSelfValidationWithAuthenticationToken:(id)token
 {
-  v4 = a3;
-  v5 = [(VSApplicationController *)self application];
+  tokenCopy = token;
+  application = [(VSApplicationController *)self application];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__VSApplicationController_applicationStartSelfValidationWithAuthenticationToken___block_invoke;
   v7[3] = &unk_279E19CB0;
-  v8 = v4;
-  v6 = v4;
-  [v5 evaluate:v7 completionHandler:&__block_literal_global_211];
+  v8 = tokenCopy;
+  v6 = tokenCopy;
+  [application evaluate:v7 completionHandler:&__block_literal_global_211];
 }
 
 void __81__VSApplicationController_applicationStartSelfValidationWithAuthenticationToken___block_invoke(uint64_t a1, void *a2)
@@ -837,12 +837,12 @@ void __81__VSApplicationController_applicationStartSelfValidationWithAuthenticat
   }
 }
 
-- (void)application:(id)a3 evaluateAppJavascriptInContext:(id)a4
+- (void)application:(id)application evaluateAppJavascriptInContext:(id)context
 {
   v78[4] = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v38 = a4;
-  v39 = [v38 objectForKeyedSubscript:@"App"];
+  applicationCopy = application;
+  contextCopy = context;
+  v39 = [contextCopy objectForKeyedSubscript:@"App"];
   objc_initWeak(&location, self);
   v76[0] = *MEMORY[0x277CD4630];
   v6 = v76[0];
@@ -983,9 +983,9 @@ void __81__VSApplicationController_applicationStartSelfValidationWithAuthenticat
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:4];
   [v39 defineProperty:@"AlertAction" descriptor:v24];
 
-  VSExportCompressionToContext(v38);
+  VSExportCompressionToContext(contextCopy);
   v25 = VSScriptMessageSupportInjection(1);
-  v26 = [v38 evaluateScript:v25];
+  v26 = [contextCopy evaluateScript:v25];
 
   v27 = MEMORY[0x277CD4658];
   v44[0] = MEMORY[0x277D85DD0];
@@ -994,10 +994,10 @@ void __81__VSApplicationController_applicationStartSelfValidationWithAuthenticat
   v44[3] = &unk_279E19D70;
   objc_copyWeak(&v45, &location);
   v28 = MEMORY[0x2743B6E40](v44);
-  v29 = [v27 valueWithObject:v28 inContext:v38];
+  v29 = [v27 valueWithObject:v28 inContext:contextCopy];
 
   [(VSApplicationController *)self setApplicationReadyCallback:v29];
-  v30 = [v38 globalObject];
+  globalObject = [contextCopy globalObject];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
@@ -1016,7 +1016,7 @@ void __81__VSApplicationController_applicationStartSelfValidationWithAuthenticat
         }
 
         v34 = *(*(&v40 + 1) + 8 * i);
-        if ([v30 deleteProperty:v34])
+        if ([globalObject deleteProperty:v34])
         {
           v35 = VSErrorLogObject();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -1100,76 +1100,76 @@ void __70__VSApplicationController_application_evaluateAppJavascriptInContext___
   }
 }
 
-- (void)applicationDidStart:(id)a3
+- (void)applicationDidStart:(id)start
 {
-  v3 = [(VSApplicationController *)self stateMachine];
-  [v3 enqueueEvent:@"Application did start"];
+  stateMachine = [(VSApplicationController *)self stateMachine];
+  [stateMachine enqueueEvent:@"Application did start"];
 }
 
-- (void)application:(id)a3 startDidFailWithError:(id)a4
+- (void)application:(id)application startDidFailWithError:(id)error
 {
   v6 = VSPublicError();
   [(VSApplicationController *)self setDelegateError:v6];
-  v5 = [(VSApplicationController *)self stateMachine];
-  [v5 enqueueEvent:@"Application failed to start"];
+  stateMachine = [(VSApplicationController *)self stateMachine];
+  [stateMachine enqueueEvent:@"Application failed to start"];
 }
 
-- (id)activeAppDocumentForApplication:(id)a3
+- (id)activeAppDocumentForApplication:(id)application
 {
-  v3 = [(VSApplicationController *)self appDocumentController];
-  v4 = [v3 appDocument];
+  appDocumentController = [(VSApplicationController *)self appDocumentController];
+  appDocument = [appDocumentController appDocument];
 
-  return v4;
+  return appDocument;
 }
 
-- (void)appDocumentController:(id)a3 didUpdateViewModel:(id)a4
+- (void)appDocumentController:(id)controller didUpdateViewModel:(id)model
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  modelCopy = model;
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = modelCopy;
     _os_log_impl(&dword_270DD4000, v6, OS_LOG_TYPE_DEFAULT, "Document controller did update view model: %@", &v8, 0xCu);
   }
 
-  [(VSApplicationController *)self _notifyDidReceiveViewModel:v5];
+  [(VSApplicationController *)self _notifyDidReceiveViewModel:modelCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appDocumentController:(id)a3 didFailToUpdateViewModelWithError:(id)a4
+- (void)appDocumentController:(id)controller didFailToUpdateViewModelWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = VSErrorLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     [VSApplicationController appDocumentController:didFailToUpdateViewModelWithError:];
   }
 
-  [(VSApplicationController *)self _notifyDidReceiveViewModelError:v5];
+  [(VSApplicationController *)self _notifyDidReceiveViewModelError:errorCopy];
 }
 
-- (void)appDocumentController:(id)a3 didUpdateLogoViewModel:(id)a4
+- (void)appDocumentController:(id)controller didUpdateLogoViewModel:(id)model
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  modelCopy = model;
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = modelCopy;
     _os_log_impl(&dword_270DD4000, v6, OS_LOG_TYPE_DEFAULT, "Document controller did update logo view model: %@", &v8, 0xCu);
   }
 
-  [(VSApplicationController *)self _notifyDidUpdateLogoViewModel:v5];
+  [(VSApplicationController *)self _notifyDidUpdateLogoViewModel:modelCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_presentDocument:(id)a3
+- (void)_presentDocument:(id)document
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  documentCopy = document;
   if ([(VSApplicationController *)self allowUI])
   {
     v6 = VSDefaultLogObject();
@@ -1185,14 +1185,14 @@ void __70__VSApplicationController_application_evaluateAppJavascriptInContext___
       _os_log_impl(&dword_270DD4000, v6, OS_LOG_TYPE_DEFAULT, "Will create app document in [%@ %@]", buf, 0x16u);
     }
 
-    v10 = [(VSApplicationController *)self application];
+    application = [(VSApplicationController *)self application];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __44__VSApplicationController__presentDocument___block_invoke;
     v14[3] = &unk_279E19D98;
     v14[4] = self;
     v14[5] = a2;
-    [v10 appDocumentForDocument:v5 completionHandler:v14];
+    [application appDocumentForDocument:documentCopy completionHandler:v14];
   }
 
   else
@@ -1203,8 +1203,8 @@ void __70__VSApplicationController_application_evaluateAppJavascriptInContext___
       [VSApplicationController _presentDocument:];
     }
 
-    v12 = [(VSApplicationController *)self application];
-    [v12 sendErrorWithMessage:@"The App.presentDocument function cannot be called in the current context."];
+    application2 = [(VSApplicationController *)self application];
+    [application2 sendErrorWithMessage:@"The App.presentDocument function cannot be called in the current context."];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1288,17 +1288,17 @@ void __44__VSApplicationController__presentDocument___block_invoke_235(uint64_t 
   }
 }
 
-- (void)_presentAlert:(id)a3
+- (void)_presentAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   if ([(VSApplicationController *)self allowUI])
   {
-    v5 = [(VSApplicationController *)self _applicationControllerAlertForJavascriptAlert:v4];
-    v6 = [(VSApplicationController *)self delegate];
+    application = [(VSApplicationController *)self _applicationControllerAlertForJavascriptAlert:alertCopy];
+    delegate = [(VSApplicationController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = v6;
-      v9 = v5;
+      v8 = delegate;
+      v9 = application;
       VSPerformBlockOnMainThread();
     }
   }
@@ -1311,8 +1311,8 @@ void __44__VSApplicationController__presentDocument___block_invoke_235(uint64_t 
       [VSApplicationController _presentAlert:];
     }
 
-    v5 = [(VSApplicationController *)self application];
-    [v5 sendErrorWithMessage:@"The App.presentAlert function cannot be called in the current context."];
+    application = [(VSApplicationController *)self application];
+    [application sendErrorWithMessage:@"The App.presentAlert function cannot be called in the current context."];
   }
 }
 
@@ -1351,11 +1351,11 @@ void __44__VSApplicationController__cancelValidation__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_submitJavascriptRequest:(id)a3 forApplicationControllerRequest:(id)a4
+- (void)_submitJavascriptRequest:(id)request forApplicationControllerRequest:(id)controllerRequest
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  controllerRequestCopy = controllerRequest;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1364,19 +1364,19 @@ void __44__VSApplicationController__cancelValidation__block_invoke(uint64_t a1)
     _os_log_impl(&dword_270DD4000, v8, OS_LOG_TYPE_DEFAULT, "Entering %s", &buf, 0xCu);
   }
 
-  v9 = [v6 copy];
+  v9 = [requestCopy copy];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v26 = 0x2020000000;
   v27 = 0;
   objc_initWeak(&location, self);
-  v10 = [(VSApplicationController *)self application];
+  application = [(VSApplicationController *)self application];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __84__VSApplicationController__submitJavascriptRequest_forApplicationControllerRequest___block_invoke;
   v19[3] = &unk_279E19E10;
   objc_copyWeak(&v23, &location);
-  v11 = v7;
+  v11 = controllerRequestCopy;
   v20 = v11;
   v12 = v9;
   v21 = v12;
@@ -1389,7 +1389,7 @@ void __44__VSApplicationController__cancelValidation__block_invoke(uint64_t a1)
   v17 = &buf;
   v13 = v11;
   v16 = v13;
-  [v10 evaluate:v19 completionHandler:v15];
+  [application evaluate:v19 completionHandler:v15];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v23);
@@ -1477,9 +1477,9 @@ void __84__VSApplicationController__submitJavascriptRequest_forApplicationContro
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_applicationReadyWithSuccess:(BOOL)a3 javascriptErrorValue:(id)a4
+- (void)_applicationReadyWithSuccess:(BOOL)success javascriptErrorValue:(id)value
 {
-  if (a3)
+  if (success)
   {
     v5 = VSDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1488,28 +1488,28 @@ void __84__VSApplicationController__submitJavascriptRequest_forApplicationContro
       _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Application is ready.", buf, 2u);
     }
 
-    v6 = [(VSApplicationController *)self application];
+    application = [(VSApplicationController *)self application];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __77__VSApplicationController__applicationReadyWithSuccess_javascriptErrorValue___block_invoke;
     v10[3] = &unk_279E19CB0;
     v10[4] = self;
-    [v6 evaluate:v10 completionHandler:&__block_literal_global_259];
+    [application evaluate:v10 completionHandler:&__block_literal_global_259];
 
-    v7 = [(VSApplicationController *)self stateMachine];
-    [v7 enqueueEvent:@"onLaunch callback succeeded"];
+    stateMachine = [(VSApplicationController *)self stateMachine];
+    [stateMachine enqueueEvent:@"onLaunch callback succeeded"];
   }
 
   else
   {
-    v8 = [(VSApplicationController *)self _errorForJavascriptErrorValueValue:a4 withRequest:0];
+    v8 = [(VSApplicationController *)self _errorForJavascriptErrorValueValue:value withRequest:0];
     v9 = VSErrorLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       [VSApplicationController _applicationReadyWithSuccess:javascriptErrorValue:];
     }
 
-    v7 = v8;
+    stateMachine = v8;
     VSPerformBlockOnMainThread();
   }
 }
@@ -1552,28 +1552,28 @@ void __77__VSApplicationController__applicationReadyWithSuccess_javascriptErrorV
   [v2 enqueueEvent:@"onLaunch callback failed"];
 }
 
-- (void)_completeRequest:(id)a3 withJavascriptResponse:(id)a4 javascriptErrorValue:(id)a5
+- (void)_completeRequest:(id)request withJavascriptResponse:(id)response javascriptErrorValue:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  responseCopy = response;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(VSApplicationController *)self responseHandler];
-    v12 = [v8 type];
+    responseHandler = [(VSApplicationController *)self responseHandler];
+    type = [requestCopy type];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __88__VSApplicationController__completeRequest_withJavascriptResponse_javascriptErrorValue___block_invoke;
     v16[3] = &unk_279E19E80;
     v16[4] = self;
-    v17 = v8;
-    [v11 handleJavascriptResponse:v9 requestType:v12 completionHandler:v16];
+    v17 = requestCopy;
+    [responseHandler handleJavascriptResponse:responseCopy requestType:type completionHandler:v16];
   }
 
   else
   {
-    v13 = [(VSApplicationController *)self _errorForJavascriptErrorValueValue:v10 withRequest:v8];
+    v13 = [(VSApplicationController *)self _errorForJavascriptErrorValueValue:valueCopy withRequest:requestCopy];
     v14 = VSErrorLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1581,7 +1581,7 @@ void __77__VSApplicationController__applicationReadyWithSuccess_javascriptErrorV
     }
 
     v15 = [MEMORY[0x277CE2250] failableWithError:v13];
-    [(VSApplicationController *)self _completeRequest:v8 withResult:v15];
+    [(VSApplicationController *)self _completeRequest:requestCopy withResult:v15];
   }
 }
 
@@ -1604,12 +1604,12 @@ void __88__VSApplicationController__completeRequest_withJavascriptResponse_javas
   [v3 sendErrorWithMessage:v4];
 }
 
-- (void)_completeRequest:(id)a3 withResult:(id)a4
+- (void)_completeRequest:(id)request withResult:(id)result
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v5;
-  v7 = v8;
+  requestCopy = request;
+  resultCopy = result;
+  v6 = requestCopy;
+  v7 = resultCopy;
   VSPerformBlockOnMainThread();
 }
 
@@ -1676,20 +1676,20 @@ void __55__VSApplicationController__completeRequest_withResult___block_invoke_26
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyRequest:(id)a3 didCompleteWithResponse:(id)a4
+- (void)_notifyRequest:(id)request didCompleteWithResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  responseCopy = response;
   VSRequireMainThread();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__VSApplicationController__notifyRequest_didCompleteWithResponse___block_invoke;
   v10[3] = &unk_279E19DC0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestCopy;
+  v12 = responseCopy;
+  v8 = responseCopy;
+  v9 = requestCopy;
   [(VSApplicationController *)self _notifyDelegateWithBlock:v10];
 }
 
@@ -1699,17 +1699,17 @@ void __66__VSApplicationController__notifyRequest_didCompleteWithResponse___bloc
   [v2 applicationController:*(a1 + 32) request:*(a1 + 40) didCompleteWithResponse:*(a1 + 48)];
 }
 
-- (void)_notifyDidReceiveViewModel:(id)a3
+- (void)_notifyDidReceiveViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   VSRequireMainThread();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__VSApplicationController__notifyDidReceiveViewModel___block_invoke;
   v6[3] = &unk_279E19848;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = modelCopy;
+  v5 = modelCopy;
   [(VSApplicationController *)self _notifyDelegateWithBlock:v6];
 }
 
@@ -1719,17 +1719,17 @@ void __54__VSApplicationController__notifyDidReceiveViewModel___block_invoke(uin
   [v2 applicationController:*(a1 + 32) didReceiveViewModel:*(a1 + 40)];
 }
 
-- (void)_notifyDidReceiveViewModelError:(id)a3
+- (void)_notifyDidReceiveViewModelError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   VSRequireMainThread();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__VSApplicationController__notifyDidReceiveViewModelError___block_invoke;
   v6[3] = &unk_279E19848;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(VSApplicationController *)self _notifyDelegateWithBlock:v6];
 }
 
@@ -1739,20 +1739,20 @@ void __59__VSApplicationController__notifyDidReceiveViewModelError___block_invok
   [v2 applicationController:*(a1 + 32) didReceiveViewModelError:*(a1 + 40)];
 }
 
-- (void)_notifyRequest:(id)a3 didFailWithError:(id)a4
+- (void)_notifyRequest:(id)request didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  errorCopy = error;
   VSRequireMainThread();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__VSApplicationController__notifyRequest_didFailWithError___block_invoke;
   v10[3] = &unk_279E19DC0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = requestCopy;
   [(VSApplicationController *)self _notifyDelegateWithBlock:v10];
 }
 
@@ -1779,17 +1779,17 @@ void __42__VSApplicationController__notifyDidStart__block_invoke(uint64_t a1)
   [v2 applicationControllerDidStart:*(a1 + 32)];
 }
 
-- (void)_notifyStartDidFailWithError:(id)a3
+- (void)_notifyStartDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   VSRequireMainThread();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__VSApplicationController__notifyStartDidFailWithError___block_invoke;
   v6[3] = &unk_279E19848;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(VSApplicationController *)self _notifyDelegateWithBlock:v6];
 }
 
@@ -1799,11 +1799,11 @@ void __56__VSApplicationController__notifyStartDidFailWithError___block_invoke(u
   [v2 applicationController:*(a1 + 32) startDidFailWithError:*(a1 + 40)];
 }
 
-- (void)_notifyDelegateWithBlock:(id)a3
+- (void)_notifyDelegateWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   VSRequireMainThread();
-  if (!v3)
+  if (!blockCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The block parameter must not be nil."];
   }
@@ -1815,30 +1815,30 @@ void __56__VSApplicationController__notifyStartDidFailWithError___block_invoke(u
     _os_log_impl(&dword_270DD4000, v4, OS_LOG_TYPE_DEFAULT, "Application controller will notify delegate.", v5, 2u);
   }
 
-  v3[2](v3);
+  blockCopy[2](blockCopy);
 }
 
-- (void)_notifyDidUpdateLogoViewModel:(id)a3
+- (void)_notifyDidUpdateLogoViewModel:(id)model
 {
-  v5 = a3;
-  v4 = [(VSApplicationController *)self delegate];
+  modelCopy = model;
+  delegate = [(VSApplicationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 applicationController:self didUpdateLogoViewModel:v5];
+    [delegate applicationController:self didUpdateLogoViewModel:modelCopy];
   }
 }
 
 - (id)_bootURL
 {
-  v3 = [(VSApplicationController *)self preferences];
-  v4 = [v3 overridingAppBootURL];
+  preferences = [(VSApplicationController *)self preferences];
+  overridingAppBootURL = [preferences overridingAppBootURL];
 
-  if (!v4)
+  if (!overridingAppBootURL)
   {
-    v4 = [(VSApplicationController *)self fetchedURL];
+    overridingAppBootURL = [(VSApplicationController *)self fetchedURL];
   }
 
-  v5 = [MEMORY[0x277CE2298] optionalWithObject:v4];
+  v5 = [MEMORY[0x277CE2298] optionalWithObject:overridingAppBootURL];
 
   return v5;
 }
@@ -1847,72 +1847,72 @@ void __56__VSApplicationController__notifyStartDidFailWithError___block_invoke(u
 {
   v29 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(VSApplicationController *)self identityProvider];
-  v5 = [v4 authenticationURL];
-  v6 = [v5 absoluteString];
+  identityProvider = [(VSApplicationController *)self identityProvider];
+  authenticationURL = [identityProvider authenticationURL];
+  absoluteString = [authenticationURL absoluteString];
 
-  if (v6)
+  if (absoluteString)
   {
-    [v3 setObject:v6 forKey:@"location"];
+    [v3 setObject:absoluteString forKey:@"location"];
   }
 
-  v7 = [(VSApplicationController *)self userAccounts];
+  userAccounts = [(VSApplicationController *)self userAccounts];
 
-  if (v7)
+  if (userAccounts)
   {
-    v8 = [(VSApplicationController *)self userAccounts];
+    userAccounts2 = [(VSApplicationController *)self userAccounts];
 
-    if (!v8)
+    if (!userAccounts2)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self userAccounts] parameter must not be nil."];
     }
 
-    v9 = [(VSApplicationController *)self userAccounts];
-    v10 = [MEMORY[0x277CE2208] applicationUserAccountsFromUserAccounts:v9];
+    userAccounts3 = [(VSApplicationController *)self userAccounts];
+    v10 = [MEMORY[0x277CE2208] applicationUserAccountsFromUserAccounts:userAccounts3];
     [v3 setObject:v10 forKey:@"userAccounts"];
   }
 
-  v11 = [(VSApplicationController *)self applicationReadyCallback];
-  if (v11)
+  applicationReadyCallback = [(VSApplicationController *)self applicationReadyCallback];
+  if (applicationReadyCallback)
   {
-    [v3 setObject:v11 forKey:@"callback"];
+    [v3 setObject:applicationReadyCallback forKey:@"callback"];
   }
 
-  v12 = [(VSApplicationController *)self identityProvider];
-  v13 = [v12 userToken];
+  identityProvider2 = [(VSApplicationController *)self identityProvider];
+  userToken = [identityProvider2 userToken];
 
-  if (v13)
+  if (userToken)
   {
-    v14 = [(VSApplicationController *)self identityProvider];
-    v15 = [v14 userToken];
+    identityProvider3 = [(VSApplicationController *)self identityProvider];
+    userToken2 = [identityProvider3 userToken];
 
-    if (!v15)
+    if (!userToken2)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [[self identityProvider] userToken] parameter must not be nil."];
     }
 
-    v16 = [(VSApplicationController *)self identityProvider];
-    v17 = [v16 userToken];
+    identityProvider4 = [(VSApplicationController *)self identityProvider];
+    userToken3 = [identityProvider4 userToken];
 
     v18 = VSDefaultLogObject();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(VSApplicationController *)self identityProvider];
-      v20 = [v19 providerID];
+      identityProvider5 = [(VSApplicationController *)self identityProvider];
+      providerID = [identityProvider5 providerID];
       v25 = 138412546;
-      v26 = v17;
+      v26 = userToken3;
       v27 = 2112;
-      v28 = v20;
+      v28 = providerID;
       _os_log_impl(&dword_270DD4000, v18, OS_LOG_TYPE_DEFAULT, "Add userToken %@ in %@'s js launch params", &v25, 0x16u);
     }
 
-    [v3 setObject:v17 forKey:@"userToken"];
+    [v3 setObject:userToken3 forKey:@"userToken"];
   }
 
-  v21 = [(VSApplicationController *)self accountProviderAuthenticationToken];
-  if (v21)
+  accountProviderAuthenticationToken = [(VSApplicationController *)self accountProviderAuthenticationToken];
+  if (accountProviderAuthenticationToken)
   {
-    [v3 setObject:v21 forKey:@"accountProviderAuthenticationToken"];
+    [v3 setObject:accountProviderAuthenticationToken forKey:@"accountProviderAuthenticationToken"];
   }
 
   v22 = [v3 copy];
@@ -1922,16 +1922,16 @@ void __56__VSApplicationController__notifyStartDidFailWithError___block_invoke(u
   return v22;
 }
 
-- (id)_applicationControllerAlertForJavascriptAlert:(id)a3
+- (id)_applicationControllerAlertForJavascriptAlert:(id)alert
 {
   v28 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  alertCopy = alert;
   v18 = objc_alloc_init(VSApplicationControllerAlert);
-  v4 = [v17 title];
-  [(VSApplicationControllerAlert *)v18 setTitle:v4];
+  title = [alertCopy title];
+  [(VSApplicationControllerAlert *)v18 setTitle:title];
 
-  v5 = [v17 message];
-  [(VSApplicationControllerAlert *)v18 setMessage:v5];
+  message = [alertCopy message];
+  [(VSApplicationControllerAlert *)v18 setMessage:message];
 
   objc_initWeak(&location, self);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1939,12 +1939,12 @@ void __56__VSApplicationController__notifyStartDidFailWithError___block_invoke(u
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v17 actions];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  actions = [alertCopy actions];
+  v8 = [actions countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
     v9 = *v23;
-    obj = v7;
+    obj = actions;
     do
     {
       for (i = 0; i != v8; ++i)
@@ -1956,11 +1956,11 @@ void __56__VSApplicationController__notifyStartDidFailWithError___block_invoke(u
 
         v11 = *(*(&v22 + 1) + 8 * i);
         v12 = objc_alloc_init(VSApplicationControllerAlertAction);
-        v13 = [v11 title];
-        [(VSApplicationControllerAlertAction *)v12 setTitle:v13];
+        title2 = [v11 title];
+        [(VSApplicationControllerAlertAction *)v12 setTitle:title2];
 
-        v14 = [v11 style];
-        [(VSApplicationControllerAlertAction *)v12 setStyle:[VSApplicationControllerAlertAction styleFromString:v14]];
+        style = [v11 style];
+        [(VSApplicationControllerAlertAction *)v12 setStyle:[VSApplicationControllerAlertAction styleFromString:style]];
 
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
@@ -1973,7 +1973,7 @@ void __56__VSApplicationController__notifyStartDidFailWithError___block_invoke(u
         objc_destroyWeak(&v21);
       }
 
-      v7 = obj;
+      actions = obj;
       v8 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
@@ -2020,12 +2020,12 @@ void __73__VSApplicationController__applicationControllerAlertForJavascriptAlert
   }
 }
 
-- (void)_makeJavascriptRequestForRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)_makeJavascriptRequestForRequest:(id)request withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  requestCopy = request;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!requestCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The request parameter must not be nil."];
     if (v8)
@@ -2038,7 +2038,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -2048,16 +2048,16 @@ LABEL_3:
   v10 = [objc_alloc(MEMORY[0x277CE2308]) initWithOperation:v9 timeout:10.0];
   v16 = MEMORY[0x277D85DD0];
   v17 = v9;
-  v18 = v6;
+  v18 = requestCopy;
   v19 = v8;
   v11 = v8;
-  v12 = v6;
+  v12 = requestCopy;
   v13 = v9;
   v14 = VSMainThreadOperationWithBlock();
   [v14 addDependency:{v10, v16, 3221225472, __82__VSApplicationController__makeJavascriptRequestForRequest_withCompletionHandler___block_invoke, &unk_279E19EF8}];
   VSEnqueueCompletionOperation();
-  v15 = [(VSApplicationController *)self privateQueue];
-  [v15 addOperation:v10];
+  privateQueue = [(VSApplicationController *)self privateQueue];
+  [privateQueue addOperation:v10];
 }
 
 void __82__VSApplicationController__makeJavascriptRequestForRequest_withCompletionHandler___block_invoke(uint64_t a1)
@@ -2070,20 +2070,20 @@ void __82__VSApplicationController__makeJavascriptRequestForRequest_withCompleti
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)_javascriptRequestForRequest:(id)a3 withVerificationData:(id)a4
+- (id)_javascriptRequestForRequest:(id)request withVerificationData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 type];
-  if (v8 <= 2)
+  requestCopy = request;
+  dataCopy = data;
+  type = [requestCopy type];
+  if (type <= 2)
   {
-    if (v8 == 1)
+    if (type == 1)
     {
       v9 = VSJSRequestTypeUIAuthN;
       goto LABEL_12;
     }
 
-    if (v8 == 2)
+    if (type == 2)
     {
       v9 = VSJSRequestTypeAuthN;
       goto LABEL_12;
@@ -2092,7 +2092,7 @@ void __82__VSApplicationController__makeJavascriptRequestForRequest_withCompleti
 
   else
   {
-    switch(v8)
+    switch(type)
     {
       case 3:
         v9 = VSJSRequestTypeUserMetadata;
@@ -2110,16 +2110,16 @@ LABEL_12:
 
   v18 = MEMORY[0x277CBEAD8];
   v19 = *MEMORY[0x277CBE660];
-  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "type")}];
+  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(requestCopy, "type")}];
   [v18 raise:v19 format:{@"Unexpected request type: %@", v20}];
 
   v10 = 0;
 LABEL_13:
-  v11 = [v6 authenticationToken];
-  v12 = [v6 SAMLRequest];
-  v13 = [v6 requestorVerificationToken];
-  v14 = [v6 attributeNames];
-  v15 = [v7 base64EncodedStringWithOptions:0];
+  authenticationToken = [requestCopy authenticationToken];
+  sAMLRequest = [requestCopy SAMLRequest];
+  requestorVerificationToken = [requestCopy requestorVerificationToken];
+  attributeNames = [requestCopy attributeNames];
+  v15 = [dataCopy base64EncodedStringWithOptions:0];
 
   if (![v15 length])
   {
@@ -2127,26 +2127,26 @@ LABEL_13:
     v15 = 0;
   }
 
-  v16 = [(VSApplicationController *)self _makeJavaScriptRequest];
-  [v16 setRequestType:v10];
-  [v16 setRequestBody:v12];
-  [v16 setCurrentAuthentication:v11];
-  [v16 setRequestorVerificationToken:v13];
-  [v16 setAttributeNames:v14];
-  [v16 setAppleVerificationToken:v15];
+  _makeJavaScriptRequest = [(VSApplicationController *)self _makeJavaScriptRequest];
+  [_makeJavaScriptRequest setRequestType:v10];
+  [_makeJavaScriptRequest setRequestBody:sAMLRequest];
+  [_makeJavaScriptRequest setCurrentAuthentication:authenticationToken];
+  [_makeJavaScriptRequest setRequestorVerificationToken:requestorVerificationToken];
+  [_makeJavaScriptRequest setAttributeNames:attributeNames];
+  [_makeJavaScriptRequest setAppleVerificationToken:v15];
 
-  return v16;
+  return _makeJavaScriptRequest;
 }
 
-- (id)_errorForJavascriptErrorValueValue:(id)a3 withRequest:(id)a4
+- (id)_errorForJavascriptErrorValueValue:(id)value withRequest:(id)request
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  valueCopy = value;
+  requestCopy = request;
+  v7 = requestCopy;
+  if (requestCopy)
   {
-    v8 = [v6 type] == 1;
+    v8 = [requestCopy type] == 1;
   }
 
   else
@@ -2154,7 +2154,7 @@ LABEL_13:
     v8 = 0;
   }
 
-  v9 = [v5 toObject];
+  toObject = [valueCopy toObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2162,16 +2162,16 @@ LABEL_13:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 138412290;
-      v27 = v5;
+      v27 = valueCopy;
       _os_log_impl(&dword_270DD4000, v10, OS_LOG_TYPE_DEFAULT, "Application passed an error object: %@", &v26, 0xCu);
     }
 
     v11 = objc_alloc_init(VSJSError);
-    v12 = [v5 valueForProperty:@"code"];
+    v12 = [valueCopy valueForProperty:@"code"];
     -[VSJSError setCode:](v11, "setCode:", [v12 toUInt32]);
-    v13 = [v5 valueForProperty:@"message"];
-    v14 = [v13 toString];
-    [(VSJSError *)v11 setMessage:v14];
+    v13 = [valueCopy valueForProperty:@"message"];
+    toString = [v13 toString];
+    [(VSJSError *)v11 setMessage:toString];
   }
 
   else
@@ -2188,7 +2188,7 @@ LABEL_13:
       [VSApplicationController _errorForJavascriptErrorValueValue:withRequest:];
     }
 
-    if (!v9)
+    if (!toObject)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The errorObject parameter must not be nil."];
     }
@@ -2203,7 +2203,7 @@ LABEL_13:
       v16 = 4;
     }
 
-    v12 = v9;
+    v12 = toObject;
     v11 = objc_alloc_init(VSJSError);
     [(VSJSError *)v11 setCode:v16];
     [(VSJSError *)v11 setMessage:v12];
@@ -2228,11 +2228,11 @@ LABEL_22:
   }
 
   v17 = v11;
-  v18 = [(VSJSError *)v17 error];
-  v19 = [(VSJSError *)v17 code];
-  if (v19 <= 2)
+  error = [(VSJSError *)v17 error];
+  code = [(VSJSError *)v17 code];
+  if (code <= 2)
   {
-    if (v19 == 1)
+    if (code == 1)
     {
       if (v8)
       {
@@ -2250,7 +2250,7 @@ LABEL_34:
       goto LABEL_38;
     }
 
-    if (v19 == 2)
+    if (code == 2)
     {
       goto LABEL_34;
     }
@@ -2267,13 +2267,13 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (v19 == 3)
+  if (code == 3)
   {
     v25 = VSInvalidVerificationTokenError();
     goto LABEL_40;
   }
 
-  if (v19 != 4)
+  if (code != 4)
   {
     goto LABEL_31;
   }
@@ -2299,9 +2299,9 @@ LABEL_26:
 - (id)_makeJavaScriptRequest
 {
   v3 = [VSJSRequest alloc];
-  v4 = [(VSApplicationController *)self application];
-  v5 = [v4 appContext];
-  v6 = [(IKJSObject *)v3 initWithAppContext:v5];
+  application = [(VSApplicationController *)self application];
+  appContext = [application appContext];
+  v6 = [(IKJSObject *)v3 initWithAppContext:appContext];
 
   return v6;
 }

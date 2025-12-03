@@ -1,30 +1,30 @@
 @interface NRDevicePairingManagerContext
 - (NSString)description;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)dealloc;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)peripheralManagerDidUpdateState:(id)a3;
-- (void)requestConfigurationForListener:(id)a3 session:(id)a4 sessionConfig:(id)a5 childConfig:(id)a6 validateAuthBlock:(id)a7 responseBlock:(id)a8;
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5;
-- (void)scalablePipeManagerDidUpdateState:(id)a3;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)peripheralManagerDidUpdateState:(id)state;
+- (void)requestConfigurationForListener:(id)listener session:(id)session sessionConfig:(id)config childConfig:(id)childConfig validateAuthBlock:(id)block responseBlock:(id)responseBlock;
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect;
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error;
+- (void)scalablePipeManagerDidUpdateState:(id)state;
 @end
 
 @implementation NRDevicePairingManagerContext
 
-- (void)requestConfigurationForListener:(id)a3 session:(id)a4 sessionConfig:(id)a5 childConfig:(id)a6 validateAuthBlock:(id)a7 responseBlock:(id)a8
+- (void)requestConfigurationForListener:(id)listener session:(id)session sessionConfig:(id)config childConfig:(id)childConfig validateAuthBlock:(id)block responseBlock:(id)responseBlock
 {
-  v18 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  listenerCopy = listener;
+  sessionCopy = session;
+  configCopy = config;
+  childConfigCopy = childConfig;
+  blockCopy = block;
+  responseBlockCopy = responseBlock;
   if (qword_1002291E8 != -1)
   {
     dispatch_once(&qword_1002291E8, &stru_1001FC218);
@@ -40,24 +40,24 @@
     _NRLogWithArgs();
   }
 
-  (*(v17 + 2))(v17, 0, 0, 0);
+  (*(responseBlockCopy + 2))(responseBlockCopy, 0, 0, 0);
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v20)
+  managerCopy = manager;
+  disconnectCopy = disconnect;
+  errorCopy = error;
+  if (managerCopy)
   {
-    if (v8)
+    if (disconnectCopy)
     {
-      v10 = [v8 peer];
-      v11 = [v10 identifier];
+      peer = [disconnectCopy peer];
+      identifier = [peer identifier];
 
-      if (v11)
+      if (identifier)
       {
-        v12 = sub_1001232AC(&self->super.isa, v11);
+        v12 = sub_1001232AC(&self->super.isa, identifier);
         if (v12)
         {
           v13 = v12;
@@ -115,7 +115,7 @@
 
         if (!IsLevelEnabled)
         {
-          v11 = 0;
+          identifier = 0;
           goto LABEL_23;
         }
 
@@ -133,7 +133,7 @@ LABEL_23:
     if (v17)
     {
 LABEL_30:
-      v11 = sub_100123258();
+      identifier = sub_100123258();
       _NRLogWithArgs();
       goto LABEL_23;
     }
@@ -153,25 +153,25 @@ LABEL_30:
 LABEL_24:
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect
 {
-  v62 = a3;
-  v6 = a4;
-  if (v62)
+  managerCopy = manager;
+  connectCopy = connect;
+  if (managerCopy)
   {
-    if (v6)
+    if (connectCopy)
     {
-      v7 = [v6 peer];
-      v8 = [v7 identifier];
+      peer = [connectCopy peer];
+      identifier = [peer identifier];
 
-      if (!v8)
+      if (!identifier)
       {
         v45 = sub_100123258();
         IsLevelEnabled = _NRLogIsLevelEnabled();
 
         if (!IsLevelEnabled)
         {
-          v8 = 0;
+          identifier = 0;
           goto LABEL_33;
         }
 
@@ -180,7 +180,7 @@ LABEL_24:
         goto LABEL_32;
       }
 
-      v9 = sub_1001232AC(&self->super.isa, v8);
+      v9 = sub_1001232AC(&self->super.isa, identifier);
       if (!v9)
       {
         if (qword_1002291E8 != -1)
@@ -218,7 +218,7 @@ LABEL_24:
         _NRLogWithArgs();
       }
 
-      v11 = v6;
+      v11 = connectCopy;
       if (*(v10 + 12))
       {
         sub_10012357C(v10);
@@ -231,10 +231,10 @@ LABEL_24:
         sub_100126038(WeakRetained, *(v10 + 4));
       }
 
-      objc_storeStrong(v10 + 12, a4);
-      v13 = [v11 channel];
-      *(v10 + 13) = v13;
-      if (v13)
+      objc_storeStrong(v10 + 12, connect);
+      channel = [v11 channel];
+      *(v10 + 13) = channel;
+      if (channel)
       {
         os_channel_ring_id();
         v14 = *(v10 + 13);
@@ -313,8 +313,8 @@ LABEL_24:
                 dispatch_resume(*(v10 + 17));
                 *(v10 + 9) = 0;
                 v33 = [NRDeviceIdentifier alloc];
-                v34 = [*(v10 + 4) uuid];
-                v35 = [v33 initWithUUID:v34];
+                uuid = [*(v10 + 4) uuid];
+                v35 = [v33 initWithUUID:uuid];
 
                 v36 = [[NRBluetoothPacketParser alloc] initWithDeviceIdentifier:v35 queue:*(v10 + 3)];
                 [v36 setDirect:1];
@@ -415,7 +415,7 @@ LABEL_52:
     if (v44)
     {
 LABEL_40:
-      v8 = sub_100123258();
+      identifier = sub_100123258();
       _NRLogWithArgs();
       goto LABEL_33;
     }
@@ -435,27 +435,27 @@ LABEL_40:
 LABEL_34:
 }
 
-- (void)scalablePipeManagerDidUpdateState:(id)a3
+- (void)scalablePipeManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
+  stateCopy = state;
+  v5 = stateCopy;
   if (self)
   {
-    if (self->_pipeManager != v4)
+    if (self->_pipeManager != stateCopy)
     {
       goto LABEL_18;
     }
   }
 
-  else if (v4)
+  else if (stateCopy)
   {
     goto LABEL_18;
   }
 
-  v6 = [(CBScalablePipeManager *)v4 state];
-  if (v6)
+  state = [(CBScalablePipeManager *)stateCopy state];
+  if (state)
   {
-    if (v6 == 5)
+    if (state == 5)
     {
       if (self)
       {
@@ -530,13 +530,13 @@ LABEL_34:
 LABEL_18:
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v11 = a4;
-  v8 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   if (self)
   {
-    if (self->_centralManager != a3)
+    if (self->_centralManager != manager)
     {
 LABEL_3:
       if (qword_1002291E8 != -1)
@@ -558,13 +558,13 @@ LABEL_3:
     }
   }
 
-  else if (a3)
+  else if (manager)
   {
     goto LABEL_3;
   }
 
-  v9 = [v11 identifier];
-  v10 = sub_1001232AC(&self->super.isa, v9);
+  identifier = [peripheralCopy identifier];
+  v10 = sub_1001232AC(&self->super.isa, identifier);
 
   if (v10)
   {
@@ -607,13 +607,13 @@ LABEL_3:
 LABEL_25:
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v11 = a4;
-  v8 = a5;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   if (self)
   {
-    if (self->_centralManager != a3)
+    if (self->_centralManager != manager)
     {
 LABEL_3:
       if (qword_1002291E8 != -1)
@@ -635,13 +635,13 @@ LABEL_3:
     }
   }
 
-  else if (a3)
+  else if (manager)
   {
     goto LABEL_3;
   }
 
-  v9 = [v11 identifier];
-  v10 = sub_1001232AC(&self->super.isa, v9);
+  identifier = [peripheralCopy identifier];
+  v10 = sub_1001232AC(&self->super.isa, identifier);
 
   if (v10)
   {
@@ -684,9 +684,9 @@ LABEL_3:
 LABEL_25:
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a4;
+  peripheralCopy = peripheral;
   if (self)
   {
     centralManager = self->_centralManager;
@@ -697,11 +697,11 @@ LABEL_25:
     centralManager = 0;
   }
 
-  v10 = v6;
-  if (centralManager == a3)
+  v10 = peripheralCopy;
+  if (centralManager == manager)
   {
-    v8 = [v6 identifier];
-    v9 = sub_1001232AC(&self->super.isa, v8);
+    identifier = [peripheralCopy identifier];
+    v9 = sub_1001232AC(&self->super.isa, identifier);
 
     if (v9)
     {
@@ -765,13 +765,13 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
+  stateCopy = state;
+  v5 = stateCopy;
   if (self)
   {
-    if (self->_centralManager != v4)
+    if (self->_centralManager != stateCopy)
     {
 LABEL_3:
       if (qword_1002291E8 != -1)
@@ -793,22 +793,22 @@ LABEL_3:
     }
   }
 
-  else if (v4)
+  else if (stateCopy)
   {
     goto LABEL_3;
   }
 
-  v6 = [(CBCentralManager *)v4 state];
-  if (v6)
+  state = [(CBCentralManager *)stateCopy state];
+  if (state)
   {
-    if (v6 == 5)
+    if (state == 5)
     {
       if (self)
       {
-        v7 = [(NRDevicePairingManagerInfo *)self->_info pairingCriteria];
-        v8 = [v7 migrationPairing];
+        pairingCriteria = [(NRDevicePairingManagerInfo *)self->_info pairingCriteria];
+        migrationPairing = [pairingCriteria migrationPairing];
 
-        if (v8)
+        if (migrationPairing)
         {
           sub_10012DBA8(&self->super.isa);
         }
@@ -863,9 +863,9 @@ LABEL_3:
 LABEL_26:
 }
 
-- (void)peripheralManagerDidUpdateState:(id)a3
+- (void)peripheralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (qword_1002291E8 != -1)
   {
     dispatch_once(&qword_1002291E8, &stru_1001FC218);
@@ -879,29 +879,29 @@ LABEL_26:
     }
 
     v3 = qword_1002291E0;
-    [v4 state];
+    [stateCopy state];
     _NRLogWithArgs();
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  errorCopy = error;
   if (self)
   {
-    if (self->_pairingAgent == v9)
+    if (self->_pairingAgent == agentCopy)
     {
       goto LABEL_3;
     }
   }
 
-  else if (!v9)
+  else if (!agentCopy)
   {
 LABEL_3:
-    v12 = [v10 identifier];
-    v13 = sub_1001232AC(&self->super.isa, v12);
+    identifier = [pairingCopy identifier];
+    v13 = sub_1001232AC(&self->super.isa, identifier);
 
     if (!v13)
     {
@@ -911,7 +911,7 @@ LABEL_3:
       if (IsLevelEnabled)
       {
         v44 = sub_100123258();
-        v79 = [v10 identifier];
+        identifier2 = [pairingCopy identifier];
         _NRLogWithArgs();
       }
 
@@ -936,22 +936,22 @@ LABEL_3:
       }
 
       *(v13 + 11) = 0;
-      v84 = v11;
-      v14 = v11;
+      v84 = errorCopy;
+      v14 = errorCopy;
       v15 = v14;
       if (v14 && [v14 code] == 1)
       {
         v16 = CBInternalErrorDomain;
-        v5 = [v15 domain];
-        v12 = [v5 isEqualToString:v16];
+        domain = [v15 domain];
+        identifier = [domain isEqualToString:v16];
 
-        if (v12)
+        if (identifier)
         {
-          v17 = [v15 userInfo];
-          v5 = [v17 objectForKeyedSubscript:CBOriginalPeerIdentifierErrorKey];
+          userInfo = [v15 userInfo];
+          domain = [userInfo objectForKeyedSubscript:CBOriginalPeerIdentifierErrorKey];
 
-          v82 = v5;
-          if (!v5)
+          v82 = domain;
+          if (!domain)
           {
             v58 = sub_100123258();
             v59 = _NRLogIsLevelEnabled();
@@ -967,7 +967,7 @@ LABEL_3:
             goto LABEL_55;
           }
 
-          v12 = &v80;
+          identifier = &v80;
           v18 = xpc_dictionary_create(0, 0, 0);
           if (v18)
           {
@@ -994,9 +994,9 @@ LABEL_3:
 
               else
               {
-                v23 = [v21 bytes];
+                bytes = [v21 bytes];
                 v24 = [v21 length];
-                xpc_dictionary_set_data(v83, v19, v23, v24);
+                xpc_dictionary_set_data(v83, v19, bytes, v24);
               }
 
               v20 = v81;
@@ -1084,7 +1084,7 @@ LABEL_34:
                 }
 
 LABEL_55:
-                v11 = v84;
+                errorCopy = v84;
                 goto LABEL_56;
               }
 
@@ -1135,14 +1135,14 @@ LABEL_55:
       if (v38)
       {
         v39 = nrXPCKeyUnderlyingError;
-        v12 = v38;
-        v5 = v15;
+        identifier = v38;
+        domain = v15;
         if (v39)
         {
           if (v15)
           {
             *uuid = 0;
-            v40 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:uuid];
+            v40 = [NSKeyedArchiver archivedDataWithRootObject:domain requiringSecureCoding:1 error:uuid];
             v41 = *uuid;
             if (v41 || ![v40 length])
             {
@@ -1158,7 +1158,7 @@ LABEL_55:
 
             else
             {
-              xpc_dictionary_set_data(v12, v39, [v40 bytes], objc_msgSend(v40, "length"));
+              xpc_dictionary_set_data(identifier, v39, [v40 bytes], objc_msgSend(v40, "length"));
             }
 
             goto LABEL_52;
@@ -1177,7 +1177,7 @@ LABEL_52:
 
           if (self)
           {
-            sub_1001246D8(self, 0xFFFFFFFFFFFFF442, 0xCuLL, v12);
+            sub_1001246D8(self, 0xFFFFFFFFFFFFF442, 0xCuLL, identifier);
             sub_100129A18(self);
           }
 
@@ -1206,8 +1206,8 @@ LABEL_68:
       if (!v46)
       {
 LABEL_63:
-        v9 = _os_log_pack_size();
-        v10 = &v80 - ((__chkstk_darwin() + 15) & 0xFFFFFFFFFFFFFFF0);
+        agentCopy = _os_log_pack_size();
+        pairingCopy = &v80 - ((__chkstk_darwin() + 15) & 0xFFFFFFFFFFFFFFF0);
         v48 = *__error();
         v49 = _os_log_pack_fill();
         sub_1000F4320(v49, "nr_xpc_dictionary_create");
@@ -1275,23 +1275,23 @@ LABEL_56:
 LABEL_57:
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v6 = a4;
-  v7 = v6;
+  pairingCopy = pairing;
+  v7 = pairingCopy;
   if (self)
   {
-    if (self->_pairingAgent == a3)
+    if (self->_pairingAgent == agent)
     {
       goto LABEL_3;
     }
   }
 
-  else if (!a3)
+  else if (!agent)
   {
 LABEL_3:
-    v8 = [v6 identifier];
-    v9 = sub_1001232AC(&self->super.isa, v8);
+    identifier = [pairingCopy identifier];
+    v9 = sub_1001232AC(&self->super.isa, identifier);
 
     if (!v9)
     {
@@ -1304,7 +1304,7 @@ LABEL_3:
       }
 
       v18 = sub_100123258();
-      v27 = [v7 identifier];
+      identifier2 = [v7 identifier];
       _NRLogWithArgs();
 
       goto LABEL_24;
@@ -1333,8 +1333,8 @@ LABEL_3:
 
       *(v9 + 11) = 0;
       sub_100172950(NRDLocalDevice, *(v9 + 248));
-      v10 = [v7 identifier];
-      sub_10017440C(NRDLocalDevice, v10, *(v9 + 248));
+      identifier3 = [v7 identifier];
+      sub_10017440C(NRDLocalDevice, identifier3, *(v9 + 248));
 
       if (self)
       {
@@ -1428,11 +1428,11 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
   v13 = &qword_100229000;
   if (qword_1002291E8 != -1)
   {
@@ -1446,10 +1446,10 @@ LABEL_26:
       dispatch_once(&qword_1002291E8, &stru_1001FC218);
     }
 
-    v39 = a5;
-    v40 = v11;
+    typeCopy2 = type;
+    v40 = pairingCopy;
     v37 = 1091;
-    v38 = self;
+    selfCopy6 = self;
     v35 = "";
     v36 = "[NRDevicePairingManagerContext pairingAgent:peerDidRequestPairing:type:passkey:]";
     _NRLogWithArgs();
@@ -1457,16 +1457,16 @@ LABEL_26:
 
   if (self)
   {
-    if (self->_pairingAgent == v10)
+    if (self->_pairingAgent == agentCopy)
     {
       goto LABEL_9;
     }
   }
 
-  else if (!v10)
+  else if (!agentCopy)
   {
 LABEL_9:
-    if (a5 != 5)
+    if (type != 5)
     {
       if (qword_1002291E8 != -1)
       {
@@ -1480,8 +1480,8 @@ LABEL_9:
           dispatch_once(&qword_1002291E8, &stru_1001FC218);
         }
 
-        v38 = self;
-        v39 = a5;
+        selfCopy6 = self;
+        typeCopy2 = type;
         v37 = 1144;
         v35 = "";
         v36 = "[NRDevicePairingManagerContext pairingAgent:peerDidRequestPairing:type:passkey:]";
@@ -1491,8 +1491,8 @@ LABEL_9:
       goto LABEL_38;
     }
 
-    v14 = [v11 identifier];
-    v15 = sub_1001232AC(&self->super.isa, v14);
+    identifier = [pairingCopy identifier];
+    v15 = sub_1001232AC(&self->super.isa, identifier);
 
     if (!v15)
     {
@@ -1505,8 +1505,8 @@ LABEL_9:
       }
 
       v24 = sub_100123258();
-      [v11 identifier];
-      v39 = v38 = self;
+      [pairingCopy identifier];
+      typeCopy2 = selfCopy6 = self;
       v37 = 1104;
       v35 = "";
       v36 = "[NRDevicePairingManagerContext pairingAgent:peerDidRequestPairing:type:passkey:]";
@@ -1528,15 +1528,15 @@ LABEL_38:
           dispatch_once(&qword_1002291E8, &stru_1001FC218);
         }
 
-        v38 = self;
-        v39 = v11;
+        selfCopy6 = self;
+        typeCopy2 = pairingCopy;
         v37 = 1149;
         v35 = "";
         v36 = "[NRDevicePairingManagerContext pairingAgent:peerDidRequestPairing:type:passkey:]";
         _NRLogWithArgs();
       }
 
-      [(CBPairingAgent *)v10 respondToPairingRequest:v11 type:a5 accept:0 data:0, v35, v36, v37, v38, v39, v40];
+      [(CBPairingAgent *)agentCopy respondToPairingRequest:pairingCopy type:type accept:0 data:0, v35, v36, v37, selfCopy6, typeCopy2, v40];
       goto LABEL_45;
     }
 
@@ -1565,8 +1565,8 @@ LABEL_38:
                 dispatch_once(&qword_1002291E8, &stru_1001FC218);
               }
 
-              v38 = v15;
-              v39 = v11;
+              selfCopy6 = v15;
+              typeCopy2 = pairingCopy;
               v37 = 1129;
               v35 = "";
               v36 = "[NRDevicePairingManagerContext pairingAgent:peerDidRequestPairing:type:passkey:]";
@@ -1575,8 +1575,8 @@ LABEL_38:
 
             v41 = CBPairingAgentPairingDataOOBTKKey;
             v42 = v20;
-            v21 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1, v35, v36, v37, v38, v39, v40];
-            [(CBPairingAgent *)v10 respondToPairingRequest:v11 type:5 accept:1 data:v21];
+            v21 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1, v35, v36, v37, selfCopy6, typeCopy2, v40];
+            [(CBPairingAgent *)agentCopy respondToPairingRequest:pairingCopy type:5 accept:1 data:v21];
 
             goto LABEL_45;
           }
@@ -1589,7 +1589,7 @@ LABEL_38:
         {
           v34 = sub_100123258();
           v37 = 1141;
-          v38 = self;
+          selfCopy6 = self;
           v35 = "";
           v36 = "[NRDevicePairingManagerContext pairingAgent:peerDidRequestPairing:type:passkey:]";
           _NRLogWithArgs();
@@ -1608,8 +1608,8 @@ LABEL_38:
       }
 
       v24 = sub_100123258();
-      v38 = self;
-      v39 = v15;
+      selfCopy6 = self;
+      typeCopy2 = v15;
       v37 = 1122;
       v35 = "";
       v36 = "[NRDevicePairingManagerContext pairingAgent:peerDidRequestPairing:type:passkey:]";
@@ -1635,8 +1635,8 @@ LABEL_33:
         inProgressPairingCandidateIdentifier = self->_inProgressPairingCandidateIdentifier;
 LABEL_34:
         v24 = v22;
-        v38 = self;
-        v39 = inProgressPairingCandidateIdentifier;
+        selfCopy6 = self;
+        typeCopy2 = inProgressPairingCandidateIdentifier;
         v37 = 1117;
         v35 = "";
         v36 = "[NRDevicePairingManagerContext pairingAgent:peerDidRequestPairing:type:passkey:]";

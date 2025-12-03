@@ -1,12 +1,12 @@
 @interface BuddyCursiveTextView
 - (BuddyCursiveTextView)init;
-- (BuddyCursiveTextView)initWithFrame:(CGRect)a3;
+- (BuddyCursiveTextView)initWithFrame:(CGRect)frame;
 - (void)configure;
 - (void)layoutSubviews;
-- (void)loadText:(id)a3 pointSize:(double)a4;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setFillColor:(id)a3;
-- (void)setTime:(float)a3;
+- (void)loadText:(id)text pointSize:(double)size;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setFillColor:(id)color;
+- (void)setTime:(float)time;
 @end
 
 @implementation BuddyCursiveTextView
@@ -29,14 +29,14 @@
   return v2;
 }
 
-- (BuddyCursiveTextView)initWithFrame:(CGRect)a3
+- (BuddyCursiveTextView)initWithFrame:(CGRect)frame
 {
-  v8 = a3;
+  frameCopy = frame;
   v6 = a2;
   location = 0;
   v5.receiver = self;
   v5.super_class = BuddyCursiveTextView;
-  location = [(BuddyCursiveTextView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  location = [(BuddyCursiveTextView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&location, location);
   if (location)
   {
@@ -63,42 +63,42 @@
   v10 = self->_textLayer;
   v11 = sub_1000BB0E4();
   [(CAShapeLayer *)v10 setShadowOffset:v11, v12, *&v11, *&v12];
-  v13 = [(BuddyCursiveTextView *)self layer];
-  [v13 addSublayer:self->_textLayer];
+  layer = [(BuddyCursiveTextView *)self layer];
+  [layer addSublayer:self->_textLayer];
 }
 
 - (void)layoutSubviews
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = BuddyCursiveTextView;
   [(BuddyCursiveTextView *)&v7 layoutSubviews];
-  textLayer = v9->_textLayer;
-  [(BuddyCursiveTextView *)v9 bounds];
+  textLayer = selfCopy->_textLayer;
+  [(BuddyCursiveTextView *)selfCopy bounds];
   [(CAShapeLayer *)textLayer setFrame:v3, v4, v5, v6, *&v3, *&v4, *&v5, *&v6];
 }
 
-- (void)loadText:(id)a3 pointSize:(double)a4
+- (void)loadText:(id)text pointSize:(double)size
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
+  objc_storeStrong(location, text);
+  sizeCopy = size;
   v5 = [BuddyCursiveTextPath alloc];
   v6 = [(BuddyCursiveTextPath *)v5 initWithURL:location[0]];
-  textPath = v17->_textPath;
-  v17->_textPath = v6;
+  textPath = selfCopy->_textPath;
+  selfCopy->_textPath = v6;
 
-  if (v17->_textPath)
+  if (selfCopy->_textPath)
   {
-    p_textTransform = &v17->_textTransform;
-    v9 = v17->_textPath;
-    [(CAShapeLayer *)v17->_textLayer bounds];
+    p_textTransform = &selfCopy->_textTransform;
+    v9 = selfCopy->_textPath;
+    [(CAShapeLayer *)selfCopy->_textLayer bounds];
     if (v9)
     {
-      [(BuddyCursiveTextPath *)v9 transformForRect:1 pointSize:v10 flipped:v11, v12, v13, v15];
+      [(BuddyCursiveTextPath *)v9 transformForRect:1 pointSize:v10 flipped:v11, v12, v13, sizeCopy];
     }
 
     else
@@ -112,9 +112,9 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setTime:(float)a3
+- (void)setTime:(float)time
 {
-  path = [(BuddyCursiveTextPath *)self->_textPath pathForTime:a3];
+  path = [(BuddyCursiveTextPath *)self->_textPath pathForTime:time];
   CopyByTransformingPath = CGPathCreateCopyByTransformingPath(path, &self->_textTransform);
   [(CAShapeLayer *)self->_textLayer setPath:CopyByTransformingPath];
   [(CAShapeLayer *)self->_textLayer setShadowPath:CopyByTransformingPath];
@@ -122,26 +122,26 @@
   CGPathRelease(path);
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  -[CAShapeLayer setFillColor:](v4->_textLayer, "setFillColor:", [location[0] CGColor]);
+  objc_storeStrong(location, color);
+  -[CAShapeLayer setFillColor:](selfCopy->_textLayer, "setFillColor:", [location[0] CGColor]);
   objc_storeStrong(location, 0);
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, label);
+  v3.receiver = selfCopy;
   v3.super_class = BuddyCursiveTextView;
   [(BuddyCursiveTextView *)&v3 setAccessibilityLabel:location[0]];
-  [(BuddyCursiveTextPath *)v5->_textPath setAccessibilityLabel:location[0]];
+  [(BuddyCursiveTextPath *)selfCopy->_textPath setAccessibilityLabel:location[0]];
   objc_storeStrong(location, 0);
 }
 

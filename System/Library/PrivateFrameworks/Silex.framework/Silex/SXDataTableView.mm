@@ -1,26 +1,26 @@
 @interface SXDataTableView
 - (CGPoint)originOffset;
 - (id)dataSource;
-- (id)initWithDataSource:(id *)a1;
+- (id)initWithDataSource:(id *)source;
 - (id)setDataSource:(id *)result;
-- (id)viewForColumnAtIndex:(uint64_t)a1;
-- (id)viewForRowAtIndex:(uint64_t)a1;
+- (id)viewForColumnAtIndex:(uint64_t)index;
+- (id)viewForRowAtIndex:(uint64_t)index;
 - (uint64_t)blueprint;
-- (uint64_t)indexPathForPoint:(CGFloat)a3;
+- (uint64_t)indexPathForPoint:(CGFloat)point;
 - (uint64_t)reset;
-- (void)draw:(uint64_t)a3 forIndexPath:(uint64_t)a4;
-- (void)layoutCellsForBlueprint:(id *)a1;
-- (void)prepareDrawingForBlueprint:(id *)a1;
+- (void)draw:(uint64_t)draw forIndexPath:(uint64_t)path;
+- (void)layoutCellsForBlueprint:(id *)blueprint;
+- (void)prepareDrawingForBlueprint:(id *)blueprint;
 - (void)setBlueprint:;
 @end
 
 @implementation SXDataTableView
 
-- (void)prepareDrawingForBlueprint:(id *)a1
+- (void)prepareDrawingForBlueprint:(id *)blueprint
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (blueprint)
   {
     if ([v3 numberOfRows])
     {
@@ -90,8 +90,8 @@
             v177.size.width = v27;
             v177.size.height = v29;
             v34 = v14 + CGRectGetHeight(v177);
-            v35 = [(SXDataTableView *)a1 dataSource];
-            v36 = [v35 backgroundColorForRowAtIndex:v5];
+            dataSource = [(SXDataTableView *)blueprint dataSource];
+            v36 = [dataSource backgroundColorForRowAtIndex:v5];
 
             if (v36)
             {
@@ -105,11 +105,11 @@
               v172 = v34;
               v168 = v36;
               v37 = MEMORY[0x1DA716BE0](v167);
-              [(SXDataTableView *)a1 draw:v37 forIndexPath:v5, v6];
+              [(SXDataTableView *)blueprint draw:v37 forIndexPath:v5, v6];
             }
 
-            v38 = [(SXDataTableView *)a1 dataSource];
-            v39 = [v38 backgroundColorForColumnAtIndex:v6];
+            dataSource2 = [(SXDataTableView *)blueprint dataSource];
+            v39 = [dataSource2 backgroundColorForColumnAtIndex:v6];
 
             if (v39)
             {
@@ -123,16 +123,16 @@
               v166 = v34;
               v162 = v39;
               v40 = MEMORY[0x1DA716BE0](v161);
-              [(SXDataTableView *)a1 draw:v40 forIndexPath:v5, v6];
+              [(SXDataTableView *)blueprint draw:v40 forIndexPath:v5, v6];
             }
 
-            v41 = [(SXDataTableView *)a1 dataSource];
-            v42 = [v41 backgroundColorForCellAtIndexPath:{v5, v6}];
+            dataSource3 = [(SXDataTableView *)blueprint dataSource];
+            v42 = [dataSource3 backgroundColorForCellAtIndexPath:{v5, v6}];
 
             if (v42)
             {
-              v43 = [(SXDataTableView *)a1 dataSource];
-              [v43 paddingForCellAtIndexPath:{v5, v6}];
+              dataSource4 = [(SXDataTableView *)blueprint dataSource];
+              [dataSource4 paddingForCellAtIndexPath:{v5, v6}];
               v45 = v44;
               v47 = v46;
               v82 = v48;
@@ -169,16 +169,16 @@
               v160 = v82 + v45 + v54;
               v156 = v42;
               v55 = MEMORY[0x1DA716BE0](v155);
-              [(SXDataTableView *)a1 draw:v55 forIndexPath:v5, v6];
+              [(SXDataTableView *)blueprint draw:v55 forIndexPath:v5, v6];
             }
 
-            v56 = [(SXDataTableView *)a1 dataSource];
-            v57 = [v56 rowDividerAtIndex:v5];
+            dataSource5 = [(SXDataTableView *)blueprint dataSource];
+            v57 = [dataSource5 rowDividerAtIndex:v5];
 
-            v58 = [v57 color];
-            if (v58)
+            color = [v57 color];
+            if (color)
             {
-              v59 = v58;
+              v59 = color;
               v182.origin.x = v24;
               v182.size.height = v94;
               v182.origin.y = rect;
@@ -201,17 +201,17 @@
                 v153 = rect1;
                 v154 = v94;
                 v61 = MEMORY[0x1DA716BE0](v149);
-                [(SXDataTableView *)a1 draw:v61 forIndexPath:v5, v6];
+                [(SXDataTableView *)blueprint draw:v61 forIndexPath:v5, v6];
               }
             }
 
-            v62 = [(SXDataTableView *)a1 dataSource];
-            v63 = [v62 columnDividerAtIndex:v6];
+            dataSource6 = [(SXDataTableView *)blueprint dataSource];
+            v63 = [dataSource6 columnDividerAtIndex:v6];
 
-            v64 = [v63 color];
-            if (v64)
+            color2 = [v63 color];
+            if (color2)
             {
-              v65 = v64;
+              v65 = color2;
               v183.origin.y = v102;
               v183.origin.x = v103;
               v183.size.height = v100;
@@ -234,12 +234,12 @@
                 v147 = v101;
                 v148 = v100;
                 v67 = MEMORY[0x1DA716BE0](v143);
-                [(SXDataTableView *)a1 draw:v67 forIndexPath:v5, v6];
+                [(SXDataTableView *)blueprint draw:v67 forIndexPath:v5, v6];
               }
             }
 
-            v68 = [(SXDataTableView *)a1 dataSource];
-            v69 = [v68 cellBorderForCellAtIndexPath:{v5, v6}];
+            dataSource7 = [(SXDataTableView *)blueprint dataSource];
+            v69 = [dataSource7 cellBorderForCellAtIndexPath:{v5, v6}];
 
             if (v69)
             {
@@ -253,7 +253,7 @@
               v142 = v14;
               v138 = v69;
               v70 = MEMORY[0x1DA716BE0](v137);
-              [(SXDataTableView *)a1 draw:v70 forIndexPath:v5, v6];
+              [(SXDataTableView *)blueprint draw:v70 forIndexPath:v5, v6];
             }
 
             ++v6;
@@ -294,7 +294,7 @@
     v125[3] = &unk_1D83A8029;
     v126 = v135;
     v127 = v71;
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, blueprint);
     v120[0] = MEMORY[0x1E69E9820];
     v120[1] = 3221225472;
     v120[2] = __46__SXDataTableView_prepareDrawingForBlueprint___block_invoke_7;
@@ -304,7 +304,7 @@
     v72 = v4;
     v121 = v72;
     v73 = MEMORY[0x1DA716BE0](v120);
-    [(SXDataTableView *)a1 draw:v73 forIndexPath:0, 0x7FFFFFFFFFFFFFFFLL];
+    [(SXDataTableView *)blueprint draw:v73 forIndexPath:0, 0x7FFFFFFFFFFFFFFFLL];
     v116[0] = MEMORY[0x1E69E9820];
     v116[1] = 3221225472;
     v116[2] = __46__SXDataTableView_prepareDrawingForBlueprint___block_invoke_8;
@@ -314,7 +314,7 @@
     v74 = v72;
     v117 = v74;
     v75 = MEMORY[0x1DA716BE0](v116);
-    -[SXDataTableView draw:forIndexPath:](a1, v75, [v74 numberOfRows] - 1, 0x7FFFFFFFFFFFFFFFLL);
+    -[SXDataTableView draw:forIndexPath:](blueprint, v75, [v74 numberOfRows] - 1, 0x7FFFFFFFFFFFFFFFLL);
     v110[0] = MEMORY[0x1E69E9820];
     v110[1] = 3221225472;
     v110[2] = __46__SXDataTableView_prepareDrawingForBlueprint___block_invoke_9;
@@ -326,7 +326,7 @@
     v113 = v134;
     v114 = v131;
     v77 = MEMORY[0x1DA716BE0](v110);
-    -[SXDataTableView draw:forIndexPath:](a1, v77, 0x7FFFFFFFFFFFFFFFLL, [v76 numberOfColumns] - 1);
+    -[SXDataTableView draw:forIndexPath:](blueprint, v77, 0x7FFFFFFFFFFFFFFFLL, [v76 numberOfColumns] - 1);
     v104[0] = MEMORY[0x1E69E9820];
     v104[1] = 3221225472;
     v104[2] = __46__SXDataTableView_prepareDrawingForBlueprint___block_invoke_10;
@@ -337,14 +337,14 @@
     v105 = v76;
     v108 = v131;
     v78 = MEMORY[0x1DA716BE0](v104);
-    [(SXDataTableView *)a1 draw:v78 forIndexPath:0x7FFFFFFFFFFFFFFFLL, 0];
-    v79 = a1[56];
+    [(SXDataTableView *)blueprint draw:v78 forIndexPath:0x7FFFFFFFFFFFFFFFLL, 0];
+    v79 = blueprint[56];
     [v79 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_9_1];
 
-    v80 = a1[55];
+    v80 = blueprint[55];
     [v80 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_11];
 
-    [a1 setNeedsDisplay];
+    [blueprint setNeedsDisplay];
     objc_destroyWeak(&v109);
 
     objc_destroyWeak(&v115);
@@ -709,22 +709,22 @@ void __46__SXDataTableView_prepareDrawingForBlueprint___block_invoke_12(uint64_t
   return result;
 }
 
-- (id)initWithDataSource:(id *)a1
+- (id)initWithDataSource:(id *)source
 {
   v3 = a2;
-  if (a1)
+  if (source)
   {
-    v6.receiver = a1;
+    v6.receiver = source;
     v6.super_class = SXDataTableView;
     v4 = objc_msgSendSuper2(&v6, sel_initWithFrame_, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24));
-    a1 = v4;
+    source = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 52, v3);
     }
   }
 
-  return a1;
+  return source;
 }
 
 - (void)setBlueprint:
@@ -734,8 +734,8 @@ void __46__SXDataTableView_prepareDrawingForBlueprint___block_invoke_12(uint64_t
   if (v1)
   {
     [(SXDataTableView *)v1 reset];
-    v3 = [v13 tableSize];
-    [OUTLINED_FUNCTION_4(v3 v4];
+    tableSize = [v13 tableSize];
+    [OUTLINED_FUNCTION_4(tableSize v4];
     [v1 setFrame:{0.0, 0.0, v2, v11}];
     [(SXDataTableView *)v1 layoutCellsForBlueprint:v13];
     [(SXDataTableView *)v1 prepareDrawingForBlueprint:v13];
@@ -750,35 +750,35 @@ void __46__SXDataTableView_prepareDrawingForBlueprint___block_invoke_12(uint64_t
     v1 = result;
     [*(result + 440) enumerateKeysAndObjectsUsingBlock:&__block_literal_global_92];
     [*(v1 + 448) enumerateKeysAndObjectsUsingBlock:&__block_literal_global_2_0];
-    v2 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v3 = *(v1 + 440);
-    *(v1 + 440) = v2;
+    *(v1 + 440) = dictionary;
 
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v5 = *(v1 + 448);
-    *(v1 + 448) = v4;
+    *(v1 + 448) = dictionary2;
 
-    return MEMORY[0x1EEE66BB8](v4, v5);
+    return MEMORY[0x1EEE66BB8](dictionary2, v5);
   }
 
   return result;
 }
 
-- (void)layoutCellsForBlueprint:(id *)a1
+- (void)layoutCellsForBlueprint:(id *)blueprint
 {
   v38 = a2;
-  if (a1 && [v38 numberOfRows])
+  if (blueprint && [v38 numberOfRows])
   {
     v3 = 0;
     while (1)
     {
-      v4 = [(SXDataTableView *)a1 viewForRowAtIndex:v3];
+      v4 = [(SXDataTableView *)blueprint viewForRowAtIndex:v3];
       v5 = v38;
       if (v4)
       {
         [v38 rectForRowAtIndex:v3];
         [v4 setFrame:?];
-        [a1 addSubview:v4];
+        [blueprint addSubview:v4];
         v5 = v38;
       }
 
@@ -798,18 +798,18 @@ LABEL_22:
     v6 = 0;
     if (v4)
     {
-      v7 = v4;
+      blueprintCopy = v4;
     }
 
     else
     {
-      v7 = a1;
+      blueprintCopy = blueprint;
     }
 
     while (1)
     {
-      v8 = v7;
-      v9 = [(SXDataTableView *)a1 viewForColumnAtIndex:v6];
+      v8 = blueprintCopy;
+      v9 = [(SXDataTableView *)blueprint viewForColumnAtIndex:v6];
       if (v9)
       {
         [v38 rectForColumnAtIndex:v6];
@@ -817,7 +817,7 @@ LABEL_22:
 
         OUTLINED_FUNCTION_5();
         [v11 setFrame:?];
-        [a1 addSubview:v10];
+        [blueprint addSubview:v10];
         v8 = v10;
       }
 
@@ -829,10 +829,10 @@ LABEL_22:
       v17 = v16;
       v19 = v18;
       v21 = v20;
-      WeakRetained = objc_loadWeakRetained(a1 + 52);
-      v23 = [WeakRetained dataTableView:a1 viewForCellAtIndexPath:v3 constraintToSize:{v6, v19, v21}];
+      WeakRetained = objc_loadWeakRetained(blueprint + 52);
+      v23 = [WeakRetained dataTableView:blueprint viewForCellAtIndexPath:v3 constraintToSize:{v6, v19, v21}];
 
-      v24 = objc_loadWeakRetained(a1 + 53);
+      v24 = objc_loadWeakRetained(blueprint + 53);
       OUTLINED_FUNCTION_9();
       v26 = [v25 verticalAlignmentForCellAtIndexPath:?];
 
@@ -860,7 +860,7 @@ LABEL_22:
 
       v17 = v17 + v21 - Height;
 LABEL_17:
-      v31 = objc_loadWeakRetained(a1 + 53);
+      v31 = objc_loadWeakRetained(blueprint + 53);
       OUTLINED_FUNCTION_9();
       v33 = [v32 horizontalAlignmentForCellAtIndexPath:?];
 
@@ -899,12 +899,12 @@ LABEL_20:
 LABEL_23:
 }
 
-- (id)viewForRowAtIndex:(uint64_t)a1
+- (id)viewForRowAtIndex:(uint64_t)index
 {
-  if (a1)
+  if (index)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = *(a1 + 440);
+    v6 = *(index + 440);
     [v5 numberWithUnsignedInteger:a2];
     objc_claimAutoreleasedReturnValue();
     v7 = [OUTLINED_FUNCTION_8() objectForKey:v2];
@@ -924,9 +924,9 @@ LABEL_23:
     v9 = v7;
     if (!v8)
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
 
-      if (v7 == v10)
+      if (v7 == null)
       {
         v9 = 0;
       }
@@ -936,24 +936,24 @@ LABEL_23:
         v11 = OUTLINED_FUNCTION_11();
         v12 = objc_opt_respondsToSelector();
 
-        if ((v12 & 1) != 0 && (v12 = OUTLINED_FUNCTION_11(), [v12 dataTableView:a1 drawViewForRowAtIndex:a2], v9 = objc_claimAutoreleasedReturnValue(), v12, v9))
+        if ((v12 & 1) != 0 && (v12 = OUTLINED_FUNCTION_11(), [v12 dataTableView:index drawViewForRowAtIndex:a2], v9 = objc_claimAutoreleasedReturnValue(), v12, v9))
         {
-          v13 = *(a1 + 440);
-          v14 = MEMORY[0x1E696AD98];
+          v13 = *(index + 440);
+          null2 = MEMORY[0x1E696AD98];
           v12 = v13;
-          v15 = [v14 numberWithUnsignedInteger:a2];
+          v15 = [null2 numberWithUnsignedInteger:a2];
           OUTLINED_FUNCTION_10(v15);
         }
 
         else
         {
-          v16 = *(a1 + 440);
+          v16 = *(index + 440);
           v17 = MEMORY[0x1E695DFB0];
           v18 = v16;
-          v14 = [v17 null];
+          null2 = [v17 null];
           [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a2];
           objc_claimAutoreleasedReturnValue();
-          [OUTLINED_FUNCTION_8() setObject:v14 forKey:v12];
+          [OUTLINED_FUNCTION_8() setObject:null2 forKey:v12];
 
           v9 = 0;
         }
@@ -969,12 +969,12 @@ LABEL_23:
   return v9;
 }
 
-- (id)viewForColumnAtIndex:(uint64_t)a1
+- (id)viewForColumnAtIndex:(uint64_t)index
 {
-  if (a1)
+  if (index)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = *(a1 + 448);
+    v6 = *(index + 448);
     [v5 numberWithUnsignedInteger:a2];
     objc_claimAutoreleasedReturnValue();
     v7 = [OUTLINED_FUNCTION_8() objectForKey:v2];
@@ -994,9 +994,9 @@ LABEL_23:
     v9 = v7;
     if (!v8)
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
 
-      if (v7 == v10)
+      if (v7 == null)
       {
         v9 = 0;
       }
@@ -1006,24 +1006,24 @@ LABEL_23:
         v11 = OUTLINED_FUNCTION_11();
         v12 = objc_opt_respondsToSelector();
 
-        if ((v12 & 1) != 0 && (v12 = OUTLINED_FUNCTION_11(), [v12 dataTableView:a1 drawViewForColumnAtIndex:a2], v9 = objc_claimAutoreleasedReturnValue(), v12, v9))
+        if ((v12 & 1) != 0 && (v12 = OUTLINED_FUNCTION_11(), [v12 dataTableView:index drawViewForColumnAtIndex:a2], v9 = objc_claimAutoreleasedReturnValue(), v12, v9))
         {
-          v13 = *(a1 + 448);
-          v14 = MEMORY[0x1E696AD98];
+          v13 = *(index + 448);
+          null2 = MEMORY[0x1E696AD98];
           v12 = v13;
-          v15 = [v14 numberWithUnsignedInteger:a2];
+          v15 = [null2 numberWithUnsignedInteger:a2];
           OUTLINED_FUNCTION_10(v15);
         }
 
         else
         {
-          v16 = *(a1 + 448);
+          v16 = *(index + 448);
           v17 = MEMORY[0x1E695DFB0];
           v18 = v16;
-          v14 = [v17 null];
+          null2 = [v17 null];
           [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a2];
           objc_claimAutoreleasedReturnValue();
-          [OUTLINED_FUNCTION_8() setObject:v14 forKey:v12];
+          [OUTLINED_FUNCTION_8() setObject:null2 forKey:v12];
 
           v9 = 0;
         }
@@ -1050,14 +1050,14 @@ LABEL_23:
   return WeakRetained;
 }
 
-- (uint64_t)indexPathForPoint:(CGFloat)a3
+- (uint64_t)indexPathForPoint:(CGFloat)point
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (![*(a1 + 432) numberOfRows])
+  if (![*(self + 432) numberOfRows])
   {
     return -1;
   }
@@ -1068,7 +1068,7 @@ LABEL_23:
   {
     [OUTLINED_FUNCTION_6() rectForRowAtIndex:v5];
     v9.x = a2;
-    v9.y = a3;
+    v9.y = point;
     if (CGRectContainsPoint(v11, v9) && [OUTLINED_FUNCTION_6() numberOfColumns])
     {
       v7 = 0;
@@ -1076,7 +1076,7 @@ LABEL_23:
       {
         [OUTLINED_FUNCTION_6() rectForColumnAtIndex:v7];
         v10.x = a2;
-        v10.y = a3;
+        v10.y = point;
         if (CGRectContainsPoint(v12, v10))
         {
           break;
@@ -1109,32 +1109,32 @@ LABEL_11:
   return result;
 }
 
-- (void)draw:(uint64_t)a3 forIndexPath:(uint64_t)a4
+- (void)draw:(uint64_t)draw forIndexPath:(uint64_t)path
 {
   v13 = a2;
-  if (a1)
+  if (self)
   {
-    v7 = [(SXDataTableView *)a1 viewForRowAtIndex:a3];
-    v8 = [(SXDataTableView *)a1 viewForColumnAtIndex:a4];
+    v7 = [(SXDataTableView *)self viewForRowAtIndex:draw];
+    v8 = [(SXDataTableView *)self viewForColumnAtIndex:path];
     v9 = v8;
     if (v7)
     {
-      v10 = v7;
+      selfCopy = v7;
     }
 
     else
     {
-      v10 = a1;
+      selfCopy = self;
     }
 
     if (!v8)
     {
-      v8 = v10;
+      v8 = selfCopy;
     }
 
-    v11 = [(SXDataTableDrawView *)v8 drawBlocks];
+    drawBlocks = [(SXDataTableDrawView *)v8 drawBlocks];
     v12 = [v13 copy];
-    [v11 addObject:v12];
+    [drawBlocks addObject:v12];
   }
 }
 

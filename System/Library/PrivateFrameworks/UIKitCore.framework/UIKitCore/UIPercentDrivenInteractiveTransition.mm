@@ -1,19 +1,19 @@
 @interface UIPercentDrivenInteractiveTransition
-- (BOOL)_startInterruptibleTransition:(id)a3;
+- (BOOL)_startInterruptibleTransition:(id)transition;
 - (BOOL)_useAnimatorTrackingToDriveTransition;
 - (CGFloat)completionSpeed;
 - (CGFloat)percentComplete;
 - (UIPercentDrivenInteractiveTransition)init;
-- (double)_durationFactorForPercentComplete:(double)a3 reversed:(BOOL)a4;
-- (void)_continueInterruptibleTransitionFromPercentComplete:(double)a3 reversed:(BOOL)a4;
+- (double)_durationFactorForPercentComplete:(double)complete reversed:(BOOL)reversed;
+- (void)_continueInterruptibleTransitionFromPercentComplete:(double)complete reversed:(BOOL)reversed;
 - (void)_stopInteractiveTransition;
-- (void)_stopInteractiveTransition:(id)a3;
-- (void)_updateInteractiveTransition:(id)a3 percent:(double)a4 isFinished:(BOOL)a5 didComplete:(BOOL)a6;
+- (void)_stopInteractiveTransition:(id)transition;
+- (void)_updateInteractiveTransition:(id)transition percent:(double)percent isFinished:(BOOL)finished didComplete:(BOOL)complete;
 - (void)cancelInteractiveTransition;
 - (void)finishInteractiveTransition;
 - (void)pauseInteractiveTransition;
-- (void)startInteractiveTransition:(id)a3;
-- (void)startInteractiveTransition:(id)a3 containerViews:(id)a4 animation:(id)a5;
+- (void)startInteractiveTransition:(id)transition;
+- (void)startInteractiveTransition:(id)transition containerViews:(id)views animation:(id)animation;
 - (void)updateInteractiveTransition:(CGFloat)percentComplete;
 @end
 
@@ -34,9 +34,9 @@
 - (CGFloat)percentComplete
 {
   v2 = [_UIViewControllerTransitionContext _associatedTransitionContextsForInteractionController:self];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  [v3 _previousPercentComplete];
+  [firstObject _previousPercentComplete];
   v5 = v4;
 
   return v5;
@@ -53,57 +53,57 @@
   return result;
 }
 
-- (double)_durationFactorForPercentComplete:(double)a3 reversed:(BOOL)a4
+- (double)_durationFactorForPercentComplete:(double)complete reversed:(BOOL)reversed
 {
-  v4 = a4;
+  reversedCopy = reversed;
   [(UIPercentDrivenInteractiveTransition *)self completionSpeed];
   if (v6 == 0.0)
   {
     return 0.0;
   }
 
-  v7 = 1.0 - a3;
-  if (v4)
+  completeCopy = 1.0 - complete;
+  if (reversedCopy)
   {
-    v7 = a3;
+    completeCopy = complete;
   }
 
-  return v7 / v6;
+  return completeCopy / v6;
 }
 
-- (void)_continueInterruptibleTransitionFromPercentComplete:(double)a3 reversed:(BOOL)a4
+- (void)_continueInterruptibleTransitionFromPercentComplete:(double)complete reversed:(BOOL)reversed
 {
-  v4 = a4;
+  reversedCopy = reversed;
   interruptibleAnimator = self->_interruptibleAnimator;
   if (!interruptibleAnimator)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIViewControllerTransitioning.m" lineNumber:728 description:{@"Expected an interruptible animator for %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIViewControllerTransitioning.m" lineNumber:728 description:{@"Expected an interruptible animator for %@", self}];
 
     interruptibleAnimator = self->_interruptibleAnimator;
   }
 
-  [(UIViewImplicitlyAnimating *)interruptibleAnimator setReversed:v4];
-  v8 = [(UIPercentDrivenInteractiveTransition *)self timingCurve];
-  if (v8)
+  [(UIViewImplicitlyAnimating *)interruptibleAnimator setReversed:reversedCopy];
+  timingCurve = [(UIPercentDrivenInteractiveTransition *)self timingCurve];
+  if (timingCurve)
   {
 
 LABEL_6:
-    [(UIPercentDrivenInteractiveTransition *)self _durationFactorForPercentComplete:dyld_program_sdk_at_least() & v4 reversed:a3];
+    [(UIPercentDrivenInteractiveTransition *)self _durationFactorForPercentComplete:dyld_program_sdk_at_least() & reversedCopy reversed:complete];
     v11 = v10;
     v12 = [(UIViewImplicitlyAnimating *)self->_interruptibleAnimator conformsToProtocol:&unk_1EFE9F500];
     v13 = self->_interruptibleAnimator;
     if (v12)
     {
-      v17 = v13;
+      timingCurve2 = v13;
       [(UIPercentDrivenInteractiveTransition *)self _startingVelocity];
-      [(UIViewImplicitlyAnimating *)v17 _continueAnimationWithStartingVelocity:?];
+      [(UIViewImplicitlyAnimating *)timingCurve2 _continueAnimationWithStartingVelocity:?];
     }
 
     else
     {
-      v17 = [(UIPercentDrivenInteractiveTransition *)self timingCurve];
-      [(UIViewImplicitlyAnimating *)v13 continueAnimationWithTimingParameters:v17 durationFactor:v11];
+      timingCurve2 = [(UIPercentDrivenInteractiveTransition *)self timingCurve];
+      [(UIViewImplicitlyAnimating *)v13 continueAnimationWithTimingParameters:timingCurve2 durationFactor:v11];
     }
 
     return;
@@ -135,80 +135,80 @@ LABEL_6:
   return +[UIViewPropertyAnimator _canEnableTrackingAnimationsWithAnimators];
 }
 
-- (void)_updateInteractiveTransition:(id)a3 percent:(double)a4 isFinished:(BOOL)a5 didComplete:(BOOL)a6
+- (void)_updateInteractiveTransition:(id)transition percent:(double)percent isFinished:(BOOL)finished didComplete:(BOOL)complete
 {
-  v6 = a6;
-  v7 = a5;
+  completeCopy = complete;
+  finishedCopy = finished;
   v120 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  transitionCopy = transition;
   interruptibleAnimator = self->_interruptibleAnimator;
   if (!interruptibleAnimator)
   {
     v83 = a2;
-    v13 = [v11 firstObject];
-    v14 = [v13 containerView];
-    v15 = [v14 layer];
+    firstObject = [transitionCopy firstObject];
+    containerView = [firstObject containerView];
+    layer = [containerView layer];
 
-    v16 = [v11 firstObject];
-    v17 = [v16 containerView];
+    firstObject2 = [transitionCopy firstObject];
+    containerView2 = [firstObject2 containerView];
 
-    v18 = [v11 firstObject];
-    v85 = [v18 _containerViews];
+    firstObject3 = [transitionCopy firstObject];
+    _containerViews = [firstObject3 _containerViews];
 
-    v19 = [v11 firstObject];
-    v20 = [v19 _auxContext];
-    if (v20)
+    firstObject4 = [transitionCopy firstObject];
+    _auxContext = [firstObject4 _auxContext];
+    if (_auxContext)
     {
-      v21 = [v11 firstObject];
-      v22 = [v21 _auxContext];
-      v84 = [v22 _alongsideAnimationViews];
+      firstObject5 = [transitionCopy firstObject];
+      _auxContext2 = [firstObject5 _auxContext];
+      _alongsideAnimationViews = [_auxContext2 _alongsideAnimationViews];
     }
 
     else
     {
-      v84 = 0;
+      _alongsideAnimationViews = 0;
     }
 
-    if (!v7)
+    if (!finishedCopy)
     {
-      v29 = v15;
+      v29 = layer;
       if ([(UIPercentDrivenInteractiveTransition *)self _useAnimatorTrackingToDriveTransition])
       {
         v31 = [UIViewPropertyAnimator _animatorForTrackedAnimationsUUID:self->_animationTrackingAnimatorUUID];
         [v31 pauseAnimation];
-        v32 = v17;
-        v33 = v85;
+        v32 = containerView2;
+        v33 = _containerViews;
         if (self->__usesPacedFractionComplete && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v31 setPacedFractionComplete:a4];
+          [v31 setPacedFractionComplete:percent];
         }
 
         else
         {
-          [v31 setFractionComplete:a4];
+          [v31 setFractionComplete:percent];
         }
 
-        v38 = v84;
+        v38 = _alongsideAnimationViews;
       }
 
       else
       {
-        v32 = v17;
-        v33 = v85;
-        if ([v11 count] != 1)
+        v32 = containerView2;
+        v33 = _containerViews;
+        if ([transitionCopy count] != 1)
         {
-          v81 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v81 handleFailureInMethod:v83 object:self file:@"UIViewControllerTransitioning.m" lineNumber:800 description:{@"Unsupported path when one interactor is driving multiple (%lu) transitions.", objc_msgSend(v11, "count")}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:v83 object:self file:@"UIViewControllerTransitioning.m" lineNumber:800 description:{@"Unsupported path when one interactor is driving multiple (%lu) transitions.", objc_msgSend(transitionCopy, "count")}];
         }
 
-        v39 = self->_duration * a4;
-        if (v85)
+        v39 = self->_duration * percent;
+        if (_containerViews)
         {
           v113 = 0u;
           v114 = 0u;
           v111 = 0u;
           v112 = 0u;
-          v40 = v85;
+          v40 = _containerViews;
           v41 = [v40 countByEnumeratingWithState:&v111 objects:v119 count:16];
           if (v41)
           {
@@ -224,8 +224,8 @@ LABEL_6:
                 }
 
                 v45 = *(*(&v111 + 1) + 8 * i);
-                v46 = [v45 layer];
-                [v46 setTimeOffset:v39];
+                layer2 = [v45 layer];
+                [layer2 setTimeOffset:v39];
 
                 [v45 layoutBelowIfNeeded];
               }
@@ -240,17 +240,17 @@ LABEL_6:
         else
         {
           [v29 setTimeOffset:v39];
-          [v17 layoutBelowIfNeeded];
+          [containerView2 layoutBelowIfNeeded];
         }
 
-        v38 = v84;
-        if (v84)
+        v38 = _alongsideAnimationViews;
+        if (_alongsideAnimationViews)
         {
           v109 = 0u;
           v110 = 0u;
           v107 = 0u;
           v108 = 0u;
-          v61 = v84;
+          v61 = _alongsideAnimationViews;
           v62 = [v61 countByEnumeratingWithState:&v107 objects:v118 count:16];
           if (v62)
           {
@@ -266,8 +266,8 @@ LABEL_6:
                 }
 
                 v66 = *(*(&v107 + 1) + 8 * j);
-                v67 = [v66 layer];
-                [v67 setTimeOffset:v39];
+                layer3 = [v66 layer];
+                [layer3 setTimeOffset:v39];
                 [v66 layoutBelowIfNeeded];
               }
 
@@ -277,7 +277,7 @@ LABEL_6:
             while (v63);
           }
 
-          v38 = v84;
+          v38 = _alongsideAnimationViews;
         }
       }
 
@@ -290,7 +290,7 @@ LABEL_6:
       v106 = 0u;
       v103 = 0u;
       v104 = 0u;
-      v24 = v11;
+      v24 = transitionCopy;
       v25 = [v24 countByEnumeratingWithState:&v103 objects:v117 count:16];
       if (v25)
       {
@@ -305,7 +305,7 @@ LABEL_6:
               objc_enumerationMutation(v24);
             }
 
-            [*(*(&v103 + 1) + 8 * k) setTransitionWasCancelled:!v6];
+            [*(*(&v103 + 1) + 8 * k) setTransitionWasCancelled:!completeCopy];
           }
 
           v26 = [v24 countByEnumeratingWithState:&v103 objects:v117 count:16];
@@ -314,51 +314,51 @@ LABEL_6:
         while (v26);
       }
 
-      v29 = v15;
+      v29 = layer;
       if ([(UIPercentDrivenInteractiveTransition *)self _useAnimatorTrackingToDriveTransition])
       {
-        v30 = [UIViewPropertyAnimator _animatorForTrackedAnimationsUUID:self->_animationTrackingAnimatorUUID];
-        [v30 stopAnimation:0];
-        [v30 finishAnimationAtPosition:!v6];
+        _uuid = [UIViewPropertyAnimator _animatorForTrackedAnimationsUUID:self->_animationTrackingAnimatorUUID];
+        [_uuid stopAnimation:0];
+        [_uuid finishAnimationAtPosition:!completeCopy];
       }
 
       else
       {
-        v30 = [(UIPercentDrivenInteractiveTransition *)self _uuid];
-        [UIView _finalizeStoppedAnimationWithUUID:v30 reverseAnimation:!v6];
+        _uuid = [(UIPercentDrivenInteractiveTransition *)self _uuid];
+        [UIView _finalizeStoppedAnimationWithUUID:_uuid reverseAnimation:!completeCopy];
       }
 
-      v32 = v17;
-      v33 = v85;
+      v32 = containerView2;
+      v33 = _containerViews;
 
       [(UIPercentDrivenInteractiveTransition *)self _setTransitionInterrupted:0];
-      v38 = v84;
+      v38 = _alongsideAnimationViews;
       goto LABEL_79;
     }
 
     [(UIPercentDrivenInteractiveTransition *)self completionSpeed];
     v35 = v34;
-    v29 = v15;
+    v29 = layer;
     if ([(UIPercentDrivenInteractiveTransition *)self _useAnimatorTrackingToDriveTransition])
     {
       v36 = [UIViewPropertyAnimator _animatorForTrackedAnimationsUUID:self->_animationTrackingAnimatorUUID];
       v37 = [[UICubicTimingParameters alloc] initWithAnimationCurve:[(UIPercentDrivenInteractiveTransition *)self completionCurve]];
-      [v36 setReversed:!v6];
-      [(UIPercentDrivenInteractiveTransition *)self _durationFactorForPercentComplete:!v6 reversed:a4];
+      [v36 setReversed:!completeCopy];
+      [(UIPercentDrivenInteractiveTransition *)self _durationFactorForPercentComplete:!completeCopy reversed:percent];
       [v36 continueAnimationWithTimingParameters:v37 durationFactor:?];
 
-      v32 = v17;
-      v38 = v84;
-      v33 = v85;
+      v32 = containerView2;
+      v38 = _alongsideAnimationViews;
+      v33 = _containerViews;
 LABEL_79:
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __100__UIPercentDrivenInteractiveTransition__updateInteractiveTransition_percent_isFinished_didComplete___block_invoke;
       aBlock[3] = &unk_1E70F3590;
-      v77 = v11;
+      v77 = transitionCopy;
       v94 = v77;
       v78 = _Block_copy(aBlock);
-      v79 = [v77 firstObject];
+      firstObject6 = [v77 firstObject];
       v86[0] = MEMORY[0x1E69E9820];
       v86[1] = 3221225472;
       v86[2] = __100__UIPercentDrivenInteractiveTransition__updateInteractiveTransition_percent_isFinished_didComplete___block_invoke_2;
@@ -371,41 +371,41 @@ LABEL_79:
       v90 = v38;
       v91 = v78;
       v80 = v78;
-      [v79 _setPostInteractiveCompletionHandler:v86];
+      [firstObject6 _setPostInteractiveCompletionHandler:v86];
 
 LABEL_80:
       goto LABEL_81;
     }
 
-    v32 = v17;
-    v33 = v85;
-    if ([v11 count] != 1)
+    v32 = containerView2;
+    v33 = _containerViews;
+    if ([transitionCopy count] != 1)
     {
-      v82 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v82 handleFailureInMethod:v83 object:self file:@"UIViewControllerTransitioning.m" lineNumber:847 description:{@"Unsupported path when one interactor is driving multiple (%lu) transitions.", objc_msgSend(v11, "count")}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:v83 object:self file:@"UIViewControllerTransitioning.m" lineNumber:847 description:{@"Unsupported path when one interactor is driving multiple (%lu) transitions.", objc_msgSend(transitionCopy, "count")}];
     }
 
-    v38 = v84;
-    if (v85)
+    v38 = _alongsideAnimationViews;
+    if (_containerViews)
     {
-      v47 = [v85 objectAtIndex:0];
-      v48 = [v47 layer];
-      [v48 timeOffset];
+      v47 = [_containerViews objectAtIndex:0];
+      layer4 = [v47 layer];
+      [layer4 timeOffset];
       v50 = v49;
 
-      if (!v6)
+      if (!completeCopy)
       {
 LABEL_48:
-        v51 = [(UIPercentDrivenInteractiveTransition *)self _uuid];
-        [UIView _completeAnimationWithUUID:v51 duration:[(UIPercentDrivenInteractiveTransition *)self completionCurve] curve:!v6 reverse:v50];
+        _uuid2 = [(UIPercentDrivenInteractiveTransition *)self _uuid];
+        [UIView _completeAnimationWithUUID:_uuid2 duration:[(UIPercentDrivenInteractiveTransition *)self completionCurve] curve:!completeCopy reverse:v50];
 
-        if (v85)
+        if (_containerViews)
         {
           v101 = 0u;
           v102 = 0u;
           v99 = 0u;
           v100 = 0u;
-          v53 = v85;
+          v53 = _containerViews;
           v54 = [v53 countByEnumeratingWithState:&v99 objects:v116 count:16];
           if (v54)
           {
@@ -420,10 +420,10 @@ LABEL_48:
                   objc_enumerationMutation(v53);
                 }
 
-                v59 = [*(*(&v99 + 1) + 8 * m) layer];
+                layer5 = [*(*(&v99 + 1) + 8 * m) layer];
                 v57 = v35;
                 *&v60 = v57;
-                [v59 setSpeed:v60];
+                [layer5 setSpeed:v60];
               }
 
               v55 = [v53 countByEnumeratingWithState:&v99 objects:v116 count:16];
@@ -432,7 +432,7 @@ LABEL_48:
             while (v55);
           }
 
-          v33 = v85;
+          v33 = _containerViews;
         }
 
         else
@@ -441,13 +441,13 @@ LABEL_48:
           [v29 setSpeed:v52];
         }
 
-        if (v84)
+        if (_alongsideAnimationViews)
         {
           v97 = 0u;
           v98 = 0u;
           v95 = 0u;
           v96 = 0u;
-          v69 = v84;
+          v69 = _alongsideAnimationViews;
           v70 = [v69 countByEnumeratingWithState:&v95 objects:v115 count:16];
           if (v70)
           {
@@ -462,10 +462,10 @@ LABEL_48:
                   objc_enumerationMutation(v69);
                 }
 
-                v75 = [*(*(&v95 + 1) + 8 * n) layer];
+                layer6 = [*(*(&v95 + 1) + 8 * n) layer];
                 v73 = v35;
                 *&v76 = v73;
-                [v75 setSpeed:v76];
+                [layer6 setSpeed:v76];
               }
 
               v71 = [v69 countByEnumeratingWithState:&v95 objects:v115 count:16];
@@ -474,7 +474,7 @@ LABEL_48:
             while (v71);
           }
 
-          v33 = v85;
+          v33 = _containerViews;
         }
 
         goto LABEL_79;
@@ -485,7 +485,7 @@ LABEL_48:
     {
       [v29 timeOffset];
       v50 = v68;
-      if (!v6)
+      if (!completeCopy)
       {
         goto LABEL_48;
       }
@@ -495,19 +495,19 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (v7)
+  if (finishedCopy)
   {
-    [(UIPercentDrivenInteractiveTransition *)self _continueInterruptibleTransitionFromPercentComplete:!v6 reversed:a4];
+    [(UIPercentDrivenInteractiveTransition *)self _continueInterruptibleTransitionFromPercentComplete:!completeCopy reversed:percent];
   }
 
   else if (self->__usesPacedFractionComplete && (v23 = objc_opt_respondsToSelector(), interruptibleAnimator = self->_interruptibleAnimator, (v23 & 1) != 0))
   {
-    [(UIViewImplicitlyAnimating *)interruptibleAnimator setPacedFractionComplete:a4];
+    [(UIViewImplicitlyAnimating *)interruptibleAnimator setPacedFractionComplete:percent];
   }
 
   else
   {
-    [(UIViewImplicitlyAnimating *)interruptibleAnimator setFractionComplete:a4];
+    [(UIViewImplicitlyAnimating *)interruptibleAnimator setFractionComplete:percent];
   }
 
 LABEL_81:
@@ -653,16 +653,16 @@ void __100__UIPercentDrivenInteractiveTransition__updateInteractiveTransition_pe
   *(v21 + 32) = 0;
 }
 
-- (void)_stopInteractiveTransition:(id)a3
+- (void)_stopInteractiveTransition:(id)transition
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  transitionCopy = transition;
   [(UIPercentDrivenInteractiveTransition *)self _setTransitionInterrupted:1];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v6 = v5;
+  v6 = transitionCopy;
   v7 = [v6 countByEnumeratingWithState:&v53 objects:v60 count:16];
   if (v7)
   {
@@ -688,31 +688,31 @@ void __100__UIPercentDrivenInteractiveTransition__updateInteractiveTransition_pe
 
   if ([(UIPercentDrivenInteractiveTransition *)self _useAnimatorTrackingToDriveTransition])
   {
-    v11 = [UIViewPropertyAnimator _animatorForTrackedAnimationsUUID:self->_animationTrackingAnimatorUUID];
-    [v11 stopAnimation:1];
+    firstObject = [UIViewPropertyAnimator _animatorForTrackedAnimationsUUID:self->_animationTrackingAnimatorUUID];
+    [firstObject stopAnimation:1];
   }
 
   else
   {
     if ([v6 count] != 1)
     {
-      v40 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v40 handleFailureInMethod:a2 object:self file:@"UIViewControllerTransitioning.m" lineNumber:924 description:{@"Unsupported path when one interactor is driving multiple (%lu) transitions.", objc_msgSend(v6, "count")}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIViewControllerTransitioning.m" lineNumber:924 description:{@"Unsupported path when one interactor is driving multiple (%lu) transitions.", objc_msgSend(v6, "count")}];
     }
 
-    v11 = [v6 firstObject];
-    v12 = [(UIPercentDrivenInteractiveTransition *)self _uuid];
-    [UIView _stopAnimationWithUUID:v12];
-    v13 = [v11 _containerViews];
+    firstObject = [v6 firstObject];
+    _uuid = [(UIPercentDrivenInteractiveTransition *)self _uuid];
+    [UIView _stopAnimationWithUUID:_uuid];
+    _containerViews = [firstObject _containerViews];
 
-    if (v13)
+    if (_containerViews)
     {
       v51 = 0u;
       v52 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v14 = [v11 _containerViews];
-      v15 = [v14 countByEnumeratingWithState:&v49 objects:v59 count:16];
+      _containerViews2 = [firstObject _containerViews];
+      v15 = [_containerViews2 countByEnumeratingWithState:&v49 objects:v59 count:16];
       if (v15)
       {
         v16 = v15;
@@ -723,16 +723,16 @@ void __100__UIPercentDrivenInteractiveTransition__updateInteractiveTransition_pe
           {
             if (*v50 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(_containerViews2);
             }
 
-            v19 = [*(*(&v49 + 1) + 8 * j) layer];
+            layer = [*(*(&v49 + 1) + 8 * j) layer];
             LODWORD(v20) = 1.0;
-            [v19 setSpeed:v20];
-            [v19 setTimeOffset:0.0];
+            [layer setSpeed:v20];
+            [layer setTimeOffset:0.0];
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v49 objects:v59 count:16];
+          v16 = [_containerViews2 countByEnumeratingWithState:&v49 objects:v59 count:16];
         }
 
         while (v16);
@@ -741,28 +741,28 @@ void __100__UIPercentDrivenInteractiveTransition__updateInteractiveTransition_pe
 
     else
     {
-      v21 = [v11 containerView];
-      v14 = [v21 layer];
+      containerView = [firstObject containerView];
+      _containerViews2 = [containerView layer];
 
       LODWORD(v22) = 1.0;
-      [v14 setSpeed:v22];
-      [v14 setTimeOffset:0.0];
+      [_containerViews2 setSpeed:v22];
+      [_containerViews2 setTimeOffset:0.0];
     }
 
-    v23 = [v11 _auxContext];
-    if (v23)
+    _auxContext = [firstObject _auxContext];
+    if (_auxContext)
     {
-      v24 = v23;
-      v25 = [v11 _auxContext];
-      v26 = [v25 _alongsideAnimationViews];
+      v24 = _auxContext;
+      _auxContext2 = [firstObject _auxContext];
+      _alongsideAnimationViews = [_auxContext2 _alongsideAnimationViews];
 
-      if (v26)
+      if (_alongsideAnimationViews)
       {
         v47 = 0u;
         v48 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v27 = v26;
+        v27 = _alongsideAnimationViews;
         v28 = [v27 countByEnumeratingWithState:&v45 objects:v58 count:16];
         if (v28)
         {
@@ -777,10 +777,10 @@ void __100__UIPercentDrivenInteractiveTransition__updateInteractiveTransition_pe
                 objc_enumerationMutation(v27);
               }
 
-              v32 = [*(*(&v45 + 1) + 8 * k) layer];
+              layer2 = [*(*(&v45 + 1) + 8 * k) layer];
               LODWORD(v33) = 1.0;
-              [v32 setSpeed:v33];
-              [v32 setTimeOffset:0.0];
+              [layer2 setSpeed:v33];
+              [layer2 setTimeOffset:0.0];
             }
 
             v29 = [v27 countByEnumeratingWithState:&v45 objects:v58 count:16];
@@ -789,8 +789,8 @@ void __100__UIPercentDrivenInteractiveTransition__updateInteractiveTransition_pe
           while (v29);
         }
 
-        v34 = [v11 _auxContext];
-        [v34 _setAlongsideAnimations:0];
+        _auxContext3 = [firstObject _auxContext];
+        [_auxContext3 _setAlongsideAnimations:0];
       }
     }
   }
@@ -830,34 +830,34 @@ void __100__UIPercentDrivenInteractiveTransition__updateInteractiveTransition_pe
   [(UIPercentDrivenInteractiveTransition *)self _stopInteractiveTransition:v3];
 }
 
-- (BOOL)_startInterruptibleTransition:(id)a3
+- (BOOL)_startInterruptibleTransition:(id)transition
 {
-  v5 = a3;
-  v6 = [v5 _animator];
-  if (!v6 || (objc_opt_respondsToSelector() & 1) == 0)
+  transitionCopy = transition;
+  _animator = [transitionCopy _animator];
+  if (!_animator || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = NSStringFromSelector(a2);
-    [v15 handleFailureInMethod:a2 object:self file:@"UIViewControllerTransitioning.m" lineNumber:968 description:{@"%@ requires an animator that implements interruptibleAnimatorForTransition:", v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIViewControllerTransitioning.m" lineNumber:968 description:{@"%@ requires an animator that implements interruptibleAnimatorForTransition:", v16}];
   }
 
-  v7 = [v6 interruptibleAnimatorForTransition:v5];
+  v7 = [_animator interruptibleAnimatorForTransition:transitionCopy];
   interruptibleAnimator = self->_interruptibleAnimator;
   self->_interruptibleAnimator = v7;
 
   v9 = self->_interruptibleAnimator;
   if (v9)
   {
-    v10 = [v5 _initiallyInteractive];
+    _initiallyInteractive = [transitionCopy _initiallyInteractive];
     objc_initWeak(&location, self);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___block_invoke;
     v17[3] = &unk_1E70F5A28;
     objc_copyWeak(&v18, &location);
-    [v5 _setPostInteractiveCompletionHandler:v17];
+    [transitionCopy _setPostInteractiveCompletionHandler:v17];
     v11 = self->_interruptibleAnimator;
-    if (v10)
+    if (_initiallyInteractive)
     {
       [(UIViewImplicitlyAnimating *)v11 pauseAnimation];
     }
@@ -894,19 +894,19 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
   }
 }
 
-- (void)startInteractiveTransition:(id)a3
+- (void)startInteractiveTransition:(id)transition
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 _animator];
+  transitionCopy = transition;
+  _animator = [transitionCopy _animator];
   v7 = [_UIViewControllerTransitionContext _associatedTransitionContextsForInteractionController:self];
   if ([v7 count] < 2)
   {
-    [v6 transitionDuration:v5];
+    [_animator transitionDuration:transitionCopy];
     self->_duration = v8;
-    if (v6)
+    if (_animator)
     {
-      if ((objc_opt_respondsToSelector() & 1) == 0 || ![(UIPercentDrivenInteractiveTransition *)self _startInterruptibleTransition:v5])
+      if ((objc_opt_respondsToSelector() & 1) == 0 || ![(UIPercentDrivenInteractiveTransition *)self _startInterruptibleTransition:transitionCopy])
       {
         if ([(UIPercentDrivenInteractiveTransition *)self _useAnimatorTrackingToDriveTransition])
         {
@@ -919,13 +919,13 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
             if (self->_wantsInteractiveStart && !+[UIViewPropertyAnimator _trackedAnimationsStartPaused]&& dyld_program_sdk_at_least())
             {
               [UIViewPropertyAnimator _setTrackedAnimationsStartPaused:1];
-              [v6 animateTransition:v5];
+              [_animator animateTransition:transitionCopy];
               [UIViewPropertyAnimator _setTrackedAnimationsStartPaused:0];
             }
 
             else
             {
-              [v6 animateTransition:v5];
+              [_animator animateTransition:transitionCopy];
             }
           }
 
@@ -935,8 +935,8 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
 
             if (v15)
             {
-              v28 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v28 handleFailureInMethod:a2 object:self file:@"UIViewControllerTransitioning.m" lineNumber:1019 description:@"Detected animation state before starting interactive transition. This means we MAY need to support implicit start/finish animator tracking."];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"UIViewControllerTransitioning.m" lineNumber:1019 description:@"Detected animation state before starting interactive transition. This means we MAY need to support implicit start/finish animator tracking."];
             }
 
             v16 = +[UIViewPropertyAnimator _startTrackingAnimations];
@@ -945,7 +945,7 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
             v18 = self->_animationTrackingAnimatorUUID;
             self->_animationTrackingAnimatorUUID = v17;
 
-            [v6 animateTransition:v5];
+            [_animator animateTransition:transitionCopy];
             +[UIViewPropertyAnimator _finishTrackingAnimations];
           }
 
@@ -967,24 +967,24 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
 
         else
         {
-          v12 = [v5 _auxContext];
-          if (v12)
+          _auxContext = [transitionCopy _auxContext];
+          if (_auxContext)
           {
-            v13 = [v5 _auxContext];
-            v14 = [v13 _alongsideAnimationViews];
+            _auxContext2 = [transitionCopy _auxContext];
+            _alongsideAnimationViews = [_auxContext2 _alongsideAnimationViews];
           }
 
           else
           {
-            v14 = 0;
+            _alongsideAnimationViews = 0;
           }
 
-          v19 = [v5 containerView];
-          v20 = [v19 layer];
+          containerView = [transitionCopy containerView];
+          layer = [containerView layer];
 
           v21 = +[UIView _enableAnimationTracking];
           [(UIPercentDrivenInteractiveTransition *)self _setUuid:v21];
-          [v6 animateTransition:v5];
+          [_animator animateTransition:transitionCopy];
           self->_didCommitAnimations = 0;
           v33[0] = MEMORY[0x1E69E9820];
           v33[1] = 3221225472;
@@ -992,13 +992,13 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
           v33[3] = &unk_1E70F3590;
           v33[4] = self;
           [UIApp _performBlockAfterCATransactionCommits:v33];
-          [v20 setSpeed:0.0];
-          [v20 setTimeOffset:0.0];
+          [layer setSpeed:0.0];
+          [layer setTimeOffset:0.0];
           v31 = 0u;
           v32 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v22 = v14;
+          v22 = _alongsideAnimationViews;
           v23 = [v22 countByEnumeratingWithState:&v29 objects:v35 count:16];
           if (v23)
           {
@@ -1013,9 +1013,9 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
                   objc_enumerationMutation(v22);
                 }
 
-                v27 = [*(*(&v29 + 1) + 8 * i) layer];
-                [v27 setSpeed:0.0];
-                [v27 setTimeOffset:0.0];
+                layer2 = [*(*(&v29 + 1) + 8 * i) layer];
+                [layer2 setSpeed:0.0];
+                [layer2 setTimeOffset:0.0];
               }
 
               v24 = [v22 countByEnumeratingWithState:&v29 objects:v35 count:16];
@@ -1035,50 +1035,50 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
 
   else
   {
-    [v6 animateTransition:v5];
+    [_animator animateTransition:transitionCopy];
   }
 }
 
-- (void)startInteractiveTransition:(id)a3 containerViews:(id)a4 animation:(id)a5
+- (void)startInteractiveTransition:(id)transition containerViews:(id)views animation:(id)animation
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  transitionCopy = transition;
+  viewsCopy = views;
+  animationCopy = animation;
   if ([(UIPercentDrivenInteractiveTransition *)self _useAnimatorTrackingToDriveTransition])
   {
-    [(UIPercentDrivenInteractiveTransition *)self startInteractiveTransition:v8];
+    [(UIPercentDrivenInteractiveTransition *)self startInteractiveTransition:transitionCopy];
   }
 
   else
   {
-    v11 = v8;
-    v12 = [v11 _animator];
-    [v12 transitionDuration:v11];
+    v11 = transitionCopy;
+    _animator = [v11 _animator];
+    [_animator transitionDuration:v11];
     self->_duration = v13;
-    if (v12)
+    if (_animator)
     {
-      v14 = [v11 _auxContext];
-      if (v14)
+      _auxContext = [v11 _auxContext];
+      if (_auxContext)
       {
-        v15 = [v11 _auxContext];
-        v29 = [v15 _alongsideAnimationViews];
+        _auxContext2 = [v11 _auxContext];
+        _alongsideAnimationViews = [_auxContext2 _alongsideAnimationViews];
       }
 
       else
       {
-        v29 = 0;
+        _alongsideAnimationViews = 0;
       }
 
-      [v11 _setContainerViews:v9];
+      [v11 _setContainerViews:viewsCopy];
       v30 = +[UIView _enableAnimationTracking];
       [(UIPercentDrivenInteractiveTransition *)self _setUuid:?];
-      v10[2](v10, v11);
+      animationCopy[2](animationCopy, v11);
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v17 = v9;
+      v17 = viewsCopy;
       v18 = [v17 countByEnumeratingWithState:&v35 objects:v40 count:16];
       if (v18)
       {
@@ -1093,9 +1093,9 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
               objc_enumerationMutation(v17);
             }
 
-            v22 = [*(*(&v35 + 1) + 8 * i) layer];
-            [v22 setSpeed:0.0];
-            [v22 setTimeOffset:0.0];
+            layer = [*(*(&v35 + 1) + 8 * i) layer];
+            [layer setSpeed:0.0];
+            [layer setTimeOffset:0.0];
           }
 
           v19 = [v17 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -1108,7 +1108,7 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v23 = v29;
+      v23 = _alongsideAnimationViews;
       v24 = [v23 countByEnumeratingWithState:&v31 objects:v39 count:16];
       if (v24)
       {
@@ -1123,9 +1123,9 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
               objc_enumerationMutation(v23);
             }
 
-            v28 = [*(*(&v31 + 1) + 8 * j) layer];
-            [v28 setSpeed:0.0];
-            [v28 setTimeOffset:0.0];
+            layer2 = [*(*(&v31 + 1) + 8 * j) layer];
+            [layer2 setSpeed:0.0];
+            [layer2 setTimeOffset:0.0];
           }
 
           v25 = [v23 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -1148,10 +1148,10 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
   if (self->_interruptibleAnimator)
   {
     v3 = [_UIViewControllerTransitionContext _associatedTransitionContextsForInteractionController:self];
-    v4 = [v3 firstObject];
-    v5 = [v4 _state];
+    firstObject = [v3 firstObject];
+    _state = [firstObject _state];
 
-    if (v5 == 1)
+    if (_state == 1)
     {
       [(UIViewImplicitlyAnimating *)self->_interruptibleAnimator pauseAnimation];
       if (dyld_program_sdk_at_least())
@@ -1208,10 +1208,10 @@ void __70__UIPercentDrivenInteractiveTransition__startInterruptibleTransition___
 - (void)updateInteractiveTransition:(CGFloat)percentComplete
 {
   v5 = [_UIViewControllerTransitionContext _associatedTransitionContextsForInteractionController:self];
-  v6 = [v5 firstObject];
-  v7 = [v6 _state];
+  firstObject = [v5 firstObject];
+  _state = [firstObject _state];
 
-  if (v7 == 1)
+  if (_state == 1)
   {
     if ([(UIPercentDrivenInteractiveTransition *)self _clampsPercentComplete])
     {
@@ -1307,21 +1307,21 @@ void __68__UIPercentDrivenInteractiveTransition_updateInteractiveTransition___bl
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = [_UIViewControllerTransitionContext _associatedTransitionContextsForInteractionController:self];
-  v4 = [v3 firstObject];
-  if ([v4 _state] == 1)
+  firstObject = [v3 firstObject];
+  if ([firstObject _state] == 1)
   {
 
     goto LABEL_4;
   }
 
-  v5 = [v3 firstObject];
-  v6 = [v5 _state];
+  firstObject2 = [v3 firstObject];
+  _state = [firstObject2 _state];
 
-  if (v6 == 4)
+  if (_state == 4)
   {
 LABEL_4:
-    v7 = [v3 firstObject];
-    [v7 _previousPercentComplete];
+    firstObject3 = [v3 firstObject];
+    [firstObject3 _previousPercentComplete];
     [(UIPercentDrivenInteractiveTransition *)self _updateInteractiveTransition:v3 percent:1 isFinished:0 didComplete:?];
 
     v20 = 0u;
@@ -1390,21 +1390,21 @@ LABEL_19:
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = [_UIViewControllerTransitionContext _associatedTransitionContextsForInteractionController:self];
-  v4 = [v3 firstObject];
-  if ([v4 _state] == 1)
+  firstObject = [v3 firstObject];
+  if ([firstObject _state] == 1)
   {
 
     goto LABEL_4;
   }
 
-  v5 = [v3 firstObject];
-  v6 = [v5 _state];
+  firstObject2 = [v3 firstObject];
+  _state = [firstObject2 _state];
 
-  if (v6 == 4)
+  if (_state == 4)
   {
 LABEL_4:
-    v7 = [v3 firstObject];
-    [v7 _previousPercentComplete];
+    firstObject3 = [v3 firstObject];
+    [firstObject3 _previousPercentComplete];
     [(UIPercentDrivenInteractiveTransition *)self _updateInteractiveTransition:v3 percent:1 isFinished:1 didComplete:?];
 
     v20 = 0u;

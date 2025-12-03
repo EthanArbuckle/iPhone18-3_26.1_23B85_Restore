@@ -1,41 +1,41 @@
 @interface BMIntelligencePlatformFeatureStoreFeatureValue
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMIntelligencePlatformFeatureStoreFeatureValue)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMIntelligencePlatformFeatureStoreFeatureValue)initWithValue_sequence:(id)a3 value_sequence_shape:(id)a4 value_dictionary:(id)a5 value:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMIntelligencePlatformFeatureStoreFeatureValue)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMIntelligencePlatformFeatureStoreFeatureValue)initWithValue_sequence:(id)value_sequence value_sequence_shape:(id)value_sequence_shape value_dictionary:(id)value_dictionary value:(id)value;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_value_dictionaryJSONArray;
 - (id)_value_sequenceJSONArray;
 - (id)_value_sequence_shapeJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMIntelligencePlatformFeatureStoreFeatureValue
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence];
-    v7 = [v5 value_sequence];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    value_sequence = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence];
+    value_sequence2 = [v5 value_sequence];
+    v8 = value_sequence2;
+    if (value_sequence == value_sequence2)
     {
     }
 
     else
     {
-      v9 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence];
-      v10 = [v5 value_sequence];
-      v11 = [v9 isEqual:v10];
+      value_sequence3 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence];
+      value_sequence4 = [v5 value_sequence];
+      v11 = [value_sequence3 isEqual:value_sequence4];
 
       if (!v11)
       {
@@ -43,18 +43,18 @@
       }
     }
 
-    v13 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence_shape];
-    v14 = [v5 value_sequence_shape];
-    v15 = v14;
-    if (v13 == v14)
+    value_sequence_shape = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence_shape];
+    value_sequence_shape2 = [v5 value_sequence_shape];
+    v15 = value_sequence_shape2;
+    if (value_sequence_shape == value_sequence_shape2)
     {
     }
 
     else
     {
-      v16 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence_shape];
-      v17 = [v5 value_sequence_shape];
-      v18 = [v16 isEqual:v17];
+      value_sequence_shape3 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence_shape];
+      value_sequence_shape4 = [v5 value_sequence_shape];
+      v18 = [value_sequence_shape3 isEqual:value_sequence_shape4];
 
       if (!v18)
       {
@@ -62,18 +62,18 @@
       }
     }
 
-    v19 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_dictionary];
-    v20 = [v5 value_dictionary];
-    v21 = v20;
-    if (v19 == v20)
+    value_dictionary = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_dictionary];
+    value_dictionary2 = [v5 value_dictionary];
+    v21 = value_dictionary2;
+    if (value_dictionary == value_dictionary2)
     {
     }
 
     else
     {
-      v22 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_dictionary];
-      v23 = [v5 value_dictionary];
-      v24 = [v22 isEqual:v23];
+      value_dictionary3 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_dictionary];
+      value_dictionary4 = [v5 value_dictionary];
+      v24 = [value_dictionary3 isEqual:value_dictionary4];
 
       if (!v24)
       {
@@ -85,18 +85,18 @@ LABEL_19:
       }
     }
 
-    v25 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value];
-    v26 = [v5 value];
-    if (v25 == v26)
+    value = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value];
+    value2 = [v5 value];
+    if (value == value2)
     {
       v12 = 1;
     }
 
     else
     {
-      v27 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value];
-      v28 = [v5 value];
-      v12 = [v27 isEqual:v28];
+      value3 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value];
+      value4 = [v5 value];
+      v12 = [value3 isEqual:value4];
     }
 
     goto LABEL_19;
@@ -111,48 +111,48 @@ LABEL_20:
 - (id)jsonDictionary
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self _value_sequenceJSONArray];
-  v4 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self _value_sequence_shapeJSONArray];
-  v5 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self _value_dictionaryJSONArray];
-  v6 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value];
-  v7 = [v6 jsonDictionary];
+  _value_sequenceJSONArray = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self _value_sequenceJSONArray];
+  _value_sequence_shapeJSONArray = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self _value_sequence_shapeJSONArray];
+  _value_dictionaryJSONArray = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self _value_dictionaryJSONArray];
+  value = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value];
+  jsonDictionary = [value jsonDictionary];
 
   v15[0] = @"value_sequence";
-  v8 = v3;
-  if (!v3)
+  null = _value_sequenceJSONArray;
+  if (!_value_sequenceJSONArray)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v8;
+  v16[0] = null;
   v15[1] = @"value_sequence_shape";
-  v9 = v4;
-  if (!v4)
+  null2 = _value_sequence_shapeJSONArray;
+  if (!_value_sequence_shapeJSONArray)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v9;
+  v16[1] = null2;
   v15[2] = @"value_dictionary";
-  v10 = v5;
-  if (!v5)
+  null3 = _value_dictionaryJSONArray;
+  if (!_value_dictionaryJSONArray)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v10;
+  v16[2] = null3;
   v15[3] = @"value";
-  v11 = v7;
-  if (!v7)
+  null4 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[3] = v11;
+  v16[3] = null4;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
-  if (v7)
+  if (jsonDictionary)
   {
-    if (v5)
+    if (_value_dictionaryJSONArray)
     {
       goto LABEL_11;
     }
@@ -161,17 +161,17 @@ LABEL_20:
   else
   {
 
-    if (v5)
+    if (_value_dictionaryJSONArray)
     {
 LABEL_11:
-      if (v4)
+      if (_value_sequence_shapeJSONArray)
       {
         goto LABEL_12;
       }
 
 LABEL_18:
 
-      if (v3)
+      if (_value_sequenceJSONArray)
       {
         goto LABEL_13;
       }
@@ -180,13 +180,13 @@ LABEL_18:
     }
   }
 
-  if (!v4)
+  if (!_value_sequence_shapeJSONArray)
   {
     goto LABEL_18;
   }
 
 LABEL_12:
-  if (v3)
+  if (_value_sequenceJSONArray)
   {
     goto LABEL_13;
   }
@@ -207,8 +207,8 @@ LABEL_13:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_dictionary];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  value_dictionary = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_dictionary];
+  v5 = [value_dictionary countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -219,14 +219,14 @@ LABEL_13:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(value_dictionary);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [value_dictionary countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -245,8 +245,8 @@ LABEL_13:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence_shape];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  value_sequence_shape = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence_shape];
+  v5 = [value_sequence_shape countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -257,13 +257,13 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(value_sequence_shape);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [value_sequence_shape countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -282,8 +282,8 @@ LABEL_13:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  value_sequence = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence];
+  v5 = [value_sequence countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -294,14 +294,14 @@ LABEL_13:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(value_sequence);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [value_sequence countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -312,17 +312,17 @@ LABEL_13:
   return v3;
 }
 
-- (BMIntelligencePlatformFeatureStoreFeatureValue)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMIntelligencePlatformFeatureStoreFeatureValue)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v118[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"value_sequence"];
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v6 isEqual:v7];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"value_sequence"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [v6 isEqual:null];
 
   if (v8)
   {
-    v77 = self;
+    selfCopy2 = self;
 
     v6 = 0;
   }
@@ -334,7 +334,7 @@ LABEL_13:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v37 = objc_alloc(MEMORY[0x1E696ABC0]);
           v38 = *MEMORY[0x1E698F240];
@@ -343,7 +343,7 @@ LABEL_13:
           v118[0] = v80;
           v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v118 forKeys:&v117 count:1];
           v28 = 0;
-          *a4 = [v37 initWithDomain:v38 code:2 userInfo:v18];
+          *error = [v37 initWithDomain:v38 code:2 userInfo:v18];
           goto LABEL_83;
         }
 
@@ -352,7 +352,7 @@ LABEL_13:
       }
     }
 
-    v77 = self;
+    selfCopy2 = self;
   }
 
   v80 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
@@ -362,7 +362,7 @@ LABEL_13:
   v95 = 0u;
   v6 = v6;
   v9 = [v6 countByEnumeratingWithState:&v92 objects:v116 count:16];
-  v79 = v5;
+  v79 = dictionaryCopy;
   if (!v9)
   {
     goto LABEL_16;
@@ -383,8 +383,8 @@ LABEL_13:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v21 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v22 = objc_alloc(MEMORY[0x1E696ABC0]);
           v23 = *MEMORY[0x1E698F240];
@@ -400,16 +400,16 @@ LABEL_13:
 LABEL_42:
         v28 = 0;
         v18 = v6;
-        v5 = v79;
-        self = v77;
+        dictionaryCopy = v79;
+        self = selfCopy2;
         goto LABEL_83;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v21 = a4;
-        if (!a4)
+        errorCopy2 = error;
+        if (!error)
         {
           goto LABEL_42;
         }
@@ -425,7 +425,7 @@ LABEL_42:
 LABEL_22:
         v27 = [v24 dictionaryWithObjects:v25 forKeys:v26 count:1];
         v28 = 0;
-        *v21 = [v22 initWithDomain:v23 code:2 userInfo:v27];
+        *errorCopy2 = [v22 initWithDomain:v23 code:2 userInfo:v27];
 LABEL_26:
         v18 = v6;
         goto LABEL_80;
@@ -439,10 +439,10 @@ LABEL_26:
       if (v17)
       {
         v27 = v17;
-        if (a4)
+        if (error)
         {
           v29 = v17;
-          *a4 = v27;
+          *error = v27;
         }
 
         v28 = 0;
@@ -453,15 +453,15 @@ LABEL_26:
     }
 
     v10 = [v6 countByEnumeratingWithState:&v92 objects:v116 count:16];
-    v5 = v79;
+    dictionaryCopy = v79;
   }
 
   while (v10);
 LABEL_16:
 
-  v18 = [v5 objectForKeyedSubscript:@"value_sequence_shape"];
-  v19 = [MEMORY[0x1E695DFB0] null];
-  v20 = [v18 isEqual:v19];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"value_sequence_shape"];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v20 = [v18 isEqual:null2];
 
   if (v20)
   {
@@ -485,8 +485,8 @@ LABEL_29:
 LABEL_38:
 
       v27 = [v79 objectForKeyedSubscript:@"value_dictionary"];
-      v35 = [MEMORY[0x1E695DFB0] null];
-      v36 = [v27 isEqual:v35];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      v36 = [v27 isEqual:null3];
 
       if (v36)
       {
@@ -499,7 +499,7 @@ LABEL_38:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v68 = objc_alloc(MEMORY[0x1E696ABC0]);
             v69 = *MEMORY[0x1E698F240];
@@ -508,7 +508,7 @@ LABEL_38:
             v104 = v76;
             v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v104 forKeys:&v103 count:1];
             v28 = 0;
-            *a4 = [v68 initWithDomain:v69 code:2 userInfo:v45];
+            *error = [v68 initWithDomain:v69 code:2 userInfo:v45];
             goto LABEL_79;
           }
 
@@ -550,8 +550,8 @@ LABEL_54:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v57 = a4;
-          if (a4)
+          errorCopy4 = error;
+          if (error)
           {
             v58 = objc_alloc(MEMORY[0x1E696ABC0]);
             v59 = *MEMORY[0x1E698F240];
@@ -575,10 +575,10 @@ LABEL_54:
         if (v53)
         {
           v64 = v53;
-          if (a4)
+          if (error)
           {
             v65 = v53;
-            *a4 = v64;
+            *error = v64;
           }
 
           goto LABEL_77;
@@ -612,10 +612,10 @@ LABEL_62:
             v71 = v81;
             if (v71)
             {
-              if (a4)
+              if (error)
               {
                 v71 = v71;
-                *a4 = v71;
+                *error = v71;
               }
 
               v28 = 0;
@@ -626,8 +626,8 @@ LABEL_62:
             {
 
 LABEL_65:
-              v28 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)v77 initWithValue_sequence:v80 value_sequence_shape:v14 value_dictionary:v76 value:v50];
-              v77 = v28;
+              v28 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)selfCopy2 initWithValue_sequence:v80 value_sequence_shape:v14 value_dictionary:v76 value:v50];
+              selfCopy2 = v28;
             }
 
 LABEL_78:
@@ -635,7 +635,7 @@ LABEL_78:
 
           else
           {
-            if (a4)
+            if (error)
             {
               v75 = objc_alloc(MEMORY[0x1E696ABC0]);
               v72 = *MEMORY[0x1E698F240];
@@ -643,7 +643,7 @@ LABEL_78:
               v50 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"value"];
               v97 = v50;
               v73 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v97 forKeys:&v96 count:1];
-              *a4 = [v75 initWithDomain:v72 code:2 userInfo:v73];
+              *error = [v75 initWithDomain:v72 code:2 userInfo:v73];
 
               v28 = 0;
               goto LABEL_78;
@@ -655,15 +655,15 @@ LABEL_78:
 LABEL_79:
 
 LABEL_80:
-          self = v77;
+          self = selfCopy2;
 LABEL_81:
 
           goto LABEL_82;
         }
       }
 
-      v57 = a4;
-      if (a4)
+      errorCopy4 = error;
+      if (error)
       {
         v58 = objc_alloc(MEMORY[0x1E696ABC0]);
         v59 = *MEMORY[0x1E698F240];
@@ -675,7 +675,7 @@ LABEL_81:
         v62 = &v100;
 LABEL_73:
         v63 = [v60 dictionaryWithObjects:v61 forKeys:v62 count:1];
-        *v57 = [v58 initWithDomain:v59 code:2 userInfo:v63];
+        *errorCopy4 = [v58 initWithDomain:v59 code:2 userInfo:v63];
 
 LABEL_77:
         v28 = 0;
@@ -710,8 +710,8 @@ LABEL_31:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v39 = a4;
-        if (a4)
+        errorCopy6 = error;
+        if (error)
         {
           v40 = objc_alloc(MEMORY[0x1E696ABC0]);
           v41 = *MEMORY[0x1E698F240];
@@ -740,8 +740,8 @@ LABEL_31:
       }
     }
 
-    v39 = a4;
-    if (a4)
+    errorCopy6 = error;
+    if (error)
     {
       v40 = objc_alloc(MEMORY[0x1E696ABC0]);
       v41 = *MEMORY[0x1E698F240];
@@ -754,7 +754,7 @@ LABEL_31:
 LABEL_47:
       v45 = [v42 dictionaryWithObjects:v43 forKeys:v44 count:1];
       v28 = 0;
-      *v39 = [v40 initWithDomain:v41 code:2 userInfo:v45];
+      *errorCopy6 = [v40 initWithDomain:v41 code:2 userInfo:v45];
       v27 = v18;
       goto LABEL_79;
     }
@@ -765,8 +765,8 @@ LABEL_48:
     goto LABEL_80;
   }
 
-  self = v77;
-  if (a4)
+  self = selfCopy2;
+  if (error)
   {
     v54 = objc_alloc(MEMORY[0x1E696ABC0]);
     v55 = *MEMORY[0x1E698F240];
@@ -776,13 +776,13 @@ LABEL_48:
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v111 forKeys:&v110 count:1];
     v56 = [v54 initWithDomain:v55 code:2 userInfo:v27];
     v28 = 0;
-    *a4 = v56;
+    *error = v56;
     goto LABEL_81;
   }
 
   v28 = 0;
 LABEL_82:
-  v5 = v79;
+  dictionaryCopy = v79;
 LABEL_83:
 
 LABEL_84:
@@ -794,15 +794,15 @@ LABEL_84:
 {
   v3 = objc_opt_new();
   [(BMIntelligencePlatformFeatureStoreFeatureValue *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -826,7 +826,7 @@ LABEL_84:
         v10 = *(*(&v32 + 1) + 8 * v9);
         v31 = 0;
         PBDataWriterPlaceMark();
-        [v10 writeTo:v4];
+        [v10 writeTo:toCopy];
         PBDataWriterRecallMark();
         ++v9;
       }
@@ -893,7 +893,7 @@ LABEL_84:
         v21 = *(*(&v23 + 1) + 8 * v20);
         v31 = 0;
         PBDataWriterPlaceMark();
-        [v21 writeTo:{v4, v23}];
+        [v21 writeTo:{toCopy, v23}];
         PBDataWriterRecallMark();
         ++v20;
       }
@@ -909,16 +909,16 @@ LABEL_84:
   {
     v31 = 0;
     PBDataWriterPlaceMark();
-    [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)self->_value writeTo:v4];
+    [(BMIntelligencePlatformFeatureStoreFeatureValueBasicValue *)self->_value writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v49.receiver = self;
   v49.super_class = BMIntelligencePlatformFeatureStoreFeatureValue;
   v5 = [(BMEventBase *)&v49 init];
@@ -930,14 +930,14 @@ LABEL_84:
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v9 = [v4 position];
-  if (v9 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     v10 = off_1E6E85000;
     v48 = v8;
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_52;
       }
@@ -948,18 +948,18 @@ LABEL_84:
       while (1)
       {
         LOBYTE(v50) = 0;
-        v14 = [v4 position] + 1;
-        if (v14 >= [v4 position] && (v15 = objc_msgSend(v4, "position") + 1, v15 <= objc_msgSend(v4, "length")))
+        v14 = [fromCopy position] + 1;
+        if (v14 >= [fromCopy position] && (v15 = objc_msgSend(fromCopy, "position") + 1, v15 <= objc_msgSend(fromCopy, "length")))
         {
-          v16 = [v4 data];
-          [v16 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v13 |= (v50 & 0x7F) << v11;
@@ -977,9 +977,9 @@ LABEL_84:
         }
       }
 
-      v18 = [v4 hasError] ? 0 : v13;
+      v18 = [fromCopy hasError] ? 0 : v13;
 LABEL_17:
-      if (([v4 hasError] & 1) != 0 || (v18 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v18 & 7) == 4)
       {
         goto LABEL_52;
       }
@@ -999,7 +999,7 @@ LABEL_17:
           goto LABEL_54;
         }
 
-        v36 = [[BMIntelligencePlatformFeatureStoreFeatureValueNamedValue alloc] initByReadFrom:v4];
+        v36 = [[BMIntelligencePlatformFeatureStoreFeatureValueNamedValue alloc] initByReadFrom:fromCopy];
         if (!v36)
         {
           goto LABEL_54;
@@ -1027,7 +1027,7 @@ LABEL_50:
         goto LABEL_54;
       }
 
-      v31 = [objc_alloc(v10[116]) initByReadFrom:v4];
+      v31 = [objc_alloc(v10[116]) initByReadFrom:fromCopy];
       if (!v31)
       {
         goto LABEL_54;
@@ -1038,8 +1038,8 @@ LABEL_50:
 
       PBReaderRecallMark();
 LABEL_51:
-      v38 = [v4 position];
-      if (v38 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_52;
       }
@@ -1054,7 +1054,7 @@ LABEL_51:
         goto LABEL_54;
       }
 
-      v33 = [objc_alloc(v10[116]) initByReadFrom:v4];
+      v33 = [objc_alloc(v10[116]) initByReadFrom:fromCopy];
       if (!v33)
       {
         goto LABEL_54;
@@ -1077,18 +1077,18 @@ LABEL_51:
       while (1)
       {
         LOBYTE(v50) = 0;
-        v27 = [v4 position] + 1;
-        if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+        v27 = [fromCopy position] + 1;
+        if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
         {
-          v29 = [v4 data];
-          [v29 getBytes:&v50 range:{objc_msgSend(v4, "position"), 1}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v50 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v25 |= (v50 & 0x7F) << v23;
@@ -1106,7 +1106,7 @@ LABEL_51:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v30 = 0;
       }
@@ -1156,8 +1156,8 @@ LABEL_52:
   value_dictionary = v5->_value_dictionary;
   v5->_value_dictionary = v43;
 
-  v45 = [v4 hasError];
-  if (v45)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_55:
     v46 = 0;
@@ -1175,31 +1175,31 @@ LABEL_53:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence];
-  v5 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence_shape];
-  v6 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_dictionary];
-  v7 = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value];
-  v8 = [v3 initWithFormat:@"BMIntelligencePlatformFeatureStoreFeatureValue with value_sequence: %@, value_sequence_shape: %@, value_dictionary: %@, value: %@", v4, v5, v6, v7];
+  value_sequence = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence];
+  value_sequence_shape = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_sequence_shape];
+  value_dictionary = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value_dictionary];
+  value = [(BMIntelligencePlatformFeatureStoreFeatureValue *)self value];
+  v8 = [v3 initWithFormat:@"BMIntelligencePlatformFeatureStoreFeatureValue with value_sequence: %@, value_sequence_shape: %@, value_dictionary: %@, value: %@", value_sequence, value_sequence_shape, value_dictionary, value];
 
   return v8;
 }
 
-- (BMIntelligencePlatformFeatureStoreFeatureValue)initWithValue_sequence:(id)a3 value_sequence_shape:(id)a4 value_dictionary:(id)a5 value:(id)a6
+- (BMIntelligencePlatformFeatureStoreFeatureValue)initWithValue_sequence:(id)value_sequence value_sequence_shape:(id)value_sequence_shape value_dictionary:(id)value_dictionary value:(id)value
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  value_sequenceCopy = value_sequence;
+  value_sequence_shapeCopy = value_sequence_shape;
+  value_dictionaryCopy = value_dictionary;
+  valueCopy = value;
   v17.receiver = self;
   v17.super_class = BMIntelligencePlatformFeatureStoreFeatureValue;
   v15 = [(BMEventBase *)&v17 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_value_sequence, a3);
-    objc_storeStrong(&v15->_value_sequence_shape, a4);
-    objc_storeStrong(&v15->_value_dictionary, a5);
-    objc_storeStrong(&v15->_value, a6);
+    objc_storeStrong(&v15->_value_sequence, value_sequence);
+    objc_storeStrong(&v15->_value_sequence_shape, value_sequence_shape);
+    objc_storeStrong(&v15->_value_dictionary, value_dictionary);
+    objc_storeStrong(&v15->_value, value);
   }
 
   return v15;
@@ -1278,9 +1278,9 @@ id __57__BMIntelligencePlatformFeatureStoreFeatureValue_columns__block_invoke(ui
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1288,8 +1288,8 @@ id __57__BMIntelligencePlatformFeatureStoreFeatureValue_columns__block_invoke(ui
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMIntelligencePlatformFeatureStoreFeatureValue alloc] initByReadFrom:v7];
     v4 = v8;

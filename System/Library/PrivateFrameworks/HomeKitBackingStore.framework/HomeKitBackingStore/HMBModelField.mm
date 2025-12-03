@@ -1,48 +1,48 @@
 @interface HMBModelField
-+ (HMBModelField)fieldWithClass:(Class)a3;
-+ (HMBModelField)fieldWithClass:(Class)a3 options:(id)a4;
++ (HMBModelField)fieldWithClass:(Class)class;
++ (HMBModelField)fieldWithClass:(Class)class options:(id)options;
 + (id)deprecatedField;
-+ (id)optionalFieldWithClass:(Class)a3;
-+ (id)optionalFieldWithClass:(Class)a3 options:(id)a4;
-- (HMBModelField)initWithClass:(Class)a3;
-- (HMBModelField)initWithClass:(Class)a3 options:(id)a4;
-- (id)decodeQueryableValue:(id)a3;
++ (id)optionalFieldWithClass:(Class)class;
++ (id)optionalFieldWithClass:(Class)class options:(id)options;
+- (HMBModelField)initWithClass:(Class)class;
+- (HMBModelField)initWithClass:(Class)class options:(id)options;
+- (id)decodeQueryableValue:(id)value;
 - (id)description;
-- (id)descriptionForEncodedQueryableValue:(id)a3;
-- (id)encodeQueryableValue:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setDefaultValue:(id)a3;
+- (id)descriptionForEncodedQueryableValue:(id)value;
+- (id)encodeQueryableValue:(id)value;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setDefaultValue:(id)value;
 @end
 
 @implementation HMBModelField
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(HMBModelField *)[HMBMutableModelField allocWithZone:?], "initWithClass:", [(HMBModelField *)self classObj]];
   [(HMBModelField *)v4 setOptional:[(HMBModelField *)self isOptional]];
   [(HMBModelField *)v4 setLoggingVisibility:[(HMBModelField *)self loggingVisibility]];
-  v5 = [(HMBModelField *)self defaultValue];
-  [(HMBModelField *)v4 setDefaultValue:v5];
+  defaultValue = [(HMBModelField *)self defaultValue];
+  [(HMBModelField *)v4 setDefaultValue:defaultValue];
 
-  v6 = [(HMBModelField *)self readonlyVersion];
-  [(HMBModelField *)v4 setReadonlyVersion:v6];
+  readonlyVersion = [(HMBModelField *)self readonlyVersion];
+  [(HMBModelField *)v4 setReadonlyVersion:readonlyVersion];
 
-  v7 = [(HMBModelField *)self unavailableVersion];
-  [(HMBModelField *)v4 setUnavailableVersion:v7];
+  unavailableVersion = [(HMBModelField *)self unavailableVersion];
+  [(HMBModelField *)v4 setUnavailableVersion:unavailableVersion];
 
-  v8 = [(HMBModelField *)self externalRecordField];
-  [(HMBModelField *)v4 setExternalRecordField:v8];
+  externalRecordField = [(HMBModelField *)self externalRecordField];
+  [(HMBModelField *)v4 setExternalRecordField:externalRecordField];
 
   [(HMBModelField *)v4 setConformsToHMBModelNativeCKWrapper:[(HMBModelField *)self conformsToHMBModelNativeCKWrapper]];
   [(HMBModelField *)v4 setExcludeFromCloudStorage:[(HMBModelField *)self excludeFromCloudStorage]];
-  v9 = [(HMBModelField *)self encodeBlock];
-  [(HMBModelField *)v4 setEncodeBlock:v9];
+  encodeBlock = [(HMBModelField *)self encodeBlock];
+  [(HMBModelField *)v4 setEncodeBlock:encodeBlock];
 
-  v10 = [(HMBModelField *)self decodeBlock];
-  [(HMBModelField *)v4 setDecodeBlock:v10];
+  decodeBlock = [(HMBModelField *)self decodeBlock];
+  [(HMBModelField *)v4 setDecodeBlock:decodeBlock];
 
-  v11 = [(HMBModelField *)self descriptionBlock];
-  [(HMBModelField *)v4 setDescriptionBlock:v11];
+  descriptionBlock = [(HMBModelField *)self descriptionBlock];
+  [(HMBModelField *)v4 setDescriptionBlock:descriptionBlock];
 
   return v4;
 }
@@ -57,10 +57,10 @@
   return v4;
 }
 
-+ (id)optionalFieldWithClass:(Class)a3 options:(id)a4
++ (id)optionalFieldWithClass:(Class)class options:(id)options
 {
-  v5 = a4;
-  v6 = [(HMBModelField *)[HMBMutableModelField alloc] initWithClass:a3 options:v5];
+  optionsCopy = options;
+  v6 = [(HMBModelField *)[HMBMutableModelField alloc] initWithClass:class options:optionsCopy];
 
   [(HMBModelField *)v6 setOptional:1];
   v7 = [(HMBMutableModelField *)v6 copy];
@@ -68,41 +68,41 @@
   return v7;
 }
 
-+ (HMBModelField)fieldWithClass:(Class)a3 options:(id)a4
++ (HMBModelField)fieldWithClass:(Class)class options:(id)options
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithClass:a3 options:v6];
+  optionsCopy = options;
+  v7 = [[self alloc] initWithClass:class options:optionsCopy];
 
   return v7;
 }
 
-+ (id)optionalFieldWithClass:(Class)a3
++ (id)optionalFieldWithClass:(Class)class
 {
   v4 = [HMBMutableModelField alloc];
-  v5 = [(HMBModelField *)v4 initWithClass:a3 options:MEMORY[0x277CBEBF8]];
+  v5 = [(HMBModelField *)v4 initWithClass:class options:MEMORY[0x277CBEBF8]];
   [(HMBModelField *)v5 setOptional:1];
   v6 = [(HMBMutableModelField *)v5 copy];
 
   return v6;
 }
 
-+ (HMBModelField)fieldWithClass:(Class)a3
++ (HMBModelField)fieldWithClass:(Class)class
 {
-  v4 = [a1 alloc];
-  v5 = [v4 initWithClass:a3 options:MEMORY[0x277CBEBF8]];
+  v4 = [self alloc];
+  v5 = [v4 initWithClass:class options:MEMORY[0x277CBEBF8]];
 
   return v5;
 }
 
-- (id)descriptionForEncodedQueryableValue:(id)a3
+- (id)descriptionForEncodedQueryableValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HMBModelField *)self descriptionBlock];
+  valueCopy = value;
+  descriptionBlock = [(HMBModelField *)self descriptionBlock];
 
-  if (v5)
+  if (descriptionBlock)
   {
-    v6 = [(HMBModelField *)self descriptionBlock];
-    v7 = (v6)[2](v6, v4);
+    descriptionBlock2 = [(HMBModelField *)self descriptionBlock];
+    v7 = (descriptionBlock2)[2](descriptionBlock2, valueCopy);
 
     return v7;
   }
@@ -114,15 +114,15 @@
   }
 }
 
-- (id)decodeQueryableValue:(id)a3
+- (id)decodeQueryableValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HMBModelField *)self decodeBlock];
+  valueCopy = value;
+  decodeBlock = [(HMBModelField *)self decodeBlock];
 
-  if (v5)
+  if (decodeBlock)
   {
-    v6 = [(HMBModelField *)self decodeBlock];
-    v7 = (v6)[2](v6, v4);
+    decodeBlock2 = [(HMBModelField *)self decodeBlock];
+    v7 = (decodeBlock2)[2](decodeBlock2, valueCopy);
 
     return v7;
   }
@@ -134,9 +134,9 @@
   }
 }
 
-- (id)encodeQueryableValue:(id)a3
+- (id)encodeQueryableValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   [(HMBModelField *)self classObj];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -144,9 +144,9 @@
     goto LABEL_7;
   }
 
-  v5 = [(HMBModelField *)self encodeBlock];
+  encodeBlock = [(HMBModelField *)self encodeBlock];
 
-  if (!v5)
+  if (!encodeBlock)
   {
 LABEL_7:
     v9 = _HMFPreconditionFailure();
@@ -154,31 +154,31 @@ LABEL_7:
     return result;
   }
 
-  v6 = [(HMBModelField *)self encodeBlock];
-  v7 = (v6)[2](v6, v4);
+  encodeBlock2 = [(HMBModelField *)self encodeBlock];
+  v7 = (encodeBlock2)[2](encodeBlock2, valueCopy);
 
   return v7;
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5 && ([(HMBModelField *)self classObj], (objc_opt_isKindOfClass() & 1) == 0))
+  valueCopy = value;
+  if (valueCopy && ([(HMBModelField *)self classObj], (objc_opt_isKindOfClass() & 1) == 0))
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = HMFGetLogIdentifier();
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = NSStringFromClass([(HMBModelField *)v7 classObj]);
+      v12 = NSStringFromClass([(HMBModelField *)selfCopy classObj]);
       v14 = 138544130;
       v15 = v9;
       v16 = 2112;
-      v17 = v5;
+      v17 = valueCopy;
       v18 = 2112;
       v19 = v11;
       v20 = 2112;
@@ -191,7 +191,7 @@ LABEL_7:
 
   else
   {
-    objc_storeStrong(&self->_defaultValue, a3);
+    objc_storeStrong(&self->_defaultValue, value);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -208,12 +208,12 @@ LABEL_7:
     [v5 appendFormat:@" optional: YES"];
   }
 
-  v6 = [(HMBModelField *)self externalRecordField];
+  externalRecordField = [(HMBModelField *)self externalRecordField];
 
-  if (v6)
+  if (externalRecordField)
   {
-    v7 = [(HMBModelField *)self externalRecordField];
-    [v5 appendFormat:@" recordField: %@", v7];
+    externalRecordField2 = [(HMBModelField *)self externalRecordField];
+    [v5 appendFormat:@" recordField: %@", externalRecordField2];
   }
 
   if ([(HMBModelField *)self loggingVisibility])
@@ -221,28 +221,28 @@ LABEL_7:
     [v5 appendFormat:@" loggingVisibility: %ld", -[HMBModelField loggingVisibility](self, "loggingVisibility")];
   }
 
-  v8 = [(HMBModelField *)self defaultValue];
+  defaultValue = [(HMBModelField *)self defaultValue];
 
-  if (v8)
+  if (defaultValue)
   {
-    v9 = [(HMBModelField *)self defaultValue];
-    [v5 appendFormat:@" defaultValue: %@", v9];
+    defaultValue2 = [(HMBModelField *)self defaultValue];
+    [v5 appendFormat:@" defaultValue: %@", defaultValue2];
   }
 
-  v10 = [(HMBModelField *)self readonlyVersion];
+  readonlyVersion = [(HMBModelField *)self readonlyVersion];
 
-  if (v10)
+  if (readonlyVersion)
   {
-    v11 = [(HMBModelField *)self readonlyVersion];
-    [v5 appendFormat:@" readonlyVersion: %@", v11];
+    readonlyVersion2 = [(HMBModelField *)self readonlyVersion];
+    [v5 appendFormat:@" readonlyVersion: %@", readonlyVersion2];
   }
 
-  v12 = [(HMBModelField *)self unavailableVersion];
+  unavailableVersion = [(HMBModelField *)self unavailableVersion];
 
-  if (v12)
+  if (unavailableVersion)
   {
-    v13 = [(HMBModelField *)self unavailableVersion];
-    [v5 appendFormat:@" unavailableVersion: %@", v13];
+    unavailableVersion2 = [(HMBModelField *)self unavailableVersion];
+    [v5 appendFormat:@" unavailableVersion: %@", unavailableVersion2];
   }
 
   [v5 appendString:@">"];
@@ -251,10 +251,10 @@ LABEL_7:
   return v14;
 }
 
-- (HMBModelField)initWithClass:(Class)a3 options:(id)a4
+- (HMBModelField)initWithClass:(Class)class options:(id)options
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  optionsCopy = options;
   v33.receiver = self;
   v33.super_class = HMBModelField;
   v7 = [(HMBModelField *)&v33 init];
@@ -264,12 +264,12 @@ LABEL_7:
     goto LABEL_25;
   }
 
-  objc_storeStrong(&v7->_classObj, a3);
+  objc_storeStrong(&v7->_classObj, class);
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = v6;
+  v9 = optionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v10)
   {
@@ -296,17 +296,17 @@ LABEL_7:
   }
 
   v8->_excludeFromCloudStorage = 0;
-  v14 = [(objc_class *)a3 conformsToProtocol:&unk_283EBFD90];
+  v14 = [(objc_class *)class conformsToProtocol:&unk_283EBFD90];
   v8->_conformsToHMBModelNativeCKWrapper = v14;
-  v15 = [(HMBModelField *)v8 externalRecordField];
+  externalRecordField = [(HMBModelField *)v8 externalRecordField];
 
   if (v14)
   {
-    if (v15)
+    if (externalRecordField)
     {
       if (objc_opt_respondsToSelector())
       {
-        v16 = [(objc_class *)a3 includeInModelEncoding]^ 1;
+        v16 = [(objc_class *)class includeInModelEncoding]^ 1;
 LABEL_16:
         v8->_excludeFromCloudStorage = v16;
         goto LABEL_17;
@@ -322,9 +322,9 @@ LABEL_27:
     _HMFPreconditionFailure();
   }
 
-  if (v15)
+  if (externalRecordField)
   {
-    if (([(objc_class *)a3 conformsToProtocol:&unk_283ECB100]& 1) != 0)
+    if (([(objc_class *)class conformsToProtocol:&unk_283ECB100]& 1) != 0)
     {
       goto LABEL_15;
     }
@@ -371,7 +371,7 @@ LABEL_25:
   return v8;
 }
 
-- (HMBModelField)initWithClass:(Class)a3
+- (HMBModelField)initWithClass:(Class)class
 {
   v8.receiver = self;
   v8.super_class = HMBModelField;
@@ -379,7 +379,7 @@ LABEL_25:
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_classObj, a3);
+    objc_storeStrong(&v4->_classObj, class);
     v5->_loggingVisibility = 0;
     v6 = v5;
   }

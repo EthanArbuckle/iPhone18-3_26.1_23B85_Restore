@@ -1,51 +1,51 @@
 @interface CCSetDescriptor
-+ (id)localeIdentifierWithValue:(id)a3 error:(id *)a4;
-+ (id)setDescriptorFromDescriptor:(id)a3 error:(id *)a4;
-+ (id)setDescriptorsFromEncodedString:(id)a3 error:(id *)a4;
-+ (id)setDescriptorsFromResourceDescriptors:(id)a3 error:(id *)a4;
-+ (id)sourceIdentifierWithValue:(id)a3 error:(id *)a4;
++ (id)localeIdentifierWithValue:(id)value error:(id *)error;
++ (id)setDescriptorFromDescriptor:(id)descriptor error:(id *)error;
++ (id)setDescriptorsFromEncodedString:(id)string error:(id *)error;
++ (id)setDescriptorsFromResourceDescriptors:(id)descriptors error:(id *)error;
++ (id)sourceIdentifierWithValue:(id)value error:(id *)error;
 @end
 
 @implementation CCSetDescriptor
 
-+ (id)sourceIdentifierWithValue:(id)a3 error:(id *)a4
++ (id)sourceIdentifierWithValue:(id)value error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithKey:@"sourceIdentifier" value:v6 error:a4];
+  valueCopy = value;
+  v7 = [[self alloc] initWithKey:@"sourceIdentifier" value:valueCopy error:error];
 
   return v7;
 }
 
-+ (id)localeIdentifierWithValue:(id)a3 error:(id *)a4
++ (id)localeIdentifierWithValue:(id)value error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithKey:@"localeIdentifier" value:v6 error:a4];
+  valueCopy = value;
+  v7 = [[self alloc] initWithKey:@"localeIdentifier" value:valueCopy error:error];
 
   return v7;
 }
 
-+ (id)setDescriptorFromDescriptor:(id)a3 error:(id *)a4
++ (id)setDescriptorFromDescriptor:(id)descriptor error:(id *)error
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v6 = [CCSetDescriptor alloc];
-  v7 = [v5 key];
-  v8 = [v5 value];
+  v7 = [descriptorCopy key];
+  value = [descriptorCopy value];
 
-  v9 = [(BMResourceDescriptor *)v6 initWithKey:v7 value:v8 error:a4];
+  v9 = [(BMResourceDescriptor *)v6 initWithKey:v7 value:value error:error];
 
   return v9;
 }
 
-+ (id)setDescriptorsFromResourceDescriptors:(id)a3 error:(id *)a4
++ (id)setDescriptorsFromResourceDescriptors:(id)descriptors error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  descriptorsCopy = descriptors;
   v6 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v5;
+  v7 = descriptorsCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -77,7 +77,7 @@
         if (!v15)
         {
           v16 = v14;
-          CCSetError(a4, v14);
+          CCSetError(error, v14);
 
           v17 = 0;
           goto LABEL_14;
@@ -100,9 +100,9 @@ LABEL_14:
   return v17;
 }
 
-+ (id)setDescriptorsFromEncodedString:(id)a3 error:(id *)a4
++ (id)setDescriptorsFromEncodedString:(id)string error:(id *)error
 {
-  v5 = a3;
+  stringCopy = string;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -121,12 +121,12 @@ LABEL_14:
   v9[3] = &unk_1E7C8BAC8;
   v9[4] = &v10;
   v9[5] = &v16;
-  if ([MEMORY[0x1E698E9F0] enumerateDescriptorsFromEncodedString:v5 error:a4 usingBlock:v9])
+  if ([MEMORY[0x1E698E9F0] enumerateDescriptorsFromEncodedString:stringCopy error:error usingBlock:v9])
   {
     v6 = v17[5];
     if (!v6)
     {
-      CCSetError(a4, v11[5]);
+      CCSetError(error, v11[5]);
       v6 = v17[5];
     }
 

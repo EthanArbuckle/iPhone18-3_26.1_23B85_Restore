@@ -1,19 +1,19 @@
 @interface PDStringProperty
-- (PDStringProperty)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
+- (PDStringProperty)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDStringProperty
 
-- (PDStringProperty)initWithDatabaseRow:(id)a3
+- (PDStringProperty)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v9.receiver = self;
   v9.super_class = PDStringProperty;
-  v5 = [(PDProperty *)&v9 initWithDatabaseRow:v4];
+  v5 = [(PDProperty *)&v9 initWithDatabaseRow:rowCopy];
   if (v5)
   {
-    v6 = sub_10016D778(v4, @"value");
+    v6 = sub_10016D778(rowCopy, @"value");
     value = v5->_value;
     v5->_value = v6;
   }
@@ -21,13 +21,13 @@
   return v5;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v5.receiver = self;
   v5.super_class = PDStringProperty;
-  v4 = a3;
-  [(PDProperty *)&v5 bindTo:v4];
-  sub_1000982FC(v4, self->_value, @"value");
+  toCopy = to;
+  [(PDProperty *)&v5 bindTo:toCopy];
+  sub_1000982FC(toCopy, self->_value, @"value");
 }
 
 @end

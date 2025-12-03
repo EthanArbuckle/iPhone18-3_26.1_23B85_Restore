@@ -1,51 +1,51 @@
 @interface SBHomeScreenZoomSwitcherModifier
 - (BOOL)_isEffectivelyHome;
-- (SBHomeScreenZoomSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4;
+- (SBHomeScreenZoomSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction;
 - (double)homeScreenAlpha;
 - (double)homeScreenBackdropBlurProgress;
 - (double)homeScreenDimmingAlpha;
 - (double)homeScreenScale;
 - (double)wallpaperScale;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (int64_t)homeScreenBackdropBlurType;
 @end
 
 @implementation SBHomeScreenZoomSwitcherModifier
 
-- (SBHomeScreenZoomSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4
+- (SBHomeScreenZoomSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction
 {
   v6.receiver = self;
   v6.super_class = SBHomeScreenZoomSwitcherModifier;
-  result = [(SBTransitionSwitcherModifier *)&v6 initWithTransitionID:a3];
+  result = [(SBTransitionSwitcherModifier *)&v6 initWithTransitionID:d];
   if (result)
   {
-    result->_direction = a4;
+    result->_direction = direction;
   }
 
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v12.receiver = self;
   v12.super_class = SBHomeScreenZoomSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:v4];
-  v6 = [v4 switcherLayoutElementType];
+  elementCopy = element;
+  v5 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:elementCopy];
+  switcherLayoutElementType = [elementCopy switcherLayoutElementType];
 
-  if (v6 == 1)
+  if (switcherLayoutElementType == 1)
   {
-    v7 = [(SBHomeScreenZoomSwitcherModifier *)self switcherSettings];
-    v8 = [v7 animationSettings];
+    switcherSettings = [(SBHomeScreenZoomSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
 
     if ([(SBHomeScreenZoomSwitcherModifier *)self _isEffectivelyHome])
     {
-      [v8 zoomUpSettings];
+      [animationSettings zoomUpSettings];
     }
 
     else
     {
-      [v8 iconZoomDownSettings];
+      [animationSettings iconZoomDownSettings];
     }
     v9 = ;
     v10 = [v5 mutableCopy];
@@ -68,9 +68,9 @@
 
   else
   {
-    v4 = [(SBHomeScreenZoomSwitcherModifier *)self switcherSettings];
-    v5 = [v4 animationSettings];
-    [v5 homeScreenOpacityInApplication];
+    switcherSettings = [(SBHomeScreenZoomSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings homeScreenOpacityInApplication];
     v7 = v6;
 
     return v7;
@@ -90,9 +90,9 @@
 
   else
   {
-    v4 = [(SBHomeScreenZoomSwitcherModifier *)self switcherSettings];
-    v5 = [v4 animationSettings];
-    [v5 homeScreenBlurInApplication];
+    switcherSettings = [(SBHomeScreenZoomSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings homeScreenBlurInApplication];
     v7 = v6;
 
     return v7;
@@ -125,9 +125,9 @@
 
   else
   {
-    v4 = [(SBHomeScreenZoomSwitcherModifier *)self switcherSettings];
-    v5 = [v4 animationSettings];
-    [v5 dimmingAlphaInApplication];
+    switcherSettings = [(SBHomeScreenZoomSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings dimmingAlphaInApplication];
     v7 = v6;
 
     return v7;
@@ -147,9 +147,9 @@
 
   else
   {
-    v4 = [(SBHomeScreenZoomSwitcherModifier *)self switcherSettings];
-    v5 = [v4 animationSettings];
-    [v5 homeScreenScaleInApplication];
+    switcherSettings = [(SBHomeScreenZoomSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings homeScreenScaleInApplication];
     v7 = v6;
 
     return v7;
@@ -169,9 +169,9 @@
 
   else
   {
-    v4 = [(SBHomeScreenZoomSwitcherModifier *)self switcherSettings];
-    v5 = [v4 animationSettings];
-    [v5 wallpaperScaleInApplication];
+    switcherSettings = [(SBHomeScreenZoomSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings wallpaperScaleInApplication];
     v7 = v6;
 
     return v7;
@@ -184,19 +184,19 @@
 {
   if ([(SBTransitionSwitcherModifier *)self isPreparingLayout]&& self->_direction == 2)
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isUpdatingLayout) = 1;
   }
 
   else
   {
-    v3 = [(SBTransitionSwitcherModifier *)self isUpdatingLayout];
-    if (v3)
+    isUpdatingLayout = [(SBTransitionSwitcherModifier *)self isUpdatingLayout];
+    if (isUpdatingLayout)
     {
-      LOBYTE(v3) = self->_direction == 1;
+      LOBYTE(isUpdatingLayout) = self->_direction == 1;
     }
   }
 
-  return v3;
+  return isUpdatingLayout;
 }
 
 @end

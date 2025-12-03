@@ -1,52 +1,52 @@
 @interface FMFAccount
 - (id)description;
-- (void)copyInfoFromAccount:(id)a3;
+- (void)copyInfoFromAccount:(id)account;
 @end
 
 @implementation FMFAccount
 
-- (void)copyInfoFromAccount:(id)a3
+- (void)copyInfoFromAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v13.receiver = self;
   v13.super_class = FMFAccount;
-  [(FindBaseAccount *)&v13 copyInfoFromAccount:v4];
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  [(FindBaseAccount *)&v13 copyInfoFromAccount:accountCopy];
+  if ([accountCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [v5 dsid];
-    [(FMFAccount *)self setDsid:v6];
+    v5 = accountCopy;
+    dsid = [v5 dsid];
+    [(FMFAccount *)self setDsid:dsid];
 
-    v7 = [v5 appServerHost];
-    [(FMFAccount *)self setAppServerHost:v7];
+    appServerHost = [v5 appServerHost];
+    [(FMFAccount *)self setAppServerHost:appServerHost];
 
-    v8 = [v5 appAuthToken];
-    [(FMFAccount *)self setAppAuthToken:v8];
+    appAuthToken = [v5 appAuthToken];
+    [(FMFAccount *)self setAppAuthToken:appAuthToken];
 
-    v9 = [v5 internalAuthToken];
+    internalAuthToken = [v5 internalAuthToken];
 
-    if (v9)
+    if (internalAuthToken)
     {
-      v10 = [v5 internalAuthToken];
-      [(FMFAccount *)self setInternalAuthToken:v10];
+      internalAuthToken2 = [v5 internalAuthToken];
+      [(FMFAccount *)self setInternalAuthToken:internalAuthToken2];
     }
 
-    v11 = [v5 additionalInfo];
-    [(FMFAccount *)self setAdditionalInfo:v11];
+    additionalInfo = [v5 additionalInfo];
+    [(FMFAccount *)self setAdditionalInfo:additionalInfo];
 
     -[FMFAccount setAppAuthTokenStatus:](self, "setAppAuthTokenStatus:", [v5 appAuthTokenStatus]);
     -[FMFAccount setInternalAuthTokenStatus:](self, "setInternalAuthTokenStatus:", [v5 internalAuthTokenStatus]);
-    v12 = [v5 lastMessageDisplayedTimestamp];
-    [(FMFAccount *)self setLastMessageDisplayedTimestamp:v12];
+    lastMessageDisplayedTimestamp = [v5 lastMessageDisplayedTimestamp];
+    [(FMFAccount *)self setLastMessageDisplayedTimestamp:lastMessageDisplayedTimestamp];
   }
 }
 
 - (id)description
 {
-  v17 = [(FMFAccount *)self dsid];
-  v16 = [(FindBaseAccount *)self username];
-  v18 = [(FMFAccount *)self appAuthToken];
-  if (v18)
+  dsid = [(FMFAccount *)self dsid];
+  username = [(FindBaseAccount *)self username];
+  appAuthToken = [(FMFAccount *)self appAuthToken];
+  if (appAuthToken)
   {
     v3 = @"(not-nil)";
   }
@@ -57,9 +57,9 @@
   }
 
   v15 = v3;
-  v4 = [(FMFAccount *)self appAuthTokenStatus];
-  v5 = [(FMFAccount *)self internalAuthToken];
-  if (v5)
+  appAuthTokenStatus = [(FMFAccount *)self appAuthTokenStatus];
+  internalAuthToken = [(FMFAccount *)self internalAuthToken];
+  if (internalAuthToken)
   {
     v6 = @"(not-nil)";
   }
@@ -69,13 +69,13 @@
     v6 = @"(nil)";
   }
 
-  v7 = [(FMFAccount *)self internalAuthTokenStatus];
-  v8 = [(FindBaseAccount *)self serverHost];
-  v9 = [(FMFAccount *)self appServerHost];
-  v10 = [(FindBaseAccount *)self serverProtocolScheme];
-  v11 = [(FindBaseAccount *)self apsEnvironment];
-  v12 = [(FMFAccount *)self additionalInfo];
-  v13 = [NSString stringWithFormat:@"FMFAccount(0x%lx) %@, %@, %@, %ld, %@, %ld, %@, %@, %@, %@, %@", self, v17, v16, v15, v4, v6, v7, v8, v9, v10, v11, v12];
+  internalAuthTokenStatus = [(FMFAccount *)self internalAuthTokenStatus];
+  serverHost = [(FindBaseAccount *)self serverHost];
+  appServerHost = [(FMFAccount *)self appServerHost];
+  serverProtocolScheme = [(FindBaseAccount *)self serverProtocolScheme];
+  apsEnvironment = [(FindBaseAccount *)self apsEnvironment];
+  additionalInfo = [(FMFAccount *)self additionalInfo];
+  v13 = [NSString stringWithFormat:@"FMFAccount(0x%lx) %@, %@, %@, %ld, %@, %ld, %@, %@, %@, %@, %@", self, dsid, username, v15, appAuthTokenStatus, v6, internalAuthTokenStatus, serverHost, appServerHost, serverProtocolScheme, apsEnvironment, additionalInfo];
 
   return v13;
 }

@@ -1,29 +1,29 @@
 @interface _LTDAnalyticsAssetSnapshot
-- (_LTDAnalyticsAssetSnapshot)initWithAssetBuild:(id)a3 expectedAssetVersion:(id)a4 installedAssetVersion:(id)a5;
+- (_LTDAnalyticsAssetSnapshot)initWithAssetBuild:(id)build expectedAssetVersion:(id)version installedAssetVersion:(id)assetVersion;
 - (id)description;
 @end
 
 @implementation _LTDAnalyticsAssetSnapshot
 
-- (_LTDAnalyticsAssetSnapshot)initWithAssetBuild:(id)a3 expectedAssetVersion:(id)a4 installedAssetVersion:(id)a5
+- (_LTDAnalyticsAssetSnapshot)initWithAssetBuild:(id)build expectedAssetVersion:(id)version installedAssetVersion:(id)assetVersion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  buildCopy = build;
+  versionCopy = version;
+  assetVersionCopy = assetVersion;
   v20.receiver = self;
   v20.super_class = _LTDAnalyticsAssetSnapshot;
   v11 = [(_LTDAnalyticsAssetSnapshot *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [buildCopy copy];
     assetBuild = v11->_assetBuild;
     v11->_assetBuild = v12;
 
-    v14 = [v9 copy];
+    v14 = [versionCopy copy];
     expectedAssetVersion = v11->_expectedAssetVersion;
     v11->_expectedAssetVersion = v14;
 
-    v16 = [v10 copy];
+    v16 = [assetVersionCopy copy];
     installedAssetVersion = v11->_installedAssetVersion;
     v11->_installedAssetVersion = v16;
 
@@ -38,10 +38,10 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_LTDAnalyticsAssetSnapshot *)self assetBuild];
-  v7 = [(_LTDAnalyticsAssetSnapshot *)self expectedAssetVersion];
-  v8 = [(_LTDAnalyticsAssetSnapshot *)self installedAssetVersion];
-  v9 = [v3 stringWithFormat:@"<%@: %p assetBuild: %@; expectedAssetVersion: %@; installedAssetVersion: %@>", v5, self, v6, v7, v8];;
+  assetBuild = [(_LTDAnalyticsAssetSnapshot *)self assetBuild];
+  expectedAssetVersion = [(_LTDAnalyticsAssetSnapshot *)self expectedAssetVersion];
+  installedAssetVersion = [(_LTDAnalyticsAssetSnapshot *)self installedAssetVersion];
+  v9 = [v3 stringWithFormat:@"<%@: %p assetBuild: %@; expectedAssetVersion: %@; installedAssetVersion: %@>", v5, self, assetBuild, expectedAssetVersion, installedAssetVersion];;
 
   return v9;
 }

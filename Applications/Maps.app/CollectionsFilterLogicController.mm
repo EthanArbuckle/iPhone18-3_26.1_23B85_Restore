@@ -1,22 +1,22 @@
 @interface CollectionsFilterLogicController
-- (CollectionsFilterLogicController)initWithCollectionView:(id)a3 withAllCollectionsResultFilters:(id)a4 withSelectedFilterIndexPath:(id)a5;
-- (CollectionsFilterLogicController)initWithCollectionView:(id)a3 withGuidesHomeResultFilters:(id)a4 withSelectedFilterIndexPath:(id)a5;
-- (CollectionsFilterLogicController)initWithCollectionView:(id)a3 withResultFilters:(id)a4 withSelectedFilterIndexPath:(id)a5;
+- (CollectionsFilterLogicController)initWithCollectionView:(id)view withAllCollectionsResultFilters:(id)filters withSelectedFilterIndexPath:(id)path;
+- (CollectionsFilterLogicController)initWithCollectionView:(id)view withGuidesHomeResultFilters:(id)filters withSelectedFilterIndexPath:(id)path;
+- (CollectionsFilterLogicController)initWithCollectionView:(id)view withResultFilters:(id)filters withSelectedFilterIndexPath:(id)path;
 - (UICollectionView)collectionView;
-- (id)buildAllCollectionsFiltersWithSelectedIndexPath:(id)a3;
-- (id)buildGuidesHomeViewFiltersWithSelectedIndexPath:(id)a3;
-- (id)buildPublishersFiltersWithSelectedIndexPath:(id)a3;
-- (id)filterAtIndexPath:(id)a3;
+- (id)buildAllCollectionsFiltersWithSelectedIndexPath:(id)path;
+- (id)buildGuidesHomeViewFiltersWithSelectedIndexPath:(id)path;
+- (id)buildPublishersFiltersWithSelectedIndexPath:(id)path;
+- (id)filterAtIndexPath:(id)path;
 - (id)filterViewModels;
-- (id)initForAllCollectionsViewUsingFilters:(id)a3 withSelectedFilterIndexPath:(id)a4;
-- (id)initForGuidesHomeViewUsingFilters:(id)a3 withSelectedFilterIndexPath:(id)a4 traitEnvironment:(id)a5;
-- (id)initForPublisherViewUsingFilters:(id)a3 withSelectedFilterIndexPath:(id)a4;
-- (id)routeToSelectedAllCollectionsFilterAtIndexPath:(id)a3;
-- (id)routeToSelectedFilterAtIndexPath:(id)a3;
-- (id)routeToSelectedGuidesHomeFilterAtIndexPath:(id)a3;
+- (id)initForAllCollectionsViewUsingFilters:(id)filters withSelectedFilterIndexPath:(id)path;
+- (id)initForGuidesHomeViewUsingFilters:(id)filters withSelectedFilterIndexPath:(id)path traitEnvironment:(id)environment;
+- (id)initForPublisherViewUsingFilters:(id)filters withSelectedFilterIndexPath:(id)path;
+- (id)routeToSelectedAllCollectionsFilterAtIndexPath:(id)path;
+- (id)routeToSelectedFilterAtIndexPath:(id)path;
+- (id)routeToSelectedGuidesHomeFilterAtIndexPath:(id)path;
 - (int64_t)numberOfFilters;
 - (void)displayFilters;
-- (void)getFilters:(id)a3;
+- (void)getFilters:(id)filters;
 - (void)prepareSnapshot;
 - (void)scrollToSelectedFilter;
 @end
@@ -30,121 +30,121 @@
   return WeakRetained;
 }
 
-- (id)buildGuidesHomeViewFiltersWithSelectedIndexPath:(id)a3
+- (id)buildGuidesHomeViewFiltersWithSelectedIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CollectionsFilterLogicController *)self traitEnvironment];
-  v6 = [v5 traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  pathCopy = path;
+  traitEnvironment = [(CollectionsFilterLogicController *)self traitEnvironment];
+  traitCollection = [traitEnvironment traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v8 = [NSMutableArray alloc];
-  v9 = [(CollectionsFilterLogicController *)self allCollectionsResultFilters];
-  v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+  allCollectionsResultFilters = [(CollectionsFilterLogicController *)self allCollectionsResultFilters];
+  v10 = [v8 initWithCapacity:{objc_msgSend(allCollectionsResultFilters, "count")}];
 
-  v11 = [(CollectionsFilterLogicController *)self guidesHomeFilters];
+  guidesHomeFilters = [(CollectionsFilterLogicController *)self guidesHomeFilters];
   v20 = _NSConcreteStackBlock;
   v21 = 3221225472;
   v22 = sub_100689DB8;
   v23 = &unk_101625BB8;
-  v25 = v7 == 2;
+  v25 = userInterfaceStyle == 2;
   v12 = v10;
   v24 = v12;
-  [v11 enumerateObjectsUsingBlock:&v20];
+  [guidesHomeFilters enumerateObjectsUsingBlock:&v20];
 
-  if (v4)
+  if (pathCopy)
   {
-    v13 = [v4 item];
-    if (v13 <= [v12 count])
+    item = [pathCopy item];
+    if (item <= [v12 count])
     {
-      v14 = [v12 objectAtIndex:{objc_msgSend(v4, "item")}];
+      v14 = [v12 objectAtIndex:{objc_msgSend(pathCopy, "item")}];
       v15 = v14;
       if (v14)
       {
-        [v14 modelSelected:1 isDarkMode:v7 == 2];
+        [v14 modelSelected:1 isDarkMode:userInterfaceStyle == 2];
       }
     }
   }
 
-  [(CollectionsFilterLogicController *)self setSelectedIndexPath:v4, v20, v21, v22, v23];
+  [(CollectionsFilterLogicController *)self setSelectedIndexPath:pathCopy, v20, v21, v22, v23];
   v16 = [[NSOrderedSet alloc] initWithArray:v12];
-  v17 = [v16 array];
-  v18 = [v17 copy];
+  array = [v16 array];
+  v18 = [array copy];
 
   return v18;
 }
 
-- (id)buildPublishersFiltersWithSelectedIndexPath:(id)a3
+- (id)buildPublishersFiltersWithSelectedIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_collectionView);
-  v6 = [WeakRetained traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [WeakRetained traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v8 = [NSMutableArray alloc];
-  v9 = [(CollectionsFilterLogicController *)self publisherResultFilters];
-  v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+  publisherResultFilters = [(CollectionsFilterLogicController *)self publisherResultFilters];
+  v10 = [v8 initWithCapacity:{objc_msgSend(publisherResultFilters, "count")}];
 
-  v11 = [(CollectionsFilterLogicController *)self publisherResultFilters];
+  publisherResultFilters2 = [(CollectionsFilterLogicController *)self publisherResultFilters];
   v20 = _NSConcreteStackBlock;
   v21 = 3221225472;
   v22 = sub_10068A044;
   v23 = &unk_101625B90;
-  v25 = v7 == 2;
+  v25 = userInterfaceStyle == 2;
   v12 = v10;
   v24 = v12;
-  [v11 enumerateObjectsUsingBlock:&v20];
+  [publisherResultFilters2 enumerateObjectsUsingBlock:&v20];
 
-  v13 = [v4 item];
-  if (v13 <= [v12 count])
+  item = [pathCopy item];
+  if (item <= [v12 count])
   {
-    v14 = [v12 objectAtIndex:{objc_msgSend(v4, "item")}];
+    v14 = [v12 objectAtIndex:{objc_msgSend(pathCopy, "item")}];
     v15 = v14;
     if (v14)
     {
-      [v14 modelSelected:1 isDarkMode:v7 == 2];
+      [v14 modelSelected:1 isDarkMode:userInterfaceStyle == 2];
     }
   }
 
-  [(CollectionsFilterLogicController *)self setSelectedIndexPath:v4];
+  [(CollectionsFilterLogicController *)self setSelectedIndexPath:pathCopy];
   v16 = [[NSOrderedSet alloc] initWithArray:v12];
-  v17 = [v16 array];
-  v18 = [v17 copy];
+  array = [v16 array];
+  v18 = [array copy];
 
   return v18;
 }
 
-- (id)buildAllCollectionsFiltersWithSelectedIndexPath:(id)a3
+- (id)buildAllCollectionsFiltersWithSelectedIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_collectionView);
-  v6 = [WeakRetained traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [WeakRetained traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v8 = [NSMutableArray alloc];
-  v9 = [(CollectionsFilterLogicController *)self allCollectionsResultFilters];
-  v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+  allCollectionsResultFilters = [(CollectionsFilterLogicController *)self allCollectionsResultFilters];
+  v10 = [v8 initWithCapacity:{objc_msgSend(allCollectionsResultFilters, "count")}];
 
-  v11 = [(CollectionsFilterLogicController *)self allCollectionsResultFilters];
+  allCollectionsResultFilters2 = [(CollectionsFilterLogicController *)self allCollectionsResultFilters];
   v19 = _NSConcreteStackBlock;
   v20 = 3221225472;
   v21 = sub_10068A314;
   v22 = &unk_101625B68;
-  v24 = v7 == 2;
+  v24 = userInterfaceStyle == 2;
   v12 = v10;
   v23 = v12;
-  [v11 enumerateObjectsUsingBlock:&v19];
+  [allCollectionsResultFilters2 enumerateObjectsUsingBlock:&v19];
 
-  v13 = [v12 objectAtIndex:{objc_msgSend(v4, "item", v19, v20, v21, v22)}];
+  v13 = [v12 objectAtIndex:{objc_msgSend(pathCopy, "item", v19, v20, v21, v22)}];
   v14 = v13;
   if (v13)
   {
-    [v13 modelSelected:1 isDarkMode:v7 == 2];
+    [v13 modelSelected:1 isDarkMode:userInterfaceStyle == 2];
   }
 
-  [(CollectionsFilterLogicController *)self setSelectedIndexPath:v4];
+  [(CollectionsFilterLogicController *)self setSelectedIndexPath:pathCopy];
   v15 = [[NSOrderedSet alloc] initWithArray:v12];
-  v16 = [v15 array];
-  v17 = [v16 copy];
+  array = [v15 array];
+  v17 = [array copy];
 
   return v17;
 }
@@ -154,35 +154,35 @@
   v3 = objc_alloc_init(NSDiffableDataSourceSnapshot);
   [(CollectionsFilterLogicController *)self setSnapshot:v3];
 
-  v4 = [(CollectionsFilterLogicController *)self snapshot];
+  snapshot = [(CollectionsFilterLogicController *)self snapshot];
   v8 = @"FiltersSection";
   v5 = [NSArray arrayWithObjects:&v8 count:1];
-  [v4 appendSectionsWithIdentifiers:v5];
+  [snapshot appendSectionsWithIdentifiers:v5];
 
-  v6 = [(CollectionsFilterLogicController *)self snapshot];
-  v7 = [(CollectionsFilterLogicController *)self filters];
-  [v6 appendItemsWithIdentifiers:v7];
+  snapshot2 = [(CollectionsFilterLogicController *)self snapshot];
+  filters = [(CollectionsFilterLogicController *)self filters];
+  [snapshot2 appendItemsWithIdentifiers:filters];
 }
 
-- (id)routeToSelectedGuidesHomeFilterAtIndexPath:(id)a3
+- (id)routeToSelectedGuidesHomeFilterAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CollectionsFilterLogicController *)self buildGuidesHomeViewFiltersWithSelectedIndexPath:v4];
+  pathCopy = path;
+  v5 = [(CollectionsFilterLogicController *)self buildGuidesHomeViewFiltersWithSelectedIndexPath:pathCopy];
   [(CollectionsFilterLogicController *)self setFilters:v5];
 
-  v6 = [(CollectionsFilterLogicController *)self collectionView];
+  collectionView = [(CollectionsFilterLogicController *)self collectionView];
 
-  if (v6)
+  if (collectionView)
   {
     [(CollectionsFilterLogicController *)self prepareSnapshot];
     [(CollectionsFilterLogicController *)self displayFilters];
-    v7 = [(CollectionsFilterLogicController *)self collectionView];
-    [v7 scrollToItemAtIndexPath:v4 atScrollPosition:16 animated:1];
+    collectionView2 = [(CollectionsFilterLogicController *)self collectionView];
+    [collectionView2 scrollToItemAtIndexPath:pathCopy atScrollPosition:16 animated:1];
   }
 
-  if (v4)
+  if (pathCopy)
   {
-    v8 = [(CollectionsFilterLogicController *)self filterAtIndexPath:v4];
+    v8 = [(CollectionsFilterLogicController *)self filterAtIndexPath:pathCopy];
   }
 
   else
@@ -193,100 +193,100 @@
   return v8;
 }
 
-- (id)routeToSelectedAllCollectionsFilterAtIndexPath:(id)a3
+- (id)routeToSelectedAllCollectionsFilterAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CollectionsFilterLogicController *)self buildAllCollectionsFiltersWithSelectedIndexPath:v4];
+  pathCopy = path;
+  v5 = [(CollectionsFilterLogicController *)self buildAllCollectionsFiltersWithSelectedIndexPath:pathCopy];
   [(CollectionsFilterLogicController *)self setFilters:v5];
 
-  v6 = [(CollectionsFilterLogicController *)self collectionView];
+  collectionView = [(CollectionsFilterLogicController *)self collectionView];
 
-  if (v6)
+  if (collectionView)
   {
     [(CollectionsFilterLogicController *)self prepareSnapshot];
     [(CollectionsFilterLogicController *)self displayFilters];
-    v7 = [(CollectionsFilterLogicController *)self collectionView];
-    [v7 scrollToItemAtIndexPath:v4 atScrollPosition:16 animated:1];
+    collectionView2 = [(CollectionsFilterLogicController *)self collectionView];
+    [collectionView2 scrollToItemAtIndexPath:pathCopy atScrollPosition:16 animated:1];
   }
 
-  v8 = [(CollectionsFilterLogicController *)self filterAtIndexPath:v4];
+  v8 = [(CollectionsFilterLogicController *)self filterAtIndexPath:pathCopy];
 
   return v8;
 }
 
-- (id)routeToSelectedFilterAtIndexPath:(id)a3
+- (id)routeToSelectedFilterAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CollectionsFilterLogicController *)self buildPublishersFiltersWithSelectedIndexPath:v4];
+  pathCopy = path;
+  v5 = [(CollectionsFilterLogicController *)self buildPublishersFiltersWithSelectedIndexPath:pathCopy];
   [(CollectionsFilterLogicController *)self setFilters:v5];
 
-  v6 = [(CollectionsFilterLogicController *)self collectionView];
+  collectionView = [(CollectionsFilterLogicController *)self collectionView];
 
-  if (v6)
+  if (collectionView)
   {
     [(CollectionsFilterLogicController *)self prepareSnapshot];
     [(CollectionsFilterLogicController *)self displayFilters];
-    v7 = [(CollectionsFilterLogicController *)self collectionView];
-    [v7 scrollToItemAtIndexPath:v4 atScrollPosition:16 animated:1];
+    collectionView2 = [(CollectionsFilterLogicController *)self collectionView];
+    [collectionView2 scrollToItemAtIndexPath:pathCopy atScrollPosition:16 animated:1];
   }
 
-  v8 = [(CollectionsFilterLogicController *)self filterAtIndexPath:v4];
+  v8 = [(CollectionsFilterLogicController *)self filterAtIndexPath:pathCopy];
 
   return v8;
 }
 
 - (id)filterViewModels
 {
-  v2 = [(CollectionsFilterLogicController *)self filters];
-  v3 = [v2 copy];
+  filters = [(CollectionsFilterLogicController *)self filters];
+  v3 = [filters copy];
 
   return v3;
 }
 
-- (id)filterAtIndexPath:(id)a3
+- (id)filterAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CollectionsFilterLogicController *)self filters];
-  v6 = [v4 item];
+  pathCopy = path;
+  filters = [(CollectionsFilterLogicController *)self filters];
+  item = [pathCopy item];
 
-  v7 = [v5 objectAtIndex:v6];
+  v7 = [filters objectAtIndex:item];
 
   return v7;
 }
 
 - (int64_t)numberOfFilters
 {
-  v2 = [(CollectionsFilterLogicController *)self filters];
-  v3 = [v2 count];
+  filters = [(CollectionsFilterLogicController *)self filters];
+  v3 = [filters count];
 
   return v3;
 }
 
 - (void)displayFilters
 {
-  v4 = [(CollectionsFilterLogicController *)self dataSource];
-  v3 = [(CollectionsFilterLogicController *)self snapshot];
-  [v4 applySnapshot:v3 animatingDifferences:0];
+  dataSource = [(CollectionsFilterLogicController *)self dataSource];
+  snapshot = [(CollectionsFilterLogicController *)self snapshot];
+  [dataSource applySnapshot:snapshot animatingDifferences:0];
 }
 
-- (void)getFilters:(id)a3
+- (void)getFilters:(id)filters
 {
-  v4 = a3;
+  filtersCopy = filters;
   objc_initWeak(&location, self);
   v5 = [UICollectionViewDiffableDataSource alloc];
-  v6 = [(CollectionsFilterLogicController *)self collectionView];
+  collectionView = [(CollectionsFilterLogicController *)self collectionView];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_10068AA48;
   v11 = &unk_101636E00;
   objc_copyWeak(&v12, &location);
-  v7 = [v5 initWithCollectionView:v6 cellProvider:&v8];
+  v7 = [v5 initWithCollectionView:collectionView cellProvider:&v8];
   [(CollectionsFilterLogicController *)self setDataSource:v7, v8, v9, v10, v11];
 
   [(CollectionsFilterLogicController *)self prepareSnapshot];
-  if (v4)
+  if (filtersCopy)
   {
-    v4[2](v4);
+    filtersCopy[2](filtersCopy);
   }
 
   objc_destroyWeak(&v12);
@@ -295,9 +295,9 @@
 
 - (void)scrollToSelectedFilter
 {
-  v3 = [(CollectionsFilterLogicController *)self collectionView];
-  v4 = [(CollectionsFilterLogicController *)self selectedIndexPath];
-  v9 = [v3 layoutAttributesForItemAtIndexPath:v4];
+  collectionView = [(CollectionsFilterLogicController *)self collectionView];
+  selectedIndexPath = [(CollectionsFilterLogicController *)self selectedIndexPath];
+  v9 = [collectionView layoutAttributesForItemAtIndexPath:selectedIndexPath];
 
   v5 = v9;
   if (v9)
@@ -309,32 +309,32 @@
     v12.size.height = CGRectZero.size.height;
     if (CGRectEqualToRect(v11, v12))
     {
-      v6 = [(CollectionsFilterLogicController *)self collectionView];
-      [v6 layoutIfNeeded];
+      collectionView2 = [(CollectionsFilterLogicController *)self collectionView];
+      [collectionView2 layoutIfNeeded];
     }
 
-    v7 = [(CollectionsFilterLogicController *)self collectionView];
-    v8 = [(CollectionsFilterLogicController *)self selectedFilterIndexPath];
-    [v7 scrollToItemAtIndexPath:v8 atScrollPosition:16 animated:0];
+    collectionView3 = [(CollectionsFilterLogicController *)self collectionView];
+    selectedFilterIndexPath = [(CollectionsFilterLogicController *)self selectedFilterIndexPath];
+    [collectionView3 scrollToItemAtIndexPath:selectedFilterIndexPath atScrollPosition:16 animated:0];
 
     v5 = v9;
   }
 }
 
-- (id)initForGuidesHomeViewUsingFilters:(id)a3 withSelectedFilterIndexPath:(id)a4 traitEnvironment:(id)a5
+- (id)initForGuidesHomeViewUsingFilters:(id)filters withSelectedFilterIndexPath:(id)path traitEnvironment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  filtersCopy = filters;
+  pathCopy = path;
+  environmentCopy = environment;
   v17.receiver = self;
   v17.super_class = CollectionsFilterLogicController;
   v12 = [(CollectionsFilterLogicController *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_guidesHomeFilters, a3);
-    objc_storeStrong(&v13->_traitEnvironment, a5);
-    v14 = [(CollectionsFilterLogicController *)v13 buildGuidesHomeViewFiltersWithSelectedIndexPath:v10];
+    objc_storeStrong(&v12->_guidesHomeFilters, filters);
+    objc_storeStrong(&v13->_traitEnvironment, environment);
+    v14 = [(CollectionsFilterLogicController *)v13 buildGuidesHomeViewFiltersWithSelectedIndexPath:pathCopy];
     filters = v13->_filters;
     v13->_filters = v14;
   }
@@ -342,20 +342,20 @@
   return v13;
 }
 
-- (id)initForPublisherViewUsingFilters:(id)a3 withSelectedFilterIndexPath:(id)a4
+- (id)initForPublisherViewUsingFilters:(id)filters withSelectedFilterIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  filtersCopy = filters;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = CollectionsFilterLogicController;
   v9 = [(CollectionsFilterLogicController *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_publisherResultFilters, a3);
-    if (v8)
+    objc_storeStrong(&v9->_publisherResultFilters, filters);
+    if (pathCopy)
     {
-      v11 = [(CollectionsFilterLogicController *)v10 buildPublishersFiltersWithSelectedIndexPath:v8];
+      v11 = [(CollectionsFilterLogicController *)v10 buildPublishersFiltersWithSelectedIndexPath:pathCopy];
       filters = v10->_filters;
       v10->_filters = v11;
     }
@@ -372,20 +372,20 @@
   return v10;
 }
 
-- (id)initForAllCollectionsViewUsingFilters:(id)a3 withSelectedFilterIndexPath:(id)a4
+- (id)initForAllCollectionsViewUsingFilters:(id)filters withSelectedFilterIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  filtersCopy = filters;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = CollectionsFilterLogicController;
   v9 = [(CollectionsFilterLogicController *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_allCollectionsResultFilters, a3);
-    if (v8)
+    objc_storeStrong(&v9->_allCollectionsResultFilters, filters);
+    if (pathCopy)
     {
-      v11 = [(CollectionsFilterLogicController *)v10 buildAllCollectionsFiltersWithSelectedIndexPath:v8];
+      v11 = [(CollectionsFilterLogicController *)v10 buildAllCollectionsFiltersWithSelectedIndexPath:pathCopy];
       filters = v10->_filters;
       v10->_filters = v11;
     }
@@ -402,47 +402,47 @@
   return v10;
 }
 
-- (CollectionsFilterLogicController)initWithCollectionView:(id)a3 withGuidesHomeResultFilters:(id)a4 withSelectedFilterIndexPath:(id)a5
+- (CollectionsFilterLogicController)initWithCollectionView:(id)view withGuidesHomeResultFilters:(id)filters withSelectedFilterIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  filtersCopy = filters;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = CollectionsFilterLogicController;
   v11 = [(CollectionsFilterLogicController *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_collectionView, v8);
-    objc_storeStrong(&v12->_guidesHomeFilters, a4);
-    v13 = [(CollectionsFilterLogicController *)v12 buildGuidesHomeViewFiltersWithSelectedIndexPath:v10];
+    objc_storeWeak(&v11->_collectionView, viewCopy);
+    objc_storeStrong(&v12->_guidesHomeFilters, filters);
+    v13 = [(CollectionsFilterLogicController *)v12 buildGuidesHomeViewFiltersWithSelectedIndexPath:pathCopy];
     filters = v12->_filters;
     v12->_filters = v13;
 
     v15 = objc_opt_class();
     v16 = +[CollectionsFilterCell reuseIdentifier];
-    [v8 registerClass:v15 forCellWithReuseIdentifier:v16];
+    [viewCopy registerClass:v15 forCellWithReuseIdentifier:v16];
   }
 
   return v12;
 }
 
-- (CollectionsFilterLogicController)initWithCollectionView:(id)a3 withAllCollectionsResultFilters:(id)a4 withSelectedFilterIndexPath:(id)a5
+- (CollectionsFilterLogicController)initWithCollectionView:(id)view withAllCollectionsResultFilters:(id)filters withSelectedFilterIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  filtersCopy = filters;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = CollectionsFilterLogicController;
   v11 = [(CollectionsFilterLogicController *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_collectionView, v8);
-    objc_storeStrong(&v12->_allCollectionsResultFilters, a4);
-    if (v10)
+    objc_storeWeak(&v11->_collectionView, viewCopy);
+    objc_storeStrong(&v12->_allCollectionsResultFilters, filters);
+    if (pathCopy)
     {
-      v13 = [(CollectionsFilterLogicController *)v12 buildAllCollectionsFiltersWithSelectedIndexPath:v10];
+      v13 = [(CollectionsFilterLogicController *)v12 buildAllCollectionsFiltersWithSelectedIndexPath:pathCopy];
       filters = v12->_filters;
       v12->_filters = v13;
     }
@@ -457,28 +457,28 @@
 
     v17 = objc_opt_class();
     v18 = +[CollectionsFilterCell reuseIdentifier];
-    [v8 registerClass:v17 forCellWithReuseIdentifier:v18];
+    [viewCopy registerClass:v17 forCellWithReuseIdentifier:v18];
   }
 
   return v12;
 }
 
-- (CollectionsFilterLogicController)initWithCollectionView:(id)a3 withResultFilters:(id)a4 withSelectedFilterIndexPath:(id)a5
+- (CollectionsFilterLogicController)initWithCollectionView:(id)view withResultFilters:(id)filters withSelectedFilterIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  filtersCopy = filters;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = CollectionsFilterLogicController;
   v11 = [(CollectionsFilterLogicController *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_collectionView, v8);
-    objc_storeStrong(&v12->_publisherResultFilters, a4);
-    if (v10)
+    objc_storeWeak(&v11->_collectionView, viewCopy);
+    objc_storeStrong(&v12->_publisherResultFilters, filters);
+    if (pathCopy)
     {
-      v13 = [(CollectionsFilterLogicController *)v12 buildPublishersFiltersWithSelectedIndexPath:v10];
+      v13 = [(CollectionsFilterLogicController *)v12 buildPublishersFiltersWithSelectedIndexPath:pathCopy];
       filters = v12->_filters;
       v12->_filters = v13;
     }
@@ -493,7 +493,7 @@
 
     v17 = objc_opt_class();
     v18 = +[CollectionsFilterCell reuseIdentifier];
-    [v8 registerClass:v17 forCellWithReuseIdentifier:v18];
+    [viewCopy registerClass:v17 forCellWithReuseIdentifier:v18];
   }
 
   return v12;

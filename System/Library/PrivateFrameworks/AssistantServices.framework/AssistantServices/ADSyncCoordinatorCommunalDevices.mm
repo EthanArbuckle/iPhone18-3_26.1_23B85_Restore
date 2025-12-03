@@ -1,25 +1,25 @@
 @interface ADSyncCoordinatorCommunalDevices
-+ (unint64_t)_computeLeeway:(unint64_t)a3;
++ (unint64_t)_computeLeeway:(unint64_t)leeway;
 + (unint64_t)_timerIntervalNanosec;
 + (unint64_t)_timerStartNanosec;
 - (ADSyncCoordinatorCommunalDevices)init;
-- (ADSyncCoordinatorCommunalDevices)initWithProfileUserId:(id)a3;
-- (ADSyncCoordinatorCommunalDevices)initWithProfileUserId:(id)a3 homeInfoManager:(id)a4 multiUserService:(id)a5 disableTimer:(BOOL)a6;
+- (ADSyncCoordinatorCommunalDevices)initWithProfileUserId:(id)id;
+- (ADSyncCoordinatorCommunalDevices)initWithProfileUserId:(id)id homeInfoManager:(id)manager multiUserService:(id)service disableTimer:(BOOL)timer;
 - (BOOL)_isDefaultUserAvailable;
-- (BOOL)_sameItem:(id)a3 other:(id)a4;
-- (BOOL)addAggregationIdForUser:(id)a3 aggregationId:(id)a4;
-- (BOOL)addSeedForHome:(id)a3 seed:(id)a4;
+- (BOOL)_sameItem:(id)item other:(id)other;
+- (BOOL)addAggregationIdForUser:(id)user aggregationId:(id)id;
+- (BOOL)addSeedForHome:(id)home seed:(id)seed;
 - (id)_fetchKnownAccounts;
-- (id)_fetchKnownAccountsWithMultiUserService:(id)a3 userSeedStream:(id)a4;
-- (id)fetchSynchronizedAnalyticsIdsForHome:(id)a3;
-- (id)fetchSynchronizedAnalyticsIdsForUser:(id)a3;
+- (id)_fetchKnownAccountsWithMultiUserService:(id)service userSeedStream:(id)stream;
+- (id)fetchSynchronizedAnalyticsIdsForHome:(id)home;
+- (id)fetchSynchronizedAnalyticsIdsForUser:(id)user;
 - (void)_initConsistencyTimer;
-- (void)_initHomeDetailsWithProfileUserId:(id)a3 homeInfoManager:(id)a4 multiUserService:(id)a5;
+- (void)_initHomeDetailsWithProfileUserId:(id)id homeInfoManager:(id)manager multiUserService:(id)service;
 - (void)_logTVOSMacroError;
-- (void)_publishHomeSeed:(id)a3 forAccounts:(id)a4;
+- (void)_publishHomeSeed:(id)seed forAccounts:(id)accounts;
 - (void)_publishHomeSeedToAllMembers;
-- (void)_publishHomeSeedToAllMembers:(id)a3;
-- (void)_refreshHomeAndUserDetailsWithHomeInfoManager:(id)a3 multiUserService:(id)a4;
+- (void)_publishHomeSeedToAllMembers:(id)members;
+- (void)_refreshHomeAndUserDetailsWithHomeInfoManager:(id)manager multiUserService:(id)service;
 - (void)refreshHomeAndUserDetails;
 @end
 
@@ -40,16 +40,16 @@
   }
 }
 
-- (void)_publishHomeSeed:(id)a3 forAccounts:(id)a4
+- (void)_publishHomeSeed:(id)seed forAccounts:(id)accounts
 {
-  v6 = a3;
-  v7 = a4;
+  seedCopy = seed;
+  accountsCopy = accounts;
   v8 = &OBJC_METACLASS___ADDictationConnection;
   v9 = +[ADAnalyticsIdentifiersUtils logger];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v45 = v7;
+    v45 = accountsCopy;
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Going to publish seed to %@", buf, 0xCu);
   }
 
@@ -57,7 +57,7 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v7;
+  obj = accountsCopy;
   v39 = [obj countByEnumeratingWithState:&v40 objects:v52 count:16];
   if (v39)
   {
@@ -66,7 +66,7 @@
     v13 = &RPOptionStatusFlags_ptr;
     *&v10 = 138412290;
     v35 = v10;
-    v37 = v6;
+    v37 = seedCopy;
     while (2)
     {
       for (i = 0; i != v39; i = i + 1)
@@ -80,16 +80,16 @@
         v16 = [v13[128] now];
         v17 = [p_vtable + 182 processorForBMSiriHomeSeed:v16 homeId:self->_currentHomeId account:v15];
 
-        v18 = [v17 fetchLocalIdItemPair];
-        v19 = v18;
-        if (!v18)
+        fetchLocalIdItemPair = [v17 fetchLocalIdItemPair];
+        v19 = fetchLocalIdItemPair;
+        if (!fetchLocalIdItemPair)
         {
           goto LABEL_18;
         }
 
         v38 = v15;
-        v20 = [v18 current];
-        if ([(ADSyncCoordinatorCommunalDevices *)self _sameItem:v6 other:v20])
+        current = [fetchLocalIdItemPair current];
+        if ([(ADSyncCoordinatorCommunalDevices *)self _sameItem:seedCopy other:current])
         {
         }
 
@@ -100,7 +100,7 @@
           v22 = p_vtable;
           v23 = v11;
           v25 = v24 = v8;
-          v26 = [(ADSyncCoordinatorCommunalDevices *)self _sameItem:v6 other:v25];
+          v26 = [(ADSyncCoordinatorCommunalDevices *)self _sameItem:seedCopy other:v25];
 
           v8 = v24;
           v11 = v23;
@@ -110,29 +110,29 @@
 
           if (!v26)
           {
-            v6 = v37;
+            seedCopy = v37;
             v15 = v38;
 LABEL_18:
-            v28 = [&v8[76] logger];
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+            logger = [&v8[76] logger];
+            if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
             {
-              v29 = [v19 current];
-              v30 = [v29 createdOn];
+              current2 = [v19 current];
+              createdOn = [current2 createdOn];
               [v19 next];
               v32 = v31 = v15;
-              v33 = [v32 createdOn];
-              v34 = [v6 createdOn];
+              createdOn2 = [v32 createdOn];
+              createdOn3 = [seedCopy createdOn];
               *buf = 138413058;
               v45 = v31;
               v46 = 2112;
-              v47 = v30;
+              v47 = createdOn;
               v48 = 2112;
-              v49 = v33;
+              v49 = createdOn2;
               v50 = 2112;
-              v51 = v34;
-              _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "Account %@ does not have the seed. current:%@ next:%@ expected:%@", buf, 0x2Au);
+              v51 = createdOn3;
+              _os_log_debug_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEBUG, "Account %@ does not have the seed. current:%@ next:%@ expected:%@", buf, 0x2Au);
 
-              v6 = v37;
+              seedCopy = v37;
             }
 
             [(ADSyncCoordinatorCommunalDevices *)self _logTVOSMacroError];
@@ -140,15 +140,15 @@ LABEL_18:
           }
         }
 
-        v27 = [&v8[76] logger];
-        if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
+        logger2 = [&v8[76] logger];
+        if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEBUG))
         {
           *buf = v35;
           v45 = v38;
-          _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "Account %@ already has the seed!", buf, 0xCu);
+          _os_log_debug_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEBUG, "Account %@ already has the seed!", buf, 0xCu);
         }
 
-        v6 = v37;
+        seedCopy = v37;
       }
 
       v39 = [obj countByEnumeratingWithState:&v40 objects:v52 count:16];
@@ -164,24 +164,24 @@ LABEL_18:
 LABEL_21:
 }
 
-- (BOOL)_sameItem:(id)a3 other:(id)a4
+- (BOOL)_sameItem:(id)item other:(id)other
 {
-  if (!a4)
+  if (!other)
   {
     return 0;
   }
 
-  v5 = a3;
-  v6 = [a4 value];
-  v7 = [v5 value];
+  itemCopy = item;
+  value = [other value];
+  value2 = [itemCopy value];
 
-  LOBYTE(v5) = [v6 isEqual:v7];
-  return v5;
+  LOBYTE(itemCopy) = [value isEqual:value2];
+  return itemCopy;
 }
 
-- (void)_publishHomeSeedToAllMembers:(id)a3
+- (void)_publishHomeSeedToAllMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   if ([ADAnalyticsIdentifiersUtils isPartOfHome:self->_currentHomeId])
   {
     backgroundQueue = self->_backgroundQueue;
@@ -190,7 +190,7 @@ LABEL_21:
     v7[2] = sub_1002F5164;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = membersCopy;
     dispatch_async(backgroundQueue, v7);
   }
 
@@ -210,23 +210,23 @@ LABEL_21:
   v3 = +[NSDate now];
   v4 = [ADBiomeStreamProcessor processorForBMSiriHomeSeed:v3 homeId:self->_currentHomeId userId:self->_defaultUserId];
 
-  v5 = [v4 fetchLocalIdItemPair];
-  v6 = v5;
-  if (v5)
+  fetchLocalIdItemPair = [v4 fetchLocalIdItemPair];
+  v6 = fetchLocalIdItemPair;
+  if (fetchLocalIdItemPair)
   {
-    v7 = [v5 current];
-    v8 = [v6 next];
-    if (v7 | v8)
+    current = [fetchLocalIdItemPair current];
+    next = [v6 next];
+    if (current | next)
     {
-      v10 = [(ADSyncCoordinatorCommunalDevices *)self _fetchKnownAccounts];
-      if (v7)
+      _fetchKnownAccounts = [(ADSyncCoordinatorCommunalDevices *)self _fetchKnownAccounts];
+      if (current)
       {
-        [(ADSyncCoordinatorCommunalDevices *)self _publishHomeSeed:v7 forAccounts:v10];
+        [(ADSyncCoordinatorCommunalDevices *)self _publishHomeSeed:current forAccounts:_fetchKnownAccounts];
       }
 
-      if (v8)
+      if (next)
       {
-        [(ADSyncCoordinatorCommunalDevices *)self _publishHomeSeed:v8 forAccounts:v10];
+        [(ADSyncCoordinatorCommunalDevices *)self _publishHomeSeed:next forAccounts:_fetchKnownAccounts];
       }
     }
 
@@ -243,21 +243,21 @@ LABEL_21:
 
   else
   {
-    v7 = +[ADAnalyticsIdentifiersUtils logger];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    current = +[ADAnalyticsIdentifiersUtils logger];
+    if (os_log_type_enabled(current, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
-      _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "There are no ephemeral home seeds. Nothing to publish", buf, 2u);
+      _os_log_debug_impl(&_mh_execute_header, current, OS_LOG_TYPE_DEBUG, "There are no ephemeral home seeds. Nothing to publish", buf, 2u);
     }
   }
 }
 
-- (id)_fetchKnownAccountsWithMultiUserService:(id)a3 userSeedStream:(id)a4
+- (id)_fetchKnownAccountsWithMultiUserService:(id)service userSeedStream:(id)stream
 {
-  v5 = a4;
-  v6 = a3;
+  streamCopy = stream;
+  serviceCopy = service;
   v7 = objc_alloc_init(NSMutableSet);
-  v8 = [v6 allUsersBySharedUserID];
+  allUsersBySharedUserID = [serviceCopy allUsersBySharedUserID];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -265,7 +265,7 @@ LABEL_21:
   v18[3] = &unk_10051B140;
   v9 = v7;
   v19 = v9;
-  [v8 enumerateKeysAndObjectsUsingBlock:v18];
+  [allUsersBySharedUserID enumerateKeysAndObjectsUsingBlock:v18];
   v10 = +[ADAnalyticsIdentifiersUtils logger];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -275,7 +275,7 @@ LABEL_21:
   }
 
   v17 = 0;
-  v11 = [v5 sharedDeviceAccountsWithError:&v17];
+  v11 = [streamCopy sharedDeviceAccountsWithError:&v17];
 
   v12 = v17;
   v13 = +[ADAnalyticsIdentifiersUtils logger];
@@ -309,39 +309,39 @@ LABEL_21:
     }
   }
 
-  v15 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v15;
+  return allObjects;
 }
 
 - (id)_fetchKnownAccounts
 {
   v3 = +[ADMultiUserService sharedService];
   v4 = BiomeLibrary();
-  v5 = [v4 Siri];
-  v6 = [v5 AnalyticsIdentifiers];
-  v7 = [v6 UserSeed];
-  v8 = [(ADSyncCoordinatorCommunalDevices *)self _fetchKnownAccountsWithMultiUserService:v3 userSeedStream:v7];
+  siri = [v4 Siri];
+  analyticsIdentifiers = [siri AnalyticsIdentifiers];
+  userSeed = [analyticsIdentifiers UserSeed];
+  v8 = [(ADSyncCoordinatorCommunalDevices *)self _fetchKnownAccountsWithMultiUserService:v3 userSeedStream:userSeed];
 
   return v8;
 }
 
-- (id)fetchSynchronizedAnalyticsIdsForUser:(id)a3
+- (id)fetchSynchronizedAnalyticsIdsForUser:(id)user
 {
-  v4 = a3;
-  if (!v4)
+  userCopy = user;
+  if (!userCopy)
   {
-    v4 = self->_defaultUserId;
+    userCopy = self->_defaultUserId;
   }
 
   if ([(ADSyncCoordinatorCommunalDevices *)self _isDefaultUserAvailable])
   {
     v5 = +[NSDate now];
-    v6 = [ADBiomeStreamProcessor processorForBMSiriUserSeed:v5 userId:v4];
-    v7 = [v6 fetchIdItemPair];
-    v8 = [ADBiomeStreamProcessor processorForBMSiriUserAggregationId:v5 userId:v4];
-    v9 = [v8 fetchIdItemPair];
-    v10 = [[ADSynchronizedUserAnalyticsIds alloc] initWithUserEphemeralSeeds:v7 andUserAggregationIds:v9];
+    v6 = [ADBiomeStreamProcessor processorForBMSiriUserSeed:v5 userId:userCopy];
+    fetchIdItemPair = [v6 fetchIdItemPair];
+    v8 = [ADBiomeStreamProcessor processorForBMSiriUserAggregationId:v5 userId:userCopy];
+    fetchIdItemPair2 = [v8 fetchIdItemPair];
+    v10 = [[ADSynchronizedUserAnalyticsIds alloc] initWithUserEphemeralSeeds:fetchIdItemPair andUserAggregationIds:fetchIdItemPair2];
   }
 
   else
@@ -352,15 +352,15 @@ LABEL_21:
   return v10;
 }
 
-- (id)fetchSynchronizedAnalyticsIdsForHome:(id)a3
+- (id)fetchSynchronizedAnalyticsIdsForHome:(id)home
 {
   if ([(ADSyncCoordinatorCommunalDevices *)self isPartOfHome]&& [(ADSyncCoordinatorCommunalDevices *)self _isDefaultUserAvailable])
   {
     v4 = +[NSDate now];
     v5 = [ADBiomeStreamProcessor processorForBMSiriHomeSeed:v4 homeId:self->_currentHomeId userId:self->_defaultUserId];
 
-    v6 = [v5 fetchIdItemPair];
-    v7 = [[ADSynchronizedHomeAnalyticsIds alloc] initWithHomeEphemeralSeeds:v6];
+    fetchIdItemPair = [v5 fetchIdItemPair];
+    v7 = [[ADSynchronizedHomeAnalyticsIds alloc] initWithHomeEphemeralSeeds:fetchIdItemPair];
   }
 
   else
@@ -371,15 +371,15 @@ LABEL_21:
   return v7;
 }
 
-- (BOOL)addSeedForHome:(id)a3 seed:(id)a4
+- (BOOL)addSeedForHome:(id)home seed:(id)seed
 {
-  v5 = a3;
-  if (!v5)
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v5 = self->_currentHomeId;
+    homeCopy = self->_currentHomeId;
   }
 
-  if ([ADAnalyticsIdentifiersUtils isPartOfHome:v5]&& [(ADSyncCoordinatorCommunalDevices *)self _isDefaultUserAvailable])
+  if ([ADAnalyticsIdentifiersUtils isPartOfHome:homeCopy]&& [(ADSyncCoordinatorCommunalDevices *)self _isDefaultUserAvailable])
   {
     v6 = [[BMAccount alloc] initWithAltDSID:self->_defaultUserId];
     if (v6)
@@ -398,23 +398,23 @@ LABEL_21:
   return v7;
 }
 
-- (BOOL)addAggregationIdForUser:(id)a3 aggregationId:(id)a4
+- (BOOL)addAggregationIdForUser:(id)user aggregationId:(id)id
 {
-  v4 = a4;
+  idCopy = id;
   v5 = BiomeLibrary();
-  v6 = [v5 Siri];
-  v7 = [v6 AnalyticsIdentifiers];
-  v8 = [v7 UserAggregationId];
-  v9 = [v8 source];
-  v10 = [v4 toBMSiriUserAggregationId];
+  siri = [v5 Siri];
+  analyticsIdentifiers = [siri AnalyticsIdentifiers];
+  userAggregationId = [analyticsIdentifiers UserAggregationId];
+  source = [userAggregationId source];
+  toBMSiriUserAggregationId = [idCopy toBMSiriUserAggregationId];
 
-  [v9 sendEvent:v10];
+  [source sendEvent:toBMSiriUserAggregationId];
   return 1;
 }
 
-- (void)_refreshHomeAndUserDetailsWithHomeInfoManager:(id)a3 multiUserService:(id)a4
+- (void)_refreshHomeAndUserDetailsWithHomeInfoManager:(id)manager multiUserService:(id)service
 {
-  v7 = [(ADSyncCoordinatorCommunalDevices *)self _profileUserId:a3];
+  v7 = [(ADSyncCoordinatorCommunalDevices *)self _profileUserId:manager];
   v5 = +[ADHomeInfoManager sharedInfoManager];
   v6 = +[ADMultiUserService sharedService];
   [(ADSyncCoordinatorCommunalDevices *)self _initHomeDetailsWithProfileUserId:v7 homeInfoManager:v5 multiUserService:v6];
@@ -492,31 +492,31 @@ LABEL_21:
   return defaultUserId;
 }
 
-- (void)_initHomeDetailsWithProfileUserId:(id)a3 homeInfoManager:(id)a4 multiUserService:(id)a5
+- (void)_initHomeDetailsWithProfileUserId:(id)id homeInfoManager:(id)manager multiUserService:(id)service
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 currentHome];
-  v11 = v10;
-  if (v10)
+  idCopy = id;
+  serviceCopy = service;
+  currentHome = [manager currentHome];
+  v11 = currentHome;
+  if (currentHome)
   {
-    v12 = [v10 uniqueIdentifier];
+    uniqueIdentifier = [currentHome uniqueIdentifier];
     currentHomeId = self->_currentHomeId;
-    self->_currentHomeId = v12;
+    self->_currentHomeId = uniqueIdentifier;
 
-    v14 = [v9 deviceOwner];
-    v15 = [v14 iCloudAltDSID];
+    deviceOwner = [serviceCopy deviceOwner];
+    iCloudAltDSID = [deviceOwner iCloudAltDSID];
     defaultUserId = self->_defaultUserId;
-    self->_defaultUserId = v15;
+    self->_defaultUserId = iCloudAltDSID;
 
     v17 = 1;
   }
 
   else
   {
-    v18 = v8;
+    v18 = idCopy;
     v17 = 0;
-    v14 = self->_defaultUserId;
+    deviceOwner = self->_defaultUserId;
     self->_defaultUserId = v18;
   }
 
@@ -547,11 +547,11 @@ LABEL_21:
   }
 }
 
-- (ADSyncCoordinatorCommunalDevices)initWithProfileUserId:(id)a3 homeInfoManager:(id)a4 multiUserService:(id)a5 disableTimer:(BOOL)a6
+- (ADSyncCoordinatorCommunalDevices)initWithProfileUserId:(id)id homeInfoManager:(id)manager multiUserService:(id)service disableTimer:(BOOL)timer
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  idCopy = id;
+  managerCopy = manager;
+  serviceCopy = service;
   v18.receiver = self;
   v18.super_class = ADSyncCoordinatorCommunalDevices;
   v13 = [(ADSyncCoordinatorCommunalDevices *)&v18 init];
@@ -564,8 +564,8 @@ LABEL_21:
     v13->_backgroundQueue = v15;
 
     v13->_multiUserDevice = 1;
-    [(ADSyncCoordinatorCommunalDevices *)v13 _initHomeDetailsWithProfileUserId:v10 homeInfoManager:v11 multiUserService:v12];
-    if (!a6)
+    [(ADSyncCoordinatorCommunalDevices *)v13 _initHomeDetailsWithProfileUserId:idCopy homeInfoManager:managerCopy multiUserService:serviceCopy];
+    if (!timer)
     {
       [(ADSyncCoordinatorCommunalDevices *)v13 _initConsistencyTimer];
     }
@@ -574,12 +574,12 @@ LABEL_21:
   return v13;
 }
 
-- (ADSyncCoordinatorCommunalDevices)initWithProfileUserId:(id)a3
+- (ADSyncCoordinatorCommunalDevices)initWithProfileUserId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = +[ADHomeInfoManager sharedInfoManager];
   v6 = +[ADMultiUserService sharedService];
-  v7 = [(ADSyncCoordinatorCommunalDevices *)self initWithProfileUserId:v4 homeInfoManager:v5 multiUserService:v6 disableTimer:0];
+  v7 = [(ADSyncCoordinatorCommunalDevices *)self initWithProfileUserId:idCopy homeInfoManager:v5 multiUserService:v6 disableTimer:0];
 
   return v7;
 }
@@ -596,10 +596,10 @@ LABEL_21:
   return [(ADSyncCoordinatorCommunalDevices *)self initWithProfileUserId:0];
 }
 
-+ (unint64_t)_computeLeeway:(unint64_t)a3
++ (unint64_t)_computeLeeway:(unint64_t)leeway
 {
-  v3 = a3 / 0xA;
-  if (a3 / 0xA <= 0xF4240)
+  v3 = leeway / 0xA;
+  if (leeway / 0xA <= 0xF4240)
   {
     v3 = 1000000;
   }
@@ -618,11 +618,11 @@ LABEL_21:
 + (unint64_t)_timerIntervalNanosec
 {
   v2 = +[ADPreferences sharedPreferences];
-  v3 = [v2 siriAnalyticsIdentifiersConsistencyTimerIntervalMillisec];
+  siriAnalyticsIdentifiersConsistencyTimerIntervalMillisec = [v2 siriAnalyticsIdentifiersConsistencyTimerIntervalMillisec];
 
-  if ((AFIsInternalInstall() & (v3 - 1 < 0x1B7740)) != 0)
+  if ((AFIsInternalInstall() & (siriAnalyticsIdentifiersConsistencyTimerIntervalMillisec - 1 < 0x1B7740)) != 0)
   {
-    return 1000000 * v3;
+    return 1000000 * siriAnalyticsIdentifiersConsistencyTimerIntervalMillisec;
   }
 
   else
@@ -634,11 +634,11 @@ LABEL_21:
 + (unint64_t)_timerStartNanosec
 {
   v2 = +[ADPreferences sharedPreferences];
-  v3 = [v2 siriAnalyticsIdentifiersConsistencyTimerStartDelayMillisec];
+  siriAnalyticsIdentifiersConsistencyTimerStartDelayMillisec = [v2 siriAnalyticsIdentifiersConsistencyTimerStartDelayMillisec];
 
-  if ((AFIsInternalInstall() & (v3 - 1 < 0x493E0)) != 0)
+  if ((AFIsInternalInstall() & (siriAnalyticsIdentifiersConsistencyTimerStartDelayMillisec - 1 < 0x493E0)) != 0)
   {
-    return 1000000 * v3;
+    return 1000000 * siriAnalyticsIdentifiersConsistencyTimerStartDelayMillisec;
   }
 
   else

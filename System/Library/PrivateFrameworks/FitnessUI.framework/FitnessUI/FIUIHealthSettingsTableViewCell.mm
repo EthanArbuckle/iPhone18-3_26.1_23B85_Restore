@@ -2,37 +2,37 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
 - (FIUIHealthSettingsForceUpdatable)forceUpdatable;
-- (FIUIHealthSettingsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (FIUIHealthSettingsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation FIUIHealthSettingsTableViewCell
 
-- (FIUIHealthSettingsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (FIUIHealthSettingsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v15.receiver = self;
   v15.super_class = FIUIHealthSettingsTableViewCell;
-  v4 = [(FIUIHealthSettingsTableViewCell *)&v15 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(FIUIHealthSettingsTableViewCell *)&v15 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(FIUIHealthSettingsTableViewCell *)v4 setAccessoryType:0];
     [(FIUIHealthSettingsTableViewCell *)v5 setEditingAccessoryType:0];
     [(FIUIHealthSettingsTableViewCell *)v5 setSelectionStyle:0];
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    v7 = [(FIUIHealthSettingsTableViewCell *)v5 textLabel];
-    [v7 setTextColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    textLabel = [(FIUIHealthSettingsTableViewCell *)v5 textLabel];
+    [textLabel setTextColor:whiteColor];
 
-    v8 = [MEMORY[0x1E69DC888] grayColor];
-    v9 = [(FIUIHealthSettingsTableViewCell *)v5 detailTextLabel];
-    [v9 setTextColor:v8];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    detailTextLabel = [(FIUIHealthSettingsTableViewCell *)v5 detailTextLabel];
+    [detailTextLabel setTextColor:grayColor];
 
     v10 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
     v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] compatibleWithTraitCollection:v10];
-    v12 = [(FIUIHealthSettingsTableViewCell *)v5 textLabel];
-    [v12 setFont:v11];
+    textLabel2 = [(FIUIHealthSettingsTableViewCell *)v5 textLabel];
+    [textLabel2 setFont:v11];
 
-    v13 = [(FIUIHealthSettingsTableViewCell *)v5 detailTextLabel];
-    [v13 setFont:v11];
+    detailTextLabel2 = [(FIUIHealthSettingsTableViewCell *)v5 detailTextLabel];
+    [detailTextLabel2 setFont:v11];
   }
 
   return v5;
@@ -43,9 +43,9 @@
   v6.receiver = self;
   v6.super_class = FIUIHealthSettingsTableViewCell;
   [(FIUIHealthSettingsTableViewCell *)&v6 becomeFirstResponder];
-  v3 = [(FIUIHealthSettingsTableViewCell *)self tintColor];
-  v4 = [(FIUIHealthSettingsTableViewCell *)self detailTextLabel];
-  [v4 setTextColor:v3];
+  tintColor = [(FIUIHealthSettingsTableViewCell *)self tintColor];
+  detailTextLabel = [(FIUIHealthSettingsTableViewCell *)self detailTextLabel];
+  [detailTextLabel setTextColor:tintColor];
 
   return 1;
 }
@@ -55,9 +55,9 @@
   v6.receiver = self;
   v6.super_class = FIUIHealthSettingsTableViewCell;
   [(FIUIHealthSettingsTableViewCell *)&v6 resignFirstResponder];
-  v3 = [MEMORY[0x1E69DC888] grayColor];
-  v4 = [(FIUIHealthSettingsTableViewCell *)self detailTextLabel];
-  [v4 setTextColor:v3];
+  grayColor = [MEMORY[0x1E69DC888] grayColor];
+  detailTextLabel = [(FIUIHealthSettingsTableViewCell *)self detailTextLabel];
+  [detailTextLabel setTextColor:grayColor];
 
   return 1;
 }

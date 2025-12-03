@@ -1,58 +1,58 @@
 @interface COAlarmService
-+ (BOOL)_isAllowedClient:(id)a3;
-+ (id)serviceWithDelegate:(id)a3;
-- (BOOL)_applicableToCluster:(id)a3;
-- (COAlarmService)initWithListenerProvider:(id)a3 addOnProvider:(id)a4 delegate:(id)a5;
-- (id)_newClientForConnection:(id)a3;
-- (void)_addOnAdded:(id)a3;
-- (void)_addOnRemoved:(id)a3;
-- (void)_clientLost:(id)a3;
-- (void)_completeDispatchabilityStallActivity:(id)a3;
-- (void)_configureServiceInterfacesOnConnection:(id)a3;
-- (void)_didStopCanDispatchUpdate:(id)a3;
-- (void)_postCanDispatchChangedAddOn:(id)a3;
-- (void)_postNotificationName:(id)a3 connection:(id)a4 userInfo:(id)a5;
-- (void)_postNotificationName:(id)a3 forAccessory:(id)a4 toAddOn:(id)a5;
-- (void)_postNotificationName:(id)a3 forAlarms:(id)a4 toAddOn:(id)a5 requiresUserInfo:(BOOL)a6;
-- (void)addAlarm:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 withCallback:(id)a6;
-- (void)addObserverForNotificationName:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 constraints:(id)a6 withCallback:(id)a7;
-- (void)alarmAddOn:(id)a3 didAddAlarms:(id)a4;
-- (void)alarmAddOn:(id)a3 didChangeAlarms:(id)a4;
-- (void)alarmAddOn:(id)a3 didChangeFiringAlarms:(id)a4;
-- (void)alarmAddOn:(id)a3 didDismissAlarms:(id)a4;
-- (void)alarmAddOn:(id)a3 didFireAlarms:(id)a4;
-- (void)alarmAddOn:(id)a3 didRemoveAlarms:(id)a4;
-- (void)alarmAddOn:(id)a3 didUpdateAlarms:(id)a4;
-- (void)alarmAddOn:(id)a3 resetAccesory:(id)a4;
-- (void)alarmsAsAccessory:(id)a3 asInstance:(id)a4 forAccessories:(id)a5 callback:(id)a6;
-- (void)alarmsAsAccessory:(id)a3 asInstance:(id)a4 withCallback:(id)a5;
-- (void)canDispatchAsAccessory:(id)a3 asInstance:(id)a4 reply:(id)a5;
-- (void)didChangeCompositionForAlarmAddOn:(id)a3;
-- (void)didResetAlarmAddOn:(id)a3;
-- (void)dismissAlarmWithIdentifier:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 withCallback:(id)a6;
-- (void)removeAlarm:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 withCallback:(id)a6;
-- (void)removeObserverForNotificationName:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 withCallback:(id)a6;
-- (void)snoozeAlarmWithIdentifier:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 withCallback:(id)a6;
-- (void)updateAlarm:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 withCallback:(id)a6;
++ (BOOL)_isAllowedClient:(id)client;
++ (id)serviceWithDelegate:(id)delegate;
+- (BOOL)_applicableToCluster:(id)cluster;
+- (COAlarmService)initWithListenerProvider:(id)provider addOnProvider:(id)onProvider delegate:(id)delegate;
+- (id)_newClientForConnection:(id)connection;
+- (void)_addOnAdded:(id)added;
+- (void)_addOnRemoved:(id)removed;
+- (void)_clientLost:(id)lost;
+- (void)_completeDispatchabilityStallActivity:(id)activity;
+- (void)_configureServiceInterfacesOnConnection:(id)connection;
+- (void)_didStopCanDispatchUpdate:(id)update;
+- (void)_postCanDispatchChangedAddOn:(id)on;
+- (void)_postNotificationName:(id)name connection:(id)connection userInfo:(id)info;
+- (void)_postNotificationName:(id)name forAccessory:(id)accessory toAddOn:(id)on;
+- (void)_postNotificationName:(id)name forAlarms:(id)alarms toAddOn:(id)on requiresUserInfo:(BOOL)info;
+- (void)addAlarm:(id)alarm asAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback;
+- (void)addObserverForNotificationName:(id)name asAccessory:(id)accessory asInstance:(id)instance constraints:(id)constraints withCallback:(id)callback;
+- (void)alarmAddOn:(id)on didAddAlarms:(id)alarms;
+- (void)alarmAddOn:(id)on didChangeAlarms:(id)alarms;
+- (void)alarmAddOn:(id)on didChangeFiringAlarms:(id)alarms;
+- (void)alarmAddOn:(id)on didDismissAlarms:(id)alarms;
+- (void)alarmAddOn:(id)on didFireAlarms:(id)alarms;
+- (void)alarmAddOn:(id)on didRemoveAlarms:(id)alarms;
+- (void)alarmAddOn:(id)on didUpdateAlarms:(id)alarms;
+- (void)alarmAddOn:(id)on resetAccesory:(id)accesory;
+- (void)alarmsAsAccessory:(id)accessory asInstance:(id)instance forAccessories:(id)accessories callback:(id)callback;
+- (void)alarmsAsAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback;
+- (void)canDispatchAsAccessory:(id)accessory asInstance:(id)instance reply:(id)reply;
+- (void)didChangeCompositionForAlarmAddOn:(id)on;
+- (void)didResetAlarmAddOn:(id)on;
+- (void)dismissAlarmWithIdentifier:(id)identifier asAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback;
+- (void)removeAlarm:(id)alarm asAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback;
+- (void)removeObserverForNotificationName:(id)name asAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback;
+- (void)snoozeAlarmWithIdentifier:(id)identifier asAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback;
+- (void)updateAlarm:(id)alarm asAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback;
 @end
 
 @implementation COAlarmService
 
-+ (id)serviceWithDelegate:(id)a3
++ (id)serviceWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_alloc_init(COAlarmAddOnListenerProvider);
   v6 = objc_alloc_init(COAlarmAddOnProvider);
-  v7 = [[a1 alloc] initWithListenerProvider:v5 addOnProvider:v6 delegate:v4];
+  v7 = [[self alloc] initWithListenerProvider:v5 addOnProvider:v6 delegate:delegateCopy];
 
   return v7;
 }
 
-- (COAlarmService)initWithListenerProvider:(id)a3 addOnProvider:(id)a4 delegate:(id)a5
+- (COAlarmService)initWithListenerProvider:(id)provider addOnProvider:(id)onProvider delegate:(id)delegate
 {
   v9.receiver = self;
   v9.super_class = COAlarmService;
-  v5 = [(COService *)&v9 initWithListenerProvider:a3 addOnProvider:a4 delegate:a5];
+  v5 = [(COService *)&v9 initWithListenerProvider:provider addOnProvider:onProvider delegate:delegate];
   if (v5)
   {
     v6 = objc_alloc_init(COSignalsClientObserverSet);
@@ -65,24 +65,24 @@
   return v5;
 }
 
-+ (BOOL)_isAllowedClient:(id)a3
++ (BOOL)_isAllowedClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v4 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(COAlarmService *)v3 _isAllowedClient:v4];
+    [(COAlarmService *)clientCopy _isAllowedClient:v4];
   }
 
   return 1;
 }
 
-- (void)_configureServiceInterfacesOnConnection:(id)a3
+- (void)_configureServiceInterfacesOnConnection:(id)connection
 {
   v13.receiver = self;
   v13.super_class = COAlarmService;
-  v4 = a3;
-  [(COService *)&v13 _configureServiceInterfacesOnConnection:v4];
+  connectionCopy = connection;
+  [(COService *)&v13 _configureServiceInterfacesOnConnection:connectionCopy];
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2857D6038];
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
@@ -93,31 +93,31 @@
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
 
   [v5 setClasses:v11 forSelector:sel_alarmsAsAccessory_asInstance_forAccessories_callback_ argumentIndex:2 ofReply:0];
-  [v4 setExportedInterface:v5];
-  [v4 setExportedObject:self];
+  [connectionCopy setExportedInterface:v5];
+  [connectionCopy setExportedObject:self];
   v12 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2857E6408];
 
-  [v4 setRemoteObjectInterface:v12];
+  [connectionCopy setRemoteObjectInterface:v12];
 }
 
-- (id)_newClientForConnection:(id)a3
+- (id)_newClientForConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [[COAlarmServiceClient alloc] initWithConnection:v3];
+  connectionCopy = connection;
+  v4 = [[COAlarmServiceClient alloc] initWithConnection:connectionCopy];
 
   return v4;
 }
 
-- (void)_clientLost:(id)a3
+- (void)_clientLost:(id)lost
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lostCopy = lost;
   v20.receiver = self;
   v20.super_class = COAlarmService;
-  [(COService *)&v20 _clientLost:v4];
-  v5 = [(COAlarmService *)self observers];
-  v6 = [v4 connection];
-  v7 = [v5 clientObserversForXPCConnection:v6];
+  [(COService *)&v20 _clientLost:lostCopy];
+  observers = [(COAlarmService *)self observers];
+  connection = [lostCopy connection];
+  v7 = [observers clientObserversForXPCConnection:connection];
 
   v18 = 0u;
   v19 = 0u;
@@ -139,10 +139,10 @@
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        [v5 removeClientObserver:v13 forNotificationName:{0, v16}];
+        [observers removeClientObserver:v13 forNotificationName:{0, v16}];
         [(COAlarmService *)self _didStopCanDispatchUpdate:v13];
-        v14 = [v13 cluster];
-        [(COService *)self _releaseAssertionForCluster:v14];
+        cluster = [v13 cluster];
+        [(COService *)self _releaseAssertionForCluster:cluster];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -154,68 +154,68 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addOnAdded:(id)a3
+- (void)_addOnAdded:(id)added
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setDelegate:self];
-  v5 = [v4 homekit];
-  v6 = [v5 currentAccessory];
-  if (v6)
+  addedCopy = added;
+  [addedCopy setDelegate:self];
+  homekit = [addedCopy homekit];
+  currentAccessory = [homekit currentAccessory];
+  if (currentAccessory)
   {
-    v7 = [objc_alloc(MEMORY[0x277CFD0C8]) initWithHomeKitAccessory:v6];
+    v7 = [objc_alloc(MEMORY[0x277CFD0C8]) initWithHomeKitAccessory:currentAccessory];
     if (v7)
     {
       v8 = COCoreLogForCategory(2);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v12 = self;
+        selfCopy = self;
         v13 = 2112;
-        v14 = v6;
+        v14 = currentAccessory;
         _os_log_impl(&dword_244378000, v8, OS_LOG_TYPE_DEFAULT, "%p AlarmService added secondary cluster for accessory %@", buf, 0x16u);
       }
 
-      [v4 establishSecondaryClusterForAccessory:v7];
+      [addedCopy establishSecondaryClusterForAccessory:v7];
     }
   }
 
   v10.receiver = self;
   v10.super_class = COAlarmService;
-  [(COService *)&v10 _addOnAdded:v4];
+  [(COService *)&v10 _addOnAdded:addedCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addOnRemoved:(id)a3
+- (void)_addOnRemoved:(id)removed
 {
   v4.receiver = self;
   v4.super_class = COAlarmService;
-  v3 = a3;
-  [(COService *)&v4 _addOnRemoved:v3];
-  [v3 setDelegate:{0, v4.receiver, v4.super_class}];
+  removedCopy = removed;
+  [(COService *)&v4 _addOnRemoved:removedCopy];
+  [removedCopy setDelegate:{0, v4.receiver, v4.super_class}];
 }
 
-- (BOOL)_applicableToCluster:(id)a3
+- (BOOL)_applicableToCluster:(id)cluster
 {
-  v3 = [a3 label];
-  v4 = [v3 isEqual:*MEMORY[0x277CFCEE8]];
+  label = [cluster label];
+  v4 = [label isEqual:*MEMORY[0x277CFCEE8]];
 
   return v4;
 }
 
-- (void)_postNotificationName:(id)a3 connection:(id)a4 userInfo:(id)a5
+- (void)_postNotificationName:(id)name connection:(id)connection userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  connectionCopy = connection;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __60__COAlarmService__postNotificationName_connection_userInfo___block_invoke;
   v18[3] = &unk_278E16A88;
   v18[4] = self;
-  v10 = v9;
+  v10 = connectionCopy;
   v19 = v10;
-  v11 = a5;
+  infoCopy = info;
   v12 = [v10 remoteObjectProxyWithErrorHandler:v18];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -223,10 +223,10 @@
   v15[3] = &unk_278E17E48;
   v15[4] = self;
   v16 = v10;
-  v17 = v8;
-  v13 = v8;
+  v17 = nameCopy;
+  v13 = nameCopy;
   v14 = v10;
-  [v12 postNotificationName:v13 withUserInfo:v11 callback:v15];
+  [v12 postNotificationName:v13 withUserInfo:infoCopy callback:v15];
 }
 
 void __60__COAlarmService__postNotificationName_connection_userInfo___block_invoke(uint64_t a1, void *a2)
@@ -252,25 +252,25 @@ void __60__COAlarmService__postNotificationName_connection_userInfo___block_invo
   }
 }
 
-- (void)_postNotificationName:(id)a3 forAlarms:(id)a4 toAddOn:(id)a5 requiresUserInfo:(BOOL)a6
+- (void)_postNotificationName:(id)name forAlarms:(id)alarms toAddOn:(id)on requiresUserInfo:(BOOL)info
 {
-  v38 = a6;
+  infoCopy = info;
   v50 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 homekit];
-  v32 = [v11 homehub];
-  v33 = v12;
-  v31 = [v12 currentAccessory];
+  nameCopy = name;
+  alarmsCopy = alarms;
+  onCopy = on;
+  homekit = [onCopy homekit];
+  homehub = [onCopy homehub];
+  v33 = homekit;
+  currentAccessory = [homekit currentAccessory];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v34 = self;
-  v13 = [(COAlarmService *)self observers];
-  v35 = v9;
-  v14 = [v13 clientObserversForNotificationName:v9];
+  selfCopy = self;
+  observers = [(COAlarmService *)self observers];
+  v35 = nameCopy;
+  v14 = [observers clientObserversForNotificationName:nameCopy];
 
   obj = v14;
   v15 = [v14 countByEnumeratingWithState:&v45 objects:v49 count:16];
@@ -289,32 +289,32 @@ void __60__COAlarmService__postNotificationName_connection_userInfo___block_invo
         }
 
         v19 = *(*(&v45 + 1) + 8 * i);
-        v20 = [v19 connection];
-        v21 = [v19 constraints];
-        if (v21)
+        connection = [v19 connection];
+        constraints = [v19 constraints];
+        if (constraints)
         {
           v39[0] = MEMORY[0x277D85DD0];
           v39[1] = 3221225472;
           v39[2] = __75__COAlarmService__postNotificationName_forAlarms_toAddOn_requiresUserInfo___block_invoke_2;
           v39[3] = &unk_278E17E70;
-          v40 = v11;
-          v41 = v21;
-          v22 = [v10 indexesOfObjectsPassingTest:v39];
+          v40 = onCopy;
+          v41 = constraints;
+          v22 = [alarmsCopy indexesOfObjectsPassingTest:v39];
 
-          v23 = v40;
+          co_PeerInstance = v40;
         }
 
         else
         {
-          v23 = [v20 co_PeerInstance];
-          if (v23)
+          co_PeerInstance = [connection co_PeerInstance];
+          if (co_PeerInstance)
           {
-            v24 = [v32 accessoryForPeerInstance:v23 usingHomeKitAdapter:v33];
+            v24 = [homehub accessoryForPeerInstance:co_PeerInstance usingHomeKitAdapter:v33];
           }
 
           else
           {
-            v24 = v31;
+            v24 = currentAccessory;
           }
 
           v25 = v24;
@@ -322,16 +322,16 @@ void __60__COAlarmService__postNotificationName_connection_userInfo___block_invo
           v42[1] = 3221225472;
           v42[2] = __75__COAlarmService__postNotificationName_forAlarms_toAddOn_requiresUserInfo___block_invoke;
           v42[3] = &unk_278E17E70;
-          v43 = v11;
+          v43 = onCopy;
           v44 = v25;
           v26 = v25;
-          v22 = [v10 indexesOfObjectsPassingTest:v42];
+          v22 = [alarmsCopy indexesOfObjectsPassingTest:v42];
         }
 
         if ([v22 count])
         {
           v27 = MEMORY[0x277CBEAC0];
-          v28 = [v10 objectsAtIndexes:v22];
+          v28 = [alarmsCopy objectsAtIndexes:v22];
           v29 = [v27 dictionaryWithObject:v28 forKey:v37];
         }
 
@@ -340,9 +340,9 @@ void __60__COAlarmService__postNotificationName_connection_userInfo___block_invo
           v29 = 0;
         }
 
-        if (!v38 || v29)
+        if (!infoCopy || v29)
         {
-          [(COAlarmService *)v34 _postNotificationName:v35 connection:v20 userInfo:v29];
+          [(COAlarmService *)selfCopy _postNotificationName:v35 connection:connection userInfo:v29];
         }
       }
 
@@ -366,19 +366,19 @@ uint64_t __75__COAlarmService__postNotificationName_forAlarms_toAddOn_requiresUs
   return v6;
 }
 
-- (void)_postNotificationName:(id)a3 forAccessory:(id)a4 toAddOn:(id)a5
+- (void)_postNotificationName:(id)name forAccessory:(id)accessory toAddOn:(id)on
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  accessoryCopy = accessory;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = self;
-  v10 = [(COAlarmService *)self observers];
-  v23 = v7;
-  v11 = [v10 clientObserversForNotificationName:v7];
+  selfCopy = self;
+  observers = [(COAlarmService *)self observers];
+  v23 = nameCopy;
+  v11 = [observers clientObserversForNotificationName:nameCopy];
 
   v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
@@ -395,17 +395,17 @@ uint64_t __75__COAlarmService__postNotificationName_forAlarms_toAddOn_requiresUs
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 accessory];
-        v18 = v17;
-        if (v8)
+        accessory = [v16 accessory];
+        v18 = accessory;
+        if (accessoryCopy)
         {
-          v19 = [v17 uniqueIdentifier];
-          v20 = [v19 isEqual:v8];
+          uniqueIdentifier = [accessory uniqueIdentifier];
+          v20 = [uniqueIdentifier isEqual:accessoryCopy];
 
           if (v20)
           {
-            v21 = [v16 connection];
-            [(COAlarmService *)v9 _postNotificationName:v23 connection:v21 userInfo:0];
+            connection = [v16 connection];
+            [(COAlarmService *)selfCopy _postNotificationName:v23 connection:connection userInfo:0];
           }
         }
       }
@@ -419,13 +419,13 @@ uint64_t __75__COAlarmService__postNotificationName_forAlarms_toAddOn_requiresUs
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postCanDispatchChangedAddOn:(id)a3
+- (void)_postCanDispatchChangedAddOn:(id)on
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(COAlarmService *)self observers];
+  onCopy = on;
+  observers = [(COAlarmService *)self observers];
   v15 = *MEMORY[0x277CFCE88];
-  v6 = [v5 clientObserversForNotificationName:?];
+  v6 = [observers clientObserversForNotificationName:?];
 
   v23 = 0u;
   v24 = 0u;
@@ -446,8 +446,8 @@ uint64_t __75__COAlarmService__postNotificationName_forAlarms_toAddOn_requiresUs
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 accessory];
-        if (v12)
+        accessory = [v11 accessory];
+        if (accessory)
         {
           objc_initWeak(&location, self);
           v16[0] = MEMORY[0x277D85DD0];
@@ -455,9 +455,9 @@ uint64_t __75__COAlarmService__postNotificationName_forAlarms_toAddOn_requiresUs
           v16[2] = __47__COAlarmService__postCanDispatchChangedAddOn___block_invoke;
           v16[3] = &unk_278E17E98;
           objc_copyWeak(&v19, &location);
-          v17 = v12;
+          v17 = accessory;
           v18 = v11;
-          [v4 canDispatchAsAccessory:v17 asInstance:0 reply:v16];
+          [onCopy canDispatchAsAccessory:v17 asInstance:0 reply:v16];
 
           objc_destroyWeak(&v19);
           objc_destroyWeak(&location);
@@ -465,8 +465,8 @@ uint64_t __75__COAlarmService__postNotificationName_forAlarms_toAddOn_requiresUs
 
         else
         {
-          v13 = [v11 connection];
-          [(COAlarmService *)self _postNotificationName:v15 connection:v13 userInfo:0];
+          connection = [v11 connection];
+          [(COAlarmService *)self _postNotificationName:v15 connection:connection userInfo:0];
         }
       }
 
@@ -492,31 +492,31 @@ void __47__COAlarmService__postCanDispatchChangedAddOn___block_invoke(uint64_t a
   }
 }
 
-- (void)_completeDispatchabilityStallActivity:(id)a3
+- (void)_completeDispatchabilityStallActivity:(id)activity
 {
-  v4 = a3;
-  v3 = [v4 dispatchabilityStallActivity];
-  if (v3)
+  activityCopy = activity;
+  dispatchabilityStallActivity = [activityCopy dispatchabilityStallActivity];
+  if (dispatchabilityStallActivity)
   {
     nw_activity_complete_with_reason();
-    [v4 setDispatchabilityStallCount:{objc_msgSend(v4, "dispatchabilityStallCount") + 1}];
-    [v4 setDispatchabilityStallActivity:0];
+    [activityCopy setDispatchabilityStallCount:{objc_msgSend(activityCopy, "dispatchabilityStallCount") + 1}];
+    [activityCopy setDispatchabilityStallActivity:0];
   }
 }
 
-- (void)_didStopCanDispatchUpdate:(id)a3
+- (void)_didStopCanDispatchUpdate:(id)update
 {
-  v8 = a3;
-  v4 = [v8 connection];
-  v5 = [(COService *)self clientForConnection:v4];
+  updateCopy = update;
+  connection = [updateCopy connection];
+  v5 = [(COService *)self clientForConnection:connection];
 
-  [(COAlarmService *)self _completeDispatchabilityStallActivity:v8];
-  v6 = [v8 dispatchabilityStallCount];
-  if (v6)
+  [(COAlarmService *)self _completeDispatchabilityStallActivity:updateCopy];
+  dispatchabilityStallCount = [updateCopy dispatchabilityStallCount];
+  if (dispatchabilityStallCount)
   {
-    if (v6 == 1)
+    if (dispatchabilityStallCount == 1)
     {
-      if ([v8 canDispatch])
+      if ([updateCopy canDispatch])
       {
         v7 = 2;
       }
@@ -536,37 +536,37 @@ void __47__COAlarmService__postCanDispatchChangedAddOn___block_invoke(uint64_t a
   }
 }
 
-- (void)alarmsAsAccessory:(id)a3 asInstance:(id)a4 withCallback:(id)a5
+- (void)alarmsAsAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(COService *)self currentClient];
-  v12 = [v11 connection];
-  [v12 co_SetPeerInstance:v10];
+  accessoryCopy = accessory;
+  callbackCopy = callback;
+  instanceCopy = instance;
+  currentClient = [(COService *)self currentClient];
+  connection = [currentClient connection];
+  [connection co_SetPeerInstance:instanceCopy];
 
-  v13 = _ClusterForAccessory(v8);
+  v13 = _ClusterForAccessory(accessoryCopy);
   [(COService *)self _takeAssertionForCluster:v13];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __60__COAlarmService_alarmsAsAccessory_asInstance_withCallback___block_invoke;
   v24[3] = &unk_278E17EC0;
   v25 = v13;
-  v26 = v9;
+  v26 = callbackCopy;
   v24[4] = self;
   v14 = v13;
-  v15 = v9;
+  v15 = callbackCopy;
   v16 = MEMORY[0x245D5FF10](v24);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __60__COAlarmService_alarmsAsAccessory_asInstance_withCallback___block_invoke_3;
   v20[3] = &unk_278E17EE8;
-  v21 = v8;
-  v22 = v11;
+  v21 = accessoryCopy;
+  v22 = currentClient;
   v23 = v16;
   v17 = v16;
-  v18 = v11;
-  v19 = v8;
+  v18 = currentClient;
+  v19 = accessoryCopy;
   [(COService *)self _addOnForCluster:v14 completion:v20];
 }
 
@@ -602,36 +602,36 @@ void __60__COAlarmService_alarmsAsAccessory_asInstance_withCallback___block_invo
   }
 }
 
-- (void)alarmsAsAccessory:(id)a3 asInstance:(id)a4 forAccessories:(id)a5 callback:(id)a6
+- (void)alarmsAsAccessory:(id)accessory asInstance:(id)instance forAccessories:(id)accessories callback:(id)callback
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(COService *)self currentClient];
-  v13 = _ClusterForAccessory(v9);
+  accessoryCopy = accessory;
+  accessoriesCopy = accessories;
+  callbackCopy = callback;
+  currentClient = [(COService *)self currentClient];
+  v13 = _ClusterForAccessory(accessoryCopy);
   [(COService *)self _takeAssertionForCluster:v13];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __71__COAlarmService_alarmsAsAccessory_asInstance_forAccessories_callback___block_invoke;
   v26[3] = &unk_278E17F10;
   v27 = v13;
-  v28 = v11;
+  v28 = callbackCopy;
   v26[4] = self;
   v14 = v13;
-  v15 = v11;
+  v15 = callbackCopy;
   v16 = MEMORY[0x245D5FF10](v26);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __71__COAlarmService_alarmsAsAccessory_asInstance_forAccessories_callback___block_invoke_3;
   v21[3] = &unk_278E17F38;
-  v22 = v9;
-  v23 = v10;
-  v24 = v12;
+  v22 = accessoryCopy;
+  v23 = accessoriesCopy;
+  v24 = currentClient;
   v25 = v16;
   v17 = v16;
-  v18 = v12;
-  v19 = v10;
-  v20 = v9;
+  v18 = currentClient;
+  v19 = accessoriesCopy;
+  v20 = accessoryCopy;
   [(COService *)self _addOnForCluster:v14 completion:v21];
 }
 
@@ -667,40 +667,40 @@ void __71__COAlarmService_alarmsAsAccessory_asInstance_forAccessories_callback__
   }
 }
 
-- (void)addAlarm:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 withCallback:(id)a6
+- (void)addAlarm:(id)alarm asAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [(COService *)self currentClient];
-  v15 = [v14 connection];
-  [v15 co_SetPeerInstance:v13];
+  alarmCopy = alarm;
+  accessoryCopy = accessory;
+  callbackCopy = callback;
+  instanceCopy = instance;
+  currentClient = [(COService *)self currentClient];
+  connection = [currentClient connection];
+  [connection co_SetPeerInstance:instanceCopy];
 
-  v16 = _ClusterForAccessory(v11);
+  v16 = _ClusterForAccessory(accessoryCopy);
   [(COService *)self _takeAssertionForCluster:v16];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __63__COAlarmService_addAlarm_asAccessory_asInstance_withCallback___block_invoke;
   v29[3] = &unk_278E17F60;
   v30 = v16;
-  v31 = v12;
+  v31 = callbackCopy;
   v29[4] = self;
   v17 = v16;
-  v18 = v12;
+  v18 = callbackCopy;
   v19 = MEMORY[0x245D5FF10](v29);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __63__COAlarmService_addAlarm_asAccessory_asInstance_withCallback___block_invoke_3;
   v24[3] = &unk_278E17F38;
-  v25 = v11;
-  v26 = v10;
-  v27 = v14;
+  v25 = accessoryCopy;
+  v26 = alarmCopy;
+  v27 = currentClient;
   v28 = v19;
   v20 = v19;
-  v21 = v14;
-  v22 = v10;
-  v23 = v11;
+  v21 = currentClient;
+  v22 = alarmCopy;
+  v23 = accessoryCopy;
   [(COService *)self _addOnForCluster:v17 completion:v24];
 }
 
@@ -736,40 +736,40 @@ void __63__COAlarmService_addAlarm_asAccessory_asInstance_withCallback___block_i
   }
 }
 
-- (void)updateAlarm:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 withCallback:(id)a6
+- (void)updateAlarm:(id)alarm asAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [(COService *)self currentClient];
-  v15 = [v14 connection];
-  [v15 co_SetPeerInstance:v13];
+  alarmCopy = alarm;
+  accessoryCopy = accessory;
+  callbackCopy = callback;
+  instanceCopy = instance;
+  currentClient = [(COService *)self currentClient];
+  connection = [currentClient connection];
+  [connection co_SetPeerInstance:instanceCopy];
 
-  v16 = _ClusterForAccessory(v11);
+  v16 = _ClusterForAccessory(accessoryCopy);
   [(COService *)self _takeAssertionForCluster:v16];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __66__COAlarmService_updateAlarm_asAccessory_asInstance_withCallback___block_invoke;
   v29[3] = &unk_278E17F60;
   v30 = v16;
-  v31 = v12;
+  v31 = callbackCopy;
   v29[4] = self;
   v17 = v16;
-  v18 = v12;
+  v18 = callbackCopy;
   v19 = MEMORY[0x245D5FF10](v29);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __66__COAlarmService_updateAlarm_asAccessory_asInstance_withCallback___block_invoke_3;
   v24[3] = &unk_278E17F38;
-  v25 = v11;
-  v26 = v10;
-  v27 = v14;
+  v25 = accessoryCopy;
+  v26 = alarmCopy;
+  v27 = currentClient;
   v28 = v19;
   v20 = v19;
-  v21 = v14;
-  v22 = v10;
-  v23 = v11;
+  v21 = currentClient;
+  v22 = alarmCopy;
+  v23 = accessoryCopy;
   [(COService *)self _addOnForCluster:v17 completion:v24];
 }
 
@@ -805,40 +805,40 @@ void __66__COAlarmService_updateAlarm_asAccessory_asInstance_withCallback___bloc
   }
 }
 
-- (void)removeAlarm:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 withCallback:(id)a6
+- (void)removeAlarm:(id)alarm asAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [(COService *)self currentClient];
-  v15 = [v14 connection];
-  [v15 co_SetPeerInstance:v13];
+  alarmCopy = alarm;
+  accessoryCopy = accessory;
+  callbackCopy = callback;
+  instanceCopy = instance;
+  currentClient = [(COService *)self currentClient];
+  connection = [currentClient connection];
+  [connection co_SetPeerInstance:instanceCopy];
 
-  v16 = _ClusterForAccessory(v11);
+  v16 = _ClusterForAccessory(accessoryCopy);
   [(COService *)self _takeAssertionForCluster:v16];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __66__COAlarmService_removeAlarm_asAccessory_asInstance_withCallback___block_invoke;
   v29[3] = &unk_278E17F60;
   v30 = v16;
-  v31 = v12;
+  v31 = callbackCopy;
   v29[4] = self;
   v17 = v16;
-  v18 = v12;
+  v18 = callbackCopy;
   v19 = MEMORY[0x245D5FF10](v29);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __66__COAlarmService_removeAlarm_asAccessory_asInstance_withCallback___block_invoke_3;
   v24[3] = &unk_278E17F38;
-  v25 = v11;
-  v26 = v10;
-  v27 = v14;
+  v25 = accessoryCopy;
+  v26 = alarmCopy;
+  v27 = currentClient;
   v28 = v19;
   v20 = v19;
-  v21 = v14;
-  v22 = v10;
-  v23 = v11;
+  v21 = currentClient;
+  v22 = alarmCopy;
+  v23 = accessoryCopy;
   [(COService *)self _addOnForCluster:v17 completion:v24];
 }
 
@@ -874,36 +874,36 @@ void __66__COAlarmService_removeAlarm_asAccessory_asInstance_withCallback___bloc
   }
 }
 
-- (void)snoozeAlarmWithIdentifier:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 withCallback:(id)a6
+- (void)snoozeAlarmWithIdentifier:(id)identifier asAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(COService *)self currentClient];
-  v13 = _ClusterForAccessory(v10);
+  identifierCopy = identifier;
+  accessoryCopy = accessory;
+  callbackCopy = callback;
+  currentClient = [(COService *)self currentClient];
+  v13 = _ClusterForAccessory(accessoryCopy);
   [(COService *)self _takeAssertionForCluster:v13];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __80__COAlarmService_snoozeAlarmWithIdentifier_asAccessory_asInstance_withCallback___block_invoke;
   v26[3] = &unk_278E17F60;
   v27 = v13;
-  v28 = v11;
+  v28 = callbackCopy;
   v26[4] = self;
   v14 = v13;
-  v15 = v11;
+  v15 = callbackCopy;
   v16 = MEMORY[0x245D5FF10](v26);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __80__COAlarmService_snoozeAlarmWithIdentifier_asAccessory_asInstance_withCallback___block_invoke_3;
   v21[3] = &unk_278E17F38;
-  v22 = v10;
-  v23 = v9;
-  v24 = v12;
+  v22 = accessoryCopy;
+  v23 = identifierCopy;
+  v24 = currentClient;
   v25 = v16;
   v17 = v16;
-  v18 = v12;
-  v19 = v9;
-  v20 = v10;
+  v18 = currentClient;
+  v19 = identifierCopy;
+  v20 = accessoryCopy;
   [(COService *)self _addOnForCluster:v14 completion:v21];
 }
 
@@ -939,36 +939,36 @@ void __80__COAlarmService_snoozeAlarmWithIdentifier_asAccessory_asInstance_withC
   }
 }
 
-- (void)dismissAlarmWithIdentifier:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 withCallback:(id)a6
+- (void)dismissAlarmWithIdentifier:(id)identifier asAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(COService *)self currentClient];
-  v13 = _ClusterForAccessory(v10);
+  identifierCopy = identifier;
+  accessoryCopy = accessory;
+  callbackCopy = callback;
+  currentClient = [(COService *)self currentClient];
+  v13 = _ClusterForAccessory(accessoryCopy);
   [(COService *)self _takeAssertionForCluster:v13];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __81__COAlarmService_dismissAlarmWithIdentifier_asAccessory_asInstance_withCallback___block_invoke;
   v26[3] = &unk_278E17F60;
   v27 = v13;
-  v28 = v11;
+  v28 = callbackCopy;
   v26[4] = self;
   v14 = v13;
-  v15 = v11;
+  v15 = callbackCopy;
   v16 = MEMORY[0x245D5FF10](v26);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __81__COAlarmService_dismissAlarmWithIdentifier_asAccessory_asInstance_withCallback___block_invoke_3;
   v21[3] = &unk_278E17F38;
-  v22 = v10;
-  v23 = v9;
-  v24 = v12;
+  v22 = accessoryCopy;
+  v23 = identifierCopy;
+  v24 = currentClient;
   v25 = v16;
   v17 = v16;
-  v18 = v12;
-  v19 = v9;
-  v20 = v10;
+  v18 = currentClient;
+  v19 = identifierCopy;
+  v20 = accessoryCopy;
   [(COService *)self _addOnForCluster:v14 completion:v21];
 }
 
@@ -1004,19 +1004,19 @@ void __81__COAlarmService_dismissAlarmWithIdentifier_asAccessory_asInstance_with
   }
 }
 
-- (void)addObserverForNotificationName:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 constraints:(id)a6 withCallback:(id)a7
+- (void)addObserverForNotificationName:(id)name asAccessory:(id)accessory asInstance:(id)instance constraints:(id)constraints withCallback:(id)callback
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = a5;
-  v17 = v13;
-  v18 = v16;
-  v19 = [(COService *)self currentClient];
-  v20 = [v19 connection];
-  [v20 co_SetPeerInstance:v18];
+  nameCopy = name;
+  accessoryCopy = accessory;
+  constraintsCopy = constraints;
+  callbackCopy = callback;
+  instanceCopy = instance;
+  v17 = accessoryCopy;
+  v18 = instanceCopy;
+  currentClient = [(COService *)self currentClient];
+  connection = [currentClient connection];
+  [connection co_SetPeerInstance:v18];
 
   v21 = _ClusterForAccessory(v17);
   [(COService *)self _takeAssertionForCluster:v21];
@@ -1024,35 +1024,35 @@ void __81__COAlarmService_dismissAlarmWithIdentifier_asAccessory_asInstance_with
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v42 = v19;
+    v42 = currentClient;
     v43 = 2112;
-    v44 = v12;
+    v44 = nameCopy;
     _os_log_impl(&dword_244378000, v22, OS_LOG_TYPE_DEFAULT, "%p serving request to observe %@", buf, 0x16u);
   }
 
-  v23 = [(COAlarmService *)self observers];
-  v37 = v19;
-  if (v14)
+  observers = [(COAlarmService *)self observers];
+  v37 = currentClient;
+  if (constraintsCopy)
   {
     v24 = COCoreLogForCategory(2);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      [COAlarmService addObserverForNotificationName:v19 asAccessory:v14 asInstance:v24 constraints:? withCallback:?];
+      [COAlarmService addObserverForNotificationName:currentClient asAccessory:constraintsCopy asInstance:v24 constraints:? withCallback:?];
     }
 
-    v25 = [[COSignalsClientObserver alloc] initWithConnection:v20 asAccessory:v17 constraints:v14 cluster:v21];
+    v25 = [[COSignalsClientObserver alloc] initWithConnection:connection asAccessory:v17 constraints:constraintsCopy cluster:v21];
   }
 
   else
   {
-    v25 = [[COSignalsClientObserver alloc] initWithConnection:v20 cluster:v21];
+    v25 = [[COSignalsClientObserver alloc] initWithConnection:connection cluster:v21];
   }
 
   v26 = v25;
-  if ([v12 isEqualToString:*MEMORY[0x277CFCE88]])
+  if ([nameCopy isEqualToString:*MEMORY[0x277CFCE88]])
   {
-    v27 = [(COSignalsClientObserver *)v26 dispatchabilityStallActivity];
-    if (v27)
+    dispatchabilityStallActivity = [(COSignalsClientObserver *)v26 dispatchabilityStallActivity];
+    if (dispatchabilityStallActivity)
     {
 LABEL_12:
 
@@ -1063,35 +1063,35 @@ LABEL_12:
     {
       [v37 clientLifetimeActivity];
       v28 = v35 = v17;
-      v27 = [CONetworkActivityFactory activityWithLabel:7 parentActivity:v28];
+      dispatchabilityStallActivity = [CONetworkActivityFactory activityWithLabel:7 parentActivity:v28];
 
       v17 = v35;
-      [(COSignalsClientObserver *)v26 setDispatchabilityStallActivity:v27];
+      [(COSignalsClientObserver *)v26 setDispatchabilityStallActivity:dispatchabilityStallActivity];
       nw_activity_activate();
       goto LABEL_12;
     }
   }
 
 LABEL_13:
-  if ([MEMORY[0x277CFD0B8] isGlobalMessagingEnabled] && objc_msgSend(v14, "count"))
+  if ([MEMORY[0x277CFD0B8] isGlobalMessagingEnabled] && objc_msgSend(constraintsCopy, "count"))
   {
     v36 = v17;
-    v29 = [v23 constraints];
-    v30 = [v14 mutableCopy];
-    [v30 minusSet:v29];
+    constraints = [observers constraints];
+    v30 = [constraintsCopy mutableCopy];
+    [v30 minusSet:constraints];
     if ([v30 count])
     {
-      v34 = v29;
-      v31 = [v29 mutableCopy];
+      v34 = constraints;
+      v31 = [constraints mutableCopy];
 
-      [v31 unionSet:v14];
+      [v31 unionSet:constraintsCopy];
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __97__COAlarmService_addObserverForNotificationName_asAccessory_asInstance_constraints_withCallback___block_invoke;
       v38[3] = &unk_278E17F88;
       v39 = v36;
       v32 = v31;
-      v29 = v34;
+      constraints = v34;
       v30 = v32;
       v40 = v32;
       [(COService *)self _addOnForCluster:v21 completion:v38];
@@ -1100,8 +1100,8 @@ LABEL_13:
     v17 = v36;
   }
 
-  [v23 addClientObserver:v26 forNotificationName:v12];
-  v15[2](v15, 0);
+  [observers addClientObserver:v26 forNotificationName:nameCopy];
+  callbackCopy[2](callbackCopy, 0);
 
   v33 = *MEMORY[0x277D85DE8];
 }
@@ -1117,40 +1117,40 @@ void __97__COAlarmService_addObserverForNotificationName_asAccessory_asInstance_
   }
 }
 
-- (void)removeObserverForNotificationName:(id)a3 asAccessory:(id)a4 asInstance:(id)a5 withCallback:(id)a6
+- (void)removeObserverForNotificationName:(id)name asAccessory:(id)accessory asInstance:(id)instance withCallback:(id)callback
 {
   v49 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(COService *)self currentClient];
-  v13 = [v12 connection];
+  nameCopy = name;
+  accessoryCopy = accessory;
+  callbackCopy = callback;
+  currentClient = [(COService *)self currentClient];
+  connection = [currentClient connection];
   v14 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v46 = v12;
+    v46 = currentClient;
     v47 = 2112;
-    v48 = v9;
+    v48 = nameCopy;
     _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%p serving request to stop observing %@", buf, 0x16u);
   }
 
-  v15 = [(COAlarmService *)self observers];
-  v31 = v12;
-  v32 = v10;
-  v16 = v11;
+  observers = [(COAlarmService *)self observers];
+  v31 = currentClient;
+  v32 = accessoryCopy;
+  v16 = callbackCopy;
   if ([MEMORY[0x277CFD0B8] isGlobalMessagingEnabled])
   {
-    v33 = [v15 constraints];
+    constraints = [observers constraints];
   }
 
   else
   {
-    v33 = 0;
+    constraints = 0;
   }
 
-  v30 = v13;
-  v17 = [v15 clientObserversForXPCConnection:v13];
+  v30 = connection;
+  v17 = [observers clientObserversForXPCConnection:connection];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -1171,8 +1171,8 @@ void __97__COAlarmService_addObserverForNotificationName_asAccessory_asInstance_
         }
 
         v23 = *(*(&v40 + 1) + 8 * i);
-        [v15 removeClientObserver:v23 forNotificationName:v9];
-        if ([v9 isEqualToString:v21])
+        [observers removeClientObserver:v23 forNotificationName:nameCopy];
+        if ([nameCopy isEqualToString:v21])
         {
           [(COAlarmService *)self _didStopCanDispatchUpdate:v23];
         }
@@ -1188,8 +1188,8 @@ void __97__COAlarmService_addObserverForNotificationName_asAccessory_asInstance_
   v24 = _ClusterForAccessory(v32);
   if ([MEMORY[0x277CFD0B8] isGlobalMessagingEnabled])
   {
-    v25 = [v15 constraints];
-    if (([v25 isEqual:v33] & 1) == 0)
+    constraints2 = [observers constraints];
+    if (([constraints2 isEqual:constraints] & 1) == 0)
     {
       [(COService *)self _takeAssertionForCluster:v24];
       v38[0] = MEMORY[0x277D85DD0];
@@ -1205,7 +1205,7 @@ void __97__COAlarmService_addObserverForNotificationName_asAccessory_asInstance_
       v34[2] = __88__COAlarmService_removeObserverForNotificationName_asAccessory_asInstance_withCallback___block_invoke_3;
       v34[3] = &unk_278E17EE8;
       v35 = v32;
-      v36 = v25;
+      v36 = constraints2;
       v37 = v27;
       v28 = v27;
       [(COService *)self _addOnForCluster:v26 completion:v34];
@@ -1241,33 +1241,33 @@ void __88__COAlarmService_removeObserverForNotificationName_asAccessory_asInstan
   }
 }
 
-- (void)canDispatchAsAccessory:(id)a3 asInstance:(id)a4 reply:(id)a5
+- (void)canDispatchAsAccessory:(id)accessory asInstance:(id)instance reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = _ClusterForAccessory(v8);
+  accessoryCopy = accessory;
+  instanceCopy = instance;
+  replyCopy = reply;
+  v11 = _ClusterForAccessory(accessoryCopy);
   [(COService *)self _takeAssertionForCluster:v11];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __58__COAlarmService_canDispatchAsAccessory_asInstance_reply___block_invoke;
   v22[3] = &unk_278E17FB0;
   v23 = v11;
-  v24 = v10;
+  v24 = replyCopy;
   v22[4] = self;
   v12 = v11;
-  v13 = v10;
+  v13 = replyCopy;
   v14 = MEMORY[0x245D5FF10](v22);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __58__COAlarmService_canDispatchAsAccessory_asInstance_reply___block_invoke_3;
   v18[3] = &unk_278E17EE8;
-  v19 = v8;
-  v20 = v9;
+  v19 = accessoryCopy;
+  v20 = instanceCopy;
   v21 = v14;
   v15 = v14;
-  v16 = v9;
-  v17 = v8;
+  v16 = instanceCopy;
+  v17 = accessoryCopy;
   [(COService *)self _addOnForCluster:v12 completion:v18];
 }
 
@@ -1301,168 +1301,168 @@ void __58__COAlarmService_canDispatchAsAccessory_asInstance_reply___block_invoke
   }
 }
 
-- (void)alarmAddOn:(id)a3 didAddAlarms:(id)a4
+- (void)alarmAddOn:(id)on didAddAlarms:(id)alarms
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COService *)self dispatchQueue];
+  onCopy = on;
+  alarmsCopy = alarms;
+  dispatchQueue = [(COService *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__COAlarmService_alarmAddOn_didAddAlarms___block_invoke;
   block[3] = &unk_278E15728;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = alarmsCopy;
+  v13 = onCopy;
+  v9 = onCopy;
+  v10 = alarmsCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)alarmAddOn:(id)a3 didRemoveAlarms:(id)a4
+- (void)alarmAddOn:(id)on didRemoveAlarms:(id)alarms
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COService *)self dispatchQueue];
+  onCopy = on;
+  alarmsCopy = alarms;
+  dispatchQueue = [(COService *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__COAlarmService_alarmAddOn_didRemoveAlarms___block_invoke;
   block[3] = &unk_278E15728;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = alarmsCopy;
+  v13 = onCopy;
+  v9 = onCopy;
+  v10 = alarmsCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)alarmAddOn:(id)a3 didUpdateAlarms:(id)a4
+- (void)alarmAddOn:(id)on didUpdateAlarms:(id)alarms
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COService *)self dispatchQueue];
+  onCopy = on;
+  alarmsCopy = alarms;
+  dispatchQueue = [(COService *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__COAlarmService_alarmAddOn_didUpdateAlarms___block_invoke;
   block[3] = &unk_278E15728;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = alarmsCopy;
+  v13 = onCopy;
+  v9 = onCopy;
+  v10 = alarmsCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)alarmAddOn:(id)a3 didChangeAlarms:(id)a4
+- (void)alarmAddOn:(id)on didChangeAlarms:(id)alarms
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COService *)self dispatchQueue];
+  onCopy = on;
+  alarmsCopy = alarms;
+  dispatchQueue = [(COService *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__COAlarmService_alarmAddOn_didChangeAlarms___block_invoke;
   block[3] = &unk_278E15728;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = alarmsCopy;
+  v13 = onCopy;
+  v9 = onCopy;
+  v10 = alarmsCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)alarmAddOn:(id)a3 didFireAlarms:(id)a4
+- (void)alarmAddOn:(id)on didFireAlarms:(id)alarms
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COService *)self dispatchQueue];
+  onCopy = on;
+  alarmsCopy = alarms;
+  dispatchQueue = [(COService *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__COAlarmService_alarmAddOn_didFireAlarms___block_invoke;
   block[3] = &unk_278E15728;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = alarmsCopy;
+  v13 = onCopy;
+  v9 = onCopy;
+  v10 = alarmsCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)alarmAddOn:(id)a3 didDismissAlarms:(id)a4
+- (void)alarmAddOn:(id)on didDismissAlarms:(id)alarms
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COService *)self dispatchQueue];
+  onCopy = on;
+  alarmsCopy = alarms;
+  dispatchQueue = [(COService *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__COAlarmService_alarmAddOn_didDismissAlarms___block_invoke;
   block[3] = &unk_278E15728;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = alarmsCopy;
+  v13 = onCopy;
+  v9 = onCopy;
+  v10 = alarmsCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)alarmAddOn:(id)a3 didChangeFiringAlarms:(id)a4
+- (void)alarmAddOn:(id)on didChangeFiringAlarms:(id)alarms
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COService *)self dispatchQueue];
+  onCopy = on;
+  alarmsCopy = alarms;
+  dispatchQueue = [(COService *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__COAlarmService_alarmAddOn_didChangeFiringAlarms___block_invoke;
   block[3] = &unk_278E15728;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = alarmsCopy;
+  v13 = onCopy;
+  v9 = onCopy;
+  v10 = alarmsCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)alarmAddOn:(id)a3 resetAccesory:(id)a4
+- (void)alarmAddOn:(id)on resetAccesory:(id)accesory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COService *)self dispatchQueue];
+  onCopy = on;
+  accesoryCopy = accesory;
+  dispatchQueue = [(COService *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__COAlarmService_alarmAddOn_resetAccesory___block_invoke;
   block[3] = &unk_278E15728;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = accesoryCopy;
+  v13 = onCopy;
+  v9 = onCopy;
+  v10 = accesoryCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)didResetAlarmAddOn:(id)a3
+- (void)didResetAlarmAddOn:(id)on
 {
-  v4 = a3;
-  v5 = [(COService *)self dispatchQueue];
+  onCopy = on;
+  dispatchQueue = [(COService *)self dispatchQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__COAlarmService_didResetAlarmAddOn___block_invoke;
   v7[3] = &unk_278E156B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = onCopy;
+  v6 = onCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)didChangeCompositionForAlarmAddOn:(id)a3
+- (void)didChangeCompositionForAlarmAddOn:(id)on
 {
-  v4 = a3;
-  v5 = [(COService *)self dispatchQueue];
+  onCopy = on;
+  dispatchQueue = [(COService *)self dispatchQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__COAlarmService_didChangeCompositionForAlarmAddOn___block_invoke;
   v7[3] = &unk_278E156B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = onCopy;
+  v6 = onCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 + (void)_isAllowedClient:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

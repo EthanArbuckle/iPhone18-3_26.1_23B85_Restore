@@ -1,82 +1,82 @@
 @interface UICommand
 + (UICommand)commandWithTitle:(NSString *)title image:(UIImage *)image action:(SEL)action propertyList:(id)propertyList;
 + (UICommand)commandWithTitle:(NSString *)title image:(UIImage *)image action:(SEL)action propertyList:(id)propertyList alternates:(NSArray *)alternates;
-+ (UICommand)commandWithTitle:(id)a3 imageName:(id)a4 action:(SEL)a5;
-+ (UICommand)commandWithTitle:(id)a3 imageName:(id)a4 action:(SEL)a5 fallbackAction:(SEL)a6;
-+ (UICommand)commandWithTitle:(id)a3 imageName:(id)a4 attributes:(unint64_t)a5 action:(SEL)a6;
-+ (UICommand)commandWithTitle:(id)a3 imageName:(id)a4 preferredDisplayMode:(unint64_t)a5 action:(SEL)a6;
-+ (id)_defaultCommandForAction:(SEL)a3;
-+ (id)_originalCommandForAction:(SEL)a3;
-- (BOOL)_acceptBoolMenuVisit:(id)a3 commandVisit:(id)a4 actionVisit:(id)a5;
-- (BOOL)_acceptBoolMenuVisit:(id)a3 leafVisit:(id)a4;
++ (UICommand)commandWithTitle:(id)title imageName:(id)name action:(SEL)action;
++ (UICommand)commandWithTitle:(id)title imageName:(id)name action:(SEL)action fallbackAction:(SEL)fallbackAction;
++ (UICommand)commandWithTitle:(id)title imageName:(id)name attributes:(unint64_t)attributes action:(SEL)action;
++ (UICommand)commandWithTitle:(id)title imageName:(id)name preferredDisplayMode:(unint64_t)mode action:(SEL)action;
++ (id)_defaultCommandForAction:(SEL)action;
++ (id)_originalCommandForAction:(SEL)action;
+- (BOOL)_acceptBoolMenuVisit:(id)visit commandVisit:(id)commandVisit actionVisit:(id)actionVisit;
+- (BOOL)_acceptBoolMenuVisit:(id)visit leafVisit:(id)leafVisit;
 - (BOOL)_isDefaultCommand;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)_leafAlternates;
 - (NSString)description;
 - (UICommand)initWithCoder:(NSCoder *)coder;
-- (UICommand)initWithCommand:(id)a3;
-- (UICommand)initWithTitle:(id)a3 image:(id)a4 imageName:(id)a5 action:(SEL)a6 fallbackAction:(SEL)a7 propertyList:(id)a8 leafOrCommandAlternates:(id)a9 discoverabilityTitle:(id)a10 attributes:(unint64_t)a11 state:(int64_t)a12;
+- (UICommand)initWithCommand:(id)command;
+- (UICommand)initWithTitle:(id)title image:(id)image imageName:(id)name action:(SEL)action fallbackAction:(SEL)fallbackAction propertyList:(id)list leafOrCommandAlternates:(id)alternates discoverabilityTitle:(id)self0 attributes:(unint64_t)self1 state:(int64_t)self2;
 - (UISPasteVariant)_pasteVariant;
-- (id)_menuLeafWithKeyboardShortcut:(id)a3;
-- (id)_resolvedTargetFromFirstTarget:(id)a3 sender:(id)a4;
-- (id)_resolvedTargetFromFirstTarget:(id)a3 sender:(id)a4 shouldUseFallbackActionOut:(BOOL *)a5;
+- (id)_menuLeafWithKeyboardShortcut:(id)shortcut;
+- (id)_resolvedTargetFromFirstTarget:(id)target sender:(id)sender;
+- (id)_resolvedTargetFromFirstTarget:(id)target sender:(id)sender shouldUseFallbackActionOut:(BOOL *)out;
 - (id)_storedLeafAlternates;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_acceptMenuVisit:(id)a3 commandVisit:(id)a4 actionVisit:(id)a5 deferredElementVisit:(id)a6;
-- (void)_acceptMenuVisit:(id)a3 leafVisit:(id)a4;
-- (void)_appendDescriptionComponentsToDescription:(id)a3;
-- (void)_performAction:(SEL)a3 withSender:(id)a4 target:(id)a5 notifyingStateObservers:(BOOL)a6;
-- (void)_performWithSender:(id)a3 handler:(id)a4;
-- (void)_setLeafAlternates:(id)a3;
-- (void)_setState:(int64_t)a3 notifyingObservers:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)performWithSender:(id)a3 target:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_acceptMenuVisit:(id)visit commandVisit:(id)commandVisit actionVisit:(id)actionVisit deferredElementVisit:(id)elementVisit;
+- (void)_acceptMenuVisit:(id)visit leafVisit:(id)leafVisit;
+- (void)_appendDescriptionComponentsToDescription:(id)description;
+- (void)_performAction:(SEL)action withSender:(id)sender target:(id)target notifyingStateObservers:(BOOL)observers;
+- (void)_performWithSender:(id)sender handler:(id)handler;
+- (void)_setLeafAlternates:(id)alternates;
+- (void)_setState:(int64_t)state notifyingObservers:(BOOL)observers;
+- (void)encodeWithCoder:(id)coder;
+- (void)performWithSender:(id)sender target:(id)target;
 - (void)setImage:(UIImage *)image;
-- (void)setRepeatBehavior:(int64_t)a3;
-- (void)setSubtitle:(id)a3;
+- (void)setRepeatBehavior:(int64_t)behavior;
+- (void)setSubtitle:(id)subtitle;
 - (void)setTitle:(NSString *)title;
 @end
 
 @implementation UICommand
 
-+ (UICommand)commandWithTitle:(id)a3 imageName:(id)a4 action:(SEL)a5
++ (UICommand)commandWithTitle:(id)title imageName:(id)name action:(SEL)action
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 alloc];
-  v11 = [v10 initWithTitle:v9 image:0 imageName:v8 action:a5 propertyList:0 leafOrCommandAlternates:MEMORY[0x1E695E0F0] discoverabilityTitle:0 attributes:0 state:0];
+  nameCopy = name;
+  titleCopy = title;
+  v10 = [self alloc];
+  v11 = [v10 initWithTitle:titleCopy image:0 imageName:nameCopy action:action propertyList:0 leafOrCommandAlternates:MEMORY[0x1E695E0F0] discoverabilityTitle:0 attributes:0 state:0];
 
   return v11;
 }
 
-+ (UICommand)commandWithTitle:(id)a3 imageName:(id)a4 action:(SEL)a5 fallbackAction:(SEL)a6
++ (UICommand)commandWithTitle:(id)title imageName:(id)name action:(SEL)action fallbackAction:(SEL)fallbackAction
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [a1 alloc];
-  v13 = [v12 initWithTitle:v11 image:0 imageName:v10 action:a5 fallbackAction:a6 propertyList:0 leafOrCommandAlternates:MEMORY[0x1E695E0F0] discoverabilityTitle:0 attributes:0 state:0];
+  nameCopy = name;
+  titleCopy = title;
+  v12 = [self alloc];
+  v13 = [v12 initWithTitle:titleCopy image:0 imageName:nameCopy action:action fallbackAction:fallbackAction propertyList:0 leafOrCommandAlternates:MEMORY[0x1E695E0F0] discoverabilityTitle:0 attributes:0 state:0];
 
   return v13;
 }
 
-+ (UICommand)commandWithTitle:(id)a3 imageName:(id)a4 preferredDisplayMode:(unint64_t)a5 action:(SEL)a6
++ (UICommand)commandWithTitle:(id)title imageName:(id)name preferredDisplayMode:(unint64_t)mode action:(SEL)action
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [a1 alloc];
-  v13 = [v12 initWithTitle:v11 image:0 imageName:v10 action:a6 propertyList:0 leafOrCommandAlternates:MEMORY[0x1E695E0F0] discoverabilityTitle:0 attributes:0 state:0];
+  nameCopy = name;
+  titleCopy = title;
+  v12 = [self alloc];
+  v13 = [v12 initWithTitle:titleCopy image:0 imageName:nameCopy action:action propertyList:0 leafOrCommandAlternates:MEMORY[0x1E695E0F0] discoverabilityTitle:0 attributes:0 state:0];
 
-  v13[4] = a5;
+  v13[4] = mode;
 
   return v13;
 }
 
-+ (UICommand)commandWithTitle:(id)a3 imageName:(id)a4 attributes:(unint64_t)a5 action:(SEL)a6
++ (UICommand)commandWithTitle:(id)title imageName:(id)name attributes:(unint64_t)attributes action:(SEL)action
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [a1 alloc];
-  v13 = [v12 initWithTitle:v11 image:0 imageName:v10 action:a6 propertyList:0 leafOrCommandAlternates:MEMORY[0x1E695E0F0] discoverabilityTitle:0 attributes:a5 state:0];
+  nameCopy = name;
+  titleCopy = title;
+  v12 = [self alloc];
+  v13 = [v12 initWithTitle:titleCopy image:0 imageName:nameCopy action:action propertyList:0 leafOrCommandAlternates:MEMORY[0x1E695E0F0] discoverabilityTitle:0 attributes:attributes state:0];
 
   return v13;
 }
@@ -86,7 +86,7 @@
   v10 = propertyList;
   v11 = image;
   v12 = title;
-  v13 = [a1 alloc];
+  v13 = [self alloc];
   v14 = [v13 initWithTitle:v12 image:v11 imageName:0 action:action propertyList:v10 leafOrCommandAlternates:MEMORY[0x1E695E0F0] discoverabilityTitle:0 attributes:0 state:0];
 
   return v14;
@@ -98,7 +98,7 @@
   v13 = propertyList;
   v14 = image;
   v15 = title;
-  v16 = [[a1 alloc] initWithTitle:v15 image:v14 imageName:0 action:action propertyList:v13 leafOrCommandAlternates:v12 discoverabilityTitle:0 attributes:0 state:0];
+  v16 = [[self alloc] initWithTitle:v15 image:v14 imageName:0 action:action propertyList:v13 leafOrCommandAlternates:v12 discoverabilityTitle:0 attributes:0 state:0];
 
   return v16;
 }
@@ -159,22 +159,22 @@
   return v5;
 }
 
-- (UICommand)initWithTitle:(id)a3 image:(id)a4 imageName:(id)a5 action:(SEL)a6 fallbackAction:(SEL)a7 propertyList:(id)a8 leafOrCommandAlternates:(id)a9 discoverabilityTitle:(id)a10 attributes:(unint64_t)a11 state:(int64_t)a12
+- (UICommand)initWithTitle:(id)title image:(id)image imageName:(id)name action:(SEL)action fallbackAction:(SEL)fallbackAction propertyList:(id)list leafOrCommandAlternates:(id)alternates discoverabilityTitle:(id)self0 attributes:(unint64_t)self1 state:(int64_t)self2
 {
   v51 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v44 = a5;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
-  if (v17)
+  titleCopy = title;
+  imageCopy = image;
+  nameCopy = name;
+  listCopy = list;
+  alternatesCopy = alternates;
+  discoverabilityTitleCopy = discoverabilityTitle;
+  if (listCopy)
   {
-    DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x1E695E480], v17, 0);
+    DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x1E695E480], listCopy, 0);
     if (!DeepCopy)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"UICommand.m" lineNumber:355 description:{@"Invalid parameter not satisfying: %@", @"propertyListCopy"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UICommand.m" lineNumber:355 description:{@"Invalid parameter not satisfying: %@", @"propertyListCopy"}];
     }
   }
 
@@ -183,13 +183,13 @@
     DeepCopy = 0;
   }
 
-  v41 = v16;
-  v42 = v15;
+  v41 = imageCopy;
+  v42 = titleCopy;
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v22 = v18;
+  v22 = alternatesCopy;
   v23 = [v22 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (!v23)
   {
@@ -209,16 +209,16 @@
         objc_enumerationMutation(v22);
       }
 
-      v28 = [*(*(&v46 + 1) + 8 * i) modifierFlags];
-      if (!v28 || [v25 containsIndex:v28])
+      modifierFlags = [*(*(&v46 + 1) + 8 * i) modifierFlags];
+      if (!modifierFlags || [v25 containsIndex:modifierFlags])
       {
-        v29 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v29 handleFailureInMethod:a2 object:self file:@"UICommand.m" lineNumber:364 description:{@"Invalid parameter not satisfying: %@", @"alternateModifierFlags != 0 && ![allAlternateModifierFlags containsIndex:alternateModifierFlags]"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"UICommand.m" lineNumber:364 description:{@"Invalid parameter not satisfying: %@", @"alternateModifierFlags != 0 && ![allAlternateModifierFlags containsIndex:alternateModifierFlags]"}];
 
         if (v25)
         {
 LABEL_13:
-          [v25 addIndex:v28];
+          [v25 addIndex:modifierFlags];
           continue;
         }
       }
@@ -228,7 +228,7 @@ LABEL_13:
         goto LABEL_13;
       }
 
-      v25 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndex:v28];
+      v25 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndex:modifierFlags];
     }
 
     v24 = [v22 countByEnumeratingWithState:&v46 objects:v50 count:16];
@@ -239,58 +239,58 @@ LABEL_20:
 
   v45.receiver = self;
   v45.super_class = UICommand;
-  v30 = [(UIMenuElement *)&v45 initWithTitle:v42 image:v41 imageName:v44];
+  v30 = [(UIMenuElement *)&v45 initWithTitle:v42 image:v41 imageName:nameCopy];
   v31 = v30;
   if (v30)
   {
     target = v30->__target;
     v30->__target = 0;
 
-    v31->_action = a6;
-    v31->_fallbackAction = a7;
+    v31->_action = action;
+    v31->_fallbackAction = fallbackAction;
     objc_storeStrong(&v31->_propertyList, DeepCopy);
     v33 = [v22 copy];
     alternates = v31->_alternates;
     v31->_alternates = v33;
 
-    v35 = [v19 copy];
+    v35 = [discoverabilityTitleCopy copy];
     discoverabilityTitle = v31->_discoverabilityTitle;
     v31->_discoverabilityTitle = v35;
 
-    *(v31 + 20) = a11;
-    *(v31 + 21) = a12;
+    *(v31 + 20) = attributes;
+    *(v31 + 21) = state;
   }
 
   return v31;
 }
 
-- (UICommand)initWithCommand:(id)a3
+- (UICommand)initWithCommand:(id)command
 {
-  v4 = a3;
-  v5 = [v4 _imageOrName];
-  v6 = [v4 title];
-  v7 = [v5 _asMenuElementImage];
-  v8 = [v5 _asMenuElementImageName];
+  commandCopy = command;
+  _imageOrName = [commandCopy _imageOrName];
+  title = [commandCopy title];
+  _asMenuElementImage = [_imageOrName _asMenuElementImage];
+  _asMenuElementImageName = [_imageOrName _asMenuElementImageName];
   v11.receiver = self;
   v11.super_class = UICommand;
-  v9 = [(UIMenuElement *)&v11 initWithTitle:v6 image:v7 imageName:v8];
+  v9 = [(UIMenuElement *)&v11 initWithTitle:title image:_asMenuElementImage imageName:_asMenuElementImageName];
 
   if (v9)
   {
-    objc_storeStrong(&v9->__target, v4[19]);
-    v9->_action = v4[16];
-    v9->_fallbackAction = v4[18];
-    objc_storeStrong(&v9->super._attributedTitle, v4[1]);
-    objc_storeStrong(&v9->super._subtitle, v4[2]);
-    objc_storeStrong(&v9->_propertyList, v4[17]);
-    objc_storeStrong(&v9->_alternates, v4[9]);
-    objc_storeStrong(&v9->_discoverabilityTitle, v4[15]);
-    *(v9 + 20) = *(v4 + 20);
-    *(v9 + 21) = *(v4 + 21);
-    objc_storeStrong(&v9->_selectedImage, v4[14]);
-    *(v9 + 22) = *(v4 + 22);
-    objc_storeStrong(&v9->super._accessibilityIdentifier, v4[3]);
-    v9->super.__preferredDisplayMode = v4[4];
+    objc_storeStrong(&v9->__target, commandCopy[19]);
+    v9->_action = commandCopy[16];
+    v9->_fallbackAction = commandCopy[18];
+    objc_storeStrong(&v9->super._attributedTitle, commandCopy[1]);
+    objc_storeStrong(&v9->super._subtitle, commandCopy[2]);
+    objc_storeStrong(&v9->_propertyList, commandCopy[17]);
+    objc_storeStrong(&v9->_alternates, commandCopy[9]);
+    objc_storeStrong(&v9->_discoverabilityTitle, commandCopy[15]);
+    *(v9 + 20) = *(commandCopy + 20);
+    *(v9 + 21) = *(commandCopy + 21);
+    objc_storeStrong(&v9->_selectedImage, commandCopy[14]);
+    *(v9 + 22) = *(commandCopy + 22);
+    objc_storeStrong(&v9->super._accessibilityIdentifier, commandCopy[3]);
+    v9->super.__preferredDisplayMode = commandCopy[4];
   }
 
   return v9;
@@ -303,11 +303,11 @@ LABEL_20:
   [(UIMenuElement *)&v3 _setTitle:title];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   v3.receiver = self;
   v3.super_class = UICommand;
-  [(UIMenuElement *)&v3 _setSubtitle:a3];
+  [(UIMenuElement *)&v3 _setSubtitle:subtitle];
 }
 
 - (void)setImage:(UIImage *)image
@@ -317,19 +317,19 @@ LABEL_20:
   [(UIMenuElement *)&v3 _setImage:image];
 }
 
-- (void)_acceptMenuVisit:(id)a3 commandVisit:(id)a4 actionVisit:(id)a5 deferredElementVisit:(id)a6
+- (void)_acceptMenuVisit:(id)visit commandVisit:(id)commandVisit actionVisit:(id)actionVisit deferredElementVisit:(id)elementVisit
 {
-  if (a4)
+  if (commandVisit)
   {
-    (*(a4 + 2))(a4, self);
+    (*(commandVisit + 2))(commandVisit, self);
   }
 }
 
-- (BOOL)_acceptBoolMenuVisit:(id)a3 commandVisit:(id)a4 actionVisit:(id)a5
+- (BOOL)_acceptBoolMenuVisit:(id)visit commandVisit:(id)commandVisit actionVisit:(id)actionVisit
 {
-  if (a4)
+  if (commandVisit)
   {
-    return (*(a4 + 2))(a4, self);
+    return (*(commandVisit + 2))(commandVisit, self);
   }
 
   else
@@ -338,19 +338,19 @@ LABEL_20:
   }
 }
 
-- (void)_acceptMenuVisit:(id)a3 leafVisit:(id)a4
+- (void)_acceptMenuVisit:(id)visit leafVisit:(id)leafVisit
 {
-  if (a4)
+  if (leafVisit)
   {
-    (*(a4 + 2))(a4, self);
+    (*(leafVisit + 2))(leafVisit, self);
   }
 }
 
-- (BOOL)_acceptBoolMenuVisit:(id)a3 leafVisit:(id)a4
+- (BOOL)_acceptBoolMenuVisit:(id)visit leafVisit:(id)leafVisit
 {
-  if (a4)
+  if (leafVisit)
   {
-    return (*(a4 + 2))(a4, self);
+    return (*(leafVisit + 2))(leafVisit, self);
   }
 
   else
@@ -362,9 +362,9 @@ LABEL_20:
 - (UISPasteVariant)_pasteVariant
 {
   v2 = MEMORY[0x1E69DEC00];
-  v3 = [(UICommand *)self action];
+  action = [(UICommand *)self action];
 
-  return [v2 variantForSelector:v3];
+  return [v2 variantForSelector:action];
 }
 
 - (id)_storedLeafAlternates
@@ -447,52 +447,52 @@ id __28__UICommand__leafAlternates__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (void)_setLeafAlternates:(id)a3
+- (void)_setLeafAlternates:(id)alternates
 {
-  if (self->_alternates != a3)
+  if (self->_alternates != alternates)
   {
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithArray:v5 copyItems:1];
+    alternatesCopy = alternates;
+    v6 = [[v4 alloc] initWithArray:alternatesCopy copyItems:1];
 
     alternates = self->_alternates;
     self->_alternates = v6;
   }
 }
 
-- (id)_menuLeafWithKeyboardShortcut:(id)a3
+- (id)_menuLeafWithKeyboardShortcut:(id)shortcut
 {
-  v4 = a3;
-  if (v4)
+  shortcutCopy = shortcut;
+  if (shortcutCopy)
   {
-    v5 = [[UIKeyCommand alloc] _initWithCommand:self keyboardShortcut:v4];
+    selfCopy = [[UIKeyCommand alloc] _initWithCommand:self keyboardShortcut:shortcutCopy];
   }
 
   else
   {
-    v6 = [(UICommand *)self _keyboardShortcut];
+    _keyboardShortcut = [(UICommand *)self _keyboardShortcut];
 
-    if (v6)
+    if (_keyboardShortcut)
     {
-      v5 = [[UICommand alloc] initWithCommand:self];
+      selfCopy = [[UICommand alloc] initWithCommand:self];
     }
 
     else
     {
-      v5 = self;
+      selfCopy = self;
     }
   }
 
-  v7 = v5;
+  v7 = selfCopy;
 
   return v7;
 }
 
-- (void)setRepeatBehavior:(int64_t)a3
+- (void)setRepeatBehavior:(int64_t)behavior
 {
-  if (*(self + 22) != a3)
+  if (*(self + 22) != behavior)
   {
-    *(self + 22) = a3;
+    *(self + 22) = behavior;
   }
 }
 
@@ -504,20 +504,20 @@ id __28__UICommand__leafAlternates__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)_performAction:(SEL)a3 withSender:(id)a4 target:(id)a5 notifyingStateObservers:(BOOL)a6
+- (void)_performAction:(SEL)action withSender:(id)sender target:(id)target notifyingStateObservers:(BOOL)observers
 {
-  v6 = a6;
-  v16 = a4;
-  v11 = a5;
-  objc_storeStrong(&self->_sender, a4);
-  if (v6)
+  observersCopy = observers;
+  senderCopy = sender;
+  targetCopy = target;
+  objc_storeStrong(&self->_sender, sender);
+  if (observersCopy)
   {
     _UIMenuStateObserverableLeafWillPerformAction(self);
   }
 
   if (self->__useSenderForResolvingTarget)
   {
-    v12 = v16;
+    v12 = senderCopy;
   }
 
   else
@@ -526,40 +526,40 @@ id __28__UICommand__leafAlternates__block_invoke(uint64_t a1, void *a2)
   }
 
   v13 = v12;
-  if (v11)
+  if (targetCopy)
   {
     if (v13)
     {
-      v14 = v13;
+      selfCopy = v13;
     }
 
     else
     {
-      v14 = self;
+      selfCopy = self;
     }
 
-    [UIApp sendAction:a3 to:v11 from:v14 forEvent:0];
+    [UIApp sendAction:action to:targetCopy from:selfCopy forEvent:0];
   }
 
   sender = self->_sender;
   self->_sender = 0;
 }
 
-- (void)performWithSender:(id)a3 target:(id)a4
+- (void)performWithSender:(id)sender target:(id)target
 {
-  v6 = a4;
-  v7 = a3;
-  [(UICommand *)self _performAction:[(UICommand *)self action] withSender:v7 target:v6 notifyingStateObservers:1];
+  targetCopy = target;
+  senderCopy = sender;
+  [(UICommand *)self _performAction:[(UICommand *)self action] withSender:senderCopy target:targetCopy notifyingStateObservers:1];
 }
 
-- (id)_resolvedTargetFromFirstTarget:(id)a3 sender:(id)a4
+- (id)_resolvedTargetFromFirstTarget:(id)target sender:(id)sender
 {
-  objc_storeStrong(&self->_sender, a4);
-  v7 = a4;
-  v8 = a3;
+  objc_storeStrong(&self->_sender, sender);
+  senderCopy = sender;
+  targetCopy = target;
   if (self->__useSenderForResolvingTarget)
   {
-    v9 = v7;
+    v9 = senderCopy;
   }
 
   else
@@ -570,16 +570,16 @@ id __28__UICommand__leafAlternates__block_invoke(uint64_t a1, void *a2)
   action = self->_action;
   if (v9)
   {
-    v11 = v9;
+    selfCopy = v9;
   }
 
   else
   {
-    v11 = self;
+    selfCopy = self;
   }
 
   v12 = v9;
-  v13 = [v8 targetForAction:action withSender:v11];
+  v13 = [targetCopy targetForAction:action withSender:selfCopy];
 
   sender = self->_sender;
   self->_sender = 0;
@@ -587,14 +587,14 @@ id __28__UICommand__leafAlternates__block_invoke(uint64_t a1, void *a2)
   return v13;
 }
 
-- (id)_resolvedTargetFromFirstTarget:(id)a3 sender:(id)a4 shouldUseFallbackActionOut:(BOOL *)a5
+- (id)_resolvedTargetFromFirstTarget:(id)target sender:(id)sender shouldUseFallbackActionOut:(BOOL *)out
 {
-  v8 = a3;
-  v9 = a4;
-  objc_storeStrong(&self->_sender, a4);
+  targetCopy = target;
+  senderCopy = sender;
+  objc_storeStrong(&self->_sender, sender);
   if (self->__useSenderForResolvingTarget)
   {
-    v10 = v9;
+    v10 = senderCopy;
   }
 
   else
@@ -606,15 +606,15 @@ id __28__UICommand__leafAlternates__block_invoke(uint64_t a1, void *a2)
   v12 = v11;
   if (v11)
   {
-    v13 = v11;
+    selfCopy = v11;
   }
 
   else
   {
-    v13 = self;
+    selfCopy = self;
   }
 
-  v14 = [v8 targetForAction:self->_action withSender:v13];
+  v14 = [targetCopy targetForAction:self->_action withSender:selfCopy];
   v15 = v14;
   if (self->_fallbackAction)
   {
@@ -628,14 +628,14 @@ id __28__UICommand__leafAlternates__block_invoke(uint64_t a1, void *a2)
 
   if (v16)
   {
-    v17 = [v8 targetForAction:? withSender:?];
+    v17 = [targetCopy targetForAction:? withSender:?];
     v15 = v17;
     if (v17)
     {
       v18 = v17;
-      if (a5)
+      if (out)
       {
-        *a5 = 1;
+        *out = 1;
       }
     }
   }
@@ -646,105 +646,105 @@ id __28__UICommand__leafAlternates__block_invoke(uint64_t a1, void *a2)
   return v15;
 }
 
-- (void)_performWithSender:(id)a3 handler:(id)a4
+- (void)_performWithSender:(id)sender handler:(id)handler
 {
-  objc_storeStrong(&self->_sender, a3);
-  v9 = a3;
-  v7 = a4;
-  v7[2]();
+  objc_storeStrong(&self->_sender, sender);
+  senderCopy = sender;
+  handlerCopy = handler;
+  handlerCopy[2]();
 
   sender = self->_sender;
   self->_sender = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UICommand alloc];
 
   return [(UICommand *)v4 initWithCommand:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (self->__target)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UICommand.m" lineNumber:652 description:@"Commands with explicit targets cannot be encoded."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICommand.m" lineNumber:652 description:@"Commands with explicit targets cannot be encoded."];
   }
 
   v16.receiver = self;
   v16.super_class = UICommand;
-  [(UIMenuElement *)&v16 encodeWithCoder:v5];
+  [(UIMenuElement *)&v16 encodeWithCoder:coderCopy];
   v6 = NSStringFromSelector(self->_action);
-  [v5 encodeObject:v6 forKey:@"action"];
+  [coderCopy encodeObject:v6 forKey:@"action"];
 
   discoverabilityTitle = self->_discoverabilityTitle;
   if (discoverabilityTitle)
   {
-    [v5 encodeObject:discoverabilityTitle forKey:@"discoverabilityTitle"];
+    [coderCopy encodeObject:discoverabilityTitle forKey:@"discoverabilityTitle"];
   }
 
   propertyList = self->_propertyList;
   if (propertyList)
   {
-    [v5 encodeObject:propertyList forKey:@"propertyList"];
+    [coderCopy encodeObject:propertyList forKey:@"propertyList"];
   }
 
   if ([(NSArray *)self->_alternates count])
   {
-    v9 = [(UICommand *)self alternates];
-    if ([v9 count])
+    alternates = [(UICommand *)self alternates];
+    if ([alternates count])
     {
-      [v5 encodeObject:v9 forKey:@"alternates"];
+      [coderCopy encodeObject:alternates forKey:@"alternates"];
     }
 
     else
     {
-      v10 = [(UICommand *)self _storedLeafAlternates];
-      [v5 encodeObject:v10 forKey:@"leafAlternates"];
+      _storedLeafAlternates = [(UICommand *)self _storedLeafAlternates];
+      [coderCopy encodeObject:_storedLeafAlternates forKey:@"leafAlternates"];
     }
   }
 
   v11 = *(self + 20);
   if (v11)
   {
-    [v5 encodeInteger:v11 forKey:@"attributes"];
+    [coderCopy encodeInteger:v11 forKey:@"attributes"];
   }
 
   v12 = *(self + 21);
   if (v12)
   {
-    [v5 encodeInteger:v12 forKey:@"states"];
+    [coderCopy encodeInteger:v12 forKey:@"states"];
   }
 
   selectedImage = self->_selectedImage;
   if (selectedImage)
   {
-    [v5 encodeObject:selectedImage forKey:@"selectedImage"];
+    [coderCopy encodeObject:selectedImage forKey:@"selectedImage"];
   }
 
   v14 = *(self + 22);
   if (v14)
   {
-    [v5 encodeInteger:v14 forKey:@"repeatBehavior"];
+    [coderCopy encodeInteger:v14 forKey:@"repeatBehavior"];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v6 = v4;
-    v7 = [v6 action];
-    if (v7 == [(UICommand *)self action])
+    v6 = equalCopy;
+    action = [v6 action];
+    if (action == [(UICommand *)self action])
     {
-      v8 = [v6 propertyList];
-      v9 = [(UICommand *)self propertyList];
-      v10 = v8;
-      v11 = v9;
+      propertyList = [v6 propertyList];
+      propertyList2 = [(UICommand *)self propertyList];
+      v10 = propertyList;
+      v11 = propertyList2;
       v12 = v11;
       if (v10 == v11)
       {
@@ -784,49 +784,49 @@ id __28__UICommand__leafAlternates__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)_appendDescriptionComponentsToDescription:(id)a3
+- (void)_appendDescriptionComponentsToDescription:(id)description
 {
-  v8 = a3;
-  v4 = [(UIMenuElement *)self title];
-  v5 = [v4 length];
+  descriptionCopy = description;
+  title = [(UIMenuElement *)self title];
+  v5 = [title length];
 
   if (v5)
   {
-    v6 = [(UIMenuElement *)self title];
-    [v8 appendFormat:@"; title = %@", v6];
+    title2 = [(UIMenuElement *)self title];
+    [descriptionCopy appendFormat:@"; title = %@", title2];
   }
 
   if ([(UICommand *)self action])
   {
     v7 = NSStringFromSelector([(UICommand *)self action]);
-    [v8 appendFormat:@"; action: %@", v7];
+    [descriptionCopy appendFormat:@"; action: %@", v7];
   }
 }
 
-- (void)_setState:(int64_t)a3 notifyingObservers:(BOOL)a4
+- (void)_setState:(int64_t)state notifyingObservers:(BOOL)observers
 {
-  if (*(self + 21) != a3)
+  if (*(self + 21) != state)
   {
-    *(self + 21) = a3;
-    if (a4)
+    *(self + 21) = state;
+    if (observers)
     {
       _UIMenuStateObserverableLeafStateDidChange(self);
     }
   }
 }
 
-+ (id)_defaultCommandForAction:(SEL)a3
++ (id)_defaultCommandForAction:(SEL)action
 {
   v4 = +[_UIDefaultCommands sharedCommands];
-  v5 = [(_UIDefaultCommands *)v4 defaultCommandForAction:a3 wantsCopy:1];
+  v5 = [(_UIDefaultCommands *)v4 defaultCommandForAction:action wantsCopy:1];
 
   return v5;
 }
 
-+ (id)_originalCommandForAction:(SEL)a3
++ (id)_originalCommandForAction:(SEL)action
 {
   v4 = +[_UIDefaultCommands sharedCommands];
-  v5 = [(_UIDefaultCommands *)v4 defaultCommandForAction:a3 wantsCopy:0];
+  v5 = [(_UIDefaultCommands *)v4 defaultCommandForAction:action wantsCopy:0];
 
   return v5;
 }

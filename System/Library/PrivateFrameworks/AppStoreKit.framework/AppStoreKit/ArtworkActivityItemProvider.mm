@@ -1,17 +1,17 @@
 @interface ArtworkActivityItemProvider
-- (_TtC11AppStoreKit27ArtworkActivityItemProvider)initWithPlaceholderItem:(id)a3;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
+- (_TtC11AppStoreKit27ArtworkActivityItemProvider)initWithPlaceholderItem:(id)item;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
 - (id)item;
 @end
 
 @implementation ArtworkActivityItemProvider
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1E16DBF38(v8, a4, &v17);
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
+  sub_1E16DBF38(selfCopy, type, &v17);
 
   v9 = v18;
   if (v18)
@@ -36,7 +36,7 @@
 
 - (id)item
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E16DC248(v5);
 
   __swift_project_boxed_opaque_existential_1Tm(v5, v5[3]);
@@ -46,7 +46,7 @@
   return v3;
 }
 
-- (_TtC11AppStoreKit27ArtworkActivityItemProvider)initWithPlaceholderItem:(id)a3
+- (_TtC11AppStoreKit27ArtworkActivityItemProvider)initWithPlaceholderItem:(id)item
 {
   swift_unknownObjectRetain();
   sub_1E1AF6EBC();

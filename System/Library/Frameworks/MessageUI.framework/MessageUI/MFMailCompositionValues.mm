@@ -1,11 +1,11 @@
 @interface MFMailCompositionValues
 - (MFMailCompositionValues)init;
-- (MFMailCompositionValues)initWithCoder:(id)a3;
-- (MFMailCompositionValues)initWithDictionaryRepresentation:(id)a3;
-- (id)addContentVariationWithName:(id)a3;
+- (MFMailCompositionValues)initWithCoder:(id)coder;
+- (MFMailCompositionValues)initWithDictionaryRepresentation:(id)representation;
+- (id)addContentVariationWithName:(id)name;
 - (id)dictionaryRepresentation;
-- (void)_processDictionaryRepresentation:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_processDictionaryRepresentation:(id)representation;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MFMailCompositionValues
@@ -25,14 +25,14 @@
   return result;
 }
 
-- (MFMailCompositionValues)initWithDictionaryRepresentation:(id)a3
+- (MFMailCompositionValues)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(MFMailCompositionValues *)self init];
   v6 = v5;
   if (v5)
   {
-    [(MFMailCompositionValues *)v5 _processDictionaryRepresentation:v4];
+    [(MFMailCompositionValues *)v5 _processDictionaryRepresentation:representationCopy];
   }
 
   return v6;
@@ -41,41 +41,41 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(MFMailCompositionValues *)self mailtoURL];
-  [v3 ef_setOptionalObject:v4 forKey:@"URL"];
+  mailtoURL = [(MFMailCompositionValues *)self mailtoURL];
+  [v3 ef_setOptionalObject:mailtoURL forKey:@"URL"];
 
-  v5 = [(MFMailCompositionValues *)self autosaveIdentifier];
-  [v3 ef_setOptionalObject:v5 forKey:@"AutosaveIdentifier"];
+  autosaveIdentifier = [(MFMailCompositionValues *)self autosaveIdentifier];
+  [v3 ef_setOptionalObject:autosaveIdentifier forKey:@"AutosaveIdentifier"];
 
-  v6 = [(MFMailCompositionValues *)self messageBody];
-  [v3 ef_setOptionalObject:v6 forKey:@"Body"];
+  messageBody = [(MFMailCompositionValues *)self messageBody];
+  [v3 ef_setOptionalObject:messageBody forKey:@"Body"];
 
-  v7 = [(MFMailCompositionValues *)self from];
-  [v3 ef_setOptionalObject:v7 forKey:@"From"];
+  from = [(MFMailCompositionValues *)self from];
+  [v3 ef_setOptionalObject:from forKey:@"From"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[MFMailCompositionValues isHTML](self, "isHTML")}];
   [v3 ef_setOptionalObject:v8 forKey:@"BodyIsHTML"];
 
-  v9 = [(MFMailCompositionValues *)self subject];
-  [v3 ef_setOptionalObject:v9 forKey:@"Subject"];
+  subject = [(MFMailCompositionValues *)self subject];
+  [v3 ef_setOptionalObject:subject forKey:@"Subject"];
 
-  v10 = [(MFMailCompositionValues *)self hideMyEmailFrom];
-  [v3 ef_setOptionalObject:v10 forKey:@"HideMyEmailFrom"];
+  hideMyEmailFrom = [(MFMailCompositionValues *)self hideMyEmailFrom];
+  [v3 ef_setOptionalObject:hideMyEmailFrom forKey:@"HideMyEmailFrom"];
 
-  v11 = [(MFMailCompositionValues *)self toRecipients];
-  [v3 ef_setOptionalObject:v11 forKey:@"ToRecipients"];
+  toRecipients = [(MFMailCompositionValues *)self toRecipients];
+  [v3 ef_setOptionalObject:toRecipients forKey:@"ToRecipients"];
 
-  v12 = [(MFMailCompositionValues *)self ccRecipients];
-  [v3 ef_setOptionalObject:v12 forKey:@"CcRecipients"];
+  ccRecipients = [(MFMailCompositionValues *)self ccRecipients];
+  [v3 ef_setOptionalObject:ccRecipients forKey:@"CcRecipients"];
 
-  v13 = [(MFMailCompositionValues *)self bccRecipients];
-  [v3 ef_setOptionalObject:v13 forKey:@"BccRecipients"];
+  bccRecipients = [(MFMailCompositionValues *)self bccRecipients];
+  [v3 ef_setOptionalObject:bccRecipients forKey:@"BccRecipients"];
 
-  v14 = [(MFMailCompositionValues *)self originalContent];
-  [v3 ef_setOptionalObject:v14 forKey:@"OriginalContent"];
+  originalContent = [(MFMailCompositionValues *)self originalContent];
+  [v3 ef_setOptionalObject:originalContent forKey:@"OriginalContent"];
 
-  v15 = [(MFMailCompositionValues *)self preferredSendingEmailAddress];
-  [v3 ef_setOptionalObject:v15 forKey:@"PreferredSendingEmailAddress"];
+  preferredSendingEmailAddress = [(MFMailCompositionValues *)self preferredSendingEmailAddress];
+  [v3 ef_setOptionalObject:preferredSendingEmailAddress forKey:@"PreferredSendingEmailAddress"];
 
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[MFMailCompositionValues showKeyboardImmediately](self, "showKeyboardImmediately")}];
   [v3 ef_setOptionalObject:v16 forKey:@"ShowKeyboardImmediately"];
@@ -89,29 +89,29 @@
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MFMailCompositionValues caretPosition](self, "caretPosition")}];
   [v3 ef_setOptionalObject:v19 forKey:@"CaretPosition"];
 
-  v20 = [(MFMailCompositionValues *)self UTITypes];
-  [v3 ef_setOptionalObject:v20 forKey:@"UTITypes"];
+  uTITypes = [(MFMailCompositionValues *)self UTITypes];
+  [v3 ef_setOptionalObject:uTITypes forKey:@"UTITypes"];
 
-  v21 = [(MFMailCompositionValues *)self photoIDs];
-  [v3 ef_setOptionalObject:v21 forKey:@"PhotoIDs"];
+  photoIDs = [(MFMailCompositionValues *)self photoIDs];
+  [v3 ef_setOptionalObject:photoIDs forKey:@"PhotoIDs"];
 
-  v22 = [(MFMailCompositionValues *)self cloudPhotoIDs];
-  [v3 ef_setOptionalObject:v22 forKey:@"CloudPhotoIDs"];
+  cloudPhotoIDs = [(MFMailCompositionValues *)self cloudPhotoIDs];
+  [v3 ef_setOptionalObject:cloudPhotoIDs forKey:@"CloudPhotoIDs"];
 
-  v23 = [(MFMailCompositionValues *)self contentText];
-  [v3 ef_setOptionalObject:v23 forKey:@"ContentText"];
+  contentText = [(MFMailCompositionValues *)self contentText];
+  [v3 ef_setOptionalObject:contentText forKey:@"ContentText"];
 
-  v24 = [(MFMailCompositionValues *)self contentURLs];
-  [v3 ef_setOptionalObject:v24 forKey:@"ContentURLs"];
+  contentURLs = [(MFMailCompositionValues *)self contentURLs];
+  [v3 ef_setOptionalObject:contentURLs forKey:@"ContentURLs"];
 
-  v25 = [(MFMailCompositionValues *)self contentVariations];
-  [v3 ef_setOptionalObject:v25 forKey:@"ContentVariations"];
+  contentVariations = [(MFMailCompositionValues *)self contentVariations];
+  [v3 ef_setOptionalObject:contentVariations forKey:@"ContentVariations"];
 
   v26 = [MEMORY[0x1E696AD98] numberWithInteger:{-[MFMailCompositionValues defaultContentVariationIndex](self, "defaultContentVariationIndex")}];
   [v3 ef_setOptionalObject:v26 forKey:@"DefaultContentVariationIndex"];
 
-  v27 = [(MFMailCompositionValues *)self shareSheetSessionID];
-  [v3 ef_setOptionalObject:v27 forKey:@"ShareSheetSessionID"];
+  shareSheetSessionID = [(MFMailCompositionValues *)self shareSheetSessionID];
+  [v3 ef_setOptionalObject:shareSheetSessionID forKey:@"ShareSheetSessionID"];
 
   v28 = [MEMORY[0x1E696AD98] numberWithBool:{-[MFMailCompositionValues isUsingDefaultAccount](self, "isUsingDefaultAccount")}];
   [v3 ef_setOptionalObject:v28 forKey:@"IsUsingDefaultAccount"];
@@ -122,32 +122,32 @@
   v30 = [MEMORY[0x1E696AD98] numberWithInteger:{-[MFMailCompositionValues composeType](self, "composeType")}];
   [v3 ef_setOptionalObject:v30 forKey:@"ComposeType"];
 
-  v31 = [(MFMailCompositionValues *)self serializedMessageObjectID];
-  [v3 ef_setOptionalObject:v31 forKey:@"SerializedMessageObjectID"];
+  serializedMessageObjectID = [(MFMailCompositionValues *)self serializedMessageObjectID];
+  [v3 ef_setOptionalObject:serializedMessageObjectID forKey:@"SerializedMessageObjectID"];
 
   v32 = [MEMORY[0x1E696AD98] numberWithBool:{-[MFMailCompositionValues includeAttachments](self, "includeAttachments")}];
   [v3 ef_setOptionalObject:v32 forKey:@"IncludeAttachments"];
 
-  v33 = [(MFMailCompositionValues *)self serializedMailboxObjectID];
-  [v3 ef_setOptionalObject:v33 forKey:@"SerializedMailboxObjectID"];
+  serializedMailboxObjectID = [(MFMailCompositionValues *)self serializedMailboxObjectID];
+  [v3 ef_setOptionalObject:serializedMailboxObjectID forKey:@"SerializedMailboxObjectID"];
 
-  v34 = [(MFMailCompositionValues *)self deferredAttachments];
-  [v3 ef_setOptionalObject:v34 forKey:@"DeferredAttachments"];
+  deferredAttachments = [(MFMailCompositionValues *)self deferredAttachments];
+  [v3 ef_setOptionalObject:deferredAttachments forKey:@"DeferredAttachments"];
 
-  v35 = [(MFMailCompositionValues *)self sendLaterDate];
-  [v3 ef_setOptionalObject:v35 forKey:@"SendLaterDate"];
+  sendLaterDate = [(MFMailCompositionValues *)self sendLaterDate];
+  [v3 ef_setOptionalObject:sendLaterDate forKey:@"SendLaterDate"];
 
   v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MFMailCompositionValues sendLaterContext](self, "sendLaterContext")}];
   [v3 ef_setOptionalObject:v36 forKey:@"SendLaterContext"];
 
-  v37 = [(MFMailCompositionValues *)self sharingSandboxingURLWrapper];
-  [v3 ef_setOptionalObject:v37 forKey:@"SharingSandboxingURLWrapper"];
+  sharingSandboxingURLWrapper = [(MFMailCompositionValues *)self sharingSandboxingURLWrapper];
+  [v3 ef_setOptionalObject:sharingSandboxingURLWrapper forKey:@"SharingSandboxingURLWrapper"];
 
-  v38 = [(MFMailCompositionValues *)self ckShare];
-  [v3 ef_setOptionalObject:v38 forKey:@"CKShare"];
+  ckShare = [(MFMailCompositionValues *)self ckShare];
+  [v3 ef_setOptionalObject:ckShare forKey:@"CKShare"];
 
-  v39 = [(MFMailCompositionValues *)self ckContainerSetupInfo];
-  [v3 ef_setOptionalObject:v39 forKey:@"CKContainerSetupInfo"];
+  ckContainerSetupInfo = [(MFMailCompositionValues *)self ckContainerSetupInfo];
+  [v3 ef_setOptionalObject:ckContainerSetupInfo forKey:@"CKContainerSetupInfo"];
 
   v40 = [MEMORY[0x1E696AD98] numberWithInteger:{-[MFMailCompositionValues ckSharePermissionType](self, "ckSharePermissionType")}];
   [v3 ef_setOptionalObject:v40 forKey:@"CKSharePermissionType"];
@@ -158,126 +158,126 @@
   return v3;
 }
 
-- (void)_processDictionaryRepresentation:(id)a3
+- (void)_processDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"URL"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"URL"];
   [(MFMailCompositionValues *)self setMailtoURL:v5];
 
-  v6 = [v4 objectForKeyedSubscript:@"AutosaveIdentifier"];
+  v6 = [representationCopy objectForKeyedSubscript:@"AutosaveIdentifier"];
   [(MFMailCompositionValues *)self setAutosaveIdentifier:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"Subject"];
+  v7 = [representationCopy objectForKeyedSubscript:@"Subject"];
   [(MFMailCompositionValues *)self setSubject:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"HideMyEmailFrom"];
+  v8 = [representationCopy objectForKeyedSubscript:@"HideMyEmailFrom"];
   [(MFMailCompositionValues *)self setHideMyEmailFrom:v8];
 
-  v9 = [v4 objectForKeyedSubscript:@"From"];
+  v9 = [representationCopy objectForKeyedSubscript:@"From"];
   [(MFMailCompositionValues *)self setFrom:v9];
 
-  v10 = [v4 objectForKeyedSubscript:@"ToRecipients"];
+  v10 = [representationCopy objectForKeyedSubscript:@"ToRecipients"];
   [(MFMailCompositionValues *)self setToRecipients:v10];
 
-  v11 = [v4 objectForKeyedSubscript:@"CcRecipients"];
+  v11 = [representationCopy objectForKeyedSubscript:@"CcRecipients"];
   [(MFMailCompositionValues *)self setCcRecipients:v11];
 
-  v12 = [v4 objectForKeyedSubscript:@"BccRecipients"];
+  v12 = [representationCopy objectForKeyedSubscript:@"BccRecipients"];
   [(MFMailCompositionValues *)self setBccRecipients:v12];
 
-  v13 = [v4 objectForKeyedSubscript:@"OriginalContent"];
+  v13 = [representationCopy objectForKeyedSubscript:@"OriginalContent"];
   [(MFMailCompositionValues *)self setOriginalContent:v13];
 
-  v14 = [v4 objectForKeyedSubscript:@"UTITypes"];
+  v14 = [representationCopy objectForKeyedSubscript:@"UTITypes"];
   [(MFMailCompositionValues *)self setUTITypes:v14];
 
-  v15 = [v4 objectForKeyedSubscript:@"PhotoIDs"];
+  v15 = [representationCopy objectForKeyedSubscript:@"PhotoIDs"];
   [(MFMailCompositionValues *)self setPhotoIDs:v15];
 
-  v16 = [v4 objectForKeyedSubscript:@"CloudPhotoIDs"];
+  v16 = [representationCopy objectForKeyedSubscript:@"CloudPhotoIDs"];
   [(MFMailCompositionValues *)self setCloudPhotoIDs:v16];
 
-  v17 = [v4 objectForKeyedSubscript:@"ContentText"];
+  v17 = [representationCopy objectForKeyedSubscript:@"ContentText"];
   [(MFMailCompositionValues *)self setContentText:v17];
 
-  v18 = [v4 objectForKeyedSubscript:@"ContentURLs"];
+  v18 = [representationCopy objectForKeyedSubscript:@"ContentURLs"];
   [(MFMailCompositionValues *)self setContentURLs:v18];
 
-  v19 = [v4 objectForKeyedSubscript:@"ContentVariations"];
+  v19 = [representationCopy objectForKeyedSubscript:@"ContentVariations"];
   [(MFMailCompositionValues *)self setContentVariations:v19];
 
-  v20 = [v4 objectForKeyedSubscript:@"SerializedMessageObjectID"];
+  v20 = [representationCopy objectForKeyedSubscript:@"SerializedMessageObjectID"];
   [(MFMailCompositionValues *)self setSerializedMessageObjectID:v20];
 
-  v21 = [v4 objectForKeyedSubscript:@"SerializedMailboxObjectID"];
+  v21 = [representationCopy objectForKeyedSubscript:@"SerializedMailboxObjectID"];
   [(MFMailCompositionValues *)self setSerializedMailboxObjectID:v21];
 
-  v22 = [v4 objectForKeyedSubscript:@"ShowKeyboardImmediately"];
+  v22 = [representationCopy objectForKeyedSubscript:@"ShowKeyboardImmediately"];
   -[MFMailCompositionValues setShowKeyboardImmediately:](self, "setShowKeyboardImmediately:", [v22 BOOLValue]);
 
-  v23 = [v4 objectForKeyedSubscript:@"ShowContentImmediately"];
+  v23 = [representationCopy objectForKeyedSubscript:@"ShowContentImmediately"];
   -[MFMailCompositionValues setShowContentImmediately:](self, "setShowContentImmediately:", [v23 BOOLValue]);
 
-  v24 = [v4 objectForKeyedSubscript:@"CaretPosition"];
+  v24 = [representationCopy objectForKeyedSubscript:@"CaretPosition"];
   -[MFMailCompositionValues setCaretPosition:](self, "setCaretPosition:", [v24 unsignedIntegerValue]);
 
-  v25 = [v4 objectForKeyedSubscript:@"DefaultContentVariationIndex"];
+  v25 = [representationCopy objectForKeyedSubscript:@"DefaultContentVariationIndex"];
   -[MFMailCompositionValues setDefaultContentVariationIndex:](self, "setDefaultContentVariationIndex:", [v25 integerValue]);
 
-  v26 = [v4 objectForKeyedSubscript:@"IsUsingDefaultAccount"];
+  v26 = [representationCopy objectForKeyedSubscript:@"IsUsingDefaultAccount"];
   -[MFMailCompositionValues setIsUsingDefaultAccount:](self, "setIsUsingDefaultAccount:", [v26 BOOLValue]);
 
-  v27 = [v4 objectForKeyedSubscript:@"PrefersFirstLineSelection"];
+  v27 = [representationCopy objectForKeyedSubscript:@"PrefersFirstLineSelection"];
   -[MFMailCompositionValues setPrefersFirstLineSelection:](self, "setPrefersFirstLineSelection:", [v27 BOOLValue]);
 
-  v28 = [v4 objectForKeyedSubscript:@"ComposeType"];
+  v28 = [representationCopy objectForKeyedSubscript:@"ComposeType"];
   -[MFMailCompositionValues setComposeType:](self, "setComposeType:", [v28 integerValue]);
 
-  v29 = [v4 objectForKeyedSubscript:@"IncludeAttachments"];
+  v29 = [representationCopy objectForKeyedSubscript:@"IncludeAttachments"];
   -[MFMailCompositionValues setIncludeAttachments:](self, "setIncludeAttachments:", [v29 BOOLValue]);
 
-  v30 = [v4 objectForKeyedSubscript:@"DeferredAttachments"];
+  v30 = [representationCopy objectForKeyedSubscript:@"DeferredAttachments"];
   [(MFMailCompositionValues *)self setDeferredAttachments:v30];
 
-  v31 = [v4 objectForKeyedSubscript:@"SourceAccountManagement"];
+  v31 = [representationCopy objectForKeyedSubscript:@"SourceAccountManagement"];
   -[MFMailCompositionValues setSourceAccountManagement:](self, "setSourceAccountManagement:", [v31 intValue]);
 
-  v32 = [v4 objectForKeyedSubscript:@"SendLaterDate"];
+  v32 = [representationCopy objectForKeyedSubscript:@"SendLaterDate"];
   [(MFMailCompositionValues *)self setSendLaterDate:v32];
 
-  v33 = [v4 objectForKeyedSubscript:@"SendLaterContext"];
+  v33 = [representationCopy objectForKeyedSubscript:@"SendLaterContext"];
   -[MFMailCompositionValues setSendLaterContext:](self, "setSendLaterContext:", [v33 integerValue]);
 
-  v34 = [v4 objectForKeyedSubscript:@"SharingSandboxingURLWrapper"];
+  v34 = [representationCopy objectForKeyedSubscript:@"SharingSandboxingURLWrapper"];
   [(MFMailCompositionValues *)self setSharingSandboxingURLWrapper:v34];
 
-  v35 = [v4 objectForKeyedSubscript:@"CKShare"];
+  v35 = [representationCopy objectForKeyedSubscript:@"CKShare"];
   [(MFMailCompositionValues *)self setCkShare:v35];
 
-  v36 = [v4 objectForKeyedSubscript:@"CKContainerSetupInfo"];
+  v36 = [representationCopy objectForKeyedSubscript:@"CKContainerSetupInfo"];
   [(MFMailCompositionValues *)self setCkContainerSetupInfo:v36];
 
-  v37 = [v4 objectForKeyedSubscript:@"CKSharePermissionType"];
+  v37 = [representationCopy objectForKeyedSubscript:@"CKSharePermissionType"];
   -[MFMailCompositionValues setCkSharePermissionType:](self, "setCkSharePermissionType:", [v37 integerValue]);
 
-  v38 = [v4 objectForKeyedSubscript:@"CKShareAllowOthersToInvite"];
+  v38 = [representationCopy objectForKeyedSubscript:@"CKShareAllowOthersToInvite"];
   -[MFMailCompositionValues setCkShareAllowOthersToInvite:](self, "setCkShareAllowOthersToInvite:", [v38 BOOLValue]);
 
-  v39 = [v4 objectForKeyedSubscript:@"BodyIsHTML"];
-  v40 = [v39 BOOLValue];
+  v39 = [representationCopy objectForKeyedSubscript:@"BodyIsHTML"];
+  bOOLValue = [v39 BOOLValue];
 
-  [(MFMailCompositionValues *)self setIsHTML:v40];
-  v41 = [v4 objectForKeyedSubscript:@"Body"];
+  [(MFMailCompositionValues *)self setIsHTML:bOOLValue];
+  v41 = [representationCopy objectForKeyedSubscript:@"Body"];
   if (v41)
   {
     v42 = [_MFMailCompositionContext processMessageBody:v41 asHTML:[(MFMailCompositionValues *)self isHTML]];
     [(MFMailCompositionValues *)self setMessageBody:v42];
   }
 
-  v43 = [v4 objectForKeyedSubscript:@"PreferredSendingEmailAddress"];
+  v43 = [representationCopy objectForKeyedSubscript:@"PreferredSendingEmailAddress"];
   if (v43)
   {
-    v44 = [MEMORY[0x1E69B16A8] mailAccounts];
+    mailAccounts = [MEMORY[0x1E69B16A8] mailAccounts];
     v45 = [MEMORY[0x1E69B16A8] accountContainingEmailAddress:v43];
     if (v45)
     {
@@ -285,7 +285,7 @@
     }
   }
 
-  v46 = [v4 objectForKeyedSubscript:@"ShareSheetSessionID"];
+  v46 = [representationCopy objectForKeyedSubscript:@"ShareSheetSessionID"];
   if (v46)
   {
     v47[0] = MEMORY[0x1E69E9820];
@@ -298,18 +298,18 @@
   }
 }
 
-- (id)addContentVariationWithName:(id)a3
+- (id)addContentVariationWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(MFMailCompositionValues *)self contentVariations];
-  if (!v5)
+  nameCopy = name;
+  contentVariations = [(MFMailCompositionValues *)self contentVariations];
+  if (!contentVariations)
   {
-    v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(MFMailCompositionValues *)self setContentVariations:v5];
+    contentVariations = objc_alloc_init(MEMORY[0x1E695DF70]);
+    [(MFMailCompositionValues *)self setContentVariations:contentVariations];
   }
 
-  v6 = [[_MFMailComposeContentVariation alloc] initWithName:v4];
-  [v5 addObject:v6];
+  v6 = [[_MFMailComposeContentVariation alloc] initWithName:nameCopy];
+  [contentVariations addObject:v6];
   if ([(MFMailCompositionValues *)self defaultContentVariationIndex]== 0x7FFFFFFFFFFFFFFFLL)
   {
     [(MFMailCompositionValues *)self setDefaultContentVariationIndex:0];
@@ -318,131 +318,131 @@
   return v6;
 }
 
-- (MFMailCompositionValues)initWithCoder:(id)a3
+- (MFMailCompositionValues)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v91.receiver = self;
   v91.super_class = MFMailCompositionValues;
   v5 = [(MFMailCompositionValues *)&v91 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_mailtoURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_mailtoURL"];
     mailtoURL = v5->_mailtoURL;
     v5->_mailtoURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_autosaveIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_autosaveIdentifier"];
     autosaveIdentifier = v5->_autosaveIdentifier;
     v5->_autosaveIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_messageBody"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_messageBody"];
     messageBody = v5->_messageBody;
     v5->_messageBody = v10;
 
-    v5->_isHTML = [v4 decodeBoolForKey:@"EFPropertyKey_isHTML"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_subject"];
+    v5->_isHTML = [coderCopy decodeBoolForKey:@"EFPropertyKey_isHTML"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_subject"];
     subject = v5->_subject;
     v5->_subject = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_hideMyEmailFrom"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_hideMyEmailFrom"];
     hideMyEmailFrom = v5->_hideMyEmailFrom;
     v5->_hideMyEmailFrom = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_from"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_from"];
     from = v5->_from;
     v5->_from = v16;
 
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"EFPropertyKey_toRecipients"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"EFPropertyKey_toRecipients"];
     toRecipients = v5->_toRecipients;
     v5->_toRecipients = v21;
 
     v23 = MEMORY[0x1E695DFD8];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"EFPropertyKey_ccRecipients"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"EFPropertyKey_ccRecipients"];
     ccRecipients = v5->_ccRecipients;
     v5->_ccRecipients = v26;
 
     v28 = MEMORY[0x1E695DFD8];
     v29 = objc_opt_class();
     v30 = [v28 setWithObjects:{v29, objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"EFPropertyKey_bccRecipients"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"EFPropertyKey_bccRecipients"];
     bccRecipients = v5->_bccRecipients;
     v5->_bccRecipients = v31;
 
     v33 = MEMORY[0x1E695DFD8];
     v34 = objc_opt_class();
     v35 = [v33 setWithObjects:{v34, objc_opt_class(), 0}];
-    v36 = [v4 decodeObjectOfClasses:v35 forKey:@"EFPropertyKey_originalContent"];
+    v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"EFPropertyKey_originalContent"];
     originalContent = v5->_originalContent;
     v5->_originalContent = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_preferredSendingEmailAddress"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_preferredSendingEmailAddress"];
     preferredSendingEmailAddress = v5->_preferredSendingEmailAddress;
     v5->_preferredSendingEmailAddress = v38;
 
-    v5->_showKeyboardImmediately = [v4 decodeBoolForKey:@"EFPropertyKey_showKeyboardImmediately"];
-    v5->_showContentImmediately = [v4 decodeBoolForKey:@"EFPropertyKey_showContentImmediately"];
-    v5->_sourceAccountManagement = [v4 decodeIntegerForKey:@"EFPropertyKey_sourceAccountManagement"];
-    v5->_caretPosition = [v4 decodeIntegerForKey:@"EFPropertyKey_caretPosition"];
+    v5->_showKeyboardImmediately = [coderCopy decodeBoolForKey:@"EFPropertyKey_showKeyboardImmediately"];
+    v5->_showContentImmediately = [coderCopy decodeBoolForKey:@"EFPropertyKey_showContentImmediately"];
+    v5->_sourceAccountManagement = [coderCopy decodeIntegerForKey:@"EFPropertyKey_sourceAccountManagement"];
+    v5->_caretPosition = [coderCopy decodeIntegerForKey:@"EFPropertyKey_caretPosition"];
     v40 = MEMORY[0x1E695DFD8];
     v41 = objc_opt_class();
     v42 = [v40 setWithObjects:{v41, objc_opt_class(), 0}];
-    v43 = [v4 decodeObjectOfClasses:v42 forKey:@"EFPropertyKey_UTITypes"];
+    v43 = [coderCopy decodeObjectOfClasses:v42 forKey:@"EFPropertyKey_UTITypes"];
     UTITypes = v5->_UTITypes;
     v5->_UTITypes = v43;
 
     v45 = MEMORY[0x1E695DFD8];
     v46 = objc_opt_class();
     v47 = [v45 setWithObjects:{v46, objc_opt_class(), 0}];
-    v48 = [v4 decodeObjectOfClasses:v47 forKey:@"EFPropertyKey_photoIDs"];
+    v48 = [coderCopy decodeObjectOfClasses:v47 forKey:@"EFPropertyKey_photoIDs"];
     photoIDs = v5->_photoIDs;
     v5->_photoIDs = v48;
 
     v50 = MEMORY[0x1E695DFD8];
     v51 = objc_opt_class();
     v52 = [v50 setWithObjects:{v51, objc_opt_class(), 0}];
-    v53 = [v4 decodeObjectOfClasses:v52 forKey:@"EFPropertyKey_cloudPhotoIDs"];
+    v53 = [coderCopy decodeObjectOfClasses:v52 forKey:@"EFPropertyKey_cloudPhotoIDs"];
     cloudPhotoIDs = v5->_cloudPhotoIDs;
     v5->_cloudPhotoIDs = v53;
 
     v55 = MEMORY[0x1E695DFD8];
     v56 = objc_opt_class();
     v57 = [v55 setWithObjects:{v56, objc_opt_class(), 0}];
-    v58 = [v4 decodeObjectOfClasses:v57 forKey:@"EFPropertyKey_contentText"];
+    v58 = [coderCopy decodeObjectOfClasses:v57 forKey:@"EFPropertyKey_contentText"];
     contentText = v5->_contentText;
     v5->_contentText = v58;
 
     v60 = MEMORY[0x1E695DFD8];
     v61 = objc_opt_class();
     v62 = [v60 setWithObjects:{v61, objc_opt_class(), 0}];
-    v63 = [v4 decodeObjectOfClasses:v62 forKey:@"EFPropertyKey_contentURLs"];
+    v63 = [coderCopy decodeObjectOfClasses:v62 forKey:@"EFPropertyKey_contentURLs"];
     contentURLs = v5->_contentURLs;
     v5->_contentURLs = v63;
 
     v65 = MEMORY[0x1E695DFD8];
     v66 = objc_opt_class();
     v67 = [v65 setWithObjects:{v66, objc_opt_class(), 0}];
-    v68 = [v4 decodeObjectOfClasses:v67 forKey:@"EFPropertyKey_contentVariations"];
+    v68 = [coderCopy decodeObjectOfClasses:v67 forKey:@"EFPropertyKey_contentVariations"];
     contentVariations = v5->_contentVariations;
     v5->_contentVariations = v68;
 
-    v5->_defaultContentVariationIndex = [v4 decodeIntegerForKey:@"EFPropertyKey_defaultContentVariationIndex"];
-    v70 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_shareSheetSessionID"];
+    v5->_defaultContentVariationIndex = [coderCopy decodeIntegerForKey:@"EFPropertyKey_defaultContentVariationIndex"];
+    v70 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_shareSheetSessionID"];
     shareSheetSessionID = v5->_shareSheetSessionID;
     v5->_shareSheetSessionID = v70;
 
-    v5->_isUsingDefaultAccount = [v4 decodeBoolForKey:@"EFPropertyKey_isUsingDefaultAccount"];
-    v5->_prefersFirstLineSelection = [v4 decodeBoolForKey:@"EFPropertyKey_prefersFirstLineSelection"];
-    v5->_composeType = [v4 decodeIntegerForKey:@"EFPropertyKey_composeType"];
-    v72 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_serializedMessageObjectID"];
+    v5->_isUsingDefaultAccount = [coderCopy decodeBoolForKey:@"EFPropertyKey_isUsingDefaultAccount"];
+    v5->_prefersFirstLineSelection = [coderCopy decodeBoolForKey:@"EFPropertyKey_prefersFirstLineSelection"];
+    v5->_composeType = [coderCopy decodeIntegerForKey:@"EFPropertyKey_composeType"];
+    v72 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_serializedMessageObjectID"];
     serializedMessageObjectID = v5->_serializedMessageObjectID;
     v5->_serializedMessageObjectID = v72;
 
-    v5->_includeAttachments = [v4 decodeBoolForKey:@"EFPropertyKey_includeAttachments"];
-    v74 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_serializedMailboxObjectID"];
+    v5->_includeAttachments = [coderCopy decodeBoolForKey:@"EFPropertyKey_includeAttachments"];
+    v74 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_serializedMailboxObjectID"];
     serializedMailboxObjectID = v5->_serializedMailboxObjectID;
     v5->_serializedMailboxObjectID = v74;
 
@@ -450,124 +450,124 @@
     v77 = objc_opt_class();
     v78 = objc_opt_class();
     v79 = [v76 setWithObjects:{v77, v78, objc_opt_class(), 0}];
-    v80 = [v4 decodeObjectOfClasses:v79 forKey:@"EFPropertyKey_deferredAttachments"];
+    v80 = [coderCopy decodeObjectOfClasses:v79 forKey:@"EFPropertyKey_deferredAttachments"];
     deferredAttachments = v5->_deferredAttachments;
     v5->_deferredAttachments = v80;
 
-    v82 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_sendLaterDate"];
+    v82 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_sendLaterDate"];
     sendLaterDate = v5->_sendLaterDate;
     v5->_sendLaterDate = v82;
 
-    v84 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_sharingSandboxingURLWrapper"];
+    v84 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_sharingSandboxingURLWrapper"];
     sharingSandboxingURLWrapper = v5->_sharingSandboxingURLWrapper;
     v5->_sharingSandboxingURLWrapper = v84;
 
-    v86 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_ckShare"];
+    v86 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_ckShare"];
     ckShare = v5->_ckShare;
     v5->_ckShare = v86;
 
-    v88 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_ckContainerSetupInfo"];
+    v88 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_ckContainerSetupInfo"];
     ckContainerSetupInfo = v5->_ckContainerSetupInfo;
     v5->_ckContainerSetupInfo = v88;
 
-    v5->_ckSharePermissionType = [v4 decodeIntegerForKey:@"EFPropertyKey_ckSharePermissionType"];
-    v5->_ckShareAllowOthersToInvite = [v4 decodeBoolForKey:@"EFPropertyKey_ckShareAllowOthersToInvite"];
+    v5->_ckSharePermissionType = [coderCopy decodeIntegerForKey:@"EFPropertyKey_ckSharePermissionType"];
+    v5->_ckShareAllowOthersToInvite = [coderCopy decodeBoolForKey:@"EFPropertyKey_ckShareAllowOthersToInvite"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v29 = a3;
-  v4 = [(MFMailCompositionValues *)self mailtoURL];
-  [v29 encodeObject:v4 forKey:@"EFPropertyKey_mailtoURL"];
+  coderCopy = coder;
+  mailtoURL = [(MFMailCompositionValues *)self mailtoURL];
+  [coderCopy encodeObject:mailtoURL forKey:@"EFPropertyKey_mailtoURL"];
 
-  v5 = [(MFMailCompositionValues *)self autosaveIdentifier];
-  [v29 encodeObject:v5 forKey:@"EFPropertyKey_autosaveIdentifier"];
+  autosaveIdentifier = [(MFMailCompositionValues *)self autosaveIdentifier];
+  [coderCopy encodeObject:autosaveIdentifier forKey:@"EFPropertyKey_autosaveIdentifier"];
 
-  v6 = [(MFMailCompositionValues *)self messageBody];
-  [v29 encodeObject:v6 forKey:@"EFPropertyKey_messageBody"];
+  messageBody = [(MFMailCompositionValues *)self messageBody];
+  [coderCopy encodeObject:messageBody forKey:@"EFPropertyKey_messageBody"];
 
-  [v29 encodeBool:-[MFMailCompositionValues isHTML](self forKey:{"isHTML"), @"EFPropertyKey_isHTML"}];
-  v7 = [(MFMailCompositionValues *)self subject];
-  [v29 encodeObject:v7 forKey:@"EFPropertyKey_subject"];
+  [coderCopy encodeBool:-[MFMailCompositionValues isHTML](self forKey:{"isHTML"), @"EFPropertyKey_isHTML"}];
+  subject = [(MFMailCompositionValues *)self subject];
+  [coderCopy encodeObject:subject forKey:@"EFPropertyKey_subject"];
 
-  v8 = [(MFMailCompositionValues *)self hideMyEmailFrom];
-  [v29 encodeObject:v8 forKey:@"EFPropertyKey_hideMyEmailFrom"];
+  hideMyEmailFrom = [(MFMailCompositionValues *)self hideMyEmailFrom];
+  [coderCopy encodeObject:hideMyEmailFrom forKey:@"EFPropertyKey_hideMyEmailFrom"];
 
-  v9 = [(MFMailCompositionValues *)self from];
-  [v29 encodeObject:v9 forKey:@"EFPropertyKey_from"];
+  from = [(MFMailCompositionValues *)self from];
+  [coderCopy encodeObject:from forKey:@"EFPropertyKey_from"];
 
-  v10 = [(MFMailCompositionValues *)self toRecipients];
-  [v29 encodeObject:v10 forKey:@"EFPropertyKey_toRecipients"];
+  toRecipients = [(MFMailCompositionValues *)self toRecipients];
+  [coderCopy encodeObject:toRecipients forKey:@"EFPropertyKey_toRecipients"];
 
-  v11 = [(MFMailCompositionValues *)self ccRecipients];
-  [v29 encodeObject:v11 forKey:@"EFPropertyKey_ccRecipients"];
+  ccRecipients = [(MFMailCompositionValues *)self ccRecipients];
+  [coderCopy encodeObject:ccRecipients forKey:@"EFPropertyKey_ccRecipients"];
 
-  v12 = [(MFMailCompositionValues *)self bccRecipients];
-  [v29 encodeObject:v12 forKey:@"EFPropertyKey_bccRecipients"];
+  bccRecipients = [(MFMailCompositionValues *)self bccRecipients];
+  [coderCopy encodeObject:bccRecipients forKey:@"EFPropertyKey_bccRecipients"];
 
-  v13 = [(MFMailCompositionValues *)self originalContent];
-  [v29 encodeObject:v13 forKey:@"EFPropertyKey_originalContent"];
+  originalContent = [(MFMailCompositionValues *)self originalContent];
+  [coderCopy encodeObject:originalContent forKey:@"EFPropertyKey_originalContent"];
 
-  v14 = [(MFMailCompositionValues *)self preferredSendingEmailAddress];
-  [v29 encodeObject:v14 forKey:@"EFPropertyKey_preferredSendingEmailAddress"];
+  preferredSendingEmailAddress = [(MFMailCompositionValues *)self preferredSendingEmailAddress];
+  [coderCopy encodeObject:preferredSendingEmailAddress forKey:@"EFPropertyKey_preferredSendingEmailAddress"];
 
-  [v29 encodeBool:-[MFMailCompositionValues showKeyboardImmediately](self forKey:{"showKeyboardImmediately"), @"EFPropertyKey_showKeyboardImmediately"}];
-  [v29 encodeBool:-[MFMailCompositionValues showContentImmediately](self forKey:{"showContentImmediately"), @"EFPropertyKey_showContentImmediately"}];
-  [v29 encodeInteger:-[MFMailCompositionValues sourceAccountManagement](self forKey:{"sourceAccountManagement"), @"EFPropertyKey_sourceAccountManagement"}];
-  [v29 encodeInteger:-[MFMailCompositionValues caretPosition](self forKey:{"caretPosition"), @"EFPropertyKey_caretPosition"}];
-  v15 = [(MFMailCompositionValues *)self UTITypes];
-  [v29 encodeObject:v15 forKey:@"EFPropertyKey_UTITypes"];
+  [coderCopy encodeBool:-[MFMailCompositionValues showKeyboardImmediately](self forKey:{"showKeyboardImmediately"), @"EFPropertyKey_showKeyboardImmediately"}];
+  [coderCopy encodeBool:-[MFMailCompositionValues showContentImmediately](self forKey:{"showContentImmediately"), @"EFPropertyKey_showContentImmediately"}];
+  [coderCopy encodeInteger:-[MFMailCompositionValues sourceAccountManagement](self forKey:{"sourceAccountManagement"), @"EFPropertyKey_sourceAccountManagement"}];
+  [coderCopy encodeInteger:-[MFMailCompositionValues caretPosition](self forKey:{"caretPosition"), @"EFPropertyKey_caretPosition"}];
+  uTITypes = [(MFMailCompositionValues *)self UTITypes];
+  [coderCopy encodeObject:uTITypes forKey:@"EFPropertyKey_UTITypes"];
 
-  v16 = [(MFMailCompositionValues *)self photoIDs];
-  [v29 encodeObject:v16 forKey:@"EFPropertyKey_photoIDs"];
+  photoIDs = [(MFMailCompositionValues *)self photoIDs];
+  [coderCopy encodeObject:photoIDs forKey:@"EFPropertyKey_photoIDs"];
 
-  v17 = [(MFMailCompositionValues *)self cloudPhotoIDs];
-  [v29 encodeObject:v17 forKey:@"EFPropertyKey_cloudPhotoIDs"];
+  cloudPhotoIDs = [(MFMailCompositionValues *)self cloudPhotoIDs];
+  [coderCopy encodeObject:cloudPhotoIDs forKey:@"EFPropertyKey_cloudPhotoIDs"];
 
-  v18 = [(MFMailCompositionValues *)self contentText];
-  [v29 encodeObject:v18 forKey:@"EFPropertyKey_contentText"];
+  contentText = [(MFMailCompositionValues *)self contentText];
+  [coderCopy encodeObject:contentText forKey:@"EFPropertyKey_contentText"];
 
-  v19 = [(MFMailCompositionValues *)self contentURLs];
-  [v29 encodeObject:v19 forKey:@"EFPropertyKey_contentURLs"];
+  contentURLs = [(MFMailCompositionValues *)self contentURLs];
+  [coderCopy encodeObject:contentURLs forKey:@"EFPropertyKey_contentURLs"];
 
-  v20 = [(MFMailCompositionValues *)self contentVariations];
-  [v29 encodeObject:v20 forKey:@"EFPropertyKey_contentVariations"];
+  contentVariations = [(MFMailCompositionValues *)self contentVariations];
+  [coderCopy encodeObject:contentVariations forKey:@"EFPropertyKey_contentVariations"];
 
-  [v29 encodeInteger:-[MFMailCompositionValues defaultContentVariationIndex](self forKey:{"defaultContentVariationIndex"), @"EFPropertyKey_defaultContentVariationIndex"}];
-  v21 = [(MFMailCompositionValues *)self shareSheetSessionID];
-  [v29 encodeObject:v21 forKey:@"EFPropertyKey_shareSheetSessionID"];
+  [coderCopy encodeInteger:-[MFMailCompositionValues defaultContentVariationIndex](self forKey:{"defaultContentVariationIndex"), @"EFPropertyKey_defaultContentVariationIndex"}];
+  shareSheetSessionID = [(MFMailCompositionValues *)self shareSheetSessionID];
+  [coderCopy encodeObject:shareSheetSessionID forKey:@"EFPropertyKey_shareSheetSessionID"];
 
-  [v29 encodeBool:-[MFMailCompositionValues isUsingDefaultAccount](self forKey:{"isUsingDefaultAccount"), @"EFPropertyKey_isUsingDefaultAccount"}];
-  [v29 encodeBool:-[MFMailCompositionValues prefersFirstLineSelection](self forKey:{"prefersFirstLineSelection"), @"EFPropertyKey_prefersFirstLineSelection"}];
-  [v29 encodeInteger:-[MFMailCompositionValues composeType](self forKey:{"composeType"), @"EFPropertyKey_composeType"}];
-  v22 = [(MFMailCompositionValues *)self serializedMessageObjectID];
-  [v29 encodeObject:v22 forKey:@"EFPropertyKey_serializedMessageObjectID"];
+  [coderCopy encodeBool:-[MFMailCompositionValues isUsingDefaultAccount](self forKey:{"isUsingDefaultAccount"), @"EFPropertyKey_isUsingDefaultAccount"}];
+  [coderCopy encodeBool:-[MFMailCompositionValues prefersFirstLineSelection](self forKey:{"prefersFirstLineSelection"), @"EFPropertyKey_prefersFirstLineSelection"}];
+  [coderCopy encodeInteger:-[MFMailCompositionValues composeType](self forKey:{"composeType"), @"EFPropertyKey_composeType"}];
+  serializedMessageObjectID = [(MFMailCompositionValues *)self serializedMessageObjectID];
+  [coderCopy encodeObject:serializedMessageObjectID forKey:@"EFPropertyKey_serializedMessageObjectID"];
 
-  [v29 encodeBool:-[MFMailCompositionValues includeAttachments](self forKey:{"includeAttachments"), @"EFPropertyKey_includeAttachments"}];
-  v23 = [(MFMailCompositionValues *)self serializedMailboxObjectID];
-  [v29 encodeObject:v23 forKey:@"EFPropertyKey_serializedMailboxObjectID"];
+  [coderCopy encodeBool:-[MFMailCompositionValues includeAttachments](self forKey:{"includeAttachments"), @"EFPropertyKey_includeAttachments"}];
+  serializedMailboxObjectID = [(MFMailCompositionValues *)self serializedMailboxObjectID];
+  [coderCopy encodeObject:serializedMailboxObjectID forKey:@"EFPropertyKey_serializedMailboxObjectID"];
 
-  v24 = [(MFMailCompositionValues *)self deferredAttachments];
-  [v29 encodeObject:v24 forKey:@"EFPropertyKey_deferredAttachments"];
+  deferredAttachments = [(MFMailCompositionValues *)self deferredAttachments];
+  [coderCopy encodeObject:deferredAttachments forKey:@"EFPropertyKey_deferredAttachments"];
 
-  v25 = [(MFMailCompositionValues *)self sendLaterDate];
-  [v29 encodeObject:v25 forKey:@"EFPropertyKey_sendLaterDate"];
+  sendLaterDate = [(MFMailCompositionValues *)self sendLaterDate];
+  [coderCopy encodeObject:sendLaterDate forKey:@"EFPropertyKey_sendLaterDate"];
 
-  [v29 encodeInteger:-[MFMailCompositionValues sendLaterContext](self forKey:{"sendLaterContext"), @"EFPropertyKey_sendLaterContext"}];
-  v26 = [(MFMailCompositionValues *)self sharingSandboxingURLWrapper];
-  [v29 encodeObject:v26 forKey:@"EFPropertyKey_sharingSandboxingURLWrapper"];
+  [coderCopy encodeInteger:-[MFMailCompositionValues sendLaterContext](self forKey:{"sendLaterContext"), @"EFPropertyKey_sendLaterContext"}];
+  sharingSandboxingURLWrapper = [(MFMailCompositionValues *)self sharingSandboxingURLWrapper];
+  [coderCopy encodeObject:sharingSandboxingURLWrapper forKey:@"EFPropertyKey_sharingSandboxingURLWrapper"];
 
-  v27 = [(MFMailCompositionValues *)self ckShare];
-  [v29 encodeObject:v27 forKey:@"EFPropertyKey_ckShare"];
+  ckShare = [(MFMailCompositionValues *)self ckShare];
+  [coderCopy encodeObject:ckShare forKey:@"EFPropertyKey_ckShare"];
 
-  v28 = [(MFMailCompositionValues *)self ckContainerSetupInfo];
-  [v29 encodeObject:v28 forKey:@"EFPropertyKey_ckContainerSetupInfo"];
+  ckContainerSetupInfo = [(MFMailCompositionValues *)self ckContainerSetupInfo];
+  [coderCopy encodeObject:ckContainerSetupInfo forKey:@"EFPropertyKey_ckContainerSetupInfo"];
 
-  [v29 encodeInteger:-[MFMailCompositionValues ckSharePermissionType](self forKey:{"ckSharePermissionType"), @"EFPropertyKey_ckSharePermissionType"}];
-  [v29 encodeBool:-[MFMailCompositionValues ckShareAllowOthersToInvite](self forKey:{"ckShareAllowOthersToInvite"), @"EFPropertyKey_ckShareAllowOthersToInvite"}];
+  [coderCopy encodeInteger:-[MFMailCompositionValues ckSharePermissionType](self forKey:{"ckSharePermissionType"), @"EFPropertyKey_ckSharePermissionType"}];
+  [coderCopy encodeBool:-[MFMailCompositionValues ckShareAllowOthersToInvite](self forKey:{"ckShareAllowOthersToInvite"), @"EFPropertyKey_ckShareAllowOthersToInvite"}];
 }
 
 @end

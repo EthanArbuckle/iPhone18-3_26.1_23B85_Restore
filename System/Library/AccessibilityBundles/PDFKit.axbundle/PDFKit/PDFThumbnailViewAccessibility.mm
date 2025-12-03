@@ -1,28 +1,28 @@
 @interface PDFThumbnailViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
-- (id)_axPageDescriptionForPage:(id)a3;
+- (id)_axPageDescriptionForPage:(id)page;
 - (id)_axThumbnailSelf;
 - (id)accessibilityValue;
 - (id)automationElements;
 - (int64_t)_axCurrentPageNumber;
-- (int64_t)_axPageNumberForPage:(id)a3;
+- (int64_t)_axPageNumberForPage:(id)page;
 - (unint64_t)accessibilityTraits;
-- (void)_axMoveOnePage:(BOOL)a3;
+- (void)_axMoveOnePage:(BOOL)page;
 @end
 
 @implementation PDFThumbnailViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PDFThumbnailView" hasInstanceVariable:@"_iconsView" withType:"UIView<PDFThumbnailCollectionViewInterface>"];
-  [v3 validateClass:@"PDFIconsView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"PDFIconsView" hasInstanceVariable:@"_activeIcon" withType:"PDFPageIconLayer"];
-  [v3 validateClass:@"PDFPageIconLayer" isKindOfClass:@"CALayer"];
-  [v3 validateClass:@"PDFIconsView" hasInstanceVariable:@"_icons" withType:"NSMutableArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PDFThumbnailView" hasInstanceVariable:@"_iconsView" withType:"UIView<PDFThumbnailCollectionViewInterface>"];
+  [validationsCopy validateClass:@"PDFIconsView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"PDFIconsView" hasInstanceVariable:@"_activeIcon" withType:"PDFPageIconLayer"];
+  [validationsCopy validateClass:@"PDFPageIconLayer" isKindOfClass:@"CALayer"];
+  [validationsCopy validateClass:@"PDFIconsView" hasInstanceVariable:@"_icons" withType:"NSMutableArray"];
 }
 
 - (id)_axThumbnailSelf
@@ -33,17 +33,17 @@
   return v2;
 }
 
-- (int64_t)_axPageNumberForPage:(id)a3
+- (int64_t)_axPageNumberForPage:(id)page
 {
-  v4 = a3;
-  v5 = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
-  v6 = [v5 PDFView];
-  v7 = [v6 document];
+  pageCopy = page;
+  _axThumbnailSelf = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
+  pDFView = [_axThumbnailSelf PDFView];
+  document = [pDFView document];
 
   v8 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v4 && v7)
+  if (pageCopy && document)
   {
-    v8 = [v7 indexForPage:v4];
+    v8 = [document indexForPage:pageCopy];
   }
 
   return v8;
@@ -51,22 +51,22 @@
 
 - (int64_t)_axCurrentPageNumber
 {
-  v3 = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
-  v4 = [v3 PDFView];
-  v5 = [v4 currentPage];
+  _axThumbnailSelf = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
+  pDFView = [_axThumbnailSelf PDFView];
+  currentPage = [pDFView currentPage];
 
-  v6 = [(PDFThumbnailViewAccessibility *)self _axPageNumberForPage:v5];
+  v6 = [(PDFThumbnailViewAccessibility *)self _axPageNumberForPage:currentPage];
   return v6;
 }
 
-- (id)_axPageDescriptionForPage:(id)a3
+- (id)_axPageDescriptionForPage:(id)page
 {
-  v4 = a3;
-  v5 = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
-  v6 = [v5 PDFView];
-  v7 = [v6 document];
+  pageCopy = page;
+  _axThumbnailSelf = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
+  pDFView = [_axThumbnailSelf PDFView];
+  document = [pDFView document];
 
-  v8 = [(PDFThumbnailViewAccessibility *)self _axPageNumberForPage:v4];
+  v8 = [(PDFThumbnailViewAccessibility *)self _axPageNumberForPage:pageCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -75,66 +75,66 @@
   else
   {
     v10 = v8 + 1;
-    v11 = [v7 pageCount];
+    pageCount = [document pageCount];
     v12 = MEMORY[0x29EDBA0F8];
     v13 = accessibilityLocalizedString(@"page.x.of.y");
-    v9 = [v12 localizedStringWithFormat:v13, v10, v11];
+    v9 = [v12 localizedStringWithFormat:v13, v10, pageCount];
   }
 
   return v9;
 }
 
-- (void)_axMoveOnePage:(BOOL)a3
+- (void)_axMoveOnePage:(BOOL)page
 {
-  v3 = a3;
-  v5 = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
-  v6 = [v5 PDFView];
+  pageCopy = page;
+  _axThumbnailSelf = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
+  pDFView = [_axThumbnailSelf PDFView];
 
   if ([(PDFThumbnailViewAccessibility *)self _axCurrentPageNumber]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v3)
+    if (pageCopy)
     {
-      if ([v6 canGoToNextPage])
+      if ([pDFView canGoToNextPage])
       {
-        [v6 goToNextPage:self];
+        [pDFView goToNextPage:self];
       }
     }
 
-    else if ([v6 canGoToPreviousPage])
+    else if ([pDFView canGoToPreviousPage])
     {
-      [v6 goToPreviousPage:self];
+      [pDFView goToPreviousPage:self];
     }
   }
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
-  v3 = [v2 PDFView];
-  v4 = v3 != 0;
+  _axThumbnailSelf = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
+  pDFView = [_axThumbnailSelf PDFView];
+  v4 = pDFView != 0;
 
   return v4;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
-  v4 = [v3 PDFView];
-  v5 = [v4 document];
+  _axThumbnailSelf = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
+  pDFView = [_axThumbnailSelf PDFView];
+  document = [pDFView document];
 
-  v6 = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
-  v7 = [v6 PDFView];
-  v8 = [v7 currentPage];
+  _axThumbnailSelf2 = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
+  pDFView2 = [_axThumbnailSelf2 PDFView];
+  currentPage = [pDFView2 currentPage];
 
   v9 = 0;
-  if (v5 && v8)
+  if (document && currentPage)
   {
-    v9 = [v5 pageCount] > 1;
+    v9 = [document pageCount] > 1;
   }
 
   v13.receiver = self;
   v13.super_class = PDFThumbnailViewAccessibility;
-  v10 = [(PDFThumbnailViewAccessibility *)&v13 accessibilityTraits];
+  accessibilityTraits = [(PDFThumbnailViewAccessibility *)&v13 accessibilityTraits];
   if (v9)
   {
     v11 = *MEMORY[0x29EDC7F60];
@@ -145,39 +145,39 @@
     v11 = 0;
   }
 
-  return v11 | v10;
+  return v11 | accessibilityTraits;
 }
 
 - (id)accessibilityValue
 {
   v10.receiver = self;
   v10.super_class = PDFThumbnailViewAccessibility;
-  v3 = [(PDFThumbnailViewAccessibility *)&v10 accessibilityValue];
+  accessibilityValue = [(PDFThumbnailViewAccessibility *)&v10 accessibilityValue];
 
-  if (v3)
+  if (accessibilityValue)
   {
     v9.receiver = self;
     v9.super_class = PDFThumbnailViewAccessibility;
-    v4 = [(PDFThumbnailViewAccessibility *)&v9 accessibilityValue];
+    accessibilityValue2 = [(PDFThumbnailViewAccessibility *)&v9 accessibilityValue];
   }
 
   else
   {
-    v5 = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
-    v6 = [v5 PDFView];
-    v7 = [v6 currentPage];
+    _axThumbnailSelf = [(PDFThumbnailViewAccessibility *)self _axThumbnailSelf];
+    pDFView = [_axThumbnailSelf PDFView];
+    currentPage = [pDFView currentPage];
 
-    v4 = [(PDFThumbnailViewAccessibility *)self _axPageDescriptionForPage:v7];
+    accessibilityValue2 = [(PDFThumbnailViewAccessibility *)self _axPageDescriptionForPage:currentPage];
   }
 
-  return v4;
+  return accessibilityValue2;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
   v13 = 0;
-  v3 = [(PDFThumbnailViewAccessibility *)self _axIconsView];
-  v4 = [v3 safeValueForKey:@"_activeIcon"];
+  _axIconsView = [(PDFThumbnailViewAccessibility *)self _axIconsView];
+  v4 = [_axIconsView safeValueForKey:@"_activeIcon"];
   v5 = __UIAccessibilitySafeClass();
 
   if (v5)
@@ -205,11 +205,11 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(PDFThumbnailViewAccessibility *)self _axIconsView];
-  v4 = v3;
-  if (v3)
+  _axIconsView = [(PDFThumbnailViewAccessibility *)self _axIconsView];
+  v4 = _axIconsView;
+  if (_axIconsView)
   {
-    [v3 accessibilityFrame];
+    [_axIconsView accessibilityFrame];
   }
 
   else
@@ -239,26 +239,26 @@
 {
   v13.receiver = self;
   v13.super_class = PDFThumbnailViewAccessibility;
-  v3 = [(PDFThumbnailViewAccessibility *)&v13 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(PDFThumbnailViewAccessibility *)&v13 automationElements];
+  v4 = [automationElements mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
-  v8 = [(PDFThumbnailViewAccessibility *)self _axIconsView];
-  v9 = v8;
-  if (v8)
+  _axIconsView = [(PDFThumbnailViewAccessibility *)self _axIconsView];
+  v9 = _axIconsView;
+  if (_axIconsView)
   {
-    v10 = [v8 safeValueForKey:@"_icons"];
+    v10 = [_axIconsView safeValueForKey:@"_icons"];
     v11 = __UIAccessibilitySafeClass();
 
     [v7 axSafelyAddObjectsFromArray:v11];

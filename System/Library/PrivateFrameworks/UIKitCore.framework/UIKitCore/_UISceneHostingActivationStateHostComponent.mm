@@ -1,21 +1,21 @@
 @interface _UISceneHostingActivationStateHostComponent
 - (BOOL)isActive;
 - (id)_createTransitionContext;
-- (id)activationSuppressionAssertionForReason:(id)a3;
-- (id)foregroundAssertionForReason:(id)a3;
-- (void)_activate:(id)a3;
-- (void)_scene:(id)a3 isMovingToParent:(id)a4;
-- (void)activate:(id)a3;
-- (void)deactivate:(id)a3;
+- (id)activationSuppressionAssertionForReason:(id)reason;
+- (id)foregroundAssertionForReason:(id)reason;
+- (void)_activate:(id)_activate;
+- (void)_scene:(id)_scene isMovingToParent:(id)parent;
+- (void)activate:(id)activate;
+- (void)deactivate:(id)deactivate;
 - (void)evaluateActivationState;
 - (void)evaluateActivationSuppression;
-- (void)propagateForeground:(BOOL)a3;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
-- (void)setActivationController:(id)a3;
-- (void)setForeground:(BOOL)a3;
-- (void)setScene:(id)a3;
-- (void)ui_sceneDidDeactivate:(id)a3 withContext:(id)a4;
+- (void)propagateForeground:(BOOL)foreground;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
+- (void)setActivationController:(id)controller;
+- (void)setForeground:(BOOL)foreground;
+- (void)setScene:(id)scene;
+- (void)ui_sceneDidDeactivate:(id)deactivate withContext:(id)context;
 @end
 
 @implementation _UISceneHostingActivationStateHostComponent
@@ -25,11 +25,11 @@
   if (self->_foregroundAssertionCount)
   {
     [(_UISceneHostingActivationStateHostComponent *)self propagateForeground:0];
-    v3 = self;
+    selfCopy2 = self;
     v4 = 1;
 LABEL_3:
 
-    [(_UISceneHostingActivationStateHostComponent *)v3 setForeground:v4];
+    [(_UISceneHostingActivationStateHostComponent *)selfCopy2 setForeground:v4];
     return;
   }
 
@@ -38,7 +38,7 @@ LABEL_3:
   if (!WeakRetained)
   {
     [(_UISceneHostingActivationStateHostComponent *)self propagateForeground:0];
-    v3 = self;
+    selfCopy2 = self;
     v4 = 0;
     goto LABEL_3;
   }
@@ -48,33 +48,33 @@ LABEL_3:
 
 - (BOOL)isActive
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 isActive];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  isActive = [hostScene isActive];
 
-  return v3;
+  return isActive;
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v6.receiver = self;
   v6.super_class = _UISceneHostingActivationStateHostComponent;
-  [(FBSSceneComponent *)&v6 setScene:a3];
-  v4 = [(FBSSceneComponent *)self hostScene];
-  v5 = [v4 _relationshipManagementHostComponent];
-  [v5 addObserver:self];
+  [(FBSSceneComponent *)&v6 setScene:scene];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  _relationshipManagementHostComponent = [hostScene _relationshipManagementHostComponent];
+  [_relationshipManagementHostComponent addObserver:self];
 
   [(_UISceneHostingActivationStateHostComponent *)self setActivationController:0];
 }
 
-- (id)foregroundAssertionForReason:(id)a3
+- (id)foregroundAssertionForReason:(id)reason
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   ++self->_foregroundAssertionCount;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(FBSSceneComponent *)self hostScene];
-  v7 = [v6 identityToken];
-  v8 = [v5 stringWithFormat:@"foregroundAssertion::%@", v7];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  identityToken = [hostScene identityToken];
+  v8 = [v5 stringWithFormat:@"foregroundAssertion::%@", identityToken];
 
   objc_initWeak(&location, self);
   v9 = objc_alloc(MEMORY[0x1E698E778]);
@@ -83,7 +83,7 @@ LABEL_3:
   v14[2] = __76___UISceneHostingActivationStateHostComponent_foregroundAssertionForReason___block_invoke;
   v14[3] = &unk_1E70FA170;
   objc_copyWeak(&v15, &location);
-  v10 = [v9 initWithIdentifier:v8 forReason:v4 invalidationBlock:v14];
+  v10 = [v9 initWithIdentifier:v8 forReason:reasonCopy invalidationBlock:v14];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("UISceneHostingActivationState", &foregroundAssertionForReason____s_category);
   if (*CategoryCachedImpl)
   {
@@ -103,43 +103,43 @@ LABEL_3:
   return v10;
 }
 
-- (void)setForeground:(BOOL)a3
+- (void)setForeground:(BOOL)foreground
 {
-  v4 = [(FBSSceneComponent *)self hostScene];
+  hostScene = [(FBSSceneComponent *)self hostScene];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __61___UISceneHostingActivationStateHostComponent_setForeground___block_invoke;
   v5[3] = &__block_descriptor_33_e33_v16__0__FBSMutableSceneSettings_8l;
-  v6 = a3;
-  [v4 updateSettings:v5];
+  foregroundCopy = foreground;
+  [hostScene updateSettings:v5];
 }
 
-- (void)propagateForeground:(BOOL)a3
+- (void)propagateForeground:(BOOL)foreground
 {
-  if (self->_isCurrentlyPropagatingForeground != a3)
+  if (self->_isCurrentlyPropagatingForeground != foreground)
   {
     v10 = v3;
     v11 = v4;
-    self->_isCurrentlyPropagatingForeground = a3;
-    v7 = [(FBSSceneComponent *)self hostScene];
+    self->_isCurrentlyPropagatingForeground = foreground;
+    hostScene = [(FBSSceneComponent *)self hostScene];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __67___UISceneHostingActivationStateHostComponent_propagateForeground___block_invoke;
     v8[3] = &unk_1E7103F58;
-    v9 = a3;
+    foregroundCopy = foreground;
     v8[4] = self;
-    [v7 updateSettings:v8];
+    [hostScene updateSettings:v8];
   }
 }
 
-- (void)setActivationController:(id)a3
+- (void)setActivationController:(id)controller
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = v4;
-    if (self->_activationController == v4)
+    v5 = controllerCopy;
+    if (self->_activationController == controllerCopy)
     {
       goto LABEL_10;
     }
@@ -150,8 +150,8 @@ LABEL_3:
     v5 = objc_opt_new();
   }
 
-  v6 = [(FBSSceneComponent *)self hostScene];
-  v7 = [v6 uiSceneHostingController];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  uiSceneHostingController = [hostScene uiSceneHostingController];
 
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("UISceneHosting", &setActivationController____s_category);
   if (*CategoryCachedImpl)
@@ -162,19 +162,19 @@ LABEL_3:
       if (self)
       {
         v13 = MEMORY[0x1E696AEC0];
-        v14 = self;
+        selfCopy = self;
         v15 = objc_opt_class();
         v16 = NSStringFromClass(v15);
-        v17 = [v13 stringWithFormat:@"<%@: %p>", v16, v14];
+        selfCopy = [v13 stringWithFormat:@"<%@: %p>", v16, selfCopy];
       }
 
       else
       {
-        v17 = @"(nil)";
+        selfCopy = @"(nil)";
       }
 
-      v18 = v17;
-      v19 = v7;
+      v18 = selfCopy;
+      v19 = uiSceneHostingController;
       if (v19)
       {
         v20 = MEMORY[0x1E696AEC0];
@@ -197,7 +197,7 @@ LABEL_3:
   }
 
   [(_UISceneHostingActivationHandle *)self->_activationHandle invalidate];
-  [(_UISceneHostingActivationControlling *)self->_activationController endManagingHostedSceneActivationForHostingController:v7];
+  [(_UISceneHostingActivationControlling *)self->_activationController endManagingHostedSceneActivationForHostingController:uiSceneHostingController];
   objc_storeStrong(&self->_activationController, v5);
   v9 = [[_UISceneHostingActivationHandle alloc] initWithActivationTarget:?];
   activationHandle = self->_activationHandle;
@@ -215,25 +215,25 @@ LABEL_3:
   }
 
   *&self->_flags = *&self->_flags & 0xFD | v11;
-  [v5 beginManagingHostedSceneActivationUsingHandle:self->_activationHandle forHostingController:v7];
+  [v5 beginManagingHostedSceneActivationUsingHandle:self->_activationHandle forHostingController:uiSceneHostingController];
 
 LABEL_10:
 }
 
-- (void)activate:(id)a3
+- (void)activate:(id)activate
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(FBSSceneComponent *)self hostScene];
-  v7 = [v6 settings];
-  v8 = [v7 displayConfiguration];
+  activateCopy = activate;
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  settings = [hostScene settings];
+  displayConfiguration = [settings displayConfiguration];
 
-  if (!v8)
+  if (!displayConfiguration)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [(FBSSceneComponent *)self hostScene];
-    v19 = [v18 identityToken];
-    v20 = [v17 stringWithFormat:@"Activating a _UISceneHostingController's scene with a nil display configuration is not supported: %@", v19];
+    hostScene2 = [(FBSSceneComponent *)self hostScene];
+    identityToken = [hostScene2 identityToken];
+    v20 = [v17 stringWithFormat:@"Activating a _UISceneHostingController's scene with a nil display configuration is not supported: %@", identityToken];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -245,7 +245,7 @@ LABEL_10:
       v28 = 2114;
       v29 = v23;
       v30 = 2048;
-      v31 = self;
+      selfCopy = self;
       v32 = 2114;
       v33 = @"_UISceneHostingActivationStateHostComponent.m";
       v34 = 1024;
@@ -261,12 +261,12 @@ LABEL_10:
     JUMPOUT(0x1896A30FCLL);
   }
 
-  v9 = [(FBSSceneComponent *)self hostScene];
-  v10 = [v9 definition];
-  v11 = [v10 specification];
+  hostScene3 = [(FBSSceneComponent *)self hostScene];
+  definition = [hostScene3 definition];
+  specification = [definition specification];
 
   v12 = objc_opt_class();
-  v13 = v11;
+  v13 = specification;
   if (v12)
   {
     if (objc_opt_isKindOfClass())
@@ -287,61 +287,61 @@ LABEL_10:
 
   v15 = v14;
 
-  v16 = [v15 userActivity];
+  userActivity = [v15 userActivity];
 
-  if (v16)
+  if (userActivity)
   {
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __56___UISceneHostingActivationStateHostComponent_activate___block_invoke;
     v24[3] = &unk_1E7103FD0;
     v24[4] = self;
-    v25 = v5;
-    [(UISActivityContinuationAction *)UIActivityContinuationAction buildWithUserActivity:v16 completion:v24];
+    v25 = activateCopy;
+    [(UISActivityContinuationAction *)UIActivityContinuationAction buildWithUserActivity:userActivity completion:v24];
   }
 
   else
   {
-    [(_UISceneHostingActivationStateHostComponent *)self _activate:v5];
+    [(_UISceneHostingActivationStateHostComponent *)self _activate:activateCopy];
   }
 }
 
-- (void)deactivate:(id)a3
+- (void)deactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = [(FBSSceneComponent *)self hostScene];
-  [v5 deactivate:v4];
+  deactivateCopy = deactivate;
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  [hostScene deactivate:deactivateCopy];
 }
 
-- (void)_activate:(id)a3
+- (void)_activate:(id)_activate
 {
-  v12 = a3;
-  v4 = [(FBSSceneComponent *)self hostScene];
-  v5 = [v4 ui_settingsModifierComponent];
-  v6 = v5;
-  if (v5)
+  _activateCopy = _activate;
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  ui_settingsModifierComponent = [hostScene ui_settingsModifierComponent];
+  v6 = ui_settingsModifierComponent;
+  if (ui_settingsModifierComponent)
   {
-    [(_UISceneExternalSettingsModifierHostComponent *)v5 fetchSettingsModifiers];
+    [(_UISceneExternalSettingsModifierHostComponent *)ui_settingsModifierComponent fetchSettingsModifiers];
   }
 
   if ([(_UISceneHostingActivationStateHostComponent *)self isActivationSuppressed])
   {
-    v7 = v12;
-    if (v12)
+    v7 = _activateCopy;
+    if (_activateCopy)
     {
       pendingTransitionContext = self->_pendingTransitionContext;
       if (!pendingTransitionContext)
       {
-        v9 = [(_UISceneHostingActivationStateHostComponent *)self _createTransitionContext];
+        _createTransitionContext = [(_UISceneHostingActivationStateHostComponent *)self _createTransitionContext];
         v10 = self->_pendingTransitionContext;
-        self->_pendingTransitionContext = v9;
+        self->_pendingTransitionContext = _createTransitionContext;
 
-        v7 = v12;
+        v7 = _activateCopy;
         pendingTransitionContext = self->_pendingTransitionContext;
       }
 
-      (v7)[2](v12, pendingTransitionContext);
-      v7 = v12;
+      (v7)[2](_activateCopy, pendingTransitionContext);
+      v7 = _activateCopy;
     }
 
     *&self->_flags |= 4u;
@@ -349,49 +349,49 @@ LABEL_10:
 
   else
   {
-    v11 = [(FBSSceneComponent *)self hostScene];
-    [v11 activate:v12];
+    hostScene2 = [(FBSSceneComponent *)self hostScene];
+    [hostScene2 activate:_activateCopy];
 
-    v7 = v12;
+    v7 = _activateCopy;
   }
 }
 
 - (id)_createTransitionContext
 {
-  v2 = [(FBSSceneComponent *)self hostScene];
-  v3 = [v2 definition];
-  v4 = [v3 specification];
-  v5 = [objc_msgSend(v4 "transitionContextClass")];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  definition = [hostScene definition];
+  specification = [definition specification];
+  v5 = [objc_msgSend(specification "transitionContextClass")];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    transitionContext = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E699FC58] transitionContext];
+    transitionContext = [MEMORY[0x1E699FC58] transitionContext];
   }
 
-  v8 = v7;
+  v8 = transitionContext;
 
   return v8;
 }
 
-- (id)activationSuppressionAssertionForReason:(id)a3
+- (id)activationSuppressionAssertionForReason:(id)reason
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
-  v6 = [(FBSSceneComponent *)self hostScene];
-  v7 = [v6 isActive];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  isActive = [hostScene isActive];
 
-  if (v7)
+  if (isActive)
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(FBSSceneComponent *)self hostScene];
-    v18 = [v17 identityToken];
-    v19 = [v16 stringWithFormat:@"Scene activation can not be suppressed while it is already active (%@)", v18];
+    hostScene2 = [(FBSSceneComponent *)self hostScene];
+    identityToken = [hostScene2 identityToken];
+    v19 = [v16 stringWithFormat:@"Scene activation can not be suppressed while it is already active (%@)", identityToken];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -403,7 +403,7 @@ LABEL_10:
       v29 = 2114;
       v30 = v22;
       v31 = 2048;
-      v32 = self;
+      selfCopy = self;
       v33 = 2114;
       v34 = @"_UISceneHostingActivationStateHostComponent.m";
       v35 = 1024;
@@ -422,9 +422,9 @@ LABEL_10:
 
   ++self->_activationSuppressionCount;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(FBSSceneComponent *)self hostScene];
-  v10 = [v9 identityToken];
-  v11 = [v8 stringWithFormat:@"activationSuppressionAssertion::%@", v10];
+  hostScene3 = [(FBSSceneComponent *)self hostScene];
+  identityToken2 = [hostScene3 identityToken];
+  v11 = [v8 stringWithFormat:@"activationSuppressionAssertion::%@", identityToken2];
 
   objc_initWeak(&location, self);
   v12 = objc_alloc(MEMORY[0x1E698E778]);
@@ -433,7 +433,7 @@ LABEL_10:
   v24[2] = __87___UISceneHostingActivationStateHostComponent_activationSuppressionAssertionForReason___block_invoke;
   v24[3] = &unk_1E70FA170;
   objc_copyWeak(&v25, &location);
-  v13 = [v12 initWithIdentifier:v11 forReason:v5 invalidationBlock:v24];
+  v13 = [v12 initWithIdentifier:v11 forReason:reasonCopy invalidationBlock:v24];
   v14 = *(__UILogGetCategoryCachedImpl("UISceneHostingActivationState", &activationSuppressionAssertionForReason____s_category) + 8);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -455,65 +455,65 @@ LABEL_10:
   if (![(_UISceneHostingActivationStateHostComponent *)self isActivationSuppressed]&& (*&self->_flags & 4) != 0)
   {
     *&self->_flags &= ~4u;
-    v3 = [(FBSSceneComponent *)self hostScene];
-    [v3 activateWithTransitionContext:self->_pendingTransitionContext];
+    hostScene = [(FBSSceneComponent *)self hostScene];
+    [hostScene activateWithTransitionContext:self->_pendingTransitionContext];
 
     pendingTransitionContext = self->_pendingTransitionContext;
     self->_pendingTransitionContext = 0;
   }
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
-  [(_UISceneHostingActivationHandle *)self->_activationHandle invalidate:a3];
+  [(_UISceneHostingActivationHandle *)self->_activationHandle invalidate:invalidate];
   activationHandle = self->_activationHandle;
   self->_activationHandle = 0;
 
   activationController = self->_activationController;
-  v7 = [(FBSSceneComponent *)self hostScene];
-  v8 = [v7 uiSceneHostingController];
-  [(_UISceneHostingActivationControlling *)activationController endManagingHostedSceneActivationForHostingController:v8];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  uiSceneHostingController = [hostScene uiSceneHostingController];
+  [(_UISceneHostingActivationControlling *)activationController endManagingHostedSceneActivationForHostingController:uiSceneHostingController];
 
   v9 = self->_activationController;
   self->_activationController = 0;
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
   if ((*&self->_flags & 2) != 0)
   {
     activationController = self->_activationController;
     activationHandle = self->_activationHandle;
-    v7 = [(FBSSceneComponent *)self hostScene];
-    v6 = [v7 uiSceneHostingController];
-    [(_UISceneHostingActivationControlling *)activationController activationHandleDidUpdate:activationHandle forHostingController:v6];
+    hostScene = [(FBSSceneComponent *)self hostScene];
+    uiSceneHostingController = [hostScene uiSceneHostingController];
+    [(_UISceneHostingActivationControlling *)activationController activationHandleDidUpdate:activationHandle forHostingController:uiSceneHostingController];
   }
 }
 
-- (void)ui_sceneDidDeactivate:(id)a3 withContext:(id)a4
+- (void)ui_sceneDidDeactivate:(id)deactivate withContext:(id)context
 {
   if ((*&self->_flags & 2) != 0)
   {
     activationController = self->_activationController;
     activationHandle = self->_activationHandle;
-    v8 = [(FBSSceneComponent *)self hostScene:a3];
-    v7 = [v8 uiSceneHostingController];
-    [(_UISceneHostingActivationControlling *)activationController activationHandleDidUpdate:activationHandle forHostingController:v7];
+    v8 = [(FBSSceneComponent *)self hostScene:deactivate];
+    uiSceneHostingController = [v8 uiSceneHostingController];
+    [(_UISceneHostingActivationControlling *)activationController activationHandleDidUpdate:activationHandle forHostingController:uiSceneHostingController];
   }
 }
 
-- (void)_scene:(id)a3 isMovingToParent:(id)a4
+- (void)_scene:(id)_scene isMovingToParent:(id)parent
 {
-  v9 = a4;
-  objc_storeWeak(&self->_parentEnvironment, v9);
+  parentCopy = parent;
+  objc_storeWeak(&self->_parentEnvironment, parentCopy);
   [(_UISceneHostingActivationStateHostComponent *)self evaluateActivationState];
   if (*&self->_flags)
   {
     activationController = self->_activationController;
-    v6 = [(FBSSceneComponent *)self hostScene];
-    v7 = [v6 uiSceneHostingController];
-    v8 = [v9 _windowHostingScene];
-    [(_UISceneHostingActivationControlling *)activationController hostingController:v7 isMovingToParentScene:v8];
+    hostScene = [(FBSSceneComponent *)self hostScene];
+    uiSceneHostingController = [hostScene uiSceneHostingController];
+    _windowHostingScene = [parentCopy _windowHostingScene];
+    [(_UISceneHostingActivationControlling *)activationController hostingController:uiSceneHostingController isMovingToParentScene:_windowHostingScene];
   }
 }
 

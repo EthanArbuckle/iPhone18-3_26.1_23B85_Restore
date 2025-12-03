@@ -1,17 +1,17 @@
 @interface ICStartupDeviceListViewController
 - (double)standardFontSize;
-- (id)attributedStringWithString:(id)a3 font:(id)a4 color:(id)a5;
+- (id)attributedStringWithString:(id)string font:(id)font color:(id)color;
 - (id)choiceLabels;
 - (id)disclaimerStringForCurrentDevice;
 - (id)redAsteriskAttributedString;
 - (void)applyAccessibilityInfo;
-- (void)choiceSelected:(unint64_t)a3;
+- (void)choiceSelected:(unint64_t)selected;
 - (void)didCompleteAction;
 - (void)startIndicatorAnimation;
 - (void)stopIndicatorAnimation;
 - (void)updateDeviceList;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ICStartupDeviceListViewController
@@ -26,28 +26,28 @@
   v3 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   [(ICStartupDeviceListViewController *)self setActivityIndicatorView:v3];
 
-  v4 = [(ICStartupDeviceListViewController *)self activityIndicatorView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  activityIndicatorView = [(ICStartupDeviceListViewController *)self activityIndicatorView];
+  [activityIndicatorView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(ICStartupDeviceListViewController *)self view];
-  v6 = [(ICStartupDeviceListViewController *)self activityIndicatorView];
-  [v5 addSubview:v6];
+  view = [(ICStartupDeviceListViewController *)self view];
+  activityIndicatorView2 = [(ICStartupDeviceListViewController *)self activityIndicatorView];
+  [view addSubview:activityIndicatorView2];
 
   v7 = +[NSMutableArray array];
-  v8 = [(ICStartupDeviceListViewController *)self activityIndicatorView];
-  v9 = [v8 centerYAnchor];
-  v10 = [(ICStartupDeviceListViewController *)self view];
-  v11 = [v10 layoutMarginsGuide];
-  v12 = [v11 centerYAnchor];
-  v13 = [v9 constraintEqualToAnchor:v12];
+  activityIndicatorView3 = [(ICStartupDeviceListViewController *)self activityIndicatorView];
+  centerYAnchor = [activityIndicatorView3 centerYAnchor];
+  view2 = [(ICStartupDeviceListViewController *)self view];
+  layoutMarginsGuide = [view2 layoutMarginsGuide];
+  centerYAnchor2 = [layoutMarginsGuide centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v7 addObject:v13];
 
-  v14 = [(ICStartupDeviceListViewController *)self activityIndicatorView];
-  v15 = [v14 centerXAnchor];
-  v16 = [(ICStartupDeviceListViewController *)self view];
-  v17 = [v16 layoutMarginsGuide];
-  v18 = [v17 centerXAnchor];
-  v19 = [v15 constraintEqualToAnchor:v18];
+  activityIndicatorView4 = [(ICStartupDeviceListViewController *)self activityIndicatorView];
+  centerXAnchor = [activityIndicatorView4 centerXAnchor];
+  view3 = [(ICStartupDeviceListViewController *)self view];
+  layoutMarginsGuide2 = [view3 layoutMarginsGuide];
+  centerXAnchor2 = [layoutMarginsGuide2 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v7 addObject:v19];
 
   [NSLayoutConstraint activateConstraints:v7];
@@ -55,8 +55,8 @@
 
 - (double)standardFontSize
 {
-  v2 = [(ICStartupDeviceListViewController *)self traitCollection];
-  if ([v2 horizontalSizeClass] == 1)
+  traitCollection = [(ICStartupDeviceListViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     v3 = 17.0;
   }
@@ -108,8 +108,8 @@
 
 - (void)updateDeviceList
 {
-  v2 = [(ICStartupBaseViewController *)self startupNavigationController];
-  v3 = [v2 primaryAccountDevices];
+  startupNavigationController = [(ICStartupBaseViewController *)self startupNavigationController];
+  primaryAccountDevices = [startupNavigationController primaryAccountDevices];
 
   v28 = objc_alloc_init(NSMutableArray);
   v4 = objc_alloc_init(NSMutableAttributedString);
@@ -121,7 +121,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v3;
+  v6 = primaryAccountDevices;
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v7)
   {
@@ -138,20 +138,20 @@
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
-        v12 = [v11 name];
-        if ([v12 length] && (objc_msgSend(v11, "notesVersion") & 0x8000000000000000) != 0)
+        name = [v11 name];
+        if ([name length] && (objc_msgSend(v11, "notesVersion") & 0x8000000000000000) != 0)
         {
           [v28 addObject:v11];
-          v13 = [v11 name];
-          v14 = [(ICStartupDeviceListViewController *)self attributedStringWithString:v13 font:0 color:0];
+          name2 = [v11 name];
+          v14 = [(ICStartupDeviceListViewController *)self attributedStringWithString:name2 font:0 color:0];
           v15 = [v14 mutableCopy];
 
           if (([v11 maximumNotesVersion] & 0x8000000000000000) != 0)
           {
             v16 = [[NSAttributedString alloc] initWithString:@" "];
             [v15 appendAttributedString:v16];
-            v17 = [(ICStartupDeviceListViewController *)self redAsteriskAttributedString];
-            [v15 appendAttributedString:v17];
+            redAsteriskAttributedString = [(ICStartupDeviceListViewController *)self redAsteriskAttributedString];
+            [v15 appendAttributedString:redAsteriskAttributedString];
 
             v27 = 1;
           }
@@ -196,30 +196,30 @@
   [v4 ic_appendString:@"\n"];
   if (v27)
   {
-    v21 = [(ICStartupDeviceListViewController *)self redAsteriskAttributedString];
+    redAsteriskAttributedString2 = [(ICStartupDeviceListViewController *)self redAsteriskAttributedString];
     v22 = +[NSBundle mainBundle];
     v23 = [v22 localizedStringForKey:@" Device can’t be upgraded." value:&stru_100661CF0 table:0];
     v24 = [(ICStartupDeviceListViewController *)self attributedStringWithString:v23 font:0 color:0];
 
-    [v21 appendAttributedString:v24];
+    [redAsteriskAttributedString2 appendAttributedString:v24];
     [v4 ic_appendString:@"\n"];
-    [v4 appendAttributedString:v21];
+    [v4 appendAttributedString:redAsteriskAttributedString2];
   }
 
-  v25 = [(ICStartupDeviceListViewController *)self headerView];
-  v26 = [v4 string];
-  [v25 setDetailText:v26];
+  headerView = [(ICStartupDeviceListViewController *)self headerView];
+  string = [v4 string];
+  [headerView setDetailText:string];
 }
 
-- (id)attributedStringWithString:(id)a3 font:(id)a4 color:(id)a5
+- (id)attributedStringWithString:(id)string font:(id)font color:(id)color
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  stringCopy = string;
+  fontCopy = font;
+  colorCopy = color;
+  v11 = colorCopy;
+  if (fontCopy)
   {
-    if (v10)
+    if (colorCopy)
     {
       goto LABEL_3;
     }
@@ -229,7 +229,7 @@
   {
     [(ICStartupDeviceListViewController *)self standardFontSize];
     v16 = [UIFont systemFontOfSize:"systemFontOfSize:weight:" weight:?];
-    v9 = [v16 ic_fontWithSingleLineA];
+    fontCopy = [v16 ic_fontWithSingleLineA];
 
     if (v11)
     {
@@ -242,58 +242,58 @@ LABEL_3:
   v12 = [NSAttributedString alloc];
   v17[0] = NSFontAttributeName;
   v17[1] = NSForegroundColorAttributeName;
-  v18[0] = v9;
+  v18[0] = fontCopy;
   v18[1] = v11;
   v13 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2];
-  v14 = [v12 initWithString:v8 attributes:v13];
+  v14 = [v12 initWithString:stringCopy attributes:v13];
 
   return v14;
 }
 
 - (id)redAsteriskAttributedString
 {
-  v3 = [(ICStartupDeviceListViewController *)self redColor];
-  v4 = [(ICStartupDeviceListViewController *)self attributedStringWithString:@"*" font:0 color:v3];
+  redColor = [(ICStartupDeviceListViewController *)self redColor];
+  v4 = [(ICStartupDeviceListViewController *)self attributedStringWithString:@"*" font:0 color:redColor];
   v5 = [v4 mutableCopy];
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = ICStartupDeviceListViewController;
-  [(ICStartupDeviceListViewController *)&v6 viewWillAppear:a3];
-  v4 = [(ICStartupDeviceListViewController *)self navigationItem];
-  [v4 setHidesBackButton:1];
+  [(ICStartupDeviceListViewController *)&v6 viewWillAppear:appear];
+  navigationItem = [(ICStartupDeviceListViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v5 = [(ICStartupDeviceListViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:0];
+  navigationItem2 = [(ICStartupDeviceListViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:0];
 }
 
 - (void)didCompleteAction
 {
-  v2 = [(ICStartupBaseViewController *)self startupNavigationController];
-  [v2 dismiss];
+  startupNavigationController = [(ICStartupBaseViewController *)self startupNavigationController];
+  [startupNavigationController dismiss];
 }
 
 - (void)startIndicatorAnimation
 {
-  v2 = [(ICStartupDeviceListViewController *)self activityIndicatorView];
-  [v2 startAnimating];
+  activityIndicatorView = [(ICStartupDeviceListViewController *)self activityIndicatorView];
+  [activityIndicatorView startAnimating];
 }
 
 - (void)stopIndicatorAnimation
 {
   [(ICStartupDeviceListViewController *)self updateDeviceList];
-  v3 = [(ICStartupDeviceListViewController *)self activityIndicatorView];
-  [v3 stopAnimating];
+  activityIndicatorView = [(ICStartupDeviceListViewController *)self activityIndicatorView];
+  [activityIndicatorView stopAnimating];
 }
 
 - (void)applyAccessibilityInfo
 {
-  v2 = [(ICStartupDeviceListViewController *)self view];
-  [v2 setAccessibilityViewIsModal:1];
+  view = [(ICStartupDeviceListViewController *)self view];
+  [view setAccessibilityViewIsModal:1];
 }
 
 - (id)choiceLabels
@@ -309,21 +309,21 @@ LABEL_3:
   return v6;
 }
 
-- (void)choiceSelected:(unint64_t)a3
+- (void)choiceSelected:(unint64_t)selected
 {
-  v5 = [(ICStartupBaseViewController *)self startupNavigationController];
-  v6 = v5;
-  if (a3)
+  startupNavigationController = [(ICStartupBaseViewController *)self startupNavigationController];
+  v6 = startupNavigationController;
+  if (selected)
   {
-    [v5 noUpgradeAction];
+    [startupNavigationController noUpgradeAction];
 
-    v7 = [(ICStartupBaseViewController *)self startupNavigationController];
-    [v7 dismiss];
+    startupNavigationController2 = [(ICStartupBaseViewController *)self startupNavigationController];
+    [startupNavigationController2 dismiss];
   }
 
   else
   {
-    [v5 upgradeAction];
+    [startupNavigationController upgradeAction];
 
     [(ICStartupDeviceListViewController *)self didCompleteAction];
   }

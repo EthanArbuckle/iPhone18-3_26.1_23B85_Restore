@@ -5,8 +5,8 @@
 - (NSString)lastSignificantActionTaken;
 - (PKSelectionStatisticsSession)init;
 - (int64_t)numberOfTimesSelectionWasClearedInASession;
-- (void)logGesture:(int64_t)a3 selectionType:(int64_t)a4 contentType:(int64_t)a5;
-- (void)logSelectionAction:(int64_t)a3;
+- (void)logGesture:(int64_t)gesture selectionType:(int64_t)type contentType:(int64_t)contentType;
+- (void)logSelectionAction:(int64_t)action;
 @end
 
 @implementation PKSelectionStatisticsSession
@@ -18,41 +18,41 @@
   v2 = [(PKSelectionStatisticsSession *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     startTime = v2->_startTime;
-    v2->_startTime = v3;
+    v2->_startTime = date;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     selectionActions = v2->_selectionActions;
-    v2->_selectionActions = v5;
+    v2->_selectionActions = array;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     selectionGestures = v2->_selectionGestures;
-    v2->_selectionGestures = v7;
+    v2->_selectionGestures = array2;
   }
 
   return v2;
 }
 
-- (void)logGesture:(int64_t)a3 selectionType:(int64_t)a4 contentType:(int64_t)a5
+- (void)logGesture:(int64_t)gesture selectionType:(int64_t)type contentType:(int64_t)contentType
 {
   ++self->_selectionGestureCount;
-  self->_lastSelectionType = a4;
-  self->_lastContentType = a5;
-  v6 = PKAnalyticsStringForSelectionGesture(a3);
+  self->_lastSelectionType = type;
+  self->_lastContentType = contentType;
+  v6 = PKAnalyticsStringForSelectionGesture(gesture);
   [(NSMutableArray *)self->_selectionGestures addObject:v6];
 }
 
-- (void)logSelectionAction:(int64_t)a3
+- (void)logSelectionAction:(int64_t)action
 {
-  if ((a3 - 1) > 9)
+  if ((action - 1) > 9)
   {
     v3 = @"selectionActionTypeNone";
   }
 
   else
   {
-    v3 = off_1E82DC5E8[a3 - 1];
+    v3 = off_1E82DC5E8[action - 1];
   }
 
   [(NSMutableArray *)self->_selectionActions addObject:v3];
@@ -61,7 +61,7 @@
 - (NSDictionary)selectionGestureDictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -82,20 +82,20 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v3 valueForKey:{v9, v15}];
+        v10 = [dictionary valueForKey:{v9, v15}];
 
         if (v10)
         {
-          v11 = [v3 valueForKey:v9];
-          v12 = [v11 intValue];
+          v11 = [dictionary valueForKey:v9];
+          intValue = [v11 intValue];
 
-          v13 = [MEMORY[0x1E696AD98] numberWithInteger:v12 + 1];
-          [v3 setObject:v13 forKey:v9];
+          v13 = [MEMORY[0x1E696AD98] numberWithInteger:intValue + 1];
+          [dictionary setObject:v13 forKey:v9];
         }
 
         else
         {
-          [v3 setObject:&unk_1F47C1790 forKey:v9];
+          [dictionary setObject:&unk_1F47C1790 forKey:v9];
         }
       }
 
@@ -105,13 +105,13 @@
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSDictionary)selectionActionDictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -132,20 +132,20 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v3 valueForKey:{v9, v15}];
+        v10 = [dictionary valueForKey:{v9, v15}];
 
         if (v10)
         {
-          v11 = [v3 valueForKey:v9];
-          v12 = [v11 intValue];
+          v11 = [dictionary valueForKey:v9];
+          intValue = [v11 intValue];
 
-          v13 = [MEMORY[0x1E696AD98] numberWithInteger:v12 + 1];
-          [v3 setObject:v13 forKey:v9];
+          v13 = [MEMORY[0x1E696AD98] numberWithInteger:intValue + 1];
+          [dictionary setObject:v13 forKey:v9];
         }
 
         else
         {
-          [v3 setObject:&unk_1F47C1790 forKey:v9];
+          [dictionary setObject:&unk_1F47C1790 forKey:v9];
         }
       }
 
@@ -155,7 +155,7 @@
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (int64_t)numberOfTimesSelectionWasClearedInASession
@@ -202,15 +202,15 @@
 {
   if ([(NSMutableArray *)self->_selectionActions count])
   {
-    v3 = [(NSMutableArray *)self->_selectionActions lastObject];
+    lastObject = [(NSMutableArray *)self->_selectionActions lastObject];
   }
 
   else
   {
-    v3 = @"selectionActionTypeNone";
+    lastObject = @"selectionActionTypeNone";
   }
 
-  return v3;
+  return lastObject;
 }
 
 - (NSString)lastSignificantActionTaken

@@ -1,40 +1,40 @@
 @interface TUIImageModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (TUIImageModel)initWithIdentifier:(id)a3 image:(id)a4 size:(CGSize)a5 renderMode:(int64_t)a6 alignmentRectInsets:(UIEdgeInsets)a7;
-- (TUIImageModel)initWithIdentifier:(id)a3 urlString:(id)a4 baseURL:(id)a5 size:(CGSize)a6 renderMode:(int64_t)a7 alignmentRectInsets:(UIEdgeInsets)a8;
+- (TUIImageModel)initWithIdentifier:(id)identifier image:(id)image size:(CGSize)size renderMode:(int64_t)mode alignmentRectInsets:(UIEdgeInsets)insets;
+- (TUIImageModel)initWithIdentifier:(id)identifier urlString:(id)string baseURL:(id)l size:(CGSize)size renderMode:(int64_t)mode alignmentRectInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)alignmentRectInsets;
-- (id)_configuredImage:(id)a3;
-- (void)loadImageFromResource:(id)a3 placeholderImage:(id)a4;
+- (id)_configuredImage:(id)image;
+- (void)loadImageFromResource:(id)resource placeholderImage:(id)image;
 @end
 
 @implementation TUIImageModel
 
-- (TUIImageModel)initWithIdentifier:(id)a3 image:(id)a4 size:(CGSize)a5 renderMode:(int64_t)a6 alignmentRectInsets:(UIEdgeInsets)a7
+- (TUIImageModel)initWithIdentifier:(id)identifier image:(id)image size:(CGSize)size renderMode:(int64_t)mode alignmentRectInsets:(UIEdgeInsets)insets
 {
-  right = a7.right;
-  bottom = a7.bottom;
-  left = a7.left;
-  top = a7.top;
-  height = a5.height;
-  width = a5.width;
-  v17 = a3;
-  v18 = a4;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  imageCopy = image;
   v24.receiver = self;
   v24.super_class = TUIImageModel;
   v19 = [(TUIImageModel *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_identifier, a3);
+    objc_storeStrong(&v19->_identifier, identifier);
     v20->_size.width = width;
     v20->_size.height = height;
-    v20->_renderMode = a6;
+    v20->_renderMode = mode;
     v20->_alignmentRectInsets.top = top;
     v20->_alignmentRectInsets.left = left;
     v20->_alignmentRectInsets.bottom = bottom;
     v20->_alignmentRectInsets.right = right;
-    v21 = [(TUIImageModel *)v20 _configuredImage:v18];
+    v21 = [(TUIImageModel *)v20 _configuredImage:imageCopy];
     image = v20->_image;
     v20->_image = v21;
 
@@ -44,29 +44,29 @@
   return v20;
 }
 
-- (TUIImageModel)initWithIdentifier:(id)a3 urlString:(id)a4 baseURL:(id)a5 size:(CGSize)a6 renderMode:(int64_t)a7 alignmentRectInsets:(UIEdgeInsets)a8
+- (TUIImageModel)initWithIdentifier:(id)identifier urlString:(id)string baseURL:(id)l size:(CGSize)size renderMode:(int64_t)mode alignmentRectInsets:(UIEdgeInsets)insets
 {
-  right = a8.right;
-  bottom = a8.bottom;
-  left = a8.left;
-  top = a8.top;
-  height = a6.height;
-  width = a6.width;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  stringCopy = string;
+  lCopy = l;
   v25.receiver = self;
   v25.super_class = TUIImageModel;
   v22 = [(TUIImageModel *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_identifier, a3);
-    objc_storeStrong(&v23->_urlString, a4);
-    objc_storeStrong(&v23->_baseURL, a5);
+    objc_storeStrong(&v22->_identifier, identifier);
+    objc_storeStrong(&v23->_urlString, string);
+    objc_storeStrong(&v23->_baseURL, l);
     v23->_size.width = width;
     v23->_size.height = height;
-    v23->_renderMode = a7;
+    v23->_renderMode = mode;
     v23->_alignmentRectInsets.top = top;
     v23->_alignmentRectInsets.left = left;
     v23->_alignmentRectInsets.bottom = bottom;
@@ -76,24 +76,24 @@
   return v23;
 }
 
-- (void)loadImageFromResource:(id)a3 placeholderImage:(id)a4
+- (void)loadImageFromResource:(id)resource placeholderImage:(id)image
 {
   if (!self->_isLoaded)
   {
-    v7 = a4;
-    v8 = a3;
-    v16 = [v8 imageContentWithOptions:1];
-    v9 = [v16 image];
-    v10 = [v9 newImage];
-    v11 = v10;
-    if (v10)
+    imageCopy = image;
+    resourceCopy = resource;
+    v16 = [resourceCopy imageContentWithOptions:1];
+    image = [v16 image];
+    newImage = [image newImage];
+    v11 = newImage;
+    if (newImage)
     {
-      v12 = v10;
+      v12 = newImage;
     }
 
     else
     {
-      v12 = v7;
+      v12 = imageCopy;
     }
 
     v13 = v12;
@@ -103,36 +103,36 @@
     image = self->_image;
     self->_image = v14;
 
-    LOBYTE(v14) = [v8 isImageLoaded];
+    LOBYTE(v14) = [resourceCopy isImageLoaded];
     self->_isLoaded = v14;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
-    v5 = a3;
+    equalCopy = equal;
     v6 = objc_opt_class();
-    v7 = TUIDynamicCast(v6, v5);
+    v7 = TUIDynamicCast(v6, equalCopy);
   }
 
-  return self == a3;
+  return self == equal;
 }
 
-- (id)_configuredImage:(id)a3
+- (id)_configuredImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  imageCopy = image;
+  v5 = imageCopy;
+  if (imageCopy)
   {
-    v6 = v4;
+    v6 = imageCopy;
     if (self->_size.width > 0.0)
     {
-      v6 = v4;
+      v6 = imageCopy;
       if (self->_size.height > 0.0)
       {
-        [v4 size];
+        [imageCopy size];
         v9 = v8 == self->_size.width && v7 == self->_size.height;
         v6 = v5;
         if (!v9)

@@ -1,28 +1,28 @@
 @interface CCWalletPaymentsCommerceOrderEmailPaymentInformation
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCWalletPaymentsCommerceOrderEmailPaymentInformation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCWalletPaymentsCommerceOrderEmailPaymentInformation)initWithTotalAmount:(id)a3 totalCurrencyCode:(id)a4 paymentMethod:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCWalletPaymentsCommerceOrderEmailPaymentInformation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCWalletPaymentsCommerceOrderEmailPaymentInformation)initWithTotalAmount:(id)amount totalCurrencyCode:(id)code paymentMethod:(id)method error:(id *)error;
 - (CCWalletPaymentsCommerceOrderEmailPaymentInformationPaymentMethod)paymentMethod;
 - (NSString)totalAmount;
 - (NSString)totalCurrencyCode;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCWalletPaymentsCommerceOrderEmailPaymentInformation
 
-- (CCWalletPaymentsCommerceOrderEmailPaymentInformation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCWalletPaymentsCommerceOrderEmailPaymentInformation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v18[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"totalAmount"];
-    v10 = [v6 objectForKeyedSubscript:@"totalCurrencyCode"];
-    v11 = [v6 objectForKeyedSubscript:@"paymentMethod"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"totalAmount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"totalCurrencyCode"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"paymentMethod"];
     if (v11)
     {
       v12 = v11;
@@ -44,7 +44,7 @@
       v13 = 0;
     }
 
-    v16 = [[CCWalletPaymentsCommerceOrderEmailPaymentInformation alloc] initWithTotalAmount:v9 totalCurrencyCode:v10 paymentMethod:v13 error:a4];
+    v16 = [[CCWalletPaymentsCommerceOrderEmailPaymentInformation alloc] initWithTotalAmount:v9 totalCurrencyCode:v10 paymentMethod:v13 error:error];
     v12 = v13;
 LABEL_10:
 
@@ -63,21 +63,21 @@ LABEL_11:
   v3 = objc_opt_new();
   if (self->_totalAmount)
   {
-    v4 = [(CCWalletPaymentsCommerceOrderEmailPaymentInformation *)self totalAmount];
-    [v3 setObject:v4 forKeyedSubscript:@"totalAmount"];
+    totalAmount = [(CCWalletPaymentsCommerceOrderEmailPaymentInformation *)self totalAmount];
+    [v3 setObject:totalAmount forKeyedSubscript:@"totalAmount"];
   }
 
   if (self->_totalCurrencyCode)
   {
-    v5 = [(CCWalletPaymentsCommerceOrderEmailPaymentInformation *)self totalCurrencyCode];
-    [v3 setObject:v5 forKeyedSubscript:@"totalCurrencyCode"];
+    totalCurrencyCode = [(CCWalletPaymentsCommerceOrderEmailPaymentInformation *)self totalCurrencyCode];
+    [v3 setObject:totalCurrencyCode forKeyedSubscript:@"totalCurrencyCode"];
   }
 
   if (self->_paymentMethod)
   {
-    v6 = [(CCWalletPaymentsCommerceOrderEmailPaymentInformation *)self paymentMethod];
-    v7 = [v6 jsonDictionary];
-    [v3 setObject:v7 forKeyedSubscript:@"paymentMethod"];
+    paymentMethod = [(CCWalletPaymentsCommerceOrderEmailPaymentInformation *)self paymentMethod];
+    jsonDictionary = [paymentMethod jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"paymentMethod"];
   }
 
   v8 = [v3 copy];
@@ -85,11 +85,11 @@ LABEL_11:
   return v8;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v11 = v5;
+  v11 = blockCopy;
   if (self->_totalAmount)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_totalAmount];
@@ -133,10 +133,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -302,13 +302,13 @@ LABEL_39:
   return v36;
 }
 
-- (CCWalletPaymentsCommerceOrderEmailPaymentInformation)initWithTotalAmount:(id)a3 totalCurrencyCode:(id)a4 paymentMethod:(id)a5 error:(id *)a6
+- (CCWalletPaymentsCommerceOrderEmailPaymentInformation)initWithTotalAmount:(id)amount totalCurrencyCode:(id)code paymentMethod:(id)method error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  amountCopy = amount;
+  codeCopy = code;
+  methodCopy = method;
   v13 = objc_opt_new();
-  if (v10)
+  if (amountCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -319,11 +319,11 @@ LABEL_39:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!codeCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (methodCopy)
       {
         goto LABEL_5;
       }
@@ -337,7 +337,7 @@ LABEL_11:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!codeCopy)
     {
       goto LABEL_4;
     }
@@ -350,13 +350,13 @@ LABEL_11:
   if (!v20)
   {
     CCSetError();
-    v19 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_14;
   }
 
   CCPBDataWriterWriteStringField();
-  if (!v12)
+  if (!methodCopy)
   {
     goto LABEL_11;
   }
@@ -368,23 +368,23 @@ LABEL_5:
 
   if (v17)
   {
-    v18 = [v12 data];
+    data = [methodCopy data];
     CCPBDataWriterWriteDataField();
 
 LABEL_12:
-    v21 = [v13 immutableData];
-    self = [(CCItemMessage *)self initWithData:v21 error:a6];
+    immutableData = [v13 immutableData];
+    self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-    v19 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
 LABEL_7:
   CCSetError();
-  v19 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v19;
+  return selfCopy;
 }
 
 @end

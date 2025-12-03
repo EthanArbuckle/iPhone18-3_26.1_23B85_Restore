@@ -1,33 +1,33 @@
 @interface TRIBlockBasedSysdiagnoseInfoProvider
-- (TRIBlockBasedSysdiagnoseInfoProvider)initWithOutputFilename:(id)a3 block:(id)a4;
-- (id)sysdiagnoseLinesWithError:(id *)a3;
+- (TRIBlockBasedSysdiagnoseInfoProvider)initWithOutputFilename:(id)filename block:(id)block;
+- (id)sysdiagnoseLinesWithError:(id *)error;
 @end
 
 @implementation TRIBlockBasedSysdiagnoseInfoProvider
 
-- (TRIBlockBasedSysdiagnoseInfoProvider)initWithOutputFilename:(id)a3 block:(id)a4
+- (TRIBlockBasedSysdiagnoseInfoProvider)initWithOutputFilename:(id)filename block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  filenameCopy = filename;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = TRIBlockBasedSysdiagnoseInfoProvider;
   v9 = [(TRIBlockBasedSysdiagnoseInfoProvider *)&v13 init];
   if (v9)
   {
-    v10 = MEMORY[0x2318F2490](v8);
+    v10 = MEMORY[0x2318F2490](blockCopy);
     block = v9->_block;
     v9->_block = v10;
 
-    objc_storeStrong(&v9->_outputFilename, a3);
+    objc_storeStrong(&v9->_outputFilename, filename);
   }
 
   return v9;
 }
 
-- (id)sysdiagnoseLinesWithError:(id *)a3
+- (id)sysdiagnoseLinesWithError:(id *)error
 {
-  v4 = [(TRIBlockBasedSysdiagnoseInfoProvider *)self block];
-  v5 = (v4)[2](v4, a3);
+  block = [(TRIBlockBasedSysdiagnoseInfoProvider *)self block];
+  v5 = (block)[2](block, error);
 
   return v5;
 }

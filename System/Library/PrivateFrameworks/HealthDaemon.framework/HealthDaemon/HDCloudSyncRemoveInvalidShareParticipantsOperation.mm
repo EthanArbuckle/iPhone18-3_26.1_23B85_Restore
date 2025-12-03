@@ -1,17 +1,17 @@
 @interface HDCloudSyncRemoveInvalidShareParticipantsOperation
-- (HDCloudSyncRemoveInvalidShareParticipantsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
+- (HDCloudSyncRemoveInvalidShareParticipantsOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
 - (void)main;
-- (void)setParticipantsToCheck:(id)a3;
-- (void)setRequiredPermission:(int64_t)a3;
+- (void)setParticipantsToCheck:(id)check;
+- (void)setRequiredPermission:(int64_t)permission;
 @end
 
 @implementation HDCloudSyncRemoveInvalidShareParticipantsOperation
 
-- (HDCloudSyncRemoveInvalidShareParticipantsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncRemoveInvalidShareParticipantsOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5.receiver = self;
   v5.super_class = HDCloudSyncRemoveInvalidShareParticipantsOperation;
-  result = [(HDCloudSyncOperation *)&v5 initWithConfiguration:a3 cloudState:a4];
+  result = [(HDCloudSyncOperation *)&v5 initWithConfiguration:configuration cloudState:state];
   if (result)
   {
     result->_requiredPermission = 3;
@@ -20,27 +20,27 @@
   return result;
 }
 
-- (void)setRequiredPermission:(int64_t)a3
+- (void)setRequiredPermission:(int64_t)permission
 {
   if ([(HDCloudSyncOperation *)self status])
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HDCloudSyncRemoveInvalidShareParticipantsOperation.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncRemoveInvalidShareParticipantsOperation.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
   }
 
-  self->_requiredPermission = a3;
+  self->_requiredPermission = permission;
 }
 
-- (void)setParticipantsToCheck:(id)a3
+- (void)setParticipantsToCheck:(id)check
 {
-  v8 = a3;
+  checkCopy = check;
   if ([(HDCloudSyncOperation *)self status])
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDCloudSyncRemoveInvalidShareParticipantsOperation.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncRemoveInvalidShareParticipantsOperation.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
   }
 
-  v5 = [v8 copy];
+  v5 = [checkCopy copy];
   participantsToCheck = self->_participantsToCheck;
   self->_participantsToCheck = v5;
 }
@@ -56,7 +56,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *v107 = 138543362;
-      v108 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_228986000, v62, OS_LOG_TYPE_DEFAULT, "%{public}@: No participants to check; nothing to do.", v107, 0xCu);
     }
 
@@ -75,12 +75,12 @@
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v6 = [(HDCloudSyncOperation *)self configuration];
-    v7 = [v6 repository];
-    v8 = [v7 allCKContainers];
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration repository];
+    allCKContainers = [repository allCKContainers];
 
-    obj = v8;
-    v9 = [v8 countByEnumeratingWithState:&v85 objects:v99 count:16];
+    obj = allCKContainers;
+    v9 = [allCKContainers countByEnumeratingWithState:&v85 objects:v99 count:16];
     if (v9)
     {
       v11 = v9;
@@ -107,10 +107,10 @@
           [(HDSynchronousTaskGroup *)self->_taskGroup beginTask:v64];
           v74 = v15;
           v72 = objc_alloc_init(*(v13 + 2840));
-          v16 = [(HDCloudSyncOperation *)self configuration];
-          v17 = [v16 cachedCloudState];
+          configuration2 = [(HDCloudSyncOperation *)self configuration];
+          cachedCloudState = [configuration2 cachedCloudState];
           v98 = 0;
-          v18 = [v17 zonesByIdentifierWithError:&v98];
+          v18 = [cachedCloudState zonesByIdentifierWithError:&v98];
           v19 = v98;
 
           v20 = v18;
@@ -121,13 +121,13 @@
             v94 = 0u;
             v95 = 0u;
             v70 = v18;
-            v25 = [v18 allValues];
+            allValues = [v18 allValues];
             v26 = v74;
-            v78 = [v25 countByEnumeratingWithState:&v94 objects:v107 count:16];
+            v78 = [allValues countByEnumeratingWithState:&v94 objects:v107 count:16];
             if (v78)
             {
               v27 = *v95;
-              v73 = v25;
+              v73 = allValues;
               v79 = v19;
               v76 = *v95;
               while (2)
@@ -136,14 +136,14 @@
                 {
                   if (*v95 != v27)
                   {
-                    objc_enumerationMutation(v25);
+                    objc_enumerationMutation(allValues);
                   }
 
                   v29 = *(*(&v94 + 1) + 8 * i);
-                  v30 = [v29 zoneIdentifier];
-                  v31 = [v30 containerIdentifier];
-                  v32 = [v26 containerIdentifier];
-                  v33 = [v31 isEqualToString:v32];
+                  zoneIdentifier = [v29 zoneIdentifier];
+                  containerIdentifier = [zoneIdentifier containerIdentifier];
+                  containerIdentifier2 = [v26 containerIdentifier];
+                  v33 = [containerIdentifier isEqualToString:containerIdentifier2];
 
                   v19 = v79;
                   if (v33)
@@ -172,11 +172,11 @@
                       if (v53)
                       {
                         v60 = v52;
-                        v61 = [v29 zoneIdentifier];
+                        zoneIdentifier2 = [v29 zoneIdentifier];
                         *buf = v64;
-                        v102 = self;
+                        selfCopy3 = self;
                         v103 = 2114;
-                        v104 = v61;
+                        v104 = zoneIdentifier2;
                         v105 = 2114;
                         v106 = v24;
                         _os_log_error_impl(&dword_228986000, v60, OS_LOG_TYPE_ERROR, "%{public}@ Failed to retrieve cached CKShare for zone %{public}@, %{public}@", buf, 0x20u);
@@ -195,8 +195,8 @@
                       v89 = 0u;
                       v90 = 0u;
                       v80 = v34;
-                      v37 = [v34 participants];
-                      v38 = [v37 copy];
+                      participants = [v34 participants];
+                      v38 = [participants copy];
 
                       v39 = [v38 countByEnumeratingWithState:&v89 objects:v100 count:16];
                       if (v39)
@@ -219,10 +219,10 @@
                             {
                               requiredPermission = self->_requiredPermission;
                               v46 = v44;
-                              v47 = [v46 acceptanceStatus];
-                              v48 = [v46 permission];
+                              acceptanceStatus = [v46 acceptanceStatus];
+                              permission = [v46 permission];
 
-                              if (v47 != 2 || v48 != requiredPermission)
+                              if (acceptanceStatus != 2 || permission != requiredPermission)
                               {
                                 v50 = self->_participantsToCheck;
                                 if (!v50 || [(NSArray *)v50 containsObject:v46])
@@ -232,7 +232,7 @@
                                   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
                                   {
                                     *buf = 138543618;
-                                    v102 = self;
+                                    selfCopy3 = self;
                                     v103 = 2114;
                                     v104 = v46;
                                     _os_log_impl(&dword_228986000, v51, OS_LOG_TYPE_DEFAULT, "%{public}@: Found invalid participant %{public}@, removing.", buf, 0x16u);
@@ -250,7 +250,7 @@
 
                         while (v40);
 
-                        v25 = v73;
+                        allValues = v73;
                         v26 = v74;
                         v19 = v79;
                         v24 = v75;
@@ -271,7 +271,7 @@
                   }
                 }
 
-                v78 = [v25 countByEnumeratingWithState:&v94 objects:v107 count:16];
+                v78 = [allValues countByEnumeratingWithState:&v94 objects:v107 count:16];
                 if (v78)
                 {
                   continue;
@@ -297,7 +297,7 @@ LABEL_52:
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               *v107 = 138543618;
-              v108 = self;
+              selfCopy4 = self;
               v109 = 2114;
               v110 = v19;
               _os_log_error_impl(&dword_228986000, v21, OS_LOG_TYPE_ERROR, "%{public}@: Failed to retrieve cached zones, %{public}@", v107, 0x16u);
@@ -315,8 +315,8 @@ LABEL_52:
             if ([v23 count])
             {
               v57 = [HDCloudSyncModifyRecordsOperation alloc];
-              v58 = [(HDCloudSyncOperation *)self configuration];
-              v59 = [(HDCloudSyncModifyRecordsOperation *)v57 initWithConfiguration:v58 container:v74 recordsToSave:v23 recordIDsToDelete:0];
+              configuration3 = [(HDCloudSyncOperation *)self configuration];
+              v59 = [(HDCloudSyncModifyRecordsOperation *)v57 initWithConfiguration:configuration3 container:v74 recordsToSave:v23 recordIDsToDelete:0];
 
               v83[0] = MEMORY[0x277D85DD0];
               v83[1] = 3221225472;

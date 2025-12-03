@@ -1,30 +1,30 @@
 @interface VTKInternalConfiguration
-+ (id)_comparatorForStrategy:(unint64_t)a3 comparisonOptions:(unint64_t)a4;
-+ (id)_referenceItemsSourceForType:(unint64_t)a3;
++ (id)_comparatorForStrategy:(unint64_t)strategy comparisonOptions:(unint64_t)options;
++ (id)_referenceItemsSourceForType:(unint64_t)type;
 - (NSArray)drawItems;
 - (NSArray)exclusionAreas;
 - (NSString)referenceImagesDirectory;
 - (VTKComparator)imageComparator;
-- (VTKInternalConfiguration)initWithReferenceItemsSource:(id)a3 storeManager:(id)a4 imageComparator:(id)a5;
+- (VTKInternalConfiguration)initWithReferenceItemsSource:(id)source storeManager:(id)manager imageComparator:(id)comparator;
 - (VTKReferenceItemsSource)referenceItemsSource;
 - (VTKStoreManager)storeManager;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addExclusionAreaAt:(CGRect)a3;
-- (void)addHorozontalGuideAt:(double)a3 withColor:(id)a4;
-- (void)addSquareGuideAt:(CGRect)a3 withColor:(id)a4;
-- (void)addVerticalGuideAt:(double)a3 withColor:(id)a4;
-- (void)setImageComparatorStrategy:(unint64_t)a3;
-- (void)setReferenceImagesDirectory:(id)a3;
-- (void)setReferenceItemsSourceType:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addExclusionAreaAt:(CGRect)at;
+- (void)addHorozontalGuideAt:(double)at withColor:(id)color;
+- (void)addSquareGuideAt:(CGRect)at withColor:(id)color;
+- (void)addVerticalGuideAt:(double)at withColor:(id)color;
+- (void)setImageComparatorStrategy:(unint64_t)strategy;
+- (void)setReferenceImagesDirectory:(id)directory;
+- (void)setReferenceItemsSourceType:(unint64_t)type;
 @end
 
 @implementation VTKInternalConfiguration
 
-- (VTKInternalConfiguration)initWithReferenceItemsSource:(id)a3 storeManager:(id)a4 imageComparator:(id)a5
+- (VTKInternalConfiguration)initWithReferenceItemsSource:(id)source storeManager:(id)manager imageComparator:(id)comparator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  managerCopy = manager;
+  comparatorCopy = comparator;
   v18.receiver = self;
   v18.super_class = VTKInternalConfiguration;
   v12 = [(VTKInternalConfiguration *)&v18 init];
@@ -38,39 +38,39 @@
     mutableExclusionAreas = v12->_mutableExclusionAreas;
     v12->_mutableExclusionAreas = v15;
 
-    objc_storeStrong(&v12->_cachedReferenceItemsSource, a3);
-    objc_storeStrong(&v12->_cachedStoreManager, a4);
-    objc_storeStrong(&v12->_cachedImageComparator, a5);
+    objc_storeStrong(&v12->_cachedReferenceItemsSource, source);
+    objc_storeStrong(&v12->_cachedStoreManager, manager);
+    objc_storeStrong(&v12->_cachedImageComparator, comparator);
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VTKInternalConfiguration allocWithZone:?]];
   v4->_referenceItemsSourceType = [(VTKInternalConfiguration *)self referenceItemsSourceType];
   v4->_imageComparatorStrategy = [(VTKInternalConfiguration *)self imageComparatorStrategy];
-  v5 = [(VTKInternalConfiguration *)self cachedReferenceItemsSource];
+  cachedReferenceItemsSource = [(VTKInternalConfiguration *)self cachedReferenceItemsSource];
   cachedReferenceItemsSource = v4->_cachedReferenceItemsSource;
-  v4->_cachedReferenceItemsSource = v5;
+  v4->_cachedReferenceItemsSource = cachedReferenceItemsSource;
 
-  v7 = [(VTKInternalConfiguration *)self cachedStoreManager];
+  cachedStoreManager = [(VTKInternalConfiguration *)self cachedStoreManager];
   cachedStoreManager = v4->_cachedStoreManager;
-  v4->_cachedStoreManager = v7;
+  v4->_cachedStoreManager = cachedStoreManager;
 
-  v9 = [(VTKInternalConfiguration *)self cachedImageComparator];
+  cachedImageComparator = [(VTKInternalConfiguration *)self cachedImageComparator];
   cachedImageComparator = v4->_cachedImageComparator;
-  v4->_cachedImageComparator = v9;
+  v4->_cachedImageComparator = cachedImageComparator;
 
-  v11 = [(VTKInternalConfiguration *)self mutableDrawItems];
-  v12 = [v11 mutableCopy];
+  mutableDrawItems = [(VTKInternalConfiguration *)self mutableDrawItems];
+  v12 = [mutableDrawItems mutableCopy];
   mutableDrawItems = v4->_mutableDrawItems;
   v4->_mutableDrawItems = v12;
 
   v4->_comparisonOptions = [(VTKInternalConfiguration *)self comparisonOptions];
-  v14 = [(VTKInternalConfiguration *)self mutableExclusionAreas];
-  v15 = [v14 mutableCopy];
+  mutableExclusionAreas = [(VTKInternalConfiguration *)self mutableExclusionAreas];
+  v15 = [mutableExclusionAreas mutableCopy];
   mutableExclusionAreas = v4->_mutableExclusionAreas;
   v4->_mutableExclusionAreas = v15;
 
@@ -92,18 +92,18 @@
   return cachedReferenceItemsSource;
 }
 
-+ (id)_referenceItemsSourceForType:(unint64_t)a3
++ (id)_referenceItemsSourceForType:(unint64_t)type
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (void)setReferenceItemsSourceType:(unint64_t)a3
+- (void)setReferenceItemsSourceType:(unint64_t)type
 {
-  if (self->_referenceItemsSourceType != a3)
+  if (self->_referenceItemsSourceType != type)
   {
-    self->_referenceItemsSourceType = a3;
+    self->_referenceItemsSourceType = type;
     self->_cachedReferenceItemsSource = 0;
     _objc_release_x1();
   }
@@ -139,44 +139,44 @@
   return cachedImageComparator;
 }
 
-+ (id)_comparatorForStrategy:(unint64_t)a3 comparisonOptions:(unint64_t)a4
++ (id)_comparatorForStrategy:(unint64_t)strategy comparisonOptions:(unint64_t)options
 {
   v5 = [VTKColorDifferenceComparator alloc];
   v6 = objc_opt_new();
-  v7 = [(VTKColorDifferenceComparator *)v5 initWithStrategy:v6 comparisonOptions:a4];
+  v7 = [(VTKColorDifferenceComparator *)v5 initWithStrategy:v6 comparisonOptions:options];
 
   return v7;
 }
 
-- (void)setImageComparatorStrategy:(unint64_t)a3
+- (void)setImageComparatorStrategy:(unint64_t)strategy
 {
-  if (self->_imageComparatorStrategy != a3)
+  if (self->_imageComparatorStrategy != strategy)
   {
-    self->_imageComparatorStrategy = a3;
+    self->_imageComparatorStrategy = strategy;
     self->_cachedImageComparator = 0;
     _objc_release_x1();
   }
 }
 
-- (void)setReferenceImagesDirectory:(id)a3
+- (void)setReferenceImagesDirectory:(id)directory
 {
-  v8 = a3;
-  v4 = [(VTKInternalConfiguration *)self referenceItemsSource];
+  directoryCopy = directory;
+  referenceItemsSource = [(VTKInternalConfiguration *)self referenceItemsSource];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VTKInternalConfiguration *)self referenceItemsSource];
-    [v6 setItemsDirectory:v8];
+    referenceItemsSource2 = [(VTKInternalConfiguration *)self referenceItemsSource];
+    [referenceItemsSource2 setItemsDirectory:directoryCopy];
   }
 
-  v7 = [(VTKInternalConfiguration *)self storeManager];
-  [v7 setItemsDirectory:v8];
+  storeManager = [(VTKInternalConfiguration *)self storeManager];
+  [storeManager setItemsDirectory:directoryCopy];
 }
 
 - (NSString)referenceImagesDirectory
 {
-  v3 = [(VTKInternalConfiguration *)self referenceItemsSource];
+  referenceItemsSource = [(VTKInternalConfiguration *)self referenceItemsSource];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -189,42 +189,42 @@
     [(VTKInternalConfiguration *)self storeManager];
   }
   v5 = ;
-  v6 = [v5 itemsDirectory];
+  itemsDirectory = [v5 itemsDirectory];
 
-  return v6;
+  return itemsDirectory;
 }
 
-- (void)addVerticalGuideAt:(double)a3 withColor:(id)a4
+- (void)addVerticalGuideAt:(double)at withColor:(id)color
 {
-  v6 = a4;
-  v7 = [[VTKLineDrawItem alloc] initWitColor:v6 origin:0 orientation:a3, 0.0];
+  colorCopy = color;
+  v7 = [[VTKLineDrawItem alloc] initWitColor:colorCopy origin:0 orientation:at, 0.0];
 
   [(NSMutableArray *)self->_mutableDrawItems addObject:v7];
 }
 
-- (void)addHorozontalGuideAt:(double)a3 withColor:(id)a4
+- (void)addHorozontalGuideAt:(double)at withColor:(id)color
 {
-  v6 = a4;
-  v7 = [[VTKLineDrawItem alloc] initWitColor:v6 origin:1 orientation:0.0, a3];
+  colorCopy = color;
+  v7 = [[VTKLineDrawItem alloc] initWitColor:colorCopy origin:1 orientation:0.0, at];
 
   [(NSMutableArray *)self->_mutableDrawItems addObject:v7];
 }
 
-- (void)addSquareGuideAt:(CGRect)a3 withColor:(id)a4
+- (void)addSquareGuideAt:(CGRect)at withColor:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [[VTKSquareDrawItem alloc] initWitColor:v9 frame:x, y, width, height];
+  height = at.size.height;
+  width = at.size.width;
+  y = at.origin.y;
+  x = at.origin.x;
+  colorCopy = color;
+  height = [[VTKSquareDrawItem alloc] initWitColor:colorCopy frame:x, y, width, height];
 
-  [(NSMutableArray *)self->_mutableDrawItems addObject:v10];
+  [(NSMutableArray *)self->_mutableDrawItems addObject:height];
 }
 
-- (void)addExclusionAreaAt:(CGRect)a3
+- (void)addExclusionAreaAt:(CGRect)at
 {
-  v4 = [[VTKExclusionAreaDrawItem alloc] initWitFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [[VTKExclusionAreaDrawItem alloc] initWitFrame:at.origin.x, at.origin.y, at.size.width, at.size.height];
   [(NSMutableArray *)self->_mutableExclusionAreas addObject:v4];
 }
 

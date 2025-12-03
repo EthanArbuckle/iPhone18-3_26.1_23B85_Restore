@@ -1,37 +1,37 @@
 @interface LargeMonthViewController
-+ (double)_cellHeightForMultiplier:(double)a3 windowSize:(CGSize)a4;
++ (double)_cellHeightForMultiplier:(double)multiplier windowSize:(CGSize)size;
 - (BOOL)canSpaciallyEditOccurrences;
 - (BOOL)currentlyEditingEventsWithGestures;
 - (BOOL)dragAndDropIsCurrentlyScrubbing;
-- (BOOL)interaction:(id)a3 canCreateEventAtPoint:(CGPoint)a4 inView:(id)a5;
-- (BOOL)interaction:(id)a3 canCreateReminderAtPoint:(CGPoint)a4 inView:(id)a5;
-- (BOOL)interaction:(id)a3 canPasteEventAtPoint:(CGPoint)a4 inView:(id)a5;
-- (BOOL)interaction:(id)a3 shouldShowMenuAtPoint:(CGPoint)a4 inView:(id)a5;
+- (BOOL)interaction:(id)interaction canCreateEventAtPoint:(CGPoint)point inView:(id)view;
+- (BOOL)interaction:(id)interaction canCreateReminderAtPoint:(CGPoint)point inView:(id)view;
+- (BOOL)interaction:(id)interaction canPasteEventAtPoint:(CGPoint)point inView:(id)view;
+- (BOOL)interaction:(id)interaction shouldShowMenuAtPoint:(CGPoint)point inView:(id)view;
 - (BOOL)isBackgroundScene;
 - (BOOL)isDraggingOccurrence;
-- (BOOL)isReadyToShowViewControllersInsideEnqueueableManagedNavigationController:(id)a3 isPreemptiveCheck:(BOOL)a4;
+- (BOOL)isReadyToShowViewControllersInsideEnqueueableManagedNavigationController:(id)controller isPreemptiveCheck:(BOOL)check;
 - (BOOL)mainViewControllerCanChangeSelectedDate;
 - (BOOL)mainViewControllerCanChangeSelectedEvent;
 - (CGRect)frameForTodayHighlight;
-- (LargeMonthViewController)initWithCalendarDate:(id)a3 model:(id)a4 window:(id)a5;
-- (double)_subviewHeightForDate:(id)a3;
+- (LargeMonthViewController)initWithCalendarDate:(id)date model:(id)model window:(id)window;
+- (double)_subviewHeightForDate:(id)date;
 - (double)decelerationDistanceThresholdForPreferringMonthBoundary;
-- (id)_createLargeMonthWeekViewForDate:(id)a3;
-- (id)_findNextWeekAfterWeek:(id)a3 inForwardDirection:(BOOL)a4;
+- (id)_createLargeMonthWeekViewForDate:(id)date;
+- (id)_findNextWeekAfterWeek:(id)week inForwardDirection:(BOOL)direction;
 - (id)_paletteView;
-- (id)_weekViewAtPoint:(CGPoint)a3 pointInWeek:(CGPoint *)a4;
-- (id)_weekViewForDate:(id)a3;
-- (id)createInitialViewForDate:(id)a3;
-- (id)interaction:(id)a3 subtitleForPasteActionAtPoint:(CGPoint)a4 inView:(id)a5;
-- (id)interaction:(id)a3 titleForPasteActionAtPoint:(CGPoint)a4 inView:(id)a5;
-- (id)newBottomViewBelowViewWithCalendarDate:(id)a3;
-- (id)newTopViewAboveViewWithCalendarDate:(id)a3;
-- (id)nextLevelWeekViewControllerWithDate:(id)a3;
-- (id)occurrenceAtPoint:(CGPoint)a3;
-- (id)occurrencesForStartDate:(id)a3 endDate:(id)a4 waitForLoad:(BOOL)a5;
-- (id)pasteboardManagerForEventEditViewController:(id)a3;
+- (id)_weekViewAtPoint:(CGPoint)point pointInWeek:(CGPoint *)week;
+- (id)_weekViewForDate:(id)date;
+- (id)createInitialViewForDate:(id)date;
+- (id)interaction:(id)interaction subtitleForPasteActionAtPoint:(CGPoint)point inView:(id)view;
+- (id)interaction:(id)interaction titleForPasteActionAtPoint:(CGPoint)point inView:(id)view;
+- (id)newBottomViewBelowViewWithCalendarDate:(id)date;
+- (id)newTopViewAboveViewWithCalendarDate:(id)date;
+- (id)nextLevelWeekViewControllerWithDate:(id)date;
+- (id)occurrenceAtPoint:(CGPoint)point;
+- (id)occurrencesForStartDate:(id)date endDate:(id)endDate waitForLoad:(BOOL)load;
+- (id)pasteboardManagerForEventEditViewController:(id)controller;
 - (id)presentationControllerForEditMenu;
-- (id)pushedWeekViewControllerWithDate:(id)a3 animated:(BOOL)a4;
+- (id)pushedWeekViewControllerWithDate:(id)date animated:(BOOL)animated;
 - (id)shownEventEditViewController;
 - (id)shownEventViewController;
 - (id)spacialEditDownIncrement;
@@ -42,83 +42,83 @@
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_animateGridlinesAndBackgrounds;
 - (void)_cleanupGridAnimation;
-- (void)_closeEventPresentationAnimated:(BOOL)a3 viewController:(id)a4 completion:(id)a5;
-- (void)_displayedOccurrencesChanged:(id)a3;
-- (void)_highlightOccurrenceForPointerTarget:(id)a3 inWeek:(id)a4 onDay:(id)a5;
-- (void)_layoutGridlinesAndBackgrounds:(BOOL)a3;
-- (void)_navigateToSelectableItemInForwardDirection:(BOOL)a3;
+- (void)_closeEventPresentationAnimated:(BOOL)animated viewController:(id)controller completion:(id)completion;
+- (void)_displayedOccurrencesChanged:(id)changed;
+- (void)_highlightOccurrenceForPointerTarget:(id)target inWeek:(id)week onDay:(id)day;
+- (void)_layoutGridlinesAndBackgrounds:(BOOL)backgrounds;
+- (void)_navigateToSelectableItemInForwardDirection:(BOOL)direction;
 - (void)_presentationControllerDidDismiss;
 - (void)_removeAnimatedGridComponents;
-- (void)_scrollToWeekView:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_scrubAtPoint:(CGPoint)a3;
-- (void)_scrubWithTouches:(id)a3;
-- (void)_selectedOccurrencesChanged:(id)a3;
-- (void)_showEventDetailsForOccurrence:(id)a3 inWeek:(id)a4 onDay:(id)a5 animatedScrollToVisible:(BOOL)a6 showMode:(unint64_t)a7 context:(id)a8 creationMethod:(unint64_t)a9;
-- (void)_showNextDateComponentUnitInForwardDirection:(BOOL)a3 animated:(BOOL)a4;
+- (void)_scrollToWeekView:(id)view animated:(BOOL)animated completion:(id)completion;
+- (void)_scrubAtPoint:(CGPoint)point;
+- (void)_scrubWithTouches:(id)touches;
+- (void)_selectedOccurrencesChanged:(id)changed;
+- (void)_showEventDetailsForOccurrence:(id)occurrence inWeek:(id)week onDay:(id)day animatedScrollToVisible:(BOOL)visible showMode:(unint64_t)mode context:(id)context creationMethod:(unint64_t)method;
+- (void)_showNextDateComponentUnitInForwardDirection:(BOOL)direction animated:(BOOL)animated;
 - (void)_updateDayHeaderFrames;
-- (void)addEventToSelection:(id)a3 inWeek:(id)a4 updateModel:(BOOL)a5;
-- (void)completeReminderFromTap:(id)a3;
+- (void)addEventToSelection:(id)selection inWeek:(id)week updateModel:(BOOL)model;
+- (void)completeReminderFromTap:(id)tap;
 - (void)contentSizeCategoryChanged;
-- (void)didCompleteBackgroundOccurrenceRenderingForLargeMonthWeekView:(id)a3;
+- (void)didCompleteBackgroundOccurrenceRenderingForLargeMonthWeekView:(id)view;
 - (void)didEndScrolling;
 - (void)didScroll;
-- (void)dragAndDropRequestsPresentationOfViewController:(id)a3;
-- (void)draggedOccurrenceWasCancelled:(id)a3 atPoint:(CGPoint)a4;
-- (void)enqueuableNavigationController:(id)a3 requestsDeferShowViewControllerUntilReady:(id)a4;
-- (void)enqueueableManagedNavigationController:(id)a3 requestsConfigurationOfPropertiesForPopoverPresentationController:(id)a4 completion:(id)a5;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 completionHandler:(id)a5;
-- (void)eventViewController:(id)a3 requestsDisplayOfDeleteAlert:(id)a4;
-- (void)eventViewController:(id)a3 requestsDisplayOfEditViewController:(id)a4 animated:(BOOL)a5;
-- (void)eventViewController:(id)a3 requestsShowEvent:(id)a4;
-- (void)eventViewControllerNextButtonWasTapped:(id)a3;
-- (void)eventViewControllerPreviousButtonWasTapped:(id)a3;
+- (void)dragAndDropRequestsPresentationOfViewController:(id)controller;
+- (void)draggedOccurrenceWasCancelled:(id)cancelled atPoint:(CGPoint)point;
+- (void)enqueuableNavigationController:(id)controller requestsDeferShowViewControllerUntilReady:(id)ready;
+- (void)enqueueableManagedNavigationController:(id)controller requestsConfigurationOfPropertiesForPopoverPresentationController:(id)presentationController completion:(id)completion;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action completionHandler:(id)handler;
+- (void)eventViewController:(id)controller requestsDisplayOfDeleteAlert:(id)alert;
+- (void)eventViewController:(id)controller requestsDisplayOfEditViewController:(id)viewController animated:(BOOL)animated;
+- (void)eventViewController:(id)controller requestsShowEvent:(id)event;
+- (void)eventViewControllerNextButtonWasTapped:(id)tapped;
+- (void)eventViewControllerPreviousButtonWasTapped:(id)tapped;
 - (void)handleCloseKeyCommand;
-- (void)interaction:(id)a3 createEventAtPoint:(CGPoint)a4 inView:(id)a5;
-- (void)interaction:(id)a3 createReminderAtPoint:(CGPoint)a4 inView:(id)a5;
-- (void)interaction:(id)a3 pasteEventAtPoint:(CGPoint)a4 inView:(id)a5;
-- (void)largeMonthWeekView:(id)a3 didDoubleTapOnDay:(id)a4;
-- (void)largeMonthWeekView:(id)a3 didTapOccurrence:(id)a4 onDay:(id)a5 extendSelection:(BOOL)a6 source:(unint64_t)a7 tappedSymbol:(BOOL)a8;
-- (void)largeMonthWeekView:(id)a3 touchesBegan:(id)a4 withEvent:(id)a5;
-- (void)largeMonthWeekView:(id)a3 touchesEnded:(id)a4 withEvent:(id)a5;
-- (void)largeMonthWeekView:(id)a3 touchesMoved:(id)a4 withEvent:(id)a5;
+- (void)interaction:(id)interaction createEventAtPoint:(CGPoint)point inView:(id)view;
+- (void)interaction:(id)interaction createReminderAtPoint:(CGPoint)point inView:(id)view;
+- (void)interaction:(id)interaction pasteEventAtPoint:(CGPoint)point inView:(id)view;
+- (void)largeMonthWeekView:(id)view didDoubleTapOnDay:(id)day;
+- (void)largeMonthWeekView:(id)view didTapOccurrence:(id)occurrence onDay:(id)day extendSelection:(BOOL)selection source:(unint64_t)source tappedSymbol:(BOOL)symbol;
+- (void)largeMonthWeekView:(id)view touchesBegan:(id)began withEvent:(id)event;
+- (void)largeMonthWeekView:(id)view touchesEnded:(id)ended withEvent:(id)event;
+- (void)largeMonthWeekView:(id)view touchesMoved:(id)moved withEvent:(id)event;
 - (void)loadView;
 - (void)localeChanged;
-- (void)occurrencesWereSpaciallyEditedFromDate:(id)a3 toDate:(id)a4;
-- (void)pasteboardManager:(id)a3 didFinishPasteWithResult:(unint64_t)a4 willOpenEditor:(BOOL)a5;
-- (void)popoverPresentationController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5;
-- (void)removeEventFromSelection:(id)a3 inWeek:(id)a4 updateModel:(BOOL)a5;
-- (void)selectOccurrence:(id)a3 inWeek:(id)a4;
+- (void)occurrencesWereSpaciallyEditedFromDate:(id)date toDate:(id)toDate;
+- (void)pasteboardManager:(id)manager didFinishPasteWithResult:(unint64_t)result willOpenEditor:(BOOL)editor;
+- (void)popoverPresentationController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view;
+- (void)removeEventFromSelection:(id)selection inWeek:(id)week updateModel:(BOOL)model;
+- (void)selectOccurrence:(id)occurrence inWeek:(id)week;
 - (void)showDetailsForCurrentSelectableItem;
-- (void)showDetailsForDraggedOccurrence:(id)a3 inWeekView:(id)a4 onDay:(id)a5 creationMethod:(unint64_t)a6;
-- (void)showEditorForNewDraggedEvent:(id)a3 inWeek:(id)a4;
+- (void)showDetailsForDraggedOccurrence:(id)occurrence inWeekView:(id)view onDay:(id)day creationMethod:(unint64_t)method;
+- (void)showEditorForNewDraggedEvent:(id)event inWeek:(id)week;
 - (void)showNextOccurrenceOfSelectableItem;
 - (void)showPreviousOccurrenceOfSelectableItem;
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion;
 - (void)updateNavigationBarDisplayedDateString;
-- (void)updatePalette:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)updatePalette:(id)palette;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)weekNumbersPrefChanged;
 @end
 
 @implementation LargeMonthViewController
 
-- (LargeMonthViewController)initWithCalendarDate:(id)a3 model:(id)a4 window:(id)a5
+- (LargeMonthViewController)initWithCalendarDate:(id)date model:(id)model window:(id)window
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  modelCopy = model;
+  windowCopy = window;
   v20.receiver = self;
   v20.super_class = LargeMonthViewController;
-  v12 = [(MonthViewController *)&v20 initWithCalendarDate:v9 model:v10 window:v11];
+  v12 = [(MonthViewController *)&v20 initWithCalendarDate:dateCopy model:modelCopy window:windowCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_initialDate, a3);
+    objc_storeStrong(&v12->_initialDate, date);
     +[MonthViewOccurrence clearCachedFonts];
     +[LargeMonthWeekView clearCachedFonts];
     [(LargeMonthViewController *)v13 findWeekends];
@@ -141,21 +141,21 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(LargeMonthViewController *)self shownEventEditViewController];
-  v4 = v3;
-  if (v3)
+  shownEventEditViewController = [(LargeMonthViewController *)self shownEventEditViewController];
+  v4 = shownEventEditViewController;
+  if (shownEventEditViewController)
   {
-    v5 = [v3 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [shownEventEditViewController supportedInterfaceOrientations];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = LargeMonthViewController;
-    v5 = [(LargeMonthViewController *)&v8 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [(LargeMonthViewController *)&v8 supportedInterfaceOrientations];
   }
 
-  v6 = v5;
+  v6 = supportedInterfaceOrientations;
 
   return v6;
 }
@@ -175,9 +175,9 @@
     v7 = +[LargeMonthWeekView gridlineColor];
     [v6 setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
 
-    v8 = [(InfiniteScrollViewController *)self scrollView];
-    v9 = [v8 layer];
-    [v9 addSublayer:v6];
+    scrollView = [(InfiniteScrollViewController *)self scrollView];
+    layer = [scrollView layer];
+    [layer addSublayer:v6];
 
     [(NSArray *)v4 addObject:v6];
     --v3;
@@ -198,13 +198,13 @@
   v15 = +[LargeMonthWeekView weekendColor];
   [v13 setBackgroundColor:{objc_msgSend(v15, "CGColor")}];
 
-  v16 = [(InfiniteScrollViewController *)self scrollView];
-  v17 = [v16 layer];
-  [v17 addSublayer:v12];
+  scrollView2 = [(InfiniteScrollViewController *)self scrollView];
+  layer2 = [scrollView2 layer];
+  [layer2 addSublayer:v12];
 
-  v18 = [(InfiniteScrollViewController *)self scrollView];
-  v19 = [v18 layer];
-  [v19 addSublayer:v13];
+  scrollView3 = [(InfiniteScrollViewController *)self scrollView];
+  layer3 = [scrollView3 layer];
+  [layer3 addSublayer:v13];
 
   v23[0] = v12;
   v23[1] = v13;
@@ -213,11 +213,11 @@
   self->_weekendDayBackgrounds = v20;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = LargeMonthViewController;
-  [(MonthViewController *)&v6 viewWillAppear:a3];
+  [(MonthViewController *)&v6 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"_displayedOccurrencesChanged:" name:CUIKCalendarModelDisplayedOccurrencesChangedNotification object:self->super.super.super._model];
   [v4 addObserver:self selector:"_selectedOccurrencesChanged:" name:CUIKCalendarModelSelectedOccurrencesChangedNotification object:self->super.super.super._model];
@@ -229,40 +229,40 @@
   self->_viewIsAppearing = 1;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = LargeMonthViewController;
-  [(MonthViewController *)&v11 viewDidAppear:a3];
+  [(MonthViewController *)&v11 viewDidAppear:appear];
   v4 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
     v5 = v4;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(MainViewController *)self model];
-    v9 = [v8 selectedDate];
-    v10 = [v9 date];
+    model = [(MainViewController *)self model];
+    selectedDate = [model selectedDate];
+    date = [selectedDate date];
     *buf = 138543618;
     v13 = v7;
     v14 = 2114;
-    v15 = v10;
+    v15 = date;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[UserStateLog] State -> %{public}@ viewDidAppear. date = %{public}@", buf, 0x16u);
   }
 
   self->_viewIsAppearing = 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:CUIKCalendarModelDisplayedOccurrencesChangedNotification object:self->super.super.super._model];
   [v5 removeObserver:self name:CUIKCalendarModelSelectedOccurrencesChangedNotification object:self->super.super.super._model];
   [(LargeMonthViewController *)self setIsWaitingForBackgroundLoadingOfSelectedEventOccurrenceView:0];
-  v6 = [(LargeMonthViewController *)self shownEventViewController];
+  shownEventViewController = [(LargeMonthViewController *)self shownEventViewController];
 
-  if (v6)
+  if (shownEventViewController)
   {
     [(LargeMonthViewController *)self _closeEventPresentationAnimated:0];
   }
@@ -270,28 +270,28 @@
   self->_viewIsAppearing = 0;
   v7.receiver = self;
   v7.super_class = LargeMonthViewController;
-  [(MonthViewController *)&v7 viewWillDisappear:v3];
+  [(MonthViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = LargeMonthViewController;
-  [(LargeMonthViewController *)&v4 viewDidDisappear:a3];
+  [(LargeMonthViewController *)&v4 viewDidDisappear:disappear];
   self->_viewIsAppearing = 0;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   self->_shouldForceAllowUpdateNavigationBarDateString = 1;
   if ([(InfiniteScrollViewController *)self viewIsVisible]|| self->_viewIsAppearing)
   {
-    if (v7)
+    if (coordinatorCopy)
     {
-      [v7 targetTransform];
+      [coordinatorCopy targetTransform];
     }
 
     else
@@ -302,9 +302,9 @@
     self->_animateResize = CGAffineTransformIsIdentity(&v14);
     v13.receiver = self;
     v13.super_class = LargeMonthViewController;
-    [(InfiniteScrollViewController *)&v13 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-    v8 = [(LargeMonthViewController *)self view];
-    [v8 setNeedsLayout];
+    [(InfiniteScrollViewController *)&v13 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+    view = [(LargeMonthViewController *)self view];
+    [view setNeedsLayout];
 
     v14.a = 0.0;
     *&v14.b = &v14;
@@ -331,7 +331,7 @@
     v9[4] = self;
     v9[5] = v11;
     v9[6] = &v14;
-    [v7 animateAlongsideTransition:v10 completion:v9];
+    [coordinatorCopy animateAlongsideTransition:v10 completion:v9];
     _Block_object_dispose(v11, 8);
 
     _Block_object_dispose(&v14, 8);
@@ -343,8 +343,8 @@
   v4.receiver = self;
   v4.super_class = LargeMonthViewController;
   [(InfiniteScrollViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [(LargeMonthViewController *)self _paletteView];
-  [(LargeMonthViewController *)self updatePalette:v3];
+  _paletteView = [(LargeMonthViewController *)self _paletteView];
+  [(LargeMonthViewController *)self updatePalette:_paletteView];
 
   if (!self->_animateResize)
   {
@@ -510,28 +510,28 @@
   }
 }
 
-- (void)_layoutGridlinesAndBackgrounds:(BOOL)a3
+- (void)_layoutGridlinesAndBackgrounds:(BOOL)backgrounds
 {
-  v5 = [(InfiniteScrollViewController *)self scrollView];
-  [v5 bounds];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView bounds];
   v7 = v6;
   v9 = v8;
 
   EKUISeparatorLineThickness();
   v11 = v10;
-  v12 = [(InfiniteScrollViewController *)self centerViewOnScreen];
-  v39 = [v12 dayFrames];
+  centerViewOnScreen = [(InfiniteScrollViewController *)self centerViewOnScreen];
+  dayFrames = [centerViewOnScreen dayFrames];
 
   v13 = 0;
   IsLeftToRight = CalTimeDirectionIsLeftToRight();
   do
   {
-    v15 = [v39 objectAtIndexedSubscript:IsLeftToRight + v13];
+    v15 = [dayFrames objectAtIndexedSubscript:IsLeftToRight + v13];
     [v15 CGRectValue];
     v17 = v16;
 
     v18 = v17 - v11;
-    if (a3)
+    if (backgrounds)
     {
       v19 = [(NSArray *)self->_animatableGridLines objectAtIndexedSubscript:v13];
       [v19 setFrame:{v18, v7, v11, v9}];
@@ -549,17 +549,17 @@
   v22 = v21 - CUIKZeroIndexedWeekStart() + 7;
   v23 = self->_weekendOffsets[1];
   v24 = v23 - CUIKZeroIndexedWeekStart() + 7;
-  v25 = [v39 objectAtIndexedSubscript:v22 % 7];
+  v25 = [dayFrames objectAtIndexedSubscript:v22 % 7];
   [v25 CGRectValue];
   v27 = v26;
   v29 = v28;
 
-  v30 = [v39 objectAtIndexedSubscript:v24 % 7];
+  v30 = [dayFrames objectAtIndexedSubscript:v24 % 7];
   [v30 CGRectValue];
   v32 = v31;
   v34 = v33;
 
-  if (a3)
+  if (backgrounds)
   {
     v35 = [(NSArray *)self->_animatableDayBackgrounds objectAtIndexedSubscript:0];
     [v35 setFrame:{v27, v7, v29, v9}];
@@ -578,27 +578,27 @@
 
 - (id)_paletteView
 {
-  v2 = [(LargeMonthViewController *)self navigationController];
-  v3 = [v2 paletteView];
+  navigationController = [(LargeMonthViewController *)self navigationController];
+  paletteView = [navigationController paletteView];
 
-  return v3;
+  return paletteView;
 }
 
 - (void)_updateDayHeaderFrames
 {
-  v3 = [(LargeMonthViewController *)self _paletteView];
-  if (v3)
+  _paletteView = [(LargeMonthViewController *)self _paletteView];
+  if (_paletteView)
   {
-    v24 = v3;
+    v24 = _paletteView;
     v4 = [(InfiniteScrollViewController *)self subviewForPoint:CGPointZero.x, CGPointZero.y];
-    v5 = [v4 dayFrames];
-    v6 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
-    if ([v5 count])
+    dayFrames = [v4 dayFrames];
+    v6 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(dayFrames, "count")}];
+    if ([dayFrames count])
     {
       v7 = 0;
       do
       {
-        v8 = [v5 objectAtIndexedSubscript:v7];
+        v8 = [dayFrames objectAtIndexedSubscript:v7];
         [v8 CGRectValue];
         v10 = v9;
         v12 = v11;
@@ -617,33 +617,33 @@
         ++v7;
       }
 
-      while (v7 < [v5 count]);
+      while (v7 < [dayFrames count]);
     }
 
     [v24 setDayHeaderFrames:v6];
 
-    v3 = v24;
+    _paletteView = v24;
   }
 }
 
 - (void)_presentationControllerDidDismiss
 {
-  v3 = [(MonthViewController *)self draggedOccurrenceView];
+  draggedOccurrenceView = [(MonthViewController *)self draggedOccurrenceView];
 
-  if (v3)
+  if (draggedOccurrenceView)
   {
     [(MonthViewController *)self removeDraggingOccurrenceAnimated:1];
     [(MonthViewController *)self removeAllWeekHighlights];
   }
 
   [(MainViewController *)self invalidateManagedNavigationController];
-  v4 = [(EKEvent *)self->_eventBeingInspected startCalendarDate];
-  v9 = [(InfiniteScrollViewController *)self subviewForDate:v4];
+  startCalendarDate = [(EKEvent *)self->_eventBeingInspected startCalendarDate];
+  v9 = [(InfiniteScrollViewController *)self subviewForDate:startCalendarDate];
 
   [(LargeMonthViewController *)self selectOccurrence:0 inWeek:v9];
   self->_currentlyEditingEvent = 0;
-  v5 = [(InfiniteScrollViewController *)self scrollView];
-  [v5 setScrollEnabled:1];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView setScrollEnabled:1];
 
   eventBeingInspected = self->_eventBeingInspected;
   self->_eventBeingInspected = 0;
@@ -660,14 +660,14 @@
   [(LargeMonthViewController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
 }
 
-- (void)popoverPresentationController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5
+- (void)popoverPresentationController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view
 {
-  v8 = [(EKEvent *)self->_eventBeingInspected startCalendarDate];
-  v19 = [(InfiniteScrollViewController *)self subviewForDate:v8];
+  startCalendarDate = [(EKEvent *)self->_eventBeingInspected startCalendarDate];
+  v19 = [(InfiniteScrollViewController *)self subviewForDate:startCalendarDate];
 
   eventBeingInspected = self->_eventBeingInspected;
-  v10 = [(EKEvent *)eventBeingInspected startCalendarDate];
-  [v19 frameForOccurrence:eventBeingInspected onDay:v10];
+  startCalendarDate2 = [(EKEvent *)eventBeingInspected startCalendarDate];
+  [v19 frameForOccurrence:eventBeingInspected onDay:startCalendarDate2];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -679,31 +679,31 @@
   v21.size.height = v18;
   if (!CGRectIsNull(v21))
   {
-    *a5 = v19;
-    a4->origin.x = v12;
-    a4->origin.y = v14;
-    a4->size.width = v16;
-    a4->size.height = v18;
+    *view = v19;
+    rect->origin.x = v12;
+    rect->origin.y = v14;
+    rect->size.width = v16;
+    rect->size.height = v18;
   }
 
   [(LargeMonthViewController *)self selectOccurrence:self->_eventBeingInspected inWeek:v19];
 }
 
-- (id)_createLargeMonthWeekViewForDate:(id)a3
+- (id)_createLargeMonthWeekViewForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = CUIKOneIndexedWeekStart();
   v6 = CUIKTodayDate();
   [v6 timeIntervalSinceReferenceDate];
   v8 = v7;
 
-  v9 = [v4 calendarDateForWeekWithWeekStart:v5];
-  v10 = [v4 calendarDateForEndOfWeekWithWeekStart:v5];
+  v9 = [dateCopy calendarDateForWeekWithWeekStart:v5];
+  v10 = [dateCopy calendarDateForEndOfWeekWithWeekStart:v5];
   v11 = [v9 calendarDateByAddingWeeks:1];
   v12 = [v10 calendarDateByAddingWeeks:-1];
-  v13 = [v12 month];
+  month = [v12 month];
   v55 = v11;
-  if (v13 == [v10 month] && (v14 = objc_msgSend(v9, "month"), v14 == objc_msgSend(v11, "month")))
+  if (month == [v10 month] && (v14 = objc_msgSend(v9, "month"), v14 == objc_msgSend(v11, "month")))
   {
     v15 = 0;
     v54 = 0;
@@ -713,29 +713,29 @@
 
   else
   {
-    v18 = [v4 month];
-    if (v18 == [v12 month])
+    month2 = [dateCopy month];
+    if (month2 == [v12 month])
     {
-      v19 = [v9 calendarDateForEndOfMonth];
+      calendarDateForEndOfMonth = [v9 calendarDateForEndOfMonth];
 
-      v20 = [v19 day];
+      v20 = [calendarDateForEndOfMonth day];
       v15 = 0;
       v17 = v20 - [v9 day] + 1;
       v54 = 1;
       v16 = 2;
-      v10 = v19;
+      v10 = calendarDateForEndOfMonth;
     }
 
     else
     {
-      v21 = [v10 calendarDateForMonth];
+      calendarDateForMonth = [v10 calendarDateForMonth];
 
       v22 = [v10 day];
       v54 = 0;
-      v15 = v22 - [v21 day] - 6;
+      v15 = v22 - [calendarDateForMonth day] - 6;
       v16 = 3;
       v17 = 7;
-      v9 = v21;
+      v9 = calendarDateForMonth;
     }
   }
 
@@ -751,19 +751,19 @@
     v25 = 0;
   }
 
-  v27 = [(LargeMonthViewController *)self view];
-  [v27 bounds];
+  view = [(LargeMonthViewController *)self view];
+  [view bounds];
   v29 = v28;
   v31 = v30;
   v33 = v32;
 
   [(LargeMonthViewController *)self _subviewHeightForDate:v9];
   v35 = v34;
-  v36 = [(InfiniteScrollViewController *)self dequeueReusableView];
-  if (v36)
+  dequeueReusableView = [(InfiniteScrollViewController *)self dequeueReusableView];
+  if (dequeueReusableView)
   {
-    v37 = v36;
-    [(LargeMonthWeekView *)v36 setFrame:v29, v31, v33, v35];
+    v37 = dequeueReusableView;
+    [(LargeMonthWeekView *)dequeueReusableView setFrame:v29, v31, v33, v35];
   }
 
   else
@@ -773,10 +773,10 @@
     [(LargeMonthWeekView *)v37 setDelegate:self];
     v38 = [[EKUIRightClickEmptySpaceInteraction alloc] initWithDelegate:self];
     v53 = v10;
-    v39 = self;
+    selfCopy = self;
     v40 = v25;
     v41 = v16;
-    v42 = v4;
+    v42 = dateCopy;
     v43 = v12;
     v44 = v17;
     v45 = v15;
@@ -786,19 +786,19 @@
     v15 = v45;
     v17 = v44;
     v12 = v43;
-    v4 = v42;
+    dateCopy = v42;
     v16 = v41;
     v25 = v40;
-    self = v39;
+    self = selfCopy;
     v10 = v53;
   }
 
   [(LargeMonthWeekView *)v37 setStartDate:v9 endDate:v10 dayCount:v17 + v15 todayDay:v25 reload:0];
-  v47 = [v9 month];
-  if (v47 == [(EKCalendarDate *)self->_navigationBarDisplayedDate month])
+  month3 = [v9 month];
+  if (month3 == [(EKCalendarDate *)self->_navigationBarDisplayedDate month])
   {
-    v48 = [v9 year];
-    v49 = v48 != [(EKCalendarDate *)self->_navigationBarDisplayedDate year];
+    year = [v9 year];
+    v49 = year != [(EKCalendarDate *)self->_navigationBarDisplayedDate year];
   }
 
   else
@@ -824,10 +824,10 @@
   return v37;
 }
 
-- (id)createInitialViewForDate:(id)a3
+- (id)createInitialViewForDate:(id)date
 {
-  v4 = a3;
-  v5 = [v4 calendarDateForWeekWithWeekStart:CUIKOneIndexedWeekStart()];
+  dateCopy = date;
+  v5 = [dateCopy calendarDateForWeekWithWeekStart:CUIKOneIndexedWeekStart()];
 
   v6 = [(LargeMonthViewController *)self _createLargeMonthWeekViewForDate:v5];
   [v6 reloadData];
@@ -835,17 +835,17 @@
   return v6;
 }
 
-- (id)newTopViewAboveViewWithCalendarDate:(id)a3
+- (id)newTopViewAboveViewWithCalendarDate:(id)date
 {
-  v4 = [(MonthViewController *)self calendarDateForSubviewAboveSubviewWithCalendarDate:a3];
+  v4 = [(MonthViewController *)self calendarDateForSubviewAboveSubviewWithCalendarDate:date];
   v5 = [(LargeMonthViewController *)self _createLargeMonthWeekViewForDate:v4];
 
   return v5;
 }
 
-- (id)newBottomViewBelowViewWithCalendarDate:(id)a3
+- (id)newBottomViewBelowViewWithCalendarDate:(id)date
 {
-  v4 = [(MonthViewController *)self calendarDateForSubviewBelowSubviewWithCalendarDate:a3];
+  v4 = [(MonthViewController *)self calendarDateForSubviewBelowSubviewWithCalendarDate:date];
   v5 = [(LargeMonthViewController *)self _createLargeMonthWeekViewForDate:v4];
 
   return v5;
@@ -854,7 +854,7 @@
 - (double)decelerationDistanceThresholdForPreferringMonthBoundary
 {
   v3 = objc_opt_class();
-  v4 = [(LargeMonthViewController *)self view];
+  view = [(LargeMonthViewController *)self view];
   EKUICurrentWindowSize();
   [v3 _cellHeightForMultiplier:3.5 windowSize:{v5, v6}];
   v8 = v7;
@@ -862,15 +862,15 @@
   return v8;
 }
 
-- (void)updatePalette:(id)a3
+- (void)updatePalette:(id)palette
 {
-  v4 = a3;
+  paletteCopy = palette;
   [(LargeMonthViewController *)self updateNavigationBarDisplayedDateString];
-  [v4 setWeekdayHeaderVisible:1];
-  [v4 setWeekdayHeaderFillsHalfWidth:0];
-  [v4 setTodayButtonVisible:CalSolariumEnabled() ^ 1];
-  [v4 setDateStringVisible:CalSolariumEnabled() ^ 1];
-  [v4 setDividerLineVisible:CalSystemSolariumEnabled()];
+  [paletteCopy setWeekdayHeaderVisible:1];
+  [paletteCopy setWeekdayHeaderFillsHalfWidth:0];
+  [paletteCopy setTodayButtonVisible:CalSolariumEnabled() ^ 1];
+  [paletteCopy setDateStringVisible:CalSolariumEnabled() ^ 1];
+  [paletteCopy setDividerLineVisible:CalSystemSolariumEnabled()];
   if (CalSolariumEnabled())
   {
     v5 = 0;
@@ -881,34 +881,34 @@
     v5 = 2;
   }
 
-  [v4 setFocusBannerPlacement:v5];
-  [v4 setDayScrubberController:0];
+  [paletteCopy setFocusBannerPlacement:v5];
+  [paletteCopy setDayScrubberController:0];
   [(LargeMonthViewController *)self _updateDayHeaderFrames];
-  [v4 sizeToFit];
-  [v4 frame];
+  [paletteCopy sizeToFit];
+  [paletteCopy frame];
   v7 = v6;
-  v8 = [v4 containingPalette];
+  containingPalette = [paletteCopy containingPalette];
 
-  [v8 setPreferredHeight:v7];
+  [containingPalette setPreferredHeight:v7];
 }
 
 - (void)updateNavigationBarDisplayedDateString
 {
-  v3 = [(InfiniteScrollViewController *)self dateOfCenterViewOnScreen];
-  v4 = v3;
-  if (self->_shouldForceAllowUpdateNavigationBarDateString || !self->_navigationBarDisplayedDate || (v5 = [v3 month], v5 != -[EKCalendarDate month](self->_navigationBarDisplayedDate, "month")) || (v6 = objc_msgSend(v4, "year"), v6 != -[EKCalendarDate year](self->_navigationBarDisplayedDate, "year")))
+  dateOfCenterViewOnScreen = [(InfiniteScrollViewController *)self dateOfCenterViewOnScreen];
+  v4 = dateOfCenterViewOnScreen;
+  if (self->_shouldForceAllowUpdateNavigationBarDateString || !self->_navigationBarDisplayedDate || (v5 = [dateOfCenterViewOnScreen month], v5 != -[EKCalendarDate month](self->_navigationBarDisplayedDate, "month")) || (v6 = objc_msgSend(v4, "year"), v6 != -[EKCalendarDate year](self->_navigationBarDisplayedDate, "year")))
   {
     self->_shouldForceAllowUpdateNavigationBarDateString = 0;
-    v7 = [(LargeMonthViewController *)self navigationController];
-    v8 = [v7 topMainViewControllerContainer];
-    if ([v8 currentChildViewControllerIsLoaded])
+    navigationController = [(LargeMonthViewController *)self navigationController];
+    topMainViewControllerContainer = [navigationController topMainViewControllerContainer];
+    if ([topMainViewControllerContainer currentChildViewControllerIsLoaded])
     {
-      v9 = [v7 topMainViewControllerContainer];
-      v10 = [v9 currentChildViewController];
+      topMainViewControllerContainer2 = [navigationController topMainViewControllerContainer];
+      currentChildViewController = [topMainViewControllerContainer2 currentChildViewController];
 
-      if (v10 == self)
+      if (currentChildViewController == self)
       {
-        [v7 setNavBarStringFromDate:v4 includeMonth:1 includeYear:1];
+        [navigationController setNavBarStringFromDate:v4 includeMonth:1 includeYear:1];
       }
     }
 
@@ -950,9 +950,9 @@
 - (CGRect)frameForTodayHighlight
 {
   v3 = CUIKTodayDate();
-  v4 = [(CUIKCalendarModel *)self->super.super.super._model calendar];
-  v5 = [v4 timeZone];
-  v6 = [EKCalendarDate calendarDateWithDate:v3 timeZone:v5];
+  calendar = [(CUIKCalendarModel *)self->super.super.super._model calendar];
+  timeZone = [calendar timeZone];
+  v6 = [EKCalendarDate calendarDateWithDate:v3 timeZone:timeZone];
 
   v7 = [(InfiniteScrollViewController *)self subviewForDate:v6];
   v8 = v7;
@@ -963,8 +963,8 @@
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(LargeMonthViewController *)self view];
-    [v17 convertRect:v8 fromView:{v10, v12, v14, v16}];
+    view = [(LargeMonthViewController *)self view];
+    [view convertRect:v8 fromView:{v10, v12, v14, v16}];
     x = v18;
     y = v20;
     width = v22;
@@ -992,108 +992,108 @@
 
 - (id)shownEventViewController
 {
-  v3 = [(LargeMonthViewController *)self viewControllerToShowFrom];
-  v4 = [v3 presentingViewController];
+  viewControllerToShowFrom = [(LargeMonthViewController *)self viewControllerToShowFrom];
+  presentingViewController = [viewControllerToShowFrom presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
     v7.receiver = self;
     v7.super_class = LargeMonthViewController;
-    v5 = [(MainViewController *)&v7 shownEventViewController];
+    shownEventViewController = [(MainViewController *)&v7 shownEventViewController];
   }
 
   else
   {
-    v5 = 0;
+    shownEventViewController = 0;
   }
 
-  return v5;
+  return shownEventViewController;
 }
 
 - (id)shownEventEditViewController
 {
-  v3 = [(LargeMonthViewController *)self viewControllerToShowFrom];
-  v4 = [v3 presentingViewController];
+  viewControllerToShowFrom = [(LargeMonthViewController *)self viewControllerToShowFrom];
+  presentingViewController = [viewControllerToShowFrom presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
     v7.receiver = self;
     v7.super_class = LargeMonthViewController;
-    v5 = [(MainViewController *)&v7 shownEventEditViewController];
+    shownEventEditViewController = [(MainViewController *)&v7 shownEventEditViewController];
   }
 
   else
   {
-    v5 = 0;
+    shownEventEditViewController = 0;
   }
 
-  return v5;
+  return shownEventEditViewController;
 }
 
 - (BOOL)currentlyEditingEventsWithGestures
 {
-  v2 = [(MonthViewController *)self draggedOccurrenceView];
-  v3 = v2 != 0;
+  draggedOccurrenceView = [(MonthViewController *)self draggedOccurrenceView];
+  v3 = draggedOccurrenceView != 0;
 
   return v3;
 }
 
 - (BOOL)mainViewControllerCanChangeSelectedEvent
 {
-  v2 = [(LargeMonthViewController *)self shownEventEditViewController];
-  v3 = v2 == 0;
+  shownEventEditViewController = [(LargeMonthViewController *)self shownEventEditViewController];
+  v3 = shownEventEditViewController == 0;
 
   return v3;
 }
 
 - (BOOL)mainViewControllerCanChangeSelectedDate
 {
-  v3 = [(LargeMonthViewController *)self shownEventEditViewController];
-  if (v3)
+  shownEventEditViewController = [(LargeMonthViewController *)self shownEventEditViewController];
+  if (shownEventEditViewController)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(LargeMonthViewController *)self shownEventViewController];
-    v4 = v5 == 0;
+    shownEventViewController = [(LargeMonthViewController *)self shownEventViewController];
+    v4 = shownEventViewController == 0;
   }
 
   return v4;
 }
 
-- (void)_navigateToSelectableItemInForwardDirection:(BOOL)a3
+- (void)_navigateToSelectableItemInForwardDirection:(BOOL)direction
 {
-  v3 = a3;
-  v26 = [(LargeMonthViewController *)self presentedViewController];
-  if (![v26 isBeingDismissed])
+  directionCopy = direction;
+  presentedViewController = [(LargeMonthViewController *)self presentedViewController];
+  if (![presentedViewController isBeingDismissed])
   {
-    v5 = [(LargeMonthViewController *)self presentedViewController];
-    v6 = [v5 isBeingPresented];
+    presentedViewController2 = [(LargeMonthViewController *)self presentedViewController];
+    isBeingPresented = [presentedViewController2 isBeingPresented];
 
-    if (v6)
+    if (isBeingPresented)
     {
       return;
     }
 
-    v7 = [(MainViewController *)self model];
-    v8 = [v7 selectedOccurrences];
-    v9 = [v8 count];
+    model = [(MainViewController *)self model];
+    selectedOccurrences = [model selectedOccurrences];
+    v9 = [selectedOccurrences count];
 
     if (v9 != 1)
     {
       return;
     }
 
-    v10 = [(MainViewController *)self model];
-    v11 = [v10 selectedOccurrence];
+    model2 = [(MainViewController *)self model];
+    selectedOccurrence = [model2 selectedOccurrence];
 
     linearNavigationSelectedWeek = self->_linearNavigationSelectedWeek;
     if (!linearNavigationSelectedWeek)
     {
-      v13 = [v11 startCalendarDate];
-      v14 = [(InfiniteScrollViewController *)self subviewForDate:v13];
+      startCalendarDate = [selectedOccurrence startCalendarDate];
+      v14 = [(InfiniteScrollViewController *)self subviewForDate:startCalendarDate];
       v15 = self->_linearNavigationSelectedWeek;
       self->_linearNavigationSelectedWeek = v14;
 
@@ -1107,7 +1107,7 @@
       v17 = 0;
       while (1)
       {
-        if (v3)
+        if (directionCopy)
         {
           [(LargeMonthWeekView *)v16 findNextOccurrenceAndShouldMoveNext:&v29];
         }
@@ -1124,7 +1124,7 @@
 
         if (v29 == 1)
         {
-          v19 = [(LargeMonthViewController *)self _findNextWeekAfterWeek:v16 inForwardDirection:v3];
+          v19 = [(LargeMonthViewController *)self _findNextWeekAfterWeek:v16 inForwardDirection:directionCopy];
 
           v16 = v19;
         }
@@ -1145,17 +1145,17 @@
       }
 
       objc_storeStrong(&self->_linearNavigationSelectedWeek, v16);
-      v21 = [(MainViewController *)self model];
-      if ([v21 selectedOccurrenceSelectionSource] == 1)
+      model3 = [(MainViewController *)self model];
+      if ([model3 selectedOccurrenceSelectionSource] == 1)
       {
-        v22 = [(LargeMonthViewController *)self presentedViewController];
+        presentedViewController3 = [(LargeMonthViewController *)self presentedViewController];
 
-        if (!v22)
+        if (!presentedViewController3)
         {
-          v23 = [(MainViewController *)self model];
+          model4 = [(MainViewController *)self model];
           v24 = [NSArray arrayWithObject:v18];
-          v25 = [(MainViewController *)self model];
-          [v23 setSelectedOccurrences:v24 source:objc_msgSend(v25 forceChange:{"selectedOccurrenceSelectionSource"), 0}];
+          model5 = [(MainViewController *)self model];
+          [model4 setSelectedOccurrences:v24 source:objc_msgSend(model5 forceChange:{"selectedOccurrenceSelectionSource"), 0}];
 
           goto LABEL_28;
         }
@@ -1184,23 +1184,23 @@ LABEL_28:
   }
 }
 
-- (id)_findNextWeekAfterWeek:(id)a3 inForwardDirection:(BOOL)a4
+- (id)_findNextWeekAfterWeek:(id)week inForwardDirection:(BOOL)direction
 {
-  if (a4)
+  if (direction)
   {
-    v5 = [a3 endDate];
-    v6 = v5;
+    endDate = [week endDate];
+    v6 = endDate;
     v7 = 1;
   }
 
   else
   {
-    v5 = [a3 startDate];
-    v6 = v5;
+    endDate = [week startDate];
+    v6 = endDate;
     v7 = -1;
   }
 
-  v8 = [v5 calendarDateByAddingDays:v7];
+  v8 = [endDate calendarDateByAddingDays:v7];
 
   v9 = [(InfiniteScrollViewController *)self subviewForDate:v8];
 
@@ -1209,60 +1209,60 @@ LABEL_28:
 
 - (void)showNextOccurrenceOfSelectableItem
 {
-  v3 = [(LargeMonthViewController *)self shownEventViewController];
+  shownEventViewController = [(LargeMonthViewController *)self shownEventViewController];
 
-  if (v3)
+  if (shownEventViewController)
   {
-    v4 = [(LargeMonthViewController *)self shownEventViewController];
-    [(LargeMonthViewController *)self eventViewControllerNextButtonWasTapped:v4];
+    shownEventViewController2 = [(LargeMonthViewController *)self shownEventViewController];
+    [(LargeMonthViewController *)self eventViewControllerNextButtonWasTapped:shownEventViewController2];
   }
 }
 
 - (void)showPreviousOccurrenceOfSelectableItem
 {
-  v3 = [(LargeMonthViewController *)self shownEventViewController];
+  shownEventViewController = [(LargeMonthViewController *)self shownEventViewController];
 
-  if (v3)
+  if (shownEventViewController)
   {
-    v4 = [(LargeMonthViewController *)self shownEventViewController];
-    [(LargeMonthViewController *)self eventViewControllerPreviousButtonWasTapped:v4];
+    shownEventViewController2 = [(LargeMonthViewController *)self shownEventViewController];
+    [(LargeMonthViewController *)self eventViewControllerPreviousButtonWasTapped:shownEventViewController2];
   }
 }
 
 - (void)showDetailsForCurrentSelectableItem
 {
-  v3 = [(LargeMonthViewController *)self presentedViewController];
-  if (!v3)
+  presentedViewController = [(LargeMonthViewController *)self presentedViewController];
+  if (!presentedViewController)
   {
-    v4 = [(MainViewController *)self model];
-    v5 = [v4 pointerTargetedOccurrences];
-    v6 = [v5 count];
+    model = [(MainViewController *)self model];
+    pointerTargetedOccurrences = [model pointerTargetedOccurrences];
+    v6 = [pointerTargetedOccurrences count];
 
     if (v6 != 1)
     {
       return;
     }
 
-    v7 = [(MainViewController *)self model];
-    v8 = [v7 pointerTargetedOccurrences];
-    v9 = [v8 firstObject];
-    [(LargeMonthViewController *)self showEvent:v9 animated:1 showMode:1 context:0];
+    model2 = [(MainViewController *)self model];
+    pointerTargetedOccurrences2 = [model2 pointerTargetedOccurrences];
+    firstObject = [pointerTargetedOccurrences2 firstObject];
+    [(LargeMonthViewController *)self showEvent:firstObject animated:1 showMode:1 context:0];
 
-    v10 = [(MainViewController *)self model];
-    [v10 setSelectedOccurrenceSelectionSource:0];
-    v3 = v10;
+    model3 = [(MainViewController *)self model];
+    [model3 setSelectedOccurrenceSelectionSource:0];
+    presentedViewController = model3;
   }
 }
 
-- (void)_showNextDateComponentUnitInForwardDirection:(BOOL)a3 animated:(BOOL)a4
+- (void)_showNextDateComponentUnitInForwardDirection:(BOOL)direction animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  directionCopy = direction;
   [(LargeMonthViewController *)self _closeEventPresentationAnimated:0];
-  v7 = [(MainViewController *)self model];
-  v10 = [v7 selectedDate];
+  model = [(MainViewController *)self model];
+  selectedDate = [model selectedDate];
 
-  if (v5)
+  if (directionCopy)
   {
     v8 = 1;
   }
@@ -1272,19 +1272,19 @@ LABEL_28:
     v8 = -1;
   }
 
-  v9 = [v10 calendarDateByAddingMonths:v8];
-  [(MonthViewController *)self selectDate:v9 animated:v4];
+  v9 = [selectedDate calendarDateByAddingMonths:v8];
+  [(MonthViewController *)self selectDate:v9 animated:animatedCopy];
 }
 
-- (double)_subviewHeightForDate:(id)a3
+- (double)_subviewHeightForDate:(id)date
 {
-  v4 = a3;
-  v5 = [v4 calendarDateForWeekWithWeekStart:CUIKOneIndexedWeekStart()];
+  dateCopy = date;
+  v5 = [dateCopy calendarDateForWeekWithWeekStart:CUIKOneIndexedWeekStart()];
   v6 = [v5 calendarDateByAddingWeeks:1];
   v7 = [v6 day];
-  v8 = [v4 calendarDateForMonth];
+  calendarDateForMonth = [dateCopy calendarDateForMonth];
 
-  v9 = [v8 day];
+  v9 = [calendarDateForMonth day];
   if (v7 == v9)
   {
     v10 = 2.0;
@@ -1296,7 +1296,7 @@ LABEL_28:
   }
 
   v11 = objc_opt_class();
-  v12 = [(LargeMonthViewController *)self view];
+  view = [(LargeMonthViewController *)self view];
   EKUICurrentWindowSize();
   [v11 _cellHeightForMultiplier:v10 windowSize:{v13, v14}];
   v16 = v15;
@@ -1304,64 +1304,64 @@ LABEL_28:
   return v16;
 }
 
-+ (double)_cellHeightForMultiplier:(double)a3 windowSize:(CGSize)a4
++ (double)_cellHeightForMultiplier:(double)multiplier windowSize:(CGSize)size
 {
-  width = a4.width;
+  width = size.width;
   if (qword_100251950 != -1)
   {
     sub_10016FE2C();
   }
 
   [qword_100251948 valueForSize:width];
-  return v6 * a3;
+  return v6 * multiplier;
 }
 
-- (id)pushedWeekViewControllerWithDate:(id)a3 animated:(BOOL)a4
+- (id)pushedWeekViewControllerWithDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(LargeMonthViewController *)self nextLevelWeekViewControllerWithDate:a3];
-  v7 = [(LargeMonthViewController *)self navigationController];
-  [v7 pushViewController:v6 animated:v4];
+  animatedCopy = animated;
+  v6 = [(LargeMonthViewController *)self nextLevelWeekViewControllerWithDate:date];
+  navigationController = [(LargeMonthViewController *)self navigationController];
+  [navigationController pushViewController:v6 animated:animatedCopy];
 
   return v6;
 }
 
-- (id)nextLevelWeekViewControllerWithDate:(id)a3
+- (id)nextLevelWeekViewControllerWithDate:(id)date
 {
-  [(CUIKCalendarModel *)self->super.super.super._model setSelectedDate:a3];
+  [(CUIKCalendarModel *)self->super.super.super._model setSelectedDate:date];
   v4 = [WeekViewContainerViewController alloc];
   model = self->super.super.super._model;
-  v6 = [(MainViewController *)self window];
-  v7 = [(MainViewControllerContainer *)v4 initWithModel:model window:v6];
+  window = [(MainViewController *)self window];
+  v7 = [(MainViewControllerContainer *)v4 initWithModel:model window:window];
 
   return v7;
 }
 
-- (id)occurrencesForStartDate:(id)a3 endDate:(id)a4 waitForLoad:(BOOL)a5
+- (id)occurrencesForStartDate:(id)date endDate:(id)endDate waitForLoad:(BOOL)load
 {
-  v5 = [(CUIKCalendarModel *)self->super.super.super._model occurrencesForStartDate:a3 endDate:a4 preSorted:0 waitForLoad:a5];
-  v6 = [v5 occurrences];
+  v5 = [(CUIKCalendarModel *)self->super.super.super._model occurrencesForStartDate:date endDate:endDate preSorted:0 waitForLoad:load];
+  occurrences = [v5 occurrences];
 
-  return v6;
+  return occurrences;
 }
 
-- (void)didCompleteBackgroundOccurrenceRenderingForLargeMonthWeekView:(id)a3
+- (void)didCompleteBackgroundOccurrenceRenderingForLargeMonthWeekView:(id)view
 {
-  v4 = a3;
-  v5 = [(MainViewController *)self model];
-  v6 = [v5 selectedOccurrence];
+  viewCopy = view;
+  model = [(MainViewController *)self model];
+  selectedOccurrence = [model selectedOccurrence];
 
   v7 = [(LargeMonthViewController *)self isReadyToShowViewControllersInsideEnqueueableManagedNavigationController:0 isPreemptiveCheck:1];
-  if (v6)
+  if (selectedOccurrence)
   {
     v8 = v7;
     if ([(LargeMonthViewController *)self isWaitingForBackgroundLoadingOfSelectedEventOccurrenceView])
     {
-      v9 = [v6 endCalendarDate];
-      [v9 absoluteTime];
+      endCalendarDate = [selectedOccurrence endCalendarDate];
+      [endCalendarDate absoluteTime];
       v11 = v10;
-      v12 = [v4 startDate];
-      [v12 absoluteTime];
+      startDate = [viewCopy startDate];
+      [startDate absoluteTime];
       if (v11 <= v13)
       {
 
@@ -1369,11 +1369,11 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v14 = [v6 startCalendarDate];
-      [v14 absoluteTime];
+      startCalendarDate = [selectedOccurrence startCalendarDate];
+      [startCalendarDate absoluteTime];
       v16 = v15;
-      v17 = [v4 endDate];
-      [v17 absoluteTime];
+      endDate = [viewCopy endDate];
+      [endDate absoluteTime];
       v19 = (v16 < v18) & v8;
 
       if (v19 == 1)
@@ -1385,7 +1385,7 @@ LABEL_9:
           v21 = v20;
           v22 = objc_opt_class();
           v23 = v22;
-          v24 = [(MainViewController *)self managedNavigationController];
+          managedNavigationController = [(MainViewController *)self managedNavigationController];
           *v26 = 138412546;
           *&v26[4] = v22;
           *&v26[12] = 2112;
@@ -1394,8 +1394,8 @@ LABEL_9:
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%@ notifying %@ that it completed background rendering of the occurrence view for the selected event.", v26, 0x16u);
         }
 
-        v9 = [(MainViewController *)self managedNavigationController:*v26];
-        [v9 sourceViewController:self notifiesReadinessForPresentation:1];
+        endCalendarDate = [(MainViewController *)self managedNavigationController:*v26];
+        [endCalendarDate sourceViewController:self notifiesReadinessForPresentation:1];
         goto LABEL_9;
       }
     }
@@ -1406,47 +1406,47 @@ LABEL_10:
 
 - (BOOL)isBackgroundScene
 {
-  v2 = [(MainViewController *)self window];
-  v3 = [v2 windowScene];
-  v4 = [v3 activationState] == 2;
+  window = [(MainViewController *)self window];
+  windowScene = [window windowScene];
+  v4 = [windowScene activationState] == 2;
 
   return v4;
 }
 
-- (void)largeMonthWeekView:(id)a3 didTapOccurrence:(id)a4 onDay:(id)a5 extendSelection:(BOOL)a6 source:(unint64_t)a7 tappedSymbol:(BOOL)a8
+- (void)largeMonthWeekView:(id)view didTapOccurrence:(id)occurrence onDay:(id)day extendSelection:(BOOL)selection source:(unint64_t)source tappedSymbol:(BOOL)symbol
 {
-  v8 = a8;
-  v10 = a6;
-  v36 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = [(MainViewController *)self model];
-  v17 = [v16 pasteboardManager];
-  if (v14)
+  symbolCopy = symbol;
+  selectionCopy = selection;
+  viewCopy = view;
+  occurrenceCopy = occurrence;
+  dayCopy = day;
+  model = [(MainViewController *)self model];
+  pasteboardManager = [model pasteboardManager];
+  if (occurrenceCopy)
   {
-    [v14 startDate];
+    [occurrenceCopy startDate];
   }
 
   else
   {
-    [v15 date];
+    [dayCopy date];
   }
   v18 = ;
-  [v17 setDateForPaste:v18];
+  [pasteboardManager setDateForPaste:v18];
 
-  v19 = [(LargeMonthViewController *)self shownEventEditViewController];
+  shownEventEditViewController = [(LargeMonthViewController *)self shownEventEditViewController];
 
-  if (v19)
+  if (shownEventEditViewController)
   {
     goto LABEL_5;
   }
 
-  if ([EKDayOccurrenceView isUserInitiated:a7])
+  if ([EKDayOccurrenceView isUserInitiated:source])
   {
-    v20 = [(LargeMonthViewController *)self presentedViewController];
-    v21 = [v20 isBeingDismissed];
+    presentedViewController = [(LargeMonthViewController *)self presentedViewController];
+    isBeingDismissed = [presentedViewController isBeingDismissed];
 
-    if (v21)
+    if (isBeingDismissed)
     {
       goto LABEL_5;
     }
@@ -1454,46 +1454,46 @@ LABEL_10:
     p_isTrackingTouches = &self->_isTrackingTouches;
     if (!self->_isTrackingTouches)
     {
-      v23 = [(InfiniteScrollViewController *)self subviewForDate:v15];
+      v23 = [(InfiniteScrollViewController *)self subviewForDate:dayCopy];
       v24 = v23;
-      if (v14 && v23)
+      if (occurrenceCopy && v23)
       {
-        if (v10)
+        if (selectionCopy)
         {
-          v25 = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrences];
-          v26 = [v25 containsObject:v14];
+          selectedOccurrences = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrences];
+          v26 = [selectedOccurrences containsObject:occurrenceCopy];
 
           if (v26)
           {
-            [(LargeMonthViewController *)self removeEventFromSelection:v14 inWeek:v24 updateModel:1];
+            [(LargeMonthViewController *)self removeEventFromSelection:occurrenceCopy inWeek:v24 updateModel:1];
           }
 
           else
           {
-            [(LargeMonthViewController *)self addEventToSelection:v14 inWeek:v24 updateModel:1];
+            [(LargeMonthViewController *)self addEventToSelection:occurrenceCopy inWeek:v24 updateModel:1];
           }
         }
 
-        else if (v8 && [v14 isIntegrationEvent])
+        else if (symbolCopy && [occurrenceCopy isIntegrationEvent])
         {
-          [(LargeMonthViewController *)self completeReminderFromTap:v14];
+          [(LargeMonthViewController *)self completeReminderFromTap:occurrenceCopy];
         }
 
-        else if (a7)
+        else if (source)
         {
-          [(LargeMonthViewController *)self _highlightOccurrenceForPointerTarget:v14 inWeek:v24 onDay:v15];
+          [(LargeMonthViewController *)self _highlightOccurrenceForPointerTarget:occurrenceCopy inWeek:v24 onDay:dayCopy];
         }
 
         else
         {
-          [(LargeMonthViewController *)self _showEventDetailsForOccurrence:v14 inWeek:v24 onDay:v15 creationMethod:0];
+          [(LargeMonthViewController *)self _showEventDetailsForOccurrence:occurrenceCopy inWeek:v24 onDay:dayCopy creationMethod:0];
         }
       }
 
       else
       {
-        v33 = [(LargeMonthViewController *)self shownEventEditViewController];
-        if (v33)
+        shownEventEditViewController2 = [(LargeMonthViewController *)self shownEventEditViewController];
+        if (shownEventEditViewController2)
         {
           currentlyEditingEvent = self->_currentlyEditingEvent;
 
@@ -1503,8 +1503,8 @@ LABEL_10:
             [(MonthViewController *)self removeDraggingOccurrenceAnimated:1];
             [(MonthViewController *)self removeAllWeekHighlights];
             [(LargeMonthViewController *)self selectOccurrence:0 inWeek:0];
-            v35 = [(InfiniteScrollViewController *)self scrollView];
-            [v35 setScrollEnabled:1];
+            scrollView = [(InfiniteScrollViewController *)self scrollView];
+            [scrollView setScrollEnabled:1];
           }
         }
       }
@@ -1519,17 +1519,17 @@ LABEL_10:
   if (self->_isTrackingTouches)
   {
 LABEL_17:
-    v27 = [(LargeMonthViewController *)self shownEventViewController];
+    shownEventViewController = [(LargeMonthViewController *)self shownEventViewController];
 
-    if (v27)
+    if (shownEventViewController)
     {
-      v28 = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrence];
+      selectedOccurrence = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrence];
 
-      if (v28)
+      if (selectedOccurrence)
       {
-        v29 = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrence];
-        v30 = [(NSMutableArray *)self->_weeksContainingSelectedOccurrences firstObject];
-        [(LargeMonthViewController *)self _showEventDetailsForOccurrence:v29 inWeek:v30 onDay:self->_tappedDay creationMethod:0];
+        selectedOccurrence2 = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrence];
+        firstObject = [(NSMutableArray *)self->_weeksContainingSelectedOccurrences firstObject];
+        [(LargeMonthViewController *)self _showEventDetailsForOccurrence:selectedOccurrence2 inWeek:firstObject onDay:self->_tappedDay creationMethod:0];
       }
 
       else
@@ -1542,27 +1542,27 @@ LABEL_17:
     goto LABEL_5;
   }
 
-  if (v14)
+  if (occurrenceCopy)
   {
-    v31 = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrences];
-    v32 = [v31 containsObject:v14];
+    selectedOccurrences2 = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrences];
+    v32 = [selectedOccurrences2 containsObject:occurrenceCopy];
 
     if ((v32 & 1) == 0)
     {
-      [(CUIKCalendarModel *)self->super.super.super._model setSelectedOccurrence:v14];
+      [(CUIKCalendarModel *)self->super.super.super._model setSelectedOccurrence:occurrenceCopy];
     }
   }
 
 LABEL_5:
 }
 
-- (void)completeReminderFromTap:(id)a3
+- (void)completeReminderFromTap:(id)tap
 {
-  v4 = a3;
-  [v4 setCompleted:{objc_msgSend(v4, "completed") ^ 1}];
-  v5 = [(LargeMonthViewController *)self EKUI_editor];
+  tapCopy = tap;
+  [tapCopy setCompleted:{objc_msgSend(tapCopy, "completed") ^ 1}];
+  eKUI_editor = [(LargeMonthViewController *)self EKUI_editor];
   v9 = 0;
-  v6 = [v5 saveEvent:v4 span:0 error:&v9];
+  v6 = [eKUI_editor saveEvent:tapCopy span:0 error:&v9];
 
   v7 = v9;
   if ((v6 & 1) == 0)
@@ -1577,83 +1577,83 @@ LABEL_5:
   }
 }
 
-- (void)largeMonthWeekView:(id)a3 didDoubleTapOnDay:(id)a4
+- (void)largeMonthWeekView:(id)view didDoubleTapOnDay:(id)day
 {
-  v8 = a4;
+  dayCopy = day;
   [(LargeMonthViewController *)self _closeEventPresentationAnimated:0];
   [(MonthViewController *)self removeAllWeekHighlights];
-  [(CUIKCalendarModel *)self->super.super.super._model setSelectedDate:v8];
-  v5 = [(LargeMonthViewController *)self pushedWeekViewControllerWithDate:v8 animated:0];
-  v6 = [v5 currentChildViewController];
+  [(CUIKCalendarModel *)self->super.super.super._model setSelectedDate:dayCopy];
+  v5 = [(LargeMonthViewController *)self pushedWeekViewControllerWithDate:dayCopy animated:0];
+  currentChildViewController = [v5 currentChildViewController];
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 pushedDayViewControllerWithDate:v8 animated:0];
+    v7 = [currentChildViewController pushedDayViewControllerWithDate:dayCopy animated:0];
   }
 }
 
-- (void)largeMonthWeekView:(id)a3 touchesBegan:(id)a4 withEvent:(id)a5
+- (void)largeMonthWeekView:(id)view touchesBegan:(id)began withEvent:(id)event
 {
-  v8 = a4;
-  v6 = [(LargeMonthViewController *)self shownEventEditViewController];
+  beganCopy = began;
+  shownEventEditViewController = [(LargeMonthViewController *)self shownEventEditViewController];
 
-  if (!v6)
+  if (!shownEventEditViewController)
   {
-    v7 = [(LargeMonthViewController *)self shownEventViewController];
+    shownEventViewController = [(LargeMonthViewController *)self shownEventViewController];
 
-    if (v7)
+    if (shownEventViewController)
     {
       self->_isTrackingTouches = 1;
-      [(LargeMonthViewController *)self _scrubWithTouches:v8];
+      [(LargeMonthViewController *)self _scrubWithTouches:beganCopy];
     }
   }
 }
 
-- (void)largeMonthWeekView:(id)a3 touchesMoved:(id)a4 withEvent:(id)a5
+- (void)largeMonthWeekView:(id)view touchesMoved:(id)moved withEvent:(id)event
 {
-  v8 = a4;
-  v6 = [(LargeMonthViewController *)self shownEventEditViewController];
+  movedCopy = moved;
+  shownEventEditViewController = [(LargeMonthViewController *)self shownEventEditViewController];
 
-  if (!v6)
+  if (!shownEventEditViewController)
   {
-    v7 = [(LargeMonthViewController *)self shownEventViewController];
+    shownEventViewController = [(LargeMonthViewController *)self shownEventViewController];
 
-    if (v7)
+    if (shownEventViewController)
     {
-      [(LargeMonthViewController *)self _scrubWithTouches:v8];
+      [(LargeMonthViewController *)self _scrubWithTouches:movedCopy];
     }
   }
 }
 
-- (void)largeMonthWeekView:(id)a3 touchesEnded:(id)a4 withEvent:(id)a5
+- (void)largeMonthWeekView:(id)view touchesEnded:(id)ended withEvent:(id)event
 {
-  v20 = a4;
-  v6 = [(LargeMonthViewController *)self shownEventEditViewController];
+  endedCopy = ended;
+  shownEventEditViewController = [(LargeMonthViewController *)self shownEventEditViewController];
 
-  if (!v6)
+  if (!shownEventEditViewController)
   {
     self->_isTrackingTouches = 0;
-    v7 = [(LargeMonthViewController *)self shownEventViewController];
+    shownEventViewController = [(LargeMonthViewController *)self shownEventViewController];
 
-    if (v7)
+    if (shownEventViewController)
     {
-      [(LargeMonthViewController *)self _scrubWithTouches:v20];
-      v8 = [(MainViewController *)self model];
-      v9 = [v8 selectedOccurrence];
+      [(LargeMonthViewController *)self _scrubWithTouches:endedCopy];
+      model = [(MainViewController *)self model];
+      selectedOccurrence = [model selectedOccurrence];
 
-      if (v9)
+      if (selectedOccurrence)
       {
-        v10 = [v20 anyObject];
-        v11 = [(InfiniteScrollViewController *)self scrollView];
-        [v10 locationInView:v11];
+        anyObject = [endedCopy anyObject];
+        scrollView = [(InfiniteScrollViewController *)self scrollView];
+        [anyObject locationInView:scrollView];
         v13 = v12;
         v15 = v14;
 
         v16 = [(LargeMonthViewController *)self _weekViewAtPoint:0 pointInWeek:v13, v15];
-        v17 = [(MainViewController *)self model];
-        v18 = [v17 selectedOccurrence];
+        model2 = [(MainViewController *)self model];
+        selectedOccurrence2 = [model2 selectedOccurrence];
         v19 = [(MonthViewController *)self dateAtPoint:v13, v15];
-        [(LargeMonthViewController *)self _showEventDetailsForOccurrence:v18 inWeek:v16 onDay:v19 creationMethod:0];
+        [(LargeMonthViewController *)self _showEventDetailsForOccurrence:selectedOccurrence2 inWeek:v16 onDay:v19 creationMethod:0];
       }
 
       else
@@ -1668,66 +1668,66 @@ LABEL_5:
 
 - (id)presentationControllerForEditMenu
 {
-  v2 = [(LargeMonthViewController *)self currentPresentationController];
-  v3 = [v2 presentedViewController];
+  currentPresentationController = [(LargeMonthViewController *)self currentPresentationController];
+  presentedViewController = [currentPresentationController presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
-    v4 = [v2 presentedViewController];
+    presentedViewController2 = [currentPresentationController presentedViewController];
   }
 
   else
   {
-    v4 = v2;
+    presentedViewController2 = currentPresentationController;
   }
 
-  v5 = v4;
+  v5 = presentedViewController2;
 
   return v5;
 }
 
-- (BOOL)interaction:(id)a3 shouldShowMenuAtPoint:(CGPoint)a4 inView:(id)a5
+- (BOOL)interaction:(id)interaction shouldShowMenuAtPoint:(CGPoint)point inView:(id)view
 {
-  v5 = [a5 occurrenceAtPoint:{a3, a4.x, a4.y}];
+  v5 = [view occurrenceAtPoint:{interaction, point.x, point.y}];
   v6 = v5 == 0;
 
   return v6;
 }
 
-- (BOOL)interaction:(id)a3 canPasteEventAtPoint:(CGPoint)a4 inView:(id)a5
+- (BOOL)interaction:(id)interaction canPasteEventAtPoint:(CGPoint)point inView:(id)view
 {
-  v5 = [(MainViewController *)self model:a3];
-  v6 = [v5 pasteboardManager];
-  v7 = [v6 canPerformPaste];
+  v5 = [(MainViewController *)self model:interaction];
+  pasteboardManager = [v5 pasteboardManager];
+  canPerformPaste = [pasteboardManager canPerformPaste];
+
+  return canPerformPaste;
+}
+
+- (BOOL)interaction:(id)interaction canCreateEventAtPoint:(CGPoint)point inView:(id)view
+{
+  v5 = [(MainViewController *)self model:interaction];
+  defaultCalendarForNewEvents = [v5 defaultCalendarForNewEvents];
+  v7 = defaultCalendarForNewEvents != 0;
 
   return v7;
 }
 
-- (BOOL)interaction:(id)a3 canCreateEventAtPoint:(CGPoint)a4 inView:(id)a5
+- (BOOL)interaction:(id)interaction canCreateReminderAtPoint:(CGPoint)point inView:(id)view
 {
-  v5 = [(MainViewController *)self model:a3];
-  v6 = [v5 defaultCalendarForNewEvents];
-  v7 = v6 != 0;
+  v5 = [(MainViewController *)self model:interaction];
+  reminderCalendar = [v5 reminderCalendar];
+  v7 = reminderCalendar != 0;
 
   return v7;
 }
 
-- (BOOL)interaction:(id)a3 canCreateReminderAtPoint:(CGPoint)a4 inView:(id)a5
+- (void)interaction:(id)interaction createEventAtPoint:(CGPoint)point inView:(id)view
 {
-  v5 = [(MainViewController *)self model:a3];
-  v6 = [v5 reminderCalendar];
-  v7 = v6 != 0;
-
-  return v7;
-}
-
-- (void)interaction:(id)a3 createEventAtPoint:(CGPoint)a4 inView:(id)a5
-{
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = [(InfiniteScrollViewController *)self scrollView];
-  [v9 convertPoint:v8 fromView:{x, y}];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView convertPoint:viewCopy fromView:{x, y}];
   v11 = v10;
   v13 = v12;
 
@@ -1736,76 +1736,76 @@ LABEL_5:
   [(MonthViewController *)self eventGestureController:0 commitToPoint:v11, v13];
 }
 
-- (void)interaction:(id)a3 createReminderAtPoint:(CGPoint)a4 inView:(id)a5
+- (void)interaction:(id)interaction createReminderAtPoint:(CGPoint)point inView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = [(InfiniteScrollViewController *)self scrollView];
-  [v9 convertPoint:v8 fromView:{x, y}];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView convertPoint:viewCopy fromView:{x, y}];
   v11 = v10;
   v13 = v12;
 
   v17 = [(MonthViewController *)self eventGestureController:0 setUpAtPoint:0 withOccurrence:1 forceNewEvent:v11, v13];
-  v14 = [(MainViewController *)self model];
-  v15 = [v14 reminderCalendar];
-  [v17 setCalendar:v15];
+  model = [(MainViewController *)self model];
+  reminderCalendar = [model reminderCalendar];
+  [v17 setCalendar:reminderCalendar];
 
-  v16 = [v17 startDate];
-  [v17 setEndDate:v16];
+  startDate = [v17 startDate];
+  [v17 setEndDate:startDate];
 
   [(MonthViewController *)self eventGestureController:0 commitToPoint:v11, v13];
 }
 
-- (void)interaction:(id)a3 pasteEventAtPoint:(CGPoint)a4 inView:(id)a5
+- (void)interaction:(id)interaction pasteEventAtPoint:(CGPoint)point inView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = [(InfiniteScrollViewController *)self scrollView];
-  [v9 convertPoint:v8 fromView:{x, y}];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView convertPoint:viewCopy fromView:{x, y}];
   v11 = v10;
   v13 = v12;
 
   v19 = [(MonthViewController *)self dateAtPoint:v11, v13];
-  v14 = [(MainViewController *)self model];
-  v15 = [v14 pasteboardManager];
-  v16 = [v19 date];
-  [v15 setDateForPaste:v16];
+  model = [(MainViewController *)self model];
+  pasteboardManager = [model pasteboardManager];
+  date = [v19 date];
+  [pasteboardManager setDateForPaste:date];
 
-  v17 = [(MainViewController *)self model];
-  v18 = [v17 pasteboardManager];
-  [v18 pasteEventsWithDateMode:0 delegate:self];
+  model2 = [(MainViewController *)self model];
+  pasteboardManager2 = [model2 pasteboardManager];
+  [pasteboardManager2 pasteEventsWithDateMode:0 delegate:self];
 }
 
-- (id)interaction:(id)a3 titleForPasteActionAtPoint:(CGPoint)a4 inView:(id)a5
+- (id)interaction:(id)interaction titleForPasteActionAtPoint:(CGPoint)point inView:(id)view
 {
-  v5 = [(MainViewController *)self model:a3];
-  v6 = [v5 pasteboardManager];
-  v7 = [v6 numberOfEventsToPaste];
+  v5 = [(MainViewController *)self model:interaction];
+  pasteboardManager = [v5 pasteboardManager];
+  numberOfEventsToPaste = [pasteboardManager numberOfEventsToPaste];
 
-  return [EKUIRightClickEmptySpaceInteraction localizedPasteStringForEventCount:v7 includeHere:0];
+  return [EKUIRightClickEmptySpaceInteraction localizedPasteStringForEventCount:numberOfEventsToPaste includeHere:0];
 }
 
-- (id)interaction:(id)a3 subtitleForPasteActionAtPoint:(CGPoint)a4 inView:(id)a5
+- (id)interaction:(id)interaction subtitleForPasteActionAtPoint:(CGPoint)point inView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = [(InfiniteScrollViewController *)self scrollView];
-  [v9 convertPoint:v8 fromView:{x, y}];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [scrollView convertPoint:viewCopy fromView:{x, y}];
   v11 = v10;
   v13 = v12;
 
   v14 = [(MonthViewController *)self dateAtPoint:v11, v13];
-  v15 = [v14 date];
+  date = [v14 date];
   v16 = CUIKCalendar();
-  v17 = [CUIKPasteboardUtilities roundedDateForDate:v15 dateMode:0 calendar:v16];
+  v17 = [CUIKPasteboardUtilities roundedDateForDate:date dateMode:0 calendar:v16];
 
   v18 = objc_alloc_init(NSDateFormatter);
   [v18 setCalendar:v16];
-  v19 = [v16 timeZone];
-  [v18 setTimeZone:v19];
+  timeZone = [v16 timeZone];
+  [v18 setTimeZone:timeZone];
 
   [v18 setDoesRelativeDateFormatting:1];
   [v18 setDateStyle:1];
@@ -1817,18 +1817,18 @@ LABEL_5:
 
 - (BOOL)canSpaciallyEditOccurrences
 {
-  v2 = [(LargeMonthViewController *)self presentedViewController];
-  v3 = v2 == 0;
+  presentedViewController = [(LargeMonthViewController *)self presentedViewController];
+  v3 = presentedViewController == 0;
 
   return v3;
 }
 
 - (id)spaciallyEditableOccurrences
 {
-  v2 = [(MainViewController *)self model];
-  v3 = [v2 pointerTargetedOccurrences];
+  model = [(MainViewController *)self model];
+  pointerTargetedOccurrences = [model pointerTargetedOccurrences];
 
-  return v3;
+  return pointerTargetedOccurrences;
 }
 
 - (id)spacialEditUpIncrement
@@ -1885,9 +1885,9 @@ LABEL_5:
   return v3;
 }
 
-- (void)occurrencesWereSpaciallyEditedFromDate:(id)a3 toDate:(id)a4
+- (void)occurrencesWereSpaciallyEditedFromDate:(id)date toDate:(id)toDate
 {
-  v5 = [(LargeMonthViewController *)self _weekViewForDate:a4];
+  v5 = [(LargeMonthViewController *)self _weekViewForDate:toDate];
   if (v5)
   {
     [(LargeMonthViewController *)self _scrollToWeekView:v5 animated:1 completion:0];
@@ -1896,16 +1896,16 @@ LABEL_5:
   _objc_release_x1();
 }
 
-- (id)_weekViewForDate:(id)a3
+- (id)_weekViewForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = sub_100060C40;
   v13 = sub_100060C50;
   v14 = 0;
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100064950;
@@ -1919,22 +1919,22 @@ LABEL_5:
   return v6;
 }
 
-- (void)pasteboardManager:(id)a3 didFinishPasteWithResult:(unint64_t)a4 willOpenEditor:(BOOL)a5
+- (void)pasteboardManager:(id)manager didFinishPasteWithResult:(unint64_t)result willOpenEditor:(BOOL)editor
 {
-  if (!a4 && !a5)
+  if (!result && !editor)
   {
     [(MainViewController *)self attemptDisplayReviewPrompt];
   }
 }
 
-- (void)_showEventDetailsForOccurrence:(id)a3 inWeek:(id)a4 onDay:(id)a5 animatedScrollToVisible:(BOOL)a6 showMode:(unint64_t)a7 context:(id)a8 creationMethod:(unint64_t)a9
+- (void)_showEventDetailsForOccurrence:(id)occurrence inWeek:(id)week onDay:(id)day animatedScrollToVisible:(BOOL)visible showMode:(unint64_t)mode context:(id)context creationMethod:(unint64_t)method
 {
-  v15 = a3;
-  v16 = a4;
-  v39 = a5;
-  v17 = a8;
-  v18 = [(MainViewController *)self model];
-  [v18 setSelectedOccurrence:v15];
+  occurrenceCopy = occurrence;
+  weekCopy = week;
+  dayCopy = day;
+  contextCopy = context;
+  model = [(MainViewController *)self model];
+  [model setSelectedOccurrence:occurrenceCopy];
 
   if (!self->_weeksContainingSelectedOccurrences)
   {
@@ -1943,57 +1943,57 @@ LABEL_5:
     self->_weeksContainingSelectedOccurrences = v19;
   }
 
-  if (v16)
+  if (weekCopy)
   {
-    [(NSMutableArray *)self->_weeksContainingSelectedOccurrences addObject:v16];
+    [(NSMutableArray *)self->_weeksContainingSelectedOccurrences addObject:weekCopy];
   }
 
-  v40 = v16;
-  objc_storeStrong(&self->_tappedDay, a5);
-  self->_shouldAnimateScrollToVisibleWeekViewForSelectedOccurrence = a6;
-  v38 = a7 == 2;
-  self->_shouldPresentEventCommentsForSelectedOccurrence = a7 == 2;
+  v40 = weekCopy;
+  objc_storeStrong(&self->_tappedDay, day);
+  self->_shouldAnimateScrollToVisibleWeekViewForSelectedOccurrence = visible;
+  v38 = mode == 2;
+  self->_shouldPresentEventCommentsForSelectedOccurrence = mode == 2;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
   v56 = sub_100060C40;
   v57 = sub_100060C50;
   v58 = 0;
-  v21 = [(LargeMonthViewController *)self viewControllerToShowFrom];
+  viewControllerToShowFrom = [(LargeMonthViewController *)self viewControllerToShowFrom];
   v45[0] = _NSConcreteStackBlock;
   v45[1] = 3221225472;
   v45[2] = sub_100064EA0;
   v45[3] = &unk_10020F980;
-  v22 = v15;
+  v22 = occurrenceCopy;
   v46 = v22;
-  v47 = self;
-  v51 = a7;
-  v52 = a9;
+  selfCopy = self;
+  modeCopy = mode;
+  methodCopy = method;
   v50 = &v53;
-  v23 = v17;
+  v23 = contextCopy;
   v48 = v23;
-  v24 = v21;
+  v24 = viewControllerToShowFrom;
   v49 = v24;
   v25 = objc_retainBlock(v45);
-  v26 = [v24 viewControllers];
-  v27 = [v26 count];
+  viewControllers = [v24 viewControllers];
+  v27 = [viewControllers count];
 
   if (!v27)
   {
     goto LABEL_10;
   }
 
-  v28 = [(LargeMonthViewController *)self shownEventEditViewController];
-  v29 = [v28 event];
-  if ([v29 isEqual:v22])
+  shownEventEditViewController = [(LargeMonthViewController *)self shownEventEditViewController];
+  event = [shownEventEditViewController event];
+  if ([event isEqual:v22])
   {
 
     goto LABEL_11;
   }
 
-  v30 = [(LargeMonthViewController *)self shownEventViewController];
-  v31 = [v30 event];
-  v32 = [v31 isEqual:v22];
+  shownEventViewController = [(LargeMonthViewController *)self shownEventViewController];
+  event2 = [shownEventViewController event];
+  v32 = [event2 isEqual:v22];
 
   if ((v32 & 1) == 0)
   {
@@ -2006,11 +2006,11 @@ LABEL_10:
 LABEL_11:
   if (v54[5])
   {
-    v33 = [(LargeMonthViewController *)self navigationController];
-    v34 = [v33 view];
-    v35 = [v34 window];
+    navigationController = [(LargeMonthViewController *)self navigationController];
+    view = [navigationController view];
+    window = [view window];
 
-    if (v35)
+    if (window)
     {
       EKUIPushFallbackSizingContextWithViewHierarchy();
     }
@@ -2022,7 +2022,7 @@ LABEL_11:
     v41[3] = &unk_10020F9A8;
     v44 = v38;
     v43 = &v53;
-    v37 = v35;
+    v37 = window;
     v42 = v37;
     [v24 showViewController:v36 sender:self animated:1 completion:v41];
   }
@@ -2030,49 +2030,49 @@ LABEL_11:
   _Block_object_dispose(&v53, 8);
 }
 
-- (void)_highlightOccurrenceForPointerTarget:(id)a3 inWeek:(id)a4 onDay:(id)a5
+- (void)_highlightOccurrenceForPointerTarget:(id)target inWeek:(id)week onDay:(id)day
 {
-  v6 = a3;
-  v8 = [(MainViewController *)self model];
-  v7 = [NSArray arrayWithObject:v6];
+  targetCopy = target;
+  model = [(MainViewController *)self model];
+  v7 = [NSArray arrayWithObject:targetCopy];
 
-  [v8 setPointerTargetedOccurrences:v7];
+  [model setPointerTargetedOccurrences:v7];
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  senderCopy = sender;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [(LargeMonthViewController *)self viewControllerToShowFrom];
-    [v13 setNavigationBarHidden:1 animated:0];
+    viewControllerToShowFrom = [(LargeMonthViewController *)self viewControllerToShowFrom];
+    [viewControllerToShowFrom setNavigationBarHidden:1 animated:0];
   }
 
   v14.receiver = self;
   v14.super_class = LargeMonthViewController;
-  [(MainViewController *)&v14 showViewController:v10 sender:v11 animated:v7 completion:v12];
+  [(MainViewController *)&v14 showViewController:controllerCopy sender:senderCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)_scrubAtPoint:(CGPoint)a3
+- (void)_scrubAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(LargeMonthViewController *)self shownEventEditViewController];
+  y = point.y;
+  x = point.x;
+  shownEventEditViewController = [(LargeMonthViewController *)self shownEventEditViewController];
 
-  if (!v6)
+  if (!shownEventEditViewController)
   {
     v13.x = x;
     v13.y = y;
     if (!CGRectContainsPoint(self->_scrubbingRect, v13) || ([(LargeMonthViewController *)self occurrenceAtPoint:x, y], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v8 = [(MainViewController *)self model];
-      v9 = [v8 selectedOccurrence];
+      model = [(MainViewController *)self model];
+      selectedOccurrence = [model selectedOccurrence];
 
-      if (!v9)
+      if (!selectedOccurrence)
       {
         return;
       }
@@ -2086,25 +2086,25 @@ LABEL_11:
   }
 }
 
-- (void)_scrubWithTouches:(id)a3
+- (void)_scrubWithTouches:(id)touches
 {
-  v9 = [a3 anyObject];
-  v4 = [(InfiniteScrollViewController *)self scrollView];
-  [v9 locationInView:v4];
+  anyObject = [touches anyObject];
+  scrollView = [(InfiniteScrollViewController *)self scrollView];
+  [anyObject locationInView:scrollView];
   v6 = v5;
   v8 = v7;
 
   [(LargeMonthViewController *)self _scrubAtPoint:v6, v8];
 }
 
-- (void)_scrollToWeekView:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_scrollToWeekView:(id)view animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  animatedCopy = animated;
+  viewCopy = view;
+  completionCopy = completion;
+  if (viewCopy)
   {
-    if (v6)
+    if (animatedCopy)
     {
       v10 = 0.4;
     }
@@ -2114,26 +2114,26 @@ LABEL_11:
       v10 = 0.0;
     }
 
-    v11 = [(MainViewController *)self existingPalette];
-    v12 = [v11 superview];
-    [v11 frame];
+    existingPalette = [(MainViewController *)self existingPalette];
+    superview = [existingPalette superview];
+    [existingPalette frame];
     MaxY = CGRectGetMaxY(v47);
-    v14 = [(LargeMonthViewController *)self view];
-    [v12 convertPoint:v14 toView:{0.0, MaxY}];
+    view = [(LargeMonthViewController *)self view];
+    [superview convertPoint:view toView:{0.0, MaxY}];
     v16 = v15;
 
-    v17 = [(LargeMonthViewController *)self view];
-    [v17 bounds];
+    view2 = [(LargeMonthViewController *)self view];
+    [view2 bounds];
     v18 = CGRectGetMaxY(v48);
 
-    v19 = [v8 superview];
-    [v8 frame];
+    superview2 = [viewCopy superview];
+    [viewCopy frame];
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [(LargeMonthViewController *)self view];
-    [v19 convertRect:v28 toView:{v21, v23, v25, v27}];
+    view3 = [(LargeMonthViewController *)self view];
+    [superview2 convertRect:view3 toView:{v21, v23, v25, v27}];
     v30 = v29;
     v32 = v31;
     v34 = v33;
@@ -2172,8 +2172,8 @@ LABEL_11:
 
     if (v37 != 0.0)
     {
-      v39 = [(InfiniteScrollViewController *)self scrollView];
-      [v39 contentOffset];
+      scrollView = [(InfiniteScrollViewController *)self scrollView];
+      [scrollView contentOffset];
       v41 = v40;
       v43 = v42;
 
@@ -2184,16 +2184,16 @@ LABEL_11:
       v44[4] = self;
       v44[5] = v41;
       *&v44[6] = v37 + v43;
-      [UIView animateWithDuration:v44 animations:v9 completion:v10];
+      [UIView animateWithDuration:v44 animations:completionCopy completion:v10];
 LABEL_15:
 
       goto LABEL_16;
     }
 
 LABEL_13:
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     goto LABEL_15;
@@ -2210,19 +2210,19 @@ LABEL_13:
 LABEL_16:
 }
 
-- (void)_closeEventPresentationAnimated:(BOOL)a3 viewController:(id)a4 completion:(id)a5
+- (void)_closeEventPresentationAnimated:(BOOL)animated viewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(LargeMonthViewController *)self presentedViewController];
-  v11 = [v10 popoverPresentationController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  presentedViewController = [(LargeMonthViewController *)self presentedViewController];
+  popoverPresentationController = [presentedViewController popoverPresentationController];
 
-  if (v11)
+  if (popoverPresentationController)
   {
-    if (([v11 dismissing] & 1) == 0)
+    if (([popoverPresentationController dismissing] & 1) == 0)
     {
-      if (v6)
+      if (animatedCopy)
       {
         v12 = 0.3;
       }
@@ -2236,47 +2236,47 @@ LABEL_16:
       v18[1] = 3221225472;
       v18[2] = sub_100065858;
       v18[3] = &unk_10020EB00;
-      v19 = v11;
+      v19 = popoverPresentationController;
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_1000658A0;
       v15[3] = &unk_10020F9F8;
       v15[4] = self;
       v16 = v19;
-      v17 = v9;
+      v17 = completionCopy;
       [UIView animateWithDuration:v18 animations:v15 completion:v12];
     }
   }
 
-  else if (v8)
+  else if (controllerCopy)
   {
-    v13 = [v8 presentingViewController];
+    presentingViewController = [controllerCopy presentingViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v13 presentingViewController];
+      v13PresentingViewController = [presentingViewController presentingViewController];
 
-      v13 = v14;
+      presentingViewController = v13PresentingViewController;
     }
 
-    [v13 dismissViewControllerAnimated:v6 completion:v9];
+    [presentingViewController dismissViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)addEventToSelection:(id)a3 inWeek:(id)a4 updateModel:(BOOL)a5
+- (void)addEventToSelection:(id)selection inWeek:(id)week updateModel:(BOOL)model
 {
-  v5 = a5;
-  v12 = a3;
-  v8 = a4;
-  if (v5)
+  modelCopy = model;
+  selectionCopy = selection;
+  weekCopy = week;
+  if (modelCopy)
   {
-    [(CUIKCalendarModel *)self->super.super.super._model selectOccurrence:v12];
+    [(CUIKCalendarModel *)self->super.super.super._model selectOccurrence:selectionCopy];
   }
 
-  if (v8)
+  if (weekCopy)
   {
-    [v8 selectOccurrence:v12];
-    if (([(NSMutableArray *)self->_weeksContainingSelectedOccurrences containsObject:v8]& 1) == 0)
+    [weekCopy selectOccurrence:selectionCopy];
+    if (([(NSMutableArray *)self->_weeksContainingSelectedOccurrences containsObject:weekCopy]& 1) == 0)
     {
       weeksContainingSelectedOccurrences = self->_weeksContainingSelectedOccurrences;
       if (!weeksContainingSelectedOccurrences)
@@ -2288,55 +2288,55 @@ LABEL_16:
         weeksContainingSelectedOccurrences = self->_weeksContainingSelectedOccurrences;
       }
 
-      [(NSMutableArray *)weeksContainingSelectedOccurrences addObject:v8];
+      [(NSMutableArray *)weeksContainingSelectedOccurrences addObject:weekCopy];
     }
   }
 }
 
-- (void)removeEventFromSelection:(id)a3 inWeek:(id)a4 updateModel:(BOOL)a5
+- (void)removeEventFromSelection:(id)selection inWeek:(id)week updateModel:(BOOL)model
 {
-  v5 = a5;
-  v12 = a3;
-  v8 = a4;
-  if (v5)
+  modelCopy = model;
+  selectionCopy = selection;
+  weekCopy = week;
+  if (modelCopy)
   {
-    [(CUIKCalendarModel *)self->super.super.super._model deselectOccurrence:v12];
+    [(CUIKCalendarModel *)self->super.super.super._model deselectOccurrence:selectionCopy];
   }
 
-  [v8 deselectOccurrence:v12];
-  v9 = [v8 selectedOccurrences];
-  v10 = [v9 count];
+  [weekCopy deselectOccurrence:selectionCopy];
+  selectedOccurrences = [weekCopy selectedOccurrences];
+  v10 = [selectedOccurrences count];
 
   if (!v10)
   {
-    [(NSMutableArray *)self->_weeksContainingSelectedOccurrences removeObject:v8];
+    [(NSMutableArray *)self->_weeksContainingSelectedOccurrences removeObject:weekCopy];
   }
 
   linearNavigationSelectedWeek = self->_linearNavigationSelectedWeek;
   self->_linearNavigationSelectedWeek = 0;
 }
 
-- (BOOL)isReadyToShowViewControllersInsideEnqueueableManagedNavigationController:(id)a3 isPreemptiveCheck:(BOOL)a4
+- (BOOL)isReadyToShowViewControllersInsideEnqueueableManagedNavigationController:(id)controller isPreemptiveCheck:(BOOL)check
 {
-  v6 = [(MainViewController *)self model];
-  v7 = [v6 selectedOccurrence];
+  model = [(MainViewController *)self model];
+  selectedOccurrence = [model selectedOccurrence];
 
-  if (v7)
+  if (selectedOccurrence)
   {
-    v8 = [v7 startCalendarDate];
-    v9 = [(InfiniteScrollViewController *)self subviewForDate:v8];
+    startCalendarDate = [selectedOccurrence startCalendarDate];
+    v9 = [(InfiniteScrollViewController *)self subviewForDate:startCalendarDate];
 
-    v10 = [(LargeMonthViewController *)self view];
-    v11 = [v7 startCalendarDate];
-    v12 = [v11 calendarDateForDay];
-    [v9 frameForOccurrence:v7 onDay:v12];
-    [v10 convertRect:v9 fromView:?];
+    view = [(LargeMonthViewController *)self view];
+    startCalendarDate2 = [selectedOccurrence startCalendarDate];
+    calendarDateForDay = [startCalendarDate2 calendarDateForDay];
+    [v9 frameForOccurrence:selectedOccurrence onDay:calendarDateForDay];
+    [view convertRect:v9 fromView:?];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
 
-    if (a4)
+    if (check)
     {
       LOBYTE(v21) = 1;
     }
@@ -2351,8 +2351,8 @@ LABEL_16:
     v29.size.width = v18;
     v29.size.height = v20;
     v24 = (v9 != 0) & v21 & ~CGRectIsEmpty(v29);
-    v25 = [(LargeMonthViewController *)self view];
-    [v25 bounds];
+    view2 = [(LargeMonthViewController *)self view];
+    [view2 bounds];
     v31.origin.x = v14;
     v31.origin.y = v16;
     v31.size.width = v18;
@@ -2376,15 +2376,15 @@ LABEL_16:
   return v23;
 }
 
-- (void)enqueuableNavigationController:(id)a3 requestsDeferShowViewControllerUntilReady:(id)a4
+- (void)enqueuableNavigationController:(id)controller requestsDeferShowViewControllerUntilReady:(id)ready
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  readyCopy = ready;
   v8 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEBUG))
   {
     v9 = v8;
-    v10 = [(MainViewController *)self managedNavigationController];
+    managedNavigationController = [(MainViewController *)self managedNavigationController];
     v11 = objc_opt_class();
     v12 = v11;
     *buf = 138412546;
@@ -2395,10 +2395,10 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%@ requested that %@ prepare itself to show the source view for the popover.", buf, 0x16u);
   }
 
-  v14 = [(MainViewController *)self model];
-  v15 = [v14 selectedOccurrence];
+  model = [(MainViewController *)self model];
+  selectedOccurrence = [model selectedOccurrence];
 
-  if (v15)
+  if (selectedOccurrence)
   {
     objc_initWeak(buf, self);
     v22[0] = _NSConcreteStackBlock;
@@ -2406,12 +2406,12 @@ LABEL_16:
     v22[2] = sub_10006608C;
     v22[3] = &unk_10020FA20;
     objc_copyWeak(&v27, buf);
-    v16 = v15;
+    v16 = selectedOccurrence;
     v23 = v16;
-    v17 = v6;
+    v17 = controllerCopy;
     v24 = v17;
-    v25 = self;
-    v26 = v7;
+    selfCopy = self;
+    v26 = readyCopy;
     v18 = objc_retainBlock(v22);
     if ([(LargeMonthViewController *)self isReadyToShowViewControllersInsideEnqueueableManagedNavigationController:v17])
     {
@@ -2420,9 +2420,9 @@ LABEL_16:
 
     else
     {
-      v20 = [v16 startCalendarDate];
-      v21 = [v20 date];
-      [(InfiniteScrollViewController *)self showDate:v21 animated:self->_shouldAnimateScrollToVisibleWeekViewForSelectedOccurrence completionBlock:v18];
+      startCalendarDate = [v16 startCalendarDate];
+      date = [startCalendarDate date];
+      [(InfiniteScrollViewController *)self showDate:date animated:self->_shouldAnimateScrollToVisibleWeekViewForSelectedOccurrence completionBlock:v18];
     }
 
     objc_destroyWeak(&v27);
@@ -2439,20 +2439,20 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%s: Couldn't find a selected event to show details for.", buf, 0xCu);
     }
 
-    [v6 enqueueStackResetOperation];
+    [controllerCopy enqueueStackResetOperation];
   }
 }
 
-- (void)enqueueableManagedNavigationController:(id)a3 requestsConfigurationOfPropertiesForPopoverPresentationController:(id)a4 completion:(id)a5
+- (void)enqueueableManagedNavigationController:(id)controller requestsConfigurationOfPropertiesForPopoverPresentationController:(id)presentationController completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  presentationControllerCopy = presentationController;
+  completionCopy = completion;
   v11 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEBUG))
   {
     v12 = v11;
-    v13 = [(MainViewController *)self managedNavigationController];
+    managedNavigationController = [(MainViewController *)self managedNavigationController];
     v14 = objc_opt_class();
     v15 = v14;
     *v44 = 138412546;
@@ -2464,39 +2464,39 @@ LABEL_16:
   }
 
   v17 = [(MainViewController *)self model:*v44];
-  v18 = [v17 selectedOccurrence];
+  selectedOccurrence = [v17 selectedOccurrence];
 
-  if (v18)
+  if (selectedOccurrence)
   {
-    v19 = [v18 startCalendarDate];
-    v20 = [(InfiniteScrollViewController *)self subviewForDate:v19];
+    startCalendarDate = [selectedOccurrence startCalendarDate];
+    v20 = [(InfiniteScrollViewController *)self subviewForDate:startCalendarDate];
 
     if (v20)
     {
       v21 = +[UIColor clearColor];
-      v22 = [v9 presentedViewController];
-      v23 = [v22 view];
-      [v23 setBackgroundColor:v21];
+      presentedViewController = [presentationControllerCopy presentedViewController];
+      view = [presentedViewController view];
+      [view setBackgroundColor:v21];
 
-      v24 = [v9 presentedViewController];
-      [v24 setModalPresentationStyle:7];
+      presentedViewController2 = [presentationControllerCopy presentedViewController];
+      [presentedViewController2 setModalPresentationStyle:7];
 
-      v25 = [(MonthViewController *)self draggedOccurrenceView];
+      draggedOccurrenceView = [(MonthViewController *)self draggedOccurrenceView];
 
-      if (v25)
+      if (draggedOccurrenceView)
       {
-        v26 = [(MonthViewController *)self draggedOccurrenceView];
-        [v26 bounds];
-        [v9 setSourceRect:?];
+        draggedOccurrenceView2 = [(MonthViewController *)self draggedOccurrenceView];
+        [draggedOccurrenceView2 bounds];
+        [presentationControllerCopy setSourceRect:?];
 
-        v27 = [(MonthViewController *)self draggedOccurrenceView];
-        [v9 setSourceView:v27];
+        draggedOccurrenceView3 = [(MonthViewController *)self draggedOccurrenceView];
+        [presentationControllerCopy setSourceView:draggedOccurrenceView3];
       }
 
       else
       {
-        v30 = [v18 startCalendarDate];
-        [v20 frameForOccurrence:v18 onDay:v30];
+        startCalendarDate2 = [selectedOccurrence startCalendarDate];
+        [v20 frameForOccurrence:selectedOccurrence onDay:startCalendarDate2];
         x = v31;
         y = v33;
         width = v35;
@@ -2519,7 +2519,7 @@ LABEL_16:
           [v20 frame];
           if (width == v39)
           {
-            v40 = [(LargeMonthViewController *)self view];
+            view2 = [(LargeMonthViewController *)self view];
             EKUICurrentWindowSize();
             v42 = v41;
 
@@ -2530,26 +2530,26 @@ LABEL_16:
           }
         }
 
-        [v9 setSourceRect:{x, y, width, height}];
-        [v9 setSourceView:v20];
+        [presentationControllerCopy setSourceRect:{x, y, width, height}];
+        [presentationControllerCopy setSourceView:v20];
       }
 
-      [v9 setDelegate:self];
-      [v9 setPermittedArrowDirections:12];
+      [presentationControllerCopy setDelegate:self];
+      [presentationControllerCopy setPermittedArrowDirections:12];
       if (self->_tappedDay)
       {
-        v43 = [(LargeMonthViewController *)self shownEventEditViewController];
+        shownEventEditViewController = [(LargeMonthViewController *)self shownEventEditViewController];
 
-        if (!v43)
+        if (!shownEventEditViewController)
         {
           [v20 frameForDate:self->_tappedDay];
           CGRectIsNull(v46);
         }
       }
 
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10);
+        completionCopy[2](completionCopy);
       }
     }
 
@@ -2575,69 +2575,69 @@ LABEL_16:
   }
 }
 
-- (void)eventViewController:(id)a3 requestsDisplayOfEditViewController:(id)a4 animated:(BOOL)a5
+- (void)eventViewController:(id)controller requestsDisplayOfEditViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
-  [v7 setInternalEditViewDelegate:self];
-  [v7 setModalPresentationStyle:3];
-  [v7 setModalTransitionStyle:2];
-  v8 = [(MainViewController *)self managedNavigationController];
-  [v8 presentViewController:v7 animated:v5 completion:0];
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  [viewControllerCopy setInternalEditViewDelegate:self];
+  [viewControllerCopy setModalPresentationStyle:3];
+  [viewControllerCopy setModalTransitionStyle:2];
+  managedNavigationController = [(MainViewController *)self managedNavigationController];
+  [managedNavigationController presentViewController:viewControllerCopy animated:animatedCopy completion:0];
 }
 
-- (void)eventViewController:(id)a3 requestsDisplayOfDeleteAlert:(id)a4
+- (void)eventViewController:(id)controller requestsDisplayOfDeleteAlert:(id)alert
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 popoverPresentationController];
-  [v8 sourceRect];
+  alertCopy = alert;
+  controllerCopy = controller;
+  popoverPresentationController = [controllerCopy popoverPresentationController];
+  [popoverPresentationController sourceRect];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v6 popoverPresentationController];
-  [v17 setSourceRect:{v10, v12, v14, v16}];
+  popoverPresentationController2 = [alertCopy popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v10, v12, v14, v16}];
 
-  v18 = [v7 popoverPresentationController];
-  v19 = [v18 sourceView];
-  v20 = [v6 popoverPresentationController];
-  [v20 setSourceView:v19];
+  popoverPresentationController3 = [controllerCopy popoverPresentationController];
+  sourceView = [popoverPresentationController3 sourceView];
+  popoverPresentationController4 = [alertCopy popoverPresentationController];
+  [popoverPresentationController4 setSourceView:sourceView];
 
-  v21 = [v7 popoverPresentationController];
+  popoverPresentationController5 = [controllerCopy popoverPresentationController];
 
-  v22 = [v21 permittedArrowDirections];
-  v23 = [v6 popoverPresentationController];
-  [v23 setPermittedArrowDirections:v22];
+  permittedArrowDirections = [popoverPresentationController5 permittedArrowDirections];
+  popoverPresentationController6 = [alertCopy popoverPresentationController];
+  [popoverPresentationController6 setPermittedArrowDirections:permittedArrowDirections];
 
-  v24 = [v6 popoverPresentationController];
-  [v24 setDelegate:self];
+  popoverPresentationController7 = [alertCopy popoverPresentationController];
+  [popoverPresentationController7 setDelegate:self];
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1000669A4;
   v26[3] = &unk_10020EC68;
   v26[4] = self;
-  v27 = v6;
-  v25 = v6;
+  v27 = alertCopy;
+  v25 = alertCopy;
   [(LargeMonthViewController *)self dismissViewControllerAnimated:1 completion:v26];
 }
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 completionHandler:(id)a5
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 == 1)
+  controllerCopy = controller;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (action == 1)
   {
-    v11 = [v8 calendarToMakeVisibleOnSave];
-    v12 = [v11 objectID];
-    if (v12)
+    calendarToMakeVisibleOnSave = [controllerCopy calendarToMakeVisibleOnSave];
+    objectID = [calendarToMakeVisibleOnSave objectID];
+    if (objectID)
     {
-      [(CUIKCalendarModel *)self->super.super.super._model ensureCalendarVisibleWithId:v12];
+      [(CUIKCalendarModel *)self->super.super.super._model ensureCalendarVisibleWithId:objectID];
     }
 
-    if ([v11 sharingStatus])
+    if ([calendarToMakeVisibleOnSave sharingStatus])
     {
       if (!v10)
       {
@@ -2682,16 +2682,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v9)
+  if (handlerCopy)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100066CB4;
     v15[3] = &unk_10020EBC8;
     v15[4] = self;
-    v16 = v9;
+    v16 = handlerCopy;
     v13 = objc_retainBlock(v15);
-    v11 = v16;
+    calendarToMakeVisibleOnSave = v16;
 LABEL_16:
 
     goto LABEL_17;
@@ -2699,82 +2699,82 @@ LABEL_16:
 
   v13 = 0;
 LABEL_17:
-  [(LargeMonthViewController *)self _closeEventPresentationAnimated:1 viewController:v8 completion:v13];
+  [(LargeMonthViewController *)self _closeEventPresentationAnimated:1 viewController:controllerCopy completion:v13];
   [(MonthViewController *)self removeDraggingOccurrenceAnimated:1];
   [(MonthViewController *)self removeAllWeekHighlights];
   self->_currentlyEditingEvent = 0;
 }
 
-- (id)pasteboardManagerForEventEditViewController:(id)a3
+- (id)pasteboardManagerForEventEditViewController:(id)controller
 {
-  v3 = [(MainViewController *)self model];
-  v4 = [v3 pasteboardManager];
+  model = [(MainViewController *)self model];
+  pasteboardManager = [model pasteboardManager];
 
-  return v4;
+  return pasteboardManager;
 }
 
-- (void)eventViewControllerNextButtonWasTapped:(id)a3
+- (void)eventViewControllerNextButtonWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [v4 event];
-  v6 = [v5 nextOccurrence];
+  tappedCopy = tapped;
+  event = [tappedCopy event];
+  nextOccurrence = [event nextOccurrence];
 
-  if (v6)
+  if (nextOccurrence)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100066E04;
     v7[3] = &unk_10020F2E0;
     v7[4] = self;
-    v8 = v6;
-    v9 = v4;
+    v8 = nextOccurrence;
+    v9 = tappedCopy;
     [(LargeMonthViewController *)self _closeEventPresentationAnimated:1 viewController:0 completion:v7];
   }
 }
 
-- (void)eventViewControllerPreviousButtonWasTapped:(id)a3
+- (void)eventViewControllerPreviousButtonWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [v4 event];
-  v6 = [v5 previousOccurrence];
+  tappedCopy = tapped;
+  event = [tappedCopy event];
+  previousOccurrence = [event previousOccurrence];
 
-  if (v6)
+  if (previousOccurrence)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100066F44;
     v7[3] = &unk_10020F2E0;
     v7[4] = self;
-    v8 = v6;
-    v9 = v4;
+    v8 = previousOccurrence;
+    v9 = tappedCopy;
     [(LargeMonthViewController *)self _closeEventPresentationAnimated:1 viewController:0 completion:v7];
   }
 }
 
-- (void)eventViewController:(id)a3 requestsShowEvent:(id)a4
+- (void)eventViewController:(id)controller requestsShowEvent:(id)event
 {
-  v6 = a3;
+  controllerCopy = controller;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100067074;
   v9[3] = &unk_10020F2E0;
   v9[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  eventCopy = event;
+  v11 = controllerCopy;
+  v7 = controllerCopy;
+  v8 = eventCopy;
   [(LargeMonthViewController *)self _closeEventPresentationAnimated:1 viewController:0 completion:v9];
 }
 
-- (void)_displayedOccurrencesChanged:(id)a3
+- (void)_displayedOccurrencesChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedRangeStartKey];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedRangeStartKey];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [changedCopy userInfo];
 
-  v8 = [v7 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedRangeEndKey];
+  v8 = [userInfo2 objectForKey:CUIKCalendarModelDisplayedOccurrencesChangedRangeEndKey];
 
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
@@ -2786,8 +2786,8 @@ LABEL_17:
   v10 = v6;
   [(InfiniteScrollViewController *)self enumerateScrollViewSubviews:&v14];
   v11 = [(MainViewController *)self model:v14];
-  v12 = [v11 pointerTargetedOccurrences];
-  v13 = [v12 count];
+  pointerTargetedOccurrences = [v11 pointerTargetedOccurrences];
+  v13 = [pointerTargetedOccurrences count];
 
   if (v13)
   {
@@ -2795,7 +2795,7 @@ LABEL_17:
   }
 }
 
-- (void)_selectedOccurrencesChanged:(id)a3
+- (void)_selectedOccurrencesChanged:(id)changed
 {
   v38 = 0u;
   v39 = 0u;
@@ -2821,8 +2821,8 @@ LABEL_17:
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v10 = [v9 selectedOccurrences];
-        v11 = [v10 countByEnumeratingWithState:&v34 objects:v43 count:16];
+        selectedOccurrences = [v9 selectedOccurrences];
+        v11 = [selectedOccurrences countByEnumeratingWithState:&v34 objects:v43 count:16];
         if (v11)
         {
           v12 = v11;
@@ -2833,13 +2833,13 @@ LABEL_17:
             {
               if (*v35 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(selectedOccurrences);
               }
 
               [(LargeMonthViewController *)self removeEventFromSelection:*(*(&v34 + 1) + 8 * j) inWeek:v9 updateModel:0];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v34 objects:v43 count:16];
+            v12 = [selectedOccurrences countByEnumeratingWithState:&v34 objects:v43 count:16];
           }
 
           while (v12);
@@ -2856,8 +2856,8 @@ LABEL_17:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrences];
-  v16 = [v15 countByEnumeratingWithState:&v30 objects:v42 count:16];
+  selectedOccurrences2 = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrences];
+  v16 = [selectedOccurrences2 countByEnumeratingWithState:&v30 objects:v42 count:16];
   if (v16)
   {
     v17 = v16;
@@ -2868,34 +2868,34 @@ LABEL_17:
       {
         if (*v31 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(selectedOccurrences2);
         }
 
         v20 = *(*(&v30 + 1) + 8 * k);
-        v21 = [v20 startCalendarDate];
-        v22 = [(InfiniteScrollViewController *)self subviewForDate:v21];
+        startCalendarDate = [v20 startCalendarDate];
+        v22 = [(InfiniteScrollViewController *)self subviewForDate:startCalendarDate];
 
         [(LargeMonthViewController *)self addEventToSelection:v20 inWeek:v22 updateModel:0];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v30 objects:v42 count:16];
+      v17 = [selectedOccurrences2 countByEnumeratingWithState:&v30 objects:v42 count:16];
     }
 
     while (v17);
   }
 
-  v23 = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrences];
-  v24 = [v23 count];
+  selectedOccurrences3 = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrences];
+  v24 = [selectedOccurrences3 count];
 
   if (v24 == 1)
   {
-    v25 = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrences];
-    v26 = [v25 firstObject];
+    selectedOccurrences4 = [(CUIKCalendarModel *)self->super.super.super._model selectedOccurrences];
+    firstObject = [selectedOccurrences4 firstObject];
 
     if (self->_linearNavigationSelectedWeek && ([(NSMutableArray *)self->_weeksContainingSelectedOccurrences containsObject:?]& 1) == 0)
     {
-      v27 = [v26 startCalendarDate];
-      v28 = [(InfiniteScrollViewController *)self subviewForDate:v27];
+      startCalendarDate2 = [firstObject startCalendarDate];
+      v28 = [(InfiniteScrollViewController *)self subviewForDate:startCalendarDate2];
       linearNavigationSelectedWeek = self->_linearNavigationSelectedWeek;
       self->_linearNavigationSelectedWeek = v28;
     }
@@ -2903,7 +2903,7 @@ LABEL_17:
 
   else
   {
-    v26 = self->_linearNavigationSelectedWeek;
+    firstObject = self->_linearNavigationSelectedWeek;
     self->_linearNavigationSelectedWeek = 0;
   }
 }
@@ -2920,13 +2920,13 @@ LABEL_17:
 - (void)weekNumbersPrefChanged
 {
   v3 = +[CUIKPreferences sharedPreferences];
-  v4 = [v3 showWeekNumbers];
+  showWeekNumbers = [v3 showWeekNumbers];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100067740;
   v5[3] = &unk_10020FA68;
-  v6 = v4;
+  v6 = showWeekNumbers;
   [(InfiniteScrollViewController *)self enumerateScrollViewSubviews:v5];
 }
 
@@ -2938,10 +2938,10 @@ LABEL_17:
   [(MonthViewController *)&v3 localeChanged];
 }
 
-- (id)occurrenceAtPoint:(CGPoint)a3
+- (id)occurrenceAtPoint:(CGPoint)point
 {
   v6 = CGPointZero;
-  v3 = [(LargeMonthViewController *)self _weekViewAtPoint:&v6 pointInWeek:a3.x, a3.y];
+  v3 = [(LargeMonthViewController *)self _weekViewAtPoint:&v6 pointInWeek:point.x, point.y];
   v4 = [v3 occurrenceAtPoint:v6];
 
   return v4;
@@ -2949,37 +2949,37 @@ LABEL_17:
 
 - (BOOL)dragAndDropIsCurrentlyScrubbing
 {
-  v2 = [(LargeMonthViewController *)self shownEventViewController];
-  v3 = v2 != 0;
+  shownEventViewController = [(LargeMonthViewController *)self shownEventViewController];
+  v3 = shownEventViewController != 0;
 
   return v3;
 }
 
-- (void)draggedOccurrenceWasCancelled:(id)a3 atPoint:(CGPoint)a4
+- (void)draggedOccurrenceWasCancelled:(id)cancelled atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  if (([a3 isNew] & 1) == 0)
+  y = point.y;
+  x = point.x;
+  if (([cancelled isNew] & 1) == 0)
   {
     v7 = [(LargeMonthViewController *)self _weekViewAtPoint:0 pointInWeek:x, y];
     [v7 reloadData];
   }
 }
 
-- (void)selectOccurrence:(id)a3 inWeek:(id)a4
+- (void)selectOccurrence:(id)occurrence inWeek:(id)week
 {
-  v6 = a3;
-  v7 = a4;
+  occurrenceCopy = occurrence;
+  weekCopy = week;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    if (v6)
+    v8 = weekCopy;
+    if (occurrenceCopy)
     {
-      v9 = [(MainViewController *)self model];
-      v10 = [v9 selectedOccurrence];
-      v11 = v10;
-      if (v10 == v6)
+      model = [(MainViewController *)self model];
+      selectedOccurrence = [model selectedOccurrence];
+      v11 = selectedOccurrence;
+      if (selectedOccurrence == occurrenceCopy)
       {
         v12 = [(NSMutableArray *)self->_weeksContainingSelectedOccurrences containsObject:v8];
 
@@ -2994,7 +2994,7 @@ LABEL_17:
       }
     }
 
-    [(CUIKCalendarModel *)self->super.super.super._model setSelectedOccurrence:v6];
+    [(CUIKCalendarModel *)self->super.super.super._model setSelectedOccurrence:occurrenceCopy];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -3036,9 +3036,9 @@ LABEL_17:
       [(NSMutableArray *)self->_weeksContainingSelectedOccurrences addObject:v8];
     }
 
-    if (v6)
+    if (occurrenceCopy)
     {
-      [v8 setSelectedOccurrence:v6];
+      [v8 setSelectedOccurrence:occurrenceCopy];
     }
   }
 
@@ -3050,26 +3050,26 @@ LABEL_17:
 LABEL_20:
 }
 
-- (void)showDetailsForDraggedOccurrence:(id)a3 inWeekView:(id)a4 onDay:(id)a5 creationMethod:(unint64_t)a6
+- (void)showDetailsForDraggedOccurrence:(id)occurrence inWeekView:(id)view onDay:(id)day creationMethod:(unint64_t)method
 {
-  v11 = a3;
-  v9 = a4;
-  v10 = a5;
+  occurrenceCopy = occurrence;
+  viewCopy = view;
+  dayCopy = day;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(LargeMonthViewController *)self _showEventDetailsForOccurrence:v11 inWeek:v9 onDay:v10 creationMethod:1];
+    [(LargeMonthViewController *)self _showEventDetailsForOccurrence:occurrenceCopy inWeek:viewCopy onDay:dayCopy creationMethod:1];
   }
 }
 
-- (void)showEditorForNewDraggedEvent:(id)a3 inWeek:(id)a4
+- (void)showEditorForNewDraggedEvent:(id)event inWeek:(id)week
 {
-  v8 = a4;
-  v6 = a3;
+  weekCopy = week;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v8;
+    v7 = weekCopy;
   }
 
   else
@@ -3077,28 +3077,28 @@ LABEL_20:
     v7 = 0;
   }
 
-  [(LargeMonthViewController *)self _showEventDetailsForOccurrence:v6 inWeek:v7 onDay:0 creationMethod:1];
+  [(LargeMonthViewController *)self _showEventDetailsForOccurrence:eventCopy inWeek:v7 onDay:0 creationMethod:1];
 }
 
-- (void)dragAndDropRequestsPresentationOfViewController:(id)a3
+- (void)dragAndDropRequestsPresentationOfViewController:(id)controller
 {
-  v4 = a3;
-  v6 = [[UnadaptableNavigationController alloc] initWithRootViewController:v4];
+  controllerCopy = controller;
+  v6 = [[UnadaptableNavigationController alloc] initWithRootViewController:controllerCopy];
 
   [(UnadaptableNavigationController *)v6 setModalPresentationStyle:2];
-  v5 = [(LargeMonthViewController *)self currentPresentationController];
-  [v5 presentViewController:v6 animated:1 completion:0];
+  currentPresentationController = [(LargeMonthViewController *)self currentPresentationController];
+  [currentPresentationController presentViewController:v6 animated:1 completion:0];
 }
 
 - (BOOL)isDraggingOccurrence
 {
-  v2 = [(MonthViewController *)self draggedOccurrenceView];
-  v3 = v2 != 0;
+  draggedOccurrenceView = [(MonthViewController *)self draggedOccurrenceView];
+  v3 = draggedOccurrenceView != 0;
 
   return v3;
 }
 
-- (id)_weekViewAtPoint:(CGPoint)a3 pointInWeek:(CGPoint *)a4
+- (id)_weekViewAtPoint:(CGPoint)point pointInWeek:(CGPoint *)week
 {
   v9 = 0;
   v10 = &v9;
@@ -3110,10 +3110,10 @@ LABEL_20:
   v6[1] = 3221225472;
   v6[2] = sub_100067DF4;
   v6[3] = &unk_10020FA90;
-  v7 = a3;
+  pointCopy = point;
   v6[4] = self;
   v6[5] = &v9;
-  v8 = a4;
+  weekCopy = week;
   [(InfiniteScrollViewController *)self enumerateScrollViewSubviews:v6];
   v4 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -3123,16 +3123,16 @@ LABEL_20:
 
 - (void)handleCloseKeyCommand
 {
-  v3 = [(LargeMonthViewController *)self shownEventEditViewController];
-  if (v3)
+  shownEventEditViewController = [(LargeMonthViewController *)self shownEventEditViewController];
+  if (shownEventEditViewController)
   {
   }
 
   else
   {
-    v4 = [(LargeMonthViewController *)self shownEventViewController];
+    shownEventViewController = [(LargeMonthViewController *)self shownEventViewController];
 
-    if (v4)
+    if (shownEventViewController)
     {
       v5[0] = _NSConcreteStackBlock;
       v5[1] = 3221225472;

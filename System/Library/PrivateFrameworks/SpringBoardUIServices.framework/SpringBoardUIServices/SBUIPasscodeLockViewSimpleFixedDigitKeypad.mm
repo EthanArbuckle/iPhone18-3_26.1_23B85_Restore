@@ -1,6 +1,6 @@
 @interface SBUIPasscodeLockViewSimpleFixedDigitKeypad
-- (SBUIPasscodeLockViewSimpleFixedDigitKeypad)initWithLightStyle:(BOOL)a3 numberOfDigits:(unint64_t)a4;
-- (SBUIPasscodeLockViewSimpleFixedDigitKeypad)initWithLightStyle:(BOOL)a3 providesDimming:(BOOL)a4 numberOfDigits:(unint64_t)a5;
+- (SBUIPasscodeLockViewSimpleFixedDigitKeypad)initWithLightStyle:(BOOL)style numberOfDigits:(unint64_t)digits;
+- (SBUIPasscodeLockViewSimpleFixedDigitKeypad)initWithLightStyle:(BOOL)style providesDimming:(BOOL)dimming numberOfDigits:(unint64_t)digits;
 - (double)_entryFieldBottomYDistanceFromNumberPadTopButton;
 - (id)_newEntryField;
 @end
@@ -10,38 +10,38 @@
 - (double)_entryFieldBottomYDistanceFromNumberPadTopButton
 {
   v2 = MEMORY[0x1E69D3FE8];
-  v3 = [(SBUIPasscodeLockViewBase *)self _isBoundsPortraitOriented];
+  _isBoundsPortraitOriented = [(SBUIPasscodeLockViewBase *)self _isBoundsPortraitOriented];
 
-  [v2 pinFixedDigitEntryFieldBottomYDistanceFromNumberPadTopButton:v3];
+  [v2 pinFixedDigitEntryFieldBottomYDistanceFromNumberPadTopButton:_isBoundsPortraitOriented];
   return result;
 }
 
 - (id)_newEntryField
 {
   v3 = [SBUISimpleFixedDigitPasscodeEntryField alloc];
-  v4 = [(SBUIPasscodeLockViewWithKeypad *)self _usesLightStyle];
+  _usesLightStyle = [(SBUIPasscodeLockViewWithKeypad *)self _usesLightStyle];
   numberOfDigits = self->_numberOfDigits;
 
-  return [(SBUISimpleFixedDigitPasscodeEntryField *)v3 initWithDefaultSizeAndLightStyle:v4 numberOfDigits:numberOfDigits];
+  return [(SBUISimpleFixedDigitPasscodeEntryField *)v3 initWithDefaultSizeAndLightStyle:_usesLightStyle numberOfDigits:numberOfDigits];
 }
 
-- (SBUIPasscodeLockViewSimpleFixedDigitKeypad)initWithLightStyle:(BOOL)a3 numberOfDigits:(unint64_t)a4
+- (SBUIPasscodeLockViewSimpleFixedDigitKeypad)initWithLightStyle:(BOOL)style numberOfDigits:(unint64_t)digits
 {
-  v5 = a3;
-  v7 = [objc_opt_class() providesDimmingByDefault];
+  styleCopy = style;
+  providesDimmingByDefault = [objc_opt_class() providesDimmingByDefault];
 
-  return [(SBUIPasscodeLockViewSimpleFixedDigitKeypad *)self initWithLightStyle:v5 providesDimming:v7 numberOfDigits:a4];
+  return [(SBUIPasscodeLockViewSimpleFixedDigitKeypad *)self initWithLightStyle:styleCopy providesDimming:providesDimmingByDefault numberOfDigits:digits];
 }
 
-- (SBUIPasscodeLockViewSimpleFixedDigitKeypad)initWithLightStyle:(BOOL)a3 providesDimming:(BOOL)a4 numberOfDigits:(unint64_t)a5
+- (SBUIPasscodeLockViewSimpleFixedDigitKeypad)initWithLightStyle:(BOOL)style providesDimming:(BOOL)dimming numberOfDigits:(unint64_t)digits
 {
-  self->_numberOfDigits = a5;
+  self->_numberOfDigits = digits;
   v9.receiver = self;
   v9.super_class = SBUIPasscodeLockViewSimpleFixedDigitKeypad;
-  v6 = [(SBUIPasscodeLockViewWithKeypad *)&v9 initWithLightStyle:a3 providesDimming:a4];
+  v6 = [(SBUIPasscodeLockViewWithKeypad *)&v9 initWithLightStyle:style providesDimming:dimming];
   if (v6)
   {
-    if (a3)
+    if (style)
     {
       [MEMORY[0x1E69DC888] clearColor];
     }

@@ -2,19 +2,19 @@
 - (NSArray)encounteredIssues;
 - (SiriTTSSynthesisResource)resource;
 - (SiriTTSSynthesisVoice)voice;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEncounteredIssues:(id)a3;
-- (void)setResource:(id)a3;
-- (void)setVoice:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEncounteredIssues:(id)issues;
+- (void)setResource:(id)resource;
+- (void)setVoice:(id)voice;
 @end
 
 @implementation SiriTTSInstrumentationMetrics
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1AB0018(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B1AB0018(coderCopy);
 }
 
 - (SiriTTSSynthesisVoice)voice
@@ -24,11 +24,11 @@
   return v2;
 }
 
-- (void)setVoice:(id)a3
+- (void)setVoice:(id)voice
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B1BE6A0C(a3);
+  voiceCopy = voice;
+  selfCopy = self;
+  sub_1B1BE6A0C(voice);
 }
 
 - (SiriTTSSynthesisResource)resource
@@ -38,11 +38,11 @@
   return v2;
 }
 
-- (void)setResource:(id)a3
+- (void)setResource:(id)resource
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B1BE6BA4(a3);
+  resourceCopy = resource;
+  selfCopy = self;
+  sub_1B1BE6BA4(resource);
 }
 
 - (NSArray)encounteredIssues
@@ -53,10 +53,10 @@
   return v2;
 }
 
-- (void)setEncounteredIssues:(id)a3
+- (void)setEncounteredIssues:(id)issues
 {
   v4 = sub_1B1C2CE78();
-  v5 = self;
+  selfCopy = self;
   sub_1B1BE81C4(v4);
 }
 

@@ -1,6 +1,6 @@
 @interface MTRCommodityTariffClusterAuxiliaryLoadSwitchSettingsStruct
 - (MTRCommodityTariffClusterAuxiliaryLoadSwitchSettingsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityTariffClusterAuxiliaryLoadSwitchSettingsStruct);
-  v5 = [(MTRCommodityTariffClusterAuxiliaryLoadSwitchSettingsStruct *)self number];
-  [(MTRCommodityTariffClusterAuxiliaryLoadSwitchSettingsStruct *)v4 setNumber:v5];
+  number = [(MTRCommodityTariffClusterAuxiliaryLoadSwitchSettingsStruct *)self number];
+  [(MTRCommodityTariffClusterAuxiliaryLoadSwitchSettingsStruct *)v4 setNumber:number];
 
-  v6 = [(MTRCommodityTariffClusterAuxiliaryLoadSwitchSettingsStruct *)self requiredState];
-  [(MTRCommodityTariffClusterAuxiliaryLoadSwitchSettingsStruct *)v4 setRequiredState:v6];
+  requiredState = [(MTRCommodityTariffClusterAuxiliaryLoadSwitchSettingsStruct *)self requiredState];
+  [(MTRCommodityTariffClusterAuxiliaryLoadSwitchSettingsStruct *)v4 setRequiredState:requiredState];
 
   return v4;
 }

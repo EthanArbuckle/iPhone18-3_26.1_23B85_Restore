@@ -8,60 +8,60 @@
 - (HUComfortSoundsController)init;
 - (double)endTimeStamp;
 - (id)nextFileToPlay;
-- (id)processAutomationRequest:(id)a3;
-- (id)processComfortSoundsAssetRequest:(id)a3;
-- (id)processComfortSoundsControlRequest:(id)a3;
+- (id)processAutomationRequest:(id)request;
+- (id)processComfortSoundsAssetRequest:(id)request;
+- (id)processComfortSoundsControlRequest:(id)request;
 - (void)_handleContinuitySessionCheck;
 - (void)applyTinnitusBalance;
 - (void)assetDownloadDidUpdate;
 - (void)attachNodesToEngine;
-- (void)audioEngineWasInterrupted:(id)a3;
-- (void)audioSessionWasInterrupted:(id)a3;
+- (void)audioEngineWasInterrupted:(id)interrupted;
+- (void)audioSessionWasInterrupted:(id)interrupted;
 - (void)availableAssetsDidUpdate;
-- (void)calculateVolumeForSessionWithCompletion:(id)a3;
-- (void)callStatusDidChange:(id)a3;
+- (void)calculateVolumeForSessionWithCompletion:(id)completion;
+- (void)callStatusDidChange:(id)change;
 - (void)clearActiveRoute;
 - (void)clearEngine;
-- (void)clientRemoved:(id)a3;
-- (void)configureBandWithType:(int64_t)a3 frequency:(double)a4 bandwidth:(double)a5 atIndex:(int64_t)a6;
-- (void)configureBandWithType:(int64_t)a3 frequency:(double)a4 bandwidth:(double)a5 gain:(double)a6 atIndex:(int64_t)a7;
+- (void)clientRemoved:(id)removed;
+- (void)configureBandWithType:(int64_t)type frequency:(double)frequency bandwidth:(double)bandwidth atIndex:(int64_t)index;
+- (void)configureBandWithType:(int64_t)type frequency:(double)frequency bandwidth:(double)bandwidth gain:(double)gain atIndex:(int64_t)index;
 - (void)configureBandsForCoarseFilter;
 - (void)configureBandsForFineFilter;
 - (void)configureTinnitusEqualizer;
-- (void)connectNodesToEngine:(id)a3;
-- (void)deviceScreenStatusDidChange:(int)a3 systemLocked:(int)a4;
+- (void)connectNodesToEngine:(id)engine;
+- (void)deviceScreenStatusDidChange:(int)change systemLocked:(int)locked;
 - (void)handlePlaybackForDifferentCategory;
 - (void)handlePlaybackForSameCategory;
 - (void)invalidateTimer;
 - (void)listenForChangesInEqualizer;
 - (void)listenForChangesInTimer;
-- (void)logMessageForTimer:(double)a3;
-- (void)mediaPlaybackDidChange:(id)a3;
+- (void)logMessageForTimer:(double)timer;
+- (void)mediaPlaybackDidChange:(id)change;
 - (void)mediaServerDied;
 - (void)nextFileToPlay;
 - (void)play;
 - (void)playOnQueue;
-- (void)rampNodeVolume:(id)a3 from:(double)a4 to:(double)a5 fadeDuration:(double)a6 withProgress:(double)a7;
-- (void)rampOutputGainFrom:(double)a3 to:(double)a4 withProgress:(double)a5;
+- (void)rampNodeVolume:(id)volume from:(double)from to:(double)to fadeDuration:(double)duration withProgress:(double)progress;
+- (void)rampOutputGainFrom:(double)from to:(double)to withProgress:(double)progress;
 - (void)registerHasBlankedScreenNotification;
 - (void)registerNotifications;
-- (void)routesDidChange:(id)a3;
+- (void)routesDidChange:(id)change;
 - (void)scheduleFile;
 - (void)scheduleNewFile;
-- (void)scheduleTimer:(double)a3;
-- (void)setFilterBoost:(double)a3;
-- (void)setOutputGain:(double)a3;
-- (void)setPreviewEnabled:(BOOL)a3;
-- (void)setVolume:(double)a3 forNode:(id)a4 andRamp:(BOOL)a5;
+- (void)scheduleTimer:(double)timer;
+- (void)setFilterBoost:(double)boost;
+- (void)setOutputGain:(double)gain;
+- (void)setPreviewEnabled:(BOOL)enabled;
+- (void)setVolume:(double)volume forNode:(id)node andRamp:(BOOL)ramp;
 - (void)setupEngine;
 - (void)setupTimerIfEnabled;
 - (void)setupTimerIfNeeded;
 - (void)startComfortSounds;
 - (void)stop;
-- (void)stopAndClearRoute:(BOOL)a3;
-- (void)stopComfortSound:(BOOL)a3;
+- (void)stopAndClearRoute:(BOOL)route;
+- (void)stopComfortSound:(BOOL)sound;
 - (void)updateAnalytics;
-- (void)updateVolumeForSessionAndRamp:(BOOL)a3;
+- (void)updateVolumeForSessionAndRamp:(BOOL)ramp;
 - (void)validateTimerDuration;
 - (void)validateTimerEndInterval;
 @end
@@ -71,9 +71,9 @@
 - (BOOL)currentRouteSupported
 {
   v2 = +[HUUtilities sharedUtilities];
-  v3 = [v2 currentRouteSupportsBackgroundSounds];
+  currentRouteSupportsBackgroundSounds = [v2 currentRouteSupportsBackgroundSounds];
 
-  return v3;
+  return currentRouteSupportsBackgroundSounds;
 }
 
 void __33__HUComfortSoundsController_init__block_invoke(uint64_t a1)
@@ -126,8 +126,8 @@ void __33__HUComfortSoundsController_init__block_invoke(uint64_t a1)
   v17 = 0u;
   v18 = 0u;
   v15 = v19 = 0u;
-  v3 = [v15 outputDevices];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  outputDevices = [v15 outputDevices];
+  v4 = [outputDevices countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -138,15 +138,15 @@ void __33__HUComfortSoundsController_init__block_invoke(uint64_t a1)
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(outputDevices);
         }
 
-        v8 = [*(*(&v16 + 1) + 8 * i) isActivatedForContinuityScreen];
-        [(HUComfortSoundsController *)self setIsInContinuitySession:v8];
+        isActivatedForContinuityScreen = [*(*(&v16 + 1) + 8 * i) isActivatedForContinuityScreen];
+        [(HUComfortSoundsController *)self setIsInContinuitySession:isActivatedForContinuityScreen];
         v9 = HCLogHearingXPC();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+          v10 = [MEMORY[0x1E696AD98] numberWithBool:isActivatedForContinuityScreen];
           *buf = 136315394;
           v21 = "[HUComfortSoundsController _handleContinuitySessionCheck]";
           v22 = 2112;
@@ -154,12 +154,12 @@ void __33__HUComfortSoundsController_init__block_invoke(uint64_t a1)
           _os_log_impl(&dword_1DA5E2000, v9, OS_LOG_TYPE_DEFAULT, "%s: session active: %@", buf, 0x16u);
         }
 
-        if (v8)
+        if (isActivatedForContinuityScreen)
         {
           v11 = +[HUComfortSoundsSettings sharedInstance];
-          v12 = [v11 comfortSoundsEnabled];
+          comfortSoundsEnabled = [v11 comfortSoundsEnabled];
 
-          if (v12)
+          if (comfortSoundsEnabled)
           {
             v13 = +[HUComfortSoundsSettings sharedInstance];
             [v13 setComfortSoundsEnabled:0];
@@ -169,7 +169,7 @@ void __33__HUComfortSoundsController_init__block_invoke(uint64_t a1)
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v5 = [outputDevices countByEnumeratingWithState:&v16 objects:v24 count:16];
       if (v5)
       {
         continue;
@@ -194,9 +194,9 @@ LABEL_14:
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
   v4 = +[HUUtilities sharedUtilities];
-  v5 = [v4 currentPickableAudioRoutes];
+  currentPickableAudioRoutes = [v4 currentPickableAudioRoutes];
 
-  v6 = [v5 valueForKey:@"AXSHARoutePicked"];
+  v6 = [currentPickableAudioRoutes valueForKey:@"AXSHARoutePicked"];
   routeUID = self->_routeUID;
   v8 = [v6 valueForKey:@"RouteUID"];
   v9 = [(NSString *)routeUID isEqualToString:v8];
@@ -256,19 +256,19 @@ LABEL_14:
 
 - (BOOL)isPlayingOnQueue
 {
-  v3 = [(HUComfortSoundsController *)self audioPlayerNodeA];
-  if ([v3 isPlaying])
+  audioPlayerNodeA = [(HUComfortSoundsController *)self audioPlayerNodeA];
+  if ([audioPlayerNodeA isPlaying])
   {
-    v4 = 1;
+    isPlaying = 1;
   }
 
   else
   {
-    v5 = [(HUComfortSoundsController *)self audioPlayerNodeB];
-    v4 = [v5 isPlaying];
+    audioPlayerNodeB = [(HUComfortSoundsController *)self audioPlayerNodeB];
+    isPlaying = [audioPlayerNodeB isPlaying];
   }
 
-  return v4;
+  return isPlaying;
 }
 
 void __45__HUComfortSoundsController_clearActiveRoute__block_invoke(uint64_t a1)
@@ -358,9 +358,9 @@ LABEL_8:
 
 - (void)invalidateTimer
 {
-  v3 = [(HUComfortSoundsController *)self playbackTimer];
+  playbackTimer = [(HUComfortSoundsController *)self playbackTimer];
 
-  if (v3)
+  if (playbackTimer)
   {
     v4 = HCLogComfortSounds();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -372,8 +372,8 @@ LABEL_8:
     v5 = +[HUComfortSoundsSettings sharedInstance];
     [v5 resetValueForSelector:sel_activeTimerEndTimeStamp];
 
-    v6 = [(HUComfortSoundsController *)self playbackTimer];
-    [v6 cancel];
+    playbackTimer2 = [(HUComfortSoundsController *)self playbackTimer];
+    [playbackTimer2 cancel];
   }
 }
 
@@ -381,8 +381,8 @@ LABEL_8:
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v2 = +[HUComfortSoundsSettings sharedInstance];
-  v3 = [v2 selectedComfortSound];
-  v4 = [v3 soundGroup];
+  selectedComfortSound = [v2 selectedComfortSound];
+  soundGroup = [selectedComfortSound soundGroup];
 
   v16[0] = @"enabled";
   v5 = MEMORY[0x1E696AD98];
@@ -390,7 +390,7 @@ LABEL_8:
   v7 = [v5 numberWithBool:{objc_msgSend(v6, "comfortSoundsEnabled")}];
   v17[0] = v7;
   v16[1] = @"sound";
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:soundGroup];
   v17[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
@@ -429,28 +429,28 @@ LABEL_8:
   v2 = [(HUComfortSoundsController *)&v60 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69A4560] comfortSoundsAudioQueue];
+    comfortSoundsAudioQueue = [MEMORY[0x1E69A4560] comfortSoundsAudioQueue];
     v4 = *(v2 + 19);
-    *(v2 + 19) = v3;
+    *(v2 + 19) = comfortSoundsAudioQueue;
 
-    v5 = [MEMORY[0x1E695DF00] date];
-    [v5 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v7 = v6;
-    v8 = [MEMORY[0x1E69A4560] systemBootTime];
+    systemBootTime = [MEMORY[0x1E69A4560] systemBootTime];
 
-    v9 = [MEMORY[0x1E695DF00] date];
-    [v9 timeIntervalSince1970];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSince1970];
     v11 = v10;
     v12 = +[HUComfortSoundsSettings sharedInstance];
     [v12 lastEnablementTimestamp];
     v14 = v13;
 
     v15 = HCLogComfortSounds();
-    v16 = v7 - v8;
+    v16 = v7 - systemBootTime;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v62 = v7 - v8;
+      v62 = v7 - systemBootTime;
       v63 = 2048;
       v64 = v11 - v14;
       _os_log_impl(&dword_1DA5E2000, v15, OS_LOG_TYPE_DEFAULT, "Starting up (%f, %f)", buf, 0x16u);
@@ -472,9 +472,9 @@ LABEL_8:
       [v19 setComfortSoundsEnabled:0];
 
       v20 = +[HUComfortSoundsSettings sharedInstance];
-      v21 = [v20 timerOnlyOnFirstSession];
+      timerOnlyOnFirstSession = [v20 timerOnlyOnFirstSession];
 
-      if (v21)
+      if (timerOnlyOnFirstSession)
       {
         v22 = +[HUComfortSoundsSettings sharedInstance];
         [v22 setTimerEnabled:0];
@@ -485,12 +485,12 @@ LABEL_8:
     *(v2 + 56) = xmmword_1DA687680;
     *(v2 + 9) = 0x3FA1111111111111;
     v23 = objc_alloc(MEMORY[0x1E6988780]);
-    v24 = [v2 audioQueue];
-    v25 = [v23 initWithTargetSerialQueue:v24];
+    audioQueue = [v2 audioQueue];
+    v25 = [v23 initWithTargetSerialQueue:audioQueue];
     [v2 setPlaybackTimer:v25];
 
-    v26 = [v2 playbackTimer];
-    [v26 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
+    playbackTimer = [v2 playbackTimer];
+    [playbackTimer setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
 
     v27 = objc_alloc_init(HUComfortSoundsAssetManager);
     v28 = *(v2 + 23);
@@ -498,8 +498,8 @@ LABEL_8:
 
     [*(v2 + 23) setDelegate:v2];
     v29 = +[HUComfortSoundsSettings sharedInstance];
-    v30 = [v29 selectedComfortSound];
-    [v2 setSelectedSound:v30];
+    selectedComfortSound = [v29 selectedComfortSound];
+    [v2 setSelectedSound:selectedComfortSound];
 
     objc_initWeak(buf, v2);
     v31 = +[HUComfortSoundsSettings sharedInstance];
@@ -1456,74 +1456,74 @@ void __56__HUComfortSoundsController_listenForChangesInEqualizer__block_invoke_5
 - (void)attachNodesToEngine
 {
   v3 = objc_alloc_init(MEMORY[0x1E6958458]);
-  v4 = [(HUComfortSoundsController *)self engine];
-  [v4 attachNode:v3];
+  engine = [(HUComfortSoundsController *)self engine];
+  [engine attachNode:v3];
 
   [(HUComfortSoundsController *)self setAudioPlayerNodeA:v3];
   v14 = objc_alloc_init(MEMORY[0x1E6958458]);
 
-  v5 = [(HUComfortSoundsController *)self engine];
-  [v5 attachNode:v14];
+  engine2 = [(HUComfortSoundsController *)self engine];
+  [engine2 attachNode:v14];
 
   [(HUComfortSoundsController *)self setAudioPlayerNodeB:v14];
   v6 = objc_alloc_init(MEMORY[0x1E6958428]);
-  v7 = [(HUComfortSoundsController *)self engine];
-  [v7 attachNode:v6];
+  engine3 = [(HUComfortSoundsController *)self engine];
+  [engine3 attachNode:v6];
 
   [(HUComfortSoundsController *)self setAudioPlayerMixerNode:v6];
-  v8 = [(HUComfortSoundsController *)self audioPlayerMixerNode];
+  audioPlayerMixerNode = [(HUComfortSoundsController *)self audioPlayerMixerNode];
   LODWORD(v9) = 1.0;
-  [v8 setVolume:v9];
+  [audioPlayerMixerNode setVolume:v9];
 
-  v10 = [(HUComfortSoundsController *)self audioPlayerMixerNode];
+  audioPlayerMixerNode2 = [(HUComfortSoundsController *)self audioPlayerMixerNode];
   LODWORD(v11) = 1.0;
-  [v10 setOutputVolume:v11];
+  [audioPlayerMixerNode2 setOutputVolume:v11];
 
   v12 = [objc_alloc(MEMORY[0x1E69584C0]) initWithNumberOfBands:5];
-  v13 = [(HUComfortSoundsController *)self engine];
-  [v13 attachNode:v12];
+  engine4 = [(HUComfortSoundsController *)self engine];
+  [engine4 attachNode:v12];
 
   [(HUComfortSoundsController *)self setAudioPlayerFilterNode:v12];
 }
 
-- (void)connectNodesToEngine:(id)a3
+- (void)connectNodesToEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [(HUComfortSoundsController *)self engine];
-  v6 = [(HUComfortSoundsController *)self audioPlayerNodeA];
-  v7 = [(HUComfortSoundsController *)self audioPlayerMixerNode];
-  [v5 connect:v6 to:v7 format:v4];
+  engineCopy = engine;
+  engine = [(HUComfortSoundsController *)self engine];
+  audioPlayerNodeA = [(HUComfortSoundsController *)self audioPlayerNodeA];
+  audioPlayerMixerNode = [(HUComfortSoundsController *)self audioPlayerMixerNode];
+  [engine connect:audioPlayerNodeA to:audioPlayerMixerNode format:engineCopy];
 
-  v8 = [(HUComfortSoundsController *)self engine];
-  v9 = [(HUComfortSoundsController *)self audioPlayerNodeB];
-  v10 = [(HUComfortSoundsController *)self audioPlayerMixerNode];
-  [v8 connect:v9 to:v10 format:v4];
+  engine2 = [(HUComfortSoundsController *)self engine];
+  audioPlayerNodeB = [(HUComfortSoundsController *)self audioPlayerNodeB];
+  audioPlayerMixerNode2 = [(HUComfortSoundsController *)self audioPlayerMixerNode];
+  [engine2 connect:audioPlayerNodeB to:audioPlayerMixerNode2 format:engineCopy];
 
-  v11 = [(HUComfortSoundsController *)self engine];
-  v12 = [(HUComfortSoundsController *)self audioPlayerMixerNode];
-  v13 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
-  [v11 connect:v12 to:v13 format:v4];
+  engine3 = [(HUComfortSoundsController *)self engine];
+  audioPlayerMixerNode3 = [(HUComfortSoundsController *)self audioPlayerMixerNode];
+  audioPlayerFilterNode = [(HUComfortSoundsController *)self audioPlayerFilterNode];
+  [engine3 connect:audioPlayerMixerNode3 to:audioPlayerFilterNode format:engineCopy];
 
-  v17 = [(HUComfortSoundsController *)self engine];
-  v14 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
-  v15 = [(HUComfortSoundsController *)self engine];
-  v16 = [v15 mainMixerNode];
-  [v17 connect:v14 to:v16 format:v4];
+  engine4 = [(HUComfortSoundsController *)self engine];
+  audioPlayerFilterNode2 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
+  engine5 = [(HUComfortSoundsController *)self engine];
+  mainMixerNode = [engine5 mainMixerNode];
+  [engine4 connect:audioPlayerFilterNode2 to:mainMixerNode format:engineCopy];
 }
 
 - (void)configureTinnitusEqualizer
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
-  v4 = [v3 tinnitusFilterEnabled];
+  tinnitusFilterEnabled = [v3 tinnitusFilterEnabled];
 
   v5 = +[HUComfortSoundsSettings sharedInstance];
-  v6 = [v5 tinnitusFilterMode];
+  tinnitusFilterMode = [v5 tinnitusFilterMode];
 
   v7 = +[HUComfortSoundsSettings sharedInstance];
-  v8 = [v7 tinnitusFilterMode];
+  tinnitusFilterMode2 = [v7 tinnitusFilterMode];
 
-  v9 = v4 ^ 1;
-  if (v8)
+  v9 = tinnitusFilterEnabled ^ 1;
+  if (tinnitusFilterMode2)
   {
     v10 = v9;
   }
@@ -1534,7 +1534,7 @@ void __56__HUComfortSoundsController_listenForChangesInEqualizer__block_invoke_5
   }
 
   [(HUComfortSoundsController *)self applyBypassForFiltersAtIndexes:&unk_1F56243E8 shouldBypass:v10];
-  if (v6 == 1)
+  if (tinnitusFilterMode == 1)
   {
     v11 = 1;
   }
@@ -1545,10 +1545,10 @@ void __56__HUComfortSoundsController_listenForChangesInEqualizer__block_invoke_5
   }
 
   [(HUComfortSoundsController *)self applyBypassForFiltersAtIndexes:&unk_1F5624400 shouldBypass:v11];
-  if (v6 == 1)
+  if (tinnitusFilterMode == 1)
   {
     [(HUComfortSoundsController *)self configureBandsForFineFilter];
-    if (v4)
+    if (tinnitusFilterEnabled)
     {
       return;
     }
@@ -1557,7 +1557,7 @@ void __56__HUComfortSoundsController_listenForChangesInEqualizer__block_invoke_5
   else
   {
     [(HUComfortSoundsController *)self configureBandsForCoarseFilter];
-    if (v4)
+    if (tinnitusFilterEnabled)
     {
       return;
     }
@@ -1566,63 +1566,63 @@ void __56__HUComfortSoundsController_listenForChangesInEqualizer__block_invoke_5
   [(HUComfortSoundsController *)self setFilterBoost:0.0];
 }
 
-- (void)configureBandWithType:(int64_t)a3 frequency:(double)a4 bandwidth:(double)a5 atIndex:(int64_t)a6
+- (void)configureBandWithType:(int64_t)type frequency:(double)frequency bandwidth:(double)bandwidth atIndex:(int64_t)index
 {
-  v11 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
-  v12 = [v11 bands];
-  v13 = [v12 objectAtIndexedSubscript:a6];
-  [v13 setFilterType:a3];
+  audioPlayerFilterNode = [(HUComfortSoundsController *)self audioPlayerFilterNode];
+  bands = [audioPlayerFilterNode bands];
+  v13 = [bands objectAtIndexedSubscript:index];
+  [v13 setFilterType:type];
 
-  v14 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
-  v15 = [v14 bands];
-  v16 = [v15 objectAtIndexedSubscript:a6];
-  *&a4 = a4;
-  LODWORD(v17) = LODWORD(a4);
+  audioPlayerFilterNode2 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
+  bands2 = [audioPlayerFilterNode2 bands];
+  v16 = [bands2 objectAtIndexedSubscript:index];
+  *&frequency = frequency;
+  LODWORD(v17) = LODWORD(frequency);
   [v16 setFrequency:v17];
 
-  v21 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
-  v18 = [v21 bands];
-  v19 = [v18 objectAtIndexedSubscript:a6];
-  *&a5 = a5;
-  LODWORD(v20) = LODWORD(a5);
+  audioPlayerFilterNode3 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
+  bands3 = [audioPlayerFilterNode3 bands];
+  v19 = [bands3 objectAtIndexedSubscript:index];
+  *&bandwidth = bandwidth;
+  LODWORD(v20) = LODWORD(bandwidth);
   [v19 setBandwidth:v20];
 }
 
-- (void)configureBandWithType:(int64_t)a3 frequency:(double)a4 bandwidth:(double)a5 gain:(double)a6 atIndex:(int64_t)a7
+- (void)configureBandWithType:(int64_t)type frequency:(double)frequency bandwidth:(double)bandwidth gain:(double)gain atIndex:(int64_t)index
 {
-  v13 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
-  v14 = [v13 bands];
-  v15 = [v14 objectAtIndexedSubscript:a7];
-  [v15 setFilterType:a3];
+  audioPlayerFilterNode = [(HUComfortSoundsController *)self audioPlayerFilterNode];
+  bands = [audioPlayerFilterNode bands];
+  v15 = [bands objectAtIndexedSubscript:index];
+  [v15 setFilterType:type];
 
-  v16 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
-  v17 = [v16 bands];
-  v18 = [v17 objectAtIndexedSubscript:a7];
-  *&a4 = a4;
-  LODWORD(v19) = LODWORD(a4);
+  audioPlayerFilterNode2 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
+  bands2 = [audioPlayerFilterNode2 bands];
+  v18 = [bands2 objectAtIndexedSubscript:index];
+  *&frequency = frequency;
+  LODWORD(v19) = LODWORD(frequency);
   [v18 setFrequency:v19];
 
-  v20 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
-  v21 = [v20 bands];
-  v22 = [v21 objectAtIndexedSubscript:a7];
-  *&a5 = a5;
-  LODWORD(v23) = LODWORD(a5);
+  audioPlayerFilterNode3 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
+  bands3 = [audioPlayerFilterNode3 bands];
+  v22 = [bands3 objectAtIndexedSubscript:index];
+  *&bandwidth = bandwidth;
+  LODWORD(v23) = LODWORD(bandwidth);
   [v22 setBandwidth:v23];
 
-  v27 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
-  v24 = [v27 bands];
-  v25 = [v24 objectAtIndexedSubscript:a7];
-  *&a6 = a6;
-  LODWORD(v26) = LODWORD(a6);
+  audioPlayerFilterNode4 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
+  bands4 = [audioPlayerFilterNode4 bands];
+  v25 = [bands4 objectAtIndexedSubscript:index];
+  *&gain = gain;
+  LODWORD(v26) = LODWORD(gain);
   [v25 setGain:v26];
 }
 
-- (void)setFilterBoost:(double)a3
+- (void)setFilterBoost:(double)boost
 {
-  v3 = a3;
-  v5 = [(HUComfortSoundsController *)self audioPlayerFilterNode];
-  *&v4 = v3;
-  [v5 setGlobalGain:v4];
+  boostCopy = boost;
+  audioPlayerFilterNode = [(HUComfortSoundsController *)self audioPlayerFilterNode];
+  *&v4 = boostCopy;
+  [audioPlayerFilterNode setGlobalGain:v4];
 }
 
 - (void)applyTinnitusBalance
@@ -1630,20 +1630,20 @@ void __56__HUComfortSoundsController_listenForChangesInEqualizer__block_invoke_5
   v7 = +[HUComfortSoundsSettings sharedInstance];
   [v7 tinnitusBalance];
   v4 = v3;
-  v5 = [(HUComfortSoundsController *)self audioPlayerMixerNode];
+  audioPlayerMixerNode = [(HUComfortSoundsController *)self audioPlayerMixerNode];
   *&v6 = v4;
-  [v5 setPan:v6];
+  [audioPlayerMixerNode setPan:v6];
 }
 
 - (void)configureBandsForFineFilter
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
-  v4 = [v3 tinnitusFilterPoint];
-  [v4 frequencyForBandPass];
+  tinnitusFilterPoint = [v3 tinnitusFilterPoint];
+  [tinnitusFilterPoint frequencyForBandPass];
   v6 = v5;
   v7 = +[HUComfortSoundsSettings sharedInstance];
-  v8 = [v7 tinnitusFilterPoint];
-  [v8 widthForBandPass];
+  tinnitusFilterPoint2 = [v7 tinnitusFilterPoint];
+  [tinnitusFilterPoint2 widthForBandPass];
   [(HUComfortSoundsController *)self configureBandWithType:5 frequency:0 bandwidth:v6 atIndex:v9];
 
   [(HUComfortSoundsController *)self setFilterBoost:6.0];
@@ -1652,23 +1652,23 @@ void __56__HUComfortSoundsController_listenForChangesInEqualizer__block_invoke_5
 - (void)configureBandsForCoarseFilter
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
-  v4 = [v3 tinnitusFilterPoint];
-  [v4 gainForLowResonance];
+  tinnitusFilterPoint = [v3 tinnitusFilterPoint];
+  [tinnitusFilterPoint gainForLowResonance];
   [(HUComfortSoundsController *)self configureBandWithType:9 frequency:1 bandwidth:150.0 gain:1.92 atIndex:v5];
 
   v6 = +[HUComfortSoundsSettings sharedInstance];
-  v7 = [v6 tinnitusFilterPoint];
-  [v7 gainForHighResonance];
+  tinnitusFilterPoint2 = [v6 tinnitusFilterPoint];
+  [tinnitusFilterPoint2 gainForHighResonance];
   [(HUComfortSoundsController *)self configureBandWithType:10 frequency:2 bandwidth:4500.0 gain:1.89 atIndex:v8];
 
   v9 = +[HUComfortSoundsSettings sharedInstance];
-  v10 = [v9 tinnitusFilterPoint];
-  [v10 gainForLeftBellFilters];
+  tinnitusFilterPoint3 = [v9 tinnitusFilterPoint];
+  [tinnitusFilterPoint3 gainForLeftBellFilters];
   [(HUComfortSoundsController *)self configureBandWithType:0 frequency:3 bandwidth:750.0 gain:2.19 atIndex:v11];
 
   v12 = +[HUComfortSoundsSettings sharedInstance];
-  v13 = [v12 tinnitusFilterPoint];
-  [v13 gainForRightBellFilters];
+  tinnitusFilterPoint4 = [v12 tinnitusFilterPoint];
+  [tinnitusFilterPoint4 gainForRightBellFilters];
   [(HUComfortSoundsController *)self configureBandWithType:0 frequency:4 bandwidth:1200.0 gain:1.91 atIndex:v14];
 
   [(HUComfortSoundsController *)self setFilterBoost:0.0];
@@ -1709,52 +1709,52 @@ void __56__HUComfortSoundsController_listenForChangesInEqualizer__block_invoke_5
 - (void)registerNotifications
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_callStatusDidChange_ name:*MEMORY[0x1E69D8E08] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_callStatusDidChange_ name:*MEMORY[0x1E69D8E08] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_callStatusDidChange_ name:*MEMORY[0x1E69D8E58] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_callStatusDidChange_ name:*MEMORY[0x1E69D8E58] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_routesDidChange_ name:@"com.apple.accessibility.hearing.wireless.splitter.changed" object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_routesDidChange_ name:@"com.apple.accessibility.hearing.wireless.splitter.changed" object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel_audioSessionWasInterrupted_ name:*MEMORY[0x1E69580D8] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel_audioSessionWasInterrupted_ name:*MEMORY[0x1E69580D8] object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel_audioEngineWasInterrupted_ name:*MEMORY[0x1E6958028] object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel_audioEngineWasInterrupted_ name:*MEMORY[0x1E6958028] object:0];
 
   MRMediaRemoteSetWantsNowPlayingNotifications();
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 addObserver:self selector:sel_mediaPlaybackDidChange_ name:*MEMORY[0x1E69B0E08] object:0];
+  defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter6 addObserver:self selector:sel_mediaPlaybackDidChange_ name:*MEMORY[0x1E69B0E08] object:0];
 
   MRMediaRemoteSetWantsRouteChangeNotifications();
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 addObserver:self selector:sel_routesDidChange_ name:*MEMORY[0x1E69B12A0] object:0];
+  defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter7 addObserver:self selector:sel_routesDidChange_ name:*MEMORY[0x1E69B12A0] object:0];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 addObserver:self selector:sel_routesDidChange_ name:*MEMORY[0x1E69B12E0] object:0];
+  defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter8 addObserver:self selector:sel_routesDidChange_ name:*MEMORY[0x1E69B12E0] object:0];
 
-  v11 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
   v12 = MEMORY[0x1E69AECB8];
   v24[0] = *MEMORY[0x1E69AECB8];
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-  [v11 setAttribute:v13 forKey:*MEMORY[0x1E69AECD8] error:0];
+  [mEMORY[0x1E69AED10] setAttribute:v13 forKey:*MEMORY[0x1E69AECD8] error:0];
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter9 = [MEMORY[0x1E696AD88] defaultCenter];
   v15 = *v12;
-  v16 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  [v14 addObserver:self selector:sel_mediaServerDied name:v15 object:v16];
+  mEMORY[0x1E69AED10]2 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  [defaultCenter9 addObserver:self selector:sel_mediaServerDied name:v15 object:mEMORY[0x1E69AED10]2];
 
-  v17 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter10 = [MEMORY[0x1E696AD88] defaultCenter];
   v18 = *MEMORY[0x1E69586A8];
-  v19 = [MEMORY[0x1E69587F0] sharedSystemAudioContext];
+  mEMORY[0x1E69587F0] = [MEMORY[0x1E69587F0] sharedSystemAudioContext];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __50__HUComfortSoundsController_registerNotifications__block_invoke;
   v23[3] = &unk_1E85CCDB8;
   v23[4] = self;
-  v20 = [v17 addObserverForName:v18 object:v19 queue:0 usingBlock:v23];
+  v20 = [defaultCenter10 addObserverForName:v18 object:mEMORY[0x1E69587F0] queue:0 usingBlock:v23];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _hearingTestStarted, @"com.apple.HearingTest.test.started", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -1796,7 +1796,7 @@ void __56__HUComfortSoundsController_listenForChangesInEqualizer__block_invoke_5
     {
       v9 = [MEMORY[0x1E696AD98] numberWithInt:{self->_keybagLockStateToken, v17, v18, v19, v20}];
       *buf = 138412546;
-      v28 = self;
+      selfCopy3 = self;
       v29 = 2112;
       v30 = v9;
       _os_log_impl(&dword_1DA5E2000, v8, OS_LOG_TYPE_DEFAULT, "Registered keybag lock state: %@ %@", buf, 0x16u);
@@ -1818,7 +1818,7 @@ void __56__HUComfortSoundsController_listenForChangesInEqualizer__block_invoke_5
     {
       v12 = [MEMORY[0x1E696AD98] numberWithInt:self->_blankScreenToken];
       *buf = 138412546;
-      v28 = self;
+      selfCopy3 = self;
       v29 = 2112;
       v30 = v12;
       _os_log_impl(&dword_1DA5E2000, v11, OS_LOG_TYPE_DEFAULT, "Registered blank screen state: %@ %@", buf, 0x16u);
@@ -1840,7 +1840,7 @@ void __56__HUComfortSoundsController_listenForChangesInEqualizer__block_invoke_5
     {
       v15 = [MEMORY[0x1E696AD98] numberWithInt:self->_lockStateNotifyToken];
       *buf = 138412546;
-      v28 = self;
+      selfCopy3 = self;
       v29 = 2112;
       v30 = v15;
       _os_log_impl(&dword_1DA5E2000, v14, OS_LOG_TYPE_DEFAULT, "Registered lock screen state: %@ %@", buf, 0x16u);
@@ -1916,24 +1916,24 @@ void __65__HUComfortSoundsController_registerHasBlankedScreenNotification__block
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deviceScreenStatusDidChange:(int)a3 systemLocked:(int)a4
+- (void)deviceScreenStatusDidChange:(int)change systemLocked:(int)locked
 {
   v19 = *MEMORY[0x1E69E9840];
   v6 = +[HUComfortSoundsSettings sharedInstance];
-  v7 = [v6 stopsOnLock];
+  stopsOnLock = [v6 stopsOnLock];
 
   v8 = HCLogComfortSounds();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = a3 != 0;
-    v10 = a4 != 0;
-    if (a4)
+    v9 = change != 0;
+    v10 = locked != 0;
+    if (locked)
     {
       v9 = 0;
     }
 
     v14[0] = 67109632;
-    if (a3)
+    if (change)
     {
       v10 = 0;
     }
@@ -1942,11 +1942,11 @@ void __65__HUComfortSoundsController_registerHasBlankedScreenNotification__block
     v15 = 1024;
     v16 = v9;
     v17 = 1024;
-    v18 = v7;
+    v18 = stopsOnLock;
     _os_log_impl(&dword_1DA5E2000, v8, OS_LOG_TYPE_DEFAULT, "Screen blank status has changed - %d, %d, %d", v14, 0x14u);
   }
 
-  if ((((a3 != 0) ^ (a4 != 0)) & v7) == 1)
+  if ((((change != 0) ^ (locked != 0)) & stopsOnLock) == 1)
   {
     v11 = HCLogComfortSounds();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1966,18 +1966,18 @@ void __65__HUComfortSoundsController_registerHasBlankedScreenNotification__block
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = +[HUComfortSoundsSettings sharedInstance];
-  v4 = [v3 comfortSoundsEnabled];
+  comfortSoundsEnabled = [v3 comfortSoundsEnabled];
 
   v5 = 0.0;
-  if (v4)
+  if (comfortSoundsEnabled)
   {
     [(HUComfortSoundsController *)self activeTimerEndTimeStampCache];
     if (v6 == 0.0)
     {
       v10 = +[HUComfortSoundsSettings sharedInstance];
-      v11 = [v10 timerOption];
+      timerOption = [v10 timerOption];
 
-      if (v11 == 1)
+      if (timerOption == 1)
       {
         [(HUComfortSoundsController *)self validateTimerDuration];
         [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
@@ -1989,7 +1989,7 @@ void __65__HUComfortSoundsController_registerHasBlankedScreenNotification__block
 
       else
       {
-        if (v11)
+        if (timerOption)
         {
           goto LABEL_11;
         }
@@ -2029,23 +2029,23 @@ LABEL_11:
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)scheduleTimer:(double)a3
+- (void)scheduleTimer:(double)timer
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = HCLogComfortSounds();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = a3;
+    timerCopy = timer;
     _os_log_impl(&dword_1DA5E2000, v5, OS_LOG_TYPE_DEFAULT, "Scheduling timer with duration: %f", &v10, 0xCu);
   }
 
   v6 = +[HUComfortSoundsSettings sharedInstance];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-  [v6 setActiveTimerEndTimeStamp:v7 + a3];
+  [v6 setActiveTimerEndTimeStamp:v7 + timer];
 
-  v8 = [(HUComfortSoundsController *)self playbackTimer];
-  [v8 afterDelay:&__block_literal_global_109 processBlock:a3];
+  playbackTimer = [(HUComfortSoundsController *)self playbackTimer];
+  [playbackTimer afterDelay:&__block_literal_global_109 processBlock:timer];
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -2101,10 +2101,10 @@ void __43__HUComfortSoundsController_scheduleTimer___block_invoke()
   }
 }
 
-- (void)logMessageForTimer:(double)a3
+- (void)logMessageForTimer:(double)timer
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a3];
+  v3 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:timer];
   v4 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v4 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
   v5 = [v4 stringFromDate:v3];
@@ -2121,22 +2121,22 @@ void __43__HUComfortSoundsController_scheduleTimer___block_invoke()
 
 - (void)validateTimerEndInterval
 {
-  v22 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v2 = MEMORY[0x1E695DF00];
   v3 = +[HUComfortSoundsSettings sharedInstance];
   [v3 timerEndInterval];
   v4 = [v2 dateWithTimeIntervalSinceReferenceDate:?];
 
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 dateByAddingUnit:16 value:1 toDate:v6 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date2 = [MEMORY[0x1E695DF00] date];
+  v7 = [currentCalendar dateByAddingUnit:16 value:1 toDate:date2 options:0];
 
-  if ([v4 compare:v22] == -1)
+  if ([v4 compare:date] == -1)
   {
-    [v22 timeIntervalSinceDate:v4];
+    [date timeIntervalSinceDate:v4];
     v9 = vcvtpd_s64_f64(v8 / 86400.0);
-    v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v11 = [v10 dateByAddingUnit:16 value:v9 toDate:v4 options:0];
+    currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+    v11 = [currentCalendar2 dateByAddingUnit:16 value:v9 toDate:v4 options:0];
 
     v4 = v11;
   }
@@ -2145,8 +2145,8 @@ void __43__HUComfortSoundsController_scheduleTimer___block_invoke()
   {
     [v4 timeIntervalSinceDate:v7];
     v13 = vcvtpd_s64_f64(v12 / 86400.0);
-    v14 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v15 = [v14 dateByAddingUnit:16 value:-v13 toDate:v4 options:0];
+    currentCalendar3 = [MEMORY[0x1E695DEE8] currentCalendar];
+    v15 = [currentCalendar3 dateByAddingUnit:16 value:-v13 toDate:v4 options:0];
 
     v4 = v15;
   }
@@ -2244,23 +2244,23 @@ uint64_t __44__HUComfortSoundsController_mediaServerDied__block_invoke(uint64_t 
   return result;
 }
 
-- (void)audioSessionWasInterrupted:(id)a3
+- (void)audioSessionWasInterrupted:(id)interrupted
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interruptedCopy = interrupted;
   v5 = HCLogComfortSounds();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = interruptedCopy;
     _os_log_impl(&dword_1DA5E2000, v5, OS_LOG_TYPE_DEFAULT, "Session interrupted. %@", &v11, 0xCu);
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 valueForKey:*MEMORY[0x1E6958100]];
-  v8 = [v7 intValue];
+  userInfo = [interruptedCopy userInfo];
+  v7 = [userInfo valueForKey:*MEMORY[0x1E6958100]];
+  intValue = [v7 intValue];
 
-  if (v8 == 1)
+  if (intValue == 1)
   {
     [(HUComfortSoundsController *)self stopAndClearRoute:0];
   }
@@ -2284,15 +2284,15 @@ uint64_t __44__HUComfortSoundsController_mediaServerDied__block_invoke(uint64_t 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)audioEngineWasInterrupted:(id)a3
+- (void)audioEngineWasInterrupted:(id)interrupted
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interruptedCopy = interrupted;
   v5 = HCLogComfortSounds();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = interruptedCopy;
     _os_log_impl(&dword_1DA5E2000, v5, OS_LOG_TYPE_DEFAULT, "Audio Engine interrupted. %@", buf, 0xCu);
   }
 
@@ -2340,18 +2340,18 @@ uint64_t __55__HUComfortSoundsController_audioEngineWasInterrupted___block_invok
   [(HUComfortSoundsController *)self calculateVolumeForSessionWithCompletion:v4];
 }
 
-- (void)routesDidChange:(id)a3
+- (void)routesDidChange:(id)change
 {
   v37 = *MEMORY[0x1E69E9840];
   v4 = +[HUUtilities sharedUtilities];
   [v4 clearAudioRoutes];
 
-  v5 = [(HUComfortSoundsController *)self currentRouteSupported];
+  currentRouteSupported = [(HUComfortSoundsController *)self currentRouteSupported];
   v6 = +[HUUtilities sharedUtilities];
-  v7 = [v6 currentPickableAudioRoutes];
+  currentPickableAudioRoutes = [v6 currentPickableAudioRoutes];
 
-  v8 = [v7 valueForKey:@"AXSHARoutePicked"];
-  v9 = [v7 valueForKey:@"AXSHARouteSpeaker"];
+  v8 = [currentPickableAudioRoutes valueForKey:@"AXSHARoutePicked"];
+  v9 = [currentPickableAudioRoutes valueForKey:@"AXSHARouteSpeaker"];
   v10 = [v8 isEqualToDictionary:v9];
 
   routeUID = self->_routeUID;
@@ -2364,7 +2364,7 @@ uint64_t __55__HUComfortSoundsController_audioEngineWasInterrupted___block_invok
     v15 = self->_routeUID;
     v16 = [v8 valueForKey:@"RouteUID"];
     *buf = 67110146;
-    v28 = v5;
+    v28 = currentRouteSupported;
     v29 = 1024;
     v30 = !v13;
     v31 = 2112;
@@ -2378,7 +2378,7 @@ uint64_t __55__HUComfortSoundsController_audioEngineWasInterrupted___block_invok
 
   if (!self->_holdingForCall)
   {
-    if (v13 && v5)
+    if (v13 && currentRouteSupported)
     {
       if ((v10 & 1) != 0 || ![(NSString *)self->_routeUID length]|| !self->_selectedSound || !self->_temporaryAirpodsDisconnect)
       {
@@ -2412,9 +2412,9 @@ uint64_t __55__HUComfortSoundsController_audioEngineWasInterrupted___block_invok
       block[4] = self;
       dispatch_async(audioQueue, block);
       v24 = +[HUComfortSoundsSettings sharedInstance];
-      v25 = [v24 comfortSoundsEnabled];
+      comfortSoundsEnabled = [v24 comfortSoundsEnabled];
 
-      if (!v25)
+      if (!comfortSoundsEnabled)
       {
         goto LABEL_7;
       }
@@ -2516,9 +2516,9 @@ void *__43__HUComfortSoundsController_hasCurrentCall__block_invoke(void *result,
   return result;
 }
 
-- (void)callStatusDidChange:(id)a3
+- (void)callStatusDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = HCLogComfortSounds();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2526,22 +2526,22 @@ void *__43__HUComfortSoundsController_hasCurrentCall__block_invoke(void *result,
   }
 
   v6 = +[HUComfortSoundsSettings sharedInstance];
-  v7 = [v6 comfortSoundsAvailable];
+  comfortSoundsAvailable = [v6 comfortSoundsAvailable];
 
-  if (v7)
+  if (comfortSoundsAvailable)
   {
     v8 = HCLogComfortSounds();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(HUComfortSoundsController *)self callStatusDidChange:v4, v8];
+      [(HUComfortSoundsController *)self callStatusDidChange:changeCopy, v8];
     }
 
     if ([(HUComfortSoundsController *)self hasCurrentCall])
     {
       v9 = +[HUComfortSoundsSettings sharedInstance];
-      v10 = [v9 comfortSoundsEnabled];
+      comfortSoundsEnabled = [v9 comfortSoundsEnabled];
 
-      if (v10)
+      if (comfortSoundsEnabled)
       {
         self->_holdingForCall = 1;
         [(HUComfortSoundsController *)self stopAndClearRoute:0];
@@ -2551,9 +2551,9 @@ void *__43__HUComfortSoundsController_hasCurrentCall__block_invoke(void *result,
     else if (self->_holdingForCall)
     {
       v11 = +[HUComfortSoundsSettings sharedInstance];
-      v12 = [v11 comfortSoundsEnabled];
+      comfortSoundsEnabled2 = [v11 comfortSoundsEnabled];
 
-      if ((v12 & 1) == 0)
+      if ((comfortSoundsEnabled2 & 1) == 0)
       {
         v13 = +[HUComfortSoundsSettings sharedInstance];
         [v13 setComfortSoundsEnabled:1];
@@ -2617,15 +2617,15 @@ void __49__HUComfortSoundsController_callStatusDidChange___block_invoke(uint64_t
   }
 }
 
-- (void)mediaPlaybackDidChange:(id)a3
+- (void)mediaPlaybackDidChange:(id)change
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = HCLogComfortSounds();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = changeCopy;
     _os_log_impl(&dword_1DA5E2000, v5, OS_LOG_TYPE_DEFAULT, "Now playing notification: %@", buf, 0xCu);
   }
 
@@ -2688,13 +2688,13 @@ LABEL_5:
 - (id)nextFileToPlay
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [self->_selectedSound nextFilePath];
-  if (!v3)
+  nextFilePath = [self->_selectedSound nextFilePath];
+  if (!nextFilePath)
   {
     v5 = 0;
 LABEL_9:
-    v4 = [self->_selectedSound asset];
-    if (v4)
+    asset = [self->_selectedSound asset];
+    if (asset)
     {
       selectedSound = self->_selectedSound;
       objc_opt_class();
@@ -2715,11 +2715,11 @@ LABEL_9:
           _os_log_impl(&dword_1DA5E2000, v10, OS_LOG_TYPE_DEFAULT, "Missing file. Falling back %@", buf, 0xCu);
         }
 
-        v12 = [self->_selectedSound nextFilePath];
-        if (v12)
+        nextFilePath2 = [self->_selectedSound nextFilePath];
+        if (nextFilePath2)
         {
           v17 = v5;
-          v4 = [objc_alloc(MEMORY[0x1E6958408]) initForReading:v12 error:&v17];
+          asset = [objc_alloc(MEMORY[0x1E6958408]) initForReading:nextFilePath2 error:&v17];
           v13 = v17;
 
           if (v13)
@@ -2734,7 +2734,7 @@ LABEL_9:
 
         else
         {
-          v4 = 0;
+          asset = 0;
           v13 = v5;
         }
 
@@ -2743,7 +2743,7 @@ LABEL_9:
 
       else
       {
-        v4 = 0;
+        asset = 0;
       }
     }
 
@@ -2751,7 +2751,7 @@ LABEL_9:
   }
 
   v18 = 0;
-  v4 = [objc_alloc(MEMORY[0x1E6958408]) initForReading:v3 error:&v18];
+  asset = [objc_alloc(MEMORY[0x1E6958408]) initForReading:nextFilePath error:&v18];
   v5 = v18;
   if (v5)
   {
@@ -2762,7 +2762,7 @@ LABEL_9:
     }
   }
 
-  if (!v4)
+  if (!asset)
   {
     goto LABEL_9;
   }
@@ -2771,7 +2771,7 @@ LABEL_21:
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return asset;
 }
 
 - (void)scheduleNewFile
@@ -2883,9 +2883,9 @@ uint64_t __38__HUComfortSoundsController_isPlaying__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)calculateVolumeForSessionWithCompletion:(id)a3
+- (void)calculateVolumeForSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x2020000000;
@@ -2897,7 +2897,7 @@ uint64_t __38__HUComfortSoundsController_isPlaying__block_invoke(uint64_t a1)
   v8[2] = __69__HUComfortSoundsController_calculateVolumeForSessionWithCompletion___block_invoke;
   v8[3] = &unk_1E85CCE50;
   v10 = v11;
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
   [v5 checkAudioPlayingWithQueue:audioQueue andCompletion:v8];
 
@@ -2964,7 +2964,7 @@ LABEL_11:
   return result;
 }
 
-- (void)updateVolumeForSessionAndRamp:(BOOL)a3
+- (void)updateVolumeForSessionAndRamp:(BOOL)ramp
 {
   if (!self->_holdingForCall)
   {
@@ -2973,7 +2973,7 @@ LABEL_11:
     v3[2] = __59__HUComfortSoundsController_updateVolumeForSessionAndRamp___block_invoke;
     v3[3] = &unk_1E85CCE78;
     v3[4] = self;
-    v4 = a3;
+    rampCopy = ramp;
     [(HUComfortSoundsController *)self calculateVolumeForSessionWithCompletion:v3];
   }
 }
@@ -2985,12 +2985,12 @@ void __59__HUComfortSoundsController_updateVolumeForSessionAndRamp___block_invok
   [v4 setVolume:v5 forNode:*(a1 + 40) andRamp:a2];
 }
 
-- (void)setVolume:(double)a3 forNode:(id)a4 andRamp:(BOOL)a5
+- (void)setVolume:(double)volume forNode:(id)node andRamp:(BOOL)ramp
 {
-  v5 = a5;
+  rampCopy = ramp;
   v13 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (v5)
+  nodeCopy = node;
+  if (rampCopy)
   {
     duckingBlock = self->_duckingBlock;
     if (duckingBlock)
@@ -3004,8 +3004,8 @@ void __59__HUComfortSoundsController_updateVolumeForSessionAndRamp___block_invok
 
   else
   {
-    [(HUComfortSoundsController *)self setOutputGain:a3];
-    if (a3 <= 0.0)
+    [(HUComfortSoundsController *)self setOutputGain:volume];
+    if (volume <= 0.0)
     {
       [(HUComfortSoundsController *)self stopOnQueueAndClearRoute:0];
       goto LABEL_11;
@@ -3026,17 +3026,17 @@ LABEL_11:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setOutputGain:(double)a3
+- (void)setOutputGain:(double)gain
 {
-  v4 = 0.0;
-  if (a3 >= 0.0)
+  gainCopy = 0.0;
+  if (gain >= 0.0)
   {
-    v4 = a3;
+    gainCopy = gain;
   }
 
-  if (a3 <= 1.0)
+  if (gain <= 1.0)
   {
-    v5 = v4;
+    v5 = gainCopy;
   }
 
   else
@@ -3052,16 +3052,16 @@ LABEL_11:
     [(AVAudioPlayerNode *)self->_currentNode setVolume:outputGain];
   }
 
-  v9 = [(HUComfortSoundsController *)self engine];
-  v7 = [v9 mainMixerNode];
+  engine = [(HUComfortSoundsController *)self engine];
+  mainMixerNode = [engine mainMixerNode];
   v8 = self->_outputGain;
   *&v8 = v8;
-  [v7 setOutputVolume:v8];
+  [mainMixerNode setOutputVolume:v8];
 }
 
-- (void)rampOutputGainFrom:(double)a3 to:(double)a4 withProgress:(double)a5
+- (void)rampOutputGainFrom:(double)from to:(double)to withProgress:(double)progress
 {
-  if (a3 != a4)
+  if (from != to)
   {
     v24[1] = v10;
     v24[2] = v9;
@@ -3072,17 +3072,17 @@ LABEL_11:
     duckDuration = self->_duckDuration;
     stepsPerSecond = self->_stepsPerSecond;
     v17 = 1.0 / (duckDuration * stepsPerSecond);
-    [(HUComfortSoundsController *)self setOutputGain:self->_outputGain + (a4 - a3) / (duckDuration * stepsPerSecond + 1.0)];
+    [(HUComfortSoundsController *)self setOutputGain:self->_outputGain + (to - from) / (duckDuration * stepsPerSecond + 1.0)];
     v18 = objc_initWeak(v24, self);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __64__HUComfortSoundsController_rampOutputGainFrom_to_withProgress___block_invoke;
     block[3] = &unk_1E85CCEA0;
-    v23[1] = *&a5;
+    v23[1] = *&progress;
     v23[2] = *&v17;
     block[4] = self;
-    v23[3] = *&a3;
-    v23[4] = *&a4;
+    v23[3] = *&from;
+    v23[4] = *&to;
     objc_copyWeak(v23, v24);
     v19 = dispatch_block_create(0, block);
     duckingBlock = self->_duckingBlock;
@@ -3131,20 +3131,20 @@ void __64__HUComfortSoundsController_rampOutputGainFrom_to_withProgress___block_
   }
 }
 
-- (void)rampNodeVolume:(id)a3 from:(double)a4 to:(double)a5 fadeDuration:(double)a6 withProgress:(double)a7
+- (void)rampNodeVolume:(id)volume from:(double)from to:(double)to fadeDuration:(double)duration withProgress:(double)progress
 {
-  v12 = a3;
+  volumeCopy = volume;
   stepsPerSecond = self->_stepsPerSecond;
-  v14 = vabdd_f64(a5, a4);
-  v15 = a7 * 1.57079633;
-  if (a5 <= a4)
+  v14 = vabdd_f64(to, from);
+  v15 = progress * 1.57079633;
+  if (to <= from)
   {
-    v16 = a5 + cos(v15) * v14;
+    v16 = to + cos(v15) * v14;
   }
 
   else
   {
-    v16 = a4 + sin(v15) * v14;
+    v16 = from + sin(v15) * v14;
   }
 
   [(HUComfortSoundsController *)self outputGain];
@@ -3166,22 +3166,22 @@ void __64__HUComfortSoundsController_rampOutputGainFrom_to_withProgress___block_
   }
 
   *&v20 = v20;
-  [v12 setVolume:{v20, v19}];
-  if (a5 <= a4)
+  [volumeCopy setVolume:{v20, v19}];
+  if (to <= from)
   {
-    v21 = v16 <= a5;
+    v21 = v16 <= to;
   }
 
   else
   {
-    v21 = v16 >= a5;
+    v21 = v16 >= to;
   }
 
   if (v21)
   {
-    if (a5 <= a4)
+    if (to <= from)
     {
-      [v12 stop];
+      [volumeCopy stop];
       if (![(HUComfortSoundsController *)self shouldContinuePlayback])
       {
         v29 = HCLogComfortSounds();
@@ -3191,8 +3191,8 @@ void __64__HUComfortSoundsController_rampOutputGainFrom_to_withProgress___block_
           _os_log_impl(&dword_1DA5E2000, v29, OS_LOG_TYPE_DEFAULT, "Playback ended. Stopping", buf, 2u);
         }
 
-        v30 = [(HUComfortSoundsController *)self engine];
-        [v30 stop];
+        engine = [(HUComfortSoundsController *)self engine];
+        [engine stop];
       }
 
       rampDownBlock = self->_rampDownBlock;
@@ -3229,16 +3229,16 @@ void __64__HUComfortSoundsController_rampOutputGainFrom_to_withProgress___block_
     block[2] = __78__HUComfortSoundsController_rampNodeVolume_from_to_fadeDuration_withProgress___block_invoke;
     block[3] = &unk_1E85CCEC8;
     objc_copyWeak(v34, buf);
-    v34[1] = *&a7;
-    *&v34[2] = 1.0 / (stepsPerSecond * a6);
-    v33 = v12;
-    v34[3] = *&a4;
-    v34[4] = *&a5;
-    v34[5] = *&a6;
+    v34[1] = *&progress;
+    *&v34[2] = 1.0 / (stepsPerSecond * duration);
+    v33 = volumeCopy;
+    v34[3] = *&from;
+    v34[4] = *&to;
+    v34[5] = *&duration;
     v24 = dispatch_block_create(0, block);
     v25 = _Block_copy(v24);
     v26 = 32;
-    if (a5 > a4)
+    if (to > from)
     {
       v26 = 24;
     }
@@ -3283,18 +3283,18 @@ void __78__HUComfortSoundsController_rampNodeVolume_from_to_fadeDuration_withPro
 
   [(HUComfortSoundsController *)self play];
   v5 = +[HUComfortSoundsSettings sharedInstance];
-  v6 = [v5 selectedComfortSound];
-  v7 = [v6 soundGroup];
+  selectedComfortSound = [v5 selectedComfortSound];
+  soundGroup = [selectedComfortSound soundGroup];
 
-  v8 = [(HUComfortSoundsController *)self assetManager];
-  v9 = [v8 availableAssets];
+  assetManager = [(HUComfortSoundsController *)self assetManager];
+  availableAssets = [assetManager availableAssets];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__HUComfortSoundsController_startComfortSounds__block_invoke;
   v10[3] = &unk_1E85CCEF0;
   v10[4] = self;
-  v10[5] = v7;
-  [v9 enumerateObjectsUsingBlock:v10];
+  v10[5] = soundGroup;
+  [availableAssets enumerateObjectsUsingBlock:v10];
 }
 
 void __47__HUComfortSoundsController_startComfortSounds__block_invoke(uint64_t a1, void *a2)
@@ -3313,7 +3313,7 @@ void __47__HUComfortSoundsController_startComfortSounds__block_invoke(uint64_t a
   }
 }
 
-- (void)stopAndClearRoute:(BOOL)a3
+- (void)stopAndClearRoute:(BOOL)route
 {
   audioQueue = self->_audioQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -3321,13 +3321,13 @@ void __47__HUComfortSoundsController_startComfortSounds__block_invoke(uint64_t a
   v4[2] = __47__HUComfortSoundsController_stopAndClearRoute___block_invoke;
   v4[3] = &unk_1E85CCF18;
   v4[4] = self;
-  v5 = a3;
+  routeCopy = route;
   dispatch_async(audioQueue, v4);
 }
 
-- (void)stopComfortSound:(BOOL)a3
+- (void)stopComfortSound:(BOOL)sound
 {
-  v3 = a3;
+  soundCopy = sound;
   v5 = HCLogComfortSounds();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3353,16 +3353,16 @@ void __47__HUComfortSoundsController_startComfortSounds__block_invoke(uint64_t a
     dispatch_block_cancel(rampDownBlock);
   }
 
-  if (v3)
+  if (soundCopy)
   {
     [(HUComfortSoundsController *)self clearActiveRoute];
   }
 
-  v9 = [(HUComfortSoundsController *)self audioPlayerNodeA];
-  [v9 stop];
+  audioPlayerNodeA = [(HUComfortSoundsController *)self audioPlayerNodeA];
+  [audioPlayerNodeA stop];
 
-  v10 = [(HUComfortSoundsController *)self audioPlayerNodeB];
-  [v10 stop];
+  audioPlayerNodeB = [(HUComfortSoundsController *)self audioPlayerNodeB];
+  [audioPlayerNodeB stop];
 
   if (![(HUComfortSoundsController *)self shouldContinuePlayback])
   {
@@ -3373,8 +3373,8 @@ void __47__HUComfortSoundsController_startComfortSounds__block_invoke(uint64_t a
       _os_log_impl(&dword_1DA5E2000, v11, OS_LOG_TYPE_DEFAULT, "Stopping engine", v13, 2u);
     }
 
-    v12 = [(HUComfortSoundsController *)self engine];
-    [v12 stop];
+    engine = [(HUComfortSoundsController *)self engine];
+    [engine stop];
 
     [(HUComfortSoundsController *)self setTransaction:0];
     [(AVAudioSession *)self->_session setActive:0 forFeature:2048 error:0];
@@ -3394,9 +3394,9 @@ void __47__HUComfortSoundsController_startComfortSounds__block_invoke(uint64_t a
 - (void)assetDownloadDidUpdate
 {
   v3 = MEMORY[0x1E69881A8];
-  v4 = [(HUComfortSoundsAssetManager *)self->_assetManager availableAssets];
+  availableAssets = [(HUComfortSoundsAssetManager *)self->_assetManager availableAssets];
   v14 = 0;
-  v5 = [v3 archivedAssets:v4 error:&v14];
+  v5 = [v3 archivedAssets:availableAssets error:&v14];
   v6 = v14;
 
   if ([v5 length])
@@ -3412,8 +3412,8 @@ void __47__HUComfortSoundsController_startComfortSounds__block_invoke(uint64_t a
   if (v7)
   {
     v9 = MEMORY[0x1E695DF20];
-    v10 = [(HUComfortSoundsAssetManager *)self->_assetManager assetDownloadProgress];
-    v11 = [v9 dictionaryWithObjectsAndKeys:{v5, @"HUComfortSoundsAvailableAssetsKey", v10, @"HUComfortSoundsDownloadProgressKey", 0}];
+    assetDownloadProgress = [(HUComfortSoundsAssetManager *)self->_assetManager assetDownloadProgress];
+    v11 = [v9 dictionaryWithObjectsAndKeys:{v5, @"HUComfortSoundsAvailableAssetsKey", assetDownloadProgress, @"HUComfortSoundsDownloadProgressKey", 0}];
 
     v8 = [MEMORY[0x1E69A4560] messagePayloadFromDictionary:v11 andIdentifier:0x1000000];
 
@@ -3432,18 +3432,18 @@ void __47__HUComfortSoundsController_startComfortSounds__block_invoke(uint64_t a
   }
 }
 
-- (id)processComfortSoundsAssetRequest:(id)a3
+- (id)processComfortSoundsAssetRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 payload];
+  requestCopy = request;
+  payload = [requestCopy payload];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__HUComfortSoundsController_processComfortSoundsAssetRequest___block_invoke;
   v8[3] = &unk_1E85CBD80;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
+  [payload enumerateKeysAndObjectsUsingBlock:v8];
 
   return 0;
 }
@@ -3487,18 +3487,18 @@ void __62__HUComfortSoundsController_processComfortSoundsAssetRequest___block_in
   }
 }
 
-- (id)processComfortSoundsControlRequest:(id)a3
+- (id)processComfortSoundsControlRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 payload];
+  requestCopy = request;
+  payload = [requestCopy payload];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__HUComfortSoundsController_processComfortSoundsControlRequest___block_invoke;
   v8[3] = &unk_1E85CBD80;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = requestCopy;
+  v6 = requestCopy;
+  [payload enumerateKeysAndObjectsUsingBlock:v8];
 
   return 0;
 }
@@ -3544,13 +3544,13 @@ uint64_t __64__HUComfortSoundsController_processComfortSoundsControlRequest___bl
   return result;
 }
 
-- (void)setPreviewEnabled:(BOOL)a3
+- (void)setPreviewEnabled:(BOOL)enabled
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (self->_previewEnabled != a3)
+  if (self->_previewEnabled != enabled)
   {
-    self->_previewEnabled = a3;
-    if (a3)
+    self->_previewEnabled = enabled;
+    if (enabled)
     {
       v4 = +[HUComfortSoundsSettings sharedInstance];
       -[HUComfortSoundsController setComfortSoundsEnabledCache:](self, "setComfortSoundsEnabledCache:", [v4 comfortSoundsEnabled]);
@@ -3558,10 +3558,10 @@ uint64_t __64__HUComfortSoundsController_processComfortSoundsControlRequest___bl
       v5 = +[HUComfortSoundsSettings sharedInstance];
       -[HUComfortSoundsController setTimerEnabledCache:](self, "setTimerEnabledCache:", [v5 timerEnabled]);
 
-      v6 = [(HUComfortSoundsController *)self playbackTimer];
-      v7 = [v6 isPending];
+      playbackTimer = [(HUComfortSoundsController *)self playbackTimer];
+      isPending = [playbackTimer isPending];
 
-      if (v7)
+      if (isPending)
       {
         v8 = +[HUComfortSoundsSettings sharedInstance];
         [v8 activeTimerEndTimeStamp];
@@ -3612,9 +3612,9 @@ uint64_t __64__HUComfortSoundsController_processComfortSoundsControlRequest___bl
           [(HUComfortSoundsController *)self setActiveTimerEndTimeStampCache:0.0];
           [(HUComfortSoundsController *)self setComfortSoundsEnabledCache:0];
           v17 = +[HUComfortSoundsSettings sharedInstance];
-          v18 = [v17 timerOnlyOnFirstSession];
+          timerOnlyOnFirstSession = [v17 timerOnlyOnFirstSession];
 
-          if (v18)
+          if (timerOnlyOnFirstSession)
           {
             [(HUComfortSoundsController *)self setTimerEnabledCache:0];
           }
@@ -3634,12 +3634,12 @@ uint64_t __64__HUComfortSoundsController_processComfortSoundsControlRequest___bl
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (id)processAutomationRequest:(id)a3
+- (id)processAutomationRequest:(id)request
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKey:@"ax_automation_is_background_sounds_playing"];
+  requestCopy = request;
+  payload = [requestCopy payload];
+  v6 = [payload objectForKey:@"ax_automation_is_background_sounds_playing"];
 
   if (v6)
   {
@@ -3655,16 +3655,16 @@ uint64_t __64__HUComfortSoundsController_processComfortSoundsControlRequest___bl
   }
 
   v9 = [MEMORY[0x1E69A4560] messagePayloadFromDictionary:v8 andIdentifier:0x4000000000000000];
-  v10 = [v4 replyMessageWithPayload:v9];
+  v10 = [requestCopy replyMessageWithPayload:v9];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-- (void)clientRemoved:(id)a3
+- (void)clientRemoved:(id)removed
 {
-  v4 = [a3 pid];
+  v4 = [removed pid];
   if (v4 == [(HUComfortSoundsController *)self previewClientPID])
   {
     audioQueue = self->_audioQueue;

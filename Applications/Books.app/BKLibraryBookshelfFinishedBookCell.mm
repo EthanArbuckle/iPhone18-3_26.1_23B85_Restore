@@ -1,53 +1,53 @@
 @interface BKLibraryBookshelfFinishedBookCell
-+ (double)bookCellHeightFor:(id)a3 assetReview:(id)a4 storeID:(id)a5 editMode:(BOOL)a6 metrics:(id)a7 storageProvider:(id)a8 clearCache:(BOOL)a9;
++ (double)bookCellHeightFor:(id)for assetReview:(id)review storeID:(id)d editMode:(BOOL)mode metrics:(id)metrics storageProvider:(id)provider clearCache:(BOOL)cache;
 + (id)heightCache;
-+ (int)finishedStateForAsset:(id)a3 assetReview:(id)a4 storeID:(id)a5 storageProvider:(id)a6;
++ (int)finishedStateForAsset:(id)asset assetReview:(id)review storeID:(id)d storageProvider:(id)provider;
 - (BCUCoverEffectsEnvironment)coverEffectsEnvironment;
 - (BKLibraryActionHandler)actionHandler;
-- (BKLibraryBookshelfFinishedBookCell)initWithFrame:(CGRect)a3;
+- (BKLibraryBookshelfFinishedBookCell)initWithFrame:(CGRect)frame;
 - (BKLibraryBookshelfLayoutManager)layoutManager;
 - (BKLibraryBookshelfStorageProvider)storageProvider;
 - (BKLibraryBookshelfSupplementaryDataSource)dataSource;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)isDownloading;
 - (BOOL)shouldShowCloud;
 - (BOOL)shouldShowDownloadProgressButton;
 - (BOOL)shouldShowMoreButton;
-- (CGPath)pathForDateIndicator:(CGRect)a3;
+- (CGPath)pathForDateIndicator:(CGRect)indicator;
 - (CGRect)coverArea;
 - (CGRect)coverFrame;
 - (CGSize)bookCoverSize;
-- (double)_desiredAlphaFromRawAlpha:(double)a3;
+- (double)_desiredAlphaFromRawAlpha:(double)alpha;
 - (id)coverImage;
 - (id)coverLayer;
 - (id)dragPreview;
-- (id)dragPreviewParametersForDrop:(BOOL)a3;
-- (void)_cancelDownload:(id)a3;
+- (id)dragPreviewParametersForDrop:(BOOL)drop;
+- (void)_cancelDownload:(id)download;
 - (void)_updateLibraryAsset;
 - (void)_updateTintedImages;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)cleanupCell;
-- (void)configureCombinedDate:(id)a3;
+- (void)configureCombinedDate:(id)date;
 - (void)configureViewsBasedOnState;
 - (void)dealloc;
-- (void)handleTapWithCompletion:(id)a3;
+- (void)handleTapWithCompletion:(id)completion;
 - (void)layoutSubviews;
 - (void)markAsFinishedPressed;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareForReuse;
 - (void)reviewMorePressed;
-- (void)setAssetReview:(id)a3;
-- (void)setAudiobookStatus:(id)a3;
-- (void)setCoverEffectsEnvironment:(id)a3;
-- (void)setCoverHidden:(BOOL)a3;
-- (void)setDataSource:(id)a3;
-- (void)setFinishedState:(int)a3;
-- (void)setLibraryAsset:(id)a3;
-- (void)setLibraryDownloadStatus:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setupMenuWithLibraryAsset:(id)a3 withActionHandler:(id)a4;
-- (void)starRatingDidChange:(id)a3 rating:(double)a4;
-- (void)togglePlayPause:(id)a3;
+- (void)setAssetReview:(id)review;
+- (void)setAudiobookStatus:(id)status;
+- (void)setCoverEffectsEnvironment:(id)environment;
+- (void)setCoverHidden:(BOOL)hidden;
+- (void)setDataSource:(id)source;
+- (void)setFinishedState:(int)state;
+- (void)setLibraryAsset:(id)asset;
+- (void)setLibraryDownloadStatus:(id)status;
+- (void)setSelected:(BOOL)selected;
+- (void)setupMenuWithLibraryAsset:(id)asset withActionHandler:(id)handler;
+- (void)starRatingDidChange:(id)change rating:(double)rating;
+- (void)togglePlayPause:(id)pause;
 - (void)updateFinishedState;
 - (void)updateRatingAndReview;
 - (void)writeReviewPressed;
@@ -55,57 +55,57 @@
 
 @implementation BKLibraryBookshelfFinishedBookCell
 
-+ (int)finishedStateForAsset:(id)a3 assetReview:(id)a4 storeID:(id)a5 storageProvider:(id)a6
++ (int)finishedStateForAsset:(id)asset assetReview:(id)review storeID:(id)d storageProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  assetCopy = asset;
+  reviewCopy = review;
+  providerCopy = provider;
   objc_opt_class();
-  v12 = [v9 permanentOrTemporaryAssetID];
-  v13 = [v11 retrieveValueForKey:@"kExpandReviewText" forConsumer:v12];
-  v14 = BUDynamicCast();
+  permanentOrTemporaryAssetID = [assetCopy permanentOrTemporaryAssetID];
+  v13 = [providerCopy retrieveValueForKey:@"kExpandReviewText" forConsumer:permanentOrTemporaryAssetID];
+  dCopy2 = BUDynamicCast();
 
   objc_opt_class();
-  v15 = [v9 permanentOrTemporaryAssetID];
-  v16 = [v11 retrieveValueForKey:@"kStarRatedThisSession" forConsumer:v15];
+  permanentOrTemporaryAssetID2 = [assetCopy permanentOrTemporaryAssetID];
+  v16 = [providerCopy retrieveValueForKey:@"kStarRatedThisSession" forConsumer:permanentOrTemporaryAssetID2];
 
   v17 = BUDynamicCast();
-  v33 = [v17 BOOLValue];
+  bOOLValue = [v17 BOOLValue];
 
-  v34 = [v14 BOOLValue];
-  v18 = [v9 isFinished];
-  v19 = [v9 notFinished];
-  v20 = [v10 starRating];
-  if (a5)
+  bOOLValue2 = [dCopy2 BOOLValue];
+  isFinished = [assetCopy isFinished];
+  notFinished = [assetCopy notFinished];
+  starRating = [reviewCopy starRating];
+  if (d)
   {
-    if ([v9 isStoreItem])
+    if ([assetCopy isStoreItem])
     {
-      LODWORD(a5) = 0;
+      LODWORD(d) = 0;
     }
 
     else
     {
-      LODWORD(a5) = [v9 isStore];
+      LODWORD(d) = [assetCopy isStore];
     }
   }
 
-  v21 = [v9 purchaseDate];
-  if (v21)
+  purchaseDate = [assetCopy purchaseDate];
+  if (purchaseDate)
   {
-    v22 = [v9 purchaseDate];
+    purchaseDate2 = [assetCopy purchaseDate];
     +[NSDate distantPast];
-    v23 = v10;
-    v24 = v18;
-    v25 = a5;
-    a5 = v14;
-    v27 = v26 = v20;
-    v35 = [v22 isEqual:v27] ^ 1;
+    v23 = reviewCopy;
+    v24 = isFinished;
+    dCopy = d;
+    d = dCopy2;
+    v27 = v26 = starRating;
+    v35 = [purchaseDate2 isEqual:v27] ^ 1;
 
-    v20 = v26;
-    v14 = a5;
-    LODWORD(a5) = v25;
-    v18 = v24;
-    v10 = v23;
+    starRating = v26;
+    dCopy2 = d;
+    LODWORD(d) = dCopy;
+    isFinished = v24;
+    reviewCopy = v23;
   }
 
   else
@@ -113,17 +113,17 @@
     v35 = 0;
   }
 
-  v28 = [v10 reviewTitle];
-  v29 = [v10 reviewBody];
-  if (v19 & 1 | ((v18 & 1) == 0))
+  reviewTitle = [reviewCopy reviewTitle];
+  reviewBody = [reviewCopy reviewBody];
+  if (notFinished & 1 | ((isFinished & 1) == 0))
   {
-    v30 = v19 ^ 1;
+    v30 = notFinished ^ 1;
   }
 
   else
   {
-    v31 = a5 & v35;
-    if ((a5 & v35) != 0)
+    v31 = d & v35;
+    if ((d & v35) != 0)
     {
       v30 = 2;
     }
@@ -133,11 +133,11 @@
       v30 = 3;
     }
 
-    if (v31 && v20)
+    if (v31 && starRating)
     {
-      if ([v28 length] || (v33 ? (v30 = 4) : (v30 = 5), objc_msgSend(v29, "length")))
+      if ([reviewTitle length] || (bOOLValue ? (v30 = 4) : (v30 = 5), objc_msgSend(reviewBody, "length")))
       {
-        if (v34)
+        if (bOOLValue2)
         {
           v30 = 7;
         }
@@ -165,32 +165,32 @@
   return v3;
 }
 
-+ (double)bookCellHeightFor:(id)a3 assetReview:(id)a4 storeID:(id)a5 editMode:(BOOL)a6 metrics:(id)a7 storageProvider:(id)a8 clearCache:(BOOL)a9
++ (double)bookCellHeightFor:(id)for assetReview:(id)review storeID:(id)d editMode:(BOOL)mode metrics:(id)metrics storageProvider:(id)provider clearCache:(BOOL)cache
 {
-  v11 = a6;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = [a1 heightCache];
-  v21 = v20;
-  if (a9 || byte_100AF7560 != v11)
+  modeCopy = mode;
+  forCopy = for;
+  reviewCopy = review;
+  dCopy = d;
+  metricsCopy = metrics;
+  providerCopy = provider;
+  heightCache = [self heightCache];
+  v21 = heightCache;
+  if (cache || byte_100AF7560 != modeCopy)
   {
-    [v20 removeAllObjects];
-    byte_100AF7560 = v11;
-    if (v15)
+    [heightCache removeAllObjects];
+    byte_100AF7560 = modeCopy;
+    if (forCopy)
     {
 LABEL_4:
-      v204 = v17;
+      v204 = dCopy;
       objc_opt_class();
       v22 = BUDynamicCast();
       [v22 bookCoverSize];
       v24 = v23;
       [v22 cellSpacing];
       v26 = v25;
-      v27 = [v15 permanentOrTemporaryAssetID];
-      v28 = [v21 objectForKeyedSubscript:v27];
+      permanentOrTemporaryAssetID = [forCopy permanentOrTemporaryAssetID];
+      v28 = [v21 objectForKeyedSubscript:permanentOrTemporaryAssetID];
 
       if (v28)
       {
@@ -199,13 +199,13 @@ LABEL_4:
 LABEL_65:
 
         v31 = v30;
-        v17 = v204;
+        dCopy = v204;
         goto LABEL_66;
       }
 
       v197 = v26;
       v198 = v24;
-      v190 = [v22 reviewBottomLayout];
+      reviewBottomLayout = [v22 reviewBottomLayout];
       [v22 cellWidth];
       v33 = v32;
       [v22 lockupMargin];
@@ -231,10 +231,10 @@ LABEL_65:
       width = CGRectZero.size.width;
       height = CGRectZero.size.height;
       v50 = [v46 initWithFrame:{CGRectZero.origin.x, y, width, height}];
-      [v15 title];
-      v51 = v201 = v16;
+      [forCopy title];
+      v51 = v201 = reviewCopy;
       [v22 titleFontAttributes];
-      v52 = v203 = v19;
+      v52 = v203 = providerCopy;
       v53 = [TUIFontSpec attributedStringWith:v51 attributes:v52];
       [v50 setAttributedText:v53];
 
@@ -248,9 +248,9 @@ LABEL_65:
       v58 = v40;
       v60 = v59;
       [v50 setFrame:{CGRectZero.origin.x, y, v56, v57}];
-      v61 = [v15 displayAuthor];
-      v62 = [v22 authorFontAttributes];
-      v63 = [TUIFontSpec attributedStringWith:v61 attributes:v62];
+      displayAuthor = [forCopy displayAuthor];
+      authorFontAttributes = [v22 authorFontAttributes];
+      v63 = [TUIFontSpec attributedStringWith:displayAuthor attributes:authorFontAttributes];
       [v50 setAttributedText:v63];
 
       [v22 authorMaxLines];
@@ -262,30 +262,30 @@ LABEL_65:
       [v22 authorSpacing];
       v69 = v68 + v67;
       objc_opt_class();
-      v70 = [v15 permanentOrTemporaryAssetID];
-      v71 = [v203 retrieveValueForKey:@"kExpandReviewText" forConsumer:v70];
+      permanentOrTemporaryAssetID2 = [forCopy permanentOrTemporaryAssetID];
+      v71 = [v203 retrieveValueForKey:@"kExpandReviewText" forConsumer:permanentOrTemporaryAssetID2];
       v72 = BUDynamicCast();
 
-      v16 = v201;
+      reviewCopy = v201;
       v200 = v72;
       LODWORD(v72) = [v72 BOOLValue];
-      v73 = [a1 finishedStateForAsset:v15 assetReview:v201 storeID:v204 storageProvider:v203];
+      v73 = [self finishedStateForAsset:forCopy assetReview:v201 storeID:v204 storageProvider:v203];
       v186 = v72;
       v196 = v73;
       if (v69 > v58)
       {
-        v74 = [v15 title];
-        v75 = [v22 titleFontAttributes];
-        v76 = [TUIFontSpec attributedStringWith:v74 attributes:v75];
+        title = [forCopy title];
+        titleFontAttributes = [v22 titleFontAttributes];
+        v76 = [TUIFontSpec attributedStringWith:title attributes:titleFontAttributes];
         [v50 setAttributedText:v76];
 
         [v22 titleMaxLines];
         [v50 setNumberOfLines:v77];
         [v50 sizeThatFits:{v193 - v194, 1.79769313e308}];
         v79 = v78;
-        v80 = [v15 displayAuthor];
-        v81 = [v22 authorFontAttributes];
-        v82 = [TUIFontSpec attributedStringWith:v80 attributes:v81];
+        displayAuthor2 = [forCopy displayAuthor];
+        authorFontAttributes2 = [v22 authorFontAttributes];
+        v82 = [TUIFontSpec attributedStringWith:displayAuthor2 attributes:authorFontAttributes2];
         [v50 setAttributedText:v82];
 
         [v22 authorMaxLines];
@@ -310,14 +310,14 @@ LABEL_12:
       }
 
       v88 = v44;
-      if (v11)
+      if (modeCopy)
       {
         v85 = 0;
-        v86 = v190;
+        v86 = reviewBottomLayout;
         goto LABEL_13;
       }
 
-      v86 = v190;
+      v86 = reviewBottomLayout;
       if (v73 == 4)
       {
         v195 = v60;
@@ -330,8 +330,8 @@ LABEL_12:
         v179 = +[NSBundle mainBundle];
         v180 = [v179 localizedStringForKey:@"Write a Review" value:&stru_100A30A68 table:0];
 
-        v181 = [v22 writeReviewFontAttributes];
-        v182 = [TUIFontSpec attributedStringWith:v180 attributes:v181];
+        writeReviewFontAttributes = [v22 writeReviewFontAttributes];
+        v182 = [TUIFontSpec attributedStringWith:v180 attributes:writeReviewFontAttributes];
         [v97 setAttributedTitle:v182 forState:0];
 
         [v97 sizeThatFits:{1.79769313e308, 1.79769313e308}];
@@ -358,7 +358,7 @@ LABEL_13:
             v91 = v90;
           }
 
-          if (v11)
+          if (modeCopy)
           {
             if (v91 >= v58)
             {
@@ -371,12 +371,12 @@ LABEL_13:
             }
 
             v30 = v199 + v92;
-            v19 = v203;
+            providerCopy = v203;
             goto LABEL_64;
           }
 
           v30 = v198 + v197;
-          v19 = v203;
+          providerCopy = v203;
           if (v196 <= 4)
           {
             if (v196 > 2)
@@ -390,11 +390,11 @@ LABEL_43:
               }
 
               v112 = objc_alloc_init(BCLibraryButton);
-              v113 = [v22 writeReviewFontAttributes];
-              v114 = [TUIFontSpec attributedStringWith:@"Write" attributes:v113];
+              writeReviewFontAttributes2 = [v22 writeReviewFontAttributes];
+              v114 = [TUIFontSpec attributedStringWith:@"Write" attributes:writeReviewFontAttributes2];
               [v112 setAttributedTitle:v114 forState:0];
 
-              v19 = v203;
+              providerCopy = v203;
               [v112 sizeThatFits:{1.79769313e308, 1.79769313e308}];
               v116 = v115;
               [v22 ratingSpacing];
@@ -413,8 +413,8 @@ LABEL_43:
                 {
 LABEL_64:
                   v172 = [NSNumber numberWithDouble:v30];
-                  v173 = [v15 permanentOrTemporaryAssetID];
-                  [v21 setObject:v172 forKeyedSubscript:v173];
+                  permanentOrTemporaryAssetID3 = [forCopy permanentOrTemporaryAssetID];
+                  [v21 setObject:v172 forKeyedSubscript:permanentOrTemporaryAssetID3];
 
                   v28 = 0;
                   goto LABEL_65;
@@ -435,11 +435,11 @@ LABEL_45:
               }
 
               v112 = objc_alloc_init(BCLibraryButton);
-              v131 = [v22 finishedFontAttributes];
-              v132 = [TUIFontSpec attributedStringWith:@"FIN" attributes:v131];
+              finishedFontAttributes = [v22 finishedFontAttributes];
+              v132 = [TUIFontSpec attributedStringWith:@"FIN" attributes:finishedFontAttributes];
               [v112 setAttributedTitle:v132 forState:0];
 
-              v19 = v203;
+              providerCopy = v203;
               [v112 sizeThatFits:{1.79769313e308, 1.79769313e308}];
               v116 = v133;
               [v22 finishedSpacing];
@@ -494,7 +494,7 @@ LABEL_44:
             v123 = v186;
           }
 
-          v202 = [v16 reviewBody];
+          reviewBody = [reviewCopy reviewBody];
           [v22 bookCoverSize];
           v139 = v138;
           if (v86)
@@ -511,27 +511,27 @@ LABEL_44:
           v146 = v144 - v145;
           if (v123)
           {
-            v147 = [v22 reviewContentFontAttributes];
-            v148 = [v147 attributes];
-            [v202 boundingRectWithSize:1 options:v148 attributes:0 context:{v146, 1.79769313e308}];
+            reviewContentFontAttributes = [v22 reviewContentFontAttributes];
+            attributes = [reviewContentFontAttributes attributes];
+            [reviewBody boundingRectWithSize:1 options:attributes attributes:0 context:{v146, 1.79769313e308}];
             v149 = CGRectGetHeight(v205);
           }
 
           else
           {
-            v147 = [[IMExpandingLabel alloc] initWithFrame:{CGRectZero.origin.x, v55, v187, v57}];
-            [v147 setTextAlignment:0];
-            v150 = [v22 reviewContentFontAttributes];
-            v151 = [TUIFontSpec attributedStringWith:v202 attributes:v150];
-            [v147 setAttributedText:v151];
+            reviewContentFontAttributes = [[IMExpandingLabel alloc] initWithFrame:{CGRectZero.origin.x, v55, v187, v57}];
+            [reviewContentFontAttributes setTextAlignment:0];
+            reviewContentFontAttributes2 = [v22 reviewContentFontAttributes];
+            v151 = [TUIFontSpec attributedStringWith:reviewBody attributes:reviewContentFontAttributes2];
+            [reviewContentFontAttributes setAttributedText:v151];
 
-            [v147 sizeThatFits:{v146, 1.79769313e308}];
+            [reviewContentFontAttributes sizeThatFits:{v146, 1.79769313e308}];
             v149 = v152;
           }
 
-          v153 = [v22 reviewTitleFontAttributes];
-          v154 = [v153 font];
-          [v154 lineHeight];
+          reviewTitleFontAttributes = [v22 reviewTitleFontAttributes];
+          font = [reviewTitleFontAttributes font];
+          [font lineHeight];
           v156 = v155;
 
           [v22 reviewTopMargin];
@@ -563,7 +563,7 @@ LABEL_44:
             v168 = v191 + v171 + v170;
           }
 
-          v19 = v203;
+          providerCopy = v203;
           v30 = v199 + v168;
 
           goto LABEL_64;
@@ -576,10 +576,10 @@ LABEL_44:
         v99 = v98;
         [v22 finishedTitleInset];
         [v97 setTitleEdgeInsets:{0.0, v99, 0.0, v100}];
-        v101 = [v22 finishedShortText];
+        finishedShortText = [v22 finishedShortText];
         v102 = +[NSBundle mainBundle];
         v103 = v102;
-        if (v101)
+        if (finishedShortText)
         {
           v104 = @"FINISHED";
         }
@@ -591,8 +591,8 @@ LABEL_44:
 
         v105 = [v102 localizedStringForKey:v104 value:&stru_100A30A68 table:0];
 
-        v106 = [v22 finishedFontAttributes];
-        v107 = [TUIFontSpec attributedStringWith:v105 attributes:v106];
+        finishedFontAttributes2 = [v22 finishedFontAttributes];
+        v107 = [TUIFontSpec attributedStringWith:v105 attributes:finishedFontAttributes2];
         [v97 setAttributedTitle:v107 forState:0];
 
         [v97 sizeThatFits:{1.79769313e308, 1.79769313e308}];
@@ -602,15 +602,15 @@ LABEL_44:
       }
 
       v85 = v111 > v189;
-      v16 = v201;
-      v86 = v190;
+      reviewCopy = v201;
+      v86 = reviewBottomLayout;
       v88 = v44;
       v60 = v195;
       goto LABEL_13;
     }
   }
 
-  else if (v15)
+  else if (forCopy)
   {
     goto LABEL_4;
   }
@@ -622,11 +622,11 @@ LABEL_66:
   return v174;
 }
 
-- (BKLibraryBookshelfFinishedBookCell)initWithFrame:(CGRect)a3
+- (BKLibraryBookshelfFinishedBookCell)initWithFrame:(CGRect)frame
 {
   v76.receiver = self;
   v76.super_class = BKLibraryBookshelfFinishedBookCell;
-  v3 = [(BKLibraryBookshelfCollectionViewCell *)&v76 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKLibraryBookshelfCollectionViewCell *)&v76 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_initWeak(&location, v3);
@@ -649,11 +649,11 @@ LABEL_66:
     coverView = v3->_coverView;
     v3->_coverView = v8;
 
-    v10 = [(BKLibraryBookshelfCoverView *)v3->_coverView coverLayer];
-    [v10 setBottomAligned:0];
+    coverLayer = [(BKLibraryBookshelfCoverView *)v3->_coverView coverLayer];
+    [coverLayer setBottomAligned:0];
 
-    v11 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v11 addSubview:v3->_coverView];
+    contentView = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView addSubview:v3->_coverView];
 
     v12 = [UIImageView alloc];
     y = CGRectZero.origin.y;
@@ -663,19 +663,19 @@ LABEL_66:
     checkmarkView = v3->_checkmarkView;
     v3->_checkmarkView = v16;
 
-    v18 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v18 addSubview:v3->_checkmarkView];
+    contentView2 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView2 addSubview:v3->_checkmarkView];
 
-    v19 = [[BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     v20 = +[NSBundle mainBundle];
     v21 = [v20 localizedStringForKey:@"Not downloaded" value:&stru_100A30A68 table:0];
-    [(BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize *)v19 setAccessibilityLabel:v21];
+    [(BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize *)height setAccessibilityLabel:v21];
 
-    v22 = [(BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize *)v19 accessibilityTraits];
-    [(BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize *)v19 setAccessibilityTraits:v22 & ~UIAccessibilityTraitImage];
-    objc_storeStrong(&v3->_cloudView, v19);
-    v23 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v23 addSubview:v3->_cloudView];
+    accessibilityTraits = [(BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize *)height accessibilityTraits];
+    [(BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize *)height setAccessibilityTraits:accessibilityTraits & ~UIAccessibilityTraitImage];
+    objc_storeStrong(&v3->_cloudView, height);
+    contentView3 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView3 addSubview:v3->_cloudView];
 
     v24 = [[IMRadialProgressButton alloc] initWithFrame:{0.0, 0.0, 17.0, 17.0}];
     downloadProgressButton = v3->_downloadProgressButton;
@@ -699,25 +699,25 @@ LABEL_66:
     [(BKLibraryDownloadStatus *)v3->_libraryDownloadStatus progressValue];
     *&v28 = v28;
     [(IMRadialProgressButton *)v3->_downloadProgressButton setProgress:v28];
-    v29 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v29 addSubview:v3->_downloadProgressButton];
+    contentView4 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView4 addSubview:v3->_downloadProgressButton];
 
     v30 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     titleLabel = v3->_titleLabel;
     v3->_titleLabel = v30;
 
     v32 = v3->_titleLabel;
-    v33 = [(UILabel *)v32 accessibilityTraits];
-    [(UILabel *)v32 setAccessibilityTraits:UIAccessibilityTraitButton | UIAccessibilityTraitHeader | v33];
+    accessibilityTraits2 = [(UILabel *)v32 accessibilityTraits];
+    [(UILabel *)v32 setAccessibilityTraits:UIAccessibilityTraitButton | UIAccessibilityTraitHeader | accessibilityTraits2];
     v34 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     authorLabel = v3->_authorLabel;
     v3->_authorLabel = v34;
 
-    v36 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v36 addSubview:v3->_titleLabel];
+    contentView5 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView5 addSubview:v3->_titleLabel];
 
-    v37 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v37 addSubview:v3->_authorLabel];
+    contentView6 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView6 addSubview:v3->_authorLabel];
 
     v38 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     combinedDateLabel = v3->_combinedDateLabel;
@@ -735,26 +735,26 @@ LABEL_66:
 
     [(UILabel *)v3->_combinedDateLabel setTextAlignment:v40];
     [(UILabel *)v3->_combinedDateLabel setMinimumScaleFactor:0.5];
-    v41 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v41 addSubview:v3->_combinedDateLabel];
+    contentView7 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView7 addSubview:v3->_combinedDateLabel];
 
     v42 = +[CAShapeLayer layer];
     dateIndicator = v3->_dateIndicator;
     v3->_dateIndicator = v42;
 
-    v44 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    v45 = [v44 layer];
-    [v45 addSublayer:v3->_dateIndicator];
+    contentView8 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    layer = [contentView8 layer];
+    [layer addSublayer:v3->_dateIndicator];
 
-    v46 = [[BKLibraryStarRating alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height2 = [[BKLibraryStarRating alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     starRating = v3->_starRating;
-    v3->_starRating = v46;
+    v3->_starRating = height2;
 
     [(BKLibraryStarRating *)v3->_starRating setDelegate:v3];
     [(BKLibraryStarRating *)v3->_starRating setIsRTL:v3->_isRTL];
     [(BKLibraryStarRating *)v3->_starRating setAllowHalfStars:0];
-    v48 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v48 addSubview:v3->_starRating];
+    contentView9 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView9 addSubview:v3->_starRating];
 
     v49 = objc_alloc_init(BCLibraryButton);
     markAsFinishedButton = v3->_markAsFinishedButton;
@@ -762,8 +762,8 @@ LABEL_66:
 
     [(BCLibraryButton *)v3->_markAsFinishedButton setClipsToBounds:1];
     [(BCLibraryButton *)v3->_markAsFinishedButton addTarget:v3 action:"markAsFinishedPressed" forControlEvents:64];
-    v51 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v51 addSubview:v3->_markAsFinishedButton];
+    contentView10 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView10 addSubview:v3->_markAsFinishedButton];
 
     v52 = [IMTouchInsetsButton buttonWithType:0];
     moreButton = v3->_moreButton;
@@ -774,8 +774,8 @@ LABEL_66:
     [(IMTouchInsetsButton *)v3->_moreButton setAccessibilityLabel:v55];
 
     [(IMTouchInsetsButton *)v3->_moreButton setTouchInsets:-10.0, -10.0, -10.0, -10.0];
-    v56 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v56 addSubview:v3->_moreButton];
+    contentView11 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView11 addSubview:v3->_moreButton];
 
     v57 = objc_alloc_init(BCLibraryButton);
     writeReviewButton = v3->_writeReviewButton;
@@ -783,24 +783,24 @@ LABEL_66:
 
     [(BCLibraryButton *)v3->_writeReviewButton setClipsToBounds:1];
     [(BCLibraryButton *)v3->_writeReviewButton addTarget:v3 action:"writeReviewPressed" forControlEvents:64];
-    v59 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v59 addSubview:v3->_writeReviewButton];
+    contentView12 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView12 addSubview:v3->_writeReviewButton];
 
     v60 = +[CALayer layer];
     reviewBackground = v3->_reviewBackground;
     v3->_reviewBackground = v60;
 
     [(CALayer *)v3->_reviewBackground setZPosition:-1.0];
-    v62 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    v63 = [v62 layer];
-    [v63 addSublayer:v3->_reviewBackground];
+    contentView13 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    layer2 = [contentView13 layer];
+    [layer2 addSublayer:v3->_reviewBackground];
 
     v64 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     reviewTitle = v3->_reviewTitle;
     v3->_reviewTitle = v64;
 
-    v66 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v66 addSubview:v3->_reviewTitle];
+    contentView14 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView14 addSubview:v3->_reviewTitle];
 
     v67 = [[IMExpandingLabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     reviewComments = v3->_reviewComments;
@@ -812,8 +812,8 @@ LABEL_66:
     v71[3] = &unk_100A035D0;
     objc_copyWeak(&v72, &location);
     [(IMExpandingLabel *)v3->_reviewComments setLabelResizedBlock:v71];
-    v69 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
-    [v69 addSubview:v3->_reviewComments];
+    contentView15 = [(BKLibraryBookshelfFinishedBookCell *)v3 contentView];
+    [contentView15 addSubview:v3->_reviewComments];
 
     objc_destroyWeak(&v72);
     objc_destroyWeak(&v74);
@@ -855,10 +855,10 @@ LABEL_66:
   v5.super_class = BKLibraryBookshelfFinishedBookCell;
   [(BKLibraryBookshelfCollectionViewCell *)&v5 prepareForReuse];
   [(BKLibraryBookshelfFinishedBookCell *)self cleanupCell];
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
-  v4 = [v3 isHidden];
+  coverLayer = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
+  isHidden = [coverLayer isHidden];
 
-  if (v4)
+  if (isHidden)
   {
     [(BKLibraryBookshelfFinishedBookCell *)self setCoverHidden:0];
   }
@@ -866,9 +866,9 @@ LABEL_66:
   +[CATransaction commit];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
+  touchCopy = touch;
   if ([(BKLibraryBookshelfCollectionViewCell *)self isInEditMode])
   {
     v6 = 1;
@@ -881,7 +881,7 @@ LABEL_66:
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    [v5 locationInView:self];
+    [touchCopy locationInView:self];
     v18.x = v15;
     v18.y = v16;
     v19.origin.x = v8;
@@ -896,91 +896,91 @@ LABEL_66:
 
 - (void)markAsFinishedPressed
 {
-  v4 = [(BKLibraryBookshelfFinishedBookCell *)self actionHandler];
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-  [v4 bookMarkedFinished:v3];
+  actionHandler = [(BKLibraryBookshelfFinishedBookCell *)self actionHandler];
+  libraryAsset = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+  [actionHandler bookMarkedFinished:libraryAsset];
 }
 
 - (void)writeReviewPressed
 {
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self storageProvider];
-  v4 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-  v5 = [v4 permanentOrTemporaryAssetID];
-  [v3 storeValue:&__kCFBooleanFalse forKey:@"kStarRatedThisSession" forConsumer:v5];
+  storageProvider = [(BKLibraryBookshelfFinishedBookCell *)self storageProvider];
+  libraryAsset = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+  permanentOrTemporaryAssetID = [libraryAsset permanentOrTemporaryAssetID];
+  [storageProvider storeValue:&__kCFBooleanFalse forKey:@"kStarRatedThisSession" forConsumer:permanentOrTemporaryAssetID];
 
-  v7 = [(BKLibraryBookshelfFinishedBookCell *)self actionHandler];
-  v6 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-  [v7 bookWriteReview:v6];
+  actionHandler = [(BKLibraryBookshelfFinishedBookCell *)self actionHandler];
+  libraryAsset2 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+  [actionHandler bookWriteReview:libraryAsset2];
 }
 
 - (void)reviewMorePressed
 {
   [(BKLibraryBookshelfFinishedBookCell *)self setShowFullReviewText:1];
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self storageProvider];
+  storageProvider = [(BKLibraryBookshelfFinishedBookCell *)self storageProvider];
   v4 = [NSNumber numberWithBool:[(BKLibraryBookshelfFinishedBookCell *)self showFullReviewText]];
-  v5 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-  v6 = [v5 permanentOrTemporaryAssetID];
-  [v3 storeValue:v4 forKey:@"kExpandReviewText" forConsumer:v6];
+  libraryAsset = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+  permanentOrTemporaryAssetID = [libraryAsset permanentOrTemporaryAssetID];
+  [storageProvider storeValue:v4 forKey:@"kExpandReviewText" forConsumer:permanentOrTemporaryAssetID];
 
-  v7 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-  v11 = [v7 permanentOrTemporaryAssetID];
+  libraryAsset2 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+  permanentOrTemporaryAssetID2 = [libraryAsset2 permanentOrTemporaryAssetID];
 
-  if (v11)
+  if (permanentOrTemporaryAssetID2)
   {
-    v8 = [objc_opt_class() heightCache];
-    [v8 removeObjectForKey:v11];
+    heightCache = [objc_opt_class() heightCache];
+    [heightCache removeObjectForKey:permanentOrTemporaryAssetID2];
 
-    v9 = [(BKLibraryBookshelfFinishedBookCell *)self layoutManager];
-    v10 = [(BKLibraryBookshelfFinishedBookCell *)self indexPath];
-    [v9 invalidateLayoutFor:v10];
+    layoutManager = [(BKLibraryBookshelfFinishedBookCell *)self layoutManager];
+    indexPath = [(BKLibraryBookshelfFinishedBookCell *)self indexPath];
+    [layoutManager invalidateLayoutFor:indexPath];
   }
 }
 
 - (id)coverLayer
 {
-  v2 = [(BKLibraryBookshelfFinishedBookCell *)self coverView];
-  v3 = [v2 coverLayer];
+  coverView = [(BKLibraryBookshelfFinishedBookCell *)self coverView];
+  coverLayer = [coverView coverLayer];
 
-  return v3;
+  return coverLayer;
 }
 
-- (void)handleTapWithCompletion:(id)a3
+- (void)handleTapWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(BKLibraryBookshelfFinishedBookCell *)self actionHandler];
-  v5 = [(BKLibraryBookshelfFinishedBookCell *)self indexPath];
-  [v6 bookTapped:v5 completion:v4];
+  completionCopy = completion;
+  actionHandler = [(BKLibraryBookshelfFinishedBookCell *)self actionHandler];
+  indexPath = [(BKLibraryBookshelfFinishedBookCell *)self indexPath];
+  [actionHandler bookTapped:indexPath completion:completionCopy];
 }
 
 - (BCUCoverEffectsEnvironment)coverEffectsEnvironment
 {
-  v2 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
-  v3 = [v2 coverEffectsEnvironment];
+  coverLayer = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
+  coverEffectsEnvironment = [coverLayer coverEffectsEnvironment];
 
-  return v3;
+  return coverEffectsEnvironment;
 }
 
-- (void)setCoverEffectsEnvironment:(id)a3
+- (void)setCoverEffectsEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
-  [v5 setCoverEffectsEnvironment:v4];
+  environmentCopy = environment;
+  coverLayer = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
+  [coverLayer setCoverEffectsEnvironment:environmentCopy];
 }
 
 - (id)dragPreview
 {
   v3 = [UIDragPreview alloc];
-  v4 = [(BKLibraryBookshelfFinishedBookCell *)self coverView];
-  v5 = [v3 initWithView:v4];
+  coverView = [(BKLibraryBookshelfFinishedBookCell *)self coverView];
+  v5 = [v3 initWithView:coverView];
 
   return v5;
 }
 
-- (id)dragPreviewParametersForDrop:(BOOL)a3
+- (id)dragPreviewParametersForDrop:(BOOL)drop
 {
   v4 = objc_alloc_init(UIDragPreviewParameters);
-  v5 = [(BKLibraryBookshelfFinishedBookCell *)self traitCollection];
-  v6 = [v5 traitCollectionByModifyingTraits:&stru_100A06AE0];
+  traitCollection = [(BKLibraryBookshelfFinishedBookCell *)self traitCollection];
+  v6 = [traitCollection traitCollectionByModifyingTraits:&stru_100A06AE0];
 
   v7 = +[UIColor bc_booksBackground];
   v8 = [v7 resolvedColorWithTraitCollection:v6];
@@ -989,52 +989,52 @@ LABEL_66:
   return v4;
 }
 
-- (double)_desiredAlphaFromRawAlpha:(double)a3
+- (double)_desiredAlphaFromRawAlpha:(double)alpha
 {
   if ([(BKLibraryBookshelfCollectionViewCell *)self isInEditMode])
   {
-    a3 = 1.0;
+    alpha = 1.0;
     if (([(BKLibraryBookshelfFinishedBookCell *)self isSelected]& 1) == 0)
     {
-      v5 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      [v5 shrinkAlpha];
-      a3 = v6;
+      finishedMetrics = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      [finishedMetrics shrinkAlpha];
+      alpha = v6;
     }
   }
 
-  return a3;
+  return alpha;
 }
 
-- (void)setCoverHidden:(BOOL)a3
+- (void)setCoverHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v5 = [(BKLibraryBookshelfFinishedBookCell *)self coverView];
-  [v5 setHidden:v3];
+  coverView = [(BKLibraryBookshelfFinishedBookCell *)self coverView];
+  [coverView setHidden:hiddenCopy];
 
   +[CATransaction commit];
 }
 
 - (id)coverImage
 {
-  v2 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
-  v3 = [v2 image];
+  coverLayer = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
+  image = [coverLayer image];
 
-  return v3;
+  return image;
 }
 
 - (CGRect)coverFrame
 {
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self layer];
-  v4 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
-  [v4 coverBounds];
+  layer = [(BKLibraryBookshelfFinishedBookCell *)self layer];
+  coverLayer = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
+  [coverLayer coverBounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
-  [v3 convertRect:v13 fromLayer:{v6, v8, v10, v12}];
+  coverLayer2 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
+  [layer convertRect:coverLayer2 fromLayer:{v6, v8, v10, v12}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -1054,8 +1054,8 @@ LABEL_66:
 - (CGRect)coverArea
 {
   [(BKLibraryBookshelfFinishedBookCell *)self bounds];
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-  [v3 margins];
+  columnMetrics = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+  [columnMetrics margins];
   [(BKLibraryBookshelfFinishedBookCell *)self bookCoverLeftMargin];
 
   [(BKLibraryBookshelfFinishedBookCell *)self bookCoverSize];
@@ -1073,17 +1073,17 @@ LABEL_66:
 - (void)configureViewsBasedOnState
 {
   v3 = ([(BKLibraryBookshelfCollectionViewCell *)self isInEditMode]^ 1);
-  v4 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-  [v4 setAlpha:v3];
+  combinedDateLabel = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+  [combinedDateLabel setAlpha:v3];
 
   *&v3 = ([(BKLibraryBookshelfCollectionViewCell *)self isInEditMode]^ 1);
-  v5 = [(BKLibraryBookshelfFinishedBookCell *)self dateIndicator];
+  dateIndicator = [(BKLibraryBookshelfFinishedBookCell *)self dateIndicator];
   LODWORD(v6) = LODWORD(v3);
-  [v5 setOpacity:v6];
+  [dateIndicator setOpacity:v6];
 
-  v7 = [(BKLibraryBookshelfCollectionViewCell *)self isInEditMode];
-  v8 = [(BKLibraryBookshelfFinishedBookCell *)self checkmarkView];
-  [v8 setAlpha:v7];
+  isInEditMode = [(BKLibraryBookshelfCollectionViewCell *)self isInEditMode];
+  checkmarkView = [(BKLibraryBookshelfFinishedBookCell *)self checkmarkView];
+  [checkmarkView setAlpha:isInEditMode];
 
   if ([(BKLibraryBookshelfFinishedBookCell *)self shouldShowCloud])
   {
@@ -1095,12 +1095,12 @@ LABEL_66:
     v9 = 0.0;
   }
 
-  v10 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
-  [v10 setAlpha:v9];
+  cloudView = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
+  [cloudView setAlpha:v9];
 
-  v11 = [(BKLibraryBookshelfFinishedBookCell *)self shouldShowCloud];
-  v12 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
-  [v12 setIsAccessibilityElement:v11];
+  shouldShowCloud = [(BKLibraryBookshelfFinishedBookCell *)self shouldShowCloud];
+  cloudView2 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
+  [cloudView2 setIsAccessibilityElement:shouldShowCloud];
 
   if ([(BKLibraryBookshelfFinishedBookCell *)self shouldShowDownloadProgressButton])
   {
@@ -1112,8 +1112,8 @@ LABEL_66:
     v13 = 0.0;
   }
 
-  v14 = [(BKLibraryBookshelfFinishedBookCell *)self downloadProgressButton];
-  [v14 setAlpha:v13];
+  downloadProgressButton = [(BKLibraryBookshelfFinishedBookCell *)self downloadProgressButton];
+  [downloadProgressButton setAlpha:v13];
 
   if ([(BKLibraryBookshelfFinishedBookCell *)self shouldShowMoreButton])
   {
@@ -1125,8 +1125,8 @@ LABEL_66:
     v15 = 0.0;
   }
 
-  v16 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
-  [v16 setAlpha:v15];
+  moreButton = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+  [moreButton setAlpha:v15];
 
   finishedState = self->_finishedState;
   if (finishedState <= 4)
@@ -1135,46 +1135,46 @@ LABEL_66:
     {
       if (finishedState == 3)
       {
-        v49 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-        [v49 setOpacity:0.0];
+        reviewBackground = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+        [reviewBackground setOpacity:0.0];
 
-        v50 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-        [v50 setAlpha:0.0];
+        reviewTitle = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+        [reviewTitle setAlpha:0.0];
 
-        v51 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-        [v51 setAlpha:0.0];
+        reviewComments = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+        [reviewComments setAlpha:0.0];
 
-        v52 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-        [v52 setAlpha:0.0];
+        writeReviewButton = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+        [writeReviewButton setAlpha:0.0];
 
-        v53 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-        [v53 setAlpha:0.0];
+        markAsFinishedButton = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+        [markAsFinishedButton setAlpha:0.0];
 
-        v23 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+        starRating = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
 LABEL_27:
         v48 = 0.0;
 LABEL_30:
-        v59 = v23;
+        reviewBackground7 = starRating;
         goto LABEL_31;
       }
 
-      v29 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-      [v29 setOpacity:0.0];
+      reviewBackground2 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+      [reviewBackground2 setOpacity:0.0];
 
-      v30 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-      [v30 setAlpha:0.0];
+      reviewTitle2 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+      [reviewTitle2 setAlpha:0.0];
 
-      v31 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-      [v31 setAlpha:0.0];
+      reviewComments2 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+      [reviewComments2 setAlpha:0.0];
 
-      v32 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-      [v32 setAlpha:0.0];
+      markAsFinishedButton2 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      [markAsFinishedButton2 setAlpha:0.0];
 
-      v33 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-      [v33 setAlpha:1.0];
+      starRating2 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+      [starRating2 setAlpha:1.0];
 
       v34 = ([(BKLibraryBookshelfCollectionViewCell *)self isInEditMode]^ 1);
-      v23 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      starRating = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
     }
 
     else
@@ -1187,51 +1187,51 @@ LABEL_30:
         }
 
 LABEL_19:
-        v24 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-        [v24 setOpacity:0.0];
+        reviewBackground3 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+        [reviewBackground3 setOpacity:0.0];
 
-        v25 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-        [v25 setAlpha:0.0];
+        reviewTitle3 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+        [reviewTitle3 setAlpha:0.0];
 
-        v26 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-        [v26 setAlpha:0.0];
+        reviewComments3 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+        [reviewComments3 setAlpha:0.0];
 
-        v27 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-        [v27 setAlpha:0.0];
+        writeReviewButton2 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+        [writeReviewButton2 setAlpha:0.0];
 
-        v28 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+        markAsFinishedButton3 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
 LABEL_29:
-        v58 = v28;
-        [v28 setAlpha:0.0];
+        v58 = markAsFinishedButton3;
+        [markAsFinishedButton3 setAlpha:0.0];
 
-        v23 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+        starRating = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
         v48 = 1.0;
         goto LABEL_30;
       }
 
-      v43 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-      [v43 setOpacity:0.0];
+      reviewBackground4 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+      [reviewBackground4 setOpacity:0.0];
 
-      v44 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-      [v44 setAlpha:0.0];
+      reviewTitle4 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+      [reviewTitle4 setAlpha:0.0];
 
-      v45 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-      [v45 setAlpha:0.0];
+      reviewComments4 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+      [reviewComments4 setAlpha:0.0];
 
-      v46 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-      [v46 setAlpha:0.0];
+      starRating3 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+      [starRating3 setAlpha:0.0];
 
-      v47 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-      [v47 setAlpha:0.0];
+      writeReviewButton3 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      [writeReviewButton3 setAlpha:0.0];
 
       v34 = ([(BKLibraryBookshelfCollectionViewCell *)self isInEditMode]^ 1);
-      v23 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      starRating = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
     }
 
-    v59 = v23;
+    reviewBackground7 = starRating;
     v48 = v34;
 LABEL_31:
-    [v23 setAlpha:v48];
+    [starRating setAlpha:v48];
     goto LABEL_32;
   }
 
@@ -1239,19 +1239,19 @@ LABEL_31:
   {
     if (finishedState == 5)
     {
-      v54 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-      [v54 setOpacity:0.0];
+      reviewBackground5 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+      [reviewBackground5 setOpacity:0.0];
 
-      v55 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-      [v55 setAlpha:0.0];
+      reviewTitle5 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+      [reviewTitle5 setAlpha:0.0];
 
-      v56 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-      [v56 setAlpha:0.0];
+      reviewComments5 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+      [reviewComments5 setAlpha:0.0];
 
-      v57 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-      [v57 setAlpha:0.0];
+      markAsFinishedButton4 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      [markAsFinishedButton4 setAlpha:0.0];
 
-      v28 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      markAsFinishedButton3 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
       goto LABEL_29;
     }
   }
@@ -1265,53 +1265,53 @@ LABEL_31:
         return;
       }
 
-      v18 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-      [v18 setOpacity:0.0];
+      reviewBackground6 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+      [reviewBackground6 setOpacity:0.0];
 
-      v19 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-      [v19 setAlpha:0.0];
+      reviewTitle6 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+      [reviewTitle6 setAlpha:0.0];
 
-      v20 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-      [v20 setAlpha:0.0];
+      reviewComments6 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+      [reviewComments6 setAlpha:0.0];
 
-      v21 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-      [v21 setAlpha:0.0];
+      starRating4 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+      [starRating4 setAlpha:0.0];
 
-      v22 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-      [v22 setAlpha:0.0];
+      writeReviewButton4 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      [writeReviewButton4 setAlpha:0.0];
 
-      v23 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      starRating = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
       goto LABEL_27;
     }
 
     goto LABEL_19;
   }
 
-  v35 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-  [v35 setAlpha:0.0];
+  markAsFinishedButton5 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+  [markAsFinishedButton5 setAlpha:0.0];
 
-  v36 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-  [v36 setAlpha:0.0];
+  writeReviewButton5 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+  [writeReviewButton5 setAlpha:0.0];
 
-  v37 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-  [v37 setAlpha:1.0];
+  starRating5 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+  [starRating5 setAlpha:1.0];
 
   v38 = ([(BKLibraryBookshelfCollectionViewCell *)self isInEditMode]^ 1);
-  v39 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-  [v39 setAlpha:v38];
+  reviewTitle7 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+  [reviewTitle7 setAlpha:v38];
 
   v40 = ([(BKLibraryBookshelfCollectionViewCell *)self isInEditMode]^ 1);
-  v41 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-  [v41 setAlpha:v40];
+  reviewComments7 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+  [reviewComments7 setAlpha:v40];
 
   *&v40 = ([(BKLibraryBookshelfCollectionViewCell *)self isInEditMode]^ 1);
-  v59 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+  reviewBackground7 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
   LODWORD(v42) = LODWORD(v40);
-  [v59 setOpacity:v42];
+  [reviewBackground7 setOpacity:v42];
 LABEL_32:
 }
 
-- (void)setFinishedState:(int)a3
+- (void)setFinishedState:(int)state
 {
   if (!+[NSThread isMainThread])
   {
@@ -1319,22 +1319,22 @@ LABEL_32:
   }
 
   finishedState = self->_finishedState;
-  if (finishedState == 10 || finishedState != a3)
+  if (finishedState == 10 || finishedState != state)
   {
-    self->_finishedState = a3;
+    self->_finishedState = state;
     if (finishedState != 10)
     {
-      v7 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-      v8 = [v7 permanentOrTemporaryAssetID];
+      libraryAsset = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+      permanentOrTemporaryAssetID = [libraryAsset permanentOrTemporaryAssetID];
 
-      if (v8)
+      if (permanentOrTemporaryAssetID)
       {
-        v9 = [objc_opt_class() heightCache];
-        [v9 removeObjectForKey:v8];
+        heightCache = [objc_opt_class() heightCache];
+        [heightCache removeObjectForKey:permanentOrTemporaryAssetID];
 
-        v10 = [(BKLibraryBookshelfFinishedBookCell *)self layoutManager];
-        v11 = [(BKLibraryBookshelfFinishedBookCell *)self indexPath];
-        [v10 invalidateLayoutFor:v11];
+        layoutManager = [(BKLibraryBookshelfFinishedBookCell *)self layoutManager];
+        indexPath = [(BKLibraryBookshelfFinishedBookCell *)self indexPath];
+        [layoutManager invalidateLayoutFor:indexPath];
       }
     }
 
@@ -1349,15 +1349,15 @@ LABEL_32:
   v664.receiver = self;
   v664.super_class = BKLibraryBookshelfFinishedBookCell;
   [(BKLibraryBookshelfFinishedBookCell *)&v664 layoutSubviews];
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+  finishedMetrics = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
   [(BKLibraryBookshelfFinishedBookCell *)self bounds];
   x = v665.origin.x;
   y = v665.origin.y;
   width = v665.size.width;
   height = v665.size.height;
   MaxX = CGRectGetMaxX(v665);
-  v6 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-  [v6 margins];
+  columnMetrics = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+  [columnMetrics margins];
   v613 = v7;
 
   [(BKLibraryBookshelfFinishedBookCell *)self coverArea];
@@ -1366,8 +1366,8 @@ LABEL_32:
   rect_8 = v666.size.height;
   rect_16 = v666.size.width;
   CGRectGetMidY(v666);
-  v8 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
-  [v8 bounds];
+  coverLayer = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
+  [coverLayer bounds];
   v637 = CGSizeZero.height;
   if (v10 == CGSizeZero.width && v9 == CGSizeZero.height)
   {
@@ -1380,21 +1380,21 @@ LABEL_32:
 
     if (v13 != 0.0)
     {
-      v14 = [(BKLibraryBookshelfFinishedBookCell *)self coverView];
+      coverView = [(BKLibraryBookshelfFinishedBookCell *)self coverView];
       goto LABEL_9;
     }
   }
 
-  v14 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
+  coverView = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
 LABEL_9:
-  v15 = v14;
-  [v14 setFrame:{v632, rect_24, rect_16, rect_8}];
+  v15 = coverView;
+  [coverView setFrame:{v632, rect_24, rect_16, rect_8}];
 
-  v16 = [v3 reviewBottomLayout];
-  v17 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-  [v17 margins];
+  reviewBottomLayout = [finishedMetrics reviewBottomLayout];
+  columnMetrics2 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+  [columnMetrics2 margins];
   v19 = v18;
-  [v3 lockupMargin];
+  [finishedMetrics lockupMargin];
   v21 = v19 + v20;
 
   v667.origin.x = x;
@@ -1403,8 +1403,8 @@ LABEL_9:
   v667.size.height = height;
   v641 = v21;
   v22 = CGRectGetWidth(v667) - v21;
-  v23 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-  [v23 margins];
+  columnMetrics3 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+  [columnMetrics3 margins];
   v25 = v22 - v24;
 
   v668.origin.x = v632;
@@ -1430,17 +1430,17 @@ LABEL_9:
   v644 = height;
   v671.size.height = height;
   v622 = CGRectGetWidth(v671);
-  v28 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-  [v28 margins];
+  columnMetrics4 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+  [columnMetrics4 margins];
   v615 = v29;
 
-  [v3 lockupBottomSpacing];
+  [finishedMetrics lockupBottomSpacing];
   v645 = MaxY + v30;
-  [v3 smallLayoutSpaceNeeded];
+  [finishedMetrics smallLayoutSpaceNeeded];
   v32 = v31;
   v33 = CGRectZero.origin.y;
-  v34 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
-  [v34 sizeThatFits:{v25, 1.79769313e308}];
+  titleLabel = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
+  [titleLabel sizeThatFits:{v25, 1.79769313e308}];
   v36 = v35;
   v38 = v37;
 
@@ -1455,8 +1455,8 @@ LABEL_9:
   }
 
   v616 = v39;
-  v40 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
-  [v40 sizeThatFits:{v25, 1.79769313e308}];
+  authorLabel = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
+  [authorLabel sizeThatFits:{v25, 1.79769313e308}];
   v42 = v41;
   v44 = v43;
 
@@ -1473,7 +1473,7 @@ LABEL_9:
   }
 
   v633 = v45;
-  [v3 authorSpacing];
+  [finishedMetrics authorSpacing];
   v47 = v38 + v44 + v46;
   v618 = v33;
   v625 = MinX;
@@ -1483,7 +1483,7 @@ LABEL_9:
     if (rect - v47 < v32)
     {
       v64 = 0;
-      v16 = 1;
+      reviewBottomLayout = 1;
       recta = v641;
       v63 = 1;
       v65 = MinY;
@@ -1499,14 +1499,14 @@ LABEL_32:
       goto LABEL_25;
     }
 
-    v66 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-    [v66 alpha];
+    markAsFinishedButton = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+    [markAsFinishedButton alpha];
     v68 = v67;
 
     if (v68 == 0.0)
     {
-      v75 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-      [v75 alpha];
+      writeReviewButton = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      [writeReviewButton alpha];
       v77 = v76;
 
       if (v77 == 0.0)
@@ -1520,26 +1520,26 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      v78 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-      [v78 titleEdgeInsets];
+      writeReviewButton2 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      [writeReviewButton2 titleEdgeInsets];
       v71 = v79;
       v73 = v80;
 
-      v74 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      writeReviewButton3 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
     }
 
     else
     {
-      v69 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-      [v69 titleEdgeInsets];
+      markAsFinishedButton2 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      [markAsFinishedButton2 titleEdgeInsets];
       v71 = v70;
       v73 = v72;
 
-      v74 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      writeReviewButton3 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
     }
 
-    v81 = v74;
-    [v74 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+    v81 = writeReviewButton3;
+    [writeReviewButton3 sizeThatFits:{1.79769313e308, 1.79769313e308}];
     v83 = v82;
 
     v84 = v71 + v73;
@@ -1551,8 +1551,8 @@ LABEL_31:
   }
 
   v48 = v622 - MinX - v615;
-  v49 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
-  [v49 sizeThatFits:{v48, 1.79769313e308}];
+  titleLabel2 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
+  [titleLabel2 sizeThatFits:{v48, 1.79769313e308}];
   v51 = v50;
   v53 = v52;
 
@@ -1571,8 +1571,8 @@ LABEL_31:
     v55 = v54;
   }
 
-  v56 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
-  [v56 sizeThatFits:{v48, 1.79769313e308}];
+  authorLabel2 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
+  [authorLabel2 sizeThatFits:{v48, 1.79769313e308}];
   v58 = v57;
   v60 = v59;
 
@@ -1591,7 +1591,7 @@ LABEL_31:
   }
 
   v633 = v62;
-  v16 = 1;
+  reviewBottomLayout = 1;
   v65 = v645;
   recta = MinX;
 LABEL_33:
@@ -1603,15 +1603,15 @@ LABEL_33:
   v91 = v90;
   v93 = v92;
   v95 = v94;
-  v96 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
-  [v96 setFrame:{v89, v91, v93, v95}];
+  titleLabel3 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
+  [titleLabel3 setFrame:{v89, v91, v93, v95}];
 
   v674.origin.x = recta;
   v674.origin.y = v86;
   v674.size.width = v61;
   v674.size.height = v87;
   v97 = CGRectGetMaxY(v674);
-  [v3 authorSpacing];
+  [finishedMetrics authorSpacing];
   v99 = v97 + v98;
   [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
   IMRectFlippedForRTL();
@@ -1619,8 +1619,8 @@ LABEL_33:
   v103 = v102;
   v105 = v104;
   v107 = v106;
-  v108 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
-  [v108 setFrame:{v101, v103, v105, v107}];
+  authorLabel3 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
+  [authorLabel3 setFrame:{v101, v103, v105, v107}];
 
   if (!v63)
   {
@@ -1631,12 +1631,12 @@ LABEL_33:
     v645 = CGRectGetMaxY(v675);
   }
 
-  v109 = [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
-  v110 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-  [v110 setIsRTL:v109];
+  isRTL = [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
+  starRating = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+  [starRating setIsRTL:isRTL];
 
-  v111 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-  [v111 alpha];
+  starRating2 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+  [starRating2 alpha];
   v113 = v112;
 
   if (v64)
@@ -1649,7 +1649,7 @@ LABEL_33:
     v114 = v625;
   }
 
-  [v3 ratingSpacing];
+  [finishedMetrics ratingSpacing];
   v115 = v645;
   v117 = v645 + v116;
   v634 = v114;
@@ -1664,15 +1664,15 @@ LABEL_33:
     v124 = v123;
     v126 = v125;
     v128 = v127;
-    v129 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-    [v129 setFrame:{v122, v124, v126, v128}];
+    starRating3 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+    [starRating3 setFrame:{v122, v124, v126, v128}];
   }
 
   else
   {
-    [v3 ratingWidth];
+    [finishedMetrics ratingWidth];
     v131 = v130;
-    [v3 ratingHeight];
+    [finishedMetrics ratingHeight];
     v133 = v132;
     [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
     IMRectFlippedForRTL();
@@ -1680,12 +1680,12 @@ LABEL_33:
     v137 = v136;
     v139 = v138;
     v141 = v140;
-    v142 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+    starRating4 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
     v143 = v139;
     v144 = v141;
     v119 = width;
     v118 = y;
-    [v142 setFrame:{v135, v137, v143, v144}];
+    [starRating4 setFrame:{v135, v137, v143, v144}];
 
     v676.origin.x = v634;
     v676.origin.y = v117;
@@ -1698,18 +1698,18 @@ LABEL_33:
   v646 = v115;
   if ([(BKLibraryBookshelfCollectionViewCell *)self isInEditMode])
   {
-    v145 = [(BKLibraryBookshelfFinishedBookCell *)self checkmarkView];
-    v146 = [v145 image];
-    [v146 size];
+    checkmarkView = [(BKLibraryBookshelfFinishedBookCell *)self checkmarkView];
+    image = [checkmarkView image];
+    [image size];
     v148 = v147;
     v150 = v149;
 
-    v151 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-    [v151 margins];
+    columnMetrics5 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+    [columnMetrics5 margins];
     v153 = v152;
     [(BKLibraryBookshelfFinishedBookCell *)self bookCoverLeftMargin];
     v155 = v153 + v154;
-    [v3 checkMarkSpacing];
+    [finishedMetrics checkMarkSpacing];
     v157 = v155 - (v148 + v156);
 
     v677.origin.y = rect_24;
@@ -1720,7 +1720,7 @@ LABEL_33:
     *&v653.origin.y = _NSConcreteStackBlock;
     *&v653.size.height = sub_1000CF4BC;
     v654 = &unk_100A04558;
-    v655 = self;
+    selfCopy = self;
     v656 = v157;
     v657 = CGRectGetMidY(v677) + v150 * -0.5;
     v658 = v148;
@@ -1730,17 +1730,17 @@ LABEL_33:
     v662 = v119;
     v663 = v120;
     [UIView performWithoutAnimation:&v653.origin.y];
-    [v3 finishedSpacing];
+    [finishedMetrics finishedSpacing];
     [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
     IMRectFlippedForRTL();
     v159 = v158;
     v161 = v160;
     v163 = v162;
     v165 = v164;
-    v166 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-    [v166 setFrame:{v159, v161, v163, v165}];
+    markAsFinishedButton3 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+    [markAsFinishedButton3 setFrame:{v159, v161, v163, v165}];
 
-    [v3 writeReviewSpacing];
+    [finishedMetrics writeReviewSpacing];
     v647 = v646 + v167;
     [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
     IMRectFlippedForRTL();
@@ -1748,8 +1748,8 @@ LABEL_33:
     v171 = v170;
     v173 = v172;
     v175 = v174;
-    v176 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-    [v176 setFrame:{v169, v171, v173, v175}];
+    writeReviewButton4 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+    [writeReviewButton4 setFrame:{v169, v171, v173, v175}];
 
     v678.origin.x = v634;
     v678.origin.y = v647;
@@ -1757,19 +1757,19 @@ LABEL_33:
     v678.size.height = v637;
     v177 = CGRectGetMaxY(v678);
     v648 = v177;
-    if (v16)
+    if (reviewBottomLayout)
     {
-      [v3 bookCoverLeftMargin];
+      [finishedMetrics bookCoverLeftMargin];
       v179 = v178;
-      v180 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-      [v180 margins];
+      columnMetrics6 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+      [columnMetrics6 margins];
       v641 = v179 + v181;
 
-      [v3 bookCoverSize];
+      [finishedMetrics bookCoverSize];
       v177 = v182;
     }
 
-    [v3 reviewSpacing];
+    [finishedMetrics reviewSpacing];
     v184 = v177 + v183;
     [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
     IMRectFlippedForRTL();
@@ -1777,8 +1777,8 @@ LABEL_33:
     v188 = v187;
     v190 = v189;
     v192 = v191;
-    v193 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-    [v193 setFrame:{v186, v188, v190, v192}];
+    reviewBackground = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+    [reviewBackground setFrame:{v186, v188, v190, v192}];
 
     [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
     IMRectFlippedForRTL();
@@ -1786,8 +1786,8 @@ LABEL_33:
     v197 = v196;
     v199 = v198;
     v201 = v200;
-    v202 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-    [v202 setFrame:{v195, v197, v199, v201}];
+    reviewTitle = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+    [reviewTitle setFrame:{v195, v197, v199, v201}];
 
     [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
     IMRectFlippedForRTL();
@@ -1795,11 +1795,11 @@ LABEL_33:
     v206 = v205;
     v208 = v207;
     v210 = v209;
-    v211 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-    [v211 setFrame:{v204, v206, v208, v210}];
+    reviewComments = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+    [reviewComments setFrame:{v204, v206, v208, v210}];
 
-    v212 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-    [v212 setExpanded:1];
+    reviewComments2 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+    [reviewComments2 setExpanded:1];
 
     v213 = v648;
     if ([(BKLibraryBookshelfFinishedBookCell *)self finishedState]== 7 || [(BKLibraryBookshelfFinishedBookCell *)self finishedState]== 6)
@@ -1811,13 +1811,13 @@ LABEL_33:
       v213 = CGRectGetMaxY(v679);
     }
 
-    v214 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
-    [v214 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+    moreButton = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+    [moreButton sizeThatFits:{1.79769313e308, 1.79769313e308}];
     v642 = v215;
 
-    [v3 moreHeight];
+    [finishedMetrics moreHeight];
     v638 = v216;
-    [v3 moreSpacing];
+    [finishedMetrics moreSpacing];
     v635 = v213 + v217;
     [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
     IMRectFlippedForRTL();
@@ -1825,10 +1825,10 @@ LABEL_33:
     v221 = v220;
     v223 = v222;
     v225 = v224;
-    v226 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
-    [v226 setFrame:{v219, v221, v223, v225}];
+    moreButton2 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+    [moreButton2 setFrame:{v219, v221, v223, v225}];
 
-    [v3 moreSpacing];
+    [finishedMetrics moreSpacing];
     v649 = v213;
     [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
     IMRectFlippedForRTL();
@@ -1836,19 +1836,19 @@ LABEL_33:
     v230 = v229;
     v232 = v231;
     v234 = v233;
-    v235 = [(BKLibraryBookshelfFinishedBookCell *)self downloadProgressButton];
-    [v235 setFrame:{v228, v230, v232, v234}];
+    downloadProgressButton = [(BKLibraryBookshelfFinishedBookCell *)self downloadProgressButton];
+    [downloadProgressButton setFrame:{v228, v230, v232, v234}];
 
-    v236 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
-    v237 = [v236 image];
-    [v237 size];
+    cloudView = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
+    image2 = [cloudView image];
+    [image2 size];
 
     v680.origin.x = v634;
     v680.origin.y = v635;
     v680.size.width = v642;
     v680.size.height = v638;
     CGRectGetMaxX(v680);
-    [v3 cloudSpacing];
+    [finishedMetrics cloudSpacing];
     v681.origin.x = v634;
     v681.origin.y = v635;
     v681.size.width = v642;
@@ -1860,97 +1860,97 @@ LABEL_33:
     v241 = v240;
     v243 = v242;
     v245 = v244;
-    v246 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
-    [v246 setFrame:{v239, v241, v243, v245}];
+    cloudView2 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
+    [cloudView2 setFrame:{v239, v241, v243, v245}];
   }
 
   else
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
-    v247 = [(BKLibraryBookshelfFinishedBookCell *)self pathForDateIndicator:v632, rect_24, rect_16, rect_8];
-    v248 = [(BKLibraryBookshelfFinishedBookCell *)self dateIndicator];
-    [v248 setPath:v247];
+    rect_8 = [(BKLibraryBookshelfFinishedBookCell *)self pathForDateIndicator:v632, rect_24, rect_16, rect_8];
+    dateIndicator = [(BKLibraryBookshelfFinishedBookCell *)self dateIndicator];
+    [dateIndicator setPath:rect_8];
 
-    v249 = [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
-    [v3 datelineMargin];
+    isRTL2 = [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
+    [finishedMetrics datelineMargin];
     v251 = v250;
-    if (v249)
+    if (isRTL2)
     {
-      [v3 datelineWidth];
+      [finishedMetrics datelineWidth];
       v253 = MaxX - v613 - v251 + v252 * -0.5;
     }
 
     else
     {
-      v248 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-      [v248 margins];
+      dateIndicator = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+      [dateIndicator margins];
       v253 = v251 + v254;
     }
 
-    v255 = [(BKLibraryBookshelfFinishedBookCell *)self dateIndicator];
-    [v255 setPosition:{v253, 0.0}];
+    dateIndicator2 = [(BKLibraryBookshelfFinishedBookCell *)self dateIndicator];
+    [dateIndicator2 setPosition:{v253, 0.0}];
 
-    if ((v249 & 1) == 0)
+    if ((isRTL2 & 1) == 0)
     {
     }
 
     +[CATransaction commit];
     objc_opt_class();
-    v256 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-    v257 = [v256 dateFontAttributes];
-    v258 = [v257 font];
-    v246 = BUDynamicCast();
+    finishedMetrics2 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+    dateFontAttributes = [finishedMetrics2 dateFontAttributes];
+    font = [dateFontAttributes font];
+    cloudView2 = BUDynamicCast();
 
-    if (v246)
+    if (cloudView2)
     {
-      v259 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-      [v259 setFont:v246];
+      combinedDateLabel = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+      [combinedDateLabel setFont:cloudView2];
     }
 
     objc_opt_class();
-    v260 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-    v261 = [v260 dateFontAttributes];
-    v262 = [v261 foregroundColor];
+    finishedMetrics3 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+    dateFontAttributes2 = [finishedMetrics3 dateFontAttributes];
+    foregroundColor = [dateFontAttributes2 foregroundColor];
     v263 = BUDynamicCast();
 
     if (v263)
     {
-      v264 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-      [v264 setTextColor:v263];
+      combinedDateLabel2 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+      [combinedDateLabel2 setTextColor:v263];
     }
 
-    v265 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-    [v265 setAdjustsFontSizeToFitWidth:0];
+    combinedDateLabel3 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+    [combinedDateLabel3 setAdjustsFontSizeToFitWidth:0];
 
-    v266 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-    [v266 margins];
+    columnMetrics7 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+    [columnMetrics7 margins];
     v268 = v267;
-    [v3 datelineMargin];
+    [finishedMetrics datelineMargin];
     v270 = v268 + v269;
-    [v3 dateSpace];
+    [finishedMetrics dateSpace];
     v272 = v270 - v271;
-    [v3 datelineCircleSize];
+    [finishedMetrics datelineCircleSize];
     v274 = v272 - v273 + -4.0;
 
-    v275 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-    [v275 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+    combinedDateLabel4 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+    [combinedDateLabel4 sizeThatFits:{1.79769313e308, 1.79769313e308}];
     v277 = v276;
     v279 = v278;
 
-    v280 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-    [v280 margins];
+    columnMetrics8 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+    [columnMetrics8 margins];
     v282 = v281;
-    [v3 datelineMargin];
+    [finishedMetrics datelineMargin];
     v284 = v282 + v283;
     v682.origin.x = CGRectZero.origin.x;
     v682.origin.y = v618;
     v682.size.width = v277;
     v682.size.height = v279;
     v285 = v284 - CGRectGetWidth(v682);
-    [v3 dateSpace];
+    [finishedMetrics dateSpace];
     v287 = v285 - v286;
-    [v3 datelineCircleSize];
+    [finishedMetrics datelineCircleSize];
     v289 = v287 - v288;
 
     v683.origin.x = v289;
@@ -1964,22 +1964,22 @@ LABEL_33:
 
     else
     {
-      v290 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-      [v290 setAdjustsFontSizeToFitWidth:1];
+      combinedDateLabel5 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+      [combinedDateLabel5 setAdjustsFontSizeToFitWidth:1];
 
-      v291 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-      [v291 margins];
+      columnMetrics9 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+      [columnMetrics9 margins];
       v293 = v292;
-      [v3 datelineMargin];
+      [finishedMetrics datelineMargin];
       v295 = v293 + v294;
       v684.origin.x = v289;
       v684.origin.y = v618;
       v684.size.width = v274;
       v684.size.height = v279;
       v296 = v295 - CGRectGetWidth(v684);
-      [v3 dateSpace];
+      [finishedMetrics dateSpace];
       v298 = v296 - v297;
-      [v3 datelineCircleSize];
+      [finishedMetrics datelineCircleSize];
       v289 = v298 - v299;
 
       v277 = v274;
@@ -2001,16 +2001,16 @@ LABEL_33:
     v304 = v303;
     v306 = v305;
     v308 = v307;
-    v309 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-    [v309 setFrame:{v302, v304, v306, v308}];
+    combinedDateLabel6 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+    [combinedDateLabel6 setFrame:{v302, v304, v306, v308}];
 
-    v310 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-    [v310 alpha];
+    markAsFinishedButton4 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+    [markAsFinishedButton4 alpha];
     v312 = v311;
 
     if (v312 == 0.0)
     {
-      [v3 finishedSpacing];
+      [finishedMetrics finishedSpacing];
       v313 = v646;
       [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
       IMRectFlippedForRTL();
@@ -2018,24 +2018,24 @@ LABEL_33:
       v317 = v316;
       v319 = v318;
       v321 = v320;
-      v322 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-      [v322 setFrame:{v315, v317, v319, v321}];
+      markAsFinishedButton5 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      [markAsFinishedButton5 setFrame:{v315, v317, v319, v321}];
     }
 
     else
     {
-      v323 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-      [v323 titleEdgeInsets];
+      markAsFinishedButton6 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      [markAsFinishedButton6 titleEdgeInsets];
       v325 = v324;
       v327 = v326;
 
-      v328 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-      [v328 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+      markAsFinishedButton7 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      [markAsFinishedButton7 sizeThatFits:{1.79769313e308, 1.79769313e308}];
       v330 = v329;
       v332 = v331;
 
       v333 = v325 + v327 + v330;
-      [v3 finishedSpacing];
+      [finishedMetrics finishedSpacing];
       v335 = v646 + v334;
       [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
       IMRectFlippedForRTL();
@@ -2043,23 +2043,23 @@ LABEL_33:
       v339 = v338;
       v341 = v340;
       v343 = v342;
-      v344 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      markAsFinishedButton8 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
       v345 = v339;
       v346 = v341;
       v300 = y;
       v347 = v343;
       v119 = width;
       v120 = v644;
-      [v344 setFrame:{v337, v345, v346, v347}];
+      [markAsFinishedButton8 setFrame:{v337, v345, v346, v347}];
 
       v687.origin.x = v634;
       v687.origin.y = v335;
       v687.size.width = v333;
       v687.size.height = v332;
       v348 = CGRectGetHeight(v687) * 0.5;
-      v349 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-      v350 = [v349 layer];
-      [v350 setCornerRadius:v348];
+      markAsFinishedButton9 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      layer = [markAsFinishedButton9 layer];
+      [layer setCornerRadius:v348];
 
       v688.origin.x = v634;
       v688.origin.y = v335;
@@ -2068,37 +2068,37 @@ LABEL_33:
       v313 = CGRectGetMaxY(v688);
     }
 
-    v351 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-    [v351 alpha];
+    writeReviewButton5 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+    [writeReviewButton5 alpha];
     v353 = v352;
 
     if (v353 == 0.0)
     {
-      [v3 writeReviewSpacing];
+      [finishedMetrics writeReviewSpacing];
       [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
       IMRectFlippedForRTL();
       v355 = v354;
       v357 = v356;
       v359 = v358;
       v361 = v360;
-      v362 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-      [v362 setFrame:{v355, v357, v359, v361}];
+      writeReviewButton6 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      [writeReviewButton6 setFrame:{v355, v357, v359, v361}];
     }
 
     else
     {
-      v363 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-      [v363 titleEdgeInsets];
+      writeReviewButton7 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      [writeReviewButton7 titleEdgeInsets];
       v365 = v364;
       v367 = v366;
 
-      v368 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-      [v368 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+      writeReviewButton8 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      [writeReviewButton8 sizeThatFits:{1.79769313e308, 1.79769313e308}];
       v370 = v369;
       v372 = v371;
 
       v373 = v365 + v367 + v370;
-      [v3 writeReviewSpacing];
+      [finishedMetrics writeReviewSpacing];
       v375 = v313 + v374;
       v689.origin.x = v634;
       v689.origin.y = v375;
@@ -2109,7 +2109,7 @@ LABEL_33:
       v690.origin.y = v300;
       v690.size.width = v119;
       v690.size.height = v120;
-      if (v376 <= CGRectGetMaxX(v690) || (v691.origin.x = v634, v691.origin.y = v375, v691.size.width = v373, v691.size.height = v372, v377 = CGRectGetMinY(v691), [v3 bookCoverSize], v377 <= v378))
+      if (v376 <= CGRectGetMaxX(v690) || (v691.origin.x = v634, v691.origin.y = v375, v691.size.width = v373, v691.size.height = v372, v377 = CGRectGetMinY(v691), [finishedMetrics bookCoverSize], v377 <= v378))
       {
         v383 = v634;
       }
@@ -2126,8 +2126,8 @@ LABEL_33:
         v693.size.width = v373;
         v693.size.height = v372;
         v380 = v379 - CGRectGetWidth(v693);
-        v381 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-        [v381 margins];
+        columnMetrics10 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+        [columnMetrics10 margins];
         v383 = v380 - v382;
       }
 
@@ -2137,23 +2137,23 @@ LABEL_33:
       v387 = v386;
       v389 = v388;
       v391 = v390;
-      v392 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      writeReviewButton9 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
       v393 = v385;
       v394 = v387;
       v300 = y;
       v395 = v389;
       v119 = width;
       v120 = v644;
-      [v392 setFrame:{v393, v394, v395, v391}];
+      [writeReviewButton9 setFrame:{v393, v394, v395, v391}];
 
       v694.origin.x = v383;
       v694.origin.y = v375;
       v694.size.width = v373;
       v694.size.height = v372;
       v396 = CGRectGetHeight(v694) * 0.5;
-      v397 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-      v398 = [v397 layer];
-      [v398 setCornerRadius:v396];
+      writeReviewButton10 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      layer2 = [writeReviewButton10 layer];
+      [layer2 setCornerRadius:v396];
 
       v695.origin.x = v383;
       v695.origin.y = v375;
@@ -2162,31 +2162,31 @@ LABEL_33:
       v313 = CGRectGetMaxY(v695);
     }
 
-    v399 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-    [v399 alpha];
+    reviewComments3 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+    [reviewComments3 alpha];
     v401 = v400;
 
     v650 = v313;
     if (v401 == 0.0)
     {
-      if (v16)
+      if (reviewBottomLayout)
       {
-        [v3 bookCoverLeftMargin];
-        v402 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-        [v402 margins];
+        [finishedMetrics bookCoverLeftMargin];
+        columnMetrics11 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+        [columnMetrics11 margins];
 
-        [v3 bookCoverSize];
+        [finishedMetrics bookCoverSize];
       }
 
-      [v3 reviewSpacing];
+      [finishedMetrics reviewSpacing];
       [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
       IMRectFlippedForRTL();
       v404 = v403;
       v406 = v405;
       v408 = v407;
       v410 = v409;
-      v411 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-      [v411 setFrame:{v404, v406, v408, v410}];
+      reviewBackground2 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+      [reviewBackground2 setFrame:{v404, v406, v408, v410}];
 
       [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
       IMRectFlippedForRTL();
@@ -2194,8 +2194,8 @@ LABEL_33:
       v415 = v414;
       v417 = v416;
       v419 = v418;
-      v420 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-      [v420 setFrame:{v413, v415, v417, v419}];
+      reviewTitle2 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+      [reviewTitle2 setFrame:{v413, v415, v417, v419}];
 
       [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
       IMRectFlippedForRTL();
@@ -2203,8 +2203,8 @@ LABEL_33:
       v424 = v423;
       v426 = v425;
       v428 = v427;
-      v429 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-      [v429 setFrame:{v422, v424, v426, v428}];
+      reviewComments4 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+      [reviewComments4 setFrame:{v422, v424, v426, v428}];
 
       v430 = v650;
     }
@@ -2212,67 +2212,67 @@ LABEL_33:
     else
     {
       v431 = v619;
-      if (v16)
+      if (reviewBottomLayout)
       {
         v696.origin.x = v653.origin.x;
         v696.origin.y = v300;
         v696.size.width = v119;
         v696.size.height = v120;
         v432 = CGRectGetWidth(v696);
-        [v3 bookCoverLeftMargin];
+        [finishedMetrics bookCoverLeftMargin];
         v434 = v432 - v433;
-        v435 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-        [v435 margins];
+        columnMetrics12 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+        [columnMetrics12 margins];
         v431 = v434 + v436 * -2.0;
       }
 
-      [v3 reviewLeftMargin];
+      [finishedMetrics reviewLeftMargin];
       v437 = v431;
       v439 = v431 - v438;
-      [v3 reviewRightMargin];
+      [finishedMetrics reviewRightMargin];
       v441 = v439 - v440;
-      v442 = [(BKLibraryBookshelfFinishedBookCell *)self finishedState];
-      v443 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-      v444 = v443;
-      if (v442 == 7)
+      finishedState = [(BKLibraryBookshelfFinishedBookCell *)self finishedState];
+      reviewComments5 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+      v444 = reviewComments5;
+      if (finishedState == 7)
       {
-        [v443 setExpanded:1];
+        [reviewComments5 setExpanded:1];
 
-        v445 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-        v446 = [v445 text];
-        v447 = [v3 reviewContentFontAttributes];
-        v448 = [v447 attributes];
-        [v446 boundingRectWithSize:1 options:v448 attributes:0 context:{v441, 1.79769313e308}];
+        reviewComments6 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+        text = [reviewComments6 text];
+        reviewContentFontAttributes = [finishedMetrics reviewContentFontAttributes];
+        attributes = [reviewContentFontAttributes attributes];
+        [text boundingRectWithSize:1 options:attributes attributes:0 context:{v441, 1.79769313e308}];
         v449 = CGRectGetHeight(v697);
       }
 
       else
       {
-        [v443 setExpanded:0];
+        [reviewComments5 setExpanded:0];
 
-        v445 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-        [v445 sizeThatFits:{v441, 1.79769313e308}];
+        reviewComments6 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+        [reviewComments6 sizeThatFits:{v441, 1.79769313e308}];
         v449 = v450;
       }
 
-      v451 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+      reviewTitle3 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
       v639 = v441;
-      [v451 sizeThatFits:{v441, 1.79769313e308}];
+      [reviewTitle3 sizeThatFits:{v441, 1.79769313e308}];
       v453 = v452;
 
-      if (v16)
+      if (reviewBottomLayout)
       {
-        [v3 bookCoverLeftMargin];
+        [finishedMetrics bookCoverLeftMargin];
         v455 = v454;
-        v456 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
-        [v456 margins];
+        columnMetrics13 = [(BKLibraryBookshelfFinishedBookCell *)self columnMetrics];
+        [columnMetrics13 margins];
         v641 = v455 + v457;
 
-        [v3 bookCoverSize];
+        [finishedMetrics bookCoverSize];
         v313 = v458;
-        [v3 moreHeight];
+        [finishedMetrics moreHeight];
         v460 = v650 + v459;
-        [v3 moreSpacing];
+        [finishedMetrics moreSpacing];
         v462 = v460 + v461;
         if (v313 < v462)
         {
@@ -2280,11 +2280,11 @@ LABEL_33:
         }
       }
 
-      [v3 reviewSpacing];
+      [finishedMetrics reviewSpacing];
       v464 = v313 + v463;
-      [v3 reviewTopMargin];
+      [finishedMetrics reviewTopMargin];
       v466 = v449 + v465;
-      [v3 reviewBottomMargin];
+      [finishedMetrics reviewBottomMargin];
       rectb = v453;
       v468 = v453 + v466 + v467;
       [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
@@ -2293,15 +2293,15 @@ LABEL_33:
       v472 = v471;
       v474 = v473;
       v476 = v475;
-      v477 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-      [v477 setFrame:{v470, v472, v474, v476}];
+      reviewBackground3 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+      [reviewBackground3 setFrame:{v470, v472, v474, v476}];
 
       v698.origin.x = v641;
       v698.origin.y = v464;
       v698.size.width = v437;
       v698.size.height = v468;
       v478 = CGRectGetMinX(v698);
-      [v3 reviewLeftMargin];
+      [finishedMetrics reviewLeftMargin];
       v480 = v478 + v479;
       v699.origin.x = v641;
       v624 = v468;
@@ -2310,7 +2310,7 @@ LABEL_33:
       v699.size.width = v437;
       v699.size.height = v468;
       v481 = CGRectGetMinY(v699);
-      [v3 reviewTopMargin];
+      [finishedMetrics reviewTopMargin];
       v483 = v481 + v482;
       [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
       IMRectFlippedForRTL();
@@ -2318,8 +2318,8 @@ LABEL_33:
       v487 = v486;
       v489 = v488;
       v491 = v490;
-      v492 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-      [v492 setFrame:{v485, v487, v489, v491}];
+      reviewTitle4 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+      [reviewTitle4 setFrame:{v485, v487, v489, v491}];
 
       v700.origin.x = v480;
       v700.origin.y = v483;
@@ -2332,11 +2332,11 @@ LABEL_33:
       v496 = v495;
       v498 = v497;
       v500 = v499;
-      v501 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-      [v501 setFrame:{v494, v496, v498, v500}];
+      reviewComments7 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+      [reviewComments7 setFrame:{v494, v496, v498, v500}];
 
       v430 = v650;
-      if ((v16 & 1) == 0)
+      if ((reviewBottomLayout & 1) == 0)
       {
         v701.origin.x = v641;
         v701.size.height = v624;
@@ -2346,13 +2346,13 @@ LABEL_33:
       }
     }
 
-    v502 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
-    [v502 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+    moreButton3 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+    [moreButton3 sizeThatFits:{1.79769313e308, 1.79769313e308}];
     v643 = v503;
 
-    [v3 moreHeight];
+    [finishedMetrics moreHeight];
     v640 = v504;
-    [v3 moreSpacing];
+    [finishedMetrics moreSpacing];
     v636 = v430 + v505;
     [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
     IMRectFlippedForRTL();
@@ -2360,10 +2360,10 @@ LABEL_33:
     v509 = v508;
     v511 = v510;
     v513 = v512;
-    v514 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
-    [v514 setFrame:{v507, v509, v511, v513}];
+    moreButton4 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+    [moreButton4 setFrame:{v507, v509, v511, v513}];
 
-    [v3 moreSpacing];
+    [finishedMetrics moreSpacing];
     v649 = v430;
     [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
     IMRectFlippedForRTL();
@@ -2371,19 +2371,19 @@ LABEL_33:
     v518 = v517;
     v520 = v519;
     v522 = v521;
-    v523 = [(BKLibraryBookshelfFinishedBookCell *)self downloadProgressButton];
-    [v523 setFrame:{v516, v518, v520, v522}];
+    downloadProgressButton2 = [(BKLibraryBookshelfFinishedBookCell *)self downloadProgressButton];
+    [downloadProgressButton2 setFrame:{v516, v518, v520, v522}];
 
-    v524 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
-    v525 = [v524 image];
-    [v525 size];
+    cloudView3 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
+    image3 = [cloudView3 image];
+    [image3 size];
 
     v702.origin.x = v634;
     v702.origin.y = v636;
     v702.size.width = v643;
     v702.size.height = v640;
     CGRectGetMaxX(v702);
-    [v3 cloudSpacing];
+    [finishedMetrics cloudSpacing];
     v703.origin.x = v634;
     v703.origin.y = v636;
     v703.size.width = v643;
@@ -2395,8 +2395,8 @@ LABEL_33:
     v529 = v528;
     v531 = v530;
     v533 = v532;
-    v534 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
-    [v534 setFrame:{v527, v529, v531, v533}];
+    cloudView4 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
+    [cloudView4 setFrame:{v527, v529, v531, v533}];
   }
 
   v704.origin.y = rect_24;
@@ -2408,135 +2408,135 @@ LABEL_33:
   if (v536 > 1.0)
   {
     v537 = v536;
-    v538 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
-    [v538 frame];
+    titleLabel4 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
+    [titleLabel4 frame];
     v706 = CGRectOffset(v705, 0.0, v537);
     v539 = v706.origin.x;
     v540 = v706.origin.y;
     v541 = v706.size.width;
     v542 = v706.size.height;
-    v543 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
-    [v543 setFrame:{v539, v540, v541, v542}];
+    titleLabel5 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
+    [titleLabel5 setFrame:{v539, v540, v541, v542}];
 
-    v544 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
-    [v544 frame];
+    authorLabel4 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
+    [authorLabel4 frame];
     v708 = CGRectOffset(v707, 0.0, v537);
     v545 = v708.origin.x;
     v546 = v708.origin.y;
     v547 = v708.size.width;
     v548 = v708.size.height;
-    v549 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
-    [v549 setFrame:{v545, v546, v547, v548}];
+    authorLabel5 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
+    [authorLabel5 setFrame:{v545, v546, v547, v548}];
 
-    v550 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-    [v550 frame];
+    starRating5 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+    [starRating5 frame];
     v710 = CGRectOffset(v709, 0.0, v537);
     v551 = v710.origin.x;
     v552 = v710.origin.y;
     v553 = v710.size.width;
     v554 = v710.size.height;
-    v555 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-    [v555 setFrame:{v551, v552, v553, v554}];
+    starRating6 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+    [starRating6 setFrame:{v551, v552, v553, v554}];
 
     if (![(BKLibraryBookshelfCollectionViewCell *)self isInEditMode])
     {
-      v556 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-      [v556 frame];
+      markAsFinishedButton10 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      [markAsFinishedButton10 frame];
       v712 = CGRectOffset(v711, 0.0, v537);
       v557 = v712.origin.x;
       v558 = v712.origin.y;
       v559 = v712.size.width;
       v560 = v712.size.height;
-      v561 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-      [v561 setFrame:{v557, v558, v559, v560}];
+      markAsFinishedButton11 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      [markAsFinishedButton11 setFrame:{v557, v558, v559, v560}];
 
-      v562 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-      [v562 frame];
+      writeReviewButton11 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      [writeReviewButton11 frame];
       v714 = CGRectOffset(v713, 0.0, v537);
       v563 = v714.origin.x;
       v564 = v714.origin.y;
       v565 = v714.size.width;
       v566 = v714.size.height;
-      v567 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-      [v567 setFrame:{v563, v564, v565, v566}];
+      writeReviewButton12 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      [writeReviewButton12 setFrame:{v563, v564, v565, v566}];
 
-      v568 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
-      [v568 frame];
+      moreButton5 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+      [moreButton5 frame];
       v716 = CGRectOffset(v715, 0.0, v537);
       v569 = v716.origin.x;
       v570 = v716.origin.y;
       v571 = v716.size.width;
       v572 = v716.size.height;
-      v573 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
-      [v573 setFrame:{v569, v570, v571, v572}];
+      moreButton6 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+      [moreButton6 setFrame:{v569, v570, v571, v572}];
 
-      v574 = [(BKLibraryBookshelfFinishedBookCell *)self downloadProgressButton];
-      [v574 frame];
+      downloadProgressButton3 = [(BKLibraryBookshelfFinishedBookCell *)self downloadProgressButton];
+      [downloadProgressButton3 frame];
       v718 = CGRectOffset(v717, 0.0, v537);
       v575 = v718.origin.x;
       v576 = v718.origin.y;
       v577 = v718.size.width;
       v578 = v718.size.height;
-      v579 = [(BKLibraryBookshelfFinishedBookCell *)self downloadProgressButton];
-      [v579 setFrame:{v575, v576, v577, v578}];
+      downloadProgressButton4 = [(BKLibraryBookshelfFinishedBookCell *)self downloadProgressButton];
+      [downloadProgressButton4 setFrame:{v575, v576, v577, v578}];
 
-      v580 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
-      [v580 frame];
+      cloudView5 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
+      [cloudView5 frame];
       v720 = CGRectOffset(v719, 0.0, v537);
       v581 = v720.origin.x;
       v582 = v720.origin.y;
       v583 = v720.size.width;
       v584 = v720.size.height;
-      v585 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
-      [v585 setFrame:{v581, v582, v583, v584}];
+      cloudView6 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
+      [cloudView6 setFrame:{v581, v582, v583, v584}];
 
-      if ((v16 & 1) == 0)
+      if ((reviewBottomLayout & 1) == 0)
       {
-        v586 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-        [v586 frame];
+        reviewBackground4 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+        [reviewBackground4 frame];
         v722 = CGRectOffset(v721, 0.0, v537);
         v587 = v722.origin.x;
         v588 = v722.origin.y;
         v589 = v722.size.width;
         v590 = v722.size.height;
-        v591 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-        [v591 setFrame:{v587, v588, v589, v590}];
+        reviewBackground5 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+        [reviewBackground5 setFrame:{v587, v588, v589, v590}];
 
-        v592 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-        [v592 frame];
+        reviewComments8 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+        [reviewComments8 frame];
         v724 = CGRectOffset(v723, 0.0, v537);
         v593 = v724.origin.x;
         v594 = v724.origin.y;
         v595 = v724.size.width;
         v596 = v724.size.height;
-        v597 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-        [v597 setFrame:{v593, v594, v595, v596}];
+        reviewComments9 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+        [reviewComments9 setFrame:{v593, v594, v595, v596}];
 
-        v598 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-        [v598 frame];
+        reviewTitle5 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+        [reviewTitle5 frame];
         v726 = CGRectOffset(v725, 0.0, v537);
         v599 = v726.origin.x;
         v600 = v726.origin.y;
         v601 = v726.size.width;
         v602 = v726.size.height;
-        v603 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-        [v603 setFrame:{v599, v600, v601, v602}];
+        reviewTitle6 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+        [reviewTitle6 setFrame:{v599, v600, v601, v602}];
       }
     }
   }
 
-  v604 = [(BKLibraryBookshelfCollectionViewCell *)self audiobookControl];
-  if (v604)
+  audiobookControl = [(BKLibraryBookshelfCollectionViewCell *)self audiobookControl];
+  if (audiobookControl)
   {
-    [v3 audiobookControlMargin];
+    [finishedMetrics audiobookControlMargin];
     v606 = v605;
-    [v604 frame];
+    [audiobookControl frame];
     v608 = v607;
     v610 = v609;
     [(BKLibraryBookshelfFinishedBookCell *)self coverContainerFrame];
     v611 = v606 + v727.origin.x;
     v612 = v727.origin.y + CGRectGetHeight(v727) - v610 - v606;
-    [v604 frame];
+    [audiobookControl frame];
     v729.origin.x = v611;
     v729.origin.y = v612;
     v729.size.width = v608;
@@ -2545,98 +2545,98 @@ LABEL_33:
     {
       [(BKLibraryBookshelfFinishedBookCell *)self isRTL];
       IMRectFlippedForRTL();
-      [v604 setFrame:?];
+      [audiobookControl setFrame:?];
     }
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v126.receiver = self;
   v126.super_class = BKLibraryBookshelfFinishedBookCell;
-  v4 = a3;
-  [(BKLibraryBookshelfCollectionViewCell *)&v126 applyLayoutAttributes:v4];
+  attributesCopy = attributes;
+  [(BKLibraryBookshelfCollectionViewCell *)&v126 applyLayoutAttributes:attributesCopy];
   objc_opt_class();
   v5 = BUDynamicCast();
-  v6 = [v4 indexPath];
+  indexPath = [attributesCopy indexPath];
 
-  [(BKLibraryBookshelfFinishedBookCell *)self setIndexPath:v6];
+  [(BKLibraryBookshelfFinishedBookCell *)self setIndexPath:indexPath];
   v7 = +[UIApplication sharedApplication];
   -[BKLibraryBookshelfFinishedBookCell setIsRTL:](self, "setIsRTL:", [v7 userInterfaceLayoutDirection] == 1);
 
-  v8 = [v5 columnMetrics];
-  [(BKLibraryBookshelfFinishedBookCell *)self setColumnMetrics:v8];
+  columnMetrics = [v5 columnMetrics];
+  [(BKLibraryBookshelfFinishedBookCell *)self setColumnMetrics:columnMetrics];
 
   -[BKLibraryBookshelfFinishedBookCell setLayoutDebugMode:](self, "setLayoutDebugMode:", [v5 layoutDebugMode]);
   if ([(BKLibraryBookshelfFinishedBookCell *)self layoutDebugMode])
   {
     v9 = +[UIColor redColor];
     v10 = [v9 colorWithAlphaComponent:0.2];
-    v11 = [v10 CGColor];
-    v12 = [(BKLibraryBookshelfFinishedBookCell *)self layer];
-    [v12 setBorderColor:v11];
+    cGColor = [v10 CGColor];
+    layer = [(BKLibraryBookshelfFinishedBookCell *)self layer];
+    [layer setBorderColor:cGColor];
 
-    v13 = [(BKLibraryBookshelfFinishedBookCell *)self layer];
-    [v13 setBorderWidth:0.5];
+    layer2 = [(BKLibraryBookshelfFinishedBookCell *)self layer];
+    [layer2 setBorderWidth:0.5];
 
     v14 = +[UIColor redColor];
     v15 = [v14 colorWithAlphaComponent:0.2];
-    v16 = [v15 CGColor];
-    v17 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
-    v18 = [v17 layer];
-    [v18 setBorderColor:v16];
+    cGColor2 = [v15 CGColor];
+    titleLabel = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
+    layer3 = [titleLabel layer];
+    [layer3 setBorderColor:cGColor2];
 
-    v19 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
-    v20 = [v19 layer];
-    [v20 setBorderWidth:0.5];
+    titleLabel2 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
+    layer4 = [titleLabel2 layer];
+    [layer4 setBorderWidth:0.5];
 
     v21 = +[UIColor redColor];
     v22 = [v21 colorWithAlphaComponent:0.2];
-    v23 = [v22 CGColor];
-    v24 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
-    v25 = [v24 layer];
-    [v25 setBorderColor:v23];
+    cGColor3 = [v22 CGColor];
+    authorLabel = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
+    layer5 = [authorLabel layer];
+    [layer5 setBorderColor:cGColor3];
 
-    v26 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
-    v27 = [v26 layer];
-    [v27 setBorderWidth:0.5];
+    authorLabel2 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
+    layer6 = [authorLabel2 layer];
+    [layer6 setBorderWidth:0.5];
 
     v28 = +[UIColor redColor];
     v29 = [v28 colorWithAlphaComponent:0.2];
-    v30 = [v29 CGColor];
-    v31 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
-    [v31 setBorderColor:v30];
+    cGColor4 = [v29 CGColor];
+    coverLayer = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
+    [coverLayer setBorderColor:cGColor4];
 
-    v32 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
-    [v32 setBorderWidth:0.5];
+    coverLayer2 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
+    [coverLayer2 setBorderWidth:0.5];
 
     v33 = +[UIColor redColor];
     v34 = [v33 colorWithAlphaComponent:0.2];
-    v35 = [v34 CGColor];
-    v36 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-    v37 = [v36 layer];
-    [v37 setBorderColor:v35];
+    cGColor5 = [v34 CGColor];
+    combinedDateLabel = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+    layer7 = [combinedDateLabel layer];
+    [layer7 setBorderColor:cGColor5];
 
-    v38 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-    v39 = [v38 layer];
-    [v39 setBorderWidth:0.5];
+    combinedDateLabel2 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+    layer8 = [combinedDateLabel2 layer];
+    [layer8 setBorderWidth:0.5];
   }
 
   else
   {
-    v40 = [(BKLibraryBookshelfFinishedBookCell *)self layer];
-    [v40 setBorderWidth:0.0];
+    layer9 = [(BKLibraryBookshelfFinishedBookCell *)self layer];
+    [layer9 setBorderWidth:0.0];
 
-    v41 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
-    v42 = [v41 layer];
-    [v42 setBorderWidth:0.0];
+    titleLabel3 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
+    layer10 = [titleLabel3 layer];
+    [layer10 setBorderWidth:0.0];
 
-    v43 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
-    v44 = [v43 layer];
-    [v44 setBorderWidth:0.0];
+    authorLabel3 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
+    layer11 = [authorLabel3 layer];
+    [layer11 setBorderWidth:0.0];
 
-    v38 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
-    [v38 setBorderWidth:0.0];
+    combinedDateLabel2 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
+    [combinedDateLabel2 setBorderWidth:0.0];
   }
 
   -[BKLibraryBookshelfFinishedBookCell setFirstItem:](self, "setFirstItem:", [v5 firstItem]);
@@ -2655,16 +2655,16 @@ LABEL_33:
     }
   }
 
-  v46 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-  [v46 setAlpha:v45];
+  starRating = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+  [starRating setAlpha:v45];
 
   objc_opt_class();
-  v47 = [v5 cellMetrics];
+  cellMetrics = [v5 cellMetrics];
   v48 = BUDynamicCast();
 
-  v49 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+  finishedMetrics = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
 
-  if (v48 != v49)
+  if (v48 != finishedMetrics)
   {
     [(BKLibraryBookshelfFinishedBookCell *)self setFinishedMetrics:v48];
     [(BKLibraryBookshelfFinishedBookCell *)self setMetrics:v48];
@@ -2674,42 +2674,42 @@ LABEL_33:
     [(BKLibraryBookshelfFinishedBookCell *)self setBookCoverLeftMargin:?];
     [v48 titleMaxLines];
     v51 = v50;
-    v52 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
-    [v52 setNumberOfLines:v51];
+    titleLabel4 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
+    [titleLabel4 setNumberOfLines:v51];
 
     [v48 authorMaxLines];
     v54 = v53;
-    v55 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
-    [v55 setNumberOfLines:v54];
+    authorLabel4 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
+    [authorLabel4 setNumberOfLines:v54];
 
-    v56 = [v48 finishedFillColor];
-    v57 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-    [v57 setNormalBackgroundColor:v56];
+    finishedFillColor = [v48 finishedFillColor];
+    markAsFinishedButton = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+    [markAsFinishedButton setNormalBackgroundColor:finishedFillColor];
 
-    v58 = [v48 finishedFillHilightColor];
-    v59 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-    [v59 setHighlightBackgroundColor:v58];
+    finishedFillHilightColor = [v48 finishedFillHilightColor];
+    markAsFinishedButton2 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+    [markAsFinishedButton2 setHighlightBackgroundColor:finishedFillHilightColor];
 
-    v60 = [v48 finishedFrameColor];
-    if (v60)
+    finishedFrameColor = [v48 finishedFrameColor];
+    if (finishedFrameColor)
     {
-      v61 = v60;
+      v61 = finishedFrameColor;
       [v48 finishedFrameWidth];
       v63 = v62;
 
       if (v63 != 0.0)
       {
-        v64 = [v48 finishedFrameColor];
-        v65 = [v64 CGColor];
-        v66 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-        v67 = [v66 layer];
-        [v67 setBorderColor:v65];
+        finishedFrameColor2 = [v48 finishedFrameColor];
+        cGColor6 = [finishedFrameColor2 CGColor];
+        markAsFinishedButton3 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+        layer12 = [markAsFinishedButton3 layer];
+        [layer12 setBorderColor:cGColor6];
 
         [v48 finishedFrameWidth];
         v69 = v68;
-        v70 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-        v71 = [v70 layer];
-        [v71 setBorderWidth:v69];
+        markAsFinishedButton4 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+        layer13 = [markAsFinishedButton4 layer];
+        [layer13 setBorderWidth:v69];
       }
     }
 
@@ -2717,37 +2717,37 @@ LABEL_33:
     v73 = v72;
     [v48 finishedTitleInset];
     v75 = v74;
-    v76 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-    [v76 setTitleEdgeInsets:{0.0, v73, 0.0, v75}];
+    markAsFinishedButton5 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+    [markAsFinishedButton5 setTitleEdgeInsets:{0.0, v73, 0.0, v75}];
 
-    v77 = [v48 writeReviewFillColor];
-    v78 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-    [v78 setNormalBackgroundColor:v77];
+    writeReviewFillColor = [v48 writeReviewFillColor];
+    writeReviewButton = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+    [writeReviewButton setNormalBackgroundColor:writeReviewFillColor];
 
-    v79 = [v48 writeReviewFillHilightColor];
-    v80 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-    [v80 setHighlightBackgroundColor:v79];
+    writeReviewFillHilightColor = [v48 writeReviewFillHilightColor];
+    writeReviewButton2 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+    [writeReviewButton2 setHighlightBackgroundColor:writeReviewFillHilightColor];
 
-    v81 = [v48 writeReviewFrameColor];
-    if (v81)
+    writeReviewFrameColor = [v48 writeReviewFrameColor];
+    if (writeReviewFrameColor)
     {
-      v82 = v81;
+      v82 = writeReviewFrameColor;
       [v48 writeReviewFrameWidth];
       v84 = v83;
 
       if (v84 != 0.0)
       {
-        v85 = [v48 writeReviewFrameColor];
-        v86 = [v85 CGColor];
-        v87 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-        v88 = [v87 layer];
-        [v88 setBorderColor:v86];
+        writeReviewFrameColor2 = [v48 writeReviewFrameColor];
+        cGColor7 = [writeReviewFrameColor2 CGColor];
+        writeReviewButton3 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+        layer14 = [writeReviewButton3 layer];
+        [layer14 setBorderColor:cGColor7];
 
         [v48 writeReviewFrameWidth];
         v90 = v89;
-        v91 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-        v92 = [v91 layer];
-        [v92 setBorderWidth:v90];
+        writeReviewButton4 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+        layer15 = [writeReviewButton4 layer];
+        [layer15 setBorderWidth:v90];
       }
     }
 
@@ -2755,20 +2755,20 @@ LABEL_33:
     v94 = v93;
     [v48 writeReviewTitleInset];
     v96 = v95;
-    v97 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-    [v97 setTitleEdgeInsets:{0.0, v94, 0.0, v96}];
+    writeReviewButton5 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+    [writeReviewButton5 setTitleEdgeInsets:{0.0, v94, 0.0, v96}];
 
-    v98 = [v48 ratingFrameColor];
-    v99 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-    [v99 setFrameColor:v98];
+    ratingFrameColor = [v48 ratingFrameColor];
+    starRating2 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+    [starRating2 setFrameColor:ratingFrameColor];
 
-    v100 = [v48 ratingFillColor];
-    v101 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-    [v101 setFillColor:v100];
+    ratingFillColor = [v48 ratingFillColor];
+    starRating3 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+    [starRating3 setFillColor:ratingFillColor];
 
-    v102 = [v48 ratingEmptyColor];
-    v103 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-    [v103 setEmptyColor:v102];
+    ratingEmptyColor = [v48 ratingEmptyColor];
+    starRating4 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+    [starRating4 setEmptyColor:ratingEmptyColor];
 
     v104 = +[UIColor bc_booksTableSelectionColor];
     [(BKLibraryBookshelfCollectionViewCell *)self setHighlightBackgroundColor:v104];
@@ -2776,11 +2776,11 @@ LABEL_33:
     v105 = +[NSBundle mainBundle];
     v106 = [v105 localizedStringForKey:@"More" value:&stru_100A30A68 table:0];
 
-    v107 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-    v108 = [v107 reviewMoreFontAttributes];
-    v109 = [TUIFontSpec attributedStringWith:v106 attributes:v108];
-    v110 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-    [v110 setShowMoreAttributedText:v109];
+    finishedMetrics2 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+    reviewMoreFontAttributes = [finishedMetrics2 reviewMoreFontAttributes];
+    v109 = [TUIFontSpec attributedStringWith:v106 attributes:reviewMoreFontAttributes];
+    reviewComments = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+    [reviewComments setShowMoreAttributedText:v109];
 
     [(BKLibraryBookshelfFinishedBookCell *)self _updateTintedImages];
     [(BKLibraryBookshelfFinishedBookCell *)self _updateLibraryAsset];
@@ -2788,25 +2788,25 @@ LABEL_33:
 
   [(BKLibraryBookshelfFinishedBookCell *)self updateFinishedState];
   [(BKLibraryBookshelfFinishedBookCell *)self setNeedsLayout];
-  v111 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+  libraryAsset = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
 
-  if (v111)
+  if (libraryAsset)
   {
     +[UIView inheritedAnimationDuration];
     v113 = v112;
-    v114 = [(BKLibraryBookshelfFinishedBookCell *)self coverView];
-    v115 = [v114 coverLayer];
+    coverView = [(BKLibraryBookshelfFinishedBookCell *)self coverView];
+    coverLayer3 = [coverView coverLayer];
     if (v113 == 0.0)
     {
       libraryAsset = self->_libraryAsset;
       [(BKLibraryBookshelfFinishedBookCell *)self coverArea];
-      [v115 setLibraryAsset:libraryAsset size:{v121, v122}];
+      [coverLayer3 setLibraryAsset:libraryAsset size:{v121, v122}];
     }
 
     else
     {
       [(BKLibraryBookshelfFinishedBookCell *)self coverArea];
-      [v115 preloadCoverImageAtSize:{v116, v117}];
+      [coverLayer3 preloadCoverImageAtSize:{v116, v117}];
 
       +[UIView inheritedAnimationDuration];
       v119 = dispatch_time(0, (v118 * 1000000000.0));
@@ -2818,9 +2818,9 @@ LABEL_33:
       dispatch_after(v119, &_dispatch_main_q, block);
     }
 
-    v123 = [(BKLibraryBookshelfFinishedBookCell *)self coverView];
-    v124 = [v123 coverLayer];
-    [v124 setAnimateFrameChange:1];
+    coverView2 = [(BKLibraryBookshelfFinishedBookCell *)self coverView];
+    coverLayer4 = [coverView2 coverLayer];
+    [coverLayer4 setAnimateFrameChange:1];
 
     [(BKLibraryBookshelfFinishedBookCell *)self layoutIfNeeded];
   }
@@ -2828,62 +2828,62 @@ LABEL_33:
 
 - (void)_updateTintedImages
 {
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-  if (v3)
+  finishedMetrics = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+  if (finishedMetrics)
   {
-    v4 = v3;
-    v5 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
+    v4 = finishedMetrics;
+    dataSource = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
 
-    if (v5)
+    if (dataSource)
     {
-      v6 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
-      v7 = [v6 reviewBackgroundName];
-      v68 = [UIImage imageNamed:v7];
+      dataSource2 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
+      reviewBackgroundName = [dataSource2 reviewBackgroundName];
+      v68 = [UIImage imageNamed:reviewBackgroundName];
 
       if ([(BKLibraryBookshelfFinishedBookCell *)self isRTL])
       {
-        v8 = [v68 imageWithHorizontallyFlippedOrientation];
+        imageWithHorizontallyFlippedOrientation = [v68 imageWithHorizontallyFlippedOrientation];
 
-        v68 = v8;
+        v68 = imageWithHorizontallyFlippedOrientation;
       }
 
-      v9 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-      [v9 setContentsGravity:kCAGravityResize];
+      reviewBackground = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+      [reviewBackground setContentsGravity:kCAGravityResize];
 
-      v10 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      v11 = [v10 reviewBGColor];
-      v12 = [(BKLibraryBookshelfFinishedBookCell *)self traitCollection];
-      v13 = [v68 imageMaskWithColor:v11 forTraitCollection:v12];
-      v14 = [v13 CGImage];
-      v15 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-      [v15 setContents:v14];
+      finishedMetrics2 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      reviewBGColor = [finishedMetrics2 reviewBGColor];
+      traitCollection = [(BKLibraryBookshelfFinishedBookCell *)self traitCollection];
+      v13 = [v68 imageMaskWithColor:reviewBGColor forTraitCollection:traitCollection];
+      cGImage = [v13 CGImage];
+      reviewBackground2 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+      [reviewBackground2 setContents:cGImage];
 
-      v16 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
-      [v16 setContentsCenter:{0.4, 0.4, 0.2, 0.2}];
+      reviewBackground3 = [(BKLibraryBookshelfFinishedBookCell *)self reviewBackground];
+      [reviewBackground3 setContentsCenter:{0.4, 0.4, 0.2, 0.2}];
 
-      v17 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
-      v18 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      v19 = [v18 moreTintColor];
-      v20 = [v17 actionMenuImageWithTintColor:v19];
+      dataSource3 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
+      finishedMetrics3 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      moreTintColor = [finishedMetrics3 moreTintColor];
+      v20 = [dataSource3 actionMenuImageWithTintColor:moreTintColor];
 
-      v21 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+      moreButton = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
       v67 = v20;
-      [v21 setImage:v20 forState:0];
+      [moreButton setImage:v20 forState:0];
 
-      v22 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
-      v23 = [v22 templateCloudImageForCloudState:1];
-      v24 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
-      [v24 setImage:v23];
+      dataSource4 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
+      v23 = [dataSource4 templateCloudImageForCloudState:1];
+      cloudView = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
+      [cloudView setImage:v23];
 
-      v25 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      v26 = [v25 moreTintColor];
-      v27 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
-      [v27 setTintColor:v26];
+      finishedMetrics4 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      moreTintColor2 = [finishedMetrics4 moreTintColor];
+      cloudView2 = [(BKLibraryBookshelfFinishedBookCell *)self cloudView];
+      [cloudView2 setTintColor:moreTintColor2];
 
-      v28 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
-      v29 = [v28 selectedCheckmarkImageForSelectedState:{-[BKLibraryBookshelfFinishedBookCell isSelected](self, "isSelected")}];
-      v30 = [(BKLibraryBookshelfFinishedBookCell *)self checkmarkView];
-      [v30 setImage:v29];
+      dataSource5 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
+      v29 = [dataSource5 selectedCheckmarkImageForSelectedState:{-[BKLibraryBookshelfFinishedBookCell isSelected](self, "isSelected")}];
+      checkmarkView = [(BKLibraryBookshelfFinishedBookCell *)self checkmarkView];
+      [checkmarkView setImage:v29];
 
       if ([(BKLibraryBookshelfFinishedBookCell *)self isSelected])
       {
@@ -2895,11 +2895,11 @@ LABEL_33:
         +[UIColor bc_booksTertiaryLabelColor];
       }
       v31 = ;
-      v32 = [(BKLibraryBookshelfFinishedBookCell *)self checkmarkView];
-      [v32 setTintColor:v31];
+      checkmarkView2 = [(BKLibraryBookshelfFinishedBookCell *)self checkmarkView];
+      [checkmarkView2 setTintColor:v31];
 
-      v33 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      if ([v33 finishedShortText])
+      finishedMetrics5 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      if ([finishedMetrics5 finishedShortText])
       {
         v34 = @"FINISHED";
       }
@@ -2912,57 +2912,57 @@ LABEL_33:
       v35 = +[NSBundle mainBundle];
       v36 = [v35 localizedStringForKey:v34 value:&stru_100A30A68 table:0];
 
-      v37 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-      v38 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      v39 = [v38 finishedFontAttributes];
-      v40 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      v41 = [v40 finishedTextColor];
-      v42 = [v39 attributesWithForegroundColor:v41];
+      markAsFinishedButton = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      finishedMetrics6 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      finishedFontAttributes = [finishedMetrics6 finishedFontAttributes];
+      finishedMetrics7 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      finishedTextColor = [finishedMetrics7 finishedTextColor];
+      v42 = [finishedFontAttributes attributesWithForegroundColor:finishedTextColor];
       v43 = [TUIFontSpec attributedStringWith:v36 attributes:v42];
-      [v37 setAttributedTitle:v43 forState:0];
+      [markAsFinishedButton setAttributedTitle:v43 forState:0];
 
-      v44 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
-      v45 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      v46 = [v45 finishedFontAttributes];
-      v47 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      v48 = [v47 finishedTextHilightColor];
-      v49 = [v46 attributesWithForegroundColor:v48];
+      markAsFinishedButton2 = [(BKLibraryBookshelfFinishedBookCell *)self markAsFinishedButton];
+      finishedMetrics8 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      finishedFontAttributes2 = [finishedMetrics8 finishedFontAttributes];
+      finishedMetrics9 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      finishedTextHilightColor = [finishedMetrics9 finishedTextHilightColor];
+      v49 = [finishedFontAttributes2 attributesWithForegroundColor:finishedTextHilightColor];
       v50 = [TUIFontSpec attributedStringWith:v36 attributes:v49];
-      [v44 setAttributedTitle:v50 forState:1];
+      [markAsFinishedButton2 setAttributedTitle:v50 forState:1];
 
       v51 = +[NSBundle mainBundle];
       v52 = [v51 localizedStringForKey:@"Write a Review" value:&stru_100A30A68 table:0];
 
-      v53 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-      v54 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      v55 = [v54 writeReviewFontAttributes];
-      v56 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      v57 = [v56 writeReviewTextColor];
-      v58 = [v55 attributesWithForegroundColor:v57];
+      writeReviewButton = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      finishedMetrics10 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      writeReviewFontAttributes = [finishedMetrics10 writeReviewFontAttributes];
+      finishedMetrics11 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      writeReviewTextColor = [finishedMetrics11 writeReviewTextColor];
+      v58 = [writeReviewFontAttributes attributesWithForegroundColor:writeReviewTextColor];
       v59 = [TUIFontSpec attributedStringWith:v52 attributes:v58];
-      [v53 setAttributedTitle:v59 forState:0];
+      [writeReviewButton setAttributedTitle:v59 forState:0];
 
-      v60 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
-      v61 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      v62 = [v61 writeReviewFontAttributes];
-      v63 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      v64 = [v63 writeReviewTextHilightColor];
-      v65 = [v62 attributesWithForegroundColor:v64];
+      writeReviewButton2 = [(BKLibraryBookshelfFinishedBookCell *)self writeReviewButton];
+      finishedMetrics12 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      writeReviewFontAttributes2 = [finishedMetrics12 writeReviewFontAttributes];
+      finishedMetrics13 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      writeReviewTextHilightColor = [finishedMetrics13 writeReviewTextHilightColor];
+      v65 = [writeReviewFontAttributes2 attributesWithForegroundColor:writeReviewTextHilightColor];
       v66 = [TUIFontSpec attributedStringWith:v52 attributes:v65];
-      [v60 setAttributedTitle:v66 forState:1];
+      [writeReviewButton2 setAttributedTitle:v66 forState:1];
 
       [(BKLibraryBookshelfFinishedBookCell *)self setNeedsLayout];
     }
   }
 }
 
-- (void)_cancelDownload:(id)a3
+- (void)_cancelDownload:(id)download
 {
   if ([(BKLibraryBookshelfFinishedBookCell *)self isDownloading])
   {
-    v6 = [(BKLibraryBookshelfFinishedBookCell *)self actionHandler];
-    v4 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-    [v6 bookCancelDownload:v4];
+    actionHandler = [(BKLibraryBookshelfFinishedBookCell *)self actionHandler];
+    libraryAsset = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+    [actionHandler bookCancelDownload:libraryAsset];
   }
 
   else
@@ -2975,18 +2975,18 @@ LABEL_33:
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   if ([(BKLibraryBookshelfCollectionViewCell *)self isInEditMode])
   {
     v11.receiver = self;
     v11.super_class = BKLibraryBookshelfFinishedBookCell;
-    [(BKLibraryBookshelfFinishedBookCell *)&v11 setSelected:v3];
+    [(BKLibraryBookshelfFinishedBookCell *)&v11 setSelected:selectedCopy];
     if ([(BKLibraryBookshelfCollectionViewCell *)self isInEditMode]&& ![(BKLibraryBookshelfFinishedBookCell *)self isSelected])
     {
-      v5 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-      [v5 shrinkAlpha];
+      finishedMetrics = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+      [finishedMetrics shrinkAlpha];
       [(BKLibraryBookshelfCollectionViewCell *)self setAlpha:?];
     }
 
@@ -2995,12 +2995,12 @@ LABEL_33:
       [(BKLibraryBookshelfCollectionViewCell *)self setAlpha:1.0];
     }
 
-    v6 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
-    v7 = [v6 selectedCheckmarkImageForSelectedState:v3];
-    v8 = [(BKLibraryBookshelfFinishedBookCell *)self checkmarkView];
-    [v8 setImage:v7];
+    dataSource = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
+    v7 = [dataSource selectedCheckmarkImageForSelectedState:selectedCopy];
+    checkmarkView = [(BKLibraryBookshelfFinishedBookCell *)self checkmarkView];
+    [checkmarkView setImage:v7];
 
-    if (v3)
+    if (selectedCopy)
     {
       +[UIColor bc_booksKeyColor];
     }
@@ -3010,17 +3010,17 @@ LABEL_33:
       +[UIColor bc_booksTertiaryLabelColor];
     }
     v9 = ;
-    v10 = [(BKLibraryBookshelfFinishedBookCell *)self checkmarkView];
-    [v10 setTintColor:v9];
+    checkmarkView2 = [(BKLibraryBookshelfFinishedBookCell *)self checkmarkView];
+    [checkmarkView2 setTintColor:v9];
   }
 }
 
-- (CGPath)pathForDateIndicator:(CGRect)a3
+- (CGPath)pathForDateIndicator:(CGRect)indicator
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = indicator.size.height;
+  width = indicator.size.width;
+  y = indicator.origin.y;
+  x = indicator.origin.x;
   [(BKLibraryBookshelfFinishedBookCell *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -3037,86 +3037,86 @@ LABEL_33:
   v41.size.width = width;
   v41.size.height = height;
   MidY = CGRectGetMidY(v41);
-  v19 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-  [v19 datelineCircleSize];
+  finishedMetrics = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+  [finishedMetrics datelineCircleSize];
   v21 = v20;
 
-  v22 = [(BKLibraryBookshelfFinishedBookCell *)self firstItem];
-  v23 = [(BKLibraryBookshelfFinishedBookCell *)self lastItem];
-  v24 = [(BKLibraryBookshelfFinishedBookCell *)self finishedState];
+  firstItem = [(BKLibraryBookshelfFinishedBookCell *)self firstItem];
+  lastItem = [(BKLibraryBookshelfFinishedBookCell *)self lastItem];
+  finishedState = [(BKLibraryBookshelfFinishedBookCell *)self finishedState];
   [v16 addArcWithCenter:1 radius:0.0 startAngle:MidY endAngle:v21 clockwise:{0.0, 6.28318531}];
-  if ((v22 & 1) == 0)
+  if ((firstItem & 1) == 0)
   {
     [v16 moveToPoint:{0.0, 0.0}];
     [v16 addLineToPoint:{0.0, MidY - v21}];
   }
 
-  if ((v23 & 1) == 0)
+  if ((lastItem & 1) == 0)
   {
     [v16 moveToPoint:{0.0, MidY + v21}];
     [v16 addLineToPoint:{0.0, v17}];
   }
 
-  v25 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-  v26 = [v25 datelineColor];
-  v27 = [v26 CGColor];
-  v28 = [(BKLibraryBookshelfFinishedBookCell *)self dateIndicator];
-  [v28 setStrokeColor:v27];
+  finishedMetrics2 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+  datelineColor = [finishedMetrics2 datelineColor];
+  cGColor = [datelineColor CGColor];
+  dateIndicator = [(BKLibraryBookshelfFinishedBookCell *)self dateIndicator];
+  [dateIndicator setStrokeColor:cGColor];
 
-  v29 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-  v30 = v29;
-  if (v24 == 1)
+  finishedMetrics3 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+  v30 = finishedMetrics3;
+  if (finishedState == 1)
   {
-    [v29 datelineCircleHollowColor];
+    [finishedMetrics3 datelineCircleHollowColor];
   }
 
   else
   {
-    [v29 datelineCircleFilledColor];
+    [finishedMetrics3 datelineCircleFilledColor];
   }
   v31 = ;
-  v32 = [v31 CGColor];
-  v33 = [(BKLibraryBookshelfFinishedBookCell *)self dateIndicator];
-  [v33 setFillColor:v32];
+  cGColor2 = [v31 CGColor];
+  dateIndicator2 = [(BKLibraryBookshelfFinishedBookCell *)self dateIndicator];
+  [dateIndicator2 setFillColor:cGColor2];
 
-  v34 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-  [v34 datelineWidth];
+  finishedMetrics4 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+  [finishedMetrics4 datelineWidth];
   v36 = v35;
-  v37 = [(BKLibraryBookshelfFinishedBookCell *)self dateIndicator];
-  [v37 setLineWidth:v36];
+  dateIndicator3 = [(BKLibraryBookshelfFinishedBookCell *)self dateIndicator];
+  [dateIndicator3 setLineWidth:v36];
 
-  v38 = [v16 CGPath];
-  return v38;
+  cGPath = [v16 CGPath];
+  return cGPath;
 }
 
-- (void)setLibraryAsset:(id)a3
+- (void)setLibraryAsset:(id)asset
 {
-  v14 = a3;
+  assetCopy = asset;
   if (!+[NSThread isMainThread])
   {
     sub_10078E110();
   }
 
   libraryAsset = self->_libraryAsset;
-  v6 = v14;
-  if (libraryAsset != v14)
+  v6 = assetCopy;
+  if (libraryAsset != assetCopy)
   {
     [(BKLibraryAsset *)libraryAsset removeObserver:self forKeyPath:@"isFinished" context:off_100ACD930];
     [(BKLibraryAsset *)self->_libraryAsset removeObserver:self forKeyPath:@"notFinished" context:off_100ACD930];
     [(BKLibraryAsset *)self->_libraryAsset removeObserver:self forKeyPath:@"dateFinished" context:off_100ACD930];
     [(BKLibraryAsset *)self->_libraryAsset removeObserver:self forKeyPath:@"title" context:off_100ACD930];
     [(BKLibraryAsset *)self->_libraryAsset removeObserver:self forKeyPath:@"author" context:off_100ACD930];
-    objc_storeStrong(&self->_libraryAsset, a3);
-    v7 = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
+    objc_storeStrong(&self->_libraryAsset, asset);
+    coverLayer = [(BKLibraryBookshelfFinishedBookCell *)self coverLayer];
     v8 = self->_libraryAsset;
     [(BKLibraryBookshelfFinishedBookCell *)self coverArea];
-    [v7 setLibraryAsset:v8 size:{v9, v10}];
+    [coverLayer setLibraryAsset:v8 size:{v9, v10}];
 
     if (self->_libraryAsset)
     {
       v11 = +[BKLibraryAssetStatusController sharedController];
-      v12 = [(BKLibraryAsset *)self->_libraryAsset permanentOrTemporaryAssetID];
-      v13 = [v11 statusForAssetID:v12];
+      permanentOrTemporaryAssetID = [(BKLibraryAsset *)self->_libraryAsset permanentOrTemporaryAssetID];
+      v13 = [v11 statusForAssetID:permanentOrTemporaryAssetID];
       [(BKLibraryBookshelfFinishedBookCell *)self setLibraryDownloadStatus:v13];
     }
 
@@ -3131,41 +3131,41 @@ LABEL_33:
     [(BKLibraryAsset *)self->_libraryAsset addObserver:self forKeyPath:@"title" options:0 context:off_100ACD930];
     [(BKLibraryAsset *)self->_libraryAsset addObserver:self forKeyPath:@"author" options:0 context:off_100ACD930];
     [(BKLibraryBookshelfFinishedBookCell *)self _updateLibraryAsset];
-    v6 = v14;
+    v6 = assetCopy;
   }
 }
 
-- (void)setLibraryDownloadStatus:(id)a3
+- (void)setLibraryDownloadStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   libraryDownloadStatus = self->_libraryDownloadStatus;
-  if (libraryDownloadStatus != v5)
+  if (libraryDownloadStatus != statusCopy)
   {
-    v7 = v5;
+    v7 = statusCopy;
     [(BKLibraryDownloadStatus *)libraryDownloadStatus removeObserver:self forKeyPath:@"combinedState" context:off_100ACD920];
     [(BKLibraryDownloadStatus *)self->_libraryDownloadStatus removeObserver:self forKeyPath:@"progressValue" context:off_100ACD928];
-    objc_storeStrong(&self->_libraryDownloadStatus, a3);
+    objc_storeStrong(&self->_libraryDownloadStatus, status);
     [(BKLibraryDownloadStatus *)self->_libraryDownloadStatus addObserver:self forKeyPath:@"combinedState" options:0 context:off_100ACD920];
     [(BKLibraryDownloadStatus *)self->_libraryDownloadStatus addObserver:self forKeyPath:@"progressValue" options:0 context:off_100ACD928];
-    v5 = v7;
+    statusCopy = v7;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   objc_initWeak(&location, self);
-  if (off_100ACD930 == a6)
+  if (off_100ACD930 == context)
   {
-    v13 = [(BKLibraryBookshelfFinishedBookCell *)self coalescedPropertyChange];
-    [v13 signalWithCompletion:&stru_100A06B00];
+    coalescedPropertyChange = [(BKLibraryBookshelfFinishedBookCell *)self coalescedPropertyChange];
+    [coalescedPropertyChange signalWithCompletion:&stru_100A06B00];
 
     goto LABEL_14;
   }
 
-  if (off_100ACD938 == a6)
+  if (off_100ACD938 == context)
   {
     v14 = v22;
     v22[0] = _NSConcreteStackBlock;
@@ -3180,7 +3180,7 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if (off_100ACD940 == a6)
+  if (off_100ACD940 == context)
   {
     v14 = block;
     block[0] = _NSConcreteStackBlock;
@@ -3192,7 +3192,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (off_100ACD920 == a6)
+  if (off_100ACD920 == context)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -3205,7 +3205,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (off_100ACD928 == a6)
+  if (off_100ACD928 == context)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -3218,14 +3218,14 @@ LABEL_13:
 
   v17.receiver = self;
   v17.super_class = BKLibraryBookshelfFinishedBookCell;
-  [(BKLibraryBookshelfFinishedBookCell *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(BKLibraryBookshelfFinishedBookCell *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (void)configureCombinedDate:(id)a3
+- (void)configureCombinedDate:(id)date
 {
-  v26 = a3;
+  dateCopy = date;
   if (qword_100AF7598 != -1)
   {
     sub_10078E14C();
@@ -3243,47 +3243,47 @@ LABEL_14:
   v8 = [v6 stringFromDate:v7];
 
   v9 = qword_100AF7570;
-  v10 = [v26 dateFinished];
-  v11 = [v9 stringFromDate:v10];
+  dateFinished = [dateCopy dateFinished];
+  v11 = [v9 stringFromDate:dateFinished];
 
   v12 = qword_100AF7568;
-  v13 = [v26 dateFinished];
-  v14 = [v12 stringFromDate:v13];
+  dateFinished2 = [dateCopy dateFinished];
+  v14 = [v12 stringFromDate:dateFinished2];
 
   v15 = [v11 isEqualToString:v8];
-  if (_os_feature_enabled_impl() && [v26 finishedDateKind] == 2)
+  if (_os_feature_enabled_impl() && [dateCopy finishedDateKind] == 2)
   {
     v16 = qword_100AF7578;
-    v17 = [v26 dateFinished];
-    v18 = [v16 stringFromDate:v17];
+    dateFinished3 = [dateCopy dateFinished];
+    v18 = [v16 stringFromDate:dateFinished3];
 
-    v19 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-    [v19 setNumberOfLines:1];
+    combinedDateLabel = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+    [combinedDateLabel setNumberOfLines:1];
 
-    v20 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-    [v20 setText:v18];
+    combinedDateLabel2 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+    [combinedDateLabel2 setText:v18];
     v11 = v18;
   }
 
   else
   {
-    v21 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-    v22 = v21;
+    combinedDateLabel3 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+    v22 = combinedDateLabel3;
     if (v15)
     {
-      [v21 setNumberOfLines:1];
+      [combinedDateLabel3 setNumberOfLines:1];
 
-      v20 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-      [v20 setText:v14];
+      combinedDateLabel2 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+      [combinedDateLabel2 setText:v14];
     }
 
     else
     {
-      [v21 setNumberOfLines:2];
+      [combinedDateLabel3 setNumberOfLines:2];
 
-      v20 = [NSString stringWithFormat:qword_100AF7580, v14, v11];
-      v23 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-      [v23 setText:v20];
+      combinedDateLabel2 = [NSString stringWithFormat:qword_100AF7580, v14, v11];
+      combinedDateLabel4 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+      [combinedDateLabel4 setText:combinedDateLabel2];
     }
   }
 
@@ -3297,56 +3297,56 @@ LABEL_14:
     v24 = 2;
   }
 
-  v25 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
-  [v25 setTextAlignment:v24];
+  combinedDateLabel5 = [(BKLibraryBookshelfFinishedBookCell *)self combinedDateLabel];
+  [combinedDateLabel5 setTextAlignment:v24];
 }
 
 - (void)_updateLibraryAsset
 {
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-  if (v3)
+  libraryAsset = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+  if (libraryAsset)
   {
-    v16 = v3;
-    v4 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-    v5 = [v4 titleFontAttributes];
-    v6 = [v5 attributesWithTruncated:1];
+    v16 = libraryAsset;
+    finishedMetrics = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+    titleFontAttributes = [finishedMetrics titleFontAttributes];
+    v6 = [titleFontAttributes attributesWithTruncated:1];
 
-    v7 = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
-    v8 = [v16 title];
-    v9 = [TUIFontSpec attributedStringWith:v8 attributes:v6];
-    [v7 setAttributedText:v9];
+    titleLabel = [(BKLibraryBookshelfFinishedBookCell *)self titleLabel];
+    title = [v16 title];
+    v9 = [TUIFontSpec attributedStringWith:title attributes:v6];
+    [titleLabel setAttributedText:v9];
 
-    v10 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-    v11 = [v10 authorFontAttributes];
-    v12 = [v11 attributesWithTruncated:1];
+    finishedMetrics2 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+    authorFontAttributes = [finishedMetrics2 authorFontAttributes];
+    v12 = [authorFontAttributes attributesWithTruncated:1];
 
-    v13 = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
-    v14 = [v16 displayAuthor];
-    v15 = [TUIFontSpec attributedStringWith:v14 attributes:v12];
-    [v13 setAttributedText:v15];
+    authorLabel = [(BKLibraryBookshelfFinishedBookCell *)self authorLabel];
+    displayAuthor = [v16 displayAuthor];
+    v15 = [TUIFontSpec attributedStringWith:displayAuthor attributes:v12];
+    [authorLabel setAttributedText:v15];
 
     [(BKLibraryBookshelfFinishedBookCell *)self configureCombinedDate:v16];
     [(BKLibraryBookshelfFinishedBookCell *)self updateRatingAndReview];
     [(BKLibraryBookshelfFinishedBookCell *)self setNeedsLayout];
 
-    v3 = v16;
+    libraryAsset = v16;
   }
 }
 
-- (void)setAssetReview:(id)a3
+- (void)setAssetReview:(id)review
 {
-  v6 = a3;
+  reviewCopy = review;
   if (!+[NSThread isMainThread])
   {
     sub_10078E160();
   }
 
-  v5 = v6;
-  if (self->_assetReview != v6)
+  v5 = reviewCopy;
+  if (self->_assetReview != reviewCopy)
   {
-    objc_storeStrong(&self->_assetReview, a3);
+    objc_storeStrong(&self->_assetReview, review);
     [(BKLibraryBookshelfFinishedBookCell *)self updateRatingAndReview];
-    v5 = v6;
+    v5 = reviewCopy;
   }
 }
 
@@ -3357,40 +3357,40 @@ LABEL_14:
     sub_10078E19C();
   }
 
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self assetReview];
-  v19 = v3;
-  if (v3)
+  assetReview = [(BKLibraryBookshelfFinishedBookCell *)self assetReview];
+  v19 = assetReview;
+  if (assetReview)
   {
-    [v3 normalizedStarRating];
+    [assetReview normalizedStarRating];
     v5 = v4;
-    v6 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-    [v6 setRating:v5];
+    starRating = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+    [starRating setRating:v5];
 
-    v7 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-    v8 = [v19 reviewTitle];
-    v9 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-    v10 = [v9 reviewTitleFontAttributes];
-    v11 = [TUIFontSpec attributedStringWith:v8 attributes:v10];
-    [v7 setAttributedText:v11];
+    reviewTitle = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+    reviewTitle2 = [v19 reviewTitle];
+    finishedMetrics = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+    reviewTitleFontAttributes = [finishedMetrics reviewTitleFontAttributes];
+    v11 = [TUIFontSpec attributedStringWith:reviewTitle2 attributes:reviewTitleFontAttributes];
+    [reviewTitle setAttributedText:v11];
 
-    v12 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-    v13 = [v19 reviewBody];
-    v14 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-    v15 = [v14 reviewContentFontAttributes];
-    v16 = [TUIFontSpec attributedStringWith:v13 attributes:v15];
-    [v12 setAttributedText:v16];
+    reviewComments = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+    reviewBody = [v19 reviewBody];
+    finishedMetrics2 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+    reviewContentFontAttributes = [finishedMetrics2 reviewContentFontAttributes];
+    v16 = [TUIFontSpec attributedStringWith:reviewBody attributes:reviewContentFontAttributes];
+    [reviewComments setAttributedText:v16];
   }
 
   else
   {
-    v17 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
-    [v17 setRating:0.0];
+    starRating2 = [(BKLibraryBookshelfFinishedBookCell *)self starRating];
+    [starRating2 setRating:0.0];
 
-    v18 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
-    [v18 setText:0];
+    reviewTitle3 = [(BKLibraryBookshelfFinishedBookCell *)self reviewTitle];
+    [reviewTitle3 setText:0];
 
-    v12 = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
-    [v12 setAttributedText:0];
+    reviewComments = [(BKLibraryBookshelfFinishedBookCell *)self reviewComments];
+    [reviewComments setAttributedText:0];
   }
 
   [(BKLibraryBookshelfFinishedBookCell *)self updateFinishedState];
@@ -3398,24 +3398,24 @@ LABEL_14:
 
 - (void)updateFinishedState
 {
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+  libraryAsset = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
 
-  if (v3)
+  if (libraryAsset)
   {
-    v4 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
-    v5 = [v4 currentStoreAccountID];
-    v15 = [v5 stringValue];
+    dataSource = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
+    currentStoreAccountID = [dataSource currentStoreAccountID];
+    stringValue = [currentStoreAccountID stringValue];
 
-    v6 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-    v7 = [(BKLibraryBookshelfFinishedBookCell *)self assetReview];
-    v8 = [(BKLibraryBookshelfFinishedBookCell *)self storageProvider];
-    v9 = [BKLibraryBookshelfFinishedBookCell finishedStateForAsset:v6 assetReview:v7 storeID:v15 storageProvider:v8];
+    libraryAsset2 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+    assetReview = [(BKLibraryBookshelfFinishedBookCell *)self assetReview];
+    storageProvider = [(BKLibraryBookshelfFinishedBookCell *)self storageProvider];
+    v9 = [BKLibraryBookshelfFinishedBookCell finishedStateForAsset:libraryAsset2 assetReview:assetReview storeID:stringValue storageProvider:storageProvider];
 
     objc_opt_class();
-    v10 = [(BKLibraryBookshelfFinishedBookCell *)self storageProvider];
-    v11 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-    v12 = [v11 permanentOrTemporaryAssetID];
-    v13 = [v10 retrieveValueForKey:@"kExpandReviewText" forConsumer:v12];
+    storageProvider2 = [(BKLibraryBookshelfFinishedBookCell *)self storageProvider];
+    libraryAsset3 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+    permanentOrTemporaryAssetID = [libraryAsset3 permanentOrTemporaryAssetID];
+    v13 = [storageProvider2 retrieveValueForKey:@"kExpandReviewText" forConsumer:permanentOrTemporaryAssetID];
     v14 = BUDynamicCast();
 
     -[BKLibraryBookshelfFinishedBookCell setShowFullReviewText:](self, "setShowFullReviewText:", [v14 BOOLValue]);
@@ -3449,27 +3449,27 @@ LABEL_14:
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  objc_storeWeak(&self->_dataSource, a3);
+  objc_storeWeak(&self->_dataSource, source);
 
   [(BKLibraryBookshelfFinishedBookCell *)self _updateTintedImages];
 }
 
-- (void)setAudiobookStatus:(id)a3
+- (void)setAudiobookStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   audiobookStatus = self->_audiobookStatus;
-  if (audiobookStatus != v5)
+  if (audiobookStatus != statusCopy)
   {
-    v9 = v5;
+    v9 = statusCopy;
     if (audiobookStatus)
     {
       [(AEAssetAudiobookStatus *)audiobookStatus removeObserver:self forKeyPath:@"assetAudiobookStatusIsPlaying" context:off_100ACD938];
       [(AEAssetAudiobookStatus *)self->_audiobookStatus removeObserver:self forKeyPath:@"assetAudiobookStatusTrackProgress" context:off_100ACD940];
     }
 
-    objc_storeStrong(&self->_audiobookStatus, a3);
+    objc_storeStrong(&self->_audiobookStatus, status);
     v7 = self->_audiobookStatus;
     if (v7)
     {
@@ -3477,11 +3477,11 @@ LABEL_14:
       [(AEAssetAudiobookStatus *)self->_audiobookStatus addObserver:self forKeyPath:@"assetAudiobookStatusTrackProgress" options:0 context:off_100ACD940];
     }
 
-    v8 = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
-    [v8 audiobookControlDiameter];
+    finishedMetrics = [(BKLibraryBookshelfFinishedBookCell *)self finishedMetrics];
+    [finishedMetrics audiobookControlDiameter];
     [(BKLibraryBookshelfCollectionViewCell *)self updateAudiobookControlWithStatus:v9 diameter:?];
 
-    v5 = v9;
+    statusCopy = v9;
   }
 }
 
@@ -3492,19 +3492,19 @@ LABEL_14:
     return 0;
   }
 
-  v4 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-  if ([v4 isCloud])
+  libraryAsset = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+  if ([libraryAsset isCloud])
   {
-    v3 = 1;
+    isNonLocalSample = 1;
   }
 
   else
   {
-    v5 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-    v3 = [v5 isNonLocalSample];
+    libraryAsset2 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+    isNonLocalSample = [libraryAsset2 isNonLocalSample];
   }
 
-  return v3;
+  return isNonLocalSample;
 }
 
 - (BOOL)shouldShowDownloadProgressButton
@@ -3532,64 +3532,64 @@ LABEL_14:
 
 - (BOOL)isDownloading
 {
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-  if ([v3 isDownloading])
+  libraryAsset = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+  if ([libraryAsset isDownloading])
   {
-    v4 = 1;
+    isDownloadingSupplementalContent = 1;
   }
 
   else
   {
-    v5 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-    v4 = [v5 isDownloadingSupplementalContent];
+    libraryAsset2 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+    isDownloadingSupplementalContent = [libraryAsset2 isDownloadingSupplementalContent];
   }
 
-  return v4;
+  return isDownloadingSupplementalContent;
 }
 
-- (void)starRatingDidChange:(id)a3 rating:(double)a4
+- (void)starRatingDidChange:(id)change rating:(double)rating
 {
-  v6 = [(BKLibraryBookshelfFinishedBookCell *)self assetReview];
-  [v6 normalizedStarRating];
+  assetReview = [(BKLibraryBookshelfFinishedBookCell *)self assetReview];
+  [assetReview normalizedStarRating];
   v8 = v7;
 
-  if (v8 != a4)
+  if (v8 != rating)
   {
-    v24 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
-    v9 = [v24 currentStoreAccountID];
-    if (v9)
+    dataSource = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
+    currentStoreAccountID = [dataSource currentStoreAccountID];
+    if (currentStoreAccountID)
     {
-      v10 = v9;
-      v11 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-      v12 = [v11 storeID];
+      v10 = currentStoreAccountID;
+      libraryAsset = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+      storeID = [libraryAsset storeID];
 
-      if (!v12)
+      if (!storeID)
       {
         return;
       }
 
-      v13 = [(BKLibraryBookshelfFinishedBookCell *)self assetReview];
-      if (v13)
+      assetReview2 = [(BKLibraryBookshelfFinishedBookCell *)self assetReview];
+      if (assetReview2)
       {
-        v14 = v13;
-        v15 = [(BKLibraryBookshelfFinishedBookCell *)self assetReview];
-        if ([v15 starRating])
+        v14 = assetReview2;
+        assetReview3 = [(BKLibraryBookshelfFinishedBookCell *)self assetReview];
+        if ([assetReview3 starRating])
         {
-          v16 = [(BKLibraryBookshelfFinishedBookCell *)self assetReview];
-          v17 = [v16 reviewTitle];
-          v18 = [v17 length];
+          assetReview4 = [(BKLibraryBookshelfFinishedBookCell *)self assetReview];
+          reviewTitle = [assetReview4 reviewTitle];
+          v18 = [reviewTitle length];
 
           if (v18)
           {
 LABEL_13:
-            v22 = [(BKLibraryBookshelfFinishedBookCell *)self actionHandler];
-            v23 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+            actionHandler = [(BKLibraryBookshelfFinishedBookCell *)self actionHandler];
+            libraryAsset2 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
             v25[0] = _NSConcreteStackBlock;
             v25[1] = 3221225472;
             v25[2] = sub_1000D2368;
             v25[3] = &unk_100A038D0;
             v25[4] = self;
-            [v22 bookUpdateStarRating:v23 rating:v25 completion:a4];
+            [actionHandler bookUpdateStarRating:libraryAsset2 rating:v25 completion:rating];
 
             return;
           }
@@ -3600,45 +3600,45 @@ LABEL_13:
         }
       }
 
-      v19 = [(BKLibraryBookshelfFinishedBookCell *)self storageProvider];
-      v20 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
-      v21 = [v20 permanentOrTemporaryAssetID];
-      [v19 storeValue:&__kCFBooleanTrue forKey:@"kStarRatedThisSession" forConsumer:v21];
+      storageProvider = [(BKLibraryBookshelfFinishedBookCell *)self storageProvider];
+      libraryAsset3 = [(BKLibraryBookshelfFinishedBookCell *)self libraryAsset];
+      permanentOrTemporaryAssetID = [libraryAsset3 permanentOrTemporaryAssetID];
+      [storageProvider storeValue:&__kCFBooleanTrue forKey:@"kStarRatedThisSession" forConsumer:permanentOrTemporaryAssetID];
 
       goto LABEL_13;
     }
   }
 }
 
-- (void)setupMenuWithLibraryAsset:(id)a3 withActionHandler:(id)a4
+- (void)setupMenuWithLibraryAsset:(id)asset withActionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
-  v9 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
-  v10 = [v9 collection];
-  v19 = [v6 analyticsAssetPropertyProviderForLibraryAsset:v7 fromSourceView:v8 inCollection:v10];
+  handlerCopy = handler;
+  assetCopy = asset;
+  moreButton = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+  dataSource = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
+  collection = [dataSource collection];
+  v19 = [handlerCopy analyticsAssetPropertyProviderForLibraryAsset:assetCopy fromSourceView:moreButton inCollection:collection];
 
-  v11 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
-  v12 = [v6 tracker];
-  [v11 setupAppAnalyticsReportingUsingTracker:v12 withPropertyProvider:v19];
+  moreButton2 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+  tracker = [handlerCopy tracker];
+  [moreButton2 setupAppAnalyticsReportingUsingTracker:tracker withPropertyProvider:v19];
 
-  v13 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
-  [v13 setShowsMenuAsPrimaryAction:1];
+  moreButton3 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+  [moreButton3 setShowsMenuAsPrimaryAction:1];
 
-  v14 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
-  v15 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
-  v16 = [v15 collection];
-  v17 = [v6 menuWithLibraryAsset:v7 sourceView:v14 collection:v16];
+  moreButton4 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+  dataSource2 = [(BKLibraryBookshelfFinishedBookCell *)self dataSource];
+  collection2 = [dataSource2 collection];
+  v17 = [handlerCopy menuWithLibraryAsset:assetCopy sourceView:moreButton4 collection:collection2];
 
-  v18 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
-  [v18 setMenu:v17];
+  moreButton5 = [(BKLibraryBookshelfFinishedBookCell *)self moreButton];
+  [moreButton5 setMenu:v17];
 }
 
-- (void)togglePlayPause:(id)a3
+- (void)togglePlayPause:(id)pause
 {
-  v3 = [(BKLibraryBookshelfFinishedBookCell *)self audiobookStatus];
-  [v3 assetAudiobookStatusTogglePlayPause];
+  audiobookStatus = [(BKLibraryBookshelfFinishedBookCell *)self audiobookStatus];
+  [audiobookStatus assetAudiobookStatusTogglePlayPause];
 }
 
 - (BKLibraryBookshelfSupplementaryDataSource)dataSource

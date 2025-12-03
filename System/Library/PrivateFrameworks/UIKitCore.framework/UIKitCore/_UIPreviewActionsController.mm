@@ -1,15 +1,15 @@
 @interface _UIPreviewActionsController
-+ (id)actionsControllerWithContainerView:(id)a3 platterView:(id)a4 presentedViewController:(id)a5 delegate:(id)a6;
++ (id)actionsControllerWithContainerView:(id)view platterView:(id)platterView presentedViewController:(id)controller delegate:(id)delegate;
 - (BOOL)_hasPreviewSwipeActions;
 - (BOOL)_hasSelectedSwipeAction;
 - (BOOL)_platterIsInInitialPositionMostly;
 - (BOOL)_previewActionsSheetIsVisible;
 - (BOOL)_shouldDismiss;
 - (BOOL)platterPanned;
-- (CGPoint)_applyLayoutAdjustmentsForManagedViewWithPosition:(CGPoint)a3;
-- (CGPoint)_centerForMenuDismissedForActionSheet:(id)a3;
-- (CGPoint)_centerForMenuPresentedForActionSheet:(id)a3;
-- (CGPoint)_centerForPlatterWithMenuViewPresentedForActionSheet:(id)a3;
+- (CGPoint)_applyLayoutAdjustmentsForManagedViewWithPosition:(CGPoint)position;
+- (CGPoint)_centerForMenuDismissedForActionSheet:(id)sheet;
+- (CGPoint)_centerForMenuPresentedForActionSheet:(id)sheet;
+- (CGPoint)_centerForPlatterWithMenuViewPresentedForActionSheet:(id)sheet;
 - (CGPoint)centerForMenuDismissed;
 - (CGPoint)centerForMenuPresented;
 - (CGPoint)centerForPlatterWithMenuViewDismissed;
@@ -23,14 +23,14 @@
 - (NSArray)currentPreviewActionItems;
 - (UIPreviewAction)leadingPreviewAction;
 - (UIPreviewAction)trailingPreviewAction;
-- (_UIPreviewActionsController)initWithContainerView:(id)a3 platterView:(id)a4 presentedViewController:(id)a5 delegate:(id)a6;
+- (_UIPreviewActionsController)initWithContainerView:(id)view platterView:(id)platterView presentedViewController:(id)controller delegate:(id)delegate;
 - (_UIPreviewActionsControllerDelegate)delegate;
 - (_UIPreviewQuickActionView)leadingPreviewActionView;
 - (_UIPreviewQuickActionView)trailingPreviewActionView;
 - (double)_platterOffsetDistance;
 - (double)_quickActionSelectionOffset;
-- (double)_quickActionsSelectionThresholdForPreviewMenuItemStyle:(int64_t)a3;
-- (id)_makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:(id)a3;
+- (double)_quickActionsSelectionThresholdForPreviewMenuItemStyle:(int64_t)style;
+- (id)_makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:(id)items;
 - (void)_actionsControllerCommonInit;
 - (void)_activateFeedbackIfNeeded;
 - (void)_configureFeedbackGenerator;
@@ -38,43 +38,43 @@
 - (void)_deactivateFeedbackIfNeeded;
 - (void)_disablePlatterController;
 - (void)_dismissForSelectedSwipeAction;
-- (void)_dismissWithAction:(id)a3;
-- (void)_fireConfirmFeedbackIfNeededForInitialSelectionState:(BOOL)a3 finalSelectionState:(BOOL)a4;
-- (void)_hideChromeAndSetAffordanceHidden:(BOOL)a3;
-- (void)_presentSubactionsForActionGroup:(id)a3;
-- (void)_setAffordanceAlpha:(double)a3 withDuration:(double)a4 hideOnCompletion:(BOOL)a5;
+- (void)_dismissWithAction:(id)action;
+- (void)_fireConfirmFeedbackIfNeededForInitialSelectionState:(BOOL)state finalSelectionState:(BOOL)selectionState;
+- (void)_hideChromeAndSetAffordanceHidden:(BOOL)hidden;
+- (void)_presentSubactionsForActionGroup:(id)group;
+- (void)_setAffordanceAlpha:(double)alpha withDuration:(double)duration hideOnCompletion:(BOOL)completion;
 - (void)_updateAffordanceIfNecessary;
 - (void)_updateSwipeActionsState;
-- (void)beginPanningAtLocation:(CGPoint)a3;
+- (void)beginPanningAtLocation:(CGPoint)location;
 - (void)dealloc;
-- (void)dismissPreviewActionsWithCompletion:(id)a3;
-- (void)endPanningAtLocation:(CGPoint)a3;
-- (void)platterMenuDynamicsController:(id)a3 didMoveSwipeView:(id)a4 toPosition:(CGPoint)a5;
-- (void)platterMenuDynamicsControllerDidDismissWithController:(id)a3;
-- (void)setLeadingSwipeActionViewSelected:(BOOL)a3;
-- (void)setTrailingSwipeActionViewSelected:(BOOL)a3;
-- (void)translationDidUpdateForPlatterMenuDynamicsController:(id)a3;
-- (void)updatePanningLocation:(CGPoint)a3;
+- (void)dismissPreviewActionsWithCompletion:(id)completion;
+- (void)endPanningAtLocation:(CGPoint)location;
+- (void)platterMenuDynamicsController:(id)controller didMoveSwipeView:(id)view toPosition:(CGPoint)position;
+- (void)platterMenuDynamicsControllerDidDismissWithController:(id)controller;
+- (void)setLeadingSwipeActionViewSelected:(BOOL)selected;
+- (void)setTrailingSwipeActionViewSelected:(BOOL)selected;
+- (void)translationDidUpdateForPlatterMenuDynamicsController:(id)controller;
+- (void)updatePanningLocation:(CGPoint)location;
 @end
 
 @implementation _UIPreviewActionsController
 
-- (_UIPreviewActionsController)initWithContainerView:(id)a3 platterView:(id)a4 presentedViewController:(id)a5 delegate:(id)a6
+- (_UIPreviewActionsController)initWithContainerView:(id)view platterView:(id)platterView presentedViewController:(id)controller delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  viewCopy = view;
+  platterViewCopy = platterView;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = _UIPreviewActionsController;
   v15 = [(_UIPreviewActionsController *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_containerView, a3);
-    objc_storeStrong(&v16->_platterView, a4);
-    objc_storeStrong(&v16->_presentedViewController, a5);
-    objc_storeWeak(&v16->_delegate, v14);
+    objc_storeStrong(&v15->_containerView, view);
+    objc_storeStrong(&v16->_platterView, platterView);
+    objc_storeStrong(&v16->_presentedViewController, controller);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
     [(_UIPreviewActionsController *)v16 _actionsControllerCommonInit];
   }
 
@@ -83,13 +83,13 @@
 
 - (void)_actionsControllerCommonInit
 {
-  v3 = [(_UIPreviewActionsController *)self currentPreviewActionItems];
-  v4 = [(_UIPreviewActionsController *)self _makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:v3];
+  currentPreviewActionItems = [(_UIPreviewActionsController *)self currentPreviewActionItems];
+  v4 = [(_UIPreviewActionsController *)self _makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:currentPreviewActionItems];
   [(_UIPreviewActionsController *)self setPreviewActionsView:v4];
 
-  v5 = [(_UIPreviewActionsController *)self previewActionsView];
+  previewActionsView = [(_UIPreviewActionsController *)self previewActionsView];
 
-  if (v5)
+  if (previewActionsView)
   {
     [(_UIPreviewActionsController *)self _memoizePreviewActionViews];
     [(_UIPreviewActionsController *)self _configurePlatterDynamicsController];
@@ -107,8 +107,8 @@
     _updateAffordanceFrameOrigin(self->_platterView, v6);
     [(UIView *)v6 setAlpha:0.0];
     [(_UIPreviewActionsController *)self setAffordanceImageView:v9];
-    v11 = [(UIView *)self->_platterView superview];
-    [v11 addSubview:v6];
+    superview = [(UIView *)self->_platterView superview];
+    [superview addSubview:v6];
 
     [(_UIPreviewActionsController *)self setAffordanceView:v6];
     if (![(_UIPreviewActionsController *)self _hasPreviewSwipeActions])
@@ -123,10 +123,10 @@
 - (void)_configurePlatterDynamicsController
 {
   v3 = [_UIPlatterMenuDynamicsController alloc];
-  v7 = [(_UIPreviewActionsController *)self containerView];
-  v4 = [(_UIPreviewActionsController *)self platterView];
-  v5 = [(_UIPreviewActionsController *)self previewActionsView];
-  v6 = [(_UIPlatterMenuDynamicsController *)v3 initWithContainerView:v7 platterView:v4 menuView:v5 delegate:self];
+  containerView = [(_UIPreviewActionsController *)self containerView];
+  platterView = [(_UIPreviewActionsController *)self platterView];
+  previewActionsView = [(_UIPreviewActionsController *)self previewActionsView];
+  v6 = [(_UIPlatterMenuDynamicsController *)v3 initWithContainerView:containerView platterView:platterView menuView:previewActionsView delegate:self];
   [(_UIPreviewActionsController *)self setPlatterDynamicsController:v6];
 }
 
@@ -140,38 +140,38 @@
   [(_UIPreviewActionsController *)&v3 dealloc];
 }
 
-+ (id)actionsControllerWithContainerView:(id)a3 platterView:(id)a4 presentedViewController:(id)a5 delegate:(id)a6
++ (id)actionsControllerWithContainerView:(id)view platterView:(id)platterView presentedViewController:(id)controller delegate:(id)delegate
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithContainerView:v13 platterView:v12 presentedViewController:v11 delegate:v10];
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  platterViewCopy = platterView;
+  viewCopy = view;
+  v14 = [[self alloc] initWithContainerView:viewCopy platterView:platterViewCopy presentedViewController:controllerCopy delegate:delegateCopy];
 
   return v14;
 }
 
-- (void)beginPanningAtLocation:(CGPoint)a3
+- (void)beginPanningAtLocation:(CGPoint)location
 {
   if (self->_platterDynamicsController)
   {
-    y = a3.y;
-    x = a3.x;
+    y = location.y;
+    x = location.x;
     [(_UIPreviewActionsController *)self setHasBegun:1];
     [(_UIPreviewActionsController *)self setTotalPanningTranslation:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
     [(_UIPreviewActionsController *)self setLastPanningLocation:x, y];
     [(_UIPlatterMenuDynamicsController *)self->_platterDynamicsController didBeginPanningWithPoint:x, y];
   }
 
-  [(_UIPreviewActionsController *)self _activateFeedbackIfNeeded:a3.x];
+  [(_UIPreviewActionsController *)self _activateFeedbackIfNeeded:location.x];
 }
 
-- (void)updatePanningLocation:(CGPoint)a3
+- (void)updatePanningLocation:(CGPoint)location
 {
   if (self->_platterDynamicsController)
   {
-    y = a3.y;
-    x = a3.x;
+    y = location.y;
+    x = location.x;
     width = self->_totalPanningTranslation.width;
     [(_UIPreviewActionsController *)self lastPanningLocation];
     v8 = width + vabdd_f64(v7, x);
@@ -187,10 +187,10 @@
   }
 }
 
-- (void)endPanningAtLocation:(CGPoint)a3
+- (void)endPanningAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(_UIPreviewActionsController *)self _deactivateFeedbackIfNeeded];
   if (self->_platterDynamicsController)
   {
@@ -221,32 +221,32 @@
   return platterDynamicsController;
 }
 
-- (void)dismissPreviewActionsWithCompletion:(id)a3
+- (void)dismissPreviewActionsWithCompletion:(id)completion
 {
-  v8 = a3;
+  completionCopy = completion;
   [(_UIPreviewActionsController *)self _setAffordanceAlpha:1 withDuration:0.0 hideOnCompletion:0.1];
   [(_UIPreviewActionsController *)self _hideChromeAndSetAffordanceHidden:0];
   [(_UIPreviewActionsController *)self _platterOffsetDistance];
   v5 = v4;
-  v6 = [(_UIPreviewActionsController *)self _isSwipeActionVisible];
-  if (v5 <= 44.0 && !v6)
+  _isSwipeActionVisible = [(_UIPreviewActionsController *)self _isSwipeActionVisible];
+  if (v5 <= 44.0 && !_isSwipeActionVisible)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2]();
+      completionCopy[2]();
     }
   }
 
   else
   {
-    [(_UIPlatterMenuDynamicsController *)self->_platterDynamicsController _animateToPlatterDismissedWithDuration:v8 completion:0.225];
+    [(_UIPlatterMenuDynamicsController *)self->_platterDynamicsController _animateToPlatterDismissedWithDuration:completionCopy completion:0.225];
   }
 }
 
 - (CGRect)frameForActionView
 {
-  v2 = [(_UIPreviewActionsController *)self previewActionsView];
-  [v2 frame];
+  previewActionsView = [(_UIPreviewActionsController *)self previewActionsView];
+  [previewActionsView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -263,26 +263,26 @@
   return result;
 }
 
-- (void)_hideChromeAndSetAffordanceHidden:(BOOL)a3
+- (void)_hideChromeAndSetAffordanceHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
-    v4 = [(_UIPreviewActionsController *)self affordanceView];
-    v5 = [v4 layer];
-    v6 = [v5 animationForKey:@"opacity"];
+    affordanceView = [(_UIPreviewActionsController *)self affordanceView];
+    layer = [affordanceView layer];
+    v6 = [layer animationForKey:@"opacity"];
 
     if (!v6)
     {
-      v7 = [(_UIPreviewActionsController *)self affordanceView];
-      [v7 setHidden:1];
+      affordanceView2 = [(_UIPreviewActionsController *)self affordanceView];
+      [affordanceView2 setHidden:1];
     }
   }
 
-  v8 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-  [v8 setHidden:1];
+  leadingPreviewActionView = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+  [leadingPreviewActionView setHidden:1];
 
-  v9 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-  [v9 setHidden:1];
+  trailingPreviewActionView = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+  [trailingPreviewActionView setHidden:1];
 }
 
 - (double)_platterOffsetDistance
@@ -293,19 +293,19 @@
   return sqrt((v4 - *MEMORY[0x1E695EFF8]) * (v4 - *MEMORY[0x1E695EFF8]) + (v5 - *(MEMORY[0x1E695EFF8] + 8)) * (v5 - *(MEMORY[0x1E695EFF8] + 8)));
 }
 
-- (id)_makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:(id)a3
+- (id)_makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v5 = [(_UIPreviewActionsController *)self delegate];
-    [v5 maximumPreviewActionsViewSizeForPreviewActionsController:self];
+    delegate = [(_UIPreviewActionsController *)self delegate];
+    [delegate maximumPreviewActionsViewSizeForPreviewActionsController:self];
     v7 = v6;
     v9 = v8;
 
-    v10 = [[_UIPreviewActionSheetView alloc] initWithFrame:0 title:v4 items:0.0 contentInsets:0.0, v7, v9, 20.0, 0.0, 20.0, 0.0];
-    v11 = [(_UIPreviewActionsController *)self containerView];
-    [v11 addSubview:v10];
+    v10 = [[_UIPreviewActionSheetView alloc] initWithFrame:0 title:itemsCopy items:0.0 contentInsets:0.0, v7, v9, 20.0, 0.0, 20.0, 0.0];
+    containerView = [(_UIPreviewActionsController *)self containerView];
+    [containerView addSubview:v10];
 
     [(UIView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v10 setNeedsLayout];
@@ -338,12 +338,12 @@
   currentPreviewActionItems = self->_currentPreviewActionItems;
   if (!currentPreviewActionItems)
   {
-    v4 = [(_UIPreviewActionsController *)self presentedViewController];
-    v5 = [v4 previewActionItems];
+    presentedViewController = [(_UIPreviewActionsController *)self presentedViewController];
+    previewActionItems = [presentedViewController previewActionItems];
 
-    if ([v5 count])
+    if ([previewActionItems count])
     {
-      v6 = [v5 copy];
+      v6 = [previewActionItems copy];
     }
 
     else
@@ -365,19 +365,19 @@
   leadingPreviewAction = self->_leadingPreviewAction;
   if (!leadingPreviewAction)
   {
-    v4 = [(_UIPreviewActionsController *)self containerView];
-    v5 = v4[13];
+    containerView = [(_UIPreviewActionsController *)self containerView];
+    v5 = containerView[13];
 
-    v6 = [(_UIPreviewActionsController *)self presentedViewController];
-    v7 = v6;
+    presentedViewController = [(_UIPreviewActionsController *)self presentedViewController];
+    v7 = presentedViewController;
     if ((v5 & 0x400000) != 0)
     {
-      [v6 trailingPreviewAction];
+      [presentedViewController trailingPreviewAction];
     }
 
     else
     {
-      [v6 leadingPreviewAction];
+      [presentedViewController leadingPreviewAction];
     }
     v8 = ;
     v9 = [v8 copy];
@@ -395,19 +395,19 @@
   trailingPreviewAction = self->_trailingPreviewAction;
   if (!trailingPreviewAction)
   {
-    v4 = [(_UIPreviewActionsController *)self containerView];
-    v5 = v4[13];
+    containerView = [(_UIPreviewActionsController *)self containerView];
+    v5 = containerView[13];
 
-    v6 = [(_UIPreviewActionsController *)self presentedViewController];
-    v7 = v6;
+    presentedViewController = [(_UIPreviewActionsController *)self presentedViewController];
+    v7 = presentedViewController;
     if ((v5 & 0x400000) != 0)
     {
-      [v6 leadingPreviewAction];
+      [presentedViewController leadingPreviewAction];
     }
 
     else
     {
-      [v6 trailingPreviewAction];
+      [presentedViewController trailingPreviewAction];
     }
     v8 = ;
     v9 = [v8 copy];
@@ -424,9 +424,9 @@
 {
   if (!self->_leadingPreviewActionView)
   {
-    v3 = [(_UIPreviewActionsController *)self leadingPreviewAction];
+    leadingPreviewAction = [(_UIPreviewActionsController *)self leadingPreviewAction];
 
-    if (v3)
+    if (leadingPreviewAction)
     {
       v4 = [_UIPreviewQuickActionView alloc];
       v5 = [(_UIPreviewQuickActionView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -434,15 +434,15 @@
       self->_leadingPreviewActionView = v5;
 
       [(UIView *)self->_leadingPreviewActionView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v7 = [(_UIPreviewActionsController *)self leadingPreviewAction];
-      [(_UIPreviewQuickActionView *)self->_leadingPreviewActionView setQuickAction:v7];
+      leadingPreviewAction2 = [(_UIPreviewActionsController *)self leadingPreviewAction];
+      [(_UIPreviewQuickActionView *)self->_leadingPreviewActionView setQuickAction:leadingPreviewAction2];
 
       [(UIView *)self->_leadingPreviewActionView layoutIfNeeded];
-      v8 = [(_UIPreviewActionsController *)self platterView];
-      v9 = [v8 superview];
+      platterView = [(_UIPreviewActionsController *)self platterView];
+      superview = [platterView superview];
       v10 = self->_leadingPreviewActionView;
-      v11 = [(_UIPreviewActionsController *)self platterView];
-      [v9 insertSubview:v10 belowSubview:v11];
+      platterView2 = [(_UIPreviewActionsController *)self platterView];
+      [superview insertSubview:v10 belowSubview:platterView2];
 
       [(_UIPreviewActionsController *)self initialCenterForLeadingSwipeActionView];
       [(UIView *)self->_leadingPreviewActionView setCenter:?];
@@ -459,9 +459,9 @@
 {
   if (!self->_trailingPreviewActionView)
   {
-    v3 = [(_UIPreviewActionsController *)self trailingPreviewAction];
+    trailingPreviewAction = [(_UIPreviewActionsController *)self trailingPreviewAction];
 
-    if (v3)
+    if (trailingPreviewAction)
     {
       v4 = [_UIPreviewQuickActionView alloc];
       v5 = [(_UIPreviewQuickActionView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -469,15 +469,15 @@
       self->_trailingPreviewActionView = v5;
 
       [(UIView *)self->_trailingPreviewActionView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v7 = [(_UIPreviewActionsController *)self trailingPreviewAction];
-      [(_UIPreviewQuickActionView *)self->_trailingPreviewActionView setQuickAction:v7];
+      trailingPreviewAction2 = [(_UIPreviewActionsController *)self trailingPreviewAction];
+      [(_UIPreviewQuickActionView *)self->_trailingPreviewActionView setQuickAction:trailingPreviewAction2];
 
       [(UIView *)self->_trailingPreviewActionView layoutIfNeeded];
-      v8 = [(_UIPreviewActionsController *)self platterView];
-      v9 = [v8 superview];
+      platterView = [(_UIPreviewActionsController *)self platterView];
+      superview = [platterView superview];
       v10 = self->_trailingPreviewActionView;
-      v11 = [(_UIPreviewActionsController *)self platterView];
-      [v9 insertSubview:v10 belowSubview:v11];
+      platterView2 = [(_UIPreviewActionsController *)self platterView];
+      [superview insertSubview:v10 belowSubview:platterView2];
 
       [(_UIPreviewActionsController *)self initialCenterForTrailingSwipeActionView];
       [(UIView *)self->_trailingPreviewActionView setCenter:?];
@@ -492,17 +492,17 @@
 
 - (CGRect)_initialPlatterFrame
 {
-  v3 = [(_UIPreviewActionsController *)self platterView];
-  [v3 bounds];
+  platterView = [(_UIPreviewActionsController *)self platterView];
+  [platterView bounds];
   Width = CGRectGetWidth(v15);
-  v5 = [(_UIPreviewActionsController *)self platterView];
-  [v5 bounds];
+  platterView2 = [(_UIPreviewActionsController *)self platterView];
+  [platterView2 bounds];
   Height = CGRectGetHeight(v16);
-  v7 = [(_UIPreviewActionsController *)self containerView];
-  [v7 bounds];
+  containerView = [(_UIPreviewActionsController *)self containerView];
+  [containerView bounds];
   MidX = CGRectGetMidX(v17);
-  v9 = [(_UIPreviewActionsController *)self containerView];
-  [v9 bounds];
+  containerView2 = [(_UIPreviewActionsController *)self containerView];
+  [containerView2 bounds];
   v10 = round(CGRectGetMidY(v18) - Height * 0.5);
 
   v11 = round(MidX - Width * 0.5);
@@ -518,16 +518,16 @@
 
 - (BOOL)_hasPreviewSwipeActions
 {
-  v3 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-  if (v3)
+  leadingPreviewActionView = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+  if (leadingPreviewActionView)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-    v4 = v5 != 0;
+    trailingPreviewActionView = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+    v4 = trailingPreviewActionView != 0;
   }
 
   return v4;
@@ -535,34 +535,34 @@
 
 - (BOOL)_hasSelectedSwipeAction
 {
-  v3 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-  if ([v3 selected])
+  leadingPreviewActionView = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+  if ([leadingPreviewActionView selected])
   {
-    v4 = 1;
+    selected = 1;
   }
 
   else
   {
-    v5 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-    v4 = [v5 selected];
+    trailingPreviewActionView = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+    selected = [trailingPreviewActionView selected];
   }
 
-  return v4;
+  return selected;
 }
 
 - (BOOL)_previewActionsSheetIsVisible
 {
-  v3 = [(_UIPreviewActionsController *)self previewActionsView];
-  if (v3)
+  previewActionsView = [(_UIPreviewActionsController *)self previewActionsView];
+  if (previewActionsView)
   {
-    v4 = [(_UIPreviewActionsController *)self previewActionsView];
-    [v4 frame];
+    previewActionsView2 = [(_UIPreviewActionsController *)self previewActionsView];
+    [previewActionsView2 frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(_UIPreviewActionsController *)self containerView];
-    [v13 bounds];
+    containerView = [(_UIPreviewActionsController *)self containerView];
+    [containerView bounds];
     v21.origin.x = v14;
     v21.origin.y = v15;
     v21.size.width = v16;
@@ -584,14 +584,14 @@
 
 - (double)_quickActionSelectionOffset
 {
-  v3 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-  [v3 bounds];
+  leadingPreviewActionView = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+  [leadingPreviewActionView bounds];
   Width = CGRectGetWidth(v7);
 
   if (Width <= 2.22044605e-16)
   {
-    v5 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-    [v5 bounds];
+    trailingPreviewActionView = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+    [trailingPreviewActionView bounds];
     Width = CGRectGetWidth(v8);
   }
 
@@ -604,11 +604,11 @@
   return result;
 }
 
-- (double)_quickActionsSelectionThresholdForPreviewMenuItemStyle:(int64_t)a3
+- (double)_quickActionsSelectionThresholdForPreviewMenuItemStyle:(int64_t)style
 {
   [(_UIPreviewActionsController *)self _quickActionSelectionOffset];
   v5 = 2.0;
-  if (a3 == 2)
+  if (style == 2)
   {
     v5 = 3.5;
   }
@@ -620,84 +620,84 @@
 {
   if ([(_UIPreviewActionsController *)self _hasPreviewSwipeActions])
   {
-    v3 = [(_UIPreviewActionsController *)self platterDynamicsController];
-    [v3 currentTranslation];
+    platterDynamicsController = [(_UIPreviewActionsController *)self platterDynamicsController];
+    [platterDynamicsController currentTranslation];
     v5 = v4;
 
-    v6 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-    [v6 setHidden:v5 > 0.0];
+    leadingPreviewActionView = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+    [leadingPreviewActionView setHidden:v5 > 0.0];
 
-    v7 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-    [v7 setHidden:v5 < 0.0];
+    trailingPreviewActionView = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+    [trailingPreviewActionView setHidden:v5 < 0.0];
 
-    v8 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+    leadingPreviewActionView2 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
 
-    if (v8)
+    if (leadingPreviewActionView2)
     {
-      v9 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-      v10 = [v9 quickAction];
-      -[_UIPreviewActionsController _quickActionsSelectionThresholdForPreviewMenuItemStyle:](self, "_quickActionsSelectionThresholdForPreviewMenuItemStyle:", [v10 style]);
+      leadingPreviewActionView3 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+      quickAction = [leadingPreviewActionView3 quickAction];
+      -[_UIPreviewActionsController _quickActionsSelectionThresholdForPreviewMenuItemStyle:](self, "_quickActionsSelectionThresholdForPreviewMenuItemStyle:", [quickAction style]);
       v12 = v11;
 
       if (v12 > 0.0)
       {
         [(_UIPreviewActionsController *)self setLeadingSwipeActionViewSelected:v5 < -v12];
-        v13 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-        v14 = [v13 selected];
+        leadingPreviewActionView4 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+        selected = [leadingPreviewActionView4 selected];
 
-        if (v14)
+        if (selected)
         {
-          v15 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-          [v15 setSelected:0];
+          trailingPreviewActionView2 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+          [trailingPreviewActionView2 setSelected:0];
         }
       }
     }
 
-    v16 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+    trailingPreviewActionView3 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
 
-    if (v16)
+    if (trailingPreviewActionView3)
     {
-      v17 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-      v18 = [v17 quickAction];
-      -[_UIPreviewActionsController _quickActionsSelectionThresholdForPreviewMenuItemStyle:](self, "_quickActionsSelectionThresholdForPreviewMenuItemStyle:", [v18 style]);
+      trailingPreviewActionView4 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+      quickAction2 = [trailingPreviewActionView4 quickAction];
+      -[_UIPreviewActionsController _quickActionsSelectionThresholdForPreviewMenuItemStyle:](self, "_quickActionsSelectionThresholdForPreviewMenuItemStyle:", [quickAction2 style]);
       v20 = v19;
 
       if (v20 > 0.0)
       {
         [(_UIPreviewActionsController *)self setTrailingSwipeActionViewSelected:v5 > v20];
-        v21 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-        v22 = [v21 selected];
+        trailingPreviewActionView5 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+        selected2 = [trailingPreviewActionView5 selected];
 
-        if (v22)
+        if (selected2)
         {
-          v23 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-          [v23 setSelected:0];
+          leadingPreviewActionView5 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+          [leadingPreviewActionView5 setSelected:0];
         }
       }
     }
 
-    v24 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-    v25 = [v24 selected];
+    trailingPreviewActionView6 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+    selected3 = [trailingPreviewActionView6 selected];
 
-    if (v25)
+    if (selected3)
     {
-      v26 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-      [v26 setHidden:0];
+      trailingPreviewActionView7 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+      [trailingPreviewActionView7 setHidden:0];
 
-      v27 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-      [v27 setHidden:1];
+      leadingPreviewActionView6 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+      [leadingPreviewActionView6 setHidden:1];
     }
 
-    v28 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-    v29 = [v28 selected];
+    leadingPreviewActionView7 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+    selected4 = [leadingPreviewActionView7 selected];
 
-    if (v29)
+    if (selected4)
     {
-      v30 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-      [v30 setHidden:0];
+      leadingPreviewActionView8 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+      [leadingPreviewActionView8 setHidden:0];
 
-      v31 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-      [v31 setHidden:1];
+      trailingPreviewActionView8 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+      [trailingPreviewActionView8 setHidden:1];
     }
   }
 }
@@ -705,15 +705,15 @@
 - (void)_dismissForSelectedSwipeAction
 {
   [(_UIPreviewActionsController *)self _disablePlatterController];
-  v3 = [(_UIPreviewActionsController *)self containerView];
-  [v3 bounds];
+  containerView = [(_UIPreviewActionsController *)self containerView];
+  [containerView bounds];
   MidX = CGRectGetMidX(v33);
-  v5 = [(_UIPreviewActionsController *)self containerView];
-  [v5 bounds];
+  containerView2 = [(_UIPreviewActionsController *)self containerView];
+  [containerView2 bounds];
   MidY = CGRectGetMidY(v34);
 
-  v7 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-  if ([v7 selected])
+  leadingPreviewActionView = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+  if ([leadingPreviewActionView selected])
   {
     [(_UIPreviewActionsController *)self leadingPreviewActionView];
   }
@@ -726,23 +726,23 @@
 
   [(_UIPreviewActionsController *)self centerForPlatterWithMenuViewDismissed];
   v10 = v9;
-  v11 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-  v12 = [v11 selected];
+  leadingPreviewActionView2 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+  selected = [leadingPreviewActionView2 selected];
 
-  if (v12)
+  if (selected)
   {
-    v13 = [(_UIPreviewActionsController *)self containerView];
-    [v13 bounds];
+    containerView3 = [(_UIPreviewActionsController *)self containerView];
+    [containerView3 bounds];
     Width = CGRectGetWidth(v35);
-    v15 = [(_UIPreviewActionsController *)self platterView];
-    [v15 bounds];
+    platterView = [(_UIPreviewActionsController *)self platterView];
+    [platterView bounds];
     v16 = Width + CGRectGetWidth(v36) * 0.5;
   }
 
   else
   {
-    v13 = [(_UIPreviewActionsController *)self platterView];
-    [v13 bounds];
+    containerView3 = [(_UIPreviewActionsController *)self platterView];
+    [containerView3 bounds];
     v16 = CGRectGetWidth(v37) * -0.5;
   }
 
@@ -762,17 +762,17 @@
   v22 = 3221225472;
   v23 = __61___UIPreviewActionsController__dismissForSelectedSwipeAction__block_invoke_2;
   v24 = &unk_1E70F3C60;
-  v25 = self;
+  selfCopy = self;
   v26 = v17;
   v19 = v17;
   v20 = _Block_copy(&v21);
-  [UIView animateWithDuration:v18 animations:v20 completion:0.3, v21, v22, v23, v24, v25];
+  [UIView animateWithDuration:v18 animations:v20 completion:0.3, v21, v22, v23, v24, selfCopy];
 }
 
-- (void)_dismissWithAction:(id)a3
+- (void)_dismissWithAction:(id)action
 {
-  v4 = a3;
-  if (!v4)
+  actionCopy = action;
+  if (!actionCopy)
   {
     [(_UIPreviewActionsController *)self _hideChromeAndSetAffordanceHidden:0];
   }
@@ -780,10 +780,10 @@
   [(_UIPreviewActionsController *)self _disablePlatterController];
   [(_UIPreviewActionsController *)self centerForPlatterWithMenuViewDismissed];
   v7 = v6;
-  if (v4)
+  if (actionCopy)
   {
-    v8 = [(_UIPreviewActionsController *)self platterView];
-    [v8 bounds];
+    platterView = [(_UIPreviewActionsController *)self platterView];
+    [platterView bounds];
     v9 = -CGRectGetHeight(v18);
   }
 
@@ -808,35 +808,35 @@
   v15[2] = __50___UIPreviewActionsController__dismissWithAction___block_invoke_2;
   v15[3] = &unk_1E70F3C60;
   v15[4] = self;
-  v16 = v4;
-  v13 = v4;
+  v16 = actionCopy;
+  v13 = actionCopy;
   v14 = _Block_copy(v15);
   [UIView animateWithDuration:v12 animations:v14 completion:0.3];
 }
 
 - (BOOL)_shouldDismiss
 {
-  v3 = [(_UIPreviewActionsController *)self _previewActionsSheetIsVisible];
-  v4 = [(_UIPreviewActionsController *)self _hasSelectedSwipeAction];
-  v5 = [(_UIPreviewActionsController *)self platterDynamicsController];
-  [v5 currentVelocity];
+  _previewActionsSheetIsVisible = [(_UIPreviewActionsController *)self _previewActionsSheetIsVisible];
+  _hasSelectedSwipeAction = [(_UIPreviewActionsController *)self _hasSelectedSwipeAction];
+  platterDynamicsController = [(_UIPreviewActionsController *)self platterDynamicsController];
+  [platterDynamicsController currentVelocity];
   v7 = v6 >= 0.1;
 
-  return v7 || !v3 && !v4;
+  return v7 || !_previewActionsSheetIsVisible && !_hasSelectedSwipeAction;
 }
 
 - (void)_disablePlatterController
 {
-  v3 = [(_UIPreviewActionsController *)self platterDynamicsController];
-  [v3 resetAnimator];
+  platterDynamicsController = [(_UIPreviewActionsController *)self platterDynamicsController];
+  [platterDynamicsController resetAnimator];
 
   [(_UIPreviewActionsController *)self setPlatterDynamicsController:0];
 }
 
 - (BOOL)_platterIsInInitialPositionMostly
 {
-  v3 = [(_UIPreviewActionsController *)self containerView];
-  [v3 bounds];
+  containerView = [(_UIPreviewActionsController *)self containerView];
+  [containerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -852,47 +852,47 @@
   v20.size.width = v9;
   v20.size.height = v11;
   v13 = round(CGRectGetMidY(v20) + -22.0);
-  v14 = [(_UIPreviewActionsController *)self platterView];
-  [v14 center];
+  platterView = [(_UIPreviewActionsController *)self platterView];
+  [platterView center];
   v18.x = v15;
   v18.y = v16;
   v21.size.width = 44.0;
   v21.origin.x = round(MidX + -22.0);
   v21.origin.y = v13;
   v21.size.height = 44.0;
-  LOBYTE(v3) = CGRectContainsPoint(v21, v18);
+  LOBYTE(containerView) = CGRectContainsPoint(v21, v18);
 
-  return v3;
+  return containerView;
 }
 
-- (void)_presentSubactionsForActionGroup:(id)a3
+- (void)_presentSubactionsForActionGroup:(id)group
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  groupCopy = group;
+  v5 = groupCopy;
+  if (groupCopy)
   {
-    v6 = [v4 _actions];
-    v7 = [v6 count];
+    _actions = [groupCopy _actions];
+    v7 = [_actions count];
 
     if (v7)
     {
-      v8 = [(_UIPreviewActionsController *)self previewActionsView];
-      v9 = [v5 _actions];
-      v10 = [(_UIPreviewActionsController *)self _makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:v9];
+      previewActionsView = [(_UIPreviewActionsController *)self previewActionsView];
+      _actions2 = [v5 _actions];
+      v10 = [(_UIPreviewActionsController *)self _makeAndAddToViewHierarchyPreviewActionSheetForMenuItems:_actions2];
 
       objc_initWeak(location, self);
-      v11 = [(_UIPreviewActionsController *)self previewActionsView];
-      v12 = [v11 window];
-      [v12 setUserInteractionEnabled:0];
+      previewActionsView2 = [(_UIPreviewActionsController *)self previewActionsView];
+      window = [previewActionsView2 window];
+      [window setUserInteractionEnabled:0];
 
       [(_UIPreviewActionsController *)self _disablePlatterController];
       [(_UIPreviewActionsController *)self _centerForPlatterWithMenuViewPresentedForActionSheet:v10];
       v14 = v13;
       v16 = v15;
-      [(_UIPreviewActionsController *)self _centerForMenuPresentedForActionSheet:v8];
+      [(_UIPreviewActionsController *)self _centerForMenuPresentedForActionSheet:previewActionsView];
       v18 = v17;
       v20 = v19;
-      [(_UIPreviewActionsController *)self _centerForMenuDismissedForActionSheet:v8];
+      [(_UIPreviewActionsController *)self _centerForMenuDismissedForActionSheet:previewActionsView];
       v22 = v21;
       v24 = v23;
       [(_UIPreviewActionsController *)self _centerForMenuDismissedForActionSheet:v10];
@@ -902,7 +902,7 @@
       v43 = v30;
       v44 = v29;
       [v10 setCenter:{v26, v28}];
-      [v8 setCenter:{v18, v20}];
+      [previewActionsView setCenter:{v18, v20}];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __64___UIPreviewActionsController__presentSubactionsForActionGroup___block_invoke;
@@ -915,7 +915,7 @@
       v58[1] = 3221225472;
       v58[2] = __64___UIPreviewActionsController__presentSubactionsForActionGroup___block_invoke_2;
       v58[3] = &unk_1E70F6848;
-      v32 = v8;
+      v32 = previewActionsView;
       v59 = v32;
       v60 = v22;
       v61 = v24;
@@ -958,11 +958,11 @@
   }
 }
 
-- (void)_setAffordanceAlpha:(double)a3 withDuration:(double)a4 hideOnCompletion:(BOOL)a5
+- (void)_setAffordanceAlpha:(double)alpha withDuration:(double)duration hideOnCompletion:(BOOL)completion
 {
-  v9 = [(_UIPreviewActionsController *)self affordanceView];
-  [v9 alpha];
-  v11 = vabdd_f64(v10, a3);
+  affordanceView = [(_UIPreviewActionsController *)self affordanceView];
+  [affordanceView alpha];
+  v11 = vabdd_f64(v10, alpha);
 
   if (v11 > 2.22044605e-16)
   {
@@ -971,27 +971,27 @@
     v14[2] = __81___UIPreviewActionsController__setAffordanceAlpha_withDuration_hideOnCompletion___block_invoke;
     v14[3] = &unk_1E70F32F0;
     v14[4] = self;
-    *&v14[5] = a3;
+    *&v14[5] = alpha;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __81___UIPreviewActionsController__setAffordanceAlpha_withDuration_hideOnCompletion___block_invoke_2;
     v12[3] = &unk_1E70FA0F0;
-    v13 = a5;
+    completionCopy = completion;
     v12[4] = self;
-    [UIView animateWithDuration:v14 animations:v12 completion:a4];
+    [UIView animateWithDuration:v14 animations:v12 completion:duration];
   }
 }
 
 - (void)_updateAffordanceIfNecessary
 {
-  v3 = [(_UIPreviewActionsController *)self affordanceView];
+  affordanceView = [(_UIPreviewActionsController *)self affordanceView];
 
-  if (v3)
+  if (affordanceView)
   {
     _updateAffordanceFrameOrigin(self->_platterView, self->_affordanceView);
-    v4 = [(_UIPreviewActionsController *)self _platterIsInInitialPositionMostly];
+    _platterIsInInitialPositionMostly = [(_UIPreviewActionsController *)self _platterIsInInitialPositionMostly];
     v5 = 0.0;
-    if (v4)
+    if (_platterIsInInitialPositionMostly)
     {
       v5 = 1.0;
     }
@@ -1002,8 +1002,8 @@
 
 - (CGPoint)centerForPlatterWithMenuViewPresented
 {
-  v3 = [(_UIPreviewActionsController *)self previewActionsView];
-  [(_UIPreviewActionsController *)self _centerForPlatterWithMenuViewPresentedForActionSheet:v3];
+  previewActionsView = [(_UIPreviewActionsController *)self previewActionsView];
+  [(_UIPreviewActionsController *)self _centerForPlatterWithMenuViewPresentedForActionSheet:previewActionsView];
   v5 = v4;
   v7 = v6;
 
@@ -1014,22 +1014,22 @@
   return result;
 }
 
-- (CGPoint)_centerForPlatterWithMenuViewPresentedForActionSheet:(id)a3
+- (CGPoint)_centerForPlatterWithMenuViewPresentedForActionSheet:(id)sheet
 {
-  v4 = a3;
-  v5 = [(_UIPreviewActionsController *)self delegate];
-  [v5 initialPlatterPositionForPreviewActionsController:self];
+  sheetCopy = sheet;
+  delegate = [(_UIPreviewActionsController *)self delegate];
+  [delegate initialPlatterPositionForPreviewActionsController:self];
   v7 = v6;
   v9 = v8;
 
-  if (v4)
+  if (sheetCopy)
   {
-    [(_UIPreviewActionsController *)self _centerForMenuPresentedForActionSheet:v4];
+    [(_UIPreviewActionsController *)self _centerForMenuPresentedForActionSheet:sheetCopy];
     v11 = v10;
-    [v4 bounds];
+    [sheetCopy bounds];
     v12 = v11 - CGRectGetHeight(v18) * 0.5;
-    v13 = [(_UIPreviewActionsController *)self platterView];
-    [v13 bounds];
+    platterView = [(_UIPreviewActionsController *)self platterView];
+    [platterView bounds];
     v14 = v12 - CGRectGetHeight(v19) * 0.5;
 
     if (v14 <= v9)
@@ -1047,8 +1047,8 @@
 
 - (CGPoint)centerForPlatterWithMenuViewDismissed
 {
-  v3 = [(_UIPreviewActionsController *)self delegate];
-  [v3 initialPlatterPositionForPreviewActionsController:self];
+  delegate = [(_UIPreviewActionsController *)self delegate];
+  [delegate initialPlatterPositionForPreviewActionsController:self];
   v5 = v4;
   v7 = v6;
 
@@ -1061,8 +1061,8 @@
 
 - (CGPoint)centerForMenuPresented
 {
-  v3 = [(_UIPreviewActionsController *)self previewActionsView];
-  [(_UIPreviewActionsController *)self _centerForMenuPresentedForActionSheet:v3];
+  previewActionsView = [(_UIPreviewActionsController *)self previewActionsView];
+  [(_UIPreviewActionsController *)self _centerForMenuPresentedForActionSheet:previewActionsView];
   v5 = v4;
   v7 = v6;
 
@@ -1073,16 +1073,16 @@
   return result;
 }
 
-- (CGPoint)_centerForMenuPresentedForActionSheet:(id)a3
+- (CGPoint)_centerForMenuPresentedForActionSheet:(id)sheet
 {
-  if (a3)
+  if (sheet)
   {
-    v4 = a3;
-    v5 = [(_UIPreviewActionsController *)self containerView];
-    [v5 bounds];
+    sheetCopy = sheet;
+    containerView = [(_UIPreviewActionsController *)self containerView];
+    [containerView bounds];
     Height = CGRectGetHeight(v22);
 
-    [v4 bounds];
+    [sheetCopy bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -1093,8 +1093,8 @@
     v23.size.width = v12;
     v23.size.height = v14;
     v15 = Height + CGRectGetHeight(v23) * -0.5;
-    v16 = [(_UIPreviewActionsController *)self containerView];
-    [v16 bounds];
+    containerView2 = [(_UIPreviewActionsController *)self containerView];
+    [containerView2 bounds];
     MidX = CGRectGetMidX(v24);
   }
 
@@ -1112,8 +1112,8 @@
 
 - (CGPoint)centerForMenuDismissed
 {
-  v3 = [(_UIPreviewActionsController *)self previewActionsView];
-  [(_UIPreviewActionsController *)self _centerForMenuDismissedForActionSheet:v3];
+  previewActionsView = [(_UIPreviewActionsController *)self previewActionsView];
+  [(_UIPreviewActionsController *)self _centerForMenuDismissedForActionSheet:previewActionsView];
   v5 = v4;
   v7 = v6;
 
@@ -1124,16 +1124,16 @@
   return result;
 }
 
-- (CGPoint)_centerForMenuDismissedForActionSheet:(id)a3
+- (CGPoint)_centerForMenuDismissedForActionSheet:(id)sheet
 {
-  if (a3)
+  if (sheet)
   {
-    v4 = a3;
-    v5 = [(_UIPreviewActionsController *)self containerView];
-    [v5 bounds];
+    sheetCopy = sheet;
+    containerView = [(_UIPreviewActionsController *)self containerView];
+    [containerView bounds];
     Height = CGRectGetHeight(v21);
 
-    [v4 bounds];
+    [sheetCopy bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -1144,8 +1144,8 @@
     v22.size.width = v12;
     v22.size.height = v14;
     v15 = Height + CGRectGetHeight(v22) * 0.5;
-    v16 = [(_UIPreviewActionsController *)self containerView];
-    [v16 bounds];
+    containerView2 = [(_UIPreviewActionsController *)self containerView];
+    [containerView2 bounds];
     MidX = CGRectGetMidX(v23);
   }
 
@@ -1166,11 +1166,11 @@
 {
   [(_UIPreviewActionsController *)self _initialPlatterFrame];
   MinX = CGRectGetMinX(v11);
-  v4 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-  [v4 bounds];
+  leadingPreviewActionView = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+  [leadingPreviewActionView bounds];
   v5 = MinX + CGRectGetWidth(v12) * 0.5;
-  v6 = [(_UIPreviewActionsController *)self containerView];
-  [v6 bounds];
+  containerView = [(_UIPreviewActionsController *)self containerView];
+  [containerView bounds];
   MidY = CGRectGetMidY(v13);
 
   v8 = v5;
@@ -1184,11 +1184,11 @@
 {
   [(_UIPreviewActionsController *)self _initialPlatterFrame];
   MaxX = CGRectGetMaxX(v11);
-  v4 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-  [v4 bounds];
+  trailingPreviewActionView = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+  [trailingPreviewActionView bounds];
   v5 = MaxX + CGRectGetWidth(v12) * -0.5;
-  v6 = [(_UIPreviewActionsController *)self containerView];
-  [v6 bounds];
+  containerView = [(_UIPreviewActionsController *)self containerView];
+  [containerView bounds];
   MidY = CGRectGetMidY(v13);
 
   v8 = v5;
@@ -1198,63 +1198,63 @@
   return result;
 }
 
-- (void)platterMenuDynamicsControllerDidDismissWithController:(id)a3
+- (void)platterMenuDynamicsControllerDidDismissWithController:(id)controller
 {
-  v4 = [(_UIPreviewActionsController *)self delegate];
-  [v4 didDismissPreviewActionsController:self];
+  delegate = [(_UIPreviewActionsController *)self delegate];
+  [delegate didDismissPreviewActionsController:self];
 }
 
-- (void)platterMenuDynamicsController:(id)a3 didMoveSwipeView:(id)a4 toPosition:(CGPoint)a5
+- (void)platterMenuDynamicsController:(id)controller didMoveSwipeView:(id)view toPosition:(CGPoint)position
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a4;
-  [a3 currentTranslation];
+  y = position.y;
+  x = position.x;
+  viewCopy = view;
+  [controller currentTranslation];
   if (fabs(v9) > 2.22044605e-16)
   {
-    [v10 setHidden:1];
-    [v10 setCenter:{x, y}];
+    [viewCopy setHidden:1];
+    [viewCopy setCenter:{x, y}];
     [(_UIPreviewActionsController *)self _updateSwipeActionsState];
   }
 }
 
-- (void)translationDidUpdateForPlatterMenuDynamicsController:(id)a3
+- (void)translationDidUpdateForPlatterMenuDynamicsController:(id)controller
 {
-  v4 = a3;
-  [v4 currentTranslation];
+  controllerCopy = controller;
+  [controllerCopy currentTranslation];
   if (fabs(v5) > 2.22044605e-16)
   {
-    v6 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-    [v6 setHidden:1];
+    leadingPreviewActionView = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+    [leadingPreviewActionView setHidden:1];
 
-    v7 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-    [v7 setHidden:1];
+    trailingPreviewActionView = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+    [trailingPreviewActionView setHidden:1];
   }
 
   [(_UIPreviewActionsController *)self _updateAffordanceIfNecessary];
-  v15 = [(_UIPreviewActionsController *)self delegate];
-  [v4 currentTranslation];
+  delegate = [(_UIPreviewActionsController *)self delegate];
+  [controllerCopy currentTranslation];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_UIPreviewActionsController *)self platterDynamicsController];
-  [v12 currentVelocity];
-  [v15 previewActionsController:self didUpdatePlatterTranslation:v9 withVelocity:{v11, v13, v14}];
+  platterDynamicsController = [(_UIPreviewActionsController *)self platterDynamicsController];
+  [platterDynamicsController currentVelocity];
+  [delegate previewActionsController:self didUpdatePlatterTranslation:v9 withVelocity:{v11, v13, v14}];
 }
 
-- (CGPoint)_applyLayoutAdjustmentsForManagedViewWithPosition:(CGPoint)a3
+- (CGPoint)_applyLayoutAdjustmentsForManagedViewWithPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UIPreviewActionsController *)self previewActionsView];
-  v7 = [v6 _window];
-  [v7 _managedSafeAreaInsets];
+  y = position.y;
+  x = position.x;
+  previewActionsView = [(_UIPreviewActionsController *)self previewActionsView];
+  _window = [previewActionsView _window];
+  [_window _managedSafeAreaInsets];
   v9 = v8;
 
   if (fabs(v9) >= 2.22044605e-16)
   {
-    v10 = [(_UIPreviewActionsController *)self previewActionsView];
-    [v10 contentInsets];
+    previewActionsView2 = [(_UIPreviewActionsController *)self previewActionsView];
+    [previewActionsView2 contentInsets];
     v12 = v11;
 
     y = y - (v9 - v12);
@@ -1273,88 +1273,88 @@
   v7 = [v3 tweakedConfigurationForClass:objc_opt_class() usage:@"swipeAction"];
 
   v4 = [_UIStatesFeedbackGenerator alloc];
-  v5 = [(_UIPreviewActionsController *)self containerView];
-  v6 = [(_UIStatesFeedbackGenerator *)v4 initWithConfiguration:v7 view:v5];
+  containerView = [(_UIPreviewActionsController *)self containerView];
+  v6 = [(_UIStatesFeedbackGenerator *)v4 initWithConfiguration:v7 view:containerView];
   [(_UIPreviewActionsController *)self setSwipeFeedbackGenerator:v6];
 }
 
 - (void)_activateFeedbackIfNeeded
 {
-  v3 = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
-  v4 = [v3 isActive];
+  swipeFeedbackGenerator = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
+  isActive = [swipeFeedbackGenerator isActive];
 
-  if ((v4 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
-    v5 = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
-    [v5 activateWithCompletionBlock:0];
+    swipeFeedbackGenerator2 = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
+    [swipeFeedbackGenerator2 activateWithCompletionBlock:0];
   }
 }
 
 - (void)_deactivateFeedbackIfNeeded
 {
-  v3 = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
-  v4 = [v3 isActive];
+  swipeFeedbackGenerator = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
+  isActive = [swipeFeedbackGenerator isActive];
 
-  if (v4)
+  if (isActive)
   {
-    v5 = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
-    [v5 deactivate];
+    swipeFeedbackGenerator2 = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
+    [swipeFeedbackGenerator2 deactivate];
   }
 }
 
-- (void)_fireConfirmFeedbackIfNeededForInitialSelectionState:(BOOL)a3 finalSelectionState:(BOOL)a4
+- (void)_fireConfirmFeedbackIfNeededForInitialSelectionState:(BOOL)state finalSelectionState:(BOOL)selectionState
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
-  v8 = [v7 isActive];
+  selectionStateCopy = selectionState;
+  stateCopy = state;
+  swipeFeedbackGenerator = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
+  isActive = [swipeFeedbackGenerator isActive];
 
-  if (v8)
+  if (isActive)
   {
-    if (!v4 || v5)
+    if (!selectionStateCopy || stateCopy)
     {
-      if (!v5 || v4)
+      if (!stateCopy || selectionStateCopy)
       {
         return;
       }
 
-      v11 = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
+      swipeFeedbackGenerator2 = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
       v9 = +[_UIStatesFeedbackGeneratorSwipeActionConfiguration openState];
     }
 
     else
     {
-      v11 = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
+      swipeFeedbackGenerator2 = [(_UIPreviewActionsController *)self swipeFeedbackGenerator];
       v9 = +[_UIStatesFeedbackGeneratorSwipeActionConfiguration confirmState];
     }
 
     v10 = v9;
-    [v11 transitionToState:v9 ended:1];
+    [swipeFeedbackGenerator2 transitionToState:v9 ended:1];
   }
 }
 
-- (void)setLeadingSwipeActionViewSelected:(BOOL)a3
+- (void)setLeadingSwipeActionViewSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-  v6 = [v5 selected];
+  selectedCopy = selected;
+  leadingPreviewActionView = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+  selected = [leadingPreviewActionView selected];
 
-  v7 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
-  [v7 setSelected:v3];
+  leadingPreviewActionView2 = [(_UIPreviewActionsController *)self leadingPreviewActionView];
+  [leadingPreviewActionView2 setSelected:selectedCopy];
 
-  [(_UIPreviewActionsController *)self _fireConfirmFeedbackIfNeededForInitialSelectionState:v6 finalSelectionState:v3];
+  [(_UIPreviewActionsController *)self _fireConfirmFeedbackIfNeededForInitialSelectionState:selected finalSelectionState:selectedCopy];
 }
 
-- (void)setTrailingSwipeActionViewSelected:(BOOL)a3
+- (void)setTrailingSwipeActionViewSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-  v6 = [v5 selected];
+  selectedCopy = selected;
+  trailingPreviewActionView = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+  selected = [trailingPreviewActionView selected];
 
-  v7 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
-  [v7 setSelected:v3];
+  trailingPreviewActionView2 = [(_UIPreviewActionsController *)self trailingPreviewActionView];
+  [trailingPreviewActionView2 setSelected:selectedCopy];
 
-  [(_UIPreviewActionsController *)self _fireConfirmFeedbackIfNeededForInitialSelectionState:v6 finalSelectionState:v3];
+  [(_UIPreviewActionsController *)self _fireConfirmFeedbackIfNeededForInitialSelectionState:selected finalSelectionState:selectedCopy];
 }
 
 - (CGSize)totalPanningTranslation

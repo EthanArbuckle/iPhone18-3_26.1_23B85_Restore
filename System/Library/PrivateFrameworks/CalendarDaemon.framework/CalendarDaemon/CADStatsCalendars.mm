@@ -1,39 +1,39 @@
 @interface CADStatsCalendars
-- (BOOL)calendarUsesAuthentication:(void *)a3;
+- (BOOL)calendarUsesAuthentication:(void *)authentication;
 - (id)eventDictionaries;
-- (void)prepareWithContext:(id)a3;
-- (void)processCalendars:(id)a3 inStore:(void *)a4;
+- (void)prepareWithContext:(id)context;
+- (void)processCalendars:(id)calendars inStore:(void *)store;
 @end
 
 @implementation CADStatsCalendars
 
-- (void)prepareWithContext:(id)a3
+- (void)prepareWithContext:(id)context
 {
-  objc_storeStrong(&self->_context, a3);
-  v7 = a3;
+  objc_storeStrong(&self->_context, context);
+  contextCopy = context;
   v5 = objc_opt_new();
   calendarInfos = self->_calendarInfos;
   self->_calendarInfos = v5;
 }
 
-- (void)processCalendars:(id)a3 inStore:(void *)a4
+- (void)processCalendars:(id)calendars inStore:(void *)store
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  calendarsCopy = calendars;
   CalGetDatabaseForRecord();
   v6 = CalDatabaseGetPreferences();
-  v7 = [v6 preferences];
+  preferences = [v6 preferences];
 
   v8 = objc_alloc(MEMORY[0x277CBEB98]);
-  v24 = v7;
-  v9 = [v7 getValueForPreference:@"LastDeselectedCalendars" expectedClass:objc_opt_class()];
+  v24 = preferences;
+  v9 = [preferences getValueForPreference:@"LastDeselectedCalendars" expectedClass:objc_opt_class()];
   v10 = [v8 initWithArray:v9];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = calendarsCopy;
   v11 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
@@ -113,18 +113,18 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)calendarUsesAuthentication:(void *)a3
+- (BOOL)calendarUsesAuthentication:(void *)authentication
 {
   v4 = CalCalendarCopySubscriptionURL();
   v5 = [MEMORY[0x277CBEBC0] URLWithString:v4];
-  v6 = [v5 user];
-  if ([v6 length])
+  user = [v5 user];
+  if ([user length])
   {
     goto LABEL_2;
   }
 
-  v8 = [v5 password];
-  v9 = [v8 length];
+  password = [v5 password];
+  v9 = [password length];
 
   if (v9)
   {
@@ -132,16 +132,16 @@
     goto LABEL_6;
   }
 
-  v6 = CalCalendarCopySubCalAccountID();
-  if (!v6)
+  user = CalCalendarCopySubCalAccountID();
+  if (!user)
   {
 LABEL_12:
     v7 = 0;
     goto LABEL_3;
   }
 
-  v11 = [(CADStatCollectionContext *)self->_context accountStore];
-  v12 = [v11 accountWithIdentifier:v6];
+  accountStore = [(CADStatCollectionContext *)self->_context accountStore];
+  v12 = [accountStore accountWithIdentifier:user];
   if (!v12)
   {
 
@@ -149,8 +149,8 @@ LABEL_12:
   }
 
   v13 = v12;
-  v14 = [v12 username];
-  v15 = [v14 length];
+  username = [v12 username];
+  v15 = [username length];
 
   if (!v15)
   {

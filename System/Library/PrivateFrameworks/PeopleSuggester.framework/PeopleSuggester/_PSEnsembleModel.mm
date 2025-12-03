@@ -1,18 +1,18 @@
 @interface _PSEnsembleModel
 + (id)_feedbackDictionary;
-+ (id)_suggestionInteractionPredicatesForFirstPartyMessages:(BOOL)a3 bundleID:(id)a4 interactionRecipients:(id)a5;
-+ (id)orderedSuggestionProxiesWithProxyOrder:(id)a3 suggestionProxies:(id)a4 suggestionsWithSharePlayAddedBlock:(id)a5;
-+ (id)popFeedbackForSession:(id)a3;
-+ (void)saveFeedback:(id)a3 forSessionId:(id)a4 feedbackActionType:(int64_t)a5 transportBundleId:(id)a6 isFallbackFetch:(BOOL)a7;
-- (BOOL)_updateInteractionStatisticsForExplicitEngagement:(id)a3 interactionStatisticsConfig:(id)a4 interactionStatistics:(id)a5 sessionFeedback:(id)a6;
-- (BOOL)_updateInteractionStatisticsForImplicitEngagement:(id)a3 interactionStatisticsConfig:(id)a4 interactionStatistics:(id)a5 sessionFeedback:(id)a6;
-- (BOOL)_updateInteractionStatisticsForSpeculativeEngagement:(id)a3 interactionStatisticsConfig:(id)a4 interactionStatistics:(id)a5 sessionFeedback:(id)a6;
++ (id)_suggestionInteractionPredicatesForFirstPartyMessages:(BOOL)messages bundleID:(id)d interactionRecipients:(id)recipients;
++ (id)orderedSuggestionProxiesWithProxyOrder:(id)order suggestionProxies:(id)proxies suggestionsWithSharePlayAddedBlock:(id)block;
++ (id)popFeedbackForSession:(id)session;
++ (void)saveFeedback:(id)feedback forSessionId:(id)id feedbackActionType:(int64_t)type transportBundleId:(id)bundleId isFallbackFetch:(BOOL)fetch;
+- (BOOL)_updateInteractionStatisticsForExplicitEngagement:(id)engagement interactionStatisticsConfig:(id)config interactionStatistics:(id)statistics sessionFeedback:(id)feedback;
+- (BOOL)_updateInteractionStatisticsForImplicitEngagement:(id)engagement interactionStatisticsConfig:(id)config interactionStatistics:(id)statistics sessionFeedback:(id)feedback;
+- (BOOL)_updateInteractionStatisticsForSpeculativeEngagement:(id)engagement interactionStatisticsConfig:(id)config interactionStatistics:(id)statistics sessionFeedback:(id)feedback;
 - (BOOL)allowConcurrentReads;
-- (BOOL)areRecipientsBlockedForSuggestion:(id)a3;
+- (BOOL)areRecipientsBlockedForSuggestion:(id)suggestion;
 - (BOOL)coreMLModelNeedsDurableFeatures;
-- (BOOL)excludeSuggestionWithConversationId:(id)a3;
-- (BOOL)loadPSConfig:(id)a3;
-- (BOOL)loadPSConfigPath:(id)a3;
+- (BOOL)excludeSuggestionWithConversationId:(id)id;
+- (BOOL)loadPSConfig:(id)config;
+- (BOOL)loadPSConfigPath:(id)path;
 - (BOOL)shouldUseLegacyUI;
 - (CNContactStore)contactStore;
 - (NSArray)defaultContactKeysToFetch;
@@ -20,71 +20,71 @@
 - (_CDInteractionStore)interactionStore;
 - (_DKKnowledgeQuerying)knowledgeStore;
 - (_PSEnsembleModel)init;
-- (_PSEnsembleModel)initWithInteractionStore:(id)a3 knowledgeStore:(id)a4;
-- (id)_conversationIdForFirstInteractionAfterSharingStartDate:(id)a3 targetBundleId:(id)a4;
-- (id)_defaultPredictionsWithPredictionContext:(id)a3 trialClient:(id)a4 config:(id)a5 parentSpanId:(id)a6;
-- (id)_fallbackPredictionWithPredictionContext:(id)a3 config:(id)a4 parentSpanId:(id)a5;
-- (id)_knnZKWSuggestionsWithPredictionContext:(id)a3 modelConfiguration:(id)a4 maxSuggestions:(unint64_t)a5;
-- (id)_reMapContentTypes:(int *)a3 count:(unint64_t)a4;
-- (id)appExtensionSuggestionsFromContext:(id)a3;
-- (id)autocompleteSearchResultsWithPredictionContext:(id)a3;
+- (_PSEnsembleModel)initWithInteractionStore:(id)store knowledgeStore:(id)knowledgeStore;
+- (id)_conversationIdForFirstInteractionAfterSharingStartDate:(id)date targetBundleId:(id)id;
+- (id)_defaultPredictionsWithPredictionContext:(id)context trialClient:(id)client config:(id)config parentSpanId:(id)id;
+- (id)_fallbackPredictionWithPredictionContext:(id)context config:(id)config parentSpanId:(id)id;
+- (id)_knnZKWSuggestionsWithPredictionContext:(id)context modelConfiguration:(id)configuration maxSuggestions:(unint64_t)suggestions;
+- (id)_reMapContentTypes:(int *)types count:(unint64_t)count;
+- (id)appExtensionSuggestionsFromContext:(id)context;
+- (id)autocompleteSearchResultsWithPredictionContext:(id)context;
 - (id)candidatesForShareSheetRanking;
-- (id)familyPredictionsWithMaxSuggestions:(unint64_t)a3 predictionContext:(id)a4;
+- (id)familyPredictionsWithMaxSuggestions:(unint64_t)suggestions predictionContext:(id)context;
 - (id)fetchShareSheetSupportedBundleIDs;
-- (id)fetchSupportedBundleIDsWithPredictionContextFilters:(id)a3;
-- (id)finalSuggestionProxiesForInteractionStatistics:(id)a3 config:(id)a4 trialClient:(id)a5 context:(id)a6;
+- (id)fetchSupportedBundleIDsWithPredictionContextFilters:(id)filters;
+- (id)finalSuggestionProxiesForInteractionStatistics:(id)statistics config:(id)config trialClient:(id)client context:(id)context;
 - (id)getMeContactIdentifier;
-- (id)getModelProxiesArrayWithPredictionContext:(id)a3;
-- (id)getModelSuggestionsProxyDictWithModelProxiesArray:(id)a3;
-- (id)getPETMessageFrom:(id)a3 withConfig:(id)a4 andContext:(id)a5;
-- (id)getPhotoBasedFeaturesAsync:(id)a3 shouldProcessPicturesLive:(BOOL)a4 shouldUseVIPModel:(BOOL)a5 withTimeout:(double)a6;
-- (id)getReasonTypesFromObjects:(id)a3 limit:(unint64_t)a4;
-- (id)getSuggestionsFromInteractionsStatistics:(id)a3 withConfig:(id)a4 trialClient:(id)a5 andPredictionContext:(id)a6;
-- (id)mapsSuggestionArrayWithArray:(id)a3 appendingUniqueElementsFromArray:(id)a4 contactResolver:(id)a5 meContactId:(id)a6;
-- (id)mergedSuggestionsWithFamilySuggestions:(id)a3 shareSheetSuggestions:(id)a4 maxSuggestions:(unint64_t)a5 supportedBundleIds:(id)a6;
-- (id)predictWithMapsPredictionContext:(id)a3 maxSuggestions:(unint64_t)a4;
-- (id)predictWithPredictionContext:(id)a3 maxSuggestions:(unint64_t)a4;
-- (id)predictWithPredictionContext:(id)a3 maxSuggestions:(unint64_t)a4 contactKeysToFetch:(id)a5;
-- (id)psr_suggestionsFromSuggestionProxies:(id)a3 interactionsStatistics:(id)a4 maxSuggestions:(unint64_t)a5 predictionContext:(id)a6;
-- (id)rankedAutocompleteSuggestionsFromContext:(id)a3 candidates:(id)a4;
-- (id)rankedGlobalSuggestionsForSiriNLWithPredictionContext:(id)a3 maxSuggestions:(unint64_t)a4 interactionId:(id)a5;
-- (id)rankedHandlesFromCandidateHandles:(id)a3;
-- (id)rankedNameSuggestionsWithPredictionContext:(id)a3 name:(id)a4;
-- (id)rankedSiriMLCRHandles:(id)a3 context:(id)a4;
-- (id)rerankMapsSuggestions:(id)a3 usingPredictionContext:(id)a4 contactResolver:(id)a5;
-- (id)suggestZKWSuggestionsWithPredictionContext:(id)a3 maxSuggestions:(unint64_t)a4;
-- (id)suggestionsFromSuggestionProxies:(id)a3 supportedBundleIDs:(id)a4 contactKeysToFetch:(id)a5 meContactIdentifier:(id)a6 maxSuggestions:(unint64_t)a7;
+- (id)getModelProxiesArrayWithPredictionContext:(id)context;
+- (id)getModelSuggestionsProxyDictWithModelProxiesArray:(id)array;
+- (id)getPETMessageFrom:(id)from withConfig:(id)config andContext:(id)context;
+- (id)getPhotoBasedFeaturesAsync:(id)async shouldProcessPicturesLive:(BOOL)live shouldUseVIPModel:(BOOL)model withTimeout:(double)timeout;
+- (id)getReasonTypesFromObjects:(id)objects limit:(unint64_t)limit;
+- (id)getSuggestionsFromInteractionsStatistics:(id)statistics withConfig:(id)config trialClient:(id)client andPredictionContext:(id)context;
+- (id)mapsSuggestionArrayWithArray:(id)array appendingUniqueElementsFromArray:(id)fromArray contactResolver:(id)resolver meContactId:(id)id;
+- (id)mergedSuggestionsWithFamilySuggestions:(id)suggestions shareSheetSuggestions:(id)sheetSuggestions maxSuggestions:(unint64_t)maxSuggestions supportedBundleIds:(id)ids;
+- (id)predictWithMapsPredictionContext:(id)context maxSuggestions:(unint64_t)suggestions;
+- (id)predictWithPredictionContext:(id)context maxSuggestions:(unint64_t)suggestions;
+- (id)predictWithPredictionContext:(id)context maxSuggestions:(unint64_t)suggestions contactKeysToFetch:(id)fetch;
+- (id)psr_suggestionsFromSuggestionProxies:(id)proxies interactionsStatistics:(id)statistics maxSuggestions:(unint64_t)suggestions predictionContext:(id)context;
+- (id)rankedAutocompleteSuggestionsFromContext:(id)context candidates:(id)candidates;
+- (id)rankedGlobalSuggestionsForSiriNLWithPredictionContext:(id)context maxSuggestions:(unint64_t)suggestions interactionId:(id)id;
+- (id)rankedHandlesFromCandidateHandles:(id)handles;
+- (id)rankedNameSuggestionsWithPredictionContext:(id)context name:(id)name;
+- (id)rankedSiriMLCRHandles:(id)handles context:(id)context;
+- (id)rerankMapsSuggestions:(id)suggestions usingPredictionContext:(id)context contactResolver:(id)resolver;
+- (id)suggestZKWSuggestionsWithPredictionContext:(id)context maxSuggestions:(unint64_t)suggestions;
+- (id)suggestionsFromSuggestionProxies:(id)proxies supportedBundleIDs:(id)ds contactKeysToFetch:(id)fetch meContactIdentifier:(id)identifier maxSuggestions:(unint64_t)suggestions;
 - (id)trialIdentifier;
-- (int)_remapSingleContentTypeValue:(int)a3;
-- (int)modelProxyToVirtualFeatureStoreFeature:(id)a3;
-- (unint64_t)pruneCandidatesForRanking:(id)a3;
-- (void)addExtraInformationWithSuggestions:(id)a3 modelSuggestionProxiesDict:(id)a4;
-- (void)addSuggestedRankFeature:(id)a3 interactionsStatistics:(id)a4;
-- (void)addSupportedBundleIDs:(id)a3;
-- (void)addTrialInfoToPredictionContext:(id)a3 withExperiment:(id)a4;
-- (void)addUTIInfo:(id)a3 predictionContext:(id)a4;
-- (void)evaluateCandidates:(id)a3 psrMLModel:(id)a4;
+- (int)_remapSingleContentTypeValue:(int)value;
+- (int)modelProxyToVirtualFeatureStoreFeature:(id)feature;
+- (unint64_t)pruneCandidatesForRanking:(id)ranking;
+- (void)addExtraInformationWithSuggestions:(id)suggestions modelSuggestionProxiesDict:(id)dict;
+- (void)addSuggestedRankFeature:(id)feature interactionsStatistics:(id)statistics;
+- (void)addSupportedBundleIDs:(id)ds;
+- (void)addTrialInfoToPredictionContext:(id)context withExperiment:(id)experiment;
+- (void)addUTIInfo:(id)info predictionContext:(id)context;
+- (void)evaluateCandidates:(id)candidates psrMLModel:(id)model;
 - (void)freeCaches;
 - (void)freeCachesIfNotCoreDuetDaemon;
-- (void)getCoreMLSuggestionProxiesWithPredictionContext:(id)a3 modelSuggestionProxiesDict:(id)a4 candidateToFeatureVectorDictGetter:(id)a5;
-- (void)getHeuristicSuggestionProxies:(id)a3 supportedBundleIDs:(id)a4 modelSuggestionProxiesDict:(id)a5;
-- (void)getKnnSuggestionProxies:(id)a3 supportedBundleIDs:(id)a4 modelSuggestionProxiesDict:(id)a5;
+- (void)getCoreMLSuggestionProxiesWithPredictionContext:(id)context modelSuggestionProxiesDict:(id)dict candidateToFeatureVectorDictGetter:(id)getter;
+- (void)getHeuristicSuggestionProxies:(id)proxies supportedBundleIDs:(id)ds modelSuggestionProxiesDict:(id)dict;
+- (void)getKnnSuggestionProxies:(id)proxies supportedBundleIDs:(id)ds modelSuggestionProxiesDict:(id)dict;
 - (void)getMeContactIdentifier;
-- (void)getOtherSuggestionProxies:(id)a3 supportedBundleIDs:(id)a4 modelSuggestionProxiesDict:(id)a5;
-- (void)intializeKNNContactRankerModelWithInteractionStore:(id)a3 knowledgeStore:(id)a4;
+- (void)getOtherSuggestionProxies:(id)proxies supportedBundleIDs:(id)ds modelSuggestionProxiesDict:(id)dict;
+- (void)intializeKNNContactRankerModelWithInteractionStore:(id)store knowledgeStore:(id)knowledgeStore;
 - (void)loadDefaultPSConfig;
-- (void)logPipeline:(id)a3 withPipelineStage:(id)a4 andSessionID:(id)a5 andCandidateNames:(id)a6;
-- (void)logPipelineWithSuggestions:(id)a3 interactionsStatistics:(id)a4 pipelineStage:(id)a5 sessionID:(id)a6;
+- (void)logPipeline:(id)pipeline withPipelineStage:(id)stage andSessionID:(id)d andCandidateNames:(id)names;
+- (void)logPipelineWithSuggestions:(id)suggestions interactionsStatistics:(id)statistics pipelineStage:(id)stage sessionID:(id)d;
 - (void)populateCaches;
-- (void)populateCachesWithSupportedBundleIDs:(id)a3;
-- (void)psrDataCollectionForContext:(id)a3 timeToWaitInSeconds:(int)a4 interactionStatisticsConfig:(id)a5 interactionStatistics:(id)a6;
+- (void)populateCachesWithSupportedBundleIDs:(id)ds;
+- (void)psrDataCollectionForContext:(id)context timeToWaitInSeconds:(int)seconds interactionStatisticsConfig:(id)config interactionStatistics:(id)statistics;
 - (void)refreshCaches;
 - (void)registerWithTrial;
-- (void)sendDataCollectionMessageWith:(id)a3;
-- (void)sendDataToPETAsync:(id)a3 withConfig:(id)a4 andContext:(id)a5;
-- (void)setupAeroMLPipelineLoggerWithModel:(id)a3;
+- (void)sendDataCollectionMessageWith:(id)with;
+- (void)sendDataToPETAsync:(id)async withConfig:(id)config andContext:(id)context;
+- (void)setupAeroMLPipelineLoggerWithModel:(id)model;
 - (void)updateFactorLevels;
-- (void)updateTrialID:(id)a3;
+- (void)updateTrialID:(id)d;
 @end
 
 @implementation _PSEnsembleModel
@@ -99,9 +99,9 @@
   {
     *&v2->_lock._os_unfair_lock_opaque = 0;
     v2->_populateCacheLock._os_unfair_lock_opaque = 0;
-    v4 = [(_PSEnsembleModel *)v2 interactionStore];
-    v5 = [(_PSEnsembleModel *)v3 knowledgeStore];
-    [(_PSEnsembleModel *)v3 initializeEnsembleModelsWithInteractionStore:v4 knowledgeStore:v5];
+    interactionStore = [(_PSEnsembleModel *)v2 interactionStore];
+    knowledgeStore = [(_PSEnsembleModel *)v3 knowledgeStore];
+    [(_PSEnsembleModel *)v3 initializeEnsembleModelsWithInteractionStore:interactionStore knowledgeStore:knowledgeStore];
 
     [(_PSEnsembleModel *)v3 loadDefaultPSConfig];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -109,10 +109,10 @@
     queue = v3->_queue;
     v3->_queue = v7;
 
-    v9 = [MEMORY[0x1E696AAE8] mainBundle];
-    v10 = [v9 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     v11 = +[_PSConstants mobileCoreDuetBundleId];
-    v12 = [v10 isEqual:v11];
+    v12 = [bundleIdentifier isEqual:v11];
 
     if (v12)
     {
@@ -133,8 +133,8 @@
   if (!interactionStore)
   {
     v4 = MEMORY[0x1E69978F8];
-    v5 = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
-    v6 = [v4 storeWithDirectory:v5 readOnly:1];
+    defaultDatabaseDirectory = [MEMORY[0x1E69978F8] defaultDatabaseDirectory];
+    v6 = [v4 storeWithDirectory:defaultDatabaseDirectory readOnly:1];
     v7 = self->_interactionStore;
     self->_interactionStore = v6;
 
@@ -151,18 +151,18 @@
 - (BOOL)allowConcurrentReads
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v4 = +[_PSConstants mobileCoreDuetBundleId];
   v9[0] = v4;
   v5 = +[_PSConstants macKnowledgeAgentBundleId];
   v9[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
-  LOBYTE(v2) = [v6 containsObject:v3];
+  LOBYTE(mainBundle) = [v6 containsObject:bundleIdentifier];
 
   v7 = *MEMORY[0x1E69E9840];
-  return v2;
+  return mainBundle;
 }
 
 - (_DKKnowledgeQuerying)knowledgeStore
@@ -171,9 +171,9 @@
   knowledgeStore = self->_knowledgeStore;
   if (!knowledgeStore)
   {
-    v4 = [MEMORY[0x1E69979A0] knowledgeStore];
+    knowledgeStore = [MEMORY[0x1E69979A0] knowledgeStore];
     v5 = self->_knowledgeStore;
-    self->_knowledgeStore = v4;
+    self->_knowledgeStore = knowledgeStore;
 
     knowledgeStore = self->_knowledgeStore;
   }
@@ -186,13 +186,13 @@
 
 - (id)fetchShareSheetSupportedBundleIDs
 {
-  v3 = [(_PSEnsembleModel *)self peopleSuggesterDefaults];
-  -[_PSEnsembleModel setAllowNonSupportedBundleIDs:](self, "setAllowNonSupportedBundleIDs:", [v3 BOOLForKey:@"_PSAllowNonSupportedBundleIDs"]);
+  peopleSuggesterDefaults = [(_PSEnsembleModel *)self peopleSuggesterDefaults];
+  -[_PSEnsembleModel setAllowNonSupportedBundleIDs:](self, "setAllowNonSupportedBundleIDs:", [peopleSuggesterDefaults BOOLForKey:@"_PSAllowNonSupportedBundleIDs"]);
 
   v4 = _PSShareSheetSuggestionBundleIDs([(_PSEnsembleModel *)self allowNonSupportedBundleIDs]);
-  v5 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v5;
+  return allObjects;
 }
 
 - (NSUserDefaults)peopleSuggesterDefaults
@@ -265,60 +265,60 @@
   return v3;
 }
 
-- (_PSEnsembleModel)initWithInteractionStore:(id)a3 knowledgeStore:(id)a4
+- (_PSEnsembleModel)initWithInteractionStore:(id)store knowledgeStore:(id)knowledgeStore
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  knowledgeStoreCopy = knowledgeStore;
   v9 = [(_PSEnsembleModel *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_interactionStore, a3);
-    [(_PSEnsembleModel *)v10 initializeEnsembleModelsWithInteractionStore:v7 knowledgeStore:v8];
+    objc_storeStrong(&v9->_interactionStore, store);
+    [(_PSEnsembleModel *)v10 initializeEnsembleModelsWithInteractionStore:storeCopy knowledgeStore:knowledgeStoreCopy];
   }
 
   return v10;
 }
 
-+ (void)saveFeedback:(id)a3 forSessionId:(id)a4 feedbackActionType:(int64_t)a5 transportBundleId:(id)a6 isFallbackFetch:(BOOL)a7
++ (void)saveFeedback:(id)feedback forSessionId:(id)id feedbackActionType:(int64_t)type transportBundleId:(id)bundleId isFallbackFetch:(BOOL)fetch
 {
   v29 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  feedbackCopy = feedback;
+  idCopy = id;
+  bundleIdCopy = bundleId;
   v14 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v24 = v11;
+    v24 = feedbackCopy;
     v25 = 2112;
-    v26 = v12;
+    v26 = idCopy;
     v27 = 2048;
-    v28 = a5;
+    typeCopy = type;
     _os_log_impl(&dword_1B5ED1000, v14, OS_LOG_TYPE_INFO, "Received feedback in coreduetd %@,%@,%ld", buf, 0x20u);
   }
 
-  if (v12)
+  if (idCopy)
   {
     v15 = +[_PSEnsembleModel _feedbackDictionary];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __99___PSEnsembleModel_saveFeedback_forSessionId_feedbackActionType_transportBundleId_isFallbackFetch___block_invoke;
     v17[3] = &unk_1E7C247E0;
-    v18 = v11;
-    v21 = a5;
-    v19 = v13;
-    v22 = a7;
-    v20 = v12;
+    v18 = feedbackCopy;
+    typeCopy2 = type;
+    v19 = bundleIdCopy;
+    fetchCopy = fetch;
+    v20 = idCopy;
     [v15 runWithLockAcquired:v17];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)popFeedbackForSession:(id)a3
++ (id)popFeedbackForSession:(id)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -331,7 +331,7 @@
   v8[2] = __42___PSEnsembleModel_popFeedbackForSession___block_invoke;
   v8[3] = &unk_1E7C24808;
   v10 = &v11;
-  v5 = v3;
+  v5 = sessionCopy;
   v9 = v5;
   [v4 runWithLockAcquired:v8];
 
@@ -341,11 +341,11 @@
   return v6;
 }
 
-- (BOOL)loadPSConfigPath:(id)a3
+- (BOOL)loadPSConfigPath:(id)path
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4];
+  pathCopy = path;
+  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
   v13 = 0;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v5 error:&v13];
   v7 = v13;
@@ -365,7 +365,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = pathCopy;
       _os_log_impl(&dword_1B5ED1000, v10, OS_LOG_TYPE_INFO, "Trial: loaded psConfig from:%@", buf, 0xCu);
     }
   }
@@ -374,16 +374,16 @@
   return v9;
 }
 
-- (BOOL)loadPSConfig:(id)a3
+- (BOOL)loadPSConfig:(id)config
 {
-  v5 = a3;
-  objc_storeStrong(&self->_psConfig, a3);
+  configCopy = config;
+  objc_storeStrong(&self->_psConfig, config);
   psConfig = self->_psConfig;
   if (psConfig)
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v5 objectForKeyedSubscript:v8];
+    v9 = [configCopy objectForKeyedSubscript:v8];
 
     v10 = [v9 objectForKeyedSubscript:@"maxCandidatesFromShareSheetCache"];
     v11 = v10;
@@ -439,59 +439,59 @@
     allOtherInteractionCacheMechanism = self->_allOtherInteractionCacheMechanism;
     self->_allOtherInteractionCacheMechanism = &unk_1F2D8C138;
 
-    v22 = [(_PSEnsembleModel *)self knnModel];
+    knnModel = [(_PSEnsembleModel *)self knnModel];
 
-    if (v22)
+    if (knnModel)
     {
-      v23 = [(_PSEnsembleModel *)self knnModel];
-      [v23 updateModelProperties:self->_psConfig];
+      knnModel2 = [(_PSEnsembleModel *)self knnModel];
+      [knnModel2 updateModelProperties:self->_psConfig];
     }
 
-    v24 = [(_PSEnsembleModel *)self knnMapsModel];
+    knnMapsModel = [(_PSEnsembleModel *)self knnMapsModel];
 
-    if (v24)
+    if (knnMapsModel)
     {
-      v25 = [(_PSEnsembleModel *)self knnMapsModel];
-      [v25 updateModelProperties:self->_psConfig];
+      knnMapsModel2 = [(_PSEnsembleModel *)self knnMapsModel];
+      [knnMapsModel2 updateModelProperties:self->_psConfig];
     }
 
-    v26 = [(_PSEnsembleModel *)self knnZkwModel];
+    knnZkwModel = [(_PSEnsembleModel *)self knnZkwModel];
 
-    if (v26)
+    if (knnZkwModel)
     {
-      v27 = [(_PSEnsembleModel *)self knnZkwModel];
-      [v27 updateModelProperties:self->_psConfig];
+      knnZkwModel2 = [(_PSEnsembleModel *)self knnZkwModel];
+      [knnZkwModel2 updateModelProperties:self->_psConfig];
     }
 
-    v28 = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
+    knnNameOrContactRankerModel = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
 
-    if (v28)
+    if (knnNameOrContactRankerModel)
     {
-      v29 = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
-      [v29 updateModelProperties:self->_psConfig];
+      knnNameOrContactRankerModel2 = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
+      [knnNameOrContactRankerModel2 updateModelProperties:self->_psConfig];
     }
 
-    v30 = [(_PSEnsembleModel *)self heuristics];
+    heuristics = [(_PSEnsembleModel *)self heuristics];
 
-    if (v30)
+    if (heuristics)
     {
-      v31 = [(_PSEnsembleModel *)self heuristics];
-      [v31 updateModelProperties:self->_psConfig];
+      heuristics2 = [(_PSEnsembleModel *)self heuristics];
+      [heuristics2 updateModelProperties:self->_psConfig];
     }
   }
 
   return psConfig != 0;
 }
 
-- (void)updateTrialID:(id)a3
+- (void)updateTrialID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v5 = [dCopy countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v5)
   {
     v7 = v5;
@@ -505,31 +505,31 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dCopy);
         }
 
         v10 = *(*(&v18 + 1) + 8 * v9);
         v11 = +[_PSLogging generalChannel];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
-          v14 = [v10 reasonType];
-          v15 = [v10 reason];
+          reasonType = [v10 reasonType];
+          reason = [v10 reason];
           *buf = v17;
-          v23 = v14;
+          v23 = reasonType;
           v24 = 2112;
-          v25 = v15;
+          v25 = reason;
           _os_log_debug_impl(&dword_1B5ED1000, v11, OS_LOG_TYPE_DEBUG, "Suggestion ReasonType:%@, Reason:%@", buf, 0x16u);
         }
 
-        v12 = [(_PSEnsembleModel *)self trialID];
-        v13 = [v12 copy];
+        trialID = [(_PSEnsembleModel *)self trialID];
+        v13 = [trialID copy];
         [v10 setTrialID:v13];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v7 = [dCopy countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v7);
@@ -602,9 +602,9 @@
   }
 
   v4 = [(TRIClient *)self->_trialClient levelForFactor:@"coreMLModelNeedsDurableFeatures" withNamespaceName:@"COREML_SYSTEMS_PEOPLE_SUGGESTER"];
-  v5 = [v4 BOOLeanValue];
+  bOOLeanValue = [v4 BOOLeanValue];
 
-  return v5;
+  return bOOLeanValue;
 }
 
 - (NSArray)defaultContactKeysToFetch
@@ -628,14 +628,14 @@
 
 - (void)populateCaches
 {
-  v3 = [(_PSEnsembleModel *)self fetchShareSheetSupportedBundleIDs];
-  [(_PSEnsembleModel *)self populateCachesWithSupportedBundleIDs:v3];
+  fetchShareSheetSupportedBundleIDs = [(_PSEnsembleModel *)self fetchShareSheetSupportedBundleIDs];
+  [(_PSEnsembleModel *)self populateCachesWithSupportedBundleIDs:fetchShareSheetSupportedBundleIDs];
 }
 
-- (void)populateCachesWithSupportedBundleIDs:(id)a3
+- (void)populateCachesWithSupportedBundleIDs:(id)ds
 {
   v166[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v5))
   {
@@ -643,28 +643,28 @@
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSEnsembleModel_populateCachesWithSupportedBundleIDs", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v148 = [(_PSEnsembleModel *)self interactionStore];
-  v6 = [(_PSEnsembleModel *)self contactStore];
-  v147 = [(_PSEnsembleModel *)self knowledgeStore];
+  interactionStore = [(_PSEnsembleModel *)self interactionStore];
+  contactStore = [(_PSEnsembleModel *)self contactStore];
+  knowledgeStore = [(_PSEnsembleModel *)self knowledgeStore];
   v7 = [_PSContactResolver alloc];
-  v8 = [(_PSEnsembleModel *)self defaultContactKeysToFetch];
-  v145 = v6;
-  v9 = [(_PSContactResolver *)v7 initWithContactStore:v6 keysToFetch:v8];
+  defaultContactKeysToFetch = [(_PSEnsembleModel *)self defaultContactKeysToFetch];
+  v145 = contactStore;
+  v9 = [(_PSContactResolver *)v7 initWithContactStore:contactStore keysToFetch:defaultContactKeysToFetch];
   [(_PSEnsembleModel *)self setContactResolver:v9];
 
   os_unfair_lock_lock(&self->_populateCacheLock);
-  v10 = [MEMORY[0x1E695DFD8] setWithArray:v4];
-  v11 = [(_PSEnsembleModel *)self cachedSupportedBundleIDs];
-  if (v11 && (v12 = v11, -[_PSEnsembleModel cachedSupportedBundleIDs](self, "cachedSupportedBundleIDs"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v10 isSubsetOfSet:v13], v13, v12, (v14 & 1) == 0))
+  v10 = [MEMORY[0x1E695DFD8] setWithArray:dsCopy];
+  cachedSupportedBundleIDs = [(_PSEnsembleModel *)self cachedSupportedBundleIDs];
+  if (cachedSupportedBundleIDs && (v12 = cachedSupportedBundleIDs, -[_PSEnsembleModel cachedSupportedBundleIDs](self, "cachedSupportedBundleIDs"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v10 isSubsetOfSet:v13], v13, v12, (v14 & 1) == 0))
   {
-    v15 = v4;
+    v15 = dsCopy;
     [(_PSEnsembleModel *)self setMessageInteractionCache:0];
     [(_PSEnsembleModel *)self setShareInteractionCache:0];
   }
 
   else
   {
-    v15 = v4;
+    v15 = dsCopy;
     v16 = [v10 copy];
     [(_PSEnsembleModel *)self setCachedSupportedBundleIDs:v16];
   }
@@ -699,11 +699,11 @@
   v144 = v25;
   v160 = v144;
   v146 = MEMORY[0x1B8C8C060](v157);
-  v28 = [(_PSEnsembleModel *)self messageInteractionCache];
+  messageInteractionCache = [(_PSEnsembleModel *)self messageInteractionCache];
 
   v141 = v17;
   v142 = v26;
-  if (v28)
+  if (messageInteractionCache)
   {
     v29 = 0;
   }
@@ -725,17 +725,17 @@
     [v22 addObject:v35];
 
     v29 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v22];
-    v36 = [_PSInteractionStoreUtils interactionCacheFromStore:v148 size:350 queryPredicate:v29 filterBlock:v26];
+    v36 = [_PSInteractionStoreUtils interactionCacheFromStore:interactionStore size:350 queryPredicate:v29 filterBlock:v26];
     [(_PSEnsembleModel *)self setMessageInteractionCache:v36];
   }
 
-  v37 = [(_PSEnsembleModel *)self shareInteractionCache];
+  shareInteractionCache = [(_PSEnsembleModel *)self shareInteractionCache];
 
   v38 = v15;
-  if (v37)
+  if (shareInteractionCache)
   {
     v139 = 0;
-    v39 = v148;
+    v39 = interactionStore;
   }
 
   else
@@ -747,18 +747,18 @@
     v43 = [v41 predicateWithFormat:@"(startDate >= %@)", v42];
     [v40 addObject:v43];
 
-    v44 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(mechanism IN %@)", v143];
-    [v40 addObject:v44];
+    v143 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(mechanism IN %@)", v143];
+    [v40 addObject:v143];
 
     v45 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(direction IN %@)", v27];
     [v40 addObject:v45];
 
-    v46 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(targetBundleId IN %@)", v144];
-    [v40 addObject:v46];
+    v144 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(targetBundleId IN %@)", v144];
+    [v40 addObject:v144];
 
     [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v40];
-    v139 = v39 = v148;
-    v47 = [_PSInteractionStoreUtils interactionCacheFromStore:"interactionCacheFromStore:size:queryPredicate:filterBlock:" size:v148 queryPredicate:350 filterBlock:?];
+    v139 = v39 = interactionStore;
+    v47 = [_PSInteractionStoreUtils interactionCacheFromStore:"interactionCacheFromStore:size:queryPredicate:filterBlock:" size:interactionStore queryPredicate:350 filterBlock:?];
     [(_PSEnsembleModel *)self setShareInteractionCache:v47];
 
     v22 = v40;
@@ -766,11 +766,11 @@
 
   v138 = v27;
   v140 = v24;
-  v48 = [(_PSEnsembleModel *)self contactMonitor];
+  contactMonitor = [(_PSEnsembleModel *)self contactMonitor];
 
-  if (!v48)
+  if (!contactMonitor)
   {
-    v49 = [[_PSInteractionAndContactMonitor alloc] initWithInteractionStore:v39 contactStore:v6];
+    v49 = [[_PSInteractionAndContactMonitor alloc] initWithInteractionStore:v39 contactStore:contactStore];
     [(_PSEnsembleModel *)self setContactMonitor:v49];
 
     v50 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -784,16 +784,16 @@
     dispatch_async(v51, block);
   }
 
-  v52 = [(_PSEnsembleModel *)self knnModel];
-  if (!v52)
+  knnModel = [(_PSEnsembleModel *)self knnModel];
+  if (!knnModel)
   {
     goto LABEL_17;
   }
 
-  v53 = v52;
+  v53 = knnModel;
   v54 = MEMORY[0x1E695DFD8];
-  v55 = [(_PSEnsembleModel *)self knnModel];
-  [v55 filterBundleIds];
+  knnModel2 = [(_PSEnsembleModel *)self knnModel];
+  [knnModel2 filterBundleIds];
   v57 = v56 = v38;
   v58 = [v54 setWithArray:v57];
   [MEMORY[0x1E695DFD8] setWithArray:v56];
@@ -805,49 +805,49 @@
   v22 = v59;
 
   v38 = v56;
-  v39 = v148;
+  v39 = interactionStore;
 
   if ((v62 & 1) == 0)
   {
 LABEL_17:
     v63 = [_PSKNNModel alloc];
-    v64 = [(_PSEnsembleModel *)self contactResolver];
-    v65 = [(_PSEnsembleModel *)self messageInteractionCache];
-    v66 = [(_PSEnsembleModel *)self shareInteractionCache];
-    v67 = [(_PSKNNModel *)v63 initWithK:100 interactionStore:v39 filterByBundleIds:v38 knowledgeStore:v147 contactResolver:v64 messageInteractionCache:v65 shareInteractionCache:v66];
+    contactResolver = [(_PSEnsembleModel *)self contactResolver];
+    messageInteractionCache2 = [(_PSEnsembleModel *)self messageInteractionCache];
+    shareInteractionCache2 = [(_PSEnsembleModel *)self shareInteractionCache];
+    v67 = [(_PSKNNModel *)v63 initWithK:100 interactionStore:v39 filterByBundleIds:v38 knowledgeStore:knowledgeStore contactResolver:contactResolver messageInteractionCache:messageInteractionCache2 shareInteractionCache:shareInteractionCache2];
     [(_PSEnsembleModel *)self setKnnModel:v67];
 
-    v68 = [(_PSEnsembleModel *)self knnModel];
-    v69 = [(_PSEnsembleModel *)self psConfig];
-    [v68 updateModelProperties:v69];
+    knnModel3 = [(_PSEnsembleModel *)self knnModel];
+    psConfig = [(_PSEnsembleModel *)self psConfig];
+    [knnModel3 updateModelProperties:psConfig];
   }
 
-  v70 = [(_PSEnsembleModel *)self knnZkwModel];
+  knnZkwModel = [(_PSEnsembleModel *)self knnZkwModel];
 
-  v71 = v147;
-  if (!v70)
+  v71 = knowledgeStore;
+  if (!knnZkwModel)
   {
     v72 = [_PSKNNModel alloc];
-    v73 = [(_PSEnsembleModel *)self contactResolver];
-    v74 = [(_PSEnsembleModel *)self messageInteractionCache];
-    v75 = [(_PSEnsembleModel *)self shareInteractionCache];
-    v76 = [(_PSKNNModel *)v72 initWithK:500 interactionStore:v39 filterByBundleIds:v38 knowledgeStore:v147 contactResolver:v73 messageInteractionCache:v74 shareInteractionCache:v75];
+    contactResolver2 = [(_PSEnsembleModel *)self contactResolver];
+    messageInteractionCache3 = [(_PSEnsembleModel *)self messageInteractionCache];
+    shareInteractionCache3 = [(_PSEnsembleModel *)self shareInteractionCache];
+    v76 = [(_PSKNNModel *)v72 initWithK:500 interactionStore:v39 filterByBundleIds:v38 knowledgeStore:knowledgeStore contactResolver:contactResolver2 messageInteractionCache:messageInteractionCache3 shareInteractionCache:shareInteractionCache3];
     [(_PSEnsembleModel *)self setKnnZkwModel:v76];
 
-    v77 = [(_PSEnsembleModel *)self knnZkwModel];
-    v78 = [(_PSEnsembleModel *)self psConfig];
-    [v77 updateModelProperties:v78];
+    knnZkwModel2 = [(_PSEnsembleModel *)self knnZkwModel];
+    psConfig2 = [(_PSEnsembleModel *)self psConfig];
+    [knnZkwModel2 updateModelProperties:psConfig2];
 
-    v79 = [(_PSEnsembleModel *)self zkwFTOrchestrator];
-    if (v79)
+    zkwFTOrchestrator = [(_PSEnsembleModel *)self zkwFTOrchestrator];
+    if (zkwFTOrchestrator)
     {
     }
 
     else if (getuid())
     {
       v80 = [_PSFTZKWOrchestrator alloc];
-      v81 = [(_PSEnsembleModel *)self knnZkwModel];
-      v82 = [(_PSFTZKWOrchestrator *)v80 initWithKNNModel:v81 interactionStore:v39];
+      knnZkwModel3 = [(_PSEnsembleModel *)self knnZkwModel];
+      v82 = [(_PSFTZKWOrchestrator *)v80 initWithKNNModel:knnZkwModel3 interactionStore:v39];
       [(_PSEnsembleModel *)self setZkwFTOrchestrator:v82];
 
       v155[0] = MEMORY[0x1E69E9820];
@@ -856,55 +856,55 @@ LABEL_17:
       v155[3] = &unk_1E7C24880;
       v155[4] = self;
       [_PSFTZKWTrialWrapper runWithData:v155];
-      v83 = [(_PSEnsembleModel *)self zkwFTOrchestrator];
-      [v83 populateCaches];
+      zkwFTOrchestrator2 = [(_PSEnsembleModel *)self zkwFTOrchestrator];
+      [zkwFTOrchestrator2 populateCaches];
     }
   }
 
-  v84 = [(_PSEnsembleModel *)self knnSiriNLContactRankerModel];
+  knnSiriNLContactRankerModel = [(_PSEnsembleModel *)self knnSiriNLContactRankerModel];
 
-  if (!v84)
+  if (!knnSiriNLContactRankerModel)
   {
     v85 = [_PSKNNModel alloc];
-    v86 = [(_PSEnsembleModel *)self contactResolver];
-    v87 = [(_PSEnsembleModel *)self messageInteractionCache];
-    v88 = [(_PSEnsembleModel *)self shareInteractionCache];
-    v89 = [(_PSKNNModel *)v85 initWithK:2000 interactionStore:v39 filterByBundleIds:v38 knowledgeStore:v147 contactResolver:v86 messageInteractionCache:v87 shareInteractionCache:v88];
+    contactResolver3 = [(_PSEnsembleModel *)self contactResolver];
+    messageInteractionCache4 = [(_PSEnsembleModel *)self messageInteractionCache];
+    shareInteractionCache4 = [(_PSEnsembleModel *)self shareInteractionCache];
+    v89 = [(_PSKNNModel *)v85 initWithK:2000 interactionStore:v39 filterByBundleIds:v38 knowledgeStore:knowledgeStore contactResolver:contactResolver3 messageInteractionCache:messageInteractionCache4 shareInteractionCache:shareInteractionCache4];
     [(_PSEnsembleModel *)self setKnnSiriNLContactRankerModel:v89];
 
-    v90 = [(_PSEnsembleModel *)self knnSiriNLContactRankerModel];
-    v91 = [(_PSEnsembleModel *)self psConfig];
-    [v90 updateModelProperties:v91];
+    knnSiriNLContactRankerModel2 = [(_PSEnsembleModel *)self knnSiriNLContactRankerModel];
+    psConfig3 = [(_PSEnsembleModel *)self psConfig];
+    [knnSiriNLContactRankerModel2 updateModelProperties:psConfig3];
   }
 
-  v92 = [(_PSEnsembleModel *)self heuristics];
+  heuristics = [(_PSEnsembleModel *)self heuristics];
 
-  if (!v92)
+  if (!heuristics)
   {
     v93 = [_PSHeuristics alloc];
-    v94 = [(_PSEnsembleModel *)self contactResolver];
-    v95 = [(_PSEnsembleModel *)self cachedSupportedBundleIDs];
-    v96 = [(_PSEnsembleModel *)self messageInteractionCache];
-    v97 = [(_PSHeuristics *)v93 initWithKnowledgeStore:v147 interactionStore:v39 contactResolver:v94 shareSheetSupportedBundleIds:v95 messageInteractionCache:v96];
+    contactResolver4 = [(_PSEnsembleModel *)self contactResolver];
+    cachedSupportedBundleIDs2 = [(_PSEnsembleModel *)self cachedSupportedBundleIDs];
+    messageInteractionCache5 = [(_PSEnsembleModel *)self messageInteractionCache];
+    v97 = [(_PSHeuristics *)v93 initWithKnowledgeStore:knowledgeStore interactionStore:v39 contactResolver:contactResolver4 shareSheetSupportedBundleIds:cachedSupportedBundleIDs2 messageInteractionCache:messageInteractionCache5];
     [(_PSEnsembleModel *)self setHeuristics:v97];
 
-    v98 = [(_PSEnsembleModel *)self heuristics];
-    v99 = [(_PSEnsembleModel *)self psConfig];
-    [v98 updateModelProperties:v99];
+    heuristics2 = [(_PSEnsembleModel *)self heuristics];
+    psConfig4 = [(_PSEnsembleModel *)self psConfig];
+    [heuristics2 updateModelProperties:psConfig4];
   }
 
-  v100 = [(_PSEnsembleModel *)self coreMLScoringModel];
+  coreMLScoringModel = [(_PSEnsembleModel *)self coreMLScoringModel];
   v101 = v140;
   v102 = v142;
-  if (!v100)
+  if (!coreMLScoringModel)
   {
     if (!_os_feature_enabled_impl())
     {
       goto LABEL_31;
     }
 
-    v100 = objc_alloc_init(_PSCoreMLScoringModel);
-    [(_PSEnsembleModel *)self setCoreMLScoringModel:v100];
+    coreMLScoringModel = objc_alloc_init(_PSCoreMLScoringModel);
+    [(_PSEnsembleModel *)self setCoreMLScoringModel:coreMLScoringModel];
   }
 
 LABEL_31:
@@ -924,24 +924,24 @@ LABEL_31:
 
       v107 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:86400.0];
       v108 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-14515200.0];
-      v109 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(startDate <= %@)", v107];
-      [v104 addObject:v109];
+      v107 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(startDate <= %@)", v107];
+      [v104 addObject:v107];
 
       v136 = v108;
-      v110 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%@ <= startDate)", v108];
-      [v104 addObject:v110];
+      v108 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%@ <= startDate)", v108];
+      [v104 addObject:v108];
 
-      v111 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(direction IN %@)", v106];
-      [v104 addObject:v111];
+      v106 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(direction IN %@)", v106];
+      [v104 addObject:v106];
 
       v112 = v105;
-      v113 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(mechanism IN %@)", v105];
-      [v104 addObject:v113];
+      v105 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(mechanism IN %@)", v105];
+      [v104 addObject:v105];
 
       v114 = MEMORY[0x1E696AE18];
       v115 = +[_PSConstants contactsAutocompleteBundleId];
-      v116 = [v114 predicateWithFormat:@"(bundleId != %@)", v115];
-      [v104 addObject:v116];
+      v115 = [v114 predicateWithFormat:@"(bundleId != %@)", v115];
+      [v104 addObject:v115];
 
       if (v139)
       {
@@ -970,20 +970,20 @@ LABEL_31:
       v151 = v120;
       v133 = v107;
       v152 = v133;
-      v121 = [_PSInteractionStoreUtils interactionCacheFromStore:v148 size:100 queryPredicate:v119 filterBlock:v149];
+      v121 = [_PSInteractionStoreUtils interactionCacheFromStore:interactionStore size:100 queryPredicate:v119 filterBlock:v149];
       allOtherInteractionCache = self->_allOtherInteractionCache;
       self->_allOtherInteractionCache = v121;
 
       v123 = [_PSFeatureCache alloc];
-      v124 = [(_PSEnsembleModel *)self candidatesForShareSheetRanking];
-      v125 = [(_PSEnsembleModel *)self messageInteractionCache];
-      v166[0] = v125;
-      v126 = [(_PSEnsembleModel *)self shareInteractionCache];
-      v166[1] = v126;
-      v127 = [(_PSEnsembleModel *)self allOtherInteractionCache];
-      v166[2] = v127;
+      candidatesForShareSheetRanking = [(_PSEnsembleModel *)self candidatesForShareSheetRanking];
+      messageInteractionCache6 = [(_PSEnsembleModel *)self messageInteractionCache];
+      v166[0] = messageInteractionCache6;
+      shareInteractionCache5 = [(_PSEnsembleModel *)self shareInteractionCache];
+      v166[1] = shareInteractionCache5;
+      allOtherInteractionCache = [(_PSEnsembleModel *)self allOtherInteractionCache];
+      v166[2] = allOtherInteractionCache;
       v128 = [MEMORY[0x1E695DEC8] arrayWithObjects:v166 count:3];
-      v129 = [(_PSFeatureCache *)v123 initWithPredictionContext:0 candidates:v124 caches:v128 store:self->_interactionStore];
+      v129 = [(_PSFeatureCache *)v123 initWithPredictionContext:0 candidates:candidatesForShareSheetRanking caches:v128 store:self->_interactionStore];
       featureCache = self->_featureCache;
       self->_featureCache = v129;
 
@@ -995,8 +995,8 @@ LABEL_31:
       }
 
       v38 = v137;
-      v71 = v147;
-      v39 = v148;
+      v71 = knowledgeStore;
+      v39 = interactionStore;
       v101 = v140;
       v103 = v141;
       v102 = v142;
@@ -1015,53 +1015,53 @@ LABEL_31:
   v132 = *MEMORY[0x1E69E9840];
 }
 
-- (void)intializeKNNContactRankerModelWithInteractionStore:(id)a3 knowledgeStore:(id)a4
+- (void)intializeKNNContactRankerModelWithInteractionStore:(id)store knowledgeStore:(id)knowledgeStore
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
+  storeCopy = store;
+  knowledgeStoreCopy = knowledgeStore;
+  knnNameOrContactRankerModel = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
 
-  if (!v7)
+  if (!knnNameOrContactRankerModel)
   {
-    v8 = [(_PSEnsembleModel *)self fetchShareSheetSupportedBundleIDs];
+    fetchShareSheetSupportedBundleIDs = [(_PSEnsembleModel *)self fetchShareSheetSupportedBundleIDs];
     v9 = [_PSKNNModel alloc];
-    v10 = [(_PSEnsembleModel *)self contactResolver];
-    v11 = [(_PSEnsembleModel *)self messageInteractionCache];
-    v12 = [(_PSEnsembleModel *)self shareInteractionCache];
-    v13 = [(_PSKNNModel *)v9 initWithK:500 interactionStore:v16 filterByBundleIds:v8 knowledgeStore:v6 contactResolver:v10 messageInteractionCache:v11 shareInteractionCache:v12];
+    contactResolver = [(_PSEnsembleModel *)self contactResolver];
+    messageInteractionCache = [(_PSEnsembleModel *)self messageInteractionCache];
+    shareInteractionCache = [(_PSEnsembleModel *)self shareInteractionCache];
+    v13 = [(_PSKNNModel *)v9 initWithK:500 interactionStore:storeCopy filterByBundleIds:fetchShareSheetSupportedBundleIDs knowledgeStore:knowledgeStoreCopy contactResolver:contactResolver messageInteractionCache:messageInteractionCache shareInteractionCache:shareInteractionCache];
     [(_PSEnsembleModel *)self setKnnNameOrContactRankerModel:v13];
 
-    v14 = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
-    v15 = [(_PSEnsembleModel *)self psConfig];
-    [v14 updateModelProperties:v15];
+    knnNameOrContactRankerModel2 = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
+    psConfig = [(_PSEnsembleModel *)self psConfig];
+    [knnNameOrContactRankerModel2 updateModelProperties:psConfig];
   }
 }
 
 - (void)refreshCaches
 {
-  v3 = [(_PSEnsembleModel *)self zkwFTOrchestrator];
+  zkwFTOrchestrator = [(_PSEnsembleModel *)self zkwFTOrchestrator];
 
-  if (v3)
+  if (zkwFTOrchestrator)
   {
-    v4 = [(_PSEnsembleModel *)self zkwFTOrchestrator];
-    [v4 populateCaches];
+    zkwFTOrchestrator2 = [(_PSEnsembleModel *)self zkwFTOrchestrator];
+    [zkwFTOrchestrator2 populateCaches];
   }
 }
 
 - (void)freeCachesIfNotCoreDuetDaemon
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v5 = +[_PSConstants mobileCoreDuetBundleId];
-  if ([v4 isEqual:v5])
+  if ([bundleIdentifier isEqual:v5])
   {
   }
 
   else
   {
     v6 = +[_PSConstants macKnowledgeAgentBundleId];
-    v7 = [v4 isEqual:v6];
+    v7 = [bundleIdentifier isEqual:v6];
 
     if ((v7 & 1) == 0)
     {
@@ -1107,29 +1107,29 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_populateCacheLock);
 }
 
-- (id)predictWithPredictionContext:(id)a3 maxSuggestions:(unint64_t)a4
+- (id)predictWithPredictionContext:(id)context maxSuggestions:(unint64_t)suggestions
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "showPotentialFamilyMembers")}];
-    v9 = [v6 bundleID];
-    v10 = [v6 attachments];
-    v11 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "isSharePlayAvailable")}];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(contextCopy, "showPotentialFamilyMembers")}];
+    bundleID = [contextCopy bundleID];
+    attachments = [contextCopy attachments];
+    v11 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(contextCopy, "isSharePlayAvailable")}];
     v18 = 138413058;
     v19 = v8;
     v20 = 2112;
-    v21 = v9;
+    v21 = bundleID;
     v22 = 2112;
-    v23 = v10;
+    v23 = attachments;
     v24 = 2112;
     v25 = v11;
     _os_log_impl(&dword_1B5ED1000, v7, OS_LOG_TYPE_DEFAULT, "Prediction Context - Family: %@, Bundle Id: %@, Attachments: %@, SharePlay: %@", &v18, 0x2Au);
   }
 
-  if ([v6 showPotentialFamilyMembers])
+  if ([contextCopy showPotentialFamilyMembers])
   {
     v12 = +[_PSLogging generalChannel];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -1138,12 +1138,12 @@ LABEL_8:
       _os_log_impl(&dword_1B5ED1000, v12, OS_LOG_TYPE_INFO, "iCloud Family Suggestions Active", &v18, 2u);
     }
 
-    v13 = [(_PSEnsembleModel *)self familyPredictionsWithMaxSuggestions:a4 predictionContext:v6];
+    v13 = [(_PSEnsembleModel *)self familyPredictionsWithMaxSuggestions:suggestions predictionContext:contextCopy];
   }
 
   else
   {
-    v13 = [(_PSEnsembleModel *)self predictWithPredictionContext:v6 maxSuggestions:a4 contactKeysToFetch:0];
+    v13 = [(_PSEnsembleModel *)self predictWithPredictionContext:contextCopy maxSuggestions:suggestions contactKeysToFetch:0];
   }
 
   v14 = v13;
@@ -1160,47 +1160,47 @@ LABEL_8:
   return v14;
 }
 
-- (id)familyPredictionsWithMaxSuggestions:(unint64_t)a3 predictionContext:(id)a4
+- (id)familyPredictionsWithMaxSuggestions:(unint64_t)suggestions predictionContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   v6 = objc_alloc_init(_PSFamilyRecommender);
-  v7 = [(_PSFamilyRecommender *)v6 familyRecommendationSuggestionsForShareSheetWithPredictionContext:v5];
+  v7 = [(_PSFamilyRecommender *)v6 familyRecommendationSuggestionsForShareSheetWithPredictionContext:contextCopy];
 
   v8 = [v7 count];
-  if (v8 >= a3)
+  if (v8 >= suggestions)
   {
-    v9 = a3;
+    suggestionsCopy = suggestions;
   }
 
   else
   {
-    v9 = v8;
+    suggestionsCopy = v8;
   }
 
-  v10 = [v7 subarrayWithRange:{0, v9}];
+  v10 = [v7 subarrayWithRange:{0, suggestionsCopy}];
 
   return v10;
 }
 
-- (id)fetchSupportedBundleIDsWithPredictionContextFilters:(id)a3
+- (id)fetchSupportedBundleIDsWithPredictionContextFilters:(id)filters
 {
-  v4 = a3;
-  v5 = [(_PSEnsembleModel *)self fetchShareSheetSupportedBundleIDs];
-  v6 = [v5 mutableCopy];
+  filtersCopy = filters;
+  fetchShareSheetSupportedBundleIDs = [(_PSEnsembleModel *)self fetchShareSheetSupportedBundleIDs];
+  v6 = [fetchShareSheetSupportedBundleIDs mutableCopy];
 
-  if (([v4 isSharePlayAvailable] & 1) == 0)
+  if (([filtersCopy isSharePlayAvailable] & 1) == 0)
   {
     v7 = +[_PSConstants sharePlayBundleId];
     [v6 removeObject:v7];
   }
 
-  v8 = [v4 suggestionsFilteredByBundleIds];
-  v9 = [v8 count];
+  suggestionsFilteredByBundleIds = [filtersCopy suggestionsFilteredByBundleIds];
+  v9 = [suggestionsFilteredByBundleIds count];
 
   if (v9)
   {
     v10 = objc_opt_new();
-    v11 = [v4 suggestionsFilteredByBundleIds];
+    suggestionsFilteredByBundleIds2 = [filtersCopy suggestionsFilteredByBundleIds];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __72___PSEnsembleModel_fetchSupportedBundleIDsWithPredictionContextFilters___block_invoke;
@@ -1209,7 +1209,7 @@ LABEL_8:
     v19 = v6;
     v12 = v10;
     v20 = v12;
-    [v11 enumerateObjectsUsingBlock:&v15];
+    [suggestionsFilteredByBundleIds2 enumerateObjectsUsingBlock:&v15];
 
     if ([v12 count])
     {
@@ -1222,12 +1222,12 @@ LABEL_8:
   return v6;
 }
 
-- (id)getPhotoBasedFeaturesAsync:(id)a3 shouldProcessPicturesLive:(BOOL)a4 shouldUseVIPModel:(BOOL)a5 withTimeout:(double)a6
+- (id)getPhotoBasedFeaturesAsync:(id)async shouldProcessPicturesLive:(BOOL)live shouldUseVIPModel:(BOOL)model withTimeout:(double)timeout
 {
-  v32 = a4;
-  v33 = a5;
-  v7 = a3;
-  v35 = [MEMORY[0x1E695DF00] date];
+  liveCopy = live;
+  modelCopy = model;
+  asyncCopy = async;
+  date = [MEMORY[0x1E695DF00] date];
   v8 = +[_PSLogging suggestionSignpost];
   v9 = os_signpost_id_generate(v8);
 
@@ -1239,7 +1239,7 @@ LABEL_8:
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "_PSEnsembleModel_getPhotoBasedFeatures", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v34 = [v7 bundleID];
+  bundleID = [asyncCopy bundleID];
   v12 = +[_PSLogging suggestionSignpost];
   v13 = v12;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
@@ -1250,25 +1250,25 @@ LABEL_8:
 
   v14 = dispatch_group_create();
   queue = [MEMORY[0x1E69C5D10] autoreleasingSerialQueueWithLabel:"getPhotoBasedFeaturesAsync"];
-  v15 = [v7 attachments];
-  v16 = [_PSPhotoUtils attachmentsEligibleForPhotoProcessingFromAttachments:v15];
+  attachments = [asyncCopy attachments];
+  v16 = [_PSPhotoUtils attachmentsEligibleForPhotoProcessingFromAttachments:attachments];
 
-  v17 = [v16 firstObject];
+  firstObject = [v16 firstObject];
   dispatch_group_enter(v14);
-  v18 = [v7 sessionID];
-  v19 = [v7 currentSpanId];
+  sessionID = [asyncCopy sessionID];
+  currentSpanId = [asyncCopy currentSpanId];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __103___PSEnsembleModel_getPhotoBasedFeaturesAsync_shouldProcessPicturesLive_shouldUseVIPModel_withTimeout___block_invoke;
   v45[3] = &unk_1E7C248F8;
   v49 = v9;
-  v20 = v7;
+  v20 = asyncCopy;
   v46 = v20;
-  v21 = v17;
+  v21 = firstObject;
   v47 = v21;
   v22 = v14;
   v48 = v22;
-  v23 = [_PSPhotoSuggestions phPersonIdentifiersOfPeopleInSharedPhotoAttachments:v16 forBundleID:v34 shouldProcessPicturesLive:v32 shouldUseVIPModel:v33 withTraceID:v18 withSpanID:v19 withCompletion:v45];
+  v23 = [_PSPhotoSuggestions phPersonIdentifiersOfPeopleInSharedPhotoAttachments:v16 forBundleID:bundleID shouldProcessPicturesLive:liveCopy shouldUseVIPModel:modelCopy withTraceID:sessionID withSpanID:currentSpanId withCompletion:v45];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1284,24 +1284,24 @@ LABEL_8:
   v36[1] = 3221225472;
   v36[2] = __103___PSEnsembleModel_getPhotoBasedFeaturesAsync_shouldProcessPicturesLive_shouldUseVIPModel_withTimeout___block_invoke_423;
   v36[3] = &unk_1E7C24948;
-  v40 = a6;
-  v37 = v35;
+  timeoutCopy = timeout;
+  v37 = date;
   v38 = v22;
   v39 = v23;
   v26 = v23;
   v27 = v22;
-  v28 = v35;
+  v28 = date;
   v29 = MEMORY[0x1B8C8C060](v36);
 
   return v29;
 }
 
-- (void)getCoreMLSuggestionProxiesWithPredictionContext:(id)a3 modelSuggestionProxiesDict:(id)a4 candidateToFeatureVectorDictGetter:(id)a5
+- (void)getCoreMLSuggestionProxiesWithPredictionContext:(id)context modelSuggestionProxiesDict:(id)dict candidateToFeatureVectorDictGetter:(id)getter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 objectForKeyedSubscript:@"coreMLSuggestionProxies"];
+  contextCopy = context;
+  dictCopy = dict;
+  getterCopy = getter;
+  v11 = [dictCopy objectForKeyedSubscript:@"coreMLSuggestionProxies"];
   if (v11)
   {
     v12 = v11;
@@ -1316,11 +1316,11 @@ LABEL_8:
         _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v14, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetCoreMLSuggestions", " enableTelemetry=YES ", buf, 2u);
       }
 
-      v15 = [(_PSEnsembleModel *)self coreMLScoringModel];
-      v16 = [(_PSEnsembleModel *)self messageInteractionCache];
-      v17 = [(_PSEnsembleModel *)self shareInteractionCache];
-      v18 = [v15 getSuggestionProxiesForCandidateToFeatureVectorDictGetter:v10 predictionContext:v8 messageInteractionCache:v16 shareInteractionCache:v17];
-      [v9 setObject:v18 forKeyedSubscript:@"coreMLSuggestionProxies"];
+      coreMLScoringModel = [(_PSEnsembleModel *)self coreMLScoringModel];
+      messageInteractionCache = [(_PSEnsembleModel *)self messageInteractionCache];
+      shareInteractionCache = [(_PSEnsembleModel *)self shareInteractionCache];
+      v18 = [coreMLScoringModel getSuggestionProxiesForCandidateToFeatureVectorDictGetter:getterCopy predictionContext:contextCopy messageInteractionCache:messageInteractionCache shareInteractionCache:shareInteractionCache];
+      [dictCopy setObject:v18 forKeyedSubscript:@"coreMLSuggestionProxies"];
 
       v19 = +[_PSLogging suggestionSignpost];
       if (os_signpost_enabled(v19))
@@ -1332,12 +1332,12 @@ LABEL_8:
   }
 }
 
-- (void)getHeuristicSuggestionProxies:(id)a3 supportedBundleIDs:(id)a4 modelSuggestionProxiesDict:(id)a5
+- (void)getHeuristicSuggestionProxies:(id)proxies supportedBundleIDs:(id)ds modelSuggestionProxiesDict:(id)dict
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 objectForKeyedSubscript:@"hyperRecentSuggestionProxies"];
+  proxiesCopy = proxies;
+  dsCopy = ds;
+  dictCopy = dict;
+  v11 = [dictCopy objectForKeyedSubscript:@"hyperRecentSuggestionProxies"];
 
   if (v11)
   {
@@ -1354,11 +1354,11 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v13, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleHyperRecencyHeuristic", " enableTelemetry=YES ", buf, 2u);
     }
 
-    v14 = [(_PSEnsembleModel *)self heuristics];
-    v15 = [v8 suggestionDate];
-    v16 = [v8 bundleID];
-    v17 = [v14 hyperRecentHeuristicSuggestionProxiesWithReferenceDate:v15 predictionContextBundleId:v16];
-    [v10 setObject:v17 forKeyedSubscript:@"hyperRecentSuggestionProxies"];
+    heuristics = [(_PSEnsembleModel *)self heuristics];
+    suggestionDate = [proxiesCopy suggestionDate];
+    bundleID = [proxiesCopy bundleID];
+    v17 = [heuristics hyperRecentHeuristicSuggestionProxiesWithReferenceDate:suggestionDate predictionContextBundleId:bundleID];
+    [dictCopy setObject:v17 forKeyedSubscript:@"hyperRecentSuggestionProxies"];
 
     v18 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v18))
@@ -1368,7 +1368,7 @@ LABEL_8:
     }
   }
 
-  v19 = [v10 objectForKeyedSubscript:@"inPhoneCallSuggestionProxies"];
+  v19 = [dictCopy objectForKeyedSubscript:@"inPhoneCallSuggestionProxies"];
 
   if (v19)
   {
@@ -1385,9 +1385,9 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v21, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleInPhoneCallHeuristic", " enableTelemetry=YES ", v34, 2u);
     }
 
-    v22 = [(_PSEnsembleModel *)self heuristics];
-    v23 = [v22 inPhoneCallHeuristicSuggestionProxiesWithBundleIds:v9 predictionContext:v8];
-    [v10 setObject:v23 forKeyedSubscript:@"inPhoneCallSuggestionProxies"];
+    heuristics2 = [(_PSEnsembleModel *)self heuristics];
+    v23 = [heuristics2 inPhoneCallHeuristicSuggestionProxiesWithBundleIds:dsCopy predictionContext:proxiesCopy];
+    [dictCopy setObject:v23 forKeyedSubscript:@"inPhoneCallSuggestionProxies"];
 
     v24 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v24))
@@ -1397,7 +1397,7 @@ LABEL_8:
     }
   }
 
-  v25 = [v10 objectForKeyedSubscript:@"returnDocumentToSenderSuggestionProxies"];
+  v25 = [dictCopy objectForKeyedSubscript:@"returnDocumentToSenderSuggestionProxies"];
 
   if (v25)
   {
@@ -1414,9 +1414,9 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v27, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetReturnToSenderHeuristic", " enableTelemetry=YES ", v32, 2u);
     }
 
-    v28 = [(_PSEnsembleModel *)self heuristics];
-    v29 = [v28 returnDocumentToSender:v8];
-    [v10 setObject:v29 forKeyedSubscript:@"returnDocumentToSenderSuggestionProxies"];
+    heuristics3 = [(_PSEnsembleModel *)self heuristics];
+    v29 = [heuristics3 returnDocumentToSender:proxiesCopy];
+    [dictCopy setObject:v29 forKeyedSubscript:@"returnDocumentToSenderSuggestionProxies"];
 
     v30 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v30))
@@ -1427,11 +1427,11 @@ LABEL_8:
   }
 }
 
-- (void)getKnnSuggestionProxies:(id)a3 supportedBundleIDs:(id)a4 modelSuggestionProxiesDict:(id)a5
+- (void)getKnnSuggestionProxies:(id)proxies supportedBundleIDs:(id)ds modelSuggestionProxiesDict:(id)dict
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 objectForKeyedSubscript:@"knnSuggestionProxies"];
+  proxiesCopy = proxies;
+  dictCopy = dict;
+  v9 = [dictCopy objectForKeyedSubscript:@"knnSuggestionProxies"];
 
   if (v9)
   {
@@ -1448,9 +1448,9 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleKnnSuggestions", " enableTelemetry=YES ", v45, 2u);
     }
 
-    v12 = [(_PSEnsembleModel *)self knnModel];
-    v13 = [v12 suggestionProxiesWithPredictionContext:v7];
-    [v8 setObject:v13 forKeyedSubscript:@"knnSuggestionProxies"];
+    knnModel = [(_PSEnsembleModel *)self knnModel];
+    v13 = [knnModel suggestionProxiesWithPredictionContext:proxiesCopy];
+    [dictCopy setObject:v13 forKeyedSubscript:@"knnSuggestionProxies"];
 
     v14 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v14))
@@ -1460,7 +1460,7 @@ LABEL_8:
     }
   }
 
-  v15 = [v8 objectForKeyedSubscript:@"knnSuggestionBasedOnSharesAllProxies"];
+  v15 = [dictCopy objectForKeyedSubscript:@"knnSuggestionBasedOnSharesAllProxies"];
 
   if (v15)
   {
@@ -1477,9 +1477,9 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v17, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleKnnSuggestions", " enableTelemetry=YES ", v45, 2u);
     }
 
-    v18 = [(_PSEnsembleModel *)self knnModel];
-    v19 = [v18 suggestionProxiesBasedOnSharingInteractionsWithPredictionContext:v7 withOnlyTopShares:0 withFilterOutNonMatchingSourceBundleIDs:0];
-    [v8 setObject:v19 forKeyedSubscript:@"knnSuggestionBasedOnSharesAllProxies"];
+    knnModel2 = [(_PSEnsembleModel *)self knnModel];
+    v19 = [knnModel2 suggestionProxiesBasedOnSharingInteractionsWithPredictionContext:proxiesCopy withOnlyTopShares:0 withFilterOutNonMatchingSourceBundleIDs:0];
+    [dictCopy setObject:v19 forKeyedSubscript:@"knnSuggestionBasedOnSharesAllProxies"];
 
     v20 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v20))
@@ -1489,7 +1489,7 @@ LABEL_8:
     }
   }
 
-  v21 = [v8 objectForKeyedSubscript:@"knnSuggestionBasedOnSharesTopProxies"];
+  v21 = [dictCopy objectForKeyedSubscript:@"knnSuggestionBasedOnSharesTopProxies"];
 
   if (v21)
   {
@@ -1506,9 +1506,9 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v23, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleKnnSuggestions", " enableTelemetry=YES ", v45, 2u);
     }
 
-    v24 = [(_PSEnsembleModel *)self knnModel];
-    v25 = [v24 suggestionProxiesBasedOnSharingInteractionsWithPredictionContext:v7 withOnlyTopShares:1 withFilterOutNonMatchingSourceBundleIDs:0];
-    [v8 setObject:v25 forKeyedSubscript:@"knnSuggestionBasedOnSharesTopProxies"];
+    knnModel3 = [(_PSEnsembleModel *)self knnModel];
+    v25 = [knnModel3 suggestionProxiesBasedOnSharingInteractionsWithPredictionContext:proxiesCopy withOnlyTopShares:1 withFilterOutNonMatchingSourceBundleIDs:0];
+    [dictCopy setObject:v25 forKeyedSubscript:@"knnSuggestionBasedOnSharesTopProxies"];
 
     v26 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v26))
@@ -1518,7 +1518,7 @@ LABEL_8:
     }
   }
 
-  v27 = [v8 objectForKeyedSubscript:@"knnSuggestionBasedOnSharesAllAndAppFilterOnProxies"];
+  v27 = [dictCopy objectForKeyedSubscript:@"knnSuggestionBasedOnSharesAllAndAppFilterOnProxies"];
 
   if (v27)
   {
@@ -1535,9 +1535,9 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v29, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleKnnSuggestions", " enableTelemetry=YES ", v45, 2u);
     }
 
-    v30 = [(_PSEnsembleModel *)self knnModel];
-    v31 = [v30 suggestionProxiesBasedOnSharingInteractionsWithPredictionContext:v7 withOnlyTopShares:0 withFilterOutNonMatchingSourceBundleIDs:1];
-    [v8 setObject:v31 forKeyedSubscript:@"knnSuggestionBasedOnSharesAllAndAppFilterOnProxies"];
+    knnModel4 = [(_PSEnsembleModel *)self knnModel];
+    v31 = [knnModel4 suggestionProxiesBasedOnSharingInteractionsWithPredictionContext:proxiesCopy withOnlyTopShares:0 withFilterOutNonMatchingSourceBundleIDs:1];
+    [dictCopy setObject:v31 forKeyedSubscript:@"knnSuggestionBasedOnSharesAllAndAppFilterOnProxies"];
 
     v32 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v32))
@@ -1547,7 +1547,7 @@ LABEL_8:
     }
   }
 
-  v33 = [v8 objectForKeyedSubscript:@"knnSuggestionBasedOnSharesTopAndAppFilterOnProxies"];
+  v33 = [dictCopy objectForKeyedSubscript:@"knnSuggestionBasedOnSharesTopAndAppFilterOnProxies"];
 
   if (v33)
   {
@@ -1564,9 +1564,9 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v35, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleKnnSuggestions", " enableTelemetry=YES ", v45, 2u);
     }
 
-    v36 = [(_PSEnsembleModel *)self knnModel];
-    v37 = [v36 suggestionProxiesBasedOnSharingInteractionsWithPredictionContext:v7 withOnlyTopShares:1 withFilterOutNonMatchingSourceBundleIDs:1];
-    [v8 setObject:v37 forKeyedSubscript:@"knnSuggestionBasedOnSharesTopAndAppFilterOnProxies"];
+    knnModel5 = [(_PSEnsembleModel *)self knnModel];
+    v37 = [knnModel5 suggestionProxiesBasedOnSharingInteractionsWithPredictionContext:proxiesCopy withOnlyTopShares:1 withFilterOutNonMatchingSourceBundleIDs:1];
+    [dictCopy setObject:v37 forKeyedSubscript:@"knnSuggestionBasedOnSharesTopAndAppFilterOnProxies"];
 
     v38 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v38))
@@ -1576,7 +1576,7 @@ LABEL_8:
     }
   }
 
-  v39 = [v8 objectForKeyedSubscript:@"knnSuggestionBasedOnInteractionsProxies"];
+  v39 = [dictCopy objectForKeyedSubscript:@"knnSuggestionBasedOnInteractionsProxies"];
 
   if (v39)
   {
@@ -1593,9 +1593,9 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v41, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleKnnSuggestions", " enableTelemetry=YES ", v45, 2u);
     }
 
-    v42 = [(_PSEnsembleModel *)self knnModel];
-    v43 = [v42 suggestionProxiesBasedOnNonSharingInteractionsWithPredictionContext:v7];
-    [v8 setObject:v43 forKeyedSubscript:@"knnSuggestionBasedOnInteractionsProxies"];
+    knnModel6 = [(_PSEnsembleModel *)self knnModel];
+    v43 = [knnModel6 suggestionProxiesBasedOnNonSharingInteractionsWithPredictionContext:proxiesCopy];
+    [dictCopy setObject:v43 forKeyedSubscript:@"knnSuggestionBasedOnInteractionsProxies"];
 
     v44 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v44))
@@ -1606,10 +1606,10 @@ LABEL_8:
   }
 }
 
-- (void)getOtherSuggestionProxies:(id)a3 supportedBundleIDs:(id)a4 modelSuggestionProxiesDict:(id)a5
+- (void)getOtherSuggestionProxies:(id)proxies supportedBundleIDs:(id)ds modelSuggestionProxiesDict:(id)dict
 {
-  v6 = a5;
-  v7 = [v6 objectForKeyedSubscript:@"backFillProxies"];
+  dictCopy = dict;
+  v7 = [dictCopy objectForKeyedSubscript:@"backFillProxies"];
 
   if (v7)
   {
@@ -1620,14 +1620,14 @@ LABEL_8:
       [_PSEnsembleModel getOtherSuggestionProxies:supportedBundleIDs:modelSuggestionProxiesDict:];
     }
 
-    v10 = [(_PSEnsembleModel *)self heuristics];
-    v11 = [(_PSEnsembleModel *)self messageInteractionCache];
-    v12 = [v11 interactions];
-    v13 = [v10 proxiesByRecencyUsingInteractions:v12 startIndex:100 reason:0 allowNonSupportedBundleIDs:{-[_PSEnsembleModel allowNonSupportedBundleIDs](self, "allowNonSupportedBundleIDs")}];
-    [v6 setObject:v13 forKeyedSubscript:@"backFillProxies"];
+    heuristics = [(_PSEnsembleModel *)self heuristics];
+    messageInteractionCache = [(_PSEnsembleModel *)self messageInteractionCache];
+    interactions = [messageInteractionCache interactions];
+    v13 = [heuristics proxiesByRecencyUsingInteractions:interactions startIndex:100 reason:0 allowNonSupportedBundleIDs:{-[_PSEnsembleModel allowNonSupportedBundleIDs](self, "allowNonSupportedBundleIDs")}];
+    [dictCopy setObject:v13 forKeyedSubscript:@"backFillProxies"];
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"messagesRecencyProxies"];
+  v14 = [dictCopy objectForKeyedSubscript:@"messagesRecencyProxies"];
 
   if (v14)
   {
@@ -1638,14 +1638,14 @@ LABEL_8:
       [_PSEnsembleModel getOtherSuggestionProxies:supportedBundleIDs:modelSuggestionProxiesDict:];
     }
 
-    v17 = [(_PSEnsembleModel *)self heuristics];
-    v18 = [(_PSEnsembleModel *)self messageInteractionCache];
-    v19 = [v18 interactions];
-    v20 = [v17 proxiesByRecencyUsingInteractions:v19 startIndex:0 reason:1 allowNonSupportedBundleIDs:{-[_PSEnsembleModel allowNonSupportedBundleIDs](self, "allowNonSupportedBundleIDs")}];
-    [v6 setObject:v20 forKeyedSubscript:@"messagesRecencyProxies"];
+    heuristics2 = [(_PSEnsembleModel *)self heuristics];
+    messageInteractionCache2 = [(_PSEnsembleModel *)self messageInteractionCache];
+    interactions2 = [messageInteractionCache2 interactions];
+    v20 = [heuristics2 proxiesByRecencyUsingInteractions:interactions2 startIndex:0 reason:1 allowNonSupportedBundleIDs:{-[_PSEnsembleModel allowNonSupportedBundleIDs](self, "allowNonSupportedBundleIDs")}];
+    [dictCopy setObject:v20 forKeyedSubscript:@"messagesRecencyProxies"];
   }
 
-  v21 = [v6 objectForKeyedSubscript:@"shareSheetRecencyProxies"];
+  v21 = [dictCopy objectForKeyedSubscript:@"shareSheetRecencyProxies"];
 
   if (v21)
   {
@@ -1656,23 +1656,23 @@ LABEL_8:
       [_PSEnsembleModel getOtherSuggestionProxies:supportedBundleIDs:modelSuggestionProxiesDict:];
     }
 
-    v24 = [(_PSEnsembleModel *)self heuristics];
-    v25 = [(_PSEnsembleModel *)self shareInteractionCache];
-    v26 = [v25 interactions];
-    v27 = [v24 proxiesByRecencyUsingInteractions:v26 startIndex:0 reason:2 allowNonSupportedBundleIDs:{-[_PSEnsembleModel allowNonSupportedBundleIDs](self, "allowNonSupportedBundleIDs")}];
-    [v6 setObject:v27 forKeyedSubscript:@"shareSheetRecencyProxies"];
+    heuristics3 = [(_PSEnsembleModel *)self heuristics];
+    shareInteractionCache = [(_PSEnsembleModel *)self shareInteractionCache];
+    interactions3 = [shareInteractionCache interactions];
+    v27 = [heuristics3 proxiesByRecencyUsingInteractions:interactions3 startIndex:0 reason:2 allowNonSupportedBundleIDs:{-[_PSEnsembleModel allowNonSupportedBundleIDs](self, "allowNonSupportedBundleIDs")}];
+    [dictCopy setObject:v27 forKeyedSubscript:@"shareSheetRecencyProxies"];
   }
 }
 
-- (id)getModelProxiesArrayWithPredictionContext:(id)a3
+- (id)getModelProxiesArrayWithPredictionContext:(id)context
 {
-  v4 = [a3 isFallbackFetch];
-  v5 = [(_PSEnsembleModel *)self psConfig];
+  isFallbackFetch = [context isFallbackFetch];
+  psConfig = [(_PSEnsembleModel *)self psConfig];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 objectForKeyedSubscript:v7];
+  v8 = [psConfig objectForKeyedSubscript:v7];
   v9 = v8;
-  if (v4)
+  if (isFallbackFetch)
   {
     v10 = @"fallbackModelProxiesArray";
   }
@@ -1687,18 +1687,18 @@ LABEL_8:
   return v11;
 }
 
-- (id)getModelSuggestionsProxyDictWithModelProxiesArray:(id)a3
+- (id)getModelSuggestionsProxyDictWithModelProxiesArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [_PSEnsembleModel getModelSuggestionsProxyDictWithModelProxiesArray:v3];
+    [_PSEnsembleModel getModelSuggestionsProxyDictWithModelProxiesArray:arrayCopy];
   }
 
   v5 = objc_alloc(MEMORY[0x1E695DF90]);
-  v6 = [v3 _pas_mappedArrayWithTransform:&__block_literal_global_438];
-  v7 = [v5 initWithObjects:v6 forKeys:v3];
+  v6 = [arrayCopy _pas_mappedArrayWithTransform:&__block_literal_global_438];
+  v7 = [v5 initWithObjects:v6 forKeys:arrayCopy];
 
   return v7;
 }
@@ -1706,12 +1706,12 @@ LABEL_8:
 - (id)getMeContactIdentifier
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v2 = [(_PSEnsembleModel *)self contactStore];
+  contactStore = [(_PSEnsembleModel *)self contactStore];
   v3 = getCNContactIdentifierKey_0();
   v13[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v12 = 0;
-  v5 = [v2 _crossPlatformUnifiedMeContactWithKeysToFetch:v4 error:&v12];
+  v5 = [contactStore _crossPlatformUnifiedMeContactWithKeysToFetch:v4 error:&v12];
   v6 = v12;
 
   if (v6)
@@ -1725,7 +1725,7 @@ LABEL_8:
 
   if (v5)
   {
-    v8 = [v5 identifier];
+    identifier = [v5 identifier];
   }
 
   else
@@ -1736,20 +1736,20 @@ LABEL_8:
       [_PSEnsembleModel getMeContactIdentifier];
     }
 
-    v8 = 0;
+    identifier = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return identifier;
 }
 
-- (id)_fallbackPredictionWithPredictionContext:(id)a3 config:(id)a4 parentSpanId:(id)a5
+- (id)_fallbackPredictionWithPredictionContext:(id)context config:(id)config parentSpanId:(id)id
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  contextCopy = context;
+  idCopy = id;
+  configCopy = config;
   v11 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v11))
   {
@@ -1758,20 +1758,20 @@ LABEL_8:
   }
 
   v12 = [AeroMLTracerSession alloc];
-  v13 = [v8 sessionID];
+  sessionID = [contextCopy sessionID];
   v14 = +[_PSConstants peopleSuggesterShareSheetProjectName];
-  v15 = [(AeroMLTracerSession *)v12 initWithTraceId:v13 projectName:v14];
+  v15 = [(AeroMLTracerSession *)v12 initWithTraceId:sessionID projectName:v14];
 
   v16 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v8 sessionID];
+    sessionID2 = [contextCopy sessionID];
     *buf = 138412290;
-    v37 = v17;
+    v37 = sessionID2;
     _os_log_impl(&dword_1B5ED1000, v16, OS_LOG_TYPE_DEFAULT, "Reading interaction stats for fallback request sessionID %@", buf, 0xCu);
   }
 
-  v18 = [(AeroMLTracerSession *)v15 createSubSpanWithName:@"getInteractionsStatisticsForConfig" parentSpanId:v9];
+  v18 = [(AeroMLTracerSession *)v15 createSubSpanWithName:@"getInteractionsStatisticsForConfig" parentSpanId:idCopy];
   [v18 start];
   v19 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v19))
@@ -1780,7 +1780,7 @@ LABEL_8:
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v19, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSInteractionsStatisticsQuery", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v20 = [[_PSInteractionsStatistics alloc] initWithConfig:v10];
+  v20 = [[_PSInteractionsStatistics alloc] initWithConfig:configCopy];
   [(_PSInteractionsStatistics *)v20 computeStatisticsWithInteractionStore:self->_interactionStore];
   v21 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v21))
@@ -1789,8 +1789,8 @@ LABEL_8:
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v21, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "_PSInteractionsStatisticsQuery", &unk_1B5FD970D, buf, 2u);
   }
 
-  v22 = [(_PSInteractionsStatistics *)v20 queryStats];
-  [v18 addAttributes:v22];
+  queryStats = [(_PSInteractionsStatistics *)v20 queryStats];
+  [v18 addAttributes:queryStats];
 
   [v18 end];
   v23 = +[_PSLogging rewriteChannel];
@@ -1805,7 +1805,7 @@ LABEL_8:
     [_PSEnsembleModel _fallbackPredictionWithPredictionContext:config:parentSpanId:];
   }
 
-  v25 = [(AeroMLTracerSession *)v15 createSubSpanWithName:@"pruneCandidatesForRanking" parentSpanId:v9];
+  v25 = [(AeroMLTracerSession *)v15 createSubSpanWithName:@"pruneCandidatesForRanking" parentSpanId:idCopy];
   [v25 start];
   v26 = [(_PSEnsembleModel *)self pruneCandidatesForRanking:v20];
   v34 = @"pruneCount";
@@ -1818,9 +1818,9 @@ LABEL_8:
   v29 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
-    v30 = [(_PSInteractionsStatistics *)v20 conversationIds];
+    conversationIds = [(_PSInteractionsStatistics *)v20 conversationIds];
     *buf = 138477827;
-    v37 = v30;
+    v37 = conversationIds;
     _os_log_impl(&dword_1B5ED1000, v29, OS_LOG_TYPE_INFO, "Fallback candidates after pruning %{private}@", buf, 0xCu);
   }
 
@@ -1836,13 +1836,13 @@ LABEL_8:
   return v20;
 }
 
-- (id)_defaultPredictionsWithPredictionContext:(id)a3 trialClient:(id)a4 config:(id)a5 parentSpanId:(id)a6
+- (id)_defaultPredictionsWithPredictionContext:(id)context trialClient:(id)client config:(id)config parentSpanId:(id)id
 {
   v91 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v84 = a6;
+  contextCopy = context;
+  clientCopy = client;
+  configCopy = config;
+  idCopy = id;
   v13 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v13))
   {
@@ -1851,30 +1851,30 @@ LABEL_8:
   }
 
   v14 = [AeroMLTracerSession alloc];
-  v15 = [v10 sessionID];
+  sessionID = [contextCopy sessionID];
   v16 = +[_PSConstants peopleSuggesterShareSheetProjectName];
-  v17 = [(AeroMLTracerSession *)v14 initWithTraceId:v15 projectName:v16];
+  v17 = [(AeroMLTracerSession *)v14 initWithTraceId:sessionID projectName:v16];
 
-  v18 = [v10 queryStartDate];
-  v81 = [(AeroMLTracerSession *)v17 createSubSpanWithName:@"getPhotoBasedFeaturesAsync" parentSpanId:v84];
-  v80 = v18;
-  if (([v10 isFallbackFetch] & 1) != 0 || !objc_msgSend(v11, "shouldComputePhotoBasedFeatures"))
+  queryStartDate = [contextCopy queryStartDate];
+  v81 = [(AeroMLTracerSession *)v17 createSubSpanWithName:@"getPhotoBasedFeaturesAsync" parentSpanId:idCopy];
+  v80 = queryStartDate;
+  if (([contextCopy isFallbackFetch] & 1) != 0 || !objc_msgSend(clientCopy, "shouldComputePhotoBasedFeatures"))
   {
     v82 = &__block_literal_global_457;
   }
 
   else
   {
-    v19 = [(_PSEnsembleModel *)self peopleSuggesterDefaults];
-    [v19 doubleForKey:@"_PSGetPhotoBasedFeaturesTimeout"];
+    peopleSuggesterDefaults = [(_PSEnsembleModel *)self peopleSuggesterDefaults];
+    [peopleSuggesterDefaults doubleForKey:@"_PSGetPhotoBasedFeaturesTimeout"];
     v21 = v20;
     if (v20 == 0.0)
     {
-      [v11 maxComputationTime];
+      [clientCopy maxComputationTime];
       v21 = v22;
     }
 
-    v23 = [v18 dateByAddingTimeInterval:v21];
+    v23 = [queryStartDate dateByAddingTimeInterval:v21];
     [v23 timeIntervalSinceNow];
     v25 = fmax(v24, 0.3);
     v26 = +[_PSLogging rewriteChannel];
@@ -1886,7 +1886,7 @@ LABEL_8:
     }
 
     [v81 start];
-    v82 = -[_PSEnsembleModel getPhotoBasedFeaturesAsync:shouldProcessPicturesLive:shouldUseVIPModel:withTimeout:](self, "getPhotoBasedFeaturesAsync:shouldProcessPicturesLive:shouldUseVIPModel:withTimeout:", v10, [v11 shouldProcessPicturesLive], objc_msgSend(v11, "shouldUseVIPModel"), v25);
+    v82 = -[_PSEnsembleModel getPhotoBasedFeaturesAsync:shouldProcessPicturesLive:shouldUseVIPModel:withTimeout:](self, "getPhotoBasedFeaturesAsync:shouldProcessPicturesLive:shouldUseVIPModel:withTimeout:", contextCopy, [clientCopy shouldProcessPicturesLive], objc_msgSend(clientCopy, "shouldUseVIPModel"), v25);
   }
 
   v27 = 0x1E7C23000uLL;
@@ -1900,20 +1900,20 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __93___PSEnsembleModel__defaultPredictionsWithPredictionContext_trialClient_config_parentSpanId___block_invoke_2;
   block[3] = &unk_1E7C24268;
-  v29 = v11;
+  v29 = clientCopy;
   v86 = v29;
   v79 = v28;
   dispatch_async(v28, block);
   v30 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v10 sessionID];
+    sessionID2 = [contextCopy sessionID];
     *buf = 138412290;
-    v90 = *&v31;
+    v90 = *&sessionID2;
     _os_log_impl(&dword_1B5ED1000, v30, OS_LOG_TYPE_DEFAULT, "Reading interaction stats for request sessionID %@", buf, 0xCu);
   }
 
-  v32 = [(AeroMLTracerSession *)v17 createSubSpanWithName:@"getInteractionsStatisticsForConfig" parentSpanId:v84];
+  v32 = [(AeroMLTracerSession *)v17 createSubSpanWithName:@"getInteractionsStatisticsForConfig" parentSpanId:idCopy];
   [v32 start];
   v33 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v33))
@@ -1922,7 +1922,7 @@ LABEL_8:
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v33, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSInteractionsStatisticsQuery", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v34 = [[_PSInteractionsStatistics alloc] initWithConfig:v12];
+  v34 = [[_PSInteractionsStatistics alloc] initWithConfig:configCopy];
   [(_PSInteractionsStatistics *)v34 computeStatisticsWithInteractionStore:self->_interactionStore];
   v35 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v35))
@@ -1931,8 +1931,8 @@ LABEL_8:
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v35, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "_PSInteractionsStatisticsQuery", &unk_1B5FD970D, buf, 2u);
   }
 
-  v36 = [(_PSInteractionsStatistics *)v34 queryStats];
-  [v32 addAttributes:v36];
+  queryStats = [(_PSInteractionsStatistics *)v34 queryStats];
+  [v32 addAttributes:queryStats];
 
   [v32 end];
   v37 = +[_PSLogging rewriteChannel];
@@ -1950,8 +1950,8 @@ LABEL_8:
   }
 
   v39 = [MEMORY[0x1E695DF00] now];
-  v40 = [v10 queryStartDate];
-  [v39 timeIntervalSinceDate:v40];
+  queryStartDate2 = [contextCopy queryStartDate];
+  [v39 timeIntervalSinceDate:queryStartDate2];
   v42 = v41;
   [v29 maxComputationTime];
   v44 = v43;
@@ -1959,33 +1959,33 @@ LABEL_8:
   if (v42 > v44)
   {
     v45 = +[_PSConstants suggestionPathBestEffort];
-    [v10 setSuggestionPath:v45];
+    [contextCopy setSuggestionPath:v45];
   }
 
-  v83 = v12;
-  v46 = [(_PSEnsembleModel *)self peopleSuggesterDefaults];
-  -[_PSEnsembleModel setEnablePipelineCheckpointing:](self, "setEnablePipelineCheckpointing:", [v46 BOOLForKey:@"enablePipelineCheckpointing"]);
+  v83 = configCopy;
+  peopleSuggesterDefaults2 = [(_PSEnsembleModel *)self peopleSuggesterDefaults];
+  -[_PSEnsembleModel setEnablePipelineCheckpointing:](self, "setEnablePipelineCheckpointing:", [peopleSuggesterDefaults2 BOOLForKey:@"enablePipelineCheckpointing"]);
 
   v47 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
   {
-    v48 = [(_PSEnsembleModel *)self enablePipelineCheckpointing];
+    enablePipelineCheckpointing = [(_PSEnsembleModel *)self enablePipelineCheckpointing];
     *buf = 67109120;
-    LODWORD(v90) = v48;
+    LODWORD(v90) = enablePipelineCheckpointing;
     _os_log_impl(&dword_1B5ED1000, v47, OS_LOG_TYPE_DEFAULT, "_PSEnsemble: enablePipelineCheckpointing = %d", buf, 8u);
   }
 
-  v49 = [(AeroMLTracerSession *)v17 createSubSpanWithName:@"logPipeline_interactionsStatisticsCandidate_sourcing" parentSpanId:v84];
+  v49 = [(AeroMLTracerSession *)v17 createSubSpanWithName:@"logPipeline_interactionsStatisticsCandidate_sourcing" parentSpanId:idCopy];
   [v49 start];
-  v50 = [v29 rankingModel];
-  [(_PSEnsembleModel *)self setupAeroMLPipelineLoggerWithModel:v50];
+  rankingModel = [v29 rankingModel];
+  [(_PSEnsembleModel *)self setupAeroMLPipelineLoggerWithModel:rankingModel];
 
-  v51 = [v10 sessionID];
-  [(_PSEnsembleModel *)self logPipeline:v34 withPipelineStage:@"candidate_sourcing" andSessionID:v51 andCandidateNames:0];
+  sessionID3 = [contextCopy sessionID];
+  [(_PSEnsembleModel *)self logPipeline:v34 withPipelineStage:@"candidate_sourcing" andSessionID:sessionID3 andCandidateNames:0];
 
   v77 = v49;
   [v49 end];
-  v52 = [(AeroMLTracerSession *)v17 createSubSpanWithName:@"pruneCandidatesForRanking" parentSpanId:v84];
+  v52 = [(AeroMLTracerSession *)v17 createSubSpanWithName:@"pruneCandidatesForRanking" parentSpanId:idCopy];
   [v52 start];
   v53 = [(_PSEnsembleModel *)self pruneCandidatesForRanking:v34];
   v87 = @"pruneCount";
@@ -1998,27 +1998,27 @@ LABEL_8:
   v56 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
   {
-    v57 = [(_PSInteractionsStatistics *)v34 conversationIds];
+    conversationIds = [(_PSInteractionsStatistics *)v34 conversationIds];
     *buf = 138477827;
-    v90 = *&v57;
+    v90 = *&conversationIds;
     _os_log_impl(&dword_1B5ED1000, v56, OS_LOG_TYPE_INFO, "Candidates after pruning %{private}@", buf, 0xCu);
   }
 
   if ([v29 shouldComputePhotoBasedFeatures])
   {
     v82[2]();
-    v58 = [v10 sceneTagsInPhotoIdentifiers];
-    v59 = [v83 detectedSceneCategoryNamesFromSceneNetTags:v58];
+    sceneTagsInPhotoIdentifiers = [contextCopy sceneTagsInPhotoIdentifiers];
+    v59 = [v83 detectedSceneCategoryNamesFromSceneNetTags:sceneTagsInPhotoIdentifiers];
 
     v60 = objc_autoreleasePoolPush();
     v61 = MEMORY[0x1E695DFD8];
-    v62 = [v10 peopleInPhotoIdentifiers];
-    v63 = [v61 setWithArray:v62];
+    peopleInPhotoIdentifiers = [contextCopy peopleInPhotoIdentifiers];
+    v63 = [v61 setWithArray:peopleInPhotoIdentifiers];
 
     objc_autoreleasePoolPop(v60);
     [(_PSInteractionsStatistics *)v34 computeContentBasedFeaturesForPersonIdsDetectedInPhoto:v63 sceneCategoriesDetectedInPhoto:v59];
-    v64 = [v10 sessionID];
-    [(_PSEnsembleModel *)self logPipeline:v34 withPipelineStage:@"candidates_with_photo_based_features" andSessionID:v64 andCandidateNames:0];
+    sessionID4 = [contextCopy sessionID];
+    [(_PSEnsembleModel *)self logPipeline:v34 withPipelineStage:@"candidates_with_photo_based_features" andSessionID:sessionID4 andCandidateNames:0];
 
     v27 = 0x1E7C23000;
   }
@@ -2034,19 +2034,19 @@ LABEL_8:
   }
 
   [v81 end];
-  v65 = [*(v27 + 1360) rewriteChannel];
-  if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
+  rewriteChannel = [*(v27 + 1360) rewriteChannel];
+  if (os_log_type_enabled(rewriteChannel, OS_LOG_TYPE_DEBUG))
   {
     [_PSEnsembleModel _defaultPredictionsWithPredictionContext:trialClient:config:parentSpanId:];
   }
 
-  v66 = [(AeroMLTracerSession *)v17 createSubSpanWithName:@"dynamicFeatureComputationSpan" parentSpanId:v84];
+  v66 = [(AeroMLTracerSession *)v17 createSubSpanWithName:@"dynamicFeatureComputationSpan" parentSpanId:idCopy];
   [v66 start];
-  v67 = [*(v27 + 1360) suggestionSignpost];
-  if (os_signpost_enabled(v67))
+  suggestionSignpost = [*(v27 + 1360) suggestionSignpost];
+  if (os_signpost_enabled(suggestionSignpost))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v67, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSEnsembleModel_addDynamicFeaturesToCandidates", " enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1B5ED1000, suggestionSignpost, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSEnsembleModel_addDynamicFeaturesToCandidates", " enableTelemetry=YES ", buf, 2u);
   }
 
   [(_PSInteractionsStatistics *)v34 computeDynamicFeatures];
@@ -2058,13 +2058,13 @@ LABEL_8:
   }
 
   [v66 end];
-  v69 = [v10 sessionID];
-  [(_PSEnsembleModel *)self logPipeline:v34 withPipelineStage:@"candidates_with_additional_features" andSessionID:v69 andCandidateNames:0];
+  sessionID5 = [contextCopy sessionID];
+  [(_PSEnsembleModel *)self logPipeline:v34 withPipelineStage:@"candidates_with_additional_features" andSessionID:sessionID5 andCandidateNames:0];
 
-  v70 = [(AeroMLTracerSession *)v17 createSubSpanWithName:@"evaluateCandidates" parentSpanId:v84];
+  v70 = [(AeroMLTracerSession *)v17 createSubSpanWithName:@"evaluateCandidates" parentSpanId:idCopy];
   [v70 start];
-  v71 = [v29 rankingModel];
-  [(_PSEnsembleModel *)self evaluateCandidates:v34 psrMLModel:v71];
+  rankingModel2 = [v29 rankingModel];
+  [(_PSEnsembleModel *)self evaluateCandidates:v34 psrMLModel:rankingModel2];
 
   [v70 end];
   v72 = +[_PSLogging rewriteChannel];
@@ -2074,8 +2074,8 @@ LABEL_8:
     _os_log_impl(&dword_1B5ED1000, v72, OS_LOG_TYPE_DEFAULT, "Ran the features through the coreML model", buf, 2u);
   }
 
-  v73 = [v10 sessionID];
-  [(_PSEnsembleModel *)self logPipeline:v34 withPipelineStage:@"candidates_with_coreml_output" andSessionID:v73 andCandidateNames:0];
+  sessionID6 = [contextCopy sessionID];
+  [(_PSEnsembleModel *)self logPipeline:v34 withPipelineStage:@"candidates_with_coreml_output" andSessionID:sessionID6 andCandidateNames:0];
 
   v74 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v74))
@@ -2089,10 +2089,10 @@ LABEL_8:
   return v34;
 }
 
-- (id)predictWithPredictionContext:(id)a3 maxSuggestions:(unint64_t)a4 contactKeysToFetch:(id)a5
+- (id)predictWithPredictionContext:(id)context maxSuggestions:(unint64_t)suggestions contactKeysToFetch:(id)fetch
 {
   v144 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v7))
   {
@@ -2101,21 +2101,21 @@ LABEL_8:
   }
 
   v8 = [AeroMLTracerSession alloc];
-  v9 = [v6 sessionID];
+  sessionID = [contextCopy sessionID];
   v10 = +[_PSConstants peopleSuggesterShareSheetProjectName];
-  v11 = [(AeroMLTracerSession *)v8 initWithTraceId:v9 projectName:v10];
+  v11 = [(AeroMLTracerSession *)v8 initWithTraceId:sessionID projectName:v10];
 
-  v12 = [v6 currentSpanId];
+  currentSpanId = [contextCopy currentSpanId];
   v122 = v11;
-  v13 = [(AeroMLTracerSession *)v11 createSubSpanWithName:@"predictWithPredictionContext" parentSpanId:v12];
+  v13 = [(AeroMLTracerSession *)v11 createSubSpanWithName:@"predictWithPredictionContext" parentSpanId:currentSpanId];
 
   [v13 start];
-  v14 = [(_PSEnsembleModel *)self deviceIdentifier];
-  [v13 addDeviceIdentifier:v14];
+  deviceIdentifier = [(_PSEnsembleModel *)self deviceIdentifier];
+  [v13 addDeviceIdentifier:deviceIdentifier];
 
-  v15 = [v6 queryStartDate];
+  queryStartDate = [contextCopy queryStartDate];
 
-  if (!v15)
+  if (!queryStartDate)
   {
     v16 = +[_PSLogging rewriteChannel];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2124,18 +2124,18 @@ LABEL_8:
     }
 
     v17 = [MEMORY[0x1E695DF00] now];
-    [v6 setQueryStartDate:v17];
+    [contextCopy setQueryStartDate:v17];
   }
 
-  v128 = [v6 queryStartDate];
+  queryStartDate2 = [contextCopy queryStartDate];
   v18 = [v13 createSubSpanWithName:@"readTrialInfo"];
   [v18 start];
   v19 = objc_alloc_init(_PSTrialClient);
-  v20 = [(_PSTrialClient *)v19 getTrialExperiment];
-  [(_PSEnsembleModel *)self addTrialInfoToPredictionContext:v6 withExperiment:v20];
-  v21 = [(_PSTrialClient *)v19 shouldActivatePSR];
-  v100 = [(_PSTrialClient *)v19 dataCollectionTimeToWaitInSeconds];
-  v101 = [(_PSTrialClient *)v19 shouldEnableDataCollection];
+  getTrialExperiment = [(_PSTrialClient *)v19 getTrialExperiment];
+  [(_PSEnsembleModel *)self addTrialInfoToPredictionContext:contextCopy withExperiment:getTrialExperiment];
+  shouldActivatePSR = [(_PSTrialClient *)v19 shouldActivatePSR];
+  dataCollectionTimeToWaitInSeconds = [(_PSTrialClient *)v19 dataCollectionTimeToWaitInSeconds];
+  shouldEnableDataCollection = [(_PSTrialClient *)v19 shouldEnableDataCollection];
   [(_PSTrialClient *)v19 maxComputationTime];
   v118 = v18;
   [v18 end];
@@ -2150,60 +2150,60 @@ LABEL_8:
   v23 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v6 sessionID];
-    [v20 experimentId];
-    v26 = v25 = v21;
-    v27 = [v20 deploymentId];
-    v28 = [v20 treatmentId];
+    sessionID2 = [contextCopy sessionID];
+    [getTrialExperiment experimentId];
+    v26 = v25 = shouldActivatePSR;
+    deploymentId = [getTrialExperiment deploymentId];
+    treatmentId = [getTrialExperiment treatmentId];
     *buf = 138413058;
-    v137 = v24;
+    v137 = sessionID2;
     v138 = 2112;
     v139 = v26;
     v140 = 1024;
-    v141 = v27;
+    v141 = deploymentId;
     v142 = 2112;
-    v143 = v28;
+    v143 = treatmentId;
     _os_log_impl(&dword_1B5ED1000, v23, OS_LOG_TYPE_DEFAULT, "_PSEnsemble: Getting suggestions for ShareSheet session %@ (trial experimentId: %@ deploymentId: %d treatmentId: %@)", buf, 0x26u);
 
-    v21 = v25;
+    shouldActivatePSR = v25;
   }
 
-  v117 = v20;
+  v117 = getTrialExperiment;
 
-  [v6 setIsPSRActive:1];
-  [v6 setReasonType:@"PS_Rewrite"];
+  [contextCopy setIsPSRActive:1];
+  [contextCopy setReasonType:@"PS_Rewrite"];
   v29 = [v13 createSubSpanWithName:@"fetchSupportedBundleIDsWithPredictionContextFilters"];
   [v29 start];
-  v123 = self;
-  v30 = [(_PSEnsembleModel *)self fetchSupportedBundleIDsWithPredictionContextFilters:v6];
-  [v6 setSupportedBundleIds:v30];
+  selfCopy = self;
+  v30 = [(_PSEnsembleModel *)self fetchSupportedBundleIDsWithPredictionContextFilters:contextCopy];
+  [contextCopy setSupportedBundleIds:v30];
 
   v116 = v29;
   [v29 end];
-  v31 = [v6 suggestionsFilteredByBundleIds];
+  suggestionsFilteredByBundleIds = [contextCopy suggestionsFilteredByBundleIds];
 
-  if (v31)
+  if (suggestionsFilteredByBundleIds)
   {
-    v32 = [v6 suggestionsFilteredByBundleIds];
-    v33 = [v32 componentsJoinedByString:{@", "}];
+    suggestionsFilteredByBundleIds2 = [contextCopy suggestionsFilteredByBundleIds];
+    v33 = [suggestionsFilteredByBundleIds2 componentsJoinedByString:{@", "}];
     [v13 logDebugEventWithName:@"ClientRequestBundleIdFilters" details:v33 attributes:MEMORY[0x1E695E0F8]];
   }
 
   v134[0] = @"shouldActivatePSRTrialOverwrite";
-  v126 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v21];
+  v126 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", shouldActivatePSR];
   v135[0] = v126;
   v134[1] = @"isFallbackFetch";
-  v119 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(v6, "isFallbackFetch")];
+  v119 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(contextCopy, "isFallbackFetch")];
   v135[1] = v119;
   v134[2] = @"sourceBundleID";
   v34 = MEMORY[0x1E696AEC0];
-  v114 = [v6 bundleID];
-  v112 = [v34 stringWithFormat:@"%@", v114];
-  v135[2] = v112;
+  bundleID = [contextCopy bundleID];
+  v114 = [v34 stringWithFormat:@"%@", bundleID];
+  v135[2] = v114;
   v134[3] = @"attachments_count";
   v35 = MEMORY[0x1E696AEC0];
-  v36 = [v6 attachments];
-  v37 = [v35 stringWithFormat:@"%ld", objc_msgSend(v36, "count")];
+  attachments = [contextCopy attachments];
+  v37 = [v35 stringWithFormat:@"%ld", objc_msgSend(attachments, "count")];
   v135[3] = v37;
   v134[4] = @"shouldProcessPicturesLive";
   v38 = MEMORY[0x1E696AEC0];
@@ -2219,29 +2219,29 @@ LABEL_8:
   v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v135 forKeys:v134 count:6];
   [v39 addAttributes:v45];
 
-  LOBYTE(v43) = [v6 isFallbackFetch];
+  LOBYTE(v43) = [contextCopy isFallbackFetch];
   v46 = [_PSInteractionsStatisticsConfig alloc];
-  v47 = [v6 bundleID];
+  bundleID2 = [contextCopy bundleID];
   if (v43)
   {
-    v48 = [(_PSInteractionsStatisticsConfig *)v46 initFallbackConfigWithBundleId:v47 anchorDate:v128];
+    v48 = [(_PSInteractionsStatisticsConfig *)v46 initFallbackConfigWithBundleId:bundleID2 anchorDate:queryStartDate2];
 
-    v49 = [v39 getSpanId];
-    v50 = v123;
-    v51 = [(_PSEnsembleModel *)v123 _fallbackPredictionWithPredictionContext:v6 config:v48 parentSpanId:v49];
+    getSpanId = [v39 getSpanId];
+    v50 = selfCopy;
+    v51 = [(_PSEnsembleModel *)selfCopy _fallbackPredictionWithPredictionContext:contextCopy config:v48 parentSpanId:getSpanId];
     v52 = v129;
     v53 = 0x1E7C23000;
   }
 
   else
   {
-    v48 = [(_PSInteractionsStatisticsConfig *)v46 initDefaultConfigWithBundleId:v47 anchorDate:v128];
+    v48 = [(_PSInteractionsStatisticsConfig *)v46 initDefaultConfigWithBundleId:bundleID2 anchorDate:queryStartDate2];
 
-    v49 = [v39 createSubSpanWithName:@"loadTrialInfoConfig"];
-    [v49 start];
+    getSpanId = [v39 createSubSpanWithName:@"loadTrialInfoConfig"];
+    [getSpanId start];
     v53 = 0x1E7C23000uLL;
     v54 = +[_PSLogging suggestionSignpost];
-    v50 = v123;
+    v50 = selfCopy;
     if (os_signpost_enabled(v54))
     {
       *buf = 0;
@@ -2257,32 +2257,32 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v55, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "_PSTrialClientLoading", &unk_1B5FD970D, buf, 2u);
     }
 
-    [v49 end];
-    v56 = [v6 attachments];
-    v57 = [v56 _pas_mappedArrayWithTransform:&__block_literal_global_538];
+    [getSpanId end];
+    attachments2 = [contextCopy attachments];
+    v57 = [attachments2 _pas_mappedArrayWithTransform:&__block_literal_global_538];
 
     if ([v57 count])
     {
-      v58 = [v57 firstObject];
-      [v48 setTopDomainURL:v58];
+      firstObject = [v57 firstObject];
+      [v48 setTopDomainURL:firstObject];
     }
 
-    v59 = [v39 getSpanId];
-    v60 = [(_PSEnsembleModel *)v123 _defaultPredictionsWithPredictionContext:v6 trialClient:v129 config:v48 parentSpanId:v59];
+    getSpanId2 = [v39 getSpanId];
+    v60 = [(_PSEnsembleModel *)selfCopy _defaultPredictionsWithPredictionContext:contextCopy trialClient:v129 config:v48 parentSpanId:getSpanId2];
 
     v51 = v60;
   }
 
   v61 = [v39 createSubSpanWithName:@"finalSuggestionProxiesForInteractionStatistics"];
   [v61 start];
-  v62 = [v61 getSpanId];
-  [v6 setCurrentSpanId:v62];
+  getSpanId3 = [v61 getSpanId];
+  [contextCopy setCurrentSpanId:getSpanId3];
 
   v127 = v51;
-  v63 = [(_PSEnsembleModel *)v50 finalSuggestionProxiesForInteractionStatistics:v51 config:v48 trialClient:v52 context:v6];
+  v63 = [(_PSEnsembleModel *)v50 finalSuggestionProxiesForInteractionStatistics:v51 config:v48 trialClient:v52 context:contextCopy];
   v64 = [(_PSEnsembleModel *)v50 getReasonTypesFromObjects:v63];
-  v65 = [*(v53 + 1360) rewriteChannel];
-  if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
+  rewriteChannel = [*(v53 + 1360) rewriteChannel];
+  if (os_log_type_enabled(rewriteChannel, OS_LOG_TYPE_DEBUG))
   {
     [_PSEnsembleModel predictWithPredictionContext:maxSuggestions:contactKeysToFetch:];
   }
@@ -2298,52 +2298,52 @@ LABEL_8:
   [v61 addAttributes:v68];
 
   [v61 end];
-  v69 = [v6 sessionID];
-  [(_PSEnsembleModel *)v50 setTraceId:v69];
+  sessionID3 = [contextCopy sessionID];
+  [(_PSEnsembleModel *)v50 setTraceId:sessionID3];
 
-  v70 = [v39 getSpanId];
-  [(_PSEnsembleModel *)v50 setCurrentSpanId:v70];
+  getSpanId4 = [v39 getSpanId];
+  [(_PSEnsembleModel *)v50 setCurrentSpanId:getSpanId4];
 
-  v71 = [*(v53 + 1360) suggestionSignpost];
-  if (os_signpost_enabled(v71))
+  suggestionSignpost = [*(v53 + 1360) suggestionSignpost];
+  if (os_signpost_enabled(suggestionSignpost))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v71, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleDedupingAndTrimming", &unk_1B5FD970D, buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1B5ED1000, suggestionSignpost, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleDedupingAndTrimming", &unk_1B5FD970D, buf, 2u);
   }
 
-  v72 = [(_PSEnsembleModel *)v50 fetchSupportedBundleIDsWithPredictionContextFilters:v6];
-  v73 = [(_PSEnsembleModel *)v50 defaultContactKeysToFetch];
-  v74 = [(_PSEnsembleModel *)v50 getMeContactIdentifier];
+  v72 = [(_PSEnsembleModel *)v50 fetchSupportedBundleIDsWithPredictionContextFilters:contextCopy];
+  defaultContactKeysToFetch = [(_PSEnsembleModel *)v50 defaultContactKeysToFetch];
+  getMeContactIdentifier = [(_PSEnsembleModel *)v50 getMeContactIdentifier];
   v111 = v63;
-  v75 = [(_PSEnsembleModel *)v50 suggestionsFromSuggestionProxies:v63 supportedBundleIDs:v72 contactKeysToFetch:v73 meContactIdentifier:v74 maxSuggestions:a4];
+  v75 = [(_PSEnsembleModel *)v50 suggestionsFromSuggestionProxies:v63 supportedBundleIDs:v72 contactKeysToFetch:defaultContactKeysToFetch meContactIdentifier:getMeContactIdentifier maxSuggestions:suggestions];
   v125 = [v75 mutableCopy];
 
-  v76 = [*(v53 + 1360) suggestionSignpost];
-  if (os_signpost_enabled(v76))
+  suggestionSignpost2 = [*(v53 + 1360) suggestionSignpost];
+  if (os_signpost_enabled(suggestionSignpost2))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v76, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleDedupingAndTrimming", &unk_1B5FD970D, buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1B5ED1000, suggestionSignpost2, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "_PSShareSheetPeopleDedupingAndTrimming", &unk_1B5FD970D, buf, 2u);
   }
 
-  v77 = [*(v53 + 1360) rewriteChannel];
-  if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
+  rewriteChannel2 = [*(v53 + 1360) rewriteChannel];
+  if (os_log_type_enabled(rewriteChannel2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
     v137 = v125;
-    _os_log_impl(&dword_1B5ED1000, v77, OS_LOG_TYPE_DEFAULT, "_PSEnsemble: final suggestions %{private}@", buf, 0xCu);
+    _os_log_impl(&dword_1B5ED1000, rewriteChannel2, OS_LOG_TYPE_DEFAULT, "_PSEnsemble: final suggestions %{private}@", buf, 0xCu);
   }
 
-  v78 = [v6 sessionID];
-  [(_PSEnsembleModel *)v50 logPipelineWithSuggestions:v125 interactionsStatistics:v127 pipelineStage:@"final_candidates_after_UI_resolution" sessionID:v78];
+  sessionID4 = [contextCopy sessionID];
+  [(_PSEnsembleModel *)v50 logPipelineWithSuggestions:v125 interactionsStatistics:v127 pipelineStage:@"final_candidates_after_UI_resolution" sessionID:sessionID4];
 
   [(_PSEnsembleModel *)v50 addSuggestedRankFeature:v125 interactionsStatistics:v127];
   [(_PSEnsembleModel *)v50 addSupportedBundleIDs:v125];
-  [(_PSEnsembleModel *)v50 addUTIInfo:v125 predictionContext:v6];
-  v79 = [*(v53 + 1360) suggestionSignpost];
-  if (os_signpost_enabled(v79))
+  [(_PSEnsembleModel *)v50 addUTIInfo:v125 predictionContext:contextCopy];
+  suggestionSignpost3 = [*(v53 + 1360) suggestionSignpost];
+  if (os_signpost_enabled(suggestionSignpost3))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v79, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "_PSEnsembleModel_predictWithPredictionContext", &unk_1B5FD970D, buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1B5ED1000, suggestionSignpost3, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "_PSEnsembleModel_predictWithPredictionContext", &unk_1B5FD970D, buf, 2u);
   }
 
   v121 = v39;
@@ -2351,62 +2351,62 @@ LABEL_8:
   v115 = v48;
   if ([v125 count])
   {
-    v80 = [v125 firstObject];
-    v81 = [v80 utiList];
+    firstObject2 = [v125 firstObject];
+    utiList = [firstObject2 utiList];
   }
 
   else
   {
-    v81 = &stru_1F2D6CE98;
+    utiList = &stru_1F2D6CE98;
   }
 
   v130[0] = @"utiList";
-  v109 = v81;
-  v108 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v81];
+  v109 = utiList;
+  v108 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", utiList];
   v131[0] = v108;
   v130[1] = @"predictionContext_photoSuggestedPeople";
   v82 = MEMORY[0x1E696AEC0];
-  v107 = [v6 photoSuggestedPeople];
-  v106 = [v82 stringWithFormat:@"%ld", objc_msgSend(v107, "count")];
+  photoSuggestedPeople = [contextCopy photoSuggestedPeople];
+  v106 = [v82 stringWithFormat:@"%ld", objc_msgSend(photoSuggestedPeople, "count")];
   v131[1] = v106;
   v130[2] = @"predictionContext_sceneTagsInPhotoIdentifiers";
   v83 = MEMORY[0x1E696AEC0];
-  v105 = [v6 sceneTagsInPhotoIdentifiers];
-  v104 = [v83 stringWithFormat:@"%ld", objc_msgSend(v105, "count")];
+  sceneTagsInPhotoIdentifiers = [contextCopy sceneTagsInPhotoIdentifiers];
+  v104 = [v83 stringWithFormat:@"%ld", objc_msgSend(sceneTagsInPhotoIdentifiers, "count")];
   v131[2] = v104;
   v130[3] = @"predictionContext_peopleInPhotoIdentifiers";
   v84 = MEMORY[0x1E696AEC0];
-  v103 = [v6 peopleInPhotoIdentifiers];
-  v102 = [v84 stringWithFormat:@"%ld", objc_msgSend(v103, "count")];
+  peopleInPhotoIdentifiers = [contextCopy peopleInPhotoIdentifiers];
+  v102 = [v84 stringWithFormat:@"%ld", objc_msgSend(peopleInPhotoIdentifiers, "count")];
   v131[3] = v102;
   v130[4] = @"predictionContext_suggestionPath";
   v85 = MEMORY[0x1E696AEC0];
-  v86 = [v6 suggestionPath];
-  [v85 stringWithFormat:@"%@", v86];
-  v87 = v120 = v6;
+  suggestionPath = [contextCopy suggestionPath];
+  [v85 stringWithFormat:@"%@", suggestionPath];
+  v87 = v120 = contextCopy;
   v131[4] = v87;
   v130[5] = @"messageInteractionCache_count";
   v88 = MEMORY[0x1E696AEC0];
-  v89 = [(_PSEnsembleModel *)v50 messageInteractionCache];
-  v90 = [v88 stringWithFormat:@"%ld", objc_msgSend(v89, "size")];
+  messageInteractionCache = [(_PSEnsembleModel *)v50 messageInteractionCache];
+  v90 = [v88 stringWithFormat:@"%ld", objc_msgSend(messageInteractionCache, "size")];
   v131[5] = v90;
   v130[6] = @"shareInteractionCache_count";
   v91 = MEMORY[0x1E696AEC0];
-  v92 = [(_PSEnsembleModel *)v50 shareInteractionCache];
-  v93 = [v91 stringWithFormat:@"%ld", objc_msgSend(v92, "size")];
+  shareInteractionCache = [(_PSEnsembleModel *)v50 shareInteractionCache];
+  v93 = [v91 stringWithFormat:@"%ld", objc_msgSend(shareInteractionCache, "size")];
   v131[6] = v93;
   v130[7] = @"allOtherInteractionCache_count";
   v94 = MEMORY[0x1E696AEC0];
-  v95 = [(_PSEnsembleModel *)v50 allOtherInteractionCache];
-  v96 = [v94 stringWithFormat:@"%ld", objc_msgSend(v95, "size")];
+  allOtherInteractionCache = [(_PSEnsembleModel *)v50 allOtherInteractionCache];
+  v96 = [v94 stringWithFormat:@"%ld", objc_msgSend(allOtherInteractionCache, "size")];
   v131[7] = v96;
   v97 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v131 forKeys:v130 count:8];
   [v121 addAttributes:v97];
 
   [v121 end];
-  if (([v120 isFallbackFetch] & 1) == 0 && v101)
+  if (([v120 isFallbackFetch] & 1) == 0 && shouldEnableDataCollection)
   {
-    [(_PSEnsembleModel *)v123 psrDataCollectionForContext:v120 timeToWaitInSeconds:v100 interactionStatisticsConfig:v115 interactionStatistics:v127];
+    [(_PSEnsembleModel *)selfCopy psrDataCollectionForContext:v120 timeToWaitInSeconds:dataCollectionTimeToWaitInSeconds interactionStatisticsConfig:v115 interactionStatistics:v127];
   }
 
   v98 = *MEMORY[0x1E69E9840];
@@ -2414,40 +2414,40 @@ LABEL_8:
   return v125;
 }
 
-- (id)getReasonTypesFromObjects:(id)a3 limit:(unint64_t)a4
+- (id)getReasonTypesFromObjects:(id)objects limit:(unint64_t)limit
 {
-  v5 = [a3 _pas_mappedArrayWithTransform:&__block_literal_global_580];
+  v5 = [objects _pas_mappedArrayWithTransform:&__block_literal_global_580];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF != nil"];
   v7 = [v5 filteredArrayUsingPredicate:v6];
 
   v8 = [v7 count];
-  if (v8 >= a4)
+  if (v8 >= limit)
   {
-    v9 = a4;
+    limitCopy = limit;
   }
 
   else
   {
-    v9 = v8;
+    limitCopy = v8;
   }
 
-  v10 = [v7 subarrayWithRange:{0, v9}];
+  v10 = [v7 subarrayWithRange:{0, limitCopy}];
   v11 = [v10 componentsJoinedByString:@"::"];
 
   return v11;
 }
 
-- (void)addSuggestedRankFeature:(id)a3 interactionsStatistics:(id)a4
+- (void)addSuggestedRankFeature:(id)feature interactionsStatistics:(id)statistics
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  [v6 initFeature:@"suggestedRank" withValue:&unk_1F2D8B2E0];
+  featureCopy = feature;
+  statisticsCopy = statistics;
+  [statisticsCopy initFeature:@"suggestedRank" withValue:&unk_1F2D8B2E0];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = featureCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -2464,14 +2464,14 @@ LABEL_8:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 conversationIdentifier];
-        if (!v14)
+        conversationIdentifier = [v13 conversationIdentifier];
+        if (!conversationIdentifier)
         {
-          v14 = [v13 derivedIntentIdentifier];
+          conversationIdentifier = [v13 derivedIntentIdentifier];
         }
 
         v15 = [MEMORY[0x1E696AD98] numberWithInt:v11];
-        [v6 setValue:v15 forFeature:@"suggestedRank" andConversationId:v14];
+        [statisticsCopy setValue:v15 forFeature:@"suggestedRank" andConversationId:conversationIdentifier];
 
         v11 = (v11 + 1);
       }
@@ -2485,60 +2485,60 @@ LABEL_8:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (int)modelProxyToVirtualFeatureStoreFeature:(id)a3
+- (int)modelProxyToVirtualFeatureStoreFeature:(id)feature
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"knnSuggestionProxies"])
+  featureCopy = feature;
+  if ([featureCopy isEqualToString:@"knnSuggestionProxies"])
   {
     v4 = 691;
   }
 
-  else if ([v3 isEqualToString:@"inPhoneCallSuggestionProxies"])
+  else if ([featureCopy isEqualToString:@"inPhoneCallSuggestionProxies"])
   {
     v4 = 695;
   }
 
-  else if ([v3 isEqualToString:@"hyperRecentSuggestionProxies"])
+  else if ([featureCopy isEqualToString:@"hyperRecentSuggestionProxies"])
   {
     v4 = 698;
   }
 
-  else if ([v3 isEqualToString:@"backFillProxies"])
+  else if ([featureCopy isEqualToString:@"backFillProxies"])
   {
     v4 = 702;
   }
 
-  else if ([v3 isEqualToString:@"photosGroupSuggestionProxies"])
+  else if ([featureCopy isEqualToString:@"photosGroupSuggestionProxies"])
   {
     v4 = 700;
   }
 
-  else if ([v3 isEqualToString:@"photosGroupSuggestionProxiesAssetPresence"])
+  else if ([featureCopy isEqualToString:@"photosGroupSuggestionProxiesAssetPresence"])
   {
     v4 = 701;
   }
 
-  else if ([v3 isEqualToString:@"photoSuggestionProxiesFilteredByAssetOrMomentPresence"])
+  else if ([featureCopy isEqualToString:@"photoSuggestionProxiesFilteredByAssetOrMomentPresence"])
   {
     v4 = 699;
   }
 
-  else if ([v3 isEqualToString:@"returnDocumentToSenderSuggestionProxies"])
+  else if ([featureCopy isEqualToString:@"returnDocumentToSenderSuggestionProxies"])
   {
     v4 = 704;
   }
 
-  else if ([v3 isEqualToString:@"shareSheetRecencyProxies"])
+  else if ([featureCopy isEqualToString:@"shareSheetRecencyProxies"])
   {
     v4 = 708;
   }
 
-  else if ([v3 isEqualToString:@"messagesRecencyProxies"])
+  else if ([featureCopy isEqualToString:@"messagesRecencyProxies"])
   {
     v4 = 709;
   }
 
-  else if ([v3 isEqualToString:@"coreMLSuggestionProxies"])
+  else if ([featureCopy isEqualToString:@"coreMLSuggestionProxies"])
   {
     v4 = 703;
   }
@@ -2557,27 +2557,27 @@ LABEL_8:
   return v4;
 }
 
-- (void)addTrialInfoToPredictionContext:(id)a3 withExperiment:(id)a4
+- (void)addTrialInfoToPredictionContext:(id)context withExperiment:(id)experiment
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 experimentId];
-  [v6 setTrialExperimentId:v7];
+  experimentCopy = experiment;
+  contextCopy = context;
+  experimentId = [experimentCopy experimentId];
+  [contextCopy setTrialExperimentId:experimentId];
 
-  v8 = [v5 treatmentId];
-  [v6 setTrialTreatmentId:v8];
+  treatmentId = [experimentCopy treatmentId];
+  [contextCopy setTrialTreatmentId:treatmentId];
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [v5 deploymentId];
+  deploymentId = [experimentCopy deploymentId];
 
-  v11 = [v9 stringWithFormat:@"%d", v10];
-  [v6 setTrialDeploymentId:v11];
+  v11 = [v9 stringWithFormat:@"%d", deploymentId];
+  [contextCopy setTrialDeploymentId:v11];
 }
 
-- (void)addExtraInformationWithSuggestions:(id)a3 modelSuggestionProxiesDict:(id)a4
+- (void)addExtraInformationWithSuggestions:(id)suggestions modelSuggestionProxiesDict:(id)dict
 {
-  v6 = a3;
-  v7 = a4;
+  suggestionsCopy = suggestions;
+  dictCopy = dict;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -2588,15 +2588,15 @@ LABEL_8:
   v17[3] = &unk_1E7C249D0;
   v17[4] = self;
   v17[5] = v18;
-  [v6 enumerateObjectsUsingBlock:v17];
+  [suggestionsCopy enumerateObjectsUsingBlock:v17];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __82___PSEnsembleModel_addExtraInformationWithSuggestions_modelSuggestionProxiesDict___block_invoke_597;
   v16[3] = &unk_1E7C24A20;
   v16[4] = self;
-  [v7 enumerateKeysAndObjectsUsingBlock:v16];
-  v8 = [(_PSEnsembleModel *)self trialID];
-  v9 = [v8 copy];
+  [dictCopy enumerateKeysAndObjectsUsingBlock:v16];
+  trialID = [(_PSEnsembleModel *)self trialID];
+  v9 = [trialID copy];
 
   if (v9)
   {
@@ -2620,18 +2620,18 @@ LABEL_8:
   _Block_object_dispose(v18, 8);
 }
 
-- (void)addUTIInfo:(id)a3 predictionContext:(id)a4
+- (void)addUTIInfo:(id)info predictionContext:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  contextCopy = context;
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = [v6 attachments];
-  v9 = [v8 countByEnumeratingWithState:&v29 objects:v36 count:16];
+  attachments = [contextCopy attachments];
+  v9 = [attachments countByEnumeratingWithState:&v29 objects:v36 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2642,7 +2642,7 @@ LABEL_8:
       {
         if (*v30 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(attachments);
         }
 
         v13 = *(*(&v29 + 1) + 8 * i);
@@ -2655,14 +2655,14 @@ LABEL_8:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v29 objects:v36 count:16];
+      v10 = [attachments countByEnumeratingWithState:&v29 objects:v36 count:16];
     }
 
     while (v10);
   }
 
-  v16 = [v7 allObjects];
-  v17 = [v16 componentsJoinedByString:{@", "}];
+  allObjects = [v7 allObjects];
+  v17 = [allObjects componentsJoinedByString:{@", "}];
   v18 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
@@ -2675,7 +2675,7 @@ LABEL_8:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v19 = v5;
+  v19 = infoCopy;
   v20 = [v19 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v20)
   {
@@ -2702,12 +2702,12 @@ LABEL_8:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSupportedBundleIDs:(id)a3
+- (void)addSupportedBundleIDs:(id)ds
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_PSEnsembleModel *)self fetchShareSheetSupportedBundleIDs];
-  v6 = [v5 componentsJoinedByString:{@", "}];
+  dsCopy = ds;
+  fetchShareSheetSupportedBundleIDs = [(_PSEnsembleModel *)self fetchShareSheetSupportedBundleIDs];
+  v6 = [fetchShareSheetSupportedBundleIDs componentsJoinedByString:{@", "}];
   v7 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2720,7 +2720,7 @@ LABEL_8:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v4;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -2749,17 +2749,17 @@ LABEL_8:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_suggestionInteractionPredicatesForFirstPartyMessages:(BOOL)a3 bundleID:(id)a4 interactionRecipients:(id)a5
++ (id)_suggestionInteractionPredicatesForFirstPartyMessages:(BOOL)messages bundleID:(id)d interactionRecipients:(id)recipients
 {
-  v6 = a3;
+  messagesCopy = messages;
   v24[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  recipientsCopy = recipients;
+  v9 = recipientsCopy;
+  if (dCopy)
   {
     v10 = 0;
-    if (v8)
+    if (recipientsCopy)
     {
       goto LABEL_3;
     }
@@ -2813,7 +2813,7 @@ LABEL_12:
   }
 
   v15 = &_suggestionInteractionPredicatesForFirstPartyMessages_bundleID_interactionRecipients__firstPartyMessagesPredicates;
-  if (!v6)
+  if (!messagesCopy)
   {
     v15 = &_suggestionInteractionPredicatesForFirstPartyMessages_bundleID_interactionRecipients__thirdPartyPredicates;
   }
@@ -2821,7 +2821,7 @@ LABEL_12:
   v16 = *v15;
   v23[0] = @"bundleID";
   v23[1] = @"interactionRecipients";
-  v24[0] = v7;
+  v24[0] = dCopy;
   v24[1] = v9;
   v17 = MEMORY[0x1E695DF20];
   v10 = v16;
@@ -2840,9 +2840,9 @@ LABEL_17:
   return v12;
 }
 
-- (id)suggestionsFromSuggestionProxies:(id)a3 supportedBundleIDs:(id)a4 contactKeysToFetch:(id)a5 meContactIdentifier:(id)a6 maxSuggestions:(unint64_t)a7
+- (id)suggestionsFromSuggestionProxies:(id)proxies supportedBundleIDs:(id)ds contactKeysToFetch:(id)fetch meContactIdentifier:(id)identifier maxSuggestions:(unint64_t)suggestions
 {
-  v8 = MEMORY[0x1EEE9AC00](self, a2, a3, a4, a5, a6, a7);
+  v8 = MEMORY[0x1EEE9AC00](self, a2, proxies, ds, fetch, identifier, suggestions);
   v465 = v9;
   v11 = v10;
   v13 = v12;
@@ -2854,26 +2854,26 @@ LABEL_17:
   v20 = v13;
   v505 = v11;
   v21 = [AeroMLTracerSession alloc];
-  v22 = [v16 traceId];
+  traceId = [v16 traceId];
   v23 = +[_PSConstants peopleSuggesterShareSheetProjectName];
-  v24 = [(AeroMLTracerSession *)v21 initWithTraceId:v22 projectName:v23];
+  v24 = [(AeroMLTracerSession *)v21 initWithTraceId:traceId projectName:v23];
 
-  v25 = [v16 currentSpanId];
+  currentSpanId = [v16 currentSpanId];
   v458 = v24;
-  v26 = [(AeroMLTracerSession *)v24 createSubSpanWithName:@"suggestionsFromSuggestionProxies" parentSpanId:v25];
+  v26 = [(AeroMLTracerSession *)v24 createSubSpanWithName:@"suggestionsFromSuggestionProxies" parentSpanId:currentSpanId];
 
   [v26 start];
   v27 = [v26 createSubSpanWithName:@"cachedMessagesInteractions"];
   [v27 start];
-  v28 = [v16 messageInteractionCache];
-  v474 = [v28 interactions];
+  messageInteractionCache = [v16 messageInteractionCache];
+  interactions = [messageInteractionCache interactions];
 
   v457 = v27;
   [v27 end];
   v29 = [v26 createSubSpanWithName:@"cachedShares"];
   [v29 start];
-  v30 = [v16 shareInteractionCache];
-  v473 = [v30 interactions];
+  shareInteractionCache = [v16 shareInteractionCache];
+  interactions2 = [shareInteractionCache interactions];
 
   v456 = v29;
   [v29 end];
@@ -2913,29 +2913,29 @@ LABEL_17:
         v520 = v32;
         v33 = *(*(&v645 + 1) + 8 * v32);
         v516 = objc_autoreleasePoolPush();
-        v34 = [(_PSSuggestionProxy *)v33 interactionRecipients];
-        v535 = [(_PSSuggestionProxy *)v33 contactID];
-        if (!(v34 | v535))
+        interactionRecipients = [(_PSSuggestionProxy *)v33 interactionRecipients];
+        contactID = [(_PSSuggestionProxy *)v33 contactID];
+        if (!(interactionRecipients | contactID))
         {
-          v35 = [(_PSSuggestionProxy *)v33 handles];
+          handles = [(_PSSuggestionProxy *)v33 handles];
 
-          if (!v35)
+          if (!handles)
           {
             v42 = 0;
             goto LABEL_16;
           }
         }
 
-        v36 = [(_PSSuggestionProxy *)v33 bundleID];
-        if (v36)
+        bundleID = [(_PSSuggestionProxy *)v33 bundleID];
+        if (bundleID)
         {
-          v37 = v36;
-          v38 = [(_PSSuggestionProxy *)v33 bundleID];
-          v39 = [v484 containsObject:v38];
+          v37 = bundleID;
+          bundleID2 = [(_PSSuggestionProxy *)v33 bundleID];
+          v39 = [v484 containsObject:bundleID2];
 
           if (!v39)
           {
-            v42 = v34;
+            v42 = interactionRecipients;
 LABEL_16:
             v43 = v520;
             goto LABEL_230;
@@ -2943,12 +2943,12 @@ LABEL_16:
         }
 
         v526 = v33;
-        if (v535)
+        if (contactID)
         {
-          v40 = [(_PSSuggestionProxy *)v33 handle];
+          handle = [(_PSSuggestionProxy *)v33 handle];
 
           v41 = v543;
-          if (!v40)
+          if (!handle)
           {
             v44 = v484;
             v45 = +[_PSConstants mobileMailBundleId];
@@ -2967,9 +2967,9 @@ LABEL_63:
             v643 = 0u;
             v642 = 0u;
             v641 = 0u;
-            v46 = v473;
+            v46 = interactions2;
             v47 = [v46 countByEnumeratingWithState:&v641 objects:v681 count:16];
-            v496 = v7;
+            v496 = groupName2;
             if (v47)
             {
               v48 = *v642;
@@ -2983,11 +2983,11 @@ LABEL_63:
                   }
 
                   v50 = *(*(&v641 + 1) + 8 * i);
-                  v51 = [v50 recipients];
-                  if ([v51 count] <= 1)
+                  recipients = [v50 recipients];
+                  if ([recipients count] <= 1)
                   {
-                    v52 = [MEMORY[0x1E696AE18] predicateWithFormat:@"personId == %@", v535];
-                    v53 = [v51 filteredArrayUsingPredicate:v52];
+                    v535 = [MEMORY[0x1E696AE18] predicateWithFormat:@"personId == %@", contactID];
+                    v53 = [recipients filteredArrayUsingPredicate:v535];
 
                     if ([v53 count] == 1)
                     {
@@ -3006,14 +3006,14 @@ LABEL_63:
 
               while (v47);
 LABEL_31:
-              v7 = v496;
+              groupName2 = v496;
             }
 
             v640 = 0u;
             v639 = 0u;
             v638 = 0u;
             v637 = 0u;
-            v54 = v474;
+            v54 = interactions;
             v55 = [v54 countByEnumeratingWithState:&v637 objects:v680 count:16];
             if (v55)
             {
@@ -3028,11 +3028,11 @@ LABEL_31:
                   }
 
                   v58 = *(*(&v637 + 1) + 8 * j);
-                  v59 = [v58 recipients];
-                  if ([v59 count] <= 1)
+                  recipients2 = [v58 recipients];
+                  if ([recipients2 count] <= 1)
                   {
-                    v60 = [MEMORY[0x1E696AE18] predicateWithFormat:@"personId == %@", v535];
-                    v61 = [v59 filteredArrayUsingPredicate:v60];
+                    v5352 = [MEMORY[0x1E696AE18] predicateWithFormat:@"personId == %@", contactID];
+                    v61 = [recipients2 filteredArrayUsingPredicate:v5352];
 
                     if ([v61 count] == 1)
                     {
@@ -3052,14 +3052,14 @@ LABEL_31:
               while (v55);
 LABEL_44:
               v41 = v543;
-              v7 = v496;
+              groupName2 = v496;
             }
 
             if (v47)
             {
-              v62 = [v55 startDate];
-              v63 = [v47 startDate];
-              [v62 timeIntervalSinceDate:v63];
+              startDate = [v55 startDate];
+              startDate2 = [v47 startDate];
+              [startDate timeIntervalSinceDate:startDate2];
               v65 = v64;
 
               if (v65 <= 0.0 || (v66 = v55, v47, (v47 = v66) != 0))
@@ -3069,29 +3069,29 @@ LABEL_44:
               }
             }
 
-            v47 = [_PSInteractionStoreUtils mostRecentInteractionWithRecipientMatchingContactIdentifier:v535 bundleIds:v561 store:v41[6] singleRecipient:1];
+            v47 = [_PSInteractionStoreUtils mostRecentInteractionWithRecipientMatchingContactIdentifier:contactID bundleIds:v561 store:v41[6] singleRecipient:1];
 
             if (v47)
             {
 LABEL_50:
-              v67 = [v47 bundleId];
+              bundleId = [v47 bundleId];
               v68 = +[_PSConstants mobileMessagesBundleId];
-              if ([v67 isEqualToString:v68])
+              if ([bundleId isEqualToString:v68])
               {
 
                 goto LABEL_53;
               }
 
-              v69 = [v47 targetBundleId];
+              targetBundleId = [v47 targetBundleId];
               v70 = +[_PSConstants shareSheetTargetBundleIdMessages];
-              v71 = [v69 isEqualToString:v70];
+              v71 = [targetBundleId isEqualToString:v70];
 
               if (v71)
               {
 LABEL_53:
-                v72 = [(_PSSuggestionProxy *)v526 reason];
-                v73 = [(_PSSuggestionProxy *)v526 reasonType];
-                v74 = [_PSPhotoSuggestions suggestionTemplateForPhotoContactIdWithMessages:v535 cdInteraction:v47 reason:v72 reasonType:v73];
+                reason = [(_PSSuggestionProxy *)v526 reason];
+                reasonType = [(_PSSuggestionProxy *)v526 reasonType];
+                v74 = [_PSPhotoSuggestions suggestionTemplateForPhotoContactIdWithMessages:contactID cdInteraction:v47 reason:reason reasonType:reasonType];
 
                 v20 = v544;
                 if (v74)
@@ -3104,35 +3104,35 @@ LABEL_53:
 
               else
               {
-                v75 = [v47 targetBundleId];
+                targetBundleId2 = [v47 targetBundleId];
                 v76 = +[_PSConstants shareSheetTargetBundleIdMail];
-                v77 = [v75 isEqualToString:v76];
+                v77 = [targetBundleId2 isEqualToString:v76];
 
                 v78 = [_PSSuggestionProxy alloc];
                 if (v77)
                 {
                   v551 = +[_PSConstants mobileMailBundleId];
                   v79 = MEMORY[0x1E69978D0];
-                  v556 = [v47 recipients];
-                  v80 = [v79 generateConversationIdFromInteractionRecipients:v556];
-                  v81 = [(_PSSuggestionProxy *)v526 contactID];
-                  v82 = [(_PSSuggestionProxy *)v526 handle];
+                  recipients3 = [v47 recipients];
+                  v80 = [v79 generateConversationIdFromInteractionRecipients:recipients3];
+                  contactID2 = [(_PSSuggestionProxy *)v526 contactID];
+                  handle2 = [(_PSSuggestionProxy *)v526 handle];
                   [(_PSSuggestionProxy *)v526 reason];
-                  v84 = v83 = v7;
-                  v85 = [(_PSSuggestionProxy *)v526 reasonType];
-                  v547 = [(_PSSuggestionProxy *)v78 initWithBundleID:v551 interactionRecipients:v80 contactID:v81 handle:v82 reason:v84 reasonType:v85];
+                  v84 = v83 = groupName2;
+                  reasonType2 = [(_PSSuggestionProxy *)v526 reasonType];
+                  v547 = [(_PSSuggestionProxy *)v78 initWithBundleID:v551 interactionRecipients:v80 contactID:contactID2 handle:handle2 reason:v84 reasonType:reasonType2];
 
-                  v7 = v83;
+                  groupName2 = v83;
                   v74 = v547;
                 }
 
                 else
                 {
-                  v86 = [v47 bundleId];
-                  v87 = [v47 derivedIntentIdentifier];
-                  v88 = [(_PSSuggestionProxy *)v526 reason];
-                  v89 = [(_PSSuggestionProxy *)v526 reasonType];
-                  v90 = [(_PSSuggestionProxy *)v78 initWithBundleID:v86 interactionRecipients:v87 contactID:v535 reason:v88 reasonType:v89];
+                  bundleId2 = [v47 bundleId];
+                  derivedIntentIdentifier = [v47 derivedIntentIdentifier];
+                  reason2 = [(_PSSuggestionProxy *)v526 reason];
+                  reasonType3 = [(_PSSuggestionProxy *)v526 reasonType];
+                  v90 = [(_PSSuggestionProxy *)v78 initWithBundleID:bundleId2 interactionRecipients:derivedIntentIdentifier contactID:contactID reason:reason2 reasonType:reasonType3];
 
                   v74 = v90;
                 }
@@ -3156,22 +3156,22 @@ LABEL_61:
         }
 
 LABEL_64:
-        v91 = [(_PSSuggestionProxy *)v33 bundleID];
-        v92 = [(_PSSuggestionProxy *)v33 interactionRecipients];
+        bundleID3 = [(_PSSuggestionProxy *)v33 bundleID];
+        interactionRecipients2 = [(_PSSuggestionProxy *)v33 interactionRecipients];
 
-        v545 = v91;
-        v537 = v92;
-        if ([v483 containsObject:v91])
+        v545 = bundleID3;
+        v537 = interactionRecipients2;
+        if ([v483 containsObject:bundleID3])
         {
-          v93 = [MEMORY[0x1E69978D0] recipientIdentifiersFromMobileMailConversationId:v92];
+          v93 = [MEMORY[0x1E69978D0] recipientIdentifiersFromMobileMailConversationId:interactionRecipients2];
           v94 = v93;
           if (v93 && [v93 count])
           {
             v95 = [_PSSuggestionTemplate alloc];
-            v96 = [(_PSSuggestionProxy *)v33 reason];
-            v97 = [(_PSSuggestionProxy *)v33 reasonType];
-            v98 = [(_PSSuggestionProxy *)v33 modelScore];
-            v99 = [(_PSSuggestionTemplate *)v95 initWithBundleID:v545 interactionRecipients:v537 image:0 groupName:0 recipientContactIDs:0 recipientEmailAddresses:v94 recipientPhoneNumbers:0 recipientDisplayNames:0 contactIdToHandleMapping:0 reason:v96 reasonType:v97 modelScore:v98];
+            reason3 = [(_PSSuggestionProxy *)v33 reason];
+            reasonType4 = [(_PSSuggestionProxy *)v33 reasonType];
+            modelScore = [(_PSSuggestionProxy *)v33 modelScore];
+            v99 = [(_PSSuggestionTemplate *)v95 initWithBundleID:v545 interactionRecipients:v537 image:0 groupName:0 recipientContactIDs:0 recipientEmailAddresses:v94 recipientPhoneNumbers:0 recipientDisplayNames:0 contactIdToHandleMapping:0 reason:reason3 reasonType:reasonType4 modelScore:modelScore];
 
             [v31 addObject:v99];
           }
@@ -3180,19 +3180,19 @@ LABEL_64:
           goto LABEL_229;
         }
 
-        v100 = [(_PSSuggestionProxy *)v33 reason];
+        reason4 = [(_PSSuggestionProxy *)v33 reason];
         v101 = +[_PSConstants inCallHeuristicReason];
         v527 = v33;
-        if ([v100 isEqualToString:v101])
+        if ([reason4 isEqualToString:v101])
         {
           v102 = 1;
         }
 
         else
         {
-          v103 = [(_PSSuggestionProxy *)v33 reason];
+          reason5 = [(_PSSuggestionProxy *)v33 reason];
           v104 = +[_PSConstants inCallCollaborationHeuristicReason];
-          v102 = [v103 isEqualToString:v104];
+          v102 = [reason5 isEqualToString:v104];
 
           v31 = v481;
         }
@@ -3202,12 +3202,12 @@ LABEL_64:
         if (v102)
         {
           v43 = v520;
-          if (v535)
+          if (contactID)
           {
-            v106 = [(_PSSuggestionProxy *)v33 handle];
-            if (v106)
+            handle3 = [(_PSSuggestionProxy *)v33 handle];
+            if (handle3)
             {
-              v477 = v106;
+              v477 = handle3;
 
 LABEL_80:
               v94 = [_PSHeuristics templateForPhoneCallHeuristicFromSuggestionProxy:v33];
@@ -3222,13 +3222,13 @@ LABEL_80:
             v477 = 0;
           }
 
-          v107 = [(_PSSuggestionProxy *)v33 handles];
+          handles2 = [(_PSSuggestionProxy *)v33 handles];
 
-          if (v535)
+          if (contactID)
           {
           }
 
-          if (v107)
+          if (handles2)
           {
             goto LABEL_80;
           }
@@ -3238,8 +3238,8 @@ LABEL_80:
         v635 = 0u;
         v634 = 0u;
         v633 = 0u;
-        v552 = v473;
-        v108 = [v552 countByEnumeratingWithState:&v633 objects:v679 count:16];
+        recipients5 = interactions2;
+        v108 = [recipients5 countByEnumeratingWithState:&v633 objects:v679 count:16];
         v548 = v105;
         if (!v108)
         {
@@ -3255,26 +3255,26 @@ LABEL_84:
         {
           if (*v634 != v562)
           {
-            objc_enumerationMutation(v552);
+            objc_enumerationMutation(recipients5);
           }
 
           v111 = *(*(&v633 + 1) + 8 * v110);
-          v112 = [v111 domainIdentifier];
-          v113 = [v112 isEqual:v109];
+          domainIdentifier = [v111 domainIdentifier];
+          v113 = [domainIdentifier isEqual:v109];
 
-          v114 = [v111 derivedIntentIdentifier];
-          v115 = [v114 isEqual:v109];
+          derivedIntentIdentifier2 = [v111 derivedIntentIdentifier];
+          v115 = [derivedIntentIdentifier2 isEqual:v109];
 
-          v116 = [v111 targetBundleId];
+          targetBundleId3 = [v111 targetBundleId];
           v117 = v115;
-          if (([v116 isEqual:v545] & 1) == 0)
+          if (([targetBundleId3 isEqual:v545] & 1) == 0)
           {
-            v118 = [v111 targetBundleId];
-            [v500 objectForKeyedSubscript:v118];
-            v120 = v119 = v7;
+            targetBundleId4 = [v111 targetBundleId];
+            [v500 objectForKeyedSubscript:targetBundleId4];
+            v120 = v119 = groupName2;
             v121 = [v120 isEqual:v545];
 
-            v7 = v119;
+            groupName2 = v119;
             v105 = v548;
             v117 = v121 & v115;
           }
@@ -3297,8 +3297,8 @@ LABEL_84:
           else
           {
             v123 = MEMORY[0x1E69978D0];
-            v124 = [v111 recipients];
-            v125 = [v123 generateConversationIdFromInteractionRecipients:v124];
+            recipients4 = [v111 recipients];
+            v125 = [v123 generateConversationIdFromInteractionRecipients:recipients4];
             v126 = [v125 isEqual:v537];
 
             if (v126)
@@ -3309,7 +3309,7 @@ LABEL_84:
 
           if (v108 == ++v110)
           {
-            v108 = [v552 countByEnumeratingWithState:&v633 objects:v679 count:16];
+            v108 = [recipients5 countByEnumeratingWithState:&v633 objects:v679 count:16];
             if (!v108)
             {
 LABEL_99:
@@ -3334,9 +3334,9 @@ LABEL_99:
           goto LABEL_113;
         }
 
-        v552 = [v128 recipients];
+        recipients5 = [v128 recipients];
         v502 = v128;
-        if ([v552 count] < 2)
+        if ([recipients5 count] < 2)
         {
           v506 = 0;
           v127 = 0;
@@ -3344,13 +3344,13 @@ LABEL_99:
 
         else
         {
-          v129 = [v128 contentURL];
-          if (v129)
+          contentURL = [v128 contentURL];
+          if (contentURL)
           {
-            v130 = v129;
-            v131 = [v128 groupName];
+            v130 = contentURL;
+            groupName = [v128 groupName];
 
-            if (v131)
+            if (groupName)
             {
               v506 = 0;
               v127 = 0;
@@ -3363,8 +3363,8 @@ LABEL_99:
           {
           }
 
-          v132 = [v128 recipients];
-          v133 = [v132 _pas_mappedArrayWithTransform:&__block_literal_global_644];
+          recipients6 = [v128 recipients];
+          v133 = [recipients6 _pas_mappedArrayWithTransform:&__block_literal_global_644];
           [v502 setRecipients:v133];
 
           v134 = +[_PSLogging generalChannel];
@@ -3374,8 +3374,8 @@ LABEL_99:
           }
 
           v127 = 1;
-          v552 = objc_opt_new();
-          v506 = v552;
+          recipients5 = objc_opt_new();
+          v506 = recipients5;
         }
 
         LOBYTE(v108) = 1;
@@ -3386,7 +3386,7 @@ LABEL_113:
         v629 = 0u;
         v628 = 0u;
         v627 = 0u;
-        v553 = v474;
+        v553 = interactions;
         v563 = [v553 countByEnumeratingWithState:&v627 objects:v678 count:16];
         if (!v563)
         {
@@ -3411,43 +3411,43 @@ LABEL_116:
             goto LABEL_129;
           }
 
-          v137 = [*(*(&v627 + 1) + 8 * v135) contentURL];
-          if (!v137)
+          contentURL2 = [*(*(&v627 + 1) + 8 * v135) contentURL];
+          if (!contentURL2)
           {
-            v7 = [v136 groupName];
-            if (!v7)
+            groupName2 = [v136 groupName];
+            if (!groupName2)
             {
               v127 = 1;
               goto LABEL_129;
             }
           }
 
-          v138 = [v136 bundleId];
-          if (![v504 containsObject:v138])
+          bundleId3 = [v136 bundleId];
+          if (![v504 containsObject:bundleId3])
           {
             goto LABEL_125;
           }
 
-          v139 = [v136 domainIdentifier];
-          if (!v139)
+          domainIdentifier2 = [v136 domainIdentifier];
+          if (!domainIdentifier2)
           {
             goto LABEL_125;
           }
 
-          v140 = v139;
-          v141 = [v136 domainIdentifier];
-          if (([v506 containsObject:v141] & 1) == 0)
+          v140 = domainIdentifier2;
+          domainIdentifier3 = [v136 domainIdentifier];
+          if (([v506 containsObject:domainIdentifier3] & 1) == 0)
           {
-            v152 = [v136 recipients];
-            if (v152)
+            recipients7 = [v136 recipients];
+            if (recipients7)
             {
               [v136 recipients];
-              v153 = v497 = v7;
+              v153 = v497 = groupName2;
               v154 = [v153 count];
-              v155 = [v502 recipients];
-              v156 = v154 == [v155 count];
+              recipients8 = [v502 recipients];
+              v156 = v154 == [recipients8 count];
 
-              v7 = v497;
+              groupName2 = v497;
             }
 
             else
@@ -3455,55 +3455,55 @@ LABEL_116:
               v156 = 0;
             }
 
-            if (v137)
+            if (contentURL2)
             {
 
               if (v156)
               {
 LABEL_153:
                 v157 = objc_autoreleasePoolPush();
-                v158 = [v136 recipients];
-                v159 = [v158 _pas_mappedArrayWithTransform:&__block_literal_global_644];
+                recipients9 = [v136 recipients];
+                v159 = [recipients9 _pas_mappedArrayWithTransform:&__block_literal_global_644];
                 [v136 setRecipients:v159];
 
                 v160 = MEMORY[0x1E695DFD8];
-                v161 = [v136 recipients];
-                v162 = [v161 valueForKey:@"identifier"];
+                recipients10 = [v136 recipients];
+                v162 = [recipients10 valueForKey:@"identifier"];
                 v163 = [v160 setWithArray:v162];
 
                 v164 = MEMORY[0x1E695DFD8];
-                v165 = [v502 recipients];
-                v166 = [v165 valueForKey:@"identifier"];
+                recipients11 = [v502 recipients];
+                v166 = [recipients11 valueForKey:@"identifier"];
                 v167 = [v164 setWithArray:v166];
 
                 v168 = [v163 isEqualToSet:v167];
                 if (v168)
                 {
-                  v169 = [v502 contentURL];
+                  contentURL3 = [v502 contentURL];
 
-                  if (!v169)
+                  if (!contentURL3)
                   {
-                    v170 = [v136 contentURL];
-                    [v502 setContentURL:v170];
+                    contentURL4 = [v136 contentURL];
+                    [v502 setContentURL:contentURL4];
                   }
 
-                  v171 = [v502 groupName];
+                  groupName3 = [v502 groupName];
 
-                  if (!v171)
+                  if (!groupName3)
                   {
-                    v172 = [v136 groupName];
-                    [v502 setGroupName:v172];
+                    groupName4 = [v136 groupName];
+                    [v502 setGroupName:groupName4];
                   }
 
                   v173 = +[_PSLogging generalChannel];
                   if (os_log_type_enabled(v173, OS_LOG_TYPE_DEBUG))
                   {
-                    v174 = [v136 groupName];
-                    v175 = [v136 contentURL];
+                    groupName5 = [v136 groupName];
+                    contentURL5 = [v136 contentURL];
                     *buf = 138740227;
-                    v665 = v174;
+                    v665 = groupName5;
                     v666 = 2117;
-                    v667 = v175;
+                    v667 = contentURL5;
                     _os_log_debug_impl(&dword_1B5ED1000, v173, OS_LOG_TYPE_DEBUG, "Resolved group name or display image, group name: %{sensitive}@, display name: %{sensitive}@", buf, 0x16u);
                   }
                 }
@@ -3511,8 +3511,8 @@ LABEL_153:
                 v127 = v168 ^ 1;
 
                 objc_autoreleasePoolPop(v157);
-                v137 = [v136 domainIdentifier];
-                [v506 addObject:v137];
+                contentURL2 = [v136 domainIdentifier];
+                [v506 addObject:contentURL2];
                 v105 = v548;
                 goto LABEL_127;
               }
@@ -3534,9 +3534,9 @@ LABEL_153:
 
 LABEL_125:
           v127 = 1;
-          if (!v137)
+          if (!contentURL2)
           {
-            v137 = v7;
+            contentURL2 = groupName2;
           }
 
 LABEL_127:
@@ -3544,18 +3544,18 @@ LABEL_127:
 LABEL_129:
           if (v105)
           {
-            v142 = [v136 domainIdentifier];
-            if (!v142)
+            domainIdentifier4 = [v136 domainIdentifier];
+            if (!domainIdentifier4)
             {
               goto LABEL_148;
             }
 
-            v143 = v142;
-            v144 = [v136 bundleId];
-            if ([v144 isEqual:v545])
+            v143 = domainIdentifier4;
+            bundleId4 = [v136 bundleId];
+            if ([bundleId4 isEqual:v545])
             {
-              v145 = [v136 domainIdentifier];
-              v146 = [v145 isEqual:v537];
+              domainIdentifier5 = [v136 domainIdentifier];
+              v146 = [domainIdentifier5 isEqual:v537];
 
               if (v146)
               {
@@ -3590,15 +3590,15 @@ LABEL_144:
           break;
         }
 
-        v147 = [v136 derivedIntentIdentifier];
-        if (!v147)
+        derivedIntentIdentifier3 = [v136 derivedIntentIdentifier];
+        if (!derivedIntentIdentifier3)
         {
           goto LABEL_148;
         }
 
-        v143 = v147;
-        v144 = [v136 bundleId];
-        v148 = [v144 isEqual:v545];
+        v143 = derivedIntentIdentifier3;
+        bundleId4 = [v136 bundleId];
+        v148 = [bundleId4 isEqual:v545];
         if ((v148 & 1) == 0)
         {
           v529 = [v500 objectForKeyedSubscript:v545];
@@ -3609,10 +3609,10 @@ LABEL_144:
             goto LABEL_144;
           }
 
-          v149 = [v136 bundleId];
+          bundleId5 = [v136 bundleId];
           v510 = [v500 objectForKeyedSubscript:v545];
-          v513 = v149;
-          if (![v149 isEqual:?])
+          v513 = bundleId5;
+          if (![bundleId5 isEqual:?])
           {
             v151 = 0;
             v105 = v548;
@@ -3623,8 +3623,8 @@ LABEL_146:
         }
 
         v105 = v548;
-        v150 = [v136 derivedIntentIdentifier];
-        v151 = [v150 isEqual:v537];
+        derivedIntentIdentifier4 = [v136 derivedIntentIdentifier];
+        v151 = [derivedIntentIdentifier4 isEqual:v537];
 
         if ((v148 & 1) == 0)
         {
@@ -3666,10 +3666,10 @@ LABEL_174:
 
         else
         {
-          v180 = [v177 startDate];
+          startDate3 = [v177 startDate];
           v178 = v502;
-          v181 = [v502 startDate];
-          v182 = [v180 compare:v181];
+          startDate4 = [v502 startDate];
+          v182 = [startDate3 compare:startDate4];
 
           v20 = v544;
           v31 = v481;
@@ -3720,7 +3720,7 @@ LABEL_179:
         v559 = objc_alloc_init(MEMORY[0x1E695DF90]);
         v549 = objc_alloc_init(MEMORY[0x1E695DF90]);
         v491 = v183;
-        v498 = v7;
+        v498 = groupName2;
         if (!v105)
         {
           context = objc_autoreleasePoolPush();
@@ -3728,8 +3728,8 @@ LABEL_179:
           v618 = 0u;
           v619 = 0u;
           v620 = 0u;
-          v206 = [v183 recipients];
-          v207 = [v206 countByEnumeratingWithState:&v617 objects:v675 count:16];
+          recipients12 = [v183 recipients];
+          v207 = [recipients12 countByEnumeratingWithState:&v617 objects:v675 count:16];
           if (!v207)
           {
             goto LABEL_220;
@@ -3743,35 +3743,35 @@ LABEL_179:
             {
               if (*v618 != v209)
               {
-                objc_enumerationMutation(v206);
+                objc_enumerationMutation(recipients12);
               }
 
               v211 = *(*(&v617 + 1) + 8 * k);
-              v212 = [v211 personId];
-              v213 = [v211 identifier];
-              v214 = [v211 displayName];
-              v215 = [v214 length];
+              personId = [v211 personId];
+              identifier = [v211 identifier];
+              displayName = [v211 displayName];
+              v215 = [displayName length];
 
-              if (v212)
+              if (personId)
               {
-                [v190 addObject:v212];
-                if (!v213)
+                [v190 addObject:personId];
+                if (!identifier)
                 {
                   goto LABEL_218;
                 }
 
-                [v559 setObject:v213 forKeyedSubscript:v212];
+                [v559 setObject:identifier forKeyedSubscript:personId];
               }
 
-              else if (!v213)
+              else if (!identifier)
               {
                 if (v215 < 1)
                 {
                   goto LABEL_218;
                 }
 
-                v217 = [v211 displayName];
-                [v541 addObject:v217];
+                displayName2 = [v211 displayName];
+                [v541 addObject:displayName2];
                 goto LABEL_217;
               }
 
@@ -3779,8 +3779,8 @@ LABEL_179:
               {
                 v216 = v564;
 LABEL_208:
-                [v216 addObject:v213];
-                if (!v212 && v215 >= 1)
+                [v216 addObject:identifier];
+                if (!personId && v215 >= 1)
                 {
                   goto LABEL_210;
                 }
@@ -3794,16 +3794,16 @@ LABEL_208:
                 goto LABEL_208;
               }
 
-              if (!v212 && v215 >= 1)
+              if (!personId && v215 >= 1)
               {
-                v218 = [v211 displayName];
-                [v541 addObject:v218];
+                displayName3 = [v211 displayName];
+                [v541 addObject:displayName3];
 
                 if (![v211 type])
                 {
 LABEL_210:
-                  v217 = [v211 displayName];
-                  [v549 setObject:v217 forKeyedSubscript:v213];
+                  displayName2 = [v211 displayName];
+                  [v549 setObject:displayName2 forKeyedSubscript:identifier];
 LABEL_217:
                 }
               }
@@ -3811,7 +3811,7 @@ LABEL_217:
 LABEL_218:
             }
 
-            v208 = [v206 countByEnumeratingWithState:&v617 objects:v675 count:16];
+            v208 = [recipients12 countByEnumeratingWithState:&v617 objects:v675 count:16];
             if (!v208)
             {
 LABEL_220:
@@ -3827,8 +3827,8 @@ LABEL_220:
         v623 = 0u;
         v622 = 0u;
         v621 = 0u;
-        v191 = [v183 recipients];
-        v192 = [v191 countByEnumeratingWithState:&v621 objects:v676 count:16];
+        recipients13 = [v183 recipients];
+        v192 = [recipients13 countByEnumeratingWithState:&v621 objects:v676 count:16];
         if (v192)
         {
           v193 = v192;
@@ -3839,54 +3839,54 @@ LABEL_220:
             {
               if (*v622 != v194)
               {
-                objc_enumerationMutation(v191);
+                objc_enumerationMutation(recipients13);
               }
 
               v196 = *(*(&v621 + 1) + 8 * m);
-              v197 = [v196 personId];
-              if (v197)
+              personId2 = [v196 personId];
+              if (personId2)
               {
-                v198 = v197;
-                v199 = [v196 identifier];
+                v198 = personId2;
+                identifier2 = [v196 identifier];
 
-                if (v199)
+                if (identifier2)
                 {
-                  v200 = [v196 personId];
-                  [v190 addObject:v200];
+                  personId3 = [v196 personId];
+                  [v190 addObject:personId3];
 
-                  v201 = [v196 identifier];
-                  v202 = [v196 personId];
-                  [v559 setObject:v201 forKeyedSubscript:v202];
+                  identifier3 = [v196 identifier];
+                  personId4 = [v196 personId];
+                  [v559 setObject:identifier3 forKeyedSubscript:personId4];
                 }
               }
 
-              v203 = [v196 identifier];
+              identifier4 = [v196 identifier];
 
-              if (v203)
+              if (identifier4)
               {
                 v204 = v564;
                 if ([v196 type] == 2 || (v204 = v554, objc_msgSend(v196, "type") == 1))
                 {
-                  v205 = [v196 identifier];
-                  [v204 addObject:v205];
+                  identifier5 = [v196 identifier];
+                  [v204 addObject:identifier5];
                 }
               }
             }
 
-            v193 = [v191 countByEnumeratingWithState:&v621 objects:v676 count:16];
+            v193 = [recipients13 countByEnumeratingWithState:&v621 objects:v676 count:16];
           }
 
           while (v193);
         }
 
 LABEL_221:
-        v219 = [v491 contentURL];
+        contentURL6 = [v491 contentURL];
 
-        if (v219)
+        if (contentURL6)
         {
           INImageClass = getINImageClass();
-          v221 = [v491 contentURL];
-          contexta = [INImageClass imageWithURL:v221];
+          contentURL7 = [v491 contentURL];
+          contexta = [INImageClass imageWithURL:contentURL7];
         }
 
         else
@@ -3907,18 +3907,18 @@ LABEL_221:
           v225 = v545;
         }
 
-        v226 = [v491 groupName];
-        v227 = [(_PSSuggestionProxy *)v527 reason];
-        v228 = [(_PSSuggestionProxy *)v527 reasonType];
-        v229 = [(_PSSuggestionProxy *)v527 modelScore];
-        v230 = [(_PSSuggestionTemplate *)v222 initWithBundleID:v225 interactionRecipients:v537 image:contexta groupName:v226 recipientContactIDs:v190 recipientEmailAddresses:v564 recipientPhoneNumbers:v554 recipientDisplayNames:v541 contactIdToHandleMapping:v559 handleToDisplayNameMapping:v549 reason:v227 reasonType:v228 modelScore:v229];
+        groupName6 = [v491 groupName];
+        reason6 = [(_PSSuggestionProxy *)v527 reason];
+        reasonType5 = [(_PSSuggestionProxy *)v527 reasonType];
+        modelScore2 = [(_PSSuggestionProxy *)v527 modelScore];
+        v230 = [(_PSSuggestionTemplate *)v222 initWithBundleID:v225 interactionRecipients:v537 image:contexta groupName:groupName6 recipientContactIDs:v190 recipientEmailAddresses:v564 recipientPhoneNumbers:v554 recipientDisplayNames:v541 contactIdToHandleMapping:v559 handleToDisplayNameMapping:v549 reason:reason6 reasonType:reasonType5 modelScore:modelScore2];
 
         v231 = v491;
         [v481 addObject:v230];
 
         v31 = v481;
         objc_autoreleasePoolPop(v487);
-        v7 = v498;
+        groupName2 = v498;
         v177 = v489;
 LABEL_228:
 
@@ -3943,7 +3943,7 @@ LABEL_230:
   }
 
   [v460 end];
-  v233 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([v31 count])
   {
     v234 = v31;
@@ -3964,7 +3964,7 @@ LABEL_230:
       }
 
       v240 = [v234 subarrayWithRange:{v236, v239}];
-      [v233 addObject:v240];
+      [array addObject:v240];
       v236 += v237;
 
       v235 += -2 - v465;
@@ -3977,7 +3977,7 @@ LABEL_230:
   v475 = [MEMORY[0x1E695DFA8] set];
   v493 = [MEMORY[0x1E695DFA8] set];
   v476 = [MEMORY[0x1E695DFA8] set];
-  v495 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v241 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v565 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v528 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -3987,7 +3987,7 @@ LABEL_230:
   v615 = 0u;
   v614 = 0u;
   v613 = 0u;
-  v462 = v233;
+  v462 = array;
   v560 = v241;
   v464 = [v462 countByEnumeratingWithState:&v613 objects:v674 count:16];
   if (v464)
@@ -4043,8 +4043,8 @@ LABEL_230:
               v606 = 0u;
               v607 = 0u;
               v608 = 0u;
-              v248 = [v247 recipientContactIDs];
-              v249 = [v248 countByEnumeratingWithState:&v605 objects:v672 count:16];
+              recipientContactIDs = [v247 recipientContactIDs];
+              v249 = [recipientContactIDs countByEnumeratingWithState:&v605 objects:v672 count:16];
               if (v249)
               {
                 v250 = v249;
@@ -4055,7 +4055,7 @@ LABEL_230:
                   {
                     if (*v606 != v251)
                     {
-                      objc_enumerationMutation(v248);
+                      objc_enumerationMutation(recipientContactIDs);
                     }
 
                     v253 = *(*(&v605 + 1) + 8 * n);
@@ -4064,8 +4064,8 @@ LABEL_230:
                     if (!v254)
                     {
                       [v555 addObject:v253];
-                      v255 = [v247 contactIdToHandleMapping];
-                      v256 = [v255 objectForKeyedSubscript:v253];
+                      contactIdToHandleMapping = [v247 contactIdToHandleMapping];
+                      v256 = [contactIdToHandleMapping objectForKeyedSubscript:v253];
 
                       if (v256)
                       {
@@ -4077,7 +4077,7 @@ LABEL_230:
                     }
                   }
 
-                  v250 = [v248 countByEnumeratingWithState:&v605 objects:v672 count:16];
+                  v250 = [recipientContactIDs countByEnumeratingWithState:&v605 objects:v672 count:16];
                 }
 
                 while (v250);
@@ -4087,8 +4087,8 @@ LABEL_230:
               v603 = 0u;
               v602 = 0u;
               v601 = 0u;
-              v257 = [v247 recipientEmailAddresses];
-              v258 = [v257 countByEnumeratingWithState:&v601 objects:v671 count:16];
+              recipientEmailAddresses = [v247 recipientEmailAddresses];
+              v258 = [recipientEmailAddresses countByEnumeratingWithState:&v601 objects:v671 count:16];
               v20 = v544;
               if (v258)
               {
@@ -4100,7 +4100,7 @@ LABEL_230:
                   {
                     if (*v602 != v260)
                     {
-                      objc_enumerationMutation(v257);
+                      objc_enumerationMutation(recipientEmailAddresses);
                     }
 
                     v262 = *(*(&v601 + 1) + 8 * ii);
@@ -4112,7 +4112,7 @@ LABEL_230:
                     }
                   }
 
-                  v259 = [v257 countByEnumeratingWithState:&v601 objects:v671 count:16];
+                  v259 = [recipientEmailAddresses countByEnumeratingWithState:&v601 objects:v671 count:16];
                 }
 
                 while (v259);
@@ -4122,8 +4122,8 @@ LABEL_230:
               v599 = 0u;
               v598 = 0u;
               v597 = 0u;
-              v264 = [v247 recipientPhoneNumbers];
-              v265 = [v264 countByEnumeratingWithState:&v597 objects:v670 count:16];
+              recipientPhoneNumbers = [v247 recipientPhoneNumbers];
+              v265 = [recipientPhoneNumbers countByEnumeratingWithState:&v597 objects:v670 count:16];
               if (v265)
               {
                 v266 = v265;
@@ -4134,7 +4134,7 @@ LABEL_230:
                   {
                     if (*v598 != v267)
                     {
-                      objc_enumerationMutation(v264);
+                      objc_enumerationMutation(recipientPhoneNumbers);
                     }
 
                     v269 = *(*(&v597 + 1) + 8 * jj);
@@ -4146,7 +4146,7 @@ LABEL_230:
                     }
                   }
 
-                  v266 = [v264 countByEnumeratingWithState:&v597 objects:v670 count:16];
+                  v266 = [recipientPhoneNumbers countByEnumeratingWithState:&v597 objects:v670 count:16];
                 }
 
                 while (v266);
@@ -4170,13 +4170,13 @@ LABEL_230:
           goto LABEL_304;
         }
 
-        v522 = [v542 getMonotonicTimeInMilliseconds];
-        v271 = [v543 contactStore];
+        getMonotonicTimeInMilliseconds = [v542 getMonotonicTimeInMilliseconds];
+        contactStore = [v543 contactStore];
         CNContactClass = getCNContactClass();
-        v273 = [v555 allObjects];
-        v274 = [CNContactClass predicateForContactsWithIdentifiers:v273];
+        allObjects = [v555 allObjects];
+        v274 = [CNContactClass predicateForContactsWithIdentifiers:allObjects];
         v596 = v470;
-        v275 = [v271 unifiedContactsMatchingPredicate:v274 keysToFetch:v20 error:&v596];
+        v275 = [contactStore unifiedContactsMatchingPredicate:v274 keysToFetch:v20 error:&v596];
         v276 = v596;
 
         v277 = v276;
@@ -4315,11 +4315,11 @@ LABEL_230:
               }
 
               v427 = *(*(&v584 + 1) + 8 * nn);
-              v428 = [v427 identifier];
-              if (v428)
+              identifier6 = [v427 identifier];
+              if (identifier6)
               {
-                [v425 setObject:v427 forKeyedSubscript:v428];
-                v429 = [v550 objectForKeyedSubscript:v428];
+                [v425 setObject:v427 forKeyedSubscript:identifier6];
+                v429 = [v550 objectForKeyedSubscript:identifier6];
                 if ([v429 containsString:@"@"])
                 {
                   v430 = v565;
@@ -4348,7 +4348,7 @@ LABEL_230:
 LABEL_301:
         v279 = v514;
 LABEL_302:
-        v466 = (v466 - v522 + v518);
+        v466 = (v466 - getMonotonicTimeInMilliseconds + v518);
         v467 = (v467 + 1);
 
 LABEL_304:
@@ -4376,23 +4376,23 @@ LABEL_304:
 
             v296 = *(*(&v580 + 1) + 8 * i1);
             v297 = [getCNContactClass() predicateForContactsMatchingEmailAddress:v296];
-            v532 = [v542 getMonotonicTimeInMilliseconds];
-            v298 = [v284 contactStore];
+            getMonotonicTimeInMilliseconds2 = [v542 getMonotonicTimeInMilliseconds];
+            contactStore2 = [v284 contactStore];
             v579 = v277;
             v299 = v297;
-            v300 = [v298 unifiedContactsMatchingPredicate:v297 keysToFetch:v544 error:&v579];
+            v300 = [contactStore2 unifiedContactsMatchingPredicate:v297 keysToFetch:v544 error:&v579];
             v301 = v579;
 
             v277 = v301;
-            v302 = [v542 getMonotonicTimeInMilliseconds];
+            getMonotonicTimeInMilliseconds3 = [v542 getMonotonicTimeInMilliseconds];
             if (v277)
             {
-              v303 = +[_PSLogging generalChannel];
-              if (os_log_type_enabled(v303, OS_LOG_TYPE_ERROR))
+              firstObject = +[_PSLogging generalChannel];
+              if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
                 v665 = v277;
-                _os_log_error_impl(&dword_1B5ED1000, v303, OS_LOG_TYPE_ERROR, "Error fetching contacts by email: %@", buf, 0xCu);
+                _os_log_error_impl(&dword_1B5ED1000, firstObject, OS_LOG_TYPE_ERROR, "Error fetching contacts by email: %@", buf, 0xCu);
               }
 
               v284 = v543;
@@ -4406,12 +4406,12 @@ LABEL_304:
                 goto LABEL_316;
               }
 
-              v303 = [v300 firstObject];
-              [v565 setObject:v303 forKeyedSubscript:v296];
+              firstObject = [v300 firstObject];
+              [v565 setObject:firstObject forKeyedSubscript:v296];
             }
 
 LABEL_316:
-            v538 = (v302 - v532 + v538);
+            v538 = (getMonotonicTimeInMilliseconds3 - getMonotonicTimeInMilliseconds2 + v538);
           }
 
           v490 = (v490 + v294);
@@ -4450,22 +4450,22 @@ LABEL_318:
             v309 = *(*(&v575 + 1) + 8 * v307);
             v310 = [getCNPhoneNumberClass() phoneNumberWithStringValue:v309];
             v311 = [getCNContactClass() predicateForContactsMatchingPhoneNumber:v310];
-            v533 = [v542 getMonotonicTimeInMilliseconds];
-            v312 = [v284 contactStore];
+            getMonotonicTimeInMilliseconds4 = [v542 getMonotonicTimeInMilliseconds];
+            contactStore3 = [v284 contactStore];
             v574 = v308;
-            v313 = [v312 unifiedContactsMatchingPredicate:v311 keysToFetch:v544 error:&v574];
+            v313 = [contactStore3 unifiedContactsMatchingPredicate:v311 keysToFetch:v544 error:&v574];
             v314 = v574;
 
             v308 = v314;
-            v315 = [v542 getMonotonicTimeInMilliseconds];
+            getMonotonicTimeInMilliseconds5 = [v542 getMonotonicTimeInMilliseconds];
             if (v308)
             {
-              v316 = +[_PSLogging generalChannel];
-              if (os_log_type_enabled(v316, OS_LOG_TYPE_ERROR))
+              firstObject2 = +[_PSLogging generalChannel];
+              if (os_log_type_enabled(firstObject2, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
                 v665 = v308;
-                _os_log_error_impl(&dword_1B5ED1000, v316, OS_LOG_TYPE_ERROR, "Error fetching contacts by phone number: %@", buf, 0xCu);
+                _os_log_error_impl(&dword_1B5ED1000, firstObject2, OS_LOG_TYPE_ERROR, "Error fetching contacts by phone number: %@", buf, 0xCu);
               }
 
               v284 = v543;
@@ -4477,13 +4477,13 @@ LABEL_329:
               v284 = v543;
               if ([v313 count])
               {
-                v316 = [v313 firstObject];
-                [v528 setObject:v316 forKeyedSubscript:v309];
+                firstObject2 = [v313 firstObject];
+                [v528 setObject:firstObject2 forKeyedSubscript:v309];
                 goto LABEL_329;
               }
             }
 
-            v536 = (v315 - v533 + v536);
+            v536 = (getMonotonicTimeInMilliseconds5 - getMonotonicTimeInMilliseconds4 + v536);
 
             if (v305 != ++v307)
             {
@@ -4541,9 +4541,9 @@ LABEL_334:
               }
 
               v320 = *(*(&v570 + 1) + 8 * i2);
-              v321 = [v284 contactStore];
+              contactStore4 = [v284 contactStore];
               v322 = v20;
-              v323 = [v320 suggestionWithContactIDMapping:v241 phoneMapping:v318 emailMapping:v565 contactStore:v321 contactKeysToFetch:v20];
+              v323 = [v320 suggestionWithContactIDMapping:v241 phoneMapping:v318 emailMapping:v565 contactStore:contactStore4 contactKeysToFetch:v20];
 
               if (!v323)
               {
@@ -4556,104 +4556,104 @@ LABEL_334:
                 goto LABEL_425;
               }
 
-              v325 = [v323 conversationIdentifier];
-              v326 = [v284 excludeSuggestionWithConversationId:v325];
+              conversationIdentifier = [v323 conversationIdentifier];
+              v326 = [v284 excludeSuggestionWithConversationId:conversationIdentifier];
 
               if (v326)
               {
                 goto LABEL_425;
               }
 
-              v327 = [v323 recipients];
-              v328 = [v327 count];
+              recipients14 = [v323 recipients];
+              v328 = [recipients14 count];
 
               if (v505)
               {
                 if (v328 == 1)
                 {
-                  v329 = [v323 recipients];
-                  v330 = [v329 firstObject];
-                  v331 = [v330 contact];
-                  v332 = [v331 identifier];
+                  recipients15 = [v323 recipients];
+                  firstObject3 = [recipients15 firstObject];
+                  contact = [firstObject3 contact];
+                  identifier7 = [contact identifier];
 
                   v284 = v543;
-                  LOBYTE(v329) = [v332 isEqualToString:v505];
+                  LOBYTE(recipients15) = [identifier7 isEqualToString:v505];
 
                   v241 = v560;
-                  if (v329)
+                  if (recipients15)
                   {
                     goto LABEL_425;
                   }
                 }
               }
 
-              v333 = [v323 bundleID];
-              v334 = [v501 containsObject:v333];
+              bundleID4 = [v323 bundleID];
+              v334 = [v501 containsObject:bundleID4];
 
               if (v334)
               {
-                v335 = [v323 recipients];
-                v336 = [v335 count];
+                recipients16 = [v323 recipients];
+                v336 = [recipients16 count];
 
                 if (v336 == 1)
                 {
-                  v337 = [v323 conversationIdentifier];
-                  if (v337)
+                  conversationIdentifier2 = [v323 conversationIdentifier];
+                  if (conversationIdentifier2)
                   {
-                    v338 = v337;
-                    v339 = [v323 conversationIdentifier];
-                    v340 = [v493 containsObject:v339];
+                    v338 = conversationIdentifier2;
+                    conversationIdentifier3 = [v323 conversationIdentifier];
+                    v340 = [v493 containsObject:conversationIdentifier3];
 
                     if ((v340 & 1) == 0)
                     {
-                      v341 = [v323 conversationIdentifier];
-                      [v493 addObject:v341];
+                      conversationIdentifier4 = [v323 conversationIdentifier];
+                      [v493 addObject:conversationIdentifier4];
 
-                      v342 = [v323 recipients];
-                      v343 = [v342 firstObject];
+                      recipients17 = [v323 recipients];
+                      firstObject4 = [recipients17 firstObject];
 
-                      v508 = v343;
-                      v344 = [v343 contact];
-                      v345 = [v344 identifier];
+                      v508 = firstObject4;
+                      contact2 = [firstObject4 contact];
+                      identifier8 = [contact2 identifier];
 
-                      v346 = [v323 bundleID];
-                      v347 = [v480 containsObject:v346];
+                      bundleID5 = [v323 bundleID];
+                      v347 = [v480 containsObject:bundleID5];
 
                       if (v347)
                       {
-                        v348 = [v323 bundleID];
-                        v349 = [v345 stringByAppendingString:v348];
+                        bundleID6 = [v323 bundleID];
+                        v349 = [identifier8 stringByAppendingString:bundleID6];
 
-                        v345 = v349;
+                        identifier8 = v349;
                       }
 
                       if ([v323 isReturnToSender])
                       {
                         v350 = objc_alloc(MEMORY[0x1E696AEC0]);
-                        v351 = [v323 bundleID];
+                        bundleID7 = [v323 bundleID];
                         v352 = +[_PSConstants returnToSenderReason];
-                        v353 = [v350 initWithFormat:@"%@_%@_%@", v345, v351, v352];
+                        v352 = [v350 initWithFormat:@"%@_%@_%@", identifier8, bundleID7, v352];
 
-                        v345 = v353;
+                        identifier8 = v352;
                       }
 
-                      v386 = [v323 bundleID];
+                      bundleID8 = [v323 bundleID];
                       v387 = +[_PSConstants collaborationSuggestionBundleId];
-                      v388 = [v386 isEqualToString:v387];
+                      v388 = [bundleID8 isEqualToString:v387];
 
                       if (v388)
                       {
-                        v389 = [v323 conversationIdentifier];
-                        v390 = [v323 bundleID];
-                        v391 = [v389 stringByAppendingString:v390];
+                        conversationIdentifier5 = [v323 conversationIdentifier];
+                        bundleID9 = [v323 bundleID];
+                        v391 = [conversationIdentifier5 stringByAppendingString:bundleID9];
 
-                        v345 = v391;
+                        identifier8 = v391;
                       }
 
                       v241 = v560;
-                      if (v345 && ([v475 containsObject:v345] & 1) == 0)
+                      if (identifier8 && ([v475 containsObject:identifier8] & 1) == 0)
                       {
-                        [v475 addObject:v345];
+                        [v475 addObject:identifier8];
                         [v479 addObject:v323];
                       }
                     }
@@ -4662,53 +4662,53 @@ LABEL_334:
                   goto LABEL_421;
                 }
 
-                v370 = [v323 recipients];
-                v371 = [v370 count];
+                recipients18 = [v323 recipients];
+                v371 = [recipients18 count];
 
                 if (v371 < 2)
                 {
                   goto LABEL_421;
                 }
 
-                v372 = [v323 conversationIdentifier];
-                if (!v372)
+                conversationIdentifier6 = [v323 conversationIdentifier];
+                if (!conversationIdentifier6)
                 {
                   goto LABEL_421;
                 }
 
-                v373 = v372;
-                v374 = [v323 conversationIdentifier];
-                v375 = [v493 containsObject:v374];
+                v373 = conversationIdentifier6;
+                conversationIdentifier7 = [v323 conversationIdentifier];
+                v375 = [v493 containsObject:conversationIdentifier7];
 
                 if (v375)
                 {
                   goto LABEL_421;
                 }
 
-                v376 = [v323 conversationIdentifier];
-                [v493 addObject:v376];
+                conversationIdentifier8 = [v323 conversationIdentifier];
+                [v493 addObject:conversationIdentifier8];
 
-                v377 = [v323 bundleID];
+                bundleID10 = [v323 bundleID];
                 v378 = +[_PSConstants mobileMessagesBundleId];
-                if ([v377 isEqualToString:v378])
+                if ([bundleID10 isEqualToString:v378])
                 {
-                  v379 = [v323 conversationIdentifier];
+                  conversationIdentifier9 = [v323 conversationIdentifier];
 
-                  if (v379)
+                  if (conversationIdentifier9)
                   {
-                    v380 = [v323 conversationIdentifier];
-                    v381 = [v380 componentsSeparatedByString:@""];;
-                    v382 = [v381 lastObject];
+                    conversationIdentifier10 = [v323 conversationIdentifier];
+                    v381 = [conversationIdentifier10 componentsSeparatedByString:@""];;
+                    lastObject = [v381 lastObject];
 
-                    if (v382 && ([v475 containsObject:v382] & 1) == 0)
+                    if (lastObject && ([v475 containsObject:lastObject] & 1) == 0)
                     {
-                      v383 = [v323 recipients];
-                      v384 = [v383 valueForKey:@"handle"];
+                      recipients19 = [v323 recipients];
+                      v384 = [recipients19 valueForKey:@"handle"];
                       v385 = [v384 sortedArrayUsingSelector:sel_compare_];
 
                       if (([v476 containsObject:v385] & 1) == 0)
                       {
-                        [v475 addObject:v382];
+                        [v475 addObject:lastObject];
                         [v476 addObject:v385];
                         [v479 addObject:v323];
                       }
@@ -4728,20 +4728,20 @@ LABEL_334:
                 goto LABEL_421;
               }
 
-              v354 = [v323 bundleID];
-              v355 = [v323 derivedIntentIdentifier];
-              v356 = [v355 stringByAppendingString:v354];
+              bundleID11 = [v323 bundleID];
+              derivedIntentIdentifier5 = [v323 derivedIntentIdentifier];
+              v356 = [derivedIntentIdentifier5 stringByAppendingString:bundleID11];
 
-              v357 = [v323 groupName];
+              groupName7 = [v323 groupName];
               v503 = v356;
-              v358 = [v357 stringByAppendingString:v356];
+              v358 = [groupName7 stringByAppendingString:v356];
 
-              v359 = [v323 recipients];
-              v360 = [v495 objectForKeyedSubscript:v354];
+              recipients20 = [v323 recipients];
+              v360 = [dictionary objectForKeyedSubscript:bundleID11];
               if (!v360)
               {
                 v360 = [MEMORY[0x1E695DFA8] set];
-                [v495 setObject:v360 forKeyedSubscript:v354];
+                [dictionary setObject:v360 forKeyedSubscript:bundleID11];
               }
 
               v318 = v528;
@@ -4764,45 +4764,45 @@ LABEL_334:
                 [v499 addObject:v358];
               }
 
-              if (![v359 count])
+              if (![recipients20 count])
               {
                 [v479 addObject:v324];
                 goto LABEL_420;
               }
 
-              v509 = v354;
-              v478 = v359;
-              if ([v359 count] == 1)
+              v509 = bundleID11;
+              v478 = recipients20;
+              if ([recipients20 count] == 1)
               {
-                v362 = [v324 recipients];
-                v363 = [v362 firstObject];
+                recipients21 = [v324 recipients];
+                firstObject5 = [recipients21 firstObject];
 
-                v364 = [v363 contact];
-                v365 = [v364 identifier];
+                contact3 = [firstObject5 contact];
+                identifier9 = [contact3 identifier];
 
-                v366 = [v363 handle];
-                v367 = [v363 displayName];
-                if (v367)
+                handle4 = [firstObject5 handle];
+                displayName4 = [firstObject5 displayName];
+                if (displayName4)
                 {
-                  v368 = v367;
-                  v471 = [v367 stringByAppendingString:v509];
+                  v368 = displayName4;
+                  v471 = [displayName4 stringByAppendingString:v509];
 
-                  if (v365)
+                  if (identifier9)
                   {
                     goto LABEL_368;
                   }
 
 LABEL_410:
-                  v369 = v365;
-                  if (v366)
+                  v369 = identifier9;
+                  if (handle4)
                   {
-                    v657 = v366;
+                    v657 = handle4;
                     v408 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v657 count:1];
                     v409 = [v476 containsObject:v408];
 
                     if ((v409 & 1) == 0)
                     {
-                      v656 = v366;
+                      v656 = handle4;
                       v410 = MEMORY[0x1E695DEC8];
                       v411 = &v656;
                       goto LABEL_416;
@@ -4811,7 +4811,7 @@ LABEL_410:
 LABEL_418:
 
                     v318 = v528;
-                    v354 = v509;
+                    bundleID11 = v509;
                     v361 = v503;
                     goto LABEL_419;
                   }
@@ -4841,28 +4841,28 @@ LABEL_416:
                 else
                 {
                   v471 = 0;
-                  if (!v365)
+                  if (!identifier9)
                   {
                     goto LABEL_410;
                   }
 
 LABEL_368:
-                  v369 = v365;
-                  if ([v475 containsObject:v365])
+                  v369 = identifier9;
+                  if ([v475 containsObject:identifier9])
                   {
                     goto LABEL_418;
                   }
 
-                  [v475 addObject:v365];
+                  [v475 addObject:identifier9];
                 }
 
                 [v479 addObject:v324];
                 goto LABEL_418;
               }
 
-              v392 = v359;
+              v392 = recipients20;
               v472 = v358;
-              v393 = [MEMORY[0x1E695DF70] array];
+              array2 = [MEMORY[0x1E695DF70] array];
               v566 = 0u;
               v567 = 0u;
               v568 = 0u;
@@ -4887,33 +4887,33 @@ LABEL_368:
                   }
 
                   v399 = *(*(&v566 + 1) + 8 * v398);
-                  v400 = [v399 contact];
+                  contact4 = [v399 contact];
 
-                  if (v400)
+                  if (contact4)
                   {
-                    v401 = [v399 contact];
-                    v402 = [v401 identifier];
+                    contact5 = [v399 contact];
+                    identifier10 = [contact5 identifier];
                     goto LABEL_395;
                   }
 
-                  v404 = [v399 handle];
+                  handle5 = [v399 handle];
 
-                  if (v404)
+                  if (handle5)
                   {
-                    v401 = [v399 handle];
-                    [v393 addObject:v401];
+                    contact5 = [v399 handle];
+                    [array2 addObject:contact5];
                     goto LABEL_398;
                   }
 
-                  v405 = [v399 displayName];
+                  displayName5 = [v399 displayName];
 
-                  if (v405)
+                  if (displayName5)
                   {
-                    v401 = [v399 displayName];
-                    v402 = [v401 stringByAppendingString:v509];
+                    contact5 = [v399 displayName];
+                    identifier10 = [contact5 stringByAppendingString:v509];
 LABEL_395:
-                    v403 = v402;
-                    [v393 addObject:v402];
+                    v403 = identifier10;
+                    [array2 addObject:identifier10];
 
 LABEL_398:
                   }
@@ -4929,7 +4929,7 @@ LABEL_398:
               while (v406);
 LABEL_404:
 
-              v407 = [v393 sortedArrayUsingSelector:sel_compare_];
+              v407 = [array2 sortedArrayUsingSelector:sel_compare_];
               if (([v476 containsObject:v407] & 1) == 0)
               {
                 [v476 addObject:v407];
@@ -4938,22 +4938,22 @@ LABEL_404:
 
               v241 = v560;
               v318 = v528;
-              v354 = v509;
+              bundleID11 = v509;
               v361 = v503;
               v358 = v472;
 LABEL_419:
-              v359 = v478;
+              recipients20 = v478;
 LABEL_420:
 
 LABEL_421:
-              v354 = +[_PSLogging generalChannel];
-              if (os_log_type_enabled(v354, OS_LOG_TYPE_DEBUG))
+              bundleID11 = +[_PSLogging generalChannel];
+              if (os_log_type_enabled(bundleID11, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138740227;
                 v665 = v479;
                 v666 = 2112;
                 v667 = v476;
-                _os_log_debug_impl(&dword_1B5ED1000, v354, OS_LOG_TYPE_DEBUG, "suggestions array: %{sensitive}@, addedRecipientInfo: %@", buf, 0x16u);
+                _os_log_debug_impl(&dword_1B5ED1000, bundleID11, OS_LOG_TYPE_DEBUG, "suggestions array: %{sensitive}@, addedRecipientInfo: %@", buf, 0x16u);
               }
 
               v284 = v543;
@@ -5012,26 +5012,26 @@ LABEL_454:
     v433 = 0;
   }
 
-  v434 = [v432 stringWithFormat:@"%ld", v433];
-  v652[0] = v434;
+  v433 = [v432 stringWithFormat:@"%ld", v433];
+  v652[0] = v433;
   v651[1] = @"contactStoreIdQueryTimeSumInMillis";
-  v435 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v466];
-  v652[1] = v435;
+  v466 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v466];
+  v652[1] = v466;
   v651[2] = @"contactStoreIdQueryCount";
-  v436 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v467];
-  v652[2] = v436;
+  v467 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v467];
+  v652[2] = v467;
   v651[3] = @"contactStorePhoneQueryTimeSumInMillis";
-  v437 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v536];
-  v652[3] = v437;
+  v536 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v536];
+  v652[3] = v536;
   v651[4] = @"contactStorePhoneQueryCount";
-  v438 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v488];
-  v652[4] = v438;
+  v488 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v488];
+  v652[4] = v488;
   v651[5] = @"contactStoreEmailQueryTimeSumInMillis";
-  v439 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v538];
-  v652[5] = v439;
+  v538 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v538];
+  v652[5] = v538;
   v651[6] = @"contactStoreEmailQueryCount";
-  v440 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v490];
-  v652[6] = v440;
+  v490 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v490];
+  v652[6] = v490;
   v441 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v652 forKeys:v651 count:7];
   [v542 addAttributes:v441];
 
@@ -5058,8 +5058,8 @@ LABEL_454:
     v446 = [obj count];
   }
 
-  v447 = [v445 stringWithFormat:@"%ld", v446];
-  v650[0] = v447;
+  v446 = [v445 stringWithFormat:@"%ld", v446];
+  v650[0] = v446;
   v649[1] = @"suggestionsCountAfterResolution";
   v448 = MEMORY[0x1E696AEC0];
   if (v479)
@@ -5072,11 +5072,11 @@ LABEL_454:
     v449 = 0;
   }
 
-  v450 = [v448 stringWithFormat:@"%ld", v449];
-  v650[1] = v450;
+  v449 = [v448 stringWithFormat:@"%ld", v449];
+  v650[1] = v449;
   v649[2] = @"suggestionReasonTypes";
-  v451 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v443];
-  v650[2] = v451;
+  v443 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v443];
+  v650[2] = v443;
   v452 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v650 forKeys:v649 count:3];
   [v461 addAttributes:v452];
 
@@ -5088,15 +5088,15 @@ LABEL_454:
   return v453;
 }
 
-- (BOOL)areRecipientsBlockedForSuggestion:(id)a3
+- (BOOL)areRecipientsBlockedForSuggestion:(id)suggestion
 {
   v23 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 recipients];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  recipients = [suggestion recipients];
+  v4 = [recipients countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v4)
   {
     v5 = *v15;
@@ -5106,22 +5106,22 @@ LABEL_454:
       {
         if (*v15 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(recipients);
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
         v8 = +[_PSBlockedHandlesCache sharedBlockedHandlesCache];
-        v9 = [v7 handle];
-        v10 = [v8 isHandleBlocked:v9];
+        handle = [v7 handle];
+        v10 = [v8 isHandleBlocked:handle];
 
         if (v10)
         {
           v4 = +[_PSLogging generalChannel];
           if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
           {
-            v11 = [v7 handle];
+            handle2 = [v7 handle];
             *buf = 138478083;
-            v19 = v11;
+            v19 = handle2;
             v20 = 2113;
             v21 = v7;
             _os_log_impl(&dword_1B5ED1000, v4, OS_LOG_TYPE_DEFAULT, "handle %{private}@ is blocked; dropping recipient %{private}@", buf, 0x16u);
@@ -5132,7 +5132,7 @@ LABEL_454:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v4 = [recipients countByEnumeratingWithState:&v14 objects:v22 count:16];
       if (v4)
       {
         continue;
@@ -5148,24 +5148,24 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)excludeSuggestionWithConversationId:(id)a3
+- (BOOL)excludeSuggestionWithConversationId:(id)id
 {
-  v3 = a3;
-  v4 = (objc_opt_respondsToSelector() & 1) != 0 && ([v3 _appearsToBeBusinessID] & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v3, "_appearsToBeTemporaryID") & 1) != 0;
+  idCopy = id;
+  v4 = (objc_opt_respondsToSelector() & 1) != 0 && ([idCopy _appearsToBeBusinessID] & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(idCopy, "_appearsToBeTemporaryID") & 1) != 0;
 
   return v4;
 }
 
-- (id)mergedSuggestionsWithFamilySuggestions:(id)a3 shareSheetSuggestions:(id)a4 maxSuggestions:(unint64_t)a5 supportedBundleIds:(id)a6
+- (id)mergedSuggestionsWithFamilySuggestions:(id)suggestions shareSheetSuggestions:(id)sheetSuggestions maxSuggestions:(unint64_t)maxSuggestions supportedBundleIds:(id)ids
 {
   v57 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a6;
-  v11 = [MEMORY[0x1E695DF70] arrayWithArray:a3];
+  sheetSuggestionsCopy = sheetSuggestions;
+  idsCopy = ids;
+  v11 = [MEMORY[0x1E695DF70] arrayWithArray:suggestions];
   if ([v11 count])
   {
-    v44 = v10;
-    v42 = v9;
+    v44 = idsCopy;
+    v42 = sheetSuggestionsCopy;
     v12 = [MEMORY[0x1E695DFA8] set];
     v51 = 0u;
     v52 = 0u;
@@ -5174,7 +5174,7 @@ LABEL_13:
     v41 = v11;
     v13 = v11;
     v14 = [v13 countByEnumeratingWithState:&v51 objects:v56 count:16];
-    v15 = a5;
+    maxSuggestionsCopy = maxSuggestions;
     if (v14)
     {
       v16 = v14;
@@ -5188,15 +5188,15 @@ LABEL_13:
             objc_enumerationMutation(v13);
           }
 
-          v19 = [*(*(&v51 + 1) + 8 * i) recipients];
-          v20 = [v19 firstObject];
+          recipients = [*(*(&v51 + 1) + 8 * i) recipients];
+          firstObject = [recipients firstObject];
 
-          v21 = [v20 contact];
-          v22 = [v21 identifier];
+          contact = [firstObject contact];
+          identifier = [contact identifier];
 
-          if (v22)
+          if (identifier)
           {
-            [v12 addObject:v22];
+            [v12 addObject:identifier];
           }
         }
 
@@ -5211,7 +5211,7 @@ LABEL_13:
     v47 = 0u;
     v48 = 0u;
     v23 = v42;
-    v10 = v44;
+    idsCopy = v44;
     v46 = [v23 countByEnumeratingWithState:&v47 objects:v55 count:16];
     if (v46)
     {
@@ -5227,33 +5227,33 @@ LABEL_13:
         }
 
         v25 = *(*(&v47 + 1) + 8 * v24);
-        if ([v13 count] == v15)
+        if ([v13 count] == maxSuggestionsCopy)
         {
           break;
         }
 
-        v26 = [v25 bundleID];
-        v27 = [v10 containsObject:v26];
+        bundleID = [v25 bundleID];
+        v27 = [idsCopy containsObject:bundleID];
 
         if (v27)
         {
-          v28 = [v25 recipients];
-          v29 = [v28 count];
+          recipients2 = [v25 recipients];
+          v29 = [recipients2 count];
 
           if (v29 > 1)
           {
             goto LABEL_20;
           }
 
-          v30 = [v25 recipients];
-          v31 = [v30 firstObject];
-          [v31 contact];
-          v33 = v32 = v15;
-          v34 = [v33 identifier];
-          v35 = [v12 containsObject:v34];
+          recipients3 = [v25 recipients];
+          firstObject2 = [recipients3 firstObject];
+          [firstObject2 contact];
+          v33 = v32 = maxSuggestionsCopy;
+          identifier2 = [v33 identifier];
+          v35 = [v12 containsObject:identifier2];
 
-          v10 = v44;
-          v15 = v32;
+          idsCopy = v44;
+          maxSuggestionsCopy = v32;
           v23 = v43;
 
           if ((v35 & 1) == 0)
@@ -5278,23 +5278,23 @@ LABEL_20:
 
     v36 = [v13 copy];
     v11 = v41;
-    v9 = v42;
+    sheetSuggestionsCopy = v42;
   }
 
   else
   {
-    v37 = [v9 count];
-    if (v37 >= a5)
+    v37 = [sheetSuggestionsCopy count];
+    if (v37 >= maxSuggestions)
     {
-      v38 = a5;
+      maxSuggestionsCopy2 = maxSuggestions;
     }
 
     else
     {
-      v38 = v37;
+      maxSuggestionsCopy2 = v37;
     }
 
-    v36 = [v9 subarrayWithRange:{0, v38}];
+    v36 = [sheetSuggestionsCopy subarrayWithRange:{0, maxSuggestionsCopy2}];
   }
 
   v39 = *MEMORY[0x1E69E9840];
@@ -5302,21 +5302,21 @@ LABEL_20:
   return v36;
 }
 
-- (id)predictWithMapsPredictionContext:(id)a3 maxSuggestions:(unint64_t)a4
+- (id)predictWithMapsPredictionContext:(id)context maxSuggestions:(unint64_t)suggestions
 {
   v68[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = [_PSContactResolver alloc];
-  v8 = [(_PSEnsembleModel *)self contactStore];
+  contactStore = [(_PSEnsembleModel *)self contactStore];
   v9 = _PSMapsContactKeysToFetch();
-  v10 = [(_PSContactResolver *)v7 initWithContactStore:v8 keysToFetch:v9];
+  v10 = [(_PSContactResolver *)v7 initWithContactStore:contactStore keysToFetch:v9];
 
-  v11 = [(_PSEnsembleModel *)self contactStore];
+  contactStore2 = [(_PSEnsembleModel *)self contactStore];
   v12 = getCNContactIdentifierKey_0();
   v68[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:1];
   v63 = 0;
-  v14 = [v11 _ios_meContactWithKeysToFetch:v13 error:&v63];
+  v14 = [contactStore2 _ios_meContactWithKeysToFetch:v13 error:&v63];
   v15 = v63;
 
   if (v15)
@@ -5330,20 +5330,20 @@ LABEL_20:
 
   v57 = v15;
   v58 = v14;
-  v17 = [v14 identifier];
-  v18 = [MEMORY[0x1E69979A0] knowledgeStoreWithDirectReadOnlyAccess];
-  v19 = [(_PSEnsembleModel *)self interactionStore];
+  identifier = [v14 identifier];
+  knowledgeStoreWithDirectReadOnlyAccess = [MEMORY[0x1E69979A0] knowledgeStoreWithDirectReadOnlyAccess];
+  interactionStore = [(_PSEnsembleModel *)self interactionStore];
   os_unfair_lock_lock(&self->_lock);
-  v20 = [(_PSEnsembleModel *)self knnMapsModel];
+  knnMapsModel = [(_PSEnsembleModel *)self knnMapsModel];
 
-  if (!v20)
+  if (!knnMapsModel)
   {
-    v21 = [[_PSKNNModel alloc] initWithK:500 interactionStore:v19 filterByBundleIds:0 knowledgeStore:v18 contactResolver:v10 messageInteractionCache:0 shareInteractionCache:0];
+    v21 = [[_PSKNNModel alloc] initWithK:500 interactionStore:interactionStore filterByBundleIds:0 knowledgeStore:knowledgeStoreWithDirectReadOnlyAccess contactResolver:v10 messageInteractionCache:0 shareInteractionCache:0];
     [(_PSEnsembleModel *)self setKnnMapsModel:v21];
 
-    v22 = [(_PSEnsembleModel *)self knnMapsModel];
-    v23 = [(_PSEnsembleModel *)self psConfig];
-    [v22 updateModelProperties:v23];
+    knnMapsModel2 = [(_PSEnsembleModel *)self knnMapsModel];
+    psConfig = [(_PSEnsembleModel *)self psConfig];
+    [knnMapsModel2 updateModelProperties:psConfig];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -5354,8 +5354,8 @@ LABEL_20:
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v24, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSMapsPeopleKnnSuggestions", &unk_1B5FD970D, buf, 2u);
   }
 
-  v25 = [(_PSEnsembleModel *)self knnMapsModel];
-  v26 = [v25 rankedMapsShareEtaSuggestions:v6 maxSuggestions:a4];
+  knnMapsModel3 = [(_PSEnsembleModel *)self knnMapsModel];
+  v26 = [knnMapsModel3 rankedMapsShareEtaSuggestions:contextCopy maxSuggestions:suggestions];
 
   v27 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v27))
@@ -5364,7 +5364,7 @@ LABEL_20:
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v27, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "_PSMapsPeopleKnnSuggestions", &unk_1B5FD970D, buf, 2u);
   }
 
-  v55 = v19;
+  v55 = interactionStore;
 
   v28 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -5379,30 +5379,30 @@ LABEL_20:
 
   v30 = v26;
   v31 = v30;
-  if ([v30 count] < a4)
+  if ([v30 count] < suggestions)
   {
-    v32 = [(_PSEnsembleModel *)self knnMapsModel];
-    v33 = v32;
-    if (a4 <= 0x64)
+    knnMapsModel4 = [(_PSEnsembleModel *)self knnMapsModel];
+    v33 = knnMapsModel4;
+    if (suggestions <= 0x64)
     {
-      v34 = 100;
+      suggestionsCopy = 100;
     }
 
     else
     {
-      v34 = a4;
+      suggestionsCopy = suggestions;
     }
 
-    v35 = [v32 mapsShareEtaDefaultKnnSuggestions:v6 maxSuggestions:v34];
+    v35 = [knnMapsModel4 mapsShareEtaDefaultKnnSuggestions:contextCopy maxSuggestions:suggestionsCopy];
 
-    v31 = [(_PSEnsembleModel *)self mapsSuggestionArrayWithArray:v30 appendingUniqueElementsFromArray:v35 contactResolver:v10 meContactId:v17];
+    v31 = [(_PSEnsembleModel *)self mapsSuggestionArrayWithArray:v30 appendingUniqueElementsFromArray:v35 contactResolver:v10 meContactId:identifier];
   }
 
-  v36 = [v6 seedContactIdentifiers];
-  v56 = v18;
-  if (v36 && (v37 = v36, v38 = [v31 count], v37, v38))
+  seedContactIdentifiers = [contextCopy seedContactIdentifiers];
+  v56 = knowledgeStoreWithDirectReadOnlyAccess;
+  if (seedContactIdentifiers && (v37 = seedContactIdentifiers, v38 = [v31 count], v37, v38))
   {
-    v39 = [(_PSEnsembleModel *)self rerankMapsSuggestions:v31 usingPredictionContext:v6 contactResolver:v10];
+    v39 = [(_PSEnsembleModel *)self rerankMapsSuggestions:v31 usingPredictionContext:contextCopy contactResolver:v10];
   }
 
   else
@@ -5411,7 +5411,7 @@ LABEL_20:
   }
 
   v40 = v39;
-  v41 = v17;
+  v41 = identifier;
   v42 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
   {
@@ -5454,42 +5454,42 @@ LABEL_20:
   }
 
   v50 = [v40 count];
-  if (v50 >= a4)
+  if (v50 >= suggestions)
   {
-    v51 = a4;
+    suggestionsCopy2 = suggestions;
   }
 
   else
   {
-    v51 = v50;
+    suggestionsCopy2 = v50;
   }
 
-  v52 = [v40 subarrayWithRange:{0, v51}];
+  v52 = [v40 subarrayWithRange:{0, suggestionsCopy2}];
 
   v53 = *MEMORY[0x1E69E9840];
 
   return v52;
 }
 
-- (id)rerankMapsSuggestions:(id)a3 usingPredictionContext:(id)a4 contactResolver:(id)a5
+- (id)rerankMapsSuggestions:(id)suggestions usingPredictionContext:(id)context contactResolver:(id)resolver
 {
   v199 = *MEMORY[0x1E69E9840];
-  v110 = a3;
-  v8 = a4;
-  v130 = a5;
-  v9 = [(_PSEnsembleModel *)self contactStore];
-  v111 = self;
-  v10 = [(_PSEnsembleModel *)self defaultContactKeysToFetch];
-  v115 = [v9 _ios_meContactWithKeysToFetch:v10 error:0];
+  suggestionsCopy = suggestions;
+  contextCopy = context;
+  resolverCopy = resolver;
+  contactStore = [(_PSEnsembleModel *)self contactStore];
+  selfCopy = self;
+  defaultContactKeysToFetch = [(_PSEnsembleModel *)self defaultContactKeysToFetch];
+  v115 = [contactStore _ios_meContactWithKeysToFetch:defaultContactKeysToFetch error:0];
 
   v123 = objc_opt_new();
   v183 = 0u;
   v184 = 0u;
   v185 = 0u;
   v186 = 0u;
-  v139 = v8;
-  v11 = [v8 seedContactIdentifiers];
-  v12 = [v11 countByEnumeratingWithState:&v183 objects:v198 count:16];
+  v139 = contextCopy;
+  seedContactIdentifiers = [contextCopy seedContactIdentifiers];
+  v12 = [seedContactIdentifiers countByEnumeratingWithState:&v183 objects:v198 count:16];
   if (v12)
   {
     v13 = v12;
@@ -5500,21 +5500,21 @@ LABEL_20:
       {
         if (*v184 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(seedContactIdentifiers);
         }
 
-        v16 = [v130 contactWithIdentifier:*(*(&v183 + 1) + 8 * i)];
+        v16 = [resolverCopy contactWithIdentifier:*(*(&v183 + 1) + 8 * i)];
         if (v16)
         {
           v17 = [_PSRecipient alloc];
-          v18 = [v16 identifier];
-          v19 = [(_PSRecipient *)v17 initWithIdentifier:v18 handle:0 contact:v16];
+          identifier = [v16 identifier];
+          v19 = [(_PSRecipient *)v17 initWithIdentifier:identifier handle:0 contact:v16];
 
           if (v19)
           {
-            v20 = [v115 identifier];
-            v21 = [v16 identifier];
-            v22 = [v20 isEqualToString:v21];
+            identifier2 = [v115 identifier];
+            identifier3 = [v16 identifier];
+            v22 = [identifier2 isEqualToString:identifier3];
 
             if ((v22 & 1) == 0)
             {
@@ -5533,7 +5533,7 @@ LABEL_20:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v183 objects:v198 count:16];
+      v13 = [seedContactIdentifiers countByEnumeratingWithState:&v183 objects:v198 count:16];
     }
 
     while (v13);
@@ -5543,8 +5543,8 @@ LABEL_20:
   if ([v123 count])
   {
     v24 = [v123 count];
-    v25 = [v139 seedContactIdentifiers];
-    v26 = [v25 count];
+    seedContactIdentifiers2 = [v139 seedContactIdentifiers];
+    v26 = [seedContactIdentifiers2 count];
 
     if (v24 != v26)
     {
@@ -5564,7 +5564,7 @@ LABEL_20:
     v177 = 0u;
     v178 = 0u;
     v179 = 0u;
-    obj = v110;
+    obj = suggestionsCopy;
     v28 = v123;
     v119 = [obj countByEnumeratingWithState:&v176 objects:v197 count:16];
     if (v119)
@@ -5585,12 +5585,12 @@ LABEL_20:
           v174 = 0u;
           v175 = 0u;
           v134 = v30;
-          v31 = [v30 recipients];
-          v124 = [v31 countByEnumeratingWithState:&v172 objects:v196 count:16];
+          recipients = [v30 recipients];
+          v124 = [recipients countByEnumeratingWithState:&v172 objects:v196 count:16];
           if (v124)
           {
             v32 = *v173;
-            v131 = v31;
+            v131 = recipients;
             v121 = *v173;
             do
             {
@@ -5599,11 +5599,11 @@ LABEL_20:
               {
                 if (*v173 != v32)
                 {
-                  objc_enumerationMutation(v31);
+                  objc_enumerationMutation(recipients);
                 }
 
                 v127 = v33;
-                v34 = [*(*(&v172 + 1) + 8 * v33) contact];
+                contact = [*(*(&v172 + 1) + 8 * v33) contact];
                 v168 = 0u;
                 v169 = 0u;
                 v170 = 0u;
@@ -5623,17 +5623,17 @@ LABEL_20:
                         objc_enumerationMutation(v35);
                       }
 
-                      if (v34)
+                      if (contact)
                       {
                         v40 = *(*(&v168 + 1) + 8 * k);
-                        v41 = [v40 contact];
+                        contact2 = [v40 contact];
 
-                        if (v41)
+                        if (contact2)
                         {
-                          v42 = [v34 identifier];
-                          v43 = [v40 contact];
-                          v44 = [v43 identifier];
-                          v45 = [v42 isEqualToString:v44];
+                          identifier4 = [contact identifier];
+                          contact3 = [v40 contact];
+                          identifier5 = [contact3 identifier];
+                          v45 = [identifier4 isEqualToString:identifier5];
 
                           if (v45)
                           {
@@ -5659,7 +5659,7 @@ LABEL_20:
                 v33 = v127 + 1;
                 v32 = v121;
                 v28 = v123;
-                v31 = v131;
+                recipients = v131;
               }
 
               while ((v127 + 1) != v124);
@@ -5731,8 +5731,8 @@ LABEL_43:
                   v157 = 0u;
                   v158 = 0u;
                   v159 = 0u;
-                  v54 = [v53 recipients];
-                  v55 = [v54 countByEnumeratingWithState:&v156 objects:v192 count:16];
+                  recipients2 = [v53 recipients];
+                  v55 = [recipients2 countByEnumeratingWithState:&v156 objects:v192 count:16];
                   if (v55)
                   {
                     v56 = v55;
@@ -5743,15 +5743,15 @@ LABEL_43:
                       {
                         if (*v157 != v57)
                         {
-                          objc_enumerationMutation(v54);
+                          objc_enumerationMutation(recipients2);
                         }
 
                         v59 = *(*(&v156 + 1) + 8 * n);
-                        v60 = [v49 contact];
-                        v61 = [v60 identifier];
-                        v62 = [v59 contact];
-                        v63 = [v62 identifier];
-                        v64 = [v61 isEqualToString:v63];
+                        contact4 = [v49 contact];
+                        identifier6 = [contact4 identifier];
+                        contact5 = [v59 contact];
+                        identifier7 = [contact5 identifier];
+                        v64 = [identifier6 isEqualToString:identifier7];
 
                         if (v64)
                         {
@@ -5763,7 +5763,7 @@ LABEL_43:
                         }
                       }
 
-                      v56 = [v54 countByEnumeratingWithState:&v156 objects:v192 count:16];
+                      v56 = [recipients2 countByEnumeratingWithState:&v156 objects:v192 count:16];
                       if (v56)
                       {
                         continue;
@@ -5787,18 +5787,18 @@ LABEL_43:
               while (v125);
             }
 
-            v65 = [(_PSEnsembleModel *)v111 contactResolver];
-            v66 = [v49 contact];
-            v67 = [v65 allEmailAndPhoneNumberHandlesForContact:v66];
-            v68 = [v67 firstObject];
-            [v49 setHandle:v68];
+            contactResolver = [(_PSEnsembleModel *)selfCopy contactResolver];
+            contact6 = [v49 contact];
+            v67 = [contactResolver allEmailAndPhoneNumberHandlesForContact:contact6];
+            firstObject = [v67 firstObject];
+            [v49 setHandle:firstObject];
 
             v69 = [_PSSuggestion alloc];
-            v70 = [v49 handle];
+            handle = [v49 handle];
             v191 = v49;
             v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v191 count:1];
             LOBYTE(v109) = 0;
-            v72 = [(_PSSuggestion *)v69 initWithBundleID:v70 conversationIdentifier:0 groupName:0 recipients:v71 derivedIntentIdentifier:0 image:0 reason:@"Maps Seeded Contact" reasonType:0 score:0 familySuggestion:v109];
+            v72 = [(_PSSuggestion *)v69 initWithBundleID:handle conversationIdentifier:0 groupName:0 recipients:v71 derivedIntentIdentifier:0 image:0 reason:@"Maps Seeded Contact" reasonType:0 score:0 familySuggestion:v109];
 
             [v138 addObject:v72];
 LABEL_68:
@@ -5827,7 +5827,7 @@ LABEL_68:
       v74 = [v116 count];
     }
 
-    v75 = v110;
+    v75 = suggestionsCopy;
     if ([v138 count])
     {
       v150 = 0uLL;
@@ -5855,8 +5855,8 @@ LABEL_68:
             v145 = 0u;
             v146 = 0u;
             v147 = 0u;
-            v78 = [v77 recipients];
-            v79 = [v78 countByEnumeratingWithState:&v144 objects:v188 count:16];
+            recipients3 = [v77 recipients];
+            v79 = [recipients3 countByEnumeratingWithState:&v144 objects:v188 count:16];
             if (v79)
             {
               v80 = v79;
@@ -5867,27 +5867,27 @@ LABEL_68:
                 {
                   if (*v145 != v81)
                   {
-                    objc_enumerationMutation(v78);
+                    objc_enumerationMutation(recipients3);
                   }
 
                   v83 = *(*(&v144 + 1) + 8 * ii);
-                  v84 = [v139 seedContactIdentifiers];
-                  v85 = [v83 contact];
-                  v86 = [v85 identifier];
-                  v87 = [v84 containsObject:v86];
+                  seedContactIdentifiers3 = [v139 seedContactIdentifiers];
+                  contact7 = [v83 contact];
+                  identifier8 = [contact7 identifier];
+                  v87 = [seedContactIdentifiers3 containsObject:identifier8];
 
                   if (v87)
                   {
-                    v88 = [v83 contact];
-                    v89 = [v88 postalAddresses];
-                    v90 = [v89 count];
+                    contact8 = [v83 contact];
+                    postalAddresses = [contact8 postalAddresses];
+                    v90 = [postalAddresses count];
 
                     if (v90)
                     {
-                      v91 = [v139 seedContactIdentifiers];
-                      v92 = [v83 contact];
-                      v93 = [v92 identifier];
-                      v94 = [v91 indexOfObject:v93];
+                      seedContactIdentifiers4 = [v139 seedContactIdentifiers];
+                      contact9 = [v83 contact];
+                      identifier9 = [contact9 identifier];
+                      v94 = [seedContactIdentifiers4 indexOfObject:identifier9];
 
                       if (v94 > [v137 count])
                       {
@@ -5900,7 +5900,7 @@ LABEL_68:
                   }
                 }
 
-                v80 = [v78 countByEnumeratingWithState:&v144 objects:v188 count:16];
+                v80 = [recipients3 countByEnumeratingWithState:&v144 objects:v188 count:16];
               }
 
               while (v80);
@@ -5925,7 +5925,7 @@ LABEL_68:
       v141 = 0u;
       v95 = v112;
       v96 = [v95 countByEnumeratingWithState:&v140 objects:v187 count:16];
-      v75 = v110;
+      v75 = suggestionsCopy;
       if (v96)
       {
         v97 = v96;
@@ -5995,8 +5995,8 @@ LABEL_68:
 
   else
   {
-    v75 = v110;
-    v73 = v110;
+    v75 = suggestionsCopy;
+    v73 = suggestionsCopy;
   }
 
   v107 = *MEMORY[0x1E69E9840];
@@ -6004,13 +6004,13 @@ LABEL_68:
   return v73;
 }
 
-- (id)mapsSuggestionArrayWithArray:(id)a3 appendingUniqueElementsFromArray:(id)a4 contactResolver:(id)a5 meContactId:(id)a6
+- (id)mapsSuggestionArrayWithArray:(id)array appendingUniqueElementsFromArray:(id)fromArray contactResolver:(id)resolver meContactId:(id)id
 {
   v44 = *MEMORY[0x1E69E9840];
-  v37 = a5;
-  v36 = a6;
-  v9 = [a3 arrayByAddingObjectsFromArray:a4];
-  v34 = [MEMORY[0x1E695DF70] array];
+  resolverCopy = resolver;
+  idCopy = id;
+  v9 = [array arrayByAddingObjectsFromArray:fromArray];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = [MEMORY[0x1E695DFA8] set];
   v39 = 0u;
   v40 = 0u;
@@ -6035,22 +6035,22 @@ LABEL_68:
         }
 
         v16 = *(*(&v39 + 1) + 8 * v15);
-        v17 = [v16 recipients];
-        v18 = [v17 count];
+        recipients = [v16 recipients];
+        v18 = [recipients count];
 
         if (v18 == 1)
         {
           v19 = v10;
-          v20 = [v16 recipients];
-          v21 = [v20 firstObject];
+          recipients2 = [v16 recipients];
+          firstObject = [recipients2 firstObject];
 
-          v22 = [v21 contact];
-          if (v22)
+          contact = [firstObject contact];
+          if (contact)
           {
-            v23 = v22;
-            v24 = [v37 allEmailAndPhoneNumberHandlesForContact:v22];
-            v25 = [v21 handle];
-            v26 = [v24 containsObject:v25];
+            v23 = contact;
+            v24 = [resolverCopy allEmailAndPhoneNumberHandlesForContact:contact];
+            handle = [firstObject handle];
+            v26 = [v24 containsObject:handle];
 
             if ((v26 & 1) == 0)
             {
@@ -6058,11 +6058,11 @@ LABEL_68:
             }
 
 LABEL_11:
-            v29 = [v23 identifier];
-            if (([v29 isEqualToString:v36] & 1) == 0)
+            identifier = [v23 identifier];
+            if (([identifier isEqualToString:idCopy] & 1) == 0)
             {
-              v30 = [v23 identifier];
-              v31 = [v19 containsObject:v30];
+              identifier2 = [v23 identifier];
+              v31 = [v19 containsObject:identifier2];
 
               if (v31)
               {
@@ -6070,22 +6070,22 @@ LABEL_11:
                 goto LABEL_16;
               }
 
-              [v34 addObject:v16];
-              v29 = [v23 identifier];
-              [v19 addObject:v29];
+              [array addObject:v16];
+              identifier = [v23 identifier];
+              [v19 addObject:identifier];
               v11 = v35;
             }
 
             goto LABEL_16;
           }
 
-          v27 = [v21 handle];
-          v23 = [v37 resolveContactIfPossibleFromContactIdentifierString:v27 pickFirstOfMultiple:1];
+          handle2 = [firstObject handle];
+          v23 = [resolverCopy resolveContactIfPossibleFromContactIdentifierString:handle2 pickFirstOfMultiple:1];
 
-          v28 = [v23 identifier];
-          [v21 setIdentifier:v28];
+          identifier3 = [v23 identifier];
+          [firstObject setIdentifier:identifier3];
 
-          [v21 setContact:v23];
+          [firstObject setContact:v23];
           if (v23)
           {
             goto LABEL_11;
@@ -6109,44 +6109,44 @@ LABEL_16:
 
   v32 = *MEMORY[0x1E69E9840];
 
-  return v34;
+  return array;
 }
 
-- (id)suggestZKWSuggestionsWithPredictionContext:(id)a3 maxSuggestions:(unint64_t)a4
+- (id)suggestZKWSuggestionsWithPredictionContext:(id)context maxSuggestions:(unint64_t)suggestions
 {
   v96[8] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 bundleID];
+  contextCopy = context;
+  bundleID = [contextCopy bundleID];
   v7 = +[_PSConstants mobileSharePlayPeoplePickerBundleId];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [bundleID isEqualToString:v7];
 
   if (v8)
   {
     v9 = +[_PSConstants mobileFacetimeBundleId];
-    [v5 setBundleID:v9];
+    [contextCopy setBundleID:v9];
   }
 
-  v10 = [v5 bundleID];
+  bundleID2 = [contextCopy bundleID];
   v11 = +[_PSConstants macSharePlayPeoplePickerBundleId];
-  v12 = [v10 isEqualToString:v11];
+  v12 = [bundleID2 isEqualToString:v11];
 
   if (v12)
   {
     v13 = +[_PSConstants macFacetimeBundleId];
-    [v5 setBundleID:v13];
+    [contextCopy setBundleID:v13];
   }
 
-  v14 = [v5 bundleID];
+  bundleID3 = [contextCopy bundleID];
   v15 = +[_PSConstants preferencesBundleId];
-  if ([v14 isEqualToString:v15])
+  if ([bundleID3 isEqualToString:v15])
   {
   }
 
   else
   {
-    v16 = [v5 bundleID];
+    bundleID4 = [contextCopy bundleID];
     v17 = +[_PSConstants mobilePhoneBundleId];
-    v18 = [v16 isEqualToString:v17];
+    v18 = [bundleID4 isEqualToString:v17];
 
     if (!v18)
     {
@@ -6155,42 +6155,42 @@ LABEL_16:
   }
 
   v19 = +[_PSConstants mobileMessagesBundleId];
-  [v5 setBundleID:v19];
+  [contextCopy setBundleID:v19];
 
 LABEL_9:
-  v20 = [v5 bundleID];
+  bundleID5 = [contextCopy bundleID];
   v21 = +[_PSConstants passwordsAppBundleId];
-  v22 = [v20 isEqualToString:v21];
+  v22 = [bundleID5 isEqualToString:v21];
 
   if (v22)
   {
     v23 = +[_PSConstants mobileMessagesBundleId];
-    [v5 setBundleID:v23];
+    [contextCopy setBundleID:v23];
   }
 
-  v24 = [v5 bundleID];
+  bundleID6 = [contextCopy bundleID];
   v25 = +[_PSConstants macSafariBundleId];
-  if ([v24 isEqualToString:v25])
+  if ([bundleID6 isEqualToString:v25])
   {
     goto LABEL_14;
   }
 
-  v26 = [v5 bundleID];
+  bundleID7 = [contextCopy bundleID];
   v27 = +[_PSConstants macSafariTechnologyPreviewBundleId];
-  if ([v26 isEqualToString:v27])
+  if ([bundleID7 isEqualToString:v27])
   {
 
 LABEL_14:
 LABEL_15:
     v28 = +[_PSConstants mobileMessagesBundleId];
-    [v5 setBundleID:v28];
+    [contextCopy setBundleID:v28];
 
     goto LABEL_16;
   }
 
-  v71 = [v5 bundleID];
+  bundleID8 = [contextCopy bundleID];
   v72 = +[_PSConstants macSafariPlatformSupportBundleId];
-  v73 = [v71 isEqualToString:v72];
+  v73 = [bundleID8 isEqualToString:v72];
 
   if (v73)
   {
@@ -6199,42 +6199,42 @@ LABEL_15:
 
 LABEL_16:
   v29 = +[_PSFTZKWConfig useBlendingLayer];
-  v30 = [v5 bundleID];
+  bundleID9 = [contextCopy bundleID];
   v31 = +[_PSConstants findMyBundleId];
-  v32 = [v30 isEqualToString:v31];
+  v32 = [bundleID9 isEqualToString:v31];
 
   if (v32)
   {
     v33 = +[_PSConstants mobileMessagesBundleId];
-    [v5 setBundleID:v33];
+    [contextCopy setBundleID:v33];
   }
 
-  v34 = [v5 bundleID];
+  bundleID10 = [contextCopy bundleID];
   v35 = +[_PSConstants mobileFacetimeBundleId];
-  if ([v34 isEqualToString:v35])
+  if ([bundleID10 isEqualToString:v35])
   {
     v36 = 1;
   }
 
   else
   {
-    v37 = [v5 bundleID];
+    bundleID11 = [contextCopy bundleID];
     v38 = +[_PSConstants macFacetimeBundleId];
-    v36 = [v37 isEqualToString:v38];
+    v36 = [bundleID11 isEqualToString:v38];
   }
 
-  v39 = [v5 bundleID];
+  bundleID12 = [contextCopy bundleID];
   v40 = +[_PSConstants mobileMessagesBundleId];
-  if ([v39 isEqualToString:v40])
+  if ([bundleID12 isEqualToString:v40])
   {
     v41 = 1;
   }
 
   else
   {
-    v42 = [v5 bundleID];
+    bundleID13 = [contextCopy bundleID];
     v43 = +[_PSConstants macMessagesBundleId];
-    v41 = [v42 isEqualToString:v43];
+    v41 = [bundleID13 isEqualToString:v43];
   }
 
   if ((_os_feature_enabled_impl() & v36) == 1)
@@ -6252,18 +6252,18 @@ LABEL_16:
     v90[3] = &unk_1E7C24880;
     v90[4] = self;
     [_PSFTZKWTrialWrapper runIfUpdated:v90];
-    v45 = [(_PSFTZKWOrchestrator *)self->_zkwFTOrchestrator config];
-    [v45 setUseBlendingLayer:v29];
+    config = [(_PSFTZKWOrchestrator *)self->_zkwFTOrchestrator config];
+    [config setUseBlendingLayer:v29];
 
-    v87 = [(_PSFTZKWOrchestrator *)self->_zkwFTOrchestrator getSuggestionsWithPredictionContext:v5];
+    v87 = [(_PSFTZKWOrchestrator *)self->_zkwFTOrchestrator getSuggestionsWithPredictionContext:contextCopy];
     v46 = [_PSFTZKWSuggestionsTransformerFactory alloc];
-    v47 = [(_PSEnsembleModel *)self interactionStore];
-    v48 = [(_PSFTZKWSuggestionsTransformerFactory *)v46 initWithInteractionStore:v47];
+    interactionStore = [(_PSEnsembleModel *)self interactionStore];
+    v48 = [(_PSFTZKWSuggestionsTransformerFactory *)v46 initWithInteractionStore:interactionStore];
 
     v85 = MEMORY[0x1E695DF70];
     v84 = [(_PSFTZKWSuggestionsTransformerFactory *)v48 mapRecipientsToContactsWithUnmapped:1];
     v96[0] = v84;
-    v83 = -[_PSFTZKWSuggestionsTransformerFactory filterIDSReachable:](v48, "filterIDSReachable:", [v5 bypassIDSFilter]);
+    v83 = -[_PSFTZKWSuggestionsTransformerFactory filterIDSReachable:](v48, "filterIDSReachable:", [contextCopy bypassIDSFilter]);
     v96[1] = v83;
     v82 = +[_PSConstants mobileMessagesBundleId];
     v95[0] = v82;
@@ -6272,23 +6272,23 @@ LABEL_16:
     v80 = [MEMORY[0x1E695DEC8] arrayWithObjects:v95 count:2];
     v79 = [(_PSFTZKWSuggestionsTransformerFactory *)v48 formatWithBundleIdsForGroupMatching:v80];
     v96[2] = v79;
-    v78 = [v5 seedRecipients];
-    v77 = [(_PSFTZKWSuggestionsTransformerFactory *)v48 deduplicateWithSeedRecipients:v78];
+    seedRecipients = [contextCopy seedRecipients];
+    v77 = [(_PSFTZKWSuggestionsTransformerFactory *)v48 deduplicateWithSeedRecipients:seedRecipients];
     v96[3] = v77;
-    v76 = [(_PSFTZKWSuggestionsTransformerFactory *)v48 deduplicateWithMaxSuggestions:a4];
+    v76 = [(_PSFTZKWSuggestionsTransformerFactory *)v48 deduplicateWithMaxSuggestions:suggestions];
     v96[4] = v76;
-    v49 = [(_PSEnsembleModel *)self zkwFTTrialData];
-    v50 = [v49 experimentIdentifiers];
-    v51 = [(_PSEnsembleModel *)self zkwFTTrialData];
-    v52 = [v51 rolloutIdentifiers];
-    v53 = [(_PSFTZKWSuggestionsTransformerFactory *)v48 annotateWithTrialExperimentIdentifiers:v50 rolloutIdentifiers:v52];
+    zkwFTTrialData = [(_PSEnsembleModel *)self zkwFTTrialData];
+    experimentIdentifiers = [zkwFTTrialData experimentIdentifiers];
+    zkwFTTrialData2 = [(_PSEnsembleModel *)self zkwFTTrialData];
+    rolloutIdentifiers = [zkwFTTrialData2 rolloutIdentifiers];
+    v53 = [(_PSFTZKWSuggestionsTransformerFactory *)v48 annotateWithTrialExperimentIdentifiers:experimentIdentifiers rolloutIdentifiers:rolloutIdentifiers];
     v96[5] = v53;
-    v54 = [v5 priorityContacts];
-    v55 = [(_PSFTZKWSuggestionsTransformerFactory *)v48 boostPriorityContacts:v54];
+    priorityContacts = [contextCopy priorityContacts];
+    v55 = [(_PSFTZKWSuggestionsTransformerFactory *)v48 boostPriorityContacts:priorityContacts];
     v96[6] = v55;
     v89 = v48;
-    v56 = [(_PSFTZKWSuggestionsTransformerFactory *)v48 filterBlockedContacts];
-    v96[7] = v56;
+    filterBlockedContacts = [(_PSFTZKWSuggestionsTransformerFactory *)v48 filterBlockedContacts];
+    v96[7] = filterBlockedContacts;
     v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v96 count:8];
     v86 = [v85 arrayWithArray:v57];
 
@@ -6330,13 +6330,13 @@ LABEL_16:
     v92 = v63;
     v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v92 count:1];
     v66 = MEMORY[0x1E695DFD8];
-    v67 = [v5 bundleID];
-    v68 = [v66 setWithObject:v67];
+    bundleID14 = [contextCopy bundleID];
+    v68 = [v66 setWithObject:bundleID14];
     v91 = v68;
     v69 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v91 count:1];
     v70 = [(_PSKNNModelConfiguration *)v64 initWithInteractionMechanisms:v65 interactionCountMaxDepths:&unk_1F2D8C150 interactionHistoryRelativeStartDates:&unk_1F2D8C168 bundleIds:v69 modelType:0 clusterPruneThreshold:5 modelName:@"PastMessages"];
 
-    v59 = [(_PSEnsembleModel *)self _knnZKWSuggestionsWithPredictionContext:v5 modelConfiguration:v70 maxSuggestions:a4];
+    v59 = [(_PSEnsembleModel *)self _knnZKWSuggestionsWithPredictionContext:contextCopy modelConfiguration:v70 maxSuggestions:suggestions];
   }
 
   else
@@ -6349,12 +6349,12 @@ LABEL_16:
   return v59;
 }
 
-- (id)_knnZKWSuggestionsWithPredictionContext:(id)a3 modelConfiguration:(id)a4 maxSuggestions:(unint64_t)a5
+- (id)_knnZKWSuggestionsWithPredictionContext:(id)context modelConfiguration:(id)configuration maxSuggestions:(unint64_t)suggestions
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(_PSEnsembleModel *)self knnZkwModel];
-  v11 = [v10 rankedZkwSuggestionsWithPredictionContext:v9 modelConfiguration:v8 maxSuggestions:a5];
+  configurationCopy = configuration;
+  contextCopy = context;
+  knnZkwModel = [(_PSEnsembleModel *)self knnZkwModel];
+  v11 = [knnZkwModel rankedZkwSuggestionsWithPredictionContext:contextCopy modelConfiguration:configurationCopy maxSuggestions:suggestions];
 
   v12 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -6374,35 +6374,35 @@ LABEL_16:
   return v14;
 }
 
-- (id)rankedGlobalSuggestionsForSiriNLWithPredictionContext:(id)a3 maxSuggestions:(unint64_t)a4 interactionId:(id)a5
+- (id)rankedGlobalSuggestionsForSiriNLWithPredictionContext:(id)context maxSuggestions:(unint64_t)suggestions interactionId:(id)id
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  idCopy = id;
   if ([MEMORY[0x1E69978B8] isRunningOnInternalBuild])
   {
     v8 = objc_alloc_init(_PSContactSuggester);
     v9 = [(_PSContactSuggester *)v8 contactPriorsForContactIdentifiers:0];
-    v10 = [v9 allValues];
+    allValues = [v9 allValues];
 
-    v11 = [v10 count];
-    if (v11 >= a4)
+    v11 = [allValues count];
+    if (v11 >= suggestions)
     {
-      v12 = a4;
+      suggestionsCopy = suggestions;
     }
 
     else
     {
-      v12 = v11;
+      suggestionsCopy = v11;
     }
 
-    v13 = [v10 subarrayWithRange:{0, v12}];
-    v14 = [_PSSiriNLRankerUtilities knowledgeEventWithContactPriors:v13 interactionId:v7];
+    v13 = [allValues subarrayWithRange:{0, suggestionsCopy}];
+    v14 = [_PSSiriNLRankerUtilities knowledgeEventWithContactPriors:v13 interactionId:idCopy];
     if (v14)
     {
-      v15 = [(_PSEnsembleModel *)self knowledgeStore];
+      knowledgeStore = [(_PSEnsembleModel *)self knowledgeStore];
       v19[0] = v14;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-      [v15 saveObjects:v16 tracker:&__block_literal_global_747 responseQueue:0 withCompletion:&__block_literal_global_750];
+      [knowledgeStore saveObjects:v16 tracker:&__block_literal_global_747 responseQueue:0 withCompletion:&__block_literal_global_750];
     }
   }
 
@@ -6410,62 +6410,62 @@ LABEL_16:
   return MEMORY[0x1E695E0F0];
 }
 
-- (id)rankedNameSuggestionsWithPredictionContext:(id)a3 name:(id)a4
+- (id)rankedNameSuggestionsWithPredictionContext:(id)context name:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
-  v9 = [v8 rankedNameSuggestionsWithPredictionContext:v7 forName:v6];
+  nameCopy = name;
+  contextCopy = context;
+  knnNameOrContactRankerModel = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
+  v9 = [knnNameOrContactRankerModel rankedNameSuggestionsWithPredictionContext:contextCopy forName:nameCopy];
 
   return v9;
 }
 
-- (id)rankedAutocompleteSuggestionsFromContext:(id)a3 candidates:(id)a4
+- (id)rankedAutocompleteSuggestionsFromContext:(id)context candidates:(id)candidates
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
-  v9 = [v8 rankedAutocompleteSuggestionsWithPredictionContext:v7 candidates:v6];
+  candidatesCopy = candidates;
+  contextCopy = context;
+  knnNameOrContactRankerModel = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
+  v9 = [knnNameOrContactRankerModel rankedAutocompleteSuggestionsWithPredictionContext:contextCopy candidates:candidatesCopy];
 
   v10 = [v9 _pas_filteredArrayWithTest:&__block_literal_global_753];
 
   return v10;
 }
 
-- (id)autocompleteSearchResultsWithPredictionContext:(id)a3
+- (id)autocompleteSearchResultsWithPredictionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
-  v6 = [v5 messagesGroupResultsForPredictionContext:v4];
+  contextCopy = context;
+  knnNameOrContactRankerModel = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
+  v6 = [knnNameOrContactRankerModel messagesGroupResultsForPredictionContext:contextCopy];
 
   v7 = [v6 _pas_filteredArrayWithTest:&__block_literal_global_756];
 
   return v7;
 }
 
-- (id)rankedSiriMLCRHandles:(id)a3 context:(id)a4
+- (id)rankedSiriMLCRHandles:(id)handles context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
-  v9 = [v8 rankedSiriMLCRHandles:v7 context:v6];
+  contextCopy = context;
+  handlesCopy = handles;
+  knnNameOrContactRankerModel = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
+  v9 = [knnNameOrContactRankerModel rankedSiriMLCRHandles:handlesCopy context:contextCopy];
 
   return v9;
 }
 
-- (id)rankedHandlesFromCandidateHandles:(id)a3
+- (id)rankedHandlesFromCandidateHandles:(id)handles
 {
-  v4 = a3;
-  v5 = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
-  v6 = [v5 rankedHandlesFromCandidateHandles:v4];
+  handlesCopy = handles;
+  knnNameOrContactRankerModel = [(_PSEnsembleModel *)self knnNameOrContactRankerModel];
+  v6 = [knnNameOrContactRankerModel rankedHandlesFromCandidateHandles:handlesCopy];
 
   return v6;
 }
 
-- (id)appExtensionSuggestionsFromContext:(id)a3
+- (id)appExtensionSuggestionsFromContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v4 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v4))
   {
@@ -6480,7 +6480,7 @@ LABEL_16:
     v16[1] = 3221225472;
     v16[2] = __55___PSEnsembleModel_appExtensionSuggestionsFromContext___block_invoke;
     v16[3] = &unk_1E7C24B88;
-    v17 = v3;
+    v17 = contextCopy;
     v6 = __55___PSEnsembleModel_appExtensionSuggestionsFromContext___block_invoke(v16);
     *buf = 138412290;
     v19 = v6;
@@ -6489,9 +6489,9 @@ LABEL_16:
 
   v7 = +[_PSAppUsageUtilities sharesFromSourceToTargetBundleValues];
   v8 = +[_PSAppUsageUtilities appUsageDurations];
-  v9 = [v3 appBundleIdsToShareExtensionBundleIdsMapping];
-  v10 = [v3 bundleID];
-  v11 = [_PSAppUsageUtilities mostUsedAppShareExtensionsWithAppBundleIdsToShareExtensionBundleIdsMapping:v9 sourceBundleId:v10 sharesFromSourceToTargetBundle:v7 appUsageDurations:v8];
+  appBundleIdsToShareExtensionBundleIdsMapping = [contextCopy appBundleIdsToShareExtensionBundleIdsMapping];
+  bundleID = [contextCopy bundleID];
+  v11 = [_PSAppUsageUtilities mostUsedAppShareExtensionsWithAppBundleIdsToShareExtensionBundleIdsMapping:appBundleIdsToShareExtensionBundleIdsMapping sourceBundleId:bundleID sharesFromSourceToTargetBundle:v7 appUsageDurations:v8];
 
   v12 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v12))
@@ -6534,28 +6534,28 @@ LABEL_16:
   v7 = v5;
   v80 = v7;
   v8 = MEMORY[0x1B8C8C060](v78);
-  v9 = [(_PSEnsembleModel *)self shareInteractionCache];
+  shareInteractionCache = [(_PSEnsembleModel *)self shareInteractionCache];
 
-  if (v9)
+  if (shareInteractionCache)
   {
-    v10 = [(_PSEnsembleModel *)self shareInteractionCache];
-    v11 = [v10 uniqueConversationCandidates];
+    shareInteractionCache2 = [(_PSEnsembleModel *)self shareInteractionCache];
+    uniqueConversationCandidates = [shareInteractionCache2 uniqueConversationCandidates];
 
-    v13 = __50___PSEnsembleModel_candidatesForShareSheetRanking__block_invoke(v12, v11);
-    v14 = [(_PSEnsembleModel *)self maxCandidatesFromShareSheetCache];
-    (*(v8 + 16))(v8, v13, v14);
+    v13 = __50___PSEnsembleModel_candidatesForShareSheetRanking__block_invoke(v12, uniqueConversationCandidates);
+    maxCandidatesFromShareSheetCache = [(_PSEnsembleModel *)self maxCandidatesFromShareSheetCache];
+    (*(v8 + 16))(v8, v13, maxCandidatesFromShareSheetCache);
   }
 
-  v15 = [(_PSEnsembleModel *)self messageInteractionCache];
+  messageInteractionCache = [(_PSEnsembleModel *)self messageInteractionCache];
 
-  if (v15)
+  if (messageInteractionCache)
   {
-    v16 = [(_PSEnsembleModel *)self messageInteractionCache];
-    v17 = [v16 uniqueConversationCandidates];
+    messageInteractionCache2 = [(_PSEnsembleModel *)self messageInteractionCache];
+    uniqueConversationCandidates2 = [messageInteractionCache2 uniqueConversationCandidates];
 
-    v19 = __50___PSEnsembleModel_candidatesForShareSheetRanking__block_invoke(v18, v17);
-    v20 = [(_PSEnsembleModel *)self maxCandidatesFromMessageCache];
-    (*(v8 + 16))(v8, v19, v20);
+    v19 = __50___PSEnsembleModel_candidatesForShareSheetRanking__block_invoke(v18, uniqueConversationCandidates2);
+    maxCandidatesFromMessageCache = [(_PSEnsembleModel *)self maxCandidatesFromMessageCache];
+    (*(v8 + 16))(v8, v19, maxCandidatesFromMessageCache);
   }
 
   v21 = objc_opt_new();
@@ -6595,16 +6595,16 @@ LABEL_16:
         }
 
         v29 = *(*(&v74 + 1) + 8 * i);
-        v30 = [v29 recipientsId];
-        if (v30)
+        recipientsId = [v29 recipientsId];
+        if (recipientsId)
         {
-          v31 = v30;
-          v32 = [v29 domainId];
+          v31 = recipientsId;
+          domainId = [v29 domainId];
 
-          if (v32)
+          if (domainId)
           {
-            v33 = [v29 recipientsId];
-            [v23 setObject:v29 forKeyedSubscript:v33];
+            recipientsId2 = [v29 recipientsId];
+            [v23 setObject:v29 forKeyedSubscript:recipientsId2];
           }
         }
       }
@@ -6617,10 +6617,10 @@ LABEL_16:
 
   v61 = v8;
 
-  v34 = [(_PSEnsembleModel *)self maxCandidatesFromMessageCache];
-  v35 = [v34 integerValue];
-  v36 = [(_PSEnsembleModel *)self maxCandidatesFromShareSheetCache];
-  v37 = [v36 integerValue];
+  maxCandidatesFromMessageCache2 = [(_PSEnsembleModel *)self maxCandidatesFromMessageCache];
+  integerValue = [maxCandidatesFromMessageCache2 integerValue];
+  maxCandidatesFromShareSheetCache2 = [(_PSEnsembleModel *)self maxCandidatesFromShareSheetCache];
+  integerValue2 = [maxCandidatesFromShareSheetCache2 integerValue];
 
   v38 = objc_opt_new();
   v66 = _PSShareSheetExtensionBundleIDToAppBundleIDMapping([(_PSEnsembleModel *)self allowNonSupportedBundleIDs]);
@@ -6632,7 +6632,7 @@ LABEL_16:
   v69 = [obj countByEnumeratingWithState:&v70 objects:v81 count:16];
   if (v69)
   {
-    v68 = v37 + v35;
+    v68 = integerValue2 + integerValue;
     v67 = *v71;
 LABEL_21:
     v39 = 0;
@@ -6649,46 +6649,46 @@ LABEL_21:
         break;
       }
 
-      v41 = [v40 domainId];
-      if (!v41)
+      domainId2 = [v40 domainId];
+      if (!domainId2)
       {
-        v42 = [v40 recipientsId];
+        recipientsId3 = [v40 recipientsId];
 
-        if (!v42)
+        if (!recipientsId3)
         {
           goto LABEL_29;
         }
 
-        v43 = [v40 recipientsId];
-        v41 = [v23 objectForKeyedSubscript:v43];
+        recipientsId4 = [v40 recipientsId];
+        domainId2 = [v23 objectForKeyedSubscript:recipientsId4];
 
-        v44 = [v41 domainId];
-        [v40 setDomainId:v44];
+        v41DomainId = [domainId2 domainId];
+        [v40 setDomainId:v41DomainId];
 
-        v45 = [v41 derivedIntentId];
-        [v40 setDerivedIntentId:v45];
+        derivedIntentId = [domainId2 derivedIntentId];
+        [v40 setDerivedIntentId:derivedIntentId];
       }
 
 LABEL_29:
-      v46 = [v40 domainId];
-      if (v46)
+      domainId3 = [v40 domainId];
+      if (domainId3)
       {
 
 LABEL_32:
         v48 = [_PSCandidate alloc];
-        v49 = [v40 domainId];
-        v50 = [v40 derivedIntentId];
-        v51 = [v40 bundleId];
-        v52 = [v66 objectForKeyedSubscript:v51];
-        v53 = v52;
+        domainId4 = [v40 domainId];
+        derivedIntentId2 = [v40 derivedIntentId];
+        bundleId = [v40 bundleId];
+        v52 = [v66 objectForKeyedSubscript:bundleId];
+        bundleId2 = v52;
         if (!v52)
         {
-          v53 = [v40 bundleId];
-          v64 = v53;
+          bundleId2 = [v40 bundleId];
+          v64 = bundleId2;
         }
 
-        v54 = [v40 recipientsId];
-        v55 = [(_PSCandidate *)v48 initWithDomainId:v49 derivedIntentId:v50 bundleId:v53 recipientsId:v54];
+        recipientsId5 = [v40 recipientsId];
+        v55 = [(_PSCandidate *)v48 initWithDomainId:domainId4 derivedIntentId:derivedIntentId2 bundleId:bundleId2 recipientsId:recipientsId5];
         [v38 addObject:v55];
 
         if (!v52)
@@ -6698,9 +6698,9 @@ LABEL_32:
         goto LABEL_37;
       }
 
-      v47 = [v40 recipientsId];
+      recipientsId6 = [v40 recipientsId];
 
-      if (v47)
+      if (recipientsId6)
       {
         goto LABEL_32;
       }
@@ -6741,10 +6741,10 @@ LABEL_37:
   return v38;
 }
 
-- (unint64_t)pruneCandidatesForRanking:(id)a3
+- (unint64_t)pruneCandidatesForRanking:(id)ranking
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  rankingCopy = ranking;
   v4 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -6752,14 +6752,14 @@ LABEL_37:
     _os_log_impl(&dword_1B5ED1000, v4, OS_LOG_TYPE_DEFAULT, "Pruning all candidates that the user never sent a message to nor recently engaged with in the sharing UI.", buf, 2u);
   }
 
-  v5 = [v3 conversationIds];
+  conversationIds = [rankingCopy conversationIds];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __46___PSEnsembleModel_pruneCandidatesForRanking___block_invoke;
   v13[3] = &unk_1E7C24C00;
-  v6 = v3;
+  v6 = rankingCopy;
   v14 = v6;
-  v7 = [v5 _pas_mappedArrayWithTransform:v13];
+  v7 = [conversationIds _pas_mappedArrayWithTransform:v13];
 
   v8 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -6779,33 +6779,33 @@ LABEL_37:
   return v10;
 }
 
-- (void)setupAeroMLPipelineLoggerWithModel:(id)a3
+- (void)setupAeroMLPipelineLoggerWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if (-[_PSEnsembleModel enablePipelineCheckpointing](self, "enablePipelineCheckpointing") && ([MEMORY[0x1E69C5CF8] isInternalBuild] & 1) != 0)
   {
-    v5 = [(_PSEnsembleModel *)self amlPipelineLogger];
+    amlPipelineLogger = [(_PSEnsembleModel *)self amlPipelineLogger];
 
-    if (v5)
+    if (amlPipelineLogger)
     {
-      v6 = +[_PSLogging rewriteChannel];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+      inputDescriptionsByName = +[_PSLogging rewriteChannel];
+      if (os_log_type_enabled(inputDescriptionsByName, OS_LOG_TYPE_INFO))
       {
         LOWORD(v24) = 0;
         v7 = "_PSEnsemble: reusing AMLPipelineLogger object";
 LABEL_8:
-        _os_log_impl(&dword_1B5ED1000, v6, OS_LOG_TYPE_INFO, v7, &v24, 2u);
+        _os_log_impl(&dword_1B5ED1000, inputDescriptionsByName, OS_LOG_TYPE_INFO, v7, &v24, 2u);
       }
     }
 
     else
     {
-      v8 = [v4 modelDescription];
-      v6 = [v8 inputDescriptionsByName];
+      modelDescription = [modelCopy modelDescription];
+      inputDescriptionsByName = [modelDescription inputDescriptionsByName];
 
-      v9 = [v4 modelDescription];
-      v10 = [v9 metadata];
-      v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E695FDD0]];
+      modelDescription2 = [modelCopy modelDescription];
+      metadata = [modelDescription2 metadata];
+      v11 = [metadata objectForKeyedSubscript:*MEMORY[0x1E695FDD0]];
 
       v29 = 0;
       v30 = &v29;
@@ -6828,8 +6828,8 @@ LABEL_8:
       v13 = v12;
       _Block_object_dispose(&v29, 8);
       v14 = [v12 alloc];
-      v15 = [v6 allValues];
-      v16 = [v14 initWithFeaturesDescription:v15];
+      allValues = [inputDescriptionsByName allValues];
+      v16 = [v14 initWithFeaturesDescription:allValues];
 
       v29 = 0;
       v30 = &v29;
@@ -6886,8 +6886,8 @@ LABEL_8:
 
   else
   {
-    v6 = +[_PSLogging rewriteChannel];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    inputDescriptionsByName = +[_PSLogging rewriteChannel];
+    if (os_log_type_enabled(inputDescriptionsByName, OS_LOG_TYPE_INFO))
     {
       LOWORD(v24) = 0;
       v7 = "_PSEnsemble: pipeline checkpointing is disabled";
@@ -6896,23 +6896,23 @@ LABEL_8:
   }
 }
 
-- (void)logPipelineWithSuggestions:(id)a3 interactionsStatistics:(id)a4 pipelineStage:(id)a5 sessionID:(id)a6
+- (void)logPipelineWithSuggestions:(id)suggestions interactionsStatistics:(id)statistics pipelineStage:(id)stage sessionID:(id)d
 {
   v58 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v28 = a4;
-  v29 = a5;
-  v30 = a6;
-  v10 = [(_PSEnsembleModel *)self amlPipelineLogger];
+  suggestionsCopy = suggestions;
+  statisticsCopy = statistics;
+  stageCopy = stage;
+  dCopy = d;
+  amlPipelineLogger = [(_PSEnsembleModel *)self amlPipelineLogger];
 
-  if (v10)
+  if (amlPipelineLogger)
   {
     v34 = objc_opt_new();
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    obj = v31;
+    obj = suggestionsCopy;
     v35 = [obj countByEnumeratingWithState:&v43 objects:v57 count:16];
     if (v35)
     {
@@ -6927,23 +6927,23 @@ LABEL_8:
           }
 
           v38 = *(*(&v43 + 1) + 8 * i);
-          v36 = [v38 groupName];
-          if (v36)
+          groupName = [v38 groupName];
+          if (groupName)
           {
             v11 = objc_alloc(MEMORY[0x1E696AD60]);
-            v12 = [v38 groupName];
-            v13 = [v11 initWithString:v12];
+            groupName2 = [v38 groupName];
+            v13 = [v11 initWithString:groupName2];
           }
 
           else
           {
-            v12 = objc_opt_new();
+            groupName2 = objc_opt_new();
             v41 = 0u;
             v42 = 0u;
             v39 = 0u;
             v40 = 0u;
-            v14 = [v38 recipients];
-            v15 = [v14 countByEnumeratingWithState:&v39 objects:v56 count:16];
+            recipients = [v38 recipients];
+            v15 = [recipients countByEnumeratingWithState:&v39 objects:v56 count:16];
             if (v15)
             {
               v16 = *v40;
@@ -6953,7 +6953,7 @@ LABEL_8:
                 {
                   if (*v40 != v16)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(recipients);
                   }
 
                   v18 = *(*(&v39 + 1) + 8 * j);
@@ -6978,24 +6978,24 @@ LABEL_8:
 
                   v21 = v19;
                   _Block_object_dispose(&v52, 8);
-                  v22 = [v18 contact];
-                  v23 = [v19 stringFromContact:v22 style:0];
+                  contact = [v18 contact];
+                  v23 = [v19 stringFromContact:contact style:0];
 
                   if (v23)
                   {
-                    [v12 addObject:v23];
+                    [groupName2 addObject:v23];
                   }
                 }
 
-                v15 = [v14 countByEnumeratingWithState:&v39 objects:v56 count:16];
+                v15 = [recipients countByEnumeratingWithState:&v39 objects:v56 count:16];
               }
 
               while (v15);
             }
 
-            if (![v12 count])
+            if (![groupName2 count])
             {
-              [v12 addObject:@"unable_to_resolve"];
+              [groupName2 addObject:@"unable_to_resolve"];
             }
 
             v13 = _PASJoinStrings();
@@ -7003,16 +7003,16 @@ LABEL_8:
 
           v24 = v13;
 
-          v25 = [v38 conversationIdentifier];
-          if (v25)
+          conversationIdentifier = [v38 conversationIdentifier];
+          if (conversationIdentifier)
           {
-            [v34 setObject:v24 forKeyedSubscript:v25];
+            [v34 setObject:v24 forKeyedSubscript:conversationIdentifier];
           }
 
           else
           {
-            v26 = [v38 derivedIntentIdentifier];
-            [v34 setObject:v24 forKeyedSubscript:v26];
+            derivedIntentIdentifier = [v38 derivedIntentIdentifier];
+            [v34 setObject:v24 forKeyedSubscript:derivedIntentIdentifier];
           }
         }
 
@@ -7022,34 +7022,34 @@ LABEL_8:
       while (v35);
     }
 
-    [(_PSEnsembleModel *)self logPipeline:v28 withPipelineStage:v29 andSessionID:v30 andCandidateNames:v34];
+    [(_PSEnsembleModel *)self logPipeline:statisticsCopy withPipelineStage:stageCopy andSessionID:dCopy andCandidateNames:v34];
   }
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logPipeline:(id)a3 withPipelineStage:(id)a4 andSessionID:(id)a5 andCandidateNames:(id)a6
+- (void)logPipeline:(id)pipeline withPipelineStage:(id)stage andSessionID:(id)d andCandidateNames:(id)names
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(_PSEnsembleModel *)self amlPipelineLogger];
+  pipelineCopy = pipeline;
+  stageCopy = stage;
+  dCopy = d;
+  namesCopy = names;
+  amlPipelineLogger = [(_PSEnsembleModel *)self amlPipelineLogger];
 
-  if (v14)
+  if (amlPipelineLogger)
   {
-    v15 = [[_PSInteractionsStatisticsFeatureProvider alloc] initWithInteractionsStatistics:v10];
-    v16 = [(_PSInteractionsStatisticsFeatureProvider *)v15 mlFeatures];
-    v17 = v16;
-    if (v13)
+    v15 = [[_PSInteractionsStatisticsFeatureProvider alloc] initWithInteractionsStatistics:pipelineCopy];
+    mlFeatures = [(_PSInteractionsStatisticsFeatureProvider *)v15 mlFeatures];
+    v17 = mlFeatures;
+    if (namesCopy)
     {
       v18 = objc_opt_new();
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __81___PSEnsembleModel_logPipeline_withPipelineStage_andSessionID_andCandidateNames___block_invoke;
       v29[3] = &unk_1E7C24C28;
-      v30 = v13;
+      v30 = namesCopy;
       v19 = v18;
       v31 = v19;
       [v17 enumerateKeysAndObjectsUsingBlock:v29];
@@ -7058,7 +7058,7 @@ LABEL_8:
 
     else
     {
-      v20 = v16;
+      v20 = mlFeatures;
     }
 
     v32 = 0;
@@ -7082,9 +7082,9 @@ LABEL_8:
 
     v23 = v21;
     _Block_object_dispose(&v32, 8);
-    v24 = [[v21 alloc] initWithSessionId:v12 metadata:0];
-    v25 = [(_PSEnsembleModel *)self amlPipelineLogger];
-    v26 = [v25 logPipelineAsync:v11 features:v20 metadata:v24 async:1];
+    v24 = [[v21 alloc] initWithSessionId:dCopy metadata:0];
+    amlPipelineLogger2 = [(_PSEnsembleModel *)self amlPipelineLogger];
+    v26 = [amlPipelineLogger2 logPipelineAsync:stageCopy features:v20 metadata:v24 async:1];
 
     v27 = +[_PSLogging rewriteChannel];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
@@ -7108,11 +7108,11 @@ LABEL_8:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)evaluateCandidates:(id)a3 psrMLModel:(id)a4
+- (void)evaluateCandidates:(id)candidates psrMLModel:(id)model
 {
   v84 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  candidatesCopy = candidates;
+  modelCopy = model;
   v7 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v7))
   {
@@ -7120,53 +7120,53 @@ LABEL_8:
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSEnsembleModel_evaluateCandidates", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v8 = [v6 modelDescription];
-  v9 = [v8 metadata];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E695FDB0]];
+  modelDescription = [modelCopy modelDescription];
+  metadata = [modelDescription metadata];
+  v10 = [metadata objectForKeyedSubscript:*MEMORY[0x1E695FDB0]];
 
   v11 = [v10 objectForKeyedSubscript:@"model_type"];
-  LODWORD(v9) = [@"set" isEqual:v11];
+  LODWORD(metadata) = [@"set" isEqual:v11];
 
-  if (!v9)
+  if (!metadata)
   {
-    v23 = [v5 conversationIds];
+    conversationIds = [candidatesCopy conversationIds];
     v59[0] = MEMORY[0x1E69E9820];
     v59[1] = 3221225472;
     v59[2] = __50___PSEnsembleModel_evaluateCandidates_psrMLModel___block_invoke_837;
     v59[3] = &unk_1E7C248D0;
-    v60 = v5;
-    v61 = v6;
-    [v23 enumerateObjectsUsingBlock:v59];
+    v60 = candidatesCopy;
+    v61 = modelCopy;
+    [conversationIds enumerateObjectsUsingBlock:v59];
 
     v24 = v60;
     goto LABEL_31;
   }
 
-  v12 = [v6 modelDescription];
-  v13 = [v12 inputDescriptionsByName];
+  modelDescription2 = [modelCopy modelDescription];
+  inputDescriptionsByName = [modelDescription2 inputDescriptionsByName];
 
-  v14 = [v13 objectForKeyedSubscript:@"features"];
-  v15 = [v14 multiArrayConstraint];
+  v14 = [inputDescriptionsByName objectForKeyedSubscript:@"features"];
+  multiArrayConstraint = [v14 multiArrayConstraint];
 
-  v16 = [v15 shape];
-  v17 = [v16 objectAtIndexedSubscript:0];
-  v58 = [v17 unsignedIntegerValue];
+  shape = [multiArrayConstraint shape];
+  v17 = [shape objectAtIndexedSubscript:0];
+  unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-  v18 = [v16 objectAtIndexedSubscript:1];
-  v49 = [v18 unsignedIntegerValue];
+  v18 = [shape objectAtIndexedSubscript:1];
+  unsignedIntegerValue2 = [v18 unsignedIntegerValue];
 
-  v19 = [v15 dataType];
+  dataType = [multiArrayConstraint dataType];
   v20 = 0;
   v21 = 0;
-  v54 = v15;
-  v55 = v13;
-  v53 = v16;
-  if (v19 > 65599)
+  v54 = multiArrayConstraint;
+  v55 = inputDescriptionsByName;
+  v53 = shape;
+  if (dataType > 65599)
   {
-    if (v19 != 131104)
+    if (dataType != 131104)
     {
       v22 = 0;
-      if (v19 == 65600)
+      if (dataType == 65600)
       {
         v20 = 1;
         v22 = 6;
@@ -7181,7 +7181,7 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  if (v19 == 65552)
+  if (dataType == 65552)
   {
     v22 = 0;
     v20 = 1;
@@ -7191,7 +7191,7 @@ LABEL_8:
   else
   {
     v22 = 0;
-    if (v19 == 65568)
+    if (dataType == 65568)
     {
       v20 = 1;
       v22 = 5;
@@ -7204,7 +7204,7 @@ LABEL_15:
   v50 = v22;
   v51 = v21;
   v52 = v20;
-  v57 = v5;
+  v57 = candidatesCopy;
   v25 = [v10 objectForKeyedSubscript:@"feature_order"];
   v26 = objc_autoreleasePoolPush();
   v27 = MEMORY[0x1E696ACB0];
@@ -7262,23 +7262,23 @@ LABEL_15:
     while (v34);
   }
 
-  if ([v32 count] != v49)
+  if ([v32 count] != unsignedIntegerValue2)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"shape feature count %tu must be equal to feature order count %tu, feature order: %@", v49, objc_msgSend(v32, "count"), v32}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"shape feature count %tu must be equal to feature order count %tu, feature order: %@", unsignedIntegerValue2, objc_msgSend(v32, "count"), v32}];
   }
 
-  v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v49];
+  v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue2];
   v82[0] = v39;
   v82[1] = &unk_1F2D8B340;
   v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:2];
 
-  v5 = v57;
-  v41 = [v57 conversationIds];
+  candidatesCopy = v57;
+  conversationIds2 = [v57 conversationIds];
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
   v62[2] = __50___PSEnsembleModel_evaluateCandidates_psrMLModel___block_invoke;
   v62[3] = &unk_1E7C24C70;
-  v72 = v49 * v58;
+  v72 = unsignedIntegerValue2 * unsignedIntegerValue;
   v73 = v51;
   v63 = v32;
   v75 = v52;
@@ -7290,13 +7290,13 @@ LABEL_15:
   v69 = @"count";
   v74 = v50;
   v70 = @"features";
-  v71 = v6;
+  v71 = modelCopy;
   v42 = v32;
   v43 = v53;
   v44 = v54;
   v45 = v40;
   v24 = v55;
-  [v41 _pas_enumerateChunksOfSize:v58 usingBlock:v62];
+  [conversationIds2 _pas_enumerateChunksOfSize:unsignedIntegerValue usingBlock:v62];
 
   v10 = v56;
 LABEL_31:
@@ -7311,30 +7311,30 @@ LABEL_31:
   v47 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getSuggestionsFromInteractionsStatistics:(id)a3 withConfig:(id)a4 trialClient:(id)a5 andPredictionContext:(id)a6
+- (id)getSuggestionsFromInteractionsStatistics:(id)statistics withConfig:(id)config trialClient:(id)client andPredictionContext:(id)context
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  statisticsCopy = statistics;
+  configCopy = config;
   v9 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 sortOrderFeatureNames];
+    sortOrderFeatureNames = [configCopy sortOrderFeatureNames];
     *buf = 138412290;
-    v37 = v10;
+    v37 = sortOrderFeatureNames;
     _os_log_impl(&dword_1B5ED1000, v9, OS_LOG_TYPE_DEFAULT, "_PSEnsemble: sorting candidates using %@", buf, 0xCu);
   }
 
-  v11 = [v7 conversationIds];
+  conversationIds = [statisticsCopy conversationIds];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __105___PSEnsembleModel_getSuggestionsFromInteractionsStatistics_withConfig_trialClient_andPredictionContext___block_invoke;
   v33[3] = &unk_1E7C24C98;
-  v12 = v8;
+  v12 = configCopy;
   v34 = v12;
-  v13 = v7;
+  v13 = statisticsCopy;
   v35 = v13;
-  v14 = [v11 sortedArrayUsingComparator:v33];
+  v14 = [conversationIds sortedArrayUsingComparator:v33];
 
   v15 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -7385,12 +7385,12 @@ LABEL_31:
   return v19;
 }
 
-+ (id)orderedSuggestionProxiesWithProxyOrder:(id)a3 suggestionProxies:(id)a4 suggestionsWithSharePlayAddedBlock:(id)a5
++ (id)orderedSuggestionProxiesWithProxyOrder:(id)order suggestionProxies:(id)proxies suggestionsWithSharePlayAddedBlock:(id)block
 {
   v43[5] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v30 = a5;
+  orderCopy = order;
+  proxiesCopy = proxies;
+  blockCopy = block;
   v9 = objc_alloc(MEMORY[0x1E695DFD8]);
   v43[0] = @"SuggestionProxyTypeInCall";
   v43[1] = @"SuggestionProxyTypeReturnToSender";
@@ -7418,7 +7418,7 @@ LABEL_31:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v15 = v7;
+  v15 = orderCopy;
   v16 = [v15 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v16)
   {
@@ -7457,7 +7457,7 @@ LABEL_31:
         [v14 addObject:v21];
         if ([v11 containsObject:v21])
         {
-          v22 = [v8 objectForKeyedSubscript:v21];
+          v22 = [proxiesCopy objectForKeyedSubscript:v21];
           if (v22)
           {
             [v31 addObjectsFromArray:v22];
@@ -7466,10 +7466,10 @@ LABEL_31:
 
         else if ([v32 containsObject:v21])
         {
-          v22 = [v8 objectForKeyedSubscript:v21];
+          v22 = [proxiesCopy objectForKeyedSubscript:v21];
           if (v22)
           {
-            v25 = v30[2](v30, v22);
+            v25 = blockCopy[2](blockCopy, v22);
             [v31 addObjectsFromArray:v25];
           }
         }
@@ -7508,48 +7508,48 @@ LABEL_17:
   return v31;
 }
 
-- (id)finalSuggestionProxiesForInteractionStatistics:(id)a3 config:(id)a4 trialClient:(id)a5 context:(id)a6
+- (id)finalSuggestionProxiesForInteractionStatistics:(id)statistics config:(id)config trialClient:(id)client context:(id)context
 {
   v87[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [(_PSEnsembleModel *)self heuristics];
-  v70 = v12;
-  v15 = [v12 psHeuristicsOverrides];
-  [v14 updateHeuristicParameterOverrides:v15];
+  statisticsCopy = statistics;
+  contextCopy = context;
+  clientCopy = client;
+  configCopy = config;
+  heuristics = [(_PSEnsembleModel *)self heuristics];
+  v70 = clientCopy;
+  psHeuristicsOverrides = [clientCopy psHeuristicsOverrides];
+  [heuristics updateHeuristicParameterOverrides:psHeuristicsOverrides];
 
   v16 = [AeroMLTracerSession alloc];
-  v17 = [v11 sessionID];
+  sessionID = [contextCopy sessionID];
   v18 = +[_PSConstants peopleSuggesterShareSheetProjectName];
-  v72 = [(AeroMLTracerSession *)v16 initWithTraceId:v17 projectName:v18];
+  v72 = [(AeroMLTracerSession *)v16 initWithTraceId:sessionID projectName:v18];
 
-  v71 = [(_PSEnsembleModel *)self getSuggestionsFromInteractionsStatistics:v10 withConfig:v13 trialClient:v12 andPredictionContext:v11];
+  v71 = [(_PSEnsembleModel *)self getSuggestionsFromInteractionsStatistics:statisticsCopy withConfig:configCopy trialClient:clientCopy andPredictionContext:contextCopy];
 
-  v19 = [(_PSEnsembleModel *)self heuristics];
-  v20 = [(_PSEnsembleModel *)self fetchSupportedBundleIDsWithPredictionContextFilters:v11];
-  v77 = [v19 inPhoneCallHeuristicSuggestionProxiesWithBundleIds:v20 predictionContext:v11];
+  heuristics2 = [(_PSEnsembleModel *)self heuristics];
+  v20 = [(_PSEnsembleModel *)self fetchSupportedBundleIDsWithPredictionContextFilters:contextCopy];
+  v77 = [heuristics2 inPhoneCallHeuristicSuggestionProxiesWithBundleIds:v20 predictionContext:contextCopy];
 
-  v21 = [(_PSEnsembleModel *)self heuristics];
-  v76 = [v21 returnDocumentToSender:v11];
+  heuristics3 = [(_PSEnsembleModel *)self heuristics];
+  v76 = [heuristics3 returnDocumentToSender:contextCopy];
 
-  v22 = [(_PSEnsembleModel *)self heuristics];
-  v78 = [v22 peopleAwareSuggestionProxiesForInteractionStatistics:v10];
+  heuristics4 = [(_PSEnsembleModel *)self heuristics];
+  v78 = [heuristics4 peopleAwareSuggestionProxiesForInteractionStatistics:statisticsCopy];
 
-  v23 = [v11 currentSpanId];
-  v24 = [(AeroMLTracerSession *)v72 createSubSpanWithName:@"suggestionsProxiesPASSv1Span" parentSpanId:v23];
+  currentSpanId = [contextCopy currentSpanId];
+  v24 = [(AeroMLTracerSession *)v72 createSubSpanWithName:@"suggestionsProxiesPASSv1Span" parentSpanId:currentSpanId];
 
   v25 = v24;
   [v24 start];
-  v26 = [(_PSEnsembleModel *)self heuristics];
-  v27 = [v11 peopleInPhotoIdentifiers];
-  v68 = [v26 peopleAwareSuggestionProxiesForDetectedFaces:v27];
+  heuristics5 = [(_PSEnsembleModel *)self heuristics];
+  peopleInPhotoIdentifiers = [contextCopy peopleInPhotoIdentifiers];
+  v68 = [heuristics5 peopleAwareSuggestionProxiesForDetectedFaces:peopleInPhotoIdentifiers];
 
   v86[0] = @"peopleInPhotoIdentifiers_count";
   v28 = MEMORY[0x1E696AEC0];
-  v29 = [v11 peopleInPhotoIdentifiers];
-  v30 = [v28 stringWithFormat:@"%ld", objc_msgSend(v29, "count")];
+  peopleInPhotoIdentifiers2 = [contextCopy peopleInPhotoIdentifiers];
+  v30 = [v28 stringWithFormat:@"%ld", objc_msgSend(peopleInPhotoIdentifiers2, "count")];
   v86[1] = @"ResolvedContactIDsFromMD_count";
   v87[0] = v30;
   v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", objc_msgSend(v68, "count")];
@@ -7559,43 +7559,43 @@ LABEL_17:
   [v25 addAttributes:v32];
 
   [v25 end];
-  v33 = [(_PSEnsembleModel *)self heuristics];
-  v34 = [v33 hyperRecentHeuristicSuggestionProxiesForInteractionStatistics:v10];
+  heuristics6 = [(_PSEnsembleModel *)self heuristics];
+  v34 = [heuristics6 hyperRecentHeuristicSuggestionProxiesForInteractionStatistics:statisticsCopy];
 
-  v35 = [(_PSEnsembleModel *)self heuristics];
-  v75 = [v35 hyperRecentCallHeuristicSuggestionProxiesForInteractionStatistics:v10];
+  heuristics7 = [(_PSEnsembleModel *)self heuristics];
+  v75 = [heuristics7 hyperRecentCallHeuristicSuggestionProxiesForInteractionStatistics:statisticsCopy];
 
-  v36 = [(_PSEnsembleModel *)self heuristics];
-  v74 = [v36 hyperRecentViewedThreadHeuristicSuggestionProxiesForInteractionStatistics];
+  heuristics8 = [(_PSEnsembleModel *)self heuristics];
+  hyperRecentViewedThreadHeuristicSuggestionProxiesForInteractionStatistics = [heuristics8 hyperRecentViewedThreadHeuristicSuggestionProxiesForInteractionStatistics];
 
-  v37 = [(_PSEnsembleModel *)self heuristics];
-  v73 = [v37 hyperRecentHeuristicIncomingSuggestionProxiesForInteractionStatistics:v10];
+  heuristics9 = [(_PSEnsembleModel *)self heuristics];
+  v73 = [heuristics9 hyperRecentHeuristicIncomingSuggestionProxiesForInteractionStatistics:statisticsCopy];
 
-  v38 = [(_PSEnsembleModel *)self heuristics];
-  v39 = [v38 pastSharesWithCurrentAppAwareSuggestionProxiesForInteractionStatistics:v10];
+  heuristics10 = [(_PSEnsembleModel *)self heuristics];
+  v39 = [heuristics10 pastSharesWithCurrentAppAwareSuggestionProxiesForInteractionStatistics:statisticsCopy];
 
-  v40 = [(_PSEnsembleModel *)self heuristics];
-  v41 = [v40 pastSharesAwareSuggestionProxiesForInteractionStatistics:v10];
+  heuristics11 = [(_PSEnsembleModel *)self heuristics];
+  v41 = [heuristics11 pastSharesAwareSuggestionProxiesForInteractionStatistics:statisticsCopy];
 
-  v42 = [(_PSEnsembleModel *)self heuristics];
-  v43 = [v42 pastSharesOfTopDomainURLAwareSuggestionProxiesForInteractionStatistics:v10];
+  heuristics12 = [(_PSEnsembleModel *)self heuristics];
+  v43 = [heuristics12 pastSharesOfTopDomainURLAwareSuggestionProxiesForInteractionStatistics:statisticsCopy];
 
-  v44 = [(_PSEnsembleModel *)self heuristics];
+  heuristics13 = [(_PSEnsembleModel *)self heuristics];
   v85 = @"numberOfSharesOfDetectedScenesInPhotoWithConversation";
   v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v85 count:1];
-  v46 = [v44 scenesBasedFeaturesAwareSuggestionProxiesForInteractionStatistics:v10 forFeatureNames:v45];
+  v46 = [heuristics13 scenesBasedFeaturesAwareSuggestionProxiesForInteractionStatistics:statisticsCopy forFeatureNames:v45];
 
   v79[0] = MEMORY[0x1E69E9820];
   v79[1] = 3221225472;
   v79[2] = __94___PSEnsembleModel_finalSuggestionProxiesForInteractionStatistics_config_trialClient_context___block_invoke;
   v79[3] = &unk_1E7C24D10;
-  v80 = v11;
-  v81 = v10;
-  v82 = self;
-  v67 = v10;
-  v66 = v11;
+  v80 = contextCopy;
+  v81 = statisticsCopy;
+  selfCopy = self;
+  v67 = statisticsCopy;
+  v66 = contextCopy;
   v47 = MEMORY[0x1B8C8C060](v79);
-  v48 = [v70 suggestionProxyOrder];
+  suggestionProxyOrder = [v70 suggestionProxyOrder];
 
   v49 = MEMORY[0x1E695E0F0];
   v50 = v77;
@@ -7634,8 +7634,8 @@ LABEL_17:
 
   v84[2] = v52;
   v84[3] = v53;
-  v54 = v74;
-  if (!v74)
+  v54 = hyperRecentViewedThreadHeuristicSuggestionProxiesForInteractionStatistics;
+  if (!hyperRecentViewedThreadHeuristicSuggestionProxiesForInteractionStatistics)
   {
     v54 = MEMORY[0x1E695E0F0];
   }
@@ -7726,7 +7726,7 @@ LABEL_17:
 
   v84[12] = v49;
   v62 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v84 forKeys:v83 count:13];
-  v63 = [objc_opt_class() orderedSuggestionProxiesWithProxyOrder:v48 suggestionProxies:v62 suggestionsWithSharePlayAddedBlock:v47];
+  v63 = [objc_opt_class() orderedSuggestionProxiesWithProxyOrder:suggestionProxyOrder suggestionProxies:v62 suggestionsWithSharePlayAddedBlock:v47];
 
   v64 = *MEMORY[0x1E69E9840];
 
@@ -7736,11 +7736,11 @@ LABEL_17:
 - (id)trialIdentifier
 {
   v3 = objc_opt_new();
-  v4 = [(_PSEnsembleModel *)self trialExperimentId];
-  v5 = v4;
-  if (v4)
+  trialExperimentId = [(_PSEnsembleModel *)self trialExperimentId];
+  v5 = trialExperimentId;
+  if (trialExperimentId)
   {
-    v6 = v4;
+    v6 = trialExperimentId;
   }
 
   else
@@ -7750,11 +7750,11 @@ LABEL_17:
 
   [v3 setTask:v6];
 
-  v7 = [(_PSEnsembleModel *)self trialTreatmentId];
-  v8 = v7;
-  if (v7)
+  trialTreatmentId = [(_PSEnsembleModel *)self trialTreatmentId];
+  v8 = trialTreatmentId;
+  if (trialTreatmentId)
   {
-    v9 = v7;
+    v9 = trialTreatmentId;
   }
 
   else
@@ -7764,11 +7764,11 @@ LABEL_17:
 
   [v3 setTreatment:v9];
 
-  v10 = [(_PSEnsembleModel *)self trialDeploymentId];
-  v11 = v10;
-  if (v10)
+  trialDeploymentId = [(_PSEnsembleModel *)self trialDeploymentId];
+  v11 = trialDeploymentId;
+  if (trialDeploymentId)
   {
-    v12 = v10;
+    v12 = trialDeploymentId;
   }
 
   else
@@ -7781,30 +7781,30 @@ LABEL_17:
   return v3;
 }
 
-- (void)sendDataToPETAsync:(id)a3 withConfig:(id)a4 andContext:(id)a5
+- (void)sendDataToPETAsync:(id)async withConfig:(id)config andContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  asyncCopy = async;
+  configCopy = config;
+  contextCopy = context;
   v11 = dispatch_get_global_queue(0, 0);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __61___PSEnsembleModel_sendDataToPETAsync_withConfig_andContext___block_invoke;
   v15[3] = &unk_1E7C24D38;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = asyncCopy;
+  v17 = configCopy;
+  v18 = contextCopy;
+  v12 = contextCopy;
+  v13 = configCopy;
+  v14 = asyncCopy;
   dispatch_async(v11, v15);
 }
 
-- (id)getPETMessageFrom:(id)a3 withConfig:(id)a4 andContext:(id)a5
+- (id)getPETMessageFrom:(id)from withConfig:(id)config andContext:(id)context
 {
-  v7 = a5;
-  v8 = a3;
+  contextCopy = context;
+  fromCopy = from;
   v9 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v9))
   {
@@ -7812,10 +7812,10 @@ LABEL_17:
     _os_signpost_emit_with_name_impl(&dword_1B5ED1000, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_PSEnsembleModel_sendDataToPET", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v10 = [(_PSEnsembleModel *)self deviceIdentifier];
-  v11 = [(_PSEnsembleModel *)self trialIdentifier];
-  v12 = [(_PSEnsembleModel *)self peopleSuggesterDefaults];
-  v13 = [_PSPETMessageBuilder getPETMessageWithInteractionsStatistics:v8 predictionContext:v7 deviceIdentifier:v10 trialIdentifier:v11 peopleSuggesterDefaults:v12];
+  deviceIdentifier = [(_PSEnsembleModel *)self deviceIdentifier];
+  trialIdentifier = [(_PSEnsembleModel *)self trialIdentifier];
+  peopleSuggesterDefaults = [(_PSEnsembleModel *)self peopleSuggesterDefaults];
+  v13 = [_PSPETMessageBuilder getPETMessageWithInteractionsStatistics:fromCopy predictionContext:contextCopy deviceIdentifier:deviceIdentifier trialIdentifier:trialIdentifier peopleSuggesterDefaults:peopleSuggesterDefaults];
 
   [(_PSEnsembleModel *)self sendDataCollectionMessageWith:v13];
   v14 = +[_PSLogging generalChannel];
@@ -7835,21 +7835,21 @@ LABEL_17:
   return v13;
 }
 
-- (int)_remapSingleContentTypeValue:(int)a3
+- (int)_remapSingleContentTypeValue:(int)value
 {
-  if (a3 == 13)
+  if (value == 13)
   {
-    v3 = 0;
+    valueCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    valueCopy = value;
   }
 
-  if (a3)
+  if (value)
   {
-    return v3;
+    return valueCopy;
   }
 
   else
@@ -7858,27 +7858,27 @@ LABEL_17:
   }
 }
 
-- (id)_reMapContentTypes:(int *)a3 count:(unint64_t)a4
+- (id)_reMapContentTypes:(int *)types count:(unint64_t)count
 {
   v4 = MEMORY[0x1E695E0F0];
-  if (a3)
+  if (types)
   {
-    v5 = a4;
-    if (a4)
+    countCopy = count;
+    if (count)
     {
-      v6 = a3;
-      v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4];
+      typesCopy = types;
+      v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:count];
       do
       {
-        v9 = *v6++;
+        v9 = *typesCopy++;
         v10 = [(_PSEnsembleModel *)self _remapSingleContentTypeValue:v9];
         v11 = [MEMORY[0x1E696AD98] numberWithInt:v10];
         [v8 addObject:v11];
 
-        --v5;
+        --countCopy;
       }
 
-      while (v5);
+      while (countCopy);
       v4 = [v8 copy];
     }
   }
@@ -7886,51 +7886,51 @@ LABEL_17:
   return v4;
 }
 
-- (void)sendDataCollectionMessageWith:(id)a3
+- (void)sendDataCollectionMessageWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v5 = BiomeLibrary();
-  v6 = [v5 MLSE];
-  v7 = [v6 ShareSheet];
-  v8 = [v7 Inference];
-  v32 = [v8 PeopleSuggestions];
+  mLSE = [v5 MLSE];
+  shareSheet = [mLSE ShareSheet];
+  inference = [shareSheet Inference];
+  peopleSuggestions = [inference PeopleSuggestions];
 
-  v30 = [v32 source];
+  source = [peopleSuggestions source];
   v22 = objc_alloc(MEMORY[0x1E698EEA0]);
-  v31 = [v4 deviceIdentifier];
-  v29 = [v4 sessionId];
-  v28 = [v4 trialIdentifier];
-  v27 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "version")}];
-  v26 = [v4 candidates];
-  v25 = [v4 testKey];
-  v23 = [v4 madResponseStatus];
-  v20 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isFallbackFetch")}];
-  v19 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isSharePlayAvailable")}];
-  v21 = [v4 appSharedFrom];
-  v18 = [v4 feedbackEvents];
-  v9 = -[_PSEnsembleModel _reMapContentTypes:count:](self, "_reMapContentTypes:count:", [v4 typeOfContents], objc_msgSend(v4, "typeOfContentsCount"));
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isInPhoneCall")}];
-  v11 = [v4 timeSinceLastShare];
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isScreenShot")}];
-  v13 = [v4 photoFeatures];
+  deviceIdentifier = [withCopy deviceIdentifier];
+  sessionId = [withCopy sessionId];
+  trialIdentifier = [withCopy trialIdentifier];
+  v27 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(withCopy, "version")}];
+  candidates = [withCopy candidates];
+  testKey = [withCopy testKey];
+  madResponseStatus = [withCopy madResponseStatus];
+  v20 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(withCopy, "isFallbackFetch")}];
+  v19 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(withCopy, "isSharePlayAvailable")}];
+  appSharedFrom = [withCopy appSharedFrom];
+  feedbackEvents = [withCopy feedbackEvents];
+  v9 = -[_PSEnsembleModel _reMapContentTypes:count:](self, "_reMapContentTypes:count:", [withCopy typeOfContents], objc_msgSend(withCopy, "typeOfContentsCount"));
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(withCopy, "isInPhoneCall")}];
+  timeSinceLastShare = [withCopy timeSinceLastShare];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(withCopy, "isScreenShot")}];
+  photoFeatures = [withCopy photoFeatures];
 
-  LODWORD(v17) = v21;
-  LODWORD(v16) = v23;
-  v24 = [v22 initWithDeviceIdentifier:v31 sessionId:v29 trialIdentifiers:v28 version:v27 candidates:v26 testKey:v25 madResponseStatus:v16 isFallbackFetch:v20 isSharePlayAvailable:v19 appSharedFrom:v17 feedbackEvents:v18 typeOfContent:v9 isInPhoneCall:v10 timeSinceLastShare:v11 isScreenShot:v12 photoFeatures:v13];
+  LODWORD(v17) = appSharedFrom;
+  LODWORD(v16) = madResponseStatus;
+  v24 = [v22 initWithDeviceIdentifier:deviceIdentifier sessionId:sessionId trialIdentifiers:trialIdentifier version:v27 candidates:candidates testKey:testKey madResponseStatus:v16 isFallbackFetch:v20 isSharePlayAvailable:v19 appSharedFrom:v17 feedbackEvents:feedbackEvents typeOfContent:v9 isInPhoneCall:v10 timeSinceLastShare:timeSinceLastShare isScreenShot:v12 photoFeatures:photoFeatures];
 
   v14 = objc_alloc(MEMORY[0x1E698ECA0]);
   v15 = [v14 initWithIdentifier:0 sourceBundleId:0 peopleSuggestions:MEMORY[0x1E695E0F0] responseType:0 trainingDataCollection:v24];
-  [v30 sendEvent:v15];
+  [source sendEvent:v15];
 }
 
-- (id)_conversationIdForFirstInteractionAfterSharingStartDate:(id)a3 targetBundleId:(id)a4
+- (id)_conversationIdForFirstInteractionAfterSharingStartDate:(id)date targetBundleId:(id)id
 {
   v43[3] = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v6 = a4;
+  dateCopy = date;
+  idCopy = id;
   v7 = MEMORY[0x1E696AE18];
   v8 = [MEMORY[0x1E695DF00] now];
-  v9 = [v7 predicateWithFormat:@"(startDate >= %@) && (startDate <= %@)", v31, v8];
+  v9 = [v7 predicateWithFormat:@"(startDate >= %@) && (startDate <= %@)", dateCopy, v8];
 
   v34 = 0;
   v35 = &v34;
@@ -7939,11 +7939,11 @@ LABEL_17:
   v38 = __Block_byref_object_dispose__1;
   v39 = 0;
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"mechanism == %@", &unk_1F2D8B190];
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"targetBundleId == %@", v6];
+  idCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"targetBundleId == %@", idCopy];
   v12 = MEMORY[0x1E696AB28];
   v43[0] = v9;
   v43[1] = v10;
-  v43[2] = v11;
+  v43[2] = idCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:3];
   v14 = [v12 andPredicateWithSubpredicates:v13];
 
@@ -7951,7 +7951,7 @@ LABEL_17:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v42 = v6;
+    v42 = idCopy;
     _os_log_impl(&dword_1B5ED1000, v15, OS_LOG_TYPE_DEFAULT, "Searching for share interactions from for share extension %@ for session", buf, 0xCu);
   }
 
@@ -7966,7 +7966,7 @@ LABEL_17:
   if (!v17)
   {
     v28 = _PSShareSheetExtensionBundleIDToAppBundleIDMapping(0);
-    v29 = [v28 objectForKeyedSubscript:v6];
+    v29 = [v28 objectForKeyedSubscript:idCopy];
     v30 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bundleId == %@", v29];
     v18 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(mechanism IN %@)", &unk_1F2D8C180];
     v19 = [MEMORY[0x1E696AE18] predicateWithFormat:@"direction == %@", &unk_1F2D8B1D8];
@@ -8005,58 +8005,58 @@ LABEL_17:
   return v25;
 }
 
-- (BOOL)_updateInteractionStatisticsForExplicitEngagement:(id)a3 interactionStatisticsConfig:(id)a4 interactionStatistics:(id)a5 sessionFeedback:(id)a6
+- (BOOL)_updateInteractionStatisticsForExplicitEngagement:(id)engagement interactionStatisticsConfig:(id)config interactionStatistics:(id)statistics sessionFeedback:(id)feedback
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 conversationId];
+  engagementCopy = engagement;
+  configCopy = config;
+  statisticsCopy = statistics;
+  feedbackCopy = feedback;
+  conversationId = [feedbackCopy conversationId];
 
   v15 = +[_PSLogging rewriteChannel];
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (!v14)
+  if (!conversationId)
   {
     if (v16)
     {
-      v22 = [v13 transportBundleId];
-      v23 = [v10 sessionID];
+      transportBundleId = [feedbackCopy transportBundleId];
+      sessionID = [engagementCopy sessionID];
       v32 = 138412546;
-      v33 = v22;
+      v33 = transportBundleId;
       v34 = 2112;
-      v35 = v23;
+      v35 = sessionID;
       _os_log_impl(&dword_1B5ED1000, v15, OS_LOG_TYPE_DEFAULT, "Looking for share interactions from target bundleId %@ for session %@", &v32, 0x16u);
     }
 
-    v24 = [v11 rightBoundDate];
-    v25 = [v13 transportBundleId];
-    v19 = [(_PSEnsembleModel *)self _conversationIdForFirstInteractionAfterSharingStartDate:v24 targetBundleId:v25];
+    rightBoundDate = [configCopy rightBoundDate];
+    transportBundleId2 = [feedbackCopy transportBundleId];
+    conversationId3 = [(_PSEnsembleModel *)self _conversationIdForFirstInteractionAfterSharingStartDate:rightBoundDate targetBundleId:transportBundleId2];
 
-    if (v19)
+    if (conversationId3)
     {
-      v26 = [v12 containsConversationId:v19];
+      v26 = [statisticsCopy containsConversationId:conversationId3];
       v27 = +[_PSLogging rewriteChannel];
       v28 = v27;
       if (v26)
       {
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [v10 sessionID];
+          sessionID2 = [engagementCopy sessionID];
           v32 = 138478083;
-          v33 = v19;
+          v33 = conversationId3;
           v34 = 2112;
-          v35 = v29;
+          v35 = sessionID2;
           _os_log_impl(&dword_1B5ED1000, v28, OS_LOG_TYPE_DEFAULT, "Storing feedback for explicit positive engagement (top row share) with %{private}@ for session %@", &v32, 0x16u);
         }
 
-        v20 = v12;
+        v20 = statisticsCopy;
         goto LABEL_5;
       }
 
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        [_PSEnsembleModel _updateInteractionStatisticsForExplicitEngagement:v10 interactionStatisticsConfig:? interactionStatistics:? sessionFeedback:?];
+        [_PSEnsembleModel _updateInteractionStatisticsForExplicitEngagement:engagementCopy interactionStatisticsConfig:? interactionStatistics:? sessionFeedback:?];
       }
     }
 
@@ -8065,7 +8065,7 @@ LABEL_17:
       v28 = +[_PSLogging rewriteChannel];
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        [_PSEnsembleModel _updateInteractionStatisticsForExplicitEngagement:v10 interactionStatisticsConfig:? interactionStatistics:? sessionFeedback:?];
+        [_PSEnsembleModel _updateInteractionStatisticsForExplicitEngagement:engagementCopy interactionStatisticsConfig:? interactionStatistics:? sessionFeedback:?];
       }
     }
 
@@ -8075,19 +8075,19 @@ LABEL_17:
 
   if (v16)
   {
-    v17 = [v13 conversationId];
-    v18 = [v10 sessionID];
+    conversationId2 = [feedbackCopy conversationId];
+    sessionID3 = [engagementCopy sessionID];
     v32 = 138478083;
-    v33 = v17;
+    v33 = conversationId2;
     v34 = 2112;
-    v35 = v18;
+    v35 = sessionID3;
     _os_log_impl(&dword_1B5ED1000, v15, OS_LOG_TYPE_DEFAULT, "Storing feedback for explicit positive engagement (top row share) with %{private}@ for session %@", &v32, 0x16u);
   }
 
-  v19 = [v13 conversationId];
-  v20 = v12;
+  conversationId3 = [feedbackCopy conversationId];
+  v20 = statisticsCopy;
 LABEL_5:
-  [v20 setValue:&unk_1F2D8B358 forFeature:@"feedback" andConversationId:v19];
+  [v20 setValue:&unk_1F2D8B358 forFeature:@"feedback" andConversationId:conversationId3];
   v21 = 1;
 LABEL_18:
 
@@ -8095,61 +8095,61 @@ LABEL_18:
   return v21;
 }
 
-- (BOOL)_updateInteractionStatisticsForImplicitEngagement:(id)a3 interactionStatisticsConfig:(id)a4 interactionStatistics:(id)a5 sessionFeedback:(id)a6
+- (BOOL)_updateInteractionStatisticsForImplicitEngagement:(id)engagement interactionStatisticsConfig:(id)config interactionStatistics:(id)statistics sessionFeedback:(id)feedback
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  engagementCopy = engagement;
+  statisticsCopy = statistics;
+  feedbackCopy = feedback;
+  configCopy = config;
   v14 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 sessionID];
-    v16 = [v12 transportBundleId];
+    sessionID = [engagementCopy sessionID];
+    transportBundleId = [feedbackCopy transportBundleId];
     v30 = 138412546;
-    v31 = v15;
+    v31 = sessionID;
     v32 = 2112;
-    v33 = v16;
+    v33 = transportBundleId;
     _os_log_impl(&dword_1B5ED1000, v14, OS_LOG_TYPE_DEFAULT, "Processing implicit positive engagement (app extension share) for session %@ from transport bundleId %@", &v30, 0x16u);
   }
 
   v17 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v12 transportBundleId];
-    v19 = [v10 sessionID];
+    transportBundleId2 = [feedbackCopy transportBundleId];
+    sessionID2 = [engagementCopy sessionID];
     v30 = 138412546;
-    v31 = v18;
+    v31 = transportBundleId2;
     v32 = 2112;
-    v33 = v19;
+    v33 = sessionID2;
     _os_log_impl(&dword_1B5ED1000, v17, OS_LOG_TYPE_DEFAULT, "Looking for interactions from target bundleId %@ for session %@", &v30, 0x16u);
   }
 
-  v20 = [v13 rightBoundDate];
+  rightBoundDate = [configCopy rightBoundDate];
 
-  v21 = [v12 transportBundleId];
-  v22 = [(_PSEnsembleModel *)self _conversationIdForFirstInteractionAfterSharingStartDate:v20 targetBundleId:v21];
+  transportBundleId3 = [feedbackCopy transportBundleId];
+  v22 = [(_PSEnsembleModel *)self _conversationIdForFirstInteractionAfterSharingStartDate:rightBoundDate targetBundleId:transportBundleId3];
 
   if (!v22)
   {
     v25 = +[_PSLogging rewriteChannel];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      [_PSEnsembleModel _updateInteractionStatisticsForImplicitEngagement:v10 interactionStatisticsConfig:? interactionStatistics:? sessionFeedback:?];
+      [_PSEnsembleModel _updateInteractionStatisticsForImplicitEngagement:engagementCopy interactionStatisticsConfig:? interactionStatistics:? sessionFeedback:?];
     }
 
     goto LABEL_14;
   }
 
-  v23 = [v11 containsConversationId:v22];
+  v23 = [statisticsCopy containsConversationId:v22];
   v24 = +[_PSLogging rewriteChannel];
   v25 = v24;
   if ((v23 & 1) == 0)
   {
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      [_PSEnsembleModel _updateInteractionStatisticsForImplicitEngagement:v10 interactionStatisticsConfig:? interactionStatistics:? sessionFeedback:?];
+      [_PSEnsembleModel _updateInteractionStatisticsForImplicitEngagement:engagementCopy interactionStatisticsConfig:? interactionStatistics:? sessionFeedback:?];
     }
 
 LABEL_14:
@@ -8160,15 +8160,15 @@ LABEL_14:
 
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [v10 sessionID];
+    sessionID3 = [engagementCopy sessionID];
     v30 = 138478083;
     v31 = v22;
     v32 = 2112;
-    v33 = v26;
+    v33 = sessionID3;
     _os_log_impl(&dword_1B5ED1000, v25, OS_LOG_TYPE_DEFAULT, "Storing feedback for app extension sharing interaction (implicit positive engagement – bottom row share) with %{private}@ for session %@", &v30, 0x16u);
   }
 
-  [v11 setValue:&unk_1F2D8B370 forFeature:@"feedback" andConversationId:v22];
+  [statisticsCopy setValue:&unk_1F2D8B370 forFeature:@"feedback" andConversationId:v22];
   v27 = 1;
 LABEL_15:
 
@@ -8176,30 +8176,30 @@ LABEL_15:
   return v27;
 }
 
-- (BOOL)_updateInteractionStatisticsForSpeculativeEngagement:(id)a3 interactionStatisticsConfig:(id)a4 interactionStatistics:(id)a5 sessionFeedback:(id)a6
+- (BOOL)_updateInteractionStatisticsForSpeculativeEngagement:(id)engagement interactionStatisticsConfig:(id)config interactionStatistics:(id)statistics sessionFeedback:(id)feedback
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v30 = a4;
-  v11 = a5;
-  v12 = a6;
+  engagementCopy = engagement;
+  configCopy = config;
+  statisticsCopy = statistics;
+  feedbackCopy = feedback;
   v13 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 sessionID];
+    sessionID = [engagementCopy sessionID];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v14;
+    *(&buf + 4) = sessionID;
     _os_log_impl(&dword_1B5ED1000, v13, OS_LOG_TYPE_DEFAULT, "Processing speculative engagement (manual interactions after ShareSheet closed) for session %@", &buf, 0xCu);
   }
 
   *&buf = 0;
   *(&buf + 1) = &buf;
   v37 = 0x2020000000;
-  v38 = [v12 feedbackActionType] == 2;
+  v38 = [feedbackCopy feedbackActionType] == 2;
   v15 = MEMORY[0x1E696AE18];
-  v16 = [v30 rightBoundDate];
+  rightBoundDate = [configCopy rightBoundDate];
   v17 = [MEMORY[0x1E695DF00] now];
-  v18 = [v15 predicateWithFormat:@"(startDate >= %@) && (startDate <= %@)", v16, v17];
+  v18 = [v15 predicateWithFormat:@"(startDate >= %@) && (startDate <= %@)", rightBoundDate, v17];
 
   v19 = [MEMORY[0x1E696AE18] predicateWithFormat:@"NOT (bundleId IN %@)", &unk_1F2D8C198];
   v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(mechanism IN %@)", &unk_1F2D8C1B0];
@@ -8216,9 +8216,9 @@ LABEL_15:
   v31[1] = 3221225472;
   v31[2] = __139___PSEnsembleModel__updateInteractionStatisticsForSpeculativeEngagement_interactionStatisticsConfig_interactionStatistics_sessionFeedback___block_invoke;
   v31[3] = &unk_1E7C24D88;
-  v26 = v11;
+  v26 = statisticsCopy;
   v32 = v26;
-  v27 = v10;
+  v27 = engagementCopy;
   v33 = v27;
   p_buf = &buf;
   [(_CDInteractionStore *)interactionStore iterInteractionRecordsWithPredicate:v25 fetchLimit:25 sortAscending:1 updateTelemetry:0 withBlock:v31];
@@ -8230,43 +8230,43 @@ LABEL_15:
   return v25 & 1;
 }
 
-- (void)psrDataCollectionForContext:(id)a3 timeToWaitInSeconds:(int)a4 interactionStatisticsConfig:(id)a5 interactionStatistics:(id)a6
+- (void)psrDataCollectionForContext:(id)context timeToWaitInSeconds:(int)seconds interactionStatisticsConfig:(id)config interactionStatistics:(id)statistics
 {
   *&v33[5] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  configCopy = config;
+  statisticsCopy = statistics;
   v13 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 sessionID];
+    sessionID = [contextCopy sessionID];
     *buf = 138412290;
-    *v33 = v14;
+    *v33 = sessionID;
     _os_log_impl(&dword_1B5ED1000, v13, OS_LOG_TYPE_DEFAULT, "_PSEnsemble: registering data logging for sessionId: %@", buf, 0xCu);
   }
 
-  v15 = [v10 sessionID];
+  sessionID2 = [contextCopy sessionID];
 
-  if (v15)
+  if (sessionID2)
   {
     v24 = MEMORY[0x1E69E9820];
     v25 = 3221225472;
     v26 = __118___PSEnsembleModel_psrDataCollectionForContext_timeToWaitInSeconds_interactionStatisticsConfig_interactionStatistics___block_invoke;
     v27 = &unk_1E7C24D38;
-    v16 = v10;
+    v16 = contextCopy;
     v28 = v16;
-    v29 = v12;
-    v30 = self;
-    v31 = v11;
+    v29 = statisticsCopy;
+    selfCopy = self;
+    v31 = configCopy;
     v17 = MEMORY[0x1B8C8C060](&v24);
     v18 = [_PSLogging generalChannel:v24];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v16 sessionID];
+      sessionID3 = [v16 sessionID];
       *buf = 67109378;
-      v33[0] = a4;
+      v33[0] = seconds;
       LOWORD(v33[1]) = 2112;
-      *(&v33[1] + 2) = v19;
+      *(&v33[1] + 2) = sessionID3;
       _os_log_impl(&dword_1B5ED1000, v18, OS_LOG_TYPE_DEFAULT, "_PSEnsemble: Waiting %d seconds for feedback events from ShareSheet UI for sessionId: %@", buf, 0x12u);
     }
 
@@ -8276,7 +8276,7 @@ LABEL_15:
     }
 
     v20 = psrDataCollectionForContext_timeToWaitInSeconds_interactionStatisticsConfig_interactionStatistics___pasExprOnceResult;
-    v21 = dispatch_time(0, 1000000000 * a4);
+    v21 = dispatch_time(0, 1000000000 * seconds);
     dispatch_after(v21, v20, v17);
 
     v22 = v28;
@@ -8294,24 +8294,24 @@ LABEL_15:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)psr_suggestionsFromSuggestionProxies:(id)a3 interactionsStatistics:(id)a4 maxSuggestions:(unint64_t)a5 predictionContext:(id)a6
+- (id)psr_suggestionsFromSuggestionProxies:(id)proxies interactionsStatistics:(id)statistics maxSuggestions:(unint64_t)suggestions predictionContext:(id)context
 {
   v86 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v51 = a4;
-  v49 = a6;
+  proxiesCopy = proxies;
+  statisticsCopy = statistics;
+  contextCopy = context;
   v48 = objc_opt_new();
   v58 = objc_opt_new();
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = v9;
+  obj = proxiesCopy;
   v54 = [obj countByEnumeratingWithState:&v74 objects:v85 count:16];
   if (v54)
   {
     v52 = *v75;
-    v10 = a5;
+    suggestionsCopy = suggestions;
     v11 = 0.0;
 LABEL_3:
     v60 = 0;
@@ -8322,23 +8322,23 @@ LABEL_3:
         objc_enumerationMutation(obj);
       }
 
-      if (v11 == v10)
+      if (v11 == suggestionsCopy)
       {
         break;
       }
 
       v59 = *(*(&v74 + 1) + 8 * v60);
-      v63 = [v59 bundleID];
-      v62 = [v59 interactionRecipients];
-      v61 = [MEMORY[0x1E69C5D98] tupleWithFirst:v63 second:v62];
+      bundleID = [v59 bundleID];
+      interactionRecipients = [v59 interactionRecipients];
+      v61 = [MEMORY[0x1E69C5D98] tupleWithFirst:bundleID second:interactionRecipients];
       if (([v58 containsObject:v61] & 1) == 0)
       {
         [v58 addObject:v61];
-        if (([v63 isEqualToString:@"com.apple.MobileSMS"] & 1) != 0 || objc_msgSend(v63, "isEqualToString:", @"com.apple.telephonyutilities.callservicesd"))
+        if (([bundleID isEqualToString:@"com.apple.MobileSMS"] & 1) != 0 || objc_msgSend(bundleID, "isEqualToString:", @"com.apple.telephonyutilities.callservicesd"))
         {
-          v12 = v62;
-          v13 = [v59 reason];
-          v14 = [v13 isEqualToString:@"SharePlay heuristic"];
+          v12 = interactionRecipients;
+          reason = [v59 reason];
+          v14 = [reason isEqualToString:@"SharePlay heuristic"];
 
           v56 = v12;
           if (v14)
@@ -8374,14 +8374,14 @@ LABEL_3:
           v53 = v16(v15);
 
           v57 = [v53 objectAtIndexedSubscript:0];
-          v55 = [v57 displayName];
+          displayName = [v57 displayName];
           v67 = objc_opt_new();
           v72 = 0u;
           v73 = 0u;
           v70 = 0u;
           v71 = 0u;
-          v64 = [v57 participants];
-          v68 = [v64 countByEnumeratingWithState:&v70 objects:v84 count:16];
+          participants = [v57 participants];
+          v68 = [participants countByEnumeratingWithState:&v70 objects:v84 count:16];
           if (v68)
           {
             v66 = *v71;
@@ -8391,14 +8391,14 @@ LABEL_3:
               {
                 if (*v71 != v66)
                 {
-                  objc_enumerationMutation(v64);
+                  objc_enumerationMutation(participants);
                 }
 
                 v18 = *(*(&v70 + 1) + 8 * i);
-                v19 = [v18 address];
-                v69 = [getCNContactClass() predicateForContactsMatchingEmailAddress:v19];
+                address = [v18 address];
+                v69 = [getCNContactClass() predicateForContactsMatchingEmailAddress:address];
                 CNContactClass = getCNContactClass();
-                v21 = [getCNPhoneNumberClass() phoneNumberWithStringValue:v19];
+                v21 = [getCNPhoneNumberClass() phoneNumberWithStringValue:address];
                 v22 = [CNContactClass predicateForContactsMatchingPhoneNumber:v21];
 
                 v23 = MEMORY[0x1E696AB28];
@@ -8407,30 +8407,30 @@ LABEL_3:
                 v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:2];
                 v25 = [v23 orPredicateWithSubpredicates:v24];
 
-                v26 = [(_PSEnsembleModel *)self contactStore];
+                contactStore = [(_PSEnsembleModel *)self contactStore];
                 v27 = _PSDefaultContactKeysToFetch();
-                v28 = [v26 unifiedContactsMatchingPredicate:v25 keysToFetch:v27 error:0];
+                v28 = [contactStore unifiedContactsMatchingPredicate:v25 keysToFetch:v27 error:0];
 
-                v29 = [v28 firstObject];
-                if (v29)
+                firstObject = [v28 firstObject];
+                if (firstObject)
                 {
                   v30 = 0;
                 }
 
                 else
                 {
-                  v30 = v19;
-                  v29 = objc_alloc_init(getCNContactClass());
+                  v30 = address;
+                  firstObject = objc_alloc_init(getCNContactClass());
                 }
 
                 v31 = [_PSRecipient alloc];
-                v32 = [v29 identifier];
-                v33 = [v18 displayName];
-                v34 = [(_PSRecipient *)v31 initWithIdentifier:v32 handle:v19 displayName:v33 contact:v29];
+                identifier = [firstObject identifier];
+                displayName2 = [v18 displayName];
+                v34 = [(_PSRecipient *)v31 initWithIdentifier:identifier handle:address displayName:displayName2 contact:firstObject];
                 [v67 addObject:v34];
               }
 
-              v68 = [v64 countByEnumeratingWithState:&v70 objects:v84 count:16];
+              v68 = [participants countByEnumeratingWithState:&v70 objects:v84 count:16];
             }
 
             while (v68);
@@ -8441,13 +8441,13 @@ LABEL_3:
 
         else
         {
-          v35 = v62;
-          v55 = [v51 valueForProperty:@"ConversationGroupName" forConversationId:v35];
+          v35 = interactionRecipients;
+          displayName = [statisticsCopy valueForProperty:@"ConversationGroupName" forConversationId:v35];
           v67 = 0;
           v56 = 0;
         }
 
-        v36 = [v51 valueForProperty:@"ConversationINImageURL" forConversationId:v62];
+        v36 = [statisticsCopy valueForProperty:@"ConversationINImageURL" forConversationId:interactionRecipients];
         if (v36)
         {
           v37 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v36];
@@ -8460,19 +8460,19 @@ LABEL_3:
           v38 = 0;
         }
 
-        if (v63 && v62)
+        if (bundleID && interactionRecipients)
         {
           v39 = [_PSSuggestion alloc];
-          v40 = [v59 reason];
-          v41 = [v59 reasonType];
+          reason2 = [v59 reason];
+          reasonType = [v59 reasonType];
           v42 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-          v43 = [(_PSSuggestion *)v39 initWithBundleID:v63 conversationIdentifier:v56 groupName:v55 recipients:v67 derivedIntentIdentifier:v35 image:v38 reason:v40 reasonType:v41 score:v42];
+          v43 = [(_PSSuggestion *)v39 initWithBundleID:bundleID conversationIdentifier:v56 groupName:displayName recipients:v67 derivedIntentIdentifier:v35 image:v38 reason:reason2 reasonType:reasonType score:v42];
 
-          v44 = [v49 suggestionsFilteredByBundleIds];
-          v45 = [(_PSSuggestion *)v43 bundleID];
-          LOBYTE(v40) = [v44 containsObject:v45];
+          suggestionsFilteredByBundleIds = [contextCopy suggestionsFilteredByBundleIds];
+          bundleID2 = [(_PSSuggestion *)v43 bundleID];
+          LOBYTE(reason2) = [suggestionsFilteredByBundleIds containsObject:bundleID2];
 
-          if (((v43 != 0) & v40) == 1)
+          if (((v43 != 0) & reason2) == 1)
           {
             [v48 addObject:v43];
             v11 = v11 + 1.0;
@@ -8501,8 +8501,8 @@ LABEL_3:
 - (BOOL)shouldUseLegacyUI
 {
   v2 = _os_feature_enabled_impl();
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"shouldUseLegacyUI"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"shouldUseLegacyUI"];
 
   return v4 & 1 | ((v2 & 1) == 0);
 }

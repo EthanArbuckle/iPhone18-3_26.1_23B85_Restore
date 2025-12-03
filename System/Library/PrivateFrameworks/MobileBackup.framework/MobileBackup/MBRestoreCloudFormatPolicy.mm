@@ -1,19 +1,19 @@
 @interface MBRestoreCloudFormatPolicy
-+ (BOOL)isRestoringFromFileLists:(BOOL *)a3 persona:(id)a4 error:(id *)a5;
-+ (BOOL)shouldRestoreSnapshot:(id)a3 account:(id)a4 persona:(id)a5 useFileLists:(BOOL *)a6 error:(id *)a7;
-+ (id)_lastFailedForegroundRestoreAttemptDate:(id)a3;
-+ (int64_t)snapshotFormatForCurrentRestore:(id)a3;
-+ (void)promptTTRIfFileListForegroundRestoreFailed:(id)a3;
-+ (void)recordFileListForegroundRestoreFailure:(id)a3 persona:(id)a4;
++ (BOOL)isRestoringFromFileLists:(BOOL *)lists persona:(id)persona error:(id *)error;
++ (BOOL)shouldRestoreSnapshot:(id)snapshot account:(id)account persona:(id)persona useFileLists:(BOOL *)lists error:(id *)error;
++ (id)_lastFailedForegroundRestoreAttemptDate:(id)date;
++ (int64_t)snapshotFormatForCurrentRestore:(id)restore;
++ (void)promptTTRIfFileListForegroundRestoreFailed:(id)failed;
++ (void)recordFileListForegroundRestoreFailure:(id)failure persona:(id)persona;
 @end
 
 @implementation MBRestoreCloudFormatPolicy
 
-+ (void)recordFileListForegroundRestoreFailure:(id)a3 persona:(id)a4
++ (void)recordFileListForegroundRestoreFailure:(id)failure persona:(id)persona
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 copyPreferencesValueForKey:@"RestoreCloudFormatInfo" class:objc_opt_class()];
+  personaCopy = persona;
+  failureCopy = failure;
+  v7 = [personaCopy copyPreferencesValueForKey:@"RestoreCloudFormatInfo" class:objc_opt_class()];
   v8 = v7;
   if (!v7)
   {
@@ -25,10 +25,10 @@
   v10 = +[NSDate now];
   [v9 setObject:v10 forKeyedSubscript:@"LastForegroundRestoreFailureDate"];
 
-  v11 = [MBError dictionaryRepresentationForError:v6 withMultiErrors:1];
+  v11 = [MBError dictionaryRepresentationForError:failureCopy withMultiErrors:1];
 
   [v9 setObject:v11 forKeyedSubscript:@"LastForegroundRestoreFailure"];
-  [v5 setPreferencesValue:v9 forKey:@"RestoreCloudFormatInfo"];
+  [personaCopy setPreferencesValue:v9 forKey:@"RestoreCloudFormatInfo"];
 
   if (MBIsInternalInstall())
   {
@@ -154,10 +154,10 @@ LABEL_8:
 LABEL_9:
 }
 
-+ (void)promptTTRIfFileListForegroundRestoreFailed:(id)a3
++ (void)promptTTRIfFileListForegroundRestoreFailed:(id)failed
 {
-  v13 = a3;
-  v3 = [v13 copyPreferencesValueForKey:@"RestoreCloudFormatInfo" class:objc_opt_class()];
+  failedCopy = failed;
+  v3 = [failedCopy copyPreferencesValueForKey:@"RestoreCloudFormatInfo" class:objc_opt_class()];
   v4 = v3;
   if (!v3)
   {
@@ -187,26 +187,26 @@ LABEL_9:
     if (!v9)
     {
       [v5 setObject:v8 forKeyedSubscript:@"LastTTRPromptDateForFailedForegroundRestore"];
-      [v13 setPreferencesValue:v5 forKey:@"RestoreCloudFormatInfo"];
+      [failedCopy setPreferencesValue:v5 forKey:@"RestoreCloudFormatInfo"];
       v10 = [v5 objectForKeyedSubscript:@"LastForegroundRestoreFailure"];
       v11 = [MBError errorWithDictionaryRepresentation:v10 withMultiErrors:1];
       v12 = +[MBTapToRadar sharedInstance];
-      [v12 reportForegroundRestoreFailure:v11 persona:v13];
+      [v12 reportForegroundRestoreFailure:v11 persona:failedCopy];
     }
   }
 }
 
-+ (int64_t)snapshotFormatForCurrentRestore:(id)a3
++ (int64_t)snapshotFormatForCurrentRestore:(id)restore
 {
-  v3 = a3;
-  v4 = [v3 copyPreferencesValueForKey:@"RestoreCloudFormatInfo" class:objc_opt_class()];
+  restoreCopy = restore;
+  v4 = [restoreCopy copyPreferencesValueForKey:@"RestoreCloudFormatInfo" class:objc_opt_class()];
 
   if (v4)
   {
     v5 = [v4 objectForKeyedSubscript:@"SnapshotFormatEnum"];
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v6 = [v5 intValue];
+      intValue = [v5 intValue];
     }
 
     else
@@ -222,35 +222,35 @@ LABEL_9:
         _MBLog();
       }
 
-      v6 = -1;
+      intValue = -1;
     }
   }
 
   else
   {
-    v6 = 0;
+    intValue = 0;
   }
 
-  return v6;
+  return intValue;
 }
 
-+ (BOOL)isRestoringFromFileLists:(BOOL *)a3 persona:(id)a4 error:(id *)a5
++ (BOOL)isRestoringFromFileLists:(BOOL *)lists persona:(id)persona error:(id *)error
 {
-  v7 = a4;
-  if (!a3)
+  personaCopy = persona;
+  if (!lists)
   {
     __assert_rtn("+[MBRestoreCloudFormatPolicy isRestoringFromFileLists:persona:error:]", "MBRestoreCloudFormatPolicy.m", 141, "outIsRestoringFromFileLists");
   }
 
-  v8 = v7;
-  v9 = [v7 copyPreferencesValueForKey:@"RestoreCloudFormatInfo" class:objc_opt_class()];
+  v8 = personaCopy;
+  v9 = [personaCopy copyPreferencesValueForKey:@"RestoreCloudFormatInfo" class:objc_opt_class()];
   v10 = v9;
   if (v9)
   {
     v11 = [v9 objectForKeyedSubscript:@"RestoredFromFileList"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      *a3 = [v11 BOOLValue];
+      *lists = [v11 BOOLValue];
       v12 = 1;
     }
 
@@ -267,10 +267,10 @@ LABEL_9:
         _MBLog();
       }
 
-      if (a5)
+      if (error)
       {
         [MBError errorWithCode:205 format:@"Failed to determine if restoring from file lists - invalid value %@", v11];
-        *a5 = v12 = 0;
+        *error = v12 = 0;
       }
 
       else
@@ -290,10 +290,10 @@ LABEL_9:
       _MBLog();
     }
 
-    if (a5)
+    if (error)
     {
       [MBError errorWithCode:4 format:@"Could not find cloudFormatInfo"];
-      *a5 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -305,71 +305,71 @@ LABEL_9:
   return v12;
 }
 
-+ (BOOL)shouldRestoreSnapshot:(id)a3 account:(id)a4 persona:(id)a5 useFileLists:(BOOL *)a6 error:(id *)a7
++ (BOOL)shouldRestoreSnapshot:(id)snapshot account:(id)account persona:(id)persona useFileLists:(BOOL *)lists error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v12)
+  snapshotCopy = snapshot;
+  accountCopy = account;
+  personaCopy = persona;
+  if (!snapshotCopy)
   {
     __assert_rtn("+[MBRestoreCloudFormatPolicy shouldRestoreSnapshot:account:persona:useFileLists:error:]", "MBRestoreCloudFormatPolicy.m", 168, "snapshot");
   }
 
-  if (!v13)
+  if (!accountCopy)
   {
     __assert_rtn("+[MBRestoreCloudFormatPolicy shouldRestoreSnapshot:account:persona:useFileLists:error:]", "MBRestoreCloudFormatPolicy.m", 169, "account");
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = personaCopy;
+  if (!personaCopy)
   {
     __assert_rtn("+[MBRestoreCloudFormatPolicy shouldRestoreSnapshot:account:persona:useFileLists:error:]", "MBRestoreCloudFormatPolicy.m", 170, "persona");
   }
 
-  if (!a6)
+  if (!lists)
   {
     __assert_rtn("+[MBRestoreCloudFormatPolicy shouldRestoreSnapshot:account:persona:useFileLists:error:]", "MBRestoreCloudFormatPolicy.m", 171, "useFileLists");
   }
 
-  if (!a7)
+  if (!error)
   {
     __assert_rtn("+[MBRestoreCloudFormatPolicy shouldRestoreSnapshot:account:persona:useFileLists:error:]", "MBRestoreCloudFormatPolicy.m", 172, "error");
   }
 
-  v51 = a7;
-  v54 = [v14 accountType];
-  v16 = [v12 snapshotFormat];
-  v17 = [v12 accountType];
+  errorCopy = error;
+  accountType = [personaCopy accountType];
+  snapshotFormat = [snapshotCopy snapshotFormat];
+  accountType2 = [snapshotCopy accountType];
   v18 = MBStringForSnapshotFormat();
   v19 = +[MBBehaviorOptions sharedOptions];
-  v52 = [v19 shouldRestoreFromLegacySnapshotFormat];
+  shouldRestoreFromLegacySnapshotFormat = [v19 shouldRestoreFromLegacySnapshotFormat];
 
   v20 = +[MBRemoteConfiguration sharedInstance];
-  v56 = v13;
-  v21 = [v20 shouldRestoreUsingFileListsForAccount:v13];
+  v56 = accountCopy;
+  v21 = [v20 shouldRestoreUsingFileListsForAccount:accountCopy];
 
   v22 = +[MBBehaviorOptions sharedOptions];
-  v23 = [v22 requiredRestoreSnapshotFormatString];
+  requiredRestoreSnapshotFormatString = [v22 requiredRestoreSnapshotFormatString];
 
   v24 = MBSnapshotFormatForString();
-  v25 = [a1 _lastFailedForegroundRestoreAttemptDate:v15];
+  v25 = [self _lastFailedForegroundRestoreAttemptDate:v15];
   v57[0] = _NSConcreteStackBlock;
   v57[1] = 3221225472;
   v57[2] = sub_100204FB0;
   v57[3] = &unk_1003C19C0;
-  v65 = a6;
-  v66 = v54;
-  v67 = v17;
+  listsCopy = lists;
+  v66 = accountType;
+  v67 = accountType2;
   v26 = v18;
   v58 = v26;
-  v68 = v16;
-  v27 = v12;
+  v68 = snapshotFormat;
+  v27 = snapshotCopy;
   v59 = v27;
-  v28 = v52;
+  v28 = shouldRestoreFromLegacySnapshotFormat;
   v60 = v28;
   v29 = v21;
   v61 = v29;
-  v30 = v23;
+  v30 = requiredRestoreSnapshotFormatString;
   v62 = v30;
   v31 = v25;
   v63 = v31;
@@ -377,12 +377,12 @@ LABEL_9:
   v64 = v55;
   v32 = objc_retainBlock(v57);
   v33 = v32;
-  v34 = v24 == -1 || v24 == v16;
+  v34 = v24 == -1 || v24 == snapshotFormat;
   v35 = v34;
   v53 = v35;
   if (!v34)
   {
-    *v51 = [MBError errorWithCode:1 format:@"Existing snapshot format: '%@' does not match the BehaviorOption RequiredRestoreSnapshotFormat: '%@'", v26, v30];
+    *errorCopy = [MBError errorWithCode:1 format:@"Existing snapshot format: '%@' does not match the BehaviorOption RequiredRestoreSnapshotFormat: '%@'", v26, v30];
     v33[2](v33, 0);
     v38 = MBGetDefaultLog();
     v39 = os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT);
@@ -401,7 +401,7 @@ LABEL_9:
     goto LABEL_28;
   }
 
-  if (v16 == 3)
+  if (snapshotFormat == 3)
   {
     (v32[2])(v32, 1);
     v38 = MBGetDefaultLog();
@@ -473,10 +473,10 @@ LABEL_28:
 
     if (v29)
     {
-      v47 = [v29 BOOLValue];
+      bOOLValue = [v29 BOOLValue];
       v48 = v33[2];
       v43 = v55;
-      if (v47)
+      if (bOOLValue)
       {
         v48(v33, 1);
         v38 = MBGetDefaultLog();
@@ -522,11 +522,11 @@ LABEL_45:
     goto LABEL_29;
   }
 
-  v41 = [v28 BOOLValue];
+  bOOLValue2 = [v28 BOOLValue];
   v42 = v33[2];
   v43 = v55;
   v44 = v29;
-  if (!v41)
+  if (!bOOLValue2)
   {
     v42(v33, 1);
     v38 = MBGetDefaultLog();
@@ -554,10 +554,10 @@ LABEL_29:
   return v53;
 }
 
-+ (id)_lastFailedForegroundRestoreAttemptDate:(id)a3
++ (id)_lastFailedForegroundRestoreAttemptDate:(id)date
 {
-  v3 = a3;
-  v4 = [v3 copyPreferencesValueForKey:@"RestoreCloudFormatInfo" class:objc_opt_class()];
+  dateCopy = date;
+  v4 = [dateCopy copyPreferencesValueForKey:@"RestoreCloudFormatInfo" class:objc_opt_class()];
 
   v5 = [v4 objectForKeyedSubscript:@"LastForegroundRestoreFailureDate"];
   objc_opt_class();

@@ -1,17 +1,17 @@
 @interface PVInstructionGraphImageBufferSourceNode
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4;
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4;
-- (PVInstructionGraphImageBufferSourceNode)initWithPVImageBuffer:(id)a3 transform:(CGAffineTransform *)a4;
-- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)a3;
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context;
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PVInstructionGraphImageBufferSourceNode)initWithPVImageBuffer:(id)buffer transform:(CGAffineTransform *)transform;
+- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)label;
 - (id)instructionGraphNodeDescription;
 @end
 
 @implementation PVInstructionGraphImageBufferSourceNode
 
-- (PVInstructionGraphImageBufferSourceNode)initWithPVImageBuffer:(id)a3 transform:(CGAffineTransform *)a4
+- (PVInstructionGraphImageBufferSourceNode)initWithPVImageBuffer:(id)buffer transform:(CGAffineTransform *)transform
 {
-  v7 = a3;
+  bufferCopy = buffer;
   v16.receiver = self;
   v16.super_class = PVInstructionGraphImageBufferSourceNode;
   v8 = [(PVInstructionGraphSourceNode *)&v16 init];
@@ -41,18 +41,18 @@
       v10->_imageBuffer = v12;
     }
 
-    objc_storeStrong(&v9->super._transform.ty, a3);
-    v13 = *&a4->c;
-    v15[0] = *&a4->a;
+    objc_storeStrong(&v9->super._transform.ty, buffer);
+    v13 = *&transform->c;
+    v15[0] = *&transform->a;
     v15[1] = v13;
-    v15[2] = *&a4->tx;
+    v15[2] = *&transform->tx;
     [(PVInstructionGraphSourceNode *)v10 setTransform:v15];
   }
 
   return v10;
 }
 
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v10 = v6;
   if (([*&self->super._transform.ty canCreateCVPixelBuffer] & 1) == 0 && (objc_msgSend(*&self->super._transform.ty, "canCreateHGBitmap") & 1) == 0)
@@ -67,10 +67,10 @@
   if ([*&self->super._transform.ty cvPixelBufferRequiresCopy])
   {
     v12 = +[PVColorSpace preferredDisplayColorSpace];
-    v13 = [*&self->super._transform.ty cgImage];
-    if (v13)
+    cgImage = [*&self->super._transform.ty cgImage];
+    if (cgImage)
     {
-      v14 = [PVColorSpace pvColorSpaceFromCGColorSpace:CGImageGetColorSpace(v13)];
+      v14 = [PVColorSpace pvColorSpaceFromCGColorSpace:CGImageGetColorSpace(cgImage)];
 
       v12 = v14;
     }
@@ -80,16 +80,16 @@
       v12 = +[PVColorSpace sRGBColorSpace];
     }
 
-    v15 = [*&self->super._transform.ty canCreateCVPixelBuffer];
+    canCreateCVPixelBuffer = [*&self->super._transform.ty canCreateCVPixelBuffer];
     ty = self->super._transform.ty;
-    if (v15)
+    if (canCreateCVPixelBuffer)
     {
       v17 = [*&ty cvPixelBufferWithColorSpace:v12];
       if (v17)
       {
-        *v38 = *&a3->var0;
-        var3 = a3->var3;
-        v18 = *a6.m_Obj;
+        *v38 = *&time->var0;
+        var3 = time->var3;
+        v18 = *context.m_Obj;
         v43 = v18;
         if (v18)
         {
@@ -184,8 +184,8 @@
               }
 
               v31 = v30[3];
-              v32 = PVInstructionGraphContext::WorkingColorSpace(*a6.m_Obj);
-              v33 = PVInstructionGraphContext::WorkingColorSpaceConformIntent(*a6.m_Obj);
+              v32 = PVInstructionGraphContext::WorkingColorSpace(*context.m_Obj);
+              v33 = PVInstructionGraphContext::WorkingColorSpaceConformIntent(*context.m_Obj);
               ColorConformInput(&v42, v31, v32, v33, 0, &v45);
               v34 = v45;
               if (v25 == v45)
@@ -255,7 +255,7 @@ LABEL_62:
       }
 
       [(PVInstructionGraphSourceNode *)self transform];
-      v36 = (*(**a6.m_Obj + 64))();
+      v36 = (*(**context.m_Obj + 64))();
       HGXFormForCGAffineTransform(&v40, v38, v36, &v45);
       v37 = v45;
       if (v35 == v45)
@@ -288,18 +288,18 @@ LABEL_62:
 
   else
   {
-    v21 = [*&self->super._transform.ty cvPixelBuffer];
-    if (v21)
+    cvPixelBuffer = [*&self->super._transform.ty cvPixelBuffer];
+    if (cvPixelBuffer)
     {
-      *v38 = *&a3->var0;
-      var3 = a3->var3;
-      v44 = *a6.m_Obj;
+      *v38 = *&time->var0;
+      var3 = time->var3;
+      v44 = *context.m_Obj;
       if (v44)
       {
         (*(*v44 + 16))(v44);
       }
 
-      PVCreateInputGraphForPixelBuffer(v21, &v44, &v45);
+      PVCreateInputGraphForPixelBuffer(cvPixelBuffer, &v44, &v45);
       v22 = v45;
       if (v11 == v45)
       {
@@ -343,10 +343,10 @@ LABEL_62:
   return v27;
 }
 
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v6 = v4;
-  v7 = a3;
+  effectCopy = effect;
   *v6 = 0;
   *(v6 + 8) = 0;
   __asm { FMOV            V0.2D, #-1.0 }
@@ -365,14 +365,14 @@ LABEL_62:
       v27 = v15;
       if (v15.f64[1] >= v15.f64[0])
       {
-        [v7 outputSize];
+        [effectCopy outputSize];
         v19 = v16 / v20;
         v17 = v27;
       }
 
       else
       {
-        [v7 outputSize];
+        [effectCopy outputSize];
         v17 = v27;
         v19 = v27.f64[0] / v18;
       }
@@ -388,9 +388,9 @@ LABEL_62:
   return result;
 }
 
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context
 {
-  v18 = a4;
+  contextCopy = context;
   retstr->var0[3][3] = 1.0;
   retstr->var0[2][2] = 1.0;
   retstr->var0[1][1] = 1.0;
@@ -406,7 +406,7 @@ LABEL_62:
     v8 = (*(**a5.m_Obj + 40))();
     v10 = v9;
     v11 = (*(**a5.m_Obj + 48))();
-    [v18 outputSize];
+    [contextCopy outputSize];
     v12 = v10;
     v13 = (v11 * v12);
     v14 = v8;
@@ -420,9 +420,9 @@ LABEL_62:
   return result;
 }
 
-- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)a3
+- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)label
 {
-  v10 = *a3.m_Obj;
+  v10 = *label.m_Obj;
   if (v10)
   {
     (*(*v10 + 16))(v10, a2);
@@ -446,8 +446,8 @@ LABEL_62:
 {
   v11.receiver = self;
   v11.super_class = PVInstructionGraphImageBufferSourceNode;
-  v3 = [(PVInstructionGraphSourceNode *)&v11 instructionGraphNodeDescription];
-  v4 = [v3 mutableCopy];
+  instructionGraphNodeDescription = [(PVInstructionGraphSourceNode *)&v11 instructionGraphNodeDescription];
+  v4 = [instructionGraphNodeDescription mutableCopy];
 
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);

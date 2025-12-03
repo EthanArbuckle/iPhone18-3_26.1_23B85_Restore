@@ -1,18 +1,18 @@
 @interface _UITypeSelectNavigationGestureRecognizer
-- (_UITypeSelectNavigationGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (_UITypeSelectNavigationGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UITypeSelectNavigationGestureRecognizer
 
-- (_UITypeSelectNavigationGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UITypeSelectNavigationGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UITypeSelectNavigationGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -26,21 +26,21 @@
   return v5;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v11.receiver = self;
   v11.super_class = _UITypeSelectNavigationGestureRecognizer;
-  [(UIGestureRecognizer *)&v11 pressesBegan:v6 withEvent:a4];
+  [(UIGestureRecognizer *)&v11 pressesBegan:beganCopy withEvent:event];
   presses = self->_presses;
   if (presses)
   {
-    [(NSMutableSet *)presses unionSet:v6];
+    [(NSMutableSet *)presses unionSet:beganCopy];
   }
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:v6];
+    v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:beganCopy];
     v9 = self->_presses;
     self->_presses = v8;
   }
@@ -59,24 +59,24 @@ LABEL_9:
   }
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _UITypeSelectNavigationGestureRecognizer;
-  [(UIGestureRecognizer *)&v5 pressesChanged:a3 withEvent:a4];
+  [(UIGestureRecognizer *)&v5 pressesChanged:changed withEvent:event];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStateBegan)
   {
     [(UIGestureRecognizer *)self setState:2];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = _UITypeSelectNavigationGestureRecognizer;
-  v6 = a3;
-  [(UIGestureRecognizer *)&v8 pressesEnded:v6 withEvent:a4];
-  [(NSMutableSet *)self->_presses minusSet:v6, v8.receiver, v8.super_class];
+  endedCopy = ended;
+  [(UIGestureRecognizer *)&v8 pressesEnded:endedCopy withEvent:event];
+  [(NSMutableSet *)self->_presses minusSet:endedCopy, v8.receiver, v8.super_class];
 
   if (![(NSMutableSet *)self->_presses count])
   {
@@ -87,11 +87,11 @@ LABEL_9:
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _UITypeSelectNavigationGestureRecognizer;
-  [(UIGestureRecognizer *)&v5 pressesCancelled:a3 withEvent:a4];
+  [(UIGestureRecognizer *)&v5 pressesCancelled:cancelled withEvent:event];
   [(UIGestureRecognizer *)self setState:4];
 }
 

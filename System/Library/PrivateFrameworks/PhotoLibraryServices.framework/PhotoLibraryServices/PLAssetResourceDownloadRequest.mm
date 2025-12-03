@@ -1,5 +1,5 @@
 @interface PLAssetResourceDownloadRequest
-- (PLAssetResourceDownloadRequest)initWithRequestID:(int)a3 library:(id)a4 queue:(id)a5 cloudResourceType:(unint64_t)a6 managedObjectID:(id)a7 progressHandler:(id)a8;
+- (PLAssetResourceDownloadRequest)initWithRequestID:(int)d library:(id)library queue:(id)queue cloudResourceType:(unint64_t)type managedObjectID:(id)iD progressHandler:(id)handler;
 - (void)cancel;
 - (void)main;
 @end
@@ -199,24 +199,24 @@ void __38__PLAssetResourceDownloadRequest_main__block_invoke_2(void *a1)
   }
 }
 
-- (PLAssetResourceDownloadRequest)initWithRequestID:(int)a3 library:(id)a4 queue:(id)a5 cloudResourceType:(unint64_t)a6 managedObjectID:(id)a7 progressHandler:(id)a8
+- (PLAssetResourceDownloadRequest)initWithRequestID:(int)d library:(id)library queue:(id)queue cloudResourceType:(unint64_t)type managedObjectID:(id)iD progressHandler:(id)handler
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if (v17)
+  libraryCopy = library;
+  queueCopy = queue;
+  iDCopy = iD;
+  handlerCopy = handler;
+  if (iDCopy)
   {
-    if (v16)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PLAssetResourceDownloadRequest.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetResourceDownloadRequest.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
-    if (v15)
+    if (libraryCopy)
     {
       goto LABEL_4;
     }
@@ -224,23 +224,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v27 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"PLAssetResourceDownloadRequest.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLAssetResourceDownloadRequest.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"objectID"}];
 
-  if (!v16)
+  if (!queueCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v15)
+  if (libraryCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"PLAssetResourceDownloadRequest.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLAssetResourceDownloadRequest.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"library"}];
 
 LABEL_4:
   v31.receiver = self;
@@ -249,19 +249,19 @@ LABEL_4:
   v20 = v19;
   if (v19)
   {
-    v19->_requestID = a3;
-    objc_storeStrong(&v19->_queue, a5);
-    objc_storeStrong(&v20->_objectID, a7);
-    v20->_cloudResourceType = a6;
-    v21 = _Block_copy(v18);
+    v19->_requestID = d;
+    objc_storeStrong(&v19->_queue, queue);
+    objc_storeStrong(&v20->_objectID, iD);
+    v20->_cloudResourceType = type;
+    v21 = _Block_copy(handlerCopy);
     progressHandler = v20->_progressHandler;
     v20->_progressHandler = v21;
 
-    objc_storeStrong(&v20->_library, a4);
-    v23 = [MEMORY[0x1E696AFB0] UUID];
-    v24 = [v23 UUIDString];
+    objc_storeStrong(&v20->_library, library);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     cplTaskIdentifier = v20->_cplTaskIdentifier;
-    v20->_cplTaskIdentifier = v24;
+    v20->_cplTaskIdentifier = uUIDString;
   }
 
   return v20;

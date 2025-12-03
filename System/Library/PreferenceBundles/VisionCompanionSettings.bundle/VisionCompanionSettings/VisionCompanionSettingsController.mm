@@ -1,7 +1,7 @@
 @interface VisionCompanionSettingsController
 - (_TtC23VisionCompanionSettings33VisionCompanionSettingsController)init;
-- (_TtC23VisionCompanionSettings33VisionCompanionSettingsController)initWithCoder:(id)a3;
-- (_TtC23VisionCompanionSettings33VisionCompanionSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC23VisionCompanionSettings33VisionCompanionSettingsController)initWithCoder:(id)coder;
+- (_TtC23VisionCompanionSettings33VisionCompanionSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
 - (void)showPrivacySheet;
 - (void)viewDidLoad;
@@ -23,7 +23,7 @@
   return [(VisionCompanionSettingsController *)&v8 initWithNibName:0 bundle:0];
 }
 
-- (_TtC23VisionCompanionSettings33VisionCompanionSettingsController)initWithCoder:(id)a3
+- (_TtC23VisionCompanionSettings33VisionCompanionSettingsController)initWithCoder:(id)coder
 {
   v4 = &self->PSListController_opaque[OBJC_IVAR____TtC23VisionCompanionSettings33VisionCompanionSettingsController_bundleIdentifier];
   *v4 = sub_37E4();
@@ -39,13 +39,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_182C();
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A24();
 
   if (v3)
@@ -63,11 +63,11 @@
 
 - (void)showPrivacySheet
 {
-  v2 = self;
+  selfCopy = self;
   sub_219C();
 }
 
-- (_TtC23VisionCompanionSettings33VisionCompanionSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23VisionCompanionSettings33VisionCompanionSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

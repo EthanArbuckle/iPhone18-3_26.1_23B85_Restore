@@ -1,15 +1,15 @@
 @interface ATXCategoricalFeatureLocationType
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
-- (id)featureNameForRTLocationOfInterestType:(int64_t)a3;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
+- (id)featureNameForRTLocationOfInterestType:(int64_t)type;
 @end
 
 @implementation ATXCategoricalFeatureLocationType
 
-- (id)featureNameForRTLocationOfInterestType:(int64_t)a3
+- (id)featureNameForRTLocationOfInterestType:(int64_t)type
 {
-  if ((a3 + 1) < 5)
+  if ((type + 1) < 5)
   {
-    return off_2785A2070[a3 + 1];
+    return off_2785A2070[type + 1];
   }
 
   v4 = __atxlog_handle_relevance_model();
@@ -21,19 +21,19 @@
   return @"<Unexpected Category Value>";
 }
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v5 = a3;
-  v6 = [v5 locationMotionContext];
-  v7 = [v6 currentLOI];
+  contextCopy = context;
+  locationMotionContext = [contextCopy locationMotionContext];
+  currentLOI = [locationMotionContext currentLOI];
 
-  if (v7)
+  if (currentLOI)
   {
-    v8 = [v5 locationMotionContext];
-    v9 = [v8 currentLOI];
-    v10 = [v9 type];
+    locationMotionContext2 = [contextCopy locationMotionContext];
+    currentLOI2 = [locationMotionContext2 currentLOI];
+    type = [currentLOI2 type];
 
-    v11 = [(ATXCategoricalFeatureLocationType *)self featureNameForRTLocationOfInterestType:v10];
+    v11 = [(ATXCategoricalFeatureLocationType *)self featureNameForRTLocationOfInterestType:type];
   }
 
   else

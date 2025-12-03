@@ -1,12 +1,12 @@
 @interface ActionTabSwitch
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation ActionTabSwitch
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -19,9 +19,9 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_1E3FC7580(v9, v6, v7);
+  responderCopy = responder;
+  selfCopy = self;
+  sub_1E3FC7580(selfCopy, v6, v7);
   sub_1E34AF594(v6);
 }
 

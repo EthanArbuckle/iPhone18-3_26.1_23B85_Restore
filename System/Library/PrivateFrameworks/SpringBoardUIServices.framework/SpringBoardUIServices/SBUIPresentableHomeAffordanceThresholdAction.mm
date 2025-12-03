@@ -1,15 +1,15 @@
 @interface SBUIPresentableHomeAffordanceThresholdAction
-- (SBUIPresentableHomeAffordanceThresholdAction)initWithHandler:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (void)setSuccessful:(BOOL)a3;
+- (SBUIPresentableHomeAffordanceThresholdAction)initWithHandler:(id)handler;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (void)setSuccessful:(BOOL)successful;
 @end
 
 @implementation SBUIPresentableHomeAffordanceThresholdAction
 
-- (SBUIPresentableHomeAffordanceThresholdAction)initWithHandler:(id)a3
+- (SBUIPresentableHomeAffordanceThresholdAction)initWithHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [(SBUIPresentableHomeAffordanceThresholdAction *)a2 initWithHandler:?];
   }
@@ -18,10 +18,10 @@
   v10[1] = 3221225472;
   v10[2] = __64__SBUIPresentableHomeAffordanceThresholdAction_initWithHandler___block_invoke;
   v10[3] = &unk_1E789E448;
-  v11 = v5;
+  v11 = handlerCopy;
   v9.receiver = self;
   v9.super_class = SBUIPresentableHomeAffordanceThresholdAction;
-  v6 = v5;
+  v6 = handlerCopy;
   v7 = [(SBUIPresentableHomeAffordanceThresholdAction *)&v9 initWithInfo:0 timeout:0 forResponseOnQueue:v10 withHandler:0.0];
 
   return v7;
@@ -34,21 +34,21 @@ void __64__SBUIPresentableHomeAffordanceThresholdAction_initWithHandler___block_
   (*(v2 + 16))(v2, [v3 BOOLForSetting:1]);
 }
 
-- (void)setSuccessful:(BOOL)a3
+- (void)setSuccessful:(BOOL)successful
 {
-  v3 = a3;
+  successfulCopy = successful;
   if ([(SBUIPresentableHomeAffordanceThresholdAction *)self isValid]&& [(SBUIPresentableHomeAffordanceThresholdAction *)self canSendResponse])
   {
     v6 = objc_alloc_init(MEMORY[0x1E698E700]);
-    [v6 setFlag:v3 forSetting:1];
+    [v6 setFlag:successfulCopy forSetting:1];
     v5 = [objc_alloc(MEMORY[0x1E698E600]) initWithInfo:v6 error:0];
     [(SBUIPresentableHomeAffordanceThresholdAction *)self sendResponse:v5];
   }
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"success";
   }

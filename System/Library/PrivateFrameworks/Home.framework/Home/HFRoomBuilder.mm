@@ -1,6 +1,6 @@
 @interface HFRoomBuilder
-- (BOOL)isEqual:(id)a3;
-- (HFRoomBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HFRoomBuilder)initWithExistingObject:(id)object inHome:(id)home;
 - (NSSet)accessories;
 - (NSString)description;
 - (id)_createRoom;
@@ -9,27 +9,27 @@
 - (id)_updateName;
 - (id)commitItem;
 - (unint64_t)hash;
-- (void)addAccessory:(id)a3;
-- (void)removeAccessory:(id)a3;
+- (void)addAccessory:(id)accessory;
+- (void)removeAccessory:(id)accessory;
 @end
 
 @implementation HFRoomBuilder
 
-- (HFRoomBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFRoomBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
-  v6 = a3;
+  objectCopy = object;
   v23.receiver = self;
   v23.super_class = HFRoomBuilder;
-  v7 = [(HFItemBuilder *)&v23 initWithExistingObject:v6 inHome:a4];
+  v7 = [(HFItemBuilder *)&v23 initWithExistingObject:objectCopy inHome:home];
   v8 = v7;
   if (v7)
   {
-    v9 = [(HFRoomBuilder *)v7 room];
-    v10 = [v9 name];
-    v11 = v10;
-    if (v10)
+    room = [(HFRoomBuilder *)v7 room];
+    name = [room name];
+    v11 = name;
+    if (name)
     {
-      v12 = v10;
+      v12 = name;
     }
 
     else
@@ -42,21 +42,21 @@
     if (+[HFExecutionEnvironment isHomeApp])
     {
       v13 = +[HFWallpaperManager sharedInstance];
-      v14 = [v13 wallpaperSourceRegistered];
+      wallpaperSourceRegistered = [v13 wallpaperSourceRegistered];
 
-      if (v14)
+      if (wallpaperSourceRegistered)
       {
-        v15 = [[HFWallpaperEditCollectionBuilder alloc] initWithHomeKitObject:v6 namedWallpaperCollectionType:1];
+        v15 = [[HFWallpaperEditCollectionBuilder alloc] initWithHomeKitObject:objectCopy namedWallpaperCollectionType:1];
         wallpaperBuilder = v8->_wallpaperBuilder;
         v8->_wallpaperBuilder = v15;
       }
     }
 
-    if (v6)
+    if (objectCopy)
     {
-      v17 = [(HFRoomBuilder *)v8 room];
-      v18 = [v17 accessories];
-      v19 = HFHomeKitObjectUniqueIdentifiers(v18);
+      room2 = [(HFRoomBuilder *)v8 room];
+      accessories = [room2 accessories];
+      v19 = HFHomeKitObjectUniqueIdentifiers(accessories);
     }
 
     else
@@ -72,48 +72,48 @@
   return v8;
 }
 
-- (void)addAccessory:(id)a3
+- (void)addAccessory:(id)accessory
 {
-  v10 = a3;
-  v4 = [(HFRoomBuilder *)self accessoryUUIDs];
-  v5 = [v4 toSet];
-  v6 = [v10 uniqueIdentifier];
-  v7 = [v5 containsObject:v6];
+  accessoryCopy = accessory;
+  accessoryUUIDs = [(HFRoomBuilder *)self accessoryUUIDs];
+  toSet = [accessoryUUIDs toSet];
+  uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+  v7 = [toSet containsObject:uniqueIdentifier];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(HFRoomBuilder *)self accessoryUUIDs];
-    v9 = [v10 uniqueIdentifier];
-    [v8 addObject:v9];
+    accessoryUUIDs2 = [(HFRoomBuilder *)self accessoryUUIDs];
+    uniqueIdentifier2 = [accessoryCopy uniqueIdentifier];
+    [accessoryUUIDs2 addObject:uniqueIdentifier2];
   }
 }
 
-- (void)removeAccessory:(id)a3
+- (void)removeAccessory:(id)accessory
 {
-  v10 = a3;
-  v4 = [(HFRoomBuilder *)self accessoryUUIDs];
-  v5 = [v4 toSet];
-  v6 = [v10 uniqueIdentifier];
-  v7 = [v5 containsObject:v6];
+  accessoryCopy = accessory;
+  accessoryUUIDs = [(HFRoomBuilder *)self accessoryUUIDs];
+  toSet = [accessoryUUIDs toSet];
+  uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+  v7 = [toSet containsObject:uniqueIdentifier];
 
   if (v7)
   {
-    v8 = [(HFRoomBuilder *)self accessoryUUIDs];
-    v9 = [v10 uniqueIdentifier];
-    [v8 deleteObject:v9];
+    accessoryUUIDs2 = [(HFRoomBuilder *)self accessoryUUIDs];
+    uniqueIdentifier2 = [accessoryCopy uniqueIdentifier];
+    [accessoryUUIDs2 deleteObject:uniqueIdentifier2];
   }
 }
 
 - (NSSet)accessories
 {
-  v3 = [(HFRoomBuilder *)self accessoryUUIDs];
-  v4 = [v3 toSet];
+  accessoryUUIDs = [(HFRoomBuilder *)self accessoryUUIDs];
+  toSet = [accessoryUUIDs toSet];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__HFRoomBuilder_accessories__block_invoke;
   v7[3] = &unk_277DF5E10;
   v7[4] = self;
-  v5 = [v4 na_map:v7];
+  v5 = [toSet na_map:v7];
 
   return v5;
 }
@@ -131,24 +131,24 @@ id __28__HFRoomBuilder_accessories__block_invoke(uint64_t a1, void *a2)
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFRoomBuilder *)self room];
+  room = [(HFRoomBuilder *)self room];
 
-  if (v4)
+  if (room)
   {
-    v5 = [(HFRoomBuilder *)self room];
-    v6 = [v5 hf_prettyDescription];
-    v7 = [v3 appendObject:v6 withName:@"room"];
+    room2 = [(HFRoomBuilder *)self room];
+    hf_prettyDescription = [room2 hf_prettyDescription];
+    v7 = [v3 appendObject:hf_prettyDescription withName:@"room"];
   }
 
   else
   {
-    v5 = [(HFRoomBuilder *)self name];
-    v8 = [v3 appendObject:v5 withName:@"name"];
+    room2 = [(HFRoomBuilder *)self name];
+    v8 = [v3 appendObject:room2 withName:@"name"];
   }
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (id)_performValidation
@@ -157,8 +157,8 @@ id __28__HFRoomBuilder_accessories__block_invoke(uint64_t a1, void *a2)
   v3 = MEMORY[0x277D2C900];
   v4 = [(HFItemBuilder *)self lazy_verifyPropertyIsSet:@"name"];
   v11[0] = v4;
-  v5 = [(HFRoomBuilder *)self name];
-  v6 = [(HFItemBuilder *)self lazy_verifyNameIsNotEmpty:v5];
+  name = [(HFRoomBuilder *)self name];
+  v6 = [(HFItemBuilder *)self lazy_verifyNameIsNotEmpty:name];
   v11[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v3 chainFutures:v7];
@@ -175,26 +175,26 @@ id __28__HFRoomBuilder_accessories__block_invoke(uint64_t a1, void *a2)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "HFRoomBuilder: Starting commit (%@)", buf, 0xCu);
   }
 
-  v4 = [(HFRoomBuilder *)self room];
+  room = [(HFRoomBuilder *)self room];
   v5 = HFOperationEditRoom;
-  if (!v4)
+  if (!room)
   {
     v5 = HFOperationAddRoom;
   }
 
   v6 = *v5;
 
-  v7 = [(HFRoomBuilder *)self _performValidation];
+  _performValidation = [(HFRoomBuilder *)self _performValidation];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __27__HFRoomBuilder_commitItem__block_invoke;
   v24[3] = &unk_277DF2CE0;
   v24[4] = self;
-  v8 = [v7 flatMap:v24];
+  v8 = [_performValidation flatMap:v24];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __27__HFRoomBuilder_commitItem__block_invoke_17;
@@ -212,7 +212,7 @@ id __28__HFRoomBuilder_accessories__block_invoke(uint64_t a1, void *a2)
   v19[2] = __27__HFRoomBuilder_commitItem__block_invoke_3;
   v19[3] = &unk_277DF2D30;
   v20 = v6;
-  v21 = self;
+  selfCopy2 = self;
   v11 = v6;
   v12 = [v10 recover:v19];
   v18[0] = MEMORY[0x277D85DD0];
@@ -365,9 +365,9 @@ void __27__HFRoomBuilder_commitItem__block_invoke_5(uint64_t a1, uint64_t a2, vo
   v3 = HFLogForCategory(0x2BuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFRoomBuilder *)self name];
+    name = [(HFRoomBuilder *)self name];
     *buf = 138412290;
-    v13 = v4;
+    v13 = name;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "HFRoomBuilder: Adding room with name: %@", buf, 0xCu);
   }
 
@@ -458,10 +458,10 @@ void __28__HFRoomBuilder__createRoom__block_invoke_28(uint64_t a1, void *a2)
 - (id)_updateName
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HFRoomBuilder *)self room];
-  v4 = [v3 name];
-  v5 = [(HFRoomBuilder *)self name];
-  v6 = [v4 isEqualToString:v5];
+  room = [(HFRoomBuilder *)self room];
+  name = [room name];
+  name2 = [(HFRoomBuilder *)self name];
+  v6 = [name isEqualToString:name2];
 
   v7 = HFLogForCategory(0x2BuLL);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -469,9 +469,9 @@ void __28__HFRoomBuilder__createRoom__block_invoke_28(uint64_t a1, void *a2)
   {
     if (v8)
     {
-      v9 = [(HFRoomBuilder *)self name];
+      name3 = [(HFRoomBuilder *)self name];
       *buf = 138412290;
-      v21 = v9;
+      v21 = name3;
       _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "HFRoomBuilder: Not updating name because it hasn't changed (%@)", buf, 0xCu);
     }
 
@@ -482,13 +482,13 @@ void __28__HFRoomBuilder__createRoom__block_invoke_28(uint64_t a1, void *a2)
   {
     if (v8)
     {
-      v11 = [(HFRoomBuilder *)self room];
-      v12 = [v11 name];
-      v13 = [(HFRoomBuilder *)self name];
+      room2 = [(HFRoomBuilder *)self room];
+      name4 = [room2 name];
+      name5 = [(HFRoomBuilder *)self name];
       *buf = 138412546;
-      v21 = v12;
+      v21 = name4;
       v22 = 2112;
-      v23 = v13;
+      v23 = name5;
       _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "HFRoomBuilder: Updating name from %@ to %@", buf, 0x16u);
     }
 
@@ -579,10 +579,10 @@ void __28__HFRoomBuilder__updateName__block_invoke_40(uint64_t a1, void *a2)
   v3 = HFLogForCategory(0x2BuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFRoomBuilder *)self accessories];
-    v5 = [v4 hf_prettyDescription];
+    accessories = [(HFRoomBuilder *)self accessories];
+    hf_prettyDescription = [accessories hf_prettyDescription];
     *buf = 138412290;
-    v18 = v5;
+    v18 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "HFRoomBuilder: Updating accessories: %@", buf, 0xCu);
   }
 
@@ -592,13 +592,13 @@ void __28__HFRoomBuilder__updateName__block_invoke_40(uint64_t a1, void *a2)
   aBlock[3] = &unk_277E01748;
   aBlock[4] = self;
   v6 = _Block_copy(aBlock);
-  v7 = [(HFRoomBuilder *)self accessoryUUIDs];
-  v8 = [(HFRoomBuilder *)self room];
-  v9 = v6[2](v6, v8);
-  v10 = [(HFItemBuilder *)self home];
-  v11 = [v10 roomForEntireHome];
-  v12 = v6[2](v6, v11);
-  v13 = [(HFItemBuilder *)self commitSetDiff:v7 addBlock:v9 updateBlock:&__block_literal_global_56_3 deleteBlock:v12];
+  accessoryUUIDs = [(HFRoomBuilder *)self accessoryUUIDs];
+  room = [(HFRoomBuilder *)self room];
+  v9 = v6[2](v6, room);
+  home = [(HFItemBuilder *)self home];
+  roomForEntireHome = [home roomForEntireHome];
+  v12 = v6[2](v6, roomForEntireHome);
+  v13 = [(HFItemBuilder *)self commitSetDiff:accessoryUUIDs addBlock:v9 updateBlock:&__block_literal_global_56_3 deleteBlock:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -766,27 +766,27 @@ void __35__HFRoomBuilder__updateAccessories__block_invoke_49(uint64_t a1, void *
 
 - (unint64_t)hash
 {
-  v3 = [(HFRoomBuilder *)self room];
+  room = [(HFRoomBuilder *)self room];
 
-  if (v3)
+  if (room)
   {
-    v4 = [(HFRoomBuilder *)self room];
-    v5 = [v4 uniqueIdentifier];
-    v6 = [v5 hash];
+    room2 = [(HFRoomBuilder *)self room];
+    uniqueIdentifier = [room2 uniqueIdentifier];
+    v6 = [uniqueIdentifier hash];
   }
 
   else
   {
-    v4 = [(HFRoomBuilder *)self name];
-    v6 = [v4 hash];
+    room2 = [(HFRoomBuilder *)self name];
+    v6 = [room2 hash];
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -794,36 +794,36 @@ void __35__HFRoomBuilder__updateAccessories__block_invoke_49(uint64_t a1, void *
     goto LABEL_18;
   }
 
-  v5 = v4;
-  v6 = [(HFRoomBuilder *)self room];
-  v7 = [v6 uniqueIdentifier];
-  v8 = v7;
-  if (!v7)
+  v5 = equalCopy;
+  room = [(HFRoomBuilder *)self room];
+  uniqueIdentifier = [room uniqueIdentifier];
+  null = uniqueIdentifier;
+  if (!uniqueIdentifier)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v9 = [v5 room];
-  v10 = [v9 uniqueIdentifier];
-  v11 = v10;
-  if (!v10)
+  room2 = [v5 room];
+  uniqueIdentifier2 = [room2 uniqueIdentifier];
+  null2 = uniqueIdentifier2;
+  if (!uniqueIdentifier2)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  if ([v8 isEqual:v11])
+  if ([null isEqual:null2])
   {
-    v19 = v8;
-    v12 = [(HFRoomBuilder *)self name];
-    v13 = [v5 name];
-    if ([v12 isEqualToString:v13])
+    v19 = null;
+    name = [(HFRoomBuilder *)self name];
+    name2 = [v5 name];
+    if ([name isEqualToString:name2])
     {
       v17 = __25__HFRoomBuilder_isEqual___block_invoke(self);
       __25__HFRoomBuilder_isEqual___block_invoke(v5);
-      v14 = v18 = v6;
+      v14 = v18 = room;
       v15 = [v17 isEqual:v14];
 
-      v6 = v18;
+      room = v18;
     }
 
     else
@@ -831,8 +831,8 @@ void __35__HFRoomBuilder__updateAccessories__block_invoke_49(uint64_t a1, void *
       v15 = 0;
     }
 
-    v8 = v19;
-    if (!v10)
+    null = v19;
+    if (!uniqueIdentifier2)
     {
       goto LABEL_14;
     }
@@ -841,13 +841,13 @@ void __35__HFRoomBuilder__updateAccessories__block_invoke_49(uint64_t a1, void *
   else
   {
     v15 = 0;
-    if (!v10)
+    if (!uniqueIdentifier2)
     {
 LABEL_14:
     }
   }
 
-  if (!v7)
+  if (!uniqueIdentifier)
   {
   }
 

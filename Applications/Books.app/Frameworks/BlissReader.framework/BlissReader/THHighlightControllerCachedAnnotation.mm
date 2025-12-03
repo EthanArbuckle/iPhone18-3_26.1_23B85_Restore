@@ -1,12 +1,12 @@
 @interface THHighlightControllerCachedAnnotation
-- (THHighlightControllerCachedAnnotation)initWithAnnotation:(id)a3;
+- (THHighlightControllerCachedAnnotation)initWithAnnotation:(id)annotation;
 - (void)dealloc;
-- (void)updateAnnotation:(id)a3;
+- (void)updateAnnotation:(id)annotation;
 @end
 
 @implementation THHighlightControllerCachedAnnotation
 
-- (THHighlightControllerCachedAnnotation)initWithAnnotation:(id)a3
+- (THHighlightControllerCachedAnnotation)initWithAnnotation:(id)annotation
 {
   if (!+[NSThread isMainThread])
   {
@@ -18,14 +18,14 @@
   v5 = [(THHighlightControllerCachedAnnotation *)&v8 init];
   if (v5)
   {
-    if (!a3)
+    if (!annotation)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    v6 = a3;
-    v5->mAnnotation = v6;
-    v5->mLastRenderedStyle = [(THAnnotation *)v6 annotationStyle];
+    annotationCopy = annotation;
+    v5->mAnnotation = annotationCopy;
+    v5->mLastRenderedStyle = [(THAnnotation *)annotationCopy annotationStyle];
   }
 
   return v5;
@@ -42,18 +42,18 @@
   [(THHighlightControllerCachedAnnotation *)&v3 dealloc];
 }
 
-- (void)updateAnnotation:(id)a3
+- (void)updateAnnotation:(id)annotation
 {
   mAnnotation = self->mAnnotation;
-  if (mAnnotation != a3 && [(THAnnotation *)mAnnotation isEqual:?])
+  if (mAnnotation != annotation && [(THAnnotation *)mAnnotation isEqual:?])
   {
 
     self->mAnnotation = 0;
-    v6 = a3;
-    self->mAnnotation = v6;
+    annotationCopy = annotation;
+    self->mAnnotation = annotationCopy;
     mHighlight = self->mHighlight;
 
-    [(THHighlight *)mHighlight setAnnotation:v6];
+    [(THHighlight *)mHighlight setAnnotation:annotationCopy];
   }
 }
 

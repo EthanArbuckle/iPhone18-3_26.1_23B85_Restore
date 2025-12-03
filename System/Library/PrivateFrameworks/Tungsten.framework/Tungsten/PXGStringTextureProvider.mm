@@ -1,10 +1,10 @@
 @interface PXGStringTextureProvider
-- (BOOL)_shouldRedrawForViewEnvironmentChange:(id)a3;
+- (BOOL)_shouldRedrawForViewEnvironmentChange:(id)change;
 - (PXGStringTextureProvider)init;
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7;
-- (void)_requestTextureForAttributedString:(id)a3 attributedStringBoundingSize:(CGSize)a4 string:(id)a5 withAttributes:(id)a6 targetSize:(CGSize)a7 drawingOptions:(int64_t)a8 drawingContext:(id)a9 userInterfaceDirection:(unint64_t)a10 verticalAlignment:(int64_t)a11 screenScale:(double)a12 textureRequestID:(int)a13 padding:(UIEdgeInsets)a14;
-- (void)cancelTextureRequests:(id)a3;
-- (void)viewEnvironmentDidChange:(id)a3;
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout;
+- (void)_requestTextureForAttributedString:(id)string attributedStringBoundingSize:(CGSize)size string:(id)a5 withAttributes:(id)attributes targetSize:(CGSize)targetSize drawingOptions:(int64_t)options drawingContext:(id)context userInterfaceDirection:(unint64_t)self0 verticalAlignment:(int64_t)self1 screenScale:(double)self2 textureRequestID:(int)self3 padding:(UIEdgeInsets)self4;
+- (void)cancelTextureRequests:(id)requests;
+- (void)viewEnvironmentDidChange:(id)change;
 @end
 
 @implementation PXGStringTextureProvider
@@ -22,30 +22,30 @@
   return result;
 }
 
-- (void)_requestTextureForAttributedString:(id)a3 attributedStringBoundingSize:(CGSize)a4 string:(id)a5 withAttributes:(id)a6 targetSize:(CGSize)a7 drawingOptions:(int64_t)a8 drawingContext:(id)a9 userInterfaceDirection:(unint64_t)a10 verticalAlignment:(int64_t)a11 screenScale:(double)a12 textureRequestID:(int)a13 padding:(UIEdgeInsets)a14
+- (void)_requestTextureForAttributedString:(id)string attributedStringBoundingSize:(CGSize)size string:(id)a5 withAttributes:(id)attributes targetSize:(CGSize)targetSize drawingOptions:(int64_t)options drawingContext:(id)context userInterfaceDirection:(unint64_t)self0 verticalAlignment:(int64_t)self1 screenScale:(double)self2 textureRequestID:(int)self3 padding:(UIEdgeInsets)self4
 {
-  height = a7.height;
-  width = a7.width;
-  v22 = a4.height;
-  v23 = a4.width;
+  height = targetSize.height;
+  width = targetSize.width;
+  v22 = size.height;
+  v23 = size.width;
   v69[3] = *MEMORY[0x277D85DE8];
-  v25 = a3;
+  stringCopy = string;
   v26 = a5;
-  v27 = a6;
-  v28 = a9;
-  if ([(PXGTextureProvider *)self isRequestActive:a13])
+  attributesCopy = attributes;
+  contextCopy = context;
+  if ([(PXGTextureProvider *)self isRequestActive:d])
   {
     if (PXPixelSizeAreaIsZero())
     {
-      [(PXGTextureProvider *)self provideNothingForRequestID:a13];
+      [(PXGTextureProvider *)self provideNothingForRequestID:d];
       goto LABEL_21;
     }
 
-    v47 = a8;
-    if (a10 == 1)
+    optionsCopy = options;
+    if (direction == 1)
     {
       v29 = *MEMORY[0x277D74118];
-      v30 = [v27 objectForKeyedSubscript:*MEMORY[0x277D74118]];
+      v30 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D74118]];
       v31 = [v30 mutableCopy];
       v32 = v31;
       if (v31)
@@ -60,18 +60,18 @@
 
       v34 = v33;
 
-      v35 = [v34 alignment];
-      if (v35 == 2)
+      alignment = [v34 alignment];
+      if (alignment == 2)
       {
         v36 = 0;
       }
 
       else
       {
-        v36 = v35;
+        v36 = alignment;
       }
 
-      if (v35)
+      if (alignment)
       {
         v37 = v36;
       }
@@ -82,22 +82,22 @@
       }
 
       [v34 setAlignment:v37];
-      v38 = [v27 mutableCopy];
+      v38 = [attributesCopy mutableCopy];
       [v38 setObject:v34 forKeyedSubscript:v29];
 
-      v27 = v38;
-      a8 = v47;
+      attributesCopy = v38;
+      options = optionsCopy;
     }
 
-    if (v25)
+    if (stringCopy)
     {
       v39 = objc_alloc(MEMORY[0x277D3CE08]);
-      v69[0] = v25;
+      v69[0] = stringCopy;
       *v66 = width;
       *&v66[1] = height;
       v40 = [MEMORY[0x277CCAE60] valueWithBytes:v66 objCType:"{CGSize=dd}"];
       v69[1] = v40;
-      v41 = [MEMORY[0x277CCABB0] numberWithInteger:a8];
+      v41 = [MEMORY[0x277CCABB0] numberWithInteger:options];
       v69[2] = v41;
       v42 = MEMORY[0x277CBEA60];
       v43 = v69;
@@ -106,15 +106,15 @@
     else
     {
       v39 = objc_alloc(MEMORY[0x277D3CE08]);
-      if (v27)
+      if (attributesCopy)
       {
         v68[0] = v26;
-        v68[1] = v27;
+        v68[1] = attributesCopy;
         *v65 = width;
         *&v65[1] = height;
         v40 = [MEMORY[0x277CCAE60] valueWithBytes:v65 objCType:"{CGSize=dd}"];
         v68[2] = v40;
-        v41 = [MEMORY[0x277CCABB0] numberWithInteger:a8];
+        v41 = [MEMORY[0x277CCABB0] numberWithInteger:options];
         v68[3] = v41;
         v42 = MEMORY[0x277CBEA60];
         v43 = v68;
@@ -127,7 +127,7 @@
       *&v64[1] = height;
       v40 = [MEMORY[0x277CCAE60] valueWithBytes:v64 objCType:"{CGSize=dd}"];
       v67[1] = v40;
-      v41 = [MEMORY[0x277CCABB0] numberWithInteger:a8];
+      v41 = [MEMORY[0x277CCABB0] numberWithInteger:options];
       v67[2] = v41;
       v42 = MEMORY[0x277CBEA60];
       v43 = v67;
@@ -144,24 +144,24 @@ LABEL_20:
     v51[3] = &unk_2782A8860;
     v56 = width;
     v57 = height;
-    v52 = v25;
+    v52 = stringCopy;
     v53 = v26;
-    v27 = v27;
-    v54 = v27;
+    attributesCopy = attributesCopy;
+    v54 = attributesCopy;
     v58 = v23;
     v59 = v22;
-    v60 = v47;
-    v55 = v28;
-    v61 = a11;
-    v62 = a14;
-    v63 = a12;
+    v60 = optionsCopy;
+    v55 = contextCopy;
+    alignmentCopy = alignment;
+    paddingCopy = padding;
+    scaleCopy = scale;
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __233__PXGStringTextureProvider__requestTextureForAttributedString_attributedStringBoundingSize_string_withAttributes_targetSize_drawingOptions_drawingContext_userInterfaceDirection_verticalAlignment_screenScale_textureRequestID_padding___block_invoke_3;
     v48[3] = &unk_2782AC600;
     v50 = 0;
     v48[4] = self;
-    v49 = a13;
+    dCopy = d;
     [(PXGCGImageTextureProvider *)self requestCGImageWithCacheKey:v46 imageProvider:v51 resultHandler:v48];
   }
 
@@ -218,23 +218,23 @@ void __233__PXGStringTextureProvider__requestTextureForAttributedString_attribut
   PXGDrawAttributedString(v13, *(a1 + 80), *(a1 + 56), *(a1 + 88), a2, *(a1 + 64), *(a1 + 72), *(a1 + 96), *(a1 + 104), *(a1 + 112), *(a1 + 120), *(a1 + 128), v14, a3, a4, a5, a6, *(a1 + 128));
 }
 
-- (BOOL)_shouldRedrawForViewEnvironmentChange:(id)a3
+- (BOOL)_shouldRedrawForViewEnvironmentChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PXGTextureProvider *)self viewEnvironment];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  viewEnvironment = [(PXGTextureProvider *)self viewEnvironment];
+  userInterfaceStyle = [viewEnvironment userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  return v6 != v7;
+  return userInterfaceStyle != userInterfaceStyle2;
 }
 
-- (void)viewEnvironmentDidChange:(id)a3
+- (void)viewEnvironmentDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = PXGStringTextureProvider;
-  v4 = a3;
-  [(PXGTextureProvider *)&v7 viewEnvironmentDidChange:v4];
-  v5 = [(PXGStringTextureProvider *)self _shouldRedrawForViewEnvironmentChange:v4, v7.receiver, v7.super_class];
+  changeCopy = change;
+  [(PXGTextureProvider *)&v7 viewEnvironmentDidChange:changeCopy];
+  v5 = [(PXGStringTextureProvider *)self _shouldRedrawForViewEnvironmentChange:changeCopy, v7.receiver, v7.super_class];
 
   if (v5)
   {
@@ -246,19 +246,19 @@ void __233__PXGStringTextureProvider__requestTextureForAttributedString_attribut
   }
 }
 
-- (void)cancelTextureRequests:(id)a3
+- (void)cancelTextureRequests:(id)requests
 {
   v6.receiver = self;
   v6.super_class = PXGStringTextureProvider;
-  v4 = a3;
-  [(PXGTextureProvider *)&v6 cancelTextureRequests:v4];
+  requestsCopy = requests;
+  [(PXGTextureProvider *)&v6 cancelTextureRequests:requestsCopy];
   os_unfair_lock_lock(&self->_requestBlockLock);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__PXGStringTextureProvider_cancelTextureRequests___block_invoke;
   v5[3] = &unk_2782ABC08;
   v5[4] = self;
-  [v4 enumerateIndexesUsingBlock:v5];
+  [requestsCopy enumerateIndexesUsingBlock:v5];
 
   os_unfair_lock_unlock(&self->_requestBlockLock);
 }
@@ -269,22 +269,22 @@ void __50__PXGStringTextureProvider_cancelTextureRequests___block_invoke(uint64_
   [*(*(a1 + 32) + 264) removeObjectForKey:v3];
 }
 
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout
 {
-  v12 = a7;
+  layoutCopy = layout;
   val = self;
   v82.receiver = self;
   v82.super_class = PXGStringTextureProvider;
-  v58 = a6;
-  v13 = [(PXGTextureProvider *)&v82 requestTexturesForSpritesInRange:a3 geometries:a4 styles:a5 infos:a6 inLayout:v12];
+  infosCopy = infos;
+  v13 = [(PXGTextureProvider *)&v82 requestTexturesForSpritesInRange:range geometries:geometries styles:styles infos:infos inLayout:layoutCopy];
   v48 = v14;
   v49 = v13;
-  v15 = [v12 contentSource];
-  v57 = [v12 userInterfaceDirection];
-  [v12 displayScale];
+  contentSource = [layoutCopy contentSource];
+  userInterfaceDirection = [layoutCopy userInterfaceDirection];
+  [layoutCopy displayScale];
   v56 = v16;
-  v17 = HIDWORD(*&a3);
-  if (HIDWORD(*&a3))
+  v17 = HIDWORD(*&range);
+  if (HIDWORD(*&range))
   {
     v54 = *(MEMORY[0x277D3CF90] + 8);
     v55 = *MEMORY[0x277D3CF90];
@@ -293,11 +293,11 @@ void __50__PXGStringTextureProvider_cancelTextureRequests___block_invoke(uint64_
     v50 = *(MEMORY[0x277CCA870] + 8);
     v51 = *MEMORY[0x277CCA870];
     v18 = v49;
-    v63 = v15;
+    v63 = contentSource;
     do
     {
       v62 = v17;
-      v19 = [v15 attributedStringForSpriteAtIndex:a3 inLayout:v12];
+      v19 = [contentSource attributedStringForSpriteAtIndex:range inLayout:layoutCopy];
       if (v19)
       {
         v20 = 0;
@@ -306,14 +306,14 @@ void __50__PXGStringTextureProvider_cancelTextureRequests___block_invoke(uint64_
 
       else
       {
-        v21 = [v15 stringAtIndex:a3 inLayout:v12];
-        v20 = [v15 stringAttributesAtIndex:a3 inLayout:v12];
+        v21 = [contentSource stringAtIndex:range inLayout:layoutCopy];
+        v20 = [contentSource stringAttributesAtIndex:range inLayout:layoutCopy];
       }
 
-      v22 = [v15 verticalAlignmentForStringAtIndex:a3 inLayout:v12];
-      if ([v12 stringSourceRespondsTo])
+      v22 = [contentSource verticalAlignmentForStringAtIndex:range inLayout:layoutCopy];
+      if ([layoutCopy stringSourceRespondsTo])
       {
-        v23 = [v15 stringDrawingOptionsForSpriteAtIndex:a3 inLayout:v12];
+        v23 = [contentSource stringDrawingOptionsForSpriteAtIndex:range inLayout:layoutCopy];
       }
 
       else
@@ -325,18 +325,18 @@ void __50__PXGStringTextureProvider_cancelTextureRequests___block_invoke(uint64_
       v25 = v53;
       v26 = v54;
       v27 = v55;
-      if (([v12 stringSourceRespondsTo] & 0x100) != 0)
+      if (([layoutCopy stringSourceRespondsTo] & 0x100) != 0)
       {
-        [v63 paddingForSpriteAtIndex:a3 inLayout:v12];
+        [v63 paddingForSpriteAtIndex:range inLayout:layoutCopy];
         v27 = v28;
         v26 = v29;
         v25 = v30;
         v24 = v31;
       }
 
-      if (([v12 stringSourceRespondsTo] & 0x10000) != 0)
+      if (([layoutCopy stringSourceRespondsTo] & 0x10000) != 0)
       {
-        v32 = [v63 drawingContextForSpriteAtIndex:a3 inLayout:v12];
+        v32 = [v63 drawingContextForSpriteAtIndex:range inLayout:layoutCopy];
       }
 
       else
@@ -346,14 +346,14 @@ void __50__PXGStringTextureProvider_cancelTextureRequests___block_invoke(uint64_
 
       v34 = v50;
       v33 = v51;
-      if (([v12 stringSourceRespondsTo] & 0x1000000) != 0)
+      if (([layoutCopy stringSourceRespondsTo] & 0x1000000) != 0)
       {
-        [v63 attributedStringBoundingSizeForSpriteAtIndex:a3 inLayout:v12];
+        [v63 attributedStringBoundingSizeForSpriteAtIndex:range inLayout:layoutCopy];
         v33 = v35;
         v34 = v36;
       }
 
-      v37 = *(&v58->var3 + 5 * a3.location);
+      v37 = *(&infosCopy->var3 + 5 * range.location);
       objc_initWeak(&location, val);
       v65[0] = MEMORY[0x277D85DD0];
       v65[1] = 3221225472;
@@ -372,7 +372,7 @@ void __50__PXGStringTextureProvider_cancelTextureRequests___block_invoke(uint64_
       v72 = v23;
       v38 = v32;
       v69 = v38;
-      v73 = v57;
+      v73 = userInterfaceDirection;
       v74 = v22;
       v80 = v18;
       v75 = v56;
@@ -402,8 +402,8 @@ void __50__PXGStringTextureProvider_cancelTextureRequests___block_invoke(uint64_
       objc_destroyWeak(&location);
 
       v18 = (v18 + 1);
-      a3 = (a3.location + 1);
-      v15 = v63;
+      range = (range.location + 1);
+      contentSource = v63;
       v17 = v62 - 1;
     }
 

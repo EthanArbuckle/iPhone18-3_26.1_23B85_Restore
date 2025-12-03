@@ -1,8 +1,8 @@
 @interface ScrollPocketBarInteraction
 - (UIView)view;
 - (_TtC7SwiftUIP33_2144E363A5C573328950F48844B228C426ScrollPocketBarInteraction)init;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation ScrollPocketBarInteraction
@@ -14,18 +14,18 @@
   return Strong;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   specialized ScrollPocketBarInteraction.willMove(to:)();
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  ScrollPocketBarInteraction.didMove(to:)(a3);
+  viewCopy = view;
+  selfCopy = self;
+  ScrollPocketBarInteraction.didMove(to:)(view);
 }
 
 - (_TtC7SwiftUIP33_2144E363A5C573328950F48844B228C426ScrollPocketBarInteraction)init

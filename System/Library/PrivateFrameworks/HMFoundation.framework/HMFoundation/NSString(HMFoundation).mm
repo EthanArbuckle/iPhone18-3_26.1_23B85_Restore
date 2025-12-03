@@ -7,50 +7,50 @@
 
 - (id)hmf_stringWithSmallestEncoding
 {
-  v2 = [a1 cStringUsingEncoding:1];
+  v2 = [self cStringUsingEncoding:1];
   if (v2)
   {
     v3 = v2;
     v4 = MEMORY[0x277CCACA8];
     v5 = 1;
 LABEL_5:
-    v8 = [v4 stringWithCString:v3 encoding:v5];
+    selfCopy = [v4 stringWithCString:v3 encoding:v5];
     goto LABEL_6;
   }
 
-  v6 = [a1 smallestEncoding];
-  v7 = [a1 cStringUsingEncoding:v6];
+  smallestEncoding = [self smallestEncoding];
+  v7 = [self cStringUsingEncoding:smallestEncoding];
   if (v7)
   {
     v3 = v7;
     v4 = MEMORY[0x277CCACA8];
-    v5 = v6;
+    v5 = smallestEncoding;
     goto LABEL_5;
   }
 
-  v8 = a1;
+  selfCopy = self;
 LABEL_6:
 
-  return v8;
+  return selfCopy;
 }
 
 - (BOOL)hmf_isInteger
 {
   v1 = MEMORY[0x277CCA900];
-  v2 = a1;
-  v3 = [v1 whitespaceCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  selfCopy = self;
+  whitespaceCharacterSet = [v1 whitespaceCharacterSet];
+  v4 = [selfCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   v5 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"+-"];
   v6 = [v4 stringByTrimmingCharactersInSet:v5];
 
-  v7 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v8 = [v6 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
-  v9 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v10 = [v9 invertedSet];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
 
-  v11 = [v8 rangeOfCharacterFromSet:v10] == 0x7FFFFFFFFFFFFFFFLL;
+  v11 = [v8 rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL;
   return v11;
 }
 

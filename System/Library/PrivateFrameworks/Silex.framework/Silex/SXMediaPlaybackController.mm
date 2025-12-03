@@ -1,66 +1,66 @@
 @interface SXMediaPlaybackController
-- (id)initWithViewport:(id *)a1;
-- (void)registerMediaPlayBack:(uint64_t)a1;
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4;
+- (id)initWithViewport:(id *)viewport;
+- (void)registerMediaPlayBack:(uint64_t)back;
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state;
 @end
 
 @implementation SXMediaPlaybackController
 
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state
 {
-  v6 = a3;
-  if (a4 != 3)
+  viewportCopy = viewport;
+  if (state != 3)
   {
-    v8 = v6;
-    v7 = [v6 appearState] == 3;
-    v6 = v8;
+    v8 = viewportCopy;
+    v7 = [viewportCopy appearState] == 3;
+    viewportCopy = v8;
     if (v7)
     {
       [SXMediaPlaybackController viewport:? appearStateChangedFromState:?];
-      v6 = v8;
+      viewportCopy = v8;
     }
   }
 }
 
-- (id)initWithViewport:(id *)a1
+- (id)initWithViewport:(id *)viewport
 {
   v4 = a2;
-  if (a1)
+  if (viewport)
   {
-    v7.receiver = a1;
+    v7.receiver = viewport;
     v7.super_class = SXMediaPlaybackController;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    viewport = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 2, a2);
-      [v4 addViewportChangeListener:a1 forOptions:8];
+      [v4 addViewportChangeListener:viewport forOptions:8];
     }
   }
 
-  return a1;
+  return viewport;
 }
 
-- (void)registerMediaPlayBack:(uint64_t)a1
+- (void)registerMediaPlayBack:(uint64_t)back
 {
   v3 = a2;
-  if (a1)
+  if (back)
   {
     obj = v3;
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((back + 8));
     if (WeakRetained)
     {
       v5 = WeakRetained;
-      v6 = objc_loadWeakRetained((a1 + 8));
+      v6 = objc_loadWeakRetained((back + 8));
 
       if (v6 != obj)
       {
-        v7 = objc_loadWeakRetained((a1 + 8));
+        v7 = objc_loadWeakRetained((back + 8));
         [v7 pauseMediaPlayback];
       }
     }
 
-    objc_storeWeak((a1 + 8), obj);
+    objc_storeWeak((back + 8), obj);
     v3 = obj;
   }
 }

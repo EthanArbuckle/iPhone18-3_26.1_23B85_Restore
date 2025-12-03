@@ -1,21 +1,21 @@
 @interface TRIPeekEnumerator
-- (TRIPeekEnumerator)initWithEnumerator:(id)a3;
+- (TRIPeekEnumerator)initWithEnumerator:(id)enumerator;
 - (id)nextObject;
 - (id)peekNextObject;
 @end
 
 @implementation TRIPeekEnumerator
 
-- (TRIPeekEnumerator)initWithEnumerator:(id)a3
+- (TRIPeekEnumerator)initWithEnumerator:(id)enumerator
 {
-  v5 = a3;
+  enumeratorCopy = enumerator;
   v9.receiver = self;
   v9.super_class = TRIPeekEnumerator;
   v6 = [(TRIPeekEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingEnum, a3);
+    objc_storeStrong(&v6->_underlyingEnum, enumerator);
   }
 
   return v7;
@@ -26,9 +26,9 @@
   peek = self->_peek;
   if (!peek)
   {
-    v4 = [(NSEnumerator *)self->_underlyingEnum nextObject];
+    nextObject = [(NSEnumerator *)self->_underlyingEnum nextObject];
     v5 = self->_peek;
-    self->_peek = v4;
+    self->_peek = nextObject;
 
     peek = self->_peek;
   }
@@ -43,17 +43,17 @@
   peek = self->_peek;
   if (peek)
   {
-    v4 = peek;
+    nextObject = peek;
     v5 = self->_peek;
     self->_peek = 0;
   }
 
   else
   {
-    v4 = [(NSEnumerator *)self->_underlyingEnum nextObject];
+    nextObject = [(NSEnumerator *)self->_underlyingEnum nextObject];
   }
 
-  return v4;
+  return nextObject;
 }
 
 @end

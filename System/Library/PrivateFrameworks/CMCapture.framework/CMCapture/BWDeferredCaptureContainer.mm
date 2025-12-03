@@ -1,34 +1,34 @@
 @interface BWDeferredCaptureContainer
-+ (id)captureRequestIdentifierForManifest:(id)a3;
-+ (id)timeForManifest:(id)a3 index:(unint64_t)a4;
-- (BWDeferredCaptureContainer)initWithApplicationID:(id)a3 captureRequestIdentifier:(id)a4 baseFolderURL:(id)a5 flushBuffersUponCommit:(BOOL)a6 err:(int *)a7;
-- (id)copyXPCEncoding:(int *)a3;
++ (id)captureRequestIdentifierForManifest:(id)manifest;
++ (id)timeForManifest:(id)manifest index:(unint64_t)index;
+- (BWDeferredCaptureContainer)initWithApplicationID:(id)d captureRequestIdentifier:(id)identifier baseFolderURL:(id)l flushBuffersUponCommit:(BOOL)commit err:(int *)err;
+- (id)copyXPCEncoding:(int *)encoding;
 - (int)abort;
 - (int)commit;
-- (int)commitArray:(id)a3 tag:(id)a4;
-- (int)commitBuffer:(__CVBuffer *)a3 tag:(id)a4 bufferType:(unint64_t)a5 captureFrameFlags:(unint64_t)a6 compressionProfile:(int)a7 metadataTag:(id)a8 rawThumbnailsBufferTag:(id)a9 rawThumbnailsMetadataTag:(id)a10 mainRawThumbnailBufferTag:(id)a11 mainRawThumbnailMetadataTag:(id)a12 sifrRawThumbnailBufferTag:(id)a13 sifrRawThumbnailMetadataTag:(id)a14 portType:(id)a15;
-- (int)commitDictionary:(id)a3 tag:(id)a4;
-- (int)commitInference:(id)a3 tag:(id)a4 inferenceAttachmentKey:(id)a5 portType:(id)a6;
-- (int)commitInferenceBuffer:(__CVBuffer *)a3 tag:(id)a4 metadataTag:(id)a5 inferenceAttachedMediaKey:(id)a6 compressionProfile:(int)a7 portType:(id)a8;
-- (int)commitMetadata:(id)a3 tag:(id)a4 bufferTag:(id)a5;
-- (int)commitPhotoDescriptor:(id)a3;
-- (int)commitStillImageSettings:(id)a3;
+- (int)commitArray:(id)array tag:(id)tag;
+- (int)commitBuffer:(__CVBuffer *)buffer tag:(id)tag bufferType:(unint64_t)type captureFrameFlags:(unint64_t)flags compressionProfile:(int)profile metadataTag:(id)metadataTag rawThumbnailsBufferTag:(id)bufferTag rawThumbnailsMetadataTag:(id)self0 mainRawThumbnailBufferTag:(id)self1 mainRawThumbnailMetadataTag:(id)self2 sifrRawThumbnailBufferTag:(id)self3 sifrRawThumbnailMetadataTag:(id)self4 portType:(id)self5;
+- (int)commitDictionary:(id)dictionary tag:(id)tag;
+- (int)commitInference:(id)inference tag:(id)tag inferenceAttachmentKey:(id)key portType:(id)type;
+- (int)commitInferenceBuffer:(__CVBuffer *)buffer tag:(id)tag metadataTag:(id)metadataTag inferenceAttachedMediaKey:(id)key compressionProfile:(int)profile portType:(id)type;
+- (int)commitMetadata:(id)metadata tag:(id)tag bufferTag:(id)bufferTag;
+- (int)commitPhotoDescriptor:(id)descriptor;
+- (int)commitStillImageSettings:(id)settings;
 - (int)flush;
 - (int)preflush;
-- (int)waitForFlushWithTimeoutInSeconds:(int)a3;
-- (uint64_t)_addIntermediateObjectToXPCDictionary:(void *)a3 xpcDictionary:;
+- (int)waitForFlushWithTimeoutInSeconds:(int)seconds;
+- (uint64_t)_addIntermediateObjectToXPCDictionary:(void *)dictionary xpcDictionary:;
 - (uint64_t)_createFolders;
 - (void)dealloc;
 @end
 
 @implementation BWDeferredCaptureContainer
 
-+ (id)captureRequestIdentifierForManifest:(id)a3
++ (id)captureRequestIdentifierForManifest:(id)manifest
 {
-  if (a3)
+  if (manifest)
   {
 
-    return [a3 objectForKeyedSubscript:@"CaptureRequestIdentifier"];
+    return [manifest objectForKeyedSubscript:@"CaptureRequestIdentifier"];
   }
 
   else
@@ -38,24 +38,24 @@
   }
 }
 
-- (BWDeferredCaptureContainer)initWithApplicationID:(id)a3 captureRequestIdentifier:(id)a4 baseFolderURL:(id)a5 flushBuffersUponCommit:(BOOL)a6 err:(int *)a7
+- (BWDeferredCaptureContainer)initWithApplicationID:(id)d captureRequestIdentifier:(id)identifier baseFolderURL:(id)l flushBuffersUponCommit:(BOOL)commit err:(int *)err
 {
   v13 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
-    [BWDeferredCaptureContainer initWithApplicationID:a4 captureRequestIdentifier:? baseFolderURL:? flushBuffersUponCommit:? err:?];
+    [BWDeferredCaptureContainer initWithApplicationID:identifier captureRequestIdentifier:? baseFolderURL:? flushBuffersUponCommit:? err:?];
   }
 
   v17 = 0;
   v16.receiver = self;
   v16.super_class = BWDeferredCaptureContainer;
-  v14 = [(BWDeferredContainer *)&v16 initWithApplicationID:a3 captureRequestIdentifier:a4 baseFolderURL:a5 queuePriority:14 err:&v17];
+  v14 = [(BWDeferredContainer *)&v16 initWithApplicationID:d captureRequestIdentifier:identifier baseFolderURL:l queuePriority:14 err:&v17];
   if (v14)
   {
-    [+[BWDeferredTransactionBroker sharedInstance](BWDeferredTransactionBroker openTransaction:"openTransaction:name:" name:3, a4];
+    [+[BWDeferredTransactionBroker sharedInstance](BWDeferredTransactionBroker openTransaction:"openTransaction:name:" name:3, identifier];
     v14->_flushQueue = FigDispatchQueueCreateWithPriority();
     v14->_flushGroup = dispatch_group_create();
-    v14->_flushBuffersUponCommit = a6;
+    v14->_flushBuffersUponCommit = commit;
     v14->_committed = 0;
     v14->_preflushed = 0;
     v14->_cacheExpiryTime = -1;
@@ -64,9 +64,9 @@
     v14->super._pipelineParameters = objc_alloc_init(BWDeferredPipelineParameters);
   }
 
-  if (a7)
+  if (err)
   {
-    *a7 = v17;
+    *err = v17;
   }
 
   if (*v13 == 1)
@@ -88,7 +88,7 @@
   [(BWDeferredContainer *)&v3 dealloc];
 }
 
-- (id)copyXPCEncoding:(int *)a3
+- (id)copyXPCEncoding:(int *)encoding
 {
   pthread_rwlock_rdlock(&self->super._lock);
   v5 = xpc_dictionary_create(0, 0, 0);
@@ -201,15 +201,15 @@ LABEL_16:
   }
 
 LABEL_18:
-  if (a3)
+  if (encoding)
   {
-    *a3 = v20;
+    *encoding = v20;
   }
 
   return v5;
 }
 
-- (int)commitStillImageSettings:(id)a3
+- (int)commitStillImageSettings:(id)settings
 {
   v5 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -218,7 +218,7 @@ LABEL_18:
   }
 
   pthread_rwlock_wrlock(&self->super._lock);
-  if (![a3 captureSettings])
+  if (![settings captureSettings])
   {
     [BWDeferredCaptureContainer commitStillImageSettings:];
 LABEL_14:
@@ -226,13 +226,13 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if (![a3 requestedSettings])
+  if (![settings requestedSettings])
   {
     [BWDeferredCaptureContainer commitStillImageSettings:];
     goto LABEL_14;
   }
 
-  if (![a3 processingSettings])
+  if (![settings processingSettings])
   {
     [BWDeferredCaptureContainer commitStillImageSettings:];
     goto LABEL_14;
@@ -246,9 +246,9 @@ LABEL_14:
 
   else
   {
-    self->super._stillImageCaptureSettings = [a3 captureSettings];
-    self->super._stillImageSettings = [objc_msgSend(a3 "requestedSettings")];
-    self->super._stillImageProcessingSettings = [a3 processingSettings];
+    self->super._stillImageCaptureSettings = [settings captureSettings];
+    self->super._stillImageSettings = [objc_msgSend(settings "requestedSettings")];
+    self->super._stillImageProcessingSettings = [settings processingSettings];
     pthread_rwlock_unlock(&self->super._lock);
     v6 = 0;
   }
@@ -270,7 +270,7 @@ uint64_t __52__BWDeferredCaptureContainer_commitPhotoDescriptor___block_invoke(u
   return [v3 isEqualToString:v4];
 }
 
-- (int)commitInference:(id)a3 tag:(id)a4 inferenceAttachmentKey:(id)a5 portType:(id)a6
+- (int)commitInference:(id)inference tag:(id)tag inferenceAttachmentKey:(id)key portType:(id)type
 {
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -280,7 +280,7 @@ uint64_t __52__BWDeferredCaptureContainer_commitPhotoDescriptor___block_invoke(u
   pthread_rwlock_wrlock(&self->super._lock);
   v11 = 0;
   v12 = -16134;
-  if (a3 && a4 && a5)
+  if (inference && tag && key)
   {
     if (self->_committed)
     {
@@ -289,23 +289,23 @@ uint64_t __52__BWDeferredCaptureContainer_commitPhotoDescriptor___block_invoke(u
 
     else
     {
-      if ([a3 conformsToProtocol:&unk_1F224F640])
+      if ([inference conformsToProtocol:&unk_1F224F640])
       {
-        v13 = [a3 copy];
+        inferenceCopy = [inference copy];
       }
 
       else
       {
-        v13 = a3;
+        inferenceCopy = inference;
       }
 
-      v11 = v13;
-      if (![(BWDeferredContainer *)self _intermediateForTag:a4])
+      v11 = inferenceCopy;
+      if (![(BWDeferredContainer *)self _intermediateForTag:tag])
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [[BWDeferredInferenceArrayIntermediate alloc] initWithArray:v11 tag:a4 inferenceAttachmentKey:a5 portType:a6 URL:[(BWDeferredContainer *)self _intermediateArrayURLForTag:a4]];
+          v14 = [[BWDeferredInferenceArrayIntermediate alloc] initWithArray:v11 tag:tag inferenceAttachmentKey:key portType:type URL:[(BWDeferredContainer *)self _intermediateArrayURLForTag:tag]];
         }
 
         else
@@ -313,11 +313,11 @@ uint64_t __52__BWDeferredCaptureContainer_commitPhotoDescriptor___block_invoke(u
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Committing a deferred inference for key '%@' of type %@ must be implemented.", a5, objc_opt_class()), 0}];
+            v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Committing a deferred inference for key '%@' of type %@ must be implemented.", key, objc_opt_class()), 0}];
             objc_exception_throw(v17);
           }
 
-          v14 = [[BWDeferredInferenceDictionaryIntermediate alloc] initWithDictionary:v11 tag:a4 inferenceAttachmentKey:a5 portType:a6 URL:[(BWDeferredContainer *)self _intermediateArrayURLForTag:a4]];
+          v14 = [[BWDeferredInferenceDictionaryIntermediate alloc] initWithDictionary:v11 tag:tag inferenceAttachmentKey:key portType:type URL:[(BWDeferredContainer *)self _intermediateArrayURLForTag:tag]];
         }
 
         v15 = v14;
@@ -456,7 +456,7 @@ LABEL_18:
   UpTimeNanoseconds = FigGetUpTimeNanoseconds();
   if (!self->_committed || !self->_preflushed)
   {
-    v17 = -16131;
+    code = -16131;
 LABEL_27:
     pthread_rwlock_unlock(&self->super._lock);
 LABEL_28:
@@ -474,18 +474,18 @@ LABEL_28:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  v7 = [(BWDeferredCaptureContainer *)self _createFolders];
-  if (v7)
+  _createFolders = [(BWDeferredCaptureContainer *)self _createFolders];
+  if (_createFolders)
   {
-    v17 = v7;
+    code = _createFolders;
     [BWDeferredCaptureContainer flush];
     goto LABEL_27;
   }
 
-  v8 = [(BWDeferredContainer *)self _writeManifest];
-  if (v8)
+  _writeManifest = [(BWDeferredContainer *)self _writeManifest];
+  if (_writeManifest)
   {
-    v17 = v8;
+    code = _writeManifest;
     [BWDeferredCaptureContainer flush];
     goto LABEL_27;
   }
@@ -513,10 +513,10 @@ LABEL_28:
               objc_enumerationMutation(intermediates);
             }
 
-            v14 = [*(*(&v28 + 1) + 8 * i) flush];
-            if (v14)
+            flush = [*(*(&v28 + 1) + 8 * i) flush];
+            if (flush)
             {
-              v17 = v14;
+              code = flush;
               [BWDeferredCaptureContainer flush];
               goto LABEL_27;
             }
@@ -538,12 +538,12 @@ LABEL_28:
       if (dispatch_group_wait(flushGroup, v16))
       {
         [BWDeferredCaptureContainer flush];
-        v17 = -16138;
+        code = -16138;
       }
 
       else
       {
-        v17 = 0;
+        code = 0;
       }
 
       self->_flushDurationNS = FigGetUpTimeNanoseconds() - v5;
@@ -551,17 +551,17 @@ LABEL_28:
 
     else
     {
-      v17 = [v42[0] code];
+      code = [v42[0] code];
     }
   }
 
   else
   {
-    v17 = [v42[0] code];
+    code = [v42[0] code];
   }
 
   pthread_rwlock_unlock(&self->super._lock);
-  if (v17)
+  if (code)
   {
     goto LABEL_28;
   }
@@ -585,15 +585,15 @@ LABEL_29:
 
     if (v20)
     {
-      v21 = [(BWStillImageCaptureSettings *)self->super._stillImageCaptureSettings settingsID];
-      v22 = [(BWStillImageCaptureSettings *)self->super._stillImageCaptureSettings applicationID];
+      settingsID = [(BWStillImageCaptureSettings *)self->super._stillImageCaptureSettings settingsID];
+      applicationID = [(BWStillImageCaptureSettings *)self->super._stillImageCaptureSettings applicationID];
       captureRequestIdentifier = self->super._captureRequestIdentifier;
       v32 = 136315907;
       v33 = "[BWDeferredCaptureContainer flush]";
       v34 = 2048;
-      v35 = v21;
+      v35 = settingsID;
       v36 = 2113;
-      v37 = v22;
+      v37 = applicationID;
       v38 = 2113;
       v39 = captureRequestIdentifier;
       _os_log_send_and_compose_impl();
@@ -607,10 +607,10 @@ LABEL_29:
     kdebug_trace();
   }
 
-  return v17;
+  return code;
 }
 
-- (int)waitForFlushWithTimeoutInSeconds:(int)a3
+- (int)waitForFlushWithTimeoutInSeconds:(int)seconds
 {
   v5 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -619,7 +619,7 @@ LABEL_29:
   }
 
   flushGroup = self->_flushGroup;
-  v7 = dispatch_time(0, 1000000000 * a3);
+  v7 = dispatch_time(0, 1000000000 * seconds);
   if (dispatch_group_wait(flushGroup, v7))
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -641,9 +641,9 @@ LABEL_29:
   return v8;
 }
 
-+ (id)timeForManifest:(id)a3 index:(unint64_t)a4
++ (id)timeForManifest:(id)manifest index:(unint64_t)index
 {
-  if (!a3 || (v5 = [a3 objectForKeyedSubscript:@"Photos"]) == 0 || (v6 = objc_msgSend(v5, "objectAtIndexedSubscript:", a4)) == 0)
+  if (!manifest || (v5 = [manifest objectForKeyedSubscript:@"Photos"]) == 0 || (v6 = objc_msgSend(v5, "objectAtIndexedSubscript:", index)) == 0)
   {
     OUTLINED_FUNCTION_0();
     FigDebugAssert3();
@@ -662,7 +662,7 @@ LABEL_29:
   return [v8 dateFromString:?];
 }
 
-- (uint64_t)_addIntermediateObjectToXPCDictionary:(void *)a3 xpcDictionary:
+- (uint64_t)_addIntermediateObjectToXPCDictionary:(void *)dictionary xpcDictionary:
 {
   if (result)
   {
@@ -670,7 +670,7 @@ LABEL_29:
     v5 = xpc_dictionary_create(0, 0, 0);
     if (v5)
     {
-      xpc_dictionary_set_value(a3, [objc_msgSend(a2 "tag")], v5);
+      xpc_dictionary_set_value(dictionary, [objc_msgSend(a2 "tag")], v5);
       v6 = [a2 archive:&v7];
       if (v6)
       {
@@ -707,8 +707,8 @@ LABEL_5:
     }
 
     [MEMORY[0x1E696AC08] defaultManager];
-    v2 = [*(v1 + 216) path];
-    if (OUTLINED_FUNCTION_63_11(v2, v3, v2, v4, v5, v6))
+    path = [*(v1 + 216) path];
+    if (OUTLINED_FUNCTION_63_11(path, v3, path, v4, v5, v6))
     {
       v31[0] = [*(v1 + 216) path];
       v31[1] = @"Intermediates";
@@ -739,9 +739,9 @@ LABEL_5:
   return result;
 }
 
-- (int)commitPhotoDescriptor:(id)a3
+- (int)commitPhotoDescriptor:(id)descriptor
 {
-  v6 = [a3 photoIdentifier];
+  photoIdentifier = [descriptor photoIdentifier];
   OUTLINED_FUNCTION_57_10();
   if (v7)
   {
@@ -751,12 +751,12 @@ LABEL_5:
   }
 
   pthread_rwlock_wrlock(&self->super._lock);
-  if (!v6)
+  if (!photoIdentifier)
   {
     goto LABEL_17;
   }
 
-  if (!a3)
+  if (!descriptor)
   {
     v18[5] = 0;
     v19 = 0;
@@ -764,7 +764,7 @@ LABEL_5:
     goto LABEL_17;
   }
 
-  [a3 presentationTimeStamp];
+  [descriptor presentationTimeStamp];
   if ((v19 & 0x100000000) == 0)
   {
 LABEL_17:
@@ -787,18 +787,18 @@ LABEL_17:
     v18[1] = 3221225472;
     v18[2] = __52__BWDeferredCaptureContainer_commitPhotoDescriptor___block_invoke;
     v18[3] = &unk_1E79998B0;
-    v18[4] = a3;
+    v18[4] = descriptor;
     [(NSMutableArray *)photoDescriptors indexOfObjectPassingTest:v18];
     OUTLINED_FUNCTION_79();
     if (v7)
     {
-      v9 = [a3 processingFlags] & 0xFFFFCFFF;
+      v9 = [descriptor processingFlags] & 0xFFFFCFFF;
       v10 = [BWPhotoDescriptor alloc];
-      v11 = [OUTLINED_FUNCTION_18_0() photoIdentifier];
-      v12 = [a3 time];
-      v13 = [a3 timeZone];
-      [a3 presentationTimeStamp];
-      v14 = [v3 initWithPhotoIdentifier:v11 processingFlags:v9 | 0x2000u time:v12 timeZone:v13 presentationTimeStamp:v17];
+      photoIdentifier2 = [OUTLINED_FUNCTION_18_0() photoIdentifier];
+      time = [descriptor time];
+      timeZone = [descriptor timeZone];
+      [descriptor presentationTimeStamp];
+      v14 = [v3 initWithPhotoIdentifier:photoIdentifier2 processingFlags:v9 | 0x2000u time:time timeZone:timeZone presentationTimeStamp:v17];
       [(NSMutableArray *)self->super._photoDescriptors addObject:v14];
 
       v15 = 0;
@@ -819,7 +819,7 @@ LABEL_11:
   return v15;
 }
 
-- (int)commitArray:(id)a3 tag:(id)a4
+- (int)commitArray:(id)array tag:(id)tag
 {
   OUTLINED_FUNCTION_39_14();
   OUTLINED_FUNCTION_19_2();
@@ -875,7 +875,7 @@ LABEL_9:
   return v9;
 }
 
-- (int)commitBuffer:(__CVBuffer *)a3 tag:(id)a4 bufferType:(unint64_t)a5 captureFrameFlags:(unint64_t)a6 compressionProfile:(int)a7 metadataTag:(id)a8 rawThumbnailsBufferTag:(id)a9 rawThumbnailsMetadataTag:(id)a10 mainRawThumbnailBufferTag:(id)a11 mainRawThumbnailMetadataTag:(id)a12 sifrRawThumbnailBufferTag:(id)a13 sifrRawThumbnailMetadataTag:(id)a14 portType:(id)a15
+- (int)commitBuffer:(__CVBuffer *)buffer tag:(id)tag bufferType:(unint64_t)type captureFrameFlags:(unint64_t)flags compressionProfile:(int)profile metadataTag:(id)metadataTag rawThumbnailsBufferTag:(id)bufferTag rawThumbnailsMetadataTag:(id)self0 mainRawThumbnailBufferTag:(id)self1 mainRawThumbnailMetadataTag:(id)self2 sifrRawThumbnailBufferTag:(id)self3 sifrRawThumbnailMetadataTag:(id)self4 portType:(id)self5
 {
   v22 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -886,26 +886,26 @@ LABEL_9:
   }
 
   pthread_rwlock_wrlock(&self->super._lock);
-  v23 = -16134;
-  if (a3 && a4)
+  _createFolders = -16134;
+  if (buffer && tag)
   {
     if (self->_committed)
     {
-      v23 = -16135;
+      _createFolders = -16135;
     }
 
     else
     {
-      LODWORD(v27) = a7;
-      [[BWDeferredBufferIntermediate alloc] initWithBuffer:a3 tag:a4 bufferType:a5 captureFrameFlags:a6 metadataTag:a8 rawThumbnailsBufferTag:a9 rawThumbnailsMetadataTag:a10 mainRawThumbnailBufferTag:a11 mainRawThumbnailMetadataTag:a12 sifrRawThumbnailBufferTag:a13 sifrRawThumbnailMetadataTag:a14 portType:a15 compressionProfile:v27 URL:[(BWDeferredContainer *)self _intermediateBufferURLForTag:a4 compressionProfile:a7]];
+      LODWORD(v27) = profile;
+      [[BWDeferredBufferIntermediate alloc] initWithBuffer:buffer tag:tag bufferType:type captureFrameFlags:flags metadataTag:metadataTag rawThumbnailsBufferTag:bufferTag rawThumbnailsMetadataTag:thumbnailsMetadataTag mainRawThumbnailBufferTag:thumbnailBufferTag mainRawThumbnailMetadataTag:thumbnailMetadataTag sifrRawThumbnailBufferTag:rawThumbnailBufferTag sifrRawThumbnailMetadataTag:rawThumbnailMetadataTag portType:portType compressionProfile:v27 URL:[(BWDeferredContainer *)self _intermediateBufferURLForTag:tag compressionProfile:profile]];
       OUTLINED_FUNCTION_69_4();
       [OUTLINED_FUNCTION_8() setSettingsID:?];
       OUTLINED_FUNCTION_73_5();
 
       if (self->_flushBuffersUponCommit)
       {
-        v23 = [(BWDeferredCaptureContainer *)self _createFolders];
-        if (v23)
+        _createFolders = [(BWDeferredCaptureContainer *)self _createFolders];
+        if (_createFolders)
         {
           FigDebugAssert3();
         }
@@ -918,14 +918,14 @@ LABEL_9:
           block[1] = 3221225472;
           block[2] = __272__BWDeferredCaptureContainer_commitBuffer_tag_bufferType_captureFrameFlags_compressionProfile_metadataTag_rawThumbnailsBufferTag_rawThumbnailsMetadataTag_mainRawThumbnailBufferTag_mainRawThumbnailMetadataTag_sifrRawThumbnailBufferTag_sifrRawThumbnailMetadataTag_portType___block_invoke;
           block[3] = &unk_1E798F870;
-          block[4] = a14;
+          block[4] = rawThumbnailMetadataTag;
           dispatch_group_async(flushGroup, flushQueue, block);
         }
       }
 
       else
       {
-        v23 = 0;
+        _createFolders = 0;
       }
 
       v22 = MEMORY[0x1E695FF58];
@@ -940,10 +940,10 @@ LABEL_9:
     kdebug_trace();
   }
 
-  return v23;
+  return _createFolders;
 }
 
-- (int)commitMetadata:(id)a3 tag:(id)a4 bufferTag:(id)a5
+- (int)commitMetadata:(id)metadata tag:(id)tag bufferTag:(id)bufferTag
 {
   OUTLINED_FUNCTION_57_10();
   if (v9)
@@ -956,7 +956,7 @@ LABEL_9:
   pthread_rwlock_wrlock(&self->super._lock);
   v10 = 0;
   v11 = -16134;
-  if (a3 && a4)
+  if (metadata && tag)
   {
     if (self->_committed)
     {
@@ -965,10 +965,10 @@ LABEL_9:
 
     else
     {
-      v10 = [a3 copy];
-      if (![(BWDeferredContainer *)self _intermediateForTag:a4])
+      v10 = [metadata copy];
+      if (![(BWDeferredContainer *)self _intermediateForTag:tag])
       {
-        [[BWDeferredMetadataIntermediate alloc] initWithMetadata:v10 tag:a4 bufferTag:a5 URL:[(BWDeferredContainer *)self _intermediateArrayURLForTag:a4]];
+        [[BWDeferredMetadataIntermediate alloc] initWithMetadata:v10 tag:tag bufferTag:bufferTag URL:[(BWDeferredContainer *)self _intermediateArrayURLForTag:tag]];
         OUTLINED_FUNCTION_69_4();
         [OUTLINED_FUNCTION_8() setSettingsID:?];
         OUTLINED_FUNCTION_73_5();
@@ -994,9 +994,9 @@ LABEL_9:
   return v11;
 }
 
-- (int)commitInferenceBuffer:(__CVBuffer *)a3 tag:(id)a4 metadataTag:(id)a5 inferenceAttachedMediaKey:(id)a6 compressionProfile:(int)a7 portType:(id)a8
+- (int)commitInferenceBuffer:(__CVBuffer *)buffer tag:(id)tag metadataTag:(id)metadataTag inferenceAttachedMediaKey:(id)key compressionProfile:(int)profile portType:(id)type
 {
-  v9 = *&a7;
+  v9 = *&profile;
   OUTLINED_FUNCTION_16_2();
   if (v15)
   {
@@ -1006,25 +1006,25 @@ LABEL_9:
   }
 
   pthread_rwlock_wrlock(&self->super._lock);
-  v16 = -16134;
-  if (a3 && a4 && a6)
+  _createFolders = -16134;
+  if (buffer && tag && key)
   {
     if (self->_committed)
     {
-      v16 = -16135;
+      _createFolders = -16135;
     }
 
     else
     {
-      v17 = [[BWDeferredInferenceBufferIntermediate alloc] initWithBuffer:a3 tag:a4 metadataTag:a5 inferenceAttachedMediaKey:a6 portType:a8 compressionProfile:v9 URL:[(BWDeferredContainer *)self _intermediateBufferURLForTag:a4 compressionProfile:v9]];
+      v17 = [[BWDeferredInferenceBufferIntermediate alloc] initWithBuffer:buffer tag:tag metadataTag:metadataTag inferenceAttachedMediaKey:key portType:type compressionProfile:v9 URL:[(BWDeferredContainer *)self _intermediateBufferURLForTag:tag compressionProfile:v9]];
       [(FigCaptureStillImageSettings *)self->super._stillImageSettings settingsID];
       [OUTLINED_FUNCTION_7() setSettingsID:?];
       [(NSMutableArray *)self->super._intermediates addObject:v17];
 
       if (self->_flushBuffersUponCommit)
       {
-        v16 = [(BWDeferredCaptureContainer *)self _createFolders];
-        if (v16)
+        _createFolders = [(BWDeferredCaptureContainer *)self _createFolders];
+        if (_createFolders)
         {
           FigDebugAssert3();
         }
@@ -1044,7 +1044,7 @@ LABEL_9:
 
       else
       {
-        v16 = 0;
+        _createFolders = 0;
       }
     }
   }
@@ -1058,10 +1058,10 @@ LABEL_9:
     kdebug_trace();
   }
 
-  return v16;
+  return _createFolders;
 }
 
-- (int)commitDictionary:(id)a3 tag:(id)a4
+- (int)commitDictionary:(id)dictionary tag:(id)tag
 {
   OUTLINED_FUNCTION_39_14();
   OUTLINED_FUNCTION_19_2();

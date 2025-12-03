@@ -1,65 +1,65 @@
 @interface SVXSystemEvent
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXSystemEvent)initWithCoder:(id)a3;
-- (SVXSystemEvent)initWithType:(int64_t)a3 timestamp:(unint64_t)a4 deviceSetupFlowScene:(id)a5 storeDemo:(id)a6 orderedAlarmAndTimerIDs:(id)a7 speechSynthesisRequest:(id)a8 audioSessionID:(unsigned int)a9;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXSystemEvent)initWithCoder:(id)coder;
+- (SVXSystemEvent)initWithType:(int64_t)type timestamp:(unint64_t)timestamp deviceSetupFlowScene:(id)scene storeDemo:(id)demo orderedAlarmAndTimerIDs:(id)ds speechSynthesisRequest:(id)request audioSessionID:(unsigned int)d;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXSystemEvent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   type = self->_type;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithInteger:type];
-  [v6 encodeObject:v7 forKey:@"SVXSystemEvent::type"];
+  [coderCopy encodeObject:v7 forKey:@"SVXSystemEvent::type"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-  [v6 encodeObject:v8 forKey:@"SVXSystemEvent::timestamp"];
+  [coderCopy encodeObject:v8 forKey:@"SVXSystemEvent::timestamp"];
 
-  [v6 encodeObject:self->_deviceSetupFlowScene forKey:@"SVXSystemEvent::deviceSetupFlowScene"];
-  [v6 encodeObject:self->_storeDemo forKey:@"SVXSystemEvent::storeDemo"];
-  [v6 encodeObject:self->_orderedAlarmAndTimerIDs forKey:@"SVXSystemEvent::orderedAlarmAndTimerIDs"];
-  [v6 encodeObject:self->_speechSynthesisRequest forKey:@"SVXSystemEvent::speechSynthesisRequest"];
+  [coderCopy encodeObject:self->_deviceSetupFlowScene forKey:@"SVXSystemEvent::deviceSetupFlowScene"];
+  [coderCopy encodeObject:self->_storeDemo forKey:@"SVXSystemEvent::storeDemo"];
+  [coderCopy encodeObject:self->_orderedAlarmAndTimerIDs forKey:@"SVXSystemEvent::orderedAlarmAndTimerIDs"];
+  [coderCopy encodeObject:self->_speechSynthesisRequest forKey:@"SVXSystemEvent::speechSynthesisRequest"];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_audioSessionID];
-  [v6 encodeObject:v9 forKey:@"SVXSystemEvent::audioSessionID"];
+  [coderCopy encodeObject:v9 forKey:@"SVXSystemEvent::audioSessionID"];
 }
 
-- (SVXSystemEvent)initWithCoder:(id)a3
+- (SVXSystemEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSystemEvent::type"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSystemEvent::type"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSystemEvent::timestamp"];
-  v8 = [v7 unsignedLongLongValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSystemEvent::timestamp"];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSystemEvent::deviceSetupFlowScene"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSystemEvent::storeDemo"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSystemEvent::deviceSetupFlowScene"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSystemEvent::storeDemo"];
   v11 = MEMORY[0x277CBEB98];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"SVXSystemEvent::orderedAlarmAndTimerIDs"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"SVXSystemEvent::orderedAlarmAndTimerIDs"];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSystemEvent::speechSynthesisRequest"];
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSystemEvent::audioSessionID"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSystemEvent::speechSynthesisRequest"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSystemEvent::audioSessionID"];
 
-  LODWORD(v4) = [v16 unsignedIntValue];
-  LODWORD(v19) = v4;
-  v17 = [(SVXSystemEvent *)self initWithType:v6 timestamp:v8 deviceSetupFlowScene:v9 storeDemo:v10 orderedAlarmAndTimerIDs:v14 speechSynthesisRequest:v15 audioSessionID:v19];
+  LODWORD(coderCopy) = [v16 unsignedIntValue];
+  LODWORD(v19) = coderCopy;
+  v17 = [(SVXSystemEvent *)self initWithType:integerValue timestamp:unsignedLongLongValue deviceSetupFlowScene:v9 storeDemo:v10 orderedAlarmAndTimerIDs:v14 speechSynthesisRequest:v15 audioSessionID:v19];
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
@@ -69,25 +69,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       type = self->_type;
       if (type == [(SVXSystemEvent *)v5 type]&& (timestamp = self->_timestamp, timestamp == [(SVXSystemEvent *)v5 timestamp]) && (audioSessionID = self->_audioSessionID, audioSessionID == [(SVXSystemEvent *)v5 audioSessionID]))
       {
-        v9 = [(SVXSystemEvent *)v5 deviceSetupFlowScene];
+        deviceSetupFlowScene = [(SVXSystemEvent *)v5 deviceSetupFlowScene];
         deviceSetupFlowScene = self->_deviceSetupFlowScene;
-        if (deviceSetupFlowScene == v9 || [(SVXDeviceSetupFlowScene *)deviceSetupFlowScene isEqual:v9])
+        if (deviceSetupFlowScene == deviceSetupFlowScene || [(SVXDeviceSetupFlowScene *)deviceSetupFlowScene isEqual:deviceSetupFlowScene])
         {
-          v11 = [(SVXSystemEvent *)v5 storeDemo];
+          storeDemo = [(SVXSystemEvent *)v5 storeDemo];
           storeDemo = self->_storeDemo;
-          if (storeDemo == v11 || [(SVXStoreDemo *)storeDemo isEqual:v11])
+          if (storeDemo == storeDemo || [(SVXStoreDemo *)storeDemo isEqual:storeDemo])
           {
-            v13 = [(SVXSystemEvent *)v5 orderedAlarmAndTimerIDs];
+            orderedAlarmAndTimerIDs = [(SVXSystemEvent *)v5 orderedAlarmAndTimerIDs];
             orderedAlarmAndTimerIDs = self->_orderedAlarmAndTimerIDs;
-            if (orderedAlarmAndTimerIDs == v13 || [(NSArray *)orderedAlarmAndTimerIDs isEqual:v13])
+            if (orderedAlarmAndTimerIDs == orderedAlarmAndTimerIDs || [(NSArray *)orderedAlarmAndTimerIDs isEqual:orderedAlarmAndTimerIDs])
             {
-              v15 = [(SVXSystemEvent *)v5 speechSynthesisRequest];
+              speechSynthesisRequest = [(SVXSystemEvent *)v5 speechSynthesisRequest];
               speechSynthesisRequest = self->_speechSynthesisRequest;
-              v17 = speechSynthesisRequest == v15 || [(SVXSpeechSynthesisRequest *)speechSynthesisRequest isEqual:v15];
+              v17 = speechSynthesisRequest == speechSynthesisRequest || [(SVXSpeechSynthesisRequest *)speechSynthesisRequest isEqual:speechSynthesisRequest];
             }
 
             else
@@ -139,7 +139,7 @@
   return v10 ^ v12;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v12.receiver = self;
@@ -163,72 +163,72 @@
   return v10;
 }
 
-- (SVXSystemEvent)initWithType:(int64_t)a3 timestamp:(unint64_t)a4 deviceSetupFlowScene:(id)a5 storeDemo:(id)a6 orderedAlarmAndTimerIDs:(id)a7 speechSynthesisRequest:(id)a8 audioSessionID:(unsigned int)a9
+- (SVXSystemEvent)initWithType:(int64_t)type timestamp:(unint64_t)timestamp deviceSetupFlowScene:(id)scene storeDemo:(id)demo orderedAlarmAndTimerIDs:(id)ds speechSynthesisRequest:(id)request audioSessionID:(unsigned int)d
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  sceneCopy = scene;
+  demoCopy = demo;
+  dsCopy = ds;
+  requestCopy = request;
   v30.receiver = self;
   v30.super_class = SVXSystemEvent;
   v19 = [(SVXSystemEvent *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    v19->_type = a3;
-    v19->_timestamp = a4;
-    v21 = [v15 copy];
+    v19->_type = type;
+    v19->_timestamp = timestamp;
+    v21 = [sceneCopy copy];
     deviceSetupFlowScene = v20->_deviceSetupFlowScene;
     v20->_deviceSetupFlowScene = v21;
 
-    v23 = [v16 copy];
+    v23 = [demoCopy copy];
     storeDemo = v20->_storeDemo;
     v20->_storeDemo = v23;
 
-    v25 = [v17 copy];
+    v25 = [dsCopy copy];
     orderedAlarmAndTimerIDs = v20->_orderedAlarmAndTimerIDs;
     v20->_orderedAlarmAndTimerIDs = v25;
 
-    v27 = [v18 copy];
+    v27 = [requestCopy copy];
     speechSynthesisRequest = v20->_speechSynthesisRequest;
     v20->_speechSynthesisRequest = v27;
 
-    v20->_audioSessionID = a9;
+    v20->_audioSessionID = d;
   }
 
   return v20;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXSystemEventMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXSystemEventMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXSystemEventMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXSystemEvent *)self copy];
+    generate = [(SVXSystemEvent *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXSystemEventMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXSystemEventMutation *)v4 generate];
+  generate = [(_SVXSystemEventMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

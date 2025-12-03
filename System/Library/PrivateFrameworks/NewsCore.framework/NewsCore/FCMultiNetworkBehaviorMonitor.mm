@@ -1,8 +1,8 @@
 @interface FCMultiNetworkBehaviorMonitor
 - (FCMultiNetworkBehaviorMonitor)init;
-- (void)addMonitor:(id)a3;
-- (void)logNetworkEvent:(id)a3;
-- (void)removeMonitor:(id)a3;
+- (void)addMonitor:(id)monitor;
+- (void)logNetworkEvent:(id)event;
+- (void)removeMonitor:(id)monitor;
 @end
 
 @implementation FCMultiNetworkBehaviorMonitor
@@ -22,26 +22,26 @@
   return v2;
 }
 
-- (void)addMonitor:(id)a3
+- (void)addMonitor:(id)monitor
 {
-  v4 = a3;
-  v5 = [(FCMultiNetworkBehaviorMonitor *)self multiDelegate];
-  [v5 addDelegate:v4];
+  monitorCopy = monitor;
+  multiDelegate = [(FCMultiNetworkBehaviorMonitor *)self multiDelegate];
+  [multiDelegate addDelegate:monitorCopy];
 }
 
-- (void)removeMonitor:(id)a3
+- (void)removeMonitor:(id)monitor
 {
-  v4 = a3;
-  v5 = [(FCMultiNetworkBehaviorMonitor *)self multiDelegate];
-  [v5 removeDelegate:v4];
+  monitorCopy = monitor;
+  multiDelegate = [(FCMultiNetworkBehaviorMonitor *)self multiDelegate];
+  [multiDelegate removeDelegate:monitorCopy];
 }
 
-- (void)logNetworkEvent:(id)a3
+- (void)logNetworkEvent:(id)event
 {
-  v4 = a3;
-  v6 = [(FCMultiNetworkBehaviorMonitor *)self multiDelegate];
-  v5 = [v6 delegate];
-  [v5 logNetworkEvent:v4];
+  eventCopy = event;
+  multiDelegate = [(FCMultiNetworkBehaviorMonitor *)self multiDelegate];
+  delegate = [multiDelegate delegate];
+  [delegate logNetworkEvent:eventCopy];
 }
 
 @end

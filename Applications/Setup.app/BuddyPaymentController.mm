@@ -1,21 +1,21 @@
 @interface BuddyPaymentController
-+ (void)setupAssistantExpressProvisioningContext:(id)a3;
++ (void)setupAssistantExpressProvisioningContext:(id)context;
 - (BFFFlowItemDelegate)delegate;
 - (BOOL)controllerNeedsToRun;
-- (id)_createPaymentControllerWithContext:(id)a3;
+- (id)_createPaymentControllerWithContext:(id)context;
 - (void)controllerWasPopped;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
 @end
 
 @implementation BuddyPaymentController
 
-- (id)_createPaymentControllerWithContext:(id)a3
+- (id)_createPaymentControllerWithContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v3 = objc_alloc(sub_1001CD3FC());
   v4 = [v3 initWithSetupAssistantContext:location[0]];
   objc_storeStrong(location, 0);
@@ -25,10 +25,10 @@
 
 - (BOOL)controllerNeedsToRun
 {
-  v18 = self;
+  selfCopy = self;
   oslog[1] = a2;
-  v2 = [(BuddyPaymentController *)self capabilities];
-  v3 = [(BYCapabilities *)v2 supportsApplePay]^ 1;
+  capabilities = [(BuddyPaymentController *)self capabilities];
+  v3 = [(BYCapabilities *)capabilities supportsApplePay]^ 1;
 
   if (v3)
   {
@@ -48,12 +48,12 @@
 
   else
   {
-    v6 = [(BuddyPaymentController *)v18 buddyPreferences];
-    v7 = [(BYPreferencesController *)v6 BOOLForKey:@"Payment2Presented"];
+    buddyPreferences = [(BuddyPaymentController *)selfCopy buddyPreferences];
+    v7 = [(BYPreferencesController *)buddyPreferences BOOLForKey:@"Payment2Presented"];
 
     v14 = v7 & 1;
-    v8 = [(BuddyPaymentController *)v18 chronicle];
-    v9 = [(BYChronicle *)v8 entryForFeature:1];
+    chronicle = [(BuddyPaymentController *)selfCopy chronicle];
+    v9 = [(BYChronicle *)chronicle entryForFeature:1];
     v10 = [v9 createdOnCurrentMajorVersion] ^ 1;
 
     v13 = v10 & 1;
@@ -77,19 +77,19 @@
   }
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = dispatch_get_global_queue(25, 0);
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001CD8B4;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -104,63 +104,63 @@
   [(BYPreferencesController *)v2 removeObjectForKey:@"Payment2Presented"];
 }
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, flow);
   sub_1001CEF18();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(BuddyPaymentController *)v11 setShouldSuppressSpinner:1];
+    [(BuddyPaymentController *)selfCopy setShouldSuppressSpinner:1];
   }
 
-  v3 = [(BuddyPaymentController *)v11 paymentController];
-  v4 = [(PKPaymentSetupAssistantController *)v3 isFollowupNeededReturningRequirements:0];
+  paymentController = [(BuddyPaymentController *)selfCopy paymentController];
+  v4 = [(PKPaymentSetupAssistantController *)paymentController isFollowupNeededReturningRequirements:0];
 
-  v5 = [(BuddyPaymentController *)v11 flowSkipController];
+  flowSkipController = [(BuddyPaymentController *)selfCopy flowSkipController];
   if (v4)
   {
-    [(BYFlowSkipController *)v5 didSkipFlow:BYFlowSkipIdentifierApplePay];
+    [(BYFlowSkipController *)flowSkipController didSkipFlow:BYFlowSkipIdentifierApplePay];
 
-    v6 = [(BuddyPaymentController *)v11 paneFeatureAnalyticsManager];
-    [(BYPaneFeatureAnalyticsManager *)v6 recordActionWithValue:&__kCFBooleanFalse forFeature:15];
+    paneFeatureAnalyticsManager = [(BuddyPaymentController *)selfCopy paneFeatureAnalyticsManager];
+    [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager recordActionWithValue:&__kCFBooleanFalse forFeature:15];
   }
 
   else
   {
-    [(BYFlowSkipController *)v5 didCompleteFlow:BYFlowSkipIdentifierApplePay];
+    [(BYFlowSkipController *)flowSkipController didCompleteFlow:BYFlowSkipIdentifierApplePay];
 
-    v6 = [(BuddyPaymentController *)v11 paneFeatureAnalyticsManager];
-    [(BYPaneFeatureAnalyticsManager *)v6 recordActionWithValue:&__kCFBooleanTrue forFeature:15];
+    paneFeatureAnalyticsManager = [(BuddyPaymentController *)selfCopy paneFeatureAnalyticsManager];
+    [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager recordActionWithValue:&__kCFBooleanTrue forFeature:15];
   }
 
-  v7 = [(BuddyPaymentController *)v11 buddyPreferences];
-  [(BYPreferencesController *)v7 setObject:&__kCFBooleanTrue forKey:@"Payment2Presented"];
+  buddyPreferences = [(BuddyPaymentController *)selfCopy buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanTrue forKey:@"Payment2Presented"];
 
-  v8 = [(BuddyPaymentController *)v11 buddyPreferences];
-  [(BYPreferencesController *)v8 setObject:&__kCFBooleanTrue forKey:@"ApplePayOnBoardingPresented"];
+  buddyPreferences2 = [(BuddyPaymentController *)selfCopy buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences2 setObject:&__kCFBooleanTrue forKey:@"ApplePayOnBoardingPresented"];
 
-  v9 = [(BuddyPaymentController *)v11 delegate];
-  [(BFFFlowItemDelegate *)v9 flowItemDone:v11];
+  delegate = [(BuddyPaymentController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }
 
-+ (void)setupAssistantExpressProvisioningContext:(id)a3
++ (void)setupAssistantExpressProvisioningContext:(id)context
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v13 = objc_alloc_init(BYBuddyDaemonGeneralClient);
-  v3 = [v13 fetchAuthenticationContextForApplePay];
-  v12 = [v3 externalizedContext];
+  fetchAuthenticationContextForApplePay = [v13 fetchAuthenticationContextForApplePay];
+  externalizedContext = [fetchAuthenticationContextForApplePay externalizedContext];
 
   v11 = [objc_alloc(sub_1001CE248()) initWithSetupAssistant:1];
-  [v11 setExternalizedContext:v12];
+  [v11 setExternalizedContext:externalizedContext];
   v10 = [objc_alloc(sub_1001CE92C()) initWithSetupAssistantContext:v11];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
@@ -172,7 +172,7 @@
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&externalizedContext, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }

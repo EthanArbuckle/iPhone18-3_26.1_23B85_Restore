@@ -1,21 +1,21 @@
 @interface CUAppleIDClient
-- (BOOL)_validatePeerHashes:(id)a3;
-- (BOOL)validatePeerWithFlags:(unsigned int)a3 error:(id *)a4;
-- (BOOL)verifyBytes:(const void *)a3 verifyLength:(unint64_t)a4 signatureBytes:(const void *)a5 signatureLength:(unint64_t)a6 error:(id *)a7;
-- (BOOL)verifyData:(id)a3 signature:(id)a4 error:(id *)a5;
-- (__SecCertificate)_getMyCertificateAndReturnError:(id *)a3;
-- (__SecCertificate)_getPeerCertificateAndReturnError:(id *)a3;
-- (__SecIdentity)_getMyIdentityAndReturnError:(id *)a3;
-- (__SecKey)_getMySecretKeyAndReturnError:(id *)a3;
-- (__SecKey)_getPeerPublicKeyAndReturnError:(id *)a3;
-- (id)copyMyAppleIDAndReturnError:(id *)a3;
-- (id)copyMyCertificateDataAndReturnError:(id *)a3;
-- (id)copyMyValidationDataAndReturnError:(id *)a3;
-- (id)signBytes:(const void *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (id)signData:(id)a3 error:(id *)a4;
+- (BOOL)_validatePeerHashes:(id)hashes;
+- (BOOL)validatePeerWithFlags:(unsigned int)flags error:(id *)error;
+- (BOOL)verifyBytes:(const void *)bytes verifyLength:(unint64_t)length signatureBytes:(const void *)signatureBytes signatureLength:(unint64_t)signatureLength error:(id *)error;
+- (BOOL)verifyData:(id)data signature:(id)signature error:(id *)error;
+- (__SecCertificate)_getMyCertificateAndReturnError:(id *)error;
+- (__SecCertificate)_getPeerCertificateAndReturnError:(id *)error;
+- (__SecIdentity)_getMyIdentityAndReturnError:(id *)error;
+- (__SecKey)_getMySecretKeyAndReturnError:(id *)error;
+- (__SecKey)_getPeerPublicKeyAndReturnError:(id *)error;
+- (id)copyMyAppleIDAndReturnError:(id *)error;
+- (id)copyMyCertificateDataAndReturnError:(id *)error;
+- (id)copyMyValidationDataAndReturnError:(id *)error;
+- (id)signBytes:(const void *)bytes length:(unint64_t)length error:(id *)error;
+- (id)signData:(id)data error:(id *)error;
 - (int)securityLevel;
 - (void)dealloc;
-- (void)setPeerAppleID:(id)a3;
+- (void)setPeerAppleID:(id)d;
 @end
 
 @implementation CUAppleIDClient
@@ -31,15 +31,15 @@
     }
 
     v4 = objc_alloc_init(getACAccountStoreClass[0]());
-    v5 = [v4 aa_primaryAppleAccount];
-    v6 = [v5 accountPropertyForKey:@"altDSID"];
+    aa_primaryAppleAccount = [v4 aa_primaryAppleAccount];
+    v6 = [aa_primaryAppleAccount accountPropertyForKey:@"altDSID"];
     if (v6)
     {
-      v7 = [getAKAccountManagerClass[0]() sharedInstance];
-      v8 = [v7 authKitAccountWithAltDSID:v6 error:0];
+      sharedInstance = [getAKAccountManagerClass[0]() sharedInstance];
+      v8 = [sharedInstance authKitAccountWithAltDSID:v6 error:0];
       if (v8)
       {
-        securityLevel = [v7 securityLevelForAccount:v8];
+        securityLevel = [sharedInstance securityLevelForAccount:v8];
         self->_securityLevel = securityLevel;
       }
 
@@ -100,7 +100,7 @@
   [(CUAppleIDClient *)&v8 dealloc];
 }
 
-- (__SecKey)_getPeerPublicKeyAndReturnError:(id *)a3
+- (__SecKey)_getPeerPublicKeyAndReturnError:(id *)error
 {
   result = self->_peerPublicKey;
   if (!result)
@@ -110,11 +110,11 @@
     {
       result = SecCertificateCopyKey(result);
       self->_peerPublicKey = result;
-      if (a3)
+      if (error)
       {
         if (!result)
         {
-          *a3 = NSErrorWithOSStatusF(4294960596, "Get peer public key from certificate failed", v6, v7, v8, v9, v10, v11, v12);
+          *error = NSErrorWithOSStatusF(4294960596, "Get peer public key from certificate failed", v6, v7, v8, v9, v10, v11, v12);
           return self->_peerPublicKey;
         }
       }
@@ -124,7 +124,7 @@
   return result;
 }
 
-- (__SecCertificate)_getPeerCertificateAndReturnError:(id *)a3
+- (__SecCertificate)_getPeerCertificateAndReturnError:(id *)error
 {
   peerCertificate = self->_peerCertificate;
   if (!peerCertificate)
@@ -135,17 +135,17 @@
       v13 = SecCertificateCreateWithData(0, v12);
       peerCertificate = v13;
       self->_peerCertificate = v13;
-      if (a3 && !v13)
+      if (error && !v13)
       {
-        *a3 = NSErrorWithOSStatusF(4294960596, "Import peer certificate failed", v14, v15, v16, v17, v18, v19, v21);
+        *error = NSErrorWithOSStatusF(4294960596, "Import peer certificate failed", v14, v15, v16, v17, v18, v19, v21);
         peerCertificate = self->_peerCertificate;
       }
     }
 
-    else if (a3)
+    else if (error)
     {
       NSErrorWithOSStatusF(4294960569, "No peer certificate data", v6, v7, v8, v9, v10, v11, v21);
-      *a3 = peerCertificate = 0;
+      *error = peerCertificate = 0;
     }
 
     else
@@ -157,7 +157,7 @@
   return peerCertificate;
 }
 
-- (id)copyMyValidationDataAndReturnError:(id *)a3
+- (id)copyMyValidationDataAndReturnError:(id *)error
 {
   myInfoClient = self->_myInfoClient;
   if (myInfoClient)
@@ -169,7 +169,7 @@
   myValidationData = self->_myValidationData;
   if (!myValidationData)
   {
-    v8 = [(CUAppleIDClient *)self copyMyAppleIDAndReturnError:a3];
+    v8 = [(CUAppleIDClient *)self copyMyAppleIDAndReturnError:error];
     if (!v8)
     {
       v28 = 0;
@@ -190,9 +190,9 @@ LABEL_22:
       self->_myValidationData = v19;
 
       v27 = self->_myValidationData;
-      if (a3 && !v27)
+      if (error && !v27)
       {
-        *a3 = NSErrorWithOSStatusF(4294960569, "Get AppleID validation record data failed", v21, v22, v23, v24, v25, v26, v31);
+        *error = NSErrorWithOSStatusF(4294960569, "Get AppleID validation record data failed", v21, v22, v23, v24, v25, v26, v31);
         v27 = self->_myValidationData;
       }
 
@@ -200,20 +200,20 @@ LABEL_22:
       goto LABEL_21;
     }
 
-    if (a3)
+    if (error)
     {
       if (v32)
       {
         v29 = v32;
         v28 = 0;
-        *a3 = v17;
+        *error = v17;
 LABEL_21:
 
         goto LABEL_22;
       }
 
       v30 = NSErrorWithOSStatusF(4294960569, "Get AppleID certificate info failed", v10, v11, v12, v13, v14, v15, v31);
-      *a3 = v30;
+      *error = v30;
     }
 
     v28 = 0;
@@ -223,7 +223,7 @@ LABEL_21:
   return myValidationData;
 }
 
-- (__SecKey)_getMySecretKeyAndReturnError:(id *)a3
+- (__SecKey)_getMySecretKeyAndReturnError:(id *)error
 {
   v40[2] = *MEMORY[0x1E69E9840];
   myInfoClient = self->_myInfoClient;
@@ -250,28 +250,28 @@ LABEL_21:
           v20 = SecKeyCreateWithData(self->_mySecretKeyData, v19, &v38);
           self->_mySecretKey = v20;
           v27 = v38;
-          if (a3 && !v20)
+          if (error && !v20)
           {
             if (v38)
             {
               v28 = v38;
-              *a3 = v27;
+              *error = v27;
             }
 
             else
             {
               v37 = NSErrorWithOSStatusF(4294960596, "Import secret key failed", v21, v22, v23, v24, v25, v26, 0);
-              *a3 = v37;
+              *error = v37;
             }
           }
 
           mySecretKey = *p_mySecretKey;
         }
 
-        else if (a3)
+        else if (error)
         {
           NSErrorWithOSStatusF(4294960591, "Secret key data without type", v10, v11, v12, v13, v14, v15, v38);
-          *a3 = mySecretKey = 0;
+          *error = mySecretKey = 0;
         }
 
         else
@@ -282,13 +282,13 @@ LABEL_21:
         return mySecretKey;
       }
 
-      v29 = [(CUAppleIDClient *)self _getMyIdentityAndReturnError:a3];
+      v29 = [(CUAppleIDClient *)self _getMyIdentityAndReturnError:error];
       if (v29)
       {
         v30 = SecIdentityCopyPrivateKey(v29, &self->_mySecretKey);
         if (v30)
         {
-          if (!a3)
+          if (!error)
           {
             return *p_mySecretKey;
           }
@@ -296,7 +296,7 @@ LABEL_21:
 
         else
         {
-          if (!a3 || *p_mySecretKey)
+          if (!error || *p_mySecretKey)
           {
             return *p_mySecretKey;
           }
@@ -304,7 +304,7 @@ LABEL_21:
           v30 = 4294960596;
         }
 
-        *a3 = NSErrorWithOSStatusF(v30, "Get AppleID key failed", v31, v32, v33, v34, v35, v36, v38);
+        *error = NSErrorWithOSStatusF(v30, "Get AppleID key failed", v31, v32, v33, v34, v35, v36, v38);
         return *p_mySecretKey;
       }
 
@@ -317,7 +317,7 @@ LABEL_21:
   return [(CUAppleIDClient *)myInfoClient _getMySecretKeyAndReturnError:?];
 }
 
-- (__SecIdentity)_getMyIdentityAndReturnError:(id *)a3
+- (__SecIdentity)_getMyIdentityAndReturnError:(id *)error
 {
   myInfoClient = self->_myInfoClient;
   if (myInfoClient)
@@ -333,14 +333,14 @@ LABEL_21:
     {
       if (self->_mySecretKey || self->_mySecretKeyData)
       {
-        if ([(CUAppleIDClient *)self _getMyCertificateAndReturnError:a3]&& [(CUAppleIDClient *)self _getMySecretKeyAndReturnError:a3])
+        if ([(CUAppleIDClient *)self _getMyCertificateAndReturnError:error]&& [(CUAppleIDClient *)self _getMySecretKeyAndReturnError:error])
         {
           v8 = SecIdentityCreate();
           myIdentity = v8;
           self->_myIdentity = v8;
-          if (a3 && !v8)
+          if (error && !v8)
           {
-            *a3 = NSErrorWithOSStatusF(4294960596, "Import my identity failed", v9, v10, v11, v12, v13, v14, v27);
+            *error = NSErrorWithOSStatusF(4294960596, "Import my identity failed", v9, v10, v11, v12, v13, v14, v27);
             return self->_myIdentity;
           }
         }
@@ -353,7 +353,7 @@ LABEL_21:
 
       else
       {
-        v15 = [(CUAppleIDClient *)self copyMyAppleIDAndReturnError:a3];
+        v15 = [(CUAppleIDClient *)self copyMyAppleIDAndReturnError:error];
         v16 = v15;
         if (v15)
         {
@@ -361,18 +361,18 @@ LABEL_21:
           v17 = (softLink_AppleIDCopySecIdentityForAppleIDAccount[0])(v15, 0, &v28);
           self->_myIdentity = v17;
           v24 = v28;
-          if (a3 && !v17)
+          if (error && !v17)
           {
             if (v28)
             {
               v25 = v28;
-              *a3 = v24;
+              *error = v24;
             }
 
             else
             {
               v26 = NSErrorWithOSStatusF(4294960569, "Get AppleID identity failed", v18, v19, v20, v21, v22, v23, v27);
-              *a3 = v26;
+              *error = v26;
             }
           }
 
@@ -390,7 +390,7 @@ LABEL_21:
   }
 }
 
-- (id)copyMyCertificateDataAndReturnError:(id *)a3
+- (id)copyMyCertificateDataAndReturnError:(id *)error
 {
   myInfoClient = self->_myInfoClient;
   if (myInfoClient)
@@ -410,7 +410,7 @@ LABEL_21:
 
     else
     {
-      result = [(CUAppleIDClient *)self _getMyCertificateAndReturnError:a3];
+      result = [(CUAppleIDClient *)self _getMyCertificateAndReturnError:error];
       if (result)
       {
         v8 = SecCertificateCopyData(result);
@@ -418,9 +418,9 @@ LABEL_21:
         self->_myCertificateData = v8;
 
         v16 = self->_myCertificateData;
-        if (a3 && !v16)
+        if (error && !v16)
         {
-          *a3 = NSErrorWithOSStatusF(4294960596, "Copy my certificate data failed", v10, v11, v12, v13, v14, v15, v17);
+          *error = NSErrorWithOSStatusF(4294960596, "Copy my certificate data failed", v10, v11, v12, v13, v14, v15, v17);
           v16 = self->_myCertificateData;
         }
 
@@ -432,7 +432,7 @@ LABEL_21:
   return result;
 }
 
-- (__SecCertificate)_getMyCertificateAndReturnError:(id *)a3
+- (__SecCertificate)_getMyCertificateAndReturnError:(id *)error
 {
   myInfoClient = self->_myInfoClient;
   if (!myInfoClient)
@@ -449,7 +449,7 @@ LABEL_21:
     {
       result = SecCertificateCreateWithData(0, myCertificateData);
       *p_myCertificate = result;
-      if (!a3 || result)
+      if (!error || result)
       {
         return result;
       }
@@ -460,7 +460,7 @@ LABEL_21:
 
     else
     {
-      result = [(CUAppleIDClient *)self _getMyIdentityAndReturnError:a3];
+      result = [(CUAppleIDClient *)self _getMyIdentityAndReturnError:error];
       if (!result)
       {
         return result;
@@ -469,7 +469,7 @@ LABEL_21:
       v16 = SecIdentityCopyCertificate(result, p_myCertificate);
       if (v16)
       {
-        if (!a3)
+        if (!error)
         {
           return *p_myCertificate;
         }
@@ -477,7 +477,7 @@ LABEL_21:
 
       else
       {
-        if (!a3 || *p_myCertificate)
+        if (!error || *p_myCertificate)
         {
           return *p_myCertificate;
         }
@@ -488,14 +488,14 @@ LABEL_21:
       v15 = "Get AppleID identity certificate failed";
     }
 
-    *a3 = NSErrorWithOSStatusF(v16, v15, v9, v10, v11, v12, v13, v14, v17);
+    *error = NSErrorWithOSStatusF(v16, v15, v9, v10, v11, v12, v13, v14, v17);
     return *p_myCertificate;
   }
 
   return [(CUAppleIDClient *)myInfoClient _getMyCertificateAndReturnError:?];
 }
 
-- (id)copyMyAppleIDAndReturnError:(id *)a3
+- (id)copyMyAppleIDAndReturnError:(id *)error
 {
   myInfoClient = self->_myInfoClient;
   if (myInfoClient)
@@ -521,15 +521,15 @@ LABEL_21:
       }
 
       v8 = objc_alloc_init(getACAccountStoreClass[0]());
-      v9 = [v8 aa_primaryAppleAccount];
-      v10 = [v9 username];
+      aa_primaryAppleAccount = [v8 aa_primaryAppleAccount];
+      username = [aa_primaryAppleAccount username];
       v11 = self->_myAppleID;
-      self->_myAppleID = v10;
+      self->_myAppleID = username;
 
       v18 = self->_myAppleID;
-      if (a3 && !v18)
+      if (error && !v18)
       {
-        *a3 = NSErrorWithOSStatusF(4294960569, "Get AppleID failed", v12, v13, v14, v15, v16, v17, v20);
+        *error = NSErrorWithOSStatusF(4294960569, "Get AppleID failed", v12, v13, v14, v15, v16, v17, v20);
         v18 = self->_myAppleID;
       }
 
@@ -540,15 +540,15 @@ LABEL_21:
   }
 }
 
-- (BOOL)verifyBytes:(const void *)a3 verifyLength:(unint64_t)a4 signatureBytes:(const void *)a5 signatureLength:(unint64_t)a6 error:(id *)a7
+- (BOOL)verifyBytes:(const void *)bytes verifyLength:(unint64_t)length signatureBytes:(const void *)signatureBytes signatureLength:(unint64_t)signatureLength error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
   if (gLogCategory_CUAppleIDClient <= 30 && (gLogCategory_CUAppleIDClient != -1 || _LogCategory_Initialize(&gLogCategory_CUAppleIDClient, 0x1Eu)))
   {
-    LogPrintF(&gLogCategory_CUAppleIDClient, "[CUAppleIDClient verifyBytes:verifyLength:signatureBytes:signatureLength:error:]", 0x1Eu, "Verify signature (%zu bytes data, %zu bytes signature)\n", a5, a6, a7, v7, a4);
+    LogPrintF(&gLogCategory_CUAppleIDClient, "[CUAppleIDClient verifyBytes:verifyLength:signatureBytes:signatureLength:error:]", 0x1Eu, "Verify signature (%zu bytes data, %zu bytes signature)\n", signatureBytes, signatureLength, error, v7, length);
   }
 
-  v14 = [(CUAppleIDClient *)self _getPeerPublicKeyAndReturnError:a7];
+  v14 = [(CUAppleIDClient *)self _getPeerPublicKeyAndReturnError:error];
   if (!v14)
   {
     return 0;
@@ -570,15 +570,15 @@ LABEL_21:
   v27 = 0u;
   v26 = _kCryptoHashDescriptor_SHA512;
   _SHA512Init(&v26);
-  _SHA512Update(&v26, a3, a4);
+  _SHA512Update(&v26, bytes, length);
   _SHA512Final(&v26, signedData);
-  v16 = SecKeyRawVerify(v15, 1u, signedData, 0x40uLL, a5, a6);
+  v16 = SecKeyRawVerify(v15, 1u, signedData, 0x40uLL, signatureBytes, signatureLength);
   v23 = v16 == 0;
   if (v16)
   {
-    if (a7)
+    if (error)
     {
-      *a7 = NSErrorWithOSStatusF(v16, "Verify data signature failed", v17, v18, v19, v20, v21, v22, v25);
+      *error = NSErrorWithOSStatusF(v16, "Verify data signature failed", v17, v18, v19, v20, v21, v22, v25);
     }
   }
 
@@ -590,24 +590,24 @@ LABEL_21:
   return v23;
 }
 
-- (BOOL)verifyData:(id)a3 signature:(id)a4 error:(id *)a5
+- (BOOL)verifyData:(id)data signature:(id)signature error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 bytes];
-  v13 = [v11 length];
+  dataCopy = data;
+  signatureCopy = signature;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v13 = [dataCopy2 length];
 
-  v14 = [v10 bytes];
-  v15 = [v10 length];
+  bytes2 = [signatureCopy bytes];
+  v15 = [signatureCopy length];
 
-  return [(CUAppleIDClient *)self verifyBytes:v12 verifyLength:v13 signatureBytes:v14 signatureLength:v15 error:a5];
+  return [(CUAppleIDClient *)self verifyBytes:bytes verifyLength:v13 signatureBytes:bytes2 signatureLength:v15 error:error];
 }
 
-- (BOOL)_validatePeerHashes:(id)a3
+- (BOOL)_validatePeerHashes:(id)hashes
 {
   v105 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  hashesCopy = hashes;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
@@ -619,7 +619,7 @@ LABEL_21:
     v7 = 0x1E695D000uLL;
     v8 = *v97;
     v81 = v5;
-    v82 = v4;
+    v82 = hashesCopy;
     v76 = *v97;
     do
     {
@@ -634,10 +634,10 @@ LABEL_21:
 
         v78 = v9;
         v79 = *(*(&v96 + 1) + 8 * v9);
-        v83 = [v79 lowercaseString];
-        v10 = [v83 UTF8String];
-        v11 = strlen(v10);
-        CC_SHA256(v10, v11, md);
+        lowercaseString = [v79 lowercaseString];
+        uTF8String = [lowercaseString UTF8String];
+        v11 = strlen(uTF8String);
+        CC_SHA256(uTF8String, v11, md);
         v16 = [objc_alloc(*(v7 + 3824)) initWithBytes:md length:32];
         if (gLogCategory_CUAppleIDClient <= 30 && (gLogCategory_CUAppleIDClient != -1 || _LogCategory_Initialize(&gLogCategory_CUAppleIDClient, 0x1Eu)))
         {
@@ -645,7 +645,7 @@ LABEL_21:
         }
 
         TypeID = CFArrayGetTypeID();
-        v18 = CFDictionaryGetTypedValue(v4, @"ValidatedEmailHashes", TypeID, 0);
+        v18 = CFDictionaryGetTypedValue(hashesCopy, @"ValidatedEmailHashes", TypeID, 0);
         v92 = 0u;
         v93 = 0u;
         v94 = 0u;
@@ -685,7 +685,7 @@ LABEL_69:
 
 LABEL_70:
                   v5 = v81;
-                  v4 = v82;
+                  hashesCopy = v82;
 
                   v73 = 1;
                   goto LABEL_72;
@@ -703,17 +703,17 @@ LABEL_70:
           }
         }
 
-        if (strchr(v10, 64))
+        if (strchr(uTF8String, 64))
         {
           v31 = v79;
           v32 = CUNormalizeEmailAddress(v79, 1);
           v7 = 0x1E695D000uLL;
-          if (([v32 isEqual:v83] & 1) == 0)
+          if (([v32 isEqual:lowercaseString] & 1) == 0)
           {
             v75 = v32;
-            v33 = [v32 UTF8String];
-            v34 = strlen(v33);
-            CC_SHA256(v33, v34, md);
+            uTF8String2 = [v32 UTF8String];
+            v34 = strlen(uTF8String2);
+            CC_SHA256(uTF8String2, v34, md);
             v35 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:md length:32];
 
             if (gLogCategory_CUAppleIDClient <= 30 && (gLogCategory_CUAppleIDClient != -1 || _LogCategory_Initialize(&gLogCategory_CUAppleIDClient, 0x1Eu)))
@@ -777,12 +777,12 @@ LABEL_70:
             v32 = v75;
           }
 
-          v4 = v82;
+          hashesCopy = v82;
         }
 
         else
         {
-          v4 = v82;
+          hashesCopy = v82;
           v7 = 0x1E695D000;
           v31 = v79;
         }
@@ -791,9 +791,9 @@ LABEL_70:
         if (v52)
         {
           v80 = v52;
-          v53 = [v80 UTF8String];
-          v54 = strlen(v53);
-          CC_SHA256(v53, v54, md);
+          uTF8String3 = [v80 UTF8String];
+          v54 = strlen(uTF8String3);
+          CC_SHA256(uTF8String3, v54, md);
           v55 = [objc_alloc(*(v7 + 3824)) initWithBytes:md length:32];
 
           if (gLogCategory_CUAppleIDClient <= 30 && (gLogCategory_CUAppleIDClient != -1 || _LogCategory_Initialize(&gLogCategory_CUAppleIDClient, 0x1Eu)))
@@ -806,7 +806,7 @@ LABEL_70:
           v84 = 0u;
           v85 = 0u;
           v60 = CFArrayGetTypeID();
-          v61 = CFDictionaryGetTypedValue(v4, @"ValidatedPhoneHashes", v60, 0);
+          v61 = CFDictionaryGetTypedValue(hashesCopy, @"ValidatedPhoneHashes", v60, 0);
           v62 = [v61 countByEnumeratingWithState:&v84 objects:v100 count:16];
           if (v62)
           {
@@ -851,7 +851,7 @@ LABEL_70:
             }
           }
 
-          v4 = v82;
+          hashesCopy = v82;
           v7 = 0x1E695D000;
           v52 = v80;
         }
@@ -884,9 +884,9 @@ LABEL_72:
   return v73;
 }
 
-- (BOOL)validatePeerWithFlags:(unsigned int)a3 error:(id *)a4
+- (BOOL)validatePeerWithFlags:(unsigned int)flags error:(id *)error
 {
-  v9 = a3;
+  flagsCopy = flags;
   if (gLogCategory_CUAppleIDClient <= 30 && (gLogCategory_CUAppleIDClient != -1 || _LogCategory_Initialize(&gLogCategory_CUAppleIDClient, 0x1Eu)))
   {
     LogPrintF(&gLogCategory_CUAppleIDClient, "[CUAppleIDClient validatePeerWithFlags:error:]", 0x1Eu, "Validate peer\n", v4, v5, v6, v7, v64);
@@ -902,10 +902,10 @@ LABEL_72:
     v18 = self->_peerValidationData;
     if (!v18)
     {
-      if (a4)
+      if (error)
       {
         NSErrorWithOSStatusF(4294960591, "No peer validation data", v12, v13, v14, v15, v16, v17, v64);
-        *a4 = v11 = 0;
+        *error = v11 = 0;
       }
 
       else
@@ -940,12 +940,12 @@ LABEL_72:
     v22 = dispatch_time(0, 30000000000);
     if (dispatch_semaphore_wait(v21, v22))
     {
-      if (a4)
+      if (error)
       {
         v29 = 4294960574;
 LABEL_22:
         NSErrorWithOSStatusF(v29, "Validate peer data failed", v23, v24, v25, v26, v27, v28, v64);
-        *a4 = v11 = 0;
+        *error = v11 = 0;
 LABEL_51:
 
         _Block_object_dispose(&v69, 8);
@@ -961,7 +961,7 @@ LABEL_52:
     v30 = *(v70 + 6);
     if (v30 || (v31 = v74[5]) == 0)
     {
-      if (a4)
+      if (error)
       {
         if (v30)
         {
@@ -987,7 +987,7 @@ LABEL_23:
     v40 = CFDictionaryGetTypedValue(v32, @"encDsID", TypeID, 0);
     if (v40)
     {
-      v41 = [(CUAppleIDClient *)self _getPeerCertificateAndReturnError:a4];
+      v41 = [(CUAppleIDClient *)self _getPeerCertificateAndReturnError:error];
       if (v41)
       {
         v64 = 0;
@@ -995,7 +995,7 @@ LABEL_23:
         v49 = v64;
         if (v42 || !v64)
         {
-          if (a4)
+          if (error)
           {
             if (v42)
             {
@@ -1014,7 +1014,7 @@ LABEL_23:
 
         else if (([(__CFString *)v64 hasSuffix:v40]& 1) != 0)
         {
-          if (v9)
+          if (flagsCopy)
           {
             v11 = 1;
             goto LABEL_49;
@@ -1029,19 +1029,19 @@ LABEL_49:
             goto LABEL_50;
           }
 
-          if (a4)
+          if (error)
           {
             v62 = NSErrorWithOSStatusF(4294960588, "Peer AppleID not found in hashes", v56, v57, v58, v59, v60, v61, v64);
             goto LABEL_44;
           }
         }
 
-        else if (a4)
+        else if (error)
         {
           v62 = NSErrorWithOSStatusF(4294960552, "Certificate DSID doesn't match validation info DSID", v50, v51, v52, v53, v54, v55, v64);
 LABEL_44:
           v11 = 0;
-          *a4 = v62;
+          *error = v62;
           goto LABEL_49;
         }
 
@@ -1050,10 +1050,10 @@ LABEL_44:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       NSErrorWithOSStatusF(4294960591, "No peer validation info DSID", v34, v35, v36, v37, v38, v39, v64);
-      *a4 = v11 = 0;
+      *error = v11 = 0;
 LABEL_50:
 
       goto LABEL_51;
@@ -1063,13 +1063,13 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
 
-  NSErrorWithOSStatusF(4294960551, "Signature not verified. Use verifyData irst", *&a3, a4, v4, v5, v6, v7, v64);
-  *a4 = v11 = 0;
+  NSErrorWithOSStatusF(4294960551, "Signature not verified. Use verifyData irst", *&flags, error, v4, v5, v6, v7, v64);
+  *error = v11 = 0;
   return v11;
 }
 
@@ -1081,12 +1081,12 @@ void __47__CUAppleIDClient_validatePeerWithFlags_error___block_invoke(uint64_t a
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)signBytes:(const void *)a3 length:(unint64_t)a4 error:(id *)a5
+- (id)signBytes:(const void *)bytes length:(unint64_t)length error:(id *)error
 {
   v68 = *MEMORY[0x1E69E9840];
   if (gLogCategory_CUAppleIDClient <= 30 && (gLogCategory_CUAppleIDClient != -1 || _LogCategory_Initialize(&gLogCategory_CUAppleIDClient, 0x1Eu)))
   {
-    LogPrintF(&gLogCategory_CUAppleIDClient, "[CUAppleIDClient signBytes:length:error:]", 0x1Eu, "Sign %zu bytes\n", a5, v5, v6, v7, a4);
+    LogPrintF(&gLogCategory_CUAppleIDClient, "[CUAppleIDClient signBytes:length:error:]", 0x1Eu, "Sign %zu bytes\n", error, v5, v6, v7, length);
   }
 
   v51 = 0;
@@ -1142,7 +1142,7 @@ void __47__CUAppleIDClient_validatePeerWithFlags_error___block_invoke(uint64_t a
       v54 = 0u;
       v53 = _kCryptoHashDescriptor_SHA512;
       _SHA512Init(&v53);
-      _SHA512Update(&v53, a3, a4);
+      _SHA512Update(&v53, bytes, length);
       _SHA512Final(&v53, dataToSign);
       v32 = SecKeyRawSign(v21, 1u, dataToSign, 0x40uLL, v31, &sigLen);
       if (v32)
@@ -1191,14 +1191,14 @@ LABEL_23:
 LABEL_24:
   if (v18 && gLogCategory_CUAppleIDClient <= 60 && (gLogCategory_CUAppleIDClient != -1 || _LogCategory_Initialize(&gLogCategory_CUAppleIDClient, 0x3Cu)))
   {
-    LogPrintF(&gLogCategory_CUAppleIDClient, "[CUAppleIDClient signBytes:length:error:]", 0x3Cu, "### Sign failed (%zu bytes): %{error}\n", v14, v15, v16, v17, a4);
+    LogPrintF(&gLogCategory_CUAppleIDClient, "[CUAppleIDClient signBytes:length:error:]", 0x3Cu, "### Sign failed (%zu bytes): %{error}\n", v14, v15, v16, v17, length);
   }
 
-  if (a5)
+  if (error)
   {
     v47 = v18;
     v41 = 0;
-    *a5 = v18;
+    *error = v18;
   }
 
   else
@@ -1211,24 +1211,24 @@ LABEL_13:
   return v41;
 }
 
-- (id)signData:(id)a3 error:(id *)a4
+- (id)signData:(id)data error:(id *)error
 {
-  v7 = a3;
-  v8 = a3;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v10 = [dataCopy2 length];
 
-  return [(CUAppleIDClient *)self signBytes:v9 length:v10 error:a4];
+  return [(CUAppleIDClient *)self signBytes:bytes length:v10 error:error];
 }
 
-- (void)setPeerAppleID:(id)a3
+- (void)setPeerAppleID:(id)d
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_peerAppleID, a3);
-  if (v5)
+  dCopy = d;
+  objc_storeStrong(&self->_peerAppleID, d);
+  if (dCopy)
   {
-    v8[0] = v5;
+    v8[0] = dCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     peerAppleIDs = self->_peerAppleIDs;
     self->_peerAppleIDs = v6;

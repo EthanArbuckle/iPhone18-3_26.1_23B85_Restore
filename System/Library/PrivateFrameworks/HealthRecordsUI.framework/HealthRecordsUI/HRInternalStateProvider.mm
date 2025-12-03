@@ -1,47 +1,47 @@
 @interface HRInternalStateProvider
 - (HRInternalStateProvider)init;
-- (HRInternalStateProvider)initWithHealthStore:(id)a3;
-- (HRInternalStateProvider)initWithProfile:(id)a3;
-- (void)clinicalIngestionStore:(id)a3 ingestionStateDidUpdateTo:(int64_t)a4;
-- (void)conceptStore:(id)a3 indexManagerDidChangeState:(unint64_t)a4;
-- (void)fetchJSONWithCompletion:(id)a3;
+- (HRInternalStateProvider)initWithHealthStore:(id)store;
+- (HRInternalStateProvider)initWithProfile:(id)profile;
+- (void)clinicalIngestionStore:(id)store ingestionStateDidUpdateTo:(int64_t)to;
+- (void)conceptStore:(id)store indexManagerDidChangeState:(unint64_t)state;
+- (void)fetchJSONWithCompletion:(id)completion;
 @end
 
 @implementation HRInternalStateProvider
 
-- (HRInternalStateProvider)initWithHealthStore:(id)a3
+- (HRInternalStateProvider)initWithHealthStore:(id)store
 {
   v4 = objc_allocWithZone(MEMORY[0x1E696C038]);
-  v5 = a3;
-  v6 = [v4 initWithHealthStore_];
-  v7 = [objc_allocWithZone(MEMORY[0x1E696C1A8]) initWithHealthStore_];
+  storeCopy = store;
+  initWithHealthStore_ = [v4 initWithHealthStore_];
+  initWithHealthStore_2 = [objc_allocWithZone(MEMORY[0x1E696C1A8]) initWithHealthStore_];
   v8 = objc_allocWithZone(type metadata accessor for InternalStateProvider());
-  v9 = sub_1D11E0D98(v6, v7);
+  v9 = sub_1D11E0D98(initWithHealthStore_, initWithHealthStore_2);
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v9;
 }
 
-- (HRInternalStateProvider)initWithProfile:(id)a3
+- (HRInternalStateProvider)initWithProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [v3 conceptStore];
-  v5 = [v3 healthRecordsStore];
+  profileCopy = profile;
+  conceptStore = [profileCopy conceptStore];
+  healthRecordsStore = [profileCopy healthRecordsStore];
   v6 = objc_allocWithZone(type metadata accessor for InternalStateProvider());
-  v7 = sub_1D11E0D98(v4, v5);
+  v7 = sub_1D11E0D98(conceptStore, healthRecordsStore);
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v7;
 }
 
-- (void)fetchJSONWithCompletion:(id)a3
+- (void)fetchJSONWithCompletion:(id)completion
 {
   sub_1D11E640C(0, &qword_1EE06A650, MEMORY[0x1E69E85F0], MEMORY[0x1E69E6720]);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -57,7 +57,7 @@
   v12[3] = 0;
   v12[4] = &unk_1D13A80D8;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1D11E58DC(0, 0, v7, &unk_1D13A80E8, v12);
 }
 
@@ -68,7 +68,7 @@
   return result;
 }
 
-- (void)clinicalIngestionStore:(id)a3 ingestionStateDidUpdateTo:(int64_t)a4
+- (void)clinicalIngestionStore:(id)store ingestionStateDidUpdateTo:(int64_t)to
 {
   sub_1D11E640C(0, &qword_1EE06A650, MEMORY[0x1E69E85F0], MEMORY[0x1E69E6720]);
   MEMORY[0x1EEE9AC00](v6 - 8);
@@ -79,15 +79,15 @@
   v10[2] = 0;
   v10[3] = 0;
   v10[4] = self;
-  v10[5] = a4;
-  v11 = self;
+  v10[5] = to;
+  selfCopy = self;
   sub_1D107877C(0, 0, v8, &unk_1D13A8098, v10);
 }
 
-- (void)conceptStore:(id)a3 indexManagerDidChangeState:(unint64_t)a4
+- (void)conceptStore:(id)store indexManagerDidChangeState:(unint64_t)state
 {
-  v5 = a3;
-  v6 = self;
+  storeCopy = store;
+  selfCopy = self;
   sub_1D11E60E8();
 }
 

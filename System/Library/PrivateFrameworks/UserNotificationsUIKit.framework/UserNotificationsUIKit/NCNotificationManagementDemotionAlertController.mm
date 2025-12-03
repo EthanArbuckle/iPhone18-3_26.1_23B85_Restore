@@ -1,20 +1,20 @@
 @interface NCNotificationManagementDemotionAlertController
-- (NCNotificationManagementDemotionAlertController)initWithRequest:(id)a3 withPresentingView:(id)a4 settingsDelegate:(id)a5 includeExplanation:(BOOL)a6;
+- (NCNotificationManagementDemotionAlertController)initWithRequest:(id)request withPresentingView:(id)view settingsDelegate:(id)delegate includeExplanation:(BOOL)explanation;
 - (void)_configureView;
 @end
 
 @implementation NCNotificationManagementDemotionAlertController
 
-- (NCNotificationManagementDemotionAlertController)initWithRequest:(id)a3 withPresentingView:(id)a4 settingsDelegate:(id)a5 includeExplanation:(BOOL)a6
+- (NCNotificationManagementDemotionAlertController)initWithRequest:(id)request withPresentingView:(id)view settingsDelegate:(id)delegate includeExplanation:(BOOL)explanation
 {
-  v6 = a6;
+  explanationCopy = explanation;
   v10.receiver = self;
   v10.super_class = NCNotificationManagementDemotionAlertController;
-  v7 = [(NCNotificationManagementAlertController *)&v10 initWithRequest:a3 withPresentingView:a4 settingsDelegate:a5];
+  v7 = [(NCNotificationManagementAlertController *)&v10 initWithRequest:request withPresentingView:view settingsDelegate:delegate];
   v8 = v7;
   if (v7)
   {
-    [(NCNotificationManagementDemotionAlertController *)v7 setIncludeExplanation:v6];
+    [(NCNotificationManagementDemotionAlertController *)v7 setIncludeExplanation:explanationCopy];
   }
 
   return v8;
@@ -24,11 +24,11 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = [a3 localizedDescription];
+  localizedDescription = [a3 localizedDescription];
   v7 = 138543618;
-  v8 = a1;
+  selfCopy = self;
   v9 = 2114;
-  v10 = v6;
+  v10 = localizedDescription;
   _os_log_error_impl(&dword_21E77E000, v5, OS_LOG_TYPE_ERROR, "Error localizing title for format %{public}@, %{public}@", &v7, 0x16u);
 }
 

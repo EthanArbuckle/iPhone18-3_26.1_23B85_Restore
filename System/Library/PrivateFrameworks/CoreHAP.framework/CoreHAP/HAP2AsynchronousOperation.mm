@@ -1,12 +1,12 @@
 @interface HAP2AsynchronousOperation
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 - (BOOL)isCancelled;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (HAP2AsynchronousOperation)init;
-- (HAP2AsynchronousOperation)initWithName:(id)a3 optionalActivity:(id)a4;
+- (HAP2AsynchronousOperation)initWithName:(id)name optionalActivity:(id)activity;
 - (NSError)error;
-- (void)_setFinalStateWithError:(int)a3 cancelled:;
+- (void)_setFinalStateWithError:(int)error cancelled:;
 - (void)cancel;
 - (void)main;
 - (void)start;
@@ -14,56 +14,56 @@
 
 @implementation HAP2AsynchronousOperation
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"executing"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"finished") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"cancelled") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"isExecuting") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"isFinished") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"isCancelled"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"executing"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"finished") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"cancelled") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"isExecuting") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"isFinished") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"isCancelled"))
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___HAP2AsynchronousOperation;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;
 }
 
-- (void)_setFinalStateWithError:(int)a3 cancelled:
+- (void)_setFinalStateWithError:(int)error cancelled:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    [a1 willChangeValueForKey:@"isExecuting"];
-    [a1 willChangeValueForKey:@"isFinished"];
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
     if (v5)
     {
-      [a1 willChangeValueForKey:@"isCancelled"];
+      [self willChangeValueForKey:@"isCancelled"];
     }
 
-    v6 = a1[34];
+    v6 = self[34];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __63__HAP2AsynchronousOperation__setFinalStateWithError_cancelled___block_invoke;
     v15 = &unk_2786D5268;
-    v16 = a1;
-    v18 = a3;
+    selfCopy = self;
+    errorCopy = error;
     v7 = v5;
     v17 = v7;
     [v6 performWritingBlock:&v12];
     if (v5)
     {
-      [a1 didChangeValueForKey:@"isCancelled"];
+      [self didChangeValueForKey:@"isCancelled"];
     }
 
-    [a1 didChangeValueForKey:@"isFinished"];
-    [a1 didChangeValueForKey:@"isExecuting"];
-    v8 = [a1 activity];
-    v9 = v8;
-    if (a3)
+    [self didChangeValueForKey:@"isFinished"];
+    [self didChangeValueForKey:@"isExecuting"];
+    activity = [self activity];
+    v9 = activity;
+    if (error)
     {
       v10 = @"Canceled";
     }
@@ -72,11 +72,11 @@
     {
       if (v5)
       {
-        [v8 markWithFormat:@"Finished with error: %@", v7, v12, v13, v14, v15, v16];
+        [activity markWithFormat:@"Finished with error: %@", v7, v12, v13, v14, v15, selfCopy];
 LABEL_12:
 
-        v11 = [a1 activity];
-        [v11 invalidate];
+        activity2 = [self activity];
+        [activity2 invalidate];
 
         goto LABEL_13;
       }
@@ -84,7 +84,7 @@ LABEL_12:
       v10 = @"Finished";
     }
 
-    [v8 markWithReason:v10];
+    [activity markWithReason:v10];
     goto LABEL_12;
   }
 
@@ -180,12 +180,12 @@ void __63__HAP2AsynchronousOperation__setFinalStateWithError_cancelled___block_i
 
   if (*(v12 + 24) == 1)
   {
-    v6 = [(HAP2AsynchronousOperation *)self activity];
-    [v6 begin];
-    v9 = [(HAP2AsynchronousOperation *)self activity];
+    activity = [(HAP2AsynchronousOperation *)self activity];
+    [activity begin];
+    activity2 = [(HAP2AsynchronousOperation *)self activity];
 
-    v7 = [(HAP2AsynchronousOperation *)self activity];
-    [v7 markWithReason:@"Started"];
+    activity3 = [(HAP2AsynchronousOperation *)self activity];
+    [activity3 markWithReason:@"Started"];
 
     v8 = objc_autoreleasePoolPush();
     [(HAP2AsynchronousOperation *)self main];
@@ -371,10 +371,10 @@ LABEL_10:
   return v5;
 }
 
-- (HAP2AsynchronousOperation)initWithName:(id)a3 optionalActivity:(id)a4
+- (HAP2AsynchronousOperation)initWithName:(id)name optionalActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  activityCopy = activity;
   v12.receiver = self;
   v12.super_class = HAP2AsynchronousOperation;
   v8 = [(HAP2AsynchronousOperation *)&v12 init];
@@ -384,13 +384,13 @@ LABEL_10:
     propertyLock = v8->_propertyLock;
     v8->_propertyLock = v9;
 
-    if (!v7)
+    if (!activityCopy)
     {
-      v7 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:v6 parent:0 options:16];
+      activityCopy = [objc_alloc(MEMORY[0x277D0F770]) initWithName:nameCopy parent:0 options:16];
     }
 
-    objc_storeStrong(&v8->_activity, v7);
-    [(HAP2AsynchronousOperation *)v8 setName:v6];
+    objc_storeStrong(&v8->_activity, activityCopy);
+    [(HAP2AsynchronousOperation *)v8 setName:nameCopy];
   }
 
   return v8;

@@ -3,48 +3,48 @@
 - (BOOL)_didRestoreIniTunes;
 - (BOOL)_doesRestartFlowCauseErase;
 - (BOOL)_hasLocaleAndLanguage;
-- (BOOL)_isBackInBuddyAfterRestoreFromBackup:(BOOL)a3;
+- (BOOL)_isBackInBuddyAfterRestoreFromBackup:(BOOL)backup;
 - (BOOL)_isBackInBuddyForActivationOnly;
 - (BOOL)_isTeslaEnrolled;
 - (BOOL)_restoreFromBackupJustFinished;
-- (BOOL)_userSelectedLocale:(id)a3 localePaneScrollOffset:(double)a4;
+- (BOOL)_userSelectedLocale:(id)locale localePaneScrollOffset:(double)offset;
 - (BOOL)airplaneModeEnabled;
-- (BOOL)doesTapFreeSetupAffectsClass:(Class)a3;
+- (BOOL)doesTapFreeSetupAffectsClass:(Class)class;
 - (BOOL)hasCloudConfiguration;
-- (BOOL)isAlertPresented:(id)a3;
+- (BOOL)isAlertPresented:(id)presented;
 - (BOOL)isFirstRunWithoutCloudConfiguration;
 - (BOOL)isLanguageSet;
 - (BOOL)shouldBeginMigration;
 - (BOOL)shouldBeginRestore;
-- (BOOL)shouldEndLifecycleForCause:(unint64_t)a3;
-- (BOOL)shouldTapFreeSetupSkipControllerClass:(Class)a3;
-- (BOOL)updateLanguageLocale:(id)a3;
-- (BOOL)userSelectedLanguageWithLocale:(id)a3 countryCode:(id)a4 localePaneScrollOffset:(double)a5;
-- (BOOL)willRestartFlowToViewController:(id)a3;
+- (BOOL)shouldEndLifecycleForCause:(unint64_t)cause;
+- (BOOL)shouldTapFreeSetupSkipControllerClass:(Class)class;
+- (BOOL)updateLanguageLocale:(id)locale;
+- (BOOL)userSelectedLanguageWithLocale:(id)locale countryCode:(id)code localePaneScrollOffset:(double)offset;
+- (BOOL)willRestartFlowToViewController:(id)controller;
 - (BOOL)willSetUpAsNew;
 - (BuddyFlowItemDispositionProvider)flowItemDispositionProvider;
 - (BuddyMiscState)miscState;
 - (BuddyRemoteManagementProvider)remoteManagementProvider;
 - (SetupController)init;
-- (id)_associationErrorFromNotification:(id)a3;
-- (id)_stringForStartupCause:(unint64_t)a3;
+- (id)_associationErrorFromNotification:(id)notification;
+- (id)_stringForStartupCause:(unint64_t)cause;
 - (unint64_t)intendedRestoreType;
 - (unint64_t)restoreType;
-- (void)TFDEPPollTimerFired:(id)a3;
+- (void)TFDEPPollTimerFired:(id)fired;
 - (void)_addSBAlertItemsSupressionAssertion;
 - (void)_cleanUpModalWiFiSettings;
 - (void)_commitAnalytics;
 - (void)_connectedToWiFiAfterProximity;
 - (void)_createNavigationController;
-- (void)_executeAfterBuddyPreTerminationTasksFinish:(id)a3;
+- (void)_executeAfterBuddyPreTerminationTasksFinish:(id)finish;
 - (void)_exitBuddyForDemoSetUp;
 - (void)_exitBuddyForMDMMigration;
-- (void)_hideModalWiFiSettingsWithReason:(id)a3;
+- (void)_hideModalWiFiSettingsWithReason:(id)reason;
 - (void)_initializeGreen;
 - (void)_languageChangeAlertDone;
 - (void)_localeChanged;
 - (void)_menuButtonPressed;
-- (void)_modalWifiControllerDone:(id)a3;
+- (void)_modalWifiControllerDone:(id)done;
 - (void)_networkPathChanged;
 - (void)_persistAnalyticsForLanguageReboot;
 - (void)_persistAnalyticsForSoftwareUpdate;
@@ -52,54 +52,54 @@
 - (void)_populateSetupAnalytics;
 - (void)_preCommitAnalytics;
 - (void)_preStashAnalytics;
-- (void)_preflightDispositionValidationWithControllerClass:(Class)a3;
+- (void)_preflightDispositionValidationWithControllerClass:(Class)class;
 - (void)_prepareForCloudRestoreReboot;
-- (void)_prepareForDeviceMigrationAfterSoftwareUpdate:(BOOL)a3;
+- (void)_prepareForDeviceMigrationAfterSoftwareUpdate:(BOOL)update;
 - (void)_prepareForMigrationReboot;
-- (void)_queuePreTerminationTask:(id)a3 taskDescription:(id)a4 withTimeoutInSeconds:(id)a5;
+- (void)_queuePreTerminationTask:(id)task taskDescription:(id)description withTimeoutInSeconds:(id)seconds;
 - (void)_refreshLanguage;
 - (void)_removeSBAlertItemsSupressionAssertion;
 - (void)_setupAnalytics;
 - (void)_setupAndStartMDMEnrollmentIfNeeded;
 - (void)_setupSnapshotRemoved;
 - (void)_setupStateChanged;
-- (void)_showMiniAlertWithRestart:(BOOL)a3 withLanguage:(id)a4;
-- (void)_showModalWiFiSettingsWithDismissalTriggers:(unint64_t)a3 completionHandler:(id)a4;
+- (void)_showMiniAlertWithRestart:(BOOL)restart withLanguage:(id)language;
+- (void)_showModalWiFiSettingsWithDismissalTriggers:(unint64_t)triggers completionHandler:(id)handler;
 - (void)_startDeviceMigration;
 - (void)_stashAnalytics;
 - (void)_waitForBuddyTerminationTasksToFinish;
-- (void)_wifiAssociationDidFinish:(id)a3;
+- (void)_wifiAssociationDidFinish:(id)finish;
 - (void)_willEndLifecycleForDataTransfer;
 - (void)_writeGreenInformedDefaultPlistIfNecessary;
-- (void)_writeGreenInformedDefaultPlistIfNecessaryForLocaleCountryCode:(id)a3;
-- (void)activationConfigurationChanged:(BOOL)a3 isActivated:(BOOL)a4;
-- (void)buddyViewControllerDidPressAlternateSetupButton:(id)a3;
+- (void)_writeGreenInformedDefaultPlistIfNecessaryForLocaleCountryCode:(id)code;
+- (void)activationConfigurationChanged:(BOOL)changed isActivated:(BOOL)activated;
+- (void)buddyViewControllerDidPressAlternateSetupButton:(id)button;
 - (void)checkForUpdatedCarrierBundle;
 - (void)checkMiniBuddyBreadcrumbs;
 - (void)dealloc;
-- (void)dialerDidDismiss:(id)a3;
-- (void)didApplyProximitySettingsWithWillReboot:(id)a3;
+- (void)dialerDidDismiss:(id)dismiss;
+- (void)didApplyProximitySettingsWithWillReboot:(id)reboot;
 - (void)didBecomeActive;
 - (void)didEnterBackground;
 - (void)didMarkBuddyComplete;
 - (void)didRestartFlow;
 - (void)disableTapFreeSetUp;
-- (void)dismissAlert:(id)a3 animated:(BOOL)a4;
-- (void)dismissAlert:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)dismissAlert:(id)alert animated:(BOOL)animated;
+- (void)dismissAlert:(id)alert animated:(BOOL)animated completion:(id)completion;
 - (void)dismissProximityPinCode;
-- (void)displayIncompatibleProximityPairingFromDeviceClass:(id)a3;
-- (void)displayProximityPinCode:(id)a3 language:(id)a4 visual:(BOOL)a5 accessibilitySettings:(id)a6;
+- (void)displayIncompatibleProximityPairingFromDeviceClass:(id)class;
+- (void)displayProximityPinCode:(id)code language:(id)language visual:(BOOL)visual accessibilitySettings:(id)settings;
 - (void)displayUpdateRequiredToMigrate;
-- (void)endLifecycleDueToCause:(unint64_t)a3;
+- (void)endLifecycleDueToCause:(unint64_t)cause;
 - (void)handleDebugGesture;
-- (void)invalidateAssertionIfNeededForStartUpCause:(unint64_t)a3;
+- (void)invalidateAssertionIfNeededForStartUpCause:(unint64_t)cause;
 - (void)markBuddyComplete;
-- (void)observer:(id)a3 didObserveLanguageChange:(BOOL)a4 localeChange:(BOOL)a5;
-- (void)prepareWithCompletion:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)proximityAutomatedDeviceEnrollmentController:(id)a3 wantsToTransitionToPairingWithPin:(id)a4;
+- (void)observer:(id)observer didObserveLanguageChange:(BOOL)change localeChange:(BOOL)localeChange;
+- (void)prepareWithCompletion:(id)completion;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)proximityAutomatedDeviceEnrollmentController:(id)controller wantsToTransitionToPairingWithPin:(id)pin;
 - (void)respring;
-- (void)runWithScene:(id)a3;
+- (void)runWithScene:(id)scene;
 - (void)setNeedsConfigurationUpdate;
 - (void)skippedApplyProximitySettings;
 - (void)startTFDEPPolling;
@@ -107,9 +107,9 @@
 - (void)terminate;
 - (void)unableToApplyProximitySettings;
 - (void)userDidChooseLanguage;
-- (void)userSelectedLanguage:(id)a3;
-- (void)willApplyProximitySettingsWithCompletion:(id)a3;
-- (void)willEndLifecycleDueToCause:(unint64_t)a3 allowDismissal:(BOOL)a4;
+- (void)userSelectedLanguage:(id)language;
+- (void)willApplyProximitySettingsWithCompletion:(id)completion;
+- (void)willEndLifecycleDueToCause:(unint64_t)cause allowDismissal:(BOOL)dismissal;
 - (void)willMarkBuddyComplete;
 - (void)willPerformProximityHandshake;
 - (void)willResignActive;
@@ -129,8 +129,8 @@
   if (location[0])
   {
     v2 = objc_alloc_init(BYRBSCPUAssertionProvider);
-    v3 = [(BYRBSCPUAssertionProvider *)v2 acquireAssertion];
-    [location[0] setCpuAssertion:v3];
+    acquireAssertion = [(BYRBSCPUAssertionProvider *)v2 acquireAssertion];
+    [location[0] setCpuAssertion:acquireAssertion];
 
     v4 = dispatch_group_create();
     v5 = *(location[0] + 18);
@@ -152,9 +152,9 @@
     [*(location[0] + 30) setDeviceProvider:v11];
 
     v12 = [BYPasscodeCacheManager alloc];
-    v13 = [location[0] environment];
-    v14 = [v13 featureFlags];
-    v15 = [v12 initWithFeatureFlags:v14];
+    environment = [location[0] environment];
+    featureFlags = [environment featureFlags];
+    v15 = [v12 initWithFeatureFlags:featureFlags];
     [*(location[0] + 30) setPasscodeCacheManager:v15];
 
     v16 = +[BYPreferencesController buddyPreferences];
@@ -236,9 +236,9 @@
     [*(location[0] + 30) setButtonMonitor:v22];
 
     v23 = [BYChronicle alloc];
-    v109 = [*(location[0] + 30) buddyPreferences];
-    v24 = [*(location[0] + 30) buddyPreferencesExcludedFromBackup];
-    v161 = [v23 initFromBackedUpPreferences:v109 andNotBackedUpPreferences:v24];
+    buddyPreferences = [*(location[0] + 30) buddyPreferences];
+    buddyPreferencesExcludedFromBackup = [*(location[0] + 30) buddyPreferencesExcludedFromBackup];
+    v161 = [v23 initFromBackedUpPreferences:buddyPreferences andNotBackedUpPreferences:buddyPreferencesExcludedFromBackup];
 
     [*(location[0] + 30) setChronicle:v161];
     if ((BYSetupAssistantHasCompletedInitialRun() & 1) == 0)
@@ -254,9 +254,9 @@
     [*(location[0] + 30) setDisplayZoomExecutor:v27];
 
     v28 = [BuddyPendingRestoreState alloc];
-    v29 = [*(location[0] + 30) existingSettings];
-    v102 = [*(location[0] + 30) setupMethod];
-    v30 = [(BuddyPendingRestoreState *)v28 initWithExistingSettings:v29 setupMethod:?];
+    existingSettings = [*(location[0] + 30) existingSettings];
+    setupMethod = [*(location[0] + 30) setupMethod];
+    v30 = [(BuddyPendingRestoreState *)v28 initWithExistingSettings:existingSettings setupMethod:?];
     [*(location[0] + 30) setPendingRestoreState:v30];
 
     v155 = _NSConcreteStackBlock;
@@ -303,7 +303,7 @@
     [*(location[0] + 30) setFlowSkipController:v42];
 
     v43 = [_TtC5Setup22AppearanceModeProvider alloc];
-    v98 = [*(location[0] + 30) displayZoomExecutor];
+    displayZoomExecutor = [*(location[0] + 30) displayZoomExecutor];
     v44 = [(AppearanceModeProvider *)v43 initWithDisplayZoomExecutor:?];
     [*(location[0] + 30) setAppearanceModeProvider:v44];
 
@@ -314,37 +314,37 @@
     [*(location[0] + 30) setDeviceConfiguration:v46];
 
     v47 = [BuddyFlowItemDispositionProvider alloc];
-    v114 = [*(location[0] + 30) setupMethod];
-    v101 = [*(location[0] + 30) runState];
-    v48 = [(BuddyFlowItemDispositionProvider *)v47 initWithSetupMethod:v114 runState:?];
+    setupMethod2 = [*(location[0] + 30) setupMethod];
+    runState = [*(location[0] + 30) runState];
+    v48 = [(BuddyFlowItemDispositionProvider *)v47 initWithSetupMethod:setupMethod2 runState:?];
     [*(location[0] + 30) setFlowItemDispositionProvider:v48];
 
     v49 = [BYPaneFeatureAnalyticsManager alloc];
-    v123 = [*(location[0] + 30) analyticsManager];
-    v117 = [*(location[0] + 30) runState];
+    analyticsManager = [*(location[0] + 30) analyticsManager];
+    runState2 = [*(location[0] + 30) runState];
     v96 = BYPaneFeatureAnalyticsHostSetupAssistant;
-    v104 = [*(location[0] + 30) flowItemDispositionProvider];
-    v50 = [v49 initWithAnalyticsManager:v123 runState:v117 host:v96 flowItemDispositionProvider:?];
+    flowItemDispositionProvider = [*(location[0] + 30) flowItemDispositionProvider];
+    v50 = [v49 initWithAnalyticsManager:analyticsManager runState:runState2 host:v96 flowItemDispositionProvider:?];
     [*(location[0] + 30) setPaneFeatureAnalyticsManager:v50];
 
     v51 = objc_alloc_init(_TtC5Setup19LockdownModeManager);
     [*(location[0] + 30) setLockdownModeProvider:v51];
 
     v52 = [BYAnalyticsEventAppearance alloc];
-    v113 = [*(location[0] + 30) analyticsManager];
-    v100 = [*(location[0] + 30) buddyPreferencesExcludedFromBackup];
-    v53 = [v52 initWithAnalyticsManager:v113 buddyPreferencesExcludedFromBackup:?];
+    analyticsManager2 = [*(location[0] + 30) analyticsManager];
+    buddyPreferencesExcludedFromBackup2 = [*(location[0] + 30) buddyPreferencesExcludedFromBackup];
+    v53 = [v52 initWithAnalyticsManager:analyticsManager2 buddyPreferencesExcludedFromBackup:?];
     [*(location[0] + 30) setAnalyticsEventAppearance:v53];
 
     v54 = objc_alloc_init(BuddyChildSetupPresenter);
     [*(location[0] + 30) setChildSetupPresenter:v54];
 
     v55 = [_TtC5Setup19IntelligenceManager alloc];
-    v125 = [*(location[0] + 30) featureFlags];
-    v120 = [*(location[0] + 30) buddyPreferences];
-    v115 = [*(location[0] + 30) chronicle];
-    v103 = [*(location[0] + 30) deviceProvider];
-    v56 = [(IntelligenceManager *)v55 initWithFeatureFlags:v125 preferences:v120 chronicle:v115 deviceProvider:?];
+    featureFlags2 = [*(location[0] + 30) featureFlags];
+    buddyPreferences2 = [*(location[0] + 30) buddyPreferences];
+    chronicle = [*(location[0] + 30) chronicle];
+    deviceProvider = [*(location[0] + 30) deviceProvider];
+    v56 = [(IntelligenceManager *)v55 initWithFeatureFlags:featureFlags2 preferences:buddyPreferences2 chronicle:chronicle deviceProvider:?];
     [*(location[0] + 30) setIntelligenceProvider:v56];
 
     v57 = objc_alloc_init(BuddyMultilingualFlowManager);
@@ -354,19 +354,19 @@
     [*(location[0] + 30) setExpressSettingsCache:v58];
 
     v59 = [BuddyDiagnosticsThreadDecorator alloc];
-    v121 = [*(location[0] + 30) setupMethod];
-    v116 = [*(location[0] + 30) runState];
-    v105 = [*(location[0] + 30) flowItemDispositionProvider];
-    v60 = [BuddyDiagnosticsThreadDecorator initWithSetupMethod:v59 runState:"initWithSetupMethod:runState:flowItemDispositionProvider:fundamentalFlowStartupProvider:" flowItemDispositionProvider:v121 fundamentalFlowStartupProvider:v116];
+    setupMethod3 = [*(location[0] + 30) setupMethod];
+    runState3 = [*(location[0] + 30) runState];
+    flowItemDispositionProvider2 = [*(location[0] + 30) flowItemDispositionProvider];
+    v60 = [BuddyDiagnosticsThreadDecorator initWithSetupMethod:v59 runState:"initWithSetupMethod:runState:flowItemDispositionProvider:fundamentalFlowStartupProvider:" flowItemDispositionProvider:setupMethod3 fundamentalFlowStartupProvider:runState3];
     [*(location[0] + 30) setDiagnosticsThreadDecorator:v60];
 
     v61 = +[BuddyThreatNotificationProvider sharedInstance];
     [*(location[0] + 30) setThreatNotificationProvider:v61];
 
     v62 = [_TtC5Setup33BuddyMultitaskingSelectionManager alloc];
-    v112 = [*(location[0] + 30) deviceProvider];
-    v99 = [*(location[0] + 30) buddyPreferences];
-    v63 = [(BuddyMultitaskingSelectionManager *)v62 initWithDeviceProvider:v112 preferences:?];
+    deviceProvider2 = [*(location[0] + 30) deviceProvider];
+    buddyPreferences3 = [*(location[0] + 30) buddyPreferences];
+    v63 = [(BuddyMultitaskingSelectionManager *)v62 initWithDeviceProvider:deviceProvider2 preferences:?];
     [*(location[0] + 30) setIPadMultitaskingModeManager:v63];
 
     v64 = objc_alloc_init(BuddySafetySettingsUIManager);
@@ -380,26 +380,26 @@
     v153 = location[0];
     v154 = objc_retainBlock(&v148);
     v65 = [BuddyEnrollmentCoordinator alloc];
-    v129 = [*(location[0] + 30) passcodeCacheManager];
-    v128 = [*(location[0] + 30) buddyPreferences];
+    passcodeCacheManager = [*(location[0] + 30) passcodeCacheManager];
+    buddyPreferences4 = [*(location[0] + 30) buddyPreferences];
     v127 = +[BYPreferencesController buddyPreferencesEphemeral];
-    v126 = [*(location[0] + 30) featureFlags];
-    v124 = [*(location[0] + 30) networkProvider];
-    v118 = [*(location[0] + 30) managedConfiguration];
-    v108 = [*(location[0] + 30) showModalWiFiSettingsBlock];
-    v66 = [(BuddyEnrollmentCoordinator *)v65 initWithPasscodeCacheManager:v129 buddyPreferences:v128 buddyPreferencesEphemeral:v127 featureFlags:v126 networkProvider:v124 managedConfiguration:v118 showModalWiFiSettingsBlock:v108 exitBuddyBlock:v154];
+    featureFlags3 = [*(location[0] + 30) featureFlags];
+    networkProvider = [*(location[0] + 30) networkProvider];
+    managedConfiguration = [*(location[0] + 30) managedConfiguration];
+    showModalWiFiSettingsBlock = [*(location[0] + 30) showModalWiFiSettingsBlock];
+    v66 = [(BuddyEnrollmentCoordinator *)v65 initWithPasscodeCacheManager:passcodeCacheManager buddyPreferences:buddyPreferences4 buddyPreferencesEphemeral:v127 featureFlags:featureFlags3 networkProvider:networkProvider managedConfiguration:managedConfiguration showModalWiFiSettingsBlock:showModalWiFiSettingsBlock exitBuddyBlock:v154];
     [*(location[0] + 30) setEnrollmentCoordinator:v66];
 
-    v67 = [*(location[0] + 30) runState];
-    v91 = [v67 hasCompletedInitialRun] ^ 1;
+    runState4 = [*(location[0] + 30) runState];
+    v91 = [runState4 hasCompletedInitialRun] ^ 1;
 
     if (v91)
     {
       v106 = +[BYSetupUserDisposition current];
-      v68 = [v106 isChild];
-      v93 = [v68 BOOLValue];
+      isChild = [v106 isChild];
+      bOOLValue = [isChild BOOLValue];
 
-      if (v93)
+      if (bOOLValue)
       {
         oslog = _BYLoggingFacility();
         v146 = OS_LOG_TYPE_DEFAULT;
@@ -412,11 +412,11 @@
         }
 
         objc_storeStrong(&oslog, 0);
-        v70 = [*(location[0] + 30) setupMethod];
-        [v70 setIntent:2];
+        setupMethod4 = [*(location[0] + 30) setupMethod];
+        [setupMethod4 setIntent:2];
 
-        v71 = [*(location[0] + 30) flowItemDispositionProvider];
-        [v71 setPreferredDispositions:16];
+        flowItemDispositionProvider3 = [*(location[0] + 30) flowItemDispositionProvider];
+        [flowItemDispositionProvider3 setPreferredDispositions:16];
       }
 
       else if ([location[0] shouldBeginRestore] & 1) != 0 || (objc_msgSend(location[0], "shouldBeginMigration"))
@@ -432,36 +432,36 @@
         }
 
         objc_storeStrong(&v144, 0);
-        v73 = [*(location[0] + 30) setupMethod];
-        [v73 setIntent:1];
+        setupMethod5 = [*(location[0] + 30) setupMethod];
+        [setupMethod5 setIntent:1];
 
-        v74 = [*(location[0] + 30) flowItemDispositionProvider];
-        [v74 setPreferredDispositions:4];
+        flowItemDispositionProvider4 = [*(location[0] + 30) flowItemDispositionProvider];
+        [flowItemDispositionProvider4 setPreferredDispositions:4];
       }
     }
 
     v75 = [BYBuddySafetyAndHandlingManager alloc];
-    v97 = [*(location[0] + 30) buddyPreferencesExcludedFromBackup];
+    buddyPreferencesExcludedFromBackup3 = [*(location[0] + 30) buddyPreferencesExcludedFromBackup];
     v76 = [(BYBuddySafetyAndHandlingManager *)v75 initWithPreferences:?];
     [location[0] setSafetyAndHandlingManager:v76];
 
-    v107 = [location[0] environment];
-    v77 = [v107 runState];
-    v92 = [v77 hasCompletedInitialRun] ^ 1;
+    environment2 = [location[0] environment];
+    runState5 = [environment2 runState];
+    v92 = [runState5 hasCompletedInitialRun] ^ 1;
 
-    v78 = [location[0] safetyAndHandlingManager];
+    safetyAndHandlingManager = [location[0] safetyAndHandlingManager];
     if (v92)
     {
-      [v78 restoreStatePostReboot];
+      [safetyAndHandlingManager restoreStatePostReboot];
     }
 
     else
     {
-      [v78 resetState];
+      [safetyAndHandlingManager resetState];
     }
 
-    v79 = [location[0] safetyAndHandlingManager];
-    [*(location[0] + 30) setSafetyAndHandlingManager:v79];
+    safetyAndHandlingManager2 = [location[0] safetyAndHandlingManager];
+    [*(location[0] + 30) setSafetyAndHandlingManager:safetyAndHandlingManager2];
 
     v80 = objc_alloc_init(BuddyInactivityTimer);
     v81 = *(location[0] + 41);
@@ -480,10 +480,10 @@
     v84 = *(location[0] + 24);
     *(location[0] + 24) = v83;
 
-    v119 = [*(location[0] + 30) miscState];
-    v110 = [location[0] environment];
-    v85 = [v110 managedConfiguration];
-    [v119 setWasPasscodeSetWhenBuddyStarted:{objc_msgSend(v85, "isPasscodeSet") & 1}];
+    miscState = [*(location[0] + 30) miscState];
+    environment3 = [location[0] environment];
+    managedConfiguration2 = [environment3 managedConfiguration];
+    [miscState setWasPasscodeSetWhenBuddyStarted:{objc_msgSend(managedConfiguration2, "isPasscodeSet") & 1}];
 
     v86 = objc_opt_new();
     v87 = *(location[0] + 46);
@@ -523,22 +523,22 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   [(BuddyLanguageChangeObserver *)self->_languageObserver stopObservingLanguageChanges];
-  if (v5->_cloudConfigurationChangeNotificationObserver)
+  if (selfCopy->_cloudConfigurationChangeNotificationObserver)
   {
     v2 = +[NSNotificationCenter defaultCenter];
-    [(NSNotificationCenter *)v2 removeObserver:v5->_cloudConfigurationChangeNotificationObserver];
+    [(NSNotificationCenter *)v2 removeObserver:selfCopy->_cloudConfigurationChangeNotificationObserver];
   }
 
-  if (v5->_sbAlertItemsSuppressionAssertion)
+  if (selfCopy->_sbAlertItemsSuppressionAssertion)
   {
-    CFRelease(v5->_sbAlertItemsSuppressionAssertion);
-    v5->_sbAlertItemsSuppressionAssertion = 0;
+    CFRelease(selfCopy->_sbAlertItemsSuppressionAssertion);
+    selfCopy->_sbAlertItemsSuppressionAssertion = 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = SetupController;
   [(SetupController *)&v3 dealloc];
 }
@@ -546,9 +546,9 @@
 - (BuddyMiscState)miscState
 {
   v2 = [(SetupController *)self environment:a2];
-  v3 = [(BYEnvironment *)v2 miscState];
+  miscState = [(BYEnvironment *)v2 miscState];
 
-  return v3;
+  return miscState;
 }
 
 - (BOOL)isFirstRunWithoutCloudConfiguration
@@ -618,39 +618,39 @@
   return HasCompletedInitialRun & 1;
 }
 
-- (BOOL)_isBackInBuddyAfterRestoreFromBackup:(BOOL)a3
+- (BOOL)_isBackInBuddyAfterRestoreFromBackup:(BOOL)backup
 {
-  v3 = 0;
-  if (a3)
+  _hasLocaleAndLanguage = 0;
+  if (backup)
   {
-    v4 = [(SetupController *)self _restoreFromBackupJustFinished];
-    v3 = 0;
-    if (v4)
+    _restoreFromBackupJustFinished = [(SetupController *)self _restoreFromBackupJustFinished];
+    _hasLocaleAndLanguage = 0;
+    if (_restoreFromBackupJustFinished)
     {
-      v3 = [(SetupController *)self _hasLocaleAndLanguage];
+      _hasLocaleAndLanguage = [(SetupController *)self _hasLocaleAndLanguage];
     }
   }
 
-  return v3 & 1;
+  return _hasLocaleAndLanguage & 1;
 }
 
-- (void)_preflightDispositionValidationWithControllerClass:(Class)a3
+- (void)_preflightDispositionValidationWithControllerClass:(Class)class
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  aClass = a3;
+  aClass = class;
   if ((os_variant_has_internal_ui() & 1) == 0)
   {
-    v3 = [(SetupController *)v18 environment];
-    v4 = [(BYEnvironment *)v3 flowItemDispositionProvider];
-    v5 = [v4 dispositions];
+    environment = [(SetupController *)selfCopy environment];
+    flowItemDispositionProvider = [(BYEnvironment *)environment flowItemDispositionProvider];
+    dispositions = [flowItemDispositionProvider dispositions];
 
-    v15 = v5;
-    if ((v5 & 2) == 2 && ([(objc_class *)aClass conformsToProtocol:&OBJC_PROTOCOL___BFFFlowItem]& 1) != 0)
+    v15 = dispositions;
+    if ((dispositions & 2) == 2 && ([(objc_class *)aClass conformsToProtocol:&OBJC_PROTOCOL___BFFFlowItem]& 1) != 0)
     {
-      v14 = [(objc_class *)aClass applicableDispositions];
-      v13 = (v14 & v15) != 0;
-      if ((v14 & v15) == 0)
+      applicableDispositions = [(objc_class *)aClass applicableDispositions];
+      v13 = (applicableDispositions & v15) != 0;
+      if ((applicableDispositions & v15) == 0)
       {
         oslog = _BYLoggingFacility();
         v11 = OS_LOG_TYPE_ERROR;
@@ -664,13 +664,13 @@
         }
 
         objc_storeStrong(&oslog, 0);
-        v6 = [(SetupController *)v18 environment];
-        v7 = [(BYEnvironment *)v6 setupMethod];
-        [v7 setIntent:1];
+        environment2 = [(SetupController *)selfCopy environment];
+        setupMethod = [(BYEnvironment *)environment2 setupMethod];
+        [setupMethod setIntent:1];
 
-        v8 = [(SetupController *)v18 environment];
-        v9 = [(BYEnvironment *)v8 flowItemDispositionProvider];
-        [v9 setPreferredDispositions:4];
+        environment3 = [(SetupController *)selfCopy environment];
+        flowItemDispositionProvider2 = [(BYEnvironment *)environment3 flowItemDispositionProvider];
+        [flowItemDispositionProvider2 setPreferredDispositions:4];
       }
     }
   }
@@ -678,28 +678,28 @@
 
 - (void)_createNavigationController
 {
-  v133 = self;
+  selfCopy = self;
   v132 = a2;
   [(SetupController *)self _refreshLanguage];
   v2 = [BFFNavigationController alloc];
   v3 = +[BYDevice currentDevice];
   v4 = [v2 initIgnoringDismissals:{objc_msgSend(v3, "type") == 1}];
-  nav = v133->_nav;
-  v133->_nav = v4;
+  nav = selfCopy->_nav;
+  selfCopy->_nav = v4;
 
-  [BFFViewControllerSpinnerManager configureWithNavigationController:v133->_nav];
-  v6 = [(SetupController *)v133 environment];
-  v7 = [(BYEnvironment *)v6 buddyPreferencesExcludedFromBackup];
-  LOBYTE(v3) = [v7 BOOLForKey:@"PushWithoutDeferringTransitionsWhileInBackground"];
+  [BFFViewControllerSpinnerManager configureWithNavigationController:selfCopy->_nav];
+  environment = [(SetupController *)selfCopy environment];
+  buddyPreferencesExcludedFromBackup = [(BYEnvironment *)environment buddyPreferencesExcludedFromBackup];
+  LOBYTE(v3) = [buddyPreferencesExcludedFromBackup BOOLForKey:@"PushWithoutDeferringTransitionsWhileInBackground"];
 
   v131 = v3 & 1;
-  if ([(SetupController *)v133 launchedForMigration]|| (v131 & 1) != 0)
+  if ([(SetupController *)selfCopy launchedForMigration]|| (v131 & 1) != 0)
   {
     location = _BYLoggingFacility();
     v129 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
     {
-      if ([(SetupController *)v133 launchedForMigration])
+      if ([(SetupController *)selfCopy launchedForMigration])
       {
         v8 = @"YES";
       }
@@ -724,21 +724,21 @@
     }
 
     objc_storeStrong(&location, 0);
-    [(BFFNavigationController *)v133->_nav setPushWithoutDeferringTransitionsWhileInBackground:1];
+    [(BFFNavigationController *)selfCopy->_nav setPushWithoutDeferringTransitionsWhileInBackground:1];
   }
 
-  [(SetupController *)v133 _setupAnalytics];
+  [(SetupController *)selfCopy _setupAnalytics];
   v10 = +[BFFStyle sharedStyle];
-  [v10 applyThemeToNavigationController:v133->_nav];
+  [v10 applyThemeToNavigationController:selfCopy->_nav];
 
-  v11 = [(BFFNavigationController *)v133->_nav view];
+  view = [(BFFNavigationController *)selfCopy->_nav view];
   v12 = +[BFFStyle sharedStyle];
-  v13 = [v12 backgroundColor];
-  [v11 setBackgroundColor:v13];
+  backgroundColor = [v12 backgroundColor];
+  [view setBackgroundColor:backgroundColor];
 
   v14 = [BuddyFlowDiverter alloc];
-  v15 = [(BuddyFlowDiverter *)v14 initWithEnvironment:v133->_environment];
-  [(SetupController *)v133 setFlowDiverter:v15];
+  v15 = [(BuddyFlowDiverter *)v14 initWithEnvironment:selfCopy->_environment];
+  [(SetupController *)selfCopy setFlowDiverter:v15];
 
   v127 = 0;
   v16 = 0;
@@ -756,67 +756,67 @@
   if (v16)
   {
     v17 = objc_alloc_init(BuddyTestFundamentalFlow);
-    [(SetupController *)v133 setFundamentalFlow:v17];
+    [(SetupController *)selfCopy setFundamentalFlow:v17];
 
-    v18 = [(SetupController *)v133 environment];
-    v19 = [(BYEnvironment *)v18 diagnosticsThreadDecorator];
-    [(BuddyFundamentalFlow *)v19 overrideThrowExceptionHandler:&stru_10032B268];
+    environment2 = [(SetupController *)selfCopy environment];
+    diagnosticsThreadDecorator = [(BYEnvironment *)environment2 diagnosticsThreadDecorator];
+    [(BuddyFundamentalFlow *)diagnosticsThreadDecorator overrideThrowExceptionHandler:&stru_10032B268];
   }
 
   else
   {
     v20 = [BuddyFundamentalFlow alloc];
-    v21 = v133;
-    v18 = objc_alloc_init(BuddyFeatureFlags);
-    v19 = [(BuddyFundamentalFlow *)v20 initWithFlowProvider:v21 featureFlags:v18];
-    [(SetupController *)v133 setFundamentalFlow:v19];
+    v21 = selfCopy;
+    environment2 = objc_alloc_init(BuddyFeatureFlags);
+    diagnosticsThreadDecorator = [(BuddyFundamentalFlow *)v20 initWithFlowProvider:v21 featureFlags:environment2];
+    [(SetupController *)selfCopy setFundamentalFlow:diagnosticsThreadDecorator];
   }
 
-  objc_initWeak(&from, v133);
+  objc_initWeak(&from, selfCopy);
   v120 = _NSConcreteStackBlock;
   v121 = -1073741824;
   v122 = 0;
   v123 = sub_1000730C0;
   v124 = &unk_10032B290;
   objc_copyWeak(&v125, &from);
-  v22 = [(SetupController *)v133 fundamentalFlow];
-  [(BuddyFlowProducer *)v22 setWillSupplyInitialFlowItemClass:&v120];
+  fundamentalFlow = [(SetupController *)selfCopy fundamentalFlow];
+  [(BuddyFlowProducer *)fundamentalFlow setWillSupplyInitialFlowItemClass:&v120];
   v119 = 0;
 
   v23 = [BuddyNavigationFlowController alloc];
-  v24 = v133;
-  v25 = v133->_nav;
-  v26 = [(SetupController *)v133 flowDiverter];
-  v27 = [(SetupController *)v133 environment];
-  v28 = [(BuddyNavigationFlowController *)v23 initWithNavigationController:v25 usingRestoreProvider:v24 usingFlowDiverter:v26 environment:v27];
-  [(SetupController *)v133 setNavigationFlowController:v28];
+  v24 = selfCopy;
+  v25 = selfCopy->_nav;
+  flowDiverter = [(SetupController *)selfCopy flowDiverter];
+  environment3 = [(SetupController *)selfCopy environment];
+  v28 = [(BuddyNavigationFlowController *)v23 initWithNavigationController:v25 usingRestoreProvider:v24 usingFlowDiverter:flowDiverter environment:environment3];
+  [(SetupController *)selfCopy setNavigationFlowController:v28];
 
-  v29 = v133;
-  v30 = [(SetupController *)v133 navigationFlowController];
-  [(BuddyNavigationFlowController *)v30 setFlowDelegate:v29];
+  v29 = selfCopy;
+  navigationFlowController = [(SetupController *)selfCopy navigationFlowController];
+  [(BuddyNavigationFlowController *)navigationFlowController setFlowDelegate:v29];
 
-  v31 = v133;
-  v32 = [(SetupController *)v133 navigationFlowController];
-  [(BuddyNavigationFlowController *)v32 setLifecycleDelegate:v31];
+  v31 = selfCopy;
+  navigationFlowController2 = [(SetupController *)selfCopy navigationFlowController];
+  [(BuddyNavigationFlowController *)navigationFlowController2 setLifecycleDelegate:v31];
 
-  v33 = [(SetupController *)v133 environment];
-  v34 = [(BYEnvironment *)v33 proximitySetupController];
-  v35 = [(SetupController *)v133 navigationFlowController];
-  [(BuddyNavigationFlowController *)v35 setProximitySetupController:v34];
+  environment4 = [(SetupController *)selfCopy environment];
+  proximitySetupController = [(BYEnvironment *)environment4 proximitySetupController];
+  navigationFlowController3 = [(SetupController *)selfCopy navigationFlowController];
+  [(BuddyNavigationFlowController *)navigationFlowController3 setProximitySetupController:proximitySetupController];
 
-  v36 = [(SetupController *)v133 fundamentalFlow];
-  v37 = [(SetupController *)v133 navigationFlowController];
-  [(BuddyNavigationFlowController *)v37 setFlowProducer:v36];
+  fundamentalFlow2 = [(SetupController *)selfCopy fundamentalFlow];
+  navigationFlowController4 = [(SetupController *)selfCopy navigationFlowController];
+  [(BuddyNavigationFlowController *)navigationFlowController4 setFlowProducer:fundamentalFlow2];
 
-  v38 = [(SetupController *)v133 environment];
-  v39 = [(BYEnvironment *)v38 buddyPreferences];
-  v40 = [(SetupController *)v133 navigationFlowController];
-  [(BuddyNavigationFlowController *)v40 setBuddyPreferences:v39];
+  environment5 = [(SetupController *)selfCopy environment];
+  buddyPreferences = [(BYEnvironment *)environment5 buddyPreferences];
+  navigationFlowController5 = [(SetupController *)selfCopy navigationFlowController];
+  [(BuddyNavigationFlowController *)navigationFlowController5 setBuddyPreferences:buddyPreferences];
 
-  v41 = [(SetupController *)v133 environment];
-  v42 = [(BYEnvironment *)v41 analyticsManager];
-  v43 = [(SetupController *)v133 navigationFlowController];
-  [(BuddyNavigationFlowController *)v43 setAnalyticsManager:v42];
+  environment6 = [(SetupController *)selfCopy environment];
+  analyticsManager = [(BYEnvironment *)environment6 analyticsManager];
+  navigationFlowController6 = [(SetupController *)selfCopy navigationFlowController];
+  [(BuddyNavigationFlowController *)navigationFlowController6 setAnalyticsManager:analyticsManager];
 
   v118 = +[NSUserDefaults standardUserDefaults];
   v117 = [v118 stringForKey:@"Language"];
@@ -837,58 +837,58 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v45 = [(SetupController *)v133 environment];
-  v46 = [(BYEnvironment *)v45 buddyPreferencesExcludedFromBackup];
-  v47 = [v46 BOOLForKey:@"AnimateLanguageChoice"];
+  environment7 = [(SetupController *)selfCopy environment];
+  buddyPreferencesExcludedFromBackup2 = [(BYEnvironment *)environment7 buddyPreferencesExcludedFromBackup];
+  v47 = [buddyPreferencesExcludedFromBackup2 BOOLForKey:@"AnimateLanguageChoice"];
 
   v112 = v47 & 1;
-  v48 = [(SetupController *)v133 environment];
-  v49 = [(BYEnvironment *)v48 buddyPreferencesExcludedFromBackup];
-  [v49 removeObjectForKey:@"AnimateLanguageChoice" onlyFromMemory:0];
+  environment8 = [(SetupController *)selfCopy environment];
+  buddyPreferencesExcludedFromBackup3 = [(BYEnvironment *)environment8 buddyPreferencesExcludedFromBackup];
+  [buddyPreferencesExcludedFromBackup3 removeObjectForKey:@"AnimateLanguageChoice" onlyFromMemory:0];
 
-  [(SetupController *)v133 setInitialAnimateLanguageChoiceValue:v112 & 1];
+  [(SetupController *)selfCopy setInitialAnimateLanguageChoiceValue:v112 & 1];
   v50 = 0;
   if (v115)
   {
     v50 = v112;
   }
 
-  v133->_shouldAnimateLocaleScreen = v50 & 1;
+  selfCopy->_shouldAnimateLocaleScreen = v50 & 1;
   v51 = +[BYLocationController sharedBuddyLocationController];
-  [v51 setFakeMode:v133->_shouldAnimateLocaleScreen];
+  [v51 setFakeMode:selfCopy->_shouldAnimateLocaleScreen];
 
-  v52 = [(SetupController *)v133 environment];
-  v53 = [(BYEnvironment *)v52 buddyPreferencesExcludedFromBackup];
-  v54 = [v53 BOOLForKey:@"DisplayZoomRestart"];
-  [(SetupController *)v133 setShouldProceedFromAppearancePane:v54 & 1];
+  environment9 = [(SetupController *)selfCopy environment];
+  buddyPreferencesExcludedFromBackup4 = [(BYEnvironment *)environment9 buddyPreferencesExcludedFromBackup];
+  v54 = [buddyPreferencesExcludedFromBackup4 BOOLForKey:@"DisplayZoomRestart"];
+  [(SetupController *)selfCopy setShouldProceedFromAppearancePane:v54 & 1];
 
-  v55 = [(SetupController *)v133 environment];
-  v56 = [(BYEnvironment *)v55 buddyPreferencesExcludedFromBackup];
-  [v56 removeObjectForKey:@"DisplayZoomRestart" onlyFromMemory:0];
+  environment10 = [(SetupController *)selfCopy environment];
+  buddyPreferencesExcludedFromBackup5 = [(BYEnvironment *)environment10 buddyPreferencesExcludedFromBackup];
+  [buddyPreferencesExcludedFromBackup5 removeObjectForKey:@"DisplayZoomRestart" onlyFromMemory:0];
 
-  v57 = [(SetupController *)v133 shouldProceedFromAppearancePane];
-  [(SetupController *)v133 setInitialDisplayZoomRestartValue:v57 & 1];
+  shouldProceedFromAppearancePane = [(SetupController *)selfCopy shouldProceedFromAppearancePane];
+  [(SetupController *)selfCopy setInitialDisplayZoomRestartValue:shouldProceedFromAppearancePane & 1];
   CFPreferencesAppSynchronize(BYBuddyNotBackedUpIdentifier);
-  v58 = [(SetupController *)v133 navigationFlowController];
+  navigationFlowController7 = [(SetupController *)selfCopy navigationFlowController];
   v103 = _NSConcreteStackBlock;
   v104 = -1073741824;
   v105 = 0;
   v106 = sub_100073134;
   v107 = &unk_10032B2B8;
-  v108 = v133;
+  v108 = selfCopy;
   v110 = v112 & 1;
   v111 = v115;
   v109 = v118;
-  [(BuddyNavigationFlowController *)v58 setupInitialFlowWithCompletion:&v103];
+  [(BuddyNavigationFlowController *)navigationFlowController7 setupInitialFlowWithCompletion:&v103];
 
   v59 = +[BuddyCloudConfigManager sharedManager];
-  v60 = [v59 isMultiUser];
+  isMultiUser = [v59 isMultiUser];
 
-  v102 = v60 & 1;
+  v102 = isMultiUser & 1;
   v61 = +[ACAccountStore defaultStore];
-  v101 = [v61 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v61 aa_primaryAppleAccount];
 
-  v100 = [v101 aa_isManagedAppleID] & 1;
+  v100 = [aa_primaryAppleAccount aa_isManagedAppleID] & 1;
   v99 = _BYLoggingFacility();
   v98 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v99, OS_LOG_TYPE_DEFAULT))
@@ -913,7 +913,7 @@
       v63 = @"NO";
     }
 
-    sub_100073590(v136, v62, v101, v63);
+    sub_100073590(v136, v62, aa_primaryAppleAccount, v63);
     _os_log_impl(&_mh_execute_header, v99, v98, "isMultiUser: %{public}@, account %p isManagedAppleID: %{public}@", v136, 0x20u);
   }
 
@@ -929,9 +929,9 @@
 
   objc_storeStrong(&v97, 0);
   v65 = +[BYSetupStateManager sharedManager];
-  v66 = [v65 didRestoreFromBackup];
+  didRestoreFromBackup = [v65 didRestoreFromBackup];
 
-  v95 = v66 & 1;
+  v95 = didRestoreFromBackup & 1;
   v94 = _BYLoggingFacility();
   v93 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
@@ -951,62 +951,62 @@
   }
 
   objc_storeStrong(&v94, 0);
-  v68 = [(SetupController *)v133 environment];
-  v69 = [(BYEnvironment *)v68 proximitySetupController];
+  environment11 = [(SetupController *)selfCopy environment];
+  proximitySetupController2 = [(BYEnvironment *)environment11 proximitySetupController];
   v87 = _NSConcreteStackBlock;
   v88 = -1073741824;
   v89 = 0;
   v90 = sub_1000735BC;
   v91 = &unk_10032B2E0;
-  v92 = v133;
-  [v69 needsToResume:&v87];
+  v92 = selfCopy;
+  [proximitySetupController2 needsToResume:&v87];
 
   v70 = +[BYDevice currentDevice];
-  LOBYTE(v69) = [v70 type] == 1;
+  LOBYTE(proximitySetupController2) = [v70 type] == 1;
 
-  if (v69)
+  if (proximitySetupController2)
   {
     v71 = objc_alloc_init(BuddyBackgroundViewController);
-    [(SetupController *)v133 setBackgroundViewController:v71];
+    [(SetupController *)selfCopy setBackgroundViewController:v71];
 
-    window = v133->_window;
-    v73 = [(SetupController *)v133 backgroundViewController];
-    [(BFFWindow *)window setRootViewController:v73];
+    window = selfCopy->_window;
+    backgroundViewController = [(SetupController *)selfCopy backgroundViewController];
+    [(BFFWindow *)window setRootViewController:backgroundViewController];
 
-    [(BFFNavigationController *)v133->_nav setModalPresentationStyle:2];
-    [(BFFNavigationController *)v133->_nav setModalInPresentation:1];
+    [(BFFNavigationController *)selfCopy->_nav setModalPresentationStyle:2];
+    [(BFFNavigationController *)selfCopy->_nav setModalInPresentation:1];
     +[OBWelcomeController preferredContentSize];
     *&v86 = v74;
     *(&v86 + 1) = v75;
-    v76 = v133->_nav;
+    v76 = selfCopy->_nav;
     v85 = v86;
     [(BFFNavigationController *)v76 setForcedPreferredContentSize:v74, v75];
-    [(BFFWindow *)v133->_window makeKeyAndVisible];
-    v77 = [(SetupController *)v133 backgroundViewController];
-    [(UIViewController *)v77 presentViewController:v133->_nav animated:1 completion:0];
+    [(BFFWindow *)selfCopy->_window makeKeyAndVisible];
+    backgroundViewController2 = [(SetupController *)selfCopy backgroundViewController];
+    [(UIViewController *)backgroundViewController2 presentViewController:selfCopy->_nav animated:1 completion:0];
 
     v78 = +[UIApplication sharedApplication];
-    v79 = [(UIApplication *)v78 connectedScenes];
-    v84 = [(NSSet *)v79 anyObject];
+    connectedScenes = [(UIApplication *)v78 connectedScenes];
+    anyObject = [(NSSet *)connectedScenes anyObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v80 = v84;
+      v80 = anyObject;
       [v80 _setBackgroundStyle:{3, v80}];
       objc_storeStrong(&v83, 0);
     }
 
-    v81 = [(SetupController *)v133 backgroundViewController];
-    [(BYEnvironment *)v133->_environment setBuddyBackgroundViewController:v81];
+    backgroundViewController3 = [(SetupController *)selfCopy backgroundViewController];
+    [(BYEnvironment *)selfCopy->_environment setBuddyBackgroundViewController:backgroundViewController3];
 
-    objc_storeStrong(&v84, 0);
+    objc_storeStrong(&anyObject, 0);
   }
 
   else
   {
-    [(BFFWindow *)v133->_window setRootViewController:v133->_nav];
-    [(BFFWindow *)v133->_window makeKeyAndVisible];
+    [(BFFWindow *)selfCopy->_window setRootViewController:selfCopy->_nav];
+    [(BFFWindow *)selfCopy->_window makeKeyAndVisible];
   }
 
   if (v115)
@@ -1016,7 +1016,7 @@
   }
 
   objc_storeStrong(&v92, 0);
-  objc_storeStrong(&v101, 0);
+  objc_storeStrong(&aa_primaryAppleAccount, 0);
   objc_storeStrong(&v109, 0);
   objc_storeStrong(&v108, 0);
   objc_storeStrong(&v116, 0);
@@ -1028,7 +1028,7 @@
 
 - (void)checkMiniBuddyBreadcrumbs
 {
-  v45 = self;
+  selfCopy = self;
   v44 = a2;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(BYBuddyRunKeychainSyncMiniBuddy, BYBuddyNotBackedUpIdentifier, 0);
   v42 = CFPreferencesGetAppBooleanValue(BYBuddyRunMesaMiniBuddy, BYBuddyNotBackedUpIdentifier, 0);
@@ -1036,7 +1036,7 @@
   v40 = CFPreferencesGetAppBooleanValue(BYBuddyRunDiagnosticsMiniBuddy, BYBuddyNotBackedUpIdentifier, 0);
   v39 = CFPreferencesGetAppBooleanValue(BYBuddyRunCombinedDiagnosticsMismatchMiniBuddy, BYBuddyNotBackedUpIdentifier, 0);
   v38 = CFPreferencesGetAppBooleanValue(BYBuddyRunHSA2MiniBuddy, BYBuddyNotBackedUpIdentifier, 0);
-  v45->_inMiniBuddyFromPostDemoRestoreBreadcrumb = CFPreferencesGetAppBooleanValue(BYBuddyRunPostDemoRestoreMiniBuddy, BYBuddyNotBackedUpIdentifier, 0) != 0;
+  selfCopy->_inMiniBuddyFromPostDemoRestoreBreadcrumb = CFPreferencesGetAppBooleanValue(BYBuddyRunPostDemoRestoreMiniBuddy, BYBuddyNotBackedUpIdentifier, 0) != 0;
   v37 = CFPreferencesGetAppBooleanValue(BYBuddyRunStolenDeviceProtectionMiniBuddy, BYBuddyNotBackedUpIdentifier, 0);
   v36 = CFPreferencesGetAppBooleanValue(BYBuddyRunStandardMiniBuddy, BYBuddyNotBackedUpIdentifier, 0);
   v35 = CFPreferencesGetAppBooleanValue(BYBuddyRunRestoreSIMSetupMiniBuddy, BYBuddyNotBackedUpIdentifier, 0);
@@ -1045,14 +1045,14 @@
   v32 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100073FE4(buf, AppBooleanValue, v42, v41, v40, v39, v38, v45->_inMiniBuddyFromPostDemoRestoreBreadcrumb, v37, v36, v35, v34);
+    sub_100073FE4(buf, AppBooleanValue, v42, v41, v40, v39, v38, selfCopy->_inMiniBuddyFromPostDemoRestoreBreadcrumb, v37, v36, v35, v34);
     _os_log_impl(&_mh_execute_header, oslog, v32, "Run with breadcrumbs: keychain=%d, touchid=%d, payment=%d, diagnostics=%d, combined diagnostics mismatch=%d, hsa2=%d, post demo restore=%d, stolen device protection=%d, standard=%d, restore SIMSetup: %d, MDM migration after SU: %d", buf, 0x44u);
   }
 
   objc_storeStrong(&oslog, 0);
-  if (AppBooleanValue || v42 || v41 || v40 || v39 || v38 || v45->_inMiniBuddyFromPostDemoRestoreBreadcrumb || v37 || v36 || v35 || v34)
+  if (AppBooleanValue || v42 || v41 || v40 || v39 || v38 || selfCopy->_inMiniBuddyFromPostDemoRestoreBreadcrumb || v37 || v36 || v35 || v34)
   {
-    v45->_inMiniBuddyFromBreadcrumb = 1;
+    selfCopy->_inMiniBuddyFromBreadcrumb = 1;
     location = +[NSUserDefaults standardUserDefaults];
     [location setBool:0 forKey:BYBuddyDoneKey];
     if (AppBooleanValue)
@@ -1080,19 +1080,19 @@
       [location removeObjectForKey:@"DiagnosticsAutoOptInSet"];
       if (v40)
       {
-        v2 = [(SetupController *)v45 environment];
-        v3 = [(BYEnvironment *)v2 managedConfiguration];
-        [v3 removeBoolSetting:MCFeatureDiagnosticsSubmissionAllowed];
+        environment = [(SetupController *)selfCopy environment];
+        managedConfiguration = [(BYEnvironment *)environment managedConfiguration];
+        [managedConfiguration removeBoolSetting:MCFeatureDiagnosticsSubmissionAllowed];
 
-        v4 = [(SetupController *)v45 environment];
-        v5 = [(BYEnvironment *)v4 capabilities];
-        v6 = [v5 eligibleForChlorine];
+        environment2 = [(SetupController *)selfCopy environment];
+        capabilities = [(BYEnvironment *)environment2 capabilities];
+        eligibleForChlorine = [capabilities eligibleForChlorine];
 
-        if (v6)
+        if (eligibleForChlorine)
         {
-          v7 = [(SetupController *)v45 environment];
-          v8 = [(BYEnvironment *)v7 managedConfiguration];
-          [v8 removeBoolSetting:MCFeatureAppAnalyticsAllowed];
+          environment3 = [(SetupController *)selfCopy environment];
+          managedConfiguration2 = [(BYEnvironment *)environment3 managedConfiguration];
+          [managedConfiguration2 removeBoolSetting:MCFeatureAppAnalyticsAllowed];
         }
       }
 
@@ -1100,14 +1100,14 @@
       {
         v29 = 0;
         v27 = 0;
-        v9 = 0;
+        eligibleForChlorine2 = 0;
         if (v39)
         {
-          v30 = [(SetupController *)v45 environment];
+          environment4 = [(SetupController *)selfCopy environment];
           v29 = 1;
-          v28 = [v30 capabilities];
+          capabilities2 = [environment4 capabilities];
           v27 = 1;
-          v9 = [v28 eligibleForChlorine];
+          eligibleForChlorine2 = [capabilities2 eligibleForChlorine];
         }
 
         if (v27)
@@ -1118,7 +1118,7 @@
         {
         }
 
-        if (v9)
+        if (eligibleForChlorine2)
         {
           v26 = _BYLoggingFacility();
           v25 = OS_LOG_TYPE_DEFAULT;
@@ -1131,9 +1131,9 @@
           }
 
           objc_storeStrong(&v26, 0);
-          v12 = [(SetupController *)v45 environment];
-          v13 = [(BYEnvironment *)v12 miscState];
-          [v13 setLaunchedWithCombinedAnalyticsMismatch:1];
+          environment5 = [(SetupController *)selfCopy environment];
+          miscState = [(BYEnvironment *)environment5 miscState];
+          [miscState setLaunchedWithCombinedAnalyticsMismatch:1];
         }
       }
     }
@@ -1147,36 +1147,36 @@
 
     if (v37)
     {
-      v14 = [(SetupController *)v45 environment];
-      v15 = [(BYEnvironment *)v14 miscState];
-      [v15 setLaunchedToShowStolenDeviceProtection:1];
+      environment6 = [(SetupController *)selfCopy environment];
+      miscState2 = [(BYEnvironment *)environment6 miscState];
+      [miscState2 setLaunchedToShowStolenDeviceProtection:1];
     }
 
     if (v35)
     {
-      v16 = [(SetupController *)v45 environment];
-      v17 = [(BYEnvironment *)v16 miscState];
-      [v17 setLaunchedToShowSIMSetupAfterRestore:1];
+      environment7 = [(SetupController *)selfCopy environment];
+      miscState3 = [(BYEnvironment *)environment7 miscState];
+      [miscState3 setLaunchedToShowSIMSetupAfterRestore:1];
     }
 
     if (v34)
     {
-      [(SetupController *)v45 setLaunchedToShowMDMMigrationAfterSoftwareUpdate:1];
+      [(SetupController *)selfCopy setLaunchedToShowMDMMigrationAfterSoftwareUpdate:1];
     }
 
     [location synchronize];
-    v18 = [(SetupController *)v45 environment];
-    v19 = [(BYEnvironment *)v18 buddyPreferencesExcludedFromBackup];
-    v20 = [v19 BOOLForKey:@"ForcePrimaryAppleIDAuthentication"];
+    environment8 = [(SetupController *)selfCopy environment];
+    buddyPreferencesExcludedFromBackup = [(BYEnvironment *)environment8 buddyPreferencesExcludedFromBackup];
+    v20 = [buddyPreferencesExcludedFromBackup BOOLForKey:@"ForcePrimaryAppleIDAuthentication"];
 
     if (v20)
     {
-      v21 = [(SetupController *)v45 miscState];
-      [(BuddyMiscState *)v21 setForcePrimaryAppleIDAuthentication:1];
+      miscState4 = [(SetupController *)selfCopy miscState];
+      [(BuddyMiscState *)miscState4 setForcePrimaryAppleIDAuthentication:1];
 
-      v22 = [(SetupController *)v45 environment];
-      v23 = [(BYEnvironment *)v22 buddyPreferencesExcludedFromBackup];
-      [v23 removeObjectForKey:@"ForcePrimaryAppleIDAuthentication" onlyFromMemory:0];
+      environment9 = [(SetupController *)selfCopy environment];
+      buddyPreferencesExcludedFromBackup2 = [(BYEnvironment *)environment9 buddyPreferencesExcludedFromBackup];
+      [buddyPreferencesExcludedFromBackup2 removeObjectForKey:@"ForcePrimaryAppleIDAuthentication" onlyFromMemory:0];
     }
 
     CFPreferencesSetAppValue(BYBuddyRunKeychainSyncMiniBuddy, kCFBooleanFalse, BYBuddyNotBackedUpIdentifier);
@@ -1193,13 +1193,13 @@
   }
 }
 
-- (void)runWithScene:(id)a3
+- (void)runWithScene:(id)scene
 {
-  v153 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v153->_window)
+  objc_storeStrong(location, scene);
+  if (selfCopy->_window)
   {
     v151 = _BYLoggingFacility();
     v150 = OS_LOG_TYPE_DEFAULT;
@@ -1212,14 +1212,14 @@
     }
 
     objc_storeStrong(&v151, 0);
-    [(BFFWindow *)v153->_window setWindowScene:location[0]];
+    [(BFFWindow *)selfCopy->_window setWindowScene:location[0]];
     v148 = 1;
   }
 
   else
   {
-    v5 = [(SetupController *)v153 inactivityTimer];
-    [(BuddyInactivityTimer *)v5 start];
+    inactivityTimer = [(SetupController *)selfCopy inactivityTimer];
+    [(BuddyInactivityTimer *)inactivityTimer start];
 
     v6 = dispatch_get_global_queue(25, 0);
     dispatch_async(v6, &stru_10032B300);
@@ -1230,7 +1230,7 @@
     v8 = +[BFFStyle sharedStyle];
     [v8 applyThemeToAllTableViews];
 
-    objc_initWeak(&from, v153);
+    objc_initWeak(&from, selfCopy);
     v141 = _NSConcreteStackBlock;
     v142 = -1073741824;
     v143 = 0;
@@ -1238,8 +1238,8 @@
     v145 = &unk_10032AF58;
     objc_copyWeak(&v146, &from);
     v9 = [BuddyMenuController menuButtonConsumerWithHandler:&v141];
-    menuButtonConsumer = v153->_menuButtonConsumer;
-    v153->_menuButtonConsumer = v9;
+    menuButtonConsumer = selfCopy->_menuButtonConsumer;
+    selfCopy->_menuButtonConsumer = v9;
 
     v11 = dispatch_get_global_queue(0, 0);
     block = _NSConcreteStackBlock;
@@ -1247,7 +1247,7 @@
     v137 = 0;
     v138 = sub_100075960;
     v139 = &unk_10032B0D0;
-    v140 = v153;
+    v140 = selfCopy;
     dispatch_async(v11, &block);
 
     cf = WiFiManagerClientCreate();
@@ -1287,44 +1287,44 @@
 
     v15 = [BFFWindow alloc];
     v16 = [v15 initWithWindowScene:location[0]];
-    window = v153->_window;
-    v153->_window = v16;
+    window = selfCopy->_window;
+    selfCopy->_window = v16;
 
     v18 = +[BYDevice currentDevice];
     v19 = [v18 type] == 0;
 
     if (v19)
     {
-      v20 = v153->_window;
+      v20 = selfCopy->_window;
       v21 = +[UIColor blackColor];
       [(BFFWindow *)v20 setBackgroundColor:v21];
     }
 
-    v22 = v153->_window;
+    v22 = selfCopy->_window;
     v23 = +[UIColor systemBlueColor];
     [(BFFWindow *)v22 setTintColor:v23];
 
-    [(SetupController *)v153 checkMiniBuddyBreadcrumbs];
+    [(SetupController *)selfCopy checkMiniBuddyBreadcrumbs];
     v24 = +[BYSetupStateNotifier sharedNotifier];
     [v24 notifyStateChangedTo:1];
 
     v25 = +[ACAccountStore defaultStore];
-    v129 = [v25 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [v25 aa_primaryAppleAccount];
 
-    if (!v129)
+    if (!aa_primaryAppleAccount)
     {
       v26 = +[ACAccountStore defaultStore];
       v27 = [v26 aa_accountsEnabledForDataclass:kAccountDataclassDeviceLocator];
-      v128 = [v27 lastObject];
+      lastObject = [v27 lastObject];
 
-      if (v128)
+      if (lastObject)
       {
-        [v128 aa_setPrimaryAccount:1];
+        [lastObject aa_setPrimaryAccount:1];
         v28 = +[ACAccountStore defaultStore];
-        [v28 saveAccount:v128 withCompletionHandler:0];
+        [v28 saveAccount:lastObject withCompletionHandler:0];
       }
 
-      objc_storeStrong(&v128, 0);
+      objc_storeStrong(&lastObject, 0);
     }
 
     v29 = +[BYSetupStateManager sharedManager];
@@ -1332,7 +1332,7 @@
     if (([v29 didSetupUsingiTunes] & 1) == 0)
     {
       v30 = 1;
-      if (![(SetupController *)v153 _didRestoreIniTunes])
+      if (![(SetupController *)selfCopy _didRestoreIniTunes])
       {
         v30 = +[DMCMultiUserModeUtilities shouldSkipLanguageAndLocaleSetupForNewUsers];
       }
@@ -1386,11 +1386,11 @@
       objc_storeStrong(&v124, 0);
     }
 
-    v121 = [(SetupController *)v153 environment];
-    v34 = [v121 networkProvider];
-    v35 = [v34 networkReachable];
+    environment = [(SetupController *)selfCopy environment];
+    networkProvider = [environment networkProvider];
+    networkReachable = [networkProvider networkReachable];
 
-    if (v35)
+    if (networkReachable)
     {
       v36 = +[BuddyAppleIDConfigurationManager sharedManager];
       [v36 getURLConfigurationWithHandler:0];
@@ -1399,92 +1399,92 @@
       dispatch_async(v37, &stru_10032B340);
     }
 
-    v90 = [(SetupController *)v153 environment];
-    v38 = [(BYEnvironment *)v90 analyticsManager];
+    environment2 = [(SetupController *)selfCopy environment];
+    analyticsManager = [(BYEnvironment *)environment2 analyticsManager];
     v158[0] = @"networkReachable";
-    v39 = [(SetupController *)v153 environment];
-    v40 = [(BYEnvironment *)v39 networkProvider];
-    v41 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v40 networkReachable] & 1);
+    environment3 = [(SetupController *)selfCopy environment];
+    networkProvider2 = [(BYEnvironment *)environment3 networkProvider];
+    v41 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [networkProvider2 networkReachable] & 1);
     v159[0] = v41;
     v158[1] = @"hasCompletedInitialSetup";
-    v42 = [(SetupController *)v153 environment];
-    v43 = [(BYEnvironment *)v42 runState];
-    v44 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v43 hasCompletedInitialRun] & 1);
+    environment4 = [(SetupController *)selfCopy environment];
+    runState = [(BYEnvironment *)environment4 runState];
+    v44 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [runState hasCompletedInitialRun] & 1);
     v159[1] = v44;
     v45 = [NSDictionary dictionaryWithObjects:v159 forKeys:v158 count:2];
-    [v38 addEvent:@"com.apple.setupassistant.ios.start" withPayload:v45 persist:1];
+    [analyticsManager addEvent:@"com.apple.setupassistant.ios.start" withPayload:v45 persist:1];
 
     v120 = _BYLoggingFacility();
     v119 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v120, OS_LOG_TYPE_DEFAULT))
     {
-      v46 = [v121 networkProvider];
-      v47 = [v46 networkReachable] & 1;
-      v48 = [v121 networkProvider];
-      sub_100075A38(v157, v47, [v48 connectedOverWiFi] & 1);
+      networkProvider3 = [environment networkProvider];
+      v47 = [networkProvider3 networkReachable] & 1;
+      networkProvider4 = [environment networkProvider];
+      sub_100075A38(v157, v47, [networkProvider4 connectedOverWiFi] & 1);
       _os_log_impl(&_mh_execute_header, v120, v119, "Network reachability at startup: %d isWifi: %d", v157, 0xEu);
     }
 
     objc_storeStrong(&v120, 0);
     v49 = nw_path_monitor_create();
-    [(SetupController *)v153 setPathMonitor:v49];
+    [(SetupController *)selfCopy setPathMonitor:v49];
 
-    v50 = [(SetupController *)v153 pathMonitor];
+    pathMonitor = [(SetupController *)selfCopy pathMonitor];
     v51 = &_dispatch_main_q;
-    nw_path_monitor_set_queue(v50, v51);
+    nw_path_monitor_set_queue(pathMonitor, v51);
 
-    v52 = [(SetupController *)v153 pathMonitor];
+    pathMonitor2 = [(SetupController *)selfCopy pathMonitor];
     update_handler = _NSConcreteStackBlock;
     v114 = -1073741824;
     v115 = 0;
     v116 = sub_100075A58;
     v117 = &unk_10032B368;
-    v118 = v153;
-    nw_path_monitor_set_update_handler(v52, &update_handler);
+    v118 = selfCopy;
+    nw_path_monitor_set_update_handler(pathMonitor2, &update_handler);
 
-    v53 = [(SetupController *)v153 pathMonitor];
-    nw_path_monitor_start(v53);
+    pathMonitor3 = [(SetupController *)selfCopy pathMonitor];
+    nw_path_monitor_start(pathMonitor3);
 
     v54 = objc_alloc_init(BuddyProximityAutomatedDeviceEnrollmentController);
-    [v121 setProximityAutomatedDeviceEnrollmentController:v54];
+    [environment setProximityAutomatedDeviceEnrollmentController:v54];
 
-    v55 = v153;
-    v56 = [v121 proximityAutomatedDeviceEnrollmentController];
-    [v56 setDelegate:v55];
+    v55 = selfCopy;
+    proximityAutomatedDeviceEnrollmentController = [environment proximityAutomatedDeviceEnrollmentController];
+    [proximityAutomatedDeviceEnrollmentController setDelegate:v55];
 
     v57 = [ProximitySetupController alloc];
-    v58 = [v121 miscState];
-    v59 = [v121 buddyPreferences];
-    v60 = [v121 buddyPreferencesExcludedFromBackup];
-    v61 = [v121 featureFlags];
-    v62 = [v121 analyticsManager];
-    v63 = [v121 setupMethod];
-    v64 = [(ProximitySetupController *)v57 initWithMiscState:v58 buddyPreferences:v59 buddyPreferencesExcludedFromBackup:v60 featureFlags:v61 analyticsManager:v62 setupMethod:v63];
-    [v121 setProximitySetupController:v64];
+    miscState = [environment miscState];
+    buddyPreferences = [environment buddyPreferences];
+    buddyPreferencesExcludedFromBackup = [environment buddyPreferencesExcludedFromBackup];
+    featureFlags = [environment featureFlags];
+    analyticsManager2 = [environment analyticsManager];
+    setupMethod = [environment setupMethod];
+    v64 = [(ProximitySetupController *)v57 initWithMiscState:miscState buddyPreferences:buddyPreferences buddyPreferencesExcludedFromBackup:buddyPreferencesExcludedFromBackup featureFlags:featureFlags analyticsManager:analyticsManager2 setupMethod:setupMethod];
+    [environment setProximitySetupController:v64];
 
-    v65 = v153;
-    v66 = [v121 proximitySetupController];
-    [v66 setDelegate:v65];
+    v65 = selfCopy;
+    proximitySetupController = [environment proximitySetupController];
+    [proximitySetupController setDelegate:v65];
 
-    [(SetupController *)v153 _createNavigationController];
+    [(SetupController *)selfCopy _createNavigationController];
     v67 = +[UIDevice currentDevice];
     [(UIDevice *)v67 setBatteryMonitoringEnabled:1];
 
-    [(SetupController *)v153 _initializeGreen];
+    [(SetupController *)selfCopy _initializeGreen];
     v68 = +[NSNotificationCenter defaultCenter];
-    [(NSNotificationCenter *)v68 addObserver:v153 selector:"_updateLoadingStatus" name:RUIHTTPRequestLoadingStatusDidChangeNotification object:0];
+    [(NSNotificationCenter *)v68 addObserver:selfCopy selector:"_updateLoadingStatus" name:RUIHTTPRequestLoadingStatusDidChangeNotification object:0];
 
     center = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterAddObserver(center, v153, sub_100075AA8, @"com.apple.springboard.setupsnapshotremoved", 0, CFNotificationSuspensionBehaviorCoalesce);
-    CFNotificationCenterAddObserver(center, v153, sub_100075AE0, @"com.apple.purplebuddy.SetupStateChanged", 0, CFNotificationSuspensionBehaviorCoalesce);
-    CFNotificationCenterAddObserver(center, v153, sub_100075B18, @"AppleDatePreferencesChangedNotification", 0, CFNotificationSuspensionBehaviorCoalesce);
+    CFNotificationCenterAddObserver(center, selfCopy, sub_100075AA8, @"com.apple.springboard.setupsnapshotremoved", 0, CFNotificationSuspensionBehaviorCoalesce);
+    CFNotificationCenterAddObserver(center, selfCopy, sub_100075AE0, @"com.apple.purplebuddy.SetupStateChanged", 0, CFNotificationSuspensionBehaviorCoalesce);
+    CFNotificationCenterAddObserver(center, selfCopy, sub_100075B18, @"AppleDatePreferencesChangedNotification", 0, CFNotificationSuspensionBehaviorCoalesce);
     v69 = +[BuddyActivationConfiguration currentConfiguration];
-    [v69 addDelegate:v153];
+    [v69 addDelegate:selfCopy];
 
     v110 = 0;
-    v70 = [v121 runState];
+    runState2 = [environment runState];
     v71 = 0;
-    if (([v70 hasCompletedInitialRun] & 1) == 0)
+    if (([runState2 hasCompletedInitialRun] & 1) == 0)
     {
       v111 = +[BuddyActivationConfiguration currentConfiguration];
       v110 = 1;
@@ -1498,21 +1498,21 @@
     if (v71)
     {
       v72 = objc_opt_class();
-      v73 = [objc_opt_class() currentAppStates];
-      v74 = [v121 buddyPreferencesExcludedFromBackup];
-      [v72 persist:v73 to:v74];
+      currentAppStates = [objc_opt_class() currentAppStates];
+      buddyPreferencesExcludedFromBackup2 = [environment buddyPreferencesExcludedFromBackup];
+      [v72 persist:currentAppStates to:buddyPreferencesExcludedFromBackup2];
     }
 
     v75 = objc_alloc_init(BuddyLanguageChangeObserver);
-    languageObserver = v153->_languageObserver;
-    v153->_languageObserver = v75;
+    languageObserver = selfCopy->_languageObserver;
+    selfCopy->_languageObserver = v75;
 
-    [(BuddyLanguageChangeObserver *)v153->_languageObserver setDelegate:?];
-    [(BuddyLanguageChangeObserver *)v153->_languageObserver startObservingLanguageChanges];
+    [(BuddyLanguageChangeObserver *)selfCopy->_languageObserver setDelegate:?];
+    [(BuddyLanguageChangeObserver *)selfCopy->_languageObserver startObservingLanguageChanges];
     v77 = +[BYLocationController sharedBuddyLocationController];
-    v78 = [(SetupController *)v153 environment];
-    v79 = [(BYEnvironment *)v78 analyticsManager];
-    [v77 configureForAnalytics:v79];
+    environment5 = [(SetupController *)selfCopy environment];
+    analyticsManager3 = [(BYEnvironment *)environment5 analyticsManager];
+    [v77 configureForAnalytics:analyticsManager3];
 
     v109 = +[NSFileManager defaultManager];
     if (([v109 fileExistsAtPath:@"/var/mobile/Media/iTunes_Control/iTunes/FirstTime"] & 1) != 0 && ((objc_msgSend(v109, "createFileAtPath:contents:attributes:", @"/var/mobile/Media/iTunes_Control/iTunes/ShowLicense", 0, 0) & 1) == 0 || (objc_msgSend(v109, "createFileAtPath:contents:attributes:", @"/var/mobile/Media/iTunes_Control/iTunes/ShowMarketing", 0, 0) & 1) == 0 || (objc_msgSend(v109, "removeItemAtPath:error:", @"/var/mobile/Media/iTunes_Control/iTunes/FirstTime", 0) & 1) == 0))
@@ -1522,22 +1522,22 @@
     }
 
     v80 = [BFFBackupDeviceController alloc];
-    v81 = [v121 proximitySetupController];
-    v82 = [(BFFBackupDeviceController *)v80 initWithProximitySetupController:v81];
-    [v121 setBackupDeviceController:v82];
+    proximitySetupController2 = [environment proximitySetupController];
+    v82 = [(BFFBackupDeviceController *)v80 initWithProximitySetupController:proximitySetupController2];
+    [environment setBackupDeviceController:v82];
 
     if ((BYSetupAssistantHasCompletedInitialRun() & 1) == 0)
     {
-      [(SetupController *)v153 startTFDEPPolling];
+      [(SetupController *)selfCopy startTFDEPPolling];
     }
 
-    v83 = [v121 buddyPreferencesExcludedFromBackup];
-    v84 = [BuddySuspendTask hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:v83];
+    buddyPreferencesExcludedFromBackup3 = [environment buddyPreferencesExcludedFromBackup];
+    v84 = [BuddySuspendTask hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:buddyPreferencesExcludedFromBackup3];
 
     if (v84)
     {
       v85 = objc_opt_new();
-      [v121 setSuspendTask:v85];
+      [environment setSuspendTask:v85];
     }
 
     v86 = +[OBAnalyticsManager sharedManager];
@@ -1549,7 +1549,7 @@
     v105 = 0;
     v106 = sub_100075B50;
     v107 = &unk_10032B2E0;
-    v108 = v121;
+    v108 = environment;
     [(BYNetworkMonitor *)v87 withMinimumNetworkType:1 timeout:&v103 runBlock:30.0];
 
     v97 = _NSConcreteStackBlock;
@@ -1557,26 +1557,26 @@
     v99 = 0;
     v100 = sub_100076038;
     v101 = &unk_10032B0D0;
-    v102 = v153;
-    v88 = [location[0] statusBarManager];
-    [v88 setDebugMenuHandler:&v97];
+    v102 = selfCopy;
+    statusBarManager = [location[0] statusBarManager];
+    [statusBarManager setDebugMenuHandler:&v97];
 
     v91 = _NSConcreteStackBlock;
     v92 = -1073741824;
     v93 = 0;
     v94 = sub_100076088;
     v95 = &unk_10032B0D0;
-    v96 = v153;
-    v89 = [v121 displayZoomExecutor];
-    [v89 setWillCommit:&v91];
+    v96 = selfCopy;
+    displayZoomExecutor = [environment displayZoomExecutor];
+    [displayZoomExecutor setWillCommit:&v91];
 
     objc_storeStrong(&v96, 0);
     objc_storeStrong(&v102, 0);
     objc_storeStrong(&v108, 0);
     objc_storeStrong(&v109, 0);
     objc_storeStrong(&v118, 0);
-    objc_storeStrong(&v121, 0);
-    objc_storeStrong(&v129, 0);
+    objc_storeStrong(&environment, 0);
+    objc_storeStrong(&aa_primaryAppleAccount, 0);
     objc_storeStrong(&v140, 0);
     objc_destroyWeak(&v146);
     objc_destroyWeak(&from);
@@ -1586,23 +1586,23 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)buddyViewControllerDidPressAlternateSetupButton:(id)a3
+- (void)buddyViewControllerDidPressAlternateSetupButton:(id)button
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, button);
   objc_storeStrong(location, 0);
 }
 
 - (void)_networkPathChanged
 {
-  v37 = self;
+  selfCopy = self;
   oslog[1] = a2;
   v2 = byte_1003A6FC0 & 1;
-  v3 = [(SetupController *)self environment];
-  v4 = [(BYEnvironment *)v3 networkProvider];
-  v5 = [v4 networkReachable] & 1;
+  environment = [(SetupController *)self environment];
+  networkProvider = [(BYEnvironment *)environment networkProvider];
+  v5 = [networkProvider networkReachable] & 1;
 
   if (v2 != v5)
   {
@@ -1610,42 +1610,42 @@
     v35 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v37 environment];
-      v7 = [v6 networkProvider];
-      v8 = [v7 networkReachable] & 1;
-      v9 = [v37 environment];
-      v10 = [v9 networkProvider];
-      sub_100075A38(buf, v8, [v10 connectedOverWiFi] & 1);
+      environment2 = [selfCopy environment];
+      networkProvider2 = [environment2 networkProvider];
+      v8 = [networkProvider2 networkReachable] & 1;
+      environment3 = [selfCopy environment];
+      networkProvider3 = [environment3 networkProvider];
+      sub_100075A38(buf, v8, [networkProvider3 connectedOverWiFi] & 1);
       _os_log_impl(&_mh_execute_header, oslog[0], v35, "Network reachability changed: %d isWifi: %d", buf, 0xEu);
     }
 
     objc_storeStrong(oslog, 0);
-    v11 = [v37 environment];
-    v12 = [v11 networkProvider];
-    byte_1003A6FC0 = [v12 networkReachable] & 1;
+    environment4 = [selfCopy environment];
+    networkProvider4 = [environment4 networkProvider];
+    byte_1003A6FC0 = [networkProvider4 networkReachable] & 1;
   }
 
-  v13 = [v37 environment];
-  v14 = [v13 networkProvider];
-  v15 = [v14 networkReachable];
+  environment5 = [selfCopy environment];
+  networkProvider5 = [environment5 networkProvider];
+  networkReachable = [networkProvider5 networkReachable];
 
-  if (v15)
+  if (networkReachable)
   {
-    v16 = [v37 environment];
-    v17 = [v16 systemTimeUpdateManager];
-    [v17 updateSystemTime];
+    environment6 = [selfCopy environment];
+    systemTimeUpdateManager = [environment6 systemTimeUpdateManager];
+    [systemTimeUpdateManager updateSystemTime];
 
     v18 = +[BuddyAppleIDConfigurationManager sharedManager];
     [v18 getURLConfigurationWithHandler:0];
 
-    if ([v37 modalWiFiDismissalTriggers])
+    if ([selfCopy modalWiFiDismissalTriggers])
     {
-      [v37 _hideModalWiFiSettingsWithReason:@"successful network reachability"];
+      [selfCopy _hideModalWiFiSettingsWithReason:@"successful network reachability"];
     }
 
-    v19 = [v37 environment];
-    v20 = [v19 enrollmentCoordinator];
-    [v20 networkAcquired];
+    environment7 = [selfCopy environment];
+    enrollmentCoordinator = [environment7 enrollmentCoordinator];
+    [enrollmentCoordinator networkAcquired];
 
     v21 = &_dispatch_main_q;
     block = _NSConcreteStackBlock;
@@ -1653,26 +1653,26 @@
     v31 = 0;
     v32 = sub_100076618;
     v33 = &unk_10032B0D0;
-    v34 = v37;
+    v34 = selfCopy;
     dispatch_async(v21, &block);
 
     objc_storeStrong(&v34, 0);
   }
 
-  v22 = [v37 environment];
-  v23 = [v22 networkProvider];
-  v24 = [v23 connectedOverWiFi];
+  environment8 = [selfCopy environment];
+  networkProvider6 = [environment8 networkProvider];
+  connectedOverWiFi = [networkProvider6 connectedOverWiFi];
 
-  if (v24)
+  if (connectedOverWiFi)
   {
-    *(v37 + 112) = 1;
+    *(selfCopy + 112) = 1;
   }
 
-  v25 = [v37 navigationFlowController];
-  v26 = [v25 wifiController];
-  v27 = [v37 environment];
-  v28 = [v27 networkProvider];
-  [v26 reachabilityChanged:{objc_msgSend(v28, "networkReachable") & 1}];
+  navigationFlowController = [selfCopy navigationFlowController];
+  wifiController = [navigationFlowController wifiController];
+  environment9 = [selfCopy environment];
+  networkProvider7 = [environment9 networkProvider];
+  [wifiController reachabilityChanged:{objc_msgSend(networkProvider7, "networkReachable") & 1}];
 }
 
 - (void)checkForUpdatedCarrierBundle
@@ -1698,24 +1698,24 @@
 - (void)_refreshLanguage
 {
   v2 = +[NSLocale preferredLanguages];
-  v3 = [(NSArray *)v2 firstObject];
+  firstObject = [(NSArray *)v2 firstObject];
   languageAtStartup = self->_languageAtStartup;
-  self->_languageAtStartup = v3;
+  self->_languageAtStartup = firstObject;
 
   v5 = +[NSLocale preferredLanguages];
   [(SetupController *)self setPreferredLanguagesAtStartup:v5];
 
   v6 = +[NSLocale currentLocale];
-  v7 = [(NSLocale *)v6 localeIdentifier];
+  localeIdentifier = [(NSLocale *)v6 localeIdentifier];
   localeIdentifierAtStartup = self->_localeIdentifierAtStartup;
-  self->_localeIdentifierAtStartup = v7;
+  self->_localeIdentifierAtStartup = localeIdentifier;
 }
 
-- (id)_stringForStartupCause:(unint64_t)a3
+- (id)_stringForStartupCause:(unint64_t)cause
 {
-  if (a3)
+  if (cause)
   {
-    switch(a3)
+    switch(cause)
     {
       case 1uLL:
         v4 = @"Post-Language Change";
@@ -1757,7 +1757,7 @@
 
 - (void)startTFDEPPolling
 {
-  v9 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if (!self->_TFDEPPollTimer)
   {
@@ -1772,15 +1772,15 @@
     }
 
     objc_storeStrong(oslog, 0);
-    v4 = [NSTimer scheduledTimerWithTimeInterval:v9 target:"TFDEPPollTimerFired:" selector:0 userInfo:1 repeats:1.0];
-    TFDEPPollTimer = v9->_TFDEPPollTimer;
-    v9->_TFDEPPollTimer = v4;
+    v4 = [NSTimer scheduledTimerWithTimeInterval:selfCopy target:"TFDEPPollTimerFired:" selector:0 userInfo:1 repeats:1.0];
+    TFDEPPollTimer = selfCopy->_TFDEPPollTimer;
+    selfCopy->_TFDEPPollTimer = v4;
   }
 }
 
 - (void)stopTFDEPPolling
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if (self->_TFDEPPollTimer)
   {
@@ -1795,36 +1795,36 @@
     }
 
     objc_storeStrong(oslog, 0);
-    [(NSTimer *)v7->_TFDEPPollTimer invalidate];
-    objc_storeStrong(&v7->_TFDEPPollTimer, 0);
+    [(NSTimer *)selfCopy->_TFDEPPollTimer invalidate];
+    objc_storeStrong(&selfCopy->_TFDEPPollTimer, 0);
   }
 }
 
 - (BOOL)_isTeslaEnrolled
 {
   v2 = [MDMCloudConfiguration sharedConfiguration:a2];
-  v3 = [v2 isTeslaEnrolled];
+  isTeslaEnrolled = [v2 isTeslaEnrolled];
 
-  return v3 & 1;
+  return isTeslaEnrolled & 1;
 }
 
-- (void)TFDEPPollTimerFired:(id)a3
+- (void)TFDEPPollTimerFired:(id)fired
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(SetupController *)v21 environment];
-  v19 = [(BYEnvironment *)v3 managedConfiguration];
+  objc_storeStrong(location, fired);
+  environment = [(SetupController *)selfCopy environment];
+  managedConfiguration = [(BYEnvironment *)environment managedConfiguration];
 
   v17 = 0;
   v15 = 0;
   v13 = 0;
-  if (-[SetupController _isTeslaEnrolled](v21, "_isTeslaEnrolled") || (v18 = -[SetupController environment](v21, "environment"), v17 = 1, v16 = [v18 enrollmentCoordinator], v15 = 1, v4 = 0, (objc_msgSend(v16, "shouldDoReturnToService") & 1) != 0))
+  if (-[SetupController _isTeslaEnrolled](selfCopy, "_isTeslaEnrolled") || (v18 = -[SetupController environment](selfCopy, "environment"), v17 = 1, v16 = [v18 enrollmentCoordinator], v15 = 1, v4 = 0, (objc_msgSend(v16, "shouldDoReturnToService") & 1) != 0))
   {
-    v14 = [v19 installedMDMProfileIdentifier];
+    installedMDMProfileIdentifier = [managedConfiguration installedMDMProfileIdentifier];
     v13 = 1;
-    v4 = v14 != 0;
+    v4 = installedMDMProfileIdentifier != 0;
   }
 
   if (v13)
@@ -1852,43 +1852,43 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [(SetupController *)v21 stopTFDEPPolling];
-    v21->_isTapFreeSetup = 1;
-    v7 = [(BYEnvironment *)v21->_environment featureFlags];
-    v8 = [v7 isMDMEnrollmentFlowControllerAdoptionEnabled] ^ 1;
+    [(SetupController *)selfCopy stopTFDEPPolling];
+    selfCopy->_isTapFreeSetup = 1;
+    featureFlags = [(BYEnvironment *)selfCopy->_environment featureFlags];
+    v8 = [featureFlags isMDMEnrollmentFlowControllerAdoptionEnabled] ^ 1;
 
     if (v8)
     {
-      [v19 cloudConfigurationUIDidCompleteWasApplied:1];
+      [managedConfiguration cloudConfigurationUIDidCompleteWasApplied:1];
     }
 
-    v9 = [(SetupController *)v21 navigationFlowController];
-    [(BuddyNavigationFlowController *)v9 beginTapFreeSetUp];
+    navigationFlowController = [(SetupController *)selfCopy navigationFlowController];
+    [(BuddyNavigationFlowController *)navigationFlowController beginTapFreeSetUp];
   }
 
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&managedConfiguration, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)doesTapFreeSetupAffectsClass:(Class)a3
+- (BOOL)doesTapFreeSetupAffectsClass:(Class)class
 {
   v3 = objc_opt_respondsToSelector();
-  v4 = 0;
+  controllerAffectedByTapFreeSetup = 0;
   if (v3)
   {
-    v4 = [(objc_class *)a3 controllerAffectedByTapFreeSetup];
+    controllerAffectedByTapFreeSetup = [(objc_class *)class controllerAffectedByTapFreeSetup];
   }
 
-  return v4 & 1;
+  return controllerAffectedByTapFreeSetup & 1;
 }
 
-- (BOOL)shouldTapFreeSetupSkipControllerClass:(Class)a3
+- (BOOL)shouldTapFreeSetupSkipControllerClass:(Class)class
 {
   isTapFreeSetup = self->_isTapFreeSetup;
   v4 = 0;
   if (isTapFreeSetup)
   {
-    v4 = [(SetupController *)self doesTapFreeSetupAffectsClass:a3];
+    v4 = [(SetupController *)self doesTapFreeSetupAffectsClass:class];
   }
 
   return v4 & 1;
@@ -1896,29 +1896,29 @@
 
 - (void)_setupAndStartMDMEnrollmentIfNeeded
 {
-  v53 = self;
+  selfCopy = self;
   v52 = a2;
-  v2 = [(SetupController *)self cachedStartupCause];
+  cachedStartupCause = [(SetupController *)self cachedStartupCause];
   v3 = 0;
-  if (v2 != 1)
+  if (cachedStartupCause != 1)
   {
-    v3 = [(SetupController *)v53 cachedStartupCause]!= 2;
+    v3 = [(SetupController *)selfCopy cachedStartupCause]!= 2;
   }
 
   v51 = v3;
-  v50 = [(BYEnvironment *)v53->_environment enrollmentCoordinator];
-  v4 = [(BYEnvironment *)v53->_environment featureFlags];
-  v5 = [v4 isMDMEnrollmentFlowControllerAdoptionEnabled];
+  enrollmentCoordinator = [(BYEnvironment *)selfCopy->_environment enrollmentCoordinator];
+  featureFlags = [(BYEnvironment *)selfCopy->_environment featureFlags];
+  isMDMEnrollmentFlowControllerAdoptionEnabled = [featureFlags isMDMEnrollmentFlowControllerAdoptionEnabled];
 
-  if (v5)
+  if (isMDMEnrollmentFlowControllerAdoptionEnabled)
   {
-    [v50 setNavigationController:v53->_nav];
-    v6 = [(BYEnvironment *)v53->_environment enrollmentCoordinator];
-    v7 = [v6 shouldDoReturnToService];
+    [enrollmentCoordinator setNavigationController:selfCopy->_nav];
+    enrollmentCoordinator2 = [(BYEnvironment *)selfCopy->_environment enrollmentCoordinator];
+    shouldDoReturnToService = [enrollmentCoordinator2 shouldDoReturnToService];
 
-    if (v7)
+    if (shouldDoReturnToService)
     {
-      v49 = [(BYEnvironment *)v53->_environment enrollmentCoordinator];
+      enrollmentCoordinator3 = [(BYEnvironment *)selfCopy->_environment enrollmentCoordinator];
       location = _BYLoggingFacility();
       v47 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
@@ -1930,32 +1930,32 @@
       }
 
       objc_storeStrong(&location, 0);
-      [(BFFNavigationController *)v53->_nav setPushWithoutDeferringTransitionsWhileInBackground:1];
+      [(BFFNavigationController *)selfCopy->_nav setPushWithoutDeferringTransitionsWhileInBackground:1];
       v10 = +[BuddyCloudConfigManager sharedManager];
-      [v10 setEnrollmentCoordinator:v49];
+      [v10 setEnrollmentCoordinator:enrollmentCoordinator3];
 
       v39 = _NSConcreteStackBlock;
       v40 = -1073741824;
       v41 = 0;
       v42 = sub_100077670;
       v43 = &unk_10032B438;
-      v44 = v53;
+      v44 = selfCopy;
       v45 = v51;
-      [v49 setLanguageSettingBlock:&v39];
-      v11 = [(BYEnvironment *)v53->_environment enrollmentCoordinator];
-      [v11 startEnrollmentFlow];
+      [enrollmentCoordinator3 setLanguageSettingBlock:&v39];
+      enrollmentCoordinator4 = [(BYEnvironment *)selfCopy->_environment enrollmentCoordinator];
+      [enrollmentCoordinator4 startEnrollmentFlow];
 
       objc_storeStrong(&v44, 0);
-      objc_storeStrong(&v49, 0);
+      objc_storeStrong(&enrollmentCoordinator3, 0);
     }
   }
 
   else
   {
     v12 = +[BuddyCloudConfigManager sharedManager];
-    [v12 setEnrollmentCoordinator:v50];
+    [v12 setEnrollmentCoordinator:enrollmentCoordinator];
 
-    if ([v50 shouldDoReturnToService])
+    if ([enrollmentCoordinator shouldDoReturnToService])
     {
       oslog = _BYLoggingFacility();
       v37 = OS_LOG_TYPE_DEFAULT;
@@ -1968,21 +1968,21 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      [(BFFNavigationController *)v53->_nav setPushWithoutDeferringTransitionsWhileInBackground:1];
+      [(BFFNavigationController *)selfCopy->_nav setPushWithoutDeferringTransitionsWhileInBackground:1];
       v15 = dispatch_get_global_queue(2, 0);
       block = _NSConcreteStackBlock;
       v31 = -1073741824;
       v32 = 0;
       v33 = sub_10007791C;
       v34 = &unk_10032B0D0;
-      v35 = v50;
+      v35 = enrollmentCoordinator;
       dispatch_async(v15, &block);
 
-      v16 = [v50 languageStrings];
-      v29 = [v16 firstObject];
+      languageStrings = [enrollmentCoordinator languageStrings];
+      firstObject = [languageStrings firstObject];
 
-      v28 = [v50 localeString];
-      if ([v29 length] && objc_msgSend(v28, "length"))
+      localeString = [enrollmentCoordinator localeString];
+      if ([firstObject length] && objc_msgSend(localeString, "length"))
       {
         v27 = _BYLoggingFacility();
         v26 = OS_LOG_TYPE_DEFAULT;
@@ -1995,7 +1995,7 @@
         }
 
         objc_storeStrong(&v27, 0);
-        [(SetupController *)v53 userSelectedLanguageWithLocale:v29 countryCode:v28 localePaneScrollOffset:0.0];
+        [(SetupController *)selfCopy userSelectedLanguageWithLocale:firstObject countryCode:localeString localePaneScrollOffset:0.0];
         if (v51)
         {
           v24 = _BYLoggingFacility();
@@ -2009,29 +2009,29 @@
           }
 
           objc_storeStrong(&v24, 0);
-          v21 = [(SetupController *)v53 navigationFlowController];
-          [(BuddyNavigationFlowController *)v21 proceedPastLanguageLocalePane];
+          navigationFlowController = [(SetupController *)selfCopy navigationFlowController];
+          [(BuddyNavigationFlowController *)navigationFlowController proceedPastLanguageLocalePane];
         }
       }
 
-      objc_storeStrong(&v28, 0);
-      objc_storeStrong(&v29, 0);
+      objc_storeStrong(&localeString, 0);
+      objc_storeStrong(&firstObject, 0);
       objc_storeStrong(&v35, 0);
     }
   }
 
-  objc_storeStrong(&v50, 0);
+  objc_storeStrong(&enrollmentCoordinator, 0);
 }
 
 - (void)didBecomeActive
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
   if (self->_lockStartTimestamp)
   {
-    [BuddyTimestamp intervalSinceTimestamp:v24->_lockStartTimestamp];
+    [BuddyTimestamp intervalSinceTimestamp:selfCopy->_lockStartTimestamp];
     v22 = *&v2;
-    v24->_cumulativeLockedDuration = v24->_cumulativeLockedDuration + v2;
+    selfCopy->_cumulativeLockedDuration = selfCopy->_cumulativeLockedDuration + v2;
     oslog = _BYLoggingFacility();
     v20 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -2041,13 +2041,13 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    v24->_lockStartTimestamp = 0;
+    selfCopy->_lockStartTimestamp = 0;
   }
 
-  if (!v24->_buddyStartTimestamp)
+  if (!selfCopy->_buddyStartTimestamp)
   {
     v3 = +[BuddyTimestamp currentTimestamp];
-    v24->_buddyStartTimestamp = v3;
+    selfCopy->_buddyStartTimestamp = v3;
     v19 = _BYLoggingFacility();
     v18 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -2060,35 +2060,35 @@
     }
 
     objc_storeStrong(&v19, 0);
-    v4 = [(SetupController *)v24 environment];
-    v5 = [(BYEnvironment *)v4 analyticsManager];
+    environment = [(SetupController *)selfCopy environment];
+    analyticsManager = [(BYEnvironment *)environment analyticsManager];
     v25[0] = @"networkReachable";
-    v6 = [(SetupController *)v24 environment];
-    v7 = [(BYEnvironment *)v6 networkProvider];
-    v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 networkReachable] & 1);
+    environment2 = [(SetupController *)selfCopy environment];
+    networkProvider = [(BYEnvironment *)environment2 networkProvider];
+    v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [networkProvider networkReachable] & 1);
     v26[0] = v8;
     v25[1] = @"hasCompletedInitialSetup";
-    v9 = [(SetupController *)v24 environment];
-    v10 = [(BYEnvironment *)v9 runState];
-    v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 hasCompletedInitialRun] & 1);
+    environment3 = [(SetupController *)selfCopy environment];
+    runState = [(BYEnvironment *)environment3 runState];
+    v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [runState hasCompletedInitialRun] & 1);
     v26[1] = v11;
     v12 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
-    [v5 addEvent:@"com.apple.setupassistant.ios.initialForeground" withPayload:v12 persist:1];
+    [analyticsManager addEvent:@"com.apple.setupassistant.ios.initialForeground" withPayload:v12 persist:1];
   }
 
-  v13 = [(SetupController *)v24 navigationFlowController];
-  v16 = [(BuddyNavigationFlowController *)v13 topFlowItem];
+  navigationFlowController = [(SetupController *)selfCopy navigationFlowController];
+  topFlowItem = [(BuddyNavigationFlowController *)navigationFlowController topFlowItem];
 
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v16 shouldStopInactivityTimer])
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([topFlowItem shouldStopInactivityTimer])
   {
-    v14 = [(SetupController *)v24 inactivityTimer];
-    [(BuddyInactivityTimer *)v14 stop];
+    inactivityTimer = [(SetupController *)selfCopy inactivityTimer];
+    [(BuddyInactivityTimer *)inactivityTimer stop];
   }
 
-  v15 = [(SetupController *)v24 navigationAnalytics];
-  [(BuddyNavigationAnalytics *)v15 didBecomeActive];
+  navigationAnalytics = [(SetupController *)selfCopy navigationAnalytics];
+  [(BuddyNavigationAnalytics *)navigationAnalytics didBecomeActive];
 
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&topFlowItem, 0);
 }
 
 - (void)willResignActive
@@ -2102,13 +2102,13 @@
 
 - (void)didEnterBackground
 {
-  v22 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
-    if (v22->_buddyDone)
+    if (selfCopy->_buddyDone)
     {
       v2 = @"complete";
     }
@@ -2133,9 +2133,9 @@
   }
 
   objc_storeStrong(oslog, 0);
-  v4 = [(SetupController *)v22 monitor];
+  monitor = [(SetupController *)selfCopy monitor];
 
-  if (v4)
+  if (monitor)
   {
     v19 = _BYLoggingFacility();
     v18 = 16;
@@ -2148,68 +2148,68 @@
     }
 
     objc_storeStrong(&v19, 0);
-    v7 = [(SetupController *)v22 monitor];
-    [(FBSDisplayLayoutMonitor *)v7 invalidate];
+    monitor2 = [(SetupController *)selfCopy monitor];
+    [(FBSDisplayLayoutMonitor *)monitor2 invalidate];
 
-    [(SetupController *)v22 setMonitor:0];
-    [(SetupController *)v22 markBuddyComplete];
-    [(SetupController *)v22 didMarkBuddyComplete];
+    [(SetupController *)selfCopy setMonitor:0];
+    [(SetupController *)selfCopy markBuddyComplete];
+    [(SetupController *)selfCopy didMarkBuddyComplete];
   }
 
-  if (!v22->_buddyDone || ([UIApp isSuspendedUnderLock] & 1) != 0)
+  if (!selfCopy->_buddyDone || ([UIApp isSuspendedUnderLock] & 1) != 0)
   {
-    v9 = [(SetupController *)v22 inactivityTimer];
-    [(BuddyInactivityTimer *)v9 start];
+    inactivityTimer = [(SetupController *)selfCopy inactivityTimer];
+    [(BuddyInactivityTimer *)inactivityTimer start];
   }
 
   else
   {
-    v8 = v22;
+    v8 = selfCopy;
     v11 = _NSConcreteStackBlock;
     v12 = -1073741824;
     v13 = 0;
     v14 = sub_1000781A0;
     v15 = &unk_10032B0D0;
-    v16 = v22;
+    v16 = selfCopy;
     [(SetupController *)v8 _executeAfterBuddyPreTerminationTasksFinish:&v11];
     objc_storeStrong(&v16, 0);
   }
 
-  v10 = [(SetupController *)v22 navigationAnalytics];
-  [(BuddyNavigationAnalytics *)v10 didEnterBackground];
+  navigationAnalytics = [(SetupController *)selfCopy navigationAnalytics];
+  [(BuddyNavigationAnalytics *)navigationAnalytics didEnterBackground];
 }
 
 - (void)willTerminate
 {
   v2 = [(SetupController *)self environment:a2];
-  v3 = [(BYEnvironment *)v2 proximitySetupController];
-  [v3 setupFinished];
+  proximitySetupController = [(BYEnvironment *)v2 proximitySetupController];
+  [proximitySetupController setupFinished];
 }
 
 - (void)terminate
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   v2 = +[BYSetupStateNotifier sharedNotifier];
   [v2 notifyStateChangedTo:3];
 
   location[0] = 0;
-  if ([(SetupController *)v20 shouldLaunchSuspendTaskURL])
+  if ([(SetupController *)selfCopy shouldLaunchSuspendTaskURL])
   {
-    v3 = [(SetupController *)v20 environment];
-    v4 = [(BYEnvironment *)v3 suspendTask];
-    v5 = [v4 launchURL];
+    environment = [(SetupController *)selfCopy environment];
+    suspendTask = [(BYEnvironment *)environment suspendTask];
+    launchURL = [suspendTask launchURL];
     v6 = location[0];
-    location[0] = v5;
+    location[0] = launchURL;
   }
 
-  v7 = [(SetupController *)v20 environment];
-  v8 = [(BYEnvironment *)v7 displayZoomExecutor];
-  [v8 setWillCommit:0];
+  environment2 = [(SetupController *)selfCopy environment];
+  displayZoomExecutor = [(BYEnvironment *)environment2 displayZoomExecutor];
+  [displayZoomExecutor setWillCommit:0];
 
-  v9 = [(SetupController *)v20 environment];
-  v10 = [(BYEnvironment *)v9 displayZoomExecutor];
-  v11 = [v10 commitIfNeededWithRelaunchURL:location[0] transitionWithScreenshot:0];
+  environment3 = [(SetupController *)selfCopy environment];
+  displayZoomExecutor2 = [(BYEnvironment *)environment3 displayZoomExecutor];
+  v11 = [displayZoomExecutor2 commitIfNeededWithRelaunchURL:location[0] transitionWithScreenshot:0];
 
   if (v11)
   {
@@ -2239,7 +2239,7 @@
 
 - (void)willMarkBuddyComplete
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _BYLoggingFacility();
   v38 = OS_LOG_TYPE_DEFAULT;
@@ -2253,28 +2253,28 @@
 
   objc_storeStrong(location, 0);
   v4 = +[ACAccountStore defaultStore];
-  v5 = [v4 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v4 aa_primaryAppleAccount];
 
-  if (v5)
+  if (aa_primaryAppleAccount)
   {
-    v6 = [(SetupController *)v40 environment];
-    v7 = [(BYEnvironment *)v6 proximitySetupController];
-    v8 = [v7 hasAppliedSettings];
+    environment = [(SetupController *)selfCopy environment];
+    proximitySetupController = [(BYEnvironment *)environment proximitySetupController];
+    hasAppliedSettings = [proximitySetupController hasAppliedSettings];
 
-    v36 = v8 & 1;
+    v36 = hasAppliedSettings & 1;
     v33 = 0;
     v31 = 0;
     v29 = 0;
     v9 = 0;
-    if (v8)
+    if (hasAppliedSettings)
     {
-      v34 = [(SetupController *)v40 environment];
+      environment2 = [(SetupController *)selfCopy environment];
       v33 = 1;
-      v32 = [(BYEnvironment *)v34 pendingRestoreState];
+      pendingRestoreState = [(BYEnvironment *)environment2 pendingRestoreState];
       v31 = 1;
-      v30 = [v32 backupItem];
+      backupItem = [pendingRestoreState backupItem];
       v29 = 1;
-      v9 = v30 == 0;
+      v9 = backupItem == 0;
     }
 
     if (v29)
@@ -2321,9 +2321,9 @@
 
           else
           {
-            v22 = [v25 domain];
+            domain = [v25 domain];
             v21 = 1;
-            v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v22, [v25 code]);
+            v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v25 code]);
             v20 = v13;
             v19 = 1;
           }
@@ -2352,9 +2352,9 @@
   CFPreferencesGetAppBooleanValue(@"DefaultValueForPasswordAndCreditCardAutoFill", @"com.apple.WebUI", &keyExistsAndHasValidFormat);
   if (!keyExistsAndHasValidFormat)
   {
-    v14 = [(SetupController *)v40 environment];
-    v15 = [(BYEnvironment *)v14 managedConfiguration];
-    CFPreferencesSetAppValue(@"DefaultValueForPasswordAndCreditCardAutoFill", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v15 isPasscodeSet] & 1), @"com.apple.WebUI");
+    environment3 = [(SetupController *)selfCopy environment];
+    managedConfiguration = [(BYEnvironment *)environment3 managedConfiguration];
+    CFPreferencesSetAppValue(@"DefaultValueForPasswordAndCreditCardAutoFill", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [managedConfiguration isPasscodeSet] & 1), @"com.apple.WebUI");
 
     CFPreferencesAppSynchronize(@"com.apple.WebUI");
   }
@@ -2362,15 +2362,15 @@
 
 - (void)markBuddyComplete
 {
-  v52 = self;
+  selfCopy = self;
   v51 = a2;
-  v2 = self;
-  objc_sync_enter(v2);
-  v50 = [(SetupController *)v52 markBuddyCompleteDidRun];
-  [(SetupController *)v52 setMarkBuddyCompleteDidRun:1];
-  objc_sync_exit(v2);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  markBuddyCompleteDidRun = [(SetupController *)selfCopy markBuddyCompleteDidRun];
+  [(SetupController *)selfCopy setMarkBuddyCompleteDidRun:1];
+  objc_sync_exit(selfCopy2);
 
-  if (v50)
+  if (markBuddyCompleteDidRun)
   {
     oslog = _BYLoggingFacility();
     v48 = OS_LOG_TYPE_DEFAULT;
@@ -2398,38 +2398,38 @@
     }
 
     objc_storeStrong(&v46, 0);
-    v7 = [(SetupController *)v52 environment];
-    v8 = [(BYEnvironment *)v7 chronicle];
-    v9 = [(SetupController *)v52 environment];
-    v10 = [(BYEnvironment *)v9 buddyPreferences];
-    v11 = [(SetupController *)v52 environment];
-    v12 = [(BYEnvironment *)v11 buddyPreferencesExcludedFromBackup];
-    [v8 persistBackedUpFeaturesInPreferences:v10 andNotBackedFeaturesInPreferences:v12 persistImmediately:0];
+    environment = [(SetupController *)selfCopy environment];
+    chronicle = [(BYEnvironment *)environment chronicle];
+    environment2 = [(SetupController *)selfCopy environment];
+    buddyPreferences = [(BYEnvironment *)environment2 buddyPreferences];
+    environment3 = [(SetupController *)selfCopy environment];
+    buddyPreferencesExcludedFromBackup = [(BYEnvironment *)environment3 buddyPreferencesExcludedFromBackup];
+    [chronicle persistBackedUpFeaturesInPreferences:buddyPreferences andNotBackedFeaturesInPreferences:buddyPreferencesExcludedFromBackup persistImmediately:0];
 
-    v13 = [(SetupController *)v52 environment];
-    v14 = [(BYEnvironment *)v13 buddyPreferences];
-    [v14 removeObjectForKey:@"DebugFlowItemClassNames" onlyFromMemory:0];
+    environment4 = [(SetupController *)selfCopy environment];
+    buddyPreferences2 = [(BYEnvironment *)environment4 buddyPreferences];
+    [buddyPreferences2 removeObjectForKey:@"DebugFlowItemClassNames" onlyFromMemory:0];
 
-    v15 = [(SetupController *)v52 environment];
-    v16 = [(BYEnvironment *)v15 buddyPreferencesExcludedFromBackup];
-    [v16 removeObjectForKey:@"PushWithoutDeferringTransitionsWhileInBackground"];
+    environment5 = [(SetupController *)selfCopy environment];
+    buddyPreferencesExcludedFromBackup2 = [(BYEnvironment *)environment5 buddyPreferencesExcludedFromBackup];
+    [buddyPreferencesExcludedFromBackup2 removeObjectForKey:@"PushWithoutDeferringTransitionsWhileInBackground"];
 
-    v17 = [(SetupController *)v52 environment];
-    v18 = [(BYEnvironment *)v17 buddyPreferencesExcludedFromBackup];
-    [BuddySetupAnalytics removeFromDiskWithPreferences:v18];
+    environment6 = [(SetupController *)selfCopy environment];
+    buddyPreferencesExcludedFromBackup3 = [(BYEnvironment *)environment6 buddyPreferencesExcludedFromBackup];
+    [BuddySetupAnalytics removeFromDiskWithPreferences:buddyPreferencesExcludedFromBackup3];
 
-    v19 = [(SetupController *)v52 environment];
-    v20 = [(BYEnvironment *)v19 expressSettingsCache];
+    environment7 = [(SetupController *)selfCopy environment];
+    expressSettingsCache = [(BYEnvironment *)environment7 expressSettingsCache];
 
-    if (v20)
+    if (expressSettingsCache)
     {
-      v21 = v52;
+      v21 = selfCopy;
       v38 = _NSConcreteStackBlock;
       v39 = -1073741824;
       v40 = 0;
       v41 = sub_100079148;
       v42 = &unk_10032B488;
-      v43 = v52;
+      v43 = selfCopy;
       v22 = [NSNumber numberWithDouble:3.0];
       [(SetupController *)v21 _queuePreTerminationTask:&v38 taskDescription:@"Finalize express settings" withTimeoutInSeconds:v22];
 
@@ -2439,12 +2439,12 @@
     else if (os_variant_has_internal_ui())
     {
       v23 = +[NSAssertionHandler currentHandler];
-      [(NSAssertionHandler *)v23 handleFailureInMethod:v51 object:v52 file:@"SetupController.m" lineNumber:1502 description:@"expressSettingsCache must not be nil"];
+      [(NSAssertionHandler *)v23 handleFailureInMethod:v51 object:selfCopy file:@"SetupController.m" lineNumber:1502 description:@"expressSettingsCache must not be nil"];
     }
 
-    v24 = [(SetupController *)v52 environment];
-    v25 = [(BYEnvironment *)v24 buddyPreferencesExcludedFromBackup];
-    [v25 removeObjectForKey:@"UserLastSelectedLocale"];
+    environment8 = [(SetupController *)selfCopy environment];
+    buddyPreferencesExcludedFromBackup4 = [(BYEnvironment *)environment8 buddyPreferencesExcludedFromBackup];
+    [buddyPreferencesExcludedFromBackup4 removeObjectForKey:@"UserLastSelectedLocale"];
 
     +[BYPreferencesController persistEverything];
     v26 = +[NSUserDefaults standardUserDefaults];
@@ -2461,13 +2461,13 @@
     v31 = +[NSDate date];
     [(NSUserDefaults *)v30 setObject:v31 forKey:BYBuddyLastExitKey];
 
-    v32 = [(SetupController *)v52 environment];
-    v33 = [(BYEnvironment *)v32 buddyPreferences];
-    [BuddyRestoreState removeFromPreferences:v33];
+    environment9 = [(SetupController *)selfCopy environment];
+    buddyPreferences3 = [(BYEnvironment *)environment9 buddyPreferences];
+    [BuddyRestoreState removeFromPreferences:buddyPreferences3];
 
-    v34 = [(SetupController *)v52 environment];
-    v35 = [(BYEnvironment *)v34 buddyPreferencesExcludedFromBackup];
-    [BuddyMigrationState removeFromPreferences:v35];
+    environment10 = [(SetupController *)selfCopy environment];
+    buddyPreferencesExcludedFromBackup5 = [(BYEnvironment *)environment10 buddyPreferencesExcludedFromBackup];
+    [BuddyMigrationState removeFromPreferences:buddyPreferencesExcludedFromBackup5];
 
     v36 = +[BYSetupStateManager sharedManager];
     [v36 recordSetupUsingBuddy];
@@ -2482,13 +2482,13 @@
     CFPreferencesAppSynchronize(BYBuddyNotBackedUpIdentifier);
     _CFPreferencesFlushCachesForIdentifier();
     _CFPreferencesFlushCachesForIdentifier();
-    [(SetupController *)v52 _commitAnalytics];
+    [(SetupController *)selfCopy _commitAnalytics];
   }
 }
 
 - (void)didMarkBuddyComplete
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _BYLoggingFacility();
   v27 = OS_LOG_TYPE_DEFAULT;
@@ -2503,26 +2503,26 @@
   objc_storeStrong(location, 0);
   CFPreferencesSetValue(@"BuddySetupDone", kCFBooleanTrue, @"com.apple.keyboard", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   CFPreferencesSynchronize(@"com.apple.keyboard", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-  [(SetupController *)v29 checkForUpdatedCarrierBundle];
-  v4 = v29;
+  [(SetupController *)selfCopy checkForUpdatedCarrierBundle];
+  v4 = selfCopy;
   v20 = _NSConcreteStackBlock;
   v21 = -1073741824;
   v22 = 0;
   v23 = sub_1000797F0;
   v24 = &unk_10032B488;
-  v25 = v29;
+  v25 = selfCopy;
   [(SetupController *)v4 _queuePreTerminationTask:&v20 taskDescription:@"MDM RTS" withTimeoutInSeconds:0];
-  v5 = [(SetupController *)v29 mobileAssetsNewFeaturesAssetManager];
+  mobileAssetsNewFeaturesAssetManager = [(SetupController *)selfCopy mobileAssetsNewFeaturesAssetManager];
 
-  if (v5)
+  if (mobileAssetsNewFeaturesAssetManager)
   {
-    preTerminationTasksQueue = v29->_preTerminationTasksQueue;
+    preTerminationTasksQueue = selfCopy->_preTerminationTasksQueue;
     block = _NSConcreteStackBlock;
     v15 = -1073741824;
     v16 = 0;
     v17 = sub_1000798D0;
     v18 = &unk_10032B0D0;
-    v19 = v29;
+    v19 = selfCopy;
     dispatch_async(preTerminationTasksQueue, &block);
     objc_storeStrong(&v19, 0);
   }
@@ -2544,20 +2544,20 @@
 
   BYObserveFinishSetupTriggers();
   center = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveEveryObserver(center, v29);
-  [(BuddyLanguageChangeObserver *)v29->_languageObserver stopObservingLanguageChanges];
+  CFNotificationCenterRemoveEveryObserver(center, selfCopy);
+  [(BuddyLanguageChangeObserver *)selfCopy->_languageObserver stopObservingLanguageChanges];
   objc_storeStrong(&v25, 0);
 }
 
 - (void)_exitBuddyForDemoSetUp
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(SetupController *)self shouldEndLifecycleForCause:2])
   {
-    [(SetupController *)v7 willEndLifecycleDueToCause:2 allowDismissal:1];
-    [(SetupController *)v7 endLifecycleDueToCause:2];
-    [(SetupController *)v7 _waitForBuddyTerminationTasksToFinish];
+    [(SetupController *)selfCopy willEndLifecycleDueToCause:2 allowDismissal:1];
+    [(SetupController *)selfCopy endLifecycleDueToCause:2];
+    [(SetupController *)selfCopy _waitForBuddyTerminationTasksToFinish];
   }
 
   else
@@ -2578,13 +2578,13 @@
 
 - (void)_exitBuddyForMDMMigration
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(SetupController *)self shouldEndLifecycleForCause:5])
   {
-    [(SetupController *)v7 willEndLifecycleDueToCause:5 allowDismissal:1];
-    [(SetupController *)v7 endLifecycleDueToCause:5];
-    [(SetupController *)v7 _waitForBuddyTerminationTasksToFinish];
+    [(SetupController *)selfCopy willEndLifecycleDueToCause:5 allowDismissal:1];
+    [(SetupController *)selfCopy endLifecycleDueToCause:5];
+    [(SetupController *)selfCopy _waitForBuddyTerminationTasksToFinish];
   }
 
   else
@@ -2605,13 +2605,13 @@
 
 - (void)_prepareForCloudRestoreReboot
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(SetupController *)self shouldEndLifecycleForCause:3])
   {
-    [(SetupController *)v7 willEndLifecycleDueToCause:3 allowDismissal:0];
-    [(SetupController *)v7 endLifecycleDueToCause:3];
-    [(SetupController *)v7 _waitForBuddyTerminationTasksToFinish];
+    [(SetupController *)selfCopy willEndLifecycleDueToCause:3 allowDismissal:0];
+    [(SetupController *)selfCopy endLifecycleDueToCause:3];
+    [(SetupController *)selfCopy _waitForBuddyTerminationTasksToFinish];
   }
 
   else
@@ -2632,13 +2632,13 @@
 
 - (void)_prepareForMigrationReboot
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(SetupController *)self shouldEndLifecycleForCause:4])
   {
-    [(SetupController *)v7 willEndLifecycleDueToCause:4 allowDismissal:0];
-    [(SetupController *)v7 endLifecycleDueToCause:4];
-    [(SetupController *)v7 _waitForBuddyTerminationTasksToFinish];
+    [(SetupController *)selfCopy willEndLifecycleDueToCause:4 allowDismissal:0];
+    [(SetupController *)selfCopy endLifecycleDueToCause:4];
+    [(SetupController *)selfCopy _waitForBuddyTerminationTasksToFinish];
   }
 
   else
@@ -2659,37 +2659,37 @@
 
 - (void)_willEndLifecycleForDataTransfer
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   [(SetupController *)self _stashAnalytics];
   v2 = +[AALoginPluginManager sharedInstance];
   [(AALoginPluginManager *)v2 unstashLoginResponse];
 
-  v3 = [(SetupController *)v36 environment];
-  v4 = [(BYEnvironment *)v3 settingsManager];
-  v5 = [(SetupController *)v36 environment];
-  v6 = [(BYEnvironment *)v5 flowSkipController];
-  v7 = [v6 getFlowSkipIdentifiers];
-  [v4 stashFlowSkipIdentifiers:v7];
+  environment = [(SetupController *)selfCopy environment];
+  settingsManager = [(BYEnvironment *)environment settingsManager];
+  environment2 = [(SetupController *)selfCopy environment];
+  flowSkipController = [(BYEnvironment *)environment2 flowSkipController];
+  getFlowSkipIdentifiers = [flowSkipController getFlowSkipIdentifiers];
+  [settingsManager stashFlowSkipIdentifiers:getFlowSkipIdentifiers];
 
-  v8 = [(SetupController *)v36 environment];
-  v9 = [(BYEnvironment *)v8 buddyPreferences];
+  environment3 = [(SetupController *)selfCopy environment];
+  buddyPreferences = [(BYEnvironment *)environment3 buddyPreferences];
   v10 = +[NSDate date];
-  [v9 setObject:v10 forKey:BYBuddyLastExitKey];
+  [buddyPreferences setObject:v10 forKey:BYBuddyLastExitKey];
 
-  v11 = [(SetupController *)v36 environment];
-  v12 = [(BYEnvironment *)v11 settingsManager];
+  environment4 = [(SetupController *)selfCopy environment];
+  settingsManager2 = [(BYEnvironment *)environment4 settingsManager];
   v37 = _AXSCopySettingsDataBlobForBuddy();
   v13 = v37;
-  [v12 stashAccessibilityData:v13];
+  [settingsManager2 stashAccessibilityData:v13];
 
-  v14 = [(SetupController *)v36 environment];
-  v15 = [(BYEnvironment *)v14 buddyPreferences];
-  location[0] = [v15 preferences];
+  environment5 = [(SetupController *)selfCopy environment];
+  buddyPreferences2 = [(BYEnvironment *)environment5 buddyPreferences];
+  location[0] = [buddyPreferences2 preferences];
 
   memset(__b, 0, sizeof(__b));
-  v16 = [location[0] allKeys];
-  v17 = [v16 countByEnumeratingWithState:__b objects:v38 count:16];
+  allKeys = [location[0] allKeys];
+  v17 = [allKeys countByEnumeratingWithState:__b objects:v38 count:16];
   if (v17)
   {
     v18 = *__b[2];
@@ -2699,20 +2699,20 @@
       {
         if (*__b[2] != v18)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allKeys);
         }
 
         v34 = *(__b[1] + 8 * i);
-        v20 = [(SetupController *)v36 environment];
-        v21 = [(BYEnvironment *)v20 settingsManager];
+        environment6 = [(SetupController *)selfCopy environment];
+        settingsManager3 = [(BYEnvironment *)environment6 settingsManager];
         v22 = [location[0] objectForKeyedSubscript:v34];
-        v23 = [(SetupController *)v36 environment];
-        v24 = [(BYEnvironment *)v23 buddyPreferences];
-        v25 = [v24 domain];
-        [v21 setObject:v22 forDomain:v25 key:v34];
+        environment7 = [(SetupController *)selfCopy environment];
+        buddyPreferences3 = [(BYEnvironment *)environment7 buddyPreferences];
+        domain = [buddyPreferences3 domain];
+        [settingsManager3 setObject:v22 forDomain:domain key:v34];
       }
 
-      v17 = [v16 countByEnumeratingWithState:__b objects:v38 count:16];
+      v17 = [allKeys countByEnumeratingWithState:__b objects:v38 count:16];
     }
 
     while (v17);
@@ -2729,21 +2729,21 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v28 = [(SetupController *)v36 environment];
-  v29 = [(BYEnvironment *)v28 settingsManager];
-  [v29 hideStashInSafeHaven];
+  environment8 = [(SetupController *)selfCopy environment];
+  settingsManager4 = [(BYEnvironment *)environment8 settingsManager];
+  [settingsManager4 hideStashInSafeHaven];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)observer:(id)a3 didObserveLanguageChange:(BOOL)a4 localeChange:(BOOL)a5
+- (void)observer:(id)observer didObserveLanguageChange:(BOOL)change localeChange:(BOOL)localeChange
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v38 = a4;
-  v37 = a5;
+  objc_storeStrong(location, observer);
+  changeCopy = change;
+  localeChangeCopy = localeChange;
   v7 = +[NSUserDefaults standardUserDefaults];
   v8 = [(NSUserDefaults *)v7 objectForKey:@"LockdownSetLanguage"];
   v34 = 0;
@@ -2780,10 +2780,10 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [(BFFNavigationController *)v40->_nav setPushWithoutDeferringTransitionsWhileInBackground:1];
-    v12 = [(SetupController *)v40 environment];
-    v13 = [(BYEnvironment *)v12 buddyPreferencesExcludedFromBackup];
-    [v13 setObject:&__kCFBooleanTrue forKey:@"PushWithoutDeferringTransitionsWhileInBackground" persistImmediately:1];
+    [(BFFNavigationController *)selfCopy->_nav setPushWithoutDeferringTransitionsWhileInBackground:1];
+    environment = [(SetupController *)selfCopy environment];
+    buddyPreferencesExcludedFromBackup = [(BYEnvironment *)environment buddyPreferencesExcludedFromBackup];
+    [buddyPreferencesExcludedFromBackup setObject:&__kCFBooleanTrue forKey:@"PushWithoutDeferringTransitionsWhileInBackground" persistImmediately:1];
   }
 
   v28 = _BYLoggingFacility();
@@ -2797,27 +2797,27 @@
   }
 
   objc_storeStrong(&v28, 0);
-  if (!v38 || ((v16 = +[NSLocale preferredLanguages](NSLocale, "preferredLanguages"), v25 = -[NSArray firstObject](v16, "firstObject"), v16, (v24 = ([v25 isEqualToString:v40->_languageAtStartup] ^ 1) & 1) == 0) ? (v23 = 0) : (-[SetupController respring](v40, "respring"), v23 = 1), objc_storeStrong(&v25, 0), !v23))
+  if (!changeCopy || ((v16 = +[NSLocale preferredLanguages](NSLocale, "preferredLanguages"), v25 = -[NSArray firstObject](v16, "firstObject"), v16, (v24 = ([v25 isEqualToString:selfCopy->_languageAtStartup] ^ 1) & 1) == 0) ? (v23 = 0) : (-[SetupController respring](selfCopy, "respring"), v23 = 1), objc_storeStrong(&v25, 0), !v23))
   {
-    if (!v37)
+    if (!localeChangeCopy)
     {
       goto LABEL_23;
     }
 
     v22 = CFPreferencesCopyValue(@"AppleLocale", kCFPreferencesAnyApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-    if (![(NSString *)v40->_localeIdentifierAtStartup isEqualToString:v22])
+    if (![(NSString *)selfCopy->_localeIdentifierAtStartup isEqualToString:v22])
     {
       v17 = [[NSLocale alloc] initWithLocaleIdentifier:v22];
-      v20 = [v17 countryCode];
+      countryCode = [v17 countryCode];
 
-      [(SetupController *)v40 _writeGreenInformedDefaultPlistIfNecessaryForLocaleCountryCode:v20];
-      v18 = [(SetupController *)v40 environment];
-      v19 = [(BYEnvironment *)v18 capabilities];
-      [v19 eligibilitySetDeviceLocale:v20];
+      [(SetupController *)selfCopy _writeGreenInformedDefaultPlistIfNecessaryForLocaleCountryCode:countryCode];
+      environment2 = [(SetupController *)selfCopy environment];
+      capabilities = [(BYEnvironment *)environment2 capabilities];
+      [capabilities eligibilitySetDeviceLocale:countryCode];
 
-      [(SetupController *)v40 respring];
+      [(SetupController *)selfCopy respring];
       v23 = 1;
-      objc_storeStrong(&v20, 0);
+      objc_storeStrong(&countryCode, 0);
     }
 
     else
@@ -2838,10 +2838,10 @@ LABEL_23:
 
 - (void)respring
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   SBSLockDevice();
-  [(BFFWindow *)v5->_window setUserInteractionEnabled:0];
+  [(BFFWindow *)selfCopy->_window setUserInteractionEnabled:0];
   location[0] = [SBSRelaunchAction actionWithReason:@"Language change remotely" options:6 targetURL:0];
   v2 = +[FBSSystemService sharedService];
   v3 = [NSSet setWithObject:location[0]];
@@ -2850,29 +2850,29 @@ LABEL_23:
   objc_storeStrong(location, 0);
 }
 
-- (void)_queuePreTerminationTask:(id)a3 taskDescription:(id)a4 withTimeoutInSeconds:(id)a5
+- (void)_queuePreTerminationTask:(id)task taskDescription:(id)description withTimeoutInSeconds:(id)seconds
 {
-  v58 = self;
+  selfCopy = self;
   v57 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, task);
   v55 = 0;
-  objc_storeStrong(&v55, a4);
+  objc_storeStrong(&v55, description);
   v54 = 0;
-  objc_storeStrong(&v54, a5);
-  v7 = v55;
+  objc_storeStrong(&v54, seconds);
+  uUIDString = v55;
   v51 = 0;
   v49 = 0;
   if (!v55)
   {
     v52 = +[NSUUID UUID];
     v51 = 1;
-    v7 = [(NSUUID *)v52 UUIDString];
-    v50 = v7;
+    uUIDString = [(NSUUID *)v52 UUIDString];
+    v50 = uUIDString;
     v49 = 1;
   }
 
-  v53 = v7;
+  v53 = uUIDString;
   if (v49)
   {
   }
@@ -2881,7 +2881,7 @@ LABEL_23:
   {
   }
 
-  objc_initWeak(&from, v58);
+  objc_initWeak(&from, selfCopy);
   v41 = 0;
   v42 = &v41;
   v43 = 838860800;
@@ -2900,7 +2900,7 @@ LABEL_23:
   v9 = v42[5];
   v42[5] = v8;
 
-  dispatch_group_enter(v58[18]);
+  dispatch_group_enter(selfCopy[18]);
   oslog = _BYLoggingFacility();
   v32 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -2910,7 +2910,7 @@ LABEL_23:
   }
 
   objc_storeStrong(&oslog, 0);
-  v10 = v58[19];
+  v10 = selfCopy[19];
   block = _NSConcreteStackBlock;
   v25 = -1073741824;
   v26 = 0;
@@ -2928,7 +2928,7 @@ LABEL_23:
     {
       [v54 doubleValue];
       v13 = dispatch_time(0, (v12 * 1000000000.0));
-      v14 = v58[19];
+      v14 = selfCopy[19];
       v15 = _NSConcreteStackBlock;
       v16 = -1073741824;
       v17 = 0;
@@ -2939,7 +2939,7 @@ LABEL_23:
       v20 = v53;
       v21 = v54;
       v23[1] = v57;
-      v22[0] = v58;
+      v22[0] = selfCopy;
       dispatch_after(v13, v14, &v15);
       objc_storeStrong(v22, 0);
       objc_storeStrong(&v21, 0);
@@ -2963,7 +2963,7 @@ LABEL_23:
 
 - (void)_waitForBuddyTerminationTasksToFinish
 {
-  v12 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v10 = OS_LOG_TYPE_DEFAULT;
@@ -2976,7 +2976,7 @@ LABEL_23:
   }
 
   objc_storeStrong(oslog, 0);
-  dispatch_group_wait(v12->_preTerminationTasksDispatchGroup, 0xFFFFFFFFFFFFFFFFLL);
+  dispatch_group_wait(selfCopy->_preTerminationTasksDispatchGroup, 0xFFFFFFFFFFFFFFFFLL);
   v8 = _BYLoggingFacility();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2990,12 +2990,12 @@ LABEL_23:
   objc_storeStrong(&v8, 0);
 }
 
-- (void)_executeAfterBuddyPreTerminationTasksFinish:(id)a3
+- (void)_executeAfterBuddyPreTerminationTasksFinish:(id)finish
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, finish);
   oslog = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -3007,7 +3007,7 @@ LABEL_23:
   }
 
   objc_storeStrong(&oslog, 0);
-  preTerminationTasksDispatchGroup = v17->_preTerminationTasksDispatchGroup;
+  preTerminationTasksDispatchGroup = selfCopy->_preTerminationTasksDispatchGroup;
   v6 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v8 = -1073741824;
@@ -3021,41 +3021,41 @@ LABEL_23:
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)isAlertPresented:(id)a3
+- (BOOL)isAlertPresented:(id)presented
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(SetupController *)v9 navigationController];
-  v4 = [v3 topViewController];
-  v5 = [v4 presentedViewController];
-  v6 = v5 == location[0];
+  objc_storeStrong(location, presented);
+  navigationController = [(SetupController *)selfCopy navigationController];
+  topViewController = [navigationController topViewController];
+  presentedViewController = [topViewController presentedViewController];
+  v6 = presentedViewController == location[0];
 
   objc_storeStrong(location, 0);
   return v6;
 }
 
-- (void)dismissAlert:(id)a3 animated:(BOOL)a4
+- (void)dismissAlert:(id)alert animated:(BOOL)animated
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SetupController *)v6 dismissAlert:location[0] animated:a4 completion:0];
+  objc_storeStrong(location, alert);
+  [(SetupController *)selfCopy dismissAlert:location[0] animated:animated completion:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissAlert:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissAlert:(id)alert animated:(BOOL)animated completion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
+  objc_storeStrong(location, alert);
+  animatedCopy = animated;
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  if (!-[SetupController isAlertPresented:](v11, "isAlertPresented:", location[0]) || ([location[0] isBeingDismissed] & 1) != 0)
+  objc_storeStrong(&v8, completion);
+  if (!-[SetupController isAlertPresented:](selfCopy, "isAlertPresented:", location[0]) || ([location[0] isBeingDismissed] & 1) != 0)
   {
     if (v8)
     {
@@ -3065,8 +3065,8 @@ LABEL_23:
 
   else
   {
-    v7 = [location[0] presentingViewController];
-    [v7 dismissViewControllerAnimated:v9 completion:v8];
+    presentingViewController = [location[0] presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:animatedCopy completion:v8];
   }
 
   objc_storeStrong(&v8, 0);
@@ -3075,7 +3075,7 @@ LABEL_23:
 
 - (void)_menuButtonPressed
 {
-  v130 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _BYLoggingFacility();
   v128 = OS_LOG_TYPE_DEFAULT;
@@ -3088,15 +3088,15 @@ LABEL_23:
   }
 
   objc_storeStrong(location, 0);
-  v4 = [(SetupController *)v130 navigationFlowController];
+  navigationFlowController = [(SetupController *)selfCopy navigationFlowController];
   v125 = 0;
   v123 = 0;
   v5 = 0;
-  if (![(BuddyNavigationFlowController *)v4 isStartOverAllowed])
+  if (![(BuddyNavigationFlowController *)navigationFlowController isStartOverAllowed])
   {
-    v126 = [(SetupController *)v130 navigationController];
+    navigationController = [(SetupController *)selfCopy navigationController];
     v125 = 1;
-    v124 = [v126 topViewController];
+    topViewController = [navigationController topViewController];
     v123 = 1;
     objc_opt_class();
     v5 = objc_opt_isKindOfClass() ^ 1;
@@ -3110,16 +3110,16 @@ LABEL_23:
   {
   }
 
-  if ((v5 & 1) == 0 && !v130->_emergencyDialer)
+  if ((v5 & 1) == 0 && !selfCopy->_emergencyDialer)
   {
-    v6 = [(SetupController *)v130 navigationController];
-    v7 = [v6 topViewController];
-    v122 = [v7 presentedViewController];
+    navigationController2 = [(SetupController *)selfCopy navigationController];
+    topViewController2 = [navigationController2 topViewController];
+    presentedViewController = [topViewController2 presentedViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v122;
+      v8 = presentedViewController;
     }
 
     else
@@ -3127,21 +3127,21 @@ LABEL_23:
       v8 = 0;
     }
 
-    objc_storeStrong(&v122, v8);
-    if (v130->_homeButtonMenuController)
+    objc_storeStrong(&presentedViewController, v8);
+    if (selfCopy->_homeButtonMenuController)
     {
-      [(SetupController *)v130 dismissAlert:v130->_homeButtonMenuController animated:1];
-      [(SetupController *)v130 _removeSBAlertItemsSupressionAssertion];
-      objc_storeStrong(&v130->_homeButtonMenuController, 0);
+      [(SetupController *)selfCopy dismissAlert:selfCopy->_homeButtonMenuController animated:1];
+      [(SetupController *)selfCopy _removeSBAlertItemsSupressionAssertion];
+      objc_storeStrong(&selfCopy->_homeButtonMenuController, 0);
     }
 
-    else if (!v122)
+    else if (!presentedViewController)
     {
-      if (v130->_buddyDone)
+      if (selfCopy->_buddyDone)
       {
-        if ([(SetupController *)v130 allowDismissalForExit])
+        if ([(SetupController *)selfCopy allowDismissalForExit])
         {
-          [(SetupController *)v130 endLifecycleDueToCause:1];
+          [(SetupController *)selfCopy endLifecycleDueToCause:1];
         }
 
         else
@@ -3165,15 +3165,15 @@ LABEL_23:
         v9 = +[BuddySIMManager sharedManager];
         [v9 disallowSIMUnlock];
 
-        v10 = [(SetupController *)v130 navigationFlowController];
-        v121 = [(BuddyNavigationFlowController *)v10 topFlowItem];
+        navigationFlowController2 = [(SetupController *)selfCopy navigationFlowController];
+        topFlowItem = [(BuddyNavigationFlowController *)navigationFlowController2 topFlowItem];
 
         v120 = 0;
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v121 displayLanguage];
+          displayLanguage = [topFlowItem displayLanguage];
           v12 = v120;
-          v120 = v11;
+          v120 = displayLanguage;
         }
 
         v117 = 0;
@@ -3202,12 +3202,12 @@ LABEL_23:
         }
 
         v14 = [UIAlertController alertControllerWithTitle:v119 message:0 preferredStyle:(BFFIsiPad() & 1) != 0];
-        homeButtonMenuController = v130->_homeButtonMenuController;
-        v130->_homeButtonMenuController = v14;
+        homeButtonMenuController = selfCopy->_homeButtonMenuController;
+        selfCopy->_homeButtonMenuController = v14;
 
         if (MGGetBoolAnswer() & 1)
         {
-          v16 = v130->_homeButtonMenuController;
+          v16 = selfCopy->_homeButtonMenuController;
           v17 = +[NSBundle mainBundle];
           v18 = SFLocalizedStringFromTableInBundleForLanguage();
           v108 = _NSConcreteStackBlock;
@@ -3215,11 +3215,11 @@ LABEL_23:
           v110 = 0;
           v111 = sub_10007C85C;
           v112 = &unk_10032B598;
-          v113 = v130;
+          v113 = selfCopy;
           v19 = [UIAlertAction actionWithTitle:v18 style:2 handler:&v108];
           [(UIAlertController *)v16 addAction:v19];
 
-          [(SetupController *)v130 _addSBAlertItemsSupressionAssertion];
+          [(SetupController *)selfCopy _addSBAlertItemsSupressionAssertion];
           objc_storeStrong(&v113, 0);
         }
 
@@ -3229,11 +3229,11 @@ LABEL_23:
         v20 = 0;
         if (v107)
         {
-          v106 = [(SetupController *)v130 navigationController];
+          navigationController3 = [(SetupController *)selfCopy navigationController];
           v105 = 1;
-          v104 = [v106 presentedViewController];
+          presentedViewController2 = [navigationController3 presentedViewController];
           v103 = 1;
-          v20 = v104 == 0;
+          v20 = presentedViewController2 == 0;
         }
 
         if (v103)
@@ -3246,7 +3246,7 @@ LABEL_23:
 
         if (v20)
         {
-          v21 = v130->_homeButtonMenuController;
+          v21 = selfCopy->_homeButtonMenuController;
           v22 = +[NSBundle mainBundle];
           v23 = SFLocalizedStringFromTableInBundleForLanguage();
           v96 = _NSConcreteStackBlock;
@@ -3254,7 +3254,7 @@ LABEL_23:
           v98 = 0;
           v99 = sub_10007CB80;
           v100 = &unk_10032B5C0;
-          v101 = v130;
+          v101 = selfCopy;
           v102 = v107;
           v24 = [UIAlertAction actionWithTitle:v23 style:0 handler:&v96];
           [(UIAlertController *)v21 addAction:v24];
@@ -3264,18 +3264,18 @@ LABEL_23:
         }
 
         v95 = 0;
-        v25 = [(SetupController *)v130 environment];
-        v26 = [(BYEnvironment *)v25 networkProvider];
+        environment = [(SetupController *)selfCopy environment];
+        networkProvider = [(BYEnvironment *)environment networkProvider];
         v93 = 0;
         showWiFiInMenu = 0;
-        if ([v26 supportsWiFi])
+        if ([networkProvider supportsWiFi])
         {
-          v94 = [(BFFNavigationController *)v130->_nav presentedViewController];
+          presentedViewController3 = [(BFFNavigationController *)selfCopy->_nav presentedViewController];
           v93 = 1;
           showWiFiInMenu = 0;
-          if (!v94)
+          if (!presentedViewController3)
           {
-            showWiFiInMenu = v130->_showWiFiInMenu;
+            showWiFiInMenu = selfCopy->_showWiFiInMenu;
           }
         }
 
@@ -3285,13 +3285,13 @@ LABEL_23:
 
         if (showWiFiInMenu)
         {
-          v28 = [(SetupController *)v130 navigationController];
-          v29 = [v28 topViewController];
-          v30 = [(SetupController *)v130 navigationFlowController];
-          v31 = [(BuddyNavigationFlowController *)v30 wifiController];
-          v32 = [(BuddyWiFiController *)v31 viewController];
+          navigationController4 = [(SetupController *)selfCopy navigationController];
+          topViewController3 = [navigationController4 topViewController];
+          navigationFlowController3 = [(SetupController *)selfCopy navigationFlowController];
+          wifiController = [(BuddyNavigationFlowController *)navigationFlowController3 wifiController];
+          viewController = [(BuddyWiFiController *)wifiController viewController];
 
-          if (v29 == v32 || !v130->_wifiControllerInAdvancedMode)
+          if (topViewController3 == viewController || !selfCopy->_wifiControllerInAdvancedMode)
           {
             v33 = SFLocalizableWAPIStringKeyForKey();
             v34 = +[NSBundle mainBundle];
@@ -3303,13 +3303,13 @@ LABEL_23:
 
         if (v95)
         {
-          v37 = v130->_homeButtonMenuController;
+          v37 = selfCopy->_homeButtonMenuController;
           v87 = _NSConcreteStackBlock;
           v88 = -1073741824;
           v89 = 0;
           v90 = sub_10007CCB0;
           v91 = &unk_10032B598;
-          v92 = v130;
+          v92 = selfCopy;
           v38 = [UIAlertAction actionWithTitle:v95 style:0 handler:&v87];
           [(UIAlertController *)v37 addAction:v38];
 
@@ -3317,22 +3317,22 @@ LABEL_23:
         }
 
         v84 = 0;
-        v39 = 0;
+        isStartOverAllowed = 0;
         if ((BYSetupAssistantHasCompletedInitialRun() & 1) == 0)
         {
-          v85 = [(SetupController *)v130 navigationFlowController];
+          navigationFlowController4 = [(SetupController *)selfCopy navigationFlowController];
           v84 = 1;
-          v39 = [v85 isStartOverAllowed];
+          isStartOverAllowed = [navigationFlowController4 isStartOverAllowed];
         }
 
         if (v84)
         {
         }
 
-        v86 = v39 & 1;
-        if (v39)
+        v86 = isStartOverAllowed & 1;
+        if (isStartOverAllowed)
         {
-          v40 = v130->_homeButtonMenuController;
+          v40 = selfCopy->_homeButtonMenuController;
           v41 = +[NSBundle mainBundle];
           v42 = SFLocalizedStringFromTableInBundleForLanguage();
           v78 = _NSConcreteStackBlock;
@@ -3340,7 +3340,7 @@ LABEL_23:
           v80 = 0;
           v81 = sub_10007CDB4;
           v82 = &unk_10032B598;
-          v83 = v130;
+          v83 = selfCopy;
           v43 = [UIAlertAction actionWithTitle:v42 style:0 handler:&v78];
           [(UIAlertController *)v40 addAction:v43];
 
@@ -3349,7 +3349,7 @@ LABEL_23:
 
         if (+[BuddyMenuController supportsHomeGesture])
         {
-          v44 = v130->_homeButtonMenuController;
+          v44 = selfCopy->_homeButtonMenuController;
           v45 = +[NSBundle mainBundle];
           v46 = SFLocalizedStringFromTableInBundleForLanguage();
           v72 = _NSConcreteStackBlock;
@@ -3357,7 +3357,7 @@ LABEL_23:
           v74 = 0;
           v75 = sub_10007CFE8;
           v76 = &unk_10032B598;
-          v77 = v130;
+          v77 = selfCopy;
           v47 = [UIAlertAction actionWithTitle:v46 style:0 handler:&v72];
           [(UIAlertController *)v44 addAction:v47];
 
@@ -3366,7 +3366,7 @@ LABEL_23:
 
         if ((+[DMCMultiUserModeUtilities inSharediPadUserSession]& 1) != 0)
         {
-          v48 = v130->_homeButtonMenuController;
+          v48 = selfCopy->_homeButtonMenuController;
           v49 = +[NSBundle mainBundle];
           v50 = SFLocalizedStringFromTableInBundleForLanguage();
           v51 = [UIAlertAction actionWithTitle:v50 style:0 handler:&stru_10032B600];
@@ -3378,7 +3378,7 @@ LABEL_23:
           v52 = +[BYPreferencesController buddyPreferencesEphemeral];
           v53 = [v52 BOOLForKey:@"showInternalUI"];
 
-          v54 = v130->_homeButtonMenuController;
+          v54 = selfCopy->_homeButtonMenuController;
           if (v53)
           {
             v55 = [UIAlertAction actionWithTitle:@"Hide Internal UI" style:0 handler:&stru_10032B640];
@@ -3396,18 +3396,18 @@ LABEL_23:
         v56 = +[NSBundle mainBundle];
         v71 = SFLocalizedStringFromTableInBundleForLanguage();
 
-        v57 = v130->_homeButtonMenuController;
+        v57 = selfCopy->_homeButtonMenuController;
         v65 = _NSConcreteStackBlock;
         v66 = -1073741824;
         v67 = 0;
         v68 = sub_10007D4F4;
         v69 = &unk_10032B598;
-        v70 = v130;
+        v70 = selfCopy;
         v58 = [UIAlertAction actionWithTitle:v71 style:1 handler:&v65];
         [(UIAlertController *)v57 addAction:v58];
 
-        v59 = [(SetupController *)v130 navigationController];
-        [v59 buddy_presentAlertController:v130->_homeButtonMenuController];
+        navigationController5 = [(SetupController *)selfCopy navigationController];
+        [navigationController5 buddy_presentAlertController:selfCopy->_homeButtonMenuController];
 
         objc_storeStrong(&v70, 0);
         objc_storeStrong(&v71, 0);
@@ -3415,21 +3415,21 @@ LABEL_23:
         objc_storeStrong(&v107, 0);
         objc_storeStrong(&v119, 0);
         objc_storeStrong(&v120, 0);
-        objc_storeStrong(&v121, 0);
+        objc_storeStrong(&topFlowItem, 0);
       }
     }
 
-    objc_storeStrong(&v122, 0);
+    objc_storeStrong(&presentedViewController, 0);
   }
 }
 
-- (void)_showModalWiFiSettingsWithDismissalTriggers:(unint64_t)a3 completionHandler:(id)a4
+- (void)_showModalWiFiSettingsWithDismissalTriggers:(unint64_t)triggers completionHandler:(id)handler
 {
-  v59 = self;
+  selfCopy = self;
   v58 = a2;
-  v57 = a3;
+  triggersCopy = triggers;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, handler);
   v55 = _BYLoggingFacility();
   v54 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
@@ -3441,15 +3441,15 @@ LABEL_23:
   }
 
   objc_storeStrong(&v55, 0);
-  v6 = [(SetupController *)v59 navigationController];
-  v7 = [v6 topViewController];
-  v8 = [(SetupController *)v59 navigationFlowController];
-  v9 = [(BuddyNavigationFlowController *)v8 wifiController];
-  v10 = [(BuddyWiFiController *)v9 viewController];
+  navigationController = [(SetupController *)selfCopy navigationController];
+  topViewController = [navigationController topViewController];
+  navigationFlowController = [(SetupController *)selfCopy navigationFlowController];
+  wifiController = [(BuddyNavigationFlowController *)navigationFlowController wifiController];
+  viewController = [(BuddyWiFiController *)wifiController viewController];
 
-  if (v7 == v10)
+  if (topViewController == viewController)
   {
-    if (v57)
+    if (triggersCopy)
     {
       oslog = _BYLoggingFacility();
       v51 = 17;
@@ -3479,30 +3479,30 @@ LABEL_23:
       objc_storeStrong(&v49, 0);
     }
 
-    v15 = [(SetupController *)v59 navigationFlowController];
-    v16 = [(BuddyNavigationFlowController *)v15 wifiController];
-    [(BuddyWiFiController *)v16 setShowNetworkSettings:1];
+    navigationFlowController2 = [(SetupController *)selfCopy navigationFlowController];
+    wifiController2 = [(BuddyNavigationFlowController *)navigationFlowController2 wifiController];
+    [(BuddyWiFiController *)wifiController2 setShowNetworkSettings:1];
 
-    v59->_wifiControllerInAdvancedMode = 1;
+    selfCopy->_wifiControllerInAdvancedMode = 1;
     goto LABEL_18;
   }
 
   if (location)
   {
-    v17 = [(SetupController *)v59 modalWiFiCompletionHandlers];
+    modalWiFiCompletionHandlers = [(SetupController *)selfCopy modalWiFiCompletionHandlers];
     v18 = objc_retainBlock(location);
-    [(NSMutableArray *)v17 addObject:v18];
+    [(NSMutableArray *)modalWiFiCompletionHandlers addObject:v18];
   }
 
-  v19 = v59;
-  v20 = [(SetupController *)v59 modalWiFiDismissalTriggers];
-  [(SetupController *)v19 setModalWiFiDismissalTriggers:v20 | v57];
-  v21 = [(SetupController *)v59 modalWiFiSettingsNavigationController];
+  v19 = selfCopy;
+  modalWiFiDismissalTriggers = [(SetupController *)selfCopy modalWiFiDismissalTriggers];
+  [(SetupController *)v19 setModalWiFiDismissalTriggers:modalWiFiDismissalTriggers | triggersCopy];
+  modalWiFiSettingsNavigationController = [(SetupController *)selfCopy modalWiFiSettingsNavigationController];
 
-  if (!v21)
+  if (!modalWiFiSettingsNavigationController)
   {
     v22 = +[NSNotificationCenter defaultCenter];
-    v23 = v59;
+    v23 = selfCopy;
     v24 = sub_10007DB98();
     [(NSNotificationCenter *)v22 addObserver:v23 selector:"_wifiAssociationDidFinish:" name:v24 object:0];
 
@@ -3511,42 +3511,42 @@ LABEL_23:
     v25 = +[BuddyActivationConfiguration currentConfiguration];
     [v45 setSupportsCellularActivation:{objc_msgSend(v25, "supportsCellularActivation")}];
 
-    [v45 setBuddyDelegate:v59];
+    [v45 setBuddyDelegate:selfCopy];
     v26 = [objc_alloc(sub_10007DDB4()) initWithViewController:v45];
-    modalWifiManager = v59->_modalWifiManager;
-    v59->_modalWifiManager = v26;
+    modalWifiManager = selfCopy->_modalWifiManager;
+    selfCopy->_modalWifiManager = v26;
 
     v28 = [UIBarButtonItem alloc];
     v29 = +[NSBundle mainBundle];
     v30 = [(NSBundle *)v29 localizedStringForKey:@"DONE" value:&stru_10032F900 table:@"Localizable"];
-    v31 = [v28 initWithTitle:v30 style:2 target:v59 action:"_modalWifiControllerDone:"];
-    v32 = [(WFNetworkListController *)v59->_modalWifiManager viewController];
-    v33 = [v32 navigationItem];
-    [v33 setRightBarButtonItem:v31];
+    v31 = [v28 initWithTitle:v30 style:2 target:selfCopy action:"_modalWifiControllerDone:"];
+    viewController2 = [(WFNetworkListController *)selfCopy->_modalWifiManager viewController];
+    navigationItem = [viewController2 navigationItem];
+    [navigationItem setRightBarButtonItem:v31];
 
     v34 = [BFFNavigationController alloc];
-    v35 = [(WFNetworkListController *)v59->_modalWifiManager viewController];
-    v44 = [v34 initWithRootViewController:v35];
+    viewController3 = [(WFNetworkListController *)selfCopy->_modalWifiManager viewController];
+    v44 = [v34 initWithRootViewController:viewController3];
 
-    v36 = [(SetupController *)v59 navigationController];
-    [v36 forcedPreferredContentSize];
+    navigationController2 = [(SetupController *)selfCopy navigationController];
+    [navigationController2 forcedPreferredContentSize];
     [v44 setForcedPreferredContentSize:{v37, v38, *&v37, *&v38}];
 
-    v39 = [(SetupController *)v59 navigationFlowController];
-    [v44 setDelegate:v39];
+    navigationFlowController3 = [(SetupController *)selfCopy navigationFlowController];
+    [v44 setDelegate:navigationFlowController3];
 
-    v40 = [(SetupController *)v59 navigationController];
-    [v44 setModalPresentationStyle:{objc_msgSend(v40, "modalPresentationStyle")}];
+    navigationController3 = [(SetupController *)selfCopy navigationController];
+    [v44 setModalPresentationStyle:{objc_msgSend(navigationController3, "modalPresentationStyle")}];
 
-    v41 = v59;
-    v42 = [v44 presentationController];
-    [v42 setDelegate:v41];
+    v41 = selfCopy;
+    presentationController = [v44 presentationController];
+    [presentationController setDelegate:v41];
 
-    v43 = [(SetupController *)v59 navigationController];
-    [v43 presentViewController:v44 animated:1 completion:0];
+    navigationController4 = [(SetupController *)selfCopy navigationController];
+    [navigationController4 presentViewController:v44 animated:1 completion:0];
 
-    [(SetupController *)v59 setModalWiFiSettingsNavigationController:v44];
-    [(WFNetworkListController *)v59->_modalWifiManager startScanning];
+    [(SetupController *)selfCopy setModalWiFiSettingsNavigationController:v44];
+    [(WFNetworkListController *)selfCopy->_modalWifiManager startScanning];
     objc_storeStrong(&v44, 0);
     objc_storeStrong(&v45, 0);
 LABEL_18:
@@ -3559,17 +3559,17 @@ LABEL_19:
   objc_storeStrong(&location, 0);
 }
 
-- (void)_hideModalWiFiSettingsWithReason:(id)a3
+- (void)_hideModalWiFiSettingsWithReason:(id)reason
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [v16 navigationController];
-  v4 = [v3 presentedViewController];
-  v5 = [v16 modalWiFiSettingsNavigationController];
+  objc_storeStrong(location, reason);
+  navigationController = [selfCopy navigationController];
+  presentedViewController = [navigationController presentedViewController];
+  modalWiFiSettingsNavigationController = [selfCopy modalWiFiSettingsNavigationController];
 
-  if (v4 == v5)
+  if (presentedViewController == modalWiFiSettingsNavigationController)
   {
     oslog = _BYLoggingFacility();
     v13 = OS_LOG_TYPE_DEFAULT;
@@ -3580,14 +3580,14 @@ LABEL_19:
     }
 
     objc_storeStrong(&oslog, 0);
-    v6 = [v16 navigationController];
+    navigationController2 = [selfCopy navigationController];
     v7 = _NSConcreteStackBlock;
     v8 = -1073741824;
     v9 = 0;
     v10 = sub_10007E0B4;
     v11 = &unk_10032B0D0;
-    v12 = v16;
-    [v6 dismissViewControllerAnimated:1 completion:&v7];
+    v12 = selfCopy;
+    [navigationController2 dismissViewControllerAnimated:1 completion:&v7];
 
     objc_storeStrong(&v12, 0);
   }
@@ -3595,43 +3595,43 @@ LABEL_19:
   objc_storeStrong(location, 0);
 }
 
-- (void)_modalWifiControllerDone:(id)a3
+- (void)_modalWifiControllerDone:(id)done
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SetupController *)v4 _hideModalWiFiSettingsWithReason:@"user tapped Done button"];
+  objc_storeStrong(location, done);
+  [(SetupController *)selfCopy _hideModalWiFiSettingsWithReason:@"user tapped Done button"];
   objc_storeStrong(location, 0);
 }
 
-- (void)_wifiAssociationDidFinish:(id)a3
+- (void)_wifiAssociationDidFinish:(id)finish
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(SetupController *)v7 _associationErrorFromNotification:location[0]];
+  objc_storeStrong(location, finish);
+  v3 = [(SetupController *)selfCopy _associationErrorFromNotification:location[0]];
   v4 = v3 == 0;
 
-  v5 = ([(SetupController *)v7 modalWiFiDismissalTriggers]& 2) != 0;
+  v5 = ([(SetupController *)selfCopy modalWiFiDismissalTriggers]& 2) != 0;
   if (v4 && v5)
   {
-    [(SetupController *)v7 _hideModalWiFiSettingsWithReason:@"successful association"];
+    [(SetupController *)selfCopy _hideModalWiFiSettingsWithReason:@"successful association"];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (id)_associationErrorFromNotification:(id)a3
+- (id)_associationErrorFromNotification:(id)notification
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] userInfo];
+  objc_storeStrong(location, notification);
+  userInfo = [location[0] userInfo];
   v4 = sub_10007E284();
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [userInfo objectForKeyedSubscript:v4];
 
   objc_storeStrong(location, 0);
 
@@ -3640,19 +3640,19 @@ LABEL_19:
 
 - (void)_cleanUpModalWiFiSettings
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   v2 = +[NSNotificationCenter defaultCenter];
   v3 = sub_10007DB98();
-  [(NSNotificationCenter *)v2 removeObserver:v13 name:v3 object:0];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy name:v3 object:0];
 
-  [(SetupController *)v13 setModalWiFiSettingsNavigationController:0];
-  [(SetupController *)v13 setModalWiFiDismissalTriggers:0];
-  v4 = [(SetupController *)v13 modalWiFiCompletionHandlers];
-  location[0] = [(NSMutableArray *)v4 copy];
+  [(SetupController *)selfCopy setModalWiFiSettingsNavigationController:0];
+  [(SetupController *)selfCopy setModalWiFiDismissalTriggers:0];
+  modalWiFiCompletionHandlers = [(SetupController *)selfCopy modalWiFiCompletionHandlers];
+  location[0] = [(NSMutableArray *)modalWiFiCompletionHandlers copy];
 
-  v5 = [(SetupController *)v13 modalWiFiCompletionHandlers];
-  [(NSMutableArray *)v5 removeAllObjects];
+  modalWiFiCompletionHandlers2 = [(SetupController *)selfCopy modalWiFiCompletionHandlers];
+  [(NSMutableArray *)modalWiFiCompletionHandlers2 removeAllObjects];
 
   memset(__b, 0, sizeof(__b));
   v6 = location[0];
@@ -3684,7 +3684,7 @@ LABEL_19:
 
 - (void)_addSBAlertItemsSupressionAssertion
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if (!self->_sbAlertItemsSuppressionAssertion)
   {
@@ -3699,13 +3699,13 @@ LABEL_19:
     }
 
     objc_storeStrong(oslog, 0);
-    v7->_sbAlertItemsSuppressionAssertion = SBSAlertItemsSuppressionAssertionCreate();
+    selfCopy->_sbAlertItemsSuppressionAssertion = SBSAlertItemsSuppressionAssertionCreate();
   }
 }
 
 - (void)_removeSBAlertItemsSupressionAssertion
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if (self->_sbAlertItemsSuppressionAssertion)
   {
@@ -3720,28 +3720,28 @@ LABEL_19:
     }
 
     objc_storeStrong(oslog, 0);
-    CFRelease(v7->_sbAlertItemsSuppressionAssertion);
-    v7->_sbAlertItemsSuppressionAssertion = 0;
+    CFRelease(selfCopy->_sbAlertItemsSuppressionAssertion);
+    selfCopy->_sbAlertItemsSuppressionAssertion = 0;
   }
 }
 
-- (void)dialerDidDismiss:(id)a3
+- (void)dialerDidDismiss:(id)dismiss
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SetupController *)v10 _removeSBAlertItemsSupressionAssertion];
-  objc_storeStrong(&v10->_emergencyDialer, 0);
-  v3 = [(SetupController *)v10 navigationController];
-  v4 = [v3 topViewController];
-  v5 = [v4 conformsToProtocol:&OBJC_PROTOCOL___BuddyProximityAdvertisingFlow];
+  objc_storeStrong(location, dismiss);
+  [(SetupController *)selfCopy _removeSBAlertItemsSupressionAssertion];
+  objc_storeStrong(&selfCopy->_emergencyDialer, 0);
+  navigationController = [(SetupController *)selfCopy navigationController];
+  topViewController = [navigationController topViewController];
+  v5 = [topViewController conformsToProtocol:&OBJC_PROTOCOL___BuddyProximityAdvertisingFlow];
 
   if (v5)
   {
-    v6 = [(SetupController *)v10 navigationController];
-    v7 = [v6 topViewController];
-    [v7 beginAdvertisingForProximitySetup];
+    navigationController2 = [(SetupController *)selfCopy navigationController];
+    topViewController2 = [navigationController2 topViewController];
+    [topViewController2 beginAdvertisingForProximitySetup];
   }
 
   v8 = +[BuddySIMManager sharedManager];
@@ -3752,7 +3752,7 @@ LABEL_19:
 
 - (void)_setupSnapshotRemoved
 {
-  v17 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v15 = OS_LOG_TYPE_DEFAULT;
@@ -3765,14 +3765,14 @@ LABEL_19:
   }
 
   objc_storeStrong(oslog, 0);
-  v4 = 1;
-  if (!v17->_shouldAnimateLocaleScreen)
+  shouldProceedFromAppearancePane = 1;
+  if (!selfCopy->_shouldAnimateLocaleScreen)
   {
-    v4 = [(SetupController *)v17 shouldProceedFromAppearancePane];
+    shouldProceedFromAppearancePane = [(SetupController *)selfCopy shouldProceedFromAppearancePane];
   }
 
-  v13 = v4 & 1;
-  if (v4)
+  v13 = shouldProceedFromAppearancePane & 1;
+  if (shouldProceedFromAppearancePane)
   {
     v5 = dispatch_time(0, 1000000000);
     v6 = &_dispatch_main_q;
@@ -3781,7 +3781,7 @@ LABEL_19:
     v9 = 0;
     v10 = sub_10007E98C;
     v11 = &unk_10032B0D0;
-    v12 = v17;
+    v12 = selfCopy;
     dispatch_after(v5, v6, &v7);
 
     objc_storeStrong(&v12, 0);
@@ -3790,7 +3790,7 @@ LABEL_19:
 
 - (void)_setupStateChanged
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = dispatch_get_global_queue(0, 0);
   block = _NSConcreteStackBlock;
@@ -3798,19 +3798,19 @@ LABEL_19:
   v5 = 0;
   v6 = sub_10007EB18;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
+  v8[0] = selfCopy;
   dispatch_async(v2, &block);
 
   objc_storeStrong(v8, 0);
 }
 
-- (void)_showMiniAlertWithRestart:(BOOL)a3 withLanguage:(id)a4
+- (void)_showMiniAlertWithRestart:(BOOL)restart withLanguage:(id)language
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
+  restartCopy = restart;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, language);
   v4 = +[NSBundle mainBundle];
   obj = SFLocalizedStringFromTableInBundleForLanguage();
 
@@ -3835,17 +3835,17 @@ LABEL_19:
 
   v19[0] = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:1];
   [v19[0] _setAttributedTitle:v20];
-  v9 = [(SetupController *)v27 navigationController];
-  v10 = [v9 topViewController];
-  v11 = v25;
+  navigationController = [(SetupController *)selfCopy navigationController];
+  topViewController = [navigationController topViewController];
+  v11 = restartCopy;
   v12 = _NSConcreteStackBlock;
   v13 = -1073741824;
   v14 = 0;
   v15 = sub_10007F0B4;
   v16 = &unk_10032B688;
-  v18 = v25;
-  v17 = v27;
-  [v10 presentViewController:v19[0] animated:v11 completion:&v12];
+  v18 = restartCopy;
+  v17 = selfCopy;
+  [topViewController presentViewController:v19[0] animated:v11 completion:&v12];
 
   objc_storeStrong(&v17, 0);
   objc_storeStrong(v19, 0);
@@ -3907,8 +3907,8 @@ LABEL_19:
   v9[2] = self;
   v9[1] = a2;
   v9[0] = objc_alloc_init(MBManager);
-  v8 = [v9[0] restoreInfo];
-  location = [v8 date];
+  restoreInfo = [v9[0] restoreInfo];
+  location = [restoreInfo date];
   [location timeIntervalSinceNow];
   v6 = v2;
   oslog = _BYLoggingFacility();
@@ -3930,7 +3930,7 @@ LABEL_19:
   }
 
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&restoreInfo, 0);
   objc_storeStrong(v9, 0);
   return v3;
 }
@@ -3987,81 +3987,81 @@ LABEL_19:
   objc_storeStrong(v11, 0);
 }
 
-- (BOOL)updateLanguageLocale:(id)a3
+- (BOOL)updateLanguageLocale:(id)locale
 {
-  v94 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, locale);
   v92 = CFPreferencesCopyValue(@"AppleLocale", kCFPreferencesAnyApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   v3 = [[NSLocale alloc] initWithLocaleIdentifier:v92];
-  v91 = [v3 countryCode];
+  countryCode = [v3 countryCode];
 
-  [(SetupController *)v94 _writeGreenInformedDefaultPlistIfNecessaryForLocaleCountryCode:v91];
-  v4 = [(SetupController *)v94 environment];
-  v5 = [(BYEnvironment *)v4 capabilities];
-  [v5 eligibilitySetDeviceLocale:v91];
+  [(SetupController *)selfCopy _writeGreenInformedDefaultPlistIfNecessaryForLocaleCountryCode:countryCode];
+  environment = [(SetupController *)selfCopy environment];
+  capabilities = [(BYEnvironment *)environment capabilities];
+  [capabilities eligibilitySetDeviceLocale:countryCode];
 
   v90 = +[NSUserDefaults standardUserDefaults];
-  v89 = v94->_languageAtStartup;
+  v89 = selfCopy->_languageAtStartup;
   v88 = 0;
   v87 = 0;
   v86 = 0;
   v85 = 1;
   v84 = 0;
-  v6 = [(SetupController *)v94 environment];
-  v7 = [(BYEnvironment *)v6 proximitySetupController];
-  v8 = [v7 receivedLanguages];
-  v9 = [v8 count];
+  environment2 = [(SetupController *)selfCopy environment];
+  proximitySetupController = [(BYEnvironment *)environment2 proximitySetupController];
+  receivedLanguages = [proximitySetupController receivedLanguages];
+  v9 = [receivedLanguages count];
 
   if (v9)
   {
     v10 = +[NSBundle mainBundle];
-    v11 = [(NSBundle *)v10 localizations];
-    v12 = [(SetupController *)v94 environment];
-    v13 = [(BYEnvironment *)v12 proximitySetupController];
-    v14 = [v13 receivedLanguages];
-    v15 = [NSBundle preferredLocalizationsFromArray:v11 forPreferences:v14];
-    v16 = [(NSArray *)v15 firstObject];
+    localizations = [(NSBundle *)v10 localizations];
+    environment3 = [(SetupController *)selfCopy environment];
+    proximitySetupController2 = [(BYEnvironment *)environment3 proximitySetupController];
+    receivedLanguages2 = [proximitySetupController2 receivedLanguages];
+    v15 = [NSBundle preferredLocalizationsFromArray:localizations forPreferences:receivedLanguages2];
+    firstObject = [(NSArray *)v15 firstObject];
     v17 = v88;
-    v88 = v16;
+    v88 = firstObject;
 
     v85 = 0;
-    v18 = [(SetupController *)v94 environment];
-    v19 = [(BYEnvironment *)v18 proximitySetupController];
-    v20 = [v19 receivedLanguages];
+    environment4 = [(SetupController *)selfCopy environment];
+    proximitySetupController3 = [(BYEnvironment *)environment4 proximitySetupController];
+    receivedLanguages3 = [proximitySetupController3 receivedLanguages];
     v21 = v86;
-    v86 = v20;
+    v86 = receivedLanguages3;
 
-    v22 = [(SetupController *)v94 preferredLanguagesAtStartup];
-    v84 = ([v86 isEqualToArray:v22] ^ 1) & 1;
+    preferredLanguagesAtStartup = [(SetupController *)selfCopy preferredLanguagesAtStartup];
+    v84 = ([v86 isEqualToArray:preferredLanguagesAtStartup] ^ 1) & 1;
   }
 
   else
   {
-    v23 = [(SetupController *)v94 userSelectedLanguageWithLocale];
+    userSelectedLanguageWithLocale = [(SetupController *)selfCopy userSelectedLanguageWithLocale];
 
-    if (v23)
+    if (userSelectedLanguageWithLocale)
     {
-      v24 = [(SetupController *)v94 userSelectedLanguageWithLocale];
+      userSelectedLanguageWithLocale2 = [(SetupController *)selfCopy userSelectedLanguageWithLocale];
       v25 = v88;
-      v88 = v24;
+      v88 = userSelectedLanguageWithLocale2;
 
       v26 = [NSLocale localeWithLocaleIdentifier:v88];
-      v27 = [(NSLocale *)v26 regionCode];
+      regionCode = [(NSLocale *)v26 regionCode];
       v28 = v87;
-      v87 = v27;
+      v87 = regionCode;
     }
 
     else
     {
-      v29 = [(SetupController *)v94 userSelectedLanguage];
+      userSelectedLanguage = [(SetupController *)selfCopy userSelectedLanguage];
 
-      if (v29)
+      if (userSelectedLanguage)
       {
-        v30 = [(SetupController *)v94 userSelectedLanguage];
+        userSelectedLanguage2 = [(SetupController *)selfCopy userSelectedLanguage];
         v31 = v88;
-        v88 = v30;
+        v88 = userSelectedLanguage2;
       }
     }
   }
@@ -4083,15 +4083,15 @@ LABEL_19:
   }
 
   v83 = v32;
-  v33 = [(SetupController *)v94 safetyAndHandlingManager];
-  [(BYBuddySafetyAndHandlingManager *)v33 setLanguageCode:v83];
+  safetyAndHandlingManager = [(SetupController *)selfCopy safetyAndHandlingManager];
+  [(BYBuddySafetyAndHandlingManager *)safetyAndHandlingManager setLanguageCode:v83];
 
-  v34 = [(SetupController *)v94 safetyAndHandlingManager];
-  [(BYBuddySafetyAndHandlingManager *)v34 setCountryCode:v87];
+  safetyAndHandlingManager2 = [(SetupController *)selfCopy safetyAndHandlingManager];
+  [(BYBuddySafetyAndHandlingManager *)safetyAndHandlingManager2 setCountryCode:v87];
 
-  v35 = [(SetupController *)v94 environment];
-  v36 = [(BYEnvironment *)v35 buddyPreferences];
-  [v36 setObject:v83 forKey:@"Language"];
+  environment5 = [(SetupController *)selfCopy environment];
+  buddyPreferences = [(BYEnvironment *)environment5 buddyPreferences];
+  [buddyPreferences setObject:v83 forKey:@"Language"];
 
   [v90 removeObjectForKey:@"LockdownSetLanguage"];
   [v90 removeObjectForKey:@"LockdownSetLocale"];
@@ -4099,30 +4099,30 @@ LABEL_19:
   if (v88 && ([v89 isEqualToString:v88] & 1) == 0)
   {
     v37 = +[NSBundle mainBundle];
-    v38 = [(NSBundle *)v37 preferredLocalizations];
-    v81 = [(NSArray *)v38 firstObject];
+    preferredLocalizations = [(NSBundle *)v37 preferredLocalizations];
+    firstObject2 = [(NSArray *)preferredLocalizations firstObject];
 
     v39 = +[NSBundle mainBundle];
-    v40 = [(NSBundle *)v39 localizations];
-    v41 = [NSBundle preferredLocalizationsFromArray:v40 forPreferences:v86];
-    v80 = [(NSArray *)v41 firstObject];
+    localizations2 = [(NSBundle *)v39 localizations];
+    v41 = [NSBundle preferredLocalizationsFromArray:localizations2 forPreferences:v86];
+    firstObject3 = [(NSArray *)v41 firstObject];
 
-    if ([v81 length] && objc_msgSend(v80, "length"))
+    if ([firstObject2 length] && objc_msgSend(firstObject3, "length"))
     {
-      v82 = ([v80 isEqualToString:v81] & 1) == 0;
+      v82 = ([firstObject3 isEqualToString:firstObject2] & 1) == 0;
     }
 
     oslog = _BYLoggingFacility();
     v78 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      sub_100080778(buf, v81, v80, v82);
+      sub_100080778(buf, firstObject2, firstObject3, v82);
       _os_log_impl(&_mh_execute_header, oslog, v78, "currentBundle: %{public}@; selectedBundle: %{public}@; selectedLanguageLoadsDifferentBundle? %d", buf, 0x1Cu);
     }
 
     objc_storeStrong(&oslog, 0);
-    objc_storeStrong(&v80, 0);
-    objc_storeStrong(&v81, 0);
+    objc_storeStrong(&firstObject3, 0);
+    objc_storeStrong(&firstObject2, 0);
   }
 
   if (v84)
@@ -4151,7 +4151,7 @@ LABEL_19:
     }
 
     objc_storeStrong(&v65, 0);
-    [(BFFWindow *)v94->_window setUserInteractionEnabled:0];
+    [(BFFWindow *)selfCopy->_window setUserInteractionEnabled:0];
     if (location[0])
     {
       (*(location[0] + 2))();
@@ -4159,12 +4159,12 @@ LABEL_19:
 
     [v90 setObject:v83 forKey:@"Language"];
     [v90 synchronize];
-    v54 = [(SetupController *)v94 environment];
-    v55 = [(BYEnvironment *)v54 buddyPreferencesExcludedFromBackup];
-    [v55 setObject:&__kCFBooleanTrue forKey:@"AnimateLanguageChoice" persistImmediately:1];
+    environment6 = [(SetupController *)selfCopy environment];
+    buddyPreferencesExcludedFromBackup = [(BYEnvironment *)environment6 buddyPreferencesExcludedFromBackup];
+    [buddyPreferencesExcludedFromBackup setObject:&__kCFBooleanTrue forKey:@"AnimateLanguageChoice" persistImmediately:1];
 
-    v56 = [(SetupController *)v94 safetyAndHandlingManager];
-    [(BYBuddySafetyAndHandlingManager *)v56 persistStateForReboot];
+    safetyAndHandlingManager3 = [(SetupController *)selfCopy safetyAndHandlingManager];
+    [(BYBuddySafetyAndHandlingManager *)safetyAndHandlingManager3 persistStateForReboot];
 
     CFPreferencesAppSynchronize(BYBuddyNotBackedUpIdentifier);
     if (v85)
@@ -4179,20 +4179,20 @@ LABEL_19:
       v57 = +[UIKeyboardPreferencesController sharedPreferencesController];
       [v57 setValue:v63 forKey:3];
 
-      v58 = [(SetupController *)v94 environment];
-      v59 = [(BYEnvironment *)v58 buddyPreferences];
-      [v59 setObject:v63 forKey:@"Locale"];
+      environment7 = [(SetupController *)selfCopy environment];
+      buddyPreferences2 = [(BYEnvironment *)environment7 buddyPreferences];
+      [buddyPreferences2 setObject:v63 forKey:@"Locale"];
 
       objc_storeStrong(&v63, 0);
     }
 
-    [(SetupController *)v94 userDidChooseLanguage];
-    [(SetupController *)v94 _persistAnalyticsForLanguageReboot];
-    v60 = [(SetupController *)v94 environment];
-    v61 = [(BYEnvironment *)v60 proximitySetupController];
-    [v61 prepareForReboot];
+    [(SetupController *)selfCopy userDidChooseLanguage];
+    [(SetupController *)selfCopy _persistAnalyticsForLanguageReboot];
+    environment8 = [(SetupController *)selfCopy environment];
+    proximitySetupController4 = [(BYEnvironment *)environment8 proximitySetupController];
+    [proximitySetupController4 prepareForReboot];
 
-    [(SetupController *)v94 _showMiniAlertWithRestart:1 withLanguage:v88];
+    [(SetupController *)selfCopy _showMiniAlertWithRestart:1 withLanguage:v88];
     v95 = 1;
     v66 = 1;
   }
@@ -4210,11 +4210,11 @@ LABEL_19:
     objc_storeStrong(&v74, 0);
     [v90 synchronize];
     v72 = [v90 objectForKey:@"AppleLanguages"];
-    v71 = [v72 firstObject];
+    firstObject4 = [v72 firstObject];
     v44 = 0;
     if (v88)
     {
-      v44 = [v71 isEqualToString:v88] ^ 1;
+      v44 = [firstObject4 isEqualToString:v88] ^ 1;
     }
 
     v70 = v44 & 1;
@@ -4222,7 +4222,7 @@ LABEL_19:
     v68 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
     {
-      sub_100073058(v97, v71, v88);
+      sub_100073058(v97, firstObject4, v88);
       _os_log_impl(&_mh_execute_header, v69, v68, "current default: %{public}@; selected language: %{public}@", v97, 0x16u);
     }
 
@@ -4241,9 +4241,9 @@ LABEL_19:
         v45 = +[UIKeyboardPreferencesController sharedPreferencesController];
         [v45 setValue:v67 forKey:3];
 
-        v46 = [(SetupController *)v94 environment];
-        v47 = [(BYEnvironment *)v46 buddyPreferences];
-        [v47 setObject:v67 forKey:@"Locale"];
+        environment9 = [(SetupController *)selfCopy environment];
+        buddyPreferences3 = [(BYEnvironment *)environment9 buddyPreferences];
+        [buddyPreferences3 setObject:v67 forKey:@"Locale"];
 
         objc_storeStrong(&v67, 0);
       }
@@ -4256,17 +4256,17 @@ LABEL_19:
 
     v50 = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(v50, BYSetupAssistantDidCompleteLanguageLocaleNotification, 0, 0, 1u);
-    [(SetupController *)v94 userDidChooseLanguage];
-    v51 = [(SetupController *)v94 environment];
-    v52 = [(BYEnvironment *)v51 proximitySetupController];
-    [v52 languageChangeCompleted];
+    [(SetupController *)selfCopy userDidChooseLanguage];
+    environment10 = [(SetupController *)selfCopy environment];
+    proximitySetupController5 = [(BYEnvironment *)environment10 proximitySetupController];
+    [proximitySetupController5 languageChangeCompleted];
 
     v53 = +[BuddySIMManager sharedManager];
     [v53 allowSIMUnlock];
 
     v95 = 0;
     v66 = 1;
-    objc_storeStrong(&v71, 0);
+    objc_storeStrong(&firstObject4, 0);
     objc_storeStrong(&v72, 0);
   }
 
@@ -4276,7 +4276,7 @@ LABEL_19:
   objc_storeStrong(&v88, 0);
   objc_storeStrong(&v89, 0);
   objc_storeStrong(&v90, 0);
-  objc_storeStrong(&v91, 0);
+  objc_storeStrong(&countryCode, 0);
   objc_storeStrong(&v92, 0);
   objc_storeStrong(location, 0);
   return v95 & 1;
@@ -4284,41 +4284,41 @@ LABEL_19:
 
 - (void)_setupAnalytics
 {
-  v25 = self;
+  selfCopy = self;
   v24[1] = a2;
   v2 = [BuddyNavigationAnalytics alloc];
-  v3 = [(SetupController *)v25 navigationController];
-  v4 = [(BuddyNavigationAnalytics *)v2 initWithNavigationController:v3];
-  [(SetupController *)v25 setNavigationAnalytics:v4];
+  navigationController = [(SetupController *)selfCopy navigationController];
+  v4 = [(BuddyNavigationAnalytics *)v2 initWithNavigationController:navigationController];
+  [(SetupController *)selfCopy setNavigationAnalytics:v4];
 
-  v5 = [(SetupController *)v25 environment];
-  v6 = [(BYEnvironment *)v5 buddyPreferencesExcludedFromBackup];
-  v7 = [BuddySetupAnalytics loadFromDiskWithPreferences:v6];
-  [(SetupController *)v25 setSetupAnalytics:v7];
+  environment = [(SetupController *)selfCopy environment];
+  buddyPreferencesExcludedFromBackup = [(BYEnvironment *)environment buddyPreferencesExcludedFromBackup];
+  v7 = [BuddySetupAnalytics loadFromDiskWithPreferences:buddyPreferencesExcludedFromBackup];
+  [(SetupController *)selfCopy setSetupAnalytics:v7];
 
-  v8 = [(SetupController *)v25 setupAnalytics];
-  LOBYTE(v7) = v8 == 0;
+  setupAnalytics = [(SetupController *)selfCopy setupAnalytics];
+  LOBYTE(v7) = setupAnalytics == 0;
 
   if (v7)
   {
     v9 = [BuddySetupAnalytics alloc];
-    v10 = [(SetupController *)v25 environment];
-    v11 = [(BYEnvironment *)v10 buddyPreferencesExcludedFromBackup];
-    v12 = [(BuddySetupAnalytics *)v9 initWithPreferences:v11];
-    [(SetupController *)v25 setSetupAnalytics:v12];
+    environment2 = [(SetupController *)selfCopy environment];
+    buddyPreferencesExcludedFromBackup2 = [(BYEnvironment *)environment2 buddyPreferencesExcludedFromBackup];
+    v12 = [(BuddySetupAnalytics *)v9 initWithPreferences:buddyPreferencesExcludedFromBackup2];
+    [(SetupController *)selfCopy setSetupAnalytics:v12];
 
     LOBYTE(v12) = BYSetupAssistantHasCompletedInitialRun();
-    v13 = [(SetupController *)v25 setupAnalytics];
-    [(BuddySetupAnalytics *)v13 setHasCompletedInitialSetup:v12 & 1];
+    setupAnalytics2 = [(SetupController *)selfCopy setupAnalytics];
+    [(BuddySetupAnalytics *)setupAnalytics2 setHasCompletedInitialSetup:v12 & 1];
   }
 
-  v14 = [(SetupController *)v25 environment];
-  v15 = [(BYEnvironment *)v14 buddyPreferences];
-  v24[0] = [BuddyRestoreState loadFromPreferences:v15];
+  environment3 = [(SetupController *)selfCopy environment];
+  buddyPreferences = [(BYEnvironment *)environment3 buddyPreferences];
+  v24[0] = [BuddyRestoreState loadFromPreferences:buddyPreferences];
 
-  v16 = [(SetupController *)v25 environment];
-  v17 = [(BYEnvironment *)v16 buddyPreferencesExcludedFromBackup];
-  v23 = [BuddyMigrationState loadFromPreferences:v17];
+  environment4 = [(SetupController *)selfCopy environment];
+  buddyPreferencesExcludedFromBackup3 = [(BYEnvironment *)environment4 buddyPreferencesExcludedFromBackup];
+  v23 = [BuddyMigrationState loadFromPreferences:buddyPreferencesExcludedFromBackup3];
 
   if (v24[0] || v23)
   {
@@ -4328,13 +4328,13 @@ LABEL_19:
       location = [v23 persistDate];
     }
 
-    v18 = [(SetupController *)v25 setupAnalytics];
-    [(BuddySetupAnalytics *)v18 setSoftwareUpdatePerformed:1];
+    setupAnalytics3 = [(SetupController *)selfCopy setupAnalytics];
+    [(BuddySetupAnalytics *)setupAnalytics3 setSoftwareUpdatePerformed:1];
 
     [location timeIntervalSinceNow];
     v20 = -v19;
-    v21 = [(SetupController *)v25 setupAnalytics];
-    [(BuddySetupAnalytics *)v21 setOtherDuration:v20];
+    setupAnalytics4 = [(SetupController *)selfCopy setupAnalytics];
+    [(BuddySetupAnalytics *)setupAnalytics4 setOtherDuration:v20];
 
     objc_storeStrong(&location, 0);
   }
@@ -4346,18 +4346,18 @@ LABEL_19:
 - (void)_preStashAnalytics
 {
   [(SetupController *)self _populateSetupAnalytics];
-  v2 = [(SetupController *)self navigationAnalytics];
-  [(BuddyNavigationAnalytics *)v2 prepareEventForCurrentViewController];
+  navigationAnalytics = [(SetupController *)self navigationAnalytics];
+  [(BuddyNavigationAnalytics *)navigationAnalytics prepareEventForCurrentViewController];
 
-  v3 = [(SetupController *)self navigationAnalytics];
-  v4 = [(SetupController *)self environment];
-  v5 = [(BYEnvironment *)v4 analyticsManager];
-  [(BuddyNavigationAnalytics *)v3 addEventsUsingAnalyticsManager:v5];
+  navigationAnalytics2 = [(SetupController *)self navigationAnalytics];
+  environment = [(SetupController *)self environment];
+  analyticsManager = [(BYEnvironment *)environment analyticsManager];
+  [(BuddyNavigationAnalytics *)navigationAnalytics2 addEventsUsingAnalyticsManager:analyticsManager];
 
-  v6 = [(SetupController *)self setupAnalytics];
-  v7 = [(SetupController *)self environment];
-  v8 = [(BYEnvironment *)v7 analyticsManager];
-  [(BuddySetupAnalytics *)v6 addEventUsingAnalyticsManager:v8];
+  setupAnalytics = [(SetupController *)self setupAnalytics];
+  environment2 = [(SetupController *)self environment];
+  analyticsManager2 = [(BYEnvironment *)environment2 analyticsManager];
+  [(BuddySetupAnalytics *)setupAnalytics addEventUsingAnalyticsManager:analyticsManager2];
 
   [(SetupController *)self setSetupAnalytics:0];
 }
@@ -4365,103 +4365,103 @@ LABEL_19:
 - (void)_stashAnalytics
 {
   [(SetupController *)self _preStashAnalytics];
-  v2 = [(SetupController *)self environment];
-  v3 = [(BYEnvironment *)v2 analyticsManager];
-  v4 = [(SetupController *)self environment];
-  v5 = [(BYEnvironment *)v4 settingsManager];
-  [v3 stash:v5];
+  environment = [(SetupController *)self environment];
+  analyticsManager = [(BYEnvironment *)environment analyticsManager];
+  environment2 = [(SetupController *)self environment];
+  settingsManager = [(BYEnvironment *)environment2 settingsManager];
+  [analyticsManager stash:settingsManager];
 
-  v6 = [(SetupController *)self environment];
-  v7 = [(BYEnvironment *)v6 analyticsManager];
-  [v7 reset];
+  environment3 = [(SetupController *)self environment];
+  analyticsManager2 = [(BYEnvironment *)environment3 analyticsManager];
+  [analyticsManager2 reset];
 }
 
 - (void)_preCommitAnalytics
 {
   [(SetupController *)self _populateSetupAnalytics];
   [(SetupController *)self _populatePowerLogAnalytics];
-  v2 = [(SetupController *)self navigationAnalytics];
-  [(BuddyNavigationAnalytics *)v2 prepareEventForCurrentViewController];
+  navigationAnalytics = [(SetupController *)self navigationAnalytics];
+  [(BuddyNavigationAnalytics *)navigationAnalytics prepareEventForCurrentViewController];
 
-  v3 = [(SetupController *)self navigationAnalytics];
-  v4 = [(SetupController *)self environment];
-  v5 = [(BYEnvironment *)v4 analyticsManager];
-  [(BuddyNavigationAnalytics *)v3 addEventsUsingAnalyticsManager:v5];
+  navigationAnalytics2 = [(SetupController *)self navigationAnalytics];
+  environment = [(SetupController *)self environment];
+  analyticsManager = [(BYEnvironment *)environment analyticsManager];
+  [(BuddyNavigationAnalytics *)navigationAnalytics2 addEventsUsingAnalyticsManager:analyticsManager];
 
-  v6 = [(SetupController *)self setupAnalytics];
-  v7 = [(SetupController *)self environment];
-  v8 = [(BYEnvironment *)v7 analyticsManager];
-  [(BuddySetupAnalytics *)v6 addEventUsingAnalyticsManager:v8];
+  setupAnalytics = [(SetupController *)self setupAnalytics];
+  environment2 = [(SetupController *)self environment];
+  analyticsManager2 = [(BYEnvironment *)environment2 analyticsManager];
+  [(BuddySetupAnalytics *)setupAnalytics addEventUsingAnalyticsManager:analyticsManager2];
 }
 
 - (void)_commitAnalytics
 {
   [(SetupController *)self _preCommitAnalytics];
-  v2 = [(SetupController *)self environment];
-  v3 = [(BYEnvironment *)v2 analyticsManager];
-  [v3 commit];
+  environment = [(SetupController *)self environment];
+  analyticsManager = [(BYEnvironment *)environment analyticsManager];
+  [analyticsManager commit];
 }
 
 - (void)_populateSetupAnalytics
 {
-  v2 = [(SetupController *)self environment];
-  v3 = [(BYEnvironment *)v2 setupMethod];
-  v4 = [v3 dataTransferMethod];
-  v5 = [(SetupController *)self setupAnalytics];
-  [(BuddySetupAnalytics *)v5 setDataTransferMethod:v4];
+  environment = [(SetupController *)self environment];
+  setupMethod = [(BYEnvironment *)environment setupMethod];
+  dataTransferMethod = [setupMethod dataTransferMethod];
+  setupAnalytics = [(SetupController *)self setupAnalytics];
+  [(BuddySetupAnalytics *)setupAnalytics setDataTransferMethod:dataTransferMethod];
 
-  v6 = [(SetupController *)self setupAnalytics];
-  v7 = [(SetupController *)self environment];
-  v8 = [(BYEnvironment *)v7 networkProvider];
-  -[BuddySetupAnalytics setInAppleStore:](v6, "setInAppleStore:", (-[BuddySetupAnalytics inAppleStore](v6, "inAppleStore") | [v8 inAppleStore] & 1) != 0);
+  setupAnalytics2 = [(SetupController *)self setupAnalytics];
+  environment2 = [(SetupController *)self environment];
+  networkProvider = [(BYEnvironment *)environment2 networkProvider];
+  -[BuddySetupAnalytics setInAppleStore:](setupAnalytics2, "setInAppleStore:", (-[BuddySetupAnalytics inAppleStore](setupAnalytics2, "inAppleStore") | [networkProvider inAppleStore] & 1) != 0);
 
-  v9 = [(SetupController *)self setupAnalytics];
-  v10 = [(BFFNavigationController *)self->_nav viewControllers];
-  -[BuddySetupAnalytics setNumberOfPanesPresented:](v9, "setNumberOfPanesPresented:", [v10 count] + -[BuddySetupAnalytics numberOfPanesPresented](v9, "numberOfPanesPresented"));
+  setupAnalytics3 = [(SetupController *)self setupAnalytics];
+  viewControllers = [(BFFNavigationController *)self->_nav viewControllers];
+  -[BuddySetupAnalytics setNumberOfPanesPresented:](setupAnalytics3, "setNumberOfPanesPresented:", [viewControllers count] + -[BuddySetupAnalytics numberOfPanesPresented](setupAnalytics3, "numberOfPanesPresented"));
 
-  v11 = [(SetupController *)self setupAnalytics];
-  [(BuddySetupAnalytics *)v11 backgroundDuration];
-  [(BuddySetupAnalytics *)v11 setBackgroundDuration:v12 + self->_cumulativeLockedDuration];
+  setupAnalytics4 = [(SetupController *)self setupAnalytics];
+  [(BuddySetupAnalytics *)setupAnalytics4 backgroundDuration];
+  [(BuddySetupAnalytics *)setupAnalytics4 setBackgroundDuration:v12 + self->_cumulativeLockedDuration];
 
-  v13 = [(SetupController *)self setupAnalytics];
+  setupAnalytics5 = [(SetupController *)self setupAnalytics];
   [BuddyTimestamp intervalSinceTimestamp:self->_buddyStartTimestamp];
   v15 = v14 - self->_cumulativeLockedDuration;
-  [(BuddySetupAnalytics *)v13 activeDuration];
-  [(BuddySetupAnalytics *)v13 setActiveDuration:v16 + v15];
+  [(BuddySetupAnalytics *)setupAnalytics5 activeDuration];
+  [(BuddySetupAnalytics *)setupAnalytics5 setActiveDuration:v16 + v15];
 
   v17 = +[ACAccountStore defaultStore];
-  v18 = [v17 aa_primaryAppleAccount];
-  v19 = [(SetupController *)self setupAnalytics];
-  [(BuddySetupAnalytics *)v19 setIsSignedIntoAppleID:v18 != 0];
+  aa_primaryAppleAccount = [v17 aa_primaryAppleAccount];
+  setupAnalytics6 = [(SetupController *)self setupAnalytics];
+  [(BuddySetupAnalytics *)setupAnalytics6 setIsSignedIntoAppleID:aa_primaryAppleAccount != 0];
 
-  v20 = [(SetupController *)self environment];
-  v21 = [(BYEnvironment *)v20 flowSkipController];
-  v22 = [v21 getFlowSkipIdentifiers];
-  v23 = [v22 count];
-  v24 = [(SetupController *)self setupAnalytics];
-  [(BuddySetupAnalytics *)v24 setFollowUpItemsCount:v23];
+  environment3 = [(SetupController *)self environment];
+  flowSkipController = [(BYEnvironment *)environment3 flowSkipController];
+  getFlowSkipIdentifiers = [flowSkipController getFlowSkipIdentifiers];
+  v23 = [getFlowSkipIdentifiers count];
+  setupAnalytics7 = [(SetupController *)self setupAnalytics];
+  [(BuddySetupAnalytics *)setupAnalytics7 setFollowUpItemsCount:v23];
 }
 
 - (void)_populatePowerLogAnalytics
 {
-  v39 = self;
+  selfCopy = self;
   v38[1] = a2;
   v38[0] = objc_alloc_init(BYSetupUserDisposition);
   location = 0;
-  v2 = [v38[0] date];
+  date = [v38[0] date];
 
-  if (v2)
+  if (date)
   {
-    v3 = [v38[0] date];
+    date2 = [v38[0] date];
     v4 = location;
-    location = v3;
+    location = date2;
   }
 
   else
   {
-    v5 = [(SetupController *)v39 environment];
-    v6 = [(BYEnvironment *)v5 runState];
-    v7 = [v6 hasCompletedInitialRun] ^ 1;
+    environment = [(SetupController *)selfCopy environment];
+    runState = [(BYEnvironment *)environment runState];
+    v7 = [runState hasCompletedInitialRun] ^ 1;
 
     if (v7)
     {
@@ -4501,23 +4501,23 @@ LABEL_19:
   {
     [location timeIntervalSince1970];
     v30 = v14;
-    v15 = [(SetupController *)v39 environment];
-    v16 = [(BYEnvironment *)v15 analyticsManager];
+    environment2 = [(SetupController *)selfCopy environment];
+    analyticsManager = [(BYEnvironment *)environment2 analyticsManager];
     v17 = [NSNumber numberWithDouble:v30];
-    [v16 addPowerLogEvent:0 withPayload:v17];
+    [analyticsManager addPowerLogEvent:0 withPayload:v17];
   }
 
-  v18 = [(SetupController *)v39 environment];
-  v19 = [(BYEnvironment *)v18 setupMethod];
+  environment3 = [(SetupController *)selfCopy environment];
+  setupMethod = [(BYEnvironment *)environment3 setupMethod];
 
-  if (v19)
+  if (setupMethod)
   {
-    v20 = [(SetupController *)v39 environment];
-    v21 = [(BYEnvironment *)v20 analyticsManager];
-    v22 = [(SetupController *)v39 environment];
-    v23 = [(BYEnvironment *)v22 setupMethod];
-    v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v23 dataTransferMethod]);
-    [v21 addPowerLogEvent:1 withPayload:v24];
+    environment4 = [(SetupController *)selfCopy environment];
+    analyticsManager2 = [(BYEnvironment *)environment4 analyticsManager];
+    environment5 = [(SetupController *)selfCopy environment];
+    setupMethod2 = [(BYEnvironment *)environment5 setupMethod];
+    v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [setupMethod2 dataTransferMethod]);
+    [analyticsManager2 addPowerLogEvent:1 withPayload:v24];
   }
 
   else
@@ -4542,103 +4542,103 @@ LABEL_19:
 - (void)_persistAnalyticsForLanguageReboot
 {
   [(SetupController *)self _populateSetupAnalytics];
-  v2 = [(SetupController *)self setupAnalytics];
-  [(BuddySetupAnalytics *)v2 persist];
+  setupAnalytics = [(SetupController *)self setupAnalytics];
+  [(BuddySetupAnalytics *)setupAnalytics persist];
 }
 
 - (void)_persistAnalyticsForSoftwareUpdate
 {
   [(SetupController *)self _populateSetupAnalytics];
-  v2 = [(SetupController *)self environment];
-  v3 = [(BYEnvironment *)v2 analyticsManager];
-  v4 = [(SetupController *)self environment];
-  v5 = [(BYEnvironment *)v4 settingsManager];
-  [v3 stash:v5];
+  environment = [(SetupController *)self environment];
+  analyticsManager = [(BYEnvironment *)environment analyticsManager];
+  environment2 = [(SetupController *)self environment];
+  settingsManager = [(BYEnvironment *)environment2 settingsManager];
+  [analyticsManager stash:settingsManager];
 
-  v6 = [(SetupController *)self setupAnalytics];
-  [(BuddySetupAnalytics *)v6 persist];
+  setupAnalytics = [(SetupController *)self setupAnalytics];
+  [(BuddySetupAnalytics *)setupAnalytics persist];
 }
 
-- (void)displayProximityPinCode:(id)a3 language:(id)a4 visual:(BOOL)a5 accessibilitySettings:(id)a6
+- (void)displayProximityPinCode:(id)code language:(id)language visual:(BOOL)visual accessibilitySettings:(id)settings
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
-  v38 = a5;
+  objc_storeStrong(&v39, language);
+  visualCopy = visual;
   v37 = 0;
-  objc_storeStrong(&v37, a6);
-  v9 = [(SetupController *)v41 proximityPairingController];
+  objc_storeStrong(&v37, settings);
+  proximityPairingController = [(SetupController *)selfCopy proximityPairingController];
 
-  if (!v9)
+  if (!proximityPairingController)
   {
     v10 = objc_alloc_init(BuddyProximityPairingController);
-    [(SetupController *)v41 setProximityPairingController:v10];
+    [(SetupController *)selfCopy setProximityPairingController:v10];
 
     v11 = _AXSCopySettingsDataBlobForBuddy();
-    [(SetupController *)v41 setDefaultAccessibilitySettings:v11];
+    [(SetupController *)selfCopy setDefaultAccessibilitySettings:v11];
 
-    v12 = [(SetupController *)v41 navigationFlowController];
-    v13 = [(BuddyNavigationFlowController *)v12 environmentInjector];
-    v14 = [(SetupController *)v41 proximityPairingController];
-    v15 = v13[2](v13, v14);
+    navigationFlowController = [(SetupController *)selfCopy navigationFlowController];
+    environmentInjector = [(BuddyNavigationFlowController *)navigationFlowController environmentInjector];
+    proximityPairingController2 = [(SetupController *)selfCopy proximityPairingController];
+    v15 = environmentInjector[2](environmentInjector, proximityPairingController2);
   }
 
-  v16 = [(SetupController *)v41 environment];
-  v17 = [(BYEnvironment *)v16 featureFlags];
-  v18 = [(SetupController *)v41 proximityPairingController];
-  [(BuddyProximityPairingController *)v18 setFeatureFlags:v17];
+  environment = [(SetupController *)selfCopy environment];
+  featureFlags = [(BYEnvironment *)environment featureFlags];
+  proximityPairingController3 = [(SetupController *)selfCopy proximityPairingController];
+  [(BuddyProximityPairingController *)proximityPairingController3 setFeatureFlags:featureFlags];
 
-  v19 = [(SetupController *)v41 navigationFlowController];
-  v20 = [(SetupController *)v41 proximityPairingController];
-  [(BuddyProximityPairingController *)v20 setDelegate:v19];
+  navigationFlowController2 = [(SetupController *)selfCopy navigationFlowController];
+  proximityPairingController4 = [(SetupController *)selfCopy proximityPairingController];
+  [(BuddyProximityPairingController *)proximityPairingController4 setDelegate:navigationFlowController2];
 
-  v21 = [(SetupController *)v41 proximityPairingController];
-  [(BuddyProximityPairingController *)v21 setNonUserInitiatedDismissal:0];
+  proximityPairingController5 = [(SetupController *)selfCopy proximityPairingController];
+  [(BuddyProximityPairingController *)proximityPairingController5 setNonUserInitiatedDismissal:0];
 
   v22 = location[0];
-  v23 = [(SetupController *)v41 proximityPairingController];
-  [(BuddyProximityPairingController *)v23 setPairingCode:v22];
+  proximityPairingController6 = [(SetupController *)selfCopy proximityPairingController];
+  [(BuddyProximityPairingController *)proximityPairingController6 setPairingCode:v22];
 
   v24 = v39;
-  v25 = [(SetupController *)v41 proximityPairingController];
-  [(BuddyProximityPairingController *)v25 setLanguage:v24];
+  proximityPairingController7 = [(SetupController *)selfCopy proximityPairingController];
+  [(BuddyProximityPairingController *)proximityPairingController7 setLanguage:v24];
 
-  if (v38)
+  if (visualCopy)
   {
-    v26 = [(SetupController *)v41 proximityPairingController];
-    [(BuddyProximityPairingController *)v26 showVisualPairing];
+    proximityPairingController8 = [(SetupController *)selfCopy proximityPairingController];
+    [(BuddyProximityPairingController *)proximityPairingController8 showVisualPairing];
   }
 
   else
   {
-    v26 = [(SetupController *)v41 proximityPairingController];
-    [(BuddyProximityPairingController *)v26 showPairingCode];
+    proximityPairingController8 = [(SetupController *)selfCopy proximityPairingController];
+    [(BuddyProximityPairingController *)proximityPairingController8 showPairingCode];
   }
 
-  v27 = [(SetupController *)v41 navigationController];
-  v28 = [v27 topViewController];
-  v29 = [v28 navigationItem];
+  navigationController = [(SetupController *)selfCopy navigationController];
+  topViewController = [navigationController topViewController];
+  navigationItem = [topViewController navigationItem];
   v30 = +[NSBundle mainBundle];
   v31 = SFLocalizedStringFromTableInBundleForLanguage();
-  [v29 setBackButtonTitle:v31];
+  [navigationItem setBackButtonTitle:v31];
 
-  v32 = [(SetupController *)v41 navigationController];
-  v33 = [v32 topViewController];
-  v34 = [(SetupController *)v41 proximityPairingController];
+  navigationController2 = [(SetupController *)selfCopy navigationController];
+  topViewController2 = [navigationController2 topViewController];
+  proximityPairingController9 = [(SetupController *)selfCopy proximityPairingController];
 
-  if (v33 != v34)
+  if (topViewController2 != proximityPairingController9)
   {
     if (v37)
     {
       _AXSRestoreSettingsFromDataBlobForBuddy();
     }
 
-    v35 = [(SetupController *)v41 navigationFlowController];
-    v36 = [(SetupController *)v41 proximityPairingController];
-    [(BuddyNavigationFlowController *)v35 pushFlowItem:v36 animated:1];
+    navigationFlowController3 = [(SetupController *)selfCopy navigationFlowController];
+    proximityPairingController10 = [(SetupController *)selfCopy proximityPairingController];
+    [(BuddyNavigationFlowController *)navigationFlowController3 pushFlowItem:proximityPairingController10 animated:1];
   }
 
   objc_storeStrong(&v37, 0);
@@ -4648,40 +4648,40 @@ LABEL_19:
 
 - (void)dismissProximityPinCode
 {
-  v2 = [(SetupController *)self navigationController];
-  v3 = [v2 topViewController];
-  v4 = [(SetupController *)self proximityPairingController];
+  navigationController = [(SetupController *)self navigationController];
+  topViewController = [navigationController topViewController];
+  proximityPairingController = [(SetupController *)self proximityPairingController];
   v5 = 0;
-  if (v3 == v4)
+  if (topViewController == proximityPairingController)
   {
-    v6 = v4;
-    v7 = [(SetupController *)self applyingProximitySettings];
-    v4 = v6;
-    v5 = (v7 & 1) == 0;
+    v6 = proximityPairingController;
+    applyingProximitySettings = [(SetupController *)self applyingProximitySettings];
+    proximityPairingController = v6;
+    v5 = (applyingProximitySettings & 1) == 0;
   }
 
   if (v5)
   {
-    v8 = [(SetupController *)self defaultAccessibilitySettings];
+    defaultAccessibilitySettings = [(SetupController *)self defaultAccessibilitySettings];
     _AXSRestoreSettingsFromDataBlobForBuddy();
 
     [(SetupController *)self setDefaultAccessibilitySettings:0];
-    v9 = [(SetupController *)self proximityPairingController];
-    [(BuddyProximityPairingController *)v9 setNonUserInitiatedDismissal:1];
+    proximityPairingController2 = [(SetupController *)self proximityPairingController];
+    [(BuddyProximityPairingController *)proximityPairingController2 setNonUserInitiatedDismissal:1];
 
-    v10 = [(SetupController *)self navigationController];
-    v11 = [v10 popViewControllerAnimated:1];
+    navigationController2 = [(SetupController *)self navigationController];
+    v11 = [navigationController2 popViewControllerAnimated:1];
 
     [(SetupController *)self setProximityPairingController:0];
   }
 }
 
-- (void)displayIncompatibleProximityPairingFromDeviceClass:(id)a3
+- (void)displayIncompatibleProximityPairingFromDeviceClass:(id)class
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, class);
   v3 = +[NSBundle mainBundle];
   v4 = [BuddyLocalizationUtilities modelSpecificLocalizedStringKeyForKey:@"PROXIMITY_PAIRING_INVALID_TITLE" deviceClass:location[0]];
   v13 = [(NSBundle *)v3 localizedStringForKey:v4 value:&stru_10032F900 table:@"Localizable"];
@@ -4696,8 +4696,8 @@ LABEL_19:
   v9 = [UIAlertAction actionWithTitle:v8 style:0 handler:0];
   [(UIAlertController *)v11 addAction:v9];
 
-  v10 = [(SetupController *)v15 navigationController];
-  [v10 presentViewController:v11 animated:1 completion:0];
+  navigationController = [(SetupController *)selfCopy navigationController];
+  [navigationController presentViewController:v11 animated:1 completion:0];
 
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
@@ -4707,20 +4707,20 @@ LABEL_19:
 
 - (void)displayUpdateRequiredToMigrate
 {
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:@"SETUP_CONTROLLER"];
-  [(BFFWindow *)v17->_window setUserInteractionEnabled:1];
-  v2 = [(SetupController *)v17 navigationController];
-  v3 = [v2 topViewController];
-  v4 = [(SetupController *)v17 proximityPairingController];
+  [(BFFWindow *)selfCopy->_window setUserInteractionEnabled:1];
+  navigationController = [(SetupController *)selfCopy navigationController];
+  topViewController = [navigationController topViewController];
+  proximityPairingController = [(SetupController *)selfCopy proximityPairingController];
 
-  if (v3 == v4)
+  if (topViewController == proximityPairingController)
   {
-    v5 = [(SetupController *)v17 navigationController];
-    v6 = [v5 popViewControllerAnimated:1];
+    navigationController2 = [(SetupController *)selfCopy navigationController];
+    v6 = [navigationController2 popViewControllerAnimated:1];
 
-    [(SetupController *)v17 setProximityPairingController:0];
+    [(SetupController *)selfCopy setProximityPairingController:0];
   }
 
   v7 = +[NSBundle mainBundle];
@@ -4736,8 +4736,8 @@ LABEL_19:
   v12 = [UIAlertAction actionWithTitle:v11 style:0 handler:0];
   [location addAction:v12];
 
-  v13 = [(SetupController *)v17 navigationController];
-  [v13 presentViewController:location animated:1 completion:0];
+  navigationController3 = [(SetupController *)selfCopy navigationController];
+  [navigationController3 presentViewController:location animated:1 completion:0];
 
   objc_storeStrong(&location, 0);
   objc_storeStrong(&v15, 0);
@@ -4746,7 +4746,7 @@ LABEL_19:
 
 - (void)willPerformProximityHandshake
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
@@ -4754,25 +4754,25 @@ LABEL_19:
   v5 = 0;
   v6 = sub_100082294;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
+  v8[0] = selfCopy;
   dispatch_async(v2, &block);
 
   objc_storeStrong(v8, 0);
 }
 
-- (void)willApplyProximitySettingsWithCompletion:(id)a3
+- (void)willApplyProximitySettingsWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100082454;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -4781,19 +4781,19 @@ LABEL_19:
   objc_storeStrong(location, 0);
 }
 
-- (void)didApplyProximitySettingsWithWillReboot:(id)a3
+- (void)didApplyProximitySettingsWithWillReboot:(id)reboot
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reboot);
   v3 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000825BC;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -4804,7 +4804,7 @@ LABEL_19:
 
 - (void)unableToApplyProximitySettings
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
@@ -4812,7 +4812,7 @@ LABEL_19:
   v5 = 0;
   v6 = sub_100082888;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
+  v8[0] = selfCopy;
   dispatch_async(v2, &block);
 
   objc_storeStrong(v8, 0);
@@ -4820,7 +4820,7 @@ LABEL_19:
 
 - (void)skippedApplyProximitySettings
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = &_dispatch_main_q;
   block = _NSConcreteStackBlock;
@@ -4828,7 +4828,7 @@ LABEL_19:
   v5 = 0;
   v6 = sub_100082A54;
   v7 = &unk_10032B0D0;
-  v8[0] = v9;
+  v8[0] = selfCopy;
   dispatch_async(v2, &block);
 
   objc_storeStrong(v8, 0);
@@ -4836,7 +4836,7 @@ LABEL_19:
 
 - (void)_connectedToWiFiAfterProximity
 {
-  v9 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v7 = OS_LOG_TYPE_DEFAULT;
@@ -4849,31 +4849,31 @@ LABEL_19:
   }
 
   objc_storeStrong(oslog, 0);
-  v4 = [(SetupController *)v9 environment];
-  v5 = [(BYEnvironment *)v4 networkProvider];
-  [v5 assumeNetworkReachabilityOverWiFi];
+  environment = [(SetupController *)selfCopy environment];
+  networkProvider = [(BYEnvironment *)environment networkProvider];
+  [networkProvider assumeNetworkReachabilityOverWiFi];
 }
 
-- (void)activationConfigurationChanged:(BOOL)a3 isActivated:(BOOL)a4
+- (void)activationConfigurationChanged:(BOOL)changed isActivated:(BOOL)activated
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
-  v16 = a4;
-  if (a3)
+  changedCopy = changed;
+  activatedCopy = activated;
+  if (changed)
   {
     oslog = _BYLoggingFacility();
     v14 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      sub_100082D54(buf, v16);
+      sub_100082D54(buf, activatedCopy);
       _os_log_impl(&_mh_execute_header, oslog, v14, "Activation State Changed, isActivated = %d", buf, 8u);
     }
 
     objc_storeStrong(&oslog, 0);
     v4 = objc_alloc_init(BuddyActivationRecord);
-    v5 = [(SetupController *)v19 environment];
-    [(BYEnvironment *)v5 setActivationRecord:v4];
+    environment = [(SetupController *)selfCopy environment];
+    [(BYEnvironment *)environment setActivationRecord:v4];
 
     v6 = &_dispatch_main_q;
     v7 = _NSConcreteStackBlock;
@@ -4881,64 +4881,64 @@ LABEL_19:
     v9 = 0;
     v10 = sub_100082D68;
     v11 = &unk_10032B688;
-    v12 = v19;
-    v13 = v16;
+    v12 = selfCopy;
+    v13 = activatedCopy;
     dispatch_async(v6, &v7);
 
     objc_storeStrong(&v12, 0);
   }
 }
 
-- (void)proximityAutomatedDeviceEnrollmentController:(id)a3 wantsToTransitionToPairingWithPin:(id)a4
+- (void)proximityAutomatedDeviceEnrollmentController:(id)controller wantsToTransitionToPairingWithPin:(id)pin
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, pin);
   v5 = [BuddyProximityAutomatedDeviceEnrollmentPairingController alloc];
   v11 = [(BuddyProximityAutomatedDeviceEnrollmentPairingController *)v5 initWithPairingCode:v12];
-  v6 = [(SetupController *)v14 navigationFlowController];
-  v7 = [(BuddyNavigationFlowController *)v6 environmentInjector];
-  v8 = v7[2](v7, v11);
+  navigationFlowController = [(SetupController *)selfCopy navigationFlowController];
+  environmentInjector = [(BuddyNavigationFlowController *)navigationFlowController environmentInjector];
+  v8 = environmentInjector[2](environmentInjector, v11);
 
-  v9 = [(SetupController *)v14 navigationFlowController];
-  [v11 setDelegate:v9];
+  navigationFlowController2 = [(SetupController *)selfCopy navigationFlowController];
+  [v11 setDelegate:navigationFlowController2];
 
-  v10 = [(SetupController *)v14 navigationFlowController];
-  [(BuddyNavigationFlowController *)v10 pushFlowItem:v11 animated:1];
+  navigationFlowController3 = [(SetupController *)selfCopy navigationFlowController];
+  [(BuddyNavigationFlowController *)navigationFlowController3 pushFlowItem:v11 animated:1];
 
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_prepareForDeviceMigrationAfterSoftwareUpdate:(BOOL)a3
+- (void)_prepareForDeviceMigrationAfterSoftwareUpdate:(BOOL)update
 {
-  v88 = self;
+  selfCopy = self;
   v87 = a2;
-  v86 = a3;
-  v3 = [(SetupController *)self environment];
-  v4 = [(BYEnvironment *)v3 miscState];
-  v5 = [v4 migrationManager];
+  updateCopy = update;
+  environment = [(SetupController *)self environment];
+  miscState = [(BYEnvironment *)environment miscState];
+  migrationManager = [miscState migrationManager];
 
-  if (!v5)
+  if (!migrationManager)
   {
     location = 0;
     v84 = 0;
     v83 = +[BuddyMigrationCapability currentDeviceShouldOfferMigration];
-    v6 = [(SetupController *)v88 environment];
-    v7 = [(BYEnvironment *)v6 proximitySetupController];
-    v8 = [v7 information];
-    v9 = [(SetupController *)v88 environment];
-    v10 = [(BYEnvironment *)v9 proximitySetupController];
-    v11 = [v10 productVersion];
-    v12 = [(SetupController *)v88 environment];
-    v13 = [(BYEnvironment *)v12 proximitySetupController];
-    v14 = [v13 deviceClass];
+    environment2 = [(SetupController *)selfCopy environment];
+    proximitySetupController = [(BYEnvironment *)environment2 proximitySetupController];
+    information = [proximitySetupController information];
+    environment3 = [(SetupController *)selfCopy environment];
+    proximitySetupController2 = [(BYEnvironment *)environment3 proximitySetupController];
+    productVersion = [proximitySetupController2 productVersion];
+    environment4 = [(SetupController *)selfCopy environment];
+    proximitySetupController3 = [(BYEnvironment *)environment4 proximitySetupController];
+    deviceClass = [proximitySetupController3 deviceClass];
     obj = 0;
-    v15 = [BuddyMigrationCapability sourceDeviceSupportsMigration:v8 productVersion:v11 deviceClass:v14 softwareUpdateRequired:&v84 reason:&obj];
+    v15 = [BuddyMigrationCapability sourceDeviceSupportsMigration:information productVersion:productVersion deviceClass:deviceClass softwareUpdateRequired:&v84 reason:&obj];
     objc_storeStrong(&location, obj);
 
     v82 = v15 & 1;
@@ -4951,46 +4951,46 @@ LABEL_19:
     v80 = v16;
     if (v16)
     {
-      objc_initWeak(&from, v88);
-      v17 = [(SetupController *)v88 environment];
-      v18 = [(BYEnvironment *)v17 proximitySetupController];
+      objc_initWeak(&from, selfCopy);
+      environment5 = [(SetupController *)selfCopy environment];
+      proximitySetupController4 = [(BYEnvironment *)environment5 proximitySetupController];
       v73 = _NSConcreteStackBlock;
       v74 = -1073741824;
       v75 = 0;
       v76 = sub_100083C48;
       v77 = &unk_10032AF58;
       objc_copyWeak(&v78, &from);
-      v19 = [(SetupController *)v88 environment];
-      v20 = [(BYEnvironment *)v19 passcodeCacheManager];
-      v21 = [(SetupController *)v88 environment];
-      v62 = [(BYEnvironment *)v21 analyticsManager];
-      v61 = [(SetupController *)v88 environment];
-      v22 = [(BYEnvironment *)v61 lockdownModeProvider];
-      v23 = [v18 createTargetDeviceMigrationManagerWithPrepareForMigrationRebootBlock:&v73 passcodeCacheManager:v20 analyticsManager:v62 lockdownModeProvider:v22];
-      v24 = [(SetupController *)v88 environment];
-      v25 = [(BYEnvironment *)v24 miscState];
-      [v25 setMigrationManager:v23];
+      environment6 = [(SetupController *)selfCopy environment];
+      passcodeCacheManager = [(BYEnvironment *)environment6 passcodeCacheManager];
+      environment7 = [(SetupController *)selfCopy environment];
+      analyticsManager = [(BYEnvironment *)environment7 analyticsManager];
+      environment8 = [(SetupController *)selfCopy environment];
+      lockdownModeProvider = [(BYEnvironment *)environment8 lockdownModeProvider];
+      v23 = [proximitySetupController4 createTargetDeviceMigrationManagerWithPrepareForMigrationRebootBlock:&v73 passcodeCacheManager:passcodeCacheManager analyticsManager:analyticsManager lockdownModeProvider:lockdownModeProvider];
+      environment9 = [(SetupController *)selfCopy environment];
+      miscState2 = [(BYEnvironment *)environment9 miscState];
+      [miscState2 setMigrationManager:v23];
       v72 = 0;
 
-      LOBYTE(v20) = v84;
-      v26 = [(SetupController *)v88 environment];
-      v27 = [(BYEnvironment *)v26 miscState];
-      v28 = [v27 migrationManager];
-      [v28 setRequiresUpdateToMigrate:v20 & 1];
+      LOBYTE(passcodeCacheManager) = v84;
+      environment10 = [(SetupController *)selfCopy environment];
+      miscState3 = [(BYEnvironment *)environment10 miscState];
+      migrationManager2 = [miscState3 migrationManager];
+      [migrationManager2 setRequiresUpdateToMigrate:passcodeCacheManager & 1];
 
-      v29 = [(SetupController *)v88 environment];
-      v30 = [(BYEnvironment *)v29 networkProvider];
-      v31 = [(SetupController *)v88 environment];
-      v32 = [(BYEnvironment *)v31 miscState];
-      v33 = [v32 migrationManager];
-      [v33 setNetworkProvider:v30];
+      environment11 = [(SetupController *)selfCopy environment];
+      networkProvider = [(BYEnvironment *)environment11 networkProvider];
+      environment12 = [(SetupController *)selfCopy environment];
+      miscState4 = [(BYEnvironment *)environment12 miscState];
+      migrationManager3 = [miscState4 migrationManager];
+      [migrationManager3 setNetworkProvider:networkProvider];
 
-      v34 = [(SetupController *)v88 environment];
-      v35 = [(BYEnvironment *)v34 miscState];
-      v36 = [v35 migrationManager];
-      LOBYTE(v31) = [v36 requiresUpdateToMigrate];
+      environment13 = [(SetupController *)selfCopy environment];
+      miscState5 = [(BYEnvironment *)environment13 miscState];
+      migrationManager4 = [miscState5 migrationManager];
+      LOBYTE(environment12) = [migrationManager4 requiresUpdateToMigrate];
 
-      if (v31)
+      if (environment12)
       {
         oslog = _BYLoggingFacility();
         v70 = OS_LOG_TYPE_DEFAULT;
@@ -5003,41 +5003,41 @@ LABEL_19:
         }
 
         objc_storeStrong(&oslog, 0);
-        v39 = [(SetupController *)v88 environment];
-        v40 = [(BYEnvironment *)v39 miscState];
-        v41 = [v40 migrationManager];
-        [v41 setWillMigrate:1];
+        environment14 = [(SetupController *)selfCopy environment];
+        miscState6 = [(BYEnvironment *)environment14 miscState];
+        migrationManager5 = [miscState6 migrationManager];
+        [migrationManager5 setWillMigrate:1];
       }
 
       else
       {
-        v42 = v86;
-        v43 = [(SetupController *)v88 environment];
-        v44 = [(BYEnvironment *)v43 miscState];
-        v45 = [v44 migrationManager];
-        [v45 setSoftwareUpdateDidOccur:v42];
+        v42 = updateCopy;
+        environment15 = [(SetupController *)selfCopy environment];
+        miscState7 = [(BYEnvironment *)environment15 miscState];
+        migrationManager6 = [miscState7 migrationManager];
+        [migrationManager6 setSoftwareUpdateDidOccur:v42];
 
-        v46 = [(SetupController *)v88 environment];
-        v47 = [(BYEnvironment *)v46 proximitySetupController];
-        [v47 beginDeviceToDeviceMigration];
+        environment16 = [(SetupController *)selfCopy environment];
+        proximitySetupController5 = [(BYEnvironment *)environment16 proximitySetupController];
+        [proximitySetupController5 beginDeviceToDeviceMigration];
 
-        v48 = [(SetupController *)v88 environment];
-        v49 = [(BYEnvironment *)v48 proximitySetupController];
-        v50 = [(SetupController *)v88 environment];
-        v51 = [(BYEnvironment *)v50 miscState];
-        v52 = [v51 migrationManager];
-        [v49 addObserver:v52];
+        environment17 = [(SetupController *)selfCopy environment];
+        proximitySetupController6 = [(BYEnvironment *)environment17 proximitySetupController];
+        environment18 = [(SetupController *)selfCopy environment];
+        miscState8 = [(BYEnvironment *)environment18 miscState];
+        migrationManager7 = [miscState8 migrationManager];
+        [proximitySetupController6 addObserver:migrationManager7];
 
-        v53 = [(SetupController *)v88 environment];
-        v54 = [(BYEnvironment *)v53 miscState];
-        v55 = [v54 migrationManager];
+        environment19 = [(SetupController *)selfCopy environment];
+        miscState9 = [(BYEnvironment *)environment19 miscState];
+        migrationManager8 = [miscState9 migrationManager];
         v63 = _NSConcreteStackBlock;
         v64 = -1073741824;
         v65 = 0;
         v66 = sub_100083C8C;
         v67 = &unk_10032B6F0;
-        v68 = v88;
-        [v55 startKeychainDataTransferWithCompletionHandler:&v63];
+        v68 = selfCopy;
+        [migrationManager8 startKeychainDataTransferWithCompletionHandler:&v63];
 
         objc_storeStrong(&v68, 0);
       }
@@ -5051,8 +5051,8 @@ LABEL_19:
       objc_storeStrong(&location, @"none");
     }
 
-    v56 = [(SetupController *)v88 environment];
-    v57 = [(BYEnvironment *)v56 analyticsManager];
+    environment20 = [(SetupController *)selfCopy environment];
+    analyticsManager2 = [(BYEnvironment *)environment20 analyticsManager];
     v89[0] = @"targetSupports";
     v58 = [NSNumber numberWithBool:v83 & 1];
     v90[0] = v58;
@@ -5062,7 +5062,7 @@ LABEL_19:
     v89[2] = @"reason";
     v90[2] = location;
     v60 = [NSDictionary dictionaryWithObjects:v90 forKeys:v89 count:3];
-    [v57 addEvent:@"com.apple.setupassistant.ios.migration.ability" withPayload:v60 persist:1];
+    [analyticsManager2 addEvent:@"com.apple.setupassistant.ios.migration.ability" withPayload:v60 persist:1];
 
     objc_storeStrong(&location, 0);
   }
@@ -5070,19 +5070,19 @@ LABEL_19:
 
 - (void)_startDeviceMigration
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(SetupController *)self environment];
-  v3 = [(BYEnvironment *)v2 buddyPreferences];
-  [v3 setObject:&__kCFBooleanTrue forKey:@"RestoreChoice"];
+  environment = [(SetupController *)self environment];
+  buddyPreferences = [(BYEnvironment *)environment buddyPreferences];
+  [buddyPreferences setObject:&__kCFBooleanTrue forKey:@"RestoreChoice"];
 
-  v4 = [v30 environment];
-  v5 = [v4 setupMethod];
-  [v5 setDataTransferMethod:2];
+  environment2 = [selfCopy environment];
+  setupMethod = [environment2 setupMethod];
+  [setupMethod setDataTransferMethod:2];
 
-  v6 = [v30 environment];
-  v7 = [v6 proximitySetupController];
-  location[0] = [v7 backupMetadata];
+  environment3 = [selfCopy environment];
+  proximitySetupController = [environment3 proximitySetupController];
+  location[0] = [proximitySetupController backupMetadata];
 
   oslog = _BYLoggingFacility();
   v27 = OS_LOG_TYPE_DEFAULT;
@@ -5094,32 +5094,32 @@ LABEL_19:
 
   objc_storeStrong(&oslog, 0);
   v8 = location[0];
-  v9 = [v30 environment];
-  v10 = [v9 existingSettings];
-  [v10 setBackupMetadata:v8];
+  environment4 = [selfCopy environment];
+  existingSettings = [environment4 existingSettings];
+  [existingSettings setBackupMetadata:v8];
 
-  v11 = [v30 environment];
-  v12 = [v11 miscState];
-  v13 = [v12 migrationManager];
-  [v13 setUserChoseMigration:1];
+  environment5 = [selfCopy environment];
+  miscState = [environment5 miscState];
+  migrationManager = [miscState migrationManager];
+  [migrationManager setUserChoseMigration:1];
 
-  v14 = [v30 environment];
-  v15 = [v14 miscState];
-  v16 = [v15 migrationManager];
-  v17 = [v16 requiresUpdateToMigrate] ^ 1;
+  environment6 = [selfCopy environment];
+  miscState2 = [environment6 miscState];
+  migrationManager2 = [miscState2 migrationManager];
+  v17 = [migrationManager2 requiresUpdateToMigrate] ^ 1;
 
   if (v17)
   {
-    v18 = [v30 environment];
-    v19 = [v18 miscState];
-    v20 = [v19 migrationManager];
+    environment7 = [selfCopy environment];
+    miscState3 = [environment7 miscState];
+    migrationManager3 = [miscState3 migrationManager];
     v21 = _NSConcreteStackBlock;
     v22 = -1073741824;
     v23 = 0;
     v24 = sub_100084150;
     v25 = &unk_10032B6F0;
-    v26 = v30;
-    [v20 waitForKeychainDataTransfer:&v21];
+    v26 = selfCopy;
+    [migrationManager3 waitForKeychainDataTransfer:&v21];
 
     objc_storeStrong(&v26, 0);
   }
@@ -5135,9 +5135,9 @@ LABEL_19:
 
 - (BOOL)_doesRestartFlowCauseErase
 {
-  v2 = [(SetupController *)self environment];
-  v3 = [(BYEnvironment *)v2 flowItemDispositionProvider];
-  v4 = [v3 dispositions] & 0x10;
+  environment = [(SetupController *)self environment];
+  flowItemDispositionProvider = [(BYEnvironment *)environment flowItemDispositionProvider];
+  v4 = [flowItemDispositionProvider dispositions] & 0x10;
 
   if (v4 == 16)
   {
@@ -5145,19 +5145,19 @@ LABEL_19:
   }
 
   v5 = +[ACAccountStore defaultStore];
-  v6 = [v5 aa_primaryAppleAccount];
-  v7 = v6 != 0;
+  aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
+  v7 = aa_primaryAppleAccount != 0;
 
   v18 = v7;
-  v8 = [(SetupController *)self environment];
-  v9 = [(BYEnvironment *)v8 managedConfiguration];
-  v10 = [v9 isPasscodeSet];
+  environment2 = [(SetupController *)self environment];
+  managedConfiguration = [(BYEnvironment *)environment2 managedConfiguration];
+  isPasscodeSet = [managedConfiguration isPasscodeSet];
 
-  v17 = v10 & 1;
-  v11 = [(SetupController *)self environment];
-  v12 = [(BYEnvironment *)v11 miscState];
-  v13 = [v12 migrationManager];
-  v14 = [v13 hasTransferredData];
+  v17 = isPasscodeSet & 1;
+  environment3 = [(SetupController *)self environment];
+  miscState = [(BYEnvironment *)environment3 miscState];
+  migrationManager = [miscState migrationManager];
+  hasTransferredData = [migrationManager hasTransferredData];
 
   v15 = 1;
   if ((v17 & 1) == 0)
@@ -5165,21 +5165,21 @@ LABEL_19:
     v15 = 1;
     if (!v18)
     {
-      return v14 & 1;
+      return hasTransferredData & 1;
     }
   }
 
   return v15;
 }
 
-- (BOOL)willRestartFlowToViewController:(id)a3
+- (BOOL)willRestartFlowToViewController:(id)controller
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = [(SetupController *)v17 _doesRestartFlowCauseErase];
-  if (!v15 || (BYSetupAssistantHasCompletedInitialRun() & 1) != 0)
+  objc_storeStrong(location, controller);
+  _doesRestartFlowCauseErase = [(SetupController *)selfCopy _doesRestartFlowCauseErase];
+  if (!_doesRestartFlowCauseErase || (BYSetupAssistantHasCompletedInitialRun() & 1) != 0)
   {
     if ([location[0] conformsToProtocol:&OBJC_PROTOCOL___OBWelcomeHeaderAnimatable])
     {
@@ -5194,16 +5194,16 @@ LABEL_19:
 
   else
   {
-    window = v17->_window;
-    v4 = [(SetupController *)v17 navigationController];
-    v5 = [(SetupController *)v17 environment];
-    v6 = [(BYEnvironment *)v5 proximitySetupController];
-    v7 = [(SetupController *)v17 environment];
-    v8 = [(BYEnvironment *)v7 analyticsManager];
-    v14 = [BuddyEraseAlertController alertControllerWithWindow:window navigationController:v4 proximitySetupController:v6 analyticsManager:v8];
+    window = selfCopy->_window;
+    navigationController = [(SetupController *)selfCopy navigationController];
+    environment = [(SetupController *)selfCopy environment];
+    proximitySetupController = [(BYEnvironment *)environment proximitySetupController];
+    environment2 = [(SetupController *)selfCopy environment];
+    analyticsManager = [(BYEnvironment *)environment2 analyticsManager];
+    v14 = [BuddyEraseAlertController alertControllerWithWindow:window navigationController:navigationController proximitySetupController:proximitySetupController analyticsManager:analyticsManager];
 
-    v9 = [(SetupController *)v17 navigationController];
-    [v9 buddy_presentAlertController:v14];
+    navigationController2 = [(SetupController *)selfCopy navigationController];
+    [navigationController2 buddy_presentAlertController:v14];
 
     v18 = 0;
     v13 = 1;
@@ -5216,27 +5216,27 @@ LABEL_19:
 
 - (void)didRestartFlow
 {
-  v2 = [(SetupController *)self environment];
-  v3 = [(BYEnvironment *)v2 miscState];
-  [v3 setUserSelectedCellularActivation:0];
+  environment = [(SetupController *)self environment];
+  miscState = [(BYEnvironment *)environment miscState];
+  [miscState setUserSelectedCellularActivation:0];
 
-  v4 = [(SetupController *)self environment];
-  v5 = [(BYEnvironment *)v4 pendingRestoreState];
-  [v5 clearBackupItem];
+  environment2 = [(SetupController *)self environment];
+  pendingRestoreState = [(BYEnvironment *)environment2 pendingRestoreState];
+  [pendingRestoreState clearBackupItem];
 
-  v6 = [(SetupController *)self environment];
-  v7 = [(BYEnvironment *)v6 proximitySetupController];
-  [v7 startOver];
+  environment3 = [(SetupController *)self environment];
+  proximitySetupController = [(BYEnvironment *)environment3 proximitySetupController];
+  [proximitySetupController startOver];
 
-  v8 = [(SetupController *)self environment];
-  v9 = [(BYEnvironment *)v8 flowItemDispositionProvider];
-  v10 = [v9 dispositions] & 0x10;
+  environment4 = [(SetupController *)self environment];
+  flowItemDispositionProvider = [(BYEnvironment *)environment4 flowItemDispositionProvider];
+  v10 = [flowItemDispositionProvider dispositions] & 0x10;
 
   if (v10 != 16)
   {
-    v11 = [(SetupController *)self environment];
-    v12 = [(BYEnvironment *)v11 setupMethod];
-    [v12 setIntent:0];
+    environment5 = [(SetupController *)self environment];
+    setupMethod = [(BYEnvironment *)environment5 setupMethod];
+    [setupMethod setIntent:0];
   }
 }
 
@@ -5250,7 +5250,7 @@ LABEL_19:
 
 - (void)_initializeGreen
 {
-  v8 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(SetupController *)self _canShortCircuitGreen])
   {
@@ -5270,24 +5270,24 @@ LABEL_19:
   else
   {
     v4 = objc_alloc_init(BYGreenController);
-    [(SetupController *)v8 setGreenController:v4];
+    [(SetupController *)selfCopy setGreenController:v4];
   }
 }
 
 - (void)_writeGreenInformedDefaultPlistIfNecessary
 {
   v3 = [NSLocale currentLocale:a2];
-  v4 = [(NSLocale *)v3 countryCode];
-  [(SetupController *)self _writeGreenInformedDefaultPlistIfNecessaryForLocaleCountryCode:v4];
+  countryCode = [(NSLocale *)v3 countryCode];
+  [(SetupController *)self _writeGreenInformedDefaultPlistIfNecessaryForLocaleCountryCode:countryCode];
 }
 
-- (void)_writeGreenInformedDefaultPlistIfNecessaryForLocaleCountryCode:(id)a3
+- (void)_writeGreenInformedDefaultPlistIfNecessaryForLocaleCountryCode:(id)code
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(SetupController *)v10 _canShortCircuitGreen])
+  objc_storeStrong(location, code);
+  if ([(SetupController *)selfCopy _canShortCircuitGreen])
   {
     oslog = _BYLoggingFacility();
     v7 = OS_LOG_TYPE_DEFAULT;
@@ -5304,45 +5304,45 @@ LABEL_19:
 
   else
   {
-    v5 = [(SetupController *)v10 greenController];
-    [(BYGreenController *)v5 writeInformedDefaultPlistIfNecessaryForLocaleRegionCode:location[0]];
+    greenController = [(SetupController *)selfCopy greenController];
+    [(BYGreenController *)greenController writeInformedDefaultPlistIfNecessaryForLocaleRegionCode:location[0]];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)userSelectedLanguage:(id)a3
+- (void)userSelectedLanguage:(id)language
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SetupController *)v4 setUserSelectedLanguage:location[0]];
+  objc_storeStrong(location, language);
+  [(SetupController *)selfCopy setUserSelectedLanguage:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)userSelectedLanguageWithLocale:(id)a3 countryCode:(id)a4 localePaneScrollOffset:(double)a5
+- (BOOL)userSelectedLanguageWithLocale:(id)locale countryCode:(id)code localePaneScrollOffset:(double)offset
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, locale);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  [(SetupController *)v10 setUserSelectedLanguageWithLocale:location[0]];
-  LOBYTE(a4) = [(SetupController *)v10 _userSelectedLocale:0 localePaneScrollOffset:a5];
+  objc_storeStrong(&v8, code);
+  [(SetupController *)selfCopy setUserSelectedLanguageWithLocale:location[0]];
+  LOBYTE(code) = [(SetupController *)selfCopy _userSelectedLocale:0 localePaneScrollOffset:offset];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
-  return a4 & 1;
+  return code & 1;
 }
 
-- (BOOL)_userSelectedLocale:(id)a3 localePaneScrollOffset:(double)a4
+- (BOOL)_userSelectedLocale:(id)locale localePaneScrollOffset:(double)offset
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = a4;
+  objc_storeStrong(location, locale);
+  offsetCopy = offset;
   if (location[0])
   {
     oslog = _BYLoggingFacility();
@@ -5357,30 +5357,30 @@ LABEL_19:
     v5 = +[UIKeyboardPreferencesController sharedPreferencesController];
     [v5 setValue:location[0] forKey:3];
 
-    v6 = [(SetupController *)v20 environment];
-    v7 = [(BYEnvironment *)v6 buddyPreferences];
-    [v7 setObject:location[0] forKey:@"Locale"];
+    environment = [(SetupController *)selfCopy environment];
+    buddyPreferences = [(BYEnvironment *)environment buddyPreferences];
+    [buddyPreferences setObject:location[0] forKey:@"Locale"];
   }
 
-  v8 = v20;
+  v8 = selfCopy;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_100084D9C;
   v14 = &unk_10032B718;
-  v15[0] = v20;
-  v15[1] = *&v18;
+  v15[0] = selfCopy;
+  v15[1] = *&offsetCopy;
   LOBYTE(v8) = [(SetupController *)v8 updateLanguageLocale:&v10];
   objc_storeStrong(v15, 0);
   objc_storeStrong(location, 0);
   return v8 & 1;
 }
 
-- (BOOL)shouldEndLifecycleForCause:(unint64_t)a3
+- (BOOL)shouldEndLifecycleForCause:(unint64_t)cause
 {
-  if (a3)
+  if (cause)
   {
-    if (a3 - 1 < 5)
+    if (cause - 1 < 5)
     {
       v9 = 1;
     }
@@ -5390,7 +5390,7 @@ LABEL_19:
   {
     v7 = BYSetupAssistantHasCompletedInitialRun() & 1;
     v3 = +[BuddyActivationConfiguration currentConfiguration];
-    v4 = [v3 hasActivated];
+    hasActivated = [v3 hasActivated];
 
     v5 = 0;
     if (v7)
@@ -5398,7 +5398,7 @@ LABEL_19:
       v5 = 0;
       if (!self->_inMiniBuddyFromBreadcrumb)
       {
-        v5 = v4 & 1;
+        v5 = hasActivated & 1;
       }
     }
 
@@ -5408,19 +5408,19 @@ LABEL_19:
   return v9 & 1;
 }
 
-- (void)willEndLifecycleDueToCause:(unint64_t)a3 allowDismissal:(BOOL)a4
+- (void)willEndLifecycleDueToCause:(unint64_t)cause allowDismissal:(BOOL)dismissal
 {
-  v57 = self;
+  selfCopy = self;
   v56 = a2;
-  v55 = a3;
-  v54 = a4;
+  causeCopy = cause;
+  dismissalCopy = dismissal;
   if (self->_buddyDone)
   {
     oslog = _BYLoggingFacility();
     v52 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      sub_100077E48(buf, v55);
+      sub_100077E48(buf, causeCopy);
       _os_log_error_impl(&_mh_execute_header, oslog, v52, "Ignoring request will exit cause %ld request as an exit has already begun", buf, 0xCu);
     }
 
@@ -5429,13 +5429,13 @@ LABEL_19:
 
   else
   {
-    if (v54)
+    if (dismissalCopy)
     {
       v51 = _BYLoggingFacility();
       v50 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
-        sub_100077E48(v61, v55);
+        sub_100077E48(v61, causeCopy);
         _os_log_impl(&_mh_execute_header, v51, v50, "Will end lifecycle due to cause %ld with dismissal allowed...", v61, 0xCu);
       }
 
@@ -5448,55 +5448,55 @@ LABEL_19:
       v48 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
-        sub_100077E48(v60, v55);
+        sub_100077E48(v60, causeCopy);
         _os_log_impl(&_mh_execute_header, v49, v48, "Will end lifecycle due to cause %ld...", v60, 0xCu);
       }
 
       objc_storeStrong(&v49, 0);
     }
 
-    v4 = [v57 environment];
-    v5 = [v4 lockdownModeProvider];
-    v6 = [v5 hasStagedEnablement];
+    environment = [selfCopy environment];
+    lockdownModeProvider = [environment lockdownModeProvider];
+    hasStagedEnablement = [lockdownModeProvider hasStagedEnablement];
 
-    v47 = v6 & 1;
-    if (v55 == 1 && v54 && +[BuddyMenuController supportsHomeGesture]&& (v47 & 1) == 0)
+    v47 = hasStagedEnablement & 1;
+    if (causeCopy == 1 && dismissalCopy && +[BuddyMenuController supportsHomeGesture]&& (v47 & 1) == 0)
     {
-      [*(v57 + 12) invalidate];
-      objc_storeStrong(v57 + 12, 0);
+      [*(selfCopy + 12) invalidate];
+      objc_storeStrong(selfCopy + 12, 0);
     }
 
-    *(v57 + 42) = 1;
-    [v57 setAllowDismissalForExit:v54];
-    v7 = [v57 environment];
-    v8 = [v7 analyticsManager];
+    *(selfCopy + 42) = 1;
+    [selfCopy setAllowDismissalForExit:dismissalCopy];
+    environment2 = [selfCopy environment];
+    analyticsManager = [environment2 analyticsManager];
     v58[0] = @"duration";
-    [BuddyTimestamp intervalSinceTimestamp:*(v57 + 15)];
+    [BuddyTimestamp intervalSinceTimestamp:*(selfCopy + 15)];
     v9 = [NSNumber numberWithDouble:?];
     v59[0] = v9;
     v58[1] = @"startupCause";
-    v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v57 cachedStartupCause]);
+    v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [selfCopy cachedStartupCause]);
     v59[1] = v10;
     v58[2] = @"exitCause";
-    v11 = [NSNumber numberWithUnsignedInteger:v55];
+    v11 = [NSNumber numberWithUnsignedInteger:causeCopy];
     v59[2] = v11;
     v58[3] = @"hasCompletedInitialRun";
     v12 = [NSNumber numberWithBool:BYSetupAssistantHasCompletedInitialRun()];
     v59[3] = v12;
     v13 = [NSDictionary dictionaryWithObjects:v59 forKeys:v58 count:4];
-    [v8 addEvent:@"com.apple.setupassistant.ios.duration" withPayload:v13 persist:1];
+    [analyticsManager addEvent:@"com.apple.setupassistant.ios.duration" withPayload:v13 persist:1];
 
-    if (v55 >= 3 && v55 - 3 < 2)
+    if (causeCopy >= 3 && causeCopy - 3 < 2)
     {
-      [v57 _willEndLifecycleForDataTransfer];
+      [selfCopy _willEndLifecycleForDataTransfer];
     }
 
     else
     {
       v14 = +[ACAccountStore defaultStore];
-      v15 = [v14 aa_primaryAppleAccount];
+      aa_primaryAppleAccount = [v14 aa_primaryAppleAccount];
 
-      if (v15)
+      if (aa_primaryAppleAccount)
       {
         v16 = +[BYPreferencesController buddyPreferencesInternal];
         v17 = [v16 BOOLForKey:@"SkipExpressSettingsUpload"];
@@ -5525,19 +5525,19 @@ LABEL_19:
         }
       }
 
-      v20 = [v57 environment];
-      v21 = [v20 suspendTask];
-      v22 = [v21 launchURL];
+      environment3 = [selfCopy environment];
+      suspendTask = [environment3 suspendTask];
+      launchURL = [suspendTask launchURL];
       v39 = 0;
       v37 = 0;
       v23 = 1;
-      if (v22)
+      if (launchURL)
       {
-        v40 = [v57 environment];
+        environment4 = [selfCopy environment];
         v39 = 1;
-        v38 = [v40 lockdownModeProvider];
+        lockdownModeProvider2 = [environment4 lockdownModeProvider];
         v37 = 1;
-        v23 = [v38 hasStagedEnablement] ^ 1;
+        v23 = [lockdownModeProvider2 hasStagedEnablement] ^ 1;
       }
 
       if (v37)
@@ -5567,10 +5567,10 @@ LABEL_19:
         v29 = 3221225472;
         v30 = sub_1000856AC;
         v31 = &unk_10032B740;
-        v32 = v57;
+        v32 = selfCopy;
         [v33 setTransitionHandler:&v28];
         v26 = [FBSDisplayLayoutMonitor monitorWithConfiguration:v33, v28, v29, v30, v31];
-        [v57 setMonitor:v26];
+        [selfCopy setMonitor:v26];
 
         DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
         CFNotificationCenterPostNotification(DarwinNotifyCenter, BYSetupAssistantUISessionNoLongerExclusiveNotification, 0, 0, 1u);
@@ -5581,25 +5581,25 @@ LABEL_19:
   }
 }
 
-- (void)endLifecycleDueToCause:(unint64_t)a3
+- (void)endLifecycleDueToCause:(unint64_t)cause
 {
-  v123 = self;
+  selfCopy = self;
   v122 = a2;
-  v121 = a3;
+  causeCopy = cause;
   location = _BYLoggingFacility();
   v119 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100077E48(buf, v121);
+    sub_100077E48(buf, causeCopy);
     _os_log_impl(&_mh_execute_header, location, v119, "Ending lifecycle due to cause %ld...", buf, 0xCu);
   }
 
   objc_storeStrong(&location, 0);
   v118 = 1;
   v3 = 1;
-  if (v121 != 3)
+  if (causeCopy != 3)
   {
-    v3 = v121 == 4;
+    v3 = causeCopy == 4;
   }
 
   v117 = v3;
@@ -5608,23 +5608,23 @@ LABEL_19:
   v5 = [(UIApplication *)v4 applicationState]== 2;
 
   v115 = v5;
-  v6 = [(SetupController *)v123 navigationController];
-  v7 = [v6 viewControllers];
-  v8 = [v7 lastObject];
-  v9 = [v8 conformsToProtocol:&OBJC_PROTOCOL___BFFFlowItem];
+  navigationController = [(SetupController *)selfCopy navigationController];
+  viewControllers = [navigationController viewControllers];
+  lastObject = [viewControllers lastObject];
+  v9 = [lastObject conformsToProtocol:&OBJC_PROTOCOL___BFFFlowItem];
 
   if (v9)
   {
-    v10 = [(SetupController *)v123 navigationController];
-    v11 = [v10 viewControllers];
-    v114 = [v11 lastObject];
+    navigationController2 = [(SetupController *)selfCopy navigationController];
+    viewControllers2 = [navigationController2 viewControllers];
+    lastObject2 = [viewControllers2 lastObject];
 
     if (objc_opt_respondsToSelector())
     {
-      v118 = [v114 allowedTerminationSources] == 0;
+      v118 = [lastObject2 allowedTerminationSources] == 0;
     }
 
-    objc_storeStrong(&v114, 0);
+    objc_storeStrong(&lastObject2, 0);
   }
 
   v113 = _BYLoggingFacility();
@@ -5652,22 +5652,22 @@ LABEL_19:
     v116 = 1;
   }
 
-  switch(v121)
+  switch(causeCopy)
   {
     case 0uLL:
       goto LABEL_49;
     case 1uLL:
-      v14 = [(SetupController *)v123 environment];
-      v15 = [(BYEnvironment *)v14 suspendTask];
-      v16 = [v15 launchURL];
+      environment = [(SetupController *)selfCopy environment];
+      suspendTask = [(BYEnvironment *)environment suspendTask];
+      launchURL = [suspendTask launchURL];
       v106 = 0;
       v104 = 0;
       v17 = 0;
-      if (v16)
+      if (launchURL)
       {
-        v107 = [(SetupController *)v123 environment];
+        environment2 = [(SetupController *)selfCopy environment];
         v106 = 1;
-        v105 = [v107 buddyPreferencesExcludedFromBackup];
+        buddyPreferencesExcludedFromBackup = [environment2 buddyPreferencesExcludedFromBackup];
         v104 = 1;
         v17 = [BuddySuspendTask hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:?];
       }
@@ -5681,22 +5681,22 @@ LABEL_19:
       }
 
       v108 = v17 & 1;
-      v18 = [(SetupController *)v123 environment];
-      v19 = [(BYEnvironment *)v18 lockdownModeProvider];
-      v20 = [v19 hasStagedEnablement];
+      environment3 = [(SetupController *)selfCopy environment];
+      lockdownModeProvider = [(BYEnvironment *)environment3 lockdownModeProvider];
+      hasStagedEnablement = [lockdownModeProvider hasStagedEnablement];
 
-      if (v20)
+      if (hasStagedEnablement)
       {
         if (v108)
         {
-          v21 = [(SetupController *)v123 environment];
-          v22 = [(BYEnvironment *)v21 buddyPreferencesExcludedFromBackup];
-          [v22 setObject:&__kCFBooleanTrue forKey:BYBuddyRunStandardMiniBuddy];
+          environment4 = [(SetupController *)selfCopy environment];
+          buddyPreferencesExcludedFromBackup2 = [(BYEnvironment *)environment4 buddyPreferencesExcludedFromBackup];
+          [buddyPreferencesExcludedFromBackup2 setObject:&__kCFBooleanTrue forKey:BYBuddyRunStandardMiniBuddy];
         }
 
-        [(SetupController *)v123 willMarkBuddyComplete];
-        [(SetupController *)v123 markBuddyComplete];
-        [(SetupController *)v123 didMarkBuddyComplete];
+        [(SetupController *)selfCopy willMarkBuddyComplete];
+        [(SetupController *)selfCopy markBuddyComplete];
+        [(SetupController *)selfCopy didMarkBuddyComplete];
         oslog = _BYLoggingFacility();
         v102 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -5708,13 +5708,13 @@ LABEL_19:
         }
 
         objc_storeStrong(&oslog, 0);
-        v25 = v123;
+        v25 = selfCopy;
         v95 = _NSConcreteStackBlock;
         v96 = -1073741824;
         v97 = 0;
         v98 = sub_100086884;
         v99 = &unk_10032B0D0;
-        v100 = v123;
+        v100 = selfCopy;
         [(SetupController *)v25 _executeAfterBuddyPreTerminationTasksFinish:&v95];
         objc_storeStrong(&v100, 0);
         return;
@@ -5722,20 +5722,20 @@ LABEL_19:
 
       if (v108)
       {
-        [(SetupController *)v123 setShouldLaunchSuspendTaskURL:1];
-        [(SetupController *)v123 willMarkBuddyComplete];
-        [(SetupController *)v123 markBuddyComplete];
-        [(SetupController *)v123 didMarkBuddyComplete];
+        [(SetupController *)selfCopy setShouldLaunchSuspendTaskURL:1];
+        [(SetupController *)selfCopy willMarkBuddyComplete];
+        [(SetupController *)selfCopy markBuddyComplete];
+        [(SetupController *)selfCopy didMarkBuddyComplete];
         v94 = 0;
         v26 = +[LSApplicationWorkspace defaultWorkspace];
-        v27 = [(SetupController *)v123 environment];
-        v28 = [(BYEnvironment *)v27 suspendTask];
-        v29 = [v28 launchURL];
+        environment5 = [(SetupController *)selfCopy environment];
+        suspendTask2 = [(BYEnvironment *)environment5 suspendTask];
+        launchURL2 = [suspendTask2 launchURL];
         v127 = SBSOpenApplicationOptionKeyLaunchApplicationAfterSetup;
         v128 = &__kCFBooleanTrue;
         v30 = [NSDictionary dictionaryWithObjects:&v128 forKeys:&v127 count:1];
         obj = 0;
-        v31 = [v26 openURL:v29 withOptions:v30 error:&obj];
+        v31 = [v26 openURL:launchURL2 withOptions:v30 error:&obj];
         objc_storeStrong(&v94, obj);
 
         if ((v31 ^ 1))
@@ -5753,9 +5753,9 @@ LABEL_19:
 
             else if (v94)
             {
-              v90 = [v94 domain];
+              domain = [v94 domain];
               v89 = 1;
-              v32 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v90, [v94 code]);
+              v32 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v94 code]);
               v88 = v32;
               v87 = 1;
             }
@@ -5777,13 +5777,13 @@ LABEL_19:
           }
 
           objc_storeStrong(&v92, 0);
-          v33 = v123;
+          v33 = selfCopy;
           v81 = _NSConcreteStackBlock;
           v82 = -1073741824;
           v83 = 0;
           v84 = sub_100086AC0;
           v85 = &unk_10032B0D0;
-          v86 = v123;
+          v86 = selfCopy;
           [(SetupController *)v33 _executeAfterBuddyPreTerminationTasksFinish:&v81];
           objc_storeStrong(&v86, 0);
         }
@@ -5793,13 +5793,13 @@ LABEL_19:
       }
 
 LABEL_49:
-      if (v118 && v115 && v121 == 1)
+      if (v118 && v115 && causeCopy == 1)
       {
-        v34 = [(SetupController *)v123 environment];
-        v35 = [(BYEnvironment *)v34 managedConfiguration];
-        v36 = [v35 isPasscodeSet];
+        environment6 = [(SetupController *)selfCopy environment];
+        managedConfiguration = [(BYEnvironment *)environment6 managedConfiguration];
+        isPasscodeSet = [managedConfiguration isPasscodeSet];
 
-        if (v36)
+        if (isPasscodeSet)
         {
           v80 = _BYLoggingFacility();
           v79 = OS_LOG_TYPE_DEFAULT;
@@ -5812,16 +5812,16 @@ LABEL_49:
           }
 
           objc_storeStrong(&v80, 0);
-          [(SetupController *)v123 willMarkBuddyComplete];
-          [(SetupController *)v123 markBuddyComplete];
-          [(SetupController *)v123 didMarkBuddyComplete];
-          v39 = v123;
+          [(SetupController *)selfCopy willMarkBuddyComplete];
+          [(SetupController *)selfCopy markBuddyComplete];
+          [(SetupController *)selfCopy didMarkBuddyComplete];
+          v39 = selfCopy;
           v72 = _NSConcreteStackBlock;
           v73 = -1073741824;
           v74 = 0;
           v75 = sub_100086AEC;
           v76 = &unk_10032B0D0;
-          v77 = v123;
+          v77 = selfCopy;
           [(SetupController *)v39 _executeAfterBuddyPreTerminationTasksFinish:&v72];
           objc_storeStrong(&v77, 0);
         }
@@ -5841,17 +5841,17 @@ LABEL_49:
           objc_storeStrong(&v71, 0);
           v42 = +[FBSSystemService sharedService];
           v43 = +[NSBundle mainBundle];
-          v44 = [(NSBundle *)v43 bundleIdentifier];
+          bundleIdentifier = [(NSBundle *)v43 bundleIdentifier];
           v124 = FBSOpenApplicationOptionKeyUnlockDevice;
           v125 = &__kCFBooleanTrue;
           v45 = [NSDictionary dictionaryWithObjects:&v125 forKeys:&v124 count:1];
-          [v42 openApplication:v44 options:v45 withResult:&stru_10032B780];
+          [v42 openApplication:bundleIdentifier options:v45 withResult:&stru_10032B780];
         }
       }
 
       else
       {
-        if ((os_variant_has_internal_ui() & 1) != 0 && v121 == 1 && v118 && !v115 && (v116 & 1) == 0)
+        if ((os_variant_has_internal_ui() & 1) != 0 && causeCopy == 1 && v118 && !v115 && (v116 & 1) == 0)
         {
           v68 = _BYLoggingFacility();
           v67 = OS_LOG_TYPE_DEFAULT;
@@ -5864,7 +5864,7 @@ LABEL_49:
           }
 
           objc_storeStrong(&v68, 0);
-          [(SetupController *)v123 markBuddyComplete];
+          [(SetupController *)selfCopy markBuddyComplete];
           v116 = 1;
         }
 
@@ -5881,14 +5881,14 @@ LABEL_49:
           }
 
           objc_storeStrong(&v65, 0);
-          [(SetupController *)v123 didMarkBuddyComplete];
-          v50 = v123;
+          [(SetupController *)selfCopy didMarkBuddyComplete];
+          v50 = selfCopy;
           v57 = _NSConcreteStackBlock;
           v58 = -1073741824;
           v59 = 0;
           v60 = sub_100086C50;
           v61 = &unk_10032B0D0;
-          v62 = v123;
+          v62 = selfCopy;
           [(SetupController *)v50 _executeAfterBuddyPreTerminationTasksFinish:&v57];
           objc_storeStrong(&v62, 0);
         }
@@ -5916,14 +5916,14 @@ LABEL_49:
       goto LABEL_49;
   }
 
-  if (v121 - 3 < 2)
+  if (causeCopy - 3 < 2)
   {
-    [(SetupController *)v123 willMarkBuddyComplete];
-    [(SetupController *)v123 markBuddyComplete];
+    [(SetupController *)selfCopy willMarkBuddyComplete];
+    [(SetupController *)selfCopy markBuddyComplete];
     return;
   }
 
-  if (v121 == 5)
+  if (causeCopy == 5)
   {
     goto LABEL_49;
   }
@@ -5931,35 +5931,35 @@ LABEL_49:
 
 - (unint64_t)intendedRestoreType
 {
-  v2 = [(SetupController *)self environment];
-  v3 = [(BYEnvironment *)v2 setupMethod];
-  v4 = [v3 intendedDataTransferMethod];
+  environment = [(SetupController *)self environment];
+  setupMethod = [(BYEnvironment *)environment setupMethod];
+  intendedDataTransferMethod = [setupMethod intendedDataTransferMethod];
 
-  return v4 == 1;
+  return intendedDataTransferMethod == 1;
 }
 
 - (unint64_t)restoreType
 {
-  v2 = [(SetupController *)self environment];
-  v3 = [(BYEnvironment *)v2 setupMethod];
-  v4 = [v3 dataTransferMethod];
+  environment = [(SetupController *)self environment];
+  setupMethod = [(BYEnvironment *)environment setupMethod];
+  dataTransferMethod = [setupMethod dataTransferMethod];
 
-  return v4 == 1;
+  return dataTransferMethod == 1;
 }
 
-- (void)prepareWithCompletion:(id)a3
+- (void)prepareWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = dispatch_get_global_queue(2, 0);
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100086EB4;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -5968,29 +5968,29 @@ LABEL_49:
   objc_storeStrong(location, 0);
 }
 
-- (void)invalidateAssertionIfNeededForStartUpCause:(unint64_t)a3
+- (void)invalidateAssertionIfNeededForStartUpCause:(unint64_t)cause
 {
   v4 = 0;
-  if (a3 < 6)
+  if (cause < 6)
   {
     goto LABEL_6;
   }
 
-  if (a3 == 6)
+  if (cause == 6)
   {
 LABEL_7:
     v4 = 1;
     goto LABEL_8;
   }
 
-  if (a3 == 7)
+  if (cause == 7)
   {
 LABEL_6:
     v4 = 0;
     goto LABEL_8;
   }
 
-  if (a3 - 9 < 2)
+  if (cause - 9 < 2)
   {
     goto LABEL_7;
   }
@@ -5998,8 +5998,8 @@ LABEL_6:
 LABEL_8:
   if (v4)
   {
-    v3 = [(SetupController *)self cpuAssertion];
-    [(BYCPUAssertion *)v3 invalidate];
+    cpuAssertion = [(SetupController *)self cpuAssertion];
+    [(BYCPUAssertion *)cpuAssertion invalidate];
 
     [(SetupController *)self setCpuAssertion:0];
   }
@@ -6010,29 +6010,29 @@ LABEL_8:
   location[2] = self;
   location[1] = a2;
   location[0] = objc_alloc_init(RadiosPreferences);
-  v2 = [location[0] airplaneMode];
+  airplaneMode = [location[0] airplaneMode];
   objc_storeStrong(location, 0);
-  return v2 & 1;
+  return airplaneMode & 1;
 }
 
 - (BOOL)shouldBeginRestore
 {
-  v2 = [(SetupController *)self environment];
-  v3 = [(BYEnvironment *)v2 pendingRestoreState];
-  v4 = [(SetupController *)self environment];
-  v5 = [(BYEnvironment *)v4 buddyPreferences];
-  v6 = [BuddySoftwareUpdateRestoreFlow controllerNeedsToRunWithPendingRestoreState:v3 buddyPreferences:v5];
+  environment = [(SetupController *)self environment];
+  pendingRestoreState = [(BYEnvironment *)environment pendingRestoreState];
+  environment2 = [(SetupController *)self environment];
+  buddyPreferences = [(BYEnvironment *)environment2 buddyPreferences];
+  v6 = [BuddySoftwareUpdateRestoreFlow controllerNeedsToRunWithPendingRestoreState:pendingRestoreState buddyPreferences:buddyPreferences];
 
   return v6 & 1;
 }
 
 - (BOOL)shouldBeginMigration
 {
-  v2 = [(SetupController *)self environment];
-  v3 = [(BYEnvironment *)v2 buddyPreferencesExcludedFromBackup];
-  v4 = [(SetupController *)self environment];
-  v5 = [(BYEnvironment *)v4 runState];
-  v6 = +[BuddyMigrationStateProvider validateAndResolveMigrationStateUsingPreferences:didCompleteInitialRun:](BuddyMigrationStateProvider, "validateAndResolveMigrationStateUsingPreferences:didCompleteInitialRun:", v3, [v5 hasCompletedInitialRun] & 1);
+  environment = [(SetupController *)self environment];
+  buddyPreferencesExcludedFromBackup = [(BYEnvironment *)environment buddyPreferencesExcludedFromBackup];
+  environment2 = [(SetupController *)self environment];
+  runState = [(BYEnvironment *)environment2 runState];
+  v6 = +[BuddyMigrationStateProvider validateAndResolveMigrationStateUsingPreferences:didCompleteInitialRun:](BuddyMigrationStateProvider, "validateAndResolveMigrationStateUsingPreferences:didCompleteInitialRun:", buddyPreferencesExcludedFromBackup, [runState hasCompletedInitialRun] & 1);
   v7 = v6 != 0;
 
   return v7;
@@ -6062,29 +6062,29 @@ LABEL_8:
 - (BOOL)hasCloudConfiguration
 {
   v2 = [BuddyCloudConfigManager sharedManager:a2];
-  v3 = [v2 cloudConfigurationDetails];
-  v4 = v3 != 0;
+  cloudConfigurationDetails = [v2 cloudConfigurationDetails];
+  v4 = cloudConfigurationDetails != 0;
 
   return v4;
 }
 
 - (BOOL)willSetUpAsNew
 {
-  v2 = [(SetupController *)self environment];
-  v3 = [(BYEnvironment *)v2 pendingRestoreState];
-  v4 = [v3 backupItem];
-  v5 = v4 != 0;
+  environment = [(SetupController *)self environment];
+  pendingRestoreState = [(BYEnvironment *)environment pendingRestoreState];
+  backupItem = [pendingRestoreState backupItem];
+  v5 = backupItem != 0;
 
   v12 = v5;
-  v6 = [(SetupController *)self environment];
-  v7 = [(BYEnvironment *)v6 miscState];
-  v8 = [v7 migrationManager];
-  v9 = [v8 migrationInProgressOrCompleted];
+  environment2 = [(SetupController *)self environment];
+  miscState = [(BYEnvironment *)environment2 miscState];
+  migrationManager = [miscState migrationManager];
+  migrationInProgressOrCompleted = [migrationManager migrationInProgressOrCompleted];
 
   v10 = 1;
   if (!v12)
   {
-    v10 = v9 & 1;
+    v10 = migrationInProgressOrCompleted & 1;
   }
 
   return (v10 ^ 1) & 1;
@@ -6093,29 +6093,29 @@ LABEL_8:
 - (BuddyFlowItemDispositionProvider)flowItemDispositionProvider
 {
   v2 = [(SetupController *)self environment:a2];
-  v3 = [(BYEnvironment *)v2 flowItemDispositionProvider];
+  flowItemDispositionProvider = [(BYEnvironment *)v2 flowItemDispositionProvider];
 
-  return v3;
+  return flowItemDispositionProvider;
 }
 
 - (BuddyRemoteManagementProvider)remoteManagementProvider
 {
   v2 = [(SetupController *)self environment:a2];
-  v3 = [(BYEnvironment *)v2 enrollmentCoordinator];
+  enrollmentCoordinator = [(BYEnvironment *)v2 enrollmentCoordinator];
 
-  return v3;
+  return enrollmentCoordinator;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] presentedViewController];
-  v4 = [(SetupController *)v11 modalWiFiSettingsNavigationController];
+  objc_storeStrong(location, dismiss);
+  presentedViewController = [location[0] presentedViewController];
+  modalWiFiSettingsNavigationController = [(SetupController *)selfCopy modalWiFiSettingsNavigationController];
 
-  if (v3 == v4)
+  if (presentedViewController == modalWiFiSettingsNavigationController)
   {
     oslog = _BYLoggingFacility();
     v8 = OS_LOG_TYPE_DEFAULT;
@@ -6128,7 +6128,7 @@ LABEL_8:
     }
 
     objc_storeStrong(&oslog, 0);
-    [(SetupController *)v11 _cleanUpModalWiFiSettings];
+    [(SetupController *)selfCopy _cleanUpModalWiFiSettings];
   }
 
   objc_storeStrong(location, 0);

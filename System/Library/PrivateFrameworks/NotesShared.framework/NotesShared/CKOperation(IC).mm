@@ -6,32 +6,32 @@
 
 - (id)ic_loggingValues
 {
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = &off_2827832B8;
   v2 = objc_msgSendSuper2(&v15, sel_ic_loggingValues);
   v3 = [v2 mutableCopy];
 
-  v4 = [a1 metrics];
-  v5 = [v4 cloudKitMetrics];
-  [v5 duration];
+  metrics = [self metrics];
+  cloudKitMetrics = [metrics cloudKitMetrics];
+  [cloudKitMetrics duration];
   v7 = v6;
 
   if (v7 > 0.0)
   {
     v8 = MEMORY[0x277CCABB0];
-    v9 = [a1 metrics];
-    v10 = [v9 cloudKitMetrics];
-    [v10 duration];
+    metrics2 = [self metrics];
+    cloudKitMetrics2 = [metrics2 cloudKitMetrics];
+    [cloudKitMetrics2 duration];
     v11 = [v8 numberWithDouble:?];
     [v3 setObject:v11 forKeyedSubscript:@"duration"];
   }
 
-  v12 = [a1 group];
-  v13 = [v12 ic_loggingDescription];
+  group = [self group];
+  ic_loggingDescription = [group ic_loggingDescription];
 
-  if (v13)
+  if (ic_loggingDescription)
   {
-    [v3 setObject:v13 forKeyedSubscript:@"group"];
+    [v3 setObject:ic_loggingDescription forKeyedSubscript:@"group"];
   }
 
   return v3;

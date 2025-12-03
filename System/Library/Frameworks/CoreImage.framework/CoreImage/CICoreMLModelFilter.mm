@@ -64,8 +64,8 @@
     }
   }
 
-  v4 = [(MLModelDescription *)[(MLModel *)self->inputModel modelDescription] inputDescriptionsByName];
-  v5 = [MEMORY[0x1E695DFD8] setWithArray:{-[NSDictionary allKeys](v4, "allKeys")}];
+  inputDescriptionsByName = [(MLModelDescription *)[(MLModel *)self->inputModel modelDescription] inputDescriptionsByName];
+  v5 = [MEMORY[0x1E695DFD8] setWithArray:{-[NSDictionary allKeys](inputDescriptionsByName, "allKeys")}];
   if (v3 != [v5 count])
   {
     v18 = ci_logger_filter();
@@ -170,11 +170,11 @@
     v17 = 0;
   }
 
-  v19 = [(NSNumber *)self->inputHeadIndex intValue];
-  v20 = [(MLModelDescription *)[(MLModel *)self->inputModel modelDescription] outputDescriptionsByName];
-  if (v20 && (v21 = v20, [(NSDictionary *)v20 count]> v19))
+  intValue = [(NSNumber *)self->inputHeadIndex intValue];
+  outputDescriptionsByName = [(MLModelDescription *)[(MLModel *)self->inputModel modelDescription] outputDescriptionsByName];
+  if (outputDescriptionsByName && (v21 = outputDescriptionsByName, [(NSDictionary *)outputDescriptionsByName count]> intValue))
   {
-    v22 = [(NSArray *)[(NSDictionary *)v21 allKeys] objectAtIndex:v19];
+    v22 = [(NSArray *)[(NSDictionary *)v21 allKeys] objectAtIndex:intValue];
   }
 
   else
@@ -214,9 +214,9 @@
   if (v3 == 1 && v17)
   {
     v26 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
-    v27 = [v5 anyObject];
+    anyObject = [v5 anyObject];
     inputImage = self->inputImage;
-    v46 = v27;
+    v46 = anyObject;
     v47 = inputImage;
     v29 = process([MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1], self->inputModel, v22, self->_logName, 0, v26);
     CGColorSpaceRelease(v26);
@@ -232,9 +232,9 @@ LABEL_42:
 
   else
   {
-    v34 = [v5 anyObject];
+    anyObject2 = [v5 anyObject];
     v35 = self->inputImage;
-    v44 = v34;
+    v44 = anyObject2;
     v45 = v35;
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
   }

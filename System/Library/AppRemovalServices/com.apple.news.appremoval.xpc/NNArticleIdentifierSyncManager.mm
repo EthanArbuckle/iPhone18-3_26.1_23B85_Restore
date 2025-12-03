@@ -1,10 +1,10 @@
 @interface NNArticleIdentifierSyncManager
 + (id)savedManager;
 + (id)seenManager;
-- (NNArticleIdentifierSyncManager)initWithReadonlyResetKey:(id)a3 readwriteResetKey:(id)a4 readonlyKey:(id)a5 readwriteKey:(id)a6;
+- (NNArticleIdentifierSyncManager)initWithReadonlyResetKey:(id)key readwriteResetKey:(id)resetKey readonlyKey:(id)readonlyKey readwriteKey:(id)readwriteKey;
 - (NSSet)articleIdentifiers;
 - (NSSet)readonlyArticleIdentifiers;
-- (id)_lookupIdentifiersForKey:(id)a3;
+- (id)_lookupIdentifiersForKey:(id)key;
 - (id)_readonlyArticleStateLookup;
 - (id)_readonlyResetDate;
 - (id)_readwriteArticleStateLookup;
@@ -39,30 +39,30 @@
   return v3;
 }
 
-- (NNArticleIdentifierSyncManager)initWithReadonlyResetKey:(id)a3 readwriteResetKey:(id)a4 readonlyKey:(id)a5 readwriteKey:(id)a6
+- (NNArticleIdentifierSyncManager)initWithReadonlyResetKey:(id)key readwriteResetKey:(id)resetKey readonlyKey:(id)readonlyKey readwriteKey:(id)readwriteKey
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  resetKeyCopy = resetKey;
+  readonlyKeyCopy = readonlyKey;
+  readwriteKeyCopy = readwriteKey;
   v30.receiver = self;
   v30.super_class = NNArticleIdentifierSyncManager;
   v14 = [(NNArticleIdentifierSyncManager *)&v30 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [keyCopy copy];
     readonlyResetKey = v14->_readonlyResetKey;
     v14->_readonlyResetKey = v15;
 
-    v17 = [v11 copy];
+    v17 = [resetKeyCopy copy];
     readwriteResetKey = v14->_readwriteResetKey;
     v14->_readwriteResetKey = v17;
 
-    v19 = [v12 copy];
+    v19 = [readonlyKeyCopy copy];
     readonlyKey = v14->_readonlyKey;
     v14->_readonlyKey = v19;
 
-    v21 = [v13 copy];
+    v21 = [readwriteKeyCopy copy];
     readwriteKey = v14->_readwriteKey;
     v14->_readwriteKey = v21;
 
@@ -92,18 +92,18 @@
 
 - (void)clearAllIdentifiers
 {
-  v3 = [(NNArticleIdentifierSyncManager *)self readwriteResetKey];
-  v4 = [v3 length];
+  readwriteResetKey = [(NNArticleIdentifierSyncManager *)self readwriteResetKey];
+  v4 = [readwriteResetKey length];
 
   if (v4)
   {
     v8 = +[NSDate date];
     v5 = +[NSUserDefaults nanoNewsSyncDefaults];
-    v6 = [(NNArticleIdentifierSyncManager *)self readwriteResetKey];
-    [v5 setObject:v8 forKey:v6];
+    readwriteResetKey2 = [(NNArticleIdentifierSyncManager *)self readwriteResetKey];
+    [v5 setObject:v8 forKey:readwriteResetKey2];
 
-    v7 = [(NNArticleIdentifierSyncManager *)self readwriteKey];
-    [v5 setObject:&__NSDictionary0__struct forKey:v7];
+    readwriteKey = [(NNArticleIdentifierSyncManager *)self readwriteKey];
+    [v5 setObject:&__NSDictionary0__struct forKey:readwriteKey];
 
     [(NNArticleIdentifierSyncManager *)self synchronize];
   }
@@ -113,21 +113,21 @@
 {
   v4 = +[NSUserDefaults nanoNewsSyncDefaults];
   [v4 synchronize];
-  v3 = [(NNArticleIdentifierSyncManager *)self synchronizedKeys];
-  [v4 nn_synchronizeKeys:v3];
+  synchronizedKeys = [(NNArticleIdentifierSyncManager *)self synchronizedKeys];
+  [v4 nn_synchronizeKeys:synchronizedKeys];
 }
 
 - (NSSet)articleIdentifiers
 {
   v3 = +[NSMutableSet set];
-  v4 = [(NNArticleIdentifierSyncManager *)self _readonlyArticleStateLookup];
-  v5 = [(NNArticleIdentifierSyncManager *)self _readonlyResetDate];
-  v6 = [(NNArticleIdentifierSyncManager *)self _readwriteResetDate];
-  v43 = v5;
-  [v5 timeIntervalSinceReferenceDate];
+  _readonlyArticleStateLookup = [(NNArticleIdentifierSyncManager *)self _readonlyArticleStateLookup];
+  _readonlyResetDate = [(NNArticleIdentifierSyncManager *)self _readonlyResetDate];
+  _readwriteResetDate = [(NNArticleIdentifierSyncManager *)self _readwriteResetDate];
+  v43 = _readonlyResetDate;
+  [_readonlyResetDate timeIntervalSinceReferenceDate];
   v8 = v7;
-  v42 = v6;
-  [v6 timeIntervalSinceReferenceDate];
+  v42 = _readwriteResetDate;
+  [_readwriteResetDate timeIntervalSinceReferenceDate];
   if (v8 >= v9)
   {
     v10 = v8;
@@ -138,12 +138,12 @@
     v10 = v9;
   }
 
-  v11 = [(NNArticleIdentifierSyncManager *)self _readwriteArticleStateLookup];
-  v12 = [v4 allKeys];
-  v13 = [v11 allKeys];
-  v14 = [v12 arrayByAddingObjectsFromArray:v13];
+  _readwriteArticleStateLookup = [(NNArticleIdentifierSyncManager *)self _readwriteArticleStateLookup];
+  allKeys = [_readonlyArticleStateLookup allKeys];
+  allKeys2 = [_readwriteArticleStateLookup allKeys];
+  v14 = [allKeys arrayByAddingObjectsFromArray:allKeys2];
 
-  v15 = v11;
+  v15 = _readwriteArticleStateLookup;
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
@@ -155,7 +155,7 @@
     v17 = v16;
     v18 = *v48;
     v44 = v15;
-    v45 = v4;
+    v45 = _readonlyArticleStateLookup;
     do
     {
       v19 = 0;
@@ -167,10 +167,10 @@
         }
 
         v20 = *(*(&v47 + 1) + 8 * v19);
-        v21 = [v4 objectForKeyedSubscript:v20];
+        v21 = [_readonlyArticleStateLookup objectForKeyedSubscript:v20];
         v22 = [v15 objectForKeyedSubscript:v20];
-        v23 = [v21 nn_date];
-        [v23 timeIntervalSinceReferenceDate];
+        nn_date = [v21 nn_date];
+        [nn_date timeIntervalSinceReferenceDate];
         v25 = v24;
 
         if (v25 < v10)
@@ -179,8 +179,8 @@
           v21 = 0;
         }
 
-        v26 = [v22 nn_date];
-        [v26 timeIntervalSinceReferenceDate];
+        nn_date2 = [v22 nn_date];
+        [nn_date2 timeIntervalSinceReferenceDate];
         v28 = v27;
 
         if (v28 < v10)
@@ -217,18 +217,18 @@ LABEL_26:
           goto LABEL_18;
         }
 
-        v31 = [v21 nn_active];
-        v32 = [v22 nn_active];
-        if (v31 == v32)
+        nn_active = [v21 nn_active];
+        nn_active2 = [v22 nn_active];
+        if (nn_active == nn_active2)
         {
           v30 = v21;
           goto LABEL_26;
         }
 
         v33 = v3;
-        v34 = [v22 nn_date];
-        v35 = [v21 nn_date];
-        v36 = [v34 compare:v35];
+        nn_date3 = [v22 nn_date];
+        nn_date4 = [v21 nn_date];
+        v36 = [nn_date3 compare:nn_date4];
 
         v37 = v21;
         if (v36 + 1 >= 2)
@@ -251,7 +251,7 @@ LABEL_31:
           [v33 addObject:v20];
         }
 
-        v4 = v45;
+        _readonlyArticleStateLookup = v45;
 LABEL_28:
 
         v19 = v19 + 1;
@@ -273,33 +273,33 @@ LABEL_28:
 - (NSSet)readonlyArticleIdentifiers
 {
   v29 = +[NSMutableSet set];
-  v3 = [(NNArticleIdentifierSyncManager *)self _readonlyArticleStateLookup];
-  v4 = [(NNArticleIdentifierSyncManager *)self _readwriteArticleStateLookup];
-  v5 = [v3 allKeys];
+  _readonlyArticleStateLookup = [(NNArticleIdentifierSyncManager *)self _readonlyArticleStateLookup];
+  _readwriteArticleStateLookup = [(NNArticleIdentifierSyncManager *)self _readwriteArticleStateLookup];
+  allKeys = [_readonlyArticleStateLookup allKeys];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v31;
     v27 = *v31;
-    v28 = v5;
-    v26 = v4;
+    v28 = allKeys;
+    v26 = _readwriteArticleStateLookup;
     do
     {
       for (i = 0; i != v7; i = i + 1)
       {
         if (*v31 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v30 + 1) + 8 * i);
-        v11 = [v3 objectForKeyedSubscript:{v10, v26, v27, v28}];
-        v12 = [v4 objectForKeyedSubscript:v10];
+        v11 = [_readonlyArticleStateLookup objectForKeyedSubscript:{v10, v26, v27, v28}];
+        v12 = [_readwriteArticleStateLookup objectForKeyedSubscript:v10];
         v13 = v12;
         if (v11)
         {
@@ -327,18 +327,18 @@ LABEL_19:
           goto LABEL_25;
         }
 
-        v16 = [v11 nn_active];
-        v17 = [v13 nn_active];
-        if (v16 == v17)
+        nn_active = [v11 nn_active];
+        nn_active2 = [v13 nn_active];
+        if (nn_active == nn_active2)
         {
           v15 = v11;
           goto LABEL_19;
         }
 
-        v18 = v3;
-        v19 = [v13 nn_date];
-        v20 = [v11 nn_date];
-        v21 = [v19 compare:v20];
+        v18 = _readonlyArticleStateLookup;
+        nn_date = [v13 nn_date];
+        nn_date2 = [v11 nn_date];
+        v21 = [nn_date compare:nn_date2];
 
         v22 = v11;
         if (v21 + 1 >= 2)
@@ -354,19 +354,19 @@ LABEL_19:
 
         v23 = v22;
 LABEL_22:
-        v3 = v18;
+        _readonlyArticleStateLookup = v18;
         if ([v23 nn_active])
         {
           [v29 addObject:v10];
         }
 
-        v4 = v26;
+        _readwriteArticleStateLookup = v26;
         v8 = v27;
-        v5 = v28;
+        allKeys = v28;
 LABEL_25:
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v7);
@@ -379,29 +379,29 @@ LABEL_25:
 
 - (id)_readonlyArticleStateLookup
 {
-  v3 = [(NNArticleIdentifierSyncManager *)self readonlyKey];
-  v4 = [(NNArticleIdentifierSyncManager *)self _lookupIdentifiersForKey:v3];
+  readonlyKey = [(NNArticleIdentifierSyncManager *)self readonlyKey];
+  v4 = [(NNArticleIdentifierSyncManager *)self _lookupIdentifiersForKey:readonlyKey];
 
   return v4;
 }
 
 - (id)_readwriteArticleStateLookup
 {
-  v3 = [(NNArticleIdentifierSyncManager *)self readwriteKey];
-  v4 = [(NNArticleIdentifierSyncManager *)self _lookupIdentifiersForKey:v3];
+  readwriteKey = [(NNArticleIdentifierSyncManager *)self readwriteKey];
+  v4 = [(NNArticleIdentifierSyncManager *)self _lookupIdentifiersForKey:readwriteKey];
 
   return v4;
 }
 
-- (id)_lookupIdentifiersForKey:(id)a3
+- (id)_lookupIdentifiersForKey:(id)key
 {
-  v3 = a3;
-  if ([v3 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
     v4 = +[NSUserDefaults nanoNewsSyncDefaults];
     [v4 synchronize];
-    v5 = v3;
-    v6 = [v4 dictionaryForKey:v3];
+    v5 = keyCopy;
+    v6 = [v4 dictionaryForKey:keyCopy];
     v7 = v6;
     if (v6)
     {
@@ -460,7 +460,7 @@ LABEL_25:
       v9 = v19;
     }
 
-    v3 = v5;
+    keyCopy = v5;
   }
 
   else
@@ -473,26 +473,26 @@ LABEL_25:
 
 - (id)_readonlyResetDate
 {
-  v3 = [(NNArticleIdentifierSyncManager *)self readonlyResetKey];
-  NSLog(@"_readonlyResetDate for %@", v3);
+  readonlyResetKey = [(NNArticleIdentifierSyncManager *)self readonlyResetKey];
+  NSLog(@"_readonlyResetDate for %@", readonlyResetKey);
 
   v4 = +[NSUserDefaults nanoNewsSyncDefaults];
   [v4 synchronize];
-  v5 = [(NNArticleIdentifierSyncManager *)self readonlyResetKey];
-  v6 = [v4 objectForKey:v5];
+  readonlyResetKey2 = [(NNArticleIdentifierSyncManager *)self readonlyResetKey];
+  v6 = [v4 objectForKey:readonlyResetKey2];
 
   return v6;
 }
 
 - (id)_readwriteResetDate
 {
-  v3 = [(NNArticleIdentifierSyncManager *)self readwriteResetKey];
-  NSLog(@"_readwriteResetDate for %@", v3);
+  readwriteResetKey = [(NNArticleIdentifierSyncManager *)self readwriteResetKey];
+  NSLog(@"_readwriteResetDate for %@", readwriteResetKey);
 
   v4 = +[NSUserDefaults nanoNewsSyncDefaults];
   [v4 synchronize];
-  v5 = [(NNArticleIdentifierSyncManager *)self readwriteResetKey];
-  v6 = [v4 objectForKey:v5];
+  readwriteResetKey2 = [(NNArticleIdentifierSyncManager *)self readwriteResetKey];
+  v6 = [v4 objectForKey:readwriteResetKey2];
 
   return v6;
 }

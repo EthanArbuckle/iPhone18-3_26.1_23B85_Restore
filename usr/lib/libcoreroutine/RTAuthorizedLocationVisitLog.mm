@@ -1,28 +1,28 @@
 @interface RTAuthorizedLocationVisitLog
-+ (BOOL)decodeTimeSourceWithValue:(id)a3 isRetroRegistration:(BOOL *)a4 isTrusted:(BOOL *)a5;
-+ (id)createWithAuthorizedLocationVisitLogMO:(id)a3;
-+ (id)createWithManagedObject:(id)a3;
-+ (id)encodeTimeSourceWithValue:(id)a3 isTrusted:(BOOL)a4 isRetroRegistration:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)decodeTimeSourceWithValue:(id)value isRetroRegistration:(BOOL *)registration isTrusted:(BOOL *)trusted;
++ (id)createWithAuthorizedLocationVisitLogMO:(id)o;
++ (id)createWithManagedObject:(id)object;
++ (id)encodeTimeSourceWithValue:(id)value isTrusted:(BOOL)trusted isRetroRegistration:(BOOL)registration;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RTAuthorizedLocationVisitLog)initWithCoder:(id)a3;
-- (RTAuthorizedLocationVisitLog)initWithVisitIdentifier:(id)a3 registrationDate:(id)a4 locationTechnologyAvailability:(unint64_t)a5;
-- (id)managedObjectWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RTAuthorizedLocationVisitLog)initWithCoder:(id)coder;
+- (RTAuthorizedLocationVisitLog)initWithVisitIdentifier:(id)identifier registrationDate:(id)date locationTechnologyAvailability:(unint64_t)availability;
+- (id)managedObjectWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTAuthorizedLocationVisitLog
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = objectCopy;
       v6 = [objc_opt_class() createWithAuthorizedLocationVisitLogMO:v5];
 
       goto LABEL_8;
@@ -36,7 +36,7 @@
       v11 = v9;
       v12 = 2112;
       v14 = 2080;
-      v13 = v4;
+      v13 = objectCopy;
       v15 = "+[RTAuthorizedLocationVisitLog(RTCoreDataTransformable) createWithManagedObject:]";
       v16 = 1024;
       v17 = 31;
@@ -50,32 +50,32 @@ LABEL_8:
   return v6;
 }
 
-+ (id)createWithAuthorizedLocationVisitLogMO:(id)a3
++ (id)createWithAuthorizedLocationVisitLogMO:(id)o
 {
-  v3 = a3;
-  if ([v3 locationTechnologyAvailability])
+  oCopy = o;
+  if ([oCopy locationTechnologyAvailability])
   {
-    v4 = [v3 locationTechnologyAvailability];
+    locationTechnologyAvailability = [oCopy locationTechnologyAvailability];
   }
 
   else
   {
-    v4 = 0;
+    locationTechnologyAvailability = 0;
   }
 
   v5 = [RTAuthorizedLocationVisitLog alloc];
-  v6 = [v3 visitIdentifier];
-  v7 = [v3 registrationDate];
-  v8 = [(RTAuthorizedLocationVisitLog *)v5 initWithVisitIdentifier:v6 registrationDate:v7 locationTechnologyAvailability:v4];
+  visitIdentifier = [oCopy visitIdentifier];
+  registrationDate = [oCopy registrationDate];
+  v8 = [(RTAuthorizedLocationVisitLog *)v5 initWithVisitIdentifier:visitIdentifier registrationDate:registrationDate locationTechnologyAvailability:locationTechnologyAvailability];
 
   return v8;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = [RTAuthorizedLocationVisitLogMO managedObjectWithAuthorizedLocationVisitLog:self inManagedObjectContext:a3];
+    v3 = [RTAuthorizedLocationVisitLogMO managedObjectWithAuthorizedLocationVisitLog:self inManagedObjectContext:context];
   }
 
   else
@@ -93,19 +93,19 @@ LABEL_8:
   return v3;
 }
 
-- (RTAuthorizedLocationVisitLog)initWithVisitIdentifier:(id)a3 registrationDate:(id)a4 locationTechnologyAvailability:(unint64_t)a5
+- (RTAuthorizedLocationVisitLog)initWithVisitIdentifier:(id)identifier registrationDate:(id)date locationTechnologyAvailability:(unint64_t)availability
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  identifierCopy = identifier;
+  dateCopy = date;
+  v11 = dateCopy;
+  if (!identifierCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -116,7 +116,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v10)
+  if (!dateCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -135,31 +135,31 @@ LABEL_12:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_visitIdentifier, a3);
-    objc_storeStrong(&v13->_registrationDate, a4);
-    v13->_locationTechnologyAvailability = a5;
+    objc_storeStrong(&v12->_visitIdentifier, identifier);
+    objc_storeStrong(&v13->_registrationDate, date);
+    v13->_locationTechnologyAvailability = availability;
   }
 
   self = v13;
-  v14 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v14;
+  return selfCopy;
 }
 
-+ (id)encodeTimeSourceWithValue:(id)a3 isTrusted:(BOOL)a4 isRetroRegistration:(BOOL)a5
++ (id)encodeTimeSourceWithValue:(id)value isTrusted:(BOOL)trusted isRetroRegistration:(BOOL)registration
 {
-  v5 = a5;
-  v6 = a4;
-  [a3 timeIntervalSinceReferenceDate];
+  registrationCopy = registration;
+  trustedCopy = trusted;
+  [value timeIntervalSinceReferenceDate];
   v8 = floor(v7);
   v9 = 0.5;
-  if (v6)
+  if (trustedCopy)
   {
     v9 = 0.0;
   }
 
-  if (v5)
+  if (registrationCopy)
   {
     v9 = 0.25;
   }
@@ -169,14 +169,14 @@ LABEL_10:
   return v10;
 }
 
-+ (BOOL)decodeTimeSourceWithValue:(id)a3 isRetroRegistration:(BOOL *)a4 isTrusted:(BOOL *)a5
++ (BOOL)decodeTimeSourceWithValue:(id)value isRetroRegistration:(BOOL *)registration isTrusted:(BOOL *)trusted
 {
-  v7 = a3;
-  v8 = v7;
+  valueCopy = value;
+  v8 = valueCopy;
   v9 = 0;
-  if (a4 && a5)
+  if (registration && trusted)
   {
-    [v7 timeIntervalSinceReferenceDate];
+    [valueCopy timeIntervalSinceReferenceDate];
     v11 = v10;
     [v8 timeIntervalSinceReferenceDate];
     v13 = v11 - floor(v12);
@@ -185,8 +185,8 @@ LABEL_10:
       v14 = 0;
       v15 = 1;
 LABEL_9:
-      *a4 = v15;
-      *a5 = v14;
+      *registration = v15;
+      *trusted = v14;
       v9 = 1;
       goto LABEL_10;
     }
@@ -212,42 +212,42 @@ LABEL_10:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   visitIdentifier = self->_visitIdentifier;
-  v5 = a3;
-  [v5 encodeObject:visitIdentifier forKey:@"visitIdentifier"];
-  [v5 encodeObject:self->_registrationDate forKey:@"registrationDate"];
-  [v5 encodeInteger:self->_locationTechnologyAvailability forKey:@"locationTechnologyAvailability"];
+  coderCopy = coder;
+  [coderCopy encodeObject:visitIdentifier forKey:@"visitIdentifier"];
+  [coderCopy encodeObject:self->_registrationDate forKey:@"registrationDate"];
+  [coderCopy encodeInteger:self->_locationTechnologyAvailability forKey:@"locationTechnologyAvailability"];
 }
 
-- (RTAuthorizedLocationVisitLog)initWithCoder:(id)a3
+- (RTAuthorizedLocationVisitLog)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visitIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"registrationDate"];
-  v7 = [v4 decodeIntegerForKey:@"locationTechnologyAvailability"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visitIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"registrationDate"];
+  v7 = [coderCopy decodeIntegerForKey:@"locationTechnologyAvailability"];
 
   v8 = [(RTAuthorizedLocationVisitLog *)self initWithVisitIdentifier:v5 registrationDate:v6 locationTechnologyAvailability:v7];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()];
   visitIdentifier = self->_visitIdentifier;
-  v7 = [v4 visitIdentifier];
-  v8 = [(NSUUID *)visitIdentifier isEqual:v7];
+  visitIdentifier = [equalCopy visitIdentifier];
+  v8 = [(NSUUID *)visitIdentifier isEqual:visitIdentifier];
 
   registrationDate = self->_registrationDate;
-  v10 = [v4 registrationDate];
-  v11 = [(NSDate *)registrationDate isEqual:v10];
+  registrationDate = [equalCopy registrationDate];
+  v11 = [(NSDate *)registrationDate isEqual:registrationDate];
 
   locationTechnologyAvailability = self->_locationTechnologyAvailability;
-  v13 = [v4 locationTechnologyAvailability];
+  locationTechnologyAvailability = [equalCopy locationTechnologyAvailability];
 
-  if (locationTechnologyAvailability == v13)
+  if (locationTechnologyAvailability == locationTechnologyAvailability)
   {
     v14 = v11;
   }
@@ -270,19 +270,19 @@ LABEL_10:
   v14 = 0;
   v3 = [RTAuthorizedLocationVisitLog decodeTimeSourceWithValue:self->_registrationDate isRetroRegistration:&v14 + 1 isTrusted:&v14];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(NSUUID *)self->_visitIdentifier UUIDString];
-  v6 = [v5 UTF8String];
-  v7 = [(NSDate *)self->_registrationDate stringFromDate];
-  v8 = v7;
+  uUIDString = [(NSUUID *)self->_visitIdentifier UUIDString];
+  uTF8String = [uUIDString UTF8String];
+  stringFromDate = [(NSDate *)self->_registrationDate stringFromDate];
+  v8 = stringFromDate;
   locationTechnologyAvailability = self->_locationTechnologyAvailability;
   if (v3)
   {
-    [v4 stringWithFormat:@"Visit UUID, %s, registrationDate, %@, locationTechnologyAvailability, %lu, isRetroRegistration, %d, isTrustedTime, %d", v6, v7, locationTechnologyAvailability, HIBYTE(v14), v14];
+    [v4 stringWithFormat:@"Visit UUID, %s, registrationDate, %@, locationTechnologyAvailability, %lu, isRetroRegistration, %d, isTrustedTime, %d", uTF8String, stringFromDate, locationTechnologyAvailability, HIBYTE(v14), v14];
   }
 
   else
   {
-    [v4 stringWithFormat:@"Visit UUID, %s, registrationDate, %@, locationTechnologyAvailability, %lu", v6, v7, locationTechnologyAvailability, v12, v13];
+    [v4 stringWithFormat:@"Visit UUID, %s, registrationDate, %@, locationTechnologyAvailability, %lu", uTF8String, stringFromDate, locationTechnologyAvailability, v12, v13];
   }
   v10 = ;
 

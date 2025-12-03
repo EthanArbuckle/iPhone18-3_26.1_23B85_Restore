@@ -1,6 +1,6 @@
 @interface MFStringTransform
 + (id)identityTransform;
-- (MFStringTransform)initWithSoftBankHexData:(id)a3;
+- (MFStringTransform)initWithSoftBankHexData:(id)data;
 - (id)_init;
 - (void)dealloc;
 @end
@@ -14,10 +14,10 @@
   return [(MFStringTransform *)&v3 init];
 }
 
-- (MFStringTransform)initWithSoftBankHexData:(id)a3
+- (MFStringTransform)initWithSoftBankHexData:(id)data
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v28.receiver = self;
   v28.super_class = MFStringTransform;
   v5 = [(MFStringTransform *)&v28 init];
@@ -26,7 +26,7 @@
     goto LABEL_37;
   }
 
-  v6 = v4;
+  v6 = dataCopy;
   v7 = objc_autoreleasePoolPush();
   if (!v6)
   {
@@ -199,9 +199,9 @@ LABEL_39:
 
 + (id)identityTransform
 {
-  v2 = [[MFStringTransform alloc] _init];
+  _init = [[MFStringTransform alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 - (void)initWithSoftBankHexData:(NSObject *)a3 .cold.1(void *a1, uint64_t a2, NSObject *a3)

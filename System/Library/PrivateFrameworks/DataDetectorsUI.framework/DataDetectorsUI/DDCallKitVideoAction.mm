@@ -1,17 +1,17 @@
 @interface DDCallKitVideoAction
-+ (BOOL)providerIsValid:(id)a3 forHandleType:(int64_t)a4;
-+ (id)patchedSchemeForScheme:(id)a3;
++ (BOOL)providerIsValid:(id)valid forHandleType:(int64_t)type;
++ (id)patchedSchemeForScheme:(id)scheme;
 - (id)_serviceIdentifier;
 @end
 
 @implementation DDCallKitVideoAction
 
-+ (BOOL)providerIsValid:(id)a3 forHandleType:(int64_t)a4
++ (BOOL)providerIsValid:(id)valid forHandleType:(int64_t)type
 {
-  v5 = a3;
-  if ([v5 supportsAudioAndVideo])
+  validCopy = valid;
+  if ([validCopy supportsAudioAndVideo])
   {
-    v6 = [v5 supportsHandleType:a4];
+    v6 = [validCopy supportsHandleType:type];
 
     return v6;
   }
@@ -23,16 +23,16 @@
   }
 }
 
-+ (id)patchedSchemeForScheme:(id)a3
++ (id)patchedSchemeForScheme:(id)scheme
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  schemeCopy = scheme;
+  v5 = schemeCopy;
+  if (!schemeCopy)
   {
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"facetime-audio"])
+  if ([schemeCopy isEqualToString:@"facetime-audio"])
   {
     v6 = @"facetime";
     goto LABEL_9;
@@ -44,8 +44,8 @@
     goto LABEL_9;
   }
 
-  v7 = [a1 matchingSchemes];
-  v8 = [v7 containsObject:v5];
+  matchingSchemes = [self matchingSchemes];
+  v8 = [matchingSchemes containsObject:v5];
 
   if (v8)
   {
@@ -67,8 +67,8 @@ LABEL_9:
 {
   v5.receiver = self;
   v5.super_class = DDCallKitVideoAction;
-  v2 = [(DDCallKitAudioAction *)&v5 _serviceIdentifier];
-  v3 = [v2 stringByAppendingString:@"-video"];
+  _serviceIdentifier = [(DDCallKitAudioAction *)&v5 _serviceIdentifier];
+  v3 = [_serviceIdentifier stringByAppendingString:@"-video"];
 
   return v3;
 }

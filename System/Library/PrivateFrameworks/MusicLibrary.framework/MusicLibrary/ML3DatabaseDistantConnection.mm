@@ -1,13 +1,13 @@
 @interface ML3DatabaseDistantConnection
-- (BOOL)_internalBeginTransactionWithBehaviorType:(unint64_t)a3 isRetry:(BOOL)a4;
-- (BOOL)_internalEndTransactionAndCommit:(BOOL)a3;
-- (BOOL)_internalExecuteUpdate:(id)a3 withParameters:(id)a4 error:(id *)a5;
-- (BOOL)_openWithFlags:(int)a3;
+- (BOOL)_internalBeginTransactionWithBehaviorType:(unint64_t)type isRetry:(BOOL)retry;
+- (BOOL)_internalEndTransactionAndCommit:(BOOL)commit;
+- (BOOL)_internalExecuteUpdate:(id)update withParameters:(id)parameters error:(id *)error;
+- (BOOL)_openWithFlags:(int)flags;
 - (BOOL)close;
-- (ML3DatabaseDistantConnection)initWithDatabasePath:(id)a3;
+- (ML3DatabaseDistantConnection)initWithDatabasePath:(id)path;
 - (ML3DatabaseDistantConnectionDelegate)distantDelegate;
-- (id)_internalExecuteQuery:(id)a3 withParameters:(id)a4 limitProperty:(id)a5 limitValue:(int64_t)a6;
-- (void)_serviceTerminatedTransactionNotification:(id)a3;
+- (id)_internalExecuteQuery:(id)query withParameters:(id)parameters limitProperty:(id)property limitValue:(int64_t)value;
+- (void)_serviceTerminatedTransactionNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -20,19 +20,19 @@
   return WeakRetained;
 }
 
-- (void)_serviceTerminatedTransactionNotification:(id)a3
+- (void)_serviceTerminatedTransactionNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if ([(ML3DatabaseConnection *)self isInTransaction]&& self->_currentTransactionID)
   {
-    v5 = [v4 userInfo];
-    v6 = [v5 objectForKey:@"MLTerminatedTransactionIdentifierKey"];
+    userInfo = [notificationCopy userInfo];
+    v6 = [userInfo objectForKey:@"MLTerminatedTransactionIdentifierKey"];
 
     if ([(NSUUID *)self->_currentTransactionID isEqual:v6])
     {
-      v7 = [v4 userInfo];
-      v8 = [v7 objectForKey:*MEMORY[0x277CCA7E8]];
+      userInfo2 = [notificationCopy userInfo];
+      v8 = [userInfo2 objectForKey:*MEMORY[0x277CCA7E8]];
 
       v9 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -50,13 +50,13 @@
   }
 }
 
-- (BOOL)_internalExecuteUpdate:(id)a3 withParameters:(id)a4 error:(id *)a5
+- (BOOL)_internalExecuteUpdate:(id)update withParameters:(id)parameters error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ML3DatabaseConnection *)self isInTransaction];
-  if (!v10)
+  updateCopy = update;
+  parametersCopy = parameters;
+  isInTransaction = [(ML3DatabaseConnection *)self isInTransaction];
+  if (!isInTransaction)
   {
     [(ML3DatabaseConnection *)self pushTransaction];
   }
@@ -67,7 +67,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v25 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_22D2FA000, v13, OS_LOG_TYPE_ERROR, "No valid transaction ID for connection %{public}@", buf, 0xCu);
     }
 
@@ -79,7 +79,7 @@
 LABEL_11:
 
     v15 = 0;
-    if (v10)
+    if (isInTransaction)
     {
       goto LABEL_13;
     }
@@ -93,7 +93,7 @@ LABEL_11:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v25 = v8;
+      selfCopy2 = updateCopy;
       _os_log_impl(&dword_22D2FA000, v11, OS_LOG_TYPE_ERROR, "failing update request in a transaction marked for rollback. sql=%{public}@", buf, 0xCu);
     }
 
@@ -104,7 +104,7 @@ LABEL_11:
   mediaLibraryService = self->_mediaLibraryService;
   currentTransactionID = self->_currentTransactionID;
   v21 = 0;
-  v20 = [(MLMediaLibraryService *)mediaLibraryService executeUpdate:v8 withParameters:v9 onTransaction:currentTransactionID error:&v21];
+  v20 = [(MLMediaLibraryService *)mediaLibraryService executeUpdate:updateCopy withParameters:parametersCopy onTransaction:currentTransactionID error:&v21];
   v12 = v21;
   if (!v20)
   {
@@ -112,7 +112,7 @@ LABEL_11:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
       v27 = v12;
       _os_log_impl(&dword_22D2FA000, v11, OS_LOG_TYPE_ERROR, "Could not execute update on distant connection: %{public}@. %{public}@", buf, 0x16u);
@@ -122,54 +122,54 @@ LABEL_11:
   }
 
   v15 = 1;
-  if (!v10)
+  if (!isInTransaction)
   {
 LABEL_12:
     [(ML3DatabaseConnection *)self popTransactionAndCommit:1];
   }
 
 LABEL_13:
-  if (a5)
+  if (error)
   {
     v16 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v15;
 }
 
-- (id)_internalExecuteQuery:(id)a3 withParameters:(id)a4 limitProperty:(id)a5 limitValue:(int64_t)a6
+- (id)_internalExecuteQuery:(id)query withParameters:(id)parameters limitProperty:(id)property limitValue:(int64_t)value
 {
-  v10 = a5;
-  if (a3)
+  propertyCopy = property;
+  if (query)
   {
-    v11 = a4;
-    v12 = a3;
-    a3 = [[ML3DatabaseDistantResult alloc] initWithDistantConnection:self sql:v12 parameters:v11];
+    parametersCopy = parameters;
+    queryCopy = query;
+    query = [[ML3DatabaseDistantResult alloc] initWithDistantConnection:self sql:queryCopy parameters:parametersCopy];
 
-    if (v10)
+    if (propertyCopy)
     {
-      [a3 setLimitProperty:v10 limitValue:a6];
+      [query setLimitProperty:propertyCopy limitValue:value];
     }
 
-    v13 = [(ML3DatabaseConnection *)self connectionDelegate];
+    connectionDelegate = [(ML3DatabaseConnection *)self connectionDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v13 connectionDidAccessDatabase:self];
+      [connectionDelegate connectionDidAccessDatabase:self];
     }
   }
 
-  return a3;
+  return query;
 }
 
-- (BOOL)_internalEndTransactionAndCommit:(BOOL)a3
+- (BOOL)_internalEndTransactionAndCommit:(BOOL)commit
 {
-  v3 = a3;
+  commitCopy = commit;
   v22 = *MEMORY[0x277D85DE8];
   if (![(ML3DatabaseConnection *)self isInTransaction])
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"ML3DatabaseDistantConnection.m" lineNumber:203 description:@"Attempted to end non-existent distant transaction."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseDistantConnection.m" lineNumber:203 description:@"Attempted to end non-existent distant transaction."];
   }
 
   [(ML3DatabaseConnection *)self _ensureConnectionIsOpen];
@@ -178,24 +178,24 @@ LABEL_13:
   {
     mediaLibraryService = self->_mediaLibraryService;
     v17 = 0;
-    v8 = [(MLMediaLibraryService *)mediaLibraryService endTransaction:currentTransactionID shouldCommit:v3 error:&v17];
+    v8 = [(MLMediaLibraryService *)mediaLibraryService endTransaction:currentTransactionID shouldCommit:commitCopy error:&v17];
     v9 = v17;
-    v10 = [(ML3DatabaseConnection *)self connectionDelegate];
+    connectionDelegate = [(ML3DatabaseConnection *)self connectionDelegate];
     v11 = os_log_create("com.apple.amp.medialibrary", "Default");
     v12 = v11;
     if (v8)
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v13 = [(NSUUID *)self->_currentTransactionID UUIDString];
+        uUIDString = [(NSUUID *)self->_currentTransactionID UUIDString];
         *buf = 138543362;
-        v19 = v13;
+        selfCopy = uUIDString;
         _os_log_impl(&dword_22D2FA000, v12, OS_LOG_TYPE_DEBUG, "Successfully ended transaction with ID %{public}@", buf, 0xCu);
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v10 connection:self didEndDatabaseTransactionAndCommit:v3];
+        [connectionDelegate connection:self didEndDatabaseTransactionAndCommit:commitCopy];
       }
     }
 
@@ -204,7 +204,7 @@ LABEL_13:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v19 = self;
+        selfCopy = self;
         v20 = 2114;
         v21 = v9;
         _os_log_impl(&dword_22D2FA000, v12, OS_LOG_TYPE_DEFAULT, "Could not end transaction on distant connection: %{public}@. %{public}@", buf, 0x16u);
@@ -223,13 +223,13 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)_internalBeginTransactionWithBehaviorType:(unint64_t)a3 isRetry:(BOOL)a4
+- (BOOL)_internalBeginTransactionWithBehaviorType:(unint64_t)type isRetry:(BOOL)retry
 {
   v34 = *MEMORY[0x277D85DE8];
   if ([(ML3DatabaseConnection *)self isInTransaction])
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"ML3DatabaseDistantConnection.m" lineNumber:152 description:@"Attempted to begin distant transaction while one is already in process."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseDistantConnection.m" lineNumber:152 description:@"Attempted to begin distant transaction while one is already in process."];
   }
 
   [(ML3DatabaseConnection *)self _ensureConnectionIsOpen];
@@ -250,32 +250,32 @@ LABEL_13:
       IsFirstPartyMediaApplication = 1;
     }
 
-    v10 = [MEMORY[0x277CCACC8] isMainThread];
-    v11 = [(ML3DatabaseConnection *)self databasePath];
+    isMainThread = [MEMORY[0x277CCACC8] isMainThread];
+    databasePath = [(ML3DatabaseConnection *)self databasePath];
     v12 = [MLTransactionContext alloc];
-    v13 = [(ML3DatabaseConnection *)self privacyContext];
-    v14 = [(MLTransactionContext *)v12 initWithPrivacyContext:v13 path:v11 priorityLevel:v10 options:IsFirstPartyMediaApplication];
+    privacyContext = [(ML3DatabaseConnection *)self privacyContext];
+    v14 = [(MLTransactionContext *)v12 initWithPrivacyContext:privacyContext path:databasePath priorityLevel:isMainThread options:IsFirstPartyMediaApplication];
 
     mediaLibraryService = self->_mediaLibraryService;
     v29 = 0;
     v16 = [(MLMediaLibraryService *)mediaLibraryService beginTransactionForDatabaseWithContext:v14 error:&v29];
     v17 = v29;
-    v18 = [(ML3DatabaseConnection *)self connectionDelegate];
+    connectionDelegate = [(ML3DatabaseConnection *)self connectionDelegate];
     if (!v17 && v16)
     {
       objc_storeStrong(&self->_currentTransactionID, v16);
       v19 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
-        v20 = [v16 UUIDString];
+        uUIDString = [v16 UUIDString];
         *buf = 138543362;
-        v31 = v20;
+        selfCopy = uUIDString;
         _os_log_impl(&dword_22D2FA000, v19, OS_LOG_TYPE_DEBUG, "Successfully began transaction with ID %{public}@", buf, 0xCu);
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v18 connectionDidBeginDatabaseTransaction:self];
+        [connectionDelegate connectionDidBeginDatabaseTransaction:self];
       }
 
 LABEL_25:
@@ -289,13 +289,13 @@ LABEL_30:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v31 = self;
+      selfCopy = self;
       v32 = 2114;
       v33 = v17;
       _os_log_impl(&dword_22D2FA000, v21, OS_LOG_TYPE_DEFAULT, "Could not begin transaction on distant connection: %{public}@. %{public}@", buf, 0x16u);
     }
 
-    if (!a4)
+    if (!retry)
     {
       v22 = os_log_create("com.apple.amp.medialibrary", "Default");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -304,16 +304,16 @@ LABEL_30:
         _os_log_impl(&dword_22D2FA000, v22, OS_LOG_TYPE_DEFAULT, "Reattempting to begin transaction with media library service...", buf, 2u);
       }
 
-      v23 = [(ML3DatabaseDistantConnection *)self _internalBeginTransactionWithBehaviorType:a3 isRetry:1];
+      v23 = [(ML3DatabaseDistantConnection *)self _internalBeginTransactionWithBehaviorType:type isRetry:1];
       v24 = os_log_create("com.apple.amp.medialibrary", "Default");
       v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
       if (v23)
       {
         if (v25)
         {
-          v26 = [(NSUUID *)self->_currentTransactionID UUIDString];
+          uUIDString2 = [(NSUUID *)self->_currentTransactionID UUIDString];
           *buf = 138543362;
-          v31 = v26;
+          selfCopy = uUIDString2;
           _os_log_impl(&dword_22D2FA000, v24, OS_LOG_TYPE_DEFAULT, "Reattempt to begin transaction succeeded. Proceeding with new transaction ID %{public}@.", buf, 0xCu);
         }
 
@@ -350,19 +350,19 @@ LABEL_30:
   return result;
 }
 
-- (BOOL)_openWithFlags:(int)a3
+- (BOOL)_openWithFlags:(int)flags
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = [(ML3DatabaseConnection *)self connectionDelegate];
+  connectionDelegate = [(ML3DatabaseConnection *)self connectionDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 connectionWillOpenDatabase:self];
+    [connectionDelegate connectionWillOpenDatabase:self];
   }
 
   self->_connectionOpen = 1;
   if (objc_opt_respondsToSelector())
   {
-    [v4 connectionDidOpenDatabase:0];
+    [connectionDelegate connectionDidOpenDatabase:0];
   }
 
   else if (!self->_connectionOpen && (objc_opt_respondsToSelector() & 1) != 0)
@@ -371,7 +371,7 @@ LABEL_30:
     v10[0] = @"Distant connection could not open XPC connection to media library service daemon.";
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ML3DatabaseErrorDomain" code:0 userInfo:v5];
-    [v4 connection:self didFailToOpenDatabaseWithError:v6];
+    [connectionDelegate connection:self didFailToOpenDatabaseWithError:v6];
   }
 
   connectionOpen = self->_connectionOpen;
@@ -381,19 +381,19 @@ LABEL_30:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"MLMediaLibraryServiceDidTerminateTransactionNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"MLMediaLibraryServiceDidTerminateTransactionNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = ML3DatabaseDistantConnection;
   [(ML3DatabaseConnection *)&v4 dealloc];
 }
 
-- (ML3DatabaseDistantConnection)initWithDatabasePath:(id)a3
+- (ML3DatabaseDistantConnection)initWithDatabasePath:(id)path
 {
   v9.receiver = self;
   v9.super_class = ML3DatabaseDistantConnection;
-  v3 = [(ML3DatabaseConnection *)&v9 initWithDatabasePath:a3];
+  v3 = [(ML3DatabaseConnection *)&v9 initWithDatabasePath:path];
   if (v3)
   {
     v4 = +[MLMediaLibraryService sharedMediaLibraryService];
@@ -403,8 +403,8 @@ LABEL_30:
     currentTransactionID = v3->_currentTransactionID;
     v3->_currentTransactionID = 0;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v3 selector:sel__serviceTerminatedTransactionNotification_ name:@"MLMediaLibraryServiceDidTerminateTransactionNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__serviceTerminatedTransactionNotification_ name:@"MLMediaLibraryServiceDidTerminateTransactionNotification" object:0];
   }
 
   return v3;

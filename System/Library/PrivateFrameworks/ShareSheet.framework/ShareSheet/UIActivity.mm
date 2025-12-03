@@ -1,17 +1,17 @@
 @interface UIActivity
-+ (double)imageWidthForContentSizeCategory:(id)a3;
-+ (id)_actionImageForActionRepresentationImage:(id)a3 contentSizeCategory:(id)a4 monochrome:(BOOL)a5;
-+ (id)_actionImageForBundleImageConfiguration:(id)a3;
-+ (id)_activityImageForActionRepresentationImage:(id)a3;
-+ (id)_activityImageForBundleImageConfiguration:(id)a3;
-+ (id)_activitySettingsImageForBundleImageConfiguration:(id)a3;
++ (double)imageWidthForContentSizeCategory:(id)category;
++ (id)_actionImageForActionRepresentationImage:(id)image contentSizeCategory:(id)category monochrome:(BOOL)monochrome;
++ (id)_actionImageForBundleImageConfiguration:(id)configuration;
++ (id)_activityImageForActionRepresentationImage:(id)image;
++ (id)_activityImageForBundleImageConfiguration:(id)configuration;
++ (id)_activitySettingsImageForBundleImageConfiguration:(id)configuration;
 + (id)_defaultFallbackActivityType;
-+ (id)_imageByApplyingDefaultEffectsToImage:(id)a3 activityCategory:(int64_t)a4 iconFormat:(int)a5;
-+ (id)_stringFromActivityCategory:(int64_t)a3;
-+ (id)preparedActivityExtensionItemDataForActivityItemValues:(id)a3 extensionItemDataRequest:(id)a4;
++ (id)_imageByApplyingDefaultEffectsToImage:(id)image activityCategory:(int64_t)category iconFormat:(int)format;
++ (id)_stringFromActivityCategory:(int64_t)category;
++ (id)preparedActivityExtensionItemDataForActivityItemValues:(id)values extensionItemDataRequest:(id)request;
 + (unint64_t)_xpcAttributes;
-+ (void)_loadItemProvidersFromActivityItems:(id)a3 withCacheURL:(id)a4 completion:(id)a5;
-+ (void)_performAfterActivityImageLoadingCompletes:(id)a3;
++ (void)_loadItemProvidersFromActivityItems:(id)items withCacheURL:(id)l completion:(id)completion;
++ (void)_performAfterActivityImageLoadingCompletes:(id)completes;
 - (BOOL)_isBuiltinDerived;
 - (CGSize)_thumbnailSize;
 - (NSString)description;
@@ -22,15 +22,15 @@
 - (id)_activityImage;
 - (id)_activitySettingsImage;
 - (id)_activityTypeUsingFallbackActivityTypeIfNecessary;
-- (id)_attachmentNameForActivityItem:(id)a3;
-- (id)_dataTypeIdentifierForActivityItem:(id)a3;
-- (id)_subjectForActivityItem:(id)a3;
-- (id)_thumbnailImageForActivityItem:(id)a3;
+- (id)_attachmentNameForActivityItem:(id)item;
+- (id)_dataTypeIdentifierForActivityItem:(id)item;
+- (id)_subjectForActivityItem:(id)item;
+- (id)_thumbnailImageForActivityItem:(id)item;
 - (int64_t)_defaultSortGroup;
-- (void)_loadItemProvidersFromActivityItems:(id)a3 wantsSendCopyRepresentation:(BOOL)a4 completion:(id)a5;
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4;
-- (void)activityDidFinish:(BOOL)a3 items:(id)a4 error:(id)a5;
+- (void)_loadItemProvidersFromActivityItems:(id)items wantsSendCopyRepresentation:(BOOL)representation completion:(id)completion;
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion;
 - (void)activityDidFinish:(BOOL)completed;
+- (void)activityDidFinish:(BOOL)finish items:(id)items error:(id)error;
 @end
 
 @implementation UIActivity
@@ -42,9 +42,9 @@
   v2 = [(UIActivity *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     activityUUID = v2->_activityUUID;
-    v2->_activityUUID = v3;
+    v2->_activityUUID = uUID;
 
     v2->_indexInApplicationDefinedActivities = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -54,12 +54,12 @@
 
 + (id)_defaultFallbackActivityType
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [v3 stringByAppendingString:@"."];
+  v6 = [bundleIdentifier stringByAppendingString:@"."];
   v7 = [v6 stringByAppendingString:v5];
 
   return v7;
@@ -119,8 +119,8 @@
     v11.receiver = self;
     v11.super_class = UIActivity;
     v8 = [(UIActivity *)&v11 description];
-    v9 = [(UIActivity *)self activityType];
-    v5 = [v7 stringWithFormat:@"%@ activityType:%@ activityTitle:%@", v8, v9, v4];
+    activityType = [(UIActivity *)self activityType];
+    v5 = [v7 stringWithFormat:@"%@ activityType:%@ activityTitle:%@", v8, activityType, v4];
   }
 
   self->_isInsideDescription = 0;
@@ -199,89 +199,89 @@ LABEL_11:
 
 - (id)_activityTypeUsingFallbackActivityTypeIfNecessary
 {
-  v2 = [(UIActivity *)self activityType];
-  if ([v2 length])
+  activityType = [(UIActivity *)self activityType];
+  if ([activityType length])
   {
-    v3 = v2;
+    _defaultFallbackActivityType = activityType;
   }
 
   else
   {
-    v3 = [objc_opt_class() _defaultFallbackActivityType];
+    _defaultFallbackActivityType = [objc_opt_class() _defaultFallbackActivityType];
   }
 
-  v4 = v3;
+  v4 = _defaultFallbackActivityType;
 
   return v4;
 }
 
-- (id)_subjectForActivityItem:(id)a3
+- (id)_subjectForActivityItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UIActivity *)self activityType];
-  v6 = [_UIActivityItemMapping _subjectForActivityItem:v4 activityType:v5];
+  itemCopy = item;
+  activityType = [(UIActivity *)self activityType];
+  v6 = [_UIActivityItemMapping _subjectForActivityItem:itemCopy activityType:activityType];
 
   return v6;
 }
 
-- (id)_dataTypeIdentifierForActivityItem:(id)a3
+- (id)_dataTypeIdentifierForActivityItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UIActivity *)self activityType];
-  v6 = [_UIActivityItemMapping _dataTypeIdentifierForActivityItem:v4 activityType:v5];
+  itemCopy = item;
+  activityType = [(UIActivity *)self activityType];
+  v6 = [_UIActivityItemMapping _dataTypeIdentifierForActivityItem:itemCopy activityType:activityType];
 
   return v6;
 }
 
-- (id)_thumbnailImageForActivityItem:(id)a3
+- (id)_thumbnailImageForActivityItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(UIActivity *)self _thumbnailSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(UIActivity *)self activityType];
-  v10 = [_UIActivityItemMapping _thumbnailImageForActivityItem:v4 thumbnailSize:v9 activityType:v6, v8];
+  activityType = [(UIActivity *)self activityType];
+  v10 = [_UIActivityItemMapping _thumbnailImageForActivityItem:itemCopy thumbnailSize:activityType activityType:v6, v8];
 
   return v10;
 }
 
-- (id)_attachmentNameForActivityItem:(id)a3
+- (id)_attachmentNameForActivityItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UIActivity *)self activityType];
-  v6 = [_UIActivityItemMapping _attachmentNameForActivityItem:v4 activityType:v5];
+  itemCopy = item;
+  activityType = [(UIActivity *)self activityType];
+  v6 = [_UIActivityItemMapping _attachmentNameForActivityItem:itemCopy activityType:activityType];
 
   return v6;
 }
 
-- (void)activityDidFinish:(BOOL)a3 items:(id)a4 error:(id)a5
+- (void)activityDidFinish:(BOOL)finish items:(id)items error:(id)error
 {
-  v6 = a3;
+  finishCopy = finish;
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  itemsCopy = items;
+  errorCopy = error;
   v10 = share_sheet_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"NO";
     v15 = 138412802;
-    if (v6)
+    if (finishCopy)
     {
       v11 = @"YES";
     }
 
     v16 = v11;
     v17 = 2112;
-    v18 = v8;
+    v18 = itemsCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = errorCopy;
     _os_log_impl(&dword_18B359000, v10, OS_LOG_TYPE_DEFAULT, "Called activityDidFinish:%@ items:%@ error:%@", &v15, 0x20u);
   }
 
   if (self->_representationCacheURL)
   {
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    [v12 removeItemAtURL:self->_representationCacheURL error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:self->_representationCacheURL error:0];
   }
 
   v13 = MEMORY[0x18CFF58E0](self->_didFinishPerformingActivityHandler);
@@ -290,13 +290,13 @@ LABEL_11:
 
   if (v13)
   {
-    (v13)[2](v13, v6, v8, v9);
+    (v13)[2](v13, finishCopy, itemsCopy, errorCopy);
   }
 }
 
-+ (void)_performAfterActivityImageLoadingCompletes:(id)a3
++ (void)_performAfterActivityImageLoadingCompletes:(id)completes
 {
-  v3 = a3;
+  completesCopy = completes;
   v4 = share_sheet_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -314,14 +314,14 @@ LABEL_11:
     _os_log_impl(&dword_18B359000, v6, OS_LOG_TYPE_DEFAULT, "Finished waiting on image loading queue", v7, 2u);
   }
 
-  dispatch_async(MEMORY[0x1E69E96A0], v3);
+  dispatch_async(MEMORY[0x1E69E96A0], completesCopy);
 }
 
-+ (double)imageWidthForContentSizeCategory:(id)a3
++ (double)imageWidthForContentSizeCategory:(id)category
 {
-  v3 = a3;
-  v4 = v3;
-  if (*MEMORY[0x1E69DDC70] == v3)
+  categoryCopy = category;
+  v4 = categoryCopy;
+  if (*MEMORY[0x1E69DDC70] == categoryCopy)
   {
     v6 = 0x4040000000000000;
 LABEL_12:
@@ -329,43 +329,43 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  if (*MEMORY[0x1E69DDC68] == v3)
+  if (*MEMORY[0x1E69DDC68] == categoryCopy)
   {
     v5 = 26.0;
     goto LABEL_16;
   }
 
-  if (*MEMORY[0x1E69DDC88] == v3)
+  if (*MEMORY[0x1E69DDC88] == categoryCopy)
   {
     v5 = 28.0;
     goto LABEL_16;
   }
 
-  if (*MEMORY[0x1E69DDC78] == v3)
+  if (*MEMORY[0x1E69DDC78] == categoryCopy)
   {
     v5 = 30.0;
     goto LABEL_16;
   }
 
-  if (*MEMORY[0x1E69DDC60] == v3)
+  if (*MEMORY[0x1E69DDC60] == categoryCopy)
   {
     v6 = 0x4041000000000000;
     goto LABEL_12;
   }
 
-  if (*MEMORY[0x1E69DDC58] == v3)
+  if (*MEMORY[0x1E69DDC58] == categoryCopy)
   {
     v6 = 0x4042000000000000;
     goto LABEL_12;
   }
 
-  if (*MEMORY[0x1E69DDC50] == v3)
+  if (*MEMORY[0x1E69DDC50] == categoryCopy)
   {
     v6 = 0x4043000000000000;
     goto LABEL_12;
   }
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+  if (UIContentSizeCategoryIsAccessibilityCategory(categoryCopy))
   {
     v5 = 46.0;
   }
@@ -380,24 +380,24 @@ LABEL_16:
   return v5;
 }
 
-- (void)_loadItemProvidersFromActivityItems:(id)a3 wantsSendCopyRepresentation:(BOOL)a4 completion:(id)a5
+- (void)_loadItemProvidersFromActivityItems:(id)items wantsSendCopyRepresentation:(BOOL)representation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  itemsCopy = items;
+  completionCopy = completion;
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v11 = _itemLoaderQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__UIActivity__loadItemProvidersFromActivityItems_wantsSendCopyRepresentation_completion___block_invoke;
   block[3] = &unk_1E71F99A8;
-  v16 = v8;
-  v17 = self;
-  v20 = a4;
+  v16 = itemsCopy;
+  selfCopy = self;
+  representationCopy = representation;
   v18 = v10;
-  v19 = v9;
-  v12 = v9;
+  v19 = completionCopy;
+  v12 = completionCopy;
   v13 = v10;
-  v14 = v8;
+  v14 = itemsCopy;
   dispatch_async(v11, block);
 }
 
@@ -496,25 +496,25 @@ void __89__UIActivity__loadItemProvidersFromActivityItems_wantsSendCopyRepresent
   (*(v12 + 16))(v12, v13);
 }
 
-+ (void)_loadItemProvidersFromActivityItems:(id)a3 withCacheURL:(id)a4 completion:(id)a5
++ (void)_loadItemProvidersFromActivityItems:(id)items withCacheURL:(id)l completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  itemsCopy = items;
+  lCopy = l;
+  completionCopy = completion;
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v11 = _itemLoaderQueue();
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __74__UIActivity__loadItemProvidersFromActivityItems_withCacheURL_completion___block_invoke;
   v16[3] = &unk_1E71F9A20;
-  v17 = v7;
-  v18 = v8;
+  v17 = itemsCopy;
+  v18 = lCopy;
   v19 = v10;
-  v20 = v9;
-  v12 = v9;
+  v20 = completionCopy;
+  v12 = completionCopy;
   v13 = v10;
-  v14 = v8;
-  v15 = v7;
+  v14 = lCopy;
+  v15 = itemsCopy;
   dispatch_async(v11, v16);
 }
 
@@ -610,15 +610,15 @@ void __74__UIActivity__loadItemProvidersFromActivityItems_withCacheURL_completio
   (*(v12 + 16))(v12, v13, *(a1 + 48));
 }
 
-+ (id)_stringFromActivityCategory:(int64_t)a3
++ (id)_stringFromActivityCategory:(int64_t)category
 {
   v3 = @"Unknown";
-  if (!a3)
+  if (!category)
   {
     v3 = @"UIActivityCategoryAction";
   }
 
-  if (a3 == 1)
+  if (category == 1)
   {
     return @"UIActivityCategoryShare";
   }
@@ -697,40 +697,40 @@ id __42__UIActivity__activitySettingsImageLoader__block_invoke(uint64_t a1)
 
 - (id)_actionImage
 {
-  v3 = [(UIActivity *)self _activityBundleImageConfiguration];
-  if (v3)
+  _activityBundleImageConfiguration = [(UIActivity *)self _activityBundleImageConfiguration];
+  if (_activityBundleImageConfiguration)
   {
-    v4 = [UIActivity _actionImageForBundleImageConfiguration:v3];
+    v4 = [UIActivity _actionImageForBundleImageConfiguration:_activityBundleImageConfiguration];
   }
 
   else
   {
-    v5 = [(UIActivity *)self activityImage];
-    v6 = [(UIActivity *)self contentSizeCategory];
-    v4 = [UIActivity _actionImageForActionRepresentationImage:v5 contentSizeCategory:v6];
+    activityImage = [(UIActivity *)self activityImage];
+    contentSizeCategory = [(UIActivity *)self contentSizeCategory];
+    v4 = [UIActivity _actionImageForActionRepresentationImage:activityImage contentSizeCategory:contentSizeCategory];
   }
 
   return v4;
 }
 
-+ (id)_actionImageForActionRepresentationImage:(id)a3 contentSizeCategory:(id)a4 monochrome:(BOOL)a5
++ (id)_actionImageForActionRepresentationImage:(id)image contentSizeCategory:(id)category monochrome:(BOOL)monochrome
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 || (([v7 size], v10 == *MEMORY[0x1E695F060]) ? (v11 = v9 == *(MEMORY[0x1E695F060] + 8)) : (v11 = 0), v11))
+  imageCopy = image;
+  categoryCopy = category;
+  if (!imageCopy || (([imageCopy size], v10 == *MEMORY[0x1E695F060]) ? (v11 = v9 == *(MEMORY[0x1E695F060] + 8)) : (v11 = 0), v11))
   {
     v28 = 0;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v12 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v14 = v13;
 
-    [UIActivity imageWidthForContentSizeCategory:v8];
+    [UIActivity imageWidthForContentSizeCategory:categoryCopy];
     v16 = v15;
-    [v7 size];
+    [imageCopy size];
     UIRectCenteredAboutPointScale();
     v18 = v17;
     v20 = v19;
@@ -746,10 +746,10 @@ id __42__UIActivity__activitySettingsImageLoader__block_invoke(uint64_t a1)
     *&v30.d = xmmword_18B4339B0;
     v30.ty = v16;
     CGContextConcatCTM(CurrentContext, &v30);
-    if (a5)
+    if (monochrome)
     {
-      v26 = [MEMORY[0x1E69DC888] whiteColor];
-      CGContextSetFillColorWithColor(CurrentContext, [v26 CGColor]);
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      CGContextSetFillColorWithColor(CurrentContext, [whiteColor CGColor]);
 
       v33.origin.x = v18;
       v33.origin.y = v20;
@@ -759,12 +759,12 @@ id __42__UIActivity__activitySettingsImageLoader__block_invoke(uint64_t a1)
       CGContextSetBlendMode(CurrentContext, kCGBlendModeDestinationIn);
     }
 
-    v27 = [v7 CGImage];
+    cGImage = [imageCopy CGImage];
     v34.origin.x = v18;
     v34.origin.y = v20;
     v34.size.width = v22;
     v34.size.height = v24;
-    CGContextDrawImage(CurrentContext, v34, v27);
+    CGContextDrawImage(CurrentContext, v34, cGImage);
     v28 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
   }
@@ -772,61 +772,61 @@ id __42__UIActivity__activitySettingsImageLoader__block_invoke(uint64_t a1)
   return v28;
 }
 
-+ (id)preparedActivityExtensionItemDataForActivityItemValues:(id)a3 extensionItemDataRequest:(id)a4
++ (id)preparedActivityExtensionItemDataForActivityItemValues:(id)values extensionItemDataRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  valuesCopy = values;
   v8 = objc_alloc_init(UISUIActivityExtensionItemData);
-  v9 = [a1 _activityExtensionItemsForActivityItemValues:v7 extensionItemDataRequest:v6];
+  v9 = [self _activityExtensionItemsForActivityItemValues:valuesCopy extensionItemDataRequest:requestCopy];
 
   [(UISUIActivityExtensionItemData *)v8 setExtensionItems:v9];
 
   return v8;
 }
 
-+ (id)_actionImageForBundleImageConfiguration:(id)a3
++ (id)_actionImageForBundleImageConfiguration:(id)configuration
 {
-  v3 = [a3 fetchedImage];
-  v4 = [UIActivity _actionImageForActionRepresentationImage:v3 contentSizeCategory:0];
+  fetchedImage = [configuration fetchedImage];
+  v4 = [UIActivity _actionImageForActionRepresentationImage:fetchedImage contentSizeCategory:0];
 
   return v4;
 }
 
-+ (id)_activityImageForBundleImageConfiguration:(id)a3
++ (id)_activityImageForBundleImageConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 fetchedImage];
-  v5 = [v3 activityCategory];
+  configurationCopy = configuration;
+  fetchedImage = [configurationCopy fetchedImage];
+  activityCategory = [configurationCopy activityCategory];
 
-  v6 = [UIActivity _imageByApplyingDefaultEffectsToImage:v4 activityCategory:v5 iconFormat:10];
+  v6 = [UIActivity _imageByApplyingDefaultEffectsToImage:fetchedImage activityCategory:activityCategory iconFormat:10];
 
   return v6;
 }
 
-+ (id)_activitySettingsImageForBundleImageConfiguration:(id)a3
++ (id)_activitySettingsImageForBundleImageConfiguration:(id)configuration
 {
-  v3 = [a3 fetchedImage];
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 scale];
+  fetchedImage = [configuration fetchedImage];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
-  v7 = [v3 _applicationIconImageForFormat:0 precomposed:0 scale:v6];
+  v7 = [fetchedImage _applicationIconImageForFormat:0 precomposed:0 scale:v6];
 
   return v7;
 }
 
-+ (id)_imageByApplyingDefaultEffectsToImage:(id)a3 activityCategory:(int64_t)a4 iconFormat:(int)a5
++ (id)_imageByApplyingDefaultEffectsToImage:(id)image activityCategory:(int64_t)category iconFormat:(int)format
 {
-  v6 = a3;
+  imageCopy = image;
   v7 = dyld_program_sdk_at_least();
-  if (a4 && (v7 & 1) != 0)
+  if (category && (v7 & 1) != 0)
   {
-    v8 = v6;
+    v8 = imageCopy;
   }
 
   else
   {
-    v8 = [UIActivity _activityImageForActionRepresentationImage:v6];
+    v8 = [UIActivity _activityImageForActionRepresentationImage:imageCopy];
   }
 
   v9 = v8;
@@ -834,13 +834,13 @@ id __42__UIActivity__activitySettingsImageLoader__block_invoke(uint64_t a1)
   return v9;
 }
 
-+ (id)_activityImageForActionRepresentationImage:(id)a3
++ (id)_activityImageForActionRepresentationImage:(id)image
 {
-  v3 = a3;
-  v4 = v3;
+  imageCopy = image;
+  v4 = imageCopy;
   if (_activityImageForActionRepresentationImage__once == -1)
   {
-    if (!v3)
+    if (!imageCopy)
     {
       goto LABEL_9;
     }
@@ -880,18 +880,18 @@ id __42__UIActivity__activitySettingsImageLoader__block_invoke(uint64_t a1)
     v27.ty = v11;
     CGContextConcatCTM(CurrentContext, &v27);
     [_activityImageForActionRepresentationImage____chickletImage drawAtPoint:17 blendMode:*MEMORY[0x1E695EFF8] alpha:{*(MEMORY[0x1E695EFF8] + 8), 1.0}];
-    v23 = [_activityImageForActionRepresentationImage____chickletImage CGImage];
+    cGImage = [_activityImageForActionRepresentationImage____chickletImage CGImage];
     v30.origin.x = 0.0;
     v30.origin.y = 0.0;
     v30.size.width = v9;
     v30.size.height = v11;
-    CGContextClipToMask(CurrentContext, v30, v23);
-    v24 = [v4 CGImage];
+    CGContextClipToMask(CurrentContext, v30, cGImage);
+    cGImage2 = [v4 CGImage];
     v31.origin.x = v15;
     v31.origin.y = v17;
     v31.size.width = v19;
     v31.size.height = v21;
-    CGContextClipToMask(CurrentContext, v31, v24);
+    CGContextClipToMask(CurrentContext, v31, cGImage2);
     [_activityImageForActionRepresentationImage____imageTintColor set];
     v32.origin.x = 0.0;
     v32.origin.y = 0.0;
@@ -937,24 +937,24 @@ void __77__UIActivity_UIActivity_Private___activityImageForActionRepresentationI
 
 - (id)_activityImage
 {
-  v3 = [(UIActivity *)self _bundleIdentifierForActivityImageCreation];
-  if ([v3 length])
+  _bundleIdentifierForActivityImageCreation = [(UIActivity *)self _bundleIdentifierForActivityImageCreation];
+  if ([_bundleIdentifierForActivityImageCreation length])
   {
-    v4 = [UIActivity _activityImageForApplicationBundleIdentifier:v3 userInterfaceStyle:[(UIActivity *)self userInterfaceStyle]];
+    v4 = [UIActivity _activityImageForApplicationBundleIdentifier:_bundleIdentifierForActivityImageCreation userInterfaceStyle:[(UIActivity *)self userInterfaceStyle]];
   }
 
   else
   {
-    v5 = [(UIActivity *)self _activityBundleImageConfiguration];
-    if (v5)
+    _activityBundleImageConfiguration = [(UIActivity *)self _activityBundleImageConfiguration];
+    if (_activityBundleImageConfiguration)
     {
-      v4 = [UIActivity _activityImageForBundleImageConfiguration:v5];
+      v4 = [UIActivity _activityImageForBundleImageConfiguration:_activityBundleImageConfiguration];
     }
 
     else
     {
-      v6 = [(UIActivity *)self activityImage];
-      v4 = +[UIActivity _imageByApplyingDefaultEffectsToImage:activityCategory:iconFormat:](UIActivity, "_imageByApplyingDefaultEffectsToImage:activityCategory:iconFormat:", v6, [objc_opt_class() activityCategory], 10);
+      activityImage = [(UIActivity *)self activityImage];
+      v4 = +[UIActivity _imageByApplyingDefaultEffectsToImage:activityCategory:iconFormat:](UIActivity, "_imageByApplyingDefaultEffectsToImage:activityCategory:iconFormat:", activityImage, [objc_opt_class() activityCategory], 10);
     }
   }
 
@@ -963,18 +963,18 @@ void __77__UIActivity_UIActivity_Private___activityImageForActionRepresentationI
 
 - (id)_activitySettingsImage
 {
-  v3 = [(UIActivity *)self _bundleIdentifierForActivityImageCreation];
-  if (v3)
+  _bundleIdentifierForActivityImageCreation = [(UIActivity *)self _bundleIdentifierForActivityImageCreation];
+  if (_bundleIdentifierForActivityImageCreation)
   {
-    v4 = [UIActivity _activitySettingsImageForApplicationBundleIdentifier:v3 userInterfaceStyle:[(UIActivity *)self userInterfaceStyle]];
+    v4 = [UIActivity _activitySettingsImageForApplicationBundleIdentifier:_bundleIdentifierForActivityImageCreation userInterfaceStyle:[(UIActivity *)self userInterfaceStyle]];
   }
 
   else
   {
-    v5 = [(UIActivity *)self _activitySettingsBundleImageConfiguration];
-    if (v5)
+    _activitySettingsBundleImageConfiguration = [(UIActivity *)self _activitySettingsBundleImageConfiguration];
+    if (_activitySettingsBundleImageConfiguration)
     {
-      v4 = [UIActivity _activitySettingsImageForBundleImageConfiguration:v5];
+      v4 = [UIActivity _activitySettingsImageForBundleImageConfiguration:_activitySettingsBundleImageConfiguration];
     }
 
     else
@@ -986,19 +986,19 @@ void __77__UIActivity_UIActivity_Private___activityImageForActionRepresentationI
   return v4;
 }
 
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __71__UIActivity_UIActivity_Private___prepareWithActivityItems_completion___block_invoke;
   v9[3] = &unk_1E71F9A70;
   objc_copyWeak(&v11, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v10 = v8;
-  [(UIActivity *)self _loadItemProvidersFromActivityItems:v6 completion:v9];
+  [(UIActivity *)self _loadItemProvidersFromActivityItems:itemsCopy completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

@@ -2,21 +2,21 @@
 - (BOOL)bufferEmpty;
 - (BOOL)bufferFull;
 - (NSArray)partfileArchivePaths;
-- (TISerializingResultLogger)initWithOutputURL:(id)a3 flushThreshold:(id)a4;
+- (TISerializingResultLogger)initWithOutputURL:(id)l flushThreshold:(id)threshold;
 - (id)allResults;
 - (id)currentPartfileArchivePath;
-- (void)addResult:(id)a3;
-- (void)enumerateResultsWithBlock:(id)a3;
-- (void)flushBufferWithCompletionHandler:(id)a3;
-- (void)serializeResultsArray:(id)a3;
+- (void)addResult:(id)result;
+- (void)enumerateResultsWithBlock:(id)block;
+- (void)flushBufferWithCompletionHandler:(id)handler;
+- (void)serializeResultsArray:(id)array;
 @end
 
 @implementation TISerializingResultLogger
 
-- (void)enumerateResultsWithBlock:(id)a3
+- (void)enumerateResultsWithBlock:(id)block
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   if (![(TISerializingResultLogger *)self bufferEmpty])
   {
     v5 = dispatch_semaphore_create(0);
@@ -80,7 +80,7 @@
                 objc_enumerationMutation(v17);
               }
 
-              v4[2](v4, *(*(&v26 + 1) + 8 * v21++));
+              blockCopy[2](blockCopy, *(*(&v26 + 1) + 8 * v21++));
             }
 
             while (v19 != v21);
@@ -104,41 +104,41 @@
 
 - (id)allResults
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__TISerializingResultLogger_allResults__block_invoke;
   v6[3] = &unk_279DA0960;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(TISerializingResultLogger *)self enumerateResultsWithBlock:v6];
 
   return v4;
 }
 
-- (void)serializeResultsArray:(id)a3
+- (void)serializeResultsArray:(id)array
 {
   v6 = 0;
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v6];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:array requiringSecureCoding:1 error:&v6];
   if (v4)
   {
-    v5 = [(TISerializingResultLogger *)self currentPartfileArchivePath];
-    [v4 writeToFile:v5 atomically:1];
+    currentPartfileArchivePath = [(TISerializingResultLogger *)self currentPartfileArchivePath];
+    [v4 writeToFile:currentPartfileArchivePath atomically:1];
   }
 }
 
-- (void)flushBufferWithCompletionHandler:(id)a3
+- (void)flushBufferWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TISerializingResultLogger *)self resultsBuffer];
+  handlerCopy = handler;
+  resultsBuffer = [(TISerializingResultLogger *)self resultsBuffer];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   resultsBuffer = self->_resultsBuffer;
   self->_resultsBuffer = v6;
 
-  v8 = [(TISerializingResultLogger *)self logSerializationQueue];
-  v11 = v4;
-  v9 = v4;
-  v10 = v5;
+  logSerializationQueue = [(TISerializingResultLogger *)self logSerializationQueue];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = resultsBuffer;
   TIDispatchAsync();
 }
 
@@ -158,27 +158,27 @@ uint64_t __62__TISerializingResultLogger_flushBufferWithCompletionHandler___bloc
 
 - (BOOL)bufferEmpty
 {
-  v2 = [(TISerializingResultLogger *)self resultsBuffer];
-  v3 = [v2 count] == 0;
+  resultsBuffer = [(TISerializingResultLogger *)self resultsBuffer];
+  v3 = [resultsBuffer count] == 0;
 
   return v3;
 }
 
 - (BOOL)bufferFull
 {
-  v2 = self;
-  v3 = [(TISerializingResultLogger *)self resultsBuffer];
-  v4 = [v3 count];
-  LOBYTE(v2) = v4 >= [(TISerializingResultLogger *)v2 flushThreshold];
+  selfCopy = self;
+  resultsBuffer = [(TISerializingResultLogger *)self resultsBuffer];
+  v4 = [resultsBuffer count];
+  LOBYTE(selfCopy) = v4 >= [(TISerializingResultLogger *)selfCopy flushThreshold];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)addResult:(id)a3
+- (void)addResult:(id)result
 {
-  v4 = a3;
-  v5 = [(TISerializingResultLogger *)self resultsBuffer];
-  [v5 addObject:v4];
+  resultCopy = result;
+  resultsBuffer = [(TISerializingResultLogger *)self resultsBuffer];
+  [resultsBuffer addObject:resultCopy];
 
   if ([(TISerializingResultLogger *)self bufferFull])
   {
@@ -189,13 +189,13 @@ uint64_t __62__TISerializingResultLogger_flushBufferWithCompletionHandler___bloc
 
 - (id)currentPartfileArchivePath
 {
-  v3 = [(TISerializingResultLogger *)self partfileURL];
-  v4 = [v3 path];
+  partfileURL = [(TISerializingResultLogger *)self partfileURL];
+  path = [partfileURL path];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", -[TISerializingResultLogger partfileCount](self, "partfileCount")];
-  v6 = [v4 stringByAppendingString:v5];
+  v6 = [path stringByAppendingString:v5];
 
   ++self->_partfileCount;
-  v7 = [(TISerializingResultLogger *)self partfileArchivePathsQueue];
+  partfileArchivePathsQueue = [(TISerializingResultLogger *)self partfileArchivePathsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__TISerializingResultLogger_currentPartfileArchivePath__block_invoke;
@@ -203,7 +203,7 @@ uint64_t __62__TISerializingResultLogger_flushBufferWithCompletionHandler___bloc
   block[4] = self;
   v8 = v6;
   v13 = v8;
-  dispatch_barrier_sync(v7, block);
+  dispatch_barrier_sync(partfileArchivePathsQueue, block);
 
   v9 = v13;
   v10 = v8;
@@ -225,7 +225,7 @@ void __55__TISerializingResultLogger_currentPartfileArchivePath__block_invoke(ui
   v8 = __Block_byref_object_copy__1144;
   v9 = __Block_byref_object_dispose__1145;
   v10 = 0;
-  v2 = [(TISerializingResultLogger *)self partfileArchivePathsQueue];
+  partfileArchivePathsQueue = [(TISerializingResultLogger *)self partfileArchivePathsQueue];
   TIDispatchSync();
 
   v3 = v6[5];
@@ -241,10 +241,10 @@ uint64_t __49__TISerializingResultLogger_partfileArchivePaths__block_invoke(uint
   return MEMORY[0x2821F96F8]();
 }
 
-- (TISerializingResultLogger)initWithOutputURL:(id)a3 flushThreshold:(id)a4
+- (TISerializingResultLogger)initWithOutputURL:(id)l flushThreshold:(id)threshold
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  thresholdCopy = threshold;
   v24.receiver = self;
   v24.super_class = TISerializingResultLogger;
   v8 = [(TISerializingResultLogger *)&v24 init];
@@ -252,18 +252,18 @@ uint64_t __49__TISerializingResultLogger_partfileArchivePaths__block_invoke(uint
   if (v8)
   {
     v8->_partfileCount = 0;
-    if (v7)
+    if (thresholdCopy)
     {
-      v10 = [v7 unsignedIntegerValue];
+      unsignedIntegerValue = [thresholdCopy unsignedIntegerValue];
     }
 
     else
     {
-      v10 = 500;
+      unsignedIntegerValue = 500;
     }
 
-    v9->_flushThreshold = v10;
-    v11 = [v6 URLByAppendingPathExtension:@"part"];
+    v9->_flushThreshold = unsignedIntegerValue;
+    v11 = [lCopy URLByAppendingPathExtension:@"part"];
     partfileURL = v9->_partfileURL;
     v9->_partfileURL = v11;
 

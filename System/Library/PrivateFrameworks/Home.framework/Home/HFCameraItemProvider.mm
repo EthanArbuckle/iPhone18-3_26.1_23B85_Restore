@@ -1,10 +1,10 @@
 @interface HFCameraItemProvider
 - (HFCameraItemProvider)init;
-- (HFCameraItemProvider)initWithHome:(id)a3;
+- (HFCameraItemProvider)initWithHome:(id)home;
 - (id)_favoriteFilter;
 - (id)_roomFilter;
 - (id)_showInHomeDashboardFilter;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
@@ -13,23 +13,23 @@
 
 - (HFCameraItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFCameraItemProvider.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HFCameraItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFCameraItemProvider.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HFCameraItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HFCameraItemProvider)initWithHome:(id)a3
+- (HFCameraItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v10.receiver = self;
   v10.super_class = HFCameraItemProvider;
   v6 = [(HFItemProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     [(HFCameraItemProvider *)v7 setCameraItems:v8];
   }
@@ -37,11 +37,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFCameraItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFCameraItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
@@ -56,15 +56,15 @@
   aBlock[3] = &unk_277DF5228;
   objc_copyWeak(&v25, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(HFCameraItemProvider *)self home];
-  v6 = [v5 accessories];
+  home = [(HFCameraItemProvider *)self home];
+  accessories = [home accessories];
 
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v27 count:16];
+  v7 = [accessories countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (v7)
   {
     v8 = *v21;
@@ -74,14 +74,14 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(accessories);
         }
 
-        v10 = [*(*(&v20 + 1) + 8 * i) cameraProfiles];
-        [v4 addObjectsFromArray:v10];
+        cameraProfiles = [*(*(&v20 + 1) + 8 * i) cameraProfiles];
+        [array addObjectsFromArray:cameraProfiles];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v20 objects:v27 count:16];
+      v7 = [accessories countByEnumeratingWithState:&v20 objects:v27 count:16];
     }
 
     while (v7);
@@ -92,9 +92,9 @@
   v19[2] = __35__HFCameraItemProvider_reloadItems__block_invoke_2;
   v19[3] = &unk_277DF8038;
   v19[4] = self;
-  v11 = [v4 na_filter:v19];
-  v12 = [(HFCameraItemProvider *)self filter];
-  v13 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v11 filter:v12 itemMap:v3];
+  v11 = [array na_filter:v19];
+  filter = [(HFCameraItemProvider *)self filter];
+  v13 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v11 filter:filter itemMap:v3];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __35__HFCameraItemProvider_reloadItems__block_invoke_3;
@@ -162,11 +162,11 @@ id __35__HFCameraItemProvider_reloadItems__block_invoke_3(uint64_t a1, void *a2)
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFCameraItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"service";
   v8[1] = @"accessory";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 
@@ -175,15 +175,15 @@ id __35__HFCameraItemProvider_reloadItems__block_invoke_3(uint64_t a1, void *a2)
 
 - (id)_roomFilter
 {
-  v2 = [(HFCameraItemProvider *)self room];
-  v3 = [v2 uniqueIdentifier];
+  room = [(HFCameraItemProvider *)self room];
+  uniqueIdentifier = [room uniqueIdentifier];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __35__HFCameraItemProvider__roomFilter__block_invoke;
   aBlock[3] = &unk_277DF8038;
-  v9 = v3;
-  v4 = v3;
+  v9 = uniqueIdentifier;
+  v4 = uniqueIdentifier;
   v5 = _Block_copy(aBlock);
   v6 = [v5 copy];
 

@@ -1,35 +1,35 @@
 @interface BSUIProgressSeparatorController
-- (BSUIProgressSeparatorController)initWithProgressView:(id)a3 frame:(CGRect)a4;
+- (BSUIProgressSeparatorController)initWithProgressView:(id)view frame:(CGRect)frame;
 - (CGRect)bounds;
 - (CGRect)frame;
-- (id)_gradientSeparatorWithColors:(id)a3 backgroundColor:(id)a4;
-- (id)_separatorWithColor:(id)a3;
+- (id)_gradientSeparatorWithColors:(id)colors backgroundColor:(id)color;
+- (id)_separatorWithColor:(id)color;
 - (id)description;
 - (void)_setupBackgroundLayer;
-- (void)_setupSeparatorForLayoutType:(int64_t)a3;
-- (void)configureWithType:(int64_t)a3;
-- (void)updateProgress:(double)a3 animate:(BOOL)a4;
+- (void)_setupSeparatorForLayoutType:(int64_t)type;
+- (void)configureWithType:(int64_t)type;
+- (void)updateProgress:(double)progress animate:(BOOL)animate;
 @end
 
 @implementation BSUIProgressSeparatorController
 
-- (BSUIProgressSeparatorController)initWithProgressView:(id)a3 frame:(CGRect)a4
+- (BSUIProgressSeparatorController)initWithProgressView:(id)view frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = BSUIProgressSeparatorController;
   v11 = [(BSUIProgressSeparatorController *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_progressView, a3);
-    v13 = [v10 metrics];
+    objc_storeStrong(&v11->_progressView, view);
+    metrics = [viewCopy metrics];
     metrics = v12->_metrics;
-    v12->_metrics = v13;
+    v12->_metrics = metrics;
 
     v12->_frame.origin.x = x;
     v12->_frame.origin.y = y;
@@ -40,38 +40,38 @@
   return v12;
 }
 
-- (void)updateProgress:(double)a3 animate:(BOOL)a4
+- (void)updateProgress:(double)progress animate:(BOOL)animate
 {
-  v6 = [(BSUIProgressSeparatorController *)self metrics];
-  v7 = v6;
-  if (a3 >= 1.0)
+  metrics = [(BSUIProgressSeparatorController *)self metrics];
+  v7 = metrics;
+  if (progress >= 1.0)
   {
-    [v6 progressColor];
+    [metrics progressColor];
   }
 
   else
   {
-    [v6 controlColor];
+    [metrics controlColor];
   }
   v8 = ;
-  v9 = [(BSUIProgressSeparatorController *)self progressView];
-  v10 = [v9 traitCollection];
-  v16 = [v8 resolvedColorWithTraitCollection:v10];
+  progressView = [(BSUIProgressSeparatorController *)self progressView];
+  traitCollection = [progressView traitCollection];
+  v16 = [v8 resolvedColorWithTraitCollection:traitCollection];
 
-  v11 = [(BSUIProgressSeparatorController *)self separatorLayer];
-  v12 = [v11 backgroundColor];
+  separatorLayer = [(BSUIProgressSeparatorController *)self separatorLayer];
+  backgroundColor = [separatorLayer backgroundColor];
   v13 = v16;
-  LOBYTE(v12) = CGColorEqualToColor(v12, [v16 CGColor]);
+  LOBYTE(backgroundColor) = CGColorEqualToColor(backgroundColor, [v16 CGColor]);
 
-  if ((v12 & 1) == 0)
+  if ((backgroundColor & 1) == 0)
   {
-    v14 = [v16 CGColor];
-    v15 = [(BSUIProgressSeparatorController *)self separatorLayer];
-    [v15 setBackgroundColor:v14];
+    cGColor = [v16 CGColor];
+    separatorLayer2 = [(BSUIProgressSeparatorController *)self separatorLayer];
+    [separatorLayer2 setBackgroundColor:cGColor];
   }
 }
 
-- (void)configureWithType:(int64_t)a3
+- (void)configureWithType:(int64_t)type
 {
   [(BSUIProgressSeparatorController *)self frame];
   Width = CGRectGetWidth(v7);
@@ -79,14 +79,14 @@
   [(BSUIProgressSeparatorController *)self setBounds:0.0, 0.0, Width, CGRectGetHeight(v8)];
   [(BSUIProgressSeparatorController *)self _setupBackgroundLayer];
 
-  [(BSUIProgressSeparatorController *)self _setupSeparatorForLayoutType:a3];
+  [(BSUIProgressSeparatorController *)self _setupSeparatorForLayoutType:type];
 }
 
 - (void)_setupBackgroundLayer
 {
-  v3 = [(BSUIProgressSeparatorController *)self backgroundLayer];
+  backgroundLayer = [(BSUIProgressSeparatorController *)self backgroundLayer];
 
-  if (!v3)
+  if (!backgroundLayer)
   {
     v4 = +[CALayer layer];
     backgroundLayer = self->_backgroundLayer;
@@ -109,109 +109,109 @@
   }
 
   [(CALayer *)self->_backgroundLayer setMasksToBounds:1];
-  v9 = [(BSUIProgressSeparatorController *)self progressView];
-  v8 = [v9 presentationLayer];
-  [v8 addSublayer:self->_backgroundLayer];
+  progressView = [(BSUIProgressSeparatorController *)self progressView];
+  presentationLayer = [progressView presentationLayer];
+  [presentationLayer addSublayer:self->_backgroundLayer];
 }
 
-- (void)_setupSeparatorForLayoutType:(int64_t)a3
+- (void)_setupSeparatorForLayoutType:(int64_t)type
 {
-  v5 = [(BSUIProgressSeparatorController *)self separatorLayer];
-  [v5 removeFromSuperlayer];
+  separatorLayer = [(BSUIProgressSeparatorController *)self separatorLayer];
+  [separatorLayer removeFromSuperlayer];
 
   [(BSUIProgressSeparatorController *)self setSeparatorLayer:0];
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 6)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
-    v8 = [(BSUIProgressSeparatorController *)self metrics];
-    v9 = v8;
-    if (a3 == 6)
+    metrics = [(BSUIProgressSeparatorController *)self metrics];
+    v9 = metrics;
+    if (type == 6)
     {
-      [v8 controlColor];
+      [metrics controlColor];
     }
 
     else
     {
-      [v8 progressColor];
+      [metrics progressColor];
     }
     v15 = ;
 
-    v16 = [(BSUIProgressSeparatorController *)self progressView];
-    v17 = [v16 traitCollection];
-    v13 = [v15 resolvedColorWithTraitCollection:v17];
+    progressView = [(BSUIProgressSeparatorController *)self progressView];
+    traitCollection = [progressView traitCollection];
+    v13 = [v15 resolvedColorWithTraitCollection:traitCollection];
 
-    v14 = [(BSUIProgressSeparatorController *)self metrics];
-    v18 = [v14 backgroundColor];
-    v19 = [(BSUIProgressSeparatorController *)self _gradientSeparatorWithColors:v13 backgroundColor:v18];
+    metrics2 = [(BSUIProgressSeparatorController *)self metrics];
+    backgroundColor = [metrics2 backgroundColor];
+    v19 = [(BSUIProgressSeparatorController *)self _gradientSeparatorWithColors:v13 backgroundColor:backgroundColor];
     [(BSUIProgressSeparatorController *)self setSeparatorLayer:v19];
   }
 
   else
   {
-    if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 4)
+    if ((type & 0xFFFFFFFFFFFFFFFELL) != 4)
     {
       goto LABEL_12;
     }
 
-    v6 = [(BSUIProgressSeparatorController *)self metrics];
-    v7 = v6;
-    if (a3 == 4)
+    metrics3 = [(BSUIProgressSeparatorController *)self metrics];
+    v7 = metrics3;
+    if (type == 4)
     {
-      [v6 controlColor];
+      [metrics3 controlColor];
     }
 
     else
     {
-      [v6 progressColor];
+      [metrics3 progressColor];
     }
     v10 = ;
 
-    v11 = [(BSUIProgressSeparatorController *)self progressView];
-    v12 = [v11 traitCollection];
-    v13 = [v10 resolvedColorWithTraitCollection:v12];
+    progressView2 = [(BSUIProgressSeparatorController *)self progressView];
+    traitCollection2 = [progressView2 traitCollection];
+    v13 = [v10 resolvedColorWithTraitCollection:traitCollection2];
 
-    v14 = [(BSUIProgressSeparatorController *)self _separatorWithColor:v13];
-    [(BSUIProgressSeparatorController *)self setSeparatorLayer:v14];
+    metrics2 = [(BSUIProgressSeparatorController *)self _separatorWithColor:v13];
+    [(BSUIProgressSeparatorController *)self setSeparatorLayer:metrics2];
   }
 
 LABEL_12:
-  v21 = [(BSUIProgressSeparatorController *)self backgroundLayer];
-  v20 = [(BSUIProgressSeparatorController *)self separatorLayer];
-  [v21 addSublayer:v20];
+  backgroundLayer = [(BSUIProgressSeparatorController *)self backgroundLayer];
+  separatorLayer2 = [(BSUIProgressSeparatorController *)self separatorLayer];
+  [backgroundLayer addSublayer:separatorLayer2];
 }
 
-- (id)_gradientSeparatorWithColors:(id)a3 backgroundColor:(id)a4
+- (id)_gradientSeparatorWithColors:(id)colors backgroundColor:(id)color
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BSUIProgressSeparatorController *)self metrics];
-  v9 = [v8 rightToLeft];
-  v10 = [v9 BOOLValue];
+  colorCopy = color;
+  colorsCopy = colors;
+  metrics = [(BSUIProgressSeparatorController *)self metrics];
+  rightToLeft = [metrics rightToLeft];
+  bOOLValue = [rightToLeft BOOLValue];
 
   v11 = objc_alloc_init(CAGradientLayer);
-  v12 = [v6 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  v16[0] = v12;
-  v13 = [v7 CGColor];
+  v16[0] = cGColor;
+  cGColor2 = [colorsCopy CGColor];
 
-  v16[1] = v13;
+  v16[1] = cGColor2;
   v14 = [NSArray arrayWithObjects:v16 count:2];
   [v11 setColors:v14];
 
   [(BSUIProgressSeparatorController *)self bounds];
   [v11 setFrame:?];
-  [v11 setStartPoint:{v10, 0.5}];
-  [v11 setEndPoint:{(v10 ^ 1), 0.5}];
+  [v11 setStartPoint:{bOOLValue, 0.5}];
+  [v11 setEndPoint:{(bOOLValue ^ 1), 0.5}];
 
   return v11;
 }
 
-- (id)_separatorWithColor:(id)a3
+- (id)_separatorWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = +[CALayer layer];
-  v6 = [v4 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  [v5 setBackgroundColor:v6];
+  [v5 setBackgroundColor:cGColor];
   [(BSUIProgressSeparatorController *)self bounds];
   [v5 setBounds:?];
   [(BSUIProgressSeparatorController *)self bounds];

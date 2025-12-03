@@ -23,11 +23,11 @@
   v23[2] = &unk_285C53448;
   v24[2] = @"No";
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:3];
-  v4 = [v3 allKeys];
-  [v2 setPossibleValues:v4];
+  allKeys = [v3 allKeys];
+  [v2 setPossibleValues:allKeys];
 
-  v5 = [v3 allValues];
-  [v2 setPossibleTitles:v5];
+  allValues = [v3 allValues];
+  [v2 setPossibleTitles:allValues];
 
   v6 = MEMORY[0x277D43218];
   v22 = v2;

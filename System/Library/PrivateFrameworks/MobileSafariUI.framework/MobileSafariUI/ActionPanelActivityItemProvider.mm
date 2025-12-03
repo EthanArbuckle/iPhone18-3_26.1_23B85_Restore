@@ -1,53 +1,53 @@
 @interface ActionPanelActivityItemProvider
-- (ActionPanelActivityItemProvider)initWithPlaceholderItem:(id)a3 tabDocument:(id)a4;
-- (ActionPanelActivityItemProvider)initWithTabDocument:(id)a3;
+- (ActionPanelActivityItemProvider)initWithPlaceholderItem:(id)item tabDocument:(id)document;
+- (ActionPanelActivityItemProvider)initWithTabDocument:(id)document;
 - (TabDocument)tabDocument;
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5;
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size;
 @end
 
 @implementation ActionPanelActivityItemProvider
 
-- (ActionPanelActivityItemProvider)initWithPlaceholderItem:(id)a3 tabDocument:(id)a4
+- (ActionPanelActivityItemProvider)initWithPlaceholderItem:(id)item tabDocument:(id)document
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 cachedCanonicalURLOrURLForSharing];
-  v9 = [v6 titleForSharing];
-  v10 = [v6 webView];
+  documentCopy = document;
+  itemCopy = item;
+  cachedCanonicalURLOrURLForSharing = [documentCopy cachedCanonicalURLOrURLForSharing];
+  titleForSharing = [documentCopy titleForSharing];
+  webView = [documentCopy webView];
   v14.receiver = self;
   v14.super_class = ActionPanelActivityItemProvider;
-  v11 = [(_SFLinkWithPreviewActivityItemProvider *)&v14 initWithPlaceholderItem:v7 URL:v8 pageTitle:v9 webView:v10];
+  v11 = [(_SFLinkWithPreviewActivityItemProvider *)&v14 initWithPlaceholderItem:itemCopy URL:cachedCanonicalURLOrURLForSharing pageTitle:titleForSharing webView:webView];
 
   if (v11)
   {
-    objc_storeWeak(&v11->_tabDocument, v6);
+    objc_storeWeak(&v11->_tabDocument, documentCopy);
     v12 = v11;
   }
 
   return v11;
 }
 
-- (ActionPanelActivityItemProvider)initWithTabDocument:(id)a3
+- (ActionPanelActivityItemProvider)initWithTabDocument:(id)document
 {
-  v4 = a3;
-  v5 = [v4 cachedCanonicalURLOrURLForSharing];
-  v6 = [(ActionPanelActivityItemProvider *)self initWithPlaceholderItem:v5 tabDocument:v4];
+  documentCopy = document;
+  cachedCanonicalURLOrURLForSharing = [documentCopy cachedCanonicalURLOrURLForSharing];
+  v6 = [(ActionPanelActivityItemProvider *)self initWithPlaceholderItem:cachedCanonicalURLOrURLForSharing tabDocument:documentCopy];
 
   return v6;
 }
 
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a4;
-  if ([v8 isEqualToString:*MEMORY[0x277D54710]])
+  height = size.height;
+  width = size.width;
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x277D54710]])
   {
-    v9 = [(_SFActivityItemProvider *)self thumbnailHandler];
-    if (v9)
+    thumbnailHandler = [(_SFActivityItemProvider *)self thumbnailHandler];
+    if (thumbnailHandler)
     {
-      v10 = [(_SFActivityItemProvider *)self thumbnailHandler];
-      v11 = (v10)[2](v10, v8, width, height);
+      thumbnailHandler2 = [(_SFActivityItemProvider *)self thumbnailHandler];
+      v11 = (thumbnailHandler2)[2](thumbnailHandler2, typeCopy, width, height);
     }
 
     else

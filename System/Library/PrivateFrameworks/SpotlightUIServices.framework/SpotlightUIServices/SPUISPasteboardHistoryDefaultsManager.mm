@@ -7,9 +7,9 @@
 - (SPUISPasteboardHistoryDefaultsManager)init;
 - (int64_t)historyTimeout;
 - (int64_t)pasteboardHistorySettingsVersion;
-- (void)setHistoryTimeout:(int64_t)a3;
-- (void)setIsPasteboardHistoryEnabled:(BOOL)a3;
-- (void)setPasteboardHistorySettingsVersion:(int64_t)a3;
+- (void)setHistoryTimeout:(int64_t)timeout;
+- (void)setIsPasteboardHistoryEnabled:(BOOL)enabled;
+- (void)setPasteboardHistorySettingsVersion:(int64_t)version;
 @end
 
 @implementation SPUISPasteboardHistoryDefaultsManager
@@ -28,28 +28,28 @@
 
 - (int64_t)historyTimeout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_26B8C1400();
 
   return v3;
 }
 
-- (void)setHistoryTimeout:(int64_t)a3
+- (void)setHistoryTimeout:(int64_t)timeout
 {
   v4 = MEMORY[0x277D85000];
   v5 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x60);
-  v8 = self;
-  if (v5() != a3)
+  selfCopy = self;
+  if (v5() != timeout)
   {
-    v6 = (*((*v4 & v8->super.isa) + 0x58))();
+    v6 = (*((*v4 & selfCopy->super.isa) + 0x58))();
     v7 = sub_26B8C7E84();
-    [v6 setInteger:a3 forKey:v7];
+    [v6 setInteger:timeout forKey:v7];
   }
 }
 
 - (BOOL)isContinuityEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_26B8C1980();
 
   return v3 & 1;
@@ -58,52 +58,52 @@
 - (BOOL)isFTEEngaged
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x58);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   v5 = sub_26B8C7E84();
-  v6 = [v4 BOOLForKey_];
+  bOOLForKey_ = [v4 BOOLForKey_];
 
-  return v6;
+  return bOOLForKey_;
 }
 
 - (BOOL)isPasteboardHistoryEnabled
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x58);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   v5 = sub_26B8C7E84();
-  v6 = [v4 BOOLForKey_];
+  bOOLForKey_ = [v4 BOOLForKey_];
 
-  return v6;
+  return bOOLForKey_;
 }
 
-- (void)setIsPasteboardHistoryEnabled:(BOOL)a3
+- (void)setIsPasteboardHistoryEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_26B8C2664(a3);
+  selfCopy = self;
+  sub_26B8C2664(enabled);
 }
 
 - (int64_t)pasteboardHistorySettingsVersion
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x58);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   v5 = sub_26B8C7E84();
-  v6 = [v4 integerForKey_];
+  integerForKey_ = [v4 integerForKey_];
 
-  return v6;
+  return integerForKey_;
 }
 
-- (void)setPasteboardHistorySettingsVersion:(int64_t)a3
+- (void)setPasteboardHistorySettingsVersion:(int64_t)version
 {
   v4 = MEMORY[0x277D85000];
   v5 = *((*MEMORY[0x277D85000] & self->super.isa) + 0xC0);
-  v8 = self;
-  if (v5() != a3)
+  selfCopy = self;
+  if (v5() != version)
   {
-    v6 = (*((*v4 & v8->super.isa) + 0x58))();
+    v6 = (*((*v4 & selfCopy->super.isa) + 0x58))();
     v7 = sub_26B8C7E84();
-    [v6 setInteger:a3 forKey:v7];
+    [v6 setInteger:version forKey:v7];
   }
 }
 
@@ -111,10 +111,10 @@
 {
   v2 = MEMORY[0x277D85000];
   v3 = *((*MEMORY[0x277D85000] & self->super.isa) + 0xA8);
-  v4 = self;
+  selfCopy = self;
   if (v3())
   {
-    v5 = (*((*v2 & v4->super.isa) + 0x90))();
+    v5 = (*((*v2 & selfCopy->super.isa) + 0x90))();
   }
 
   else

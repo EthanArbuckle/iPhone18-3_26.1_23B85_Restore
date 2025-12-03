@@ -1,33 +1,33 @@
 @interface PowerTableManager
-+ (BOOL)assetSupportedOnCurrentBuild:(id)a3;
-+ (BOOL)build:(id)a3 inRangeStarting:(id)a4 ending:(id)a5;
-+ (id)newPowerTableResultAsString:(int64_t)a3;
-+ (id)restoreVersionFromOSVersion:(id)a3;
++ (BOOL)assetSupportedOnCurrentBuild:(id)build;
++ (BOOL)build:(id)build inRangeStarting:(id)starting ending:(id)ending;
++ (id)newPowerTableResultAsString:(int64_t)string;
++ (id)restoreVersionFromOSVersion:(id)version;
 + (int64_t)assetCheckTaskInterval;
 - (BOOL)bluetoothAudioStreamingActive;
 - (BOOL)discoverBluetoothAudioStreaming;
 - (NSArray)pathsToUse;
 - (NSString)btAssetVersion;
 - (NSString)wifiAssetVersion;
-- (PowerTableManager)initWithQueue:(id)a3 delegate:(id)a4;
-- (int64_t)performChipLevelValidationForPowerTableEvaluationSession:(id)a3 reason:(id *)a4;
+- (PowerTableManager)initWithQueue:(id)queue delegate:(id)delegate;
+- (int64_t)performChipLevelValidationForPowerTableEvaluationSession:(id)session reason:(id *)reason;
 - (void)activate;
-- (void)checkForNewPowerTablesWithCompletion:(id)a3;
+- (void)checkForNewPowerTablesWithCompletion:(id)completion;
 - (void)log;
-- (void)powerTableEvaluationSessionDidEnd:(id)a3 state:(int64_t)a4;
-- (void)powerTableEvaluationSessionWillEnd:(id)a3 state:(int64_t)a4 reason:(id)a5;
-- (void)purgeUnsupportedAssetsFromStore:(id)a3;
-- (void)reportEvaluationOutcome:(id)a3 reason:(id)a4 newAssetVersions:(id)a5 previousAssetVersions:(id)a6;
-- (void)runBackgroundTaskWithIdentifier:(id)a3 completion:(id)a4;
-- (void)validateNewAssets:(id)a3 completion:(id)a4;
+- (void)powerTableEvaluationSessionDidEnd:(id)end state:(int64_t)state;
+- (void)powerTableEvaluationSessionWillEnd:(id)end state:(int64_t)state reason:(id)reason;
+- (void)purgeUnsupportedAssetsFromStore:(id)store;
+- (void)reportEvaluationOutcome:(id)outcome reason:(id)reason newAssetVersions:(id)versions previousAssetVersions:(id)assetVersions;
+- (void)runBackgroundTaskWithIdentifier:(id)identifier completion:(id)completion;
+- (void)validateNewAssets:(id)assets completion:(id)completion;
 @end
 
 @implementation PowerTableManager
 
-- (PowerTableManager)initWithQueue:(id)a3 delegate:(id)a4
+- (PowerTableManager)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   if (_os_feature_enabled_impl())
   {
     v22.receiver = self;
@@ -36,8 +36,8 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_dispatchQueue, a3);
-      objc_storeWeak(&v11->_delegate, v9);
+      objc_storeStrong(&v10->_dispatchQueue, queue);
+      objc_storeWeak(&v11->_delegate, delegateCopy);
       v12 = [[PowerTableAssetStore alloc] initWithSubsystem:0];
       v23[0] = v12;
       v13 = [[PowerTableAssetStore alloc] initWithSubsystem:1];
@@ -131,9 +131,9 @@
   objc_destroyWeak(buf);
 }
 
-- (void)checkForNewPowerTablesWithCompletion:(id)a3
+- (void)checkForNewPowerTablesWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -156,7 +156,7 @@
     }
 
     [(PowerTableEvaluationSession *)self->_evaluationSession log];
-    v5[2](v5, 3);
+    completionCopy[2](completionCopy, 3);
   }
 
   else
@@ -184,21 +184,21 @@
         [(PowerTableManager *)self purgeUnsupportedAssetsFromStore:v15];
 
         v16 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v13];
-        v17 = [v16 availableAsset];
+        availableAsset = [v16 availableAsset];
 
-        if (v17)
+        if (availableAsset)
         {
           v18 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v13];
           v19 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v13];
-          v20 = [v19 availableAsset];
-          v21 = [v18 stageAsset:v20];
+          availableAsset2 = [v19 availableAsset];
+          v21 = [v18 stageAsset:availableAsset2];
 
           if (v21)
           {
             v22 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v13];
-            v23 = [v22 stagedAsset];
+            stagedAsset = [v22 stagedAsset];
             v24 = [NSNumber numberWithUnsignedInteger:v13];
-            [v12 setObject:v23 forKey:v24];
+            [v12 setObject:stagedAsset forKey:v24];
           }
         }
 
@@ -217,7 +217,7 @@
       v30[2] = sub_100004F98;
       v30[3] = &unk_10005C778;
       objc_copyWeak(&v32, buf);
-      v31 = v5;
+      v31 = completionCopy;
       [(PowerTableManager *)self validateNewAssets:v25 completion:v30];
 
       objc_destroyWeak(&v32);
@@ -239,7 +239,7 @@
       }
 
       self->_lastCheckResult = 0;
-      v5[2](v5, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
@@ -290,13 +290,13 @@
   {
     v13 = [objc_opt_class() description];
     v14 = NSStringFromSelector(a2);
-    v15 = [(PowerTableManager *)self pathsToUse];
+    pathsToUse = [(PowerTableManager *)self pathsToUse];
     v18 = 138543874;
     v19 = v13;
     v20 = 2114;
     v21 = v14;
     v22 = 2114;
-    v23 = v15;
+    v23 = pathsToUse;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: paths to use: %{public}@", &v18, 0x20u);
   }
 
@@ -347,23 +347,23 @@
       v9 = *(*(&v18 + 1) + 8 * v8);
       if (self->_evaluationSession && ([*(*(&v18 + 1) + 8 * v8) stagedAsset], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
       {
-        v11 = [v9 stagedAsset];
+        stagedAsset = [v9 stagedAsset];
       }
 
       else
       {
-        v12 = [v9 activeAsset];
+        activeAsset = [v9 activeAsset];
 
-        if (!v12)
+        if (!activeAsset)
         {
           goto LABEL_12;
         }
 
-        v11 = [v9 activeAsset];
+        stagedAsset = [v9 activeAsset];
       }
 
-      v13 = v11;
-      v14 = [v9 pathForAsset:v11];
+      v13 = stagedAsset;
+      v14 = [v9 pathForAsset:stagedAsset];
       [(NSArray *)v3 addObject:v14];
 
 LABEL_12:
@@ -398,31 +398,31 @@ LABEL_14:
   v4 = v3;
   if (self->_evaluationSession)
   {
-    v5 = [v3 stagedAsset];
+    stagedAsset = [v3 stagedAsset];
 
-    if (v5)
+    if (stagedAsset)
     {
-      v6 = [v4 stagedAsset];
+      stagedAsset2 = [v4 stagedAsset];
 LABEL_6:
-      v8 = v6;
-      v9 = [v6 version];
+      v8 = stagedAsset2;
+      version = [stagedAsset2 version];
 
       goto LABEL_8;
     }
   }
 
-  v7 = [v4 activeAsset];
+  activeAsset = [v4 activeAsset];
 
-  if (v7)
+  if (activeAsset)
   {
-    v6 = [v4 activeAsset];
+    stagedAsset2 = [v4 activeAsset];
     goto LABEL_6;
   }
 
-  v9 = &stru_10005D038;
+  version = &stru_10005D038;
 LABEL_8:
 
-  return v9;
+  return version;
 }
 
 - (NSString)btAssetVersion
@@ -431,37 +431,37 @@ LABEL_8:
   v4 = v3;
   if (self->_evaluationSession)
   {
-    v5 = [v3 stagedAsset];
+    stagedAsset = [v3 stagedAsset];
 
-    if (v5)
+    if (stagedAsset)
     {
-      v6 = [v4 stagedAsset];
+      stagedAsset2 = [v4 stagedAsset];
 LABEL_6:
-      v8 = v6;
-      v9 = [v6 version];
+      v8 = stagedAsset2;
+      version = [stagedAsset2 version];
 
       goto LABEL_8;
     }
   }
 
-  v7 = [v4 activeAsset];
+  activeAsset = [v4 activeAsset];
 
-  if (v7)
+  if (activeAsset)
   {
-    v6 = [v4 activeAsset];
+    stagedAsset2 = [v4 activeAsset];
     goto LABEL_6;
   }
 
-  v9 = &stru_10005D038;
+  version = &stru_10005D038;
 LABEL_8:
 
-  return v9;
+  return version;
 }
 
-- (void)validateNewAssets:(id)a3 completion:(id)a4
+- (void)validateNewAssets:(id)assets completion:(id)completion
 {
-  v7 = a3;
-  v45 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   v8 = sub_100025204();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -472,7 +472,7 @@ LABEL_8:
     v49 = 2114;
     v50 = v10;
     v51 = 2048;
-    v52 = [v7 count];
+    v52 = [assetsCopy count];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %lu new asset(s) need validation", buf, 0x20u);
   }
 
@@ -486,25 +486,25 @@ LABEL_8:
     do
     {
       v14 = [NSNumber numberWithUnsignedInteger:v13];
-      v15 = [v7 objectForKey:v14];
+      v15 = [assetsCopy objectForKey:v14];
 
       if (v15)
       {
-        v16 = [v15 version];
-        [v11 addObject:v16];
+        version = [v15 version];
+        [v11 addObject:version];
       }
 
       else
       {
         v17 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v13];
-        v18 = [v17 activeAsset];
+        activeAsset = [v17 activeAsset];
 
-        if (v18)
+        if (activeAsset)
         {
           v19 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v13];
-          v20 = [v19 activeAsset];
-          v21 = [v20 version];
-          [v11 addObject:v21];
+          activeAsset2 = [v19 activeAsset];
+          version2 = [activeAsset2 version];
+          [v11 addObject:version2];
         }
 
         else
@@ -514,14 +514,14 @@ LABEL_8:
       }
 
       v22 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v13];
-      v23 = [v22 activeAsset];
+      activeAsset3 = [v22 activeAsset];
 
-      if (v23)
+      if (activeAsset3)
       {
         v24 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v13];
-        v25 = [v24 activeAsset];
-        v26 = [v25 version];
-        [v12 addObject:v26];
+        activeAsset4 = [v24 activeAsset];
+        version3 = [activeAsset4 version];
+        [v12 addObject:version3];
       }
 
       else
@@ -559,14 +559,14 @@ LABEL_8:
         }
 
         [(PowerTableManager *)self reportEvaluationOutcome:@"Aborted" reason:@"chipLevelNotReady:btAudioStreaming" newAssetVersions:v11 previousAssetVersions:v12];
-        v34 = v45;
-        (*(v45 + 2))(v45, 3);
+        v34 = completionCopy;
+        (*(completionCopy + 2))(completionCopy, 3);
       }
 
       else
       {
-        v34 = v45;
-        v40 = objc_retainBlock(v45);
+        v34 = completionCopy;
+        v40 = objc_retainBlock(completionCopy);
         clientCompletionForNewPowerTableCheck = self->_clientCompletionForNewPowerTableCheck;
         self->_clientCompletionForNewPowerTableCheck = v40;
 
@@ -592,7 +592,7 @@ LABEL_8:
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: delegate not ready", buf, 0x16u);
       }
 
-      v34 = v45;
+      v34 = completionCopy;
       if (v30)
       {
         v39 = [@"chipLevelNotReady" stringByAppendingFormat:@":%@", v30];
@@ -604,7 +604,7 @@ LABEL_8:
       }
 
       [(PowerTableManager *)self reportEvaluationOutcome:@"Aborted" reason:v39 newAssetVersions:v11 previousAssetVersions:v12];
-      (*(v45 + 2))(v45, 3);
+      (*(completionCopy + 2))(completionCopy, 3);
     }
   }
 
@@ -616,69 +616,69 @@ LABEL_8:
       sub_1000290CC();
     }
 
-    v34 = v45;
-    (*(v45 + 2))(v45, 3);
+    v34 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 3);
   }
 }
 
-- (void)purgeUnsupportedAssetsFromStore:(id)a3
+- (void)purgeUnsupportedAssetsFromStore:(id)store
 {
-  v3 = a3;
-  v4 = [v3 availableAsset];
-  if (v4)
+  storeCopy = store;
+  availableAsset = [storeCopy availableAsset];
+  if (availableAsset)
   {
-    v5 = v4;
+    v5 = availableAsset;
     v6 = objc_opt_class();
-    v7 = [v3 availableAsset];
-    LOBYTE(v6) = [v6 assetSupportedOnCurrentBuild:v7];
+    availableAsset2 = [storeCopy availableAsset];
+    LOBYTE(v6) = [v6 assetSupportedOnCurrentBuild:availableAsset2];
 
     if ((v6 & 1) == 0)
     {
-      v8 = [v3 availableAsset];
-      [v3 purgeAsset:v8];
+      availableAsset3 = [storeCopy availableAsset];
+      [storeCopy purgeAsset:availableAsset3];
     }
   }
 
-  v9 = [v3 activeAsset];
-  if (v9)
+  activeAsset = [storeCopy activeAsset];
+  if (activeAsset)
   {
-    v10 = v9;
+    v10 = activeAsset;
     v11 = objc_opt_class();
-    v12 = [v3 activeAsset];
-    LOBYTE(v11) = [v11 assetSupportedOnCurrentBuild:v12];
+    activeAsset2 = [storeCopy activeAsset];
+    LOBYTE(v11) = [v11 assetSupportedOnCurrentBuild:activeAsset2];
 
     if ((v11 & 1) == 0)
     {
-      v13 = [v3 activeAsset];
-      [v3 purgeAsset:v13];
+      activeAsset3 = [storeCopy activeAsset];
+      [storeCopy purgeAsset:activeAsset3];
     }
   }
 
-  v14 = [v3 stagedAsset];
-  if (v14)
+  stagedAsset = [storeCopy stagedAsset];
+  if (stagedAsset)
   {
-    v15 = v14;
+    v15 = stagedAsset;
     v16 = objc_opt_class();
-    v17 = [v3 stagedAsset];
-    LOBYTE(v16) = [v16 assetSupportedOnCurrentBuild:v17];
+    stagedAsset2 = [storeCopy stagedAsset];
+    LOBYTE(v16) = [v16 assetSupportedOnCurrentBuild:stagedAsset2];
 
     if ((v16 & 1) == 0)
     {
-      v18 = [v3 stagedAsset];
-      [v3 purgeAsset:v18];
+      stagedAsset3 = [storeCopy stagedAsset];
+      [storeCopy purgeAsset:stagedAsset3];
     }
   }
 
-  v19 = [v3 rejectedAssets];
+  rejectedAssets = [storeCopy rejectedAssets];
 
-  if (v19)
+  if (rejectedAssets)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v20 = [v3 rejectedAssets];
-    v21 = [v20 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    rejectedAssets2 = [storeCopy rejectedAssets];
+    v21 = [rejectedAssets2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v21)
     {
       v22 = v21;
@@ -690,20 +690,20 @@ LABEL_8:
         {
           if (*v27 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(rejectedAssets2);
           }
 
           v25 = *(*(&v26 + 1) + 8 * v24);
           if (([objc_opt_class() assetSupportedOnCurrentBuild:v25] & 1) == 0)
           {
-            [v3 purgeAsset:v25];
+            [storeCopy purgeAsset:v25];
           }
 
           v24 = v24 + 1;
         }
 
         while (v22 != v24);
-        v22 = [v20 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v22 = [rejectedAssets2 countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v22);
@@ -781,10 +781,10 @@ LABEL_8:
           objc_enumerationMutation(v12);
         }
 
-        v18 = [*(*(&v34 + 1) + 8 * i) audioStreamState];
-        if ((v18 & 0xFFFFFFFE) == 2)
+        audioStreamState = [*(*(&v34 + 1) + 8 * i) audioStreamState];
+        if ((audioStreamState & 0xFFFFFFFE) == 2)
         {
-          v19 = v18;
+          v19 = audioStreamState;
           v20 = sub_100025204();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
@@ -853,8 +853,8 @@ LABEL_28:
   v27 = 0;
   if (!objc_opt_class())
   {
-    v4 = sub_100025204();
-    if (os_log_type_enabled(&v4->super, OS_LOG_TYPE_ERROR))
+    selfCopy = sub_100025204();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       v13 = [objc_opt_class() description];
       NSStringFromSelector(a2);
@@ -865,9 +865,9 @@ LABEL_28:
     goto LABEL_17;
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_btDiscoveryInProgress)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_btDiscoveryInProgress)
   {
     v14 = sub_100025204();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -895,26 +895,26 @@ LABEL_28:
 
 LABEL_16:
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 LABEL_17:
     v11 = 0;
     goto LABEL_9;
   }
 
   v6 = v5;
-  v4->_btDiscoveryInProgress = 1;
+  selfCopy->_btDiscoveryInProgress = 1;
   v7 = dispatch_get_global_queue(21, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000068BC;
   block[3] = &unk_10005C7A0;
-  block[4] = v4;
+  block[4] = selfCopy;
   v23 = &v24;
   v8 = v6;
   v22 = v8;
   dispatch_async(v7, block);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v9 = dispatch_time(0, 1000000000);
   if (dispatch_semaphore_wait(v8, v9))
   {
@@ -932,9 +932,9 @@ LABEL_17:
 
   else
   {
-    v10 = v4;
+    v10 = selfCopy;
     objc_sync_enter(v10);
-    if (v4->_btDiscoveryInProgress)
+    if (selfCopy->_btDiscoveryInProgress)
     {
       v19 = sub_100025204();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -956,33 +956,33 @@ LABEL_17:
     objc_sync_exit(v10);
   }
 
-  v4 = v8;
+  selfCopy = v8;
 LABEL_9:
 
   _Block_object_dispose(&v24, 8);
   return v11 & 1;
 }
 
-- (void)reportEvaluationOutcome:(id)a3 reason:(id)a4 newAssetVersions:(id)a5 previousAssetVersions:(id)a6
+- (void)reportEvaluationOutcome:(id)outcome reason:(id)reason newAssetVersions:(id)versions previousAssetVersions:(id)assetVersions
 {
-  v10 = a3;
-  v23 = a4;
-  v11 = a5;
-  v22 = a6;
+  outcomeCopy = outcome;
+  reasonCopy = reason;
+  versionsCopy = versions;
+  assetVersionsCopy = assetVersions;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v13 = [v11 componentsJoinedByString:@""];;
+  v13 = [versionsCopy componentsJoinedByString:@""];;
   v14 = +[NSUserDefaults standardUserDefaults];
   v15 = [v14 dictionaryForKey:@"PowerTableValidationAttempts"];
 
   v16 = [v15 objectForKeyedSubscript:v13];
-  v17 = [v16 unsignedIntegerValue];
-  LODWORD(a4) = [v10 isEqualToString:@"Aborted"];
+  unsignedIntegerValue = [v16 unsignedIntegerValue];
+  LODWORD(reason) = [outcomeCopy isEqualToString:@"Aborted"];
   v18 = +[NSUserDefaults standardUserDefaults];
   v19 = v18;
-  if (a4)
+  if (reason)
   {
     v24 = v13;
-    v20 = [NSNumber numberWithUnsignedInteger:v17 + 1];
+    v20 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue + 1];
     v25 = v20;
     v21 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     [v19 setObject:v21 forKey:@"PowerTableValidationAttempts"];
@@ -995,18 +995,18 @@ LABEL_9:
 
   if (WeakRetained)
   {
-    [WeakRetained reportNewPowerTableEvaluationOutcome:v10 reason:v23 attempts:v17 + 1 newAssetVersions:v11 previousAssetVersions:v22];
+    [WeakRetained reportNewPowerTableEvaluationOutcome:outcomeCopy reason:reasonCopy attempts:unsignedIntegerValue + 1 newAssetVersions:versionsCopy previousAssetVersions:assetVersionsCopy];
   }
 }
 
-+ (BOOL)assetSupportedOnCurrentBuild:(id)a3
++ (BOOL)assetSupportedOnCurrentBuild:(id)build
 {
-  v5 = a3;
+  buildCopy = build;
   v6 = +[SUCoreDevice sharedDevice];
-  v7 = [v6 productVersion];
+  productVersion = [v6 productVersion];
 
-  v8 = v7;
-  if (!v7)
+  v8 = productVersion;
+  if (!productVersion)
   {
     v25 = sub_100025204();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1017,7 +1017,7 @@ LABEL_9:
     goto LABEL_23;
   }
 
-  v9 = [a1 restoreVersionFromOSVersion:v7];
+  v9 = [self restoreVersionFromOSVersion:productVersion];
   if (!v9)
   {
     v25 = sub_100025204();
@@ -1025,7 +1025,7 @@ LABEL_9:
     {
       [objc_opt_class() description];
       v33 = v25;
-      v35 = v34 = v7;
+      v35 = v34 = productVersion;
       v36 = NSStringFromSelector(a2);
       *buf = 138543874;
       v57 = v35;
@@ -1042,8 +1042,8 @@ LABEL_9:
 LABEL_23:
     v24 = 0;
     v21 = 0;
-    v16 = 0;
-    v15 = 0;
+    lastSupportedBuild = 0;
+    firstSupportedBuild = 0;
     v14 = 0;
     v12 = 0;
     v55 = 0;
@@ -1054,8 +1054,8 @@ LABEL_44:
   }
 
   v10 = v9;
-  v11 = [v5 firstSupportedOS];
-  v12 = [a1 restoreVersionFromOSVersion:v11];
+  firstSupportedOS = [buildCopy firstSupportedOS];
+  v12 = [self restoreVersionFromOSVersion:firstSupportedOS];
 
   v55 = v10;
   if (!v12)
@@ -1065,27 +1065,27 @@ LABEL_44:
     {
       v37 = [objc_opt_class() description];
       v38 = NSStringFromSelector(a2);
-      v39 = [v5 firstSupportedOS];
+      firstSupportedOS2 = [buildCopy firstSupportedOS];
       *buf = 138543874;
       v57 = v37;
       v58 = 2114;
       v59 = v38;
       v60 = 2114;
-      v61 = v39;
+      v61 = firstSupportedOS2;
       _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: invalid firstSupportedOS: %{public}@", buf, 0x20u);
     }
 
     v24 = 0;
     v21 = 0;
-    v16 = 0;
-    v15 = 0;
+    lastSupportedBuild = 0;
+    firstSupportedBuild = 0;
     v14 = 0;
     v12 = 0;
     goto LABEL_44;
   }
 
-  v13 = [v5 lastSupportedOS];
-  v14 = [a1 restoreVersionFromOSVersion:v13];
+  lastSupportedOS = [buildCopy lastSupportedOS];
+  v14 = [self restoreVersionFromOSVersion:lastSupportedOS];
 
   if (!v14)
   {
@@ -1094,25 +1094,25 @@ LABEL_44:
     {
       v40 = [objc_opt_class() description];
       v41 = NSStringFromSelector(a2);
-      v42 = [v5 lastSupportedOS];
+      lastSupportedOS2 = [buildCopy lastSupportedOS];
       *buf = 138543874;
       v57 = v40;
       v58 = 2114;
       v59 = v41;
       v60 = 2114;
-      v61 = v42;
+      v61 = lastSupportedOS2;
       _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: invalid lastSupportedOS: %{public}@", buf, 0x20u);
     }
 
     v24 = 0;
     v21 = 0;
-    v16 = 0;
-    v15 = 0;
+    lastSupportedBuild = 0;
+    firstSupportedBuild = 0;
     v14 = 0;
     goto LABEL_44;
   }
 
-  if (([a1 build:v10 inRangeStarting:v12 ending:v14] & 1) == 0)
+  if (([self build:v10 inRangeStarting:v12 ending:v14] & 1) == 0)
   {
     v25 = sub_100025204();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -1129,29 +1129,29 @@ LABEL_44:
     goto LABEL_34;
   }
 
-  v15 = [v5 firstSupportedBuild];
-  if (!v15)
+  firstSupportedBuild = [buildCopy firstSupportedBuild];
+  if (!firstSupportedBuild)
   {
     v24 = 0;
     v21 = 0;
-    v16 = 0;
+    lastSupportedBuild = 0;
     goto LABEL_17;
   }
 
-  v16 = [v5 lastSupportedBuild];
+  lastSupportedBuild = [buildCopy lastSupportedBuild];
 
-  if (!v16)
+  if (!lastSupportedBuild)
   {
     v24 = 0;
     v21 = 0;
-    v15 = 0;
+    firstSupportedBuild = 0;
     goto LABEL_17;
   }
 
   v17 = +[SUCoreDevice sharedDevice];
-  v15 = [v17 restoreVersion];
+  firstSupportedBuild = [v17 restoreVersion];
 
-  if (!v15)
+  if (!firstSupportedBuild)
   {
     v25 = sub_100025204();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1162,13 +1162,13 @@ LABEL_44:
 LABEL_34:
     v24 = 0;
     v21 = 0;
-    v16 = 0;
-    v15 = 0;
+    lastSupportedBuild = 0;
+    firstSupportedBuild = 0;
     goto LABEL_44;
   }
 
   v54 = v8;
-  v18 = [[SUCoreRestoreVersion alloc] initWithRestoreVersion:v15];
+  v18 = [[SUCoreRestoreVersion alloc] initWithRestoreVersion:firstSupportedBuild];
   if (!v18)
   {
     v25 = sub_100025204();
@@ -1181,21 +1181,21 @@ LABEL_34:
       v58 = 2114;
       v59 = v44;
       v60 = 2114;
-      v61 = v15;
+      v61 = firstSupportedBuild;
       _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: invalid current build: %{public}@", buf, 0x20u);
     }
 
     v24 = 0;
     v21 = 0;
-    v16 = 0;
+    lastSupportedBuild = 0;
     goto LABEL_44;
   }
 
-  v16 = v18;
+  lastSupportedBuild = v18;
   aSelector = a2;
   v19 = [SUCoreRestoreVersion alloc];
-  v20 = [v5 firstSupportedBuild];
-  v21 = [v19 initWithRestoreVersion:v20];
+  firstSupportedBuild2 = [buildCopy firstSupportedBuild];
+  v21 = [v19 initWithRestoreVersion:firstSupportedBuild2];
 
   if (!v21)
   {
@@ -1205,13 +1205,13 @@ LABEL_34:
       [objc_opt_class() description];
       v46 = v45 = v25;
       v47 = NSStringFromSelector(aSelector);
-      v48 = [v5 firstSupportedBuild];
+      firstSupportedBuild3 = [buildCopy firstSupportedBuild];
       *buf = 138543874;
       v57 = v46;
       v58 = 2114;
       v59 = v47;
       v60 = 2114;
-      v61 = v48;
+      v61 = firstSupportedBuild3;
       _os_log_error_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: invalid firstSupportedBuild: %{public}@", buf, 0x20u);
 
       v25 = v45;
@@ -1223,8 +1223,8 @@ LABEL_34:
   }
 
   v22 = [SUCoreRestoreVersion alloc];
-  v23 = [v5 lastSupportedBuild];
-  v24 = [v22 initWithRestoreVersion:v23];
+  lastSupportedBuild2 = [buildCopy lastSupportedBuild];
+  v24 = [v22 initWithRestoreVersion:lastSupportedBuild2];
 
   if (!v24)
   {
@@ -1235,13 +1235,13 @@ LABEL_34:
       [objc_opt_class() description];
       v50 = v49 = v25;
       v51 = NSStringFromSelector(aSelector);
-      v52 = [v5 lastSupportedBuild];
+      lastSupportedBuild3 = [buildCopy lastSupportedBuild];
       *buf = 138543874;
       v57 = v50;
       v58 = 2114;
       v59 = v51;
       v60 = 2114;
-      v61 = v52;
+      v61 = lastSupportedBuild3;
       _os_log_error_impl(&_mh_execute_header, v49, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: invalid lastSupportedBuild: %{public}@", buf, 0x20u);
 
       v8 = v54;
@@ -1253,7 +1253,7 @@ LABEL_34:
   }
 
   v8 = v54;
-  if (([a1 build:v16 inRangeStarting:v21 ending:v24] & 1) == 0)
+  if (([self build:lastSupportedBuild inRangeStarting:v21 ending:v24] & 1) == 0)
   {
     v25 = sub_100025204();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -1281,12 +1281,12 @@ LABEL_18:
   return v29;
 }
 
-+ (BOOL)build:(id)a3 inRangeStarting:(id)a4 ending:(id)a5
++ (BOOL)build:(id)build inRangeStarting:(id)starting ending:(id)ending
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v8 isComparable:v9] & 1) == 0)
+  buildCopy = build;
+  startingCopy = starting;
+  endingCopy = ending;
+  if (([buildCopy isComparable:startingCopy] & 1) == 0)
   {
     v12 = sub_100025204();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1296,16 +1296,16 @@ LABEL_18:
 
     v21 = [objc_opt_class() description];
     v22 = NSStringFromSelector(a2);
-    v23 = [v8 summary];
-    v24 = [v9 summary];
+    summary = [buildCopy summary];
+    summary2 = [startingCopy summary];
     v28 = 138544130;
     v29 = v21;
     v30 = 2114;
     v31 = v22;
     v32 = 2114;
-    v33 = v23;
+    v33 = summary;
     v34 = 2114;
-    v35 = v24;
+    v35 = summary2;
     v25 = "%{public}@::%{public}@: %{public}@ not comparible with range start %{public}@";
 LABEL_13:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, v25, &v28, 0x2Au);
@@ -1314,7 +1314,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (([v8 isComparable:v10] & 1) == 0)
+  if (([buildCopy isComparable:endingCopy] & 1) == 0)
   {
     v12 = sub_100025204();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1324,40 +1324,40 @@ LABEL_19:
 
     v21 = [objc_opt_class() description];
     v22 = NSStringFromSelector(a2);
-    v23 = [v8 summary];
-    v24 = [v10 summary];
+    summary = [buildCopy summary];
+    summary2 = [endingCopy summary];
     v28 = 138544130;
     v29 = v21;
     v30 = 2114;
     v31 = v22;
     v32 = 2114;
-    v33 = v23;
+    v33 = summary;
     v34 = 2114;
-    v35 = v24;
+    v35 = summary2;
     v25 = "%{public}@::%{public}@: %{public}@ not comparible with range end %{public}@";
     goto LABEL_13;
   }
 
-  if ([v8 compare:v9] == -1)
+  if ([buildCopy compare:startingCopy] == -1)
   {
     v12 = sub_100025204();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v21 = [objc_opt_class() description];
       v22 = NSStringFromSelector(a2);
-      v23 = [v8 summary];
-      v24 = [v9 summary];
-      v26 = [v10 summary];
+      summary = [buildCopy summary];
+      summary2 = [startingCopy summary];
+      summary3 = [endingCopy summary];
       v28 = 138544386;
       v29 = v21;
       v30 = 2114;
       v31 = v22;
       v32 = 2114;
-      v33 = v23;
+      v33 = summary;
       v34 = 2114;
-      v35 = v24;
+      v35 = summary2;
       v36 = 2114;
-      v37 = v26;
+      v37 = summary3;
       v27 = "%{public}@::%{public}@: %{public}@ older than range [%{public}@, %{public}@]";
 LABEL_18:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, v27, &v28, 0x34u);
@@ -1370,7 +1370,7 @@ LABEL_20:
     goto LABEL_8;
   }
 
-  v11 = [v8 compare:v10];
+  v11 = [buildCopy compare:endingCopy];
   v12 = sub_100025204();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
   if (v11 == 1)
@@ -1379,19 +1379,19 @@ LABEL_20:
     {
       v21 = [objc_opt_class() description];
       v22 = NSStringFromSelector(a2);
-      v23 = [v8 summary];
-      v24 = [v9 summary];
-      v26 = [v10 summary];
+      summary = [buildCopy summary];
+      summary2 = [startingCopy summary];
+      summary3 = [endingCopy summary];
       v28 = 138544386;
       v29 = v21;
       v30 = 2114;
       v31 = v22;
       v32 = 2114;
-      v33 = v23;
+      v33 = summary;
       v34 = 2114;
-      v35 = v24;
+      v35 = summary2;
       v36 = 2114;
-      v37 = v26;
+      v37 = summary3;
       v27 = "%{public}@::%{public}@: %{public}@ newer than range [%{public}@, %{public}@]";
       goto LABEL_18;
     }
@@ -1403,19 +1403,19 @@ LABEL_20:
   {
     v14 = [objc_opt_class() description];
     v15 = NSStringFromSelector(a2);
-    v16 = [v8 summary];
-    v17 = [v9 summary];
-    v18 = [v10 summary];
+    summary4 = [buildCopy summary];
+    summary5 = [startingCopy summary];
+    summary6 = [endingCopy summary];
     v28 = 138544386;
     v29 = v14;
     v30 = 2114;
     v31 = v15;
     v32 = 2114;
-    v33 = v16;
+    v33 = summary4;
     v34 = 2114;
-    v35 = v17;
+    v35 = summary5;
     v36 = 2114;
-    v37 = v18;
+    v37 = summary6;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %{public}@ in range [%{public}@, %{public}@]", &v28, 0x34u);
   }
 
@@ -1425,12 +1425,12 @@ LABEL_8:
   return v19;
 }
 
-+ (id)restoreVersionFromOSVersion:(id)a3
++ (id)restoreVersionFromOSVersion:(id)version
 {
-  v5 = a3;
-  if (![v5 length])
+  versionCopy = version;
+  if (![versionCopy length])
   {
-    sub_100029750(a1);
+    sub_100029750(self);
 LABEL_14:
     v13 = 0;
     v12 = 0;
@@ -1441,16 +1441,16 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if ([v5 containsString:{@", "}])
+  if ([versionCopy containsString:{@", "}])
   {
-    sub_100029690(a1);
+    sub_100029690(self);
     goto LABEL_14;
   }
 
-  v6 = [v5 componentsSeparatedByString:@"."];
+  v6 = [versionCopy componentsSeparatedByString:@"."];
   if ([v6 count] >= 6)
   {
-    sub_100029598(a1, a2);
+    sub_100029598(self, a2);
     v13 = 0;
     v12 = 0;
     v7 = 0;
@@ -1529,38 +1529,38 @@ LABEL_8:
   return v4;
 }
 
-+ (id)newPowerTableResultAsString:(int64_t)a3
++ (id)newPowerTableResultAsString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"NoNewPowerTablesAvailable";
   }
 
   else
   {
-    return *(&off_10005C7E8 + a3 - 1);
+    return *(&off_10005C7E8 + string - 1);
   }
 }
 
-- (void)runBackgroundTaskWithIdentifier:(id)a3 completion:(id)a4
+- (void)runBackgroundTaskWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == @"com.apple.centaurid.PowerTableAssetCheck")
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (identifier == @"com.apple.centaurid.PowerTableAssetCheck")
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100007C8C;
     v8[3] = &unk_10005C7C8;
-    v9 = v6;
+    v9 = completionCopy;
     [(PowerTableManager *)self checkForNewPowerTablesWithCompletion:v8];
   }
 }
 
-- (int64_t)performChipLevelValidationForPowerTableEvaluationSession:(id)a3 reason:(id *)a4
+- (int64_t)performChipLevelValidationForPowerTableEvaluationSession:(id)session reason:(id *)reason
 {
-  v7 = a3;
-  if (([v7 isEqual:self->_evaluationSession] & 1) == 0)
+  sessionCopy = session;
+  if (([sessionCopy isEqual:self->_evaluationSession] & 1) == 0)
   {
     sub_100029810(self);
   }
@@ -1575,7 +1575,7 @@ LABEL_8:
       sub_1000290CC();
     }
 
-    *a4 = @"noDelegate";
+    *reason = @"noDelegate";
     goto LABEL_16;
   }
 
@@ -1596,13 +1596,13 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: delegate not ready", buf, 0x16u);
     }
 
-    *a4 = @"chipLevelNotReady";
+    *reason = @"chipLevelNotReady";
     if (!v11)
     {
       goto LABEL_16;
     }
 
-    *a4 = [@"chipLevelNotReady" stringByAppendingFormat:@":%@", v11];
+    *reason = [@"chipLevelNotReady" stringByAppendingFormat:@":%@", v11];
 LABEL_15:
 
 LABEL_16:
@@ -1624,7 +1624,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: bailing due to active audio streaming", buf, 0x16u);
     }
 
-    *a4 = @"btAudioStreaming";
+    *reason = @"btAudioStreaming";
     goto LABEL_15;
   }
 
@@ -1655,10 +1655,10 @@ LABEL_16:
 
   if ((v21 & 1) == 0)
   {
-    *a4 = @"chipLevelFailed";
+    *reason = @"chipLevelFailed";
     if (v22)
     {
-      *a4 = [@"chipLevelFailed" stringByAppendingFormat:@":%@", v22];
+      *reason = [@"chipLevelFailed" stringByAppendingFormat:@":%@", v22];
     }
   }
 
@@ -1668,14 +1668,14 @@ LABEL_17:
   return v19;
 }
 
-- (void)powerTableEvaluationSessionWillEnd:(id)a3 state:(int64_t)a4 reason:(id)a5
+- (void)powerTableEvaluationSessionWillEnd:(id)end state:(int64_t)state reason:(id)reason
 {
-  v8 = a3;
-  v9 = a5;
+  endCopy = end;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ([v8 isEqual:self->_evaluationSession])
+  if ([endCopy isEqual:self->_evaluationSession])
   {
-    switch(a4)
+    switch(state)
     {
       case 4:
         if ([(NSArray *)self->_assetStores count])
@@ -1684,14 +1684,14 @@ LABEL_17:
           do
           {
             v25 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v24];
-            v26 = [v25 stagedAsset];
+            stagedAsset = [v25 stagedAsset];
 
-            if (v26)
+            if (stagedAsset)
             {
               v27 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v24];
               v28 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v24];
-              v29 = [v28 stagedAsset];
-              [v27 rejectStagedAsset:v29];
+              stagedAsset2 = [v28 stagedAsset];
+              [v27 rejectStagedAsset:stagedAsset2];
             }
 
             ++v24;
@@ -1724,14 +1724,14 @@ LABEL_17:
           do
           {
             v19 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v18];
-            v20 = [v19 stagedAsset];
+            stagedAsset3 = [v19 stagedAsset];
 
-            if (v20)
+            if (stagedAsset3)
             {
               v21 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v18];
               v22 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v18];
-              v23 = [v22 stagedAsset];
-              [v21 commitStagedAsset:v23];
+              stagedAsset4 = [v22 stagedAsset];
+              [v21 commitStagedAsset:stagedAsset4];
             }
 
             ++v18;
@@ -1754,14 +1754,14 @@ LABEL_17:
           do
           {
             v13 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v11];
-            v14 = [v13 stagedAsset];
+            stagedAsset5 = [v13 stagedAsset];
 
-            if (v14)
+            if (stagedAsset5)
             {
               v15 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v11];
               v16 = [(NSArray *)self->_assetStores objectAtIndexedSubscript:v11];
-              v17 = [v16 stagedAsset];
-              [v15 unstageStagedAsset:v17];
+              stagedAsset6 = [v16 stagedAsset];
+              [v15 unstageStagedAsset:stagedAsset6];
             }
 
             ++v11;
@@ -1776,9 +1776,9 @@ LABEL_17:
         }
 
 LABEL_30:
-        v31 = [v8 assetVersionsUnderEvaluation];
-        v32 = [v8 previousKnownGoodAssetVersions];
-        [(PowerTableManager *)self reportEvaluationOutcome:v12 reason:v9 newAssetVersions:v31 previousAssetVersions:v32];
+        assetVersionsUnderEvaluation = [endCopy assetVersionsUnderEvaluation];
+        previousKnownGoodAssetVersions = [endCopy previousKnownGoodAssetVersions];
+        [(PowerTableManager *)self reportEvaluationOutcome:v12 reason:reasonCopy newAssetVersions:assetVersionsUnderEvaluation previousAssetVersions:previousKnownGoodAssetVersions];
 
         return;
     }
@@ -1799,10 +1799,10 @@ LABEL_30:
   [(PowerTableManager *)v34 powerTableEvaluationSessionDidEnd:v35 state:v36, v37];
 }
 
-- (void)powerTableEvaluationSessionDidEnd:(id)a3 state:(int64_t)a4
+- (void)powerTableEvaluationSessionDidEnd:(id)end state:(int64_t)state
 {
-  v12 = a3;
-  if (([v12 isEqual:self->_evaluationSession] & 1) == 0)
+  endCopy = end;
+  if (([endCopy isEqual:self->_evaluationSession] & 1) == 0)
   {
     sub_100029810(self);
     goto LABEL_8;
@@ -1816,9 +1816,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ((a4 - 4) < 3)
+  if ((state - 4) < 3)
   {
-    clientCompletionForNewPowerTableCheck[2](clientCompletionForNewPowerTableCheck, qword_100036458[a4 - 4]);
+    clientCompletionForNewPowerTableCheck[2](clientCompletionForNewPowerTableCheck, qword_100036458[state - 4]);
     evaluationSession = self->_evaluationSession;
     self->_evaluationSession = 0;
 

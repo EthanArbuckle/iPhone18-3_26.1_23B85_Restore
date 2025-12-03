@@ -1,28 +1,28 @@
 @interface _HandoffActivityHandlingTask
 - (void)performTask;
-- (void)taskFinished:(id)a3;
+- (void)taskFinished:(id)finished;
 @end
 
 @implementation _HandoffActivityHandlingTask
 
-- (void)taskFinished:(id)a3
+- (void)taskFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   v5 = +[GEOAPSharedStateData sharedData];
   [v5 setMapLaunchIsHandoff:1];
 
   v6.receiver = self;
   v6.super_class = _HandoffActivityHandlingTask;
-  [(UserActivityHandlingTask *)&v6 taskFinished:v4];
+  [(UserActivityHandlingTask *)&v6 taskFinished:finishedCopy];
 }
 
 - (void)performTask
 {
   [(RichMapsActivityCreatingTaskImpl *)self taskStarted];
-  v3 = [(UserActivityHandlingTask *)self userActivity];
-  v4 = [v3 userInfo];
+  userActivity = [(UserActivityHandlingTask *)self userActivity];
+  userInfo = [userActivity userInfo];
 
-  v5 = [v4 objectForKeyedSubscript:@"bs"];
+  v5 = [userInfo objectForKeyedSubscript:@"bs"];
   if (v5)
   {
     v6 = [[MapsActivity alloc] initWithBzip2CompressedData:v5];
@@ -42,16 +42,16 @@
 
     if ([(MapsActivity *)v6 hasDisplayOptions])
     {
-      v8 = [(MapsActivity *)v7 displayOptions];
-      if ([v8 hasCamera])
+      displayOptions = [(MapsActivity *)v7 displayOptions];
+      if ([displayOptions hasCamera])
       {
         v9 = 0;
       }
 
       else
       {
-        v13 = [(MapsActivity *)v7 displayOptions];
-        v9 = [v13 hasCenterSpan] ^ 1;
+        displayOptions2 = [(MapsActivity *)v7 displayOptions];
+        v9 = [displayOptions2 hasCenterSpan] ^ 1;
       }
 
       v12 = objc_alloc_init(RestorationAction);

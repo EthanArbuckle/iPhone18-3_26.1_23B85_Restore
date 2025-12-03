@@ -1,9 +1,9 @@
 @interface PTEffectDescriptor
-- (BOOL)isEqual:(id)a3 includeSyncInit:(BOOL)a4;
+- (BOOL)isEqual:(id)equal includeSyncInit:(BOOL)init;
 - (CGSize)colorSize;
 - (CGSize)externalDisparitySize;
 - (PTEffectDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PTEffectDescriptor
@@ -22,11 +22,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3 includeSyncInit:(BOOL)a4
+- (BOOL)isEqual:(id)equal includeSyncInit:(BOOL)init
 {
-  v5 = a4;
-  v7 = a3;
-  if (v7 == self)
+  initCopy = init;
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -36,12 +36,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = equalCopy;
       metalCommandQueue = self->_metalCommandQueue;
-      v10 = [(PTEffectDescriptor *)v8 metalCommandQueue];
-      if (metalCommandQueue == v10 || (v11 = self->_metalCommandQueue, [(PTEffectDescriptor *)v8 metalCommandQueue], v4 = objc_claimAutoreleasedReturnValue(), [(MTLCommandQueue *)v11 isEqual:v4]))
+      metalCommandQueue = [(PTEffectDescriptor *)v8 metalCommandQueue];
+      if (metalCommandQueue == metalCommandQueue || (v11 = self->_metalCommandQueue, [(PTEffectDescriptor *)v8 metalCommandQueue], v4 = objc_claimAutoreleasedReturnValue(), [(MTLCommandQueue *)v11 isEqual:v4]))
       {
-        if ((!v5 || (syncInitialization = self->_syncInitialization, syncInitialization == [(PTEffectDescriptor *)v8 syncInitialization])) && (width = self->_colorSize.width, height = self->_colorSize.height, [(PTEffectDescriptor *)v8 colorSize], width == v18) && height == v17 && (v20 = self->_externalDisparitySize.width, v19 = self->_externalDisparitySize.height, [(PTEffectDescriptor *)v8 externalDisparitySize], v20 == v22) && v19 == v21 && (availableEffectTypes = self->_availableEffectTypes, availableEffectTypes == [(PTEffectDescriptor *)v8 availableEffectTypes]) && (activeEffectType = self->_activeEffectType, activeEffectType == [(PTEffectDescriptor *)v8 activeEffectType]) && (effectQuality = self->_effectQuality, effectQuality == [(PTEffectDescriptor *)v8 effectQuality]) && (prewarmOnly = self->_prewarmOnly, prewarmOnly == [(PTEffectDescriptor *)v8 prewarmOnly]) && (laguna = self->_laguna, laguna == [(PTEffectDescriptor *)v8 laguna]) && (externalHandDetectionsEnabled = self->_externalHandDetectionsEnabled, externalHandDetectionsEnabled == [(PTEffectDescriptor *)v8 externalHandDetectionsEnabled]) && (allowSkipOutColorBufferWrite = self->_allowSkipOutColorBufferWrite, allowSkipOutColorBufferWrite == [(PTEffectDescriptor *)v8 allowSkipOutColorBufferWrite]))
+        if ((!initCopy || (syncInitialization = self->_syncInitialization, syncInitialization == [(PTEffectDescriptor *)v8 syncInitialization])) && (width = self->_colorSize.width, height = self->_colorSize.height, [(PTEffectDescriptor *)v8 colorSize], width == v18) && height == v17 && (v20 = self->_externalDisparitySize.width, v19 = self->_externalDisparitySize.height, [(PTEffectDescriptor *)v8 externalDisparitySize], v20 == v22) && v19 == v21 && (availableEffectTypes = self->_availableEffectTypes, availableEffectTypes == [(PTEffectDescriptor *)v8 availableEffectTypes]) && (activeEffectType = self->_activeEffectType, activeEffectType == [(PTEffectDescriptor *)v8 activeEffectType]) && (effectQuality = self->_effectQuality, effectQuality == [(PTEffectDescriptor *)v8 effectQuality]) && (prewarmOnly = self->_prewarmOnly, prewarmOnly == [(PTEffectDescriptor *)v8 prewarmOnly]) && (laguna = self->_laguna, laguna == [(PTEffectDescriptor *)v8 laguna]) && (externalHandDetectionsEnabled = self->_externalHandDetectionsEnabled, externalHandDetectionsEnabled == [(PTEffectDescriptor *)v8 externalHandDetectionsEnabled]) && (allowSkipOutColorBufferWrite = self->_allowSkipOutColorBufferWrite, allowSkipOutColorBufferWrite == [(PTEffectDescriptor *)v8 allowSkipOutColorBufferWrite]))
         {
           externalCamera = self->_externalCamera;
           v12 = externalCamera == [(PTEffectDescriptor *)v8 externalCamera];
@@ -54,7 +54,7 @@
           v13 = 0;
         }
 
-        if (metalCommandQueue == v10)
+        if (metalCommandQueue == metalCommandQueue)
         {
           goto LABEL_25;
         }
@@ -79,11 +79,11 @@ LABEL_26:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(PTEffectDescriptor *)self metalCommandQueue];
-  [v4 setMetalCommandQueue:v5];
+  metalCommandQueue = [(PTEffectDescriptor *)self metalCommandQueue];
+  [v4 setMetalCommandQueue:metalCommandQueue];
 
   [(PTEffectDescriptor *)self colorSize];
   [v4 setColorSize:?];
@@ -96,11 +96,11 @@ LABEL_26:
   [v4 setLaguna:{-[PTEffectDescriptor laguna](self, "laguna")}];
   [v4 setExternalHandDetectionsEnabled:{-[PTEffectDescriptor externalHandDetectionsEnabled](self, "externalHandDetectionsEnabled")}];
   [v4 setAllowSkipOutColorBufferWrite:{-[PTEffectDescriptor allowSkipOutColorBufferWrite](self, "allowSkipOutColorBufferWrite")}];
-  v6 = [(PTEffectDescriptor *)self asyncInitQueue];
-  [v4 setAsyncInitQueue:v6];
+  asyncInitQueue = [(PTEffectDescriptor *)self asyncInitQueue];
+  [v4 setAsyncInitQueue:asyncInitQueue];
 
-  v7 = [(PTEffectDescriptor *)self asyncProcessingQueue];
-  [v4 setAsyncProcessingQueue:v7];
+  asyncProcessingQueue = [(PTEffectDescriptor *)self asyncProcessingQueue];
+  [v4 setAsyncProcessingQueue:asyncProcessingQueue];
 
   [v4 setSyncInitialization:{-[PTEffectDescriptor syncInitialization](self, "syncInitialization")}];
   [v4 setExternalCamera:{-[PTEffectDescriptor externalCamera](self, "externalCamera")}];

@@ -1,15 +1,15 @@
 @interface CBStackDeviceMonitorBTStack
 - (CBStackDeviceMonitorBTStack)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (int)_updatePowerSources;
 - (void)_invalidated;
-- (void)_updateDeviceBLE:(id)a3 flags:(unint64_t)a4;
-- (void)_updateDeviceClassic:(void *)a3 flags:(unint64_t)a4;
+- (void)_updateDeviceBLE:(id)e flags:(unint64_t)flags;
+- (void)_updateDeviceClassic:(void *)classic flags:(unint64_t)flags;
 - (void)_updateDevicesConnected;
 - (void)_updateDevicesPaired;
 - (void)activate;
 - (void)invalidate;
-- (void)localDeviceEvent:(int)a3;
+- (void)localDeviceEvent:(int)event;
 - (void)updateDevices;
 @end
 
@@ -43,8 +43,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(NSMutableDictionary *)self->_deviceMap allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    allKeys = [(NSMutableDictionary *)self->_deviceMap allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -54,7 +54,7 @@
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
@@ -77,7 +77,7 @@
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v6);
@@ -284,11 +284,11 @@ LABEL_12:
   return v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v4 = a3;
+  levelCopy = level;
   v5 = [(NSMutableDictionary *)self->_deviceMap count];
-  if (v4 < 0x15)
+  if (levelCopy < 0x15)
   {
     v20 = 0;
     v21 = &v20;
@@ -312,7 +312,7 @@ LABEL_12:
     v13[3] = &unk_100ADF7F8;
     v13[4] = &v20;
     v13[5] = &v15;
-    v14 = v4;
+    v14 = levelCopy;
     [(NSMutableDictionary *)deviceMap enumerateKeysAndObjectsUsingBlock:v13, v11, v5];
     if (v5 > v16[3])
     {
@@ -503,9 +503,9 @@ LABEL_23:
   }
 }
 
-- (void)_updateDeviceBLE:(id)a3 flags:(unint64_t)a4
+- (void)_updateDeviceBLE:(id)e flags:(unint64_t)flags
 {
-  v6 = a3;
+  eCopy = e;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -520,10 +520,10 @@ LABEL_23:
   v13[2] = sub_1000EFFAC;
   v13[3] = &unk_100ADF8D8;
   v13[4] = &v14;
-  if (sub_1000C320C(off_100B508C8, v6, v13) && v15[3])
+  if (sub_1000C320C(off_100B508C8, eCopy, v13) && v15[3])
   {
-    v7 = [v6 UUIDString];
-    v8 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:v7];
+    uUIDString = [eCopy UUIDString];
+    v8 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:uUIDString];
     if (v8)
     {
       v9 = 0;
@@ -532,7 +532,7 @@ LABEL_23:
     else
     {
       v8 = objc_alloc_init(CBDevice);
-      [v8 setIdentifier:v7];
+      [v8 setIdentifier:uUIDString];
       [v8 setInternalFlags:4];
       deviceMap = self->_deviceMap;
       if (!deviceMap)
@@ -544,25 +544,25 @@ LABEL_23:
         deviceMap = self->_deviceMap;
       }
 
-      [(NSMutableDictionary *)deviceMap setObject:v8 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)deviceMap setObject:v8 forKeyedSubscript:uUIDString];
       v9 = 0x4000000;
     }
 
-    [v8 setChangeFlags:{objc_msgSend(v8, "updateWithBLEDevice:btAddr:", v6, v15[3]) | v9 | objc_msgSend(v8, "changeFlags")}];
-    [v8 setDiscoveryFlags:{objc_msgSend(v8, "discoveryFlags") | a4}];
+    [v8 setChangeFlags:{objc_msgSend(v8, "updateWithBLEDevice:btAddr:", eCopy, v15[3]) | v9 | objc_msgSend(v8, "changeFlags")}];
+    [v8 setDiscoveryFlags:{objc_msgSend(v8, "discoveryFlags") | flags}];
   }
 
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)_updateDeviceClassic:(void *)a3 flags:(unint64_t)a4
+- (void)_updateDeviceClassic:(void *)classic flags:(unint64_t)flags
 {
-  v7 = *(a3 + 128);
-  v8 = *(a3 + 129);
-  v9 = *(a3 + 130);
-  v10 = *(a3 + 131);
-  v11 = *(a3 + 132);
-  v12 = *(a3 + 133);
+  v7 = *(classic + 128);
+  v8 = *(classic + 129);
+  v9 = *(classic + 130);
+  v10 = *(classic + 131);
+  v11 = *(classic + 132);
+  v12 = *(classic + 133);
   if (qword_100B508D0 != -1)
   {
     sub_1007FFA5C();
@@ -572,10 +572,10 @@ LABEL_23:
   v21[1] = 0;
   sub_1000498D4(off_100B508C8, (v7 << 40) | (v8 << 32) | (v9 << 24) | (v10 << 16) | (v11 << 8) | v12, 1u, 1u, 0, 0, v21);
   v13 = sub_10004DF60(v21);
-  v14 = [v13 UUIDString];
-  if (v14)
+  uUIDString = [v13 UUIDString];
+  if (uUIDString)
   {
-    v15 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:v14];
+    v15 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:uUIDString];
     if (v15)
     {
       v16 = 0;
@@ -584,7 +584,7 @@ LABEL_23:
     else
     {
       v15 = objc_alloc_init(CBDevice);
-      [v15 setIdentifier:v14];
+      [v15 setIdentifier:uUIDString];
       [v15 setInternalFlags:4];
       deviceMap = self->_deviceMap;
       if (!deviceMap)
@@ -597,12 +597,12 @@ LABEL_23:
         deviceMap = *p_deviceMap;
       }
 
-      [(NSMutableDictionary *)deviceMap setObject:v15 forKeyedSubscript:v14];
+      [(NSMutableDictionary *)deviceMap setObject:v15 forKeyedSubscript:uUIDString];
       v16 = 0x4000000;
     }
 
-    [v15 setChangeFlags:{objc_msgSend(v15, "updateWithClassicDevice:deviceUUID:", a3, v13) | v16 | objc_msgSend(v15, "changeFlags")}];
-    [v15 setDiscoveryFlags:{objc_msgSend(v15, "discoveryFlags") | a4}];
+    [v15 setChangeFlags:{objc_msgSend(v15, "updateWithClassicDevice:deviceUUID:", classic, v13) | v16 | objc_msgSend(v15, "changeFlags")}];
+    [v15 setDiscoveryFlags:{objc_msgSend(v15, "discoveryFlags") | flags}];
   }
 
   else if (dword_100B507C8 <= 90 && (dword_100B507C8 != -1 || _LogCategory_Initialize()))
@@ -704,14 +704,14 @@ LABEL_23:
   return v16;
 }
 
-- (void)localDeviceEvent:(int)a3
+- (void)localDeviceEvent:(int)event
 {
   if (!self->_addedMonitor)
   {
     return;
   }
 
-  if (a3 == 4)
+  if (event == 4)
   {
     if ((self->_discoveryFlags & 0x800000) == 0)
     {
@@ -726,7 +726,7 @@ LABEL_23:
 
   else
   {
-    if (a3 != 5 || (self->_discoveryFlags & 0x200000) == 0)
+    if (event != 5 || (self->_discoveryFlags & 0x200000) == 0)
     {
       return;
     }

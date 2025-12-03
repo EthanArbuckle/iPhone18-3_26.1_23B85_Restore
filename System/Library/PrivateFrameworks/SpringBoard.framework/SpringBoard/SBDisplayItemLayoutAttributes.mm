@@ -1,59 +1,59 @@
 @interface SBDisplayItemLayoutAttributes
-+ (double)normalizedPointForPoint:(CGFloat)a3 inBounds:(CGFloat)a4;
-+ (id)layoutAttributesWithProtobufRepresentation:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
-- (CGSize)_sizeForAttributedSize:(SBDisplayItemAttributedSize *)a3 inBounds:(CGRect)a4 defaultSize:(CGSize)a5 screenEdgePadding:(double)a6;
++ (double)normalizedPointForPoint:(CGFloat)point inBounds:(CGFloat)bounds;
++ (id)layoutAttributesWithProtobufRepresentation:(uint64_t)representation;
+- (BOOL)isEqual:(id)equal;
+- (CGSize)_sizeForAttributedSize:(SBDisplayItemAttributedSize *)size inBounds:(CGRect)bounds defaultSize:(CGSize)defaultSize screenEdgePadding:(double)padding;
 - (NSString)debugDescription;
 - (SBDisplayItemLayoutAttributes)init;
 - (SBPBDisplayItemLayoutAttributes)protobufRepresentation;
 - (double)attributedSize;
 - (double)attributedUserSizeBeforeOverlapping;
-- (double)attributesByModifyingNormalizedCenter:(double)a3;
-- (double)attributesByModifyingUnoccludedPeekingCenter:(double)a3;
-- (double)centerInBounds:(double)a3;
+- (double)attributesByModifyingNormalizedCenter:(double)center;
+- (double)attributesByModifyingUnoccludedPeekingCenter:(double)center;
+- (double)centerInBounds:(double)bounds;
 - (double)normalizedCenter;
-- (double)sizeInBounds:(uint64_t)a1 defaultSize:screenEdgePadding:;
+- (double)sizeInBounds:(uint64_t)bounds defaultSize:screenEdgePadding:;
 - (double)slideOverConfiguration;
 - (double)unoccludedPeekingCenter;
-- (double)userSizeBeforeOverlappingInBounds:(uint64_t)a1 defaultSize:screenEdgePadding:;
-- (id)_initWithContentOrientation:(int64_t)a3 lastInteractionTime:(int64_t)a4 sizingPolicy:(int64_t)a5 attributedSize:(SBDisplayItemAttributedSize *)a6 tileConfiguration:(SBDisplayItemTileConfiguration *)a7 slideOverConfiguration:(SBDisplayItemSlideOverConfiguration *)a8 normalizedCenter:(CGPoint)a9 cascaded:(BOOL)a10 occlusionState:(int64_t)a11 attributedUserSizeBeforeOverlapping:(SBDisplayItemAttributedSize *)a12 unoccludedPeekingCenter:(CGPoint)a13 positionIsSystemManaged:(BOOL)a14 version:(int64_t)a15;
-- (id)attributesByModifyingAttributedSize:(id)a1;
-- (id)attributesByModifyingAttributedUserSizeBeforeOverlapping:(id)a1;
-- (id)attributesByModifyingContentOrientation:(id)a1;
-- (id)attributesByModifyingLastInteractionTime:(id)a1;
-- (id)attributesByModifyingOcclusionState:(id)a1;
-- (id)attributesByModifyingSizingPolicy:(id)a1;
-- (id)attributesByModifyingSlideOverConfiguration:(id)a1;
-- (id)attributesByModifyingTileConfiguration:(id)a1;
-- (id)attributesByModifyingVersion:(id)a1;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initWithPlistRepresentation:(void *)a1;
+- (double)userSizeBeforeOverlappingInBounds:(uint64_t)bounds defaultSize:screenEdgePadding:;
+- (id)_initWithContentOrientation:(int64_t)orientation lastInteractionTime:(int64_t)time sizingPolicy:(int64_t)policy attributedSize:(SBDisplayItemAttributedSize *)size tileConfiguration:(SBDisplayItemTileConfiguration *)configuration slideOverConfiguration:(SBDisplayItemSlideOverConfiguration *)overConfiguration normalizedCenter:(CGPoint)center cascaded:(BOOL)self0 occlusionState:(int64_t)self1 attributedUserSizeBeforeOverlapping:(SBDisplayItemAttributedSize *)self2 unoccludedPeekingCenter:(CGPoint)self3 positionIsSystemManaged:(BOOL)self4 version:(int64_t)self5;
+- (id)attributesByModifyingAttributedSize:(id)size;
+- (id)attributesByModifyingAttributedUserSizeBeforeOverlapping:(id)overlapping;
+- (id)attributesByModifyingContentOrientation:(id)orientation;
+- (id)attributesByModifyingLastInteractionTime:(id)time;
+- (id)attributesByModifyingOcclusionState:(id)state;
+- (id)attributesByModifyingSizingPolicy:(id)policy;
+- (id)attributesByModifyingSlideOverConfiguration:(id)configuration;
+- (id)attributesByModifyingTileConfiguration:(id)configuration;
+- (id)attributesByModifyingVersion:(id)version;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initWithPlistRepresentation:(void *)representation;
 - (id)plistRepresentation;
 - (id)succinctDescription;
-- (uint64_t)initWithContentOrientation:(uint64_t)a3 lastInteractionTime:(uint64_t)a4 sizingPolicy:(uint64_t)a5 attributedSize:(char)a6 normalizedCenter:(double)a7 cascaded:(double)a8;
+- (uint64_t)initWithContentOrientation:(uint64_t)orientation lastInteractionTime:(uint64_t)time sizingPolicy:(uint64_t)policy attributedSize:(char)size normalizedCenter:(double)center cascaded:(double)cascaded;
 - (uint64_t)initWithContentOrientation:(uint64_t)result lastInteractionTime:sizingPolicy:attributedSize:tileConfiguration:slideOverConfiguration:normalizedCenter:cascaded:occlusionState:attributedUserSizeBeforeOverlapping:unoccludedPeekingCenter:positionIsSystemManaged:;
 - (uint64_t)isCascaded;
 - (uint64_t)isPositionSystemManaged;
 - (uint64_t)tileConfiguration;
-- (unsigned)attributesByModifyingCascaded:(unsigned __int8 *)a1;
-- (unsigned)attributesByModifyingPositionIsSystemManaged:(unsigned __int8 *)a1;
-- (void)_appendPropertiesToBuilder:(id)a3;
+- (unsigned)attributesByModifyingCascaded:(unsigned __int8 *)cascaded;
+- (unsigned)attributesByModifyingPositionIsSystemManaged:(unsigned __int8 *)managed;
+- (void)_appendPropertiesToBuilder:(id)builder;
 @end
 
 @implementation SBDisplayItemLayoutAttributes
 
 - (double)attributedSize
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 176);
-    *a2 = *(a1 + 160);
+    v2 = *(self + 176);
+    *a2 = *(self + 160);
     *(a2 + 16) = v2;
-    v3 = *(a1 + 192);
+    v3 = *(self + 192);
     *(a2 + 32) = v3;
-    *(a2 + 48) = *(a1 + 208);
+    *(a2 + 48) = *(self + 208);
   }
 
   else
@@ -99,13 +99,13 @@
 
 - (double)slideOverConfiguration
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 120);
-    v3 = *(a1 + 136);
+    v2 = *(self + 120);
+    v3 = *(self + 136);
     *a2 = v2;
     *(a2 + 16) = v3;
-    *(a2 + 32) = *(a1 + 152);
+    *(a2 + 32) = *(self + 152);
   }
 
   else
@@ -119,98 +119,98 @@
   return *&v2;
 }
 
-+ (double)normalizedPointForPoint:(CGFloat)a3 inBounds:(CGFloat)a4
++ (double)normalizedPointForPoint:(CGFloat)point inBounds:(CGFloat)bounds
 {
   objc_opt_self();
-  v13.origin.x = a3;
-  v13.origin.y = a4;
+  v13.origin.x = point;
+  v13.origin.y = bounds;
   v13.size.width = a5;
   v13.size.height = a6;
-  v11 = a1 / CGRectGetWidth(v13);
-  v14.origin.x = a3;
-  v14.origin.y = a4;
+  v11 = self / CGRectGetWidth(v13);
+  v14.origin.x = point;
+  v14.origin.y = bounds;
   v14.size.width = a5;
   v14.size.height = a6;
   CGRectGetHeight(v14);
   return v11;
 }
 
-- (id)_initWithContentOrientation:(int64_t)a3 lastInteractionTime:(int64_t)a4 sizingPolicy:(int64_t)a5 attributedSize:(SBDisplayItemAttributedSize *)a6 tileConfiguration:(SBDisplayItemTileConfiguration *)a7 slideOverConfiguration:(SBDisplayItemSlideOverConfiguration *)a8 normalizedCenter:(CGPoint)a9 cascaded:(BOOL)a10 occlusionState:(int64_t)a11 attributedUserSizeBeforeOverlapping:(SBDisplayItemAttributedSize *)a12 unoccludedPeekingCenter:(CGPoint)a13 positionIsSystemManaged:(BOOL)a14 version:(int64_t)a15
+- (id)_initWithContentOrientation:(int64_t)orientation lastInteractionTime:(int64_t)time sizingPolicy:(int64_t)policy attributedSize:(SBDisplayItemAttributedSize *)size tileConfiguration:(SBDisplayItemTileConfiguration *)configuration slideOverConfiguration:(SBDisplayItemSlideOverConfiguration *)overConfiguration normalizedCenter:(CGPoint)center cascaded:(BOOL)self0 occlusionState:(int64_t)self1 attributedUserSizeBeforeOverlapping:(SBDisplayItemAttributedSize *)self2 unoccludedPeekingCenter:(CGPoint)self3 positionIsSystemManaged:(BOOL)self4 version:(int64_t)self5
 {
-  y = a13.y;
-  x = a13.x;
-  v22 = a9.y;
-  v23 = a9.x;
+  y = peekingCenter.y;
+  x = peekingCenter.x;
+  v22 = center.y;
+  v23 = center.x;
   v61.receiver = self;
   v61.super_class = SBDisplayItemLayoutAttributes;
   v25 = [(SBDisplayItemLayoutAttributes *)&v61 init];
   v26 = v25;
   if (v25)
   {
-    *(v25 + 3) = a3;
-    *(v25 + 4) = a4;
-    *(v25 + 5) = a5;
-    private_opaqueSize = a6->_private_opaqueSize;
-    origin = a6->referenceBounds.origin;
-    size = a6->referenceBounds.size;
-    *(v25 + 26) = a6->semanticSizeType;
+    *(v25 + 3) = orientation;
+    *(v25 + 4) = time;
+    *(v25 + 5) = policy;
+    private_opaqueSize = size->_private_opaqueSize;
+    origin = size->referenceBounds.origin;
+    size = size->referenceBounds.size;
+    *(v25 + 26) = size->semanticSizeType;
     *(v25 + 11) = origin;
     *(v25 + 12) = size;
     *(v25 + 10) = private_opaqueSize;
-    v30 = *&a7->tileRole;
-    *(v25 + 14) = *&a7->customSize.height;
+    v30 = *&configuration->tileRole;
+    *(v25 + 14) = *&configuration->customSize.height;
     *(v25 + 6) = v30;
-    v31 = *&a8->corner;
-    v32 = a8->size;
-    *(v25 + 19) = *&a8->isActive;
+    v31 = *&overConfiguration->corner;
+    v32 = overConfiguration->size;
+    *(v25 + 19) = *&overConfiguration->isActive;
     *(v25 + 136) = v32;
     *(v25 + 120) = v31;
     *(v25 + 8) = v23;
     *(v25 + 9) = v22;
-    *(v25 + 7) = a11;
-    v33 = a12->_private_opaqueSize;
-    v34 = a12->referenceBounds.origin;
-    v35 = a12->referenceBounds.size;
-    *(v25 + 33) = a12->semanticSizeType;
+    *(v25 + 7) = state;
+    v33 = overlapping->_private_opaqueSize;
+    v34 = overlapping->referenceBounds.origin;
+    v35 = overlapping->referenceBounds.size;
+    *(v25 + 33) = overlapping->semanticSizeType;
     *(v25 + 248) = v35;
     *(v25 + 232) = v34;
     *(v25 + 216) = v33;
     *(v25 + 10) = x;
     *(v25 + 11) = y;
-    v25[17] = a14;
-    *(v25 + 6) = a15;
-    v25[16] = a10;
-    v36 = [MEMORY[0x277CF0C40] builder];
-    v37 = [v36 appendInteger:*(v26 + 3)];
-    v38 = [v36 appendInteger:*(v26 + 4)];
-    v39 = [v36 appendInteger:*(v26 + 5)];
-    v40 = [v36 appendCGSize:{v26[20], v26[21]}];
-    v41 = [v36 appendCGRect:{v26[22], v26[23], v26[24], v26[25]}];
-    v42 = [v36 appendInteger:*(v26 + 26)];
-    v43 = [v36 appendInteger:*(v26 + 12)];
-    v44 = [v36 appendCGSize:{v26[13], v26[14]}];
-    v45 = [v36 appendInteger:*(v26 + 15)];
-    v46 = [v36 appendCGFloat:v26[16]];
-    v47 = [v36 appendCGSize:{v26[17], v26[18]}];
-    v48 = [v36 appendBool:*(v26 + 152)];
-    v49 = [v36 appendBool:*(v26 + 153)];
-    v50 = [v36 appendBool:*(v26 + 154)];
-    v51 = [v36 appendCGPoint:{v26[8], v26[9]}];
-    v52 = [v36 appendBool:*(v26 + 16)];
-    v53 = [v36 appendInteger:*(v26 + 7)];
-    v54 = [v36 appendCGSize:{v26[27], v26[28]}];
-    v55 = [v36 appendCGRect:{v26[29], v26[30], v26[31], v26[32]}];
-    v56 = [v36 appendInteger:*(v26 + 33)];
-    v57 = [v36 appendCGPoint:{v26[10], v26[11]}];
-    v58 = [v36 appendBool:*(v26 + 17)];
-    v59 = [v36 appendInteger:*(v26 + 6)];
-    *(v26 + 1) = [v36 hash];
+    v25[17] = managed;
+    *(v25 + 6) = version;
+    v25[16] = cascaded;
+    builder = [MEMORY[0x277CF0C40] builder];
+    v37 = [builder appendInteger:*(v26 + 3)];
+    v38 = [builder appendInteger:*(v26 + 4)];
+    v39 = [builder appendInteger:*(v26 + 5)];
+    v40 = [builder appendCGSize:{v26[20], v26[21]}];
+    v41 = [builder appendCGRect:{v26[22], v26[23], v26[24], v26[25]}];
+    v42 = [builder appendInteger:*(v26 + 26)];
+    v43 = [builder appendInteger:*(v26 + 12)];
+    v44 = [builder appendCGSize:{v26[13], v26[14]}];
+    v45 = [builder appendInteger:*(v26 + 15)];
+    v46 = [builder appendCGFloat:v26[16]];
+    v47 = [builder appendCGSize:{v26[17], v26[18]}];
+    v48 = [builder appendBool:*(v26 + 152)];
+    v49 = [builder appendBool:*(v26 + 153)];
+    v50 = [builder appendBool:*(v26 + 154)];
+    v51 = [builder appendCGPoint:{v26[8], v26[9]}];
+    v52 = [builder appendBool:*(v26 + 16)];
+    v53 = [builder appendInteger:*(v26 + 7)];
+    v54 = [builder appendCGSize:{v26[27], v26[28]}];
+    v55 = [builder appendCGRect:{v26[29], v26[30], v26[31], v26[32]}];
+    v56 = [builder appendInteger:*(v26 + 33)];
+    v57 = [builder appendCGPoint:{v26[10], v26[11]}];
+    v58 = [builder appendBool:*(v26 + 17)];
+    v59 = [builder appendInteger:*(v26 + 6)];
+    *(v26 + 1) = [builder hash];
   }
 
   return v26;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBDisplayItemLayoutAttributes alloc];
   contentOrientation = self->_contentOrientation;
@@ -242,18 +242,18 @@
   return [(SBDisplayItemLayoutAttributes *)v4 _initWithContentOrientation:contentOrientation lastInteractionTime:lastInteractionTime sizingPolicy:sizingPolicy attributedSize:v24 tileConfiguration:&tileConfiguration slideOverConfiguration:v21 normalizedCenter:x cascaded:size.width occlusionState:self->_unoccludedPeekingCenter.x attributedUserSizeBeforeOverlapping:self->_unoccludedPeekingCenter.y unoccludedPeekingCenter:v17 positionIsSystemManaged:occlusionState version:v19, v18, version];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
   else
   {
-    if (v4 && [(SBDisplayItemLayoutAttributes *)v4 sb_isDisplayItemLayoutAttributes])
+    if (equalCopy && [(SBDisplayItemLayoutAttributes *)equalCopy sb_isDisplayItemLayoutAttributes])
     {
       v6 = v5;
       v7 = v6;
@@ -372,16 +372,16 @@ LABEL_22:
   v8 = 3221225472;
   v9 = __49__SBDisplayItemLayoutAttributes_debugDescription__block_invoke;
   v10 = &unk_2783A92D8;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendBodySectionWithName:&stru_283094718 multilinePrefix:&stru_283094718 block:&v7];
-  v5 = [v4 build];
+  build = [v4 build];
 
-  return v5;
+  return build;
 }
 
-+ (id)layoutAttributesWithProtobufRepresentation:(uint64_t)a1
++ (id)layoutAttributesWithProtobufRepresentation:(uint64_t)representation
 {
   v2 = a2;
   objc_opt_self();
@@ -389,88 +389,88 @@ LABEL_22:
   {
     v49 = 0uLL;
     v50 = 0;
-    v3 = [(SBPBDisplayItemLayoutAttributes *)v2 preferredTileRole];
-    v4 = [(SBPBDisplayItemLayoutAttributes *)v2 tileConfigurationCustomSizeWidth];
-    v5 = [(SBPBDisplayItemLayoutAttributes *)v2 tileConfigurationCustomSizeHeight];
-    SBDisplayItemTileConfigurationMake(v3, &v49, v4, v5);
-    v6 = [(SBPBDisplayItemLayoutAttributes *)v2 slideOverConfiguration];
+    preferredTileRole = [(SBPBDisplayItemLayoutAttributes *)v2 preferredTileRole];
+    tileConfigurationCustomSizeWidth = [(SBPBDisplayItemLayoutAttributes *)v2 tileConfigurationCustomSizeWidth];
+    tileConfigurationCustomSizeHeight = [(SBPBDisplayItemLayoutAttributes *)v2 tileConfigurationCustomSizeHeight];
+    SBDisplayItemTileConfigurationMake(preferredTileRole, &v49, tileConfigurationCustomSizeWidth, tileConfigurationCustomSizeHeight);
+    slideOverConfiguration = [(SBPBDisplayItemLayoutAttributes *)v2 slideOverConfiguration];
     v48 = 0;
     v46 = 0u;
     v47 = 0u;
-    v7 = [(SBPBSlideOverConfiguration *)v6 slideOverCorner];
-    v8 = [(SBPBSlideOverConfiguration *)v6 slideOverYOffsetFromCorner];
-    v9 = [(SBPBSlideOverConfiguration *)v6 slideOverSizeWidth];
-    v10 = [(SBPBSlideOverConfiguration *)v6 slideOverSizeHeight];
-    v11 = [(SBPBSlideOverConfiguration *)v6 slideOverIsActive];
-    v12 = [(SBPBSlideOverConfiguration *)v6 slideOverIsStashed];
-    v13 = [(SBPBSlideOverConfiguration *)v6 slideOverDodgesDock];
-    SBDisplayItemSlideOverConfigurationMake(v7, v11, v12, v13, &v46, v8, v9, v10);
-    v39 = [(SBPBDisplayItemLayoutAttributes *)v2 sizeWidth];
-    v38 = [(SBPBDisplayItemLayoutAttributes *)v2 sizeHeight];
-    v14 = [(SBPBDisplayItemLayoutAttributes *)v2 referenceBoundsWidthForSize];
-    v15 = [(SBPBDisplayItemLayoutAttributes *)v2 referenceBoundsHeightForSize];
-    v16 = [(SBPBDisplayItemLayoutAttributes *)v2 semanticSizeTypeForSize];
-    v17 = [(SBPBDisplayItemLayoutAttributes *)v2 userSizeBeforeOverlappingInBoundsWidth];
-    v18 = [(SBPBDisplayItemLayoutAttributes *)v2 userSizeBeforeOverlappingInBoundsHeight];
-    v19 = [(SBPBDisplayItemLayoutAttributes *)v2 referenceBoundsWidthBeforeOverlapping];
-    v20 = [(SBPBDisplayItemLayoutAttributes *)v2 referenceBoundsHeightBeforeOverlapping];
-    v21 = [(SBPBDisplayItemLayoutAttributes *)v2 semanticSizeTypeBeforeOverlapping];
+    slideOverCorner = [(SBPBSlideOverConfiguration *)slideOverConfiguration slideOverCorner];
+    slideOverYOffsetFromCorner = [(SBPBSlideOverConfiguration *)slideOverConfiguration slideOverYOffsetFromCorner];
+    slideOverSizeWidth = [(SBPBSlideOverConfiguration *)slideOverConfiguration slideOverSizeWidth];
+    slideOverSizeHeight = [(SBPBSlideOverConfiguration *)slideOverConfiguration slideOverSizeHeight];
+    slideOverIsActive = [(SBPBSlideOverConfiguration *)slideOverConfiguration slideOverIsActive];
+    slideOverIsStashed = [(SBPBSlideOverConfiguration *)slideOverConfiguration slideOverIsStashed];
+    slideOverDodgesDock = [(SBPBSlideOverConfiguration *)slideOverConfiguration slideOverDodgesDock];
+    SBDisplayItemSlideOverConfigurationMake(slideOverCorner, slideOverIsActive, slideOverIsStashed, slideOverDodgesDock, &v46, slideOverYOffsetFromCorner, slideOverSizeWidth, slideOverSizeHeight);
+    sizeWidth = [(SBPBDisplayItemLayoutAttributes *)v2 sizeWidth];
+    sizeHeight = [(SBPBDisplayItemLayoutAttributes *)v2 sizeHeight];
+    referenceBoundsWidthForSize = [(SBPBDisplayItemLayoutAttributes *)v2 referenceBoundsWidthForSize];
+    referenceBoundsHeightForSize = [(SBPBDisplayItemLayoutAttributes *)v2 referenceBoundsHeightForSize];
+    semanticSizeTypeForSize = [(SBPBDisplayItemLayoutAttributes *)v2 semanticSizeTypeForSize];
+    userSizeBeforeOverlappingInBoundsWidth = [(SBPBDisplayItemLayoutAttributes *)v2 userSizeBeforeOverlappingInBoundsWidth];
+    userSizeBeforeOverlappingInBoundsHeight = [(SBPBDisplayItemLayoutAttributes *)v2 userSizeBeforeOverlappingInBoundsHeight];
+    referenceBoundsWidthBeforeOverlapping = [(SBPBDisplayItemLayoutAttributes *)v2 referenceBoundsWidthBeforeOverlapping];
+    referenceBoundsHeightBeforeOverlapping = [(SBPBDisplayItemLayoutAttributes *)v2 referenceBoundsHeightBeforeOverlapping];
+    semanticSizeTypeBeforeOverlapping = [(SBPBDisplayItemLayoutAttributes *)v2 semanticSizeTypeBeforeOverlapping];
     v52.origin.x = 0.0;
     v52.origin.y = 0.0;
-    v52.size.width = v19;
-    v52.size.height = v20;
+    v52.size.width = referenceBoundsWidthBeforeOverlapping;
+    v52.size.height = referenceBoundsHeightBeforeOverlapping;
     IsEmpty = CGRectIsEmpty(v52);
     if (IsEmpty)
     {
-      v23 = v14;
+      v23 = referenceBoundsWidthForSize;
     }
 
     else
     {
-      v23 = v19;
+      v23 = referenceBoundsWidthBeforeOverlapping;
     }
 
     if (IsEmpty)
     {
-      v24 = v15;
+      v24 = referenceBoundsHeightForSize;
     }
 
     else
     {
-      v24 = v20;
+      v24 = referenceBoundsHeightBeforeOverlapping;
     }
 
     v25 = [SBDisplayItemLayoutAttributes alloc];
-    v26 = [(SBPBDisplayItemLayoutAttributes *)v2 contentOrientation];
-    v27 = [(SBPBDisplayItemLayoutAttributes *)v2 lastInteractionTime];
-    v28 = [(SBPBDisplayItemLayoutAttributes *)v2 sizingPolicy];
-    v29 = [(SBPBDisplayItemLayoutAttributes *)v2 centerX];
-    v30 = [(SBPBDisplayItemLayoutAttributes *)v2 centerY];
-    v31 = [(SBPBDisplayItemLayoutAttributes *)v2 cascaded];
+    contentOrientation = [(SBPBDisplayItemLayoutAttributes *)v2 contentOrientation];
+    lastInteractionTime = [(SBPBDisplayItemLayoutAttributes *)v2 lastInteractionTime];
+    sizingPolicy = [(SBPBDisplayItemLayoutAttributes *)v2 sizingPolicy];
+    centerX = [(SBPBDisplayItemLayoutAttributes *)v2 centerX];
+    centerY = [(SBPBDisplayItemLayoutAttributes *)v2 centerY];
+    cascaded = [(SBPBDisplayItemLayoutAttributes *)v2 cascaded];
     IsSystem = [(SBPBDisplayItemLayoutAttributes *)v2 positionIsSystemManaged];
-    v33 = [(SBPBDisplayItemLayoutAttributes *)v2 version];
-    *v45 = v39;
-    *&v45[1] = v38;
+    version = [(SBPBDisplayItemLayoutAttributes *)v2 version];
+    *v45 = sizeWidth;
+    *&v45[1] = sizeHeight;
     v45[2] = 0;
     v45[3] = 0;
-    *&v45[4] = v14;
-    *&v45[5] = v15;
-    v45[6] = v16;
+    *&v45[4] = referenceBoundsWidthForSize;
+    *&v45[5] = referenceBoundsHeightForSize;
+    v45[6] = semanticSizeTypeForSize;
     v43 = v49;
     v44 = v50;
     v41[0] = v46;
     v41[1] = v47;
     v42 = v48;
-    *v40 = v17;
-    *&v40[1] = v18;
+    *v40 = userSizeBeforeOverlappingInBoundsWidth;
+    *&v40[1] = userSizeBeforeOverlappingInBoundsHeight;
     v40[2] = 0;
     v40[3] = 0;
     *&v40[4] = v23;
     *&v40[5] = v24;
-    v40[6] = v21;
+    v40[6] = semanticSizeTypeBeforeOverlapping;
     LOBYTE(v37) = IsSystem;
-    LOBYTE(v36) = v31;
-    v34 = [(SBDisplayItemLayoutAttributes *)v25 _initWithContentOrientation:v26 lastInteractionTime:v27 sizingPolicy:v28 attributedSize:v45 tileConfiguration:&v43 slideOverConfiguration:v41 normalizedCenter:v29 cascaded:v30 occlusionState:0.0 attributedUserSizeBeforeOverlapping:0.0 unoccludedPeekingCenter:v36 positionIsSystemManaged:0 version:v40, v37, v33];
+    LOBYTE(v36) = cascaded;
+    v34 = [(SBDisplayItemLayoutAttributes *)v25 _initWithContentOrientation:contentOrientation lastInteractionTime:lastInteractionTime sizingPolicy:sizingPolicy attributedSize:v45 tileConfiguration:&v43 slideOverConfiguration:v41 normalizedCenter:centerX cascaded:centerY occlusionState:0.0 attributedUserSizeBeforeOverlapping:0.0 unoccludedPeekingCenter:v36 positionIsSystemManaged:0 version:v40, v37, version];
   }
 
   else
@@ -483,21 +483,21 @@ LABEL_22:
 
 - (id)succinctDescription
 {
-  v2 = [(SBDisplayItemLayoutAttributes *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBDisplayItemLayoutAttributes *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBDisplayItemLayoutAttributes *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBDisplayItemLayoutAttributes *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [(SBDisplayItemLayoutAttributes *)self _appendPropertiesToBuilder:v4];
@@ -505,32 +505,32 @@ LABEL_22:
   return v4;
 }
 
-- (void)_appendPropertiesToBuilder:(id)a3
+- (void)_appendPropertiesToBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v5 = BSInterfaceOrientationDescription();
-  [v4 appendString:v5 withName:@"contentOrientation"];
+  [builderCopy appendString:v5 withName:@"contentOrientation"];
 
   lastInteractionTime = self->_lastInteractionTime;
   if (lastInteractionTime)
   {
-    v7 = [v4 appendInteger:lastInteractionTime withName:@"lastInteractionTime"];
+    v7 = [builderCopy appendInteger:lastInteractionTime withName:@"lastInteractionTime"];
   }
 
   else
   {
-    [v4 appendString:@"never" withName:@"lastInteractionTime"];
+    [builderCopy appendString:@"never" withName:@"lastInteractionTime"];
   }
 
   v8 = NSStringFromDisplayItemSizingPolicy(self->_sizingPolicy);
-  [v4 appendString:v8 withName:@"sizingPolicy"];
+  [builderCopy appendString:v8 withName:@"sizingPolicy"];
 
   v10 = *MEMORY[0x277CBF3A8];
   v9 = *(MEMORY[0x277CBF3A8] + 8);
   v11 = self->_attributedSize._private_opaqueSize.width == *MEMORY[0x277CBF3A8] && self->_attributedSize._private_opaqueSize.height == v9;
   if (v11 && !self->_attributedSize.semanticSizeType)
   {
-    [v4 appendString:@"unspecified" withName:@"size"];
+    [builderCopy appendString:@"unspecified" withName:@"size"];
   }
 
   else
@@ -541,7 +541,7 @@ LABEL_22:
     size = self->_attributedSize.referenceBounds.size;
     semanticSizeType = self->_attributedSize.semanticSizeType;
     v13 = SBDisplayItemAttributedSizeDescription(&private_opaqueSize);
-    [v4 appendString:v13 withName:@"size"];
+    [builderCopy appendString:v13 withName:@"size"];
   }
 
   x = self->_normalizedCenter.x;
@@ -556,26 +556,26 @@ LABEL_22:
     v16 = NSStringFromCGPoint(*&x);
   }
 
-  [v4 appendString:v16 withName:@"center"];
+  [builderCopy appendString:v16 withName:@"center"];
   private_opaqueSize = *&self->_tileConfiguration.tileRole;
   v28.x = self->_tileConfiguration.customSize.height;
   v17 = SBStringFromDisplayItemTileConfiguration(&private_opaqueSize);
-  [v4 appendString:v17 withName:@"tileConfiguration"];
+  [builderCopy appendString:v17 withName:@"tileConfiguration"];
 
   v18 = self->_slideOverConfiguration.size;
   private_opaqueSize = *&self->_slideOverConfiguration.corner;
   v28 = v18;
   size.width = *&self->_slideOverConfiguration.isActive;
   v19 = NSStringFromDisplayItemSlideOverConfiguration(&private_opaqueSize);
-  [v4 appendString:v19 withName:@"slideOverConfiguration"];
+  [builderCopy appendString:v19 withName:@"slideOverConfiguration"];
 
-  v20 = [v4 appendBool:self->_cascaded withName:@"cascaded"];
+  v20 = [builderCopy appendBool:self->_cascaded withName:@"cascaded"];
   v21 = SBOcclusionStateDescription(self->_occlusionState);
-  [v4 appendString:v21 withName:@"occlusionState"];
+  [builderCopy appendString:v21 withName:@"occlusionState"];
 
   if (self->_attributedUserSizeBeforeOverlapping._private_opaqueSize.width == v10 && self->_attributedUserSizeBeforeOverlapping._private_opaqueSize.height == v9 && !self->_attributedUserSizeBeforeOverlapping.semanticSizeType)
   {
-    [v4 appendString:@"unspecified" withName:@"userConfiguredSizeBeforeOverlapping"];
+    [builderCopy appendString:@"unspecified" withName:@"userConfiguredSizeBeforeOverlapping"];
   }
 
   else
@@ -586,52 +586,52 @@ LABEL_22:
     size = self->_attributedUserSizeBeforeOverlapping.referenceBounds.size;
     semanticSizeType = self->_attributedUserSizeBeforeOverlapping.semanticSizeType;
     v23 = SBDisplayItemAttributedSizeDescription(&private_opaqueSize);
-    [v4 appendString:v23 withName:@"userConfiguredSizeBeforeOverlapping"];
+    [builderCopy appendString:v23 withName:@"userConfiguredSizeBeforeOverlapping"];
   }
 
-  v24 = [v4 appendBool:self->_positionIsSystemManaged withName:@"positionIsSystemManaged"];
+  v24 = [builderCopy appendBool:self->_positionIsSystemManaged withName:@"positionIsSystemManaged"];
   if (self->_unoccludedPeekingCenter.x == 0.0 && self->_unoccludedPeekingCenter.y == 0.0)
   {
-    [v4 appendString:@"unspecified" withName:@"unoccludedPeekingCenter"];
+    [builderCopy appendString:@"unspecified" withName:@"unoccludedPeekingCenter"];
   }
 
   else
   {
-    v25 = [v4 appendPoint:@"unoccludedPeekingCenter" withName:?];
+    v25 = [builderCopy appendPoint:@"unoccludedPeekingCenter" withName:?];
   }
 
-  v26 = [v4 appendInteger:self->_version withName:@"version"];
+  v26 = [builderCopy appendInteger:self->_version withName:@"version"];
 }
 
-- (CGSize)_sizeForAttributedSize:(SBDisplayItemAttributedSize *)a3 inBounds:(CGRect)a4 defaultSize:(CGSize)a5 screenEdgePadding:(double)a6
+- (CGSize)_sizeForAttributedSize:(SBDisplayItemAttributedSize *)size inBounds:(CGRect)bounds defaultSize:(CGSize)defaultSize screenEdgePadding:(double)padding
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a4.size.height;
-  v9 = a4.size.width;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  if (!CGRectIsEmpty(a3->referenceBounds))
+  height = defaultSize.height;
+  width = defaultSize.width;
+  v8 = bounds.size.height;
+  v9 = bounds.size.width;
+  v11 = bounds.size.height;
+  v12 = bounds.size.width;
+  if (!CGRectIsEmpty(size->referenceBounds))
   {
-    v12 = a3->referenceBounds.size.width;
-    v11 = a3->referenceBounds.size.height;
+    v12 = size->referenceBounds.size.width;
+    v11 = size->referenceBounds.size.height;
   }
 
   if (BSFloatLessThanOrEqualToFloat() && BSFloatLessThanOrEqualToFloat())
   {
-    v13 = v12 * a3->_private_opaqueSize.width;
-    v14 = v11 * a3->_private_opaqueSize.height;
+    v13 = v12 * size->_private_opaqueSize.width;
+    v14 = v11 * size->_private_opaqueSize.height;
   }
 
   else
   {
-    v13 = a3->_private_opaqueSize.width;
-    v14 = a3->_private_opaqueSize.height;
+    v13 = size->_private_opaqueSize.width;
+    v14 = size->_private_opaqueSize.height;
   }
 
   if (BSFloatEqualToFloat() && BSFloatEqualToFloat())
   {
-    semanticSizeType = a3->semanticSizeType;
+    semanticSizeType = size->semanticSizeType;
     if (semanticSizeType <= 4)
     {
       if (semanticSizeType == 4)
@@ -740,14 +740,14 @@ LABEL_22:
       switch(semanticSizeType)
       {
         case 7:
-          v13 = v9 + a6 * -2.0;
+          v13 = v9 + padding * -2.0;
           break;
         case 8:
-          v14 = v8 + a6 * -2.0;
+          v14 = v8 + padding * -2.0;
           break;
         case 9:
-          v13 = v9 - a6 * 2.0;
-          v14 = v8 - a6 * 2.0;
+          v13 = v9 - padding * 2.0;
+          v14 = v8 - padding * 2.0;
           break;
       }
     }
@@ -781,14 +781,14 @@ LABEL_50:
 
 - (double)attributedUserSizeBeforeOverlapping
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 232);
-    *a2 = *(a1 + 216);
+    v2 = *(self + 232);
+    *a2 = *(self + 216);
     *(a2 + 16) = v2;
-    v3 = *(a1 + 248);
+    v3 = *(self + 248);
     *(a2 + 32) = v3;
-    *(a2 + 48) = *(a1 + 264);
+    *(a2 + 48) = *(self + 264);
   }
 
   else
@@ -803,7 +803,7 @@ LABEL_50:
   return *&v3;
 }
 
-- (uint64_t)initWithContentOrientation:(uint64_t)a3 lastInteractionTime:(uint64_t)a4 sizingPolicy:(uint64_t)a5 attributedSize:(char)a6 normalizedCenter:(double)a7 cascaded:(double)a8
+- (uint64_t)initWithContentOrientation:(uint64_t)orientation lastInteractionTime:(uint64_t)time sizingPolicy:(uint64_t)policy attributedSize:(char)size normalizedCenter:(double)center cascaded:(double)cascaded
 {
   if (result)
   {
@@ -816,14 +816,14 @@ LABEL_50:
     v23 = *MEMORY[0x277CBF3A0];
     v24 = v16;
     v25 = 0;
-    v17 = *(a5 + 16);
-    v20[0] = *a5;
+    v17 = *(policy + 16);
+    v20[0] = *policy;
     v20[1] = v17;
-    v20[2] = *(a5 + 32);
-    v21 = *(a5 + 48);
+    v20[2] = *(policy + 32);
+    v21 = *(policy + 48);
     LOBYTE(v19) = 1;
-    LOBYTE(v18) = a6;
-    return [v15 _initWithContentOrientation:a2 lastInteractionTime:a3 sizingPolicy:a4 attributedSize:v20 tileConfiguration:v27 slideOverConfiguration:v26 normalizedCenter:a7 cascaded:a8 occlusionState:0.0 attributedUserSizeBeforeOverlapping:0.0 unoccludedPeekingCenter:v18 positionIsSystemManaged:0 version:{v22, v19, 1000}];
+    LOBYTE(v18) = size;
+    return [v15 _initWithContentOrientation:a2 lastInteractionTime:orientation sizingPolicy:time attributedSize:v20 tileConfiguration:v27 slideOverConfiguration:v26 normalizedCenter:center cascaded:cascaded occlusionState:0.0 attributedUserSizeBeforeOverlapping:0.0 unoccludedPeekingCenter:v18 positionIsSystemManaged:0 version:{v22, v19, 1000}];
   }
 
   return result;
@@ -841,27 +841,27 @@ LABEL_50:
   return result;
 }
 
-- (double)sizeInBounds:(uint64_t)a1 defaultSize:screenEdgePadding:
+- (double)sizeInBounds:(uint64_t)bounds defaultSize:screenEdgePadding:
 {
-  if (!a1)
+  if (!bounds)
   {
     return OUTLINED_FUNCTION_18();
   }
 
-  v1 = *(a1 + 176);
-  v3[0] = *(a1 + 160);
+  v1 = *(bounds + 176);
+  v3[0] = *(bounds + 160);
   v3[1] = v1;
-  v3[2] = *(a1 + 192);
-  v4 = *(a1 + 208);
-  [a1 _sizeForAttributedSize:v3 inBounds:? defaultSize:? screenEdgePadding:?];
+  v3[2] = *(bounds + 192);
+  v4 = *(bounds + 208);
+  [bounds _sizeForAttributedSize:v3 inBounds:? defaultSize:? screenEdgePadding:?];
   return result;
 }
 
-- (double)centerInBounds:(double)a3
+- (double)centerInBounds:(double)bounds
 {
-  if (a1)
+  if (self)
   {
-    return a4 * *(a1 + 64);
+    return a4 * *(self + 64);
   }
 
   else
@@ -870,30 +870,30 @@ LABEL_50:
   }
 }
 
-- (double)userSizeBeforeOverlappingInBounds:(uint64_t)a1 defaultSize:screenEdgePadding:
+- (double)userSizeBeforeOverlappingInBounds:(uint64_t)bounds defaultSize:screenEdgePadding:
 {
-  if (!a1)
+  if (!bounds)
   {
     return OUTLINED_FUNCTION_18();
   }
 
-  v1 = *(a1 + 232);
-  v3[0] = *(a1 + 216);
+  v1 = *(bounds + 232);
+  v3[0] = *(bounds + 216);
   v3[1] = v1;
-  v3[2] = *(a1 + 248);
-  v4 = *(a1 + 264);
-  [a1 _sizeForAttributedSize:v3 inBounds:? defaultSize:? screenEdgePadding:?];
+  v3[2] = *(bounds + 248);
+  v4 = *(bounds + 264);
+  [bounds _sizeForAttributedSize:v3 inBounds:? defaultSize:? screenEdgePadding:?];
   return result;
 }
 
-- (id)attributesByModifyingContentOrientation:(id)a1
+- (id)attributesByModifyingContentOrientation:(id)orientation
 {
-  if (a1)
+  if (orientation)
   {
     OUTLINED_FUNCTION_1_2();
     if (*(v4 + 24) == v5)
     {
-      a1 = v2;
+      orientation = v2;
     }
 
     else
@@ -904,23 +904,23 @@ LABEL_50:
       OUTLINED_FUNCTION_3_14();
       OUTLINED_FUNCTION_13_1();
       OUTLINED_FUNCTION_4_7();
-      a1 = [v7 _initWithContentOrientation:v1 lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
+      orientation = [v7 _initWithContentOrientation:v1 lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
     }
 
     v3 = vars8;
   }
 
-  return a1;
+  return orientation;
 }
 
-- (id)attributesByModifyingLastInteractionTime:(id)a1
+- (id)attributesByModifyingLastInteractionTime:(id)time
 {
-  if (a1)
+  if (time)
   {
     OUTLINED_FUNCTION_1_2();
     if (*(v3 + 32) == v4)
     {
-      a1 = v1;
+      time = v1;
     }
 
     else
@@ -931,23 +931,23 @@ LABEL_50:
       OUTLINED_FUNCTION_3_14();
       OUTLINED_FUNCTION_13_1();
       OUTLINED_FUNCTION_2_16();
-      a1 = [v6 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
+      time = [v6 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return time;
 }
 
-- (id)attributesByModifyingSizingPolicy:(id)a1
+- (id)attributesByModifyingSizingPolicy:(id)policy
 {
-  if (a1)
+  if (policy)
   {
     OUTLINED_FUNCTION_1_2();
     if (*(v3 + 40) == v4)
     {
-      a1 = v1;
+      policy = v1;
     }
 
     else
@@ -958,24 +958,24 @@ LABEL_50:
       OUTLINED_FUNCTION_3_14();
       OUTLINED_FUNCTION_13_1();
       OUTLINED_FUNCTION_4_7();
-      a1 = [v6 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
+      policy = [v6 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return policy;
 }
 
-- (id)attributesByModifyingAttributedSize:(id)a1
+- (id)attributesByModifyingAttributedSize:(id)size
 {
-  if (a1)
+  if (size)
   {
     OUTLINED_FUNCTION_19();
     v6 = *v5 == *(v4 + 160) && v5[1] == *(v4 + 168);
     if (v6 && CGRectEqualToRect(*(v2 + 16), *(v1 + 176)) && *(v2 + 48) == *(v1 + 208))
     {
-      a1 = v1;
+      size = v1;
     }
 
     else
@@ -985,18 +985,18 @@ LABEL_50:
       OUTLINED_FUNCTION_7_1();
       OUTLINED_FUNCTION_12_1();
       OUTLINED_FUNCTION_2_16();
-      a1 = [v8 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
+      size = [v8 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
     }
 
     v3 = vars8;
   }
 
-  return a1;
+  return size;
 }
 
-- (id)attributesByModifyingTileConfiguration:(id)a1
+- (id)attributesByModifyingTileConfiguration:(id)configuration
 {
-  if (a1)
+  if (configuration)
   {
     OUTLINED_FUNCTION_19();
     v31 = *v4;
@@ -1005,7 +1005,7 @@ LABEL_50:
     v24 = *(v5 + 112);
     if (SBEqualDisplayItemTileConfigurations(&v31, &v23))
     {
-      a1 = v1;
+      configuration = v1;
     }
 
     else
@@ -1019,18 +1019,18 @@ LABEL_50:
       v28 = v7;
       OUTLINED_FUNCTION_6_1();
       OUTLINED_FUNCTION_12_1();
-      a1 = OUTLINED_FUNCTION_17(v8, v9, v10, v11, v12, v13, v14, v15, v17, v18, v19, v20, v21, v22, v23, *(&v23 + 1), v24, v25, v26);
+      configuration = OUTLINED_FUNCTION_17(v8, v9, v10, v11, v12, v13, v14, v15, v17, v18, v19, v20, v21, v22, v23, *(&v23 + 1), v24, v25, v26);
     }
 
     v3 = vars8;
   }
 
-  return a1;
+  return configuration;
 }
 
-- (id)attributesByModifyingSlideOverConfiguration:(id)a1
+- (id)attributesByModifyingSlideOverConfiguration:(id)configuration
 {
-  if (a1)
+  if (configuration)
   {
     OUTLINED_FUNCTION_19();
     v5 = *(v4 + 16);
@@ -1043,7 +1043,7 @@ LABEL_50:
     v27 = *(v6 + 152);
     if (SBEqualDisplayItemSlideOverConfigurations(v32, &v25))
     {
-      a1 = v1;
+      configuration = v1;
     }
 
     else
@@ -1057,22 +1057,22 @@ LABEL_50:
       v29 = v9;
       OUTLINED_FUNCTION_6_1();
       OUTLINED_FUNCTION_12_1();
-      a1 = OUTLINED_FUNCTION_17(v10, v11, v12, v13, v14, v15, v16, v17, v19, v20, v21, v22, v23, v24, v25, *(&v25 + 1), v26, *(&v26 + 1), v27);
+      configuration = OUTLINED_FUNCTION_17(v10, v11, v12, v13, v14, v15, v16, v17, v19, v20, v21, v22, v23, v24, v25, *(&v25 + 1), v26, *(&v26 + 1), v27);
     }
 
     v3 = vars8;
   }
 
-  return a1;
+  return configuration;
 }
 
-- (double)attributesByModifyingNormalizedCenter:(double)a3
+- (double)attributesByModifyingNormalizedCenter:(double)center
 {
-  if (a1)
+  if (self)
   {
-    if (a2 == a1[8] && a3 == a1[9])
+    if (a2 == self[8] && center == self[9])
     {
-      a1 = a1;
+      self = self;
     }
 
     else
@@ -1082,23 +1082,23 @@ LABEL_50:
       OUTLINED_FUNCTION_5_3();
       OUTLINED_FUNCTION_10_1();
       OUTLINED_FUNCTION_2_16();
-      a1 = [v8 _initWithContentOrientation:a2 lastInteractionTime:a3 sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
+      self = [v8 _initWithContentOrientation:a2 lastInteractionTime:center sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
     }
 
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (unsigned)attributesByModifyingCascaded:(unsigned __int8 *)a1
+- (unsigned)attributesByModifyingCascaded:(unsigned __int8 *)cascaded
 {
-  if (a1)
+  if (cascaded)
   {
     v3 = a2;
-    if (a1[16] == a2)
+    if (cascaded[16] == a2)
     {
-      a1 = a1;
+      cascaded = cascaded;
     }
 
     else
@@ -1107,23 +1107,23 @@ LABEL_50:
       OUTLINED_FUNCTION_0_28();
       OUTLINED_FUNCTION_16();
       LOBYTE(v9) = v3;
-      a1 = [v5 _initWithContentOrientation:v9 lastInteractionTime:v6 sizingPolicy:v7 attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
+      cascaded = [v5 _initWithContentOrientation:v9 lastInteractionTime:v6 sizingPolicy:v7 attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return cascaded;
 }
 
-- (id)attributesByModifyingOcclusionState:(id)a1
+- (id)attributesByModifyingOcclusionState:(id)state
 {
-  if (a1)
+  if (state)
   {
     OUTLINED_FUNCTION_1_2();
     if (*(v3 + 56) == v4)
     {
-      a1 = v1;
+      state = v1;
     }
 
     else
@@ -1132,24 +1132,24 @@ LABEL_50:
       OUTLINED_FUNCTION_0_28();
       OUTLINED_FUNCTION_16();
       OUTLINED_FUNCTION_4_7();
-      a1 = [v6 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
+      state = [v6 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return state;
 }
 
-- (id)attributesByModifyingAttributedUserSizeBeforeOverlapping:(id)a1
+- (id)attributesByModifyingAttributedUserSizeBeforeOverlapping:(id)overlapping
 {
-  if (a1)
+  if (overlapping)
   {
     OUTLINED_FUNCTION_19();
     v6 = *v5 == *(v4 + 216) && v5[1] == *(v4 + 224);
     if (v6 && CGRectEqualToRect(*(v2 + 16), *(v1 + 232)) && *(v2 + 48) == *(v1 + 264))
     {
-      a1 = v1;
+      overlapping = v1;
     }
 
     else
@@ -1159,22 +1159,22 @@ LABEL_50:
       OUTLINED_FUNCTION_5_3();
       OUTLINED_FUNCTION_10_1();
       OUTLINED_FUNCTION_2_16();
-      a1 = [v8 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
+      overlapping = [v8 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
     }
 
     v3 = vars8;
   }
 
-  return a1;
+  return overlapping;
 }
 
-- (double)attributesByModifyingUnoccludedPeekingCenter:(double)a3
+- (double)attributesByModifyingUnoccludedPeekingCenter:(double)center
 {
-  if (a1)
+  if (self)
   {
-    if (a2 == a1[10] && a3 == a1[11])
+    if (a2 == self[10] && center == self[11])
     {
-      a1 = a1;
+      self = self;
     }
 
     else
@@ -1184,22 +1184,22 @@ LABEL_50:
       OUTLINED_FUNCTION_5_3();
       OUTLINED_FUNCTION_7_1();
       OUTLINED_FUNCTION_2_16();
-      a1 = [v6 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
+      self = [v6 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
     }
 
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (unsigned)attributesByModifyingPositionIsSystemManaged:(unsigned __int8 *)a1
+- (unsigned)attributesByModifyingPositionIsSystemManaged:(unsigned __int8 *)managed
 {
-  if (a1)
+  if (managed)
   {
-    if (a1[17] == a2)
+    if (managed[17] == a2)
     {
-      a1 = a1;
+      managed = managed;
     }
 
     else
@@ -1207,23 +1207,23 @@ LABEL_50:
       v3 = [SBDisplayItemLayoutAttributes alloc];
       OUTLINED_FUNCTION_0_28();
       OUTLINED_FUNCTION_2_16();
-      a1 = [v4 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
+      managed = [v4 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return managed;
 }
 
-- (id)attributesByModifyingVersion:(id)a1
+- (id)attributesByModifyingVersion:(id)version
 {
-  if (a1)
+  if (version)
   {
     OUTLINED_FUNCTION_1_2();
     if (*(v3 + 48) == v4)
     {
-      a1 = v1;
+      version = v1;
     }
 
     else
@@ -1231,30 +1231,30 @@ LABEL_50:
       v5 = [SBDisplayItemLayoutAttributes alloc];
       OUTLINED_FUNCTION_0_28();
       OUTLINED_FUNCTION_2_16();
-      a1 = [v6 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
+      version = [v6 _initWithContentOrientation:? lastInteractionTime:? sizingPolicy:? attributedSize:? tileConfiguration:? slideOverConfiguration:? normalizedCenter:? cascaded:? occlusionState:? attributedUserSizeBeforeOverlapping:? unoccludedPeekingCenter:? positionIsSystemManaged:? version:?];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return version;
 }
 
-- (id)initWithPlistRepresentation:(void *)a1
+- (id)initWithPlistRepresentation:(void *)representation
 {
-  if (!a1)
+  if (!representation)
   {
     return 0;
   }
 
-  v2 = a1;
+  representationCopy = representation;
   v3 = a2;
   v4 = objc_opt_class();
   v5 = SBSafeCast(v4, v3);
 
   if (v5)
   {
-    v104 = v2;
+    v104 = representationCopy;
     objc_opt_class();
     [v5 objectForKey:@"contentOrientation"];
     objc_claimAutoreleasedReturnValue();
@@ -1264,12 +1264,12 @@ LABEL_50:
     v103 = v8;
     if (v8)
     {
-      v100 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
     {
-      v100 = 0;
+      integerValue = 0;
     }
 
     objc_opt_class();
@@ -1281,12 +1281,12 @@ LABEL_50:
     v102 = v12;
     if (v12)
     {
-      v99 = [v12 integerValue];
+      integerValue2 = [v12 integerValue];
     }
 
     else
     {
-      v99 = 0;
+      integerValue2 = 0;
     }
 
     objc_opt_class();
@@ -1298,12 +1298,12 @@ LABEL_50:
     v101 = v15;
     if (v15)
     {
-      v97 = [v15 integerValue];
+      integerValue3 = [v15 integerValue];
     }
 
     else
     {
-      v97 = 0;
+      integerValue3 = 0;
     }
 
     v16 = *MEMORY[0x277CBF3A8];
@@ -1365,24 +1365,24 @@ LABEL_50:
     v95 = v30;
     if (v30)
     {
-      v92 = [v30 integerValue];
+      integerValue4 = [v30 integerValue];
     }
 
     else
     {
-      v92 = 0;
+      integerValue4 = 0;
     }
 
     objc_opt_class();
     [v5 objectForKey:@"preferredTileRole"];
     objc_claimAutoreleasedReturnValue();
     v31 = OUTLINED_FUNCTION_9_2();
-    v33 = SBSafeCast(v31, v32);
+    integerValue5 = SBSafeCast(v31, v32);
 
-    v94 = v33;
-    if (v33)
+    v94 = integerValue5;
+    if (integerValue5)
     {
-      v33 = [v33 integerValue];
+      integerValue5 = [integerValue5 integerValue];
     }
 
     width = 1.79769313e308;
@@ -1402,7 +1402,7 @@ LABEL_50:
 
     v125 = 0uLL;
     v126 = 0;
-    SBDisplayItemTileConfigurationMake(v33, &v125, width, height);
+    SBDisplayItemTileConfigurationMake(integerValue5, &v125, width, height);
     objc_opt_class();
     [v5 objectForKey:@"slideOverCorner"];
     objc_claimAutoreleasedReturnValue();
@@ -1412,12 +1412,12 @@ LABEL_50:
     v91 = v41;
     if (v41)
     {
-      v42 = [v41 integerValue];
+      integerValue6 = [v41 integerValue];
     }
 
     else
     {
-      v42 = 0;
+      integerValue6 = 0;
     }
 
     v43 = [v5 objectForKey:@"slideOverYOffsetFromCorner"];
@@ -1449,7 +1449,7 @@ LABEL_50:
     v123 = 0;
     v121 = 0u;
     v122 = 0u;
-    SBDisplayItemSlideOverConfigurationMake(v42, v50, v52, v54, &v121, v45, v16, v17);
+    SBDisplayItemSlideOverConfigurationMake(integerValue6, v50, v52, v54, &v121, v45, v16, v17);
     objc_opt_class();
     [v5 objectForKey:@"center"];
     objc_claimAutoreleasedReturnValue();
@@ -1482,12 +1482,12 @@ LABEL_50:
 
     if (v62)
     {
-      v88 = [v62 BOOLValue];
+      bOOLValue = [v62 BOOLValue];
     }
 
     else
     {
-      v88 = 0;
+      bOOLValue = 0;
     }
 
     objc_opt_class();
@@ -1548,12 +1548,12 @@ LABEL_50:
 
     if (v73)
     {
-      v74 = [v73 integerValue];
+      integerValue7 = [v73 integerValue];
     }
 
     else
     {
-      v74 = 0;
+      integerValue7 = 0;
     }
 
     v75 = objc_opt_class();
@@ -1562,12 +1562,12 @@ LABEL_50:
 
     if (v77)
     {
-      v78 = [v77 BOOLValue];
+      bOOLValue2 = [v77 BOOLValue];
     }
 
     else
     {
-      v78 = 0;
+      bOOLValue2 = 0;
     }
 
     v79 = objc_opt_class();
@@ -1576,12 +1576,12 @@ LABEL_50:
 
     if (v81)
     {
-      v82 = [v81 integerValue];
+      integerValue8 = [v81 integerValue];
     }
 
     else
     {
-      v82 = 0;
+      integerValue8 = 0;
     }
 
     v83 = *MEMORY[0x277CBF348];
@@ -1591,7 +1591,7 @@ LABEL_50:
     v114 = *&v105[8];
     v115 = *&v105[16];
     v116 = *&v105[24];
-    v117 = v92;
+    v117 = integerValue4;
     v110 = v125;
     v111 = v126;
     v108[0] = v121;
@@ -1603,12 +1603,12 @@ LABEL_50:
     *&v107[3] = v22;
     *&v107[4] = v23;
     *&v107[5] = v24;
-    v107[6] = v74;
-    LOBYTE(v87) = v78;
-    LOBYTE(v86) = v88;
-    v2 = [v104 _initWithContentOrientation:v100 lastInteractionTime:v99 sizingPolicy:v97 attributedSize:&v112 tileConfiguration:&v110 slideOverConfiguration:v108 normalizedCenter:x cascaded:y occlusionState:v83 attributedUserSizeBeforeOverlapping:v84 unoccludedPeekingCenter:v86 positionIsSystemManaged:0 version:{v107, v87, v82}];
+    v107[6] = integerValue7;
+    LOBYTE(v87) = bOOLValue2;
+    LOBYTE(v86) = bOOLValue;
+    representationCopy = [v104 _initWithContentOrientation:integerValue lastInteractionTime:integerValue2 sizingPolicy:integerValue3 attributedSize:&v112 tileConfiguration:&v110 slideOverConfiguration:v108 normalizedCenter:x cascaded:y occlusionState:v83 attributedUserSizeBeforeOverlapping:v84 unoccludedPeekingCenter:v86 positionIsSystemManaged:0 version:{v107, v87, integerValue8}];
 
-    v9 = v2;
+    v9 = representationCopy;
   }
 
   else
@@ -1621,30 +1621,30 @@ LABEL_50:
 
 - (id)plistRepresentation
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v3 = [MEMORY[0x277CCABB0] numberWithInteger:*(a1 + 24)];
+    v3 = [MEMORY[0x277CCABB0] numberWithInteger:*(self + 24)];
     if (v3)
     {
       OUTLINED_FUNCTION_14_0();
     }
 
-    v4 = [MEMORY[0x277CCABB0] numberWithInteger:*(a1 + 32)];
+    v4 = [MEMORY[0x277CCABB0] numberWithInteger:*(self + 32)];
     if (v4)
     {
       [v2 setObject:v4 forKey:@"lastInteractionTime"];
     }
 
     v40 = v3;
-    v5 = [MEMORY[0x277CCABB0] numberWithInteger:*(a1 + 40)];
+    v5 = [MEMORY[0x277CCABB0] numberWithInteger:*(self + 40)];
     if (v5)
     {
       OUTLINED_FUNCTION_14_0();
     }
 
     v39 = v5;
-    DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(*(a1 + 160));
+    DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(*(self + 160));
     if (DictionaryRepresentation)
     {
       v7 = DictionaryRepresentation;
@@ -1652,7 +1652,7 @@ LABEL_50:
       CFRelease(v7);
     }
 
-    v8 = CGRectCreateDictionaryRepresentation(*(a1 + 176));
+    v8 = CGRectCreateDictionaryRepresentation(*(self + 176));
     if (v8)
     {
       v9 = v8;
@@ -1660,20 +1660,20 @@ LABEL_50:
       CFRelease(v9);
     }
 
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:*(a1 + 208)];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:*(self + 208)];
     if (v10)
     {
       OUTLINED_FUNCTION_14_0();
     }
 
     v38 = v10;
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:*(a1 + 96)];
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:*(self + 96)];
     if (v11)
     {
       [v2 setObject:v11 forKey:@"preferredTileRole"];
     }
 
-    v12 = CGSizeCreateDictionaryRepresentation(*(a1 + 104));
+    v12 = CGSizeCreateDictionaryRepresentation(*(self + 104));
     if (v12)
     {
       v13 = v12;
@@ -1681,19 +1681,19 @@ LABEL_50:
       CFRelease(v13);
     }
 
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:*(a1 + 120)];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:*(self + 120)];
     if (v14)
     {
       [v2 setObject:v14 forKey:@"slideOverCorner"];
     }
 
-    v15 = [MEMORY[0x277CCABB0] numberWithDouble:*(a1 + 128)];
+    v15 = [MEMORY[0x277CCABB0] numberWithDouble:*(self + 128)];
     if (v15)
     {
       [v2 setObject:v15 forKey:@"slideOverYOffsetFromCorner"];
     }
 
-    v16 = CGSizeCreateDictionaryRepresentation(*(a1 + 136));
+    v16 = CGSizeCreateDictionaryRepresentation(*(self + 136));
     if (v16)
     {
       v17 = v16;
@@ -1701,25 +1701,25 @@ LABEL_50:
       CFRelease(v17);
     }
 
-    v18 = [MEMORY[0x277CCABB0] numberWithBool:*(a1 + 152)];
+    v18 = [MEMORY[0x277CCABB0] numberWithBool:*(self + 152)];
     v19 = v18 != 0;
 
     v20 = [MEMORY[0x277CCABB0] numberWithBool:v19];
     OUTLINED_FUNCTION_14_0();
 
-    v21 = [MEMORY[0x277CCABB0] numberWithBool:*(a1 + 153)];
+    v21 = [MEMORY[0x277CCABB0] numberWithBool:*(self + 153)];
     v22 = v21 != 0;
 
     v23 = [MEMORY[0x277CCABB0] numberWithBool:v22];
     OUTLINED_FUNCTION_14_0();
 
-    v24 = [MEMORY[0x277CCABB0] numberWithBool:*(a1 + 154)];
+    v24 = [MEMORY[0x277CCABB0] numberWithBool:*(self + 154)];
     v25 = v24 != 0;
 
     v26 = [MEMORY[0x277CCABB0] numberWithBool:v25];
     OUTLINED_FUNCTION_14_0();
 
-    v27 = CGPointCreateDictionaryRepresentation(*(a1 + 64));
+    v27 = CGPointCreateDictionaryRepresentation(*(self + 64));
     if (v27)
     {
       v28 = v27;
@@ -1727,9 +1727,9 @@ LABEL_50:
       CFRelease(v28);
     }
 
-    v29 = [MEMORY[0x277CCABB0] numberWithBool:*(a1 + 16)];
+    v29 = [MEMORY[0x277CCABB0] numberWithBool:*(self + 16)];
     [v2 setObject:v29 forKey:@"cascaded"];
-    v30 = CGSizeCreateDictionaryRepresentation(*(a1 + 216));
+    v30 = CGSizeCreateDictionaryRepresentation(*(self + 216));
     if (v30)
     {
       v31 = v30;
@@ -1737,7 +1737,7 @@ LABEL_50:
       CFRelease(v31);
     }
 
-    v32 = CGRectCreateDictionaryRepresentation(*(a1 + 232));
+    v32 = CGRectCreateDictionaryRepresentation(*(self + 232));
     if (v32)
     {
       v33 = v32;
@@ -1745,15 +1745,15 @@ LABEL_50:
       CFRelease(v33);
     }
 
-    v34 = [MEMORY[0x277CCABB0] numberWithInteger:*(a1 + 264)];
+    v34 = [MEMORY[0x277CCABB0] numberWithInteger:*(self + 264)];
     if (v34)
     {
       OUTLINED_FUNCTION_14_0();
     }
 
-    v35 = [MEMORY[0x277CCABB0] numberWithBool:*(a1 + 17)];
+    v35 = [MEMORY[0x277CCABB0] numberWithBool:*(self + 17)];
     [v2 setObject:v35 forKey:@"positionIsSystemManaged"];
-    v36 = [MEMORY[0x277CCABB0] numberWithInteger:*(a1 + 48)];
+    v36 = [MEMORY[0x277CCABB0] numberWithInteger:*(self + 48)];
     [v2 setObject:v36 forKey:@"version"];
   }
 
@@ -1767,7 +1767,7 @@ LABEL_50:
 
 - (SBPBDisplayItemLayoutAttributes)protobufRepresentation
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(SBPBDisplayItemLayoutAttributes);
     [(SBPBDisplayItemLayoutAttributes *)v2 setContentOrientation:?];
@@ -1812,9 +1812,9 @@ LABEL_50:
 
 - (double)normalizedCenter
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 64);
+    return *(self + 64);
   }
 
   else
@@ -1825,9 +1825,9 @@ LABEL_50:
 
 - (uint64_t)isCascaded
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 16);
+    v1 = *(self + 16);
   }
 
   else
@@ -1840,9 +1840,9 @@ LABEL_50:
 
 - (double)unoccludedPeekingCenter
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 80);
+    return *(self + 80);
   }
 
   else
@@ -1853,9 +1853,9 @@ LABEL_50:
 
 - (uint64_t)isPositionSystemManaged
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 17);
+    v1 = *(self + 17);
   }
 
   else

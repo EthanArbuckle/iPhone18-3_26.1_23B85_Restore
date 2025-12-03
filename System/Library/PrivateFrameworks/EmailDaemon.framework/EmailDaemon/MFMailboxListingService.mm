@@ -1,24 +1,24 @@
 @interface MFMailboxListingService
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6;
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error;
 @end
 
 @implementation MFMailboxListingService
 
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error
 {
-  original = a3;
+  original = message;
   v10 = xpc_dictionary_get_value(original, [_MSMailServiceArguments UTF8String]);
   if (!v10)
   {
     v32 = +[NSAssertionHandler currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"MFAccountsService.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"arguments"}];
+    [v32 handleFailureInMethod:a2 object:self file:@"MFAccountsService.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"arguments"}];
   }
 
   v11 = xpc_dictionary_get_value(v10, [MSAccountsArgumentAccountUniqueIdentifiers UTF8String]);
   v34 = _CFXPCCreateCFObjectFromXPCObject();
   v38 = [v34 objectAtIndex:0];
   v12 = xpc_dictionary_get_value(v10, [MSAccountsArgumentKeys UTF8String]);
-  v33 = a5;
+  objectCopy = object;
 
   v35 = v12;
   v36 = _CFXPCCreateCFObjectFromXPCObject();
@@ -29,8 +29,8 @@
     v15 = [v13 allMailboxUidsSortedWithSpecialsAtTopIncludingLocals:0];
     v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v15 count]);
     v17 = [(_MFResultsGenerator *)[MFMailboxResultsGenerator alloc] initWithKeys:v36];
-    v18 = [v14 pushedMailboxUids];
-    [(MFMailboxResultsGenerator *)v17 setPushedMailboxUids:v18];
+    pushedMailboxUids = [v14 pushedMailboxUids];
+    [(MFMailboxResultsGenerator *)v17 setPushedMailboxUids:pushedMailboxUids];
 
     v41 = 0u;
     v42 = 0u;
@@ -51,8 +51,8 @@
           }
 
           [(MFMailboxResultsGenerator *)v17 setMailboxUid:*(*(&v39 + 1) + 8 * i)];
-          v23 = [(_MFResultsGenerator *)v17 results];
-          [v16 addObject:v23];
+          results = [(_MFResultsGenerator *)v17 results];
+          [v16 addObject:results];
         }
 
         v20 = [v19 countByEnumeratingWithState:&v39 objects:v43 count:16];
@@ -74,18 +74,18 @@ LABEL_12:
     v25 = _CFXPCCreateXPCObjectFromCFObject();
     xpc_dictionary_set_value(reply, [MSAccountsResultMailboxes UTF8String], v25);
     v26 = reply;
-    *v33 = reply;
+    *objectCopy = reply;
 
     v27 = 0;
     v28 = 1;
     goto LABEL_13;
   }
 
-  if (a6)
+  if (error)
   {
     v31 = v30;
     v28 = 0;
-    *a6 = v27;
+    *error = v27;
   }
 
   else

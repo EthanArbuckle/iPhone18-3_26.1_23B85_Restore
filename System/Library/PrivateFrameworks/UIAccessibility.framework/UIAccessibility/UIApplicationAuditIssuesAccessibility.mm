@@ -1,61 +1,61 @@
 @interface UIApplicationAuditIssuesAccessibility
-+ (BOOL)_axAuditElementIsClipping:(id)a3;
-+ (BOOL)_axAuditSetSwizzledImp:(void *)a3 orOrigImp:(void *)a4 forMethod:(objc_method *)a5 withSwizzling:(BOOL)a6;
-+ (BOOL)_axAuditShouldElementBeCheckedForClipping:(id)a3;
-+ (BOOL)_axAuditSwiftUIViewHasText:(id)a3;
-+ (BOOL)_axAuditSwiftUIViewIsClipping:(id)a3;
-+ (BOOL)_axAuditSwizzleAwayContentSize:(BOOL)a3;
-+ (BOOL)_axAuditViewIsSwiftUI:(id)a3;
-+ (CGRect)_axAuditBoundsForRange:(_NSRange)a3 onSwiftUIView:(id)a4;
-+ (id)_accessibilityGetAllSubviews:(id)a3 withFiltering:(BOOL)a4;
-+ (id)_accessibilityGetAllSwiftUISubviews:(id)a3 withFiltering:(BOOL)a4;
-+ (id)_axAuditContrastDetectionForSwiftUIView:(id)a3;
-+ (id)_axAuditCreateElementInfoDictionariesForSubviews:(id)a3;
-+ (id)_axAuditDereferenceCellsForViewHierarchy:(id)a3;
-+ (id)_axAuditFindAllCollectionViewsInHierarchyForElements:(id)a3;
-+ (id)_axAuditFindAllCollectionViewsInHierarchyForView:(id)a3;
-+ (id)_axAuditFindAllTablesInHierarchyForElements:(id)a3;
-+ (id)_axAuditFindAllTablesInHierarchyForView:(id)a3;
-+ (id)_axAuditFindDescendantInaccessibleElements:(id)a3 honorsGroups:(BOOL)a4;
-+ (id)_axAuditFindElementsNotSupportingDynamicText:(id)a3;
-+ (id)_axAuditFindFrontmostViewControllerForHierarchy:(id)a3;
++ (BOOL)_axAuditElementIsClipping:(id)clipping;
++ (BOOL)_axAuditSetSwizzledImp:(void *)imp orOrigImp:(void *)origImp forMethod:(objc_method *)method withSwizzling:(BOOL)swizzling;
++ (BOOL)_axAuditShouldElementBeCheckedForClipping:(id)clipping;
++ (BOOL)_axAuditSwiftUIViewHasText:(id)text;
++ (BOOL)_axAuditSwiftUIViewIsClipping:(id)clipping;
++ (BOOL)_axAuditSwizzleAwayContentSize:(BOOL)size;
++ (BOOL)_axAuditViewIsSwiftUI:(id)i;
++ (CGRect)_axAuditBoundsForRange:(_NSRange)range onSwiftUIView:(id)view;
++ (id)_accessibilityGetAllSubviews:(id)subviews withFiltering:(BOOL)filtering;
++ (id)_accessibilityGetAllSwiftUISubviews:(id)subviews withFiltering:(BOOL)filtering;
++ (id)_axAuditContrastDetectionForSwiftUIView:(id)view;
++ (id)_axAuditCreateElementInfoDictionariesForSubviews:(id)subviews;
++ (id)_axAuditDereferenceCellsForViewHierarchy:(id)hierarchy;
++ (id)_axAuditFindAllCollectionViewsInHierarchyForElements:(id)elements;
++ (id)_axAuditFindAllCollectionViewsInHierarchyForView:(id)view;
++ (id)_axAuditFindAllTablesInHierarchyForElements:(id)elements;
++ (id)_axAuditFindAllTablesInHierarchyForView:(id)view;
++ (id)_axAuditFindDescendantInaccessibleElements:(id)elements honorsGroups:(BOOL)groups;
++ (id)_axAuditFindElementsNotSupportingDynamicText:(id)text;
++ (id)_axAuditFindFrontmostViewControllerForHierarchy:(id)hierarchy;
 + (id)_axAuditGetAllFontSizes;
-+ (id)_axAuditGetAllTableAndCollectionViewsForHierarchy:(id)a3;
-+ (id)_axAuditGetAttrLabelFromSwiftUIView:(id)a3;
-+ (id)_axAuditGetFontAttrFromAttributedString:(id)a3;
-+ (id)_axAuditGetFontForElement:(id)a3;
-+ (id)_axAuditGetFontForSwiftUIView:(id)a3;
-+ (id)_axAuditGetIndexPathsDictionaryForCaptureActionForView:(id)a3;
-+ (id)_axAuditGetIndexPathsDictionaryForUpdateActionForView:(id)a3;
-+ (id)_axAuditGetOriginalContentOffsetForView:(id)a3;
-+ (id)_axAuditGetTextFromObject:(id)a3;
-+ (id)_axAuditHelperToFindRelevantSubviewsOfCellView:(id)a3;
-+ (id)_axAuditMatchReferenceSubviews:(id)a3 againstNewSubviews:(id)a4;
-+ (id)_axAuditUnlabeledIssueDictForElement:(id)a3 honorsGroups:(BOOL)a4;
-+ (void)_axAuditCaptureReferenceToCellsForViewHierarchy:(id)a3;
-+ (void)_axAuditCheckElementForClipping:(id)a3 storeIntoSet:(id)a4;
-+ (void)_axAuditCheckSwiftUIViewForClipping:(id)a3 storeIntoSet:(id)a4;
-+ (void)_axAuditForHierarchy:(id)a3 withTableOrCollectionViews:(id)a4 performAction:(id)a5 performBlockOnEachCell:(id)a6;
-+ (void)_axAuditRemoveUIViewsFromArray:(id)a3 usingFilter:(id)a4;
-+ (void)_axAuditRemoveUnsupportedCategories:(id)a3;
-+ (void)_axAuditStoreClippedElementsIntoSet:(id)a3 forReferenceMatches:(id)a4;
-+ (void)_axAuditStoreFontForElement:(id)a3 intoDictionary:(id)a4 forCurrentFont:(id)a5;
-+ (void)_axAuditStoreFontForSwiftUIView:(id)a3 intoDictionary:(id)a4 forCurrentFont:(id)a5;
-+ (void)_axAuditStoreFontsIntoDictionary:(id)a3 forReferenceMatches:(id)a4;
-+ (void)_axAuditUIKitShouldReportFontSize:(id)a3;
-+ (void)_axAuditUpdateClippingStatusForReferenceMatches:(id)a3;
-+ (void)_axAuditUpdateFontsForReferenceMatches:(id)a3 forFontSize:(id)a4;
-+ (void)_axAuditUpdateReferenceOfCellsForViewHierarchy:(id)a3 forFontSize:(id)a4;
-+ (void)_axAuditUpdateRowHeightForTableAndCollectionViewsOfElements:(id)a3;
++ (id)_axAuditGetAllTableAndCollectionViewsForHierarchy:(id)hierarchy;
++ (id)_axAuditGetAttrLabelFromSwiftUIView:(id)view;
++ (id)_axAuditGetFontAttrFromAttributedString:(id)string;
++ (id)_axAuditGetFontForElement:(id)element;
++ (id)_axAuditGetFontForSwiftUIView:(id)view;
++ (id)_axAuditGetIndexPathsDictionaryForCaptureActionForView:(id)view;
++ (id)_axAuditGetIndexPathsDictionaryForUpdateActionForView:(id)view;
++ (id)_axAuditGetOriginalContentOffsetForView:(id)view;
++ (id)_axAuditGetTextFromObject:(id)object;
++ (id)_axAuditHelperToFindRelevantSubviewsOfCellView:(id)view;
++ (id)_axAuditMatchReferenceSubviews:(id)subviews againstNewSubviews:(id)newSubviews;
++ (id)_axAuditUnlabeledIssueDictForElement:(id)element honorsGroups:(BOOL)groups;
++ (void)_axAuditCaptureReferenceToCellsForViewHierarchy:(id)hierarchy;
++ (void)_axAuditCheckElementForClipping:(id)clipping storeIntoSet:(id)set;
++ (void)_axAuditCheckSwiftUIViewForClipping:(id)clipping storeIntoSet:(id)set;
++ (void)_axAuditForHierarchy:(id)hierarchy withTableOrCollectionViews:(id)views performAction:(id)action performBlockOnEachCell:(id)cell;
++ (void)_axAuditRemoveUIViewsFromArray:(id)array usingFilter:(id)filter;
++ (void)_axAuditRemoveUnsupportedCategories:(id)categories;
++ (void)_axAuditStoreClippedElementsIntoSet:(id)set forReferenceMatches:(id)matches;
++ (void)_axAuditStoreFontForElement:(id)element intoDictionary:(id)dictionary forCurrentFont:(id)font;
++ (void)_axAuditStoreFontForSwiftUIView:(id)view intoDictionary:(id)dictionary forCurrentFont:(id)font;
++ (void)_axAuditStoreFontsIntoDictionary:(id)dictionary forReferenceMatches:(id)matches;
++ (void)_axAuditUIKitShouldReportFontSize:(id)size;
++ (void)_axAuditUpdateClippingStatusForReferenceMatches:(id)matches;
++ (void)_axAuditUpdateFontsForReferenceMatches:(id)matches forFontSize:(id)size;
++ (void)_axAuditUpdateReferenceOfCellsForViewHierarchy:(id)hierarchy forFontSize:(id)size;
++ (void)_axAuditUpdateRowHeightForTableAndCollectionViewsOfElements:(id)elements;
 @end
 
 @implementation UIApplicationAuditIssuesAccessibility
 
-+ (id)_accessibilityGetAllSubviews:(id)a3 withFiltering:(BOOL)a4
++ (id)_accessibilityGetAllSubviews:(id)subviews withFiltering:(BOOL)filtering
 {
-  v4 = a4;
-  v5 = [MEMORY[0x1E695DF70] axArrayByIgnoringNilElementsWithCount:{1, a3}];
-  v6 = [MEMORY[0x1E695DF70] array];
+  filteringCopy = filtering;
+  v5 = [MEMORY[0x1E695DF70] axArrayByIgnoringNilElementsWithCount:{1, subviews}];
+  array = [MEMORY[0x1E695DF70] array];
   if ([v5 count])
   {
     v7 = 0;
@@ -63,15 +63,15 @@
     v9 = *(MEMORY[0x1E695F060] + 8);
     do
     {
-      v10 = [v5 firstObject];
+      firstObject = [v5 firstObject];
       [v5 removeObjectAtIndex:0];
-      if (!v4 || (([v10 bounds], v8 == v12) ? (v13 = v9 == v11) : (v13 = 0), !v13 && (objc_msgSend(v10, "bounds"), v15 = v14, v17 = v16, v19 = v18, v21 = v20, objc_msgSend(v10, "window"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "convertRect:toView:", v22, v15, v17, v19, v21), v24 = v23, v26 = v25, v22, objc_msgSend(MEMORY[0x1E69DCEB0], "mainScreen"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "bounds"), v29 = v28, v31 = v30, v27, (objc_msgSend(v10, "isHidden") & 1) == 0) && ((v32 = objc_msgSend(v10, "accessibilityElementsHidden"), v24 <= v29) ? (v33 = v26 <= v31) : (v33 = 0), v33 && (v32 & 1) == 0)))
+      if (!filteringCopy || (([firstObject bounds], v8 == v12) ? (v13 = v9 == v11) : (v13 = 0), !v13 && (objc_msgSend(firstObject, "bounds"), v15 = v14, v17 = v16, v19 = v18, v21 = v20, objc_msgSend(firstObject, "window"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(firstObject, "convertRect:toView:", v22, v15, v17, v19, v21), v24 = v23, v26 = v25, v22, objc_msgSend(MEMORY[0x1E69DCEB0], "mainScreen"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "bounds"), v29 = v28, v31 = v30, v27, (objc_msgSend(firstObject, "isHidden") & 1) == 0) && ((v32 = objc_msgSend(firstObject, "accessibilityElementsHidden"), v24 <= v29) ? (v33 = v26 <= v31) : (v33 = 0), v33 && (v32 & 1) == 0)))
       {
-        if (([v6 containsObject:v10] & 1) == 0)
+        if (([array containsObject:firstObject] & 1) == 0)
         {
-          v34 = [v10 subviews];
-          [v5 addObjectsFromArray:v34];
-          [v6 addObject:v10];
+          subviews = [firstObject subviews];
+          [v5 addObjectsFromArray:subviews];
+          [array addObject:firstObject];
         }
       }
 
@@ -84,16 +84,16 @@
     while (v7++ < 0x270F);
   }
 
-  return v6;
+  return array;
 }
 
-+ (id)_accessibilityGetAllSwiftUISubviews:(id)a3 withFiltering:(BOOL)a4
++ (id)_accessibilityGetAllSwiftUISubviews:(id)subviews withFiltering:(BOOL)filtering
 {
-  v4 = a4;
-  v5 = [MEMORY[0x1E695DF70] axArrayByIgnoringNilElementsWithCount:{1, a3}];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 bounds];
+  filteringCopy = filtering;
+  v5 = [MEMORY[0x1E695DF70] axArrayByIgnoringNilElementsWithCount:{1, subviews}];
+  array = [MEMORY[0x1E695DF70] array];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v9 = v8;
   v11 = v10;
 
@@ -104,22 +104,22 @@
     v14 = *(MEMORY[0x1E695F060] + 8);
     do
     {
-      v15 = [v5 firstObject];
+      firstObject = [v5 firstObject];
       [v5 removeObjectAtIndex:0];
-      v16 = 0;
+      automationElements = 0;
       if (objc_opt_respondsToSelector())
       {
-        v16 = [v15 automationElements];
+        automationElements = [firstObject automationElements];
       }
 
-      if ([v16 count])
+      if ([automationElements count])
       {
-        [v5 addObjectsFromArray:v16];
+        [v5 addObjectsFromArray:automationElements];
       }
 
-      else if (!v4 || (objc_opt_respondsToSelector() & 1) == 0 || (([v15 accessibilityFrame], v13 != v20) || v14 != v19) && v17 <= v9 && v18 <= v11)
+      else if (!filteringCopy || (objc_opt_respondsToSelector() & 1) == 0 || (([firstObject accessibilityFrame], v13 != v20) || v14 != v19) && v17 <= v9 && v18 <= v11)
       {
-        [v6 addObject:v15];
+        [array addObject:firstObject];
       }
 
       if (![v5 count])
@@ -131,7 +131,7 @@
     while (v12++ < 0x270F);
   }
 
-  return v6;
+  return array;
 }
 
 + (id)_axAuditGetAllFontSizes
@@ -168,39 +168,39 @@
   return v2;
 }
 
-+ (id)_axAuditFindAllTablesInHierarchyForView:(id)a3
++ (id)_axAuditFindAllTablesInHierarchyForView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_opt_new();
   do
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 addObject:v3];
+      [v4 addObject:viewCopy];
     }
 
-    v5 = [v3 superview];
+    superview = [viewCopy superview];
 
-    v3 = v5;
+    viewCopy = superview;
   }
 
-  while (v5);
+  while (superview);
   v6 = [v4 copy];
 
   return v6;
 }
 
-+ (id)_axAuditFindAllTablesInHierarchyForElements:(id)a3
++ (id)_axAuditFindAllTablesInHierarchyForElements:(id)elements
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  elementsCopy = elements;
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = elementsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -219,7 +219,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [a1 _axAuditFindAllTablesInHierarchyForView:{v11, v15}];
+          v12 = [self _axAuditFindAllTablesInHierarchyForView:{v11, v15}];
           if ([v12 count])
           {
             [v5 unionSet:v12];
@@ -238,39 +238,39 @@
   return v13;
 }
 
-+ (id)_axAuditFindAllCollectionViewsInHierarchyForView:(id)a3
++ (id)_axAuditFindAllCollectionViewsInHierarchyForView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_opt_new();
   do
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 addObject:v3];
+      [v4 addObject:viewCopy];
     }
 
-    v5 = [v3 superview];
+    superview = [viewCopy superview];
 
-    v3 = v5;
+    viewCopy = superview;
   }
 
-  while (v5);
+  while (superview);
   v6 = [v4 copy];
 
   return v6;
 }
 
-+ (id)_axAuditFindAllCollectionViewsInHierarchyForElements:(id)a3
++ (id)_axAuditFindAllCollectionViewsInHierarchyForElements:(id)elements
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  elementsCopy = elements;
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = elementsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -289,7 +289,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [a1 _axAuditFindAllCollectionViewsInHierarchyForView:{v11, v15}];
+          v12 = [self _axAuditFindAllCollectionViewsInHierarchyForView:{v11, v15}];
           if ([v12 count])
           {
             [v5 unionSet:v12];
@@ -308,11 +308,11 @@
   return v13;
 }
 
-+ (void)_axAuditUpdateRowHeightForTableAndCollectionViewsOfElements:(id)a3
++ (void)_axAuditUpdateRowHeightForTableAndCollectionViewsOfElements:(id)elements
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 _axAuditFindAllTablesInHierarchyForElements:v4];
+  elementsCopy = elements;
+  v5 = [self _axAuditFindAllTablesInHierarchyForElements:elementsCopy];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -342,7 +342,7 @@
     while (v7);
   }
 
-  v11 = [a1 _axAuditFindAllCollectionViewsInHierarchyForElements:v4];
+  v11 = [self _axAuditFindAllCollectionViewsInHierarchyForElements:elementsCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -373,46 +373,46 @@
   }
 }
 
-+ (void)_axAuditRemoveUIViewsFromArray:(id)a3 usingFilter:(id)a4
++ (void)_axAuditRemoveUIViewsFromArray:(id)array usingFilter:(id)filter
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD50] indexSet];
-  v24 = [MEMORY[0x1E695DF70] array];
-  v8 = [v5 count];
+  arrayCopy = array;
+  filterCopy = filter;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  array = [MEMORY[0x1E695DF70] array];
+  v8 = [arrayCopy count];
   if (v8)
   {
     v9 = v8;
     for (i = 0; i != v9; ++i)
     {
-      v11 = [v5 objectAtIndex:i];
-      if (v6[2](v6, v11))
+      v11 = [arrayCopy objectAtIndex:i];
+      if (filterCopy[2](filterCopy, v11))
       {
-        [v7 addIndex:i];
-        [v24 addObject:v11];
+        [indexSet addIndex:i];
+        [array addObject:v11];
       }
     }
   }
 
-  [v5 removeObjectsAtIndexes:{v7, v7}];
-  v12 = [MEMORY[0x1E696AD50] indexSet];
-  v13 = [v5 count];
+  [arrayCopy removeObjectsAtIndexes:{indexSet, indexSet}];
+  indexSet2 = [MEMORY[0x1E696AD50] indexSet];
+  v13 = [arrayCopy count];
   if (v13)
   {
     v14 = v13;
     for (j = 0; j != v14; ++j)
     {
-      v16 = [v5 objectAtIndex:j];
-      v17 = [v16 window];
+      v16 = [arrayCopy objectAtIndex:j];
+      window = [v16 window];
 
-      if (v17)
+      if (window)
       {
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v18 = v24;
+        v18 = array;
         v19 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v19)
         {
@@ -430,7 +430,7 @@
 
               if ([v16 isDescendantOfView:*(*(&v25 + 1) + 8 * v22)])
               {
-                [v12 addIndex:j];
+                [indexSet2 addIndex:j];
               }
 
               ++v22;
@@ -446,52 +446,52 @@
 
       else
       {
-        [v12 addIndex:j];
+        [indexSet2 addIndex:j];
       }
     }
   }
 
-  [v5 removeObjectsAtIndexes:v12];
+  [arrayCopy removeObjectsAtIndexes:indexSet2];
 }
 
-+ (id)_axAuditFindFrontmostViewControllerForHierarchy:(id)a3
++ (id)_axAuditFindFrontmostViewControllerForHierarchy:(id)hierarchy
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] axArrayByIgnoringNilElementsWithCount:{1, v3}];
+  hierarchyCopy = hierarchy;
+  v4 = [MEMORY[0x1E695DF70] axArrayByIgnoringNilElementsWithCount:{1, hierarchyCopy}];
   if ([v4 count])
   {
-    v5 = v3;
+    v5 = hierarchyCopy;
     do
     {
-      v6 = [v4 firstObject];
+      firstObject = [v4 firstObject];
       [v4 removeObjectAtIndex:0];
-      v7 = [v6 presentedViewController];
+      presentedViewController = [firstObject presentedViewController];
 
-      if (v7)
+      if (presentedViewController)
       {
-        v8 = [v6 presentedViewController];
+        presentedViewController2 = [firstObject presentedViewController];
 
-        [MEMORY[0x1E695DF70] arrayWithObject:v8];
-        v4 = v9 = v4;
-        v5 = v8;
+        [MEMORY[0x1E695DF70] arrayWithObject:presentedViewController2];
+        v4 = topViewController = v4;
+        v5 = presentedViewController2;
       }
 
       else
       {
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && ([v6 topViewController], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+        if ((objc_opt_isKindOfClass() & 1) != 0 && ([firstObject topViewController], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
         {
           v11 = MEMORY[0x1E695DF70];
-          v9 = [v6 topViewController];
-          v12 = [v11 arrayWithObject:v9];
+          topViewController = [firstObject topViewController];
+          v12 = [v11 arrayWithObject:topViewController];
 
           v4 = v12;
         }
 
         else
         {
-          v9 = [v6 childViewControllers];
-          [v4 addObjectsFromArray:v9];
+          topViewController = [firstObject childViewControllers];
+          [v4 addObjectsFromArray:topViewController];
         }
       }
     }
@@ -501,38 +501,38 @@
 
   else
   {
-    v5 = v3;
+    v5 = hierarchyCopy;
   }
 
   return v5;
 }
 
-+ (id)_axAuditGetFontForElement:(id)a3
++ (id)_axAuditGetFontForElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 textLabel];
-    v5 = [v4 font];
+    textLabel = [elementCopy textLabel];
+    font = [textLabel font];
 
-    if (v5)
+    if (font)
     {
       goto LABEL_29;
     }
 
-    v6 = [v3 detailTextLabel];
-    v7 = [v6 font];
+    detailTextLabel = [elementCopy detailTextLabel];
+    font2 = [detailTextLabel font];
     goto LABEL_6;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 attributedText];
-    v7 = [UIApplicationAuditIssuesAccessibility _axAuditGetFontAttrFromAttributedString:v6];
+    detailTextLabel = [elementCopy attributedText];
+    font2 = [UIApplicationAuditIssuesAccessibility _axAuditGetFontAttrFromAttributedString:detailTextLabel];
 LABEL_6:
-    v5 = v7;
+    font = font2;
 
     goto LABEL_9;
   }
@@ -543,11 +543,11 @@ LABEL_6:
   }
 
   objc_opt_class();
-  v8 = [v3 safeValueForKey:@"font"];
-  v5 = __UIAccessibilityCastAsClass();
+  v8 = [elementCopy safeValueForKey:@"font"];
+  font = __UIAccessibilityCastAsClass();
 
 LABEL_9:
-  if (v5)
+  if (font)
   {
     goto LABEL_29;
   }
@@ -556,36 +556,36 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v3 textLayoutManager];
-    if (v9)
+    textLayoutManager = [elementCopy textLayoutManager];
+    if (textLayoutManager)
     {
       objc_opt_class();
-      v10 = [v9 textContentManager];
+      textContentManager = [textLayoutManager textContentManager];
       v11 = __UIAccessibilityCastAsClass();
 
       if (v11)
       {
-        v12 = [v11 textStorage];
-        if (v12)
+        textStorage = [v11 textStorage];
+        if (textStorage)
         {
-          v5 = [UIApplicationAuditIssuesAccessibility _axAuditGetFontAttrFromAttributedString:v12];
+          font = [UIApplicationAuditIssuesAccessibility _axAuditGetFontAttrFromAttributedString:textStorage];
         }
 
         else
         {
-          v5 = 0;
+          font = 0;
         }
       }
 
       else
       {
-        v5 = 0;
+        font = 0;
       }
     }
 
     else
     {
-      v5 = 0;
+      font = 0;
     }
 
     goto LABEL_28;
@@ -597,15 +597,15 @@ LABEL_10:
   {
 
 LABEL_19:
-    v9 = [v3 _accessibilityAXAttributedValue];
-    if ([v9 isAXAttributedString])
+    textLayoutManager = [elementCopy _accessibilityAXAttributedValue];
+    if ([textLayoutManager isAXAttributedString])
     {
-      v16 = [v9 cfAttributedString];
+      cfAttributedString = [textLayoutManager cfAttributedString];
     }
 
     else
     {
-      v16 = 0;
+      cfAttributedString = 0;
     }
 
     goto LABEL_23;
@@ -618,22 +618,22 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v9 = [v3 performSelector:sel_textStorage];
-  v16 = v9;
+  textLayoutManager = [elementCopy performSelector:sel_textStorage];
+  cfAttributedString = textLayoutManager;
 LABEL_23:
-  v5 = [UIApplicationAuditIssuesAccessibility _axAuditGetFontAttrFromAttributedString:v16];
+  font = [UIApplicationAuditIssuesAccessibility _axAuditGetFontAttrFromAttributedString:cfAttributedString];
 LABEL_28:
 
 LABEL_29:
-  v17 = v5;
+  v17 = font;
 
   return v17;
 }
 
-+ (id)_axAuditGetFontForSwiftUIView:(id)a3
++ (id)_axAuditGetFontForSwiftUIView:(id)view
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _axAuditGetAttrLabelFromSwiftUIView:v3];
+  viewCopy = view;
+  v4 = [objc_opt_class() _axAuditGetAttrLabelFromSwiftUIView:viewCopy];
 
   if (v4)
   {
@@ -648,11 +648,11 @@ LABEL_29:
   return v5;
 }
 
-+ (id)_axAuditGetFontAttrFromAttributedString:(id)a3
++ (id)_axAuditGetFontAttrFromAttributedString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
     v22 = 0;
     v23 = &v22;
@@ -660,7 +660,7 @@ LABEL_29:
     v25 = __Block_byref_object_copy__1;
     v26 = __Block_byref_object_dispose__1;
     v27 = 0;
-    v5 = [v3 length];
+    v5 = [stringCopy length];
     v16 = 0;
     v17 = &v16;
     v18 = 0x3032000000;
@@ -763,16 +763,16 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditGetFontAttrFromAttribut
   }
 }
 
-+ (id)_axAuditFindElementsNotSupportingDynamicText:(id)a3
++ (id)_axAuditFindElementsNotSupportingDynamicText:(id)text
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v43 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+  textCopy = text;
+  weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v5 = v4;
+  v5 = textCopy;
   v6 = [v5 countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v6)
   {
@@ -780,7 +780,7 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditGetFontAttrFromAttribut
     v8 = *v54;
     v44 = *MEMORY[0x1E69DDC68];
     v40 = *v54;
-    v41 = a1;
+    selfCopy = self;
     do
     {
       v9 = 0;
@@ -801,8 +801,8 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditGetFontAttrFromAttribut
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [a1 _axAuditGetTextFromObject:v10];
-            if (![v13 length])
+            string = [self _axAuditGetTextFromObject:v10];
+            if (![string length])
             {
               goto LABEL_40;
             }
@@ -811,7 +811,7 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditGetFontAttrFromAttribut
           else if ([objc_opt_class() _axAuditViewIsSwiftUI:v10])
           {
             v14 = [objc_opt_class() _axAuditGetAttrLabelFromSwiftUIView:v10];
-            v13 = [v14 string];
+            string = [v14 string];
 
             if (![objc_opt_class() _axAuditSwiftUIViewHasText:v10])
             {
@@ -821,20 +821,20 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditGetFontAttrFromAttribut
 
           else
           {
-            v13 = 0;
+            string = 0;
           }
 
-          v45 = v13;
+          v45 = string;
           v46 = v9;
           v15 = v44;
-          v16 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
           v52 = 0u;
-          v17 = [a1 _axAuditGetAllFontSizes];
-          v18 = [v17 countByEnumeratingWithState:&v49 objects:v57 count:16];
-          v48 = v16;
+          _axAuditGetAllFontSizes = [self _axAuditGetAllFontSizes];
+          v18 = [_axAuditGetAllFontSizes countByEnumeratingWithState:&v49 objects:v57 count:16];
+          v48 = array;
           if (v18)
           {
             v19 = v18;
@@ -851,7 +851,7 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditGetFontAttrFromAttribut
               {
                 if (*v50 != v20)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(_axAuditGetAllFontSizes);
                 }
 
                 v26 = *(*(&v49 + 1) + 8 * v24);
@@ -897,7 +897,7 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditGetFontAttrFromAttribut
               }
 
               while (v19 != v24);
-              v19 = [v17 countByEnumeratingWithState:&v49 objects:v57 count:16];
+              v19 = [_axAuditGetAllFontSizes countByEnumeratingWithState:&v49 objects:v57 count:16];
             }
 
             while (v19);
@@ -905,10 +905,10 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditGetFontAttrFromAttribut
             if (v21 < v23)
             {
               v8 = v40;
-              a1 = v41;
+              self = selfCopy;
               v7 = v42;
-              v13 = v45;
-              v16 = v48;
+              string = v45;
+              array = v48;
               if ((v47 & 1) == 0)
               {
 LABEL_39:
@@ -920,37 +920,37 @@ LABEL_40:
               }
 
 LABEL_36:
-              [v43 setObject:v16 forKey:v10];
+              [weakToStrongObjectsMapTable setObject:array forKey:v10];
               objc_opt_class();
-              if ((objc_opt_isKindOfClass() & 1) == 0 || ([a1 _axAuditGetTextFromObject:v10], v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "length"), v32, v16 = v48, v33))
+              if ((objc_opt_isKindOfClass() & 1) == 0 || ([self _axAuditGetTextFromObject:v10], v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "length"), v32, array = v48, v33))
               {
-                [v16 componentsJoinedByString:{@", "}];
-                v39 = v38 = v13;
+                [array componentsJoinedByString:{@", "}];
+                v39 = v38 = string;
                 v36 = @"AX Audit: Element: %@, with text: %@, does not support these font sizes:%@";
                 v37 = v10;
                 LOBYTE(v35) = 1;
                 _AXLogWithFacility();
 
-                v16 = v48;
+                array = v48;
               }
 
               goto LABEL_39;
             }
 
             v8 = v40;
-            a1 = v41;
+            self = selfCopy;
             v7 = v42;
-            v13 = v45;
-            v16 = v48;
+            string = v45;
+            array = v48;
           }
 
           else
           {
 
-            v13 = v45;
+            string = v45;
           }
 
-          [v16 insertObject:v15 atIndex:0];
+          [array insertObject:v15 atIndex:0];
           goto LABEL_36;
         }
 
@@ -965,85 +965,85 @@ LABEL_41:
     while (v7);
   }
 
-  return v43;
+  return weakToStrongObjectsMapTable;
 }
 
-+ (void)_axAuditStoreFontForElement:(id)a3 intoDictionary:(id)a4 forCurrentFont:(id)a5
++ (void)_axAuditStoreFontForElement:(id)element intoDictionary:(id)dictionary forCurrentFont:(id)font
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 _axAuditGetFontForElement:v19];
-  v11 = [a1 _axAuditGetTextFromObject:v19];
+  elementCopy = element;
+  dictionaryCopy = dictionary;
+  fontCopy = font;
+  v10 = [self _axAuditGetFontForElement:elementCopy];
+  v11 = [self _axAuditGetTextFromObject:elementCopy];
   v12 = v11;
   if (v10 && v11)
   {
-    v13 = [v8 objectForKey:v19];
+    v13 = [dictionaryCopy objectForKey:elementCopy];
 
     if (v13)
     {
-      v14 = [v8 objectForKey:v19];
-      v15 = v14;
+      v14 = [dictionaryCopy objectForKey:elementCopy];
+      dictionary = v14;
       v16 = v10;
-      v17 = v9;
+      v17 = fontCopy;
     }
 
     else
     {
       LOBYTE(v18) = 1;
       _AXLogWithFacility();
-      v15 = [MEMORY[0x1E695DF90] dictionary];
-      [v15 setObject:v10 forKeyedSubscript:v9];
-      v14 = v8;
-      v16 = v15;
-      v17 = v19;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:v10 forKeyedSubscript:fontCopy];
+      v14 = dictionaryCopy;
+      v16 = dictionary;
+      v17 = elementCopy;
     }
 
     [v14 setObject:v16 forKey:v17];
   }
 }
 
-+ (void)_axAuditStoreFontForSwiftUIView:(id)a3 intoDictionary:(id)a4 forCurrentFont:(id)a5
++ (void)_axAuditStoreFontForSwiftUIView:(id)view intoDictionary:(id)dictionary forCurrentFont:(id)font
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 _axAuditGetFontForSwiftUIView:v16];
+  viewCopy = view;
+  dictionaryCopy = dictionary;
+  fontCopy = font;
+  v10 = [self _axAuditGetFontForSwiftUIView:viewCopy];
   if (v10)
   {
-    v11 = [v8 objectForKey:v16];
+    v11 = [dictionaryCopy objectForKey:viewCopy];
 
     if (v11)
     {
-      v12 = [v8 objectForKey:v16];
-      v13 = v12;
+      v12 = [dictionaryCopy objectForKey:viewCopy];
+      dictionary = v12;
       v14 = v10;
-      v15 = v9;
+      v15 = fontCopy;
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DF90] dictionary];
-      [v13 setObject:v10 forKeyedSubscript:v9];
-      v12 = v8;
-      v14 = v13;
-      v15 = v16;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:v10 forKeyedSubscript:fontCopy];
+      v12 = dictionaryCopy;
+      v14 = dictionary;
+      v15 = viewCopy;
     }
 
     [v12 setObject:v14 forKey:v15];
   }
 }
 
-+ (void)_axAuditRemoveUnsupportedCategories:(id)a3
++ (void)_axAuditRemoveUnsupportedCategories:(id)categories
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v23 = [MEMORY[0x1E695DF70] array];
+  categoriesCopy = categories;
+  array = [MEMORY[0x1E695DF70] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v4 = v3;
+  v4 = categoriesCopy;
   v26 = [v4 countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v26)
   {
@@ -1063,7 +1063,7 @@ LABEL_41:
         if (v6)
         {
           v27 = v5;
-          v7 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           v8 = [v4 objectForKey:v6];
           v32 = 0u;
           v33 = 0u;
@@ -1091,10 +1091,10 @@ LABEL_41:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v15 = [v14 superview];
+                    superview = [v14 superview];
 
-                    v14 = v15;
-                    if (v15)
+                    v14 = superview;
+                    if (superview)
                     {
                       continue;
                     }
@@ -1103,7 +1103,7 @@ LABEL_41:
                   goto LABEL_18;
                 }
 
-                [v7 addObject:v13];
+                [array2 addObject:v13];
 LABEL_18:
                 ++v12;
               }
@@ -1115,13 +1115,13 @@ LABEL_18:
             while (v10);
           }
 
-          [v8 removeObjectsForKeys:v7];
-          v16 = [v8 allKeys];
-          v17 = [v16 count];
+          [v8 removeObjectsForKeys:array2];
+          allKeys = [v8 allKeys];
+          v17 = [allKeys count];
 
           if (!v17)
           {
-            [v23 addObject:v6];
+            [array addObject:v6];
           }
 
           v4 = v24;
@@ -1142,7 +1142,7 @@ LABEL_18:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v18 = v23;
+  v18 = array;
   v19 = [v18 countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v19)
   {
@@ -1169,28 +1169,28 @@ LABEL_18:
   }
 }
 
-+ (void)_axAuditCheckElementForClipping:(id)a3 storeIntoSet:(id)a4
++ (void)_axAuditCheckElementForClipping:(id)clipping storeIntoSet:(id)set
 {
-  v7 = a3;
-  v6 = a4;
-  if ([a1 _axAuditElementIsClipping:v7])
+  clippingCopy = clipping;
+  setCopy = set;
+  if ([self _axAuditElementIsClipping:clippingCopy])
   {
-    [v6 addObject:v7];
+    [setCopy addObject:clippingCopy];
   }
 }
 
-+ (BOOL)_axAuditElementIsClipping:(id)a3
++ (BOOL)_axAuditElementIsClipping:(id)clipping
 {
-  v4 = a3;
-  if ([a1 _axAuditShouldElementBeCheckedForClipping:v4])
+  clippingCopy = clipping;
+  if ([self _axAuditShouldElementBeCheckedForClipping:clippingCopy])
   {
-    [v4 frame];
-    [v4 alignmentRectForFrame:?];
+    [clippingCopy frame];
+    [clippingCopy alignmentRectForFrame:?];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [v4 sizeThatFits:{v9, v11}];
+    [clippingCopy sizeThatFits:{v9, v11}];
     v15 = v13;
     v16 = v14;
     v17 = v10 + 5.0 < v13 && v13 != *MEMORY[0x1E69DE788];
@@ -1225,48 +1225,48 @@ LABEL_18:
   return v24;
 }
 
-+ (void)_axAuditCheckSwiftUIViewForClipping:(id)a3 storeIntoSet:(id)a4
++ (void)_axAuditCheckSwiftUIViewForClipping:(id)clipping storeIntoSet:(id)set
 {
-  v7 = a3;
-  v6 = a4;
-  if ([a1 _axAuditSwiftUIViewIsClipping:v7])
+  clippingCopy = clipping;
+  setCopy = set;
+  if ([self _axAuditSwiftUIViewIsClipping:clippingCopy])
   {
-    [v6 addObject:v7];
+    [setCopy addObject:clippingCopy];
   }
 }
 
-+ (BOOL)_axAuditSwiftUIViewIsClipping:(id)a3
++ (BOOL)_axAuditSwiftUIViewIsClipping:(id)clipping
 {
-  v4 = a3;
-  if ([a1 _axAuditSwiftUIViewHasText:v4])
+  clippingCopy = clipping;
+  if ([self _axAuditSwiftUIViewHasText:clippingCopy])
   {
-    v5 = [objc_opt_class() _axAuditGetAttrLabelFromSwiftUIView:v4];
+    v5 = [objc_opt_class() _axAuditGetAttrLabelFromSwiftUIView:clippingCopy];
     v6 = v5;
     if (v5 && [v5 length] >= 2)
     {
-      [objc_opt_class() _axAuditBoundsForRange:0 onSwiftUIView:{1, v4}];
+      [objc_opt_class() _axAuditBoundsForRange:0 onSwiftUIView:{1, clippingCopy}];
       v9 = v8;
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      [objc_opt_class() _axAuditBoundsForRange:1 onSwiftUIView:{1, v4}];
+      [objc_opt_class() _axAuditBoundsForRange:1 onSwiftUIView:{1, clippingCopy}];
       v45 = v17;
       v46 = v16;
       v43 = v19;
       v44 = v18;
-      [objc_opt_class() _axAuditBoundsForRange:objc_msgSend(v6 onSwiftUIView:{"length") - 1, 1, v4}];
+      [objc_opt_class() _axAuditBoundsForRange:objc_msgSend(v6 onSwiftUIView:{"length") - 1, 1, clippingCopy}];
       v41 = v21;
       v42 = v20;
       v39 = v23;
       v40 = v22;
-      [objc_opt_class() _axAuditBoundsForRange:objc_msgSend(v6 onSwiftUIView:{"length") - 2, 1, v4}];
+      [objc_opt_class() _axAuditBoundsForRange:objc_msgSend(v6 onSwiftUIView:{"length") - 2, 1, clippingCopy}];
       v49 = v25;
       v50 = v24;
       v47 = v27;
       v48 = v26;
       if (objc_opt_respondsToSelector())
       {
-        [v4 accessibilityFrame];
+        [clippingCopy accessibilityFrame];
         v29 = v28;
         v31 = v30;
         v33 = v32;
@@ -1334,17 +1334,17 @@ LABEL_18:
   return v7;
 }
 
-+ (BOOL)_axAuditShouldElementBeCheckedForClipping:(id)a3
++ (BOOL)_axAuditShouldElementBeCheckedForClipping:(id)clipping
 {
-  v4 = a3;
+  clippingCopy = clipping;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 delegate];
-      if (objc_opt_respondsToSelector() & 1) != 0 && ([v5 textFieldShouldBeginEditing:v4])
+      delegate = [clippingCopy delegate];
+      if (objc_opt_respondsToSelector() & 1) != 0 && ([delegate textFieldShouldBeginEditing:clippingCopy])
       {
         v6 = 0;
 LABEL_18:
@@ -1354,16 +1354,16 @@ LABEL_18:
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ([v4 isEditable] & 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ([clippingCopy isEditable] & 1) == 0)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || ([v4 isScrollEnabled] & 1) == 0)
+      if ((objc_opt_isKindOfClass() & 1) == 0 || ([clippingCopy isScrollEnabled] & 1) == 0)
       {
-        v7 = [v4 superview];
-        if (!v7 || (v8 = v7, [v4 superview], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "conformsToProtocol:", &unk_1F1E10CA0), v9, v8, (v10 & 1) == 0))
+        superview = [clippingCopy superview];
+        if (!superview || (v8 = superview, [clippingCopy superview], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "conformsToProtocol:", &unk_1F1E10CA0), v9, v8, (v10 & 1) == 0))
         {
-          v5 = [a1 _axAuditGetTextFromObject:v4];
-          v6 = [v5 length] != 0;
+          delegate = [self _axAuditGetTextFromObject:clippingCopy];
+          v6 = [delegate length] != 0;
           goto LABEL_18;
         }
       }
@@ -1376,13 +1376,13 @@ LABEL_19:
   return v6;
 }
 
-+ (id)_axAuditContrastDetectionForSwiftUIView:(id)a3
++ (id)_axAuditContrastDetectionForSwiftUIView:(id)view
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([a1 _axAuditSwiftUIViewHasText:v4])
+  viewCopy = view;
+  if ([self _axAuditSwiftUIViewHasText:viewCopy])
   {
-    v5 = [a1 _axAuditGetAttrLabelFromSwiftUIView:v4];
+    v5 = [self _axAuditGetAttrLabelFromSwiftUIView:viewCopy];
     v6 = v5;
     if (v5)
     {
@@ -1426,9 +1426,9 @@ LABEL_19:
 
       LOBYTE(v19) = 1;
       _AXLogWithFacility();
-      v15 = [v6 string];
-      v16 = [v6 string];
-      v17 = [UIAccessibilityAuditUtilities dictionaryWithAXAuditIssue:4001 element:v4 additionalInfo:0 identifier:v15 foregroundColor:v9 backgroundColor:0 fontSize:v14 elementRect:0 text:v16];
+      string = [v6 string];
+      string2 = [v6 string];
+      v17 = [UIAccessibilityAuditUtilities dictionaryWithAXAuditIssue:4001 element:viewCopy additionalInfo:0 identifier:string foregroundColor:v9 backgroundColor:0 fontSize:v14 elementRect:0 text:string2];
       v27[0] = v17;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
 
@@ -1460,15 +1460,15 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditContrastDetectionForSwi
   }
 }
 
-+ (BOOL)_axAuditSwiftUIViewHasText:(id)a3
++ (BOOL)_axAuditSwiftUIViewHasText:(id)text
 {
-  v3 = a3;
-  if ([objc_opt_class() _axAuditViewIsSwiftUI:v3])
+  textCopy = text;
+  if ([objc_opt_class() _axAuditViewIsSwiftUI:textCopy])
   {
-    v4 = [objc_opt_class() _axAuditGetAttrLabelFromSwiftUIView:v3];
+    v4 = [objc_opt_class() _axAuditGetAttrLabelFromSwiftUIView:textCopy];
     if (v4)
     {
-      [objc_opt_class() _axAuditBoundsForRange:0 onSwiftUIView:{objc_msgSend(v4, "length"), v3}];
+      [objc_opt_class() _axAuditBoundsForRange:0 onSwiftUIView:{objc_msgSend(v4, "length"), textCopy}];
       v5 = !CGRectEqualToRect(v7, *MEMORY[0x1E695F058]);
     }
 
@@ -1486,18 +1486,18 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditContrastDetectionForSwi
   return v5;
 }
 
-+ (CGRect)_axAuditBoundsForRange:(_NSRange)a3 onSwiftUIView:(id)a4
++ (CGRect)_axAuditBoundsForRange:(_NSRange)range onSwiftUIView:(id)view
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
   v7 = *MEMORY[0x1E695F058];
   v8 = *(MEMORY[0x1E695F058] + 8);
   v9 = *(MEMORY[0x1E695F058] + 16);
   v10 = *(MEMORY[0x1E695F058] + 24);
-  if ([objc_opt_class() _axAuditViewIsSwiftUI:v6] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([objc_opt_class() _axAuditViewIsSwiftUI:viewCopy] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 _accessibilityBoundsForRange:{location, length}];
+    [viewCopy _accessibilityBoundsForRange:{location, length}];
     v7 = v11;
     v8 = v12;
     v9 = v13;
@@ -1515,12 +1515,12 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditContrastDetectionForSwi
   return result;
 }
 
-+ (id)_axAuditGetAttrLabelFromSwiftUIView:(id)a3
++ (id)_axAuditGetAttrLabelFromSwiftUIView:(id)view
 {
-  v3 = a3;
-  if ([objc_opt_class() _axAuditViewIsSwiftUI:v3] && (objc_opt_respondsToSelector() & 1) != 0)
+  viewCopy = view;
+  if ([objc_opt_class() _axAuditViewIsSwiftUI:viewCopy] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 performSelector:sel_accessibilityAttributedLabel];
+    v4 = [viewCopy performSelector:sel_accessibilityAttributedLabel];
   }
 
   else
@@ -1531,43 +1531,43 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditContrastDetectionForSwi
   return v4;
 }
 
-+ (BOOL)_axAuditViewIsSwiftUI:(id)a3
++ (BOOL)_axAuditViewIsSwiftUI:(id)i
 {
-  v3 = a3;
+  iCopy = i;
   NSClassFromString(&cfstr_SwiftuiAccessi.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-+ (id)_axAuditFindDescendantInaccessibleElements:(id)a3 honorsGroups:(BOOL)a4
++ (id)_axAuditFindDescendantInaccessibleElements:(id)elements honorsGroups:(BOOL)groups
 {
-  v4 = a4;
+  groupsCopy = groups;
   v115 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v94 = [MEMORY[0x1E695DF70] array];
+  elementsCopy = elements;
+  array = [MEMORY[0x1E695DF70] array];
   v6 = MEMORY[0x1E695DF70];
-  v92 = v5;
-  v7 = [v5 subviews];
-  v8 = [v6 arrayWithArray:v7];
+  v92 = elementsCopy;
+  subviews = [elementsCopy subviews];
+  v8 = [v6 arrayWithArray:subviews];
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  v85 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v93 = v8;
   if ([v8 count])
   {
     v10 = 0;
-    v11 = !v4;
+    v11 = !groupsCopy;
     do
     {
-      v12 = [v93 firstObject];
+      firstObject = [v93 firstObject];
       [v93 removeObjectAtIndex:0];
-      if (([v12 accessibilityElementsHidden] & 1) == 0)
+      if (([firstObject accessibilityElementsHidden] & 1) == 0)
       {
-        [v12 bounds];
+        [firstObject bounds];
         if (v13 >= 1.0)
         {
-          [v12 bounds];
+          [firstObject bounds];
           v14 = v15 < 1.0;
         }
 
@@ -1576,45 +1576,45 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditContrastDetectionForSwi
           v14 = 1;
         }
 
-        [v12 alpha];
+        [firstObject alpha];
         v17 = v16;
-        v18 = [v12 isAccessibilityElement];
-        if (((v18 | v11) & 1) == 0)
+        isAccessibilityElement = [firstObject isAccessibilityElement];
+        if (((isAccessibilityElement | v11) & 1) == 0)
         {
-          v18 = [v12 accessibilityContainerType] == 4;
+          isAccessibilityElement = [firstObject accessibilityContainerType] == 4;
         }
 
-        v19 = [objc_opt_class() _axAuditFindAllTablesInHierarchyForView:v12];
+        v19 = [objc_opt_class() _axAuditFindAllTablesInHierarchyForView:firstObject];
         v20 = [v19 count];
 
         if (!v20 || (NSClassFromString(&cfstr_Uitablecellacc.isa), isKindOfClass = objc_opt_isKindOfClass(), objc_opt_class(), v22 = objc_opt_isKindOfClass(), (isKindOfClass & 1) == 0) && (v22 & 1) == 0)
         {
-          v23 = [v12 subviews];
-          v24 = ([v23 count] != 0) | v18 | v14;
+          subviews2 = [firstObject subviews];
+          v24 = ([subviews2 count] != 0) | isAccessibilityElement | v14;
 
-          if ((v17 > 0.0) & ~v24 | v18 & 1)
+          if ((v17 > 0.0) & ~v24 | isAccessibilityElement & 1)
           {
             if (((v17 > 0.0) & ~v24) != 0)
             {
-              v25 = v9;
+              v25 = array2;
             }
 
             else
             {
-              v25 = v85;
+              v25 = array3;
             }
 
-            [v25 addObject:v12];
+            [v25 addObject:firstObject];
           }
 
-          if (([v12 isAccessibilityElement] & 1) == 0)
+          if (([firstObject isAccessibilityElement] & 1) == 0)
           {
             v109 = 0u;
             v110 = 0u;
             v107 = 0u;
             v108 = 0u;
-            v26 = [v12 subviews];
-            v27 = [v26 countByEnumeratingWithState:&v107 objects:v114 count:16];
+            subviews3 = [firstObject subviews];
+            v27 = [subviews3 countByEnumeratingWithState:&v107 objects:v114 count:16];
             if (v27)
             {
               v28 = v27;
@@ -1625,7 +1625,7 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditContrastDetectionForSwi
                 {
                   if (*v108 != v29)
                   {
-                    objc_enumerationMutation(v26);
+                    objc_enumerationMutation(subviews3);
                   }
 
                   v31 = *(*(&v107 + 1) + 8 * i);
@@ -1635,7 +1635,7 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditContrastDetectionForSwi
                   }
                 }
 
-                v28 = [v26 countByEnumeratingWithState:&v107 objects:v114 count:16];
+                v28 = [subviews3 countByEnumeratingWithState:&v107 objects:v114 count:16];
               }
 
               while (v28);
@@ -1653,8 +1653,8 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditContrastDetectionForSwi
     while (v10++ < 0x270F);
   }
 
-  v84 = [MEMORY[0x1E696AD50] indexSet];
-  v90 = [v9 count];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  v90 = [array2 count];
   if (v90)
   {
     for (j = 0; j != v90; ++j)
@@ -1663,7 +1663,7 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditContrastDetectionForSwi
       v106 = 0u;
       v103 = 0u;
       v104 = 0u;
-      v34 = v85;
+      v34 = array3;
       v35 = [v34 countByEnumeratingWithState:&v103 objects:v113 count:16];
       if (v35)
       {
@@ -1678,7 +1678,7 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditContrastDetectionForSwi
             }
 
             v38 = *(*(&v103 + 1) + 8 * k);
-            v39 = [v9 objectAtIndex:j];
+            v39 = [array2 objectAtIndex:j];
             [v38 bounds];
             [v38 convertRect:v92 toView:?];
             v41 = v40;
@@ -1691,8 +1691,8 @@ void __81__UIApplicationAuditIssuesAccessibility__axAuditContrastDetectionForSwi
             v51 = v50;
             v53 = v52;
             v55 = v54;
-            v56 = [v38 subviews];
-            if ([v56 count])
+            subviews4 = [v38 subviews];
+            if ([subviews4 count])
             {
             }
 
@@ -1744,17 +1744,17 @@ LABEL_57:
 
       if ((v35 & 1) != 0 || v64)
       {
-        [v84 addIndex:j];
+        [indexSet addIndex:j];
       }
     }
   }
 
-  [v9 removeObjectsAtIndexes:v84];
+  [array2 removeObjectsAtIndexes:indexSet];
   v101 = 0u;
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  obj = v9;
+  obj = array2;
   v88 = [obj countByEnumeratingWithState:&v99 objects:v112 count:16];
   if (v88)
   {
@@ -1804,7 +1804,7 @@ LABEL_57:
                 [v75 setObject:v69 forKey:@"AXAuditIssueElementRectKey"];
                 [v75 setObject:v66 forKey:@"AXAuditIssueElementKey"];
                 v77 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v75];
-                [v94 addObject:v77];
+                [array addObject:v77];
 
                 v82 = @"AX Audit: Element: %@ is inaccessible and has text.";
                 v83 = v66;
@@ -1825,7 +1825,7 @@ LABEL_57:
         else
         {
           v78 = [UIAccessibilityAuditUtilities dictionaryWithAXAuditIssue:1006 element:v66 additionalInfo:0 identifier:0 foregroundColor:0 backgroundColor:0 fontSize:0 elementRect:v69 text:0];
-          [v94 addObject:v78];
+          [array addObject:v78];
 
           v82 = @"AX Audit: Element: %@ is inaccessible.";
           v83 = v66;
@@ -1840,19 +1840,19 @@ LABEL_57:
     while (v88);
   }
 
-  return v94;
+  return array;
 }
 
-+ (id)_axAuditUnlabeledIssueDictForElement:(id)a3 honorsGroups:(BOOL)a4
++ (id)_axAuditUnlabeledIssueDictForElement:(id)element honorsGroups:(BOOL)groups
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 accessibilityContainerType];
+  groupsCopy = groups;
+  elementCopy = element;
+  accessibilityContainerType = [elementCopy accessibilityContainerType];
   v7 = 0;
-  if (v4 && v6 == 4)
+  if (groupsCopy && accessibilityContainerType == 4)
   {
-    v8 = [v5 accessibilityLabel];
-    if ([v8 length])
+    accessibilityLabel = [elementCopy accessibilityLabel];
+    if ([accessibilityLabel length])
     {
       v7 = 0;
 LABEL_5:
@@ -1860,25 +1860,25 @@ LABEL_5:
       goto LABEL_8;
     }
 
-    v9 = [v5 accessibilityValue];
-    v10 = [v9 length];
+    accessibilityValue = [elementCopy accessibilityValue];
+    v10 = [accessibilityValue length];
 
     if (!v10)
     {
-      v8 = v5;
-      v12 = [v8 window];
+      accessibilityLabel = elementCopy;
+      window = [accessibilityLabel window];
 
-      if (v12)
+      if (window)
       {
-        v13 = [v8 superview];
-        [v8 frame];
-        [v13 convertPoint:0 toView:?];
+        superview = [accessibilityLabel superview];
+        [accessibilityLabel frame];
+        [superview convertPoint:0 toView:?];
         v15 = v14;
         v17 = v16;
 
-        [v8 bounds];
+        [accessibilityLabel bounds];
         v19 = v18;
-        [v8 bounds];
+        [accessibilityLabel bounds];
         v20 = [MEMORY[0x1E696B098] valueWithCGRect:{v15, v17, v19}];
       }
 
@@ -1887,7 +1887,7 @@ LABEL_5:
         v20 = 0;
       }
 
-      v7 = [UIAccessibilityAuditUtilities dictionaryWithAXAuditIssue:1000 element:v8 additionalInfo:0 identifier:0 foregroundColor:0 backgroundColor:0 fontSize:0 elementRect:v20 text:0];
+      v7 = [UIAccessibilityAuditUtilities dictionaryWithAXAuditIssue:1000 element:accessibilityLabel additionalInfo:0 identifier:0 foregroundColor:0 backgroundColor:0 fontSize:0 elementRect:v20 text:0];
 
       goto LABEL_5;
     }
@@ -1900,26 +1900,26 @@ LABEL_8:
   return v7;
 }
 
-+ (id)_axAuditGetAllTableAndCollectionViewsForHierarchy:(id)a3
++ (id)_axAuditGetAllTableAndCollectionViewsForHierarchy:(id)hierarchy
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] axArrayByIgnoringNilElementsWithCount:{1, v3}];
+  hierarchyCopy = hierarchy;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = [MEMORY[0x1E695DF70] axArrayByIgnoringNilElementsWithCount:{1, hierarchyCopy}];
   if ([v5 count])
   {
     v6 = 0;
     do
     {
-      v7 = [v5 firstObject];
+      firstObject = [v5 firstObject];
       [v5 removeObjectAtIndex:0];
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        [v4 addObject:v7];
+        [array addObject:firstObject];
       }
 
-      v8 = [v7 subviews];
-      [v5 addObjectsFromArray:v8];
+      subviews = [firstObject subviews];
+      [v5 addObjectsFromArray:subviews];
 
       if (![v5 count])
       {
@@ -1930,38 +1930,38 @@ LABEL_8:
     while (v6++ < 0x270F);
   }
 
-  return v4;
+  return array;
 }
 
-+ (id)_axAuditGetIndexPathsDictionaryForCaptureActionForView:(id)a3
++ (id)_axAuditGetIndexPathsDictionaryForCaptureActionForView:(id)view
 {
-  v3 = a3;
-  v4 = [cellReferenceMapTable objectForKey:v3];
-  if (!v4)
+  viewCopy = view;
+  dictionary = [cellReferenceMapTable objectForKey:viewCopy];
+  if (!dictionary)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    [cellReferenceMapTable setObject:v4 forKey:v3];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [cellReferenceMapTable setObject:dictionary forKey:viewCopy];
   }
 
-  v5 = [v4 objectForKey:@"Index Paths"];
-  if (!v5)
+  dictionary2 = [dictionary objectForKey:@"Index Paths"];
+  if (!dictionary2)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    [v4 setObject:v5 forKey:@"Index Paths"];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dictionary2 forKey:@"Index Paths"];
   }
 
-  v6 = [v4 objectForKey:@"Content Offset"];
+  v6 = [dictionary objectForKey:@"Content Offset"];
   if (!v6)
   {
     if (objc_opt_respondsToSelector())
     {
       objc_opt_class();
-      v7 = [v3 safeValueForKey:@"contentOffset"];
+      v7 = [viewCopy safeValueForKey:@"contentOffset"];
       v6 = __UIAccessibilityCastAsClass();
 
       if (v6)
       {
-        [v4 setObject:v6 forKey:@"Content Offset"];
+        [dictionary setObject:v6 forKey:@"Content Offset"];
       }
     }
 
@@ -1971,12 +1971,12 @@ LABEL_8:
     }
   }
 
-  return v5;
+  return dictionary2;
 }
 
-+ (id)_axAuditGetIndexPathsDictionaryForUpdateActionForView:(id)a3
++ (id)_axAuditGetIndexPathsDictionaryForUpdateActionForView:(id)view
 {
-  v3 = [cellReferenceMapTable objectForKey:a3];
+  v3 = [cellReferenceMapTable objectForKey:view];
   v4 = v3;
   if (v3)
   {
@@ -1996,29 +1996,29 @@ LABEL_8:
   return v6;
 }
 
-+ (id)_axAuditGetOriginalContentOffsetForView:(id)a3
++ (id)_axAuditGetOriginalContentOffsetForView:(id)view
 {
-  v3 = [cellReferenceMapTable objectForKey:a3];
+  v3 = [cellReferenceMapTable objectForKey:view];
   v4 = [v3 objectForKey:@"Content Offset"];
 
   return v4;
 }
 
-+ (void)_axAuditForHierarchy:(id)a3 withTableOrCollectionViews:(id)a4 performAction:(id)a5 performBlockOnEachCell:(id)a6
++ (void)_axAuditForHierarchy:(id)hierarchy withTableOrCollectionViews:(id)views performAction:(id)action performBlockOnEachCell:(id)cell
 {
   v75 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
-  v50 = [v9 isEqualToString:@"Capture Cell References"];
-  v11 = [v9 isEqualToString:@"Update Cell References Key"];
-  v44 = v9;
-  v48 = [v9 isEqualToString:@"Dereference Cells"];
+  viewsCopy = views;
+  actionCopy = action;
+  cellCopy = cell;
+  v50 = [actionCopy isEqualToString:@"Capture Cell References"];
+  v11 = [actionCopy isEqualToString:@"Update Cell References Key"];
+  v44 = actionCopy;
+  v48 = [actionCopy isEqualToString:@"Dereference Cells"];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v8;
+  obj = viewsCopy;
   v51 = [obj countByEnumeratingWithState:&v67 objects:v74 count:16];
   if (v51)
   {
@@ -2036,12 +2036,12 @@ LABEL_8:
         v13 = *(*(&v67 + 1) + 8 * i);
         if (v50)
         {
-          v14 = [a1 _axAuditGetIndexPathsDictionaryForCaptureActionForView:*(*(&v67 + 1) + 8 * i)];
+          v14 = [self _axAuditGetIndexPathsDictionaryForCaptureActionForView:*(*(&v67 + 1) + 8 * i)];
         }
 
         else if (v46)
         {
-          v14 = [a1 _axAuditGetIndexPathsDictionaryForUpdateActionForView:*(*(&v67 + 1) + 8 * i)];
+          v14 = [self _axAuditGetIndexPathsDictionaryForUpdateActionForView:*(*(&v67 + 1) + 8 * i)];
           if (!v14)
           {
             continue;
@@ -2061,24 +2061,24 @@ LABEL_8:
         v17 = v16;
         if (isKindOfClass)
         {
-          v18 = [v13 indexPathsForVisibleRows];
+          indexPathsForVisibleRows = [v13 indexPathsForVisibleRows];
         }
 
         else if (v16)
         {
-          v18 = [v13 indexPathsForVisibleItems];
+          indexPathsForVisibleRows = [v13 indexPathsForVisibleItems];
         }
 
         else
         {
-          v18 = 0;
+          indexPathsForVisibleRows = 0;
         }
 
         v65 = 0u;
         v66 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v54 = v18;
+        v54 = indexPathsForVisibleRows;
         v19 = [v54 countByEnumeratingWithState:&v63 objects:v73 count:16];
         if (v19)
         {
@@ -2112,7 +2112,7 @@ LABEL_8:
               v25 = v24;
               if (v24)
               {
-                v10[2](v10, v24, v14, v23);
+                cellCopy[2](cellCopy, v24, v14, v23);
               }
             }
 
@@ -2124,12 +2124,12 @@ LABEL_8:
 
         if (isKindOfClass)
         {
-          v26 = [v13 _accessibilityIndicesOfVisibleHeadersAndFooters];
+          _accessibilityIndicesOfVisibleHeadersAndFooters = [v13 _accessibilityIndicesOfVisibleHeadersAndFooters];
           v59 = 0u;
           v60 = 0u;
           v61 = 0u;
           v62 = 0u;
-          v27 = [v26 countByEnumeratingWithState:&v59 objects:v72 count:16];
+          v27 = [_accessibilityIndicesOfVisibleHeadersAndFooters countByEnumeratingWithState:&v59 objects:v72 count:16];
           if (v27)
           {
             v28 = v27;
@@ -2140,7 +2140,7 @@ LABEL_8:
               {
                 if (*v60 != v29)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(_accessibilityIndicesOfVisibleHeadersAndFooters);
                 }
 
                 v31 = *(*(&v59 + 1) + 8 * k);
@@ -2148,16 +2148,16 @@ LABEL_8:
                 v33 = [v13 footerViewForSection:{objc_msgSend(v31, "integerValue")}];
                 if (v32)
                 {
-                  (v10)[2](v10, v32, v14, v31);
+                  (cellCopy)[2](cellCopy, v32, v14, v31);
                 }
 
                 if (v33)
                 {
-                  (v10)[2](v10, v33, v14, v31);
+                  (cellCopy)[2](cellCopy, v33, v14, v31);
                 }
               }
 
-              v28 = [v26 countByEnumeratingWithState:&v59 objects:v72 count:16];
+              v28 = [_accessibilityIndicesOfVisibleHeadersAndFooters countByEnumeratingWithState:&v59 objects:v72 count:16];
             }
 
             while (v28);
@@ -2170,16 +2170,16 @@ LABEL_54:
 
         if (v17)
         {
-          v26 = v13;
-          v34 = [v26 _accessibilityIndexPathToOtherCollectionViewItems];
-          if ([v34 count])
+          _accessibilityIndicesOfVisibleHeadersAndFooters = v13;
+          _accessibilityIndexPathToOtherCollectionViewItems = [_accessibilityIndicesOfVisibleHeadersAndFooters _accessibilityIndexPathToOtherCollectionViewItems];
+          if ([_accessibilityIndexPathToOtherCollectionViewItems count])
           {
-            v45 = v26;
+            v45 = _accessibilityIndicesOfVisibleHeadersAndFooters;
             v57 = 0u;
             v58 = 0u;
             v55 = 0u;
             v56 = 0u;
-            v35 = v34;
+            v35 = _accessibilityIndexPathToOtherCollectionViewItems;
             v36 = [v35 countByEnumeratingWithState:&v55 objects:v71 count:16];
             if (v36)
             {
@@ -2196,7 +2196,7 @@ LABEL_54:
 
                   v40 = *(*(&v55 + 1) + 8 * m);
                   v41 = [v35 objectForKeyedSubscript:v40];
-                  v10[2](v10, v41, v14, v40);
+                  cellCopy[2](cellCopy, v41, v14, v40);
                 }
 
                 v37 = [v35 countByEnumeratingWithState:&v55 objects:v71 count:16];
@@ -2205,7 +2205,7 @@ LABEL_54:
               while (v37);
             }
 
-            v26 = v45;
+            _accessibilityIndicesOfVisibleHeadersAndFooters = v45;
           }
 
           goto LABEL_54;
@@ -2215,7 +2215,7 @@ LABEL_55:
         i = v53;
         if (v48)
         {
-          v42 = [a1 _axAuditGetOriginalContentOffsetForView:v13];
+          v42 = [self _axAuditGetOriginalContentOffsetForView:v13];
           v43 = v42;
           if (v42)
           {
@@ -2232,22 +2232,22 @@ LABEL_55:
   }
 }
 
-+ (void)_axAuditCaptureReferenceToCellsForViewHierarchy:(id)a3
++ (void)_axAuditCaptureReferenceToCellsForViewHierarchy:(id)hierarchy
 {
   v4 = MEMORY[0x1E696AD18];
-  v5 = a3;
-  v6 = [v4 weakToStrongObjectsMapTable];
+  hierarchyCopy = hierarchy;
+  weakToStrongObjectsMapTable = [v4 weakToStrongObjectsMapTable];
   v7 = cellReferenceMapTable;
-  cellReferenceMapTable = v6;
+  cellReferenceMapTable = weakToStrongObjectsMapTable;
 
-  v8 = [a1 _axAuditGetAllTableAndCollectionViewsForHierarchy:v5];
+  v8 = [self _axAuditGetAllTableAndCollectionViewsForHierarchy:hierarchyCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__UIApplicationAuditIssuesAccessibility__axAuditCaptureReferenceToCellsForViewHierarchy___block_invoke;
   aBlock[3] = &__block_descriptor_40_e64_v32__0__UIView_8__NSMutableDictionary_16__NSObject_NSCopying__24l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v9 = _Block_copy(aBlock);
-  [a1 _axAuditForHierarchy:v5 withTableOrCollectionViews:v8 performAction:@"Capture Cell References" performBlockOnEachCell:v9];
+  [self _axAuditForHierarchy:hierarchyCopy withTableOrCollectionViews:v8 performAction:@"Capture Cell References" performBlockOnEachCell:v9];
 }
 
 void __89__UIApplicationAuditIssuesAccessibility__axAuditCaptureReferenceToCellsForViewHierarchy___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -2262,20 +2262,20 @@ void __89__UIApplicationAuditIssuesAccessibility__axAuditCaptureReferenceToCells
   }
 }
 
-+ (void)_axAuditUpdateReferenceOfCellsForViewHierarchy:(id)a3 forFontSize:(id)a4
++ (void)_axAuditUpdateReferenceOfCellsForViewHierarchy:(id)hierarchy forFontSize:(id)size
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _axAuditGetAllTableAndCollectionViewsForHierarchy:v7];
+  sizeCopy = size;
+  hierarchyCopy = hierarchy;
+  v8 = [self _axAuditGetAllTableAndCollectionViewsForHierarchy:hierarchyCopy];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __100__UIApplicationAuditIssuesAccessibility__axAuditUpdateReferenceOfCellsForViewHierarchy_forFontSize___block_invoke;
   v14 = &unk_1E78AAAD0;
-  v15 = v6;
-  v16 = a1;
-  v9 = v6;
+  v15 = sizeCopy;
+  selfCopy = self;
+  v9 = sizeCopy;
   v10 = _Block_copy(&v11);
-  [a1 _axAuditForHierarchy:v7 withTableOrCollectionViews:v8 performAction:@"Update Cell References Key" performBlockOnEachCell:{v10, v11, v12, v13, v14}];
+  [self _axAuditForHierarchy:hierarchyCopy withTableOrCollectionViews:v8 performAction:@"Update Cell References Key" performBlockOnEachCell:{v10, v11, v12, v13, v14}];
 }
 
 void __100__UIApplicationAuditIssuesAccessibility__axAuditUpdateReferenceOfCellsForViewHierarchy_forFontSize___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -2291,24 +2291,24 @@ void __100__UIApplicationAuditIssuesAccessibility__axAuditUpdateReferenceOfCells
   [*(a1 + 40) _axAuditUpdateClippingStatusForReferenceMatches:v11];
 }
 
-+ (id)_axAuditDereferenceCellsForViewHierarchy:(id)a3
++ (id)_axAuditDereferenceCellsForViewHierarchy:(id)hierarchy
 {
-  v4 = a3;
-  v5 = [a1 _axAuditGetAllTableAndCollectionViewsForHierarchy:v4];
-  v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
-  v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-  v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v6, @"Font Info for Cells", v7, @"Clipping Info for Cells", 0}];
+  hierarchyCopy = hierarchy;
+  v5 = [self _axAuditGetAllTableAndCollectionViewsForHierarchy:hierarchyCopy];
+  weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{weakToStrongObjectsMapTable, @"Font Info for Cells", weakObjectsHashTable, @"Clipping Info for Cells", 0}];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__UIApplicationAuditIssuesAccessibility__axAuditDereferenceCellsForViewHierarchy___block_invoke;
   aBlock[3] = &unk_1E78AAAF8;
-  v16 = v7;
-  v17 = a1;
-  v15 = v6;
-  v9 = v7;
-  v10 = v6;
+  v16 = weakObjectsHashTable;
+  selfCopy = self;
+  v15 = weakToStrongObjectsMapTable;
+  v9 = weakObjectsHashTable;
+  v10 = weakToStrongObjectsMapTable;
   v11 = _Block_copy(aBlock);
-  [a1 _axAuditForHierarchy:v4 withTableOrCollectionViews:v5 performAction:@"Dereference Cells" performBlockOnEachCell:v11];
+  [self _axAuditForHierarchy:hierarchyCopy withTableOrCollectionViews:v5 performAction:@"Dereference Cells" performBlockOnEachCell:v11];
 
   v12 = cellReferenceMapTable;
   cellReferenceMapTable = 0;
@@ -2329,18 +2329,18 @@ void __82__UIApplicationAuditIssuesAccessibility__axAuditDereferenceCellsForView
   [*(a1 + 48) _axAuditStoreClippedElementsIntoSet:*(a1 + 40) forReferenceMatches:v11];
 }
 
-+ (id)_axAuditHelperToFindRelevantSubviewsOfCellView:(id)a3
++ (id)_axAuditHelperToFindRelevantSubviewsOfCellView:(id)view
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] arrayWithObject:a3];
-  v22 = [MEMORY[0x1E695DF70] array];
+  v4 = [MEMORY[0x1E695DF70] arrayWithObject:view];
+  array = [MEMORY[0x1E695DF70] array];
   if ([v4 count])
   {
     v5 = 0;
     v21 = v4;
     do
     {
-      v6 = [v4 firstObject];
+      firstObject = [v4 firstObject];
       [v4 removeObjectAtIndex:0];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2348,8 +2348,8 @@ void __82__UIApplicationAuditIssuesAccessibility__axAuditDereferenceCellsForView
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v7 = [a1 _axAuditGetFontForElement:v6];
-          v8 = [a1 _axAuditGetTextFromObject:v6];
+          v7 = [self _axAuditGetFontForElement:firstObject];
+          v8 = [self _axAuditGetTextFromObject:firstObject];
           v9 = v8;
           if (v7 && v8)
           {
@@ -2358,7 +2358,7 @@ void __82__UIApplicationAuditIssuesAccessibility__axAuditDereferenceCellsForView
             v27 = 0u;
             v24 = 0u;
             v25 = 0u;
-            v10 = v22;
+            v10 = array;
             v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
             if (v11)
             {
@@ -2374,8 +2374,8 @@ void __82__UIApplicationAuditIssuesAccessibility__axAuditDereferenceCellsForView
                   }
 
                   v15 = *(*(&v24 + 1) + 8 * i);
-                  v16 = [a1 _axAuditGetFontForElement:v15];
-                  v17 = [a1 _axAuditGetTextFromObject:v15];
+                  v16 = [self _axAuditGetFontForElement:v15];
+                  v17 = [self _axAuditGetTextFromObject:v15];
                   if ([v7 isEqual:v16] && objc_msgSend(v23, "isEqualToString:", v17))
                   {
 
@@ -2393,14 +2393,14 @@ void __82__UIApplicationAuditIssuesAccessibility__axAuditDereferenceCellsForView
               }
             }
 
-            [v10 addObject:v6];
+            [v10 addObject:firstObject];
 LABEL_18:
             v4 = v21;
             v9 = v23;
           }
 
-          v18 = [v6 subviews];
-          [v4 addObjectsFromArray:v18];
+          subviews = [firstObject subviews];
+          [v4 addObjectsFromArray:subviews];
         }
       }
 
@@ -2413,19 +2413,19 @@ LABEL_18:
     while (v5++ < 0x270F);
   }
 
-  return v22;
+  return array;
 }
 
-+ (id)_axAuditCreateElementInfoDictionariesForSubviews:(id)a3
++ (id)_axAuditCreateElementInfoDictionariesForSubviews:(id)subviews
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  subviewsCopy = subviews;
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v4;
+  obj = subviewsCopy;
   v6 = [obj countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v6)
   {
@@ -2443,19 +2443,19 @@ LABEL_18:
         v10 = *(*(&v19 + 1) + 8 * i);
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
-        v13 = [a1 _axAuditGetTextFromObject:v10];
-        v14 = [MEMORY[0x1E695DF90] dictionary];
+        v13 = [self _axAuditGetTextFromObject:v10];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v23[0] = @"Class Name";
         v23[1] = @"Text";
         v24[0] = v12;
         v24[1] = v13;
         v23[2] = @"Font Dictionary";
         v23[3] = @"Clipping Status";
-        v24[2] = v14;
+        v24[2] = dictionary;
         v24[3] = MEMORY[0x1E695E110];
         v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:4];
         v16 = [v15 mutableCopy];
-        [v5 addObject:v16];
+        [array addObject:v16];
       }
 
       v7 = [obj countByEnumeratingWithState:&v19 objects:v25 count:16];
@@ -2464,20 +2464,20 @@ LABEL_18:
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
-+ (id)_axAuditMatchReferenceSubviews:(id)a3 againstNewSubviews:(id)a4
++ (id)_axAuditMatchReferenceSubviews:(id)subviews againstNewSubviews:(id)newSubviews
 {
   v38 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v5 = a4;
-  v26 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+  subviewsCopy = subviews;
+  newSubviewsCopy = newSubviews;
+  weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v5;
+  obj = newSubviewsCopy;
   v24 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v24)
   {
@@ -2497,12 +2497,12 @@ LABEL_18:
         v8 = objc_opt_class();
         v9 = NSStringFromClass(v8);
         v27 = v7;
-        v10 = [a1 _axAuditGetTextFromObject:v7];
+        v10 = [self _axAuditGetTextFromObject:v7];
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v11 = v23;
+        v11 = subviewsCopy;
         v12 = [v11 countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v12)
         {
@@ -2522,7 +2522,7 @@ LABEL_18:
               v18 = [v16 objectForKey:@"Text"];
               if ([v9 isEqualToString:v17] && objc_msgSend(v10, "isEqualToString:", v18))
               {
-                [v26 setObject:v16 forKey:v27];
+                [weakToStrongObjectsMapTable setObject:v16 forKey:v27];
               }
             }
 
@@ -2542,19 +2542,19 @@ LABEL_18:
     while (v24);
   }
 
-  return v26;
+  return weakToStrongObjectsMapTable;
 }
 
-+ (void)_axAuditUpdateFontsForReferenceMatches:(id)a3 forFontSize:(id)a4
++ (void)_axAuditUpdateFontsForReferenceMatches:(id)matches forFontSize:(id)size
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  matchesCopy = matches;
+  sizeCopy = size;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [matchesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2565,35 +2565,35 @@ LABEL_18:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(matchesCopy);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v6 objectForKey:v12];
-        v14 = [a1 _axAuditGetFontForElement:v12];
+        v13 = [matchesCopy objectForKey:v12];
+        v14 = [self _axAuditGetFontForElement:v12];
         if (v14)
         {
           v15 = [v13 objectForKey:@"Font Dictionary"];
-          [v15 setObject:v14 forKey:v7];
+          [v15 setObject:v14 forKey:sizeCopy];
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [matchesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
   }
 }
 
-+ (void)_axAuditUpdateClippingStatusForReferenceMatches:(id)a3
++ (void)_axAuditUpdateClippingStatusForReferenceMatches:(id)matches
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  matchesCopy = matches;
+  v4 = [matchesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2604,15 +2604,15 @@ LABEL_18:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(matchesCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v3 objectForKey:{v8, v12}];
+        v9 = [matchesCopy objectForKey:{v8, v12}];
         v10 = [v9 objectForKey:@"Clipping Status"];
-        v11 = [v10 BOOLValue];
+        bOOLValue = [v10 BOOLValue];
 
-        if (v11)
+        if (bOOLValue)
         {
 
           goto LABEL_13;
@@ -2624,7 +2624,7 @@ LABEL_18:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [matchesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -2637,28 +2637,28 @@ LABEL_18:
 LABEL_13:
 }
 
-+ (id)_axAuditGetTextFromObject:(id)a3
++ (id)_axAuditGetTextFromObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   if (objc_opt_respondsToSelector())
   {
     objc_opt_class();
-    v4 = [v3 safeValueForKey:@"text"];
-    v5 = __UIAccessibilityCastAsClass();
+    v4 = [objectCopy safeValueForKey:@"text"];
+    string = __UIAccessibilityCastAsClass();
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ![v5 length])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ![string length])
     {
-      v15 = [v3 placeholder];
+      placeholder = [objectCopy placeholder];
 
-      v5 = v15;
-      if (v15)
+      string = placeholder;
+      if (placeholder)
       {
         goto LABEL_19;
       }
     }
 
-    else if (v5)
+    else if (string)
     {
       goto LABEL_19;
     }
@@ -2667,22 +2667,22 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 textLayoutManager];
-    if (v6)
+    textLayoutManager = [objectCopy textLayoutManager];
+    if (textLayoutManager)
     {
       objc_opt_class();
-      v7 = [v6 textContentManager];
+      textContentManager = [textLayoutManager textContentManager];
       v8 = __UIAccessibilityCastAsClass();
 
       if (v8)
       {
-        v9 = [v8 textStorage];
-        v10 = v9;
-        if (v9)
+        textStorage = [v8 textStorage];
+        v10 = textStorage;
+        if (textStorage)
         {
-          v11 = v9;
+          v11 = textStorage;
 
-          v3 = v11;
+          objectCopy = v11;
         }
       }
     }
@@ -2691,8 +2691,8 @@ LABEL_13:
   else
   {
     v12 = objc_opt_class();
-    v6 = NSStringFromClass(v12);
-    if ([v6 isEqualToString:@"_UITextContainerView"])
+    textLayoutManager = NSStringFromClass(v12);
+    if ([textLayoutManager isEqualToString:@"_UITextContainerView"])
     {
       v13 = objc_opt_respondsToSelector();
 
@@ -2701,8 +2701,8 @@ LABEL_13:
         goto LABEL_16;
       }
 
-      [v3 performSelector:sel_textStorage];
-      v3 = v6 = v3;
+      [objectCopy performSelector:sel_textStorage];
+      objectCopy = textLayoutManager = objectCopy;
     }
   }
 
@@ -2710,29 +2710,29 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 string];
+    string = [objectCopy string];
   }
 
   else
   {
-    v5 = 0;
+    string = 0;
   }
 
 LABEL_19:
 
-  return v5;
+  return string;
 }
 
-+ (void)_axAuditStoreFontsIntoDictionary:(id)a3 forReferenceMatches:(id)a4
++ (void)_axAuditStoreFontsIntoDictionary:(id)dictionary forReferenceMatches:(id)matches
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  matchesCopy = matches;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [matchesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2743,35 +2743,35 @@ LABEL_19:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(matchesCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v6 objectForKey:v11];
+        v12 = [matchesCopy objectForKey:v11];
         v13 = [v12 objectForKey:@"Font Dictionary"];
         if (v13)
         {
-          [v5 setObject:v13 forKey:v11];
+          [dictionaryCopy setObject:v13 forKey:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [matchesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 }
 
-+ (void)_axAuditStoreClippedElementsIntoSet:(id)a3 forReferenceMatches:(id)a4
++ (void)_axAuditStoreClippedElementsIntoSet:(id)set forReferenceMatches:(id)matches
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  setCopy = set;
+  matchesCopy = matches;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [matchesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2782,32 +2782,32 @@ LABEL_19:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(matchesCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v6 objectForKey:v11];
+        v12 = [matchesCopy objectForKey:v11];
         v13 = [v12 objectForKey:@"Clipping Status"];
-        v14 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
 
-        if (v14)
+        if (bOOLValue)
         {
-          [v5 addObject:v11];
+          [setCopy addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [matchesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 }
 
-+ (void)_axAuditUIKitShouldReportFontSize:(id)a3
++ (void)_axAuditUIKitShouldReportFontSize:(id)size
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 copy];
+  sizeCopy = size;
+  v4 = [sizeCopy copy];
   v5 = _axFontSizeToReturn;
   _axFontSizeToReturn = v4;
 
@@ -2822,22 +2822,22 @@ LABEL_19:
   }
   v6 = ;
   AXPerformSafeBlock();
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = *MEMORY[0x1E69DDC48];
   v12[0] = *MEMORY[0x1E69DDC80];
-  v9 = [v3 copy];
+  v9 = [sizeCopy copy];
 
   v12[1] = @"UIContentSizeCategoryTextLegibilityEnabledKey";
   v13[0] = v9;
   v10 = [MEMORY[0x1E696AD98] numberWithBool:UIAccessibilityIsBoldTextEnabled()];
   v13[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  [v7 postNotificationName:v8 object:v6 userInfo:v11];
+  [defaultCenter postNotificationName:v8 object:v6 userInfo:v11];
 }
 
-+ (BOOL)_axAuditSwizzleAwayContentSize:(BOOL)a3
++ (BOOL)_axAuditSwizzleAwayContentSize:(BOOL)size
 {
-  v3 = a3;
+  sizeCopy = size;
   v5 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v5, sel_preferredContentSizeCategory);
   v7 = objc_opt_class();
@@ -2853,8 +2853,8 @@ LABEL_19:
     dispatch_once(&_axAuditSwizzleAwayContentSize__onceToken, &v11);
   }
 
-  v9 = [a1 _axAuditSetSwizzledImp:axAuditSwizzlePreferredContentSizeCategory1 orOrigImp:_axAuditOrigPreferredContentSizeCategory1 forMethod:InstanceMethod withSwizzling:{v3, v11, v12, v13, v14, v15, v16}];
-  return v9 & [a1 _axAuditSetSwizzledImp:axAuditSwizzlePreferredContentSizeCategory2 orOrigImp:_axAuditOrigPreferredContentSizeCategory2 forMethod:v8 withSwizzling:v3];
+  v9 = [self _axAuditSetSwizzledImp:axAuditSwizzlePreferredContentSizeCategory1 orOrigImp:_axAuditOrigPreferredContentSizeCategory1 forMethod:InstanceMethod withSwizzling:{sizeCopy, v11, v12, v13, v14, v15, v16}];
+  return v9 & [self _axAuditSetSwizzledImp:axAuditSwizzlePreferredContentSizeCategory2 orOrigImp:_axAuditOrigPreferredContentSizeCategory2 forMethod:v8 withSwizzling:sizeCopy];
 }
 
 objc_method *__72__UIApplicationAuditIssuesAccessibility__axAuditSwizzleAwayContentSize___block_invoke(uint64_t a1)
@@ -2875,19 +2875,19 @@ objc_method *__72__UIApplicationAuditIssuesAccessibility__axAuditSwizzleAwayCont
   return result;
 }
 
-+ (BOOL)_axAuditSetSwizzledImp:(void *)a3 orOrigImp:(void *)a4 forMethod:(objc_method *)a5 withSwizzling:(BOOL)a6
++ (BOOL)_axAuditSetSwizzledImp:(void *)imp orOrigImp:(void *)origImp forMethod:(objc_method *)method withSwizzling:(BOOL)swizzling
 {
-  if (a5)
+  if (method)
   {
-    if (!a6)
+    if (!swizzling)
     {
-      a3 = a4;
+      imp = origImp;
     }
 
-    method_setImplementation(a5, a3);
+    method_setImplementation(method, imp);
   }
 
-  return a5 != 0;
+  return method != 0;
 }
 
 @end

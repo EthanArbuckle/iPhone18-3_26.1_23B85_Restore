@@ -14,7 +14,7 @@
     v6 = v5;
     if (v5)
     {
-      v4 = [v5 markedForDeletion];
+      markedForDeletion = [v5 markedForDeletion];
 LABEL_9:
 
       goto LABEL_10;
@@ -25,24 +25,24 @@ LABEL_9:
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 account];
-      v10 = [v9 markedForDeletion];
+      account = [v7 account];
+      markedForDeletion2 = [account markedForDeletion];
       goto LABEL_7;
     }
 
     v12 = ICProtocolCast();
-    v9 = v12;
+    account = v12;
     if (v12)
     {
       if (![v12 enabled])
       {
-        v4 = 1;
+        markedForDeletion = 1;
         goto LABEL_8;
       }
 
-      v10 = [v9 didChooseToMigrate];
+      markedForDeletion2 = [account didChooseToMigrate];
 LABEL_7:
-      v4 = v10;
+      markedForDeletion = markedForDeletion2;
 LABEL_8:
 
       goto LABEL_9;
@@ -55,56 +55,56 @@ LABEL_8:
     {
       if ([v13 markedForDeletion] & 1) != 0 || (objc_msgSend(v14, "isTrashFolder"))
       {
-        v4 = 1;
+        markedForDeletion = 1;
 LABEL_44:
 
         goto LABEL_8;
       }
 
-      v16 = [v14 account];
-      if (v16)
+      account2 = [v14 account];
+      if (account2)
       {
-        v17 = [v14 account];
-        v4 = [v17 markedForDeletion];
+        account3 = [v14 account];
+        markedForDeletion = [account3 markedForDeletion];
 LABEL_42:
 
         goto LABEL_43;
       }
 
 LABEL_26:
-      v4 = 1;
+      markedForDeletion = 1;
 LABEL_43:
 
       goto LABEL_44;
     }
 
     v15 = ICProtocolCast();
-    v16 = v15;
+    account2 = v15;
     if (v15)
     {
-      if ([v15 isDeletedOrInTrash] & 1) != 0 || (objc_msgSend(v16, "isTrashFolder"))
+      if ([v15 isDeletedOrInTrash] & 1) != 0 || (objc_msgSend(account2, "isTrashFolder"))
       {
         goto LABEL_26;
       }
 
-      v17 = [v16 account];
-      if ([v17 enabled])
+      account3 = [account2 account];
+      if ([account3 enabled])
       {
-        v18 = [v16 account];
-        v4 = [v18 didChooseToMigrate];
+        v16Account = [account2 account];
+        markedForDeletion = [v16Account didChooseToMigrate];
 LABEL_41:
 
         goto LABEL_42;
       }
 
 LABEL_29:
-      v4 = 1;
+      markedForDeletion = 1;
       goto LABEL_42;
     }
 
     objc_opt_class();
     v19 = ICDynamicCast();
-    v17 = v19;
+    account3 = v19;
     if (v19)
     {
       if ([v19 isDeletedOrInTrash])
@@ -112,11 +112,11 @@ LABEL_29:
         goto LABEL_29;
       }
 
-      v18 = [v17 account];
-      if (v18)
+      v16Account = [account3 account];
+      if (v16Account)
       {
-        v21 = [v17 account];
-        v4 = [v21 markedForDeletion];
+        v17Account = [account3 account];
+        markedForDeletion = [v17Account markedForDeletion];
 LABEL_40:
 
         goto LABEL_41;
@@ -126,35 +126,35 @@ LABEL_40:
     else
     {
       v20 = ICProtocolCast();
-      v18 = v20;
-      if (v20 && ([v20 isMarkedForDeletion] & 1) == 0 && (objc_msgSend(v18, "isDeletedOrInTrash") & 1) == 0)
+      v16Account = v20;
+      if (v20 && ([v20 isMarkedForDeletion] & 1) == 0 && (objc_msgSend(v16Account, "isDeletedOrInTrash") & 1) == 0)
       {
-        v21 = [v18 folder];
-        v24 = [v21 account];
-        if ([v24 enabled])
+        v17Account = [v16Account folder];
+        v21Account = [v17Account account];
+        if ([v21Account enabled])
         {
-          v23 = [v18 folder];
-          v22 = [v23 account];
-          v4 = [v22 didChooseToMigrate];
+          folder = [v16Account folder];
+          account4 = [folder account];
+          markedForDeletion = [account4 didChooseToMigrate];
         }
 
         else
         {
-          v4 = 1;
+          markedForDeletion = 1;
         }
 
         goto LABEL_40;
       }
     }
 
-    v4 = 1;
+    markedForDeletion = 1;
     goto LABEL_41;
   }
 
-  v4 = 1;
+  markedForDeletion = 1;
 LABEL_10:
 
-  return v4;
+  return markedForDeletion;
 }
 
 @end

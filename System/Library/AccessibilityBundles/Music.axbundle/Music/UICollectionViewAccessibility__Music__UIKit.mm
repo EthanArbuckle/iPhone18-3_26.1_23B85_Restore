@@ -1,5 +1,5 @@
 @interface UICollectionViewAccessibility__Music__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityScrollDownPage;
 - (BOOL)accessibilityScrollUpPage;
 - (BOOL)accessibilityShouldSpeakItemReorderEvents;
@@ -10,14 +10,14 @@
 
 @implementation UICollectionViewAccessibility__Music__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Music.NowPlayingViewController"];
-  [v3 validateClass:@"Music.LibraryMainViewController"];
-  [v3 validateClass:@"Music.PlaylistEditingViewController"];
-  [v3 validateClass:@"UICollectionView" hasInstanceMethod:@"collectionViewLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UICollectionView" hasInstanceMethod:@"_accessibilitySupplementaryViewSectionHeaderIdentifiers" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Music.NowPlayingViewController"];
+  [validationsCopy validateClass:@"Music.LibraryMainViewController"];
+  [validationsCopy validateClass:@"Music.PlaylistEditingViewController"];
+  [validationsCopy validateClass:@"UICollectionView" hasInstanceMethod:@"collectionViewLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UICollectionView" hasInstanceMethod:@"_accessibilitySupplementaryViewSectionHeaderIdentifiers" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityShouldSpeakItemReorderEvents
@@ -56,32 +56,32 @@
 
 - (BOOL)isAccessibilityOpaqueElementProvider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(UICollectionViewAccessibility__Music__UIKit *)self safeValueForKey:@"delegate"];
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = UICollectionViewAccessibility__Music__UIKit;
-  LOBYTE(v2) = [(UICollectionViewAccessibility__Music__UIKit *)&v5 isAccessibilityOpaqueElementProvider];
+  LOBYTE(selfCopy) = [(UICollectionViewAccessibility__Music__UIKit *)&v5 isAccessibilityOpaqueElementProvider];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_accessibilitySupplementaryViewSectionHeaderIdentifiers
 {
   v8.receiver = self;
   v8.super_class = UICollectionViewAccessibility__Music__UIKit;
-  v2 = [(UICollectionViewAccessibility__Music__UIKit *)&v8 _accessibilitySupplementaryViewSectionHeaderIdentifiers];
+  _accessibilitySupplementaryViewSectionHeaderIdentifiers = [(UICollectionViewAccessibility__Music__UIKit *)&v8 _accessibilitySupplementaryViewSectionHeaderIdentifiers];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 dataSource];
+  dataSource = [v3 dataSource];
   MEMORY[0x29C2E2910](@"Music.JSFlowcaseViewController");
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_321_0];
+    v5 = [_accessibilitySupplementaryViewSectionHeaderIdentifiers ax_filteredArrayUsingBlock:&__block_literal_global_321_0];
   }
 
   else
   {
-    v5 = v2;
+    v5 = _accessibilitySupplementaryViewSectionHeaderIdentifiers;
   }
 
   v6 = v5;

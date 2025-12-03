@@ -3,11 +3,11 @@
 + (void)systemDaemonNotifyDidLaunch;
 - (CSSystemDaemonStateMonitor)init;
 - (unint64_t)currentSystemDaemonState;
-- (void)CSLaunchAgentXPCClientConnectionDisconnected:(id)a3;
+- (void)CSLaunchAgentXPCClientConnectionDisconnected:(id)disconnected;
 - (void)_handleSystemDaemonDidLaunchNotification;
 - (void)_notifyObserversSystemDaemonCrashed;
 - (void)_notifyObserversSystemDaemonRestartedFromCrash;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -82,7 +82,7 @@ void __65__CSSystemDaemonStateMonitor__notifyObserversSystemDaemonCrashed__block
   return v3;
 }
 
-- (void)CSLaunchAgentXPCClientConnectionDisconnected:(id)a3
+- (void)CSLaunchAgentXPCClientConnectionDisconnected:(id)disconnected
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -107,7 +107,7 @@ void __65__CSSystemDaemonStateMonitor__notifyObserversSystemDaemonCrashed__block
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = CSLogContextFacilityCoreSpeech;

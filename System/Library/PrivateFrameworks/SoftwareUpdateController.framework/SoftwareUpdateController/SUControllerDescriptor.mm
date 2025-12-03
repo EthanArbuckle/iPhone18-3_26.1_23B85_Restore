@@ -1,14 +1,14 @@
 @interface SUControllerDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)humanReadableUpdateName;
 - (SUControllerDescriptor)init;
-- (SUControllerDescriptor)initWithCoder:(id)a3;
+- (SUControllerDescriptor)initWithCoder:(id)coder;
 - (id)copy;
 - (id)description;
 - (id)summary;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUControllerDescriptor
@@ -90,56 +90,56 @@
   return v3;
 }
 
-- (SUControllerDescriptor)initWithCoder:(id)a3
+- (SUControllerDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = SUControllerDescriptor;
   v5 = [(SUControllerDescriptor *)&v38 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentation"];
     documentation = v5->_documentation;
     v5->_documentation = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productVersion"];
     productVersion = v5->_productVersion;
     v5->_productVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productBuildVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productBuildVersion"];
     productBuildVersion = v5->_productBuildVersion;
     v5->_productBuildVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentationID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentationID"];
     documentationID = v5->_documentationID;
     v5->_documentationID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MarketingVersion"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MarketingVersion"];
     marketingVersion = v5->_marketingVersion;
     v5->_marketingVersion = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publisher"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publisher"];
     publisher = v5->_publisher;
     v5->_publisher = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productSystemName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productSystemName"];
     productSystemName = v5->_productSystemName;
     v5->_productSystemName = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"denialReasons"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"denialReasons"];
     denialReasons = v5->_denialReasons;
     v5->_denialReasons = v20;
 
-    v5->_downloadSize = [v4 decodeInt64ForKey:@"downloadSize"];
-    v5->_unarchivedSize = [v4 decodeInt64ForKey:@"unarchivedSize"];
-    v5->_msuPrepareSize = [v4 decodeInt64ForKey:@"msuPrepareSize"];
-    v5->_installationSize = [v4 decodeInt64ForKey:@"installationSize"];
-    v5->_totalRequiredFreeSpace = [v4 decodeInt64ForKey:@"TotalRequiredFreeSpace"];
-    v5->_userDidAcceptTermsAndConditions = [v4 decodeBoolForKey:@"userDidAcceptTermsAndConditions"];
-    v5->_fullReplacement = [v4 decodeBoolForKey:@"fullReplacement"];
-    v5->_rampEnabled = [v4 decodeBoolForKey:@"rampEnabled"];
-    v5->_willProceedWithInstallation = [v4 decodeBoolForKey:@"willProceedWithInstallation"];
-    v5->_isAwaitingAdmissionControlForInstallation = [v4 decodeBoolForKey:@"isAwaitingAdmissionControlForInstallation"];
+    v5->_downloadSize = [coderCopy decodeInt64ForKey:@"downloadSize"];
+    v5->_unarchivedSize = [coderCopy decodeInt64ForKey:@"unarchivedSize"];
+    v5->_msuPrepareSize = [coderCopy decodeInt64ForKey:@"msuPrepareSize"];
+    v5->_installationSize = [coderCopy decodeInt64ForKey:@"installationSize"];
+    v5->_totalRequiredFreeSpace = [coderCopy decodeInt64ForKey:@"TotalRequiredFreeSpace"];
+    v5->_userDidAcceptTermsAndConditions = [coderCopy decodeBoolForKey:@"userDidAcceptTermsAndConditions"];
+    v5->_fullReplacement = [coderCopy decodeBoolForKey:@"fullReplacement"];
+    v5->_rampEnabled = [coderCopy decodeBoolForKey:@"rampEnabled"];
+    v5->_willProceedWithInstallation = [coderCopy decodeBoolForKey:@"willProceedWithInstallation"];
+    v5->_isAwaitingAdmissionControlForInstallation = [coderCopy decodeBoolForKey:@"isAwaitingAdmissionControlForInstallation"];
     fullProductVersion = v5->_fullProductVersion;
     v5->_fullProductVersion = 0;
 
@@ -149,101 +149,101 @@
     documentationAsset = v5->_documentationAsset;
     v5->_documentationAsset = 0;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coreDescriptor"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coreDescriptor"];
     coreDescriptor = v5->_coreDescriptor;
     v5->_coreDescriptor = v25;
 
     v5->_hasBeenAbandoned = 0;
-    v5->_isSupervisedPolicy = [v4 decodeBoolForKey:@"isSupervisedPolicy"];
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedPMV"];
+    v5->_isSupervisedPolicy = [coderCopy decodeBoolForKey:@"isSupervisedPolicy"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedPMV"];
     requestedPMV = v5->_requestedPMV;
     v5->_requestedPMV = v27;
 
-    v5->_delayPeriod = [v4 decodeIntegerForKey:@"delayPeriod"];
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"releaseType"];
+    v5->_delayPeriod = [coderCopy decodeIntegerForKey:@"delayPeriod"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"releaseType"];
     releaseType = v5->_releaseType;
     v5->_releaseType = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"releaseDate"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"releaseDate"];
     releaseDate = v5->_releaseDate;
     v5->_releaseDate = v31;
 
-    v5->_mandatoryUpdateEligible = [v4 decodeBoolForKey:@"mandatoryUpdateEligible"];
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mandatoryUpdateVersionMin"];
+    v5->_mandatoryUpdateEligible = [coderCopy decodeBoolForKey:@"mandatoryUpdateEligible"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mandatoryUpdateVersionMin"];
     mandatoryUpdateVersionMin = v5->_mandatoryUpdateVersionMin;
     v5->_mandatoryUpdateVersionMin = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mandatoryUpdateVersionMax"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mandatoryUpdateVersionMax"];
     mandatoryUpdateVersionMax = v5->_mandatoryUpdateVersionMax;
     v5->_mandatoryUpdateVersionMax = v35;
 
-    v5->_mandatoryUpdateOptional = [v4 decodeBoolForKey:@"mandatoryUpdateOptional"];
-    v5->_mandatoryUpdateRestrictedToOutOfTheBox = [v4 decodeBoolForKey:@"mandatoryUpdateRestrictedToOutOfTheBox"];
+    v5->_mandatoryUpdateOptional = [coderCopy decodeBoolForKey:@"mandatoryUpdateOptional"];
+    v5->_mandatoryUpdateRestrictedToOutOfTheBox = [coderCopy decodeBoolForKey:@"mandatoryUpdateRestrictedToOutOfTheBox"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v18 = a3;
-  v4 = [(SUControllerDescriptor *)self documentation];
-  [v18 encodeObject:v4 forKey:@"documentation"];
+  coderCopy = coder;
+  documentation = [(SUControllerDescriptor *)self documentation];
+  [coderCopy encodeObject:documentation forKey:@"documentation"];
 
-  v5 = [(SUControllerDescriptor *)self productVersion];
-  [v18 encodeObject:v5 forKey:@"productVersion"];
+  productVersion = [(SUControllerDescriptor *)self productVersion];
+  [coderCopy encodeObject:productVersion forKey:@"productVersion"];
 
-  v6 = [(SUControllerDescriptor *)self productBuildVersion];
-  [v18 encodeObject:v6 forKey:@"productBuildVersion"];
+  productBuildVersion = [(SUControllerDescriptor *)self productBuildVersion];
+  [coderCopy encodeObject:productBuildVersion forKey:@"productBuildVersion"];
 
-  v7 = [(SUControllerDescriptor *)self documentationID];
-  [v18 encodeObject:v7 forKey:@"documentationID"];
+  documentationID = [(SUControllerDescriptor *)self documentationID];
+  [coderCopy encodeObject:documentationID forKey:@"documentationID"];
 
-  v8 = [(SUControllerDescriptor *)self marketingVersion];
-  [v18 encodeObject:v8 forKey:@"MarketingVersion"];
+  marketingVersion = [(SUControllerDescriptor *)self marketingVersion];
+  [coderCopy encodeObject:marketingVersion forKey:@"MarketingVersion"];
 
-  v9 = [(SUControllerDescriptor *)self publisher];
-  [v18 encodeObject:v9 forKey:@"publisher"];
+  publisher = [(SUControllerDescriptor *)self publisher];
+  [coderCopy encodeObject:publisher forKey:@"publisher"];
 
-  v10 = [(SUControllerDescriptor *)self productSystemName];
-  [v18 encodeObject:v10 forKey:@"productSystemName"];
+  productSystemName = [(SUControllerDescriptor *)self productSystemName];
+  [coderCopy encodeObject:productSystemName forKey:@"productSystemName"];
 
-  v11 = [(SUControllerDescriptor *)self denialReasons];
-  [v18 encodeObject:v11 forKey:@"denialReasons"];
+  denialReasons = [(SUControllerDescriptor *)self denialReasons];
+  [coderCopy encodeObject:denialReasons forKey:@"denialReasons"];
 
-  [v18 encodeInt64:-[SUControllerDescriptor downloadSize](self forKey:{"downloadSize"), @"downloadSize"}];
-  [v18 encodeInt64:-[SUControllerDescriptor unarchivedSize](self forKey:{"unarchivedSize"), @"unarchivedSize"}];
-  [v18 encodeInt64:-[SUControllerDescriptor msuPrepareSize](self forKey:{"msuPrepareSize"), @"msuPrepareSize"}];
-  [v18 encodeInt64:-[SUControllerDescriptor installationSize](self forKey:{"installationSize"), @"installationSize"}];
-  [v18 encodeInt64:-[SUControllerDescriptor totalRequiredFreeSpace](self forKey:{"totalRequiredFreeSpace"), @"TotalRequiredFreeSpace"}];
-  [v18 encodeBool:-[SUControllerDescriptor userDidAcceptTermsAndConditions](self forKey:{"userDidAcceptTermsAndConditions"), @"userDidAcceptTermsAndConditions"}];
-  [v18 encodeBool:-[SUControllerDescriptor fullReplacement](self forKey:{"fullReplacement"), @"fullReplacement"}];
-  [v18 encodeBool:-[SUControllerDescriptor rampEnabled](self forKey:{"rampEnabled"), @"rampEnabled"}];
-  [v18 encodeBool:-[SUControllerDescriptor willProceedWithInstallation](self forKey:{"willProceedWithInstallation"), @"willProceedWithInstallation"}];
-  [v18 encodeBool:-[SUControllerDescriptor isAwaitingAdmissionControlForInstallation](self forKey:{"isAwaitingAdmissionControlForInstallation"), @"isAwaitingAdmissionControlForInstallation"}];
-  v12 = [(SUControllerDescriptor *)self coreDescriptor];
-  [v18 encodeObject:v12 forKey:@"coreDescriptor"];
+  [coderCopy encodeInt64:-[SUControllerDescriptor downloadSize](self forKey:{"downloadSize"), @"downloadSize"}];
+  [coderCopy encodeInt64:-[SUControllerDescriptor unarchivedSize](self forKey:{"unarchivedSize"), @"unarchivedSize"}];
+  [coderCopy encodeInt64:-[SUControllerDescriptor msuPrepareSize](self forKey:{"msuPrepareSize"), @"msuPrepareSize"}];
+  [coderCopy encodeInt64:-[SUControllerDescriptor installationSize](self forKey:{"installationSize"), @"installationSize"}];
+  [coderCopy encodeInt64:-[SUControllerDescriptor totalRequiredFreeSpace](self forKey:{"totalRequiredFreeSpace"), @"TotalRequiredFreeSpace"}];
+  [coderCopy encodeBool:-[SUControllerDescriptor userDidAcceptTermsAndConditions](self forKey:{"userDidAcceptTermsAndConditions"), @"userDidAcceptTermsAndConditions"}];
+  [coderCopy encodeBool:-[SUControllerDescriptor fullReplacement](self forKey:{"fullReplacement"), @"fullReplacement"}];
+  [coderCopy encodeBool:-[SUControllerDescriptor rampEnabled](self forKey:{"rampEnabled"), @"rampEnabled"}];
+  [coderCopy encodeBool:-[SUControllerDescriptor willProceedWithInstallation](self forKey:{"willProceedWithInstallation"), @"willProceedWithInstallation"}];
+  [coderCopy encodeBool:-[SUControllerDescriptor isAwaitingAdmissionControlForInstallation](self forKey:{"isAwaitingAdmissionControlForInstallation"), @"isAwaitingAdmissionControlForInstallation"}];
+  coreDescriptor = [(SUControllerDescriptor *)self coreDescriptor];
+  [coderCopy encodeObject:coreDescriptor forKey:@"coreDescriptor"];
 
-  [v18 encodeBool:-[SUControllerDescriptor isSupervisedPolicy](self forKey:{"isSupervisedPolicy"), @"isSupervisedPolicy"}];
-  v13 = [(SUControllerDescriptor *)self requestedPMV];
-  [v18 encodeObject:v13 forKey:@"requestedPMV"];
+  [coderCopy encodeBool:-[SUControllerDescriptor isSupervisedPolicy](self forKey:{"isSupervisedPolicy"), @"isSupervisedPolicy"}];
+  requestedPMV = [(SUControllerDescriptor *)self requestedPMV];
+  [coderCopy encodeObject:requestedPMV forKey:@"requestedPMV"];
 
-  [v18 encodeInteger:-[SUControllerDescriptor delayPeriod](self forKey:{"delayPeriod"), @"delayPeriod"}];
-  v14 = [(SUControllerDescriptor *)self releaseType];
-  [v18 encodeObject:v14 forKey:@"releaseType"];
+  [coderCopy encodeInteger:-[SUControllerDescriptor delayPeriod](self forKey:{"delayPeriod"), @"delayPeriod"}];
+  releaseType = [(SUControllerDescriptor *)self releaseType];
+  [coderCopy encodeObject:releaseType forKey:@"releaseType"];
 
-  v15 = [(SUControllerDescriptor *)self releaseDate];
-  [v18 encodeObject:v15 forKey:@"releaseDate"];
+  releaseDate = [(SUControllerDescriptor *)self releaseDate];
+  [coderCopy encodeObject:releaseDate forKey:@"releaseDate"];
 
-  [v18 encodeBool:-[SUControllerDescriptor mandatoryUpdateEligible](self forKey:{"mandatoryUpdateEligible"), @"mandatoryUpdateEligible"}];
-  v16 = [(SUControllerDescriptor *)self mandatoryUpdateVersionMin];
-  [v18 encodeObject:v16 forKey:@"mandatoryUpdateVersionMin"];
+  [coderCopy encodeBool:-[SUControllerDescriptor mandatoryUpdateEligible](self forKey:{"mandatoryUpdateEligible"), @"mandatoryUpdateEligible"}];
+  mandatoryUpdateVersionMin = [(SUControllerDescriptor *)self mandatoryUpdateVersionMin];
+  [coderCopy encodeObject:mandatoryUpdateVersionMin forKey:@"mandatoryUpdateVersionMin"];
 
-  v17 = [(SUControllerDescriptor *)self mandatoryUpdateVersionMax];
-  [v18 encodeObject:v17 forKey:@"mandatoryUpdateVersionMax"];
+  mandatoryUpdateVersionMax = [(SUControllerDescriptor *)self mandatoryUpdateVersionMax];
+  [coderCopy encodeObject:mandatoryUpdateVersionMax forKey:@"mandatoryUpdateVersionMax"];
 
-  [v18 encodeBool:-[SUControllerDescriptor mandatoryUpdateOptional](self forKey:{"mandatoryUpdateOptional"), @"mandatoryUpdateOptional"}];
-  [v18 encodeBool:-[SUControllerDescriptor mandatoryUpdateRestrictedToOutOfTheBox](self forKey:{"mandatoryUpdateRestrictedToOutOfTheBox"), @"mandatoryUpdateRestrictedToOutOfTheBox"}];
+  [coderCopy encodeBool:-[SUControllerDescriptor mandatoryUpdateOptional](self forKey:{"mandatoryUpdateOptional"), @"mandatoryUpdateOptional"}];
+  [coderCopy encodeBool:-[SUControllerDescriptor mandatoryUpdateRestrictedToOutOfTheBox](self forKey:{"mandatoryUpdateRestrictedToOutOfTheBox"), @"mandatoryUpdateRestrictedToOutOfTheBox"}];
 }
 
 - (id)copy
@@ -254,10 +254,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v11) = 1;
   }
@@ -267,17 +267,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUControllerDescriptor *)v5 productVersion];
-      v7 = [(SUControllerDescriptor *)self productVersion];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      productVersion = [(SUControllerDescriptor *)v5 productVersion];
+      productVersion2 = [(SUControllerDescriptor *)self productVersion];
+      if ([productVersion isEqualToString:productVersion2])
       {
-        v8 = [(SUControllerDescriptor *)v5 productBuildVersion];
-        v9 = [(SUControllerDescriptor *)self productBuildVersion];
-        if ([v8 isEqualToString:v9])
+        productBuildVersion = [(SUControllerDescriptor *)v5 productBuildVersion];
+        productBuildVersion2 = [(SUControllerDescriptor *)self productBuildVersion];
+        if ([productBuildVersion isEqualToString:productBuildVersion2])
         {
-          v10 = [(SUControllerDescriptor *)v5 isSupervisedPolicy];
-          v11 = v10 ^ [(SUControllerDescriptor *)self isSupervisedPolicy]^ 1;
+          isSupervisedPolicy = [(SUControllerDescriptor *)v5 isSupervisedPolicy];
+          v11 = isSupervisedPolicy ^ [(SUControllerDescriptor *)self isSupervisedPolicy]^ 1;
         }
 
         else
@@ -304,9 +304,9 @@
 - (unint64_t)hash
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUControllerDescriptor *)self productVersion];
-  v5 = [(SUControllerDescriptor *)self productBuildVersion];
-  v6 = [v3 stringWithFormat:@"%@/%@", v4, v5];
+  productVersion = [(SUControllerDescriptor *)self productVersion];
+  productBuildVersion = [(SUControllerDescriptor *)self productBuildVersion];
+  v6 = [v3 stringWithFormat:@"%@/%@", productVersion, productBuildVersion];
   v7 = [v6 hash];
 
   return v7;
@@ -315,17 +315,17 @@
 - (id)description
 {
   v31 = MEMORY[0x277CCACA8];
-  v30 = [(SUControllerDescriptor *)self humanReadableUpdateName];
-  v29 = [(SUControllerDescriptor *)self productVersion];
-  v28 = [(SUControllerDescriptor *)self productBuildVersion];
-  v27 = [(SUControllerDescriptor *)self productSystemName];
-  v26 = [(SUControllerDescriptor *)self publisher];
-  v25 = [(SUControllerDescriptor *)self downloadSize];
-  v24 = [(SUControllerDescriptor *)self preparationSize];
-  v23 = [(SUControllerDescriptor *)self installationSize];
-  v22 = [(SUControllerDescriptor *)self totalRequiredFreeSpace];
-  v21 = [(SUControllerDescriptor *)self documentationID];
-  v20 = [(SUControllerDescriptor *)self marketingVersion];
+  humanReadableUpdateName = [(SUControllerDescriptor *)self humanReadableUpdateName];
+  productVersion = [(SUControllerDescriptor *)self productVersion];
+  productBuildVersion = [(SUControllerDescriptor *)self productBuildVersion];
+  productSystemName = [(SUControllerDescriptor *)self productSystemName];
+  publisher = [(SUControllerDescriptor *)self publisher];
+  downloadSize = [(SUControllerDescriptor *)self downloadSize];
+  preparationSize = [(SUControllerDescriptor *)self preparationSize];
+  installationSize = [(SUControllerDescriptor *)self installationSize];
+  totalRequiredFreeSpace = [(SUControllerDescriptor *)self totalRequiredFreeSpace];
+  documentationID = [(SUControllerDescriptor *)self documentationID];
+  marketingVersion = [(SUControllerDescriptor *)self marketingVersion];
   if ([(SUControllerDescriptor *)self fullReplacement])
   {
     v3 = @"YES";
@@ -348,9 +348,9 @@
   }
 
   v18 = v4;
-  v17 = [(SUControllerDescriptor *)self denialReasons];
-  v5 = [(SUControllerDescriptor *)self releaseType];
-  v16 = [(SUControllerDescriptor *)self releaseDate];
+  denialReasons = [(SUControllerDescriptor *)self denialReasons];
+  releaseType = [(SUControllerDescriptor *)self releaseType];
+  releaseDate = [(SUControllerDescriptor *)self releaseDate];
   if ([(SUControllerDescriptor *)self isSupervisedPolicy])
   {
     v6 = @"YES";
@@ -362,8 +362,8 @@
   }
 
   v15 = v6;
-  v7 = [(SUControllerDescriptor *)self requestedPMV];
-  v8 = [(SUControllerDescriptor *)self delayPeriod];
+  requestedPMV = [(SUControllerDescriptor *)self requestedPMV];
+  delayPeriod = [(SUControllerDescriptor *)self delayPeriod];
   if ([(SUControllerDescriptor *)self mandatoryUpdateEligible])
   {
     v9 = @"YES";
@@ -374,8 +374,8 @@
     v9 = @"NO";
   }
 
-  v10 = [(SUControllerDescriptor *)self mandatoryUpdateVersionMin];
-  v11 = [(SUControllerDescriptor *)self mandatoryUpdateVersionMax];
+  mandatoryUpdateVersionMin = [(SUControllerDescriptor *)self mandatoryUpdateVersionMin];
+  mandatoryUpdateVersionMax = [(SUControllerDescriptor *)self mandatoryUpdateVersionMax];
   if ([(SUControllerDescriptor *)self mandatoryUpdateOptional])
   {
     v12 = @"YES";
@@ -396,7 +396,7 @@
     v13 = @"NO";
   }
 
-  v32 = [v31 stringWithFormat:@"\n            HumanReadableUpdateName: %@\n            ProductVersion: %@\n            ProductBuildVersion: %@\n            ProductSystemName: %@\n            Publisher: %@\n            DownloadSize: %lld\n            PreparationSize: %lld\n            InstallationSize: %lld\n            TotalRequiredFreeSpace: %lld\n            DocumentationID: %@\n            MarketingVersion: %@\n            FullReplacement: %@\n            RampEnabled: %@\n            CurrentDenialReasons: %@\n            ReleaseType: %@\n            ReleaseDate: %@\n            IsSupervisedPolicy: %@\n            RequestedPMV: %@\n            DelayPeriod: %d days\n            MandatoryUpdateEligible: %@\n            MandatoryUpdateVersionMin: %@\n            MandatoryUpdateVersionMax: %@\n            MandatoryUpdateOptional: %@\n            mandatoryUpdateRestrictedToOutOfTheBox: %@", v30, v29, v28, v27, v26, v25, v24, v23, v22, v21, v20, v19, v18, v17, v5, v16, v15, v7, v8, v9, v10, v11, v12, v13];
+  v32 = [v31 stringWithFormat:@"\n            HumanReadableUpdateName: %@\n            ProductVersion: %@\n            ProductBuildVersion: %@\n            ProductSystemName: %@\n            Publisher: %@\n            DownloadSize: %lld\n            PreparationSize: %lld\n            InstallationSize: %lld\n            TotalRequiredFreeSpace: %lld\n            DocumentationID: %@\n            MarketingVersion: %@\n            FullReplacement: %@\n            RampEnabled: %@\n            CurrentDenialReasons: %@\n            ReleaseType: %@\n            ReleaseDate: %@\n            IsSupervisedPolicy: %@\n            RequestedPMV: %@\n            DelayPeriod: %d days\n            MandatoryUpdateEligible: %@\n            MandatoryUpdateVersionMin: %@\n            MandatoryUpdateVersionMax: %@\n            MandatoryUpdateOptional: %@\n            mandatoryUpdateRestrictedToOutOfTheBox: %@", humanReadableUpdateName, productVersion, productBuildVersion, productSystemName, publisher, downloadSize, preparationSize, installationSize, totalRequiredFreeSpace, documentationID, marketingVersion, v19, v18, denialReasons, releaseType, releaseDate, v15, requestedPMV, delayPeriod, v9, mandatoryUpdateVersionMin, mandatoryUpdateVersionMax, v12, v13];
 
   return v32;
 }
@@ -404,40 +404,40 @@
 - (id)summary
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUControllerDescriptor *)self humanReadableUpdateName];
-  v5 = [(SUControllerDescriptor *)self productBuildVersion];
-  v6 = [(SUControllerDescriptor *)self isSupervisedPolicy];
+  humanReadableUpdateName = [(SUControllerDescriptor *)self humanReadableUpdateName];
+  productBuildVersion = [(SUControllerDescriptor *)self productBuildVersion];
+  isSupervisedPolicy = [(SUControllerDescriptor *)self isSupervisedPolicy];
   v7 = @"Not Supervised";
-  if (v6)
+  if (isSupervisedPolicy)
   {
     v7 = @"Supervised";
   }
 
-  v8 = [v3 stringWithFormat:@"%@ %@ (%@)", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"%@ %@ (%@)", humanReadableUpdateName, productBuildVersion, v7];
 
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  compareCopy = compare;
+  v5 = compareCopy;
+  if (self == compareCopy)
   {
     v8 = 0;
   }
 
-  else if (v4)
+  else if (compareCopy)
   {
-    v6 = [(SUControllerDescriptor *)self productVersion];
-    v7 = [(SUControllerDescriptor *)v5 productVersion];
-    v8 = [v6 compare:v7 options:64];
+    productVersion = [(SUControllerDescriptor *)self productVersion];
+    productVersion2 = [(SUControllerDescriptor *)v5 productVersion];
+    v8 = [productVersion compare:productVersion2 options:64];
 
     if (v8 != -1 && v8 != 1)
     {
-      v9 = [(SUControllerDescriptor *)self productBuildVersion];
-      v10 = [(SUControllerDescriptor *)v5 productBuildVersion];
-      v8 = [v9 compare:v10 options:64];
+      productBuildVersion = [(SUControllerDescriptor *)self productBuildVersion];
+      productBuildVersion2 = [(SUControllerDescriptor *)v5 productBuildVersion];
+      v8 = [productBuildVersion compare:productBuildVersion2 options:64];
     }
   }
 
@@ -451,39 +451,39 @@
 
 - (NSString)humanReadableUpdateName
 {
-  v3 = [(SUControllerDescriptor *)self documentation];
-  v4 = [v3 humanReadableUpdateName];
+  documentation = [(SUControllerDescriptor *)self documentation];
+  humanReadableUpdateName = [documentation humanReadableUpdateName];
 
-  if (v4)
+  if (humanReadableUpdateName)
   {
-    v5 = [(SUControllerDescriptor *)self documentation];
-    v6 = [v5 humanReadableUpdateName];
+    documentation2 = [(SUControllerDescriptor *)self documentation];
+    humanReadableUpdateName2 = [documentation2 humanReadableUpdateName];
 LABEL_3:
 
     goto LABEL_8;
   }
 
-  v7 = [(SUControllerDescriptor *)self productSystemName];
-  if (v7)
+  productSystemName = [(SUControllerDescriptor *)self productSystemName];
+  if (productSystemName)
   {
-    v8 = v7;
-    v9 = [(SUControllerDescriptor *)self productVersion];
+    v8 = productSystemName;
+    productVersion = [(SUControllerDescriptor *)self productVersion];
 
-    if (v9)
+    if (productVersion)
     {
       v10 = MEMORY[0x277CCACA8];
-      v5 = [(SUControllerDescriptor *)self productSystemName];
-      v11 = [(SUControllerDescriptor *)self productVersion];
-      v6 = [v10 stringWithFormat:@"%@ %@", v5, v11];
+      documentation2 = [(SUControllerDescriptor *)self productSystemName];
+      productVersion2 = [(SUControllerDescriptor *)self productVersion];
+      humanReadableUpdateName2 = [v10 stringWithFormat:@"%@ %@", documentation2, productVersion2];
 
       goto LABEL_3;
     }
   }
 
-  v6 = @"Software Update";
+  humanReadableUpdateName2 = @"Software Update";
 LABEL_8:
 
-  return v6;
+  return humanReadableUpdateName2;
 }
 
 @end

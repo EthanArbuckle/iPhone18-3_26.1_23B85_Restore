@@ -1,14 +1,14 @@
 @interface IUIDummyITTInputTeletypeServer
 + (id)sharedServer;
 - (IUIDummyITTInputTeletypeServer)init;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation IUIDummyITTInputTeletypeServer
 
 + (id)sharedServer
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -44,18 +44,18 @@
   return v3;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sub_100001928();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Rejecting connection: %@", &v7, 0xCu);
   }
 
-  [v5 invalidate];
+  [connectionCopy invalidate];
 }
 
 @end

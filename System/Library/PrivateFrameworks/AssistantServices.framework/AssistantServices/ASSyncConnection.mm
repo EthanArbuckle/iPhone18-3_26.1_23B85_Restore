@@ -1,19 +1,19 @@
 @interface ASSyncConnection
-- (ASSyncConnection)initWithDelegate:(id)a3;
-- (BOOL)_getChunkInfoWithHandler:(id)a3 batchSize:(int64_t)a4 lastAnchor:(id)a5 updates:(id)a6 deletes:(id)a7 post:(id *)a8 targetIsLocal:(BOOL)a9;
-- (BOOL)_infoIsValid:(id)a3 forPreAnchor:(id)a4;
-- (BOOL)_sendChunkWithUpdates:(id)a3 deletes:(id)a4 pre:(id)a5 post:(id)a6 validity:(id)a7 forRequestUUID:(id)a8;
+- (ASSyncConnection)initWithDelegate:(id)delegate;
+- (BOOL)_getChunkInfoWithHandler:(id)handler batchSize:(int64_t)size lastAnchor:(id)anchor updates:(id)updates deletes:(id)deletes post:(id *)post targetIsLocal:(BOOL)local;
+- (BOOL)_infoIsValid:(id)valid forPreAnchor:(id)anchor;
+- (BOOL)_sendChunkWithUpdates:(id)updates deletes:(id)deletes pre:(id)pre post:(id)post validity:(id)validity forRequestUUID:(id)d;
 - (int64_t)defaultChunkBatchSize;
-- (void)runSyncWithHandler:(id)a3 info:(id)a4 forRequestUUID:(id)a5;
+- (void)runSyncWithHandler:(id)handler info:(id)info forRequestUUID:(id)d;
 @end
 
 @implementation ASSyncConnection
 
-- (void)runSyncWithHandler:(id)a3 info:(id)a4 forRequestUUID:(id)a5
+- (void)runSyncWithHandler:(id)handler info:(id)info forRequestUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v60 = a5;
+  handlerCopy = handler;
+  infoCopy = info;
+  dCopy = d;
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
   v12 = v11;
@@ -25,9 +25,9 @@
 
   v14 = v13;
 
-  v55 = [v9 reasons];
-  v15 = [v55 allObjects];
-  v16 = [v15 componentsJoinedByString:@"+"];
+  reasons = [infoCopy reasons];
+  allObjects = [reasons allObjects];
+  v16 = [allObjects componentsJoinedByString:@"+"];
 
   v17 = AFSiriLogContextSync;
   if (os_log_type_enabled(AFSiriLogContextSync, OS_LOG_TYPE_INFO))
@@ -37,7 +37,7 @@
     v68 = 2112;
     v69 = v14;
     v70 = 2112;
-    v71 = v9;
+    v71 = infoCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%s %@ Beginning sync with info %@", buf, 0x20u);
   }
 
@@ -54,26 +54,26 @@
   sub_100001FA8(v19);
 
   v20 = objc_alloc_init(ASSyncBeginInfo);
-  v21 = [v9 anchor];
-  v22 = [v9 validity];
-  v23 = [v9 count];
-  v24 = [v9 key];
-  [(ASSyncBeginInfo *)v20 setAnchor:v21];
-  [(ASSyncBeginInfo *)v20 setValidity:v22];
+  anchor = [infoCopy anchor];
+  validity = [infoCopy validity];
+  v23 = [infoCopy count];
+  v24 = [infoCopy key];
+  [(ASSyncBeginInfo *)v20 setAnchor:anchor];
+  [(ASSyncBeginInfo *)v20 setValidity:validity];
   [(ASSyncBeginInfo *)v20 setCount:v23];
   [(ASSyncBeginInfo *)v20 setKey:v24];
-  v25 = [v9 appMetadata];
-  [(ASSyncBeginInfo *)v20 setAppMetadata:v25];
+  appMetadata = [infoCopy appMetadata];
+  [(ASSyncBeginInfo *)v20 setAppMetadata:appMetadata];
 
-  v26 = [v9 reasons];
-  [(ASSyncBeginInfo *)v20 setReasons:v26];
+  reasons2 = [infoCopy reasons];
+  [(ASSyncBeginInfo *)v20 setReasons:reasons2];
 
   v27 = objc_autoreleasePoolPush();
   v57 = v24;
   if (objc_opt_respondsToSelector())
   {
     v28 = [[ASSyncConfiguration alloc] initWithConfigurationPlistForSyncKey:v24];
-    [v8 beginSyncWithInfo:v20 configuration:v28];
+    [handlerCopy beginSyncWithInfo:v20 configuration:v28];
   }
 
   else
@@ -82,19 +82,19 @@
     {
       if (objc_opt_respondsToSelector())
       {
-        [v8 beginSyncWithAnchor:v21 validity:v22 count:v23 forKey:v24 beginInfo:v20];
+        [handlerCopy beginSyncWithAnchor:anchor validity:validity count:v23 forKey:v24 beginInfo:v20];
       }
 
       else
       {
-        [v8 beginSyncWithAnchor:v21 validity:v22 forKey:v24 beginInfo:v20];
+        [handlerCopy beginSyncWithAnchor:anchor validity:validity forKey:v24 beginInfo:v20];
       }
 
       goto LABEL_10;
     }
 
     v28 = [[ASSyncConfiguration alloc] initWithConfigurationPlistForSyncKey:v24];
-    [v8 beginSyncWithAnchor:v21 validity:v22 count:v23 forKey:v24 beginInfo:v20 configuration:v28];
+    [handlerCopy beginSyncWithAnchor:anchor validity:validity count:v23 forKey:v24 beginInfo:v20 configuration:v28];
   }
 
 LABEL_10:
@@ -110,33 +110,33 @@ LABEL_10:
   }
 
   v53 = v20;
-  v30 = [(ASSyncBeginInfo *)v20 resetValidity];
-  v58 = v30;
-  if (v30)
+  resetValidity = [(ASSyncBeginInfo *)v20 resetValidity];
+  v58 = resetValidity;
+  if (resetValidity)
   {
-    v31 = v30;
+    v31 = resetValidity;
   }
 
   else
   {
-    v31 = v22;
+    v31 = validity;
   }
 
   v59 = v31;
-  v51 = v22;
+  v51 = validity;
   if (objc_opt_respondsToSelector())
   {
-    v32 = [v8 _syncBatchSize];
+    _syncBatchSize = [handlerCopy _syncBatchSize];
   }
 
   else
   {
-    v32 = [(ASSyncConnection *)self defaultChunkBatchSize];
+    _syncBatchSize = [(ASSyncConnection *)self defaultChunkBatchSize];
   }
 
-  v33 = [[NSMutableArray alloc] initWithCapacity:v32];
-  v34 = [[NSMutableArray alloc] initWithCapacity:v32];
-  v52 = v21;
+  v33 = [[NSMutableArray alloc] initWithCapacity:_syncBatchSize];
+  v34 = [[NSMutableArray alloc] initWithCapacity:_syncBatchSize];
+  v52 = anchor;
   if (v58)
   {
     v35 = 0;
@@ -144,7 +144,7 @@ LABEL_10:
 
   else
   {
-    v35 = v21;
+    v35 = anchor;
   }
 
   v36 = v35;
@@ -162,10 +162,10 @@ LABEL_10:
     }
 
     v61 = v36;
-    v38 = v9;
-    LOBYTE(v50) = [v9 targetIsLocal];
-    v39 = v8;
-    v40 = [(ASSyncConnection *)self _getChunkInfoWithHandler:v8 batchSize:v32 lastAnchor:v36 updates:v33 deletes:v34 post:&v61 targetIsLocal:v50];
+    v38 = infoCopy;
+    LOBYTE(v50) = [infoCopy targetIsLocal];
+    v39 = handlerCopy;
+    v40 = [(ASSyncConnection *)self _getChunkInfoWithHandler:handlerCopy batchSize:_syncBatchSize lastAnchor:v36 updates:v33 deletes:v34 post:&v61 targetIsLocal:v50];
     v41 = v61;
 
     if (v40)
@@ -203,7 +203,7 @@ LABEL_29:
       goto LABEL_33;
     }
 
-    if (![(ASSyncConnection *)self _sendChunkWithUpdates:v33 deletes:v34 pre:v36 post:v41 validity:v59 forRequestUUID:v60])
+    if (![(ASSyncConnection *)self _sendChunkWithUpdates:v33 deletes:v34 pre:v36 post:v41 validity:v59 forRequestUUID:dCopy])
     {
       v46 = AFSiriLogContextSync;
       if (os_log_type_enabled(AFSiriLogContextSync, OS_LOG_TYPE_INFO))
@@ -232,8 +232,8 @@ LABEL_38:
     [v33 removeAllObjects];
     [v34 removeAllObjects];
 
-    v8 = v39;
-    v9 = v38;
+    handlerCopy = v39;
+    infoCopy = v38;
   }
 
   while ((v45 & 1) != 0);
@@ -259,7 +259,7 @@ LABEL_38:
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 syncDidEnd];
+    [handlerCopy syncDidEnd];
   }
 }
 
@@ -271,15 +271,15 @@ LABEL_38:
 
   if (v4)
   {
-    v5 = [v4 integerValue];
-    if ((v5 - 1) >= 0x270F)
+    integerValue = [v4 integerValue];
+    if ((integerValue - 1) >= 0x270F)
     {
       v6 = 100;
     }
 
     else
     {
-      v6 = v5;
+      v6 = integerValue;
     }
   }
 
@@ -291,11 +291,11 @@ LABEL_38:
   return v6;
 }
 
-- (BOOL)_infoIsValid:(id)a3 forPreAnchor:(id)a4
+- (BOOL)_infoIsValid:(id)valid forPreAnchor:(id)anchor
 {
-  v4 = [a3 object];
-  v5 = v4;
-  if (v4 && ([v4 identifier], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  object = [valid object];
+  v5 = object;
+  if (object && ([object identifier], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
     v8 = AFSiriLogContextSync;
     if (os_log_type_enabled(AFSiriLogContextSync, OS_LOG_TYPE_ERROR))
@@ -318,21 +318,21 @@ LABEL_38:
   return v7;
 }
 
-- (BOOL)_getChunkInfoWithHandler:(id)a3 batchSize:(int64_t)a4 lastAnchor:(id)a5 updates:(id)a6 deletes:(id)a7 post:(id *)a8 targetIsLocal:(BOOL)a9
+- (BOOL)_getChunkInfoWithHandler:(id)handler batchSize:(int64_t)size lastAnchor:(id)anchor updates:(id)updates deletes:(id)deletes post:(id *)post targetIsLocal:(BOOL)local
 {
-  v14 = a3;
-  v15 = a5;
-  v40 = a6;
-  v39 = a7;
+  handlerCopy = handler;
+  anchorCopy = anchor;
+  updatesCopy = updates;
+  deletesCopy = deletes;
   v16 = objc_alloc_init(ASSyncChangeInfo);
-  if (a4 < 1)
+  if (size < 1)
   {
     v30 = 0;
   }
 
   else
   {
-    v38 = a8;
+    postCopy = post;
     v17 = 0;
     while (1)
     {
@@ -340,11 +340,11 @@ LABEL_38:
       [(ASSyncChangeInfo *)v16 setIsDelete:0];
       [(ASSyncChangeInfo *)v16 setPostAnchor:0];
       v18 = objc_autoreleasePoolPush();
-      [v14 getChangeAfterAnchor:v15 changeInfo:v16];
+      [handlerCopy getChangeAfterAnchor:anchorCopy changeInfo:v16];
       objc_autoreleasePoolPop(v18);
-      v19 = [(ASSyncChangeInfo *)v16 object];
-      v20 = [(ASSyncChangeInfo *)v16 isDelete];
-      v21 = [(ASSyncChangeInfo *)v16 postAnchor];
+      object = [(ASSyncChangeInfo *)v16 object];
+      isDelete = [(ASSyncChangeInfo *)v16 isDelete];
+      postAnchor = [(ASSyncChangeInfo *)v16 postAnchor];
       v22 = AFSiriLogContextSync;
       if (os_log_type_enabled(AFSiriLogContextSync, OS_LOG_TYPE_INFO))
       {
@@ -360,44 +360,44 @@ LABEL_38:
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%s %@ change info %@", buf, 0x20u);
       }
 
-      if (!v21 || ([v15 isEqualToString:v21] & 1) != 0)
+      if (!postAnchor || ([anchorCopy isEqualToString:postAnchor] & 1) != 0)
       {
-        a8 = v38;
+        post = postCopy;
         goto LABEL_17;
       }
 
-      if (![(ASSyncConnection *)self _infoIsValid:v16 forPreAnchor:v15])
+      if (![(ASSyncConnection *)self _infoIsValid:v16 forPreAnchor:anchorCopy])
       {
         break;
       }
 
-      v26 = [v19 properties];
-      v27 = [v26 count];
+      properties = [object properties];
+      v27 = [properties count];
 
       if (v27)
       {
-        if (v20)
+        if (isDelete)
         {
-          v28 = v39;
+          v28 = deletesCopy;
         }
 
         else
         {
-          v28 = v40;
+          v28 = updatesCopy;
         }
 
-        v29 = [v19 dictionary];
-        [v28 addObject:v29];
+        dictionary = [object dictionary];
+        [v28 addObject:dictionary];
 
         ++v17;
       }
 
-      v15 = v21;
-      if (v17 >= a4)
+      anchorCopy = postAnchor;
+      if (v17 >= size)
       {
         v30 = 0;
-        v15 = v21;
-        a8 = v38;
+        anchorCopy = postAnchor;
+        post = postCopy;
         goto LABEL_18;
       }
     }
@@ -408,13 +408,13 @@ LABEL_38:
       *buf = 136315650;
       v43 = "[ASSyncConnection _getChunkInfoWithHandler:batchSize:lastAnchor:updates:deletes:post:targetIsLocal:]";
       v44 = 2114;
-      v45 = v14;
+      v45 = handlerCopy;
       v46 = 2112;
       v47 = v16;
       _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "%s Sync plugin %{public}@ gave bad sync info %@", buf, 0x20u);
     }
 
-    a8 = v38;
+    post = postCopy;
     if (AFIsInternalInstall())
     {
       v33 = objc_opt_class();
@@ -432,19 +432,19 @@ LABEL_17:
   }
 
 LABEL_18:
-  *a8 = [v15 copy];
+  *post = [anchorCopy copy];
 
   return v30;
 }
 
-- (BOOL)_sendChunkWithUpdates:(id)a3 deletes:(id)a4 pre:(id)a5 post:(id)a6 validity:(id)a7 forRequestUUID:(id)a8
+- (BOOL)_sendChunkWithUpdates:(id)updates deletes:(id)deletes pre:(id)pre post:(id)post validity:(id)validity forRequestUUID:(id)d
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  updatesCopy = updates;
+  deletesCopy = deletes;
+  preCopy = pre;
+  postCopy = post;
+  validityCopy = validity;
+  dCopy = d;
   v20 = AFSiriLogContextSync;
   if (os_log_type_enabled(AFSiriLogContextSync, OS_LOG_TYPE_INFO))
   {
@@ -452,31 +452,31 @@ LABEL_18:
     v24 = 136316162;
     v25 = "[ASSyncConnection _sendChunkWithUpdates:deletes:pre:post:validity:forRequestUUID:]";
     v26 = 2048;
-    v27 = [v14 count];
+    v27 = [updatesCopy count];
     v28 = 2048;
-    v29 = [v15 count];
+    v29 = [deletesCopy count];
     v30 = 2112;
-    v31 = v16;
+    v31 = preCopy;
     v32 = 2112;
-    v33 = v17;
+    v33 = postCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "%s Sending chunk with %lu updates %lu deletes. Anchors (%@, %@)", &v24, 0x34u);
   }
 
-  v22 = [(ASSyncConnectionDelegate *)self->_delegate sendSyncChunksWithPreAnchor:v16 postAnchor:v17 updates:v14 deletes:v15 validity:v18 forRequestUUID:v19];
+  v22 = [(ASSyncConnectionDelegate *)self->_delegate sendSyncChunksWithPreAnchor:preCopy postAnchor:postCopy updates:updatesCopy deletes:deletesCopy validity:validityCopy forRequestUUID:dCopy];
 
   return v22 ^ 1;
 }
 
-- (ASSyncConnection)initWithDelegate:(id)a3
+- (ASSyncConnection)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = ASSyncConnection;
   v6 = [(ASSyncConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
   }
 
   return v7;

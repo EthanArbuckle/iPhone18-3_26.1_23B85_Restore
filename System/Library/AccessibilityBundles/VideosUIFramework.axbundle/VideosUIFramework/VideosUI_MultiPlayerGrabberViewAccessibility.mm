@@ -1,33 +1,33 @@
 @interface VideosUI_MultiPlayerGrabberViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)_axMultiviewController;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
-- (void)setAlpha:(double)a3;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation VideosUI_MultiPlayerGrabberViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.MultiPlayerViewController" hasSwiftField:@"isDetailsViewControllerVisible" withSwiftType:"Bool"];
-  [v3 validateClass:@"VideosUI.MultiPlayerViewController" hasInstanceMethod:@"setDetailsViewControllerVisible:animated:completion:" withFullSignature:{"v", "B", "B", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.MultiPlayerViewController" hasSwiftField:@"isDetailsViewControllerVisible" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"VideosUI.MultiPlayerViewController" hasInstanceMethod:@"setDetailsViewControllerVisible:animated:completion:" withFullSignature:{"v", "B", "B", "@?", 0}];
 }
 
 - (id)_axMultiviewController
 {
   v2 = [(VideosUI_MultiPlayerGrabberViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_19 startWithSelf:0];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  return v3;
+  return _accessibilityViewController;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(VideosUI_MultiPlayerGrabberViewAccessibility *)self _axMultiviewController];
-  v3 = [v2 safeSwiftBoolForKey:@"isDetailsViewControllerVisible"];
+  _axMultiviewController = [(VideosUI_MultiPlayerGrabberViewAccessibility *)self _axMultiviewController];
+  v3 = [_axMultiviewController safeSwiftBoolForKey:@"isDetailsViewControllerVisible"];
 
   if (v3)
   {
@@ -53,16 +53,16 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = [(VideosUI_MultiPlayerGrabberViewAccessibility *)self _axMultiviewController];
-  [v2 safeSwiftBoolForKey:@"isDetailsViewControllerVisible"];
-  v5 = v2;
-  v3 = v2;
+  _axMultiviewController = [(VideosUI_MultiPlayerGrabberViewAccessibility *)self _axMultiviewController];
+  [_axMultiviewController safeSwiftBoolForKey:@"isDetailsViewControllerVisible"];
+  v5 = _axMultiviewController;
+  v3 = _axMultiviewController;
   AXPerformSafeBlock();
 
   return 1;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   if (UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning() || (_UIAccessibilityFullKeyboardAccessEnabled() & 1) != 0)
   {
@@ -73,7 +73,7 @@
 
   v5.receiver = self;
   v5.super_class = VideosUI_MultiPlayerGrabberViewAccessibility;
-  [(VideosUI_MultiPlayerGrabberViewAccessibility *)&v5 setAlpha:a3];
+  [(VideosUI_MultiPlayerGrabberViewAccessibility *)&v5 setAlpha:alpha];
 }
 
 @end

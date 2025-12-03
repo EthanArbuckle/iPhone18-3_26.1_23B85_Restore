@@ -1,7 +1,7 @@
 @interface HMNoiseCheckService
 - (_TtC13HearingModeUI19HMNoiseCheckService)init;
-- (void)runNoiseCheckNudgingWithTopView:(id)a3 passAction:(id)a4;
-- (void)runNoiseCheckWithCompletionHandler:(id)a3;
+- (void)runNoiseCheckNudgingWithTopView:(id)view passAction:(id)action;
+- (void)runNoiseCheckWithCompletionHandler:(id)handler;
 - (void)stopNoiseCheck;
 @end
 
@@ -9,17 +9,17 @@
 
 - (void)stopNoiseCheck
 {
-  v2 = self;
+  selfCopy = self;
   sub_25204BA58();
 }
 
-- (void)runNoiseCheckWithCompletionHandler:(id)a3
+- (void)runNoiseCheckWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F4C9ED0, &qword_2520682E8);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -35,18 +35,18 @@
   v13[3] = 0;
   v13[4] = &unk_252068308;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_25204CF6C(0, 0, v8, &unk_252068318, v13);
 }
 
-- (void)runNoiseCheckNudgingWithTopView:(id)a3 passAction:(id)a4
+- (void)runNoiseCheckNudgingWithTopView:(id)view passAction:(id)action
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(action);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_25204C624(v8, sub_25204D8DC, v7);
+  viewCopy = view;
+  selfCopy = self;
+  sub_25204C624(viewCopy, sub_25204D8DC, v7);
 }
 
 - (_TtC13HearingModeUI19HMNoiseCheckService)init

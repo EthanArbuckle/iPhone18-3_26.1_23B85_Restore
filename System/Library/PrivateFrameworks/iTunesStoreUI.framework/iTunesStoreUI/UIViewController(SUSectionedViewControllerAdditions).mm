@@ -6,9 +6,9 @@
 
 - (uint64_t)reloadForSectionsWithGroup:()SUSectionedViewControllerAdditions
 {
-  v4 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
 
-  return [v4 reloadForSectionsWithGroup:a3];
+  return [parentViewController reloadForSectionsWithGroup:a3];
 }
 
 @end

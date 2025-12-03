@@ -1,23 +1,23 @@
 @interface TranscriptViewConfigurationMediator
 - (_TtC10VoiceMemos35TranscriptViewConfigurationMediator)init;
-- (void)timeController:(id)a3 didChangeCurrentTime:(double)a4;
-- (void)timeController:(id)a3 didChangeCurrentTime:(double)a4 didChangeDuration:(double)a5;
+- (void)timeController:(id)controller didChangeCurrentTime:(double)time;
+- (void)timeController:(id)controller didChangeCurrentTime:(double)time didChangeDuration:(double)duration;
 @end
 
 @implementation TranscriptViewConfigurationMediator
 
-- (void)timeController:(id)a3 didChangeCurrentTime:(double)a4
+- (void)timeController:(id)controller didChangeCurrentTime:(double)time
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_10010D70C();
   swift_unknownObjectRelease();
 }
 
-- (void)timeController:(id)a3 didChangeCurrentTime:(double)a4 didChangeDuration:(double)a5
+- (void)timeController:(id)controller didChangeCurrentTime:(double)time didChangeDuration:(double)duration
 {
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_10010D70C();
   swift_unknownObjectRelease();
 }

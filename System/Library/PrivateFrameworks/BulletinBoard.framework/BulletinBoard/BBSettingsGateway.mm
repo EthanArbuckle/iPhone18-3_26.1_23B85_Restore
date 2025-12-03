@@ -1,7 +1,7 @@
 @interface BBSettingsGateway
 + (id)clientInterface;
 + (id)serverInterface;
-- (BBSettingsGateway)initWithQueue:(id)a3;
+- (BBSettingsGateway)initWithQueue:(id)queue;
 - (id)_ensureBBServerSettingsConnection;
 - (id)activeSectionInfo;
 - (id)allActiveSectionIDs;
@@ -9,10 +9,10 @@
 - (id)allSectionIDs;
 - (id)allSectionInfo;
 - (id)effectiveGlobalScheduledDeliveryTimes;
-- (id)effectiveSectionInfoForSectionID:(id)a3;
-- (id)effectiveSectionInfoForSectionIDs:(id)a3;
-- (id)sectionInfoForSectionID:(id)a3;
-- (id)sectionInfoForSectionIDs:(id)a3;
+- (id)effectiveSectionInfoForSectionID:(id)d;
+- (id)effectiveSectionInfoForSectionIDs:(id)ds;
+- (id)sectionInfoForSectionID:(id)d;
+- (id)sectionInfoForSectionIDs:(id)ds;
 - (int64_t)effectiveGlobalAnnounceCarPlaySetting;
 - (int64_t)effectiveGlobalAnnounceHeadphonesSetting;
 - (int64_t)effectiveGlobalAnnounceSetting;
@@ -25,40 +25,40 @@
 - (int64_t)effectiveGlobalSummarizationSetting;
 - (void)_resetBBServerSettingsConnection;
 - (void)dealloc;
-- (void)getEffectiveGlobalAnnounceCarPlaySettingWithCompletion:(id)a3;
-- (void)getEffectiveGlobalAnnounceHeadphonesSettingWithCompletion:(id)a3;
-- (void)getEffectiveGlobalAnnounceSettingWithCompletion:(id)a3;
-- (void)getEffectiveGlobalContentPreviewsSettingWithCompletion:(id)a3;
-- (void)getEffectiveGlobalHighlightsSettingWithCompletion:(id)a3;
-- (void)getEffectiveGlobalNotificationListDisplayStyleSettingWithCompletion:(id)a3;
-- (void)getEffectiveGlobalScheduledDeliverySettingWithCompletion:(id)a3;
-- (void)getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithCompletion:(id)a3;
-- (void)getEffectiveGlobalScheduledDeliveryTimesWithCompletion:(id)a3;
-- (void)getEffectiveGlobalSpokenNotificationSettingWithCompletion:(id)a3;
-- (void)getEffectiveGlobalSummarizationSettingWithCompletion:(id)a3;
-- (void)getEffectiveSectionInfoForSectionID:(id)a3 withCompletion:(id)a4;
-- (void)getEffectiveSectionInfoForSectionIDs:(id)a3 withCompletion:(id)a4;
-- (void)getSectionInfoForActiveSectionsWithCompletion:(id)a3;
-- (void)getSectionInfoForSectionID:(id)a3 withCompletion:(id)a4;
-- (void)getSectionInfoForSectionIDs:(id)a3 withCompletion:(id)a4;
-- (void)getSectionInfoWithCompletion:(id)a3;
+- (void)getEffectiveGlobalAnnounceCarPlaySettingWithCompletion:(id)completion;
+- (void)getEffectiveGlobalAnnounceHeadphonesSettingWithCompletion:(id)completion;
+- (void)getEffectiveGlobalAnnounceSettingWithCompletion:(id)completion;
+- (void)getEffectiveGlobalContentPreviewsSettingWithCompletion:(id)completion;
+- (void)getEffectiveGlobalHighlightsSettingWithCompletion:(id)completion;
+- (void)getEffectiveGlobalNotificationListDisplayStyleSettingWithCompletion:(id)completion;
+- (void)getEffectiveGlobalScheduledDeliverySettingWithCompletion:(id)completion;
+- (void)getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithCompletion:(id)completion;
+- (void)getEffectiveGlobalScheduledDeliveryTimesWithCompletion:(id)completion;
+- (void)getEffectiveGlobalSpokenNotificationSettingWithCompletion:(id)completion;
+- (void)getEffectiveGlobalSummarizationSettingWithCompletion:(id)completion;
+- (void)getEffectiveSectionInfoForSectionID:(id)d withCompletion:(id)completion;
+- (void)getEffectiveSectionInfoForSectionIDs:(id)ds withCompletion:(id)completion;
+- (void)getSectionInfoForActiveSectionsWithCompletion:(id)completion;
+- (void)getSectionInfoForSectionID:(id)d withCompletion:(id)completion;
+- (void)getSectionInfoForSectionIDs:(id)ds withCompletion:(id)completion;
+- (void)getSectionInfoWithCompletion:(id)completion;
 - (void)invalidate;
 - (void)refreshAnnounceSettings;
 - (void)refreshGlobalSettings;
 - (void)refreshSectionInfo;
-- (void)setEffectiveGlobalAnnounceCarPlaySetting:(int64_t)a3;
-- (void)setEffectiveGlobalAnnounceHeadphonesSetting:(int64_t)a3;
-- (void)setEffectiveGlobalAnnounceSetting:(int64_t)a3;
-- (void)setEffectiveGlobalContentPreviewsSetting:(int64_t)a3;
-- (void)setEffectiveGlobalHighlightsSetting:(int64_t)a3;
-- (void)setEffectiveGlobalNotificationListDisplayStyleSetting:(int64_t)a3;
-- (void)setEffectiveGlobalScheduledDeliverySetting:(int64_t)a3;
-- (void)setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)a3;
-- (void)setEffectiveGlobalScheduledDeliveryTimes:(id)a3;
-- (void)setEffectiveGlobalSpokenNotificationSetting:(int64_t)a3;
-- (void)setEffectiveGlobalSummarizationSetting:(int64_t)a3;
-- (void)setSectionInfo:(id)a3 forSectionID:(id)a4 withCompletion:(id)a5;
-- (void)updateSectionInfoForSectionID:(id)a3 withHandler:(id)a4;
+- (void)setEffectiveGlobalAnnounceCarPlaySetting:(int64_t)setting;
+- (void)setEffectiveGlobalAnnounceHeadphonesSetting:(int64_t)setting;
+- (void)setEffectiveGlobalAnnounceSetting:(int64_t)setting;
+- (void)setEffectiveGlobalContentPreviewsSetting:(int64_t)setting;
+- (void)setEffectiveGlobalHighlightsSetting:(int64_t)setting;
+- (void)setEffectiveGlobalNotificationListDisplayStyleSetting:(int64_t)setting;
+- (void)setEffectiveGlobalScheduledDeliverySetting:(int64_t)setting;
+- (void)setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)setting;
+- (void)setEffectiveGlobalScheduledDeliveryTimes:(id)times;
+- (void)setEffectiveGlobalSpokenNotificationSetting:(int64_t)setting;
+- (void)setEffectiveGlobalSummarizationSetting:(int64_t)setting;
+- (void)setSectionInfo:(id)info forSectionID:(id)d withCompletion:(id)completion;
+- (void)updateSectionInfoForSectionID:(id)d withHandler:(id)handler;
 @end
 
 @implementation BBSettingsGateway
@@ -126,8 +126,8 @@ void __54__BBSettingsGateway__ensureBBServerSettingsConnection__block_invoke(uin
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = -1;
-  v2 = [(BBSettingsGateway *)self _settingsConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_171];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v3 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_171];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__BBSettingsGateway_effectiveGlobalAnnounceSetting__block_invoke_172;
@@ -146,8 +146,8 @@ void __54__BBSettingsGateway__ensureBBServerSettingsConnection__block_invoke(uin
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = -1;
-  v2 = [(BBSettingsGateway *)self _settingsConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_179];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v3 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_179];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__BBSettingsGateway_effectiveGlobalAnnounceHeadphonesSetting__block_invoke_180;
@@ -166,8 +166,8 @@ void __54__BBSettingsGateway__ensureBBServerSettingsConnection__block_invoke(uin
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = -1;
-  v2 = [(BBSettingsGateway *)self _settingsConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_187];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v3 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_187];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__BBSettingsGateway_effectiveGlobalAnnounceCarPlaySetting__block_invoke_188;
@@ -186,8 +186,8 @@ void __54__BBSettingsGateway__ensureBBServerSettingsConnection__block_invoke(uin
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(BBSettingsGateway *)self _settingsConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_195];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v3 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_195];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__BBSettingsGateway_effectiveGlobalScheduledDeliverySetting__block_invoke_196;
@@ -207,9 +207,9 @@ void __54__BBSettingsGateway__ensureBBServerSettingsConnection__block_invoke(uin
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__5;
   v12 = __Block_byref_object_dispose__5;
-  v13 = [MEMORY[0x277CBEA60] array];
-  v3 = [(BBSettingsGateway *)self _settingsConnection];
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_203];
+  array = [MEMORY[0x277CBEA60] array];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v4 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_203];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__BBSettingsGateway_effectiveGlobalScheduledDeliveryTimes__block_invoke_204;
@@ -229,8 +229,8 @@ void __54__BBSettingsGateway__ensureBBServerSettingsConnection__block_invoke(uin
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(BBSettingsGateway *)self _settingsConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_211];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v3 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_211];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75__BBSettingsGateway_effectiveGlobalScheduledDeliveryShowNextSummarySetting__block_invoke_212;
@@ -249,8 +249,8 @@ void __54__BBSettingsGateway__ensureBBServerSettingsConnection__block_invoke(uin
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(BBSettingsGateway *)self _settingsConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_219];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v3 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_219];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__BBSettingsGateway_effectiveGlobalNotificationListDisplayStyleSetting__block_invoke_220;
@@ -269,8 +269,8 @@ void __54__BBSettingsGateway__ensureBBServerSettingsConnection__block_invoke(uin
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(BBSettingsGateway *)self _settingsConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_227];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v3 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_227];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__BBSettingsGateway_effectiveGlobalSummarizationSetting__block_invoke_228;
@@ -289,8 +289,8 @@ void __54__BBSettingsGateway__ensureBBServerSettingsConnection__block_invoke(uin
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(BBSettingsGateway *)self _settingsConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_161];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v3 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_161];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__BBSettingsGateway_effectiveGlobalContentPreviewsSetting__block_invoke_162;
@@ -309,8 +309,8 @@ void __54__BBSettingsGateway__ensureBBServerSettingsConnection__block_invoke(uin
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(BBSettingsGateway *)self _settingsConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_235];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v3 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_235];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__BBSettingsGateway_effectiveGlobalHighlightsSetting__block_invoke_236;
@@ -458,21 +458,21 @@ void __36__BBSettingsGateway_serverInterface__block_invoke()
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (BBSettingsGateway)initWithQueue:(id)a3
+- (BBSettingsGateway)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = BBSettingsGateway;
   v5 = [(BBSettingsGateway *)&v10 init];
   if (v5)
   {
-    if (!v4)
+    if (!queueCopy)
     {
-      v4 = MEMORY[0x277D85CD0];
+      queueCopy = MEMORY[0x277D85CD0];
       v6 = MEMORY[0x277D85CD0];
     }
 
-    objc_storeStrong(&v5->_queue, v4);
+    objc_storeStrong(&v5->_queue, queueCopy);
     v7 = dispatch_queue_create("com.apple.bulletinboard.BBSettingsGateway.connectionQueue", 0);
     connectionQueue = v5->_connectionQueue;
     v5->_connectionQueue = v7;
@@ -560,8 +560,8 @@ void __53__BBSettingsGateway__resetBBServerSettingsConnection__block_invoke(uint
     _os_log_impl(&dword_241EFF000, v3, OS_LOG_TYPE_DEFAULT, "Getting all effective section infos (sync)", buf, 2u);
   }
 
-  v4 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_123];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  v5 = [_ensureBBServerSettingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_123];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__BBSettingsGateway_allEffectiveSectionInfo__block_invoke_124;
@@ -622,8 +622,8 @@ void __44__BBSettingsGateway_allEffectiveSectionInfo__block_invoke_124(uint64_t 
     _os_log_impl(&dword_241EFF000, v3, OS_LOG_TYPE_DEFAULT, "Getting all section infos (sync)", buf, 2u);
   }
 
-  v4 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_127];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  v5 = [_ensureBBServerSettingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_127];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__BBSettingsGateway_allSectionInfo__block_invoke_128;
@@ -669,15 +669,15 @@ void __35__BBSettingsGateway_allSectionInfo__block_invoke_128(uint64_t a1, void 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getSectionInfoWithCompletion:(id)a3
+- (void)getSectionInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __50__BBSettingsGateway_getSectionInfoWithCompletion___block_invoke;
   v17[3] = &unk_278D2B298;
   v17[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v18 = v5;
   v6 = MEMORY[0x245D05D40](v17);
   v7 = BBLogConnection;
@@ -687,14 +687,14 @@ void __35__BBSettingsGateway_allSectionInfo__block_invoke_128(uint64_t a1, void 
     _os_log_impl(&dword_241EFF000, v7, OS_LOG_TYPE_DEFAULT, "Getting all section infos (async)", buf, 2u);
   }
 
-  v8 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __50__BBSettingsGateway_getSectionInfoWithCompletion___block_invoke_130;
   v14[3] = &unk_278D2B2C0;
   v9 = v6;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [_ensureBBServerSettingsConnection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __50__BBSettingsGateway_getSectionInfoWithCompletion___block_invoke_131;
@@ -751,9 +751,9 @@ void __50__BBSettingsGateway_getSectionInfoWithCompletion___block_invoke_131(uin
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sectionInfoForSectionIDs:(id)a3
+- (id)sectionInfoForSectionIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -767,14 +767,14 @@ void __50__BBSettingsGateway_getSectionInfoWithCompletion___block_invoke_131(uin
     _os_log_impl(&dword_241EFF000, v5, OS_LOG_TYPE_DEFAULT, "Getting requested section infos (sync)", buf, 2u);
   }
 
-  v6 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_133];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  v7 = [_ensureBBServerSettingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_133];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __46__BBSettingsGateway_sectionInfoForSectionIDs___block_invoke_134;
   v10[3] = &unk_278D2B2E8;
   v10[4] = &v12;
-  [v7 getSectionInfoForSectionIDs:v4 withHandler:v10];
+  [v7 getSectionInfoForSectionIDs:dsCopy withHandler:v10];
 
   v8 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -811,27 +811,27 @@ void __46__BBSettingsGateway_sectionInfoForSectionIDs___block_invoke_134(uint64_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getSectionInfoForSectionIDs:(id)a3 withCompletion:(id)a4
+- (void)getSectionInfoForSectionIDs:(id)ds withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__BBSettingsGateway_getSectionInfoForSectionIDs_withCompletion___block_invoke;
   v15[3] = &unk_278D2B298;
   v15[4] = self;
-  v16 = v6;
-  v7 = v6;
-  v8 = a3;
+  v16 = completionCopy;
+  v7 = completionCopy;
+  dsCopy = ds;
   v9 = MEMORY[0x245D05D40](v15);
-  v10 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v11 = [v10 remoteObjectProxy];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  remoteObjectProxy = [_ensureBBServerSettingsConnection remoteObjectProxy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __64__BBSettingsGateway_getSectionInfoForSectionIDs_withCompletion___block_invoke_3;
   v13[3] = &unk_278D2B310;
   v14 = v9;
   v12 = v9;
-  [v11 getSectionInfoForSectionIDs:v8 withHandler:v13];
+  [remoteObjectProxy getSectionInfoForSectionIDs:dsCopy withHandler:v13];
 }
 
 void __64__BBSettingsGateway_getSectionInfoForSectionIDs_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -849,9 +849,9 @@ void __64__BBSettingsGateway_getSectionInfoForSectionIDs_withCompletion___block_
   dispatch_async(v4, v7);
 }
 
-- (id)effectiveSectionInfoForSectionID:(id)a3
+- (id)effectiveSectionInfoForSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -865,14 +865,14 @@ void __64__BBSettingsGateway_getSectionInfoForSectionIDs_withCompletion___block_
     _os_log_impl(&dword_241EFF000, v5, OS_LOG_TYPE_DEFAULT, "Getting requested effective section info (sync)", buf, 2u);
   }
 
-  v6 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_136];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  v7 = [_ensureBBServerSettingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_136];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__BBSettingsGateway_effectiveSectionInfoForSectionID___block_invoke_137;
   v10[3] = &unk_278D2B338;
   v10[4] = &v12;
-  [v7 getEffectiveSectionInfoForSectionID:v4 withHandler:v10];
+  [v7 getEffectiveSectionInfoForSectionID:dCopy withHandler:v10];
 
   v8 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -909,9 +909,9 @@ void __54__BBSettingsGateway_effectiveSectionInfoForSectionID___block_invoke_137
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)effectiveSectionInfoForSectionIDs:(id)a3
+- (id)effectiveSectionInfoForSectionIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -925,14 +925,14 @@ void __54__BBSettingsGateway_effectiveSectionInfoForSectionID___block_invoke_137
     _os_log_impl(&dword_241EFF000, v5, OS_LOG_TYPE_DEFAULT, "Getting requested effective section infos (sync)", buf, 2u);
   }
 
-  v6 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_140];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  v7 = [_ensureBBServerSettingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_140];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__BBSettingsGateway_effectiveSectionInfoForSectionIDs___block_invoke_141;
   v10[3] = &unk_278D2B2E8;
   v10[4] = &v12;
-  [v7 getEffectiveSectionInfoForSectionIDs:v4 withHandler:v10];
+  [v7 getEffectiveSectionInfoForSectionIDs:dsCopy withHandler:v10];
 
   v8 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -969,20 +969,20 @@ void __55__BBSettingsGateway_effectiveSectionInfoForSectionIDs___block_invoke_14
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEffectiveSectionInfoForSectionIDs:(id)a3 withCompletion:(id)a4
+- (void)getEffectiveSectionInfoForSectionIDs:(id)ds withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v9 = [v8 remoteObjectProxy];
+  completionCopy = completion;
+  dsCopy = ds;
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  remoteObjectProxy = [_ensureBBServerSettingsConnection remoteObjectProxy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__BBSettingsGateway_getEffectiveSectionInfoForSectionIDs_withCompletion___block_invoke;
   v11[3] = &unk_278D2B298;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 getEffectiveSectionInfoForSectionIDs:v7 withHandler:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [remoteObjectProxy getEffectiveSectionInfoForSectionIDs:dsCopy withHandler:v11];
 }
 
 void __73__BBSettingsGateway_getEffectiveSectionInfoForSectionIDs_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1000,9 +1000,9 @@ void __73__BBSettingsGateway_getEffectiveSectionInfoForSectionIDs_withCompletion
   dispatch_async(v4, v7);
 }
 
-- (id)sectionInfoForSectionID:(id)a3
+- (id)sectionInfoForSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1016,14 +1016,14 @@ void __73__BBSettingsGateway_getEffectiveSectionInfoForSectionIDs_withCompletion
     _os_log_impl(&dword_241EFF000, v5, OS_LOG_TYPE_DEFAULT, "Getting requested section info (sync)", buf, 2u);
   }
 
-  v6 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_143];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  v7 = [_ensureBBServerSettingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_143];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __45__BBSettingsGateway_sectionInfoForSectionID___block_invoke_144;
   v10[3] = &unk_278D2B338;
   v10[4] = &v12;
-  [v7 getSectionInfoForSectionID:v4 withHandler:v10];
+  [v7 getSectionInfoForSectionID:dCopy withHandler:v10];
 
   v8 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1060,20 +1060,20 @@ void __45__BBSettingsGateway_sectionInfoForSectionID___block_invoke_144(uint64_t
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getSectionInfoForSectionID:(id)a3 withCompletion:(id)a4
+- (void)getSectionInfoForSectionID:(id)d withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v9 = [v8 remoteObjectProxy];
+  completionCopy = completion;
+  dCopy = d;
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  remoteObjectProxy = [_ensureBBServerSettingsConnection remoteObjectProxy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__BBSettingsGateway_getSectionInfoForSectionID_withCompletion___block_invoke;
   v11[3] = &unk_278D2B360;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 getSectionInfoForSectionID:v7 withHandler:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [remoteObjectProxy getSectionInfoForSectionID:dCopy withHandler:v11];
 }
 
 void __63__BBSettingsGateway_getSectionInfoForSectionID_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1091,20 +1091,20 @@ void __63__BBSettingsGateway_getSectionInfoForSectionID_withCompletion___block_i
   dispatch_async(v4, v7);
 }
 
-- (void)getEffectiveSectionInfoForSectionID:(id)a3 withCompletion:(id)a4
+- (void)getEffectiveSectionInfoForSectionID:(id)d withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v9 = [v8 remoteObjectProxy];
+  completionCopy = completion;
+  dCopy = d;
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  remoteObjectProxy = [_ensureBBServerSettingsConnection remoteObjectProxy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__BBSettingsGateway_getEffectiveSectionInfoForSectionID_withCompletion___block_invoke;
   v11[3] = &unk_278D2B360;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 getEffectiveSectionInfoForSectionID:v7 withHandler:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [remoteObjectProxy getEffectiveSectionInfoForSectionID:dCopy withHandler:v11];
 }
 
 void __72__BBSettingsGateway_getEffectiveSectionInfoForSectionID_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1137,8 +1137,8 @@ void __72__BBSettingsGateway_getEffectiveSectionInfoForSectionID_withCompletion_
     _os_log_impl(&dword_241EFF000, v3, OS_LOG_TYPE_DEFAULT, "Getting active section infos (sync)", buf, 2u);
   }
 
-  v4 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_146];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  v5 = [_ensureBBServerSettingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_146];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__BBSettingsGateway_activeSectionInfo__block_invoke_147;
@@ -1189,8 +1189,8 @@ void __38__BBSettingsGateway_activeSectionInfo__block_invoke_147(uint64_t a1, vo
   v11 = __Block_byref_object_copy__5;
   v12 = __Block_byref_object_dispose__5;
   v13 = [MEMORY[0x277CBEB98] set];
-  v3 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_149];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  v4 = [_ensureBBServerSettingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_149];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -1240,8 +1240,8 @@ void __40__BBSettingsGateway_allActiveSectionIDs__block_invoke_150(uint64_t a1, 
     _os_log_impl(&dword_241EFF000, v3, OS_LOG_TYPE_DEFAULT, "Getting all section IDs (sync)", buf, 2u);
   }
 
-  v4 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_153];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  v5 = [_ensureBBServerSettingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_153];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__BBSettingsGateway_allSectionIDs__block_invoke_154;
@@ -1287,19 +1287,19 @@ void __34__BBSettingsGateway_allSectionIDs__block_invoke_154(uint64_t a1, void *
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getSectionInfoForActiveSectionsWithCompletion:(id)a3
+- (void)getSectionInfoForActiveSectionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v6 = [v5 remoteObjectProxy];
+  completionCopy = completion;
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  remoteObjectProxy = [_ensureBBServerSettingsConnection remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__BBSettingsGateway_getSectionInfoForActiveSectionsWithCompletion___block_invoke;
   v8[3] = &unk_278D2B3B0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 getSectionInfoForActiveSectionsWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [remoteObjectProxy getSectionInfoForActiveSectionsWithHandler:v8];
 }
 
 void __67__BBSettingsGateway_getSectionInfoForActiveSectionsWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1317,20 +1317,20 @@ void __67__BBSettingsGateway_getSectionInfoForActiveSectionsWithCompletion___blo
   dispatch_async(v4, v7);
 }
 
-- (void)setSectionInfo:(id)a3 forSectionID:(id)a4 withCompletion:(id)a5
+- (void)setSectionInfo:(id)info forSectionID:(id)d withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v12 = [v11 remoteObjectProxy];
+  completionCopy = completion;
+  dCopy = d;
+  infoCopy = info;
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  remoteObjectProxy = [_ensureBBServerSettingsConnection remoteObjectProxy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__BBSettingsGateway_setSectionInfo_forSectionID_withCompletion___block_invoke;
   v14[3] = &unk_278D2A9C8;
-  v15 = v8;
-  v13 = v8;
-  [v12 setSectionInfo:v10 forSectionID:v9 withHandler:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [remoteObjectProxy setSectionInfo:infoCopy forSectionID:dCopy withHandler:v14];
 }
 
 uint64_t __64__BBSettingsGateway_setSectionInfo_forSectionID_withCompletion___block_invoke(uint64_t a1)
@@ -1344,23 +1344,23 @@ uint64_t __64__BBSettingsGateway_setSectionInfo_forSectionID_withCompletion___bl
   return result;
 }
 
-- (void)updateSectionInfoForSectionID:(id)a3 withHandler:(id)a4
+- (void)updateSectionInfoForSectionID:(id)d withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v9 = [v8 remoteObjectProxy];
+  dCopy = d;
+  handlerCopy = handler;
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  remoteObjectProxy = [_ensureBBServerSettingsConnection remoteObjectProxy];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __63__BBSettingsGateway_updateSectionInfoForSectionID_withHandler___block_invoke;
   v13[3] = &unk_278D2B3D8;
-  v15 = v6;
-  v16 = v7;
-  v14 = v9;
-  v10 = v6;
-  v11 = v9;
-  v12 = v7;
+  v15 = dCopy;
+  v16 = handlerCopy;
+  v14 = remoteObjectProxy;
+  v10 = dCopy;
+  v11 = remoteObjectProxy;
+  v12 = handlerCopy;
   [v11 getSectionInfoForSectionID:v10 withHandler:v13];
 }
 
@@ -1370,11 +1370,11 @@ void __63__BBSettingsGateway_updateSectionInfoForSectionID_withHandler___block_i
   [*(a1 + 32) setSectionInfo:v2 forSectionID:*(a1 + 40)];
 }
 
-- (void)setEffectiveGlobalContentPreviewsSetting:(int64_t)a3
+- (void)setEffectiveGlobalContentPreviewsSetting:(int64_t)setting
 {
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v4 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_156];
-  [v4 setEffectiveGlobalContentPreviewsSetting:a3 withHandler:&__block_literal_global_159];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v4 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_156];
+  [v4 setEffectiveGlobalContentPreviewsSetting:setting withHandler:&__block_literal_global_159];
 }
 
 void __62__BBSettingsGateway_setEffectiveGlobalContentPreviewsSetting___block_invoke(uint64_t a1, void *a2)
@@ -1416,19 +1416,19 @@ void __58__BBSettingsGateway_effectiveGlobalContentPreviewsSetting__block_invoke
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEffectiveGlobalContentPreviewsSettingWithCompletion:(id)a3
+- (void)getEffectiveGlobalContentPreviewsSettingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v6 = [v5 remoteObjectProxy];
+  completionCopy = completion;
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  remoteObjectProxy = [_settingsConnection remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__BBSettingsGateway_getEffectiveGlobalContentPreviewsSettingWithCompletion___block_invoke;
   v8[3] = &unk_278D2B450;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 getEffectiveGlobalContentPreviewsSettingWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [remoteObjectProxy getEffectiveGlobalContentPreviewsSettingWithHandler:v8];
 }
 
 void __76__BBSettingsGateway_getEffectiveGlobalContentPreviewsSettingWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1443,29 +1443,29 @@ void __76__BBSettingsGateway_getEffectiveGlobalContentPreviewsSettingWithComplet
   dispatch_async(v3, v4);
 }
 
-- (void)setEffectiveGlobalSpokenNotificationSetting:(int64_t)a3
+- (void)setEffectiveGlobalSpokenNotificationSetting:(int64_t)setting
 {
-  v4 = BBAnnounceSettingForSpokenNotificationSetting(a3);
+  v4 = BBAnnounceSettingForSpokenNotificationSetting(setting);
 
   [(BBSettingsGateway *)self setEffectiveGlobalAnnounceSetting:v4];
 }
 
 - (int64_t)effectiveGlobalSpokenNotificationSetting
 {
-  v2 = [(BBSettingsGateway *)self effectiveGlobalAnnounceSetting];
+  effectiveGlobalAnnounceSetting = [(BBSettingsGateway *)self effectiveGlobalAnnounceSetting];
 
-  return BBSpokenNotificationSettingForAnnounceSetting(v2);
+  return BBSpokenNotificationSettingForAnnounceSetting(effectiveGlobalAnnounceSetting);
 }
 
-- (void)getEffectiveGlobalSpokenNotificationSettingWithCompletion:(id)a3
+- (void)getEffectiveGlobalSpokenNotificationSettingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __79__BBSettingsGateway_getEffectiveGlobalSpokenNotificationSettingWithCompletion___block_invoke;
   v6[3] = &unk_278D2B478;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(BBSettingsGateway *)self getEffectiveGlobalAnnounceSettingWithCompletion:v6];
 }
 
@@ -1478,11 +1478,11 @@ uint64_t __79__BBSettingsGateway_getEffectiveGlobalSpokenNotificationSettingWith
   return v4(v2, v3);
 }
 
-- (void)setEffectiveGlobalAnnounceSetting:(int64_t)a3
+- (void)setEffectiveGlobalAnnounceSetting:(int64_t)setting
 {
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v4 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_166];
-  [v4 setEffectiveGlobalAnnounceSetting:a3 withHandler:&__block_literal_global_169];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v4 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_166];
+  [v4 setEffectiveGlobalAnnounceSetting:setting withHandler:&__block_literal_global_169];
 }
 
 void __55__BBSettingsGateway_setEffectiveGlobalAnnounceSetting___block_invoke(uint64_t a1, void *a2)
@@ -1524,19 +1524,19 @@ void __51__BBSettingsGateway_effectiveGlobalAnnounceSetting__block_invoke_172(ui
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEffectiveGlobalAnnounceSettingWithCompletion:(id)a3
+- (void)getEffectiveGlobalAnnounceSettingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v6 = [v5 remoteObjectProxy];
+  completionCopy = completion;
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  remoteObjectProxy = [_settingsConnection remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__BBSettingsGateway_getEffectiveGlobalAnnounceSettingWithCompletion___block_invoke;
   v8[3] = &unk_278D2B450;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 getEffectiveGlobalAnnounceSettingWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [remoteObjectProxy getEffectiveGlobalAnnounceSettingWithHandler:v8];
 }
 
 void __69__BBSettingsGateway_getEffectiveGlobalAnnounceSettingWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1551,11 +1551,11 @@ void __69__BBSettingsGateway_getEffectiveGlobalAnnounceSettingWithCompletion___b
   dispatch_async(v3, v4);
 }
 
-- (void)setEffectiveGlobalAnnounceHeadphonesSetting:(int64_t)a3
+- (void)setEffectiveGlobalAnnounceHeadphonesSetting:(int64_t)setting
 {
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v4 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_174];
-  [v4 setEffectiveGlobalAnnounceHeadphonesSetting:a3 withHandler:&__block_literal_global_177];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v4 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_174];
+  [v4 setEffectiveGlobalAnnounceHeadphonesSetting:setting withHandler:&__block_literal_global_177];
 }
 
 void __65__BBSettingsGateway_setEffectiveGlobalAnnounceHeadphonesSetting___block_invoke(uint64_t a1, void *a2)
@@ -1597,19 +1597,19 @@ void __61__BBSettingsGateway_effectiveGlobalAnnounceHeadphonesSetting__block_inv
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEffectiveGlobalAnnounceHeadphonesSettingWithCompletion:(id)a3
+- (void)getEffectiveGlobalAnnounceHeadphonesSettingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v6 = [v5 remoteObjectProxy];
+  completionCopy = completion;
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  remoteObjectProxy = [_settingsConnection remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__BBSettingsGateway_getEffectiveGlobalAnnounceHeadphonesSettingWithCompletion___block_invoke;
   v8[3] = &unk_278D2B450;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 getEffectiveGlobalAnnounceHeadphonesSettingWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [remoteObjectProxy getEffectiveGlobalAnnounceHeadphonesSettingWithHandler:v8];
 }
 
 void __79__BBSettingsGateway_getEffectiveGlobalAnnounceHeadphonesSettingWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1624,11 +1624,11 @@ void __79__BBSettingsGateway_getEffectiveGlobalAnnounceHeadphonesSettingWithComp
   dispatch_async(v3, v4);
 }
 
-- (void)setEffectiveGlobalAnnounceCarPlaySetting:(int64_t)a3
+- (void)setEffectiveGlobalAnnounceCarPlaySetting:(int64_t)setting
 {
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v4 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_182];
-  [v4 setEffectiveGlobalAnnounceCarPlaySetting:a3 withHandler:&__block_literal_global_185];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v4 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_182];
+  [v4 setEffectiveGlobalAnnounceCarPlaySetting:setting withHandler:&__block_literal_global_185];
 }
 
 void __62__BBSettingsGateway_setEffectiveGlobalAnnounceCarPlaySetting___block_invoke(uint64_t a1, void *a2)
@@ -1670,19 +1670,19 @@ void __58__BBSettingsGateway_effectiveGlobalAnnounceCarPlaySetting__block_invoke
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEffectiveGlobalAnnounceCarPlaySettingWithCompletion:(id)a3
+- (void)getEffectiveGlobalAnnounceCarPlaySettingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v6 = [v5 remoteObjectProxy];
+  completionCopy = completion;
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  remoteObjectProxy = [_settingsConnection remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__BBSettingsGateway_getEffectiveGlobalAnnounceCarPlaySettingWithCompletion___block_invoke;
   v8[3] = &unk_278D2B450;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 getEffectiveGlobalAnnounceCarPlaySettingWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [remoteObjectProxy getEffectiveGlobalAnnounceCarPlaySettingWithHandler:v8];
 }
 
 void __76__BBSettingsGateway_getEffectiveGlobalAnnounceCarPlaySettingWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1697,11 +1697,11 @@ void __76__BBSettingsGateway_getEffectiveGlobalAnnounceCarPlaySettingWithComplet
   dispatch_async(v3, v4);
 }
 
-- (void)setEffectiveGlobalScheduledDeliverySetting:(int64_t)a3
+- (void)setEffectiveGlobalScheduledDeliverySetting:(int64_t)setting
 {
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v4 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_190];
-  [v4 setEffectiveGlobalScheduledDeliverySetting:a3 withHandler:&__block_literal_global_193];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v4 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_190];
+  [v4 setEffectiveGlobalScheduledDeliverySetting:setting withHandler:&__block_literal_global_193];
 }
 
 void __64__BBSettingsGateway_setEffectiveGlobalScheduledDeliverySetting___block_invoke(uint64_t a1, void *a2)
@@ -1743,19 +1743,19 @@ void __60__BBSettingsGateway_effectiveGlobalScheduledDeliverySetting__block_invo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEffectiveGlobalScheduledDeliverySettingWithCompletion:(id)a3
+- (void)getEffectiveGlobalScheduledDeliverySettingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v6 = [v5 remoteObjectProxy];
+  completionCopy = completion;
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  remoteObjectProxy = [_settingsConnection remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__BBSettingsGateway_getEffectiveGlobalScheduledDeliverySettingWithCompletion___block_invoke;
   v8[3] = &unk_278D2B450;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 getEffectiveGlobalScheduledDeliverySettingWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [remoteObjectProxy getEffectiveGlobalScheduledDeliverySettingWithHandler:v8];
 }
 
 void __78__BBSettingsGateway_getEffectiveGlobalScheduledDeliverySettingWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1770,12 +1770,12 @@ void __78__BBSettingsGateway_getEffectiveGlobalScheduledDeliverySettingWithCompl
   dispatch_async(v3, v4);
 }
 
-- (void)setEffectiveGlobalScheduledDeliveryTimes:(id)a3
+- (void)setEffectiveGlobalScheduledDeliveryTimes:(id)times
 {
-  v4 = a3;
-  v6 = [(BBSettingsGateway *)self _settingsConnection];
-  v5 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_198];
-  [v5 setEffectiveGlobalScheduledDeliveryTimes:v4 withHandler:&__block_literal_global_201];
+  timesCopy = times;
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v5 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_198];
+  [v5 setEffectiveGlobalScheduledDeliveryTimes:timesCopy withHandler:&__block_literal_global_201];
 }
 
 void __62__BBSettingsGateway_setEffectiveGlobalScheduledDeliveryTimes___block_invoke(uint64_t a1, void *a2)
@@ -1816,19 +1816,19 @@ void __58__BBSettingsGateway_effectiveGlobalScheduledDeliveryTimes__block_invoke
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEffectiveGlobalScheduledDeliveryTimesWithCompletion:(id)a3
+- (void)getEffectiveGlobalScheduledDeliveryTimesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v6 = [v5 remoteObjectProxy];
+  completionCopy = completion;
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  remoteObjectProxy = [_settingsConnection remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__BBSettingsGateway_getEffectiveGlobalScheduledDeliveryTimesWithCompletion___block_invoke;
   v8[3] = &unk_278D2B3B0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 getEffectiveGlobalScheduledDeliveryTimesWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [remoteObjectProxy getEffectiveGlobalScheduledDeliveryTimesWithHandler:v8];
 }
 
 void __76__BBSettingsGateway_getEffectiveGlobalScheduledDeliveryTimesWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1846,11 +1846,11 @@ void __76__BBSettingsGateway_getEffectiveGlobalScheduledDeliveryTimesWithComplet
   dispatch_async(v4, v7);
 }
 
-- (void)setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)a3
+- (void)setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:(int64_t)setting
 {
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v4 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_206];
-  [v4 setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:a3 withHandler:&__block_literal_global_209];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v4 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_206];
+  [v4 setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:setting withHandler:&__block_literal_global_209];
 }
 
 void __79__BBSettingsGateway_setEffectiveGlobalScheduledDeliveryShowNextSummarySetting___block_invoke(uint64_t a1, void *a2)
@@ -1892,19 +1892,19 @@ void __75__BBSettingsGateway_effectiveGlobalScheduledDeliveryShowNextSummarySett
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithCompletion:(id)a3
+- (void)getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v6 = [v5 remoteObjectProxy];
+  completionCopy = completion;
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  remoteObjectProxy = [_settingsConnection remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __93__BBSettingsGateway_getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithCompletion___block_invoke;
   v8[3] = &unk_278D2B450;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [remoteObjectProxy getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithHandler:v8];
 }
 
 void __93__BBSettingsGateway_getEffectiveGlobalScheduledDeliveryShowNextSummarySettingWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1919,11 +1919,11 @@ void __93__BBSettingsGateway_getEffectiveGlobalScheduledDeliveryShowNextSummaryS
   dispatch_async(v3, v4);
 }
 
-- (void)setEffectiveGlobalNotificationListDisplayStyleSetting:(int64_t)a3
+- (void)setEffectiveGlobalNotificationListDisplayStyleSetting:(int64_t)setting
 {
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v4 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_214];
-  [v4 setEffectiveGlobalNotificationListDisplayStyleSetting:a3 withHandler:&__block_literal_global_217];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v4 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_214];
+  [v4 setEffectiveGlobalNotificationListDisplayStyleSetting:setting withHandler:&__block_literal_global_217];
 }
 
 void __75__BBSettingsGateway_setEffectiveGlobalNotificationListDisplayStyleSetting___block_invoke(uint64_t a1, void *a2)
@@ -1965,19 +1965,19 @@ void __71__BBSettingsGateway_effectiveGlobalNotificationListDisplayStyleSetting_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEffectiveGlobalNotificationListDisplayStyleSettingWithCompletion:(id)a3
+- (void)getEffectiveGlobalNotificationListDisplayStyleSettingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v6 = [v5 remoteObjectProxy];
+  completionCopy = completion;
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  remoteObjectProxy = [_settingsConnection remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __89__BBSettingsGateway_getEffectiveGlobalNotificationListDisplayStyleSettingWithCompletion___block_invoke;
   v8[3] = &unk_278D2B450;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 getEffectiveGlobalNotificationListDisplayStyleSettingWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [remoteObjectProxy getEffectiveGlobalNotificationListDisplayStyleSettingWithHandler:v8];
 }
 
 void __89__BBSettingsGateway_getEffectiveGlobalNotificationListDisplayStyleSettingWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1992,11 +1992,11 @@ void __89__BBSettingsGateway_getEffectiveGlobalNotificationListDisplayStyleSetti
   dispatch_async(v3, v4);
 }
 
-- (void)setEffectiveGlobalSummarizationSetting:(int64_t)a3
+- (void)setEffectiveGlobalSummarizationSetting:(int64_t)setting
 {
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v4 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_222];
-  [v4 setEffectiveGlobalSummarizationSetting:a3 withHandler:&__block_literal_global_225];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v4 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_222];
+  [v4 setEffectiveGlobalSummarizationSetting:setting withHandler:&__block_literal_global_225];
 }
 
 void __60__BBSettingsGateway_setEffectiveGlobalSummarizationSetting___block_invoke(uint64_t a1, void *a2)
@@ -2038,19 +2038,19 @@ void __56__BBSettingsGateway_effectiveGlobalSummarizationSetting__block_invoke_2
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEffectiveGlobalSummarizationSettingWithCompletion:(id)a3
+- (void)getEffectiveGlobalSummarizationSettingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v6 = [v5 remoteObjectProxy];
+  completionCopy = completion;
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  remoteObjectProxy = [_settingsConnection remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __74__BBSettingsGateway_getEffectiveGlobalSummarizationSettingWithCompletion___block_invoke;
   v8[3] = &unk_278D2B450;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 getEffectiveGlobalSummarizationSettingWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [remoteObjectProxy getEffectiveGlobalSummarizationSettingWithHandler:v8];
 }
 
 void __74__BBSettingsGateway_getEffectiveGlobalSummarizationSettingWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -2065,11 +2065,11 @@ void __74__BBSettingsGateway_getEffectiveGlobalSummarizationSettingWithCompletio
   dispatch_async(v3, v4);
 }
 
-- (void)setEffectiveGlobalHighlightsSetting:(int64_t)a3
+- (void)setEffectiveGlobalHighlightsSetting:(int64_t)setting
 {
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v4 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_230];
-  [v4 setEffectiveGlobalHighlightsSetting:a3 withHandler:&__block_literal_global_233];
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  v4 = [_settingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_230];
+  [v4 setEffectiveGlobalHighlightsSetting:setting withHandler:&__block_literal_global_233];
 }
 
 void __57__BBSettingsGateway_setEffectiveGlobalHighlightsSetting___block_invoke(uint64_t a1, void *a2)
@@ -2111,19 +2111,19 @@ void __53__BBSettingsGateway_effectiveGlobalHighlightsSetting__block_invoke_236(
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEffectiveGlobalHighlightsSettingWithCompletion:(id)a3
+- (void)getEffectiveGlobalHighlightsSettingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BBSettingsGateway *)self _settingsConnection];
-  v6 = [v5 remoteObjectProxy];
+  completionCopy = completion;
+  _settingsConnection = [(BBSettingsGateway *)self _settingsConnection];
+  remoteObjectProxy = [_settingsConnection remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__BBSettingsGateway_getEffectiveGlobalHighlightsSettingWithCompletion___block_invoke;
   v8[3] = &unk_278D2B450;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 getEffectiveGlobalHighlightsSettingWithHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [remoteObjectProxy getEffectiveGlobalHighlightsSettingWithHandler:v8];
 }
 
 void __71__BBSettingsGateway_getEffectiveGlobalHighlightsSettingWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -2140,23 +2140,23 @@ void __71__BBSettingsGateway_getEffectiveGlobalHighlightsSettingWithCompletion__
 
 - (void)refreshAnnounceSettings
 {
-  v3 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 refreshAnnounceSettings];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  remoteObjectProxy = [_ensureBBServerSettingsConnection remoteObjectProxy];
+  [remoteObjectProxy refreshAnnounceSettings];
 }
 
 - (void)refreshGlobalSettings
 {
-  v3 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 refreshGlobalSettings];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  remoteObjectProxy = [_ensureBBServerSettingsConnection remoteObjectProxy];
+  [remoteObjectProxy refreshGlobalSettings];
 }
 
 - (void)refreshSectionInfo
 {
-  v3 = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 refreshSectionInfo];
+  _ensureBBServerSettingsConnection = [(BBSettingsGateway *)self _ensureBBServerSettingsConnection];
+  remoteObjectProxy = [_ensureBBServerSettingsConnection remoteObjectProxy];
+  [remoteObjectProxy refreshSectionInfo];
 }
 
 void __44__BBSettingsGateway_allEffectiveSectionInfo__block_invoke_cold_1()

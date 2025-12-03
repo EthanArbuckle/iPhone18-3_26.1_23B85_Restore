@@ -3,16 +3,16 @@
 - (AVCoordinatedPlaybackSuspension)beginSuspensionForReason:(AVCoordinatedPlaybackSuspensionReason)suspensionReason;
 - (BOOL)isDefunct;
 - (BOOL)pauseSnapsToMediaTimeOfOriginator;
-- (CMTime)expectedItemTimeAtHostTime:(SEL)a3;
+- (CMTime)expectedItemTimeAtHostTime:(SEL)time;
 - (NSArray)otherParticipants;
 - (NSArray)suspensionReasons;
 - (NSArray)suspensionReasonsThatTriggerWaiting;
 - (NSInteger)participantLimitForWaitingOutSuspensionsWithReason:(AVCoordinatedPlaybackSuspensionReason)reason;
 - (id)_currentWaitingPoliciesArray;
 - (id)initInternal;
-- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)a3;
-- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)a3 proposingNewTime:(id *)a4;
-- (void)_removeSuspension:(OpaqueFigTimelineCoordinatorSuspension *)a3;
+- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)suspension;
+- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)suspension proposingNewTime:(id *)time;
+- (void)_removeSuspension:(OpaqueFigTimelineCoordinatorSuspension *)suspension;
 - (void)setParticipantLimit:(NSInteger)participantLimit forWaitingOutSuspensionsWithReason:(AVCoordinatedPlaybackSuspensionReason)reason;
 - (void)setPauseSnapsToMediaTimeOfOriginator:(BOOL)pauseSnapsToMediaTimeOfOriginator;
 - (void)setSuspensionReasonsThatTriggerWaiting:(NSArray *)suspensionReasonsThatTriggerWaiting;
@@ -29,7 +29,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -59,31 +59,31 @@
   return 0;
 }
 
-- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)a3
+- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)suspension
 {
   v5 = objc_opt_class();
 
   AVRequestConcreteImplementation(self, a2, v5);
 }
 
-- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)a3 proposingNewTime:(id *)a4
+- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)suspension proposingNewTime:(id *)time
 {
   v6 = objc_opt_class();
 
   AVRequestConcreteImplementation(self, a2, v6);
 }
 
-- (void)_removeSuspension:(OpaqueFigTimelineCoordinatorSuspension *)a3
+- (void)_removeSuspension:(OpaqueFigTimelineCoordinatorSuspension *)suspension
 {
   v5 = objc_opt_class();
 
   AVRequestConcreteImplementation(self, a2, v5);
 }
 
-- (CMTime)expectedItemTimeAtHostTime:(SEL)a3
+- (CMTime)expectedItemTimeAtHostTime:(SEL)time
 {
   v7 = objc_opt_class();
-  result = AVRequestConcreteImplementation(self, a3, v7);
+  result = AVRequestConcreteImplementation(self, time, v7);
   *retstr = **&MEMORY[0x1E6960C70];
   return result;
 }

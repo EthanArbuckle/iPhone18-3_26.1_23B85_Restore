@@ -1,19 +1,19 @@
 @interface CUIVectorGlyphHierarchicalLayer
-- (CGImage)createImageUsingScaleFactor:(double)a3 targetSize:(CGSize)a4 variableMinValue:(double)a5 variableMaxValue:(double)a6 hierarchicalColorResolver:(id)CopyWithAlpha;
-- (CGImage)createImageUsingScaleFactor:(double)a3 targetSize:(CGSize)a4 variableMinValue:(double)a5 variableMaxValue:(double)a6 paletteColorResolver:(id)CopyWithAlpha;
+- (CGImage)createImageUsingScaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue hierarchicalColorResolver:(id)CopyWithAlpha;
+- (CGImage)createImageUsingScaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue paletteColorResolver:(id)CopyWithAlpha;
 - (id)debugDescription;
-- (void)_readCSSAttributes:(CGSVGAttributeMap *)a3 styleAttributes:(CGSVGAttributeMap *)a4;
-- (void)drawInContext:(CGContext *)a3 scaleFactor:(double)a4 targetSize:(CGSize)a5 variableMinValue:(double)a6 variableMaxValue:(double)a7 hierarchicalColorResolver:(id)a8;
-- (void)drawInContext:(CGContext *)a3 scaleFactor:(double)a4 targetSize:(CGSize)a5 variableMinValue:(double)a6 variableMaxValue:(double)a7 paletteColorResolver:(id)a8;
+- (void)_readCSSAttributes:(CGSVGAttributeMap *)attributes styleAttributes:(CGSVGAttributeMap *)styleAttributes;
+- (void)drawInContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue hierarchicalColorResolver:(id)resolver;
+- (void)drawInContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue paletteColorResolver:(id)resolver;
 @end
 
 @implementation CUIVectorGlyphHierarchicalLayer
 
-- (void)_readCSSAttributes:(CGSVGAttributeMap *)a3 styleAttributes:(CGSVGAttributeMap *)a4
+- (void)_readCSSAttributes:(CGSVGAttributeMap *)attributes styleAttributes:(CGSVGAttributeMap *)styleAttributes
 {
   v8.receiver = self;
   v8.super_class = CUIVectorGlyphHierarchicalLayer;
-  [(CUIVectorGlyphLayer *)&v8 _readCSSAttributes:a3 styleAttributes:a4];
+  [(CUIVectorGlyphLayer *)&v8 _readCSSAttributes:attributes styleAttributes:styleAttributes];
   v5 = [objc_opt_class() _colorNameForRenderingStyle:{-[CUIVectorGlyphLayer name](self, "name")}];
   v6 = [objc_msgSend(objc_opt_class() "_layerHierarchyStyleNames")];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -36,27 +36,27 @@
   return [-[CUIVectorGlyphLayer debugDescription](&v3 debugDescription)];
 }
 
-- (void)drawInContext:(CGContext *)a3 scaleFactor:(double)a4 targetSize:(CGSize)a5 variableMinValue:(double)a6 variableMaxValue:(double)a7 hierarchicalColorResolver:(id)a8
+- (void)drawInContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue hierarchicalColorResolver:(id)resolver
 {
-  height = a5.height;
-  width = a5.width;
-  v16 = [(CUIVectorGlyphLayer *)self isEraserLayer];
+  height = size.height;
+  width = size.width;
+  isEraserLayer = [(CUIVectorGlyphLayer *)self isEraserLayer];
   [(CUIVectorGlyphLayer *)self opacity];
   v18 = v17;
-  v19 = [(CUIVectorGlyphLayer *)self index];
-  v20 = [(CUIVectorGlyphHierarchicalLayer *)self hierarchyLevel];
+  index = [(CUIVectorGlyphLayer *)self index];
+  hierarchyLevel = [(CUIVectorGlyphHierarchicalLayer *)self hierarchyLevel];
   SRGBBlack = _CUIColorGetSRGBBlack();
-  if (v16 && v18 < 2.22044605e-16)
+  if (isEraserLayer && v18 < 2.22044605e-16)
   {
     SRGBBlack = _CUIColorGetSRGBClear();
     CopyWithAlpha = CGColorCreateCopyWithAlpha(SRGBBlack, 0.7);
     CFAutorelease(CopyWithAlpha);
   }
 
-  else if (a8)
+  else if (resolver)
   {
-    SRGBBlack = (*(a8 + 2))(a8, v19, v20);
-    CopyWithAlpha = (*(a8 + 2))(a8, v19, 2);
+    SRGBBlack = (*(resolver + 2))(resolver, index, hierarchyLevel);
+    CopyWithAlpha = (*(resolver + 2))(resolver, index, 2);
   }
 
   else
@@ -68,7 +68,7 @@
   {
     v24.receiver = self;
     v24.super_class = CUIVectorGlyphHierarchicalLayer;
-    [(CUIVectorGlyphLayer *)&v24 drawInContext:a3 scaleFactor:SRGBBlack targetSize:CopyWithAlpha variableMinValue:a4 variableMaxValue:width onFillColor:height offFillColor:a6, a7];
+    [(CUIVectorGlyphLayer *)&v24 drawInContext:context scaleFactor:SRGBBlack targetSize:CopyWithAlpha variableMinValue:factor variableMaxValue:width onFillColor:height offFillColor:value, maxValue];
   }
 
   else
@@ -77,8 +77,8 @@
     v23[1] = 3221225472;
     v23[2] = __132__CUIVectorGlyphHierarchicalLayer_drawInContext_scaleFactor_targetSize_variableMinValue_variableMaxValue_hierarchicalColorResolver___block_invoke;
     v23[3] = &unk_1E7249B60;
-    v23[4] = a8;
-    [(CUIVectorGlyhLayerDelegate *)[(CUIVectorGlyphLayer *)self delegate] _legacy_drawHierarchicalLayerNamed:[(CUIVectorGlyphLayer *)self name] inContext:a3 scaleFactor:v23 targetSize:a4 colorResolver:width, height];
+    v23[4] = resolver;
+    [(CUIVectorGlyhLayerDelegate *)[(CUIVectorGlyphLayer *)self delegate] _legacy_drawHierarchicalLayerNamed:[(CUIVectorGlyphLayer *)self name] inContext:context scaleFactor:v23 targetSize:factor colorResolver:width, height];
   }
 }
 
@@ -93,21 +93,21 @@ uint64_t __132__CUIVectorGlyphHierarchicalLayer_drawInContext_scaleFactor_target
   return result;
 }
 
-- (CGImage)createImageUsingScaleFactor:(double)a3 targetSize:(CGSize)a4 variableMinValue:(double)a5 variableMaxValue:(double)a6 hierarchicalColorResolver:(id)CopyWithAlpha
+- (CGImage)createImageUsingScaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue hierarchicalColorResolver:(id)CopyWithAlpha
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a4.width * a3;
-  v15 = a4.height * a3;
+  height = size.height;
+  width = size.width;
+  v14 = size.width * factor;
+  v15 = size.height * factor;
   SRGB = _CUIColorSpaceGetSRGB();
   v19 = CUICGBitmapContextCreate(vcvtpd_u64_f64(v14), vcvtpd_u64_f64(v15), 8uLL, 0, SRGB, 8193, v17, v18);
-  v20 = [(CUIVectorGlyphLayer *)self isEraserLayer];
+  isEraserLayer = [(CUIVectorGlyphLayer *)self isEraserLayer];
   [(CUIVectorGlyphLayer *)self opacity];
   v22 = v21;
-  v23 = [(CUIVectorGlyphLayer *)self index];
-  v24 = [(CUIVectorGlyphHierarchicalLayer *)self hierarchyLevel];
+  index = [(CUIVectorGlyphLayer *)self index];
+  hierarchyLevel = [(CUIVectorGlyphHierarchicalLayer *)self hierarchyLevel];
   SRGBBlack = _CUIColorGetSRGBBlack();
-  if (v20 && v22 < 2.22044605e-16)
+  if (isEraserLayer && v22 < 2.22044605e-16)
   {
     SRGBBlack = _CUIColorGetSRGBClear();
     CopyWithAlpha = CGColorCreateCopyWithAlpha(SRGBBlack, 0.7);
@@ -116,16 +116,16 @@ uint64_t __132__CUIVectorGlyphHierarchicalLayer_drawInContext_scaleFactor_target
 
   else if (CopyWithAlpha)
   {
-    SRGBBlack = (*(CopyWithAlpha + 2))(CopyWithAlpha, v23, v24);
-    CopyWithAlpha = (*(CopyWithAlpha + 2))(CopyWithAlpha, v23, 2);
+    SRGBBlack = (*(CopyWithAlpha + 2))(CopyWithAlpha, index, hierarchyLevel);
+    CopyWithAlpha = (*(CopyWithAlpha + 2))(CopyWithAlpha, index, 2);
   }
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v26 = [(CUIVectorGlyphLayer *)self sublayers];
-  v27 = [(NSArray *)v26 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  sublayers = [(CUIVectorGlyphLayer *)self sublayers];
+  v27 = [(NSArray *)sublayers countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v27)
   {
     v28 = v27;
@@ -136,13 +136,13 @@ uint64_t __132__CUIVectorGlyphHierarchicalLayer_drawInContext_scaleFactor_target
       {
         if (*v34 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(sublayers);
         }
 
-        [*(*(&v33 + 1) + 8 * i) drawInContext:v19 scaleFactor:SRGBBlack targetSize:CopyWithAlpha variableMinValue:a3 variableMaxValue:width onFillColor:height offFillColor:{a5, a6}];
+        [*(*(&v33 + 1) + 8 * i) drawInContext:v19 scaleFactor:SRGBBlack targetSize:CopyWithAlpha variableMinValue:factor variableMaxValue:width onFillColor:height offFillColor:{value, maxValue}];
       }
 
-      v28 = [(NSArray *)v26 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v28 = [(NSArray *)sublayers countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v28);
@@ -153,17 +153,17 @@ uint64_t __132__CUIVectorGlyphHierarchicalLayer_drawInContext_scaleFactor_target
   return Image;
 }
 
-- (void)drawInContext:(CGContext *)a3 scaleFactor:(double)a4 targetSize:(CGSize)a5 variableMinValue:(double)a6 variableMaxValue:(double)a7 paletteColorResolver:(id)a8
+- (void)drawInContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue paletteColorResolver:(id)resolver
 {
-  height = a5.height;
-  width = a5.width;
-  v16 = [(CUIVectorGlyphLayer *)self isEraserLayer];
+  height = size.height;
+  width = size.width;
+  isEraserLayer = [(CUIVectorGlyphLayer *)self isEraserLayer];
   [(CUIVectorGlyphLayer *)self opacity];
   v18 = v17;
-  v19 = [(CUIVectorGlyphLayer *)self index];
-  v20 = [(CUIVectorGlyphHierarchicalLayer *)self hierarchyLevel];
+  index = [(CUIVectorGlyphLayer *)self index];
+  hierarchyLevel = [(CUIVectorGlyphHierarchicalLayer *)self hierarchyLevel];
   SRGBBlack = _CUIColorGetSRGBBlack();
-  if (v16 && v18 < 2.22044605e-16)
+  if (isEraserLayer && v18 < 2.22044605e-16)
   {
     SRGBClear = _CUIColorGetSRGBClear();
     SRGBBlack = SRGBClear;
@@ -172,13 +172,13 @@ uint64_t __132__CUIVectorGlyphHierarchicalLayer_drawInContext_scaleFactor_target
 
   else
   {
-    if (!a8)
+    if (!resolver)
     {
       CopyWithAlpha = 0;
       goto LABEL_7;
     }
 
-    SRGBBlack = (*(a8 + 2))(a8, v19, v20);
+    SRGBBlack = (*(resolver + 2))(resolver, index, hierarchyLevel);
     v23 = CGColorGetAlpha(SRGBBlack) * 0.3;
     SRGBClear = SRGBBlack;
   }
@@ -190,7 +190,7 @@ LABEL_7:
   {
     v26.receiver = self;
     v26.super_class = CUIVectorGlyphHierarchicalLayer;
-    [(CUIVectorGlyphLayer *)&v26 drawInContext:a3 scaleFactor:SRGBBlack targetSize:CopyWithAlpha variableMinValue:a4 variableMaxValue:width onFillColor:height offFillColor:a6, a7];
+    [(CUIVectorGlyphLayer *)&v26 drawInContext:context scaleFactor:SRGBBlack targetSize:CopyWithAlpha variableMinValue:factor variableMaxValue:width onFillColor:height offFillColor:value, maxValue];
   }
 
   else
@@ -199,8 +199,8 @@ LABEL_7:
     v25[1] = 3221225472;
     v25[2] = __127__CUIVectorGlyphHierarchicalLayer_drawInContext_scaleFactor_targetSize_variableMinValue_variableMaxValue_paletteColorResolver___block_invoke;
     v25[3] = &unk_1E7249B60;
-    v25[4] = a8;
-    [(CUIVectorGlyhLayerDelegate *)[(CUIVectorGlyphLayer *)self delegate] _legacy_drawHierarchicalLayerNamed:[(CUIVectorGlyphLayer *)self name] inContext:a3 scaleFactor:v25 targetSize:a4 colorResolver:width, height];
+    v25[4] = resolver;
+    [(CUIVectorGlyhLayerDelegate *)[(CUIVectorGlyphLayer *)self delegate] _legacy_drawHierarchicalLayerNamed:[(CUIVectorGlyphLayer *)self name] inContext:context scaleFactor:v25 targetSize:factor colorResolver:width, height];
   }
 }
 
@@ -215,21 +215,21 @@ uint64_t __127__CUIVectorGlyphHierarchicalLayer_drawInContext_scaleFactor_target
   return result;
 }
 
-- (CGImage)createImageUsingScaleFactor:(double)a3 targetSize:(CGSize)a4 variableMinValue:(double)a5 variableMaxValue:(double)a6 paletteColorResolver:(id)CopyWithAlpha
+- (CGImage)createImageUsingScaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue paletteColorResolver:(id)CopyWithAlpha
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a4.width * a3;
-  v15 = a4.height * a3;
+  height = size.height;
+  width = size.width;
+  v14 = size.width * factor;
+  v15 = size.height * factor;
   SRGB = _CUIColorSpaceGetSRGB();
   v19 = CUICGBitmapContextCreate(vcvtpd_u64_f64(v14), vcvtpd_u64_f64(v15), 8uLL, 0, SRGB, 8193, v17, v18);
-  v20 = [(CUIVectorGlyphLayer *)self isEraserLayer];
+  isEraserLayer = [(CUIVectorGlyphLayer *)self isEraserLayer];
   [(CUIVectorGlyphLayer *)self opacity];
   v22 = v21;
-  v23 = [(CUIVectorGlyphLayer *)self index];
-  v24 = [(CUIVectorGlyphHierarchicalLayer *)self hierarchyLevel];
+  index = [(CUIVectorGlyphLayer *)self index];
+  hierarchyLevel = [(CUIVectorGlyphHierarchicalLayer *)self hierarchyLevel];
   SRGBBlack = _CUIColorGetSRGBBlack();
-  if (v20 && v22 < 2.22044605e-16)
+  if (isEraserLayer && v22 < 2.22044605e-16)
   {
     SRGBClear = _CUIColorGetSRGBClear();
     SRGBBlack = SRGBClear;
@@ -243,7 +243,7 @@ uint64_t __127__CUIVectorGlyphHierarchicalLayer_drawInContext_scaleFactor_target
       goto LABEL_7;
     }
 
-    SRGBBlack = (*(CopyWithAlpha + 2))(CopyWithAlpha, v23, v24);
+    SRGBBlack = (*(CopyWithAlpha + 2))(CopyWithAlpha, index, hierarchyLevel);
     v27 = CGColorGetAlpha(SRGBBlack) * 0.3;
     SRGBClear = SRGBBlack;
   }
@@ -255,8 +255,8 @@ LABEL_7:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v28 = [(CUIVectorGlyphLayer *)self sublayers];
-  v29 = [(NSArray *)v28 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  sublayers = [(CUIVectorGlyphLayer *)self sublayers];
+  v29 = [(NSArray *)sublayers countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v29)
   {
     v30 = v29;
@@ -267,13 +267,13 @@ LABEL_7:
       {
         if (*v36 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(sublayers);
         }
 
-        [*(*(&v35 + 1) + 8 * i) drawInContext:v19 scaleFactor:SRGBBlack targetSize:CopyWithAlpha variableMinValue:a3 variableMaxValue:width onFillColor:height offFillColor:{a5, a6}];
+        [*(*(&v35 + 1) + 8 * i) drawInContext:v19 scaleFactor:SRGBBlack targetSize:CopyWithAlpha variableMinValue:factor variableMaxValue:width onFillColor:height offFillColor:{value, maxValue}];
       }
 
-      v30 = [(NSArray *)v28 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v30 = [(NSArray *)sublayers countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v30);

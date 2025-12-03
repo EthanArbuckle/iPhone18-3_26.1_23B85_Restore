@@ -1,32 +1,32 @@
 @interface NSURL
-- (id)rc_URLByAppendingStringToLastComponentBasename:(id)a3;
-- (id)rc_URLByReplacingPathExtensionWithExtension:(id)a3;
+- (id)rc_URLByAppendingStringToLastComponentBasename:(id)basename;
+- (id)rc_URLByReplacingPathExtensionWithExtension:(id)extension;
 - (id)rc_URLByStandardizingResolvedPath;
 @end
 
 @implementation NSURL
 
-- (id)rc_URLByAppendingStringToLastComponentBasename:(id)a3
+- (id)rc_URLByAppendingStringToLastComponentBasename:(id)basename
 {
-  v4 = a3;
-  v5 = [(NSURL *)self lastPathComponent];
-  v6 = [v5 stringByDeletingPathExtension];
-  v7 = [v6 stringByAppendingString:v4];
+  basenameCopy = basename;
+  lastPathComponent = [(NSURL *)self lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v7 = [stringByDeletingPathExtension stringByAppendingString:basenameCopy];
 
-  v8 = [(NSURL *)self pathExtension];
-  v9 = [v7 stringByAppendingPathExtension:v8];
+  pathExtension = [(NSURL *)self pathExtension];
+  v9 = [v7 stringByAppendingPathExtension:pathExtension];
 
-  v10 = [(NSURL *)self URLByDeletingLastPathComponent];
-  v11 = [v10 URLByAppendingPathComponent:v9];
+  uRLByDeletingLastPathComponent = [(NSURL *)self URLByDeletingLastPathComponent];
+  v11 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v9];
 
   return v11;
 }
 
-- (id)rc_URLByReplacingPathExtensionWithExtension:(id)a3
+- (id)rc_URLByReplacingPathExtensionWithExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [(NSURL *)self URLByDeletingPathExtension];
-  v6 = [v5 URLByAppendingPathExtension:v4];
+  extensionCopy = extension;
+  uRLByDeletingPathExtension = [(NSURL *)self URLByDeletingPathExtension];
+  v6 = [uRLByDeletingPathExtension URLByAppendingPathExtension:extensionCopy];
 
   return v6;
 }
@@ -34,25 +34,25 @@
 - (id)rc_URLByStandardizingResolvedPath
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(NSURL *)self path];
-  v5 = [v3 fileExistsAtPath:v4 isDirectory:0];
+  path = [(NSURL *)self path];
+  v5 = [v3 fileExistsAtPath:path isDirectory:0];
 
   if (v5)
   {
-    v6 = [(NSURL *)self URLByResolvingSymlinksInPath];
-    v7 = [v6 URLByStandardizingPath];
+    uRLByResolvingSymlinksInPath = [(NSURL *)self URLByResolvingSymlinksInPath];
+    uRLByStandardizingPath = [uRLByResolvingSymlinksInPath URLByStandardizingPath];
   }
 
   else
   {
-    v6 = [(NSURL *)self lastPathComponent];
-    v8 = [(NSURL *)self URLByDeletingLastPathComponent];
-    v9 = [v8 URLByResolvingSymlinksInPath];
-    v10 = [v9 URLByStandardizingPath];
-    v7 = [v10 URLByAppendingPathComponent:v6];
+    uRLByResolvingSymlinksInPath = [(NSURL *)self lastPathComponent];
+    uRLByDeletingLastPathComponent = [(NSURL *)self URLByDeletingLastPathComponent];
+    uRLByResolvingSymlinksInPath2 = [uRLByDeletingLastPathComponent URLByResolvingSymlinksInPath];
+    uRLByStandardizingPath2 = [uRLByResolvingSymlinksInPath2 URLByStandardizingPath];
+    uRLByStandardizingPath = [uRLByStandardizingPath2 URLByAppendingPathComponent:uRLByResolvingSymlinksInPath];
   }
 
-  return v7;
+  return uRLByStandardizingPath;
 }
 
 @end

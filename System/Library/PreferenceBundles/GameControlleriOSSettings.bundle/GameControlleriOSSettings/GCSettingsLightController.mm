@@ -1,13 +1,13 @@
 @interface GCSettingsLightController
 - (GCSettingsLightController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)valueForColorKey:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)valueForColorKey:(id)key;
 - (void)loadDevice;
 - (void)loadLightData;
-- (void)setBrightness:(id)a3 specifier:(id)a4;
-- (void)setColor:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setBrightness:(id)brightness specifier:(id)specifier;
+- (void)setColor:(id)color;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation GCSettingsLightController
@@ -59,34 +59,34 @@
 
   else
   {
-    v6 = [(GCSettingsLightController *)self navigationController];
-    v7 = [v6 viewControllers];
-    v8 = [v7 indexOfObject:self];
+    navigationController = [(GCSettingsLightController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    v8 = [viewControllers indexOfObject:self];
 
     if (!v8 || v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       return;
     }
 
-    v9 = [(GCSettingsLightController *)self navigationController];
-    v10 = [v9 viewControllers];
-    v13 = [v10 objectAtIndex:v8 - 1];
+    navigationController2 = [(GCSettingsLightController *)self navigationController];
+    viewControllers2 = [navigationController2 viewControllers];
+    v13 = [viewControllers2 objectAtIndex:v8 - 1];
 
-    v11 = [(GCSettingsLightController *)self navigationController];
-    v12 = [v11 popToViewController:v13 animated:1];
+    navigationController3 = [(GCSettingsLightController *)self navigationController];
+    v12 = [navigationController3 popToViewController:v13 animated:1];
   }
 
   _objc_release_x1();
 }
 
-- (void)setBrightness:(id)a3 specifier:(id)a4
+- (void)setBrightness:(id)brightness specifier:(id)specifier
 {
-  [(NSMutableDictionary *)self->_lightDictionary setObject:a3 forKeyedSubscript:@"brightness"];
+  [(NSMutableDictionary *)self->_lightDictionary setObject:brightness forKeyedSubscript:@"brightness"];
 
   [(GCSettingsLightController *)self saveLight];
 }
 
-- (id)valueForColorKey:(id)a3
+- (id)valueForColorKey:(id)key
 {
   v3 = [(NSMutableDictionary *)self->_lightDictionary objectForKeyedSubscript:@"color"];
   v4 = v3;
@@ -103,9 +103,9 @@
   return v5;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  [(NSMutableDictionary *)self->_lightDictionary setObject:a3 forKeyedSubscript:@"color"];
+  [(NSMutableDictionary *)self->_lightDictionary setObject:color forKeyedSubscript:@"color"];
   [(GCSettingsLightController *)self saveLight];
   [(GCSettingsLightController *)self reloadSpecifiers];
   v4 = +[NSNotificationCenter defaultCenter];
@@ -186,13 +186,13 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v26.receiver = self;
   v26.super_class = GCSettingsLightController;
-  v6 = a4;
-  v24 = [(GCSettingsLightController *)&v26 tableView:a3 cellForRowAtIndexPath:v6];
-  v25 = [(GCSettingsLightController *)self specifierAtIndexPath:v6];
+  pathCopy = path;
+  v24 = [(GCSettingsLightController *)&v26 tableView:view cellForRowAtIndexPath:pathCopy];
+  v25 = [(GCSettingsLightController *)self specifierAtIndexPath:pathCopy];
 
   v7 = [v25 propertyForKey:PSIDKey];
   v8 = [(NSDictionary *)self->_colors objectForKeyedSubscript:v7];
@@ -224,8 +224,8 @@
   v20 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
   [v10 addAttributes:v20 range:{0, objc_msgSend(v10, "length")}];
 
-  v21 = [v24 titleLabel];
-  [v21 setAttributedText:v10];
+  titleLabel = [v24 titleLabel];
+  [titleLabel setAttributedText:v10];
 
   v22 = [(GCSettingsLightController *)self valueForColorKey:v9];
   [v24 setChecked:{objc_msgSend(v9, "isEqualToString:", v22)}];
@@ -233,15 +233,15 @@
   return v24;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(GCSettingsLightController *)self specifierAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = [(GCSettingsLightController *)self specifierAtIndexPath:pathCopy];
   v8 = [v9 propertyForKey:PSIDKey];
   [(GCSettingsLightController *)self setColor:v8];
   [(GCSettingsLightController *)self reloadSpecifiers];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 @end

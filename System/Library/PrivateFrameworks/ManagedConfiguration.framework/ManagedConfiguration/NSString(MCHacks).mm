@@ -8,26 +8,26 @@
 - (id)MCAppendGreenteaSuffix
 {
   v2 = +[MCHacks sharedHacks];
-  v3 = [v2 isGreenTea];
+  isGreenTea = [v2 isGreenTea];
 
-  if (v3)
+  if (isGreenTea)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_CH", a1];
+    selfCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_CH", self];
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (uint64_t)MCRemoveAppExternalVersionIDParameter
 {
-  v2 = [a1 length];
+  v2 = [self length];
 
-  return [a1 stringByReplacingOccurrencesOfString:@"(?:^appExtVrsId=[^&]+&?|&appExtVrsId=[^&]+)" withString:&stru_1F1A7FAB0 options:1024 range:{0, v2}];
+  return [self stringByReplacingOccurrencesOfString:@"(?:^appExtVrsId=[^&]+&?|&appExtVrsId=[^&]+)" withString:&stru_1F1A7FAB0 options:1024 range:{0, v2}];
 }
 
 @end

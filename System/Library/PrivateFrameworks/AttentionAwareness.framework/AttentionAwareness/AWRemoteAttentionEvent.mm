@@ -1,8 +1,8 @@
 @interface AWRemoteAttentionEvent
-- (AWRemoteAttentionEvent)initWithCoder:(id)a3;
-- (AWRemoteAttentionEvent)initWithTimestamp:(double)a3 tagIndex:(unint64_t)a4 remoteMetadata:(AWRemoteMetadata *)a5;
+- (AWRemoteAttentionEvent)initWithCoder:(id)coder;
+- (AWRemoteAttentionEvent)initWithTimestamp:(double)timestamp tagIndex:(unint64_t)index remoteMetadata:(AWRemoteMetadata *)metadata;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)validateMask;
 @end
 
@@ -19,28 +19,28 @@
   usage = self->_usage;
   senderID = self->_senderID;
   buttonPressed = self->_buttonPressed;
-  v12 = [(AWAttentionEvent *)self tagIndex];
+  tagIndex = [(AWAttentionEvent *)self tagIndex];
   v13 = [(AWAttentionEvent *)self tag];
-  v14 = tagDescription(v12, v13);
+  v14 = tagDescription(tagIndex, v13);
   v15 = [v3 stringWithFormat:@"<%@: %p> (timestamp: %13.5f usagePage %ld usage %ld senderID: %llu buttonPressed: %d %@)", v5, self, v7, usagePage, usage, senderID, buttonPressed, v14];
 
   return v15;
 }
 
-- (AWRemoteAttentionEvent)initWithTimestamp:(double)a3 tagIndex:(unint64_t)a4 remoteMetadata:(AWRemoteMetadata *)a5
+- (AWRemoteAttentionEvent)initWithTimestamp:(double)timestamp tagIndex:(unint64_t)index remoteMetadata:(AWRemoteMetadata *)metadata
 {
   v8.receiver = self;
   v8.super_class = AWRemoteAttentionEvent;
-  result = [(AWAttentionEvent *)&v8 initWithTimestamp:a4 tagIndex:32 eventMask:a3];
-  if (a5)
+  result = [(AWAttentionEvent *)&v8 initWithTimestamp:index tagIndex:32 eventMask:timestamp];
+  if (metadata)
   {
     if (result)
     {
-      result->_usagePage = a5->var0;
-      var2 = a5->var2;
-      result->_usage = a5->var1;
+      result->_usagePage = metadata->var0;
+      var2 = metadata->var2;
+      result->_usage = metadata->var1;
       result->_senderID = var2;
-      result->_buttonPressed = a5->var3;
+      result->_buttonPressed = metadata->var3;
     }
   }
 
@@ -55,17 +55,17 @@
   }
 }
 
-- (AWRemoteAttentionEvent)initWithCoder:(id)a3
+- (AWRemoteAttentionEvent)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
   v19 = 0;
-  v4 = a3;
-  v5 = decodeDouble(v4, &v19, @"timestamp");
-  v6 = decodeUInt64(v4, &v19, @"usagePage");
-  v7 = decodeUInt64(v4, &v19, @"usage");
-  v8 = decodeUInt64(v4, &v19, @"senderID");
-  v9 = decodeUInt64(v4, &v19, @"buttonPressed");
-  v10 = decodeUInt64(v4, &v19, @"tagIndex");
+  coderCopy = coder;
+  v5 = decodeDouble(coderCopy, &v19, @"timestamp");
+  v6 = decodeUInt64(coderCopy, &v19, @"usagePage");
+  v7 = decodeUInt64(coderCopy, &v19, @"usage");
+  v8 = decodeUInt64(coderCopy, &v19, @"senderID");
+  v9 = decodeUInt64(coderCopy, &v19, @"buttonPressed");
+  v10 = decodeUInt64(coderCopy, &v19, @"tagIndex");
 
   if (v19 == 1)
   {
@@ -111,23 +111,23 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(AWAttentionEvent *)self timestamp];
-  [v4 encodeDouble:@"timestamp" forKey:?];
+  [coderCopy encodeDouble:@"timestamp" forKey:?];
   v5 = [MEMORY[0x1E696AD98] numberWithLong:self->_usagePage];
-  [v4 encodeObject:v5 forKey:@"usagePage"];
+  [coderCopy encodeObject:v5 forKey:@"usagePage"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithLong:self->_usage];
-  [v4 encodeObject:v6 forKey:@"usage"];
+  [coderCopy encodeObject:v6 forKey:@"usage"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_senderID];
-  [v4 encodeObject:v7 forKey:@"senderID"];
+  [coderCopy encodeObject:v7 forKey:@"senderID"];
 
-  [v4 encodeBool:self->_buttonPressed forKey:@"buttonPressed"];
+  [coderCopy encodeBool:self->_buttonPressed forKey:@"buttonPressed"];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[AWAttentionEvent tagIndex](self, "tagIndex")}];
-  [v4 encodeObject:v8 forKey:@"tagIndex"];
+  [coderCopy encodeObject:v8 forKey:@"tagIndex"];
 }
 
 @end

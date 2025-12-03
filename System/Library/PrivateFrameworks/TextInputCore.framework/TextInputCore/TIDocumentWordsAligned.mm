@@ -1,65 +1,65 @@
 @interface TIDocumentWordsAligned
 - (TIDocumentWordsAligned)init;
-- (id)_wordsFromContext:(id)a3 shouldDelete:(BOOL)a4;
+- (id)_wordsFromContext:(id)context shouldDelete:(BOOL)delete;
 - (id)description;
 - (id)lastWord;
-- (id)matchingLeftContextToWordMapKey:(id)a3;
-- (id)preferredLeftContextToWordMapKeyForLeftContext:(id)a3 andMatchingLeftContext:(id)a4;
-- (id)wordsForContext:(id)a3;
+- (id)matchingLeftContextToWordMapKey:(id)key;
+- (id)preferredLeftContextToWordMapKeyForLeftContext:(id)context andMatchingLeftContext:(id)leftContext;
+- (id)wordsForContext:(id)context;
 - (unint64_t)wordsCount;
-- (void)addToContextMap:(id)a3;
-- (void)insertWord:(id)a3 atIndex:(int64_t)a4;
-- (void)pushWordToDocument:(id)a3;
-- (void)removeFromContextMap:(id)a3;
-- (void)replaceLeftContextToWordMapKey:(id)a3 withNewKey:(id)a4;
+- (void)addToContextMap:(id)map;
+- (void)insertWord:(id)word atIndex:(int64_t)index;
+- (void)pushWordToDocument:(id)document;
+- (void)removeFromContextMap:(id)map;
+- (void)replaceLeftContextToWordMapKey:(id)key withNewKey:(id)newKey;
 @end
 
 @implementation TIDocumentWordsAligned
 
 - (id)lastWord
 {
-  v2 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
-  v3 = [v2 lastObject];
-  v4 = [v3 acceptedString];
+  inDocumentWordsStack = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
+  lastObject = [inDocumentWordsStack lastObject];
+  acceptedString = [lastObject acceptedString];
 
-  return v4;
+  return acceptedString;
 }
 
 - (id)description
 {
-  v2 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
-  v3 = [v2 componentsJoinedByString:@" "];
+  inDocumentWordsStack = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
+  v3 = [inDocumentWordsStack componentsJoinedByString:@" "];
 
   return v3;
 }
 
 - (unint64_t)wordsCount
 {
-  v2 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
-  v3 = [v2 count];
+  inDocumentWordsStack = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
+  v3 = [inDocumentWordsStack count];
 
   return v3;
 }
 
-- (id)_wordsFromContext:(id)a3 shouldDelete:(BOOL)a4
+- (id)_wordsFromContext:(id)context shouldDelete:(BOOL)delete
 {
-  v4 = a4;
+  deleteCopy = delete;
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
-  v8 = [v7 count];
+  contextCopy = context;
+  inDocumentWordsStack = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
+  v8 = [inDocumentWordsStack count];
 
   if (!v8)
   {
-    v9 = 0;
+    array = 0;
     goto LABEL_37;
   }
 
-  v9 = [MEMORY[0x277CBEB18] array];
-  if (v6)
+  array = [MEMORY[0x277CBEB18] array];
+  if (contextCopy)
   {
-    v10 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v38 = [v6 stringByTrimmingCharactersInSet:v10];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v38 = [contextCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   }
 
   else
@@ -69,19 +69,19 @@
 
   if (v8 >= 1)
   {
-    v36 = v4;
+    v36 = deleteCopy;
     v11 = 0;
     while (1)
     {
-      v12 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
-      v13 = [v12 objectAtIndexedSubscript:v11];
-      v14 = [v13 documentState];
-      v15 = [v14 contextBeforeInput];
+      inDocumentWordsStack2 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
+      v13 = [inDocumentWordsStack2 objectAtIndexedSubscript:v11];
+      documentState = [v13 documentState];
+      contextBeforeInput = [documentState contextBeforeInput];
 
-      v16 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v17 = [v15 stringByTrimmingCharactersInSet:v16];
+      whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v17 = [contextBeforeInput stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
-      if (([v17 isEqualToString:v6] & 1) != 0 || objc_msgSend(v17, "isEqualToString:", v38))
+      if (([v17 isEqualToString:contextCopy] & 1) != 0 || objc_msgSend(v17, "isEqualToString:", v38))
       {
         break;
       }
@@ -98,9 +98,9 @@
       v18 = v11;
       do
       {
-        v19 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
-        v20 = [v19 objectAtIndexedSubscript:v18];
-        [v9 addObject:v20];
+        inDocumentWordsStack3 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
+        v20 = [inDocumentWordsStack3 objectAtIndexedSubscript:v18];
+        [array addObject:v20];
 
         ++v18;
       }
@@ -118,22 +118,22 @@ LABEL_16:
   }
 
   v11 = -1;
-  if (v4)
+  if (deleteCopy)
   {
 LABEL_19:
-    v37 = v6;
+    v37 = contextCopy;
     if (v11 != -1)
     {
-      v21 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
-      [v21 removeObjectsInRange:{v11, v8 - v11}];
+      inDocumentWordsStack4 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
+      [inDocumentWordsStack4 removeObjectsInRange:{v11, v8 - v11}];
     }
 
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v35 = v9;
-    v22 = v9;
+    v35 = array;
+    v22 = array;
     v23 = [v22 countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v23)
     {
@@ -154,8 +154,8 @@ LABEL_19:
           v42 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v28 = [v27 allEdits];
-          v29 = [v28 countByEnumeratingWithState:&v39 objects:v47 count:16];
+          allEdits = [v27 allEdits];
+          v29 = [allEdits countByEnumeratingWithState:&v39 objects:v47 count:16];
           if (v29)
           {
             v30 = v29;
@@ -166,13 +166,13 @@ LABEL_19:
               {
                 if (*v40 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(allEdits);
                 }
 
                 [*(*(&v39 + 1) + 8 * j) setDeleted:1];
               }
 
-              v30 = [v28 countByEnumeratingWithState:&v39 objects:v47 count:16];
+              v30 = [allEdits countByEnumeratingWithState:&v39 objects:v47 count:16];
             }
 
             while (v30);
@@ -187,8 +187,8 @@ LABEL_19:
       while (v24);
     }
 
-    v9 = v35;
-    v6 = v37;
+    array = v35;
+    contextCopy = v37;
   }
 
 LABEL_36:
@@ -196,60 +196,60 @@ LABEL_36:
 LABEL_37:
   v33 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return array;
 }
 
-- (void)insertWord:(id)a3 atIndex:(int64_t)a4
+- (void)insertWord:(id)word atIndex:(int64_t)index
 {
-  v11 = a3;
-  v6 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
-  v7 = [v6 count];
+  wordCopy = word;
+  inDocumentWordsStack = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
+  v7 = [inDocumentWordsStack count];
 
-  v8 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
-  v9 = v8;
-  if (v7 <= a4)
+  inDocumentWordsStack2 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
+  v9 = inDocumentWordsStack2;
+  if (v7 <= index)
   {
-    [v8 addObject:v11];
+    [inDocumentWordsStack2 addObject:wordCopy];
 
-    v10 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
-    [v11 setSessionIndex:{objc_msgSend(v10, "count")}];
+    inDocumentWordsStack3 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
+    [wordCopy setSessionIndex:{objc_msgSend(inDocumentWordsStack3, "count")}];
   }
 
   else
   {
-    [v8 insertObject:v11 atIndex:a4];
+    [inDocumentWordsStack2 insertObject:wordCopy atIndex:index];
 
-    [v11 setSessionIndex:a4];
+    [wordCopy setSessionIndex:index];
   }
 
-  [(TIDocumentWordsAligned *)self addToContextMap:v11];
+  [(TIDocumentWordsAligned *)self addToContextMap:wordCopy];
 }
 
-- (void)replaceLeftContextToWordMapKey:(id)a3 withNewKey:(id)a4
+- (void)replaceLeftContextToWordMapKey:(id)key withNewKey:(id)newKey
 {
-  v11 = a3;
-  v6 = a4;
-  if (([v11 isEqualToString:v6] & 1) == 0)
+  keyCopy = key;
+  newKeyCopy = newKey;
+  if (([keyCopy isEqualToString:newKeyCopy] & 1) == 0)
   {
-    v7 = [(TIDocumentWordsAligned *)self leftContextToWordMap];
-    v8 = [v7 objectForKey:v11];
+    leftContextToWordMap = [(TIDocumentWordsAligned *)self leftContextToWordMap];
+    v8 = [leftContextToWordMap objectForKey:keyCopy];
 
-    v9 = [(TIDocumentWordsAligned *)self leftContextToWordMap];
-    [v9 setObject:v8 forKey:v6];
+    leftContextToWordMap2 = [(TIDocumentWordsAligned *)self leftContextToWordMap];
+    [leftContextToWordMap2 setObject:v8 forKey:newKeyCopy];
 
-    v10 = [(TIDocumentWordsAligned *)self leftContextToWordMap];
-    [v10 removeObjectForKey:v11];
+    leftContextToWordMap3 = [(TIDocumentWordsAligned *)self leftContextToWordMap];
+    [leftContextToWordMap3 removeObjectForKey:keyCopy];
   }
 }
 
-- (id)preferredLeftContextToWordMapKeyForLeftContext:(id)a3 andMatchingLeftContext:(id)a4
+- (id)preferredLeftContextToWordMapKeyForLeftContext:(id)context andMatchingLeftContext:(id)leftContext
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  contextCopy = context;
+  v6 = contextCopy;
+  if (leftContext)
   {
-    v7 = a4;
-    v8 = [v7 length];
+    leftContextCopy = leftContext;
+    v8 = [leftContextCopy length];
     if (v8 <= [v6 length])
     {
       v9 = v6;
@@ -257,7 +257,7 @@ LABEL_37:
 
     else
     {
-      v9 = v7;
+      v9 = leftContextCopy;
     }
 
     v10 = v9;
@@ -265,24 +265,24 @@ LABEL_37:
 
   else
   {
-    v10 = v5;
+    v10 = contextCopy;
   }
 
   return v10;
 }
 
-- (id)matchingLeftContextToWordMapKey:(id)a3
+- (id)matchingLeftContextToWordMapKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(TIDocumentWordsAligned *)self leftContextToWordMap];
-  v6 = [v5 allKeys];
+  leftContextToWordMap = [(TIDocumentWordsAligned *)self leftContextToWordMap];
+  allKeys = [leftContextToWordMap allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -294,11 +294,11 @@ LABEL_37:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        if ([v12 isEqualToString:v4])
+        if ([v12 isEqualToString:keyCopy])
         {
           v15 = v12;
 
@@ -306,7 +306,7 @@ LABEL_37:
         }
 
         v13 = [v12 length];
-        if (v13 > [v9 length] && ((objc_msgSend(v12, "hasPrefix:", v4) & 1) == 0 && objc_msgSend(v12, "hasSuffix:", v4) && objc_msgSend(v4, "length") > 0xF || (objc_msgSend(v4, "hasPrefix:", v12) & 1) == 0 && objc_msgSend(v4, "hasSuffix:", v12) && objc_msgSend(v12, "length") >= 0x10))
+        if (v13 > [v9 length] && ((objc_msgSend(v12, "hasPrefix:", keyCopy) & 1) == 0 && objc_msgSend(v12, "hasSuffix:", keyCopy) && objc_msgSend(keyCopy, "length") > 0xF || (objc_msgSend(keyCopy, "hasPrefix:", v12) & 1) == 0 && objc_msgSend(keyCopy, "hasSuffix:", v12) && objc_msgSend(v12, "length") >= 0x10))
         {
           v14 = v12;
 
@@ -314,7 +314,7 @@ LABEL_37:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
       {
         continue;
@@ -338,13 +338,13 @@ LABEL_21:
   return v15;
 }
 
-- (id)wordsForContext:(id)a3
+- (id)wordsForContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v5 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v6 = [v4 stringByTrimmingCharactersInSet:v5];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v6 = [contextCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     v7 = [(TIDocumentWordsAligned *)self matchingLeftContextToWordMapKey:v6];
     if (v7)
@@ -352,8 +352,8 @@ LABEL_21:
       v8 = v7;
       v9 = [(TIDocumentWordsAligned *)self preferredLeftContextToWordMapKeyForLeftContext:v6 andMatchingLeftContext:v7];
       [(TIDocumentWordsAligned *)self replaceLeftContextToWordMapKey:v8 withNewKey:v9];
-      v10 = [(TIDocumentWordsAligned *)self leftContextToWordMap];
-      v11 = [v10 objectForKeyedSubscript:v9];
+      leftContextToWordMap = [(TIDocumentWordsAligned *)self leftContextToWordMap];
+      v11 = [leftContextToWordMap objectForKeyedSubscript:v9];
       v12 = [v11 copy];
     }
 
@@ -371,51 +371,51 @@ LABEL_21:
   return v12;
 }
 
-- (void)removeFromContextMap:(id)a3
+- (void)removeFromContextMap:(id)map
 {
-  v8 = a3;
-  v4 = [v8 trimmedDocumentContextBeforeInput];
-  v5 = [(TIDocumentWordsAligned *)self matchingLeftContextToWordMapKey:v4];
+  mapCopy = map;
+  trimmedDocumentContextBeforeInput = [mapCopy trimmedDocumentContextBeforeInput];
+  v5 = [(TIDocumentWordsAligned *)self matchingLeftContextToWordMapKey:trimmedDocumentContextBeforeInput];
   if (v5)
   {
-    v6 = [(TIDocumentWordsAligned *)self leftContextToWordMap];
-    v7 = [v6 objectForKeyedSubscript:v5];
-    [v7 removeObject:v8];
+    leftContextToWordMap = [(TIDocumentWordsAligned *)self leftContextToWordMap];
+    v7 = [leftContextToWordMap objectForKeyedSubscript:v5];
+    [v7 removeObject:mapCopy];
   }
 }
 
-- (void)addToContextMap:(id)a3
+- (void)addToContextMap:(id)map
 {
-  v9 = a3;
-  v4 = [v9 trimmedDocumentContextBeforeInput];
-  v5 = [(TIDocumentWordsAligned *)self matchingLeftContextToWordMapKey:v4];
+  mapCopy = map;
+  trimmedDocumentContextBeforeInput = [mapCopy trimmedDocumentContextBeforeInput];
+  v5 = [(TIDocumentWordsAligned *)self matchingLeftContextToWordMapKey:trimmedDocumentContextBeforeInput];
   if (v5)
   {
-    v6 = [(TIDocumentWordsAligned *)self preferredLeftContextToWordMapKeyForLeftContext:v4 andMatchingLeftContext:v5];
+    v6 = [(TIDocumentWordsAligned *)self preferredLeftContextToWordMapKeyForLeftContext:trimmedDocumentContextBeforeInput andMatchingLeftContext:v5];
     [(TIDocumentWordsAligned *)self replaceLeftContextToWordMapKey:v5 withNewKey:v6];
-    v7 = [(TIDocumentWordsAligned *)self leftContextToWordMap];
-    v8 = [v7 objectForKeyedSubscript:v6];
-    [v8 addObject:v9];
+    leftContextToWordMap = [(TIDocumentWordsAligned *)self leftContextToWordMap];
+    v8 = [leftContextToWordMap objectForKeyedSubscript:v6];
+    [v8 addObject:mapCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEB18] arrayWithObject:v9];
-    v7 = [(TIDocumentWordsAligned *)self leftContextToWordMap];
-    [v7 setObject:v6 forKeyedSubscript:v4];
+    v6 = [MEMORY[0x277CBEB18] arrayWithObject:mapCopy];
+    leftContextToWordMap = [(TIDocumentWordsAligned *)self leftContextToWordMap];
+    [leftContextToWordMap setObject:v6 forKeyedSubscript:trimmedDocumentContextBeforeInput];
   }
 }
 
-- (void)pushWordToDocument:(id)a3
+- (void)pushWordToDocument:(id)document
 {
-  v6 = a3;
-  v4 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
-  [v6 setSessionIndex:{objc_msgSend(v4, "count")}];
+  documentCopy = document;
+  inDocumentWordsStack = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
+  [documentCopy setSessionIndex:{objc_msgSend(inDocumentWordsStack, "count")}];
 
-  v5 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
-  [v5 addObject:v6];
+  inDocumentWordsStack2 = [(TIDocumentWordsAligned *)self inDocumentWordsStack];
+  [inDocumentWordsStack2 addObject:documentCopy];
 
-  [(TIDocumentWordsAligned *)self addToContextMap:v6];
+  [(TIDocumentWordsAligned *)self addToContextMap:documentCopy];
 }
 
 - (TIDocumentWordsAligned)init
@@ -425,13 +425,13 @@ LABEL_21:
   v2 = [(TIDocumentWordsAligned *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     inDocumentWordsStack = v2->_inDocumentWordsStack;
-    v2->_inDocumentWordsStack = v3;
+    v2->_inDocumentWordsStack = array;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     leftContextToWordMap = v2->_leftContextToWordMap;
-    v2->_leftContextToWordMap = v5;
+    v2->_leftContextToWordMap = dictionary;
   }
 
   return v2;

@@ -1,13 +1,13 @@
 @interface ProductRatingsHistogramView
 - (NSArray)accessibilityProgressBarViews;
 - (NSArray)accessibilityStarViews;
-- (_TtC20ProductPageExtension27ProductRatingsHistogramView)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension27ProductRatingsHistogramView)initWithFrame:(CGRect)a3;
+- (_TtC20ProductPageExtension27ProductRatingsHistogramView)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension27ProductRatingsHistogramView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ProductRatingsHistogramView
 
-- (_TtC20ProductPageExtension27ProductRatingsHistogramView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension27ProductRatingsHistogramView)initWithCoder:(id)coder
 {
   result = sub_10077156C();
   __break(1u);
@@ -27,7 +27,7 @@
 - (NSArray)accessibilityProgressBarViews
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension27ProductRatingsHistogramView_barViews);
-  v3 = self;
+  selfCopy = self;
   sub_10016DEF0(v2);
 
   sub_100016F40(0, &qword_1009441F0);
@@ -36,7 +36,7 @@
   return v4.super.isa;
 }
 
-- (_TtC20ProductPageExtension27ProductRatingsHistogramView)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension27ProductRatingsHistogramView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,16 +1,16 @@
 @interface THModelSearchIndexTerm
-- (BOOL)containsOccurrenceOfWord:(id)a3;
-- (BOOL)p_inflection:(id)a3 matchesWord:(id)a4;
-- (THModelSearchIndexTerm)initWithStem:(id)a3;
-- (id)addInflection:(id)a3;
+- (BOOL)containsOccurrenceOfWord:(id)word;
+- (BOOL)p_inflection:(id)p_inflection matchesWord:(id)word;
+- (THModelSearchIndexTerm)initWithStem:(id)stem;
+- (id)addInflection:(id)inflection;
 - (void)dealloc;
-- (void)enumerateOccurrencesOfWord:(id)a3 withBlock:(id)a4;
-- (void)enumerateOccurrencesWithBlock:(id)a3;
+- (void)enumerateOccurrencesOfWord:(id)word withBlock:(id)block;
+- (void)enumerateOccurrencesWithBlock:(id)block;
 @end
 
 @implementation THModelSearchIndexTerm
 
-- (THModelSearchIndexTerm)initWithStem:(id)a3
+- (THModelSearchIndexTerm)initWithStem:(id)stem
 {
   v6.receiver = self;
   v6.super_class = THModelSearchIndexTerm;
@@ -18,7 +18,7 @@
   if (v4)
   {
     v4->mInflections = objc_alloc_init(NSMutableArray);
-    v4->mStem = [a3 copy];
+    v4->mStem = [stem copy];
   }
 
   return v4;
@@ -31,15 +31,15 @@
   [(THModelSearchIndexTerm *)&v3 dealloc];
 }
 
-- (id)addInflection:(id)a3
+- (id)addInflection:(id)inflection
 {
-  v4 = [[THModelSearchIndexInflection alloc] initWithInflection:a3];
+  v4 = [[THModelSearchIndexInflection alloc] initWithInflection:inflection];
   [(NSMutableArray *)self->mInflections addObject:v4];
   v5 = v4;
   return v4;
 }
 
-- (void)enumerateOccurrencesWithBlock:(id)a3
+- (void)enumerateOccurrencesWithBlock:(id)block
 {
   v13 = 0u;
   v14 = 0u;
@@ -61,19 +61,19 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 occurrenceCount];
-        v11 = [v9 occurrences];
-        if (v10)
+        occurrenceCount = [v9 occurrenceCount];
+        occurrences = [v9 occurrences];
+        if (occurrenceCount)
         {
-          v12 = v11;
+          v12 = occurrences;
           do
           {
-            (*(a3 + 2))(a3, v9, v12);
+            (*(block + 2))(block, v9, v12);
             v12 += 24;
-            --v10;
+            --occurrenceCount;
           }
 
-          while (v10);
+          while (occurrenceCount);
         }
       }
 
@@ -84,19 +84,19 @@
   }
 }
 
-- (BOOL)p_inflection:(id)a3 matchesWord:(id)a4
+- (BOOL)p_inflection:(id)p_inflection matchesWord:(id)word
 {
-  if ([a3 isEqualToString:a4])
+  if ([p_inflection isEqualToString:word])
   {
     return 1;
   }
 
-  v7 = [NSString stringWithFormat:@"%@ ", a4];
+  word = [NSString stringWithFormat:@"%@ ", word];
 
-  return [a3 hasPrefix:v7];
+  return [p_inflection hasPrefix:word];
 }
 
-- (void)enumerateOccurrencesOfWord:(id)a3 withBlock:(id)a4
+- (void)enumerateOccurrencesOfWord:(id)word withBlock:(id)block
 {
   v16 = 0u;
   v17 = 0u;
@@ -118,21 +118,21 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if (-[THModelSearchIndexTerm p_inflection:matchesWord:](self, "p_inflection:matchesWord:", [v12 inflection], a3))
+        if (-[THModelSearchIndexTerm p_inflection:matchesWord:](self, "p_inflection:matchesWord:", [v12 inflection], word))
         {
-          v13 = [v12 occurrenceCount];
-          v14 = [v12 occurrences];
-          if (v13)
+          occurrenceCount = [v12 occurrenceCount];
+          occurrences = [v12 occurrences];
+          if (occurrenceCount)
           {
-            v15 = v14;
+            v15 = occurrences;
             do
             {
-              (*(a4 + 2))(a4, v15);
+              (*(block + 2))(block, v15);
               v15 += 24;
-              --v13;
+              --occurrenceCount;
             }
 
-            while (v13);
+            while (occurrenceCount);
           }
 
           return;
@@ -150,7 +150,7 @@
   }
 }
 
-- (BOOL)containsOccurrenceOfWord:(id)a3
+- (BOOL)containsOccurrenceOfWord:(id)word
 {
   v12 = 0u;
   v13 = 0u;
@@ -173,7 +173,7 @@
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        if (-[THModelSearchIndexTerm p_inflection:matchesWord:](self, "p_inflection:matchesWord:", [v10 inflection], a3) && objc_msgSend(v10, "occurrenceCount"))
+        if (-[THModelSearchIndexTerm p_inflection:matchesWord:](self, "p_inflection:matchesWord:", [v10 inflection], word) && objc_msgSend(v10, "occurrenceCount"))
         {
           LOBYTE(v6) = 1;
           return v6;

@@ -1,15 +1,15 @@
 @interface SKUIGiftConfirmLabeledValue
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIGiftConfirmLabeledValue)initWithGiftConfirmLabelStyle:(int64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIGiftConfirmLabeledValue)initWithGiftConfirmLabelStyle:(int64_t)style;
 - (void)layoutSubviews;
-- (void)setLabel:(id)a3;
-- (void)setSubtitleLabel:(id)a3;
-- (void)setValue:(id)a3;
+- (void)setLabel:(id)label;
+- (void)setSubtitleLabel:(id)label;
+- (void)setValue:(id)value;
 @end
 
 @implementation SKUIGiftConfirmLabeledValue
 
-- (SKUIGiftConfirmLabeledValue)initWithGiftConfirmLabelStyle:(int64_t)a3
+- (SKUIGiftConfirmLabeledValue)initWithGiftConfirmLabelStyle:(int64_t)style
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -21,19 +21,19 @@
   v5 = [(SKUIGiftConfirmLabeledValue *)&v14 init];
   if (v5)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
       v6 = objc_alloc_init(SKUIGiftDashView);
       dashView = v5->_dashView;
       v5->_dashView = v6;
 
       v8 = v5->_dashView;
-      v9 = [MEMORY[0x277D75348] clearColor];
-      [(SKUIGiftDashView *)v8 setBackgroundColor:v9];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(SKUIGiftDashView *)v8 setBackgroundColor:clearColor];
 
       v10 = v5->_dashView;
-      v11 = [MEMORY[0x277D75348] _labelColor];
-      v12 = [v11 colorWithAlphaComponent:0.3];
+      _labelColor = [MEMORY[0x277D75348] _labelColor];
+      v12 = [_labelColor colorWithAlphaComponent:0.3];
       [(SKUIGiftDashView *)v10 setDashColor:v12];
 
       [(SKUIGiftDashView *)v5->_dashView setDashSize:1.0, 1.0];
@@ -41,20 +41,20 @@
       [(SKUIGiftConfirmLabeledValue *)v5 addSubview:v5->_dashView];
     }
 
-    v5->_style = a3;
+    v5->_style = style;
   }
 
   return v5;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v15 = a3;
-  v4 = [(SKUIGiftConfirmLabeledValue *)self label];
-  if (v4 != v15 && ([v15 isEqualToString:v4] & 1) == 0)
+  labelCopy = label;
+  label = [(SKUIGiftConfirmLabeledValue *)self label];
+  if (label != labelCopy && ([labelCopy isEqualToString:label] & 1) == 0)
   {
     labelLabel = self->_labelLabel;
-    if (v15)
+    if (labelCopy)
     {
       if (!labelLabel)
       {
@@ -63,16 +63,16 @@
         self->_labelLabel = v6;
 
         v8 = self->_labelLabel;
-        v9 = [MEMORY[0x277D75348] clearColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(UILabel *)v8 setBackgroundColor:clearColor];
 
         v10 = self->_labelLabel;
         v11 = [MEMORY[0x277D74300] boldSystemFontOfSize:13.0];
         [(UILabel *)v10 setFont:v11];
 
         v12 = self->_labelLabel;
-        v13 = [MEMORY[0x277D75348] _labelColor];
-        [(UILabel *)v12 setTextColor:v13];
+        _labelColor = [MEMORY[0x277D75348] _labelColor];
+        [(UILabel *)v12 setTextColor:_labelColor];
 
         [(UILabel *)self->_labelLabel setTextAlignment:4];
         [(SKUIGiftConfirmLabeledValue *)self addSubview:self->_labelLabel];
@@ -94,14 +94,14 @@
   }
 }
 
-- (void)setSubtitleLabel:(id)a3
+- (void)setSubtitleLabel:(id)label
 {
-  v15 = a3;
-  v4 = [(SKUIGiftConfirmLabeledValue *)self subtitleLabel];
-  if (v4 != v15 && ([v15 isEqualToString:v4] & 1) == 0)
+  labelCopy = label;
+  subtitleLabel = [(SKUIGiftConfirmLabeledValue *)self subtitleLabel];
+  if (subtitleLabel != labelCopy && ([labelCopy isEqualToString:subtitleLabel] & 1) == 0)
   {
     subtitleLabel = self->_subtitleLabel;
-    if (v15)
+    if (labelCopy)
     {
       if (!subtitleLabel)
       {
@@ -110,16 +110,16 @@
         self->_subtitleLabel = v6;
 
         v8 = self->_subtitleLabel;
-        v9 = [MEMORY[0x277D75348] clearColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(UILabel *)v8 setBackgroundColor:clearColor];
 
         v10 = self->_subtitleLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:13.0];
         [(UILabel *)v10 setFont:v11];
 
         v12 = self->_subtitleLabel;
-        v13 = [MEMORY[0x277D75348] _secondaryLabelColor];
-        [(UILabel *)v12 setTextColor:v13];
+        _secondaryLabelColor = [MEMORY[0x277D75348] _secondaryLabelColor];
+        [(UILabel *)v12 setTextColor:_secondaryLabelColor];
 
         [(UILabel *)self->_subtitleLabel setTextAlignment:4];
         [(SKUIGiftConfirmLabeledValue *)self addSubview:self->_subtitleLabel];
@@ -141,14 +141,14 @@
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v20 = a3;
-  v4 = [(SKUIGiftConfirmLabeledValue *)self label];
-  if (v4 != v20 && ([v20 isEqualToString:v4] & 1) == 0)
+  valueCopy = value;
+  label = [(SKUIGiftConfirmLabeledValue *)self label];
+  if (label != valueCopy && ([valueCopy isEqualToString:label] & 1) == 0)
   {
     valueLabel = self->_valueLabel;
-    if (!v20)
+    if (!valueCopy)
     {
       [(UILabel *)valueLabel removeFromSuperview];
       v17 = self->_valueLabel;
@@ -171,16 +171,16 @@ LABEL_16:
     self->_valueLabel = v6;
 
     v8 = self->_valueLabel;
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v8 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v8 setBackgroundColor:clearColor];
 
     v10 = self->_valueLabel;
     v11 = [MEMORY[0x277D74300] systemFontOfSize:13.0];
     [(UILabel *)v10 setFont:v11];
 
     v12 = self->_valueLabel;
-    v13 = [MEMORY[0x277D75348] _secondaryLabelColor];
-    [(UILabel *)v12 setTextColor:v13];
+    _secondaryLabelColor = [MEMORY[0x277D75348] _secondaryLabelColor];
+    [(UILabel *)v12 setTextColor:_secondaryLabelColor];
 
     [(UILabel *)self->_valueLabel setTextAlignment:4];
     style = self->_style;
@@ -188,11 +188,11 @@ LABEL_16:
     {
       if (style == 1)
       {
-        v18 = [MEMORY[0x277D75418] currentDevice];
-        v19 = [v18 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
         v15 = self->_valueLabel;
-        if (v19 == 1)
+        if (userInterfaceIdiom == 1)
         {
           v16 = 7;
         }
@@ -233,8 +233,8 @@ LABEL_18:
 
 - (void)layoutSubviews
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
   [(SKUIGiftConfirmLabeledValue *)self bounds];
   v6 = v5;
@@ -251,7 +251,7 @@ LABEL_18:
     v19 = v16;
     v20 = v17;
     v21 = self->_labelLabel;
-    if (v4)
+    if (userInterfaceLayoutDirection)
     {
       [SKUICGRectHelpers rect:v6 withFlippedOriginXRelativeTo:v15, v16, v17, v6, v69, v8, v10];
     }
@@ -286,7 +286,7 @@ LABEL_18:
     v31 = v28;
     v32 = self->_subtitleLabel;
     v33 = v14;
-    if (v4)
+    if (userInterfaceLayoutDirection)
     {
       [SKUICGRectHelpers rect:v14 withFlippedOriginXRelativeTo:v26, v27, v28, v6, v69, v25, v24];
       v14 = v34;
@@ -357,7 +357,7 @@ LABEL_18:
     }
 
     v51 = self->_valueLabel;
-    if (v4)
+    if (userInterfaceLayoutDirection)
     {
       [SKUICGRectHelpers rect:v14 withFlippedOriginXRelativeTo:v40, v47, v38, v6, v69, v8, v10];
       v14 = v52;
@@ -373,7 +373,7 @@ LABEL_18:
   {
     [(SKUIGiftDashView *)dashView frame];
     v56 = v10 + -1.0;
-    if (v4)
+    if (userInterfaceLayoutDirection)
     {
       v57 = self->_valueLabel;
       if (v57)
@@ -425,17 +425,17 @@ LABEL_18:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   labelLabel = self->_labelLabel;
   if (!labelLabel)
   {
-    height = a3.height;
+    height = fits.height;
     goto LABEL_5;
   }
 
-  [(UILabel *)labelLabel frame:a3.width];
+  [(UILabel *)labelLabel frame:fits.width];
   height = v7;
   if ((self->_style | 2) != 2)
   {

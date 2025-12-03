@@ -1,37 +1,37 @@
 @interface VMSilenceRemover
 - (VMAudioProvider)inputProvider;
-- (VMSilenceRemover)initWithSampleRate:(double)a3 channelCount:(int)a4 error:(id *)a5;
-- (float)_getInput:(int *)a3;
+- (VMSilenceRemover)initWithSampleRate:(double)rate channelCount:(int)count error:(id *)error;
+- (float)_getInput:(int *)input;
 - (float)saved;
-- (int)fillNextBuffer:(AudioBufferList *)a3 frameCount:(int)a4;
-- (int)readFromInternalBuffer:(AudioBufferList *)a3 frameCount:(int)a4 offset:(int)a5;
+- (int)fillNextBuffer:(AudioBufferList *)buffer frameCount:(int)count;
+- (int)readFromInternalBuffer:(AudioBufferList *)buffer frameCount:(int)count offset:(int)offset;
 - (void)_advanceToOverThresholdState;
 - (void)_discardSilenceFrames;
 - (void)_makeCutAndStartFlush;
 - (void)dealloc;
 - (void)flush;
 - (void)reset;
-- (void)setCutPadding:(float)a3;
-- (void)setFadeDuration:(float)a3;
+- (void)setCutPadding:(float)padding;
+- (void)setFadeDuration:(float)duration;
 @end
 
 @implementation VMSilenceRemover
 
-- (void)setCutPadding:(float)a3
+- (void)setCutPadding:(float)padding
 {
   [(VMSilenceRemover *)self flush];
-  self->_cutPadding = a3;
-  self->_cutPaddingInSamples = (self->_sampleRate * a3);
+  self->_cutPadding = padding;
+  self->_cutPaddingInSamples = (self->_sampleRate * padding);
   [(VMSilenceRemover *)self updateContiguousThreshold];
 
   [(VMSilenceRemover *)self resetCounter];
 }
 
-- (void)setFadeDuration:(float)a3
+- (void)setFadeDuration:(float)duration
 {
   [(VMSilenceRemover *)self flush];
-  self->_fadeDuration = a3;
-  self->_crossfadeDurationInSamples = (self->_sampleRate * a3);
+  self->_fadeDuration = duration;
+  self->_crossfadeDurationInSamples = (self->_sampleRate * duration);
   [(VMSilenceRemover *)self updateContiguousThreshold];
 
   [(VMSilenceRemover *)self resetCounter];
@@ -48,7 +48,7 @@
   [(VMSilenceRemover *)self resetCounter];
 }
 
-- (VMSilenceRemover)initWithSampleRate:(double)a3 channelCount:(int)a4 error:(id *)a5
+- (VMSilenceRemover)initWithSampleRate:(double)rate channelCount:(int)count error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = VMSilenceRemover;
@@ -56,15 +56,15 @@
   v8 = v7;
   if (v7)
   {
-    v7->_sampleRate = a3;
-    v7->_channelCount = a4;
+    v7->_sampleRate = rate;
+    v7->_channelCount = count;
     v7->_fadeDuration = 0.0025;
     *&v7->_cutPadding = 0x3C03126F3D4CCCCDLL;
-    *&v7->_crossfadeDurationInSamples = vmovn_s64(vcvtq_s64_f64(vmulq_n_f64(xmmword_100240500, a3)));
-    v7->_maxSilenceFramesToRender = (a3 * 0.699999988);
+    *&v7->_crossfadeDurationInSamples = vmovn_s64(vcvtq_s64_f64(vmulq_n_f64(xmmword_100240500, rate)));
+    v7->_maxSilenceFramesToRender = (rate * 0.699999988);
     v7->_silenceRemovalRatio = 0.7;
     [(VMSilenceRemover *)v7 updateContiguousThreshold];
-    if (sub_100057FF0(&v8->_processingBuffer, (v8->_sampleRate * 40.0), v8->_channelCount, a5) && sub_100057FF0(&v8->_inputBuffer, 0x8000, v8->_channelCount, a5))
+    if (sub_100057FF0(&v8->_processingBuffer, (v8->_sampleRate * 40.0), v8->_channelCount, error) && sub_100057FF0(&v8->_inputBuffer, 0x8000, v8->_channelCount, error))
     {
       v8->_preCutBuffer = sub_100067480(v8->_channelCount, v8->_sampleRate, 4);
       operator new();
@@ -104,12 +104,12 @@
   [(VMSilenceRemover *)&v5 dealloc];
 }
 
-- (int)fillNextBuffer:(AudioBufferList *)a3 frameCount:(int)a4
+- (int)fillNextBuffer:(AudioBufferList *)buffer frameCount:(int)count
 {
-  v4 = *&a4;
-  v7 = [(VMSilenceRemover *)self inputProvider];
-  v8 = v7;
-  if (!v7)
+  v4 = *&count;
+  inputProvider = [(VMSilenceRemover *)self inputProvider];
+  v8 = inputProvider;
+  if (!inputProvider)
   {
     goto LABEL_77;
   }
@@ -119,7 +119,7 @@
     v62 = atomic_load(&self->_processingBuffer.mFill);
     if (v62 < 1)
     {
-      LODWORD(v9) = [v7 fillNextBuffer:a3 frameCount:v4];
+      LODWORD(v9) = [inputProvider fillNextBuffer:buffer frameCount:v4];
     }
 
     else
@@ -129,7 +129,7 @@
         [(VMSilenceRemover *)self _makeCutAndStartFlush];
       }
 
-      LODWORD(v9) = [(VMSilenceRemover *)self readFromInternalBuffer:a3 frameCount:v4 offset:0];
+      LODWORD(v9) = [(VMSilenceRemover *)self readFromInternalBuffer:buffer frameCount:v4 offset:0];
       if (v4 - v9 >= 1)
       {
         mReadBufferlist = self->_inputBuffer.mReadBufferlist;
@@ -155,7 +155,7 @@
         {
           v68 = 0;
           v69 = &mReadBufferlist->mBuffers[0].mData;
-          v70 = &a3->mBuffers[0].mData;
+          v70 = &buffer->mBuffers[0].mData;
           do
           {
             v71 = *v70;
@@ -189,7 +189,7 @@ LABEL_77:
   {
     if (self->_state == 2)
     {
-      LODWORD(v9) = [(VMSilenceRemover *)self readFromInternalBuffer:a3 frameCount:(v4 - v9) offset:v9]+ v9;
+      LODWORD(v9) = [(VMSilenceRemover *)self readFromInternalBuffer:buffer frameCount:(v4 - v9) offset:v9]+ v9;
       goto LABEL_7;
     }
 
@@ -303,7 +303,7 @@ LABEL_7:
           v47 = self->_channelCount;
           if (v47)
           {
-            v48 = &a3->mBuffers[0].mData;
+            v48 = &buffer->mBuffers[0].mData;
             v49 = v14;
             do
             {
@@ -471,23 +471,23 @@ LABEL_78:
   return v9;
 }
 
-- (int)readFromInternalBuffer:(AudioBufferList *)a3 frameCount:(int)a4 offset:(int)a5
+- (int)readFromInternalBuffer:(AudioBufferList *)buffer frameCount:(int)count offset:(int)offset
 {
   v6 = atomic_load(&self->_processingBuffer.mFill);
-  v7 = v6 > a4;
-  if (v6 >= a4)
+  v7 = v6 > count;
+  if (v6 >= count)
   {
-    v8 = a4;
+    countCopy = count;
   }
 
   else
   {
-    v8 = v6;
+    countCopy = v6;
   }
 
-  sub_100059444(&self->_processingBuffer, a3, v8, a5);
+  sub_100059444(&self->_processingBuffer, buffer, countCopy, offset);
   self->_state = 2 * v7;
-  return v8;
+  return countCopy;
 }
 
 - (void)_advanceToOverThresholdState
@@ -569,11 +569,11 @@ LABEL_78:
   self->_state = 2;
 }
 
-- (float)_getInput:(int *)a3
+- (float)_getInput:(int *)input
 {
-  v5 = [(VMSilenceRemover *)self inputProvider];
-  v6 = v5;
-  if (v5)
+  inputProvider = [(VMSilenceRemover *)self inputProvider];
+  v6 = inputProvider;
+  if (inputProvider)
   {
     v7 = atomic_load(&self->_inputBuffer.mFill);
     if (v7 <= 2047)
@@ -597,13 +597,13 @@ LABEL_78:
         while (mNumberBuffers);
       }
 
-      v13 = [v5 fillNextBuffer:? frameCount:?];
+      v13 = [inputProvider fillNextBuffer:? frameCount:?];
       self->counter += v13;
       sub_10003FE04(&self->_inputBuffer, v13);
     }
 
     v14 = atomic_load(&self->_inputBuffer.mFill);
-    *a3 = v14;
+    *input = v14;
     mReadPointers = self->_inputBuffer.mReadPointers;
   }
 

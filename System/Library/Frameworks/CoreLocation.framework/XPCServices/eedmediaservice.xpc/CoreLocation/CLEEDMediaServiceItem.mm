@@ -1,28 +1,28 @@
 @interface CLEEDMediaServiceItem
-- (BOOL)isEqual:(id)a3;
-- (CLEEDMediaServiceItem)initWithMediaItem:(id)a3 mediaRequest:(id)a4 mediaService:(id)a5;
-- (id)encryptMediaItem:(id)a3 returnedAuthTag:(id *)a4;
-- (int64_t)compareMediaSize:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLEEDMediaServiceItem)initWithMediaItem:(id)item mediaRequest:(id)request mediaService:(id)service;
+- (id)encryptMediaItem:(id)item returnedAuthTag:(id *)tag;
+- (int64_t)compareMediaSize:(id)size;
 - (unint64_t)hash;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
 - (void)cancelDelayTimer;
-- (void)generateEncrytionKeyForMediaID:(id)a3 returningKey:(id *)a4 IV:(id *)a5;
-- (void)handleUploadTaskCompletionForItem:(id)a3 response:(id)a4 error:(id)a5;
-- (void)handleUploadTaskDelayForItem:(id)a3 response:(id)a4 error:(id)a5;
-- (void)handleUploadTaskForSession:(id)a3 withRequest:(id)a4 resumeData:(id)a5;
-- (void)processMediaItemWithCompletion:(id)a3;
-- (void)setupUploadTaskForSession:(id)a3 withRequest:(id)a4 resumeData:(id)a5 urlSessionError:(id)a6;
+- (void)generateEncrytionKeyForMediaID:(id)d returningKey:(id *)key IV:(id *)v;
+- (void)handleUploadTaskCompletionForItem:(id)item response:(id)response error:(id)error;
+- (void)handleUploadTaskDelayForItem:(id)item response:(id)response error:(id)error;
+- (void)handleUploadTaskForSession:(id)session withRequest:(id)request resumeData:(id)data;
+- (void)processMediaItemWithCompletion:(id)completion;
+- (void)setupUploadTaskForSession:(id)session withRequest:(id)request resumeData:(id)data urlSessionError:(id)error;
 @end
 
 @implementation CLEEDMediaServiceItem
 
-- (CLEEDMediaServiceItem)initWithMediaItem:(id)a3 mediaRequest:(id)a4 mediaService:(id)a5
+- (CLEEDMediaServiceItem)initWithMediaItem:(id)item mediaRequest:(id)request mediaService:(id)service
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  requestCopy = request;
+  serviceCopy = service;
   v51.receiver = self;
   v51.super_class = CLEEDMediaServiceItem;
   v12 = [(CLEEDMediaServiceItem *)&v51 init];
@@ -32,9 +32,9 @@
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v12->_mediaRequest, a4);
-  objc_storeStrong(&v13->_mediaItem, a3);
-  objc_storeStrong(&v13->_mediaService, a5);
+  objc_storeStrong(&v12->_mediaRequest, request);
+  objc_storeStrong(&v13->_mediaItem, item);
+  objc_storeStrong(&v13->_mediaService, service);
   urlUploadTask = v13->_urlUploadTask;
   v13->_urlUploadTask = 0;
 
@@ -52,37 +52,37 @@
   v13->_timestampUploadStart = 0;
 
   v19 = +[NSFileManager defaultManager];
-  v20 = [v9 stagingURL];
-  v21 = [v20 path];
-  v22 = [v19 fileExistsAtPath:v21];
+  stagingURL = [itemCopy stagingURL];
+  path = [stagingURL path];
+  v22 = [v19 fileExistsAtPath:path];
 
   v23 = +[NSFileManager defaultManager];
   if (v22)
   {
-    v24 = [v9 stagingURL];
-    v25 = [v24 path];
+    stagingURL2 = [itemCopy stagingURL];
+    path2 = [stagingURL2 path];
     v50 = 0;
     v26 = &v50;
     v27 = &v50;
     goto LABEL_6;
   }
 
-  v28 = [v9 encryptedFileURL];
-  v29 = [v28 path];
-  v30 = [v23 fileExistsAtPath:v29];
+  encryptedFileURL = [itemCopy encryptedFileURL];
+  path3 = [encryptedFileURL path];
+  v30 = [v23 fileExistsAtPath:path3];
 
   if (v30)
   {
     v23 = +[NSFileManager defaultManager];
-    v24 = [v9 encryptedFileURL];
-    v25 = [v24 path];
+    stagingURL2 = [itemCopy encryptedFileURL];
+    path2 = [stagingURL2 path];
     v49 = 0;
     v26 = &v49;
     v27 = &v49;
 LABEL_6:
-    v31 = [v23 attributesOfItemAtPath:v25 error:v27];
+    v31 = [v23 attributesOfItemAtPath:path2 error:v27];
     v32 = *v26;
-    v33 = [v31 fileSize];
+    fileSize = [v31 fileSize];
 
     if (v32)
     {
@@ -95,18 +95,18 @@ LABEL_6:
       if (os_log_type_enabled(qword_100029E68, OS_LOG_TYPE_ERROR))
       {
         log = v34;
-        v44 = [v9 stagingURL];
-        v45 = [v44 path];
-        v46 = [v9 encryptedFileURL];
-        v47 = [v46 path];
+        stagingURL3 = [itemCopy stagingURL];
+        path4 = [stagingURL3 path];
+        encryptedFileURL2 = [itemCopy encryptedFileURL];
+        path5 = [encryptedFileURL2 path];
         *buf = 136447235;
         v53 = "[CLEEDMediaServiceItem initWithMediaItem:mediaRequest:mediaService:]";
         v54 = 2113;
-        v55 = v45;
+        v55 = path4;
         v56 = 2113;
-        v57 = *&v47;
+        v57 = *&path5;
         v58 = 2050;
-        v59 = v33;
+        v59 = fileSize;
         v60 = 2114;
         v61 = v32;
         _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "#EED2EMS,%{public}s, File size error for stagingFile:%{private}@ or encryptedFile:%{private}@, size:%{public}ld, error:%{public}@", buf, 0x34u);
@@ -119,9 +119,9 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v33 = 0;
+  fileSize = 0;
 LABEL_13:
-  [(CLEEDMediaItem *)v13->_mediaItem setMediaItemSizeBytes:v33];
+  [(CLEEDMediaItem *)v13->_mediaItem setMediaItemSizeBytes:fileSize];
 LABEL_14:
   if (qword_100029E70 != -1)
   {
@@ -133,16 +133,16 @@ LABEL_14:
   {
     mediaItem = v13->_mediaItem;
     v38 = v36;
-    v39 = [(CLEEDMediaItem *)mediaItem mediaItemID];
-    v40 = [v39 UUIDString];
-    v41 = [v40 UTF8String];
-    v42 = [(CLEEDMediaItem *)v13->_mediaItem mediaItemSizeBytes];
+    mediaItemID = [(CLEEDMediaItem *)mediaItem mediaItemID];
+    uUIDString = [mediaItemID UUIDString];
+    uTF8String = [uUIDString UTF8String];
+    mediaItemSizeBytes = [(CLEEDMediaItem *)v13->_mediaItem mediaItemSizeBytes];
     *buf = 136446723;
     v53 = "[CLEEDMediaServiceItem initWithMediaItem:mediaRequest:mediaService:]";
     v54 = 2081;
-    v55 = v41;
+    v55 = uTF8String;
     v56 = 2049;
-    v57 = vcvtd_n_f64_u64(v42, 0x14uLL);
+    v57 = vcvtd_n_f64_u64(mediaItemSizeBytes, 0x14uLL);
     _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "#EED2EMS,%{public}s, mediaID:%{private}s, size:%{private}.2lf MB", buf, 0x20u);
   }
 
@@ -152,22 +152,22 @@ LABEL_19:
   return v35;
 }
 
-- (int64_t)compareMediaSize:(id)a3
+- (int64_t)compareMediaSize:(id)size
 {
-  v4 = a3;
-  v5 = [(CLEEDMediaServiceItem *)self mediaItem];
-  v6 = [v5 mediaItemSizeBytes];
-  v7 = [v4 mediaItem];
-  v8 = [v7 mediaItemSizeBytes];
+  sizeCopy = size;
+  mediaItem = [(CLEEDMediaServiceItem *)self mediaItem];
+  mediaItemSizeBytes = [mediaItem mediaItemSizeBytes];
+  mediaItem2 = [sizeCopy mediaItem];
+  mediaItemSizeBytes2 = [mediaItem2 mediaItemSizeBytes];
 
-  if (v6 <= v8)
+  if (mediaItemSizeBytes <= mediaItemSizeBytes2)
   {
-    v10 = [(CLEEDMediaServiceItem *)self mediaItem];
-    v11 = [v10 mediaItemSizeBytes];
-    v12 = [v4 mediaItem];
-    v13 = [v12 mediaItemSizeBytes];
+    mediaItem3 = [(CLEEDMediaServiceItem *)self mediaItem];
+    mediaItemSizeBytes3 = [mediaItem3 mediaItemSizeBytes];
+    mediaItem4 = [sizeCopy mediaItem];
+    mediaItemSizeBytes4 = [mediaItem4 mediaItemSizeBytes];
 
-    if (v11 == v13)
+    if (mediaItemSizeBytes3 == mediaItemSizeBytes4)
     {
       v9 = 0;
     }
@@ -186,10 +186,10 @@ LABEL_19:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_6;
   }
@@ -202,27 +202,27 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v5 = v4;
-  v6 = [(CLEEDMediaServiceItem *)self mediaItem];
-  if (!v6)
+  v5 = equalCopy;
+  mediaItem = [(CLEEDMediaServiceItem *)self mediaItem];
+  if (!mediaItem)
   {
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v7 = v6;
-  v8 = [(CLEEDMediaServiceItem *)v5 mediaItem];
-  if (!v8)
+  v7 = mediaItem;
+  mediaItem2 = [(CLEEDMediaServiceItem *)v5 mediaItem];
+  if (!mediaItem2)
   {
 
     goto LABEL_8;
   }
 
-  v9 = v8;
-  v10 = [(CLEEDMediaServiceItem *)self mediaItem];
-  v11 = [(CLEEDMediaServiceItem *)v5 mediaItem];
-  v12 = [v10 isEqual:v11];
+  v9 = mediaItem2;
+  mediaItem3 = [(CLEEDMediaServiceItem *)self mediaItem];
+  mediaItem4 = [(CLEEDMediaServiceItem *)v5 mediaItem];
+  v12 = [mediaItem3 isEqual:mediaItem4];
 
   if ((v12 & 1) == 0)
   {
@@ -238,15 +238,15 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v2 = [(CLEEDMediaServiceItem *)self mediaItem];
-  v3 = [v2 hash];
+  mediaItem = [(CLEEDMediaServiceItem *)self mediaItem];
+  v3 = [mediaItem hash];
 
   return v3;
 }
 
-- (void)generateEncrytionKeyForMediaID:(id)a3 returningKey:(id *)a4 IV:(id *)a5
+- (void)generateEncrytionKeyForMediaID:(id)d returningKey:(id *)key IV:(id *)v
 {
-  v6 = a3;
+  dCopy = d;
   if (qword_100029E70 != -1)
   {
     sub_100013344();
@@ -258,19 +258,19 @@ LABEL_10:
     *buf = 136446466;
     v28 = "[CLEEDMediaServiceItem generateEncrytionKeyForMediaID:returningKey:IV:]";
     v29 = 2114;
-    v30 = v6;
+    v30 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "#EED2EMS,%{public}s, Media encryption key generation for mediaID:%{public}@", buf, 0x16u);
   }
 
-  v8 = [v6 UUIDString];
+  uUIDString = [dCopy UUIDString];
   v9 = [@"device media response" dataUsingEncoding:4];
-  v10 = [(CLEEDMediaServiceRequest *)self->_mediaRequest sharedInfoPrefix];
-  v11 = +[NSMutableData dataWithCapacity:](NSMutableData, "dataWithCapacity:", [@"device media response" length] + objc_msgSend(v8, "length") + objc_msgSend(v10, "length"));
+  sharedInfoPrefix = [(CLEEDMediaServiceRequest *)self->_mediaRequest sharedInfoPrefix];
+  v11 = +[NSMutableData dataWithCapacity:](NSMutableData, "dataWithCapacity:", [@"device media response" length] + objc_msgSend(uUIDString, "length") + objc_msgSend(sharedInfoPrefix, "length"));
 
-  v12 = [(CLEEDMediaServiceRequest *)self->_mediaRequest sharedInfoPrefix];
-  [v11 appendData:v12];
+  sharedInfoPrefix2 = [(CLEEDMediaServiceRequest *)self->_mediaRequest sharedInfoPrefix];
+  [v11 appendData:sharedInfoPrefix2];
 
-  v13 = [v8 dataUsingEncoding:4];
+  v13 = [uUIDString dataUsingEncoding:4];
   [v11 appendData:v13];
 
   [v11 appendData:v9];
@@ -285,13 +285,13 @@ LABEL_10:
     sub_1000139C0(v14);
   }
 
-  v15 = [(CLEEDMediaServiceRequest *)self->_mediaRequest combinedSecret];
-  v16 = [CLEEDCryptoUtilities getDerivedKeyWithLength:48 secretData:v15 additionalInfo:v11];
+  combinedSecret = [(CLEEDMediaServiceRequest *)self->_mediaRequest combinedSecret];
+  v16 = [CLEEDCryptoUtilities getDerivedKeyWithLength:48 secretData:combinedSecret additionalInfo:v11];
 
   if (v16)
   {
-    *a4 = [v16 subdataWithRange:{0, 32}];
-    *a5 = [v16 subdataWithRange:{32, 16}];
+    *key = [v16 subdataWithRange:{0, 32}];
+    *v = [v16 subdataWithRange:{32, 16}];
     if (qword_100029E70 != -1)
     {
       sub_100013358();
@@ -302,19 +302,19 @@ LABEL_10:
     {
       log = v17;
       v18 = [v16 base64EncodedStringWithOptions:0];
-      v19 = [v18 UTF8String];
-      v20 = [*a4 base64EncodedStringWithOptions:0];
-      v21 = [v20 UTF8String];
-      v22 = [*a5 base64EncodedStringWithOptions:0];
-      v23 = [v22 UTF8String];
+      uTF8String = [v18 UTF8String];
+      v20 = [*key base64EncodedStringWithOptions:0];
+      uTF8String2 = [v20 UTF8String];
+      v22 = [*v base64EncodedStringWithOptions:0];
+      uTF8String3 = [v22 UTF8String];
       *buf = 136446979;
       v28 = "[CLEEDMediaServiceItem generateEncrytionKeyForMediaID:returningKey:IV:]";
       v29 = 2081;
-      v30 = v19;
+      v30 = uTF8String;
       v31 = 2081;
-      v32 = v21;
+      v32 = uTF8String2;
       v33 = 2081;
-      v34 = v23;
+      v34 = uTF8String3;
       _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "#EED2EMS,%{public}s, Derived key blob:%{private}s, derived key:%{private}s, derived IV:%{private}s", buf, 0x2Au);
     }
   }
@@ -333,9 +333,9 @@ LABEL_10:
   }
 }
 
-- (id)encryptMediaItem:(id)a3 returnedAuthTag:(id *)a4
+- (id)encryptMediaItem:(id)item returnedAuthTag:(id *)tag
 {
-  v6 = a3;
+  itemCopy = item;
   if (qword_100029E70 != -1)
   {
     sub_100013344();
@@ -345,26 +345,26 @@ LABEL_10:
   if (os_log_type_enabled(qword_100029E68, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v6 stagingURL];
-    v10 = [v9 path];
+    stagingURL = [itemCopy stagingURL];
+    path = [stagingURL path];
     *buf = 136446467;
     v73 = "[CLEEDMediaServiceItem encryptMediaItem:returnedAuthTag:]";
     v74 = 2113;
-    *v75 = v10;
+    *v75 = path;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#EED2EMS,%{public}s, Encrypting media file at path:%{private}@", buf, 0x16u);
   }
 
   v11 = +[NSFileManager defaultManager];
-  v12 = [v6 stagingURL];
-  v13 = [v12 path];
-  v14 = [v11 fileExistsAtPath:v13];
+  stagingURL2 = [itemCopy stagingURL];
+  path2 = [stagingURL2 path];
+  v14 = [v11 fileExistsAtPath:path2];
 
   if (v14)
   {
-    v15 = [v6 mediaItemID];
+    mediaItemID = [itemCopy mediaItemID];
     v70 = 0;
     v71 = 0;
-    [(CLEEDMediaServiceItem *)self generateEncrytionKeyForMediaID:v15 returningKey:&v71 IV:&v70];
+    [(CLEEDMediaServiceItem *)self generateEncrytionKeyForMediaID:mediaItemID returningKey:&v71 IV:&v70];
     v16 = v71;
     v17 = v70;
 
@@ -380,9 +380,9 @@ LABEL_10:
         sub_100013FE4();
       }
 
-      v20 = [v6 stagingURL];
-      v21 = [v20 path];
-      [CLEEDMediaService deleteFileAtPath:v21];
+      stagingURL3 = [itemCopy stagingURL];
+      path3 = [stagingURL3 path];
+      [CLEEDMediaService deleteFileAtPath:path3];
 
       v19 = 0;
       goto LABEL_31;
@@ -402,11 +402,11 @@ LABEL_10:
       }
 
 LABEL_28:
-      v22 = [v6 stagingURL];
-      v23 = v22;
+      stagingURL4 = [itemCopy stagingURL];
+      v23 = stagingURL4;
 LABEL_29:
-      v24 = [v22 path];
-      [CLEEDMediaService deleteFileAtPath:v24];
+      path4 = [stagingURL4 path];
+      [CLEEDMediaService deleteFileAtPath:path4];
       v19 = 0;
 LABEL_30:
 
@@ -431,9 +431,9 @@ LABEL_31:
       goto LABEL_28;
     }
 
-    v26 = [v6 stagingURL];
-    v27 = [v26 path];
-    v28 = fopen([v27 UTF8String], "rb");
+    stagingURL5 = [itemCopy stagingURL];
+    path5 = [stagingURL5 path];
+    v28 = fopen([path5 UTF8String], "rb");
 
     if (!v28)
     {
@@ -447,14 +447,14 @@ LABEL_31:
     }
 
     v68 = v28;
-    v65 = a4;
-    v29 = [v6 stagingURL];
-    v30 = [v29 path];
-    v31 = [v30 stringByAppendingString:@".encrypted"];
+    tagCopy = tag;
+    stagingURL6 = [itemCopy stagingURL];
+    path6 = [stagingURL6 path];
+    v31 = [path6 stringByAppendingString:@".encrypted"];
     v23 = [NSURL fileURLWithPath:v31];
 
-    v32 = [v23 path];
-    v33 = fopen([v32 UTF8String], "wb");
+    path7 = [v23 path];
+    v33 = fopen([path7 UTF8String], "wb");
 
     __stream = v33;
     if (!v33)
@@ -466,20 +466,20 @@ LABEL_31:
       }
 
       fclose(v68);
-      v47 = [v6 stagingURL];
-      v48 = [v47 path];
-      [CLEEDMediaService deleteFileAtPath:v48];
+      stagingURL7 = [itemCopy stagingURL];
+      path8 = [stagingURL7 path];
+      [CLEEDMediaService deleteFileAtPath:path8];
 
-      v22 = v23;
+      stagingURL4 = v23;
       goto LABEL_29;
     }
 
     v66 = v23;
-    v24 = [NSMutableData dataWithCapacity:0x100000];
-    v34 = [(CLEEDMediaServiceItem *)self mediaItem];
-    v35 = [v34 mediaItemSizeBytes] >> 20;
-    v36 = [(CLEEDMediaServiceItem *)self mediaItem];
-    if (([v36 mediaItemSizeBytes] & 0xFFFFF) != 0)
+    path4 = [NSMutableData dataWithCapacity:0x100000];
+    mediaItem = [(CLEEDMediaServiceItem *)self mediaItem];
+    v35 = [mediaItem mediaItemSizeBytes] >> 20;
+    mediaItem2 = [(CLEEDMediaServiceItem *)self mediaItem];
+    if (([mediaItem2 mediaItemSizeBytes] & 0xFFFFF) != 0)
     {
       v37 = v35 + 1;
     }
@@ -499,7 +499,7 @@ LABEL_31:
         goto LABEL_71;
       }
 
-      v39 = fread([v24 mutableBytes], 1uLL, 0x100000uLL, v68);
+      v39 = fread([path4 mutableBytes], 1uLL, 0x100000uLL, v68);
       if (!v39)
       {
         goto LABEL_71;
@@ -531,8 +531,8 @@ LABEL_31:
         _os_log_debug_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEBUG, "#EED2EMS,%{public}s, Encrypting chunk %{public}d of %{public}d, chunkLength:%{public}zu", buf, 0x22u);
       }
 
-      [v24 bytes];
-      [v24 mutableBytes];
+      [path4 bytes];
+      [path4 mutableBytes];
       if (CCCryptorGCMEncrypt())
       {
         v49 = sub_1000012D8();
@@ -544,7 +544,7 @@ LABEL_31:
         goto LABEL_70;
       }
 
-      v43 = fwrite([v24 bytes], 1uLL, v40, __stream);
+      v43 = fwrite([path4 bytes], 1uLL, v40, __stream);
       v44 = ferror(__stream);
       if (!v44)
       {
@@ -588,30 +588,30 @@ LABEL_31:
 LABEL_71:
         fclose(v68);
         fclose(__stream);
-        v52 = [NSMutableData dataWithLength:16];
-        [v52 mutableBytes];
-        [v52 length];
+        path13 = [NSMutableData dataWithLength:16];
+        [path13 mutableBytes];
+        [path13 length];
         v53 = CCCryptorGCMFinalize();
         CCCryptorRelease(cryptorRef);
         if (!v53)
         {
-          v58 = v52;
-          *v65 = v52;
+          v58 = path13;
+          *tagCopy = path13;
           v59 = sub_1000012D8();
           if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
           {
-            v60 = [*v65 base64EncodedStringWithOptions:0];
-            v61 = [v60 UTF8String];
+            v60 = [*tagCopy base64EncodedStringWithOptions:0];
+            uTF8String = [v60 UTF8String];
             *buf = 136446467;
             v73 = "[CLEEDMediaServiceItem encryptMediaItem:returnedAuthTag:]";
             v74 = 2081;
-            *v75 = v61;
+            *v75 = uTF8String;
             _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "#EED2EMS,%{public}s, AuthenticationTag:%{private}s", buf, 0x16u);
           }
 
-          v62 = [v6 stagingURL];
-          v63 = [v62 path];
-          [CLEEDMediaService deleteFileAtPath:v63];
+          stagingURL8 = [itemCopy stagingURL];
+          path9 = [stagingURL8 path];
+          [CLEEDMediaService deleteFileAtPath:path9];
 
           v23 = v66;
           v19 = v66;
@@ -626,13 +626,13 @@ LABEL_76:
           sub_100013E30();
         }
 
-        v55 = [v6 stagingURL];
-        v56 = [v55 path];
-        [CLEEDMediaService deleteFileAtPath:v56];
+        stagingURL9 = [itemCopy stagingURL];
+        path10 = [stagingURL9 path];
+        [CLEEDMediaService deleteFileAtPath:path10];
 
         v23 = v66;
-        v57 = [v66 path];
-        [CLEEDMediaService deleteFileAtPath:v57];
+        path11 = [v66 path];
+        [CLEEDMediaService deleteFileAtPath:path11];
 
 LABEL_75:
         v19 = 0;
@@ -650,13 +650,13 @@ LABEL_70:
 
     fclose(v68);
     fclose(__stream);
-    v50 = [v6 stagingURL];
-    v51 = [v50 path];
-    [CLEEDMediaService deleteFileAtPath:v51];
+    stagingURL10 = [itemCopy stagingURL];
+    path12 = [stagingURL10 path];
+    [CLEEDMediaService deleteFileAtPath:path12];
 
     v23 = v66;
-    v52 = [v66 path];
-    [CLEEDMediaService deleteFileAtPath:v52];
+    path13 = [v66 path];
+    [CLEEDMediaService deleteFileAtPath:path13];
     goto LABEL_75;
   }
 
@@ -677,9 +677,9 @@ LABEL_32:
   return v19;
 }
 
-- (void)processMediaItemWithCompletion:(id)a3
+- (void)processMediaItemWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (qword_100029E70 != -1)
   {
     sub_100013344();
@@ -689,97 +689,97 @@ LABEL_32:
   if (os_log_type_enabled(qword_100029E68, OS_LOG_TYPE_DEFAULT))
   {
     log = v5;
-    v45 = [(CLEEDMediaServiceItem *)self mediaItem];
-    v44 = [v45 mediaItemID];
-    v43 = [v44 UUIDString];
-    v35 = [v43 UTF8String];
-    v42 = [(CLEEDMediaServiceItem *)self mediaItem];
-    v41 = [v42 encryptedFileURL];
-    v40 = [v41 path];
-    v34 = [v40 UTF8String];
-    v38 = [(CLEEDMediaServiceItem *)self mediaItem];
-    v37 = [v38 authTag];
-    v6 = [v37 base64EncodedStringWithOptions:0];
-    v33 = [v6 UTF8String];
-    v36 = [(CLEEDMediaServiceItem *)self mediaRequest];
-    v7 = [v36 deviceKeyConfirmation];
-    [v7 base64EncodedStringWithOptions:0];
-    v8 = v46 = v4;
-    v9 = [v8 UTF8String];
-    v10 = [(CLEEDMediaServiceItem *)self mediaRequest];
-    v11 = [v10 uploadURL];
-    v12 = [v11 UTF8String];
-    v13 = [(CLEEDMediaServiceItem *)self mediaRequest];
-    v14 = [v13 token];
+    mediaItem = [(CLEEDMediaServiceItem *)self mediaItem];
+    mediaItemID = [mediaItem mediaItemID];
+    uUIDString = [mediaItemID UUIDString];
+    uTF8String = [uUIDString UTF8String];
+    mediaItem2 = [(CLEEDMediaServiceItem *)self mediaItem];
+    encryptedFileURL = [mediaItem2 encryptedFileURL];
+    path = [encryptedFileURL path];
+    uTF8String2 = [path UTF8String];
+    mediaItem3 = [(CLEEDMediaServiceItem *)self mediaItem];
+    authTag = [mediaItem3 authTag];
+    v6 = [authTag base64EncodedStringWithOptions:0];
+    uTF8String3 = [v6 UTF8String];
+    mediaRequest = [(CLEEDMediaServiceItem *)self mediaRequest];
+    deviceKeyConfirmation = [mediaRequest deviceKeyConfirmation];
+    [deviceKeyConfirmation base64EncodedStringWithOptions:0];
+    v8 = v46 = completionCopy;
+    uTF8String4 = [v8 UTF8String];
+    mediaRequest2 = [(CLEEDMediaServiceItem *)self mediaRequest];
+    uploadURL = [mediaRequest2 uploadURL];
+    uTF8String5 = [uploadURL UTF8String];
+    mediaRequest3 = [(CLEEDMediaServiceItem *)self mediaRequest];
+    token = [mediaRequest3 token];
     *buf = 136447747;
     v48 = "[CLEEDMediaServiceItem processMediaItemWithCompletion:]";
     v49 = 2081;
-    v50 = v35;
+    v50 = uTF8String;
     v51 = 2081;
-    v52 = v34;
+    v52 = uTF8String2;
     v53 = 2081;
-    v54 = v33;
+    v54 = uTF8String3;
     v55 = 2081;
-    v56 = v9;
+    v56 = uTF8String4;
     v57 = 2081;
-    v58 = v12;
+    v58 = uTF8String5;
     v59 = 2081;
-    v60 = [v14 UTF8String];
+    uTF8String6 = [token UTF8String];
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "#EED2EMS,%{public}s, Starting media upload, mediaID:%{private}s, EncryptedFile:%{private}s, AuthTag:%{private}s, deviceKeyCnf:%{private}s, uploadURL:%{private}s, token:%{private}s", buf, 0x48u);
 
-    v4 = v46;
+    completionCopy = v46;
   }
 
-  [(CLEEDMediaServiceItem *)self setCompletionHandler:v4];
-  v15 = [(CLEEDMediaServiceItem *)self mediaRequest];
-  v16 = [v15 uploadURL];
-  v17 = [NSURL URLWithString:v16];
+  [(CLEEDMediaServiceItem *)self setCompletionHandler:completionCopy];
+  mediaRequest4 = [(CLEEDMediaServiceItem *)self mediaRequest];
+  uploadURL2 = [mediaRequest4 uploadURL];
+  v17 = [NSURL URLWithString:uploadURL2];
   v18 = [NSMutableURLRequest requestWithURL:v17];
 
   [v18 setHTTPMethod:@"PUT"];
   [v18 setValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
-  v19 = [(CLEEDMediaServiceItem *)self mediaItem];
-  v20 = [v19 mediaItemID];
-  v21 = [v20 UUIDString];
-  [v18 setValue:v21 forHTTPHeaderField:@"x-eed-media-id"];
+  mediaItem4 = [(CLEEDMediaServiceItem *)self mediaItem];
+  mediaItemID2 = [mediaItem4 mediaItemID];
+  uUIDString2 = [mediaItemID2 UUIDString];
+  [v18 setValue:uUIDString2 forHTTPHeaderField:@"x-eed-media-id"];
 
-  v22 = [(CLEEDMediaServiceItem *)self mediaItem];
-  v23 = [v22 authTag];
-  v24 = [v23 base64EncodedStringWithOptions:0];
+  mediaItem5 = [(CLEEDMediaServiceItem *)self mediaItem];
+  authTag2 = [mediaItem5 authTag];
+  v24 = [authTag2 base64EncodedStringWithOptions:0];
   [v18 setValue:v24 forHTTPHeaderField:@"x-eed-media-auth-tag"];
 
-  v25 = [(CLEEDMediaServiceItem *)self mediaRequest];
-  v26 = [v25 deviceKeyConfirmation];
-  v27 = [v26 base64EncodedStringWithOptions:0];
+  mediaRequest5 = [(CLEEDMediaServiceItem *)self mediaRequest];
+  deviceKeyConfirmation2 = [mediaRequest5 deviceKeyConfirmation];
+  v27 = [deviceKeyConfirmation2 base64EncodedStringWithOptions:0];
   [v18 setValue:v27 forHTTPHeaderField:@"x-eed-device-key-confirmation"];
 
-  v28 = [(CLEEDMediaServiceItem *)self mediaRequest];
-  v29 = [v28 token];
-  v30 = [@"Bearer " stringByAppendingString:v29];
+  mediaRequest6 = [(CLEEDMediaServiceItem *)self mediaRequest];
+  token2 = [mediaRequest6 token];
+  v30 = [@"Bearer " stringByAppendingString:token2];
   [v18 setValue:v30 forHTTPHeaderField:@"Authorization"];
 
-  v31 = [(CLEEDMediaServiceItem *)self mediaService];
-  v32 = [v31 getURLSession];
-  [(CLEEDMediaServiceItem *)self setupUploadTaskForSession:v32 withRequest:v18 resumeData:0 urlSessionError:0];
+  mediaService = [(CLEEDMediaServiceItem *)self mediaService];
+  getURLSession = [mediaService getURLSession];
+  [(CLEEDMediaServiceItem *)self setupUploadTaskForSession:getURLSession withRequest:v18 resumeData:0 urlSessionError:0];
 }
 
-- (void)setupUploadTaskForSession:(id)a3 withRequest:(id)a4 resumeData:(id)a5 urlSessionError:(id)a6
+- (void)setupUploadTaskForSession:(id)session withRequest:(id)request resumeData:(id)data urlSessionError:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v56 = a5;
-  v55 = a6;
-  v12 = [(CLEEDMediaServiceItem *)self mediaItem];
-  v54 = [v12 uploadAttempts];
+  sessionCopy = session;
+  requestCopy = request;
+  dataCopy = data;
+  errorCopy = error;
+  mediaItem = [(CLEEDMediaServiceItem *)self mediaItem];
+  uploadAttempts = [mediaItem uploadAttempts];
 
-  v13 = [(CLEEDMediaServiceItem *)self mediaItem];
-  v14 = [v13 uploadAttempts];
-  v15 = [(CLEEDMediaServiceItem *)self mediaItem];
-  [v15 setUploadAttempts:v14 + 1];
+  mediaItem2 = [(CLEEDMediaServiceItem *)self mediaItem];
+  uploadAttempts2 = [mediaItem2 uploadAttempts];
+  mediaItem3 = [(CLEEDMediaServiceItem *)self mediaItem];
+  [mediaItem3 setUploadAttempts:uploadAttempts2 + 1];
 
-  v16 = [(CLEEDMediaServiceItem *)self mediaRequest];
-  v17 = [v16 requestTimestamp];
-  [v17 timeIntervalSinceNow];
+  mediaRequest = [(CLEEDMediaServiceItem *)self mediaRequest];
+  requestTimestamp = [mediaRequest requestTimestamp];
+  [requestTimestamp timeIntervalSinceNow];
   v19 = v18;
 
   if (qword_100029E70 != -1)
@@ -792,41 +792,41 @@ LABEL_32:
   if (os_log_type_enabled(qword_100029E68, OS_LOG_TYPE_DEFAULT))
   {
     v22 = v21;
-    v23 = [(CLEEDMediaServiceItem *)self mediaItem];
+    mediaItem4 = [(CLEEDMediaServiceItem *)self mediaItem];
     *buf = 136447491;
     v65 = "[CLEEDMediaServiceItem setupUploadTaskForSession:withRequest:resumeData:urlSessionError:]";
     v66 = 2050;
-    v67 = [v23 uploadAttempts];
+    uploadAttempts3 = [mediaItem4 uploadAttempts];
     v68 = 2050;
     v69 = v20;
     v70 = 2113;
-    v71 = v10;
+    v71 = sessionCopy;
     v72 = 2114;
-    v73 = v11;
+    v73 = requestCopy;
     v74 = 2113;
-    v75 = v56;
+    v75 = dataCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "#EED2EMS,%{public}s, uploadAttempt:%{public}lu, timeElapsedSinceRequestSecs:%{public}lld, session:%{private}@, urlRequest:%{public}@, resumeData:%{private}@, ", buf, 0x3Eu);
   }
 
-  if (v10 && v11)
+  if (sessionCopy && requestCopy)
   {
-    v24 = [(CLEEDMediaServiceItem *)self mediaItem];
-    v25 = [v24 encryptedFileURL];
-    if (v25)
+    mediaItem5 = [(CLEEDMediaServiceItem *)self mediaItem];
+    encryptedFileURL = [mediaItem5 encryptedFileURL];
+    if (encryptedFileURL)
     {
-      v26 = [(CLEEDMediaServiceItem *)self mediaItem];
-      v28 = [v26 uploadAttempts] > 3 || v20 > 14400;
+      mediaItem6 = [(CLEEDMediaServiceItem *)self mediaItem];
+      v28 = [mediaItem6 uploadAttempts] > 3 || v20 > 14400;
 
       if (!v28)
       {
         [(CLEEDMediaServiceItem *)self cancelDelayTimer];
-        v29 = [(CLEEDMediaServiceItem *)self mediaService];
-        v30 = [v29 getQueue];
-        v31 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v30);
+        mediaService = [(CLEEDMediaServiceItem *)self mediaService];
+        getQueue = [mediaService getQueue];
+        v31 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, getQueue);
         [(CLEEDMediaServiceItem *)self setDelayTimer:v31];
 
-        v32 = [(CLEEDMediaServiceItem *)self delayTimer];
-        v33 = v32 == 0;
+        delayTimer = [(CLEEDMediaServiceItem *)self delayTimer];
+        v33 = delayTimer == 0;
 
         if (v33)
         {
@@ -840,30 +840,30 @@ LABEL_32:
             sub_100014060();
           }
 
-          [(CLEEDMediaServiceItem *)self handleUploadTaskForSession:v10 withRequest:v11 resumeData:v56, v54];
+          [(CLEEDMediaServiceItem *)self handleUploadTaskForSession:sessionCopy withRequest:requestCopy resumeData:dataCopy, uploadAttempts];
         }
 
         else
         {
-          v34 = dispatch_time(0, 10000000000 * v54);
-          v35 = [(CLEEDMediaServiceItem *)self delayTimer];
-          dispatch_source_set_timer(v35, v34, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+          v34 = dispatch_time(0, 10000000000 * uploadAttempts);
+          delayTimer2 = [(CLEEDMediaServiceItem *)self delayTimer];
+          dispatch_source_set_timer(delayTimer2, v34, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 
           objc_initWeak(buf, self);
-          v36 = [(CLEEDMediaServiceItem *)self delayTimer];
+          delayTimer3 = [(CLEEDMediaServiceItem *)self delayTimer];
           handler[0] = _NSConcreteStackBlock;
           handler[1] = 3221225472;
           handler[2] = sub_100004628;
           handler[3] = &unk_1000244C0;
           objc_copyWeak(&v61, buf);
           handler[4] = self;
-          v58 = v10;
-          v59 = v11;
-          v60 = v56;
-          dispatch_source_set_event_handler(v36, handler);
+          v58 = sessionCopy;
+          v59 = requestCopy;
+          v60 = dataCopy;
+          dispatch_source_set_event_handler(delayTimer3, handler);
 
-          v37 = [(CLEEDMediaServiceItem *)self delayTimer];
-          dispatch_resume(v37);
+          delayTimer4 = [(CLEEDMediaServiceItem *)self delayTimer];
+          dispatch_resume(delayTimer4);
 
           objc_destroyWeak(&v61);
           objc_destroyWeak(buf);
@@ -880,31 +880,31 @@ LABEL_32:
 
   v38 = [[NSMutableString alloc] initWithString:@"Error"];
   v39 = v38;
-  if (!v11)
+  if (!requestCopy)
   {
     v40 = [v38 stringByAppendingString:{@" -urlRequest nil, "}];
   }
 
-  if (!v10)
+  if (!sessionCopy)
   {
     v41 = [v39 stringByAppendingString:{@" -urlSession nil, "}];
   }
 
-  v42 = [(CLEEDMediaServiceItem *)self mediaItem];
-  v43 = [v42 encryptedFileURL];
-  v44 = v43 == 0;
+  mediaItem7 = [(CLEEDMediaServiceItem *)self mediaItem];
+  encryptedFileURL2 = [mediaItem7 encryptedFileURL];
+  v44 = encryptedFileURL2 == 0;
 
   if (v44)
   {
     v45 = [v39 stringByAppendingString:{@" -urlEncryptedFile nil, "}];
   }
 
-  v46 = [(CLEEDMediaServiceItem *)self mediaItem];
-  v47 = [v46 uploadAttempts] > 3;
+  mediaItem8 = [(CLEEDMediaServiceItem *)self mediaItem];
+  v47 = [mediaItem8 uploadAttempts] > 3;
 
-  if (v47 && (v48 = [v39 stringByAppendingString:{@" -max uploadAttempts reached, "}], v55))
+  if (v47 && (v48 = [v39 stringByAppendingString:{@" -max uploadAttempts reached, "}], errorCopy))
   {
-    v49 = v55;
+    v49 = errorCopy;
   }
 
   else
@@ -926,17 +926,17 @@ LABEL_32:
     v49 = [v51 initWithDomain:@"com.apple.locationd.CLEEDMediaService" code:1007 userInfo:v52];
   }
 
-  v53 = [(CLEEDMediaServiceItem *)self mediaItem];
-  [(CLEEDMediaServiceItem *)self handleUploadTaskCompletionForItem:v53 response:0 error:v49];
+  mediaItem9 = [(CLEEDMediaServiceItem *)self mediaItem];
+  [(CLEEDMediaServiceItem *)self handleUploadTaskCompletionForItem:mediaItem9 response:0 error:v49];
 
 LABEL_33:
 }
 
 - (void)cancelDelayTimer
 {
-  v3 = [(CLEEDMediaServiceItem *)self delayTimer];
+  delayTimer = [(CLEEDMediaServiceItem *)self delayTimer];
 
-  if (v3)
+  if (delayTimer)
   {
     if (qword_100029E70 != -1)
     {
@@ -949,29 +949,29 @@ LABEL_33:
       sub_100014184(v4);
     }
 
-    v5 = [(CLEEDMediaServiceItem *)self delayTimer];
-    dispatch_source_cancel(v5);
+    delayTimer2 = [(CLEEDMediaServiceItem *)self delayTimer];
+    dispatch_source_cancel(delayTimer2);
 
     [(CLEEDMediaServiceItem *)self setDelayTimer:0];
   }
 }
 
-- (void)handleUploadTaskForSession:(id)a3 withRequest:(id)a4 resumeData:(id)a5
+- (void)handleUploadTaskForSession:(id)session withRequest:(id)request resumeData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v39 = v10;
-  if (v10)
+  sessionCopy = session;
+  requestCopy = request;
+  dataCopy = data;
+  v39 = dataCopy;
+  if (dataCopy)
   {
-    v11 = [v8 uploadTaskWithResumeData:v10];
+    v11 = [sessionCopy uploadTaskWithResumeData:dataCopy];
     [(CLEEDMediaServiceItem *)self setUrlUploadTask:v11];
 
-    v12 = [(CLEEDMediaServiceItem *)self urlUploadTask];
+    urlUploadTask = [(CLEEDMediaServiceItem *)self urlUploadTask];
 
-    if (v12)
+    if (urlUploadTask)
     {
-      v13 = v9;
+      v13 = requestCopy;
       if (qword_100029E70 != -1)
       {
         sub_100013344();
@@ -988,10 +988,10 @@ LABEL_33:
 
     else
     {
-      v19 = [(CLEEDMediaServiceItem *)self mediaItem];
-      v20 = [v19 encryptedFileURL];
-      v13 = v9;
-      v21 = [v8 uploadTaskWithRequest:v9 fromFile:v20];
+      mediaItem = [(CLEEDMediaServiceItem *)self mediaItem];
+      encryptedFileURL = [mediaItem encryptedFileURL];
+      v13 = requestCopy;
+      v21 = [sessionCopy uploadTaskWithRequest:requestCopy fromFile:encryptedFileURL];
       [(CLEEDMediaServiceItem *)self setUrlUploadTask:v21];
     }
   }
@@ -1001,12 +1001,12 @@ LABEL_33:
     v15 = +[NSDate date];
     [(CLEEDMediaServiceItem *)self setTimestampUploadStart:v15];
 
-    v16 = [(CLEEDMediaServiceItem *)self mediaItem];
-    v17 = [v16 encryptedFileURL];
-    v18 = [v8 uploadTaskWithRequest:v9 fromFile:v17];
+    mediaItem2 = [(CLEEDMediaServiceItem *)self mediaItem];
+    encryptedFileURL2 = [mediaItem2 encryptedFileURL];
+    v18 = [sessionCopy uploadTaskWithRequest:requestCopy fromFile:encryptedFileURL2];
     [(CLEEDMediaServiceItem *)self setUrlUploadTask:v18];
 
-    v13 = v9;
+    v13 = requestCopy;
   }
 
   if (qword_100029E70 != -1)
@@ -1018,27 +1018,27 @@ LABEL_33:
   if (os_log_type_enabled(qword_100029E68, OS_LOG_TYPE_DEFAULT))
   {
     v23 = v22;
-    v38 = [(CLEEDMediaServiceItem *)self mediaItem];
+    mediaItem3 = [(CLEEDMediaServiceItem *)self mediaItem];
     v24 = v13;
-    v25 = v8;
-    v26 = [v38 uploadAttempts];
-    v27 = [(CLEEDMediaServiceItem *)self mediaItem];
-    v28 = [v27 mediaItemID];
-    v29 = [v28 UUIDString];
-    v30 = [v29 UTF8String];
-    v31 = [(CLEEDMediaServiceItem *)self urlUploadTask];
+    v25 = sessionCopy;
+    uploadAttempts = [mediaItem3 uploadAttempts];
+    mediaItem4 = [(CLEEDMediaServiceItem *)self mediaItem];
+    mediaItemID = [mediaItem4 mediaItemID];
+    uUIDString = [mediaItemID UUIDString];
+    uTF8String = [uUIDString UTF8String];
+    urlUploadTask2 = [(CLEEDMediaServiceItem *)self urlUploadTask];
     *buf = 136447747;
     v43 = "[CLEEDMediaServiceItem handleUploadTaskForSession:withRequest:resumeData:]";
     v44 = 2050;
-    v45 = v26;
-    v8 = v25;
+    v45 = uploadAttempts;
+    sessionCopy = v25;
     v13 = v24;
     v46 = 2082;
-    v47 = v30;
+    v47 = uTF8String;
     v48 = 2113;
-    v49 = v31;
+    v49 = urlUploadTask2;
     v50 = 2113;
-    v51 = v8;
+    v51 = sessionCopy;
     v52 = 2114;
     v53 = v24;
     v54 = 2113;
@@ -1046,15 +1046,15 @@ LABEL_33:
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "#EED2EMS,%{public}s, uploadAttempt:%{public}lu, mediaID:%{public}s, URLUploadTask:%{private}@, session:%{private}@, urlRequest:%{public}@, resumeData:%{private}@", buf, 0x48u);
   }
 
-  v32 = [(CLEEDMediaServiceItem *)self urlUploadTask];
+  urlUploadTask3 = [(CLEEDMediaServiceItem *)self urlUploadTask];
 
-  if (v32)
+  if (urlUploadTask3)
   {
-    v33 = [(CLEEDMediaServiceItem *)self urlUploadTask];
-    [v33 setDelegate:self];
+    urlUploadTask4 = [(CLEEDMediaServiceItem *)self urlUploadTask];
+    [urlUploadTask4 setDelegate:self];
 
-    v34 = [(CLEEDMediaServiceItem *)self urlUploadTask];
-    [v34 resume];
+    urlUploadTask5 = [(CLEEDMediaServiceItem *)self urlUploadTask];
+    [urlUploadTask5 resume];
   }
 
   else
@@ -1063,36 +1063,36 @@ LABEL_33:
     v40 = NSLocalizedDescriptionKey;
     v41 = @"Upload task creation failed";
     v36 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-    v34 = [v35 initWithDomain:@"com.apple.locationd.CLEEDMediaService" code:1008 userInfo:v36];
+    urlUploadTask5 = [v35 initWithDomain:@"com.apple.locationd.CLEEDMediaService" code:1008 userInfo:v36];
 
-    v37 = [(CLEEDMediaServiceItem *)self mediaItem];
-    [(CLEEDMediaServiceItem *)self handleUploadTaskCompletionForItem:v37 response:0 error:v34];
+    mediaItem5 = [(CLEEDMediaServiceItem *)self mediaItem];
+    [(CLEEDMediaServiceItem *)self handleUploadTaskCompletionForItem:mediaItem5 response:0 error:urlUploadTask5];
   }
 }
 
-- (void)handleUploadTaskCompletionForItem:(id)a3 response:(id)a4 error:(id)a5
+- (void)handleUploadTaskCompletionForItem:(id)item response:(id)response error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  itemCopy = item;
+  responseCopy = response;
+  errorCopy = error;
+  v11 = responseCopy;
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 statusCode];
+    statusCode = [v11 statusCode];
   }
 
   else
   {
-    if (!v10)
+    if (!errorCopy)
     {
       goto LABEL_6;
     }
 
-    v13 = [v10 code];
+    statusCode = [errorCopy code];
   }
 
-  [v8 setServerUploadStatus:v13];
+  [itemCopy setServerUploadStatus:statusCode];
 LABEL_6:
   if (qword_100029E70 != -1)
   {
@@ -1103,25 +1103,25 @@ LABEL_6:
   if (os_log_type_enabled(qword_100029E68, OS_LOG_TYPE_DEFAULT))
   {
     log = v14;
-    v15 = [v8 serverUploadStatus];
-    v31 = [(CLEEDMediaServiceItem *)self mediaItem];
-    v30 = [v31 mediaItemID];
-    [v30 UUIDString];
-    v17 = v16 = v10;
-    v18 = [v17 UTF8String];
-    v19 = [(CLEEDMediaServiceItem *)self urlUploadTask];
-    v20 = [v8 stagingURL];
-    v21 = [v20 lastPathComponent];
+    serverUploadStatus = [itemCopy serverUploadStatus];
+    mediaItem = [(CLEEDMediaServiceItem *)self mediaItem];
+    mediaItemID = [mediaItem mediaItemID];
+    [mediaItemID UUIDString];
+    v17 = v16 = errorCopy;
+    uTF8String = [v17 UTF8String];
+    urlUploadTask = [(CLEEDMediaServiceItem *)self urlUploadTask];
+    stagingURL = [itemCopy stagingURL];
+    lastPathComponent = [stagingURL lastPathComponent];
     *buf = 136448003;
     v33 = "[CLEEDMediaServiceItem handleUploadTaskCompletionForItem:response:error:]";
     v34 = 2050;
-    v35 = v15;
+    v35 = serverUploadStatus;
     v36 = 2082;
-    v37 = v18;
+    v37 = uTF8String;
     v38 = 2113;
-    v39 = v19;
+    v39 = urlUploadTask;
     v40 = 2081;
-    v41 = [v21 UTF8String];
+    uTF8String2 = [lastPathComponent UTF8String];
     v42 = 2114;
     v43 = v12;
     v44 = 2114;
@@ -1130,33 +1130,33 @@ LABEL_6:
     v47 = v12;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "#EED2EMS,%{public}s, serverUploadStatus:%{public}ld, mediaID:%{public}s, URLUploadTask:%{private}@, [item:%{private}s,response:%{public}@,error:%{public}@], httpResponse:%{public}@", buf, 0x52u);
 
-    v10 = v16;
+    errorCopy = v16;
   }
 
   if (v12 && [v12 statusCode] >= 200 && objc_msgSend(v12, "statusCode") <= 299)
   {
-    [v8 setUploadStatus:5];
-    v22 = [(CLEEDMediaServiceItem *)self timestampUploadStart];
-    [v22 timeIntervalSinceNow];
-    [v8 setDurationUploadMs:(fabs(v23) * 1000.0)];
+    [itemCopy setUploadStatus:5];
+    timestampUploadStart = [(CLEEDMediaServiceItem *)self timestampUploadStart];
+    [timestampUploadStart timeIntervalSinceNow];
+    [itemCopy setDurationUploadMs:(fabs(v23) * 1000.0)];
   }
 
   else
   {
-    [v8 setUploadStatus:6];
+    [itemCopy setUploadStatus:6];
   }
 
-  v24 = [(CLEEDMediaServiceItem *)self mediaItem];
-  v25 = [v24 encryptedFileURL];
-  v26 = [v25 path];
-  [CLEEDMediaService deleteFileAtPath:v26];
+  mediaItem2 = [(CLEEDMediaServiceItem *)self mediaItem];
+  encryptedFileURL = [mediaItem2 encryptedFileURL];
+  path = [encryptedFileURL path];
+  [CLEEDMediaService deleteFileAtPath:path];
 
-  v27 = [(CLEEDMediaServiceItem *)self completionHandler];
+  completionHandler = [(CLEEDMediaServiceItem *)self completionHandler];
 
-  if (v27)
+  if (completionHandler)
   {
-    v28 = [(CLEEDMediaServiceItem *)self completionHandler];
-    v28[2]();
+    completionHandler2 = [(CLEEDMediaServiceItem *)self completionHandler];
+    completionHandler2[2]();
 
     [(CLEEDMediaServiceItem *)self setCompletionHandler:0];
   }
@@ -1175,12 +1175,12 @@ LABEL_6:
   }
 }
 
-- (void)handleUploadTaskDelayForItem:(id)a3 response:(id)a4 error:(id)a5
+- (void)handleUploadTaskDelayForItem:(id)item response:(id)response error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v23 = a5;
-  v10 = v9;
+  itemCopy = item;
+  responseCopy = response;
+  errorCopy = error;
+  v10 = responseCopy;
   if (qword_100029E70 != -1)
   {
     sub_100013344();
@@ -1190,45 +1190,45 @@ LABEL_6:
   if (os_log_type_enabled(qword_100029E68, OS_LOG_TYPE_DEFAULT))
   {
     log = v11;
-    v12 = [v8 serverUploadStatus];
-    v22 = [(CLEEDMediaServiceItem *)self mediaItem];
-    v21 = [v22 mediaItemID];
-    v13 = [v21 UUIDString];
-    v14 = [v13 UTF8String];
-    v15 = [(CLEEDMediaServiceItem *)self urlUploadTask];
-    v16 = [v8 stagingURL];
-    v17 = [v16 lastPathComponent];
+    serverUploadStatus = [itemCopy serverUploadStatus];
+    mediaItem = [(CLEEDMediaServiceItem *)self mediaItem];
+    mediaItemID = [mediaItem mediaItemID];
+    uUIDString = [mediaItemID UUIDString];
+    uTF8String = [uUIDString UTF8String];
+    urlUploadTask = [(CLEEDMediaServiceItem *)self urlUploadTask];
+    stagingURL = [itemCopy stagingURL];
+    lastPathComponent = [stagingURL lastPathComponent];
     *buf = 136448003;
     v25 = "[CLEEDMediaServiceItem handleUploadTaskDelayForItem:response:error:]";
     v26 = 2050;
-    v27 = v12;
+    v27 = serverUploadStatus;
     v28 = 2082;
-    v29 = v14;
+    v29 = uTF8String;
     v30 = 2113;
-    v31 = v15;
+    v31 = urlUploadTask;
     v32 = 2081;
-    v33 = [v17 UTF8String];
+    uTF8String2 = [lastPathComponent UTF8String];
     v34 = 2114;
     v35 = v10;
     v36 = 2114;
-    v37 = v23;
+    v37 = errorCopy;
     v38 = 2114;
     v39 = v10;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "#EED2EMS,%{public}s, serverUploadStatus:%{public}ld, mediaID:%{public}s, URLUploadTask:%{private}@, [item:%{private}s,response:%{public}@,error:%{public}@], httpResponse:%{public}@", buf, 0x52u);
   }
 
-  [v8 setUploadStatus:3];
-  if ([v8 uploadAttempts])
+  [itemCopy setUploadStatus:3];
+  if ([itemCopy uploadAttempts])
   {
-    [v8 setUploadAttempts:{objc_msgSend(v8, "uploadAttempts") - 1}];
+    [itemCopy setUploadAttempts:{objc_msgSend(itemCopy, "uploadAttempts") - 1}];
   }
 
-  v18 = [(CLEEDMediaServiceItem *)self completionHandler];
+  completionHandler = [(CLEEDMediaServiceItem *)self completionHandler];
 
-  if (v18)
+  if (completionHandler)
   {
-    v19 = [(CLEEDMediaServiceItem *)self completionHandler];
-    v19[2]();
+    completionHandler2 = [(CLEEDMediaServiceItem *)self completionHandler];
+    completionHandler2[2]();
 
     [(CLEEDMediaServiceItem *)self setCompletionHandler:0];
   }
@@ -1247,75 +1247,75 @@ LABEL_6:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = [(CLEEDMediaServiceItem *)self mediaService];
-  v15 = [v14 getQueue];
+  sessionCopy = session;
+  taskCopy = task;
+  mediaService = [(CLEEDMediaServiceItem *)self mediaService];
+  getQueue = [mediaService getQueue];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000053A0;
   v18[3] = &unk_1000244E8;
   v18[4] = self;
-  v19 = v12;
-  v20 = v13;
-  v21 = a6;
-  v22 = a7;
-  v23 = a5;
-  v16 = v13;
-  v17 = v12;
-  dispatch_async(v15, v18);
+  v19 = sessionCopy;
+  v20 = taskCopy;
+  sentCopy = sent;
+  sendCopy = send;
+  dataCopy = data;
+  v16 = taskCopy;
+  v17 = sessionCopy;
+  dispatch_async(getQueue, v18);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v11 = [(CLEEDMediaServiceItem *)self mediaService];
-  v12 = [v11 getQueue];
+  mediaService = [(CLEEDMediaServiceItem *)self mediaService];
+  getQueue = [mediaService getQueue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100005654;
   v16[3] = &unk_1000244C0;
   objc_copyWeak(&v21, &location);
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v20 = self;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v12, v16);
+  v17 = sessionCopy;
+  v18 = taskCopy;
+  v19 = errorCopy;
+  selfCopy = self;
+  v13 = errorCopy;
+  v14 = taskCopy;
+  v15 = sessionCopy;
+  dispatch_async(getQueue, v16);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CLEEDMediaServiceItem *)self mediaService];
-  v15 = [v14 getQueue];
+  sessionCopy = session;
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  mediaService = [(CLEEDMediaServiceItem *)self mediaService];
+  getQueue = [mediaService getQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000059F4;
   block[3] = &unk_100024510;
-  v21 = v10;
-  v22 = v11;
-  v24 = self;
-  v25 = v13;
-  v23 = v12;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
-  dispatch_async(v15, block);
+  v21 = sessionCopy;
+  v22 = taskCopy;
+  selfCopy = self;
+  v25 = handlerCopy;
+  v23 = challengeCopy;
+  v16 = handlerCopy;
+  v17 = challengeCopy;
+  v18 = taskCopy;
+  v19 = sessionCopy;
+  dispatch_async(getQueue, block);
 }
 
 @end

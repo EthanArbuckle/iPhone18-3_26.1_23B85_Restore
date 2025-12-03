@@ -1,6 +1,6 @@
 @interface _MTLResource
 - (_MTLResource)init;
-- (id)newTensorWithDescriptor:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
+- (id)newTensorWithDescriptor:(id)descriptor offset:(unint64_t)offset error:(id *)error;
 - (unint64_t)bufferOffset;
 @end
 
@@ -28,14 +28,14 @@
   }
 }
 
-- (id)newTensorWithDescriptor:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)newTensorWithDescriptor:(id)descriptor offset:(unint64_t)offset error:(id *)error
 {
   if ([(_MTLResource *)self conformsToProtocol:&unk_1EF5054C8])
   {
-    v10 = [(_MTLResource *)self device];
-    v11 = [a3 strides];
+    device = [(_MTLResource *)self device];
+    strides = [descriptor strides];
 
-    return [v10 newTensorWithBuffer:self descriptor:a3 offset:a4 strides:v11 error:a5];
+    return [device newTensorWithBuffer:self descriptor:descriptor offset:offset strides:strides error:error];
   }
 
   else

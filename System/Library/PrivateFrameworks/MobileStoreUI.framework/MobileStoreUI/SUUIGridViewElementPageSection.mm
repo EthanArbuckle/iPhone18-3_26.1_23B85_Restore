@@ -1,48 +1,48 @@
 @interface SUUIGridViewElementPageSection
 - (BOOL)_containsOnlyShelfElements;
-- (BOOL)requestLayoutWithReloadReason:(int64_t)a3;
-- (BOOL)updateCellWithIndexPath:(id)a3 itemState:(id)a4 animated:(BOOL)a5;
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SUUIGridViewElementPageSection)initWithPageComponent:(id)a3;
+- (BOOL)requestLayoutWithReloadReason:(int64_t)reason;
+- (BOOL)updateCellWithIndexPath:(id)path itemState:(id)state animated:(BOOL)animated;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SUUIGridViewElementPageSection)initWithPageComponent:(id)component;
 - (UIEdgeInsets)sectionContentInset;
-- (id)backgroundColorForIndexPath:(id)a3;
-- (id)cellForIndexPath:(id)a3;
-- (id)gridViewElementPageSectionConfiguration:(id)a3 viewElementForIndexPath:(id)a4;
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4;
-- (id)targetScrollingIndexPathForElementWithIndexBarEntryID:(id)a3 relativeSectionIndex:(int64_t)a4;
-- (int64_t)applyUpdateType:(int64_t)a3;
-- (void)_enumerateVisibleViewElementsUsingBlock:(id)a3;
+- (id)backgroundColorForIndexPath:(id)path;
+- (id)cellForIndexPath:(id)path;
+- (id)gridViewElementPageSectionConfiguration:(id)configuration viewElementForIndexPath:(id)path;
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location;
+- (id)targetScrollingIndexPathForElementWithIndexBarEntryID:(id)d relativeSectionIndex:(int64_t)index;
+- (int64_t)applyUpdateType:(int64_t)type;
+- (void)_enumerateVisibleViewElementsUsingBlock:(id)block;
 - (void)_reloadViewElementProperties;
 - (void)_requestLayoutForCells;
 - (void)_resetLayoutProperties;
-- (void)_setContext:(id)a3;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewDidLongPressItemAtIndexPath:(id)a3;
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3;
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewWillScrollToOffset:(CGPoint)a3 visibleRange:(SUUIIndexPathRange *)a4;
+- (void)_setContext:(id)context;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewDidLongPressItemAtIndexPath:(id)path;
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path;
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
+- (void)collectionViewWillScrollToOffset:(CGPoint)offset visibleRange:(SUUIIndexPathRange *)range;
 - (void)dealloc;
-- (void)deselectItemsAnimated:(BOOL)a3;
-- (void)expandEditorialForLabelElement:(id)a3 indexPath:(id)a4;
-- (void)getModalSourceViewForViewElement:(id)a3 completionBlock:(id)a4;
-- (void)prefetchResourcesWithReason:(int64_t)a3;
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4;
-- (void)reloadVisibleCellsWithReason:(int64_t)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)willAppearInContext:(id)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)deselectItemsAnimated:(BOOL)animated;
+- (void)expandEditorialForLabelElement:(id)element indexPath:(id)path;
+- (void)getModalSourceViewForViewElement:(id)element completionBlock:(id)block;
+- (void)prefetchResourcesWithReason:(int64_t)reason;
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason;
+- (void)reloadVisibleCellsWithReason:(int64_t)reason;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)willAppearInContext:(id)context;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUIGridViewElementPageSection
 
-- (SUUIGridViewElementPageSection)initWithPageComponent:(id)a3
+- (SUUIGridViewElementPageSection)initWithPageComponent:(id)component
 {
   v7.receiver = self;
   v7.super_class = SUUIGridViewElementPageSection;
-  v3 = [(SUUIStorePageSection *)&v7 initWithPageComponent:a3];
+  v3 = [(SUUIStorePageSection *)&v7 initWithPageComponent:component];
   if (v3)
   {
     v4 = objc_alloc_init(SUUIGridViewElementPageSectionConfiguration);
@@ -64,34 +64,34 @@
   [(SUUIStorePageSection *)&v3 dealloc];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SUUIStorePageSection *)self pageComponent];
-  v9 = [v8 viewElement];
-  [v6 addItemViewElement:v9];
+  sessionCopy = session;
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 
   viewElements = self->_viewElements;
-  v11 = [v7 item];
+  item = [pathCopy item];
 
-  v12 = [(NSArray *)viewElements objectAtIndex:v11];
-  [v6 addItemViewElement:v12];
+  v12 = [(NSArray *)viewElements objectAtIndex:item];
+  [sessionCopy addItemViewElement:v12];
 }
 
-- (int64_t)applyUpdateType:(int64_t)a3
+- (int64_t)applyUpdateType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return [(SUUIStorePageSection *)&v9 applyUpdateType:2, v8.receiver, v8.super_class, self, SUUIGridViewElementPageSection];
   }
 
-  v6 = [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration showsEditMode];
+  showsEditMode = [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration showsEditMode];
   v7 = [(NSArray *)self->_viewElements count];
   [(SUUIGridViewElementPageSection *)self _reloadViewElementProperties];
-  if (v6 == [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration showsEditMode]|| v7 != [(NSArray *)self->_viewElements count])
+  if (showsEditMode == [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration showsEditMode]|| v7 != [(NSArray *)self->_viewElements count])
   {
-    return [(SUUIStorePageSection *)&v8 applyUpdateType:a3, self, SUUIGridViewElementPageSection, v9.receiver, v9.super_class];
+    return [(SUUIStorePageSection *)&v8 applyUpdateType:type, self, SUUIGridViewElementPageSection, v9.receiver, v9.super_class];
   }
 
   [(SUUIGridViewElementPageSection *)self _resetLayoutProperties];
@@ -99,32 +99,32 @@
   return 1;
 }
 
-- (id)backgroundColorForIndexPath:(id)a3
+- (id)backgroundColorForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [v4 item]);
+  pathCopy = path;
+  v5 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [pathCopy item]);
   v6 = [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration backgroundColorForViewElement:v5];
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
-  v9 = [v8 style];
-  v10 = [v9 ikBackgroundColor];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  style = [viewElement style];
+  ikBackgroundColor = [style ikBackgroundColor];
 
-  if (v10 || [0 colorType] == 3)
+  if (ikBackgroundColor || [0 colorType] == 3)
   {
-    v11 = [v5 style];
-    v12 = [v11 ikBackgroundColor];
+    style2 = [v5 style];
+    ikBackgroundColor2 = [style2 ikBackgroundColor];
 
-    if (v12 && ([v12 color], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+    if (ikBackgroundColor2 && ([ikBackgroundColor2 color], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
     {
-      v14 = [v12 color];
+      color = [ikBackgroundColor2 color];
     }
 
     else
     {
-      v14 = [MEMORY[0x277D75348] clearColor];
+      color = [MEMORY[0x277D75348] clearColor];
     }
 
-    v15 = v14;
+    v15 = color;
   }
 
   else if ([v5 handlesBackgroundColorDirectly])
@@ -138,7 +138,7 @@
     {
       v17.receiver = self;
       v17.super_class = SUUIGridViewElementPageSection;
-      v6 = [(SUUIStorePageSection *)&v17 backgroundColorForIndexPath:v4];
+      v6 = [(SUUIStorePageSection *)&v17 backgroundColorForIndexPath:pathCopy];
     }
 
     v6 = v6;
@@ -148,22 +148,22 @@
   return v15;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
   viewElements = self->_viewElements;
-  v5 = a3;
-  v6 = -[NSArray objectAtIndex:](viewElements, "objectAtIndex:", [v5 item]);
-  v7 = [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration cellForViewElement:v6 indexPath:v5];
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndex:](viewElements, "objectAtIndex:", [pathCopy item]);
+  v7 = [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration cellForViewElement:v6 indexPath:pathCopy];
 
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
   viewElements = self->_viewElements;
-  v5 = a3;
-  v6 = -[NSArray objectAtIndex:](viewElements, "objectAtIndex:", [v5 item]);
-  [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration cellSizeForViewElement:v6 indexPath:v5];
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndex:](viewElements, "objectAtIndex:", [pathCopy item]);
+  [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration cellSizeForViewElement:v6 indexPath:pathCopy];
   v8 = v7;
   v10 = v9;
 
@@ -174,20 +174,20 @@
   return result;
 }
 
-- (void)collectionViewDidLongPressItemAtIndexPath:(id)a3
+- (void)collectionViewDidLongPressItemAtIndexPath:(id)path
 {
-  v3 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [a3 item]);
+  v3 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [path item]);
   if ([v3 isEnabled])
   {
     [v3 dispatchEventOfType:3 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 }
 
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   objc_initWeak(&location, self);
-  v5 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [v4 item]);
+  v5 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [pathCopy item]);
   v6 = v5;
   if (v5)
   {
@@ -199,7 +199,7 @@
       v7[3] = &unk_2798FD328;
       objc_copyWeak(&v10, &location);
       v8 = v6;
-      v9 = self;
+      selfCopy = self;
       [v8 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:v7];
 
       objc_destroyWeak(&v10);
@@ -254,101 +254,101 @@ void __73__SUUIGridViewElementPageSection_collectionViewDidSelectItemAtIndexPath
   }
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 activeMetricsImpressionSession];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
 
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  [v6 beginActiveImpressionForViewElement:v8];
-  v9 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [v4 item]);
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
+  v9 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [pathCopy item]);
 
-  [v6 beginActiveImpressionForViewElement:v9];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:v9];
   v10.receiver = self;
   v10.super_class = SUUIGridViewElementPageSection;
-  [(SUUIStorePageSection *)&v10 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v10 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 activeMetricsImpressionSession];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
 
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  [v6 endActiveImpressionForViewElement:v8];
-  v9 = [v4 item];
-  if (v9 < [(NSArray *)self->_viewElements count])
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
+  item = [pathCopy item];
+  if (item < [(NSArray *)self->_viewElements count])
   {
-    v10 = [(NSArray *)self->_viewElements objectAtIndex:v9];
+    v10 = [(NSArray *)self->_viewElements objectAtIndex:item];
 
-    [v6 endActiveImpressionForViewElement:v10];
-    v8 = v10;
+    [activeMetricsImpressionSession endActiveImpressionForViewElement:v10];
+    viewElement = v10;
   }
 
   v11.receiver = self;
   v11.super_class = SUUIGridViewElementPageSection;
-  [(SUUIStorePageSection *)&v11 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v11 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes
 {
   configuration = self->_configuration;
-  v5 = a3;
-  [(SUUIGridViewElementPageSectionConfiguration *)configuration collectionViewWillApplyLayoutAttributes:v5];
+  attributesCopy = attributes;
+  [(SUUIGridViewElementPageSectionConfiguration *)configuration collectionViewWillApplyLayoutAttributes:attributesCopy];
   v6.receiver = self;
   v6.super_class = SUUIGridViewElementPageSection;
-  [(SUUIStorePageSection *)&v6 collectionViewWillApplyLayoutAttributes:v5];
+  [(SUUIStorePageSection *)&v6 collectionViewWillApplyLayoutAttributes:attributesCopy];
 }
 
-- (void)collectionViewWillScrollToOffset:(CGPoint)a3 visibleRange:(SUUIIndexPathRange *)a4
+- (void)collectionViewWillScrollToOffset:(CGPoint)offset visibleRange:(SUUIIndexPathRange *)range
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(SUUIGridViewElementPageSection *)self numberOfCells];
-  if (self->_lastNeedsMoreCount < v8)
+  y = offset.y;
+  x = offset.x;
+  numberOfCells = [(SUUIGridViewElementPageSection *)self numberOfCells];
+  if (self->_lastNeedsMoreCount < numberOfCells)
   {
-    v9 = v8;
-    v10 = *&a4->var2;
-    v17 = *&a4->var0;
+    v9 = numberOfCells;
+    v10 = *&range->var2;
+    v17 = *&range->var0;
     v18 = v10;
     v11 = [(SUUIStorePageSection *)self itemRangeForIndexPathRange:&v17];
     if (v12 + v11 + 20 >= v9)
     {
       self->_lastNeedsMoreCount = v9;
-      v13 = [(SUUIStorePageSection *)self pageComponent];
-      v14 = [v13 viewElement];
-      [v14 dispatchEventOfType:16 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+      pageComponent = [(SUUIStorePageSection *)self pageComponent];
+      viewElement = [pageComponent viewElement];
+      [viewElement dispatchEventOfType:16 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
     }
   }
 
   v16.receiver = self;
   v16.super_class = SUUIGridViewElementPageSection;
-  v15 = *&a4->var2;
-  v17 = *&a4->var0;
+  v15 = *&range->var2;
+  v17 = *&range->var0;
   v18 = v15;
   [(SUUIStorePageSection *)&v16 collectionViewWillScrollToOffset:&v17 visibleRange:x, y];
 }
 
-- (void)deselectItemsAnimated:(BOOL)a3
+- (void)deselectItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v7 = [v6 indexPathsForSelectedItems];
-  v8 = [(SUUIStorePageSection *)self sectionIndex];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  sectionIndex = [(SUUIStorePageSection *)self sectionIndex];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v7;
+  v9 = indexPathsForSelectedItems;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -364,9 +364,9 @@ void __73__SUUIGridViewElementPageSection_collectionViewDidSelectItemAtIndexPath
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
-        if ([v14 section] == v8)
+        if ([v14 section] == sectionIndex)
         {
-          [v6 deselectItemAtIndexPath:v14 animated:v3];
+          [collectionView deselectItemAtIndexPath:v14 animated:animatedCopy];
         }
       }
 
@@ -378,27 +378,27 @@ void __73__SUUIGridViewElementPageSection_collectionViewDidSelectItemAtIndexPath
 
   v15.receiver = self;
   v15.super_class = SUUIGridViewElementPageSection;
-  [(SUUIStorePageSection *)&v15 deselectItemsAnimated:v3];
+  [(SUUIStorePageSection *)&v15 deselectItemsAnimated:animatedCopy];
 }
 
-- (void)expandEditorialForLabelElement:(id)a3 indexPath:(id)a4
+- (void)expandEditorialForLabelElement:(id)element indexPath:(id)path
 {
   v11[1] = *MEMORY[0x277D85DE8];
   cellLayoutContext = self->_cellLayoutContext;
-  v7 = a4;
-  [(SUUIViewElementLayoutContext *)cellLayoutContext expandEditorialForLabelElement:a3];
-  v8 = [(SUUIStorePageSection *)self context];
-  v9 = [v8 collectionView];
-  v11[0] = v7;
+  pathCopy = path;
+  [(SUUIViewElementLayoutContext *)cellLayoutContext expandEditorialForLabelElement:element];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v11[0] = pathCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
 
-  [v9 reloadItemsAtIndexPaths:v10];
+  [collectionView reloadItemsAtIndexPaths:v10];
 }
 
-- (void)getModalSourceViewForViewElement:(id)a3 completionBlock:(id)a4
+- (void)getModalSourceViewForViewElement:(id)element completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  blockCopy = block;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -410,8 +410,8 @@ void __73__SUUIGridViewElementPageSection_collectionViewDidSelectItemAtIndexPath
   v16[1] = 3221225472;
   v16[2] = __83__SUUIGridViewElementPageSection_getModalSourceViewForViewElement_completionBlock___block_invoke;
   v16[3] = &unk_2798FAF98;
-  v9 = v6;
-  v18 = self;
+  v9 = elementCopy;
+  selfCopy = self;
   v19 = &v20;
   v17 = v9;
   [(NSArray *)viewElements enumerateObjectsUsingBlock:v16];
@@ -419,12 +419,12 @@ void __73__SUUIGridViewElementPageSection_collectionViewDidSelectItemAtIndexPath
   {
     v10 = objc_alloc_init(SUUIModalSourceViewProvider);
     [(SUUIModalSourceViewProvider *)v10 setUserInfo:v9];
-    v11 = [(SUUIStorePageSection *)self context];
-    v12 = [v11 collectionView];
-    v13 = [v12 cellForItemAtIndexPath:v21[5]];
+    context = [(SUUIStorePageSection *)self context];
+    collectionView = [context collectionView];
+    v13 = [collectionView cellForItemAtIndexPath:v21[5]];
 
-    v14 = [v9 itmlID];
-    v15 = [v13 viewForElementIdentifier:v14];
+    itmlID = [v9 itmlID];
+    v15 = [v13 viewForElementIdentifier:itmlID];
 
     if (v15)
     {
@@ -442,7 +442,7 @@ void __73__SUUIGridViewElementPageSection_collectionViewDidSelectItemAtIndexPath
     v10 = 0;
   }
 
-  v7[2](v7, v10);
+  blockCopy[2](blockCopy, v10);
 
   _Block_object_dispose(&v20, 8);
 }
@@ -460,19 +460,19 @@ void __83__SUUIGridViewElementPageSection_getModalSourceViewForViewElement_compl
   }
 }
 
-- (void)prefetchResourcesWithReason:(int64_t)a3
+- (void)prefetchResourcesWithReason:(int64_t)reason
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = [(SUUIStorePageSection *)self context];
-  v5 = [v4 collectionView];
-  v6 = [v5 indexPathsForVisibleItems];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v7 = [(SUUIStorePageSection *)self sectionIndex];
+  sectionIndex = [(SUUIStorePageSection *)self sectionIndex];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v6;
+  v8 = indexPathsForVisibleItems;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -489,12 +489,12 @@ void __83__SUUIGridViewElementPageSection_getModalSourceViewForViewElement_compl
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        if ([v14 section] == v7)
+        if ([v14 section] == sectionIndex)
         {
-          v15 = [v14 item];
-          if (v11 <= v15)
+          item = [v14 item];
+          if (v11 <= item)
           {
-            v11 = v15;
+            v11 = item;
           }
         }
       }
@@ -510,8 +510,8 @@ void __83__SUUIGridViewElementPageSection_getModalSourceViewForViewElement_compl
     v11 = 0;
   }
 
-  v16 = [(SUUIStorePageSection *)self pageComponent];
-  v22 = [v16 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
   v17 = [(NSArray *)self->_viewElements count];
   if (v11 < v17)
@@ -519,8 +519,8 @@ void __83__SUUIGridViewElementPageSection_getModalSourceViewForViewElement_compl
     v18 = 0;
     do
     {
-      v19 = [(NSArray *)self->_viewElements objectAtIndex:v11, v22];
-      if ([(objc_class *)[(SUUIGridViewElementPageSectionConfiguration *)self->_configuration cellClassForViewElement:v19] prefetchResourcesForViewElement:v19 reason:a3 context:self->_cellLayoutContext])
+      v19 = [(NSArray *)self->_viewElements objectAtIndex:v11, viewElement];
+      if ([(objc_class *)[(SUUIGridViewElementPageSectionConfiguration *)self->_configuration cellClassForViewElement:v19] prefetchResourcesForViewElement:v19 reason:reason context:self->_cellLayoutContext])
       {
         if ([(SUUIGridViewElementPageSectionConfiguration *)self->_configuration viewElementIsStandardCard:v19])
         {
@@ -550,64 +550,64 @@ void __83__SUUIGridViewElementPageSection_getModalSourceViewForViewElement_compl
     while (v11 < v17);
   }
 
-  v21 = v22;
+  v21 = viewElement;
   if (v17 <= 19 && self->_lastNeedsMoreCount < v17)
   {
     self->_lastNeedsMoreCount = v17;
-    [v22 dispatchEventOfType:16 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+    [viewElement dispatchEventOfType:16 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 
   v24.receiver = self;
   v24.super_class = SUUIGridViewElementPageSection;
-  [(SUUIStorePageSection *)&v24 prefetchResourcesWithReason:a3, v22];
+  [(SUUIStorePageSection *)&v24 prefetchResourcesWithReason:reason, viewElement];
 }
 
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(SUUIStorePageSection *)self context];
-  v9 = [v8 collectionView];
+  y = location.y;
+  x = location.x;
+  contextCopy = context;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v10 = [v7 sourceView];
+  sourceView = [contextCopy sourceView];
 
-  [v9 convertPoint:v10 fromView:{x, y}];
-  v11 = [v9 indexPathForItemAtPoint:?];
+  [collectionView convertPoint:sourceView fromView:{x, y}];
+  v11 = [collectionView indexPathForItemAtPoint:?];
   v12 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [v11 item]);
-  v13 = [(SUUIStorePageSection *)self context];
-  v14 = [v13 clientContext];
-  v15 = [v14 previewViewControllerForViewElement:v12];
+  context2 = [(SUUIStorePageSection *)self context];
+  clientContext = [context2 clientContext];
+  v15 = [clientContext previewViewControllerForViewElement:v12];
 
   return v15;
 }
 
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason
 {
   viewElements = self->_viewElements;
-  v7 = a3;
-  v8 = -[NSArray objectAtIndex:](viewElements, "objectAtIndex:", [v7 item]);
-  [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration reloadCellWithIndexPath:v7 forViewElement:v8 reason:a4];
+  pathCopy = path;
+  v8 = -[NSArray objectAtIndex:](viewElements, "objectAtIndex:", [pathCopy item]);
+  [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration reloadCellWithIndexPath:pathCopy forViewElement:v8 reason:reason];
 }
 
-- (void)reloadVisibleCellsWithReason:(int64_t)a3
+- (void)reloadVisibleCellsWithReason:(int64_t)reason
 {
   v6.receiver = self;
   v6.super_class = SUUIGridViewElementPageSection;
-  [(SUUIStorePageSection *)&v6 reloadVisibleCellsWithReason:a3];
+  [(SUUIStorePageSection *)&v6 reloadVisibleCellsWithReason:reason];
   cellLayoutContext = self->_cellLayoutContext;
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[SUUIGridViewElementPageSectionConfiguration showsEditMode](self->_configuration, "showsEditMode")}];
   [(SUUIViewElementLayoutContext *)cellLayoutContext setAggregateValue:v5 forKey:0x286AFE1A0];
 }
 
-- (BOOL)requestLayoutWithReloadReason:(int64_t)a3
+- (BOOL)requestLayoutWithReloadReason:(int64_t)reason
 {
-  if (a3 == 2)
+  if (reason == 2)
   {
     [(SUUIGridViewElementPageSection *)self _requestLayoutForCells];
   }
 
-  return a3 == 2;
+  return reason == 2;
 }
 
 - (UIEdgeInsets)sectionContentInset
@@ -620,9 +620,9 @@ void __83__SUUIGridViewElementPageSection_getModalSourceViewForViewElement_compl
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SUUIStorePageSection *)self pageComponent];
-  v13 = [v12 viewElement];
-  [(SUUIGridViewElementPageSectionConfiguration *)configuration sectionContentInsetAdjustedFromValue:v13 forGridViewElement:v5, v7, v9, v11];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [(SUUIGridViewElementPageSectionConfiguration *)configuration sectionContentInsetAdjustedFromValue:viewElement forGridViewElement:v5, v7, v9, v11];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -639,25 +639,25 @@ void __83__SUUIGridViewElementPageSection_getModalSourceViewForViewElement_compl
   return result;
 }
 
-- (id)targetScrollingIndexPathForElementWithIndexBarEntryID:(id)a3 relativeSectionIndex:(int64_t)a4
+- (id)targetScrollingIndexPathForElementWithIndexBarEntryID:(id)d relativeSectionIndex:(int64_t)index
 {
-  v5 = a3;
-  v6 = [(SUUIStorePageSection *)self pageComponent];
-  v7 = [v6 viewElement];
+  dCopy = d;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v8 = [v7 firstDescendentWithIndexBarEntryID:v5];
+  v8 = [viewElement firstDescendentWithIndexBarEntryID:dCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    parent = v8;
     do
     {
-      v11 = v10;
-      v12 = [(NSArray *)self->_viewElements indexOfObject:v10];
-      v10 = [v10 parent];
+      v11 = parent;
+      v12 = [(NSArray *)self->_viewElements indexOfObject:parent];
+      parent = [parent parent];
     }
 
-    while (v10 && v12 == 0x7FFFFFFFFFFFFFFFLL);
+    while (parent && v12 == 0x7FFFFFFFFFFFFFFFLL);
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = 0;
@@ -677,33 +677,33 @@ void __83__SUUIGridViewElementPageSection_getModalSourceViewForViewElement_compl
   return v13;
 }
 
-- (BOOL)updateCellWithIndexPath:(id)a3 itemState:(id)a4 animated:(BOOL)a5
+- (BOOL)updateCellWithIndexPath:(id)path itemState:(id)state animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SUUIStorePageSection *)self context];
-  v11 = [v10 collectionView];
-  v12 = [v11 cellForItemAtIndexPath:v8];
+  animatedCopy = animated;
+  pathCopy = path;
+  stateCopy = state;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v12 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  v13 = [v12 updateWithItemState:v9 context:self->_cellLayoutContext animated:v5];
+  v13 = [v12 updateWithItemState:stateCopy context:self->_cellLayoutContext animated:animatedCopy];
   if (v13)
   {
-    v14 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [v8 item]);
+    v14 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [pathCopy item]);
     [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration requestCellLayoutForViewElement:v14];
   }
 
   return v13;
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration registerReusableClassesForCollectionView:v5];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration registerReusableClassesForCollectionView:collectionView];
   v6 = self->_cellLayoutContext;
-  v7 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:v4 previousLayoutContext:v6];
+  v7 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:contextCopy previousLayoutContext:v6];
   cellLayoutContext = self->_cellLayoutContext;
   self->_cellLayoutContext = v7;
 
@@ -714,10 +714,10 @@ void __83__SUUIGridViewElementPageSection_getModalSourceViewForViewElement_compl
 
   [(SUUIViewElementLayoutContext *)self->_cellLayoutContext setAggregateValue:MEMORY[0x277CBEC38] forKey:0x286AF73A0];
   [(SUUIViewElementLayoutContext *)self->_cellLayoutContext setAggregateValue:&unk_286BBE478 forKey:0x286AFA780];
-  v11 = [(SUUIStorePageSection *)self pageComponent];
-  v12 = [v11 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  -[SUUIViewElementLayoutContext setContainerViewElementType:](self->_cellLayoutContext, "setContainerViewElementType:", [v12 elementType]);
+  -[SUUIViewElementLayoutContext setContainerViewElementType:](self->_cellLayoutContext, "setContainerViewElementType:", [viewElement elementType]);
   if ([(SUUIGridViewElementPageSection *)self _containsOnlyShelfElements])
   {
     [(SUUIViewElementLayoutContext *)self->_cellLayoutContext setAggregateValue:MEMORY[0x277CBEC38] forKey:0x286AFC9E0];
@@ -726,14 +726,14 @@ void __83__SUUIGridViewElementPageSection_getModalSourceViewForViewElement_compl
   [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration setCellLayoutContext:self->_cellLayoutContext];
   [(SUUIGridViewElementPageSection *)self _resetLayoutProperties];
   [(SUUIGridViewElementPageSection *)self _requestLayoutForCells];
-  v13 = [(SUUIStorePageSection *)self pageComponent];
-  v14 = [v13 viewElement];
-  v15 = [v14 style];
-  v16 = [v15 ikBackgroundColor];
+  pageComponent2 = [(SUUIStorePageSection *)self pageComponent];
+  viewElement2 = [pageComponent2 viewElement];
+  style = [viewElement2 style];
+  ikBackgroundColor = [style ikBackgroundColor];
 
-  if (v16 && [v16 colorType] == 3)
+  if (ikBackgroundColor && [ikBackgroundColor colorType] == 3)
   {
-    v17 = [v16 copy];
+    v17 = [ikBackgroundColor copy];
     backgroundColor = self->_backgroundColor;
     self->_backgroundColor = v17;
 
@@ -755,59 +755,59 @@ void __83__SUUIGridViewElementPageSection_getModalSourceViewForViewElement_compl
 
   v24.receiver = self;
   v24.super_class = SUUIGridViewElementPageSection;
-  [(SUUIStorePageSection *)&v24 willAppearInContext:v4];
+  [(SUUIStorePageSection *)&v24 willAppearInContext:contextCopy];
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   cellLayoutContext = self->_cellLayoutContext;
-  v8 = a4;
+  coordinatorCopy = coordinator;
   [(SUUIViewElementLayoutContext *)cellLayoutContext invalidateAllEditorialLayouts];
   [(SUUIViewElementLayoutContext *)self->_cellLayoutContext setActivePageWidth:width];
   [(SUUIGridViewElementPageSection *)self _resetLayoutProperties];
   [(SUUIGridViewElementPageSection *)self _requestLayoutForCells];
   v9.receiver = self;
   v9.super_class = SUUIGridViewElementPageSection;
-  [(SUUIStorePageSection *)&v9 willTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(SUUIStorePageSection *)&v9 willTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)_setContext:(id)a3
+- (void)_setContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = SUUIGridViewElementPageSection;
-  v4 = a3;
-  [(SUUIStorePageSection *)&v5 _setContext:v4];
-  [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration setPageSectionContext:v4, v5.receiver, v5.super_class];
+  contextCopy = context;
+  [(SUUIStorePageSection *)&v5 _setContext:contextCopy];
+  [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration setPageSectionContext:contextCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
   }
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUIStorePageSection *)self context];
-  v9 = [v8 collectionView];
+  requestCopy = request;
+  imageCopy = image;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__SUUIGridViewElementPageSection_artworkRequest_didLoadImage___block_invoke;
   v13[3] = &unk_2798F8FF0;
-  v14 = v9;
-  v15 = v7;
-  v16 = v6;
-  v17 = self;
-  v10 = v6;
-  v11 = v7;
-  v12 = v9;
+  v14 = collectionView;
+  v15 = imageCopy;
+  v16 = requestCopy;
+  selfCopy = self;
+  v10 = requestCopy;
+  v11 = imageCopy;
+  v12 = collectionView;
   [(SUUIGridViewElementPageSection *)self _enumerateVisibleViewElementsUsingBlock:v13];
 }
 
@@ -823,17 +823,17 @@ void __62__SUUIGridViewElementPageSection_artworkRequest_didLoadImage___block_in
   }
 }
 
-- (id)gridViewElementPageSectionConfiguration:(id)a3 viewElementForIndexPath:(id)a4
+- (id)gridViewElementPageSectionConfiguration:(id)configuration viewElementForIndexPath:(id)path
 {
-  v5 = [a4 item];
-  if (v5 >= [(NSArray *)self->_viewElements count])
+  item = [path item];
+  if (item >= [(NSArray *)self->_viewElements count])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(NSArray *)self->_viewElements objectAtIndex:v5];
+    v6 = [(NSArray *)self->_viewElements objectAtIndex:item];
   }
 
   return v6;
@@ -887,23 +887,23 @@ LABEL_12:
   return v8;
 }
 
-- (void)_enumerateVisibleViewElementsUsingBlock:(id)a3
+- (void)_enumerateVisibleViewElementsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  blockCopy = block;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v7 = [v6 indexPathsForVisibleItems];
-  v8 = [(SUUIStorePageSection *)self sectionIndex];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+  sectionIndex = [(SUUIStorePageSection *)self sectionIndex];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__SUUIGridViewElementPageSection__enumerateVisibleViewElementsUsingBlock___block_invoke;
   v10[3] = &unk_2798FD350;
-  v11 = v4;
-  v12 = v8;
+  v11 = blockCopy;
+  v12 = sectionIndex;
   v10[4] = self;
-  v9 = v4;
-  [v7 enumerateObjectsUsingBlock:v10];
+  v9 = blockCopy;
+  [indexPathsForVisibleItems enumerateObjectsUsingBlock:v10];
 }
 
 void __74__SUUIGridViewElementPageSection__enumerateVisibleViewElementsUsingBlock___block_invoke(void *a1, void *a2, uint64_t a3, uint64_t a4)
@@ -919,20 +919,20 @@ void __74__SUUIGridViewElementPageSection__enumerateVisibleViewElementsUsingBloc
 
 - (void)_reloadViewElementProperties
 {
-  v3 = [(SUUIStorePageSection *)self pageComponent];
-  v7 = [v3 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  -[SUUIGridViewElementPageSectionConfiguration setRendersWithPerspective:](self->_configuration, "setRendersWithPerspective:", [v7 rendersWithPerspective]);
-  v4 = [v7 flattenedChildren];
+  -[SUUIGridViewElementPageSectionConfiguration setRendersWithPerspective:](self->_configuration, "setRendersWithPerspective:", [viewElement rendersWithPerspective]);
+  flattenedChildren = [viewElement flattenedChildren];
   viewElements = self->_viewElements;
-  self->_viewElements = v4;
+  self->_viewElements = flattenedChildren;
 
-  [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration updateStylePropertiesForGridViewElement:v7 gridItemViewElements:self->_viewElements numberOfGridItems:[(NSArray *)self->_viewElements count]];
+  [(SUUIGridViewElementPageSectionConfiguration *)self->_configuration updateStylePropertiesForGridViewElement:viewElement gridItemViewElements:self->_viewElements numberOfGridItems:[(NSArray *)self->_viewElements count]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v7 collectionFeature];
-    [v6 setCollectionTarget:self];
+    collectionFeature = [viewElement collectionFeature];
+    [collectionFeature setCollectionTarget:self];
   }
 }
 
@@ -973,9 +973,9 @@ void __74__SUUIGridViewElementPageSection__enumerateVisibleViewElementsUsingBloc
 - (void)_resetLayoutProperties
 {
   configuration = self->_configuration;
-  v4 = [(SUUIStorePageSection *)self pageComponent];
-  v3 = [v4 viewElement];
-  [(SUUIGridViewElementPageSectionConfiguration *)configuration updateLayoutPropertiesForGridViewElement:v3];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [(SUUIGridViewElementPageSectionConfiguration *)configuration updateLayoutPropertiesForGridViewElement:viewElement];
 }
 
 @end

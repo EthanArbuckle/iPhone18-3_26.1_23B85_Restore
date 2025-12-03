@@ -1,34 +1,34 @@
 @interface SBDisplayItemGridLayoutRestrictionInfo
-+ (id)layoutRestrictionInfoWithLayoutRestrictions:(unint64_t)a3 restrictedSize:(CGSize)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)layoutRestrictionInfoWithLayoutRestrictions:(unint64_t)restrictions restrictedSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)restrictedSize;
-- (id)_initWithLayoutRestrictions:(unint64_t)a3 restrictedSize:(CGSize)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithLayoutRestrictions:(unint64_t)restrictions restrictedSize:(CGSize)size;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBDisplayItemGridLayoutRestrictionInfo
 
-+ (id)layoutRestrictionInfoWithLayoutRestrictions:(unint64_t)a3 restrictedSize:(CGSize)a4
++ (id)layoutRestrictionInfoWithLayoutRestrictions:(unint64_t)restrictions restrictedSize:(CGSize)size
 {
-  if (a3)
+  if (restrictions)
   {
-    v5 = [[a1 alloc] _initWithLayoutRestrictions:a3 restrictedSize:{a4.width, a4.height}];
+    v5 = [[self alloc] _initWithLayoutRestrictions:restrictions restrictedSize:{size.width, size.height}];
   }
 
   else
   {
-    if (a4.width != -1.0 || a4.height != -1.0)
+    if (size.width != -1.0 || size.height != -1.0)
     {
-      [SBDisplayItemGridLayoutRestrictionInfo layoutRestrictionInfoWithLayoutRestrictions:a2 restrictedSize:a1];
+      [SBDisplayItemGridLayoutRestrictionInfo layoutRestrictionInfoWithLayoutRestrictions:a2 restrictedSize:self];
     }
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __101__SBDisplayItemGridLayoutRestrictionInfo_layoutRestrictionInfoWithLayoutRestrictions_restrictedSize___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (layoutRestrictionInfoWithLayoutRestrictions_restrictedSize__onceToken != -1)
     {
       dispatch_once(&layoutRestrictionInfoWithLayoutRestrictions_restrictedSize__onceToken, block);
@@ -47,43 +47,43 @@ void __101__SBDisplayItemGridLayoutRestrictionInfo_layoutRestrictionInfoWithLayo
   layoutRestrictionInfoWithLayoutRestrictions_restrictedSize__sSharedUnrestrictedInfo = v1;
 }
 
-- (id)_initWithLayoutRestrictions:(unint64_t)a3 restrictedSize:(CGSize)a4
+- (id)_initWithLayoutRestrictions:(unint64_t)restrictions restrictedSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v13.receiver = self;
   v13.super_class = SBDisplayItemGridLayoutRestrictionInfo;
   v7 = [(SBDisplayItemGridLayoutRestrictionInfo *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_layoutRestrictions = a3;
+    v7->_layoutRestrictions = restrictions;
     v7->_restrictedSize.width = width;
     v7->_restrictedSize.height = height;
-    v9 = [MEMORY[0x277CF0C40] builder];
-    v10 = [v9 appendUnsignedInteger:v8->_layoutRestrictions];
-    v11 = [v9 appendCGSize:{v8->_restrictedSize.width, v8->_restrictedSize.height}];
-    v8->_cachedHash = [v9 hash];
+    builder = [MEMORY[0x277CF0C40] builder];
+    v10 = [builder appendUnsignedInteger:v8->_layoutRestrictions];
+    v11 = [builder appendCGSize:{v8->_restrictedSize.width, v8->_restrictedSize.height}];
+    v8->_cachedHash = [builder hash];
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_layoutRestrictions == *(v4 + 2) && self->_restrictedSize.height == v4[4] && self->_restrictedSize.width == v4[3];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_layoutRestrictions == *(equalCopy + 2) && self->_restrictedSize.height == equalCopy[4] && self->_restrictedSize.width == equalCopy[3];
 
   return v5;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBDisplayItemGridLayoutRestrictionInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBDisplayItemGridLayoutRestrictionInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -103,12 +103,12 @@ void __101__SBDisplayItemGridLayoutRestrictionInfo_layoutRestrictionInfoWithLayo
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBDisplayItemGridLayoutRestrictionInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBDisplayItemGridLayoutRestrictionInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (CGSize)restrictedSize

@@ -1,28 +1,28 @@
 @interface WXListDefinitionTable
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXListDefinitionTable
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v18 = a4;
-  v7 = a5;
-  v8 = [v7 WXMainNamespace];
-  Child = OCXFindChild(a3, v8, "abstractNum");
+  toCopy = to;
+  stateCopy = state;
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  Child = OCXFindChild(from, wXMainNamespace, "abstractNum");
 
   while (Child)
   {
-    v10 = [v7 WXMainNamespace];
-    v11 = CXRequiredLongAttribute(Child, v10, "abstractNumId");
+    wXMainNamespace2 = [stateCopy WXMainNamespace];
+    v11 = CXRequiredLongAttribute(Child, wXMainNamespace2, "abstractNumId");
 
-    v12 = [v7 WXMainNamespace];
-    v13 = OCXFindChild(Child, v12, "styleLink");
+    wXMainNamespace3 = [stateCopy WXMainNamespace];
+    v13 = OCXFindChild(Child, wXMainNamespace3, "styleLink");
 
     if (v13)
     {
-      v14 = [v7 WXMainNamespace];
-      v15 = CXDefaultStringAttribute(v13, v14, "val", 0);
+      wXMainNamespace4 = [stateCopy WXMainNamespace];
+      v15 = CXDefaultStringAttribute(v13, wXMainNamespace4, "val", 0);
     }
 
     else
@@ -30,10 +30,10 @@
       v15 = 0;
     }
 
-    v16 = [v18 addDefinitionWithDefinitionId:v11 styleId:v15];
-    [WXListDefinition readFrom:Child to:v16 state:v7];
-    v17 = [v7 WXMainNamespace];
-    Child = OCXFindNextChild(Child, v17, "abstractNum");
+    v16 = [toCopy addDefinitionWithDefinitionId:v11 styleId:v15];
+    [WXListDefinition readFrom:Child to:v16 state:stateCopy];
+    wXMainNamespace5 = [stateCopy WXMainNamespace];
+    Child = OCXFindNextChild(Child, wXMainNamespace5, "abstractNum");
   }
 }
 

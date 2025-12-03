@@ -1,17 +1,17 @@
 @interface WiFiP2PAWDLStateMonitor
-- (BOOL)fetchAWDLActiveServices:(id *)a3 withActivePorts:(id *)a4 error:(id *)a5;
-- (BOOL)updateLTERestrictedChannels:(id)a3 error:(id *)a4;
+- (BOOL)fetchAWDLActiveServices:(id *)services withActivePorts:(id *)ports error:(id *)error;
+- (BOOL)updateLTERestrictedChannels:(id)channels error:(id *)error;
 - (WiFiP2PAWDLStateMonitor)init;
 - (id)exportedInterface;
-- (id)lowLatencyStatisticsDifferenceBetweenPrevious:(id)a3 current:(id)a4;
+- (id)lowLatencyStatisticsDifferenceBetweenPrevious:(id)previous current:(id)current;
 - (id)queryPeerDatabase;
-- (int)queryAverageRSSIForPeer:(id)a3;
-- (void)availabilityUpdatedForService:(id)a3 error:(id)a4;
-- (void)channelSequenceChangedEvent:(id)a3;
-- (void)registerAvailabilityUpdatesForService:(id)a3;
-- (void)startConnectionUsingProxy:(id)a3 completionHandler:(id)a4;
-- (void)threadCoexistenceEvent:(id)a3;
-- (void)updatedAWDLState:(id)a3;
+- (int)queryAverageRSSIForPeer:(id)peer;
+- (void)availabilityUpdatedForService:(id)service error:(id)error;
+- (void)channelSequenceChangedEvent:(id)event;
+- (void)registerAvailabilityUpdatesForService:(id)service;
+- (void)startConnectionUsingProxy:(id)proxy completionHandler:(id)handler;
+- (void)threadCoexistenceEvent:(id)event;
+- (void)updatedAWDLState:(id)state;
 - (void)updatedLowLatencyStatistics;
 - (void)updatedStatistics;
 @end
@@ -53,64 +53,64 @@
   return v2;
 }
 
-- (void)startConnectionUsingProxy:(id)a3 completionHandler:(id)a4
+- (void)startConnectionUsingProxy:(id)proxy completionHandler:(id)handler
 {
-  v18 = a3;
-  v6 = a4;
+  proxyCopy = proxy;
+  handlerCopy = handler;
   v7 = objc_alloc_init(WiFiP2PAWDLStateMonitorConfiguration);
-  v8 = [(WiFiP2PAWDLStateMonitor *)self stateUpdatedHandler];
+  stateUpdatedHandler = [(WiFiP2PAWDLStateMonitor *)self stateUpdatedHandler];
 
-  if (v8)
+  if (stateUpdatedHandler)
   {
     [(WiFiP2PAWDLStateMonitorConfiguration *)v7 setOptions:[(WiFiP2PAWDLStateMonitorConfiguration *)v7 options]| 1];
   }
 
-  v9 = [(WiFiP2PAWDLStateMonitor *)self statisticsUpdatedHandler];
+  statisticsUpdatedHandler = [(WiFiP2PAWDLStateMonitor *)self statisticsUpdatedHandler];
 
-  if (v9)
+  if (statisticsUpdatedHandler)
   {
     [(WiFiP2PAWDLStateMonitorConfiguration *)v7 setOptions:[(WiFiP2PAWDLStateMonitorConfiguration *)v7 options]| 2];
   }
 
-  v10 = [(WiFiP2PAWDLStateMonitor *)self lowLatencyStatisticsUpdatedHandler];
+  lowLatencyStatisticsUpdatedHandler = [(WiFiP2PAWDLStateMonitor *)self lowLatencyStatisticsUpdatedHandler];
 
-  if (v10)
+  if (lowLatencyStatisticsUpdatedHandler)
   {
     [(WiFiP2PAWDLStateMonitorConfiguration *)v7 setOptions:[(WiFiP2PAWDLStateMonitorConfiguration *)v7 options]| 0x40];
   }
 
-  v11 = [(WiFiP2PAWDLStateMonitor *)self realtimeModeUpdatedHandler];
+  realtimeModeUpdatedHandler = [(WiFiP2PAWDLStateMonitor *)self realtimeModeUpdatedHandler];
 
-  if (v11)
+  if (realtimeModeUpdatedHandler)
   {
     [(WiFiP2PAWDLStateMonitorConfiguration *)v7 setOptions:[(WiFiP2PAWDLStateMonitorConfiguration *)v7 options]| 4];
   }
 
-  v12 = [(WiFiP2PAWDLStateMonitor *)self threadCoexistenceEventHandler];
+  threadCoexistenceEventHandler = [(WiFiP2PAWDLStateMonitor *)self threadCoexistenceEventHandler];
 
-  if (v12)
+  if (threadCoexistenceEventHandler)
   {
     [(WiFiP2PAWDLStateMonitorConfiguration *)v7 setOptions:[(WiFiP2PAWDLStateMonitorConfiguration *)v7 options]| 8];
   }
 
-  v13 = [(WiFiP2PAWDLStateMonitor *)self softAPChannelChangedEventHandler];
+  softAPChannelChangedEventHandler = [(WiFiP2PAWDLStateMonitor *)self softAPChannelChangedEventHandler];
 
-  if (v13)
+  if (softAPChannelChangedEventHandler)
   {
     [(WiFiP2PAWDLStateMonitorConfiguration *)v7 setOptions:[(WiFiP2PAWDLStateMonitorConfiguration *)v7 options]| 0x10];
   }
 
-  v14 = [(WiFiP2PAWDLStateMonitor *)self channelSequenceUpdatedEventHandler];
+  channelSequenceUpdatedEventHandler = [(WiFiP2PAWDLStateMonitor *)self channelSequenceUpdatedEventHandler];
 
-  if (v14)
+  if (channelSequenceUpdatedEventHandler)
   {
     [(WiFiP2PAWDLStateMonitorConfiguration *)v7 setOptions:[(WiFiP2PAWDLStateMonitorConfiguration *)v7 options]| 0x20];
   }
 
-  v15 = [(WiFiP2PAWDLStateMonitor *)self serviceAvailabilityUpdatedHandler];
-  if (v15)
+  serviceAvailabilityUpdatedHandler = [(WiFiP2PAWDLStateMonitor *)self serviceAvailabilityUpdatedHandler];
+  if (serviceAvailabilityUpdatedHandler)
   {
-    v16 = v15;
+    v16 = serviceAvailabilityUpdatedHandler;
     v17 = [(NSMutableArray *)self->_interestedUniqueIdentifiers count];
 
     if (v17)
@@ -119,21 +119,21 @@
     }
   }
 
-  [v18 startMonitoringAWDLStateWithConfiguration:v7 completionHandler:v6];
+  [proxyCopy startMonitoringAWDLStateWithConfiguration:v7 completionHandler:handlerCopy];
 }
 
-- (void)registerAvailabilityUpdatesForService:(id)a3
+- (void)registerAvailabilityUpdatesForService:(id)service
 {
   interestedUniqueIdentifiers = self->_interestedUniqueIdentifiers;
   if (interestedUniqueIdentifiers)
   {
 
-    [(NSMutableArray *)interestedUniqueIdentifiers addObject:a3];
+    [(NSMutableArray *)interestedUniqueIdentifiers addObject:service];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithObject:a3];
+    v5 = [MEMORY[0x277CBEB18] arrayWithObject:service];
     v6 = self->_interestedUniqueIdentifiers;
     self->_interestedUniqueIdentifiers = v5;
 
@@ -141,96 +141,96 @@
   }
 }
 
-- (void)updatedAWDLState:(id)a3
+- (void)updatedAWDLState:(id)state
 {
-  v6 = a3;
-  v4 = [(WiFiP2PAWDLStateMonitor *)self stateUpdatedHandler];
+  stateCopy = state;
+  stateUpdatedHandler = [(WiFiP2PAWDLStateMonitor *)self stateUpdatedHandler];
 
-  if (v4)
+  if (stateUpdatedHandler)
   {
-    v5 = [(WiFiP2PAWDLStateMonitor *)self stateUpdatedHandler];
-    (v5)[2](v5, v6);
+    stateUpdatedHandler2 = [(WiFiP2PAWDLStateMonitor *)self stateUpdatedHandler];
+    (stateUpdatedHandler2)[2](stateUpdatedHandler2, stateCopy);
   }
 }
 
 - (void)updatedStatistics
 {
-  v3 = [(WiFiP2PAWDLStateMonitor *)self statisticsUpdatedHandler];
+  statisticsUpdatedHandler = [(WiFiP2PAWDLStateMonitor *)self statisticsUpdatedHandler];
 
-  if (v3)
+  if (statisticsUpdatedHandler)
   {
-    v4 = [(WiFiP2PAWDLStateMonitor *)self statisticsUpdatedHandler];
-    v4[2]();
+    statisticsUpdatedHandler2 = [(WiFiP2PAWDLStateMonitor *)self statisticsUpdatedHandler];
+    statisticsUpdatedHandler2[2]();
   }
 }
 
 - (void)updatedLowLatencyStatistics
 {
-  v3 = [(WiFiP2PAWDLStateMonitor *)self lowLatencyStatisticsUpdatedHandler];
+  lowLatencyStatisticsUpdatedHandler = [(WiFiP2PAWDLStateMonitor *)self lowLatencyStatisticsUpdatedHandler];
 
-  if (v3)
+  if (lowLatencyStatisticsUpdatedHandler)
   {
-    v4 = [(WiFiP2PAWDLStateMonitor *)self lowLatencyStatisticsUpdatedHandler];
-    v4[2]();
+    lowLatencyStatisticsUpdatedHandler2 = [(WiFiP2PAWDLStateMonitor *)self lowLatencyStatisticsUpdatedHandler];
+    lowLatencyStatisticsUpdatedHandler2[2]();
   }
 }
 
-- (void)threadCoexistenceEvent:(id)a3
+- (void)threadCoexistenceEvent:(id)event
 {
-  v6 = a3;
-  v4 = [(WiFiP2PAWDLStateMonitor *)self threadCoexistenceEventHandler];
+  eventCopy = event;
+  threadCoexistenceEventHandler = [(WiFiP2PAWDLStateMonitor *)self threadCoexistenceEventHandler];
 
-  if (v4)
+  if (threadCoexistenceEventHandler)
   {
-    v5 = [(WiFiP2PAWDLStateMonitor *)self threadCoexistenceEventHandler];
-    (v5)[2](v5, v6);
+    threadCoexistenceEventHandler2 = [(WiFiP2PAWDLStateMonitor *)self threadCoexistenceEventHandler];
+    (threadCoexistenceEventHandler2)[2](threadCoexistenceEventHandler2, eventCopy);
   }
 }
 
-- (void)channelSequenceChangedEvent:(id)a3
+- (void)channelSequenceChangedEvent:(id)event
 {
-  v6 = a3;
-  v4 = [(WiFiP2PAWDLStateMonitor *)self channelSequenceUpdatedEventHandler];
+  eventCopy = event;
+  channelSequenceUpdatedEventHandler = [(WiFiP2PAWDLStateMonitor *)self channelSequenceUpdatedEventHandler];
 
-  if (v4)
+  if (channelSequenceUpdatedEventHandler)
   {
-    v5 = [(WiFiP2PAWDLStateMonitor *)self channelSequenceUpdatedEventHandler];
-    (v5)[2](v5, v6);
+    channelSequenceUpdatedEventHandler2 = [(WiFiP2PAWDLStateMonitor *)self channelSequenceUpdatedEventHandler];
+    (channelSequenceUpdatedEventHandler2)[2](channelSequenceUpdatedEventHandler2, eventCopy);
   }
 }
 
-- (void)availabilityUpdatedForService:(id)a3 error:(id)a4
+- (void)availabilityUpdatedForService:(id)service error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WiFiP2PAWDLStateMonitor *)self serviceAvailabilityUpdatedHandler];
+  serviceCopy = service;
+  errorCopy = error;
+  serviceAvailabilityUpdatedHandler = [(WiFiP2PAWDLStateMonitor *)self serviceAvailabilityUpdatedHandler];
 
-  if (v7)
+  if (serviceAvailabilityUpdatedHandler)
   {
-    v8 = [(WiFiP2PAWDLStateMonitor *)self serviceAvailabilityUpdatedHandler];
-    (v8)[2](v8, v9, v6 == 0, v6);
+    serviceAvailabilityUpdatedHandler2 = [(WiFiP2PAWDLStateMonitor *)self serviceAvailabilityUpdatedHandler];
+    (serviceAvailabilityUpdatedHandler2)[2](serviceAvailabilityUpdatedHandler2, serviceCopy, errorCopy == 0, errorCopy);
   }
 }
 
-- (BOOL)updateLTERestrictedChannels:(id)a3 error:(id *)a4
+- (BOOL)updateLTERestrictedChannels:(id)channels error:(id *)error
 {
-  v5 = a3;
+  channelsCopy = channels;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__WiFiP2PAWDLStateMonitor_updateLTERestrictedChannels_error___block_invoke;
   v8[3] = &unk_2787AB7F8;
-  v9 = v5;
-  v6 = v5;
-  LOBYTE(a4) = [WiFiP2PXPCConnection directRequestOnEndpointType:2 error:a4 requesting:v8];
+  v9 = channelsCopy;
+  v6 = channelsCopy;
+  LOBYTE(error) = [WiFiP2PXPCConnection directRequestOnEndpointType:2 error:error requesting:v8];
 
-  return a4;
+  return error;
 }
 
-- (id)lowLatencyStatisticsDifferenceBetweenPrevious:(id)a3 current:(id)a4
+- (id)lowLatencyStatisticsDifferenceBetweenPrevious:(id)previous current:(id)current
 {
   v82[2] = *MEMORY[0x277D85DE8];
-  v58 = a3;
-  v57 = a4;
+  previousCopy = previous;
+  currentCopy = current;
   v82[0] = @"LL_STATS_ACTIVE_SERVICES_BITMAP";
   v82[1] = @"LL_STATS_REMOTE_CAMERA_ACTIVE";
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v82 count:2];
@@ -313,7 +313,7 @@
   v79[16] = @"LL_STATS_RX_DATA_RATE";
   v79[17] = @"LL_STATS_RX_RSSI";
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v79 count:18];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
@@ -334,10 +334,10 @@
         }
 
         v15 = *(*(&v71 + 1) + 8 * i);
-        v16 = [v58 objectForKey:v15];
+        v16 = [previousCopy objectForKey:v15];
         if (v16)
         {
-          [v9 setObject:v16 forKey:v15];
+          [dictionary setObject:v16 forKey:v15];
         }
       }
 
@@ -367,10 +367,10 @@
         }
 
         v22 = *(*(&v67 + 1) + 8 * j);
-        v23 = [v57 objectForKey:v22];
+        v23 = [currentCopy objectForKey:v22];
         if (v23)
         {
-          [v9 setObject:v23 forKey:v22];
+          [dictionary setObject:v23 forKey:v22];
         }
       }
 
@@ -403,14 +403,14 @@
         }
 
         v28 = *(*(&v63 + 1) + 8 * k);
-        v29 = [v58 valueForKey:v28];
-        v30 = [v29 integerValue];
+        v29 = [previousCopy valueForKey:v28];
+        integerValue = [v29 integerValue];
 
-        v31 = [v57 valueForKey:v28];
-        v32 = [v31 integerValue];
+        v31 = [currentCopy valueForKey:v28];
+        integerValue2 = [v31 integerValue];
 
-        v33 = [MEMORY[0x277CCABB0] numberWithInteger:v32 - v30];
-        [v9 setObject:v33 forKey:v28];
+        v33 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue2 - integerValue];
+        [dictionary setObject:v33 forKey:v28];
       }
 
       v25 = [obj countByEnumeratingWithState:&v63 objects:v76 count:16];
@@ -439,9 +439,9 @@
         }
 
         v37 = *(*(&v59 + 1) + 8 * m);
-        v38 = [v58 objectForKey:v37];
-        v39 = [v57 objectForKey:v37];
-        v40 = [MEMORY[0x277CBEB18] array];
+        v38 = [previousCopy objectForKey:v37];
+        v39 = [currentCopy objectForKey:v37];
+        array = [MEMORY[0x277CBEB18] array];
         if ([v38 count])
         {
           v41 = 0;
@@ -461,7 +461,7 @@
             v47 = v46;
 
             v48 = [MEMORY[0x277CCABB0] numberWithDouble:v47 - v44];
-            [v40 addObject:v48];
+            [array addObject:v48];
 
             ++v41;
           }
@@ -469,8 +469,8 @@
           while (v41 < [v38 count]);
         }
 
-        v49 = [v40 componentsJoinedByString:{@", "}];
-        [v9 setObject:v49 forKey:v37];
+        v49 = [array componentsJoinedByString:{@", "}];
+        [dictionary setObject:v49 forKey:v37];
       }
 
       v35 = [v54 countByEnumeratingWithState:&v59 objects:v75 count:16];
@@ -481,30 +481,30 @@
 
   v50 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return dictionary;
 }
 
-- (int)queryAverageRSSIForPeer:(id)a3
+- (int)queryAverageRSSIForPeer:(id)peer
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  peerCopy = peer;
+  v4 = peerCopy;
+  if (peerCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__WiFiP2PAWDLStateMonitor_queryAverageRSSIForPeer___block_invoke;
     v8[3] = &unk_2787AB758;
-    v9 = v3;
+    v9 = peerCopy;
     v5 = [WiFiP2PXPCConnection directQueryOnEndpointType:2 error:0 querying:v8];
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = 0;
+    intValue = 0;
   }
 
-  return v6;
+  return intValue;
 }
 
 void __51__WiFiP2PAWDLStateMonitor_queryAverageRSSIForPeer___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -558,7 +558,7 @@ void __44__WiFiP2PAWDLStateMonitor_queryPeerDatabase__block_invoke(uint64_t a1, 
   [a2 queryPeersWithCompletionHandler:v6];
 }
 
-- (BOOL)fetchAWDLActiveServices:(id *)a3 withActivePorts:(id *)a4 error:(id *)a5
+- (BOOL)fetchAWDLActiveServices:(id *)services withActivePorts:(id *)ports error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -584,35 +584,35 @@ void __44__WiFiP2PAWDLStateMonitor_queryPeerDatabase__block_invoke(uint64_t a1, 
   v10 = v9;
   if (v9)
   {
-    if (a3)
+    if (services)
     {
-      *a3 = 0;
+      *services = 0;
     }
 
-    if (a4)
+    if (ports)
     {
-      *a4 = 0;
+      *ports = 0;
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
 
 LABEL_12:
-    *a5 = v9;
+    *error = v9;
     goto LABEL_13;
   }
 
-  if (a3)
+  if (services)
   {
-    *a3 = v21[5];
+    *services = v21[5];
   }
 
-  if (a4)
+  if (ports)
   {
     v9 = v15[5];
-    a5 = a4;
+    error = ports;
     goto LABEL_12;
   }
 

@@ -18,8 +18,8 @@
 
 + (double)safari_timeIntervalSinceSystemStart
 {
-  v0 = [MEMORY[0x1E696AE30] processInfo];
-  [v0 systemUptime];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo systemUptime];
   v2 = v1;
 
   return v2;
@@ -29,8 +29,8 @@
 {
   v4 = objc_alloc(MEMORY[0x1E695DEE8]);
   v5 = [v4 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 components:28 fromDate:v6];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [v5 components:28 fromDate:date];
 
   [v7 setDay:{objc_msgSend(v7, "day") - a3}];
   v8 = [v5 dateFromComponents:v7];
@@ -50,7 +50,7 @@
   aBlock[2] = __81__NSDate_WBSNSDateExtras__safari_dateFromNTPServerWithTimeout_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7CF2630;
   v21 = v23;
-  v22 = a1;
+  selfCopy = self;
   v20 = v6;
   v7 = v6;
   v8 = _Block_copy(aBlock);
@@ -79,8 +79,8 @@
 - (uint64_t)safari_numberOfWeeksUntilDate:()WBSNSDateExtras
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [v5 components:8208 fromDate:a1 toDate:v4 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v6 = [currentCalendar components:8208 fromDate:self toDate:v4 options:0];
   v7 = [v6 day];
   if (v7 >= 0)
   {
@@ -92,47 +92,47 @@
     v8 = -v7;
   }
 
-  [v5 maximumRangeOfUnit:512];
+  [currentCalendar maximumRangeOfUnit:512];
   if (v8 >= v9 - 1)
   {
-    v11 = [v5 components:512 fromDate:a1];
-    v12 = [v5 components:512 fromDate:v4];
-    v13 = [v11 weekday];
-    if (v13 == [v12 weekday])
+    v11 = [currentCalendar components:512 fromDate:self];
+    v12 = [currentCalendar components:512 fromDate:v4];
+    weekday = [v11 weekday];
+    if (weekday == [v12 weekday])
     {
       v14 = [v6 day];
-      v15 = [v6 weekOfYear];
+      weekOfYear = [v6 weekOfYear];
       if (v14 >= 1)
       {
-        v10 = v15 + 1;
+        weekOfYear2 = weekOfYear + 1;
       }
 
       else
       {
-        v10 = v15 - 1;
+        weekOfYear2 = weekOfYear - 1;
       }
     }
 
     else
     {
-      v10 = [v6 weekOfYear];
+      weekOfYear2 = [v6 weekOfYear];
     }
   }
 
   else
   {
-    v10 = [v6 weekOfYear];
+    weekOfYear2 = [v6 weekOfYear];
   }
 
-  return v10;
+  return weekOfYear2;
 }
 
 - (uint64_t)safari_numberOfDaysUntilDate:()WBSNSDateExtras
 {
   v4 = MEMORY[0x1E695DEE8];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 components:16 fromDate:a1 toDate:v5 options:0];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar components:16 fromDate:self toDate:v5 options:0];
 
   v8 = [v7 day];
   return v8;
@@ -140,8 +140,8 @@
 
 - (uint64_t)safari_isInToday
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 isDateInToday:a1];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar isDateInToday:self];
 
   return v3;
 }
@@ -150,16 +150,16 @@
 {
   v4 = MEMORY[0x1E695DEE8];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 isDate:a1 inSameDayAsDate:v5];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar isDate:self inSameDayAsDate:v5];
 
   return v7;
 }
 
 - (id)safari_startOfDay
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 startOfDayForDate:a1];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar startOfDayForDate:self];
 
   return v3;
 }
@@ -167,17 +167,17 @@
 - (BOOL)safari_isInclusivelyBetweenDate:()WBSNSDateExtras andDate:
 {
   v6 = a4;
-  v7 = [a3 compare:a1];
-  v8 = [a1 compare:v6];
+  v7 = [a3 compare:self];
+  v8 = [self compare:v6];
 
   return v7 <= 0 && v8 < 1 || (v7 | v8) >= 0;
 }
 
 - (uint64_t)safari_isNowOrInRecentPast
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  v3 = [v2 dateByAddingTimeInterval:-2.0];
-  v4 = [a1 safari_isInclusivelyBetweenDate:v3 andDate:v2];
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [date dateByAddingTimeInterval:-2.0];
+  v4 = [self safari_isInclusivelyBetweenDate:v3 andDate:date];
 
   return v4;
 }
@@ -191,19 +191,19 @@
 
   v2 = safari_filenameFormattedString_dateFormatter;
 
-  return [v2 stringFromDate:a1];
+  return [v2 stringFromDate:self];
 }
 
 - (id)_safari_stringWithDashSeparatorWithDateFormatter:()WBSNSDateExtras
 {
   v4 = a3;
-  v5 = [v4 dateFormat];
+  dateFormat = [v4 dateFormat];
   v6 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:{@"./, "}];
-  v7 = [v5 componentsSeparatedByCharactersInSet:v6];
+  v7 = [dateFormat componentsSeparatedByCharactersInSet:v6];
   v8 = [v7 componentsJoinedByString:@"-"];
 
   [v4 setDateFormat:v8];
-  v9 = [v4 stringFromDate:a1];
+  v9 = [v4 stringFromDate:self];
 
   return v9;
 }
@@ -255,10 +255,10 @@
               }
 
               [v6 setLocalizedDateFormatFromTemplate:*(*(&v30 + 1) + 8 * i)];
-              v13 = [v6 stringFromDate:a1];
+              v13 = [v6 stringFromDate:self];
               [v5 addObject:v13];
 
-              v14 = [a1 _safari_stringWithDashSeparatorWithDateFormatter:v6];
+              v14 = [self _safari_stringWithDashSeparatorWithDateFormatter:v6];
               [v5 addObject:v14];
             }
 
@@ -293,7 +293,7 @@
               }
 
               [v6 setLocalizedDateFormatFromTemplate:*(*(&v26 + 1) + 8 * j)];
-              v20 = [v6 stringFromDate:a1];
+              v20 = [v6 stringFromDate:self];
               [v5 addObject:v20];
             }
 

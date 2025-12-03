@@ -1,23 +1,23 @@
 @interface MFPhoneBrush
-- (BOOL)fillWithROP:(id)a3 in_path:(id)a4;
-- (void)setPolyFillMode:(id)a3 in_path:(id)a4;
+- (BOOL)fillWithROP:(id)p in_path:(id)in_path;
+- (void)setPolyFillMode:(id)mode in_path:(id)in_path;
 @end
 
 @implementation MFPhoneBrush
 
-- (void)setPolyFillMode:(id)a3 in_path:(id)a4
+- (void)setPolyFillMode:(id)mode in_path:(id)in_path
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = [v8 getPolyFillMode];
-  if (v6 == 1)
+  modeCopy = mode;
+  in_pathCopy = in_path;
+  getPolyFillMode = [modeCopy getPolyFillMode];
+  if (getPolyFillMode == 1)
   {
     v7 = 1;
   }
 
   else
   {
-    if (v6 != 2)
+    if (getPolyFillMode != 2)
     {
       goto LABEL_6;
     }
@@ -25,15 +25,15 @@
     v7 = 0;
   }
 
-  [v5 setWindingRule:v7];
+  [in_pathCopy setWindingRule:v7];
 LABEL_6:
 }
 
-- (BOOL)fillWithROP:(id)a3 in_path:(id)a4
+- (BOOL)fillWithROP:(id)p in_path:(id)in_path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MFPhoneDeviceDriver getROP:v5];
+  pCopy = p;
+  in_pathCopy = in_path;
+  v7 = [MFPhoneDeviceDriver getROP:pCopy];
   if (!v7)
   {
     v9 = +[OITSUColor blackColor];
@@ -47,7 +47,7 @@ LABEL_6:
     [v9 set];
 LABEL_6:
 
-    [v6 fill];
+    [in_pathCopy fill];
     v8 = 1;
     goto LABEL_7;
   }

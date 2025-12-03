@@ -1,13 +1,13 @@
 @interface AXElementVision__generated__
 + (id)urlOfModelInThisBundle;
 - (AXElementVision__generated__)init;
-- (AXElementVision__generated__)initWithConfiguration:(id)a3 error:(id *)a4;
-- (AXElementVision__generated__)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (AXElementVision__generated__)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionFromImage:(__CVBuffer *)a3 iouThreshold:(double)a4 confidenceThreshold:(double)a5 error:(id *)a6;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
+- (AXElementVision__generated__)initWithConfiguration:(id)configuration error:(id *)error;
+- (AXElementVision__generated__)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (AXElementVision__generated__)initWithContentsOfURL:(id)l error:(id *)error;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionFromImage:(__CVBuffer *)image iouThreshold:(double)threshold confidenceThreshold:(double)confidenceThreshold error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
 @end
 
 @implementation AXElementVision__generated__
@@ -32,19 +32,19 @@
 
 - (AXElementVision__generated__)init
 {
-  v3 = [objc_opt_class() urlOfModelInThisBundle];
-  v4 = [(AXElementVision__generated__ *)self initWithContentsOfURL:v3 error:0];
+  urlOfModelInThisBundle = [objc_opt_class() urlOfModelInThisBundle];
+  v4 = [(AXElementVision__generated__ *)self initWithContentsOfURL:urlOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (AXElementVision__generated__)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (AXElementVision__generated__)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = AXElementVision__generated__;
   v7 = [(AXElementVision__generated__ *)&v12 init];
-  if (v7 && ([MEMORY[0x1E695FE90] modelWithContentsOfURL:v6 error:a4], v8 = objc_claimAutoreleasedReturnValue(), model = v7->_model, v7->_model = v8, model, v7->_model))
+  if (v7 && ([MEMORY[0x1E695FE90] modelWithContentsOfURL:lCopy error:error], v8 = objc_claimAutoreleasedReturnValue(), model = v7->_model, v7->_model = v8, model, v7->_model))
   {
     v10 = v7;
   }
@@ -57,23 +57,23 @@
   return v10;
 }
 
-- (AXElementVision__generated__)initWithConfiguration:(id)a3 error:(id *)a4
+- (AXElementVision__generated__)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() urlOfModelInThisBundle];
-  v8 = [(AXElementVision__generated__ *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  configurationCopy = configuration;
+  urlOfModelInThisBundle = [objc_opt_class() urlOfModelInThisBundle];
+  v8 = [(AXElementVision__generated__ *)self initWithContentsOfURL:urlOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v8;
 }
 
-- (AXElementVision__generated__)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (AXElementVision__generated__)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = AXElementVision__generated__;
   v10 = [(AXElementVision__generated__ *)&v15 init];
-  if (v10 && ([MEMORY[0x1E695FE90] modelWithContentsOfURL:v8 configuration:v9 error:a5], v11 = objc_claimAutoreleasedReturnValue(), model = v10->_model, v10->_model = v11, model, v10->_model))
+  if (v10 && ([MEMORY[0x1E695FE90] modelWithContentsOfURL:lCopy configuration:configurationCopy error:error], v11 = objc_claimAutoreleasedReturnValue(), model = v10->_model, v10->_model = v11, model, v10->_model))
   {
     v13 = v10;
   }
@@ -86,44 +86,44 @@
   return v13;
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
   v6 = MEMORY[0x1E695FF08];
-  v7 = a3;
+  featuresCopy = features;
   v8 = objc_alloc_init(v6);
-  v9 = [(AXElementVision__generated__ *)self predictionFromFeatures:v7 options:v8 error:a4];
+  v9 = [(AXElementVision__generated__ *)self predictionFromFeatures:featuresCopy options:v8 error:error];
 
   return v9;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v5 = [(MLModel *)self->_model predictionFromFeatures:a3 options:a4 error:a5];
+  v5 = [(MLModel *)self->_model predictionFromFeatures:features options:options error:error];
   v6 = [AXElementVision__generated__Output alloc];
   v7 = [v5 featureValueForName:@"confidence"];
-  v8 = [v7 multiArrayValue];
+  multiArrayValue = [v7 multiArrayValue];
   v9 = [v5 featureValueForName:@"coordinates"];
-  v10 = [v9 multiArrayValue];
-  v11 = [(AXElementVision__generated__Output *)v6 initWithConfidence:v8 coordinates:v10];
+  multiArrayValue2 = [v9 multiArrayValue];
+  v11 = [(AXElementVision__generated__Output *)v6 initWithConfidence:multiArrayValue coordinates:multiArrayValue2];
 
   return v11;
 }
 
-- (id)predictionFromImage:(__CVBuffer *)a3 iouThreshold:(double)a4 confidenceThreshold:(double)a5 error:(id *)a6
+- (id)predictionFromImage:(__CVBuffer *)image iouThreshold:(double)threshold confidenceThreshold:(double)confidenceThreshold error:(id *)error
 {
-  v8 = [[AXElementVision__generated__Input alloc] initWithImage:a3 iouThreshold:a4 confidenceThreshold:a5];
-  v9 = [(AXElementVision__generated__ *)self predictionFromFeatures:v8 error:a6];
+  v8 = [[AXElementVision__generated__Input alloc] initWithImage:image iouThreshold:threshold confidenceThreshold:confidenceThreshold];
+  v9 = [(AXElementVision__generated__ *)self predictionFromFeatures:v8 error:error];
 
   return v9;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v22 = v7;
-  v20 = [objc_alloc(MEMORY[0x1E695FE30]) initWithFeatureProviderArray:v7];
-  v21 = v8;
+  inputsCopy = inputs;
+  optionsCopy = options;
+  v22 = inputsCopy;
+  v20 = [objc_alloc(MEMORY[0x1E695FE30]) initWithFeatureProviderArray:inputsCopy];
+  v21 = optionsCopy;
   v9 = [MLModel predictionsFromBatch:"predictionsFromBatch:options:error:" options:? error:?];
   v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
   if ([v9 count] >= 1)
@@ -134,10 +134,10 @@
       v12 = [v9 featuresAtIndex:v11];
       v13 = [AXElementVision__generated__Output alloc];
       v14 = [v12 featureValueForName:@"confidence"];
-      v15 = [v14 multiArrayValue];
+      multiArrayValue = [v14 multiArrayValue];
       v16 = [v12 featureValueForName:@"coordinates"];
-      v17 = [v16 multiArrayValue];
-      v18 = [(AXElementVision__generated__Output *)v13 initWithConfidence:v15 coordinates:v17];
+      multiArrayValue2 = [v16 multiArrayValue];
+      v18 = [(AXElementVision__generated__Output *)v13 initWithConfidence:multiArrayValue coordinates:multiArrayValue2];
 
       [v10 addObject:v18];
       ++v11;

@@ -1,9 +1,9 @@
 @interface FBSProcessAssertion
 - (BOOL)isActivated;
 - (FBSProcess)process;
-- (FBSProcessAssertion)initWithName:(id)a3 process:(id)a4 policy:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (FBSProcessAssertion)initWithName:(id)name process:(id)process policy:(id)policy;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)activate;
@@ -14,12 +14,12 @@
 
 @implementation FBSProcessAssertion
 
-- (FBSProcessAssertion)initWithName:(id)a3 process:(id)a4 policy:(id)a5
+- (FBSProcessAssertion)initWithName:(id)name process:(id)process policy:(id)policy
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v10;
+  nameCopy = name;
+  processCopy = process;
+  policyCopy = policy;
+  v12 = processCopy;
   if (!v12)
   {
     [FBSProcessAssertion initWithName:a2 process:? policy:?];
@@ -31,7 +31,7 @@
     [FBSProcessAssertion initWithName:a2 process:? policy:?];
   }
 
-  v14 = v9;
+  v14 = nameCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v14)
   {
@@ -43,7 +43,7 @@
     [FBSProcessAssertion initWithName:a2 process:? policy:?];
   }
 
-  v15 = v11;
+  v15 = policyCopy;
   NSClassFromString(&cfstr_Fbsprocessexec_1.isa);
   if (!v15)
   {
@@ -61,7 +61,7 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_policy, a5);
+    objc_storeStrong(&v16->_policy, policy);
     objc_storeWeak(&v17->_process, v13);
     v18 = [v14 copy];
     name = v17->_name;
@@ -76,7 +76,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -90,10 +90,10 @@
 
 - (BOOL)isActivated
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activationCount != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activationCount != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -233,10 +233,10 @@
     v6 = objc_alloc(MEMORY[0x1E698D038]);
     WeakRetained = objc_loadWeakRetained(&obj->_process);
     v8 = [WeakRetained pid];
-    v9 = [(FBSProcessExecutionPolicy *)obj->_policy strategy];
-    v10 = [v9 flags];
-    v11 = [(FBSProcessExecutionPolicy *)obj->_policy strategy];
-    v12 = [v6 initWithPID:v8 flags:v10 reason:objc_msgSend(v11 name:"reason") withHandler:{obj->_name, 0}];
+    strategy = [(FBSProcessExecutionPolicy *)obj->_policy strategy];
+    flags = [strategy flags];
+    strategy2 = [(FBSProcessExecutionPolicy *)obj->_policy strategy];
+    v12 = [v6 initWithPID:v8 flags:flags reason:objc_msgSend(strategy2 name:"reason") withHandler:{obj->_name, 0}];
     assertion = obj->_assertion;
     obj->_assertion = v12;
 
@@ -316,10 +316,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBSProcessAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSProcessAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -340,26 +340,26 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSProcessAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSProcessAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSProcessAssertion *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSProcessAssertion *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__FBSProcessAssertion_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E76BCD60;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

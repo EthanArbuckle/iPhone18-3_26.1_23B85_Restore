@@ -1,18 +1,18 @@
 @interface INBundleAccessManager
 + (id)sharedManager;
 - (INBundleAccessManager)init;
-- (id)_grantForBundleIdentifiers:(id)a3 error:(id *)a4;
-- (id)grantForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)grantForBundleIdentifiers:(id)a3 error:(id *)a4;
+- (id)_grantForBundleIdentifiers:(id)identifiers error:(id *)error;
+- (id)grantForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)grantForBundleIdentifiers:(id)identifiers error:(id *)error;
 @end
 
 @implementation INBundleAccessManager
 
-- (id)_grantForBundleIdentifiers:(id)a3 error:(id *)a4
+- (id)_grantForBundleIdentifiers:(id)identifiers error:(id *)error
 {
-  v32 = a4;
+  errorCopy = error;
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_assert_owner(&self->_lock);
   ++self->_stats._requestCount;
   v6 = objc_opt_new();
@@ -21,7 +21,7 @@
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v7 = v5;
+  v7 = identifiersCopy;
   v38 = [v7 countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v38)
   {
@@ -38,8 +38,8 @@
         }
 
         v10 = *(*(&v43 + 1) + 8 * i);
-        v11 = [(INBundleAccessManager *)self securityScopedURLs];
-        v12 = [v11 objectForKey:v10];
+        securityScopedURLs = [(INBundleAccessManager *)self securityScopedURLs];
+        v12 = [securityScopedURLs objectForKey:v10];
 
         if (v12)
         {
@@ -59,8 +59,8 @@
 
         else
         {
-          v14 = [(INBundleAccessManager *)self accessibleBundleIDs];
-          v15 = [v14 containsObject:v10];
+          accessibleBundleIDs = [(INBundleAccessManager *)self accessibleBundleIDs];
+          v15 = [accessibleBundleIDs containsObject:v10];
 
           if (v15)
           {
@@ -78,11 +78,11 @@
             }
 
             v18 = v17;
-            v19 = [MEMORY[0x1E696AC08] defaultManager];
+            defaultManager = [MEMORY[0x1E696AC08] defaultManager];
             v20 = [v16 URL];
             [v20 path];
             v22 = v21 = v6;
-            v36 = [v19 isReadableFileAtPath:v22];
+            v36 = [defaultManager isReadableFileAtPath:v22];
 
             v6 = v21;
             v7 = v35;
@@ -95,8 +95,8 @@
             else
             {
 LABEL_14:
-              v23 = [(INBundleAccessManager *)self accessibleBundleIDs];
-              [v23 addObject:v10];
+              accessibleBundleIDs2 = [(INBundleAccessManager *)self accessibleBundleIDs];
+              [accessibleBundleIDs2 addObject:v10];
             }
           }
 
@@ -138,7 +138,7 @@ LABEL_14:
     v39[2] = __58__INBundleAccessManager__grantForBundleIdentifiers_error___block_invoke;
     v39[3] = &unk_1E727F298;
     v40 = v6;
-    v41 = self;
+    selfCopy = self;
     [v26 enumerateKeysAndObjectsUsingBlock:v39];
 
 LABEL_25:
@@ -171,26 +171,26 @@ void __58__INBundleAccessManager__grantForBundleIdentifiers_error___block_invoke
   [v7 setObject:v8 forKey:v6];
 }
 
-- (id)grantForBundleIdentifiers:(id)a3 error:(id *)a4
+- (id)grantForBundleIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(INBundleAccessManager *)self _grantForBundleIdentifiers:v6 error:a4];
+  v7 = [(INBundleAccessManager *)self _grantForBundleIdentifiers:identifiersCopy error:error];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v7;
 }
 
-- (id)grantForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)grantForBundleIdentifier:(id)identifier error:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v11[0] = v6;
+  v11[0] = identifierCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
 
-  v8 = [(INBundleAccessManager *)self _grantForBundleIdentifiers:v7 error:a4];
+  v8 = [(INBundleAccessManager *)self _grantForBundleIdentifiers:v7 error:error];
 
   os_unfair_lock_unlock(&self->_lock);
   v9 = *MEMORY[0x1E69E9840];

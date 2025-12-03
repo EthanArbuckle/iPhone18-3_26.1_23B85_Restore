@@ -1,90 +1,90 @@
 @interface APUIActionSuggestionView
-- (void)_tapRecognized:(id)a3;
-- (void)layoutSuggestion:(id)a3;
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4;
+- (void)_tapRecognized:(id)recognized;
+- (void)layoutSuggestion:(id)suggestion;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress;
 @end
 
 @implementation APUIActionSuggestionView
 
-- (void)layoutSuggestion:(id)a3
+- (void)layoutSuggestion:(id)suggestion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  suggestionCopy = suggestion;
+  if (suggestionCopy)
   {
-    [(APUISuggestionView *)self setSuggestion:v4];
+    [(APUISuggestionView *)self setSuggestion:suggestionCopy];
     [(APUISuggestionView *)self createViewsIfNeeded];
     v5 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__tapRecognized_];
     tapRecognizer = self->_tapRecognizer;
     self->_tapRecognizer = v5;
 
     [(APUIActionSuggestionView *)self addGestureRecognizer:self->_tapRecognizer];
-    v7 = [v4 executableSpecification];
-    v8 = [v7 executableObject];
+    executableSpecification = [suggestionCopy executableSpecification];
+    executableObject = [executableSpecification executableObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
-      objc_storeStrong(&self->_atxAction, v8);
-      v10 = [v9 bundleId];
-      v11 = [v9 userActivityWebpageURL];
+      v9 = executableObject;
+      objc_storeStrong(&self->_atxAction, executableObject);
+      bundleId = [v9 bundleId];
+      userActivityWebpageURL = [v9 userActivityWebpageURL];
       v12 = ATXBundleIdReplacementForBundleIdWithWebpageURLHint();
 
-      v13 = [v9 intent];
-      v14 = [v13 keyImage];
+      intent = [v9 intent];
+      keyImage = [intent keyImage];
       v15 = __atxlog_handle_ui();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v32 = v13;
+        v32 = intent;
         v33 = 2112;
-        v34 = v14;
+        v34 = keyImage;
         _os_log_impl(&dword_240036000, v15, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: image with intent: %@ inImage = intent.keyImage = %@", buf, 0x16u);
       }
 
-      [(APUISuggestionView *)self setINImage:v14 withBundleID:v12];
+      [(APUISuggestionView *)self setINImage:keyImage withBundleID:v12];
       v16 = objc_getAssociatedObject(v9, sel_title);
       v17 = objc_getAssociatedObject(v9, sel_subtitle);
-      v18 = [(APUISuggestionView *)self titleLabel];
-      v19 = v18;
+      titleLabel = [(APUISuggestionView *)self titleLabel];
+      v19 = titleLabel;
       if (v16)
       {
-        [v18 setText:v16];
+        [titleLabel setText:v16];
       }
 
       else
       {
         [v9 actionTitle];
-        v29 = v14;
-        v20 = v13;
+        v29 = keyImage;
+        v20 = intent;
         v22 = v21 = v12;
         [v19 setText:v22];
 
         v12 = v21;
-        v13 = v20;
-        v14 = v29;
+        intent = v20;
+        keyImage = v29;
       }
 
-      v23 = [(APUISuggestionView *)self subtitleLabel];
-      v24 = v23;
+      subtitleLabel = [(APUISuggestionView *)self subtitleLabel];
+      v24 = subtitleLabel;
       if (v17)
       {
-        [v23 setText:v17];
+        [subtitleLabel setText:v17];
       }
 
       else
       {
         [v9 subtitleForSuggestionsWidget];
-        v30 = v14;
-        v25 = v13;
+        v30 = keyImage;
+        v25 = intent;
         v27 = v26 = v12;
         [v24 setText:v27];
 
         v12 = v26;
-        v13 = v25;
-        v14 = v30;
+        intent = v25;
+        keyImage = v30;
       }
     }
 
@@ -102,8 +102,8 @@
 
   else
   {
-    v8 = __atxlog_handle_ui();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    executableObject = __atxlog_handle_ui();
+    if (os_log_type_enabled(executableObject, OS_LOG_TYPE_ERROR))
     {
       [APUIActionSuggestionView layoutSuggestion:];
     }
@@ -112,13 +112,13 @@
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_tapRecognized:(id)a3
+- (void)_tapRecognized:(id)recognized
 {
-  v4 = a3;
+  recognizedCopy = recognized;
   if (![(APUISuggestionView *)self canEngageSuggestion])
   {
-    v10 = __atxlog_handle_ui();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    linkAction = __atxlog_handle_ui();
+    if (os_log_type_enabled(linkAction, OS_LOG_TYPE_ERROR))
     {
       [APUIActionSuggestionView _tapRecognized:];
     }
@@ -127,26 +127,26 @@
   }
 
   [(APUISuggestionView *)self setCanEngageSuggestion:0];
-  if ([v4 state] == 3)
+  if ([recognizedCopy state] == 3)
   {
-    v5 = [(APUISuggestionView *)self delegate];
-    v6 = [(APUISuggestionView *)self suggestion];
-    [v5 view:self didTapSuggestion:v6];
+    delegate = [(APUISuggestionView *)self delegate];
+    suggestion = [(APUISuggestionView *)self suggestion];
+    [delegate view:self didTapSuggestion:suggestion];
 
     if (![(ATXAction *)self->_atxAction actionType])
     {
-      v7 = [(ATXAction *)self->_atxAction intent];
+      intent = [(ATXAction *)self->_atxAction intent];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v9 = [(ATXAction *)self->_atxAction intent];
-        v10 = [v9 linkAction];
+        intent2 = [(ATXAction *)self->_atxAction intent];
+        linkAction = [intent2 linkAction];
 
-        if (v10)
+        if (linkAction)
         {
-          v11 = 0;
+          suggestion2 = 0;
 LABEL_13:
           v16 = __atxlog_handle_ui();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -157,18 +157,18 @@ LABEL_13:
 
           v17 = objc_alloc(MEMORY[0x277D7A150]);
           v18 = v17;
-          if (v10)
+          if (linkAction)
           {
-            v19 = [(ATXAction *)self->_atxAction bundleId];
-            v20 = [v18 initWithLinkAction:v10 bundleIdentifier:v19 resultSurface:1];
+            bundleId = [(ATXAction *)self->_atxAction bundleId];
+            v20 = [v18 initWithLinkAction:linkAction bundleIdentifier:bundleId resultSurface:1];
             workflowRunnerClient = self->_workflowRunnerClient;
             self->_workflowRunnerClient = v20;
           }
 
           else
           {
-            v26 = [v17 initWithINShortcut:v11 executionContext:3];
-            v19 = self->_workflowRunnerClient;
+            v26 = [v17 initWithINShortcut:suggestion2 executionContext:3];
+            bundleId = self->_workflowRunnerClient;
             self->_workflowRunnerClient = v26;
           }
 
@@ -185,9 +185,9 @@ LABEL_13:
 
 LABEL_29:
 
-        v10 = [(APUISuggestionView *)self delegate];
-        v11 = [(APUISuggestionView *)self suggestion];
-        [v10 view:self didFailExecutingSuggestion:v11];
+        linkAction = [(APUISuggestionView *)self delegate];
+        suggestion2 = [(APUISuggestionView *)self suggestion];
+        [linkAction view:self didFailExecutingSuggestion:suggestion2];
 LABEL_30:
 
 LABEL_31:
@@ -209,11 +209,11 @@ LABEL_31:
       }
 
       v22 = objc_alloc(MEMORY[0x277CD4158]);
-      v23 = [(ATXAction *)self->_atxAction userActivity];
-      v24 = [(ATXAction *)self->_atxAction bundleId];
-      v11 = [v22 initWithUserActivity:v23 bundleIdentifier:v24];
+      userActivity = [(ATXAction *)self->_atxAction userActivity];
+      bundleId2 = [(ATXAction *)self->_atxAction bundleId];
+      suggestion2 = [v22 initWithUserActivity:userActivity bundleIdentifier:bundleId2];
 
-      if (!v11)
+      if (!suggestion2)
       {
         v25 = __atxlog_handle_ui();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
@@ -227,15 +227,15 @@ LABEL_31:
 
     else
     {
-      v12 = [(ATXAction *)self->_atxAction bundleId];
-      v13 = [(ATXAction *)self->_atxAction intent];
-      [v13 _setLaunchId:v12];
+      bundleId3 = [(ATXAction *)self->_atxAction bundleId];
+      intent3 = [(ATXAction *)self->_atxAction intent];
+      [intent3 _setLaunchId:bundleId3];
 
       v14 = objc_alloc(MEMORY[0x277CD4158]);
-      v15 = [(ATXAction *)self->_atxAction intent];
-      v11 = [v14 initWithIntent:v15];
+      intent4 = [(ATXAction *)self->_atxAction intent];
+      suggestion2 = [v14 initWithIntent:intent4];
 
-      if (!v11)
+      if (!suggestion2)
       {
         v25 = __atxlog_handle_ui();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
@@ -247,48 +247,48 @@ LABEL_31:
       }
     }
 
-    v10 = 0;
+    linkAction = 0;
     goto LABEL_13;
   }
 
 LABEL_32:
 }
 
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  progressCopy = progress;
   v7 = __atxlog_handle_ui();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218240;
-    v10 = v5;
+    v10 = clientCopy;
     v11 = 2048;
-    v12 = v6;
+    v12 = progressCopy;
     _os_log_impl(&dword_240036000, v7, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: workflowRunnerClient: <%p> didStartRunningWorkflowWithProgress: <%p>", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
-  v6 = a6;
+  cancelledCopy = cancelled;
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  clientCopy = client;
+  errorCopy = error;
   v11 = __atxlog_handle_ui();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v21 = v9;
+    v21 = clientCopy;
     _os_log_impl(&dword_240036000, v11, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: workflowRunnerClient: <%p> didFinishRunningWorkflowWithOutput:error:cancelled:", buf, 0xCu);
   }
 
-  if (v10 || v6)
+  if (errorCopy || cancelledCopy)
   {
-    if (v6)
+    if (cancelledCopy)
     {
       v15 = __atxlog_handle_ui();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -298,7 +298,7 @@ LABEL_32:
       }
     }
 
-    if (v10)
+    if (errorCopy)
     {
       v16 = __atxlog_handle_ui();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))

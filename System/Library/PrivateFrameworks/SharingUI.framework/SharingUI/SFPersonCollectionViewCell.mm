@@ -1,33 +1,33 @@
 @interface SFPersonCollectionViewCell
-+ (CGSize)_cachedPreferredItemSizeForString:(id)a3 viewWidth:(double)a4 sizeCategory:(id)a5;
-+ (CGSize)_cachedPreferredItemSizeForViewWidth:(double)a3 sizeCategory:(id)a4;
-- (CGSize)calculatedContentSizeForSheetWidth:(double)a3 sizeCategory:(id)a4;
-- (SFPersonCollectionViewCell)initWithFrame:(CGRect)a3;
++ (CGSize)_cachedPreferredItemSizeForString:(id)string viewWidth:(double)width sizeCategory:(id)category;
++ (CGSize)_cachedPreferredItemSizeForViewWidth:(double)width sizeCategory:(id)category;
+- (CGSize)calculatedContentSizeForSheetWidth:(double)width sizeCategory:(id)category;
+- (SFPersonCollectionViewCell)initWithFrame:(CGRect)frame;
 - (SFPersonCollectionViewCellDelegate)delegate;
 - (void)_updateForCurrentSizeCategory;
-- (void)addObserverOfValuesForKeyPaths:(id)a3 ofObject:(id)a4;
+- (void)addObserverOfValuesForKeyPaths:(id)paths ofObject:(id)object;
 - (void)deactivateHaptics;
 - (void)dealloc;
-- (void)fireHapticsForState:(int64_t)a3;
-- (void)handleKVOUpdateForPerson:(id)a3 keyPath:(id)a4;
-- (void)handleKVOUpdateForProgress:(id)a3 keyPath:(id)a4;
+- (void)fireHapticsForState:(int64_t)state;
+- (void)handleKVOUpdateForPerson:(id)person keyPath:(id)path;
+- (void)handleKVOUpdateForProgress:(id)progress keyPath:(id)path;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareForReuse;
-- (void)prepareHapticsPreWarm:(BOOL)a3;
-- (void)removeObserverOfValuesForKeyPaths:(id)a3 ofObject:(id)a4;
+- (void)prepareHapticsPreWarm:(BOOL)warm;
+- (void)removeObserverOfValuesForKeyPaths:(id)paths ofObject:(id)object;
 - (void)resetTransferState;
-- (void)restoreCellStateFromFinalTransferState:(int64_t)a3;
-- (void)setCellState:(int64_t)a3 animated:(BOOL)a4 silent:(BOOL)a5;
-- (void)setDarkStyleOnLegacyApp:(BOOL)a3;
-- (void)setPerson:(id)a3;
-- (void)setProgress:(id)a3;
-- (void)setSecondLabelText:(id)a3 withTextColor:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)setSelected:(BOOL)a3;
+- (void)restoreCellStateFromFinalTransferState:(int64_t)state;
+- (void)setCellState:(int64_t)state animated:(BOOL)animated silent:(BOOL)silent;
+- (void)setDarkStyleOnLegacyApp:(BOOL)app;
+- (void)setPerson:(id)person;
+- (void)setProgress:(id)progress;
+- (void)setSecondLabelText:(id)text withTextColor:(id)color animated:(BOOL)animated completion:(id)completion;
+- (void)setSelected:(BOOL)selected;
 - (void)setupConstraints;
 - (void)setupConstraintsYukon;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)triggerKVOForKeyPaths:(id)a3 ofObject:(id)a4;
+- (void)traitCollectionDidChange:(id)change;
+- (void)triggerKVOForKeyPaths:(id)paths ofObject:(id)object;
 - (void)updateNameLabel;
 - (void)updatePersonIconView;
 - (void)userDidCancel;
@@ -36,21 +36,21 @@
 
 @implementation SFPersonCollectionViewCell
 
-+ (CGSize)_cachedPreferredItemSizeForViewWidth:(double)a3 sizeCategory:(id)a4
++ (CGSize)_cachedPreferredItemSizeForViewWidth:(double)width sizeCategory:(id)category
 {
-  [a1 _cachedPreferredItemSizeForString:@"Apple\nInc." viewWidth:a4 sizeCategory:a3];
+  [self _cachedPreferredItemSizeForString:@"Apple\nInc." viewWidth:category sizeCategory:width];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (CGSize)_cachedPreferredItemSizeForString:(id)a3 viewWidth:(double)a4 sizeCategory:(id)a5
++ (CGSize)_cachedPreferredItemSizeForString:(id)string viewWidth:(double)width sizeCategory:(id)category
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%ld-%@", v7, a4, v8];
+  stringCopy = string;
+  categoryCopy = category;
+  categoryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%ld-%@", stringCopy, width, categoryCopy];
   v10 = getCachedPreferredItemSizesByString();
-  v11 = [v10 objectForKey:v9];
+  v11 = [v10 objectForKey:categoryCopy];
 
   if (!v11)
   {
@@ -62,17 +62,17 @@
       __prototypeActivityCell = v13;
 
       v12 = v13;
-      v15 = [(SFPersonCollectionViewCell *)v12 nameLabel];
-      [v15 setAdjustsFontSizeToFitWidth:0];
+      nameLabel = [(SFPersonCollectionViewCell *)v12 nameLabel];
+      [nameLabel setAdjustsFontSizeToFitWidth:0];
     }
 
-    v16 = [(SFPersonCollectionViewCell *)v12 nameLabel];
-    [v16 setText:v7];
+    nameLabel2 = [(SFPersonCollectionViewCell *)v12 nameLabel];
+    [nameLabel2 setText:stringCopy];
 
-    [(SFPersonCollectionViewCell *)v12 calculatedContentSizeForSheetWidth:v8 sizeCategory:a4];
+    [(SFPersonCollectionViewCell *)v12 calculatedContentSizeForSheetWidth:categoryCopy sizeCategory:width];
     v11 = [MEMORY[0x1E696B098] valueWithCGSize:?];
     v17 = getCachedPreferredItemSizesByString();
-    [v17 setObject:v11 forKey:v9];
+    [v17 setObject:v11 forKey:categoryCopy];
   }
 
   [v11 CGSizeValue];
@@ -86,11 +86,11 @@
   return result;
 }
 
-- (SFPersonCollectionViewCell)initWithFrame:(CGRect)a3
+- (SFPersonCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v52.receiver = self;
   v52.super_class = SFPersonCollectionViewCell;
-  v3 = [(SFPersonCollectionViewCell *)&v52 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFPersonCollectionViewCell *)&v52 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -100,69 +100,69 @@
     v6 = objc_alloc_init(SFPersonImageView);
     [(SFPersonImageView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SFPersonImageView *)v6 setContentMode:2];
-    v7 = [MEMORY[0x1E69DC888] blackColor];
-    v8 = [v7 CGColor];
-    v9 = [(SFPersonImageView *)v6 layer];
-    [v9 setShadowColor:v8];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
+    layer = [(SFPersonImageView *)v6 layer];
+    [layer setShadowColor:cGColor];
 
-    v10 = [(SFPersonImageView *)v6 layer];
+    layer2 = [(SFPersonImageView *)v6 layer];
     LODWORD(v11) = 1032805417;
-    [v10 setShadowOpacity:v11];
+    [layer2 setShadowOpacity:v11];
 
     v12 = *MEMORY[0x1E695F060];
     v13 = *(MEMORY[0x1E695F060] + 8);
-    v14 = [(SFPersonImageView *)v6 layer];
-    [v14 setShadowOffset:{v12, v13}];
+    layer3 = [(SFPersonImageView *)v6 layer];
+    [layer3 setShadowOffset:{v12, v13}];
 
-    v15 = [(SFPersonImageView *)v6 layer];
-    [v15 setShadowRadius:10.0];
+    layer4 = [(SFPersonImageView *)v6 layer];
+    [layer4 setShadowRadius:10.0];
 
-    v16 = [(SFPersonImageView *)v6 layer];
-    [v16 setShadowPathIsBounds:1];
+    layer5 = [(SFPersonImageView *)v6 layer];
+    [layer5 setShadowPathIsBounds:1];
 
     [(SFPersonCollectionViewCell *)v4 setImageView:v6];
-    v17 = [(SFPersonCollectionViewCell *)v4 contentView];
-    [v17 addSubview:v6];
+    contentView = [(SFPersonCollectionViewCell *)v4 contentView];
+    [contentView addSubview:v6];
 
     v18 = [SFCircleProgressView alloc];
     v19 = [(SFCircleProgressView *)v18 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(SFCircleProgressView *)v19 setProgressLineWidth:2.0];
     [(SFCircleProgressView *)v19 setShowProgressTray:1];
     [(SFCircleProgressView *)v19 setAlpha:1.0];
-    v20 = [MEMORY[0x1E69DC888] clearColor];
-    [(SFCircleProgressView *)v19 setBackgroundColor:v20];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SFCircleProgressView *)v19 setBackgroundColor:clearColor];
 
     [(SFCircleProgressView *)v19 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v21 = [MEMORY[0x1E69DC938] currentDevice];
-    -[SFCircleProgressView setUsesRoundedLineCap:](v19, "setUsesRoundedLineCap:", [v21 userInterfaceIdiom] == 6);
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    -[SFCircleProgressView setUsesRoundedLineCap:](v19, "setUsesRoundedLineCap:", [currentDevice userInterfaceIdiom] == 6);
 
     [(SFPersonCollectionViewCell *)v4 setCircleProgressView:v19];
-    v22 = [(SFPersonCollectionViewCell *)v4 contentView];
-    [v22 addSubview:v19];
+    contentView2 = [(SFPersonCollectionViewCell *)v4 contentView];
+    [contentView2 addSubview:v19];
 
-    v23 = [(SFPersonCollectionViewCell *)v4 traitCollection];
-    v24 = [v23 preferredContentSizeCategory];
-    v25 = createNameLabel(v24);
+    traitCollection = [(SFPersonCollectionViewCell *)v4 traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v25 = createNameLabel(preferredContentSizeCategory);
     [(SFPersonCollectionViewCell *)v4 setNameLabel:v25];
 
-    v26 = [(SFPersonCollectionViewCell *)v4 contentView];
-    v27 = [(SFPersonCollectionViewCell *)v4 nameLabel];
-    [v26 addSubview:v27];
+    contentView3 = [(SFPersonCollectionViewCell *)v4 contentView];
+    nameLabel = [(SFPersonCollectionViewCell *)v4 nameLabel];
+    [contentView3 addSubview:nameLabel];
 
-    v28 = [(SFPersonCollectionViewCell *)v4 traitCollection];
-    v29 = [v28 preferredContentSizeCategory];
+    traitCollection2 = [(SFPersonCollectionViewCell *)v4 traitCollection];
+    preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
     v30 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-    v31 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v30 setTextColor:v31];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v30 setTextColor:secondaryLabelColor];
 
-    v32 = [v30 _screen];
+    _screen = [v30 _screen];
     v33 = _SFPersonLabelFont();
     [v30 setFont:v33];
 
-    v34 = [MEMORY[0x1E69DC888] clearColor];
-    [v30 setBackgroundColor:v34];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [v30 setBackgroundColor:clearColor2];
 
-    if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x1E69DDC58], v29) == NSOrderedAscending)
+    if (UIContentSizeCategoryCompareToCategory(*MEMORY[0x1E69DDC58], preferredContentSizeCategory2) == NSOrderedAscending)
     {
       v35 = 4;
     }
@@ -179,36 +179,36 @@
     [v30 _setHyphenationFactor:v36];
     [(SFPersonCollectionViewCell *)v4 setSecondLabel:v30];
 
-    v37 = [(SFPersonCollectionViewCell *)v4 contentView];
-    v38 = [(SFPersonCollectionViewCell *)v4 secondLabel];
-    [v37 addSubview:v38];
+    contentView4 = [(SFPersonCollectionViewCell *)v4 contentView];
+    secondLabel = [(SFPersonCollectionViewCell *)v4 secondLabel];
+    [contentView4 addSubview:secondLabel];
 
-    v39 = [(SFPersonCollectionViewCell *)v4 traitCollection];
-    v40 = [v39 preferredContentSizeCategory];
-    v41 = createNameLabel(v40);
+    traitCollection3 = [(SFPersonCollectionViewCell *)v4 traitCollection];
+    preferredContentSizeCategory3 = [traitCollection3 preferredContentSizeCategory];
+    v41 = createNameLabel(preferredContentSizeCategory3);
     [(SFPersonCollectionViewCell *)v4 setLabelForPositioning:v41];
 
-    v42 = [(SFPersonCollectionViewCell *)v4 labelForPositioning];
-    [v42 setAlpha:0.0];
+    labelForPositioning = [(SFPersonCollectionViewCell *)v4 labelForPositioning];
+    [labelForPositioning setAlpha:0.0];
 
-    v43 = [(SFPersonCollectionViewCell *)v4 labelForPositioning];
-    [v43 setText:@"Apple\nInc"];
+    labelForPositioning2 = [(SFPersonCollectionViewCell *)v4 labelForPositioning];
+    [labelForPositioning2 setText:@"Apple\nInc"];
 
-    v44 = [(SFPersonCollectionViewCell *)v4 contentView];
-    v45 = [(SFPersonCollectionViewCell *)v4 labelForPositioning];
-    [v44 addSubview:v45];
+    contentView5 = [(SFPersonCollectionViewCell *)v4 contentView];
+    labelForPositioning3 = [(SFPersonCollectionViewCell *)v4 labelForPositioning];
+    [contentView5 addSubview:labelForPositioning3];
 
-    v46 = [(SFPersonCollectionViewCell *)v4 contentView];
-    v47 = [MEMORY[0x1E69DC888] clearColor];
-    [v46 setBackgroundColor:v47];
+    contentView6 = [(SFPersonCollectionViewCell *)v4 contentView];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    [contentView6 setBackgroundColor:clearColor3];
 
-    [v46 setTranslatesAutoresizingMaskIntoConstraints:1];
+    [contentView6 setTranslatesAutoresizingMaskIntoConstraints:1];
     [(SFPersonCollectionViewCell *)v4 setupConstraintsYukon];
     [(SFPersonCollectionViewCell *)v4 prepareHapticsPreWarm:0];
-    v48 = [MEMORY[0x1E69DC938] currentDevice];
-    v49 = [v48 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    if (v49 == 6)
+    if (userInterfaceIdiom == 6)
     {
       [(SFPersonCollectionViewCell *)v4 _setCornerRadius:12.0];
     }
@@ -231,59 +231,59 @@
 - (void)setupConstraints
 {
   v100[9] = *MEMORY[0x1E69E9840];
-  v3 = [(SFPersonCollectionViewCell *)self circleProgressView];
-  v4 = [(SFPersonCollectionViewCell *)self contentView];
+  circleProgressView = [(SFPersonCollectionViewCell *)self circleProgressView];
+  contentView = [(SFPersonCollectionViewCell *)self contentView];
   ChickletSize = getChickletSize();
   v7 = v6;
   v8 = MEMORY[0x1E696ACD8];
-  v92 = [(SFPersonCollectionViewCell *)self imageView];
-  v89 = [v8 constraintWithItem:v3 attribute:7 relatedBy:0 toItem:v92 attribute:7 multiplier:1.0 constant:10.0];
+  imageView = [(SFPersonCollectionViewCell *)self imageView];
+  v89 = [v8 constraintWithItem:circleProgressView attribute:7 relatedBy:0 toItem:imageView attribute:7 multiplier:1.0 constant:10.0];
   v100[0] = v89;
   v9 = MEMORY[0x1E696ACD8];
-  v86 = [(SFPersonCollectionViewCell *)self imageView];
-  v83 = [v9 constraintWithItem:v3 attribute:8 relatedBy:0 toItem:v86 attribute:8 multiplier:1.0 constant:10.0];
+  imageView2 = [(SFPersonCollectionViewCell *)self imageView];
+  v83 = [v9 constraintWithItem:circleProgressView attribute:8 relatedBy:0 toItem:imageView2 attribute:8 multiplier:1.0 constant:10.0];
   v100[1] = v83;
   v10 = MEMORY[0x1E696ACD8];
-  v82 = [(SFPersonCollectionViewCell *)self imageView];
-  v96 = v3;
-  v80 = [v10 constraintWithItem:v3 attribute:9 relatedBy:0 toItem:v82 attribute:9 multiplier:1.0 constant:0.0];
+  imageView3 = [(SFPersonCollectionViewCell *)self imageView];
+  v96 = circleProgressView;
+  v80 = [v10 constraintWithItem:circleProgressView attribute:9 relatedBy:0 toItem:imageView3 attribute:9 multiplier:1.0 constant:0.0];
   v100[2] = v80;
   v11 = MEMORY[0x1E696ACD8];
-  v78 = [(SFPersonCollectionViewCell *)self imageView];
-  v12 = [v11 constraintWithItem:v3 attribute:10 relatedBy:0 toItem:v78 attribute:10 multiplier:1.0 constant:0.0];
+  imageView4 = [(SFPersonCollectionViewCell *)self imageView];
+  v12 = [v11 constraintWithItem:circleProgressView attribute:10 relatedBy:0 toItem:imageView4 attribute:10 multiplier:1.0 constant:0.0];
   v100[3] = v12;
-  v13 = [MEMORY[0x1E696ACD8] constraintWithItem:v4 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
+  v13 = [MEMORY[0x1E696ACD8] constraintWithItem:contentView attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
   cellWidthConstraint = self->_cellWidthConstraint;
   self->_cellWidthConstraint = v13;
 
   v100[4] = v13;
   v15 = MEMORY[0x1E696ACD8];
-  v16 = [(SFPersonCollectionViewCell *)self imageView];
-  v17 = [v15 constraintWithItem:v16 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v7];
+  imageView5 = [(SFPersonCollectionViewCell *)self imageView];
+  v17 = [v15 constraintWithItem:imageView5 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v7];
   v100[5] = v17;
   v18 = MEMORY[0x1E696ACD8];
-  v19 = [(SFPersonCollectionViewCell *)self imageView];
-  v20 = [v18 constraintWithItem:v19 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v7];
+  imageView6 = [(SFPersonCollectionViewCell *)self imageView];
+  v20 = [v18 constraintWithItem:imageView6 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v7];
   v100[6] = v20;
-  v21 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_nameLabel attribute:6 relatedBy:0 toItem:v4 attribute:6 multiplier:1.0 constant:-0.5];
+  v21 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_nameLabel attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:-0.5];
   v100[7] = v21;
-  v22 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_secondLabel attribute:6 relatedBy:0 toItem:v4 attribute:6 multiplier:1.0 constant:-0.5];
+  v22 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_secondLabel attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:-0.5];
   v100[8] = v22;
   v95 = [MEMORY[0x1E695DEC8] arrayWithObjects:v100 count:9];
 
   v23 = MEMORY[0x1E696ACD8];
-  v93 = [(SFPersonCollectionViewCell *)self imageView];
-  v24 = v4;
-  v90 = [v23 constraintWithItem:v93 attribute:3 relatedBy:0 toItem:v4 attribute:3 multiplier:1.0 constant:0.0];
+  imageView7 = [(SFPersonCollectionViewCell *)self imageView];
+  v24 = contentView;
+  v90 = [v23 constraintWithItem:imageView7 attribute:3 relatedBy:0 toItem:contentView attribute:3 multiplier:1.0 constant:0.0];
   v99[0] = v90;
   v25 = MEMORY[0x1E696ACD8];
-  v87 = [(SFPersonCollectionViewCell *)self imageView];
-  v84 = [v25 constraintWithItem:v87 attribute:9 relatedBy:0 toItem:v4 attribute:9 multiplier:1.0 constant:0.0];
+  imageView8 = [(SFPersonCollectionViewCell *)self imageView];
+  v84 = [v25 constraintWithItem:imageView8 attribute:9 relatedBy:0 toItem:contentView attribute:9 multiplier:1.0 constant:0.0];
   v99[1] = v84;
   v26 = MEMORY[0x1E696ACD8];
   nameLabel = self->_nameLabel;
-  v28 = [(SFPersonCollectionViewCell *)self imageView];
-  v29 = [v26 constraintWithItem:nameLabel attribute:12 relatedBy:0 toItem:v28 attribute:4 multiplier:1.0 constant:0.0];
+  imageView9 = [(SFPersonCollectionViewCell *)self imageView];
+  v29 = [v26 constraintWithItem:nameLabel attribute:12 relatedBy:0 toItem:imageView9 attribute:4 multiplier:1.0 constant:0.0];
   chickletToTitleSpacingConstraint = self->_chickletToTitleSpacingConstraint;
   self->_chickletToTitleSpacingConstraint = v29;
 
@@ -302,67 +302,67 @@
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v99 count:7];
   [(SFPersonCollectionViewCell *)self setRegularConstraints:v36];
 
-  v91 = [(UILabel *)self->_labelForPositioning centerYAnchor];
-  v94 = [(SFPersonCollectionViewCell *)self imageView];
-  v88 = [v94 centerYAnchor];
-  v85 = [v91 constraintEqualToAnchor:v88];
+  centerYAnchor = [(UILabel *)self->_labelForPositioning centerYAnchor];
+  imageView10 = [(SFPersonCollectionViewCell *)self imageView];
+  centerYAnchor2 = [imageView10 centerYAnchor];
+  v85 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v98[0] = v85;
-  v79 = [(UILabel *)self->_labelForPositioning leadingAnchor];
-  v81 = [(SFPersonCollectionViewCell *)self imageView];
-  v77 = [v81 trailingAnchor];
-  v76 = [v79 constraintEqualToAnchor:v77 constant:10.0];
+  leadingAnchor = [(UILabel *)self->_labelForPositioning leadingAnchor];
+  imageView11 = [(SFPersonCollectionViewCell *)self imageView];
+  trailingAnchor = [imageView11 trailingAnchor];
+  v76 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:10.0];
   v98[1] = v76;
-  v74 = [(UILabel *)self->_labelForPositioning trailingAnchor];
-  v73 = [v24 trailingAnchor];
-  v72 = [v74 constraintEqualToAnchor:v73 constant:-0.5];
+  trailingAnchor2 = [(UILabel *)self->_labelForPositioning trailingAnchor];
+  trailingAnchor3 = [v24 trailingAnchor];
+  v72 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-0.5];
   v98[2] = v72;
-  v71 = [(UILabel *)self->_secondLabel firstBaselineAnchor];
-  v70 = [(UILabel *)self->_labelForPositioning lastBaselineAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70];
+  firstBaselineAnchor = [(UILabel *)self->_secondLabel firstBaselineAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_labelForPositioning lastBaselineAnchor];
+  v69 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor];
   v98[3] = v69;
-  v68 = [(SFPersonCollectionViewCell *)self imageView];
-  v67 = [v68 topAnchor];
+  imageView12 = [(SFPersonCollectionViewCell *)self imageView];
+  topAnchor = [imageView12 topAnchor];
   v37 = v24;
-  v66 = [v24 topAnchor];
-  v65 = [v67 constraintGreaterThanOrEqualToAnchor:v66 constant:5.0];
+  topAnchor2 = [v24 topAnchor];
+  v65 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:5.0];
   v98[4] = v65;
-  v64 = [(SFPersonCollectionViewCell *)self imageView];
-  v63 = [v64 bottomAnchor];
+  imageView13 = [(SFPersonCollectionViewCell *)self imageView];
+  bottomAnchor = [imageView13 bottomAnchor];
   v75 = v24;
-  v62 = [v24 bottomAnchor];
-  v61 = [v63 constraintLessThanOrEqualToAnchor:v62 constant:-5.0];
+  bottomAnchor2 = [v24 bottomAnchor];
+  v61 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-5.0];
   v98[5] = v61;
-  v59 = [(UILabel *)self->_nameLabel centerYAnchor];
-  v60 = [(SFPersonCollectionViewCell *)self imageView];
-  v58 = [v60 centerYAnchor];
-  v38 = [v59 constraintEqualToAnchor:v58];
+  centerYAnchor3 = [(UILabel *)self->_nameLabel centerYAnchor];
+  imageView14 = [(SFPersonCollectionViewCell *)self imageView];
+  centerYAnchor4 = [imageView14 centerYAnchor];
+  v38 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   largeTextNameCenterYConstraint = self->_largeTextNameCenterYConstraint;
   self->_largeTextNameCenterYConstraint = v38;
 
   v98[6] = v38;
-  v40 = [(SFPersonCollectionViewCell *)self imageView];
-  v41 = [v40 leadingAnchor];
-  v42 = [v37 leadingAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42 constant:5.0];
+  imageView15 = [(SFPersonCollectionViewCell *)self imageView];
+  leadingAnchor2 = [imageView15 leadingAnchor];
+  leadingAnchor3 = [v37 leadingAnchor];
+  v43 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:5.0];
   v98[7] = v43;
   v44 = MEMORY[0x1E696ACD8];
   v45 = self->_nameLabel;
-  v46 = [(SFPersonCollectionViewCell *)self imageView];
-  v47 = [v44 constraintWithItem:v45 attribute:5 relatedBy:0 toItem:v46 attribute:6 multiplier:1.0 constant:10.0];
+  imageView16 = [(SFPersonCollectionViewCell *)self imageView];
+  v47 = [v44 constraintWithItem:v45 attribute:5 relatedBy:0 toItem:imageView16 attribute:6 multiplier:1.0 constant:10.0];
   v98[8] = v47;
   v48 = MEMORY[0x1E696ACD8];
   secondLabel = self->_secondLabel;
-  v50 = [(SFPersonCollectionViewCell *)self imageView];
-  v51 = [v48 constraintWithItem:secondLabel attribute:5 relatedBy:0 toItem:v50 attribute:6 multiplier:1.0 constant:10.0];
+  imageView17 = [(SFPersonCollectionViewCell *)self imageView];
+  v51 = [v48 constraintWithItem:secondLabel attribute:5 relatedBy:0 toItem:imageView17 attribute:6 multiplier:1.0 constant:10.0];
   v98[9] = v51;
   v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v98 count:10];
   [(SFPersonCollectionViewCell *)self setLargeTextConstraints:v52];
 
   v53 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_nameLabel attribute:11 relatedBy:0 toItem:self->_nameLabel attribute:12 multiplier:1.0 constant:0.0];
   v97[0] = v53;
-  v54 = [(UILabel *)self->_nameLabel firstBaselineAnchor];
-  v55 = [(UILabel *)self->_labelForPositioning firstBaselineAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55];
+  firstBaselineAnchor2 = [(UILabel *)self->_nameLabel firstBaselineAnchor];
+  firstBaselineAnchor3 = [(UILabel *)self->_labelForPositioning firstBaselineAnchor];
+  v56 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3];
   v97[1] = v56;
   v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v97 count:2];
   [(SFPersonCollectionViewCell *)self setSecondLabelVisibleConstraintsArray:v57];
@@ -373,13 +373,13 @@
 - (void)setupConstraintsYukon
 {
   v196[16] = *MEMORY[0x1E69E9840];
-  v193 = [(SFPersonCollectionViewCell *)self circleProgressView];
-  v192 = [(SFPersonCollectionViewCell *)self contentView];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  circleProgressView = [(SFPersonCollectionViewCell *)self circleProgressView];
+  contentView = [(SFPersonCollectionViewCell *)self contentView];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v190 = v4;
-  if (v4 == 6)
+  v190 = userInterfaceIdiom;
+  if (userInterfaceIdiom == 6)
   {
     v5 = 8.0;
     v6 = -8.0;
@@ -390,14 +390,14 @@
 
   else
   {
-    v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v10 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
     if (v11 >= 414.0)
     {
-      v12 = [MEMORY[0x1E69DC938] currentDevice];
-      v13 = [v12 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-      if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v8 = 62.0;
       }
@@ -420,230 +420,230 @@
   }
 
   v14 = MEMORY[0x1E695DF70];
-  v187 = [(SFPersonCollectionViewCell *)self imageView];
-  v184 = [v187 widthAnchor];
-  v182 = [v184 constraintEqualToConstant:v8];
+  imageView = [(SFPersonCollectionViewCell *)self imageView];
+  widthAnchor = [imageView widthAnchor];
+  v182 = [widthAnchor constraintEqualToConstant:v8];
   v196[0] = v182;
-  v180 = [(SFPersonCollectionViewCell *)self imageView];
-  v178 = [v180 heightAnchor];
-  v176 = [v178 constraintEqualToConstant:v8];
+  imageView2 = [(SFPersonCollectionViewCell *)self imageView];
+  heightAnchor = [imageView2 heightAnchor];
+  v176 = [heightAnchor constraintEqualToConstant:v8];
   v196[1] = v176;
-  v174 = [(SFPersonCollectionViewCell *)self imageView];
-  v172 = [v174 topAnchor];
-  v170 = [v192 topAnchor];
-  v168 = [v172 constraintEqualToAnchor:v170 constant:v5];
+  imageView3 = [(SFPersonCollectionViewCell *)self imageView];
+  topAnchor = [imageView3 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v168 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v5];
   v196[2] = v168;
-  v166 = [(SFPersonCollectionViewCell *)self imageView];
-  v164 = [v166 centerXAnchor];
-  v162 = [v192 centerXAnchor];
-  v160 = [v164 constraintEqualToAnchor:v162];
+  imageView4 = [(SFPersonCollectionViewCell *)self imageView];
+  centerXAnchor = [imageView4 centerXAnchor];
+  centerXAnchor2 = [contentView centerXAnchor];
+  v160 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v196[3] = v160;
-  v158 = [(SFPersonCollectionViewCell *)self imageView];
-  v154 = [v158 centerXAnchor];
-  v156 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v152 = [v156 centerXAnchor];
-  v150 = [v154 constraintEqualToAnchor:v152];
+  imageView5 = [(SFPersonCollectionViewCell *)self imageView];
+  centerXAnchor3 = [imageView5 centerXAnchor];
+  labelForPositioning = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  centerXAnchor4 = [labelForPositioning centerXAnchor];
+  v150 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v196[4] = v150;
-  v148 = [(SFPersonCollectionViewCell *)self imageView];
-  v144 = [v148 bottomAnchor];
-  v146 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v142 = [v146 topAnchor];
-  v140 = [v144 constraintEqualToAnchor:v142 constant:v9];
+  imageView6 = [(SFPersonCollectionViewCell *)self imageView];
+  bottomAnchor = [imageView6 bottomAnchor];
+  labelForPositioning2 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  topAnchor3 = [labelForPositioning2 topAnchor];
+  v140 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:v9];
   v196[5] = v140;
-  v138 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v136 = [v138 bottomAnchor];
-  v134 = [v192 bottomAnchor];
-  v132 = [v136 constraintEqualToAnchor:v134 constant:v6];
+  labelForPositioning3 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  bottomAnchor2 = [labelForPositioning3 bottomAnchor];
+  bottomAnchor3 = [contentView bottomAnchor];
+  v132 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:v6];
   v196[6] = v132;
-  v130 = [(SFPersonCollectionViewCell *)self nameLabel];
-  v126 = [v130 firstBaselineAnchor];
-  v128 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v124 = [v128 firstBaselineAnchor];
-  v122 = [v126 constraintEqualToAnchor:v124];
+  nameLabel = [(SFPersonCollectionViewCell *)self nameLabel];
+  firstBaselineAnchor = [nameLabel firstBaselineAnchor];
+  labelForPositioning4 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  firstBaselineAnchor2 = [labelForPositioning4 firstBaselineAnchor];
+  v122 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   v196[7] = v122;
-  v120 = [(SFPersonCollectionViewCell *)self nameLabel];
-  v118 = [v120 widthAnchor];
-  v116 = [v192 widthAnchor];
-  v114 = [v118 constraintEqualToAnchor:v116 constant:v6];
+  nameLabel2 = [(SFPersonCollectionViewCell *)self nameLabel];
+  widthAnchor2 = [nameLabel2 widthAnchor];
+  widthAnchor3 = [contentView widthAnchor];
+  v114 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3 constant:v6];
   v196[8] = v114;
-  v112 = [(SFPersonCollectionViewCell *)self secondLabel];
-  v108 = [v112 centerXAnchor];
-  v110 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v106 = [v110 centerXAnchor];
-  v104 = [v108 constraintEqualToAnchor:v106];
+  secondLabel = [(SFPersonCollectionViewCell *)self secondLabel];
+  centerXAnchor5 = [secondLabel centerXAnchor];
+  labelForPositioning5 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  centerXAnchor6 = [labelForPositioning5 centerXAnchor];
+  v104 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v196[9] = v104;
-  v102 = [(SFPersonCollectionViewCell *)self secondLabel];
-  v100 = [v102 widthAnchor];
-  v98 = [v192 widthAnchor];
-  v96 = [v100 constraintEqualToAnchor:v98 constant:v6];
+  secondLabel2 = [(SFPersonCollectionViewCell *)self secondLabel];
+  widthAnchor4 = [secondLabel2 widthAnchor];
+  widthAnchor5 = [contentView widthAnchor];
+  v96 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5 constant:v6];
   v196[10] = v96;
-  v94 = [(SFPersonCollectionViewCell *)self secondLabel];
-  v90 = [v94 lastBaselineAnchor];
-  v92 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v88 = [v92 lastBaselineAnchor];
-  v86 = [v90 constraintEqualToAnchor:v88];
+  secondLabel3 = [(SFPersonCollectionViewCell *)self secondLabel];
+  lastBaselineAnchor = [secondLabel3 lastBaselineAnchor];
+  labelForPositioning6 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  lastBaselineAnchor2 = [labelForPositioning6 lastBaselineAnchor];
+  v86 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2];
   v196[11] = v86;
-  v82 = [v193 widthAnchor];
-  v84 = [(SFPersonCollectionViewCell *)self imageView];
-  v80 = [v84 widthAnchor];
-  v78 = [v82 constraintEqualToAnchor:v80 constant:v7];
+  widthAnchor6 = [circleProgressView widthAnchor];
+  imageView7 = [(SFPersonCollectionViewCell *)self imageView];
+  widthAnchor7 = [imageView7 widthAnchor];
+  v78 = [widthAnchor6 constraintEqualToAnchor:widthAnchor7 constant:v7];
   v196[12] = v78;
-  v74 = [v193 heightAnchor];
-  v76 = [(SFPersonCollectionViewCell *)self imageView];
-  v72 = [v76 heightAnchor];
-  v70 = [v74 constraintEqualToAnchor:v72 constant:v7];
+  heightAnchor2 = [circleProgressView heightAnchor];
+  imageView8 = [(SFPersonCollectionViewCell *)self imageView];
+  heightAnchor3 = [imageView8 heightAnchor];
+  v70 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3 constant:v7];
   v196[13] = v70;
-  v68 = [v193 centerXAnchor];
-  v15 = [(SFPersonCollectionViewCell *)self imageView];
-  v16 = [v15 centerXAnchor];
-  v17 = [v68 constraintEqualToAnchor:v16];
+  centerXAnchor7 = [circleProgressView centerXAnchor];
+  imageView9 = [(SFPersonCollectionViewCell *)self imageView];
+  centerXAnchor8 = [imageView9 centerXAnchor];
+  v17 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   v196[14] = v17;
-  v18 = [v193 centerYAnchor];
-  v19 = [(SFPersonCollectionViewCell *)self imageView];
-  v20 = [v19 centerYAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  centerYAnchor = [circleProgressView centerYAnchor];
+  imageView10 = [(SFPersonCollectionViewCell *)self imageView];
+  centerYAnchor2 = [imageView10 centerYAnchor];
+  v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v196[15] = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v196 count:16];
   v23 = [v14 arrayWithArray:v22];
 
   if (v190 == 6)
   {
-    v24 = [(SFPersonCollectionViewCell *)self nameLabel];
-    v25 = [v24 centerXAnchor];
-    v26 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-    v27 = [v26 centerXAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27];
+    nameLabel3 = [(SFPersonCollectionViewCell *)self nameLabel];
+    centerXAnchor9 = [nameLabel3 centerXAnchor];
+    labelForPositioning7 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+    centerXAnchor10 = [labelForPositioning7 centerXAnchor];
+    v28 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
     [v23 addObject:v28];
   }
 
   v191 = v23;
   [(SFPersonCollectionViewCell *)self setRegularConstraints:v23];
-  v29 = [(SFPersonCollectionViewCell *)self nameLabel];
-  v30 = [v29 centerYAnchor];
-  v31 = [(SFPersonCollectionViewCell *)self imageView];
-  v32 = [v31 centerYAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  nameLabel4 = [(SFPersonCollectionViewCell *)self nameLabel];
+  centerYAnchor3 = [nameLabel4 centerYAnchor];
+  imageView11 = [(SFPersonCollectionViewCell *)self imageView];
+  centerYAnchor4 = [imageView11 centerYAnchor];
+  v33 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [(SFPersonCollectionViewCell *)self setLargeTextNameCenterYConstraint:v33];
 
   v34 = MEMORY[0x1E695DF70];
-  v188 = [(SFPersonCollectionViewCell *)self imageView];
-  v185 = [v188 widthAnchor];
-  v183 = [v185 constraintEqualToConstant:v8];
+  imageView12 = [(SFPersonCollectionViewCell *)self imageView];
+  widthAnchor8 = [imageView12 widthAnchor];
+  v183 = [widthAnchor8 constraintEqualToConstant:v8];
   v195[0] = v183;
-  v181 = [(SFPersonCollectionViewCell *)self imageView];
-  v179 = [v181 heightAnchor];
-  v177 = [v179 constraintEqualToConstant:v8];
+  imageView13 = [(SFPersonCollectionViewCell *)self imageView];
+  heightAnchor4 = [imageView13 heightAnchor];
+  v177 = [heightAnchor4 constraintEqualToConstant:v8];
   v195[1] = v177;
-  v175 = [(SFPersonCollectionViewCell *)self imageView];
-  v173 = [v175 centerYAnchor];
-  v171 = [v192 centerYAnchor];
-  v169 = [v173 constraintEqualToAnchor:v171];
+  imageView14 = [(SFPersonCollectionViewCell *)self imageView];
+  centerYAnchor5 = [imageView14 centerYAnchor];
+  centerYAnchor6 = [contentView centerYAnchor];
+  v169 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v195[2] = v169;
-  v167 = [(SFPersonCollectionViewCell *)self imageView];
-  v165 = [v167 leadingAnchor];
-  v163 = [v192 leadingAnchor];
-  v161 = [v165 constraintEqualToAnchor:v163];
+  imageView15 = [(SFPersonCollectionViewCell *)self imageView];
+  leadingAnchor = [imageView15 leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v161 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v195[3] = v161;
-  v159 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v157 = [v159 bottomAnchor];
-  v155 = [v192 bottomAnchor];
-  v153 = [v157 constraintEqualToAnchor:v155 constant:-8.0];
+  labelForPositioning8 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  bottomAnchor4 = [labelForPositioning8 bottomAnchor];
+  bottomAnchor5 = [contentView bottomAnchor];
+  v153 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-8.0];
   v195[4] = v153;
-  v151 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v149 = [v151 topAnchor];
-  v147 = [v192 topAnchor];
-  v145 = [v149 constraintEqualToAnchor:v147 constant:8.0];
+  labelForPositioning9 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  topAnchor4 = [labelForPositioning9 topAnchor];
+  topAnchor5 = [contentView topAnchor];
+  v145 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:8.0];
   v195[5] = v145;
-  v143 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v139 = [v143 leadingAnchor];
-  v141 = [(SFPersonCollectionViewCell *)self imageView];
-  v137 = [v141 trailingAnchor];
-  v135 = [v139 constraintEqualToAnchor:v137 constant:13.0];
+  labelForPositioning10 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  leadingAnchor3 = [labelForPositioning10 leadingAnchor];
+  imageView16 = [(SFPersonCollectionViewCell *)self imageView];
+  trailingAnchor = [imageView16 trailingAnchor];
+  v135 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:13.0];
   v195[6] = v135;
-  v133 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v131 = [v133 trailingAnchor];
-  v129 = [v192 trailingAnchor];
-  v127 = [v131 constraintEqualToAnchor:v129 constant:8.0];
+  labelForPositioning11 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  trailingAnchor2 = [labelForPositioning11 trailingAnchor];
+  trailingAnchor3 = [contentView trailingAnchor];
+  v127 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:8.0];
   v195[7] = v127;
-  v125 = [(SFPersonCollectionViewCell *)self nameLabel];
-  v121 = [v125 firstBaselineAnchor];
-  v123 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v119 = [v123 firstBaselineAnchor];
-  v117 = [v121 constraintEqualToAnchor:v119];
+  nameLabel5 = [(SFPersonCollectionViewCell *)self nameLabel];
+  firstBaselineAnchor3 = [nameLabel5 firstBaselineAnchor];
+  labelForPositioning12 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  firstBaselineAnchor4 = [labelForPositioning12 firstBaselineAnchor];
+  v117 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4];
   v195[8] = v117;
-  v115 = [(SFPersonCollectionViewCell *)self nameLabel];
-  v111 = [v115 leadingAnchor];
-  v113 = [(SFPersonCollectionViewCell *)self imageView];
-  v109 = [v113 trailingAnchor];
-  v107 = [v111 constraintEqualToAnchor:v109 constant:13.0];
+  nameLabel6 = [(SFPersonCollectionViewCell *)self nameLabel];
+  leadingAnchor4 = [nameLabel6 leadingAnchor];
+  imageView17 = [(SFPersonCollectionViewCell *)self imageView];
+  trailingAnchor4 = [imageView17 trailingAnchor];
+  v107 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4 constant:13.0];
   v195[9] = v107;
-  v105 = [(SFPersonCollectionViewCell *)self nameLabel];
-  v103 = [v105 trailingAnchor];
-  v101 = [v192 trailingAnchor];
-  v99 = [v103 constraintEqualToAnchor:v101 constant:-8.0];
+  nameLabel7 = [(SFPersonCollectionViewCell *)self nameLabel];
+  trailingAnchor5 = [nameLabel7 trailingAnchor];
+  trailingAnchor6 = [contentView trailingAnchor];
+  v99 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-8.0];
   v195[10] = v99;
-  v95 = [v193 widthAnchor];
-  v97 = [(SFPersonCollectionViewCell *)self imageView];
-  v93 = [v97 widthAnchor];
-  v91 = [v95 constraintEqualToAnchor:v93 constant:v7];
+  widthAnchor9 = [circleProgressView widthAnchor];
+  imageView18 = [(SFPersonCollectionViewCell *)self imageView];
+  widthAnchor10 = [imageView18 widthAnchor];
+  v91 = [widthAnchor9 constraintEqualToAnchor:widthAnchor10 constant:v7];
   v195[11] = v91;
-  v87 = [v193 heightAnchor];
-  v89 = [(SFPersonCollectionViewCell *)self imageView];
-  v85 = [v89 heightAnchor];
-  v83 = [v87 constraintEqualToAnchor:v85 constant:v7];
+  heightAnchor5 = [circleProgressView heightAnchor];
+  imageView19 = [(SFPersonCollectionViewCell *)self imageView];
+  heightAnchor6 = [imageView19 heightAnchor];
+  v83 = [heightAnchor5 constraintEqualToAnchor:heightAnchor6 constant:v7];
   v195[12] = v83;
-  v79 = [v193 centerXAnchor];
-  v81 = [(SFPersonCollectionViewCell *)self imageView];
-  v77 = [v81 centerXAnchor];
-  v75 = [v79 constraintEqualToAnchor:v77];
+  centerXAnchor11 = [circleProgressView centerXAnchor];
+  imageView20 = [(SFPersonCollectionViewCell *)self imageView];
+  centerXAnchor12 = [imageView20 centerXAnchor];
+  v75 = [centerXAnchor11 constraintEqualToAnchor:centerXAnchor12];
   v195[13] = v75;
-  v71 = [v193 centerYAnchor];
-  v73 = [(SFPersonCollectionViewCell *)self imageView];
-  v69 = [v73 centerYAnchor];
-  v67 = [v71 constraintEqualToAnchor:v69];
+  centerYAnchor7 = [circleProgressView centerYAnchor];
+  imageView21 = [(SFPersonCollectionViewCell *)self imageView];
+  centerYAnchor8 = [imageView21 centerYAnchor];
+  v67 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
   v195[14] = v67;
-  v66 = [(SFPersonCollectionViewCell *)self secondLabel];
-  v64 = [v66 widthAnchor];
-  v65 = [(SFPersonCollectionViewCell *)self nameLabel];
-  v63 = [v65 widthAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  secondLabel4 = [(SFPersonCollectionViewCell *)self secondLabel];
+  widthAnchor11 = [secondLabel4 widthAnchor];
+  nameLabel8 = [(SFPersonCollectionViewCell *)self nameLabel];
+  widthAnchor12 = [nameLabel8 widthAnchor];
+  v62 = [widthAnchor11 constraintEqualToAnchor:widthAnchor12];
   v195[15] = v62;
-  v61 = [(SFPersonCollectionViewCell *)self secondLabel];
-  v59 = [v61 leadingAnchor];
-  v60 = [(SFPersonCollectionViewCell *)self nameLabel];
-  v58 = [v60 leadingAnchor];
-  v35 = [v59 constraintEqualToAnchor:v58];
+  secondLabel5 = [(SFPersonCollectionViewCell *)self secondLabel];
+  leadingAnchor5 = [secondLabel5 leadingAnchor];
+  nameLabel9 = [(SFPersonCollectionViewCell *)self nameLabel];
+  leadingAnchor6 = [nameLabel9 leadingAnchor];
+  v35 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v195[16] = v35;
-  v36 = [(SFPersonCollectionViewCell *)self secondLabel];
-  v37 = [v36 lastBaselineAnchor];
-  v38 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v39 = [v38 lastBaselineAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39];
+  secondLabel6 = [(SFPersonCollectionViewCell *)self secondLabel];
+  lastBaselineAnchor3 = [secondLabel6 lastBaselineAnchor];
+  labelForPositioning13 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  lastBaselineAnchor4 = [labelForPositioning13 lastBaselineAnchor];
+  v40 = [lastBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor4];
   v195[17] = v40;
-  v41 = [(SFPersonCollectionViewCell *)self largeTextNameCenterYConstraint];
-  v195[18] = v41;
+  largeTextNameCenterYConstraint = [(SFPersonCollectionViewCell *)self largeTextNameCenterYConstraint];
+  v195[18] = largeTextNameCenterYConstraint;
   v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v195 count:19];
   v43 = [v34 arrayWithArray:v42];
   [(SFPersonCollectionViewCell *)self setLargeTextConstraints:v43];
 
-  v189 = [(SFPersonCollectionViewCell *)self nameLabel];
-  v186 = [v189 lastBaselineAnchor];
-  v44 = [(SFPersonCollectionViewCell *)self nameLabel];
-  v45 = [v44 firstBaselineAnchor];
-  v46 = [v186 constraintEqualToAnchor:v45];
+  nameLabel10 = [(SFPersonCollectionViewCell *)self nameLabel];
+  lastBaselineAnchor5 = [nameLabel10 lastBaselineAnchor];
+  nameLabel11 = [(SFPersonCollectionViewCell *)self nameLabel];
+  firstBaselineAnchor5 = [nameLabel11 firstBaselineAnchor];
+  v46 = [lastBaselineAnchor5 constraintEqualToAnchor:firstBaselineAnchor5];
   v194[0] = v46;
-  v47 = [(SFPersonCollectionViewCell *)self nameLabel];
-  v48 = [v47 firstBaselineAnchor];
-  v49 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  v50 = [v49 firstBaselineAnchor];
-  v51 = [v48 constraintEqualToAnchor:v50];
+  nameLabel12 = [(SFPersonCollectionViewCell *)self nameLabel];
+  firstBaselineAnchor6 = [nameLabel12 firstBaselineAnchor];
+  labelForPositioning14 = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  firstBaselineAnchor7 = [labelForPositioning14 firstBaselineAnchor];
+  v51 = [firstBaselineAnchor6 constraintEqualToAnchor:firstBaselineAnchor7];
   v194[1] = v51;
   v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v194 count:2];
   [(SFPersonCollectionViewCell *)self setSecondLabelVisibleConstraintsArray:v52];
 
-  v53 = [(SFPersonCollectionViewCell *)self traitCollection];
-  v54 = [v53 preferredContentSizeCategory];
-  v55 = UIContentSizeCategoryCompareToCategory(*MEMORY[0x1E69DDC58], v54);
+  traitCollection = [(SFPersonCollectionViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v55 = UIContentSizeCategoryCompareToCategory(*MEMORY[0x1E69DDC58], preferredContentSizeCategory);
 
   v56 = MEMORY[0x1E696ACD8];
   if (v55 == NSOrderedAscending)
@@ -659,15 +659,15 @@
   [v56 activateConstraints:v57];
 }
 
-- (void)setDarkStyleOnLegacyApp:(BOOL)a3
+- (void)setDarkStyleOnLegacyApp:(BOOL)app
 {
-  self->_darkStyleOnLegacyApp = a3;
+  self->_darkStyleOnLegacyApp = app;
   nameLabel = self->_nameLabel;
-  v5 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)nameLabel setTextColor:v5];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)nameLabel setTextColor:labelColor];
 
-  v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(SFPersonCollectionViewCell *)self setFadedSecondLabelColor:v6];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(SFPersonCollectionViewCell *)self setFadedSecondLabelColor:secondaryLabelColor];
 }
 
 - (void)prepareForReuse
@@ -680,14 +680,14 @@
   [(SFPersonCollectionViewCell *)self setProgress:0];
   [(SFPersonCollectionViewCell *)self setCellState:0];
   [(SFPersonCollectionViewCell *)self setSelected:0];
-  v3 = [(SFPersonCollectionViewCell *)self nameLabel];
-  [v3 setText:0];
+  nameLabel = [(SFPersonCollectionViewCell *)self nameLabel];
+  [nameLabel setText:0];
 
-  v4 = [(SFPersonCollectionViewCell *)self secondLabel];
-  [v4 setText:0];
+  secondLabel = [(SFPersonCollectionViewCell *)self secondLabel];
+  [secondLabel setText:0];
 
-  v5 = [(SFPersonCollectionViewCell *)self imageView];
-  [v5 setImage:0];
+  imageView = [(SFPersonCollectionViewCell *)self imageView];
+  [imageView setImage:0];
 }
 
 - (void)layoutSubviews
@@ -697,39 +697,39 @@
   [(SFPersonCollectionViewCell *)&v11 layoutSubviews];
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
-    v3 = [(SFPersonCollectionViewCell *)self contentView];
-    [v3 frame];
+    contentView = [(SFPersonCollectionViewCell *)self contentView];
+    [contentView frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
 
-    v10 = [(SFPersonCollectionViewCell *)self contentView];
-    [v10 setFrame:{v5, 0.0, v7, v9}];
+    contentView2 = [(SFPersonCollectionViewCell *)self contentView];
+    [contentView2 setFrame:{v5, 0.0, v7, v9}];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(SFPersonCollectionViewCell *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(SFPersonCollectionViewCell *)self isSelected]!= selected)
   {
-    v5 = [(SFPersonCollectionViewCell *)self isHighlighted];
+    isHighlighted = [(SFPersonCollectionViewCell *)self isHighlighted];
     v7.receiver = self;
     v7.super_class = SFPersonCollectionViewCell;
-    [(SFPersonCollectionViewCell *)&v7 setSelected:v3];
-    v6 = [(SFPersonCollectionViewCell *)self imageView];
-    [v6 setHighlighted:v5];
+    [(SFPersonCollectionViewCell *)&v7 setSelected:selectedCopy];
+    imageView = [(SFPersonCollectionViewCell *)self imageView];
+    [imageView setHighlighted:isHighlighted];
   }
 }
 
-- (void)setPerson:(id)a3
+- (void)setPerson:(id)person
 {
-  v5 = a3;
-  if (self->_person != v5)
+  personCopy = person;
+  if (self->_person != personCopy)
   {
     [(SFPersonCollectionViewCell *)self removeObserverOfValuesForKeyPaths:&unk_1F37F3FC0 ofObject:?];
     [(SFPersonCollectionViewCell *)self willChangeValueForKey:@"person"];
-    objc_storeStrong(&self->_person, a3);
+    objc_storeStrong(&self->_person, person);
     [(SFPersonCollectionViewCell *)self didChangeValueForKey:@"person"];
     [(SFPersonCollectionViewCell *)self addObserverOfValuesForKeyPaths:&unk_1F37F3FC0 ofObject:self->_person];
     if (self->_person)
@@ -740,32 +740,32 @@
   }
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v5 = a3;
-  if (self->_progress != v5)
+  progressCopy = progress;
+  if (self->_progress != progressCopy)
   {
-    v6 = v5;
+    v6 = progressCopy;
     [(SFPersonCollectionViewCell *)self removeObserverOfValuesForKeyPaths:self->_progressKeyPaths ofObject:?];
-    objc_storeStrong(&self->_progress, a3);
+    objc_storeStrong(&self->_progress, progress);
     [(SFPersonCollectionViewCell *)self addObserverOfValuesForKeyPaths:self->_progressKeyPaths ofObject:self->_progress];
     [(SFPersonCollectionViewCell *)self triggerKVOForKeyPaths:self->_progressKeyPaths ofObject:self->_progress];
-    v5 = v6;
+    progressCopy = v6;
   }
 }
 
-- (void)setCellState:(int64_t)a3 animated:(BOOL)a4 silent:(BOOL)a5
+- (void)setCellState:(int64_t)state animated:(BOOL)animated silent:(BOOL)silent
 {
   v66 = *MEMORY[0x1E69E9840];
   cellState = self->_cellState;
-  if (cellState == a3)
+  if (cellState == state)
   {
     return;
   }
 
-  v7 = a4;
-  v10 = a3 - 2;
-  if (a3 >= 2 && cellState > a3)
+  animatedCopy = animated;
+  v10 = state - 2;
+  if (state >= 2 && cellState > state)
   {
     v11 = airdrop_ui_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -791,13 +791,13 @@
         v23 = off_1E7EE43C0[v10];
       }
 
-      v24 = [(SFAirDropNode *)self->_person displayName];
+      displayName = [(SFAirDropNode *)self->_person displayName];
       *location = 138412803;
       *&location[4] = v13;
       v62 = 2112;
       v63 = v23;
       v64 = 2113;
-      v65 = v24;
+      v65 = displayName;
       _os_log_impl(&dword_1B9E4B000, v11, OS_LOG_TYPE_DEFAULT, "Unsupported cell state transition %@ -> %@ for person %{private}@. Ignoring", location, 0x20u);
     }
 
@@ -812,7 +812,7 @@
 
   else
   {
-    if ((a3 - 3) >= 4 && a3)
+    if ((state - 3) >= 4 && state)
     {
       return;
     }
@@ -821,30 +821,30 @@
     v15 = 0;
   }
 
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
-        v32 = [(SFPersonCollectionViewCell *)self secondLabel];
-        objc_initWeak(location, v32);
+        secondLabel = [(SFPersonCollectionViewCell *)self secondLabel];
+        objc_initWeak(location, secondLabel);
 
-        if (!a5)
+        if (!silent)
         {
           [(SFPersonCollectionViewCell *)self fireHapticsForState:1];
         }
 
         v33 = SFLocalizedStringForKey();
-        v34 = [(SFPersonCollectionViewCell *)self fadedSecondLabelColor];
+        fadedSecondLabelColor = [(SFPersonCollectionViewCell *)self fadedSecondLabelColor];
         v59[0] = MEMORY[0x1E69E9820];
         v59[1] = 3221225472;
         v59[2] = __59__SFPersonCollectionViewCell_setCellState_animated_silent___block_invoke;
         v59[3] = &unk_1E7EE4350;
         objc_copyWeak(&v60, location);
-        [(SFPersonCollectionViewCell *)self setSecondLabelText:v33 withTextColor:v34 animated:v7 completion:v59];
+        [(SFPersonCollectionViewCell *)self setSecondLabelText:v33 withTextColor:fadedSecondLabelColor animated:animatedCopy completion:v59];
 
-        [(SFCircleProgressView *)self->_circleProgressView setProgress:v7 animated:0 completion:0.0];
+        [(SFCircleProgressView *)self->_circleProgressView setProgress:animatedCopy animated:0 completion:0.0];
         if (v15)
         {
           [(SFCircleProgressView *)self->_circleProgressView setAlpha:1.0];
@@ -854,24 +854,24 @@
         objc_destroyWeak(location);
       }
 
-      else if (a3 == 2)
+      else if (state == 2)
       {
-        v17 = [(SFPersonCollectionViewCell *)self secondLabel];
-        objc_initWeak(location, v17);
+        secondLabel2 = [(SFPersonCollectionViewCell *)self secondLabel];
+        objc_initWeak(location, secondLabel2);
 
-        if (!a5)
+        if (!silent)
         {
           [(SFPersonCollectionViewCell *)self fireHapticsForState:2];
         }
 
         v18 = SFLocalizedStringForKey();
-        v19 = [(SFPersonCollectionViewCell *)self fadedSecondLabelColor];
+        fadedSecondLabelColor2 = [(SFPersonCollectionViewCell *)self fadedSecondLabelColor];
         v57[0] = MEMORY[0x1E69E9820];
         v57[1] = 3221225472;
         v57[2] = __59__SFPersonCollectionViewCell_setCellState_animated_silent___block_invoke_3;
         v57[3] = &unk_1E7EE4350;
         objc_copyWeak(&v58, location);
-        [(SFPersonCollectionViewCell *)self setSecondLabelText:v18 withTextColor:v19 animated:v7 completion:v57];
+        [(SFPersonCollectionViewCell *)self setSecondLabelText:v18 withTextColor:fadedSecondLabelColor2 animated:animatedCopy completion:v57];
 
         objc_destroyWeak(&v58);
         objc_destroyWeak(location);
@@ -881,53 +881,53 @@
     }
 
     [(SFPersonCollectionViewCell *)self prepareHaptics];
-    [(SFPersonCollectionViewCell *)self setSecondLabelText:0 withTextColor:0 animated:v7 completion:0];
-    [(SFCircleProgressView *)self->_circleProgressView setProgress:v7 animated:0 completion:0.0];
+    [(SFPersonCollectionViewCell *)self setSecondLabelText:0 withTextColor:0 animated:animatedCopy completion:0];
+    [(SFCircleProgressView *)self->_circleProgressView setProgress:animatedCopy animated:0 completion:0.0];
     circleProgressView = self->_circleProgressView;
     v26 = 0.0;
   }
 
   else
   {
-    if (a3 > 4)
+    if (state > 4)
     {
-      if (a3 == 5)
+      if (state == 5)
       {
         objc_initWeak(location, self);
         v29 = SFLocalizedStringForKey();
-        v30 = [MEMORY[0x1E69DC888] systemRedColor];
-        [(SFPersonCollectionViewCell *)self setSecondLabelText:v29 withTextColor:v30 animated:v7 completion:0];
+        systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+        [(SFPersonCollectionViewCell *)self setSecondLabelText:v29 withTextColor:systemRedColor animated:animatedCopy completion:0];
 
         v31 = self->_circleProgressView;
         v49[0] = MEMORY[0x1E69E9820];
         v49[1] = 3221225472;
         v49[2] = __59__SFPersonCollectionViewCell_setCellState_animated_silent___block_invoke_7;
         v49[3] = &unk_1E7EE4378;
-        v51 = v7;
-        v52 = a5;
+        v51 = animatedCopy;
+        silentCopy = silent;
         objc_copyWeak(&v50, location);
-        [(SFCircleProgressView *)v31 setProgress:v7 animated:v49 completion:0.0];
+        [(SFCircleProgressView *)v31 setProgress:animatedCopy animated:v49 completion:0.0];
         [(SFCircleProgressView *)self->_circleProgressView setAlpha:0.0];
         objc_destroyWeak(&v50);
         objc_destroyWeak(location);
       }
 
-      else if (a3 == 6)
+      else if (state == 6)
       {
         objc_initWeak(location, self);
         v20 = SFLocalizedStringForKey();
-        v21 = [MEMORY[0x1E69DC888] systemRedColor];
-        [(SFPersonCollectionViewCell *)self setSecondLabelText:v20 withTextColor:v21 animated:v7 completion:0];
+        systemRedColor2 = [MEMORY[0x1E69DC888] systemRedColor];
+        [(SFPersonCollectionViewCell *)self setSecondLabelText:v20 withTextColor:systemRedColor2 animated:animatedCopy completion:0];
 
         v22 = self->_circleProgressView;
         v42 = MEMORY[0x1E69E9820];
         v43 = 3221225472;
         v44 = __59__SFPersonCollectionViewCell_setCellState_animated_silent___block_invoke_8;
         v45 = &unk_1E7EE4378;
-        v47 = v7;
-        v48 = a5;
+        v47 = animatedCopy;
+        silentCopy2 = silent;
         objc_copyWeak(&v46, location);
-        [(SFCircleProgressView *)v22 setProgress:v7 animated:&v42 completion:0.0];
+        [(SFCircleProgressView *)v22 setProgress:animatedCopy animated:&v42 completion:0.0];
         [(SFCircleProgressView *)self->_circleProgressView setAlpha:0.0, v42, v43, v44, v45];
         objc_destroyWeak(&v46);
         objc_destroyWeak(location);
@@ -936,9 +936,9 @@
       goto LABEL_46;
     }
 
-    if (a3 != 3)
+    if (state != 3)
     {
-      if (v7)
+      if (animatedCopy)
       {
         objc_initWeak(location, self);
         v16 = self->_circleProgressView;
@@ -946,9 +946,9 @@
         v53[1] = 3221225472;
         v53[2] = __59__SFPersonCollectionViewCell_setCellState_animated_silent___block_invoke_5;
         v53[3] = &unk_1E7EE4378;
-        v55 = a5;
+        silentCopy3 = silent;
         objc_copyWeak(&v54, location);
-        v56 = v7;
+        v56 = animatedCopy;
         [(SFCircleProgressView *)v16 animateProgressCompletedWithCompletion:v53];
         objc_destroyWeak(&v54);
         objc_destroyWeak(location);
@@ -957,8 +957,8 @@
       else
       {
         v35 = SFLocalizedStringForKey();
-        v36 = [MEMORY[0x1E69DC888] systemBlueColor];
-        [(SFPersonCollectionViewCell *)self setSecondLabelText:v35 withTextColor:v36 animated:0 completion:0];
+        systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+        [(SFPersonCollectionViewCell *)self setSecondLabelText:v35 withTextColor:systemBlueColor animated:0 completion:0];
 
         [(SFCircleProgressView *)self->_circleProgressView setAlpha:0.0];
         [(SFCircleProgressView *)self->_circleProgressView setProgress:1.0];
@@ -967,14 +967,14 @@
       goto LABEL_46;
     }
 
-    if (!a5)
+    if (!silent)
     {
       [(SFPersonCollectionViewCell *)self fireHapticsForState:3];
     }
 
     v27 = SFLocalizedStringForKey();
-    v28 = [(SFPersonCollectionViewCell *)self fadedSecondLabelColor];
-    [(SFPersonCollectionViewCell *)self setSecondLabelText:v27 withTextColor:v28 animated:v7 completion:0];
+    fadedSecondLabelColor3 = [(SFPersonCollectionViewCell *)self fadedSecondLabelColor];
+    [(SFPersonCollectionViewCell *)self setSecondLabelText:v27 withTextColor:fadedSecondLabelColor3 animated:animatedCopy completion:0];
 
     if (!v15)
     {
@@ -1001,27 +1001,27 @@ LABEL_46:
       v39 = off_1E7EE43E8[v38];
     }
 
-    if (a3 > 6)
+    if (state > 6)
     {
       v40 = @"?";
     }
 
     else
     {
-      v40 = off_1E7EE43E8[a3];
+      v40 = off_1E7EE43E8[state];
     }
 
-    v41 = [(SFAirDropNode *)self->_person displayName];
+    displayName2 = [(SFAirDropNode *)self->_person displayName];
     *location = 138412803;
     *&location[4] = v39;
     v62 = 2112;
     v63 = v40;
     v64 = 2113;
-    v65 = v41;
+    v65 = displayName2;
     _os_log_impl(&dword_1B9E4B000, v37, OS_LOG_TYPE_DEFAULT, "Changing cell state %@ -> %@ for person %{private}@", location, 0x20u);
   }
 
-  self->_cellState = a3;
+  self->_cellState = state;
 }
 
 void __59__SFPersonCollectionViewCell_setCellState_animated_silent___block_invoke(uint64_t a1)
@@ -1108,19 +1108,19 @@ void __59__SFPersonCollectionViewCell_setCellState_animated_silent___block_invok
   }
 }
 
-- (void)restoreCellStateFromFinalTransferState:(int64_t)a3
+- (void)restoreCellStateFromFinalTransferState:(int64_t)state
 {
-  if ((a3 - 4) <= 2)
+  if ((state - 4) <= 2)
   {
-    [(SFPersonCollectionViewCell *)self setCellState:qword_1B9EDEB18[a3 - 4]];
+    [(SFPersonCollectionViewCell *)self setCellState:qword_1B9EDEB18[state - 4]];
 
     [(SFPersonCollectionViewCell *)self updateNameLabel];
   }
 }
 
-- (void)prepareHapticsPreWarm:(BOOL)a3
+- (void)prepareHapticsPreWarm:(BOOL)warm
 {
-  v3 = a3;
+  warmCopy = warm;
   v5 = airdrop_ui_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1143,7 +1143,7 @@ void __59__SFPersonCollectionViewCell_setCellState_animated_silent___block_invok
 
   if (self->_selectionHaptic)
   {
-    if (!v3)
+    if (!warmCopy)
     {
       return;
     }
@@ -1155,7 +1155,7 @@ void __59__SFPersonCollectionViewCell_setCellState_animated_silent___block_invok
     selectionHaptic = self->_selectionHaptic;
     self->_selectionHaptic = v10;
 
-    if (!v3)
+    if (!warmCopy)
     {
       return;
     }
@@ -1184,11 +1184,11 @@ void __59__SFPersonCollectionViewCell_setCellState_animated_silent___block_invok
   self->_selectionHaptic = 0;
 }
 
-- (void)fireHapticsForState:(int64_t)a3
+- (void)fireHapticsForState:(int64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
-    switch(a3)
+    switch(state)
     {
       case 4:
         v5 = 0;
@@ -1214,7 +1214,7 @@ void __59__SFPersonCollectionViewCell_setCellState_animated_silent___block_invok
     goto LABEL_23;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 1:
       goto LABEL_5;
@@ -1269,8 +1269,8 @@ LABEL_13:
   else
   {
     v6 = MEMORY[0x1E69DD250];
-    v7 = [(SFPersonCollectionViewCell *)self imageView];
-    [v6 transitionWithView:v7 duration:5242880 options:v5 animations:0 completion:0.200000003];
+    imageView = [(SFPersonCollectionViewCell *)self imageView];
+    [v6 transitionWithView:imageView duration:5242880 options:v5 animations:0 completion:0.200000003];
   }
 }
 
@@ -1293,16 +1293,16 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
 {
   v35[3] = *MEMORY[0x1E69E9840];
   person = self->_person;
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v5 = [(SFAirDropNode *)person displayNameForLocale:v4];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v5 = [(SFAirDropNode *)person displayNameForLocale:currentLocale];
 
   if ((-[SFAirDropNode isMe](self->_person, "isMe") & 1) != 0 || (-[SFAirDropNode isUnknown](self->_person, "isUnknown") & 1) != 0 || (-[SFAirDropNode isClassroom](self->_person, "isClassroom") & 1) != 0 || (-[SFPersonCollectionViewCell traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), [v6 preferredContentSizeCategory], v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(*MEMORY[0x1E69DDC58], v7), v7, v6, v8 == NSOrderedAscending))
   {
     if (([(SFAirDropNode *)self->_person isMe]& 1) != 0 || [(SFAirDropNode *)self->_person isUnknown])
     {
-      v28 = [(SFPersonCollectionViewCell *)self traitCollection];
-      v29 = [v28 preferredContentSizeCategory];
-      v30 = UIContentSizeCategoryCompareToCategory(*MEMORY[0x1E69DDC58], v29);
+      traitCollection = [(SFPersonCollectionViewCell *)self traitCollection];
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+      v30 = UIContentSizeCategoryCompareToCategory(*MEMORY[0x1E69DDC58], preferredContentSizeCategory);
 
       if (v30 != NSOrderedAscending)
       {
@@ -1321,52 +1321,52 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
     [v9 setLineBreakStrategy:0xFFFFLL];
     [v9 setAlignment:1];
     v34[0] = *MEMORY[0x1E69DB650];
-    v10 = [(UILabel *)self->_nameLabel textColor];
-    v35[0] = v10;
+    textColor = [(UILabel *)self->_nameLabel textColor];
+    v35[0] = textColor;
     v34[1] = *MEMORY[0x1E69DB648];
-    v11 = [(UILabel *)self->_nameLabel font];
-    v35[1] = v11;
+    font = [(UILabel *)self->_nameLabel font];
+    v35[1] = font;
     v34[2] = *MEMORY[0x1E69DB688];
     v12 = [v9 copy];
     v35[2] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:3];
 
-    v14 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v15 = [v5 componentsSeparatedByCharactersInSet:v14];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v15 = [v5 componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
     if ([v15 count] == 2)
     {
-      v16 = [v15 firstObject];
-      v17 = [v15 lastObject];
-      if ([v16 length] && objc_msgSend(v17, "length"))
+      firstObject = [v15 firstObject];
+      lastObject = [v15 lastObject];
+      if ([firstObject length] && objc_msgSend(lastObject, "length"))
       {
-        v33 = v17;
-        v18 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v16 attributes:v13];
-        v19 = [(SFPersonCollectionViewCell *)self nameLabel];
-        [v19 frame];
+        v33 = lastObject;
+        v18 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:firstObject attributes:v13];
+        nameLabel = [(SFPersonCollectionViewCell *)self nameLabel];
+        [nameLabel frame];
         v32 = v18;
         [v18 boundingRectWithSize:35 options:0 context:{v20, v21}];
         v37 = CGRectIntegral(v36);
         height = v37.size.height;
 
-        v23 = [(SFPersonCollectionViewCell *)self nameLabel];
-        v24 = [v23 font];
-        [v24 lineHeight];
+        nameLabel2 = [(SFPersonCollectionViewCell *)self nameLabel];
+        font2 = [nameLabel2 font];
+        [font2 lineHeight];
         *&v25 = v25;
         LODWORD(v18) = llroundf(*&v25);
 
         v26 = height;
         if (llroundf(v26) / v18 == 1)
         {
-          v17 = v33;
-          v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v16, v33];
+          lastObject = v33;
+          v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", firstObject, v33];
 
           v5 = v27;
         }
 
         else
         {
-          v17 = v33;
+          lastObject = v33;
         }
       }
     }
@@ -1375,30 +1375,30 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
   [(UILabel *)self->_nameLabel setText:v5];
 }
 
-- (void)setSecondLabelText:(id)a3 withTextColor:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)setSecondLabelText:(id)text withTextColor:(id)color animated:(BOOL)animated completion:(id)completion
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(SFPersonCollectionViewCell *)self traitCollection];
-  v13 = [v12 preferredContentSizeCategory];
-  v14 = UIContentSizeCategoryCompareToCategory(*MEMORY[0x1E69DDC58], v13);
+  textCopy = text;
+  colorCopy = color;
+  completionCopy = completion;
+  traitCollection = [(SFPersonCollectionViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v14 = UIContentSizeCategoryCompareToCategory(*MEMORY[0x1E69DDC58], preferredContentSizeCategory);
 
-  if ([v9 length])
+  if ([textCopy length])
   {
     if (v14 == NSOrderedAscending)
     {
       v15 = MEMORY[0x1E696ACD8];
-      v16 = [(SFPersonCollectionViewCell *)self largeTextNameCenterYConstraint];
-      v38[0] = v16;
+      largeTextNameCenterYConstraint = [(SFPersonCollectionViewCell *)self largeTextNameCenterYConstraint];
+      v38[0] = largeTextNameCenterYConstraint;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:1];
       [v15 deactivateConstraints:v17];
     }
 
     v18 = MEMORY[0x1E696ACD8];
-    v19 = [(SFPersonCollectionViewCell *)self secondLabelVisibleConstraintsArray];
-    [v18 activateConstraints:v19];
+    secondLabelVisibleConstraintsArray = [(SFPersonCollectionViewCell *)self secondLabelVisibleConstraintsArray];
+    [v18 activateConstraints:secondLabelVisibleConstraintsArray];
     v20 = 0;
   }
 
@@ -1407,49 +1407,49 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
     if (v14 == NSOrderedAscending)
     {
       v21 = MEMORY[0x1E696ACD8];
-      v22 = [(SFPersonCollectionViewCell *)self largeTextNameCenterYConstraint];
-      v37 = v22;
+      largeTextNameCenterYConstraint2 = [(SFPersonCollectionViewCell *)self largeTextNameCenterYConstraint];
+      v37 = largeTextNameCenterYConstraint2;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
       [v21 activateConstraints:v23];
     }
 
     v24 = MEMORY[0x1E696ACD8];
-    v19 = [(SFPersonCollectionViewCell *)self secondLabelVisibleConstraintsArray];
-    [v24 deactivateConstraints:v19];
+    secondLabelVisibleConstraintsArray = [(SFPersonCollectionViewCell *)self secondLabelVisibleConstraintsArray];
+    [v24 deactivateConstraints:secondLabelVisibleConstraintsArray];
     v20 = 4;
   }
 
-  v25 = [(SFPersonCollectionViewCell *)self nameLabel];
-  [v25 setLineBreakMode:v20];
+  nameLabel = [(SFPersonCollectionViewCell *)self nameLabel];
+  [nameLabel setLineBreakMode:v20];
 
-  v26 = [(SFPersonCollectionViewCell *)self secondLabel];
-  v27 = [v26 text];
-  if (v9 | v27)
+  secondLabel = [(SFPersonCollectionViewCell *)self secondLabel];
+  text = [secondLabel text];
+  if (textCopy | text)
   {
-    v28 = v27;
-    v29 = [(SFPersonCollectionViewCell *)self secondLabel];
-    v30 = [v29 text];
-    v31 = [v30 isEqual:v9];
+    v28 = text;
+    secondLabel2 = [(SFPersonCollectionViewCell *)self secondLabel];
+    text2 = [secondLabel2 text];
+    v31 = [text2 isEqual:textCopy];
 
     if ((v31 & 1) == 0)
     {
-      v32 = [(SFPersonCollectionViewCell *)self secondLabel];
-      v33 = [v32 layer];
-      [v33 removeAllAnimations];
+      secondLabel3 = [(SFPersonCollectionViewCell *)self secondLabel];
+      layer = [secondLabel3 layer];
+      [layer removeAllAnimations];
 
-      v34 = [(SFPersonCollectionViewCell *)self secondLabel];
-      [v34 setAlpha:1.0];
+      secondLabel4 = [(SFPersonCollectionViewCell *)self secondLabel];
+      [secondLabel4 setAlpha:1.0];
 
-      v35 = [(SFPersonCollectionViewCell *)self secondLabel];
-      [v35 setText:v9];
+      secondLabel5 = [(SFPersonCollectionViewCell *)self secondLabel];
+      [secondLabel5 setText:textCopy];
 
-      v36 = [(SFPersonCollectionViewCell *)self secondLabel];
-      [v36 setTextColor:v10];
+      secondLabel6 = [(SFPersonCollectionViewCell *)self secondLabel];
+      [secondLabel6 setTextColor:colorCopy];
 
       [(SFPersonCollectionViewCell *)self setNeedsLayout];
-      if (v11)
+      if (completionCopy)
       {
-        v11[2](v11, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
   }
@@ -1485,23 +1485,23 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E696AF00] mainThread];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  mainThread = [MEMORY[0x1E696AF00] mainThread];
 
-  if (v13)
+  if (mainThread)
   {
-    if ([v11 isEqual:self->_person])
+    if ([objectCopy isEqual:self->_person])
     {
-      [(SFPersonCollectionViewCell *)self handleKVOUpdateForPerson:self->_person keyPath:v10];
+      [(SFPersonCollectionViewCell *)self handleKVOUpdateForPerson:self->_person keyPath:pathCopy];
     }
 
-    else if ([v11 isEqual:self->_progress])
+    else if ([objectCopy isEqual:self->_progress])
     {
-      [(SFPersonCollectionViewCell *)self handleKVOUpdateForProgress:self->_progress keyPath:v10];
+      [(SFPersonCollectionViewCell *)self handleKVOUpdateForProgress:self->_progress keyPath:pathCopy];
     }
 
     else
@@ -1509,7 +1509,7 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
       v14 = airdrop_ui_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [SFPersonCollectionViewCell observeValueForKeyPath:v10 ofObject:v14 change:? context:?];
+        [SFPersonCollectionViewCell observeValueForKeyPath:pathCopy ofObject:v14 change:? context:?];
       }
     }
   }
@@ -1521,26 +1521,26 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
     block[2] = __77__SFPersonCollectionViewCell_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_1E7EE43A0;
     block[4] = self;
-    v16 = v10;
-    v17 = v11;
-    v18 = v12;
-    v19 = a6;
+    v16 = pathCopy;
+    v17 = objectCopy;
+    v18 = changeCopy;
+    contextCopy = context;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
 
-- (void)addObserverOfValuesForKeyPaths:(id)a3 ofObject:(id)a4
+- (void)addObserverOfValuesForKeyPaths:(id)paths ofObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pathsCopy = paths;
+  objectCopy = object;
+  if (objectCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v8 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1552,14 +1552,14 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(pathsCopy);
           }
 
-          [v7 addObserver:self forKeyPath:*(*(&v12 + 1) + 8 * v11++) options:0 context:0];
+          [objectCopy addObserver:self forKeyPath:*(*(&v12 + 1) + 8 * v11++) options:0 context:0];
         }
 
         while (v9 != v11);
-        v9 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -1567,18 +1567,18 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
   }
 }
 
-- (void)removeObserverOfValuesForKeyPaths:(id)a3 ofObject:(id)a4
+- (void)removeObserverOfValuesForKeyPaths:(id)paths ofObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pathsCopy = paths;
+  objectCopy = object;
+  if (objectCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v8 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1590,14 +1590,14 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(pathsCopy);
           }
 
-          [v7 removeObserver:self forKeyPath:*(*(&v12 + 1) + 8 * v11++)];
+          [objectCopy removeObserver:self forKeyPath:*(*(&v12 + 1) + 8 * v11++)];
         }
 
         while (v9 != v11);
-        v9 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -1605,18 +1605,18 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
   }
 }
 
-- (void)triggerKVOForKeyPaths:(id)a3 ofObject:(id)a4
+- (void)triggerKVOForKeyPaths:(id)paths ofObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pathsCopy = paths;
+  objectCopy = object;
+  if (objectCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v8 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1628,14 +1628,14 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(pathsCopy);
           }
 
-          [(SFPersonCollectionViewCell *)self observeValueForKeyPath:*(*(&v12 + 1) + 8 * v11++) ofObject:v7 change:0 context:0];
+          [(SFPersonCollectionViewCell *)self observeValueForKeyPath:*(*(&v12 + 1) + 8 * v11++) ofObject:objectCopy change:0 context:0];
         }
 
         while (v9 != v11);
-        v9 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [pathsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -1643,17 +1643,17 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = SFPersonCollectionViewCell;
-  v4 = a3;
-  [(SFPersonCollectionViewCell *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SFPersonCollectionViewCell *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(SFPersonCollectionViewCell *)self traitCollection:v8.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(SFPersonCollectionViewCell *)self _updateForCurrentSizeCategory];
   }
@@ -1661,21 +1661,21 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
 
 - (void)_updateForCurrentSizeCategory
 {
-  v3 = [(SFPersonCollectionViewCell *)self traitCollection];
-  rhs = [v3 preferredContentSizeCategory];
+  traitCollection = [(SFPersonCollectionViewCell *)self traitCollection];
+  rhs = [traitCollection preferredContentSizeCategory];
 
   v4 = UIContentSizeCategoryCompareToCategory(*MEMORY[0x1E69DDC58], rhs);
-  v5 = [(SFPersonCollectionViewCell *)self _screen];
+  _screen = [(SFPersonCollectionViewCell *)self _screen];
   v6 = _SFPersonLabelFont();
 
-  v7 = [(SFPersonCollectionViewCell *)self secondLabel];
-  [v7 setFont:v6];
+  secondLabel = [(SFPersonCollectionViewCell *)self secondLabel];
+  [secondLabel setFont:v6];
 
-  v8 = [(SFPersonCollectionViewCell *)self nameLabel];
-  [v8 setFont:v6];
+  nameLabel = [(SFPersonCollectionViewCell *)self nameLabel];
+  [nameLabel setFont:v6];
 
-  v9 = [(SFPersonCollectionViewCell *)self labelForPositioning];
-  [v9 setFont:v6];
+  labelForPositioning = [(SFPersonCollectionViewCell *)self labelForPositioning];
+  [labelForPositioning setFont:v6];
 
   nameLabel = self->_nameLabel;
   if (v4 == NSOrderedAscending)
@@ -1683,8 +1683,8 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
     [(UILabel *)nameLabel setTextAlignment:4];
     [(UILabel *)self->_secondLabel setTextAlignment:4];
     v14 = MEMORY[0x1E696ACD8];
-    v15 = [(SFPersonCollectionViewCell *)self regularConstraints];
-    [v14 deactivateConstraints:v15];
+    regularConstraints = [(SFPersonCollectionViewCell *)self regularConstraints];
+    [v14 deactivateConstraints:regularConstraints];
 
     v13 = MEMORY[0x1E696ACD8];
     [(SFPersonCollectionViewCell *)self largeTextConstraints];
@@ -1695,8 +1695,8 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
     [(UILabel *)nameLabel setTextAlignment:1];
     [(UILabel *)self->_secondLabel setTextAlignment:1];
     v11 = MEMORY[0x1E696ACD8];
-    v12 = [(SFPersonCollectionViewCell *)self largeTextConstraints];
-    [v11 deactivateConstraints:v12];
+    largeTextConstraints = [(SFPersonCollectionViewCell *)self largeTextConstraints];
+    [v11 deactivateConstraints:largeTextConstraints];
 
     v13 = MEMORY[0x1E696ACD8];
     [(SFPersonCollectionViewCell *)self regularConstraints];
@@ -1707,40 +1707,40 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
   [(SFPersonCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)handleKVOUpdateForPerson:(id)a3 keyPath:(id)a4
+- (void)handleKVOUpdateForPerson:(id)person keyPath:(id)path
 {
-  v5 = a4;
-  if (([v5 isEqual:@"displayIcon"] & 1) != 0 || (objc_msgSend(v5, "isEqual:", @"monogram") & 1) != 0 || (objc_msgSend(v5, "isEqual:", @"unknown") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"me"))
+  pathCopy = path;
+  if (([pathCopy isEqual:@"displayIcon"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqual:", @"monogram") & 1) != 0 || (objc_msgSend(pathCopy, "isEqual:", @"unknown") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"me"))
   {
     [(SFPersonCollectionViewCell *)self updatePersonIconView];
   }
 
-  else if (([v5 isEqual:@"displayName"] & 1) != 0 || objc_msgSend(v5, "isEqual:", @"secondaryName"))
+  else if (([pathCopy isEqual:@"displayName"] & 1) != 0 || objc_msgSend(pathCopy, "isEqual:", @"secondaryName"))
   {
     [(SFPersonCollectionViewCell *)self updateNameLabel];
   }
 }
 
-- (void)handleKVOUpdateForProgress:(id)a3 keyPath:(id)a4
+- (void)handleKVOUpdateForProgress:(id)progress keyPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   stateBeingRestored = self->_stateBeingRestored;
-  if ([v5 isEqualToString:@"userInfo.sendState"])
+  if ([pathCopy isEqualToString:@"userInfo.sendState"])
   {
-    v7 = [(NSProgress *)self->_progress sf_transferState];
-    if (v7 <= 2)
+    sf_transferState = [(NSProgress *)self->_progress sf_transferState];
+    if (sf_transferState <= 2)
     {
-      if (v7)
+      if (sf_transferState)
       {
-        if (v7 == 1)
+        if (sf_transferState == 1)
         {
           v15 = stateBeingRestored ^ 1;
-          v16 = self;
+          selfCopy4 = self;
           v17 = 1;
           goto LABEL_26;
         }
 
-        if (v7 != 2)
+        if (sf_transferState != 2)
         {
           goto LABEL_27;
         }
@@ -1753,16 +1753,16 @@ void __50__SFPersonCollectionViewCell_updatePersonIconView__block_invoke(uint64_
       }
 
       v15 = stateBeingRestored ^ 1;
-      v16 = self;
+      selfCopy4 = self;
       v17 = 2;
 LABEL_26:
-      [(SFPersonCollectionViewCell *)v16 setCellState:v17 animated:v15 silent:stateBeingRestored];
+      [(SFPersonCollectionViewCell *)selfCopy4 setCellState:v17 animated:v15 silent:stateBeingRestored];
       goto LABEL_27;
     }
 
-    if (v7 <= 4)
+    if (sf_transferState <= 4)
     {
-      if (v7 != 3)
+      if (sf_transferState != 3)
       {
         v8 = airdrop_ui_log();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1771,10 +1771,10 @@ LABEL_26:
         }
 
         v9 = stateBeingRestored ^ 1;
-        v10 = self;
+        selfCopy5 = self;
         v11 = 5;
 LABEL_23:
-        [(SFPersonCollectionViewCell *)v10 setCellState:v11 animated:v9 silent:stateBeingRestored];
+        [(SFPersonCollectionViewCell *)selfCopy5 setCellState:v11 animated:v9 silent:stateBeingRestored];
         [(SFCircleProgressView *)self->_circleProgressView setProgress:stateBeingRestored ^ 1 animated:0 completion:0.0];
         v13 = objc_loadWeakRetained(&self->_delegate);
         [v13 personCollectionViewCellDidTerminateTransfer:self];
@@ -1782,12 +1782,12 @@ LABEL_23:
       }
 
       v15 = stateBeingRestored ^ 1;
-      v16 = self;
+      selfCopy4 = self;
       v17 = 3;
       goto LABEL_26;
     }
 
-    if (v7 == 5)
+    if (sf_transferState == 5)
     {
       v18 = airdrop_ui_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -1796,12 +1796,12 @@ LABEL_23:
       }
 
       v9 = stateBeingRestored ^ 1;
-      v10 = self;
+      selfCopy5 = self;
       v11 = 6;
       goto LABEL_23;
     }
 
-    if (v7 == 6)
+    if (sf_transferState == 6)
     {
       [(SFPersonCollectionViewCell *)self setCellState:4 animated:stateBeingRestored ^ 1 silent:stateBeingRestored];
       v13 = objc_loadWeakRetained(&self->_delegate);
@@ -1810,7 +1810,7 @@ LABEL_24:
     }
   }
 
-  else if ([v5 isEqualToString:@"fractionCompleted"])
+  else if ([pathCopy isEqualToString:@"fractionCompleted"])
   {
     circleProgressView = self->_circleProgressView;
     [(NSProgress *)self->_progress fractionCompleted];
@@ -1820,15 +1820,15 @@ LABEL_24:
 LABEL_27:
 }
 
-- (CGSize)calculatedContentSizeForSheetWidth:(double)a3 sizeCategory:(id)a4
+- (CGSize)calculatedContentSizeForSheetWidth:(double)width sizeCategory:(id)category
 {
-  v5 = a4;
-  v6 = [(SFPersonCollectionViewCell *)self _screen];
+  categoryCopy = category;
+  _screen = [(SFPersonCollectionViewCell *)self _screen];
   v7 = _SFPersonLabelFont();
 
   ChickletSize = getChickletSize();
   v9 = v7;
-  v10 = UIContentSizeCategoryCompareToCategory(v5, *MEMORY[0x1E69DDC60]);
+  v10 = UIContentSizeCategoryCompareToCategory(categoryCopy, *MEMORY[0x1E69DDC60]);
 
   if (v10 == NSOrderedAscending)
   {
@@ -1851,8 +1851,8 @@ LABEL_27:
   }
 
   [v9 ascender];
-  v14 = [(SFPersonCollectionViewCell *)self nameLabel];
-  v15 = [v14 text];
+  nameLabel = [(SFPersonCollectionViewCell *)self nameLabel];
+  text = [nameLabel text];
   v16 = v9;
   v17 = sNameLabel;
   if (!sNameLabel)
@@ -1865,12 +1865,12 @@ LABEL_27:
   }
 
   [v17 setFont:v16];
-  [sNameLabel setText:v15];
+  [sNameLabel setText:text];
   [sNameLabel sizeThatFits:{v13 * ChickletSize + 10.0, 1.79769313e308}];
 
   [v16 descender];
-  v20 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v20 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   UIRectIntegralWithScale();
   v22 = v21;
   v24 = v23;

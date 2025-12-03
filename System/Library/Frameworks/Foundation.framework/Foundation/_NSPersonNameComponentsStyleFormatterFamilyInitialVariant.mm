@@ -1,5 +1,5 @@
 @interface _NSPersonNameComponentsStyleFormatterFamilyInitialVariant
-- (BOOL)fullComponentsAreValid:(id)a3;
+- (BOOL)fullComponentsAreValid:(id)valid;
 - (id)abbreviatedKeys;
 - (id)keysOfInterest;
 @end
@@ -33,22 +33,22 @@
   return result;
 }
 
-- (BOOL)fullComponentsAreValid:(id)a3
+- (BOOL)fullComponentsAreValid:(id)valid
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = _NSPersonNameComponentsStyleFormatterFamilyInitialVariant;
-  LODWORD(v4) = [(_NSPersonNameComponentsStyleFormatter *)&v6 fullComponentsAreValid:?];
-  if (v4)
+  LODWORD(familyName) = [(_NSPersonNameComponentsStyleFormatter *)&v6 fullComponentsAreValid:?];
+  if (familyName)
   {
-    v4 = [a3 familyName];
-    if (v4)
+    familyName = [valid familyName];
+    if (familyName)
     {
-      LOBYTE(v4) = [objc_msgSend(a3 "givenName")] > 1;
+      LOBYTE(familyName) = [objc_msgSend(valid "givenName")] > 1;
     }
   }
 
-  return v4;
+  return familyName;
 }
 
 @end

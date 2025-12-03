@@ -1,31 +1,31 @@
 @interface SFTabSnapshotContent
 - (SFTabSnapshotContent)init;
-- (SFTabSnapshotContent)initWithImage:(id)a3 bannerHeight:(double)a4 topBackdropHeight:(double)a5 isValid:(BOOL)a6 horizontalObscuredPercentage:(UIEdgeInsets)a7;
+- (SFTabSnapshotContent)initWithImage:(id)image bannerHeight:(double)height topBackdropHeight:(double)backdropHeight isValid:(BOOL)valid horizontalObscuredPercentage:(UIEdgeInsets)percentage;
 - (UIEdgeInsets)horizontalObscuredPercentage;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation SFTabSnapshotContent
 
-- (SFTabSnapshotContent)initWithImage:(id)a3 bannerHeight:(double)a4 topBackdropHeight:(double)a5 isValid:(BOOL)a6 horizontalObscuredPercentage:(UIEdgeInsets)a7
+- (SFTabSnapshotContent)initWithImage:(id)image bannerHeight:(double)height topBackdropHeight:(double)backdropHeight isValid:(BOOL)valid horizontalObscuredPercentage:(UIEdgeInsets)percentage
 {
   v7 = self + OBJC_IVAR___SFTabSnapshotContent_wrapped;
-  *v7 = a4;
-  *(v7 + 1) = a3;
-  v7[16] = a6;
-  *(v7 + 3) = a5;
-  *(v7 + 1) = a7;
+  *v7 = height;
+  *(v7 + 1) = image;
+  v7[16] = valid;
+  *(v7 + 3) = backdropHeight;
+  *(v7 + 1) = percentage;
   v10.receiver = self;
   v10.super_class = SFTabSnapshotContent;
-  v8 = a3;
+  imageCopy = image;
   return [(SFTabSnapshotContent *)&v10 init];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v4 = *&self->wrapped[OBJC_IVAR___SFTabSnapshotContent_wrapped];
-  *&self->wrapped[OBJC_IVAR___SFTabSnapshotContent_wrapped] = a3;
-  v3 = a3;
+  *&self->wrapped[OBJC_IVAR___SFTabSnapshotContent_wrapped] = image;
+  imageCopy = image;
 }
 
 - (UIEdgeInsets)horizontalObscuredPercentage

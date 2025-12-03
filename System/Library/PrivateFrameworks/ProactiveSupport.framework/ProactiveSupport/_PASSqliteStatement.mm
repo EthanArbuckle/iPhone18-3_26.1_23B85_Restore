@@ -1,276 +1,276 @@
 @interface _PASSqliteStatement
-- (BOOL)isNullForColumnAlias:(const char *)a3;
-- (BOOL)isNullForColumnName:(const char *)a3 table:(const char *)a4;
-- (_PASSqliteStatement)initWithStatementPointer:(sqlite3_stmt *)a3 columnMapping:(id)a4;
-- (double)getDoubleForColumnAlias:(const char *)a3;
-- (double)getDoubleForColumnName:(const char *)a3 table:(const char *)a4;
+- (BOOL)isNullForColumnAlias:(const char *)alias;
+- (BOOL)isNullForColumnName:(const char *)name table:(const char *)table;
+- (_PASSqliteStatement)initWithStatementPointer:(sqlite3_stmt *)pointer columnMapping:(id)mapping;
+- (double)getDoubleForColumnAlias:(const char *)alias;
+- (double)getDoubleForColumnName:(const char *)name table:(const char *)table;
 - (id)description;
-- (id)doubleAsNonnullNSNumberForColumnAlias:(const char *)a3;
-- (id)doubleAsNonnullNSNumberForColumnName:(const char *)a3 table:(const char *)a4;
-- (id)getDoubleAsNSNumberForColumnAlias:(const char *)a3;
-- (id)getDoubleAsNSNumberForColumnName:(const char *)a3 table:(const char *)a4;
-- (id)getInt64AsNSNumberForColumnAlias:(const char *)a3;
-- (id)getInt64AsNSNumberForColumnName:(const char *)a3 table:(const char *)a4;
-- (id)getNSDataForColumnAlias:(const char *)a3;
-- (id)getNSDataForColumnName:(const char *)a3 table:(const char *)a4;
-- (id)getNSNumberForColumn:(int)a3;
-- (id)getNSNumberForColumnAlias:(const char *)a3;
-- (id)getNSNumberForColumnName:(const char *)a3 table:(const char *)a4;
-- (id)getNSStringForColumnAlias:(const char *)a3;
-- (id)getNSStringForColumnName:(const char *)a3 table:(const char *)a4;
-- (id)int64AsNonnullNSNumberForColumnAlias:(const char *)a3;
-- (id)int64AsNonnullNSNumberForColumnName:(const char *)a3 table:(const char *)a4;
-- (id)nonnullNSDataForColumnAlias:(const char *)a3;
-- (id)nonnullNSDataForColumnName:(const char *)a3 table:(const char *)a4;
-- (id)nonnullNSNumberForColumnAlias:(const char *)a3;
-- (id)nonnullNSNumberForColumnName:(const char *)a3 table:(const char *)a4;
-- (id)nonnullNSStringForColumnAlias:(const char *)a3;
-- (id)nonnullNSStringForColumnName:(const char *)a3 table:(const char *)a4;
-- (int)bindNamedParam:(const char *)a3 toBlock:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toDouble:(double)a4;
-- (int)bindNamedParam:(const char *)a3 toDoubleAsNSNumber:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toDoubleAsNonnullNSNumber:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toInt64:(int64_t)a4;
-- (int)bindNamedParam:(const char *)a3 toInt64AsNSNumber:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toInt64AsNonnullNSNumber:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toInteger:(int64_t)a4;
-- (int)bindNamedParam:(const char *)a3 toNSArray:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toNSData:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toNSDictionary:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toNSIndexSet:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toNSNumber:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toNSOrderedSet:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toNSSet:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toNSString:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toNonnullNSData:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toNonnullNSNumber:(id)a4;
-- (int)bindNamedParam:(const char *)a3 toNonnullNSString:(id)a4;
-- (int)bindNamedParamToNull:(const char *)a3;
-- (int64_t)getInt64ForColumnAlias:(const char *)a3;
-- (int64_t)getInt64ForColumnName:(const char *)a3 table:(const char *)a4;
-- (int64_t)getIntegerForColumnAlias:(const char *)a3;
-- (int64_t)getIntegerForColumnName:(const char *)a3 table:(const char *)a4;
-- (void)accessBlobBytesForColumnAlias:(const char *)a3 usingBlock:(id)a4;
-- (void)accessBlobBytesForColumnName:(const char *)a3 table:(const char *)a4 usingBlock:(id)a5;
+- (id)doubleAsNonnullNSNumberForColumnAlias:(const char *)alias;
+- (id)doubleAsNonnullNSNumberForColumnName:(const char *)name table:(const char *)table;
+- (id)getDoubleAsNSNumberForColumnAlias:(const char *)alias;
+- (id)getDoubleAsNSNumberForColumnName:(const char *)name table:(const char *)table;
+- (id)getInt64AsNSNumberForColumnAlias:(const char *)alias;
+- (id)getInt64AsNSNumberForColumnName:(const char *)name table:(const char *)table;
+- (id)getNSDataForColumnAlias:(const char *)alias;
+- (id)getNSDataForColumnName:(const char *)name table:(const char *)table;
+- (id)getNSNumberForColumn:(int)column;
+- (id)getNSNumberForColumnAlias:(const char *)alias;
+- (id)getNSNumberForColumnName:(const char *)name table:(const char *)table;
+- (id)getNSStringForColumnAlias:(const char *)alias;
+- (id)getNSStringForColumnName:(const char *)name table:(const char *)table;
+- (id)int64AsNonnullNSNumberForColumnAlias:(const char *)alias;
+- (id)int64AsNonnullNSNumberForColumnName:(const char *)name table:(const char *)table;
+- (id)nonnullNSDataForColumnAlias:(const char *)alias;
+- (id)nonnullNSDataForColumnName:(const char *)name table:(const char *)table;
+- (id)nonnullNSNumberForColumnAlias:(const char *)alias;
+- (id)nonnullNSNumberForColumnName:(const char *)name table:(const char *)table;
+- (id)nonnullNSStringForColumnAlias:(const char *)alias;
+- (id)nonnullNSStringForColumnName:(const char *)name table:(const char *)table;
+- (int)bindNamedParam:(const char *)param toBlock:(id)block;
+- (int)bindNamedParam:(const char *)param toDouble:(double)double;
+- (int)bindNamedParam:(const char *)param toDoubleAsNSNumber:(id)number;
+- (int)bindNamedParam:(const char *)param toDoubleAsNonnullNSNumber:(id)number;
+- (int)bindNamedParam:(const char *)param toInt64:(int64_t)int64;
+- (int)bindNamedParam:(const char *)param toInt64AsNSNumber:(id)number;
+- (int)bindNamedParam:(const char *)param toInt64AsNonnullNSNumber:(id)number;
+- (int)bindNamedParam:(const char *)param toInteger:(int64_t)integer;
+- (int)bindNamedParam:(const char *)param toNSArray:(id)array;
+- (int)bindNamedParam:(const char *)param toNSData:(id)data;
+- (int)bindNamedParam:(const char *)param toNSDictionary:(id)dictionary;
+- (int)bindNamedParam:(const char *)param toNSIndexSet:(id)set;
+- (int)bindNamedParam:(const char *)param toNSNumber:(id)number;
+- (int)bindNamedParam:(const char *)param toNSOrderedSet:(id)set;
+- (int)bindNamedParam:(const char *)param toNSSet:(id)set;
+- (int)bindNamedParam:(const char *)param toNSString:(id)string;
+- (int)bindNamedParam:(const char *)param toNonnullNSData:(id)data;
+- (int)bindNamedParam:(const char *)param toNonnullNSNumber:(id)number;
+- (int)bindNamedParam:(const char *)param toNonnullNSString:(id)string;
+- (int)bindNamedParamToNull:(const char *)null;
+- (int64_t)getInt64ForColumnAlias:(const char *)alias;
+- (int64_t)getInt64ForColumnName:(const char *)name table:(const char *)table;
+- (int64_t)getIntegerForColumnAlias:(const char *)alias;
+- (int64_t)getIntegerForColumnName:(const char *)name table:(const char *)table;
+- (void)accessBlobBytesForColumnAlias:(const char *)alias usingBlock:(id)block;
+- (void)accessBlobBytesForColumnName:(const char *)name table:(const char *)table usingBlock:(id)block;
 @end
 
 @implementation _PASSqliteStatement
 
-- (BOOL)isNullForColumnAlias:(const char *)a3
+- (BOOL)isNullForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self isColumnNull:v4];
 }
 
-- (id)nonnullNSNumberForColumnAlias:(const char *)a3
+- (id)nonnullNSNumberForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self nonnullNSNumberForColumn:v4];
 }
 
-- (id)getNSNumberForColumnAlias:(const char *)a3
+- (id)getNSNumberForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self getNSNumberForColumn:v4];
 }
 
-- (id)doubleAsNonnullNSNumberForColumnAlias:(const char *)a3
+- (id)doubleAsNonnullNSNumberForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self doubleAsNonnullNSNumberForColumn:v4];
 }
 
-- (id)getDoubleAsNSNumberForColumnAlias:(const char *)a3
+- (id)getDoubleAsNSNumberForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self getDoubleAsNSNumberForColumn:v4];
 }
 
-- (double)getDoubleForColumnAlias:(const char *)a3
+- (double)getDoubleForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   [(_PASSqliteStatement *)self getDoubleForColumn:v4];
   return result;
 }
 
-- (id)int64AsNonnullNSNumberForColumnAlias:(const char *)a3
+- (id)int64AsNonnullNSNumberForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self int64AsNonnullNSNumberForColumn:v4];
 }
 
-- (id)getInt64AsNSNumberForColumnAlias:(const char *)a3
+- (id)getInt64AsNSNumberForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self getInt64AsNSNumberForColumn:v4];
 }
 
-- (int64_t)getInt64ForColumnAlias:(const char *)a3
+- (int64_t)getInt64ForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self getInt64ForColumn:v4];
 }
 
-- (int64_t)getIntegerForColumnAlias:(const char *)a3
+- (int64_t)getIntegerForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self getIntegerForColumn:v4];
 }
 
-- (void)accessBlobBytesForColumnAlias:(const char *)a3 usingBlock:(id)a4
+- (void)accessBlobBytesForColumnAlias:(const char *)alias usingBlock:(id)block
 {
   columnMapping = self->_columnMapping;
-  v7 = a4;
-  [(_PASSqliteStatement *)self accessBlobBytesForColumn:[(_PASSQLColumnMapping *)columnMapping indexForColumnAlias:a3] usingBlock:v7];
+  blockCopy = block;
+  [(_PASSqliteStatement *)self accessBlobBytesForColumn:[(_PASSQLColumnMapping *)columnMapping indexForColumnAlias:alias] usingBlock:blockCopy];
 }
 
-- (id)nonnullNSDataForColumnAlias:(const char *)a3
+- (id)nonnullNSDataForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self nonnullNSDataForColumn:v4];
 }
 
-- (id)getNSDataForColumnAlias:(const char *)a3
+- (id)getNSDataForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self getNSDataForColumn:v4];
 }
 
-- (id)nonnullNSStringForColumnAlias:(const char *)a3
+- (id)nonnullNSStringForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self nonnullNSStringForColumn:v4];
 }
 
-- (id)getNSStringForColumnAlias:(const char *)a3
+- (id)getNSStringForColumnAlias:(const char *)alias
 {
-  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:a3];
+  v4 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnAlias:alias];
 
   return [(_PASSqliteStatement *)self getNSStringForColumn:v4];
 }
 
-- (BOOL)isNullForColumnName:(const char *)a3 table:(const char *)a4
+- (BOOL)isNullForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self isColumnNull:v5];
 }
 
-- (id)nonnullNSNumberForColumnName:(const char *)a3 table:(const char *)a4
+- (id)nonnullNSNumberForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self nonnullNSNumberForColumn:v5];
 }
 
-- (id)getNSNumberForColumnName:(const char *)a3 table:(const char *)a4
+- (id)getNSNumberForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self getNSNumberForColumn:v5];
 }
 
-- (id)doubleAsNonnullNSNumberForColumnName:(const char *)a3 table:(const char *)a4
+- (id)doubleAsNonnullNSNumberForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self doubleAsNonnullNSNumberForColumn:v5];
 }
 
-- (id)getDoubleAsNSNumberForColumnName:(const char *)a3 table:(const char *)a4
+- (id)getDoubleAsNSNumberForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self getDoubleAsNSNumberForColumn:v5];
 }
 
-- (double)getDoubleForColumnName:(const char *)a3 table:(const char *)a4
+- (double)getDoubleForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   [(_PASSqliteStatement *)self getDoubleForColumn:v5];
   return result;
 }
 
-- (id)int64AsNonnullNSNumberForColumnName:(const char *)a3 table:(const char *)a4
+- (id)int64AsNonnullNSNumberForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self int64AsNonnullNSNumberForColumn:v5];
 }
 
-- (id)getInt64AsNSNumberForColumnName:(const char *)a3 table:(const char *)a4
+- (id)getInt64AsNSNumberForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self getInt64AsNSNumberForColumn:v5];
 }
 
-- (int64_t)getInt64ForColumnName:(const char *)a3 table:(const char *)a4
+- (int64_t)getInt64ForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self getInt64ForColumn:v5];
 }
 
-- (int64_t)getIntegerForColumnName:(const char *)a3 table:(const char *)a4
+- (int64_t)getIntegerForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self getIntegerForColumn:v5];
 }
 
-- (void)accessBlobBytesForColumnName:(const char *)a3 table:(const char *)a4 usingBlock:(id)a5
+- (void)accessBlobBytesForColumnName:(const char *)name table:(const char *)table usingBlock:(id)block
 {
   columnMapping = self->_columnMapping;
-  v9 = a5;
-  [(_PASSqliteStatement *)self accessBlobBytesForColumn:[(_PASSQLColumnMapping *)columnMapping indexForColumnName:a3 table:a4] usingBlock:v9];
+  blockCopy = block;
+  [(_PASSqliteStatement *)self accessBlobBytesForColumn:[(_PASSQLColumnMapping *)columnMapping indexForColumnName:name table:table] usingBlock:blockCopy];
 }
 
-- (id)nonnullNSDataForColumnName:(const char *)a3 table:(const char *)a4
+- (id)nonnullNSDataForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self nonnullNSDataForColumn:v5];
 }
 
-- (id)getNSDataForColumnName:(const char *)a3 table:(const char *)a4
+- (id)getNSDataForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self getNSDataForColumn:v5];
 }
 
-- (id)nonnullNSStringForColumnName:(const char *)a3 table:(const char *)a4
+- (id)nonnullNSStringForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self nonnullNSStringForColumn:v5];
 }
 
-- (id)getNSStringForColumnName:(const char *)a3 table:(const char *)a4
+- (id)getNSStringForColumnName:(const char *)name table:(const char *)table
 {
-  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:a3 table:a4];
+  v5 = [(_PASSQLColumnMapping *)self->_columnMapping indexForColumnName:name table:table];
 
   return [(_PASSqliteStatement *)self getNSStringForColumn:v5];
 }
 
-- (id)getNSNumberForColumn:(int)a3
+- (id)getNSNumberForColumn:(int)column
 {
-  v5 = sqlite3_column_type(self->_stmt, a3);
+  v5 = sqlite3_column_type(self->_stmt, column);
   if (v5 == 5)
   {
     v6 = 0;
@@ -280,12 +280,12 @@
   {
     if (v5 == 1)
     {
-      [MEMORY[0x1E696AD98] numberWithLongLong:{sqlite3_column_int64(self->_stmt, a3)}];
+      [MEMORY[0x1E696AD98] numberWithLongLong:{sqlite3_column_int64(self->_stmt, column)}];
     }
 
     else
     {
-      [MEMORY[0x1E696AD98] numberWithDouble:{sqlite3_column_double(self->_stmt, a3)}];
+      [MEMORY[0x1E696AD98] numberWithDouble:{sqlite3_column_double(self->_stmt, column)}];
     }
     v6 = ;
   }
@@ -293,190 +293,190 @@
   return v6;
 }
 
-- (int)bindNamedParam:(const char *)a3 toBlock:(id)a4
+- (int)bindNamedParam:(const char *)param toBlock:(id)block
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toBlock:a3), v7];
+  blockCopy = block;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toBlock:param), blockCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParam:(const char *)a3 toNSDictionary:(id)a4
+- (int)bindNamedParam:(const char *)param toNSDictionary:(id)dictionary
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSDictionary:a3), v7];
+  dictionaryCopy = dictionary;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSDictionary:param), dictionaryCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParam:(const char *)a3 toNSOrderedSet:(id)a4
+- (int)bindNamedParam:(const char *)param toNSOrderedSet:(id)set
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSOrderedSet:a3), v7];
+  setCopy = set;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSOrderedSet:param), setCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParam:(const char *)a3 toNSSet:(id)a4
+- (int)bindNamedParam:(const char *)param toNSSet:(id)set
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSSet:a3), v7];
+  setCopy = set;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSSet:param), setCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParam:(const char *)a3 toNSArray:(id)a4
+- (int)bindNamedParam:(const char *)param toNSArray:(id)array
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSArray:a3), v7];
+  arrayCopy = array;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSArray:param), arrayCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParam:(const char *)a3 toNSIndexSet:(id)a4
+- (int)bindNamedParam:(const char *)param toNSIndexSet:(id)set
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSIndexSet:a3), v7];
+  setCopy = set;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSIndexSet:param), setCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParam:(const char *)a3 toNonnullNSNumber:(id)a4
+- (int)bindNamedParam:(const char *)param toNonnullNSNumber:(id)number
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNonnullNSNumber:a3), v7];
+  numberCopy = number;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNonnullNSNumber:param), numberCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParam:(const char *)a3 toNSNumber:(id)a4
+- (int)bindNamedParam:(const char *)param toNSNumber:(id)number
 {
-  if (a4)
+  if (number)
   {
-    return [(_PASSqliteStatement *)self bindNamedParam:a3 toNonnullNSNumber:?];
+    return [(_PASSqliteStatement *)self bindNamedParam:param toNonnullNSNumber:?];
   }
 
   else
   {
-    return [(_PASSqliteStatement *)self bindNamedParamToNull:a3];
+    return [(_PASSqliteStatement *)self bindNamedParamToNull:param];
   }
 }
 
-- (int)bindNamedParam:(const char *)a3 toDoubleAsNonnullNSNumber:(id)a4
+- (int)bindNamedParam:(const char *)param toDoubleAsNonnullNSNumber:(id)number
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toDoubleAsNonnullNSNumber:a3), v7];
+  numberCopy = number;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toDoubleAsNonnullNSNumber:param), numberCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParam:(const char *)a3 toDoubleAsNSNumber:(id)a4
+- (int)bindNamedParam:(const char *)param toDoubleAsNSNumber:(id)number
 {
-  if (a4)
+  if (number)
   {
-    return [(_PASSqliteStatement *)self bindNamedParam:a3 toDoubleAsNonnullNSNumber:?];
+    return [(_PASSqliteStatement *)self bindNamedParam:param toDoubleAsNonnullNSNumber:?];
   }
 
   else
   {
-    return [(_PASSqliteStatement *)self bindNamedParamToNull:a3];
+    return [(_PASSqliteStatement *)self bindNamedParamToNull:param];
   }
 }
 
-- (int)bindNamedParam:(const char *)a3 toDouble:(double)a4
+- (int)bindNamedParam:(const char *)param toDouble:(double)double
 {
   stmt = self->_stmt;
-  v6 = _indexForBindParam(stmt, a3);
+  v6 = _indexForBindParam(stmt, param);
 
-  return sqlite3_bind_double(stmt, v6, a4);
+  return sqlite3_bind_double(stmt, v6, double);
 }
 
-- (int)bindNamedParam:(const char *)a3 toInt64AsNonnullNSNumber:(id)a4
+- (int)bindNamedParam:(const char *)param toInt64AsNonnullNSNumber:(id)number
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toInt64AsNonnullNSNumber:a3), v7];
+  numberCopy = number;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toInt64AsNonnullNSNumber:param), numberCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParam:(const char *)a3 toInt64AsNSNumber:(id)a4
+- (int)bindNamedParam:(const char *)param toInt64AsNSNumber:(id)number
 {
-  if (a4)
+  if (number)
   {
-    return [(_PASSqliteStatement *)self bindNamedParam:a3 toInt64AsNonnullNSNumber:?];
+    return [(_PASSqliteStatement *)self bindNamedParam:param toInt64AsNonnullNSNumber:?];
   }
 
   else
   {
-    return [(_PASSqliteStatement *)self bindNamedParamToNull:a3];
+    return [(_PASSqliteStatement *)self bindNamedParamToNull:param];
   }
 }
 
-- (int)bindNamedParam:(const char *)a3 toInt64:(int64_t)a4
+- (int)bindNamedParam:(const char *)param toInt64:(int64_t)int64
 {
   stmt = self->_stmt;
-  v6 = _indexForBindParam(stmt, a3);
+  v6 = _indexForBindParam(stmt, param);
 
-  return sqlite3_bind_int64(stmt, v6, a4);
+  return sqlite3_bind_int64(stmt, v6, int64);
 }
 
-- (int)bindNamedParam:(const char *)a3 toInteger:(int64_t)a4
+- (int)bindNamedParam:(const char *)param toInteger:(int64_t)integer
 {
   stmt = self->_stmt;
-  v6 = _indexForBindParam(stmt, a3);
+  v6 = _indexForBindParam(stmt, param);
 
-  return sqlite3_bind_int64(stmt, v6, a4);
+  return sqlite3_bind_int64(stmt, v6, integer);
 }
 
-- (int)bindNamedParam:(const char *)a3 toNonnullNSData:(id)a4
+- (int)bindNamedParam:(const char *)param toNonnullNSData:(id)data
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNonnullNSData:a3), v7];
+  dataCopy = data;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNonnullNSData:param), dataCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParam:(const char *)a3 toNSData:(id)a4
+- (int)bindNamedParam:(const char *)param toNSData:(id)data
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSData:a3), v7];
+  dataCopy = data;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSData:param), dataCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParam:(const char *)a3 toNonnullNSString:(id)a4
+- (int)bindNamedParam:(const char *)param toNonnullNSString:(id)string
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNonnullNSString:a3), v7];
+  stringCopy = string;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNonnullNSString:param), stringCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParam:(const char *)a3 toNSString:(id)a4
+- (int)bindNamedParam:(const char *)param toNSString:(id)string
 {
   stmt = self->_stmt;
-  v7 = a4;
-  LODWORD(a3) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSString:a3), v7];
+  stringCopy = string;
+  LODWORD(param) = [(_PASSqliteStatement *)self bindParam:_indexForBindParam(stmt toNSString:param), stringCopy];
 
-  return a3;
+  return param;
 }
 
-- (int)bindNamedParamToNull:(const char *)a3
+- (int)bindNamedParamToNull:(const char *)null
 {
   stmt = self->_stmt;
-  v4 = _indexForBindParam(stmt, a3);
+  v4 = _indexForBindParam(stmt, null);
 
   return sqlite3_bind_null(stmt, v4);
 }
@@ -490,13 +490,13 @@
   return v5;
 }
 
-- (_PASSqliteStatement)initWithStatementPointer:(sqlite3_stmt *)a3 columnMapping:(id)a4
+- (_PASSqliteStatement)initWithStatementPointer:(sqlite3_stmt *)pointer columnMapping:(id)mapping
 {
-  v7 = a4;
-  if (!a3)
+  mappingCopy = mapping;
+  if (!pointer)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_PASSqliteStatement.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"stmt"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASSqliteStatement.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"stmt"}];
   }
 
   v14.receiver = self;
@@ -505,15 +505,15 @@
   v9 = v8;
   if (v8)
   {
-    v8->_stmt = a3;
-    if (v7)
+    v8->_stmt = pointer;
+    if (mappingCopy)
     {
-      v10 = v7;
+      v10 = mappingCopy;
     }
 
     else
     {
-      v10 = [[_PASSQLColumnMapping alloc] initWithStatementPtr:a3];
+      v10 = [[_PASSQLColumnMapping alloc] initWithStatementPtr:pointer];
     }
 
     columnMapping = v9->_columnMapping;

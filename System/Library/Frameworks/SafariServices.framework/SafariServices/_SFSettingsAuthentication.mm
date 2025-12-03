@@ -1,9 +1,9 @@
 @interface _SFSettingsAuthentication
 + (BOOL)authenticationRequiresPasscode;
-+ (id)_localAuthenticationOptionsWithAuthenticationContext:(id)a3;
++ (id)_localAuthenticationOptionsWithAuthenticationContext:(id)context;
 + (int64_t)biometryTypeCurrentlyAvailableForDevice;
-+ (void)authenticateForSettings:(id)a3 allowAuthenticationReuse:(BOOL)a4 completionHandler:(id)a5;
-+ (void)pushSettingsAfterAuthentication:(id)a3 onBehalfOfViewController:(id)a4 resourceDictionary:(id)a5 completionHandler:(id)a6;
++ (void)authenticateForSettings:(id)settings allowAuthenticationReuse:(BOOL)reuse completionHandler:(id)handler;
++ (void)pushSettingsAfterAuthentication:(id)authentication onBehalfOfViewController:(id)controller resourceDictionary:(id)dictionary completionHandler:(id)handler;
 @end
 
 @implementation _SFSettingsAuthentication
@@ -29,46 +29,46 @@
   v4 = v3;
   if (v3 && ([v3 code] + 7) < 3)
   {
-    v5 = 0;
+    biometryType = 0;
   }
 
   else
   {
-    v5 = [v2 biometryType];
+    biometryType = [v2 biometryType];
   }
 
-  return v5;
+  return biometryType;
 }
 
-+ (void)authenticateForSettings:(id)a3 allowAuthenticationReuse:(BOOL)a4 completionHandler:(id)a5
++ (void)authenticateForSettings:(id)settings allowAuthenticationReuse:(BOOL)reuse completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  reuseCopy = reuse;
+  settingsCopy = settings;
+  handlerCopy = handler;
   v10 = objc_alloc_init(MEMORY[0x1E696EE50]);
   v11 = v10;
-  if (v6)
+  if (reuseCopy)
   {
     [v10 setTouchIDAuthenticationAllowableReuseDuration:10.0];
   }
 
-  v12 = [v8 authenticationPolicy];
+  authenticationPolicy = [settingsCopy authenticationPolicy];
   v28 = 0;
-  v13 = [v11 canEvaluatePolicy:v12 error:&v28];
+  v13 = [v11 canEvaluatePolicy:authenticationPolicy error:&v28];
   v14 = v28;
   v15 = v14;
   if (v13)
   {
-    v16 = [a1 _localAuthenticationOptionsWithAuthenticationContext:v8];
+    v16 = [self _localAuthenticationOptionsWithAuthenticationContext:settingsCopy];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __96___SFSettingsAuthentication_authenticateForSettings_allowAuthenticationReuse_completionHandler___block_invoke_2;
     v21[3] = &unk_1E8490F80;
-    v22 = v8;
-    v23 = v9;
-    v17 = v9;
-    v18 = v8;
-    [v11 evaluatePolicy:v12 options:v16 reply:v21];
+    v22 = settingsCopy;
+    v23 = handlerCopy;
+    v17 = handlerCopy;
+    v18 = settingsCopy;
+    [v11 evaluatePolicy:authenticationPolicy options:v16 reply:v21];
   }
 
   else
@@ -77,73 +77,73 @@
     block[1] = 3221225472;
     block[2] = __96___SFSettingsAuthentication_authenticateForSettings_allowAuthenticationReuse_completionHandler___block_invoke;
     block[3] = &unk_1E84949D0;
-    v25 = v8;
+    v25 = settingsCopy;
     v26 = v14;
-    v27 = v9;
-    v19 = v9;
-    v20 = v8;
+    v27 = handlerCopy;
+    v19 = handlerCopy;
+    v20 = settingsCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     v16 = v25;
   }
 }
 
-+ (void)pushSettingsAfterAuthentication:(id)a3 onBehalfOfViewController:(id)a4 resourceDictionary:(id)a5 completionHandler:(id)a6
++ (void)pushSettingsAfterAuthentication:(id)authentication onBehalfOfViewController:(id)controller resourceDictionary:(id)dictionary completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 safari_stringForKey:*MEMORY[0x1E69C8CA0]];
+  authenticationCopy = authentication;
+  controllerCopy = controller;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
+  v14 = [dictionaryCopy safari_stringForKey:*MEMORY[0x1E69C8CA0]];
   v15 = [v14 isEqualToString:*MEMORY[0x1E69C8CB0]];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __123___SFSettingsAuthentication_pushSettingsAfterAuthentication_onBehalfOfViewController_resourceDictionary_completionHandler___block_invoke;
   v20[3] = &unk_1E84949F8;
-  v21 = v11;
-  v22 = v10;
-  v23 = v12;
-  v24 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v10;
-  v19 = v11;
-  [a1 authenticateForSettings:v18 allowAuthenticationReuse:v15 completionHandler:v20];
+  v21 = controllerCopy;
+  v22 = authenticationCopy;
+  v23 = dictionaryCopy;
+  v24 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = dictionaryCopy;
+  v18 = authenticationCopy;
+  v19 = controllerCopy;
+  [self authenticateForSettings:v18 allowAuthenticationReuse:v15 completionHandler:v20];
 }
 
-+ (id)_localAuthenticationOptionsWithAuthenticationContext:(id)a3
++ (id)_localAuthenticationOptionsWithAuthenticationContext:(id)context
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 customLocalAuthenticationOptions];
+    customLocalAuthenticationOptions = [contextCopy customLocalAuthenticationOptions];
   }
 
   else
   {
-    if ([v3 showsAuthenticationPromptAsTitle])
+    if ([contextCopy showsAuthenticationPromptAsTitle])
     {
       v10[0] = &unk_1F50234A0;
-      v5 = +[SFAutoFillAuthenticationUtilities passcodePromptForViewingSavedAccounts];
+      authenticationPrompt2 = +[SFAutoFillAuthenticationUtilities passcodePromptForViewingSavedAccounts];
       v10[1] = &unk_1F50234B8;
-      v11[0] = v5;
-      v6 = [v3 authenticationPrompt];
-      v11[1] = v6;
-      v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
+      v11[0] = authenticationPrompt2;
+      authenticationPrompt = [contextCopy authenticationPrompt];
+      v11[1] = authenticationPrompt;
+      customLocalAuthenticationOptions = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
     }
 
     else
     {
       v8 = &unk_1F50234D0;
-      v5 = [v3 authenticationPrompt];
-      v9 = v5;
-      v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
+      authenticationPrompt2 = [contextCopy authenticationPrompt];
+      v9 = authenticationPrompt2;
+      customLocalAuthenticationOptions = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
     }
   }
 
-  return v4;
+  return customLocalAuthenticationOptions;
 }
 
 @end

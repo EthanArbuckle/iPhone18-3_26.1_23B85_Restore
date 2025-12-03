@@ -6,14 +6,14 @@
 
 - (uint64_t)encodeWithCAMLWriter:()CAMLWriter
 {
-  v4 = [a1 allObjects];
-  result = [v4 count];
+  allObjects = [self allObjects];
+  result = [allObjects count];
   if (result)
   {
     v6 = result;
     for (i = 0; i != v6; ++i)
     {
-      result = [a3 encodeObject:{objc_msgSend(v4, "objectAtIndex:", i)}];
+      result = [a3 encodeObject:{objc_msgSend(allObjects, "objectAtIndex:", i)}];
     }
   }
 

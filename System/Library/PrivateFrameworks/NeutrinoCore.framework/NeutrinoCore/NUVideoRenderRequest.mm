@@ -1,18 +1,18 @@
 @interface NUVideoRenderRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (void)_commonInit;
-- (void)submit:(id)a3;
+- (void)submit:(id)submit;
 @end
 
 @implementation NUVideoRenderRequest
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NURenderRequest *)self renderContext];
-  if ([v5 purpose] == 1)
+  submitCopy = submit;
+  renderContext = [(NURenderRequest *)self renderContext];
+  if ([renderContext purpose] == 1)
   {
     if (_NULogOnceToken != -1)
     {
@@ -56,8 +56,8 @@ LABEL_9:
         v17 = MEMORY[0x1E696AF00];
         v18 = specific;
         v19 = v11;
-        v20 = [v17 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v27 = 138543618;
         *&v27[4] = specific;
         v28 = 2114;
@@ -75,8 +75,8 @@ LABEL_15:
     {
       v23 = MEMORY[0x1E696AF00];
       v24 = v22;
-      v25 = [v23 callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v23 callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v27 = 138543362;
       *&v27[4] = v26;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v27, 0xCu);
@@ -87,7 +87,7 @@ LABEL_15:
 
 LABEL_16:
 
-  [(NURenderRequest *)self submitGeneric:v4];
+  [(NURenderRequest *)self submitGeneric:submitCopy];
 }
 
 - (id)newRenderJob
@@ -97,11 +97,11 @@ LABEL_16:
   return [(NURenderJob *)v3 initWithRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NUVideoRenderRequest;
-  v4 = [(NURenderRequest *)&v6 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 20, self->_colorSpace);
   objc_storeStrong(v4 + 21, self->_scalePolicy);
   return v4;
@@ -116,8 +116,8 @@ LABEL_16:
   scalePolicy = self->_scalePolicy;
   self->_scalePolicy = v3;
 
-  v5 = [(NURenderRequest *)self internalComposition];
-  v6 = [NUVideoUtilities defaultOutputColorSpaceForComposition:v5];
+  internalComposition = [(NURenderRequest *)self internalComposition];
+  v6 = [NUVideoUtilities defaultOutputColorSpaceForComposition:internalComposition];
   colorSpace = self->_colorSpace;
   self->_colorSpace = v6;
 }

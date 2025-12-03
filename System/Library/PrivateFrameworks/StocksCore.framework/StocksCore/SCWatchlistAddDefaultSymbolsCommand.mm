@@ -1,34 +1,34 @@
 @interface SCWatchlistAddDefaultSymbolsCommand
-- (SCWatchlistAddDefaultSymbolsCommand)initWithCoder:(id)a3;
-- (SCWatchlistAddDefaultSymbolsCommand)initWithSymbols:(id)a3 deferUpload:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithZone:(id)a3;
+- (SCWatchlistAddDefaultSymbolsCommand)initWithCoder:(id)coder;
+- (SCWatchlistAddDefaultSymbolsCommand)initWithSymbols:(id)symbols deferUpload:(BOOL)upload;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithZone:(id)zone;
 @end
 
 @implementation SCWatchlistAddDefaultSymbolsCommand
 
-- (SCWatchlistAddDefaultSymbolsCommand)initWithSymbols:(id)a3 deferUpload:(BOOL)a4
+- (SCWatchlistAddDefaultSymbolsCommand)initWithSymbols:(id)symbols deferUpload:(BOOL)upload
 {
-  v6 = a3;
+  symbolsCopy = symbols;
   v11.receiver = self;
   v11.super_class = SCWatchlistAddDefaultSymbolsCommand;
   v7 = [(SCWatchlistAddDefaultSymbolsCommand *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [symbolsCopy copy];
     symbols = v7->_symbols;
     v7->_symbols = v8;
 
-    v7->_deferUpload = a4;
+    v7->_deferUpload = upload;
   }
 
   return v7;
 }
 
-- (void)executeWithZone:(id)a3
+- (void)executeWithZone:(id)zone
 {
-  v4 = a3;
-  if (([v4 recordExistsWithName:@"watchlist"] & 1) == 0)
+  zoneCopy = zone;
+  if (([zoneCopy recordExistsWithName:@"watchlist"] & 1) == 0)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -36,7 +36,7 @@
     aBlock[3] = &unk_1E85E3320;
     aBlock[4] = self;
     v5 = _Block_copy(aBlock);
-    [v4 createOrUpdateRecordWithName:@"watchlist" recordType:@"Watchlist" modifyBlock:v5];
+    [zoneCopy createOrUpdateRecordWithName:@"watchlist" recordType:@"Watchlist" modifyBlock:v5];
   }
 }
 
@@ -50,38 +50,38 @@ void __55__SCWatchlistAddDefaultSymbolsCommand_executeWithZone___block_invoke(ui
   [v4 setObject:v5 forKeyedSubscript:@"symbols"];
 }
 
-- (SCWatchlistAddDefaultSymbolsCommand)initWithCoder:(id)a3
+- (SCWatchlistAddDefaultSymbolsCommand)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"symbols"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"symbols"];
 
-  v9 = [v5 decodeBoolForKey:@"deferUpload"];
+  v9 = [coderCopy decodeBoolForKey:@"deferUpload"];
   if (v8)
   {
     self = [(SCWatchlistAddDefaultSymbolsCommand *)self initWithSymbols:v8 deferUpload:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  v11 = v10;
+  v11 = selfCopy;
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(SCWatchlistAddDefaultSymbolsCommand *)self symbols];
-  [v5 encodeObject:v4 forKey:@"symbols"];
+  coderCopy = coder;
+  symbols = [(SCWatchlistAddDefaultSymbolsCommand *)self symbols];
+  [coderCopy encodeObject:symbols forKey:@"symbols"];
 
-  [v5 encodeBool:-[SCWatchlistAddDefaultSymbolsCommand deferUpload](self forKey:{"deferUpload"), @"deferUpload"}];
+  [coderCopy encodeBool:-[SCWatchlistAddDefaultSymbolsCommand deferUpload](self forKey:{"deferUpload"), @"deferUpload"}];
 }
 
 @end

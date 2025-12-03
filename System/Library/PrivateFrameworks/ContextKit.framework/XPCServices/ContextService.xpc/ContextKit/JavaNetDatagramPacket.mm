@@ -6,12 +6,12 @@
 - (int)getOffset;
 - (int)getPort;
 - (void)dealloc;
-- (void)setAddressWithJavaNetInetAddress:(id)a3;
-- (void)setDataWithByteArray:(id)a3;
-- (void)setDataWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (void)setLengthWithInt:(int)a3;
-- (void)setPortWithInt:(int)a3;
-- (void)setSocketAddressWithJavaNetSocketAddress:(id)a3;
+- (void)setAddressWithJavaNetInetAddress:(id)address;
+- (void)setDataWithByteArray:(id)array;
+- (void)setDataWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (void)setLengthWithInt:(int)int;
+- (void)setPortWithInt:(int)int;
+- (void)setSocketAddressWithJavaNetSocketAddress:(id)address;
 @end
 
 @implementation JavaNetDatagramPacket
@@ -56,67 +56,67 @@
   return port;
 }
 
-- (void)setAddressWithJavaNetInetAddress:(id)a3
+- (void)setAddressWithJavaNetInetAddress:(id)address
 {
   objc_sync_enter(self);
-  JreStrongAssign(&self->address_, a3);
+  JreStrongAssign(&self->address_, address);
 
   objc_sync_exit(self);
 }
 
-- (void)setDataWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)setDataWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
   objc_sync_enter(self);
-  if ((a5 | a4) < 0)
+  if ((withInt | int) < 0)
   {
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v9 = *(a3 + 2);
-  v10 = __OFSUB__(v9, a4);
-  v11 = v9 - a4;
-  if (v11 < 0 != v10 || v11 < a5)
+  v9 = *(array + 2);
+  v10 = __OFSUB__(v9, int);
+  v11 = v9 - int;
+  if (v11 < 0 != v10 || v11 < withInt)
   {
 LABEL_11:
     v13 = new_JavaLangIllegalArgumentException_init();
     objc_exception_throw(v13);
   }
 
-  JreStrongAssign(&self->data_, a3);
-  self->offset_ = a4;
-  self->length_ = a5;
-  self->userSuppliedLength_ = a5;
+  JreStrongAssign(&self->data_, array);
+  self->offset_ = int;
+  self->length_ = withInt;
+  self->userSuppliedLength_ = withInt;
 
   objc_sync_exit(self);
 }
 
-- (void)setDataWithByteArray:(id)a3
+- (void)setDataWithByteArray:(id)array
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = *(a3 + 2);
+  v5 = *(array + 2);
   self->length_ = v5;
   self->userSuppliedLength_ = v5;
-  JreStrongAssign(&self->data_, a3);
+  JreStrongAssign(&self->data_, array);
   self->offset_ = 0;
 
   objc_sync_exit(self);
 }
 
-- (void)setLengthWithInt:(int)a3
+- (void)setLengthWithInt:(int)int
 {
   objc_sync_enter(self);
   data = self->data_;
-  if (a3 < 0)
+  if (int < 0)
   {
     if (data)
     {
@@ -137,28 +137,28 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (self->offset_ + a3 > data->super.size_)
+  if (self->offset_ + int > data->super.size_)
   {
     goto LABEL_8;
   }
 
-  self->length_ = a3;
-  self->userSuppliedLength_ = a3;
+  self->length_ = int;
+  self->userSuppliedLength_ = int;
 
   objc_sync_exit(self);
 }
 
-- (void)setPortWithInt:(int)a3
+- (void)setPortWithInt:(int)int
 {
   objc_sync_enter(self);
-  if (a3 >= 0x10000)
+  if (int >= 0x10000)
   {
     v12 = JreStrcat("$I", v5, v6, v7, v8, v9, v10, v11, @"Port out of range: ");
     v13 = new_JavaLangIllegalArgumentException_initWithNSString_(v12);
     objc_exception_throw(v13);
   }
 
-  self->port_ = a3;
+  self->port_ = int;
 
   objc_sync_exit(self);
 }
@@ -171,15 +171,15 @@ LABEL_9:
   return v3;
 }
 
-- (void)setSocketAddressWithJavaNetSocketAddress:(id)a3
+- (void)setSocketAddressWithJavaNetSocketAddress:(id)address
 {
   objc_sync_enter(self);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a3)
+    if (address)
     {
-      [a3 getClass];
+      [address getClass];
     }
 
     v21 = JreStrcat("$@", v5, v6, v7, v8, v9, v10, v11, @"Socket address not an InetSocketAddress: ");
@@ -188,7 +188,7 @@ LABEL_9:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!address)
   {
     JreThrowNullPointerException();
   }
@@ -198,15 +198,15 @@ LABEL_9:
     JreThrowClassCastException();
   }
 
-  if ([a3 isUnresolved])
+  if ([address isUnresolved])
   {
     v19 = JreStrcat("$@", v12, v13, v14, v15, v16, v17, v18, @"Socket address unresolved: ");
     v20 = new_JavaLangIllegalArgumentException_initWithNSString_(v19);
     objc_exception_throw(v20);
   }
 
-  self->port_ = [a3 getPort];
-  JreStrongAssign(&self->address_, [a3 getAddress]);
+  self->port_ = [address getPort];
+  JreStrongAssign(&self->address_, [address getAddress]);
 
   objc_sync_exit(self);
 }

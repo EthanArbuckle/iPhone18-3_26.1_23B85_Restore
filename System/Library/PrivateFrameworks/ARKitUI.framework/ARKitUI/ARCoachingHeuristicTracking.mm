@@ -1,27 +1,27 @@
 @interface ARCoachingHeuristicTracking
-- (void)updateWithFrame:(id)a3 cache:(id)a4;
+- (void)updateWithFrame:(id)frame cache:(id)cache;
 @end
 
 @implementation ARCoachingHeuristicTracking
 
-- (void)updateWithFrame:(id)a3 cache:(id)a4
+- (void)updateWithFrame:(id)frame cache:(id)cache
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  frameCopy = frame;
   requirements = self->_requirements;
-  v7 = [v5 camera];
-  v8 = [v7 trackingState];
+  camera = [frameCopy camera];
+  trackingState = [camera trackingState];
 
-  if (v8 == 2)
+  if (trackingState == 2)
   {
     v9 = 0;
     goto LABEL_8;
   }
 
-  v10 = [v5 camera];
-  v11 = [v10 trackingStateReason];
+  camera2 = [frameCopy camera];
+  trackingStateReason = [camera2 trackingStateReason];
 
-  if (v11 != 2)
+  if (trackingStateReason != 2)
   {
     v9 = 1;
 LABEL_8:
@@ -36,7 +36,7 @@ LABEL_8:
         v18 = 138543618;
         v19 = v14;
         v20 = 2048;
-        v21 = self;
+        selfCopy2 = self;
         v15 = "%{public}@ <%p>: Motion is no longer excessive";
         goto LABEL_11;
       }
@@ -58,7 +58,7 @@ LABEL_8:
       v18 = 138543618;
       v19 = v14;
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       v15 = "%{public}@ <%p>: Motion became excessive";
 LABEL_11:
       _os_log_impl(&dword_23D3AE000, v12, OS_LOG_TYPE_INFO, v15, &v18, 0x16u);

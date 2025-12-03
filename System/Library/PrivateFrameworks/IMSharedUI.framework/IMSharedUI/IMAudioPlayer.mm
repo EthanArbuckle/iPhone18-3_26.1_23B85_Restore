@@ -1,21 +1,21 @@
 @interface IMAudioPlayer
-+ (IMAudioPlayer)audioPlayerWithContentsOfURL:(id)a3;
++ (IMAudioPlayer)audioPlayerWithContentsOfURL:(id)l;
 - (BOOL)isPlaying;
 - (BOOL)usesAVPlayer;
-- (IMAudioPlayer)initWithContentsOfURL:(id)a3 shouldUseAVPlayer:(BOOL)a4;
+- (IMAudioPlayer)initWithContentsOfURL:(id)l shouldUseAVPlayer:(BOOL)player;
 - (IMAudioPlayerDelegate)delegate;
 - (double)currentTime;
 - (double)duration;
 - (float)volume;
 - (void)dealloc;
 - (void)pause;
-- (void)playAfterDelay:(double)a3 completion:(id)a4;
+- (void)playAfterDelay:(double)delay completion:(id)completion;
 - (void)prepareToPlay;
-- (void)setVolume:(float)a3;
+- (void)setVolume:(float)volume;
 - (void)startTimer;
 - (void)stop;
 - (void)stopTimer;
-- (void)timerDidExpire:(id)a3;
+- (void)timerDidExpire:(id)expire;
 @end
 
 @implementation IMAudioPlayer
@@ -38,21 +38,21 @@
   [(IMAudioPlayer *)&v9 dealloc];
 }
 
-- (IMAudioPlayer)initWithContentsOfURL:(id)a3 shouldUseAVPlayer:(BOOL)a4
+- (IMAudioPlayer)initWithContentsOfURL:(id)l shouldUseAVPlayer:(BOOL)player
 {
-  v4 = a4;
-  v6 = a3;
+  playerCopy = player;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = IMAudioPlayer;
   v9 = [(IMAudioPlayer *)&v18 init];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v6, v7, v8);
+    v10 = objc_msgSend_copy(lCopy, v7, v8);
     v11 = *(v9 + 1);
     *(v9 + 1) = v10;
 
     v12 = [IMInternalAVAudioPlayer alloc];
-    v14 = objc_msgSend_initWithContentsOfURL_playerType_(v12, v13, *(v9 + 1), v4);
+    v14 = objc_msgSend_initWithContentsOfURL_playerType_(v12, v13, *(v9 + 1), playerCopy);
     objc_msgSend_setDelegate_(v14, v15, v9);
     objc_msgSend_setAudioPlayer_(v9, v16, v14);
   }
@@ -60,26 +60,26 @@
   return v9;
 }
 
-+ (IMAudioPlayer)audioPlayerWithContentsOfURL:(id)a3
++ (IMAudioPlayer)audioPlayerWithContentsOfURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc(objc_opt_class());
-  shouldUseAVPlayer = objc_msgSend_initWithContentsOfURL_shouldUseAVPlayer_(v4, v5, v3, 0);
+  shouldUseAVPlayer = objc_msgSend_initWithContentsOfURL_shouldUseAVPlayer_(v4, v5, lCopy, 0);
 
   return shouldUseAVPlayer;
 }
 
-- (void)playAfterDelay:(double)a3 completion:(id)a4
+- (void)playAfterDelay:(double)delay completion:(id)completion
 {
-  v6 = a4;
-  v9 = fmax(a3, 0.0);
-  v19 = v6;
+  completionCopy = completion;
+  v9 = fmax(delay, 0.0);
+  v19 = completionCopy;
   if (self->_block)
   {
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
-  else if (!v6)
+  else if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -124,9 +124,9 @@ LABEL_5:
   }
 }
 
-- (void)timerDidExpire:(id)a3
+- (void)timerDidExpire:(id)expire
 {
-  v5 = objc_msgSend_delegate(self, a2, a3);
+  v5 = objc_msgSend_delegate(self, a2, expire);
   objc_msgSend_audioPlayerCurrentTimeDidChange_(v5, v4, self);
 }
 
@@ -193,10 +193,10 @@ LABEL_5:
   return v7;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v8 = objc_msgSend_audioPlayer(self, a2, v3);
-  *&v5 = a3;
+  *&v5 = volume;
   objc_msgSend_setVolume_(v8, v6, v7, v5);
 }
 

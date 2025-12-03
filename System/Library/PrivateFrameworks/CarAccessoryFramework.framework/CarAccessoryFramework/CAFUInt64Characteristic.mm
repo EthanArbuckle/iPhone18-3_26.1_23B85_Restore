@@ -4,14 +4,14 @@
 - (id)descriptionExtras;
 - (id)formattedValue;
 - (unint64_t)uint64Value;
-- (void)setUint64Value:(unint64_t)a3;
+- (void)setUint64Value:(unint64_t)value;
 @end
 
 @implementation CAFUInt64Characteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFUInt64Characteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -19,10 +19,10 @@
 - (unint64_t)uint64Value
 {
   objc_opt_class();
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  value = [(CAFCharacteristic *)self value];
+  if (value && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = value;
   }
 
   else
@@ -30,35 +30,35 @@
     v4 = 0;
   }
 
-  v5 = [v4 unsignedLongLongValue];
-  return v5;
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
+  return unsignedLongLongValue;
 }
 
-- (void)setUint64Value:(unint64_t)a3
+- (void)setUint64Value:(unint64_t)value
 {
-  v5 = [(CAFUInt64Characteristic *)self range];
-  v6 = [v5 valueIsInRange:a3];
+  range = [(CAFUInt64Characteristic *)self range];
+  v6 = [range valueIsInRange:value];
 
   if (v6)
   {
     v7 = MEMORY[0x277CCABB0];
-    v14 = [(CAFUInt64Characteristic *)self range];
-    v8 = [v7 numberWithUnsignedLongLong:{objc_msgSend(v14, "valueRoundedToNearestStepValue:", a3)}];
+    range2 = [(CAFUInt64Characteristic *)self range];
+    v8 = [v7 numberWithUnsignedLongLong:{objc_msgSend(range2, "valueRoundedToNearestStepValue:", value)}];
     [(CAFCharacteristic *)self setValue:v8];
   }
 
   else
   {
     v9 = MEMORY[0x277CCA9B8];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-    v11 = [(CAFUInt64Characteristic *)self range];
-    v12 = [v9 CAF_outOfRangeErrorForValue:v10 range:v11];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:value];
+    range3 = [(CAFUInt64Characteristic *)self range];
+    v12 = [v9 CAF_outOfRangeErrorForValue:v10 range:range3];
     [(CAFCharacteristic *)self setError:v12];
 
     v13 = CAFGeneralLogging();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(CAFUInt64Characteristic *)self setUint64Value:a3, v13];
+      [(CAFUInt64Characteristic *)self setUint64Value:value, v13];
     }
   }
 }
@@ -69,8 +69,8 @@
   if (!range)
   {
     v4 = [CAFUInt64Range alloc];
-    v5 = [(CAFCharacteristic *)self metaData];
-    v6 = [(CAFRange *)v4 initWithMetaData:v5];
+    metaData = [(CAFCharacteristic *)self metaData];
+    v6 = [(CAFRange *)v4 initWithMetaData:metaData];
     v7 = self->_range;
     self->_range = v6;
 
@@ -82,8 +82,8 @@
 
 - (id)formattedValue
 {
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3)
+  value = [(CAFCharacteristic *)self value];
+  if (value)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", -[CAFUInt64Characteristic uint64Value](self, "uint64Value")];
   }
@@ -101,8 +101,8 @@
 - (id)descriptionExtras
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(CAFUInt64Characteristic *)self range];
-  v4 = [v3 description];
+  range = [(CAFUInt64Characteristic *)self range];
+  v4 = [range description];
   v5 = [v2 stringWithFormat:@"range=%@", v4];
 
   return v5;

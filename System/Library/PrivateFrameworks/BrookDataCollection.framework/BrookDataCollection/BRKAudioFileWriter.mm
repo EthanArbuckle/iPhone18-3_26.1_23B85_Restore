@@ -1,26 +1,26 @@
 @interface BRKAudioFileWriter
-- (BRKAudioFileWriter)initWithPath:(id)a3;
+- (BRKAudioFileWriter)initWithPath:(id)path;
 - (void)_lock_close;
-- (void)_lock_writeSamples:(const signed __int16 *)a3 count:(unint64_t)a4;
+- (void)_lock_writeSamples:(const signed __int16 *)samples count:(unint64_t)count;
 - (void)close;
-- (void)writeSamples:(const signed __int16 *)a3 count:(unint64_t)a4;
+- (void)writeSamples:(const signed __int16 *)samples count:(unint64_t)count;
 @end
 
 @implementation BRKAudioFileWriter
 
-- (BRKAudioFileWriter)initWithPath:(id)a3
+- (BRKAudioFileWriter)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = BRKAudioFileWriter;
-  v5 = [(BRKWriter *)&v11 initWithPath:v4];
+  v5 = [(BRKWriter *)&v11 initWithPath:pathCopy];
   v6 = v5;
   if (v5)
   {
     *(v5 + 4) = 0x40CF400000000000;
     *(v5 + 40) = xmmword_241EDFBF0;
     *(v5 + 56) = xmmword_241EDFC00;
-    v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4 isDirectory:0];
+    v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy isDirectory:0];
     if (ExtAudioFileCreateWithURL(v7, 0x57415645u, &v6->_format, 0, 1u, &v6->_audioFile))
     {
       v8 = BRKLoggingObjectForDomain();
@@ -55,19 +55,19 @@ LABEL_12:
   return v6;
 }
 
-- (void)writeSamples:(const signed __int16 *)a3 count:(unint64_t)a4
+- (void)writeSamples:(const signed __int16 *)samples count:(unint64_t)count
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __41__BRKAudioFileWriter_writeSamples_count___block_invoke;
   v4[3] = &unk_278D27D50;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = samples;
+  v4[6] = count;
   [(BRKWriter *)self performWithLock:v4];
 }
 
-- (void)_lock_writeSamples:(const signed __int16 *)a3 count:(unint64_t)a4
+- (void)_lock_writeSamples:(const signed __int16 *)samples count:(unint64_t)count
 {
   audioFile = self->_audioFile;
   if (audioFile)
@@ -75,9 +75,9 @@ LABEL_12:
     *(&ioData.mNumberBuffers + 1) = 0;
     ioData.mNumberBuffers = 1;
     ioData.mBuffers[0].mNumberChannels = 1;
-    ioData.mBuffers[0].mDataByteSize = 2 * a4;
-    ioData.mBuffers[0].mData = a3;
-    if (ExtAudioFileWrite(audioFile, a4, &ioData))
+    ioData.mBuffers[0].mDataByteSize = 2 * count;
+    ioData.mBuffers[0].mData = samples;
+    if (ExtAudioFileWrite(audioFile, count, &ioData))
     {
       v5 = BRKLoggingObjectForDomain();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))

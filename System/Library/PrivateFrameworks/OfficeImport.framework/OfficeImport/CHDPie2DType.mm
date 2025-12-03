@@ -1,17 +1,17 @@
 @interface CHDPie2DType
 - (BOOL)hasExplosion;
-- (CHDPie2DType)initWithChart:(id)a3;
+- (CHDPie2DType)initWithChart:(id)chart;
 - (id)contentFormat;
 - (int)defaultLabelPosition;
 @end
 
 @implementation CHDPie2DType
 
-- (CHDPie2DType)initWithChart:(id)a3
+- (CHDPie2DType)initWithChart:(id)chart
 {
   v4.receiver = self;
   v4.super_class = CHDPie2DType;
-  result = [(CHDChartType *)&v4 initWithChart:a3];
+  result = [(CHDChartType *)&v4 initWithChart:chart];
   if (result)
   {
     *(&result->super.mVaryColors + 1) = 0;
@@ -38,32 +38,32 @@
 
 - (id)contentFormat
 {
-  v3 = [(CHDChartType *)self seriesCollection];
-  v4 = [v3 count];
+  seriesCollection = [(CHDChartType *)self seriesCollection];
+  v4 = [seriesCollection count];
 
   if (v4)
   {
-    v5 = [(CHDChartType *)self seriesCollection];
-    WeakRetained = [v5 objectAtIndex:0];
+    seriesCollection2 = [(CHDChartType *)self seriesCollection];
+    WeakRetained = [seriesCollection2 objectAtIndex:0];
 
-    v7 = [WeakRetained valueData];
-    v8 = [v7 contentFormat];
+    valueData = [WeakRetained valueData];
+    contentFormat = [valueData contentFormat];
 
-    if (v8)
+    if (contentFormat)
     {
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    v9 = [WeakRetained defaultDataLabel];
+    defaultDataLabel = [WeakRetained defaultDataLabel];
 
-    if (v9)
+    if (defaultDataLabel)
     {
-      v10 = [WeakRetained defaultDataLabel];
-      v8 = [v10 contentFormat];
+      defaultDataLabel2 = [WeakRetained defaultDataLabel];
+      contentFormat = [defaultDataLabel2 contentFormat];
 
-      if (v8)
+      if (contentFormat)
       {
         goto LABEL_11;
       }
@@ -74,31 +74,31 @@ LABEL_10:
     }
   }
 
-  v11 = [(CHDChartType *)self defaultDataLabel];
+  defaultDataLabel3 = [(CHDChartType *)self defaultDataLabel];
 
-  if (!v11 || (-[CHDChartType defaultDataLabel](self, "defaultDataLabel"), v12 = objc_claimAutoreleasedReturnValue(), [v12 contentFormat], v8 = objc_claimAutoreleasedReturnValue(), v12, !v8))
+  if (!defaultDataLabel3 || (-[CHDChartType defaultDataLabel](self, "defaultDataLabel"), v12 = objc_claimAutoreleasedReturnValue(), [v12 contentFormat], contentFormat = objc_claimAutoreleasedReturnValue(), v12, !contentFormat))
   {
     WeakRetained = objc_loadWeakRetained(&self->super.mChart);
-    v8 = [WeakRetained defaultContentFormat];
+    contentFormat = [WeakRetained defaultContentFormat];
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  return v8;
+  return contentFormat;
 }
 
 - (BOOL)hasExplosion
 {
-  v2 = [(CHDChartType *)self seriesCollection];
-  v15 = v2;
-  v3 = [v2 count];
+  seriesCollection = [(CHDChartType *)self seriesCollection];
+  v15 = seriesCollection;
+  v3 = [seriesCollection count];
   if (v3)
   {
     v4 = 0;
     while (1)
     {
-      v5 = [v2 objectAtIndex:{v4, v14}];
+      v5 = [seriesCollection objectAtIndex:{v4, v14}];
       v14 = v5;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -113,18 +113,18 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v8 = [v7 dataValuePropertiesCollection];
-      v9 = [v8 count];
+      dataValuePropertiesCollection = [v7 dataValuePropertiesCollection];
+      v9 = [dataValuePropertiesCollection count];
       if (v9)
       {
         v10 = 0;
         while (1)
         {
           objc_opt_class();
-          v11 = [v8 objectAtIndex:v10];
-          v12 = [v11 explosion];
+          v11 = [dataValuePropertiesCollection objectAtIndex:v10];
+          explosion = [v11 explosion];
 
-          if (v12 >= 1)
+          if (explosion >= 1)
           {
             break;
           }
@@ -136,7 +136,7 @@ LABEL_11:
         }
 
         v5 = v14;
-        v2 = v15;
+        seriesCollection = v15;
 LABEL_12:
 
         break;
@@ -145,7 +145,7 @@ LABEL_12:
 LABEL_9:
 
       ++v4;
-      v2 = v15;
+      seriesCollection = v15;
       if (v4 == v3)
       {
         goto LABEL_10;

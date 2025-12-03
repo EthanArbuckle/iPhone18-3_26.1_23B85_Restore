@@ -1,15 +1,15 @@
 @interface MenuCell
 - (NSString)accessoryText;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (int64_t)accessoryType;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessoryText:(id)a3;
-- (void)setAccessoryType:(int64_t)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)switchValueChanged:(id)a3;
+- (void)setAccessoryText:(id)text;
+- (void)setAccessoryType:(int64_t)type;
+- (void)setSelected:(BOOL)selected;
+- (void)switchValueChanged:(id)changed;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MenuCell
@@ -30,9 +30,9 @@
   return v2;
 }
 
-- (void)setAccessoryText:(id)a3
+- (void)setAccessoryText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_AB92A0();
   }
@@ -48,22 +48,22 @@
   v8 = *(self + OBJC_IVAR____TtC16MusicApplication8MenuCell_accessoryText + 8);
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_4EE854(v7, v8);
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_4F0F3C(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  v6 = sub_4F0F3C(attributesCopy);
 
   return v6;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_4EEBA4();
 }
 
@@ -76,11 +76,11 @@
   sub_4EFF38();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_4EEFCC(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_4EEFCC(change);
 }
 
 - (void)prepareForReuse
@@ -95,18 +95,18 @@
   v3[8] = 1;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5 = type metadata accessor for MenuCell();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(HorizontalLockupCollectionViewCell *)&v9 isSelected];
-  v8.receiver = v6;
+  selfCopy = self;
+  isSelected = [(HorizontalLockupCollectionViewCell *)&v9 isSelected];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(HorizontalLockupCollectionViewCell *)&v8 setSelected:v3];
-  if (v7 != [(MenuCell *)v6 isSelected]|| [(MenuCell *)v6 isSelected]&& [(MenuCell *)v6 isEditing])
+  [(HorizontalLockupCollectionViewCell *)&v8 setSelected:selectedCopy];
+  if (isSelected != [(MenuCell *)selfCopy isSelected]|| [(MenuCell *)selfCopy isSelected]&& [(MenuCell *)selfCopy isEditing])
   {
     sub_4EFF38();
   }
@@ -119,24 +119,24 @@
   return [(MenuCell *)&v3 accessoryType];
 }
 
-- (void)setAccessoryType:(int64_t)a3
+- (void)setAccessoryType:(int64_t)type
 {
   v5 = type metadata accessor for MenuCell();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(MenuCell *)&v9 accessoryType];
-  v8.receiver = v6;
+  selfCopy = self;
+  accessoryType = [(MenuCell *)&v9 accessoryType];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(MenuCell *)&v8 setAccessoryType:a3];
-  sub_4EF7A0(v7);
+  [(MenuCell *)&v8 setAccessoryType:type];
+  sub_4EF7A0(accessoryType);
 }
 
-- (void)switchValueChanged:(id)a3
+- (void)switchValueChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_4EFC34(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_4EFC34(changedCopy);
 }
 
 @end

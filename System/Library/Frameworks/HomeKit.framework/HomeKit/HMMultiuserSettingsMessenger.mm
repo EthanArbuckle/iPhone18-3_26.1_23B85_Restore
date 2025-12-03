@@ -1,29 +1,29 @@
 @interface HMMultiuserSettingsMessenger
 + (id)logCategory;
 + (id)shortDescription;
-- (HMMultiuserSettingsMessenger)initWithMessageDispatcher:(id)a3 messageTargetUUID:(id)a4;
+- (HMMultiuserSettingsMessenger)initWithMessageDispatcher:(id)dispatcher messageTargetUUID:(id)d;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)logIdentifier;
-- (void)sendFetchMultiuserSettingsRequest:(id)a3;
+- (void)sendFetchMultiuserSettingsRequest:(id)request;
 @end
 
 @implementation HMMultiuserSettingsMessenger
 
 - (id)logIdentifier
 {
-  v2 = [(HMMultiuserSettingsMessenger *)self messageTargetUUID];
-  v3 = [v2 UUIDString];
+  messageTargetUUID = [(HMMultiuserSettingsMessenger *)self messageTargetUUID];
+  uUIDString = [messageTargetUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (NSArray)attributeDescriptions
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMMultiuserSettingsMessenger *)self messageTargetUUID];
-  v5 = [v3 initWithName:@"messageTargetUUID" value:v4];
+  messageTargetUUID = [(HMMultiuserSettingsMessenger *)self messageTargetUUID];
+  v5 = [v3 initWithName:@"messageTargetUUID" value:messageTargetUUID];
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
@@ -39,39 +39,39 @@
   return [v2 shortDescription];
 }
 
-- (void)sendFetchMultiuserSettingsRequest:(id)a3
+- (void)sendFetchMultiuserSettingsRequest:(id)request
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMMultiuserSettingsMessenger *)v6 messageTargetUUID];
+    messageTargetUUID = [(HMMultiuserSettingsMessenger *)selfCopy messageTargetUUID];
     *buf = 138543618;
     v24 = v8;
     v25 = 2112;
-    v26 = v9;
+    v26 = messageTargetUUID;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@Sending multiuser fetch request message with targetUUID %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v11 = [(HMMultiuserSettingsMessenger *)v6 messageTargetUUID];
-  v12 = [v10 initWithTarget:v11];
+  messageTargetUUID2 = [(HMMultiuserSettingsMessenger *)selfCopy messageTargetUUID];
+  v12 = [v10 initWithTarget:messageTargetUUID2];
 
   v13 = [objc_alloc(MEMORY[0x1E69A2A10]) initWithName:@"HMMultiuserSettingsFetchRequestMessage" destination:v12 payload:0];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __66__HMMultiuserSettingsMessenger_sendFetchMultiuserSettingsRequest___block_invoke;
   v20 = &unk_1E754DE00;
-  v21 = v6;
-  v22 = v4;
-  v14 = v4;
+  v21 = selfCopy;
+  v22 = requestCopy;
+  v14 = requestCopy;
   [v13 setResponseHandler:&v17];
-  v15 = [(HMMultiuserSettingsMessenger *)v6 messageDispatcher:v17];
+  v15 = [(HMMultiuserSettingsMessenger *)selfCopy messageDispatcher:v17];
   [v15 sendMessage:v13];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -132,18 +132,18 @@ void __66__HMMultiuserSettingsMessenger_sendFetchMultiuserSettingsRequest___bloc
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (HMMultiuserSettingsMessenger)initWithMessageDispatcher:(id)a3 messageTargetUUID:(id)a4
+- (HMMultiuserSettingsMessenger)initWithMessageDispatcher:(id)dispatcher messageTargetUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dispatcherCopy = dispatcher;
+  dCopy = d;
+  if (!dispatcherCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = dCopy;
+  if (!dCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -156,8 +156,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_messageDispatcher, a3);
-    objc_storeStrong(&v11->_messageTargetUUID, a4);
+    objc_storeStrong(&v10->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v11->_messageTargetUUID, d);
   }
 
   return v11;

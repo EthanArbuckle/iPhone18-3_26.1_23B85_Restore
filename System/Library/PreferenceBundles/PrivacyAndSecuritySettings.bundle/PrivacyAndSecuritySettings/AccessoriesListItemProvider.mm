@@ -9,9 +9,9 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC26PrivacyAndSecuritySettings27AccessoriesListItemProvider_session);
-  v5 = self;
+  selfCopy = self;
   [v4 invalidate];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(AccessoriesListItemProvider *)&v6 dealloc];
 }

@@ -1,5 +1,5 @@
 @interface _AFTestRequestOptionsMutation
-- (_AFTestRequestOptionsMutation)initWithBase:(id)a3;
+- (_AFTestRequestOptionsMutation)initWithBase:(id)base;
 - (id)getInputOrigin;
 - (id)getIsEyesFree;
 - (int64_t)getRequestPath;
@@ -11,30 +11,30 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_isEyesFree;
+    isEyesFree = self->_isEyesFree;
   }
 
   else
   {
-    v2 = [(AFTestRequestOptions *)self->_base isEyesFree];
+    isEyesFree = [(AFTestRequestOptions *)self->_base isEyesFree];
   }
 
-  return v2;
+  return isEyesFree;
 }
 
 - (id)getInputOrigin
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_inputOrigin;
+    inputOrigin = self->_inputOrigin;
   }
 
   else
   {
-    v2 = [(AFTestRequestOptions *)self->_base inputOrigin];
+    inputOrigin = [(AFTestRequestOptions *)self->_base inputOrigin];
   }
 
-  return v2;
+  return inputOrigin;
 }
 
 - (int64_t)getRequestPath
@@ -50,16 +50,16 @@
   }
 }
 
-- (_AFTestRequestOptionsMutation)initWithBase:(id)a3
+- (_AFTestRequestOptionsMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFTestRequestOptionsMutation;
   v6 = [(_AFTestRequestOptionsMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -3,28 +3,28 @@
 - (BOOL)resignFirstResponder;
 - (BOOL)shouldUseVisualIntelligenceDirectRouting;
 - (CGSize)intrinsicContentSize;
-- (_TtC4Siri30SystemAssistantPromptEntryView)initWithFrame:(CGRect)a3;
-- (_TtC4Siri30SystemAssistantPromptEntryView)initWithFrame:(CGRect)a3 dictationReplacementAction:(id)a4;
+- (_TtC4Siri30SystemAssistantPromptEntryView)initWithFrame:(CGRect)frame;
+- (_TtC4Siri30SystemAssistantPromptEntryView)initWithFrame:(CGRect)frame dictationReplacementAction:(id)action;
 - (_TtP4Siri38SystemAssistantPromptEntryViewDelegate_)delegate;
-- (void)animateOutTextFieldAndButton:(id)a3;
+- (void)animateOutTextFieldAndButton:(id)button;
 - (void)clearText;
 - (void)closeButtonTapped;
-- (void)keyboardWillHideWithNotification:(id)a3;
+- (void)keyboardWillHideWithNotification:(id)notification;
 - (void)layoutSubviews;
-- (void)makeTextViewVisible:(BOOL)a3;
-- (void)prefillWithText:(id)a3;
+- (void)makeTextViewVisible:(BOOL)visible;
+- (void)prefillWithText:(id)text;
 - (void)promptEntryViewDidSubmitWithoutView;
-- (void)promptEntryViewDidSubmitWithoutViewForSuggestionWithInvocationText:(id)a3;
-- (void)promptEntryViewDidSubmitWithoutViewForSuggestionWithInvocationText:(id)a3 suggestionRequestType:(int64_t)a4;
+- (void)promptEntryViewDidSubmitWithoutViewForSuggestionWithInvocationText:(id)text;
+- (void)promptEntryViewDidSubmitWithoutViewForSuggestionWithInvocationText:(id)text suggestionRequestType:(int64_t)type;
 - (void)resetIsInTamaleAndCollapsed;
 - (void)resignKeyboard;
 - (void)selectAllText;
-- (void)setIsInAmbient:(BOOL)a3;
+- (void)setIsInAmbient:(BOOL)ambient;
 - (void)setIsInGenerativeAssistantTextFollowup;
-- (void)setKeyboardSuggestions:(id)a3;
-- (void)setText:(id)a3;
+- (void)setKeyboardSuggestions:(id)suggestions;
+- (void)setText:(id)text;
 - (void)stopLatencyAnimationIfNeeded;
-- (void)updateIsInTamaleAndCollapsed:(BOOL)a3;
+- (void)updateIsInTamaleAndCollapsed:(BOOL)collapsed;
 @end
 
 @implementation SystemAssistantPromptEntryView
@@ -63,53 +63,53 @@
   return Strong;
 }
 
-- (_TtC4Siri30SystemAssistantPromptEntryView)initWithFrame:(CGRect)a3 dictationReplacementAction:(id)a4
+- (_TtC4Siri30SystemAssistantPromptEntryView)initWithFrame:(CGRect)frame dictationReplacementAction:(id)action
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  return sub_1000BC860(a4, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  actionCopy = action;
+  return sub_1000BC860(action, x, y, width, height);
 }
 
-- (void)keyboardWillHideWithNotification:(id)a3
+- (void)keyboardWillHideWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1000BDA50();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)setIsInAmbient:(BOOL)a3
+- (void)setIsInAmbient:(BOOL)ambient
 {
-  v3 = self;
+  selfCopy = self;
   dispatch thunk of IntelligenceUI.PromptEntryView.isLeadingButtonVisible.setter();
 }
 
-- (void)updateIsInTamaleAndCollapsed:(BOOL)a3
+- (void)updateIsInTamaleAndCollapsed:(BOOL)collapsed
 {
-  v4 = self;
-  sub_1000BDDE8(a3);
+  selfCopy = self;
+  sub_1000BDDE8(collapsed);
 }
 
 - (void)resetIsInTamaleAndCollapsed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000BED84();
 }
 
-- (void)animateOutTextFieldAndButton:(id)a3
+- (void)animateOutTextFieldAndButton:(id)button
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(button);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1000C0610(sub_1000C49A8, v5);
 }
 
@@ -124,18 +124,18 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v6 = self;
+  textCopy = text;
+  selfCopy = self;
   v5 = IntelligenceUI.PromptEntryView.textView.getter();
-  [v5 setText:v4];
+  [v5 setText:textCopy];
 }
 
 - (void)clearText
 {
   v3 = OBJC_IVAR____TtC4Siri30SystemAssistantPromptEntryView_entryView;
-  v6 = self;
+  selfCopy = self;
   v4 = IntelligenceUI.PromptEntryView.textView.getter();
   v5 = String._bridgeToObjectiveC()();
   [v4 setText:v5];
@@ -149,7 +149,7 @@
   if (UIApp)
   {
     v3 = SASPPTTestNameSiriBringupToTyping;
-    v4 = self;
+    selfCopy = self;
     [v2 finishedIPTest:v3];
     v5 = IntelligenceUI.PromptEntryView.textView.getter();
     [v5 resignFirstResponder];
@@ -161,13 +161,13 @@
   }
 }
 
-- (void)prefillWithText:(id)a3
+- (void)prefillWithText:(id)text
 {
   v4 = OBJC_IVAR____TtC4Siri30SystemAssistantPromptEntryView_entryView;
-  v5 = a3;
-  v7 = self;
+  textCopy = text;
+  selfCopy = self;
   v6 = IntelligenceUI.PromptEntryView.textView.getter();
-  [v6 setText:v5];
+  [v6 setText:textCopy];
 
   [*(self + v4) invalidateIntrinsicContentSize];
   sub_1000C34CC();
@@ -175,73 +175,73 @@
 
 - (void)setIsInGenerativeAssistantTextFollowup
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000C106C();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000C17B4();
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IntelligenceUI.PromptEntryView.textView.getter();
-  v4 = [v3 becomeFirstResponder];
+  becomeFirstResponder = [v3 becomeFirstResponder];
 
-  return v4;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000C18FC();
 
   return v3 & 1;
 }
 
-- (void)promptEntryViewDidSubmitWithoutViewForSuggestionWithInvocationText:(id)a3
+- (void)promptEntryViewDidSubmitWithoutViewForSuggestionWithInvocationText:(id)text
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   *(self + OBJC_IVAR____TtC4Siri30SystemAssistantPromptEntryView_textIsProvidedBySuggestion) = 1;
   v5 = (self + OBJC_IVAR____TtC4Siri30SystemAssistantPromptEntryView_invocationTextForSuggestion);
   *v5 = v4;
   v5[1] = v6;
-  v7 = self;
+  selfCopy = self;
 
   sub_1000C3AFC();
 }
 
-- (void)promptEntryViewDidSubmitWithoutViewForSuggestionWithInvocationText:(id)a3 suggestionRequestType:(int64_t)a4
+- (void)promptEntryViewDidSubmitWithoutViewForSuggestionWithInvocationText:(id)text suggestionRequestType:(int64_t)type
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   *(self + OBJC_IVAR____TtC4Siri30SystemAssistantPromptEntryView_textIsProvidedBySuggestion) = 1;
   v7 = (self + OBJC_IVAR____TtC4Siri30SystemAssistantPromptEntryView_invocationTextForSuggestion);
   *v7 = v6;
   v7[1] = v8;
-  v9 = self;
+  selfCopy = self;
 
-  *(v9 + OBJC_IVAR____TtC4Siri30SystemAssistantPromptEntryView_suggestionRequestTypeForSuggestionText) = a4;
+  *(selfCopy + OBJC_IVAR____TtC4Siri30SystemAssistantPromptEntryView_suggestionRequestTypeForSuggestionText) = type;
 
   sub_1000C3AFC();
 }
 
 - (void)promptEntryViewDidSubmitWithoutView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000C3AFC();
 }
 
-- (void)makeTextViewVisible:(BOOL)a3
+- (void)makeTextViewVisible:(BOOL)visible
 {
-  v3 = a3;
-  v7 = self;
+  visibleCopy = visible;
+  selfCopy = self;
   v4 = IntelligenceUI.PromptEntryView.textView.getter();
   v5 = v4;
   v6 = 0.0;
-  if (v3)
+  if (visibleCopy)
   {
     v6 = 1.0;
   }
@@ -251,25 +251,25 @@
 
 - (void)stopLatencyAnimationIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000C1E34();
 }
 
-- (void)setKeyboardSuggestions:(id)a3
+- (void)setKeyboardSuggestions:(id)suggestions
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1000C2250(v4);
 }
 
 - (void)selectAllText
 {
-  v3 = self;
+  selfCopy = self;
   v2 = IntelligenceUI.PromptEntryView.textView.getter();
   [v2 selectAll:0];
 }
 
-- (_TtC4Siri30SystemAssistantPromptEntryView)initWithFrame:(CGRect)a3
+- (_TtC4Siri30SystemAssistantPromptEntryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

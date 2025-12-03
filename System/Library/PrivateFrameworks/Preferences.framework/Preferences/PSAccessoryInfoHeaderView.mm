@@ -1,17 +1,17 @@
 @interface PSAccessoryInfoHeaderView
-- (PSAccessoryInfoHeaderView)initWithDevice:(id)a3 insets:(UIEdgeInsets)a4;
+- (PSAccessoryInfoHeaderView)initWithDevice:(id)device insets:(UIEdgeInsets)insets;
 @end
 
 @implementation PSAccessoryInfoHeaderView
 
-- (PSAccessoryInfoHeaderView)initWithDevice:(id)a3 insets:(UIEdgeInsets)a4
+- (PSAccessoryInfoHeaderView)initWithDevice:(id)device insets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v75 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  deviceCopy = device;
   v71.receiver = self;
   v71.super_class = PSAccessoryInfoHeaderView;
   v10 = [(PSAccessoryInfoHeaderView *)&v71 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -25,8 +25,8 @@
   v15 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:100.0];
   [(UIImageView *)v10->_imageView setPreferredSymbolConfiguration:v15];
 
-  v16 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [(UIImageView *)v10->_imageView setTintColor:v16];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [(UIImageView *)v10->_imageView setTintColor:systemBlueColor];
 
   v17 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   displayNameLabel = v10->_displayNameLabel;
@@ -35,9 +35,9 @@
   v19 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:24.0];
   [(UILabel *)v10->_displayNameLabel setFont:v19];
 
-  v20 = [v9 discoveryConfiguration];
-  v21 = [v20 displayName];
-  [(UILabel *)v10->_displayNameLabel setText:v21];
+  discoveryConfiguration = [deviceCopy discoveryConfiguration];
+  displayName = [discoveryConfiguration displayName];
+  [(UILabel *)v10->_displayNameLabel setText:displayName];
 
   [(UILabel *)v10->_displayNameLabel setTextAlignment:1];
   [(UILabel *)v10->_displayNameLabel setNumberOfLines:0];
@@ -48,12 +48,12 @@
   v24 = [MEMORY[0x1E69DB878] systemFontOfSize:16.0];
   [(UILabel *)v10->_otaNameLabel setFont:v24];
 
-  v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v10->_otaNameLabel setTextColor:v25];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v10->_otaNameLabel setTextColor:secondaryLabelColor];
 
-  v66 = v9;
-  v26 = [v9 name];
-  [(UILabel *)v10->_otaNameLabel setText:v26];
+  v66 = deviceCopy;
+  name = [deviceCopy name];
+  [(UILabel *)v10->_otaNameLabel setText:name];
 
   [(UILabel *)v10->_otaNameLabel setTextAlignment:1];
   [(UILabel *)v10->_otaNameLabel setNumberOfLines:0];
@@ -91,45 +91,45 @@
   }
 
   v55 = MEMORY[0x1E696ACD8];
-  v65 = [(UIImageView *)v10->_imageView topAnchor];
-  v64 = [(PSAccessoryInfoHeaderView *)v10 topAnchor];
+  topAnchor = [(UIImageView *)v10->_imageView topAnchor];
+  topAnchor2 = [(PSAccessoryInfoHeaderView *)v10 topAnchor];
   [(PSAccessoryInfoHeaderView *)v10 layoutMargins];
-  v63 = [v65 constraintEqualToAnchor:v64 constant:?];
+  v63 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   v72[0] = v63;
-  v62 = [(UIImageView *)v10->_imageView centerXAnchor];
-  v61 = [(PSAccessoryInfoHeaderView *)v10 centerXAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  centerXAnchor = [(UIImageView *)v10->_imageView centerXAnchor];
+  centerXAnchor2 = [(PSAccessoryInfoHeaderView *)v10 centerXAnchor];
+  v60 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v72[1] = v60;
-  v59 = [(UILabel *)v10->_displayNameLabel topAnchor];
-  v58 = [(UIImageView *)v10->_imageView bottomAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58 constant:10.0];
+  topAnchor3 = [(UILabel *)v10->_displayNameLabel topAnchor];
+  bottomAnchor = [(UIImageView *)v10->_imageView bottomAnchor];
+  v57 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:10.0];
   v72[2] = v57;
-  v56 = [(UILabel *)v10->_displayNameLabel centerXAnchor];
-  v54 = [(PSAccessoryInfoHeaderView *)v10 centerXAnchor];
-  v53 = [v56 constraintEqualToAnchor:v54];
+  centerXAnchor3 = [(UILabel *)v10->_displayNameLabel centerXAnchor];
+  centerXAnchor4 = [(PSAccessoryInfoHeaderView *)v10 centerXAnchor];
+  v53 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v72[3] = v53;
-  v52 = [(UILabel *)v10->_displayNameLabel leadingAnchor];
-  v51 = [(PSAccessoryInfoHeaderView *)v10 leadingAnchor];
+  leadingAnchor = [(UILabel *)v10->_displayNameLabel leadingAnchor];
+  leadingAnchor2 = [(PSAccessoryInfoHeaderView *)v10 leadingAnchor];
   [(PSAccessoryInfoHeaderView *)v10 layoutMargins];
-  v50 = [v52 constraintGreaterThanOrEqualToAnchor:v51 constant:v33];
+  v50 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:v33];
   v72[4] = v50;
-  v49 = [(UILabel *)v10->_otaNameLabel topAnchor];
-  v48 = [(UILabel *)v10->_displayNameLabel bottomAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48 constant:10.0];
+  topAnchor4 = [(UILabel *)v10->_otaNameLabel topAnchor];
+  bottomAnchor2 = [(UILabel *)v10->_displayNameLabel bottomAnchor];
+  v47 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:10.0];
   v72[5] = v47;
-  v46 = [(UILabel *)v10->_otaNameLabel centerXAnchor];
-  v34 = [(PSAccessoryInfoHeaderView *)v10 centerXAnchor];
-  v35 = [v46 constraintEqualToAnchor:v34];
+  centerXAnchor5 = [(UILabel *)v10->_otaNameLabel centerXAnchor];
+  centerXAnchor6 = [(PSAccessoryInfoHeaderView *)v10 centerXAnchor];
+  v35 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v72[6] = v35;
-  v36 = [(UILabel *)v10->_otaNameLabel leadingAnchor];
-  v37 = [(PSAccessoryInfoHeaderView *)v10 leadingAnchor];
+  leadingAnchor3 = [(UILabel *)v10->_otaNameLabel leadingAnchor];
+  leadingAnchor4 = [(PSAccessoryInfoHeaderView *)v10 leadingAnchor];
   [(PSAccessoryInfoHeaderView *)v10 layoutMargins];
-  v39 = [v36 constraintGreaterThanOrEqualToAnchor:v37 constant:v38];
+  v39 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:v38];
   v72[7] = v39;
-  v40 = [(UILabel *)v10->_otaNameLabel bottomAnchor];
-  v41 = [(PSAccessoryInfoHeaderView *)v10 bottomAnchor];
+  bottomAnchor3 = [(UILabel *)v10->_otaNameLabel bottomAnchor];
+  bottomAnchor4 = [(PSAccessoryInfoHeaderView *)v10 bottomAnchor];
   [(PSAccessoryInfoHeaderView *)v10 layoutMargins];
-  v43 = [v40 constraintLessThanOrEqualToAnchor:v41 constant:-v42];
+  v43 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4 constant:-v42];
   v72[8] = v43;
   v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:9];
   [v55 activateConstraints:v44];

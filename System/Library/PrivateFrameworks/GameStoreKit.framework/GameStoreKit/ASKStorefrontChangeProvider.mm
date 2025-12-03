@@ -1,22 +1,22 @@
 @interface ASKStorefrontChangeProvider
-- (ASKStorefrontChangeProvider)initWithBlock:(id)a3;
-- (BOOL)hasManagedStateChangedFromAccount:(id)a3 toAccount:(id)a4;
-- (BOOL)hasStorefrontChangedFromAccount:(id)a3 toAccount:(id)a4;
-- (void)accountStoreDidChange:(id)a3;
+- (ASKStorefrontChangeProvider)initWithBlock:(id)block;
+- (BOOL)hasManagedStateChangedFromAccount:(id)account toAccount:(id)toAccount;
+- (BOOL)hasStorefrontChangedFromAccount:(id)account toAccount:(id)toAccount;
+- (void)accountStoreDidChange:(id)change;
 - (void)dealloc;
 @end
 
 @implementation ASKStorefrontChangeProvider
 
-- (ASKStorefrontChangeProvider)initWithBlock:(id)a3
+- (ASKStorefrontChangeProvider)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v26.receiver = self;
   v26.super_class = ASKStorefrontChangeProvider;
   v5 = [(ASKStorefrontChangeProvider *)&v26 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
 
@@ -24,17 +24,17 @@
     notifyQueue = v5->_notifyQueue;
     v5->_notifyQueue = v8;
 
-    v10 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+    ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
     accountStore = v5->_accountStore;
-    v5->_accountStore = v10;
+    v5->_accountStore = ams_sharedAccountStore;
 
-    v12 = [(ASKStorefrontChangeProvider *)v5 accountStore];
-    v13 = [v12 ams_activeiTunesAccount];
+    accountStore = [(ASKStorefrontChangeProvider *)v5 accountStore];
+    ams_activeiTunesAccount = [accountStore ams_activeiTunesAccount];
     activeAccount = v5->_activeAccount;
-    v5->_activeAccount = v13;
+    v5->_activeAccount = ams_activeiTunesAccount;
 
-    v15 = [(ASKStorefrontChangeProvider *)v5 accountStore];
-    v16 = [v15 ams_fetchLocaliTunesAccount];
+    accountStore2 = [(ASKStorefrontChangeProvider *)v5 accountStore];
+    ams_fetchLocaliTunesAccount = [accountStore2 ams_fetchLocaliTunesAccount];
 
     objc_initWeak(&location, v5);
     v20 = MEMORY[0x277D85DD0];
@@ -42,10 +42,10 @@
     v22 = __45__ASKStorefrontChangeProvider_initWithBlock___block_invoke;
     v23 = &unk_27968B1A0;
     objc_copyWeak(&v24, &location);
-    [v16 addSuccessBlock:&v20];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    v18 = [(ASKStorefrontChangeProvider *)v5 accountStore];
-    [v17 addObserver:v5 selector:sel_accountStoreDidChange_ name:*MEMORY[0x277CB8B78] object:v18];
+    [ams_fetchLocaliTunesAccount addSuccessBlock:&v20];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    accountStore3 = [(ASKStorefrontChangeProvider *)v5 accountStore];
+    [defaultCenter addObserver:v5 selector:sel_accountStoreDidChange_ name:*MEMORY[0x277CB8B78] object:accountStore3];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
@@ -77,25 +77,25 @@ void __45__ASKStorefrontChangeProvider_initWithBlock___block_invoke_2(uint64_t a
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277CB8B78];
-  v5 = [(ASKStorefrontChangeProvider *)self accountStore];
-  [v3 removeObserver:self name:v4 object:v5];
+  accountStore = [(ASKStorefrontChangeProvider *)self accountStore];
+  [defaultCenter removeObserver:self name:v4 object:accountStore];
 
   v6.receiver = self;
   v6.super_class = ASKStorefrontChangeProvider;
   [(ASKStorefrontChangeProvider *)&v6 dealloc];
 }
 
-- (BOOL)hasStorefrontChangedFromAccount:(id)a3 toAccount:(id)a4
+- (BOOL)hasStorefrontChangedFromAccount:(id)account toAccount:(id)toAccount
 {
-  v5 = a4;
-  v6 = [a3 ams_storefront];
-  v7 = [v5 ams_storefront];
+  toAccountCopy = toAccount;
+  ams_storefront = [account ams_storefront];
+  ams_storefront2 = [toAccountCopy ams_storefront];
 
-  if (v6 | v7)
+  if (ams_storefront | ams_storefront2)
   {
-    v8 = [v6 isEqual:v7] ^ 1;
+    v8 = [ams_storefront isEqual:ams_storefront2] ^ 1;
   }
 
   else
@@ -106,10 +106,10 @@ void __45__ASKStorefrontChangeProvider_initWithBlock___block_invoke_2(uint64_t a
   return v8;
 }
 
-- (BOOL)hasManagedStateChangedFromAccount:(id)a3 toAccount:(id)a4
+- (BOOL)hasManagedStateChangedFromAccount:(id)account toAccount:(id)toAccount
 {
-  v5 = a4;
-  v6 = [a3 accountPropertyForKey:@"isManagedAppleID"];
+  toAccountCopy = toAccount;
+  v6 = [account accountPropertyForKey:@"isManagedAppleID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -121,8 +121,8 @@ void __45__ASKStorefrontChangeProvider_initWithBlock___block_invoke_2(uint64_t a
     v7 = 0;
   }
 
-  v8 = [v7 BOOLValue];
-  v9 = [v5 accountPropertyForKey:@"isManagedAppleID"];
+  bOOLValue = [v7 BOOLValue];
+  v9 = [toAccountCopy accountPropertyForKey:@"isManagedAppleID"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -135,15 +135,15 @@ void __45__ASKStorefrontChangeProvider_initWithBlock___block_invoke_2(uint64_t a
     v10 = 0;
   }
 
-  v11 = [v10 BOOLValue];
-  return v8 ^ v11;
+  bOOLValue2 = [v10 BOOLValue];
+  return bOOLValue ^ bOOLValue2;
 }
 
-- (void)accountStoreDidChange:(id)a3
+- (void)accountStoreDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(ASKStorefrontChangeProvider *)self accountStore];
-  v6 = [v5 ams_fetchLocaliTunesAccount];
+  changeCopy = change;
+  accountStore = [(ASKStorefrontChangeProvider *)self accountStore];
+  ams_fetchLocaliTunesAccount = [accountStore ams_fetchLocaliTunesAccount];
 
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
@@ -152,7 +152,7 @@ void __45__ASKStorefrontChangeProvider_initWithBlock___block_invoke_2(uint64_t a
   v7[3] = &unk_27968B218;
   objc_copyWeak(&v8, &location);
   v7[4] = self;
-  [v6 addSuccessBlock:v7];
+  [ams_fetchLocaliTunesAccount addSuccessBlock:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }

@@ -1,9 +1,9 @@
 @interface NTKFaceEditColorPickerConfiguration
 - (BOOL)hasSeparator;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NTKFaceEditColorPickerConfiguration)init;
-- (id)colorAtIndex:(unint64_t)a3;
-- (unint64_t)indexOfColor:(id)a3;
+- (id)colorAtIndex:(unint64_t)index;
+- (unint64_t)indexOfColor:(id)color;
 @end
 
 @implementation NTKFaceEditColorPickerConfiguration
@@ -23,21 +23,21 @@
     nonEditableColors = v2->_nonEditableColors;
     v2->_nonEditableColors = v5;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     legacyColors = v2->_legacyColors;
-    v2->_legacyColors = v7;
+    v2->_legacyColors = array;
   }
 
   return v2;
 }
 
-- (unint64_t)indexOfColor:(id)a3
+- (unint64_t)indexOfColor:(id)color
 {
-  v4 = a3;
-  v5 = [(NTKPigmentEditOptionArray *)self->_editableColors indexOfPigment:v4];
+  colorCopy = color;
+  v5 = [(NTKPigmentEditOptionArray *)self->_editableColors indexOfPigment:colorCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(NTKPigmentEditOptionArray *)self->_nonEditableColors indexOfPigment:v4];
+    v6 = [(NTKPigmentEditOptionArray *)self->_nonEditableColors indexOfPigment:colorCopy];
     v5 = 0x7FFFFFFFFFFFFFFFLL;
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -48,11 +48,11 @@
   return v5;
 }
 
-- (id)colorAtIndex:(unint64_t)a3
+- (id)colorAtIndex:(unint64_t)index
 {
   v5 = [(NTKPigmentEditOptionArray *)self->_editableColors count];
   v6 = 16;
-  if (v5 <= a3)
+  if (v5 <= index)
   {
     v7 = v5;
   }
@@ -63,7 +63,7 @@
     v7 = 0;
   }
 
-  v8 = [*(&self->super.isa + v6) pigmentAtIndex:a3 - v7];
+  v8 = [*(&self->super.isa + v6) pigmentAtIndex:index - v7];
 
   return v8;
 }
@@ -81,23 +81,23 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[NTKFaceEditColorPickerConfiguration canAddColors](self, "canAddColors"), v5 == [v4 canAddColors]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[NTKFaceEditColorPickerConfiguration canAddColors](self, "canAddColors"), v5 == [equalCopy canAddColors]))
   {
-    v7 = [(NTKFaceEditColorPickerConfiguration *)self editableColors];
-    v8 = [v4 editableColors];
-    if ([v7 isEqual:v8])
+    editableColors = [(NTKFaceEditColorPickerConfiguration *)self editableColors];
+    editableColors2 = [equalCopy editableColors];
+    if ([editableColors isEqual:editableColors2])
     {
-      v9 = [(NTKFaceEditColorPickerConfiguration *)self nonEditableColors];
-      v10 = [v4 nonEditableColors];
-      if ([v9 isEqual:v10])
+      nonEditableColors = [(NTKFaceEditColorPickerConfiguration *)self nonEditableColors];
+      nonEditableColors2 = [equalCopy nonEditableColors];
+      if ([nonEditableColors isEqual:nonEditableColors2])
       {
-        v11 = [(NTKFaceEditColorPickerConfiguration *)self legacyColors];
-        v12 = [v4 legacyColors];
-        v6 = [v11 isEqual:v12];
+        legacyColors = [(NTKFaceEditColorPickerConfiguration *)self legacyColors];
+        legacyColors2 = [equalCopy legacyColors];
+        v6 = [legacyColors isEqual:legacyColors2];
       }
 
       else

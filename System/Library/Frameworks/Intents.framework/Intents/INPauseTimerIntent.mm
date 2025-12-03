@@ -1,21 +1,21 @@
 @interface INPauseTimerIntent
-- (INPauseTimerIntent)initWithTargetTimer:(id)a3 pauseMultiple:(id)a4;
+- (INPauseTimerIntent)initWithTargetTimer:(id)timer pauseMultiple:(id)multiple;
 - (INTimer)targetTimer;
 - (NSNumber)pauseMultiple;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setPauseMultiple:(id)a3;
-- (void)setTargetTimer:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setPauseMultiple:(id)multiple;
+- (void)setTargetTimer:(id)timer;
 @end
 
 @implementation INPauseTimerIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INPauseTimerIntent *)self _typedBackingStore:a3];
+  v6 = [(INPauseTimerIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -24,29 +24,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"targetTimer";
-  v3 = [(INPauseTimerIntent *)self targetTimer];
-  v4 = v3;
-  if (!v3)
+  targetTimer = [(INPauseTimerIntent *)self targetTimer];
+  null = targetTimer;
+  if (!targetTimer)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"pauseMultiple";
-  v11[0] = v4;
-  v5 = [(INPauseTimerIntent *)self pauseMultiple];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  pauseMultiple = [(INPauseTimerIntent *)self pauseMultiple];
+  null2 = pauseMultiple;
+  if (!pauseMultiple)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!pauseMultiple)
   {
   }
 
-  if (!v3)
+  if (!targetTimer)
   {
   }
 
@@ -55,29 +55,29 @@
   return v7;
 }
 
-- (void)setPauseMultiple:(id)a3
+- (void)setPauseMultiple:(id)multiple
 {
-  v5 = a3;
-  v4 = [(INPauseTimerIntent *)self _typedBackingStore];
-  if (v5)
+  multipleCopy = multiple;
+  _typedBackingStore = [(INPauseTimerIntent *)self _typedBackingStore];
+  if (multipleCopy)
   {
-    [v4 setPauseMultiple:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setPauseMultiple:{objc_msgSend(multipleCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasPauseMultiple:0];
+    [_typedBackingStore setHasPauseMultiple:0];
   }
 }
 
 - (NSNumber)pauseMultiple
 {
-  v3 = [(INPauseTimerIntent *)self _typedBackingStore];
-  if ([v3 hasPauseMultiple])
+  _typedBackingStore = [(INPauseTimerIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasPauseMultiple])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INPauseTimerIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "pauseMultiple")}];
+    _typedBackingStore2 = [(INPauseTimerIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "pauseMultiple")}];
   }
 
   else
@@ -88,63 +88,63 @@
   return v6;
 }
 
-- (void)setTargetTimer:(id)a3
+- (void)setTargetTimer:(id)timer
 {
-  v4 = a3;
-  v6 = [(INPauseTimerIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToTimer(v4);
+  timerCopy = timer;
+  _typedBackingStore = [(INPauseTimerIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToTimer(timerCopy);
 
-  [v6 setTargetTimer:v5];
+  [_typedBackingStore setTargetTimer:v5];
 }
 
 - (INTimer)targetTimer
 {
-  v2 = [(INPauseTimerIntent *)self _typedBackingStore];
-  v3 = [v2 targetTimer];
-  v4 = INIntentSlotValueTransformFromTimer(v3);
+  _typedBackingStore = [(INPauseTimerIntent *)self _typedBackingStore];
+  targetTimer = [_typedBackingStore targetTimer];
+  v4 = INIntentSlotValueTransformFromTimer(targetTimer);
 
   return v4;
 }
 
-- (INPauseTimerIntent)initWithTargetTimer:(id)a3 pauseMultiple:(id)a4
+- (INPauseTimerIntent)initWithTargetTimer:(id)timer pauseMultiple:(id)multiple
 {
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  multipleCopy = multiple;
   v11.receiver = self;
   v11.super_class = INPauseTimerIntent;
   v8 = [(INIntent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(INPauseTimerIntent *)v8 setTargetTimer:v6];
-    [(INPauseTimerIntent *)v9 setPauseMultiple:v7];
+    [(INPauseTimerIntent *)v8 setTargetTimer:timerCopy];
+    [(INPauseTimerIntent *)v9 setPauseMultiple:multipleCopy];
   }
 
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INPauseTimerIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INPauseTimerIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INPauseTimerIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INPauseTimerIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

@@ -1,14 +1,14 @@
 @interface SAReporter
-+ (void)collectSAFAppSizeResults:(id)a3;
-+ (void)reportSnapshot:(id)a3;
++ (void)collectSAFAppSizeResults:(id)results;
++ (void)reportSnapshot:(id)snapshot;
 @end
 
 @implementation SAReporter
 
-+ (void)collectSAFAppSizeResults:(id)a3
++ (void)collectSAFAppSizeResults:(id)results
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  resultsCopy = results;
   v4 = SALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -50,8 +50,8 @@
 
     v10 = MEMORY[0x277CCA9B8];
     v40 = *MEMORY[0x277CCA450];
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 localizedStringForKey:@"Timeout reached while collecting SpaceAttributionFramework report" value:&stru_287BC9EA8 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v12 = [mainBundle localizedStringForKey:@"Timeout reached while collecting SpaceAttributionFramework report" value:&stru_287BC9EA8 table:0];
     v41[0] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
     v14 = [v10 errorWithDomain:*MEMORY[0x277CCA5B8] code:60 userInfo:v13];
@@ -70,8 +70,8 @@ LABEL_11:
     v18 = SALog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v28[5] localizedDescription];
-      [(SAReporter *)v19 collectSAFAppSizeResults:buf, v18];
+      localizedDescription = [v28[5] localizedDescription];
+      [(SAReporter *)localizedDescription collectSAFAppSizeResults:buf, v18];
     }
 
     v16 = 0;
@@ -88,7 +88,7 @@ LABEL_11:
   v20 = 0;
   v16 = v34[5];
 LABEL_12:
-  v3[2](v3, v16, v20);
+  resultsCopy[2](resultsCopy, v16, v20);
 
   _Block_object_dispose(&v27, 8);
   _Block_object_dispose(&v33, 8);
@@ -299,9 +299,9 @@ LABEL_34:
   return 1;
 }
 
-+ (void)reportSnapshot:(id)a3
++ (void)reportSnapshot:(id)snapshot
 {
-  v3 = a3;
+  snapshotCopy = snapshot;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -323,12 +323,12 @@ LABEL_34:
   [SAReporter collectSAFAppSizeResults:v4];
   if (v12[5])
   {
-    v3[2](v3, 0);
+    snapshotCopy[2](snapshotCopy, 0);
   }
 
   else
   {
-    v3[2](v3, v6[5]);
+    snapshotCopy[2](snapshotCopy, v6[5]);
   }
 
   _Block_object_dispose(&v5, 8);

@@ -1,32 +1,32 @@
 @interface AUUIAlert
-- (AUUIAlert)initWithViewController:(id)a3 actionSheet:(BOOL)a4;
-- (BOOL)alertViewShouldEnableFirstOtherButton:(id)a3;
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4;
-- (void)applicationDidEnterBackgroundNotification:(id)a3;
+- (AUUIAlert)initWithViewController:(id)controller actionSheet:(BOOL)sheet;
+- (BOOL)alertViewShouldEnableFirstOtherButton:(id)button;
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index;
+- (void)applicationDidEnterBackgroundNotification:(id)notification;
 - (void)dealloc;
-- (void)dismissWithCancelActionAnimated:(BOOL)a3;
-- (void)dismissWithOKActionAnimated:(BOOL)a3;
-- (void)enableAlternateAction:(BOOL)a3;
-- (void)enableCancelAction:(BOOL)a3;
-- (void)enableDestructiveAction:(BOOL)a3;
-- (void)enableOKAction:(BOOL)a3;
+- (void)dismissWithCancelActionAnimated:(BOOL)animated;
+- (void)dismissWithOKActionAnimated:(BOOL)animated;
+- (void)enableAlternateAction:(BOOL)action;
+- (void)enableCancelAction:(BOOL)action;
+- (void)enableDestructiveAction:(BOOL)action;
+- (void)enableOKAction:(BOOL)action;
 - (void)prepareToShow;
 - (void)show;
 @end
 
 @implementation AUUIAlert
 
-- (AUUIAlert)initWithViewController:(id)a3 actionSheet:(BOOL)a4
+- (AUUIAlert)initWithViewController:(id)controller actionSheet:(BOOL)sheet
 {
-  v4 = a4;
+  sheetCopy = sheet;
   v16.receiver = self;
   v16.super_class = AUUIAlert;
   v7 = [(AUUIAlert *)&v16 init];
   if (v7)
   {
-    v8 = objc_msgSend_alertControllerWithTitle_message_preferredStyle_(MEMORY[0x277D75110], v6, 0, 0, !v4);
+    v8 = objc_msgSend_alertControllerWithTitle_message_preferredStyle_(MEMORY[0x277D75110], v6, 0, 0, !sheetCopy);
     objc_msgSend_setAlert_(v7, v9, v8);
-    objc_msgSend_setViewController_(v7, v10, a3);
+    objc_msgSend_setViewController_(v7, v10, controller);
     v7->okButtonIndex = -1;
     v7->cancelButtonIndex = -1;
     v7->alternateButtonIndex = -1;
@@ -176,10 +176,10 @@ LABEL_22:
   MEMORY[0x2821F9670](v5, sel_presentViewController_animated_completion_, alert);
 }
 
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index
 {
   cancelButtonIndex = self->cancelButtonIndex;
-  if (cancelButtonIndex != -1 && cancelButtonIndex == a4)
+  if (cancelButtonIndex != -1 && cancelButtonIndex == index)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -192,7 +192,7 @@ LABEL_22:
   else
   {
     okButtonIndex = self->okButtonIndex;
-    if (okButtonIndex != -1 && okButtonIndex == a4)
+    if (okButtonIndex != -1 && okButtonIndex == index)
     {
       if (objc_opt_respondsToSelector())
       {
@@ -205,7 +205,7 @@ LABEL_22:
     else
     {
       alternateButtonIndex = self->alternateButtonIndex;
-      if (alternateButtonIndex != -1 && alternateButtonIndex == a4)
+      if (alternateButtonIndex != -1 && alternateButtonIndex == index)
       {
         if (objc_opt_respondsToSelector())
         {
@@ -219,7 +219,7 @@ LABEL_22:
       else
       {
         destructiveButtonIndex = self->destructiveButtonIndex;
-        v12 = destructiveButtonIndex != -1 && destructiveButtonIndex == a4;
+        v12 = destructiveButtonIndex != -1 && destructiveButtonIndex == index;
         if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
         {
           v13 = self->delegate;
@@ -231,9 +231,9 @@ LABEL_22:
   }
 }
 
-- (BOOL)alertViewShouldEnableFirstOtherButton:(id)a3
+- (BOOL)alertViewShouldEnableFirstOtherButton:(id)button
 {
-  v17 = a3;
+  buttonCopy = button;
   v4 = 1;
   v16 = 1;
   if (objc_opt_respondsToSelector())
@@ -242,7 +242,7 @@ LABEL_22:
     v8 = objc_msgSend_invocationWithMethodSignature_(MEMORY[0x277CBEAE8], v7, v6);
     objc_msgSend_setTarget_(v8, v9, self->delegate);
     objc_msgSend_setSelector_(v8, v10, sel_alertViewShouldEnableFirstOtherButton_);
-    objc_msgSend_setArgument_atIndex_(v8, v11, &v17, 2);
+    objc_msgSend_setArgument_atIndex_(v8, v11, &buttonCopy, 2);
     objc_msgSend_invoke(v8, v12, v13);
     objc_msgSend_getReturnValue_(v8, v14, &v16);
     v4 = v16;
@@ -251,63 +251,63 @@ LABEL_22:
   return v4 & 1;
 }
 
-- (void)dismissWithOKActionAnimated:(BOOL)a3
+- (void)dismissWithOKActionAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = objc_msgSend_alert(self, a2, a3);
+  animatedCopy = animated;
+  v5 = objc_msgSend_alert(self, a2, animated);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_23EB78670;
   v7[3] = &unk_278C66C50;
   v7[4] = self;
-  objc_msgSend_dismissViewControllerAnimated_completion_(v5, v6, v3, v7);
+  objc_msgSend_dismissViewControllerAnimated_completion_(v5, v6, animatedCopy, v7);
 }
 
-- (void)dismissWithCancelActionAnimated:(BOOL)a3
+- (void)dismissWithCancelActionAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = objc_msgSend_alert(self, a2, a3);
+  animatedCopy = animated;
+  v5 = objc_msgSend_alert(self, a2, animated);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_23EB78750;
   v7[3] = &unk_278C66C50;
   v7[4] = self;
-  objc_msgSend_dismissViewControllerAnimated_completion_(v5, v6, v3, v7);
+  objc_msgSend_dismissViewControllerAnimated_completion_(v5, v6, animatedCopy, v7);
 }
 
-- (void)enableOKAction:(BOOL)a3
+- (void)enableOKAction:(BOOL)action
 {
-  v3 = a3;
-  ok = objc_msgSend_okAction(self, a2, a3);
+  actionCopy = action;
+  ok = objc_msgSend_okAction(self, a2, action);
 
-  objc_msgSend_setEnabled_(ok, v5, v3);
+  objc_msgSend_setEnabled_(ok, v5, actionCopy);
 }
 
-- (void)enableCancelAction:(BOOL)a3
+- (void)enableCancelAction:(BOOL)action
 {
-  v3 = a3;
-  v4 = objc_msgSend_cancelAction(self, a2, a3);
+  actionCopy = action;
+  v4 = objc_msgSend_cancelAction(self, a2, action);
 
-  objc_msgSend_setEnabled_(v4, v5, v3);
+  objc_msgSend_setEnabled_(v4, v5, actionCopy);
 }
 
-- (void)enableDestructiveAction:(BOOL)a3
+- (void)enableDestructiveAction:(BOOL)action
 {
-  v3 = a3;
-  v4 = objc_msgSend_destructiveAction(self, a2, a3);
+  actionCopy = action;
+  v4 = objc_msgSend_destructiveAction(self, a2, action);
 
-  objc_msgSend_setEnabled_(v4, v5, v3);
+  objc_msgSend_setEnabled_(v4, v5, actionCopy);
 }
 
-- (void)enableAlternateAction:(BOOL)a3
+- (void)enableAlternateAction:(BOOL)action
 {
-  v3 = a3;
-  v4 = objc_msgSend_alternateAction(self, a2, a3);
+  actionCopy = action;
+  v4 = objc_msgSend_alternateAction(self, a2, action);
 
-  objc_msgSend_setEnabled_(v4, v5, v3);
+  objc_msgSend_setEnabled_(v4, v5, actionCopy);
 }
 
-- (void)applicationDidEnterBackgroundNotification:(id)a3
+- (void)applicationDidEnterBackgroundNotification:(id)notification
 {
   objc_msgSend_setDelegate_(self, a2, 0);
 

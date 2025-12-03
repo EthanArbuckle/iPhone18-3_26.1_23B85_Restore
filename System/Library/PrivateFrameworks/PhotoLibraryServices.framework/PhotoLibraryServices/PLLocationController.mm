@@ -1,26 +1,26 @@
 @interface PLLocationController
 + (id)sharedInstance;
-- (BOOL)_addLocationToAsset:(id)a3;
+- (BOOL)_addLocationToAsset:(id)asset;
 - (PLLocationController)init;
 - (id)location;
-- (id)locationDictionaryForImageWithDeviceOrientation:(int)a3 rearFacingCamera:(BOOL)a4;
+- (id)locationDictionaryForImageWithDeviceOrientation:(int)orientation rearFacingCamera:(BOOL)camera;
 - (id)locationString;
 - (id)photoLibrary;
-- (void)_assetContainerChanged:(id)a3;
+- (void)_assetContainerChanged:(id)changed;
 - (void)_startUpdating;
 - (void)_stopUpdating;
 - (void)_updateLocationRunState;
 - (void)_updatePendingAssets;
-- (void)addLocationToMediaWithAssetURLWhenAvailable:(id)a3 deviceOrientation:(int)a4 cameraWasRearFacing:(BOOL)a5;
+- (void)addLocationToMediaWithAssetURLWhenAvailable:(id)available deviceOrientation:(int)orientation cameraWasRearFacing:(BOOL)facing;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHeadingEnabled:(BOOL)a3;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHeadingEnabled:(BOOL)enabled;
 @end
 
 @implementation PLLocationController
 
-- (void)_assetContainerChanged:(id)a3
+- (void)_assetContainerChanged:(id)changed
 {
   if (self->_isUpdating)
   {
@@ -28,7 +28,7 @@
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   exifDictionary = self->_exifDictionary;
   self->_exifDictionary = 0;
@@ -49,9 +49,9 @@
   if (v3 >= 1)
   {
     v4 = v3;
-    v5 = [(PLLocationController *)self location];
+    location = [(PLLocationController *)self location];
 
-    if (v5)
+    if (location)
     {
       v6 = v4 + 1;
       do
@@ -72,24 +72,24 @@
   }
 }
 
-- (void)addLocationToMediaWithAssetURLWhenAvailable:(id)a3 deviceOrientation:(int)a4 cameraWasRearFacing:(BOOL)a5
+- (void)addLocationToMediaWithAssetURLWhenAvailable:(id)available deviceOrientation:(int)orientation cameraWasRearFacing:(BOOL)facing
 {
-  v5 = a5;
-  v6 = *&a4;
-  v18 = a3;
+  facingCopy = facing;
+  v6 = *&orientation;
+  availableCopy = available;
   if ([objc_opt_class() usesEffectiveBundleIdentifier])
   {
-    v8 = [MEMORY[0x1E695FBE8] authorizationStatusForBundleIdentifier:@"com.apple.camera"] == 3;
+    locationServicesApproved = [MEMORY[0x1E695FBE8] authorizationStatusForBundleIdentifier:@"com.apple.camera"] == 3;
   }
 
   else
   {
-    v8 = [(CLLocationManager *)self->_locationManager locationServicesApproved];
+    locationServicesApproved = [(CLLocationManager *)self->_locationManager locationServicesApproved];
   }
 
   if ([MEMORY[0x1E695FBE8] locationServicesEnabled])
   {
-    v9 = v8 == 0;
+    v9 = locationServicesApproved == 0;
   }
 
   else
@@ -100,10 +100,10 @@
   if (!v9)
   {
     v10 = objc_alloc(MEMORY[0x1E695DF20]);
-    v11 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v12 = [MEMORY[0x1E696AD98] numberWithInt:v6];
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:v5];
-    v14 = [v10 initWithObjectsAndKeys:{v18, @"PLLocationAssetURLKey", v11, @"PLLocationAssetTimestampKey", v12, @"PLLocationDeviceOrientationKey", v13, @"PLLocationCameraWasRearFacingKey", 0}];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:facingCopy];
+    v14 = [v10 initWithObjectsAndKeys:{availableCopy, @"PLLocationAssetURLKey", date, @"PLLocationAssetTimestampKey", v12, @"PLLocationDeviceOrientationKey", v13, @"PLLocationCameraWasRearFacingKey", 0}];
 
     if (![(PLLocationController *)self _addLocationToAsset:v14])
     {
@@ -122,28 +122,28 @@
   }
 }
 
-- (BOOL)_addLocationToAsset:(id)a3
+- (BOOL)_addLocationToAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"PLLocationAssetURLKey"];
-  v6 = [v4 objectForKey:@"PLLocationDeviceOrientationKey"];
-  v7 = [v6 intValue];
+  assetCopy = asset;
+  v5 = [assetCopy objectForKey:@"PLLocationAssetURLKey"];
+  v6 = [assetCopy objectForKey:@"PLLocationDeviceOrientationKey"];
+  intValue = [v6 intValue];
 
-  v8 = [v4 objectForKey:@"PLLocationCameraWasRearFacingKey"];
+  v8 = [assetCopy objectForKey:@"PLLocationCameraWasRearFacingKey"];
 
-  v9 = [v8 BOOLValue];
-  v10 = [(PLLocationController *)self photoLibrary];
-  v11 = [v10 photoFromAssetURL:v5];
+  bOOLValue = [v8 BOOLValue];
+  photoLibrary = [(PLLocationController *)self photoLibrary];
+  v11 = [photoLibrary photoFromAssetURL:v5];
 
   if (v11 && ([v11 pathForOriginalFile], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
     if ([v11 isVideo])
     {
-      v13 = [v11 pathForVideoFile];
-      v14 = [(PLLocationController *)self locationString];
-      if (v14)
+      pathForVideoFile = [v11 pathForVideoFile];
+      locationString = [(PLLocationController *)self locationString];
+      if (locationString)
       {
-        v15 = v13 == 0;
+        v15 = pathForVideoFile == 0;
       }
 
       else
@@ -157,10 +157,10 @@
         v17 = objc_alloc_init(MEMORY[0x1E6988050]);
         [v17 setKeySpace:*MEMORY[0x1E6987838]];
         [v17 setKey:*MEMORY[0x1E6987698]];
-        [v17 setValue:v14];
+        [v17 setValue:locationString];
         v18 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v17, 0}];
         v19 = MEMORY[0x1E69870D8];
-        v20 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13 isDirectory:0];
+        v20 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForVideoFile isDirectory:0];
         v27 = 0;
         [v19 updateMovieMetadataInFile:v20 withMetadata:v18 error:&v27];
         v21 = v27;
@@ -174,8 +174,8 @@
 
     else
     {
-      v13 = [v11 pathForOriginalFile];
-      v22 = [(PLLocationController *)self locationDictionaryForImageWithDeviceOrientation:v7 rearFacingCamera:v9];
+      pathForVideoFile = [v11 pathForOriginalFile];
+      v22 = [(PLLocationController *)self locationDictionaryForImageWithDeviceOrientation:intValue rearFacingCamera:bOOLValue];
       v16 = v22 != 0;
       if (v22)
       {
@@ -186,8 +186,8 @@
           NSLog(&cfstr_ErrorWritingLo.isa);
         }
 
-        v25 = [(PLLocationController *)self photoLibrary];
-        [v25 modifyDCIMEntryForPhoto:v11];
+        photoLibrary2 = [(PLLocationController *)self photoLibrary];
+        [photoLibrary2 modifyDCIMEntryForPhoto:v11];
       }
     }
   }
@@ -202,20 +202,20 @@
 
 - (id)photoLibrary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  photoLibrary = v2->_photoLibrary;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  photoLibrary = selfCopy->_photoLibrary;
   if (!photoLibrary)
   {
     v4 = +[PLPhotoLibrary cameraPhotoLibrary];
-    v5 = v2->_photoLibrary;
-    v2->_photoLibrary = v4;
+    v5 = selfCopy->_photoLibrary;
+    selfCopy->_photoLibrary = v4;
 
-    photoLibrary = v2->_photoLibrary;
+    photoLibrary = selfCopy->_photoLibrary;
   }
 
   v6 = photoLibrary;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -225,10 +225,10 @@
   locationStr = self->_locationStr;
   if (!locationStr)
   {
-    v4 = [(PLLocationController *)self location];
-    v5 = [v4 iso6709Notation];
+    location = [(PLLocationController *)self location];
+    iso6709Notation = [location iso6709Notation];
     v6 = self->_locationStr;
-    self->_locationStr = v5;
+    self->_locationStr = iso6709Notation;
 
     locationStr = self->_locationStr;
   }
@@ -236,10 +236,10 @@
   return locationStr;
 }
 
-- (id)locationDictionaryForImageWithDeviceOrientation:(int)a3 rearFacingCamera:(BOOL)a4
+- (id)locationDictionaryForImageWithDeviceOrientation:(int)orientation rearFacingCamera:(BOOL)camera
 {
-  v7 = [(PLLocationController *)self location];
-  if (!v7)
+  location = [(PLLocationController *)self location];
+  if (!location)
   {
     goto LABEL_29;
   }
@@ -247,9 +247,9 @@
   if (!self->_exifDictionary)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v7 coordinate];
+    [location coordinate];
     v10 = v9;
-    [v7 coordinate];
+    [location coordinate];
     v12 = v11;
     v13 = fabsf(v10);
     if (v10 >= 0.0)
@@ -291,22 +291,22 @@
 
     [(NSDictionary *)v8 setObject:v14 forKey:*MEMORY[0x1E696DC20]];
     [(NSDictionary *)v8 setObject:v16 forKey:*MEMORY[0x1E696DC30]];
-    v19 = [v7 timestamp];
-    if (v19)
+    timestamp = [location timestamp];
+    if (timestamp)
     {
       v20 = objc_alloc_init(MEMORY[0x1E696AB78]);
       v21 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"UTC"];
       [v20 setTimeZone:v21];
 
       [v20 setDateFormat:@"HH:mm:ss.SS"];
-      v22 = [v20 stringFromDate:v19];
+      v22 = [v20 stringFromDate:timestamp];
       [(NSDictionary *)v8 setObject:v22 forKey:*MEMORY[0x1E696DC70]];
     }
 
-    [v7 verticalAccuracy];
+    [location verticalAccuracy];
     if (v23 >= 0.0)
     {
-      [v7 altitude];
+      [location altitude];
       v25 = v24 < 0.0;
       v26 = [MEMORY[0x1E696AD98] numberWithDouble:?];
       [(NSDictionary *)v8 setObject:v26 forKey:*MEMORY[0x1E696DB88]];
@@ -327,29 +327,29 @@ LABEL_29:
   }
 
   v29 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:?];
-  if ((a3 - 2) >= 3)
+  if ((orientation - 2) >= 3)
   {
-    v30 = 1;
+    orientationCopy = 1;
   }
 
   else
   {
-    v30 = a3;
+    orientationCopy = orientation;
   }
 
-  [(CLLocationManager *)self->_locationManager setHeadingOrientation:v30];
-  v31 = [(CLLocationManager *)self->_locationManager heading];
-  v32 = v31;
-  if (v31)
+  [(CLLocationManager *)self->_locationManager setHeadingOrientation:orientationCopy];
+  heading = [(CLLocationManager *)self->_locationManager heading];
+  v32 = heading;
+  if (heading)
   {
-    [v31 headingAccuracy];
+    [heading headingAccuracy];
     if (v33 >= 0.0)
     {
       if (CFPreferencesGetAppBooleanValue(@"kMagneticNorth", @"com.apple.compass", 0) || ([v32 trueHeading], v34 < 0.0))
       {
         [v32 magneticHeading];
         v36 = @"M";
-        if (a4)
+        if (camera)
         {
           goto LABEL_32;
         }
@@ -359,7 +359,7 @@ LABEL_29:
       {
         [v32 trueHeading];
         v36 = @"T";
-        if (a4)
+        if (camera)
         {
           goto LABEL_32;
         }
@@ -393,14 +393,14 @@ LABEL_34:
 
 - (id)location
 {
-  v2 = [(CLLocationManager *)self->_locationManager location];
-  v3 = v2;
-  if (v2)
+  location = [(CLLocationManager *)self->_locationManager location];
+  v3 = location;
+  if (location)
   {
-    [v2 horizontalAccuracy];
+    [location horizontalAccuracy];
     v5 = v4;
-    v6 = [v3 timestamp];
-    [v6 timeIntervalSinceNow];
+    timestamp = [v3 timestamp];
+    [timestamp timeIntervalSinceNow];
     v8 = v7;
 
     if (v8 < -60.0 || v5 < 0.0)
@@ -477,13 +477,13 @@ LABEL_10:
   }
 }
 
-- (void)setHeadingEnabled:(BOOL)a3
+- (void)setHeadingEnabled:(BOOL)enabled
 {
-  self->_isHeadingEnabled = a3;
+  self->_isHeadingEnabled = enabled;
   if (self->_isUpdating)
   {
     locationManager = self->_locationManager;
-    if (a3)
+    if (enabled)
     {
       [(CLLocationManager *)locationManager startUpdatingHeading];
     }
@@ -495,11 +495,11 @@ LABEL_10:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_isEnabled != a3)
+  if (self->_isEnabled != enabled)
   {
-    self->_isEnabled = a3;
+    self->_isEnabled = enabled;
     [(PLLocationController *)self _updateLocationRunState];
   }
 }
@@ -525,8 +525,8 @@ LABEL_10:
 - (void)dealloc
 {
   [(PLLocationController *)self _stopUpdating];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PLLocationController;
@@ -540,17 +540,17 @@ LABEL_10:
   v2 = [(PLLocationController *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v4 = DCIM_applicationWillResignActiveNotificationName();
-    [v3 addObserver:v2 selector:sel__applicationStateChanged_ name:v4 object:0];
+    [defaultCenter addObserver:v2 selector:sel__applicationStateChanged_ name:v4 object:0];
 
     v5 = DCIM_applicationDidBecomeActiveNotificationName();
-    [v3 addObserver:v2 selector:sel__applicationStateChanged_ name:v5 object:0];
+    [defaultCenter addObserver:v2 selector:sel__applicationStateChanged_ name:v5 object:0];
 
     v6 = DCIM_applicationSuspendedEventsOnlyNotificationName();
-    [v3 addObserver:v2 selector:sel__applicationStateChanged_ name:v6 object:0];
+    [defaultCenter addObserver:v2 selector:sel__applicationStateChanged_ name:v6 object:0];
 
-    [v3 addObserver:v2 selector:sel__assetContainerChanged_ name:@"PLAssetContainerDidChangeNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__assetContainerChanged_ name:@"PLAssetContainerDidChangeNotification" object:0];
     [(PLLocationController *)v2 performSelector:sel__updateLocationRunState withObject:0 afterDelay:0.0];
   }
 

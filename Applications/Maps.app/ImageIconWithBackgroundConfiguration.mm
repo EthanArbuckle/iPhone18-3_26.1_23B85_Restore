@@ -1,5 +1,5 @@
 @interface ImageIconWithBackgroundConfiguration
-+ (id)offlineIconConfigurationWithBackgroundColor:(id)a3;
++ (id)offlineIconConfigurationWithBackgroundColor:(id)color;
 - (CGSize)iconSize;
 - (ImageIconWithBackgroundConfiguration)init;
 @end
@@ -37,11 +37,11 @@
   return v3;
 }
 
-+ (id)offlineIconConfigurationWithBackgroundColor:(id)a3
++ (id)offlineIconConfigurationWithBackgroundColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = objc_alloc_init(ImageIconWithBackgroundConfiguration);
-  [(ImageIconWithBackgroundConfiguration *)v4 setBackgroundColor:v3];
+  [(ImageIconWithBackgroundConfiguration *)v4 setBackgroundColor:colorCopy];
 
   v5 = +[UIColor whiteColor];
   [(ImageIconWithBackgroundConfiguration *)v4 setTintColor:v5];

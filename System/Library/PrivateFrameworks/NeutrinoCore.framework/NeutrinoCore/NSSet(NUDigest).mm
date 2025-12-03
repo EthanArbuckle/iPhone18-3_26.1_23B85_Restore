@@ -13,8 +13,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a1 allObjects];
-  v6 = [v5 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [self allObjects];
+  v6 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)

@@ -1,19 +1,19 @@
 @interface APCarSessionRequestHandler
 - (APCarSessionRequestHandler)init;
 - (void)_startAdvertisingCarPlayControlForUSB;
-- (void)_startAdvertisingCarPlayControlForWiFiUUID:(id)a3;
-- (void)addCarPlayHelper:(OpaqueAPCarPlayHelperHelper *)a3;
+- (void)_startAdvertisingCarPlayControlForWiFiUUID:(id)d;
+- (void)addCarPlayHelper:(OpaqueAPCarPlayHelperHelper *)helper;
 - (void)cancelRequests;
 - (void)checkCarPlayControlAdvertisingForUSB;
-- (void)checkCarPlayControlAdvertisingForWiFiUUID:(id)a3;
+- (void)checkCarPlayControlAdvertisingForWiFiUUID:(id)d;
 - (void)dealloc;
-- (void)prepareForRemovingWiFiUUID:(id)a3 completion:(id)a4;
+- (void)prepareForRemovingWiFiUUID:(id)d completion:(id)completion;
 - (void)registerSessionRequestHandlerMachService;
-- (void)removeCarPlayHelper:(OpaqueAPCarPlayHelperHelper *)a3;
+- (void)removeCarPlayHelper:(OpaqueAPCarPlayHelperHelper *)helper;
 - (void)startAdvertisingCarPlayControlForUSB;
-- (void)startAdvertisingCarPlayControlForWiFiUUID:(id)a3;
-- (void)startSessionWithHost:(id)a3 requestIdentifier:(id)a4 completion:(id)a5;
-- (void)stoppedSessionForHostIdentifier:(id)a3;
+- (void)startAdvertisingCarPlayControlForWiFiUUID:(id)d;
+- (void)startSessionWithHost:(id)host requestIdentifier:(id)identifier completion:(id)completion;
+- (void)stoppedSessionForHostIdentifier:(id)identifier;
 @end
 
 @implementation APCarSessionRequestHandler
@@ -111,7 +111,7 @@ uint64_t __66__APCarSessionRequestHandler_checkCarPlayControlAdvertisingForUSB__
   self->_agent = [[v3 alloc] initWithRequestHandler:self];
 }
 
-- (void)addCarPlayHelper:(OpaqueAPCarPlayHelperHelper *)a3
+- (void)addCarPlayHelper:(OpaqueAPCarPlayHelperHelper *)helper
 {
   if (self->_agent)
   {
@@ -126,12 +126,12 @@ uint64_t __66__APCarSessionRequestHandler_checkCarPlayControlAdvertisingForUSB__
     v4[2] = __47__APCarSessionRequestHandler_addCarPlayHelper___block_invoke;
     v4[3] = &unk_278BC72B0;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = helper;
     dispatch_sync(queue, v4);
   }
 }
 
-- (void)removeCarPlayHelper:(OpaqueAPCarPlayHelperHelper *)a3
+- (void)removeCarPlayHelper:(OpaqueAPCarPlayHelperHelper *)helper
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -139,11 +139,11 @@ uint64_t __66__APCarSessionRequestHandler_checkCarPlayControlAdvertisingForUSB__
   v4[2] = __50__APCarSessionRequestHandler_removeCarPlayHelper___block_invoke;
   v4[3] = &unk_278BC72B0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = helper;
   dispatch_sync(queue, v4);
 }
 
-- (void)startSessionWithHost:(id)a3 requestIdentifier:(id)a4 completion:(id)a5
+- (void)startSessionWithHost:(id)host requestIdentifier:(id)identifier completion:(id)completion
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -151,12 +151,12 @@ uint64_t __66__APCarSessionRequestHandler_checkCarPlayControlAdvertisingForUSB__
   block[2] = __80__APCarSessionRequestHandler_startSessionWithHost_requestIdentifier_completion___block_invoke;
   block[3] = &unk_278BC71D0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = host;
+  block[6] = identifier;
   dispatch_sync(queue, block);
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5, 1, 0);
+    (*(completion + 2))(completion, 1, 0);
   }
 }
 
@@ -348,7 +348,7 @@ LABEL_29:
   return result;
 }
 
-- (void)stoppedSessionForHostIdentifier:(id)a3
+- (void)stoppedSessionForHostIdentifier:(id)identifier
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -356,7 +356,7 @@ LABEL_29:
   v4[2] = __62__APCarSessionRequestHandler_stoppedSessionForHostIdentifier___block_invoke;
   v4[3] = &unk_278BC71F8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_sync(queue, v4);
 }
 
@@ -556,7 +556,7 @@ LABEL_13:
   dispatch_sync(queue, block);
 }
 
-- (void)_startAdvertisingCarPlayControlForWiFiUUID:(id)a3
+- (void)_startAdvertisingCarPlayControlForWiFiUUID:(id)d
 {
   if (gLogCategory_APBrowserCarSessionHelper <= 50 && (gLogCategory_APBrowserCarSessionHelper != -1 || _LogCategory_Initialize()))
   {
@@ -634,7 +634,7 @@ uint64_t __73__APCarSessionRequestHandler__startAdvertisingCarPlayControlForWiFi
   return result;
 }
 
-- (void)startAdvertisingCarPlayControlForWiFiUUID:(id)a3
+- (void)startAdvertisingCarPlayControlForWiFiUUID:(id)d
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -642,11 +642,11 @@ uint64_t __73__APCarSessionRequestHandler__startAdvertisingCarPlayControlForWiFi
   v4[2] = __72__APCarSessionRequestHandler_startAdvertisingCarPlayControlForWiFiUUID___block_invoke;
   v4[3] = &unk_278BC71F8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = d;
   dispatch_sync(queue, v4);
 }
 
-- (void)checkCarPlayControlAdvertisingForWiFiUUID:(id)a3
+- (void)checkCarPlayControlAdvertisingForWiFiUUID:(id)d
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -654,7 +654,7 @@ uint64_t __73__APCarSessionRequestHandler__startAdvertisingCarPlayControlForWiFi
   v4[2] = __72__APCarSessionRequestHandler_checkCarPlayControlAdvertisingForWiFiUUID___block_invoke;
   v4[3] = &unk_278BC71F8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = d;
   dispatch_async(queue, v4);
 }
 
@@ -677,19 +677,19 @@ uint64_t __72__APCarSessionRequestHandler_checkCarPlayControlAdvertisingForWiFiU
   return result;
 }
 
-- (void)prepareForRemovingWiFiUUID:(id)a3 completion:(id)a4
+- (void)prepareForRemovingWiFiUUID:(id)d completion:(id)completion
 {
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__APCarSessionRequestHandler_prepareForRemovingWiFiUUID_completion___block_invoke;
   v6[3] = &unk_278BC71F8;
-  v6[4] = a3;
+  v6[4] = d;
   v6[5] = self;
   dispatch_sync(queue, v6);
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 1, 0);
+    (*(completion + 2))(completion, 1, 0);
   }
 }
 

@@ -1,27 +1,27 @@
 @interface TUIWPLayout
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicHeight;
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth;
-- (BOOL)_isEmptyLine:(unint64_t)a3 column:(unint64_t)a4;
-- (BOOL)_isTruncatedLine:(unint64_t)a3 column:(unint64_t)a4;
-- (BOOL)_isWhitespaceLine:(unint64_t)a3 column:(unint64_t)a4;
+- (BOOL)_isEmptyLine:(unint64_t)line column:(unint64_t)column;
+- (BOOL)_isTruncatedLine:(unint64_t)line column:(unint64_t)column;
+- (BOOL)_isWhitespaceLine:(unint64_t)line column:(unint64_t)column;
 - (BOOL)expandableContentIsTruncated;
 - (CGRect)computedErasableBoundsPrimitive;
-- (CGSize)_contentSizeForColumns:(id)a3;
-- (CGSize)_layoutSizeForColumns:(id)a3 withInsets:(UIEdgeInsets *)a4;
+- (CGSize)_contentSizeForColumns:(id)columns;
+- (CGSize)_layoutSizeForColumns:(id)columns withInsets:(UIEdgeInsets *)insets;
 - (NSString)description;
-- (TUIWPLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
+- (TUIWPLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
 - (TUIWPStorage)storage;
-- (double)_bottomBaselineForColumns:(id)a3;
+- (double)_bottomBaselineForColumns:(id)columns;
 - (double)_maxHeight;
-- (double)_topAligmentOffsetForColumns:(id)a3;
+- (double)_topAligmentOffsetForColumns:(id)columns;
 - (double)computedScale;
 - (double)expandableMoreXOffset;
 - (id)_columnStyle;
-- (id)_newWPTextForIntrinsic:(BOOL)a3;
+- (id)_newWPTextForIntrinsic:(BOOL)intrinsic;
 - (id)debugContentDescription;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 - (void)_computeIntrinsicContentSize;
-- (void)_wpText:(id)a3 scaleFactorDidChange:(double)a4;
+- (void)_wpText:(id)text scaleFactorDidChange:(double)change;
 - (void)computeLayout;
 - (void)onComputedScaleDidChange;
 - (void)onInvalidateIntrinsicSize;
@@ -29,11 +29,11 @@
 
 @implementation TUIWPLayout
 
-- (TUIWPLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUIWPLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
   v12.receiver = self;
   v12.super_class = TUIWPLayout;
-  v5 = [(TUILayout *)&v12 initWithModel:a3 parent:a4 controller:a5];
+  v5 = [(TUILayout *)&v12 initWithModel:model parent:parent controller:controller];
   v6 = v5;
   if (v5)
   {
@@ -46,8 +46,8 @@
     v6->_scale = 1.0;
     v6->_cachedSingleLineTypographicMax = NAN;
     v8 = [(TUILayout *)v6 box];
-    v9 = [v8 storage];
-    v10 = [v9 paragraphStyleAtParIndex:0 effectiveRange:0];
+    storage = [v8 storage];
+    v10 = [storage paragraphStyleAtParIndex:0 effectiveRange:0];
 
     v6->_flags.isFirstParagraphCentered = [v10 intValueForProperty:86] == 2;
   }
@@ -58,9 +58,9 @@
 - (TUIWPStorage)storage
 {
   v2 = [(TUILayout *)self box];
-  v3 = [v2 storage];
+  storage = [v2 storage];
 
-  return v3;
+  return storage;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth
@@ -109,16 +109,16 @@
   return (v7 & 0xFFFFFFFFFFFFLL | 0x7FC0000000000000);
 }
 
-- (void)_wpText:(id)a3 scaleFactorDidChange:(double)a4
+- (void)_wpText:(id)text scaleFactorDidChange:(double)change
 {
-  self->_scale = a4;
+  self->_scale = change;
   [(TUILayout *)self notifyChildrenScaleDidChange];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(TUILayout *)self children];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  children = [(TUILayout *)self children];
+  v6 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -130,7 +130,7 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         [*(*(&v10 + 1) + 8 * v9) validateLayout];
@@ -138,7 +138,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -159,8 +159,8 @@
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 countByEnumeratingWithState:&v76 objects:v80 count:16];
+  children = [(TUILayout *)self children];
+  v4 = [children countByEnumeratingWithState:&v76 objects:v80 count:16];
   if (v4)
   {
     v5 = v4;
@@ -171,7 +171,7 @@
       {
         if (*v77 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         v8 = *(*(&v76 + 1) + 8 * i);
@@ -182,7 +182,7 @@
         [v8 validateLayout];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v76 objects:v80 count:16];
+      v5 = [children countByEnumeratingWithState:&v76 objects:v80 count:16];
     }
 
     while (v5);
@@ -206,8 +206,8 @@
 
   if (v12 != 1.79769313e308)
   {
-    v15 = [(TUIWPLayout *)self storage];
-    v16 = [v9 layoutMultiColumnTextStorage:v15 minSize:0x7FFFFFFFFFFFFFFFLL maxSize:0x7FFFFFFFFFFFFFFFLL anchor:4099 pageNumber:CGSizeZero.width pageCount:CGSizeZero.height flags:{v11, 4294967300.0, CGPointZero.x, CGPointZero.y}];
+    storage = [(TUIWPLayout *)self storage];
+    v16 = [v9 layoutMultiColumnTextStorage:storage minSize:0x7FFFFFFFFFFFFFFFLL maxSize:0x7FFFFFFFFFFFFFFFLL anchor:4099 pageNumber:CGSizeZero.width pageCount:CGSizeZero.height flags:{v11, 4294967300.0, CGPointZero.x, CGPointZero.y}];
 
     v17 = *&UIEdgeInsetsZero.bottom;
     v75[0] = *&UIEdgeInsetsZero.top;
@@ -222,26 +222,26 @@
   if (!self->_wpColumns || v13 != 1.79769313e308 || self->_cachedSingleLineTypographicMax >= v11)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = [(TUIWPLayout *)self storage];
-    v20 = [v9 layoutMultiColumnTextStorage:v19 minSize:0x7FFFFFFFFFFFFFFFLL maxSize:0x7FFFFFFFFFFFFFFFLL anchor:4099 pageNumber:CGSizeZero.width pageCount:CGSizeZero.height flags:{v11, v14, CGPointZero.x, CGPointZero.y}];
+    storage2 = [(TUIWPLayout *)self storage];
+    v20 = [v9 layoutMultiColumnTextStorage:storage2 minSize:0x7FFFFFFFFFFFFFFFLL maxSize:0x7FFFFFFFFFFFFFFFLL anchor:4099 pageNumber:CGSizeZero.width pageCount:CGSizeZero.height flags:{v11, v14, CGPointZero.x, CGPointZero.y}];
     wpColumns = self->_wpColumns;
     self->_wpColumns = v20;
 
-    v22 = [(NSArray *)self->_wpColumns lastObject];
-    v23 = [v22 logicalLineCount];
-    v24 = [(TUILayout *)self controller];
-    v25 = [v24 instantiateContext];
-    v26 = [v25 environment];
-    v27 = [v26 layoutDirection];
+    lastObject = [(NSArray *)self->_wpColumns lastObject];
+    logicalLineCount = [lastObject logicalLineCount];
+    controller = [(TUILayout *)self controller];
+    instantiateContext = [controller instantiateContext];
+    environment = [instantiateContext environment];
+    layoutDirection = [environment layoutDirection];
 
-    if (v23 == &dword_0 + 1)
+    if (logicalLineCount == &dword_0 + 1)
     {
-      v28 = [v22 lineFragmentRangeForLogicalLineIndex:0];
+      v28 = [lastObject lineFragmentRangeForLogicalLineIndex:0];
       MaxX = NAN;
       if (v29 && v28 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v31 = v28 + v29 - 1;
-        if ([v22 isTruncatedLineFragmentAtIndex:{v31, NAN}])
+        if ([lastObject isTruncatedLineFragmentAtIndex:{v31, NAN}])
         {
           MaxX = NAN;
         }
@@ -249,9 +249,9 @@
         else
         {
           MaxX = NAN;
-          if (!self->_flags.isFirstParagraphCentered && v27 != &dword_0 + 2)
+          if (!self->_flags.isFirstParagraphCentered && layoutDirection != &dword_0 + 2)
           {
-            [v22 typographicBoundsOfLineFragmentAtIndex:{v31, NAN}];
+            [lastObject typographicBoundsOfLineFragmentAtIndex:{v31, NAN}];
             MaxX = CGRectGetMaxX(v81);
             if (v11 < MaxX)
             {
@@ -272,15 +272,15 @@
     objc_autoreleasePoolPop(v18);
   }
 
-  v32 = [(TUIWPLayout *)self _columnStyle];
-  v33 = [v32 columnCount];
+  _columnStyle = [(TUIWPLayout *)self _columnStyle];
+  columnCount = [_columnStyle columnCount];
 
-  v34 = [v9 maxLineCount];
-  v35 = v34;
-  if (v34 >= 2)
+  maxLineCount = [v9 maxLineCount];
+  v35 = maxLineCount;
+  if (maxLineCount >= 2)
   {
-    v36 = v33 - 1;
-    if ([(TUIWPLayout *)self _isTruncatedLine:(v34 - 1) column:v36])
+    v36 = columnCount - 1;
+    if ([(TUIWPLayout *)self _isTruncatedLine:(maxLineCount - 1) column:v36])
     {
       v35 = v35;
       while (1)
@@ -305,8 +305,8 @@
   {
     [v9 setMaxLineCount:v35];
     v38 = objc_autoreleasePoolPush();
-    v39 = [(TUIWPLayout *)self storage];
-    v40 = [v9 layoutMultiColumnTextStorage:v39 minSize:0x7FFFFFFFFFFFFFFFLL maxSize:0x7FFFFFFFFFFFFFFFLL anchor:4099 pageNumber:CGSizeZero.width pageCount:CGSizeZero.height flags:{v11, v14, CGPointZero.x, CGPointZero.y}];
+    storage3 = [(TUIWPLayout *)self storage];
+    v40 = [v9 layoutMultiColumnTextStorage:storage3 minSize:0x7FFFFFFFFFFFFFFFLL maxSize:0x7FFFFFFFFFFFFFFFLL anchor:4099 pageNumber:CGSizeZero.width pageCount:CGSizeZero.height flags:{v11, v14, CGPointZero.x, CGPointZero.y}];
     v41 = self->_wpColumns;
     self->_wpColumns = v40;
 
@@ -338,12 +338,12 @@
   self->_renderingInsets.bottom = fmin(self->_renderingInsets.bottom - (v43 - COERCE_FLOAT([(TUILayout *)self specifiedHeight])), 0.0);
   v60 = COERCE_FLOAT([(TUILayout *)self specifiedHeight]);
   v61 = [(TUILayout *)self box];
-  v62 = [v61 allowHangingPunctuation];
+  allowHangingPunctuation = [v61 allowHangingPunctuation];
 
-  if (v62)
+  if (allowHangingPunctuation)
   {
-    v63 = [(TUIWPLayout *)self storage];
-    v64 = [v63 fontMetricsAtCharacterIndex:0];
+    storage4 = [(TUIWPLayout *)self storage];
+    v64 = [storage4 fontMetricsAtCharacterIndex:0];
 
     [v64 pointSize];
     self->_renderingInsets.left = -v65;
@@ -352,11 +352,11 @@
   }
 
   v67 = [(NSArray *)self->_wpColumns objectAtIndexedSubscript:0];
-  v68 = [v67 logicalLineCount];
+  logicalLineCount2 = [v67 logicalLineCount];
   v69 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v68)
+  if (logicalLineCount2)
   {
-    v70 = [v67 lineFragmentRangeForLogicalLineIndex:v68 - 1];
+    v70 = [v67 lineFragmentRangeForLogicalLineIndex:logicalLineCount2 - 1];
   }
 
   else
@@ -394,10 +394,10 @@
   [(TUILayout *)self setComputedNaturalSize:v11, v60];
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v5 = a4;
-  [v5 contentsScale];
+  contextCopy = context;
+  [contextCopy contentsScale];
   v7 = v6;
   v8.i64[0] = *&self->_renderingInsets.top;
   v9 = *TUIInsetsExtendedForScale(v8, self->_renderingInsets.left, self->_renderingInsets.bottom, self->_renderingInsets.right, v7).i64;
@@ -408,18 +408,18 @@
   v17 = [_TUIWPDraw alloc];
   wpColumns = self->_wpColumns;
   v19 = [(TUILayout *)self box];
-  v20 = [v19 blendMode];
-  v21 = [(_TUIWPDraw *)v17 initWithColumns:wpColumns yOffset:v20 compositingFilterType:v16];
+  blendMode = [v19 blendMode];
+  v21 = [(_TUIWPDraw *)v17 initWithColumns:wpColumns yOffset:blendMode compositingFilterType:v16];
 
   v22 = [[TUIRenderModelDraw alloc] initWithDraw:v21 erasableInsets:v9, v11, v13, v15];
-  [(TUILayout *)self renderModelSizeWithContext:v5];
+  [(TUILayout *)self renderModelSizeWithContext:contextCopy];
   v24 = v23;
   v26 = v25;
 
   [(TUIRenderModelDraw *)v22 setSize:v24, v26];
   v27 = [(TUILayout *)self box];
-  v28 = [v27 identifier];
-  [(TUIRenderModelDraw *)v22 setIdentifier:v28];
+  identifier = [v27 identifier];
+  [(TUIRenderModelDraw *)v22 setIdentifier:identifier];
 
   return v22;
 }
@@ -442,19 +442,19 @@
   return result;
 }
 
-- (id)_newWPTextForIntrinsic:(BOOL)a3
+- (id)_newWPTextForIntrinsic:(BOOL)intrinsic
 {
-  v3 = a3;
-  v5 = [(TUIWPLayout *)self _columnStyle];
-  v6 = [(TUILayout *)self controller];
-  v7 = [v6 instantiateContext];
-  v8 = [v7 environment];
-  v9 = [v8 layoutDirection] == &dword_0 + 2;
+  intrinsicCopy = intrinsic;
+  _columnStyle = [(TUIWPLayout *)self _columnStyle];
+  controller = [(TUILayout *)self controller];
+  instantiateContext = [controller instantiateContext];
+  environment = [instantiateContext environment];
+  v9 = [environment layoutDirection] == &dword_0 + 2;
 
-  v10 = [[_TUIWPText alloc] initWithParagraphStyle:0 columnStyle:v5 alignmentForNaturalAlignment:v9 naturalDirection:v9];
-  [(_TUIWPText *)v10 setComputingIntrinsic:v3];
-  v11 = [(TUILayout *)self children];
-  [(_TUIWPText *)v10 updateWithAttachmentLayouts:v11];
+  v10 = [[_TUIWPText alloc] initWithParagraphStyle:0 columnStyle:_columnStyle alignmentForNaturalAlignment:v9 naturalDirection:v9];
+  [(_TUIWPText *)v10 setComputingIntrinsic:intrinsicCopy];
+  children = [(TUILayout *)self children];
+  [(_TUIWPText *)v10 updateWithAttachmentLayouts:children];
 
   v12 = [(TUILayout *)self box];
   -[_TUIWPText setMaxLineCount:](v10, "setMaxLineCount:", [v12 maxLines]);
@@ -468,9 +468,9 @@
   -[_TUIWPText setUseShrinkToFit:](v10, "setUseShrinkToFit:", [v14 allowShrinkToFit]);
 
   v15 = [(TUILayout *)self box];
-  v16 = [v15 allowShrinkToFit];
+  allowShrinkToFit = [v15 allowShrinkToFit];
   v17 = 1.0;
-  if ((v16 & 1) == 0)
+  if ((allowShrinkToFit & 1) == 0)
   {
     v19.receiver = self;
     v19.super_class = TUIWPLayout;
@@ -487,12 +487,12 @@
 {
   v3 = [[TSWPColumns alloc] initWithEqualColumnCount:1 gapFraction:0.0500000007];
   v4 = [TSSPropertyMap propertyMapWithPropertiesAndValues:148, v3, 0];
-  v5 = [(TUIWPLayout *)self storage];
-  v6 = [v5 stylesheet];
-  v7 = [(TUIWPLayout *)self storage];
-  v8 = [v7 stylesheet];
-  v9 = [v8 defaultColumnStyle];
-  v10 = [v6 variationOfStyle:v9 propertyMap:v4];
+  storage = [(TUIWPLayout *)self storage];
+  stylesheet = [storage stylesheet];
+  storage2 = [(TUIWPLayout *)self storage];
+  stylesheet2 = [storage2 stylesheet];
+  defaultColumnStyle = [stylesheet2 defaultColumnStyle];
+  v10 = [stylesheet variationOfStyle:defaultColumnStyle propertyMap:v4];
 
   return v10;
 }
@@ -506,12 +506,12 @@
   return result;
 }
 
-- (double)_topAligmentOffsetForColumns:(id)a3
+- (double)_topAligmentOffsetForColumns:(id)columns
 {
-  v3 = [a3 firstObject];
-  if ([v3 logicalLineCount])
+  firstObject = [columns firstObject];
+  if ([firstObject logicalLineCount])
   {
-    [v3 topOfCapForLogicalLineIndex:0];
+    [firstObject topOfCapForLogicalLineIndex:0];
     v5 = v4;
   }
 
@@ -523,17 +523,17 @@
   return v5;
 }
 
-- (double)_bottomBaselineForColumns:(id)a3
+- (double)_bottomBaselineForColumns:(id)columns
 {
-  v3 = [a3 firstObject];
-  v4 = [v3 logicalLineCount];
+  firstObject = [columns firstObject];
+  logicalLineCount = [firstObject logicalLineCount];
   v5 = 0.0;
-  if (v4)
+  if (logicalLineCount)
   {
-    v6 = [v3 lineFragmentRangeForLogicalLineIndex:v4 - 1];
+    v6 = [firstObject lineFragmentRangeForLogicalLineIndex:logicalLineCount - 1];
     if (v6 != 0x7FFFFFFFFFFFFFFFLL && v7 != 0)
     {
-      [v3 baselineOfLineFragmentAtIndex:&v6[v7 - 1]];
+      [firstObject baselineOfLineFragmentAtIndex:&v6[v7 - 1]];
       v5 = v9;
     }
   }
@@ -541,17 +541,17 @@
   return v5;
 }
 
-- (CGSize)_contentSizeForColumns:(id)a3
+- (CGSize)_contentSizeForColumns:(id)columns
 {
-  v3 = a3;
-  v4 = [v3 firstObject];
-  [v4 frameBounds];
+  columnsCopy = columns;
+  firstObject = [columnsCopy firstObject];
+  [firstObject frameBounds];
   v6 = v5;
   v8 = v7;
 
-  v9 = [v3 lastObject];
+  lastObject = [columnsCopy lastObject];
 
-  [v9 frameBounds];
+  [lastObject frameBounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -568,25 +568,25 @@
   return result;
 }
 
-- (CGSize)_layoutSizeForColumns:(id)a3 withInsets:(UIEdgeInsets *)a4
+- (CGSize)_layoutSizeForColumns:(id)columns withInsets:(UIEdgeInsets *)insets
 {
-  v6 = a3;
-  [(TUIWPLayout *)self _topAligmentOffsetForColumns:v6];
+  columnsCopy = columns;
+  [(TUIWPLayout *)self _topAligmentOffsetForColumns:columnsCopy];
   v8 = v7;
-  [(TUIWPLayout *)self _bottomBaselineForColumns:v6];
+  [(TUIWPLayout *)self _bottomBaselineForColumns:columnsCopy];
   v10 = v9;
-  [(TUIWPLayout *)self _contentSizeForColumns:v6];
+  [(TUIWPLayout *)self _contentSizeForColumns:columnsCopy];
   v12 = v11;
   v14 = v13;
 
   v15 = fmin(-v8, 0.0);
   v16 = fmin(v10 - v14, 0.0);
-  if (a4)
+  if (insets)
   {
-    a4->top = v15;
-    a4->left = 0.0;
-    a4->bottom = v16;
-    a4->right = 0.0;
+    insets->top = v15;
+    insets->left = 0.0;
+    insets->bottom = v16;
+    insets->right = 0.0;
   }
 
   v17 = v15 + v14 + v16;
@@ -603,8 +603,8 @@
   if (self->_intrinsicContentSize.width == CGSizeZero.width && self->_intrinsicContentSize.height == height)
   {
     v10 = [(TUIWPLayout *)self _newWPTextForIntrinsic:1];
-    v6 = [(TUIWPLayout *)self storage];
-    v7 = [v10 layoutMultiColumnTextStorage:v6 minSize:0x7FFFFFFFFFFFFFFFLL maxSize:0x7FFFFFFFFFFFFFFFLL anchor:4111 pageNumber:CGSizeZero.width pageCount:height flags:{4294967300.0, 4294967300.0, CGPointZero.x, CGPointZero.y}];
+    storage = [(TUIWPLayout *)self storage];
+    v7 = [v10 layoutMultiColumnTextStorage:storage minSize:0x7FFFFFFFFFFFFFFFLL maxSize:0x7FFFFFFFFFFFFFFFLL anchor:4111 pageNumber:CGSizeZero.width pageCount:height flags:{4294967300.0, 4294967300.0, CGPointZero.x, CGPointZero.y}];
 
     [(TUIWPLayout *)self _layoutSizeForColumns:v7 withInsets:0];
     p_intrinsicContentSize->width = v8;
@@ -612,15 +612,15 @@
   }
 }
 
-- (BOOL)_isTruncatedLine:(unint64_t)a3 column:(unint64_t)a4
+- (BOOL)_isTruncatedLine:(unint64_t)line column:(unint64_t)column
 {
-  if ([(NSArray *)self->_wpColumns count]<= a4)
+  if ([(NSArray *)self->_wpColumns count]<= column)
   {
     return 0;
   }
 
-  v7 = [(NSArray *)self->_wpColumns objectAtIndexedSubscript:a4];
-  v8 = [v7 lineFragmentRangeForLogicalLineIndex:a3];
+  v7 = [(NSArray *)self->_wpColumns objectAtIndexedSubscript:column];
+  v8 = [v7 lineFragmentRangeForLogicalLineIndex:line];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL || v9 == 0)
   {
     v11 = 0;
@@ -634,15 +634,15 @@
   return v11;
 }
 
-- (BOOL)_isEmptyLine:(unint64_t)a3 column:(unint64_t)a4
+- (BOOL)_isEmptyLine:(unint64_t)line column:(unint64_t)column
 {
-  if ([(NSArray *)self->_wpColumns count]<= a4)
+  if ([(NSArray *)self->_wpColumns count]<= column)
   {
     return 0;
   }
 
-  v7 = [(NSArray *)self->_wpColumns objectAtIndexedSubscript:a4];
-  v8 = [v7 lineFragmentRangeForLogicalLineIndex:a3];
+  v7 = [(NSArray *)self->_wpColumns objectAtIndexedSubscript:column];
+  v8 = [v7 lineFragmentRangeForLogicalLineIndex:line];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL || v9 == 0)
   {
     v11 = 0;
@@ -656,15 +656,15 @@
   return v11;
 }
 
-- (BOOL)_isWhitespaceLine:(unint64_t)a3 column:(unint64_t)a4
+- (BOOL)_isWhitespaceLine:(unint64_t)line column:(unint64_t)column
 {
-  if ([(NSArray *)self->_wpColumns count]<= a4)
+  if ([(NSArray *)self->_wpColumns count]<= column)
   {
     return 0;
   }
 
-  v7 = [(NSArray *)self->_wpColumns objectAtIndexedSubscript:a4];
-  v8 = [v7 lineFragmentRangeForLogicalLineIndex:a3];
+  v7 = [(NSArray *)self->_wpColumns objectAtIndexedSubscript:column];
+  v8 = [v7 lineFragmentRangeForLogicalLineIndex:line];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL || v9 == 0)
   {
     v11 = 0;
@@ -679,8 +679,8 @@
     {
       v15 = [v7 rangeOfLineFragmentAtIndex:&v12[v14 - 1]];
       v17 = v16;
-      v18 = [(TUIWPLayout *)self storage];
-      v19 = [v18 substringWithRange:{v15, v17}];
+      storage = [(TUIWPLayout *)self storage];
+      v19 = [storage substringWithRange:{v15, v17}];
 
       v20 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
       v21 = [v19 stringByTrimmingCharactersInSet:v20];
@@ -730,9 +730,9 @@
   if ([(NSArray *)self->_wpColumns count])
   {
     v4 = [(NSArray *)self->_wpColumns objectAtIndexedSubscript:0];
-    v5 = [v4 countLines];
+    countLines = [v4 countLines];
 
-    if (v5)
+    if (countLines)
     {
       v6 = [(NSArray *)self->_wpColumns objectAtIndexedSubscript:[(NSArray *)self->_wpColumns count]- 1];
       if ([v6 countLines])
@@ -740,8 +740,8 @@
         v7 = [v6 countLines] - 1;
         v8 = [v6 rangeOfLineFragmentAtIndex:v7];
         v10 = v9;
-        v11 = [(TUIWPLayout *)self storage];
-        LODWORD(v8) = [v11 writingDirectionForParagraphAtCharIndex:&v8[v10]];
+        storage = [(TUIWPLayout *)self storage];
+        LODWORD(v8) = [storage writingDirectionForParagraphAtCharIndex:&v8[v10]];
 
         [v6 typographicBoundsOfLineFragmentAtIndex:v7];
         if (v8 == 1)
@@ -764,11 +764,11 @@
 
 - (BOOL)expandableContentIsTruncated
 {
-  v2 = self;
-  v3 = [(NSArray *)self->_wpColumns lastObject];
-  LOBYTE(v2) = -[TUIWPLayout _isTruncatedLine:column:](v2, "_isTruncatedLine:column:", [v3 countLines] - 1, -[NSArray count](v2->_wpColumns, "count") - 1);
+  selfCopy = self;
+  lastObject = [(NSArray *)self->_wpColumns lastObject];
+  LOBYTE(selfCopy) = -[TUIWPLayout _isTruncatedLine:column:](selfCopy, "_isTruncatedLine:column:", [lastObject countLines] - 1, -[NSArray count](selfCopy->_wpColumns, "count") - 1);
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSString)description
@@ -780,8 +780,8 @@
 
   v5 = [v4 length] - 1;
   v6 = [(TUILayout *)self box];
-  v7 = [v6 string];
-  v8 = [NSString stringWithFormat:@" string='%@'>", v7];
+  string = [v6 string];
+  v8 = [NSString stringWithFormat:@" string='%@'>", string];
   [v4 replaceCharactersInRange:v5 withString:{1, v8}];
 
   return v4;
@@ -790,9 +790,9 @@
 - (id)debugContentDescription
 {
   v2 = [(TUILayout *)self box];
-  v3 = [v2 storage];
-  v4 = [v3 string];
-  v5 = [NSString stringWithFormat:@"'%@'", v4];
+  storage = [v2 storage];
+  string = [storage string];
+  v5 = [NSString stringWithFormat:@"'%@'", string];
 
   return v5;
 }

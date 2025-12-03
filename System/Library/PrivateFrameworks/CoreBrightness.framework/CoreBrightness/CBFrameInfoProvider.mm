@@ -1,24 +1,24 @@
 @interface CBFrameInfoProvider
-- (CBFrameInfoProvider)initWithDisplayServer:(id)a3;
-- (CBFrameInfoProvider)initWithDisplayServer:(id)a3 andQueue:(id)a4;
+- (CBFrameInfoProvider)initWithDisplayServer:(id)server;
+- (CBFrameInfoProvider)initWithDisplayServer:(id)server andQueue:(id)queue;
 - (void)dealloc;
-- (void)registerObserver:(id)a3 withCallback:(id)a4;
+- (void)registerObserver:(id)observer withCallback:(id)callback;
 @end
 
 @implementation CBFrameInfoProvider
 
-- (CBFrameInfoProvider)initWithDisplayServer:(id)a3
+- (CBFrameInfoProvider)initWithDisplayServer:(id)server
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  serverCopy = server;
   v3 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
   v11 = dispatch_queue_create("com.apple.CoreBrightness.FrameInfo", v3);
   if (v11)
   {
-    v14 = [(CBFrameInfoProvider *)v14 initWithDisplayServer:v12 andQueue:v11];
+    selfCopy = [(CBFrameInfoProvider *)selfCopy initWithDisplayServer:serverCopy andQueue:v11];
     dispatch_release(v11);
-    return v14;
+    return selfCopy;
   }
 
   else
@@ -43,42 +43,42 @@
       _os_log_error_impl(&dword_1DE8E5000, log, type, "Failed to create queue for FrameInfo!", v8, 2u);
     }
 
-    MEMORY[0x1E69E5920](v14);
-    v14 = 0;
+    MEMORY[0x1E69E5920](selfCopy);
+    selfCopy = 0;
     return 0;
   }
 }
 
-- (CBFrameInfoProvider)initWithDisplayServer:(id)a3 andQueue:(id)a4
+- (CBFrameInfoProvider)initWithDisplayServer:(id)server andQueue:(id)queue
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
-  v16 = a4;
+  serverCopy = server;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = CBFrameInfoProvider;
-  v19 = [(CBFrameInfoProvider *)&v15 init];
-  if (!v19)
+  selfCopy = [(CBFrameInfoProvider *)&v15 init];
+  if (!selfCopy)
   {
     return 0;
   }
 
   v4 = os_log_create("com.apple.CoreBrightness.FrameInfo", "default");
-  *(v19 + 1) = v4;
-  v5 = MEMORY[0x1E69E5928](v17);
-  *(v19 + 2) = v5;
-  *(v19 + 3) = v16;
-  dispatch_retain(*(v19 + 3));
+  *(selfCopy + 1) = v4;
+  v5 = MEMORY[0x1E69E5928](serverCopy);
+  *(selfCopy + 2) = v5;
+  *(selfCopy + 3) = queueCopy;
+  dispatch_retain(*(selfCopy + 3));
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  *(v19 + 4) = v6;
-  if (*(v19 + 4))
+  *(selfCopy + 4) = v6;
+  if (*(selfCopy + 4))
   {
-    return v19;
+    return selfCopy;
   }
 
-  if (*(v19 + 1))
+  if (*(selfCopy + 1))
   {
-    v11 = *(v19 + 1);
+    v11 = *(selfCopy + 1);
   }
 
   else
@@ -106,20 +106,20 @@
     _os_log_error_impl(&dword_1DE8E5000, log, v9, "Failed to create observers dictionary", v12, 2u);
   }
 
-  MEMORY[0x1E69E5920](v19);
-  v19 = 0;
+  MEMORY[0x1E69E5920](selfCopy);
+  selfCopy = 0;
   return 0;
 }
 
 - (void)dealloc
 {
   v15 = *MEMORY[0x1E69E9840];
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   [(CAWindowServerDisplay *)self->_windowServerDisplay setFrameInfoCallback:0];
-  MEMORY[0x1E69E5920](v13->_windowServerDisplay);
+  MEMORY[0x1E69E5920](selfCopy->_windowServerDisplay);
   memset(__b, 0, sizeof(__b));
-  obj = [(NSMutableDictionary *)v13->_observers allValues];
+  obj = [(NSMutableDictionary *)selfCopy->_observers allValues];
   v8 = [obj countByEnumeratingWithState:__b objects:v14 count:16];
   if (v8)
   {
@@ -150,38 +150,38 @@
     }
   }
 
-  v2 = MEMORY[0x1E69E5920](v13->_observers).n128_u64[0];
-  if (v13->_queue)
+  v2 = MEMORY[0x1E69E5920](selfCopy->_observers).n128_u64[0];
+  if (selfCopy->_queue)
   {
-    dispatch_release(v13->_queue);
+    dispatch_release(selfCopy->_queue);
   }
 
-  if (v13->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v2 = MEMORY[0x1E69E5920](v13->_logHandle).n128_u64[0];
+    v2 = MEMORY[0x1E69E5920](selfCopy->_logHandle).n128_u64[0];
   }
 
-  v9.receiver = v13;
+  v9.receiver = selfCopy;
   v9.super_class = CBFrameInfoProvider;
   [(CBFrameInfoProvider *)&v9 dealloc];
   *MEMORY[0x1E69E9840];
 }
 
-- (void)registerObserver:(id)a3 withCallback:(id)a4
+- (void)registerObserver:(id)observer withCallback:(id)callback
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
-  v13 = a4;
+  observerCopy = observer;
+  callbackCopy = callback;
   queue = self->_queue;
   block = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __53__CBFrameInfoProvider_registerObserver_withCallback___block_invoke;
   v9 = &unk_1E867CD08;
-  v10 = a3;
-  v11 = v16;
-  v12 = a4;
+  observerCopy2 = observer;
+  v11 = selfCopy;
+  callbackCopy2 = callback;
   dispatch_sync(queue, &block);
 }
 

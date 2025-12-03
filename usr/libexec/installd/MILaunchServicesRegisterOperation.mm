@@ -1,52 +1,52 @@
 @interface MILaunchServicesRegisterOperation
-- (BOOL)isEqual:(id)a3;
-- (MILaunchServicesRegisterOperation)initWithBundleID:(id)a3 domain:(unint64_t)a4 personas:(id)a5 mountPoint:(id)a6 operationUUID:(id)a7 serialNumber:(unint64_t)a8;
-- (MILaunchServicesRegisterOperation)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MILaunchServicesRegisterOperation)initWithBundleID:(id)d domain:(unint64_t)domain personas:(id)personas mountPoint:(id)point operationUUID:(id)iD serialNumber:(unint64_t)number;
+- (MILaunchServicesRegisterOperation)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updatePersonaUniqueStrings:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updatePersonaUniqueStrings:(id)strings;
 @end
 
 @implementation MILaunchServicesRegisterOperation
 
-- (MILaunchServicesRegisterOperation)initWithBundleID:(id)a3 domain:(unint64_t)a4 personas:(id)a5 mountPoint:(id)a6 operationUUID:(id)a7 serialNumber:(unint64_t)a8
+- (MILaunchServicesRegisterOperation)initWithBundleID:(id)d domain:(unint64_t)domain personas:(id)personas mountPoint:(id)point operationUUID:(id)iD serialNumber:(unint64_t)number
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
+  dCopy = d;
+  personasCopy = personas;
+  pointCopy = point;
   v23.receiver = self;
   v23.super_class = MILaunchServicesRegisterOperation;
-  v17 = [(MILaunchServicesOperation *)&v23 initWithOperationUUID:a7 serialNumber:a8];
+  v17 = [(MILaunchServicesOperation *)&v23 initWithOperationUUID:iD serialNumber:number];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [dCopy copy];
     bundleID = v17->_bundleID;
     v17->_bundleID = v18;
 
-    v17->_domain = a4;
-    v20 = [v15 copy];
+    v17->_domain = domain;
+    v20 = [personasCopy copy];
     personaUniqueStrings = v17->_personaUniqueStrings;
     v17->_personaUniqueStrings = v20;
 
-    objc_storeStrong(&v17->_mountPoint, a6);
+    objc_storeStrong(&v17->_mountPoint, point);
   }
 
   return v17;
 }
 
-- (MILaunchServicesRegisterOperation)initWithCoder:(id)a3
+- (MILaunchServicesRegisterOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = MILaunchServicesRegisterOperation;
-  v5 = [(MILaunchServicesOperation *)&v30 initWithCoder:v4];
+  v5 = [(MILaunchServicesOperation *)&v30 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
   bundleID = v5->_bundleID;
   v5->_bundleID = v6;
 
@@ -54,13 +54,13 @@
   {
     v18 = sub_100010734("[MILaunchServicesRegisterOperation initWithCoder:]", 44, MIInstallerErrorDomain, 186, 0, 0, @"Missing bundle ID when deserializing registration", v8, v29);
 LABEL_11:
-    [v4 failWithError:v18];
+    [coderCopy failWithError:v18];
 
     v17 = 0;
     goto LABEL_12;
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
   v5->_domain = [v9 unsignedIntegerValue];
 
   domain = v5->_domain;
@@ -78,7 +78,7 @@ LABEL_11:
 
   v11 = objc_opt_class();
   v12 = [NSSet setWithObjects:v11, objc_opt_class(), 0];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"personaUniqueStrings"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"personaUniqueStrings"];
   personaUniqueStrings = v5->_personaUniqueStrings;
   v5->_personaUniqueStrings = v13;
 
@@ -92,7 +92,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mountPoint"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mountPoint"];
   mountPoint = v5->_mountPoint;
   v5->_mountPoint = v15;
 
@@ -103,57 +103,57 @@ LABEL_12:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = MILaunchServicesRegisterOperation;
-  v4 = a3;
-  [(MILaunchServicesOperation *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(MILaunchServicesOperation *)&v9 encodeWithCoder:coderCopy];
   v5 = [(MILaunchServicesRegisterOperation *)self bundleID:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"bundleID"];
+  [coderCopy encodeObject:v5 forKey:@"bundleID"];
 
   v6 = [NSNumber numberWithUnsignedInteger:[(MILaunchServicesRegisterOperation *)self domain]];
-  [v4 encodeObject:v6 forKey:@"domain"];
+  [coderCopy encodeObject:v6 forKey:@"domain"];
 
-  v7 = [(MILaunchServicesRegisterOperation *)self personaUniqueStrings];
-  [v4 encodeObject:v7 forKey:@"personaUniqueStrings"];
+  personaUniqueStrings = [(MILaunchServicesRegisterOperation *)self personaUniqueStrings];
+  [coderCopy encodeObject:personaUniqueStrings forKey:@"personaUniqueStrings"];
 
-  v8 = [(MILaunchServicesRegisterOperation *)self mountPoint];
-  [v4 encodeObject:v8 forKey:@"mountPoint"];
+  mountPoint = [(MILaunchServicesRegisterOperation *)self mountPoint];
+  [coderCopy encodeObject:mountPoint forKey:@"mountPoint"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v17.receiver = self;
   v17.super_class = MILaunchServicesRegisterOperation;
-  if ([(MILaunchServicesOperation *)&v17 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(MILaunchServicesOperation *)&v17 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(MILaunchServicesRegisterOperation *)self bundleID];
-    v7 = [v5 bundleID];
-    v8 = sub_100011064(v6, v7);
+    v5 = equalCopy;
+    bundleID = [(MILaunchServicesRegisterOperation *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    v8 = sub_100011064(bundleID, bundleID2);
 
     if (!v8)
     {
       goto LABEL_8;
     }
 
-    v9 = [v5 domain];
-    if (v9 != [(MILaunchServicesRegisterOperation *)self domain])
+    domain = [v5 domain];
+    if (domain != [(MILaunchServicesRegisterOperation *)self domain])
     {
       goto LABEL_8;
     }
 
-    v10 = [(MILaunchServicesRegisterOperation *)self personaUniqueStrings];
-    v11 = [v5 personaUniqueStrings];
-    v12 = sub_100011064(v10, v11);
+    personaUniqueStrings = [(MILaunchServicesRegisterOperation *)self personaUniqueStrings];
+    personaUniqueStrings2 = [v5 personaUniqueStrings];
+    v12 = sub_100011064(personaUniqueStrings, personaUniqueStrings2);
 
     if (v12)
     {
-      v13 = [(MILaunchServicesRegisterOperation *)self mountPoint];
-      v14 = [v5 mountPoint];
-      v15 = sub_100011064(v13, v14);
+      mountPoint = [(MILaunchServicesRegisterOperation *)self mountPoint];
+      mountPoint2 = [v5 mountPoint];
+      v15 = sub_100011064(mountPoint, mountPoint2);
     }
 
     else
@@ -176,20 +176,20 @@ LABEL_8:
   v12.receiver = self;
   v12.super_class = MILaunchServicesRegisterOperation;
   v3 = [(MILaunchServicesOperation *)&v12 hash];
-  v4 = [(MILaunchServicesRegisterOperation *)self bundleID];
-  v5 = [v4 hash];
+  bundleID = [(MILaunchServicesRegisterOperation *)self bundleID];
+  v5 = [bundleID hash];
   v6 = v5 ^ [(MILaunchServicesRegisterOperation *)self domain];
-  v7 = [(MILaunchServicesRegisterOperation *)self personaUniqueStrings];
-  v8 = v6 ^ [v7 hash];
-  v9 = [(MILaunchServicesRegisterOperation *)self mountPoint];
-  v10 = v8 ^ [v9 hash];
+  personaUniqueStrings = [(MILaunchServicesRegisterOperation *)self personaUniqueStrings];
+  v8 = v6 ^ [personaUniqueStrings hash];
+  mountPoint = [(MILaunchServicesRegisterOperation *)self mountPoint];
+  v10 = v8 ^ [mountPoint hash];
 
   return v10 ^ v3;
 }
 
-- (void)updatePersonaUniqueStrings:(id)a3
+- (void)updatePersonaUniqueStrings:(id)strings
 {
-  v4 = [a3 copy];
+  v4 = [strings copy];
   personaUniqueStrings = self->_personaUniqueStrings;
   self->_personaUniqueStrings = v4;
 
@@ -198,28 +198,28 @@ LABEL_8:
 
 - (id)description
 {
-  v3 = [(MILaunchServicesRegisterOperation *)self personaUniqueStrings];
-  v4 = [v3 allObjects];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  personaUniqueStrings = [(MILaunchServicesRegisterOperation *)self personaUniqueStrings];
+  allObjects = [personaUniqueStrings allObjects];
+  v5 = [allObjects componentsJoinedByString:{@", "}];
 
-  v6 = [(MILaunchServicesRegisterOperation *)self mountPoint];
+  mountPoint = [(MILaunchServicesRegisterOperation *)self mountPoint];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(MILaunchServicesOperation *)self operationUUID];
-  v10 = [(MILaunchServicesOperation *)self serialNumber];
-  v11 = [(MILaunchServicesRegisterOperation *)self bundleID];
+  operationUUID = [(MILaunchServicesOperation *)self operationUUID];
+  serialNumber = [(MILaunchServicesOperation *)self serialNumber];
+  bundleID = [(MILaunchServicesRegisterOperation *)self bundleID];
   [(MILaunchServicesRegisterOperation *)self domain];
   v12 = MIStringForInstallationDomain();
   v13 = v12;
-  if (v6)
+  if (mountPoint)
   {
-    v14 = [v6 path];
-    v15 = [NSString stringWithFormat:@"<%@: %@:%lu %@/%@ personas:[%@] mount:%@>", v8, v9, v10, v11, v13, v5, v14];
+    path = [mountPoint path];
+    v15 = [NSString stringWithFormat:@"<%@: %@:%lu %@/%@ personas:[%@] mount:%@>", v8, operationUUID, serialNumber, bundleID, v13, v5, path];
   }
 
   else
   {
-    v15 = [NSString stringWithFormat:@"<%@: %@:%lu %@/%@ personas:[%@]>", v8, v9, v10, v11, v12, v5];
+    v15 = [NSString stringWithFormat:@"<%@: %@:%lu %@/%@ personas:[%@]>", v8, operationUUID, serialNumber, bundleID, v12, v5];
   }
 
   return v15;

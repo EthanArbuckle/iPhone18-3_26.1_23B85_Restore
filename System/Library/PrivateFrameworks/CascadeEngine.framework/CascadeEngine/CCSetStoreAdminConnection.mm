@@ -1,24 +1,24 @@
 @interface CCSetStoreAdminConnection
-- (CCSetStoreAdminConnection)initWithConnection:(id)a3 writeAccess:(id)a4;
+- (CCSetStoreAdminConnection)initWithConnection:(id)connection writeAccess:(id)access;
 - (id)_shouldDeferActivityBlock;
-- (void)performMaintenanceOnAllSets:(id)a3 completion:(id)a4;
-- (void)removeAllSets:(id)a3 completion:(id)a4;
+- (void)performMaintenanceOnAllSets:(id)sets completion:(id)completion;
+- (void)removeAllSets:(id)sets completion:(id)completion;
 @end
 
 @implementation CCSetStoreAdminConnection
 
-- (CCSetStoreAdminConnection)initWithConnection:(id)a3 writeAccess:(id)a4
+- (CCSetStoreAdminConnection)initWithConnection:(id)connection writeAccess:(id)access
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  accessCopy = access;
   v12.receiver = self;
   v12.super_class = CCSetStoreAdminConnection;
   v9 = [(CCSetStoreAdminConnection *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    objc_storeStrong(&v10->_writeAccess, a4);
+    objc_storeStrong(&v9->_connection, connection);
+    objc_storeStrong(&v10->_writeAccess, access);
   }
 
   return v10;
@@ -82,22 +82,22 @@ uint64_t __54__CCSetStoreAdminConnection__shouldDeferActivityBlock__block_invoke
   return v3 & 1;
 }
 
-- (void)performMaintenanceOnAllSets:(id)a3 completion:(id)a4
+- (void)performMaintenanceOnAllSets:(id)sets completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  setsCopy = sets;
+  completionCopy = completion;
   writeAccess = self->_writeAccess;
   v9 = *MEMORY[0x1E698E940];
   v17 = 0;
-  v10 = [(CCDataResourceWriteAccess *)writeAccess requestAccessToResource:v6 withMode:3 useCase:v9 error:&v17];
+  v10 = [(CCDataResourceWriteAccess *)writeAccess requestAccessToResource:setsCopy withMode:3 useCase:v9 error:&v17];
   v11 = v17;
   if (v10)
   {
     v12 = self->_writeAccess;
-    v13 = [(CCSetStoreAdminConnection *)self _shouldDeferActivityBlock];
-    v14 = [(CCDataResourceWriteAccess *)v12 performMaintenanceActivity:v13 accessAssertion:v10];
+    _shouldDeferActivityBlock = [(CCSetStoreAdminConnection *)self _shouldDeferActivityBlock];
+    v14 = [(CCDataResourceWriteAccess *)v12 performMaintenanceActivity:_shouldDeferActivityBlock accessAssertion:v10];
 
-    if (v7)
+    if (completionCopy)
     {
       if (v14)
       {
@@ -121,34 +121,34 @@ uint64_t __54__CCSetStoreAdminConnection__shouldDeferActivityBlock__block_invoke
       [CCSetStoreAdminConnection performMaintenanceOnAllSets:completion:];
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v15 = 2;
 LABEL_10:
-      v7[2](v7, v15);
+      completionCopy[2](completionCopy, v15);
     }
   }
 }
 
-- (void)removeAllSets:(id)a3 completion:(id)a4
+- (void)removeAllSets:(id)sets completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  setsCopy = sets;
+  completionCopy = completion;
   writeAccess = self->_writeAccess;
   v9 = *MEMORY[0x1E698E940];
   v24 = 0;
-  v10 = [(CCDataResourceWriteAccess *)writeAccess requestAccessToResource:v6 withMode:3 useCase:v9 error:&v24];
+  v10 = [(CCDataResourceWriteAccess *)writeAccess requestAccessToResource:setsCopy withMode:3 useCase:v9 error:&v24];
   v11 = v24;
   if (v10)
   {
     v12 = MEMORY[0x1E698E9C8];
-    v13 = [v10 container];
-    v14 = [v12 pathForResource:v6 inContainer:v13];
+    container = [v10 container];
+    v14 = [v12 pathForResource:setsCopy inContainer:container];
 
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v23 = v11;
-    v16 = [v15 removeItemAtPath:v14 error:&v23];
+    v16 = [defaultManager removeItemAtPath:v14 error:&v23];
     v17 = v23;
 
     v18 = __biome_log_for_category();
@@ -167,7 +167,7 @@ LABEL_10:
       _os_log_impl(&dword_1DA444000, v18, OS_LOG_TYPE_DEFAULT, "%@ sets root directory: %@", buf, 0x16u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
       if (v16)
       {
@@ -179,7 +179,7 @@ LABEL_10:
         v20 = 2;
       }
 
-      v7[2](v7, v20);
+      completionCopy[2](completionCopy, v20);
     }
 
     v11 = v17;
@@ -193,9 +193,9 @@ LABEL_10:
       [CCSetStoreAdminConnection removeAllSets:completion:];
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 2);
+      completionCopy[2](completionCopy, 2);
     }
   }
 

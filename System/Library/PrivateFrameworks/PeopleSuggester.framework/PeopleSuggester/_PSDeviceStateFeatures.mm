@@ -1,18 +1,18 @@
 @interface _PSDeviceStateFeatures
-+ (id)isInCallWithCandidates:(id)a3 facetimeRequest:(BOOL)a4 caches:(id)a5 store:(id)a6;
-+ (id)isInMeetingWithCandidates:(id)a3 caches:(id)a4;
++ (id)isInCallWithCandidates:(id)candidates facetimeRequest:(BOOL)request caches:(id)caches store:(id)store;
++ (id)isInMeetingWithCandidates:(id)candidates caches:(id)caches;
 @end
 
 @implementation _PSDeviceStateFeatures
 
-+ (id)isInCallWithCandidates:(id)a3 facetimeRequest:(BOOL)a4 caches:(id)a5 store:(id)a6
++ (id)isInCallWithCandidates:(id)candidates facetimeRequest:(BOOL)request caches:(id)caches store:(id)store
 {
   v85[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v63 = a6;
-  v9 = [MEMORY[0x1E6997A60] userContext];
-  v10 = [MEMORY[0x1E6997A68] keyPathForActiveCall];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  cachesCopy = caches;
+  storeCopy = store;
+  userContext = [MEMORY[0x1E6997A60] userContext];
+  keyPathForActiveCall = [MEMORY[0x1E6997A68] keyPathForActiveCall];
+  v11 = [userContext objectForKeyedSubscript:keyPathForActiveCall];
   if (!v11)
   {
     v21 = +[_PSCandidate selfCandidate];
@@ -24,14 +24,14 @@
     goto LABEL_64;
   }
 
-  v12 = [MEMORY[0x1E6997A68] calleeContactIDsKey];
-  v13 = [v11 valueForKey:v12];
+  calleeContactIDsKey = [MEMORY[0x1E6997A68] calleeContactIDsKey];
+  v13 = [v11 valueForKey:calleeContactIDsKey];
 
-  v14 = [MEMORY[0x1E6997A68] calleeHandlesKey];
-  v15 = [v11 valueForKey:v14];
+  calleeHandlesKey = [MEMORY[0x1E6997A68] calleeHandlesKey];
+  v15 = [v11 valueForKey:calleeHandlesKey];
 
-  v16 = [MEMORY[0x1E6997A68] bundleIDKey];
-  v17 = [v11 valueForKey:v16];
+  bundleIDKey = [MEMORY[0x1E6997A68] bundleIDKey];
+  v17 = [v11 valueForKey:bundleIDKey];
 
   if (v17)
   {
@@ -71,18 +71,18 @@
   v60 = v15;
   v61 = v20;
   v58 = v13;
-  v59 = v8;
+  v59 = cachesCopy;
   if (__PAIR128__(v62, v20) != 0)
   {
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v24 = v8;
+    v24 = cachesCopy;
     v25 = [v24 countByEnumeratingWithState:&v71 objects:v82 count:16];
     if (v25)
     {
-      v55 = v10;
+      v55 = keyPathForActiveCall;
       v26 = 0;
       v27 = *v72;
       while (2)
@@ -96,7 +96,7 @@
             objc_enumerationMutation(v24);
           }
 
-          v26 = [_PSInteractionStoreUtils interactionsMatchingAnyHandlesOrContactIds:v61 identifiers:v62 account:0 directions:&unk_1F2D8C288 mechanisms:&unk_1F2D8C2A0 bundleIds:0 store:v63 fetchLimit:1 messageInteractionCache:*(*(&v71 + 1) + 8 * v28)];
+          v26 = [_PSInteractionStoreUtils interactionsMatchingAnyHandlesOrContactIds:v61 identifiers:v62 account:0 directions:&unk_1F2D8C288 mechanisms:&unk_1F2D8C2A0 bundleIds:0 store:storeCopy fetchLimit:1 messageInteractionCache:*(*(&v71 + 1) + 8 * v28)];
 
           if (v26 && [v26 count])
           {
@@ -120,28 +120,28 @@
 
       if (!v26)
       {
-        v8 = v59;
-        v10 = v55;
+        cachesCopy = v59;
+        keyPathForActiveCall = v55;
         goto LABEL_35;
       }
 
 LABEL_28:
-      v8 = v59;
+      cachesCopy = v59;
       if (![v26 count])
       {
-        v10 = v55;
+        keyPathForActiveCall = v55;
         goto LABEL_35;
       }
 
       v30 = +[_PSLogging featureGenerationChannel];
-      v10 = v55;
+      keyPathForActiveCall = v55;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
         _os_log_impl(&dword_1B5ED1000, v30, OS_LOG_TYPE_INFO, "Could not find matching interaction in caches, falling back to interaction store", buf, 2u);
       }
 
-      v25 = [_PSInteractionStoreUtils interactionsMatchingAnyHandlesOrContactIds:v61 identifiers:v62 account:0 directions:&unk_1F2D8C2B8 mechanisms:&unk_1F2D8C2D0 bundleIds:0 store:v63 fetchLimit:1 messageInteractionCache:0];
+      v25 = [_PSInteractionStoreUtils interactionsMatchingAnyHandlesOrContactIds:v61 identifiers:v62 account:0 directions:&unk_1F2D8C2B8 mechanisms:&unk_1F2D8C2D0 bundleIds:0 store:storeCopy fetchLimit:1 messageInteractionCache:0];
     }
 
     else
@@ -151,10 +151,10 @@ LABEL_28:
 
     v26 = v25;
 LABEL_35:
-    v31 = [v26 firstObject];
-    if (v31)
+    firstObject = [v26 firstObject];
+    if (firstObject)
     {
-      v21 = [_PSInteractionStoreUtils conversationIdFromInteraction:v31 bundleIds:0];
+      v21 = [_PSInteractionStoreUtils conversationIdFromInteraction:firstObject bundleIds:0];
     }
 
     else
@@ -171,20 +171,20 @@ LABEL_35:
 LABEL_39:
   if ([v15 count] >= 2)
   {
-    v53 = a4;
+    requestCopy = request;
     v54 = v11;
-    v56 = v10;
+    v56 = keyPathForActiveCall;
     v32 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v15];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v33 = v8;
+    v33 = cachesCopy;
     v34 = [v33 countByEnumeratingWithState:&v67 objects:v81 count:16];
     if (v34)
     {
       v35 = v34;
-      v36 = v9;
+      v36 = userContext;
       v37 = 0;
       v38 = *v68;
 LABEL_42:
@@ -197,7 +197,7 @@ LABEL_42:
           objc_enumerationMutation(v33);
         }
 
-        v37 = [_PSInteractionStoreUtils conversationIdWithExactMatchWithContactHandles:v32 store:v63 bundleIds:0 messageInteractionCache:*(*(&v67 + 1) + 8 * v39)];
+        v37 = [_PSInteractionStoreUtils conversationIdWithExactMatchWithContactHandles:v32 store:storeCopy bundleIds:0 messageInteractionCache:*(*(&v67 + 1) + 8 * v39)];
 
         if ([v37 count])
         {
@@ -221,22 +221,22 @@ LABEL_42:
 
     else
     {
-      v36 = v9;
+      v36 = userContext;
       v37 = 0;
     }
 
-    v9 = v36;
+    userContext = v36;
     if ([v37 count])
     {
-      v41 = [v37 allValues];
-      v42 = [v41 firstObject];
+      allValues = [v37 allValues];
+      firstObject2 = [allValues firstObject];
 
       v11 = v54;
-      v10 = v56;
+      keyPathForActiveCall = v56;
       v13 = v58;
-      if ([v42 length])
+      if ([firstObject2 length])
       {
-        v43 = v42;
+        v43 = firstObject2;
 
         v21 = v43;
       }
@@ -247,18 +247,18 @@ LABEL_42:
     else
     {
       v11 = v54;
-      v10 = v56;
+      keyPathForActiveCall = v56;
       v13 = v58;
       v15 = v60;
     }
 
-    a4 = v53;
+    request = requestCopy;
     v18 = 0x1E7C23000uLL;
   }
 
   v44 = objc_opt_new();
-  v45 = [*(v18 + 1360) featureGenerationChannel];
-  v46 = os_log_type_enabled(&v45->super, OS_LOG_TYPE_INFO);
+  featureGenerationChannel = [*(v18 + 1360) featureGenerationChannel];
+  v46 = os_log_type_enabled(&featureGenerationChannel->super, OS_LOG_TYPE_INFO);
   if (v21)
   {
     if (v46)
@@ -269,12 +269,12 @@ LABEL_42:
       v78 = v13;
       v79 = 2113;
       v80 = v21;
-      _os_log_impl(&dword_1B5ED1000, &v45->super, OS_LOG_TYPE_INFO, "Resolved %{private}@ and %{private}@ to %{private}@", buf, 0x20u);
+      _os_log_impl(&dword_1B5ED1000, &featureGenerationChannel->super, OS_LOG_TYPE_INFO, "Resolved %{private}@ and %{private}@ to %{private}@", buf, 0x20u);
     }
 
     v47 = v57;
-    v45 = [[_PSCandidate alloc] initWithDomainId:v21 derivedIntentId:v21 bundleId:v57 recipientsId:0];
-    [v44 addObject:v45];
+    featureGenerationChannel = [[_PSCandidate alloc] initWithDomainId:v21 derivedIntentId:v21 bundleId:v57 recipientsId:0];
+    [v44 addObject:featureGenerationChannel];
   }
 
   else
@@ -285,7 +285,7 @@ LABEL_42:
       v76 = v15;
       v77 = 2113;
       v78 = v13;
-      _os_log_impl(&dword_1B5ED1000, &v45->super, OS_LOG_TYPE_INFO, "Could not resolve %{private}@ and %{private}@ to candidate identifier", buf, 0x16u);
+      _os_log_impl(&dword_1B5ED1000, &featureGenerationChannel->super, OS_LOG_TYPE_INFO, "Could not resolve %{private}@ and %{private}@ to candidate identifier", buf, 0x16u);
     }
 
     v47 = v57;
@@ -296,13 +296,13 @@ LABEL_42:
   v64[1] = 3221225472;
   v64[2] = __78___PSDeviceStateFeatures_isInCallWithCandidates_facetimeRequest_caches_store___block_invoke;
   v64[3] = &unk_1E7C25808;
-  v66 = a4;
+  requestCopy2 = request;
   v65 = v47;
   v49 = v47;
   v50 = [v44 _pas_mappedArrayWithTransform:v64];
   v23 = [(_PSFeatureDictionary *)v48 initWithObjects:v50 forKeys:v44];
 
-  v8 = v59;
+  cachesCopy = v59;
 LABEL_64:
 
   v51 = *MEMORY[0x1E69E9840];
@@ -310,16 +310,16 @@ LABEL_64:
   return v23;
 }
 
-+ (id)isInMeetingWithCandidates:(id)a3 caches:(id)a4
++ (id)isInMeetingWithCandidates:(id)candidates caches:(id)caches
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  cachesCopy = caches;
   v5 = [MEMORY[0x1E695DF00] now];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v4;
+  obj = cachesCopy;
   v27 = [obj countByEnumeratingWithState:&v33 objects:v40 count:16];
   if (!v27)
   {
@@ -343,8 +343,8 @@ LABEL_64:
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v8 = [v7 interactions];
-      v9 = [v8 countByEnumeratingWithState:&v29 objects:v39 count:16];
+      interactions = [v7 interactions];
+      v9 = [interactions countByEnumeratingWithState:&v29 objects:v39 count:16];
       if (!v9)
       {
         goto LABEL_24;
@@ -359,7 +359,7 @@ LABEL_64:
         {
           if (*v30 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(interactions);
           }
 
           v13 = *(*(&v29 + 1) + 8 * j);
@@ -369,8 +369,8 @@ LABEL_64:
             goto LABEL_17;
           }
 
-          v15 = [v13 dateInterval];
-          if (([v15 containsDate:v5] & 1) == 0)
+          dateInterval = [v13 dateInterval];
+          if (([dateInterval containsDate:v5] & 1) == 0)
           {
 
 LABEL_17:
@@ -385,15 +385,15 @@ LABEL_22:
             goto LABEL_23;
           }
 
-          v16 = [v13 selfParticipantStatus];
+          selfParticipantStatus = [v13 selfParticipantStatus];
 
-          if (v16 == 7)
+          if (selfParticipantStatus == 7)
           {
             goto LABEL_22;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v29 objects:v39 count:16];
+        v10 = [interactions countByEnumeratingWithState:&v29 objects:v39 count:16];
         if (v10)
         {
           continue;

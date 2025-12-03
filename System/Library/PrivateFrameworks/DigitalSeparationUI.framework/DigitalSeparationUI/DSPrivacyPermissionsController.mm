@@ -1,29 +1,29 @@
 @interface DSPrivacyPermissionsController
 - (DSNavigationDelegate)delegate;
 - (DSPrivacyPermissionsController)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_pushNextPane;
 - (void)_updateButton;
 - (void)_updateTitle;
-- (void)addUnsharedPermissions:(id)a3 andApps:(id)a4;
+- (void)addUnsharedPermissions:(id)permissions andApps:(id)apps;
 - (void)collectPermissionsByType;
-- (void)filterContentForSearchText:(id)a3 category:(int64_t)a4;
-- (void)handleResetErrors:(id)a3 pushNextPane:(BOOL)a4;
+- (void)filterContentForSearchText:(id)text category:(int64_t)category;
+- (void)handleResetErrors:(id)errors pushNextPane:(BOOL)pane;
 - (void)reloadData;
 - (void)resetAllPermissions;
 - (void)resetSelectedPermissions;
-- (void)returnFromDetailAndDeleteApp:(id)a3;
-- (void)returnFromDetailAndResetPermissionForSelectedApps:(id)a3 permission:(id)a4;
-- (void)returnFromDetailAndResetSelectedPermissions:(id)a3 forApp:(id)a4;
-- (void)returnFromDetailAndStopAllSharingForPermission:(id)a3;
-- (void)searchBar:(id)a3 selectedScopeButtonIndexDidChange:(int64_t)a4;
-- (void)setApps:(id)a3;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)returnFromDetailAndDeleteApp:(id)app;
+- (void)returnFromDetailAndResetPermissionForSelectedApps:(id)apps permission:(id)permission;
+- (void)returnFromDetailAndResetSelectedPermissions:(id)permissions forApp:(id)app;
+- (void)returnFromDetailAndStopAllSharingForPermission:(id)permission;
+- (void)searchBar:(id)bar selectedScopeButtonIndexDidChange:(int64_t)change;
+- (void)setApps:(id)apps;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -56,8 +56,8 @@
     v12 = [DSUIUtilities setUpLinkButtonForController:v2 title:v11 target:v2 selector:sel_resetAllPermissions];
     [(DSTableWelcomeController *)v2 setLinkButton:v12];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v2 selector:sel_reloadData name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_reloadData name:*MEMORY[0x277D76758] object:0];
   }
 
   return v2;
@@ -74,14 +74,14 @@
   v4 = DSUILocStringForKey(@"BY_PERMISSION");
   v22[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
-  v6 = [(DSTableWelcomeController *)self searchController];
-  v7 = [v6 searchBar];
-  [v7 setScopeButtonTitles:v5];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  [searchBar setScopeButtonTitles:v5];
 
   v8 = DSUILocStringForKey(@"SEARCH_PRIVACY_APPS_PLACEHOLDER");
-  v9 = [(DSTableWelcomeController *)self searchController];
-  v10 = [v9 searchBar];
-  [v10 setPlaceholder:v8];
+  searchController2 = [(DSTableWelcomeController *)self searchController];
+  searchBar2 = [searchController2 searchBar];
+  [searchBar2 setPlaceholder:v8];
 
   v11 = objc_alloc_init(MEMORY[0x277D054D0]);
   v12 = [objc_alloc(MEMORY[0x277D05480]) initWithTCCStore:v11];
@@ -91,7 +91,7 @@
   [(DSTableWelcomeController *)self startContentSpinner];
   objc_initWeak(&location, self);
   v14 = self->_appSharing;
-  v15 = [MEMORY[0x277D054D8] allUserVisibleApps];
+  allUserVisibleApps = [MEMORY[0x277D054D8] allUserVisibleApps];
   v16 = MEMORY[0x277D85CD0];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -99,7 +99,7 @@
   v18[3] = &unk_278F750C8;
   objc_copyWeak(&v19, &location);
   v18[4] = self;
-  [(DSAppSharing *)v14 collectPermissionsForApps:v15 queue:MEMORY[0x277D85CD0] handler:v18];
+  [(DSAppSharing *)v14 collectPermissionsForApps:allUserVisibleApps queue:MEMORY[0x277D85CD0] handler:v18];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -200,19 +200,19 @@ void __53__DSPrivacyPermissionsController_resetAllPermissions__block_invoke_3(ui
 
 - (void)resetSelectedPermissions
 {
-  v3 = [(DSPrivacyPermissionsController *)self buttonTray];
-  [v3 showButtonsBusy];
+  buttonTray = [(DSPrivacyPermissionsController *)self buttonTray];
+  [buttonTray showButtonsBusy];
 
   objc_initWeak(&location, self);
   scope = self->_scope;
   if (!scope)
   {
-    v5 = [(DSPrivacyPermissionsController *)self appSharing];
+    appSharing = [(DSPrivacyPermissionsController *)self appSharing];
     v6 = MEMORY[0x277CBEB98];
-    v7 = [MEMORY[0x277D054D8] tccServices];
-    v8 = [v6 setWithArray:v7];
-    v9 = [(DSPrivacyPermissionsController *)self selectedApps];
-    v10 = [v9 valueForKey:@"appID"];
+    tccServices = [MEMORY[0x277D054D8] tccServices];
+    v8 = [v6 setWithArray:tccServices];
+    selectedApps = [(DSPrivacyPermissionsController *)self selectedApps];
+    v10 = [selectedApps valueForKey:@"appID"];
     v11 = MEMORY[0x277D85CD0];
     v12 = MEMORY[0x277D85CD0];
     v26[0] = MEMORY[0x277D85DD0];
@@ -221,7 +221,7 @@ void __53__DSPrivacyPermissionsController_resetAllPermissions__block_invoke_3(ui
     v26[3] = &unk_278F750F0;
     v26[4] = self;
     objc_copyWeak(&v27, &location);
-    [v5 resetPermissions:v8 forApps:v10 queue:v11 handler:v26];
+    [appSharing resetPermissions:v8 forApps:v10 queue:v11 handler:v26];
 
     objc_destroyWeak(&v27);
     scope = self->_scope;
@@ -230,17 +230,17 @@ void __53__DSPrivacyPermissionsController_resetAllPermissions__block_invoke_3(ui
   if (scope == 1)
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v14 = [(DSPrivacyPermissionsController *)self selectedSensors];
+    selectedSensors = [(DSPrivacyPermissionsController *)self selectedSensors];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __58__DSPrivacyPermissionsController_resetSelectedPermissions__block_invoke_2;
     v24[3] = &unk_278F75118;
     v15 = v13;
     v25 = v15;
-    [v14 enumerateObjectsUsingBlock:v24];
+    [selectedSensors enumerateObjectsUsingBlock:v24];
 
-    v16 = [(DSPrivacyPermissionsController *)self appSharing];
-    v17 = [MEMORY[0x277D054D8] allUserVisibleApps];
+    appSharing2 = [(DSPrivacyPermissionsController *)self appSharing];
+    allUserVisibleApps = [MEMORY[0x277D054D8] allUserVisibleApps];
     v18 = MEMORY[0x277D85CD0];
     v19 = MEMORY[0x277D85CD0];
     v21[0] = MEMORY[0x277D85DD0];
@@ -251,7 +251,7 @@ void __53__DSPrivacyPermissionsController_resetAllPermissions__block_invoke_3(ui
     v20 = v15;
     v22 = v20;
     objc_copyWeak(&v23, &location);
-    [v16 resetPermissions:v20 forApps:v17 queue:v18 handler:v21];
+    [appSharing2 resetPermissions:v20 forApps:allUserVisibleApps queue:v18 handler:v21];
 
     objc_destroyWeak(&v23);
   }
@@ -295,12 +295,12 @@ void __58__DSPrivacyPermissionsController_resetSelectedPermissions__block_invoke
   [WeakRetained handleResetErrors:v6 pushNextPane:1];
 }
 
-- (void)returnFromDetailAndResetSelectedPermissions:(id)a3 forApp:(id)a4
+- (void)returnFromDetailAndResetSelectedPermissions:(id)permissions forApp:(id)app
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DSPrivacyPermissionsController *)self buttonTray];
-  [v8 showButtonsBusy];
+  permissionsCopy = permissions;
+  appCopy = app;
+  buttonTray = [(DSPrivacyPermissionsController *)self buttonTray];
+  [buttonTray showButtonsBusy];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v24[0] = MEMORY[0x277D85DD0];
@@ -309,12 +309,12 @@ void __58__DSPrivacyPermissionsController_resetSelectedPermissions__block_invoke
   v24[3] = &unk_278F75168;
   v10 = v9;
   v25 = v10;
-  [v6 enumerateObjectsUsingBlock:v24];
+  [permissionsCopy enumerateObjectsUsingBlock:v24];
   objc_initWeak(&location, self);
-  v11 = [(DSPrivacyPermissionsController *)self appSharing];
+  appSharing = [(DSPrivacyPermissionsController *)self appSharing];
   v12 = MEMORY[0x277CBEB98];
-  v13 = [v7 appID];
-  v14 = [v12 setWithObject:v13];
+  appID = [appCopy appID];
+  v14 = [v12 setWithObject:appID];
   v15 = MEMORY[0x277D85CD0];
   v16 = MEMORY[0x277D85CD0];
   v19[0] = MEMORY[0x277D85DD0];
@@ -324,10 +324,10 @@ void __58__DSPrivacyPermissionsController_resetSelectedPermissions__block_invoke
   v19[4] = self;
   v17 = v10;
   v20 = v17;
-  v18 = v7;
+  v18 = appCopy;
   v21 = v18;
   objc_copyWeak(&v22, &location);
-  [v11 resetPermissions:v17 forApps:v14 queue:v15 handler:v19];
+  [appSharing resetPermissions:v17 forApps:v14 queue:v15 handler:v19];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -354,13 +354,13 @@ void __85__DSPrivacyPermissionsController_returnFromDetailAndResetSelectedPermis
   [WeakRetained handleResetErrors:v7 pushNextPane:0];
 }
 
-- (void)returnFromDetailAndDeleteApp:(id)a3
+- (void)returnFromDetailAndDeleteApp:(id)app
 {
-  v4 = a3;
-  v5 = [(DSPrivacyPermissionsController *)self appSharing];
-  v6 = [v4 appID];
+  appCopy = app;
+  appSharing = [(DSPrivacyPermissionsController *)self appSharing];
+  appID = [appCopy appID];
 
-  v7 = [v5 deleteApp:v6 forTest:0];
+  v7 = [appSharing deleteApp:appID forTest:0];
 
   if (v7 && [v7 code] == 8)
   {
@@ -379,8 +379,8 @@ void __85__DSPrivacyPermissionsController_returnFromDetailAndResetSelectedPermis
   }
 
   [(DSPrivacyPermissionsController *)self reloadData];
-  v12 = [(DSPrivacyPermissionsController *)self navigationController];
-  v13 = [v12 popViewControllerAnimated:1];
+  navigationController = [(DSPrivacyPermissionsController *)self navigationController];
+  v13 = [navigationController popViewControllerAnimated:1];
 }
 
 void __63__DSPrivacyPermissionsController_returnFromDetailAndDeleteApp___block_invoke(uint64_t a1)
@@ -389,12 +389,12 @@ void __63__DSPrivacyPermissionsController_returnFromDetailAndDeleteApp___block_i
   [v1 showButtonsAvailable];
 }
 
-- (void)returnFromDetailAndResetPermissionForSelectedApps:(id)a3 permission:(id)a4
+- (void)returnFromDetailAndResetPermissionForSelectedApps:(id)apps permission:(id)permission
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DSPrivacyPermissionsController *)self buttonTray];
-  [v8 showButtonsBusy];
+  appsCopy = apps;
+  permissionCopy = permission;
+  buttonTray = [(DSPrivacyPermissionsController *)self buttonTray];
+  [buttonTray showButtonsBusy];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v24[0] = MEMORY[0x277D85DD0];
@@ -403,12 +403,12 @@ void __63__DSPrivacyPermissionsController_returnFromDetailAndDeleteApp___block_i
   v24[3] = &unk_278F751B8;
   v10 = v9;
   v25 = v10;
-  [v6 enumerateObjectsUsingBlock:v24];
+  [appsCopy enumerateObjectsUsingBlock:v24];
   objc_initWeak(&location, self);
-  v11 = [(DSPrivacyPermissionsController *)self appSharing];
+  appSharing = [(DSPrivacyPermissionsController *)self appSharing];
   v12 = MEMORY[0x277CBEB98];
-  v13 = [v7 tccPermission];
-  v14 = [v12 setWithObject:v13];
+  tccPermission = [permissionCopy tccPermission];
+  v14 = [v12 setWithObject:tccPermission];
   v15 = MEMORY[0x277D85CD0];
   v16 = MEMORY[0x277D85CD0];
   v19[0] = MEMORY[0x277D85DD0];
@@ -416,12 +416,12 @@ void __63__DSPrivacyPermissionsController_returnFromDetailAndDeleteApp___block_i
   v19[2] = __95__DSPrivacyPermissionsController_returnFromDetailAndResetPermissionForSelectedApps_permission___block_invoke_2;
   v19[3] = &unk_278F75190;
   v19[4] = self;
-  v17 = v7;
+  v17 = permissionCopy;
   v20 = v17;
-  v18 = v6;
+  v18 = appsCopy;
   v21 = v18;
   objc_copyWeak(&v22, &location);
-  [v11 resetPermissions:v14 forApps:v10 queue:v15 handler:v19];
+  [appSharing resetPermissions:v14 forApps:v10 queue:v15 handler:v19];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -449,18 +449,18 @@ void __95__DSPrivacyPermissionsController_returnFromDetailAndResetPermissionForS
   [WeakRetained handleResetErrors:v6 pushNextPane:0];
 }
 
-- (void)returnFromDetailAndStopAllSharingForPermission:(id)a3
+- (void)returnFromDetailAndStopAllSharingForPermission:(id)permission
 {
-  v4 = a3;
-  v5 = [(DSPrivacyPermissionsController *)self buttonTray];
-  [v5 showButtonsBusy];
+  permissionCopy = permission;
+  buttonTray = [(DSPrivacyPermissionsController *)self buttonTray];
+  [buttonTray showButtonsBusy];
 
   objc_initWeak(&location, self);
-  v6 = [(DSPrivacyPermissionsController *)self appSharing];
+  appSharing = [(DSPrivacyPermissionsController *)self appSharing];
   v7 = MEMORY[0x277CBEB98];
-  v8 = [v4 tccPermission];
-  v9 = [v7 setWithObject:v8];
-  v10 = [MEMORY[0x277D054D8] allUserVisibleApps];
+  tccPermission = [permissionCopy tccPermission];
+  v9 = [v7 setWithObject:tccPermission];
+  allUserVisibleApps = [MEMORY[0x277D054D8] allUserVisibleApps];
   v11 = MEMORY[0x277D85CD0];
   v12 = MEMORY[0x277D85CD0];
   v14[0] = MEMORY[0x277D85DD0];
@@ -468,10 +468,10 @@ void __95__DSPrivacyPermissionsController_returnFromDetailAndResetPermissionForS
   v14[2] = __81__DSPrivacyPermissionsController_returnFromDetailAndStopAllSharingForPermission___block_invoke;
   v14[3] = &unk_278F75140;
   v14[4] = self;
-  v13 = v4;
+  v13 = permissionCopy;
   v15 = v13;
   objc_copyWeak(&v16, &location);
-  [v6 resetPermissions:v9 forApps:v10 queue:v11 handler:v14];
+  [appSharing resetPermissions:v9 forApps:allUserVisibleApps queue:v11 handler:v14];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -494,13 +494,13 @@ void __81__DSPrivacyPermissionsController_returnFromDetailAndStopAllSharingForPe
   [WeakRetained handleResetErrors:v6 pushNextPane:0];
 }
 
-- (void)handleResetErrors:(id)a3 pushNextPane:(BOOL)a4
+- (void)handleResetErrors:(id)errors pushNextPane:(BOOL)pane
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 count])
+  paneCopy = pane;
+  errorsCopy = errors;
+  if ([errorsCopy count])
   {
-    v7 = [MEMORY[0x277D05498] errorWithCode:4 underlyingErrors:v6];
+    v7 = [MEMORY[0x277D05498] errorWithCode:4 underlyingErrors:errorsCopy];
     v8 = [MEMORY[0x277D75110] ds_alertControllerWithStopPermissionSharingError:v7];
     v9 = MEMORY[0x277D750F8];
     v10 = DSUILocStringForKey(@"OK");
@@ -518,19 +518,19 @@ void __81__DSPrivacyPermissionsController_returnFromDetailAndStopAllSharingForPe
   else
   {
     [(DSPrivacyPermissionsController *)self reloadData];
-    if (v4)
+    if (paneCopy)
     {
       [(DSPrivacyPermissionsController *)self _pushNextPane];
     }
 
     else
     {
-      v12 = [(DSPrivacyPermissionsController *)self navigationController];
-      v13 = [v12 popViewControllerAnimated:1];
+      navigationController = [(DSPrivacyPermissionsController *)self navigationController];
+      v13 = [navigationController popViewControllerAnimated:1];
     }
 
-    v14 = [(DSPrivacyPermissionsController *)self buttonTray];
-    [v14 showButtonsAvailable];
+    buttonTray = [(DSPrivacyPermissionsController *)self buttonTray];
+    [buttonTray showButtonsAvailable];
   }
 }
 
@@ -589,33 +589,33 @@ void __65__DSPrivacyPermissionsController_handleResetErrors_pushNextPane___block
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setApps:(id)a3
+- (void)setApps:(id)apps
 {
-  objc_storeStrong(&self->_apps, a3);
-  v5 = a3;
-  v6 = [v5 count];
+  objc_storeStrong(&self->_apps, apps);
+  appsCopy = apps;
+  v6 = [appsCopy count];
 
   [(DSTableWelcomeController *)self setIsModelEmpty:v6 == 0];
   [(DSPrivacyPermissionsController *)self collectPermissionsByType];
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 
   [(DSPrivacyPermissionsController *)self _updateButton];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v7 = [a3 searchBar];
-  v4 = [v7 text];
-  v5 = [(DSTableWelcomeController *)self searchController];
-  v6 = [v5 searchBar];
-  -[DSPrivacyPermissionsController filterContentForSearchText:category:](self, "filterContentForSearchText:category:", v4, [v6 selectedScopeButtonIndex]);
+  searchBar = [controller searchBar];
+  text = [searchBar text];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar2 = [searchController searchBar];
+  -[DSPrivacyPermissionsController filterContentForSearchText:category:](self, "filterContentForSearchText:category:", text, [searchBar2 selectedScopeButtonIndex]);
 }
 
-- (void)searchBar:(id)a3 selectedScopeButtonIndexDidChange:(int64_t)a4
+- (void)searchBar:(id)bar selectedScopeButtonIndexDidChange:(int64_t)change
 {
-  v6 = [(DSPrivacyPermissionsController *)self headerView];
-  if (a4)
+  headerView = [(DSPrivacyPermissionsController *)self headerView];
+  if (change)
   {
     v7 = @"PRIVACY_PERMISSIONS_INFORMATION";
   }
@@ -625,7 +625,7 @@ void __65__DSPrivacyPermissionsController_handleResetErrors_pushNextPane___block
     v7 = @"PRIVACY_PERMISSIONS_APPS";
   }
 
-  if (a4)
+  if (change)
   {
     v8 = @"PRIVACY_PERMISSIONS_DETAIL_PERMISSIONS";
   }
@@ -635,7 +635,7 @@ void __65__DSPrivacyPermissionsController_handleResetErrors_pushNextPane___block
     v8 = @"PRIVACY_PERMISSIONS_DETAIL_APPS";
   }
 
-  if (a4)
+  if (change)
   {
     v9 = @"SEARCH_PRIVACY_INFORMATION_PLACEHOLDER";
   }
@@ -646,63 +646,63 @@ void __65__DSPrivacyPermissionsController_handleResetErrors_pushNextPane___block
   }
 
   v10 = DSUILocStringForKey(v7);
-  [v6 setTitle:v10];
+  [headerView setTitle:v10];
 
-  v11 = [(DSPrivacyPermissionsController *)self headerView];
+  headerView2 = [(DSPrivacyPermissionsController *)self headerView];
   v12 = DSUILocStringForKey(v8);
-  [v11 setDetailText:v12];
+  [headerView2 setDetailText:v12];
 
   v13 = DSUILocStringForKey(v9);
-  v14 = [(DSTableWelcomeController *)self searchController];
-  v15 = [v14 searchBar];
-  [v15 setPlaceholder:v13];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  searchBar = [searchController searchBar];
+  [searchBar setPlaceholder:v13];
 
-  v16 = [(DSTableWelcomeController *)self searchController];
-  v17 = [v16 searchBar];
-  v18 = [v17 text];
-  [(DSPrivacyPermissionsController *)self filterContentForSearchText:v18 category:a4];
+  searchController2 = [(DSTableWelcomeController *)self searchController];
+  searchBar2 = [searchController2 searchBar];
+  text = [searchBar2 text];
+  [(DSPrivacyPermissionsController *)self filterContentForSearchText:text category:change];
 
-  self->_scope = a4;
+  self->_scope = change;
 
   [(DSPrivacyPermissionsController *)self _updateButton];
 }
 
-- (void)filterContentForSearchText:(id)a3 category:(int64_t)a4
+- (void)filterContentForSearchText:(id)text category:(int64_t)category
 {
   if (self->_scope)
   {
-    v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"localizedName contains[c] %@", a4, a3];
-    v5 = [(DSPrivacyPermissionsController *)self sensors];
-    v6 = [v5 filteredArrayUsingPredicate:v10];
+    text = [MEMORY[0x277CCAC30] predicateWithFormat:@"localizedName contains[c] %@", category, text];
+    sensors = [(DSPrivacyPermissionsController *)self sensors];
+    v6 = [sensors filteredArrayUsingPredicate:text];
     [(DSPrivacyPermissionsController *)self setFilteredSensors:v6];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"displayName contains[c] %@", a4, a3];
-    v5 = [(DSPrivacyPermissionsController *)self apps];
-    v6 = [v5 filteredArrayUsingPredicate:v10];
+    text = [MEMORY[0x277CCAC30] predicateWithFormat:@"displayName contains[c] %@", category, text];
+    sensors = [(DSPrivacyPermissionsController *)self apps];
+    v6 = [sensors filteredArrayUsingPredicate:text];
     [(DSPrivacyPermissionsController *)self setFilteredApps:v6];
   }
 
-  v7 = [(DSPrivacyPermissionsController *)self headerView];
-  [v7 setTitle:&stru_285BA4988];
+  headerView = [(DSPrivacyPermissionsController *)self headerView];
+  [headerView setTitle:&stru_285BA4988];
 
-  v8 = [(DSPrivacyPermissionsController *)self headerView];
-  [v8 setDetailText:&stru_285BA4988];
+  headerView2 = [(DSPrivacyPermissionsController *)self headerView];
+  [headerView2 setDetailText:&stru_285BA4988];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   scope = self->_scope;
-  v7 = [(DSTableWelcomeController *)self isFiltering];
+  isFiltering = [(DSTableWelcomeController *)self isFiltering];
   if (scope == 1)
   {
-    if (v7)
+    if (isFiltering)
     {
       [(DSPrivacyPermissionsController *)self filteredSensors];
     }
@@ -712,36 +712,36 @@ void __65__DSPrivacyPermissionsController_handleResetErrors_pushNextPane___block
       [(DSPrivacyPermissionsController *)self sensors];
     }
     v8 = ;
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v10 = MEMORY[0x277D05478];
-    v11 = [(DSPrivacyPermissionsController *)self apps];
-    v12 = [v10 localizedDescriptionFromApps:v11 permission:v9];
+    apps = [(DSPrivacyPermissionsController *)self apps];
+    v12 = [v10 localizedDescriptionFromApps:apps permission:v9];
 
     v13 = MEMORY[0x277D05478];
-    v14 = [v9 tccPermission];
-    v15 = [v13 iconForPermission:v14 tableFormat:1];
+    tccPermission = [v9 tccPermission];
+    v15 = [v13 iconForPermission:tccPermission tableFormat:1];
 
-    v16 = [(OBTableWelcomeController *)self tableView];
-    v17 = [v9 localizedName];
-    v18 = [DSIconTableViewCell iconTableViewCellFromTableView:v16 withText:v17 detail:v12 icon:v15];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    localizedName = [v9 localizedName];
+    v18 = [DSIconTableViewCell iconTableViewCellFromTableView:tableView withText:localizedName detail:v12 icon:v15];
 
     [v18 setAccessoryType:4];
     [v18 setEditingAccessoryType:4];
-    v19 = [(DSPrivacyPermissionsController *)self selectedSensors];
-    LOBYTE(v17) = [v19 containsObject:v9];
+    selectedSensors = [(DSPrivacyPermissionsController *)self selectedSensors];
+    LOBYTE(localizedName) = [selectedSensors containsObject:v9];
 
-    if (v17)
+    if (localizedName)
     {
 LABEL_8:
-      v20 = [(OBTableWelcomeController *)self tableView];
-      [v20 selectRowAtIndexPath:v5 animated:1 scrollPosition:0];
+      tableView2 = [(OBTableWelcomeController *)self tableView];
+      [tableView2 selectRowAtIndexPath:pathCopy animated:1 scrollPosition:0];
     }
   }
 
   else
   {
-    if (v7)
+    if (isFiltering)
     {
       [(DSPrivacyPermissionsController *)self filteredApps];
     }
@@ -751,22 +751,22 @@ LABEL_8:
       [(DSPrivacyPermissionsController *)self apps];
     }
     v23 = ;
-    v9 = [v23 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+    v9 = [v23 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v12 = [MEMORY[0x277D05478] localizedDescriptionFromPermissions:v9];
-    v24 = [v9 appID];
-    v15 = [DSUIUtilities appIconForAppID:v24 format:0];
+    appID = [v9 appID];
+    v15 = [DSUIUtilities appIconForAppID:appID format:0];
 
-    v25 = [(OBTableWelcomeController *)self tableView];
-    v26 = [v9 displayName];
-    v18 = [DSIconTableViewCell iconTableViewCellFromTableView:v25 withText:v26 detail:v12 icon:v15];
+    tableView3 = [(OBTableWelcomeController *)self tableView];
+    displayName = [v9 displayName];
+    v18 = [DSIconTableViewCell iconTableViewCellFromTableView:tableView3 withText:displayName detail:v12 icon:v15];
 
     [v18 setAccessoryType:4];
     [v18 setEditingAccessoryType:4];
-    v27 = [(DSPrivacyPermissionsController *)self selectedApps];
-    LODWORD(v26) = [v27 containsObject:v9];
+    selectedApps = [(DSPrivacyPermissionsController *)self selectedApps];
+    LODWORD(displayName) = [selectedApps containsObject:v9];
 
-    if (v26)
+    if (displayName)
     {
       goto LABEL_8;
     }
@@ -777,14 +777,14 @@ LABEL_8:
   return v18;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = a3;
+  viewCopy = view;
   scope = self->_scope;
-  v7 = [(DSTableWelcomeController *)self isFiltering];
+  isFiltering = [(DSTableWelcomeController *)self isFiltering];
   if (scope)
   {
-    if (v7)
+    if (isFiltering)
     {
       [(DSPrivacyPermissionsController *)self filteredSensors];
     }
@@ -795,7 +795,7 @@ LABEL_8:
     }
   }
 
-  else if (v7)
+  else if (isFiltering)
   {
     [(DSPrivacyPermissionsController *)self filteredApps];
   }
@@ -817,10 +817,10 @@ LABEL_8:
 
     else
     {
-      v11 = [(DSTableWelcomeController *)self searchController];
-      v12 = [v11 searchBar];
-      v13 = [v12 text];
-      [(DSTableWelcomeController *)self showNoResultsViewWithSearchText:v13];
+      searchController = [(DSTableWelcomeController *)self searchController];
+      searchBar = [searchController searchBar];
+      text = [searchBar text];
+      [(DSTableWelcomeController *)self showNoResultsViewWithSearchText:text];
     }
   }
 
@@ -845,16 +845,16 @@ LABEL_8:
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   scope = self->_scope;
-  v8 = [(DSTableWelcomeController *)self isFiltering];
+  isFiltering = [(DSTableWelcomeController *)self isFiltering];
   if (scope)
   {
-    v9 = [(DSPrivacyPermissionsController *)self selectedSensors];
-    if (v8)
+    selectedSensors = [(DSPrivacyPermissionsController *)self selectedSensors];
+    if (isFiltering)
     {
       [(DSPrivacyPermissionsController *)self filteredSensors];
     }
@@ -867,8 +867,8 @@ LABEL_8:
 
   else
   {
-    v9 = [(DSPrivacyPermissionsController *)self selectedApps];
-    if (v8)
+    selectedSensors = [(DSPrivacyPermissionsController *)self selectedApps];
+    if (isFiltering)
     {
       [(DSPrivacyPermissionsController *)self filteredApps];
     }
@@ -880,22 +880,22 @@ LABEL_8:
   }
   v10 = ;
   v11 = v10;
-  v12 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-  [v9 addObject:v12];
+  v12 = [v10 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  [selectedSensors addObject:v12];
 
   [(DSPrivacyPermissionsController *)self _updateButton];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   scope = self->_scope;
-  v8 = [(DSTableWelcomeController *)self isFiltering];
+  isFiltering = [(DSTableWelcomeController *)self isFiltering];
   if (scope)
   {
-    v9 = [(DSPrivacyPermissionsController *)self selectedSensors];
-    if (v8)
+    selectedSensors = [(DSPrivacyPermissionsController *)self selectedSensors];
+    if (isFiltering)
     {
       [(DSPrivacyPermissionsController *)self filteredSensors];
     }
@@ -908,8 +908,8 @@ LABEL_8:
 
   else
   {
-    v9 = [(DSPrivacyPermissionsController *)self selectedApps];
-    if (v8)
+    selectedSensors = [(DSPrivacyPermissionsController *)self selectedApps];
+    if (isFiltering)
     {
       [(DSPrivacyPermissionsController *)self filteredApps];
     }
@@ -921,20 +921,20 @@ LABEL_8:
   }
   v10 = ;
   v11 = v10;
-  v12 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-  [v9 removeObject:v12];
+  v12 = [v10 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  [selectedSensors removeObject:v12];
 
   [(DSPrivacyPermissionsController *)self _updateButton];
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v21 = a4;
+  pathCopy = path;
   scope = self->_scope;
-  v6 = [(DSTableWelcomeController *)self isFiltering];
+  isFiltering = [(DSTableWelcomeController *)self isFiltering];
   if (scope)
   {
-    if (v6)
+    if (isFiltering)
     {
       [(DSPrivacyPermissionsController *)self filteredSensors];
     }
@@ -944,21 +944,21 @@ LABEL_8:
       [(DSPrivacyPermissionsController *)self sensors];
     }
     v7 = ;
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v21, "row")}];
+    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v9 = [DSPrivacyPermissionDetailController alloc];
-    v10 = [v8 localizedName];
+    localizedName = [v8 localizedName];
     v11 = MEMORY[0x277CCACA8];
     v12 = DSUILocStringForKey(@"PRIVACY_PERMISSIONS_INFORMATION_DETAIL");
-    v13 = [v8 localizedName];
-    v14 = [v11 localizedStringWithFormat:v12, v13];
-    v15 = [(DSPrivacyPermissionsController *)self apps];
-    v16 = [(DSPrivacyPermissionDetailController *)v9 initWithTitle:v10 detailText:v14 symbolName:0 permission:v8 apps:v15];
+    localizedName2 = [v8 localizedName];
+    v14 = [v11 localizedStringWithFormat:v12, localizedName2];
+    apps = [(DSPrivacyPermissionsController *)self apps];
+    v16 = [(DSPrivacyPermissionDetailController *)v9 initWithTitle:localizedName detailText:v14 symbolName:0 permission:v8 apps:apps];
   }
 
   else
   {
-    if (v6)
+    if (isFiltering)
     {
       [(DSPrivacyPermissionsController *)self filteredApps];
     }
@@ -968,25 +968,25 @@ LABEL_8:
       [(DSPrivacyPermissionsController *)self apps];
     }
     v17 = ;
-    v8 = [v17 objectAtIndexedSubscript:{objc_msgSend(v21, "row")}];
+    v8 = [v17 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v18 = [DSPrivacyAppDetailController alloc];
-    v10 = [v8 displayName];
+    localizedName = [v8 displayName];
     v19 = MEMORY[0x277CCACA8];
     v12 = DSUILocStringForKey(@"PRIVACY_PERMISSIONS_APP_DETAIL");
-    v13 = [v8 displayName];
-    v14 = [v19 localizedStringWithFormat:v12, v13];
-    v16 = [(DSPrivacyAppDetailController *)v18 initWithTitle:v10 detailText:v14 symbolName:0 app:v8];
+    localizedName2 = [v8 displayName];
+    v14 = [v19 localizedStringWithFormat:v12, localizedName2];
+    v16 = [(DSPrivacyAppDetailController *)v18 initWithTitle:localizedName detailText:v14 symbolName:0 app:v8];
   }
 
   [(DSPrivacyPermissionDetailController *)v16 setDelegate:self];
-  v20 = [(DSPrivacyPermissionsController *)self navigationController];
-  [v20 pushViewController:v16 animated:1];
+  navigationController = [(DSPrivacyPermissionsController *)self navigationController];
+  [navigationController pushViewController:v16 animated:1];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if (([(DSTableWelcomeController *)self isKeyboardActive]|| [(DSTableWelcomeController *)self isFiltering]) && ![(DSTableWelcomeController *)self isShowingNoResultsView])
   {
     if (self->_scope)
@@ -1000,17 +1000,17 @@ LABEL_8:
     }
 
     v9 = DSUILocStringForKey(v8);
-    v7 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
-    v10 = [v7 defaultContentConfiguration];
-    [v10 setText:v9];
-    [v7 setContentConfiguration:v10];
+    v7 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
+    defaultContentConfiguration = [v7 defaultContentConfiguration];
+    [defaultContentConfiguration setText:v9];
+    [v7 setContentConfiguration:defaultContentConfiguration];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = DSPrivacyPermissionsController;
-    v7 = [(DSTableWelcomeController *)&v12 tableView:v6 viewForHeaderInSection:a4];
+    v7 = [(DSTableWelcomeController *)&v12 tableView:viewCopy viewForHeaderInSection:section];
   }
 
   return v7;
@@ -1020,7 +1020,7 @@ LABEL_8:
 {
   objc_initWeak(&location, self);
   appSharing = self->_appSharing;
-  v4 = [MEMORY[0x277D054D8] allUserVisibleApps];
+  allUserVisibleApps = [MEMORY[0x277D054D8] allUserVisibleApps];
   v5 = MEMORY[0x277D85CD0];
   v6 = MEMORY[0x277D85CD0];
   v7[0] = MEMORY[0x277D85DD0];
@@ -1029,7 +1029,7 @@ LABEL_8:
   v7[3] = &unk_278F750C8;
   objc_copyWeak(&v8, &location);
   v7[4] = self;
-  [(DSAppSharing *)appSharing collectPermissionsForApps:v4 queue:v5 handler:v7];
+  [(DSAppSharing *)appSharing collectPermissionsForApps:allUserVisibleApps queue:v5 handler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -1074,19 +1074,19 @@ void __44__DSPrivacyPermissionsController_reloadData__block_invoke(uint64_t a1, 
   [*(a1 + 32) _updateButton];
 }
 
-- (void)addUnsharedPermissions:(id)a3 andApps:(id)a4
+- (void)addUnsharedPermissions:(id)permissions andApps:(id)apps
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DSPrivacyPermissionsController *)self delegate];
-  v9 = [MEMORY[0x277D05478] enumerateAppPermissionPairsFromApps:v6 permissions:v7];
+  appsCopy = apps;
+  permissionsCopy = permissions;
+  delegate = [(DSPrivacyPermissionsController *)self delegate];
+  v9 = [MEMORY[0x277D05478] enumerateAppPermissionPairsFromApps:appsCopy permissions:permissionsCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__DSPrivacyPermissionsController_addUnsharedPermissions_andApps___block_invoke;
   v11[3] = &unk_278F75208;
-  v12 = v8;
-  v10 = v8;
+  v12 = delegate;
+  v10 = delegate;
   [v9 enumerateKeysAndObjectsUsingBlock:v11];
 }
 
@@ -1180,17 +1180,17 @@ id __65__DSPrivacyPermissionsController_addUnsharedPermissions_andApps___block_i
 
 - (void)_pushNextPane
 {
-  v3 = [(DSPrivacyPermissionsController *)self delegate];
-  [v3 pushNextPane];
+  delegate = [(DSPrivacyPermissionsController *)self delegate];
+  [delegate pushNextPane];
 
-  v4 = [(DSTableWelcomeController *)self searchController];
-  [v4 setActive:0];
+  searchController = [(DSTableWelcomeController *)self searchController];
+  [searchController setActive:0];
 }
 
 - (void)_updateTitle
 {
   scope = self->_scope;
-  v4 = [(DSPrivacyPermissionsController *)self headerView];
+  headerView = [(DSPrivacyPermissionsController *)self headerView];
   if (scope)
   {
     v5 = @"PRIVACY_PERMISSIONS_INFORMATION";
@@ -1212,11 +1212,11 @@ id __65__DSPrivacyPermissionsController_addUnsharedPermissions_andApps___block_i
   }
 
   v7 = DSUILocStringForKey(v5);
-  [v4 setTitle:v7];
+  [headerView setTitle:v7];
 
-  v9 = [(DSPrivacyPermissionsController *)self headerView];
+  headerView2 = [(DSPrivacyPermissionsController *)self headerView];
   v8 = DSUILocStringForKey(v6);
-  [v9 setDetailText:v8];
+  [headerView2 setDetailText:v8];
 }
 
 - (void)_updateButton
@@ -1233,17 +1233,17 @@ id __65__DSPrivacyPermissionsController_addUnsharedPermissions_andApps___block_i
   v3 = ;
   v4 = [v3 count];
 
-  v5 = [(DSTableWelcomeController *)self boldButton];
-  [v5 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
   if (v4)
   {
-    v6 = [(DSTableWelcomeController *)self boldButton];
+    boldButton2 = [(DSTableWelcomeController *)self boldButton];
     v7 = DSUILocStringForKey(@"STOP_ACCESS");
-    [v6 setTitle:v7 forState:0];
+    [boldButton2 setTitle:v7 forState:0];
 
-    v8 = [(DSTableWelcomeController *)self boldButton];
-    [v8 addTarget:self action:sel_resetSelectedPermissions forControlEvents:64];
+    boldButton3 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton3 addTarget:self action:sel_resetSelectedPermissions forControlEvents:64];
   }
 
   else
@@ -1258,12 +1258,12 @@ id __65__DSPrivacyPermissionsController_addUnsharedPermissions_andApps___block_i
       v9 = @"SKIP";
     }
 
-    v8 = DSUILocStringForKey(v9);
-    v10 = [(DSTableWelcomeController *)self boldButton];
-    [v10 setTitle:v8 forState:0];
+    boldButton3 = DSUILocStringForKey(v9);
+    boldButton4 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton4 setTitle:boldButton3 forState:0];
 
-    v11 = [(DSTableWelcomeController *)self boldButton];
-    [v11 addTarget:self action:sel__pushNextPane forControlEvents:64];
+    boldButton5 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton5 addTarget:self action:sel__pushNextPane forControlEvents:64];
   }
 
   [(DSTableWelcomeController *)self hideButtonsIfSearching];

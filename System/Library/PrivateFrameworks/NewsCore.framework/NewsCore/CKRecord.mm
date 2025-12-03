@@ -1,5 +1,5 @@
 @interface CKRecord
-+ (id)secureSentinelRecordWithEncryptionKey:(uint64_t)a1;
++ (id)secureSentinelRecordWithEncryptionKey:(uint64_t)key;
 - (id)fc_secureSentinel_encryptionKey;
 - (id)fc_sentinel_encryptionKey;
 - (uint64_t)fc_sentinel_databaseVersion;
@@ -10,26 +10,26 @@
 - (void)fc_sentinel_finishedMigrationToVersion;
 - (void)fc_sentinel_finishedSubscriptionDeletion;
 - (void)fc_sentinel_finishedSubscriptionMigration;
-- (void)setFc_sentinel_databaseVersion:(void *)a1;
-- (void)setFc_sentinel_deletedToDatabaseVersion:(void *)a1;
-- (void)setFc_sentinel_encryptionKey:(void *)a1;
-- (void)setFc_sentinel_finishedDeletion:(void *)a1;
-- (void)setFc_sentinel_finishedDeletionToVersion:(void *)a1;
-- (void)setFc_sentinel_finishedMigration:(void *)a1;
-- (void)setFc_sentinel_finishedMigrationToVersion:(void *)a1;
-- (void)setFc_sentinel_finishedSubscriptionDeletion:(void *)a1;
-- (void)setFc_sentinel_finishedSubscriptionMigration:(void *)a1;
-- (void)setFc_sentinel_version:(void *)a1;
+- (void)setFc_sentinel_databaseVersion:(void *)version;
+- (void)setFc_sentinel_deletedToDatabaseVersion:(void *)version;
+- (void)setFc_sentinel_encryptionKey:(void *)key;
+- (void)setFc_sentinel_finishedDeletion:(void *)deletion;
+- (void)setFc_sentinel_finishedDeletionToVersion:(void *)version;
+- (void)setFc_sentinel_finishedMigration:(void *)migration;
+- (void)setFc_sentinel_finishedMigrationToVersion:(void *)version;
+- (void)setFc_sentinel_finishedSubscriptionDeletion:(void *)deletion;
+- (void)setFc_sentinel_finishedSubscriptionMigration:(void *)migration;
+- (void)setFc_sentinel_version:(void *)fc_sentinel_version;
 @end
 
 @implementation CKRecord
 
 - (id)fc_sentinel_encryptionKey
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 encryptedValuesByKey];
-    v2 = [v1 objectForKeyedSubscript:@"encryptionKey"];
+    encryptedValuesByKey = [self encryptedValuesByKey];
+    v2 = [encryptedValuesByKey objectForKeyedSubscript:@"encryptionKey"];
   }
 
   else
@@ -40,13 +40,13 @@
   return v2;
 }
 
-- (void)setFc_sentinel_encryptionKey:(void *)a1
+- (void)setFc_sentinel_encryptionKey:(void *)key
 {
-  if (a1)
+  if (key)
   {
     v3 = a2;
-    v4 = [a1 encryptedValuesByKey];
-    [v4 setObject:v3 forKeyedSubscript:@"encryptionKey"];
+    encryptedValuesByKey = [key encryptedValuesByKey];
+    [encryptedValuesByKey setObject:v3 forKeyedSubscript:@"encryptionKey"];
   }
 }
 
@@ -54,23 +54,23 @@
 {
   if (result)
   {
-    v1 = [result valuesByKey];
-    v2 = [v1 objectForKeyedSubscript:@"migratedUnencryptedData"];
-    v3 = [v2 BOOLValue];
+    valuesByKey = [result valuesByKey];
+    v2 = [valuesByKey objectForKeyedSubscript:@"migratedUnencryptedData"];
+    bOOLValue = [v2 BOOLValue];
 
-    return v3;
+    return bOOLValue;
   }
 
   return result;
 }
 
-- (void)setFc_sentinel_finishedMigration:(void *)a1
+- (void)setFc_sentinel_finishedMigration:(void *)migration
 {
-  if (a1 && [(CKRecord *)a1 fc_sentinel_finishedMigration]!= a2)
+  if (migration && [(CKRecord *)migration fc_sentinel_finishedMigration]!= a2)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:a2];
-    v4 = [a1 valuesByKey];
-    [v4 setObject:v5 forKeyedSubscript:@"migratedUnencryptedData"];
+    valuesByKey = [migration valuesByKey];
+    [valuesByKey setObject:v5 forKeyedSubscript:@"migratedUnencryptedData"];
   }
 }
 
@@ -78,23 +78,23 @@
 {
   if (result)
   {
-    v1 = [result valuesByKey];
-    v2 = [v1 objectForKeyedSubscript:@"deletedUnencryptedData"];
-    v3 = [v2 BOOLValue];
+    valuesByKey = [result valuesByKey];
+    v2 = [valuesByKey objectForKeyedSubscript:@"deletedUnencryptedData"];
+    bOOLValue = [v2 BOOLValue];
 
-    return v3;
+    return bOOLValue;
   }
 
   return result;
 }
 
-- (void)setFc_sentinel_finishedDeletion:(void *)a1
+- (void)setFc_sentinel_finishedDeletion:(void *)deletion
 {
-  if (a1 && [(CKRecord *)a1 fc_sentinel_finishedDeletion]!= a2)
+  if (deletion && [(CKRecord *)deletion fc_sentinel_finishedDeletion]!= a2)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:a2];
-    v4 = [a1 valuesByKey];
-    [v4 setObject:v5 forKeyedSubscript:@"deletedUnencryptedData"];
+    valuesByKey = [deletion valuesByKey];
+    [valuesByKey setObject:v5 forKeyedSubscript:@"deletedUnencryptedData"];
   }
 }
 
@@ -102,23 +102,23 @@
 {
   if (result)
   {
-    v1 = [result valuesByKey];
-    v2 = [v1 objectForKeyedSubscript:@"migratedSubscriptions"];
-    v3 = [v2 BOOLValue];
+    valuesByKey = [result valuesByKey];
+    v2 = [valuesByKey objectForKeyedSubscript:@"migratedSubscriptions"];
+    bOOLValue = [v2 BOOLValue];
 
-    return v3;
+    return bOOLValue;
   }
 
   return result;
 }
 
-- (void)setFc_sentinel_finishedSubscriptionMigration:(void *)a1
+- (void)setFc_sentinel_finishedSubscriptionMigration:(void *)migration
 {
-  if (a1 && [(CKRecord *)a1 fc_sentinel_finishedSubscriptionMigration]!= a2)
+  if (migration && [(CKRecord *)migration fc_sentinel_finishedSubscriptionMigration]!= a2)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:a2];
-    v4 = [a1 valuesByKey];
-    [v4 setObject:v5 forKeyedSubscript:@"migratedSubscriptions"];
+    valuesByKey = [migration valuesByKey];
+    [valuesByKey setObject:v5 forKeyedSubscript:@"migratedSubscriptions"];
   }
 }
 
@@ -126,23 +126,23 @@
 {
   if (result)
   {
-    v1 = [result valuesByKey];
-    v2 = [v1 objectForKeyedSubscript:@"deletedSubscriptions"];
-    v3 = [v2 BOOLValue];
+    valuesByKey = [result valuesByKey];
+    v2 = [valuesByKey objectForKeyedSubscript:@"deletedSubscriptions"];
+    bOOLValue = [v2 BOOLValue];
 
-    return v3;
+    return bOOLValue;
   }
 
   return result;
 }
 
-- (void)setFc_sentinel_finishedSubscriptionDeletion:(void *)a1
+- (void)setFc_sentinel_finishedSubscriptionDeletion:(void *)deletion
 {
-  if (a1 && [(CKRecord *)a1 fc_sentinel_finishedSubscriptionDeletion]!= a2)
+  if (deletion && [(CKRecord *)deletion fc_sentinel_finishedSubscriptionDeletion]!= a2)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:a2];
-    v4 = [a1 valuesByKey];
-    [v4 setObject:v5 forKeyedSubscript:@"deletedSubscriptions"];
+    valuesByKey = [deletion valuesByKey];
+    [valuesByKey setObject:v5 forKeyedSubscript:@"deletedSubscriptions"];
   }
 }
 
@@ -150,23 +150,23 @@
 {
   if (result)
   {
-    v1 = [result encryptedValuesByKey];
-    v2 = [v1 objectForKeyedSubscript:@"migratedToVersion"];
-    v3 = [v2 unsignedIntegerValue];
+    encryptedValuesByKey = [result encryptedValuesByKey];
+    v2 = [encryptedValuesByKey objectForKeyedSubscript:@"migratedToVersion"];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-    return v3;
+    return unsignedIntegerValue;
   }
 
   return result;
 }
 
-- (void)setFc_sentinel_finishedMigrationToVersion:(void *)a1
+- (void)setFc_sentinel_finishedMigrationToVersion:(void *)version
 {
-  if (a1 && [(CKRecord *)a1 fc_sentinel_finishedMigrationToVersion]!= a2)
+  if (version && [(CKRecord *)version fc_sentinel_finishedMigrationToVersion]!= a2)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
-    v4 = [a1 encryptedValuesByKey];
-    [v4 setObject:v5 forKeyedSubscript:@"migratedToVersion"];
+    encryptedValuesByKey = [version encryptedValuesByKey];
+    [encryptedValuesByKey setObject:v5 forKeyedSubscript:@"migratedToVersion"];
   }
 }
 
@@ -174,44 +174,44 @@
 {
   if (result)
   {
-    v1 = [result encryptedValuesByKey];
-    v2 = [v1 objectForKeyedSubscript:@"deletedToVersion"];
-    v3 = [v2 integerValue];
+    encryptedValuesByKey = [result encryptedValuesByKey];
+    v2 = [encryptedValuesByKey objectForKeyedSubscript:@"deletedToVersion"];
+    integerValue = [v2 integerValue];
 
-    return v3;
+    return integerValue;
   }
 
   return result;
 }
 
-- (void)setFc_sentinel_finishedDeletionToVersion:(void *)a1
+- (void)setFc_sentinel_finishedDeletionToVersion:(void *)version
 {
-  if (a1 && [(CKRecord *)a1 fc_sentinel_finishedDeletionToVersion]!= a2)
+  if (version && [(CKRecord *)version fc_sentinel_finishedDeletionToVersion]!= a2)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
-    v4 = [a1 encryptedValuesByKey];
-    [v4 setObject:v5 forKeyedSubscript:@"deletedToVersion"];
+    encryptedValuesByKey = [version encryptedValuesByKey];
+    [encryptedValuesByKey setObject:v5 forKeyedSubscript:@"deletedToVersion"];
   }
 }
 
-- (void)setFc_sentinel_version:(void *)a1
+- (void)setFc_sentinel_version:(void *)fc_sentinel_version
 {
-  if (a1)
+  if (fc_sentinel_version)
   {
-    v4 = [a1 valuesByKey];
-    v5 = [v4 objectForKeyedSubscript:@"version"];
-    v6 = [v5 integerValue];
+    valuesByKey = [fc_sentinel_version valuesByKey];
+    v5 = [valuesByKey objectForKeyedSubscript:@"version"];
+    integerValue = [v5 integerValue];
 
-    if (v6 != a2)
+    if (integerValue != a2)
     {
       v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a2];
-      v7 = [a1 valuesByKey];
-      [v7 setObject:v8 forKeyedSubscript:@"version"];
+      valuesByKey2 = [fc_sentinel_version valuesByKey];
+      [valuesByKey2 setObject:v8 forKeyedSubscript:@"version"];
     }
   }
 }
 
-+ (id)secureSentinelRecordWithEncryptionKey:(uint64_t)a1
++ (id)secureSentinelRecordWithEncryptionKey:(uint64_t)key
 {
   v2 = a2;
   objc_opt_self();
@@ -222,21 +222,21 @@
   if (v5)
   {
     v6 = v2;
-    v7 = [v5 encryptedValuesByKey];
-    [v7 setObject:v6 forKeyedSubscript:@"encryptionKey"];
+    encryptedValuesByKey = [v5 encryptedValuesByKey];
+    [encryptedValuesByKey setObject:v6 forKeyedSubscript:@"encryptionKey"];
 
-    v8 = [v5 valuesByKey];
-    v9 = [v8 objectForKeyedSubscript:@"version"];
-    v10 = [v9 unsignedIntegerValue];
+    valuesByKey = [v5 valuesByKey];
+    v9 = [valuesByKey objectForKeyedSubscript:@"version"];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-    if (v10 == 1)
+    if (unsignedIntegerValue == 1)
     {
       goto LABEL_5;
     }
 
     v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:1];
-    v11 = [v5 valuesByKey];
-    [v11 setObject:v2 forKeyedSubscript:@"version"];
+    valuesByKey2 = [v5 valuesByKey];
+    [valuesByKey2 setObject:v2 forKeyedSubscript:@"version"];
   }
 
 LABEL_5:
@@ -246,10 +246,10 @@ LABEL_5:
 
 - (id)fc_secureSentinel_encryptionKey
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 encryptedValuesByKey];
-    v2 = [v1 objectForKeyedSubscript:@"encryptionKey"];
+    encryptedValuesByKey = [self encryptedValuesByKey];
+    v2 = [encryptedValuesByKey objectForKeyedSubscript:@"encryptionKey"];
   }
 
   else
@@ -285,16 +285,16 @@ LABEL_5:
   return result;
 }
 
-- (void)setFc_sentinel_databaseVersion:(void *)a1
+- (void)setFc_sentinel_databaseVersion:(void *)version
 {
-  if (a1)
+  if (version)
   {
-    [(CKRecord *)a1 setFc_sentinel_finishedMigrationToVersion:a2];
+    [(CKRecord *)version setFc_sentinel_finishedMigrationToVersion:a2];
     if (a2 <= 3)
     {
-      [(CKRecord *)a1 setFc_sentinel_finishedMigration:?];
+      [(CKRecord *)version setFc_sentinel_finishedMigration:?];
 
-      [(CKRecord *)a1 setFc_sentinel_finishedSubscriptionMigration:?];
+      [(CKRecord *)version setFc_sentinel_finishedSubscriptionMigration:?];
     }
   }
 }
@@ -324,16 +324,16 @@ LABEL_5:
   return result;
 }
 
-- (void)setFc_sentinel_deletedToDatabaseVersion:(void *)a1
+- (void)setFc_sentinel_deletedToDatabaseVersion:(void *)version
 {
-  if (a1)
+  if (version)
   {
-    [(CKRecord *)a1 setFc_sentinel_finishedDeletionToVersion:a2];
+    [(CKRecord *)version setFc_sentinel_finishedDeletionToVersion:a2];
     if (a2 <= 3)
     {
-      [(CKRecord *)a1 setFc_sentinel_finishedDeletion:?];
+      [(CKRecord *)version setFc_sentinel_finishedDeletion:?];
 
-      [(CKRecord *)a1 setFc_sentinel_finishedSubscriptionDeletion:?];
+      [(CKRecord *)version setFc_sentinel_finishedSubscriptionDeletion:?];
     }
   }
 }

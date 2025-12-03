@@ -1,29 +1,29 @@
 @interface __UISystemGestureManager
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (NSSet)gestureRecognizers;
 - (NSString)description;
-- (__UISystemGestureManager)initWithDisplayIdentity:(id)a3;
+- (__UISystemGestureManager)initWithDisplayIdentity:(id)identity;
 - (unsigned)_dispatchModeForExternalGestureCompletion;
-- (void)_addInternalGesturesToView:(id)a3;
-- (void)_catchSwipeFailureGestureChanged:(id)a3;
-- (void)_directTouchDown:(id)a3;
-- (void)_exclusiveTouchGestureChanged:(id)a3;
-- (void)_exclusiveTouchGestureDidTerminate:(id)a3;
-- (void)_externalGestureRecognizerChanged:(id)a3;
+- (void)_addInternalGesturesToView:(id)view;
+- (void)_catchSwipeFailureGestureChanged:(id)changed;
+- (void)_directTouchDown:(id)down;
+- (void)_exclusiveTouchGestureChanged:(id)changed;
+- (void)_exclusiveTouchGestureDidTerminate:(id)terminate;
+- (void)_externalGestureRecognizerChanged:(id)changed;
 - (void)_failedPendingSwipe;
-- (void)_handleTooMuchMovementWithLastTouchTimestamp:(double)a3;
-- (void)_pendingSwipeGestureChanged:(id)a3;
-- (void)_pendingSwipeGestureDidBegin:(id)a3;
-- (void)_pendingSwipeGestureDidTerminate:(id)a3;
+- (void)_handleTooMuchMovementWithLastTouchTimestamp:(double)timestamp;
+- (void)_pendingSwipeGestureChanged:(id)changed;
+- (void)_pendingSwipeGestureDidBegin:(id)begin;
+- (void)_pendingSwipeGestureDidTerminate:(id)terminate;
 - (void)_removeInternalGestures;
-- (void)addGestureRecognizer:(id)a3;
-- (void)addGestureRecognizer:(id)a3 recognitionEvent:(int64_t)a4;
+- (void)addGestureRecognizer:(id)recognizer;
+- (void)addGestureRecognizer:(id)recognizer recognitionEvent:(int64_t)event;
 - (void)clearTransform;
 - (void)dealloc;
-- (void)exclusiveTouchGestureRecognizer:(id)a3 achievedMaximumAbsoluteAccumulatedMovement:(BOOL)a4 timestamp:(double)a5;
-- (void)removeGestureRecognizer:(id)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)exclusiveTouchGestureRecognizer:(id)recognizer achievedMaximumAbsoluteAccumulatedMovement:(BOOL)movement timestamp:(double)timestamp;
+- (void)removeGestureRecognizer:(id)recognizer;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation __UISystemGestureManager
@@ -38,10 +38,10 @@
 - (void)_failedPendingSwipe
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(UIGestureRecognizer *)self->_pendingSwipeGesture isEnabled];
+  isEnabled = [(UIGestureRecognizer *)self->_pendingSwipeGesture isEnabled];
   v4 = _systemGestureLog();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
-  if (v3)
+  if (isEnabled)
   {
     if (v5)
     {
@@ -80,12 +80,12 @@
   }
 }
 
-- (__UISystemGestureManager)initWithDisplayIdentity:(id)a3
+- (__UISystemGestureManager)initWithDisplayIdentity:(id)identity
 {
-  if (!a3)
+  if (!identity)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"__UISystemGestureManager.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"displayIdentity"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"__UISystemGestureManager.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"displayIdentity"}];
   }
 
   v41.receiver = self;
@@ -93,14 +93,14 @@
   v5 = [(__UISystemGestureManager *)&v41 init];
   if (v5)
   {
-    v6 = [a3 copy];
+    v6 = [identity copy];
     displayIdentity = v5->_displayIdentity;
     v5->_displayIdentity = v6;
 
     v8 = [UIScreen _screenWithFBSDisplayIdentity:v5->_displayIdentity];
-    v9 = [v8 displayConfiguration];
+    displayConfiguration = [v8 displayConfiguration];
 
-    v10 = [[_UISystemGestureWindow alloc] initWithDisplayConfiguration:v9];
+    v10 = [[_UISystemGestureWindow alloc] initWithDisplayConfiguration:displayConfiguration];
     systemGestureWindow = v5->_systemGestureWindow;
     v5->_systemGestureWindow = v10;
 
@@ -123,8 +123,8 @@
     v20 = objc_alloc_init(_UIExclusiveTouchGestureRecognizer);
     [(UIGestureRecognizer *)v20 _setRequiresSystemGesturesToFail:0];
     [(UIGestureRecognizer *)v20 setRequiresExclusiveTouchType:0];
-    v21 = [(UIGestureRecognizer *)v20 allowedTouchTypes];
-    v22 = [v21 mutableCopy];
+    allowedTouchTypes = [(UIGestureRecognizer *)v20 allowedTouchTypes];
+    v22 = [allowedTouchTypes mutableCopy];
 
     [v22 removeObject:&unk_1EFE309E8];
     [(UIGestureRecognizer *)v20 setAllowedTouchTypes:v22];
@@ -162,7 +162,7 @@
     objc_initWeak(&v38, v5->_externalEdgeSwipeGestures);
     objc_initWeak(&from, v5->_systemGestureWindow);
     v26 = MEMORY[0x1E69E96A0];
-    v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIKit - SystemGestureState - %@", a3];
+    identity = [MEMORY[0x1E696AEC0] stringWithFormat:@"UIKit - SystemGestureState - %@", identity];
     objc_copyWeak(&v33, &from);
     objc_copyWeak(&v34, &location);
     objc_copyWeak(&v35, &v39);
@@ -184,14 +184,14 @@
   return v5;
 }
 
-- (void)_addInternalGesturesToView:(id)a3
+- (void)_addInternalGesturesToView:(id)view
 {
   internalGestures = self->_internalGestures;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __55____UISystemGestureManager__addInternalGesturesToView___block_invoke;
   v4[3] = &unk_1E710B408;
-  v4[4] = a3;
+  v4[4] = view;
   [(NSMutableSet *)internalGestures enumerateObjectsUsingBlock:v4];
 }
 
@@ -233,42 +233,42 @@
   return v4;
 }
 
-- (void)addGestureRecognizer:(id)a3 recognitionEvent:(int64_t)a4
+- (void)addGestureRecognizer:(id)recognizer recognitionEvent:(int64_t)event
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!event)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"__UISystemGestureManager.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"recognitionEvent != _UISystemGestureRecognitionEventUnknown"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"__UISystemGestureManager.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"recognitionEvent != _UISystemGestureRecognitionEventUnknown"}];
   }
 
   v8 = self->_systemGestureWindow;
   if (!v8)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"__UISystemGestureManager.m" lineNumber:314 description:{@"failed to find a rootWindow for displayIdentity=%@", self->_displayIdentity}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"__UISystemGestureManager.m" lineNumber:314 description:{@"failed to find a rootWindow for displayIdentity=%@", self->_displayIdentity}];
   }
 
-  v9 = [(_UISystemGestureWindow *)v8 _systemGestureView];
+  _systemGestureView = [(_UISystemGestureWindow *)v8 _systemGestureView];
   if (_UIApplicationProcessIsCarousel() && _UIGetLogMoarUISystemGestureLogsForCarousel())
   {
     v10 = _systemGestureLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [a3 _briefDescription];
-      v12 = v11;
-      if (a4 > 3)
+      _briefDescription = [recognizer _briefDescription];
+      v12 = _briefDescription;
+      if (event > 3)
       {
         v13 = "<nil>";
       }
 
       else
       {
-        v13 = off_1E710B428[a4];
+        v13 = off_1E710B428[event];
       }
 
       *buf = 138543618;
-      v27 = v11;
+      v27 = _briefDescription;
       v28 = 2082;
       v29 = v13;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, "Adding gesture to system gesture manager: %{public}@; with recognition event: %{public}s", buf, 0x16u);
@@ -278,43 +278,43 @@
   if (![(NSMutableSet *)self->_externalGestures count])
   {
     v14 = [UIScreen _screenWithFBSDisplayIdentity:self->_displayIdentity];
-    v15 = [v14 displayConfiguration];
+    displayConfiguration = [v14 displayConfiguration];
 
-    if (!v15)
+    if (!displayConfiguration)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       displayIdentity = self->_displayIdentity;
       v25 = +[UIScreen _screens];
-      [v23 handleFailureInMethod:a2 object:self file:@"__UISystemGestureManager.m" lineNumber:323 description:{@"failed to find the hardwareIdentifier for displayIdentity=%@ -> displays=%@", displayIdentity, v25}];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"__UISystemGestureManager.m" lineNumber:323 description:{@"failed to find the hardwareIdentifier for displayIdentity=%@ -> displays=%@", displayIdentity, v25}];
     }
 
     v16 = objc_alloc_init(MEMORY[0x1E698E410]);
     v17 = objc_alloc(MEMORY[0x1E698E450]);
-    v18 = [(UIWindow *)v8 _contextId];
-    v19 = [v15 hardwareIdentifier];
-    v20 = [v17 initWithContextID:v18 displayUUID:v19 identifier:1 policy:v16];
+    _contextId = [(UIWindow *)v8 _contextId];
+    hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+    v20 = [v17 initWithContextID:_contextId displayUUID:hardwareIdentifier identifier:1 policy:v16];
 
     [(__UISystemGestureManager *)self setTouchStream:v20];
-    [(__UISystemGestureManager *)self _addInternalGesturesToView:v9];
+    [(__UISystemGestureManager *)self _addInternalGesturesToView:_systemGestureView];
   }
 
-  [a3 _setRecognitionEvent:a4];
-  if (a4 == 3)
+  [recognizer _setRecognitionEvent:event];
+  if (event == 3)
   {
-    [(NSMutableSet *)self->_externalEdgeSwipeGestures addObject:a3];
+    [(NSMutableSet *)self->_externalEdgeSwipeGestures addObject:recognizer];
     [(UIGestureRecognizer *)self->_catchEdgeSwipeFailureGesture setEnabled:1];
     [(UIGestureRecognizer *)self->_pendingSwipeGesture setEnabled:1];
   }
 
-  [(NSMutableSet *)self->_externalGestures addObject:a3];
-  [a3 addTarget:self action:sel__externalGestureRecognizerChanged_];
-  [a3 _setRequiresSystemGesturesToFail:0];
-  [v9 addGestureRecognizer:a3];
+  [(NSMutableSet *)self->_externalGestures addObject:recognizer];
+  [recognizer addTarget:self action:sel__externalGestureRecognizerChanged_];
+  [recognizer _setRequiresSystemGesturesToFail:0];
+  [_systemGestureView addGestureRecognizer:recognizer];
 }
 
-- (void)addGestureRecognizer:(id)a3
+- (void)addGestureRecognizer:(id)recognizer
 {
-  if ([a3 _isTouchGestureRecognizer])
+  if ([recognizer _isTouchGestureRecognizer])
   {
     v5 = 1;
   }
@@ -324,19 +324,19 @@
     v5 = 2;
   }
 
-  [(__UISystemGestureManager *)self addGestureRecognizer:a3 recognitionEvent:v5];
+  [(__UISystemGestureManager *)self addGestureRecognizer:recognizer recognitionEvent:v5];
 }
 
-- (void)removeGestureRecognizer:(id)a3
+- (void)removeGestureRecognizer:(id)recognizer
 {
   v5 = [(NSMutableSet *)self->_externalGestures count];
-  v6 = [a3 view];
-  [v6 removeGestureRecognizer:a3];
+  view = [recognizer view];
+  [view removeGestureRecognizer:recognizer];
 
-  [a3 removeTarget:self action:0];
-  [(NSMutableSet *)self->_externalGestures removeObject:a3];
-  [(NSMutableSet *)self->_externalEdgeSwipeGestures removeObject:a3];
-  [(NSMutableSet *)self->_recognizingGestures removeObject:a3];
+  [recognizer removeTarget:self action:0];
+  [(NSMutableSet *)self->_externalGestures removeObject:recognizer];
+  [(NSMutableSet *)self->_externalEdgeSwipeGestures removeObject:recognizer];
+  [(NSMutableSet *)self->_recognizingGestures removeObject:recognizer];
   v7 = [(NSMutableSet *)self->_externalEdgeSwipeGestures count]!= 0;
   [(UIGestureRecognizer *)self->_catchEdgeSwipeFailureGesture setEnabled:v7];
   [(UIGestureRecognizer *)self->_pendingSwipeGesture setEnabled:v7];
@@ -349,21 +349,21 @@
   }
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
   v6 = self->_systemGestureWindow;
   if (!v6)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"__UISystemGestureManager.m" lineNumber:381 description:{@"failed to find a rootWindow for displayIdentity=%@, cannot set transform", self->_displayIdentity}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"__UISystemGestureManager.m" lineNumber:381 description:{@"failed to find a rootWindow for displayIdentity=%@, cannot set transform", self->_displayIdentity}];
   }
 
-  v7 = [(_UISystemGestureWindow *)v6 _systemGestureView];
-  v8 = *&a3->c;
-  v10[0] = *&a3->a;
+  _systemGestureView = [(_UISystemGestureWindow *)v6 _systemGestureView];
+  v8 = *&transform->c;
+  v10[0] = *&transform->a;
   v10[1] = v8;
-  v10[2] = *&a3->tx;
-  [v7 setTransform:v10];
+  v10[2] = *&transform->tx;
+  [_systemGestureView setTransform:v10];
 }
 
 - (void)clearTransform
@@ -371,40 +371,40 @@
   v4 = self->_systemGestureWindow;
   if (!v4)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"__UISystemGestureManager.m" lineNumber:386 description:{@"failed to find a rootWindow for displayIdentity=%@, cannot remove transform", self->_displayIdentity}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"__UISystemGestureManager.m" lineNumber:386 description:{@"failed to find a rootWindow for displayIdentity=%@, cannot remove transform", self->_displayIdentity}];
   }
 
-  v5 = [(_UISystemGestureWindow *)v4 _systemGestureView];
+  _systemGestureView = [(_UISystemGestureWindow *)v4 _systemGestureView];
   v6 = *(MEMORY[0x1E695EFD0] + 16);
   v8[0] = *MEMORY[0x1E695EFD0];
   v8[1] = v6;
   v8[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [v5 setTransform:v8];
+  [_systemGestureView setTransform:v8];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = [(__UISystemGestureManager *)self exclusiveTouchGesture];
-  v8 = v7;
-  if (v7 == a3)
+  exclusiveTouchGesture = [(__UISystemGestureManager *)self exclusiveTouchGesture];
+  v8 = exclusiveTouchGesture;
+  if (exclusiveTouchGesture == recognizer)
   {
-    v9 = [(NSMutableSet *)self->_externalGestures containsObject:a4];
+    v9 = [(NSMutableSet *)self->_externalGestures containsObject:gestureRecognizer];
 
-    if (v9 && [a4 _recognitionEvent] == 1)
+    if (v9 && [gestureRecognizer _recognitionEvent] == 1)
     {
       if (_UIApplicationProcessIsCarousel() && _UIGetLogMoarUISystemGestureLogsForCarousel())
       {
         v10 = _systemGestureLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [a3 _briefDescription];
-          v12 = [a4 _briefDescription];
+          _briefDescription = [recognizer _briefDescription];
+          _briefDescription2 = [gestureRecognizer _briefDescription];
           v18 = 138543618;
-          v19 = v11;
+          v19 = _briefDescription;
           v20 = 2114;
-          v21 = v12;
+          v21 = _briefDescription2;
           v13 = "shouldRequireFailureOfGestureRecognizer: YES exclusive touch and FirstTouchDown: gestureRecognizer: %{public}@; otherGestureRecognizer: %{public}@";
 LABEL_15:
           _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, v13, &v18, 0x16u);
@@ -423,19 +423,19 @@ LABEL_16:
   {
   }
 
-  if (self->_catchEdgeSwipeFailureGesture == a3 && [(NSMutableSet *)self->_externalEdgeSwipeGestures containsObject:a4])
+  if (self->_catchEdgeSwipeFailureGesture == recognizer && [(NSMutableSet *)self->_externalEdgeSwipeGestures containsObject:gestureRecognizer])
   {
     if (_UIApplicationProcessIsCarousel() && _UIGetLogMoarUISystemGestureLogsForCarousel())
     {
       v10 = _systemGestureLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [a3 _briefDescription];
-        v12 = [a4 _briefDescription];
+        _briefDescription = [recognizer _briefDescription];
+        _briefDescription2 = [gestureRecognizer _briefDescription];
         v18 = 138543618;
-        v19 = v11;
+        v19 = _briefDescription;
         v20 = 2114;
-        v21 = v12;
+        v21 = _briefDescription2;
         v13 = "shouldRequireFailureOfGestureRecognizer: YES edge swipes: gestureRecognizer: %{public}@; otherGestureRecognizer: %{public}@";
         goto LABEL_15;
       }
@@ -454,12 +454,12 @@ LABEL_16:
   v10 = _systemGestureLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [a3 _briefDescription];
-    v16 = [a4 _briefDescription];
+    _briefDescription3 = [recognizer _briefDescription];
+    _briefDescription4 = [gestureRecognizer _briefDescription];
     v18 = 138543618;
-    v19 = v15;
+    v19 = _briefDescription3;
     v20 = 2114;
-    v21 = v16;
+    v21 = _briefDescription4;
     _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, "shouldRequireFailureOfGestureRecognizer: NO default: gestureRecognizer: %{public}@; otherGestureRecognizer: %{public}@", &v18, 0x16u);
   }
 
@@ -469,33 +469,33 @@ LABEL_22:
   return v14;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_pendingSwipeGesture == a3 || self->_catchEdgeSwipeFailureGesture == a3 || self->_directTouchGesture == a3)
+  if (self->_pendingSwipeGesture == recognizer || self->_catchEdgeSwipeFailureGesture == recognizer || self->_directTouchGesture == recognizer)
   {
     return 1;
   }
 
-  v7 = [(__UISystemGestureManager *)self exclusiveTouchGesture];
+  exclusiveTouchGesture = [(__UISystemGestureManager *)self exclusiveTouchGesture];
 
-  if (v7 != a3)
+  if (exclusiveTouchGesture != recognizer)
   {
     return 0;
   }
 
-  if ([(NSMutableSet *)self->_externalGestures containsObject:a4])
+  if ([(NSMutableSet *)self->_externalGestures containsObject:gestureRecognizer])
   {
-    return [a4 _recognitionEvent] != 1;
+    return [gestureRecognizer _recognitionEvent] != 1;
   }
 
   internalGestures = self->_internalGestures;
 
-  return [(NSMutableSet *)internalGestures containsObject:a4];
+  return [(NSMutableSet *)internalGestures containsObject:gestureRecognizer];
 }
 
-- (void)exclusiveTouchGestureRecognizer:(id)a3 achievedMaximumAbsoluteAccumulatedMovement:(BOOL)a4 timestamp:(double)a5
+- (void)exclusiveTouchGestureRecognizer:(id)recognizer achievedMaximumAbsoluteAccumulatedMovement:(BOOL)movement timestamp:(double)timestamp
 {
-  if (a4)
+  if (movement)
   {
     BSRunLoopPerformRelativeToCACommit();
   }
@@ -503,28 +503,28 @@ LABEL_22:
   else
   {
 
-    [(__UISystemGestureManager *)self setAchievedMaximumMovement:0, a5];
+    [(__UISystemGestureManager *)self setAchievedMaximumMovement:0, timestamp];
   }
 }
 
-- (void)_exclusiveTouchGestureDidTerminate:(id)a3
+- (void)_exclusiveTouchGestureDidTerminate:(id)terminate
 {
   v11 = *MEMORY[0x1E69E9840];
   [(NSMutableSet *)self->_recognizingGestures removeObject:?];
   if (!self->_didSeeExclusiveTouchBegan)
   {
-    v5 = [(__UISystemGestureManager *)self _dispatchModeForExternalGestureCompletion];
+    _dispatchModeForExternalGestureCompletion = [(__UISystemGestureManager *)self _dispatchModeForExternalGestureCompletion];
     v6 = _systemGestureLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      if (v5 > 3)
+      if (_dispatchModeForExternalGestureCompletion > 3)
       {
         v7 = @"<unknown>";
       }
 
       else
       {
-        v7 = off_1E710B448[v5];
+        v7 = off_1E710B448[_dispatchModeForExternalGestureCompletion];
       }
 
       v9 = 138543362;
@@ -533,20 +533,20 @@ LABEL_22:
     }
 
     touchStream = self->_touchStream;
-    [a3 lastTouchTimestamp];
-    [(BKSTouchStream *)touchStream setEventDispatchMode:v5 ambiguityRecommendation:2 lastTouchTimestamp:?];
+    [terminate lastTouchTimestamp];
+    [(BKSTouchStream *)touchStream setEventDispatchMode:_dispatchModeForExternalGestureCompletion ambiguityRecommendation:2 lastTouchTimestamp:?];
   }
 
   self->_didSeeExclusiveTouchBegan = 0;
 }
 
-- (void)_exclusiveTouchGestureChanged:(id)a3
+- (void)_exclusiveTouchGestureChanged:(id)changed
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [a3 state];
-  if (v5 > 3)
+  state = [changed state];
+  if (state > 3)
   {
-    if (v5 == 4)
+    if (state == 4)
     {
       v6 = _systemGestureLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -559,7 +559,7 @@ LABEL_22:
       goto LABEL_17;
     }
 
-    if (v5 == 5)
+    if (state == 5)
     {
       v6 = _systemGestureLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -571,16 +571,16 @@ LABEL_22:
 
 LABEL_17:
 
-      [(__UISystemGestureManager *)self _exclusiveTouchGestureDidTerminate:a3];
+      [(__UISystemGestureManager *)self _exclusiveTouchGestureDidTerminate:changed];
       return;
     }
 
     goto LABEL_10;
   }
 
-  if (v5 != 1)
+  if (state != 1)
   {
-    if (v5 == 3)
+    if (state == 3)
     {
       v6 = _systemGestureLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -600,29 +600,29 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v15 = 67109120;
-      LODWORD(v16) = [a3 state];
+      LODWORD(v16) = [changed state];
       _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "Exclusive touch ignored state:%d", &v15, 8u);
     }
 
     return;
   }
 
-  [(NSMutableSet *)self->_recognizingGestures addObject:a3];
+  [(NSMutableSet *)self->_recognizingGestures addObject:changed];
   kdebug_trace();
   if ([(NSMutableSet *)self->_recognizingGestures count]== 1)
   {
-    v9 = [(__UISystemGestureManager *)self _dispatchModeForExternalGestureCompletion];
+    _dispatchModeForExternalGestureCompletion = [(__UISystemGestureManager *)self _dispatchModeForExternalGestureCompletion];
     v10 = _systemGestureLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      if (v9 > 3)
+      if (_dispatchModeForExternalGestureCompletion > 3)
       {
         v13 = @"<unknown>";
       }
 
       else
       {
-        v13 = off_1E710B448[v9];
+        v13 = off_1E710B448[_dispatchModeForExternalGestureCompletion];
       }
 
       v15 = 138543362;
@@ -631,8 +631,8 @@ LABEL_10:
     }
 
     touchStream = self->_touchStream;
-    [a3 lastTouchTimestamp];
-    [(BKSTouchStream *)touchStream setEventDispatchMode:v9 ambiguityRecommendation:2 lastTouchTimestamp:?];
+    [changed lastTouchTimestamp];
+    [(BKSTouchStream *)touchStream setEventDispatchMode:_dispatchModeForExternalGestureCompletion ambiguityRecommendation:2 lastTouchTimestamp:?];
   }
 
   else
@@ -650,7 +650,7 @@ LABEL_10:
   self->_didSeeExclusiveTouchBegan = 1;
 }
 
-- (void)_pendingSwipeGestureDidBegin:(id)a3
+- (void)_pendingSwipeGestureDidBegin:(id)begin
 {
   if (!self->_didProcessPendingSwipeBegan)
   {
@@ -662,15 +662,15 @@ LABEL_10:
       _os_log_debug_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEBUG, "Pending swipe began -- moving to send / defer", v7, 2u);
     }
 
-    [(NSMutableSet *)self->_recognizingGestures addObject:a3];
+    [(NSMutableSet *)self->_recognizingGestures addObject:begin];
     kdebug_trace();
     touchStream = self->_touchStream;
-    [a3 lastTouchTimestamp];
+    [begin lastTouchTimestamp];
     [(BKSTouchStream *)touchStream setEventDispatchMode:2 ambiguityRecommendation:1 lastTouchTimestamp:?];
   }
 }
 
-- (void)_pendingSwipeGestureDidTerminate:(id)a3
+- (void)_pendingSwipeGestureDidTerminate:(id)terminate
 {
   if (self->_didProcessPendingSwipeBegan)
   {
@@ -685,22 +685,22 @@ LABEL_10:
     }
 
     touchStream = self->_touchStream;
-    [a3 lastTouchTimestamp];
+    [terminate lastTouchTimestamp];
     [(BKSTouchStream *)touchStream setEventDispatchMode:2 ambiguityRecommendation:2 lastTouchTimestamp:?];
-    if (a3)
+    if (terminate)
     {
-      [(NSMutableSet *)self->_recognizingGestures removeObject:a3];
+      [(NSMutableSet *)self->_recognizingGestures removeObject:terminate];
     }
   }
 }
 
-- (void)_pendingSwipeGestureChanged:(id)a3
+- (void)_pendingSwipeGestureChanged:(id)changed
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = [a3 state];
-  if (v5 > 3)
+  state = [changed state];
+  if (state > 3)
   {
-    if (v5 == 4)
+    if (state == 4)
     {
       v6 = _systemGestureLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -713,7 +713,7 @@ LABEL_10:
       goto LABEL_17;
     }
 
-    if (v5 == 5)
+    if (state == 5)
     {
       v6 = _systemGestureLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -725,16 +725,16 @@ LABEL_10:
 
 LABEL_17:
 
-      [(__UISystemGestureManager *)self _pendingSwipeGestureDidTerminate:a3];
+      [(__UISystemGestureManager *)self _pendingSwipeGestureDidTerminate:changed];
       return;
     }
 
     goto LABEL_10;
   }
 
-  if (v5 != 1)
+  if (state != 1)
   {
-    if (v5 == 3)
+    if (state == 3)
     {
       v6 = _systemGestureLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -754,26 +754,26 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9[0] = 67109120;
-      v9[1] = [a3 state];
+      v9[1] = [changed state];
       _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "Pending swipe ignored state:%d", v9, 8u);
     }
 
     return;
   }
 
-  [(__UISystemGestureManager *)self _pendingSwipeGestureDidBegin:a3];
+  [(__UISystemGestureManager *)self _pendingSwipeGestureDidBegin:changed];
 }
 
-- (void)_catchSwipeFailureGestureChanged:(id)a3
+- (void)_catchSwipeFailureGestureChanged:(id)changed
 {
-  if ([a3 state] == 3)
+  if ([changed state] == 3)
   {
 
     [(__UISystemGestureManager *)self _failedPendingSwipe];
   }
 }
 
-- (void)_directTouchDown:(id)a3
+- (void)_directTouchDown:(id)down
 {
   v36 = *MEMORY[0x1E69E9840];
   v29 = 0u;
@@ -804,11 +804,11 @@ LABEL_10:
           v11 = _systemGestureLog();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
           {
-            v17 = [v10 name];
-            v18 = v17;
-            if (v17)
+            name = [v10 name];
+            v18 = name;
+            if (name)
             {
-              v20 = v17;
+              v20 = name;
             }
 
             else
@@ -824,8 +824,8 @@ LABEL_10:
             _os_log_debug_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEBUG, "check recognizing %@", buf, 0xCu);
           }
 
-          v12 = [v10 allowedTouchTypes];
-          if ([v12 containsObject:&unk_1EFE309E8])
+          allowedTouchTypes = [v10 allowedTouchTypes];
+          if ([allowedTouchTypes containsObject:&unk_1EFE309E8])
           {
             if (v10)
             {
@@ -844,11 +844,11 @@ LABEL_10:
             v14 = _systemGestureLog();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
             {
-              v22 = [v10 name];
-              v23 = v22;
-              if (v22)
+              name2 = [v10 name];
+              v23 = name2;
+              if (name2)
               {
-                v25 = v22;
+                v25 = name2;
               }
 
               else
@@ -886,27 +886,27 @@ LABEL_14:
   }
 }
 
-- (void)_externalGestureRecognizerChanged:(id)a3
+- (void)_externalGestureRecognizerChanged:(id)changed
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [a3 _recognitionEvent];
-  if (v6 == 2)
+  array = [MEMORY[0x1E695DF70] array];
+  _recognitionEvent = [changed _recognitionEvent];
+  if (_recognitionEvent == 2)
   {
     goto LABEL_37;
   }
 
-  v7 = v6;
-  v8 = [a3 state];
-  if (v8 > 2)
+  v7 = _recognitionEvent;
+  state = [changed state];
+  if (state > 2)
   {
-    if (v8 == 3)
+    if (state == 3)
     {
       kdebug_trace();
       v17 = _systemGestureLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        v29 = _UIGestureLogDescription(a3);
+        v29 = _UIGestureLogDescription(changed);
         *buf = 138543362;
         v43 = v29;
         _os_log_debug_impl(&dword_188A29000, v17, OS_LOG_TYPE_DEBUG, "EX ended %{public}@", buf, 0xCu);
@@ -915,28 +915,28 @@ LABEL_14:
 
     else
     {
-      if (v8 != 4)
+      if (state != 4)
       {
-        if (v8 == 5)
+        if (state == 5)
         {
           v9 = _systemGestureLog();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
           {
-            v31 = _UIGestureLogDescription(a3);
+            v31 = _UIGestureLogDescription(changed);
             *buf = 138543362;
             v43 = v31;
             _os_log_debug_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEBUG, "EX failed %{public}@", buf, 0xCu);
           }
 
           kdebug_trace();
-          [(NSMutableSet *)self->_recognizingGestures removeObject:a3];
+          [(NSMutableSet *)self->_recognizingGestures removeObject:changed];
           externalGestures = self->_externalGestures;
           v36 = MEMORY[0x1E69E9820];
           v37 = 3221225472;
           v38 = __62____UISystemGestureManager__externalGestureRecognizerChanged___block_invoke;
           v39 = &unk_1E710B3B8;
-          v40 = a3;
-          v11 = v5;
+          changedCopy = changed;
+          v11 = array;
           v41 = v11;
           [(NSMutableSet *)externalGestures enumerateObjectsUsingBlock:&v36];
           v12 = _systemGestureLog();
@@ -949,18 +949,18 @@ LABEL_14:
 
           if ([(__CFString *)v11 count:v36])
           {
-            v13 = [(__UISystemGestureManager *)self _dispatchModeForExternalGestureCompletion];
+            _dispatchModeForExternalGestureCompletion = [(__UISystemGestureManager *)self _dispatchModeForExternalGestureCompletion];
             v14 = _systemGestureLog();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
             {
-              if (v13 > 3)
+              if (_dispatchModeForExternalGestureCompletion > 3)
               {
                 v33 = @"<unknown>";
               }
 
               else
               {
-                v33 = off_1E710B448[v13];
+                v33 = off_1E710B448[_dispatchModeForExternalGestureCompletion];
               }
 
               *buf = 138543362;
@@ -971,12 +971,12 @@ LABEL_14:
             touchStream = self->_touchStream;
             if (v7 == 3)
             {
-              [(BKSTouchStream *)touchStream setEventDispatchMode:v13 ambiguityRecommendation:2 lastTouchTimestamp:0.0];
+              [(BKSTouchStream *)touchStream setEventDispatchMode:_dispatchModeForExternalGestureCompletion ambiguityRecommendation:2 lastTouchTimestamp:0.0];
             }
 
             else
             {
-              [(BKSTouchStream *)touchStream setEventDispatchMode:v13 lastTouchTimestamp:0.0];
+              [(BKSTouchStream *)touchStream setEventDispatchMode:_dispatchModeForExternalGestureCompletion lastTouchTimestamp:0.0];
             }
           }
         }
@@ -987,7 +987,7 @@ LABEL_14:
       v18 = _systemGestureLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v30 = _UIGestureLogDescription(a3);
+        v30 = _UIGestureLogDescription(changed);
         *buf = 138543362;
         v43 = v30;
         _os_log_debug_impl(&dword_188A29000, v18, OS_LOG_TYPE_DEBUG, "EX cancelled %{public}@", buf, 0xCu);
@@ -996,7 +996,7 @@ LABEL_14:
       kdebug_trace();
     }
 
-    [(NSMutableSet *)self->_recognizingGestures removeObject:a3];
+    [(NSMutableSet *)self->_recognizingGestures removeObject:changed];
     v19 = self->_touchStream;
     v20 = 0.0;
     v21 = 2;
@@ -1006,18 +1006,18 @@ LABEL_34:
     goto LABEL_37;
   }
 
-  if (v8 == 1)
+  if (state == 1)
   {
     kdebug_trace();
-    [(NSMutableSet *)self->_recognizingGestures addObject:a3];
-    v23 = [a3 cancelsTouchesInView];
+    [(NSMutableSet *)self->_recognizingGestures addObject:changed];
+    cancelsTouchesInView = [changed cancelsTouchesInView];
     v24 = _systemGestureLog();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG);
-    if (v23)
+    if (cancelsTouchesInView)
     {
       if (v25)
       {
-        v34 = _UIGestureLogDescription(a3);
+        v34 = _UIGestureLogDescription(changed);
         *buf = 138543362;
         v43 = v34;
         _os_log_debug_impl(&dword_188A29000, v24, OS_LOG_TYPE_DEBUG, "EX %{public}@ began & stealing touches", buf, 0xCu);
@@ -1031,7 +1031,7 @@ LABEL_34:
     {
       if (v25)
       {
-        v35 = _UIGestureLogDescription(a3);
+        v35 = _UIGestureLogDescription(changed);
         *buf = 138543362;
         v43 = v35;
         _os_log_debug_impl(&dword_188A29000, v24, OS_LOG_TYPE_DEBUG, "EX %{public}@ began & also allowing touches to reach app", buf, 0xCu);
@@ -1042,19 +1042,19 @@ LABEL_34:
     }
 
     v28 = self->_touchStream;
-    [a3 lastTouchTimestamp];
+    [changed lastTouchTimestamp];
     v19 = v28;
     v21 = v27;
     v22 = v26;
     goto LABEL_34;
   }
 
-  if (v8 == 2)
+  if (state == 2)
   {
     v16 = _systemGestureLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v32 = _UIGestureLogDescription(a3);
+      v32 = _UIGestureLogDescription(changed);
       *buf = 138543362;
       v43 = v32;
       _os_log_debug_impl(&dword_188A29000, v16, OS_LOG_TYPE_DEBUG, "EX changed %{public}@", buf, 0xCu);
@@ -1064,7 +1064,7 @@ LABEL_34:
 LABEL_37:
 }
 
-- (void)_handleTooMuchMovementWithLastTouchTimestamp:(double)a3
+- (void)_handleTooMuchMovementWithLastTouchTimestamp:(double)timestamp
 {
   v15 = *MEMORY[0x1E69E9840];
   if ([(NSMutableSet *)self->_recognizingGestures count])
@@ -1098,7 +1098,7 @@ LABEL_37:
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, "UIKit magic hysteresis reached with no gestures still recognizing. Moving to send/process.", buf, 2u);
     }
 
-    [(BKSTouchStream *)self->_touchStream setEventDispatchMode:2 ambiguityRecommendation:2 lastTouchTimestamp:a3];
+    [(BKSTouchStream *)self->_touchStream setEventDispatchMode:2 ambiguityRecommendation:2 lastTouchTimestamp:timestamp];
   }
 }
 

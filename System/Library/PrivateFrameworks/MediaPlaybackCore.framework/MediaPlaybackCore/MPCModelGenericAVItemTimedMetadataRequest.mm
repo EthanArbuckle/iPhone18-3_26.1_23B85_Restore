@@ -1,15 +1,15 @@
 @interface MPCModelGenericAVItemTimedMetadataRequest
 + (NSArray)metadataIdentifiers;
-- (MPCModelGenericAVItemTimedMetadataRequest)initWithGenericObject:(id)a3 timedMetadataGroups:(id)a4 storeRequestContext:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (MPCModelGenericAVItemTimedMetadataRequest)initWithGenericObject:(id)object timedMetadataGroups:(id)groups storeRequestContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation MPCModelGenericAVItemTimedMetadataRequest
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [(MPCModelGenericAVItemTimedMetadataRequest *)self copy];
   v7 = objc_alloc(MEMORY[0x1E69704B8]);
   v12[0] = MEMORY[0x1E69E9820];
@@ -17,10 +17,10 @@
   v12[2] = __77__MPCModelGenericAVItemTimedMetadataRequest_newOperationWithResponseHandler___block_invoke;
   v12[3] = &unk_1E8235460;
   v13 = v6;
-  v14 = self;
-  v15 = v5;
+  selfCopy = self;
+  v15 = handlerCopy;
   v16 = a2;
-  v8 = v5;
+  v8 = handlerCopy;
   v9 = v6;
   v10 = [v7 initWithStartHandler:v12];
 
@@ -694,11 +694,11 @@ uint64_t __77__MPCModelGenericAVItemTimedMetadataRequest_newOperationWithRespons
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = MPCModelGenericAVItemTimedMetadataRequest;
-  v4 = [(MPCModelGenericAVItemTimedMetadataRequest *)&v7 copyWithZone:a3];
+  v4 = [(MPCModelGenericAVItemTimedMetadataRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -711,23 +711,23 @@ uint64_t __77__MPCModelGenericAVItemTimedMetadataRequest_newOperationWithRespons
   return v5;
 }
 
-- (MPCModelGenericAVItemTimedMetadataRequest)initWithGenericObject:(id)a3 timedMetadataGroups:(id)a4 storeRequestContext:(id)a5
+- (MPCModelGenericAVItemTimedMetadataRequest)initWithGenericObject:(id)object timedMetadataGroups:(id)groups storeRequestContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  groupsCopy = groups;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = MPCModelGenericAVItemTimedMetadataRequest;
   v12 = [(MPCModelGenericAVItemTimedMetadataRequest *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_genericObject, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_genericObject, object);
+    v14 = [groupsCopy copy];
     timedMetadataGroups = v13->_timedMetadataGroups;
     v13->_timedMetadataGroups = v14;
 
-    v16 = [v11 copy];
+    v16 = [contextCopy copy];
     storeRequestContext = v13->_storeRequestContext;
     v13->_storeRequestContext = v16;
   }

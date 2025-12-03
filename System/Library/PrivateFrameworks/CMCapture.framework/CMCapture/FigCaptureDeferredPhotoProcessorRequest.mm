@@ -1,6 +1,6 @@
 @interface FigCaptureDeferredPhotoProcessorRequest
-- (BOOL)isEqual:(id)a3;
-- (FigCaptureDeferredPhotoProcessorRequest)initWithApplicationID:(id)a3 captureRequstIdentifier:(id)a4 photoIdentifier:(id)a5 clientPID:(int)a6 message:(id)a7 qosClass:(unsigned int)a8 parent:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (FigCaptureDeferredPhotoProcessorRequest)initWithApplicationID:(id)d captureRequstIdentifier:(id)identifier photoIdentifier:(id)photoIdentifier clientPID:(int)iD message:(id)message qosClass:(unsigned int)class parent:(id)parent;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -8,20 +8,20 @@
 
 @implementation FigCaptureDeferredPhotoProcessorRequest
 
-- (FigCaptureDeferredPhotoProcessorRequest)initWithApplicationID:(id)a3 captureRequstIdentifier:(id)a4 photoIdentifier:(id)a5 clientPID:(int)a6 message:(id)a7 qosClass:(unsigned int)a8 parent:(id)a9
+- (FigCaptureDeferredPhotoProcessorRequest)initWithApplicationID:(id)d captureRequstIdentifier:(id)identifier photoIdentifier:(id)photoIdentifier clientPID:(int)iD message:(id)message qosClass:(unsigned int)class parent:(id)parent
 {
   v16.receiver = self;
   v16.super_class = FigCaptureDeferredPhotoProcessorRequest;
   v14 = [(FigCaptureDeferredPhotoProcessorRequest *)&v16 init];
   if (v14)
   {
-    v14->_applicationID = [a3 copy];
-    v14->_captureRequestIdentifier = [a4 copy];
-    v14->_photoIdentifier = [a5 copy];
-    v14->_clientPID = a6;
-    v14->_parent = a9;
+    v14->_applicationID = [d copy];
+    v14->_captureRequestIdentifier = [identifier copy];
+    v14->_photoIdentifier = [photoIdentifier copy];
+    v14->_clientPID = iD;
+    v14->_parent = parent;
     v14->_message = FigXPCRetain();
-    v14->_qosClass = a8;
+    v14->_qosClass = class;
   }
 
   return v14;
@@ -36,9 +36,9 @@
   [(FigCaptureDeferredPhotoProcessorRequest *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
     return v5;
@@ -50,26 +50,26 @@
     goto LABEL_11;
   }
 
-  v5 = -[NSString isEqual:](self->_applicationID, "isEqual:", [a3 applicationID]);
+  v5 = -[NSString isEqual:](self->_applicationID, "isEqual:", [equal applicationID]);
   if (!v5)
   {
     return v5;
   }
 
-  v5 = -[NSString isEqual:](self->_captureRequestIdentifier, "isEqual:", [a3 captureRequestIdentifier]);
+  v5 = -[NSString isEqual:](self->_captureRequestIdentifier, "isEqual:", [equal captureRequestIdentifier]);
   if (!v5)
   {
     return v5;
   }
 
-  v5 = -[NSString isEqual:](self->_photoIdentifier, "isEqual:", [a3 photoIdentifier]);
+  v5 = -[NSString isEqual:](self->_photoIdentifier, "isEqual:", [equal photoIdentifier]);
   if (!v5)
   {
     return v5;
   }
 
   clientPID = self->_clientPID;
-  if (clientPID != [a3 clientPID])
+  if (clientPID != [equal clientPID])
   {
 LABEL_11:
     LOBYTE(v5) = 0;
@@ -77,7 +77,7 @@ LABEL_11:
   }
 
   parent = self->_parent;
-  if (parent == [a3 parent] || (v5 = -[FigCaptureDeferredPhotoProcessorRequest isEqual:](self->_parent, "isEqual:", objc_msgSend(a3, "parent"))) != 0)
+  if (parent == [equal parent] || (v5 = -[FigCaptureDeferredPhotoProcessorRequest isEqual:](self->_parent, "isEqual:", objc_msgSend(equal, "parent"))) != 0)
   {
     LOBYTE(v5) = 1;
   }

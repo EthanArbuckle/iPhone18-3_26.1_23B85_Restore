@@ -1,5 +1,5 @@
 @interface SiriCoreSQLiteStatement
-- (SiriCoreSQLiteStatement)initWithImpl:(sqlite3_stmt *)a3 finalizeWhenDone:(BOOL)a4;
+- (SiriCoreSQLiteStatement)initWithImpl:(sqlite3_stmt *)impl finalizeWhenDone:(BOOL)done;
 - (void)clearBindings;
 - (void)dealloc;
 - (void)reset;
@@ -7,15 +7,15 @@
 
 @implementation SiriCoreSQLiteStatement
 
-- (SiriCoreSQLiteStatement)initWithImpl:(sqlite3_stmt *)a3 finalizeWhenDone:(BOOL)a4
+- (SiriCoreSQLiteStatement)initWithImpl:(sqlite3_stmt *)impl finalizeWhenDone:(BOOL)done
 {
   v7.receiver = self;
   v7.super_class = SiriCoreSQLiteStatement;
   result = [(SiriCoreSQLiteStatement *)&v7 init];
   if (result)
   {
-    result->_impl = a3;
-    result->_finalizeWhenDone = a4;
+    result->_impl = impl;
+    result->_finalizeWhenDone = done;
   }
 
   return result;

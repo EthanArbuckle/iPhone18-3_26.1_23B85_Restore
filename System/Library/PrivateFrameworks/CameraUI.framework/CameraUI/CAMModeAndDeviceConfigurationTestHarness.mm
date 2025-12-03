@@ -1,12 +1,12 @@
 @interface CAMModeAndDeviceConfigurationTestHarness
-- (CAMModeAndDeviceConfigurationTestHarness)initWithTestName:(id)a3;
-- (void)_handleChangeToMode:(id)a3;
-- (void)_handleDidCloseViewfinderForReason:(id)a3;
-- (void)_handleDidOpenViewfinderForReason:(id)a3;
-- (void)_handleWillCloseViewfinderForReason:(id)a3;
-- (void)_handleWillOpenViewfinderForReason:(id)a3;
-- (void)handleChangeToMode:(int64_t)a3 device:(int64_t)a4;
-- (void)registerHandler:(id)a3 forChangeToMode:(int64_t)a4 devicePosition:(int64_t)a5;
+- (CAMModeAndDeviceConfigurationTestHarness)initWithTestName:(id)name;
+- (void)_handleChangeToMode:(id)mode;
+- (void)_handleDidCloseViewfinderForReason:(id)reason;
+- (void)_handleDidOpenViewfinderForReason:(id)reason;
+- (void)_handleWillCloseViewfinderForReason:(id)reason;
+- (void)_handleWillOpenViewfinderForReason:(id)reason;
+- (void)handleChangeToMode:(int64_t)mode device:(int64_t)device;
+- (void)registerHandler:(id)handler forChangeToMode:(int64_t)mode devicePosition:(int64_t)position;
 - (void)removeListeners;
 - (void)setupListeners;
 - (void)startTesting;
@@ -15,11 +15,11 @@
 
 @implementation CAMModeAndDeviceConfigurationTestHarness
 
-- (CAMModeAndDeviceConfigurationTestHarness)initWithTestName:(id)a3
+- (CAMModeAndDeviceConfigurationTestHarness)initWithTestName:(id)name
 {
   v8.receiver = self;
   v8.super_class = CAMModeAndDeviceConfigurationTestHarness;
-  v3 = [(CAMPerformanceTestHarness *)&v8 initWithTestName:a3];
+  v3 = [(CAMPerformanceTestHarness *)&v8 initWithTestName:name];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -35,18 +35,18 @@
 
 - (void)setupListeners
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleChangeToMode_ name:@"CAMPerformanceDidChangeToModeNotification" object:0];
-  [v3 addObserver:self selector:sel__handleWillCloseViewfinderForReason_ name:@"CAMPerformanceWillCloseViewfinderNotification" object:0];
-  [v3 addObserver:self selector:sel__handleDidCloseViewfinderForReason_ name:@"CAMPerformanceDidCloseViewfinderNotification" object:0];
-  [v3 addObserver:self selector:sel__handleWillOpenViewfinderForReason_ name:@"CAMPerformanceWillOpenViewfinderNotification" object:0];
-  [v3 addObserver:self selector:sel__handleDidOpenViewfinderForReason_ name:@"CAMPerformanceDidOpenViewfinderNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleChangeToMode_ name:@"CAMPerformanceDidChangeToModeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__handleWillCloseViewfinderForReason_ name:@"CAMPerformanceWillCloseViewfinderNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__handleDidCloseViewfinderForReason_ name:@"CAMPerformanceDidCloseViewfinderNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__handleWillOpenViewfinderForReason_ name:@"CAMPerformanceWillOpenViewfinderNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__handleDidOpenViewfinderForReason_ name:@"CAMPerformanceDidOpenViewfinderNotification" object:0];
 }
 
 - (void)removeListeners
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)startTesting
@@ -65,74 +65,74 @@
   [(CAMModeAndDeviceConfigurationTestHarness *)self removeListeners];
 }
 
-- (void)_handleChangeToMode:(id)a3
+- (void)_handleChangeToMode:(id)mode
 {
-  v8 = [a3 userInfo];
-  v4 = [v8 valueForKey:@"mode"];
-  v5 = [v4 intValue];
+  userInfo = [mode userInfo];
+  v4 = [userInfo valueForKey:@"mode"];
+  intValue = [v4 intValue];
 
-  v6 = [v8 valueForKey:@"device"];
-  v7 = [v6 intValue];
+  v6 = [userInfo valueForKey:@"device"];
+  intValue2 = [v6 intValue];
 
-  [(CAMModeAndDeviceConfigurationTestHarness *)self handleChangeToMode:v5 device:v7];
+  [(CAMModeAndDeviceConfigurationTestHarness *)self handleChangeToMode:intValue device:intValue2];
 }
 
-- (void)_handleWillCloseViewfinderForReason:(id)a3
+- (void)_handleWillCloseViewfinderForReason:(id)reason
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 valueForKey:@"reason"];
-  v5 = [v4 intValue];
+  userInfo = [reason userInfo];
+  v4 = [userInfo valueForKey:@"reason"];
+  intValue = [v4 intValue];
 
-  [(CAMModeAndDeviceConfigurationTestHarness *)self handleWillCloseViewfinderForReason:v5];
+  [(CAMModeAndDeviceConfigurationTestHarness *)self handleWillCloseViewfinderForReason:intValue];
 }
 
-- (void)_handleDidCloseViewfinderForReason:(id)a3
+- (void)_handleDidCloseViewfinderForReason:(id)reason
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 valueForKey:@"reason"];
-  v5 = [v4 intValue];
+  userInfo = [reason userInfo];
+  v4 = [userInfo valueForKey:@"reason"];
+  intValue = [v4 intValue];
 
-  [(CAMModeAndDeviceConfigurationTestHarness *)self handleDidCloseViewfinderForReason:v5];
+  [(CAMModeAndDeviceConfigurationTestHarness *)self handleDidCloseViewfinderForReason:intValue];
 }
 
-- (void)_handleWillOpenViewfinderForReason:(id)a3
+- (void)_handleWillOpenViewfinderForReason:(id)reason
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 valueForKey:@"reason"];
-  v5 = [v4 intValue];
+  userInfo = [reason userInfo];
+  v4 = [userInfo valueForKey:@"reason"];
+  intValue = [v4 intValue];
 
-  [(CAMModeAndDeviceConfigurationTestHarness *)self handleWillOpenViewfinderForReason:v5];
+  [(CAMModeAndDeviceConfigurationTestHarness *)self handleWillOpenViewfinderForReason:intValue];
 }
 
-- (void)_handleDidOpenViewfinderForReason:(id)a3
+- (void)_handleDidOpenViewfinderForReason:(id)reason
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 valueForKey:@"reason"];
-  v5 = [v4 intValue];
+  userInfo = [reason userInfo];
+  v4 = [userInfo valueForKey:@"reason"];
+  intValue = [v4 intValue];
 
-  [(CAMModeAndDeviceConfigurationTestHarness *)self handleDidOpenViewfinderForReason:v5];
+  [(CAMModeAndDeviceConfigurationTestHarness *)self handleDidOpenViewfinderForReason:intValue];
 }
 
-- (void)handleChangeToMode:(int64_t)a3 device:(int64_t)a4
+- (void)handleChangeToMode:(int64_t)mode device:(int64_t)device
 {
   v31 = *MEMORY[0x1E69E9840];
-  if ((a4 - 1) > 0xA)
+  if ((device - 1) > 0xA)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_1A3A6A978[a4 - 1];
+    v5 = qword_1A3A6A978[device - 1];
   }
 
-  v6 = [(CAMModeAndDeviceConfigurationTestHarness *)self _modeChangeListeners];
+  _modeChangeListeners = [(CAMModeAndDeviceConfigurationTestHarness *)self _modeChangeListeners];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v6;
+  v8 = _modeChangeListeners;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v9)
   {
@@ -148,7 +148,7 @@
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        if ([v13 desiredMode] == a3 && objc_msgSend(v13, "desiredDevicePosition") == v5)
+        if ([v13 desiredMode] == mode && objc_msgSend(v13, "desiredDevicePosition") == v5)
         {
           [v7 addObject:v13];
         }
@@ -180,8 +180,8 @@
         }
 
         v19 = *(*(&v21 + 1) + 8 * j);
-        v20 = [v19 handler];
-        v20[2]();
+        handler = [v19 handler];
+        handler[2]();
 
         [v8 removeObject:v19];
       }
@@ -193,16 +193,16 @@
   }
 }
 
-- (void)registerHandler:(id)a3 forChangeToMode:(int64_t)a4 devicePosition:(int64_t)a5
+- (void)registerHandler:(id)handler forChangeToMode:(int64_t)mode devicePosition:(int64_t)position
 {
-  v8 = a3;
+  handlerCopy = handler;
   v10 = objc_alloc_init(CAMModeAndDeviceConfigurationChangeListener);
-  [(CAMModeAndDeviceConfigurationChangeListener *)v10 setDesiredMode:a4];
-  [(CAMModeAndDeviceConfigurationChangeListener *)v10 setDesiredDevicePosition:a5];
-  [(CAMModeAndDeviceConfigurationChangeListener *)v10 setHandler:v8];
+  [(CAMModeAndDeviceConfigurationChangeListener *)v10 setDesiredMode:mode];
+  [(CAMModeAndDeviceConfigurationChangeListener *)v10 setDesiredDevicePosition:position];
+  [(CAMModeAndDeviceConfigurationChangeListener *)v10 setHandler:handlerCopy];
 
-  v9 = [(CAMModeAndDeviceConfigurationTestHarness *)self _modeChangeListeners];
-  [v9 addObject:v10];
+  _modeChangeListeners = [(CAMModeAndDeviceConfigurationTestHarness *)self _modeChangeListeners];
+  [_modeChangeListeners addObject:v10];
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface ASDCellularSettings
-+ (id)settingsForIdentity:(id)a3;
-- (ASDCellularSettings)initWithDefaultsKey:(id)a3;
-- (ASDCellularSettings)initWithIdentity:(id)a3;
++ (id)settingsForIdentity:(id)identity;
+- (ASDCellularSettings)initWithDefaultsKey:(id)key;
+- (ASDCellularSettings)initWithIdentity:(id)identity;
 - (id)_cellularSettings;
 - (int64_t)cellularDataPrompt;
-- (void)setCellularDataPrompt:(int64_t)a3;
+- (void)setCellularDataPrompt:(int64_t)prompt;
 @end
 
 @implementation ASDCellularSettings
 
-- (ASDCellularSettings)initWithIdentity:(id)a3
+- (ASDCellularSettings)initWithIdentity:(id)identity
 {
-  v4 = [a3 defaultsKey];
-  v5 = [(ASDCellularSettings *)self initWithDefaultsKey:v4];
+  defaultsKey = [identity defaultsKey];
+  v5 = [(ASDCellularSettings *)self initWithDefaultsKey:defaultsKey];
 
   return v5;
 }
 
-+ (id)settingsForIdentity:(id)a3
++ (id)settingsForIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 defaultsKey];
+  identityCopy = identity;
+  v5 = [self alloc];
+  defaultsKey = [identityCopy defaultsKey];
 
-  v7 = [v5 initWithDefaultsKey:v6];
+  v7 = [v5 initWithDefaultsKey:defaultsKey];
 
   return v7;
 }
 
-- (ASDCellularSettings)initWithDefaultsKey:(id)a3
+- (ASDCellularSettings)initWithDefaultsKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = ASDCellularSettings;
   v6 = [(ASDCellularSettings *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_defaultsKey, a3);
+    objc_storeStrong(&v6->_defaultsKey, key);
   }
 
   return v7;
@@ -45,8 +45,8 @@
 
 - (int64_t)cellularDataPrompt
 {
-  v3 = [(ASDCellularSettings *)self _cellularSettings];
-  v4 = [v3 objectForKey:self->_defaultsKey];
+  _cellularSettings = [(ASDCellularSettings *)self _cellularSettings];
+  v4 = [_cellularSettings objectForKey:self->_defaultsKey];
   v5 = [v4 objectForKey:@"CellularDataPrompt"];
   if ([v5 isEqualToString:@"Always"])
   {
@@ -73,25 +73,25 @@
 
 - (id)_cellularSettings
 {
-  if (a1)
+  if (self)
   {
-    a1 = CFPreferencesCopyValue(@"CellularSettings", @"com.apple.appstored", @"mobile", *MEMORY[0x1E695E898]);
+    self = CFPreferencesCopyValue(@"CellularSettings", @"com.apple.appstored", @"mobile", *MEMORY[0x1E695E898]);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setCellularDataPrompt:(int64_t)a3
+- (void)setCellularDataPrompt:(int64_t)prompt
 {
-  v8 = [(ASDCellularSettings *)self _cellularSettings];
-  v5 = [v8 objectForKey:self->_defaultsKey];
-  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v8];
+  _cellularSettings = [(ASDCellularSettings *)self _cellularSettings];
+  v5 = [_cellularSettings objectForKey:self->_defaultsKey];
+  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:_cellularSettings];
   v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v5];
   [v6 setObject:v7 forKey:self->_defaultsKey];
-  if (a3 <= 2)
+  if (prompt <= 2)
   {
-    [v7 setObject:off_1E7CDC340[a3] forKey:@"CellularDataPrompt"];
+    [v7 setObject:off_1E7CDC340[prompt] forKey:@"CellularDataPrompt"];
   }
 
   CFPreferencesSetAppValue(@"CellularSettings", v6, @"com.apple.appstored");

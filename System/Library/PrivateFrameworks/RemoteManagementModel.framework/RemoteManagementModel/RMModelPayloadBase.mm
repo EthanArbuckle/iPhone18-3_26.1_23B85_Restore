@@ -1,42 +1,42 @@
 @interface RMModelPayloadBase
-+ (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4;
-+ (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4 enrollmentType:(int64_t)a5;
-- (BOOL)_loadObjectOfClass:(Class)a3 fromDictionary:(id)a4 usingKey:(id)a5 isRequired:(BOOL)a6 defaultValue:(id)a7 payloadValue:(id *)a8 error:(id *)a9;
-- (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4 enrollmentType:(int64_t)a5;
-- (BOOL)loadObjectsFromDictionary:(id)a3 forKeyPath:(id)a4 classType:(Class)a5 serializationType:(signed __int16)a6 error:(id *)a7;
-- (RMModelPayloadBase)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_serializeItemIntoDictionary:(id)a3 usingKey:(id)a4 value:(id)a5 isRequired:(BOOL)a6 isDefaultValue:(BOOL)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeUnknownKeysFrom:(id)a3 parentKey:(id)a4;
-- (void)serializeArrayIntoDictionary:(id)a3 usingKey:(id)a4 value:(id)a5 itemSerializer:(id)a6 isRequired:(BOOL)a7 defaultValue:(id)a8;
-- (void)serializeDictionaryIntoDictionary:(id)a3 usingKey:(id)a4 value:(id)a5 dictSerializer:(id)a6 isRequired:(BOOL)a7 defaultValue:(id)a8;
-- (void)serializeObjectsIntoDictionary:(id)a3 value:(id)a4 classType:(Class)a5 serializationType:(signed __int16)a6;
++ (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope;
++ (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope enrollmentType:(int64_t)type;
+- (BOOL)_loadObjectOfClass:(Class)class fromDictionary:(id)dictionary usingKey:(id)key isRequired:(BOOL)required defaultValue:(id)value payloadValue:(id *)payloadValue error:(id *)error;
+- (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope enrollmentType:(int64_t)type;
+- (BOOL)loadObjectsFromDictionary:(id)dictionary forKeyPath:(id)path classType:(Class)type serializationType:(signed __int16)serializationType error:(id *)error;
+- (RMModelPayloadBase)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_serializeItemIntoDictionary:(id)dictionary usingKey:(id)key value:(id)value isRequired:(BOOL)required isDefaultValue:(BOOL)defaultValue;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeUnknownKeysFrom:(id)from parentKey:(id)key;
+- (void)serializeArrayIntoDictionary:(id)dictionary usingKey:(id)key value:(id)value itemSerializer:(id)serializer isRequired:(BOOL)required defaultValue:(id)defaultValue;
+- (void)serializeDictionaryIntoDictionary:(id)dictionary usingKey:(id)key value:(id)value dictSerializer:(id)serializer isRequired:(BOOL)required defaultValue:(id)defaultValue;
+- (void)serializeObjectsIntoDictionary:(id)dictionary value:(id)value classType:(Class)type serializationType:(signed __int16)serializationType;
 @end
 
 @implementation RMModelPayloadBase
 
-- (void)mergeUnknownKeysFrom:(id)a3 parentKey:(id)a4
+- (void)mergeUnknownKeysFrom:(id)from parentKey:(id)key
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 unknownPayloadKeys];
-  v9 = [v8 count];
+  fromCopy = from;
+  keyCopy = key;
+  unknownPayloadKeys = [fromCopy unknownPayloadKeys];
+  v9 = [unknownPayloadKeys count];
 
   if (v9)
   {
-    v22 = self;
+    selfCopy = self;
     v10 = MEMORY[0x277CBEB58];
-    v11 = [v6 unknownPayloadKeys];
-    v12 = [v10 setWithCapacity:{objc_msgSend(v11, "count")}];
+    unknownPayloadKeys2 = [fromCopy unknownPayloadKeys];
+    v12 = [v10 setWithCapacity:{objc_msgSend(unknownPayloadKeys2, "count")}];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = [v6 unknownPayloadKeys];
-    v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    unknownPayloadKeys3 = [fromCopy unknownPayloadKeys];
+    v14 = [unknownPayloadKeys3 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
       v15 = v14;
@@ -48,61 +48,61 @@
         {
           if (*v24 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(unknownPayloadKeys3);
           }
 
-          v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v7, *(*(&v23 + 1) + 8 * v17)];
+          v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", keyCopy, *(*(&v23 + 1) + 8 * v17)];
           [v12 addObject:v18];
 
           ++v17;
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v15 = [unknownPayloadKeys3 countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v15);
     }
 
-    v19 = [(RMModelPayloadBase *)v22 unknownPayloadKeys];
-    v20 = [v19 setByAddingObjectsFromSet:v12];
-    [(RMModelPayloadBase *)v22 setUnknownPayloadKeys:v20];
+    unknownPayloadKeys4 = [(RMModelPayloadBase *)selfCopy unknownPayloadKeys];
+    v20 = [unknownPayloadKeys4 setByAddingObjectsFromSet:v12];
+    [(RMModelPayloadBase *)selfCopy setUnknownPayloadKeys:v20];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4
++ (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope
 {
-  v6 = [a1 supportedOS];
-  LOBYTE(a4) = [RMModelPayloadUtilities isSupportedForPlatform:a3 scope:a4 supportedOS:v6];
+  supportedOS = [self supportedOS];
+  LOBYTE(scope) = [RMModelPayloadUtilities isSupportedForPlatform:platform scope:scope supportedOS:supportedOS];
 
-  return a4;
+  return scope;
 }
 
-+ (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4 enrollmentType:(int64_t)a5
++ (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope enrollmentType:(int64_t)type
 {
-  v8 = [a1 supportedOS];
-  LOBYTE(a5) = [RMModelPayloadUtilities isSupportedForPlatform:a3 scope:a4 enrollmentType:a5 supportedOS:v8];
+  supportedOS = [self supportedOS];
+  LOBYTE(type) = [RMModelPayloadUtilities isSupportedForPlatform:platform scope:scope enrollmentType:type supportedOS:supportedOS];
 
-  return a5;
+  return type;
 }
 
-- (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4 enrollmentType:(int64_t)a5
+- (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope enrollmentType:(int64_t)type
 {
-  v8 = [objc_opt_class() supportedOS];
-  LOBYTE(a5) = [RMModelPayloadUtilities isSupportedForPlatform:a3 scope:a4 enrollmentType:a5 supportedOS:v8];
+  supportedOS = [objc_opt_class() supportedOS];
+  LOBYTE(type) = [RMModelPayloadUtilities isSupportedForPlatform:platform scope:scope enrollmentType:type supportedOS:supportedOS];
 
-  return a5;
+  return type;
 }
 
-- (BOOL)_loadObjectOfClass:(Class)a3 fromDictionary:(id)a4 usingKey:(id)a5 isRequired:(BOOL)a6 defaultValue:(id)a7 payloadValue:(id *)a8 error:(id *)a9
+- (BOOL)_loadObjectOfClass:(Class)class fromDictionary:(id)dictionary usingKey:(id)key isRequired:(BOOL)required defaultValue:(id)value payloadValue:(id *)payloadValue error:(id *)error
 {
-  v11 = a6;
+  requiredCopy = required;
   v30[1] = *MEMORY[0x277D85DE8];
-  v13 = a5;
-  v14 = a7;
-  v15 = [a4 objectForKey:v13];
+  keyCopy = key;
+  valueCopy = value;
+  v15 = [dictionary objectForKey:keyCopy];
   if (v15)
   {
     v16 = v15;
@@ -110,24 +110,24 @@
 
   else
   {
-    if (v11)
+    if (requiredCopy)
     {
-      if (a9)
+      if (error)
       {
         v19 = MEMORY[0x277CCA9B8];
         v29 = *MEMORY[0x277CCA450];
-        v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing required key: %@", v13];
-        v30[0] = v20;
+        keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing required key: %@", keyCopy];
+        v30[0] = keyCopy;
         v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-        *a9 = [v19 errorWithDomain:@"error" code:1 userInfo:v21];
+        *error = [v19 errorWithDomain:@"error" code:1 userInfo:v21];
       }
 
       v18 = 0;
-      *a8 = 0;
+      *payloadValue = 0;
       goto LABEL_12;
     }
 
-    v16 = v14;
+    v16 = valueCopy;
     if (!v16)
     {
       goto LABEL_4;
@@ -138,22 +138,22 @@
   {
 LABEL_4:
     v17 = v16;
-    *a8 = v16;
+    *payloadValue = v16;
 
     v18 = 1;
     goto LABEL_12;
   }
 
-  if (a9)
+  if (error)
   {
     v22 = MEMORY[0x277CCA9B8];
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Wrong type, key: %@", v13, *MEMORY[0x277CCA450]];
+    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Wrong type, key: %@", keyCopy, *MEMORY[0x277CCA450]];
     v28 = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-    *a9 = [v22 errorWithDomain:@"error" code:1 userInfo:v24];
+    *error = [v22 errorWithDomain:@"error" code:1 userInfo:v24];
   }
 
-  *a8 = 0;
+  *payloadValue = 0;
 
   v18 = 0;
 LABEL_12:
@@ -162,18 +162,18 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)loadObjectsFromDictionary:(id)a3 forKeyPath:(id)a4 classType:(Class)a5 serializationType:(signed __int16)a6 error:(id *)a7
+- (BOOL)loadObjectsFromDictionary:(id)dictionary forKeyPath:(id)path classType:(Class)type serializationType:(signed __int16)serializationType error:(id *)error
 {
-  v26 = a6;
+  serializationTypeCopy = serializationType;
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v25 = a4;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
   v11 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v12 = v10;
+  v12 = dictionaryCopy;
   v13 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v13)
   {
@@ -189,17 +189,17 @@ LABEL_12:
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
-        if (objc_opt_class() == a5 || objc_opt_class() == a5 || objc_opt_class() == a5 || objc_opt_class() == a5)
+        if (objc_opt_class() == type || objc_opt_class() == type || objc_opt_class() == type || objc_opt_class() == type)
         {
           v29 = 0;
-          v20 = [(RMModelPayloadBase *)self _loadObjectOfClass:a5 fromDictionary:v12 usingKey:v17 isRequired:1 defaultValue:0 payloadValue:&v29 error:a7];
+          v20 = [(RMModelPayloadBase *)self _loadObjectOfClass:type fromDictionary:v12 usingKey:v17 isRequired:1 defaultValue:0 payloadValue:&v29 error:error];
           v19 = v29;
           if (!v20)
           {
 LABEL_16:
 
             v22 = 0;
-            v21 = v25;
+            v21 = pathCopy;
             goto LABEL_17;
           }
         }
@@ -207,7 +207,7 @@ LABEL_16:
         else
         {
           v28 = 0;
-          v18 = [(RMModelPayloadBase *)self getModelObjectFromDictionary:v12 usingKey:v17 classType:a5 isRequired:1 defaultValue:0 serializationType:v26 payloadValue:&v28 error:a7];
+          v18 = [(RMModelPayloadBase *)self getModelObjectFromDictionary:v12 usingKey:v17 classType:type isRequired:1 defaultValue:0 serializationType:serializationTypeCopy payloadValue:&v28 error:error];
           v19 = v28;
           if (!v18)
           {
@@ -228,8 +228,8 @@ LABEL_16:
     }
   }
 
-  v21 = v25;
-  [(RMModelPayloadBase *)self setValue:v11 forKey:v25];
+  v21 = pathCopy;
+  [(RMModelPayloadBase *)self setValue:v11 forKey:pathCopy];
   v22 = 1;
 LABEL_17:
 
@@ -237,40 +237,40 @@ LABEL_17:
   return v22;
 }
 
-- (void)_serializeItemIntoDictionary:(id)a3 usingKey:(id)a4 value:(id)a5 isRequired:(BOOL)a6 isDefaultValue:(BOOL)a7
+- (void)_serializeItemIntoDictionary:(id)dictionary usingKey:(id)key value:(id)value isRequired:(BOOL)required isDefaultValue:(BOOL)defaultValue
 {
-  v7 = !a7;
-  if (!a5)
+  v7 = !defaultValue;
+  if (!value)
   {
     v7 = 0;
   }
 
-  if (v7 || a6)
+  if (v7 || required)
   {
-    [a3 setObject:a5 forKeyedSubscript:a4];
+    [dictionary setObject:value forKeyedSubscript:key];
   }
 }
 
-- (void)serializeArrayIntoDictionary:(id)a3 usingKey:(id)a4 value:(id)a5 itemSerializer:(id)a6 isRequired:(BOOL)a7 defaultValue:(id)a8
+- (void)serializeArrayIntoDictionary:(id)dictionary usingKey:(id)key value:(id)value itemSerializer:(id)serializer isRequired:(BOOL)required defaultValue:(id)defaultValue
 {
   v36 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = v17;
-  if (v15)
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  valueCopy = value;
+  serializerCopy = serializer;
+  defaultValueCopy = defaultValue;
+  v18 = defaultValueCopy;
+  if (valueCopy)
   {
-    v28 = v17;
-    v29 = a7;
-    v30 = v13;
-    v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v15, "count")}];
+    v28 = defaultValueCopy;
+    requiredCopy = required;
+    v30 = dictionaryCopy;
+    v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(valueCopy, "count")}];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v20 = v15;
+    v20 = valueCopy;
     v21 = [v20 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v21)
     {
@@ -286,7 +286,7 @@ LABEL_17:
             objc_enumerationMutation(v20);
           }
 
-          v25 = v16[2](v16, *(*(&v31 + 1) + 8 * v24));
+          v25 = serializerCopy[2](serializerCopy, *(*(&v31 + 1) + 8 * v24));
           [v19 addObject:v25];
 
           ++v24;
@@ -299,9 +299,9 @@ LABEL_17:
       while (v22);
     }
 
-    v13 = v30;
+    dictionaryCopy = v30;
     v18 = v28;
-    if (v29)
+    if (requiredCopy)
     {
       goto LABEL_13;
     }
@@ -310,11 +310,11 @@ LABEL_17:
   else
   {
     v19 = 0;
-    if (a7)
+    if (required)
     {
 LABEL_13:
       v26 = [v19 copy];
-      [v13 setObject:v26 forKeyedSubscript:v14];
+      [dictionaryCopy setObject:v26 forKeyedSubscript:keyCopy];
 
       goto LABEL_14;
     }
@@ -330,17 +330,17 @@ LABEL_14:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serializeDictionaryIntoDictionary:(id)a3 usingKey:(id)a4 value:(id)a5 dictSerializer:(id)a6 isRequired:(BOOL)a7 defaultValue:(id)a8
+- (void)serializeDictionaryIntoDictionary:(id)dictionary usingKey:(id)key value:(id)value dictSerializer:(id)serializer isRequired:(BOOL)required defaultValue:(id)defaultValue
 {
-  v18 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
-  if (v14)
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  valueCopy = value;
+  serializerCopy = serializer;
+  defaultValueCopy = defaultValue;
+  if (valueCopy)
   {
-    v17 = v15[2](v15, v14);
-    if (a7)
+    v17 = serializerCopy[2](serializerCopy, valueCopy);
+    if (required)
     {
       goto LABEL_6;
     }
@@ -355,27 +355,27 @@ LABEL_5:
   }
 
   v17 = 0;
-  if (!a7)
+  if (!required)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  [v18 setObject:v17 forKeyedSubscript:v13];
+  [dictionaryCopy setObject:v17 forKeyedSubscript:keyCopy];
 LABEL_7:
 }
 
-- (void)serializeObjectsIntoDictionary:(id)a3 value:(id)a4 classType:(Class)a5 serializationType:(signed __int16)a6
+- (void)serializeObjectsIntoDictionary:(id)dictionary value:(id)value classType:(Class)type serializationType:(signed __int16)serializationType
 {
-  v26 = a6;
+  serializationTypeCopy = serializationType;
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  dictionaryCopy = dictionary;
+  valueCopy = value;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v11 = [valueCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v11)
   {
     v12 = v11;
@@ -389,21 +389,21 @@ LABEL_7:
       {
         if (*v28 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(valueCopy);
         }
 
         v16 = *(*(&v27 + 1) + 8 * v15);
         v17 = *(v14 + 3240);
-        if (objc_opt_class() == a5 || objc_opt_class() == a5)
+        if (objc_opt_class() == type || objc_opt_class() == type)
         {
-          v22 = [v10 objectForKeyedSubscript:{v16, v25}];
-          [(RMModelPayloadBase *)self _serializeItemIntoDictionary:v9 usingKey:v16 value:v22 isRequired:1 isDefaultValue:0];
+          v22 = [valueCopy objectForKeyedSubscript:{v16, v25}];
+          [(RMModelPayloadBase *)self _serializeItemIntoDictionary:dictionaryCopy usingKey:v16 value:v22 isRequired:1 isDefaultValue:0];
         }
 
-        else if (objc_opt_class() == a5)
+        else if (objc_opt_class() == type)
         {
-          v22 = [v10 objectForKeyedSubscript:v16];
-          [(RMModelPayloadBase *)self serializeDateIntoDictionary:v9 usingKey:v16 value:v22 isRequired:1 defaultValue:0 serializationType:v26];
+          v22 = [valueCopy objectForKeyedSubscript:v16];
+          [(RMModelPayloadBase *)self serializeDateIntoDictionary:dictionaryCopy usingKey:v16 value:v22 isRequired:1 defaultValue:0 serializationType:serializationTypeCopy];
         }
 
         else
@@ -411,17 +411,17 @@ LABEL_7:
           v18 = v13;
           v19 = v14;
           v20 = objc_opt_class();
-          v21 = [v10 objectForKeyedSubscript:v16];
+          v21 = [valueCopy objectForKeyedSubscript:v16];
           v22 = v21;
-          if (v20 == a5)
+          if (v20 == type)
           {
-            [(RMModelPayloadBase *)self serializeDataIntoDictionary:v9 usingKey:v16 value:v21 isRequired:1 defaultValue:0 serializationType:v26];
+            [(RMModelPayloadBase *)self serializeDataIntoDictionary:dictionaryCopy usingKey:v16 value:v21 isRequired:1 defaultValue:0 serializationType:serializationTypeCopy];
           }
 
           else
           {
-            v23 = [v21 serializeWithType:v26];
-            [v9 setObject:v23 forKeyedSubscript:v16];
+            v23 = [v21 serializeWithType:serializationTypeCopy];
+            [dictionaryCopy setObject:v23 forKeyedSubscript:v16];
           }
 
           v14 = v19;
@@ -433,7 +433,7 @@ LABEL_7:
       }
 
       while (v12 != v15);
-      v12 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v12 = [valueCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v12);
@@ -442,16 +442,16 @@ LABEL_7:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RMModelPayloadBase *)self serializeWithType:0];
-  [v4 encodeObject:v5 forKey:@"payload"];
+  [coderCopy encodeObject:v5 forKey:@"payload"];
 }
 
-- (RMModelPayloadBase)initWithCoder:(id)a3
+- (RMModelPayloadBase)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = RMModelPayloadBase;
   v5 = [(RMModelPayloadBase *)&v22 init];
@@ -472,7 +472,7 @@ LABEL_7:
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = [v20 setWithObjects:{v19, v18, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-  v15 = [v4 decodeObjectOfClasses:v14 forKey:@"payload"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"payload"];
   v21 = 0;
   LODWORD(v13) = [(RMModelPayloadBase *)v5 loadFromDictionary:v15 serializationType:0 error:&v21];
 
@@ -486,7 +486,7 @@ LABEL_3:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
 

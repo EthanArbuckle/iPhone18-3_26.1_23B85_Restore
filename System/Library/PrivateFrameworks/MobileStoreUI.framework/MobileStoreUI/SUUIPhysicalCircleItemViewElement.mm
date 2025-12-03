@@ -1,22 +1,22 @@
 @interface SUUIPhysicalCircleItemViewElement
-- (SUUIPhysicalCircleItemViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIPhysicalCircleItemViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIPhysicalCircleItemViewElement
 
-- (SUUIPhysicalCircleItemViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIPhysicalCircleItemViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = SUUIPhysicalCircleItemViewElement;
-  v9 = [(SUUIViewElement *)&v14 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v14 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"size"];
+    v10 = [elementCopy getAttribute:@"size"];
     v9->_circleSize = [v10 integerValue];
 
-    v11 = [v8 getAttribute:@"data-content-id"];
+    v11 = [elementCopy getAttribute:@"data-content-id"];
     itemIdentifier = v9->_itemIdentifier;
     v9->_itemIdentifier = v11;
   }
@@ -24,19 +24,19 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIPhysicalCircleItemViewElement;
-  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_circleSize = [(SUUIPhysicalCircleItemViewElement *)v4 circleSize];
-    v7 = [(SUUIPhysicalCircleItemViewElement *)v4 itemIdentifier];
+    self->_circleSize = [(SUUIPhysicalCircleItemViewElement *)elementCopy circleSize];
+    itemIdentifier = [(SUUIPhysicalCircleItemViewElement *)elementCopy itemIdentifier];
     itemIdentifier = self->_itemIdentifier;
-    self->_itemIdentifier = v7;
+    self->_itemIdentifier = itemIdentifier;
   }
 
   return v6;

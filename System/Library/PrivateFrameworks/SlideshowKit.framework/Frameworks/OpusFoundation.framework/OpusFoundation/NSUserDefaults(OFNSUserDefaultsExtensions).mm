@@ -8,48 +8,48 @@
 
 - (uint64_t)BOOLForKey:()OFNSUserDefaultsExtensions withDefaultValue:
 {
-  if ([a1 objectForKey:?])
+  if ([self objectForKey:?])
   {
 
-    return [a1 BOOLForKey:a3];
+    return [self BOOLForKey:a3];
   }
 
   else
   {
-    [a1 setBool:a4 forKey:a3];
-    [a1 synchronize];
+    [self setBool:a4 forKey:a3];
+    [self synchronize];
     return a4;
   }
 }
 
 - (uint64_t)stringForSettingKey:()OFNSUserDefaultsExtensions withDefaultValue:
 {
-  if ([a1 objectForKey:?])
+  if ([self objectForKey:?])
   {
 
-    return [a1 stringForKey:a3];
+    return [self stringForKey:a3];
   }
 
   else
   {
-    [a1 setValue:a4 forKey:a3];
-    [a1 synchronize];
+    [self setValue:a4 forKey:a3];
+    [self synchronize];
     return a4;
   }
 }
 
 - (uint64_t)integerForSettingKey:()OFNSUserDefaultsExtensions withDefaultValue:
 {
-  if ([a1 objectForKey:?])
+  if ([self objectForKey:?])
   {
 
-    return [a1 integerForKey:a3];
+    return [self integerForKey:a3];
   }
 
   else
   {
-    [a1 setInteger:a4 forKey:a3];
-    [a1 synchronize];
+    [self setInteger:a4 forKey:a3];
+    [self synchronize];
     return a4;
   }
 }

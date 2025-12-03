@@ -1,15 +1,15 @@
 @interface FamilySettingsApplication
-- (id)accountsForAccountManager:(id)a3;
+- (id)accountsForAccountManager:(id)manager;
 @end
 
 @implementation FamilySettingsApplication
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_21BBB62F4(MEMORY[0x277D84F90]);
-  v6 = *(&v5->super.isa + OBJC_IVAR____TtC14FamilyCircleUI25FamilySettingsApplication_servicesOwnerManager);
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR____TtC14FamilyCircleUI25FamilySettingsApplication_servicesOwnerManager);
   v7 = *MEMORY[0x277CED1A0];
   sub_21BD403A8([v6 accountForService_], v7);
   v8 = *MEMORY[0x277CED1C0];

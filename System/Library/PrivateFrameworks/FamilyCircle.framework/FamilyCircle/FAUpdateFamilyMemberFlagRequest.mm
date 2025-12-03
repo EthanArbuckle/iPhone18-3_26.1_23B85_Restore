@@ -1,38 +1,38 @@
 @interface FAUpdateFamilyMemberFlagRequest
-- (FAUpdateFamilyMemberFlagRequest)initWithFamilyMemberDSID:(id)a3 ephemeralAuthResults:(id)a4 flag:(id)a5 enabled:(BOOL)a6;
-- (void)startRequestWithCompletionHandler:(id)a3;
+- (FAUpdateFamilyMemberFlagRequest)initWithFamilyMemberDSID:(id)d ephemeralAuthResults:(id)results flag:(id)flag enabled:(BOOL)enabled;
+- (void)startRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation FAUpdateFamilyMemberFlagRequest
 
-- (FAUpdateFamilyMemberFlagRequest)initWithFamilyMemberDSID:(id)a3 ephemeralAuthResults:(id)a4 flag:(id)a5 enabled:(BOOL)a6
+- (FAUpdateFamilyMemberFlagRequest)initWithFamilyMemberDSID:(id)d ephemeralAuthResults:(id)results flag:(id)flag enabled:(BOOL)enabled
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  resultsCopy = results;
+  flagCopy = flag;
   v17.receiver = self;
   v17.super_class = FAUpdateFamilyMemberFlagRequest;
   v14 = [(FAFamilyCircleRequest *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_dsid, a3);
-    objc_storeStrong(&v15->_ephemeralAuthResults, a4);
-    objc_storeStrong(&v15->_flag, a5);
-    v15->_enabled = a6;
+    objc_storeStrong(&v14->_dsid, d);
+    objc_storeStrong(&v15->_ephemeralAuthResults, results);
+    objc_storeStrong(&v15->_flag, flag);
+    v15->_enabled = enabled;
   }
 
   return v15;
 }
 
-- (void)startRequestWithCompletionHandler:(id)a3
+- (void)startRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__FAUpdateFamilyMemberFlagRequest_startRequestWithCompletionHandler___block_invoke;
   v15[3] = &unk_1E7CA46D8;
-  v5 = v4;
+  v5 = handlerCopy;
   v16 = v5;
   v6 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:v15];
   v7 = _FALogSystem();
@@ -42,7 +42,7 @@
   }
 
   dsid = self->_dsid;
-  v9 = [(FAUpdateFamilyMemberFlagRequest *)self ephemeralAuthResults];
+  ephemeralAuthResults = [(FAUpdateFamilyMemberFlagRequest *)self ephemeralAuthResults];
   flag = self->_flag;
   enabled = self->_enabled;
   v13[0] = MEMORY[0x1E69E9820];
@@ -52,7 +52,7 @@
   v13[4] = self;
   v14 = v5;
   v12 = v5;
-  [v6 updateFamilyMemberFlagWithDSID:dsid ephemeralAuthResults:v9 flag:flag enabled:enabled replyBlock:v13];
+  [v6 updateFamilyMemberFlagWithDSID:dsid ephemeralAuthResults:ephemeralAuthResults flag:flag enabled:enabled replyBlock:v13];
 }
 
 void __69__FAUpdateFamilyMemberFlagRequest_startRequestWithCompletionHandler___block_invoke(uint64_t a1, void *a2)

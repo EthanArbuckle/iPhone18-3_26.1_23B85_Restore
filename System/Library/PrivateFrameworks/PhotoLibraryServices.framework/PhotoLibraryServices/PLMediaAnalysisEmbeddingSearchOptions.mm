@@ -1,10 +1,10 @@
 @interface PLMediaAnalysisEmbeddingSearchOptions
-- (PLMediaAnalysisEmbeddingSearchOptions)initWithResultLimit:(int)a3;
+- (PLMediaAnalysisEmbeddingSearchOptions)initWithResultLimit:(int)limit;
 @end
 
 @implementation PLMediaAnalysisEmbeddingSearchOptions
 
-- (PLMediaAnalysisEmbeddingSearchOptions)initWithResultLimit:(int)a3
+- (PLMediaAnalysisEmbeddingSearchOptions)initWithResultLimit:(int)limit
 {
   v9.receiver = self;
   v9.super_class = PLMediaAnalysisEmbeddingSearchOptions;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_resultLimit = a3;
+    v4->_resultLimit = limit;
     assetUUIDsForPrefilter = v4->_assetUUIDsForPrefilter;
     v4->_assetUUIDsForPrefilter = 0;
 

@@ -1,7 +1,7 @@
 @interface IDSDRegistrationControl
 + (id)sharedInstance;
-- (BOOL)updateRegistrationType:(int64_t)a3 toState:(int64_t)a4 error:(id *)a5;
-- (int64_t)registrationStateForRegistrationType:(int64_t)a3 error:(id *)a4;
+- (BOOL)updateRegistrationType:(int64_t)type toState:(int64_t)state error:(id *)error;
+- (int64_t)registrationStateForRegistrationType:(int64_t)type error:(id *)error;
 @end
 
 @implementation IDSDRegistrationControl
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_100418C50;
   block[3] = &unk_100BD75B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100CBD268 != -1)
   {
     dispatch_once(&qword_100CBD268, block);
@@ -23,20 +23,20 @@
   return v2;
 }
 
-- (BOOL)updateRegistrationType:(int64_t)a3 toState:(int64_t)a4 error:(id *)a5
+- (BOOL)updateRegistrationType:(int64_t)type toState:(int64_t)state error:(id *)error
 {
-  v13 = self;
+  selfCopy = self;
   v47 = 0;
-  v8 = [(IDSDRegistrationControl *)self registrationStateForRegistrationType:a3 error:&v47];
+  v8 = [(IDSDRegistrationControl *)self registrationStateForRegistrationType:type error:&v47];
   v9 = v47;
-  v10 = [NSString stringWithFormat:@"%@-%ld", IDSRegistrationControlKeychainAccountName, a3];
-  v11 = [NSNumber numberWithInteger:a4];
+  type = [NSString stringWithFormat:@"%@-%ld", IDSRegistrationControlKeychainAccountName, type];
+  v11 = [NSNumber numberWithInteger:state];
   v12 = [NSKeyedArchiver archivedDataWithRootObject:v11 requiringSecureCoding:1 error:0];
 
-  LODWORD(v13) = [(IDSDRegistrationControl *)v13 _setKeychainData:v12 withServiceName:IDSRegistrationControlKeychainServiceName withAccountKey:v10 withIDSRegistrationAccesssGroup:IDSRegistrationControlKeychainAccessGroup error:0];
-  if (!v13)
+  LODWORD(selfCopy) = [(IDSDRegistrationControl *)selfCopy _setKeychainData:v12 withServiceName:IDSRegistrationControlKeychainServiceName withAccountKey:type withIDSRegistrationAccesssGroup:IDSRegistrationControlKeychainAccessGroup error:0];
+  if (!selfCopy)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_29;
     }
@@ -46,7 +46,7 @@
     goto LABEL_28;
   }
 
-  if (a4 == 2 && v8 == 1)
+  if (state == 2 && v8 == 1)
   {
     v45 = 0u;
     v46 = 0u;
@@ -59,10 +59,10 @@
     if (v16)
     {
       v17 = v16;
-      v38 = a5;
-      v18 = v13;
-      v13 = v12;
-      v19 = v10;
+      errorCopy2 = error;
+      v18 = selfCopy;
+      selfCopy = v12;
+      v19 = type;
       v20 = *v44;
       do
       {
@@ -80,17 +80,17 @@
       }
 
       while (v17);
-      v10 = v19;
-      v12 = v13;
-      LOBYTE(v13) = v18;
+      type = v19;
+      v12 = selfCopy;
+      LOBYTE(selfCopy) = v18;
 LABEL_24:
-      a5 = v38;
+      error = errorCopy2;
     }
   }
 
   else
   {
-    if (a4 != 1 || v8 == 1)
+    if (state != 1 || v8 == 1)
     {
       goto LABEL_26;
     }
@@ -107,10 +107,10 @@ LABEL_24:
     {
       v26 = v25;
       v37 = v9;
-      v38 = a5;
-      v34 = v13;
+      errorCopy2 = error;
+      v34 = selfCopy;
       v35 = v12;
-      v36 = v10;
+      v36 = type;
       v27 = *v40;
       do
       {
@@ -123,8 +123,8 @@ LABEL_24:
 
           v29 = *(*(&v39 + 1) + 8 * j);
           v30 = +[IDSDAccountController sharedInstance];
-          v31 = [v29 uniqueID];
-          [v30 disableAccountWithUniqueID:v31];
+          uniqueID = [v29 uniqueID];
+          [v30 disableAccountWithUniqueID:uniqueID];
 
           [v29 setIsUserDisabled:1];
         }
@@ -133,42 +133,42 @@ LABEL_24:
       }
 
       while (v26);
-      v10 = v36;
+      type = v36;
       v9 = v37;
       v12 = v35;
-      LOBYTE(v13) = v34;
+      LOBYTE(selfCopy) = v34;
       goto LABEL_24;
     }
   }
 
 LABEL_26:
-  if (!a5)
+  if (!error)
   {
     goto LABEL_29;
   }
 
   v23 = 0;
 LABEL_28:
-  *a5 = v23;
+  *error = v23;
 LABEL_29:
   v32 = +[IMRGLog registration];
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218496;
-    v49 = a3;
+    typeCopy = type;
     v50 = 2048;
-    v51 = a4;
+    stateCopy = state;
     v52 = 1024;
     v53 = 0;
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Updating registration control state { registrationType: %lld, toState: %lld, err: %d }", buf, 0x1Cu);
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (int64_t)registrationStateForRegistrationType:(int64_t)a3 error:(id *)a4
+- (int64_t)registrationStateForRegistrationType:(int64_t)type error:(id *)error
 {
-  v6 = [NSString stringWithFormat:@"%@-%ld", IDSRegistrationControlKeychainAccountName, a3];
+  type = [NSString stringWithFormat:@"%@-%ld", IDSRegistrationControlKeychainAccountName, type];
   v7 = IMGetKeychainData();
   v8 = 0;
   if (v7)
@@ -183,7 +183,7 @@ LABEL_29:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v18) = 0;
+      LODWORD(typeCopy) = 0;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Registration control state can't be loaded because of a keychain error { err: %d }", buf, 8u);
     }
 
@@ -196,7 +196,7 @@ LABEL_29:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v18 = a3;
+    typeCopy = type;
     v19 = 2112;
     v20 = v9;
     v21 = 2112;
@@ -204,15 +204,15 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Loaded registration control state { registrationType: %lld, state: %@, error: %@ }", buf, 0x20u);
   }
 
-  if (a4)
+  if (error)
   {
     v14 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
-  v15 = [v9 integerValue];
+  integerValue = [v9 integerValue];
 
-  return v15;
+  return integerValue;
 }
 
 @end

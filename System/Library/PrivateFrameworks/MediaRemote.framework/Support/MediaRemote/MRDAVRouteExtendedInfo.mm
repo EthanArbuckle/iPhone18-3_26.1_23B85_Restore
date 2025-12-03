@@ -1,30 +1,30 @@
 @interface MRDAVRouteExtendedInfo
-+ (id)extendedInfoWithRoute:(id)a3;
++ (id)extendedInfoWithRoute:(id)route;
 - (BOOL)requiresPIN;
-- (MRDAVRouteExtendedInfo)initWithRoute:(id)a3;
+- (MRDAVRouteExtendedInfo)initWithRoute:(id)route;
 - (NSString)deviceIdentifier;
 - (NSString)modelName;
 @end
 
 @implementation MRDAVRouteExtendedInfo
 
-+ (id)extendedInfoWithRoute:(id)a3
++ (id)extendedInfoWithRoute:(id)route
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRoute:v3];
+  routeCopy = route;
+  v4 = [objc_alloc(objc_opt_class()) initWithRoute:routeCopy];
 
   return v4;
 }
 
-- (MRDAVRouteExtendedInfo)initWithRoute:(id)a3
+- (MRDAVRouteExtendedInfo)initWithRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v9.receiver = self;
   v9.super_class = MRDAVRouteExtendedInfo;
   v5 = [(MRDAVRouteExtendedInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [routeCopy copy];
     route = v5->_route;
     v5->_route = v6;
   }
@@ -34,8 +34,8 @@
 
 - (BOOL)requiresPIN
 {
-  v2 = [(MRDAVRouteExtendedInfo *)self _extendedInfo];
-  v3 = [v2 objectForKey:@"systemFlags"];
+  _extendedInfo = [(MRDAVRouteExtendedInfo *)self _extendedInfo];
+  v3 = [_extendedInfo objectForKey:@"systemFlags"];
   v4 = v3;
   if (v3)
   {
@@ -52,16 +52,16 @@
 
 - (NSString)modelName
 {
-  v2 = [(MRDAVRouteExtendedInfo *)self _extendedInfo];
-  v3 = [v2 objectForKey:@"model"];
+  _extendedInfo = [(MRDAVRouteExtendedInfo *)self _extendedInfo];
+  v3 = [_extendedInfo objectForKey:@"model"];
 
   return v3;
 }
 
 - (NSString)deviceIdentifier
 {
-  v2 = [(MRDAVRouteExtendedInfo *)self _extendedInfo];
-  v3 = [v2 objectForKey:@"deviceID"];
+  _extendedInfo = [(MRDAVRouteExtendedInfo *)self _extendedInfo];
+  v3 = [_extendedInfo objectForKey:@"deviceID"];
 
   return v3;
 }

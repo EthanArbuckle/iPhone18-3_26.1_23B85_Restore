@@ -1,28 +1,28 @@
 @interface _SFSettingsAlertStepperAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
-- (id)initUsingResetButton:(BOOL)a3;
+- (id)initUsingResetButton:(BOOL)button;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _SFSettingsAlertStepperAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFSettingsAlertStepper" hasInstanceMethod:@"_incrementTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"_SFSettingsAlertStepper" hasInstanceMethod:@"_decrementTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"_SFSettingsAlertStepper" hasInstanceMethod:@"_resetTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"_SFSettingsAlertStepper" hasInstanceVariable:@"_resetButton" withType:"_SFSettingsAlertButton"];
-  [v3 validateClass:@"_SFSettingsAlertButton" hasInstanceVariable:@"_text" withType:"NSString"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFSettingsAlertStepper" hasInstanceMethod:@"_incrementTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"_SFSettingsAlertStepper" hasInstanceMethod:@"_decrementTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"_SFSettingsAlertStepper" hasInstanceMethod:@"_resetTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"_SFSettingsAlertStepper" hasInstanceVariable:@"_resetButton" withType:"_SFSettingsAlertButton"];
+  [validationsCopy validateClass:@"_SFSettingsAlertButton" hasInstanceVariable:@"_text" withType:"NSString"];
 }
 
-- (id)initUsingResetButton:(BOOL)a3
+- (id)initUsingResetButton:(BOOL)button
 {
   v5.receiver = self;
   v5.super_class = _SFSettingsAlertStepperAccessibility;
-  v3 = [(_SFSettingsAlertStepperAccessibility *)&v5 initUsingResetButton:a3];
+  v3 = [(_SFSettingsAlertStepperAccessibility *)&v5 initUsingResetButton:button];
   [v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;
@@ -58,8 +58,8 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(_SFSettingsAlertStepperAccessibility *)self accessibilityIdentifier];
-  v3 = [v2 isEqualToString:@"PlaybackStateAndPosition"];
+  accessibilityIdentifier = [(_SFSettingsAlertStepperAccessibility *)self accessibilityIdentifier];
+  v3 = [accessibilityIdentifier isEqualToString:@"PlaybackStateAndPosition"];
 
   v4 = MEMORY[0x29EDC7FA0];
   if (!v3)
@@ -74,22 +74,22 @@
 {
   v8.receiver = self;
   v8.super_class = _SFSettingsAlertStepperAccessibility;
-  v3 = [(_SFSettingsAlertStepperAccessibility *)&v8 accessibilityValue];
+  accessibilityValue = [(_SFSettingsAlertStepperAccessibility *)&v8 accessibilityValue];
 
-  if (v3)
+  if (accessibilityValue)
   {
     v7.receiver = self;
     v7.super_class = _SFSettingsAlertStepperAccessibility;
-    v4 = [(_SFSettingsAlertStepperAccessibility *)&v7 accessibilityValue];
+    accessibilityValue2 = [(_SFSettingsAlertStepperAccessibility *)&v7 accessibilityValue];
   }
 
   else
   {
     v5 = [(_SFSettingsAlertStepperAccessibility *)self safeValueForKey:@"_resetButton"];
-    v4 = [v5 safeStringForKey:@"_text"];
+    accessibilityValue2 = [v5 safeStringForKey:@"_text"];
   }
 
-  return v4;
+  return accessibilityValue2;
 }
 
 @end

@@ -10,17 +10,17 @@
   v7.receiver = self;
   v7.super_class = _UIFluidSliderDriverSettings;
   [(PTSettings *)&v7 setDefaultValues];
-  v3 = [(_UIFluidSliderDriverSettings *)self update];
-  [v3 setDampingRatio:1.0];
+  update = [(_UIFluidSliderDriverSettings *)self update];
+  [update setDampingRatio:1.0];
 
-  v4 = [(_UIFluidSliderDriverSettings *)self update];
-  [v4 setResponse:0.4];
+  update2 = [(_UIFluidSliderDriverSettings *)self update];
+  [update2 setResponse:0.4];
 
-  v5 = [(_UIFluidSliderDriverSettings *)self acceleratedUpdate];
-  [v5 setDampingRatio:1.0];
+  acceleratedUpdate = [(_UIFluidSliderDriverSettings *)self acceleratedUpdate];
+  [acceleratedUpdate setDampingRatio:1.0];
 
-  v6 = [(_UIFluidSliderDriverSettings *)self acceleratedUpdate];
-  [v6 setResponse:0.3];
+  acceleratedUpdate2 = [(_UIFluidSliderDriverSettings *)self acceleratedUpdate];
+  [acceleratedUpdate2 setResponse:0.3];
 }
 
 + (id)settingsControllerModule

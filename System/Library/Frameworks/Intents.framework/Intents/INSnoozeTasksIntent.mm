@@ -6,23 +6,23 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAll:(id)a3;
-- (void)setNextTriggerTime:(id)a3;
-- (void)setTasks:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAll:(id)all;
+- (void)setNextTriggerTime:(id)time;
+- (void)setTasks:(id)tasks;
 @end
 
 @implementation INSnoozeTasksIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INSnoozeTasksIntent *)self _typedBackingStore];
-  v11 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 nextTriggerTime];
-  v10 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v9, a3);
+  idCopy = id;
+  _typedBackingStore = [(INSnoozeTasksIntent *)self _typedBackingStore];
+  v11 = idCopy;
+  v8 = [_typedBackingStore copy];
+  nextTriggerTime = [_typedBackingStore nextTriggerTime];
+  v10 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(nextTriggerTime, options);
 
   [v8 setNextTriggerTime:v10];
   [(INIntent *)self setBackingStore:v8];
@@ -32,42 +32,42 @@
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"tasks";
-  v3 = [(INSnoozeTasksIntent *)self tasks];
-  v4 = v3;
-  if (!v3)
+  tasks = [(INSnoozeTasksIntent *)self tasks];
+  null = tasks;
+  if (!tasks)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"nextTriggerTime";
-  v5 = [(INSnoozeTasksIntent *)self nextTriggerTime];
-  v6 = v5;
-  if (!v5)
+  nextTriggerTime = [(INSnoozeTasksIntent *)self nextTriggerTime];
+  null2 = nextTriggerTime;
+  if (!nextTriggerTime)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"all";
   v7 = [(INSnoozeTasksIntent *)self all];
-  v8 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (!v7)
   {
   }
 
-  if (!v5)
+  if (!nextTriggerTime)
   {
   }
 
-  if (!v3)
+  if (!tasks)
   {
   }
 
@@ -76,29 +76,29 @@
   return v9;
 }
 
-- (void)setAll:(id)a3
+- (void)setAll:(id)all
 {
-  v5 = a3;
-  v4 = [(INSnoozeTasksIntent *)self _typedBackingStore];
-  if (v5)
+  allCopy = all;
+  _typedBackingStore = [(INSnoozeTasksIntent *)self _typedBackingStore];
+  if (allCopy)
   {
-    [v4 setAll:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setAll:{objc_msgSend(allCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasAll:0];
+    [_typedBackingStore setHasAll:0];
   }
 }
 
 - (NSNumber)all
 {
-  v3 = [(INSnoozeTasksIntent *)self _typedBackingStore];
-  if ([v3 hasAll])
+  _typedBackingStore = [(INSnoozeTasksIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasAll])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INSnoozeTasksIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "all")}];
+    _typedBackingStore2 = [(INSnoozeTasksIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "all")}];
   }
 
   else
@@ -109,38 +109,38 @@
   return v6;
 }
 
-- (void)setNextTriggerTime:(id)a3
+- (void)setNextTriggerTime:(id)time
 {
-  v4 = a3;
-  v6 = [(INSnoozeTasksIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  timeCopy = time;
+  _typedBackingStore = [(INSnoozeTasksIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(timeCopy);
 
-  [v6 setNextTriggerTime:v5];
+  [_typedBackingStore setNextTriggerTime:v5];
 }
 
 - (INDateComponentsRange)nextTriggerTime
 {
-  v2 = [(INSnoozeTasksIntent *)self _typedBackingStore];
-  v3 = [v2 nextTriggerTime];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INSnoozeTasksIntent *)self _typedBackingStore];
+  nextTriggerTime = [_typedBackingStore nextTriggerTime];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(nextTriggerTime);
 
   return v4;
 }
 
-- (void)setTasks:(id)a3
+- (void)setTasks:(id)tasks
 {
-  v4 = a3;
-  v6 = [(INSnoozeTasksIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToTasks(v4);
+  tasksCopy = tasks;
+  _typedBackingStore = [(INSnoozeTasksIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToTasks(tasksCopy);
 
-  [v6 setTasks:v5];
+  [_typedBackingStore setTasks:v5];
 }
 
 - (NSArray)tasks
 {
-  v2 = [(INSnoozeTasksIntent *)self _typedBackingStore];
-  v3 = [v2 tasks];
-  v4 = INIntentSlotValueTransformFromTasks(v3);
+  _typedBackingStore = [(INSnoozeTasksIntent *)self _typedBackingStore];
+  tasks = [_typedBackingStore tasks];
+  v4 = INIntentSlotValueTransformFromTasks(tasks);
 
   return v4;
 }
@@ -164,28 +164,28 @@
   return v12;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSnoozeTasksIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSnoozeTasksIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSnoozeTasksIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSnoozeTasksIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

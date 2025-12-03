@@ -1,6 +1,6 @@
 @interface ClimateGroupedVentsButton
 - (_TtC7Climate25ClimateGroupedVentsButton)init;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)appMovedToForeground;
 - (void)showAutoModeUI;
 - (void)showDisabledUI;
@@ -22,19 +22,19 @@
 
 - (void)appMovedToForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_100016118();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for ClimateGroupedVentsButton(0);
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(ClimateGroupedVentsButton *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(ClimateGroupedVentsButton *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -59,13 +59,13 @@ LABEL_5:
 
 - (void)showRefreshUI
 {
-  v2 = self;
+  selfCopy = self;
   sub_100017268();
 }
 
 - (void)showAutoModeUI
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000176F0();
 }
 
@@ -73,13 +73,13 @@ LABEL_5:
 {
   v3 = swift_allocObject();
   *(v3 + 16) = self;
-  v4 = self;
+  selfCopy = self;
   sub_10001854C(sub_10001B018, v3);
 }
 
 - (void)showStackUI
 {
-  v2 = self;
+  selfCopy = self;
   sub_100018C44();
 }
 

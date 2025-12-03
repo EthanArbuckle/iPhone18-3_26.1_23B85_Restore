@@ -1,31 +1,31 @@
 @interface VUICollectionHeaderView
-+ (id)configureCollectionHeaderViewWithTitle:(id)a3 subtitle:(id)a4 buttonString:(id)a5 existingView:(id)a6;
-- (CGSize)_layoutWithSize:(CGSize)a3 metricsOnly:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (id)configureCollectionHeaderViewWithTitle:(id)title subtitle:(id)subtitle buttonString:(id)string existingView:(id)view;
+- (CGSize)_layoutWithSize:(CGSize)size metricsOnly:(BOOL)only;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)padding;
-- (id)_buttonWithString:(id)a3 existingButton:(id)a4;
-- (void)_selectButtonAction:(id)a3;
+- (id)_buttonWithString:(id)string existingButton:(id)button;
+- (void)_selectButtonAction:(id)action;
 - (void)layoutSubviews;
-- (void)setHeaderButton:(id)a3;
-- (void)setImageView:(id)a3;
-- (void)setSeparatorView:(id)a3;
-- (void)setSubtitleTextView:(id)a3;
-- (void)setTitleTextView:(id)a3;
+- (void)setHeaderButton:(id)button;
+- (void)setImageView:(id)view;
+- (void)setSeparatorView:(id)view;
+- (void)setSubtitleTextView:(id)view;
+- (void)setTitleTextView:(id)view;
 - (void)tintColorDidChange;
 @end
 
 @implementation VUICollectionHeaderView
 
-+ (id)configureCollectionHeaderViewWithTitle:(id)a3 subtitle:(id)a4 buttonString:(id)a5 existingView:(id)a6
++ (id)configureCollectionHeaderViewWithTitle:(id)title subtitle:(id)subtitle buttonString:(id)string existingView:(id)view
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  viewCopy = view;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v11;
+    v13 = viewCopy;
   }
 
   else
@@ -35,11 +35,11 @@
   }
 
   v15 = v13;
-  v16 = [(VUICollectionHeaderView *)v13 layout];
-  v17 = v16;
-  if (v16)
+  layout = [(VUICollectionHeaderView *)v13 layout];
+  v17 = layout;
+  if (layout)
   {
-    v18 = v16;
+    v18 = layout;
   }
 
   else
@@ -50,18 +50,18 @@
   v19 = v18;
 
   [(VUICollectionHeaderView *)v15 setLayout:v19];
-  if (v9)
+  if (titleCopy)
   {
-    v20 = [v19 titleTextLayout];
-    v21 = [(VUICollectionHeaderView *)v15 titleTextView];
-    v22 = [VUILabel labelWithAttributedString:v9 textLayout:v20 existingLabel:v21];
+    titleTextLayout = [v19 titleTextLayout];
+    titleTextView = [(VUICollectionHeaderView *)v15 titleTextView];
+    v22 = [VUILabel labelWithAttributedString:titleCopy textLayout:titleTextLayout existingLabel:titleTextView];
 
-    if (v10)
+    if (subtitleCopy)
     {
 LABEL_9:
-      v23 = [v19 subtitleTextLayout];
-      v24 = [(VUICollectionHeaderView *)v15 subtitleTextView];
-      v25 = [VUILabel labelWithString:v10 textLayout:v23 existingLabel:v24];
+      subtitleTextLayout = [v19 subtitleTextLayout];
+      subtitleTextView = [(VUICollectionHeaderView *)v15 subtitleTextView];
+      v25 = [VUILabel labelWithString:subtitleCopy textLayout:subtitleTextLayout existingLabel:subtitleTextView];
 
       goto LABEL_12;
     }
@@ -70,7 +70,7 @@ LABEL_9:
   else
   {
     v22 = 0;
-    if (v10)
+    if (subtitleCopy)
     {
       goto LABEL_9;
     }
@@ -78,8 +78,8 @@ LABEL_9:
 
   v25 = 0;
 LABEL_12:
-  v26 = [(VUICollectionHeaderView *)v15 headerButton];
-  v27 = [(VUICollectionHeaderView *)v15 _buttonWithString:v12 existingButton:v26];
+  headerButton = [(VUICollectionHeaderView *)v15 headerButton];
+  v27 = [(VUICollectionHeaderView *)v15 _buttonWithString:stringCopy existingButton:headerButton];
 
   [(VUICollectionHeaderView *)v15 setTitleTextView:v22];
   [(VUICollectionHeaderView *)v15 setSubtitleTextView:v25];
@@ -88,70 +88,70 @@ LABEL_12:
   return v15;
 }
 
-- (void)setTitleTextView:(id)a3
+- (void)setTitleTextView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   titleTextView = self->_titleTextView;
-  if (titleTextView != v5)
+  if (titleTextView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(VUILabel *)titleTextView removeFromSuperview];
     if (v7 && ([(VUILabel *)v7 isDescendantOfView:self]& 1) == 0)
     {
       [(VUICollectionHeaderView *)self addSubview:v7];
     }
 
-    objc_storeStrong(&self->_titleTextView, a3);
+    objc_storeStrong(&self->_titleTextView, view);
     [(VUICollectionHeaderView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setSeparatorView:(id)a3
+- (void)setSeparatorView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   separatorView = self->_separatorView;
-  if (separatorView != v5)
+  if (separatorView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(VUISeparatorView *)separatorView removeFromSuperview];
     if (v7 && ([(VUISeparatorView *)v7 isDescendantOfView:self]& 1) == 0)
     {
       [(VUICollectionHeaderView *)self addSubview:v7];
     }
 
-    objc_storeStrong(&self->_separatorView, a3);
+    objc_storeStrong(&self->_separatorView, view);
     [(VUICollectionHeaderView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setSubtitleTextView:(id)a3
+- (void)setSubtitleTextView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   subtitleTextView = self->_subtitleTextView;
-  if (subtitleTextView != v5)
+  if (subtitleTextView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(VUILabel *)subtitleTextView removeFromSuperview];
     if (v7 && ([(VUILabel *)v7 isDescendantOfView:self]& 1) == 0)
     {
       [(VUICollectionHeaderView *)self addSubview:v7];
     }
 
-    objc_storeStrong(&self->_subtitleTextView, a3);
+    objc_storeStrong(&self->_subtitleTextView, view);
     [(VUICollectionHeaderView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setHeaderButton:(id)a3
+- (void)setHeaderButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   headerButton = self->_headerButton;
-  if (headerButton != v5)
+  if (headerButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(UIButton *)headerButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
     [(UIButton *)self->_headerButton removeFromSuperview];
     if (v7 && ([(UIButton *)v7 isDescendantOfView:self]& 1) == 0)
@@ -160,34 +160,34 @@ LABEL_12:
       [(UIButton *)v7 addTarget:self action:sel__selectButtonAction_ forControlEvents:64];
     }
 
-    objc_storeStrong(&self->_headerButton, a3);
+    objc_storeStrong(&self->_headerButton, button);
     [(VUICollectionHeaderView *)self setNeedsLayout];
-    v5 = v7;
+    buttonCopy = v7;
   }
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   imageView = self->_imageView;
-  if (imageView != v5)
+  if (imageView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(_TVImageView *)imageView removeFromSuperview];
     if (v7 && ([(_TVImageView *)v7 isDescendantOfView:self]& 1) == 0)
     {
       [(VUICollectionHeaderView *)self addSubview:v7];
     }
 
-    objc_storeStrong(&self->_imageView, a3);
+    objc_storeStrong(&self->_imageView, view);
     [(VUICollectionHeaderView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUICollectionHeaderView *)self _layoutWithSize:1 metricsOnly:a3.width, a3.height];
+  [(VUICollectionHeaderView *)self _layoutWithSize:1 metricsOnly:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -200,21 +200,21 @@ LABEL_12:
   [(VUICollectionHeaderView *)self _layoutWithSize:0 metricsOnly:v3, v4];
 }
 
-- (CGSize)_layoutWithSize:(CGSize)a3 metricsOnly:(BOOL)a4
+- (CGSize)_layoutWithSize:(CGSize)size metricsOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = *MEMORY[0x1E695F060];
-  if (a3.width != *MEMORY[0x1E695F060] || a3.height != *(MEMORY[0x1E695F060] + 8))
+  if (size.width != *MEMORY[0x1E695F060] || size.height != *(MEMORY[0x1E695F060] + 8))
   {
     p_padding = &self->_padding;
-    v11 = a3.width - self->_padding.left - self->_padding.right;
-    v12 = [(VUICollectionHeaderView *)self traitCollection];
-    v13 = [v12 isAXEnabled];
+    v11 = size.width - self->_padding.left - self->_padding.right;
+    traitCollection = [(VUICollectionHeaderView *)self traitCollection];
+    isAXEnabled = [traitCollection isAXEnabled];
 
-    v14 = [(VUICollectionHeaderView *)self traitCollection];
+    traitCollection2 = [(VUICollectionHeaderView *)self traitCollection];
     v15 = +[VUICollectionHeaderViewLayout maxImageContentSizeCategory];
-    [VUIUtilities scaleContentSizeValue:v14 forTraitCollection:v15 maximumContentSizeCategory:40.0];
+    [VUIUtilities scaleContentSizeValue:traitCollection2 forTraitCollection:v15 maximumContentSizeCategory:40.0];
     v17 = v16;
 
     v19 = *MEMORY[0x1E695F058];
@@ -223,7 +223,7 @@ LABEL_12:
     v177 = *(MEMORY[0x1E695F058] + 16);
     v172 = v18;
     v173 = width;
-    if (v13)
+    if (isAXEnabled)
     {
       left = p_padding->left;
       imageView = self->_imageView;
@@ -310,9 +310,9 @@ LABEL_15:
             v47 = v11;
             if (self->_imageView)
             {
-              v71 = [(VUICollectionHeaderView *)self traitCollection];
+              traitCollection3 = [(VUICollectionHeaderView *)self traitCollection];
               v72 = +[VUICollectionHeaderViewLayout maxImageContentSizeCategory];
-              [VUIUtilities scaleContentSizeValue:v71 forTraitCollection:v72 maximumContentSizeCategory:16.0];
+              [VUIUtilities scaleContentSizeValue:traitCollection3 forTraitCollection:v72 maximumContentSizeCategory:16.0];
               v73 = v29;
               v75 = v74;
 
@@ -398,20 +398,20 @@ LABEL_47:
 
     if (self->_imageView)
     {
-      v30 = [(VUICollectionHeaderViewLayout *)self->_layout imageViewLayout];
-      [v30 decoratorSize];
+      imageViewLayout = [(VUICollectionHeaderViewLayout *)self->_layout imageViewLayout];
+      [imageViewLayout decoratorSize];
       recta = v17 - v31;
 
       v32 = self->_headerButton;
       if (v32)
       {
-        v33 = [(UIButton *)v32 titleLabel];
-        [v33 sizeThatFits:{v11, 0.0}];
+        titleLabel = [(UIButton *)v32 titleLabel];
+        [titleLabel sizeThatFits:{v11, 0.0}];
         v35 = v34;
         v171 = v36;
 
-        v37 = [(UIButton *)self->_headerButton titleLabel];
-        [v37 vui_heightToBaseline];
+        titleLabel2 = [(UIButton *)self->_headerButton titleLabel];
+        [titleLabel2 vui_heightToBaseline];
         v39 = v38;
 
         v151 = width - v35 - p_padding->right;
@@ -478,7 +478,7 @@ LABEL_27:
           v93 = v166;
 LABEL_49:
           v102 = x;
-          if (!a4)
+          if (!only)
           {
 LABEL_50:
             v175 = v102;
@@ -594,8 +594,8 @@ LABEL_54:
       v6 = v62;
       v171 = v63;
 
-      v64 = [(UIButton *)self->_headerButton titleLabel];
-      [v64 vui_heightToBaseline];
+      titleLabel3 = [(UIButton *)self->_headerButton titleLabel];
+      [titleLabel3 vui_heightToBaseline];
       v66 = v65;
 
       v67 = width - v6 - p_padding->right;
@@ -683,7 +683,7 @@ LABEL_72:
         v95 = v172;
         v102 = v146;
         v96 = v153;
-        if (!a4)
+        if (!only)
         {
           goto LABEL_50;
         }
@@ -732,16 +732,16 @@ LABEL_55:
   }
 }
 
-- (id)_buttonWithString:(id)a3 existingButton:(id)a4
+- (id)_buttonWithString:(id)string existingButton:(id)button
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  stringCopy = string;
+  buttonCopy = button;
+  if ([stringCopy length])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = buttonCopy;
     }
 
     else
@@ -750,20 +750,20 @@ LABEL_55:
     }
 
     v8 = v7;
-    v9 = [MEMORY[0x1E69DC888] vui_keyColor];
-    [v8 setTitleColor:v9 forState:0];
+    vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+    [v8 setTitleColor:vui_keyColor forState:0];
 
-    v10 = [v8 titleLabel];
+    titleLabel = [v8 titleLabel];
     v11 = [MEMORY[0x1E69DB878] vui_fontFromTextStyle:13 fontWeight:0 fontSize:0 fontWidth:0 symbolicTraits:0.0];
-    [v10 setFont:v11];
+    [titleLabel setFont:v11];
 
-    v12 = [v8 titleLabel];
-    [v12 setNumberOfLines:1];
+    titleLabel2 = [v8 titleLabel];
+    [titleLabel2 setNumberOfLines:1];
 
-    v13 = [v8 titleLabel];
-    [v13 setAdjustsFontForContentSizeCategory:1];
+    titleLabel3 = [v8 titleLabel];
+    [titleLabel3 setAdjustsFontForContentSizeCategory:1];
 
-    [v8 setTitle:v5 forState:0];
+    [v8 setTitle:stringCopy forState:0];
   }
 
   else
@@ -774,12 +774,12 @@ LABEL_55:
   return v8;
 }
 
-- (void)_selectButtonAction:(id)a3
+- (void)_selectButtonAction:(id)action
 {
   selectionHandler = self->_selectionHandler;
   if (selectionHandler)
   {
-    selectionHandler[2](selectionHandler, a3);
+    selectionHandler[2](selectionHandler, action);
   }
 }
 

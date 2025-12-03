@@ -1,15 +1,15 @@
 @interface CAMTimerButton
-- (CAMTimerButton)initWithFrame:(CGRect)a3;
-- (CAMTimerButton)initWithLayoutStyle:(int64_t)a3;
+- (CAMTimerButton)initWithFrame:(CGRect)frame;
+- (CAMTimerButton)initWithLayoutStyle:(int64_t)style;
 - (CAMTimerButtonDelegate)delegate;
-- (id)_currentGlyphImageForAccessibiliyHUD:(BOOL)a3;
+- (id)_currentGlyphImageForAccessibiliyHUD:(BOOL)d;
 - (id)shownIndexesWhileCollapsed;
-- (id)titleForMenuItemAtIndex:(int64_t)a3;
+- (id)titleForMenuItemAtIndex:(int64_t)index;
 - (void)_commonCAMTimerButtonInitialization;
 - (void)_updateCurrentGlyphImage;
 - (void)reloadData;
-- (void)setDuration:(int64_t)a3 animated:(BOOL)a4;
-- (void)setHideOffWhenCollapsed:(BOOL)a3 needsReloadData:(BOOL)a4;
+- (void)setDuration:(int64_t)duration animated:(BOOL)animated;
+- (void)setHideOffWhenCollapsed:(BOOL)collapsed needsReloadData:(BOOL)data;
 @end
 
 @implementation CAMTimerButton
@@ -53,15 +53,15 @@
 - (void)_updateCurrentGlyphImage
 {
   v4 = [(CAMTimerButton *)self _currentGlyphImageForAccessibiliyHUD:0];
-  v3 = [(CAMTimerButton *)self _glyphView];
-  [v3 setImage:v4];
+  _glyphView = [(CAMTimerButton *)self _glyphView];
+  [_glyphView setImage:v4];
 }
 
-- (CAMTimerButton)initWithLayoutStyle:(int64_t)a3
+- (CAMTimerButton)initWithLayoutStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = CAMTimerButton;
-  v3 = [(CAMExpandableMenuButton *)&v7 initWithLayoutStyle:a3];
+  v3 = [(CAMExpandableMenuButton *)&v7 initWithLayoutStyle:style];
   v4 = v3;
   if (v3)
   {
@@ -72,44 +72,44 @@
   return v4;
 }
 
-- (CAMTimerButton)initWithFrame:(CGRect)a3
+- (CAMTimerButton)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMTimerButton *)self initWithLayoutStyle:v5];
+  return [(CAMTimerButton *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
-- (void)setDuration:(int64_t)a3 animated:(BOOL)a4
+- (void)setDuration:(int64_t)duration animated:(BOOL)animated
 {
-  if ([(CAMExpandableMenuButton *)self selectedIndex:a3]!= a3)
+  if ([(CAMExpandableMenuButton *)self selectedIndex:duration]!= duration)
   {
 
-    [(CAMExpandableMenuButton *)self setSelectedIndex:a3];
+    [(CAMExpandableMenuButton *)self setSelectedIndex:duration];
   }
 }
 
-- (void)setHideOffWhenCollapsed:(BOOL)a3 needsReloadData:(BOOL)a4
+- (void)setHideOffWhenCollapsed:(BOOL)collapsed needsReloadData:(BOOL)data
 {
-  if (self->_hideOffWhenCollapsed != a3)
+  if (self->_hideOffWhenCollapsed != collapsed)
   {
-    self->_hideOffWhenCollapsed = a3;
-    if (a4)
+    self->_hideOffWhenCollapsed = collapsed;
+    if (data)
     {
       [(CAMTimerButton *)self reloadData];
     }
   }
 }
 
-- (id)_currentGlyphImageForAccessibiliyHUD:(BOOL)a3
+- (id)_currentGlyphImageForAccessibiliyHUD:(BOOL)d
 {
-  v3 = a3;
-  v4 = [(CAMExpandableMenuButton *)self layoutStyle];
+  dCopy = d;
+  layoutStyle = [(CAMExpandableMenuButton *)self layoutStyle];
   v5 = @"CAMTimerButton";
-  if (!v4 || v4 == 3)
+  if (!layoutStyle || layoutStyle == 3)
   {
 LABEL_5:
-    if (!v3)
+    if (!dCopy)
     {
       v6 = MEMORY[0x1E69DCAB8];
       v7 = CAMCameraUIFrameworkBundle();
@@ -122,13 +122,13 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if (v4 == 1)
+  if (layoutStyle == 1)
   {
     v5 = @"CAMTimerButtonPad";
     goto LABEL_5;
   }
 
-  if (v3)
+  if (dCopy)
   {
 LABEL_8:
     v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"timer"];
@@ -141,12 +141,12 @@ LABEL_9:
   return v9;
 }
 
-- (id)titleForMenuItemAtIndex:(int64_t)a3
+- (id)titleForMenuItemAtIndex:(int64_t)index
 {
-  if (a3)
+  if (index)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained timeIntervalForDuration:a3];
+    [WeakRetained timeIntervalForDuration:index];
     v6 = v5;
 
     v7 = CAMTimerDurationFormatter();

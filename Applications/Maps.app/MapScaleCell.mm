@@ -1,17 +1,17 @@
 @interface MapScaleCell
-- (MapScaleCell)initWithDistanceInMeters:(double)a3;
-- (id)_legendStringForDistanceString:(id)a3 index:(int)a4;
-- (void)drawInRect:(CGRect)a3;
+- (MapScaleCell)initWithDistanceInMeters:(double)meters;
+- (id)_legendStringForDistanceString:(id)string index:(int)index;
+- (void)drawInRect:(CGRect)rect;
 @end
 
 @implementation MapScaleCell
 
-- (void)drawInRect:(CGRect)a3
+- (void)drawInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v39 = +[UIColor whiteColor];
   v8 = [[UIColor alloc] initWithRed:0.470588235 green:0.435294118 blue:0.345098039 alpha:1.0];
   v9 = [[UIColor alloc] initWithWhite:0.0 alpha:0.800000012];
@@ -126,21 +126,21 @@ LABEL_9:
   }
 }
 
-- (id)_legendStringForDistanceString:(id)a3 index:(int)a4
+- (id)_legendStringForDistanceString:(id)string index:(int)index
 {
-  v5 = a3;
-  v6 = v5;
+  stringCopy = string;
+  v6 = stringCopy;
   v7 = 0;
-  if (a4 <= 1)
+  if (index <= 1)
   {
-    if (a4)
+    if (index)
     {
-      if (a4 != 1)
+      if (index != 1)
       {
         goto LABEL_11;
       }
 
-      [v5 floatValue];
+      [stringCopy floatValue];
       goto LABEL_10;
     }
 
@@ -149,16 +149,16 @@ LABEL_9:
 
   else
   {
-    if (a4 == 2)
+    if (index == 2)
     {
-      [v5 floatValue];
+      [stringCopy floatValue];
       v9 = v10 + v10;
       goto LABEL_10;
     }
 
-    if (a4 == 3 || a4 == 4)
+    if (index == 3 || index == 4)
     {
-      [v5 floatValue];
+      [stringCopy floatValue];
       v9 = v8 * 3.0;
 LABEL_10:
       v7 = [NSString stringWithFormat:@"%g", v9];
@@ -170,14 +170,14 @@ LABEL_11:
   return v7;
 }
 
-- (MapScaleCell)initWithDistanceInMeters:(double)a3
+- (MapScaleCell)initWithDistanceInMeters:(double)meters
 {
   v5.receiver = self;
   v5.super_class = MapScaleCell;
   result = [(MapScaleCell *)&v5 init];
   if (result)
   {
-    result->_distanceInMeters = a3;
+    result->_distanceInMeters = meters;
   }
 
   return result;

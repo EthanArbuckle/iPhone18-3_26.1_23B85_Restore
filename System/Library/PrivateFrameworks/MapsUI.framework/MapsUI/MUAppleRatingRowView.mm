@@ -1,16 +1,16 @@
 @interface MUAppleRatingRowView
-+ (id)ratingSymbolStringWithFont:(id)a3 symbolScale:(int64_t)a4 attributes:(id)a5;
-+ (int64_t)_ratingsValueAnimationFromViewModel:(id)a3 toViewModel:(id)a4;
-- (MUAppleRatingRowView)initWithFrame:(CGRect)a3 ratingsCountAnimationEnabled:(BOOL)a4 isInlineMode:(BOOL)a5;
-- (id)_attributesWithFont:(id)a3 color:(id)a4;
++ (id)ratingSymbolStringWithFont:(id)font symbolScale:(int64_t)scale attributes:(id)attributes;
++ (int64_t)_ratingsValueAnimationFromViewModel:(id)model toViewModel:(id)viewModel;
+- (MUAppleRatingRowView)initWithFrame:(CGRect)frame ratingsCountAnimationEnabled:(BOOL)enabled isInlineMode:(BOOL)mode;
+- (id)_attributesWithFont:(id)font color:(id)color;
 - (id)_percentageStringComponentsFromCurrentViewModel;
 - (id)_ratingSubtitleAttributedString;
 - (void)_contentSizeDidChange;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateAppearance;
-- (void)_updateAppearanceAnimatingFromPreviousViewModel:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)_updateAppearanceAnimatingFromPreviousViewModel:(id)model;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUAppleRatingRowView
@@ -28,17 +28,17 @@
   }
 }
 
-- (id)_attributesWithFont:(id)a3 color:(id)a4
+- (id)_attributesWithFont:(id)font color:(id)color
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69DB650];
   v12[0] = *MEMORY[0x1E69DB648];
   v12[1] = v5;
-  v13[0] = a3;
-  v13[1] = a4;
+  v13[0] = font;
+  v13[1] = color;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a4;
-  v8 = a3;
+  colorCopy = color;
+  fontCopy = font;
   v9 = [v6 dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x1E69E9840];
@@ -101,15 +101,15 @@
 
 - (id)_ratingSubtitleAttributedString
 {
-  v3 = [(MURatingPercentageViewModel *)self->_viewModel numberOfRatingsUsedForScore];
-  if (v3)
+  numberOfRatingsUsedForScore = [(MURatingPercentageViewModel *)self->_viewModel numberOfRatingsUsedForScore];
+  if (numberOfRatingsUsedForScore)
   {
-    v4 = v3;
+    v4 = numberOfRatingsUsedForScore;
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [(MUAppleRatingRowView *)self _percentageStringComponentsFromCurrentViewModel];
-    if (v6)
+    _percentageStringComponentsFromCurrentViewModel = [(MUAppleRatingRowView *)self _percentageStringComponentsFromCurrentViewModel];
+    if (_percentageStringComponentsFromCurrentViewModel)
     {
-      [v5 addObjectsFromArray:v6];
+      [v5 addObjectsFromArray:_percentageStringComponentsFromCurrentViewModel];
     }
 
     v7 = [MEMORY[0x1E696F1F0] stringFromCount:v4];
@@ -130,20 +130,20 @@
   {
     v17 = objc_alloc(MEMORY[0x1E696AAB0]);
     v5 = _MULocalizedStringFromThisBundle(@"No Ratings [Placecard]");
-    v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
+    _percentageStringComponentsFromCurrentViewModel = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
     v7 = +[MUInfoCardStyle secondaryTextColor];
-    v8 = [(MUAppleRatingRowView *)self _attributesWithFont:v6 color:v7];
+    v8 = [(MUAppleRatingRowView *)self _attributesWithFont:_percentageStringComponentsFromCurrentViewModel color:v7];
     v16 = [v17 initWithString:v5 attributes:v8];
   }
 
   return v16;
 }
 
-- (void)_updateAppearanceAnimatingFromPreviousViewModel:(id)a3
+- (void)_updateAppearanceAnimatingFromPreviousViewModel:(id)model
 {
-  v43 = a3;
-  v4 = [(MURatingPercentageViewModel *)self->_viewModel categoryTitle];
-  [(UILabel *)self->_titleLabel setText:v4];
+  modelCopy = model;
+  categoryTitle = [(MURatingPercentageViewModel *)self->_viewModel categoryTitle];
+  [(UILabel *)self->_titleLabel setText:categoryTitle];
 
   v5 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] weight:*MEMORY[0x1E69DB970]];
   [(UILabel *)self->_titleLabel setFont:v5];
@@ -151,18 +151,18 @@
   viewModel = self->_viewModel;
   if (viewModel && [(MURatingPercentageViewModel *)viewModel hasSubtitle]&& self->_isInlineMode)
   {
-    v7 = [(MURatingPercentageViewModel *)self->_viewModel numberOfRatingsUsedForScore];
+    numberOfRatingsUsedForScore = [(MURatingPercentageViewModel *)self->_viewModel numberOfRatingsUsedForScore];
     subtitleView = self->_subtitleView;
-    if (v7)
+    if (numberOfRatingsUsedForScore)
     {
-      v9 = v7;
-      v10 = [(MUAppleRatingRowSubtitleView *)self->_subtitleView superview];
+      v9 = numberOfRatingsUsedForScore;
+      superview = [(MUAppleRatingRowSubtitleView *)self->_subtitleView superview];
 
       [(MUAppleRatingRowView *)self addSubview:self->_subtitleView];
       [(MUStackLayout *)self->_stackLayout addArrangedLayoutItem:self->_subtitleView];
-      if (v10)
+      if (superview)
       {
-        v11 = [objc_opt_class() _ratingsValueAnimationFromViewModel:v43 toViewModel:self->_viewModel];
+        v11 = [objc_opt_class() _ratingsValueAnimationFromViewModel:modelCopy toViewModel:self->_viewModel];
       }
 
       else
@@ -170,11 +170,11 @@
         v11 = 0;
       }
 
-      v18 = [(MUAppleRatingRowView *)self _percentageStringComponentsFromCurrentViewModel];
-      v42 = v18;
-      if (v18)
+      _percentageStringComponentsFromCurrentViewModel = [(MUAppleRatingRowView *)self _percentageStringComponentsFromCurrentViewModel];
+      v42 = _percentageStringComponentsFromCurrentViewModel;
+      if (_percentageStringComponentsFromCurrentViewModel)
       {
-        v19 = [v18 copy];
+        v19 = [_percentageStringComponentsFromCurrentViewModel copy];
         v20 = [MapsUILayout buildAttributedDisplayStringForComponents:v19 forContainingView:self->_subtitleView];
       }
 
@@ -243,13 +243,13 @@
 
 - (void)_updateAppearance
 {
-  v3 = [(MURatingPercentageViewModel *)self->_viewModel categoryTitle];
-  [(UILabel *)self->_titleLabel setText:v3];
+  categoryTitle = [(MURatingPercentageViewModel *)self->_viewModel categoryTitle];
+  [(UILabel *)self->_titleLabel setText:categoryTitle];
 
   if ([(MURatingPercentageViewModel *)self->_viewModel hasSubtitle]&& self->_isInlineMode)
   {
-    v4 = [(MUAppleRatingRowView *)self _ratingSubtitleAttributedString];
-    [(MULabelViewProtocol *)self->_subtitleLabel setAttributedText:v4];
+    _ratingSubtitleAttributedString = [(MUAppleRatingRowView *)self _ratingSubtitleAttributedString];
+    [(MULabelViewProtocol *)self->_subtitleLabel setAttributedText:_ratingSubtitleAttributedString];
 
     [(MUAppleRatingRowView *)self addSubview:self->_subtitleLabel];
     stackLayout = self->_stackLayout;
@@ -268,19 +268,19 @@
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   viewModel = self->_viewModel;
-  if (viewModel != v5)
+  if (viewModel != modelCopy)
   {
-    v8 = v5;
-    viewModel = [(MURatingPercentageViewModel *)viewModel isEqual:v5];
-    v5 = v8;
+    v8 = modelCopy;
+    viewModel = [(MURatingPercentageViewModel *)viewModel isEqual:modelCopy];
+    modelCopy = v8;
     if ((viewModel & 1) == 0)
     {
       v7 = self->_viewModel;
-      objc_storeStrong(&self->_viewModel, a3);
+      objc_storeStrong(&self->_viewModel, model);
       if (self->_ratingsCountAnimationEnabled)
       {
         [(MUAppleRatingRowView *)self _updateAppearanceAnimatingFromPreviousViewModel:v7];
@@ -291,19 +291,19 @@
         [(MUAppleRatingRowView *)self _updateAppearance];
       }
 
-      v5 = v8;
+      modelCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](viewModel, v5);
+  MEMORY[0x1EEE66BB8](viewModel, modelCopy);
 }
 
 - (void)_setupConstraints
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v3 = [MUStackLayout alloc];
-  v4 = [(MUAppleRatingRowView *)self layoutMarginsGuide];
-  v5 = [(MUStackLayout *)v3 initWithContainer:v4 axis:1];
+  layoutMarginsGuide = [(MUAppleRatingRowView *)self layoutMarginsGuide];
+  v5 = [(MUStackLayout *)v3 initWithContainer:layoutMarginsGuide axis:1];
   stackLayout = self->_stackLayout;
   self->_stackLayout = v5;
 
@@ -377,23 +377,23 @@
 
   [*p_subtitleView setAccessibilityIdentifier:v15];
   [(MUAppleRatingRowView *)self addSubview:*p_subtitleView];
-  v18 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v18 addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
 }
 
-- (MUAppleRatingRowView)initWithFrame:(CGRect)a3 ratingsCountAnimationEnabled:(BOOL)a4 isInlineMode:(BOOL)a5
+- (MUAppleRatingRowView)initWithFrame:(CGRect)frame ratingsCountAnimationEnabled:(BOOL)enabled isInlineMode:(BOOL)mode
 {
-  v6 = a4;
+  enabledCopy = enabled;
   v12.receiver = self;
   v12.super_class = MUAppleRatingRowView;
-  v7 = [(MKViewWithHairline *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(MKViewWithHairline *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
-    v9 = [(MUAppleRatingRowView *)v7 effectiveUserInterfaceLayoutDirection];
-    if (v6)
+    effectiveUserInterfaceLayoutDirection = [(MUAppleRatingRowView *)v7 effectiveUserInterfaceLayoutDirection];
+    if (enabledCopy)
     {
-      v10 = v9;
+      v10 = effectiveUserInterfaceLayoutDirection;
       if (GEOConfigGetBOOL())
       {
         if (!v10)
@@ -403,7 +403,7 @@
       }
     }
 
-    v8->_isInlineMode = a5;
+    v8->_isInlineMode = mode;
     [(MUAppleRatingRowView *)v8 setAccessibilityIdentifier:@"AppleRatingRow"];
     [(MUAppleRatingRowView *)v8 _setupSubviews];
     [(MUAppleRatingRowView *)v8 _setupConstraints];
@@ -412,38 +412,38 @@
   return v8;
 }
 
-+ (id)ratingSymbolStringWithFont:(id)a3 symbolScale:(int64_t)a4 attributes:(id)a5
++ (id)ratingSymbolStringWithFont:(id)font symbolScale:(int64_t)scale attributes:(id)attributes
 {
   v7 = MEMORY[0x1E69DCAB8];
   v8 = MEMORY[0x1E696F1F8];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 ratingSymbolName];
-  v12 = [v7 systemImageNamed:v11];
+  attributesCopy = attributes;
+  fontCopy = font;
+  ratingSymbolName = [v8 ratingSymbolName];
+  v12 = [v7 systemImageNamed:ratingSymbolName];
 
-  v13 = [MEMORY[0x1E69DCAD8] configurationWithFont:v10 scale:a4];
+  v13 = [MEMORY[0x1E69DCAD8] configurationWithFont:fontCopy scale:scale];
 
   v14 = [v12 imageWithConfiguration:v13];
   v15 = [v14 imageWithRenderingMode:2];
 
   v16 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
   [v16 setImage:v15];
-  v17 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v16 attributes:v9];
+  v17 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v16 attributes:attributesCopy];
 
   return v17;
 }
 
-+ (int64_t)_ratingsValueAnimationFromViewModel:(id)a3 toViewModel:(id)a4
++ (int64_t)_ratingsValueAnimationFromViewModel:(id)model toViewModel:(id)viewModel
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  modelCopy = model;
+  viewModelCopy = viewModel;
+  v7 = viewModelCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (modelCopy && viewModelCopy)
   {
-    if ([v5 numberOfRatingsUsedForScore] && objc_msgSend(v7, "numberOfRatingsUsedForScore") && (v9 = objc_msgSend(v5, "numberOfRatingsUsedForScore"), v9 != objc_msgSend(v7, "numberOfRatingsUsedForScore")))
+    if ([modelCopy numberOfRatingsUsedForScore] && objc_msgSend(v7, "numberOfRatingsUsedForScore") && (v9 = objc_msgSend(modelCopy, "numberOfRatingsUsedForScore"), v9 != objc_msgSend(v7, "numberOfRatingsUsedForScore")))
     {
-      v11 = [MEMORY[0x1E696F1F0] stringFromCount:{objc_msgSend(v5, "numberOfRatingsUsedForScore")}];
+      v11 = [MEMORY[0x1E696F1F0] stringFromCount:{objc_msgSend(modelCopy, "numberOfRatingsUsedForScore")}];
       v12 = [MEMORY[0x1E696F1F0] stringFromCount:{objc_msgSend(v7, "numberOfRatingsUsedForScore")}];
       if ([v11 isEqualToString:v12])
       {
@@ -452,11 +452,11 @@
 
       else
       {
-        v13 = [v7 numberOfRatingsUsedForScore];
-        if (v13 <= [v5 numberOfRatingsUsedForScore])
+        numberOfRatingsUsedForScore = [v7 numberOfRatingsUsedForScore];
+        if (numberOfRatingsUsedForScore <= [modelCopy numberOfRatingsUsedForScore])
         {
-          v14 = [v7 numberOfRatingsUsedForScore];
-          v8 = 2 * (v14 < [v5 numberOfRatingsUsedForScore]);
+          numberOfRatingsUsedForScore2 = [v7 numberOfRatingsUsedForScore];
+          v8 = 2 * (numberOfRatingsUsedForScore2 < [modelCopy numberOfRatingsUsedForScore]);
         }
 
         else

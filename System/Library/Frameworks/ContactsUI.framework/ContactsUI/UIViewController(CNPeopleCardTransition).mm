@@ -6,21 +6,21 @@
 
 - (id)_cardViewControllerTransitioning
 {
-  v2 = objc_getAssociatedObject(a1, "CardViewControllerTransitioning");
-  if (!v2)
+  selfCopy = objc_getAssociatedObject(self, "CardViewControllerTransitioning");
+  if (!selfCopy)
   {
-    if ([a1 conformsToProtocol:&unk_1F0D7C4F0])
+    if ([self conformsToProtocol:&unk_1F0D7C4F0])
     {
-      v2 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v2 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

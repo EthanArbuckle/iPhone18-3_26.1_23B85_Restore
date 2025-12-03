@@ -1,15 +1,15 @@
 @interface MIOYzipStreamOutputSettings
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7;
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile;
 @end
 
 @implementation MIOYzipStreamOutputSettings
 
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v7 = a6;
+  encoderConfigCopy = encoderConfig;
   v21[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (v7)
+  configCopy = config;
+  if (encoderConfigCopy)
   {
     v10 = [MOVStreamEncoderConfig alloc];
     v11 = [(MOVStreamEncoderConfig *)v10 initWithCodecType:2038065520 encoderSpecification:MEMORY[0x277CBEC10] sessionProperties:MEMORY[0x277CBEC10]];
@@ -18,7 +18,7 @@
 
   else
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions(a4);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(description);
     v14 = *MEMORY[0x277CE62C8];
     v21[0] = @"yzip";
     v15 = *MEMORY[0x277CE63C0];

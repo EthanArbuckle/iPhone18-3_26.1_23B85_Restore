@@ -1,23 +1,23 @@
 @interface _UIEditMenuPageButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityViewIsVisible;
 @end
 
 @implementation _UIEditMenuPageButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UIEditMenuPageButton" isKindOfClass:@"UIButton"];
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)_accessibilityViewIsVisible
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v8 = 0;
   objc_opt_class();
@@ -32,7 +32,7 @@
     return 0;
   }
 
-  v5.receiver = v10;
+  v5.receiver = selfCopy;
   v5.super_class = _UIEditMenuPageButtonAccessibility;
   return [(_UIEditMenuPageButtonAccessibility *)&v5 _accessibilityViewIsVisible];
 }

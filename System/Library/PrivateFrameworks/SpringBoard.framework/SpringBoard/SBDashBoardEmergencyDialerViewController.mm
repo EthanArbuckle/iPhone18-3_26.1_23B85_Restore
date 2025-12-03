@@ -1,15 +1,15 @@
 @interface SBDashBoardEmergencyDialerViewController
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (void)_activateEmergencyDialerController;
 - (void)_deactivateEmergencyDialerController;
-- (void)_updateEmergencyCallMode:(id)a3;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
+- (void)_updateEmergencyCallMode:(id)mode;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
 - (void)dealloc;
-- (void)emergencyDialer:(id)a3 willDeactivateWithError:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)emergencyDialer:(id)dialer willDeactivateWithError:(id)error;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBDashBoardEmergencyDialerViewController
@@ -30,38 +30,38 @@
   [(CSCoverSheetViewControllerBase *)&v3 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBDashBoardEmergencyDialerViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:appear];
   [(SBDashBoardEmergencyDialerViewController *)self _activateEmergencyDialerController];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(SBDashBoardEmergencyDialerViewController *)self _deactivateEmergencyDialerController];
   v5.receiver = self;
   v5.super_class = SBDashBoardEmergencyDialerViewController;
-  [(CSCoverSheetViewControllerBase *)&v5 viewDidDisappear:v3];
+  [(CSCoverSheetViewControllerBase *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 != 27)
+  eventCopy = event;
+  type = [eventCopy type];
+  if (type != 27)
   {
-    if (v5 != 25)
+    if (type != 25)
     {
 LABEL_7:
       v8 = 0;
 LABEL_11:
       v12.receiver = self;
       v12.super_class = SBDashBoardEmergencyDialerViewController;
-      v8 |= [(CSCoverSheetViewControllerBase *)&v12 handleEvent:v4];
+      v8 |= [(CSCoverSheetViewControllerBase *)&v12 handleEvent:eventCopy];
       goto LABEL_12;
     }
 
@@ -70,7 +70,7 @@ LABEL_11:
       v6 = SBLogDashBoard();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        [v4 type];
+        [eventCopy type];
         v7 = NSStringFromCoverSheetEventType();
         *buf = 138543362;
         v14 = v7;
@@ -84,7 +84,7 @@ LABEL_11:
   v9 = SBLogDashBoard();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 type];
+    [eventCopy type];
     v10 = NSStringFromCoverSheetEventType();
     *buf = 138543362;
     v14 = v10;
@@ -93,7 +93,7 @@ LABEL_11:
 
   [(CSCoverSheetViewControllerBase *)self dismiss];
   v8 = 1;
-  if (([v4 isConsumable] & 1) == 0)
+  if (([eventCopy isConsumable] & 1) == 0)
   {
     goto LABEL_11;
   }
@@ -103,76 +103,76 @@ LABEL_12:
   return v8;
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v39.receiver = self;
   v39.super_class = SBDashBoardEmergencyDialerViewController;
-  [(CSCoverSheetViewControllerBase *)&v39 aggregateAppearance:v4];
-  v5 = [MEMORY[0x277D02BC8] background];
-  v6 = [v5 priority:70];
-  v7 = [MEMORY[0x277D75348] whiteColor];
-  v8 = [v6 color:v7];
-  [v4 addComponent:v8];
+  [(CSCoverSheetViewControllerBase *)&v39 aggregateAppearance:appearanceCopy];
+  background = [MEMORY[0x277D02BC8] background];
+  v6 = [background priority:70];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v8 = [v6 color:whiteColor];
+  [appearanceCopy addComponent:v8];
 
   v9 = objc_alloc(MEMORY[0x277D760A8]);
-  v10 = [MEMORY[0x277D75348] blackColor];
-  v11 = [v9 initWithStyle:2 contentColor:v10];
-  [v4 setLegibilitySettings:v11];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v11 = [v9 initWithStyle:2 contentColor:blackColor];
+  [appearanceCopy setLegibilitySettings:v11];
 
-  v12 = [MEMORY[0x277D02BC8] dateView];
-  v13 = [v12 priority:70];
+  dateView = [MEMORY[0x277D02BC8] dateView];
+  v13 = [dateView priority:70];
   v14 = [v13 hidden:1];
-  [v4 addComponent:v14];
+  [appearanceCopy addComponent:v14];
 
-  v15 = [MEMORY[0x277D02BC8] backgroundContent];
-  v16 = [v15 priority:70];
+  backgroundContent = [MEMORY[0x277D02BC8] backgroundContent];
+  v16 = [backgroundContent priority:70];
   v17 = [v16 hidden:1];
-  [v4 addComponent:v17];
+  [appearanceCopy addComponent:v17];
 
-  v18 = [MEMORY[0x277D02BC8] pageContent];
-  v19 = [v18 priority:70];
+  pageContent = [MEMORY[0x277D02BC8] pageContent];
+  v19 = [pageContent priority:70];
   v20 = [v19 hidden:1];
-  [v4 addComponent:v20];
+  [appearanceCopy addComponent:v20];
 
-  v21 = [MEMORY[0x277D02BC8] whitePoint];
-  v22 = [v21 priority:70];
+  whitePoint = [MEMORY[0x277D02BC8] whitePoint];
+  v22 = [whitePoint priority:70];
   v23 = [v22 hidden:1];
-  [v4 addComponent:v23];
+  [appearanceCopy addComponent:v23];
 
   if (SBFEffectiveHomeButtonType() == 2)
   {
     v24 = objc_opt_new();
     v25 = [v24 priority:70];
-    v26 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-    v27 = [v25 identifier:v26];
+    appearanceIdentifier = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+    v27 = [v25 identifier:appearanceIdentifier];
     v28 = [v27 hidden:1];
     v29 = [v28 suppressTeachableMomentsAnimation:1];
-    [v4 addComponent:v29];
+    [appearanceCopy addComponent:v29];
 
-    v30 = [MEMORY[0x277D02BC8] quickActions];
-    v31 = [v30 priority:70];
+    quickActions = [MEMORY[0x277D02BC8] quickActions];
+    v31 = [quickActions priority:70];
     v32 = [v31 hidden:1];
-    [v4 addComponent:v32];
+    [appearanceCopy addComponent:v32];
 
-    v33 = [MEMORY[0x277D02BC8] controlCenterGrabber];
-    v34 = [v33 priority:70];
+    controlCenterGrabber = [MEMORY[0x277D02BC8] controlCenterGrabber];
+    v34 = [controlCenterGrabber priority:70];
     v35 = [v34 hidden:1];
-    [v4 addComponent:v35];
+    [appearanceCopy addComponent:v35];
 
-    v36 = [MEMORY[0x277D02BC8] proudLock];
-    v37 = [v36 priority:70];
+    proudLock = [MEMORY[0x277D02BC8] proudLock];
+    v37 = [proudLock priority:70];
     v38 = [v37 hidden:1];
-    [v4 addComponent:v38];
+    [appearanceCopy addComponent:v38];
   }
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
   v7.receiver = self;
   v7.super_class = SBDashBoardEmergencyDialerViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v7 aggregateBehavior:v4];
+  behaviorCopy = behavior;
+  [(CSCoverSheetViewControllerBase *)&v7 aggregateBehavior:behaviorCopy];
   if (self->_inEmergencyCallMode)
   {
     v5 = 18;
@@ -183,9 +183,9 @@ LABEL_12:
     v5 = 9;
   }
 
-  [v4 setIdleTimerDuration:{v5, v7.receiver, v7.super_class}];
-  [v4 setIdleTimerMode:1];
-  [v4 addRestrictedCapabilities:67113118];
+  [behaviorCopy setIdleTimerDuration:{v5, v7.receiver, v7.super_class}];
+  [behaviorCopy setIdleTimerMode:1];
+  [behaviorCopy addRestrictedCapabilities:67113118];
   if (self->_inEmergencyCall)
   {
     v6 = 2;
@@ -196,21 +196,21 @@ LABEL_12:
     v6 = 0;
   }
 
-  [v4 setProximityDetectionMode:v6];
+  [behaviorCopy setProximityDetectionMode:v6];
 }
 
-- (void)emergencyDialer:(id)a3 willDeactivateWithError:(id)a4
+- (void)emergencyDialer:(id)dialer willDeactivateWithError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = SBLogDashBoard();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (errorCopy)
   {
     if (v7)
     {
       v11 = 138543362;
-      v12 = v5;
+      v12 = errorCopy;
       v8 = "Emergency dialer controller requested dismissal due to error: %{public}@";
       v9 = v6;
       v10 = 12;
@@ -242,14 +242,14 @@ LABEL_6:
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "Activating emergency dialer controller...", buf, 2u);
     }
 
-    v4 = [MEMORY[0x277D6EDF8] sharedInstance];
+    mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
     callCenter = self->_callCenter;
-    self->_callCenter = v4;
+    self->_callCenter = mEMORY[0x277D6EDF8];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel__updateEmergencyCallMode_ name:*MEMORY[0x277D6EFF0] object:0];
-    [v6 addObserver:self selector:sel__updateEmergencyCallMode_ name:*MEMORY[0x277D6F018] object:0];
-    [v6 addObserver:self selector:sel__updateEmergencyCallMode_ name:*MEMORY[0x277D6EFB0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__updateEmergencyCallMode_ name:*MEMORY[0x277D6EFF0] object:0];
+    [defaultCenter addObserver:self selector:sel__updateEmergencyCallMode_ name:*MEMORY[0x277D6F018] object:0];
+    [defaultCenter addObserver:self selector:sel__updateEmergencyCallMode_ name:*MEMORY[0x277D6EFB0] object:0];
     v7 = objc_alloc_init(SBLockScreenEmergencyDialerController);
     controller = self->_controller;
     self->_controller = v7;
@@ -355,10 +355,10 @@ uint64_t __78__SBDashBoardEmergencyDialerViewController__activateEmergencyDialer
     }
 
     [(SBLockScreenEmergencyDialerController *)self->_controller deactivate];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277D6EFF0] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D6F018] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D6EFB0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D6EFF0] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D6F018] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D6EFB0] object:0];
     controller = self->_controller;
     self->_controller = 0;
 
@@ -370,10 +370,10 @@ uint64_t __78__SBDashBoardEmergencyDialerViewController__activateEmergencyDialer
   }
 }
 
-- (void)_updateEmergencyCallMode:(id)a3
+- (void)_updateEmergencyCallMode:(id)mode
 {
-  v4 = a3;
-  v3 = v4;
+  modeCopy = mode;
+  v3 = modeCopy;
   BSDispatchMain();
 }
 

@@ -1,23 +1,23 @@
 @interface FPDVersionsFileCoordinationProviderDelegate
-- (FPDVersionsFileCoordinationProviderDelegate)initWithExtensionManager:(id)a3;
-- (id)_physicalURLForURL:(id)a3;
+- (FPDVersionsFileCoordinationProviderDelegate)initWithExtensionManager:(id)manager;
+- (id)_physicalURLForURL:(id)l;
 - (id)_providedItemsOperationQueue;
-- (void)_movingItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5;
-- (void)_provideItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5;
+- (void)_movingItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler;
+- (void)_provideItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler;
 @end
 
 @implementation FPDVersionsFileCoordinationProviderDelegate
 
-- (FPDVersionsFileCoordinationProviderDelegate)initWithExtensionManager:(id)a3
+- (FPDVersionsFileCoordinationProviderDelegate)initWithExtensionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = FPDVersionsFileCoordinationProviderDelegate;
   v6 = [(FPDVersionsFileCoordinationProviderDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_extensionManager, a3);
+    objc_storeStrong(&v6->_extensionManager, manager);
   }
 
   return v7;
@@ -47,10 +47,10 @@ uint64_t __75__FPDVersionsFileCoordinationProviderDelegate__providedItemsOperati
   return [v2 setName:@"com.apple.FileProvider.Versions"];
 }
 
-- (id)_physicalURLForURL:(id)a3
+- (id)_physicalURLForURL:(id)l
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -60,7 +60,7 @@ uint64_t __75__FPDVersionsFileCoordinationProviderDelegate__providedItemsOperati
   v40 = 0;
   v41 = 0;
   v39 = 0;
-  v6 = [MEMORY[0x1E6967340] parseInfoFromVersionURL:v4 domainIdentifier:&v41 fpItemIdentifier:&v40 etag:&v39];
+  v6 = [MEMORY[0x1E6967340] parseInfoFromVersionURL:lCopy domainIdentifier:&v41 fpItemIdentifier:&v40 etag:&v39];
   v7 = v41;
   v8 = v40;
   v9 = v39;
@@ -72,11 +72,11 @@ uint64_t __75__FPDVersionsFileCoordinationProviderDelegate__providedItemsOperati
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v11 = self;
-    v12 = [(FPDExtensionManager *)self->_extensionManager providerDomainsByID];
-    v13 = [v12 allKeys];
+    selfCopy = self;
+    providerDomainsByID = [(FPDExtensionManager *)self->_extensionManager providerDomainsByID];
+    allKeys = [providerDomainsByID allKeys];
 
-    v14 = [v13 countByEnumeratingWithState:&v35 objects:v42 count:16];
+    v14 = [allKeys countByEnumeratingWithState:&v35 objects:v42 count:16];
     if (v14)
     {
       v15 = v14;
@@ -87,19 +87,19 @@ LABEL_7:
       {
         if (*v36 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
         v18 = *(*(&v35 + 1) + 8 * v17);
-        v19 = [v18 fp_toDomainIdentifier];
-        if ([v19 isEqualToString:v7])
+        fp_toDomainIdentifier = [v18 fp_toDomainIdentifier];
+        if ([fp_toDomainIdentifier isEqualToString:v7])
         {
           break;
         }
 
         if (v15 == ++v17)
         {
-          v15 = [v13 countByEnumeratingWithState:&v35 objects:v42 count:16];
+          v15 = [allKeys countByEnumeratingWithState:&v35 objects:v42 count:16];
           if (v15)
           {
             goto LABEL_7;
@@ -109,28 +109,28 @@ LABEL_7:
         }
       }
 
-      v21 = [(FPDExtensionManager *)v11->_extensionManager domainWithID:v18 reason:0];
+      v21 = [(FPDExtensionManager *)selfCopy->_extensionManager domainWithID:v18 reason:0];
 
       if (!v21)
       {
         goto LABEL_19;
       }
 
-      v22 = [v21 versionsCache];
+      versionsCache = [v21 versionsCache];
       v10 = v33;
-      v23 = [v22 objectForKey:v33];
+      v23 = [versionsCache objectForKey:v33];
 
       if (v23)
       {
-        v24 = [MEMORY[0x1E69A07C0] manager];
-        v25 = [v23 originalURL];
+        manager = [MEMORY[0x1E69A07C0] manager];
+        originalURL = [v23 originalURL];
         v34 = 0;
-        v26 = [v24 permanentStorageForItemAtURL:v25 allocateIfNone:1 error:&v34];
+        v26 = [manager permanentStorageForItemAtURL:originalURL allocateIfNone:1 error:&v34];
         v32 = v34;
 
         if (v26)
         {
-          v27 = [v23 physicalURL];
+          physicalURL = [v23 physicalURL];
         }
 
         else
@@ -141,10 +141,10 @@ LABEL_7:
             [FPDVersionsFileCoordinationProviderDelegate _physicalURLForURL:];
           }
 
-          v27 = v4;
+          physicalURL = lCopy;
         }
 
-        v20 = v27;
+        v20 = physicalURL;
       }
 
       else
@@ -155,7 +155,7 @@ LABEL_7:
           [FPDVersionsFileCoordinationProviderDelegate _physicalURLForURL:];
         }
 
-        v20 = v4;
+        v20 = lCopy;
       }
     }
 
@@ -164,14 +164,14 @@ LABEL_7:
 LABEL_13:
 
 LABEL_19:
-      v20 = v4;
+      v20 = lCopy;
       v10 = v33;
     }
   }
 
   else
   {
-    v20 = v4;
+    v20 = lCopy;
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -179,17 +179,17 @@ LABEL_19:
   return v20;
 }
 
-- (void)_provideItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5
+- (void)_provideItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler
 {
   v69 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v7 = a4;
-  v40 = a5;
-  v8 = [v7 readerID];
-  [MEMORY[0x1E696ABF8] _processIdentifierForID:v8];
-  if (v8)
+  lCopy = l;
+  infoCopy = info;
+  handlerCopy = handler;
+  readerID = [infoCopy readerID];
+  [MEMORY[0x1E696ABF8] _processIdentifierForID:readerID];
+  if (readerID)
   {
-    v9 = [MEMORY[0x1E696ABF8] _processIdentifierForID:v8];
+    v9 = [MEMORY[0x1E696ABF8] _processIdentifierForID:readerID];
   }
 
   else
@@ -197,9 +197,9 @@ LABEL_19:
     v9 = 0;
   }
 
-  if (v7)
+  if (infoCopy)
   {
-    [v7 readerAuditToken];
+    [infoCopy readerAuditToken];
   }
 
   else
@@ -207,15 +207,15 @@ LABEL_19:
     memset(buf, 0, sizeof(buf));
   }
 
-  v10 = [v7 kernelMaterializationInfo];
-  v11 = [v10 fileMaterializationInfo];
-  v41 = [FPDRequest requestForPID:v9 auditToken:buf fromPOSIX:0 kernelFileInfo:v11];
+  kernelMaterializationInfo = [infoCopy kernelMaterializationInfo];
+  fileMaterializationInfo = [kernelMaterializationInfo fileMaterializationInfo];
+  v41 = [FPDRequest requestForPID:v9 auditToken:buf fromPOSIX:0 kernelFileInfo:fileMaterializationInfo];
 
   if (v41)
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v41 processName];
-    v39 = [v12 stringWithFormat:@"%@ (on behalf of %@)", 0, v13];
+    processName = [v41 processName];
+    v39 = [v12 stringWithFormat:@"%@ (on behalf of %@)", 0, processName];
   }
 
   else
@@ -227,24 +227,24 @@ LABEL_19:
   v14 = fp_current_or_default_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v42 fp_shortDescription];
+    fp_shortDescription = [lCopy fp_shortDescription];
     *buf = 134219010;
     *&buf[4] = section;
     *&buf[12] = 2112;
     *&buf[14] = self;
     *&buf[22] = 2112;
-    *&buf[24] = v15;
+    *&buf[24] = fp_shortDescription;
     v65 = 2112;
     v66 = v39;
     v67 = 2114;
-    v68 = v8;
+    v68 = readerID;
     _os_log_impl(&dword_1CEFC7000, v14, OS_LOG_TYPE_DEFAULT, "[NOTICE] ┏%llx ⭕️ NSFileCoordinator requested %@ to provide item version at %@ (consumer: %@, readerID: %{public}@)", buf, 0x34u);
   }
 
   v60 = 0;
   v61 = 0;
   v59 = 0;
-  v38 = [MEMORY[0x1E6967340] parseInfoFromVersionURL:v42 domainIdentifier:&v61 fpItemIdentifier:&v60 etag:&v59];
+  v38 = [MEMORY[0x1E6967340] parseInfoFromVersionURL:lCopy domainIdentifier:&v61 fpItemIdentifier:&v60 etag:&v59];
   v16 = v61;
   v17 = v60;
   v36 = v59;
@@ -254,10 +254,10 @@ LABEL_19:
     v58 = 0u;
     v56 = 0u;
     v55 = 0u;
-    v18 = [(FPDExtensionManager *)self->_extensionManager providerDomainsByID];
-    v19 = [v18 allKeys];
+    providerDomainsByID = [(FPDExtensionManager *)self->_extensionManager providerDomainsByID];
+    allKeys = [providerDomainsByID allKeys];
 
-    v20 = [v19 countByEnumeratingWithState:&v55 objects:v63 count:16];
+    v20 = [allKeys countByEnumeratingWithState:&v55 objects:v63 count:16];
     if (v20)
     {
       v21 = *v56;
@@ -267,19 +267,19 @@ LABEL_16:
       {
         if (*v56 != v21)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(allKeys);
         }
 
         v23 = *(*(&v55 + 1) + 8 * v22);
-        v24 = [v23 fp_toDomainIdentifier];
-        if ([v24 isEqualToString:v16])
+        fp_toDomainIdentifier = [v23 fp_toDomainIdentifier];
+        if ([fp_toDomainIdentifier isEqualToString:v16])
         {
           break;
         }
 
         if (v20 == ++v22)
         {
-          v20 = [v19 countByEnumeratingWithState:&v55 objects:v63 count:16];
+          v20 = [allKeys countByEnumeratingWithState:&v55 objects:v63 count:16];
           if (v20)
           {
             goto LABEL_16;
@@ -297,15 +297,15 @@ LABEL_16:
       }
 
       v28 = [objc_alloc(MEMORY[0x1E69673A0]) initWithProviderDomainID:v16 itemIdentifier:v17];
-      v29 = [v27 defaultBackend];
+      defaultBackend = [v27 defaultBackend];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __92__FPDVersionsFileCoordinationProviderDelegate__provideItemAtURL_withInfo_completionHandler___block_invoke;
       v43[3] = &unk_1E83BED90;
-      v44 = v42;
+      v44 = lCopy;
       v45 = v39;
-      v46 = v8;
-      v53 = v40;
+      v46 = readerID;
+      v53 = handlerCopy;
       v30 = v27;
       v47 = v30;
       v31 = v28;
@@ -314,8 +314,8 @@ LABEL_16:
       v50 = v41;
       v54 = a2;
       v51 = v17;
-      v52 = self;
-      [v29 URLForItemID:v31 creatingPlaceholderIfMissing:1 ignoreAlternateContentsURL:1 forBookmarkResolution:0 request:v50 completionHandler:v43];
+      selfCopy = self;
+      [defaultBackend URLForItemID:v31 creatingPlaceholderIfMissing:1 ignoreAlternateContentsURL:1 forBookmarkResolution:0 request:v50 completionHandler:v43];
     }
 
     else
@@ -326,7 +326,7 @@ LABEL_28:
       v32 = MEMORY[0x1E696AC28];
       v30 = FPProviderNotFoundErrorForURL();
       v31 = [v32 responseWithError:v30];
-      (*(v40 + 2))(v40, v31);
+      (*(handlerCopy + 2))(handlerCopy, v31);
     }
   }
 
@@ -337,8 +337,8 @@ LABEL_28:
       v25 = fp_current_or_default_log();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v26 = [v42 fp_shortDescription];
-        [FPDVersionsFileCoordinationProviderDelegate _provideItemAtURL:v26 withInfo:v8 completionHandler:buf];
+        fp_shortDescription2 = [lCopy fp_shortDescription];
+        [FPDVersionsFileCoordinationProviderDelegate _provideItemAtURL:fp_shortDescription2 withInfo:readerID completionHandler:buf];
       }
     }
 
@@ -347,13 +347,13 @@ LABEL_28:
       v25 = fp_current_or_default_log();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [v42 fp_shortDescription];
-        [FPDVersionsFileCoordinationProviderDelegate _provideItemAtURL:v33 withInfo:v8 completionHandler:buf];
+        fp_shortDescription3 = [lCopy fp_shortDescription];
+        [FPDVersionsFileCoordinationProviderDelegate _provideItemAtURL:fp_shortDescription3 withInfo:readerID completionHandler:buf];
       }
     }
 
     v30 = [MEMORY[0x1E696AC28] responseWithError:0];
-    (*(v40 + 2))(v40, v30);
+    (*(handlerCopy + 2))(handlerCopy, v30);
   }
 
   __fp_leave_section_Notice();
@@ -773,12 +773,12 @@ void __92__FPDVersionsFileCoordinationProviderDelegate__provideItemAtURL_withInf
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_movingItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5
+- (void)_movingItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E696AC10];
-  v7 = a5;
-  v8 = [v6 providingRequiredResponse];
-  (*(a5 + 2))(v7, v8);
+  handlerCopy = handler;
+  providingRequiredResponse = [v6 providingRequiredResponse];
+  (*(handler + 2))(handlerCopy, providingRequiredResponse);
 }
 
 - (void)_physicalURLForURL:.cold.1()

@@ -1,5 +1,5 @@
 @interface COSDiscoverCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_hasArrowUnicodeInSubtitleLabel;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
@@ -7,52 +7,52 @@
 
 @implementation COSDiscoverCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"COSDiscoverCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"COSDiscoverCell" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"COSDiscoverCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"COSDiscoverCell" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityValue
 {
   v3 = [(COSDiscoverCellAccessibility *)self safeValueForKey:@"_subtitleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   if ([(COSDiscoverCellAccessibility *)self _hasArrowUnicodeInSubtitleLabel])
   {
-    v5 = [v4 stringByReplacingCharactersInRange:objc_msgSend(v4 withString:{"length") - 1, 1, &stru_2A21289B8}];
+    v5 = [accessibilityLabel stringByReplacingCharactersInRange:objc_msgSend(accessibilityLabel withString:{"length") - 1, 1, &stru_2A21289B8}];
 
-    v4 = v5;
+    accessibilityLabel = v5;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
 {
   if ([(COSDiscoverCellAccessibility *)self _hasArrowUnicodeInSubtitleLabel])
   {
-    v3 = accessibilityLocalizedString(@"discovery.link.to.content");
+    accessibilityHint = accessibilityLocalizedString(@"discovery.link.to.content");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = COSDiscoverCellAccessibility;
-    v3 = [(COSDiscoverCellAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(COSDiscoverCellAccessibility *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (BOOL)_hasArrowUnicodeInSubtitleLabel
 {
   v2 = [(COSDiscoverCellAccessibility *)self safeValueForKey:@"_subtitleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  v4 = [v3 length];
-  if (v3)
+  v4 = [accessibilityLabel length];
+  if (accessibilityLabel)
   {
     v5 = v4 < 1;
   }
@@ -67,7 +67,7 @@
     goto LABEL_9;
   }
 
-  v6 = [v3 substringWithRange:{v4 - 1, 1}];
+  v6 = [accessibilityLabel substringWithRange:{v4 - 1, 1}];
   if ([v6 length] != 1)
   {
 

@@ -1,21 +1,21 @@
 @interface OKTransitionSuck
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (CGPoint)settingLocation;
-- (OKTransitionSuck)initWithSettings:(id)a3;
-- (void)prepareInView:(id)a3;
+- (OKTransitionSuck)initWithSettings:(id)settings;
+- (void)prepareInView:(id)view;
 @end
 
 @implementation OKTransitionSuck
 
-- (OKTransitionSuck)initWithSettings:(id)a3
+- (OKTransitionSuck)initWithSettings:(id)settings
 {
   v10.receiver = self;
   v10.super_class = OKTransitionSuck;
   v4 = [(OKTransitionParallaxPush *)&v10 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"location"];
+    v5 = [settings objectForKey:@"location"];
     v6 = v4 + 80;
     if (v5)
     {
@@ -36,7 +36,7 @@
 + (id)supportedSettings
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OKTransitionSuck;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v5, sel_supportedSettings)}];
   v8 = @"location";
@@ -61,20 +61,20 @@
   return result;
 }
 
-- (void)prepareInView:(id)a3
+- (void)prepareInView:(id)view
 {
   v4.receiver = self;
   v4.super_class = OKTransitionSuck;
-  [(OKTransitionCATransition *)&v4 prepareInView:a3];
+  [(OKTransitionCATransition *)&v4 prepareInView:view];
   [(CATransition *)self->super._transition setType:@"suckEffect"];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKTransitionSuck"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKTransitionSuck"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 @end

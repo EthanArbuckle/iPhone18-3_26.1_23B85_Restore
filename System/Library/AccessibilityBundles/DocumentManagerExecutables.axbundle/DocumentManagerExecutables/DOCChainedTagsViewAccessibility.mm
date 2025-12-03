@@ -29,7 +29,7 @@
           objc_enumerationMutation(v2);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v7) displayName];
+        displayName = [*(*(&v13 + 1) + 8 * v7) displayName];
         v12 = @"__AXStringForVariablesSentinel";
         v5 = __UIAXStringForVariables();
 
@@ -38,7 +38,7 @@
       }
 
       while (v4 != v7);
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:{16, v11, @"__AXStringForVariablesSentinel"}];
+      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:{16, displayName, @"__AXStringForVariablesSentinel"}];
     }
 
     while (v4);

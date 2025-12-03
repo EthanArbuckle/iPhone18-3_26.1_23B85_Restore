@@ -1,20 +1,20 @@
 @interface AFClockTimerSnapshot
-+ (id)newWithBuilder:(id)a3;
-- (AFClockTimerSnapshot)initWithBuilder:(id)a3;
-- (AFClockTimerSnapshot)initWithCoder:(id)a3;
-- (AFClockTimerSnapshot)initWithDictionaryRepresentation:(id)a3;
-- (AFClockTimerSnapshot)initWithGeneration:(unint64_t)a3 date:(id)a4 timersByID:(id)a5 notifiedFiringTimerIDs:(id)a6;
-- (AFClockTimerSnapshot)initWithSerializedBackingStore:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFClockTimerSnapshot)initWithBuilder:(id)builder;
+- (AFClockTimerSnapshot)initWithCoder:(id)coder;
+- (AFClockTimerSnapshot)initWithDictionaryRepresentation:(id)representation;
+- (AFClockTimerSnapshot)initWithGeneration:(unint64_t)generation date:(id)date timersByID:(id)d notifiedFiringTimerIDs:(id)ds;
+- (AFClockTimerSnapshot)initWithSerializedBackingStore:(id)store;
 - (BOOL)hasFiringTimers;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)ad_shortDescription;
 - (id)buildDictionaryRepresentation;
 - (id)firingTimers;
 - (id)mostRecentFiringTimer;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFClockTimerSnapshot
@@ -23,11 +23,11 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[AFClockTimerSnapshot generation](self, "generation")}];
-  v5 = [(AFClockTimerSnapshot *)self date];
-  v6 = [v5 description];
-  v7 = [(AFClockTimerSnapshot *)self notifiedFiringTimerIDs];
+  date = [(AFClockTimerSnapshot *)self date];
+  v6 = [date description];
+  notifiedFiringTimerIDs = [(AFClockTimerSnapshot *)self notifiedFiringTimerIDs];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[AFClockTimerSnapshot hasFiringTimers](self, "hasFiringTimers")}];
-  v9 = [v3 stringWithFormat:@"(gen: %@, date: %@, notifiedFiringTimerIDs: %@, isFiring: %@)", v4, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"(gen: %@, date: %@, notifiedFiringTimerIDs: %@, isFiring: %@)", v4, v6, notifiedFiringTimerIDs, v8];
 
   return v9;
 }
@@ -39,10 +39,10 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AFClockTimerSnapshot *)self timersByID];
-  v3 = [v2 allValues];
+  timersByID = [(AFClockTimerSnapshot *)self timersByID];
+  allValues = [timersByID allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -52,7 +52,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -63,7 +63,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -116,8 +116,8 @@ LABEL_12:
 
           v12 = *(*(&v30 + 1) + 8 * i);
           v13 = [(NSDictionary *)self->_timersByID objectForKey:v12];
-          v14 = [v13 buildDictionaryRepresentation];
-          [v6 setObject:v14 forKey:v12];
+          buildDictionaryRepresentation = [v13 buildDictionaryRepresentation];
+          [v6 setObject:buildDictionaryRepresentation forKey:v12];
         }
 
         v9 = [(NSDictionary *)v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -172,14 +172,14 @@ LABEL_12:
   return v23;
 }
 
-- (AFClockTimerSnapshot)initWithDictionaryRepresentation:(id)a3
+- (AFClockTimerSnapshot)initWithDictionaryRepresentation:(id)representation
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"generation"];
+    v6 = [representationCopy objectForKey:@"generation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -191,7 +191,7 @@ LABEL_12:
       v7 = 0;
     }
 
-    v9 = [v7 unsignedLongLongValue];
+    unsignedLongLongValue = [v7 unsignedLongLongValue];
     v10 = [v5 objectForKey:@"date"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -206,8 +206,8 @@ LABEL_12:
 
     v11 = [v5 objectForKey:@"timersByID"];
     objc_opt_class();
-    v37 = v9;
-    v38 = self;
+    v37 = unsignedLongLongValue;
+    selfCopy = self;
     if (objc_opt_isKindOfClass())
     {
       v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v11, "count")}];
@@ -261,8 +261,8 @@ LABEL_12:
 
       v21 = [v12 copy];
       v11 = v35;
-      v9 = v37;
-      self = v38;
+      unsignedLongLongValue = v37;
+      self = selfCopy;
     }
 
     else
@@ -322,8 +322,8 @@ LABEL_12:
 
       v32 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:v24];
       v5 = v23;
-      v9 = v37;
-      self = v38;
+      unsignedLongLongValue = v37;
+      self = selfCopy;
     }
 
     else
@@ -331,58 +331,58 @@ LABEL_12:
       v32 = 0;
     }
 
-    self = [(AFClockTimerSnapshot *)self initWithGeneration:v9 date:v36 timersByID:v21 notifiedFiringTimerIDs:v32];
-    v8 = self;
+    self = [(AFClockTimerSnapshot *)self initWithGeneration:unsignedLongLongValue date:v36 timersByID:v21 notifiedFiringTimerIDs:v32];
+    selfCopy2 = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy2 = 0;
   }
 
   v33 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   generation = self->_generation;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedLongLong:generation];
-  [v7 encodeObject:v6 forKey:@"AFClockTimerSnapshot::generation"];
+  [coderCopy encodeObject:v6 forKey:@"AFClockTimerSnapshot::generation"];
 
-  [v7 encodeObject:self->_date forKey:@"AFClockTimerSnapshot::date"];
-  [v7 encodeObject:self->_timersByID forKey:@"AFClockTimerSnapshot::timersByID"];
-  [v7 encodeObject:self->_notifiedFiringTimerIDs forKey:@"AFClockTimerSnapshot::notifiedFiringTimerIDs"];
+  [coderCopy encodeObject:self->_date forKey:@"AFClockTimerSnapshot::date"];
+  [coderCopy encodeObject:self->_timersByID forKey:@"AFClockTimerSnapshot::timersByID"];
+  [coderCopy encodeObject:self->_notifiedFiringTimerIDs forKey:@"AFClockTimerSnapshot::notifiedFiringTimerIDs"];
 }
 
-- (AFClockTimerSnapshot)initWithCoder:(id)a3
+- (AFClockTimerSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFClockTimerSnapshot::generation"];
-  v6 = [v5 unsignedLongLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClockTimerSnapshot::generation"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFClockTimerSnapshot::date"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClockTimerSnapshot::date"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"AFClockTimerSnapshot::timersByID"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"AFClockTimerSnapshot::timersByID"];
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"AFClockTimerSnapshot::notifiedFiringTimerIDs"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"AFClockTimerSnapshot::notifiedFiringTimerIDs"];
 
-  v17 = [(AFClockTimerSnapshot *)self initWithGeneration:v6 date:v7 timersByID:v12 notifiedFiringTimerIDs:v16];
+  v17 = [(AFClockTimerSnapshot *)self initWithGeneration:unsignedLongLongValue date:v7 timersByID:v12 notifiedFiringTimerIDs:v16];
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -392,21 +392,21 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       generation = self->_generation;
       if (generation == [(AFClockTimerSnapshot *)v5 generation])
       {
-        v7 = [(AFClockTimerSnapshot *)v5 date];
+        date = [(AFClockTimerSnapshot *)v5 date];
         date = self->_date;
-        if (date == v7 || [(NSDate *)date isEqual:v7])
+        if (date == date || [(NSDate *)date isEqual:date])
         {
-          v9 = [(AFClockTimerSnapshot *)v5 timersByID];
+          timersByID = [(AFClockTimerSnapshot *)v5 timersByID];
           timersByID = self->_timersByID;
-          if (timersByID == v9 || [(NSDictionary *)timersByID isEqual:v9])
+          if (timersByID == timersByID || [(NSDictionary *)timersByID isEqual:timersByID])
           {
-            v11 = [(AFClockTimerSnapshot *)v5 notifiedFiringTimerIDs];
+            notifiedFiringTimerIDs = [(AFClockTimerSnapshot *)v5 notifiedFiringTimerIDs];
             notifiedFiringTimerIDs = self->_notifiedFiringTimerIDs;
-            v13 = notifiedFiringTimerIDs == v11 || [(NSOrderedSet *)notifiedFiringTimerIDs isEqual:v11];
+            v13 = notifiedFiringTimerIDs == notifiedFiringTimerIDs || [(NSOrderedSet *)notifiedFiringTimerIDs isEqual:notifiedFiringTimerIDs];
           }
 
           else
@@ -447,7 +447,7 @@ LABEL_12:
   return v7 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -458,22 +458,22 @@ LABEL_12:
   return v6;
 }
 
-- (AFClockTimerSnapshot)initWithGeneration:(unint64_t)a3 date:(id)a4 timersByID:(id)a5 notifiedFiringTimerIDs:(id)a6
+- (AFClockTimerSnapshot)initWithGeneration:(unint64_t)generation date:(id)date timersByID:(id)d notifiedFiringTimerIDs:(id)ds
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  dCopy = d;
+  dsCopy = ds;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __82__AFClockTimerSnapshot_initWithGeneration_date_timersByID_notifiedFiringTimerIDs___block_invoke;
   v18[3] = &unk_1E7346098;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = a3;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v19 = dateCopy;
+  v20 = dCopy;
+  v21 = dsCopy;
+  generationCopy = generation;
+  v13 = dsCopy;
+  v14 = dCopy;
+  v15 = dateCopy;
   v16 = [(AFClockTimerSnapshot *)self initWithBuilder:v18];
 
   return v16;
@@ -489,32 +489,32 @@ void __82__AFClockTimerSnapshot_initWithGeneration_date_timersByID_notifiedFirin
   [v4 setNotifiedFiringTimerIDs:a1[6]];
 }
 
-- (AFClockTimerSnapshot)initWithBuilder:(id)a3
+- (AFClockTimerSnapshot)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v18.receiver = self;
   v18.super_class = AFClockTimerSnapshot;
   v5 = [(AFClockTimerSnapshot *)&v18 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFClockTimerSnapshotMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFClockTimerSnapshotMutation *)v7 isDirty])
     {
       v6->_generation = [(_AFClockTimerSnapshotMutation *)v7 getGeneration];
-      v8 = [(_AFClockTimerSnapshotMutation *)v7 getDate];
-      v9 = [v8 copy];
+      getDate = [(_AFClockTimerSnapshotMutation *)v7 getDate];
+      v9 = [getDate copy];
       date = v6->_date;
       v6->_date = v9;
 
-      v11 = [(_AFClockTimerSnapshotMutation *)v7 getTimersByID];
-      v12 = [v11 copy];
+      getTimersByID = [(_AFClockTimerSnapshotMutation *)v7 getTimersByID];
+      v12 = [getTimersByID copy];
       timersByID = v6->_timersByID;
       v6->_timersByID = v12;
 
-      v14 = [(_AFClockTimerSnapshotMutation *)v7 getNotifiedFiringTimerIDs];
-      v15 = [v14 copy];
+      getNotifiedFiringTimerIDs = [(_AFClockTimerSnapshotMutation *)v7 getNotifiedFiringTimerIDs];
+      v15 = [getNotifiedFiringTimerIDs copy];
       notifiedFiringTimerIDs = v6->_notifiedFiringTimerIDs;
       v6->_notifiedFiringTimerIDs = v15;
     }
@@ -523,37 +523,37 @@ void __82__AFClockTimerSnapshot_initWithGeneration_date_timersByID_notifiedFirin
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFClockTimerSnapshotMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFClockTimerSnapshotMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFClockTimerSnapshot);
       v6->_generation = [(_AFClockTimerSnapshotMutation *)v5 getGeneration];
-      v7 = [(_AFClockTimerSnapshotMutation *)v5 getDate];
-      v8 = [v7 copy];
+      getDate = [(_AFClockTimerSnapshotMutation *)v5 getDate];
+      v8 = [getDate copy];
       date = v6->_date;
       v6->_date = v8;
 
-      v10 = [(_AFClockTimerSnapshotMutation *)v5 getTimersByID];
-      v11 = [v10 copy];
+      getTimersByID = [(_AFClockTimerSnapshotMutation *)v5 getTimersByID];
+      v11 = [getTimersByID copy];
       timersByID = v6->_timersByID;
       v6->_timersByID = v11;
 
-      v13 = [(_AFClockTimerSnapshotMutation *)v5 getNotifiedFiringTimerIDs];
-      v14 = [v13 copy];
+      getNotifiedFiringTimerIDs = [(_AFClockTimerSnapshotMutation *)v5 getNotifiedFiringTimerIDs];
+      v14 = [getNotifiedFiringTimerIDs copy];
       notifiedFiringTimerIDs = v6->_notifiedFiringTimerIDs;
       v6->_notifiedFiringTimerIDs = v14;
     }
@@ -572,44 +572,44 @@ void __82__AFClockTimerSnapshot_initWithGeneration_date_timersByID_notifiedFirin
   return v6;
 }
 
-- (AFClockTimerSnapshot)initWithSerializedBackingStore:(id)a3
+- (AFClockTimerSnapshot)initWithSerializedBackingStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:0];
-    v6 = [v5 generation];
-    v7 = [v5 date];
-    v8 = [v5 timersByID];
-    v9 = [v5 notifiedFiringTimerIDs];
-    self = [(AFClockTimerSnapshot *)self initWithGeneration:v6 date:v7 timersByID:v8 notifiedFiringTimerIDs:v9];
+    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:storeCopy error:0];
+    generation = [v5 generation];
+    date = [v5 date];
+    timersByID = [v5 timersByID];
+    notifiedFiringTimerIDs = [v5 notifiedFiringTimerIDs];
+    self = [(AFClockTimerSnapshot *)self initWithGeneration:generation date:date timersByID:timersByID notifiedFiringTimerIDs:notifiedFiringTimerIDs];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)firingTimers
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(AFClockTimerSnapshot *)self notifiedFiringTimerIDs];
-  v5 = [(AFClockTimerSnapshot *)self timersByID];
+  notifiedFiringTimerIDs = [(AFClockTimerSnapshot *)self notifiedFiringTimerIDs];
+  timersByID = [(AFClockTimerSnapshot *)self timersByID];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __45__AFClockTimerSnapshot_Utility__firingTimers__block_invoke;
   v13 = &unk_1E7347F70;
-  v14 = v4;
+  v14 = notifiedFiringTimerIDs;
   v15 = v3;
   v6 = v3;
-  v7 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v10];
+  v7 = notifiedFiringTimerIDs;
+  [timersByID enumerateKeysAndObjectsUsingBlock:&v10];
 
   v8 = [v6 copy];
 
@@ -674,10 +674,10 @@ LABEL_9:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v2 = [(AFClockTimerSnapshot *)self timersByID];
-  v3 = [v2 allValues];
+  timersByID = [(AFClockTimerSnapshot *)self timersByID];
+  allValues = [timersByID allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -689,7 +689,7 @@ LABEL_9:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -697,9 +697,9 @@ LABEL_9:
         {
           if (v6)
           {
-            v10 = [v6 firedDate];
-            v11 = [v9 firedDate];
-            if ([v10 compare:v11] == -1)
+            firedDate = [v6 firedDate];
+            firedDate2 = [v9 firedDate];
+            if ([firedDate compare:firedDate2] == -1)
             {
               v12 = v9;
             }
@@ -721,7 +721,7 @@ LABEL_9:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);

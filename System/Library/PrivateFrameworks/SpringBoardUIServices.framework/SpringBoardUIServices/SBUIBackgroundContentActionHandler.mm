@@ -1,21 +1,21 @@
 @interface SBUIBackgroundContentActionHandler
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation SBUIBackgroundContentActionHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 mutableCopy];
-  v10 = v8;
+  actionsCopy = actions;
+  iSceneCopy = iScene;
+  v9 = [actionsCopy mutableCopy];
+  v10 = iSceneCopy;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v7;
+  v11 = actionsCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {

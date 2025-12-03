@@ -1,5 +1,5 @@
 @interface RTSCFaceDataCovarianceEstimator
-- (RTSCFaceDataCovarianceEstimator)initWithTimeConstant:(float)a3 initialCovariance:;
+- (RTSCFaceDataCovarianceEstimator)initWithTimeConstant:(float)constant initialCovariance:;
 - (__n128)accelerationCovariance;
 - (__n128)measurementCovariance;
 - (void)dealloc;
@@ -8,7 +8,7 @@
 
 @implementation RTSCFaceDataCovarianceEstimator
 
-- (RTSCFaceDataCovarianceEstimator)initWithTimeConstant:(float)a3 initialCovariance:
+- (RTSCFaceDataCovarianceEstimator)initWithTimeConstant:(float)constant initialCovariance:
 {
   v12 = v3;
   v13.receiver = self;
@@ -19,13 +19,13 @@
   {
     *v5->_initialCovariance = v12;
     v7 = [RTSCAutocovarianceDynamicsAnalyzer4DOF alloc];
-    *&v8 = a3;
+    *&v8 = constant;
     v9 = [(RTSCAutocovarianceDynamicsAnalyzer4DOF *)v7 initWithTimeConstant:v8 initialCovariance:*v6->_initialCovariance];
     faceDynamicsAnalyzer = v6->_faceDynamicsAnalyzer;
     v6->_faceDynamicsAnalyzer = v9;
 
-    v6->_noiseAveragingTimescale = a3 * 10.0;
-    v6->_accelerationAveragingTimescale = a3;
+    v6->_noiseAveragingTimescale = constant * 10.0;
+    v6->_accelerationAveragingTimescale = constant;
     *v6->_anon_30 = xmmword_11C50;
     *&v6->_anon_30[16] = xmmword_11C60;
     *&v6->_anon_30[32] = xmmword_11C70;
@@ -75,19 +75,19 @@
 
 - (__n128)measurementCovariance
 {
-  result = *(a1 + 192);
-  v2 = *(a1 + 208);
-  v3 = *(a1 + 224);
-  v4 = *(a1 + 240);
+  result = *(self + 192);
+  v2 = *(self + 208);
+  v3 = *(self + 224);
+  v4 = *(self + 240);
   return result;
 }
 
 - (__n128)accelerationCovariance
 {
-  result = *(a1 + 256);
-  v2 = *(a1 + 272);
-  v3 = *(a1 + 288);
-  v4 = *(a1 + 304);
+  result = *(self + 256);
+  v2 = *(self + 272);
+  v3 = *(self + 288);
+  v4 = *(self + 304);
   return result;
 }
 

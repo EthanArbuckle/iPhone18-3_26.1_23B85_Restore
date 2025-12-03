@@ -1,23 +1,23 @@
 @interface QLCacheMMAPBlobDatabase
-- (BOOL)deleteBlobWithInfo:(id)a3;
-- (BOOL)deleteBlobsWithArray:(id)a3;
+- (BOOL)deleteBlobWithInfo:(id)info;
+- (BOOL)deleteBlobsWithArray:(id)array;
 - (BOOL)doesExist;
 - (BOOL)isValid;
-- (QLCacheMMAPBlobDatabase)initWithPath:(id)a3 cacheSize:(int64_t)a4 cacheThread:(id)a5;
+- (QLCacheMMAPBlobDatabase)initWithPath:(id)path cacheSize:(int64_t)size cacheThread:(id)thread;
 - (_QLCacheThread)cacheThread;
-- (id)checkConsistency:(id)a3;
-- (id)copyBlobWithInfo:(id)a3;
-- (id)reserveBufferWithLength:(unint64_t)a3;
+- (id)checkConsistency:(id)consistency;
+- (id)copyBlobWithInfo:(id)info;
+- (id)reserveBufferWithLength:(unint64_t)length;
 - (void)close;
 - (void)compactFragmentation;
-- (void)discardReservedBufferWithBlobInfo:(id)a3;
+- (void)discardReservedBufferWithBlobInfo:(id)info;
 - (void)doesExist;
 - (void)isValid;
 - (void)markPurgeable;
 - (void)open;
 - (void)reset;
 - (void)save;
-- (void)validateReservedBufferWithBlobInfo:(id)a3;
+- (void)validateReservedBufferWithBlobInfo:(id)info;
 @end
 
 @implementation QLCacheMMAPBlobDatabase
@@ -59,10 +59,10 @@
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (QLCacheMMAPBlobDatabase)initWithPath:(id)a3 cacheSize:(int64_t)a4 cacheThread:(id)a5
+- (QLCacheMMAPBlobDatabase)initWithPath:(id)path cacheSize:(int64_t)size cacheThread:(id)thread
 {
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  threadCopy = thread;
   v17.receiver = self;
   v17.super_class = QLCacheMMAPBlobDatabase;
   v10 = [(QLCacheMMAPBlobDatabase *)&v17 init];
@@ -70,30 +70,30 @@
   if (v10)
   {
     v10->_file = -1;
-    v12 = [v8 copy];
+    v12 = [pathCopy copy];
     path = v11->_path;
     v11->_path = v12;
 
-    v11->_maxSize = a4;
+    v11->_maxSize = size;
     v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:40];
     reservedBuffers = v11->_reservedBuffers;
     v11->_reservedBuffers = v14;
 
-    objc_storeWeak(&v11->_cacheThread, v9);
+    objc_storeWeak(&v11->_cacheThread, threadCopy);
   }
 
   return v11;
 }
 
-- (id)copyBlobWithInfo:(id)a3
+- (id)copyBlobWithInfo:(id)info
 {
-  v4 = a3;
-  if (![v4 length])
+  infoCopy = info;
+  if (![infoCopy length])
   {
     goto LABEL_10;
   }
 
-  if ([v4 location] <= 7)
+  if ([infoCopy location] <= 7)
   {
     v5 = _log_7();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -106,7 +106,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v4 length] < 0x10 || (v6 = objc_msgSend(v4, "location"), v7 = v6 + objc_msgSend(v4, "length") + 8, v7 > -[QLCacheFragHandler totalLen](self->_fragHandler, "totalLen")))
+  if ([infoCopy length] < 0x10 || (v6 = objc_msgSend(infoCopy, "location"), v7 = v6 + objc_msgSend(infoCopy, "length") + 8, v7 > -[QLCacheFragHandler totalLen](self->_fragHandler, "totalLen")))
   {
     v5 = _log_7();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -117,25 +117,25 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = mmap(0, [v4 length], 3, 4097, 1627389952, 0);
+  v8 = mmap(0, [infoCopy length], 3, 4097, 1627389952, 0);
   if (!v8)
   {
     goto LABEL_11;
   }
 
-  v10 = [v4 location];
-  v11 = v10 - 8;
-  v12 = [v4 length] + 16;
+  location = [infoCopy location];
+  v11 = location - 8;
+  v12 = [infoCopy length] + 16;
   vmFile = self->_vmFile;
   v14 = -8;
   do
   {
-    if (vmFile[v10 + v14] != v12)
+    if (vmFile[location + v14] != v12)
     {
       v17 = 0;
       for (i = -1; i != -9; --i)
       {
-        v17 = vmFile[v10 + i] | (v17 << 8);
+        v17 = vmFile[location + i] | (v17 << 8);
       }
 
       v19 = MEMORY[0x277CDAB78];
@@ -164,28 +164,28 @@ LABEL_9:
   }
 
   while (!__CFADD__(v14++, 1));
-  if (vm_copy(*MEMORY[0x277D85F48], &vmFile[[v4 location]], objc_msgSend(v4, "length"), v8))
+  if (vm_copy(*MEMORY[0x277D85F48], &vmFile[[infoCopy location]], objc_msgSend(infoCopy, "length"), v8))
   {
     v16 = _log_7();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [QLCacheMMAPBlobDatabase copyBlobWithInfo:v4];
+      [QLCacheMMAPBlobDatabase copyBlobWithInfo:infoCopy];
     }
   }
 
   else
   {
     v21 = self->_vmFile;
-    v22 = [v4 location];
-    v23 = [v4 length];
+    location2 = [infoCopy location];
+    v23 = [infoCopy length];
     v24 = 0;
-    v25 = &v21[v22 + v23];
+    v25 = &v21[location2 + v23];
     while (v25[v24] == v11)
     {
       v11 >>= 8;
       if (++v24 == 8)
       {
-        v26 = [v4 length];
+        v26 = [infoCopy length];
         v8 = dispatch_data_create(v8, v26, 0, *MEMORY[0x277D85CB8]);
         goto LABEL_11;
       }
@@ -219,7 +219,7 @@ LABEL_9:
 
 LABEL_28:
 
-  MEMORY[0x266708390](*MEMORY[0x277D85F48], v8, [v4 length]);
+  MEMORY[0x266708390](*MEMORY[0x277D85F48], v8, [infoCopy length]);
 LABEL_10:
   v8 = 0;
 LABEL_11:
@@ -227,28 +227,28 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)deleteBlobWithInfo:(id)a3
+- (BOOL)deleteBlobWithInfo:(id)info
 {
-  v4 = a3;
-  if (![v4 length])
+  infoCopy = info;
+  if (![infoCopy length])
   {
 LABEL_6:
     v12 = 0;
     goto LABEL_10;
   }
 
-  v5 = [v4 location];
-  v6 = v5 + [v4 length] + 8;
+  location = [infoCopy location];
+  v6 = location + [infoCopy length] + 8;
   fragHandler = self->_fragHandler;
   p_fragHandler = &self->_fragHandler;
-  v9 = [(QLCacheFragHandler *)fragHandler totalLen];
+  totalLen = [(QLCacheFragHandler *)fragHandler totalLen];
   v10 = _log_7();
   v11 = v10;
-  if (v6 > v9)
+  if (v6 > totalLen)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(QLCacheMMAPBlobDatabase *)v4 deleteBlobWithInfo:?];
+      [(QLCacheMMAPBlobDatabase *)infoCopy deleteBlobWithInfo:?];
     }
 
     goto LABEL_6;
@@ -259,22 +259,22 @@ LABEL_6:
     [QLCacheMMAPBlobDatabase deleteBlobWithInfo:];
   }
 
-  -[QLCacheFragHandler releaseSpaceAtPos:withLen:](*p_fragHandler, "releaseSpaceAtPos:withLen:", [v4 location] - 8, objc_msgSend(v4, "length") + 16);
+  -[QLCacheFragHandler releaseSpaceAtPos:withLen:](*p_fragHandler, "releaseSpaceAtPos:withLen:", [infoCopy location] - 8, objc_msgSend(infoCopy, "length") + 16);
   v12 = 1;
 LABEL_10:
 
   return v12;
 }
 
-- (BOOL)deleteBlobsWithArray:(id)a3
+- (BOOL)deleteBlobsWithArray:(id)array
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [arrayCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -286,13 +286,13 @@ LABEL_10:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v8 &= [(QLCacheMMAPBlobDatabase *)self deleteBlobWithInfo:*(*(&v12 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [arrayCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -317,13 +317,13 @@ LABEL_10:
 
 - (BOOL)doesExist
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = [(NSString *)self->_path stringByAppendingPathExtension:@"data"];
-  v5 = [v3 fileExistsAtPath:v4];
+  v5 = [defaultManager fileExistsAtPath:v4];
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v7 = [(NSString *)self->_path stringByAppendingPathExtension:@"fraghandler"];
-  v8 = [v6 fileExistsAtPath:v7];
+  v8 = [defaultManager2 fileExistsAtPath:v7];
 
   v9 = _log_7();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
@@ -443,44 +443,44 @@ LABEL_27:
   return v16;
 }
 
-- (id)checkConsistency:(id)a3
+- (id)checkConsistency:(id)consistency
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = [a3 sortedArrayWithOptions:1 usingComparator:&__block_literal_global_5];
+  v4 = [consistency sortedArrayWithOptions:1 usingComparator:&__block_literal_global_5];
   v5 = [QLCacheFragHandler alloc];
-  v6 = [(QLCacheMMAPBlobDatabase *)self cacheThread];
-  v7 = [(QLCacheFragHandler *)v5 initWithCacheThread:v6];
+  cacheThread = [(QLCacheMMAPBlobDatabase *)self cacheThread];
+  v7 = [(QLCacheFragHandler *)v5 initWithCacheThread:cacheThread];
 
   [(QLCacheFragHandler *)self->_fragHandler compact];
   [(QLCacheFragHandler *)self->_fragHandler truncateUselessSpaceAtEndOfFile];
   [(QLCacheMMAPBlobDatabase *)self save];
-  v8 = [(QLCacheFragHandler *)self->_fragHandler checkConsistency];
-  if (v8)
+  checkConsistency = [(QLCacheFragHandler *)self->_fragHandler checkConsistency];
+  if (checkConsistency)
   {
-    v9 = 0;
+    string = 0;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCAB68] string];
-    [v9 appendFormat:@"inconsistent frag handler"];
+    string = [MEMORY[0x277CCAB68] string];
+    [string appendFormat:@"inconsistent frag handler"];
   }
 
   memset(&v44, 0, sizeof(v44));
-  v10 = [(QLCacheFragHandler *)self->_fragHandler totalLen];
+  totalLen = [(QLCacheFragHandler *)self->_fragHandler totalLen];
   v11 = [(NSString *)self->_path stringByAppendingPathExtension:@"data"];
   v12 = lstat([v11 fileSystemRepresentation], &v44);
 
   if (v12)
   {
-    if (v9)
+    if (string)
     {
-      if (v8)
+      if (checkConsistency)
       {
 LABEL_8:
         v13 = @"blob file unreadable";
 LABEL_15:
-        [v9 appendFormat:v13, st_size, v35];
+        [string appendFormat:v13, st_size, v35];
         v14 = 1;
         goto LABEL_16;
       }
@@ -488,39 +488,39 @@ LABEL_15:
 
     else
     {
-      v9 = [MEMORY[0x277CCAB68] string];
-      if (v8)
+      string = [MEMORY[0x277CCAB68] string];
+      if (checkConsistency)
       {
         goto LABEL_8;
       }
     }
 
-    [v9 appendString:@" - "];
+    [string appendString:@" - "];
     goto LABEL_8;
   }
 
-  if (v44.st_size < v10)
+  if (v44.st_size < totalLen)
   {
-    if (!v9)
+    if (!string)
     {
-      v9 = [MEMORY[0x277CCAB68] string];
+      string = [MEMORY[0x277CCAB68] string];
     }
 
-    if (!v8)
+    if (!checkConsistency)
     {
-      [v9 appendString:@" - "];
+      [string appendString:@" - "];
     }
 
     st_size = v44.st_size;
-    v35 = v10;
+    v35 = totalLen;
     v13 = @"inconsistent blob length (%llu vs. %llu)";
     goto LABEL_15;
   }
 
-  v14 = !v8;
-  v37 = v10;
+  v14 = !checkConsistency;
+  v37 = totalLen;
   v38 = v7;
-  [(QLCacheFragHandler *)v7 allocateSpaceForLength:v10 added:0];
+  [(QLCacheFragHandler *)v7 allocateSpaceForLength:totalLen added:0];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -548,46 +548,46 @@ LABEL_15:
 
       v20 = *(*(&v40 + 1) + 8 * i);
       v21 = [v20 length];
-      v22 = [v20 location];
-      v23 = v22;
+      location = [v20 location];
+      v23 = location;
       if (!v21)
       {
-        if (!v22)
+        if (!location)
         {
           continue;
         }
 
-        if (!v9)
+        if (!string)
         {
-          v9 = [MEMORY[0x277CCAB68] string];
+          string = [MEMORY[0x277CCAB68] string];
         }
 
         v4 = v36;
         v7 = v38;
-        if (!v8)
+        if (!checkConsistency)
         {
-          [v9 appendString:@" - "];
+          [string appendString:@" - "];
         }
 
         v27 = @"zero length block with non zero location";
 LABEL_51:
-        [v9 appendFormat:v27];
+        [string appendFormat:v27];
         v14 = 1;
         goto LABEL_52;
       }
 
-      if (v22 <= 7)
+      if (location <= 7)
       {
-        if (!v9)
+        if (!string)
         {
-          v9 = [MEMORY[0x277CCAB68] string];
+          string = [MEMORY[0x277CCAB68] string];
         }
 
         v4 = v36;
         v7 = v38;
-        if (!v8)
+        if (!checkConsistency)
         {
-          [v9 appendString:@" - "];
+          [string appendString:@" - "];
         }
 
         v27 = @"negative blob location";
@@ -598,16 +598,16 @@ LABEL_51:
       v25 = v23 - 8 - v17;
       if (v23 - 8 < v17)
       {
-        if (!v9)
+        if (!string)
         {
-          v9 = [MEMORY[0x277CCAB68] string];
+          string = [MEMORY[0x277CCAB68] string];
         }
 
         v4 = v36;
         v7 = v38;
-        if (!v8)
+        if (!checkConsistency)
         {
-          [v9 appendString:{@" - ", v25}];
+          [string appendString:{@" - ", v25}];
         }
 
         v27 = @"overlapping blobs";
@@ -634,48 +634,48 @@ LABEL_51:
 
   v4 = v36;
   v7 = v38;
-  v14 = !v8;
+  v14 = !checkConsistency;
 LABEL_52:
 
-  if (!v9 && v37 > v17)
+  if (!string && v37 > v17)
   {
     [(QLCacheFragHandler *)v7 releaseSpaceAtPos:v17 withLen:v37 - v17];
     goto LABEL_55;
   }
 
 LABEL_16:
-  if (!v9)
+  if (!string)
   {
 LABEL_55:
     [(QLCacheFragHandler *)v7 compact];
-    v28 = [(QLCacheFragHandler *)v7 orderedByStart];
-    v29 = [(QLCacheFragHandler *)self->_fragHandler orderedByStart];
-    if ([v28 isEqual:v29])
+    orderedByStart = [(QLCacheFragHandler *)v7 orderedByStart];
+    orderedByStart2 = [(QLCacheFragHandler *)self->_fragHandler orderedByStart];
+    if ([orderedByStart isEqual:orderedByStart2])
     {
-      v9 = 0;
+      string = 0;
     }
 
     else
     {
-      v30 = [MEMORY[0x277CCAB68] string];
-      v9 = v30;
+      string2 = [MEMORY[0x277CCAB68] string];
+      string = string2;
       if (v14)
       {
-        [v30 appendString:@" - "];
+        [string2 appendString:@" - "];
       }
 
-      [v9 appendFormat:@"desynchronized fragmentation"];
+      [string appendFormat:@"desynchronized fragmentation"];
       v31 = _log_7();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
-        [QLCacheMMAPBlobDatabase checkConsistency:v28];
+        [QLCacheMMAPBlobDatabase checkConsistency:orderedByStart];
       }
     }
   }
 
   v32 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return string;
 }
 
 uint64_t __44__QLCacheMMAPBlobDatabase_checkConsistency___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -720,24 +720,24 @@ uint64_t __44__QLCacheMMAPBlobDatabase_checkConsistency___block_invoke(uint64_t 
   }
 }
 
-- (id)reserveBufferWithLength:(unint64_t)a3
+- (id)reserveBufferWithLength:(unint64_t)length
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [(QLCacheFragHandler *)self->_fragHandler totalLen];
-  if (!a3)
+  totalLen = [(QLCacheFragHandler *)self->_fragHandler totalLen];
+  if (!length)
   {
 LABEL_6:
     v11 = 0;
     goto LABEL_21;
   }
 
-  v6 = v5;
+  v6 = totalLen;
   v23 = 0;
-  v7 = a3 + 16;
-  v8 = [(QLCacheFragHandler *)self->_fragHandler allocateSpaceForLength:a3 + 16 added:&v23];
+  v7 = length + 16;
+  v8 = [(QLCacheFragHandler *)self->_fragHandler allocateSpaceForLength:length + 16 added:&v23];
   if ([(QLCacheFragHandler *)self->_fragHandler totalLen]> self->_maxSize)
   {
-    [(QLCacheFragHandler *)self->_fragHandler releaseSpaceAtPos:v8 withLen:a3 + 16];
+    [(QLCacheFragHandler *)self->_fragHandler releaseSpaceAtPos:v8 withLen:length + 16];
     v9 = _log_7();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -745,7 +745,7 @@ LABEL_6:
       *buf = 134218496;
       v25 = v8;
       v26 = 2048;
-      v27 = a3;
+      lengthCopy = length;
       v28 = 2048;
       v29 = maxSize;
       _os_log_impl(&dword_2615D3000, v9, OS_LOG_TYPE_INFO, "we can't write the blob, it's out of the limit location %llu length %llu limit %llu", buf, 0x20u);
@@ -788,7 +788,7 @@ LABEL_6:
 
   while (v13 != 8);
   v15 = 0;
-  v16 = self->_vmFile + v8 + a3 + 8;
+  v16 = self->_vmFile + v8 + length + 8;
   v17 = v8;
   do
   {
@@ -801,22 +801,22 @@ LABEL_6:
   v18 = v8 + 8;
   if (v6 > v8 + 8)
   {
-    if (v18 + a3 >= v6)
+    if (v18 + length >= v6)
     {
-      v19 = v6 - (v8 + 8);
+      lengthCopy2 = v6 - (v8 + 8);
     }
 
     else
     {
-      v19 = a3;
+      lengthCopy2 = length;
     }
 
-    bzero(self->_vmFile + v8 + 8, v19);
+    bzero(self->_vmFile + v8 + 8, lengthCopy2);
   }
 
   v11 = objc_alloc_init(QLCacheBlobInfo);
   [(QLCacheBlobInfo *)v11 setLocation:v18];
-  [(QLCacheBlobInfo *)v11 setLength:a3];
+  [(QLCacheBlobInfo *)v11 setLength:length];
   [(NSMutableArray *)self->_reservedBuffers addObject:v11];
 LABEL_21:
   v20 = *MEMORY[0x277D85DE8];
@@ -824,28 +824,28 @@ LABEL_21:
   return v11;
 }
 
-- (void)discardReservedBufferWithBlobInfo:(id)a3
+- (void)discardReservedBufferWithBlobInfo:(id)info
 {
-  v4 = a3;
-  if ([v4 length])
+  infoCopy = info;
+  if ([infoCopy length])
   {
-    [(NSMutableArray *)self->_reservedBuffers removeObject:v4];
+    [(NSMutableArray *)self->_reservedBuffers removeObject:infoCopy];
     v5 = _log_7();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       [QLCacheMMAPBlobDatabase discardReservedBufferWithBlobInfo:];
     }
 
-    -[QLCacheFragHandler releaseSpaceAtPos:withLen:](self->_fragHandler, "releaseSpaceAtPos:withLen:", [v4 location] - 8, objc_msgSend(v4, "length") + 16);
+    -[QLCacheFragHandler releaseSpaceAtPos:withLen:](self->_fragHandler, "releaseSpaceAtPos:withLen:", [infoCopy location] - 8, objc_msgSend(infoCopy, "length") + 16);
   }
 }
 
-- (void)validateReservedBufferWithBlobInfo:(id)a3
+- (void)validateReservedBufferWithBlobInfo:(id)info
 {
-  v4 = a3;
-  if ([v4 length])
+  infoCopy = info;
+  if ([infoCopy length])
   {
-    v5 = [(NSMutableArray *)self->_reservedBuffers indexOfObject:v4];
+    v5 = [(NSMutableArray *)self->_reservedBuffers indexOfObject:infoCopy];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = v5;
@@ -977,14 +977,14 @@ LABEL_21:
   v5 = @"YES";
   v6 = 2112;
   v7 = @"YES";
-  OUTLINED_FUNCTION_9(&dword_2615D3000, a1, a3, "data file exists %@, frag handler file exists %@", &v4);
+  OUTLINED_FUNCTION_9(&dword_2615D3000, self, a3, "data file exists %@, frag handler file exists %@", &v4);
   v3 = *MEMORY[0x277D85DE8];
 }
 
 - (void)isValid
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   [*a2 totalLen];
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_0_3();

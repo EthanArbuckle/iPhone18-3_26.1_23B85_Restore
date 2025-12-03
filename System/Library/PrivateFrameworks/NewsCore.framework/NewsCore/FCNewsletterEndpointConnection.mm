@@ -1,52 +1,52 @@
 @interface FCNewsletterEndpointConnection
-- (FCNewsletterEndpointConnection)initWithConfigurationManager:(id)a3;
-- (FCNewsletterEndpointConnection)initWithEndpointConnection:(id)a3 configurationManager:(id)a4;
-- (void)configurationManager:(id)a3 configurationDidChange:(id)a4;
-- (void)deletePersonalizationVectorWithCallbackQueue:(id)a3 completion:(id)a4;
-- (void)getNewsletterSubscriptionWithCallbackQueue:(id)a3 completion:(id)a4;
-- (void)getWebTokenWithCallbackQueue:(id)a3 completion:(id)a4;
-- (void)newsletterSubscribeTo:(id)a3 includeArray:(id)a4 callbackQueue:(id)a5 completion:(id)a6;
-- (void)submitPersonalizationVector:(id)a3 withCallbackQueue:(id)a4 completion:(id)a5;
-- (void)updateBaseURL:(id)a3;
+- (FCNewsletterEndpointConnection)initWithConfigurationManager:(id)manager;
+- (FCNewsletterEndpointConnection)initWithEndpointConnection:(id)connection configurationManager:(id)manager;
+- (void)configurationManager:(id)manager configurationDidChange:(id)change;
+- (void)deletePersonalizationVectorWithCallbackQueue:(id)queue completion:(id)completion;
+- (void)getNewsletterSubscriptionWithCallbackQueue:(id)queue completion:(id)completion;
+- (void)getWebTokenWithCallbackQueue:(id)queue completion:(id)completion;
+- (void)newsletterSubscribeTo:(id)to includeArray:(id)array callbackQueue:(id)queue completion:(id)completion;
+- (void)submitPersonalizationVector:(id)vector withCallbackQueue:(id)queue completion:(id)completion;
+- (void)updateBaseURL:(id)l;
 @end
 
 @implementation FCNewsletterEndpointConnection
 
-- (FCNewsletterEndpointConnection)initWithConfigurationManager:(id)a3
+- (FCNewsletterEndpointConnection)initWithConfigurationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(FCEndpointConnection);
-  v6 = [(FCNewsletterEndpointConnection *)self initWithEndpointConnection:v5 configurationManager:v4];
+  v6 = [(FCNewsletterEndpointConnection *)self initWithEndpointConnection:v5 configurationManager:managerCopy];
 
   return v6;
 }
 
-- (FCNewsletterEndpointConnection)initWithEndpointConnection:(id)a3 configurationManager:(id)a4
+- (FCNewsletterEndpointConnection)initWithEndpointConnection:(id)connection configurationManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  managerCopy = manager;
   v18.receiver = self;
   v18.super_class = FCNewsletterEndpointConnection;
   v9 = [(FCNewsletterEndpointConnection *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_endpointConnection, a3);
+    objc_storeStrong(&v9->_endpointConnection, connection);
     v11 = objc_alloc_init(FCAsyncSerialQueue);
     serialQueue = v10->_serialQueue;
     v10->_serialQueue = v11;
 
-    objc_storeStrong(&v10->_configurationManager, a4);
-    v13 = [(FCNewsletterEndpointConnection *)v10 configurationManager];
-    [v13 addObserver:v10];
+    objc_storeStrong(&v10->_configurationManager, manager);
+    configurationManager = [(FCNewsletterEndpointConnection *)v10 configurationManager];
+    [configurationManager addObserver:v10];
 
-    v14 = [(FCNewsletterEndpointConnection *)v10 serialQueue];
+    serialQueue = [(FCNewsletterEndpointConnection *)v10 serialQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __82__FCNewsletterEndpointConnection_initWithEndpointConnection_configurationManager___block_invoke;
     v16[3] = &unk_1E7C37E50;
     v17 = v10;
-    [v14 enqueueBlock:v16];
+    [serialQueue enqueueBlock:v16];
   }
 
   return v10;
@@ -88,21 +88,21 @@ void __82__FCNewsletterEndpointConnection_initWithEndpointConnection_configurati
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getNewsletterSubscriptionWithCallbackQueue:(id)a3 completion:(id)a4
+- (void)getNewsletterSubscriptionWithCallbackQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FCNewsletterEndpointConnection *)self serialQueue];
+  queueCopy = queue;
+  completionCopy = completion;
+  serialQueue = [(FCNewsletterEndpointConnection *)self serialQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__FCNewsletterEndpointConnection_getNewsletterSubscriptionWithCallbackQueue_completion___block_invoke;
   v11[3] = &unk_1E7C463E8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 enqueueBlock:v11];
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
+  [serialQueue enqueueBlock:v11];
 }
 
 void __88__FCNewsletterEndpointConnection_getNewsletterSubscriptionWithCallbackQueue_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -315,27 +315,27 @@ void __88__FCNewsletterEndpointConnection_getNewsletterSubscriptionWithCallbackQ
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)newsletterSubscribeTo:(id)a3 includeArray:(id)a4 callbackQueue:(id)a5 completion:(id)a6
+- (void)newsletterSubscribeTo:(id)to includeArray:(id)array callbackQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(FCNewsletterEndpointConnection *)self serialQueue];
+  toCopy = to;
+  arrayCopy = array;
+  queueCopy = queue;
+  completionCopy = completion;
+  serialQueue = [(FCNewsletterEndpointConnection *)self serialQueue];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __94__FCNewsletterEndpointConnection_newsletterSubscribeTo_includeArray_callbackQueue_completion___block_invoke;
   v19[3] = &unk_1E7C425E8;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  [v14 enqueueBlock:v19];
+  v20 = toCopy;
+  v21 = arrayCopy;
+  v22 = queueCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = queueCopy;
+  v17 = arrayCopy;
+  v18 = toCopy;
+  [serialQueue enqueueBlock:v19];
 }
 
 void __94__FCNewsletterEndpointConnection_newsletterSubscribeTo_includeArray_callbackQueue_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -495,24 +495,24 @@ void __94__FCNewsletterEndpointConnection_newsletterSubscribeTo_includeArray_cal
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)submitPersonalizationVector:(id)a3 withCallbackQueue:(id)a4 completion:(id)a5
+- (void)submitPersonalizationVector:(id)vector withCallbackQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  vectorCopy = vector;
+  queueCopy = queue;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (vectorCopy)
   {
-    v12 = [(FCNewsletterEndpointConnection *)self serialQueue];
+    serialQueue = [(FCNewsletterEndpointConnection *)self serialQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __91__FCNewsletterEndpointConnection_submitPersonalizationVector_withCallbackQueue_completion___block_invoke_2;
     v15[3] = &unk_1E7C425C0;
     v15[4] = self;
-    v16 = v8;
-    v17 = v9;
+    v16 = vectorCopy;
+    v17 = queueCopy;
     v18 = v11;
-    [v12 enqueueBlock:v15];
+    [serialQueue enqueueBlock:v15];
 
     v13 = v16;
 LABEL_5:
@@ -524,7 +524,7 @@ LABEL_5:
   v20 = 3221225472;
   v21 = __91__FCNewsletterEndpointConnection_submitPersonalizationVector_withCallbackQueue_completion___block_invoke;
   v22 = &unk_1E7C379C8;
-  v14 = v10;
+  v14 = completionCopy;
   v23 = v14;
   if (v14)
   {
@@ -701,21 +701,21 @@ void __91__FCNewsletterEndpointConnection_submitPersonalizationVector_withCallba
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deletePersonalizationVectorWithCallbackQueue:(id)a3 completion:(id)a4
+- (void)deletePersonalizationVectorWithCallbackQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FCNewsletterEndpointConnection *)self serialQueue];
+  queueCopy = queue;
+  completionCopy = completion;
+  serialQueue = [(FCNewsletterEndpointConnection *)self serialQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __90__FCNewsletterEndpointConnection_deletePersonalizationVectorWithCallbackQueue_completion___block_invoke;
   v11[3] = &unk_1E7C463E8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 enqueueBlock:v11];
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
+  [serialQueue enqueueBlock:v11];
 }
 
 void __90__FCNewsletterEndpointConnection_deletePersonalizationVectorWithCallbackQueue_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -778,21 +778,21 @@ void __90__FCNewsletterEndpointConnection_deletePersonalizationVectorWithCallbac
   }
 }
 
-- (void)getWebTokenWithCallbackQueue:(id)a3 completion:(id)a4
+- (void)getWebTokenWithCallbackQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FCNewsletterEndpointConnection *)self serialQueue];
+  queueCopy = queue;
+  completionCopy = completion;
+  serialQueue = [(FCNewsletterEndpointConnection *)self serialQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__FCNewsletterEndpointConnection_getWebTokenWithCallbackQueue_completion___block_invoke;
   v11[3] = &unk_1E7C463E8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 enqueueBlock:v11];
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
+  [serialQueue enqueueBlock:v11];
 }
 
 void __74__FCNewsletterEndpointConnection_getWebTokenWithCallbackQueue_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -888,24 +888,24 @@ void __74__FCNewsletterEndpointConnection_getWebTokenWithCallbackQueue_completio
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateBaseURL:(id)a3
+- (void)updateBaseURL:(id)l
 {
-  v4 = [FCBaseURLConfiguration newsletterBaseURLForConfiguration:a3];
+  v4 = [FCBaseURLConfiguration newsletterBaseURLForConfiguration:l];
   [(FCNewsletterEndpointConnection *)self setBaseURL:v4];
 }
 
-- (void)configurationManager:(id)a3 configurationDidChange:(id)a4
+- (void)configurationManager:(id)manager configurationDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(FCNewsletterEndpointConnection *)self serialQueue];
+  changeCopy = change;
+  serialQueue = [(FCNewsletterEndpointConnection *)self serialQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __78__FCNewsletterEndpointConnection_configurationManager_configurationDidChange___block_invoke;
   v8[3] = &unk_1E7C3BDC0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 enqueueBlock:v8];
+  v9 = changeCopy;
+  v7 = changeCopy;
+  [serialQueue enqueueBlock:v8];
 }
 
 void __78__FCNewsletterEndpointConnection_configurationManager_configurationDidChange___block_invoke(uint64_t a1, void *a2)

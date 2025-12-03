@@ -1,79 +1,79 @@
 @interface DateProvider
-- (DateProvider)initWithDate:(id)a3 units:(unint64_t)a4;
-- (DateProvider)initWithDate:(id)a3 units:(unint64_t)a4 calendar:(id)a5 locale:(id)a6 timeZone:(id)a7;
-- (DateProvider)initWithDateFormat:(id)a3 calendar:(id)a4 locale:(id)a5 timeZone:(id)a6;
-- (DateProvider)initWithDateFormatTemplate:(id)a3 calendar:(id)a4 locale:(id)a5 timeZone:(id)a6;
+- (DateProvider)initWithDate:(id)date units:(unint64_t)units;
+- (DateProvider)initWithDate:(id)date units:(unint64_t)units calendar:(id)calendar locale:(id)locale timeZone:(id)zone;
+- (DateProvider)initWithDateFormat:(id)format calendar:(id)calendar locale:(id)locale timeZone:(id)zone;
+- (DateProvider)initWithDateFormatTemplate:(id)template calendar:(id)calendar locale:(id)locale timeZone:(id)zone;
 - (NSDateFormatter)dateFormatter;
 - (id)_completeDateTemplateSeries;
-- (id)_partialDateTemplateSeriesForUnits:(unint64_t)a3;
-- (id)_sessionTextForIndex:(int64_t)a3 context:(id)a4;
+- (id)_partialDateTemplateSeriesForUnits:(unint64_t)units;
+- (id)_sessionTextForIndex:(int64_t)index context:(id)context;
 - (int64_t)updateType;
-- (unint64_t)_minCalendarUnitFromFormat:(id)a3;
-- (void)_startSessionWithDate:(id)a3;
+- (unint64_t)_minCalendarUnitFromFormat:(id)format;
+- (void)_startSessionWithDate:(id)date;
 @end
 
 @implementation DateProvider
 
-- (DateProvider)initWithDate:(id)a3 units:(unint64_t)a4
+- (DateProvider)initWithDate:(id)date units:(unint64_t)units
 {
   v6 = MEMORY[0x1E695DEE8];
-  v7 = a3;
-  v8 = [v6 currentCalendar];
-  v9 = [MEMORY[0x1E695DF58] currentLocale];
-  v10 = [(DateProvider *)self initWithDate:v7 units:a4 calendar:v8 locale:v9 timeZone:0];
+  dateCopy = date;
+  currentCalendar = [v6 currentCalendar];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v10 = [(DateProvider *)self initWithDate:dateCopy units:units calendar:currentCalendar locale:currentLocale timeZone:0];
 
   return v10;
 }
 
-- (DateProvider)initWithDate:(id)a3 units:(unint64_t)a4 calendar:(id)a5 locale:(id)a6 timeZone:(id)a7
+- (DateProvider)initWithDate:(id)date units:(unint64_t)units calendar:(id)calendar locale:(id)locale timeZone:(id)zone
 {
-  v13 = a3;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = DateProvider;
-  v14 = [(BaseDateProvider *)&v17 initWithCalendar:a5 locale:a6 timeZone:a7];
+  v14 = [(BaseDateProvider *)&v17 initWithCalendar:calendar locale:locale timeZone:zone];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_date, a3);
-    v15->_calendarUnits = a4;
+    objc_storeStrong(&v14->_date, date);
+    v15->_calendarUnits = units;
   }
 
   return v15;
 }
 
-- (DateProvider)initWithDateFormat:(id)a3 calendar:(id)a4 locale:(id)a5 timeZone:(id)a6
+- (DateProvider)initWithDateFormat:(id)format calendar:(id)calendar locale:(id)locale timeZone:(id)zone
 {
-  v11 = a3;
+  formatCopy = format;
   v16.receiver = self;
   v16.super_class = DateProvider;
-  v12 = [(BaseDateProvider *)&v16 initWithCalendar:a4 locale:a5 timeZone:a6];
+  v12 = [(BaseDateProvider *)&v16 initWithCalendar:calendar locale:locale timeZone:zone];
   if (v12)
   {
-    v13 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     date = v12->_date;
-    v12->_date = v13;
+    v12->_date = date;
 
-    objc_storeStrong(&v12->_dateFormat, a3);
-    v12->_updateWallClockAlignment = [(DateProvider *)v12 _minCalendarUnitFromFormat:v11];
+    objc_storeStrong(&v12->_dateFormat, format);
+    v12->_updateWallClockAlignment = [(DateProvider *)v12 _minCalendarUnitFromFormat:formatCopy];
   }
 
   return v12;
 }
 
-- (DateProvider)initWithDateFormatTemplate:(id)a3 calendar:(id)a4 locale:(id)a5 timeZone:(id)a6
+- (DateProvider)initWithDateFormatTemplate:(id)template calendar:(id)calendar locale:(id)locale timeZone:(id)zone
 {
-  v11 = a3;
+  templateCopy = template;
   v16.receiver = self;
   v16.super_class = DateProvider;
-  v12 = [(BaseDateProvider *)&v16 initWithCalendar:a4 locale:a5 timeZone:a6];
+  v12 = [(BaseDateProvider *)&v16 initWithCalendar:calendar locale:locale timeZone:zone];
   if (v12)
   {
-    v13 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     date = v12->_date;
-    v12->_date = v13;
+    v12->_date = date;
 
-    objc_storeStrong(&v12->_dateFormatTemplate, a3);
-    v12->_updateWallClockAlignment = [(DateProvider *)v12 _minCalendarUnitFromFormat:v11];
+    objc_storeStrong(&v12->_dateFormatTemplate, template);
+    v12->_updateWallClockAlignment = [(DateProvider *)v12 _minCalendarUnitFromFormat:templateCopy];
   }
 
   return v12;
@@ -81,8 +81,8 @@
 
 - (int64_t)updateType
 {
-  v3 = [(DateProvider *)self dateFormatTemplate];
-  if (v3)
+  dateFormatTemplate = [(DateProvider *)self dateFormatTemplate];
+  if (dateFormatTemplate)
   {
 
     return 1;
@@ -90,43 +90,43 @@
 
   else
   {
-    v5 = [(DateProvider *)self dateFormat];
-    v4 = v5 != 0;
+    dateFormat = [(DateProvider *)self dateFormat];
+    v4 = dateFormat != 0;
   }
 
   return v4;
 }
 
-- (void)_startSessionWithDate:(id)a3
+- (void)_startSessionWithDate:(id)date
 {
-  v5 = a3;
-  if (v5)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_date, a3);
-    v5 = v6;
+    v6 = dateCopy;
+    objc_storeStrong(&self->_date, date);
+    dateCopy = v6;
   }
 }
 
-- (id)_sessionTextForIndex:(int64_t)a3 context:(id)a4
+- (id)_sessionTextForIndex:(int64_t)index context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   if (self->_date)
   {
-    v7 = [(DateProvider *)self dateFormatter];
-    [v7 setDateFormat:0];
+    dateFormatter = [(DateProvider *)self dateFormatter];
+    [dateFormatter setDateFormat:0];
 
-    v8 = [(DateProvider *)self dateFormatTemplate];
+    dateFormatTemplate = [(DateProvider *)self dateFormatTemplate];
 
-    if (v8)
+    if (dateFormatTemplate)
     {
-      v9 = [(DateProvider *)self dateFormatter];
-      v10 = [(DateProvider *)self dateFormatTemplate];
-      [v9 setLocalizedDateFormatFromTemplate:v10];
+      dateFormatter2 = [(DateProvider *)self dateFormatter];
+      dateFormatTemplate2 = [(DateProvider *)self dateFormatTemplate];
+      [dateFormatter2 setLocalizedDateFormatFromTemplate:dateFormatTemplate2];
 
 LABEL_6:
-      v12 = [(DateProvider *)self dateFormatter];
-      v13 = [v12 stringFromDate:self->_date];
+      dateFormatter3 = [(DateProvider *)self dateFormatter];
+      v13 = [dateFormatter3 stringFromDate:self->_date];
 LABEL_7:
 
       goto LABEL_15;
@@ -135,35 +135,35 @@ LABEL_7:
     dateFormat = self->_dateFormat;
     if (dateFormat)
     {
-      v9 = [(DateProvider *)self dateFormatter];
-      [v9 setDateFormat:dateFormat];
+      dateFormatter2 = [(DateProvider *)self dateFormatter];
+      [dateFormatter2 setDateFormat:dateFormat];
       goto LABEL_6;
     }
 
     templateSeries = self->_templateSeries;
     if (!templateSeries)
     {
-      v15 = [(DateProvider *)self _completeDateTemplateSeries];
+      _completeDateTemplateSeries = [(DateProvider *)self _completeDateTemplateSeries];
       v16 = self->_templateSeries;
-      self->_templateSeries = v15;
+      self->_templateSeries = _completeDateTemplateSeries;
 
       templateSeries = self->_templateSeries;
     }
 
-    if ([(NSArray *)templateSeries count]> a3)
+    if ([(NSArray *)templateSeries count]> index)
     {
-      v17 = [(NSArray *)self->_templateSeries objectAtIndex:a3];
-      v18 = [(BaseDateProvider *)self locale];
+      v17 = [(NSArray *)self->_templateSeries objectAtIndex:index];
+      locale = [(BaseDateProvider *)self locale];
       v19 = v17;
-      v20 = v18;
+      v20 = locale;
       if ([v19 isEqualToString:@"d"])
       {
         if (LocaleIsCJK(v20))
         {
 
 LABEL_20:
-          v24 = [(DateProvider *)self dateFormatter];
-          [v24 setDateFormat:v19];
+          dateFormatter4 = [(DateProvider *)self dateFormatter];
+          [dateFormatter4 setDateFormat:v19];
           goto LABEL_23;
         }
       }
@@ -179,42 +179,42 @@ LABEL_20:
         }
 
 LABEL_22:
-        v24 = [(DateProvider *)self dateFormatter];
-        [v24 setLocalizedDateFormatFromTemplate:v19];
+        dateFormatter4 = [(DateProvider *)self dateFormatter];
+        [dateFormatter4 setLocalizedDateFormatFromTemplate:v19];
 LABEL_23:
 
-        v25 = [(DateProvider *)self dateFormatter];
-        v26 = [v25 stringFromDate:self->_date];
+        dateFormatter5 = [(DateProvider *)self dateFormatter];
+        v26 = [dateFormatter5 stringFromDate:self->_date];
 
-        v27 = [(BaseDateProvider *)self locale];
-        v12 = v19;
+        locale2 = [(BaseDateProvider *)self locale];
+        dateFormatter3 = v19;
         v28 = [@"MMMMM" stringByAppendingString:@"d"];
-        v29 = [v12 isEqualToString:v28];
+        v29 = [dateFormatter3 isEqualToString:v28];
 
-        if (v29 && (LocaleIsCJK(v27) & 1) != 0)
+        if (v29 && (LocaleIsCJK(locale2) & 1) != 0)
         {
 
-          v30 = [(DateProvider *)self dateFormatter];
-          v13 = [v30 stringFromDate:self->_date];
+          dateFormatter6 = [(DateProvider *)self dateFormatter];
+          v13 = [dateFormatter6 stringFromDate:self->_date];
         }
 
         else
         {
 
-          v31 = [(BaseDateProvider *)self locale];
+          locale3 = [(BaseDateProvider *)self locale];
           v32 = v26;
           v33 = v32;
-          if (_isWeekdayDayTemplate(v12))
+          if (_isWeekdayDayTemplate(dateFormatter3))
           {
             v33 = v32;
-            if (RemovesPunctuationFromWeekdayDay(v31))
+            if (RemovesPunctuationFromWeekdayDay(locale3))
             {
               if (!_removePunctuationIfNecessaryFromTextForTemplate_punctuationExceptDash)
               {
-                v34 = [MEMORY[0x1E696AD48] punctuationCharacterSet];
-                [v34 removeCharactersInString:@"-"];
+                punctuationCharacterSet = [MEMORY[0x1E696AD48] punctuationCharacterSet];
+                [punctuationCharacterSet removeCharactersInString:@"-"];
                 v35 = _removePunctuationIfNecessaryFromTextForTemplate_punctuationExceptDash;
-                _removePunctuationIfNecessaryFromTextForTemplate_punctuationExceptDash = v34;
+                _removePunctuationIfNecessaryFromTextForTemplate_punctuationExceptDash = punctuationCharacterSet;
               }
 
               v36 = [v32 componentsSeparatedByCharactersInSet:?];
@@ -248,18 +248,18 @@ LABEL_15:
     self->_dateFormatter = v3;
 
     [(NSDateFormatter *)self->_dateFormatter setFormattingContext:2];
-    v5 = [(BaseDateProvider *)self calendar];
-    [(NSDateFormatter *)self->_dateFormatter setCalendar:v5];
+    calendar = [(BaseDateProvider *)self calendar];
+    [(NSDateFormatter *)self->_dateFormatter setCalendar:calendar];
 
-    v6 = [(BaseDateProvider *)self locale];
-    [(NSDateFormatter *)self->_dateFormatter setLocale:v6];
+    locale = [(BaseDateProvider *)self locale];
+    [(NSDateFormatter *)self->_dateFormatter setLocale:locale];
 
-    v7 = [(BaseDateProvider *)self timeZone];
+    timeZone = [(BaseDateProvider *)self timeZone];
 
-    if (v7)
+    if (timeZone)
     {
-      v8 = [(BaseDateProvider *)self timeZone];
-      [(NSDateFormatter *)self->_dateFormatter setTimeZone:v8];
+      timeZone2 = [(BaseDateProvider *)self timeZone];
+      [(NSDateFormatter *)self->_dateFormatter setTimeZone:timeZone2];
     }
   }
 
@@ -271,7 +271,7 @@ LABEL_15:
 - (id)_completeDateTemplateSeries
 {
   calendarUnits = self->_calendarUnits;
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ((calendarUnits & 0x21C) != 0)
   {
     v5 = calendarUnits & 0x21C;
@@ -285,7 +285,7 @@ LABEL_15:
   do
   {
     v6 = [(DateProvider *)self _partialDateTemplateSeriesForUnits:v5];
-    [v4 addObjectsFromArray:v6];
+    [array addObjectsFromArray:v6];
 
     v7 = v5 & 0xFFFFFFFFFFFFFDE3;
     if ((v5 & 0x10) == 0)
@@ -316,31 +316,31 @@ LABEL_15:
 
   while (v5);
 
-  return v4;
+  return array;
 }
 
-- (id)_partialDateTemplateSeriesForUnits:(unint64_t)a3
+- (id)_partialDateTemplateSeriesForUnits:(unint64_t)units
 {
   v23[3] = *MEMORY[0x1E69E9840];
   v4 = objc_opt_new();
   v5 = v4;
-  if (a3 == 528)
+  if (units == 528)
   {
     [v4 addObject:@"EEEE d"];
     [v5 addObject:@"EEE d"];
-    v6 = v5;
+    array = v5;
     goto LABEL_23;
   }
 
-  if ((~a3 & 0x208) != 0)
+  if ((~units & 0x208) != 0)
   {
-    if ((a3 & 8) != 0)
+    if ((units & 8) != 0)
     {
       [v4 addObject:@"MMMM"];
       v8 = @"MMM";
     }
 
-    else if ((a3 & 0x200) != 0)
+    else if ((units & 0x200) != 0)
     {
       [v4 addObject:@"EEEE"];
       v8 = @"EEE";
@@ -364,10 +364,10 @@ LABEL_15:
   }
 
   [v5 addObject:v8];
-  if ((a3 & 0x10) == 0)
+  if ((units & 0x10) == 0)
   {
     v9 = &stru_1F00C2360;
-    if ((a3 & 4) == 0)
+    if ((units & 4) == 0)
     {
       goto LABEL_15;
     }
@@ -376,7 +376,7 @@ LABEL_15:
   }
 
   v9 = [&stru_1F00C2360 stringByAppendingString:@"d"];
-  if ((a3 & 4) != 0)
+  if ((units & 4) != 0)
   {
 LABEL_14:
     v10 = [(__CFString *)v9 stringByAppendingString:@"y"];
@@ -385,7 +385,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -406,7 +406,7 @@ LABEL_15:
         }
 
         v16 = [*(*(&v18 + 1) + 8 * i) stringByAppendingString:{v9, v18}];
-        [v6 addObject:v16];
+        [array addObject:v16];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -417,24 +417,24 @@ LABEL_15:
 
 LABEL_23:
 
-  return v6;
+  return array;
 }
 
-- (unint64_t)_minCalendarUnitFromFormat:(id)a3
+- (unint64_t)_minCalendarUnitFromFormat:(id)format
 {
-  v4 = a3;
-  if (![v4 length])
+  formatCopy = format;
+  if (![formatCopy length])
   {
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"a"])
+  if ([formatCopy isEqualToString:@"a"])
   {
     SkeletonFromTemplate = 32;
     goto LABEL_10;
   }
 
-  v6 = [(BaseDateProvider *)self locale];
+  locale = [(BaseDateProvider *)self locale];
   SkeletonFromTemplate = _CFDateFormatterCreateSkeletonFromTemplate();
 
   if (!SkeletonFromTemplate)

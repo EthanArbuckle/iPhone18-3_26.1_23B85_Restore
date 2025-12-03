@@ -1,10 +1,10 @@
 @interface SceneSessionManager
-- (void)didReceiveMemoryWarning:(id)a3;
+- (void)didReceiveMemoryWarning:(id)warning;
 @end
 
 @implementation SceneSessionManager
 
-- (void)didReceiveMemoryWarning:(id)a3
+- (void)didReceiveMemoryWarning:(id)warning
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

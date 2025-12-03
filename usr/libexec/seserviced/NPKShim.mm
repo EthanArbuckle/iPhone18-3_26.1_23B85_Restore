@@ -1,22 +1,22 @@
 @interface NPKShim
-+ (void)getWatchSnapshot:(id)a3 completion:(id)a4;
-+ (void)reclaimUnusedSEMemory:(id)a3 completion:(id)a4;
++ (void)getWatchSnapshot:(id)snapshot completion:(id)completion;
++ (void)reclaimUnusedSEMemory:(id)memory completion:(id)completion;
 @end
 
 @implementation NPKShim
 
-+ (void)getWatchSnapshot:(id)a3 completion:(id)a4
++ (void)getWatchSnapshot:(id)snapshot completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  snapshotCopy = snapshot;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100012250;
     v8[3] = &unk_1004C1280;
-    v9 = v6;
-    [v5 currentSesdSnapshot:v8];
+    v9 = completionCopy;
+    [snapshotCopy currentSesdSnapshot:v8];
   }
 
   else
@@ -28,22 +28,22 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Nanopassbook isn't new enough for currentSesdSnapshot", buf, 2u);
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-+ (void)reclaimUnusedSEMemory:(id)a3 completion:(id)a4
++ (void)reclaimUnusedSEMemory:(id)memory completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  memoryCopy = memory;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100012548;
     v8[3] = &unk_1004C1280;
-    v9 = v6;
-    [v5 reclaimUnusedSecureElementMemory:v8];
+    v9 = completionCopy;
+    [memoryCopy reclaimUnusedSecureElementMemory:v8];
   }
 
   else
@@ -55,7 +55,7 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Nanopassbook isn't new enough for reclaimUnusedSEMemory", buf, 2u);
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

@@ -1,41 +1,41 @@
 @interface WBTableRow
-+ (void)collectCellProperties:(void *)a3 tracked:(void *)a4 for:(id)a5;
-+ (void)readCellsFrom:(id)a3 textRuns:(id)a4 level:(int)a5 to:(id)a6 properties:(void *)a7 tracked:(void *)a8;
-+ (void)readFrom:(id)a3 textRuns:(id)a4 to:(id)a5 index:(unint64_t)a6 row:(id)a7;
++ (void)collectCellProperties:(void *)properties tracked:(void *)tracked for:(id)for;
++ (void)readCellsFrom:(id)from textRuns:(id)runs level:(int)level to:(id)to properties:(void *)properties tracked:(void *)tracked;
++ (void)readFrom:(id)from textRuns:(id)runs to:(id)to index:(unint64_t)index row:(id)row;
 @end
 
 @implementation WBTableRow
 
-+ (void)readFrom:(id)a3 textRuns:(id)a4 to:(id)a5 index:(unint64_t)a6 row:(id)a7
++ (void)readFrom:(id)from textRuns:(id)runs to:(id)to index:(unint64_t)index row:(id)row
 {
-  v31 = a3;
-  v11 = a4;
-  v30 = a5;
-  v28 = a7;
-  v29 = v11;
-  v12 = [v11 lastObject];
-  v13 = [v12 pointerValue];
+  fromCopy = from;
+  runsCopy = runs;
+  toCopy = to;
+  rowCopy = row;
+  v29 = runsCopy;
+  lastObject = [runsCopy lastObject];
+  pointerValue = [lastObject pointerValue];
 
-  v14 = *(v13 + 24);
-  v15 = *(v13 + 40);
-  v16 = *(v13 + 48);
-  v17 = [v28 properties];
-  [WBTableRowProperties readFrom:v31 wrdProperties:v15 tracked:v16 properties:v17];
+  v14 = *(pointerValue + 24);
+  v15 = *(pointerValue + 40);
+  v16 = *(pointerValue + 48);
+  properties = [rowCopy properties];
+  [WBTableRowProperties readFrom:fromCopy wrdProperties:v15 tracked:v16 properties:properties];
 
   WrdCharacterTextRun::WrdCharacterTextRun(&v32);
-  v18 = *(v13 + 12) + *(v13 + 16) - 1;
-  v32.var1 = *(v13 + 8);
+  v18 = *(pointerValue + 12) + *(pointerValue + 16) - 1;
+  v32.var1 = *(pointerValue + 8);
   v32.var2 = v18;
   v32.var3 = 1;
-  v19 = [v31 wrdReader];
-  (*(*v19 + 192))(v19, &v32);
+  wrdReader = [fromCopy wrdReader];
+  (*(*wrdReader + 192))(wrdReader, &v32);
   var4 = v32.var4;
   var5 = v32.var5;
-  v22 = [v30 properties];
-  v23 = [v22 document];
-  v24 = [v28 properties];
-  v25 = [v24 characterProperties];
-  [WBCharacterProperties readFrom:v31 wrdProperties:var4 tracked:var5 document:v23 properties:v25];
+  properties2 = [toCopy properties];
+  document = [properties2 document];
+  properties3 = [rowCopy properties];
+  characterProperties = [properties3 characterProperties];
+  [WBCharacterProperties readFrom:fromCopy wrdProperties:var4 tracked:var5 document:document properties:characterProperties];
 
   v26 = *(v14 + 16);
   if ((v26 & 0x1000000000000) != 0)
@@ -48,19 +48,19 @@
     v27 = (v26 >> 1) & 1;
   }
 
-  [a1 readCellsFrom:v31 textRuns:v29 level:v27 to:v28 properties:v15 tracked:v16];
+  [self readCellsFrom:fromCopy textRuns:v29 level:v27 to:rowCopy properties:v15 tracked:v16];
   WrdCharacterTextRun::~WrdCharacterTextRun(&v32);
 }
 
-+ (void)readCellsFrom:(id)a3 textRuns:(id)a4 level:(int)a5 to:(id)a6 properties:(void *)a7 tracked:(void *)a8
++ (void)readCellsFrom:(id)from textRuns:(id)runs level:(int)level to:(id)to properties:(void *)properties tracked:(void *)tracked
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [v13 count];
-  v16 = [v14 table];
-  v17 = [v16 text];
-  WrdTextRun::WrdTextRun(v32, [v17 textType], 0);
+  fromCopy = from;
+  runsCopy = runs;
+  toCopy = to;
+  v15 = [runsCopy count];
+  table = [toCopy table];
+  text = [table text];
+  WrdTextRun::WrdTextRun(v32, [text textType], 0);
   v18 = v15 - 1;
 
   if (v18)
@@ -69,13 +69,13 @@
     v20 = 1;
     do
     {
-      v21 = [v13 objectAtIndex:v19];
-      v22 = [v21 pointerValue];
+      v21 = [runsCopy objectAtIndex:v19];
+      pointerValue = [v21 pointerValue];
 
       if (v20)
       {
         v23 = 0;
-        v33 = *(v22 + 12);
+        v33 = *(pointerValue + 12);
         v34 = 0;
       }
 
@@ -84,11 +84,11 @@
         v23 = v34;
       }
 
-      v34 = *(v22 + 16) + v23;
-      if (a5 == 1)
+      v34 = *(pointerValue + 16) + v23;
+      if (level == 1)
       {
-        v24 = (*(v22 + 16) + *(v22 + 12));
-        v25 = [v12 readCharactersFrom:(v24 - 1) to:v24 textType:*(v22 + 8)];
+        v24 = (*(pointerValue + 16) + *(pointerValue + 12));
+        v25 = [fromCopy readCharactersFrom:(v24 - 1) to:v24 textType:*(pointerValue + 8)];
         v26 = [v25 isEqualToString:@"\a"];
 
         if ((v26 & 1) == 0)
@@ -99,7 +99,7 @@
 
       else
       {
-        v28 = *(v22 + 24);
+        v28 = *(pointerValue + 24);
         v29 = *(v28 + 16);
         if ((v29 & 0x1000000000000) != 0)
         {
@@ -112,7 +112,7 @@
         }
 
         v20 = 0;
-        if ((v29 & 0x2000000000000) == 0 || v30 != a5)
+        if ((v29 & 0x2000000000000) == 0 || v30 != level)
         {
           goto LABEL_16;
         }
@@ -125,8 +125,8 @@ LABEL_15:
         }
       }
 
-      v27 = [v14 addCell];
-      +[WBTableCell readFrom:textRun:with:tracked:row:index:cell:](WBTableCell, "readFrom:textRun:with:tracked:row:index:cell:", v12, v32, a7, a8, v14, [v14 cellCount] - 1, v27);
+      addCell = [toCopy addCell];
+      +[WBTableCell readFrom:textRun:with:tracked:row:index:cell:](WBTableCell, "readFrom:textRun:with:tracked:row:index:cell:", fromCopy, v32, properties, tracked, toCopy, [toCopy cellCount] - 1, addCell);
 
       v20 = 1;
 LABEL_16:
@@ -137,19 +137,19 @@ LABEL_16:
   }
 }
 
-+ (void)collectCellProperties:(void *)a3 tracked:(void *)a4 for:(id)a5
++ (void)collectCellProperties:(void *)properties tracked:(void *)tracked for:(id)for
 {
-  v11 = a5;
-  v7 = [v11 cellCount];
-  WrdTableProperties::insertCells(a3, 0, v7, 0);
-  WrdTableProperties::insertCells(a4, 0, v7, 0);
-  if (v7)
+  forCopy = for;
+  cellCount = [forCopy cellCount];
+  WrdTableProperties::insertCells(properties, 0, cellCount, 0);
+  WrdTableProperties::insertCells(tracked, 0, cellCount, 0);
+  if (cellCount)
   {
-    for (i = 0; i != v7; ++i)
+    for (i = 0; i != cellCount; ++i)
     {
-      v9 = [v11 cellAt:i];
-      v10 = [v9 properties];
-      [WBTableCellBodyProperties write:v10 wrdProperties:a3 tracked:a4 index:i];
+      v9 = [forCopy cellAt:i];
+      properties = [v9 properties];
+      [WBTableCellBodyProperties write:properties wrdProperties:properties tracked:tracked index:i];
     }
   }
 }

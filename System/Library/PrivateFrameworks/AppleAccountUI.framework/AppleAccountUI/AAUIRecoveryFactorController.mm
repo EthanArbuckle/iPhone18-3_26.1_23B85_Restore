@@ -1,5 +1,5 @@
 @interface AAUIRecoveryFactorController
-- (AAUIRecoveryFactorController)initWithAccountManager:(id)a3 presentingViewController:(id)a4;
+- (AAUIRecoveryFactorController)initWithAccountManager:(id)manager presentingViewController:(id)controller;
 - (AAUIRecoveryFactorControllerDelegate)delegate;
 - (UIViewController)presentingViewController;
 - (id)_cdpHelper;
@@ -7,36 +7,36 @@
 - (id)_stateController;
 - (id)_walrusStateController;
 - (void)_continueAddingRecoveryContact;
-- (void)_custodianFlowControllerWithCompletion:(id)a3;
+- (void)_custodianFlowControllerWithCompletion:(id)completion;
 - (void)_displayCustodianAddNotAllowedAlert;
 - (void)_displayRatchetGenericErrorAlert;
-- (void)_handleRecoveryKeyOperationResultWithSuccess:(BOOL)a3 error:(id)a4 operationDescription:(id)a5 completion:(id)a6;
-- (void)authenticateAndDeleteRecoveryKeyFromAllSystemsWithCompletion:(id)a3;
-- (void)authenticateAndGenerateNewRecoveryKeyWithCompletion:(id)a3;
-- (void)custodianSetupFlowControllerDidFinish:(id)a3;
+- (void)_handleRecoveryKeyOperationResultWithSuccess:(BOOL)success error:(id)error operationDescription:(id)description completion:(id)completion;
+- (void)authenticateAndDeleteRecoveryKeyFromAllSystemsWithCompletion:(id)completion;
+- (void)authenticateAndGenerateNewRecoveryKeyWithCompletion:(id)completion;
+- (void)custodianSetupFlowControllerDidFinish:(id)finish;
 - (void)custodianSetupFlowControllerRecoveryContactInviteSent;
-- (void)deleteRecoveryKeyFromAllSystems:(id)a3;
-- (void)generateRecoveryKeyWithCompletion:(id)a3;
-- (void)setForceInlinePresentation:(BOOL)a3;
+- (void)deleteRecoveryKeyFromAllSystems:(id)systems;
+- (void)generateRecoveryKeyWithCompletion:(id)completion;
+- (void)setForceInlinePresentation:(BOOL)presentation;
 - (void)startAddingDataRecoveryService;
 - (void)startAddingRecoveryContact;
-- (void)validateRecoveryKeyWithCompletion:(id)a3;
+- (void)validateRecoveryKeyWithCompletion:(id)completion;
 @end
 
 @implementation AAUIRecoveryFactorController
 
-- (AAUIRecoveryFactorController)initWithAccountManager:(id)a3 presentingViewController:(id)a4
+- (AAUIRecoveryFactorController)initWithAccountManager:(id)manager presentingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = AAUIRecoveryFactorController;
   v8 = [(AAUIRecoveryFactorController *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    [(AAUIRecoveryFactorController *)v8 setAccountManager:v6];
-    [(AAUIRecoveryFactorController *)v9 setPresentingViewController:v7];
+    [(AAUIRecoveryFactorController *)v8 setAccountManager:managerCopy];
+    [(AAUIRecoveryFactorController *)v9 setPresentingViewController:controllerCopy];
     v10 = objc_alloc_init(MEMORY[0x1E698DD40]);
     v11 = [[AAUIDTOHelper alloc] initWithDTOController:v10];
     dtoHelper = v9->_dtoHelper;
@@ -48,34 +48,34 @@
 
 - (void)_displayCustodianAddNotAllowedAlert
 {
-  v4 = [(AAUIDTOHelper *)self->_dtoHelper makeCustodianAddOpNotAllowedAlert];
-  v3 = [(AAUIRecoveryFactorController *)self presentingViewController];
-  [v3 presentViewController:v4 animated:1 completion:0];
+  makeCustodianAddOpNotAllowedAlert = [(AAUIDTOHelper *)self->_dtoHelper makeCustodianAddOpNotAllowedAlert];
+  presentingViewController = [(AAUIRecoveryFactorController *)self presentingViewController];
+  [presentingViewController presentViewController:makeCustodianAddOpNotAllowedAlert animated:1 completion:0];
 }
 
 - (void)_displayRatchetGenericErrorAlert
 {
-  v4 = [(AAUIDTOHelper *)self->_dtoHelper makeGenericRatchetFailedAlert];
-  v3 = [(AAUIRecoveryFactorController *)self presentingViewController];
-  [v3 presentViewController:v4 animated:1 completion:0];
+  makeGenericRatchetFailedAlert = [(AAUIDTOHelper *)self->_dtoHelper makeGenericRatchetFailedAlert];
+  presentingViewController = [(AAUIRecoveryFactorController *)self presentingViewController];
+  [presentingViewController presentViewController:makeGenericRatchetFailedAlert animated:1 completion:0];
 }
 
 - (void)startAddingRecoveryContact
 {
-  v3 = [(AAUIRecoveryFactorController *)self accountManager];
-  v4 = [v3 accounts];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accountManager = [(AAUIRecoveryFactorController *)self accountManager];
+  accounts = [accountManager accounts];
+  v5 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v5)
   {
     dtoHelper = self->_dtoHelper;
-    v7 = [v5 aa_altDSID];
+    aa_altDSID = [v5 aa_altDSID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __58__AAUIRecoveryFactorController_startAddingRecoveryContact__block_invoke;
     v9[3] = &unk_1E820C140;
     v9[4] = self;
-    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:v7 completion:v9];
+    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:aa_altDSID completion:v9];
   }
 
   else
@@ -225,23 +225,23 @@ void __62__AAUIRecoveryFactorController__continueAddingRecoveryContact__block_in
 LABEL_7:
 }
 
-- (void)authenticateAndGenerateNewRecoveryKeyWithCompletion:(id)a3
+- (void)authenticateAndGenerateNewRecoveryKeyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(AAUIRecoveryFactorController *)self _stateController];
+  _stateController = [(AAUIRecoveryFactorController *)self _stateController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AAUIRecoveryFactorController *)self _stateController];
+    _stateController2 = [(AAUIRecoveryFactorController *)self _stateController];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __84__AAUIRecoveryFactorController_authenticateAndGenerateNewRecoveryKeyWithCompletion___block_invoke;
     v10[3] = &unk_1E820C2E0;
     objc_copyWeak(&v12, &location);
-    v11 = v4;
-    [v7 authenticateAndGenerateNewRecoveryKeyWithCompletion:v10];
+    v11 = completionCopy;
+    [_stateController2 authenticateAndGenerateNewRecoveryKeyWithCompletion:v10];
 
     objc_destroyWeak(&v12);
   }
@@ -254,10 +254,10 @@ LABEL_7:
       [AAUIRecoveryFactorController authenticateAndGenerateNewRecoveryKeyWithCompletion:];
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v9 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-3];
-      (*(v4 + 2))(v4, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, v9);
     }
   }
 
@@ -271,19 +271,19 @@ void __84__AAUIRecoveryFactorController_authenticateAndGenerateNewRecoveryKeyWit
   [WeakRetained _handleRecoveryKeyOperationResultWithSuccess:a2 error:v5 operationDescription:@"recovery key generation" completion:*(a1 + 32)];
 }
 
-- (void)generateRecoveryKeyWithCompletion:(id)a3
+- (void)generateRecoveryKeyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(AAUIRecoveryFactorController *)self _stateController];
+  _stateController = [(AAUIRecoveryFactorController *)self _stateController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__AAUIRecoveryFactorController_generateRecoveryKeyWithCompletion___block_invoke;
   v7[3] = &unk_1E820C2E0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 generateNewRecoveryKey:v7];
+  [_stateController generateNewRecoveryKey:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -296,20 +296,20 @@ void __66__AAUIRecoveryFactorController_generateRecoveryKeyWithCompletion___bloc
   [WeakRetained _handleRecoveryKeyOperationResultWithSuccess:a2 error:v5 operationDescription:@"recovery key generation" completion:*(a1 + 32)];
 }
 
-- (void)validateRecoveryKeyWithCompletion:(id)a3
+- (void)validateRecoveryKeyWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69977E8] contextForPrimaryAccount];
-  [v5 setType:9];
-  v6 = [(AAUIRecoveryFactorController *)self _cdpHelper];
-  v7 = [v6 cdpStateControllerWithContext:v5];
+  completionCopy = completion;
+  contextForPrimaryAccount = [MEMORY[0x1E69977E8] contextForPrimaryAccount];
+  [contextForPrimaryAccount setType:9];
+  _cdpHelper = [(AAUIRecoveryFactorController *)self _cdpHelper];
+  v7 = [_cdpHelper cdpStateControllerWithContext:contextForPrimaryAccount];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__AAUIRecoveryFactorController_validateRecoveryKeyWithCompletion___block_invoke;
   v9[3] = &unk_1E820C308;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v7 verifyRecoveryKey:v9];
 }
 
@@ -338,34 +338,34 @@ void __66__AAUIRecoveryFactorController_validateRecoveryKeyWithCompletion___bloc
   }
 }
 
-- (void)deleteRecoveryKeyFromAllSystems:(id)a3
+- (void)deleteRecoveryKeyFromAllSystems:(id)systems
 {
   v4 = MEMORY[0x1E69977E8];
-  v5 = a3;
-  v8 = [v4 contextForPrimaryAccount];
-  v6 = [(AAUIRecoveryFactorController *)self _cdpHelper];
-  v7 = [v6 cdpStateControllerWithContext:v8];
+  systemsCopy = systems;
+  contextForPrimaryAccount = [v4 contextForPrimaryAccount];
+  _cdpHelper = [(AAUIRecoveryFactorController *)self _cdpHelper];
+  v7 = [_cdpHelper cdpStateControllerWithContext:contextForPrimaryAccount];
 
-  [v7 deleteRecoveryKey:v5];
+  [v7 deleteRecoveryKey:systemsCopy];
 }
 
-- (void)authenticateAndDeleteRecoveryKeyFromAllSystemsWithCompletion:(id)a3
+- (void)authenticateAndDeleteRecoveryKeyFromAllSystemsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(AAUIRecoveryFactorController *)self _stateController];
+  _stateController = [(AAUIRecoveryFactorController *)self _stateController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AAUIRecoveryFactorController *)self _stateController];
+    _stateController2 = [(AAUIRecoveryFactorController *)self _stateController];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __93__AAUIRecoveryFactorController_authenticateAndDeleteRecoveryKeyFromAllSystemsWithCompletion___block_invoke;
     v10[3] = &unk_1E820C2E0;
     objc_copyWeak(&v12, &location);
-    v11 = v4;
-    [v7 authenticateAndDeleteRecoveryKeyWithCompletion:v10];
+    v11 = completionCopy;
+    [_stateController2 authenticateAndDeleteRecoveryKeyWithCompletion:v10];
 
     objc_destroyWeak(&v12);
   }
@@ -378,10 +378,10 @@ void __66__AAUIRecoveryFactorController_validateRecoveryKeyWithCompletion___bloc
       [AAUIRecoveryFactorController authenticateAndDeleteRecoveryKeyFromAllSystemsWithCompletion:];
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v9 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-3];
-      (*(v4 + 2))(v4, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, v9);
     }
   }
 
@@ -395,13 +395,13 @@ void __93__AAUIRecoveryFactorController_authenticateAndDeleteRecoveryKeyFromAllS
   [WeakRetained _handleRecoveryKeyOperationResultWithSuccess:a2 error:v5 operationDescription:@"recovery key deletion" completion:*(a1 + 32)];
 }
 
-- (void)_handleRecoveryKeyOperationResultWithSuccess:(BOOL)a3 error:(id)a4 operationDescription:(id)a5 completion:(id)a6
+- (void)_handleRecoveryKeyOperationResultWithSuccess:(BOOL)success error:(id)error operationDescription:(id)description completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (v8)
+  successCopy = success;
+  errorCopy = error;
+  descriptionCopy = description;
+  completionCopy = completion;
+  if (successCopy)
   {
     v12 = objc_alloc_init(MEMORY[0x1E698B850]);
     [v12 startHealthCheckWithCompletion:&__block_literal_global_4];
@@ -416,9 +416,9 @@ void __93__AAUIRecoveryFactorController_authenticateAndDeleteRecoveryKeyFromAllS
     }
   }
 
-  if (v11)
+  if (completionCopy)
   {
-    v11[2](v11, v8, v9);
+    completionCopy[2](completionCopy, successCopy, errorCopy);
   }
 }
 
@@ -476,15 +476,15 @@ void __62__AAUIRecoveryFactorController_startAddingDataRecoveryService__block_in
   }
 }
 
-- (void)setForceInlinePresentation:(BOOL)a3
+- (void)setForceInlinePresentation:(BOOL)presentation
 {
-  v3 = a3;
-  self->_forceInlinePresentation = a3;
-  v5 = [(AAUIRecoveryFactorController *)self _cdpHelper];
-  [v5 setForceInline:v3];
+  presentationCopy = presentation;
+  self->_forceInlinePresentation = presentation;
+  _cdpHelper = [(AAUIRecoveryFactorController *)self _cdpHelper];
+  [_cdpHelper setForceInline:presentationCopy];
 
-  v6 = [(AAUIRecoveryFactorController *)self _custodianFlowController];
-  [v6 setForceInlinePresentation:v3];
+  _custodianFlowController = [(AAUIRecoveryFactorController *)self _custodianFlowController];
+  [_custodianFlowController setForceInlinePresentation:presentationCopy];
 }
 
 - (id)_custodianFlowController
@@ -492,22 +492,22 @@ void __62__AAUIRecoveryFactorController_startAddingDataRecoveryService__block_in
   if (!self->_custodianFlowController)
   {
     v3 = [AAUICustodianSetupFlowController alloc];
-    v4 = [(AAUIRecoveryFactorController *)self accountManager];
-    v5 = [(AAUICustodianSetupFlowController *)v3 initWithAccountManager:v4];
+    accountManager = [(AAUIRecoveryFactorController *)self accountManager];
+    v5 = [(AAUICustodianSetupFlowController *)v3 initWithAccountManager:accountManager];
     custodianFlowController = self->_custodianFlowController;
     self->_custodianFlowController = v5;
 
     [(AAUICustodianSetupFlowController *)self->_custodianFlowController setDelegate:self];
     if ([(AAUIRecoveryFactorController *)self forceInlinePresentation])
     {
-      v7 = [(AAUIRecoveryFactorController *)self presentingViewController];
+      presentingViewController = [(AAUIRecoveryFactorController *)self presentingViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v9 = [(AAUIRecoveryFactorController *)self presentingViewController];
-        [(AAUICustodianSetupFlowController *)self->_custodianFlowController setNavigationController:v9];
+        presentingViewController2 = [(AAUIRecoveryFactorController *)self presentingViewController];
+        [(AAUICustodianSetupFlowController *)self->_custodianFlowController setNavigationController:presentingViewController2];
       }
     }
   }
@@ -517,9 +517,9 @@ void __62__AAUIRecoveryFactorController_startAddingDataRecoveryService__block_in
   return v10;
 }
 
-- (void)_custodianFlowControllerWithCompletion:(id)a3
+- (void)_custodianFlowControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -527,15 +527,15 @@ void __62__AAUIRecoveryFactorController_startAddingDataRecoveryService__block_in
   }
 
   objc_initWeak(&location, self);
-  v6 = [(AAUIRecoveryFactorController *)self _walrusStateController];
+  _walrusStateController = [(AAUIRecoveryFactorController *)self _walrusStateController];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__AAUIRecoveryFactorController__custodianFlowControllerWithCompletion___block_invoke;
   v8[3] = &unk_1E820C378;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
-  [v6 walrusStatusWithCompletion:v8];
+  [_walrusStateController walrusStatusWithCompletion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -586,10 +586,10 @@ void __71__AAUIRecoveryFactorController__custodianFlowControllerWithCompletion__
   stateController = self->_stateController;
   if (!stateController)
   {
-    v4 = [(AAUIRecoveryFactorController *)self _cdpHelper];
-    v5 = [v4 cdpStateControllerForPrimaryAccount];
+    _cdpHelper = [(AAUIRecoveryFactorController *)self _cdpHelper];
+    cdpStateControllerForPrimaryAccount = [_cdpHelper cdpStateControllerForPrimaryAccount];
     v6 = self->_stateController;
-    self->_stateController = v5;
+    self->_stateController = cdpStateControllerForPrimaryAccount;
 
     stateController = self->_stateController;
   }
@@ -602,8 +602,8 @@ void __71__AAUIRecoveryFactorController__custodianFlowControllerWithCompletion__
   cdpHelper = self->_cdpHelper;
   if (!cdpHelper)
   {
-    v4 = [(AAUIRecoveryFactorController *)self presentingViewController];
-    v5 = [AAUICDPHelper helperWithPresenter:v4];
+    presentingViewController = [(AAUIRecoveryFactorController *)self presentingViewController];
+    v5 = [AAUICDPHelper helperWithPresenter:presentingViewController];
     v6 = self->_cdpHelper;
     self->_cdpHelper = v5;
 
@@ -628,16 +628,16 @@ void __71__AAUIRecoveryFactorController__custodianFlowControllerWithCompletion__
   return walrusStateController;
 }
 
-- (void)custodianSetupFlowControllerDidFinish:(id)a3
+- (void)custodianSetupFlowControllerDidFinish:(id)finish
 {
   if (![(AAUIRecoveryFactorController *)self forceInlinePresentation])
   {
-    v4 = [(AAUIRecoveryFactorController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(AAUIRecoveryFactorController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
-  v5 = [(AAUIRecoveryFactorController *)self delegate];
-  [v5 recoveryFactorController:self didFinishAddingRecoveryContactWithError:0];
+  delegate = [(AAUIRecoveryFactorController *)self delegate];
+  [delegate recoveryFactorController:self didFinishAddingRecoveryContactWithError:0];
 }
 
 - (void)custodianSetupFlowControllerRecoveryContactInviteSent

@@ -1,5 +1,5 @@
 @interface NSSQLEntity_DerivedAttributesExtension
-- (NSSQLEntity_DerivedAttributesExtension)initWithEntity:(id)a3;
+- (NSSQLEntity_DerivedAttributesExtension)initWithEntity:(id)entity;
 - (uint64_t)addDerivationKeypath:(void *)key forAttribute:;
 - (void)_generateTriggerSQL;
 - (void)dealloc;
@@ -24,35 +24,35 @@
 
 - (void)_generateTriggerSQL
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 24))
+    if (!*(self + 24))
     {
       v2 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-      *(a1 + 24) = objc_alloc_init(MEMORY[0x1E695DF70]);
-      *(a1 + 32) = objc_alloc_init(MEMORY[0x1E695DF90]);
+      *(self + 24) = objc_alloc_init(MEMORY[0x1E695DF70]);
+      *(self + 32) = objc_alloc_init(MEMORY[0x1E695DF90]);
       v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [*(a1 + 32) setValue:v3 forKey:@"dropStatements"];
+      [*(self + 32) setValue:v3 forKey:@"dropStatements"];
 
       v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [*(a1 + 32) setValue:v4 forKey:@"dataStatements"];
+      [*(self + 32) setValue:v4 forKey:@"dataStatements"];
 
       v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [*(a1 + 32) setValue:v5 forKey:@"triggerCreationStatements"];
+      [*(self + 32) setValue:v5 forKey:@"triggerCreationStatements"];
 
-      v6 = *(a1 + 16);
+      v6 = *(self + 16);
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __61__NSSQLEntity_DerivedAttributesExtension__generateTriggerSQL__block_invoke;
       v7[3] = &unk_1E6EC48B8;
-      v7[4] = a1;
+      v7[4] = self;
       [v6 enumerateKeysAndObjectsUsingBlock:v7];
       [v2 drain];
     }
   }
 }
 
-- (NSSQLEntity_DerivedAttributesExtension)initWithEntity:(id)a3
+- (NSSQLEntity_DerivedAttributesExtension)initWithEntity:(id)entity
 {
   v8.receiver = self;
   v8.super_class = NSSQLEntity_DerivedAttributesExtension;
@@ -60,7 +60,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_entity = a3;
+    v4->_entity = entity;
     memset(&v7, 0, 24);
     *&v7.copyDescription = *(MEMORY[0x1E695E9D8] + 24);
     v7.hash = *(MEMORY[0x1E695E9D8] + 40);

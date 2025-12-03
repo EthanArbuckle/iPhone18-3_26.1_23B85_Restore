@@ -1,33 +1,33 @@
 @interface VSTwoFactorEntryAppDocumentController
-- (BOOL)_updateTwoFactorEntryViewModel:(id)a3 withTemplate:(id)a4 error:(id *)a5;
-- (BOOL)_updateViewModel:(id)a3 error:(id *)a4;
+- (BOOL)_updateTwoFactorEntryViewModel:(id)model withTemplate:(id)template error:(id *)error;
+- (BOOL)_updateViewModel:(id)model error:(id *)error;
 - (id)_newViewModel;
-- (void)_startObservingViewModel:(id)a3;
-- (void)_stopObservingViewModel:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)twoFactorEntryViewModel:(id)a3 didPressButtonAtIndex:(unint64_t)a4;
+- (void)_startObservingViewModel:(id)model;
+- (void)_stopObservingViewModel:(id)model;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)twoFactorEntryViewModel:(id)model didPressButtonAtIndex:(unint64_t)index;
 @end
 
 @implementation VSTwoFactorEntryAppDocumentController
 
-- (void)_startObservingViewModel:(id)a3
+- (void)_startObservingViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v6.receiver = self;
   v6.super_class = VSTwoFactorEntryAppDocumentController;
-  [(VSAppDocumentController *)&v6 _startObservingViewModel:v4];
-  v5 = [v4 twoFactorTextField];
-  [v5 addObserver:self forKeyPath:@"text" options:3 context:kVSKeyValueObservingContext_TwoFactorText];
+  [(VSAppDocumentController *)&v6 _startObservingViewModel:modelCopy];
+  twoFactorTextField = [modelCopy twoFactorTextField];
+  [twoFactorTextField addObserver:self forKeyPath:@"text" options:3 context:kVSKeyValueObservingContext_TwoFactorText];
 }
 
-- (void)_stopObservingViewModel:(id)a3
+- (void)_stopObservingViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v6.receiver = self;
   v6.super_class = VSTwoFactorEntryAppDocumentController;
-  [(VSAppDocumentController *)&v6 _stopObservingViewModel:v4];
-  v5 = [v4 twoFactorTextField];
-  [v5 removeObserver:self forKeyPath:@"text" context:kVSKeyValueObservingContext_TwoFactorText];
+  [(VSAppDocumentController *)&v6 _stopObservingViewModel:modelCopy];
+  twoFactorTextField = [modelCopy twoFactorTextField];
+  [twoFactorTextField removeObserver:self forKeyPath:@"text" context:kVSKeyValueObservingContext_TwoFactorText];
 }
 
 - (id)_newViewModel
@@ -37,44 +37,44 @@
   return v3;
 }
 
-- (BOOL)_updateViewModel:(id)a3 error:(id *)a4
+- (BOOL)_updateViewModel:(id)model error:(id *)error
 {
-  v6 = a3;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = VSTwoFactorEntryAppDocumentController;
-  [(VSAppDocumentController *)&v15 _updateViewModel:v6 error:a4];
-  v7 = v6;
-  v8 = [(VSAppDocumentController *)self appDocument];
-  v9 = [v8 error];
+  [(VSAppDocumentController *)&v15 _updateViewModel:modelCopy error:error];
+  v7 = modelCopy;
+  appDocument = [(VSAppDocumentController *)self appDocument];
+  error = [appDocument error];
 
-  if (v9)
+  if (error)
   {
     v10 = 0;
-    if (a4)
+    if (error)
     {
 LABEL_3:
-      v11 = v9;
-      *a4 = v9;
+      v11 = error;
+      *error = error;
     }
   }
 
   else
   {
-    v13 = [(VSAppDocumentController *)self templateElement];
-    if ([v13 vs_elementType] == 165)
+    templateElement = [(VSAppDocumentController *)self templateElement];
+    if ([templateElement vs_elementType] == 165)
     {
       v14 = 0;
-      v10 = [(VSTwoFactorEntryAppDocumentController *)self _updateTwoFactorEntryViewModel:v7 withTemplate:v13 error:&v14];
-      v9 = v14;
+      v10 = [(VSTwoFactorEntryAppDocumentController *)self _updateTwoFactorEntryViewModel:v7 withTemplate:templateElement error:&v14];
+      error = v14;
     }
 
     else
     {
-      v9 = VSPrivateError();
+      error = VSPrivateError();
       v10 = 0;
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -83,23 +83,23 @@ LABEL_3:
   return v10;
 }
 
-- (BOOL)_updateTwoFactorEntryViewModel:(id)a3 withTemplate:(id)a4 error:(id *)a5
+- (BOOL)_updateTwoFactorEntryViewModel:(id)model withTemplate:(id)template error:(id *)error
 {
   v99 = *MEMORY[0x277D85DE8];
-  v74 = a3;
+  modelCopy = model;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v6 = [a4 children];
-  v7 = [v6 countByEnumeratingWithState:&v88 objects:v98 count:16];
+  children = [template children];
+  v7 = [children countByEnumeratingWithState:&v88 objects:v98 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v89;
     v67 = *MEMORY[0x277CBE660];
     v68 = *v89;
-    v69 = v6;
+    v69 = children;
     do
     {
       v10 = 0;
@@ -108,16 +108,16 @@ LABEL_3:
       {
         if (*v89 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         v11 = *(*(&v88 + 1) + 8 * v10);
-        v12 = [v11 vs_elementType];
-        if (v12 != 160)
+        vs_elementType = [v11 vs_elementType];
+        if (vs_elementType != 160)
         {
-          if (v12 != 138)
+          if (vs_elementType != 138)
           {
-            if (v12 == 49)
+            if (vs_elementType == 49)
             {
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -129,7 +129,7 @@ LABEL_3:
               }
 
               v16 = [(VSAppDocumentController *)self _imageItemProviderWithImageElement:v11];
-              [v74 setLogoProvider:v16];
+              [modelCopy setLogoProvider:v16];
               goto LABEL_59;
             }
 
@@ -146,20 +146,20 @@ LABEL_3:
           }
 
           v16 = v11;
-          v20 = [v16 elementName];
-          if ([v20 isEqual:@"title"])
+          elementName = [v16 elementName];
+          if ([elementName isEqual:@"title"])
           {
-            v21 = [v16 text];
-            v22 = [v21 string];
-            [v74 setHeaderText:v22];
+            text = [v16 text];
+            string = [text string];
+            [modelCopy setHeaderText:string];
             goto LABEL_34;
           }
 
-          if ([v20 isEqual:@"description"])
+          if ([elementName isEqual:@"description"])
           {
-            v21 = [v16 text];
-            v22 = [v21 string];
-            [v74 setMessage:v22];
+            text = [v16 text];
+            string = [text string];
+            [modelCopy setMessage:string];
 LABEL_34:
           }
 
@@ -192,20 +192,20 @@ LABEL_34:
             }
 
             v28 = *(*(&v84 + 1) + 8 * i);
-            v29 = [v28 attributes];
-            v30 = [v29 objectForKey:@"label"];
+            attributes = [v28 attributes];
+            v30 = [attributes objectForKey:@"label"];
 
-            v31 = [v28 attributes];
-            v32 = [v31 objectForKey:@"length"];
+            attributes2 = [v28 attributes];
+            v32 = [attributes2 objectForKey:@"length"];
 
-            v33 = [v28 attributes];
-            v34 = [v33 objectForKey:@"type"];
+            attributes3 = [v28 attributes];
+            v34 = [attributes3 objectForKey:@"type"];
 
-            v35 = [v28 attributes];
-            v36 = [v35 objectForKey:@"autocapitalize"];
+            attributes4 = [v28 attributes];
+            v36 = [attributes4 objectForKey:@"autocapitalize"];
 
-            v37 = [v28 attributes];
-            v38 = [v37 objectForKey:@"autoshowkeyboard"];
+            attributes5 = [v28 attributes];
+            v38 = [attributes5 objectForKey:@"autoshowkeyboard"];
 
             if (v32 && [v32 integerValue] > 0)
             {
@@ -259,7 +259,7 @@ LABEL_52:
                   [(VSTwoFactorEntryTextField *)v42 setLabel:v30];
                   if ([v32 integerValue] < 9)
                   {
-                    v44 = [v32 integerValue];
+                    integerValue = [v32 integerValue];
                   }
 
                   else
@@ -267,19 +267,19 @@ LABEL_52:
                     v43 = VSErrorLogObject();
                     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
                     {
-                      v46 = [v32 integerValue];
+                      integerValue2 = [v32 integerValue];
                       *buf = 134218240;
-                      v94 = v46;
+                      v94 = integerValue2;
                       v95 = 2048;
                       v96 = 8;
                       _os_log_error_impl(&dword_270DD4000, v43, OS_LOG_TYPE_ERROR, "Attempted to use TFA with %ld digits, limit is %ld", buf, 0x16u);
                     }
 
-                    v44 = 8;
+                    integerValue = 8;
                   }
 
-                  [(VSTwoFactorEntryTextField *)v42 setExpectedLength:v44];
-                  [v74 setTwoFactorTextField:v42];
+                  [(VSTwoFactorEntryTextField *)v42 setExpectedLength:integerValue];
+                  [modelCopy setTwoFactorTextField:v42];
 
                   goto LABEL_58;
                 }
@@ -355,7 +355,7 @@ LABEL_50:
 LABEL_58:
 
         v9 = v68;
-        v6 = v69;
+        children = v69;
         v8 = v71;
         v10 = v73;
 LABEL_59:
@@ -365,7 +365,7 @@ LABEL_60:
       }
 
       while (v10 != v8);
-      v47 = [v6 countByEnumeratingWithState:&v88 objects:v98 count:16];
+      v47 = [children countByEnumeratingWithState:&v88 objects:v98 count:16];
       v8 = v47;
     }
 
@@ -377,8 +377,8 @@ LABEL_60:
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v48 = [(VSAppDocumentController *)self filteredButtonLockupElements];
-  v49 = [v48 countByEnumeratingWithState:&v78 objects:v92 count:16];
+  filteredButtonLockupElements = [(VSAppDocumentController *)self filteredButtonLockupElements];
+  v49 = [filteredButtonLockupElements countByEnumeratingWithState:&v78 objects:v92 count:16];
   if (v49)
   {
     v50 = v49;
@@ -390,27 +390,27 @@ LABEL_60:
       {
         if (*v79 != v51)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(filteredButtonLockupElements);
         }
 
         v53 = *(*(&v78 + 1) + 8 * j);
         v54 = [v53 vs_itemElementsOfType:138];
-        v55 = [v54 firstObject];
+        firstObject = [v54 firstObject];
 
-        if (v55)
+        if (firstObject)
         {
-          v56 = [v55 text];
-          v57 = [v56 string];
+          text2 = [firstObject text];
+          string2 = [text2 string];
 
           v58 = objc_alloc_init(VSTwoFactorEntryButton);
-          if (!v57)
+          if (!string2)
           {
             [MEMORY[0x277CBEAD8] raise:v76 format:@"The buttonText parameter must not be nil."];
           }
 
-          [(VSTwoFactorEntryButton *)v58 setText:v57];
-          v59 = [v53 attributes];
-          v60 = [v59 objectForKey:@"type"];
+          [(VSTwoFactorEntryButton *)v58 setText:string2];
+          attributes6 = [v53 attributes];
+          v60 = [attributes6 objectForKey:@"type"];
 
           if (v60)
           {
@@ -421,16 +421,16 @@ LABEL_60:
         }
       }
 
-      v50 = [v48 countByEnumeratingWithState:&v78 objects:v92 count:16];
+      v50 = [filteredButtonLockupElements countByEnumeratingWithState:&v78 objects:v92 count:16];
     }
 
     while (v50);
   }
 
-  [v74 setButtons:v77];
-  v61 = [v74 twoFactorTextField];
+  [modelCopy setButtons:v77];
+  twoFactorTextField = [modelCopy twoFactorTextField];
 
-  if (v61)
+  if (twoFactorTextField)
   {
     v62 = 0;
   }
@@ -440,22 +440,22 @@ LABEL_60:
     v62 = VSPrivateError();
   }
 
-  if (*a5)
+  if (*error)
   {
     v63 = v62;
-    *a5 = v62;
+    *error = v62;
   }
 
   v64 = *MEMORY[0x277D85DE8];
   return v62 == 0;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  if (kVSKeyValueObservingContext_TwoFactorText == a6)
+  objectCopy = object;
+  if (kVSKeyValueObservingContext_TwoFactorText == context)
   {
-    v12 = a5;
+    changeCopy = change;
     v13 = VSDefaultLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -464,29 +464,29 @@ LABEL_60:
     }
 
     v14 = *MEMORY[0x277CCA2F0];
-    v15 = v10;
-    v11 = [v12 objectForKey:v14];
+    v15 = objectCopy;
+    changeCopy2 = [changeCopy objectForKey:v14];
 
-    v16 = [v15 associatedTextFieldElement];
+    associatedTextFieldElement = [v15 associatedTextFieldElement];
 
-    v17 = [v16 keyboard];
-    [v17 setText:v11];
+    keyboard = [associatedTextFieldElement keyboard];
+    [keyboard setText:changeCopy2];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = VSTwoFactorEntryAppDocumentController;
-    v11 = a5;
-    [(VSAppDocumentController *)&v18 observeValueForKeyPath:a3 ofObject:v10 change:v11 context:a6];
+    changeCopy2 = change;
+    [(VSAppDocumentController *)&v18 observeValueForKeyPath:path ofObject:objectCopy change:changeCopy2 context:context];
   }
 }
 
-- (void)twoFactorEntryViewModel:(id)a3 didPressButtonAtIndex:(unint64_t)a4
+- (void)twoFactorEntryViewModel:(id)model didPressButtonAtIndex:(unint64_t)index
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = [(VSAppDocumentController *)self filteredButtonLockupElements];
-  v6 = [v5 objectAtIndex:a4];
+  filteredButtonLockupElements = [(VSAppDocumentController *)self filteredButtonLockupElements];
+  v6 = [filteredButtonLockupElements objectAtIndex:index];
 
   if (v6)
   {
@@ -506,7 +506,7 @@ LABEL_60:
     v8 = VSErrorLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [VSTwoFactorEntryAppDocumentController twoFactorEntryViewModel:a4 didPressButtonAtIndex:v8];
+      [VSTwoFactorEntryAppDocumentController twoFactorEntryViewModel:index didPressButtonAtIndex:v8];
     }
   }
 

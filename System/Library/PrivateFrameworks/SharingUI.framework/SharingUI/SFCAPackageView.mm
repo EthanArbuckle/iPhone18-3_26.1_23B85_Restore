@@ -2,37 +2,37 @@
 - (BOOL)isInitialState;
 - (CALayer)packageRootLayer;
 - (NSString)stateName;
-- (SFCAPackageView)initWithCoder:(id)a3;
-- (SFCAPackageView)initWithFrame:(CGRect)a3;
-- (id)_getStateWithName:(id)a3;
-- (id)_newStateControllerWithSuperlayer:(id)a3;
+- (SFCAPackageView)initWithCoder:(id)coder;
+- (SFCAPackageView)initWithFrame:(CGRect)frame;
+- (id)_getStateWithName:(id)name;
+- (id)_newStateControllerWithSuperlayer:(id)superlayer;
 - (unint64_t)statesCount;
 - (void)_changeAppearance;
 - (void)_stcaPackageViewCommonInit;
-- (void)animateToInitialStateWithCompletionHandler:(id)a3;
-- (void)animateToStateName:(id)a3 completionHandler:(id)a4;
+- (void)animateToInitialStateWithCompletionHandler:(id)handler;
+- (void)animateToStateName:(id)name completionHandler:(id)handler;
 - (void)setInitialState;
-- (void)setStateName:(id)a3;
-- (void)stateController:(id)a3 transitionDidStop:(id)a4 completed:(BOOL)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setStateName:(id)name;
+- (void)stateController:(id)controller transitionDidStop:(id)stop completed:(BOOL)completed;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SFCAPackageView
 
-- (SFCAPackageView)initWithFrame:(CGRect)a3
+- (SFCAPackageView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SFCAPackageView;
-  v3 = [(SFCAPackageView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFCAPackageView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SFCAPackageView *)v3 _stcaPackageViewCommonInit];
   return v3;
 }
 
-- (SFCAPackageView)initWithCoder:(id)a3
+- (SFCAPackageView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SFCAPackageView;
-  v3 = [(SFCAPackageView *)&v5 initWithCoder:a3];
+  v3 = [(SFCAPackageView *)&v5 initWithCoder:coder];
   [(SFCAPackageView *)v3 _stcaPackageViewCommonInit];
   return v3;
 }
@@ -43,35 +43,35 @@
   completionHandlers = self->_completionHandlers;
   self->_completionHandlers = v3;
 
-  v5 = [(SFCAPackageView *)self layer];
-  v6 = [(SFCAPackageView *)self _newStateControllerWithSuperlayer:v5];
+  layer = [(SFCAPackageView *)self layer];
+  v6 = [(SFCAPackageView *)self _newStateControllerWithSuperlayer:layer];
   stateController = self->_stateController;
   self->_stateController = v6;
 
   [(SFCAPackageView *)self setUserInteractionEnabled:0];
 }
 
-- (id)_newStateControllerWithSuperlayer:(id)a3
+- (id)_newStateControllerWithSuperlayer:(id)superlayer
 {
-  v4 = a3;
-  v5 = [(SFCAPackageView *)self makeCAPackage];
-  v6 = [v5 rootLayer];
-  [v4 addSublayer:v6];
-  [v4 setGeometryFlipped:{objc_msgSend(v5, "isGeometryFlipped")}];
+  superlayerCopy = superlayer;
+  makeCAPackage = [(SFCAPackageView *)self makeCAPackage];
+  rootLayer = [makeCAPackage rootLayer];
+  [superlayerCopy addSublayer:rootLayer];
+  [superlayerCopy setGeometryFlipped:{objc_msgSend(makeCAPackage, "isGeometryFlipped")}];
 
-  v7 = [objc_alloc(MEMORY[0x1E69794D0]) initWithLayer:v6];
+  v7 = [objc_alloc(MEMORY[0x1E69794D0]) initWithLayer:rootLayer];
   [v7 setDelegate:self];
 
   return v7;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8.receiver = self;
   v8.super_class = SFCAPackageView;
-  [(SFCAPackageView *)&v8 traitCollectionDidChange:v4];
-  if (!v4 || (v5 = [v4 userInterfaceStyle], -[SFCAPackageView traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceStyle"), v6, v5 != v7))
+  [(SFCAPackageView *)&v8 traitCollectionDidChange:changeCopy];
+  if (!changeCopy || (v5 = [changeCopy userInterfaceStyle], -[SFCAPackageView traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceStyle"), v6, v5 != v7))
   {
     [(SFCAPackageView *)self _changeAppearance];
   }
@@ -79,47 +79,47 @@
 
 - (void)_changeAppearance
 {
-  v8 = [(SFCAPackageView *)self packageRootLayer];
-  v3 = [(SFCAPackageView *)self stateController];
-  v4 = [v3 stateOfLayer:v8];
-  v5 = [v4 name];
+  packageRootLayer = [(SFCAPackageView *)self packageRootLayer];
+  stateController = [(SFCAPackageView *)self stateController];
+  v4 = [stateController stateOfLayer:packageRootLayer];
+  name = [v4 name];
 
-  [v8 removeFromSuperlayer];
-  v6 = [(SFCAPackageView *)self layer];
-  v7 = [(SFCAPackageView *)self _newStateControllerWithSuperlayer:v6];
+  [packageRootLayer removeFromSuperlayer];
+  layer = [(SFCAPackageView *)self layer];
+  v7 = [(SFCAPackageView *)self _newStateControllerWithSuperlayer:layer];
   [(SFCAPackageView *)self setStateController:v7];
 
-  if (v5)
+  if (name)
   {
-    [(SFCAPackageView *)self setStateName:v5];
+    [(SFCAPackageView *)self setStateName:name];
   }
 }
 
 - (CALayer)packageRootLayer
 {
-  v2 = [(SFCAPackageView *)self stateController];
-  v3 = [v2 layer];
+  stateController = [(SFCAPackageView *)self stateController];
+  layer = [stateController layer];
 
-  return v3;
+  return layer;
 }
 
 - (unint64_t)statesCount
 {
-  v2 = [(SFCAPackageView *)self packageRootLayer];
-  v3 = [v2 states];
-  v4 = [v3 count];
+  packageRootLayer = [(SFCAPackageView *)self packageRootLayer];
+  states = [packageRootLayer states];
+  v4 = [states count];
 
   return v4;
 }
 
 - (BOOL)isInitialState
 {
-  v3 = [(SFCAPackageView *)self packageRootLayer];
-  v4 = [(SFCAPackageView *)self stateController];
-  v5 = [v4 stateOfLayer:v3];
+  packageRootLayer = [(SFCAPackageView *)self packageRootLayer];
+  stateController = [(SFCAPackageView *)self stateController];
+  v5 = [stateController stateOfLayer:packageRootLayer];
 
-  v6 = [v3 states];
-  v7 = [v6 indexOfObjectPassingTest:&__block_literal_global_3];
+  states = [packageRootLayer states];
+  v7 = [states indexOfObjectPassingTest:&__block_literal_global_3];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -127,7 +127,7 @@
 
   else
   {
-    v8 = [v6 objectAtIndexedSubscript:v7];
+    v8 = [states objectAtIndexedSubscript:v7];
   }
 
   if (v5 == v8)
@@ -145,15 +145,15 @@
 
 - (void)setInitialState
 {
-  v4 = [(SFCAPackageView *)self stateController];
-  v3 = [(SFCAPackageView *)self packageRootLayer];
-  [v4 setInitialStatesOfLayer:v3];
+  stateController = [(SFCAPackageView *)self stateController];
+  packageRootLayer = [(SFCAPackageView *)self packageRootLayer];
+  [stateController setInitialStatesOfLayer:packageRootLayer];
 }
 
-- (void)animateToInitialStateWithCompletionHandler:(id)a3
+- (void)animateToInitialStateWithCompletionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SFCAPackageView *)self statesCount])
   {
     if ([(SFCAPackageView *)self isInitialState])
@@ -164,38 +164,38 @@
         [SFCAPackageView animateToInitialStateWithCompletionHandler:];
       }
 
-      v4[2](v4);
+      handlerCopy[2](handlerCopy);
     }
 
     else
     {
-      v10 = [(SFCAPackageView *)self completionHandlers];
-      v11 = _Block_copy(v4);
-      [v10 addObject:v11];
+      completionHandlers = [(SFCAPackageView *)self completionHandlers];
+      v11 = _Block_copy(handlerCopy);
+      [completionHandlers addObject:v11];
 
       v12 = framework_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(SFCAPackageView *)self stateName];
+        stateName = [(SFCAPackageView *)self stateName];
         *buf = 138412546;
-        v20 = self;
+        selfCopy = self;
         v21 = 2112;
-        v22 = v13;
+        v22 = stateName;
         _os_log_impl(&dword_1B9E4B000, v12, OS_LOG_TYPE_DEFAULT, "%@ starting transition(s) from state %@ to initial state", buf, 0x16u);
       }
 
-      v14 = [(SFCAPackageView *)self stateController];
-      v15 = [(SFCAPackageView *)self packageRootLayer];
+      stateController = [(SFCAPackageView *)self stateController];
+      packageRootLayer = [(SFCAPackageView *)self packageRootLayer];
       LODWORD(v16) = 1.0;
-      [v14 setInitialStatesOfLayer:v15 transitionSpeed:v16];
+      [stateController setInitialStatesOfLayer:packageRootLayer transitionSpeed:v16];
     }
   }
 
   else
   {
     v6 = CACurrentMediaTime();
-    v7 = [(SFCAPackageView *)self packageRootLayer];
-    [v7 setBeginTime:v6];
+    packageRootLayer2 = [(SFCAPackageView *)self packageRootLayer];
+    [packageRootLayer2 setBeginTime:v6];
 
     [(SFCAPackageView *)self duration];
     v9 = dispatch_time(0, (v8 * 1000000000.0));
@@ -203,40 +203,40 @@
     block[1] = 3221225472;
     block[2] = __62__SFCAPackageView_animateToInitialStateWithCompletionHandler___block_invoke;
     block[3] = &unk_1E7EE3CE0;
-    v18 = v4;
+    v18 = handlerCopy;
     dispatch_after(v9, MEMORY[0x1E69E96A0], block);
   }
 }
 
 - (NSString)stateName
 {
-  v3 = [(SFCAPackageView *)self stateController];
-  v4 = [(SFCAPackageView *)self packageRootLayer];
-  v5 = [v3 stateOfLayer:v4];
-  v6 = [v5 name];
+  stateController = [(SFCAPackageView *)self stateController];
+  packageRootLayer = [(SFCAPackageView *)self packageRootLayer];
+  v5 = [stateController stateOfLayer:packageRootLayer];
+  name = [v5 name];
 
-  return v6;
+  return name;
 }
 
-- (void)setStateName:(id)a3
+- (void)setStateName:(id)name
 {
-  v4 = a3;
-  v7 = [(SFCAPackageView *)self stateController];
-  v5 = [(SFCAPackageView *)self _getStateWithName:v4];
+  nameCopy = name;
+  stateController = [(SFCAPackageView *)self stateController];
+  v5 = [(SFCAPackageView *)self _getStateWithName:nameCopy];
 
-  v6 = [(SFCAPackageView *)self packageRootLayer];
-  [v7 setState:v5 ofLayer:v6];
+  packageRootLayer = [(SFCAPackageView *)self packageRootLayer];
+  [stateController setState:v5 ofLayer:packageRootLayer];
 }
 
-- (void)animateToStateName:(id)a3 completionHandler:(id)a4
+- (void)animateToStateName:(id)name completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SFCAPackageView *)self stateController];
-  v9 = [(SFCAPackageView *)self packageRootLayer];
-  v10 = [v8 stateOfLayer:v9];
-  v11 = [(SFCAPackageView *)self _getStateWithName:v6];
+  nameCopy = name;
+  handlerCopy = handler;
+  stateController = [(SFCAPackageView *)self stateController];
+  packageRootLayer = [(SFCAPackageView *)self packageRootLayer];
+  v10 = [stateController stateOfLayer:packageRootLayer];
+  v11 = [(SFCAPackageView *)self _getStateWithName:nameCopy];
   if (v10 == v11 || ([v10 isEqual:v11] & 1) != 0)
   {
     v12 = framework_log();
@@ -245,39 +245,39 @@
       [SFCAPackageView animateToStateName:completionHandler:];
     }
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
-    v13 = [(SFCAPackageView *)self completionHandlers];
-    v14 = _Block_copy(v7);
-    [v13 addObject:v14];
+    completionHandlers = [(SFCAPackageView *)self completionHandlers];
+    v14 = _Block_copy(handlerCopy);
+    [completionHandlers addObject:v14];
 
     v15 = framework_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v10 name];
+      name = [v10 name];
       v19 = 138412802;
-      v20 = self;
+      selfCopy = self;
       v21 = 2112;
-      v22 = v16;
+      v22 = name;
       v23 = 2112;
-      v24 = v6;
+      v24 = nameCopy;
       _os_log_impl(&dword_1B9E4B000, v15, OS_LOG_TYPE_DEFAULT, "%@ starting transition(s) from state %@ to state %@", &v19, 0x20u);
     }
 
-    v17 = [(SFCAPackageView *)self packageRootLayer];
+    packageRootLayer2 = [(SFCAPackageView *)self packageRootLayer];
     LODWORD(v18) = 1.0;
-    [v8 setState:v11 ofLayer:v17 transitionSpeed:v18];
+    [stateController setState:v11 ofLayer:packageRootLayer2 transitionSpeed:v18];
   }
 }
 
-- (id)_getStateWithName:(id)a3
+- (id)_getStateWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(SFCAPackageView *)self packageRootLayer];
-  v6 = [v5 stateWithName:v4];
+  nameCopy = name;
+  packageRootLayer = [(SFCAPackageView *)self packageRootLayer];
+  v6 = [packageRootLayer stateWithName:nameCopy];
 
   if (!v6)
   {
@@ -291,33 +291,33 @@
   return v6;
 }
 
-- (void)stateController:(id)a3 transitionDidStop:(id)a4 completed:(BOOL)a5
+- (void)stateController:(id)controller transitionDidStop:(id)stop completed:(BOOL)completed
 {
-  v5 = a5;
+  completedCopy = completed;
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  stopCopy = stop;
   v8 = framework_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 fromState];
-    v10 = [v7 toState];
+    fromState = [stopCopy fromState];
+    toState = [stopCopy toState];
     *buf = 138413058;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
-    v24 = v9;
+    v24 = fromState;
     v25 = 2112;
-    v26 = v10;
+    v26 = toState;
     v27 = 1024;
-    v28 = v5;
+    v28 = completedCopy;
     _os_log_impl(&dword_1B9E4B000, v8, OS_LOG_TYPE_DEFAULT, "%@ stopped transition <fromState=%@ toState=%@> completed:%d", buf, 0x26u);
   }
 
-  v11 = [(SFCAPackageView *)self completionHandlers];
+  completionHandlers = [(SFCAPackageView *)self completionHandlers];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v12 = [completionHandlers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -329,20 +329,20 @@
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(completionHandlers);
         }
 
         (*(*(*(&v16 + 1) + 8 * v15++) + 16))();
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [completionHandlers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
   }
 
-  [v11 removeAllObjects];
+  [completionHandlers removeAllObjects];
 }
 
 - (void)animateToInitialStateWithCompletionHandler:.cold.1()

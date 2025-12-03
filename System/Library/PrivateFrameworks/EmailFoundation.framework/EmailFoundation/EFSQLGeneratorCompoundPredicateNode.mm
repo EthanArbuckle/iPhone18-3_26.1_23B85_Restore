@@ -1,5 +1,5 @@
 @interface EFSQLGeneratorCompoundPredicateNode
-- (EFSQLGeneratorCompoundPredicateNode)initWithPredicateType:(unint64_t)a3 childPredicates:(id)a4;
+- (EFSQLGeneratorCompoundPredicateNode)initWithPredicateType:(unint64_t)type childPredicates:(id)predicates;
 - (EFSQLValueExpressable)sqlExpressable;
 @end
 
@@ -13,8 +13,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(EFSQLGeneratorCompoundPredicateNode *)self childPredicates];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  childPredicates = [(EFSQLGeneratorCompoundPredicateNode *)self childPredicates];
+  v5 = [childPredicates countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -24,14 +24,14 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childPredicates);
         }
 
-        v8 = [*(*(&v15 + 1) + 8 * i) sqlExpressable];
-        [v3 addObject:v8];
+        sqlExpressable = [*(*(&v15 + 1) + 8 * i) sqlExpressable];
+        [v3 addObject:sqlExpressable];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [childPredicates countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -70,17 +70,17 @@ LABEL_13:
   return v10;
 }
 
-- (EFSQLGeneratorCompoundPredicateNode)initWithPredicateType:(unint64_t)a3 childPredicates:(id)a4
+- (EFSQLGeneratorCompoundPredicateNode)initWithPredicateType:(unint64_t)type childPredicates:(id)predicates
 {
-  v7 = a4;
+  predicatesCopy = predicates;
   v11.receiver = self;
   v11.super_class = EFSQLGeneratorCompoundPredicateNode;
   v8 = [(EFSQLGeneratorCompoundPredicateNode *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_predicateType = a3;
-    objc_storeStrong(&v8->_childPredicates, a4);
+    v8->_predicateType = type;
+    objc_storeStrong(&v8->_childPredicates, predicates);
   }
 
   return v9;

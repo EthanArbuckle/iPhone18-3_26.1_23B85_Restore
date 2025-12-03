@@ -1,16 +1,16 @@
 @interface PKMathVariable
-+ (id)variablesForTokens:(void *)a3 item:;
++ (id)variablesForTokens:(void *)tokens item:;
 @end
 
 @implementation PKMathVariable
 
-+ (id)variablesForTokens:(void *)a3 item:
++ (id)variablesForTokens:(void *)tokens item:
 {
   v36 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v5 = a3;
+  tokensCopy = tokens;
   objc_opt_self();
-  v29 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -34,12 +34,12 @@
         v11 = *(*(&v31 + 1) + 8 * v10);
         if ([v11 type] == 1)
         {
-          v12 = [v5 expression];
-          v13 = [v11 characterRange];
-          if (v13 + v14 <= [v12 length])
+          expression = [tokensCopy expression];
+          characterRange = [v11 characterRange];
+          if (characterRange + v14 <= [expression length])
           {
-            v16 = [v11 characterRange];
-            v15 = [v12 substringWithRange:{v16, v17}];
+            characterRange2 = [v11 characterRange];
+            v15 = [expression substringWithRange:{characterRange2, v17}];
             v18 = objc_opt_new();
             [v15 doubleValue];
             if (v18)
@@ -47,11 +47,11 @@
               *(v18 + 24) = v19;
             }
 
-            v20 = [MEMORY[0x1E696AFB0] UUID];
-            v21 = v20;
+            uUID = [MEMORY[0x1E696AFB0] UUID];
+            v21 = uUID;
             if (v18)
             {
-              objc_storeStrong((v18 + 8), v20);
+              objc_storeStrong((v18 + 8), uUID);
 
               *(v18 + 40) = [v11 characterRange];
               *(v18 + 48) = v22;
@@ -63,14 +63,14 @@
               [v11 characterRange];
             }
 
-            v23 = [v11 characterRange];
-            v25 = [(PKMathRecognitionItem *)v5 _strokeIndexesForCharacterRange:v23, v24];
+            characterRange3 = [v11 characterRange];
+            v25 = [(PKMathRecognitionItem *)tokensCopy _strokeIndexesForCharacterRange:characterRange3, v24];
             if (v18)
             {
               objc_storeStrong((v18 + 32), v25);
             }
 
-            [v29 addObject:v18];
+            [array addObject:v18];
           }
 
           else
@@ -95,7 +95,7 @@
     while (v26);
   }
 
-  v27 = [v29 copy];
+  v27 = [array copy];
 
   return v27;
 }

@@ -1,33 +1,33 @@
 @interface TransitDirectionsListViewController
 - (GEOComposedRoute)route;
-- (NSDirectionalEdgeInsets)_separatorInsetsForIndexPath:(id)a3;
+- (NSDirectionalEdgeInsets)_separatorInsetsForIndexPath:(id)path;
 - (TransitDirectionsListViewController)init;
-- (TransitDirectionsListViewController)initWithRoute:(id)a3 forNavigation:(BOOL)a4;
+- (TransitDirectionsListViewController)initWithRoute:(id)route forNavigation:(BOOL)navigation;
 - (UIScrollView)scrollView;
 - (UIScrollViewDelegate)scrollViewDelegate;
 - (double)_heightOfFinalRow;
 - (void)_willBecomeCurrent;
 - (void)loadView;
-- (void)setRoute:(id)a3;
-- (void)setScrollViewDelegate:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setRoute:(id)route;
+- (void)setScrollViewDelegate:(id)delegate;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TransitDirectionsListViewController
 
 - (double)_heightOfFinalRow
 {
-  v2 = [(TransitDirectionsListView *)self->_listView allStepViews];
-  v3 = [v2 lastObject];
+  allStepViews = [(TransitDirectionsListView *)self->_listView allStepViews];
+  lastObject = [allStepViews lastObject];
 
-  [v3 bounds];
+  [lastObject bounds];
   Height = 0.0;
   if (CGRectGetHeight(v6) >= 0.0)
   {
-    [v3 bounds];
+    [lastObject bounds];
     Height = CGRectGetHeight(v7);
   }
 
@@ -36,38 +36,38 @@
 
 - (void)_willBecomeCurrent
 {
-  v2 = [(TransitDirectionsListViewController *)self dataSource];
-  [v2 collapseAllItems];
+  dataSource = [(TransitDirectionsListViewController *)self dataSource];
+  [dataSource collapseAllItems];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = TransitDirectionsListViewController;
-  [(TransitDirectionsListViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(TransitDirectionsListViewController *)self dataSource];
-  [v4 setActive:0];
+  [(TransitDirectionsListViewController *)&v5 viewDidDisappear:disappear];
+  dataSource = [(TransitDirectionsListViewController *)self dataSource];
+  [dataSource setActive:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = TransitDirectionsListViewController;
-  [(TransitDirectionsListViewController *)&v6 viewWillAppear:a3];
-  v4 = [(TransitDirectionsListViewController *)self _shouldReloadForReferenceDateUpdates];
-  v5 = [(TransitDirectionsListViewController *)self dataSource];
-  [v5 setActive:v4];
+  [(TransitDirectionsListViewController *)&v6 viewWillAppear:appear];
+  _shouldReloadForReferenceDateUpdates = [(TransitDirectionsListViewController *)self _shouldReloadForReferenceDateUpdates];
+  dataSource = [(TransitDirectionsListViewController *)self dataSource];
+  [dataSource setActive:_shouldReloadForReferenceDateUpdates];
 }
 
-- (NSDirectionalEdgeInsets)_separatorInsetsForIndexPath:(id)a3
+- (NSDirectionalEdgeInsets)_separatorInsetsForIndexPath:(id)path
 {
   *&v12 = _UICollectionViewListLayoutSectionAutomaticDimension;
   *(&v12 + 1) = _UICollectionViewListLayoutSectionAutomaticDimension;
   *&v13 = _UICollectionViewListLayoutSectionAutomaticDimension;
   *(&v13 + 1) = _UICollectionViewListLayoutSectionAutomaticDimension;
-  v4 = a3;
-  v5 = [(TransitDirectionsListViewController *)self dataSource];
-  v6 = [v5 shouldShowSeparatorForItemAtIndexPath:v4 insets:&v12];
+  pathCopy = path;
+  dataSource = [(TransitDirectionsListViewController *)self dataSource];
+  v6 = [dataSource shouldShowSeparatorForItemAtIndexPath:pathCopy insets:&v12];
 
   if ((v6 & 1) == 0)
   {
@@ -87,11 +87,11 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = TransitDirectionsListViewController;
-  [(TransitDirectionsListViewController *)&v4 viewDidAppear:a3];
+  [(TransitDirectionsListViewController *)&v4 viewDidAppear:appear];
   [(TransitDirectionsListView *)self->_listView becomeFirstResponder];
 }
 
@@ -102,14 +102,14 @@
   [(TransitDirectionsListViewController *)&v7 viewDidLoad];
   [(TransitDirectionsListViewController *)self setViewRespectsSystemMinimumLayoutMargins:0];
   listView = self->_listView;
-  v4 = [(TransitDirectionsListViewController *)self dataSource];
-  [v4 setListView:listView];
+  dataSource = [(TransitDirectionsListViewController *)self dataSource];
+  [dataSource setListView:listView];
 
-  v5 = [(TransitDirectionsListViewController *)self dataSource];
-  [(TransitDirectionsListView *)self->_listView setListDelegate:v5];
+  dataSource2 = [(TransitDirectionsListViewController *)self dataSource];
+  [(TransitDirectionsListView *)self->_listView setListDelegate:dataSource2];
 
-  v6 = [(TransitDirectionsListViewController *)self dataSource];
-  [(TransitDirectionsListView *)self->_listView setDataSource:v6];
+  dataSource3 = [(TransitDirectionsListViewController *)self dataSource];
+  [(TransitDirectionsListView *)self->_listView setDataSource:dataSource3];
 }
 
 - (void)loadView
@@ -142,52 +142,52 @@
   return listView;
 }
 
-- (void)setScrollViewDelegate:(id)a3
+- (void)setScrollViewDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(TransitDirectionsListViewController *)self dataSource];
-  [v5 setScrollViewDelegate:v4];
+  delegateCopy = delegate;
+  dataSource = [(TransitDirectionsListViewController *)self dataSource];
+  [dataSource setScrollViewDelegate:delegateCopy];
 }
 
 - (UIScrollViewDelegate)scrollViewDelegate
 {
-  v2 = [(TransitDirectionsListViewController *)self dataSource];
-  v3 = [v2 scrollViewDelegate];
+  dataSource = [(TransitDirectionsListViewController *)self dataSource];
+  scrollViewDelegate = [dataSource scrollViewDelegate];
 
-  return v3;
+  return scrollViewDelegate;
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v6 = a3;
-  v4 = [(TransitDirectionsListViewController *)self route];
+  routeCopy = route;
+  route = [(TransitDirectionsListViewController *)self route];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = routeCopy;
+  if (route != routeCopy)
   {
-    [(TransitDirectionsStepsListDataSource *)self->_dataSource setRoute:v6];
-    v5 = v6;
+    [(TransitDirectionsStepsListDataSource *)self->_dataSource setRoute:routeCopy];
+    v5 = routeCopy;
   }
 }
 
 - (GEOComposedRoute)route
 {
-  v2 = [(TransitDirectionsListViewController *)self dataSource];
-  v3 = [v2 route];
+  dataSource = [(TransitDirectionsListViewController *)self dataSource];
+  route = [dataSource route];
 
-  return v3;
+  return route;
 }
 
-- (TransitDirectionsListViewController)initWithRoute:(id)a3 forNavigation:(BOOL)a4
+- (TransitDirectionsListViewController)initWithRoute:(id)route forNavigation:(BOOL)navigation
 {
-  v4 = a4;
-  v6 = a3;
+  navigationCopy = navigation;
+  routeCopy = route;
   v7 = [(TransitDirectionsListViewController *)self init];
   v8 = v7;
   if (v7)
   {
     dataSource = v7->_dataSource;
-    if (v4)
+    if (navigationCopy)
     {
       [(TransitDirectionsStepsListDataSource *)dataSource setEnableNavigationUpdates:1];
       [(TransitDirectionsStepsListDataSource *)v8->_dataSource setAllowStepSelection:1];
@@ -195,7 +195,7 @@
 
     else
     {
-      [(TransitDirectionsStepsListDataSource *)dataSource setRoute:v6];
+      [(TransitDirectionsStepsListDataSource *)dataSource setRoute:routeCopy];
     }
   }
 

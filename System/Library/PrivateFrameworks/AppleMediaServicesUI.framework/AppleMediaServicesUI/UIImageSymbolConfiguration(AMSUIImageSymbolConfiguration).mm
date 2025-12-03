@@ -13,8 +13,8 @@
   v5 = v4;
   if (v4 && [v4 count])
   {
-    v6 = [a1 ams_imageSymbolConfigurationStyleWithDictionary:v5];
-    v7 = [a1 ams_imageSymbolConfigurationTextStyleWithDictionary:v5];
+    v6 = [self ams_imageSymbolConfigurationStyleWithDictionary:v5];
+    v7 = [self ams_imageSymbolConfigurationTextStyleWithDictionary:v5];
     v8 = v7;
     if (v6)
     {
@@ -26,7 +26,7 @@
       v9 = v7;
     }
 
-    v11 = [a1 ams_imageSymbolConfigurationScaleWithDictionary:v5];
+    v11 = [self ams_imageSymbolConfigurationScaleWithDictionary:v5];
     v12 = v11;
     if (v9)
     {
@@ -200,21 +200,21 @@
 
   if ([v5 isEqualToString:@"monochrome"])
   {
-    v18 = [MEMORY[0x1E69DCAD8] configurationPreferringMonochrome];
+    configurationPreferringMonochrome = [MEMORY[0x1E69DCAD8] configurationPreferringMonochrome];
 LABEL_27:
-    v17 = v18;
+    v17 = configurationPreferringMonochrome;
     goto LABEL_28;
   }
 
   if ([v5 isEqualToString:@"multicolor"])
   {
-    v18 = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
+    configurationPreferringMonochrome = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
     goto LABEL_27;
   }
 
   if ([v5 isEqualToString:@"palette"] && objc_msgSend(v14, "count"))
   {
-    v18 = [MEMORY[0x1E69DCAD8] configurationWithPaletteColors:v14];
+    configurationPreferringMonochrome = [MEMORY[0x1E69DCAD8] configurationWithPaletteColors:v14];
     goto LABEL_27;
   }
 

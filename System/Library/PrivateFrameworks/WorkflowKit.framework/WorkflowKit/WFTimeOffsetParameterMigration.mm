@@ -30,14 +30,14 @@
         }
 
         v7 = *(*(&v35 + 1) + 8 * v6);
-        v8 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v9 = [v7 objectForKeyedSubscript:v8];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v9 = [v7 objectForKeyedSubscript:actionIdentifierKey];
         v10 = [v9 isEqualToString:@"is.workflow.actions.adjustdate"];
 
         if (v10)
         {
-          v11 = [(WFWorkflowMigration *)self actionParametersKey];
-          v12 = [v7 objectForKeyedSubscript:v11];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v12 = [v7 objectForKeyedSubscript:actionParametersKey];
 
           v13 = [v12 objectForKeyedSubscript:@"WFAdjustOffsetPicker"];
           v14 = [v13 objectForKey:@"Value"];
@@ -106,8 +106,8 @@
           v29 = [[WFQuantityParameterState alloc] initWithMagnitudeState:v28 unitString:v25];
 
           [v12 setObject:v15 forKeyedSubscript:@"WFAdjustOperation"];
-          v30 = [(WFQuantityParameterState *)v29 serializedRepresentation];
-          [v12 setObject:v30 forKeyedSubscript:@"WFDuration"];
+          serializedRepresentation = [(WFQuantityParameterState *)v29 serializedRepresentation];
+          [v12 setObject:serializedRepresentation forKeyedSubscript:@"WFDuration"];
 
           v5 = v32;
           v4 = v33;

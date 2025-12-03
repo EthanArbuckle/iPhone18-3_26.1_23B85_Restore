@@ -10,8 +10,8 @@
   v5 = a3;
   if ([v5 isFileURL])
   {
-    v6 = [v5 path];
-    a4 = [UIImage imageWithContentsOfFile:v6];
+    path = [v5 path];
+    a4 = [UIImage imageWithContentsOfFile:path];
   }
 
   else if (a4)

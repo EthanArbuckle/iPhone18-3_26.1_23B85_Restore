@@ -1,20 +1,20 @@
 @interface IOHIDQueueClass
 - (BOOL)setupAnalytics;
-- (IOHIDQueueClass)initWithDevice:(id)a3 port:(unsigned int)a4 source:(__CFRunLoopSource *)a5;
-- (int)addElement:(__IOHIDElement *)a3;
-- (int)containsElement:(__IOHIDElement *)a3 pValue:(char *)a4;
-- (int)copyNextValue:(__IOHIDValue *)a3;
-- (int)getAsyncEventSource:(const void *)a3;
-- (int)getDepth:(unsigned int *)a3;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
-- (int)removeElement:(__IOHIDElement *)a3;
-- (int)setDepth:(unsigned int)a3;
-- (int)setValueAvailableCallback:(void *)a3 context:(void *)a4;
+- (IOHIDQueueClass)initWithDevice:(id)device port:(unsigned int)port source:(__CFRunLoopSource *)source;
+- (int)addElement:(__IOHIDElement *)element;
+- (int)containsElement:(__IOHIDElement *)element pValue:(char *)value;
+- (int)copyNextValue:(__IOHIDValue *)value;
+- (int)getAsyncEventSource:(const void *)source;
+- (int)getDepth:(unsigned int *)depth;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
+- (int)removeElement:(__IOHIDElement *)element;
+- (int)setDepth:(unsigned int)depth;
+- (int)setValueAvailableCallback:(void *)callback context:(void *)context;
 - (int)start;
 - (int)stop;
 - (void)dealloc;
 - (void)mapMemory;
-- (void)queueCallback:(__CFMachPort *)a3 msg:(id *)a4 size:(int64_t)a5 info:(void *)a6;
+- (void)queueCallback:(__CFMachPort *)callback msg:(id *)msg size:(int64_t)size info:(void *)info;
 - (void)signalQueueEmpty;
 - (void)unmapMemory;
 - (void)updateUsageAnalytics;
@@ -73,9 +73,9 @@
   v10 = *MEMORY[0x29EDCA608];
 }
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v6 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v6 = CFUUIDCreateFromUUIDBytes(0, interface);
   v7 = CFUUIDGetConstantUUIDWithBytes(0, 0x2Eu, 0xC7u, 0x8Bu, 0xDBu, 0x9Fu, 0x4Eu, 0x11u, 0xDAu, 0xB6u, 0x5Cu, 0, 0xDu, 0x93u, 0x6Du, 6u, 0xD2u);
   if (!CFEqual(v6, v7))
   {
@@ -88,7 +88,7 @@
     goto LABEL_3;
   }
 
-  *a4 = &self->_queue;
+  *outInterface = &self->_queue;
   CFRetain(self);
   v8 = 0;
   if (v6)
@@ -100,51 +100,51 @@ LABEL_3:
   return v8;
 }
 
-- (int)getAsyncEventSource:(const void *)a3
+- (int)getAsyncEventSource:(const void *)source
 {
-  if (!a3)
+  if (!source)
   {
     return -536870206;
   }
 
   os_unfair_lock_lock(&self->_queueLock);
-  *a3 = self->_runLoopSource;
+  *source = self->_runLoopSource;
   os_unfair_lock_unlock(&self->_queueLock);
   return 0;
 }
 
-- (int)setDepth:(unsigned int)a3
+- (int)setDepth:(unsigned int)depth
 {
   os_unfair_lock_lock(&self->_queueLock);
-  self->_depth = a3;
+  self->_depth = depth;
   os_unfair_lock_unlock(&self->_queueLock);
   return 0;
 }
 
-- (int)getDepth:(unsigned int *)a3
+- (int)getDepth:(unsigned int *)depth
 {
-  if (!a3)
+  if (!depth)
   {
     return -536870206;
   }
 
   os_unfair_lock_lock(&self->_queueLock);
-  *a3 = self->_depth;
+  *depth = self->_depth;
   os_unfair_lock_unlock(&self->_queueLock);
   return 0;
 }
 
-- (int)addElement:(__IOHIDElement *)a3
+- (int)addElement:(__IOHIDElement *)element
 {
   input[3] = *MEMORY[0x29EDCA608];
   input[2] = 0;
   outputCnt = 1;
-  if (a3)
+  if (element)
   {
     queueToken = self->_queueToken;
     output = 0xAAAAAAAAAAAAAAAALL;
     input[0] = queueToken;
-    input[1] = IOHIDElementGetCookie(a3);
+    input[1] = IOHIDElementGetCookie(element);
     WeakRetained = objc_loadWeakRetained(&self->_device);
     v8 = objc_msgSend_connect(WeakRetained, v6, v7);
     v9 = IOConnectCallScalarMethod(v8, 5u, input, 3u, &output, &outputCnt);
@@ -161,16 +161,16 @@ LABEL_3:
   return v9;
 }
 
-- (int)removeElement:(__IOHIDElement *)a3
+- (int)removeElement:(__IOHIDElement *)element
 {
   input[2] = *MEMORY[0x29EDCA608];
   outputCnt = 1;
-  if (a3)
+  if (element)
   {
     queueToken = self->_queueToken;
     output = 0xAAAAAAAAAAAAAAAALL;
     input[0] = queueToken;
-    input[1] = IOHIDElementGetCookie(a3);
+    input[1] = IOHIDElementGetCookie(element);
     WeakRetained = objc_loadWeakRetained(&self->_device);
     v8 = objc_msgSend_connect(WeakRetained, v6, v7);
     v9 = IOConnectCallScalarMethod(v8, 6u, input, 2u, &output, &outputCnt);
@@ -187,22 +187,22 @@ LABEL_3:
   return v9;
 }
 
-- (int)containsElement:(__IOHIDElement *)a3 pValue:(char *)a4
+- (int)containsElement:(__IOHIDElement *)element pValue:(char *)value
 {
   input[2] = *MEMORY[0x29EDCA608];
   outputCnt = 1;
   v4 = -536870206;
-  if (a3 && a4)
+  if (element && value)
   {
     queueToken = self->_queueToken;
     output = 0xAAAAAAAAAAAAAAAALL;
     input[0] = queueToken;
-    input[1] = IOHIDElementGetCookie(a3);
+    input[1] = IOHIDElementGetCookie(element);
     WeakRetained = objc_loadWeakRetained(&self->_device);
     v11 = objc_msgSend_connect(WeakRetained, v9, v10);
     v4 = IOConnectCallScalarMethod(v11, 7u, input, 2u, &output, &outputCnt);
 
-    *a4 = output;
+    *value = output;
   }
 
   v12 = *MEMORY[0x29EDCA608];
@@ -228,26 +228,26 @@ LABEL_3:
 
 - (int)stop
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_device);
   v6 = objc_msgSend_connect(WeakRetained, v4, v5);
-  LODWORD(v2) = IOConnectCallScalarMethod(v6, 9u, &v2->_queueToken, 1u, 0, 0);
+  LODWORD(selfCopy) = IOConnectCallScalarMethod(v6, 9u, &selfCopy->_queueToken, 1u, 0, 0);
 
-  return v2;
+  return selfCopy;
 }
 
-- (int)setValueAvailableCallback:(void *)a3 context:(void *)a4
+- (int)setValueAvailableCallback:(void *)callback context:(void *)context
 {
   os_unfair_lock_lock(&self->_queueLock);
-  self->_valueAvailableCallback = a3;
-  self->_valueAvailableContext = a4;
+  self->_valueAvailableCallback = callback;
+  self->_valueAvailableContext = context;
   os_unfair_lock_unlock(&self->_queueLock);
   return 0;
 }
 
-- (int)copyNextValue:(__IOHIDValue *)a3
+- (int)copyNextValue:(__IOHIDValue *)value
 {
-  if (!a3)
+  if (!value)
   {
     return -536870206;
   }
@@ -263,16 +263,16 @@ LABEL_3:
     WeakRetained = objc_loadWeakRetained(&self->_device);
     objc_msgSend_getElement_(WeakRetained, v11, v9);
     v12 = *MEMORY[0x29EDB8ED8];
-    *a3 = _IOHIDValueCreateWithElementValuePtr();
+    *value = _IOHIDValueCreateWithElementValuePtr();
 
-    if (*a3 && (_IOHIDValueGetFlags() & 1) != 0)
+    if (*value && (_IOHIDValueGetFlags() & 1) != 0)
     {
       v13 = objc_loadWeakRetained(&self->_device);
       objc_msgSend_releaseReport_(v13, v14, *&v8[3]);
     }
 
     IODataQueueDequeue(self->_queueMemory, 0, &dataSize);
-    if (*a3)
+    if (*value)
     {
       v15 = 0;
     }
@@ -292,7 +292,7 @@ LABEL_3:
   return v15;
 }
 
-- (void)queueCallback:(__CFMachPort *)a3 msg:(id *)a4 size:(int64_t)a5 info:(void *)a6
+- (void)queueCallback:(__CFMachPort *)callback msg:(id *)msg size:(int64_t)size info:(void *)info
 {
   os_unfair_lock_lock(&self->_queueLock);
   valueAvailableCallback = self->_valueAvailableCallback;
@@ -343,10 +343,10 @@ LABEL_3:
   objc_msgSend_setupAnalytics(self, v9, v10);
 }
 
-- (IOHIDQueueClass)initWithDevice:(id)a3 port:(unsigned int)a4 source:(__CFRunLoopSource *)a5
+- (IOHIDQueueClass)initWithDevice:(id)device port:(unsigned int)port source:(__CFRunLoopSource *)source
 {
   input[2] = *MEMORY[0x29EDCA608];
-  v8 = a3;
+  deviceCopy = device;
   input[0] = 0;
   input[1] = 0;
   output = 0xAAAAAAAAAAAAAAAALL;
@@ -369,7 +369,7 @@ LABEL_3:
     goto LABEL_12;
   }
 
-  objc_storeWeak(&v10->_device, v8);
+  objc_storeWeak(&v10->_device, deviceCopy);
   v12 = malloc_type_malloc(0x70uLL, 0x8004065BD1A13uLL);
   v11->_queue = v12;
   v11->_queueLock._os_unfair_lock_opaque = 0;
@@ -396,9 +396,9 @@ LABEL_3:
   if (!v20)
   {
     v11->_queueToken = output;
-    if (a4)
+    if (port)
     {
-      v11->_port = a4;
+      v11->_port = port;
     }
 
     else
@@ -419,10 +419,10 @@ LABEL_3:
       }
     }
 
-    if (a5)
+    if (source)
     {
-      v11->_runLoopSource = a5;
-      CFRetain(a5);
+      v11->_runLoopSource = source;
+      CFRetain(source);
       goto LABEL_10;
     }
 

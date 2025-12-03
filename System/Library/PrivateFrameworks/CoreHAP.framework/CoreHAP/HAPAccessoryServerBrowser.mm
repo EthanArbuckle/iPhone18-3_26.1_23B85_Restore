@@ -1,18 +1,18 @@
 @interface HAPAccessoryServerBrowser
-- (BOOL)isPaired:(id)a3;
+- (BOOL)isPaired:(id)paired;
 - (BOOL)remoteBrowsingEnabled;
-- (HAPAccessoryServerBrowser)initWithQueue:(id)a3;
+- (HAPAccessoryServerBrowser)initWithQueue:(id)queue;
 - (id)logIdentifier;
-- (id)pairSetupSession:(id)a3 pairSetupType:(unint64_t)a4 features:(unsigned __int8)a5;
-- (void)deRegisterAccessoryWithIdentifier:(id)a3;
-- (void)discoverAccessoryServerWithIdentifier:(id)a3;
-- (void)indicateNotificationFromServer:(id)a3 notifyType:(unint64_t)a4 withDictionary:(id)a5;
-- (void)matchAccessoryServerWithSetupID:(id)a3 serverIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)registerPairedAccessoryWithIdentifier:(id)a3;
-- (void)removeRecentlySeenPairedPeripheralWithIdentifier:(id)a3;
+- (id)pairSetupSession:(id)session pairSetupType:(unint64_t)type features:(unsigned __int8)features;
+- (void)deRegisterAccessoryWithIdentifier:(id)identifier;
+- (void)discoverAccessoryServerWithIdentifier:(id)identifier;
+- (void)indicateNotificationFromServer:(id)server notifyType:(unint64_t)type withDictionary:(id)dictionary;
+- (void)matchAccessoryServerWithSetupID:(id)d serverIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)registerPairedAccessoryWithIdentifier:(id)identifier;
+- (void)removeRecentlySeenPairedPeripheralWithIdentifier:(id)identifier;
 - (void)resetPairedAccessories;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setRemoteBrowsingEnabled:(BOOL)a3;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setRemoteBrowsingEnabled:(BOOL)enabled;
 - (void)startConfirmingPairedAccessoryReachability;
 - (void)startDiscoveringAccessoryServers;
 - (void)stopConfirmingPairedAccessoryReachability;
@@ -54,10 +54,10 @@
   objc_exception_throw(v7);
 }
 
-- (void)indicateNotificationFromServer:(id)a3 notifyType:(unint64_t)a4 withDictionary:(id)a5
+- (void)indicateNotificationFromServer:(id)server notifyType:(unint64_t)type withDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a5;
+  serverCopy = server;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEAD8];
   v10 = *MEMORY[0x277CBE658];
   v11 = MEMORY[0x277CCACA8];
@@ -69,22 +69,22 @@
   objc_exception_throw(v14);
 }
 
-- (id)pairSetupSession:(id)a3 pairSetupType:(unint64_t)a4 features:(unsigned __int8)a5
+- (id)pairSetupSession:(id)session pairSetupType:(unint64_t)type features:(unsigned __int8)features
 {
-  v7 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock_with_options();
-  v8 = [[HAPSRPPairSetupSession alloc] initWithRole:0 pairSetupType:a4 delegate:v7];
+  v8 = [[HAPSRPPairSetupSession alloc] initWithRole:0 pairSetupType:type delegate:sessionCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v8;
 }
 
-- (BOOL)isPaired:(id)a3
+- (BOOL)isPaired:(id)paired
 {
-  v4 = a3;
+  pairedCopy = paired;
   os_unfair_lock_lock_with_options();
-  v5 = [(HAPAccessoryServerBrowser *)self pairedAccessoryIdentifiers];
-  v6 = [v5 containsObject:v4];
+  pairedAccessoryIdentifiers = [(HAPAccessoryServerBrowser *)self pairedAccessoryIdentifiers];
+  v6 = [pairedAccessoryIdentifiers containsObject:pairedCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v6;
@@ -93,37 +93,37 @@
 - (void)resetPairedAccessories
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HAPAccessoryServerBrowser *)self pairedAccessoryIdentifiers];
-  [v3 removeAllObjects];
+  pairedAccessoryIdentifiers = [(HAPAccessoryServerBrowser *)self pairedAccessoryIdentifiers];
+  [pairedAccessoryIdentifiers removeAllObjects];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)deRegisterAccessoryWithIdentifier:(id)a3
+- (void)deRegisterAccessoryWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v4 = [(HAPAccessoryServerBrowser *)self pairedAccessoryIdentifiers];
-  [v4 removeObject:v5];
+  pairedAccessoryIdentifiers = [(HAPAccessoryServerBrowser *)self pairedAccessoryIdentifiers];
+  [pairedAccessoryIdentifiers removeObject:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)registerPairedAccessoryWithIdentifier:(id)a3
+- (void)registerPairedAccessoryWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v4 = [(HAPAccessoryServerBrowser *)self pairedAccessoryIdentifiers];
-  [v4 addObject:v5];
+  pairedAccessoryIdentifiers = [(HAPAccessoryServerBrowser *)self pairedAccessoryIdentifiers];
+  [pairedAccessoryIdentifiers addObject:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)matchAccessoryServerWithSetupID:(id)a3 serverIdentifier:(id)a4 completionHandler:(id)a5
+- (void)matchAccessoryServerWithSetupID:(id)d serverIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -135,9 +135,9 @@
   objc_exception_throw(v16);
 }
 
-- (void)removeRecentlySeenPairedPeripheralWithIdentifier:(id)a3
+- (void)removeRecentlySeenPairedPeripheralWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -149,9 +149,9 @@
   objc_exception_throw(v10);
 }
 
-- (void)discoverAccessoryServerWithIdentifier:(id)a3
+- (void)discoverAccessoryServerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -171,10 +171,10 @@
   return remoteBrowsingEnabled;
 }
 
-- (void)setRemoteBrowsingEnabled:(BOOL)a3
+- (void)setRemoteBrowsingEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock_with_options();
-  self->_remoteBrowsingEnabled = a3;
+  self->_remoteBrowsingEnabled = enabled;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -205,10 +205,10 @@
   objc_exception_throw(v7);
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -220,23 +220,23 @@
   objc_exception_throw(v13);
 }
 
-- (HAPAccessoryServerBrowser)initWithQueue:(id)a3
+- (HAPAccessoryServerBrowser)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = HAPAccessoryServerBrowser;
   v6 = [(HAPAccessoryServerBrowser *)&v15 init];
   if (v6)
   {
-    v7 = v5;
-    if (!v5)
+    v7 = queueCopy;
+    if (!queueCopy)
     {
       v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v7 = dispatch_queue_create("com.apple.HAPAccessoryBrowser", v3);
     }
 
     objc_storeStrong(&v6->_workQueue, v7);
-    if (!v5)
+    if (!queueCopy)
     {
     }
 

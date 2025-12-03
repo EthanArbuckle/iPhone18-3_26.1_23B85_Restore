@@ -1,7 +1,7 @@
 @interface MTL4PipelineOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4PipelineOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -26,14 +26,14 @@
   [(MTL4PipelineOptions *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setShaderReflection:{-[MTL4PipelineOptions shaderReflection](self, "shaderReflection")}];
   [v5 setShaderValidation:{-[MTL4PipelineOptions shaderValidation](self, "shaderValidation")}];
   [v5 setPluginData:{-[MTL4PipelineOptions pluginData](self, "pluginData")}];
 
-  *(v5 + 40) = [(MTLShaderValidationConfiguration *)[(MTL4PipelineOptions *)self shaderValidationConfig] copyWithZone:a3];
+  *(v5 + 40) = [(MTLShaderValidationConfiguration *)[(MTL4PipelineOptions *)self shaderValidationConfig] copyWithZone:zone];
   *(v5 + 8) = self->_enablePerformanceStatistics;
   *(v5 + 9) = self->_enablePostVertexDump;
   *(v5 + 10) = self->_enablePostMeshDump;
@@ -45,21 +45,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
-  v9 = *(a3 + 3) == self->_shaderReflection && *(a3 + 2) == self->_shaderValidation;
-  v10 = *(a3 + 4);
+  v9 = *(equal + 3) == self->_shaderReflection && *(equal + 2) == self->_shaderValidation;
+  v10 = *(equal + 4);
   if (v10 == self->_pluginData)
   {
     v11 = 1;
@@ -71,22 +71,22 @@
   }
 
   v12 = v11 & v9;
-  v13 = *(a3 + 5);
+  v13 = *(equal + 5);
   v14 = v13 == self->_shaderValidationConfig || [(MTLShaderValidationConfiguration *)v13 isEqual:?];
-  v6.i32[0] = *(a3 + 2);
+  v6.i32[0] = *(equal + 2);
   v7.i32[0] = *&self->_enablePerformanceStatistics;
-  v15 = vminv_u16(vceq_s16((vmovl_u8(v6).u64[0] & 0xFF00FF00FF00FFLL), (vmovl_u8(v7).u64[0] & 0xFF00FF00FF00FFLL))) & (*(a3 + 12) == self->_enableResourcePatchingInstrumentation);
-  if (*(a3 + 13) != self->_enableResourceUsageInstrumentation)
+  v15 = vminv_u16(vceq_s16((vmovl_u8(v6).u64[0] & 0xFF00FF00FF00FFLL), (vmovl_u8(v7).u64[0] & 0xFF00FF00FF00FFLL))) & (*(equal + 12) == self->_enableResourcePatchingInstrumentation);
+  if (*(equal + 13) != self->_enableResourceUsageInstrumentation)
   {
     LOBYTE(v15) = 0;
   }
 
-  if (*(a3 + 6) != self->_maxNumRegisters)
+  if (*(equal + 6) != self->_maxNumRegisters)
   {
     LOBYTE(v15) = 0;
   }
 
-  if (*(a3 + 7) != self->_postVertexDumpBufferIndex)
+  if (*(equal + 7) != self->_postVertexDumpBufferIndex)
   {
     LOBYTE(v15) = 0;
   }

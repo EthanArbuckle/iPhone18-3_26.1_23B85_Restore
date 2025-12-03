@@ -6,11 +6,11 @@
 
 - (uint64_t)ne_verticallyCenterCapInRect:()NewsFeed
 {
-  [a1 _capOffsetFromBoundsTop];
-  [a1 _firstLineBaseline];
-  [a1 frame];
+  [self _capOffsetFromBoundsTop];
+  [self _firstLineBaseline];
+  [self frame];
 
-  return [a1 setFrame:?];
+  return [self setFrame:?];
 }
 
 @end

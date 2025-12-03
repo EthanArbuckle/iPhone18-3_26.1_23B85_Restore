@@ -1,20 +1,20 @@
 @interface CloudArtworkImportRequest
 - (CloudArtworkImportRequest)init;
-- (CloudArtworkImportRequest)initWithClientIdentity:(id)a3;
+- (CloudArtworkImportRequest)initWithClientIdentity:(id)identity;
 @end
 
 @implementation CloudArtworkImportRequest
 
-- (CloudArtworkImportRequest)initWithClientIdentity:(id)a3
+- (CloudArtworkImportRequest)initWithClientIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = CloudArtworkImportRequest;
   v6 = [(CloudArtworkImportRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientIdentity, a3);
+    objc_storeStrong(&v6->_clientIdentity, identity);
     v7->_allowsCellularData = 1;
   }
 

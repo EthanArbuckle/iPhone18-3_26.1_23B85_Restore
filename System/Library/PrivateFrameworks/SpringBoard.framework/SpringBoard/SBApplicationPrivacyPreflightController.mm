@@ -1,24 +1,24 @@
 @interface SBApplicationPrivacyPreflightController
-- (SBApplicationPrivacyPreflightController)initWithPreflightManager:(id)a3 applicationIdentity:(id)a4;
-- (void)_notePreflightFinishedWithResult:(unint64_t)a3 cancelToken:(id)a4;
-- (void)addPendingCompletion:(id)a3 forSceneIdentifier:(id)a4;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (SBApplicationPrivacyPreflightController)initWithPreflightManager:(id)manager applicationIdentity:(id)identity;
+- (void)_notePreflightFinishedWithResult:(unint64_t)result cancelToken:(id)token;
+- (void)addPendingCompletion:(id)completion forSceneIdentifier:(id)identifier;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation SBApplicationPrivacyPreflightController
 
-- (SBApplicationPrivacyPreflightController)initWithPreflightManager:(id)a3 applicationIdentity:(id)a4
+- (SBApplicationPrivacyPreflightController)initWithPreflightManager:(id)manager applicationIdentity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  identityCopy = identity;
   v14.receiver = self;
   v14.super_class = SBApplicationPrivacyPreflightController;
   v9 = [(SBApplicationPrivacyPreflightController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_privacyPreflightManager, a3);
-    objc_storeStrong(&v10->_applicationIdentity, a4);
+    objc_storeStrong(&v9->_privacyPreflightManager, manager);
+    objc_storeStrong(&v10->_applicationIdentity, identity);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     pendingCompletionsBySceneIdentifier = v10->_pendingCompletionsBySceneIdentifier;
     v10->_pendingCompletionsBySceneIdentifier = v11;
@@ -27,23 +27,23 @@
   return v10;
 }
 
-- (void)addPendingCompletion:(id)a3 forSceneIdentifier:(id)a4
+- (void)addPendingCompletion:(id)completion forSceneIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  identifierCopy = identifier;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBApplicationPrivacyPreflightController addPendingCompletion:forSceneIdentifier:];
   }
 
-  v8 = [(NSMutableDictionary *)self->_pendingCompletionsBySceneIdentifier objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_pendingCompletionsBySceneIdentifier objectForKey:identifierCopy];
   if (!v8)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(NSMutableDictionary *)self->_pendingCompletionsBySceneIdentifier setObject:v8 forKey:v7];
+    [(NSMutableDictionary *)self->_pendingCompletionsBySceneIdentifier setObject:v8 forKey:identifierCopy];
   }
 
-  v9 = MEMORY[0x223D6F7F0](v6);
+  v9 = MEMORY[0x223D6F7F0](completionCopy);
   [v8 addObject:v9];
 
   preflightCancelToken = self->_preflightCancelToken;
@@ -96,16 +96,16 @@ void __83__SBApplicationPrivacyPreflightController_addPendingCompletion_forScene
   [v3 _notePreflightFinishedWithResult:v2 cancelToken:WeakRetained];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __72__SBApplicationPrivacyPreflightController_appendDescriptionToFormatter___block_invoke;
   v10 = &unk_2783A92D8;
-  v11 = v4;
-  v12 = self;
-  v5 = v4;
+  v11 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:self block:&v7];
   v6 = [v5 appendObject:self->_pendingCompletionsBySceneIdentifier withName:{@"pendingCompletions", v7, v8, v9, v10}];
 }
@@ -117,24 +117,24 @@ void __72__SBApplicationPrivacyPreflightController_appendDescriptionToFormatter_
   [v1 appendString:v2 withName:@"applicationIdentity"];
 }
 
-- (void)_notePreflightFinishedWithResult:(unint64_t)a3 cancelToken:(id)a4
+- (void)_notePreflightFinishedWithResult:(unint64_t)result cancelToken:(id)token
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  tokenCopy = token;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBApplicationPrivacyPreflightController _notePreflightFinishedWithResult:cancelToken:];
   }
 
-  if (self->_preflightCancelToken == v6)
+  if (self->_preflightCancelToken == tokenCopy)
   {
-    v22 = v6;
+    v22 = tokenCopy;
     v7 = [(NSMutableDictionary *)self->_pendingCompletionsBySceneIdentifier mutableCopy];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v21 = self;
+    selfCopy = self;
     obj = self->_pendingCompletionsBySceneIdentifier;
     v25 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v25)
@@ -156,8 +156,8 @@ void __72__SBApplicationPrivacyPreflightController_appendDescriptionToFormatter_
           v29 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v11 = [v10 reverseObjectEnumerator];
-          v12 = [v11 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          reverseObjectEnumerator = [v10 reverseObjectEnumerator];
+          v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v12)
           {
             v13 = v12;
@@ -168,15 +168,15 @@ void __72__SBApplicationPrivacyPreflightController_appendDescriptionToFormatter_
               {
                 if (*v27 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(reverseObjectEnumerator);
                 }
 
                 v16 = *(*(&v26 + 1) + 8 * j);
-                v17 = [v10 lastObject];
-                v16[2](v16, a3, v16 == v17);
+                lastObject = [v10 lastObject];
+                v16[2](v16, result, v16 == lastObject);
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v26 objects:v34 count:16];
+              v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v34 count:16];
             }
 
             while (v13);
@@ -189,14 +189,14 @@ void __72__SBApplicationPrivacyPreflightController_appendDescriptionToFormatter_
       while (v25);
     }
 
-    pendingCompletionsBySceneIdentifier = v21->_pendingCompletionsBySceneIdentifier;
-    v21->_pendingCompletionsBySceneIdentifier = v7;
+    pendingCompletionsBySceneIdentifier = selfCopy->_pendingCompletionsBySceneIdentifier;
+    selfCopy->_pendingCompletionsBySceneIdentifier = v7;
     v19 = v7;
 
-    preflightCancelToken = v21->_preflightCancelToken;
-    v21->_preflightCancelToken = 0;
+    preflightCancelToken = selfCopy->_preflightCancelToken;
+    selfCopy->_preflightCancelToken = 0;
 
-    v6 = v22;
+    tokenCopy = v22;
   }
 }
 

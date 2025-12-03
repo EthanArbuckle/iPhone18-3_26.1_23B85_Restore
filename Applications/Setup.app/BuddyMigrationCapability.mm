@@ -1,18 +1,18 @@
 @interface BuddyMigrationCapability
 + (BOOL)_currentHardwareSupportsMigration;
-+ (BOOL)_supportsMigrationFromProductVersion:(id)a3 toProductVersion:(id)a4;
++ (BOOL)_supportsMigrationFromProductVersion:(id)version toProductVersion:(id)productVersion;
 + (BOOL)currentDeviceShouldOfferMigration;
-+ (BOOL)isMigrationSupportedFromDeviceClass:(id)a3 toDeviceClass:(id)a4 reason:(id *)a5;
-+ (BOOL)sourceDeviceSupportsMigration:(id)a3 productVersion:(id)a4 deviceClass:(id)a5 softwareUpdateRequired:(BOOL *)a6 reason:(id *)a7;
-+ (BOOL)supportsMigrationFromProductVersion:(id)a3 toProductVersion:(id)a4 toProductVersionFetchedFromCurrentProductVersion:(BOOL)a5;
-+ (int64_t)_compareProductVersion:(id)a3 toProductVersion:(id)a4;
++ (BOOL)isMigrationSupportedFromDeviceClass:(id)class toDeviceClass:(id)deviceClass reason:(id *)reason;
++ (BOOL)sourceDeviceSupportsMigration:(id)migration productVersion:(id)version deviceClass:(id)class softwareUpdateRequired:(BOOL *)required reason:(id *)reason;
++ (BOOL)supportsMigrationFromProductVersion:(id)version toProductVersion:(id)productVersion toProductVersionFetchedFromCurrentProductVersion:(BOOL)currentProductVersion;
++ (int64_t)_compareProductVersion:(id)version toProductVersion:(id)productVersion;
 @end
 
 @implementation BuddyMigrationCapability
 
 + (BOOL)currentDeviceShouldOfferMigration
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   if (BYSetupAssistantHasCompletedInitialRun())
   {
@@ -22,9 +22,9 @@
   if (+[BuddyMigrationCapability _currentHardwareSupportsMigration])
   {
     v4 = +[MCProfileConnection sharedConnection];
-    v5 = [v4 activationRecordIndicatesCloudConfigurationIsAvailable];
+    activationRecordIndicatesCloudConfigurationIsAvailable = [v4 activationRecordIndicatesCloudConfigurationIsAvailable];
 
-    if (v5)
+    if (activationRecordIndicatesCloudConfigurationIsAvailable)
     {
       oslog = _BYLoggingFacility();
       v24 = OS_LOG_TYPE_DEFAULT;
@@ -107,22 +107,22 @@
   }
 }
 
-+ (BOOL)sourceDeviceSupportsMigration:(id)a3 productVersion:(id)a4 deviceClass:(id)a5 softwareUpdateRequired:(BOOL *)a6 reason:(id *)a7
++ (BOOL)sourceDeviceSupportsMigration:(id)migration productVersion:(id)version deviceClass:(id)class softwareUpdateRequired:(BOOL *)required reason:(id *)reason
 {
-  v57 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, migration);
   v55 = 0;
-  objc_storeStrong(&v55, a4);
+  objc_storeStrong(&v55, version);
   v54 = 0;
-  objc_storeStrong(&v54, a5);
-  v53 = a6;
-  v52 = a7;
-  v11 = [location[0] supportsDeviceToDeviceMigration];
-  LOBYTE(a6) = [v11 BOOLValue] ^ 1;
+  objc_storeStrong(&v54, class);
+  requiredCopy = required;
+  reasonCopy = reason;
+  supportsDeviceToDeviceMigration = [location[0] supportsDeviceToDeviceMigration];
+  LOBYTE(required) = [supportsDeviceToDeviceMigration BOOLValue] ^ 1;
 
-  if (a6)
+  if (required)
   {
     v51 = _BYLoggingFacility();
     v50 = OS_LOG_TYPE_DEFAULT;
@@ -135,10 +135,10 @@
     }
 
     objc_storeStrong(&v51, 0);
-    if (v52)
+    if (reasonCopy)
     {
       v14 = @"not supported";
-      *v52 = v14;
+      *reasonCopy = v14;
     }
 
     v58 = 0;
@@ -147,9 +147,9 @@
 
   else
   {
-    v15 = [location[0] deviceToDeviceMigrationVersion];
+    deviceToDeviceMigrationVersion = [location[0] deviceToDeviceMigrationVersion];
     v16 = [NSNumber numberWithUnsignedInt:SASProximityDeviceToDeviceCurrentVersion];
-    v17 = [v15 isEqualToNumber:v16] ^ 1;
+    v17 = [deviceToDeviceMigrationVersion isEqualToNumber:v16] ^ 1;
 
     if (v17)
     {
@@ -164,10 +164,10 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      if (v52)
+      if (reasonCopy)
       {
         v20 = @"incompatible migration version";
-        *v52 = v20;
+        *reasonCopy = v20;
       }
 
       v58 = 0;
@@ -177,7 +177,7 @@
     else
     {
       v44 = MGCopyAnswer();
-      if ([BuddyMigrationCapability isMigrationSupportedFromDeviceClass:v54 toDeviceClass:v44 reason:v52])
+      if ([BuddyMigrationCapability isMigrationSupportedFromDeviceClass:v54 toDeviceClass:v44 reason:reasonCopy])
       {
         if ([location[0] isRestoring])
         {
@@ -192,10 +192,10 @@
           }
 
           objc_storeStrong(&v40, 0);
-          if (v52)
+          if (reasonCopy)
           {
             v25 = @"source restoring";
-            *v52 = v25;
+            *reasonCopy = v25;
           }
 
           v58 = 0;
@@ -205,21 +205,21 @@
         else
         {
           v37 = +[SASSystemInformation productVersion];
-          v36 = ([v57 supportsMigrationFromProductVersion:v55 toProductVersion:v37 toProductVersionFetchedFromCurrentProductVersion:1] ^ 1) & 1;
+          v36 = ([selfCopy supportsMigrationFromProductVersion:v55 toProductVersion:v37 toProductVersionFetchedFromCurrentProductVersion:1] ^ 1) & 1;
           v34 = 0;
-          v26 = 0;
+          bOOLValue = 0;
           if (v36)
           {
-            v35 = [location[0] preventSoftwareUpdateDeviceMigration];
+            preventSoftwareUpdateDeviceMigration = [location[0] preventSoftwareUpdateDeviceMigration];
             v34 = 1;
-            v26 = [v35 BOOLValue];
+            bOOLValue = [preventSoftwareUpdateDeviceMigration BOOLValue];
           }
 
           if (v34)
           {
           }
 
-          if (v26)
+          if (bOOLValue)
           {
             v33 = _BYLoggingFacility();
             v32 = OS_LOG_TYPE_DEFAULT;
@@ -232,10 +232,10 @@
             }
 
             objc_storeStrong(&v33, 0);
-            if (v52)
+            if (reasonCopy)
             {
               v29 = @"software update required, but prevented";
-              *v52 = v29;
+              *reasonCopy = v29;
             }
 
             v58 = 0;
@@ -244,9 +244,9 @@
 
           else
           {
-            if (v53)
+            if (requiredCopy)
             {
-              *v53 = v36 & 1;
+              *requiredCopy = v36 & 1;
             }
 
             v58 = 1;
@@ -284,15 +284,15 @@
   return v58 & 1;
 }
 
-+ (BOOL)isMigrationSupportedFromDeviceClass:(id)a3 toDeviceClass:(id)a4 reason:(id *)a5
++ (BOOL)isMigrationSupportedFromDeviceClass:(id)class toDeviceClass:(id)deviceClass reason:(id *)reason
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, class);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v9 = a5;
+  objc_storeStrong(&v10, deviceClass);
+  reasonCopy = reason;
   v8 = +[BuddyMigrationCapability _allowedDeviceClasses];
   if ([v8 containsObject:location[0]] & 1) != 0 && (objc_msgSend(v8, "containsObject:", v10))
   {
@@ -303,9 +303,9 @@
 
     else
     {
-      if (v9)
+      if (reasonCopy)
       {
-        *v9 = @"different device class";
+        *reasonCopy = @"different device class";
       }
 
       v12 = 0;
@@ -314,9 +314,9 @@
 
   else
   {
-    if (v9)
+    if (reasonCopy)
     {
-      *v9 = @"disallowed device class";
+      *reasonCopy = @"disallowed device class";
     }
 
     v12 = 0;
@@ -330,7 +330,7 @@
 
 + (BOOL)_currentHardwareSupportsMigration
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = MGCopyAnswer();
   v2 = +[BuddyMigrationCapability _allowedDeviceClasses];
@@ -340,17 +340,17 @@
   return v3 & 1;
 }
 
-+ (BOOL)supportsMigrationFromProductVersion:(id)a3 toProductVersion:(id)a4 toProductVersionFetchedFromCurrentProductVersion:(BOOL)a5
++ (BOOL)supportsMigrationFromProductVersion:(id)version toProductVersion:(id)productVersion toProductVersionFetchedFromCurrentProductVersion:(BOOL)currentProductVersion
 {
-  v15 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v12 = a5;
-  v11 = [v15 _supportsMigrationFromProductVersion:location[0] toProductVersion:v13] & 1;
-  if (v11 && v12 && (os_variant_has_internal_ui() & 1) != 0 && +[BuddyDataSourceCompatibilityManagerTestingSurrogate enabled])
+  objc_storeStrong(&v13, productVersion);
+  currentProductVersionCopy = currentProductVersion;
+  v11 = [selfCopy _supportsMigrationFromProductVersion:location[0] toProductVersion:v13] & 1;
+  if (v11 && currentProductVersionCopy && (os_variant_has_internal_ui() & 1) != 0 && +[BuddyDataSourceCompatibilityManagerTestingSurrogate enabled])
   {
     v7 = objc_alloc_init(BuddyDataSourceCompatibilityManagerTestingSurrogate);
     v11 = [(BuddyDataSourceCompatibilityManagerTestingSurrogate *)v7 canCurrentProductVersionAcceptDataSourceProductVersion:location[0], v7];
@@ -363,28 +363,28 @@
   return v8 & 1;
 }
 
-+ (BOOL)_supportsMigrationFromProductVersion:(id)a3 toProductVersion:(id)a4
++ (BOOL)_supportsMigrationFromProductVersion:(id)version toProductVersion:(id)productVersion
 {
-  v8 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  LOBYTE(a4) = [v8 _compareProductVersion:location[0] toProductVersion:v6] != 1;
+  objc_storeStrong(&v6, productVersion);
+  LOBYTE(productVersion) = [selfCopy _compareProductVersion:location[0] toProductVersion:v6] != 1;
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
-  return a4 & 1;
+  return productVersion & 1;
 }
 
-+ (int64_t)_compareProductVersion:(id)a3 toProductVersion:(id)a4
++ (int64_t)_compareProductVersion:(id)version toProductVersion:(id)productVersion
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, productVersion);
   if ([location[0] isEqualToString:v17])
   {
     v19 = 0;
@@ -414,28 +414,28 @@
         break;
       }
 
-      v12 = 0;
-      v11 = 0;
+      intValue = 0;
+      intValue2 = 0;
       if (i < [v15 count])
       {
         v8 = [v15 objectAtIndexedSubscript:i];
-        v12 = [v8 intValue];
+        intValue = [v8 intValue];
       }
 
       if (i < [v14 count])
       {
         v9 = [v14 objectAtIndexedSubscript:i];
-        v11 = [v9 intValue];
+        intValue2 = [v9 intValue];
       }
 
-      if (v12 > v11)
+      if (intValue > intValue2)
       {
         v19 = 1;
         v16 = 1;
         goto LABEL_28;
       }
 
-      if (v12 < v11)
+      if (intValue < intValue2)
       {
         v19 = -1;
         v16 = 1;

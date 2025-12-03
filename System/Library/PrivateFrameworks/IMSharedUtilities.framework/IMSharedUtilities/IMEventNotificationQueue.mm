@@ -1,28 +1,28 @@
 @interface IMEventNotificationQueue
-- (BOOL)containsNotificationTarget:(id)a3;
+- (BOOL)containsNotificationTarget:(id)target;
 - (BOOL)isBusy;
 - (BOOL)isPaused;
 - (BOOL)isScheduled;
 - (IMEventNotificationQueue)init;
 - (IMEventNotificationQueueDelegate)delegate;
 - (int64_t)count;
-- (void)_didChangePausedState:(BOOL)a3;
+- (void)_didChangePausedState:(BOOL)state;
 - (void)_dispatchProcessQueue;
-- (void)_invokeEvent:(id)a3;
+- (void)_invokeEvent:(id)event;
 - (void)_invokeNotifications;
 - (void)_processQueue;
-- (void)_scheduleIfNeeded:(BOOL)a3;
-- (void)_setBusy:(BOOL)a3;
-- (void)appendEventNotification:(id)a3;
-- (void)appendEventTarget:(id)a3 eventNotificationBlock:(id)a4;
-- (void)appendEventTarget:(id)a3 sender:(id)a4 eventNotificationBlock:(id)a5;
+- (void)_scheduleIfNeeded:(BOOL)needed;
+- (void)_setBusy:(BOOL)busy;
+- (void)appendEventNotification:(id)notification;
+- (void)appendEventTarget:(id)target eventNotificationBlock:(id)block;
+- (void)appendEventTarget:(id)target sender:(id)sender eventNotificationBlock:(id)block;
 - (void)cancelAllEventNotifications;
-- (void)cancelEventNotificationsForNotificationTarget:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)pushEventNotification:(id)a3;
-- (void)pushEventTarget:(id)a3 eventNotificationBlock:(id)a4;
-- (void)pushEventTarget:(id)a3 sender:(id)a4 eventNotificationBlock:(id)a5;
-- (void)setPaused:(BOOL)a3;
+- (void)cancelEventNotificationsForNotificationTarget:(id)target;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)pushEventNotification:(id)notification;
+- (void)pushEventTarget:(id)target eventNotificationBlock:(id)block;
+- (void)pushEventTarget:(id)target sender:(id)sender eventNotificationBlock:(id)block;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation IMEventNotificationQueue
@@ -52,9 +52,9 @@
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_scheduleIfNeeded:(BOOL)a3
+- (void)_scheduleIfNeeded:(BOOL)needed
 {
-  if (!self->_scheduled || a3)
+  if (!self->_scheduled || needed)
   {
     self->_scheduled = 1;
     if (!self->_paused)
@@ -64,58 +64,58 @@
   }
 }
 
-- (void)_invokeEvent:(id)a3
+- (void)_invokeEvent:(id)event
 {
-  if (a3)
+  if (event)
   {
-    [a3 invoke];
+    [event invoke];
   }
 }
 
 - (BOOL)isBusy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  busy = v2->_busy;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  busy = selfCopy->_busy;
+  objc_sync_exit(selfCopy);
 
   return busy;
 }
 
-- (void)_setBusy:(BOOL)a3
+- (void)_setBusy:(BOOL)busy
 {
-  if (self->_busy != a3)
+  if (self->_busy != busy)
   {
-    self->_busy = a3;
-    v5 = [(IMEventNotificationQueue *)self delegate];
+    self->_busy = busy;
+    delegate = [(IMEventNotificationQueue *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(IMEventNotificationQueue *)self delegate];
-      [v7 eventNotificationQueue:self didChangeBusyState:self->_busy];
+      delegate2 = [(IMEventNotificationQueue *)self delegate];
+      [delegate2 eventNotificationQueue:self didChangeBusyState:self->_busy];
     }
 
     MEMORY[0x1EEE66B58](self, sel__didChangeBusyState_);
   }
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v8 = 0;
-    v5 = [(IMDoubleLinkedList *)self->_eventNotificationList first];
+    first = [(IMDoubleLinkedList *)self->_eventNotificationList first];
     do
     {
-      if (!v5)
+      if (!first)
       {
         break;
       }
 
-      v6 = v5;
-      v5 = [v6 next];
+      v6 = first;
+      first = [v6 next];
 
       if ([v6 wasCancelled])
       {
@@ -125,7 +125,7 @@
 
       else
       {
-        v4[2](v4, v6, &v8);
+        blockCopy[2](blockCopy, v6, &v8);
       }
 
       v7 = v8;
@@ -152,26 +152,26 @@
   v2 = obj;
   if (!obj->_paused)
   {
-    v3 = [(IMEventNotificationQueue *)obj delegate];
+    delegate = [(IMEventNotificationQueue *)obj delegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(IMEventNotificationQueue *)obj delegate];
-      [v5 eventNotificationQueueWillSendNotifications:obj];
+      delegate2 = [(IMEventNotificationQueue *)obj delegate];
+      [delegate2 eventNotificationQueueWillSendNotifications:obj];
     }
 
     [(IMEventNotificationQueue *)obj _willProcessQueue];
     [(IMEventNotificationQueue *)obj _invokeNotifications];
     [(IMEventNotificationQueue *)obj _didProcessQueue];
-    v6 = [(IMEventNotificationQueue *)obj delegate];
+    delegate3 = [(IMEventNotificationQueue *)obj delegate];
     v7 = objc_opt_respondsToSelector();
 
     v2 = obj;
     if (v7)
     {
-      v8 = [(IMEventNotificationQueue *)obj delegate];
-      [v8 eventNotificationQueueDidSendNotifications:obj];
+      delegate4 = [(IMEventNotificationQueue *)obj delegate];
+      [delegate4 eventNotificationQueueDidSendNotifications:obj];
 
       v2 = obj;
     }
@@ -181,105 +181,105 @@
   objc_sync_exit(v2);
 }
 
-- (void)pushEventNotification:(id)a3
+- (void)pushEventNotification:(id)notification
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(IMDoubleLinkedList *)v4->_eventNotificationList pushLinkedListNode:v5];
-  [(IMEventNotificationQueue *)v4 _didAddNotification:v5];
-  objc_sync_exit(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(IMDoubleLinkedList *)selfCopy->_eventNotificationList pushLinkedListNode:notificationCopy];
+  [(IMEventNotificationQueue *)selfCopy _didAddNotification:notificationCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)appendEventNotification:(id)a3
+- (void)appendEventNotification:(id)notification
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(IMDoubleLinkedList *)v4->_eventNotificationList appendLinkedListNode:v5];
-  [(IMEventNotificationQueue *)v4 _didAddNotification:v5];
-  objc_sync_exit(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(IMDoubleLinkedList *)selfCopy->_eventNotificationList appendLinkedListNode:notificationCopy];
+  [(IMEventNotificationQueue *)selfCopy _didAddNotification:notificationCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)cancelEventNotificationsForNotificationTarget:(id)a3
+- (void)cancelEventNotificationsForNotificationTarget:(id)target
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  targetCopy = target;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = sub_1A86649E0;
   v10 = &unk_1E78280A0;
-  v6 = v4;
+  v6 = targetCopy;
   v11 = v6;
-  v12 = v5;
-  [(IMEventNotificationQueue *)v5 enumerateObjectsUsingBlock:&v7];
-  [(IMEventNotificationQueue *)v5 _didCancelNotifications:v7];
+  v12 = selfCopy;
+  [(IMEventNotificationQueue *)selfCopy enumerateObjectsUsingBlock:&v7];
+  [(IMEventNotificationQueue *)selfCopy _didCancelNotifications:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)cancelAllEventNotifications
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1A8664B14;
   v3[3] = &unk_1E7828078;
-  v3[4] = v2;
-  [(IMEventNotificationQueue *)v2 enumerateObjectsUsingBlock:v3];
-  [(IMEventNotificationQueue *)v2 _didCancelNotifications];
-  objc_sync_exit(v2);
+  v3[4] = selfCopy;
+  [(IMEventNotificationQueue *)selfCopy enumerateObjectsUsingBlock:v3];
+  [(IMEventNotificationQueue *)selfCopy _didCancelNotifications];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)appendEventTarget:(id)a3 eventNotificationBlock:(id)a4
+- (void)appendEventTarget:(id)target eventNotificationBlock:(id)block
 {
-  v5 = [IMEventNotification eventNotification:a3 eventNotificationBlock:a4];
+  v5 = [IMEventNotification eventNotification:target eventNotificationBlock:block];
   [(IMEventNotificationQueue *)self appendEventNotification:v5];
 }
 
-- (void)pushEventTarget:(id)a3 eventNotificationBlock:(id)a4
+- (void)pushEventTarget:(id)target eventNotificationBlock:(id)block
 {
-  v5 = [IMEventNotification eventNotification:a3 eventNotificationBlock:a4];
+  v5 = [IMEventNotification eventNotification:target eventNotificationBlock:block];
   [(IMEventNotificationQueue *)self pushEventNotification:v5];
 }
 
-- (void)appendEventTarget:(id)a3 sender:(id)a4 eventNotificationBlock:(id)a5
+- (void)appendEventTarget:(id)target sender:(id)sender eventNotificationBlock:(id)block
 {
-  v6 = [IMEventNotification eventNotification:a3 sender:a4 eventNotificationBlock:a5];
+  v6 = [IMEventNotification eventNotification:target sender:sender eventNotificationBlock:block];
   [(IMEventNotificationQueue *)self appendEventNotification:v6];
 }
 
-- (void)pushEventTarget:(id)a3 sender:(id)a4 eventNotificationBlock:(id)a5
+- (void)pushEventTarget:(id)target sender:(id)sender eventNotificationBlock:(id)block
 {
-  v6 = [IMEventNotification eventNotification:a3 sender:a4 eventNotificationBlock:a5];
+  v6 = [IMEventNotification eventNotification:target sender:sender eventNotificationBlock:block];
   [(IMEventNotificationQueue *)self pushEventNotification:v6];
 }
 
-- (void)_didChangePausedState:(BOOL)a3
+- (void)_didChangePausedState:(BOOL)state
 {
-  if (!a3)
+  if (!state)
   {
     [(IMEventNotificationQueue *)self _scheduleIfNeeded:self->_scheduled];
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_paused != v3)
+  if (obj->_paused != pausedCopy)
   {
-    obj->_paused = v3;
-    v4 = [(IMEventNotificationQueue *)obj delegate];
+    obj->_paused = pausedCopy;
+    delegate = [(IMEventNotificationQueue *)obj delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(IMEventNotificationQueue *)obj delegate];
-      [v6 eventNotificationQueue:obj didChangePausedState:obj->_paused];
+      delegate2 = [(IMEventNotificationQueue *)obj delegate];
+      [delegate2 eventNotificationQueue:obj didChangePausedState:obj->_paused];
     }
 
     [(IMEventNotificationQueue *)obj _didChangePausedState:obj->_paused];
@@ -290,41 +290,41 @@
 
 - (BOOL)isScheduled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  scheduled = v2->_scheduled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  scheduled = selfCopy->_scheduled;
+  objc_sync_exit(selfCopy);
 
   return scheduled;
 }
 
 - (BOOL)isPaused
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  paused = v2->_paused;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  paused = selfCopy->_paused;
+  objc_sync_exit(selfCopy);
 
   return paused;
 }
 
 - (int64_t)count
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(IMDoubleLinkedList *)v2->_eventNotificationList count];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(IMDoubleLinkedList *)selfCopy->_eventNotificationList count];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (BOOL)containsNotificationTarget:(id)a3
+- (BOOL)containsNotificationTarget:(id)target
 {
-  v4 = a3;
-  if (v4)
+  targetCopy = target;
+  if (targetCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
@@ -333,13 +333,13 @@
     v8[1] = 3221225472;
     v8[2] = sub_1A8664FA4;
     v8[3] = &unk_1E78280C8;
-    v9 = v4;
+    v9 = targetCopy;
     v10 = &v11;
-    [(IMEventNotificationQueue *)v5 enumerateObjectsUsingBlock:v8];
+    [(IMEventNotificationQueue *)selfCopy enumerateObjectsUsingBlock:v8];
     v6 = *(v12 + 24);
 
     _Block_object_dispose(&v11, 8);
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else

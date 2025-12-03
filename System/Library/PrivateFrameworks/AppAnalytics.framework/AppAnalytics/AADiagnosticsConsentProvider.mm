@@ -1,11 +1,11 @@
 @interface AADiagnosticsConsentProvider
-+ (id)custom:(id)a3;
++ (id)custom:(id)custom;
 - (AADiagnosticsConsentProvider)init;
 @end
 
 @implementation AADiagnosticsConsentProvider
 
-+ (id)custom:(id)a3
++ (id)custom:(id)custom
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   v5 = type metadata accessor for DiagnosticsConsentProvider(0);
@@ -13,7 +13,7 @@
   v7 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5);
   v9 = &v17 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(custom);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = swift_allocObject();

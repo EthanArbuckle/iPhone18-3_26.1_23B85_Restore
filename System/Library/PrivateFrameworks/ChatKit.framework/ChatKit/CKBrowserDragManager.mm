@@ -3,36 +3,36 @@
 - (CGPoint)locationInView;
 - (CKBrowserDragControllerDelegate)delegate;
 - (CKBrowserDragControllerTranscriptDelegate)transcriptDelegate;
-- (CKBrowserDragManager)initWithTargetView:(id)a3;
-- (id)browserDragViewControllerTargetView:(id)a3;
+- (CKBrowserDragManager)initWithTargetView:(id)view;
+- (id)browserDragViewControllerTargetView:(id)view;
 - (id)draggedSticker;
-- (id)superviewOfView:(id)a3 matchingClass:(Class)a4;
-- (void)beginDraggingItem:(id)a3 withAnimatedDragImage:(id)a4 fromRect:(CGRect)a5;
-- (void)beginDraggingItem:(id)a3 withDragImage:(id)a4 fromRect:(CGRect)a5;
-- (void)browserDragViewController:(id)a3 dragEndedWithTarget:(id)a4;
-- (void)browserDragViewController:(id)a3 draggedWithTarget:(id)a4;
+- (id)superviewOfView:(id)view matchingClass:(Class)class;
+- (void)beginDraggingItem:(id)item withAnimatedDragImage:(id)image fromRect:(CGRect)rect;
+- (void)beginDraggingItem:(id)item withDragImage:(id)image fromRect:(CGRect)rect;
+- (void)browserDragViewController:(id)controller dragEndedWithTarget:(id)target;
+- (void)browserDragViewController:(id)controller draggedWithTarget:(id)target;
 - (void)dealloc;
-- (void)setPlusButtonHidden:(BOOL)a3;
-- (void)tapRecognized:(id)a3;
+- (void)setPlusButtonHidden:(BOOL)hidden;
+- (void)tapRecognized:(id)recognized;
 @end
 
 @implementation CKBrowserDragManager
 
-- (CKBrowserDragManager)initWithTargetView:(id)a3
+- (CKBrowserDragManager)initWithTargetView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = CKBrowserDragManager;
   v5 = [(CKBrowserDragManager *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(CKBrowserDragManager *)v5 setTargetView:v4];
+    [(CKBrowserDragManager *)v5 setTargetView:viewCopy];
     v7 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v6 action:sel_tapRecognized_];
     [v7 setMinimumPressDuration:2.22507386e-308];
     [v7 setDelegate:v6];
     [v7 setCancelsTouchesInView:0];
-    [v4 addGestureRecognizer:v7];
+    [viewCopy addGestureRecognizer:v7];
     [(CKBrowserDragManager *)v6 setGestureRecognizer:v7];
   }
 
@@ -41,12 +41,12 @@
 
 - (void)dealloc
 {
-  v3 = [(CKBrowserDragManager *)self gestureRecognizer];
-  [v3 setEnabled:0];
+  gestureRecognizer = [(CKBrowserDragManager *)self gestureRecognizer];
+  [gestureRecognizer setEnabled:0];
 
-  v4 = [(CKBrowserDragManager *)self targetView];
-  v5 = [(CKBrowserDragManager *)self gestureRecognizer];
-  [v4 removeGestureRecognizer:v5];
+  targetView = [(CKBrowserDragManager *)self targetView];
+  gestureRecognizer2 = [(CKBrowserDragManager *)self gestureRecognizer];
+  [targetView removeGestureRecognizer:gestureRecognizer2];
 
   v6.receiver = self;
   v6.super_class = CKBrowserDragManager;
@@ -66,23 +66,23 @@
   }
 }
 
-- (void)beginDraggingItem:(id)a3 withDragImage:(id)a4 fromRect:(CGRect)a5
+- (void)beginDraggingItem:(id)item withDragImage:(id)image fromRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v19[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  if (a4)
+  itemCopy = item;
+  if (image)
   {
-    v12 = a4;
+    imageCopy = image;
     v13 = [CKAnimatedImage alloc];
-    v19[0] = v12;
+    v19[0] = imageCopy;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
 
     v15 = [(CKAnimatedImage *)v13 initWithImages:v14 durations:&unk_1F04E6900];
-    [(CKBrowserDragManager *)self beginDraggingItem:v11 withAnimatedDragImage:v15 fromRect:x, y, width, height];
+    [(CKBrowserDragManager *)self beginDraggingItem:itemCopy withAnimatedDragImage:v15 fromRect:x, y, width, height];
   }
 
   else
@@ -95,13 +95,13 @@
   }
 }
 
-- (id)superviewOfView:(id)a3 matchingClass:(Class)a4
+- (id)superviewOfView:(id)view matchingClass:(Class)class
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy)
   {
-    v6 = v4;
+    v6 = viewCopy;
     do
     {
       if (objc_opt_isKindOfClass())
@@ -109,12 +109,12 @@
         break;
       }
 
-      v7 = [v6 superview];
+      superview = [v6 superview];
 
-      v6 = v7;
+      v6 = superview;
     }
 
-    while (v7);
+    while (superview);
   }
 
   else
@@ -125,22 +125,22 @@
   return v6;
 }
 
-- (void)beginDraggingItem:(id)a3 withAnimatedDragImage:(id)a4 fromRect:(CGRect)a5
+- (void)beginDraggingItem:(id)item withAnimatedDragImage:(id)image fromRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
-  v13 = [(CKBrowserDragManager *)self gestureRecognizer];
-  v14 = [v13 state];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  itemCopy = item;
+  imageCopy = image;
+  gestureRecognizer = [(CKBrowserDragManager *)self gestureRecognizer];
+  state = [gestureRecognizer state];
 
   if (CKIsRunningInMacCatalyst())
   {
-    v15 = [(CKBrowserDragManager *)self currentItem];
+    currentItem = [(CKBrowserDragManager *)self currentItem];
 
-    if (!v15)
+    if (!currentItem)
     {
       goto LABEL_12;
     }
@@ -156,32 +156,32 @@ LABEL_30:
       }
     }
 
-    v91 = [(CKBrowserDragManager *)self delegate];
+    delegate = [(CKBrowserDragManager *)self delegate];
     v92 = objc_opt_respondsToSelector();
 
     if (v92)
     {
-      v93 = [(CKBrowserDragManager *)self delegate];
-      [v93 dragManager:self didEndDraggingItem:v11 toDragTarget:0 dropArea:0];
+      delegate2 = [(CKBrowserDragManager *)self delegate];
+      [delegate2 dragManager:self didEndDraggingItem:itemCopy toDragTarget:0 dropArea:0];
     }
 
     goto LABEL_36;
   }
 
-  v16 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v16 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     v17 = CKIsRunningInCameraAppsClient();
 
     if (!v17)
     {
       v18 = MEMORY[0x1E69DD0A8];
-      v19 = [MEMORY[0x1E69DD2E8] keyWindow];
-      v20 = [v19 windowScene];
-      v21 = [v18 sharedTextEffectsWindowForWindowScene:v20];
+      keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+      windowScene = [keyWindow windowScene];
+      v21 = [v18 sharedTextEffectsWindowForWindowScene:windowScene];
 
-      LODWORD(v19) = [v21 _isFullscreen];
-      if (!v19)
+      LODWORD(keyWindow) = [v21 _isFullscreen];
+      if (!keyWindow)
       {
         goto LABEL_30;
       }
@@ -192,92 +192,92 @@ LABEL_30:
   {
   }
 
-  v22 = [(CKBrowserDragManager *)self currentItem];
-  if (v22)
+  currentItem2 = [(CKBrowserDragManager *)self currentItem];
+  if (currentItem2)
   {
 
     goto LABEL_30;
   }
 
-  if ((v14 - 1) > 2)
+  if ((state - 1) > 2)
   {
     goto LABEL_30;
   }
 
 LABEL_12:
-  v23 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v23 postNotificationName:@"CKBrowserDragManagerWillStartDraggingNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CKBrowserDragManagerWillStartDraggingNotification" object:0];
 
-  [(CKBrowserDragManager *)self setCurrentItem:v11];
-  v24 = [(CKBrowserDragManager *)self usesSeparateDragWindow];
-  v25 = [(CKBrowserDragManager *)self targetView];
-  v26 = [v25 window];
+  [(CKBrowserDragManager *)self setCurrentItem:itemCopy];
+  usesSeparateDragWindow = [(CKBrowserDragManager *)self usesSeparateDragWindow];
+  targetView = [(CKBrowserDragManager *)self targetView];
+  window = [targetView window];
 
-  if (v24)
+  if (usesSeparateDragWindow)
   {
     v27 = [CKBrowserDragWindow alloc];
-    v28 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v28 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v29 = [(CKPresentationControllerWindow *)v27 initWithFrame:0 allowsRotation:0 allowsStatusBarChanges:0 restrictedToPortraitOrientation:?];
 
-    v26 = v29;
+    window = v29;
   }
 
-  [(CKBrowserDragManager *)self setDragWindow:v26];
-  v30 = [(CKBrowserDragManager *)self targetView];
-  [v30 convertRect:0 toView:{x, y, width, height}];
+  [(CKBrowserDragManager *)self setDragWindow:window];
+  targetView2 = [(CKBrowserDragManager *)self targetView];
+  [targetView2 convertRect:0 toView:{x, y, width, height}];
   v100 = v32;
   v101 = v31;
   v98 = v34;
   v99 = v33;
 
-  v35 = [(CKBrowserDragManager *)self gestureRecognizer];
-  v36 = [(CKBrowserDragManager *)self targetView];
-  [v35 locationInView:v36];
+  gestureRecognizer2 = [(CKBrowserDragManager *)self gestureRecognizer];
+  targetView3 = [(CKBrowserDragManager *)self targetView];
+  [gestureRecognizer2 locationInView:targetView3];
   v38 = v37;
   v40 = v39;
 
-  v41 = [(CKBrowserDragManager *)self targetView];
-  [v41 convertPoint:0 toView:{v38, v40}];
+  targetView4 = [(CKBrowserDragManager *)self targetView];
+  [targetView4 convertPoint:0 toView:{v38, v40}];
   v43 = v42;
   v45 = v44;
 
-  v46 = [(CKBrowserDragManager *)self targetView];
-  v47 = [(CKBrowserDragManager *)self superviewOfView:v46 matchingClass:objc_opt_class()];
+  targetView5 = [(CKBrowserDragManager *)self targetView];
+  v47 = [(CKBrowserDragManager *)self superviewOfView:targetView5 matchingClass:objc_opt_class()];
 
-  v48 = [(CKBrowserDragManager *)self targetView];
-  [v48 convertRect:v47 toView:{x, y, width, height}];
+  targetView6 = [(CKBrowserDragManager *)self targetView];
+  [targetView6 convertRect:v47 toView:{x, y, width, height}];
   v50 = v49;
   v52 = v51;
   v54 = v53;
   v56 = v55;
 
-  v57 = [(CKBrowserDragManager *)self gestureRecognizer];
-  [v57 locationInView:v47];
+  gestureRecognizer3 = [(CKBrowserDragManager *)self gestureRecognizer];
+  [gestureRecognizer3 locationInView:v47];
   v59 = v58;
   v61 = v60;
 
-  v62 = [(CKBrowserDragManager *)self targetView];
-  [v62 convertPoint:v47 toView:{v59, v61}];
+  targetView7 = [(CKBrowserDragManager *)self targetView];
+  [targetView7 convertPoint:v47 toView:{v59, v61}];
   v64 = v63;
   v66 = v65;
 
   v67 = [CKBrowserDragViewController alloc];
-  v68 = [(CKBrowserDragManager *)self gestureRecognizer];
-  v69 = [(CKBrowserDragViewController *)v67 initWithDragImage:v12 inSourceRect:v68 withSourcePoint:v101 keyboardSourceRect:v100 keyboardSourcePoint:v99 withGestureRecognizer:v98, v43, v45, v50, v52, v54, v56, v64, v66];
+  gestureRecognizer4 = [(CKBrowserDragManager *)self gestureRecognizer];
+  v69 = [(CKBrowserDragViewController *)v67 initWithDragImage:imageCopy inSourceRect:gestureRecognizer4 withSourcePoint:v101 keyboardSourceRect:v100 keyboardSourcePoint:v99 withGestureRecognizer:v98, v43, v45, v50, v52, v54, v56, v64, v66];
 
-  v70 = [MEMORY[0x1E69DD2E8] keyWindow];
-  v71 = [v70 windowScene];
-  v72 = [v71 _enhancedWindowingEnabled];
+  keyWindow2 = [MEMORY[0x1E69DD2E8] keyWindow];
+  windowScene2 = [keyWindow2 windowScene];
+  _enhancedWindowingEnabled = [windowScene2 _enhancedWindowingEnabled];
 
-  if (v72)
+  if (_enhancedWindowingEnabled)
   {
     [(CKBrowserDragViewController *)v69 setKeyboardWindowSourceView:v47];
   }
 
   [(CKBrowserDragViewController *)v69 setDelegate:self];
   [(CKBrowserDragManager *)self setDragViewController:v69];
-  if (v24)
+  if (usesSeparateDragWindow)
   {
     v73 = 0;
   }
@@ -288,47 +288,47 @@ LABEL_12:
   }
 
   [(CKBrowserDragViewController *)v69 setModalPresentationStyle:v73];
-  v74 = [(CKBrowserDragManager *)self delegate];
+  delegate3 = [(CKBrowserDragManager *)self delegate];
   v75 = objc_opt_respondsToSelector();
 
   if (v75)
   {
-    v76 = [(CKBrowserDragManager *)self delegate];
-    -[CKBrowserDragViewController setCanScale:](v69, "setCanScale:", [v76 dragManager:self canScaleItem:v11]);
+    delegate4 = [(CKBrowserDragManager *)self delegate];
+    -[CKBrowserDragViewController setCanScale:](v69, "setCanScale:", [delegate4 dragManager:self canScaleItem:itemCopy]);
   }
 
-  v77 = [(CKBrowserDragManager *)self delegate];
+  delegate5 = [(CKBrowserDragManager *)self delegate];
   v78 = objc_opt_respondsToSelector();
 
   if (v78)
   {
-    v79 = [(CKBrowserDragManager *)self delegate];
-    -[CKBrowserDragViewController setCanRotate:](v69, "setCanRotate:", [v79 dragManager:self canRotateItem:v11]);
+    delegate6 = [(CKBrowserDragManager *)self delegate];
+    -[CKBrowserDragViewController setCanRotate:](v69, "setCanRotate:", [delegate6 dragManager:self canRotateItem:itemCopy]);
   }
 
-  v80 = [(CKBrowserDragManager *)self delegate];
+  delegate7 = [(CKBrowserDragManager *)self delegate];
   v81 = objc_opt_respondsToSelector();
 
   if (v81)
   {
-    v82 = [(CKBrowserDragManager *)self delegate];
-    -[CKBrowserDragViewController setCanPeel:](v69, "setCanPeel:", [v82 dragManager:self canPeelItem:v11]);
+    delegate8 = [(CKBrowserDragManager *)self delegate];
+    -[CKBrowserDragViewController setCanPeel:](v69, "setCanPeel:", [delegate8 dragManager:self canPeelItem:itemCopy]);
   }
 
-  [v26 setHidden:0];
-  v83 = [v26 rootViewController];
-  if (!v24)
+  [window setHidden:0];
+  rootViewController = [window rootViewController];
+  if (!usesSeparateDragWindow)
   {
     v94 = 10;
     while (1)
     {
-      v95 = [v83 presentedViewController];
-      if (!v95)
+      presentedViewController = [rootViewController presentedViewController];
+      if (!presentedViewController)
       {
         break;
       }
 
-      v96 = v95;
+      v96 = presentedViewController;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -337,9 +337,9 @@ LABEL_12:
         break;
       }
 
-      v84 = [v83 presentedViewController];
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      v83 = v84;
+      rootViewController = presentedViewController2;
       if (!--v94)
       {
         goto LABEL_27;
@@ -347,72 +347,72 @@ LABEL_12:
     }
   }
 
-  v84 = v83;
+  presentedViewController2 = rootViewController;
 LABEL_27:
-  [v84 presentViewController:v69 animated:0 completion:0];
-  [(CKBrowserDragManager *)self setPresentingViewController:v84];
-  v85 = [(CKBrowserDragManager *)self transcriptDelegate];
-  [v85 dragManagerDidBeginDragging:self];
+  [presentedViewController2 presentViewController:v69 animated:0 completion:0];
+  [(CKBrowserDragManager *)self setPresentingViewController:presentedViewController2];
+  transcriptDelegate = [(CKBrowserDragManager *)self transcriptDelegate];
+  [transcriptDelegate dragManagerDidBeginDragging:self];
 
-  v86 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v86 postNotificationName:@"CKBrowserDragManagerDidStartDraggingNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"CKBrowserDragManagerDidStartDraggingNotification" object:0];
 
-  v87 = [(CKBrowserDragManager *)self delegate];
+  delegate9 = [(CKBrowserDragManager *)self delegate];
   v88 = objc_opt_respondsToSelector();
 
   if (v88)
   {
-    v89 = [(CKBrowserDragManager *)self delegate];
-    [v89 dragManager:self didBeginDraggingItem:v11];
+    delegate10 = [(CKBrowserDragManager *)self delegate];
+    [delegate10 dragManager:self didBeginDraggingItem:itemCopy];
   }
 
 LABEL_36:
 }
 
-- (void)setPlusButtonHidden:(BOOL)a3
+- (void)setPlusButtonHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(CKBrowserDragManager *)self dragViewController];
-  [v4 setPlusImageViewHidden:v3];
+  hiddenCopy = hidden;
+  dragViewController = [(CKBrowserDragManager *)self dragViewController];
+  [dragViewController setPlusImageViewHidden:hiddenCopy];
 }
 
-- (void)tapRecognized:(id)a3
+- (void)tapRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = [(CKBrowserDragManager *)self targetView];
-  [v4 locationInView:v5];
+  recognizedCopy = recognized;
+  targetView = [(CKBrowserDragManager *)self targetView];
+  [recognizedCopy locationInView:targetView];
   v7 = v6;
   v9 = v8;
 
   [(CKBrowserDragManager *)self setLocationInView:v7, v9];
 }
 
-- (void)browserDragViewController:(id)a3 draggedWithTarget:(id)a4
+- (void)browserDragViewController:(id)controller draggedWithTarget:(id)target
 {
-  v10 = a4;
-  v5 = [(CKBrowserDragManager *)self transcriptDelegate];
-  [v5 dragManager:self draggedItemWithTarget:v10];
+  targetCopy = target;
+  transcriptDelegate = [(CKBrowserDragManager *)self transcriptDelegate];
+  [transcriptDelegate dragManager:self draggedItemWithTarget:targetCopy];
 
-  v6 = [(CKBrowserDragManager *)self delegate];
+  delegate = [(CKBrowserDragManager *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CKBrowserDragManager *)self delegate];
-    v9 = [(CKBrowserDragManager *)self currentItem];
-    [v8 dragManager:self didDragItem:v9 toDragTarget:v10];
+    delegate2 = [(CKBrowserDragManager *)self delegate];
+    currentItem = [(CKBrowserDragManager *)self currentItem];
+    [delegate2 dragManager:self didDragItem:currentItem toDragTarget:targetCopy];
   }
 }
 
-- (id)browserDragViewControllerTargetView:(id)a3
+- (id)browserDragViewControllerTargetView:(id)view
 {
-  v4 = [(CKBrowserDragManager *)self transcriptDelegate];
+  transcriptDelegate = [(CKBrowserDragManager *)self transcriptDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKBrowserDragManager *)self transcriptDelegate];
-    v7 = [v6 dragManagerTargetView:self];
+    transcriptDelegate2 = [(CKBrowserDragManager *)self transcriptDelegate];
+    v7 = [transcriptDelegate2 dragManagerTargetView:self];
   }
 
   else
@@ -423,14 +423,14 @@ LABEL_36:
   return v7;
 }
 
-- (void)browserDragViewController:(id)a3 dragEndedWithTarget:(id)a4
+- (void)browserDragViewController:(id)controller dragEndedWithTarget:(id)target
 {
-  v5 = a4;
-  v6 = [(CKBrowserDragManager *)self currentItem];
-  if (v5)
+  targetCopy = target;
+  currentItem = [(CKBrowserDragManager *)self currentItem];
+  if (targetCopy)
   {
-    v7 = [(CKBrowserDragManager *)self transcriptDelegate];
-    v8 = [v7 dragManager:self dropAreaForDragTarget:v5];
+    transcriptDelegate = [(CKBrowserDragManager *)self transcriptDelegate];
+    v8 = [transcriptDelegate dragManager:self dropAreaForDragTarget:targetCopy];
   }
 
   else
@@ -438,13 +438,13 @@ LABEL_36:
     v8 = 0;
   }
 
-  v9 = [(CKBrowserDragManager *)self delegate];
+  delegate = [(CKBrowserDragManager *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CKBrowserDragManager *)self delegate];
-    v12 = [v11 dragManager:self shouldCancelDraggingForItem:v6 toDragTarget:v5 dropArea:v8];
+    delegate2 = [(CKBrowserDragManager *)self delegate];
+    v12 = [delegate2 dragManager:self shouldCancelDraggingForItem:currentItem toDragTarget:targetCopy dropArea:v8];
   }
 
   else
@@ -458,24 +458,24 @@ LABEL_36:
   aBlock[2] = __70__CKBrowserDragManager_browserDragViewController_dragEndedWithTarget___block_invoke;
   aBlock[3] = &unk_1E72F0D40;
   aBlock[4] = self;
-  v14 = v6;
+  v14 = currentItem;
   v30 = v14;
-  v15 = v5;
+  v15 = targetCopy;
   v31 = v15;
   v32 = v8;
   v33 = v13 & 1;
   v16 = _Block_copy(aBlock);
   if (v13)
   {
-    v17 = [(CKBrowserDragManager *)self dragViewController];
-    [v17 animateBackToSourceCompletionBlock:v16];
+    dragViewController = [(CKBrowserDragManager *)self dragViewController];
+    [dragViewController animateBackToSourceCompletionBlock:v16];
   }
 
   else
   {
-    v18 = [(CKBrowserDragManager *)self delegate];
-    v19 = [(CKBrowserDragManager *)self currentItem];
-    v20 = [v18 dragManager:self canPeelItem:v19];
+    delegate3 = [(CKBrowserDragManager *)self delegate];
+    currentItem2 = [(CKBrowserDragManager *)self currentItem];
+    v20 = [delegate3 dragManager:self canPeelItem:currentItem2];
 
     if (v20)
     {
@@ -486,18 +486,18 @@ LABEL_36:
       v27[4] = self;
       v28 = v16;
       v21 = _Block_copy(v27);
-      v22 = [(CKBrowserDragManager *)self transcriptDelegate];
+      transcriptDelegate2 = [(CKBrowserDragManager *)self transcriptDelegate];
       v23 = objc_opt_respondsToSelector();
 
       if (v23)
       {
-        v24 = [(CKBrowserDragManager *)self transcriptDelegate];
+        transcriptDelegate3 = [(CKBrowserDragManager *)self transcriptDelegate];
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;
         v25[2] = __70__CKBrowserDragManager_browserDragViewController_dragEndedWithTarget___block_invoke_4;
         v25[3] = &unk_1E72F0DB8;
         v26 = v21;
-        [v24 dragManager:self overrideDropPointForTarget:v15 completion:v25];
+        [transcriptDelegate3 dragManager:self overrideDropPointForTarget:v15 completion:v25];
       }
 
       else
@@ -587,10 +587,10 @@ void __70__CKBrowserDragManager_browserDragViewController_dragEndedWithTarget___
 
 - (id)draggedSticker
 {
-  v2 = [(CKBrowserDragManager *)self dragViewController];
-  v3 = [v2 draggedSticker];
+  dragViewController = [(CKBrowserDragManager *)self dragViewController];
+  draggedSticker = [dragViewController draggedSticker];
 
-  return v3;
+  return draggedSticker;
 }
 
 - (CKBrowserDragControllerDelegate)delegate

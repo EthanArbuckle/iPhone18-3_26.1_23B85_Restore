@@ -1,27 +1,27 @@
 @interface HomeNotificationActionOperation
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
-- (HomeNotificationActionOperation)initWithAction:(id)a3 home:(id)a4 cameraProfile:(id)a5;
-- (id)_itemsToInvertPrimaryStateForItems:(id)a3 preferredPrimaryState:(int64_t)a4 targetPrimaryState:(int64_t *)a5;
-- (id)_toggleLightbulbsForItems:(id)a3;
-- (id)_toggleMicrophoneState:(id)a3;
-- (id)_unlockLocksAndDisarmSecuritySystemsForItems:(id)a3;
-- (id)_writePrimaryState:(int64_t)a3 forItems:(id)a4;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (HomeNotificationActionOperation)initWithAction:(id)action home:(id)home cameraProfile:(id)profile;
+- (id)_itemsToInvertPrimaryStateForItems:(id)items preferredPrimaryState:(int64_t)state targetPrimaryState:(int64_t *)primaryState;
+- (id)_toggleLightbulbsForItems:(id)items;
+- (id)_toggleMicrophoneState:(id)state;
+- (id)_unlockLocksAndDisarmSecuritySystemsForItems:(id)items;
+- (id)_writePrimaryState:(int64_t)state forItems:(id)items;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
 @implementation HomeNotificationActionOperation
 
-- (HomeNotificationActionOperation)initWithAction:(id)a3 home:(id)a4 cameraProfile:(id)a5
+- (HomeNotificationActionOperation)initWithAction:(id)action home:(id)home cameraProfile:(id)profile
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  v12 = 0;
-  if (v8 && v9 && v10)
+  actionCopy = action;
+  homeCopy = home;
+  profileCopy = profile;
+  v11 = profileCopy;
+  selfCopy = 0;
+  if (actionCopy && homeCopy && profileCopy)
   {
     v16.receiver = self;
     v16.super_class = HomeNotificationActionOperation;
@@ -31,56 +31,56 @@
       v14 = dispatch_queue_create("com.apple.home.notificationActionOperation", 0);
       [(HomeNotificationActionOperation *)v13 setAccessQueue:v14];
 
-      [(HomeNotificationActionOperation *)v13 setAction:v8];
-      [(HomeNotificationActionOperation *)v13 setHome:v9];
+      [(HomeNotificationActionOperation *)v13 setAction:actionCopy];
+      [(HomeNotificationActionOperation *)v13 setHome:homeCopy];
       [(HomeNotificationActionOperation *)v13 setCameraProfile:v11];
     }
 
     self = v13;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (BOOL)isFinished
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(HomeNotificationActionOperation *)self accessQueue];
+  accessQueue = [(HomeNotificationActionOperation *)self accessQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100007B40;
   v5[3] = &unk_100018948;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(accessQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  v3 = a3;
-  if ([(HomeNotificationActionOperation *)self isFinished]!= a3)
+  finishedCopy = finished;
+  if ([(HomeNotificationActionOperation *)self isFinished]!= finished)
   {
     [(HomeNotificationActionOperation *)self willChangeValueForKey:@"isFinished"];
-    v5 = [(HomeNotificationActionOperation *)self accessQueue];
+    accessQueue = [(HomeNotificationActionOperation *)self accessQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100007C34;
     v6[3] = &unk_100018970;
     v6[4] = self;
-    v7 = v3;
-    dispatch_async(v5, v6);
+    v7 = finishedCopy;
+    dispatch_async(accessQueue, v6);
 
     [(HomeNotificationActionOperation *)self didChangeValueForKey:@"isFinished"];
-    if (v3)
+    if (finishedCopy)
     {
       [(HomeNotificationActionOperation *)self setExecuting:0];
     }
@@ -89,38 +89,38 @@
 
 - (BOOL)isExecuting
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(HomeNotificationActionOperation *)self accessQueue];
+  accessQueue = [(HomeNotificationActionOperation *)self accessQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100007D24;
   v5[3] = &unk_100018948;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(accessQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  if ([(HomeNotificationActionOperation *)self isExecuting]!= a3)
+  if ([(HomeNotificationActionOperation *)self isExecuting]!= executing)
   {
     [(HomeNotificationActionOperation *)self willChangeValueForKey:@"isExecuting"];
-    v5 = [(HomeNotificationActionOperation *)self accessQueue];
+    accessQueue = [(HomeNotificationActionOperation *)self accessQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100007E08;
     v6[3] = &unk_100018970;
     v6[4] = self;
-    v7 = a3;
-    dispatch_async(v5, v6);
+    executingCopy = executing;
+    dispatch_async(accessQueue, v6);
 
     [(HomeNotificationActionOperation *)self didChangeValueForKey:@"isExecuting"];
   }
@@ -137,14 +137,14 @@
   else
   {
     [(HomeNotificationActionOperation *)self setExecuting:1];
-    v4 = [(HomeNotificationActionOperation *)self action];
-    v5 = [v4 identifier];
+    action = [(HomeNotificationActionOperation *)self action];
+    identifier = [action identifier];
 
-    if ([v5 isEqualToString:@"microphone_toggleButton"])
+    if ([identifier isEqualToString:@"microphone_toggleButton"])
     {
-      v6 = [(HomeNotificationActionOperation *)self cameraProfile];
-      v7 = [v6 microphoneControl];
-      v8 = [(HomeNotificationActionOperation *)self _toggleMicrophoneState:v7];
+      cameraProfile = [(HomeNotificationActionOperation *)self cameraProfile];
+      microphoneControl = [cameraProfile microphoneControl];
+      v8 = [(HomeNotificationActionOperation *)self _toggleMicrophoneState:microphoneControl];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10000802C;
@@ -155,8 +155,8 @@
 
     else
     {
-      v10 = [(HomeNotificationActionOperation *)self action];
-      v11 = [v10 serviceUUIDs];
+      action2 = [(HomeNotificationActionOperation *)self action];
+      serviceUUIDs = [action2 serviceUUIDs];
 
       objc_initWeak(&location, self);
       v13[0] = _NSConcreteStackBlock;
@@ -164,9 +164,9 @@
       v13[2] = sub_10000806C;
       v13[3] = &unk_100018A88;
       v13[4] = self;
-      v14 = v11;
+      v14 = serviceUUIDs;
       v15[1] = a2;
-      v12 = v11;
+      v12 = serviceUUIDs;
       objc_copyWeak(v15, &location);
       dispatch_async(&_dispatch_main_q, v13);
       objc_destroyWeak(v15);
@@ -176,21 +176,21 @@
   }
 }
 
-- (id)_toggleMicrophoneState:(id)a3
+- (id)_toggleMicrophoneState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    v4 = [(HomeNotificationActionOperation *)self cameraProfile];
-    v5 = [v4 streamControl];
-    v6 = [v5 cameraStream];
+    cameraProfile = [(HomeNotificationActionOperation *)self cameraProfile];
+    streamControl = [cameraProfile streamControl];
+    cameraStream = [streamControl cameraStream];
 
-    if (v6)
+    if (cameraStream)
     {
       v7 = [HFCameraAudioManager alloc];
-      v8 = [(HomeNotificationActionOperation *)self cameraProfile];
-      v9 = [(HomeNotificationActionOperation *)self home];
-      v10 = [v9 hf_characteristicValueManager];
-      v11 = [v7 initWithCameraProfile:v8 cameraStream:v6 valueManager:v10];
+      cameraProfile2 = [(HomeNotificationActionOperation *)self cameraProfile];
+      home = [(HomeNotificationActionOperation *)self home];
+      hf_characteristicValueManager = [home hf_characteristicValueManager];
+      v11 = [v7 initWithCameraProfile:cameraProfile2 cameraStream:cameraStream valueManager:hf_characteristicValueManager];
 
       [v11 setOutgoingAudioEnabled:{objc_msgSend(v11, "isOutgoingAudioEnabled") ^ 1}];
     }
@@ -225,10 +225,10 @@
   return v14;
 }
 
-- (id)_toggleLightbulbsForItems:(id)a3
+- (id)_toggleLightbulbsForItems:(id)items
 {
   v18 = 2;
-  v4 = [a3 na_filter:&stru_100018AF0];
+  v4 = [items na_filter:&stru_100018AF0];
   v5 = [(HomeNotificationActionOperation *)self _itemsToInvertPrimaryStateForItems:v4 preferredPrimaryState:2 targetPrimaryState:&v18];
   v6 = [(HomeNotificationActionOperation *)self _writePrimaryState:v18 forItems:v5];
   v15[0] = _NSConcreteStackBlock;
@@ -245,21 +245,21 @@
   v12[2] = sub_100008D08;
   v12[3] = &unk_100018B40;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   v9 = v7;
   v10 = [v8 recover:v12];
 
   return v10;
 }
 
-- (id)_unlockLocksAndDisarmSecuritySystemsForItems:(id)a3
+- (id)_unlockLocksAndDisarmSecuritySystemsForItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 na_filter:&stru_100018B60];
-  v6 = [v4 na_filter:&stru_100018B80];
+  itemsCopy = items;
+  v5 = [itemsCopy na_filter:&stru_100018B60];
+  v6 = [itemsCopy na_filter:&stru_100018B80];
   if (![v5 count] && !objc_msgSend(v6, "count"))
   {
-    NSLog(@"Attempted to unlock doors and disarm security systems when no such accessories were found! Items: %@", v4);
+    NSLog(@"Attempted to unlock doors and disarm security systems when no such accessories were found! Items: %@", itemsCopy);
   }
 
   v19 = [v5 na_filter:&stru_100018BA0];
@@ -271,8 +271,8 @@
   v29[4] = self;
   v7 = [v20 na_map:v29];
   v8 = [(HomeNotificationActionOperation *)self _writePrimaryState:2 forItems:v19];
-  v9 = [v7 allObjects];
-  v10 = [v9 arrayByAddingObject:v8];
+  allObjects = [v7 allObjects];
+  v10 = [allObjects arrayByAddingObject:v8];
 
   v11 = [NAFuture combineAllFutures:v10];
   v25[0] = _NSConcreteStackBlock;
@@ -283,7 +283,7 @@
   v26 = v12;
   v13 = v6;
   v27 = v13;
-  v28 = self;
+  selfCopy = self;
   v14 = [v11 flatMap:v25];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -291,7 +291,7 @@
   v21[3] = &unk_100018C58;
   v22 = v12;
   v23 = v13;
-  v24 = self;
+  selfCopy2 = self;
   v15 = v13;
   v16 = v12;
   v17 = [v14 recover:v21];
@@ -299,29 +299,29 @@
   return v17;
 }
 
-- (id)_writePrimaryState:(int64_t)a3 forItems:(id)a4
+- (id)_writePrimaryState:(int64_t)state forItems:(id)items
 {
-  v6 = a4;
-  if ([v6 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v7 = [(HomeNotificationActionOperation *)self home];
-    v8 = [v7 hf_characteristicValueManager];
-    [v8 beginTransactionWithReason:@"Long Look notification light toggle"];
+    home = [(HomeNotificationActionOperation *)self home];
+    hf_characteristicValueManager = [home hf_characteristicValueManager];
+    [hf_characteristicValueManager beginTransactionWithReason:@"Long Look notification light toggle"];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100009900;
     v16[3] = &unk_100018C80;
     v16[4] = self;
-    v16[5] = a3;
-    v9 = [v6 na_map:v16];
-    v10 = [(HomeNotificationActionOperation *)self home];
-    v11 = [v10 hf_characteristicValueManager];
-    [v11 commitTransactionWithReason:@"Long Look notification light toggle"];
+    v16[5] = state;
+    v9 = [itemsCopy na_map:v16];
+    home2 = [(HomeNotificationActionOperation *)self home];
+    hf_characteristicValueManager2 = [home2 hf_characteristicValueManager];
+    [hf_characteristicValueManager2 commitTransactionWithReason:@"Long Look notification light toggle"];
 
-    v12 = [v9 allObjects];
+    allObjects = [v9 allObjects];
     v13 = +[NAScheduler mainThreadScheduler];
-    v14 = [NAFuture combineAllFutures:v12 ignoringErrors:0 scheduler:v13];
+    v14 = [NAFuture combineAllFutures:allObjects ignoringErrors:0 scheduler:v13];
   }
 
   else
@@ -332,29 +332,29 @@
   return v14;
 }
 
-- (id)_itemsToInvertPrimaryStateForItems:(id)a3 preferredPrimaryState:(int64_t)a4 targetPrimaryState:(int64_t *)a5
+- (id)_itemsToInvertPrimaryStateForItems:(id)items preferredPrimaryState:(int64_t)state targetPrimaryState:(int64_t *)primaryState
 {
-  v6 = a4;
+  stateCopy = state;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100009B20;
   v20[3] = &unk_100018CA0;
-  v20[4] = a4;
-  v7 = a3;
+  v20[4] = state;
+  itemsCopy = items;
   v8 = objc_retainBlock(v20);
-  v9 = [v7 na_filter:v8];
+  v9 = [itemsCopy na_filter:v8];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_100009B8C;
   v18 = &unk_100018CC8;
   v19 = v8;
   v10 = v8;
-  v11 = [v7 na_filter:&v15];
+  v11 = [itemsCopy na_filter:&v15];
 
   if ([v11 count])
   {
     v12 = v11;
-    if (!a5)
+    if (!primaryState)
     {
       goto LABEL_7;
     }
@@ -363,12 +363,12 @@
   }
 
   v12 = v9;
-  if (a5)
+  if (primaryState)
   {
-    v6 = HFToggledPrimaryState();
+    stateCopy = HFToggledPrimaryState();
     v12 = v9;
 LABEL_6:
-    *a5 = v6;
+    *primaryState = stateCopy;
   }
 
 LABEL_7:

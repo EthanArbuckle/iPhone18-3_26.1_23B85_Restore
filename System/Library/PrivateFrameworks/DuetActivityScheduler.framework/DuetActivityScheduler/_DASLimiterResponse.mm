@@ -1,13 +1,13 @@
 @interface _DASLimiterResponse
-+ (BOOL)queryActivityDecision:(unint64_t)a3 fromResponses:(id)a4;
-+ (id)limitResponseWithDecision:(unint64_t)a3 withLimiter:(id)a4 validityDuration:(double)a5 rationale:(id)a6;
-+ (unint64_t)bitmaskFromResponses:(id)a3;
-+ (void)updateActivity:(id)a3 withLimitResponse:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (_DASLimiterResponse)initWithCoder:(id)a3;
-- (_DASLimiterResponse)initWithDecision:(unint64_t)a3 withLimiter:(id)a4 validityDuration:(double)a5 rationale:(id)a6;
++ (BOOL)queryActivityDecision:(unint64_t)decision fromResponses:(id)responses;
++ (id)limitResponseWithDecision:(unint64_t)decision withLimiter:(id)limiter validityDuration:(double)duration rationale:(id)rationale;
++ (unint64_t)bitmaskFromResponses:(id)responses;
++ (void)updateActivity:(id)activity withLimitResponse:(id)response;
+- (BOOL)isEqual:(id)equal;
+- (_DASLimiterResponse)initWithCoder:(id)coder;
+- (_DASLimiterResponse)initWithDecision:(unint64_t)decision withLimiter:(id)limiter validityDuration:(double)duration rationale:(id)rationale;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DASLimiterResponse
@@ -42,49 +42,49 @@
   return v9;
 }
 
-- (_DASLimiterResponse)initWithDecision:(unint64_t)a3 withLimiter:(id)a4 validityDuration:(double)a5 rationale:(id)a6
+- (_DASLimiterResponse)initWithDecision:(unint64_t)decision withLimiter:(id)limiter validityDuration:(double)duration rationale:(id)rationale
 {
-  v11 = a4;
-  v12 = a6;
+  limiterCopy = limiter;
+  rationaleCopy = rationale;
   v16.receiver = self;
   v16.super_class = _DASLimiterResponse;
   v13 = [(_DASLimiterResponse *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_decision = a3;
-    objc_storeStrong(&v13->_limiterName, a4);
-    v14->_validityDuration = a5;
-    if (v12)
+    v13->_decision = decision;
+    objc_storeStrong(&v13->_limiterName, limiter);
+    v14->_validityDuration = duration;
+    if (rationaleCopy)
     {
-      objc_storeStrong(&v14->_rationale, a6);
+      objc_storeStrong(&v14->_rationale, rationale);
     }
   }
 
   return v14;
 }
 
-+ (id)limitResponseWithDecision:(unint64_t)a3 withLimiter:(id)a4 validityDuration:(double)a5 rationale:(id)a6
++ (id)limitResponseWithDecision:(unint64_t)decision withLimiter:(id)limiter validityDuration:(double)duration rationale:(id)rationale
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = [[_DASLimiterResponse alloc] initWithDecision:a3 withLimiter:v10 validityDuration:v9 rationale:a5];
+  rationaleCopy = rationale;
+  limiterCopy = limiter;
+  v11 = [[_DASLimiterResponse alloc] initWithDecision:decision withLimiter:limiterCopy validityDuration:rationaleCopy rationale:duration];
 
   return v11;
 }
 
-+ (BOOL)queryActivityDecision:(unint64_t)a3 fromResponses:(id)a4
++ (BOOL)queryActivityDecision:(unint64_t)decision fromResponses:(id)responses
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  responsesCopy = responses;
+  v6 = responsesCopy;
+  if (responsesCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v5;
+    v7 = responsesCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -99,7 +99,7 @@
             objc_enumerationMutation(v7);
           }
 
-          if ([*(*(&v15 + 1) + 8 * i) decision] == a3)
+          if ([*(*(&v15 + 1) + 8 * i) decision] == decision)
           {
             v12 = 1;
             goto LABEL_12;
@@ -129,37 +129,37 @@ LABEL_12:
   return v12;
 }
 
-+ (void)updateActivity:(id)a3 withLimitResponse:(id)a4
++ (void)updateActivity:(id)activity withLimitResponse:(id)response
 {
-  v11 = a4;
-  v5 = a3;
-  v6 = [v5 limitationResponse];
+  responseCopy = response;
+  activityCopy = activity;
+  limitationResponse = [activityCopy limitationResponse];
 
-  if (v6)
+  if (limitationResponse)
   {
-    v7 = [v5 limitationResponse];
-    v8 = [MEMORY[0x1E695DFA8] setWithArray:v7];
-    [v8 addObjectsFromArray:v11];
-    v9 = [v8 allObjects];
-    v10 = [v9 mutableCopy];
-    [v5 setLimitationResponse:v10];
+    limitationResponse2 = [activityCopy limitationResponse];
+    v8 = [MEMORY[0x1E695DFA8] setWithArray:limitationResponse2];
+    [v8 addObjectsFromArray:responseCopy];
+    allObjects = [v8 allObjects];
+    v10 = [allObjects mutableCopy];
+    [activityCopy setLimitationResponse:v10];
 
-    v5 = v8;
+    activityCopy = v8;
   }
 
   else
   {
-    v7 = [v11 mutableCopy];
-    [v5 setLimitationResponse:v7];
+    limitationResponse2 = [responseCopy mutableCopy];
+    [activityCopy setLimitationResponse:limitationResponse2];
   }
 }
 
-+ (unint64_t)bitmaskFromResponses:(id)a3
++ (unint64_t)bitmaskFromResponses:(id)responses
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  responsesCopy = responses;
+  v4 = responsesCopy;
+  if (responsesCopy && [responsesCopy count])
   {
     v16 = 0u;
     v17 = 0u;
@@ -181,8 +181,8 @@ LABEL_12:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * v9) limiterName];
-          v11 = [_DASLimitsUtilities bitmaskForLimitationName:v10];
+          limiterName = [*(*(&v14 + 1) + 8 * v9) limiterName];
+          v11 = [_DASLimitsUtilities bitmaskForLimitationName:limiterName];
 
           v7 |= v11 & ~(v11 >> 63);
           ++v9;
@@ -206,10 +206,10 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -219,17 +219,17 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       decision = self->_decision;
       if (decision == [(_DASLimiterResponse *)v5 decision])
       {
         rationale = self->_rationale;
-        v8 = [(_DASLimiterResponse *)v5 rationale];
-        if ([(NSString *)rationale isEqualToString:v8]&& (validityDuration = self->_validityDuration, [(_DASLimiterResponse *)v5 validityDuration], validityDuration == v10))
+        rationale = [(_DASLimiterResponse *)v5 rationale];
+        if ([(NSString *)rationale isEqualToString:rationale]&& (validityDuration = self->_validityDuration, [(_DASLimiterResponse *)v5 validityDuration], validityDuration == v10))
         {
           limiterName = self->_limiterName;
-          v12 = [(_DASLimiterResponse *)v5 limiterName];
-          v13 = [(NSString *)limiterName isEqualToString:v12];
+          limiterName = [(_DASLimiterResponse *)v5 limiterName];
+          v13 = [(NSString *)limiterName isEqualToString:limiterName];
         }
 
         else
@@ -253,33 +253,33 @@ LABEL_12:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   decision = self->_decision;
-  v8 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:decision];
-  [v8 encodeObject:v6 forKey:@"decision"];
+  [coderCopy encodeObject:v6 forKey:@"decision"];
 
-  [v8 encodeObject:self->_rationale forKey:@"rationale"];
+  [coderCopy encodeObject:self->_rationale forKey:@"rationale"];
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_validityDuration];
-  [v8 encodeObject:v7 forKey:@"validityDuration"];
+  [coderCopy encodeObject:v7 forKey:@"validityDuration"];
 
-  [v8 encodeObject:self->_limiterName forKey:@"limiterName"];
+  [coderCopy encodeObject:self->_limiterName forKey:@"limiterName"];
 }
 
-- (_DASLimiterResponse)initWithCoder:(id)a3
+- (_DASLimiterResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = _DASLimiterResponse;
   v5 = [(_DASLimiterResponse *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"decision"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rationale"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"limiterName"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"validityDuration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"decision"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rationale"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"limiterName"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"validityDuration"];
     v10 = v9;
     v11 = 0;
     if (v6 && v9 && v7 && v8)

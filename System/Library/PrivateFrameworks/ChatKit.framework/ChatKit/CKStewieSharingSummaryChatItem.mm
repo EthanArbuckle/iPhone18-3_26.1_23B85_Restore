@@ -1,30 +1,30 @@
 @interface CKStewieSharingSummaryChatItem
 - (id)_transcriptText;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 - (id)loadTranscriptText;
 @end
 
 @implementation CKStewieSharingSummaryChatItem
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v12 objectAtIndex:a4 - 1];
+    v14 = [itemsCopy objectAtIndex:index - 1];
   }
 
-  v15 = [v14 layoutType];
+  layoutType = [v14 layoutType];
   v16 = +[CKUIBehavior sharedBehaviors];
   v17 = v16;
-  if (v15 == 20)
+  if (layoutType == 20)
   {
     [v16 mediumTranscriptSpace];
   }
@@ -43,36 +43,36 @@
 
 - (id)loadTranscriptText
 {
-  v2 = [(CKStewieSharingSummaryChatItem *)self _transcriptText];
-  v3 = v2;
+  _transcriptText = [(CKStewieSharingSummaryChatItem *)self _transcriptText];
+  v3 = _transcriptText;
   v4 = &stru_1F04268F8;
-  if (v2)
+  if (_transcriptText)
   {
-    v4 = v2;
+    v4 = _transcriptText;
   }
 
   v5 = v4;
 
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 transcriptEmphasizedFontAttributes];
+  transcriptEmphasizedFontAttributes = [v6 transcriptEmphasizedFontAttributes];
 
-  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v7];
+  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:transcriptEmphasizedFontAttributes];
 
   return v8;
 }
 
 - (id)_transcriptText
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isTranscriptSharingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTranscriptSharingEnabled = [mEMORY[0x1E69A8070] isTranscriptSharingEnabled];
 
-  if (v4)
+  if (isTranscriptSharingEnabled)
   {
-    v5 = [(CKChatItem *)self IMChatItem];
-    v6 = [(CKChatItem *)self IMChatItem];
-    v7 = [v6 handle];
-    v8 = [v5 chat];
-    v9 = [v7 displayNameForChat:v8];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
+    iMChatItem2 = [(CKChatItem *)self IMChatItem];
+    handle = [iMChatItem2 handle];
+    chat = [iMChatItem chat];
+    v9 = [handle displayNameForChat:chat];
 
     v10 = MEMORY[0x1E696AEC0];
     v11 = CKFrameworkBundle();

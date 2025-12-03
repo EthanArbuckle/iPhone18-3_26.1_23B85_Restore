@@ -1,96 +1,96 @@
 @interface CRLiOSDocumentModeFreehandDrawing
-+ (void)presentEducationPaneIfNecessaryIn:(id)a3;
-- (BOOL)allowGestureInRestrictedGestureMode:(id)a3;
++ (void)presentEducationPaneIfNecessaryIn:(id)in;
+- (BOOL)allowGestureInRestrictedGestureMode:(id)mode;
 - (BOOL)allowsFingerDrawing;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 touchType:(int64_t)a4;
-- (BOOL)handleTapOnCanvasBackgroundAtUnscaledPoint:(CGPoint)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValidForEditorController:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point touchType:(int64_t)type;
+- (BOOL)handleTapOnCanvasBackgroundAtUnscaledPoint:(CGPoint)point;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValidForEditorController:(id)controller;
 - (BOOL)p_areAnyDrawingItemsOrDrawingShapesSelected;
-- (BOOL)p_gestureRecognizer:(id)a3 shouldReceiveTouchAtLocation:(CGPoint)a4 touchType:(int64_t)a5;
-- (BOOL)shouldHandleDoubleTapAtPoint:(CGPoint)a3 touchType:(int64_t)a4;
-- (BOOL)wantsAlternateContextMenuBehaviorAtPoint:(CGPoint)a3;
+- (BOOL)p_gestureRecognizer:(id)recognizer shouldReceiveTouchAtLocation:(CGPoint)location touchType:(int64_t)type;
+- (BOOL)shouldHandleDoubleTapAtPoint:(CGPoint)point touchType:(int64_t)type;
+- (BOOL)wantsAlternateContextMenuBehaviorAtPoint:(CGPoint)point;
 - (BOOL)wantsToSuppressMultiselectionWithSingleBounds;
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
 - (CRLInteractiveCanvasController)interactiveCanvasController;
-- (CRLiOSDocumentModeFreehandDrawing)initWithBoardViewController:(id)a3 andInteractiveCanvasController:(id)a4;
-- (id)contextMenuConfigurationForContextMenuInteraction:(id)a3 atPoint:(CGPoint)a4 onInteractiveCanvasController:(id)a5;
-- (id)cursorAtPoint:(CGPoint)a3 withCursorPlatformObject:(id)a4;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)gesturesToAdjustIfPencilShouldSelectAndScrollFromGestures:(id)a3;
-- (id)p_menuElementsToDisplayForLassoSelectionAtPoint:(CGPoint)a3;
+- (CRLiOSDocumentModeFreehandDrawing)initWithBoardViewController:(id)controller andInteractiveCanvasController:(id)canvasController;
+- (id)contextMenuConfigurationForContextMenuInteraction:(id)interaction atPoint:(CGPoint)point onInteractiveCanvasController:(id)controller;
+- (id)cursorAtPoint:(CGPoint)point withCursorPlatformObject:(id)object;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)gesturesToAdjustIfPencilShouldSelectAndScrollFromGestures:(id)gestures;
+- (id)p_menuElementsToDisplayForLassoSelectionAtPoint:(CGPoint)point;
 - (id)toolTray;
-- (id)validateSelectionPathIfNeededFromPersistableSelectionPath:(id)a3 withSelectionPathValidator:(id)a4;
+- (id)validateSelectionPathIfNeededFromPersistableSelectionPath:(id)path withSelectionPathValidator:(id)validator;
 - (unint64_t)p_currentLassoSelectionType;
 - (unint64_t)p_currentLockedInfosCount;
 - (void)beginDrawingTransformMode;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)editMenuInteraction:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)editMenuInteraction:(id)interaction willPresentMenuForConfiguration:(id)configuration animator:(id)animator;
 - (void)hideEditMenuForLassoSelection;
-- (void)modeDidBeginFromMode:(id)a3 forced:(BOOL)a4;
-- (void)modeDidEndForMode:(id)a3 forced:(BOOL)a4;
-- (void)modeWillBeginFromMode:(id)a3 forced:(BOOL)a4;
-- (void)modeWillEndForMode:(id)a3 forced:(BOOL)a4;
-- (void)p_addObservationOfInteractiveCanvasController:(id)a3;
+- (void)modeDidBeginFromMode:(id)mode forced:(BOOL)forced;
+- (void)modeDidEndForMode:(id)mode forced:(BOOL)forced;
+- (void)modeWillBeginFromMode:(id)mode forced:(BOOL)forced;
+- (void)modeWillEndForMode:(id)mode forced:(BOOL)forced;
+- (void)p_addObservationOfInteractiveCanvasController:(id)controller;
 - (void)p_deselectAllInfosNotInDrawingsOrDrawings;
-- (void)p_editMenuTapReceived:(id)a3;
-- (void)p_handleMarqueeTapWithInput:(id)a3 afterDelay:(double)a4;
-- (void)p_insertEditCommandInto:(id)a3;
-- (void)p_removeObservationOfInteractiveCanvasController:(id)a3;
+- (void)p_editMenuTapReceived:(id)received;
+- (void)p_handleMarqueeTapWithInput:(id)input afterDelay:(double)delay;
+- (void)p_insertEditCommandInto:(id)into;
+- (void)p_removeObservationOfInteractiveCanvasController:(id)controller;
 - (void)p_updatePanAndDrawingGestureRecognizersForState;
-- (void)pencilKitDidSmartSelectStrokesInDrawingShapeItems:(id)a3;
+- (void)pencilKitDidSmartSelectStrokesInDrawingShapeItems:(id)items;
 - (void)prefersPencilOnlyDrawingDidChange;
 - (void)presentEditMenuForLassoSelection;
-- (void)selectionPathDidChange:(id)a3;
-- (void)setInteractiveCanvasController:(id)a3;
+- (void)selectionPathDidChange:(id)change;
+- (void)setInteractiveCanvasController:(id)controller;
 - (void)toolkitDidUpdateCurrentToolSelection;
 - (void)toolkitDidUpdateRulerVisibility;
 @end
 
 @implementation CRLiOSDocumentModeFreehandDrawing
 
-- (CRLiOSDocumentModeFreehandDrawing)initWithBoardViewController:(id)a3 andInteractiveCanvasController:(id)a4
+- (CRLiOSDocumentModeFreehandDrawing)initWithBoardViewController:(id)controller andInteractiveCanvasController:(id)canvasController
 {
-  v6 = a4;
+  canvasControllerCopy = canvasController;
   v10.receiver = self;
   v10.super_class = CRLiOSDocumentModeFreehandDrawing;
-  v7 = [(CRLiOSDocumentMode *)&v10 initWithBoardViewController:a3];
+  v7 = [(CRLiOSDocumentMode *)&v10 initWithBoardViewController:controller];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_icc, v6);
+    objc_storeWeak(&v7->_icc, canvasControllerCopy);
     v8->_previousCanvasScrollMinTouchCount = 1;
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
 
-- (BOOL)allowGestureInRestrictedGestureMode:(id)a3
+- (BOOL)allowGestureInRestrictedGestureMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v6 = [WeakRetained layerHost];
-  v7 = [v6 asiOSCVC];
+  layerHost = [WeakRetained layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  v8 = [v7 allTouchesDoneGestureRecognizer];
-  if (v8 == v4)
+  allTouchesDoneGestureRecognizer = [asiOSCVC allTouchesDoneGestureRecognizer];
+  if (allTouchesDoneGestureRecognizer == modeCopy)
   {
     goto LABEL_16;
   }
 
-  v9 = [v7 preventScrollGestureRecognizer];
-  if (v9 == v4)
+  preventScrollGestureRecognizer = [asiOSCVC preventScrollGestureRecognizer];
+  if (preventScrollGestureRecognizer == modeCopy)
   {
 LABEL_15:
 
@@ -99,111 +99,111 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v10 = [v7 zoomGestureRecognizer];
-  if (v10 == v4)
+  zoomGestureRecognizer = [asiOSCVC zoomGestureRecognizer];
+  if (zoomGestureRecognizer == modeCopy)
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v11 = [v7 freehandDrawingGestureRecognizer];
-  if (v11 == v4)
+  freehandDrawingGestureRecognizer = [asiOSCVC freehandDrawingGestureRecognizer];
+  if (freehandDrawingGestureRecognizer == modeCopy)
   {
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v12 = [v7 knobDragGestureRecognizer];
-  if (v12 == v4)
+  knobDragGestureRecognizer = [asiOSCVC knobDragGestureRecognizer];
+  if (knobDragGestureRecognizer == modeCopy)
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v13 = [v7 singleTapGestureRecognizer];
-  if (v13 == v4)
+  singleTapGestureRecognizer = [asiOSCVC singleTapGestureRecognizer];
+  if (singleTapGestureRecognizer == modeCopy)
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v14 = [v7 repDragGestureRecognizer];
-  v15 = v14;
-  if (v14 == v4)
+  repDragGestureRecognizer = [asiOSCVC repDragGestureRecognizer];
+  v15 = repDragGestureRecognizer;
+  if (repDragGestureRecognizer == modeCopy)
   {
 
     goto LABEL_11;
   }
 
-  v16 = [v7 doubleTapGestureRecognizer];
+  doubleTapGestureRecognizer = [asiOSCVC doubleTapGestureRecognizer];
 
-  if (v16 == v4)
+  if (doubleTapGestureRecognizer == modeCopy)
   {
     v17 = 1;
     goto LABEL_18;
   }
 
-  v8 = [v7 appSpecificGestureRecognizersAllowedDuringFreehandDrawing];
-  v17 = [v8 containsObject:v4];
+  allTouchesDoneGestureRecognizer = [asiOSCVC appSpecificGestureRecognizersAllowedDuringFreehandDrawing];
+  v17 = [allTouchesDoneGestureRecognizer containsObject:modeCopy];
 LABEL_17:
 
 LABEL_18:
   return v17;
 }
 
-- (id)gesturesToAdjustIfPencilShouldSelectAndScrollFromGestures:(id)a3
+- (id)gesturesToAdjustIfPencilShouldSelectAndScrollFromGestures:(id)gestures
 {
-  v4 = [a3 mutableCopy];
+  v4 = [gestures mutableCopy];
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v6 = [WeakRetained layerHost];
-  v7 = [v6 asiOSCVC];
+  layerHost = [WeakRetained layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  v8 = [v7 singleTapGestureRecognizer];
-  [v4 removeObject:v8];
+  singleTapGestureRecognizer = [asiOSCVC singleTapGestureRecognizer];
+  [v4 removeObject:singleTapGestureRecognizer];
 
-  v9 = [v7 repDragGestureRecognizer];
-  [v4 removeObject:v9];
+  repDragGestureRecognizer = [asiOSCVC repDragGestureRecognizer];
+  [v4 removeObject:repDragGestureRecognizer];
 
   if ([CRLFeatureFlagsHelper isOSFeatureEnabled:9])
   {
-    v10 = [v7 doubleTapGestureRecognizer];
-    [v4 removeObject:v10];
+    doubleTapGestureRecognizer = [asiOSCVC doubleTapGestureRecognizer];
+    [v4 removeObject:doubleTapGestureRecognizer];
   }
 
   return v4;
 }
 
-- (id)validateSelectionPathIfNeededFromPersistableSelectionPath:(id)a3 withSelectionPathValidator:(id)a4
+- (id)validateSelectionPathIfNeededFromPersistableSelectionPath:(id)path withSelectionPathValidator:(id)validator
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  validatorCopy = validator;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v9 = [WeakRetained freehandDrawingToolkit];
+  freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
 
-  v10 = [v9 currentTool];
-  v11 = [v10 type];
+  currentTool = [freehandDrawingToolkit currentTool];
+  type = [currentTool type];
 
-  v12 = [v9 isLassoAbleToSelectMixedType];
-  if (v11 != 10 || v12 == 0)
+  isLassoAbleToSelectMixedType = [freehandDrawingToolkit isLassoAbleToSelectMixedType];
+  if (type != 10 || isLassoAbleToSelectMixedType == 0)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v7 selectionPathFromPersistableSelectionPath:v6 selectableBoardItemsFromParentMapAndSiblings:&stru_10184B0E0];
+    v14 = [validatorCopy selectionPathFromPersistableSelectionPath:pathCopy selectableBoardItemsFromParentMapAndSiblings:&stru_10184B0E0];
   }
 
   return v14;
 }
 
-- (void)setInteractiveCanvasController:(id)a3
+- (void)setInteractiveCanvasController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
 
   v5 = obj;
@@ -222,33 +222,33 @@ LABEL_18:
   }
 }
 
-- (void)p_addObservationOfInteractiveCanvasController:(id)a3
+- (void)p_addObservationOfInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6 = +[NSNotificationCenter defaultCenter];
-  v5 = [v4 editorController];
+  editorController = [controllerCopy editorController];
 
-  [v6 addObserver:self selector:"selectionPathDidChange:" name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:v5];
+  [v6 addObserver:self selector:"selectionPathDidChange:" name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:editorController];
   self->_isObservingICCNotifications = 1;
 }
 
-- (void)p_removeObservationOfInteractiveCanvasController:(id)a3
+- (void)p_removeObservationOfInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6 = +[NSNotificationCenter defaultCenter];
-  v5 = [v4 editorController];
+  editorController = [controllerCopy editorController];
 
-  [v6 removeObserver:self name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:v5];
+  [v6 removeObserver:self name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:editorController];
   self->_isObservingICCNotifications = 0;
 }
 
-- (void)selectionPathDidChange:(id)a3
+- (void)selectionPathDidChange:(id)change
 {
-  v4 = [a3 object];
-  v5 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-  v6 = [v5 editorController];
+  object = [change object];
+  interactiveCanvasController = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
 
-  if (v4 != v6)
+  if (object != editorController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -278,78 +278,78 @@ LABEL_18:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v11 = [WeakRetained freehandDrawingToolkit];
+  freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
 
-  v12 = [v11 currentTool];
-  v13 = [v12 type];
+  currentTool = [freehandDrawingToolkit currentTool];
+  type = [currentTool type];
 
-  if (v13 != 10)
+  if (type != 10)
   {
     v14 = objc_loadWeakRetained(&self->_icc);
-    v15 = [v14 editorController];
-    v16 = [v15 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+    editorController2 = [v14 editorController];
+    v16 = [editorController2 mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
     if ([CRLFeatureFlagsHelper isOSFeatureEnabled:1])
     {
       v17 = objc_loadWeakRetained(&self->_icc);
-      v18 = [v17 editorController];
-      v19 = [v18 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+      editorController3 = [v17 editorController];
+      v19 = [editorController3 mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
       v20 = objc_loadWeakRetained(&self->_icc);
-      v21 = [v20 editorController];
-      v22 = [v21 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+      editorController4 = [v20 editorController];
+      v22 = [editorController4 mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
       if (v19 || !v22)
       {
         v23 = objc_loadWeakRetained(&self->_icc);
-        v24 = [v23 editorController];
-        v25 = [v24 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+        editorController5 = [v23 editorController];
+        v25 = [editorController5 mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
         if (v25)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            [v11 setCurrentToolSelection:10];
+            [freehandDrawingToolkit setCurrentToolSelection:10];
           }
         }
       }
 
       else
       {
-        [v11 setCurrentToolSelection:10];
+        [freehandDrawingToolkit setCurrentToolSelection:10];
       }
     }
 
     else if (v16)
     {
-      [v11 setCurrentToolSelection:10];
+      [freehandDrawingToolkit setCurrentToolSelection:10];
     }
   }
 }
 
-- (void)modeWillBeginFromMode:(id)a3 forced:(BOOL)a4
+- (void)modeWillBeginFromMode:(id)mode forced:(BOOL)forced
 {
-  v4 = a4;
+  forcedCopy = forced;
   v22.receiver = self;
   v22.super_class = CRLiOSDocumentModeFreehandDrawing;
-  v6 = a3;
-  [(CRLiOSDocumentMode *)&v22 modeWillBeginFromMode:v6 forced:v4];
-  v7 = [(CRLiOSDocumentMode *)self boardViewController];
-  v8 = [v7 presentedViewController];
+  modeCopy = mode;
+  [(CRLiOSDocumentMode *)&v22 modeWillBeginFromMode:modeCopy forced:forcedCopy];
+  boardViewController = [(CRLiOSDocumentMode *)self boardViewController];
+  presentedViewController = [boardViewController presentedViewController];
 
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (presentedViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 dismissPresentedViewController];
+    [boardViewController dismissPresentedViewController];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_icc);
   [(CRLiOSDocumentModeFreehandDrawing *)self p_addObservationOfInteractiveCanvasController:WeakRetained];
 
   v10 = objc_loadWeakRetained(&self->_icc);
-  v11 = [v10 freehandDrawingToolkit];
+  freehandDrawingToolkit = [v10 freehandDrawingToolkit];
 
-  if (!v11)
+  if (!freehandDrawingToolkit)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -378,18 +378,18 @@ LABEL_18:
     [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:293 isFatal:0 description:"invalid nil value for '%{public}s'", "toolkit"];
   }
 
-  [v11 addToolkitObserver:self];
-  v15 = [v6 toolTray];
-  v16 = [(CRLiOSDocumentModeFreehandDrawing *)self toolTray];
+  [freehandDrawingToolkit addToolkitObserver:self];
+  toolTray = [modeCopy toolTray];
+  toolTray2 = [(CRLiOSDocumentModeFreehandDrawing *)self toolTray];
 
-  if (v15 == v16)
+  if (toolTray == toolTray2)
   {
     self->_didFinishPresentingBottomToolTray = 1;
   }
 
-  v17 = [v6 pencilModeType];
+  pencilModeType = [modeCopy pencilModeType];
 
-  if (v17 != 1)
+  if (pencilModeType != 1)
   {
     [_TtC8Freeform23CRLAnalyticsFeatureUsed logFeatureUsedWithName:6];
   }
@@ -400,27 +400,27 @@ LABEL_18:
 
   [(UIEditMenuInteraction *)self->_lassoSelectionEditMenuInteraction setPresentsContextMenuAsSecondaryAction:0];
   v20 = objc_loadWeakRetained(&self->_icc);
-  v21 = [v20 canvasView];
-  [v21 addInteraction:self->_lassoSelectionEditMenuInteraction];
+  canvasView = [v20 canvasView];
+  [canvasView addInteraction:self->_lassoSelectionEditMenuInteraction];
 }
 
-- (void)modeDidBeginFromMode:(id)a3 forced:(BOOL)a4
+- (void)modeDidBeginFromMode:(id)mode forced:(BOOL)forced
 {
-  v4 = a4;
+  forcedCopy = forced;
   v33.receiver = self;
   v33.super_class = CRLiOSDocumentModeFreehandDrawing;
-  v6 = a3;
-  [(CRLiOSDocumentMode *)&v33 modeDidBeginFromMode:v6 forced:v4];
+  modeCopy = mode;
+  [(CRLiOSDocumentMode *)&v33 modeDidBeginFromMode:modeCopy forced:forcedCopy];
   WeakRetained = objc_loadWeakRetained(&self->_icc);
   [WeakRetained invalidateAllLayers];
 
   v8 = objc_loadWeakRetained(&self->_icc);
-  v9 = [v8 layerHost];
-  v10 = [v9 asiOSCVC];
+  layerHost = [v8 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  v11 = [v10 canvasView];
+  canvasView = [asiOSCVC canvasView];
   v12 = objc_opt_class();
-  v13 = sub_100014370(v12, v6);
+  v13 = sub_100014370(v12, modeCopy);
 
   if (v13)
   {
@@ -429,27 +429,27 @@ LABEL_18:
 
   else
   {
-    v14 = [v11 enclosingScrollView];
-    v15 = [v14 panGestureRecognizer];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    panGestureRecognizer = [enclosingScrollView panGestureRecognizer];
 
-    self->_previousCanvasScrollMinTouchCount = [v15 minimumNumberOfTouches];
+    self->_previousCanvasScrollMinTouchCount = [panGestureRecognizer minimumNumberOfTouches];
   }
 
-  v16 = [v10 freehandDrawingGestureRecognizer];
-  v17 = [v16 allowedTouchTypes];
+  freehandDrawingGestureRecognizer = [asiOSCVC freehandDrawingGestureRecognizer];
+  allowedTouchTypes = [freehandDrawingGestureRecognizer allowedTouchTypes];
   previousFreehandGestureTouchTypes = self->_previousFreehandGestureTouchTypes;
-  self->_previousFreehandGestureTouchTypes = v17;
+  self->_previousFreehandGestureTouchTypes = allowedTouchTypes;
 
-  v19 = [v10 repDragGestureRecognizer];
-  [v19 setAllowedTouchTypes:&off_1018E1230];
+  repDragGestureRecognizer = [asiOSCVC repDragGestureRecognizer];
+  [repDragGestureRecognizer setAllowedTouchTypes:&off_1018E1230];
 
-  v20 = [v10 singleTapGestureRecognizer];
-  [v20 setAllowedTouchTypes:&off_1018E1230];
+  singleTapGestureRecognizer = [asiOSCVC singleTapGestureRecognizer];
+  [singleTapGestureRecognizer setAllowedTouchTypes:&off_1018E1230];
 
   if ([CRLFeatureFlagsHelper isOSFeatureEnabled:9])
   {
-    v21 = [v10 doubleTapGestureRecognizer];
-    [v21 setAllowedTouchTypes:&off_1018E1248];
+    doubleTapGestureRecognizer = [asiOSCVC doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer setAllowedTouchTypes:&off_1018E1248];
   }
 
   v22 = [[CRLiOSTapGestureRecognizer alloc] initWithTarget:self action:"p_editMenuTapReceived:"];
@@ -459,17 +459,17 @@ LABEL_18:
   [(UITapGestureRecognizer *)self->_editMenuTapGR setName:@"freehand edit tap GR"];
   [(UITapGestureRecognizer *)self->_editMenuTapGR setDelegate:self];
   [(UITapGestureRecognizer *)self->_editMenuTapGR setAllowedTouchTypes:&off_1018E1260];
-  [v11 addGestureRecognizer:self->_editMenuTapGR];
+  [canvasView addGestureRecognizer:self->_editMenuTapGR];
   [(CRLiOSDocumentModeFreehandDrawing *)self p_updatePanAndDrawingGestureRecognizersForState];
-  if (!v4)
+  if (!forcedCopy)
   {
     [(CRLiOSDocumentModeFreehandDrawing *)self p_deselectAllInfosNotInDrawingsOrDrawings];
   }
 
   v24 = objc_loadWeakRetained(&self->_icc);
-  v25 = [v24 freehandDrawingToolkit];
+  freehandDrawingToolkit = [v24 freehandDrawingToolkit];
 
-  if (!v25)
+  if (!freehandDrawingToolkit)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -498,19 +498,19 @@ LABEL_18:
     [CRLAssertionHandler handleFailureInFunction:v27 file:v28 lineNumber:363 isFatal:0 description:"invalid nil value for '%{public}s'", "toolkit"];
   }
 
-  v29 = [v25 isRulerToolShowing];
-  v30 = [(CRLiOSDocumentMode *)self boardViewController];
-  v31 = [v30 pencilKitCanvasView];
-  [v31 setRulerActive:v29];
+  isRulerToolShowing = [freehandDrawingToolkit isRulerToolShowing];
+  boardViewController = [(CRLiOSDocumentMode *)self boardViewController];
+  pencilKitCanvasView = [boardViewController pencilKitCanvasView];
+  [pencilKitCanvasView setRulerActive:isRulerToolShowing];
 
-  v32 = [(CRLiOSDocumentMode *)self boardViewController];
-  [CRLiOSDocumentModeFreehandDrawing presentEducationPaneIfNecessaryIn:v32];
+  boardViewController2 = [(CRLiOSDocumentMode *)self boardViewController];
+  [CRLiOSDocumentModeFreehandDrawing presentEducationPaneIfNecessaryIn:boardViewController2];
 }
 
-- (void)modeWillEndForMode:(id)a3 forced:(BOOL)a4
+- (void)modeWillEndForMode:(id)mode forced:(BOOL)forced
 {
-  v4 = a4;
-  v6 = a3;
+  forcedCopy = forced;
+  modeCopy = mode;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
   [(CRLiOSDocumentModeFreehandDrawing *)self p_removeObservationOfInteractiveCanvasController:WeakRetained];
 
@@ -521,20 +521,20 @@ LABEL_18:
   }
 
   v8 = objc_loadWeakRetained(&self->_icc);
-  v9 = [v8 layerHost];
-  v10 = [v9 asiOSCVC];
+  layerHost = [v8 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  [v10 hideEditMenu];
-  v11 = [v10 delegate];
-  v12 = [v11 pencilKitCanvasViewControllerForCanvasViewController:v10];
+  [asiOSCVC hideEditMenu];
+  delegate = [asiOSCVC delegate];
+  v12 = [delegate pencilKitCanvasViewControllerForCanvasViewController:asiOSCVC];
 
   [v12 removeSmartSelectionViewIfNecessary];
   v13 = objc_loadWeakRetained(&self->_icc);
-  v14 = [v13 freehandDrawingToolkit];
+  freehandDrawingToolkit = [v13 freehandDrawingToolkit];
 
-  if (!v14)
+  if (!freehandDrawingToolkit)
   {
-    v61 = v4;
+    v61 = forcedCopy;
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
     {
@@ -561,91 +561,91 @@ LABEL_18:
     v17 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLApplication/CRLiOSDocumentModeFreehandDrawing.m"];
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:383 isFatal:0 description:"invalid nil value for '%{public}s'", "toolkit"];
 
-    v4 = v61;
+    forcedCopy = v61;
   }
 
-  v18 = [v14 currentTool];
-  v19 = [v18 type];
+  currentTool = [freehandDrawingToolkit currentTool];
+  type = [currentTool type];
 
-  if ([v14 isLassoAbleToSelectMixedType])
+  if ([freehandDrawingToolkit isLassoAbleToSelectMixedType])
   {
-    if ((v4 & 1) == 0)
+    if ((forcedCopy & 1) == 0)
     {
-      v62 = v4;
+      v62 = forcedCopy;
       v20 = objc_loadWeakRetained(&self->_icc);
       v21 = v20;
-      if (v19 == 10)
+      if (type == 10)
       {
-        v60 = v6;
-        v22 = [v20 editorController];
-        v23 = [v22 selectionPath];
+        v60 = modeCopy;
+        editorController = [v20 editorController];
+        selectionPath = [editorController selectionPath];
 
         v24 = objc_loadWeakRetained(&self->_icc);
-        v25 = [v24 selectionModelTranslator];
+        selectionModelTranslator = [v24 selectionModelTranslator];
 
-        v59 = v23;
-        v26 = [v25 selectionPathRemovingCrossContainerSelectionsForSelectionPath:v23];
+        v59 = selectionPath;
+        v26 = [selectionModelTranslator selectionPathRemovingCrossContainerSelectionsForSelectionPath:selectionPath];
         v27 = [v26 mostSpecificSelectionOfClass:objc_opt_class()];
-        v28 = v26;
-        v29 = v28;
+        editorController3 = v26;
+        v29 = editorController3;
         if ([v27 containsKindOfClass:objc_opt_class()])
         {
-          v30 = [v27 boardItems];
-          v29 = [v25 selectionPathForInfos:v30];
+          boardItems = [v27 boardItems];
+          v29 = [selectionModelTranslator selectionPathForInfos:boardItems];
         }
 
         v58 = v27;
         v31 = objc_loadWeakRetained(&self->_icc);
-        v32 = [v31 editorController];
-        [v32 setSelectionPath:v29 withFlags:0x2000];
+        editorController2 = [v31 editorController];
+        [editorController2 setSelectionPath:v29 withFlags:0x2000];
 
         v33 = v59;
-        v6 = v60;
+        modeCopy = v60;
         goto LABEL_22;
       }
 
-      v37 = [v20 canvasEditor];
+      canvasEditor = [v20 canvasEditor];
       v38 = +[NSSet set];
-      v39 = [v37 selectionPathWithInfos:v38];
+      v39 = [canvasEditor selectionPathWithInfos:v38];
 
       v33 = v39;
 LABEL_21:
 
-      v25 = objc_loadWeakRetained(&self->_icc);
-      v28 = [v25 editorController];
-      [v28 setSelectionPath:v33 withFlags:0x2000];
+      selectionModelTranslator = objc_loadWeakRetained(&self->_icc);
+      editorController3 = [selectionModelTranslator editorController];
+      [editorController3 setSelectionPath:v33 withFlags:0x2000];
 LABEL_22:
 
-      v4 = v62;
+      forcedCopy = v62;
     }
   }
 
-  else if ((v4 & 1) == 0)
+  else if ((forcedCopy & 1) == 0)
   {
-    v62 = v4;
+    v62 = forcedCopy;
     v21 = objc_loadWeakRetained(&self->_icc);
-    v34 = [v21 canvasEditor];
+    canvasEditor2 = [v21 canvasEditor];
     +[NSSet set];
-    v36 = v35 = v6;
-    v33 = [v34 selectionPathWithInfos:v36];
+    v36 = v35 = modeCopy;
+    v33 = [canvasEditor2 selectionPathWithInfos:v36];
 
-    v6 = v35;
+    modeCopy = v35;
     goto LABEL_21;
   }
 
 LABEL_24:
   v40 = objc_loadWeakRetained(&self->_icc);
-  v41 = [v40 canvasView];
-  v42 = [v41 enclosingScrollView];
-  v43 = [v42 panGestureRecognizer];
+  canvasView = [v40 canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  panGestureRecognizer = [enclosingScrollView panGestureRecognizer];
 
-  [v43 setMinimumNumberOfTouches:self->_previousCanvasScrollMinTouchCount];
+  [panGestureRecognizer setMinimumNumberOfTouches:self->_previousCanvasScrollMinTouchCount];
   v44 = objc_loadWeakRetained(&self->_icc);
-  v45 = [v44 layerHost];
-  v46 = [v45 asiOSCVC];
+  layerHost2 = [v44 layerHost];
+  asiOSCVC2 = [layerHost2 asiOSCVC];
 
-  v47 = [v46 freehandDrawingGestureRecognizer];
-  [v47 setAllowedTouchTypes:self->_previousFreehandGestureTouchTypes];
+  freehandDrawingGestureRecognizer = [asiOSCVC2 freehandDrawingGestureRecognizer];
+  [freehandDrawingGestureRecognizer setAllowedTouchTypes:self->_previousFreehandGestureTouchTypes];
   if ([(CRLiOSDocumentMode *)self shouldSelectAndScrollWithApplePencil])
   {
     v48 = &off_1018E1278;
@@ -656,25 +656,25 @@ LABEL_24:
     v48 = &off_1018E1290;
   }
 
-  v49 = [v46 repDragGestureRecognizer];
-  [v49 setAllowedTouchTypes:v48];
+  repDragGestureRecognizer = [asiOSCVC2 repDragGestureRecognizer];
+  [repDragGestureRecognizer setAllowedTouchTypes:v48];
 
-  v50 = [v46 singleTapGestureRecognizer];
-  [v50 setAllowedTouchTypes:v48];
+  singleTapGestureRecognizer = [asiOSCVC2 singleTapGestureRecognizer];
+  [singleTapGestureRecognizer setAllowedTouchTypes:v48];
 
-  v51 = [(UITapGestureRecognizer *)self->_editMenuTapGR view];
-  [v51 removeGestureRecognizer:self->_editMenuTapGR];
+  view = [(UITapGestureRecognizer *)self->_editMenuTapGR view];
+  [view removeGestureRecognizer:self->_editMenuTapGR];
 
   editMenuTapGR = self->_editMenuTapGR;
   self->_editMenuTapGR = 0;
 
   v53 = objc_loadWeakRetained(&self->_icc);
-  v54 = [v53 freehandDrawingToolkit];
+  freehandDrawingToolkit2 = [v53 freehandDrawingToolkit];
 
-  if (!v54)
+  if (!freehandDrawingToolkit2)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
-    v63 = v4;
+    v63 = forcedCopy;
     if (qword_101AD5A10 != -1)
     {
       sub_101337E04();
@@ -700,28 +700,28 @@ LABEL_24:
     v57 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLApplication/CRLiOSDocumentModeFreehandDrawing.m"];
     [CRLAssertionHandler handleFailureInFunction:v56 file:v57 lineNumber:445 isFatal:0 description:"invalid nil value for '%{public}s'", "toolkit"];
 
-    v4 = v63;
+    forcedCopy = v63;
   }
 
-  [v54 setRulerToolShowing:0];
-  [v54 removeToolkitObserver:self];
+  [freehandDrawingToolkit2 setRulerToolShowing:0];
+  [freehandDrawingToolkit2 removeToolkitObserver:self];
   v64.receiver = self;
   v64.super_class = CRLiOSDocumentModeFreehandDrawing;
-  [(CRLiOSDocumentMode *)&v64 modeWillEndForMode:v6 forced:v4];
+  [(CRLiOSDocumentMode *)&v64 modeWillEndForMode:modeCopy forced:forcedCopy];
 }
 
-- (void)modeDidEndForMode:(id)a3 forced:(BOOL)a4
+- (void)modeDidEndForMode:(id)mode forced:(BOOL)forced
 {
-  v4 = a4;
-  v6 = a3;
+  forcedCopy = forced;
+  modeCopy = mode;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
   [WeakRetained invalidateAllLayers];
 
   if (self->_lassoSelectionEditMenuInteraction)
   {
     v8 = objc_loadWeakRetained(&self->_icc);
-    v9 = [v8 canvasView];
-    [v9 removeInteraction:self->_lassoSelectionEditMenuInteraction];
+    canvasView = [v8 canvasView];
+    [canvasView removeInteraction:self->_lassoSelectionEditMenuInteraction];
 
     lassoSelectionEditMenuInteraction = self->_lassoSelectionEditMenuInteraction;
     self->_lassoSelectionEditMenuInteraction = 0;
@@ -730,39 +730,39 @@ LABEL_24:
   if ([CRLFeatureFlagsHelper isOSFeatureEnabled:9])
   {
     v11 = objc_loadWeakRetained(&self->_icc);
-    v12 = [v11 layerHost];
-    v13 = [v12 asiOSCVC];
+    layerHost = [v11 layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    v14 = [v13 doubleTapGestureRecognizer];
-    [v14 setAllowedTouchTypes:&off_1018E12A8];
+    doubleTapGestureRecognizer = [asiOSCVC doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer setAllowedTouchTypes:&off_1018E12A8];
   }
 
   v15.receiver = self;
   v15.super_class = CRLiOSDocumentModeFreehandDrawing;
-  [(CRLiOSDocumentMode *)&v15 modeDidEndForMode:v6 forced:v4];
+  [(CRLiOSDocumentMode *)&v15 modeDidEndForMode:modeCopy forced:forcedCopy];
 }
 
-- (BOOL)wantsAlternateContextMenuBehaviorAtPoint:(CGPoint)a3
+- (BOOL)wantsAlternateContextMenuBehaviorAtPoint:(CGPoint)point
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained freehandDrawingToolkit];
-  v5 = [v4 currentTool];
-  v6 = [v5 type] != 10;
+  freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
+  currentTool = [freehandDrawingToolkit currentTool];
+  v6 = [currentTool type] != 10;
 
   return v6;
 }
 
-- (id)cursorAtPoint:(CGPoint)a3 withCursorPlatformObject:(id)a4
+- (id)cursorAtPoint:(CGPoint)point withCursorPlatformObject:(id)object
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v6 = [WeakRetained freehandDrawingToolkit];
-  v7 = [v6 currentTool];
+  freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
+  currentTool = [freehandDrawingToolkit currentTool];
 
-  v8 = [v7 type];
-  if (v8 < 8)
+  type = [currentTool type];
+  if (type < 8)
   {
     v9 = objc_opt_class();
-    v10 = sub_100013F00(v9, v7);
+    v10 = sub_100013F00(v9, currentTool);
     [v10 unscaledWidth];
     v12 = v11;
     v13 = objc_loadWeakRetained(&self->_icc);
@@ -780,16 +780,16 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if (v8 == 9)
+  if (type == 9)
   {
     v21 = objc_loadWeakRetained(&self->_icc);
-    v22 = [v21 freehandDrawingToolkit];
-    v23 = [v22 toolkitUIState];
-    v24 = [v23 eraserToolErasesWholeObjects];
+    freehandDrawingToolkit2 = [v21 freehandDrawingToolkit];
+    toolkitUIState = [freehandDrawingToolkit2 toolkitUIState];
+    eraserToolErasesWholeObjects = [toolkitUIState eraserToolErasesWholeObjects];
 
     v25 = objc_opt_class();
-    v26 = sub_100013F00(v25, v7);
-    if (v24)
+    v26 = sub_100013F00(v25, currentTool);
+    if (eraserToolErasesWholeObjects)
     {
       [v26 currentScaledEraserDiameter];
     }
@@ -818,8 +818,8 @@ LABEL_4:
 
 - (BOOL)allowsFingerDrawing
 {
-  v3 = [(CRLiOSDocumentModeFreehandDrawing *)self toolTray];
-  if (!v3)
+  toolTray = [(CRLiOSDocumentModeFreehandDrawing *)self toolTray];
+  if (!toolTray)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -849,11 +849,11 @@ LABEL_4:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v8 = [WeakRetained layerHost];
-  v9 = [v8 asiOSCVC];
-  v10 = [v9 pencilMediator];
+  layerHost = [WeakRetained layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  pencilMediator = [asiOSCVC pencilMediator];
 
-  if (!v10)
+  if (!pencilMediator)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -882,14 +882,14 @@ LABEL_4:
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:533 isFatal:0 description:"invalid nil value for '%{public}s'", "pencilMediator"];
   }
 
-  if ([v3 hidden])
+  if ([toolTray hidden])
   {
     LOBYTE(v14) = 0;
   }
 
   else
   {
-    v14 = [v10 prefersPencilOnlyDrawing] ^ 1;
+    v14 = [pencilMediator prefersPencilOnlyDrawing] ^ 1;
   }
 
   return v14;
@@ -897,10 +897,10 @@ LABEL_4:
 
 - (BOOL)wantsToSuppressMultiselectionWithSingleBounds
 {
-  v2 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-  v3 = [v2 freehandDrawingToolkit];
-  v4 = [v3 currentTool];
-  v5 = [v4 type] != 10;
+  interactiveCanvasController = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+  freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+  currentTool = [freehandDrawingToolkit currentTool];
+  v5 = [currentTool type] != 10;
 
   return v5;
 }
@@ -911,14 +911,14 @@ LABEL_4:
   {
     if (self->_lassoSelectionEditMenuInteraction)
     {
-      v11 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-      v3 = [v11 layerHost];
-      v4 = [v3 asiOSCVC];
+      interactiveCanvasController = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+      layerHost = [interactiveCanvasController layerHost];
+      asiOSCVC = [layerHost asiOSCVC];
 
-      v5 = [v11 editorController];
-      v6 = [v5 selectionPath];
+      editorController = [interactiveCanvasController editorController];
+      selectionPath = [editorController selectionPath];
 
-      v7 = [v4 editMenuConfigrationForSelectionPath:v6 withConfigurationIdentifier:@"CRLFreehandDrawingModeLassoSelectionMenuIdentifier"];
+      v7 = [asiOSCVC editMenuConfigrationForSelectionPath:selectionPath withConfigurationIdentifier:@"CRLFreehandDrawingModeLassoSelectionMenuIdentifier"];
       [(UIEditMenuInteraction *)self->_lassoSelectionEditMenuInteraction presentEditMenuWithConfiguration:v7];
       self->_lassoSelectionEditMenuDisplayed = 1;
     }
@@ -995,22 +995,22 @@ LABEL_4:
 
 - (void)toolkitDidUpdateCurrentToolSelection
 {
-  v19 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-  v3 = [v19 freehandDrawingToolkit];
-  v4 = [v3 currentTool];
-  v5 = [v4 type];
+  interactiveCanvasController = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+  freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+  currentTool = [freehandDrawingToolkit currentTool];
+  type = [currentTool type];
 
-  if (v5 != 10)
+  if (type != 10)
   {
-    v6 = [v19 editorController];
-    v7 = [v6 mostSpecificEditorConformingToProtocol:&OBJC_PROTOCOL___CRLFreehandDrawingHostingEditor];
+    editorController = [interactiveCanvasController editorController];
+    v7 = [editorController mostSpecificEditorConformingToProtocol:&OBJC_PROTOCOL___CRLFreehandDrawingHostingEditor];
     v14 = sub_1003035DC(v7, 1, v8, v9, v10, v11, v12, v13, &OBJC_PROTOCOL___CRLFreehandDrawingHostingEditor);
 
-    v15 = [v19 canvasEditor];
-    v16 = [v14 drawingItemsFromCurrentSelectionPath];
-    v17 = [v15 selectionPathWithInfos:v16];
-    v18 = [v19 editorController];
-    [v18 setSelectionPath:v17];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    drawingItemsFromCurrentSelectionPath = [v14 drawingItemsFromCurrentSelectionPath];
+    v17 = [canvasEditor selectionPathWithInfos:drawingItemsFromCurrentSelectionPath];
+    editorController2 = [interactiveCanvasController editorController];
+    [editorController2 setSelectionPath:v17];
 
     [(UIEditMenuInteraction *)self->_lassoSelectionEditMenuInteraction dismissMenu];
   }
@@ -1019,9 +1019,9 @@ LABEL_4:
 - (void)toolkitDidUpdateRulerVisibility
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained freehandDrawingToolkit];
+  freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
 
-  if (!v4)
+  if (!freehandDrawingToolkit)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1050,10 +1050,10 @@ LABEL_4:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:621 isFatal:0 description:"invalid nil value for '%{public}s'", "toolkit"];
   }
 
-  v8 = [(CRLiOSDocumentMode *)self boardViewController];
-  v9 = [v8 pencilKitCanvasView];
+  boardViewController = [(CRLiOSDocumentMode *)self boardViewController];
+  pencilKitCanvasView = [boardViewController pencilKitCanvasView];
 
-  if (!v9)
+  if (!pencilKitCanvasView)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1082,31 +1082,31 @@ LABEL_4:
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:623 isFatal:0 description:"invalid nil value for '%{public}s'", "pkCanvasView"];
   }
 
-  v13 = [v9 isRulerActive];
-  if (v13 != [v4 isRulerToolShowing])
+  isRulerActive = [pencilKitCanvasView isRulerActive];
+  if (isRulerActive != [freehandDrawingToolkit isRulerToolShowing])
   {
-    [v9 setRulerActive:{objc_msgSend(v4, "isRulerToolShowing")}];
+    [pencilKitCanvasView setRulerActive:{objc_msgSend(freehandDrawingToolkit, "isRulerToolShowing")}];
   }
 }
 
-- (BOOL)isValidForEditorController:(id)a3
+- (BOOL)isValidForEditorController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-  v6 = [v5 freehandDrawingToolkit];
-  v7 = [v6 isLassoAbleToSelectMixedType];
+  controllerCopy = controller;
+  interactiveCanvasController = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+  freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+  isLassoAbleToSelectMixedType = [freehandDrawingToolkit isLassoAbleToSelectMixedType];
 
-  if (v7)
+  if (isLassoAbleToSelectMixedType)
   {
     [(CRLiOSDocumentModeFreehandDrawing *)self p_currentLassoSelectionType];
   }
 
-  v8 = [v4 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+  v8 = [controllerCopy mostSpecificCurrentEditorOfClass:objc_opt_class()];
   v9 = v8 != 0;
 
-  if (v7)
+  if (isLassoAbleToSelectMixedType)
   {
-    v10 = [v4 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+    v10 = [controllerCopy mostSpecificCurrentEditorOfClass:objc_opt_class()];
     if (v10)
     {
       v11 = 1;
@@ -1120,14 +1120,14 @@ LABEL_4:
     v9 = !v11;
   }
 
-  v12 = [v4 selectionPath];
+  selectionPath = [controllerCopy selectionPath];
   v13 = objc_opt_class();
-  v14 = [v12 mostSpecificSelectionOfClass:0];
+  v14 = [selectionPath mostSpecificSelectionOfClass:0];
   v15 = sub_100014370(v13, v14);
 
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v17 = [WeakRetained infosForCurrentSelectionPath];
-  v18 = [v17 count];
+  infosForCurrentSelectionPath = [WeakRetained infosForCurrentSelectionPath];
+  v18 = [infosForCurrentSelectionPath count];
 
   if (v15)
   {
@@ -1167,11 +1167,11 @@ LABEL_4:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v24 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v5 = [WeakRetained infosForCurrentSelectionPath];
+  infosForCurrentSelectionPath = [WeakRetained infosForCurrentSelectionPath];
 
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v6 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1182,7 +1182,7 @@ LABEL_4:
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(infosForCurrentSelectionPath);
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
@@ -1213,47 +1213,47 @@ LABEL_4:
 LABEL_12:
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v7 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v7);
   }
 
-  v20 = objc_loadWeakRetained(&v24->_icc);
-  v21 = [v20 canvasEditor];
-  v22 = [v21 selectionPathWithInfos:v3];
+  v20 = objc_loadWeakRetained(&selfCopy->_icc);
+  canvasEditor = [v20 canvasEditor];
+  v22 = [canvasEditor selectionPathWithInfos:v3];
 
-  v23 = objc_loadWeakRetained(&v24->_icc);
+  v23 = objc_loadWeakRetained(&selfCopy->_icc);
   [v23 setSelectionPath:v22 withSelectionFlags:0];
 }
 
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 touchType:(int64_t)a4
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point touchType:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
   v9 = [WeakRetained hitRep:{x, y}];
 
   v10 = objc_opt_class();
   v11 = objc_loadWeakRetained(&self->_icc);
-  v12 = [v11 freehandDrawingToolkit];
-  v13 = [v12 currentTool];
-  v14 = sub_100014370(v10, v13);
+  freehandDrawingToolkit = [v11 freehandDrawingToolkit];
+  currentTool = [freehandDrawingToolkit currentTool];
+  v14 = sub_100014370(v10, currentTool);
 
-  v15 = [[CRLFreehandDrawingToolMarqueeInput alloc] initWithUnscaledTapPoint:sub_10042B6C0(a4) inputType:x, y];
+  v15 = [[CRLFreehandDrawingToolMarqueeInput alloc] initWithUnscaledTapPoint:sub_10042B6C0(type) inputType:x, y];
   if (v9)
   {
     v16 = objc_opt_class();
-    v17 = [v9 info];
-    v18 = sub_100014370(v16, v17);
+    info = [v9 info];
+    v18 = sub_100014370(v16, info);
 
-    v19 = [v18 containingGroup];
-    v20 = [v9 layout];
-    if ([v20 isInGroup])
+    containingGroup = [v18 containingGroup];
+    layout = [v9 layout];
+    if ([layout isInGroup])
     {
-      v21 = [v19 isFreehandDrawing];
+      isFreehandDrawing = [containingGroup isFreehandDrawing];
 
-      if (v21)
+      if (isFreehandDrawing)
       {
 LABEL_4:
         v22 = 1;
@@ -1267,16 +1267,16 @@ LABEL_26:
     {
     }
 
-    v24 = [(CRLiOSDocumentModeFreehandDrawing *)self allowsFingerDrawing];
-    if (a4 == 2 || (v24 & 1) != 0)
+    allowsFingerDrawing = [(CRLiOSDocumentModeFreehandDrawing *)self allowsFingerDrawing];
+    if (type == 2 || (allowsFingerDrawing & 1) != 0)
     {
       v25 = objc_loadWeakRetained(&self->_icc);
-      v26 = [v25 freehandDrawingToolkit];
-      v27 = [v26 isLassoAbleToSelectMixedType];
+      freehandDrawingToolkit2 = [v25 freehandDrawingToolkit];
+      isLassoAbleToSelectMixedType = [freehandDrawingToolkit2 isLassoAbleToSelectMixedType];
 
       if (v14)
       {
-        v22 = v27;
+        v22 = isLassoAbleToSelectMixedType;
       }
 
       else
@@ -1318,27 +1318,27 @@ LABEL_26:
       }
     }
 
-    v32 = [(CRLiOSDocumentMode *)self boardViewController];
-    v33 = [v32 documentModeController];
-    [v33 resetToDefaultModeAnimated:1];
+    boardViewController = [(CRLiOSDocumentMode *)self boardViewController];
+    documentModeController = [boardViewController documentModeController];
+    [documentModeController resetToDefaultModeAnimated:1];
 
-    v34 = [v9 repForSelecting];
-    v35 = [v34 info];
+    repForSelecting = [v9 repForSelecting];
+    info2 = [repForSelecting info];
 
-    if (v35 && [v35 isSelectable])
+    if (info2 && [info2 isSelectable])
     {
-      v36 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-      v37 = [v36 canvasEditor];
-      v44 = [v37 selectionPathWithInfo:v35];
+      interactiveCanvasController = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+      canvasEditor = [interactiveCanvasController canvasEditor];
+      v44 = [canvasEditor selectionPathWithInfo:info2];
 
-      v38 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-      v39 = [v38 editorController];
-      [v39 setSelectionPath:v44];
+      interactiveCanvasController2 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+      editorController = [interactiveCanvasController2 editorController];
+      [editorController setSelectionPath:v44];
 
-      v40 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-      v41 = [v40 layerHost];
-      v42 = [v41 asiOSCVC];
-      [v42 toggleDefaultEditUIForCurrentSelection];
+      interactiveCanvasController3 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+      layerHost = [interactiveCanvasController3 layerHost];
+      asiOSCVC = [layerHost asiOSCVC];
+      [asiOSCVC toggleDefaultEditUIForCurrentSelection];
     }
 
     v22 = 0;
@@ -1365,9 +1365,9 @@ LABEL_30:
   return v23;
 }
 
-- (BOOL)handleTapOnCanvasBackgroundAtUnscaledPoint:(CGPoint)a3
+- (BOOL)handleTapOnCanvasBackgroundAtUnscaledPoint:(CGPoint)point
 {
-  v4 = [CRLFeatureFlagsHelper isOSFeatureEnabled:9, a3.x, a3.y];
+  v4 = [CRLFeatureFlagsHelper isOSFeatureEnabled:9, point.x, point.y];
   if (v4)
   {
     if ([(CRLiOSDocumentModeFreehandDrawing *)self currentlyDisplayingLassoSelectionMenu])
@@ -1377,15 +1377,15 @@ LABEL_30:
 
     else
     {
-      v5 = [(CRLiOSDocumentMode *)self boardViewController];
-      v6 = [v5 interactiveCanvasController];
+      boardViewController = [(CRLiOSDocumentMode *)self boardViewController];
+      interactiveCanvasController = [boardViewController interactiveCanvasController];
 
-      v7 = [v6 canvasEditor];
+      canvasEditor = [interactiveCanvasController canvasEditor];
       v8 = +[NSSet set];
-      v9 = [v7 selectionPathWithInfos:v8];
+      v9 = [canvasEditor selectionPathWithInfos:v8];
 
-      v10 = [v6 editorController];
-      [v10 setSelectionPath:v9];
+      editorController = [interactiveCanvasController editorController];
+      [editorController setSelectionPath:v9];
 
       [(CRLiOSDocumentModeFreehandDrawing *)self presentEditMenuForLassoSelection];
     }
@@ -1394,17 +1394,17 @@ LABEL_30:
   return v4;
 }
 
-- (BOOL)shouldHandleDoubleTapAtPoint:(CGPoint)a3 touchType:(int64_t)a4
+- (BOOL)shouldHandleDoubleTapAtPoint:(CGPoint)point touchType:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([CRLFeatureFlagsHelper isOSFeatureEnabled:9])
   {
     v7 = objc_opt_class();
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v9 = [WeakRetained freehandDrawingToolkit];
-    v10 = [v9 currentTool];
-    v11 = sub_100014370(v7, v10);
+    freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
+    currentTool = [freehandDrawingToolkit currentTool];
+    v11 = sub_100014370(v7, currentTool);
 
     if (v11)
     {
@@ -1412,40 +1412,40 @@ LABEL_30:
     }
 
     v47 = v11;
-    v12 = [(CRLiOSDocumentMode *)self boardViewController];
-    v13 = [v12 interactiveCanvasController];
+    boardViewController = [(CRLiOSDocumentMode *)self boardViewController];
+    interactiveCanvasController = [boardViewController interactiveCanvasController];
 
-    v14 = [v13 layerHost];
-    v15 = [v14 asiOSCVC];
+    layerHost = [interactiveCanvasController layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    v16 = [v15 delegate];
-    v17 = [v16 pencilKitCanvasViewControllerForCanvasViewController:v15];
+    delegate = [asiOSCVC delegate];
+    v17 = [delegate pencilKitCanvasViewControllerForCanvasViewController:asiOSCVC];
 
-    v18 = [v13 hitRep:{x, y}];
-    v19 = [v18 repForSelecting];
+    v18 = [interactiveCanvasController hitRep:{x, y}];
+    repForSelecting = [v18 repForSelecting];
 
     v20 = objc_opt_class();
-    v46 = sub_100014370(v20, v19);
-    v45 = [v46 shapeInfo];
-    v21 = [v45 isFreehandDrawingShape];
+    v46 = sub_100014370(v20, repForSelecting);
+    shapeInfo = [v46 shapeInfo];
+    isFreehandDrawingShape = [shapeInfo isFreehandDrawingShape];
     v22 = objc_loadWeakRetained(&self->_icc);
-    v23 = [v22 freehandDrawingToolkit];
+    freehandDrawingToolkit2 = [v22 freehandDrawingToolkit];
 
-    v44 = v23;
-    v24 = [v23 currentTool];
-    v25 = [v24 type] != 10;
+    v44 = freehandDrawingToolkit2;
+    currentTool2 = [freehandDrawingToolkit2 currentTool];
+    v25 = [currentTool2 type] != 10;
 
-    v26 = [v13 freehandDrawingToolkit];
-    v27 = [v26 isLassoAbleToSelectMixedType];
+    freehandDrawingToolkit3 = [interactiveCanvasController freehandDrawingToolkit];
+    isLassoAbleToSelectMixedType = [freehandDrawingToolkit3 isLassoAbleToSelectMixedType];
 
-    if ((v19 == 0) | v21 & 1 | v25)
+    if ((repForSelecting == 0) | isFreehandDrawingShape & 1 | v25)
     {
-      v28 = v21;
+      v28 = isFreehandDrawingShape;
     }
 
     else
     {
-      v28 = v27 ^ 1 | v21;
+      v28 = isLassoAbleToSelectMixedType ^ 1 | isFreehandDrawingShape;
     }
 
     if ([(CRLiOSDocumentModeFreehandDrawing *)self currentlyDisplayingLassoSelectionMenu])
@@ -1453,34 +1453,34 @@ LABEL_30:
       [(CRLiOSDocumentModeFreehandDrawing *)self hideEditMenuForLassoSelection];
     }
 
-    v29 = [v15 canvasView];
-    v30 = [v29 unscaledCoordinateSpace];
-    v31 = [v15 canvasView];
-    v32 = [v31 window];
-    v33 = [v32 coordinateSpace];
-    [v30 convertPoint:v33 toCoordinateSpace:{x, y}];
+    canvasView = [asiOSCVC canvasView];
+    unscaledCoordinateSpace = [canvasView unscaledCoordinateSpace];
+    canvasView2 = [asiOSCVC canvasView];
+    window = [canvasView2 window];
+    coordinateSpace = [window coordinateSpace];
+    [unscaledCoordinateSpace convertPoint:coordinateSpace toCoordinateSpace:{x, y}];
     v35 = v34;
     v37 = v36;
 
-    v38 = [v15 smartSelectionManager];
-    v39 = [v17 smartSelectionView];
-    [v39 frame];
-    [v13 convertBoundsToUnscaledRect:?];
+    smartSelectionManager = [asiOSCVC smartSelectionManager];
+    smartSelectionView = [v17 smartSelectionView];
+    [smartSelectionView frame];
+    [interactiveCanvasController convertBoundsToUnscaledRect:?];
     v48.x = x;
     v48.y = y;
     v40 = CGRectContainsPoint(v49, v48);
 
-    v41 = [v17 smartSelectionView];
+    smartSelectionView2 = [v17 smartSelectionView];
 
-    if (v41 && v38 && v40)
+    if (smartSelectionView2 && smartSelectionManager && v40)
     {
-      v42 = [v17 smartSelectionView];
-      [v38 handleDoubleTapInputAtUnscaledPoint:v42 inSelectionView:{v35, v37}];
+      smartSelectionView3 = [v17 smartSelectionView];
+      [smartSelectionManager handleDoubleTapInputAtUnscaledPoint:smartSelectionView3 inSelectionView:{v35, v37}];
     }
 
     else
     {
-      [v38 handleDoubleTapInputAtUnscaledPoint:{v35, v37}];
+      [smartSelectionManager handleDoubleTapInputAtUnscaledPoint:{v35, v37}];
     }
   }
 
@@ -1492,69 +1492,69 @@ LABEL_30:
   return v28 & 1;
 }
 
-- (void)pencilKitDidSmartSelectStrokesInDrawingShapeItems:(id)a3
+- (void)pencilKitDidSmartSelectStrokesInDrawingShapeItems:(id)items
 {
-  v10 = a3;
-  v4 = [(CRLiOSDocumentMode *)self boardViewController];
-  v5 = [v4 interactiveCanvasController];
+  itemsCopy = items;
+  boardViewController = [(CRLiOSDocumentMode *)self boardViewController];
+  interactiveCanvasController = [boardViewController interactiveCanvasController];
 
-  v6 = [v5 canvasEditor];
-  v7 = [NSSet setWithArray:v10];
-  v8 = [v6 selectionPathWithInfos:v7];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v7 = [NSSet setWithArray:itemsCopy];
+  v8 = [canvasEditor selectionPathWithInfos:v7];
 
-  v9 = [v5 editorController];
-  [v9 setSelectionPath:v8];
+  editorController = [interactiveCanvasController editorController];
+  [editorController setSelectionPath:v8];
 
   if ([(CRLiOSDocumentModeFreehandDrawing *)self currentlyDisplayingLassoSelectionMenu])
   {
     [(CRLiOSDocumentModeFreehandDrawing *)self hideEditMenuForLassoSelection];
   }
 
-  if ([v10 count])
+  if ([itemsCopy count])
   {
     [(CRLiOSDocumentModeFreehandDrawing *)self presentEditMenuForLassoSelection];
   }
 }
 
-- (void)p_editMenuTapReceived:(id)a3
+- (void)p_editMenuTapReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   v5 = objc_loadWeakRetained(&self->_icc);
-  v6 = [v5 canvasView];
-  [v4 locationInView:v6];
+  canvasView = [v5 canvasView];
+  [receivedCopy locationInView:canvasView];
   [v5 convertBoundsToUnscaledPoint:?];
   v8 = v7;
   v10 = v9;
 
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v12 = [WeakRetained layerHost];
-  v13 = [v12 asiOSCVC];
+  layerHost = [WeakRetained layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  [v13 setLastTapPoint:{v8, v10}];
+  [asiOSCVC setLastTapPoint:{v8, v10}];
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isMathPaperEnabled])
   {
     v14 = objc_loadWeakRetained(&self->_icc);
-    v15 = [v14 freehandDrawingToolkit];
-    v16 = [v15 currentTool];
-    if ([v16 type] == 10)
+    freehandDrawingToolkit = [v14 freehandDrawingToolkit];
+    currentTool = [freehandDrawingToolkit currentTool];
+    if ([currentTool type] == 10)
     {
     }
 
     else
     {
-      v17 = [(CRLiOSDocumentModeFreehandDrawing *)self allowsFingerDrawing];
+      allowsFingerDrawing = [(CRLiOSDocumentModeFreehandDrawing *)self allowsFingerDrawing];
 
-      if ((v17 & 1) == 0)
+      if ((allowsFingerDrawing & 1) == 0)
       {
         v31 = 0u;
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
         v18 = objc_loadWeakRetained(&self->_icc);
-        v19 = [v18 canvas];
-        v20 = [v19 topLevelReps];
+        canvas = [v18 canvas];
+        topLevelReps = [canvas topLevelReps];
 
-        v21 = [v20 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v21 = [topLevelReps countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v21)
         {
           v22 = v21;
@@ -1566,7 +1566,7 @@ LABEL_30:
             {
               if (*v30 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(topLevelReps);
               }
 
               v25 = *(*(&v29 + 1) + 8 * v24);
@@ -1583,7 +1583,7 @@ LABEL_30:
             }
 
             while (v22 != v24);
-            v22 = [v20 countByEnumeratingWithState:&v29 objects:v33 count:16];
+            v22 = [topLevelReps countByEnumeratingWithState:&v29 objects:v33 count:16];
             if (v22)
             {
               continue;
@@ -1596,21 +1596,21 @@ LABEL_30:
     }
   }
 
-  [v13 toggleEditMenuForCurrentSelection];
+  [asiOSCVC toggleEditMenuForCurrentSelection];
 LABEL_16:
 }
 
 - (void)p_updatePanAndDrawingGestureRecognizersForState
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained canvasView];
-  v5 = [v4 enclosingScrollView];
-  v6 = [v5 panGestureRecognizer];
+  canvasView = [WeakRetained canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  panGestureRecognizer = [enclosingScrollView panGestureRecognizer];
 
   v7 = objc_loadWeakRetained(&self->_icc);
-  v8 = [v7 layerHost];
-  v9 = [v8 asiOSCVC];
-  v10 = [v9 freehandDrawingGestureRecognizer];
+  layerHost = [v7 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  freehandDrawingGestureRecognizer = [asiOSCVC freehandDrawingGestureRecognizer];
 
   if ([(CRLiOSDocumentModeFreehandDrawing *)self allowsFingerDrawing])
   {
@@ -1624,11 +1624,11 @@ LABEL_16:
     v11 = &off_1018E12D8;
   }
 
-  [v6 setMinimumNumberOfTouches:previousCanvasScrollMinTouchCount];
-  [v10 setAllowedTouchTypes:v11];
-  v13 = [v10 allowedTouchTypes];
-  v14 = [v13 arrayByAddingObject:&off_1018E2190];
-  [v10 setAllowedTouchTypes:v14];
+  [panGestureRecognizer setMinimumNumberOfTouches:previousCanvasScrollMinTouchCount];
+  [freehandDrawingGestureRecognizer setAllowedTouchTypes:v11];
+  allowedTouchTypes = [freehandDrawingGestureRecognizer allowedTouchTypes];
+  v14 = [allowedTouchTypes arrayByAddingObject:&off_1018E2190];
+  [freehandDrawingGestureRecognizer setAllowedTouchTypes:v14];
 
   if (!self->_editMenuTapGR)
   {
@@ -1659,23 +1659,23 @@ LABEL_16:
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:872 isFatal:0 description:"invalid nil value for '%{public}s'", "_editMenuTapGR"];
   }
 
-  -[UITapGestureRecognizer setNumberOfTouchesRequired:](self->_editMenuTapGR, "setNumberOfTouchesRequired:", [v6 minimumNumberOfTouches]);
+  -[UITapGestureRecognizer setNumberOfTouchesRequired:](self->_editMenuTapGR, "setNumberOfTouchesRequired:", [panGestureRecognizer minimumNumberOfTouches]);
 }
 
-- (id)p_menuElementsToDisplayForLassoSelectionAtPoint:(CGPoint)a3
+- (id)p_menuElementsToDisplayForLassoSelectionAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v8 = [WeakRetained editorController];
-  v9 = [v8 currentEditors];
+  editorController = [WeakRetained editorController];
+  currentEditors = [editorController currentEditors];
 
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v10 = [currentEditors countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1686,7 +1686,7 @@ LABEL_16:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(currentEditors);
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
@@ -1696,7 +1696,7 @@ LABEL_16:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [currentEditors countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
@@ -1713,11 +1713,11 @@ LABEL_16:
 - (BOOL)p_areAnyDrawingItemsOrDrawingShapesSelected
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained selectionModelTranslator];
+  selectionModelTranslator = [WeakRetained selectionModelTranslator];
   v5 = objc_loadWeakRetained(&self->_icc);
-  v6 = [v5 editorController];
-  v7 = [v6 selectionPath];
-  v8 = [v4 boardItemsForSelectionPath:v7];
+  editorController = [v5 editorController];
+  selectionPath = [editorController selectionPath];
+  v8 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
   v18 = 0u;
   v19 = 0u;
@@ -1773,9 +1773,9 @@ LABEL_13:
   return v14;
 }
 
-- (void)p_insertEditCommandInto:(id)a3
+- (void)p_insertEditCommandInto:(id)into
 {
-  v3 = a3;
+  intoCopy = into;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Edit" value:0 table:0];
   v6 = [UIImage systemImageNamed:@"paintbrush"];
@@ -1785,8 +1785,8 @@ LABEL_13:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v39 = v3;
-  v7 = [v3 copy];
+  v39 = intoCopy;
+  v7 = [intoCopy copy];
   v8 = [v7 countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v8)
   {
@@ -1811,8 +1811,8 @@ LABEL_13:
         v15 = v14;
         if (v14)
         {
-          v16 = [v14 identifier];
-          v17 = [v16 isEqualToString:@"CRLCutCopyPasteMenuIdentifier"];
+          identifier = [v14 identifier];
+          v17 = [identifier isEqualToString:@"CRLCutCopyPasteMenuIdentifier"];
 
           if (v17)
           {
@@ -1822,8 +1822,8 @@ LABEL_13:
             v44 = 0u;
             v45 = 0u;
             v18 = v15;
-            v19 = [v15 children];
-            v20 = [v19 countByEnumeratingWithState:&v44 objects:v52 count:16];
+            children = [v15 children];
+            v20 = [children countByEnumeratingWithState:&v44 objects:v52 count:16];
             if (v20)
             {
               v21 = v20;
@@ -1835,7 +1835,7 @@ LABEL_13:
                 {
                   if (*v45 != v22)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(children);
                   }
 
                   v25 = *(*(&v44 + 1) + 8 * i);
@@ -1844,12 +1844,12 @@ LABEL_13:
                   v28 = v27;
                   if (v27 && [v27 action] == "copy:")
                   {
-                    v29 = [v18 children];
-                    v23 = [v29 indexOfObjectIdenticalTo:v25] + 1;
+                    children2 = [v18 children];
+                    v23 = [children2 indexOfObjectIdenticalTo:v25] + 1;
                   }
                 }
 
-                v21 = [v19 countByEnumeratingWithState:&v44 objects:v52 count:16];
+                v21 = [children countByEnumeratingWithState:&v44 objects:v52 count:16];
               }
 
               while (v21);
@@ -1861,8 +1861,8 @@ LABEL_13:
               v11 = v43;
               if (v23 != 0x7FFFFFFFFFFFFFFFLL)
               {
-                v33 = [v15 children];
-                v34 = [v33 mutableCopy];
+                children3 = [v15 children];
+                v34 = [children3 mutableCopy];
 
                 v35 = v38;
                 [v34 insertObject:v38 atIndex:v23];
@@ -1927,11 +1927,11 @@ LABEL_32:
 - (unint64_t)p_currentLassoSelectionType
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained selectionModelTranslator];
+  selectionModelTranslator = [WeakRetained selectionModelTranslator];
   v5 = objc_loadWeakRetained(&self->_icc);
-  v6 = [v5 editorController];
-  v7 = [v6 selectionPath];
-  v8 = [v4 boardItemsForSelectionPath:v7];
+  editorController = [v5 editorController];
+  selectionPath = [editorController selectionPath];
+  v8 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
   v21 = 0u;
   v22 = 0u;
@@ -2012,19 +2012,19 @@ LABEL_19:
 - (unint64_t)p_currentLockedInfosCount
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained editorController];
-  v5 = [v4 selectionPath];
+  editorController = [WeakRetained editorController];
+  selectionPath = [editorController selectionPath];
 
   v6 = objc_loadWeakRetained(&self->_icc);
-  v7 = [v6 selectionModelTranslator];
+  selectionModelTranslator = [v6 selectionModelTranslator];
   v8 = objc_loadWeakRetained(&self->_icc);
-  v9 = [v8 editorController];
-  v10 = [v9 selectionPath];
-  v11 = [v7 boardItemsForSelectionPath:v10];
+  editorController2 = [v8 editorController];
+  selectionPath2 = [editorController2 selectionPath];
+  v11 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath2];
 
   v12 = objc_loadWeakRetained(&self->_icc);
-  v13 = [v12 selectionModelTranslator];
-  v14 = [v13 unlockedBoardItemsForSelectionPath:v5];
+  selectionModelTranslator2 = [v12 selectionModelTranslator];
+  v14 = [selectionModelTranslator2 unlockedBoardItemsForSelectionPath:selectionPath];
 
   v15 = [v11 count];
   if (v15 < [v14 count])
@@ -2062,92 +2062,92 @@ LABEL_19:
   return v20;
 }
 
-- (void)p_handleMarqueeTapWithInput:(id)a3 afterDelay:(double)a4
+- (void)p_handleMarqueeTapWithInput:(id)input afterDelay:(double)delay
 {
-  v6 = a3;
+  inputCopy = input;
   v7 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v9 = [WeakRetained freehandDrawingToolkit];
-  v10 = [v9 currentTool];
-  v11 = sub_100014370(v7, v10);
+  freehandDrawingToolkit = [WeakRetained freehandDrawingToolkit];
+  currentTool = [freehandDrawingToolkit currentTool];
+  v11 = sub_100014370(v7, currentTool);
 
-  [v11 performSelector:"handleMarqueeTapWithInput:" withObject:v6 afterDelay:a4];
+  [v11 performSelector:"handleMarqueeTapWithInput:" withObject:inputCopy afterDelay:delay];
 }
 
 - (void)beginDrawingTransformMode
 {
   v3 = [CRLiOSDocumentModeFreehandDrawingTransform alloc];
-  v4 = [(CRLiOSDocumentMode *)self boardViewController];
+  boardViewController = [(CRLiOSDocumentMode *)self boardViewController];
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v8 = [(CRLiOSDocumentModeFreehandDrawingTransform *)v3 initWithBoardViewController:v4 andInteractiveCanvasController:WeakRetained];
+  v8 = [(CRLiOSDocumentModeFreehandDrawingTransform *)v3 initWithBoardViewController:boardViewController andInteractiveCanvasController:WeakRetained];
 
-  v6 = [(CRLiOSDocumentMode *)self boardViewController];
-  v7 = [v6 documentModeController];
-  [v7 setMode:v8 animated:0];
+  boardViewController2 = [(CRLiOSDocumentMode *)self boardViewController];
+  documentModeController = [boardViewController2 documentModeController];
+  [documentModeController setMode:v8 animated:0];
 }
 
 - (id)toolTray
 {
-  v2 = [(CRLiOSDocumentMode *)self boardViewController];
-  v3 = [v2 sharedPencilTray];
+  boardViewController = [(CRLiOSDocumentMode *)self boardViewController];
+  sharedPencilTray = [boardViewController sharedPencilTray];
 
-  return v3;
+  return sharedPencilTray;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
+  touchCopy = touch;
+  recognizerCopy = recognizer;
   v8 = objc_loadWeakRetained(&self->_icc);
-  v9 = [v8 canvasView];
-  [v6 locationInView:v9];
+  canvasView = [v8 canvasView];
+  [touchCopy locationInView:canvasView];
   [v8 convertBoundsToUnscaledPoint:?];
   v11 = v10;
   v13 = v12;
 
-  v14 = [v6 type];
-  LOBYTE(self) = [(CRLiOSDocumentModeFreehandDrawing *)self p_gestureRecognizer:v7 shouldReceiveTouchAtLocation:v14 touchType:v11, v13];
+  type = [touchCopy type];
+  LOBYTE(self) = [(CRLiOSDocumentModeFreehandDrawing *)self p_gestureRecognizer:recognizerCopy shouldReceiveTouchAtLocation:type touchType:v11, v13];
 
   return self;
 }
 
-- (BOOL)p_gestureRecognizer:(id)a3 shouldReceiveTouchAtLocation:(CGPoint)a4 touchType:(int64_t)a5
+- (BOOL)p_gestureRecognizer:(id)recognizer shouldReceiveTouchAtLocation:(CGPoint)location touchType:(int64_t)type
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  y = location.y;
+  x = location.x;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v11 = [WeakRetained layerHost];
-  v12 = [v11 asiOSCVC];
+  layerHost = [WeakRetained layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  v13 = [v12 delegate];
+  delegate = [asiOSCVC delegate];
   v14 = objc_opt_class();
-  v15 = sub_100014370(v14, v13);
-  v16 = [v15 presentedViewController];
+  v15 = sub_100014370(v14, delegate);
+  presentedViewController = [v15 presentedViewController];
 
-  if (v16)
+  if (presentedViewController)
   {
     goto LABEL_2;
   }
 
-  if (self->_editMenuTapGR != v9)
+  if (self->_editMenuTapGR != recognizerCopy)
   {
     goto LABEL_4;
   }
 
   v19 = objc_loadWeakRetained(&self->_icc);
-  v20 = [v19 freehandDrawingToolkit];
-  v21 = [v20 currentTool];
-  v33 = [v21 type];
+  freehandDrawingToolkit = [v19 freehandDrawingToolkit];
+  currentTool = [freehandDrawingToolkit currentTool];
+  type = [currentTool type];
 
-  if (v33 == 10)
+  if (type == 10)
   {
 LABEL_2:
     v17 = 0;
     goto LABEL_5;
   }
 
-  if (a5 || [(CRLiOSDocumentModeFreehandDrawing *)self allowsFingerDrawing])
+  if (type || [(CRLiOSDocumentModeFreehandDrawing *)self allowsFingerDrawing])
   {
 LABEL_4:
     v17 = 1;
@@ -2160,19 +2160,19 @@ LABEL_4:
   if (v23)
   {
     v24 = objc_opt_class();
-    v25 = [v23 info];
-    v26 = sub_100014370(v24, v25);
+    info = [v23 info];
+    v26 = sub_100014370(v24, info);
 
-    v27 = [v26 containingGroup];
-    if (([v27 isFreehandDrawing] & 1) != 0 || (objc_msgSend(v23, "repForSelecting"), v28 = objc_claimAutoreleasedReturnValue(), v28, !v28))
+    containingGroup = [v26 containingGroup];
+    if (([containingGroup isFreehandDrawing] & 1) != 0 || (objc_msgSend(v23, "repForSelecting"), v28 = objc_claimAutoreleasedReturnValue(), v28, !v28))
     {
-      v29 = [v23 parentRep];
+      parentRep = [v23 parentRep];
 
-      if (v29)
+      if (parentRep)
       {
         v30 = objc_opt_class();
-        v31 = [v23 parentRep];
-        v32 = sub_100014370(v30, v31);
+        parentRep2 = [v23 parentRep];
+        v32 = sub_100014370(v30, parentRep2);
       }
 
       v17 = 1;
@@ -2193,15 +2193,15 @@ LABEL_5:
   return v17;
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v6 = a4;
-  v7 = [v6 identifier];
+  configurationCopy = configuration;
+  identifier = [configurationCopy identifier];
 
-  if (v7 == @"CRLFreehandDrawingModeLassoSelectionMenuIdentifier")
+  if (identifier == @"CRLFreehandDrawingModeLassoSelectionMenuIdentifier")
   {
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    [v6 sourcePoint];
+    [configurationCopy sourcePoint];
     [WeakRetained convertBoundsToUnscaledPoint:?];
     v15 = v14;
     v17 = v16;
@@ -2212,9 +2212,9 @@ LABEL_5:
 
   else
   {
-    v8 = [v6 identifier];
+    identifier2 = [configurationCopy identifier];
 
-    if (v8 != @"CRLFreehandDrawingModeLassoSelectionMenuIdentifier")
+    if (identifier2 != @"CRLFreehandDrawingModeLassoSelectionMenuIdentifier")
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -2249,16 +2249,16 @@ LABEL_5:
   return v12;
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
-  v4 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController:a3];
-  v5 = [v4 layerHost];
-  v6 = [v5 asiOSCVC];
+  v4 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController:interaction];
+  layerHost = [v4 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  v7 = [v4 editorController];
-  v8 = [v7 selectionPath];
+  editorController = [v4 editorController];
+  selectionPath = [editorController selectionPath];
 
-  [v6 targetRectForEditMenu:v8];
+  [asiOSCVC targetRectForEditMenu:selectionPath];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -2275,39 +2275,39 @@ LABEL_5:
   return result;
 }
 
-- (void)editMenuInteraction:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willPresentMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v12 = [NSNotificationCenter defaultCenter:a3];
+  v12 = [NSNotificationCenter defaultCenter:interaction];
   v6 = +[NSNotification CRLCommandControllerWillUndo];
-  v7 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-  v8 = [v7 commandController];
-  [v12 addObserver:self selector:"p_commandControllerWillUndoOrRedo:" name:v6 object:v8];
+  interactiveCanvasController = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
+  [v12 addObserver:self selector:"p_commandControllerWillUndoOrRedo:" name:v6 object:commandController];
 
   v9 = +[NSNotification CRLCommandControllerWillRedo];
-  v10 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-  v11 = [v10 commandController];
-  [v12 addObserver:self selector:"p_commandControllerWillUndoOrRedo:" name:v9 object:v11];
+  interactiveCanvasController2 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+  commandController2 = [interactiveCanvasController2 commandController];
+  [v12 addObserver:self selector:"p_commandControllerWillUndoOrRedo:" name:v9 object:commandController2];
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v12 = [NSNotificationCenter defaultCenter:a3];
+  v12 = [NSNotificationCenter defaultCenter:interaction];
   v6 = +[NSNotification CRLCommandControllerWillRedo];
-  v7 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-  v8 = [v7 commandController];
-  [v12 removeObserver:self name:v6 object:v8];
+  interactiveCanvasController = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
+  [v12 removeObserver:self name:v6 object:commandController];
 
   v9 = +[NSNotification CRLCommandControllerWillUndo];
-  v10 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
-  v11 = [v10 commandController];
-  [v12 removeObserver:self name:v9 object:v11];
+  interactiveCanvasController2 = [(CRLiOSDocumentModeFreehandDrawing *)self interactiveCanvasController];
+  commandController2 = [interactiveCanvasController2 commandController];
+  [v12 removeObserver:self name:v9 object:commandController2];
 }
 
-- (id)contextMenuConfigurationForContextMenuInteraction:(id)a3 atPoint:(CGPoint)a4 onInteractiveCanvasController:(id)a5
+- (id)contextMenuConfigurationForContextMenuInteraction:(id)interaction atPoint:(CGPoint)point onInteractiveCanvasController:(id)controller
 {
-  y = a4.y;
-  x = a4.x;
-  if ([a3 menuAppearance] == 1)
+  y = point.y;
+  x = point.x;
+  if ([interaction menuAppearance] == 1)
   {
     v8 = 0;
   }
@@ -2335,13 +2335,13 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v9 = [WeakRetained layerHost];
-  v10 = [v9 asiOSCVC];
+  layerHost = [WeakRetained layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
   v11 = [CRLFeatureFlagsHelper isOSFeatureEnabled:9];
   if (!v11)
@@ -2349,34 +2349,34 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v12 = [v10 freehandDrawingGestureRecognizer];
-  if (v12 != v6)
+  freehandDrawingGestureRecognizer = [asiOSCVC freehandDrawingGestureRecognizer];
+  if (freehandDrawingGestureRecognizer != recognizerCopy)
   {
     goto LABEL_3;
   }
 
-  v13 = [v10 doubleTapGestureRecognizer];
+  doubleTapGestureRecognizer = [asiOSCVC doubleTapGestureRecognizer];
 
-  if (v13 == v7)
+  if (doubleTapGestureRecognizer == gestureRecognizerCopy)
   {
     v19 = objc_loadWeakRetained(&self->_icc);
-    v12 = [v19 freehandDrawingToolkit];
+    freehandDrawingGestureRecognizer = [v19 freehandDrawingToolkit];
 
-    v24 = [v10 pencilMediator];
-    v20 = [v12 currentTool];
-    v21 = [v20 type];
+    pencilMediator = [asiOSCVC pencilMediator];
+    currentTool = [freehandDrawingGestureRecognizer currentTool];
+    type = [currentTool type];
 
-    if (v21 == 10 || ([v24 prefersPencilOnlyDrawing] & 1) == 0)
+    if (type == 10 || ([pencilMediator prefersPencilOnlyDrawing] & 1) == 0)
     {
 
 LABEL_3:
       goto LABEL_5;
     }
 
-    v22 = [v10 freehandDrawingGestureRecognizer];
-    v23 = [v22 inputType];
+    freehandDrawingGestureRecognizer2 = [asiOSCVC freehandDrawingGestureRecognizer];
+    inputType = [freehandDrawingGestureRecognizer2 inputType];
 
-    if (v23 == 1)
+    if (inputType == 1)
     {
       v17 = 1;
       goto LABEL_10;
@@ -2385,16 +2385,16 @@ LABEL_3:
 
 LABEL_5:
   v14 = objc_loadWeakRetained(&self->_icc);
-  v15 = [v14 drawingIntelligenceProvider];
+  drawingIntelligenceProvider = [v14 drawingIntelligenceProvider];
 
   v17 = 0;
   if ((v11 | [CRLFeatureFlagsHelper isOSFeatureEnabled:11]))
   {
-    if ([v15 isGestureRecognizerFromDescendantOfDetectorView:v7])
+    if ([drawingIntelligenceProvider isGestureRecognizerFromDescendantOfDetectorView:gestureRecognizerCopy])
     {
-      v16 = [v10 doubleTapGestureRecognizer];
+      doubleTapGestureRecognizer2 = [asiOSCVC doubleTapGestureRecognizer];
 
-      if (v16 == v6)
+      if (doubleTapGestureRecognizer2 == recognizerCopy)
       {
         v17 = 1;
       }
@@ -2405,39 +2405,39 @@ LABEL_10:
   return v17;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v9 = [WeakRetained layerHost];
-  v10 = [v9 asiOSCVC];
+  layerHost = [WeakRetained layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
   if (![CRLFeatureFlagsHelper isOSFeatureEnabled:9])
   {
     goto LABEL_10;
   }
 
-  v11 = [v10 freehandDrawingGestureRecognizer];
-  if (v11 == v6)
+  freehandDrawingGestureRecognizer = [asiOSCVC freehandDrawingGestureRecognizer];
+  if (freehandDrawingGestureRecognizer == recognizerCopy)
   {
-    v12 = [v10 doubleTapGestureRecognizer];
-    v9 = v12;
-    if (v12 == v7)
+    doubleTapGestureRecognizer = [asiOSCVC doubleTapGestureRecognizer];
+    layerHost = doubleTapGestureRecognizer;
+    if (doubleTapGestureRecognizer == gestureRecognizerCopy)
     {
 
       goto LABEL_12;
     }
   }
 
-  v13 = [v10 doubleTapGestureRecognizer];
-  v14 = v13;
-  if (v13 != v6)
+  doubleTapGestureRecognizer2 = [asiOSCVC doubleTapGestureRecognizer];
+  v14 = doubleTapGestureRecognizer2;
+  if (doubleTapGestureRecognizer2 != recognizerCopy)
   {
 
     v15 = 0;
     v16 = 0;
-    if (v11 != v6)
+    if (freehandDrawingGestureRecognizer != recognizerCopy)
     {
 LABEL_14:
 
@@ -2450,20 +2450,20 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [v10 freehandDrawingGestureRecognizer];
+  freehandDrawingGestureRecognizer2 = [asiOSCVC freehandDrawingGestureRecognizer];
 
-  if (v11 == v6)
+  if (freehandDrawingGestureRecognizer == recognizerCopy)
   {
   }
 
-  if (v17 == v7)
+  if (freehandDrawingGestureRecognizer2 == gestureRecognizerCopy)
   {
 LABEL_12:
     v18 = objc_loadWeakRetained(&self->_icc);
-    v11 = [v18 freehandDrawingToolkit];
+    freehandDrawingGestureRecognizer = [v18 freehandDrawingToolkit];
 
-    v9 = [v11 currentTool];
-    v15 = [v9 type] == 10;
+    layerHost = [freehandDrawingGestureRecognizer currentTool];
+    v15 = [layerHost type] == 10;
     goto LABEL_13;
   }
 
@@ -2481,9 +2481,9 @@ LABEL_15:
   return WeakRetained;
 }
 
-+ (void)presentEducationPaneIfNecessaryIn:(id)a3
++ (void)presentEducationPaneIfNecessaryIn:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   sub_1006EF79C();
 }
 

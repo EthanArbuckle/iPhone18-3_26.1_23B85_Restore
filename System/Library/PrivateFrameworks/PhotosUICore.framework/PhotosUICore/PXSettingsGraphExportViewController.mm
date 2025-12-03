@@ -1,7 +1,7 @@
 @interface PXSettingsGraphExportViewController
 - (void)_exportGraph;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -110,14 +110,14 @@ void __51__PXSettingsGraphExportViewController__exportGraph__block_invoke_2(uint
   v1 = [v2 popViewControllerAnimated:1];
 }
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __87__PXSettingsGraphExportViewController_mailComposeController_didFinishWithResult_error___block_invoke;
   v5[3] = &unk_1E774C648;
   v5[4] = self;
-  [(PXSettingsGraphExportViewController *)self dismissViewControllerAnimated:1 completion:v5, a5];
+  [(PXSettingsGraphExportViewController *)self dismissViewControllerAnimated:1 completion:v5, error];
 }
 
 void __87__PXSettingsGraphExportViewController_mailComposeController_didFinishWithResult_error___block_invoke(uint64_t a1)
@@ -126,11 +126,11 @@ void __87__PXSettingsGraphExportViewController_mailComposeController_didFinishWi
   v1 = [v2 popViewControllerAnimated:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PXSettingsGraphExportViewController;
-  [(PXSettingsGraphExportViewController *)&v4 viewDidAppear:a3];
+  [(PXSettingsGraphExportViewController *)&v4 viewDidAppear:appear];
   if (self->_exportGraphOnViewDidAppear)
   {
     self->_exportGraphOnViewDidAppear = 0;
@@ -145,9 +145,9 @@ void __87__PXSettingsGraphExportViewController_mailComposeController_didFinishWi
   [(PXSettingsGraphExportViewController *)&v5 viewDidLoad];
   self->_exportGraphOnViewDidAppear = 1;
   [(PXSettingsGraphExportViewController *)self setTitle:@"Export Graph"];
-  v3 = [(PXSettingsGraphExportViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PXSettingsGraphExportViewController *)self view];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [view setBackgroundColor:whiteColor];
 }
 
 @end

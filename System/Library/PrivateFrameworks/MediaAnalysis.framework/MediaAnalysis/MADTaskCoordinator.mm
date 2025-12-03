@@ -2,15 +2,15 @@
 - (BOOL)scheduleNextAssetProcessingTask;
 - (BOOL)scheduleNextClusterProcessingTask;
 - (BOOL)scheduleNextDownloadAssetProcessingTask;
-- (MADTaskCoordinator)initWithPhotoLibraries:(id)a3 taskProviderTypes:(id)a4 options:(id)a5 cancelBlock:(id)a6 progressReporter:(id)a7;
-- (int)createTaskProvidersWithPhotoLibraries:(id)a3 taskProviderTypes:(id)a4;
+- (MADTaskCoordinator)initWithPhotoLibraries:(id)libraries taskProviderTypes:(id)types options:(id)options cancelBlock:(id)block progressReporter:(id)reporter;
+- (int)createTaskProvidersWithPhotoLibraries:(id)libraries taskProviderTypes:(id)types;
 - (int)run;
-- (unint64_t)taskIDForProviderType:(int64_t)a3;
+- (unint64_t)taskIDForProviderType:(int64_t)type;
 - (void)dealloc;
 - (void)evaluateScheduling;
-- (void)executeAssetProcessingTask:(id)a3 fromTaskProvider:(id)a4;
-- (void)executeClusterProcessingTask:(id)a3 fromTaskProvider:(id)a4;
-- (void)executeDownloadAssetProcessingTask:(id)a3 fromTaskProvider:(id)a4;
+- (void)executeAssetProcessingTask:(id)task fromTaskProvider:(id)provider;
+- (void)executeClusterProcessingTask:(id)task fromTaskProvider:(id)provider;
+- (void)executeDownloadAssetProcessingTask:(id)task fromTaskProvider:(id)provider;
 @end
 
 @implementation MADTaskCoordinator
@@ -53,21 +53,21 @@
   [(MADTaskCoordinator *)&v8 dealloc];
 }
 
-- (unint64_t)taskIDForProviderType:(int64_t)a3
+- (unint64_t)taskIDForProviderType:(int64_t)type
 {
-  if ((a3 - 1) < 5)
+  if ((type - 1) < 5)
   {
-    return qword_10024CDB0[a3 - 1];
+    return qword_10024CDB0[type - 1];
   }
 
-  v4 = a3;
+  typeCopy = type;
   if (MediaAnalysisLogLevel() >= 5)
   {
     v5 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
       v6[0] = 67109120;
-      v6[1] = v4;
+      v6[1] = typeCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "Unknown task provider type: %d", v6, 8u);
     }
   }
@@ -75,15 +75,15 @@
   return 0;
 }
 
-- (int)createTaskProvidersWithPhotoLibraries:(id)a3 taskProviderTypes:(id)a4
+- (int)createTaskProvidersWithPhotoLibraries:(id)libraries taskProviderTypes:(id)types
 {
-  v6 = a3;
-  v40 = a4;
+  librariesCopy = libraries;
+  typesCopy = types;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v6;
+  obj = librariesCopy;
   v7 = [obj countByEnumeratingWithState:&v53 objects:v64 count:16];
   if (!v7)
   {
@@ -118,7 +118,7 @@
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v47 = v40;
+        v47 = typesCopy;
         v14 = [v47 countByEnumeratingWithState:&v49 objects:v63 count:16];
         if (!v14)
         {
@@ -137,8 +137,8 @@
               objc_enumerationMutation(v47);
             }
 
-            v18 = [*(*(&v49 + 1) + 8 * v17) intValue];
-            v19 = [(MADTaskCoordinator *)self taskIDForProviderType:v18];
+            intValue = [*(*(&v49 + 1) + 8 * v17) intValue];
+            v19 = [(MADTaskCoordinator *)self taskIDForProviderType:intValue];
             if ([v12 vcp_requiresProcessingForTask:v19])
             {
               v48[0] = _NSConcreteStackBlock;
@@ -156,9 +156,9 @@
                   if (v19 == 3)
                   {
                     v21 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"SkipSyncGallery"];
-                    v22 = [v21 BOOLValue];
+                    bOOLValue = [v21 BOOLValue];
 
-                    v23 = [[MADPhotosFaceTaskProvider alloc] initWithPhotoLibrary:v12 skipSyncGallery:(_os_feature_enabled_impl() | v22) & 1 cancelBlock:self->_cancelBlock];
+                    v23 = [[MADPhotosFaceTaskProvider alloc] initWithPhotoLibrary:v12 skipSyncGallery:(_os_feature_enabled_impl() | bOOLValue) & 1 cancelBlock:self->_cancelBlock];
                     goto LABEL_28;
                   }
 
@@ -167,14 +167,14 @@ LABEL_20:
                   {
                     v25 = objc_opt_class();
                     v45 = v25;
-                    v26 = [v12 photoLibraryURL];
-                    v27 = [v26 path];
+                    photoLibraryURL = [v12 photoLibraryURL];
+                    path = [photoLibraryURL path];
                     *buf = 138412802;
                     v58 = v25;
                     v59 = 2048;
                     v60 = v19;
                     v61 = 2112;
-                    v62 = v27;
+                    v62 = path;
                     _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[%@] Unsupported task type %lu for Library %@; skipping", buf, 0x20u);
                   }
 
@@ -183,7 +183,7 @@ LABEL_30:
                   goto LABEL_31;
                 }
 
-                if (v18 == 5)
+                if (intValue == 5)
                 {
                   v29 = [[MADPhotosFullTaskProvider alloc] initWithPhotoLibrary:v12 cancelBlock:self->_cancelBlock progressReporter:self->_progressReporter mediaType:1 mediaSubtype:8 imageOnlyAnalysis:0];
                   (v20[2])(v20, v29);
@@ -194,7 +194,7 @@ LABEL_30:
 
                 else
                 {
-                  if (v18 != 4)
+                  if (intValue != 4)
                   {
                     goto LABEL_30;
                   }
@@ -251,12 +251,12 @@ LABEL_35:
       {
         v31 = objc_opt_class();
         v32 = v31;
-        v33 = [v12 photoLibraryURL];
-        v34 = [v33 path];
+        photoLibraryURL2 = [v12 photoLibraryURL];
+        path2 = [photoLibraryURL2 path];
         *buf = v37;
         v58 = v31;
         v59 = 2112;
-        v60 = v34;
+        v60 = path2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v38, "[%@] Photo Library %@ is not ready; skipping", buf, 0x16u);
       }
 
@@ -286,13 +286,13 @@ LABEL_41:
   return v35;
 }
 
-- (MADTaskCoordinator)initWithPhotoLibraries:(id)a3 taskProviderTypes:(id)a4 options:(id)a5 cancelBlock:(id)a6 progressReporter:(id)a7
+- (MADTaskCoordinator)initWithPhotoLibraries:(id)libraries taskProviderTypes:(id)types options:(id)options cancelBlock:(id)block progressReporter:(id)reporter
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  librariesCopy = libraries;
+  typesCopy = types;
+  optionsCopy = options;
+  blockCopy = block;
+  reporterCopy = reporter;
   v51.receiver = self;
   v51.super_class = MADTaskCoordinator;
   v18 = [(MADTaskCoordinator *)&v51 init];
@@ -302,13 +302,13 @@ LABEL_41:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v18->_photoLibraries, a3);
-  objc_storeStrong(&v19->_options, a5);
-  v20 = objc_retainBlock(v16);
+  objc_storeStrong(&v18->_photoLibraries, libraries);
+  objc_storeStrong(&v19->_options, options);
+  v20 = objc_retainBlock(blockCopy);
   cancelBlock = v19->_cancelBlock;
   v19->_cancelBlock = v20;
 
-  objc_storeStrong(&v19->_progressReporter, a7);
+  objc_storeStrong(&v19->_progressReporter, reporter);
   v22 = +[NSMutableArray array];
   taskProviders = v19->_taskProviders;
   v19->_taskProviders = v22;
@@ -317,7 +317,7 @@ LABEL_41:
   taskTypes = v19->_taskTypes;
   v19->_taskTypes = v24;
 
-  if (![(MADTaskCoordinator *)v19 createTaskProvidersWithPhotoLibraries:v13 taskProviderTypes:v14])
+  if (![(MADTaskCoordinator *)v19 createTaskProvidersWithPhotoLibraries:librariesCopy taskProviderTypes:typesCopy])
   {
     v30 = dispatch_queue_create("MADTaskCoordinator.schedulingQueue", 0);
     schedulingQueue = v19->_schedulingQueue;
@@ -383,18 +383,18 @@ LABEL_9:
   return v29;
 }
 
-- (void)executeAssetProcessingTask:(id)a3 fromTaskProvider:(id)a4
+- (void)executeAssetProcessingTask:(id)task fromTaskProvider:(id)provider
 {
-  v6 = a3;
+  taskCopy = task;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001A4CFC;
   v12[3] = &unk_100282E10;
-  v13 = a4;
-  v14 = v6;
-  v15 = self;
-  v7 = v6;
-  v8 = v13;
+  providerCopy = provider;
+  v14 = taskCopy;
+  selfCopy = self;
+  v7 = taskCopy;
+  v8 = providerCopy;
   v9 = objc_retainBlock(v12);
   [v7 setCancelBlock:self->_cancelBlock];
   dispatch_group_enter(self->_taskGroup);
@@ -416,19 +416,19 @@ LABEL_9:
     {
       v7 = objc_autoreleasePoolPush();
       v8 = [(NSMutableArray *)self->_taskProviders objectAtIndexedSubscript:self->_assetTaskProviderIdx];
-      v9 = [v8 nextAssetProcessingTask];
+      nextAssetProcessingTask = [v8 nextAssetProcessingTask];
       v10 = MediaAnalysisLogLevel();
-      if (v9)
+      if (nextAssetProcessingTask)
       {
         break;
       }
 
       if (v10 >= 5 && os_log_type_enabled(&_os_log_default, v6))
       {
-        v11 = [0 uuid];
+        uuid = [0 uuid];
         assetTaskProviderIdx = self->_assetTaskProviderIdx;
         *buf = v19;
-        v21 = v11;
+        v21 = uuid;
         v22 = 1024;
         v23 = assetTaskProviderIdx;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "[MADTaskCoordinator] No next asset task (%@) from provider %d", buf, 0x12u);
@@ -448,16 +448,16 @@ LABEL_9:
 
     if (v10 >= 5 && os_log_type_enabled(&_os_log_default, v6))
     {
-      v14 = [v9 uuid];
+      uuid2 = [nextAssetProcessingTask uuid];
       v15 = self->_assetTaskProviderIdx;
       *buf = v19;
-      v21 = v14;
+      v21 = uuid2;
       v22 = 1024;
       v23 = v15;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "[MADTaskCoordinator] Scheduling next asset task (%@) from provider %d", buf, 0x12u);
     }
 
-    [(MADTaskCoordinator *)self executeAssetProcessingTask:v9 fromTaskProvider:v8, v19];
+    [(MADTaskCoordinator *)self executeAssetProcessingTask:nextAssetProcessingTask fromTaskProvider:v8, v19];
     v16 = self->_assetTaskCounter + 1;
     self->_assetTaskCounter = v16;
     if (v16 >= [v8 iterations])
@@ -474,18 +474,18 @@ LABEL_9:
   return v3;
 }
 
-- (void)executeDownloadAssetProcessingTask:(id)a3 fromTaskProvider:(id)a4
+- (void)executeDownloadAssetProcessingTask:(id)task fromTaskProvider:(id)provider
 {
-  v6 = a3;
+  taskCopy = task;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001A55A4;
   v12[3] = &unk_100282E10;
-  v13 = a4;
-  v14 = v6;
-  v15 = self;
-  v7 = v6;
-  v8 = v13;
+  providerCopy = provider;
+  v14 = taskCopy;
+  selfCopy = self;
+  v7 = taskCopy;
+  v8 = providerCopy;
   v9 = objc_retainBlock(v12);
   [v7 setCancelBlock:self->_cancelBlock];
   dispatch_group_enter(self->_taskGroup);
@@ -504,8 +504,8 @@ LABEL_9:
     {
       v5 = objc_autoreleasePoolPush();
       v6 = [(NSMutableArray *)self->_taskProviders objectAtIndexedSubscript:self->_downloadTaskProviderIdx];
-      v7 = [v6 nextDownloadAssetProcessingTask];
-      if (v7)
+      nextDownloadAssetProcessingTask = [v6 nextDownloadAssetProcessingTask];
+      if (nextDownloadAssetProcessingTask)
       {
         break;
       }
@@ -522,16 +522,16 @@ LABEL_9:
       }
     }
 
-    v9 = v7;
+    v9 = nextDownloadAssetProcessingTask;
     if (MediaAnalysisLogLevel() >= 5)
     {
       v10 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v10))
       {
-        v11 = [v9 uuid];
+        uuid = [v9 uuid];
         downloadTaskProviderIdx = self->_downloadTaskProviderIdx;
         v16 = 138412546;
-        v17 = v11;
+        v17 = uuid;
         v18 = 1024;
         v19 = downloadTaskProviderIdx;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "[MADTaskCoordinator] Scheduling next download task (%@) from provider %d", &v16, 0x12u);
@@ -555,18 +555,18 @@ LABEL_9:
   return v3;
 }
 
-- (void)executeClusterProcessingTask:(id)a3 fromTaskProvider:(id)a4
+- (void)executeClusterProcessingTask:(id)task fromTaskProvider:(id)provider
 {
-  v6 = a3;
+  taskCopy = task;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001A5F24;
   v12[3] = &unk_100282E10;
-  v13 = a4;
-  v14 = v6;
-  v15 = self;
-  v7 = v6;
-  v8 = v13;
+  providerCopy = provider;
+  v14 = taskCopy;
+  selfCopy = self;
+  v7 = taskCopy;
+  v8 = providerCopy;
   v9 = objc_retainBlock(v12);
   [v7 setCancelBlock:self->_cancelBlock];
   dispatch_group_enter(self->_taskGroup);
@@ -585,8 +585,8 @@ LABEL_9:
     {
       v5 = objc_autoreleasePoolPush();
       v6 = [(NSMutableArray *)self->_taskProviders objectAtIndexedSubscript:self->_clusterTaskProviderIdx];
-      v7 = [v6 nextClusterProcessingTask];
-      if (v7)
+      nextClusterProcessingTask = [v6 nextClusterProcessingTask];
+      if (nextClusterProcessingTask)
       {
         break;
       }
@@ -603,16 +603,16 @@ LABEL_9:
       }
     }
 
-    v9 = v7;
+    v9 = nextClusterProcessingTask;
     if (MediaAnalysisLogLevel() >= 5)
     {
       v10 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v10))
       {
-        v11 = [v9 uuid];
+        uuid = [v9 uuid];
         clusterTaskProviderIdx = self->_clusterTaskProviderIdx;
         v16 = 138412546;
-        v17 = v11;
+        v17 = uuid;
         v18 = 1024;
         v19 = clusterTaskProviderIdx;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "[MADTaskCoordinator] Scheduling next cluster task (%@) from provider %d", &v16, 0x12u);

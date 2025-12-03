@@ -1,12 +1,12 @@
 @interface MOAppCategoryUsage
 - (NSString)category;
 - (_TtC8momentsd18MOAppCategoryUsage)init;
-- (_TtC8momentsd18MOAppCategoryUsage)initWithCategory:(id)a3 totalDuration:(double)a4;
+- (_TtC8momentsd18MOAppCategoryUsage)initWithCategory:(id)category totalDuration:(double)duration;
 - (double)getTotalDuration;
 - (double)totalDuration;
 - (id)getCategory;
-- (void)setCategory:(id)a3;
-- (void)setTotalDuration:(double)a3;
+- (void)setCategory:(id)category;
+- (void)setTotalDuration:(double)duration;
 @end
 
 @implementation MOAppCategoryUsage
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (void)setCategory:(id)a3
+- (void)setCategory:(id)category
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -41,20 +41,20 @@
   return *(self + v3);
 }
 
-- (void)setTotalDuration:(double)a3
+- (void)setTotalDuration:(double)duration
 {
   v5 = OBJC_IVAR____TtC8momentsd18MOAppCategoryUsage_totalDuration;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = duration;
 }
 
-- (_TtC8momentsd18MOAppCategoryUsage)initWithCategory:(id)a3 totalDuration:(double)a4
+- (_TtC8momentsd18MOAppCategoryUsage)initWithCategory:(id)category totalDuration:(double)duration
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = (self + OBJC_IVAR____TtC8momentsd18MOAppCategoryUsage_category);
   *v7 = v6;
   v7[1] = v8;
-  *(self + OBJC_IVAR____TtC8momentsd18MOAppCategoryUsage_totalDuration) = a4;
+  *(self + OBJC_IVAR____TtC8momentsd18MOAppCategoryUsage_totalDuration) = duration;
   v10.receiver = self;
   v10.super_class = type metadata accessor for MOAppCategoryUsage();
   return [(MOAppCategoryUsage *)&v10 init];
@@ -63,7 +63,7 @@
 - (id)getCategory
 {
   v2 = *((swift_isaMask & *self) + 0x60);
-  v3 = self;
+  selfCopy = self;
   v2();
 
   v4 = String._bridgeToObjectiveC()();
@@ -74,7 +74,7 @@
 - (double)getTotalDuration
 {
   v2 = *((swift_isaMask & *self) + 0x78);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;

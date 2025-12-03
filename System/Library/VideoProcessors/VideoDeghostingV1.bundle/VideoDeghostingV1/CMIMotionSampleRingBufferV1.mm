@@ -1,19 +1,19 @@
 @interface CMIMotionSampleRingBufferV1
-- ($01BB1521EC52D44A8E7628F5261DCEC8)computeQuaternionForTimeStamp:(double)a3;
-- (CMIMotionSampleRingBufferV1)initWithMaxCount:(double)a3;
-- (void)addMotionDataToRingBuffer:(id *)a3 withSampleCount:(int)a4;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)computeQuaternionForTimeStamp:(double)stamp;
+- (CMIMotionSampleRingBufferV1)initWithMaxCount:(double)count;
+- (void)addMotionDataToRingBuffer:(id *)buffer withSampleCount:(int)count;
 - (void)dealloc;
 @end
 
 @implementation CMIMotionSampleRingBufferV1
 
-- (CMIMotionSampleRingBufferV1)initWithMaxCount:(double)a3
+- (CMIMotionSampleRingBufferV1)initWithMaxCount:(double)count
 {
   v10.receiver = self;
   v10.super_class = CMIMotionSampleRingBufferV1;
   v4 = [(CMIMotionSampleRingBufferV1 *)&v10 init];
   v5 = v4;
-  if (v4 && (v4->_maxCount = a3, v6 = [[RingBuffer alloc] initWithLength:v4->_maxCount dataTypeSize:48], ringBuffer = v5->_ringBuffer, v5->_ringBuffer = v6, ringBuffer, !v5->_ringBuffer))
+  if (v4 && (v4->_maxCount = count, v6 = [[RingBuffer alloc] initWithLength:v4->_maxCount dataTypeSize:48], ringBuffer = v5->_ringBuffer, v5->_ringBuffer = v6, ringBuffer, !v5->_ringBuffer))
   {
     v8 = 0;
   }
@@ -33,9 +33,9 @@
   [(CMIMotionSampleRingBufferV1 *)&v2 dealloc];
 }
 
-- (void)addMotionDataToRingBuffer:(id *)a3 withSampleCount:(int)a4
+- (void)addMotionDataToRingBuffer:(id *)buffer withSampleCount:(int)count
 {
-  if (a4 >= 1)
+  if (count >= 1)
   {
     v18 = v11;
     v19 = v10;
@@ -45,10 +45,10 @@
     v23 = v4;
     v24 = v8;
     v25 = v9;
-    v14 = a4;
+    countCopy = count;
     while (1)
     {
-      var1 = a3->var1;
+      var1 = buffer->var1;
       v16 = [(RingBuffer *)self->_ringBuffer count:v18];
       ringBuffer = self->_ringBuffer;
       if (!v16)
@@ -62,8 +62,8 @@
       }
 
 LABEL_7:
-      ++a3;
-      if (!--v14)
+      ++buffer;
+      if (!--countCopy)
       {
         return;
       }
@@ -71,12 +71,12 @@ LABEL_7:
 
     ringBuffer = self->_ringBuffer;
 LABEL_6:
-    [(RingBuffer *)ringBuffer appendElement:a3];
+    [(RingBuffer *)ringBuffer appendElement:buffer];
     goto LABEL_7;
   }
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)computeQuaternionForTimeStamp:(double)a3
+- ($01BB1521EC52D44A8E7628F5261DCEC8)computeQuaternionForTimeStamp:(double)stamp
 {
   v32 = 0u;
   v33 = 0u;
@@ -85,56 +85,56 @@ LABEL_6:
   {
     v5 = *([(RingBuffer *)self->_ringBuffer lastElement]+ 1);
     ringBuffer = self->_ringBuffer;
-    if (v5 < a3)
+    if (v5 < stamp)
     {
-      v7 = [(RingBuffer *)ringBuffer lastElement];
+      lastElement = [(RingBuffer *)ringBuffer lastElement];
 LABEL_6:
-      v10 = *(v7 + 2);
-      v32 = *(v7 + 1);
+      v10 = *(lastElement + 2);
+      v32 = *(lastElement + 1);
       v33 = v10;
       goto LABEL_7;
     }
 
     v8 = *([(RingBuffer *)ringBuffer firstElement]+ 1);
     v9 = self->_ringBuffer;
-    if (v8 > a3)
+    if (v8 > stamp)
     {
-      v7 = [(RingBuffer *)v9 firstElement];
+      lastElement = [(RingBuffer *)v9 firstElement];
       goto LABEL_6;
     }
 
-    v15 = [(RingBuffer *)v9 lastElementIndex];
-    v16 = [(RingBuffer *)self->_ringBuffer firstElementIndex];
-    v17 = [(RingBuffer *)self->_ringBuffer maxSize];
-    if (v15 >= v16)
+    lastElementIndex = [(RingBuffer *)v9 lastElementIndex];
+    firstElementIndex = [(RingBuffer *)self->_ringBuffer firstElementIndex];
+    maxSize = [(RingBuffer *)self->_ringBuffer maxSize];
+    if (lastElementIndex >= firstElementIndex)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = v17;
+      v18 = maxSize;
     }
 
-    v19 = v18 + v15;
-    if (v18 + v15 >= v16)
+    v19 = v18 + lastElementIndex;
+    if (v18 + lastElementIndex >= firstElementIndex)
     {
-      v20 = v17;
-      v21 = (v19 % v17);
-      if (*([(RingBuffer *)self->_ringBuffer elementAtIndex:v21]+ 1) <= a3)
+      v20 = maxSize;
+      v21 = (v19 % maxSize);
+      if (*([(RingBuffer *)self->_ringBuffer elementAtIndex:v21]+ 1) <= stamp)
       {
         v22 = 0xFFFFFFFFLL;
 LABEL_17:
         if (v22 != -1 && v21 != -1)
         {
           v24 = [(RingBuffer *)self->_ringBuffer elementAtIndex:v22];
-          v7 = [(RingBuffer *)self->_ringBuffer elementAtIndex:v21];
-          v25 = *(v7 + 1);
+          lastElement = [(RingBuffer *)self->_ringBuffer elementAtIndex:v21];
+          v25 = *(lastElement + 1);
           v26 = v24[1] - v25;
           if (v26 > 0.000001)
           {
-            v27 = (a3 - v25) / v26;
-            sub_A110(v7 + 16, v24 + 2, v27);
+            v27 = (stamp - v25) / v26;
+            sub_A110(lastElement + 16, v24 + 2, v27);
             *&v32 = v28;
             *(&v32 + 1) = v29;
             *&v33 = v30;
@@ -148,11 +148,11 @@ LABEL_17:
 
       else
       {
-        while (v19 > v16)
+        while (v19 > firstElementIndex)
         {
           v22 = v21;
           v21 = (--v19 % v20);
-          if (*([(RingBuffer *)self->_ringBuffer elementAtIndex:v21]+ 1) <= a3)
+          if (*([(RingBuffer *)self->_ringBuffer elementAtIndex:v21]+ 1) <= stamp)
           {
             goto LABEL_17;
           }

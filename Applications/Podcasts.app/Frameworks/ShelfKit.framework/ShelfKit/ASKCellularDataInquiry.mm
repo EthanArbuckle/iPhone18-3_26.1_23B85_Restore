@@ -1,22 +1,22 @@
 @interface ASKCellularDataInquiry
 - (ASKCellularDataInquiry)init;
-- (ASKCellularDataInquiry)initWithBundle:(id)a3;
+- (ASKCellularDataInquiry)initWithBundle:(id)bundle;
 - (BOOL)isEnabledForBundle;
 - (BOOL)isEnabledForDevice;
 @end
 
 @implementation ASKCellularDataInquiry
 
-- (ASKCellularDataInquiry)initWithBundle:(id)a3
+- (ASKCellularDataInquiry)initWithBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = ASKCellularDataInquiry;
   v6 = [(ASKCellularDataInquiry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundle, a3);
+    objc_storeStrong(&v6->_bundle, bundle);
   }
 
   return v7;
@@ -32,27 +32,27 @@
 
 - (BOOL)isEnabledForDevice
 {
-  v2 = [(ASKCellularDataInquiry *)self isSupported];
-  if (v2)
+  isSupported = [(ASKCellularDataInquiry *)self isSupported];
+  if (isSupported)
   {
 
-    LOBYTE(v2) = +[PSCellularDataSettingsDetail isEnabled];
+    LOBYTE(isSupported) = +[PSCellularDataSettingsDetail isEnabled];
   }
 
-  return v2;
+  return isSupported;
 }
 
 - (BOOL)isEnabledForBundle
 {
-  v3 = [(ASKCellularDataInquiry *)self isEnabledForDevice];
-  if (v3)
+  isEnabledForDevice = [(ASKCellularDataInquiry *)self isEnabledForDevice];
+  if (isEnabledForDevice)
   {
     v4 = _CTServerConnectionCreateOnTargetQueue();
     if (v4)
     {
       v5 = v4;
-      v6 = [(ASKCellularDataInquiry *)self bundle];
-      v7 = [v6 bundleIdentifier];
+      bundle = [(ASKCellularDataInquiry *)self bundle];
+      bundleIdentifier = [bundle bundleIdentifier];
 
       v8 = _CTServerConnectionCopyCellularUsagePolicy();
       CFRelease(v5);
@@ -63,10 +63,10 @@
       }
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(isEnabledForDevice) = 1;
   }
 
-  return v3;
+  return isEnabledForDevice;
 }
 
 @end

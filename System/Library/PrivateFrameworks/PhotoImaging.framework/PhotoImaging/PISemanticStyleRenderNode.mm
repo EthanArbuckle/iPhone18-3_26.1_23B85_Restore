@@ -1,22 +1,22 @@
 @interface PISemanticStyleRenderNode
 - (NURenderNode)input;
-- (PISemanticStyleRenderNode)initWithInput:(id)a3 settings:(id)a4;
-- (PISemanticStyleRenderNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)_evaluateVideoComposition:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (PISemanticStyleRenderNode)initWithInput:(id)input settings:(id)settings;
+- (PISemanticStyleRenderNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)_evaluateVideo:(id *)video;
+- (id)_evaluateVideoComposition:(id *)composition;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PISemanticStyleRenderNode
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v143 = *MEMORY[0x1E69E9840];
   v137 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v5 = [v137 outputImage:a3];
+  v5 = [v137 outputImage:image];
   if (v5)
   {
     v6 = [(NURenderNode *)self inputForKey:@"subjectMatte"];
@@ -39,8 +39,8 @@
       }
 
       v10 = MEMORY[0x1E695F658];
-      v11 = [MEMORY[0x1E695F610] blackColor];
-      v12 = [v10 imageWithColor:v11];
+      blackColor = [MEMORY[0x1E695F610] blackColor];
+      v12 = [v10 imageWithColor:blackColor];
       [v5 extent];
       v7 = [v12 imageByCroppingToRect:?];
     }
@@ -67,8 +67,8 @@
       }
 
       v17 = MEMORY[0x1E695F658];
-      v18 = [MEMORY[0x1E695F610] blackColor];
-      v19 = [v17 imageWithColor:v18];
+      blackColor2 = [MEMORY[0x1E695F610] blackColor];
+      v19 = [v17 imageWithColor:blackColor2];
       [v5 extent];
       v135 = [v19 imageByCroppingToRect:?];
     }
@@ -94,8 +94,8 @@
       }
 
       v23 = MEMORY[0x1E695F658];
-      v24 = [MEMORY[0x1E695F610] blackColor];
-      v25 = [v23 imageWithColor:v24];
+      blackColor3 = [MEMORY[0x1E695F610] blackColor];
+      v25 = [v23 imageWithColor:blackColor3];
       [v5 extent];
       v20 = [v25 imageByCroppingToRect:?];
     }
@@ -103,30 +103,30 @@
     v136 = v5;
     v26 = [(NURenderNode *)self inputForKey:@"linearThumbnail"];
     v138 = 0;
-    v27 = [v26 outputImage:&v138];
+    outputImage = [v26 outputImage:&v138];
     v28 = v138;
 
-    if (v27)
+    if (outputImage)
     {
       v118 = v26;
       v119 = v28;
       v132 = v20;
-      v29 = [(NURenderNode *)self settings];
-      v30 = [v29 objectForKeyedSubscript:@"applyInverseCurveToLinearThumbnail"];
-      v31 = [v30 BOOLValue];
+      settings = [(NURenderNode *)self settings];
+      v30 = [settings objectForKeyedSubscript:@"applyInverseCurveToLinearThumbnail"];
+      bOOLValue = [v30 BOOLValue];
 
       v120 = v13;
       v121 = v6;
       v133 = v7;
-      if (v31)
+      if (bOOLValue)
       {
-        v32 = [v27 imageByApplyingFilter:@"CIAppleLogToLinear"];
+        v32 = [outputImage imageByApplyingFilter:@"CIAppleLogToLinear"];
         v33 = v32;
         if (v32)
         {
           v34 = v32;
 
-          v27 = v34;
+          outputImage = v34;
         }
 
         else
@@ -145,45 +145,45 @@
           }
         }
 
-        v36 = [(NURenderNode *)self settings];
-        v37 = [v36 objectForKeyedSubscript:@"linearRangeMin"];
+        settings2 = [(NURenderNode *)self settings];
+        v37 = [settings2 objectForKeyedSubscript:@"linearRangeMin"];
 
-        v38 = [(NURenderNode *)self settings];
-        v39 = [v38 objectForKeyedSubscript:@"linearRangeMax"];
+        settings3 = [(NURenderNode *)self settings];
+        v39 = [settings3 objectForKeyedSubscript:@"linearRangeMax"];
 
-        v40 = [(NURenderNode *)self settings];
-        v41 = [v40 objectForKeyedSubscript:@"linearGain"];
+        settings4 = [(NURenderNode *)self settings];
+        v41 = [settings4 objectForKeyedSubscript:@"linearGain"];
 
         if (v37 && v39 && v41)
         {
           [v41 floatValue];
           LODWORD(v42) = 0;
           *(&v42 + 1) = 1.0 / v43;
-          v44 = [v27 _imageByApplyingColorMatrixRed:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.0 / v43)) green:v42 blue:0.0 bias:0.0];
+          v44 = [outputImage _imageByApplyingColorMatrixRed:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.0 / v43)) green:v42 blue:0.0 bias:0.0];
 
           [v37 floatValue];
           v46 = v45;
           [v39 floatValue];
           v48 = v47;
-          v49 = [MEMORY[0x1E695F648] colorClampFilter];
-          [v49 setInputImage:v44];
+          colorClampFilter = [MEMORY[0x1E695F648] colorClampFilter];
+          [colorClampFilter setInputImage:v44];
           v50 = [MEMORY[0x1E695F688] vectorWithX:v46 Y:v46 Z:v46 W:0.0];
-          [v49 setMinComponents:v50];
+          [colorClampFilter setMinComponents:v50];
 
           v51 = [MEMORY[0x1E695F688] vectorWithX:v48 Y:v48 Z:v48 W:1.0];
-          [v49 setMaxComponents:v51];
+          [colorClampFilter setMaxComponents:v51];
 
-          v27 = [v49 outputImage];
+          outputImage = [colorClampFilter outputImage];
         }
 
         v7 = v133;
       }
 
-      v52 = [MEMORY[0x1E69B3A10] displayP3LinearColorSpace];
-      v131 = [v27 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(v52, "CGColorSpace")}];
+      displayP3LinearColorSpace = [MEMORY[0x1E69B3A10] displayP3LinearColorSpace];
+      v131 = [outputImage imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(displayP3LinearColorSpace, "CGColorSpace")}];
 
-      v53 = [(NURenderNode *)self settings];
-      v54 = [v53 objectForKeyedSubscript:@"globalToneCurve"];
+      settings5 = [(NURenderNode *)self settings];
+      v54 = [settings5 objectForKeyedSubscript:@"globalToneCurve"];
 
       if (!v54)
       {
@@ -191,8 +191,8 @@
         v54 = [MEMORY[0x1E695DEF0] dataWithBytes:buf length:8];
       }
 
-      v55 = [(NURenderNode *)self settings];
-      v56 = [v55 objectForKeyedSubscript:@"baselineExposure"];
+      settings6 = [(NURenderNode *)self settings];
+      v56 = [settings6 objectForKeyedSubscript:@"baselineExposure"];
 
       if (v56)
       {
@@ -204,96 +204,96 @@
         v57 = &unk_1F471F6A0;
       }
 
-      v58 = [(NURenderNode *)self settings];
-      v59 = [v58 objectForKeyedSubscript:@"sceneType"];
+      settings7 = [(NURenderNode *)self settings];
+      v59 = [settings7 objectForKeyedSubscript:@"sceneType"];
 
-      v60 = [(NURenderNode *)self settings];
-      v61 = [v60 objectForKeyedSubscript:@"srlCurveParameter"];
+      settings8 = [(NURenderNode *)self settings];
+      v61 = [settings8 objectForKeyedSubscript:@"srlCurveParameter"];
 
-      v62 = [(NURenderNode *)self settings];
-      v130 = [v62 objectForKeyedSubscript:@"stats"];
+      settings9 = [(NURenderNode *)self settings];
+      v130 = [settings9 objectForKeyedSubscript:@"stats"];
 
-      v63 = [(NURenderNode *)self settings];
-      v129 = [v63 objectForKeyedSubscript:@"lightMap"];
+      settings10 = [(NURenderNode *)self settings];
+      v129 = [settings10 objectForKeyedSubscript:@"lightMap"];
 
-      v64 = [(NURenderNode *)self settings];
-      v128 = [v64 objectForKeyedSubscript:@"linearLightMap"];
+      settings11 = [(NURenderNode *)self settings];
+      v128 = [settings11 objectForKeyedSubscript:@"linearLightMap"];
 
-      v65 = [(NURenderNode *)self settings];
-      v127 = [v65 objectForKeyedSubscript:@"lightMapWidth"];
+      settings12 = [(NURenderNode *)self settings];
+      v127 = [settings12 objectForKeyedSubscript:@"lightMapWidth"];
 
-      v66 = [(NURenderNode *)self settings];
-      v126 = [v66 objectForKeyedSubscript:@"lightMapHeight"];
+      settings13 = [(NURenderNode *)self settings];
+      v126 = [settings13 objectForKeyedSubscript:@"lightMapHeight"];
 
-      v67 = [(NURenderNode *)self settings];
-      v125 = [v67 objectForKeyedSubscript:@"tuningType"];
+      settings14 = [(NURenderNode *)self settings];
+      v125 = [settings14 objectForKeyedSubscript:@"tuningType"];
 
-      v68 = [(NURenderNode *)self settings];
-      v124 = [v68 objectForKeyedSubscript:@"brightness"];
+      settings15 = [(NURenderNode *)self settings];
+      v124 = [settings15 objectForKeyedSubscript:@"brightness"];
 
-      v69 = [(NURenderNode *)self settings];
-      v123 = [v69 objectForKeyedSubscript:@"baseGain"];
+      settings16 = [(NURenderNode *)self settings];
+      v123 = [settings16 objectForKeyedSubscript:@"baseGain"];
 
-      v70 = [(NURenderNode *)self settings];
-      v122 = [v70 objectForKeyedSubscript:@"faceBasedGlobalExposureBoostRatio"];
+      settings17 = [(NURenderNode *)self settings];
+      v122 = [settings17 objectForKeyedSubscript:@"faceBasedGlobalExposureBoostRatio"];
 
-      v71 = [(NURenderNode *)self settings];
-      v72 = [v71 objectForKeyedSubscript:@"xstats"];
+      settings18 = [(NURenderNode *)self settings];
+      v72 = [settings18 objectForKeyedSubscript:@"xstats"];
 
-      v73 = [(NURenderNode *)self settings];
-      v74 = [v73 objectForKeyedSubscript:@"tone"];
+      settings19 = [(NURenderNode *)self settings];
+      v74 = [settings19 objectForKeyedSubscript:@"tone"];
       [v74 doubleValue];
       v76 = v75;
 
-      v77 = [(NURenderNode *)self settings];
-      v78 = [v77 objectForKeyedSubscript:@"color"];
+      settings20 = [(NURenderNode *)self settings];
+      v78 = [settings20 objectForKeyedSubscript:@"color"];
       [v78 doubleValue];
       v80 = v79;
 
-      v81 = [(NURenderNode *)self settings];
-      v82 = [v81 objectForKeyedSubscript:@"cast"];
+      settings21 = [(NURenderNode *)self settings];
+      v82 = [settings21 objectForKeyedSubscript:@"cast"];
 
-      v83 = [(NURenderNode *)self settings];
-      v84 = [v83 objectForKeyedSubscript:@"intensity"];
+      settings22 = [(NURenderNode *)self settings];
+      v84 = [settings22 objectForKeyedSubscript:@"intensity"];
       [v84 doubleValue];
       v86 = v85;
 
-      LOBYTE(v83) = [v82 isEqualToString:@"None"];
-      v27 = v136;
-      if ((v83 & 1) == 0)
+      LOBYTE(settings22) = [v82 isEqualToString:@"None"];
+      outputImage = v136;
+      if ((settings22 & 1) == 0)
       {
         v117 = v61;
         v87 = v59;
-        v88 = [(NURenderNode *)self settings];
-        v89 = [v88 objectForKeyedSubscript:@"isFallback"];
-        v90 = [v89 BOOLValue];
+        settings23 = [(NURenderNode *)self settings];
+        v89 = [settings23 objectForKeyedSubscript:@"isFallback"];
+        bOOLValue2 = [v89 BOOLValue];
 
-        if (v90)
+        if (bOOLValue2)
         {
           v91 = MEMORY[0x1E695F658];
           v92 = [MEMORY[0x1E695F610] colorWithRed:0.76 green:0.69 blue:0.88];
           v93 = [v91 imageWithColor:v92];
-          [v27 extent];
+          [outputImage extent];
           v95 = v94;
           v97 = v96;
           v99 = v98;
           v101 = v100;
 
-          v27 = [v93 imageByCroppingToRect:{v95, v97, v99, v101}];
+          outputImage = [v93 imageByCroppingToRect:{v95, v97, v99, v101}];
         }
 
         else
         {
           v92 = objc_alloc_init(PISemanticStyleFilter);
-          [(PISemanticStyleFilter *)v92 setInputImage:v27];
+          [(PISemanticStyleFilter *)v92 setInputImage:outputImage];
           [(PISemanticStyleFilter *)v92 setInputSubjectMatteImage:v133];
           [(PISemanticStyleFilter *)v92 setInputSkinMatteImage:v135];
           [(PISemanticStyleFilter *)v92 setInputSkyMatteImage:v132];
           [(PISemanticStyleFilter *)v92 setInputLinearThumbnailImage:v131];
           v102 = MEMORY[0x1E695F658];
-          v103 = [MEMORY[0x1E695F610] blackColor];
-          v104 = [v102 imageWithColor:v103];
-          [v27 extent];
+          blackColor4 = [MEMORY[0x1E695F610] blackColor];
+          v104 = [v102 imageWithColor:blackColor4];
+          [outputImage extent];
           v106 = v105;
           v108 = v107;
           v110 = v109;
@@ -321,11 +321,11 @@
           [(PISemanticStyleFilter *)v92 setTuningType:v125];
           [(PISemanticStyleFilter *)v92 setBaseGain:v123];
           [(PISemanticStyleFilter *)v92 setFaceBasedGlobalExposureBoostRatio:v122];
-          v114 = [(NURenderNode *)self settings];
-          v115 = [v114 objectForKeyedSubscript:@"useStyleEngine"];
+          settings24 = [(NURenderNode *)self settings];
+          v115 = [settings24 objectForKeyedSubscript:@"useStyleEngine"];
           -[PISemanticStyleFilter setUseStyleEngine:](v92, "setUseStyleEngine:", [v115 BOOLValue]);
 
-          v27 = [(PISemanticStyleFilter *)v92 outputImage];
+          outputImage = [(PISemanticStyleFilter *)v92 outputImage];
         }
 
         v7 = v133;
@@ -342,7 +342,7 @@
 
     else
     {
-      *a3 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to evaluate linear thumbnail" object:v26 underlyingError:v28];
+      *image = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to evaluate linear thumbnail" object:v26 underlyingError:v28];
     }
 
     v5 = v136;
@@ -350,16 +350,16 @@
 
   else
   {
-    v27 = 0;
+    outputImage = 0;
   }
 
-  return v27;
+  return outputImage;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
   v4 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v5 = [v4 outputImageGeometry:a3];
+  v5 = [v4 outputImageGeometry:geometry];
   v6 = v5;
   if (v5)
   {
@@ -369,13 +369,13 @@
   return v6;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  specific = a4;
-  v12 = a5;
-  if (!a6)
+  inputsCopy = inputs;
+  specific = settings;
+  stateCopy = state;
+  if (!error)
   {
     v57 = NUAssertLogger_11150();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -386,146 +386,146 @@
       _os_log_error_impl(&dword_1C7694000, v57, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v13 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v10 = NUAssertLogger_11150();
-    v59 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
+    inputsCopy = NUAssertLogger_11150();
+    v59 = os_log_type_enabled(inputsCopy, OS_LOG_TYPE_ERROR);
     if (specific)
     {
       if (v59)
       {
-        specific = dispatch_get_specific(*v13);
+        specific = dispatch_get_specific(*callStackSymbols);
         v60 = MEMORY[0x1E696AF00];
         v61 = specific;
-        v13 = [v60 callStackSymbols];
-        v62 = [v13 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v60 callStackSymbols];
+        v62 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = specific;
         *&buf[12] = 2114;
         *&buf[14] = v62;
-        _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+        _os_log_error_impl(&dword_1C7694000, inputsCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
       }
     }
 
     else if (v59)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      *&buf[4] = v13;
-      _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+      *&buf[4] = callStackSymbols;
+      _os_log_error_impl(&dword_1C7694000, inputsCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
     _NUAssertFailHandler();
     goto LABEL_47;
   }
 
-  v13 = v12;
-  if ([v12 evaluationMode] == 2 || !objc_msgSend(v13, "evaluationMode"))
+  callStackSymbols = stateCopy;
+  if ([stateCopy evaluationMode] == 2 || !objc_msgSend(callStackSymbols, "evaluationMode"))
   {
     v67.receiver = self;
     v67.super_class = PISemanticStyleRenderNode;
-    v20 = [(NURenderNode *)&v67 resolvedNodeWithCachedInputs:v10 settings:specific pipelineState:v13 error:a6];
+    v20 = [(NURenderNode *)&v67 resolvedNodeWithCachedInputs:inputsCopy settings:specific pipelineState:callStackSymbols error:error];
     goto LABEL_32;
   }
 
-  if ([v13 evaluationMode] != 3)
+  if ([callStackSymbols evaluationMode] != 3)
   {
-    if ([v13 evaluationMode] != 1)
+    if ([callStackSymbols evaluationMode] != 1)
     {
       v15 = 0;
       v19 = 0;
       goto LABEL_14;
     }
 
-    v15 = [v10 objectForKeyedSubscript:@"inputImage"];
+    v15 = [inputsCopy objectForKeyedSubscript:@"inputImage"];
     v65 = 0;
-    v21 = [v15 imageProperties:&v65];
+    version2 = [v15 imageProperties:&v65];
     v19 = v65;
-    v22 = [v21 semanticStyleProperties];
-    if (!v22)
+    semanticStyleProperties = [version2 semanticStyleProperties];
+    if (!semanticStyleProperties)
     {
       v52 = [MEMORY[0x1E69B3A48] errorWithCode:3 reason:@"Unable to obtain styles properties" object:0 underlyingError:v19];
       goto LABEL_24;
     }
 
-    v18 = v22;
+    v18 = semanticStyleProperties;
 
 LABEL_12:
     v15 = v18;
 LABEL_14:
-    v23 = [v15 version];
+    version = [v15 version];
     v24 = [objc_alloc(MEMORY[0x1E69B3CF0]) initWithMajor:2 minor:15];
-    v25 = [v23 isCompatibleWithVersion:v24];
+    v25 = [version isCompatibleWithVersion:v24];
 
     if (v25)
     {
       v63 = v19;
       v26 = [specific mutableCopy];
-      v27 = [v15 subjectRelightingValue];
-      [v26 setObject:v27 forKeyedSubscript:@"srlCurveParameter"];
+      subjectRelightingValue = [v15 subjectRelightingValue];
+      [v26 setObject:subjectRelightingValue forKeyedSubscript:@"srlCurveParameter"];
 
-      v28 = [v15 globalToneCurveData];
-      [v26 setObject:v28 forKeyedSubscript:@"globalToneCurve"];
+      globalToneCurveData = [v15 globalToneCurveData];
+      [v26 setObject:globalToneCurveData forKeyedSubscript:@"globalToneCurve"];
 
       v29 = MEMORY[0x1E696AD98];
       [v15 baselineExposure];
       v30 = [v29 numberWithDouble:?];
       [v26 setObject:v30 forKeyedSubscript:@"baselineExposure"];
 
-      v31 = [v15 sceneType];
-      [v26 setObject:v31 forKeyedSubscript:@"sceneType"];
+      sceneType = [v15 sceneType];
+      [v26 setObject:sceneType forKeyedSubscript:@"sceneType"];
 
-      v32 = [v15 tuningType];
-      [v26 setObject:v32 forKeyedSubscript:@"tuningType"];
+      tuningType = [v15 tuningType];
+      [v26 setObject:tuningType forKeyedSubscript:@"tuningType"];
 
-      v33 = [v15 brightness];
-      [v26 setObject:v33 forKeyedSubscript:@"brightness"];
+      brightness = [v15 brightness];
+      [v26 setObject:brightness forKeyedSubscript:@"brightness"];
 
-      v34 = [v15 stats];
-      [v26 setObject:v34 forKeyedSubscript:@"stats"];
+      stats = [v15 stats];
+      [v26 setObject:stats forKeyedSubscript:@"stats"];
 
-      v35 = [v15 lightMapData];
-      [v26 setObject:v35 forKeyedSubscript:@"lightMap"];
+      lightMapData = [v15 lightMapData];
+      [v26 setObject:lightMapData forKeyedSubscript:@"lightMap"];
 
-      v36 = [v15 linearLightMapData];
-      [v26 setObject:v36 forKeyedSubscript:@"linearLightMap"];
+      linearLightMapData = [v15 linearLightMapData];
+      [v26 setObject:linearLightMapData forKeyedSubscript:@"linearLightMap"];
 
-      v37 = [v15 lightMapWidth];
-      [v26 setObject:v37 forKeyedSubscript:@"lightMapWidth"];
+      lightMapWidth = [v15 lightMapWidth];
+      [v26 setObject:lightMapWidth forKeyedSubscript:@"lightMapWidth"];
 
-      v38 = [v15 lightMapHeight];
-      [v26 setObject:v38 forKeyedSubscript:@"lightMapHeight"];
+      lightMapHeight = [v15 lightMapHeight];
+      [v26 setObject:lightMapHeight forKeyedSubscript:@"lightMapHeight"];
 
-      v39 = [v15 baseGain];
-      [v26 setObject:v39 forKeyedSubscript:@"baseGain"];
+      baseGain = [v15 baseGain];
+      [v26 setObject:baseGain forKeyedSubscript:@"baseGain"];
 
-      v40 = [v15 faceBasedGlobalExposureBoostRatio];
-      [v26 setObject:v40 forKeyedSubscript:@"faceBasedGlobalExposureBoostRatio"];
+      faceBasedGlobalExposureBoostRatio = [v15 faceBasedGlobalExposureBoostRatio];
+      [v26 setObject:faceBasedGlobalExposureBoostRatio forKeyedSubscript:@"faceBasedGlobalExposureBoostRatio"];
 
-      v41 = [v15 extendedStats];
-      [v26 setObject:v41 forKeyedSubscript:@"xstats"];
+      extendedStats = [v15 extendedStats];
+      [v26 setObject:extendedStats forKeyedSubscript:@"xstats"];
 
-      v42 = [v15 linearGain];
-      if (v42)
+      linearGain = [v15 linearGain];
+      if (linearGain)
       {
-        v43 = v42;
-        v44 = [v15 linearRangeMin];
-        if (v44)
+        v43 = linearGain;
+        linearRangeMin = [v15 linearRangeMin];
+        if (linearRangeMin)
         {
-          v45 = v44;
-          v46 = [v15 linearRangeMax];
+          v45 = linearRangeMin;
+          linearRangeMax = [v15 linearRangeMax];
 
-          if (v46)
+          if (linearRangeMax)
           {
-            v47 = [v15 linearGain];
-            [v26 setObject:v47 forKeyedSubscript:@"linearGain"];
+            linearGain2 = [v15 linearGain];
+            [v26 setObject:linearGain2 forKeyedSubscript:@"linearGain"];
 
-            v48 = [v15 linearRangeMin];
-            [v26 setObject:v48 forKeyedSubscript:@"linearRangeMin"];
+            linearRangeMin2 = [v15 linearRangeMin];
+            [v26 setObject:linearRangeMin2 forKeyedSubscript:@"linearRangeMin"];
 
-            v49 = [v15 linearRangeMax];
-            [v26 setObject:v49 forKeyedSubscript:@"linearRangeMax"];
+            linearRangeMax2 = [v15 linearRangeMax];
+            [v26 setObject:linearRangeMax2 forKeyedSubscript:@"linearRangeMax"];
             v50 = 1;
             goto LABEL_28;
           }
@@ -536,14 +536,14 @@ LABEL_14:
         }
       }
 
-      if ([v13 mediaComponentType] != 2)
+      if ([callStackSymbols mediaComponentType] != 2)
       {
         v50 = 0;
         goto LABEL_30;
       }
 
-      v49 = [v15 version];
-      v50 = [v49 minor] > 9;
+      linearRangeMax2 = [v15 version];
+      v50 = [linearRangeMax2 minor] > 9;
 LABEL_28:
 
 LABEL_30:
@@ -552,24 +552,24 @@ LABEL_30:
 
       v64.receiver = self;
       v64.super_class = PISemanticStyleRenderNode;
-      v20 = [(NURenderNode *)&v64 resolvedNodeWithCachedInputs:v10 settings:v26 pipelineState:v13 error:a6];
+      v20 = [(NURenderNode *)&v64 resolvedNodeWithCachedInputs:inputsCopy settings:v26 pipelineState:callStackSymbols error:error];
 
       v19 = v63;
       goto LABEL_31;
     }
 
     v51 = MEMORY[0x1E69B3A48];
-    v21 = [v15 version];
-    v52 = [v51 unsupportedError:@"Incompatible styles properties" object:v21];
+    version2 = [v15 version];
+    v52 = [v51 unsupportedError:@"Incompatible styles properties" object:version2];
 LABEL_24:
-    *a6 = v52;
+    *error = v52;
 
     v20 = 0;
     goto LABEL_31;
   }
 
-  v14 = [v13 videoMetadataSamples];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69B3920]];
+  videoMetadataSamples = [callStackSymbols videoMetadataSamples];
+  v15 = [videoMetadataSamples objectForKeyedSubscript:*MEMORY[0x1E69B3920]];
 
   if (!v15)
   {
@@ -579,9 +579,9 @@ LABEL_21:
       v53 = *MEMORY[0x1E69B3D80];
       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
       {
-        if (v13)
+        if (callStackSymbols)
         {
-          [v13 time];
+          [callStackSymbols time];
         }
 
         else
@@ -595,7 +595,7 @@ LABEL_21:
         _os_log_error_impl(&dword_1C7694000, v53, OS_LOG_TYPE_ERROR, "Missing style metadata sample at %{public}@, style won't be applied", buf, 0xCu);
       }
 
-      v20 = [v10 objectForKeyedSubscript:@"inputImage"];
+      v20 = [inputsCopy objectForKeyedSubscript:@"inputImage"];
       v15 = 0;
       v19 = 0;
       goto LABEL_31;
@@ -607,11 +607,11 @@ LABEL_47:
   }
 
   v16 = MEMORY[0x1E69B3D40];
-  v17 = [v15 metadataGroup];
+  metadataGroup = [v15 metadataGroup];
   v66 = 0;
   *buf = *MEMORY[0x1E6960C70];
   *&buf[16] = *(MEMORY[0x1E6960C70] + 16);
-  v18 = [v16 semanticStylePropertiesFromMetadataGroup:v17 keyTime:buf error:&v66];
+  v18 = [v16 semanticStylePropertiesFromMetadataGroup:metadataGroup keyTime:buf error:&v66];
   v19 = v66;
 
   if (v18)
@@ -620,7 +620,7 @@ LABEL_47:
   }
 
   [MEMORY[0x1E69B3A48] errorWithCode:3 reason:@"Unable to obtain semantic style metadata" object:v15 underlyingError:v19];
-  *a6 = v20 = 0;
+  *error = v20 = 0;
 LABEL_31:
 
 LABEL_32:
@@ -628,10 +628,10 @@ LABEL_32:
   return v20;
 }
 
-- (id)_evaluateVideoComposition:(id *)a3
+- (id)_evaluateVideoComposition:(id *)composition
 {
   v82[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!composition)
   {
     v45 = NUAssertLogger_11150();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -653,8 +653,8 @@ LABEL_32:
         v53 = dispatch_get_specific(*v47);
         v54 = MEMORY[0x1E696AF00];
         v55 = v53;
-        v56 = [v54 callStackSymbols];
-        v57 = [v56 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v54 callStackSymbols];
+        v57 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v81.value) = 138543618;
         *(&v81.value + 4) = v53;
         LOWORD(v81.flags) = 2114;
@@ -665,8 +665,8 @@ LABEL_32:
 
     else if (v50)
     {
-      v51 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v52 = [v51 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v52 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v81.value) = 138543362;
       *(&v81.value + 4) = v52;
       _os_log_error_impl(&dword_1C7694000, v49, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v81, 0xCu);
@@ -682,36 +682,36 @@ LABEL_32:
     goto LABEL_29;
   }
 
-  v6 = [(PISemanticStyleRenderNode *)self input];
-  v7 = [v6 outputVideoComposition:a3];
+  input = [(PISemanticStyleRenderNode *)self input];
+  v7 = [input outputVideoComposition:composition];
 
   if (v7)
   {
-    v8 = [v7 instructions];
-    v9 = [v8 count];
+    instructions = [v7 instructions];
+    v9 = [instructions count];
 
     if (v9 == 1)
     {
-      v10 = [v7 instructions];
-      v11 = [v10 firstObject];
+      instructions2 = [v7 instructions];
+      firstObject = [instructions2 firstObject];
 
-      v12 = [(PISemanticStyleRenderNode *)self input];
-      v13 = [v12 videoProperties:a3];
+      input2 = [(PISemanticStyleRenderNode *)self input];
+      v13 = [input2 videoProperties:composition];
 
       if (v13)
       {
-        v14 = [v11 copy];
+        v14 = [firstObject copy];
         v60 = v13;
-        v15 = [v13 auxiliaryVideoTrackProperties];
+        auxiliaryVideoTrackProperties = [v13 auxiliaryVideoTrackProperties];
         v76[0] = MEMORY[0x1E69E9820];
         v76[1] = 3221225472;
         v76[2] = __55__PISemanticStyleRenderNode__evaluateVideoComposition___block_invoke;
         v76[3] = &unk_1E82AAB38;
-        v61 = v11;
-        v77 = v11;
+        v61 = firstObject;
+        v77 = firstObject;
         v16 = v14;
         v78 = v16;
-        [v15 enumerateKeysAndObjectsUsingBlock:v76];
+        [auxiliaryVideoTrackProperties enumerateKeysAndObjectsUsingBlock:v76];
 
         v17 = [MEMORY[0x1E69B3D40] metadataTrackWithIdenfifier:*MEMORY[0x1E69B3D90] forAsset:v5];
         v18 = v17;
@@ -728,8 +728,8 @@ LABEL_32:
         v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:1];
         [v21 setInstructions:v22];
 
-        v23 = [v16 requiredSourceSampleDataTrackIDs];
-        [v21 setSourceSampleDataTrackIDs:v23];
+        requiredSourceSampleDataTrackIDs = [v16 requiredSourceSampleDataTrackIDs];
+        [v21 setSourceSampleDataTrackIDs:requiredSourceSampleDataTrackIDs];
 
         [v16 setRequestedWindowOfSamples:1];
         [v16 setMainTrackSourceIdentifier:@"video"];
@@ -745,15 +745,15 @@ LABEL_32:
         v71 = v73;
 
         v26 = MEMORY[0x1E695DF90];
-        v27 = [v16 requiredSourceTrackIDs];
-        v28 = [v26 dictionaryWithCapacity:{objc_msgSend(v27, "count")}];
+        requiredSourceTrackIDs = [v16 requiredSourceTrackIDs];
+        v28 = [v26 dictionaryWithCapacity:{objc_msgSend(requiredSourceTrackIDs, "count")}];
 
         v68 = 0u;
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v29 = [v16 requiredSourceTrackIDs];
-        v30 = [v29 countByEnumeratingWithState:&v66 objects:v80 count:16];
+        requiredSourceTrackIDs2 = [v16 requiredSourceTrackIDs];
+        v30 = [requiredSourceTrackIDs2 countByEnumeratingWithState:&v66 objects:v80 count:16];
         if (v30)
         {
           v31 = v30;
@@ -764,13 +764,13 @@ LABEL_32:
             {
               if (*v67 != v32)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(requiredSourceTrackIDs2);
               }
 
               [v28 setObject:v25 forKeyedSubscript:*(*(&v66 + 1) + 8 * i)];
             }
 
-            v31 = [v29 countByEnumeratingWithState:&v66 objects:v80 count:16];
+            v31 = [requiredSourceTrackIDs2 countByEnumeratingWithState:&v66 objects:v80 count:16];
           }
 
           while (v31);
@@ -778,16 +778,16 @@ LABEL_32:
 
         [v21 setSourceVideoTrackWindowsForTrackIDs:v28];
         v34 = MEMORY[0x1E695DF90];
-        v35 = [v16 requiredSourceSampleDataTrackIDs];
-        v36 = [v34 dictionaryWithCapacity:{objc_msgSend(v35, "count")}];
+        requiredSourceSampleDataTrackIDs2 = [v16 requiredSourceSampleDataTrackIDs];
+        v36 = [v34 dictionaryWithCapacity:{objc_msgSend(requiredSourceSampleDataTrackIDs2, "count")}];
 
         v64 = 0u;
         v65 = 0u;
         v62 = 0u;
         v63 = 0u;
         v59 = v16;
-        v37 = [v16 requiredSourceSampleDataTrackIDs];
-        v38 = [v37 countByEnumeratingWithState:&v62 objects:v79 count:16];
+        requiredSourceSampleDataTrackIDs3 = [v16 requiredSourceSampleDataTrackIDs];
+        v38 = [requiredSourceSampleDataTrackIDs3 countByEnumeratingWithState:&v62 objects:v79 count:16];
         if (v38)
         {
           v39 = v38;
@@ -798,13 +798,13 @@ LABEL_32:
             {
               if (*v63 != v40)
               {
-                objc_enumerationMutation(v37);
+                objc_enumerationMutation(requiredSourceSampleDataTrackIDs3);
               }
 
               [v36 setObject:v25 forKeyedSubscript:*(*(&v62 + 1) + 8 * j)];
             }
 
-            v39 = [v37 countByEnumeratingWithState:&v62 objects:v79 count:16];
+            v39 = [requiredSourceSampleDataTrackIDs3 countByEnumeratingWithState:&v62 objects:v79 count:16];
           }
 
           while (v39);
@@ -812,7 +812,7 @@ LABEL_32:
 
         [v21 setSourceSampleDataTrackWindowsForTrackIDs:v36];
         v13 = v60;
-        v11 = v61;
+        firstObject = v61;
       }
 
       else
@@ -824,8 +824,8 @@ LABEL_32:
     }
 
     v42 = MEMORY[0x1E69B3A48];
-    v43 = [v7 instructions];
-    *a3 = [v42 unsupportedError:@"Unsupported video configuration" object:v43];
+    instructions3 = [v7 instructions];
+    *composition = [v42 unsupportedError:@"Unsupported video configuration" object:instructions3];
   }
 
   v21 = 0;
@@ -858,42 +858,42 @@ void __55__PISemanticStyleRenderNode__evaluateVideoComposition___block_invoke(ui
   [v13 setSourceIdentifier:v6 forTrackID:v14];
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
   v5.receiver = self;
   v5.super_class = PISemanticStyleRenderNode;
-  v3 = [(NURenderNode *)&v5 _evaluateVideo:a3];
+  v3 = [(NURenderNode *)&v5 _evaluateVideo:video];
 
   return v3;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v89 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (![v9 evaluationMode])
+  cacheCopy = cache;
+  stateCopy = state;
+  if (![stateCopy evaluationMode])
   {
     v86.receiver = self;
     v86.super_class = PISemanticStyleRenderNode;
-    [(NURenderNode *)&v86 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+    [(NURenderNode *)&v86 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
     goto LABEL_6;
   }
 
-  if ([v9 auxiliaryImageType] == 1)
+  if ([stateCopy auxiliaryImageType] == 1)
   {
-    if ([v9 evaluationMode] == 2)
+    if ([stateCopy evaluationMode] == 2)
     {
       v85.receiver = self;
       v85.super_class = PISemanticStyleRenderNode;
-      [(NURenderNode *)&v85 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+      [(NURenderNode *)&v85 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
       v10 = LABEL_6:;
       goto LABEL_54;
     }
 
-    v11 = [(PISemanticStyleRenderNode *)self input];
-    v12 = [(PISemanticStyleRenderNode *)self input];
-    v13 = [v12 imageProperties:a5];
+    input = [(PISemanticStyleRenderNode *)self input];
+    input2 = [(PISemanticStyleRenderNode *)self input];
+    v13 = [input2 imageProperties:error];
 
     if (!v13)
     {
@@ -966,8 +966,8 @@ LABEL_52:
 
     v24 = [objc_alloc(MEMORY[0x1E69B3A78]) initWithTargetPixelSize:{v18, v17}];
     v25 = [objc_alloc(MEMORY[0x1E69B3A68]) initWithTargetPixelSize:{v20, v22}];
-    v26 = [(PISemanticStyleRenderNode *)self input];
-    v27 = [v26 outputImageGeometry:a5];
+    input3 = [(PISemanticStyleRenderNode *)self input];
+    v27 = [input3 outputImageGeometry:error];
 
     if (!v27)
     {
@@ -987,9 +987,9 @@ LABEL_51:
     v77 = v25;
     v35 = [v25 scaleForImageSize:{v33, v34}];
     v73 = v36;
-    v37 = [v9 copy];
+    v37 = [stateCopy copy];
     v80 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v38 = [v11 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+    v38 = [input nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
 
     if (!v38)
     {
@@ -999,7 +999,7 @@ LABEL_51:
       v63 = v80;
 LABEL_50:
 
-      v11 = v38;
+      input = v38;
       v13 = v75;
       v27 = v76;
       goto LABEL_51;
@@ -1009,30 +1009,30 @@ LABEL_50:
     [v37 setSampleMode:2];
     v72 = v38;
     [v80 setObject:v38 forKeyedSubscript:*MEMORY[0x1E695FAB0]];
-    v39 = [(NURenderNode *)self settings];
-    v40 = [v39 objectForKeyedSubscript:@"isFallback"];
-    v41 = [v40 BOOLValue];
+    settings = [(NURenderNode *)self settings];
+    v40 = [settings objectForKeyedSubscript:@"isFallback"];
+    bOOLValue = [v40 BOOLValue];
 
-    if ((v41 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v71 = v37;
-      v42 = [v9 copy];
+      v42 = [stateCopy copy];
       [v42 setAuxiliaryImageType:10];
       [v42 setScale:{v35, v73}];
       [v42 setSampleMode:2];
-      v43 = [(PISemanticStyleRenderNode *)self input];
+      input4 = [(PISemanticStyleRenderNode *)self input];
       v84 = 0;
-      v44 = [v43 nodeByReplayingAgainstCache:v8 pipelineState:v42 error:&v84];
+      v44 = [input4 nodeByReplayingAgainstCache:cacheCopy pipelineState:v42 error:&v84];
       v45 = v84;
 
       if (!v44)
       {
         v66 = MEMORY[0x1E69B3A48];
-        v67 = [(PISemanticStyleRenderNode *)self input];
-        v68 = [v66 errorWithCode:1 reason:@"Failed to evaluate linear thumbnail" object:v67 underlyingError:v45];
+        input5 = [(PISemanticStyleRenderNode *)self input];
+        v68 = [v66 errorWithCode:1 reason:@"Failed to evaluate linear thumbnail" object:input5 underlyingError:v45];
         v69 = v68;
 
-        *a5 = v68;
+        *error = v68;
         v10 = 0;
         v25 = v77;
         v24 = v78;
@@ -1047,9 +1047,9 @@ LABEL_49:
       [v80 setObject:v44 forKeyedSubscript:@"linearThumbnail"];
       v46 = v37;
       [v37 setAuxiliaryImageType:3];
-      v47 = [(PISemanticStyleRenderNode *)self input];
+      input6 = [(PISemanticStyleRenderNode *)self input];
       v83 = 0;
-      v48 = [v47 nodeByReplayingAgainstCache:v8 pipelineState:v37 error:&v83];
+      v48 = [input6 nodeByReplayingAgainstCache:cacheCopy pipelineState:v37 error:&v83];
       v49 = v83;
 
       v50 = v48;
@@ -1068,9 +1068,9 @@ LABEL_49:
 
       [v80 setObject:v48 forKeyedSubscript:@"subjectMatte"];
       [v46 setAuxiliaryImageType:4];
-      v52 = [(PISemanticStyleRenderNode *)self input];
+      input7 = [(PISemanticStyleRenderNode *)self input];
       v82 = 0;
-      v53 = [v52 nodeByReplayingAgainstCache:v8 pipelineState:v46 error:&v82];
+      v53 = [input7 nodeByReplayingAgainstCache:cacheCopy pipelineState:v46 error:&v82];
       v54 = v82;
       v55 = v49;
       v56 = v54;
@@ -1092,9 +1092,9 @@ LABEL_49:
       v70 = v50;
       [v80 setObject:v53 forKeyedSubscript:@"skinMatte"];
       [v46 setAuxiliaryImageType:9];
-      v59 = [(PISemanticStyleRenderNode *)self input];
+      input8 = [(PISemanticStyleRenderNode *)self input];
       v81 = 0;
-      v60 = [v59 nodeByReplayingAgainstCache:v8 pipelineState:v46 error:&v81];
+      v60 = [input8 nodeByReplayingAgainstCache:cacheCopy pipelineState:v46 error:&v81];
       v61 = v81;
 
       if (!v60)
@@ -1115,7 +1115,7 @@ LABEL_49:
 
     [v37 setAuxiliaryImageType:1];
     v63 = v80;
-    v64 = [(NURenderNode *)self resolvedNodeWithCachedInputs:v80 cache:v8 pipelineState:v37 error:a5];
+    v64 = [(NURenderNode *)self resolvedNodeWithCachedInputs:v80 cache:cacheCopy pipelineState:v37 error:error];
     if (v64)
     {
       v42 = v64;
@@ -1133,8 +1133,8 @@ LABEL_49:
     goto LABEL_49;
   }
 
-  v11 = [(PISemanticStyleRenderNode *)self input];
-  v10 = [v11 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+  input = [(PISemanticStyleRenderNode *)self input];
+  v10 = [input nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
 LABEL_53:
 
 LABEL_54:
@@ -1144,18 +1144,18 @@ LABEL_54:
 
 - (NURenderNode)input
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
   return v3;
 }
 
-- (PISemanticStyleRenderNode)initWithInput:(id)a3 settings:(id)a4
+- (PISemanticStyleRenderNode)initWithInput:(id)input settings:(id)settings
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  inputCopy = input;
+  settingsCopy = settings;
+  if (!inputCopy)
   {
     v12 = NUAssertLogger_11150();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1177,8 +1177,8 @@ LABEL_54:
         v20 = dispatch_get_specific(*v14);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v20;
         v30 = 2114;
@@ -1189,8 +1189,8 @@ LABEL_54:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1199,9 +1199,9 @@ LABEL_54:
     _NUAssertFailHandler();
   }
 
-  v8 = v7;
+  v8 = settingsCopy;
   v26 = *MEMORY[0x1E695FAB0];
-  v27 = v6;
+  v27 = inputCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
   v25.receiver = self;
   v25.super_class = PISemanticStyleRenderNode;
@@ -1210,11 +1210,11 @@ LABEL_54:
   return v10;
 }
 
-- (PISemanticStyleRenderNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PISemanticStyleRenderNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -1253,8 +1253,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -1281,8 +1281,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

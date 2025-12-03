@@ -1,200 +1,200 @@
 @interface PLPhotoSharingPlugin
 + (id)MSASPersonIDForPollingTriggeredByPushNotification;
-+ (id)delegatePluginForPersonID:(id)a3;
-+ (void)didFindDeletedAlbumWithGUID:(id)a3 inviterAddress:(id)a4;
-+ (void)didFindNewAlbum:(id)a3;
++ (id)delegatePluginForPersonID:(id)d;
++ (void)didFindDeletedAlbumWithGUID:(id)d inviterAddress:(id)address;
++ (void)didFindNewAlbum:(id)album;
 - (PLPhotoSharingPlugin)init;
-- (id)albumTitleAndGUID:(id)a3;
-- (void)MSASModel:(id)a3 didDeleteAllCommentsForAssetCollection:(id)a4 inAlbum:(id)a5;
-- (void)MSASModel:(id)a3 didDeleteAllContentsOfAlbum:(id)a4;
-- (void)MSASModel:(id)a3 didFindAccessControlChange:(id)a4 inAlbum:(id)a5 info:(id)a6;
-- (void)MSASModel:(id)a3 didFindAlbumMetadataChange:(id)a4 info:(id)a5;
-- (void)MSASModel:(id)a3 didFindAssetCollectionChange:(id)a4 inAlbum:(id)a5;
-- (void)MSASModel:(id)a3 didFindCommentChange:(id)a4 inAssetCollection:(id)a5 inAlbum:(id)a6;
-- (void)MSASModel:(id)a3 didFindDeletedAccessControl:(id)a4 inAlbum:(id)a5 info:(id)a6;
-- (void)MSASModel:(id)a3 didFindDeletedAlbum:(id)a4;
-- (void)MSASModel:(id)a3 didFindDeletedAssetCollection:(id)a4 inAlbum:(id)a5 info:(id)a6;
-- (void)MSASModel:(id)a3 didFindDeletedComments:(id)a4 forAssetCollection:(id)a5 inAlbum:(id)a6 info:(id)a7;
-- (void)MSASModel:(id)a3 didFindDeletedInvitation:(id)a4 info:(id)a5;
-- (void)MSASModel:(id)a3 didFindGlobalResetSyncInfo:(id)a4;
-- (void)MSASModel:(id)a3 didFindInvitationChange:(id)a4 info:(id)a5;
-- (void)MSASModel:(id)a3 didFindLastViewedCommentDate:(id)a4 forAssetCollection:(id)a5 inAlbum:(id)a6;
-- (void)MSASModel:(id)a3 didFindNewAccessControls:(id)a4 inAlbum:(id)a5 info:(id)a6;
-- (void)MSASModel:(id)a3 didFindNewAlbum:(id)a4;
-- (void)MSASModel:(id)a3 didFindNewAssetCollections:(id)a4 inAlbum:(id)a5 info:(id)a6;
-- (void)MSASModel:(id)a3 didFindNewComments:(id)a4 forAssetCollection:(id)a5 inAlbum:(id)a6 info:(id)a7;
-- (void)MSASModel:(id)a3 didFindNewInvitation:(id)a4 info:(id)a5;
-- (void)MSASModel:(id)a3 didFinishAddingAlbum:(id)a4 error:(id)a5;
-- (void)MSASModel:(id)a3 didFinishAddingAssetCollection:(id)a4 toAlbum:(id)a5 error:(id)a6;
-- (void)MSASModel:(id)a3 didFinishCheckingForChangesInfo:(id)a4 error:(id)a5;
-- (void)MSASModel:(id)a3 didFinishDeletingAlbum:(id)a4 error:(id)a5;
-- (void)MSASModel:(id)a3 didFinishModifyingAlbumMetadata:(id)a4 error:(id)a5;
-- (void)MSASModel:(id)a3 didFinishRetrievingAsset:(id)a4 inAlbum:(id)a5 error:(id)a6;
-- (void)MSASModel:(id)a3 didFinishSendingInvitationByPhone:(id)a4 toAlbum:(id)a5 info:(id)a6 error:(id)a7;
-- (void)MSASModel:(id)a3 didMarkAlbum:(id)a4 asHavingUnreadContent:(BOOL)a5;
-- (void)MSASModel:(id)a3 didMarkAssetCollection:(id)a4 asHavingUnreadComments:(BOOL)a5 inAlbum:(id)a6;
-- (void)MSASModel:(id)a3 didRequestDerivativesForAssetCollections:(id)a4 specifications:(id)a5 info:(id)a6 completionBlock:(id)a7;
-- (void)MSASModel:(id)a3 didSubscribeToAlbum:(id)a4;
-- (void)MSASModel:(id)a3 didUnsubscribeFromAlbum:(id)a4;
-- (void)MSASModel:(id)a3 didUpdateUnviewedAssetCollectionCount:(int)a4 forAlbum:(id)a5;
-- (void)MSASModelDidDeleteAllAlbumsInAlbumList:(id)a3;
-- (void)MSASModelDidReceiveNewServerSideConfiguration:(id)a3;
-- (void)MSASModelWillBeForgotten:(id)a3;
+- (id)albumTitleAndGUID:(id)d;
+- (void)MSASModel:(id)model didDeleteAllCommentsForAssetCollection:(id)collection inAlbum:(id)album;
+- (void)MSASModel:(id)model didDeleteAllContentsOfAlbum:(id)album;
+- (void)MSASModel:(id)model didFindAccessControlChange:(id)change inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindAlbumMetadataChange:(id)change info:(id)info;
+- (void)MSASModel:(id)model didFindAssetCollectionChange:(id)change inAlbum:(id)album;
+- (void)MSASModel:(id)model didFindCommentChange:(id)change inAssetCollection:(id)collection inAlbum:(id)album;
+- (void)MSASModel:(id)model didFindDeletedAccessControl:(id)control inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindDeletedAlbum:(id)album;
+- (void)MSASModel:(id)model didFindDeletedAssetCollection:(id)collection inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindDeletedComments:(id)comments forAssetCollection:(id)collection inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindDeletedInvitation:(id)invitation info:(id)info;
+- (void)MSASModel:(id)model didFindGlobalResetSyncInfo:(id)info;
+- (void)MSASModel:(id)model didFindInvitationChange:(id)change info:(id)info;
+- (void)MSASModel:(id)model didFindLastViewedCommentDate:(id)date forAssetCollection:(id)collection inAlbum:(id)album;
+- (void)MSASModel:(id)model didFindNewAccessControls:(id)controls inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindNewAlbum:(id)album;
+- (void)MSASModel:(id)model didFindNewAssetCollections:(id)collections inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindNewComments:(id)comments forAssetCollection:(id)collection inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindNewInvitation:(id)invitation info:(id)info;
+- (void)MSASModel:(id)model didFinishAddingAlbum:(id)album error:(id)error;
+- (void)MSASModel:(id)model didFinishAddingAssetCollection:(id)collection toAlbum:(id)album error:(id)error;
+- (void)MSASModel:(id)model didFinishCheckingForChangesInfo:(id)info error:(id)error;
+- (void)MSASModel:(id)model didFinishDeletingAlbum:(id)album error:(id)error;
+- (void)MSASModel:(id)model didFinishModifyingAlbumMetadata:(id)metadata error:(id)error;
+- (void)MSASModel:(id)model didFinishRetrievingAsset:(id)asset inAlbum:(id)album error:(id)error;
+- (void)MSASModel:(id)model didFinishSendingInvitationByPhone:(id)phone toAlbum:(id)album info:(id)info error:(id)error;
+- (void)MSASModel:(id)model didMarkAlbum:(id)album asHavingUnreadContent:(BOOL)content;
+- (void)MSASModel:(id)model didMarkAssetCollection:(id)collection asHavingUnreadComments:(BOOL)comments inAlbum:(id)album;
+- (void)MSASModel:(id)model didRequestDerivativesForAssetCollections:(id)collections specifications:(id)specifications info:(id)info completionBlock:(id)block;
+- (void)MSASModel:(id)model didSubscribeToAlbum:(id)album;
+- (void)MSASModel:(id)model didUnsubscribeFromAlbum:(id)album;
+- (void)MSASModel:(id)model didUpdateUnviewedAssetCollectionCount:(int)count forAlbum:(id)album;
+- (void)MSASModelDidDeleteAllAlbumsInAlbumList:(id)list;
+- (void)MSASModelDidReceiveNewServerSideConfiguration:(id)configuration;
+- (void)MSASModelWillBeForgotten:(id)forgotten;
 - (void)dealloc;
 @end
 
 @implementation PLPhotoSharingPlugin
 
-- (id)albumTitleAndGUID:(id)a3
+- (id)albumTitleAndGUID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 metadata];
-  v5 = [v4 objectForKey:kMSASAlbumMetadataNameKey];
+  dCopy = d;
+  metadata = [dCopy metadata];
+  v5 = [metadata objectForKey:kMSASAlbumMetadataNameKey];
 
-  v6 = [v3 GUID];
+  gUID = [dCopy GUID];
 
-  v7 = [NSString stringWithFormat:@"(%@ %@)", v5, v6];
+  v7 = [NSString stringWithFormat:@"(%@ %@)", v5, gUID];
 
   return v7;
 }
 
-- (void)MSASModelDidReceiveNewServerSideConfiguration:(id)a3
+- (void)MSASModelDidReceiveNewServerSideConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 serverSideConfiguration];
+    serverSideConfiguration = [configurationCopy serverSideConfiguration];
     v6 = 138412290;
-    v7 = v5;
+    v7 = serverSideConfiguration;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "(server-configuration) MSASModelDidReceiveNewServerSideConfiguration %@", &v6, 0xCu);
   }
 
   +[PLPhotoSharingHelper updateSharedAlbumsCachedServerConfigurationLimits];
 }
 
-- (void)MSASModel:(id)a3 didFinishCheckingForChangesInfo:(id)a4 error:(id)a5
+- (void)MSASModel:(id)model didFinishCheckingForChangesInfo:(id)info error:(id)error
 {
-  v6 = a4;
-  v7 = a5;
+  infoCopy = info;
+  errorCopy = error;
   v8 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412802;
     v12 = objc_opt_class();
     v13 = 2112;
-    v14 = v6;
+    v14 = infoCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = errorCopy;
     v9 = v12;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%@: didFinishCheckingForChangesInfo %@ Error %@", &v11, 0x20u);
   }
 
   v10 = +[PLPhotoSharingHelper sharingPersonID];
-  [PLCloudSharedAssetSaveJob downloadPendingAssetsForPersonID:v10 info:v6];
+  [PLCloudSharedAssetSaveJob downloadPendingAssetsForPersonID:v10 info:infoCopy];
 }
 
-- (void)MSASModel:(id)a3 didFindGlobalResetSyncInfo:(id)a4
+- (void)MSASModel:(id)model didFindGlobalResetSyncInfo:(id)info
 {
-  v4 = a4;
+  infoCopy = info;
   v5 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
     v8 = objc_opt_class();
     v9 = 2112;
-    v10 = v4;
+    v10 = infoCopy;
     v6 = v8;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%@: didFindGlobalResetSyncInfo %@", &v7, 0x16u);
   }
 }
 
-- (void)MSASModel:(id)a3 didFindLastViewedCommentDate:(id)a4 forAssetCollection:(id)a5 inAlbum:(id)a6
+- (void)MSASModel:(id)model didFindLastViewedCommentDate:(id)date forAssetCollection:(id)collection inAlbum:(id)album
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  dateCopy = date;
+  collectionCopy = collection;
+  albumCopy = album;
   [(PLPhotoSharingPlugin *)self photoLibrary];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1254;
   v16[3] = &unk_C2C8;
-  v18 = v17 = v10;
-  v19 = v9;
-  v20 = self;
-  v21 = v11;
-  v12 = v11;
-  v13 = v9;
+  v18 = v17 = collectionCopy;
+  v19 = dateCopy;
+  selfCopy = self;
+  v21 = albumCopy;
+  v12 = albumCopy;
+  v13 = dateCopy;
   v14 = v18;
-  v15 = v10;
+  v15 = collectionCopy;
   [v14 performBlockAndWait:v16];
 }
 
-- (void)MSASModel:(id)a3 didMarkAssetCollection:(id)a4 asHavingUnreadComments:(BOOL)a5 inAlbum:(id)a6
+- (void)MSASModel:(id)model didMarkAssetCollection:(id)collection asHavingUnreadComments:(BOOL)comments inAlbum:(id)album
 {
-  v9 = a4;
-  v10 = a6;
+  collectionCopy = collection;
+  albumCopy = album;
   [(PLPhotoSharingPlugin *)self photoLibrary];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1534;
   v14[3] = &unk_C2A0;
-  v16 = v15 = v9;
-  v19 = a5;
-  v17 = self;
-  v18 = v10;
-  v11 = v10;
+  v16 = v15 = collectionCopy;
+  commentsCopy = comments;
+  selfCopy = self;
+  v18 = albumCopy;
+  v11 = albumCopy;
   v12 = v16;
-  v13 = v9;
+  v13 = collectionCopy;
   [v12 performBlockAndWait:v14];
 }
 
-- (void)MSASModel:(id)a3 didUpdateUnviewedAssetCollectionCount:(int)a4 forAlbum:(id)a5
+- (void)MSASModel:(id)model didUpdateUnviewedAssetCollectionCount:(int)count forAlbum:(id)album
 {
-  v7 = a5;
+  albumCopy = album;
   [(PLPhotoSharingPlugin *)self photoLibrary];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_17C8;
   v10[3] = &unk_C278;
-  v12 = v11 = v7;
-  v14 = a4;
-  v13 = self;
+  v12 = v11 = albumCopy;
+  countCopy = count;
+  selfCopy = self;
   v8 = v12;
-  v9 = v7;
+  v9 = albumCopy;
   [v8 performBlockAndWait:v10];
 }
 
-- (void)MSASModel:(id)a3 didMarkAlbum:(id)a4 asHavingUnreadContent:(BOOL)a5
+- (void)MSASModel:(id)model didMarkAlbum:(id)album asHavingUnreadContent:(BOOL)content
 {
-  v7 = a4;
+  albumCopy = album;
   [(PLPhotoSharingPlugin *)self photoLibrary];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1A28;
   v10[3] = &unk_C250;
-  v12 = v11 = v7;
-  v14 = a5;
-  v13 = self;
+  v12 = v11 = albumCopy;
+  contentCopy = content;
+  selfCopy = self;
   v8 = v12;
-  v9 = v7;
+  v9 = albumCopy;
   [v8 performBlockAndWait:v10];
 }
 
-- (void)MSASModel:(id)a3 didFindCommentChange:(id)a4 inAssetCollection:(id)a5 inAlbum:(id)a6
+- (void)MSASModel:(id)model didFindCommentChange:(id)change inAssetCollection:(id)collection inAlbum:(id)album
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  changeCopy = change;
+  collectionCopy = collection;
+  albumCopy = album;
   v11 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412802;
-    v14 = v8;
+    v14 = changeCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = collectionCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = albumCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "didFindCommentChange %@ inAssetCollection:%@ inAlbum: %@", &v13, 0x20u);
   }
 
@@ -206,54 +206,54 @@
   }
 }
 
-- (void)MSASModel:(id)a3 didFindNewComments:(id)a4 forAssetCollection:(id)a5 inAlbum:(id)a6 info:(id)a7
+- (void)MSASModel:(id)model didFindNewComments:(id)comments forAssetCollection:(id)collection inAlbum:(id)album info:(id)info
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  commentsCopy = comments;
+  collectionCopy = collection;
+  albumCopy = album;
+  infoCopy = info;
   v14 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v11 GUID];
+    gUID = [collectionCopy GUID];
     v18 = 138413058;
-    v19 = v10;
+    v19 = commentsCopy;
     v20 = 2112;
-    v21 = v15;
+    v21 = gUID;
     v22 = 2112;
-    v23 = v12;
+    v23 = albumCopy;
     v24 = 2112;
-    v25 = v13;
+    v25 = infoCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "didFindNewComments %@ forAssetCollection:%@ inAlbum: %@ info:%@", &v18, 0x2Au);
   }
 
-  v16 = [v11 GUID];
-  v17 = [v12 GUID];
-  [PLCloudSharedCommentsJob locallyProcessAddedComments:v10 assetGUID:v16 albumGUID:v17 info:v13];
+  gUID2 = [collectionCopy GUID];
+  gUID3 = [albumCopy GUID];
+  [PLCloudSharedCommentsJob locallyProcessAddedComments:commentsCopy assetGUID:gUID2 albumGUID:gUID3 info:infoCopy];
 }
 
-- (void)MSASModel:(id)a3 didFindDeletedComments:(id)a4 forAssetCollection:(id)a5 inAlbum:(id)a6 info:(id)a7
+- (void)MSASModel:(id)model didFindDeletedComments:(id)comments forAssetCollection:(id)collection inAlbum:(id)album info:(id)info
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  commentsCopy = comments;
+  collectionCopy = collection;
+  albumCopy = album;
+  infoCopy = info;
   v14 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v11 GUID];
+    gUID = [collectionCopy GUID];
     v18 = 138413058;
-    v19 = v10;
+    v19 = commentsCopy;
     v20 = 2112;
-    v21 = v15;
+    v21 = gUID;
     v22 = 2112;
-    v23 = v12;
+    v23 = albumCopy;
     v24 = 2112;
-    v25 = v13;
+    v25 = infoCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "didFindDeletedComments %@ forAssetCollection:%@ inAlbum: %@ info:%@", &v18, 0x2Au);
   }
 
-  v16 = [v13 objectForKey:kMSASInfoEventIsDueToAssetCollectionDeletionKey];
+  v16 = [infoCopy objectForKey:kMSASInfoEventIsDueToAssetCollectionDeletionKey];
 
   if (!v16)
   {
@@ -261,25 +261,25 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v10;
+      v19 = commentsCopy;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "about to PLCloudSharedCommentsJob locallyProcessDeletedComments %@", &v18, 0xCu);
     }
 
-    [PLCloudSharedCommentsJob locallyProcessDeletedComments:v10 info:v13];
+    [PLCloudSharedCommentsJob locallyProcessDeletedComments:commentsCopy info:infoCopy];
   }
 }
 
-- (void)MSASModel:(id)a3 didDeleteAllCommentsForAssetCollection:(id)a4 inAlbum:(id)a5
+- (void)MSASModel:(id)model didDeleteAllCommentsForAssetCollection:(id)collection inAlbum:(id)album
 {
-  v6 = a4;
-  v7 = a5;
+  collectionCopy = collection;
+  albumCopy = album;
   v8 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = collectionCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = albumCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "didDeleteAllCommentsForAssetCollection %@ inAlbum: %@", &v10, 0x16u);
   }
 
@@ -291,171 +291,171 @@
   }
 }
 
-- (void)MSASModel:(id)a3 didFinishSendingInvitationByPhone:(id)a4 toAlbum:(id)a5 info:(id)a6 error:(id)a7
+- (void)MSASModel:(id)model didFinishSendingInvitationByPhone:(id)phone toAlbum:(id)album info:(id)info error:(id)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  phoneCopy = phone;
+  albumCopy = album;
+  infoCopy = info;
+  errorCopy = error;
   v14 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138413058;
-    v16 = v10;
+    v16 = phoneCopy;
     v17 = 2112;
-    v18 = v11;
+    v18 = albumCopy;
     v19 = 2112;
-    v20 = v12;
+    v20 = infoCopy;
     v21 = 2112;
-    v22 = v13;
+    v22 = errorCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "MSASModel:didFinishSendingInvitationByPhone:%@ inAlbum:%@ info:%@ error:%@", &v15, 0x2Au);
   }
 
-  if (v13)
+  if (errorCopy)
   {
-    [PLPhotoSharingHelper savePhoneInvitationFailuresForPhoneNumber:v10 inAlbum:v11];
+    [PLPhotoSharingHelper savePhoneInvitationFailuresForPhoneNumber:phoneCopy inAlbum:albumCopy];
     notify_post(PLFindPhoneInvitationFailureNotification);
   }
 }
 
-- (void)MSASModel:(id)a3 didFindDeletedAccessControl:(id)a4 inAlbum:(id)a5 info:(id)a6
+- (void)MSASModel:(id)model didFindDeletedAccessControl:(id)control inAlbum:(id)album info:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  controlCopy = control;
+  albumCopy = album;
+  infoCopy = info;
   v11 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412802;
-    v14 = v8;
+    v14 = controlCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = albumCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = infoCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "MSASModel:didFindDeletedAccessControl:%@ inAlbum:%@ with infoDict:%@", &v13, 0x20u);
   }
 
-  v12 = [NSArray arrayWithObject:v8];
-  [PLCloudSharingInvitationChangeJob saveServerStateLocallyForSharingACLRelationships:v12 changeType:2 info:v10];
+  v12 = [NSArray arrayWithObject:controlCopy];
+  [PLCloudSharingInvitationChangeJob saveServerStateLocallyForSharingACLRelationships:v12 changeType:2 info:infoCopy];
 }
 
-- (void)MSASModel:(id)a3 didFindAccessControlChange:(id)a4 inAlbum:(id)a5 info:(id)a6
+- (void)MSASModel:(id)model didFindAccessControlChange:(id)change inAlbum:(id)album info:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  changeCopy = change;
+  albumCopy = album;
+  infoCopy = info;
   v11 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412802;
-    v14 = v8;
+    v14 = changeCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = albumCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = infoCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "MSASModel:didFindAccessControlChange:%@ inAlbum:%@ with infoDict:%@", &v13, 0x20u);
   }
 
-  v12 = [NSArray arrayWithObject:v8];
-  [PLCloudSharingInvitationChangeJob saveServerStateLocallyForSharingACLRelationships:v12 changeType:3 info:v10];
+  v12 = [NSArray arrayWithObject:changeCopy];
+  [PLCloudSharingInvitationChangeJob saveServerStateLocallyForSharingACLRelationships:v12 changeType:3 info:infoCopy];
 }
 
-- (void)MSASModel:(id)a3 didFindNewAccessControls:(id)a4 inAlbum:(id)a5 info:(id)a6
+- (void)MSASModel:(id)model didFindNewAccessControls:(id)controls inAlbum:(id)album info:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  controlsCopy = controls;
+  albumCopy = album;
+  infoCopy = info;
   v11 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412802;
-    v13 = v8;
+    v13 = controlsCopy;
     v14 = 2112;
-    v15 = v9;
+    v15 = albumCopy;
     v16 = 2112;
-    v17 = v10;
+    v17 = infoCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "MSASModel:didFindNewAccessControls:%@ inAlbum:%@ with infoDict:%@", &v12, 0x20u);
   }
 
-  [PLCloudSharingInvitationChangeJob saveServerStateLocallyForSharingACLRelationships:v8 changeType:1 info:v10];
+  [PLCloudSharingInvitationChangeJob saveServerStateLocallyForSharingACLRelationships:controlsCopy changeType:1 info:infoCopy];
 }
 
-- (void)MSASModel:(id)a3 didFindInvitationChange:(id)a4 info:(id)a5
+- (void)MSASModel:(id)model didFindInvitationChange:(id)change info:(id)info
 {
-  v6 = a4;
-  v7 = a5;
+  changeCopy = change;
+  infoCopy = info;
   v8 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = changeCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = infoCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "MSASModel:didFindInvitationChange:%@ with infoDict:%@", &v10, 0x16u);
   }
 
-  v9 = [NSArray arrayWithObject:v6];
-  [PLCloudSharingInvitationChangeJob saveServerStateLocallyForSharingInvitationRelationships:v9 changeType:3 info:v7];
+  v9 = [NSArray arrayWithObject:changeCopy];
+  [PLCloudSharingInvitationChangeJob saveServerStateLocallyForSharingInvitationRelationships:v9 changeType:3 info:infoCopy];
 }
 
-- (void)MSASModel:(id)a3 didFindDeletedInvitation:(id)a4 info:(id)a5
+- (void)MSASModel:(id)model didFindDeletedInvitation:(id)invitation info:(id)info
 {
-  v6 = a4;
-  v7 = a5;
+  invitationCopy = invitation;
+  infoCopy = info;
   v8 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = invitationCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = infoCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "MSASModel:didFindDeletedInvitation:%@ with infoDict:%@", &v10, 0x16u);
   }
 
-  v9 = [NSArray arrayWithObject:v6];
-  [PLCloudSharingInvitationChangeJob saveServerStateLocallyForSharingInvitationRelationships:v9 changeType:2 info:v7];
+  v9 = [NSArray arrayWithObject:invitationCopy];
+  [PLCloudSharingInvitationChangeJob saveServerStateLocallyForSharingInvitationRelationships:v9 changeType:2 info:infoCopy];
 }
 
-- (void)MSASModel:(id)a3 didFindNewInvitation:(id)a4 info:(id)a5
+- (void)MSASModel:(id)model didFindNewInvitation:(id)invitation info:(id)info
 {
-  v6 = a4;
-  v7 = a5;
+  invitationCopy = invitation;
+  infoCopy = info;
   v8 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = invitationCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = infoCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "MSASModel:didFindNewInvitation:%@ with infoDict:%@", &v9, 0x16u);
   }
 }
 
-- (void)MSASModel:(id)a3 didRequestDerivativesForAssetCollections:(id)a4 specifications:(id)a5 info:(id)a6 completionBlock:(id)a7
+- (void)MSASModel:(id)model didRequestDerivativesForAssetCollections:(id)collections specifications:(id)specifications info:(id)info completionBlock:(id)block
 {
-  v47 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v45 = a7;
+  modelCopy = model;
+  collectionsCopy = collections;
+  specificationsCopy = specifications;
+  infoCopy = info;
+  blockCopy = block;
   v14 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v69 = v11;
+    v69 = collectionsCopy;
     v70 = 2112;
-    v71 = v12;
+    v71 = specificationsCopy;
     v72 = 2112;
-    v73 = v13;
+    v73 = infoCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "MSASModel:didRequestDerivativesForAssetCollections:%@ \n specifications:%@ \n info %@", buf, 0x20u);
   }
 
-  v46 = v13;
+  v46 = infoCopy;
 
-  [PLPhotoSharingHelper writeUploadDebugBreadcrumbForAssetCollections:v11 state:110 error:0];
+  [PLPhotoSharingHelper writeUploadDebugBreadcrumbForAssetCollections:collectionsCopy state:110 error:0];
   Current = CFAbsoluteTimeGetCurrent();
   v16 = objc_alloc_init(NSFileManager);
-  v53 = [[NSMutableArray alloc] initWithArray:v11];
+  v53 = [[NSMutableArray alloc] initWithArray:collectionsCopy];
   v52 = objc_alloc_init(NSMutableArray);
   v17 = [NSMutableArray arrayWithCapacity:2];
   v18 = [NSMutableArray arrayWithCapacity:3];
@@ -469,12 +469,12 @@
   v66 = v19;
   v49 = v18;
   v67 = v49;
-  [v12 enumerateObjectsUsingBlock:v65];
+  [specificationsCopy enumerateObjectsUsingBlock:v65];
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v11;
+  obj = collectionsCopy;
   v48 = v16;
   v56 = [obj countByEnumeratingWithState:&v61 objects:v77 count:16];
   if (v56)
@@ -491,29 +491,29 @@
         }
 
         v22 = *(*(&v61 + 1) + 8 * i);
-        v23 = [v22 isPhotoIris];
-        v24 = [v22 assets];
-        v25 = [v24 count];
+        isPhotoIris = [v22 isPhotoIris];
+        assets = [v22 assets];
+        v25 = [assets count];
 
         if (v25 < 2)
         {
           goto LABEL_24;
         }
 
-        if (!v23)
+        if (!isPhotoIris)
         {
-          v26 = PLPhotoSharingGetLog();
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+          assets3 = PLPhotoSharingGetLog();
+          if (os_log_type_enabled(assets3, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "Warning: got an MSASCollection with more than one asset, will select last one", buf, 2u);
+            _os_log_impl(&dword_0, assets3, OS_LOG_TYPE_DEFAULT, "Warning: got an MSASCollection with more than one asset, will select last one", buf, 2u);
           }
 
 LABEL_23:
 
 LABEL_24:
-          v35 = [v22 assets];
-          v30 = [v35 lastObject];
+          assets2 = [v22 assets];
+          lastObject = [assets2 lastObject];
 
           goto LABEL_25;
         }
@@ -522,16 +522,16 @@ LABEL_24:
         v60 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v26 = [v22 assets];
-        v27 = [v26 countByEnumeratingWithState:&v57 objects:v76 count:16];
+        assets3 = [v22 assets];
+        v27 = [assets3 countByEnumeratingWithState:&v57 objects:v76 count:16];
         if (!v27)
         {
           goto LABEL_23;
         }
 
         v28 = v27;
-        v29 = v12;
-        v30 = 0;
+        v29 = specificationsCopy;
+        lastObject = 0;
         v31 = *v58;
         do
         {
@@ -539,7 +539,7 @@ LABEL_24:
           {
             if (*v58 != v31)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(assets3);
             }
 
             v33 = *(*(&v57 + 1) + 8 * j);
@@ -547,29 +547,29 @@ LABEL_24:
             {
               v34 = v33;
 
-              v30 = v34;
+              lastObject = v34;
             }
           }
 
-          v28 = [v26 countByEnumeratingWithState:&v57 objects:v76 count:16];
+          v28 = [assets3 countByEnumeratingWithState:&v57 objects:v76 count:16];
         }
 
         while (v28);
 
-        v12 = v29;
+        specificationsCopy = v29;
         v20 = v48;
-        if (!v30)
+        if (!lastObject)
         {
           goto LABEL_24;
         }
 
 LABEL_25:
-        v36 = [v30 path];
-        if ([v20 fileExistsAtPath:v36])
+        path = [lastObject path];
+        if ([v20 fileExistsAtPath:path])
         {
           [v22 setMetadataValue:0 forKey:v51];
-          v37 = [v22 isVideo];
-          v38 = [v22 isVideo] | v23;
+          isVideo = [v22 isVideo];
+          v38 = [v22 isVideo] | isPhotoIris;
           v39 = +[NSMutableArray array];
           if (v38)
           {
@@ -580,9 +580,9 @@ LABEL_25:
             }
           }
 
-          if ((v37 & 1) == 0)
+          if ((isVideo & 1) == 0)
           {
-            v41 = [PLPhotoSharingHelper derivativesForMasterAsset:v30 withSpecifications:v50];
+            v41 = [PLPhotoSharingHelper derivativesForMasterAsset:lastObject withSpecifications:v50];
             if ([v41 count])
             {
               [v39 addObjectsFromArray:v41];
@@ -601,7 +601,7 @@ LABEL_25:
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v69 = v36;
+            v69 = path;
             _os_log_impl(&dword_0, v42, OS_LOG_TYPE_DEFAULT, "Master asset at path %@ no longer exists, skipping", buf, 0xCu);
           }
 
@@ -631,43 +631,43 @@ LABEL_25:
     _os_log_impl(&dword_0, v43, OS_LOG_TYPE_DEFAULT, "about to call completionBlock with computedAssetCollections %@ rejectedAssetCollections %@ info %@ elapsed time %f", buf, 0x2Au);
   }
 
-  v45[2](v45, v53, v52, v46);
+  blockCopy[2](blockCopy, v53, v52, v46);
   [PLPhotoSharingHelper writeUploadDebugBreadcrumbForAssetCollections:v53 state:120 error:0];
 }
 
-- (void)MSASModel:(id)a3 didFinishAddingAssetCollection:(id)a4 toAlbum:(id)a5 error:(id)a6
+- (void)MSASModel:(id)model didFinishAddingAssetCollection:(id)collection toAlbum:(id)album error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  collectionCopy = collection;
+  albumCopy = album;
+  errorCopy = error;
   v12 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412802;
-    v16 = v9;
+    selfCopy = collectionCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = albumCopy;
     v19 = 2112;
-    v20 = v11;
+    v20 = errorCopy;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "MSASModel:didFinishAddingAssetCollection:%@ toAlbum:%@ error:%@", &v15, 0x20u);
   }
 
-  v13 = [NSArray arrayWithObject:v9];
-  [PLPhotoSharingHelper writeUploadDebugBreadcrumbForAssetCollections:v13 state:199 error:v11];
+  v13 = [NSArray arrayWithObject:collectionCopy];
+  [PLPhotoSharingHelper writeUploadDebugBreadcrumbForAssetCollections:v13 state:199 error:errorCopy];
 
-  if (v11)
+  if (errorCopy)
   {
     v14 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = 138413058;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
-      v18 = v9;
+      v18 = collectionCopy;
       v19 = 2112;
-      v20 = v10;
+      v20 = albumCopy;
       v21 = 2112;
-      v22 = v11;
+      v22 = errorCopy;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "%@ Failed to add asset collection %@ toAlbum:%@ error:%@", &v15, 0x2Au);
     }
   }
@@ -675,23 +675,23 @@ LABEL_25:
   else
   {
     v14 = +[PLPhotoSharingHelper sharingPersonID];
-    [PLCloudSharedAssetSaveJob replaceRecentlyUploadedOriginalWithDerivativeForCollection:v9 inAlbum:v10 personID:v14];
+    [PLCloudSharedAssetSaveJob replaceRecentlyUploadedOriginalWithDerivativeForCollection:collectionCopy inAlbum:albumCopy personID:v14];
   }
 }
 
-- (void)MSASModel:(id)a3 didFinishRetrievingAsset:(id)a4 inAlbum:(id)a5 error:(id)a6
+- (void)MSASModel:(id)model didFinishRetrievingAsset:(id)asset inAlbum:(id)album error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 path];
-  v14 = [v10 assetCollectionGUID];
-  v15 = [v9 focusAssetCollectionGUID];
-  v16 = v15;
-  if (v15)
+  modelCopy = model;
+  assetCopy = asset;
+  albumCopy = album;
+  errorCopy = error;
+  path = [assetCopy path];
+  assetCollectionGUID = [assetCopy assetCollectionGUID];
+  focusAssetCollectionGUID = [modelCopy focusAssetCollectionGUID];
+  v16 = focusAssetCollectionGUID;
+  if (focusAssetCollectionGUID)
   {
-    v17 = [v15 isEqualToString:v14];
+    v17 = [focusAssetCollectionGUID isEqualToString:assetCollectionGUID];
   }
 
   else
@@ -705,22 +705,22 @@ LABEL_25:
     *buf = 138413314;
     v50 = objc_opt_class();
     v51 = 2112;
-    v52 = v14;
+    v52 = assetCollectionGUID;
     v53 = 2112;
-    v54 = v10;
+    v54 = assetCopy;
     v55 = 2112;
-    v56 = v11;
+    v56 = albumCopy;
     v57 = 2112;
-    v58 = v12;
+    v58 = errorCopy;
     v19 = v50;
     _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "%@ MSASModel:didFinishRetrievingAsset:(collectionGUID:%@)%@ inAlbum:%@ error:%@", buf, 0x34u);
   }
 
-  if (v14)
+  if (assetCollectionGUID)
   {
     v45 = v17;
-    v20 = [v10 mediaAssetType];
-    if (v20 == &dword_0 + 2)
+    mediaAssetType = [assetCopy mediaAssetType];
+    if (mediaAssetType == &dword_0 + 2)
     {
       v21 = 220;
     }
@@ -730,36 +730,36 @@ LABEL_25:
       v21 = 221;
     }
 
-    v47 = v12;
-    [v11 GUID];
-    v22 = v46 = v13;
-    [PLPhotoSharingHelper writeDownloadDebugBreadcrumbForAsset:v14 albumGUID:v22 content:v10 state:v21 error:v12];
+    v47 = errorCopy;
+    [albumCopy GUID];
+    v22 = v46 = path;
+    [PLPhotoSharingHelper writeDownloadDebugBreadcrumbForAsset:assetCollectionGUID albumGUID:v22 content:assetCopy state:v21 error:errorCopy];
 
-    v13 = v46;
+    path = v46;
     if (v46)
     {
-      v23 = [v9 assetCollectionWithGUID:v14];
+      v23 = [modelCopy assetCollectionWithGUID:assetCollectionGUID];
       if (!v23)
       {
         v24 = PLPhotoSharingGetLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v50 = v14;
+          v50 = assetCollectionGUID;
           _os_log_impl(&dword_0, v24, OS_LOG_TYPE_ERROR, "ERROR: unable to find asset collection for GUID %@, skipping saving", buf, 0xCu);
         }
 
         goto LABEL_33;
       }
 
-      v24 = [PLCloudSharedAssetSaveJob pathForInFlightAssetCollectionWithGUID:v14 mediaAssetType:v20];
+      v24 = [PLCloudSharedAssetSaveJob pathForInFlightAssetCollectionWithGUID:assetCollectionGUID mediaAssetType:mediaAssetType];
       if (!v24)
       {
         v29 = PLPhotoSharingGetLog();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v50 = v10;
+          v50 = assetCopy;
           _os_log_impl(&dword_0, v29, OS_LOG_TYPE_ERROR, "ERROR : couldn't create a path to store inflight file for %@", buf, 0xCu);
         }
 
@@ -791,11 +791,11 @@ LABEL_25:
         if ((v43 & 1) == 0)
         {
           v38 = PLPhotoSharingGetLog();
-          v44 = v38;
+          gUID = v38;
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412802;
-            v13 = v46;
+            path = v46;
             v50 = v46;
             v51 = 2112;
             v52 = v24;
@@ -803,13 +803,13 @@ LABEL_25:
             v29 = v41;
             v54 = v41;
             _os_log_impl(&dword_0, v38, OS_LOG_TYPE_ERROR, "ERROR : couldn't copy MMCS transient file %@ to inflight file %@: %@", buf, 0x20u);
-            v12 = v47;
+            errorCopy = v47;
             goto LABEL_31;
           }
 
 LABEL_30:
-          v13 = v46;
-          v12 = v47;
+          path = v46;
+          errorCopy = v47;
           v29 = v41;
 LABEL_31:
 
@@ -820,32 +820,32 @@ LABEL_33:
         }
       }
 
-      v44 = [v10 GUID];
+      gUID = [assetCopy GUID];
       v32 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [v11 GUID];
+        gUID2 = [albumCopy GUID];
         *buf = 138413058;
         v50 = v24;
         v51 = 2112;
-        v52 = v14;
+        v52 = assetCollectionGUID;
         v53 = 2112;
-        v54 = v44;
+        v54 = gUID;
         v55 = 2112;
-        v56 = v33;
+        v56 = gUID2;
         _os_log_impl(&dword_0, v32, OS_LOG_TYPE_DEFAULT, "about to PLCloudSharedAssetSaveJob saveCloudSharedAssetAtPath %@ collectionGUID %@  guidOfCurrentAssetInCollection %@ albumGUID %@", buf, 0x2Au);
       }
 
-      v34 = [v10 mediaAssetType];
-      [v11 GUID];
-      v40 = v11;
+      mediaAssetType2 = [assetCopy mediaAssetType];
+      [albumCopy GUID];
+      v40 = albumCopy;
       v36 = v35 = v24;
       v37 = +[PLPhotoSharingHelper sharingPersonID];
       LOBYTE(v39) = v45;
-      [PLCloudSharedAssetSaveJob saveCloudSharedAssetAtPath:v35 forAssetCollection:v23 mediaAssetType:v34 albumGUID:v36 personID:v37 info:0 shouldPrioritize:v39];
+      [PLCloudSharedAssetSaveJob saveCloudSharedAssetAtPath:v35 forAssetCollection:v23 mediaAssetType:mediaAssetType2 albumGUID:v36 personID:v37 info:0 shouldPrioritize:v39];
 
       v24 = v35;
-      v11 = v40;
+      albumCopy = v40;
       goto LABEL_30;
     }
 
@@ -878,11 +878,11 @@ LABEL_21:
 LABEL_34:
 }
 
-- (void)MSASModel:(id)a3 didFindDeletedAssetCollection:(id)a4 inAlbum:(id)a5 info:(id)a6
+- (void)MSASModel:(id)model didFindDeletedAssetCollection:(id)collection inAlbum:(id)album info:(id)info
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  collectionCopy = collection;
+  albumCopy = album;
+  infoCopy = info;
   v12 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -894,45 +894,45 @@ LABEL_34:
     v27 = 2112;
     v28 = v15;
     v29 = 2112;
-    v30 = v9;
+    v30 = collectionCopy;
     v31 = 2112;
-    v32 = v10;
+    v32 = albumCopy;
     v33 = 2112;
-    v34 = v11;
+    v34 = infoCopy;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%@ %@ %@ album %@ info %@", &v25, 0x34u);
   }
 
-  v16 = [v11 objectForKey:kMSASInfoEventIsDueToAlbumDeletionKey];
+  v16 = [infoCopy objectForKey:kMSASInfoEventIsDueToAlbumDeletionKey];
 
-  v17 = [v9 GUID];
+  gUID = [collectionCopy GUID];
 
-  if (v17 && !v16)
+  if (gUID && !v16)
   {
     v18 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v9 GUID];
+      gUID2 = [collectionCopy GUID];
       v25 = 138412546;
-      v26 = v19;
+      v26 = gUID2;
       v27 = 2112;
-      v28 = v10;
+      v28 = albumCopy;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "about to PLCloudSharedAssetSaveJob deleteCloudSharedAssetsWithCloudGUIDs %@ inAlbum:%@", &v25, 0x16u);
     }
 
-    v20 = [v9 GUID];
-    v21 = [NSArray arrayWithObject:v20];
-    [PLCloudSharedAssetSaveJob deleteCloudSharedAssetsWithCloudGUIDs:v21 inAlbum:v10 info:v11];
+    gUID3 = [collectionCopy GUID];
+    v21 = [NSArray arrayWithObject:gUID3];
+    [PLCloudSharedAssetSaveJob deleteCloudSharedAssetsWithCloudGUIDs:v21 inAlbum:albumCopy info:infoCopy];
 
-    v22 = [v9 GUID];
-    v23 = [v10 GUID];
-    v24 = [v9 GUID];
-    [PLPhotoSharingHelper writeDownloadDebugBreadcrumbForAsset:v22 albumGUID:v23 content:v24 state:300 error:0];
+    gUID4 = [collectionCopy GUID];
+    gUID5 = [albumCopy GUID];
+    gUID6 = [collectionCopy GUID];
+    [PLPhotoSharingHelper writeDownloadDebugBreadcrumbForAsset:gUID4 albumGUID:gUID5 content:gUID6 state:300 error:0];
   }
 }
 
-- (void)MSASModel:(id)a3 didDeleteAllContentsOfAlbum:(id)a4
+- (void)MSASModel:(id)model didDeleteAllContentsOfAlbum:(id)album
 {
-  v5 = a4;
+  albumCopy = album;
   v6 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -944,7 +944,7 @@ LABEL_34:
     v13 = 2112;
     v14 = v9;
     v15 = 2112;
-    v16 = v5;
+    v16 = albumCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%@ %@ %@", &v11, 0x20u);
   }
 
@@ -956,10 +956,10 @@ LABEL_34:
   }
 }
 
-- (void)MSASModel:(id)a3 didFindAssetCollectionChange:(id)a4 inAlbum:(id)a5
+- (void)MSASModel:(id)model didFindAssetCollectionChange:(id)change inAlbum:(id)album
 {
-  v7 = a4;
-  v8 = a5;
+  changeCopy = change;
+  albumCopy = album;
   v9 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -971,9 +971,9 @@ LABEL_34:
     v16 = 2112;
     v17 = v12;
     v18 = 2112;
-    v19 = v7;
+    v19 = changeCopy;
     v20 = 2112;
-    v21 = v8;
+    v21 = albumCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%@ %@ %@ album %@", &v14, 0x2Au);
   }
 
@@ -985,36 +985,36 @@ LABEL_34:
   }
 }
 
-- (void)MSASModel:(id)a3 didFindNewAssetCollections:(id)a4 inAlbum:(id)a5 info:(id)a6
+- (void)MSASModel:(id)model didFindNewAssetCollections:(id)collections inAlbum:(id)album info:(id)info
 {
-  v8 = a4;
-  v33 = a5;
-  v9 = a6;
+  collectionsCopy = collections;
+  albumCopy = album;
+  infoCopy = info;
   v10 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = v11;
-    v13 = [v8 valueForKey:@"GUID"];
+    v13 = [collectionsCopy valueForKey:@"GUID"];
     *buf = 138413058;
     v40 = v11;
     v41 = 2112;
     v42 = v13;
     v43 = 2112;
-    v44 = v33;
+    v44 = albumCopy;
     v45 = 2112;
-    v46 = v9;
+    v46 = infoCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%@ MSASModel:didFindNewAssetCollections:%@ inAlbum:%@ info:%@", buf, 0x2Au);
   }
 
-  v32 = v9;
+  v32 = infoCopy;
 
-  v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 count]);
+  v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [collectionsCopy count]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v15 = v8;
+  v15 = collectionsCopy;
   v16 = [v15 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v16)
   {
@@ -1031,27 +1031,27 @@ LABEL_34:
         }
 
         v21 = *(*(&v34 + 1) + 8 * i);
-        v22 = [v21 metadata];
-        v23 = [v22 objectForKey:v19];
+        metadata = [v21 metadata];
+        v23 = [metadata objectForKey:v19];
 
         if (v23)
         {
-          v24 = PLPhotoSharingGetLog();
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+          gUID2 = PLPhotoSharingGetLog();
+          if (os_log_type_enabled(gUID2, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [v21 GUID];
+            gUID = [v21 GUID];
             *buf = 138412290;
-            v40 = v25;
-            _os_log_impl(&dword_0, v24, OS_LOG_TYPE_DEFAULT, "we just enqueued collection GUID %@, skipping", buf, 0xCu);
+            v40 = gUID;
+            _os_log_impl(&dword_0, gUID2, OS_LOG_TYPE_DEFAULT, "we just enqueued collection GUID %@, skipping", buf, 0xCu);
           }
         }
 
         else
         {
           [v14 addObject:v21];
-          v24 = [v21 GUID];
-          v26 = [v33 GUID];
-          [PLPhotoSharingHelper writeDownloadDebugBreadcrumbForAsset:v24 albumGUID:v26 content:v21 state:200 error:0];
+          gUID2 = [v21 GUID];
+          gUID3 = [albumCopy GUID];
+          [PLPhotoSharingHelper writeDownloadDebugBreadcrumbForAsset:gUID2 albumGUID:gUID3 content:v21 state:200 error:0];
         }
       }
 
@@ -1066,24 +1066,24 @@ LABEL_34:
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     v29 = [v14 valueForKey:@"GUID"];
-    v30 = [v33 GUID];
+    gUID4 = [albumCopy GUID];
     *buf = 138412802;
     v40 = v29;
     v41 = 2112;
-    v42 = v30;
+    v42 = gUID4;
     v43 = 2112;
     v44 = v27;
     _os_log_impl(&dword_0, v28, OS_LOG_TYPE_DEFAULT, " calling PLCloudSharedAssetSaveJob processMetadataFromClientProcessForAssetCollections:%@ inAlbum:%@ personID:%@", buf, 0x20u);
   }
 
   v31 = +[PLPhotoSharingHelper sharingPersonID];
-  [PLCloudSharedAssetSaveJob processMetadataForAssetCollections:v14 inAlbum:v33 personID:v31 info:v32];
+  [PLCloudSharedAssetSaveJob processMetadataForAssetCollections:v14 inAlbum:albumCopy personID:v31 info:v32];
 }
 
-- (void)MSASModel:(id)a3 didFinishDeletingAlbum:(id)a4 error:(id)a5
+- (void)MSASModel:(id)model didFinishDeletingAlbum:(id)album error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  albumCopy = album;
+  errorCopy = error;
   v9 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1095,17 +1095,17 @@ LABEL_34:
     v15 = 2112;
     v16 = v12;
     v17 = 2112;
-    v18 = v7;
+    v18 = albumCopy;
     v19 = 2112;
-    v20 = v8;
+    v20 = errorCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%@ %@ %@ error:%@", &v13, 0x2Au);
   }
 }
 
-- (void)MSASModel:(id)a3 didFinishModifyingAlbumMetadata:(id)a4 error:(id)a5
+- (void)MSASModel:(id)model didFinishModifyingAlbumMetadata:(id)metadata error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  metadataCopy = metadata;
+  errorCopy = error;
   v9 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1117,17 +1117,17 @@ LABEL_34:
     v15 = 2112;
     v16 = v12;
     v17 = 2112;
-    v18 = v7;
+    v18 = metadataCopy;
     v19 = 2112;
-    v20 = v8;
+    v20 = errorCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%@ %@ %@ error:%@", &v13, 0x2Au);
   }
 }
 
-- (void)MSASModel:(id)a3 didFinishAddingAlbum:(id)a4 error:(id)a5
+- (void)MSASModel:(id)model didFinishAddingAlbum:(id)album error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  albumCopy = album;
+  errorCopy = error;
   v9 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1139,18 +1139,18 @@ LABEL_34:
     v15 = 2112;
     v16 = v12;
     v17 = 2112;
-    v18 = v7;
+    v18 = albumCopy;
     v19 = 2112;
-    v20 = v8;
+    v20 = errorCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%@ %@ %@ error:%@", &v13, 0x2Au);
   }
 
-  [PLPhotoSharingHelper sendPendingInvitationsForNewlyCreatedAlbum:v7];
+  [PLPhotoSharingHelper sendPendingInvitationsForNewlyCreatedAlbum:albumCopy];
 }
 
-- (void)MSASModel:(id)a3 didUnsubscribeFromAlbum:(id)a4
+- (void)MSASModel:(id)model didUnsubscribeFromAlbum:(id)album
 {
-  v5 = a4;
+  albumCopy = album;
   v6 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1162,7 +1162,7 @@ LABEL_34:
     v13 = 2112;
     v14 = v9;
     v15 = 2112;
-    v16 = v5;
+    v16 = albumCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%@ %@ %@", &v11, 0x20u);
   }
 
@@ -1174,9 +1174,9 @@ LABEL_34:
   }
 }
 
-- (void)MSASModel:(id)a3 didSubscribeToAlbum:(id)a4
+- (void)MSASModel:(id)model didSubscribeToAlbum:(id)album
 {
-  v5 = a4;
+  albumCopy = album;
   v6 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1188,7 +1188,7 @@ LABEL_34:
     v13 = 2112;
     v14 = v9;
     v15 = 2112;
-    v16 = v5;
+    v16 = albumCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%@ %@ %@", &v11, 0x20u);
   }
 
@@ -1200,10 +1200,10 @@ LABEL_34:
   }
 }
 
-- (void)MSASModel:(id)a3 didFindAlbumMetadataChange:(id)a4 info:(id)a5
+- (void)MSASModel:(id)model didFindAlbumMetadataChange:(id)change info:(id)info
 {
-  v7 = a4;
-  v8 = a5;
+  changeCopy = change;
+  infoCopy = info;
   v9 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1215,16 +1215,16 @@ LABEL_34:
     v15 = 2112;
     v16 = v12;
     v17 = 2112;
-    v18 = v7;
+    v18 = changeCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%@ %@ %@", &v13, 0x20u);
   }
 
-  [PLPhotoSharingHelper updateLocalAlbumMetadataForMSASAlbum:v7 info:v8];
+  [PLPhotoSharingHelper updateLocalAlbumMetadataForMSASAlbum:changeCopy info:infoCopy];
 }
 
-- (void)MSASModel:(id)a3 didFindDeletedAlbum:(id)a4
+- (void)MSASModel:(id)model didFindDeletedAlbum:(id)album
 {
-  v5 = a4;
+  albumCopy = album;
   v6 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1236,18 +1236,18 @@ LABEL_34:
     v14 = 2112;
     v15 = v9;
     v16 = 2112;
-    v17 = v5;
+    v17 = albumCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%@ %@ %@", &v12, 0x20u);
   }
 
-  v10 = [v5 GUID];
-  v11 = [NSArray arrayWithObject:v10];
+  gUID = [albumCopy GUID];
+  v11 = [NSArray arrayWithObject:gUID];
   [PLPhotoSharingHelper deleteLocalAlbumsForMSASAlbumsWithGUIDs:v11];
 }
 
-- (void)MSASModel:(id)a3 didFindNewAlbum:(id)a4
+- (void)MSASModel:(id)model didFindNewAlbum:(id)album
 {
-  v5 = a4;
+  albumCopy = album;
   v6 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1259,14 +1259,14 @@ LABEL_34:
     v12 = 2112;
     v13 = v9;
     v14 = 2112;
-    v15 = v5;
+    v15 = albumCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%@ %@ %@", &v10, 0x20u);
   }
 
-  [PLPhotoSharingHelper updateLocalAlbumMetadataForMSASAlbum:v5 info:0];
+  [PLPhotoSharingHelper updateLocalAlbumMetadataForMSASAlbum:albumCopy info:0];
 }
 
-- (void)MSASModelDidDeleteAllAlbumsInAlbumList:(id)a3
+- (void)MSASModelDidDeleteAllAlbumsInAlbumList:(id)list
 {
   v4 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1284,20 +1284,20 @@ LABEL_34:
   +[PLPhotoSharingHelper resetAllLocalState];
 }
 
-- (void)MSASModelWillBeForgotten:(id)a3
+- (void)MSASModelWillBeForgotten:(id)forgotten
 {
-  v3 = [a3 personID];
-  if (v3)
+  personID = [forgotten personID];
+  if (personID)
   {
     v4 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138412290;
-      v6 = v3;
+      v6 = personID;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "MSASModelWillBeForgotten personID %@", &v5, 0xCu);
     }
 
-    [qword_10E70 removeObjectForKey:v3];
+    [qword_10E70 removeObjectForKey:personID];
   }
 }
 
@@ -1329,8 +1329,8 @@ LABEL_34:
     }
   }
 
-  v9 = [(PLPhotoSharingPlugin *)self model];
-  [v9 removeObserver:self];
+  model = [(PLPhotoSharingPlugin *)self model];
+  [model removeObserver:self];
 
   v10.receiver = self;
   v10.super_class = PLPhotoSharingPlugin;
@@ -1345,11 +1345,11 @@ LABEL_34:
   if (v2)
   {
     +[PLPhotoLibraryPathManager enableMultiLibraryMode];
-    v3 = [(PLPhotoSharingPlugin *)v2 photoLibrary];
-    v4 = [v3 assetsdClient];
-    v5 = [v4 libraryClient];
+    photoLibrary = [(PLPhotoSharingPlugin *)v2 photoLibrary];
+    assetsdClient = [photoLibrary assetsdClient];
+    libraryClient = [assetsdClient libraryClient];
     v10 = 0;
-    v6 = [v5 openPhotoLibraryDatabaseWithoutProgressIfNeededWithOptions:0 error:&v10];
+    v6 = [libraryClient openPhotoLibraryDatabaseWithoutProgressIfNeededWithOptions:0 error:&v10];
     v7 = v10;
 
     if ((v6 & 1) == 0)
@@ -1367,29 +1367,29 @@ LABEL_34:
   return v2;
 }
 
-+ (void)didFindDeletedAlbumWithGUID:(id)a3 inviterAddress:(id)a4
++ (void)didFindDeletedAlbumWithGUID:(id)d inviterAddress:(id)address
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  addressCopy = address;
   v7 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412802;
     v10 = objc_opt_class();
     v11 = 2112;
-    v12 = v5;
+    v12 = dCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = addressCopy;
     v8 = v10;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%@ deleting album with GUID %@ inviterAddress %@", &v9, 0x20u);
   }
 
-  [PLPhotoSharingHelper deleteLocalAlbumsForMSASAlbumsWithGUID:v5 inviterAddress:v6];
+  [PLPhotoSharingHelper deleteLocalAlbumsForMSASAlbumsWithGUID:dCopy inviterAddress:addressCopy];
 }
 
-+ (void)didFindNewAlbum:(id)a3
++ (void)didFindNewAlbum:(id)album
 {
-  v4 = a3;
+  albumCopy = album;
   v5 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1401,7 +1401,7 @@ LABEL_34:
     v14 = 2112;
     v15 = v8;
     v16 = 2112;
-    v17 = v4;
+    v17 = albumCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%@ %@ %@", &v12, 0x20u);
   }
 
@@ -1420,7 +1420,7 @@ LABEL_34:
 
   else
   {
-    [PLPhotoSharingHelper updateLocalAlbumMetadataForMSASAlbum:v4 info:0];
+    [PLPhotoSharingHelper updateLocalAlbumMetadataForMSASAlbum:albumCopy info:0];
   }
 }
 
@@ -1441,16 +1441,16 @@ LABEL_34:
   return v2;
 }
 
-+ (id)delegatePluginForPersonID:(id)a3
++ (id)delegatePluginForPersonID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
-    v4 = [qword_10E70 objectForKey:v3];
+    v4 = [qword_10E70 objectForKey:dCopy];
     if (!v4)
     {
       v4 = objc_alloc_init(PLPhotoSharingPlugin);
-      [(PLPhotoSharingPlugin *)v4 setPersonID:v3];
+      [(PLPhotoSharingPlugin *)v4 setPersonID:dCopy];
       v5 = qword_10E70;
       if (!qword_10E70)
       {
@@ -1461,8 +1461,8 @@ LABEL_34:
         v5 = qword_10E70;
       }
 
-      [v5 setObject:v4 forKey:v3];
-      v8 = [[MSASServerSideModel alloc] initWithPersonID:v3];
+      [v5 setObject:v4 forKey:dCopy];
+      v8 = [[MSASServerSideModel alloc] initWithPersonID:dCopy];
       [(PLPhotoSharingPlugin *)v4 setModel:v8];
       [v8 addObserver:v4];
     }
@@ -1473,11 +1473,11 @@ LABEL_34:
       v12 = 138412546;
       v13 = v4;
       v14 = 2112;
-      v15 = v3;
+      v15 = dCopy;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "delegatePluginForPersonID returning plugin %@ for personID %@", &v12, 0x16u);
     }
 
-    v10 = [(PLPhotoSharingPlugin *)v4 model];
+    model = [(PLPhotoSharingPlugin *)v4 model];
   }
 
   else
@@ -1489,10 +1489,10 @@ LABEL_34:
       _os_log_impl(&dword_0, &v4->super, OS_LOG_TYPE_ERROR, "delegatePluginForPersonID invoked with nil personID", &v12, 2u);
     }
 
-    v10 = 0;
+    model = 0;
   }
 
-  return v10;
+  return model;
 }
 
 @end

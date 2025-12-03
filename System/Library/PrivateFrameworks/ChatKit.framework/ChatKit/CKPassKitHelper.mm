@@ -1,23 +1,23 @@
 @interface CKPassKitHelper
-+ (id)addPassesViewControllerForPass:(id)a3;
-+ (id)localizedNameForPass:(id)a3;
-+ (id)mailAttachmentIconForPass:(id)a3;
-+ (id)organizationNameForPass:(id)a3;
-+ (id)passViewForPass:(id)a3 content:(int64_t)a4;
++ (id)addPassesViewControllerForPass:(id)pass;
++ (id)localizedNameForPass:(id)pass;
++ (id)mailAttachmentIconForPass:(id)pass;
++ (id)organizationNameForPass:(id)pass;
++ (id)passViewForPass:(id)pass content:(int64_t)content;
 @end
 
 @implementation CKPassKitHelper
 
-+ (id)mailAttachmentIconForPass:(id)a3
++ (id)mailAttachmentIconForPass:(id)pass
 {
-  v3 = a3;
+  passCopy = pass;
   if (PassKitUILibraryCore())
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__CKPassKitHelper_mailAttachmentIconForPass___block_invoke;
     block[3] = &unk_1E72EBA18;
-    v4 = v3;
+    v4 = passCopy;
     v8 = v4;
     if (mailAttachmentIconForPass__onceToken != -1)
     {
@@ -26,21 +26,21 @@
 
     if (mailAttachmentIconForPass__respondsToSelector == 1)
     {
-      v5 = [v4 mailAttachmentIcon];
+      mailAttachmentIcon = [v4 mailAttachmentIcon];
     }
 
     else
     {
-      v5 = 0;
+      mailAttachmentIcon = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    mailAttachmentIcon = 0;
   }
 
-  return v5;
+  return mailAttachmentIcon;
 }
 
 uint64_t __45__CKPassKitHelper_mailAttachmentIconForPass___block_invoke()
@@ -50,16 +50,16 @@ uint64_t __45__CKPassKitHelper_mailAttachmentIconForPass___block_invoke()
   return result;
 }
 
-+ (id)localizedNameForPass:(id)a3
++ (id)localizedNameForPass:(id)pass
 {
-  v3 = a3;
+  passCopy = pass;
   if (PassKitUILibraryCore())
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __40__CKPassKitHelper_localizedNameForPass___block_invoke;
     block[3] = &unk_1E72EBA18;
-    v4 = v3;
+    v4 = passCopy;
     v8 = v4;
     if (localizedNameForPass__onceToken != -1)
     {
@@ -68,21 +68,21 @@ uint64_t __45__CKPassKitHelper_mailAttachmentIconForPass___block_invoke()
 
     if (localizedNameForPass__respondsToSelector == 1)
     {
-      v5 = [v4 localizedName];
+      localizedName = [v4 localizedName];
     }
 
     else
     {
-      v5 = 0;
+      localizedName = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    localizedName = 0;
   }
 
-  return v5;
+  return localizedName;
 }
 
 uint64_t __40__CKPassKitHelper_localizedNameForPass___block_invoke()
@@ -92,16 +92,16 @@ uint64_t __40__CKPassKitHelper_localizedNameForPass___block_invoke()
   return result;
 }
 
-+ (id)organizationNameForPass:(id)a3
++ (id)organizationNameForPass:(id)pass
 {
-  v3 = a3;
+  passCopy = pass;
   if (PassKitUILibraryCore())
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__CKPassKitHelper_organizationNameForPass___block_invoke;
     block[3] = &unk_1E72EBA18;
-    v4 = v3;
+    v4 = passCopy;
     v8 = v4;
     if (organizationNameForPass__onceToken != -1)
     {
@@ -110,21 +110,21 @@ uint64_t __40__CKPassKitHelper_localizedNameForPass___block_invoke()
 
     if (organizationNameForPass__respondsToSelector == 1)
     {
-      v5 = [v4 organizationName];
+      organizationName = [v4 organizationName];
     }
 
     else
     {
-      v5 = 0;
+      organizationName = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    organizationName = 0;
   }
 
-  return v5;
+  return organizationName;
 }
 
 uint64_t __43__CKPassKitHelper_organizationNameForPass___block_invoke()
@@ -134,9 +134,9 @@ uint64_t __43__CKPassKitHelper_organizationNameForPass___block_invoke()
   return result;
 }
 
-+ (id)passViewForPass:(id)a3 content:(int64_t)a4
++ (id)passViewForPass:(id)pass content:(int64_t)content
 {
-  v5 = a3;
+  passCopy = pass;
   if (PassKitUILibraryCore())
   {
     v10 = 0;
@@ -154,7 +154,7 @@ uint64_t __43__CKPassKitHelper_organizationNameForPass___block_invoke()
 
     v7 = v6;
     _Block_object_dispose(&v10, 8);
-    v8 = [[v6 alloc] initWithPass:v5 content:a4];
+    v8 = [[v6 alloc] initWithPass:passCopy content:content];
   }
 
   else
@@ -165,9 +165,9 @@ uint64_t __43__CKPassKitHelper_organizationNameForPass___block_invoke()
   return v8;
 }
 
-+ (id)addPassesViewControllerForPass:(id)a3
++ (id)addPassesViewControllerForPass:(id)pass
 {
-  v3 = a3;
+  passCopy = pass;
   if (PassKitUILibraryCore())
   {
     v8 = 0;
@@ -185,7 +185,7 @@ uint64_t __43__CKPassKitHelper_organizationNameForPass___block_invoke()
 
     v5 = v4;
     _Block_object_dispose(&v8, 8);
-    v6 = [[v4 alloc] initWithPass:v3];
+    v6 = [[v4 alloc] initWithPass:passCopy];
   }
 
   else

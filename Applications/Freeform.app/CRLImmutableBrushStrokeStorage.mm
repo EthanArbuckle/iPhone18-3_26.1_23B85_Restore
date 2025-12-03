@@ -1,46 +1,46 @@
 @interface CRLImmutableBrushStrokeStorage
-+ (unint64_t)p_totalSectionCountWithPaths:(id)a3;
-- (CRLImmutableBrushStrokeStorage)initWithImage:(id)a3 paths:(id)a4 bounds:(id)a5 textureIndices:(id)a6 options:(id)a7 lineEnds:(id)a8;
++ (unint64_t)p_totalSectionCountWithPaths:(id)paths;
+- (CRLImmutableBrushStrokeStorage)initWithImage:(id)image paths:(id)paths bounds:(id)bounds textureIndices:(id)indices options:(id)options lineEnds:(id)ends;
 - (id)deepCopy;
 @end
 
 @implementation CRLImmutableBrushStrokeStorage
 
-- (CRLImmutableBrushStrokeStorage)initWithImage:(id)a3 paths:(id)a4 bounds:(id)a5 textureIndices:(id)a6 options:(id)a7 lineEnds:(id)a8
+- (CRLImmutableBrushStrokeStorage)initWithImage:(id)image paths:(id)paths bounds:(id)bounds textureIndices:(id)indices options:(id)options lineEnds:(id)ends
 {
-  v23 = a3;
-  v15 = a4;
-  v22 = a5;
-  v21 = a6;
-  v16 = a7;
-  v17 = a8;
+  imageCopy = image;
+  pathsCopy = paths;
+  boundsCopy = bounds;
+  indicesCopy = indices;
+  optionsCopy = options;
+  endsCopy = ends;
   v24.receiver = self;
   v24.super_class = CRLImmutableBrushStrokeStorage;
   v18 = [(CRLImmutableBrushStrokeStorage *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_image, a3);
-    objc_storeStrong(&v19->_paths, a4);
-    objc_storeStrong(&v19->_bounds, a5);
-    objc_storeStrong(&v19->_textureIndices, a6);
-    objc_storeStrong(&v19->_options, a7);
-    objc_storeStrong(&v19->_lineEnds, a8);
-    v19->_totalSectionCount = [CRLImmutableBrushStrokeStorage p_totalSectionCountWithPaths:v15];
+    objc_storeStrong(&v18->_image, image);
+    objc_storeStrong(&v19->_paths, paths);
+    objc_storeStrong(&v19->_bounds, bounds);
+    objc_storeStrong(&v19->_textureIndices, indices);
+    objc_storeStrong(&v19->_options, options);
+    objc_storeStrong(&v19->_lineEnds, ends);
+    v19->_totalSectionCount = [CRLImmutableBrushStrokeStorage p_totalSectionCountWithPaths:pathsCopy];
   }
 
   return v19;
 }
 
-+ (unint64_t)p_totalSectionCountWithPaths:(id)a3
++ (unint64_t)p_totalSectionCountWithPaths:(id)paths
 {
-  v3 = a3;
-  v4 = [v3 allKeys];
+  pathsCopy = paths;
+  allKeys = [pathsCopy allKeys];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -52,14 +52,14 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
-        v10 = [v3 objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
+        v10 = [pathsCopy objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
         v7 += [v10 count];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -75,20 +75,20 @@
 
 - (id)deepCopy
 {
-  v3 = [(CRLImmutableBrushStrokeStorage *)self image];
-  v84 = [v3 copy];
+  image = [(CRLImmutableBrushStrokeStorage *)self image];
+  v84 = [image copy];
 
   v90 = +[NSMutableDictionary dictionary];
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
   v131 = 0u;
-  v99 = self;
-  v4 = [(CRLImmutableBrushStrokeStorage *)self paths];
-  v5 = [v4 allKeys];
+  selfCopy = self;
+  paths = [(CRLImmutableBrushStrokeStorage *)self paths];
+  allKeys = [paths allKeys];
 
-  obj = v5;
-  v91 = [v5 countByEnumeratingWithState:&v128 objects:v139 count:16];
+  obj = allKeys;
+  v91 = [allKeys countByEnumeratingWithState:&v128 objects:v139 count:16];
   if (v91)
   {
     v88 = *v129;
@@ -109,9 +109,9 @@
         v125 = 0u;
         v126 = 0u;
         v127 = 0u;
-        v9 = [(CRLImmutableBrushStrokeStorage *)v99 paths];
+        paths2 = [(CRLImmutableBrushStrokeStorage *)selfCopy paths];
         v93 = v7;
-        v10 = [v9 objectForKeyedSubscript:v7];
+        v10 = [paths2 objectForKeyedSubscript:v7];
 
         v11 = [v10 countByEnumeratingWithState:&v124 objects:v138 count:16];
         if (v11)
@@ -129,10 +129,10 @@
 
               v15 = *(*(&v124 + 1) + 8 * i);
               v16 = [CRLBrushStrokeStorageBezierPathContainer alloc];
-              v17 = [v15 originalPath];
-              v18 = [v17 copy];
-              v19 = [v15 pathWithPossibleSmoothing];
-              v20 = [v19 copy];
+              originalPath = [v15 originalPath];
+              v18 = [originalPath copy];
+              pathWithPossibleSmoothing = [v15 pathWithPossibleSmoothing];
+              v20 = [pathWithPossibleSmoothing copy];
               v21 = [(CRLBrushStrokeStorageBezierPathContainer *)v16 initWithOriginalPath:v18 pathWithPossibleSmoothing:v20];
               [v8 addObject:v21];
             }
@@ -159,11 +159,11 @@
   v121 = 0u;
   v122 = 0u;
   v123 = 0u;
-  v22 = [(CRLImmutableBrushStrokeStorage *)v99 bounds];
-  v23 = [v22 allKeys];
+  bounds = [(CRLImmutableBrushStrokeStorage *)selfCopy bounds];
+  allKeys2 = [bounds allKeys];
 
-  v96 = v23;
-  v24 = [v23 countByEnumeratingWithState:&v120 objects:v137 count:16];
+  v96 = allKeys2;
+  v24 = [allKeys2 countByEnumeratingWithState:&v120 objects:v137 count:16];
   if (v24)
   {
     v25 = v24;
@@ -183,8 +183,8 @@
         v117 = 0u;
         v118 = 0u;
         v119 = 0u;
-        v30 = [(CRLImmutableBrushStrokeStorage *)v99 bounds];
-        v31 = [v30 objectForKeyedSubscript:v28];
+        bounds2 = [(CRLImmutableBrushStrokeStorage *)selfCopy bounds];
+        v31 = [bounds2 objectForKeyedSubscript:v28];
 
         v32 = [v31 countByEnumeratingWithState:&v116 objects:v136 count:16];
         if (v32)
@@ -224,11 +224,11 @@
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v37 = [(CRLImmutableBrushStrokeStorage *)v99 textureIndices];
-  v38 = [v37 allKeys];
+  textureIndices = [(CRLImmutableBrushStrokeStorage *)selfCopy textureIndices];
+  allKeys3 = [textureIndices allKeys];
 
-  v97 = v38;
-  v39 = [v38 countByEnumeratingWithState:&v112 objects:v135 count:16];
+  v97 = allKeys3;
+  v39 = [allKeys3 countByEnumeratingWithState:&v112 objects:v135 count:16];
   if (v39)
   {
     v40 = v39;
@@ -248,8 +248,8 @@
         v109 = 0u;
         v110 = 0u;
         v111 = 0u;
-        v45 = [(CRLImmutableBrushStrokeStorage *)v99 textureIndices];
-        v46 = [v45 objectForKeyedSubscript:v43];
+        textureIndices2 = [(CRLImmutableBrushStrokeStorage *)selfCopy textureIndices];
+        v46 = [textureIndices2 objectForKeyedSubscript:v43];
 
         v47 = [v46 countByEnumeratingWithState:&v108 objects:v134 count:16];
         if (v47)
@@ -289,10 +289,10 @@
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v53 = [(CRLImmutableBrushStrokeStorage *)v99 options];
-  v54 = [v53 allKeys];
+  options = [(CRLImmutableBrushStrokeStorage *)selfCopy options];
+  allKeys4 = [options allKeys];
 
-  v55 = [v54 countByEnumeratingWithState:&v104 objects:v133 count:16];
+  v55 = [allKeys4 countByEnumeratingWithState:&v104 objects:v133 count:16];
   if (v55)
   {
     v56 = v55;
@@ -303,18 +303,18 @@
       {
         if (*v105 != v57)
         {
-          objc_enumerationMutation(v54);
+          objc_enumerationMutation(allKeys4);
         }
 
         v59 = *(*(&v104 + 1) + 8 * ii);
-        v60 = [(CRLImmutableBrushStrokeStorage *)v99 options];
-        v61 = [v60 objectForKeyedSubscript:v59];
+        options2 = [(CRLImmutableBrushStrokeStorage *)selfCopy options];
+        v61 = [options2 objectForKeyedSubscript:v59];
 
         v62 = [v61 copy];
         [v52 setObject:v62 forKeyedSubscript:v59];
       }
 
-      v56 = [v54 countByEnumeratingWithState:&v104 objects:v133 count:16];
+      v56 = [allKeys4 countByEnumeratingWithState:&v104 objects:v133 count:16];
     }
 
     while (v56);
@@ -327,11 +327,11 @@
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v63 = [(CRLImmutableBrushStrokeStorage *)v99 lineEnds];
-  v64 = [v63 allKeys];
+  lineEnds = [(CRLImmutableBrushStrokeStorage *)selfCopy lineEnds];
+  allKeys5 = [lineEnds allKeys];
 
-  v85 = v64;
-  v98 = [v64 countByEnumeratingWithState:&v100 objects:v132 count:16];
+  v85 = allKeys5;
+  v98 = [allKeys5 countByEnumeratingWithState:&v100 objects:v132 count:16];
   if (v98)
   {
     obja = *v101;
@@ -345,20 +345,20 @@
         }
 
         v66 = *(*(&v100 + 1) + 8 * jj);
-        v67 = [(CRLImmutableBrushStrokeStorage *)v99 lineEnds];
-        v68 = [v67 objectForKeyedSubscript:v66];
+        lineEnds2 = [(CRLImmutableBrushStrokeStorage *)selfCopy lineEnds];
+        v68 = [lineEnds2 objectForKeyedSubscript:v66];
 
         v69 = [CRLLineEnd alloc];
-        v70 = [v68 path];
-        v71 = [v70 copy];
-        v72 = [v68 wrapPath];
-        v73 = [v72 copy];
+        path = [v68 path];
+        v71 = [path copy];
+        wrapPath = [v68 wrapPath];
+        v73 = [wrapPath copy];
         [v68 endPoint];
         v75 = v74;
         v77 = v76;
-        v78 = [v68 isFilled];
-        v79 = [v68 identifier];
-        v80 = -[CRLLineEnd initWithBezierPath:wrapPath:endPoint:isFilled:identifier:lineJoin:](v69, "initWithBezierPath:wrapPath:endPoint:isFilled:identifier:lineJoin:", v71, v73, v78, v79, [v68 lineJoin], v75, v77);
+        isFilled = [v68 isFilled];
+        identifier = [v68 identifier];
+        v80 = -[CRLLineEnd initWithBezierPath:wrapPath:endPoint:isFilled:identifier:lineJoin:](v69, "initWithBezierPath:wrapPath:endPoint:isFilled:identifier:lineJoin:", v71, v73, isFilled, identifier, [v68 lineJoin], v75, v77);
         [v89 setObject:v80 forKeyedSubscript:v66];
       }
 

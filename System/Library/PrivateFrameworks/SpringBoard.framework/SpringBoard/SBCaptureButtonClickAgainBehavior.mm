@@ -1,31 +1,31 @@
 @interface SBCaptureButtonClickAgainBehavior
-- (unint64_t)cameraLaunchIntentInContext:(id)a3;
-- (unint64_t)coachIntentInContext:(id)a3;
-- (unint64_t)prewarmIntentInContext:(id)a3;
+- (unint64_t)cameraLaunchIntentInContext:(id)context;
+- (unint64_t)coachIntentInContext:(id)context;
+- (unint64_t)prewarmIntentInContext:(id)context;
 @end
 
 @implementation SBCaptureButtonClickAgainBehavior
 
-- (unint64_t)prewarmIntentInContext:(id)a3
+- (unint64_t)prewarmIntentInContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 gesture] == 1 && objc_msgSend(v3, "wantsClickAgain") && !objc_msgSend(v3, "isWithinClickAgainTimeout");
+  contextCopy = context;
+  v4 = [contextCopy gesture] == 1 && objc_msgSend(contextCopy, "wantsClickAgain") && !objc_msgSend(contextCopy, "isWithinClickAgainTimeout");
 
   return v4;
 }
 
-- (unint64_t)cameraLaunchIntentInContext:(id)a3
+- (unint64_t)cameraLaunchIntentInContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 gesture] == 1 && objc_msgSend(v3, "wantsClickAgain") && !objc_msgSend(v3, "isWithinClickAgainTimeout");
+  contextCopy = context;
+  v4 = [contextCopy gesture] == 1 && objc_msgSend(contextCopy, "wantsClickAgain") && !objc_msgSend(contextCopy, "isWithinClickAgainTimeout");
 
   return v4;
 }
 
-- (unint64_t)coachIntentInContext:(id)a3
+- (unint64_t)coachIntentInContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 gesture] == 1 && objc_msgSend(v3, "wantsClickAgain") && !objc_msgSend(v3, "isWithinClickAgainTimeout");
+  contextCopy = context;
+  v4 = [contextCopy gesture] == 1 && objc_msgSend(contextCopy, "wantsClickAgain") && !objc_msgSend(contextCopy, "isWithinClickAgainTimeout");
 
   return v4;
 }

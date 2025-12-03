@@ -1,7 +1,7 @@
 @interface UIKBRenderFactory_Monolith
-- (CGPoint)_secondaryTextOffsetForKey:(id)a3;
-- (CGPoint)_textOffsetForKey:(id)a3;
-- (CGSize)controlKeyFocusBaseSize:(CGSize)a3;
+- (CGPoint)_secondaryTextOffsetForKey:(id)key;
+- (CGPoint)_textOffsetForKey:(id)key;
+- (CGSize)controlKeyFocusBaseSize:(CGSize)size;
 - (CGSize)letterKeyFocusIncreaseSize;
 - (double)controlKeyFontSize;
 - (double)controlKeyFontWeight;
@@ -11,43 +11,43 @@
 - (double)tldKeyFontWeight;
 - (double)variantKeyFocusRectRadius;
 - (double)variantPlatterCornerRadius;
-- (id)_activeTraitsForControlKey:(id)a3;
-- (id)_activeTraitsForKey:(id)a3;
-- (id)_activeTraitsForLetterKey:(id)a3;
-- (id)_disabledTraitsForControlKey:(id)a3;
-- (id)_disabledTraitsForKey:(id)a3;
-- (id)_disabledTraitsForLetterKey:(id)a3;
-- (id)_enabledTraitsForControlKey:(id)a3;
-- (id)_enabledTraitsForKey:(id)a3;
-- (id)_enabledTraitsForLetterKey:(id)a3;
-- (id)_highlightedTraitsForControlKey:(id)a3;
-- (id)_highlightedTraitsForKey:(id)a3;
-- (id)_highlightedTraitsForLetterKey:(id)a3;
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4;
-- (id)_variantTraitsForLetterKey:(id)a3 onKeyplane:(id)a4;
+- (id)_activeTraitsForControlKey:(id)key;
+- (id)_activeTraitsForKey:(id)key;
+- (id)_activeTraitsForLetterKey:(id)key;
+- (id)_disabledTraitsForControlKey:(id)key;
+- (id)_disabledTraitsForKey:(id)key;
+- (id)_disabledTraitsForLetterKey:(id)key;
+- (id)_enabledTraitsForControlKey:(id)key;
+- (id)_enabledTraitsForKey:(id)key;
+- (id)_enabledTraitsForLetterKey:(id)key;
+- (id)_highlightedTraitsForControlKey:(id)key;
+- (id)_highlightedTraitsForKey:(id)key;
+- (id)_highlightedTraitsForLetterKey:(id)key;
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane;
+- (id)_variantTraitsForLetterKey:(id)key onKeyplane:(id)keyplane;
 - (id)activeTextColor;
-- (id)backgroundTraitsForKeyplane:(id)a3;
+- (id)backgroundTraitsForKeyplane:(id)keyplane;
 - (id)disabledTextColor;
-- (id)displayContentsForKey:(id)a3;
+- (id)displayContentsForKey:(id)key;
 - (id)enabledTextColor;
 - (id)keyplaneSwitcherBackgroundColor;
 - (id)keyplaneSwitcherDividerColor;
 - (id)variantPlatterBackgroundColor;
-- (void)configureCornersOnGeometry:(id)a3 forKey:(id)a4;
-- (void)configureGeometry:(id)a3 forControlKey:(id)a4;
-- (void)configureSymbolStyle:(id)a3 forControlKey:(id)a4;
-- (void)configureSymbolStyles:(id)a3 forLetterKey:(id)a4;
+- (void)configureCornersOnGeometry:(id)geometry forKey:(id)key;
+- (void)configureGeometry:(id)geometry forControlKey:(id)key;
+- (void)configureSymbolStyle:(id)style forControlKey:(id)key;
+- (void)configureSymbolStyles:(id)styles forLetterKey:(id)key;
 @end
 
 @implementation UIKBRenderFactory_Monolith
 
-- (id)displayContentsForKey:(id)a3
+- (id)displayContentsForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = UIKBRenderFactory_Monolith;
-  v5 = [(UIKBRenderFactory *)&v12 displayContentsForKey:v4];
-  if ([v4 interactionType] == 4)
+  v5 = [(UIKBRenderFactory *)&v12 displayContentsForKey:keyCopy];
+  if ([keyCopy interactionType] == 4)
   {
     [v5 setDisplayPathType:2];
     v6 = @"delete.left.fill";
@@ -56,24 +56,24 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v4 interactionType] == 9)
+  if ([keyCopy interactionType] == 9)
   {
-    v7 = [v4 localizationKey];
+    localizationKey = [keyCopy localizationKey];
 
-    if (v7)
+    if (localizationKey)
     {
       [v5 setDisplayStringImage:0];
-      v8 = [v4 displayString];
-      [v5 setDisplayString:v8];
+      displayString = [keyCopy displayString];
+      [v5 setDisplayString:displayString];
 
       goto LABEL_12;
     }
   }
 
-  if ([v4 interactionType] == 10)
+  if ([keyCopy interactionType] == 10)
   {
-    v9 = [v4 displayString];
-    v10 = [v9 isEqualToString:@"shift-symbol"];
+    displayString2 = [keyCopy displayString];
+    v10 = [displayString2 isEqualToString:@"shift-symbol"];
 
     if (v10)
     {
@@ -84,7 +84,7 @@ LABEL_11:
     }
   }
 
-  if ([v4 interactionType] == 43)
+  if ([keyCopy interactionType] == 43)
   {
     [v5 setDisplayString:0];
     v6 = @"chevron.down";
@@ -92,7 +92,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  if ([v4 state] == 16)
+  if ([keyCopy state] == 16)
   {
     [v5 setDisplayString:0];
   }
@@ -102,18 +102,18 @@ LABEL_12:
 
 - (id)enabledTextColor
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = _labelColorSecondary([v2 lightKeyboard]);
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  v3 = _labelColorSecondary([renderConfig lightKeyboard]);
 
   return v3;
 }
 
 - (id)activeTextColor
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 lightKeyboard];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
   v4 = UIKBColorBlack;
-  if (!v3)
+  if (!lightKeyboard)
   {
     v4 = UIKBColorWhite;
   }
@@ -126,10 +126,10 @@ LABEL_12:
 
 - (id)disabledTextColor
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 lightKeyboard];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
   v4 = UIKBColorBlack_Alpha30;
-  if (!v3)
+  if (!lightKeyboard)
   {
     v4 = UIKBColorWhite_Alpha30;
   }
@@ -142,8 +142,8 @@ LABEL_12:
 
 - (id)keyplaneSwitcherDividerColor
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 lightKeyboard];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
   v4 = _AXDarkenSystemColors();
   v5 = UIKBColorBlack_Alpha60;
   if (!v4)
@@ -157,7 +157,7 @@ LABEL_12:
     v6 = UIKBColorWhite_Alpha30;
   }
 
-  if (!v3)
+  if (!lightKeyboard)
   {
     v5 = v6;
   }
@@ -170,10 +170,10 @@ LABEL_12:
 
 - (id)keyplaneSwitcherBackgroundColor
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 lightKeyboard];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
   v4 = UIKBColorBlack_Alpha20;
-  if (!v3)
+  if (!lightKeyboard)
   {
     v4 = UIKBColorWhite_Alpha20;
   }
@@ -186,10 +186,10 @@ LABEL_12:
 
 - (id)variantPlatterBackgroundColor
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 lightKeyboard];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
   v4 = UIKBColorKeyPopupSolidLightBackground;
-  if (!v3)
+  if (!lightKeyboard)
   {
     v4 = UIKBColorKeyPopupSolidDarkBackground;
   }
@@ -202,9 +202,9 @@ LABEL_12:
 
 - (double)letterKeyFontWeight
 {
-  v2 = [(UIKBRenderFactory *)self boldTextEnabled];
+  boldTextEnabled = [(UIKBRenderFactory *)self boldTextEnabled];
   v3 = off_1E70ECD08;
-  if (!v2)
+  if (!boldTextEnabled)
   {
     v3 = off_1E70ECD28;
   }
@@ -214,9 +214,9 @@ LABEL_12:
 
 - (double)letterKeyTwoLineFontWeight
 {
-  v2 = [(UIKBRenderFactory *)self boldTextEnabled];
+  boldTextEnabled = [(UIKBRenderFactory *)self boldTextEnabled];
   v3 = off_1E70ECD08;
-  if (!v2)
+  if (!boldTextEnabled)
   {
     v3 = off_1E70ECD30;
   }
@@ -226,8 +226,8 @@ LABEL_12:
 
 - (double)controlKeyFontSize
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 colorAdaptiveBackground])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig colorAdaptiveBackground])
   {
     v3 = 20.0;
   }
@@ -242,9 +242,9 @@ LABEL_12:
 
 - (double)controlKeyFontWeight
 {
-  v2 = [(UIKBRenderFactory *)self boldTextEnabled];
+  boldTextEnabled = [(UIKBRenderFactory *)self boldTextEnabled];
   v3 = off_1E70ECD08;
-  if (!v2)
+  if (!boldTextEnabled)
   {
     v3 = off_1E70ECD20;
   }
@@ -254,9 +254,9 @@ LABEL_12:
 
 - (double)tldKeyFontWeight
 {
-  v2 = [(UIKBRenderFactory *)self boldTextEnabled];
+  boldTextEnabled = [(UIKBRenderFactory *)self boldTextEnabled];
   v3 = off_1E70ECD08;
-  if (!v2)
+  if (!boldTextEnabled)
   {
     v3 = off_1E70ECD20;
   }
@@ -275,8 +275,8 @@ LABEL_12:
 
 - (double)keyRectCornerRadius
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 colorAdaptiveBackground])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig colorAdaptiveBackground])
   {
     v3 = 20.0;
   }
@@ -289,10 +289,10 @@ LABEL_12:
   return v3;
 }
 
-- (CGSize)controlKeyFocusBaseSize:(CGSize)a3
+- (CGSize)controlKeyFocusBaseSize:(CGSize)size
 {
-  v3 = a3.width + 12.0;
-  v4 = a3.height + 12.0;
+  v3 = size.width + 12.0;
+  v4 = size.height + 12.0;
   result.height = v4;
   result.width = v3;
   return result;
@@ -300,8 +300,8 @@ LABEL_12:
 
 - (double)variantPlatterCornerRadius
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 colorAdaptiveBackground])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig colorAdaptiveBackground])
   {
     v3 = 20.0;
   }
@@ -316,8 +316,8 @@ LABEL_12:
 
 - (double)variantKeyFocusRectRadius
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 colorAdaptiveBackground])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig colorAdaptiveBackground])
   {
     v3 = 16.0;
   }
@@ -330,26 +330,26 @@ LABEL_12:
   return v3;
 }
 
-- (id)backgroundTraitsForKeyplane:(id)a3
+- (id)backgroundTraitsForKeyplane:(id)keyplane
 {
   v5.receiver = self;
   v5.super_class = UIKBRenderFactory_Monolith;
-  v3 = [(UIKBRenderFactory *)&v5 backgroundTraitsForKeyplane:a3];
+  v3 = [(UIKBRenderFactory *)&v5 backgroundTraitsForKeyplane:keyplane];
 
   return v3;
 }
 
-- (CGPoint)_textOffsetForKey:(id)a3
+- (CGPoint)_textOffsetForKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 interactionType];
-  if (v5 > 14)
+  keyCopy = key;
+  interactionType = [keyCopy interactionType];
+  if (interactionType > 14)
   {
-    if (v5 == 15 || v5 == 23)
+    if (interactionType == 15 || interactionType == 23)
     {
-      v12 = [(UIKBRenderFactory *)self renderConfig];
+      renderConfig = [(UIKBRenderFactory *)self renderConfig];
       v13 = 0.0;
-      if ([v12 colorAdaptiveBackground])
+      if ([renderConfig colorAdaptiveBackground])
       {
         v11 = 0.0;
       }
@@ -365,19 +365,19 @@ LABEL_12:
 
   else
   {
-    if ((v5 - 1) < 2)
+    if ((interactionType - 1) < 2)
     {
       if (qword_1ED49F150 != -1)
       {
         dispatch_once(&qword_1ED49F150, &__block_literal_global_358);
       }
 
-      v6 = [v4 displayString];
-      [v6 rangeOfCharacterFromSet:_MergedGlobals_1176];
+      displayString = [keyCopy displayString];
+      [displayString rangeOfCharacterFromSet:_MergedGlobals_1176];
       v8 = v7;
 
-      v9 = [v4 displayString];
-      v10 = [v9 length];
+      displayString2 = [keyCopy displayString];
+      v10 = [displayString2 length];
 
       if (v8 == v10)
       {
@@ -392,10 +392,10 @@ LABEL_12:
       goto LABEL_23;
     }
 
-    if (v5 == 10 && [v4 displayType] != 4)
+    if (interactionType == 10 && [keyCopy displayType] != 4)
     {
-      v14 = [(UIKBRenderFactory *)self renderConfig];
-      if ([v14 colorAdaptiveBackground])
+      renderConfig2 = [(UIKBRenderFactory *)self renderConfig];
+      if ([renderConfig2 colorAdaptiveBackground])
       {
         v11 = 1.0;
       }
@@ -409,7 +409,7 @@ LABEL_12:
     }
   }
 
-  if ([v4 displayType] == 31)
+  if ([keyCopy displayType] == 31)
   {
     v11 = 8.0;
 LABEL_23:
@@ -428,16 +428,16 @@ LABEL_24:
   return result;
 }
 
-- (CGPoint)_secondaryTextOffsetForKey:(id)a3
+- (CGPoint)_secondaryTextOffsetForKey:(id)key
 {
-  v3 = a3;
-  if ([v3 displayType] == 34)
+  keyCopy = key;
+  if ([keyCopy displayType] == 34)
   {
     v4 = 26.0;
     v5 = 15.0;
   }
 
-  else if ([v3 displayType] == 31)
+  else if ([keyCopy displayType] == 31)
   {
     v4 = -7.0;
     v5 = 8.0;
@@ -456,43 +456,43 @@ LABEL_24:
   return result;
 }
 
-- (id)_enabledTraitsForKey:(id)a3
+- (id)_enabledTraitsForKey:(id)key
 {
-  v4 = [a3 shape];
-  v5 = [UIKBRenderGeometry geometryWithShape:v4];
+  shape = [key shape];
+  v5 = [UIKBRenderGeometry geometryWithShape:shape];
 
   v6 = [UIKBRenderTraits traitsWithGeometry:v5];
-  v7 = [(UIKBRenderFactory_Monolith *)self enabledTextColor];
-  v8 = [UIKBTextStyle styleWithTextColor:v7];
+  enabledTextColor = [(UIKBRenderFactory_Monolith *)self enabledTextColor];
+  v8 = [UIKBTextStyle styleWithTextColor:enabledTextColor];
   [v6 setSymbolStyle:v8];
 
-  v9 = [v6 symbolStyle];
-  [v9 setFontName:@"UIKBRenderFactorySystemFontName"];
+  symbolStyle = [v6 symbolStyle];
+  [symbolStyle setFontName:@"UIKBRenderFactorySystemFontName"];
 
-  v10 = [(UIKBRenderFactory_Monolith *)self enabledTextColor];
-  v11 = [v6 symbolStyle];
-  [v11 setTextColor:v10];
+  enabledTextColor2 = [(UIKBRenderFactory_Monolith *)self enabledTextColor];
+  symbolStyle2 = [v6 symbolStyle];
+  [symbolStyle2 setTextColor:enabledTextColor2];
 
   [(UIKBRenderFactory_Monolith *)self keyRectCornerRadius];
   v13 = v12;
-  v14 = [v6 geometry];
-  [v14 setRoundRectRadius:v13];
+  geometry = [v6 geometry];
+  [geometry setRoundRectRadius:v13];
 
-  v15 = [v6 geometry];
-  [v15 setRoundRectCorners:-1];
+  geometry2 = [v6 geometry];
+  [geometry2 setRoundRectCorners:-1];
 
   return v6;
 }
 
-- (id)_highlightedTraitsForKey:(id)a3
+- (id)_highlightedTraitsForKey:(id)key
 {
-  v4 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForKey:a3];
-  v5 = [v4 symbolStyle];
-  [v5 setFontName:@"UIKBRenderFactorySystemFontName"];
+  v4 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForKey:key];
+  symbolStyle = [v4 symbolStyle];
+  [symbolStyle setFontName:@"UIKBRenderFactorySystemFontName"];
 
-  v6 = [(UIKBRenderFactory_Monolith *)self highlightedTextColor];
-  v7 = [v4 symbolStyle];
-  [v7 setTextColor:v6];
+  highlightedTextColor = [(UIKBRenderFactory_Monolith *)self highlightedTextColor];
+  symbolStyle2 = [v4 symbolStyle];
+  [symbolStyle2 setTextColor:highlightedTextColor];
 
   [v4 setBlurBlending:1];
   [(UIKBRenderFactory_Monolith *)self keyRectCornerRadius];
@@ -510,67 +510,67 @@ LABEL_24:
   return v4;
 }
 
-- (id)_activeTraitsForKey:(id)a3
+- (id)_activeTraitsForKey:(id)key
 {
-  v4 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForKey:a3];
-  v5 = [(UIKBRenderFactory_Monolith *)self activeTextColor];
-  v6 = [v4 symbolStyle];
-  [v6 setTextColor:v5];
+  v4 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForKey:key];
+  activeTextColor = [(UIKBRenderFactory_Monolith *)self activeTextColor];
+  symbolStyle = [v4 symbolStyle];
+  [symbolStyle setTextColor:activeTextColor];
 
   return v4;
 }
 
-- (id)_disabledTraitsForKey:(id)a3
+- (id)_disabledTraitsForKey:(id)key
 {
-  v4 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForKey:a3];
-  v5 = [(UIKBRenderFactory_Monolith *)self disabledTextColor];
-  v6 = [v4 symbolStyle];
-  [v6 setTextColor:v5];
+  v4 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForKey:key];
+  disabledTextColor = [(UIKBRenderFactory_Monolith *)self disabledTextColor];
+  symbolStyle = [v4 symbolStyle];
+  [symbolStyle setTextColor:disabledTextColor];
 
   return v4;
 }
 
-- (void)configureSymbolStyles:(id)a3 forLetterKey:(id)a4
+- (void)configureSymbolStyles:(id)styles forLetterKey:(id)key
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 symbolStyle];
-  if ([v7 displayType] == 34)
+  stylesCopy = styles;
+  keyCopy = key;
+  symbolStyle = [stylesCopy symbolStyle];
+  if ([keyCopy displayType] == 34)
   {
     [(UIKBRenderFactory_Monolith *)self letterKeyFontWeight];
-    [v8 setFontWeight:?];
+    [symbolStyle setFontWeight:?];
     [(UIKBRenderFactory_Monolith *)self letterKeyFontSize];
-    [v8 setFontSize:?];
-    [(UIKBRenderFactory_Monolith *)self _textOffsetForKey:v7];
-    [v8 setTextOffset:?];
-    v9 = [v8 copy];
+    [symbolStyle setFontSize:?];
+    [(UIKBRenderFactory_Monolith *)self _textOffsetForKey:keyCopy];
+    [symbolStyle setTextOffset:?];
+    v9 = [symbolStyle copy];
     [(UIKBRenderFactory_Monolith *)self letterKeySecondaryFontSize];
     [v9 setFontSize:?];
-    [(UIKBRenderFactory_Monolith *)self _secondaryTextOffsetForKey:v7];
+    [(UIKBRenderFactory_Monolith *)self _secondaryTextOffsetForKey:keyCopy];
     [v9 setTextOffset:?];
     v14[0] = v9;
     v10 = MEMORY[0x1E695DEC8];
     v11 = v14;
 LABEL_5:
     v12 = [v10 arrayWithObjects:v11 count:1];
-    [v6 setSecondarySymbolStyles:v12];
+    [stylesCopy setSecondarySymbolStyles:v12];
 
     goto LABEL_10;
   }
 
-  if ([v7 displayType] == 31)
+  if ([keyCopy displayType] == 31)
   {
     [(UIKBRenderFactory_Monolith *)self letterKeyTwoLineFontWeight];
-    [v8 setFontWeight:?];
+    [symbolStyle setFontWeight:?];
     [(UIKBRenderFactory_Monolith *)self letterKeyTwoLineFontSize];
-    [v8 setFontSize:?];
-    [(UIKBRenderFactory_Monolith *)self _textOffsetForKey:v7];
-    [v8 setTextOffset:?];
-    v9 = [v8 copy];
+    [symbolStyle setFontSize:?];
+    [(UIKBRenderFactory_Monolith *)self _textOffsetForKey:keyCopy];
+    [symbolStyle setTextOffset:?];
+    v9 = [symbolStyle copy];
     [(UIKBRenderFactory_Monolith *)self letterKeyTwoLineFontSize];
     [v9 setFontSize:?];
-    [(UIKBRenderFactory_Monolith *)self _secondaryTextOffsetForKey:v7];
+    [(UIKBRenderFactory_Monolith *)self _secondaryTextOffsetForKey:keyCopy];
     [v9 setTextOffset:?];
     v13 = v9;
     v10 = MEMORY[0x1E695DEC8];
@@ -578,72 +578,72 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if ([v7 displayType] == 27)
+  if ([keyCopy displayType] == 27)
   {
     [(UIKBRenderFactory_Monolith *)self tldKeyFontWeight];
-    [v8 setFontWeight:?];
+    [symbolStyle setFontWeight:?];
     [(UIKBRenderFactory_Monolith *)self tldKeyFontSize];
   }
 
   else
   {
     [(UIKBRenderFactory_Monolith *)self letterKeyFontWeight];
-    [v8 setFontWeight:?];
+    [symbolStyle setFontWeight:?];
     [(UIKBRenderFactory_Monolith *)self letterKeyFontSize];
   }
 
-  [v8 setFontSize:?];
-  [(UIKBRenderFactory_Monolith *)self _textOffsetForKey:v7];
-  [v8 setTextOffset:?];
+  [symbolStyle setFontSize:?];
+  [(UIKBRenderFactory_Monolith *)self _textOffsetForKey:keyCopy];
+  [symbolStyle setTextOffset:?];
 LABEL_10:
 }
 
-- (id)_enabledTraitsForLetterKey:(id)a3
+- (id)_enabledTraitsForLetterKey:(id)key
 {
-  v4 = a3;
-  v5 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForKey:v4];
-  [(UIKBRenderFactory_Monolith *)self configureSymbolStyles:v5 forLetterKey:v4];
+  keyCopy = key;
+  v5 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForKey:keyCopy];
+  [(UIKBRenderFactory_Monolith *)self configureSymbolStyles:v5 forLetterKey:keyCopy];
 
   return v5;
 }
 
-- (id)_highlightedTraitsForLetterKey:(id)a3
+- (id)_highlightedTraitsForLetterKey:(id)key
 {
-  v4 = a3;
-  v5 = [(UIKBRenderFactory_Monolith *)self _highlightedTraitsForKey:v4];
-  [(UIKBRenderFactory_Monolith *)self configureSymbolStyles:v5 forLetterKey:v4];
+  keyCopy = key;
+  v5 = [(UIKBRenderFactory_Monolith *)self _highlightedTraitsForKey:keyCopy];
+  [(UIKBRenderFactory_Monolith *)self configureSymbolStyles:v5 forLetterKey:keyCopy];
 
   return v5;
 }
 
-- (id)_activeTraitsForLetterKey:(id)a3
+- (id)_activeTraitsForLetterKey:(id)key
 {
-  v4 = a3;
-  v5 = [(UIKBRenderFactory_Monolith *)self _activeTraitsForKey:v4];
-  [(UIKBRenderFactory_Monolith *)self configureSymbolStyles:v5 forLetterKey:v4];
+  keyCopy = key;
+  v5 = [(UIKBRenderFactory_Monolith *)self _activeTraitsForKey:keyCopy];
+  [(UIKBRenderFactory_Monolith *)self configureSymbolStyles:v5 forLetterKey:keyCopy];
 
   return v5;
 }
 
-- (id)_disabledTraitsForLetterKey:(id)a3
+- (id)_disabledTraitsForLetterKey:(id)key
 {
-  v4 = a3;
-  v5 = [(UIKBRenderFactory_Monolith *)self _disabledTraitsForKey:v4];
-  [(UIKBRenderFactory_Monolith *)self configureSymbolStyles:v5 forLetterKey:v4];
+  keyCopy = key;
+  v5 = [(UIKBRenderFactory_Monolith *)self _disabledTraitsForKey:keyCopy];
+  [(UIKBRenderFactory_Monolith *)self configureSymbolStyles:v5 forLetterKey:keyCopy];
 
   return v5;
 }
 
-- (void)configureSymbolStyle:(id)a3 forControlKey:(id)a4
+- (void)configureSymbolStyle:(id)style forControlKey:(id)key
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v6 interactionType];
-  switch(v7)
+  styleCopy = style;
+  keyCopy = key;
+  interactionType = [keyCopy interactionType];
+  switch(interactionType)
   {
     case 10:
-      v10 = [v6 displayString];
-      v11 = [v10 isEqualToString:@"shift-symbol"];
+      displayString = [keyCopy displayString];
+      v11 = [displayString isEqualToString:@"shift-symbol"];
 
       if (v11)
       {
@@ -661,47 +661,47 @@ LABEL_10:
           v15 = *(MEMORY[0x1E695EFF8] + 8);
         }
 
-        [v16 setTextOffset:{v14, v15, *(MEMORY[0x1E695EFF8] + 8)}];
+        [styleCopy setTextOffset:{v14, v15, *(MEMORY[0x1E695EFF8] + 8)}];
       }
 
       break;
     case 9:
-      v8 = [(UIKBRenderFactory *)self renderConfig];
-      v9 = [v8 colorAdaptiveBackground];
+      renderConfig = [(UIKBRenderFactory *)self renderConfig];
+      colorAdaptiveBackground = [renderConfig colorAdaptiveBackground];
 
-      if (v9)
+      if (colorAdaptiveBackground)
       {
-        [v16 setSymbolScale:3];
+        [styleCopy setSymbolScale:3];
       }
 
       break;
     case 4:
       [(UIKBRenderFactory_Monolith *)self controlKeyFontWeight];
-      [v16 setFontWeight:?];
+      [styleCopy setFontWeight:?];
       [(UIKBRenderFactory_Monolith *)self deleteKeyFontSize];
-      [v16 setFontSize:?];
-      [(UIKBRenderFactory_Monolith *)self _textOffsetForKey:v6];
-      [v16 setTextOffset:?];
-      [v16 setUsesSymbolImage:1];
-      [v16 setSymbolScale:1];
+      [styleCopy setFontSize:?];
+      [(UIKBRenderFactory_Monolith *)self _textOffsetForKey:keyCopy];
+      [styleCopy setTextOffset:?];
+      [styleCopy setUsesSymbolImage:1];
+      [styleCopy setSymbolScale:1];
       goto LABEL_14;
   }
 
   [(UIKBRenderFactory_Monolith *)self controlKeyFontWeight];
-  [v16 setFontWeight:?];
+  [styleCopy setFontWeight:?];
   [(UIKBRenderFactory_Monolith *)self controlKeyFontSize];
-  [v16 setFontSize:?];
-  [(UIKBRenderFactory_Monolith *)self _textOffsetForKey:v6];
-  [v16 setTextOffset:?];
-  [v16 setUsesSymbolImage:1];
+  [styleCopy setFontSize:?];
+  [(UIKBRenderFactory_Monolith *)self _textOffsetForKey:keyCopy];
+  [styleCopy setTextOffset:?];
+  [styleCopy setUsesSymbolImage:1];
 LABEL_14:
 }
 
-- (void)configureCornersOnGeometry:(id)a3 forKey:(id)a4
+- (void)configureCornersOnGeometry:(id)geometry forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v6 intForProperty:@"popup-bias"];
+  geometryCopy = geometry;
+  keyCopy = key;
+  v7 = [keyCopy intForProperty:@"popup-bias"];
   switch(v7)
   {
     case 2:
@@ -713,46 +713,46 @@ LABEL_14:
     case 29:
       v8 = 10;
 LABEL_7:
-      [v9 setRoundRectCorners:v8];
+      [geometryCopy setRoundRectCorners:v8];
       break;
   }
 
-  if ([v6 interactionType] == 10 || objc_msgSend(v6, "interactionType") == 9)
+  if ([keyCopy interactionType] == 10 || objc_msgSend(keyCopy, "interactionType") == 9)
   {
     [(UIKBRenderFactory_Monolith *)self controlKeyRectCornerRadius];
-    [v9 setRoundRectRadius:?];
+    [geometryCopy setRoundRectRadius:?];
   }
 }
 
-- (void)configureGeometry:(id)a3 forControlKey:(id)a4
+- (void)configureGeometry:(id)geometry forControlKey:(id)key
 {
-  v10 = a3;
-  v5 = [(UIKBRenderFactory *)self renderConfig];
-  v6 = [v5 colorAdaptiveBackground];
+  geometryCopy = geometry;
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  colorAdaptiveBackground = [renderConfig colorAdaptiveBackground];
 
-  if ((v6 & 1) == 0)
+  if ((colorAdaptiveBackground & 1) == 0)
   {
-    [v10 symbolFrame];
-    [v10 setSymbolFrame:{v7 + 12.0, v9 + 0.0, v8 + -24.0}];
+    [geometryCopy symbolFrame];
+    [geometryCopy setSymbolFrame:{v7 + 12.0, v9 + 0.0, v8 + -24.0}];
   }
 }
 
-- (id)_enabledTraitsForControlKey:(id)a3
+- (id)_enabledTraitsForControlKey:(id)key
 {
-  v4 = a3;
-  v5 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForKey:v4];
-  v6 = [v5 geometry];
-  [(UIKBRenderFactory_Monolith *)self configureGeometry:v6 forControlKey:v4];
+  keyCopy = key;
+  v5 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForKey:keyCopy];
+  geometry = [v5 geometry];
+  [(UIKBRenderFactory_Monolith *)self configureGeometry:geometry forControlKey:keyCopy];
 
-  v7 = [(UIKBRenderFactory_Monolith *)self keyplaneSwitcherBackgroundColor];
-  v8 = [UIKBGradient gradientWithFlatColor:v7];
+  keyplaneSwitcherBackgroundColor = [(UIKBRenderFactory_Monolith *)self keyplaneSwitcherBackgroundColor];
+  v8 = [UIKBGradient gradientWithFlatColor:keyplaneSwitcherBackgroundColor];
   [v5 setBackgroundGradient:v8];
 
-  v9 = [(UIKBRenderFactory_Monolith *)self enabledTextColor];
-  v10 = [v5 symbolStyle];
-  [v10 setTextColor:v9];
+  enabledTextColor = [(UIKBRenderFactory_Monolith *)self enabledTextColor];
+  symbolStyle = [v5 symbolStyle];
+  [symbolStyle setTextColor:enabledTextColor];
 
-  if ([v4 interactionType] - 9 > 1)
+  if ([keyCopy interactionType] - 9 > 1)
   {
     [v5 setRenderFlags:&unk_1EFE2C5C8];
     [v5 setBackgroundGradient:0];
@@ -763,41 +763,41 @@ LABEL_7:
     [v5 setRenderFlags:&unk_1EFE2C5B0];
   }
 
-  v11 = [v4 intForProperty:@"popup-bias"];
+  v11 = [keyCopy intForProperty:@"popup-bias"];
   if (v11 == 29 || v11 == 2)
   {
-    v12 = [(UIKBRenderFactory_Monolith *)self keyplaneSwitcherDividerColor];
-    v13 = [UIKBEdgeEffect effectWithColor:v12 edges:2 inset:0.0 weight:1.0];
+    keyplaneSwitcherDividerColor = [(UIKBRenderFactory_Monolith *)self keyplaneSwitcherDividerColor];
+    v13 = [UIKBEdgeEffect effectWithColor:keyplaneSwitcherDividerColor edges:2 inset:0.0 weight:1.0];
 
     [v5 addRenderEffect:v13];
   }
 
-  v14 = [v5 geometry];
-  [(UIKBRenderFactory_Monolith *)self configureCornersOnGeometry:v14 forKey:v4];
+  geometry2 = [v5 geometry];
+  [(UIKBRenderFactory_Monolith *)self configureCornersOnGeometry:geometry2 forKey:keyCopy];
 
-  v15 = [v5 symbolStyle];
-  [(UIKBRenderFactory_Monolith *)self configureSymbolStyle:v15 forControlKey:v4];
+  symbolStyle2 = [v5 symbolStyle];
+  [(UIKBRenderFactory_Monolith *)self configureSymbolStyle:symbolStyle2 forControlKey:keyCopy];
 
   return v5;
 }
 
-- (id)_highlightedTraitsForControlKey:(id)a3
+- (id)_highlightedTraitsForControlKey:(id)key
 {
-  v4 = a3;
-  v5 = [(UIKBRenderFactory_Monolith *)self _highlightedTraitsForKey:v4];
-  v6 = [v5 geometry];
-  [(UIKBRenderFactory_Monolith *)self configureGeometry:v6 forControlKey:v4];
+  keyCopy = key;
+  v5 = [(UIKBRenderFactory_Monolith *)self _highlightedTraitsForKey:keyCopy];
+  geometry = [v5 geometry];
+  [(UIKBRenderFactory_Monolith *)self configureGeometry:geometry forControlKey:keyCopy];
 
-  v7 = [v5 symbolStyle];
-  [(UIKBRenderFactory_Monolith *)self configureSymbolStyle:v7 forControlKey:v4];
+  symbolStyle = [v5 symbolStyle];
+  [(UIKBRenderFactory_Monolith *)self configureSymbolStyle:symbolStyle forControlKey:keyCopy];
 
-  v8 = [(UIKBRenderFactory *)self renderConfig];
-  LODWORD(v7) = [v8 colorAdaptiveBackground];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  LODWORD(symbolStyle) = [renderConfig colorAdaptiveBackground];
 
-  if (v7)
+  if (symbolStyle)
   {
-    v9 = [v5 geometry];
-    [v9 symbolFrame];
+    geometry2 = [v5 geometry];
+    [geometry2 symbolFrame];
     [(UIKBRenderFactory_Monolith *)self controlKeyFocusBaseSize:v10, v11];
     v13 = v12;
     v15 = v14;
@@ -813,48 +813,48 @@ LABEL_7:
   return v5;
 }
 
-- (id)_activeTraitsForControlKey:(id)a3
+- (id)_activeTraitsForControlKey:(id)key
 {
-  v4 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForControlKey:a3];
-  v5 = [(UIKBRenderFactory_Monolith *)self activeTextColor];
-  v6 = [v4 symbolStyle];
-  [v6 setTextColor:v5];
+  v4 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForControlKey:key];
+  activeTextColor = [(UIKBRenderFactory_Monolith *)self activeTextColor];
+  symbolStyle = [v4 symbolStyle];
+  [symbolStyle setTextColor:activeTextColor];
 
   return v4;
 }
 
-- (id)_disabledTraitsForControlKey:(id)a3
+- (id)_disabledTraitsForControlKey:(id)key
 {
-  v4 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForControlKey:a3];
-  v5 = [(UIKBRenderFactory_Monolith *)self disabledTextColor];
-  v6 = [v4 symbolStyle];
-  [v6 setTextColor:v5];
+  v4 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForControlKey:key];
+  disabledTextColor = [(UIKBRenderFactory_Monolith *)self disabledTextColor];
+  symbolStyle = [v4 symbolStyle];
+  [symbolStyle setTextColor:disabledTextColor];
 
   return v4;
 }
 
-- (id)_variantTraitsForLetterKey:(id)a3 onKeyplane:(id)a4
+- (id)_variantTraitsForLetterKey:(id)key onKeyplane:(id)keyplane
 {
   v134 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 paddedFrame];
+  keyCopy = key;
+  keyplaneCopy = keyplane;
+  [keyCopy paddedFrame];
   v126 = v8;
   v121 = v10;
   v122 = v9;
   v12 = v11;
-  v13 = [v6 subtrees];
-  v14 = [v13 count];
+  subtrees = [keyCopy subtrees];
+  v14 = [subtrees count];
 
   v15 = +[UIKeyboardInputModeController sharedInputModeController];
-  v16 = [v15 currentInputMode];
-  v17 = [v16 isDefaultRightToLeft];
+  currentInputMode = [v15 currentInputMode];
+  isDefaultRightToLeft = [currentInputMode isDefaultRightToLeft];
 
-  v18 = [v6 subtrees];
-  v19 = [v18 indexOfObjectPassingTest:&__block_literal_global_27_2];
+  subtrees2 = [keyCopy subtrees];
+  v19 = [subtrees2 indexOfObjectPassingTest:&__block_literal_global_27_2];
 
-  v20 = [v6 shape];
-  v21 = [UIKBRenderGeometry geometryWithShape:v20];
+  shape = [keyCopy shape];
+  v21 = [UIKBRenderGeometry geometryWithShape:shape];
 
   [(UIKBRenderFactory_Monolith *)self variantKeyWidth];
   v23 = v22;
@@ -864,9 +864,9 @@ LABEL_7:
   v27 = v26;
   [(UIKBRenderFactory_Monolith *)self variantKeyFocusIncrease];
   v29 = v27 + v28 + v28;
-  [v6 paddedFrame];
+  [keyCopy paddedFrame];
   v31 = (v30 - v25) * 0.5;
-  [v6 paddedFrame];
+  [keyCopy paddedFrame];
   v33 = (v32 - v29) * 0.5;
   [v21 paddedFrame];
   [v21 setPaddedFrame:{v34 + v31, v36 + v33, v35 - (v31 + v31), v37 - (v33 + v33)}];
@@ -890,7 +890,7 @@ LABEL_7:
   [(UIKBRenderFactory_Monolith *)self variantKeyWidth];
   v42 = -(v41 * (v14 + v39 - 1));
   [v21 paddedFrame];
-  if (v17)
+  if (isDefaultRightToLeft)
   {
     v46 = v42;
   }
@@ -921,9 +921,9 @@ LABEL_7:
   [v21 setRoundRectCorners:-1];
   if ([(UIKBRenderFactory_Monolith *)self forceVariantsInsideKeyplane])
   {
-    if (v17)
+    if (isDefaultRightToLeft)
     {
-      [v7 frame];
+      [keyplaneCopy frame];
       MinX = CGRectGetMinX(v136);
       [v21 displayFrame];
       v65 = MinX - CGRectGetMinX(v137);
@@ -940,7 +940,7 @@ LABEL_7:
     {
       [v21 displayFrame];
       MaxX = CGRectGetMaxX(v138);
-      [v7 frame];
+      [keyplaneCopy frame];
       v66 = MaxX - CGRectGetMaxX(v139);
       if (v66 <= 0.0)
       {
@@ -955,10 +955,10 @@ LABEL_7:
   }
 
 LABEL_16:
-  v124 = v7;
+  v124 = keyplaneCopy;
   v68 = [UIKBRenderTraits traitsWithGeometry:v21];
-  v69 = [(UIKBRenderFactory_Monolith *)self variantPlatterBackgroundColor];
-  v70 = [UIKBGradient gradientWithFlatColor:v69];
+  variantPlatterBackgroundColor = [(UIKBRenderFactory_Monolith *)self variantPlatterBackgroundColor];
+  v70 = [UIKBGradient gradientWithFlatColor:variantPlatterBackgroundColor];
   [v68 setBackgroundGradient:v70];
 
   [(UIKBRenderFactory_Monolith *)self shadowVerticalOffset];
@@ -968,9 +968,9 @@ LABEL_16:
   v123 = v68;
   [v68 addRenderEffect:v74];
 
-  v75 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(UIKBRenderFactory_Monolith *)self variantKeyWidth];
-  if (v17)
+  if (isDefaultRightToLeft)
   {
     v76 = -v76;
   }
@@ -988,9 +988,9 @@ LABEL_16:
   v130 = 0u;
   v131 = 0u;
   v132 = 0u;
-  v125 = v6;
-  v85 = [v6 subtrees];
-  v86 = [v85 countByEnumeratingWithState:&v129 objects:v133 count:16];
+  v125 = keyCopy;
+  subtrees3 = [keyCopy subtrees];
+  v86 = [subtrees3 countByEnumeratingWithState:&v129 objects:v133 count:16];
   if (v86)
   {
     v87 = v86;
@@ -1013,7 +1013,7 @@ LABEL_16:
       {
         if (*v130 != v94)
         {
-          objc_enumerationMutation(v85);
+          objc_enumerationMutation(subtrees3);
         }
 
         v96 = *(*(&v129 + 1) + 8 * i);
@@ -1042,23 +1042,23 @@ LABEL_16:
         }
 
         [v97 setSymbolFrame:{v107, v111, v108, v110}];
-        [v75 addObject:v97];
+        [array addObject:v97];
         v93 = v128 + v93;
       }
 
-      v87 = [v85 countByEnumeratingWithState:&v129 objects:v133 count:16];
+      v87 = [subtrees3 countByEnumeratingWithState:&v129 objects:v133 count:16];
     }
 
     while (v87);
   }
 
-  [v123 setVariantGeometries:v75];
+  [v123 setVariantGeometries:array];
   [(UIKBRenderFactory_Monolith *)self letterKeyFontSize];
   v112 = [UIKBTextStyle styleWithFontName:@"UIKBRenderFactorySystemFontName" withFontSize:?];
   [(UIKBRenderFactory_Monolith *)self letterKeyFontWeight];
   [v112 setFontWeight:?];
-  v113 = [(UIKBRenderFactory_Monolith *)self variantTextColor];
-  [v112 setTextColor:v113];
+  variantTextColor = [(UIKBRenderFactory_Monolith *)self variantTextColor];
+  [v112 setTextColor:variantTextColor];
 
   [v112 setUsesSymbolImage:1];
   [v112 setSymbolScale:1];
@@ -1066,12 +1066,12 @@ LABEL_16:
   [v123 setVariantTraits:v114];
 
   v115 = [UIKBRenderTraits traitsWithSymbolStyle:v112];
-  v116 = [(UIKBRenderFactory_Monolith *)self highlightedVariantTextColor];
-  v117 = [v115 symbolStyle];
-  [v117 setTextColor:v116];
+  highlightedVariantTextColor = [(UIKBRenderFactory_Monolith *)self highlightedVariantTextColor];
+  symbolStyle = [v115 symbolStyle];
+  [symbolStyle setTextColor:highlightedVariantTextColor];
 
-  v118 = [(UIKBRenderFactory_Monolith *)self highlightedVariantBackgroundColor];
-  v119 = [UIKBGradient gradientWithFlatColor:v118];
+  highlightedVariantBackgroundColor = [(UIKBRenderFactory_Monolith *)self highlightedVariantBackgroundColor];
+  v119 = [UIKBGradient gradientWithFlatColor:highlightedVariantBackgroundColor];
   [v115 setLayeredForegroundGradient:v119];
 
   [v123 setHighlightedVariantTraits:v115];
@@ -1079,25 +1079,25 @@ LABEL_16:
   return v123;
 }
 
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 interactionType] == 10 || objc_msgSend(v6, "interactionType") == 9 || objc_msgSend(v6, "interactionType") == 23 || objc_msgSend(v6, "interactionType") == 15 || objc_msgSend(v6, "interactionType") == 4 || objc_msgSend(v6, "interactionType") == 43;
-  v9 = [v6 state];
+  keyCopy = key;
+  keyplaneCopy = keyplane;
+  v8 = [keyCopy interactionType] == 10 || objc_msgSend(keyCopy, "interactionType") == 9 || objc_msgSend(keyCopy, "interactionType") == 23 || objc_msgSend(keyCopy, "interactionType") == 15 || objc_msgSend(keyCopy, "interactionType") == 4 || objc_msgSend(keyCopy, "interactionType") == 43;
+  state = [keyCopy state];
   v10 = 0;
-  if (v9 <= 7)
+  if (state <= 7)
   {
-    if (v9 != 1)
+    if (state != 1)
     {
-      if (v9 != 2)
+      if (state != 2)
       {
-        if (v9 != 4)
+        if (state != 4)
         {
           goto LABEL_31;
         }
 
-        if ([v6 interactionType] != 10)
+        if ([keyCopy interactionType] != 10)
         {
           if (os_variant_has_internal_diagnostics())
           {
@@ -1120,29 +1120,29 @@ LABEL_16:
           }
         }
 
-        v11 = [(UIKBRenderFactory_Monolith *)self _activeTraitsForControlKey:v6];
+        v11 = [(UIKBRenderFactory_Monolith *)self _activeTraitsForControlKey:keyCopy];
         goto LABEL_30;
       }
 
       if (v8)
       {
-        v11 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForControlKey:v6];
+        v11 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForControlKey:keyCopy];
         goto LABEL_30;
       }
 
 LABEL_26:
-      v11 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForLetterKey:v6];
+      v11 = [(UIKBRenderFactory_Monolith *)self _enabledTraitsForLetterKey:keyCopy];
       goto LABEL_30;
     }
 
     if (v8)
     {
-      [(UIKBRenderFactory_Monolith *)self _disabledTraitsForControlKey:v6];
+      [(UIKBRenderFactory_Monolith *)self _disabledTraitsForControlKey:keyCopy];
     }
 
     else
     {
-      [(UIKBRenderFactory_Monolith *)self _disabledTraitsForLetterKey:v6];
+      [(UIKBRenderFactory_Monolith *)self _disabledTraitsForLetterKey:keyCopy];
     }
 
     v11 = LABEL_23:;
@@ -1151,36 +1151,36 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (v9 == 8)
+  if (state == 8)
   {
     if (v8)
     {
-      [(UIKBRenderFactory_Monolith *)self _highlightedTraitsForControlKey:v6];
+      [(UIKBRenderFactory_Monolith *)self _highlightedTraitsForControlKey:keyCopy];
     }
 
     else
     {
-      [(UIKBRenderFactory_Monolith *)self _highlightedTraitsForLetterKey:v6];
+      [(UIKBRenderFactory_Monolith *)self _highlightedTraitsForLetterKey:keyCopy];
     }
 
     goto LABEL_23;
   }
 
-  if (v9 == 20 || v9 == 16)
+  if (state == 20 || state == 16)
   {
-    if ([v6 interactionType] == 3)
+    if ([keyCopy interactionType] == 3)
     {
       goto LABEL_26;
     }
 
     if (v8)
     {
-      [(UIKBRenderFactory_Monolith *)self _variantTraitsForControlKey:v6 onKeyplane:v7];
+      [(UIKBRenderFactory_Monolith *)self _variantTraitsForControlKey:keyCopy onKeyplane:keyplaneCopy];
     }
 
     else
     {
-      [(UIKBRenderFactory_Monolith *)self _variantTraitsForLetterKey:v6 onKeyplane:v7];
+      [(UIKBRenderFactory_Monolith *)self _variantTraitsForLetterKey:keyCopy onKeyplane:keyplaneCopy];
     }
 
     goto LABEL_23;

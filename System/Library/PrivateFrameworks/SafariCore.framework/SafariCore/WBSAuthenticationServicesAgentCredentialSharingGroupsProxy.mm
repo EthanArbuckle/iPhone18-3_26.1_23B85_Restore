@@ -1,13 +1,13 @@
 @interface WBSAuthenticationServicesAgentCredentialSharingGroupsProxy
 - (WBSAuthenticationServicesAgentCredentialSharingGroupsProxy)init;
 - (id)connection;
-- (void)_setUpConnection:(id)a3;
-- (void)deleteGroupWithID:(id)a3 completionHandler:(id)a4;
-- (void)fetchNumberOfPasswordAndPasskeySavedAccountsWithCompletion:(id)a3;
-- (void)fetchSharingGroupsThatIncludeFamilyMembers:(id)a3;
-- (void)groupsUpdatedWithInfos:(id)a3;
-- (void)leaveGroupWithID:(id)a3 completionHandler:(id)a4;
-- (void)notifyUserAboutSharedSavedAccountsInRecentlyDeleted:(id)a3;
+- (void)_setUpConnection:(id)connection;
+- (void)deleteGroupWithID:(id)d completionHandler:(id)handler;
+- (void)fetchNumberOfPasswordAndPasskeySavedAccountsWithCompletion:(id)completion;
+- (void)fetchSharingGroupsThatIncludeFamilyMembers:(id)members;
+- (void)groupsUpdatedWithInfos:(id)infos;
+- (void)leaveGroupWithID:(id)d completionHandler:(id)handler;
+- (void)notifyUserAboutSharedSavedAccountsInRecentlyDeleted:(id)deleted;
 @end
 
 @implementation WBSAuthenticationServicesAgentCredentialSharingGroupsProxy
@@ -34,12 +34,12 @@
   return v3;
 }
 
-- (void)_setUpConnection:(id)a3
+- (void)_setUpConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v5 = WBSAuthenticationServicesAgentCredentialSharingGroupsUserNotificationsInterface();
-  [v4 setRemoteObjectInterface:v5];
+  [connectionCopy setRemoteObjectInterface:v5];
 
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
@@ -47,13 +47,13 @@
   v11 = &unk_1E7CF15E8;
   objc_copyWeak(&v12, &location);
   v6 = _Block_copy(&v8);
-  [v4 setInvalidationHandler:{v6, v8, v9, v10, v11}];
-  [v4 setInterruptionHandler:v6];
+  [connectionCopy setInvalidationHandler:{v6, v8, v9, v10, v11}];
+  [connectionCopy setInterruptionHandler:v6];
   v7 = WBSAuthenticationServicesAgentCredentialSharingGroupsUserNotificationsInterface();
-  [v4 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  [v4 setExportedObject:self];
-  [v4 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -78,25 +78,25 @@ void __79__WBSAuthenticationServicesAgentCredentialSharingGroupsProxy__setUpConn
   }
 }
 
-- (void)notifyUserAboutSharedSavedAccountsInRecentlyDeleted:(id)a3
+- (void)notifyUserAboutSharedSavedAccountsInRecentlyDeleted:(id)deleted
 {
-  v5 = a3;
-  v6 = [(WBSAuthenticationServicesAgentCredentialSharingGroupsProxy *)self connection];
+  deletedCopy = deleted;
+  connection = [(WBSAuthenticationServicesAgentCredentialSharingGroupsProxy *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __114__WBSAuthenticationServicesAgentCredentialSharingGroupsProxy_notifyUserAboutSharedSavedAccountsInRecentlyDeleted___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
   v9[4] = a2;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v9];
 
   if (v7)
   {
-    [v7 notifyUserAboutSharedSavedAccountsInRecentlyDeleted:v5];
+    [v7 notifyUserAboutSharedSavedAccountsInRecentlyDeleted:deletedCopy];
   }
 
   else
   {
-    v8 = v5;
+    v8 = deletedCopy;
     v8[2](v8, 0);
   }
 }
@@ -121,23 +121,23 @@ void __125__WBSAuthenticationServicesAgentCredentialSharingGroupsProxy_setDebugI
   }
 }
 
-- (void)leaveGroupWithID:(id)a3 completionHandler:(id)a4
+- (void)leaveGroupWithID:(id)d completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(WBSAuthenticationServicesAgentCredentialSharingGroupsProxy *)self connection];
+  dCopy = d;
+  handlerCopy = handler;
+  connection = [(WBSAuthenticationServicesAgentCredentialSharingGroupsProxy *)self connection];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __97__WBSAuthenticationServicesAgentCredentialSharingGroupsProxy_leaveGroupWithID_completionHandler___block_invoke;
   v16 = &unk_1E7CF1658;
   v18 = a2;
-  v10 = v8;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:&v13];
+  v11 = [connection remoteObjectProxyWithErrorHandler:&v13];
 
   if (v11)
   {
-    [v11 leaveGroupWithID:v7 completionHandler:{v10, v13, v14, v15, v16}];
+    [v11 leaveGroupWithID:dCopy completionHandler:{v10, v13, v14, v15, v16}];
   }
 
   else
@@ -161,23 +161,23 @@ void __97__WBSAuthenticationServicesAgentCredentialSharingGroupsProxy_leaveGroup
   (*(v5 + 16))(v5, v6);
 }
 
-- (void)deleteGroupWithID:(id)a3 completionHandler:(id)a4
+- (void)deleteGroupWithID:(id)d completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(WBSAuthenticationServicesAgentCredentialSharingGroupsProxy *)self connection];
+  dCopy = d;
+  handlerCopy = handler;
+  connection = [(WBSAuthenticationServicesAgentCredentialSharingGroupsProxy *)self connection];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __98__WBSAuthenticationServicesAgentCredentialSharingGroupsProxy_deleteGroupWithID_completionHandler___block_invoke;
   v16 = &unk_1E7CF1658;
   v18 = a2;
-  v10 = v8;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:&v13];
+  v11 = [connection remoteObjectProxyWithErrorHandler:&v13];
 
   if (v11)
   {
-    [v11 deleteGroupWithID:v7 completionHandler:{v10, v13, v14, v15, v16}];
+    [v11 deleteGroupWithID:dCopy completionHandler:{v10, v13, v14, v15, v16}];
   }
 
   else
@@ -211,20 +211,20 @@ void __135__WBSAuthenticationServicesAgentCredentialSharingGroupsProxy_groupsUpd
   }
 }
 
-- (void)groupsUpdatedWithInfos:(id)a3
+- (void)groupsUpdatedWithInfos:(id)infos
 {
-  v5 = a3;
-  v6 = [(WBSAuthenticationServicesAgentCredentialSharingGroupsProxy *)self connection];
+  infosCopy = infos;
+  connection = [(WBSAuthenticationServicesAgentCredentialSharingGroupsProxy *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__WBSAuthenticationServicesAgentCredentialSharingGroupsProxy_groupsUpdatedWithInfos___block_invoke;
   v8[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
   v8[4] = a2;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v8];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v8];
 
   if (v7)
   {
-    [v7 groupsUpdatedWithInfos:v5 shouldForceShowingNotifications:0 completionHandler:&__block_literal_global_88];
+    [v7 groupsUpdatedWithInfos:infosCopy shouldForceShowingNotifications:0 completionHandler:&__block_literal_global_88];
   }
 }
 
@@ -238,18 +238,18 @@ void __85__WBSAuthenticationServicesAgentCredentialSharingGroupsProxy_groupsUpda
   }
 }
 
-- (void)fetchSharingGroupsThatIncludeFamilyMembers:(id)a3
+- (void)fetchSharingGroupsThatIncludeFamilyMembers:(id)members
 {
-  v5 = a3;
-  v6 = [(WBSAuthenticationServicesAgentCredentialSharingGroupsProxy *)self connection];
+  membersCopy = members;
+  connection = [(WBSAuthenticationServicesAgentCredentialSharingGroupsProxy *)self connection];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __105__WBSAuthenticationServicesAgentCredentialSharingGroupsProxy_fetchSharingGroupsThatIncludeFamilyMembers___block_invoke;
   v13 = &unk_1E7CF1658;
   v15 = a2;
-  v7 = v5;
+  v7 = membersCopy;
   v14 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:&v10];
+  v8 = [connection remoteObjectProxyWithErrorHandler:&v10];
 
   if (v8)
   {
@@ -277,18 +277,18 @@ void __105__WBSAuthenticationServicesAgentCredentialSharingGroupsProxy_fetchShar
   (*(v5 + 16))(v5, 0, v6);
 }
 
-- (void)fetchNumberOfPasswordAndPasskeySavedAccountsWithCompletion:(id)a3
+- (void)fetchNumberOfPasswordAndPasskeySavedAccountsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(WBSAuthenticationServicesAgentCredentialSharingGroupsProxy *)self connection];
+  completionCopy = completion;
+  connection = [(WBSAuthenticationServicesAgentCredentialSharingGroupsProxy *)self connection];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __121__WBSAuthenticationServicesAgentCredentialSharingGroupsProxy_fetchNumberOfPasswordAndPasskeySavedAccountsWithCompletion___block_invoke;
   v13 = &unk_1E7CF1658;
   v15 = a2;
-  v7 = v5;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:&v10];
+  v8 = [connection remoteObjectProxyWithErrorHandler:&v10];
 
   if (v8)
   {

@@ -1,29 +1,29 @@
 @interface GCHIDInformationDescription
 - (GCHIDInformationDescription)init;
-- (GCHIDInformationDescription)initWithCoder:(id)a3;
-- (GCHIDInformationDescription)initWithIdentifier:(id)a3 registryID:(id)a4;
+- (GCHIDInformationDescription)initWithCoder:(id)coder;
+- (GCHIDInformationDescription)initWithIdentifier:(id)identifier registryID:(id)d;
 - (NSString)description;
-- (id)materializeWithContext:(id)a3;
+- (id)materializeWithContext:(id)context;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCHIDInformationDescription
 
-- (GCHIDInformationDescription)initWithIdentifier:(id)a3 registryID:(id)a4
+- (GCHIDInformationDescription)initWithIdentifier:(id)identifier registryID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = GCHIDInformationDescription;
   v8 = [(GCHIDInformationDescription *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copyWithZone:0];
+    v9 = [identifierCopy copyWithZone:0];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeStrong(&v8->_registryID, a4);
+    objc_storeStrong(&v8->_registryID, d);
   }
 
   return v8;
@@ -36,20 +36,20 @@
   return 0;
 }
 
-- (GCHIDInformationDescription)initWithCoder:(id)a3
+- (GCHIDInformationDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = GCHIDInformationDescription;
   v5 = [(GCHIDInformationDescription *)&v12 init];
   if (v5)
   {
     v6 = GCIPCObjectIdentifier_Classes();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"registryID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"registryID"];
     registryID = v5->_registryID;
     v5->_registryID = v9;
   }
@@ -57,12 +57,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_registryID forKey:@"registryID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_registryID forKey:@"registryID"];
 }
 
 - (NSString)description
@@ -70,8 +70,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GCHIDInformationDescription *)self identifier];
-  v7 = [v3 stringWithFormat:@"<%@ '%@'>", v5, v6];
+  identifier = [(GCHIDInformationDescription *)self identifier];
+  v7 = [v3 stringWithFormat:@"<%@ '%@'>", v5, identifier];
 
   return v7;
 }
@@ -81,15 +81,15 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GCHIDInformationDescription *)self identifier];
-  v7 = [v3 stringWithFormat:@"<%@ '#%llx'>", v5, objc_msgSend(v6, "hash")];
+  identifier = [(GCHIDInformationDescription *)self identifier];
+  v7 = [v3 stringWithFormat:@"<%@ '#%llx'>", v5, objc_msgSend(identifier, "hash")];
 
   return v7;
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   materializedComponent = self->_materializedComponent;
   if (!materializedComponent)
   {
@@ -102,7 +102,7 @@
     materializedComponent = self->_materializedComponent;
     if (isKindOfClass)
     {
-      objc_storeWeak(&materializedComponent->_manager, v4);
+      objc_storeWeak(&materializedComponent->_manager, contextCopy);
       materializedComponent = self->_materializedComponent;
     }
   }

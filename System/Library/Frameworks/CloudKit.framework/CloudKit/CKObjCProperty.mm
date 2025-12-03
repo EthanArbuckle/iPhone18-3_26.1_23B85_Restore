@@ -1,6 +1,6 @@
 @interface CKObjCProperty
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation CKObjCProperty
@@ -19,15 +19,15 @@
   return v15;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if (self)
     {
-      v5 = v4;
+      v5 = compareCopy;
       v8 = objc_msgSend_name(self, v6, v7);
       v11 = objc_msgSend_name(v5, v9, v10);
 

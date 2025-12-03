@@ -5,17 +5,17 @@
 - (SBUISystemApertureAccessoryView)leadingView;
 - (SBUISystemApertureAccessoryView)minimalView;
 - (SBUISystemApertureAccessoryView)trailingView;
-- (_TtC8SOSBuddy27SessionBannerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8SOSBuddy27SessionBannerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)preferredHeightForBottomSafeArea;
 - (void)didTap;
 - (void)loadView;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setPreferredLayoutMode:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setPreferredLayoutMode:(int64_t)mode;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SessionBannerViewController
@@ -29,32 +29,32 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100230358();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100230748();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100230A74(a3, "[%{public}s] viewWillAppear", &selRef_viewWillAppear_);
+  selfCopy = self;
+  sub_100230A74(appear, "[%{public}s] viewWillAppear", &selRef_viewWillAppear_);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100230A74(a3, "[%{public}s] viewDidAppear", &selRef_viewDidAppear_);
+  selfCopy = self;
+  sub_100230A74(appear, "[%{public}s] viewDidAppear", &selRef_viewDidAppear_);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100230A74(a3, "[%{public}s] viewDidDisappear", &selRef_viewDidDisappear_);
+  selfCopy = self;
+  sub_100230A74(disappear, "[%{public}s] viewDidDisappear", &selRef_viewDidDisappear_);
 }
 
 + (BOOL)_isSecureForRemoteViewService
@@ -66,7 +66,7 @@
 
 - (BOOL)_canShowWhileLocked
 {
-  v2 = self;
+  selfCopy = self;
   sub_100230CC0();
 
   return 1;
@@ -74,42 +74,42 @@
 
 - (void)didTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_100230E30();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_100231364(a4, width, height);
+  selfCopy = self;
+  sub_100231364(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC8SOSBuddy27SessionBannerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8SOSBuddy27SessionBannerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  v4 = self;
-  sub_1002321E8(a3);
+  selfCopy = self;
+  sub_1002321E8(mode);
 }
 
-- (void)setPreferredLayoutMode:(int64_t)a3
+- (void)setPreferredLayoutMode:(int64_t)mode
 {
-  v4 = self;
-  sub_100232A0C(a3);
+  selfCopy = self;
+  sub_100232A0C(mode);
 }
 
 - (double)preferredHeightForBottomSafeArea
 {
-  v2 = self;
+  selfCopy = self;
   sub_100232C2C();
   v4 = v3;
 

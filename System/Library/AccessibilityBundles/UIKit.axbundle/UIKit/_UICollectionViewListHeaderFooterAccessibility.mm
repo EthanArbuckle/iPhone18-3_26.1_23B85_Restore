@@ -1,5 +1,5 @@
 @interface _UICollectionViewListHeaderFooterAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,31 +7,31 @@
 
 @implementation _UICollectionViewListHeaderFooterAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UICollectionViewListHeaderFooter" hasInstanceMethod:@"_contentViewConfiguration" withFullSignature:{"@", 0}];
   objc_storeStrong(v4, obj);
 }
 
 - (id)accessibilityLabel
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v7.receiver = self;
   v7.super_class = _UICollectionViewListHeaderFooterAccessibility;
   v8[0] = [(_UICollectionViewListHeaderFooterAccessibility *)&v7 accessibilityLabel];
   if (![v8[0] length])
   {
-    v6 = [(_UICollectionViewListHeaderFooterAccessibility *)v9 safeValueForKey:@"_contentViewConfiguration"];
-    v2 = [v6 accessibilityLabel];
+    v6 = [(_UICollectionViewListHeaderFooterAccessibility *)selfCopy safeValueForKey:@"_contentViewConfiguration"];
+    accessibilityLabel = [v6 accessibilityLabel];
     v3 = v8[0];
-    v8[0] = v2;
+    v8[0] = accessibilityLabel;
     MEMORY[0x29EDC9740](v3);
     MEMORY[0x29EDC9740](v6);
   }
@@ -44,21 +44,21 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(_UICollectionViewListHeaderFooterAccessibility *)self accessibilityLabel];
-  v4 = [v3 length] != 0;
-  MEMORY[0x29EDC9740](v3);
+  accessibilityLabel = [(_UICollectionViewListHeaderFooterAccessibility *)self accessibilityLabel];
+  v4 = [accessibilityLabel length] != 0;
+  MEMORY[0x29EDC9740](accessibilityLabel);
   return v4;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = _UICollectionViewListHeaderFooterAccessibility;
-  v3 = [(_UICollectionViewListHeaderFooterAccessibility *)&v6 accessibilityTraits];
-  v4 = [(_UICollectionViewListHeaderFooterAccessibility *)v8 safeValueForKey:@"_contentViewConfiguration"];
-  v5 = v3 | [v4 accessibilityTraits];
+  accessibilityTraits = [(_UICollectionViewListHeaderFooterAccessibility *)&v6 accessibilityTraits];
+  v4 = [(_UICollectionViewListHeaderFooterAccessibility *)selfCopy safeValueForKey:@"_contentViewConfiguration"];
+  v5 = accessibilityTraits | [v4 accessibilityTraits];
   MEMORY[0x29EDC9740](v4);
   return v5;
 }

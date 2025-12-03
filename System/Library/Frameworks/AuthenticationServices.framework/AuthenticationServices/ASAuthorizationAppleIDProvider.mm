@@ -1,7 +1,7 @@
 @interface ASAuthorizationAppleIDProvider
 + (void)initialize;
 - (ASAuthorizationAppleIDRequest)createRequest;
-- (void)credentialStateDidChange:(int64_t)a3 completion:(id)a4;
+- (void)credentialStateDidChange:(int64_t)change completion:(id)completion;
 - (void)getCredentialStateForUserID:(NSString *)userID completion:(void *)completion;
 @end
 
@@ -9,7 +9,7 @@
 
 + (void)initialize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___ASAuthorizationAppleIDProvider;
   objc_msgSendSuper2(&v3, sel_initialize);
   v2 = objc_alloc_init(ASAuthorizationAppleIDProvider);
@@ -102,21 +102,21 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)credentialStateDidChange:(int64_t)a3 completion:(id)a4
+- (void)credentialStateDidChange:(int64_t)change completion:(id)completion
 {
-  if (a3)
+  if (change)
   {
-    (*(a4 + 2))(a4, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 
   else
   {
     v4 = MEMORY[0x1E696AD88];
-    v5 = a4;
-    v6 = [v4 defaultCenter];
-    [v6 postNotificationName:@"ASAuthorizationAppleIDCredentialRevokedNotification" object:0];
+    completionCopy = completion;
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter postNotificationName:@"ASAuthorizationAppleIDCredentialRevokedNotification" object:0];
 
-    v5[2](v5, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 

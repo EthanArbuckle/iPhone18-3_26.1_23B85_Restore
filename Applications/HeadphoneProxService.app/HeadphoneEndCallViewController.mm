@@ -1,6 +1,6 @@
 @interface HeadphoneEndCallViewController
-- (_TtC20HeadphoneProxService30HeadphoneEndCallViewController)initWithContentView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC20HeadphoneProxService30HeadphoneEndCallViewController)initWithContentView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -8,20 +8,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100017D44();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100018A4C(a3);
+  selfCopy = self;
+  sub_100018A4C(appear);
 }
 
-- (_TtC20HeadphoneProxService30HeadphoneEndCallViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService30HeadphoneEndCallViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_100019860(a3);
+  viewCopy = view;
+  v5 = sub_100019860(view);
 
   return v5;
 }

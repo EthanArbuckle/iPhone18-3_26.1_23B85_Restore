@@ -15,32 +15,32 @@
 - (NSString)providerName;
 - (double)lastNetworkTypeChangeTime;
 - (id)_dataStatusIndicator;
-- (id)copyValueForCarrierBundleKey:(id)a3;
-- (int64_t)_networkTypeForReachabilityFlags:(unsigned int)a3;
-- (int64_t)_networkTypeFromDataIndicator:(id)a3;
-- (int64_t)_setNetworkType:(int64_t)a3;
+- (id)copyValueForCarrierBundleKey:(id)key;
+- (int64_t)_networkTypeForReachabilityFlags:(unsigned int)flags;
+- (int64_t)_networkTypeFromDataIndicator:(id)indicator;
+- (int64_t)_setNetworkType:(int64_t)type;
 - (int64_t)networkType;
 - (unsigned)_currentNetworkReachabilityFlags;
 - (unsigned)networkReachabilityFlags;
-- (void)_applicationForegroundNotification:(id)a3;
-- (void)_copyConnectionDataStatus:(id)a3;
-- (void)_handleTelephonyNotificationWithName:(__CFString *)a3 userInfo:(__CFDictionary *)a4;
-- (void)_postReachabilityFlagsChangedNotificationFromValue:(unsigned int)a3 toValue:(unsigned int)a4;
-- (void)_postTypeChangedNotificationFromValue:(int64_t)a3 toValue:(int64_t)a4;
+- (void)_applicationForegroundNotification:(id)notification;
+- (void)_copyConnectionDataStatus:(id)status;
+- (void)_handleTelephonyNotificationWithName:(__CFString *)name userInfo:(__CFDictionary *)info;
+- (void)_postReachabilityFlagsChangedNotificationFromValue:(unsigned int)value toValue:(unsigned int)toValue;
+- (void)_postTypeChangedNotificationFromValue:(int64_t)value toValue:(int64_t)toValue;
 - (void)_reloadCellularRestriction;
 - (void)_reloadDataStatusIndicator;
 - (void)_reloadNetworkType;
-- (void)_reloadNetworkTypeWithReachabilityFlags:(unsigned int)a3;
-- (void)_telephonyOperatorNameDidChangeNotification:(id)a3;
-- (void)_telephonyRegistrationDidChangeNotification:(id)a3;
-- (void)beginObservingDownloadQueue:(id)a3;
+- (void)_reloadNetworkTypeWithReachabilityFlags:(unsigned int)flags;
+- (void)_telephonyOperatorNameDidChangeNotification:(id)notification;
+- (void)_telephonyRegistrationDidChangeNotification:(id)notification;
+- (void)beginObservingDownloadQueue:(id)queue;
 - (void)beginUsingNetwork;
 - (void)dealloc;
-- (void)downloadQueueNetworkUsageChanged:(id)a3;
-- (void)endObservingDownloadQueue:(id)a3;
+- (void)downloadQueueNetworkUsageChanged:(id)changed;
+- (void)endObservingDownloadQueue:(id)queue;
 - (void)endUsingNetwork;
 - (void)reloadNetworkType;
-- (void)setNetworkType:(int64_t)a3;
+- (void)setNetworkType:(int64_t)type;
 @end
 
 @implementation ISNetworkObserver
@@ -51,7 +51,7 @@
   block[1] = 3221225472;
   block[2] = __35__ISNetworkObserver_sharedInstance__block_invoke;
   block[3] = &unk_27A670CC0;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_sOnce != -1)
   {
     dispatch_once(&sharedInstance_sOnce, block);
@@ -89,7 +89,7 @@ uint64_t __35__ISNetworkObserver_isUsingNetwork__block_invoke(uint64_t a1)
 - (BOOL)_ntsIsUsingNetwork
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = self->_networkUsageCount > 0;
+  isUsingNetwork = self->_networkUsageCount > 0;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -109,14 +109,14 @@ uint64_t __35__ISNetworkObserver_isUsingNetwork__block_invoke(uint64_t a1)
           objc_enumerationMutation(observedDownloadQueues);
         }
 
-        if (v2)
+        if (isUsingNetwork)
         {
-          v2 = 1;
+          isUsingNetwork = 1;
         }
 
         else
         {
-          v2 = [*(*(&v10 + 1) + 8 * i) isUsingNetwork];
+          isUsingNetwork = [*(*(&v10 + 1) + 8 * i) isUsingNetwork];
         }
       }
 
@@ -127,7 +127,7 @@ uint64_t __35__ISNetworkObserver_isUsingNetwork__block_invoke(uint64_t a1)
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v2;
+  return isUsingNetwork;
 }
 
 - (int64_t)networkType
@@ -191,15 +191,15 @@ uint64_t __35__ISNetworkObserver_isUsingNetwork__block_invoke(uint64_t a1)
       SCNetworkReachabilitySetDispatchQueue(*(v3 + 10), *(v3 + 2));
     }
 
-    v9 = [v3 _currentNetworkReachabilityFlags];
-    *(v3 + 10) = v9;
-    *(v3 + 7) = [v3 _networkTypeForReachabilityFlags:v9];
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v3 selector:sel__applicationForegroundNotification_ name:@"UIApplicationDidEnterForegroundNotification" object:0];
-    [v10 addObserver:v3 selector:sel__applicationForegroundNotification_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
-    v11 = [MEMORY[0x277D69D20] sharedController];
-    [v10 addObserver:v3 selector:sel__telephonyOperatorNameDidChangeNotification_ name:*MEMORY[0x277D6A658] object:v11];
-    [v10 addObserver:v3 selector:sel__telephonyRegistrationDidChangeNotification_ name:*MEMORY[0x277D6A660] object:v11];
+    _currentNetworkReachabilityFlags = [v3 _currentNetworkReachabilityFlags];
+    *(v3 + 10) = _currentNetworkReachabilityFlags;
+    *(v3 + 7) = [v3 _networkTypeForReachabilityFlags:_currentNetworkReachabilityFlags];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__applicationForegroundNotification_ name:@"UIApplicationDidEnterForegroundNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel__applicationForegroundNotification_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    mEMORY[0x277D69D20] = [MEMORY[0x277D69D20] sharedController];
+    [defaultCenter addObserver:v3 selector:sel__telephonyOperatorNameDidChangeNotification_ name:*MEMORY[0x277D6A658] object:mEMORY[0x277D69D20]];
+    [defaultCenter addObserver:v3 selector:sel__telephonyRegistrationDidChangeNotification_ name:*MEMORY[0x277D6A660] object:mEMORY[0x277D69D20]];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v3, __CarrierChangeNotification, *MEMORY[0x277CC3848], 0, CFNotificationSuspensionBehaviorCoalesce);
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v3, __CarrierChangeNotification, *MEMORY[0x277CC3850], 0, CFNotificationSuspensionBehaviorCoalesce);
@@ -213,11 +213,11 @@ uint64_t __35__ISNetworkObserver_isUsingNetwork__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:0];
-  v4 = [MEMORY[0x277D69D20] sharedController];
-  [v3 removeObserver:self name:*MEMORY[0x277D6A658] object:v4];
-  [v3 removeObserver:self name:*MEMORY[0x277D6A660] object:v4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:0];
+  mEMORY[0x277D69D20] = [MEMORY[0x277D69D20] sharedController];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D6A658] object:mEMORY[0x277D69D20]];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D6A660] object:mEMORY[0x277D69D20]];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277CC3848], 0);
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277CC3850], 0);
@@ -266,7 +266,7 @@ id __35__ISNetworkObserver_sharedInstance__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)beginObservingDownloadQueue:(id)a3
+- (void)beginObservingDownloadQueue:(id)queue
 {
   v10 = 0;
   v11 = &v10;
@@ -282,7 +282,7 @@ id __35__ISNetworkObserver_sharedInstance__block_invoke(uint64_t a1)
   v5[2] = __49__ISNetworkObserver_beginObservingDownloadQueue___block_invoke;
   v5[3] = &unk_27A670CE8;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = queue;
   v5[6] = &v10;
   v5[7] = &v6;
   dispatch_sync(dispatchQueue, v5);
@@ -331,33 +331,33 @@ uint64_t __49__ISNetworkObserver_beginObservingDownloadQueue___block_invoke(uint
     [(ISNetworkObserver *)self _postUsageChangedToValue:1];
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:*MEMORY[0x277D6A608] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D6A608] object:0];
   _Block_object_dispose(&v6, 8);
 }
 
 - (NSString)connectionTypeHeader
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   [(ISNetworkObserver *)self networkType];
   v4 = SSGetStringForNetworkType();
   if (v4)
   {
-    [v3 appendString:v4];
+    [string appendString:v4];
     if (SSNetworkTypeIsCellularType())
     {
-      v5 = [(ISNetworkObserver *)self operatorName];
-      if ([(NSString *)v5 length])
+      operatorName = [(ISNetworkObserver *)self operatorName];
+      if ([(NSString *)operatorName length])
       {
-        [v3 appendFormat:@"/%@", v5];
+        [string appendFormat:@"/%@", operatorName];
       }
     }
   }
 
-  return v3;
+  return string;
 }
 
-- (id)copyValueForCarrierBundleKey:(id)a3
+- (id)copyValueForCarrierBundleKey:(id)key
 {
   v29 = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -373,39 +373,39 @@ uint64_t __49__ISNetworkObserver_beginObservingDownloadQueue___block_invoke(uint
   v18[2] = __50__ISNetworkObserver_copyValueForCarrierBundleKey___block_invoke;
   v18[3] = &unk_27A670D60;
   v18[4] = v5;
-  v18[5] = a3;
+  v18[5] = key;
   v18[6] = v4;
   v18[7] = &v19;
   [v5 getSubscriptionInfo:v18];
   v6 = dispatch_time(0, 3000000000);
   if (dispatch_semaphore_wait(v4, v6))
   {
-    v7 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v7)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v7 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
-    v9 = [v7 shouldLogToDisk];
-    v10 = [v7 OSLogObject];
-    if (v9)
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    shouldLogToDisk = [mEMORY[0x277D69B38] shouldLogToDisk];
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (shouldLogToDisk)
     {
-      v8 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v8 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v8)
+    if (shouldLog)
     {
       v11 = objc_opt_class();
       v25 = 138543618;
       v26 = v11;
       v27 = 2112;
-      v28 = a3;
+      keyCopy = key;
       LODWORD(v17) = 22;
       v12 = _os_log_send_and_compose_impl();
       if (v12)
@@ -487,7 +487,7 @@ intptr_t __50__ISNetworkObserver_copyValueForCarrierBundleKey___block_invoke_2(u
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)endObservingDownloadQueue:(id)a3
+- (void)endObservingDownloadQueue:(id)queue
 {
   v10 = 0;
   v11 = &v10;
@@ -503,7 +503,7 @@ intptr_t __50__ISNetworkObserver_copyValueForCarrierBundleKey___block_invoke_2(u
   v5[2] = __47__ISNetworkObserver_endObservingDownloadQueue___block_invoke;
   v5[3] = &unk_27A670D88;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = queue;
   v5[6] = &v10;
   v5[7] = &v6;
   dispatch_sync(dispatchQueue, v5);
@@ -545,8 +545,8 @@ uint64_t __47__ISNetworkObserver_endObservingDownloadQueue___block_invoke(uint64
     [(ISNetworkObserver *)self _postUsageChangedToValue:0];
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:*MEMORY[0x277D6A610] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D6A610] object:0];
   _Block_object_dispose(&v6, 8);
 }
 
@@ -614,21 +614,21 @@ double __46__ISNetworkObserver_lastNetworkTypeChangeTime__block_invoke(uint64_t 
   {
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v2 BOOLValue];
+      bOOLValue = [v2 BOOLValue];
     }
 
     else
     {
-      v3 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)dataStatusIndicator
@@ -661,51 +661,51 @@ id __40__ISNetworkObserver_dataStatusIndicator__block_invoke(uint64_t a1)
 
 - (BOOL)isWiFiEnabled
 {
-  v2 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
 
-  return [v2 isWiFiEnabled];
+  return [mEMORY[0x277CEC5B8] isWiFiEnabled];
 }
 
 - (NSString)mobileSubscriberCountryCode
 {
-  v2 = [MEMORY[0x277D69D20] sharedController];
+  mEMORY[0x277D69D20] = [MEMORY[0x277D69D20] sharedController];
 
-  return [v2 mobileSubscriberCountryCode];
+  return [mEMORY[0x277D69D20] mobileSubscriberCountryCode];
 }
 
 - (NSString)mobileSubscriberNetworkCode
 {
-  v2 = [MEMORY[0x277D69D20] sharedController];
+  mEMORY[0x277D69D20] = [MEMORY[0x277D69D20] sharedController];
 
-  return [v2 mobileSubscriberNetworkCode];
+  return [mEMORY[0x277D69D20] mobileSubscriberNetworkCode];
 }
 
 - (NSString)modemRegistrationStatus
 {
-  v2 = [MEMORY[0x277D69D20] sharedController];
+  mEMORY[0x277D69D20] = [MEMORY[0x277D69D20] sharedController];
 
-  return [v2 registrationStatus];
+  return [mEMORY[0x277D69D20] registrationStatus];
 }
 
 - (NSString)operatorName
 {
-  v2 = [MEMORY[0x277D69D20] sharedController];
+  mEMORY[0x277D69D20] = [MEMORY[0x277D69D20] sharedController];
 
-  return [v2 operatorName];
+  return [mEMORY[0x277D69D20] operatorName];
 }
 
 - (NSString)providerName
 {
-  v2 = [MEMORY[0x277D69D20] sharedController];
+  mEMORY[0x277D69D20] = [MEMORY[0x277D69D20] sharedController];
 
-  return [v2 providerName];
+  return [mEMORY[0x277D69D20] providerName];
 }
 
 - (NSString)phoneNumber
 {
-  v2 = [MEMORY[0x277D69D20] sharedController];
+  mEMORY[0x277D69D20] = [MEMORY[0x277D69D20] sharedController];
 
-  return [v2 phoneNumber];
+  return [mEMORY[0x277D69D20] phoneNumber];
 }
 
 - (void)reloadNetworkType
@@ -719,7 +719,7 @@ id __40__ISNetworkObserver_dataStatusIndicator__block_invoke(uint64_t a1)
   dispatch_sync(dispatchQueue, block);
 }
 
-- (void)setNetworkType:(int64_t)a3
+- (void)setNetworkType:(int64_t)type
 {
   v8 = 0;
   v9 = &v8;
@@ -732,12 +732,12 @@ id __40__ISNetworkObserver_dataStatusIndicator__block_invoke(uint64_t a1)
   block[3] = &unk_27A670DB0;
   block[4] = self;
   block[5] = &v8;
-  block[6] = a3;
+  block[6] = type;
   dispatch_sync(dispatchQueue, block);
   v6 = v9[3];
-  if (v6 != a3)
+  if (v6 != type)
   {
-    [(ISNetworkObserver *)self _postTypeChangedNotificationFromValue:v6 toValue:a3];
+    [(ISNetworkObserver *)self _postTypeChangedNotificationFromValue:v6 toValue:type];
   }
 
   _Block_object_dispose(&v8, 8);
@@ -750,17 +750,17 @@ uint64_t __36__ISNetworkObserver_setNetworkType___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)downloadQueueNetworkUsageChanged:(id)a3
+- (void)downloadQueueNetworkUsageChanged:(id)changed
 {
-  v5 = [(ISNetworkObserver *)self isUsingNetwork];
-  if (v5 == [a3 isUsingNetwork])
+  isUsingNetwork = [(ISNetworkObserver *)self isUsingNetwork];
+  if (isUsingNetwork == [changed isUsingNetwork])
   {
 
-    [(ISNetworkObserver *)self _postUsageChangedToValue:v5];
+    [(ISNetworkObserver *)self _postUsageChangedToValue:isUsingNetwork];
   }
 }
 
-- (void)_applicationForegroundNotification:(id)a3
+- (void)_applicationForegroundNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -779,7 +779,7 @@ uint64_t __56__ISNetworkObserver__applicationForegroundNotification___block_invo
   return [v2 _reloadNetworkType];
 }
 
-- (void)_telephonyOperatorNameDidChangeNotification:(id)a3
+- (void)_telephonyOperatorNameDidChangeNotification:(id)notification
 {
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -798,7 +798,7 @@ uint64_t __65__ISNetworkObserver__telephonyOperatorNameDidChangeNotification___b
   return [v2 postNotificationName:@"ISNetworkObserverOperatorNameChangedNotification" object:v3];
 }
 
-- (void)_telephonyRegistrationDidChangeNotification:(id)a3
+- (void)_telephonyRegistrationDidChangeNotification:(id)notification
 {
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -817,22 +817,22 @@ uint64_t __65__ISNetworkObserver__telephonyRegistrationDidChangeNotification___b
   return [v2 postNotificationName:@"ISNetworkObserverModemRegistrationChanged" object:v3];
 }
 
-- (void)_handleTelephonyNotificationWithName:(__CFString *)a3 userInfo:(__CFDictionary *)a4
+- (void)_handleTelephonyNotificationWithName:(__CFString *)name userInfo:(__CFDictionary *)info
 {
-  if (CFStringCompare(a3, *MEMORY[0x277CC3CB0], 0) == kCFCompareEqualTo)
+  if (CFStringCompare(name, *MEMORY[0x277CC3CB0], 0) == kCFCompareEqualTo)
   {
 
-    self->_dataStatusIndicator = CFDictionaryGetValue(a4, *MEMORY[0x277CC3C48]);
+    self->_dataStatusIndicator = CFDictionaryGetValue(info, *MEMORY[0x277CC3C48]);
 
     [(ISNetworkObserver *)self _reloadNetworkType];
   }
 }
 
-- (void)_copyConnectionDataStatus:(id)a3
+- (void)_copyConnectionDataStatus:(id)status
 {
   telephonyServer = self->_telephonyServer;
   _CTServerConnectionCopyDataStatus();
-  (*(a3 + 2))(a3, 0, 0);
+  (*(status + 2))(status, 0, 0);
 }
 
 - (unsigned)_currentNetworkReachabilityFlags
@@ -873,7 +873,7 @@ uint64_t __65__ISNetworkObserver__telephonyRegistrationDidChangeNotification___b
   return result;
 }
 
-- (int64_t)_networkTypeFromDataIndicator:(id)a3
+- (int64_t)_networkTypeFromDataIndicator:(id)indicator
 {
   v4 = 0;
   v7[24] = *MEMORY[0x277D85DE8];
@@ -901,7 +901,7 @@ uint64_t __65__ISNetworkObserver__telephonyRegistrationDidChangeNotification___b
   v7[21] = 7;
   v7[22] = *MEMORY[0x277CC3CA0];
   v7[23] = 8;
-  while (![a3 isEqualToString:v7[v4]])
+  while (![indicator isEqualToString:v7[v4]])
   {
     v4 += 2;
     if (v4 == 24)
@@ -917,19 +917,19 @@ LABEL_6:
   return result;
 }
 
-- (int64_t)_networkTypeForReachabilityFlags:(unsigned int)a3
+- (int64_t)_networkTypeForReachabilityFlags:(unsigned int)flags
 {
-  if ((a3 & 2) != 0)
+  if ((flags & 2) != 0)
   {
     v6 = CFPreferencesCopyAppValue(@"SSNetworkTypeOverride", *MEMORY[0x277D6A708]);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 integerValue];
+      integerValue = [v6 integerValue];
     }
 
     else
     {
-      if ((a3 & 0x40000) == 0)
+      if ((flags & 0x40000) == 0)
       {
         v3 = 1000;
 LABEL_9:
@@ -937,32 +937,32 @@ LABEL_9:
         return v3;
       }
 
-      v7 = [(ISNetworkObserver *)self _networkTypeFromDataIndicator:[(ISNetworkObserver *)self _dataStatusIndicator]];
+      integerValue = [(ISNetworkObserver *)self _networkTypeFromDataIndicator:[(ISNetworkObserver *)self _dataStatusIndicator]];
     }
 
-    v3 = v7;
+    v3 = integerValue;
     goto LABEL_9;
   }
 
   return 0;
 }
 
-- (void)_postReachabilityFlagsChangedNotificationFromValue:(unsigned int)a3 toValue:(unsigned int)a4
+- (void)_postReachabilityFlagsChangedNotificationFromValue:(unsigned int)value toValue:(unsigned int)toValue
 {
   v7 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:value];
   v9 = *MEMORY[0x277CCA300];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:toValue];
   v11 = [v7 initWithObjectsAndKeys:{v8, v9, v10, *MEMORY[0x277CCA2F0], 0}];
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
 }
 
-- (void)_postTypeChangedNotificationFromValue:(int64_t)a3 toValue:(int64_t)a4
+- (void)_postTypeChangedNotificationFromValue:(int64_t)value toValue:(int64_t)toValue
 {
   v7 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:value];
   v9 = *MEMORY[0x277CCA300];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:toValue];
   v11 = [v7 initWithObjectsAndKeys:{v8, v9, v10, *MEMORY[0x277CCA2F0], 0}];
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
 }
@@ -1020,18 +1020,18 @@ void __47__ISNetworkObserver__reloadDataStatusIndicator__block_invoke(uint64_t a
 
 - (void)_reloadNetworkType
 {
-  v3 = [(ISNetworkObserver *)self _currentNetworkReachabilityFlags];
+  _currentNetworkReachabilityFlags = [(ISNetworkObserver *)self _currentNetworkReachabilityFlags];
 
-  [(ISNetworkObserver *)self _reloadNetworkTypeWithReachabilityFlags:v3];
+  [(ISNetworkObserver *)self _reloadNetworkTypeWithReachabilityFlags:_currentNetworkReachabilityFlags];
 }
 
-- (void)_reloadNetworkTypeWithReachabilityFlags:(unsigned int)a3
+- (void)_reloadNetworkTypeWithReachabilityFlags:(unsigned int)flags
 {
   v5 = [(ISNetworkObserver *)self _networkTypeForReachabilityFlags:?];
   v6 = [(ISNetworkObserver *)self _setNetworkType:v5];
   networkReachabilityFlags = self->_networkReachabilityFlags;
-  self->_networkReachabilityFlags = a3;
-  if (v6 != v5 || networkReachabilityFlags != a3)
+  self->_networkReachabilityFlags = flags;
+  if (v6 != v5 || networkReachabilityFlags != flags)
   {
     notificationQueue = self->_notificationQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -1042,9 +1042,9 @@ void __47__ISNetworkObserver__reloadDataStatusIndicator__block_invoke(uint64_t a
     block[4] = self;
     block[5] = v6;
     block[6] = v5;
-    v14 = networkReachabilityFlags != a3;
+    v14 = networkReachabilityFlags != flags;
     v11 = networkReachabilityFlags;
-    v12 = a3;
+    flagsCopy = flags;
     dispatch_async(notificationQueue, block);
   }
 }
@@ -1069,32 +1069,32 @@ uint64_t __61__ISNetworkObserver__reloadNetworkTypeWithReachabilityFlags___block
   return result;
 }
 
-- (int64_t)_setNetworkType:(int64_t)a3
+- (int64_t)_setNetworkType:(int64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
   networkType = self->_networkType;
-  if (networkType != a3)
+  if (networkType != type)
   {
-    self->_networkType = a3;
+    self->_networkType = type;
     self->_lastNetworkTypeChangeTime = CFAbsoluteTimeGetCurrent();
-    v5 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v5)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v5 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v7 &= 2u;
     }

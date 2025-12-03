@@ -1,36 +1,36 @@
 @interface NCNotificationRequestFullScreenContentProvider
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)importantAttributedTextWithImageConfiguration:(id)a3 importantAdornmentEligibleOptions:(unint64_t)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)importantAttributedTextWithImageConfiguration:(id)configuration importantAdornmentEligibleOptions:(unint64_t)options;
 - (id)importantText;
 - (id)thumbnail;
-- (void)loadImageAssetsWithCompletion:(id)a3;
+- (void)loadImageAssetsWithCompletion:(id)completion;
 @end
 
 @implementation NCNotificationRequestFullScreenContentProvider
 
-- (void)loadImageAssetsWithCompletion:(id)a3
+- (void)loadImageAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_imageAssetLoadingComplete)
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_imageAssetLoadingComplete)
   {
-    v5->_imageAssetLoadingComplete = 1;
+    selfCopy->_imageAssetLoadingComplete = 1;
     Serial = BSDispatchQueueCreateSerial();
-    objc_initWeak(&location, v5);
+    objc_initWeak(&location, selfCopy);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __80__NCNotificationRequestFullScreenContentProvider_loadImageAssetsWithCompletion___block_invoke;
     block[3] = &unk_27836F4C0;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(Serial, block);
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __80__NCNotificationRequestFullScreenContentProvider_loadImageAssetsWithCompletion___block_invoke(uint64_t a1)
@@ -60,11 +60,11 @@ void __80__NCNotificationRequestFullScreenContentProvider_loadImageAssetsWithCom
   (*(v1 + 16))(v1, v2 != 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = NCNotificationRequestFullScreenContentProvider;
-  v4 = [(NCNotificationRequestCoalescingContentProvider *)&v8 copyWithZone:a3];
+  v4 = [(NCNotificationRequestCoalescingContentProvider *)&v8 copyWithZone:zone];
   v4[104] = self->_imageAssetLoadingComplete;
   v5 = [(UIImage *)self->_fullScreenThumbnail copy];
   v6 = *(v4 + 14);
@@ -75,44 +75,44 @@ void __80__NCNotificationRequestFullScreenContentProvider_loadImageAssetsWithCom
 
 - (id)importantText
 {
-  v3 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-  v4 = [v3 interruptionLevel];
+  notificationRequest = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+  interruptionLevel = [notificationRequest interruptionLevel];
 
-  if (v4 == 2)
+  if (interruptionLevel == 2)
   {
     v5 = @"TIME_SENSITIVE_TEXT";
 LABEL_5:
     v8 = NCUserNotificationsUIKitFrameworkBundle();
     v9 = [v8 localizedStringForKey:v5 value:&stru_282FE84F8 table:0];
-    v10 = [v9 localizedLowercaseString];
+    localizedLowercaseString = [v9 localizedLowercaseString];
 
     goto LABEL_7;
   }
 
-  v6 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-  v7 = [v6 interruptionLevel];
+  notificationRequest2 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+  interruptionLevel2 = [notificationRequest2 interruptionLevel];
 
-  if (v7 == 3)
+  if (interruptionLevel2 == 3)
   {
     v5 = @"CRITICAL_TEXT";
     goto LABEL_5;
   }
 
-  v10 = 0;
+  localizedLowercaseString = 0;
 LABEL_7:
 
-  return v10;
+  return localizedLowercaseString;
 }
 
-- (id)importantAttributedTextWithImageConfiguration:(id)a3 importantAdornmentEligibleOptions:(unint64_t)a4
+- (id)importantAttributedTextWithImageConfiguration:(id)configuration importantAdornmentEligibleOptions:(unint64_t)options
 {
-  v5 = a3;
-  v6 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-  v7 = [v6 interruptionLevel];
+  configurationCopy = configuration;
+  notificationRequest = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+  interruptionLevel = [notificationRequest interruptionLevel];
 
-  if (v7 == 3)
+  if (interruptionLevel == 3)
   {
-    v8 = [(NCNotificationRequestContentProvider *)self _criticalAlertIconAttributedStringWithImageConfiguration:v5];
+    v8 = [(NCNotificationRequestContentProvider *)self _criticalAlertIconAttributedStringWithImageConfiguration:configurationCopy];
   }
 
   else
@@ -125,22 +125,22 @@ LABEL_7:
 
 - (id)thumbnail
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_imageAssetLoadingComplete)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_imageAssetLoadingComplete)
   {
-    v3 = v2->_fullScreenThumbnail;
+    thumbnail = selfCopy->_fullScreenThumbnail;
   }
 
   else
   {
-    v6.receiver = v2;
+    v6.receiver = selfCopy;
     v6.super_class = NCNotificationRequestFullScreenContentProvider;
-    v3 = [(NCNotificationRequestCoalescingContentProvider *)&v6 thumbnail];
+    thumbnail = [(NCNotificationRequestCoalescingContentProvider *)&v6 thumbnail];
   }
 
-  v4 = v3;
-  objc_sync_exit(v2);
+  v4 = thumbnail;
+  objc_sync_exit(selfCopy);
 
   return v4;
 }

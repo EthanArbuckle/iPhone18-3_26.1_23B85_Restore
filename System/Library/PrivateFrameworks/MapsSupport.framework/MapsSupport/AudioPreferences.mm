@@ -1,32 +1,32 @@
 @interface AudioPreferences
-- (AudioPreferences)initWithCopy:(id)a3;
-- (AudioPreferences)initWithDefaults:(id)a3;
+- (AudioPreferences)initWithCopy:(id)copy;
+- (AudioPreferences)initWithDefaults:(id)defaults;
 - (BOOL)_migratedMutedValue;
 - (id)_values;
 - (id)writtenDefaults;
 - (unint64_t)cyclingVoiceGuidance;
 - (unint64_t)drivingVoiceGuidance;
-- (unint64_t)guidanceLevelForTransportType:(int)a3;
+- (unint64_t)guidanceLevelForTransportType:(int)type;
 - (unint64_t)walkingVoiceGuidance;
 - (void)_commonInit;
 - (void)_migrateVolumeSettings;
 - (void)dealloc;
 - (void)loadValuesFromDefaults;
-- (void)setCyclingVoiceGuidance:(unint64_t)a3;
-- (void)setDrivingVoiceGuidance:(unint64_t)a3;
-- (void)setGuidanceLevel:(unint64_t)a3 forTransportType:(int)a4;
-- (void)setWalkingVoiceGuidance:(unint64_t)a3;
+- (void)setCyclingVoiceGuidance:(unint64_t)guidance;
+- (void)setDrivingVoiceGuidance:(unint64_t)guidance;
+- (void)setGuidanceLevel:(unint64_t)level forTransportType:(int)type;
+- (void)setWalkingVoiceGuidance:(unint64_t)guidance;
 - (void)synchronize;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation AudioPreferences
 
-- (AudioPreferences)initWithDefaults:(id)a3
+- (AudioPreferences)initWithDefaults:(id)defaults
 {
   v6.receiver = self;
   v6.super_class = AudioPreferences;
-  v3 = [(WatchSyncedPreferences *)&v6 initWithDefaults:a3];
+  v3 = [(WatchSyncedPreferences *)&v6 initWithDefaults:defaults];
   v4 = v3;
   if (v3)
   {
@@ -36,27 +36,27 @@
   return v4;
 }
 
-- (AudioPreferences)initWithCopy:(id)a3
+- (AudioPreferences)initWithCopy:(id)copy
 {
-  v4 = a3;
+  copyCopy = copy;
   v10.receiver = self;
   v10.super_class = AudioPreferences;
-  v5 = [(WatchSyncedPreferences *)&v10 initWithCopy:v4];
+  v5 = [(WatchSyncedPreferences *)&v10 initWithCopy:copyCopy];
   if (v5)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4 && (isKindOfClass & 1) != 0)
+    if (copyCopy && (isKindOfClass & 1) != 0)
     {
-      objc_storeStrong(&v5->_drivingModernPreference, v4[6]);
-      v7 = v4;
+      objc_storeStrong(&v5->_drivingModernPreference, copyCopy[6]);
+      v7 = copyCopy;
       objc_storeStrong(&v5->_walkingModernPreference, v7[7]);
       objc_storeStrong(&v5->_cyclingModernPreference, v7[8]);
       v5->_drivingVoiceGuidance = [v7 drivingVoiceGuidance];
       v5->_walkingVoiceGuidance = [v7 walkingVoiceGuidance];
-      v8 = [v7 cyclingVoiceGuidance];
+      cyclingVoiceGuidance = [v7 cyclingVoiceGuidance];
 
-      v5->_cyclingVoiceGuidance = v8;
+      v5->_cyclingVoiceGuidance = cyclingVoiceGuidance;
     }
 
     [(AudioPreferences *)v5 _commonInit];
@@ -122,10 +122,10 @@
 
 - (void)_migrateVolumeSettings
 {
-  v3 = [(AudioPreferences *)self _migratedMutedValue];
+  _migratedMutedValue = [(AudioPreferences *)self _migratedMutedValue];
   v4 = sub_10005329C();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (_migratedMutedValue)
   {
     if (v5)
     {
@@ -140,8 +140,8 @@
   {
     if (v5)
     {
-      v7 = [(WatchSyncedPreferences *)self defaults];
-      v8 = [v7 objectForKey:@"VoiceIsMute"];
+      defaults = [(WatchSyncedPreferences *)self defaults];
+      v8 = [defaults objectForKey:@"VoiceIsMute"];
       v12 = 138412290;
       v13 = v8;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Migrating old volume setting to full, isMute: %@", &v12, 0xCu);
@@ -164,21 +164,21 @@
 
 - (BOOL)_migratedMutedValue
 {
-  v2 = [(WatchSyncedPreferences *)self defaults];
-  v3 = [v2 objectForKey:@"VoiceIsMute"];
+  defaults = [(WatchSyncedPreferences *)self defaults];
+  v3 = [defaults objectForKey:@"VoiceIsMute"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(defaults) = [v3 BOOLValue];
+  return defaults;
 }
 
-- (unint64_t)guidanceLevelForTransportType:(int)a3
+- (unint64_t)guidanceLevelForTransportType:(int)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return [(AudioPreferences *)self walkingVoiceGuidance];
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     return [(AudioPreferences *)self cyclingVoiceGuidance];
   }
@@ -186,28 +186,28 @@
   return [(AudioPreferences *)self drivingVoiceGuidance];
 }
 
-- (void)setGuidanceLevel:(unint64_t)a3 forTransportType:(int)a4
+- (void)setGuidanceLevel:(unint64_t)level forTransportType:(int)type
 {
-  if (a4 == 2)
+  if (type == 2)
   {
-    [(AudioPreferences *)self setWalkingVoiceGuidance:a3];
+    [(AudioPreferences *)self setWalkingVoiceGuidance:level];
   }
 
-  else if (a4 == 3)
+  else if (type == 3)
   {
-    [(AudioPreferences *)self setCyclingVoiceGuidance:a3];
+    [(AudioPreferences *)self setCyclingVoiceGuidance:level];
   }
 
   else
   {
-    [(AudioPreferences *)self setDrivingVoiceGuidance:a3];
+    [(AudioPreferences *)self setDrivingVoiceGuidance:level];
   }
 }
 
 - (id)writtenDefaults
 {
-  v2 = [(WatchSyncedPreferences *)self defaults];
-  v6[0] = v2;
+  defaults = [(WatchSyncedPreferences *)self defaults];
+  v6[0] = defaults;
   v3 = +[NSUserDefaults __maps_groupUserDefaults];
   v6[1] = v3;
   v4 = [NSArray arrayWithObjects:v6 count:2];
@@ -217,18 +217,18 @@
 
 - (void)loadValuesFromDefaults
 {
-  v3 = [(WatchSyncedPreferences *)self defaults];
-  v4 = [v3 objectForKey:@"NavigationVoiceGuidanceLevelDriving"];
+  defaults = [(WatchSyncedPreferences *)self defaults];
+  v4 = [defaults objectForKey:@"NavigationVoiceGuidanceLevelDriving"];
   drivingModernPreference = self->_drivingModernPreference;
   self->_drivingModernPreference = v4;
 
-  v6 = [(WatchSyncedPreferences *)self defaults];
-  v7 = [v6 objectForKey:@"NavigationVoiceGuidanceLevelWalking"];
+  defaults2 = [(WatchSyncedPreferences *)self defaults];
+  v7 = [defaults2 objectForKey:@"NavigationVoiceGuidanceLevelWalking"];
   walkingModernPreference = self->_walkingModernPreference;
   self->_walkingModernPreference = v7;
 
-  v9 = [(WatchSyncedPreferences *)self defaults];
-  v10 = [v9 objectForKey:@"NavigationVoiceGuidanceLevelCycling"];
+  defaults3 = [(WatchSyncedPreferences *)self defaults];
+  v10 = [defaults3 objectForKey:@"NavigationVoiceGuidanceLevelCycling"];
   cyclingModernPreference = self->_cyclingModernPreference;
   self->_cyclingModernPreference = v10;
 
@@ -405,23 +405,23 @@
   GEOConfigSetInteger();
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == LODWORD(NavigationConfig_SpokenGuidanceLevel_Driving[0]) && a3.var1 == NavigationConfig_SpokenGuidanceLevel_Driving[1])
+  if (key.var0 == LODWORD(NavigationConfig_SpokenGuidanceLevel_Driving[0]) && key.var1 == NavigationConfig_SpokenGuidanceLevel_Driving[1])
   {
     Integer = GEOConfigGetInteger();
 
     [(AudioPreferences *)self setDrivingVoiceGuidance:Integer];
   }
 
-  else if (a3.var0 == LODWORD(NavigationConfig_SpokenGuidanceLevel_Walking[0]) && a3.var1 == NavigationConfig_SpokenGuidanceLevel_Walking[1])
+  else if (key.var0 == LODWORD(NavigationConfig_SpokenGuidanceLevel_Walking[0]) && key.var1 == NavigationConfig_SpokenGuidanceLevel_Walking[1])
   {
     v8 = GEOConfigGetInteger();
 
     [(AudioPreferences *)self setWalkingVoiceGuidance:v8];
   }
 
-  else if (a3.var0 == LODWORD(NavigationConfig_SpokenGuidanceLevel_Cycling[0]) && a3.var1 == NavigationConfig_SpokenGuidanceLevel_Cycling[1])
+  else if (key.var0 == LODWORD(NavigationConfig_SpokenGuidanceLevel_Cycling[0]) && key.var1 == NavigationConfig_SpokenGuidanceLevel_Cycling[1])
   {
     v9 = GEOConfigGetInteger();
 
@@ -429,45 +429,45 @@
   }
 }
 
-- (void)setDrivingVoiceGuidance:(unint64_t)a3
+- (void)setDrivingVoiceGuidance:(unint64_t)guidance
 {
   v5 = [NSNumber numberWithUnsignedInteger:?];
   drivingModernPreference = self->_drivingModernPreference;
   self->_drivingModernPreference = v5;
 
-  if (self->_drivingVoiceGuidance != a3)
+  if (self->_drivingVoiceGuidance != guidance)
   {
-    self->_drivingVoiceGuidance = a3;
+    self->_drivingVoiceGuidance = guidance;
     v7 = NavigationConfig_SpokenGuidanceLevel_Driving[1];
 
     GEOConfigSetInteger();
   }
 }
 
-- (void)setWalkingVoiceGuidance:(unint64_t)a3
+- (void)setWalkingVoiceGuidance:(unint64_t)guidance
 {
   v5 = [NSNumber numberWithUnsignedInteger:?];
   walkingModernPreference = self->_walkingModernPreference;
   self->_walkingModernPreference = v5;
 
-  if (self->_walkingVoiceGuidance != a3)
+  if (self->_walkingVoiceGuidance != guidance)
   {
-    self->_walkingVoiceGuidance = a3;
+    self->_walkingVoiceGuidance = guidance;
     v7 = NavigationConfig_SpokenGuidanceLevel_Walking[1];
 
     GEOConfigSetInteger();
   }
 }
 
-- (void)setCyclingVoiceGuidance:(unint64_t)a3
+- (void)setCyclingVoiceGuidance:(unint64_t)guidance
 {
   v5 = [NSNumber numberWithUnsignedInteger:?];
   cyclingModernPreference = self->_cyclingModernPreference;
   self->_cyclingModernPreference = v5;
 
-  if (self->_cyclingVoiceGuidance != a3)
+  if (self->_cyclingVoiceGuidance != guidance)
   {
-    self->_cyclingVoiceGuidance = a3;
+    self->_cyclingVoiceGuidance = guidance;
     v7 = NavigationConfig_SpokenGuidanceLevel_Cycling[1];
 
     GEOConfigSetInteger();

@@ -1,5 +1,5 @@
 @interface HDAppAnalyticsAcceptanceStateSyncEntity
-+ (BOOL)updateDataWithStateStorage:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
++ (BOOL)updateDataWithStateStorage:(id)storage profile:(id)profile transaction:(id)transaction error:(id *)error;
 + (HDStateSyncEntitySchema)stateEntitySchema;
 - (HDAppAnalyticsAcceptanceStateSyncEntity)init;
 @end
@@ -18,12 +18,12 @@
   return v3;
 }
 
-+ (BOOL)updateDataWithStateStorage:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)updateDataWithStateStorage:(id)storage profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   swift_unknownObjectRetain();
-  v9 = a4;
-  v10 = a5;
-  sub_2293BAAB4(a3, v9, v10);
+  profileCopy = profile;
+  transactionCopy = transaction;
+  sub_2293BAAB4(storage, profileCopy, transactionCopy);
 
   swift_unknownObjectRelease();
   return 1;

@@ -1,25 +1,25 @@
 @interface TBAnalytics
-+ (void)captureEvent:(id)a3;
++ (void)captureEvent:(id)event;
 @end
 
 @implementation TBAnalytics
 
-+ (void)captureEvent:(id)a3
++ (void)captureEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 eventName];
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  eventName = [eventCopy eventName];
+  v5 = eventName;
+  if (eventName)
   {
-    if (v3)
+    if (eventCopy)
     {
-      v6 = v3;
+      v6 = eventCopy;
       AnalyticsSendEventLazy();
     }
 
     else
     {
-      NSLog(&cfstr_SEventIsNilFor.isa, "+[TBAnalytics captureEvent:]", v4);
+      NSLog(&cfstr_SEventIsNilFor.isa, "+[TBAnalytics captureEvent:]", eventName);
     }
   }
 

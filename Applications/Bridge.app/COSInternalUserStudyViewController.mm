@@ -2,7 +2,7 @@
 + (BOOL)controllerNeedsToRun;
 + (BOOL)hasVideoFile;
 + (BOOL)isBeamBridgeReachable;
-+ (BOOL)isDeviceOfParticularInterest:(id)a3;
++ (BOOL)isDeviceOfParticularInterest:(id)interest;
 - (COSInternalUserStudyViewController)init;
 - (double)noHWDetailOffset;
 - (id)alternateButtonTitle;
@@ -14,15 +14,15 @@
 - (void)_playIfLoaded;
 - (void)_teardownPlayback;
 - (void)_uploadAssetAndComplete;
-- (void)addItemWithURL:(id)a3 completion:(id)a4;
-- (void)alternateButtonPressed:(id)a3;
-- (void)applyConfirmedOptin:(BOOL)a3;
+- (void)addItemWithURL:(id)l completion:(id)completion;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)applyConfirmedOptin:(BOOL)optin;
 - (void)completePane;
 - (void)confirmDockUpload;
-- (void)learnMoreButtonPressed:(id)a3;
-- (void)replayMovie:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)learnMoreButtonPressed:(id)pressed;
+- (void)replayMovie:(id)movie;
+- (void)suggestedButtonPressed:(id)pressed;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -32,9 +32,9 @@
 + (BOOL)isBeamBridgeReachable
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 isBeamBridgeReachable];
+  isBeamBridgeReachable = [v2 isBeamBridgeReachable];
 
-  return v3;
+  return isBeamBridgeReachable;
 }
 
 + (BOOL)controllerNeedsToRun
@@ -60,15 +60,15 @@
     }
 
     v7 = +[COSInternalUserStudyDataManager sharedManager];
-    v8 = [v7 detectedWristChoice];
+    detectedWristChoice = [v7 detectedWristChoice];
 
     v9 = +[COSInternalUserStudyDataManager sharedManager];
-    v10 = [v9 wristChoice];
+    wristChoice = [v9 wristChoice];
 
     v11 = pbb_setup_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [NSNumber numberWithInteger:v8];
+      v12 = [NSNumber numberWithInteger:detectedWristChoice];
       v21 = 138412290;
       v22 = v12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Detected WristChoice: %@", &v21, 0xCu);
@@ -77,7 +77,7 @@
     v13 = pbb_setup_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [NSNumber numberWithInteger:v10];
+      v14 = [NSNumber numberWithInteger:wristChoice];
       v21 = 138412290;
       v22 = v14;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "WristChoice: %@", &v21, 0xCu);
@@ -115,11 +115,11 @@
       *&v24[4] = 1024;
       *&v24[6] = v18;
       LOWORD(v25) = 1024;
-      *(&v25 + 2) = v8 < 5;
+      *(&v25 + 2) = detectedWristChoice < 5;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%s: Base Criteria Met: %d / Interesting Device: %d / Valuable Sample: %d", &v21, 0x1Eu);
     }
 
-    if (v8 < 5)
+    if (detectedWristChoice < 5)
     {
       LOBYTE(v2) = v16 & v18;
     }
@@ -133,20 +133,20 @@
   return v2;
 }
 
-+ (BOOL)isDeviceOfParticularInterest:(id)a3
++ (BOOL)isDeviceOfParticularInterest:(id)interest
 {
-  v3 = a3;
-  v4 = [v3 valueForProperty:NRDevicePropertyProductType];
+  interestCopy = interest;
+  v4 = [interestCopy valueForProperty:NRDevicePropertyProductType];
   v5 = [v4 componentsSeparatedByString:{@", "}];
-  v6 = [v5 firstObject];
-  v7 = [v6 isEqualToString:@"Watch7"];
+  firstObject = [v5 firstObject];
+  v7 = [firstObject isEqualToString:@"Watch7"];
 
   if (v7)
   {
-    v8 = [v5 lastObject];
-    v9 = [v8 integerValue];
+    lastObject = [v5 lastObject];
+    integerValue = [lastObject integerValue];
 
-    v10 = v9 > 4;
+    v10 = integerValue > 4;
   }
 
   else
@@ -154,7 +154,7 @@
     v10 = 0;
   }
 
-  v11 = [PBBridgeWatchAttributeController materialFromDevice:v3];
+  v11 = [PBBridgeWatchAttributeController materialFromDevice:interestCopy];
   v12 = pbb_setup_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -252,19 +252,19 @@
   [(UIView *)v7 setBackgroundColor:v8];
 
   [(UIView *)self->_movieView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(COSInternalUserStudyViewController *)self contentView];
-  [v9 addSubview:self->_movieView];
+  contentView = [(COSInternalUserStudyViewController *)self contentView];
+  [contentView addSubview:self->_movieView];
 
-  v10 = [(COSInternalUserStudyViewController *)self contentView];
-  v11 = [v10 topAnchor];
-  v12 = [(UIView *)self->_movieView topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  contentView2 = [(COSInternalUserStudyViewController *)self contentView];
+  topAnchor = [contentView2 topAnchor];
+  topAnchor2 = [(UIView *)self->_movieView topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v13 setActive:1];
 
-  v14 = [(COSInternalUserStudyViewController *)self contentView];
-  v15 = [v14 bottomAnchor];
-  v16 = [(UIView *)self->_movieView bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  contentView3 = [(COSInternalUserStudyViewController *)self contentView];
+  bottomAnchor = [contentView3 bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_movieView bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v17 setActive:1];
 
   *&v33.m11 = vdupq_n_s64(0x4064000000000000uLL);
@@ -273,19 +273,19 @@
   *&v33.m23 = *&v33.m13;
   BPSScreenValueGetRelevantValue();
   v19 = v18;
-  v20 = [(UIView *)self->_movieView heightAnchor];
-  v21 = [v20 constraintEqualToConstant:v19];
+  heightAnchor = [(UIView *)self->_movieView heightAnchor];
+  v21 = [heightAnchor constraintEqualToConstant:v19];
   [v21 setActive:1];
 
-  v22 = [(UIView *)self->_movieView widthAnchor];
-  v23 = [(UIView *)self->_movieView heightAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 multiplier:0.5625];
+  widthAnchor = [(UIView *)self->_movieView widthAnchor];
+  heightAnchor2 = [(UIView *)self->_movieView heightAnchor];
+  v24 = [widthAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.5625];
   [v24 setActive:1];
 
-  v25 = [(UIView *)self->_movieView centerXAnchor];
-  v26 = [(COSInternalUserStudyViewController *)self contentView];
-  v27 = [v26 centerXAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  centerXAnchor = [(UIView *)self->_movieView centerXAnchor];
+  contentView4 = [(COSInternalUserStudyViewController *)self contentView];
+  centerXAnchor2 = [contentView4 centerXAnchor];
+  v28 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v28 setActive:1];
 
   v29 = [AVPlayerLayer playerLayerWithPlayer:self->_player];
@@ -295,18 +295,18 @@
   v31 = self->_playerLayer;
   CATransform3DMakeRotation(&v33, 1.57079633, 0.0, 0.0, 1.0);
   [(AVPlayerLayer *)v31 setTransform:&v33];
-  v32 = [(UIView *)self->_movieView layer];
-  [v32 addSublayer:self->_playerLayer];
+  layer = [(UIView *)self->_movieView layer];
+  [layer addSublayer:self->_playerLayer];
 
   objc_destroyWeak(&v35);
   objc_destroyWeak(&location);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = COSInternalUserStudyViewController;
-  [(COSInternalUserStudyViewController *)&v4 viewDidDisappear:a3];
+  [(COSInternalUserStudyViewController *)&v4 viewDidDisappear:disappear];
   [(COSInternalUserStudyViewController *)self _teardownPlayback];
 }
 
@@ -320,22 +320,22 @@
   [(AVPlayerLayer *)playerLayer setFrame:?];
 }
 
-- (void)addItemWithURL:(id)a3 completion:(id)a4
+- (void)addItemWithURL:(id)l completion:(id)completion
 {
-  v6 = a4;
-  [AVURLAsset assetWithURL:a3];
+  completionCopy = completion;
+  [AVURLAsset assetWithURL:l];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10004D3DC;
   v9[3] = &unk_100269308;
-  v11 = self;
-  v10 = v12 = v6;
-  v7 = v6;
+  selfCopy = self;
+  v10 = v12 = completionCopy;
+  v7 = completionCopy;
   v8 = v10;
   [v8 loadValuesAsynchronouslyForKeys:&off_100281780 completionHandler:v9];
 }
 
-- (void)replayMovie:(id)a3
+- (void)replayMovie:(id)movie
 {
   player = self->_player;
   v5 = *&kCMTimeZero.value;
@@ -388,24 +388,24 @@
   v2 = +[COSInternalUserStudyAssetManager detailBundle];
   v3 = [v2 localizedStringForKey:@"USER_STUDY_DETAIL" value:&stru_10026E598 table:@"User_Study"];
 
-  v4 = [UIApp setupController];
-  v5 = [v4 visualDetector];
+  setupController = [UIApp setupController];
+  visualDetector = [setupController visualDetector];
 
-  v6 = [v5 confidenceSummary];
-  [v6 confidence];
+  confidenceSummary = [visualDetector confidenceSummary];
+  [confidenceSummary confidence];
   v8 = (v7 * 100.0);
-  v9 = [v6 attribute];
-  v10 = (v9 - 5);
-  if (v9 < 5)
+  attribute = [confidenceSummary attribute];
+  v10 = (attribute - 5);
+  if (attribute < 5)
   {
-    if ((v9 - 1) > 2)
+    if ((attribute - 1) > 2)
     {
       v13 = @"no Watch visible";
     }
 
     else
     {
-      v13 = *(&off_100269420 + (v9 - 1));
+      v13 = *(&off_100269420 + (attribute - 1));
     }
 
     [v3 stringByAppendingFormat:@"\n\n[ML Classifier says: %ld%% Confident this is %@]", v8, v13, v16];
@@ -449,11 +449,11 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Buttons Disabled while upload proceeds...", v6, 2u);
   }
 
-  v4 = [(COSInternalUserStudyViewController *)self suggestedChoiceButton];
-  [v4 setEnabled:0];
+  suggestedChoiceButton = [(COSInternalUserStudyViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton setEnabled:0];
 
-  v5 = [(COSInternalUserStudyViewController *)self alternateChoiceButton];
-  [v5 setEnabled:0];
+  alternateChoiceButton = [(COSInternalUserStudyViewController *)self alternateChoiceButton];
+  [alternateChoiceButton setEnabled:0];
 }
 
 - (void)confirmDockUpload
@@ -498,7 +498,7 @@ LABEL_13:
   [(COSInternalUserStudyViewController *)self presentViewController:v7 animated:1 completion:v16];
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v4 = pbb_setup_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -520,7 +520,7 @@ LABEL_13:
   }
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   v4 = pbb_setup_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -534,7 +534,7 @@ LABEL_13:
   [(COSInternalUserStudyViewController *)self applyConfirmedOptin:0];
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v8 = objc_alloc_init(COSAboutTextViewController);
   v4 = +[COSInternalUserStudyAssetManager detailBundle];
@@ -561,10 +561,10 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Request User Study Data", buf, 2u);
   }
 
-  v6 = [objc_opt_class() isBeamBridgeReachable];
+  isBeamBridgeReachable = [objc_opt_class() isBeamBridgeReachable];
   v7 = pbb_setup_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isBeamBridgeReachable)
   {
     if (v8)
     {
@@ -599,16 +599,16 @@ LABEL_13:
   }
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
-  v3 = a3;
+  optinCopy = optin;
   [(COSInternalUserStudyViewController *)self _disableButtons];
-  if (v3)
+  if (optinCopy)
   {
     v5 = +[COSInternalUserStudyDataManager sharedManager];
-    v6 = [v5 detectedWristChoice];
+    detectedWristChoice = [v5 detectedWristChoice];
 
-    if (v6 == 5)
+    if (detectedWristChoice == 5)
     {
       v7 = dispatch_time(0, 10000000000);
       block[0] = _NSConcreteStackBlock;
@@ -636,10 +636,10 @@ LABEL_13:
 
 - (id)suggestedButtonTitle
 {
-  v2 = [objc_opt_class() isBeamBridgeReachable];
+  isBeamBridgeReachable = [objc_opt_class() isBeamBridgeReachable];
   v3 = +[COSInternalUserStudyAssetManager detailBundle];
   v4 = v3;
-  if (v2)
+  if (isBeamBridgeReachable)
   {
     v5 = @"USER_STUDY_ACCEPT";
   }

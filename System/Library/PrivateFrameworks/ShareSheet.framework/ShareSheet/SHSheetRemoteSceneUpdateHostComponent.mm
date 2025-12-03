@@ -1,16 +1,16 @@
 @interface SHSheetRemoteSceneUpdateHostComponent
-- (void)scene:(id)a3 willUpdateSettings:(id)a4;
+- (void)scene:(id)scene willUpdateSettings:(id)settings;
 @end
 
 @implementation SHSheetRemoteSceneUpdateHostComponent
 
-- (void)scene:(id)a3 willUpdateSettings:(id)a4
+- (void)scene:(id)scene willUpdateSettings:(id)settings
 {
-  v6 = a3;
-  v7 = [a4 transitionContext];
-  v8 = [v7 animationFence];
+  sceneCopy = scene;
+  transitionContext = [settings transitionContext];
+  animationFence = [transitionContext animationFence];
 
-  if (v8 && ![(SHSheetRemoteSceneUpdateHostComponent *)self didPerformInitialFenceUpdate])
+  if (animationFence && ![(SHSheetRemoteSceneUpdateHostComponent *)self didPerformInitialFenceUpdate])
   {
     [(SHSheetRemoteSceneUpdateHostComponent *)self setDidPerformInitialFenceUpdate:1];
     v9 = MEMORY[0x1E6979518];
@@ -18,7 +18,7 @@
     v10[1] = 3221225472;
     v10[2] = __66__SHSheetRemoteSceneUpdateHostComponent_scene_willUpdateSettings___block_invoke;
     v10[3] = &unk_1E71F9510;
-    v11 = v6;
+    v11 = sceneCopy;
     [v9 addCommitHandler:v10 forPhase:5];
   }
 }

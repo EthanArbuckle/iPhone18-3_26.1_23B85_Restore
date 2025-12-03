@@ -2,14 +2,14 @@
 - (SFDeviceSetupAppleTVService)init;
 - (void)_activate;
 - (void)_cleanup;
-- (void)_handleAppleIDSetupRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handleBasicConfigRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handleFinishRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handlePreAuthRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handleSessionEnded:(id)a3;
-- (void)_handleSessionStarted:(id)a3;
-- (void)_handleTVLatencyProgressEvent:(unint64_t)a3 info:(id)a4;
-- (void)_handleTVLatencyRequest:(id)a3 responseHandler:(id)a4;
+- (void)_handleAppleIDSetupRequest:(id)request responseHandler:(id)handler;
+- (void)_handleBasicConfigRequest:(id)request responseHandler:(id)handler;
+- (void)_handleFinishRequest:(id)request responseHandler:(id)handler;
+- (void)_handlePreAuthRequest:(id)request responseHandler:(id)handler;
+- (void)_handleSessionEnded:(id)ended;
+- (void)_handleSessionStarted:(id)started;
+- (void)_handleTVLatencyProgressEvent:(unint64_t)event info:(id)info;
+- (void)_handleTVLatencyRequest:(id)request responseHandler:(id)handler;
 - (void)_invalidate;
 - (void)_sfServiceStart;
 - (void)activate;
@@ -211,24 +211,24 @@ void __46__SFDeviceSetupAppleTVService__sfServiceStart__block_invoke_3(uint64_t 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSessionStarted:(id)a3
+- (void)_handleSessionStarted:(id)started
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  startedCopy = started;
   sfSession = self->_sfSession;
   if (sfSession)
   {
-    [gLogCategory_SFDeviceSetupAppleTVService _handleSessionStarted:sfSession, v5];
+    [gLogCategory_SFDeviceSetupAppleTVService _handleSessionStarted:sfSession, startedCopy];
   }
 
   else
   {
     if (gLogCategory_SFDeviceSetupAppleTVService <= 30 && (gLogCategory_SFDeviceSetupAppleTVService != -1 || _LogCategory_Initialize()))
     {
-      [SFDeviceSetupAppleTVService _handleSessionStarted:v5];
+      [SFDeviceSetupAppleTVService _handleSessionStarted:startedCopy];
     }
 
-    objc_storeStrong(&self->_sfSession, a3);
+    objc_storeStrong(&self->_sfSession, started);
     v7 = self->_sfSession;
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
@@ -250,7 +250,7 @@ void __46__SFDeviceSetupAppleTVService__sfServiceStart__block_invoke_3(uint64_t 
       self->_cdpSetupHandler = v9;
 
       [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler setDispatchQueue:self->_dispatchQueue];
-      [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler setSfSession:v5];
+      [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler setSfSession:startedCopy];
       [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler activate];
     }
 
@@ -270,13 +270,13 @@ void __46__SFDeviceSetupAppleTVService__sfServiceStart__block_invoke_3(uint64_t 
     self->_homeKitSetupHandler = v12;
 
     v14 = self->_homeKitSetupHandler;
-    v15 = [(SFSession *)self->_sfSession trSession];
-    [(HMDeviceSetupOperationHandler *)v14 registerMessageHandlersForSession:v15];
+    trSession = [(SFSession *)self->_sfSession trSession];
+    [(HMDeviceSetupOperationHandler *)v14 registerMessageHandlersForSession:trSession];
 
-    v16 = [(SFSession *)self->_sfSession messageSessionTemplate];
-    if (v16)
+    messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+    if (messageSessionTemplate)
     {
-      v17 = [objc_alloc(getTVLAudioLatencyEstimatorClass()) initWithMessageSession:v16];
+      v17 = [objc_alloc(getTVLAudioLatencyEstimatorClass()) initWithMessageSession:messageSessionTemplate];
       objc_storeStrong(&self->_tvLatencyEstimator, v17);
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
@@ -300,14 +300,14 @@ void __46__SFDeviceSetupAppleTVService__sfServiceStart__block_invoke_3(uint64_t 
     self->_wifiSetupHandler = v20;
 
     [(SFDeviceOperationHandlerWiFiSetup *)self->_wifiSetupHandler setDispatchQueue:self->_dispatchQueue];
-    [(SFDeviceOperationHandlerWiFiSetup *)self->_wifiSetupHandler setSfSession:v5];
+    [(SFDeviceOperationHandlerWiFiSetup *)self->_wifiSetupHandler setSfSession:startedCopy];
     [(SFDeviceOperationHandlerWiFiSetup *)self->_wifiSetupHandler activate];
     v22 = objc_alloc_init(SFDeviceOperationHandlerCNJSetup);
     captiveNetworkHandler = self->_captiveNetworkHandler;
     self->_captiveNetworkHandler = v22;
 
     [(SFDeviceOperationHandlerCNJSetup *)self->_captiveNetworkHandler setDispatchQueue:self->_dispatchQueue];
-    [(SFDeviceOperationHandlerCNJSetup *)self->_captiveNetworkHandler setSfSession:v5];
+    [(SFDeviceOperationHandlerCNJSetup *)self->_captiveNetworkHandler setSfSession:startedCopy];
     [(SFDeviceOperationHandlerCNJSetup *)self->_captiveNetworkHandler activate];
     v24 = self->_sfSession;
     v29[0] = MEMORY[0x1E69E9820];
@@ -320,8 +320,8 @@ void __46__SFDeviceSetupAppleTVService__sfServiceStart__block_invoke_3(uint64_t 
     if (progressHandler)
     {
       v36 = @"trSession";
-      v26 = [v5 trSession];
-      v37[0] = v26;
+      trSession2 = [startedCopy trSession];
+      v37[0] = trSession2;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
       progressHandler[2](progressHandler, 31, v27);
     }
@@ -360,22 +360,22 @@ uint64_t __53__SFDeviceSetupAppleTVService__handleSessionStarted___block_invoke_
   return result;
 }
 
-- (void)_handleSessionEnded:(id)a3
+- (void)_handleSessionEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   sfSession = self->_sfSession;
-  if (sfSession != v4)
+  if (sfSession != endedCopy)
   {
     goto LABEL_9;
   }
 
-  v14 = v4;
-  if (v4 && gLogCategory_SFDeviceSetupAppleTVService <= 30)
+  v14 = endedCopy;
+  if (endedCopy && gLogCategory_SFDeviceSetupAppleTVService <= 30)
   {
     if (gLogCategory_SFDeviceSetupAppleTVService != -1)
     {
 LABEL_5:
-      v13 = [(SFSession *)sfSession peer];
+      peer = [(SFSession *)sfSession peer];
       LogPrintF();
 
       goto LABEL_7;
@@ -414,20 +414,20 @@ LABEL_7:
 
   [(SFService *)self->_sfService setNeedsSetup:1];
   progressHandler = self->_progressHandler;
-  v4 = v14;
+  endedCopy = v14;
   if (progressHandler)
   {
     progressHandler[2](progressHandler, 32, 0);
-    v4 = v14;
+    endedCopy = v14;
   }
 
 LABEL_9:
 }
 
-- (void)_handlePreAuthRequest:(id)a3 responseHandler:(id)a4
+- (void)_handlePreAuthRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFDeviceSetupAppleTVService <= 30 && (gLogCategory_SFDeviceSetupAppleTVService != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceSetupAppleTVService _handlePreAuthRequest:responseHandler:];
@@ -437,7 +437,7 @@ LABEL_9:
   progressHandler = self->_progressHandler;
   if (progressHandler)
   {
-    progressHandler[2](progressHandler, 40, v6);
+    progressHandler[2](progressHandler, 40, requestCopy);
   }
 
   v10 = 16;
@@ -461,12 +461,12 @@ LABEL_9:
     v10 |= 0x800uLL;
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v10 | 0x2000];
-  [v8 setObject:v11 forKeyedSubscript:@"ff"];
+  0x2000 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v10 | 0x2000];
+  [v8 setObject:0x2000 forKeyedSubscript:@"ff"];
 
-  LOBYTE(v11) = CFDictionaryGetInt64Ranged();
-  v12 = [(SFSession *)self->_sfSession peerDevice];
-  [v12 setDeviceClassCode:v11];
+  LOBYTE(0x2000) = CFDictionaryGetInt64Ranged();
+  peerDevice = [(SFSession *)self->_sfSession peerDevice];
+  [peerDevice setDeviceClassCode:0x2000];
 
   Int64 = CFDictionaryGetInt64();
   v14 = Int64 != 0;
@@ -543,13 +543,13 @@ LABEL_9:
   }
 
 LABEL_40:
-  (*(v7 + 2))(v7, 0, 0, v8);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v8);
 }
 
-- (void)_handleBasicConfigRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleBasicConfigRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFDeviceSetupAppleTVService <= 30 && (gLogCategory_SFDeviceSetupAppleTVService != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceSetupAppleTVService _handleBasicConfigRequest:responseHandler:];
@@ -557,7 +557,7 @@ LABEL_40:
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = objc_opt_new();
-  [v9 addEntriesFromDictionary:v6];
+  [v9 addEntriesFromDictionary:requestCopy];
   if (self->_isCLIMode)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:1];
@@ -576,16 +576,16 @@ LABEL_40:
   }
 
   v12 = SFMyAltDSID();
-  v13 = [v12 UTF8String];
+  uTF8String = [v12 UTF8String];
 
-  if (v13)
+  if (uTF8String)
   {
     v14 = [(SFSession *)self->_sfSession pairingDeriveKeyForIdentifier:@"AltDSID" keyLength:16];
     v15 = v14;
     if (v14)
     {
       [v14 bytes];
-      strlen(v13);
+      strlen(uTF8String);
       v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:SipHash()];
       [v8 setObject:v16 forKeyedSubscript:@"adh"];
     }
@@ -622,13 +622,13 @@ LABEL_40:
     [SFDeviceSetupAppleTVService _handleBasicConfigRequest:responseHandler:];
   }
 
-  (*(v7 + 2))(v7, 0, 0, v8);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v8);
 }
 
-- (void)_handleAppleIDSetupRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleAppleIDSetupRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFDeviceSetupAppleTVService <= 30 && (gLogCategory_SFDeviceSetupAppleTVService != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceSetupAppleTVService _handleAppleIDSetupRequest:responseHandler:];
@@ -636,7 +636,7 @@ LABEL_40:
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = objc_opt_new();
-  [v9 addEntriesFromDictionary:v6];
+  [v9 addEntriesFromDictionary:requestCopy];
   if (self->_isCLIMode)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:1];
@@ -654,8 +654,8 @@ LABEL_40:
     progressHandler[2](progressHandler, 224, v9);
   }
 
-  v12 = [(SFSession *)self->_sfSession messageSessionTemplate];
-  if (v12)
+  messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+  if (messageSessionTemplate)
   {
     v13 = objc_alloc_init(getAISSetupContextClass[0]());
     v14 = [MEMORY[0x1E695DFD8] setWithObject:*MEMORY[0x1E698C218]];
@@ -667,7 +667,7 @@ LABEL_40:
     [v13 setShouldBackgroundDesiredServices:1];
     [v13 setLocalRole:1];
     [v13 setRemoteRole:4];
-    [v13 setMessageSessionTemplate:v12];
+    [v13 setMessageSessionTemplate:messageSessionTemplate];
     v16 = _Block_copy(self->_appleIDSetupReportHandler);
     v17 = objc_alloc_init(getAISSetupControllerClass[0]());
     v20[0] = MEMORY[0x1E69E9820];
@@ -683,7 +683,7 @@ LABEL_40:
       [SFDeviceSetupAppleTVService _handleAppleIDSetupRequest:responseHandler:];
     }
 
-    (*(v7 + 2))(v7, 0, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v8);
   }
 
   else
@@ -694,7 +694,7 @@ LABEL_40:
       [SFDeviceSetupAppleTVService _handleAppleIDSetupRequest:responseHandler:];
     }
 
-    (*(v7 + 2))(v7, v19, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v19, 0, 0);
   }
 }
 
@@ -714,17 +714,17 @@ void __74__SFDeviceSetupAppleTVService__handleAppleIDSetupRequest_responseHandle
   }
 }
 
-- (void)_handleTVLatencyRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleTVLatencyRequest:(id)request responseHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFDeviceSetupAppleTVService <= 30 && (gLogCategory_SFDeviceSetupAppleTVService != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceSetupAppleTVService _handleTVLatencyRequest:responseHandler:];
   }
 
-  v7 = [(SFSession *)self->_sfSession messageSessionTemplate];
-  if (v7)
+  messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+  if (messageSessionTemplate)
   {
     v8 = self->_tvLatencyEstimator;
     if (v8)
@@ -735,13 +735,13 @@ void __74__SFDeviceSetupAppleTVService__handleAppleIDSetupRequest_responseHandle
       }
 
       [(TVLAudioLatencyEstimator *)v8 activate];
-      [(SFDeviceSetupAppleTVService *)self _reportProgress:260 info:v10];
+      [(SFDeviceSetupAppleTVService *)self _reportProgress:260 info:requestCopy];
       if (gLogCategory_SFDeviceSetupAppleTVService <= 30 && (gLogCategory_SFDeviceSetupAppleTVService != -1 || _LogCategory_Initialize()))
       {
         [SFDeviceSetupAppleTVService _handleTVLatencyRequest:responseHandler:];
       }
 
-      (*(v6 + 2))(v6, 0, 0, MEMORY[0x1E695E0F8]);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, MEMORY[0x1E695E0F8]);
     }
 
     else
@@ -752,7 +752,7 @@ void __74__SFDeviceSetupAppleTVService__handleAppleIDSetupRequest_responseHandle
         [SFDeviceSetupAppleTVService _handleTVLatencyRequest:responseHandler:];
       }
 
-      (*(v6 + 2))(v6, v9, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, v9, 0, 0);
     }
   }
 
@@ -764,83 +764,83 @@ void __74__SFDeviceSetupAppleTVService__handleAppleIDSetupRequest_responseHandle
       [SFDeviceSetupAppleTVService _handleTVLatencyRequest:responseHandler:];
     }
 
-    (*(v6 + 2))(v6, v8, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v8, 0, 0);
   }
 }
 
-- (void)_handleTVLatencyProgressEvent:(unint64_t)a3 info:(id)a4
+- (void)_handleTVLatencyProgressEvent:(unint64_t)event info:(id)info
 {
-  v6 = a4;
-  v7 = v6;
-  v12 = v6;
+  infoCopy = info;
+  v7 = infoCopy;
+  v12 = infoCopy;
   if (gLogCategory_SFDeviceSetupAppleTVService <= 30)
   {
-    if (gLogCategory_SFDeviceSetupAppleTVService != -1 || (v6 = _LogCategory_Initialize(), v7 = v12, v6))
+    if (gLogCategory_SFDeviceSetupAppleTVService != -1 || (infoCopy = _LogCategory_Initialize(), v7 = v12, infoCopy))
     {
-      v10 = a3;
+      eventCopy = event;
       v11 = v7;
-      v6 = LogPrintF();
+      infoCopy = LogPrintF();
     }
   }
 
-  if (a3 <= 1)
+  if (event <= 1)
   {
-    if (a3)
+    if (event)
     {
-      if (a3 != 1)
+      if (event != 1)
       {
         goto LABEL_18;
       }
 
-      v8 = self;
+      selfCopy4 = self;
       v9 = 277;
     }
 
     else
     {
-      v8 = self;
+      selfCopy4 = self;
       v9 = 270;
     }
 
     goto LABEL_17;
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
-    v8 = self;
+    selfCopy4 = self;
     v9 = 274;
 LABEL_17:
-    v6 = [(SFDeviceSetupAppleTVService *)v8 _reportProgress:v9 info:v12, v10, v11];
+    infoCopy = [(SFDeviceSetupAppleTVService *)selfCopy4 _reportProgress:v9 info:v12, eventCopy, v11];
     goto LABEL_18;
   }
 
-  if (a3 != 3)
+  if (event != 3)
   {
-    if (a3 != 4)
+    if (event != 4)
     {
       goto LABEL_18;
     }
 
-    v8 = self;
+    selfCopy4 = self;
     v9 = 276;
     goto LABEL_17;
   }
 
   if (!self->_tvLatencyFinalReported)
   {
-    v6 = [(SFDeviceSetupAppleTVService *)self _reportProgress:272 info:v12];
+    infoCopy = [(SFDeviceSetupAppleTVService *)self _reportProgress:272 info:v12];
     self->_tvLatencyFinalReported = 1;
   }
 
 LABEL_18:
 
-  MEMORY[0x1EEE66C30](v6);
+  MEMORY[0x1EEE66C30](infoCopy);
 }
 
-- (void)_handleFinishRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleFinishRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFDeviceSetupAppleTVService <= 30 && (gLogCategory_SFDeviceSetupAppleTVService != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceSetupAppleTVService _handleFinishRequest:responseHandler:];
@@ -858,7 +858,7 @@ LABEL_18:
     [SFDeviceSetupAppleTVService _handleFinishRequest:responseHandler:];
   }
 
-  (*(v7 + 2))(v7, 0, 0, v8);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v8);
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

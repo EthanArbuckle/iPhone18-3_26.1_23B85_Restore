@@ -1,15 +1,15 @@
 @interface UMDarwinDirectoryGroup
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation UMDarwinDirectoryGroup
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -19,7 +19,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      sub_100098460(v4, self, &v7);
+      sub_100098460(equalCopy, self, &v7);
       v5 = v7;
     }
 
@@ -50,9 +50,9 @@
     fullName = 0;
   }
 
-  v7 = [NSString stringWithFormat:@"<UMDarwinDirectoryGroup name:%@ gid:%d uuid:%@ fullName:%@", v3, gid, v5, fullName];
+  fullName = [NSString stringWithFormat:@"<UMDarwinDirectoryGroup name:%@ gid:%d uuid:%@ fullName:%@", v3, gid, v5, fullName];
 
-  return v7;
+  return fullName;
 }
 
 - (unint64_t)hash

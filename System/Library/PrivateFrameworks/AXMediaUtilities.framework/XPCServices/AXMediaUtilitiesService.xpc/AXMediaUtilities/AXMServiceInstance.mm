@@ -1,11 +1,11 @@
 @interface AXMServiceInstance
 - (AXMServiceInstance)init;
-- (id)_cachedEngineForEngine:(id)a3;
-- (void)_removeEngineFromCache:(id)a3;
+- (id)_cachedEngineForEngine:(id)engine;
+- (void)_removeEngineFromCache:(id)cache;
 - (void)prewarmVisionEngineService;
 - (void)run;
-- (void)visionEngine:(id)a3 evaluateSource:(id)a4 context:(id)a5 options:(int64_t)a6 result:(id)a7;
-- (void)willBecomeIdle:(id)a3 completion:(id)a4;
+- (void)visionEngine:(id)engine evaluateSource:(id)source context:(id)context options:(int64_t)options result:(id)result;
+- (void)willBecomeIdle:(id)idle completion:(id)completion;
 @end
 
 @implementation AXMServiceInstance
@@ -23,8 +23,8 @@
     v4 = objc_alloc_init(AXMIdleManager);
     [(AXMServiceInstance *)v2 setIdleManager:v4];
 
-    v5 = [(AXMServiceInstance *)v2 idleManager];
-    [v5 setDelegate:v2];
+    idleManager = [(AXMServiceInstance *)v2 idleManager];
+    [idleManager setDelegate:v2];
   }
 
   return v2;
@@ -42,11 +42,11 @@
   v4 = objc_alloc_init(AXMServiceXPCServer);
   [(AXMServiceInstance *)self setXpcServer:v4];
 
-  v5 = [(AXMServiceInstance *)self xpcServer];
-  [v5 setDelegate:self];
+  xpcServer = [(AXMServiceInstance *)self xpcServer];
+  [xpcServer setDelegate:self];
 
-  v6 = [(AXMServiceInstance *)self xpcServer];
-  [v6 run];
+  xpcServer2 = [(AXMServiceInstance *)self xpcServer];
+  [xpcServer2 run];
 
   v7 = AXMediaLogService();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -56,32 +56,32 @@
   }
 }
 
-- (id)_cachedEngineForEngine:(id)a3
+- (id)_cachedEngineForEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [(AXMServiceInstance *)self engineCache];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  engineCopy = engine;
+  engineCache = [(AXMServiceInstance *)self engineCache];
+  identifier = [engineCopy identifier];
+  v7 = [engineCache objectForKeyedSubscript:identifier];
 
   if (!v7)
   {
-    v8 = [(AXMServiceInstance *)self engineCache];
-    v9 = [v4 identifier];
-    [v8 setObject:v4 forKey:v9];
+    engineCache2 = [(AXMServiceInstance *)self engineCache];
+    identifier2 = [engineCopy identifier];
+    [engineCache2 setObject:engineCopy forKey:identifier2];
 
-    v7 = v4;
+    v7 = engineCopy;
   }
 
   return v7;
 }
 
-- (void)_removeEngineFromCache:(id)a3
+- (void)_removeEngineFromCache:(id)cache
 {
-  v4 = a3;
-  v6 = [(AXMServiceInstance *)self engineCache];
-  v5 = [v4 identifier];
+  cacheCopy = cache;
+  engineCache = [(AXMServiceInstance *)self engineCache];
+  identifier = [cacheCopy identifier];
 
-  [v6 removeObjectForKey:v5];
+  [engineCache removeObjectForKey:identifier];
 }
 
 - (void)prewarmVisionEngineService
@@ -94,63 +94,63 @@
   }
 }
 
-- (void)visionEngine:(id)a3 evaluateSource:(id)a4 context:(id)a5 options:(int64_t)a6 result:(id)a7
+- (void)visionEngine:(id)engine evaluateSource:(id)source context:(id)context options:(int64_t)options result:(id)result
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  optionsCopy = options;
+  engineCopy = engine;
+  sourceCopy = source;
+  contextCopy = context;
+  resultCopy = result;
   v16 = objc_autoreleasePoolPush();
-  if (v8)
+  if (optionsCopy)
   {
-    [(AXMServiceInstance *)self _removeEngineFromCache:v12];
+    [(AXMServiceInstance *)self _removeEngineFromCache:engineCopy];
   }
 
-  v17 = [(AXMServiceInstance *)self _cachedEngineForEngine:v12];
+  v17 = [(AXMServiceInstance *)self _cachedEngineForEngine:engineCopy];
 
-  v18 = [v13 identifier];
-  v19 = [v17 sourceNodeWithIdentifier:v18];
+  identifier = [sourceCopy identifier];
+  v19 = [v17 sourceNodeWithIdentifier:identifier];
 
   if (v19)
   {
-    v20 = [v14 analysisOptions];
-    v21 = [v20 clientID];
+    analysisOptions = [contextCopy analysisOptions];
+    clientID = [analysisOptions clientID];
 
-    if (v21 == 1)
+    if (clientID == 1)
     {
-      v22 = [(AXMServiceInstance *)self idleManager];
-      [v22 voiceOverActivityOccurred];
+      idleManager = [(AXMServiceInstance *)self idleManager];
+      [idleManager voiceOverActivityOccurred];
     }
 
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = __73__AXMServiceInstance_visionEngine_evaluateSource_context_options_result___block_invoke;
     v26[3] = &unk_100008240;
-    v27 = v15;
-    [v19 triggerWithContext:v14 cacheKey:0 resultHandler:v26];
+    v27 = resultCopy;
+    [v19 triggerWithContext:contextCopy cacheKey:0 resultHandler:v26];
   }
 
   else
   {
-    v23 = [0 identifier];
-    v25 = [v17 identifier];
+    identifier2 = [0 identifier];
+    identifier3 = [v17 identifier];
     v24 = _AXMMakeError();
-    (*(v15 + 2))(v15, 0, v24);
+    (*(resultCopy + 2))(resultCopy, 0, v24);
   }
 
   objc_autoreleasePoolPop(v16);
 }
 
-- (void)willBecomeIdle:(id)a3 completion:(id)a4
+- (void)willBecomeIdle:(id)idle completion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __48__AXMServiceInstance_willBecomeIdle_completion___block_invoke;
   v5[3] = &unk_1000082B8;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  completionCopy = completion;
+  v4 = completionCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 

@@ -1,31 +1,31 @@
 @interface CRLGelatoInterstitialUIController
 - (_TtC8Freeform33CRLGelatoInterstitialUIController)init;
-- (void)newParticipantJoinedSessionWithNotification:(id)a3;
-- (void)realTimeSessionDidStartOrEndWithNotification:(id)a3;
-- (void)realTimeSessionParticipantsChangedWithNotification:(id)a3;
-- (void)shareStateUpdatedWithShare:(id)a3;
+- (void)newParticipantJoinedSessionWithNotification:(id)notification;
+- (void)realTimeSessionDidStartOrEndWithNotification:(id)notification;
+- (void)realTimeSessionParticipantsChangedWithNotification:(id)notification;
+- (void)shareStateUpdatedWithShare:(id)share;
 @end
 
 @implementation CRLGelatoInterstitialUIController
 
-- (void)newParticipantJoinedSessionWithNotification:(id)a3
+- (void)newParticipantJoinedSessionWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_100FA3124("Notified of CRLBoardRealTimeNewParticipantDidJoinSession.", 57);
 }
 
-- (void)realTimeSessionParticipantsChangedWithNotification:(id)a3
+- (void)realTimeSessionParticipantsChangedWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_100FA3124("Notified of participant change.", 31);
 }
 
-- (void)realTimeSessionDidStartOrEndWithNotification:(id)a3
+- (void)realTimeSessionDidStartOrEndWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_100FA3124("Notified of CRLBoardRealTimeStateDidChange.", 43);
 }
 
@@ -36,11 +36,11 @@
   return result;
 }
 
-- (void)shareStateUpdatedWithShare:(id)a3
+- (void)shareStateUpdatedWithShare:(id)share
 {
-  v5 = a3;
-  v6 = self;
-  sub_100FA2128(a3);
+  shareCopy = share;
+  selfCopy = self;
+  sub_100FA2128(share);
 }
 
 @end

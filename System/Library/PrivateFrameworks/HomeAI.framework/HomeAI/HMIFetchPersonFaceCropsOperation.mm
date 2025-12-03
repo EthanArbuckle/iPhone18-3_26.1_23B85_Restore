@@ -1,6 +1,6 @@
 @interface HMIFetchPersonFaceCropsOperation
 + (id)shortDescription;
-- (HMIFetchPersonFaceCropsOperation)initWithDataSource:(id)a3 person:(id)a4;
+- (HMIFetchPersonFaceCropsOperation)initWithDataSource:(id)source person:(id)person;
 - (NSString)shortDescription;
 - (void)main;
 - (void)mainInsideAutoreleasePool;
@@ -8,18 +8,18 @@
 
 @implementation HMIFetchPersonFaceCropsOperation
 
-- (HMIFetchPersonFaceCropsOperation)initWithDataSource:(id)a3 person:(id)a4
+- (HMIFetchPersonFaceCropsOperation)initWithDataSource:(id)source person:(id)person
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  personCopy = person;
   v14.receiver = self;
   v14.super_class = HMIFetchPersonFaceCropsOperation;
   v9 = [(HMFOperation *)&v14 initWithTimeout:20.0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSource, a3);
-    objc_storeStrong(&v10->_person, a4);
+    objc_storeStrong(&v9->_dataSource, source);
+    objc_storeStrong(&v10->_person, person);
     v11 = [MEMORY[0x277CBEB98] set];
     personFaceCrops = v10->_personFaceCrops;
     v10->_personFaceCrops = v11;
@@ -39,17 +39,17 @@
 - (void)mainInsideAutoreleasePool
 {
   objc_initWeak(&location, self);
-  v3 = [(HMIFetchPersonFaceCropsOperation *)self dataSource];
+  dataSource = [(HMIFetchPersonFaceCropsOperation *)self dataSource];
   v4 = MEMORY[0x277CBEB98];
-  v5 = [(HMIFetchPersonFaceCropsOperation *)self person];
-  v6 = [v5 UUID];
-  v7 = [v4 setWithObject:v6];
+  person = [(HMIFetchPersonFaceCropsOperation *)self person];
+  uUID = [person UUID];
+  v7 = [v4 setWithObject:uUID];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__HMIFetchPersonFaceCropsOperation_mainInsideAutoreleasePool__block_invoke;
   v8[3] = &unk_278753D20;
   objc_copyWeak(&v9, &location);
-  [v3 fetchFaceCropsForPersonsWithUUIDs:v7 completion:v8];
+  [dataSource fetchFaceCropsForPersonsWithUUIDs:v7 completion:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);

@@ -1,16 +1,16 @@
 @interface UISceneSizeRestrictions
-+ (id)_sizeRestrictionsForWindowScene:(uint64_t)a1;
-+ (void)_registerImplClass:(Class)a3;
++ (id)_sizeRestrictionsForWindowScene:(uint64_t)scene;
++ (void)_registerImplClass:(Class)class;
 - (CGSize)maximumSize;
 - (CGSize)minimumSize;
-- (id)_implOfClass:(Class)a3;
-- (id)_initWithImplementation:(id)a3;
-- (id)_initWithScene:(id)a3;
+- (id)_implOfClass:(Class)class;
+- (id)_initWithImplementation:(id)implementation;
+- (id)_initWithScene:(id)scene;
 @end
 
 @implementation UISceneSizeRestrictions
 
-+ (id)_sizeRestrictionsForWindowScene:(uint64_t)a1
++ (id)_sizeRestrictionsForWindowScene:(uint64_t)scene
 {
   v2 = a2;
   objc_opt_self();
@@ -55,22 +55,22 @@
   return v14;
 }
 
-- (id)_initWithImplementation:(id)a3
+- (id)_initWithImplementation:(id)implementation
 {
-  v5 = a3;
+  implementationCopy = implementation;
   v9.receiver = self;
   v9.super_class = UISceneSizeRestrictions;
   v6 = [(UISceneSizeRestrictions *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activeImpl, a3);
+    objc_storeStrong(&v6->_activeImpl, implementation);
   }
 
   return v7;
 }
 
-- (id)_initWithScene:(id)a3
+- (id)_initWithScene:(id)scene
 {
   v4 = objc_alloc_init(_UISceneSizeRestrictionsInertImpl);
   v5 = [(UISceneSizeRestrictions *)self _initWithImplementation:v4];
@@ -94,7 +94,7 @@
   return result;
 }
 
-+ (void)_registerImplClass:(Class)a3
++ (void)_registerImplClass:(Class)class
 {
   if (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector())
   {
@@ -115,7 +115,7 @@
     }
 
     v10 = [v4 mutableCopy];
-    [v10 insertObject:a3 atIndex:0];
+    [v10 insertObject:class atIndex:0];
     v8 = [v10 copy];
     v9 = __UISceneSizeRestrictionsImplClasses;
     __UISceneSizeRestrictionsImplClasses = v8;
@@ -128,7 +128,7 @@
   }
 }
 
-- (id)_implOfClass:(Class)a3
+- (id)_implOfClass:(Class)class
 {
   if (objc_opt_isKindOfClass())
   {

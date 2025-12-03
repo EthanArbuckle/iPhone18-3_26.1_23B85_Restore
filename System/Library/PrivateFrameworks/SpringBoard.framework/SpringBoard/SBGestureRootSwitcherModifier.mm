@@ -1,38 +1,38 @@
 @interface SBGestureRootSwitcherModifier
-- (SBGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4;
-- (id)handleEvent:(id)a3;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleRemovalEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4;
+- (SBGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)mode;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier;
+- (id)handleEvent:(id)event;
+- (id)handleGestureEvent:(id)event;
+- (id)handleRemovalEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier;
 - (int64_t)gestureType;
 @end
 
 @implementation SBGestureRootSwitcherModifier
 
-- (SBGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)a3
+- (SBGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = SBGestureRootSwitcherModifier;
   result = [(SBSwitcherModifier *)&v5 init];
   if (result)
   {
-    result->_currentEnvironmentMode = a3;
+    result->_currentEnvironmentMode = mode;
   }
 
   return result;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v11.receiver = self;
   v11.super_class = SBGestureRootSwitcherModifier;
-  v4 = [(SBChainableModifier *)&v11 descriptionBuilderWithMultilinePrefix:a3];
-  v5 = [(SBGestureRootSwitcherModifier *)self selectedAppLayout];
-  v6 = [v5 succinctDescription];
-  v7 = [v4 appendObject:v6 withName:@"selectedAppLayout"];
+  v4 = [(SBChainableModifier *)&v11 descriptionBuilderWithMultilinePrefix:prefix];
+  selectedAppLayout = [(SBGestureRootSwitcherModifier *)self selectedAppLayout];
+  succinctDescription = [selectedAppLayout succinctDescription];
+  v7 = [v4 appendObject:succinctDescription withName:@"selectedAppLayout"];
 
   v8 = SBStringForUnlockedEnvironmentMode(self->_currentEnvironmentMode);
   v9 = [v4 appendObject:v8 withName:@"currentEnvironmentMode"];
@@ -40,20 +40,20 @@
   return v4;
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SBGestureRootSwitcherModifier *)self transitionModifier];
+  eventCopy = event;
+  transitionModifier = [(SBGestureRootSwitcherModifier *)self transitionModifier];
   transitionModifierBeforeHandlingEvent = self->_transitionModifierBeforeHandlingEvent;
-  self->_transitionModifierBeforeHandlingEvent = v5;
+  self->_transitionModifierBeforeHandlingEvent = transitionModifier;
 
-  v7 = [(SBGestureRootSwitcherModifier *)self gestureModifier];
+  gestureModifier = [(SBGestureRootSwitcherModifier *)self gestureModifier];
   gestureModifierBeforeHandlingEvent = self->_gestureModifierBeforeHandlingEvent;
-  self->_gestureModifierBeforeHandlingEvent = v7;
+  self->_gestureModifierBeforeHandlingEvent = gestureModifier;
 
   v13.receiver = self;
   v13.super_class = SBGestureRootSwitcherModifier;
-  v9 = [(SBChainableModifier *)&v13 handleEvent:v4];
+  v9 = [(SBChainableModifier *)&v13 handleEvent:eventCopy];
 
   v10 = self->_transitionModifierBeforeHandlingEvent;
   self->_transitionModifierBeforeHandlingEvent = 0;
@@ -64,14 +64,14 @@
   return v9;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v25.receiver = self;
   v25.super_class = SBGestureRootSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v25 handleTransitionEvent:v4];
-  if ([v4 phase]== 1 && [v4 isGestureInitiated])
+  v5 = [(SBSwitcherModifier *)&v25 handleTransitionEvent:eventCopy];
+  if ([eventCopy phase]== 1 && [eventCopy isGestureInitiated])
   {
     gestureModifierBeforeHandlingEvent = self->_gestureModifierBeforeHandlingEvent;
     if (!gestureModifierBeforeHandlingEvent)
@@ -89,7 +89,7 @@
         *buf = 138412546;
         v27 = v12;
         v28 = 2112;
-        v29 = v4;
+        v29 = eventCopy;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "[%@]: No gesture modifier to handle gesture initiated transition event %@", buf, 0x16u);
         goto LABEL_12;
       }
@@ -97,7 +97,7 @@
       gestureModifierBeforeHandlingEvent = self->_gestureModifierBeforeHandlingEvent;
     }
 
-    v7 = [(SBGestureRootSwitcherModifier *)self transitionChildModifierForMainTransitionEvent:v4 activeGestureModifier:gestureModifierBeforeHandlingEvent];
+    v7 = [(SBGestureRootSwitcherModifier *)self transitionChildModifierForMainTransitionEvent:eventCopy activeGestureModifier:gestureModifierBeforeHandlingEvent];
     if (v7)
     {
       [(SBChainableModifier *)self addChildModifier:v7 atLevel:0 key:@"Transition"];
@@ -105,7 +105,7 @@
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v11 = [v8 stringWithFormat:@"%@ handling gesture initiated transition.", v10];
-      [v4 handleWithReason:v11];
+      [eventCopy handleWithReason:v11];
 
       v12 = SBLogAppSwitcher();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -117,7 +117,7 @@
         v28 = 2112;
         v29 = v7;
         v30 = 2112;
-        v31 = v4;
+        v31 = eventCopy;
         v15 = "[%@]: Adding transition modifier %@ for event %@";
         v16 = v12;
         v17 = 32;
@@ -136,7 +136,7 @@ LABEL_11:
         *buf = 138412546;
         v27 = v14;
         v28 = 2112;
-        v29 = v4;
+        v29 = eventCopy;
         v15 = "[%@]: No transition modifier to handle transition event %@";
         v16 = v12;
         v17 = 22;
@@ -149,9 +149,9 @@ LABEL_12:
 LABEL_13:
   }
 
-  if ([v4 phase]== 1)
+  if ([eventCopy phase]== 1)
   {
-    self->_currentEnvironmentMode = [v4 toEnvironmentMode];
+    self->_currentEnvironmentMode = [eventCopy toEnvironmentMode];
     v19 = SBLogAppSwitcher();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -169,23 +169,23 @@ LABEL_13:
   return v5;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = SBGestureRootSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v15 handleGestureEvent:v4];
-  if ([v4 phase] == 1)
+  v5 = [(SBSwitcherModifier *)&v15 handleGestureEvent:eventCopy];
+  if ([eventCopy phase] == 1)
   {
-    v6 = [v4 gestureType];
-    if (v6 == -[SBGestureRootSwitcherModifier gestureType](self, "gestureType") && (![v4 isIndirectPanGestureEvent] || objc_msgSend(v4, "gestureType") != 8))
+    gestureType = [eventCopy gestureType];
+    if (gestureType == -[SBGestureRootSwitcherModifier gestureType](self, "gestureType") && (![eventCopy isIndirectPanGestureEvent] || objc_msgSend(eventCopy, "gestureType") != 8))
     {
-      v7 = [v4 selectedAppLayout];
+      selectedAppLayout = [eventCopy selectedAppLayout];
       selectedAppLayout = self->_selectedAppLayout;
-      self->_selectedAppLayout = v7;
+      self->_selectedAppLayout = selectedAppLayout;
 
-      v9 = [(SBGestureRootSwitcherModifier *)self gestureChildModifierForGestureEvent:v4 activeTransitionModifier:self->_transitionModifierBeforeHandlingEvent];
+      v9 = [(SBGestureRootSwitcherModifier *)self gestureChildModifierForGestureEvent:eventCopy activeTransitionModifier:self->_transitionModifierBeforeHandlingEvent];
       if (v9)
       {
         [(SBChainableModifier *)self addChildModifier:v9 atLevel:1 key:@"Gesture"];
@@ -199,7 +199,7 @@ LABEL_13:
           v18 = 2112;
           v19 = v9;
           v20 = 2112;
-          v21 = v4;
+          v21 = eventCopy;
           _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_INFO, "[%@]: Adding gesture modifier %@ for event %@", buf, 0x20u);
         }
 
@@ -213,7 +213,7 @@ LABEL_13:
           v13 = @"Starting new gesture";
         }
 
-        [v4 handleWithReason:v13];
+        [eventCopy handleWithReason:v13];
       }
     }
   }
@@ -221,15 +221,15 @@ LABEL_13:
   return v5;
 }
 
-- (id)handleRemovalEvent:(id)a3
+- (id)handleRemovalEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SBGestureRootSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v9 handleRemovalEvent:v4];
-  v6 = [v4 appLayout];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v9 handleRemovalEvent:eventCopy];
+  appLayout = [eventCopy appLayout];
 
-  if ([(SBAppLayout *)self->_selectedAppLayout isEqual:v6])
+  if ([(SBAppLayout *)self->_selectedAppLayout isEqual:appLayout])
   {
     selectedAppLayout = self->_selectedAppLayout;
     self->_selectedAppLayout = 0;
@@ -245,14 +245,14 @@ LABEL_13:
   return 0;
 }
 
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier
 {
   objc_opt_class();
   OUTLINED_FUNCTION_6();
   return 0;
 }
 
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier
 {
   objc_opt_class();
   OUTLINED_FUNCTION_6();

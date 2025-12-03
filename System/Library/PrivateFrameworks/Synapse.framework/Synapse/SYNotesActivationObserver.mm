@@ -1,10 +1,10 @@
 @interface SYNotesActivationObserver
 - (BOOL)isVisible;
 - (CGRect)visibleFrame;
-- (SYNotesActivationObserver)initWithHandler:(id)a3;
+- (SYNotesActivationObserver)initWithHandler:(id)handler;
 - (void)_notifyHandlerOfVisibility;
 - (void)_startObservingNotes;
-- (void)_updateNotesVisibilityFromLayout:(id)a3;
+- (void)_updateNotesVisibilityFromLayout:(id)layout;
 - (void)dealloc;
 @end
 
@@ -23,12 +23,12 @@ void __49__SYNotesActivationObserver__startObservingNotes__block_invoke_2(uint64
 
 - (void)_notifyHandlerOfVisibility
 {
-  v3 = [(SYNotesActivationObserver *)self handler];
+  handler = [(SYNotesActivationObserver *)self handler];
 
-  if (v3)
+  if (handler)
   {
-    v4 = [(SYNotesActivationObserver *)self handler];
-    v4[2](v4, [(SYNotesActivationObserver *)self isVisible]);
+    handler2 = [(SYNotesActivationObserver *)self handler];
+    handler2[2](handler2, [(SYNotesActivationObserver *)self isVisible]);
   }
 }
 
@@ -36,9 +36,9 @@ void __49__SYNotesActivationObserver__startObservingNotes__block_invoke_2(uint64
 {
   if (!self->_hasInitialVisibility)
   {
-    v3 = [(SYNotesActivationObserver *)self _displayLayoutMonitor];
-    v4 = [v3 currentLayout];
-    [(SYNotesActivationObserver *)self _updateNotesVisibilityFromLayout:v4];
+    _displayLayoutMonitor = [(SYNotesActivationObserver *)self _displayLayoutMonitor];
+    currentLayout = [_displayLayoutMonitor currentLayout];
+    [(SYNotesActivationObserver *)self _updateNotesVisibilityFromLayout:currentLayout];
   }
 
   return self->_visible;
@@ -107,15 +107,15 @@ void __49__SYNotesActivationObserver__startObservingNotes__block_invoke(uint64_t
   objc_destroyWeak(&location);
 }
 
-- (SYNotesActivationObserver)initWithHandler:(id)a3
+- (SYNotesActivationObserver)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10.receiver = self;
   v10.super_class = SYNotesActivationObserver;
   v5 = [(SYNotesActivationObserver *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     handler = v5->_handler;
     v5->_handler = v6;
 
@@ -130,17 +130,17 @@ void __49__SYNotesActivationObserver__startObservingNotes__block_invoke(uint64_t
 
 - (void)dealloc
 {
-  v3 = [(SYNotesActivationObserver *)self _displayLayoutMonitor];
-  [v3 invalidate];
+  _displayLayoutMonitor = [(SYNotesActivationObserver *)self _displayLayoutMonitor];
+  [_displayLayoutMonitor invalidate];
 
   v4.receiver = self;
   v4.super_class = SYNotesActivationObserver;
   [(SYNotesActivationObserver *)&v4 dealloc];
 }
 
-- (void)_updateNotesVisibilityFromLayout:(id)a3
+- (void)_updateNotesVisibilityFromLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -153,14 +153,14 @@ void __49__SYNotesActivationObserver__startObservingNotes__block_invoke(uint64_t
   v6 = *(MEMORY[0x277CBF398] + 16);
   v16 = *MEMORY[0x277CBF398];
   v17 = v6;
-  v7 = [v4 elements];
+  elements = [layoutCopy elements];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__SYNotesActivationObserver__updateNotesVisibilityFromLayout___block_invoke;
   v11[3] = &unk_27856C688;
   v11[4] = &v18;
   v11[5] = &v12;
-  [v7 enumerateObjectsUsingBlock:v11];
+  [elements enumerateObjectsUsingBlock:v11];
 
   [(SYNotesActivationObserver *)self setVisible:*(v19 + 24)];
   if (*(v19 + 24) == 1)

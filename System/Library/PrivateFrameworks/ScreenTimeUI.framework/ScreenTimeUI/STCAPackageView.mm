@@ -2,36 +2,36 @@
 - (BOOL)isInitialState;
 - (CALayer)packageRootLayer;
 - (NSString)stateName;
-- (STCAPackageView)initWithCoder:(id)a3;
-- (STCAPackageView)initWithFrame:(CGRect)a3;
-- (id)_getStateWithName:(id)a3;
-- (id)_newStateControllerWithSuperlayer:(id)a3;
+- (STCAPackageView)initWithCoder:(id)coder;
+- (STCAPackageView)initWithFrame:(CGRect)frame;
+- (id)_getStateWithName:(id)name;
+- (id)_newStateControllerWithSuperlayer:(id)superlayer;
 - (void)_changeAppearance;
 - (void)_stcaPackageViewCommonInit;
-- (void)animateToInitialStateWithCompletionHandler:(id)a3;
-- (void)animateToStateName:(id)a3 completionHandler:(id)a4;
+- (void)animateToInitialStateWithCompletionHandler:(id)handler;
+- (void)animateToStateName:(id)name completionHandler:(id)handler;
 - (void)setInitialState;
-- (void)setStateName:(id)a3;
-- (void)stateController:(id)a3 transitionDidStop:(id)a4 completed:(BOOL)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setStateName:(id)name;
+- (void)stateController:(id)controller transitionDidStop:(id)stop completed:(BOOL)completed;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation STCAPackageView
 
-- (STCAPackageView)initWithFrame:(CGRect)a3
+- (STCAPackageView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = STCAPackageView;
-  v3 = [(STCAPackageView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STCAPackageView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(STCAPackageView *)v3 _stcaPackageViewCommonInit];
   return v3;
 }
 
-- (STCAPackageView)initWithCoder:(id)a3
+- (STCAPackageView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STCAPackageView;
-  v3 = [(STCAPackageView *)&v5 initWithCoder:a3];
+  v3 = [(STCAPackageView *)&v5 initWithCoder:coder];
   [(STCAPackageView *)v3 _stcaPackageViewCommonInit];
   return v3;
 }
@@ -42,35 +42,35 @@
   completionHandlers = self->_completionHandlers;
   self->_completionHandlers = v3;
 
-  v5 = [(STCAPackageView *)self layer];
-  v6 = [(STCAPackageView *)self _newStateControllerWithSuperlayer:v5];
+  layer = [(STCAPackageView *)self layer];
+  v6 = [(STCAPackageView *)self _newStateControllerWithSuperlayer:layer];
   stateController = self->_stateController;
   self->_stateController = v6;
 
   [(STCAPackageView *)self setUserInteractionEnabled:0];
 }
 
-- (id)_newStateControllerWithSuperlayer:(id)a3
+- (id)_newStateControllerWithSuperlayer:(id)superlayer
 {
-  v4 = a3;
-  v5 = [(STCAPackageView *)self makeCAPackage];
-  v6 = [v5 rootLayer];
-  [v4 addSublayer:v6];
-  [v4 setGeometryFlipped:{objc_msgSend(v5, "isGeometryFlipped")}];
+  superlayerCopy = superlayer;
+  makeCAPackage = [(STCAPackageView *)self makeCAPackage];
+  rootLayer = [makeCAPackage rootLayer];
+  [superlayerCopy addSublayer:rootLayer];
+  [superlayerCopy setGeometryFlipped:{objc_msgSend(makeCAPackage, "isGeometryFlipped")}];
 
-  v7 = [objc_alloc(MEMORY[0x277CD9FB8]) initWithLayer:v6];
+  v7 = [objc_alloc(MEMORY[0x277CD9FB8]) initWithLayer:rootLayer];
   [v7 setDelegate:self];
 
   return v7;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8.receiver = self;
   v8.super_class = STCAPackageView;
-  [(STCAPackageView *)&v8 traitCollectionDidChange:v4];
-  if (!v4 || (v5 = [v4 userInterfaceStyle], -[STCAPackageView traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceStyle"), v6, v5 != v7))
+  [(STCAPackageView *)&v8 traitCollectionDidChange:changeCopy];
+  if (!changeCopy || (v5 = [changeCopy userInterfaceStyle], -[STCAPackageView traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceStyle"), v6, v5 != v7))
   {
     [(STCAPackageView *)self _changeAppearance];
   }
@@ -78,38 +78,38 @@
 
 - (void)_changeAppearance
 {
-  v8 = [(STCAPackageView *)self packageRootLayer];
-  v3 = [(STCAPackageView *)self stateController];
-  v4 = [v3 stateOfLayer:v8];
-  v5 = [v4 name];
+  packageRootLayer = [(STCAPackageView *)self packageRootLayer];
+  stateController = [(STCAPackageView *)self stateController];
+  v4 = [stateController stateOfLayer:packageRootLayer];
+  name = [v4 name];
 
-  [v8 removeFromSuperlayer];
-  v6 = [(STCAPackageView *)self layer];
-  v7 = [(STCAPackageView *)self _newStateControllerWithSuperlayer:v6];
+  [packageRootLayer removeFromSuperlayer];
+  layer = [(STCAPackageView *)self layer];
+  v7 = [(STCAPackageView *)self _newStateControllerWithSuperlayer:layer];
   [(STCAPackageView *)self setStateController:v7];
 
-  if (v5)
+  if (name)
   {
-    [(STCAPackageView *)self setStateName:v5];
+    [(STCAPackageView *)self setStateName:name];
   }
 }
 
 - (CALayer)packageRootLayer
 {
-  v2 = [(STCAPackageView *)self stateController];
-  v3 = [v2 layer];
+  stateController = [(STCAPackageView *)self stateController];
+  layer = [stateController layer];
 
-  return v3;
+  return layer;
 }
 
 - (BOOL)isInitialState
 {
-  v3 = [(STCAPackageView *)self packageRootLayer];
-  v4 = [(STCAPackageView *)self stateController];
-  v5 = [v4 stateOfLayer:v3];
+  packageRootLayer = [(STCAPackageView *)self packageRootLayer];
+  stateController = [(STCAPackageView *)self stateController];
+  v5 = [stateController stateOfLayer:packageRootLayer];
 
-  v6 = [v3 states];
-  v7 = [v6 indexOfObjectPassingTest:&__block_literal_global_6];
+  states = [packageRootLayer states];
+  v7 = [states indexOfObjectPassingTest:&__block_literal_global_6];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -117,7 +117,7 @@
 
   else
   {
-    v8 = [v6 objectAtIndexedSubscript:v7];
+    v8 = [states objectAtIndexedSubscript:v7];
   }
 
   if (v5 == v8)
@@ -135,171 +135,171 @@
 
 - (void)setInitialState
 {
-  v4 = [(STCAPackageView *)self stateController];
-  v3 = [(STCAPackageView *)self packageRootLayer];
-  [v4 setInitialStatesOfLayer:v3];
+  stateController = [(STCAPackageView *)self stateController];
+  packageRootLayer = [(STCAPackageView *)self packageRootLayer];
+  [stateController setInitialStatesOfLayer:packageRootLayer];
 }
 
-- (void)animateToInitialStateWithCompletionHandler:(id)a3
+- (void)animateToInitialStateWithCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if ([(STCAPackageView *)self isInitialState])
   {
-    v5 = [MEMORY[0x277D4BA00] coreAnimation];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+    coreAnimation = [MEMORY[0x277D4BA00] coreAnimation];
+    if (os_log_type_enabled(coreAnimation, OS_LOG_TYPE_FAULT))
     {
-      [(STCAPackageView *)self animateToInitialStateWithCompletionHandler:v5];
+      [(STCAPackageView *)self animateToInitialStateWithCompletionHandler:coreAnimation];
     }
 
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
-    v6 = [(STCAPackageView *)self completionHandlers];
-    v7 = _Block_copy(v4);
+    completionHandlers = [(STCAPackageView *)self completionHandlers];
+    v7 = _Block_copy(handlerCopy);
 
-    [v6 addObject:v7];
-    v8 = [MEMORY[0x277D4BA00] coreAnimation];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    [completionHandlers addObject:v7];
+    coreAnimation2 = [MEMORY[0x277D4BA00] coreAnimation];
+    if (os_log_type_enabled(coreAnimation2, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(STCAPackageView *)self stateName];
+      stateName = [(STCAPackageView *)self stateName];
       v12 = 138543618;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
-      v15 = v9;
-      _os_log_impl(&dword_21DD93000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ starting transition(s) from state %{public}@ to initial state", &v12, 0x16u);
+      v15 = stateName;
+      _os_log_impl(&dword_21DD93000, coreAnimation2, OS_LOG_TYPE_DEFAULT, "%{public}@ starting transition(s) from state %{public}@ to initial state", &v12, 0x16u);
     }
 
-    v4 = [(STCAPackageView *)self stateController];
-    v10 = [(STCAPackageView *)self packageRootLayer];
+    handlerCopy = [(STCAPackageView *)self stateController];
+    packageRootLayer = [(STCAPackageView *)self packageRootLayer];
     LODWORD(v11) = 1.0;
-    [v4 setInitialStatesOfLayer:v10 transitionSpeed:v11];
+    [handlerCopy setInitialStatesOfLayer:packageRootLayer transitionSpeed:v11];
   }
 }
 
 - (NSString)stateName
 {
-  v3 = [(STCAPackageView *)self stateController];
-  v4 = [(STCAPackageView *)self packageRootLayer];
-  v5 = [v3 stateOfLayer:v4];
-  v6 = [v5 name];
+  stateController = [(STCAPackageView *)self stateController];
+  packageRootLayer = [(STCAPackageView *)self packageRootLayer];
+  v5 = [stateController stateOfLayer:packageRootLayer];
+  name = [v5 name];
 
-  return v6;
+  return name;
 }
 
-- (void)setStateName:(id)a3
+- (void)setStateName:(id)name
 {
-  v4 = a3;
-  v7 = [(STCAPackageView *)self stateController];
-  v5 = [(STCAPackageView *)self _getStateWithName:v4];
+  nameCopy = name;
+  stateController = [(STCAPackageView *)self stateController];
+  v5 = [(STCAPackageView *)self _getStateWithName:nameCopy];
 
-  v6 = [(STCAPackageView *)self packageRootLayer];
-  [v7 setState:v5 ofLayer:v6];
+  packageRootLayer = [(STCAPackageView *)self packageRootLayer];
+  [stateController setState:v5 ofLayer:packageRootLayer];
 }
 
-- (void)animateToStateName:(id)a3 completionHandler:(id)a4
+- (void)animateToStateName:(id)name completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STCAPackageView *)self stateController];
-  v9 = [(STCAPackageView *)self packageRootLayer];
-  v10 = [v8 stateOfLayer:v9];
-  v11 = [(STCAPackageView *)self _getStateWithName:v6];
+  nameCopy = name;
+  handlerCopy = handler;
+  stateController = [(STCAPackageView *)self stateController];
+  packageRootLayer = [(STCAPackageView *)self packageRootLayer];
+  v10 = [stateController stateOfLayer:packageRootLayer];
+  v11 = [(STCAPackageView *)self _getStateWithName:nameCopy];
   if (v10 == v11 || ([v10 isEqual:v11] & 1) != 0)
   {
-    v12 = [MEMORY[0x277D4BA00] coreAnimation];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    coreAnimation = [MEMORY[0x277D4BA00] coreAnimation];
+    if (os_log_type_enabled(coreAnimation, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138543618;
-      v21 = v6;
+      selfCopy = nameCopy;
       v22 = 2114;
       v23 = objc_opt_class();
       v13 = v23;
-      _os_log_impl(&dword_21DD93000, v12, OS_LOG_TYPE_DEFAULT, "Trying to animate to %{public}@ of %{public}@ when already there", &v20, 0x16u);
+      _os_log_impl(&dword_21DD93000, coreAnimation, OS_LOG_TYPE_DEFAULT, "Trying to animate to %{public}@ of %{public}@ when already there", &v20, 0x16u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   else
   {
-    if (v7)
+    if (handlerCopy)
     {
-      v14 = [(STCAPackageView *)self completionHandlers];
-      v15 = _Block_copy(v7);
-      [v14 addObject:v15];
+      completionHandlers = [(STCAPackageView *)self completionHandlers];
+      v15 = _Block_copy(handlerCopy);
+      [completionHandlers addObject:v15];
     }
 
-    v16 = [MEMORY[0x277D4BA00] coreAnimation];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    coreAnimation2 = [MEMORY[0x277D4BA00] coreAnimation];
+    if (os_log_type_enabled(coreAnimation2, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v10 name];
+      name = [v10 name];
       v20 = 138543874;
-      v21 = self;
+      selfCopy = self;
       v22 = 2114;
-      v23 = v17;
+      v23 = name;
       v24 = 2114;
-      v25 = v6;
-      _os_log_impl(&dword_21DD93000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ starting transition(s) from state %{public}@ to state %{public}@", &v20, 0x20u);
+      v25 = nameCopy;
+      _os_log_impl(&dword_21DD93000, coreAnimation2, OS_LOG_TYPE_DEFAULT, "%{public}@ starting transition(s) from state %{public}@ to state %{public}@", &v20, 0x20u);
     }
 
-    v18 = [(STCAPackageView *)self packageRootLayer];
+    packageRootLayer2 = [(STCAPackageView *)self packageRootLayer];
     LODWORD(v19) = 1.0;
-    [v8 setState:v11 ofLayer:v18 transitionSpeed:v19];
+    [stateController setState:v11 ofLayer:packageRootLayer2 transitionSpeed:v19];
   }
 }
 
-- (id)_getStateWithName:(id)a3
+- (id)_getStateWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(STCAPackageView *)self packageRootLayer];
-  v6 = [v5 stateWithName:v4];
+  nameCopy = name;
+  packageRootLayer = [(STCAPackageView *)self packageRootLayer];
+  v6 = [packageRootLayer stateWithName:nameCopy];
 
   if (!v6)
   {
-    v7 = [MEMORY[0x277D4BA00] coreAnimation];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+    coreAnimation = [MEMORY[0x277D4BA00] coreAnimation];
+    if (os_log_type_enabled(coreAnimation, OS_LOG_TYPE_FAULT))
     {
-      [(STCAPackageView *)v4 _getStateWithName:v7];
+      [(STCAPackageView *)nameCopy _getStateWithName:coreAnimation];
     }
   }
 
   return v6;
 }
 
-- (void)stateController:(id)a3 transitionDidStop:(id)a4 completed:(BOOL)a5
+- (void)stateController:(id)controller transitionDidStop:(id)stop completed:(BOOL)completed
 {
-  v5 = a5;
+  completedCopy = completed;
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [MEMORY[0x277D4BA00] coreAnimation];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  stopCopy = stop;
+  coreAnimation = [MEMORY[0x277D4BA00] coreAnimation];
+  if (os_log_type_enabled(coreAnimation, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 fromState];
-    v10 = [v7 toState];
+    fromState = [stopCopy fromState];
+    toState = [stopCopy toState];
     *buf = 138544130;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
-    v24 = v9;
+    v24 = fromState;
     v25 = 2114;
-    v26 = v10;
+    v26 = toState;
     v27 = 1024;
-    v28 = v5;
-    _os_log_impl(&dword_21DD93000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ stopped transition <fromState=%{public}@ toState=%{public}@> completed:%d", buf, 0x26u);
+    v28 = completedCopy;
+    _os_log_impl(&dword_21DD93000, coreAnimation, OS_LOG_TYPE_DEFAULT, "%{public}@ stopped transition <fromState=%{public}@ toState=%{public}@> completed:%d", buf, 0x26u);
   }
 
-  v11 = [(STCAPackageView *)self completionHandlers];
+  completionHandlers = [(STCAPackageView *)self completionHandlers];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v12 = [completionHandlers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -311,20 +311,20 @@
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(completionHandlers);
         }
 
         (*(*(*(&v16 + 1) + 8 * v15++) + 16))();
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [completionHandlers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
   }
 
-  [v11 removeAllObjects];
+  [completionHandlers removeAllObjects];
 }
 
 - (void)animateToInitialStateWithCompletionHandler:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

@@ -7,28 +7,28 @@
 - (id)outputImage
 {
   v117[7] = *MEMORY[0x1E69E9840];
-  v3 = [(PIPortraitDebugFilter *)self inputImage];
-  v4 = [(PIPortraitDebugFilter *)self depthInfo];
-  if (v4)
+  inputImage = [(PIPortraitDebugFilter *)self inputImage];
+  depthInfo = [(PIPortraitDebugFilter *)self depthInfo];
+  if (depthInfo)
   {
-    [v3 extent];
+    [inputImage extent];
     v6 = v5;
     v8 = v7;
-    v9 = [MEMORY[0x1E695F610] cyanColor];
-    v117[0] = v9;
-    v10 = [MEMORY[0x1E695F610] magentaColor];
-    v117[1] = v10;
+    cyanColor = [MEMORY[0x1E695F610] cyanColor];
+    v117[0] = cyanColor;
+    magentaColor = [MEMORY[0x1E695F610] magentaColor];
+    v117[1] = magentaColor;
     [MEMORY[0x1E695F610] yellowColor];
-    v11 = v105 = v4;
+    v11 = v105 = depthInfo;
     v117[2] = v11;
-    v12 = [MEMORY[0x1E695F610] redColor];
-    v117[3] = v12;
-    v13 = [MEMORY[0x1E695F610] greenColor];
-    v117[4] = v13;
-    v14 = [MEMORY[0x1E695F610] blueColor];
-    v117[5] = v14;
-    v15 = [MEMORY[0x1E695F610] grayColor];
-    v117[6] = v15;
+    redColor = [MEMORY[0x1E695F610] redColor];
+    v117[3] = redColor;
+    greenColor = [MEMORY[0x1E695F610] greenColor];
+    v117[4] = greenColor;
+    blueColor = [MEMORY[0x1E695F610] blueColor];
+    v117[5] = blueColor;
+    grayColor = [MEMORY[0x1E695F610] grayColor];
+    v117[6] = grayColor;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v117 count:7];
 
     v17 = MEMORY[0x1E695F648];
@@ -81,13 +81,13 @@
             [v36 doubleValue];
             v38 = v37;
 
-            v39 = [v22 outputImage];
+            outputImage = [v22 outputImage];
             CGAffineTransformMakeTranslation(&v109, v6 * v35, v8 * v38);
-            v40 = [v39 imageByApplyingTransform:&v109];
+            v40 = [outputImage imageByApplyingTransform:&v109];
 
-            v41 = [v40 imageByCompositingOverImage:v3];
+            v41 = [v40 imageByCompositingOverImage:inputImage];
 
-            v3 = v41;
+            inputImage = v41;
           }
         }
 
@@ -109,13 +109,13 @@
             [v48 doubleValue];
             v50 = v49;
 
-            v51 = [v22 outputImage];
+            outputImage2 = [v22 outputImage];
             CGAffineTransformMakeTranslation(&v109, v6 * v47, v8 * v50);
-            v52 = [v51 imageByApplyingTransform:&v109];
+            v52 = [outputImage2 imageByApplyingTransform:&v109];
 
-            v53 = [v52 imageByCompositingOverImage:v3];
+            v53 = [v52 imageByCompositingOverImage:inputImage];
 
-            v3 = v53;
+            inputImage = v53;
           }
         }
 
@@ -128,7 +128,7 @@
           if (v56)
           {
             [v106 setValue:v29 forKey:v108];
-            v57 = [v106 outputImage];
+            outputImage3 = [v106 outputImage];
             v58 = [v28 objectForKeyedSubscript:@"noseX"];
             [v58 doubleValue];
             v60 = v59;
@@ -138,11 +138,11 @@
             v63 = v62;
 
             CGAffineTransformMakeTranslation(&v109, v6 * v60, v8 * v63);
-            v64 = [v57 imageByApplyingTransform:&v109];
+            v64 = [outputImage3 imageByApplyingTransform:&v109];
 
-            v65 = [v64 imageByCompositingOverImage:v3];
+            v65 = [v64 imageByCompositingOverImage:inputImage];
 
-            v3 = v65;
+            inputImage = v65;
           }
         }
 
@@ -168,9 +168,9 @@
             CGAffineTransformMakeTranslation(&v109, v6 * v71, v8 * v74);
             v77 = [v76 imageByApplyingTransform:&v109];
 
-            v78 = [v77 imageByCompositingOverImage:v3];
+            v78 = [v77 imageByCompositingOverImage:inputImage];
 
-            v3 = v78;
+            inputImage = v78;
           }
         }
 
@@ -180,7 +180,7 @@
       while (v27 < [v26 count]);
     }
 
-    v4 = v105;
+    depthInfo = v105;
     v79 = [v105 objectForKeyedSubscript:@"focusRect"];
     v80 = v79;
     if (v79)
@@ -211,24 +211,24 @@
       v110[2] = v95;
       v111[2] = &unk_1F471EE20;
       v110[3] = *MEMORY[0x1E695FA78];
-      v96 = [MEMORY[0x1E695F610] yellowColor];
-      v111[3] = v96;
+      yellowColor = [MEMORY[0x1E695F610] yellowColor];
+      v111[3] = yellowColor;
       v97 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v111 forKeys:v110 count:4];
       v98 = [v93 filterWithName:@"CIRoundedRectangleStrokeGenerator" withInputParameters:v97];
-      v99 = [v98 outputImage];
+      outputImage4 = [v98 outputImage];
 
-      v100 = [v99 imageByCompositingOverImage:v3];
+      v100 = [outputImage4 imageByCompositingOverImage:inputImage];
 
-      v3 = v100;
-      v4 = v105;
+      inputImage = v100;
+      depthInfo = v105;
     }
 
-    v101 = v3;
+    v101 = inputImage;
   }
 
   else
   {
-    v101 = v3;
+    v101 = inputImage;
   }
 
   return v101;

@@ -1,8 +1,8 @@
 @interface PKDiscoveryLayout
 - (CGSize)collectionViewContentSize;
 - (PKDiscoveryLayout)init;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (void)_adjustItems:(id)a3 withLateralMove:(double)a4;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (void)_adjustItems:(id)items withLateralMove:(double)move;
 - (void)prepareLayout;
 @end
 
@@ -63,19 +63,19 @@
 
 - (void)prepareLayout
 {
-  v3 = [(PKDiscoveryLayout *)self collectionView];
-  v4 = [v3 delegate];
-  v5 = v4;
-  if (v3 && v4)
+  collectionView = [(PKDiscoveryLayout *)self collectionView];
+  delegate = [collectionView delegate];
+  v5 = delegate;
+  if (collectionView && delegate)
   {
     [(NSMutableDictionary *)self->_attributesPerIndexPath removeAllObjects];
-    [v3 bounds];
+    [collectionView bounds];
     v7 = v6;
     p_currentSize = &self->_currentSize;
     self->_currentSize.width = v6;
     self->_currentSize.height = 0.0;
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([v3 numberOfSections] >= 1)
+    if ([collectionView numberOfSections] >= 1)
     {
       v10 = 0;
       v11 = *(MEMORY[0x1E695F060] + 8);
@@ -84,7 +84,7 @@
       do
       {
         height = p_currentSize->height;
-        [v5 collectionView:v3 layout:self referenceSizeForHeaderInSection:v10];
+        [v5 collectionView:collectionView layout:self referenceSizeForHeaderInSection:v10];
         v15 = v14;
         v16 = v14 == v38 && v13 == v11;
         v17 = v11;
@@ -108,14 +108,14 @@
           v17 = v19;
         }
 
-        v25 = [v3 numberOfItemsInSection:v10];
+        v25 = [collectionView numberOfItemsInSection:v10];
         if (v25)
         {
           v26 = v25;
           for (i = 0; i != v26; ++i)
           {
             v28 = [MEMORY[0x1E696AC88] indexPathForRow:i inSection:v10];
-            [v5 collectionView:v3 layout:self sizeForItemAtIndexPath:v28];
+            [v5 collectionView:collectionView layout:self sizeForItemAtIndexPath:v28];
             v30 = v29;
             v32 = v31;
             if (v7 - v18 >= v29)
@@ -166,7 +166,7 @@
         ++v10;
       }
 
-      while (v10 < [v3 numberOfSections]);
+      while (v10 < [collectionView numberOfSections]);
     }
 
     p_currentSize->height = p_currentSize->height + 16.0;
@@ -176,15 +176,15 @@
   }
 }
 
-- (void)_adjustItems:(id)a3 withLateralMove:(double)a4
+- (void)_adjustItems:(id)items withLateralMove:(double)move
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemsCopy = items;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -195,22 +195,22 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
         [v10 frame];
-        [v10 setFrame:v11 + a4];
+        [v10 setFrame:v11 + move];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);

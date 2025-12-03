@@ -1,25 +1,25 @@
 @interface BooksDiagnosticExtension
-- (id)_getApplicationSupportDirectoryWithContainer:(id)a3;
-- (id)_getDocumentsDirectoryWithContainer:(id)a3;
-- (id)_getLibraryDirectoryWithContainer:(id)a3;
-- (id)_getLibraryPersistentStoreDirectoryWithContainer:(id)a3;
-- (id)_getSeriesDatabasePersistentStoreDirectoryWithContainer:(id)a3;
-- (id)_getStoreFilesPersistentStoreDirectory:(id)a3 withContainer:(id)a4;
+- (id)_getApplicationSupportDirectoryWithContainer:(id)container;
+- (id)_getDocumentsDirectoryWithContainer:(id)container;
+- (id)_getLibraryDirectoryWithContainer:(id)container;
+- (id)_getLibraryPersistentStoreDirectoryWithContainer:(id)container;
+- (id)_getSeriesDatabasePersistentStoreDirectoryWithContainer:(id)container;
+- (id)_getStoreFilesPersistentStoreDirectory:(id)directory withContainer:(id)container;
 - (id)attachmentList;
-- (id)consumeSandboxExtensionForContainer:(id)a3;
+- (id)consumeSandboxExtensionForContainer:(id)container;
 - (id)getAppDataContainer;
-- (void)_addBookManifestAttachmentsForBackupPlists:(BOOL)a3 toArray:(id)a4;
-- (void)_appendBookManifestAttachmentsToArray:(id)a3;
-- (void)_appendCloudKitFilesToArray:(id)a3;
-- (void)_appendEngagementFilesToArray:(id)a3;
-- (void)_appendJaliscoDatabaseFileToArray:(id)a3;
-- (void)_appendLibraryFileToArray:(id)a3;
-- (void)_appendMediaLibraryAttachmentsToArray:(id)a3;
-- (void)_appendPriceTrackingFilesToArray:(id)a3;
-- (void)_appendReadingHistoryModelFilesToArray:(id)a3;
-- (void)_appendSeriesDatabaseFileToArray:(id)a3;
-- (void)_appendStoreFilesToArray:(id)a3;
-- (void)_downloadsDatabaseAttachmentToArray:(id)a3;
+- (void)_addBookManifestAttachmentsForBackupPlists:(BOOL)plists toArray:(id)array;
+- (void)_appendBookManifestAttachmentsToArray:(id)array;
+- (void)_appendCloudKitFilesToArray:(id)array;
+- (void)_appendEngagementFilesToArray:(id)array;
+- (void)_appendJaliscoDatabaseFileToArray:(id)array;
+- (void)_appendLibraryFileToArray:(id)array;
+- (void)_appendMediaLibraryAttachmentsToArray:(id)array;
+- (void)_appendPriceTrackingFilesToArray:(id)array;
+- (void)_appendReadingHistoryModelFilesToArray:(id)array;
+- (void)_appendSeriesDatabaseFileToArray:(id)array;
+- (void)_appendStoreFilesToArray:(id)array;
+- (void)_downloadsDatabaseAttachmentToArray:(id)array;
 @end
 
 @implementation BooksDiagnosticExtension
@@ -73,9 +73,9 @@
   return v3;
 }
 
-- (void)_appendMediaLibraryAttachmentsToArray:(id)a3
+- (void)_appendMediaLibraryAttachmentsToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = MSVMobileHomeDirectory();
   v11[0] = v5;
   v11[1] = @"Media";
@@ -87,24 +87,24 @@
   v9 = @"MediaLibrary.sqlitedb";
   v10 = v7;
   v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v8 hasSqliteSuffix:0 toArray:v4];
+  [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v8 hasSqliteSuffix:0 toArray:arrayCopy];
 }
 
-- (void)_appendJaliscoDatabaseFileToArray:(id)a3
+- (void)_appendJaliscoDatabaseFileToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = +[NSURL bu_booksGroupContainerDocumentsURL];
   v6 = [v5 URLByAppendingPathComponent:@"BKJaliscoServerSource"];
 
   v8 = @"Jalisco database";
   v9 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v7 hasSqliteSuffix:1 toArray:v4];
+  [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v7 hasSqliteSuffix:1 toArray:arrayCopy];
 }
 
-- (void)_appendCloudKitFilesToArray:(id)a3
+- (void)_appendCloudKitFilesToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = +[NSURL bu_booksGroupContainerDocumentsURL];
   v6 = [v5 URLByAppendingPathComponent:@"BCCloudData-BookDataStoreService"];
 
@@ -122,92 +122,92 @@
   v13[3] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:4];
 
-  [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v11 hasSqliteSuffix:0 toArray:v4];
+  [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v11 hasSqliteSuffix:0 toArray:arrayCopy];
 }
 
-- (void)_appendEngagementFilesToArray:(id)a3
+- (void)_appendEngagementFilesToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = +[NSURL bu_booksGroupContainerURL];
   v6 = [v5 URLByAppendingPathComponent:@"EngagementCollector"];
 
   v8 = @"BooksMessages";
   v9 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v7 hasSqliteSuffix:1 toArray:v4];
+  [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v7 hasSqliteSuffix:1 toArray:arrayCopy];
 }
 
-- (void)_appendLibraryFileToArray:(id)a3
+- (void)_appendLibraryFileToArray:(id)array
 {
-  v4 = a3;
-  v5 = [(BooksDiagnosticExtension *)self getAppDataContainer];
-  v6 = [(BooksDiagnosticExtension *)self _getLibraryPersistentStoreDirectoryWithContainer:v5];
+  arrayCopy = array;
+  getAppDataContainer = [(BooksDiagnosticExtension *)self getAppDataContainer];
+  v6 = [(BooksDiagnosticExtension *)self _getLibraryPersistentStoreDirectoryWithContainer:getAppDataContainer];
   v7 = v6;
   if (v6)
   {
     v10 = @"BKLibrary";
     v11 = v6;
     v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-    v9 = [(BooksDiagnosticExtension *)self consumeSandboxExtensionForContainer:v5];
+    v9 = [(BooksDiagnosticExtension *)self consumeSandboxExtensionForContainer:getAppDataContainer];
     if (v9)
     {
-      [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v8 hasSqliteSuffix:1 toArray:v4];
+      [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v8 hasSqliteSuffix:1 toArray:arrayCopy];
       [v9 close];
     }
   }
 
-  [v5 close];
+  [getAppDataContainer close];
 }
 
-- (void)_appendSeriesDatabaseFileToArray:(id)a3
+- (void)_appendSeriesDatabaseFileToArray:(id)array
 {
-  v4 = a3;
-  v5 = [(BooksDiagnosticExtension *)self getAppDataContainer];
-  v6 = [(BooksDiagnosticExtension *)self _getSeriesDatabasePersistentStoreDirectoryWithContainer:v5];
+  arrayCopy = array;
+  getAppDataContainer = [(BooksDiagnosticExtension *)self getAppDataContainer];
+  v6 = [(BooksDiagnosticExtension *)self _getSeriesDatabasePersistentStoreDirectoryWithContainer:getAppDataContainer];
   v7 = v6;
   if (v6)
   {
     v10 = @"BKSeriesDatabase";
     v11 = v6;
     v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-    v9 = [(BooksDiagnosticExtension *)self consumeSandboxExtensionForContainer:v5];
+    v9 = [(BooksDiagnosticExtension *)self consumeSandboxExtensionForContainer:getAppDataContainer];
     if (v9)
     {
-      [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v8 hasSqliteSuffix:1 toArray:v4];
+      [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v8 hasSqliteSuffix:1 toArray:arrayCopy];
       [v9 close];
     }
   }
 
-  [v5 close];
+  [getAppDataContainer close];
 }
 
-- (void)_appendStoreFilesToArray:(id)a3
+- (void)_appendStoreFilesToArray:(id)array
 {
-  v4 = a3;
-  v5 = [(BooksDiagnosticExtension *)self getAppDataContainer];
-  v6 = [(BooksDiagnosticExtension *)self _getStoreFilesPersistentStoreDirectory:@"storeFiles" withContainer:v5];
+  arrayCopy = array;
+  getAppDataContainer = [(BooksDiagnosticExtension *)self getAppDataContainer];
+  v6 = [(BooksDiagnosticExtension *)self _getStoreFilesPersistentStoreDirectory:@"storeFiles" withContainer:getAppDataContainer];
   v7 = v6;
   if (v6)
   {
     v10 = @"storeFiles";
     v11 = v6;
     v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-    v9 = [(BooksDiagnosticExtension *)self consumeSandboxExtensionForContainer:v5];
+    v9 = [(BooksDiagnosticExtension *)self consumeSandboxExtensionForContainer:getAppDataContainer];
     if (v9)
     {
-      [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v8 hasSqliteSuffix:1 toArray:v4];
+      [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v8 hasSqliteSuffix:1 toArray:arrayCopy];
       [v9 close];
     }
   }
 
-  [v5 close];
+  [getAppDataContainer close];
 }
 
-- (id)_getDocumentsDirectoryWithContainer:(id)a3
+- (id)_getDocumentsDirectoryWithContainer:(id)container
 {
-  if (a3)
+  if (container)
   {
-    v3 = [a3 url];
+    v3 = [container url];
     v4 = [v3 URLByAppendingPathComponent:@"Documents" isDirectory:1];
   }
 
@@ -219,9 +219,9 @@
   return v4;
 }
 
-- (id)_getLibraryPersistentStoreDirectoryWithContainer:(id)a3
+- (id)_getLibraryPersistentStoreDirectoryWithContainer:(id)container
 {
-  v3 = [(BooksDiagnosticExtension *)self _getDocumentsDirectoryWithContainer:a3];
+  v3 = [(BooksDiagnosticExtension *)self _getDocumentsDirectoryWithContainer:container];
   if (v3)
   {
     v4 = v3;
@@ -236,9 +236,9 @@
   return v5;
 }
 
-- (id)_getSeriesDatabasePersistentStoreDirectoryWithContainer:(id)a3
+- (id)_getSeriesDatabasePersistentStoreDirectoryWithContainer:(id)container
 {
-  v3 = [(BooksDiagnosticExtension *)self _getDocumentsDirectoryWithContainer:a3];
+  v3 = [(BooksDiagnosticExtension *)self _getDocumentsDirectoryWithContainer:container];
   if (v3)
   {
     v4 = v3;
@@ -253,14 +253,14 @@
   return v5;
 }
 
-- (id)_getStoreFilesPersistentStoreDirectory:(id)a3 withContainer:(id)a4
+- (id)_getStoreFilesPersistentStoreDirectory:(id)directory withContainer:(id)container
 {
-  v6 = a3;
-  v7 = [(BooksDiagnosticExtension *)self _getDocumentsDirectoryWithContainer:a4];
+  directoryCopy = directory;
+  v7 = [(BooksDiagnosticExtension *)self _getDocumentsDirectoryWithContainer:container];
   if (v7)
   {
     v8 = v7;
-    v9 = [v7 URLByAppendingPathComponent:v6 isDirectory:1];
+    v9 = [v7 URLByAppendingPathComponent:directoryCopy isDirectory:1];
   }
 
   else
@@ -271,11 +271,11 @@
   return v9;
 }
 
-- (id)_getLibraryDirectoryWithContainer:(id)a3
+- (id)_getLibraryDirectoryWithContainer:(id)container
 {
-  if (a3)
+  if (container)
   {
-    v3 = [a3 url];
+    v3 = [container url];
     v4 = [v3 URLByAppendingPathComponent:@"Library" isDirectory:1];
   }
 
@@ -287,9 +287,9 @@
   return v4;
 }
 
-- (id)_getApplicationSupportDirectoryWithContainer:(id)a3
+- (id)_getApplicationSupportDirectoryWithContainer:(id)container
 {
-  v3 = [(BooksDiagnosticExtension *)self _getLibraryDirectoryWithContainer:a3];
+  v3 = [(BooksDiagnosticExtension *)self _getLibraryDirectoryWithContainer:container];
   if (v3)
   {
     v4 = v3;
@@ -304,10 +304,10 @@
   return v5;
 }
 
-- (id)consumeSandboxExtensionForContainer:(id)a3
+- (id)consumeSandboxExtensionForContainer:(id)container
 {
-  v3 = [a3 consumeSandboxToken];
-  if (!v3)
+  consumeSandboxToken = [container consumeSandboxToken];
+  if (!consumeSandboxToken)
   {
     v4 = BLBooksDiagnosticExtensionLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -321,7 +321,7 @@
     }
   }
 
-  return v3;
+  return consumeSandboxToken;
 }
 
 - (id)getAppDataContainer
@@ -331,79 +331,79 @@
   return v2;
 }
 
-- (void)_appendReadingHistoryModelFilesToArray:(id)a3
+- (void)_appendReadingHistoryModelFilesToArray:(id)array
 {
-  v28 = a3;
+  arrayCopy = array;
   v4 = [NSString stringWithFormat:@"%@.%@Context.db", @"bookdatastored", @"ReadingHistoryModel"];
   v5 = +[NSURL bu_booksGroupContainerURL];
   v6 = [v5 URLByAppendingPathComponent:@"CRDTModelContext" isDirectory:1];
 
   v7 = [v6 URLByAppendingPathComponent:v4];
-  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v7 withName:v4 archiveFile:0 toArray:v28];
+  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v7 withName:v4 archiveFile:0 toArray:arrayCopy];
 
   v8 = [@"ReadingHistoryModel" stringByAppendingString:@"-SyncInfo"];
   v9 = +[NSURL bu_booksGroupContainerURL];
   v10 = [v9 URLByAppendingPathComponent:@"CRDTModelFileSync" isDirectory:1];
 
   v11 = [v10 URLByAppendingPathComponent:v8];
-  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v11 withName:v8 archiveFile:0 toArray:v28];
+  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v11 withName:v8 archiveFile:0 toArray:arrayCopy];
 
   v12 = [NSString stringWithFormat:@"%@-%@-SyncInfoContext.db", @"bookdatastored", @"ReadingHistoryModel"];
   v13 = +[NSURL bu_booksGroupContainerURL];
   v14 = [v13 URLByAppendingPathComponent:@"CRDTModelFileSyncContext" isDirectory:1];
 
   v15 = [v14 URLByAppendingPathComponent:v12];
-  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v15 withName:v12 archiveFile:0 toArray:v28];
+  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v15 withName:v12 archiveFile:0 toArray:arrayCopy];
 
   v16 = +[NSURL bu_booksGroupContainerURL];
   v17 = [v16 URLByAppendingPathComponent:@"CRDTModelLocalFile" isDirectory:1];
 
   v18 = [v17 URLByAppendingPathComponent:@"ReadingHistoryModel"];
-  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v18 withName:@"ReadingHistoryModel" archiveFile:0 toArray:v28];
+  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v18 withName:@"ReadingHistoryModel" archiveFile:0 toArray:arrayCopy];
 
-  v19 = [(BooksDiagnosticExtension *)self getAppDataContainer];
-  v20 = [(BooksDiagnosticExtension *)self _getApplicationSupportDirectoryWithContainer:v19];
+  getAppDataContainer = [(BooksDiagnosticExtension *)self getAppDataContainer];
+  v20 = [(BooksDiagnosticExtension *)self _getApplicationSupportDirectoryWithContainer:getAppDataContainer];
   if (v20)
   {
-    v21 = [(BooksDiagnosticExtension *)self consumeSandboxExtensionForContainer:v19];
+    v21 = [(BooksDiagnosticExtension *)self consumeSandboxExtensionForContainer:getAppDataContainer];
     if (v21)
     {
       v22 = [NSString stringWithFormat:@"%@-%@-SyncInfoContext.db", @"Books", @"ReadingHistoryModel"];
       v23 = [v20 URLByAppendingPathComponent:@"CRDTModelFileSyncContext" isDirectory:1];
       v24 = [v23 URLByAppendingPathComponent:v22];
-      [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v24 withName:v22 archiveFile:0 toArray:v28];
+      [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v24 withName:v22 archiveFile:0 toArray:arrayCopy];
 
       v25 = [NSString stringWithFormat:@"%@-%@Context.db", @"Books", @"ReadingHistoryModel"];
       v26 = [v20 URLByAppendingPathComponent:@"CRDTModelLocalFileContext" isDirectory:1];
       v27 = [v26 URLByAppendingPathComponent:v25];
-      [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v27 withName:v25 archiveFile:0 toArray:v28];
+      [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v27 withName:v25 archiveFile:0 toArray:arrayCopy];
 
       [v21 close];
     }
   }
 
-  [v19 close];
+  [getAppDataContainer close];
 }
 
-- (void)_appendPriceTrackingFilesToArray:(id)a3
+- (void)_appendPriceTrackingFilesToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v7 = +[NSURL bu_booksGroupContainerDocumentsURL];
   v5 = [v7 URLByAppendingPathComponent:@"BDSService-PriceTracking" isDirectory:1];
   v6 = [v5 URLByAppendingPathComponent:@"data.json" isDirectory:0];
-  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v6 withName:@"BDSService-PriceTracking-data.json" archiveFile:0 toArray:v4];
+  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v6 withName:@"BDSService-PriceTracking-data.json" archiveFile:0 toArray:arrayCopy];
 }
 
-- (void)_appendBookManifestAttachmentsToArray:(id)a3
+- (void)_appendBookManifestAttachmentsToArray:(id)array
 {
-  v4 = a3;
-  [(BooksDiagnosticExtension *)self _addBookManifestAttachmentsForBackupPlists:0 toArray:v4];
-  [(BooksDiagnosticExtension *)self _addBookManifestAttachmentsForBackupPlists:1 toArray:v4];
+  arrayCopy = array;
+  [(BooksDiagnosticExtension *)self _addBookManifestAttachmentsForBackupPlists:0 toArray:arrayCopy];
+  [(BooksDiagnosticExtension *)self _addBookManifestAttachmentsForBackupPlists:1 toArray:arrayCopy];
 }
 
-- (void)_addBookManifestAttachmentsForBackupPlists:(BOOL)a3 toArray:(id)a4
+- (void)_addBookManifestAttachmentsForBackupPlists:(BOOL)plists toArray:(id)array
 {
-  if (a3)
+  if (plists)
   {
     v6 = @"Backup-Books.plist";
   }
@@ -413,7 +413,7 @@
     v6 = @"Books.plist";
   }
 
-  if (a3)
+  if (plists)
   {
     v7 = @"Backup-Purchases.plist";
   }
@@ -424,7 +424,7 @@
   }
 
   v8 = @"Managed.plist";
-  if (a3)
+  if (plists)
   {
     v8 = @"Backup-Managed.plist";
   }
@@ -432,7 +432,7 @@
   v9 = v8;
   v10 = v7;
   v11 = v6;
-  v12 = a4;
+  arrayCopy = array;
   v13 = +[IMLibraryPlist purchasesRepositoryPath];
   v20 = [NSURL fileURLWithPath:v13];
 
@@ -442,24 +442,24 @@
   v16 = +[NSURL bu_booksRepositoryURL];
   v17 = [v16 URLByAppendingPathComponent:v11];
 
-  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v17 withName:v11 archiveFile:0 toArray:v12];
+  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v17 withName:v11 archiveFile:0 toArray:arrayCopy];
   v18 = [v20 URLByAppendingPathComponent:v10];
-  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v18 withName:v10 archiveFile:0 toArray:v12];
+  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v18 withName:v10 archiveFile:0 toArray:arrayCopy];
 
   v19 = [v15 URLByAppendingPathComponent:v9];
-  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v19 withName:v9 archiveFile:0 toArray:v12];
+  [(BLBooksDEExtensionProvider *)self addAttachmentFromURL:v19 withName:v9 archiveFile:0 toArray:arrayCopy];
 }
 
-- (void)_downloadsDatabaseAttachmentToArray:(id)a3
+- (void)_downloadsDatabaseAttachmentToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = +[IMLibraryPlist sharedContainerURL];
   v6 = [v5 URLByAppendingPathComponent:@"Documents/BLDatabaseManager"];
 
   v8 = @"BLDownloads database";
   v9 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v7 hasSqliteSuffix:1 toArray:v4];
+  [(BLBooksDEExtensionProvider *)self appendDatabaseAttachmentsFromURLs:v7 hasSqliteSuffix:1 toArray:arrayCopy];
 }
 
 @end

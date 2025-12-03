@@ -1,36 +1,36 @@
 @interface CRLFreehandDrawingPKSelectionManager
-- (BOOL)p_areSelectedFreehandShapesEqualToSelectedStrokesInPK:(id)a3;
-- (CRLFreehandDrawingPKSelectionManager)initWithDelegate:(id)a3;
+- (BOOL)p_areSelectedFreehandShapesEqualToSelectedStrokesInPK:(id)k;
+- (CRLFreehandDrawingPKSelectionManager)initWithDelegate:(id)delegate;
 - (CRLFreehandDrawingSelectionDecorator)selectionDecorator;
 - (id)interactiveCanvasController;
-- (id)p_cachedDrawingShapeItemsForStrokes:(id)a3;
-- (id)p_cachedStrokesForDrawingShapeItems:(id)a3;
+- (id)p_cachedDrawingShapeItemsForStrokes:(id)strokes;
+- (id)p_cachedStrokesForDrawingShapeItems:(id)items;
 - (id)strokeDataUUIDsForNonInteractiveDrawings;
 - (id)strokeUUIDsToDrawingItems;
 - (id)strokeUUIDsToDrawingShapeItems;
 - (id)strokeUUIDsToStrokes;
-- (void)allStrokesOnCanvasDidChange:(id)a3 inDrawing:(id)a4;
+- (void)allStrokesOnCanvasDidChange:(id)change inDrawing:(id)drawing;
 - (void)beginSuppressingSmartSelection;
 - (void)dealloc;
-- (void)didAppearInWindowScene:(id)a3;
-- (void)didSelectStrokes:(id)a3 selectionType:(int64_t)a4 inAttachment:(id)a5;
-- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)a3;
+- (void)didAppearInWindowScene:(id)scene;
+- (void)didSelectStrokes:(id)strokes selectionType:(int64_t)type inAttachment:(id)attachment;
+- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)commands;
 - (void)dynamicOperationDidEnd;
 - (void)endSuppressingSmartSelection;
-- (void)installSelectionView:(id)a3 fromView:(id)a4;
-- (void)p_canvasDidScroll:(id)a3;
-- (void)p_canvasDidZoom:(id)a3;
-- (void)p_canvasWillZoom:(id)a3;
-- (void)p_didEnterBackground:(id)a3;
-- (void)p_editorControllerSelectionPathDidChanged:(id)a3;
+- (void)installSelectionView:(id)view fromView:(id)fromView;
+- (void)p_canvasDidScroll:(id)scroll;
+- (void)p_canvasDidZoom:(id)zoom;
+- (void)p_canvasWillZoom:(id)zoom;
+- (void)p_didEnterBackground:(id)background;
+- (void)p_editorControllerSelectionPathDidChanged:(id)changed;
 - (void)p_indexHandwrittenTextsFromDrawing;
-- (void)p_recursivelyAddFreehandDrawingItemsFromGroup:(id)a3 drawingItems:(id)a4;
+- (void)p_recursivelyAddFreehandDrawingItemsFromGroup:(id)group drawingItems:(id)items;
 - (void)p_removeCurrentSelectionView;
-- (void)p_selectStrokesInDrawingShapeItems:(id)a3;
+- (void)p_selectStrokesInDrawingShapeItems:(id)items;
 - (void)p_setDrawingsAttachmentToSmartSelectionController;
-- (void)p_willEnterForeground:(id)a3;
-- (void)pencilKitDidSmartSelectPreviouslySelectedStrokes:(id)a3;
-- (void)replacingPotentiallySmartSelectedItems:(id)a3 withNewItems:(id)a4;
+- (void)p_willEnterForeground:(id)foreground;
+- (void)pencilKitDidSmartSelectPreviouslySelectedStrokes:(id)strokes;
+- (void)replacingPotentiallySmartSelectedItems:(id)items withNewItems:(id)newItems;
 - (void)setCurrentSelectedDrawingItemsAsSmartSelected;
 - (void)teardown;
 - (void)updatePKStrokesFromAllFreehandDrawingItemsOnCanvas;
@@ -38,24 +38,24 @@
 
 @implementation CRLFreehandDrawingPKSelectionManager
 
-- (CRLFreehandDrawingPKSelectionManager)initWithDelegate:(id)a3
+- (CRLFreehandDrawingPKSelectionManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v29.receiver = self;
   v29.super_class = CRLFreehandDrawingPKSelectionManager;
   v5 = [(CRLFreehandDrawingPKSelectionManager *)&v29 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_delegate, v4);
-    v8 = [v4 interactiveCanvasControllerForPKSelectionManager:v6];
+    v7 = objc_storeWeak(&v5->_delegate, delegateCopy);
+    v8 = [delegateCopy interactiveCanvasControllerForPKSelectionManager:v6];
 
     v9 = [NSTimer scheduledTimerWithTimeInterval:v6 target:"p_indexHandwrittenTextsFromDrawing" selector:0 userInfo:1 repeats:25.0];
     drawingIndexingTimer = v6->_drawingIndexingTimer;
     v6->_drawingIndexingTimer = v9;
 
-    v11 = [v8 pkDrawingProvider];
-    objc_storeWeak(&v6->_drawingProvider, v11);
+    pkDrawingProvider = [v8 pkDrawingProvider];
+    objc_storeWeak(&v6->_drawingProvider, pkDrawingProvider);
 
     WeakRetained = objc_loadWeakRetained(&v6->_drawingProvider);
     if (!WeakRetained)
@@ -87,8 +87,8 @@
       [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:87 isFatal:0 description:"invalid nil value for '%{public}s'", "_drawingProvider"];
     }
 
-    v16 = [v8 drawingIntelligenceProvider];
-    objc_storeWeak(&v6->_intelligenceProvider, v16);
+    drawingIntelligenceProvider = [v8 drawingIntelligenceProvider];
+    objc_storeWeak(&v6->_intelligenceProvider, drawingIntelligenceProvider);
 
     v17 = objc_loadWeakRetained(&v6->_intelligenceProvider);
     if (!v17)
@@ -121,8 +121,8 @@
     }
 
     v21 = +[NSNotificationCenter defaultCenter];
-    v22 = [v8 editorController];
-    [v21 addObserver:v6 selector:"p_editorControllerSelectionPathDidChanged:" name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:v22];
+    editorController = [v8 editorController];
+    [v21 addObserver:v6 selector:"p_editorControllerSelectionPathDidChanged:" name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:editorController];
 
     v23 = +[NSNotificationCenter defaultCenter];
     [v23 addObserver:v6 selector:"p_canvasWillZoom:" name:@"CRLCanvasWillZoomNotification" object:v8];
@@ -254,9 +254,9 @@
   [(CRLFreehandDrawingPKSelectionManager *)&v6 dealloc];
 }
 
-- (void)didAppearInWindowScene:(id)a3
+- (void)didAppearInWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v9 = +[NSNotificationCenter defaultCenter];
   v5 = +[NSNotification CRLiOSSceneWillEnterForeground];
   [v9 removeObserver:self name:v5 object:0];
@@ -265,34 +265,34 @@
   [v9 removeObserver:self name:v6 object:0];
 
   v7 = +[NSNotification CRLiOSSceneWillEnterForeground];
-  [v9 addObserver:self selector:"p_willEnterForeground:" name:v7 object:v4];
+  [v9 addObserver:self selector:"p_willEnterForeground:" name:v7 object:sceneCopy];
 
   v8 = +[NSNotification CRLiOSSceneDidEnterBackground];
-  [v9 addObserver:self selector:"p_didEnterBackground:" name:v8 object:v4];
+  [v9 addObserver:self selector:"p_didEnterBackground:" name:v8 object:sceneCopy];
 }
 
 - (id)strokeUUIDsToDrawingItems
 {
   WeakRetained = objc_loadWeakRetained(&self->_drawingProvider);
-  v3 = [WeakRetained strokeUUIDsToDrawingItems];
+  strokeUUIDsToDrawingItems = [WeakRetained strokeUUIDsToDrawingItems];
 
-  return v3;
+  return strokeUUIDsToDrawingItems;
 }
 
 - (id)strokeUUIDsToDrawingShapeItems
 {
   WeakRetained = objc_loadWeakRetained(&self->_drawingProvider);
-  v3 = [WeakRetained strokeUUIDsToDrawingShapeItems];
+  strokeUUIDsToDrawingShapeItems = [WeakRetained strokeUUIDsToDrawingShapeItems];
 
-  return v3;
+  return strokeUUIDsToDrawingShapeItems;
 }
 
 - (id)strokeUUIDsToStrokes
 {
   WeakRetained = objc_loadWeakRetained(&self->_drawingProvider);
-  v3 = [WeakRetained strokeUUIDsToStrokes];
+  strokeUUIDsToStrokes = [WeakRetained strokeUUIDsToStrokes];
 
-  return v3;
+  return strokeUUIDsToStrokes;
 }
 
 - (CRLFreehandDrawingSelectionDecorator)selectionDecorator
@@ -316,8 +316,8 @@
 - (void)updatePKStrokesFromAllFreehandDrawingItemsOnCanvas
 {
   [(CRLFreehandDrawingPKSelectionManager *)self p_setDrawingsAttachmentToSmartSelectionController];
-  v3 = [(PKSmartSelectionController *)self->_smartSelectionController recognitionController];
-  [v3 tagAsActive];
+  recognitionController = [(PKSmartSelectionController *)self->_smartSelectionController recognitionController];
+  [recognitionController tagAsActive];
 
   if (qword_101AD5A08 != -1)
   {
@@ -342,8 +342,8 @@
   v17 = 0u;
   v18 = 0u;
   v16 = v4;
-  v5 = [v4 infosForCurrentSelectionPath];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  infosForCurrentSelectionPath = [v4 infosForCurrentSelectionPath];
+  v6 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -355,7 +355,7 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(infosForCurrentSelectionPath);
         }
 
         v10 = *(*(&v17 + 1) + 8 * v9);
@@ -363,9 +363,9 @@
         v12 = sub_100014370(v11, v10);
         if (v12)
         {
-          v13 = [(CRLFreehandDrawingPKSelectionManager *)self strokeUUIDsToDrawingShapeItems];
-          v14 = [v13 allValues];
-          v15 = [v14 containsObject:v12];
+          strokeUUIDsToDrawingShapeItems = [(CRLFreehandDrawingPKSelectionManager *)self strokeUUIDsToDrawingShapeItems];
+          allValues = [strokeUUIDsToDrawingShapeItems allValues];
+          v15 = [allValues containsObject:v12];
 
           if (v15)
           {
@@ -377,16 +377,16 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)a3
+- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)commands
 {
-  if (a3)
+  if (commands)
   {
     self->_isInDynamicOperationWithRealTimeCommands = 1;
   }
@@ -411,15 +411,15 @@
   }
 }
 
-- (void)replacingPotentiallySmartSelectedItems:(id)a3 withNewItems:(id)a4
+- (void)replacingPotentiallySmartSelectedItems:(id)items withNewItems:(id)newItems
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  newItemsCopy = newItems;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = v6;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v9)
   {
@@ -463,7 +463,7 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v19 = v7;
+  v19 = newItemsCopy;
   v20 = [v19 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v20)
   {
@@ -631,9 +631,9 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)allStrokesOnCanvasDidChange:(id)a3 inDrawing:(id)a4
+- (void)allStrokesOnCanvasDidChange:(id)change inDrawing:(id)drawing
 {
-  v6 = a4;
+  drawingCopy = drawing;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -663,8 +663,8 @@ LABEL_23:
     [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:307 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  objc_storeStrong(&self->_drawing, a4);
-  [(CRLFreehandDrawingsAttachment *)self->_drawingsAttachment setDrawing:v6];
+  objc_storeStrong(&self->_drawing, drawing);
+  [(CRLFreehandDrawingsAttachment *)self->_drawingsAttachment setDrawing:drawingCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v11 = [WeakRetained interactiveCanvasControllerForPKSelectionManager:self];
 
@@ -697,17 +697,17 @@ LABEL_23:
     [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:313 isFatal:0 description:"invalid nil value for '%{public}s'", "icc"];
   }
 
-  v37 = v6;
+  v37 = drawingCopy;
   [(CRLFreehandDrawingsAttachment *)self->_drawingsAttachment updateAttachmentBoundsAfterCanvasVisibleBoundsChanged];
   drawingsAttachment = self->_drawingsAttachment;
   [v11 visibleUnscaledRect];
   [(CRLFreehandDrawingsAttachment *)drawingsAttachment invalidateStrokeCacheForVisibleUnscaledBounds:1 force:?];
   v16 = +[NSMutableSet set];
-  v17 = [v11 editorController];
-  v18 = [v17 selectionPath];
+  editorController = [v11 editorController];
+  selectionPath = [editorController selectionPath];
 
-  v19 = [v11 selectionModelTranslator];
-  v20 = [v19 infosForSelectionPath:v18];
+  selectionModelTranslator = [v11 selectionModelTranslator];
+  v20 = [selectionModelTranslator infosForSelectionPath:selectionPath];
 
   v44 = 0u;
   v45 = 0u;
@@ -743,8 +743,8 @@ LABEL_23:
     while (v23);
   }
 
-  v29 = [v16 allObjects];
-  v30 = [(CRLFreehandDrawingPKSelectionManager *)self p_cachedStrokesForDrawingShapeItems:v29];
+  allObjects = [v16 allObjects];
+  v30 = [(CRLFreehandDrawingPKSelectionManager *)self p_cachedStrokesForDrawingShapeItems:allObjects];
   selectedStrokes = self->_selectedStrokes;
   self->_selectedStrokes = v30;
 
@@ -753,8 +753,8 @@ LABEL_23:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v32 = [v16 allObjects];
-  v33 = [v32 countByEnumeratingWithState:&v38 objects:v46 count:16];
+  allObjects2 = [v16 allObjects];
+  v33 = [allObjects2 countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v33)
   {
     v34 = v33;
@@ -765,7 +765,7 @@ LABEL_23:
       {
         if (*v39 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(allObjects2);
         }
 
         if (![(NSMutableArray *)self->_smartSelectedDrawingShapeItems containsObject:*(*(&v38 + 1) + 8 * j)])
@@ -775,7 +775,7 @@ LABEL_23:
         }
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v38 objects:v46 count:16];
+      v34 = [allObjects2 countByEnumeratingWithState:&v38 objects:v46 count:16];
       if (v34)
       {
         continue;
@@ -832,14 +832,14 @@ LABEL_42:
     v8 = objc_loadWeakRetained(&self->_delegate);
     v9 = [v8 pencilKitCanvasViewForPKSelectionManager:self];
 
-    v10 = [v4 layerHost];
-    v11 = [v10 asPencilGestureProvider];
+    layerHost = [v4 layerHost];
+    asPencilGestureProvider = [layerHost asPencilGestureProvider];
 
-    v12 = [v11 doubleTapGestureRecognizer];
+    doubleTapGestureRecognizer = [asPencilGestureProvider doubleTapGestureRecognizer];
     v13 = objc_loadWeakRetained(&self->_intelligenceProvider);
-    v14 = [v13 pkRecognitionController];
+    pkRecognitionController = [v13 pkRecognitionController];
 
-    if (!v14)
+    if (!pkRecognitionController)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -868,11 +868,11 @@ LABEL_42:
       [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:353 isFatal:0 description:"invalid nil value for '%{public}s'", "recognitionController"];
     }
 
-    v18 = [v14 drawing];
+    drawing = [pkRecognitionController drawing];
     drawing = self->_drawing;
-    self->_drawing = v18;
+    self->_drawing = drawing;
 
-    v20 = [[PKSmartSelectionController alloc] initWithDelegate:self canvasView:v9 gestureRecognizer:v12 recognitionController:v14];
+    v20 = [[PKSmartSelectionController alloc] initWithDelegate:self canvasView:v9 gestureRecognizer:doubleTapGestureRecognizer recognitionController:pkRecognitionController];
     smartSelectionController = self->_smartSelectionController;
     self->_smartSelectionController = v20;
   }
@@ -887,9 +887,9 @@ LABEL_42:
     v24 = self->_drawingsAttachment;
     self->_drawingsAttachment = v23;
 
-    v25 = [(CRLFreehandDrawingsAttachment *)self->_drawingsAttachment drawing];
+    drawing2 = [(CRLFreehandDrawingsAttachment *)self->_drawingsAttachment drawing];
 
-    if (v25)
+    if (drawing2)
     {
       [(PKSmartSelectionController *)self->_smartSelectionController setExternalAttachment:self->_drawingsAttachment];
       v26 = self->_drawingsAttachment;
@@ -932,15 +932,15 @@ LABEL_42:
   }
 }
 
-- (void)p_recursivelyAddFreehandDrawingItemsFromGroup:(id)a3 drawingItems:(id)a4
+- (void)p_recursivelyAddFreehandDrawingItemsFromGroup:(id)group drawingItems:(id)items
 {
-  v6 = a4;
+  itemsCopy = items;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [a3 childItems];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  childItems = [group childItems];
+  v8 = [childItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -951,7 +951,7 @@ LABEL_42:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childItems);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
@@ -962,41 +962,41 @@ LABEL_42:
         v17 = v16;
         if (v14)
         {
-          [v6 addObject:v14];
+          [itemsCopy addObject:v14];
         }
 
         else if (v16)
         {
-          [(CRLFreehandDrawingPKSelectionManager *)self p_recursivelyAddFreehandDrawingItemsFromGroup:v16 drawingItems:v6];
+          [(CRLFreehandDrawingPKSelectionManager *)self p_recursivelyAddFreehandDrawingItemsFromGroup:v16 drawingItems:itemsCopy];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [childItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)p_editorControllerSelectionPathDidChanged:(id)a3
+- (void)p_editorControllerSelectionPathDidChanged:(id)changed
 {
-  v4 = [(PKSmartSelectionController *)self->_smartSelectionController currentSelectedStrokes];
-  v5 = [(CRLFreehandDrawingPKSelectionManager *)self p_areSelectedFreehandShapesEqualToSelectedStrokesInPK:v4];
+  currentSelectedStrokes = [(PKSmartSelectionController *)self->_smartSelectionController currentSelectedStrokes];
+  v5 = [(CRLFreehandDrawingPKSelectionManager *)self p_areSelectedFreehandShapesEqualToSelectedStrokesInPK:currentSelectedStrokes];
 
   if ((v5 & 1) == 0)
   {
     v6 = +[NSMutableSet set];
-    v27 = self;
-    v7 = [(CRLFreehandDrawingPKSelectionManager *)self interactiveCanvasController];
-    v8 = [v7 freehandDrawingToolkit];
-    v9 = [v8 isInDrawingMode];
+    selfCopy = self;
+    interactiveCanvasController = [(CRLFreehandDrawingPKSelectionManager *)self interactiveCanvasController];
+    freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+    isInDrawingMode = [freehandDrawingToolkit isInDrawingMode];
 
-    v10 = [v7 editorController];
-    v11 = [v10 selectionPath];
+    editorController = [interactiveCanvasController editorController];
+    selectionPath = [editorController selectionPath];
 
-    v26 = v7;
-    v12 = [v7 selectionModelTranslator];
-    v13 = [v12 infosForSelectionPath:v11];
+    v26 = interactiveCanvasController;
+    selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+    v13 = [selectionModelTranslator infosForSelectionPath:selectionPath];
 
     v30 = 0u;
     v31 = 0u;
@@ -1020,7 +1020,7 @@ LABEL_42:
           v19 = *(*(&v28 + 1) + 8 * i);
           v20 = objc_opt_class();
           v21 = sub_100014370(v20, v19);
-          if (v9)
+          if (isInDrawingMode)
           {
             [v6 crl_addNonNilObject:v21];
           }
@@ -1028,8 +1028,8 @@ LABEL_42:
           else
           {
             v22 = objc_opt_class();
-            v23 = [v21 childItems];
-            v24 = sub_100014370(v22, v23);
+            childItems = [v21 childItems];
+            v24 = sub_100014370(v22, childItems);
 
             [v6 crl_addObjectsFromNonNilArray:v24];
           }
@@ -1041,41 +1041,41 @@ LABEL_42:
       while (v16);
     }
 
-    v25 = [v6 allObjects];
-    [(CRLFreehandDrawingPKSelectionManager *)v27 p_selectStrokesInDrawingShapeItems:v25];
+    allObjects = [v6 allObjects];
+    [(CRLFreehandDrawingPKSelectionManager *)selfCopy p_selectStrokesInDrawingShapeItems:allObjects];
   }
 }
 
-- (void)p_canvasWillZoom:(id)a3
+- (void)p_canvasWillZoom:(id)zoom
 {
   v4 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = sub_100014370(v4, WeakRetained);
 
-  v7 = [v6 smartSelectionView];
+  smartSelectionView = [v6 smartSelectionView];
 
-  if (v7)
+  if (smartSelectionView)
   {
-    v8 = [v6 smartSelectionView];
+    smartSelectionView2 = [v6 smartSelectionView];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000F1A50;
     v9[3] = &unk_10183AB38;
     v9[4] = v6;
-    [UIView transitionWithView:v8 duration:0 options:v9 animations:0 completion:0.25];
+    [UIView transitionWithView:smartSelectionView2 duration:0 options:v9 animations:0 completion:0.25];
   }
 }
 
-- (void)p_canvasDidZoom:(id)a3
+- (void)p_canvasDidZoom:(id)zoom
 {
   [(CRLFreehandDrawingsAttachment *)self->_drawingsAttachment updateAttachmentBoundsAfterCanvasVisibleBoundsChanged];
   v4 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = sub_100014370(v4, WeakRetained);
 
-  v6 = [v10 smartSelectionView];
+  smartSelectionView = [v10 smartSelectionView];
 
-  if (v6)
+  if (smartSelectionView)
   {
     [v10 removeSmartSelectionViewIfNecessary];
     [(PKSmartSelectionController *)self->_smartSelectionController installSelectionViewForCurrentSelection];
@@ -1089,7 +1089,7 @@ LABEL_42:
   [(CRLFreehandDrawingsAttachment *)drawingsAttachment invalidateStrokeCacheForVisibleUnscaledBounds:0 force:?];
 }
 
-- (void)p_canvasDidScroll:(id)a3
+- (void)p_canvasDidScroll:(id)scroll
 {
   [(CRLFreehandDrawingsAttachment *)self->_drawingsAttachment updateAttachmentBoundsAfterCanvasVisibleBoundsChanged];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1100,12 +1100,12 @@ LABEL_42:
   [(CRLFreehandDrawingsAttachment *)drawingsAttachment invalidateStrokeCacheForVisibleUnscaledBounds:0 force:?];
 }
 
-- (void)p_selectStrokesInDrawingShapeItems:(id)a3
+- (void)p_selectStrokesInDrawingShapeItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   [(CRLFreehandDrawingPKSelectionManager *)self p_removeCurrentSelectionView];
-  v4 = [(CRLFreehandDrawingPKSelectionManager *)self p_cachedStrokesForDrawingShapeItems:v5];
-  if ([v4 count] || objc_msgSend(v5, "count"))
+  v4 = [(CRLFreehandDrawingPKSelectionManager *)self p_cachedStrokesForDrawingShapeItems:itemsCopy];
+  if ([v4 count] || objc_msgSend(itemsCopy, "count"))
   {
     if ([v4 count])
     {
@@ -1130,9 +1130,9 @@ LABEL_42:
   }
 }
 
-- (id)p_cachedStrokesForDrawingShapeItems:(id)a3
+- (id)p_cachedStrokesForDrawingShapeItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   WeakRetained = objc_loadWeakRetained(&self->_drawingProvider);
 
   if (!WeakRetained)
@@ -1173,8 +1173,8 @@ LABEL_42:
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v24 = v4;
-    v11 = v4;
+    v24 = itemsCopy;
+    v11 = itemsCopy;
     v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v12)
     {
@@ -1191,14 +1191,14 @@ LABEL_42:
 
           v16 = *(*(&v25 + 1) + 8 * i);
           v17 = objc_loadWeakRetained(&self->_drawingProvider);
-          v18 = [v17 drawingShapeItemUUIDToStrokeUUIDBidirectionalMap];
+          drawingShapeItemUUIDToStrokeUUIDBidirectionalMap = [v17 drawingShapeItemUUIDToStrokeUUIDBidirectionalMap];
           v19 = [v16 id];
-          v20 = [v18 objectForKeyedSubscript:v19];
+          v20 = [drawingShapeItemUUIDToStrokeUUIDBidirectionalMap objectForKeyedSubscript:v19];
 
           if (v20)
           {
-            v21 = [(CRLFreehandDrawingPKSelectionManager *)self strokeUUIDsToStrokes];
-            v22 = [v21 objectForKey:v20];
+            strokeUUIDsToStrokes = [(CRLFreehandDrawingPKSelectionManager *)self strokeUUIDsToStrokes];
+            v22 = [strokeUUIDsToStrokes objectForKey:v20];
 
             [v10 crl_addNonNilObject:v22];
           }
@@ -1210,7 +1210,7 @@ LABEL_42:
       while (v13);
     }
 
-    v4 = v24;
+    itemsCopy = v24;
   }
 
   else
@@ -1221,15 +1221,15 @@ LABEL_42:
   return v10;
 }
 
-- (id)p_cachedDrawingShapeItemsForStrokes:(id)a3
+- (id)p_cachedDrawingShapeItemsForStrokes:(id)strokes
 {
-  v4 = a3;
+  strokesCopy = strokes;
   v5 = +[NSMutableSet set];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = strokesCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -1245,9 +1245,9 @@ LABEL_42:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [(CRLFreehandDrawingPKSelectionManager *)self strokeUUIDsToDrawingShapeItems];
-        v13 = [v11 _strokeUUID];
-        v14 = [v12 objectForKeyedSubscript:v13];
+        strokeUUIDsToDrawingShapeItems = [(CRLFreehandDrawingPKSelectionManager *)self strokeUUIDsToDrawingShapeItems];
+        _strokeUUID = [v11 _strokeUUID];
+        v14 = [strokeUUIDsToDrawingShapeItems objectForKeyedSubscript:_strokeUUID];
 
         if (v14)
         {
@@ -1261,9 +1261,9 @@ LABEL_42:
     while (v8);
   }
 
-  v15 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v15;
+  return allObjects;
 }
 
 - (void)p_removeCurrentSelectionView
@@ -1274,18 +1274,18 @@ LABEL_42:
 
 - (void)p_indexHandwrittenTextsFromDrawing
 {
-  v3 = [(PKDrawing *)self->_drawing strokes];
-  v4 = [v3 count];
+  strokes = [(PKDrawing *)self->_drawing strokes];
+  v4 = [strokes count];
 
   if (v4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = [WeakRetained interactiveCanvasControllerForPKSelectionManager:self];
 
-    v7 = [v6 editingCoordinator];
-    v8 = [v7 mainBoard];
+    editingCoordinator = [v6 editingCoordinator];
+    mainBoard = [editingCoordinator mainBoard];
 
-    v9 = [v8 boardIdentifierStringRepresentation];
+    boardIdentifierStringRepresentation = [mainBoard boardIdentifierStringRepresentation];
     v10 = [(PKDrawing *)self->_drawing copy];
     objc_initWeak(&location, self);
     v12 = _NSConcreteStackBlock;
@@ -1294,7 +1294,7 @@ LABEL_42:
     v15 = &unk_10183C0A0;
     objc_copyWeak(&v18, &location);
     v16 = v10;
-    v17 = v9;
+    v17 = boardIdentifierStringRepresentation;
     v11 = objc_retainBlock(&v12);
     [(CRLLastSubmittedTaskQueue *)self->_onBoardIndexingQueue performAsync:v11, v12, v13, v14, v15];
 
@@ -1303,9 +1303,9 @@ LABEL_42:
   }
 }
 
-- (void)p_willEnterForeground:(id)a3
+- (void)p_willEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   if (qword_101AD5A08 != -1)
   {
     sub_101312A40();
@@ -1318,13 +1318,13 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Setting recognition controller as active.", v7, 2u);
   }
 
-  v6 = [(PKSmartSelectionController *)self->_smartSelectionController recognitionController];
-  [v6 tagAsActive];
+  recognitionController = [(PKSmartSelectionController *)self->_smartSelectionController recognitionController];
+  [recognitionController tagAsActive];
 }
 
-- (void)p_didEnterBackground:(id)a3
+- (void)p_didEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   if (qword_101AD5A08 != -1)
   {
     sub_101312A54();
@@ -1337,25 +1337,25 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Setting recognition controller as idle.", v7, 2u);
   }
 
-  v6 = [(PKSmartSelectionController *)self->_smartSelectionController recognitionController];
-  [v6 tagAsIdle];
+  recognitionController = [(PKSmartSelectionController *)self->_smartSelectionController recognitionController];
+  [recognitionController tagAsIdle];
 }
 
-- (BOOL)p_areSelectedFreehandShapesEqualToSelectedStrokesInPK:(id)a3
+- (BOOL)p_areSelectedFreehandShapesEqualToSelectedStrokesInPK:(id)k
 {
-  v36 = a3;
+  kCopy = k;
   v4 = +[NSMutableArray array];
-  v34 = self;
-  v5 = [(CRLFreehandDrawingPKSelectionManager *)self interactiveCanvasController];
-  v6 = [v5 freehandDrawingToolkit];
-  v7 = [v6 isInDrawingMode];
+  selfCopy = self;
+  interactiveCanvasController = [(CRLFreehandDrawingPKSelectionManager *)self interactiveCanvasController];
+  freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+  isInDrawingMode = [freehandDrawingToolkit isInDrawingMode];
 
-  v8 = [v5 editorController];
-  v9 = [v8 selectionPath];
+  editorController = [interactiveCanvasController editorController];
+  selectionPath = [editorController selectionPath];
 
-  v35 = v5;
-  v10 = [v5 selectionModelTranslator];
-  v11 = [v10 infosForSelectionPath:v9];
+  v35 = interactiveCanvasController;
+  selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+  v11 = [selectionModelTranslator infosForSelectionPath:selectionPath];
 
   v46 = 0u;
   v47 = 0u;
@@ -1380,7 +1380,7 @@ LABEL_42:
         }
 
         v16 = *(*(&v44 + 1) + 8 * v15);
-        if (v7)
+        if (isInDrawingMode)
         {
           v17 = objc_opt_class();
           v18 = sub_100014370(v17, v16);
@@ -1391,12 +1391,12 @@ LABEL_42:
         {
           v19 = objc_opt_class();
           v18 = sub_100014370(v19, v16);
-          v20 = [v18 childItems];
+          childItems = [v18 childItems];
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v21 = [v20 countByEnumeratingWithState:&v40 objects:v48 count:16];
+          v21 = [childItems countByEnumeratingWithState:&v40 objects:v48 count:16];
           if (v21)
           {
             v22 = v21;
@@ -1407,7 +1407,7 @@ LABEL_42:
               {
                 if (*v41 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(childItems);
                 }
 
                 v25 = *(*(&v40 + 1) + 8 * i);
@@ -1416,7 +1416,7 @@ LABEL_42:
                 [v4 crl_addNonNilObject:v27];
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v40 objects:v48 count:16];
+              v22 = [childItems countByEnumeratingWithState:&v40 objects:v48 count:16];
             }
 
             while (v22);
@@ -1436,12 +1436,12 @@ LABEL_42:
     while (v13);
   }
 
-  v28 = [(CRLFreehandDrawingPKSelectionManager *)v34 p_cachedStrokesForDrawingShapeItems:v4];
+  v28 = [(CRLFreehandDrawingPKSelectionManager *)selfCopy p_cachedStrokesForDrawingShapeItems:v4];
   v29 = [v28 count];
-  if (v29 == [v36 count])
+  if (v29 == [kCopy count])
   {
     v30 = [NSSet setWithArray:v28];
-    v31 = [NSSet setWithArray:v36];
+    v31 = [NSSet setWithArray:kCopy];
     v32 = [v30 isEqualToSet:v31];
   }
 
@@ -1453,11 +1453,11 @@ LABEL_42:
   return v32;
 }
 
-- (void)installSelectionView:(id)a3 fromView:(id)a4
+- (void)installSelectionView:(id)view fromView:(id)fromView
 {
-  v5 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained installSmartSelectionView:v5 forPKSelectionManager:self];
+  [WeakRetained installSmartSelectionView:viewCopy forPKSelectionManager:self];
 }
 
 - (id)interactiveCanvasController
@@ -1468,14 +1468,14 @@ LABEL_42:
   return v4;
 }
 
-- (void)pencilKitDidSmartSelectPreviouslySelectedStrokes:(id)a3
+- (void)pencilKitDidSmartSelectPreviouslySelectedStrokes:(id)strokes
 {
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  strokesCopy = strokes;
+  v5 = [strokesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1487,12 +1487,12 @@ LABEL_42:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(strokesCopy);
         }
 
         if (![(NSArray *)self->_selectedStrokes containsObject:*(*(&v18 + 1) + 8 * v8), v18])
         {
-          v13 = v4;
+          v13 = strokesCopy;
           goto LABEL_11;
         }
 
@@ -1500,7 +1500,7 @@ LABEL_42:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [strokesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v6)
       {
         continue;
@@ -1510,7 +1510,7 @@ LABEL_42:
     }
   }
 
-  v9 = [(CRLFreehandDrawingPKSelectionManager *)self p_cachedDrawingShapeItemsForStrokes:v4];
+  v9 = [(CRLFreehandDrawingPKSelectionManager *)self p_cachedDrawingShapeItemsForStrokes:strokesCopy];
   v10 = [v9 mutableCopy];
   smartSelectedDrawingShapeItems = self->_smartSelectedDrawingShapeItems;
   self->_smartSelectedDrawingShapeItems = v10;
@@ -1518,14 +1518,14 @@ LABEL_42:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v13 = [WeakRetained interactiveCanvasControllerForPKSelectionManager:self];
 
-  v14 = [v13 layerHost];
-  v15 = [v14 asiOSCVC];
+  layerHost = [v13 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
 
-  v16 = [v15 delegate];
-  v17 = [v16 currentDocumentMode];
+  delegate = [asiOSCVC delegate];
+  currentDocumentMode = [delegate currentDocumentMode];
 
   self->_keepSmartSelectedDrawingShapeItemAfterSelectionPathUpdated = 1;
-  [v17 pencilKitDidSmartSelectStrokesInDrawingShapeItems:self->_smartSelectedDrawingShapeItems];
+  [currentDocumentMode pencilKitDidSmartSelectStrokesInDrawingShapeItems:self->_smartSelectedDrawingShapeItems];
   [v13 invalidateAllLayers];
   [(PKSmartSelectionController *)self->_smartSelectionController installSelectionViewForCurrentSelection];
 
@@ -1535,20 +1535,20 @@ LABEL_11:
 - (id)strokeDataUUIDsForNonInteractiveDrawings
 {
   WeakRetained = objc_loadWeakRetained(&self->_drawingProvider);
-  v3 = [WeakRetained strokeDataUUIDsForNonInteractiveDrawings];
+  strokeDataUUIDsForNonInteractiveDrawings = [WeakRetained strokeDataUUIDsForNonInteractiveDrawings];
 
-  return v3;
+  return strokeDataUUIDsForNonInteractiveDrawings;
 }
 
-- (void)didSelectStrokes:(id)a3 selectionType:(int64_t)a4 inAttachment:(id)a5
+- (void)didSelectStrokes:(id)strokes selectionType:(int64_t)type inAttachment:(id)attachment
 {
-  v6 = a3;
+  strokesCopy = strokes;
   v7 = +[NSMutableSet set];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v6;
+  v8 = strokesCopy;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
@@ -1565,9 +1565,9 @@ LABEL_11:
         }
 
         v13 = *(*(&v28 + 1) + 8 * v12);
-        v14 = [(CRLFreehandDrawingPKSelectionManager *)self strokeUUIDsToDrawingShapeItems];
-        v15 = [v13 _strokeUUID];
-        v16 = [v14 objectForKey:v15];
+        strokeUUIDsToDrawingShapeItems = [(CRLFreehandDrawingPKSelectionManager *)self strokeUUIDsToDrawingShapeItems];
+        _strokeUUID = [v13 _strokeUUID];
+        v16 = [strokeUUIDsToDrawingShapeItems objectForKey:_strokeUUID];
 
         if (v16)
         {
@@ -1584,8 +1584,8 @@ LABEL_11:
     while (v10);
   }
 
-  v17 = [v7 allObjects];
-  v18 = [v17 mutableCopy];
+  allObjects = [v7 allObjects];
+  v18 = [allObjects mutableCopy];
   smartSelectedDrawingShapeItems = self->_smartSelectedDrawingShapeItems;
   self->_smartSelectedDrawingShapeItems = v18;
 
@@ -1598,13 +1598,13 @@ LABEL_11:
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v23 = [WeakRetained interactiveCanvasControllerForPKSelectionManager:self];
 
-    v24 = [v23 layerHost];
-    v25 = [v24 asiOSCVC];
+    layerHost = [v23 layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    v26 = [v25 delegate];
-    v27 = [v26 currentDocumentMode];
+    delegate = [asiOSCVC delegate];
+    currentDocumentMode = [delegate currentDocumentMode];
 
-    [v27 pencilKitDidSmartSelectStrokesInDrawingShapeItems:self->_smartSelectedDrawingShapeItems];
+    [currentDocumentMode pencilKitDidSmartSelectStrokesInDrawingShapeItems:self->_smartSelectedDrawingShapeItems];
   }
 }
 

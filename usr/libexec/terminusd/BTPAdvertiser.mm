@@ -1,6 +1,6 @@
 @interface BTPAdvertiser
 - (BOOL)start;
-- (BTPAdvertiser)initWithSrcIfIndex:(unsigned int)a3 dstIfIndex:(unsigned int)a4 name:(id)a5 type:(id)a6 domain:(id)a7 hostTarget:(id)a8 port:(unsigned __int16)a9 txtRecord:(id)a10;
+- (BTPAdvertiser)initWithSrcIfIndex:(unsigned int)index dstIfIndex:(unsigned int)ifIndex name:(id)name type:(id)type domain:(id)domain hostTarget:(id)target port:(unsigned __int16)port txtRecord:(id)self0;
 - (void)dealloc;
 - (void)stop;
 @end
@@ -165,13 +165,13 @@
   return result;
 }
 
-- (BTPAdvertiser)initWithSrcIfIndex:(unsigned int)a3 dstIfIndex:(unsigned int)a4 name:(id)a5 type:(id)a6 domain:(id)a7 hostTarget:(id)a8 port:(unsigned __int16)a9 txtRecord:(id)a10
+- (BTPAdvertiser)initWithSrcIfIndex:(unsigned int)index dstIfIndex:(unsigned int)ifIndex name:(id)name type:(id)type domain:(id)domain hostTarget:(id)target port:(unsigned __int16)port txtRecord:(id)self0
 {
-  v17 = a5;
-  v18 = a6;
-  v25 = a7;
-  v24 = a8;
-  v23 = a10;
+  nameCopy = name;
+  typeCopy = type;
+  domainCopy = domain;
+  targetCopy = target;
+  recordCopy = record;
   v26.receiver = self;
   v26.super_class = BTPAdvertiser;
   v19 = [(BTPAdvertiser *)&v26 init];
@@ -179,14 +179,14 @@
   if (v19)
   {
     v19->_sdRefRegister = 0;
-    v19->_srcIfIndex = a3;
-    v19->_dstIfIndex = a4;
-    objc_storeStrong(&v19->_bonjourName, a5);
-    objc_storeStrong(&v20->_bonjourType, a6);
-    objc_storeStrong(&v20->_bonjourDomain, a7);
-    objc_storeStrong(&v20->_hostTarget, a8);
-    v20->_port = a9;
-    objc_storeStrong(&v20->_txtRecord, a10);
+    v19->_srcIfIndex = index;
+    v19->_dstIfIndex = ifIndex;
+    objc_storeStrong(&v19->_bonjourName, name);
+    objc_storeStrong(&v20->_bonjourType, type);
+    objc_storeStrong(&v20->_bonjourDomain, domain);
+    objc_storeStrong(&v20->_hostTarget, target);
+    v20->_port = port;
+    objc_storeStrong(&v20->_txtRecord, record);
     v21 = v20;
   }
 

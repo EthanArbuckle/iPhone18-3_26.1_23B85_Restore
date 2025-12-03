@@ -13,7 +13,7 @@
 
   v2 = __ck_localizedString_sNumberFormatter;
 
-  return [v2 stringFromNumber:a1];
+  return [v2 stringFromNumber:self];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface PKExtensionPointProxy
-+ (id)extensionPointForIdentifier:(id)a3 platform:(id)a4;
++ (id)extensionPointForIdentifier:(id)identifier platform:(id)platform;
 - (NSDictionary)sdkEntry;
 - (NSNumber)platform;
 @end
 
 @implementation PKExtensionPointProxy
 
-+ (id)extensionPointForIdentifier:(id)a3 platform:(id)a4
++ (id)extensionPointForIdentifier:(id)identifier platform:(id)platform
 {
-  v4 = [MEMORY[0x1E6963660] extensionPointForIdentifier:a3 platform:a4];
+  v4 = [MEMORY[0x1E6963660] extensionPointForIdentifier:identifier platform:platform];
 
   return v4;
 }

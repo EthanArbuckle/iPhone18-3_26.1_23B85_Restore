@@ -72,10 +72,10 @@ LABEL_13:
 
 - (id)fp_protectionClassBehindError
 {
-  if (([a1 fp_isCocoaErrorCode:257] & 1) != 0 || objc_msgSend(a1, "fp_isPOSIXErrorCode:", 1))
+  if (([self fp_isCocoaErrorCode:257] & 1) != 0 || objc_msgSend(self, "fp_isPOSIXErrorCode:", 1))
   {
-    v2 = [a1 userInfo];
-    v3 = [v2 objectForKeyedSubscript:@"dataProtectionClass"];
+    userInfo = [self userInfo];
+    v3 = [userInfo objectForKeyedSubscript:@"dataProtectionClass"];
 
     if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -85,8 +85,8 @@ LABEL_13:
 
     else
     {
-      v5 = [a1 userInfo];
-      v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696A998]];
+      userInfo2 = [self userInfo];
+      v6 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A998]];
 
       if (v6)
       {

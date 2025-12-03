@@ -1,13 +1,13 @@
 @interface HSConnectionConfiguration
 - (HSConnectionConfiguration)init;
-- (HSConnectionConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HSConnectionConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HSConnectionConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HSConnectionConfiguration);
   objc_storeStrong(&v4->_userIdentity, self->_userIdentity);
@@ -33,55 +33,55 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   userIdentity = self->_userIdentity;
   userIdentityStore = self->_userIdentityStore;
-  v6 = a3;
-  [v6 ic_encodeUserIdentity:userIdentity withStore:userIdentityStore forKey:@"userIdentity"];
-  [v6 encodeObject:self->_userIdentityStore forKey:@"userIdentityStore"];
-  [v6 encodeObject:self->_baseURL forKey:@"baseURL"];
-  [v6 encodeObject:self->_libraryBagKey forKey:@"libraryBagKey"];
-  [v6 encodeObject:self->_buildIdentifier forKey:@"buildIdentifier"];
-  [v6 encodeObject:self->_purchaseClientIdentifier forKey:@"purchaseClientIdentifier"];
-  [v6 encodeInt64:self->_requestReason forKey:@"requestReason"];
-  [v6 encodeObject:self->_familyMemberStoreID forKey:@"familyMemberStoreID"];
+  coderCopy = coder;
+  [coderCopy ic_encodeUserIdentity:userIdentity withStore:userIdentityStore forKey:@"userIdentity"];
+  [coderCopy encodeObject:self->_userIdentityStore forKey:@"userIdentityStore"];
+  [coderCopy encodeObject:self->_baseURL forKey:@"baseURL"];
+  [coderCopy encodeObject:self->_libraryBagKey forKey:@"libraryBagKey"];
+  [coderCopy encodeObject:self->_buildIdentifier forKey:@"buildIdentifier"];
+  [coderCopy encodeObject:self->_purchaseClientIdentifier forKey:@"purchaseClientIdentifier"];
+  [coderCopy encodeInt64:self->_requestReason forKey:@"requestReason"];
+  [coderCopy encodeObject:self->_familyMemberStoreID forKey:@"familyMemberStoreID"];
 }
 
-- (HSConnectionConfiguration)initWithCoder:(id)a3
+- (HSConnectionConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = HSConnectionConfiguration;
   v5 = [(HSConnectionConfiguration *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userIdentity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userIdentity"];
     userIdentity = v5->_userIdentity;
     v5->_userIdentity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userIdentityStore"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userIdentityStore"];
     userIdentityStore = v5->_userIdentityStore;
     v5->_userIdentityStore = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
     baseURL = v5->_baseURL;
     v5->_baseURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"libraryBagKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"libraryBagKey"];
     libraryBagKey = v5->_libraryBagKey;
     v5->_libraryBagKey = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"buildIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"buildIdentifier"];
     buildIdentifier = v5->_buildIdentifier;
     v5->_buildIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"purchaseClientIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"purchaseClientIdentifier"];
     purchaseClientIdentifier = v5->_purchaseClientIdentifier;
     v5->_purchaseClientIdentifier = v16;
 
-    v5->_requestReason = [v4 decodeInt64ForKey:@"requestReason"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"familyMemberStoreID"];
+    v5->_requestReason = [coderCopy decodeInt64ForKey:@"requestReason"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"familyMemberStoreID"];
     familyMemberStoreID = v5->_familyMemberStoreID;
     v5->_familyMemberStoreID = v18;
   }
@@ -96,13 +96,13 @@
   v2 = [(HSConnectionConfiguration *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D7FCA0] activeLockerAccount];
+    activeLockerAccount = [MEMORY[0x277D7FCA0] activeLockerAccount];
     userIdentity = v2->_userIdentity;
-    v2->_userIdentity = v3;
+    v2->_userIdentity = activeLockerAccount;
 
-    v5 = [MEMORY[0x277D7FCA8] defaultIdentityStore];
+    defaultIdentityStore = [MEMORY[0x277D7FCA8] defaultIdentityStore];
     userIdentityStore = v2->_userIdentityStore;
-    v2->_userIdentityStore = v5;
+    v2->_userIdentityStore = defaultIdentityStore;
 
     v7 = MGCopyAnswer();
     if (![(__CFString *)v7 length])

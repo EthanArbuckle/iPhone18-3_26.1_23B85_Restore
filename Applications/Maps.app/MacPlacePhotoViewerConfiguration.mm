@@ -1,34 +1,34 @@
 @interface MacPlacePhotoViewerConfiguration
-- (MacPlacePhotoViewerConfiguration)initWithMapItem:(id)a3 photoGalleryViewController:(id)a4;
-- (MacPlacePhotoViewerConfiguration)initWithMapItem:(id)a3 startingContext:(int64_t)a4;
+- (MacPlacePhotoViewerConfiguration)initWithMapItem:(id)item photoGalleryViewController:(id)controller;
+- (MacPlacePhotoViewerConfiguration)initWithMapItem:(id)item startingContext:(int64_t)context;
 @end
 
 @implementation MacPlacePhotoViewerConfiguration
 
-- (MacPlacePhotoViewerConfiguration)initWithMapItem:(id)a3 photoGalleryViewController:(id)a4
+- (MacPlacePhotoViewerConfiguration)initWithMapItem:(id)item photoGalleryViewController:(id)controller
 {
-  v7 = a4;
-  v8 = [(MacPlacePhotoViewerConfiguration *)self initWithMapItem:a3 startingContext:2];
+  controllerCopy = controller;
+  v8 = [(MacPlacePhotoViewerConfiguration *)self initWithMapItem:item startingContext:2];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_photoGalleryViewController, a4);
+    objc_storeStrong(&v8->_photoGalleryViewController, controller);
   }
 
   return v9;
 }
 
-- (MacPlacePhotoViewerConfiguration)initWithMapItem:(id)a3 startingContext:(int64_t)a4
+- (MacPlacePhotoViewerConfiguration)initWithMapItem:(id)item startingContext:(int64_t)context
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = MacPlacePhotoViewerConfiguration;
   v8 = [(MacPlacePhotoViewerConfiguration *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mapItem, a3);
-    v9->_startingContext = a4;
+    objc_storeStrong(&v8->_mapItem, item);
+    v9->_startingContext = context;
   }
 
   return v9;

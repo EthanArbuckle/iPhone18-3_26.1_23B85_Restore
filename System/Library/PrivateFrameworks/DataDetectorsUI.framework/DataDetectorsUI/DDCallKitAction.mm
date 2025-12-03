@@ -7,16 +7,16 @@
 
 - (id)localizedName
 {
-  v2 = [(DDCallKitAction *)self callProvider];
-  v3 = [v2 localizedName];
+  callProvider = [(DDCallKitAction *)self callProvider];
+  localizedName = [callProvider localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (id)dialRequest
 {
-  v3 = [(DDCallKitAction *)self callProvider];
-  v4 = [(DDCallAction *)self dialRequestWithProvider:v3];
+  callProvider = [(DDCallKitAction *)self callProvider];
+  v4 = [(DDCallAction *)self dialRequestWithProvider:callProvider];
 
   return v4;
 }

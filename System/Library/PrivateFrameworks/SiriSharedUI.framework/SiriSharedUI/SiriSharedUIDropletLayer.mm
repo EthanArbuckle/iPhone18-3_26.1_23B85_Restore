@@ -1,7 +1,7 @@
 @interface SiriSharedUIDropletLayer
 - (_TtC12SiriSharedUI24SiriSharedUIDropletLayer)init;
-- (_TtC12SiriSharedUI24SiriSharedUIDropletLayer)initWithCoder:(id)a3;
-- (_TtC12SiriSharedUI24SiriSharedUIDropletLayer)initWithLayer:(id)a3;
+- (_TtC12SiriSharedUI24SiriSharedUIDropletLayer)initWithCoder:(id)coder;
+- (_TtC12SiriSharedUI24SiriSharedUIDropletLayer)initWithLayer:(id)layer;
 @end
 
 @implementation SiriSharedUIDropletLayer
@@ -13,7 +13,7 @@
   return [(SiriSharedUIDropletLayer *)&v3 init];
 }
 
-- (_TtC12SiriSharedUI24SiriSharedUIDropletLayer)initWithLayer:(id)a3
+- (_TtC12SiriSharedUI24SiriSharedUIDropletLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_21E4DD338();
@@ -28,12 +28,12 @@
   return v5;
 }
 
-- (_TtC12SiriSharedUI24SiriSharedUIDropletLayer)initWithCoder:(id)a3
+- (_TtC12SiriSharedUI24SiriSharedUIDropletLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SiriSharedUIDropletLayer();
-  v4 = a3;
-  v5 = [(SiriSharedUIDropletLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SiriSharedUIDropletLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

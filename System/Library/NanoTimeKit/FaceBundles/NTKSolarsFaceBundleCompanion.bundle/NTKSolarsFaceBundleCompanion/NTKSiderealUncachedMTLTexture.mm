@@ -1,19 +1,19 @@
 @interface NTKSiderealUncachedMTLTexture
-- (NTKSiderealUncachedMTLTexture)initWithTextureGenerationBlock:(id)a3;
-- (id)loadTextureWithCommandBuffer:(id)a3 usingBlitEncoder:(id)a4;
+- (NTKSiderealUncachedMTLTexture)initWithTextureGenerationBlock:(id)block;
+- (id)loadTextureWithCommandBuffer:(id)buffer usingBlitEncoder:(id)encoder;
 @end
 
 @implementation NTKSiderealUncachedMTLTexture
 
-- (NTKSiderealUncachedMTLTexture)initWithTextureGenerationBlock:(id)a3
+- (NTKSiderealUncachedMTLTexture)initWithTextureGenerationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = NTKSiderealUncachedMTLTexture;
   v5 = [(NTKSiderealUncachedMTLTexture *)&v10 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(blockCopy);
     loaderBlock = v5->_loaderBlock;
     v5->_loaderBlock = v6;
 
@@ -24,16 +24,16 @@
   return v5;
 }
 
-- (id)loadTextureWithCommandBuffer:(id)a3 usingBlitEncoder:(id)a4
+- (id)loadTextureWithCommandBuffer:(id)buffer usingBlitEncoder:(id)encoder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  bufferCopy = buffer;
+  encoderCopy = encoder;
+  blitCommandEncoder = encoderCopy;
   if (!self->_mtlTexture)
   {
-    if (!v7)
+    if (!encoderCopy)
     {
-      v8 = [v6 blitCommandEncoder];
+      blitCommandEncoder = [bufferCopy blitCommandEncoder];
     }
 
     v9 = (*(self->_loaderBlock + 2))();
@@ -44,9 +44,9 @@
     self->_loaderBlock = 0;
   }
 
-  v12 = v8;
+  v12 = blitCommandEncoder;
 
-  return v8;
+  return blitCommandEncoder;
 }
 
 @end

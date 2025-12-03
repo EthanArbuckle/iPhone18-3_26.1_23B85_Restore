@@ -1,8 +1,8 @@
 @interface JSNotifyObject
 - (_TtC9JetEngine14JSNotifyObject)init;
-- (void)post:(id)a3;
-- (void)register:(id)a3 :(id)a4;
-- (void)unregister:(id)a3 :(id)a4;
+- (void)post:(id)post;
+- (void)register:(id)register :(id)a4;
+- (void)unregister:(id)unregister :(id)a4;
 @end
 
 @implementation JSNotifyObject
@@ -16,27 +16,27 @@
   return [(JSNotifyObject *)&v5 init];
 }
 
-- (void)register:(id)a3 :(id)a4
+- (void)register:(id)register :(id)a4
 {
-  v6 = a3;
+  registerCopy = register;
   v7 = a4;
-  v8 = self;
-  sub_1AB3C23E8(v6, v7);
+  selfCopy = self;
+  sub_1AB3C23E8(registerCopy, v7);
 }
 
-- (void)unregister:(id)a3 :(id)a4
+- (void)unregister:(id)unregister :(id)a4
 {
-  v6 = a3;
+  unregisterCopy = unregister;
   v7 = a4;
-  v8 = self;
-  sub_1AB3C29F0(v6, v7);
+  selfCopy = self;
+  sub_1AB3C29F0(unregisterCopy, v7);
 }
 
-- (void)post:(id)a3
+- (void)post:(id)post
 {
-  v4 = a3;
-  v5 = self;
-  sub_1AB3C1D64(v4);
+  postCopy = post;
+  selfCopy = self;
+  sub_1AB3C1D64(postCopy);
 }
 
 @end

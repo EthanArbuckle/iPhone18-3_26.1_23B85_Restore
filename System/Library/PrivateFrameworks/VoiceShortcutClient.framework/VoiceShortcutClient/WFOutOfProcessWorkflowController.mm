@@ -1,47 +1,47 @@
 @interface WFOutOfProcessWorkflowController
 - (BOOL)isRunning;
-- (BOOL)resumeRunningWithRequest:(id)a3 error:(id *)a4;
-- (BOOL)runActionWithRunRequestData:(id)a3 error:(id *)a4;
-- (BOOL)runWorkflowWithDescriptor:(id)a3 request:(id)a4 error:(id *)a5;
-- (WFOutOfProcessWorkflowController)initWithEnvironment:(int64_t)a3 runningContext:(id)a4 presentationMode:(int64_t)a5 existingConnection:(id)a6;
+- (BOOL)resumeRunningWithRequest:(id)request error:(id *)error;
+- (BOOL)runActionWithRunRequestData:(id)data error:(id *)error;
+- (BOOL)runWorkflowWithDescriptor:(id)descriptor request:(id)request error:(id *)error;
+- (WFOutOfProcessWorkflowController)initWithEnvironment:(int64_t)environment runningContext:(id)context presentationMode:(int64_t)mode existingConnection:(id)connection;
 - (WFOutOfProcessWorkflowControllerDelegate)delegate;
 - (id)localizedTimeoutErrorDescription;
 - (id)localizedXPCInterruptionErrorDescription;
-- (id)runnerWithError:(id *)a3 synchronous:(BOOL)a4 reason:(id)a5;
-- (void)actionWithUUID:(id)a3 didFinishRunningWithError:(id)a4 serializedVariable:(id)a5 executionResultMetadata:(id)a6;
-- (void)controllerStateMachine:(id)a3 didFinishRunningShortcutWithResult:(id)a4;
-- (void)controllerStateMachine:(id)a3 didRequestStoppingShortcutWithError:(id)a4;
-- (void)controllerStateMachine:(id)a3 shouldNotifyDelegateWithResult:(id)a4 currentDialogAttribution:(id)a5;
-- (void)controllerStateMachineDidRequestRunnerTearDown:(id)a3;
-- (void)extractVariableContentFromEncodedReference:(id)a3 withResolutionRequest:(id)a4 completionHandler:(id)a5;
-- (void)fetchDisplayValueForRequest:(id)a3 completionHandler:(id)a4;
+- (id)runnerWithError:(id *)error synchronous:(BOOL)synchronous reason:(id)reason;
+- (void)actionWithUUID:(id)d didFinishRunningWithError:(id)error serializedVariable:(id)variable executionResultMetadata:(id)metadata;
+- (void)controllerStateMachine:(id)machine didFinishRunningShortcutWithResult:(id)result;
+- (void)controllerStateMachine:(id)machine didRequestStoppingShortcutWithError:(id)error;
+- (void)controllerStateMachine:(id)machine shouldNotifyDelegateWithResult:(id)result currentDialogAttribution:(id)attribution;
+- (void)controllerStateMachineDidRequestRunnerTearDown:(id)down;
+- (void)extractVariableContentFromEncodedReference:(id)reference withResolutionRequest:(id)request completionHandler:(id)handler;
+- (void)fetchDisplayValueForRequest:(id)request completionHandler:(id)handler;
 - (void)forTestingOnly_simulateXPCInterruption;
-- (void)getCurrentProgressCompletedWithCompletionHandler:(id)a3;
-- (void)handleIncomingFileForRemoteExecutionWithURL:(id)a3 withIdentifier:(id)a4;
-- (void)injectContentAsVariable:(id)a3 completionHandler:(id)a4;
+- (void)getCurrentProgressCompletedWithCompletionHandler:(id)handler;
+- (void)handleIncomingFileForRemoteExecutionWithURL:(id)l withIdentifier:(id)identifier;
+- (void)injectContentAsVariable:(id)variable completionHandler:(id)handler;
 - (void)pauseWorkflowAndWriteStateToDisk;
-- (void)performQuery:(id)a3 inValueSet:(id)a4 toolInvocation:(id)a5 options:(id)a6 completionHandler:(id)a7;
-- (void)presenterRequestedUpdatedRunViewSource:(id)a3 completionHandler:(id)a4;
-- (void)reindexToolKitDatabaseWithRequest:(id)a3 completionHandler:(id)a4;
+- (void)performQuery:(id)query inValueSet:(id)set toolInvocation:(id)invocation options:(id)options completionHandler:(id)handler;
+- (void)presenterRequestedUpdatedRunViewSource:(id)source completionHandler:(id)handler;
+- (void)reindexToolKitDatabaseWithRequest:(id)request completionHandler:(id)handler;
 - (void)reset;
-- (void)resolveContent:(id)a3 completionHandler:(id)a4;
-- (void)resolveDeferredValueFromEncodedStorage:(id)a3 withResolutionRequest:(id)a4 completionHandler:(id)a5;
-- (void)runToolWithInvocation:(id)a3;
+- (void)resolveContent:(id)content completionHandler:(id)handler;
+- (void)resolveDeferredValueFromEncodedStorage:(id)storage withResolutionRequest:(id)request completionHandler:(id)handler;
+- (void)runToolWithInvocation:(id)invocation;
 - (void)runnerDidPunchToShortcutsJr;
 - (void)runnerWillExit;
 - (void)stop;
-- (void)transformAction:(id)a3 completionHandler:(id)a4;
-- (void)updateRunViewSource:(id)a3;
+- (void)transformAction:(id)action completionHandler:(id)handler;
+- (void)updateRunViewSource:(id)source;
 - (void)workflowDidPause;
-- (void)workflowDidStartRunning:(id)a3 isAutomation:(id)a4 dialogAttribution:(id)a5;
+- (void)workflowDidStartRunning:(id)running isAutomation:(id)automation dialogAttribution:(id)attribution;
 @end
 
 @implementation WFOutOfProcessWorkflowController
 
 - (void)stop
 {
-  v2 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-  [v2 stopShortcutWithError:0 reason:@"-stop was called"];
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  [stateMachine stopShortcutWithError:0 reason:@"-stop was called"];
 }
 
 - (void)runnerWillExit
@@ -57,15 +57,15 @@
 
   [(WFOutOfProcessWorkflowController *)self setRunner:0];
   os_unfair_lock_lock(&self->_serviceConnectionLock);
-  v4 = [(WFOutOfProcessWorkflowController *)self serviceConnection];
-  [v4 setOnInterruption:0];
+  serviceConnection = [(WFOutOfProcessWorkflowController *)self serviceConnection];
+  [serviceConnection setOnInterruption:0];
 
-  v5 = [(WFOutOfProcessWorkflowController *)self serviceConnection];
-  [v5 setOnInvalidation:0];
+  serviceConnection2 = [(WFOutOfProcessWorkflowController *)self serviceConnection];
+  [serviceConnection2 setOnInvalidation:0];
 
   os_unfair_lock_unlock(&self->_serviceConnectionLock);
-  v6 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-  [v6 handleRunnerWillExit];
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  [stateMachine handleRunnerWillExit];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -93,30 +93,30 @@
 
   else
   {
-    v4 = [(WFOutOfProcessWorkflowController *)self currentWorkflow];
-    v5 = [v4 name];
-    v6 = [v5 length];
+    currentWorkflow = [(WFOutOfProcessWorkflowController *)self currentWorkflow];
+    name = [currentWorkflow name];
+    v6 = [name length];
 
     if (v6)
     {
       v7 = MEMORY[0x1E696AEC0];
       v8 = WFLocalizedString(@"The shortcut “%@” took too long to run.");
-      v9 = [(WFOutOfProcessWorkflowController *)self currentWorkflow];
-      v10 = [v9 name];
-      v11 = [v7 localizedStringWithFormat:v8, v10];
+      currentWorkflow2 = [(WFOutOfProcessWorkflowController *)self currentWorkflow];
+      name2 = [currentWorkflow2 name];
+      v11 = [v7 localizedStringWithFormat:v8, name2];
 
       goto LABEL_15;
     }
 
-    v12 = [(WFOutOfProcessWorkflowController *)self currentWorkflow];
+    currentWorkflow3 = [(WFOutOfProcessWorkflowController *)self currentWorkflow];
 
-    if (v12)
+    if (currentWorkflow3)
     {
       goto LABEL_6;
     }
 
-    v13 = [(WFOutOfProcessWorkflowController *)self runRequest];
-    if (v13)
+    runRequest = [(WFOutOfProcessWorkflowController *)self runRequest];
+    if (runRequest)
     {
       objc_opt_class();
       v14 = objc_opt_isKindOfClass() ^ 1;
@@ -127,9 +127,9 @@
       v14 = 1;
     }
 
-    v15 = [(WFOutOfProcessWorkflowController *)self runRequest];
-    v16 = [v15 runSource];
-    IsSuggestion = WFRunSourceIsSuggestion(v16);
+    runRequest2 = [(WFOutOfProcessWorkflowController *)self runRequest];
+    runSource = [runRequest2 runSource];
+    IsSuggestion = WFRunSourceIsSuggestion(runSource);
 
     if ((v14 & 1) == 0)
     {
@@ -165,30 +165,30 @@ LABEL_15:
 
   else
   {
-    v4 = [(WFOutOfProcessWorkflowController *)self currentWorkflow];
-    v5 = [v4 name];
-    v6 = [v5 length];
+    currentWorkflow = [(WFOutOfProcessWorkflowController *)self currentWorkflow];
+    name = [currentWorkflow name];
+    v6 = [name length];
 
     if (v6)
     {
       v7 = MEMORY[0x1E696AEC0];
       v8 = WFLocalizedString(@"There was a problem running the shortcut “%@”.");
-      v9 = [(WFOutOfProcessWorkflowController *)self currentWorkflow];
-      v10 = [v9 name];
-      v11 = [v7 localizedStringWithFormat:v8, v10];
+      currentWorkflow2 = [(WFOutOfProcessWorkflowController *)self currentWorkflow];
+      name2 = [currentWorkflow2 name];
+      v11 = [v7 localizedStringWithFormat:v8, name2];
 
       goto LABEL_15;
     }
 
-    v12 = [(WFOutOfProcessWorkflowController *)self currentWorkflow];
+    currentWorkflow3 = [(WFOutOfProcessWorkflowController *)self currentWorkflow];
 
-    if (v12)
+    if (currentWorkflow3)
     {
       goto LABEL_6;
     }
 
-    v13 = [(WFOutOfProcessWorkflowController *)self runRequest];
-    if (v13)
+    runRequest = [(WFOutOfProcessWorkflowController *)self runRequest];
+    if (runRequest)
     {
       objc_opt_class();
       v14 = objc_opt_isKindOfClass() ^ 1;
@@ -199,9 +199,9 @@ LABEL_15:
       v14 = 1;
     }
 
-    v15 = [(WFOutOfProcessWorkflowController *)self runRequest];
-    v16 = [v15 runSource];
-    IsSuggestion = WFRunSourceIsSuggestion(v16);
+    runRequest2 = [(WFOutOfProcessWorkflowController *)self runRequest];
+    runSource = [runRequest2 runSource];
+    IsSuggestion = WFRunSourceIsSuggestion(runSource);
 
     if ((v14 & 1) == 0)
     {
@@ -231,11 +231,11 @@ LABEL_15:
 - (void)runnerDidPunchToShortcutsJr
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(WFOutOfProcessWorkflowController *)self runRequest];
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  runRequest = [(WFOutOfProcessWorkflowController *)self runRequest];
+  if (runRequest && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [(WFOutOfProcessWorkflowController *)self runningContext];
-    [v4 setAllowsDialogNotifications:1];
+    runningContext = [(WFOutOfProcessWorkflowController *)self runningContext];
+    [runningContext setAllowsDialogNotifications:1];
 
     [(WFOutOfProcessWorkflowController *)self setPresentationMode:3];
   }
@@ -243,12 +243,12 @@ LABEL_15:
   else
   {
 
-    v3 = getWFVoiceShortcutClientLogObject();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+    runRequest = getWFVoiceShortcutClientLogObject();
+    if (os_log_type_enabled(runRequest, OS_LOG_TYPE_FAULT))
     {
       v6 = 136315138;
       v7 = "[WFOutOfProcessWorkflowController runnerDidPunchToShortcutsJr]";
-      _os_log_impl(&dword_1B1DE3000, v3, OS_LOG_TYPE_FAULT, "%s Attempted to perform punch out for non-Siri request", &v6, 0xCu);
+      _os_log_impl(&dword_1B1DE3000, runRequest, OS_LOG_TYPE_FAULT, "%s Attempted to perform punch out for non-Siri request", &v6, 0xCu);
     }
   }
 
@@ -266,58 +266,58 @@ LABEL_15:
     _os_log_impl(&dword_1B1DE3000, v3, OS_LOG_TYPE_DEFAULT, "%s Workflow paused", &v6, 0xCu);
   }
 
-  v4 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-  [v4 pauseAndWriteShortcutToDiskState];
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  [stateMachine pauseAndWriteShortcutToDiskState];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)actionWithUUID:(id)a3 didFinishRunningWithError:(id)a4 serializedVariable:(id)a5 executionResultMetadata:(id)a6
+- (void)actionWithUUID:(id)d didFinishRunningWithError:(id)error serializedVariable:(id)variable executionResultMetadata:(id)metadata
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  errorCopy = error;
+  variableCopy = variable;
+  metadataCopy = metadata;
   v14 = getWFVoiceShortcutClientLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(WFOutOfProcessWorkflowController *)self delegate];
+    delegate = [(WFOutOfProcessWorkflowController *)self delegate];
     v21 = 136315906;
     v22 = "[WFOutOfProcessWorkflowController actionWithUUID:didFinishRunningWithError:serializedVariable:executionResultMetadata:]";
     v23 = 2112;
-    v24 = v10;
+    v24 = dCopy;
     v25 = 2112;
-    v26 = v15;
+    v26 = delegate;
     v27 = 2112;
-    v28 = v11;
+    v28 = errorCopy;
     _os_log_impl(&dword_1B1DE3000, v14, OS_LOG_TYPE_DEFAULT, "%s Host received finish for action (%@), delegate: %@, error: %@", &v21, 0x2Au);
   }
 
-  v16 = [(WFOutOfProcessWorkflowController *)self delegate];
+  delegate2 = [(WFOutOfProcessWorkflowController *)self delegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(WFOutOfProcessWorkflowController *)self delegate];
-    v19 = [v12 propertyListObject];
-    [v18 outOfProcessWorkflowController:self actionWithUUID:v10 didFinishRunningWithError:v11 serializedVariable:v19 executionResultMetadata:v13];
+    delegate3 = [(WFOutOfProcessWorkflowController *)self delegate];
+    propertyListObject = [variableCopy propertyListObject];
+    [delegate3 outOfProcessWorkflowController:self actionWithUUID:dCopy didFinishRunningWithError:errorCopy serializedVariable:propertyListObject executionResultMetadata:metadataCopy];
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)workflowDidStartRunning:(id)a3 isAutomation:(id)a4 dialogAttribution:(id)a5
+- (void)workflowDidStartRunning:(id)running isAutomation:(id)automation dialogAttribution:(id)attribution
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  [(WFOutOfProcessWorkflowController *)self setCurrentWorkflow:v8];
-  v11 = [v10 BOOLValue];
+  runningCopy = running;
+  attributionCopy = attribution;
+  automationCopy = automation;
+  [(WFOutOfProcessWorkflowController *)self setCurrentWorkflow:runningCopy];
+  bOOLValue = [automationCopy BOOLValue];
 
-  [(WFOutOfProcessWorkflowController *)self setIsAutomation:v11];
-  [(WFOutOfProcessWorkflowController *)self setCurrentDialogAttribution:v9];
+  [(WFOutOfProcessWorkflowController *)self setIsAutomation:bOOLValue];
+  [(WFOutOfProcessWorkflowController *)self setCurrentDialogAttribution:attributionCopy];
   v12 = getWFVoiceShortcutClientLogObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -326,72 +326,72 @@ LABEL_15:
     _os_log_impl(&dword_1B1DE3000, v12, OS_LOG_TYPE_DEBUG, "%s Background runner started running workflow", &v17, 0xCu);
   }
 
-  v13 = [(WFOutOfProcessWorkflowController *)self delegate];
+  delegate = [(WFOutOfProcessWorkflowController *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(WFOutOfProcessWorkflowController *)self delegate];
-    [v15 outOfProcessWorkflowController:self didStartFromWorkflowReference:v8 dialogAttribution:v9];
+    delegate2 = [(WFOutOfProcessWorkflowController *)self delegate];
+    [delegate2 outOfProcessWorkflowController:self didStartFromWorkflowReference:runningCopy dialogAttribution:attributionCopy];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)presenterRequestedUpdatedRunViewSource:(id)a3 completionHandler:(id)a4
+- (void)presenterRequestedUpdatedRunViewSource:(id)source completionHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(WFOutOfProcessWorkflowController *)self delegate];
+  sourceCopy = source;
+  handlerCopy = handler;
+  delegate = [(WFOutOfProcessWorkflowController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(WFOutOfProcessWorkflowController *)self delegate];
-    [v9 outOfProcessWorkflowController:self didRequestUpdatedRunViewSource:v10 completionHandler:v6];
+    delegate2 = [(WFOutOfProcessWorkflowController *)self delegate];
+    [delegate2 outOfProcessWorkflowController:self didRequestUpdatedRunViewSource:sourceCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)controllerStateMachineDidRequestRunnerTearDown:(id)a3
+- (void)controllerStateMachineDidRequestRunnerTearDown:(id)down
 {
   os_unfair_lock_lock(&self->_serviceConnectionLock);
-  v4 = [(WFOutOfProcessWorkflowController *)self serviceConnection];
-  [v4 invalidate];
+  serviceConnection = [(WFOutOfProcessWorkflowController *)self serviceConnection];
+  [serviceConnection invalidate];
 
   [(WFOutOfProcessWorkflowController *)self setServiceConnection:0];
   os_unfair_lock_unlock(&self->_serviceConnectionLock);
-  v5 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-  [v5 exitWithReason:@"runner is torn down"];
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  [stateMachine exitWithReason:@"runner is torn down"];
 }
 
-- (void)controllerStateMachine:(id)a3 shouldNotifyDelegateWithResult:(id)a4 currentDialogAttribution:(id)a5
+- (void)controllerStateMachine:(id)machine shouldNotifyDelegateWithResult:(id)result currentDialogAttribution:(id)attribution
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(WFOutOfProcessWorkflowController *)self runRequest];
-  if ([v9 isStepwise])
+  resultCopy = result;
+  attributionCopy = attribution;
+  runRequest = [(WFOutOfProcessWorkflowController *)self runRequest];
+  if ([runRequest isStepwise])
   {
-    v10 = [v7 error];
+    error = [resultCopy error];
 
-    if (!v10)
+    if (!error)
     {
-      v11 = getWFVoiceShortcutClientLogObject();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      delegate3 = getWFVoiceShortcutClientLogObject();
+      if (os_log_type_enabled(delegate3, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(WFOutOfProcessWorkflowController *)self delegate];
+        delegate = [(WFOutOfProcessWorkflowController *)self delegate];
         v20 = 136315650;
         v21 = "[WFOutOfProcessWorkflowController controllerStateMachine:shouldNotifyDelegateWithResult:currentDialogAttribution:]";
         v22 = 2112;
-        v23 = v7;
+        v23 = resultCopy;
         v24 = 2112;
-        v25 = v12;
-        _os_log_impl(&dword_1B1DE3000, v11, OS_LOG_TYPE_DEFAULT, "%s Workflow stepped successfully (%@) but the run request is stepwise, not notifying the delegate %@", &v20, 0x20u);
+        v25 = delegate;
+        _os_log_impl(&dword_1B1DE3000, delegate3, OS_LOG_TYPE_DEFAULT, "%s Workflow stepped successfully (%@) but the run request is stepwise, not notifying the delegate %@", &v20, 0x20u);
       }
 
       goto LABEL_12;
@@ -405,22 +405,22 @@ LABEL_15:
   v13 = getWFVoiceShortcutClientLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(WFOutOfProcessWorkflowController *)self delegate];
+    delegate2 = [(WFOutOfProcessWorkflowController *)self delegate];
     v20 = 136315650;
     v21 = "[WFOutOfProcessWorkflowController controllerStateMachine:shouldNotifyDelegateWithResult:currentDialogAttribution:]";
     v22 = 2112;
-    v23 = v7;
+    v23 = resultCopy;
     v24 = 2112;
-    v25 = v14;
+    v25 = delegate2;
     _os_log_impl(&dword_1B1DE3000, v13, OS_LOG_TYPE_DEFAULT, "%s Reporting finish with result (%@) to the delegate (%@)", &v20, 0x20u);
   }
 
-  v15 = [(WFOutOfProcessWorkflowController *)self serviceConnection];
-  v16 = [v15 targetType];
+  serviceConnection = [(WFOutOfProcessWorkflowController *)self serviceConnection];
+  targetType = [serviceConnection targetType];
 
-  if (v16)
+  if (targetType)
   {
-    v17 = 2 * (v16 == 1);
+    v17 = 2 * (targetType == 1);
   }
 
   else
@@ -428,40 +428,40 @@ LABEL_15:
     v17 = 1;
   }
 
-  v11 = [(WFOutOfProcessWorkflowController *)self delegate];
-  [v11 outOfProcessWorkflowController:self didFinishWithResult:v7 dialogAttribution:v8 runResidency:v17];
+  delegate3 = [(WFOutOfProcessWorkflowController *)self delegate];
+  [delegate3 outOfProcessWorkflowController:self didFinishWithResult:resultCopy dialogAttribution:attributionCopy runResidency:v17];
 LABEL_12:
 
-  v18 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-  [v18 tearDownRunnerWithReason:{@"finished processing result, and notifying the delegate if applicable, done"}];
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  [stateMachine tearDownRunnerWithReason:{@"finished processing result, and notifying the delegate if applicable, done"}];
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)controllerStateMachine:(id)a3 didFinishRunningShortcutWithResult:(id)a4
+- (void)controllerStateMachine:(id)machine didFinishRunningShortcutWithResult:(id)result
 {
-  v5 = a4;
-  v6 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-  v7 = [(WFOutOfProcessWorkflowController *)self currentDialogAttribution];
-  [v6 notifyDelegateWithReason:@"workflow did finish running" result:v5 currentDialogAttribution:v7];
+  resultCopy = result;
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  currentDialogAttribution = [(WFOutOfProcessWorkflowController *)self currentDialogAttribution];
+  [stateMachine notifyDelegateWithReason:@"workflow did finish running" result:resultCopy currentDialogAttribution:currentDialogAttribution];
 
   [(WFOutOfProcessWorkflowController *)self reset];
 }
 
-- (void)controllerStateMachine:(id)a3 didRequestStoppingShortcutWithError:(id)a4
+- (void)controllerStateMachine:(id)machine didRequestStoppingShortcutWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(WFOutOfProcessWorkflowController *)self runner];
-  [v6 stopWithError:v5];
+  errorCopy = error;
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
+  [runner stopWithError:errorCopy];
 }
 
-- (id)runnerWithError:(id *)a3 synchronous:(BOOL)a4 reason:(id)a5
+- (id)runnerWithError:(id *)error synchronous:(BOOL)synchronous reason:(id)reason
 {
-  v5 = a4;
+  synchronousCopy = synchronous;
   v41 = *MEMORY[0x1E69E9840];
-  v29 = a5;
-  v7 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-  [v7 acquiringRunnerWithReason:v29];
+  reasonCopy = reason;
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  [stateMachine acquiringRunnerWithReason:reasonCopy];
 
   v8 = getWFVoiceShortcutClientLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -472,9 +472,9 @@ LABEL_12:
   }
 
   os_unfair_lock_lock(&self->_serviceConnectionLock);
-  v9 = [(WFOutOfProcessWorkflowController *)self serviceConnection];
+  serviceConnection = [(WFOutOfProcessWorkflowController *)self serviceConnection];
   os_unfair_lock_unlock(&self->_serviceConnectionLock);
-  objc_initWeak(buf, v9);
+  objc_initWeak(buf, serviceConnection);
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -491,44 +491,44 @@ LABEL_12:
   objc_copyWeak(&v34, &location);
   v11 = _Block_copy(v32);
   os_unfair_lock_lock(&self->_serviceConnectionLock);
-  if (v9)
+  if (serviceConnection)
   {
-    [(WFRunnerConnection *)v9 setOnInterruption:v10];
-    [(WFRunnerConnection *)v9 setOnInvalidation:v11];
+    [(WFRunnerConnection *)serviceConnection setOnInterruption:v10];
+    [(WFRunnerConnection *)serviceConnection setOnInvalidation:v11];
   }
 
   else
   {
     v12 = [WFRunnerConnection alloc];
-    v13 = [(WFOutOfProcessWorkflowController *)self runDescriptor];
-    v14 = [(WFOutOfProcessWorkflowController *)self runningContext];
-    v15 = [v14 locale];
-    v16 = [v15 languageIdentifier];
-    v9 = [(WFRunnerConnection *)v12 initWithRunDescriptor:v13 host:self onInterruption:v10 onInvalidation:v11 languageIdentifier:v16];
+    runDescriptor = [(WFOutOfProcessWorkflowController *)self runDescriptor];
+    runningContext = [(WFOutOfProcessWorkflowController *)self runningContext];
+    locale = [runningContext locale];
+    languageIdentifier = [locale languageIdentifier];
+    serviceConnection = [(WFRunnerConnection *)v12 initWithRunDescriptor:runDescriptor host:self onInterruption:v10 onInvalidation:v11 languageIdentifier:languageIdentifier];
 
-    [(WFOutOfProcessWorkflowController *)self setServiceConnection:v9];
+    [(WFOutOfProcessWorkflowController *)self setServiceConnection:serviceConnection];
   }
 
-  v17 = [(WFOutOfProcessWorkflowController *)self serviceConnection];
-  if (v5)
+  serviceConnection2 = [(WFOutOfProcessWorkflowController *)self serviceConnection];
+  if (synchronousCopy)
   {
     v31 = 0;
     v18 = &v31;
-    v19 = [v17 syncRunnerWithReason:v29 error:&v31];
+    v19 = [serviceConnection2 syncRunnerWithReason:reasonCopy error:&v31];
   }
 
   else
   {
     v30 = 0;
     v18 = &v30;
-    v19 = [v17 asyncRunnerWithReason:v29 error:&v30];
+    v19 = [serviceConnection2 asyncRunnerWithReason:reasonCopy error:&v30];
   }
 
   v20 = v19;
   v21 = *v18;
 
   os_unfair_lock_unlock(&self->_serviceConnectionLock);
-  if (a3 && v21)
+  if (error && v21)
   {
     v22 = v21;
     v23 = objc_opt_new();
@@ -538,7 +538,7 @@ LABEL_12:
     v24 = [MEMORY[0x1E696ABC0] errorWithDomain:WFOutOfProcessWorkflowControllerErrorDomain code:2 userInfo:v23];
 
     v25 = v24;
-    *a3 = v24;
+    *error = v24;
   }
 
   objc_destroyWeak(&v34);
@@ -600,18 +600,18 @@ void __71__WFOutOfProcessWorkflowController_runnerWithError_synchronous_reason__
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reindexToolKitDatabaseWithRequest:(id)a3 completionHandler:(id)a4
+- (void)reindexToolKitDatabaseWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69C75D0] currentProcess];
-  v9 = [v8 daemonJobLabel];
-  v10 = [v9 isEqualToString:@"com.apple.siriactionsd"];
+  requestCopy = request;
+  handlerCopy = handler;
+  currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+  daemonJobLabel = [currentProcess daemonJobLabel];
+  v10 = [daemonJobLabel isEqualToString:@"com.apple.siriactionsd"];
 
   if (v10)
   {
-    v11 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-    [v11 handlingRequestWithReason:@"new incoming ToolKit indexing request"];
+    stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+    [stateMachine handlingRequestWithReason:@"new incoming ToolKit indexing request"];
 
     v20 = 0;
     v12 = [(WFOutOfProcessWorkflowController *)self asynchronousRunnerWithError:&v20 reason:@"incoming ToolKit indexing request"];
@@ -621,9 +621,9 @@ void __71__WFOutOfProcessWorkflowController_runnerWithError_synchronous_reason__
     v18[2] = __88__WFOutOfProcessWorkflowController_reindexToolKitDatabaseWithRequest_completionHandler___block_invoke;
     v18[3] = &unk_1E7B02B00;
     v18[4] = self;
-    v19 = v7;
+    v19 = handlerCopy;
     v14 = v13;
-    [v12 reindexToolKitDatabaseWithRequest:v6 completionHandler:v18];
+    [v12 reindexToolKitDatabaseWithRequest:requestCopy completionHandler:v18];
     runner = self->_runner;
     self->_runner = v12;
     v16 = v12;
@@ -632,7 +632,7 @@ void __71__WFOutOfProcessWorkflowController_runnerWithError_synchronous_reason__
   else
   {
     v17 = [MEMORY[0x1E696ABC0] errorWithDomain:WFOutOfProcessWorkflowControllerErrorDomain code:5 userInfo:MEMORY[0x1E695E0F8]];
-    (*(v7 + 2))(v7, v17);
+    (*(handlerCopy + 2))(handlerCopy, v17);
   }
 }
 
@@ -645,48 +645,48 @@ void __88__WFOutOfProcessWorkflowController_reindexToolKitDatabaseWithRequest_co
 
 - (void)forTestingOnly_simulateXPCInterruption
 {
-  v4 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-  v3 = [(WFOutOfProcessWorkflowController *)self currentDialogAttribution];
-  [v4 handleXPCErrorWithDescription:@"simulated XPC interruption" reason:@"simulating XPC interruption for testing" currentDialogAttribution:v3];
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  currentDialogAttribution = [(WFOutOfProcessWorkflowController *)self currentDialogAttribution];
+  [stateMachine handleXPCErrorWithDescription:@"simulated XPC interruption" reason:@"simulating XPC interruption for testing" currentDialogAttribution:currentDialogAttribution];
 }
 
-- (void)fetchDisplayValueForRequest:(id)a3 completionHandler:(id)a4
+- (void)fetchDisplayValueForRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFOutOfProcessWorkflowController *)self runner];
-  [v8 fetchDisplayValueForRequest:v7 completionHandler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
+  [runner fetchDisplayValueForRequest:requestCopy completionHandler:handlerCopy];
 }
 
-- (void)performQuery:(id)a3 inValueSet:(id)a4 toolInvocation:(id)a5 options:(id)a6 completionHandler:(id)a7
+- (void)performQuery:(id)query inValueSet:(id)set toolInvocation:(id)invocation options:(id)options completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(WFOutOfProcessWorkflowController *)self runner];
-  [v17 performQuery:v16 inValueSet:v15 toolInvocation:v14 options:v13 completionHandler:v12];
+  handlerCopy = handler;
+  optionsCopy = options;
+  invocationCopy = invocation;
+  setCopy = set;
+  queryCopy = query;
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
+  [runner performQuery:queryCopy inValueSet:setCopy toolInvocation:invocationCopy options:optionsCopy completionHandler:handlerCopy];
 }
 
-- (void)runToolWithInvocation:(id)a3
+- (void)runToolWithInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [(WFOutOfProcessWorkflowController *)self runner];
-  [v5 runToolWithInvocation:v4];
+  invocationCopy = invocation;
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
+  [runner runToolWithInvocation:invocationCopy];
 }
 
-- (void)transformAction:(id)a3 completionHandler:(id)a4
+- (void)transformAction:(id)action completionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFOutOfProcessWorkflowController *)self runner];
+  actionCopy = action;
+  handlerCopy = handler;
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
 
-  if (v8)
+  if (runner)
   {
-    v9 = [(WFOutOfProcessWorkflowController *)self runner];
-    [v9 transformAction:v6 completionHandler:v7];
+    runner2 = [(WFOutOfProcessWorkflowController *)self runner];
+    [runner2 transformAction:actionCopy completionHandler:handlerCopy];
   }
 
   else
@@ -697,24 +697,24 @@ void __88__WFOutOfProcessWorkflowController_reindexToolKitDatabaseWithRequest_co
     v16[0] = @"You must be running before transforming an action";
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v13 = [v10 errorWithDomain:v11 code:94 userInfo:v12];
-    (*(v7 + 2))(v7, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resolveDeferredValueFromEncodedStorage:(id)a3 withResolutionRequest:(id)a4 completionHandler:(id)a5
+- (void)resolveDeferredValueFromEncodedStorage:(id)storage withResolutionRequest:(id)request completionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFOutOfProcessWorkflowController *)self runner];
+  storageCopy = storage;
+  requestCopy = request;
+  handlerCopy = handler;
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
 
-  if (v11)
+  if (runner)
   {
-    v12 = [(WFOutOfProcessWorkflowController *)self runner];
-    [v12 resolveDeferredValueFromEncodedStorage:v8 withResolutionRequest:v9 completionHandler:v10];
+    runner2 = [(WFOutOfProcessWorkflowController *)self runner];
+    [runner2 resolveDeferredValueFromEncodedStorage:storageCopy withResolutionRequest:requestCopy completionHandler:handlerCopy];
   }
 
   else
@@ -725,24 +725,24 @@ void __88__WFOutOfProcessWorkflowController_reindexToolKitDatabaseWithRequest_co
     v19[0] = @"You must be running before resolving a deferred value";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v16 = [v13 errorWithDomain:v14 code:94 userInfo:v15];
-    (*(v10 + 2))(v10, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, v16);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)extractVariableContentFromEncodedReference:(id)a3 withResolutionRequest:(id)a4 completionHandler:(id)a5
+- (void)extractVariableContentFromEncodedReference:(id)reference withResolutionRequest:(id)request completionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFOutOfProcessWorkflowController *)self runner];
+  referenceCopy = reference;
+  requestCopy = request;
+  handlerCopy = handler;
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
 
-  if (v11)
+  if (runner)
   {
-    v12 = [(WFOutOfProcessWorkflowController *)self runner];
-    [v12 extractVariableContentFromEncodedReference:v8 withResolutionRequest:v9 completionHandler:v10];
+    runner2 = [(WFOutOfProcessWorkflowController *)self runner];
+    [runner2 extractVariableContentFromEncodedReference:referenceCopy withResolutionRequest:requestCopy completionHandler:handlerCopy];
   }
 
   else
@@ -753,24 +753,24 @@ void __88__WFOutOfProcessWorkflowController_reindexToolKitDatabaseWithRequest_co
     v19[0] = @"You must be running before pulling content from a runtime";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v16 = [v13 errorWithDomain:v14 code:94 userInfo:v15];
-    (*(v10 + 2))(v10, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, v16);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resolveContent:(id)a3 completionHandler:(id)a4
+- (void)resolveContent:(id)content completionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFOutOfProcessWorkflowController *)self runner];
+  contentCopy = content;
+  handlerCopy = handler;
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
 
-  if (v8)
+  if (runner)
   {
-    v9 = [(WFOutOfProcessWorkflowController *)self runner];
-    v10 = [WFAnyToolKitVariableContent objectWithVariableContent:v6];
-    [v9 resolveContent:v10 completionHandler:v7];
+    runner2 = [(WFOutOfProcessWorkflowController *)self runner];
+    v10 = [WFAnyToolKitVariableContent objectWithVariableContent:contentCopy];
+    [runner2 resolveContent:v10 completionHandler:handlerCopy];
   }
 
   else
@@ -781,29 +781,29 @@ void __88__WFOutOfProcessWorkflowController_reindexToolKitDatabaseWithRequest_co
     v17[0] = @"You must be running before resolving content";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v14 = [v11 errorWithDomain:v12 code:94 userInfo:v13];
-    (*(v7 + 2))(v7, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14);
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)injectContentAsVariable:(id)a3 completionHandler:(id)a4
+- (void)injectContentAsVariable:(id)variable completionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFOutOfProcessWorkflowController *)self runner];
+  variableCopy = variable;
+  handlerCopy = handler;
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
 
-  if (v8)
+  if (runner)
   {
-    v9 = [(WFOutOfProcessWorkflowController *)self runner];
-    v10 = [WFAnyToolKitVariableContent objectWithVariableContent:v6];
+    runner2 = [(WFOutOfProcessWorkflowController *)self runner];
+    v10 = [WFAnyToolKitVariableContent objectWithVariableContent:variableCopy];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __78__WFOutOfProcessWorkflowController_injectContentAsVariable_completionHandler___block_invoke;
     v16[3] = &unk_1E7AFFE70;
-    v17 = v7;
-    [v9 injectContentAsVariable:v10 completionHandler:v16];
+    v17 = handlerCopy;
+    [runner2 injectContentAsVariable:v10 completionHandler:v16];
 
     v11 = v17;
   }
@@ -816,7 +816,7 @@ void __88__WFOutOfProcessWorkflowController_reindexToolKitDatabaseWithRequest_co
     v19[0] = @"You must be running before pushing content into a runtime";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v14 = [v12 errorWithDomain:v13 code:94 userInfo:v11];
-    (*(v7 + 2))(v7, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14);
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -830,43 +830,43 @@ void __78__WFOutOfProcessWorkflowController_injectContentAsVariable_completionHa
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)getCurrentProgressCompletedWithCompletionHandler:(id)a3
+- (void)getCurrentProgressCompletedWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(WFOutOfProcessWorkflowController *)self runner];
+  handlerCopy = handler;
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
 
-  if (v4)
+  if (runner)
   {
-    v5 = [(WFOutOfProcessWorkflowController *)self runner];
-    [v5 getCurrentProgressCompletedWithCompletionHandler:v6];
+    runner2 = [(WFOutOfProcessWorkflowController *)self runner];
+    [runner2 getCurrentProgressCompletedWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)handleIncomingFileForRemoteExecutionWithURL:(id)a3 withIdentifier:(id)a4
+- (void)handleIncomingFileForRemoteExecutionWithURL:(id)l withIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   v9 = getWFVoiceShortcutClientLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v20 = "[WFOutOfProcessWorkflowController handleIncomingFileForRemoteExecutionWithURL:withIdentifier:]";
     v21 = 2112;
-    v22 = v7;
+    v22 = lCopy;
     v23 = 2114;
-    v24 = v8;
+    v24 = identifierCopy;
     _os_log_impl(&dword_1B1DE3000, v9, OS_LOG_TYPE_DEFAULT, "%s Handling incoming file for remote execution with URL: %@, identifier: %{public}@", buf, 0x20u);
   }
 
-  if (v7)
+  if (lCopy)
   {
-    if (v8)
+    if (identifierCopy)
     {
       goto LABEL_5;
     }
@@ -874,35 +874,35 @@ void __78__WFOutOfProcessWorkflowController_injectContentAsVariable_completionHa
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFOutOfProcessWorkflowController.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFOutOfProcessWorkflowController.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
 
-    if (v8)
+    if (identifierCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"WFOutOfProcessWorkflowController.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFOutOfProcessWorkflowController.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
 LABEL_5:
-  v10 = [(WFOutOfProcessWorkflowController *)self runner];
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
 
-  if (v10)
+  if (runner)
   {
-    v11 = [(WFOutOfProcessWorkflowController *)self runner];
-    [v11 handleIncomingFileForRemoteExecutionWithURL:v7 withIdentifier:v8];
+    runner2 = [(WFOutOfProcessWorkflowController *)self runner];
+    [runner2 handleIncomingFileForRemoteExecutionWithURL:lCopy withIdentifier:identifierCopy];
   }
 
   else
   {
     v18 = 0;
     v12 = [(WFOutOfProcessWorkflowController *)self asynchronousRunnerWithError:&v18 reason:@"handling incoming remote execution file"];
-    v11 = v18;
+    runner2 = v18;
     if (v12)
     {
-      [v12 handleIncomingFileForRemoteExecutionWithURL:v7 withIdentifier:v8];
+      [v12 handleIncomingFileForRemoteExecutionWithURL:lCopy withIdentifier:identifierCopy];
       v13 = v12;
       runner = self->_runner;
       self->_runner = v13;
@@ -916,7 +916,7 @@ LABEL_5:
         *buf = 136315394;
         v20 = "[WFOutOfProcessWorkflowController handleIncomingFileForRemoteExecutionWithURL:withIdentifier:]";
         v21 = 2112;
-        v22 = v11;
+        v22 = runner2;
         _os_log_impl(&dword_1B1DE3000, runner, OS_LOG_TYPE_ERROR, "%s Unable to connect to BackgroundShortcutRunner: %@", buf, 0x16u);
       }
     }
@@ -936,71 +936,71 @@ LABEL_5:
     _os_log_impl(&dword_1B1DE3000, v3, OS_LOG_TYPE_DEFAULT, "%s Requested pausing run & writing state to disk", &v8, 0xCu);
   }
 
-  v4 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-  [v4 pauseAndWriteShortcutToDiskState];
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  [stateMachine pauseAndWriteShortcutToDiskState];
 
-  v5 = [(WFOutOfProcessWorkflowController *)self runner];
-  v6 = [(WFOutOfProcessWorkflowController *)self runningContext];
-  [v5 pauseWorkflowAndWriteStateToDisk:v6];
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
+  runningContext = [(WFOutOfProcessWorkflowController *)self runningContext];
+  [runner pauseWorkflowAndWriteStateToDisk:runningContext];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
 - (BOOL)isRunning
 {
-  v2 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-  v3 = [v2 isRunningShortcut];
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  isRunningShortcut = [stateMachine isRunningShortcut];
 
-  return v3;
+  return isRunningShortcut;
 }
 
-- (void)updateRunViewSource:(id)a3
+- (void)updateRunViewSource:(id)source
 {
-  v4 = a3;
-  v5 = [(WFOutOfProcessWorkflowController *)self runner];
-  [v5 updateRunViewSource:v4];
+  sourceCopy = source;
+  runner = [(WFOutOfProcessWorkflowController *)self runner];
+  [runner updateRunViewSource:sourceCopy];
 }
 
-- (BOOL)resumeRunningWithRequest:(id)a3 error:(id *)a4
+- (BOOL)resumeRunningWithRequest:(id)request error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  requestCopy = request;
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(WFOutOfProcessWorkflowController *)self runningContext];
-  v10 = [v8 stringWithFormat:@"resuming run with request: %@, context: %@", v6, v9];
-  [v7 handlingRequestWithReason:v10];
+  runningContext = [(WFOutOfProcessWorkflowController *)self runningContext];
+  v10 = [v8 stringWithFormat:@"resuming run with request: %@, context: %@", requestCopy, runningContext];
+  [stateMachine handlingRequestWithReason:v10];
 
   v25 = 0;
   v11 = [(WFOutOfProcessWorkflowController *)self asynchronousRunnerWithError:&v25 reason:@"incoming resume request"];
   v12 = v25;
   if (v11)
   {
-    v13 = [v6 presentationMode];
-    v14 = [(WFOutOfProcessWorkflowController *)self runningContext];
-    [v14 setPresentationMode:v13];
+    presentationMode = [requestCopy presentationMode];
+    runningContext2 = [(WFOutOfProcessWorkflowController *)self runningContext];
+    [runningContext2 setPresentationMode:presentationMode];
 
     v15 = getWFVoiceShortcutClientLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(WFOutOfProcessWorkflowController *)self runningContext];
+      runningContext3 = [(WFOutOfProcessWorkflowController *)self runningContext];
       *buf = 136315394;
       v27 = "[WFOutOfProcessWorkflowController resumeRunningWithRequest:error:]";
       v28 = 2112;
-      v29 = v16;
+      v29 = runningContext3;
       _os_log_impl(&dword_1B1DE3000, v15, OS_LOG_TYPE_DEFAULT, "%s Resuming a run for context: %@", buf, 0x16u);
     }
 
-    v17 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-    [v17 startRunningShortcutWithReason:@"resume shortcut request"];
+    stateMachine2 = [(WFOutOfProcessWorkflowController *)self stateMachine];
+    [stateMachine2 startRunningShortcutWithReason:@"resume shortcut request"];
 
-    v18 = [(WFOutOfProcessWorkflowController *)self runningContext];
+    runningContext4 = [(WFOutOfProcessWorkflowController *)self runningContext];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __67__WFOutOfProcessWorkflowController_resumeRunningWithRequest_error___block_invoke;
     v24[3] = &unk_1E7AFFA28;
     v24[4] = self;
-    [v11 resumeRunningFromContext:v18 withRequest:v6 completion:v24];
+    [v11 resumeRunningFromContext:runningContext4 withRequest:requestCopy completion:v24];
 
     objc_storeStrong(&self->_runner, v11);
   }
@@ -1017,14 +1017,14 @@ LABEL_5:
       _os_log_impl(&dword_1B1DE3000, v19, OS_LOG_TYPE_ERROR, "%s Unable to connect to BackgroundShortcutRunner: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v20 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
-    v21 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-    [v21 exitWithReason:@"unable to get runner to resume running"];
+    stateMachine3 = [(WFOutOfProcessWorkflowController *)self stateMachine];
+    [stateMachine3 exitWithReason:@"unable to get runner to resume running"];
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -1039,12 +1039,12 @@ void __67__WFOutOfProcessWorkflowController_resumeRunningWithRequest_error___blo
   [v4 finishRunningWithReason:@"resumed run finished" result:v3];
 }
 
-- (BOOL)runActionWithRunRequestData:(id)a3 error:(id *)a4
+- (BOOL)runActionWithRunRequestData:(id)data error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-  [v7 handlingRequestWithReason:@"incoming remote execution request"];
+  dataCopy = data;
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  [stateMachine handlingRequestWithReason:@"incoming remote execution request"];
 
   v19 = 0;
   v8 = [(WFOutOfProcessWorkflowController *)self asynchronousRunnerWithError:&v19 reason:@"incoming remote execution request"];
@@ -1060,16 +1060,16 @@ void __67__WFOutOfProcessWorkflowController_resumeRunningWithRequest_error___blo
       _os_log_impl(&dword_1B1DE3000, v11, OS_LOG_TYPE_DEFAULT, "%s Starting run for remote execution request", buf, 0xCu);
     }
 
-    v12 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-    [v12 startRunningShortcutWithReason:@"incoming remote execution request"];
+    stateMachine2 = [(WFOutOfProcessWorkflowController *)self stateMachine];
+    [stateMachine2 startRunningShortcutWithReason:@"incoming remote execution request"];
 
-    v13 = [(WFOutOfProcessWorkflowController *)self runningContext];
+    runningContext = [(WFOutOfProcessWorkflowController *)self runningContext];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __70__WFOutOfProcessWorkflowController_runActionWithRunRequestData_error___block_invoke;
     v18[3] = &unk_1E7AFFA28;
     v18[4] = self;
-    [v8 runActionFromRunRequestData:v6 runningContext:v13 completion:v18];
+    [v8 runActionFromRunRequestData:dataCopy runningContext:runningContext completion:v18];
 
     objc_storeStrong(&self->_runner, v8);
   }
@@ -1085,14 +1085,14 @@ void __67__WFOutOfProcessWorkflowController_resumeRunningWithRequest_error___blo
       _os_log_impl(&dword_1B1DE3000, v11, OS_LOG_TYPE_ERROR, "%s Unable to connect to BackgroundShortcutRunner: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
-    v15 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-    [v15 exitWithReason:@"unable to get runner to run remote execution request"];
+    stateMachine3 = [(WFOutOfProcessWorkflowController *)self stateMachine];
+    [stateMachine3 exitWithReason:@"unable to get runner to run remote execution request"];
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -1107,29 +1107,29 @@ void __70__WFOutOfProcessWorkflowController_runActionWithRunRequestData_error___
   [v4 finishRunningWithReason:@"remote execution finished" result:v3];
 }
 
-- (BOOL)runWorkflowWithDescriptor:(id)a3 request:(id)a4 error:(id *)a5
+- (BOOL)runWorkflowWithDescriptor:(id)descriptor request:(id)request error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"incoming run request: %@", v9];
-  [v10 handlingRequestWithReason:v11];
+  descriptorCopy = descriptor;
+  requestCopy = request;
+  stateMachine = [(WFOutOfProcessWorkflowController *)self stateMachine];
+  requestCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"incoming run request: %@", requestCopy];
+  [stateMachine handlingRequestWithReason:requestCopy];
 
-  v12 = [v9 automationType];
-  v13 = [(WFOutOfProcessWorkflowController *)self runningContext];
-  [v13 setAutomationType:v12];
+  automationType = [requestCopy automationType];
+  runningContext = [(WFOutOfProcessWorkflowController *)self runningContext];
+  [runningContext setAutomationType:automationType];
 
-  [(WFOutOfProcessWorkflowController *)self setRunRequest:v9];
-  [(WFOutOfProcessWorkflowController *)self setRunDescriptor:v8];
-  v14 = [v9 presentationMode];
-  v15 = [(WFOutOfProcessWorkflowController *)self runningContext];
-  [v15 setPresentationMode:v14];
+  [(WFOutOfProcessWorkflowController *)self setRunRequest:requestCopy];
+  [(WFOutOfProcessWorkflowController *)self setRunDescriptor:descriptorCopy];
+  presentationMode = [requestCopy presentationMode];
+  runningContext2 = [(WFOutOfProcessWorkflowController *)self runningContext];
+  [runningContext2 setPresentationMode:presentationMode];
 
   v16 = os_log_create("com.apple.shortcuts", "SystemSignpostIntervals");
-  v17 = [(WFOutOfProcessWorkflowController *)self runningContext];
-  v18 = [v17 identifier];
-  v19 = [v18 hash];
+  runningContext3 = [(WFOutOfProcessWorkflowController *)self runningContext];
+  identifier = [runningContext3 identifier];
+  v19 = [identifier hash];
 
   if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
@@ -1140,13 +1140,13 @@ void __70__WFOutOfProcessWorkflowController_runActionWithRunRequestData_error___
   v20 = getWFVoiceShortcutClientLogObject();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(WFOutOfProcessWorkflowController *)self environment];
+    environment = [(WFOutOfProcessWorkflowController *)self environment];
     *buf = 136315650;
     v35 = "[WFOutOfProcessWorkflowController runWorkflowWithDescriptor:request:error:]";
     v36 = 2114;
-    v37 = v9;
+    v37 = requestCopy;
     v38 = 2048;
-    v39 = v21;
+    v39 = environment;
     _os_log_impl(&dword_1B1DE3000, v20, OS_LOG_TYPE_DEFAULT, "%s Getting runner to run workflow with request: (%{public}@), environment (%ld)", buf, 0x20u);
   }
 
@@ -1155,17 +1155,17 @@ void __70__WFOutOfProcessWorkflowController_runActionWithRunRequestData_error___
   v23 = v33;
   if (v22)
   {
-    v24 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-    [v24 startRunningShortcutWithReason:@"run workflow"];
+    stateMachine2 = [(WFOutOfProcessWorkflowController *)self stateMachine];
+    [stateMachine2 startRunningShortcutWithReason:@"run workflow"];
 
     v25 = [MEMORY[0x1E696AD98] numberWithInteger:{-[WFOutOfProcessWorkflowController environment](self, "environment")}];
-    v26 = [(WFOutOfProcessWorkflowController *)self runningContext];
+    runningContext4 = [(WFOutOfProcessWorkflowController *)self runningContext];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __76__WFOutOfProcessWorkflowController_runWorkflowWithDescriptor_request_error___block_invoke;
     v32[3] = &unk_1E7AFFA28;
     v32[4] = self;
-    [v22 runWorkflowWithDescriptor:v8 request:v9 inEnvironment:v25 runningContext:v26 completion:v32];
+    [v22 runWorkflowWithDescriptor:descriptorCopy request:requestCopy inEnvironment:v25 runningContext:runningContext4 completion:v32];
 
     objc_storeStrong(&self->_runner, v22);
   }
@@ -1182,14 +1182,14 @@ void __70__WFOutOfProcessWorkflowController_runActionWithRunRequestData_error___
       _os_log_impl(&dword_1B1DE3000, v27, OS_LOG_TYPE_ERROR, "%s Unable to connect to BackgroundShortcutRunner: %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v28 = v23;
-      *a5 = v23;
+      *error = v23;
     }
 
-    v29 = [(WFOutOfProcessWorkflowController *)self stateMachine];
-    [v29 exitWithReason:@"unable to get runner to run workflow"];
+    stateMachine3 = [(WFOutOfProcessWorkflowController *)self stateMachine];
+    [stateMachine3 exitWithReason:@"unable to get runner to run workflow"];
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -1204,20 +1204,20 @@ void __76__WFOutOfProcessWorkflowController_runWorkflowWithDescriptor_request_er
   [v4 finishRunningWithReason:@"runner callback" result:v3];
 }
 
-- (WFOutOfProcessWorkflowController)initWithEnvironment:(int64_t)a3 runningContext:(id)a4 presentationMode:(int64_t)a5 existingConnection:(id)a6
+- (WFOutOfProcessWorkflowController)initWithEnvironment:(int64_t)environment runningContext:(id)context presentationMode:(int64_t)mode existingConnection:(id)connection
 {
-  v10 = a4;
-  v11 = a6;
+  contextCopy = context;
+  connectionCopy = connection;
   v23.receiver = self;
   v23.super_class = WFOutOfProcessWorkflowController;
   v12 = [(WFOutOfProcessWorkflowController *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    v12->_environment = a3;
-    if (v10)
+    v12->_environment = environment;
+    if (contextCopy)
     {
-      v14 = v10;
+      v14 = contextCopy;
     }
 
     else
@@ -1228,12 +1228,12 @@ void __76__WFOutOfProcessWorkflowController_runWorkflowWithDescriptor_request_er
     runningContext = v13->_runningContext;
     v13->_runningContext = v14;
 
-    v13->_presentationMode = a5;
+    v13->_presentationMode = mode;
     v16 = objc_alloc_init(WFSandboxExtensionManager);
     sandboxExtensionManager = v13->_sandboxExtensionManager;
     v13->_sandboxExtensionManager = v16;
 
-    objc_storeStrong(&v13->_serviceConnection, a6);
+    objc_storeStrong(&v13->_serviceConnection, connection);
     v13->_serviceConnectionLock._os_unfair_lock_opaque = 0;
     v18 = objc_alloc_init(WFOutOfProcessWorkflowControllerStateMachine);
     [(WFOutOfProcessWorkflowControllerStateMachine *)v18 setDelegate:v13];

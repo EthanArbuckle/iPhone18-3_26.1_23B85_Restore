@@ -1,6 +1,6 @@
 @interface PKViewController
 - (PKViewController)init;
-- (PKViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PKViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
@@ -13,10 +13,10 @@
   return [(PKViewController *)&v3 initWithNibName:0 bundle:0];
 }
 
-- (PKViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PKViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
-  result = a4;
+  nameCopy = name;
+  result = bundle;
   __break(1u);
   return result;
 }

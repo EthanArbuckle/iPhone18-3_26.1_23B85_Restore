@@ -1,17 +1,17 @@
 @interface UIPickerContentView
 - (UILabel)titleLabel;
 - (void)layoutSubviews;
-- (void)setChecked:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setChecked:(BOOL)checked;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation UIPickerContentView
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  *&self->_pickerContentViewFlags = *&self->_pickerContentViewFlags & 0xFE | a3;
+  *&self->_pickerContentViewFlags = *&self->_pickerContentViewFlags & 0xFE | checked;
   checkView = self->_checkView;
-  if (a3)
+  if (checked)
   {
     if (!checkView)
     {
@@ -21,8 +21,8 @@
       self->_checkView = v6;
 
       v8 = _UIImageWithName(@"UIPreferencesBlueCheck.png");
-      v9 = [(UIView *)self tintColor];
-      v10 = [v8 _flatImageWithColor:v9];
+      tintColor = [(UIView *)self tintColor];
+      v10 = [v8 _flatImageWithColor:tintColor];
 
       [(UIImageView *)self->_checkView setImage:v10];
       v11 = +[UIColor clearColor];
@@ -35,18 +35,18 @@
     }
 
     [(UIImageView *)checkView setHidden:0];
-    v12 = [(UIPickerContentView *)self checkedColor];
+    checkedColor = [(UIPickerContentView *)self checkedColor];
   }
 
   else
   {
     [(UIImageView *)checkView setHidden:1];
-    v12 = +[UIColor labelColor];
+    checkedColor = +[UIColor labelColor];
   }
 
-  v14 = v12;
-  v13 = [(UIPickerContentView *)self titleLabel];
-  [v13 setTextColor:v14];
+  v14 = checkedColor;
+  titleLabel = [(UIPickerContentView *)self titleLabel];
+  [titleLabel setTextColor:v14];
 }
 
 - (UILabel)titleLabel
@@ -54,8 +54,8 @@
   titleLabel = self->_titleLabel;
   if (!titleLabel)
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [v4 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    v5 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [traitCollection userInterfaceIdiom]);
 
     [(UIView *)self bounds];
     v7 = v6;
@@ -91,8 +91,8 @@
     v19 = +[UIColor clearColor];
     [(UIView *)self->_titleLabel setBackgroundColor:v19];
 
-    v20 = [(UIView *)self traitCollection];
-    v21 = [v5 nonCenterCellFontWithTraitCollection:v20];
+    traitCollection2 = [(UIView *)self traitCollection];
+    v21 = [v5 nonCenterCellFontWithTraitCollection:traitCollection2];
     [(UILabel *)self->_titleLabel setFont:v21];
 
     [(UILabel *)self->_titleLabel setHighlighted:(*&self->_pickerContentViewFlags >> 1) & 1];
@@ -114,8 +114,8 @@
   checkView = self->_checkView;
   if (checkView)
   {
-    v4 = [(UIImageView *)checkView image];
-    [v4 size];
+    image = [(UIImageView *)checkView image];
+    [image size];
     v6 = v5;
     v8 = v7;
 
@@ -142,9 +142,9 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
     v3 = 2;
   }

@@ -1,10 +1,10 @@
 @interface SBSASecureFlipBookView
-- (BOOL)transitionToState:(id)a3 completion:(id)a4;
+- (BOOL)transitionToState:(id)state completion:(id)completion;
 - (CGRect)_flipBookUserInfoFrame;
 - (CGRect)nominalFrame;
 - (NSString)state;
-- (SBSASecureFlipBookView)initWithSecureFlipBookName:(id)a3;
-- (SBSASecureFlipBookView)initWithSecureFlipBookNameAndFallbacks:(id)a3;
+- (SBSASecureFlipBookView)initWithSecureFlipBookName:(id)name;
+- (SBSASecureFlipBookView)initWithSecureFlipBookNameAndFallbacks:(id)fallbacks;
 - (double)_lastTargetTimestamp;
 - (id)_flipBookUserInfo;
 - (id)_flipBookUserInfoComponentName;
@@ -12,47 +12,47 @@
 - (id)_flipBookUserInfoSecureSequenceMap;
 - (int64_t)_flipBookUserInfoComponentCount;
 - (int64_t)_flipBookUserInfoComponentIndex;
-- (void)_tick:(id)a3;
+- (void)_tick:(id)_tick;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)willMoveToWindow:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SBSASecureFlipBookView
 
-- (SBSASecureFlipBookView)initWithSecureFlipBookName:(id)a3
+- (SBSASecureFlipBookView)initWithSecureFlipBookName:(id)name
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  nameCopy = name;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  nameCopy2 = name;
+  v6 = [v4 arrayWithObjects:&nameCopy count:1];
 
-  v7 = [(SBSASecureFlipBookView *)self initWithSecureFlipBookNameAndFallbacks:v6, v9, v10];
+  v7 = [(SBSASecureFlipBookView *)self initWithSecureFlipBookNameAndFallbacks:v6, nameCopy, v10];
   return v7;
 }
 
-- (SBSASecureFlipBookView)initWithSecureFlipBookNameAndFallbacks:(id)a3
+- (SBSASecureFlipBookView)initWithSecureFlipBookNameAndFallbacks:(id)fallbacks
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fallbacksCopy = fallbacks;
   v36.receiver = self;
   v36.super_class = SBSASecureFlipBookView;
   v5 = [(SBSASecureFlipBookView *)&v36 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v5)
   {
-    v6 = [v4 firstObject];
+    firstObject = [fallbacksCopy firstObject];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v7 = v4;
+    v7 = fallbacksCopy;
     v8 = [v7 countByEnumeratingWithState:&v32 objects:v43 count:16];
     if (v8)
     {
       v9 = v8;
-      v31 = v6;
+      v31 = firstObject;
       v10 = *v33;
       while (2)
       {
@@ -70,8 +70,8 @@
 
           if (v5->_secureFlipBookLayer)
           {
-            v15 = [v7 firstObject];
-            v16 = [v12 isEqualToString:v15];
+            firstObject2 = [v7 firstObject];
+            v16 = [v12 isEqualToString:firstObject2];
             v17 = SBLogSystemApertureSecureFlipBookElements();
             v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
             if (v16)
@@ -81,11 +81,11 @@
                 *buf = 134218242;
                 v38 = v5;
                 v39 = 2114;
-                v40 = v15;
+                v40 = firstObject2;
                 _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "[FlipBookView] <%p> Loaded flipbook named: %{public}@", buf, 0x16u);
               }
 
-              v6 = v31;
+              firstObject = v31;
             }
 
             else
@@ -95,13 +95,13 @@
                 *buf = 134218498;
                 v38 = v5;
                 v39 = 2114;
-                v40 = v15;
+                v40 = firstObject2;
                 v41 = 2114;
                 v42 = v12;
                 _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "[FlipBookView] <%p> Unable to load flipbook named: %{public}@; Loaded fallback instead: %{public}@", buf, 0x20u);
               }
 
-              v6 = v12;
+              firstObject = v12;
               v17 = v31;
             }
 
@@ -118,18 +118,18 @@
         break;
       }
 
-      v6 = v31;
+      firstObject = v31;
     }
 
 LABEL_20:
 
-    objc_storeStrong(&v5->_flipBookName, v6);
+    objc_storeStrong(&v5->_flipBookName, firstObject);
     v5->_lastTargetTimestamp = 0.0;
     v5->_lastTargetTimestampValid = 0;
     if (v5->_secureFlipBookLayer)
     {
-      v19 = [(SBSASecureFlipBookView *)v5 layer];
-      [v19 addSublayer:v5->_secureFlipBookLayer];
+      layer = [(SBSASecureFlipBookView *)v5 layer];
+      [layer addSublayer:v5->_secureFlipBookLayer];
 
       [(CASecureFlipBookLayer *)v5->_secureFlipBookLayer addObserver:v5 forKeyPath:@"currentState" options:1 context:0];
       v20 = [MEMORY[0x277CD9E48] displayLinkWithTarget:v5 selector:sel__tick_];
@@ -145,16 +145,16 @@ LABEL_20:
       [(CADisplayLink *)v22 setPreferredFrameRateRange:*&v45.minimum, *&v45.maximum, *&v45.preferred];
       [(CADisplayLink *)v5->_displayLink setHighFrameRateReason:40];
       v26 = v5->_displayLink;
-      v27 = [MEMORY[0x277CBEB88] currentRunLoop];
-      [(CADisplayLink *)v26 addToRunLoop:v27 forMode:*MEMORY[0x277CBE738]];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      [(CADisplayLink *)v26 addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
     }
 
     else
     {
-      v27 = SBLogSystemApertureSecureFlipBookElements();
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+      currentRunLoop = SBLogSystemApertureSecureFlipBookElements();
+      if (os_log_type_enabled(currentRunLoop, OS_LOG_TYPE_ERROR))
       {
-        [(SBSASecureFlipBookView *)v5 initWithSecureFlipBookNameAndFallbacks:v6, v27];
+        [(SBSASecureFlipBookView *)v5 initWithSecureFlipBookNameAndFallbacks:firstObject, currentRunLoop];
       }
     }
 
@@ -222,21 +222,21 @@ LABEL_20:
   return secureFlipBookLayer;
 }
 
-- (BOOL)transitionToState:(id)a3 completion:(id)a4
+- (BOOL)transitionToState:(id)state completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   v8 = SBLogSystemApertureSecureFlipBookElements();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(SBSASecureFlipBookView *)self componentName];
+    componentName = [(SBSASecureFlipBookView *)self componentName];
     *buf = 134218498;
-    v32 = self;
+    selfCopy5 = self;
     v33 = 2114;
-    v34 = v9;
+    v34 = componentName;
     v35 = 2114;
-    v36 = v6;
+    v36 = stateCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[FlipBookView] <%p> (%{public}@) transitionToState: %{public}@", buf, 0x20u);
   }
 
@@ -245,9 +245,9 @@ LABEL_20:
   v28[2] = __55__SBSASecureFlipBookView_transitionToState_completion___block_invoke;
   v28[3] = &unk_2783AE5A0;
   v28[4] = self;
-  v10 = v6;
+  v10 = stateCopy;
   v29 = v10;
-  v11 = v7;
+  v11 = completionCopy;
   v30 = v11;
   v12 = MEMORY[0x223D6F7F0](v28);
   secureFlipBookLayer = self->_secureFlipBookLayer;
@@ -256,11 +256,11 @@ LABEL_20:
     v19 = SBLogSystemApertureSecureFlipBookElements();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(SBSASecureFlipBookView *)self componentName];
+      componentName2 = [(SBSASecureFlipBookView *)self componentName];
       *buf = 134218242;
-      v32 = self;
+      selfCopy5 = self;
       v33 = 2114;
-      v34 = v20;
+      v34 = componentName2;
       _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "[FlipBookView] <%p> (%{public}@) Secure FlipBook Layer Unavailable", buf, 0x16u);
     }
 
@@ -279,14 +279,14 @@ LABEL_20:
     v22 = SBLogSystemApertureSecureFlipBookElements();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(SBSASecureFlipBookView *)self componentName];
-      v24 = [(CASecureFlipBookLayer *)self->_secureFlipBookLayer currentState];
+      componentName3 = [(SBSASecureFlipBookView *)self componentName];
+      currentState = [(CASecureFlipBookLayer *)self->_secureFlipBookLayer currentState];
       *buf = 134218754;
-      v32 = self;
+      selfCopy5 = self;
       v33 = 2114;
-      v34 = v23;
+      v34 = componentName3;
       v35 = 2114;
-      v36 = v24;
+      v36 = currentState;
       v37 = 2114;
       v38 = v10;
       _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_DEFAULT, "[FlipBookView] <%p> (%{public}@) unable to transition from state: %{public}@ to state: %{public}@", buf, 0x2Au);
@@ -306,11 +306,11 @@ LABEL_20:
     v22 = SBLogSystemApertureSecureFlipBookElements();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(SBSASecureFlipBookView *)self componentName];
+      componentName3 = [(SBSASecureFlipBookView *)self componentName];
       *buf = 134218498;
-      v32 = self;
+      selfCopy5 = self;
       v33 = 2114;
-      v34 = v23;
+      v34 = componentName3;
       v35 = 2114;
       v36 = v10;
       _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_DEFAULT, "[FlipBookView] <%p> (%{public}@) unexpectedly failed to transition to state: %{public}@ ", buf, 0x20u);
@@ -325,11 +325,11 @@ LABEL_20:
     v14 = SBLogSystemApertureSecureFlipBookElements();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(SBSASecureFlipBookView *)self componentName];
+      componentName4 = [(SBSASecureFlipBookView *)self componentName];
       *buf = 134218242;
-      v32 = self;
+      selfCopy5 = self;
       v33 = 2114;
-      v34 = v15;
+      v34 = componentName4;
       _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "[FlipBookView] <%p> (%{public}@) requested another transition before ticking, calling saved completion block", buf, 0x16u);
     }
 
@@ -378,11 +378,11 @@ uint64_t __55__SBSASecureFlipBookView_transitionToState_completion___block_invok
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (self->_secureFlipBookLayer == a4)
+  if (self->_secureFlipBookLayer == object)
   {
-    if ([a3 isEqualToString:@"currentState"])
+    if ([path isEqualToString:@"currentState"])
     {
       stateTransitionCompletionBlock = self->_stateTransitionCompletionBlock;
       if (stateTransitionCompletionBlock)
@@ -404,21 +404,21 @@ uint64_t __55__SBSASecureFlipBookView_transitionToState_completion___block_invok
   [(CASecureFlipBookLayer *)self->_secureFlipBookLayer setFrame:?];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  windowCopy = window;
   v5 = SBLogSystemApertureSecureFlipBookElements();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (windowCopy)
   {
     if (v6)
     {
-      v7 = [(SBSASecureFlipBookView *)self componentName];
+      componentName = [(SBSASecureFlipBookView *)self componentName];
       v11 = 134218242;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
-      v14 = v7;
+      v14 = componentName;
       v8 = "[FlipBookView] <%p> (%{public}@) moving to window";
 LABEL_6:
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, v8, &v11, 0x16u);
@@ -427,18 +427,18 @@ LABEL_6:
 
   else if (v6)
   {
-    v7 = [(SBSASecureFlipBookView *)self componentName];
+    componentName = [(SBSASecureFlipBookView *)self componentName];
     v11 = 134218242;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2114;
-    v14 = v7;
+    v14 = componentName;
     v8 = "[FlipBookView] <%p> (%{public}@) moving out of any window";
     goto LABEL_6;
   }
 
-  [(CADisplayLink *)self->_displayLink setPaused:v4 == 0];
+  [(CADisplayLink *)self->_displayLink setPaused:windowCopy == 0];
   self->_lastTargetTimestampValid = 0;
-  if (!v4)
+  if (!windowCopy)
   {
     stateTransitionCompletionBlock = self->_stateTransitionCompletionBlock;
     if (stateTransitionCompletionBlock)
@@ -450,9 +450,9 @@ LABEL_6:
   }
 }
 
-- (void)_tick:(id)a3
+- (void)_tick:(id)_tick
 {
-  [a3 targetTimestamp];
+  [_tick targetTimestamp];
   v5 = v4;
   secureFlipBookLayer = self->_secureFlipBookLayer;
   [(SBSASecureFlipBookView *)self _lastTargetTimestamp];
@@ -466,8 +466,8 @@ LABEL_6:
   v2 = *(MEMORY[0x277CBF3A0] + 16);
   v9.origin = *MEMORY[0x277CBF3A0];
   v9.size = v2;
-  v3 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
-  v4 = [v3 valueForKey:@"Component_Frame"];
+  _flipBookUserInfo = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
+  v4 = [_flipBookUserInfo valueForKey:@"Component_Frame"];
 
   CGRectMakeWithDictionaryRepresentation(v4, &v9);
   if (v4)
@@ -499,47 +499,47 @@ LABEL_6:
 
 - (int64_t)_flipBookUserInfoComponentIndex
 {
-  v3 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
-  if (v3)
+  _flipBookUserInfo = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
+  if (_flipBookUserInfo)
   {
-    v4 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
-    v5 = [v4 valueForKey:@"Component_Index"];
-    v6 = [v5 integerValue];
+    _flipBookUserInfo2 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
+    v5 = [_flipBookUserInfo2 valueForKey:@"Component_Index"];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 - (int64_t)_flipBookUserInfoComponentCount
 {
-  v3 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
-  if (v3)
+  _flipBookUserInfo = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
+  if (_flipBookUserInfo)
   {
-    v4 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
-    v5 = [v4 valueForKey:@"Component_Count"];
-    v6 = [v5 integerValue];
+    _flipBookUserInfo2 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
+    v5 = [_flipBookUserInfo2 valueForKey:@"Component_Count"];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 - (id)_flipBookUserInfoComponentName
 {
-  v3 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
-  if (v3)
+  _flipBookUserInfo = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
+  if (_flipBookUserInfo)
   {
-    v4 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
-    v5 = [v4 valueForKey:@"Component_Name"];
+    _flipBookUserInfo2 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
+    v5 = [_flipBookUserInfo2 valueForKey:@"Component_Name"];
   }
 
   else
@@ -552,11 +552,11 @@ LABEL_6:
 
 - (id)_flipBookUserInfoInitialStateName
 {
-  v3 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
-  if (v3)
+  _flipBookUserInfo = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
+  if (_flipBookUserInfo)
   {
-    v4 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
-    v5 = [v4 valueForKey:@"Initial_State"];
+    _flipBookUserInfo2 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
+    v5 = [_flipBookUserInfo2 valueForKey:@"Initial_State"];
   }
 
   else
@@ -569,34 +569,34 @@ LABEL_6:
 
 - (id)_flipBookUserInfoSecureSequenceMap
 {
-  v3 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
-  if (v3)
+  _flipBookUserInfo = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
+  if (_flipBookUserInfo)
   {
-    v4 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
-    v5 = [v4 valueForKey:@"Secure_States_Dict"];
+    _flipBookUserInfo2 = [(SBSASecureFlipBookView *)self _flipBookUserInfo];
+    dictionary = [_flipBookUserInfo2 valueForKey:@"Secure_States_Dict"];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (id)_flipBookUserInfo
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CASecureFlipBookLayer *)self->_secureFlipBookLayer userInfo];
+    userInfo = [(CASecureFlipBookLayer *)self->_secureFlipBookLayer userInfo];
   }
 
   else
   {
-    v3 = 0;
+    userInfo = 0;
   }
 
-  return v3;
+  return userInfo;
 }
 
 - (void)initWithSecureFlipBookNameAndFallbacks:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

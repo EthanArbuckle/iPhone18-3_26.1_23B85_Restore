@@ -1,19 +1,19 @@
 @interface EPDiscoverer
-- (EPDiscoverer)initWithManager:(id)a3 withDelegate:(id)a4;
+- (EPDiscoverer)initWithManager:(id)manager withDelegate:(id)delegate;
 - (NSDictionary)devices;
 - (NSMutableSet)displayableDevices;
 - (NSMutableSet)proximateDevices;
 - (id)initBase;
-- (void)collection:(id)a3 deviceDidAppear:(id)a4;
-- (void)collection:(id)a3 deviceDidBecomeDisplayable:(id)a4;
-- (void)collection:(id)a3 deviceDidBecomeProximate:(id)a4;
-- (void)collection:(id)a3 deviceDidBecomeUndisplayable:(id)a4;
-- (void)collection:(id)a3 deviceDidBecomeUnproximate:(id)a4;
-- (void)collection:(id)a3 deviceDidDisappear:(id)a4;
-- (void)collection:(id)a3 deviceDidUpdate:(id)a4;
+- (void)collection:(id)collection deviceDidAppear:(id)appear;
+- (void)collection:(id)collection deviceDidBecomeDisplayable:(id)displayable;
+- (void)collection:(id)collection deviceDidBecomeProximate:(id)proximate;
+- (void)collection:(id)collection deviceDidBecomeUndisplayable:(id)undisplayable;
+- (void)collection:(id)collection deviceDidBecomeUnproximate:(id)unproximate;
+- (void)collection:(id)collection deviceDidDisappear:(id)disappear;
+- (void)collection:(id)collection deviceDidUpdate:(id)update;
 - (void)dealloc;
-- (void)discovererBluetoothIsWorking:(id)a3;
-- (void)discovererBluetoothMayHaveFailed:(id)a3;
+- (void)discovererBluetoothIsWorking:(id)working;
+- (void)discovererBluetoothMayHaveFailed:(id)failed;
 @end
 
 @implementation EPDiscoverer
@@ -33,16 +33,16 @@
   [(EPDiscoverer *)&v3 dealloc];
 }
 
-- (EPDiscoverer)initWithManager:(id)a3 withDelegate:(id)a4
+- (EPDiscoverer)initWithManager:(id)manager withDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(EPDiscoverer *)self initBase];
-  v10 = v9;
-  if (v9)
+  managerCopy = manager;
+  delegateCopy = delegate;
+  initBase = [(EPDiscoverer *)self initBase];
+  v10 = initBase;
+  if (initBase)
   {
-    objc_storeWeak(v9 + 2, v8);
-    objc_storeStrong(&v10->_manager, a3);
+    objc_storeWeak(initBase + 2, delegateCopy);
+    objc_storeStrong(&v10->_manager, manager);
   }
 
   return v10;
@@ -50,47 +50,47 @@
 
 - (NSDictionary)devices
 {
-  v2 = [(EPDiscovererManager *)self->_manager deviceCollection];
-  v3 = [v2 devicesDictionary];
-  v4 = [v3 copy];
+  deviceCollection = [(EPDiscovererManager *)self->_manager deviceCollection];
+  devicesDictionary = [deviceCollection devicesDictionary];
+  v4 = [devicesDictionary copy];
 
   return v4;
 }
 
 - (NSMutableSet)displayableDevices
 {
-  v2 = [(EPDiscovererManager *)self->_manager deviceCollection];
-  v3 = [v2 displayableDevices];
-  v4 = [v3 copy];
+  deviceCollection = [(EPDiscovererManager *)self->_manager deviceCollection];
+  displayableDevices = [deviceCollection displayableDevices];
+  v4 = [displayableDevices copy];
 
   return v4;
 }
 
 - (NSMutableSet)proximateDevices
 {
-  v2 = [(EPDiscovererManager *)self->_manager deviceCollection];
-  v3 = [v2 proximateDevices];
-  v4 = [v3 copy];
+  deviceCollection = [(EPDiscovererManager *)self->_manager deviceCollection];
+  proximateDevices = [deviceCollection proximateDevices];
+  v4 = [proximateDevices copy];
 
   return v4;
 }
 
-- (void)collection:(id)a3 deviceDidAppear:(id)a4
+- (void)collection:(id)collection deviceDidAppear:(id)appear
 {
-  v8 = a4;
+  appearCopy = appear;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 discoverer:self deviceDidAppear:v8];
+    [v7 discoverer:self deviceDidAppear:appearCopy];
   }
 }
 
-- (void)collection:(id)a3 deviceDidBecomeDisplayable:(id)a4
+- (void)collection:(id)collection deviceDidBecomeDisplayable:(id)displayable
 {
-  v5 = a4;
+  displayableCopy = displayable;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
@@ -109,7 +109,7 @@
         v13 = NSStringFromClass(v12);
         v14 = objc_loadWeakRetained(&self->_delegate);
         v16 = 138412802;
-        v17 = v5;
+        v17 = displayableCopy;
         v18 = 2112;
         v19 = v13;
         v20 = 2048;
@@ -119,13 +119,13 @@
     }
 
     v15 = objc_loadWeakRetained(&self->_delegate);
-    [v15 discoverer:self deviceDidBecomeDisplayable:v5];
+    [v15 discoverer:self deviceDidBecomeDisplayable:displayableCopy];
   }
 }
 
-- (void)collection:(id)a3 deviceDidBecomeProximate:(id)a4
+- (void)collection:(id)collection deviceDidBecomeProximate:(id)proximate
 {
-  v5 = a4;
+  proximateCopy = proximate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
@@ -144,7 +144,7 @@
         v13 = NSStringFromClass(v12);
         v14 = objc_loadWeakRetained(&self->_delegate);
         v16 = 138412802;
-        v17 = v5;
+        v17 = proximateCopy;
         v18 = 2112;
         v19 = v13;
         v20 = 2048;
@@ -154,13 +154,13 @@
     }
 
     v15 = objc_loadWeakRetained(&self->_delegate);
-    [v15 discoverer:self deviceDidBecomeProximate:v5];
+    [v15 discoverer:self deviceDidBecomeProximate:proximateCopy];
   }
 }
 
-- (void)collection:(id)a3 deviceDidUpdate:(id)a4
+- (void)collection:(id)collection deviceDidUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
@@ -179,7 +179,7 @@
         v13 = NSStringFromClass(v12);
         v14 = objc_loadWeakRetained(&self->_delegate);
         v16 = 138412802;
-        v17 = v5;
+        v17 = updateCopy;
         v18 = 2112;
         v19 = v13;
         v20 = 2048;
@@ -189,26 +189,26 @@
     }
 
     v15 = objc_loadWeakRetained(&self->_delegate);
-    [v15 discoverer:self deviceDidUpdate:v5];
+    [v15 discoverer:self deviceDidUpdate:updateCopy];
   }
 }
 
-- (void)collection:(id)a3 deviceDidDisappear:(id)a4
+- (void)collection:(id)collection deviceDidDisappear:(id)disappear
 {
-  v8 = a4;
+  disappearCopy = disappear;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 discoverer:self deviceDidDisappear:v8];
+    [v7 discoverer:self deviceDidDisappear:disappearCopy];
   }
 }
 
-- (void)collection:(id)a3 deviceDidBecomeUndisplayable:(id)a4
+- (void)collection:(id)collection deviceDidBecomeUndisplayable:(id)undisplayable
 {
-  v5 = a4;
+  undisplayableCopy = undisplayable;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
@@ -227,7 +227,7 @@
         v13 = NSStringFromClass(v12);
         v14 = objc_loadWeakRetained(&self->_delegate);
         v16 = 138412802;
-        v17 = v5;
+        v17 = undisplayableCopy;
         v18 = 2112;
         v19 = v13;
         v20 = 2048;
@@ -237,13 +237,13 @@
     }
 
     v15 = objc_loadWeakRetained(&self->_delegate);
-    [v15 discoverer:self deviceDidBecomeUndisplayable:v5];
+    [v15 discoverer:self deviceDidBecomeUndisplayable:undisplayableCopy];
   }
 }
 
-- (void)collection:(id)a3 deviceDidBecomeUnproximate:(id)a4
+- (void)collection:(id)collection deviceDidBecomeUnproximate:(id)unproximate
 {
-  v5 = a4;
+  unproximateCopy = unproximate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
@@ -262,7 +262,7 @@
         v13 = NSStringFromClass(v12);
         v14 = objc_loadWeakRetained(&self->_delegate);
         v16 = 138412802;
-        v17 = v5;
+        v17 = unproximateCopy;
         v18 = 2112;
         v19 = v13;
         v20 = 2048;
@@ -272,11 +272,11 @@
     }
 
     v15 = objc_loadWeakRetained(&self->_delegate);
-    [v15 discoverer:self deviceDidBecomeUnproximate:v5];
+    [v15 discoverer:self deviceDidBecomeUnproximate:unproximateCopy];
   }
 }
 
-- (void)discovererBluetoothMayHaveFailed:(id)a3
+- (void)discovererBluetoothMayHaveFailed:(id)failed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -308,7 +308,7 @@
   }
 }
 
-- (void)discovererBluetoothIsWorking:(id)a3
+- (void)discovererBluetoothIsWorking:(id)working
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();

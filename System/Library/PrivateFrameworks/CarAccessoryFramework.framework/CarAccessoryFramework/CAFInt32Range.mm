@@ -2,46 +2,46 @@
 - (int)maximumValue;
 - (int)minimumValue;
 - (int)stepValue;
-- (int)valueRoundedToNearestStepValue:(int)a3;
+- (int)valueRoundedToNearestStepValue:(int)value;
 @end
 
 @implementation CAFInt32Range
 
 - (int)minimumValue
 {
-  v2 = [(CAFRange *)self minimum];
-  v3 = [v2 intValue];
+  minimum = [(CAFRange *)self minimum];
+  intValue = [minimum intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)maximumValue
 {
-  v2 = [(CAFRange *)self maximum];
-  v3 = [v2 intValue];
+  maximum = [(CAFRange *)self maximum];
+  intValue = [maximum intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)stepValue
 {
-  v2 = [(CAFRange *)self step];
-  v3 = [v2 intValue];
+  step = [(CAFRange *)self step];
+  intValue = [step intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (int)valueRoundedToNearestStepValue:(int)a3
+- (int)valueRoundedToNearestStepValue:(int)value
 {
   if ([(CAFInt32Range *)self stepValue])
   {
-    v5 = a3 - [(CAFInt32Range *)self minimumValue];
+    v5 = value - [(CAFInt32Range *)self minimumValue];
     v6 = v5 / [(CAFInt32Range *)self stepValue];
-    v7 = [(CAFInt32Range *)self minimumValue];
-    return v7 + [(CAFInt32Range *)self stepValue]* v6;
+    minimumValue = [(CAFInt32Range *)self minimumValue];
+    return minimumValue + [(CAFInt32Range *)self stepValue]* v6;
   }
 
-  return a3;
+  return value;
 }
 
 @end

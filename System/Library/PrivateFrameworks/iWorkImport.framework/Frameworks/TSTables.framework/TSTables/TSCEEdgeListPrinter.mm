@@ -1,16 +1,16 @@
 @interface TSCEEdgeListPrinter
-- (id)stringForEdgesWithLimit:(unint64_t)a3;
-- (id)stringForOwnerID:(id)a3 withLimit:(unint64_t)a4;
-- (void)addEdge:(id)a3 forOwner:(id)a4;
+- (id)stringForEdgesWithLimit:(unint64_t)limit;
+- (id)stringForOwnerID:(id)d withLimit:(unint64_t)limit;
+- (void)addEdge:(id)edge forOwner:(id)owner;
 @end
 
 @implementation TSCEEdgeListPrinter
 
-- (void)addEdge:(id)a3 forOwner:(id)a4
+- (void)addEdge:(id)edge forOwner:(id)owner
 {
-  v19 = a3;
-  v9 = a4;
-  if (v19)
+  edgeCopy = edge;
+  ownerCopy = owner;
+  if (edgeCopy)
   {
     if (!self->_edgesForOwner)
     {
@@ -19,30 +19,30 @@
       self->_edgesForOwner = v10;
     }
 
-    if (!v9)
+    if (!ownerCopy)
     {
-      v9 = &stru_2834BADA0;
+      ownerCopy = &stru_2834BADA0;
     }
 
-    v16 = objc_msgSend_objectForKey_(self->_edgesForOwner, v6, v9, v7, v8);
+    v16 = objc_msgSend_objectForKey_(self->_edgesForOwner, v6, ownerCopy, v7, v8);
     if (!v16)
     {
       v16 = objc_msgSend_array(MEMORY[0x277CBEB18], v12, v13, v14, v15);
-      objc_msgSend_setObject_forKey_(self->_edgesForOwner, v17, v16, v9, v18);
+      objc_msgSend_setObject_forKey_(self->_edgesForOwner, v17, v16, ownerCopy, v18);
     }
 
-    objc_msgSend_addObject_(v16, v12, v19, v14, v15);
+    objc_msgSend_addObject_(v16, v12, edgeCopy, v14, v15);
   }
 }
 
-- (id)stringForOwnerID:(id)a3 withLimit:(unint64_t)a4
+- (id)stringForOwnerID:(id)d withLimit:(unint64_t)limit
 {
   v53 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  dCopy = d;
   edgesForOwner = self->_edgesForOwner;
-  if (v9)
+  if (dCopy)
   {
-    objc_msgSend_objectForKey_(edgesForOwner, v6, v9, v7, v8);
+    objc_msgSend_objectForKey_(edgesForOwner, v6, dCopy, v7, v8);
   }
 
   else
@@ -63,13 +63,13 @@
   v19 = v49 = 0u;
   v47 = v11;
   v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v19, v20, &v48, v52, 16);
-  v46 = a4;
+  limitCopy = limit;
   if (v24)
   {
     v25 = 0;
     v26 = 0;
     v27 = *v49;
-    v28 = a4 - 1;
+    v28 = limit - 1;
 LABEL_7:
     v29 = 0;
     v30 = v25 + 1;
@@ -117,7 +117,7 @@ LABEL_7:
   }
 
   v11 = v47;
-  if (v9)
+  if (dCopy)
   {
     v36 = objc_msgSend_count(v47, v32, v33, v34, v35);
     if (v36 >= 2)
@@ -130,11 +130,11 @@ LABEL_7:
       v40 = @"%@::%@";
     }
 
-    if (v36 >= 2 && v46)
+    if (v36 >= 2 && limitCopy)
     {
-      if (objc_msgSend_count(v47, v37, v40, v38, v39) > v46)
+      if (objc_msgSend_count(v47, v37, v40, v38, v39) > limitCopy)
       {
-        objc_msgSend_stringWithFormat_(MEMORY[0x277CCAB68], v37, @"%@::{%@, ...}", v38, v39, v9, v26);
+        objc_msgSend_stringWithFormat_(MEMORY[0x277CCAB68], v37, @"%@::{%@, ...}", v38, v39, dCopy, v26);
         v41 = LABEL_29:;
         goto LABEL_30;
       }
@@ -142,11 +142,11 @@ LABEL_7:
       v40 = @"%@::{%@}";
     }
 
-    objc_msgSend_stringWithFormat_(MEMORY[0x277CCAB68], v37, v40, v38, v39, v9, v26);
+    objc_msgSend_stringWithFormat_(MEMORY[0x277CCAB68], v37, v40, v38, v39, dCopy, v26);
     goto LABEL_29;
   }
 
-  if (!v46 || objc_msgSend_count(v47, v32, v33, v34, v35) <= v46)
+  if (!limitCopy || objc_msgSend_count(v47, v32, v33, v34, v35) <= limitCopy)
   {
     v31 = v26;
     goto LABEL_35;
@@ -162,10 +162,10 @@ LABEL_36:
   return v31;
 }
 
-- (id)stringForEdgesWithLimit:(unint64_t)a3
+- (id)stringForEdgesWithLimit:(unint64_t)limit
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_stringForOwnerID_withLimit_(self, a2, 0, a3, v3);
+  v6 = objc_msgSend_stringForOwnerID_withLimit_(self, a2, 0, limit, v3);
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -187,7 +187,7 @@ LABEL_36:
         v16 = *(*(&v31 + 1) + 8 * i);
         if (objc_msgSend_length(v16, v9, v10, v11, v12))
         {
-          v17 = objc_msgSend_stringForOwnerID_withLimit_(self, v9, v16, a3, v12);
+          v17 = objc_msgSend_stringForOwnerID_withLimit_(self, v9, v16, limit, v12);
           if (objc_msgSend_length(v17, v18, v19, v20, v21))
           {
             if (objc_msgSend_length(v6, v22, v23, v24, v25))

@@ -1,30 +1,30 @@
 @interface ModelViewOverflowPresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_TtC23ShelfKitCollectionViews39ModelViewOverflowPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (_TtC23ShelfKitCollectionViews39ModelViewOverflowPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)containerViewWillLayoutSubviews;
-- (void)dismissTapDidChange:(id)a3;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissTapDidChange:(id)change;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)scrollPanDidChange:(id)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)scrollPanDidChange:(id)change;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ModelViewOverflowPresentationController
 
-- (_TtC23ShelfKitCollectionViews39ModelViewOverflowPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC23ShelfKitCollectionViews39ModelViewOverflowPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v5 = a3;
-  v6 = a4;
-  sub_1D8548(v5, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sub_1D8548(controllerCopy, viewController);
   return result;
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8924();
   v4 = v3;
   v6 = v5;
@@ -42,26 +42,26 @@
   return result;
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1D8C4C(v6, a4);
+  selfCopy = self;
+  sub_1D8C4C(collectionCopy, coordinator);
 
   swift_unknownObjectRelease();
 }
 
 - (void)containerViewWillLayoutSubviews
 {
-  v6 = self;
-  v2 = [(ModelViewOverflowPresentationController *)v6 containerView];
-  if (v2)
+  selfCopy = self;
+  containerView = [(ModelViewOverflowPresentationController *)selfCopy containerView];
+  if (containerView)
   {
-    v3 = v2;
-    [(ModelViewOverflowPresentationController *)v2 bounds];
-    [*(&v6->super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews39ModelViewOverflowPresentationController_overlayView) setFrame:?];
-    v4 = *(&v6->super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews39ModelViewOverflowPresentationController_presentedContainerView);
+    v3 = containerView;
+    [(ModelViewOverflowPresentationController *)containerView bounds];
+    [*(&selfCopy->super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews39ModelViewOverflowPresentationController_overlayView) setFrame:?];
+    v4 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews39ModelViewOverflowPresentationController_presentedContainerView);
     sub_1D8924();
     [v4 setFrame:?];
 
@@ -70,65 +70,65 @@
 
   else
   {
-    v5 = v6;
+    v5 = selfCopy;
   }
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D9018();
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v4 = self;
-  sub_1D94EC(a3);
+  selfCopy = self;
+  sub_1D94EC(end);
 }
 
 - (void)dismissalTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D963C();
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     [*(&self->super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews39ModelViewOverflowPresentationController_overlayView) removeFromSuperview];
   }
 }
 
-- (void)dismissTapDidChange:(id)a3
+- (void)dismissTapDidChange:(id)change
 {
-  v4 = a3;
-  v6 = self;
-  if ([v4 state] == &dword_0 + 3)
+  changeCopy = change;
+  selfCopy = self;
+  if ([changeCopy state] == &dword_0 + 3)
   {
-    v5 = [(ModelViewOverflowPresentationController *)v6 presentedViewController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    presentedViewController = [(ModelViewOverflowPresentationController *)selfCopy presentedViewController];
+    [presentedViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)scrollPanDidChange:(id)a3
+- (void)scrollPanDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D9AAC(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D9AAC(changeCopy);
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews39ModelViewOverflowPresentationController_isScrollDismissActive) == 1)
   {
-    if (a3)
+    if (scroll)
     {
-      v5 = a3;
-      v6 = self;
-      [v5 adjustedContentInset];
-      [v5 contentOffset];
-      [v5 setContentOffset:?];
+      scrollCopy = scroll;
+      selfCopy = self;
+      [scrollCopy adjustedContentInset];
+      [scrollCopy contentOffset];
+      [scrollCopy setContentOffset:?];
     }
 
     else

@@ -1,11 +1,11 @@
 @interface _CNiOSPersonMainStoreFetcher
-- (_BYTE)initWithAddressBook:(void *)a3 environment:(char)a4 shouldReturnMatchInfo:;
-- (id)executeFetchRequest:(id)a3 error:(id *)a4;
+- (_BYTE)initWithAddressBook:(void *)book environment:(char)environment shouldReturnMatchInfo:;
+- (id)executeFetchRequest:(id)request error:(id *)error;
 @end
 
 @implementation _CNiOSPersonMainStoreFetcher
 
-- (id)executeFetchRequest:(id)a3 error:(id *)a4
+- (id)executeFetchRequest:(id)request error:(id *)error
 {
   shouldReturnMatchInfo = self->_shouldReturnMatchInfo;
   if (self->_shouldReturnMatchInfo)
@@ -23,7 +23,7 @@
     v12 = 0;
   }
 
-  v7 = [CNiOSPersonFetcher peopleForFetchRequest:a3 matchInfos:v6 inAddressBook:self->_addressBook environment:self->_environment error:a4];
+  v7 = [CNiOSPersonFetcher peopleForFetchRequest:request matchInfos:v6 inAddressBook:self->_addressBook environment:self->_environment error:error];
   if (shouldReturnMatchInfo)
   {
     v8 = v12;
@@ -51,24 +51,24 @@
   return v9;
 }
 
-- (_BYTE)initWithAddressBook:(void *)a3 environment:(char)a4 shouldReturnMatchInfo:
+- (_BYTE)initWithAddressBook:(void *)book environment:(char)environment shouldReturnMatchInfo:
 {
-  v8 = a3;
-  if (a1)
+  bookCopy = book;
+  if (self)
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = _CNiOSPersonMainStoreFetcher;
     v9 = objc_msgSendSuper2(&v11, sel_init);
-    a1 = v9;
+    self = v9;
     if (v9)
     {
       *(v9 + 1) = a2;
-      objc_storeStrong(v9 + 2, a3);
-      a1[24] = a4;
+      objc_storeStrong(v9 + 2, book);
+      self[24] = environment;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

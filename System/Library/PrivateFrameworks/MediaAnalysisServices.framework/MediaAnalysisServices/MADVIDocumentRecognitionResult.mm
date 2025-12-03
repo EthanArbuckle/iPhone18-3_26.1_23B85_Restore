@@ -1,36 +1,36 @@
 @interface MADVIDocumentRecognitionResult
-- (MADVIDocumentRecognitionResult)initWithCoder:(id)a3;
-- (MADVIDocumentRecognitionResult)initWithObservations:(id)a3;
+- (MADVIDocumentRecognitionResult)initWithCoder:(id)coder;
+- (MADVIDocumentRecognitionResult)initWithObservations:(id)observations;
 - (double)executionTimeInterval;
 - (id)description;
 - (unint64_t)executionNanoseconds;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVIDocumentRecognitionResult
 
-- (MADVIDocumentRecognitionResult)initWithObservations:(id)a3
+- (MADVIDocumentRecognitionResult)initWithObservations:(id)observations
 {
-  v5 = a3;
+  observationsCopy = observations;
   v9.receiver = self;
   v9.super_class = MADVIDocumentRecognitionResult;
   v6 = [(MADResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_observations, a3);
+    objc_storeStrong(&v6->_observations, observations);
   }
 
   return v7;
 }
 
-- (MADVIDocumentRecognitionResult)initWithCoder:(id)a3
+- (MADVIDocumentRecognitionResult)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MADVIDocumentRecognitionResult;
-  v5 = [(MADResult *)&v14 initWithCoder:v4];
+  v5 = [(MADResult *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -57,7 +57,7 @@
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v10 = [v6 setWithArray:v9];
 
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"Observations"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Observations"];
     observations = v5->_observations;
     v5->_observations = v11;
   }
@@ -65,13 +65,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADVIDocumentRecognitionResult;
-  v4 = a3;
-  [(MADResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_observations forKey:{@"Observations", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MADResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_observations forKey:{@"Observations", v5.receiver, v5.super_class}];
 }
 
 - (unint64_t)executionNanoseconds
@@ -91,21 +91,21 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"observations: "];
+  [string appendFormat:@"observations: "];
   if ([(NSArray *)self->_observations count])
   {
     v6 = 0;
     do
     {
       v7 = [(NSArray *)self->_observations objectAtIndexedSubscript:v6];
-      v8 = [v7 getTranscript];
-      v9 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      v10 = [v8 componentsSeparatedByCharactersInSet:v9];
+      getTranscript = [v7 getTranscript];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      v10 = [getTranscript componentsSeparatedByCharactersInSet:newlineCharacterSet];
       v11 = [v10 componentsJoinedByString:@" "];
 
       if (v6)
@@ -119,7 +119,7 @@
       }
 
       v13 = [(NSArray *)self->_observations objectAtIndexedSubscript:v6];
-      [v3 appendFormat:@"%s%@ transcript=%@", v12, v13, v11];
+      [string appendFormat:@"%s%@ transcript=%@", v12, v13, v11];
 
       ++v6;
     }
@@ -127,9 +127,9 @@
     while (v6 < [(NSArray *)self->_observations count]);
   }
 
-  [v3 appendFormat:@">"];
+  [string appendFormat:@">"];
 
-  return v3;
+  return string;
 }
 
 @end

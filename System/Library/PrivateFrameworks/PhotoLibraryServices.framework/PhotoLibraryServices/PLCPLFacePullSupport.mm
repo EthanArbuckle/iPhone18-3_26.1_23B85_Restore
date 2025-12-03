@@ -1,108 +1,108 @@
 @interface PLCPLFacePullSupport
-+ (id)_disjointSetsByAddingSet:(id)a3 toSets:(id)a4;
-+ (void)applyFacesChangesFromAssetChange:(id)a3 toAsset:(id)a4 inSyncContext:(id)a5;
-- (BOOL)_canAssignFaceFromPerson:(id)a3 toPerson:(id)a4;
-- (PLCPLFacePullSupport)initWithSyncContext:(id)a3 asset:(id)a4;
-- (id)_applyAssetChange:(id)a3 toExistingFaces:(id)a4 withPolicy:(int64_t)a5;
-- (id)_createFaceFromFaceRef:(id)a3 algorithmVersion:(int)a4;
-- (int64_t)_policyForApplyingFaceChangesFromAssetChange:(id)a3;
-- (void)_applyDimensionAndStateFromFaceReference:(id)a3 toDetectedFace:(id)a4;
-- (void)_applyPersonFromFaceReference:(id)a3 toDetectedFace:(id)a4;
-- (void)_finalizeFace:(id)a3 withFaceRef:(id)a4 applyDimensionAndState:(BOOL)a5;
-- (void)_unlinkPersonIfVerifiedFromFace:(id)a3;
-- (void)applyFacesChangesFromAssetChange:(id)a3;
++ (id)_disjointSetsByAddingSet:(id)set toSets:(id)sets;
++ (void)applyFacesChangesFromAssetChange:(id)change toAsset:(id)asset inSyncContext:(id)context;
+- (BOOL)_canAssignFaceFromPerson:(id)person toPerson:(id)toPerson;
+- (PLCPLFacePullSupport)initWithSyncContext:(id)context asset:(id)asset;
+- (id)_applyAssetChange:(id)change toExistingFaces:(id)faces withPolicy:(int64_t)policy;
+- (id)_createFaceFromFaceRef:(id)ref algorithmVersion:(int)version;
+- (int64_t)_policyForApplyingFaceChangesFromAssetChange:(id)change;
+- (void)_applyDimensionAndStateFromFaceReference:(id)reference toDetectedFace:(id)face;
+- (void)_applyPersonFromFaceReference:(id)reference toDetectedFace:(id)face;
+- (void)_finalizeFace:(id)face withFaceRef:(id)ref applyDimensionAndState:(BOOL)state;
+- (void)_unlinkPersonIfVerifiedFromFace:(id)face;
+- (void)applyFacesChangesFromAssetChange:(id)change;
 - (void)dealloc;
 @end
 
 @implementation PLCPLFacePullSupport
 
-+ (void)applyFacesChangesFromAssetChange:(id)a3 toAsset:(id)a4 inSyncContext:(id)a5
++ (void)applyFacesChangesFromAssetChange:(id)change toAsset:(id)asset inSyncContext:(id)context
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = a5;
+  changeCopy = change;
+  assetCopy = asset;
+  contextCopy = context;
   v9 = objc_autoreleasePoolPush();
-  v10 = [[PLCPLFacePullSupport alloc] initWithSyncContext:v8 asset:v7];
-  [(PLCPLFacePullSupport *)v10 applyFacesChangesFromAssetChange:v11];
+  v10 = [[PLCPLFacePullSupport alloc] initWithSyncContext:contextCopy asset:assetCopy];
+  [(PLCPLFacePullSupport *)v10 applyFacesChangesFromAssetChange:changeCopy];
 
   objc_autoreleasePoolPop(v9);
 }
 
-- (void)_applyPersonFromFaceReference:(id)a3 toDetectedFace:(id)a4
+- (void)_applyPersonFromFaceReference:(id)reference toDetectedFace:(id)face
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v48 = v6;
-  v8 = [v6 personIdentifier];
-  v45 = v8;
-  v47 = v7;
-  if (v8)
+  referenceCopy = reference;
+  faceCopy = face;
+  v48 = referenceCopy;
+  personIdentifier = [referenceCopy personIdentifier];
+  v45 = personIdentifier;
+  v47 = faceCopy;
+  if (personIdentifier)
   {
-    v9 = [(PLSyncContext *)self->_syncContext personForUUID:v8, v8];
-    v10 = self;
+    v9 = [(PLSyncContext *)self->_syncContext personForUUID:personIdentifier, personIdentifier];
+    selfCopy2 = self;
     if (v9)
     {
-      v11 = [v7 personForFace];
-      if ([(PLCPLFacePullSupport *)self _canAssignFaceFromPerson:v11 toPerson:v9])
+      personForFace = [faceCopy personForFace];
+      if ([(PLCPLFacePullSupport *)self _canAssignFaceFromPerson:personForFace toPerson:v9])
       {
         if ((*MEMORY[0x1E6994D48] & 1) == 0)
         {
           v12 = __CPLAssetsdOSLogDomain();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [v48 pointerDescription];
-            v14 = [v9 syncDescription];
+            pointerDescription = [v48 pointerDescription];
+            syncDescription = [v9 syncDescription];
             *buf = 138412546;
-            v55 = v13;
+            v55 = pointerDescription;
             v56 = 2112;
-            v57 = v14;
+            v57 = syncDescription;
             _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "Applying faceRef %@ for %@", buf, 0x16u);
           }
         }
 
-        v15 = [v48 nameSource];
-        [v7 setCloudNameSource:v15];
-        if (v15 >= 7)
+        nameSource = [v48 nameSource];
+        [faceCopy setCloudNameSource:nameSource];
+        if (nameSource >= 7)
         {
           if ((*MEMORY[0x1E6994D48] & 1) == 0)
           {
             v16 = __CPLAssetsdOSLogDomain();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
-              v17 = [v48 pointerDescription];
+              pointerDescription2 = [v48 pointerDescription];
               *buf = 138412546;
-              v55 = v17;
+              v55 = pointerDescription2;
               v56 = 1024;
-              LODWORD(v57) = v15;
+              LODWORD(v57) = nameSource;
               _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "%@ has unsupported name source %d, defaulting to not-set", buf, 0x12u);
             }
           }
 
-          v15 = 0;
+          nameSource = 0;
         }
 
-        [v7 setNameSource:v15];
+        [faceCopy setNameSource:nameSource];
         if ([v48 isKeyFace])
         {
-          if (PLNameSourceIsSyncable([v7 nameSource]))
+          if (PLNameSourceIsSyncable([faceCopy nameSource]))
           {
             if ((*MEMORY[0x1E6994D48] & 1) == 0)
             {
               v18 = __CPLAssetsdOSLogDomain();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
               {
-                v19 = [v7 pointerDescription];
-                v20 = [v9 pointerDescription];
+                pointerDescription3 = [faceCopy pointerDescription];
+                pointerDescription4 = [v9 pointerDescription];
                 *buf = 138412546;
-                v55 = v19;
+                v55 = pointerDescription3;
                 v56 = 2112;
-                v57 = v20;
+                v57 = pointerDescription4;
                 _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Setting keyFace %@ to person %@", buf, 0x16u);
               }
             }
 
-            [v7 setPersonBeingKeyFace:v9];
+            [faceCopy setPersonBeingKeyFace:v9];
             [v9 setKeyFaceToPicked];
           }
 
@@ -118,11 +118,11 @@
           }
         }
 
-        [v7 setAssociatedPerson:v9];
+        [faceCopy setAssociatedPerson:v9];
         if ([MEMORY[0x1E6994B38] serverSupportsDetectionType])
         {
-          v28 = [v48 detectionType];
-          if (!v28)
+          detectionType = [v48 detectionType];
+          if (!detectionType)
           {
             if ((*MEMORY[0x1E6994D48] & 1) == 0)
             {
@@ -135,10 +135,10 @@
               }
             }
 
-            v28 = 1;
+            detectionType = 1;
           }
 
-          [v7 setDetectionType:v28];
+          [faceCopy setDetectionType:detectionType];
         }
       }
 
@@ -147,12 +147,12 @@
         v24 = __CPLAssetsdOSLogDomain();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v48 pointerDescription];
-          v26 = [v9 syncDescription];
+          pointerDescription5 = [v48 pointerDescription];
+          syncDescription2 = [v9 syncDescription];
           *buf = 138412546;
-          v55 = v25;
+          v55 = pointerDescription5;
           v56 = 2112;
-          v57 = v26;
+          v57 = syncDescription2;
           _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEFAULT, "Unable to assign faceRef %@ to person %@", buf, 0x16u);
         }
       }
@@ -171,36 +171,36 @@
         }
       }
 
-      [(PLCPLFacePullSupport *)self _unlinkPersonIfVerifiedFromFace:v7];
+      [(PLCPLFacePullSupport *)self _unlinkPersonIfVerifiedFromFace:faceCopy];
     }
   }
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
       v21 = __CPLAssetsdOSLogDomain();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v48 pointerDescription];
+        pointerDescription6 = [v48 pointerDescription];
         *buf = 138412290;
-        v55 = v22;
+        v55 = pointerDescription6;
         _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "faceRef %@ has no person", buf, 0xCu);
       }
     }
 
-    [(PLCPLFacePullSupport *)v10 _unlinkPersonIfVerifiedFromFace:v7, v45];
+    [(PLCPLFacePullSupport *)selfCopy2 _unlinkPersonIfVerifiedFromFace:faceCopy, v45];
   }
 
   v30 = MEMORY[0x1E6994D48];
-  v31 = [v48 rejectedPersonIdentifiers];
-  v32 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v31, "count")}];
+  rejectedPersonIdentifiers = [v48 rejectedPersonIdentifiers];
+  v32 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(rejectedPersonIdentifiers, "count")}];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v33 = v31;
+  v33 = rejectedPersonIdentifiers;
   v34 = [v33 countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v34)
   {
@@ -216,7 +216,7 @@
         }
 
         v38 = *(*(&v49 + 1) + 8 * i);
-        v39 = [(PLSyncContext *)v10->_syncContext personForUUID:v38];
+        v39 = [(PLSyncContext *)selfCopy2->_syncContext personForUUID:v38];
         if (v39)
         {
           if ((*v30 & 1) == 0)
@@ -224,16 +224,16 @@
             v40 = __CPLAssetsdOSLogDomain();
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
             {
-              v41 = [v39 syncDescription];
+              syncDescription3 = [v39 syncDescription];
               [v48 pointerDescription];
-              v43 = v42 = v10;
+              v43 = v42 = selfCopy2;
               *buf = 138412546;
-              v55 = v41;
+              v55 = syncDescription3;
               v56 = 2112;
               v57 = v43;
               _os_log_impl(&dword_19BF1F000, v40, OS_LOG_TYPE_DEFAULT, "Adding rejectedPerson %@ for faceRef %@", buf, 0x16u);
 
-              v10 = v42;
+              selfCopy2 = v42;
               v30 = MEMORY[0x1E6994D48];
             }
           }
@@ -264,33 +264,33 @@
   [v47 setRejectedPersons:v32];
 }
 
-- (BOOL)_canAssignFaceFromPerson:(id)a3 toPerson:(id)a4
+- (BOOL)_canAssignFaceFromPerson:(id)person toPerson:(id)toPerson
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 personUUID];
-  v9 = [v7 personUUID];
-  v10 = [v8 isEqualToString:v9];
+  personCopy = person;
+  toPersonCopy = toPerson;
+  personUUID = [personCopy personUUID];
+  personUUID2 = [toPersonCopy personUUID];
+  v10 = [personUUID isEqualToString:personUUID2];
 
   if ((v10 & 1) == 0)
   {
-    if ([v7 graphVerified])
+    if ([toPersonCopy graphVerified])
     {
       syncContext = self->_syncContext;
-      v12 = [v6 personUUID];
-      LOBYTE(syncContext) = [(PLSyncContext *)syncContext personUUIDIsDeleted:v12];
+      personUUID3 = [personCopy personUUID];
+      LOBYTE(syncContext) = [(PLSyncContext *)syncContext personUUIDIsDeleted:personUUID3];
 
       if ((syncContext & 1) == 0)
       {
-        if ([v6 userVerified])
+        if ([personCopy userVerified])
         {
           LOBYTE(v13) = 0;
           goto LABEL_5;
         }
 
-        if ([v6 graphVerified])
+        if ([personCopy graphVerified])
         {
-          v13 = ![PLPerson person:v6 isBetterMergeTargetThanPerson:v7];
+          v13 = ![PLPerson person:personCopy isBetterMergeTargetThanPerson:toPersonCopy];
           goto LABEL_5;
         }
       }
@@ -303,111 +303,111 @@ LABEL_5:
   return v13;
 }
 
-- (void)_unlinkPersonIfVerifiedFromFace:(id)a3
+- (void)_unlinkPersonIfVerifiedFromFace:(id)face
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 personForFace];
-  v5 = v4;
-  if (v4 && (([v4 userVerified] & 1) != 0 || objc_msgSend(v5, "graphVerified")))
+  faceCopy = face;
+  personForFace = [faceCopy personForFace];
+  v5 = personForFace;
+  if (personForFace && (([personForFace userVerified] & 1) != 0 || objc_msgSend(v5, "graphVerified")))
   {
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
       v6 = __CPLAssetsdOSLogDomain();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v3 pointerDescription];
-        v8 = [v3 personForFace];
-        v9 = [v8 syncDescription];
+        pointerDescription = [faceCopy pointerDescription];
+        personForFace2 = [faceCopy personForFace];
+        syncDescription = [personForFace2 syncDescription];
         v10 = 138412546;
-        v11 = v7;
+        v11 = pointerDescription;
         v12 = 2112;
-        v13 = v9;
+        v13 = syncDescription;
         _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Unlinking face %@ from person %@", &v10, 0x16u);
       }
     }
 
-    [v3 setPersonBeingKeyFace:0];
-    [v3 setAssociatedPerson:0];
+    [faceCopy setPersonBeingKeyFace:0];
+    [faceCopy setAssociatedPerson:0];
   }
 }
 
-- (void)_applyDimensionAndStateFromFaceReference:(id)a3 toDetectedFace:(id)a4
+- (void)_applyDimensionAndStateFromFaceReference:(id)reference toDetectedFace:(id)face
 {
-  v8 = a4;
-  v5 = a3;
-  [v5 centerX];
-  [v8 setCenterX:?];
-  [v5 centerY];
-  [v8 setCenterY:?];
-  [v5 size];
-  [v8 setSize:?];
-  [v8 setManual:{objc_msgSend(v5, "isManual")}];
-  [v5 bodyCenterX];
-  [v8 setBodyCenterX:?];
-  [v5 bodyCenterY];
-  [v8 setBodyCenterY:?];
-  [v5 bodyWidth];
-  [v8 setBodyWidth:?];
-  [v5 bodyHeight];
+  faceCopy = face;
+  referenceCopy = reference;
+  [referenceCopy centerX];
+  [faceCopy setCenterX:?];
+  [referenceCopy centerY];
+  [faceCopy setCenterY:?];
+  [referenceCopy size];
+  [faceCopy setSize:?];
+  [faceCopy setManual:{objc_msgSend(referenceCopy, "isManual")}];
+  [referenceCopy bodyCenterX];
+  [faceCopy setBodyCenterX:?];
+  [referenceCopy bodyCenterY];
+  [faceCopy setBodyCenterY:?];
+  [referenceCopy bodyWidth];
+  [faceCopy setBodyWidth:?];
+  [referenceCopy bodyHeight];
   v7 = v6;
 
-  [v8 setBodyHeight:v7];
+  [faceCopy setBodyHeight:v7];
 }
 
-- (void)_finalizeFace:(id)a3 withFaceRef:(id)a4 applyDimensionAndState:(BOOL)a5
+- (void)_finalizeFace:(id)face withFaceRef:(id)ref applyDimensionAndState:(BOOL)state
 {
-  v5 = a5;
-  v9 = a3;
-  v8 = a4;
-  if (v5)
+  stateCopy = state;
+  faceCopy = face;
+  refCopy = ref;
+  if (stateCopy)
   {
-    [(PLCPLFacePullSupport *)self _applyDimensionAndStateFromFaceReference:v8 toDetectedFace:v9];
+    [(PLCPLFacePullSupport *)self _applyDimensionAndStateFromFaceReference:refCopy toDetectedFace:faceCopy];
   }
 
-  [(PLCPLFacePullSupport *)self _applyPersonFromFaceReference:v8 toDetectedFace:v9];
-  [v9 setCloudLocalState:1];
-  [v9 setSourceWidth:{-[PLSyncableAsset width](self->_currentAsset, "width")}];
-  [v9 setSourceHeight:{-[PLSyncableAsset height](self->_currentAsset, "height")}];
+  [(PLCPLFacePullSupport *)self _applyPersonFromFaceReference:refCopy toDetectedFace:faceCopy];
+  [faceCopy setCloudLocalState:1];
+  [faceCopy setSourceWidth:{-[PLSyncableAsset width](self->_currentAsset, "width")}];
+  [faceCopy setSourceHeight:{-[PLSyncableAsset height](self->_currentAsset, "height")}];
 }
 
-- (id)_createFaceFromFaceRef:(id)a3 algorithmVersion:(int)a4
+- (id)_createFaceFromFaceRef:(id)ref algorithmVersion:(int)version
 {
-  v4 = *&a4;
+  v4 = *&version;
   syncContext = self->_syncContext;
-  v7 = a3;
-  v8 = [(PLSyncContext *)syncContext makeFace];
-  [(PLCPLFacePullSupport *)self _finalizeFace:v8 withFaceRef:v7 applyDimensionAndState:1];
+  refCopy = ref;
+  makeFace = [(PLSyncContext *)syncContext makeFace];
+  [(PLCPLFacePullSupport *)self _finalizeFace:makeFace withFaceRef:refCopy applyDimensionAndState:1];
 
-  [v8 setFaceAlgorithmVersion:v4];
+  [makeFace setFaceAlgorithmVersion:v4];
 
-  return v8;
+  return makeFace;
 }
 
-- (id)_applyAssetChange:(id)a3 toExistingFaces:(id)a4 withPolicy:(int64_t)a5
+- (id)_applyAssetChange:(id)change toExistingFaces:(id)faces withPolicy:(int64_t)policy
 {
   v80 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v70 = a4;
+  changeCopy = change;
+  facesCopy = faces;
   [MEMORY[0x1E695DFA8] set];
-  v68 = v67 = a5;
-  if (!a5)
+  v68 = v67 = policy;
+  if (!policy)
   {
     v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"manual == NO"];
-    v10 = [v70 filteredSetUsingPredicate:v9];
+    v10 = [facesCopy filteredSetUsingPredicate:v9];
 
     [v68 unionSet:v10];
   }
 
-  v66 = v8;
-  v11 = [v8 faces];
-  v12 = [v11 faces];
+  v66 = changeCopy;
+  faces = [changeCopy faces];
+  v11Faces = [faces faces];
 
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = v12;
+  obj = v11Faces;
   v13 = [obj countByEnumeratingWithState:&v71 objects:v79 count:16];
   if (v13)
   {
@@ -425,8 +425,8 @@ LABEL_5:
 
         v17 = *(*(&v71 + 1) + 8 * v16);
         v18 = [PLFaceDimension alloc];
-        v19 = [(PLSyncableAsset *)self->_currentAsset width];
-        v20 = [(PLSyncableAsset *)self->_currentAsset height];
+        width = [(PLSyncableAsset *)self->_currentAsset width];
+        height = [(PLSyncableAsset *)self->_currentAsset height];
         [v17 centerX];
         v22 = v21;
         [v17 centerY];
@@ -440,10 +440,10 @@ LABEL_5:
         [v17 bodyWidth];
         v32 = v31;
         [v17 bodyHeight];
-        v34 = [(PLFaceDimension *)v18 initWithSourceWidth:v19 sourceHeight:v20 centerX:v22 centerY:v24 size:v26 bodyCenterX:v28 bodyCenterY:v30 bodyWidth:v32 bodyHeight:v33];
+        v34 = [(PLFaceDimension *)v18 initWithSourceWidth:width sourceHeight:height centerX:v22 centerY:v24 size:v26 bodyCenterX:v28 bodyCenterY:v30 bodyWidth:v32 bodyHeight:v33];
         if ([v17 isManual])
         {
-          v35 = [PLDetectedFace findExistingFaceMatchingDimension:v34 inFaces:v70 ignoreSourceAssetDimensions:1];
+          v35 = [PLDetectedFace findExistingFaceMatchingDimension:v34 inFaces:facesCopy ignoreSourceAssetDimensions:1];
           if (v35)
           {
             v36 = v35;
@@ -454,16 +454,16 @@ LABEL_5:
                 v37 = __CPLAssetsdOSLogDomain();
                 if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
                 {
-                  v38 = [v36 syncDescription];
+                  syncDescription = [v36 syncDescription];
                   *buf = 138412546;
-                  v76 = v38;
+                  v76 = syncDescription;
                   v77 = 2112;
                   v78 = v17;
                   _os_log_impl(&dword_19BF1F000, v37, OS_LOG_TYPE_DEFAULT, "Updating manual face %@ with %@", buf, 0x16u);
                 }
               }
 
-              v39 = self;
+              selfCopy2 = self;
               v40 = v36;
               v41 = v17;
               v42 = 1;
@@ -481,9 +481,9 @@ LABEL_5:
                     v52 = __CPLAssetsdOSLogDomain();
                     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
                     {
-                      v53 = [v48 syncDescription];
+                      syncDescription2 = [v48 syncDescription];
                       *buf = 138412546;
-                      v76 = v53;
+                      v76 = syncDescription2;
                       v77 = 2112;
                       v78 = v17;
                       _os_log_impl(&dword_19BF1F000, v52, OS_LOG_TYPE_DEFAULT, "Made a new manual face %@ with %@", buf, 0x16u);
@@ -501,22 +501,22 @@ LABEL_5:
                 v54 = __CPLAssetsdOSLogDomain();
                 if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
                 {
-                  v55 = [v36 syncDescription];
+                  syncDescription3 = [v36 syncDescription];
                   *buf = 138412546;
-                  v76 = v55;
+                  v76 = syncDescription3;
                   v77 = 2112;
                   v78 = v17;
                   _os_log_impl(&dword_19BF1F000, v54, OS_LOG_TYPE_DEFAULT, "Found existing face %@ matching %@", buf, 0x16u);
                 }
               }
 
-              v39 = self;
+              selfCopy2 = self;
               v40 = v36;
               v41 = v17;
               v42 = 0;
             }
 
-            [(PLCPLFacePullSupport *)v39 _finalizeFace:v40 withFaceRef:v41 applyDimensionAndState:v42];
+            [(PLCPLFacePullSupport *)selfCopy2 _finalizeFace:v40 withFaceRef:v41 applyDimensionAndState:v42];
             v56 = v36;
             goto LABEL_48;
           }
@@ -527,9 +527,9 @@ LABEL_5:
             v50 = __CPLAssetsdOSLogDomain();
             if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
             {
-              v51 = [v48 syncDescription];
+              syncDescription4 = [v48 syncDescription];
               *buf = 138412546;
-              v76 = v51;
+              v76 = syncDescription4;
               v77 = 2112;
               v78 = v17;
               _os_log_impl(&dword_19BF1F000, v50, OS_LOG_TYPE_DEFAULT, "Made a new manual face %@ with %@", buf, 0x16u);
@@ -553,7 +553,7 @@ LABEL_35:
           v45 = 0;
         }
 
-        v46 = [v43 isTorsoOnly];
+        isTorsoOnly = [v43 isTorsoOnly];
         if (([v43 hasNameSource] & 1) == 0)
         {
 
@@ -576,14 +576,14 @@ LABEL_28:
 
         IsSyncable = PLNameSourceIsSyncable([v43 nameSource]);
 
-        if (((v45 | v46) & 1) == 0 || !IsSyncable)
+        if (((v45 | isTorsoOnly) & 1) == 0 || !IsSyncable)
         {
           goto LABEL_28;
         }
 
         if (!v67)
         {
-          v57 = [PLDetectedFace findExistingFaceMatchingDimension:v34 inFaces:v70 ignoreSourceAssetDimensions:1];
+          v57 = [PLDetectedFace findExistingFaceMatchingDimension:v34 inFaces:facesCopy ignoreSourceAssetDimensions:1];
           if (v57)
           {
             v58 = v57;
@@ -592,9 +592,9 @@ LABEL_28:
               v59 = __CPLAssetsdOSLogDomain();
               if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
               {
-                v60 = [v58 syncDescription];
+                syncDescription5 = [v58 syncDescription];
                 *buf = 138412546;
-                v76 = v60;
+                v76 = syncDescription5;
                 v77 = 2112;
                 v78 = v43;
                 _os_log_impl(&dword_19BF1F000, v59, OS_LOG_TYPE_DEFAULT, "Found existing face %@ matching %@", buf, 0x16u);
@@ -634,9 +634,9 @@ LABEL_61:
             v62 = __CPLAssetsdOSLogDomain();
             if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
             {
-              v63 = [v48 syncDescription];
+              syncDescription6 = [v48 syncDescription];
               *buf = 138412546;
-              v76 = v63;
+              v76 = syncDescription6;
               v77 = 2112;
               v78 = v43;
               _os_log_impl(&dword_19BF1F000, v62, OS_LOG_TYPE_DEFAULT, "Made a new detected face %@ with %@", buf, 0x16u);
@@ -660,9 +660,9 @@ LABEL_61:
         v36 = __CPLAssetsdOSLogDomain();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
-          v49 = [v48 syncDescription];
+          syncDescription7 = [v48 syncDescription];
           *buf = 138412546;
-          v76 = v49;
+          v76 = syncDescription7;
           v77 = 2112;
           v78 = v43;
           _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_DEFAULT, "Made a new detected face %@ with %@", buf, 0x16u);
@@ -694,24 +694,24 @@ LABEL_66:
   return v68;
 }
 
-- (int64_t)_policyForApplyingFaceChangesFromAssetChange:(id)a3
+- (int64_t)_policyForApplyingFaceChangesFromAssetChange:(id)change
 {
-  v4 = [a3 facesAdjustmentsFingerprint];
-  v5 = v4;
-  if (v4)
+  facesAdjustmentsFingerprint = [change facesAdjustmentsFingerprint];
+  v5 = facesAdjustmentsFingerprint;
+  if (facesAdjustmentsFingerprint)
   {
-    v6 = [v4 isEqualToString:*MEMORY[0x1E6994948]];
+    v6 = [facesAdjustmentsFingerprint isEqualToString:*MEMORY[0x1E6994948]];
     syncContext = self->_syncContext;
-    v8 = [(PLSyncableAsset *)self->_currentAsset cloudIdentifier];
-    v9 = [(PLSyncContext *)syncContext assetAdjustmentStateForCloudIdentifier:v8];
+    cloudIdentifier = [(PLSyncableAsset *)self->_currentAsset cloudIdentifier];
+    v9 = [(PLSyncContext *)syncContext assetAdjustmentStateForCloudIdentifier:cloudIdentifier];
 
     v10 = [v9 objectForKey:@"PLCPLAssetHasAdjustmentsKey"];
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
 
     v12 = [v9 objectForKey:@"PLCPLAssetAdjustmentFingerprintKey"];
     if (v6)
     {
-      v13 = v11 == 0;
+      v13 = bOOLValue == 0;
     }
 
     else
@@ -719,7 +719,7 @@ LABEL_66:
       v13 = 0;
     }
 
-    v14 = !v13 && (v6 == v11 || ([v5 isEqualToString:v12] & 1) == 0);
+    v14 = !v13 && (v6 == bOOLValue || ([v5 isEqualToString:v12] & 1) == 0);
   }
 
   else
@@ -730,24 +730,24 @@ LABEL_66:
   return v14;
 }
 
-- (void)applyFacesChangesFromAssetChange:(id)a3
+- (void)applyFacesChangesFromAssetChange:(id)change
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if ([(PLSyncContext *)self->_syncContext serverSupportsVision])
   {
-    v5 = [(PLCPLFacePullSupport *)self _policyForApplyingFaceChangesFromAssetChange:v4];
-    v6 = [(PLSyncableAsset *)self->_currentAsset detectedFaces];
+    v5 = [(PLCPLFacePullSupport *)self _policyForApplyingFaceChangesFromAssetChange:changeCopy];
+    detectedFaces = [(PLSyncableAsset *)self->_currentAsset detectedFaces];
     v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"isTrainingFace == YES"];
-    v8 = [v6 filteredSetUsingPredicate:v7];
+    v8 = [detectedFaces filteredSetUsingPredicate:v7];
 
     v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"isTrainingFace == NO"];
-    v30 = v6;
-    v10 = [v6 filteredSetUsingPredicate:v9];
+    v30 = detectedFaces;
+    v10 = [detectedFaces filteredSetUsingPredicate:v9];
 
-    v11 = [v4 faces];
-    v12 = [v11 faces];
-    v13 = [v12 count];
+    faces = [changeCopy faces];
+    v11Faces = [faces faces];
+    v13 = [v11Faces count];
 
     v14 = [v10 count];
     v15 = v14;
@@ -771,7 +771,7 @@ LABEL_66:
         v35 = 2048;
         v36 = v15;
         v37 = 2112;
-        v38 = v4;
+        v38 = changeCopy;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Applying face changes with policy %@ on %lu cloud faces, %lu local faces for asset change %@", buf, 0x2Au);
 
         v16 = MEMORY[0x1E6994D48];
@@ -780,7 +780,7 @@ LABEL_66:
 
     v20 = [MEMORY[0x1E695DFA8] set];
     [v20 unionSet:v8];
-    v21 = [(PLCPLFacePullSupport *)self _applyAssetChange:v4 toExistingFaces:v10 withPolicy:v5];
+    v21 = [(PLCPLFacePullSupport *)self _applyAssetChange:changeCopy toExistingFaces:v10 withPolicy:v5];
     [v20 unionSet:v21];
     if ([v21 count] && (*v16 & 1) == 0)
     {
@@ -796,8 +796,8 @@ LABEL_66:
 
     v24 = v8;
     v25 = v16;
-    v26 = [(PLSyncableAsset *)self->_currentAsset detectedFaces];
-    v27 = [v26 mutableCopy];
+    detectedFaces2 = [(PLSyncableAsset *)self->_currentAsset detectedFaces];
+    v27 = [detectedFaces2 mutableCopy];
 
     [v27 minusSet:v20];
     if ([v27 count])
@@ -838,36 +838,36 @@ LABEL_66:
   [(PLCPLFacePullSupport *)&v5 dealloc];
 }
 
-- (PLCPLFacePullSupport)initWithSyncContext:(id)a3 asset:(id)a4
+- (PLCPLFacePullSupport)initWithSyncContext:(id)context asset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  assetCopy = asset;
   v13.receiver = self;
   v13.super_class = PLCPLFacePullSupport;
   v9 = [(PLCPLFacePullSupport *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_syncContext, a3);
-    objc_storeStrong(&v10->_currentAsset, a4);
+    objc_storeStrong(&v9->_syncContext, context);
+    objc_storeStrong(&v10->_currentAsset, asset);
     v11 = v10;
   }
 
   return v10;
 }
 
-+ (id)_disjointSetsByAddingSet:(id)a3 toSets:(id)a4
++ (id)_disjointSetsByAddingSet:(id)set toSets:(id)sets
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  setCopy = set;
+  setsCopy = sets;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [MEMORY[0x1E695DFA8] setWithSet:v5];
+  v8 = [MEMORY[0x1E695DFA8] setWithSet:setCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = setsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {

@@ -1,30 +1,30 @@
 @interface MTPodcastCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (void)prepareForReuse;
 @end
 
 @implementation MTPodcastCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTPodcastCollectionViewCell" isKindOfClass:@"UICollectionReusableView"];
-  [v3 validateClass:@"UICollectionReusableView" hasInstanceMethod:@"prepareForReuse" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MTDB" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTDB" hasInstanceMethod:@"mainOrPrivateContext" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTPodcastCollectionViewCell" hasInstanceMethod:@"podcastUUID" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTPodcastCollectionViewCell" isKindOfClass:@"UICollectionReusableView"];
+  [validationsCopy validateClass:@"UICollectionReusableView" hasInstanceMethod:@"prepareForReuse" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MTDB" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTDB" hasInstanceMethod:@"mainOrPrivateContext" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTPodcastCollectionViewCell" hasInstanceMethod:@"podcastUUID" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v15.receiver = self;
   v15.super_class = MTPodcastCollectionViewCellAccessibility;
-  v3 = [(MTPodcastCollectionViewCellAccessibility *)&v15 accessibilityLabel];
-  v4 = v3;
-  if (v3)
+  accessibilityLabel = [(MTPodcastCollectionViewCellAccessibility *)&v15 accessibilityLabel];
+  v4 = accessibilityLabel;
+  if (accessibilityLabel)
   {
-    v5 = v3;
+    v5 = accessibilityLabel;
   }
 
   else
@@ -36,7 +36,7 @@
     v13 = __Block_byref_object_dispose_;
     v14 = 0;
     AXPerformSafeBlock();
-    v6 = [v10[5] firstObject];
+    firstObject = [v10[5] firstObject];
     v7 = __UIAccessibilitySafeClass();
 
     v5 = [v7 safeValueForKey:@"title"];

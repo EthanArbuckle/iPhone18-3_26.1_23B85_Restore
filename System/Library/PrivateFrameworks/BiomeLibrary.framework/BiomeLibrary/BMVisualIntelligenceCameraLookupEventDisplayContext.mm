@@ -1,39 +1,39 @@
 @interface BMVisualIntelligenceCameraLookupEventDisplayContext
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMVisualIntelligenceCameraLookupEventDisplayContext)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMVisualIntelligenceCameraLookupEventDisplayContext)initWithVisualLookupSessionId:(id)a3 pillSessionId:(id)a4 visualComponents:(id)a5 totalResultsShown:(id)a6 started:(int)a7 ended:(int)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMVisualIntelligenceCameraLookupEventDisplayContext)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMVisualIntelligenceCameraLookupEventDisplayContext)initWithVisualLookupSessionId:(id)id pillSessionId:(id)sessionId visualComponents:(id)components totalResultsShown:(id)shown started:(int)started ended:(int)ended;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_visualComponentsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMVisualIntelligenceCameraLookupEventDisplayContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualLookupSessionId];
-    v7 = [v5 visualLookupSessionId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    visualLookupSessionId = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualLookupSessionId];
+    visualLookupSessionId2 = [v5 visualLookupSessionId];
+    v8 = visualLookupSessionId2;
+    if (visualLookupSessionId == visualLookupSessionId2)
     {
     }
 
     else
     {
-      v9 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualLookupSessionId];
-      v10 = [v5 visualLookupSessionId];
-      v11 = [v9 isEqual:v10];
+      visualLookupSessionId3 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualLookupSessionId];
+      visualLookupSessionId4 = [v5 visualLookupSessionId];
+      v11 = [visualLookupSessionId3 isEqual:visualLookupSessionId4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self pillSessionId];
-    v14 = [v5 pillSessionId];
-    v15 = v14;
-    if (v13 == v14)
+    pillSessionId = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self pillSessionId];
+    pillSessionId2 = [v5 pillSessionId];
+    v15 = pillSessionId2;
+    if (pillSessionId == pillSessionId2)
     {
     }
 
     else
     {
-      v16 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self pillSessionId];
-      v17 = [v5 pillSessionId];
-      v18 = [v16 isEqual:v17];
+      pillSessionId3 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self pillSessionId];
+      pillSessionId4 = [v5 pillSessionId];
+      v18 = [pillSessionId3 isEqual:pillSessionId4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualComponents];
-    v20 = [v5 visualComponents];
-    v21 = v20;
-    if (v19 == v20)
+    visualComponents = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualComponents];
+    visualComponents2 = [v5 visualComponents];
+    v21 = visualComponents2;
+    if (visualComponents == visualComponents2)
     {
     }
 
     else
     {
-      v22 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualComponents];
-      v23 = [v5 visualComponents];
-      v24 = [v22 isEqual:v23];
+      visualComponents3 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualComponents];
+      visualComponents4 = [v5 visualComponents];
+      v24 = [visualComponents3 isEqual:visualComponents4];
 
       if (!v24)
       {
@@ -81,11 +81,11 @@
 
     if (!-[BMVisualIntelligenceCameraLookupEventDisplayContext hasTotalResultsShown](self, "hasTotalResultsShown") && ![v5 hasTotalResultsShown] || -[BMVisualIntelligenceCameraLookupEventDisplayContext hasTotalResultsShown](self, "hasTotalResultsShown") && objc_msgSend(v5, "hasTotalResultsShown") && (v25 = -[BMVisualIntelligenceCameraLookupEventDisplayContext totalResultsShown](self, "totalResultsShown"), v25 == objc_msgSend(v5, "totalResultsShown")))
     {
-      v26 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self started];
-      if (v26 == [v5 started])
+      started = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self started];
+      if (started == [v5 started])
       {
-        v27 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self ended];
-        v12 = v27 == [v5 ended];
+        ended = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self ended];
+        v12 = ended == [v5 ended];
 LABEL_23:
 
         goto LABEL_24;
@@ -106,9 +106,9 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v23[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualLookupSessionId];
-  v4 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self pillSessionId];
-  v5 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self _visualComponentsJSONArray];
+  visualLookupSessionId = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualLookupSessionId];
+  pillSessionId = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self pillSessionId];
+  _visualComponentsJSONArray = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self _visualComponentsJSONArray];
   if ([(BMVisualIntelligenceCameraLookupEventDisplayContext *)self hasTotalResultsShown])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMVisualIntelligenceCameraLookupEventDisplayContext totalResultsShown](self, "totalResultsShown")}];
@@ -122,56 +122,56 @@ LABEL_24:
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMVisualIntelligenceCameraLookupEventDisplayContext started](self, "started")}];
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMVisualIntelligenceCameraLookupEventDisplayContext ended](self, "ended")}];
   v22[0] = @"visualLookupSessionId";
-  v9 = v3;
-  if (!v3)
+  null = visualLookupSessionId;
+  if (!visualLookupSessionId)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v9;
-  v21 = v3;
-  v23[0] = v9;
+  v20 = null;
+  v21 = visualLookupSessionId;
+  v23[0] = null;
   v22[1] = @"pillSessionId";
-  v10 = v4;
-  if (!v4)
+  null2 = pillSessionId;
+  if (!pillSessionId)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v10;
-  v23[1] = v10;
+  v18 = null2;
+  v23[1] = null2;
   v22[2] = @"visualComponents";
-  v11 = v5;
-  if (!v5)
+  null3 = _visualComponentsJSONArray;
+  if (!_visualComponentsJSONArray)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v11;
+  v23[2] = null3;
   v22[3] = @"totalResultsShown";
-  v12 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v12;
+  v23[3] = null4;
   v22[4] = @"started";
-  v13 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v13;
+  v23[4] = null5;
   v22[5] = @"ended";
-  v14 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[5] = v14;
+  v23[5] = null6;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:{6, v18}];
   if (v8)
   {
@@ -199,14 +199,14 @@ LABEL_18:
   if (v6)
   {
 LABEL_19:
-    if (v5)
+    if (_visualComponentsJSONArray)
     {
       goto LABEL_20;
     }
 
 LABEL_29:
 
-    if (v4)
+    if (pillSessionId)
     {
       goto LABEL_21;
     }
@@ -216,13 +216,13 @@ LABEL_29:
 
 LABEL_28:
 
-  if (!v5)
+  if (!_visualComponentsJSONArray)
   {
     goto LABEL_29;
   }
 
 LABEL_20:
-  if (v4)
+  if (pillSessionId)
   {
     goto LABEL_21;
   }
@@ -247,8 +247,8 @@ LABEL_21:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualComponents];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  visualComponents = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualComponents];
+  v5 = [visualComponents countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -259,14 +259,14 @@ LABEL_21:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visualComponents);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [visualComponents countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -277,39 +277,39 @@ LABEL_21:
   return v3;
 }
 
-- (BMVisualIntelligenceCameraLookupEventDisplayContext)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMVisualIntelligenceCameraLookupEventDisplayContext)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v95[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"visualLookupSessionId"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"visualLookupSessionId"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
         v23 = *MEMORY[0x1E698F240];
         v94 = *MEMORY[0x1E696A578];
-        v24 = self;
+        selfCopy = self;
         v25 = objc_alloc(MEMORY[0x1E696AEC0]);
         v60 = objc_opt_class();
         v26 = v25;
-        self = v24;
-        v27 = [v26 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", v60, @"visualLookupSessionId"];
-        v95[0] = v27;
+        self = selfCopy;
+        errorCopy = [v26 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", v60, @"visualLookupSessionId"];
+        v95[0] = errorCopy;
         v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v95 forKeys:&v94 count:1];
         v29 = v22;
         v8 = v28;
         v30 = 0;
-        v31 = 0;
-        *a4 = [v29 initWithDomain:v23 code:2 userInfo:v28];
+        selfCopy4 = 0;
+        *error = [v29 initWithDomain:v23 code:2 userInfo:v28];
         goto LABEL_78;
       }
 
       v30 = 0;
-      v31 = 0;
+      selfCopy4 = 0;
       goto LABEL_79;
     }
 
@@ -321,7 +321,7 @@ LABEL_21:
     v69 = 0;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"pillSessionId"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"pillSessionId"];
   v71 = v7;
   v68 = v6;
   if (v7 && (v8 = v7, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -329,8 +329,8 @@ LABEL_21:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v27 = a4;
-      if (a4)
+      errorCopy = error;
+      if (error)
       {
         v32 = objc_alloc(MEMORY[0x1E696ABC0]);
         v33 = *MEMORY[0x1E698F240];
@@ -341,15 +341,15 @@ LABEL_21:
         v35 = v32;
         v8 = v71;
         v73 = v34;
-        v27 = 0;
-        v31 = 0;
-        *a4 = [v35 initWithDomain:v33 code:2 userInfo:?];
+        errorCopy = 0;
+        selfCopy4 = 0;
+        *error = [v35 initWithDomain:v33 code:2 userInfo:?];
         v30 = v69;
 
         goto LABEL_77;
       }
 
-      v31 = 0;
+      selfCopy4 = 0;
       v30 = v69;
       goto LABEL_78;
     }
@@ -362,13 +362,13 @@ LABEL_21:
     v67 = 0;
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"visualComponents"];
-  v10 = [MEMORY[0x1E695DFB0] null];
-  v11 = [v9 isEqual:v10];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"visualComponents"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v11 = [v9 isEqual:null];
 
   if (v11)
   {
-    v65 = self;
+    selfCopy3 = self;
 
     v9 = 0;
   }
@@ -380,12 +380,12 @@ LABEL_21:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
-          v31 = 0;
+          selfCopy4 = 0;
           v30 = v69;
           v8 = v71;
-          v27 = v67;
+          errorCopy = v67;
           goto LABEL_77;
         }
 
@@ -395,17 +395,17 @@ LABEL_21:
         v72 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"visualComponents"];
         v91 = v72;
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
-        v31 = 0;
-        *a4 = [v44 initWithDomain:v45 code:2 userInfo:v21];
+        selfCopy4 = 0;
+        *error = [v44 initWithDomain:v45 code:2 userInfo:v21];
 LABEL_44:
         v30 = v69;
         v8 = v71;
-        v27 = v67;
+        errorCopy = v67;
         goto LABEL_75;
       }
     }
 
-    v65 = self;
+    selfCopy3 = self;
   }
 
   v72 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
@@ -422,7 +422,7 @@ LABEL_44:
 
   v13 = v12;
   v14 = *v76;
-  v64 = v5;
+  v64 = dictionaryCopy;
   while (2)
   {
     for (i = 0; i != v13; ++i)
@@ -436,8 +436,8 @@ LABEL_44:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v36 = a4;
-        if (a4)
+        errorCopy3 = error;
+        if (error)
         {
           v37 = objc_alloc(MEMORY[0x1E696ABC0]);
           v38 = *MEMORY[0x1E698F240];
@@ -449,14 +449,14 @@ LABEL_44:
           v41 = &v87;
 LABEL_37:
           v42 = [v39 dictionaryWithObjects:v40 forKeys:v41 count:1];
-          v31 = 0;
-          *v36 = [v37 initWithDomain:v38 code:2 userInfo:v42];
+          selfCopy4 = 0;
+          *errorCopy3 = [v37 initWithDomain:v38 code:2 userInfo:v42];
           v21 = v9;
-          v5 = v64;
-          self = v65;
+          dictionaryCopy = v64;
+          self = selfCopy3;
           v30 = v69;
           v8 = v71;
-          v27 = v67;
+          errorCopy = v67;
           goto LABEL_73;
         }
 
@@ -466,8 +466,8 @@ LABEL_37:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v36 = a4;
-        if (a4)
+        errorCopy3 = error;
+        if (error)
         {
           v37 = objc_alloc(MEMORY[0x1E696ABC0]);
           v38 = *MEMORY[0x1E698F240];
@@ -481,10 +481,10 @@ LABEL_37:
         }
 
 LABEL_43:
-        v31 = 0;
+        selfCopy4 = 0;
         v21 = v9;
-        v5 = v64;
-        self = v65;
+        dictionaryCopy = v64;
+        self = selfCopy3;
         goto LABEL_44;
       }
 
@@ -496,17 +496,17 @@ LABEL_43:
       if (v20)
       {
         v42 = v20;
-        v27 = v67;
-        if (a4)
+        errorCopy = v67;
+        if (error)
         {
           v43 = v20;
-          *a4 = v42;
+          *error = v42;
         }
 
-        v31 = 0;
+        selfCopy4 = 0;
         v21 = v9;
-        v5 = v64;
-        self = v65;
+        dictionaryCopy = v64;
+        self = selfCopy3;
         v30 = v69;
         goto LABEL_72;
       }
@@ -515,7 +515,7 @@ LABEL_43:
     }
 
     v13 = [v9 countByEnumeratingWithState:&v75 objects:v89 count:16];
-    v5 = v64;
+    dictionaryCopy = v64;
     if (v13)
     {
       continue;
@@ -526,16 +526,16 @@ LABEL_43:
 
 LABEL_22:
 
-  v17 = [v5 objectForKeyedSubscript:@"totalResultsShown"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"totalResultsShown"];
   if (!v17)
   {
     v21 = 0;
-    self = v65;
+    self = selfCopy3;
     goto LABEL_48;
   }
 
   objc_opt_class();
-  self = v65;
+  self = selfCopy3;
   v8 = v71;
   if (objc_opt_isKindOfClass())
   {
@@ -546,7 +546,7 @@ LABEL_22:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v47 = objc_alloc(MEMORY[0x1E696ABC0]);
       v48 = *MEMORY[0x1E698F240];
@@ -556,27 +556,27 @@ LABEL_22:
       v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
       v49 = [v47 initWithDomain:v48 code:2 userInfo:?];
       v21 = 0;
-      v31 = 0;
-      *a4 = v49;
+      selfCopy4 = 0;
+      *error = v49;
       goto LABEL_88;
     }
 
     v21 = 0;
-    v31 = 0;
+    selfCopy4 = 0;
     v30 = v69;
-    v27 = v67;
+    errorCopy = v67;
     goto LABEL_74;
   }
 
   v21 = v17;
 LABEL_48:
-  v42 = [v5 objectForKeyedSubscript:@"started"];
+  v42 = [dictionaryCopy objectForKeyedSubscript:@"started"];
   v66 = v21;
   v63 = v42;
   if (!v42)
   {
 LABEL_61:
-    v50 = [v5 objectForKeyedSubscript:@"ended"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     if (v50 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -590,7 +590,7 @@ LABEL_61:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v62 = objc_alloc(MEMORY[0x1E696ABC0]);
             v61 = *MEMORY[0x1E698F240];
@@ -598,14 +598,14 @@ LABEL_61:
             v58 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"ended"];
             v80 = v58;
             v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
-            *a4 = [v62 initWithDomain:v61 code:2 userInfo:v59];
+            *error = [v62 initWithDomain:v61 code:2 userInfo:v59];
           }
 
           v51 = 0;
-          v31 = 0;
+          selfCopy4 = 0;
 LABEL_85:
           v30 = v69;
-          v27 = v67;
+          errorCopy = v67;
           goto LABEL_70;
         }
 
@@ -621,9 +621,9 @@ LABEL_85:
     }
 
     v30 = v69;
-    v27 = v67;
+    errorCopy = v67;
     self = -[BMVisualIntelligenceCameraLookupEventDisplayContext initWithVisualLookupSessionId:pillSessionId:visualComponents:totalResultsShown:started:ended:](self, "initWithVisualLookupSessionId:pillSessionId:visualComponents:totalResultsShown:started:ended:", v69, v67, v72, v66, [v42 intValue], objc_msgSend(v51, "intValue"));
-    v31 = self;
+    selfCopy4 = self;
 LABEL_70:
 
     v21 = v66;
@@ -653,7 +653,7 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  if (a4)
+  if (error)
   {
     v55 = objc_alloc(MEMORY[0x1E696ABC0]);
     v56 = *MEMORY[0x1E698F240];
@@ -663,16 +663,16 @@ LABEL_60:
     v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
     v57 = [v55 initWithDomain:v56 code:2 userInfo:v50];
     v42 = 0;
-    v31 = 0;
-    *a4 = v57;
+    selfCopy4 = 0;
+    *error = v57;
     goto LABEL_85;
   }
 
   v42 = 0;
-  v31 = 0;
+  selfCopy4 = 0;
 LABEL_88:
   v30 = v69;
-  v27 = v67;
+  errorCopy = v67;
 LABEL_71:
 
 LABEL_72:
@@ -688,22 +688,22 @@ LABEL_78:
 
 LABEL_79:
   v53 = *MEMORY[0x1E69E9840];
-  return v31;
+  return selfCopy4;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_visualLookupSessionId)
   {
     PBDataWriterWriteStringField();
@@ -735,7 +735,7 @@ LABEL_79:
 
         v10 = *(*(&v15 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v10 writeTo:v4];
+        [v10 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -759,9 +759,9 @@ LABEL_79:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v48.receiver = self;
   v48.super_class = BMVisualIntelligenceCameraLookupEventDisplayContext;
   v5 = [(BMEventBase *)&v48 init];
@@ -771,12 +771,12 @@ LABEL_79:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_74;
       }
@@ -787,18 +787,18 @@ LABEL_79:
       while (1)
       {
         LOBYTE(v49[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v49 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v49 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v49[0] & 0x7F) << v8;
@@ -816,9 +816,9 @@ LABEL_79:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_74;
       }
@@ -854,7 +854,7 @@ LABEL_50:
 
       v49[0] = 0;
       v49[1] = 0;
-      if (!PBReaderPlaceMark() || (v17 = [[BMVisualIntelligenceCameraLookupEventVisualComponent alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v17 = [[BMVisualIntelligenceCameraLookupEventVisualComponent alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_78:
 
@@ -866,8 +866,8 @@ LABEL_78:
       PBReaderRecallMark();
 
 LABEL_73:
-      v42 = [v4 position];
-      if (v42 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_74;
       }
@@ -883,18 +883,18 @@ LABEL_73:
         while (1)
         {
           LOBYTE(v49[0]) = 0;
-          v31 = [v4 position] + 1;
-          if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+          v31 = [fromCopy position] + 1;
+          if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
           {
-            v33 = [v4 data];
-            [v33 getBytes:v49 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v49 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v30 |= (v49[0] & 0x7F) << v28;
@@ -912,7 +912,7 @@ LABEL_73:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v34 = 0;
         }
@@ -932,18 +932,18 @@ LABEL_63:
         while (1)
         {
           LOBYTE(v49[0]) = 0;
-          v38 = [v4 position] + 1;
-          if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 1, v39 <= objc_msgSend(v4, "length")))
+          v38 = [fromCopy position] + 1;
+          if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 1, v39 <= objc_msgSend(fromCopy, "length")))
           {
-            v40 = [v4 data];
-            [v40 getBytes:v49 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:v49 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v21 |= (v49[0] & 0x7F) << v36;
@@ -960,7 +960,7 @@ LABEL_63:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v21 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v21 > 3)
         {
 LABEL_70:
           LODWORD(v21) = 0;
@@ -975,18 +975,18 @@ LABEL_70:
         while (1)
         {
           LOBYTE(v49[0]) = 0;
-          v22 = [v4 position] + 1;
-          if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+          v22 = [fromCopy position] + 1;
+          if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
           {
-            v24 = [v4 data];
-            [v24 getBytes:v49 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:v49 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v21 |= (v49[0] & 0x7F) << v19;
@@ -1003,7 +1003,7 @@ LABEL_70:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v21 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v21 > 3)
         {
 LABEL_66:
           LODWORD(v21) = 0;
@@ -1029,8 +1029,8 @@ LABEL_74:
   visualComponents = v5->_visualComponents;
   v5->_visualComponents = v43;
 
-  v45 = [v4 hasError];
-  if (v45)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_75:
     v46 = 0;
@@ -1048,47 +1048,47 @@ LABEL_76:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualLookupSessionId];
-  v5 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self pillSessionId];
-  v6 = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualComponents];
+  visualLookupSessionId = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualLookupSessionId];
+  pillSessionId = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self pillSessionId];
+  visualComponents = [(BMVisualIntelligenceCameraLookupEventDisplayContext *)self visualComponents];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMVisualIntelligenceCameraLookupEventDisplayContext totalResultsShown](self, "totalResultsShown")}];
   v8 = BMVisualIntelligenceCameraLookupEventDisplayStartedReasonAsString([(BMVisualIntelligenceCameraLookupEventDisplayContext *)self started]);
   v9 = BMVisualIntelligenceCameraLookupEventDisplayEndedReasonAsString([(BMVisualIntelligenceCameraLookupEventDisplayContext *)self ended]);
-  v10 = [v3 initWithFormat:@"BMVisualIntelligenceCameraLookupEventDisplayContext with visualLookupSessionId: %@, pillSessionId: %@, visualComponents: %@, totalResultsShown: %@, started: %@, ended: %@", v4, v5, v6, v7, v8, v9];
+  v10 = [v3 initWithFormat:@"BMVisualIntelligenceCameraLookupEventDisplayContext with visualLookupSessionId: %@, pillSessionId: %@, visualComponents: %@, totalResultsShown: %@, started: %@, ended: %@", visualLookupSessionId, pillSessionId, visualComponents, v7, v8, v9];
 
   return v10;
 }
 
-- (BMVisualIntelligenceCameraLookupEventDisplayContext)initWithVisualLookupSessionId:(id)a3 pillSessionId:(id)a4 visualComponents:(id)a5 totalResultsShown:(id)a6 started:(int)a7 ended:(int)a8
+- (BMVisualIntelligenceCameraLookupEventDisplayContext)initWithVisualLookupSessionId:(id)id pillSessionId:(id)sessionId visualComponents:(id)components totalResultsShown:(id)shown started:(int)started ended:(int)ended
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  idCopy = id;
+  sessionIdCopy = sessionId;
+  componentsCopy = components;
+  shownCopy = shown;
   v22.receiver = self;
   v22.super_class = BMVisualIntelligenceCameraLookupEventDisplayContext;
   v19 = [(BMEventBase *)&v22 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v19->_visualLookupSessionId, a3);
-    objc_storeStrong(&v19->_pillSessionId, a4);
-    objc_storeStrong(&v19->_visualComponents, a5);
-    if (v18)
+    objc_storeStrong(&v19->_visualLookupSessionId, id);
+    objc_storeStrong(&v19->_pillSessionId, sessionId);
+    objc_storeStrong(&v19->_visualComponents, components);
+    if (shownCopy)
     {
       v19->_hasTotalResultsShown = 1;
-      v20 = [v18 intValue];
+      intValue = [shownCopy intValue];
     }
 
     else
     {
       v19->_hasTotalResultsShown = 0;
-      v20 = -1;
+      intValue = -1;
     }
 
-    v19->_totalResultsShown = v20;
-    v19->_started = a7;
-    v19->_ended = a8;
+    v19->_totalResultsShown = intValue;
+    v19->_started = started;
+    v19->_ended = ended;
   }
 
   return v19;
@@ -1147,9 +1147,9 @@ id __62__BMVisualIntelligenceCameraLookupEventDisplayContext_columns__block_invo
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1157,8 +1157,8 @@ id __62__BMVisualIntelligenceCameraLookupEventDisplayContext_columns__block_invo
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMVisualIntelligenceCameraLookupEventDisplayContext alloc] initByReadFrom:v7];
     v4 = v8;

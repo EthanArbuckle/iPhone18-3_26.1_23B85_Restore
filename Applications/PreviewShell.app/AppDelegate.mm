@@ -1,12 +1,12 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (_TtC12PreviewShell11AppDelegate)init;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   if (qword_10006E5C8 != -1)
   {
@@ -19,13 +19,13 @@
   return 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_100037238(v9);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v12 = sub_100037238(sessionCopy);
 
   return v12;
 }

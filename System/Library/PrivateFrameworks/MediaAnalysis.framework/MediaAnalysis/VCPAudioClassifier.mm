@@ -1,13 +1,13 @@
 @interface VCPAudioClassifier
-+ (id)sharedFeaturePrintRequest:(id)a3 version:(int)a4;
++ (id)sharedFeaturePrintRequest:(id)request version:(int)version;
 + (void)purgeCachedModels;
-- (VCPAudioClassifier)initWithTypes:(unint64_t)a3;
+- (VCPAudioClassifier)initWithTypes:(unint64_t)types;
 - (id)results;
-- (int)finalizeAnalysisAtTime:(id *)a3;
-- (int)processAudioSamples:(AudioBufferList *)a3 timestamp:(AudioTimeStamp *)a4;
-- (int)setupWithSample:(opaqueCMSampleBuffer *)a3 trackDuration:(id *)a4 resultHandler:(id)a5 andSampleBatchSize:(int)a6;
-- (void)cacheModelsForClassifySoundRequest:(id)a3 requestIdentifier:(id)a4;
-- (void)cacheModelsForDetectSoundRequest:(id)a3 requestIdentifier:(id)a4;
+- (int)finalizeAnalysisAtTime:(id *)time;
+- (int)processAudioSamples:(AudioBufferList *)samples timestamp:(AudioTimeStamp *)timestamp;
+- (int)setupWithSample:(opaqueCMSampleBuffer *)sample trackDuration:(id *)duration resultHandler:(id)handler andSampleBatchSize:(int)size;
+- (void)cacheModelsForClassifySoundRequest:(id)request requestIdentifier:(id)identifier;
+- (void)cacheModelsForDetectSoundRequest:(id)request requestIdentifier:(id)identifier;
 @end
 
 @implementation VCPAudioClassifier
@@ -61,7 +61,7 @@
   }
 }
 
-- (VCPAudioClassifier)initWithTypes:(unint64_t)a3
+- (VCPAudioClassifier)initWithTypes:(unint64_t)types
 {
   v16.receiver = self;
   v16.super_class = VCPAudioClassifier;
@@ -69,24 +69,24 @@
   v5 = v4;
   if (v4)
   {
-    v4->_analysisTypes = a3;
+    v4->_analysisTypes = types;
     v4->_framePosition = 0;
     v4->_sampleRate = 16000.0;
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     detectors = v5->_detectors;
-    v5->_detectors = v6;
+    v5->_detectors = array;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     classifiers = v5->_classifiers;
-    v5->_classifiers = v8;
+    v5->_classifiers = array2;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     embeddingGenerators = v5->_embeddingGenerators;
-    v5->_embeddingGenerators = v10;
+    v5->_embeddingGenerators = array3;
 
-    v12 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     classifiers300 = v5->_classifiers300;
-    v5->_classifiers300 = v12;
+    v5->_classifiers300 = array4;
 
     v14 = v5;
   }
@@ -94,13 +94,13 @@
   return v5;
 }
 
-- (void)cacheModelsForDetectSoundRequest:(id)a3 requestIdentifier:(id)a4
+- (void)cacheModelsForDetectSoundRequest:(id)request requestIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  identifierCopy = identifier;
   HasANE = DeviceHasANE();
-  if (v5)
+  if (requestCopy)
   {
     v8 = HasANE;
   }
@@ -110,15 +110,15 @@
     v8 = 0;
   }
 
-  if (v6 && v8)
+  if (identifierCopy && v8)
   {
     v9 = +[VCPSharedInstanceManager sharedManager];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __73__VCPAudioClassifier_cacheModelsForDetectSoundRequest_requestIdentifier___block_invoke;
     v14[3] = &unk_1E8350188;
-    v15 = v5;
-    v10 = [v9 sharedInstanceWithIdentifier:v6 andCreationBlock:v14];
+    v15 = requestCopy;
+    v10 = [v9 sharedInstanceWithIdentifier:identifierCopy andCreationBlock:v14];
     v11 = v10 == 0;
 
     if (v11 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -127,20 +127,20 @@
       *buf = 138412546;
       v17 = v12;
       v18 = 2112;
-      v19 = v6;
+      v19 = identifierCopy;
       v13 = v12;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] failed to retain models for %@", buf, 0x16u);
     }
   }
 }
 
-- (void)cacheModelsForClassifySoundRequest:(id)a3 requestIdentifier:(id)a4
+- (void)cacheModelsForClassifySoundRequest:(id)request requestIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  identifierCopy = identifier;
   HasANE = DeviceHasANE();
-  if (v5)
+  if (requestCopy)
   {
     v8 = HasANE;
   }
@@ -150,15 +150,15 @@
     v8 = 0;
   }
 
-  if (v6 && v8)
+  if (identifierCopy && v8)
   {
     v9 = +[VCPSharedInstanceManager sharedManager];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __75__VCPAudioClassifier_cacheModelsForClassifySoundRequest_requestIdentifier___block_invoke;
     v14[3] = &unk_1E8350188;
-    v15 = v5;
-    v10 = [v9 sharedInstanceWithIdentifier:v6 andCreationBlock:v14];
+    v15 = requestCopy;
+    v10 = [v9 sharedInstanceWithIdentifier:identifierCopy andCreationBlock:v14];
     v11 = v10 == 0;
 
     if (v11 && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -167,23 +167,23 @@
       *buf = 138412546;
       v17 = v12;
       v18 = 2112;
-      v19 = v6;
+      v19 = identifierCopy;
       v13 = v12;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] failed to retain models for %@", buf, 0x16u);
     }
   }
 }
 
-+ (id)sharedFeaturePrintRequest:(id)a3 version:(int)a4
++ (id)sharedFeaturePrintRequest:(id)request version:(int)version
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = +[VCPSharedInstanceManager sharedManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__VCPAudioClassifier_sharedFeaturePrintRequest_version___block_invoke;
   v9[3] = &__block_descriptor_36_e34___SNCreateFeaturePrintRequest_8__0l;
-  v10 = a4;
-  v7 = [v6 sharedInstanceWithIdentifier:v5 andCreationBlock:v9];
+  versionCopy = version;
+  v7 = [v6 sharedInstanceWithIdentifier:requestCopy andCreationBlock:v9];
 
   return v7;
 }
@@ -215,12 +215,12 @@ id __56__VCPAudioClassifier_sharedFeaturePrintRequest_version___block_invoke(uin
   return v4;
 }
 
-- (int)setupWithSample:(opaqueCMSampleBuffer *)a3 trackDuration:(id *)a4 resultHandler:(id)a5 andSampleBatchSize:(int)a6
+- (int)setupWithSample:(opaqueCMSampleBuffer *)sample trackDuration:(id *)duration resultHandler:(id)handler andSampleBatchSize:(int)size
 {
-  v6 = *&a6;
+  v6 = *&size;
   v96[7] = *MEMORY[0x1E69E9840];
-  v76 = a5;
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  handlerCopy = handler;
+  FormatDescription = CMSampleBufferGetFormatDescription(sample);
   StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(FormatDescription);
   if (StreamBasicDescription)
   {
@@ -239,7 +239,7 @@ LABEL_47:
 
     [(AVAudioPCMBuffer *)v16 setFrameLength:v6];
     memset(&v84, 0, sizeof(v84));
-    CMSampleBufferGetPresentationTimeStamp(&v84, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v84, sample);
     v18 = *MEMORY[0x1E697B860];
     v90[0] = *MEMORY[0x1E697B858];
     v17 = v90[0];
@@ -373,7 +373,7 @@ LABEL_47:
     {
       obj = [objc_alloc(MEMORY[0x1E697B818]) initWithClassifierIdentifier:v71 error:0];
       [VCPAudioClassifier cacheModelsForClassifySoundRequest:"cacheModelsForClassifySoundRequest:requestIdentifier:" requestIdentifier:?];
-      time = *a4;
+      time = *duration;
       v47 = fmin(CMTimeGetSeconds(&time) * 0.949999988, 3.0);
       CMTimeMake(&v79, (v47 * 1000.0), 1000);
       time = v79;
@@ -427,8 +427,8 @@ LABEL_37:
 
       v59 = MEMORY[0x1E696AEC0];
       v60 = [MEMORY[0x1E696AD98] numberWithInt:v58];
-      v61 = [v60 stringValue];
-      obj = [v59 stringWithFormat:@"SNCreateFeaturePrintRequest_%@", v61];
+      stringValue = [v60 stringValue];
+      obj = [v59 stringWithFormat:@"SNCreateFeaturePrintRequest_%@", stringValue];
 
       v62 = [objc_opt_class() sharedFeaturePrintRequest:obj version:v58];
       if (v62)
@@ -449,9 +449,9 @@ LABEL_45:
       {
         v66 = [0 description];
         v67 = v66;
-        v68 = [v66 UTF8String];
+        uTF8String = [v66 UTF8String];
         LODWORD(time.value) = 136315138;
-        *(&time.value + 4) = v68;
+        *(&time.value + 4) = uTF8String;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to create FeaturePrintRequest %s", &time, 0xCu);
       }
 
@@ -469,7 +469,7 @@ LABEL_44:
     v55 = [VCPSoundClassifier300 alloc];
     time = v84;
     v56 = [v75 objectForKeyedSubscript:v69];
-    v57 = [(VCPSoundClassifier300 *)v55 initWithTrackStart:&time resultsKey:v56 resultHandler:v76];
+    v57 = [(VCPSoundClassifier300 *)v55 initWithTrackStart:&time resultsKey:v56 resultHandler:handlerCopy];
 
     if (!obj || !v57 || ![(SNAudioStreamAnalyzer *)self->_SNAnalyzer addRequest:obj withObserver:v57 error:0])
     {
@@ -493,11 +493,11 @@ LABEL_48:
   return v39;
 }
 
-- (int)processAudioSamples:(AudioBufferList *)a3 timestamp:(AudioTimeStamp *)a4
+- (int)processAudioSamples:(AudioBufferList *)samples timestamp:(AudioTimeStamp *)timestamp
 {
   v6 = objc_autoreleasePoolPush();
-  mData = a3->mBuffers[0].mData;
-  mDataByteSize = a3->mBuffers[0].mDataByteSize;
+  mData = samples->mBuffers[0].mData;
+  mDataByteSize = samples->mBuffers[0].mDataByteSize;
   if (mDataByteSize == 4 * [(AVAudioPCMBuffer *)self->_pcmBuffer frameLength])
   {
     memcpy(*([(AVAudioPCMBuffer *)self->_pcmBuffer mutableAudioBufferList]+ 16), mData, 4 * [(AVAudioPCMBuffer *)self->_pcmBuffer frameLength]);
@@ -515,7 +515,7 @@ LABEL_48:
   return v9;
 }
 
-- (int)finalizeAnalysisAtTime:(id *)a3
+- (int)finalizeAnalysisAtTime:(id *)time
 {
   v40 = *MEMORY[0x1E69E9840];
   v32 = 0u;
@@ -536,7 +536,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v9 = [*(*(&v32 + 1) + 8 * v8) finalizeAnalysisAtTime:a3];
+      v9 = [*(*(&v32 + 1) + 8 * v8) finalizeAnalysisAtTime:time];
       if (v9)
       {
         break;
@@ -577,7 +577,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v28 + 1) + 8 * v12) finalizeAnalysisAtTime:a3];
+        v9 = [*(*(&v28 + 1) + 8 * v12) finalizeAnalysisAtTime:time];
         if (v9)
         {
           break;
@@ -618,7 +618,7 @@ LABEL_19:
             objc_enumerationMutation(v5);
           }
 
-          v9 = [*(*(&v24 + 1) + 8 * v15) finalizeAnalysisAtTime:a3];
+          v9 = [*(*(&v24 + 1) + 8 * v15) finalizeAnalysisAtTime:time];
           if (v9)
           {
             break;
@@ -659,7 +659,7 @@ LABEL_27:
               objc_enumerationMutation(v5);
             }
 
-            v9 = [*(*(&v20 + 1) + 8 * v18) finalizeAnalysisAtTime:{a3, v20}];
+            v9 = [*(*(&v20 + 1) + 8 * v18) finalizeAnalysisAtTime:{time, v20}];
             if (v9)
             {
               break;
@@ -693,7 +693,7 @@ LABEL_33:
 - (id)results
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
@@ -712,8 +712,8 @@ LABEL_33:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v37 + 1) + 8 * i) results];
-        [v3 addEntriesFromDictionary:v8];
+        results = [*(*(&v37 + 1) + 8 * i) results];
+        [dictionary addEntriesFromDictionary:results];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v37 objects:v44 count:16];
@@ -740,8 +740,8 @@ LABEL_33:
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v33 + 1) + 8 * j) results];
-        [v3 addEntriesFromDictionary:v13];
+        results2 = [*(*(&v33 + 1) + 8 * j) results];
+        [dictionary addEntriesFromDictionary:results2];
       }
 
       v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v33 objects:v43 count:16];
@@ -768,8 +768,8 @@ LABEL_33:
           objc_enumerationMutation(v14);
         }
 
-        v18 = [*(*(&v29 + 1) + 8 * k) results];
-        [v3 addEntriesFromDictionary:v18];
+        results3 = [*(*(&v29 + 1) + 8 * k) results];
+        [dictionary addEntriesFromDictionary:results3];
       }
 
       v15 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v29 objects:v42 count:16];
@@ -796,8 +796,8 @@ LABEL_33:
           objc_enumerationMutation(v19);
         }
 
-        v23 = [*(*(&v25 + 1) + 8 * m) results];
-        [v3 addEntriesFromDictionary:v23];
+        results4 = [*(*(&v25 + 1) + 8 * m) results];
+        [dictionary addEntriesFromDictionary:results4];
       }
 
       v20 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v25 objects:v41 count:16];
@@ -806,7 +806,7 @@ LABEL_33:
     while (v20);
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

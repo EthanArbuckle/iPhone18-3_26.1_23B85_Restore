@@ -1,12 +1,12 @@
 @interface MPRadioStationRemotePlaybackQueue
-- (BOOL)verifyWithError:(id *)a3;
-- (MPRadioStationRemotePlaybackQueue)initWithMediaRemotePlaybackQueue:(_MRSystemAppPlaybackQueue *)a3 options:(id)a4;
+- (BOOL)verifyWithError:(id *)error;
+- (MPRadioStationRemotePlaybackQueue)initWithMediaRemotePlaybackQueue:(_MRSystemAppPlaybackQueue *)queue options:(id)options;
 - (id)description;
 @end
 
 @implementation MPRadioStationRemotePlaybackQueue
 
-- (BOOL)verifyWithError:(id *)a3
+- (BOOL)verifyWithError:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   if (self->_stationID || self->_stationStringID)
@@ -14,13 +14,13 @@
     return 1;
   }
 
-  if (a3)
+  if (error)
   {
     v7 = *MEMORY[0x1E696A578];
     v8[0] = @"Radio station is invalid or not found.";
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
     v6 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MPErrorDomain" code:100 userInfo:v5];
-    *a3 = v6;
+    *error = v6;
   }
 
   return 0;
@@ -36,7 +36,7 @@
   return v6;
 }
 
-- (MPRadioStationRemotePlaybackQueue)initWithMediaRemotePlaybackQueue:(_MRSystemAppPlaybackQueue *)a3 options:(id)a4
+- (MPRadioStationRemotePlaybackQueue)initWithMediaRemotePlaybackQueue:(_MRSystemAppPlaybackQueue *)queue options:(id)options
 {
   v9.receiver = self;
   v9.super_class = MPRadioStationRemotePlaybackQueue;

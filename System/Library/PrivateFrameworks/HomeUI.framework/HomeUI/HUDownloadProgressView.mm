@@ -1,18 +1,18 @@
 @interface HUDownloadProgressView
-- (HUDownloadProgressView)initWithFrame:(CGRect)a3;
+- (HUDownloadProgressView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCenterImage:(id)a3;
-- (void)setDownloadProgress:(double)a3;
-- (void)setOuterRingColor:(id)a3;
+- (void)setCenterImage:(id)image;
+- (void)setDownloadProgress:(double)progress;
+- (void)setOuterRingColor:(id)color;
 @end
 
 @implementation HUDownloadProgressView
 
-- (HUDownloadProgressView)initWithFrame:(CGRect)a3
+- (HUDownloadProgressView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = HUDownloadProgressView;
-  v3 = [(HUDownloadProgressView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUDownloadProgressView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
@@ -33,8 +33,8 @@
   v28.receiver = self;
   v28.super_class = HUDownloadProgressView;
   [(HUDownloadProgressView *)&v28 layoutSubviews];
-  v3 = [(HUDownloadProgressView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(HUDownloadProgressView *)self traitCollection];
+  [traitCollection displayScale];
   v5 = HUGetSafeScaleForValue(v4);
   v26 = v5;
 
@@ -67,18 +67,18 @@
   [(UIImage *)self->_centerImage alignmentRectInsets];
   [(UIImageView *)self->_centerImageView setFrame:v13 + v23, v15 + v20, v17 - (v23 + v21), v19 - (v20 + v22)];
   [(UIView *)self->_outerRingView setFrame:x, y, width, height];
-  v24 = [(UIView *)self->_outerRingView layer];
-  [v24 setCornerRadius:v27];
-  [v24 setBorderWidth:1.0 / v26 + 2.0];
+  layer = [(UIView *)self->_outerRingView layer];
+  [layer setCornerRadius:v27];
+  [layer setBorderWidth:1.0 / v26 + 2.0];
 }
 
-- (void)setCenterImage:(id)a3
+- (void)setCenterImage:(id)image
 {
-  v5 = a3;
-  if (self->_centerImage != v5)
+  imageCopy = image;
+  if (self->_centerImage != imageCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_centerImage, a3);
+    v10 = imageCopy;
+    objc_storeStrong(&self->_centerImage, image);
     centerImageView = self->_centerImageView;
     if (self->_centerImage)
     {
@@ -103,20 +103,20 @@
     }
 
     [(HUDownloadProgressView *)self setNeedsLayout];
-    v5 = v10;
+    imageCopy = v10;
   }
 }
 
-- (void)setDownloadProgress:(double)a3
+- (void)setDownloadProgress:(double)progress
 {
   downloadProgress = self->_downloadProgress;
-  v5 = a3;
-  if (vabds_f32(downloadProgress, v5) >= 0.00000011921)
+  progressCopy = progress;
+  if (vabds_f32(downloadProgress, progressCopy) >= 0.00000011921)
   {
-    self->_downloadProgress = a3;
-    *&v3 = fabsf(v5);
+    self->_downloadProgress = progress;
+    *&v3 = fabsf(progressCopy);
     progressView = self->_progressView;
-    v9 = v5 < 0.0;
+    v9 = progressCopy < 0.0;
     v8 = 3.18618444e-58;
     v9 = v9 || *&v3 < 0.00000011921;
     if (v9)
@@ -137,10 +137,10 @@
         v11[4] = self;
         [MEMORY[0x277D75D18] performWithoutAnimation:v11];
         progressView = self->_progressView;
-        a3 = self->_downloadProgress;
+        progress = self->_downloadProgress;
       }
 
-      [(_HUDownloadProgressRingView *)progressView setProgress:a3, v8, v3];
+      [(_HUDownloadProgressRingView *)progressView setProgress:progress, v8, v3];
     }
   }
 }
@@ -161,17 +161,17 @@ uint64_t __46__HUDownloadProgressView_setDownloadProgress___block_invoke(uint64_
   return [v6 addSubview:v7];
 }
 
-- (void)setOuterRingColor:(id)a3
+- (void)setOuterRingColor:(id)color
 {
-  v5 = a3;
-  if (self->_outerRingColor != v5)
+  colorCopy = color;
+  if (self->_outerRingColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_outerRingColor, a3);
-    v6 = [(UIView *)self->_outerRingView layer];
-    [v6 setBorderColor:{-[UIColor CGColor](self->_outerRingColor, "CGColor")}];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_outerRingColor, color);
+    layer = [(UIView *)self->_outerRingView layer];
+    [layer setBorderColor:{-[UIColor CGColor](self->_outerRingColor, "CGColor")}];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 

@@ -1,14 +1,14 @@
 @interface CCUIFlashlightModuleViewController
 - (BOOL)shouldBeginTransitionToExpandedContentModule;
-- (CCUIFlashlightModuleViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CCUIFlashlightModuleViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)createSliderView;
 - (id)sliderView;
-- (void)_sliderValueDidChange:(id)a3;
+- (void)_sliderValueDidChange:(id)change;
 - (void)_updateControls;
 - (void)_updateSliderValue;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
-- (void)flashlightAvailabilityDidChange:(BOOL)a3;
-- (void)flashlightLevelDidChange:(unint64_t)a3;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
+- (void)flashlightAvailabilityDidChange:(BOOL)change;
+- (void)flashlightLevelDidChange:(unint64_t)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -17,10 +17,10 @@
 
 - (void)_updateControls
 {
-  v3 = [(SBUIFlashlightController *)self->_flashlight isAvailable];
+  isAvailable = [(SBUIFlashlightController *)self->_flashlight isAvailable];
   if ([(SBUIFlashlightController *)self->_flashlight level])
   {
-    v4 = v3;
+    v4 = isAvailable;
   }
 
   else
@@ -28,11 +28,11 @@
     v4 = 0;
   }
 
-  v5 = [(CCUIButtonModuleViewController *)self buttonView];
-  [v5 setEnabled:v3];
+  buttonView = [(CCUIButtonModuleViewController *)self buttonView];
+  [buttonView setEnabled:isAvailable];
 
-  v6 = [(CCUIFlashlightModuleViewController *)self sliderView];
-  [v6 setEnabled:v3];
+  sliderView = [(CCUIFlashlightModuleViewController *)self sliderView];
+  [sliderView setEnabled:isAvailable];
 
   [(CCUIButtonModuleViewController *)self setSelected:v4];
 
@@ -43,22 +43,22 @@
 {
   v4.receiver = self;
   v4.super_class = CCUIFlashlightModuleViewController;
-  v2 = [(CCUISliderModuleViewController *)&v4 sliderView];
+  sliderView = [(CCUISliderModuleViewController *)&v4 sliderView];
 
-  return v2;
+  return sliderView;
 }
 
 - (void)_updateSliderValue
 {
   if ([(CCUIButtonModuleViewController *)self isExpanded])
   {
-    v5 = [(CCUIFlashlightModuleViewController *)self sliderView];
+    sliderView = [(CCUIFlashlightModuleViewController *)self sliderView];
     if ([(CCUIButtonModuleViewController *)self isSelected]&& [(SBUIFlashlightController *)self->_flashlight isAvailable])
     {
-      v3 = [(SBUIFlashlightController *)self->_flashlight level];
-      if ((v3 - 1) < 4)
+      level = [(SBUIFlashlightController *)self->_flashlight level];
+      if ((level - 1) < 4)
       {
-        v4 = v3 + 1;
+        v4 = level + 1;
       }
 
       else
@@ -72,22 +72,22 @@
       v4 = 1;
     }
 
-    [v5 setStep:v4];
+    [sliderView setStep:v4];
   }
 }
 
-- (CCUIFlashlightModuleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CCUIFlashlightModuleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = CCUIFlashlightModuleViewController;
-  v4 = [(CCUIButtonModuleViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(CCUIButtonModuleViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     if ([MEMORY[0x29EDC6D08] deviceSupportsFlashlight])
     {
-      v5 = [MEMORY[0x29EDC6D08] sharedInstance];
+      mEMORY[0x29EDC6D08] = [MEMORY[0x29EDC6D08] sharedInstance];
       flashlight = v4->_flashlight;
-      v4->_flashlight = v5;
+      v4->_flashlight = mEMORY[0x29EDC6D08];
     }
 
     [(SBUIFlashlightController *)v4->_flashlight addObserver:v4];
@@ -101,10 +101,10 @@
   v4.receiver = self;
   v4.super_class = CCUIFlashlightModuleViewController;
   [(CCUISliderModuleViewController *)&v4 viewDidLoad];
-  v3 = [(CCUIFlashlightModuleViewController *)self sliderView];
-  [v3 setNumberOfSteps:5];
-  [v3 setFirstStepIsOff:1];
-  [v3 addTarget:self action:sel__sliderValueDidChange_ forControlEvents:4096];
+  sliderView = [(CCUIFlashlightModuleViewController *)self sliderView];
+  [sliderView setNumberOfSteps:5];
+  [sliderView setFirstStepIsOff:1];
+  [sliderView addTarget:self action:sel__sliderValueDidChange_ forControlEvents:4096];
   [(CCUIFlashlightModuleViewController *)self _updateControls];
 }
 
@@ -119,19 +119,19 @@
 - (id)createSliderView
 {
   v3 = objc_alloc(MEMORY[0x29EDC0CF8]);
-  v4 = [(CCUIFlashlightModuleViewController *)self view];
-  [v4 bounds];
+  view = [(CCUIFlashlightModuleViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:?];
 
   return v5;
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
-  [(CCUIButtonModuleViewController *)self setSelected:![(CCUIButtonModuleViewController *)self isSelected]& [(SBUIFlashlightController *)self->_flashlight isAvailable:a3]];
-  v5 = [(CCUIButtonModuleViewController *)self isSelected];
+  [(CCUIButtonModuleViewController *)self setSelected:![(CCUIButtonModuleViewController *)self isSelected]& [(SBUIFlashlightController *)self->_flashlight isAvailable:tapped]];
+  isSelected = [(CCUIButtonModuleViewController *)self isSelected];
   flashlight = self->_flashlight;
-  if (v5)
+  if (isSelected)
   {
 
     MEMORY[0x2A1C70FE8](flashlight, sel_turnFlashlightOnForReason_);
@@ -146,30 +146,30 @@
 
 - (BOOL)shouldBeginTransitionToExpandedContentModule
 {
-  v3 = [(SBUIFlashlightController *)self->_flashlight isAvailable];
-  if (v3)
+  isAvailable = [(SBUIFlashlightController *)self->_flashlight isAvailable];
+  if (isAvailable)
   {
-    LOBYTE(v3) = [(SBUIFlashlightController *)self->_flashlight deviceSupportsDynamicFlashlightInterface]^ 1;
+    LOBYTE(isAvailable) = [(SBUIFlashlightController *)self->_flashlight deviceSupportsDynamicFlashlightInterface]^ 1;
   }
 
-  return v3;
+  return isAvailable;
 }
 
-- (void)flashlightLevelDidChange:(unint64_t)a3
+- (void)flashlightLevelDidChange:(unint64_t)change
 {
   dispatch_assert_queue_V2(MEMORY[0x29EDCA578]);
 
   [(CCUIFlashlightModuleViewController *)self _updateControls];
 }
 
-- (void)flashlightAvailabilityDidChange:(BOOL)a3
+- (void)flashlightAvailabilityDidChange:(BOOL)change
 {
   dispatch_assert_queue_V2(MEMORY[0x29EDCA578]);
   [(CCUIFlashlightModuleViewController *)self _updateControls];
   if (([(SBUIFlashlightController *)self->_flashlight isAvailable]& 1) == 0)
   {
-    v4 = [(CCUIButtonModuleViewController *)self buttonView];
-    [v4 cancelTouchTracking];
+    buttonView = [(CCUIButtonModuleViewController *)self buttonView];
+    [buttonView cancelTouchTracking];
 
     if ([(CCUIButtonModuleViewController *)self isExpanded])
     {
@@ -179,13 +179,13 @@
   }
 }
 
-- (void)_sliderValueDidChange:(id)a3
+- (void)_sliderValueDidChange:(id)change
 {
   flashlight = self->_flashlight;
-  v4 = [a3 step];
-  if (v4 <= 4)
+  step = [change step];
+  if (step <= 4)
   {
-    v5 = qword_29C97BAE8[v4];
+    v5 = qword_29C97BAE8[step];
   }
 
   MEMORY[0x2A1C70FE8](flashlight, sel_setLevel_);

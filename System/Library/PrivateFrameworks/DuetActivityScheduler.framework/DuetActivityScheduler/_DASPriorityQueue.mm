@@ -5,8 +5,8 @@
 - (id)description;
 - (id)popFirst;
 - (id)popLast;
-- (void)addObject:(id)a3 withPriority:(unint64_t)a4;
-- (void)removeObject:(id)a3 atPriority:(unint64_t)a4;
+- (void)addObject:(id)object withPriority:(unint64_t)priority;
+- (void)removeObject:(id)object atPriority:(unint64_t)priority;
 @end
 
 @implementation _DASPriorityQueue
@@ -18,9 +18,9 @@
   v2 = [(_DASPriorityQueue *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     objects = v2->_objects;
-    v2->_objects = v3;
+    v2->_objects = dictionary;
   }
 
   return v2;
@@ -33,20 +33,20 @@
   return v2;
 }
 
-- (void)addObject:(id)a3 withPriority:(unint64_t)a4
+- (void)addObject:(id)object withPriority:(unint64_t)priority
 {
-  v11 = a3;
+  objectCopy = object;
   v6 = self->_objects;
   objc_sync_enter(v6);
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v8 = [(NSMutableDictionary *)self->_objects objectForKeyedSubscript:v7];
-  if (!v8)
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:priority];
+  array = [(NSMutableDictionary *)self->_objects objectForKeyedSubscript:v7];
+  if (!array)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    [(NSMutableDictionary *)self->_objects setObject:v8 forKeyedSubscript:v7];
+    array = [MEMORY[0x1E695DF70] array];
+    [(NSMutableDictionary *)self->_objects setObject:array forKeyedSubscript:v7];
   }
 
-  [v8 addObject:v11];
+  [array addObject:objectCopy];
   highestPriority = self->_highestPriority;
   if (!highestPriority || [(NSNumber *)highestPriority compare:v7]== NSOrderedAscending)
   {
@@ -71,7 +71,7 @@
   v4 = [(NSMutableDictionary *)self->_objects objectForKeyedSubscript:self->_highestPriority];
   if ([v4 count])
   {
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     [v4 removeObjectAtIndex:0];
     --self->_count;
   }
@@ -110,7 +110,7 @@
       v7 = v19[5];
     }
 
-    v5 = v7;
+    firstObject = v7;
     _Block_object_dispose(&v12, 8);
 
     _Block_object_dispose(&v18, 8);
@@ -118,7 +118,7 @@
 
   objc_sync_exit(v3);
 
-  return v5;
+  return firstObject;
 }
 
 - (id)popLast
@@ -128,7 +128,7 @@
   v4 = [(NSMutableDictionary *)self->_objects objectForKeyedSubscript:self->_lowestPriority];
   if ([v4 count])
   {
-    v5 = [v4 lastObject];
+    lastObject = [v4 lastObject];
     [v4 removeLastObject];
     --self->_count;
   }
@@ -167,7 +167,7 @@
       v7 = v19[5];
     }
 
-    v5 = v7;
+    lastObject = v7;
     _Block_object_dispose(&v12, 8);
 
     _Block_object_dispose(&v18, 8);
@@ -175,22 +175,22 @@
 
   objc_sync_exit(v3);
 
-  return v5;
+  return lastObject;
 }
 
-- (void)removeObject:(id)a3 atPriority:(unint64_t)a4
+- (void)removeObject:(id)object atPriority:(unint64_t)priority
 {
-  v10 = a3;
+  objectCopy = object;
   v6 = self->_objects;
   objc_sync_enter(v6);
   objects = self->_objects;
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:priority];
   v9 = [(NSMutableDictionary *)objects objectForKeyedSubscript:v8];
 
-  if ([v9 containsObject:v10])
+  if ([v9 containsObject:objectCopy])
   {
     --self->_count;
-    [v9 removeObject:v10];
+    [v9 removeObject:objectCopy];
   }
 
   objc_sync_exit(v6);
@@ -198,7 +198,7 @@
 
 - (id)allObjects
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = self->_objects;
   objc_sync_enter(v4);
   objects = self->_objects;
@@ -206,7 +206,7 @@
   v9[1] = 3221225472;
   v9[2] = __31___DASPriorityQueue_allObjects__block_invoke;
   v9[3] = &unk_1E7C8FCB8;
-  v6 = v3;
+  v6 = array;
   v10 = v6;
   [(NSMutableDictionary *)objects enumerateKeysAndObjectsUsingBlock:v9];
 

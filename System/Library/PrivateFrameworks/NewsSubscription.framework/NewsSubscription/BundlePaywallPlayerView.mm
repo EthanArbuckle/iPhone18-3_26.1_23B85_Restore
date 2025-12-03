@@ -1,6 +1,6 @@
 @interface BundlePaywallPlayerView
 + (Class)layerClass;
-- (_TtC16NewsSubscription23BundlePaywallPlayerView)initWithCoder:(id)a3;
+- (_TtC16NewsSubscription23BundlePaywallPlayerView)initWithCoder:(id)coder;
 - (void)didMoveToWindow;
 @end
 
@@ -13,7 +13,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC16NewsSubscription23BundlePaywallPlayerView)initWithCoder:(id)a3
+- (_TtC16NewsSubscription23BundlePaywallPlayerView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16NewsSubscription23BundlePaywallPlayerView_displayStateCoordinator;
   sub_1D78B5BA4();

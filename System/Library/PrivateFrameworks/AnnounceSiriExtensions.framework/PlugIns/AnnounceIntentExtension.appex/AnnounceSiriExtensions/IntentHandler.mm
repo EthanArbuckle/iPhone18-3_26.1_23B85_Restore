@@ -1,16 +1,16 @@
 @interface IntentHandler
 - (_TtC23AnnounceIntentExtension13IntentHandler)init;
-- (id)handlerForIntent:(id)a3;
-- (void)transactionDidCompleteForIntentIdentifier:(id)a3;
+- (id)handlerForIntent:(id)intent;
+- (void)transactionDidCompleteForIntentIdentifier:(id)identifier;
 @end
 
 @implementation IntentHandler
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v4 = a3;
-  v5 = self;
-  sub_100003C24(v4, v8);
+  intentCopy = intent;
+  selfCopy = self;
+  sub_100003C24(intentCopy, v8);
 
   sub_1000058D8(v8, v8[3]);
   v6 = sub_1000166A4();
@@ -31,11 +31,11 @@
   return [(IntentHandler *)&v7 init];
 }
 
-- (void)transactionDidCompleteForIntentIdentifier:(id)a3
+- (void)transactionDidCompleteForIntentIdentifier:(id)identifier
 {
   v4 = sub_1000163D4();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100004B5C(v4, v6);
 }
 

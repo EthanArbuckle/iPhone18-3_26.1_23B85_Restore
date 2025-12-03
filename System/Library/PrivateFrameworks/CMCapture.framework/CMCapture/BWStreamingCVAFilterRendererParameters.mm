@@ -1,37 +1,37 @@
 @interface BWStreamingCVAFilterRendererParameters
-- (BWStreamingCVAFilterRendererParameters)initWithColorFilter:(id)a3 colorLookupCache:(id)a4 studioAndContourRenderingEnabled:(BOOL)a5 stageRenderingEnabled:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int)prepareForRenderingWithInputVideoFormat:(id)a3;
-- (uint64_t)_ensureParametersForColorFilter:(uint64_t *)a3 outputRenderingStrategy:;
+- (BWStreamingCVAFilterRendererParameters)initWithColorFilter:(id)filter colorLookupCache:(id)cache studioAndContourRenderingEnabled:(BOOL)enabled stageRenderingEnabled:(BOOL)renderingEnabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int)prepareForRenderingWithInputVideoFormat:(id)format;
+- (uint64_t)_ensureParametersForColorFilter:(uint64_t *)filter outputRenderingStrategy:;
 - (void)dealloc;
-- (void)setColorFilter:(id)a3;
-- (void)updateByInterpolatingFromParameters:(id)a3 toParameters:(id)a4 withFractionComplete:(float)a5;
+- (void)setColorFilter:(id)filter;
+- (void)updateByInterpolatingFromParameters:(id)parameters toParameters:(id)toParameters withFractionComplete:(float)complete;
 @end
 
 @implementation BWStreamingCVAFilterRendererParameters
 
-- (BWStreamingCVAFilterRendererParameters)initWithColorFilter:(id)a3 colorLookupCache:(id)a4 studioAndContourRenderingEnabled:(BOOL)a5 stageRenderingEnabled:(BOOL)a6
+- (BWStreamingCVAFilterRendererParameters)initWithColorFilter:(id)filter colorLookupCache:(id)cache studioAndContourRenderingEnabled:(BOOL)enabled stageRenderingEnabled:(BOOL)renderingEnabled
 {
   v13.receiver = self;
   v13.super_class = BWStreamingCVAFilterRendererParameters;
   v10 = [(BWStreamingCVAFilterRendererParameters *)&v13 init];
   if (v10)
   {
-    v10->_colorFilter = a3;
-    v10->_colorLookupCache = a4;
-    v11 = [a4 colorLookupTablesForFilter:a3];
+    v10->_colorFilter = filter;
+    v10->_colorLookupCache = cache;
+    v11 = [cache colorLookupTablesForFilter:filter];
     v10->_foregroundColorLookupTable = [v11 foregroundColorLookupTable];
     v10->_backgroundColorLookupTable = [v11 backgroundColorLookupTable];
     v10->_interpolationFractionComplete = 1.0;
-    v10->_studioAndContourRenderingEnabled = a5;
-    v10->_stageRenderingEnabled = a6;
-    [(BWStreamingCVAFilterRendererParameters *)v10 _ensureParametersForColorFilter:a3 outputRenderingStrategy:&v10->_renderingStrategy];
+    v10->_studioAndContourRenderingEnabled = enabled;
+    v10->_stageRenderingEnabled = renderingEnabled;
+    [(BWStreamingCVAFilterRendererParameters *)v10 _ensureParametersForColorFilter:filter outputRenderingStrategy:&v10->_renderingStrategy];
   }
 
   return v10;
 }
 
-- (uint64_t)_ensureParametersForColorFilter:(uint64_t *)a3 outputRenderingStrategy:
+- (uint64_t)_ensureParametersForColorFilter:(uint64_t *)filter outputRenderingStrategy:
 {
   if (result && a2)
   {
@@ -76,7 +76,7 @@
             if (!result)
             {
               v7 = 0;
-              if (!a3)
+              if (!filter)
               {
                 return result;
               }
@@ -96,10 +96,10 @@
       ++v7;
     }
 
-    if (a3)
+    if (filter)
     {
 LABEL_9:
-      *a3 = v7;
+      *filter = v7;
     }
   }
 
@@ -113,7 +113,7 @@ LABEL_9:
   [(BWStreamingCVAFilterRendererParameters *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[BWStreamingCVAFilterRendererParameters alloc] initWithColorFilter:self->_colorFilter colorLookupCache:self->_colorLookupCache studioAndContourRenderingEnabled:self->_studioAndContourRenderingEnabled stageRenderingEnabled:self->_stageRenderingEnabled];
 
@@ -125,7 +125,7 @@ LABEL_9:
   return v4;
 }
 
-- (int)prepareForRenderingWithInputVideoFormat:(id)a3
+- (int)prepareForRenderingWithInputVideoFormat:(id)format
 {
   if (![(BWStreamingCVAFilterRendererParameters *)self foregroundColorLookupTable]&& ![(BWStreamingCVAFilterRendererParameters *)self backgroundColorLookupTable])
   {
@@ -141,62 +141,62 @@ LABEL_9:
   return 0;
 }
 
-- (void)updateByInterpolatingFromParameters:(id)a3 toParameters:(id)a4 withFractionComplete:(float)a5
+- (void)updateByInterpolatingFromParameters:(id)parameters toParameters:(id)toParameters withFractionComplete:(float)complete
 {
-  if ([a3 type])
+  if ([parameters type])
   {
     [BWStreamingCVAFilterRendererParameters updateByInterpolatingFromParameters:toParameters:withFractionComplete:];
   }
 
-  else if ([a4 type])
+  else if ([toParameters type])
   {
     [BWStreamingCVAFilterRendererParameters updateByInterpolatingFromParameters:toParameters:withFractionComplete:];
   }
 
   else
   {
-    self->_renderingStrategy = [a4 renderingStrategy];
-    if ([a3 colorFilter])
+    self->_renderingStrategy = [toParameters renderingStrategy];
+    if ([parameters colorFilter])
     {
-      v9 = [a3 foregroundColorLookupTable];
+      foregroundColorLookupTable = [parameters foregroundColorLookupTable];
     }
 
     else
     {
-      v9 = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
+      foregroundColorLookupTable = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
     }
 
-    v10 = v9;
-    if ([a4 colorFilter])
+    v10 = foregroundColorLookupTable;
+    if ([toParameters colorFilter])
     {
-      v11 = [a4 foregroundColorLookupTable];
-    }
-
-    else
-    {
-      v11 = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
-    }
-
-    v12 = v11;
-    if ([a3 colorFilter])
-    {
-      v13 = [a3 backgroundColorLookupTable];
+      foregroundColorLookupTable2 = [toParameters foregroundColorLookupTable];
     }
 
     else
     {
-      v13 = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
+      foregroundColorLookupTable2 = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
     }
 
-    v14 = v13;
-    if ([a4 colorFilter])
+    v12 = foregroundColorLookupTable2;
+    if ([parameters colorFilter])
     {
-      v15 = [a4 backgroundColorLookupTable];
+      backgroundColorLookupTable = [parameters backgroundColorLookupTable];
     }
 
     else
     {
-      v15 = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
+      backgroundColorLookupTable = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
+    }
+
+    v14 = backgroundColorLookupTable;
+    if ([toParameters colorFilter])
+    {
+      backgroundColorLookupTable2 = [toParameters backgroundColorLookupTable];
+    }
+
+    else
+    {
+      backgroundColorLookupTable2 = [(BWColorLookupCache *)self->_colorLookupCache identityColorLookupTable];
     }
 
     renderingStrategy = self->_renderingStrategy;
@@ -204,9 +204,9 @@ LABEL_9:
     {
       if (((1 << renderingStrategy) & 0x555) != 0)
       {
-        if (v15)
+        if (backgroundColorLookupTable2)
         {
-          v18 = v15;
+          v18 = backgroundColorLookupTable2;
         }
 
         else
@@ -219,9 +219,9 @@ LABEL_9:
           v14 = v10;
         }
 
-        *&v16 = a5;
+        *&v16 = complete;
         [(BWStreamingCVAFilterRendererParameters *)self setForegroundColorLookupTable:[(BWColorLookupCache *)self->_colorLookupCache interpolatedColorLookupTableFromTable:v10 toTable:v12 fractionComplete:v16]];
-        *&v19 = a5;
+        *&v19 = complete;
         [(BWStreamingCVAFilterRendererParameters *)self setBackgroundColorLookupTable:[(BWColorLookupCache *)self->_colorLookupCache interpolatedColorLookupTableFromTable:v14 toTable:v18 fractionComplete:v19]];
         self->_interpolationFractionComplete = 1.0;
       }
@@ -230,24 +230,24 @@ LABEL_9:
       {
         if (((1 << renderingStrategy) & 0x2A) == 0)
         {
-          -[BWStreamingCVAFilterRendererParameters setForegroundColorLookupTable:](self, "setForegroundColorLookupTable:", [a4 foregroundColorLookupTable]);
+          -[BWStreamingCVAFilterRendererParameters setForegroundColorLookupTable:](self, "setForegroundColorLookupTable:", [toParameters foregroundColorLookupTable]);
         }
 
-        self->_interpolationFractionComplete = a5;
+        self->_interpolationFractionComplete = complete;
       }
     }
   }
 }
 
-- (void)setColorFilter:(id)a3
+- (void)setColorFilter:(id)filter
 {
   colorFilter = self->_colorFilter;
-  if (colorFilter != a3)
+  if (colorFilter != filter)
   {
 
-    self->_colorFilter = a3;
+    self->_colorFilter = filter;
 
-    [(BWStreamingCVAFilterRendererParameters *)self _ensureParametersForColorFilter:a3 outputRenderingStrategy:&self->_renderingStrategy];
+    [(BWStreamingCVAFilterRendererParameters *)self _ensureParametersForColorFilter:filter outputRenderingStrategy:&self->_renderingStrategy];
   }
 }
 

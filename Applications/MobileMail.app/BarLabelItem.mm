@@ -1,8 +1,8 @@
 @interface BarLabelItem
 + (id)_boldAttributes;
 + (id)_defaultAttributes;
-- (BarLabelItem)initWithTitle:(id)a3 width:(double)a4 style:(int64_t)a5;
-- (void)setTitle:(id)a3;
+- (BarLabelItem)initWithTitle:(id)title width:(double)width style:(int64_t)style;
+- (void)setTitle:(id)title;
 @end
 
 @implementation BarLabelItem
@@ -31,9 +31,9 @@
   return v3;
 }
 
-- (BarLabelItem)initWithTitle:(id)a3 width:(double)a4 style:(int64_t)a5
+- (BarLabelItem)initWithTitle:(id)title width:(double)width style:(int64_t)style
 {
-  v7 = a3;
+  titleCopy = title;
   v8 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v12.receiver = self;
   v12.super_class = BarLabelItem;
@@ -41,20 +41,20 @@
   v10 = v9;
   if (v9)
   {
-    v9->_itemStyle = a5;
-    [(BarLabelItem *)v9 setTitle:v7];
+    v9->_itemStyle = style;
+    [(BarLabelItem *)v9 setTitle:titleCopy];
   }
 
   return v10;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v9 = a3;
-  v4 = [(BarLabelItem *)self customView];
-  if (!v9)
+  titleCopy = title;
+  customView = [(BarLabelItem *)self customView];
+  if (!titleCopy)
   {
-    [v4 setText:0];
+    [customView setText:0];
     goto LABEL_10;
   }
 
@@ -67,19 +67,19 @@
       goto LABEL_9;
     }
 
-    v6 = [objc_opt_class() _boldAttributes];
+    _boldAttributes = [objc_opt_class() _boldAttributes];
   }
 
   else
   {
-    v6 = [objc_opt_class() _defaultAttributes];
+    _boldAttributes = [objc_opt_class() _defaultAttributes];
   }
 
-  v7 = v6;
+  v7 = _boldAttributes;
 LABEL_9:
-  v8 = [[NSAttributedString alloc] initWithString:v9 attributes:v7];
-  [v4 setAttributedText:v8];
-  [v4 sizeToFit];
+  v8 = [[NSAttributedString alloc] initWithString:titleCopy attributes:v7];
+  [customView setAttributedText:v8];
+  [customView sizeToFit];
 
 LABEL_10:
 }

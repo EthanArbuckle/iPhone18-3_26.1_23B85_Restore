@@ -7,10 +7,10 @@
 
 - (id)aa_removeFirstObject
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 objectAtIndex:0];
-    [a1 removeObjectAtIndex:0];
+    v2 = [self objectAtIndex:0];
+    [self removeObjectAtIndex:0];
   }
 
   else
@@ -23,10 +23,10 @@
 
 - (id)aa_removeLastObject
 {
-  v2 = [a1 lastObject];
-  [a1 removeLastObject];
+  lastObject = [self lastObject];
+  [self removeLastObject];
 
-  return v2;
+  return lastObject;
 }
 
 @end

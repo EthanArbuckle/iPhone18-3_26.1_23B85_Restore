@@ -2,7 +2,7 @@
 + (id)crlwp_allQuotesCharacterSetExcludingLeft;
 + (id)crlwp_allQuotesCharacterSetExcludingRight;
 + (id)crlwp_breakingSpaceCharacterSet;
-+ (id)crlwp_characterSetWithCharactersInArray:(const unsigned __int16 *)a3 length:(unint64_t)a4;
++ (id)crlwp_characterSetWithCharactersInArray:(const unsigned __int16 *)array length:(unint64_t)length;
 + (id)crlwp_curlyQuotesCharacterSet;
 + (id)crlwp_invisibleCharacterSet;
 + (id)crlwp_sentenceDelimiterCharacterSet;
@@ -15,9 +15,9 @@
 
 @implementation NSCharacterSet
 
-+ (id)crlwp_characterSetWithCharactersInArray:(const unsigned __int16 *)a3 length:(unint64_t)a4
++ (id)crlwp_characterSetWithCharactersInArray:(const unsigned __int16 *)array length:(unint64_t)length
 {
-  v4 = [NSString stringWithCharacters:a3 length:a4];
+  v4 = [NSString stringWithCharacters:array length:length];
   v5 = [NSCharacterSet characterSetWithCharactersInString:v4];
 
   return v5;

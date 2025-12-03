@@ -1,22 +1,22 @@
 @interface MAAIRBMobileAssetAssetSelector
 - (MAAIRBMobileAssetAssetSelector)init;
-- (MAAIRBMobileAssetAssetSelector)initWithAssetType:(id)a3 assetSpecifier:(id)a4 assetVersion:(id)a5;
+- (MAAIRBMobileAssetAssetSelector)initWithAssetType:(id)type assetSpecifier:(id)specifier assetVersion:(id)version;
 @end
 
 @implementation MAAIRBMobileAssetAssetSelector
 
-- (MAAIRBMobileAssetAssetSelector)initWithAssetType:(id)a3 assetSpecifier:(id)a4 assetVersion:(id)a5
+- (MAAIRBMobileAssetAssetSelector)initWithAssetType:(id)type assetSpecifier:(id)specifier assetVersion:(id)version
 {
-  if (a3)
+  if (type)
   {
     sub_303948();
-    if (a4)
+    if (specifier)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    if (!a5)
+    if (!version)
     {
       return sub_250E2C();
     }
@@ -24,14 +24,14 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!specifier)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   sub_303948();
-  if (a5)
+  if (version)
   {
 LABEL_4:
     sub_303948();

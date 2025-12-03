@@ -1,22 +1,22 @@
 @interface _UITabSidebarCell
-- (_UITabSidebarCell)initWithFrame:(CGRect)a3;
+- (_UITabSidebarCell)initWithFrame:(CGRect)frame;
 - (id)updatedSidebarItemForCurrentConfigurationState;
 - (void)_updateBackgroundConfiguration;
 - (void)_updateDisabledStateIfNeeded;
 - (void)prepareForReuse;
-- (void)setEditing:(BOOL)a3;
-- (void)setOriginalBackgroundConfiguration:(id)a3;
-- (void)setSidebarItem:(uint64_t)a1;
+- (void)setEditing:(BOOL)editing;
+- (void)setOriginalBackgroundConfiguration:(id)configuration;
+- (void)setSidebarItem:(uint64_t)item;
 @end
 
 @implementation _UITabSidebarCell
 
-- (_UITabSidebarCell)initWithFrame:(CGRect)a3
+- (_UITabSidebarCell)initWithFrame:(CGRect)frame
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = _UITabSidebarCell;
-  v3 = [(UICollectionViewListCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionViewListCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,61 +31,61 @@
 
 - (id)updatedSidebarItemForCurrentConfigurationState
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = a1[110];
+    v2 = self[110];
     if (v2)
     {
       v3 = v2;
-      v4 = [v1 contentConfiguration];
-      [v3 setContentConfiguration:v4];
+      contentConfiguration = [selfCopy contentConfiguration];
+      [v3 setContentConfiguration:contentConfiguration];
 
-      v5 = [v1 originalBackgroundConfiguration];
-      if (v5)
+      originalBackgroundConfiguration = [selfCopy originalBackgroundConfiguration];
+      if (originalBackgroundConfiguration)
       {
-        [v3 setBackgroundConfiguration:v5];
+        [v3 setBackgroundConfiguration:originalBackgroundConfiguration];
       }
 
       else
       {
-        v6 = [v1 backgroundConfiguration];
-        [v3 setBackgroundConfiguration:v6];
+        backgroundConfiguration = [selfCopy backgroundConfiguration];
+        [v3 setBackgroundConfiguration:backgroundConfiguration];
       }
 
-      v7 = [v1 configurationState];
-      v1 = [v3 _updatedItemUsingState:v7];
+      configurationState = [selfCopy configurationState];
+      selfCopy = [v3 _updatedItemUsingState:configurationState];
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)setSidebarItem:(uint64_t)a1
+- (void)setSidebarItem:(uint64_t)item
 {
   v3 = a2;
-  if (a1)
+  if (item)
   {
     v15 = v3;
-    if (*(a1 + 876))
+    if (*(item + 876))
     {
-      v4 = *(a1 + 880);
-      v5 = v3;
+      v4 = *(item + 880);
+      action2 = v3;
       v6 = v4;
-      v7 = v6;
-      if (v6 == v5)
+      accessibilityIdentifier = v6;
+      if (v6 == action2)
       {
         goto LABEL_13;
       }
 
-      if (v5 && v6)
+      if (action2 && v6)
       {
-        v8 = [v5 isEqual:v6];
+        v8 = [action2 isEqual:v6];
 
         v3 = v15;
         if (v8)
@@ -100,35 +100,35 @@
     }
 
     v9 = [v15 copy];
-    v10 = *(a1 + 880);
-    *(a1 + 880) = v9;
+    v10 = *(item + 880);
+    *(item + 880) = v9;
 
     if (v15)
     {
-      *(a1 + 876) |= 1u;
+      *(item + 876) |= 1u;
     }
 
-    v11 = [v15 contentConfiguration];
-    [a1 setContentConfiguration:v11];
+    contentConfiguration = [v15 contentConfiguration];
+    [item setContentConfiguration:contentConfiguration];
 
-    v12 = [v15 backgroundConfiguration];
-    [a1 setOriginalBackgroundConfiguration:v12];
+    backgroundConfiguration = [v15 backgroundConfiguration];
+    [item setOriginalBackgroundConfiguration:backgroundConfiguration];
 
-    v13 = [v15 _resolvedAccessories];
-    [a1 setAccessories:v13];
+    _resolvedAccessories = [v15 _resolvedAccessories];
+    [item setAccessories:_resolvedAccessories];
 
-    [(_UITabSidebarCell *)a1 _updateDisabledStateIfNeeded];
-    v14 = [v15 action];
+    [(_UITabSidebarCell *)item _updateDisabledStateIfNeeded];
+    action = [v15 action];
 
-    if (!v14)
+    if (!action)
     {
-      [a1 setAccessibilityIdentifier:0];
+      [item setAccessibilityIdentifier:0];
       goto LABEL_15;
     }
 
-    v5 = [v15 action];
-    v7 = [v5 accessibilityIdentifier];
-    [a1 setAccessibilityIdentifier:v7];
+    action2 = [v15 action];
+    accessibilityIdentifier = [action2 accessibilityIdentifier];
+    [item setAccessibilityIdentifier:accessibilityIdentifier];
 LABEL_13:
 
 LABEL_15:
@@ -140,62 +140,62 @@ LABEL_16:
 
 - (void)_updateDisabledStateIfNeeded
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = *(a1 + 880);
+  v2 = *(self + 880);
   v8 = v2;
-  if (!v2 || (*(a1 + 876) & 1) == 0)
+  if (!v2 || (*(self + 876) & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v4 = [v2 action];
-  if (v4)
+  action = [v2 action];
+  if (action)
   {
 
 LABEL_11:
-    if ([a1 isEditing])
+    if ([self isEditing])
     {
-      v3 = 0;
+      isEnabled = 0;
       goto LABEL_5;
     }
 
-    v7 = [v8 action];
-    v3 = ([v7 attributes] & 1) == 0;
+    action2 = [v8 action];
+    isEnabled = ([action2 attributes] & 1) == 0;
 LABEL_14:
 
     goto LABEL_5;
   }
 
   v5 = [v8 tab];
-  v6 = [v5 _isAction];
+  _isAction = [v5 _isAction];
 
-  if (v6)
+  if (_isAction)
   {
     goto LABEL_11;
   }
 
-  if (([a1 isEditing] & 1) == 0)
+  if (([self isEditing] & 1) == 0)
   {
-    v7 = [v8 tab];
-    v3 = [v7 isEnabled];
+    action2 = [v8 tab];
+    isEnabled = [action2 isEnabled];
     goto LABEL_14;
   }
 
 LABEL_4:
-  v3 = 1;
+  isEnabled = 1;
 LABEL_5:
-  [a1 setUserInteractionEnabled:v3];
+  [self setUserInteractionEnabled:isEnabled];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
   v4.receiver = self;
   v4.super_class = _UITabSidebarCell;
-  [(UICollectionViewListCell *)&v4 setEditing:a3];
+  [(UICollectionViewListCell *)&v4 setEditing:editing];
   [(_UITabSidebarCell *)self _updateDisabledStateIfNeeded];
 }
 
@@ -210,9 +210,9 @@ LABEL_5:
   }
 }
 
-- (void)setOriginalBackgroundConfiguration:(id)a3
+- (void)setOriginalBackgroundConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_originalBackgroundConfiguration, a3);
+  objc_storeStrong(&self->_originalBackgroundConfiguration, configuration);
 
   [(_UITabSidebarCell *)self _updateBackgroundConfiguration];
 }
@@ -231,8 +231,8 @@ LABEL_5:
 
   else
   {
-    v5 = [(_UITabSidebarCell *)self originalBackgroundConfiguration];
-    [(UICollectionViewCell *)self setBackgroundConfiguration:v5];
+    originalBackgroundConfiguration = [(_UITabSidebarCell *)self originalBackgroundConfiguration];
+    [(UICollectionViewCell *)self setBackgroundConfiguration:originalBackgroundConfiguration];
   }
 }
 

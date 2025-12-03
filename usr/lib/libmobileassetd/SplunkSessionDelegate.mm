@@ -1,48 +1,48 @@
 @interface SplunkSessionDelegate
-- (SplunkSessionDelegate)initWithDownloadManager:(id)a3;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (SplunkSessionDelegate)initWithDownloadManager:(id)manager;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 @end
 
 @implementation SplunkSessionDelegate
 
-- (SplunkSessionDelegate)initWithDownloadManager:(id)a3
+- (SplunkSessionDelegate)initWithDownloadManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SplunkSessionDelegate;
   v6 = [(SplunkSessionDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_downloadManager, a3);
+    objc_storeStrong(&v6->_downloadManager, manager);
   }
 
   return v7;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   v11 = objc_autoreleasePoolPush();
-  if (v9)
+  if (taskCopy)
   {
-    v12 = [v9 taskDescription];
-    v13 = [v9 response];
-    v14 = v13;
-    if (v13)
+    taskDescription = [taskCopy taskDescription];
+    response = [taskCopy response];
+    v14 = response;
+    if (response)
     {
-      v15 = [v13 statusCode];
+      statusCode = [response statusCode];
     }
 
     else
     {
-      v15 = 0;
+      statusCode = 0;
     }
 
-    v18 = v15 != stru_B8.segname && v15 != &stru_B8.segname[6];
-    if (!v10 && !v18)
+    v18 = statusCode != stru_B8.segname && statusCode != &stru_B8.segname[6];
+    if (!errorCopy && !v18)
     {
       v19 = 1;
       goto LABEL_20;
@@ -52,7 +52,7 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v21 = 134217984;
-      v22 = v15;
+      v22 = statusCode;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "Network error: %ld", &v21, 0xCu);
     }
   }
@@ -67,8 +67,8 @@
     }
 
     v14 = 0;
-    v15 = 0;
-    v12 = 0;
+    statusCode = 0;
+    taskDescription = 0;
   }
 
   v19 = 0;
@@ -77,17 +77,17 @@ LABEL_20:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138544130;
-    v22 = v12;
+    v22 = taskDescription;
     v23 = 1024;
     v24 = v19;
     v25 = 2048;
-    v26 = v15;
+    v26 = statusCode;
     v27 = 2114;
-    v28 = v10;
+    v28 = errorCopy;
     _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Splunk report result for %{public}@: %d, code:%ld error: %{public}@", &v21, 0x26u);
   }
 
-  [(DownloadManager *)self->_downloadManager handleSplunkReportFinished:v12 result:v19];
+  [(DownloadManager *)self->_downloadManager handleSplunkReportFinished:taskDescription result:v19];
   objc_autoreleasePoolPop(v11);
 }
 

@@ -1,18 +1,18 @@
 @interface COSHapticsViewController
-- (COSHapticsViewController)initWithCoder:(id)a3;
-- (COSHapticsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)volumeControllerDidUpdateHapticState:(id)a3;
+- (COSHapticsViewController)initWithCoder:(id)coder;
+- (COSHapticsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)volumeControllerDidUpdateHapticState:(id)state;
 @end
 
 @implementation COSHapticsViewController
 
-- (COSHapticsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (COSHapticsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -24,12 +24,12 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  sub_10013E6A4(v5, v7, a4);
+  bundleCopy = bundle;
+  sub_10013E6A4(v5, v7, bundle);
   return result;
 }
 
-- (COSHapticsViewController)initWithCoder:(id)a3
+- (COSHapticsViewController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR___COSHapticsViewController_hapticStateSpecifierIdentifierMap;
   *&self->BPSListController_opaque[v3] = sub_10013F624(&off_10026D2D8);
@@ -38,11 +38,11 @@
   return result;
 }
 
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target
 {
-  if (a4)
+  if (target)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -51,7 +51,7 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7 = String._bridgeToObjectiveC()();
@@ -64,39 +64,39 @@
   return v8;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10013E9BC(a3);
+  selfCopy = self;
+  sub_10013E9BC(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for HapticsViewController();
   v4 = v5.receiver;
-  [(COSHapticsViewController *)&v5 viewWillDisappear:v3];
+  [(COSHapticsViewController *)&v5 viewWillDisappear:disappearCopy];
   [*&v4[OBJC_IVAR___COSHapticsViewController_volumeController] endObservingHaptics];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_10013EF9C(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10013EF9C(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)volumeControllerDidUpdateHapticState:(id)a3
+- (void)volumeControllerDidUpdateHapticState:(id)state
 {
-  v3 = self;
+  selfCopy = self;
   sub_10013F234();
 }
 

@@ -1,15 +1,15 @@
 @interface CMDataContainer
 + (id)classes;
 - (CMDataContainer)init;
-- (CMDataContainer)initWithCoder:(id)a3;
+- (CMDataContainer)initWithCoder:(id)coder;
 - (id)grabNextDataRecv;
 - (id)grabNextDataSent;
 - (id)grabNextEvent;
 - (id)grabNextMessageRecv;
 - (id)grabNextMessageSent;
-- (void)appendCMData:(id)a3 sending:(BOOL)a4;
-- (void)appendCMMessage:(id)a3 sending:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendCMData:(id)data sending:(BOOL)sending;
+- (void)appendCMMessage:(id)message sending:(BOOL)sending;
+- (void)encodeWithCoder:(id)coder;
 - (void)resetReader;
 @end
 
@@ -79,60 +79,60 @@
   return v2;
 }
 
-- (CMDataContainer)initWithCoder:(id)a3
+- (CMDataContainer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = CMDataContainer;
   v5 = [(CMDataContainer *)&v32 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectForKey:@"v"];
+    v7 = [coderCopy decodeObjectForKey:@"v"];
     version = v5->_version;
     v5->_version = v7;
 
-    v9 = [v4 decodeObjectForKey:@"cv"];
+    v9 = [coderCopy decodeObjectForKey:@"cv"];
     cvPlayerVersion = v5->_cvPlayerVersion;
     v5->_cvPlayerVersion = v9;
 
-    v11 = [v4 decodeObjectForKey:@"cv3d"];
+    v11 = [coderCopy decodeObjectForKey:@"cv3d"];
     cv3dVersion = v5->_cv3dVersion;
     v5->_cv3dVersion = v11;
 
-    v13 = [v4 decodeObjectForKey:@"iOS"];
+    v13 = [coderCopy decodeObjectForKey:@"iOS"];
     iOSVersion = v5->_iOSVersion;
     v5->_iOSVersion = v13;
 
-    v15 = [v4 decodeObjectForKey:@"macOS"];
+    v15 = [coderCopy decodeObjectForKey:@"macOS"];
     macOSVersion = v5->_macOSVersion;
     v5->_macOSVersion = v15;
 
-    v17 = [v4 decodeObjectForKey:@"hw"];
+    v17 = [coderCopy decodeObjectForKey:@"hw"];
     deviceString = v5->_deviceString;
     v5->_deviceString = v17;
 
-    v19 = [v4 decodeObjectForKey:@"sid"];
+    v19 = [coderCopy decodeObjectForKey:@"sid"];
     sessionID = v5->_sessionID;
     v5->_sessionID = v19;
 
-    v21 = [v4 decodeObjectForKey:@"dsd"];
+    v21 = [coderCopy decodeObjectForKey:@"dsd"];
     cmDataSent = v5->_cmDataSent;
     v5->_cmDataSent = v21;
 
-    v23 = [v4 decodeObjectForKey:@"drv"];
+    v23 = [coderCopy decodeObjectForKey:@"drv"];
     cmDataRecv = v5->_cmDataRecv;
     v5->_cmDataRecv = v23;
 
-    v25 = [v4 decodeObjectForKey:@"ds"];
+    v25 = [coderCopy decodeObjectForKey:@"ds"];
     cmMsgSent = v5->_cmMsgSent;
     v5->_cmMsgSent = v25;
 
-    v27 = [v4 decodeObjectForKey:@"dr"];
+    v27 = [coderCopy decodeObjectForKey:@"dr"];
     cmMsgRecv = v5->_cmMsgRecv;
     v5->_cmMsgRecv = v27;
 
-    v29 = [v4 decodeObjectForKey:@"e"];
+    v29 = [coderCopy decodeObjectForKey:@"e"];
     cmEvents = v5->_cmEvents;
     v5->_cmEvents = v29;
 
@@ -143,50 +143,50 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v5 encodeObject:self->_version forKey:@"v"];
-  [v5 encodeObject:self->_cvPlayerVersion forKey:@"cv"];
-  [v5 encodeObject:self->_cv3dVersion forKey:@"cv3d"];
-  [v5 encodeObject:self->_iOSVersion forKey:@"ios"];
-  [v5 encodeObject:self->_macOSVersion forKey:@"macOS"];
-  [v5 encodeObject:self->_deviceString forKey:@"hw"];
-  [v5 encodeObject:self->_sessionID forKey:@"sid"];
-  [v5 encodeObject:self->_cmDataSent forKey:@"dsd"];
-  [v5 encodeObject:self->_cmDataRecv forKey:@"drv"];
-  [v5 encodeObject:self->_cmMsgSent forKey:@"ds"];
-  [v5 encodeObject:self->_cmMsgRecv forKey:@"dr"];
-  [v5 encodeObject:self->_cmEvents forKey:@"e"];
+  [coderCopy encodeObject:self->_version forKey:@"v"];
+  [coderCopy encodeObject:self->_cvPlayerVersion forKey:@"cv"];
+  [coderCopy encodeObject:self->_cv3dVersion forKey:@"cv3d"];
+  [coderCopy encodeObject:self->_iOSVersion forKey:@"ios"];
+  [coderCopy encodeObject:self->_macOSVersion forKey:@"macOS"];
+  [coderCopy encodeObject:self->_deviceString forKey:@"hw"];
+  [coderCopy encodeObject:self->_sessionID forKey:@"sid"];
+  [coderCopy encodeObject:self->_cmDataSent forKey:@"dsd"];
+  [coderCopy encodeObject:self->_cmDataRecv forKey:@"drv"];
+  [coderCopy encodeObject:self->_cmMsgSent forKey:@"ds"];
+  [coderCopy encodeObject:self->_cmMsgRecv forKey:@"dr"];
+  [coderCopy encodeObject:self->_cmEvents forKey:@"e"];
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)appendCMData:(id)a3 sending:(BOOL)a4
+- (void)appendCMData:(id)data sending:(BOOL)sending
 {
-  v4 = a4;
-  v8 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
+  sendingCopy = sending;
+  dataCopy = data;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = 112;
-  if (v4)
+  if (sendingCopy)
   {
     v7 = 104;
   }
 
-  [*(&v6->super.isa + v7) addObject:v8];
-  objc_sync_exit(v6);
+  [*(&selfCopy->super.isa + v7) addObject:dataCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)appendCMMessage:(id)a3 sending:(BOOL)a4
+- (void)appendCMMessage:(id)message sending:(BOOL)sending
 {
   v4 = 128;
-  if (a4)
+  if (sending)
   {
     v4 = 120;
   }
 
-  [*(&self->super.isa + v4) addObject:a3];
+  [*(&self->super.isa + v4) addObject:message];
 }
 
 - (id)grabNextDataRecv

@@ -12,29 +12,29 @@
 + (id)ds_alertControllerWithStopSharingError:()DigitalSeparation
 {
   v4 = a3;
-  v5 = [v4 ds_underlyingErrorsBySource];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D05460]];
-  v7 = [v6 domain];
-  v8 = [v7 isEqualToString:*MEMORY[0x277D05430]];
+  ds_underlyingErrorsBySource = [v4 ds_underlyingErrorsBySource];
+  v6 = [ds_underlyingErrorsBySource objectForKeyedSubscript:*MEMORY[0x277D05460]];
+  domain = [v6 domain];
+  v8 = [domain isEqualToString:*MEMORY[0x277D05430]];
 
   if (v8)
   {
-    v9 = [v6 underlyingErrors];
-    v10 = [v9 firstObject];
+    underlyingErrors = [v6 underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
 
-    v6 = v10;
+    v6 = firstObject;
   }
 
-  v11 = [v6 domain];
-  if ([v11 isEqualToString:@"HMDigitalSeparationErrorDomain"])
+  domain2 = [v6 domain];
+  if ([domain2 isEqualToString:@"HMDigitalSeparationErrorDomain"])
   {
-    v12 = [v6 code];
+    code = [v6 code];
 
-    if (v12 == 1)
+    if (code == 1)
     {
-      v13 = DSUILocStringForKey(@"STOP_SHARING_FAILED_WITH_PIN_CODE_ERROR_MESSAGE");
+      ds_localizedAppNames = DSUILocStringForKey(@"STOP_SHARING_FAILED_WITH_PIN_CODE_ERROR_MESSAGE");
       v14 = DSUILocStringForKey(@"STOP_SHARING_FAILED_WITH_PIN_CODE_ERROR_TITLE");
-      v15 = [a1 alertControllerWithTitle:v14 message:v13 preferredStyle:1];
+      v15 = [self alertControllerWithTitle:v14 message:ds_localizedAppNames preferredStyle:1];
       goto LABEL_22;
     }
   }
@@ -43,16 +43,16 @@
   {
   }
 
-  v13 = [v4 ds_localizedAppNames];
-  if ([v13 count] == 1)
+  ds_localizedAppNames = [v4 ds_localizedAppNames];
+  if ([ds_localizedAppNames count] == 1)
   {
     v16 = MEMORY[0x277CCACA8];
     v17 = DSUILocStringForKey(@"STOP_SHARING_FAILED_TITLE_WITH_APP_NAME");
-    v18 = [v13 firstObject];
-    v19 = [v16 stringWithFormat:v17, v18];
+    firstObject2 = [ds_localizedAppNames firstObject];
+    v19 = [v16 stringWithFormat:v17, firstObject2];
 
-    v20 = [v4 underlyingErrors];
-    if (__79__UIAlertController_DigitalSeparation__ds_alertControllerWithStopSharingError___block_invoke(v20, v20))
+    underlyingErrors2 = [v4 underlyingErrors];
+    if (__79__UIAlertController_DigitalSeparation__ds_alertControllerWithStopSharingError___block_invoke(underlyingErrors2, underlyingErrors2))
     {
       v21 = @"STOP_SHARING_SOURCE_FAILED_RESTRICTIONS_SINGLE_APP";
     }
@@ -65,13 +65,13 @@
     v22 = DSUILocStringForKey(v21);
 
     v23 = MEMORY[0x277CCACA8];
-    v24 = [v13 firstObject];
-    [v23 stringWithFormat:v22, v24];
+    firstObject3 = [ds_localizedAppNames firstObject];
+    [v23 stringWithFormat:v22, firstObject3];
   }
 
   else
   {
-    v25 = [v13 count];
+    v25 = [ds_localizedAppNames count];
     v19 = DSUILocStringForKey(@"STOP_SHARING_FAILED_TITLE");
     if (v25 < 2)
     {
@@ -79,9 +79,9 @@
       goto LABEL_19;
     }
 
-    v22 = [MEMORY[0x277CCAAF0] localizedStringByJoiningStrings:v13];
-    v26 = [v4 underlyingErrors];
-    if (__79__UIAlertController_DigitalSeparation__ds_alertControllerWithStopSharingError___block_invoke(v26, v26))
+    v22 = [MEMORY[0x277CCAAF0] localizedStringByJoiningStrings:ds_localizedAppNames];
+    underlyingErrors3 = [v4 underlyingErrors];
+    if (__79__UIAlertController_DigitalSeparation__ds_alertControllerWithStopSharingError___block_invoke(underlyingErrors3, underlyingErrors3))
     {
       v27 = @"STOP_SHARING_SOURCE_FAILED_RESTRICTIONS_MULTIPLE_APPS";
     }
@@ -91,9 +91,9 @@
       v27 = @"STOP_SHARING_FAILED_WITH_MULTIPLE_APPS";
     }
 
-    v24 = DSUILocStringForKey(v27);
+    firstObject3 = DSUILocStringForKey(v27);
 
-    [MEMORY[0x277CCACA8] stringWithFormat:v24, v22];
+    [MEMORY[0x277CCACA8] stringWithFormat:firstObject3, v22];
   }
   v14 = ;
 
@@ -101,13 +101,13 @@ LABEL_19:
   if (os_variant_has_internal_content())
   {
     v28 = MEMORY[0x277CCACA8];
-    v29 = [v4 ds_underlyingErrorsBySource];
-    v30 = [v28 stringWithFormat:@"%@\n\nInternal Only: %@", v14, v29];
+    ds_underlyingErrorsBySource2 = [v4 ds_underlyingErrorsBySource];
+    v30 = [v28 stringWithFormat:@"%@\n\nInternal Only: %@", v14, ds_underlyingErrorsBySource2];
 
     v14 = v30;
   }
 
-  v15 = [a1 alertControllerWithTitle:v19 message:v14 preferredStyle:1];
+  v15 = [self alertControllerWithTitle:v19 message:v14 preferredStyle:1];
 
 LABEL_22:
 
@@ -119,16 +119,16 @@ LABEL_22:
   v4 = a3;
   if (_os_feature_enabled_impl())
   {
-    v5 = [[DSErrorDescriptor alloc] initWithStopSharingErrors:v4];
-    v6 = [(DSErrorDescriptor *)v5 localizedTitle];
-    v7 = [(DSErrorDescriptor *)v5 localizedMessage];
-    v8 = [a1 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+    lastObject = [[DSErrorDescriptor alloc] initWithStopSharingErrors:v4];
+    localizedTitle = [(DSErrorDescriptor *)lastObject localizedTitle];
+    localizedMessage = [(DSErrorDescriptor *)lastObject localizedMessage];
+    v8 = [self alertControllerWithTitle:localizedTitle message:localizedMessage preferredStyle:1];
   }
 
   else
   {
-    v5 = [v4 lastObject];
-    v8 = [a1 ds_alertControllerWithStopSharingError:v5];
+    lastObject = [v4 lastObject];
+    v8 = [self ds_alertControllerWithStopSharingError:lastObject];
   }
 
   return v8;
@@ -139,66 +139,66 @@ LABEL_22:
   v4 = a3;
   if (_os_feature_enabled_impl())
   {
-    v5 = [[DSErrorDescriptor alloc] initWithFetchSharingError:v4];
-    v6 = [(DSErrorDescriptor *)v5 localizedTitle];
-    v7 = [(DSErrorDescriptor *)v5 localizedMessage];
+    ds_localizedAppNames = [[DSErrorDescriptor alloc] initWithFetchSharingError:v4];
+    localizedTitle = [(DSErrorDescriptor *)ds_localizedAppNames localizedTitle];
+    localizedMessage = [(DSErrorDescriptor *)ds_localizedAppNames localizedMessage];
   }
 
   else
   {
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 ds_localizedAppNames];
+      ds_localizedAppNames = [v4 ds_localizedAppNames];
     }
 
     else
     {
       NSLog(&cfstr_HandlingFetchE.isa, v4);
-      v5 = MEMORY[0x277CBEBF8];
+      ds_localizedAppNames = MEMORY[0x277CBEBF8];
     }
 
-    if ([(DSErrorDescriptor *)v5 count])
+    if ([(DSErrorDescriptor *)ds_localizedAppNames count])
     {
-      if ([(DSErrorDescriptor *)v5 count]== 1)
+      if ([(DSErrorDescriptor *)ds_localizedAppNames count]== 1)
       {
         v8 = MEMORY[0x277CCACA8];
         v9 = DSUILocStringForKey(@"FETCH_SHARING_FAILED_TITLE_WITH_APP_NAME");
-        v10 = [(DSErrorDescriptor *)v5 firstObject];
-        v6 = [v8 stringWithFormat:v9, v10];
+        firstObject = [(DSErrorDescriptor *)ds_localizedAppNames firstObject];
+        localizedTitle = [v8 stringWithFormat:v9, firstObject];
 
         v11 = MEMORY[0x277CCACA8];
         v12 = DSUILocStringForKey(@"FETCH_SHARING_FAILED_WITH_APP_NAME");
-        v13 = [(DSErrorDescriptor *)v5 firstObject];
-        [v11 stringWithFormat:v12, v13];
+        firstObject2 = [(DSErrorDescriptor *)ds_localizedAppNames firstObject];
+        [v11 stringWithFormat:v12, firstObject2];
       }
 
       else
       {
-        v6 = DSUILocStringForKey(@"FETCH_SHARING_FAILED_TITLE");
-        v12 = [MEMORY[0x277CCAAF0] localizedStringByJoiningStrings:v5];
-        v13 = DSUILocStringForKey(@"FETCH_SHARING_FAILED_WITH_MULTIPLE_APPS");
-        [MEMORY[0x277CCACA8] stringWithFormat:v13, v12];
+        localizedTitle = DSUILocStringForKey(@"FETCH_SHARING_FAILED_TITLE");
+        v12 = [MEMORY[0x277CCAAF0] localizedStringByJoiningStrings:ds_localizedAppNames];
+        firstObject2 = DSUILocStringForKey(@"FETCH_SHARING_FAILED_WITH_MULTIPLE_APPS");
+        [MEMORY[0x277CCACA8] stringWithFormat:firstObject2, v12];
       }
-      v7 = ;
+      localizedMessage = ;
     }
 
     else
     {
-      v6 = DSUILocStringForKey(@"FETCH_SHARING_FAILED_TITLE");
-      v7 = DSUILocStringForKey(@"FETCH_SHARING_FAILED");
+      localizedTitle = DSUILocStringForKey(@"FETCH_SHARING_FAILED_TITLE");
+      localizedMessage = DSUILocStringForKey(@"FETCH_SHARING_FAILED");
     }
 
     if (os_variant_has_internal_content() && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v14 = MEMORY[0x277CCACA8];
-      v15 = [v4 ds_underlyingErrorsBySource];
-      v16 = [v14 stringWithFormat:@"%@\n\nInternal Only: %@", v7, v15];
+      ds_underlyingErrorsBySource = [v4 ds_underlyingErrorsBySource];
+      v16 = [v14 stringWithFormat:@"%@\n\nInternal Only: %@", localizedMessage, ds_underlyingErrorsBySource];
 
-      v7 = v16;
+      localizedMessage = v16;
     }
   }
 
-  v17 = [a1 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  v17 = [self alertControllerWithTitle:localizedTitle message:localizedMessage preferredStyle:1];
 
   return v17;
 }
@@ -208,9 +208,9 @@ LABEL_22:
   v4 = a3;
   if ([v4 code] == 8)
   {
-    v5 = [v4 userInfo];
+    userInfo = [v4 userInfo];
 
-    v4 = [v5 objectForKeyedSubscript:*MEMORY[0x277D05438]];
+    v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D05438]];
 
     v6 = MEMORY[0x277CCACA8];
     v7 = DSUILocStringForKey(@"DELETE_APP_FAILED_TITLE");
@@ -220,7 +220,7 @@ LABEL_22:
     v10 = DSUILocStringForKey(@"DELETE_APP_FAILED_RESTRICTIONS");
     v11 = [v9 stringWithFormat:v10, v4];
 
-    v12 = [a1 alertControllerWithTitle:v8 message:v11 preferredStyle:1];
+    v12 = [self alertControllerWithTitle:v8 message:v11 preferredStyle:1];
   }
 
   else
@@ -236,17 +236,17 @@ LABEL_22:
 {
   v32 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 ds_localizedPermissionNames];
+  ds_localizedPermissionNames = [v4 ds_localizedPermissionNames];
   v6 = MEMORY[0x277CCAAF0];
-  v7 = [v5 allObjects];
-  v8 = [v6 localizedStringByJoiningStrings:v7];
+  allObjects = [ds_localizedPermissionNames allObjects];
+  v8 = [v6 localizedStringByJoiningStrings:allObjects];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [v4 underlyingErrors];
-  v10 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  underlyingErrors = [v4 underlyingErrors];
+  v10 = [underlyingErrors countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v10)
   {
     v11 = v10;
@@ -258,20 +258,20 @@ LABEL_22:
       {
         if (*v28 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(underlyingErrors);
         }
 
         v12 |= [*(*(&v27 + 1) + 8 * i) code] == 7;
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v11 = [underlyingErrors countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v11);
 
     if (v12)
     {
-      if ([v5 count] == 1)
+      if ([ds_localizedPermissionNames count] == 1)
       {
         v15 = MEMORY[0x277CCACA8];
         v16 = DSUILocStringForKey(@"RESET_APP_PERMISSIONS_FAILED_RESTRICTIONS_SINGLE_APP");
@@ -281,7 +281,7 @@ LABEL_22:
         goto LABEL_14;
       }
 
-      if ([v5 count] >= 2)
+      if ([ds_localizedPermissionNames count] >= 2)
       {
         v25 = MEMORY[0x277CCACA8];
         v26 = DSUILocStringForKey(@"RESET_APP_PERMISSIONS_FAILED_RESTRICTIONS_MULTIPLE_APPS");
@@ -304,7 +304,7 @@ LABEL_14:
   v20 = DSUILocStringForKey(v18);
   v21 = [v19 stringWithFormat:v20, v8];
 
-  v22 = [a1 alertControllerWithTitle:v21 message:v17 preferredStyle:1];
+  v22 = [self alertControllerWithTitle:v21 message:v17 preferredStyle:1];
 
   v23 = *MEMORY[0x277D85DE8];
 
@@ -323,7 +323,7 @@ LABEL_14:
     v6 = v7;
   }
 
-  v8 = [a1 alertControllerWithTitle:v5 message:v6 preferredStyle:1];
+  v8 = [self alertControllerWithTitle:v5 message:v6 preferredStyle:1];
 
   return v8;
 }

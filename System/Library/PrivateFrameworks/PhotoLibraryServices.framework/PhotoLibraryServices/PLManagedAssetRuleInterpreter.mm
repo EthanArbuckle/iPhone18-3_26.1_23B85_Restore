@@ -1,23 +1,23 @@
 @interface PLManagedAssetRuleInterpreter
-- (id)evaluateObjects:(id)a3 forCondition:(id)a4;
+- (id)evaluateObjects:(id)objects forCondition:(id)condition;
 @end
 
 @implementation PLManagedAssetRuleInterpreter
 
-- (id)evaluateObjects:(id)a3 forCondition:(id)a4
+- (id)evaluateObjects:(id)objects forCondition:(id)condition
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 anyObject];
-  v8 = [v7 photoLibrary];
+  conditionCopy = condition;
+  objectsCopy = objects;
+  anyObject = [objectsCopy anyObject];
+  photoLibrary = [anyObject photoLibrary];
 
   v9 = objc_alloc_init(PLQueryChangeDetectionCriteria);
-  v10 = [v5 conditionQuery];
+  conditionQuery = [conditionCopy conditionQuery];
 
-  v11 = [PLQueryHandler predicateForQuery:v10 inLibrary:v8 changeDetectionCriteria:v9];
+  v11 = [PLQueryHandler predicateForQuery:conditionQuery inLibrary:photoLibrary changeDetectionCriteria:v9];
 
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v6];
+  objectsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", objectsCopy];
 
   v13 = MEMORY[0x1E695D5E0];
   v14 = +[PLManagedAsset entityName];
@@ -25,14 +25,14 @@
 
   v16 = MEMORY[0x1E696AB28];
   v28[0] = v11;
-  v28[1] = v12;
+  v28[1] = objectsCopy;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
   v18 = [v16 andPredicateWithSubpredicates:v17];
   [v15 setPredicate:v18];
 
-  v19 = [v8 managedObjectContext];
+  managedObjectContext = [photoLibrary managedObjectContext];
   v25 = 0;
-  v20 = [v19 executeFetchRequest:v15 error:&v25];
+  v20 = [managedObjectContext executeFetchRequest:v15 error:&v25];
   v21 = v25;
 
   if (v21)

@@ -4,10 +4,10 @@
 - (NSArray)carFocusOrderSequences;
 - (NSArray)preferredCarFocusEnvironments;
 - (id)desiredCards;
-- (void)audioController:(id)a3 didSelectAudioType:(unint64_t)a4;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)configureCard:(id)a3 forKey:(id)a4;
-- (void)registerAnalyticsForAudioType:(unint64_t)a3;
+- (void)audioController:(id)controller didSelectAudioType:(unint64_t)type;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)configureCard:(id)card forKey:(id)key;
+- (void)registerAnalyticsForAudioType:(unint64_t)type;
 @end
 
 @implementation CarAudioControlModeController
@@ -19,22 +19,22 @@
   return WeakRetained;
 }
 
-- (void)registerAnalyticsForAudioType:(unint64_t)a3
+- (void)registerAnalyticsForAudioType:(unint64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    v4 = dword_1012160C0[a3];
-    v5 = [(CarAudioControlModeController *)self analyticsTarget];
+    v4 = dword_1012160C0[type];
+    analyticsTarget = [(CarAudioControlModeController *)self analyticsTarget];
 
-    [GEOAPPortal captureUserAction:v4 target:v5 value:0];
+    [GEOAPPortal captureUserAction:v4 target:analyticsTarget value:0];
   }
 }
 
 - (NSArray)carFocusOrderSequences
 {
-  v2 = [(CarAudioControlModeController *)self chromeViewController];
-  v3 = [v2 itemRepresentingOverlays];
-  v8 = v3;
+  chromeViewController = [(CarAudioControlModeController *)self chromeViewController];
+  itemRepresentingOverlays = [chromeViewController itemRepresentingOverlays];
+  v8 = itemRepresentingOverlays;
   v4 = [NSArray arrayWithObjects:&v8 count:1];
   v5 = [CarFocusOrderSequence sequenceWithItems:v4 options:5];
   v9 = v5;
@@ -52,9 +52,9 @@
   return v3;
 }
 
-- (void)audioController:(id)a3 didSelectAudioType:(unint64_t)a4
+- (void)audioController:(id)controller didSelectAudioType:(unint64_t)type
 {
-  v6 = [_TtC4Maps22NavAudioControlFactory guidanceLevelForNavAudioType:a4];
+  v6 = [_TtC4Maps22NavAudioControlFactory guidanceLevelForNavAudioType:type];
   v7 = [AudioPreferences alloc];
   v8 = +[NSUserDefaults standardUserDefaults];
   v13 = [(AudioPreferences *)v7 initWithDefaults:v8];
@@ -67,28 +67,28 @@
     v10 = +[_TtC4Maps22NavAudioControlFactory audioTypeNotification];
     [v9 postNotificationName:v10 object:self];
 
-    [(CarAudioControlModeController *)self registerAnalyticsForAudioType:a4];
+    [(CarAudioControlModeController *)self registerAnalyticsForAudioType:type];
   }
 
-  v11 = [(CarAudioControlModeController *)self carChromeViewController];
-  [v11 setNeedsUpdateComponent:@"mapcontrols" animated:1];
+  carChromeViewController = [(CarAudioControlModeController *)self carChromeViewController];
+  [carChromeViewController setNeedsUpdateComponent:@"mapcontrols" animated:1];
 
   v12 = +[CarChromeModeCoordinator sharedInstance];
   [v12 popFromContext:self];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = [(CarAudioControlModeController *)self carChromeViewController:a3];
+  v5 = [(CarAudioControlModeController *)self carChromeViewController:controller];
   [v5 setHardwareBackButtonBehavior:0 forContext:self];
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  v15 = a3;
+  cardCopy = card;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Sound [Nav value:Tray table:{CarPlay]", @"localized string not found", 0}];
-  [v15 setTitle:v6];
+  [cardCopy setTitle:v6];
 
   v7 = objc_alloc_init(CarCardLayout);
   [(CarCardLayout *)v7 setEdgePosition:0];
@@ -104,11 +104,11 @@
   [(CarCardLayout *)v7 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
   [(CarCardLayout *)v7 setFlipForRightHandDrive:1];
   v10 = v7;
-  v11 = [(CarCardLayout *)v10 primaryAxis];
-  v12 = [(CarCardLayout *)v10 cornerPosition];
-  if (v11 == 1)
+  primaryAxis = [(CarCardLayout *)v10 primaryAxis];
+  cornerPosition = [(CarCardLayout *)v10 cornerPosition];
+  if (primaryAxis == 1)
   {
-    if (v12 == 4 || [(CarCardLayout *)v10 cornerPosition]== 1 || [(CarCardLayout *)v10 edgePosition]== 2)
+    if (cornerPosition == 4 || [(CarCardLayout *)v10 cornerPosition]== 1 || [(CarCardLayout *)v10 edgePosition]== 2)
     {
       v13 = 8;
     }
@@ -133,7 +133,7 @@
 
   else
   {
-    v14 = v12 == 4 || [(CarCardLayout *)v10 cornerPosition]== 8 || [(CarCardLayout *)v10 edgePosition]== 4;
+    v14 = cornerPosition == 4 || [(CarCardLayout *)v10 cornerPosition]== 8 || [(CarCardLayout *)v10 edgePosition]== 4;
     if ([(CarCardLayout *)v10 cornerPosition]== 1 || [(CarCardLayout *)v10 cornerPosition]== 2 || [(CarCardLayout *)v10 edgePosition]== 1)
     {
       v14 |= 4uLL;
@@ -152,10 +152,10 @@
 
   [(CarCardLayout *)v10 setEdgesAffectingMapInsets:v14];
   [(CarCardLayout *)v10 setHorizontallyCenterMapInsets:0];
-  [v15 setLayout:v10];
+  [cardCopy setLayout:v10];
 
-  [v15 setAccessoryType:2];
-  [v15 setContent:self->_audioControlViewController];
+  [cardCopy setAccessoryType:2];
+  [cardCopy setContent:self->_audioControlViewController];
 }
 
 - (id)desiredCards

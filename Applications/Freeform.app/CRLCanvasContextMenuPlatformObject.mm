@@ -1,28 +1,28 @@
 @interface CRLCanvasContextMenuPlatformObject
-+ (id)platformObjectWithInteraction:(id)a3;
-- (CRLCanvasContextMenuPlatformObject)initWithInteraction:(id)a3;
++ (id)platformObjectWithInteraction:(id)interaction;
+- (CRLCanvasContextMenuPlatformObject)initWithInteraction:(id)interaction;
 @end
 
 @implementation CRLCanvasContextMenuPlatformObject
 
-+ (id)platformObjectWithInteraction:(id)a3
++ (id)platformObjectWithInteraction:(id)interaction
 {
-  v3 = a3;
-  v4 = [[CRLCanvasContextMenuPlatformObject alloc] initWithInteraction:v3];
+  interactionCopy = interaction;
+  v4 = [[CRLCanvasContextMenuPlatformObject alloc] initWithInteraction:interactionCopy];
 
   return v4;
 }
 
-- (CRLCanvasContextMenuPlatformObject)initWithInteraction:(id)a3
+- (CRLCanvasContextMenuPlatformObject)initWithInteraction:(id)interaction
 {
-  v5 = a3;
+  interactionCopy = interaction;
   v9.receiver = self;
   v9.super_class = CRLCanvasContextMenuPlatformObject;
   v6 = [(CRLCanvasContextMenuPlatformObject *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_interaction, a3);
+    objc_storeStrong(&v6->_interaction, interaction);
   }
 
   return v7;

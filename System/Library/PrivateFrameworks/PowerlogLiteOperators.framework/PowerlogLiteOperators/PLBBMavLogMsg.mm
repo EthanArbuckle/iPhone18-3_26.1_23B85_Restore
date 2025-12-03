@@ -13,16 +13,16 @@
 - (id)internaLogEventBackwardBBMavHwOtherPerRAT;
 - (id)logEventBackwardGrpEntriesBBMav1HwOtherPerRAT;
 - (id)logEventBackwardGrpEntriesBBMavHwOtherPerRAT;
-- (void)addPairWithKey:(id)a3 andWithVal:(id)a4;
+- (void)addPairWithKey:(id)key andWithVal:(id)val;
 - (void)addToGroupPLBBMav10HwOther;
 - (void)addToGroupPLBBMav13HwOther;
 - (void)addToGroupPLBBMav16BHwOther;
 - (void)addToGroupPLBBMav16HwOther;
 - (void)addToGroupPLBBMav2HwOther;
 - (void)addToGroupPLBBMav4HwOther;
-- (void)addToGroupPLBBMavHwEntry:(id)a3 withEntryKey:(id)a4;
+- (void)addToGroupPLBBMavHwEntry:(id)entry withEntryKey:(id)key;
 - (void)addToGroupPLBBMavHwOther;
-- (void)appendToError:(id)a3;
+- (void)appendToError:(id)error;
 - (void)logEventBackwardGrpEntriesBBMavHw;
 - (void)logEventBackwardMav10BBHwOther;
 - (void)logEventBackwardMav13BBHwOther;
@@ -32,15 +32,15 @@
 - (void)logEventBackwardMavBBHwOther;
 - (void)logEventBackwardMavBBHwOtherPerRAT;
 - (void)logGrpEntriesMavBBHwOtherPerRat;
-- (void)populateEntryBBMav10HwOther:(id)a3;
-- (void)populateEntryBBMav13HwOther:(id)a3;
-- (void)populateEntryBBMav16BHwOther:(id)a3;
-- (void)populateEntryBBMav16HwOther:(id)a3;
-- (void)populateEntryBBMav1HwOtherPerRAT:(id)a3;
-- (void)populateEntryBBMav2HwOther:(id)a3;
-- (void)populateEntryBBMav4HwOther:(id)a3;
-- (void)populateEntryBBMavHwOther:(id)a3;
-- (void)populateEntryBBMavHwOtherPerRAT:(id)a3;
+- (void)populateEntryBBMav10HwOther:(id)other;
+- (void)populateEntryBBMav13HwOther:(id)other;
+- (void)populateEntryBBMav16BHwOther:(id)other;
+- (void)populateEntryBBMav16HwOther:(id)other;
+- (void)populateEntryBBMav1HwOtherPerRAT:(id)t;
+- (void)populateEntryBBMav2HwOther:(id)other;
+- (void)populateEntryBBMav4HwOther:(id)other;
+- (void)populateEntryBBMavHwOther:(id)other;
+- (void)populateEntryBBMavHwOtherPerRAT:(id)t;
 - (void)refreshBBMav10HwOther;
 - (void)refreshBBMav13HwOther;
 - (void)refreshBBMav16BHwOther;
@@ -50,15 +50,15 @@
 - (void)refreshMav1BBHwOtherPerRAT;
 - (void)refreshMavBBHwOther;
 - (void)refreshMavBBHwOtherPerRAT;
-- (void)sendAndLogPLEntry:(id)a3 withName:(id)a4 withType:(id)a5;
-- (void)setDate:(id)a3;
-- (void)setError:(id)a3;
-- (void)setHeaderWithSeqNum:(id)a3 andDate:(id)a4 andTimeCal:(double)a5;
-- (void)setLogDuration:(id)a3;
-- (void)setMavBBHwValue:(id)a3 forKey:(id)a4;
-- (void)setRat:(id)a3;
-- (void)setTxPwr:(id)a3;
-- (void)setType:(id)a3;
+- (void)sendAndLogPLEntry:(id)entry withName:(id)name withType:(id)type;
+- (void)setDate:(id)date;
+- (void)setError:(id)error;
+- (void)setHeaderWithSeqNum:(id)num andDate:(id)date andTimeCal:(double)cal;
+- (void)setLogDuration:(id)duration;
+- (void)setMavBBHwValue:(id)value forKey:(id)key;
+- (void)setRat:(id)rat;
+- (void)setTxPwr:(id)pwr;
+- (void)setType:(id)type;
 @end
 
 @implementation PLBBMavLogMsg
@@ -84,9 +84,9 @@
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg init]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg init]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:46];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:46];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -131,12 +131,12 @@ uint64_t __21__PLBBMavLogMsg_init__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)sendAndLogPLEntry:(id)a3 withName:(id)a4 withType:(id)a5
+- (void)sendAndLogPLEntry:(id)entry withName:(id)name withType:(id)type
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entryCopy = entry;
+  nameCopy = name;
+  typeCopy = type;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v11 = objc_opt_class();
@@ -152,14 +152,14 @@ uint64_t __21__PLBBMavLogMsg_init__block_invoke(uint64_t a1)
 
     if (byte_2811F6AF1 == 1)
     {
-      v12 = v10;
-      v13 = v9;
+      v12 = typeCopy;
+      v13 = nameCopy;
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg sendAndLogPLEntry:withName:withType:]"];
       v15 = MEMORY[0x277D3F178];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v17 = [v16 lastPathComponent];
+      lastPathComponent = [v16 lastPathComponent];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg sendAndLogPLEntry:withName:withType:]"];
-      [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:66];
+      [v15 logMessage:v14 fromFile:lastPathComponent fromFunction:v18 fromLineNumber:66];
 
       v19 = PLLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -169,8 +169,8 @@ uint64_t __21__PLBBMavLogMsg_init__block_invoke(uint64_t a1)
         _os_log_debug_impl(&dword_21A4C6000, v19, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v9 = v13;
-      v10 = v12;
+      nameCopy = v13;
+      typeCopy = v12;
     }
   }
 
@@ -189,15 +189,15 @@ uint64_t __21__PLBBMavLogMsg_init__block_invoke(uint64_t a1)
 
     if (byte_2811F6AF2 == 1)
     {
-      v21 = v10;
-      v51 = v10;
-      v22 = v9;
-      v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sending PLEntry: name=%@ type=%@", v9, v51];
+      v21 = typeCopy;
+      v51 = typeCopy;
+      v22 = nameCopy;
+      v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sending PLEntry: name=%@ type=%@", nameCopy, v51];
       v24 = MEMORY[0x277D3F178];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v26 = [v25 lastPathComponent];
+      lastPathComponent2 = [v25 lastPathComponent];
       v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg sendAndLogPLEntry:withName:withType:]"];
-      [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:67];
+      [v24 logMessage:v23 fromFile:lastPathComponent2 fromFunction:v27 fromLineNumber:67];
 
       v28 = PLLogCommon();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -207,30 +207,30 @@ uint64_t __21__PLBBMavLogMsg_init__block_invoke(uint64_t a1)
         _os_log_debug_impl(&dword_21A4C6000, v28, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v9 = v22;
-      v10 = v21;
+      nameCopy = v22;
+      typeCopy = v21;
     }
   }
 
-  v29 = [(PLBBMavLogMsg *)self commonInfo];
-  v30 = [v29 objectForKey:@"SeqNum"];
-  [v8 setObject:v30 forKeyedSubscript:@"SeqNum"];
+  commonInfo = [(PLBBMavLogMsg *)self commonInfo];
+  v30 = [commonInfo objectForKey:@"SeqNum"];
+  [entryCopy setObject:v30 forKeyedSubscript:@"SeqNum"];
 
-  v31 = [(PLBBMavLogMsg *)self commonInfo];
-  v32 = [v31 objectForKey:@"BBDate"];
-  [v8 setObject:v32 forKeyedSubscript:@"BBDate"];
+  commonInfo2 = [(PLBBMavLogMsg *)self commonInfo];
+  v32 = [commonInfo2 objectForKey:@"BBDate"];
+  [entryCopy setObject:v32 forKeyedSubscript:@"BBDate"];
 
-  v33 = [(PLBBMavLogMsg *)self commonInfo];
-  v34 = [v33 objectForKey:@"TimeCal"];
-  [v8 setObject:v34 forKeyedSubscript:@"TimeCal"];
+  commonInfo3 = [(PLBBMavLogMsg *)self commonInfo];
+  v34 = [commonInfo3 objectForKey:@"TimeCal"];
+  [entryCopy setObject:v34 forKeyedSubscript:@"TimeCal"];
 
-  v35 = [(PLBBMavLogMsg *)self commonInfo];
-  v36 = [v35 objectForKey:@"Error"];
-  [v8 setObject:v36 forKeyedSubscript:@"Error"];
+  commonInfo4 = [(PLBBMavLogMsg *)self commonInfo];
+  v36 = [commonInfo4 objectForKey:@"Error"];
+  [entryCopy setObject:v36 forKeyedSubscript:@"Error"];
 
-  v37 = [(PLBasebandMessage *)self agent];
+  agent = [(PLBasebandMessage *)self agent];
 
-  if (!v37 && [MEMORY[0x277D3F180] debugEnabled])
+  if (!agent && [MEMORY[0x277D3F180] debugEnabled])
   {
     v38 = objc_opt_class();
     v53[0] = MEMORY[0x277D85DD0];
@@ -245,14 +245,14 @@ uint64_t __21__PLBBMavLogMsg_init__block_invoke(uint64_t a1)
 
     if (byte_2811F6AF3 == 1)
     {
-      v52 = v10;
-      v39 = v9;
+      v52 = typeCopy;
+      v39 = nameCopy;
       v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bad agent"];
       v41 = MEMORY[0x277D3F178];
       v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v43 = [v42 lastPathComponent];
+      lastPathComponent3 = [v42 lastPathComponent];
       v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg sendAndLogPLEntry:withName:withType:]"];
-      [v41 logMessage:v40 fromFile:v43 fromFunction:v44 fromLineNumber:75];
+      [v41 logMessage:v40 fromFile:lastPathComponent3 fromFunction:v44 fromLineNumber:75];
 
       v45 = PLLogCommon();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
@@ -262,18 +262,18 @@ uint64_t __21__PLBBMavLogMsg_init__block_invoke(uint64_t a1)
         _os_log_debug_impl(&dword_21A4C6000, v45, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v9 = v39;
-      v10 = v52;
+      nameCopy = v39;
+      typeCopy = v52;
     }
   }
 
-  v46 = [(PLBBMavLogMsg *)self commonInfo];
-  v47 = [v46 objectForKey:@"BBDate"];
-  v48 = [v47 convertFromBasebandToMonotonic];
-  [v8 setEntryDate:v48];
+  commonInfo5 = [(PLBBMavLogMsg *)self commonInfo];
+  v47 = [commonInfo5 objectForKey:@"BBDate"];
+  convertFromBasebandToMonotonic = [v47 convertFromBasebandToMonotonic];
+  [entryCopy setEntryDate:convertFromBasebandToMonotonic];
 
-  v49 = [(PLBasebandMessage *)self agent];
-  [v49 logEntry:v8];
+  agent2 = [(PLBasebandMessage *)self agent];
+  [agent2 logEntry:entryCopy];
 
   v50 = *MEMORY[0x277D85DE8];
 }
@@ -299,12 +299,12 @@ uint64_t __53__PLBBMavLogMsg_sendAndLogPLEntry_withName_withType___block_invoke_
   return result;
 }
 
-- (void)setHeaderWithSeqNum:(id)a3 andDate:(id)a4 andTimeCal:(double)a5
+- (void)setHeaderWithSeqNum:(id)num andDate:(id)date andTimeCal:(double)cal
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  numCopy = num;
   v9 = MEMORY[0x277D3F180];
-  v10 = a4;
+  dateCopy = date;
   if ([v9 debugEnabled])
   {
     v11 = objc_opt_class();
@@ -323,9 +323,9 @@ uint64_t __53__PLBBMavLogMsg_sendAndLogPLEntry_withName_withType___block_invoke_
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg setHeaderWithSeqNum:andDate:andTimeCal:]"];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg setHeaderWithSeqNum:andDate:andTimeCal:]"];
-      [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:86];
+      [v13 logMessage:v12 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:86];
 
       v17 = PLLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -337,8 +337,8 @@ uint64_t __53__PLBBMavLogMsg_sendAndLogPLEntry_withName_withType___block_invoke_
     }
   }
 
-  v18 = v8;
-  if (!v8)
+  v18 = numCopy;
+  if (!numCopy)
   {
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -358,9 +358,9 @@ uint64_t __53__PLBBMavLogMsg_sendAndLogPLEntry_withName_withType___block_invoke_
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"unable to set seqNum(%@)", 0];
         v21 = MEMORY[0x277D3F178];
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-        v23 = [v22 lastPathComponent];
+        lastPathComponent2 = [v22 lastPathComponent];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg setHeaderWithSeqNum:andDate:andTimeCal:]"];
-        [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:88];
+        [v21 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:88];
 
         v25 = PLLogCommon();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -376,10 +376,10 @@ uint64_t __53__PLBBMavLogMsg_sendAndLogPLEntry_withName_withType___block_invoke_
   }
 
   [(NSMutableDictionary *)self->_commonInfo setObject:v18 forKey:@"SeqNum"];
-  [(NSMutableDictionary *)self->_commonInfo setObject:v10 forKey:@"BBDate"];
+  [(NSMutableDictionary *)self->_commonInfo setObject:dateCopy forKey:@"BBDate"];
 
   commonInfo = self->_commonInfo;
-  v27 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v27 = [MEMORY[0x277CCABB0] numberWithDouble:cal];
   [(NSMutableDictionary *)commonInfo setValue:v27 forKey:@"TimeCal"];
 
   [(PLBBMavLogMsg *)self setGroupID:@"MavLogMsg"];
@@ -400,11 +400,11 @@ uint64_t __56__PLBBMavLogMsg_setHeaderWithSeqNum_andDate_andTimeCal___block_invo
   return result;
 }
 
-- (void)addPairWithKey:(id)a3 andWithVal:(id)a4
+- (void)addPairWithKey:(id)key andWithVal:(id)val
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valCopy = val;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -423,9 +423,9 @@ uint64_t __56__PLBBMavLogMsg_setHeaderWithSeqNum_andDate_andTimeCal___block_invo
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg addPairWithKey:andWithVal:]"];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg addPairWithKey:andWithVal:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:107];
+      [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:107];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -437,7 +437,7 @@ uint64_t __56__PLBBMavLogMsg_setHeaderWithSeqNum_andDate_andTimeCal___block_invo
     }
   }
 
-  if (v6)
+  if (keyCopy)
   {
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -454,12 +454,12 @@ uint64_t __56__PLBBMavLogMsg_setHeaderWithSeqNum_andDate_andTimeCal___block_invo
 
       if (byte_2811F6AF7 == 1)
       {
-        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Add KVPair [%@, %@]", v6, v7, v24, v25, v26, v27, v28];
+        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Add KVPair [%@, %@]", keyCopy, valCopy, v24, v25, v26, v27, v28];
         v17 = MEMORY[0x277D3F178];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-        v19 = [v18 lastPathComponent];
+        lastPathComponent2 = [v18 lastPathComponent];
         v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg addPairWithKey:andWithVal:]"];
-        [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:109];
+        [v17 logMessage:v16 fromFile:lastPathComponent2 fromFunction:v20 fromLineNumber:109];
 
         v21 = PLLogCommon();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -471,8 +471,8 @@ uint64_t __56__PLBBMavLogMsg_setHeaderWithSeqNum_andDate_andTimeCal___block_invo
       }
     }
 
-    v22 = [(PLBBMavLogMsg *)self kvPairs];
-    [v22 setObject:v7 forKey:v6];
+    kvPairs = [(PLBBMavLogMsg *)self kvPairs];
+    [kvPairs setObject:valCopy forKey:keyCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -492,10 +492,10 @@ uint64_t __43__PLBBMavLogMsg_addPairWithKey_andWithVal___block_invoke_399(uint64
   return result;
 }
 
-- (void)setTxPwr:(id)a3
+- (void)setTxPwr:(id)pwr
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pwrCopy = pwr;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -514,9 +514,9 @@ uint64_t __43__PLBBMavLogMsg_addPairWithKey_andWithVal___block_invoke_399(uint64
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg setTxPwr:]", block, v14, v15, v16, v17];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg setTxPwr:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:116];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:116];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -528,7 +528,7 @@ uint64_t __43__PLBBMavLogMsg_addPairWithKey_andWithVal___block_invoke_399(uint64
     }
   }
 
-  [(NSMutableDictionary *)self->_commonInfo setObject:v4 forKey:@"TxPwr"];
+  [(NSMutableDictionary *)self->_commonInfo setObject:pwrCopy forKey:@"TxPwr"];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -540,10 +540,10 @@ uint64_t __26__PLBBMavLogMsg_setTxPwr___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -562,9 +562,9 @@ uint64_t __26__PLBBMavLogMsg_setTxPwr___block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg setDate:]", block, v14, v15, v16, v17];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg setDate:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:137];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:137];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -576,7 +576,7 @@ uint64_t __26__PLBBMavLogMsg_setTxPwr___block_invoke(uint64_t a1)
     }
   }
 
-  [(NSMutableDictionary *)self->_commonInfo setObject:v4 forKey:@"BBDate"];
+  [(NSMutableDictionary *)self->_commonInfo setObject:dateCopy forKey:@"BBDate"];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -588,10 +588,10 @@ uint64_t __25__PLBBMavLogMsg_setDate___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -610,9 +610,9 @@ uint64_t __25__PLBBMavLogMsg_setDate___block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg setError:]", block, v14, v15, v16, v17];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg setError:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:143];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:143];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -624,7 +624,7 @@ uint64_t __25__PLBBMavLogMsg_setDate___block_invoke(uint64_t a1)
     }
   }
 
-  [(NSMutableDictionary *)self->_commonInfo setObject:v4 forKey:@"Error"];
+  [(NSMutableDictionary *)self->_commonInfo setObject:errorCopy forKey:@"Error"];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -636,10 +636,10 @@ uint64_t __26__PLBBMavLogMsg_setError___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)appendToError:(id)a3
+- (void)appendToError:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -658,9 +658,9 @@ uint64_t __26__PLBBMavLogMsg_setError___block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg appendToError:]", block, v18, v19, v20, v21];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg appendToError:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:148];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:148];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -677,7 +677,7 @@ uint64_t __26__PLBBMavLogMsg_setError___block_invoke(uint64_t a1)
 
   if (v13)
   {
-    [v13 appendString:v4];
+    [v13 appendString:errorCopy];
     commonInfo = self->_commonInfo;
     v15 = v13;
   }
@@ -685,7 +685,7 @@ uint64_t __26__PLBBMavLogMsg_setError___block_invoke(uint64_t a1)
   else
   {
     commonInfo = self->_commonInfo;
-    v15 = v4;
+    v15 = errorCopy;
   }
 
   [(NSMutableDictionary *)commonInfo setObject:v15 forKey:@"Error"];
@@ -700,10 +700,10 @@ uint64_t __31__PLBBMavLogMsg_appendToError___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setLogDuration:(id)a3
+- (void)setLogDuration:(id)duration
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  durationCopy = duration;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -722,9 +722,9 @@ uint64_t __31__PLBBMavLogMsg_appendToError___block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg setLogDuration:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg setLogDuration:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:163];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:163];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -737,7 +737,7 @@ uint64_t __31__PLBBMavLogMsg_appendToError___block_invoke(uint64_t a1)
   }
 
   v12 = MEMORY[0x277CCABB0];
-  *&v13 = vcvts_n_f32_s32([v4 intValue], 0xFuLL);
+  *&v13 = vcvts_n_f32_s32([durationCopy intValue], 0xFuLL);
   v14 = [v12 numberWithFloat:v13];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -759,9 +759,9 @@ uint64_t __31__PLBBMavLogMsg_appendToError___block_invoke(uint64_t a1)
       v18 = [v16 stringWithFormat:@"Hw log duration inserted as %f", v17];
       v19 = MEMORY[0x277D3F178];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v21 = [v20 lastPathComponent];
+      lastPathComponent2 = [v20 lastPathComponent];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg setLogDuration:]"];
-      [v19 logMessage:v18 fromFile:v21 fromFunction:v22 fromLineNumber:165];
+      [v19 logMessage:v18 fromFile:lastPathComponent2 fromFunction:v22 fromLineNumber:165];
 
       v23 = PLLogCommon();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -792,10 +792,10 @@ uint64_t __32__PLBBMavLogMsg_setLogDuration___block_invoke_408(uint64_t a1)
   return result;
 }
 
-- (void)setRat:(id)a3
+- (void)setRat:(id)rat
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  ratCopy = rat;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -814,9 +814,9 @@ uint64_t __32__PLBBMavLogMsg_setLogDuration___block_invoke_408(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg setRat:]", block, v14, v15, v16, v17];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg setRat:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:170];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:170];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -828,7 +828,7 @@ uint64_t __32__PLBBMavLogMsg_setLogDuration___block_invoke_408(uint64_t a1)
     }
   }
 
-  [(NSMutableDictionary *)self->_commonInfo setObject:v4 forKey:@"Rat"];
+  [(NSMutableDictionary *)self->_commonInfo setObject:ratCopy forKey:@"Rat"];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -862,9 +862,9 @@ uint64_t __24__PLBBMavLogMsg_setRat___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg refreshMavBBHwOther]", block, v16, v17, v18, v19];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg refreshMavBBHwOther]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:179];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:179];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -879,8 +879,8 @@ uint64_t __24__PLBBMavLogMsg_setRat___block_invoke(uint64_t a1)
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"MavBBHwOther"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
   [v12 setIsErrorEntry:1];
-  v13 = [(PLBasebandMessage *)self agent];
-  [v13 logEntry:v12];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEntry:v12];
 
   objc_autoreleasePoolPop(v3);
   v14 = *MEMORY[0x277D85DE8];
@@ -908,69 +908,69 @@ uint64_t __36__PLBBMavLogMsg_refreshMavBBHwOther__block_invoke(uint64_t a1)
   v111[0] = v72;
   v110[1] = *MEMORY[0x277D3F540];
   v106[0] = @"Error";
-  v71 = [MEMORY[0x277D3F198] sharedInstance];
-  v70 = [v71 commonTypeDict_BoolFormat];
-  v107[0] = v70;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v107[0] = commonTypeDict_BoolFormat;
   v106[1] = @"SeqNum";
-  v69 = [MEMORY[0x277D3F198] sharedInstance];
-  v68 = [v69 commonTypeDict_IntegerFormat];
-  v107[1] = v68;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v107[1] = commonTypeDict_IntegerFormat;
   v106[2] = @"BBDate";
-  v67 = [MEMORY[0x277D3F198] sharedInstance];
-  v66 = [v67 commonTypeDict_DateFormat];
-  v107[2] = v66;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v107[2] = commonTypeDict_DateFormat;
   v106[3] = @"TimeCal";
-  v65 = [MEMORY[0x277D3F198] sharedInstance];
-  v64 = [v65 commonTypeDict_IntegerFormat];
-  v107[3] = v64;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v107[3] = commonTypeDict_IntegerFormat2;
   v106[4] = @"SWRevision";
-  v63 = [MEMORY[0x277D3F198] sharedInstance];
-  v62 = [v63 commonTypeDict_IntegerFormat];
-  v107[4] = v62;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v107[4] = commonTypeDict_IntegerFormat3;
   v106[5] = @"HWRevision";
-  v61 = [MEMORY[0x277D3F198] sharedInstance];
-  v60 = [v61 commonTypeDict_IntegerFormat];
-  v107[5] = v60;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v107[5] = commonTypeDict_IntegerFormat4;
   v106[6] = @"HWStatsType";
-  v59 = [MEMORY[0x277D3F198] sharedInstance];
-  v58 = [v59 commonTypeDict_IntegerFormat];
-  v107[6] = v58;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v107[6] = commonTypeDict_IntegerFormat5;
   v106[7] = @"HwStatsLength";
-  v57 = [MEMORY[0x277D3F198] sharedInstance];
-  v56 = [v57 commonTypeDict_IntegerFormat];
-  v107[7] = v56;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v107[7] = commonTypeDict_IntegerFormat6;
   v106[8] = @"HwStatsLevel";
-  v55 = [MEMORY[0x277D3F198] sharedInstance];
-  v54 = [v55 commonTypeDict_IntegerFormat];
-  v107[8] = v54;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v107[8] = commonTypeDict_IntegerFormat7;
   v106[9] = @"LastTimestamp";
-  v53 = [MEMORY[0x277D3F198] sharedInstance];
-  v52 = [v53 commonTypeDict_IntegerFormat];
-  v107[9] = v52;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v107[9] = commonTypeDict_IntegerFormat8;
   v106[10] = @"CurrentTimestamp";
-  v51 = [MEMORY[0x277D3F198] sharedInstance];
-  v50 = [v51 commonTypeDict_IntegerFormat];
-  v107[10] = v50;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v107[10] = commonTypeDict_IntegerFormat9;
   v106[11] = @"LogDuration";
-  v49 = [MEMORY[0x277D3F198] sharedInstance];
-  v48 = [v49 commonTypeDict_IntegerFormat];
-  v107[11] = v48;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v107[11] = commonTypeDict_IntegerFormat10;
   v106[12] = @"RPMXOShutdownDuration";
-  v47 = [MEMORY[0x277D3F198] sharedInstance];
-  v46 = [v47 commonTypeDict_IntegerFormat];
-  v107[12] = v46;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v107[12] = commonTypeDict_IntegerFormat11;
   v106[13] = @"RPMXOShutdownCount";
-  v45 = [MEMORY[0x277D3F198] sharedInstance];
-  v44 = [v45 commonTypeDict_IntegerFormat];
-  v107[13] = v44;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v107[13] = commonTypeDict_IntegerFormat12;
   v106[14] = @"RPMVDDMinDuration";
-  v43 = [MEMORY[0x277D3F198] sharedInstance];
-  v42 = [v43 commonTypeDict_IntegerFormat];
-  v107[14] = v42;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v107[14] = commonTypeDict_IntegerFormat13;
   v106[15] = @"RPMVDDMinEnterCount";
-  v41 = [MEMORY[0x277D3F198] sharedInstance];
-  v40 = [v41 commonTypeDict_IntegerFormat];
-  v107[15] = v40;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v107[15] = commonTypeDict_IntegerFormat14;
   v106[16] = @"AppsPerfStateCountHistogram";
   v4 = *MEMORY[0x277D3F598];
   v103[0] = *MEMORY[0x277D3F5A8];
@@ -984,13 +984,13 @@ uint64_t __36__PLBBMavLogMsg_refreshMavBBHwOther__block_invoke(uint64_t a1)
   v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v105 forKeys:v103 count:3];
   v107[16] = v39;
   v106[17] = @"CXOShutdownDuration";
-  v38 = [MEMORY[0x277D3F198] sharedInstance];
-  v37 = [v38 commonTypeDict_IntegerFormat];
-  v107[17] = v37;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v107[17] = commonTypeDict_IntegerFormat15;
   v106[18] = @"CXOShutdownCount";
-  v36 = [MEMORY[0x277D3F198] sharedInstance];
-  v35 = [v36 commonTypeDict_IntegerFormat];
-  v107[18] = v35;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v107[18] = commonTypeDict_IntegerFormat16;
   v106[19] = @"USBStateCountHistogram";
   v101[0] = v3;
   v101[1] = v4;
@@ -1100,13 +1100,13 @@ uint64_t __36__PLBBMavLogMsg_refreshMavBBHwOther__block_invoke(uint64_t a1)
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:v79 count:3];
   v107[30] = v23;
   v106[31] = @"MPSSCXOShutdownDuration";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v107[31] = v21;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+  v107[31] = commonTypeDict_IntegerFormat17;
   v106[32] = @"MPSSCXOShutdownCount";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v107[32] = v19;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v107[32] = commonTypeDict_IntegerFormat18;
   v106[33] = @"MCPMVetoNumHistogram";
   v77[0] = v3;
   v77[1] = v4;
@@ -1117,9 +1117,9 @@ uint64_t __36__PLBBMavLogMsg_refreshMavBBHwOther__block_invoke(uint64_t a1)
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v78 forKeys:v77 count:3];
   v107[33] = v18;
   v106[34] = @"NPAVetoMask";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v17 commonTypeDict_IntegerFormat];
-  v107[34] = v6;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v107[34] = commonTypeDict_IntegerFormat19;
   v106[35] = @"NPAVetoClientNumHistogram";
   v75[0] = v3;
   v75[1] = v4;
@@ -1130,13 +1130,13 @@ uint64_t __36__PLBBMavLogMsg_refreshMavBBHwOther__block_invoke(uint64_t a1)
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:v75 count:3];
   v107[35] = v7;
   v106[36] = @"AppsClockStateDurationStr";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v107[36] = v9;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]22 commonTypeDict_StringFormat];
+  v107[36] = commonTypeDict_StringFormat;
   v106[37] = @"MpssClockStateDurationStr";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v107[37] = v11;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]23 commonTypeDict_StringFormat];
+  v107[37] = commonTypeDict_StringFormat2;
   v106[38] = @"HsicStateSleepVetoNum";
   v73[0] = v3;
   v73[1] = v4;
@@ -1176,9 +1176,9 @@ uint64_t __36__PLBBMavLogMsg_refreshMavBBHwOther__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg logEventBackwardMavBBHwOther]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardMavBBHwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:290];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:290];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1212,9 +1212,9 @@ uint64_t __36__PLBBMavLogMsg_refreshMavBBHwOther__block_invoke(uint64_t a1)
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"About to send to log at %s", "-[PLBBMavLogMsg logEventBackwardMavBBHwOther]"];
       v15 = MEMORY[0x277D3F178];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v17 = [v16 lastPathComponent];
+      lastPathComponent2 = [v16 lastPathComponent];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardMavBBHwOther]"];
-      [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:296];
+      [v15 logMessage:v14 fromFile:lastPathComponent2 fromFunction:v18 fromLineNumber:296];
 
       v19 = PLLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -1266,9 +1266,9 @@ uint64_t __45__PLBBMavLogMsg_logEventBackwardMavBBHwOther__block_invoke_514(uint
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg logEventBackwardGrpEntriesBBMavHw]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardGrpEntriesBBMavHw]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:331];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:331];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1280,9 +1280,9 @@ uint64_t __45__PLBBMavLogMsg_logEventBackwardMavBBHwOther__block_invoke_514(uint
     }
   }
 
-  v10 = [(PLBasebandMessage *)self agent];
+  agent = [(PLBasebandMessage *)self agent];
 
-  if (!v10 && [MEMORY[0x277D3F180] debugEnabled])
+  if (!agent && [MEMORY[0x277D3F180] debugEnabled])
   {
     v11 = objc_opt_class();
     v22[0] = MEMORY[0x277D85DD0];
@@ -1300,9 +1300,9 @@ uint64_t __45__PLBBMavLogMsg_logEventBackwardMavBBHwOther__block_invoke_514(uint
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bad agent"];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent2 = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardGrpEntriesBBMavHw]"];
-      [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:333];
+      [v13 logMessage:v12 fromFile:lastPathComponent2 fromFunction:v16 fromLineNumber:333];
 
       v17 = PLLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1314,10 +1314,10 @@ uint64_t __45__PLBBMavLogMsg_logEventBackwardMavBBHwOther__block_invoke_514(uint
     }
   }
 
-  v18 = [(PLBasebandMessage *)self agent];
-  v19 = [(PLBBMavLogMsg *)self groupDict];
-  v20 = [(PLBBMavLogMsg *)self groupEntryKey];
-  [v18 logEntries:v19 withGroupID:v20];
+  agent2 = [(PLBasebandMessage *)self agent];
+  groupDict = [(PLBBMavLogMsg *)self groupDict];
+  groupEntryKey = [(PLBBMavLogMsg *)self groupEntryKey];
+  [agent2 logEntries:groupDict withGroupID:groupEntryKey];
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -1336,23 +1336,23 @@ uint64_t __50__PLBBMavLogMsg_logEventBackwardGrpEntriesBBMavHw__block_invoke_523
   return result;
 }
 
-- (void)addToGroupPLBBMavHwEntry:(id)a3 withEntryKey:(id)a4
+- (void)addToGroupPLBBMavHwEntry:(id)entry withEntryKey:(id)key
 {
-  v13 = a4;
-  v6 = a3;
-  v7 = [(PLBBMavLogMsg *)self groupDict];
-  v8 = [v7 objectForKeyedSubscript:v13];
+  keyCopy = key;
+  entryCopy = entry;
+  groupDict = [(PLBBMavLogMsg *)self groupDict];
+  v8 = [groupDict objectForKeyedSubscript:keyCopy];
 
   if (!v8)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
-    v10 = [(PLBBMavLogMsg *)self groupDict];
-    [v10 setObject:v9 forKeyedSubscript:v13];
+    array = [MEMORY[0x277CBEB18] array];
+    groupDict2 = [(PLBBMavLogMsg *)self groupDict];
+    [groupDict2 setObject:array forKeyedSubscript:keyCopy];
   }
 
-  v11 = [(PLBBMavLogMsg *)self groupDict];
-  v12 = [v11 objectForKeyedSubscript:v13];
-  [v12 addObject:v6];
+  groupDict3 = [(PLBBMavLogMsg *)self groupDict];
+  v12 = [groupDict3 objectForKeyedSubscript:keyCopy];
+  [v12 addObject:entryCopy];
 }
 
 - (void)addToGroupPLBBMavHwOther
@@ -1376,9 +1376,9 @@ uint64_t __50__PLBBMavLogMsg_logEventBackwardGrpEntriesBBMavHw__block_invoke_523
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg addToGroupPLBBMavHwOther]", block, v14, v15, v16, v17];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg addToGroupPLBBMavHwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:352];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:352];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1406,122 +1406,122 @@ uint64_t __41__PLBBMavLogMsg_addToGroupPLBBMavHwOther__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)populateEntryBBMavHwOther:(id)a3
+- (void)populateEntryBBMavHwOther:(id)other
 {
-  v4 = a3;
-  v5 = [(PLBBMavLogMsg *)self bbSwRev];
-  [v4 setObject:v5 forKeyedSubscript:@"SWRevision"];
+  otherCopy = other;
+  bbSwRev = [(PLBBMavLogMsg *)self bbSwRev];
+  [otherCopy setObject:bbSwRev forKeyedSubscript:@"SWRevision"];
 
-  v6 = [(PLBBMavLogMsg *)self bbHwRev];
-  [v4 setObject:v6 forKeyedSubscript:@"HWRevision"];
+  bbHwRev = [(PLBBMavLogMsg *)self bbHwRev];
+  [otherCopy setObject:bbHwRev forKeyedSubscript:@"HWRevision"];
 
-  v7 = [(PLBBMavLogMsg *)self bbHwStatsType];
-  [v4 setObject:v7 forKeyedSubscript:@"HWStatsType"];
+  bbHwStatsType = [(PLBBMavLogMsg *)self bbHwStatsType];
+  [otherCopy setObject:bbHwStatsType forKeyedSubscript:@"HWStatsType"];
 
-  v8 = [(PLBBMavLogMsg *)self bbHwStatsLength];
-  [v4 setObject:v8 forKeyedSubscript:@"HwStatsLength"];
+  bbHwStatsLength = [(PLBBMavLogMsg *)self bbHwStatsLength];
+  [otherCopy setObject:bbHwStatsLength forKeyedSubscript:@"HwStatsLength"];
 
-  v9 = [(PLBBMavLogMsg *)self bbHwStatsLevel];
-  [v4 setObject:v9 forKeyedSubscript:@"HwStatsLevel"];
+  bbHwStatsLevel = [(PLBBMavLogMsg *)self bbHwStatsLevel];
+  [otherCopy setObject:bbHwStatsLevel forKeyedSubscript:@"HwStatsLevel"];
 
-  v10 = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
-  [v4 setObject:v10 forKeyedSubscript:@"CurrentTimestamp"];
+  bbHwCurrTimeStamp = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
+  [otherCopy setObject:bbHwCurrTimeStamp forKeyedSubscript:@"CurrentTimestamp"];
 
-  v11 = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
-  [v4 setObject:v11 forKeyedSubscript:@"LastTimestamp"];
+  bbHwLastTimeStamp = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
+  [otherCopy setObject:bbHwLastTimeStamp forKeyedSubscript:@"LastTimestamp"];
 
-  v12 = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
-  [v4 setObject:v12 forKeyedSubscript:@"LogDuration"];
+  bbHwLogDurationInTicks = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
+  [otherCopy setObject:bbHwLogDurationInTicks forKeyedSubscript:@"LogDuration"];
 
-  v13 = [(PLBBMavLogMsg *)self commonInfo];
-  v14 = [v13 objectForKey:@"BBDate"];
-  [v4 setObject:v14 forKeyedSubscript:@"BBDate"];
+  commonInfo = [(PLBBMavLogMsg *)self commonInfo];
+  v14 = [commonInfo objectForKey:@"BBDate"];
+  [otherCopy setObject:v14 forKeyedSubscript:@"BBDate"];
 
-  v15 = [(PLBBMavLogMsg *)self commonInfo];
-  v16 = [v15 objectForKey:@"BBDate"];
-  v17 = [v16 convertFromBasebandToMonotonic];
-  [v4 setEntryDate:v17];
+  commonInfo2 = [(PLBBMavLogMsg *)self commonInfo];
+  v16 = [commonInfo2 objectForKey:@"BBDate"];
+  convertFromBasebandToMonotonic = [v16 convertFromBasebandToMonotonic];
+  [otherCopy setEntryDate:convertFromBasebandToMonotonic];
 
-  v18 = [(PLBBMavLogMsg *)self rpmXOShutDuration];
-  [v4 setObject:v18 forKeyedSubscript:@"RPMXOShutdownDuration"];
+  rpmXOShutDuration = [(PLBBMavLogMsg *)self rpmXOShutDuration];
+  [otherCopy setObject:rpmXOShutDuration forKeyedSubscript:@"RPMXOShutdownDuration"];
 
-  v19 = [(PLBBMavLogMsg *)self rpmXOShutCnt];
-  [v4 setObject:v19 forKeyedSubscript:@"RPMXOShutdownCount"];
+  rpmXOShutCnt = [(PLBBMavLogMsg *)self rpmXOShutCnt];
+  [otherCopy setObject:rpmXOShutCnt forKeyedSubscript:@"RPMXOShutdownCount"];
 
-  v20 = [(PLBBMavLogMsg *)self rpmVDDMinDuration];
-  [v4 setObject:v20 forKeyedSubscript:@"RPMVDDMinDuration"];
+  rpmVDDMinDuration = [(PLBBMavLogMsg *)self rpmVDDMinDuration];
+  [otherCopy setObject:rpmVDDMinDuration forKeyedSubscript:@"RPMVDDMinDuration"];
 
-  v21 = [(PLBBMavLogMsg *)self rpmVDDMinEnterCnt];
-  [v4 setObject:v21 forKeyedSubscript:@"RPMVDDMinEnterCount"];
+  rpmVDDMinEnterCnt = [(PLBBMavLogMsg *)self rpmVDDMinEnterCnt];
+  [otherCopy setObject:rpmVDDMinEnterCnt forKeyedSubscript:@"RPMVDDMinEnterCount"];
 
-  v22 = [(PLBBMavLogMsg *)self appsPerfStateCountHist];
-  [v4 setObject:v22 forKeyedSubscript:@"AppsPerfStateCountHistogram"];
+  appsPerfStateCountHist = [(PLBBMavLogMsg *)self appsPerfStateCountHist];
+  [otherCopy setObject:appsPerfStateCountHist forKeyedSubscript:@"AppsPerfStateCountHistogram"];
 
-  v23 = [(PLBBMavLogMsg *)self cxoShutDownDuration];
-  [v4 setObject:v23 forKeyedSubscript:@"CXOShutdownDuration"];
+  cxoShutDownDuration = [(PLBBMavLogMsg *)self cxoShutDownDuration];
+  [otherCopy setObject:cxoShutDownDuration forKeyedSubscript:@"CXOShutdownDuration"];
 
-  v24 = [(PLBBMavLogMsg *)self cxoShutDownCount];
-  [v4 setObject:v24 forKeyedSubscript:@"CXOShutdownCount"];
+  cxoShutDownCount = [(PLBBMavLogMsg *)self cxoShutDownCount];
+  [otherCopy setObject:cxoShutDownCount forKeyedSubscript:@"CXOShutdownCount"];
 
-  v25 = [(PLBBMavLogMsg *)self usbStateCountHist];
-  [v4 setObject:v25 forKeyedSubscript:@"USBStateCountHistogram"];
+  usbStateCountHist = [(PLBBMavLogMsg *)self usbStateCountHist];
+  [otherCopy setObject:usbStateCountHist forKeyedSubscript:@"USBStateCountHistogram"];
 
-  v26 = [(PLBBMavLogMsg *)self uartOnOffState];
-  [v4 setObject:v26 forKeyedSubscript:@"UARTOnOffStateHistogram"];
+  uartOnOffState = [(PLBBMavLogMsg *)self uartOnOffState];
+  [otherCopy setObject:uartOnOffState forKeyedSubscript:@"UARTOnOffStateHistogram"];
 
-  v27 = [(PLBBMavLogMsg *)self spiOnOffState];
-  [v4 setObject:v27 forKeyedSubscript:@"SPIOnOffStateHistogram"];
+  spiOnOffState = [(PLBBMavLogMsg *)self spiOnOffState];
+  [otherCopy setObject:spiOnOffState forKeyedSubscript:@"SPIOnOffStateHistogram"];
 
-  v28 = [(PLBBMavLogMsg *)self admOnOffState];
-  [v4 setObject:v28 forKeyedSubscript:@"ADMOnOffStateHistogram"];
+  admOnOffState = [(PLBBMavLogMsg *)self admOnOffState];
+  [otherCopy setObject:admOnOffState forKeyedSubscript:@"ADMOnOffStateHistogram"];
 
-  v29 = [(PLBBMavLogMsg *)self lpassOnOffState];
-  [v4 setObject:v29 forKeyedSubscript:@"LPASSOnOffStateHistogram"];
+  lpassOnOffState = [(PLBBMavLogMsg *)self lpassOnOffState];
+  [otherCopy setObject:lpassOnOffState forKeyedSubscript:@"LPASSOnOffStateHistogram"];
 
-  v30 = [(PLBBMavLogMsg *)self appsSleepVeto];
-  [v4 setObject:v30 forKeyedSubscript:@"APPSSleepVetoState"];
+  appsSleepVeto = [(PLBBMavLogMsg *)self appsSleepVeto];
+  [otherCopy setObject:appsSleepVeto forKeyedSubscript:@"APPSSleepVetoState"];
 
-  v31 = [(PLBBMavLogMsg *)self mpssSleepVeto];
-  [v4 setObject:v31 forKeyedSubscript:@"MPSSSleepVetoHistogram"];
+  mpssSleepVeto = [(PLBBMavLogMsg *)self mpssSleepVeto];
+  [otherCopy setObject:mpssSleepVeto forKeyedSubscript:@"MPSSSleepVetoHistogram"];
 
-  v32 = [(PLBBMavLogMsg *)self mdspConfigCount];
-  [v4 setObject:v32 forKeyedSubscript:@"MDSPConfigCountHistogram"];
+  mdspConfigCount = [(PLBBMavLogMsg *)self mdspConfigCount];
+  [otherCopy setObject:mdspConfigCount forKeyedSubscript:@"MDSPConfigCountHistogram"];
 
-  v33 = [(PLBBMavLogMsg *)self qdspConfigCount];
-  [v4 setObject:v33 forKeyedSubscript:@"QDSPConfigCountHistogram"];
+  qdspConfigCount = [(PLBBMavLogMsg *)self qdspConfigCount];
+  [otherCopy setObject:qdspConfigCount forKeyedSubscript:@"QDSPConfigCountHistogram"];
 
-  v34 = [(PLBBMavLogMsg *)self gpsOnOff];
-  [v4 setObject:v34 forKeyedSubscript:@"GPSOnOffStateHistogram"];
+  gpsOnOff = [(PLBBMavLogMsg *)self gpsOnOff];
+  [otherCopy setObject:gpsOnOff forKeyedSubscript:@"GPSOnOffStateHistogram"];
 
-  v35 = [(PLBBMavLogMsg *)self gpsDPOOnOff];
-  [v4 setObject:v35 forKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
+  gpsDPOOnOff = [(PLBBMavLogMsg *)self gpsDPOOnOff];
+  [otherCopy setObject:gpsDPOOnOff forKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
 
-  v36 = [(PLBBMavLogMsg *)self gpsDPOBin];
-  [v4 setObject:v36 forKeyedSubscript:@"GPSDPOBins"];
+  gpsDPOBin = [(PLBBMavLogMsg *)self gpsDPOBin];
+  [otherCopy setObject:gpsDPOBin forKeyedSubscript:@"GPSDPOBins"];
 
-  v37 = [(PLBBMavLogMsg *)self mpssCxoShutDownDuration];
-  [v4 setObject:v37 forKeyedSubscript:@"MPSSCXOShutdownDuration"];
+  mpssCxoShutDownDuration = [(PLBBMavLogMsg *)self mpssCxoShutDownDuration];
+  [otherCopy setObject:mpssCxoShutDownDuration forKeyedSubscript:@"MPSSCXOShutdownDuration"];
 
-  v38 = [(PLBBMavLogMsg *)self mpssCxoShutDownCount];
-  [v4 setObject:v38 forKeyedSubscript:@"MPSSCXOShutdownCount"];
+  mpssCxoShutDownCount = [(PLBBMavLogMsg *)self mpssCxoShutDownCount];
+  [otherCopy setObject:mpssCxoShutDownCount forKeyedSubscript:@"MPSSCXOShutdownCount"];
 
-  v39 = [(PLBBMavLogMsg *)self mcpmVetoNumHistogram];
-  [v4 setObject:v39 forKeyedSubscript:@"MCPMVetoNumHistogram"];
+  mcpmVetoNumHistogram = [(PLBBMavLogMsg *)self mcpmVetoNumHistogram];
+  [otherCopy setObject:mcpmVetoNumHistogram forKeyedSubscript:@"MCPMVetoNumHistogram"];
 
-  v40 = [(PLBBMavLogMsg *)self npaVetoMask];
-  [v4 setObject:v40 forKeyedSubscript:@"NPAVetoMask"];
+  npaVetoMask = [(PLBBMavLogMsg *)self npaVetoMask];
+  [otherCopy setObject:npaVetoMask forKeyedSubscript:@"NPAVetoMask"];
 
-  v41 = [(PLBBMavLogMsg *)self npaVetoClientNumHistogram];
-  [v4 setObject:v41 forKeyedSubscript:@"NPAVetoClientNumHistogram"];
+  npaVetoClientNumHistogram = [(PLBBMavLogMsg *)self npaVetoClientNumHistogram];
+  [otherCopy setObject:npaVetoClientNumHistogram forKeyedSubscript:@"NPAVetoClientNumHistogram"];
 
-  v42 = [(PLBBMavLogMsg *)self appsClockStateDurationStr];
-  [v4 setObject:v42 forKeyedSubscript:@"AppsClockStateDurationStr"];
+  appsClockStateDurationStr = [(PLBBMavLogMsg *)self appsClockStateDurationStr];
+  [otherCopy setObject:appsClockStateDurationStr forKeyedSubscript:@"AppsClockStateDurationStr"];
 
-  v43 = [(PLBBMavLogMsg *)self mpssClockStateDurationStr];
-  [v4 setObject:v43 forKeyedSubscript:@"MpssClockStateDurationStr"];
+  mpssClockStateDurationStr = [(PLBBMavLogMsg *)self mpssClockStateDurationStr];
+  [otherCopy setObject:mpssClockStateDurationStr forKeyedSubscript:@"MpssClockStateDurationStr"];
 
-  v44 = [(PLBBMavLogMsg *)self hsicStateSleepVetoNum];
-  [v4 setObject:v44 forKeyedSubscript:@"HsicStateSleepVetoNum"];
+  hsicStateSleepVetoNum = [(PLBBMavLogMsg *)self hsicStateSleepVetoNum];
+  [otherCopy setObject:hsicStateSleepVetoNum forKeyedSubscript:@"HsicStateSleepVetoNum"];
 }
 
 - (void)refreshMavBBHwOtherPerRAT
@@ -1546,9 +1546,9 @@ uint64_t __41__PLBBMavLogMsg_addToGroupPLBBMavHwOther__block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg refreshMavBBHwOtherPerRAT]", block, v16, v17, v18, v19];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg refreshMavBBHwOtherPerRAT]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:436];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:436];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1563,8 +1563,8 @@ uint64_t __41__PLBBMavLogMsg_addToGroupPLBBMavHwOther__block_invoke(uint64_t a1)
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"MavBBHwOtherPerRAT"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
   [v12 setIsErrorEntry:1];
-  v13 = [(PLBasebandMessage *)self agent];
-  [v13 logEntry:v12];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEntry:v12];
 
   objc_autoreleasePoolPop(v3);
   v14 = *MEMORY[0x277D85DE8];
@@ -1592,29 +1592,29 @@ uint64_t __42__PLBBMavLogMsg_refreshMavBBHwOtherPerRAT__block_invoke(uint64_t a1
   v50[0] = v29;
   v49[1] = *MEMORY[0x277D3F540];
   v45[0] = @"Error";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_BoolFormat];
-  v46[0] = v27;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v46[0] = commonTypeDict_BoolFormat;
   v45[1] = @"SeqNum";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v46[1] = v25;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v46[1] = commonTypeDict_IntegerFormat;
   v45[2] = @"BBDate";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_DateFormat];
-  v46[2] = v23;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v46[2] = commonTypeDict_DateFormat;
   v45[3] = @"TimeCal";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v46[3] = v21;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v46[3] = commonTypeDict_IntegerFormat2;
   v45[4] = @"LogDuration";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v46[4] = v19;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v46[4] = commonTypeDict_IntegerFormat3;
   v45[5] = @"RadioTech";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v46[5] = v17;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v46[5] = commonTypeDict_IntegerFormat4;
   v45[6] = @"RSSIModeCount";
   v4 = *MEMORY[0x277D3F598];
   v42[0] = *MEMORY[0x277D3F5A8];
@@ -1711,9 +1711,9 @@ uint64_t __42__PLBBMavLogMsg_refreshMavBBHwOtherPerRAT__block_invoke(uint64_t a1
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg internaLogEventBackwardBBMavHwOtherPerRAT]", block, v17, v18, v19, v20];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg internaLogEventBackwardBBMavHwOtherPerRAT]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:484];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:484];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1770,9 +1770,9 @@ uint64_t __58__PLBBMavLogMsg_internaLogEventBackwardBBMavHwOtherPerRAT__block_in
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg logEventBackwardMavBBHwOtherPerRAT]", block, v16, v17, v18, v19];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardMavBBHwOtherPerRAT]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:498];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:498];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1784,10 +1784,10 @@ uint64_t __58__PLBBMavLogMsg_internaLogEventBackwardBBMavHwOtherPerRAT__block_in
     }
   }
 
-  v10 = [(PLBBMavLogMsg *)self internaLogEventBackwardBBMavHwOtherPerRAT];
-  v11 = [v10 objectForKey:@"entry"];
-  v12 = [v10 objectForKey:@"name"];
-  v13 = [v10 objectForKey:@"type"];
+  internaLogEventBackwardBBMavHwOtherPerRAT = [(PLBBMavLogMsg *)self internaLogEventBackwardBBMavHwOtherPerRAT];
+  v11 = [internaLogEventBackwardBBMavHwOtherPerRAT objectForKey:@"entry"];
+  v12 = [internaLogEventBackwardBBMavHwOtherPerRAT objectForKey:@"name"];
+  v13 = [internaLogEventBackwardBBMavHwOtherPerRAT objectForKey:@"type"];
   [(PLBBMavLogMsg *)self sendAndLogPLEntry:v11 withName:v12 withType:v13];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1821,9 +1821,9 @@ uint64_t __51__PLBBMavLogMsg_logEventBackwardMavBBHwOtherPerRAT__block_invoke(ui
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg logEventBackwardGrpEntriesBBMavHwOtherPerRAT]", block, v17, v18, v19, v20];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardGrpEntriesBBMavHwOtherPerRAT]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:509];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:509];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1835,12 +1835,12 @@ uint64_t __51__PLBBMavLogMsg_logEventBackwardMavBBHwOtherPerRAT__block_invoke(ui
     }
   }
 
-  v10 = [(PLBBMavLogMsg *)self internaLogEventBackwardBBMavHwOtherPerRAT];
+  internaLogEventBackwardBBMavHwOtherPerRAT = [(PLBBMavLogMsg *)self internaLogEventBackwardBBMavHwOtherPerRAT];
   v21[0] = @"entry";
-  v11 = [v10 objectForKey:?];
+  v11 = [internaLogEventBackwardBBMavHwOtherPerRAT objectForKey:?];
   v21[1] = @"name";
   v22[0] = v11;
-  v12 = [v10 objectForKey:?];
+  v12 = [internaLogEventBackwardBBMavHwOtherPerRAT objectForKey:?];
   v22[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
 
@@ -1856,59 +1856,59 @@ uint64_t __61__PLBBMavLogMsg_logEventBackwardGrpEntriesBBMavHwOtherPerRAT__block
   return result;
 }
 
-- (void)populateEntryBBMavHwOtherPerRAT:(id)a3
+- (void)populateEntryBBMavHwOtherPerRAT:(id)t
 {
-  v38 = a3;
-  v4 = [(PLBBMavLogMsg *)self commonInfo];
-  v5 = [v4 objectForKey:@"SeqNum"];
-  [v38 setObject:v5 forKeyedSubscript:@"SeqNum"];
+  tCopy = t;
+  commonInfo = [(PLBBMavLogMsg *)self commonInfo];
+  v5 = [commonInfo objectForKey:@"SeqNum"];
+  [tCopy setObject:v5 forKeyedSubscript:@"SeqNum"];
 
-  v6 = [(PLBBMavLogMsg *)self commonInfo];
-  v7 = [v6 objectForKey:@"BBDate"];
-  [v38 setObject:v7 forKeyedSubscript:@"BBDate"];
+  commonInfo2 = [(PLBBMavLogMsg *)self commonInfo];
+  v7 = [commonInfo2 objectForKey:@"BBDate"];
+  [tCopy setObject:v7 forKeyedSubscript:@"BBDate"];
 
-  v8 = [(PLBBMavLogMsg *)self commonInfo];
-  v9 = [v8 objectForKey:@"TimeCal"];
-  [v38 setObject:v9 forKeyedSubscript:@"TimeCal"];
+  commonInfo3 = [(PLBBMavLogMsg *)self commonInfo];
+  v9 = [commonInfo3 objectForKey:@"TimeCal"];
+  [tCopy setObject:v9 forKeyedSubscript:@"TimeCal"];
 
-  v10 = [(PLBBMavLogMsg *)self commonInfo];
-  v11 = [v10 objectForKey:@"Error"];
-  [v38 setObject:v11 forKeyedSubscript:@"Error"];
+  commonInfo4 = [(PLBBMavLogMsg *)self commonInfo];
+  v11 = [commonInfo4 objectForKey:@"Error"];
+  [tCopy setObject:v11 forKeyedSubscript:@"Error"];
 
-  v12 = [(PLBBMavLogMsg *)self commonInfo];
-  v13 = [v12 objectForKey:@"BBDate"];
-  v14 = [v13 convertFromBasebandToMonotonic];
-  [v38 setEntryDate:v14];
+  commonInfo5 = [(PLBBMavLogMsg *)self commonInfo];
+  v13 = [commonInfo5 objectForKey:@"BBDate"];
+  convertFromBasebandToMonotonic = [v13 convertFromBasebandToMonotonic];
+  [tCopy setEntryDate:convertFromBasebandToMonotonic];
 
-  v15 = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
-  [v38 setObject:v15 forKeyedSubscript:@"LogDuration"];
+  bbHwLogDurationInTicks = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
+  [tCopy setObject:bbHwLogDurationInTicks forKeyedSubscript:@"LogDuration"];
 
-  v16 = [(PLBBMavLogMsg *)self radioTech];
-  [v38 setObject:v16 forKeyedSubscript:@"RadioTech"];
+  radioTech = [(PLBBMavLogMsg *)self radioTech];
+  [tCopy setObject:radioTech forKeyedSubscript:@"RadioTech"];
 
-  v17 = [(PLBBMavLogMsg *)self rssiModeCount];
-  [v38 setObject:v17 forKeyedSubscript:@"RSSIModeCount"];
+  rssiModeCount = [(PLBBMavLogMsg *)self rssiModeCount];
+  [tCopy setObject:rssiModeCount forKeyedSubscript:@"RSSIModeCount"];
 
-  v18 = [(PLBBMavLogMsg *)self rx0RssiPowerHist];
-  [v38 setObject:v18 forKeyedSubscript:@"Rx0RSSIPowerHist"];
+  rx0RssiPowerHist = [(PLBBMavLogMsg *)self rx0RssiPowerHist];
+  [tCopy setObject:rx0RssiPowerHist forKeyedSubscript:@"Rx0RSSIPowerHist"];
 
-  v19 = [(PLBBMavLogMsg *)self rx1RssiPowerHist];
-  [v38 setObject:v19 forKeyedSubscript:@"Rx1RSSIPowerHist"];
+  rx1RssiPowerHist = [(PLBBMavLogMsg *)self rx1RssiPowerHist];
+  [tCopy setObject:rx1RssiPowerHist forKeyedSubscript:@"Rx1RSSIPowerHist"];
 
-  v20 = [(PLBBMavLogMsg *)self rx0SQAPowerHist];
-  [v38 setObject:v20 forKeyedSubscript:@"Rx0SQAPowerHist"];
+  rx0SQAPowerHist = [(PLBBMavLogMsg *)self rx0SQAPowerHist];
+  [tCopy setObject:rx0SQAPowerHist forKeyedSubscript:@"Rx0SQAPowerHist"];
 
-  v21 = [(PLBBMavLogMsg *)self rx1SQAPowerHist];
-  [v38 setObject:v21 forKeyedSubscript:@"Rx1SQAPowerHist"];
+  rx1SQAPowerHist = [(PLBBMavLogMsg *)self rx1SQAPowerHist];
+  [tCopy setObject:rx1SQAPowerHist forKeyedSubscript:@"Rx1SQAPowerHist"];
 
-  v22 = [(PLBBMavLogMsg *)self txPowerHist];
-  [v38 setObject:v22 forKeyedSubscript:@"TxPowerHist"];
+  txPowerHist = [(PLBBMavLogMsg *)self txPowerHist];
+  [tCopy setObject:txPowerHist forKeyedSubscript:@"TxPowerHist"];
 
-  v23 = [(PLBBMavLogMsg *)self protocolStateHist];
-  [v38 setObject:v23 forKeyedSubscript:@"ProtocolStateHist"];
+  protocolStateHist = [(PLBBMavLogMsg *)self protocolStateHist];
+  [tCopy setObject:protocolStateHist forKeyedSubscript:@"ProtocolStateHist"];
 
-  v24 = [(PLBBMavLogMsg *)self txPowerHist];
-  v25 = [v24 count];
+  txPowerHist2 = [(PLBBMavLogMsg *)self txPowerHist];
+  v25 = [txPowerHist2 count];
 
   if (v25)
   {
@@ -1916,13 +1916,13 @@ uint64_t __61__PLBBMavLogMsg_logEventBackwardGrpEntriesBBMavHwOtherPerRAT__block
     v27 = 0;
     do
     {
-      v28 = [(PLBBMavLogMsg *)self txPowerHist];
-      v29 = [v28 objectAtIndexedSubscript:v26];
+      txPowerHist3 = [(PLBBMavLogMsg *)self txPowerHist];
+      v29 = [txPowerHist3 objectAtIndexedSubscript:v26];
       v27 += [v29 intValue];
 
       ++v26;
-      v30 = [(PLBBMavLogMsg *)self txPowerHist];
-      v31 = [v30 count];
+      txPowerHist4 = [(PLBBMavLogMsg *)self txPowerHist];
+      v31 = [txPowerHist4 count];
     }
 
     while (v31 > v26);
@@ -1934,15 +1934,15 @@ uint64_t __61__PLBBMavLogMsg_logEventBackwardGrpEntriesBBMavHwOtherPerRAT__block
     v32 = 1;
   }
 
-  v33 = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
-  v34 = [v33 intValue];
-  v35 = [(PLBBMavLogMsg *)self protocolStateHist];
-  v36 = [v35 objectAtIndexedSubscript:0];
-  v37 = [v36 intValue];
+  bbHwLogDurationInTicks2 = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
+  intValue = [bbHwLogDurationInTicks2 intValue];
+  protocolStateHist2 = [(PLBBMavLogMsg *)self protocolStateHist];
+  v36 = [protocolStateHist2 objectAtIndexedSubscript:0];
+  intValue2 = [v36 intValue];
 
-  if (v34 == v37 && v32)
+  if (intValue == intValue2 && v32)
   {
-    [v38 setWriteToDB:0];
+    [tCopy setWriteToDB:0];
   }
 }
 
@@ -1967,9 +1967,9 @@ uint64_t __61__PLBBMavLogMsg_logEventBackwardGrpEntriesBBMavHwOtherPerRAT__block
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg logGrpEntriesMavBBHwOtherPerRat]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logGrpEntriesMavBBHwOtherPerRat]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:552];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:552];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1981,9 +1981,9 @@ uint64_t __61__PLBBMavLogMsg_logEventBackwardGrpEntriesBBMavHwOtherPerRAT__block
     }
   }
 
-  v10 = [(PLBasebandMessage *)self agent];
+  agent = [(PLBasebandMessage *)self agent];
 
-  if (!v10 && [MEMORY[0x277D3F180] debugEnabled])
+  if (!agent && [MEMORY[0x277D3F180] debugEnabled])
   {
     v11 = objc_opt_class();
     v24[0] = MEMORY[0x277D85DD0];
@@ -2001,9 +2001,9 @@ uint64_t __61__PLBBMavLogMsg_logEventBackwardGrpEntriesBBMavHwOtherPerRAT__block
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bad agent"];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent2 = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logGrpEntriesMavBBHwOtherPerRat]"];
-      [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:554];
+      [v13 logMessage:v12 fromFile:lastPathComponent2 fromFunction:v16 fromLineNumber:554];
 
       v17 = PLLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -2015,14 +2015,14 @@ uint64_t __61__PLBBMavLogMsg_logEventBackwardGrpEntriesBBMavHwOtherPerRAT__block
     }
   }
 
-  v18 = [(PLBasebandMessage *)self agent];
-  v19 = [(PLBBMavLogMsg *)self groupEntryKey];
-  v26 = v19;
-  v20 = [(PLBBMavLogMsg *)self groupArrEntries];
-  v27 = v20;
+  agent2 = [(PLBasebandMessage *)self agent];
+  groupEntryKey = [(PLBBMavLogMsg *)self groupEntryKey];
+  v26 = groupEntryKey;
+  groupArrEntries = [(PLBBMavLogMsg *)self groupArrEntries];
+  v27 = groupArrEntries;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-  v22 = [(PLBBMavLogMsg *)self groupEntryKey];
-  [v18 logEntries:v21 withGroupID:v22];
+  groupEntryKey2 = [(PLBBMavLogMsg *)self groupEntryKey];
+  [agent2 logEntries:v21 withGroupID:groupEntryKey2];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -2041,10 +2041,10 @@ uint64_t __48__PLBBMavLogMsg_logGrpEntriesMavBBHwOtherPerRat__block_invoke_545(u
   return result;
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -2063,9 +2063,9 @@ uint64_t __48__PLBBMavLogMsg_logGrpEntriesMavBBHwOtherPerRat__block_invoke_545(u
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg setType:]", block, v14, v15, v16, v17];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg setType:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:561];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:561];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -2077,7 +2077,7 @@ uint64_t __48__PLBBMavLogMsg_logGrpEntriesMavBBHwOtherPerRat__block_invoke_545(u
     }
   }
 
-  [(NSMutableDictionary *)self->_commonInfo setObject:v4 forKey:@"Type"];
+  [(NSMutableDictionary *)self->_commonInfo setObject:typeCopy forKey:@"Type"];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -2089,12 +2089,12 @@ uint64_t __25__PLBBMavLogMsg_setType___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setMavBBHwValue:(id)a3 forKey:(id)a4
+- (void)setMavBBHwValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLBBMavLogMsg *)self kvPairs];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  kvPairs = [(PLBBMavLogMsg *)self kvPairs];
+  [kvPairs setObject:valueCopy forKey:keyCopy];
 }
 
 - (void)logEventBackwardMav1BBHwOtherPerRAT
@@ -2118,9 +2118,9 @@ uint64_t __25__PLBBMavLogMsg_setType___block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg logEventBackwardMav1BBHwOtherPerRAT]", block, v15, v16, v17, v18];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardMav1BBHwOtherPerRAT]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:590];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:590];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -2165,25 +2165,25 @@ uint64_t __52__PLBBMavLogMsg_logEventBackwardMav1BBHwOtherPerRAT__block_invoke(u
   v40[0] = v25;
   v39[1] = *MEMORY[0x277D3F540];
   v35[0] = @"BBDate";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_DateFormat];
-  v36[0] = v23;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v36[0] = commonTypeDict_DateFormat;
   v35[1] = @"Error";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_StringFormat];
-  v36[1] = v21;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v36[1] = commonTypeDict_StringFormat;
   v35[2] = @"RxTicks";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v36[2] = v19;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v36[2] = commonTypeDict_IntegerFormat;
   v35[3] = @"TxTicks";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_StringFormat];
-  v36[3] = v17;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v36[3] = commonTypeDict_StringFormat2;
   v35[4] = @"LogDuration";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v36[4] = v15;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v36[4] = commonTypeDict_IntegerFormat2;
   v35[5] = @"RSSIModeCount";
   v5 = *MEMORY[0x277D3F598];
   v32[0] = *MEMORY[0x277D3F5A8];
@@ -2254,9 +2254,9 @@ uint64_t __52__PLBBMavLogMsg_logEventBackwardMav1BBHwOtherPerRAT__block_invoke(u
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg refreshMav1BBHwOtherPerRAT]", block, v16, v17, v18, v19];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg refreshMav1BBHwOtherPerRAT]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:640];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:640];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2271,8 +2271,8 @@ uint64_t __52__PLBBMavLogMsg_logEventBackwardMav1BBHwOtherPerRAT__block_invoke(u
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"MavBBHwOtherPerRAT"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
   [v12 setIsErrorEntry:1];
-  v13 = [(PLBasebandMessage *)self agent];
-  [v13 logEntry:v12];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEntry:v12];
 
   objc_autoreleasePoolPop(v3);
   v14 = *MEMORY[0x277D85DE8];
@@ -2285,50 +2285,50 @@ uint64_t __43__PLBBMavLogMsg_refreshMav1BBHwOtherPerRAT__block_invoke(uint64_t a
   return result;
 }
 
-- (void)populateEntryBBMav1HwOtherPerRAT:(id)a3
+- (void)populateEntryBBMav1HwOtherPerRAT:(id)t
 {
-  v4 = a3;
-  v5 = [(PLBBMavLogMsg *)self commonInfo];
-  v6 = [v5 objectForKey:@"SeqNum"];
-  [v4 setObject:v6 forKeyedSubscript:@"SeqNum"];
+  tCopy = t;
+  commonInfo = [(PLBBMavLogMsg *)self commonInfo];
+  v6 = [commonInfo objectForKey:@"SeqNum"];
+  [tCopy setObject:v6 forKeyedSubscript:@"SeqNum"];
 
-  v7 = [(PLBBMavLogMsg *)self commonInfo];
-  v8 = [v7 objectForKey:@"BBDate"];
-  [v4 setObject:v8 forKeyedSubscript:@"BBDate"];
+  commonInfo2 = [(PLBBMavLogMsg *)self commonInfo];
+  v8 = [commonInfo2 objectForKey:@"BBDate"];
+  [tCopy setObject:v8 forKeyedSubscript:@"BBDate"];
 
-  v9 = [(PLBBMavLogMsg *)self commonInfo];
-  v10 = [v9 objectForKey:@"TimeCal"];
-  [v4 setObject:v10 forKeyedSubscript:@"TimeCal"];
+  commonInfo3 = [(PLBBMavLogMsg *)self commonInfo];
+  v10 = [commonInfo3 objectForKey:@"TimeCal"];
+  [tCopy setObject:v10 forKeyedSubscript:@"TimeCal"];
 
-  v11 = [(PLBBMavLogMsg *)self commonInfo];
-  v12 = [v11 objectForKey:@"Error"];
-  [v4 setObject:v12 forKeyedSubscript:@"Error"];
+  commonInfo4 = [(PLBBMavLogMsg *)self commonInfo];
+  v12 = [commonInfo4 objectForKey:@"Error"];
+  [tCopy setObject:v12 forKeyedSubscript:@"Error"];
 
-  v13 = [(PLBBMavLogMsg *)self commonInfo];
-  v14 = [v13 objectForKey:@"BBDate"];
-  v15 = [v14 convertFromBasebandToMonotonic];
-  [v4 setEntryDate:v15];
+  commonInfo5 = [(PLBBMavLogMsg *)self commonInfo];
+  v14 = [commonInfo5 objectForKey:@"BBDate"];
+  convertFromBasebandToMonotonic = [v14 convertFromBasebandToMonotonic];
+  [tCopy setEntryDate:convertFromBasebandToMonotonic];
 
-  v16 = [(PLBBMavLogMsg *)self rxTicks];
-  [v4 setObject:v16 forKeyedSubscript:@"RxTicks"];
+  rxTicks = [(PLBBMavLogMsg *)self rxTicks];
+  [tCopy setObject:rxTicks forKeyedSubscript:@"RxTicks"];
 
-  v17 = [(PLBBMavLogMsg *)self txTicks];
-  [v4 setObject:v17 forKeyedSubscript:@"TxTicks"];
+  txTicks = [(PLBBMavLogMsg *)self txTicks];
+  [tCopy setObject:txTicks forKeyedSubscript:@"TxTicks"];
 
-  v18 = [(PLBBMavLogMsg *)self rx0RssiPowerHist];
-  [v4 setObject:v18 forKeyedSubscript:@"Rx0RSSIPowerHist"];
+  rx0RssiPowerHist = [(PLBBMavLogMsg *)self rx0RssiPowerHist];
+  [tCopy setObject:rx0RssiPowerHist forKeyedSubscript:@"Rx0RSSIPowerHist"];
 
-  v19 = [(PLBBMavLogMsg *)self rssiModeCount];
-  [v4 setObject:v19 forKeyedSubscript:@"RSSIModeCount"];
+  rssiModeCount = [(PLBBMavLogMsg *)self rssiModeCount];
+  [tCopy setObject:rssiModeCount forKeyedSubscript:@"RSSIModeCount"];
 
-  v20 = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
-  [v4 setObject:v20 forKeyedSubscript:@"LogDuration"];
+  bbHwLogDurationInTicks = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
+  [tCopy setObject:bbHwLogDurationInTicks forKeyedSubscript:@"LogDuration"];
 
-  v21 = [(PLBBMavLogMsg *)self txPowerHist1x];
-  [v4 setObject:v21 forKeyedSubscript:@"TxPowerHist1x"];
+  txPowerHist1x = [(PLBBMavLogMsg *)self txPowerHist1x];
+  [tCopy setObject:txPowerHist1x forKeyedSubscript:@"TxPowerHist1x"];
 
-  v22 = [(PLBBMavLogMsg *)self txPowerHistEVDO];
-  [v4 setObject:v22 forKeyedSubscript:@"TxPowerHistEVDO"];
+  txPowerHistEVDO = [(PLBBMavLogMsg *)self txPowerHistEVDO];
+  [tCopy setObject:txPowerHistEVDO forKeyedSubscript:@"TxPowerHistEVDO"];
 }
 
 - (id)logEventBackwardGrpEntriesBBMav1HwOtherPerRAT
@@ -2352,9 +2352,9 @@ uint64_t __43__PLBBMavLogMsg_refreshMav1BBHwOtherPerRAT__block_invoke(uint64_t a
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg logEventBackwardGrpEntriesBBMav1HwOtherPerRAT]", block, v17, v18, v19, v20];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardGrpEntriesBBMav1HwOtherPerRAT]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:672];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:672];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -2366,12 +2366,12 @@ uint64_t __43__PLBBMavLogMsg_refreshMav1BBHwOtherPerRAT__block_invoke(uint64_t a
     }
   }
 
-  v10 = [(PLBBMavLogMsg *)self internaLogEventBackwardBBMav1HwOtherPerRAT];
+  internaLogEventBackwardBBMav1HwOtherPerRAT = [(PLBBMavLogMsg *)self internaLogEventBackwardBBMav1HwOtherPerRAT];
   v21[0] = @"entry";
-  v11 = [v10 objectForKey:?];
+  v11 = [internaLogEventBackwardBBMav1HwOtherPerRAT objectForKey:?];
   v21[1] = @"name";
   v22[0] = v11;
-  v12 = [v10 objectForKey:?];
+  v12 = [internaLogEventBackwardBBMav1HwOtherPerRAT objectForKey:?];
   v22[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
 
@@ -2408,9 +2408,9 @@ uint64_t __62__PLBBMavLogMsg_logEventBackwardGrpEntriesBBMav1HwOtherPerRAT__bloc
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg internaLogEventBackwardBBMav1HwOtherPerRAT]", block, v17, v18, v19, v20];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg internaLogEventBackwardBBMav1HwOtherPerRAT]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:680];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:680];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -2468,9 +2468,9 @@ uint64_t __59__PLBBMavLogMsg_internaLogEventBackwardBBMav1HwOtherPerRAT__block_i
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg refreshBBMav2HwOther]", block, v16, v17, v18, v19];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg refreshBBMav2HwOther]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:697];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:697];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2485,8 +2485,8 @@ uint64_t __59__PLBBMavLogMsg_internaLogEventBackwardBBMav1HwOtherPerRAT__block_i
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"MavBBHwOther"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
   [v12 setIsErrorEntry:1];
-  v13 = [(PLBasebandMessage *)self agent];
-  [v13 logEntry:v12];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEntry:v12];
 
   objc_autoreleasePoolPop(v3);
   v14 = *MEMORY[0x277D85DE8];
@@ -2514,57 +2514,57 @@ uint64_t __37__PLBBMavLogMsg_refreshBBMav2HwOther__block_invoke(uint64_t a1)
   v85[0] = v50;
   v84[1] = *MEMORY[0x277D3F540];
   v80[0] = @"Error";
-  v49 = [MEMORY[0x277D3F198] sharedInstance];
-  v48 = [v49 commonTypeDict_BoolFormat];
-  v81[0] = v48;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v81[0] = commonTypeDict_BoolFormat;
   v80[1] = @"Type";
-  v47 = [MEMORY[0x277D3F198] sharedInstance];
-  v46 = [v47 commonTypeDict_IntegerFormat];
-  v81[1] = v46;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v81[1] = commonTypeDict_IntegerFormat;
   v80[2] = @"SeqNum";
-  v45 = [MEMORY[0x277D3F198] sharedInstance];
-  v44 = [v45 commonTypeDict_IntegerFormat];
-  v81[2] = v44;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v81[2] = commonTypeDict_IntegerFormat2;
   v80[3] = @"BBDate";
-  v43 = [MEMORY[0x277D3F198] sharedInstance];
-  v42 = [v43 commonTypeDict_DateFormat];
-  v81[3] = v42;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]4 commonTypeDict_DateFormat];
+  v81[3] = commonTypeDict_DateFormat;
   v80[4] = @"TimeCal";
-  v41 = [MEMORY[0x277D3F198] sharedInstance];
-  v40 = [v41 commonTypeDict_IntegerFormat];
-  v81[4] = v40;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v81[4] = commonTypeDict_IntegerFormat3;
   v80[5] = @"SWRevision";
-  v39 = [MEMORY[0x277D3F198] sharedInstance];
-  v38 = [v39 commonTypeDict_IntegerFormat];
-  v81[5] = v38;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v81[5] = commonTypeDict_IntegerFormat4;
   v80[6] = @"HWRevision";
-  v37 = [MEMORY[0x277D3F198] sharedInstance];
-  v36 = [v37 commonTypeDict_IntegerFormat];
-  v81[6] = v36;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v81[6] = commonTypeDict_IntegerFormat5;
   v80[7] = @"HWStatsType";
-  v35 = [MEMORY[0x277D3F198] sharedInstance];
-  v34 = [v35 commonTypeDict_IntegerFormat];
-  v81[7] = v34;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v81[7] = commonTypeDict_IntegerFormat6;
   v80[8] = @"HwStatsLength";
-  v33 = [MEMORY[0x277D3F198] sharedInstance];
-  v32 = [v33 commonTypeDict_IntegerFormat];
-  v81[8] = v32;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v81[8] = commonTypeDict_IntegerFormat7;
   v80[9] = @"HwStatsLevel";
-  v31 = [MEMORY[0x277D3F198] sharedInstance];
-  v30 = [v31 commonTypeDict_IntegerFormat];
-  v81[9] = v30;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v81[9] = commonTypeDict_IntegerFormat8;
   v80[10] = @"LastTimestamp";
-  v29 = [MEMORY[0x277D3F198] sharedInstance];
-  v28 = [v29 commonTypeDict_IntegerFormat];
-  v81[10] = v28;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v81[10] = commonTypeDict_IntegerFormat9;
   v80[11] = @"CurrentTimestamp";
-  v27 = [MEMORY[0x277D3F198] sharedInstance];
-  v26 = [v27 commonTypeDict_IntegerFormat];
-  v81[11] = v26;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v81[11] = commonTypeDict_IntegerFormat10;
   v80[12] = @"LogDuration";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v81[12] = v24;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v81[12] = commonTypeDict_IntegerFormat11;
   v80[13] = @"ProcSystemState";
   v4 = *MEMORY[0x277D3F598];
   v77[0] = *MEMORY[0x277D3F5A8];
@@ -2703,86 +2703,86 @@ uint64_t __37__PLBBMavLogMsg_refreshBBMav2HwOther__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (void)populateEntryBBMav2HwOther:(id)a3
+- (void)populateEntryBBMav2HwOther:(id)other
 {
-  v4 = a3;
-  v5 = [(PLBBMavLogMsg *)self bbSwRev];
-  [v4 setObject:v5 forKeyedSubscript:@"SWRevision"];
+  otherCopy = other;
+  bbSwRev = [(PLBBMavLogMsg *)self bbSwRev];
+  [otherCopy setObject:bbSwRev forKeyedSubscript:@"SWRevision"];
 
-  v6 = [(PLBBMavLogMsg *)self bbHwRev];
-  [v4 setObject:v6 forKeyedSubscript:@"HWRevision"];
+  bbHwRev = [(PLBBMavLogMsg *)self bbHwRev];
+  [otherCopy setObject:bbHwRev forKeyedSubscript:@"HWRevision"];
 
-  v7 = [(PLBBMavLogMsg *)self commonInfo];
-  v8 = [v7 objectForKey:@"BBDate"];
-  [v4 setObject:v8 forKeyedSubscript:@"BBDate"];
+  commonInfo = [(PLBBMavLogMsg *)self commonInfo];
+  v8 = [commonInfo objectForKey:@"BBDate"];
+  [otherCopy setObject:v8 forKeyedSubscript:@"BBDate"];
 
-  v9 = [(PLBBMavLogMsg *)self bbHwStatsType];
-  [v4 setObject:v9 forKeyedSubscript:@"HWStatsType"];
+  bbHwStatsType = [(PLBBMavLogMsg *)self bbHwStatsType];
+  [otherCopy setObject:bbHwStatsType forKeyedSubscript:@"HWStatsType"];
 
-  v10 = [(PLBBMavLogMsg *)self bbHwStatsLength];
-  [v4 setObject:v10 forKeyedSubscript:@"HwStatsLength"];
+  bbHwStatsLength = [(PLBBMavLogMsg *)self bbHwStatsLength];
+  [otherCopy setObject:bbHwStatsLength forKeyedSubscript:@"HwStatsLength"];
 
-  v11 = [(PLBBMavLogMsg *)self bbHwStatsLevel];
-  [v4 setObject:v11 forKeyedSubscript:@"HwStatsLevel"];
+  bbHwStatsLevel = [(PLBBMavLogMsg *)self bbHwStatsLevel];
+  [otherCopy setObject:bbHwStatsLevel forKeyedSubscript:@"HwStatsLevel"];
 
-  v12 = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
-  [v4 setObject:v12 forKeyedSubscript:@"CurrentTimestamp"];
+  bbHwCurrTimeStamp = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
+  [otherCopy setObject:bbHwCurrTimeStamp forKeyedSubscript:@"CurrentTimestamp"];
 
-  v13 = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
-  [v4 setObject:v13 forKeyedSubscript:@"LastTimestamp"];
+  bbHwLastTimeStamp = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
+  [otherCopy setObject:bbHwLastTimeStamp forKeyedSubscript:@"LastTimestamp"];
 
-  v14 = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
-  [v4 setObject:v14 forKeyedSubscript:@"LogDuration"];
+  bbHwLogDurationInTicks = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
+  [otherCopy setObject:bbHwLogDurationInTicks forKeyedSubscript:@"LogDuration"];
 
-  v15 = [(PLBBMavLogMsg *)self bbHwMsgType];
-  [v4 setObject:v15 forKeyedSubscript:@"Type"];
+  bbHwMsgType = [(PLBBMavLogMsg *)self bbHwMsgType];
+  [otherCopy setObject:bbHwMsgType forKeyedSubscript:@"Type"];
 
-  v16 = [(PLBBMavLogMsg *)self commonInfo];
-  v17 = [v16 objectForKey:@"BBDate"];
-  v18 = [v17 convertFromBasebandToMonotonic];
-  [v4 setEntryDate:v18];
+  commonInfo2 = [(PLBBMavLogMsg *)self commonInfo];
+  v17 = [commonInfo2 objectForKey:@"BBDate"];
+  convertFromBasebandToMonotonic = [v17 convertFromBasebandToMonotonic];
+  [otherCopy setEntryDate:convertFromBasebandToMonotonic];
 
-  v19 = [(PLBBMavLogMsg *)self bbHwProcSystemState];
-  [v4 setObject:v19 forKeyedSubscript:@"ProcSystemState"];
+  bbHwProcSystemState = [(PLBBMavLogMsg *)self bbHwProcSystemState];
+  [otherCopy setObject:bbHwProcSystemState forKeyedSubscript:@"ProcSystemState"];
 
-  v20 = [(PLBBMavLogMsg *)self bbHwProcArmPerfState];
-  [v4 setObject:v20 forKeyedSubscript:@"ProcArmPerfState"];
+  bbHwProcArmPerfState = [(PLBBMavLogMsg *)self bbHwProcArmPerfState];
+  [otherCopy setObject:bbHwProcArmPerfState forKeyedSubscript:@"ProcArmPerfState"];
 
-  v21 = [(PLBBMavLogMsg *)self bbHwModemAppMdspState];
-  [v4 setObject:v21 forKeyedSubscript:@"ModemAppMdspState"];
+  bbHwModemAppMdspState = [(PLBBMavLogMsg *)self bbHwModemAppMdspState];
+  [otherCopy setObject:bbHwModemAppMdspState forKeyedSubscript:@"ModemAppMdspState"];
 
-  v22 = [(PLBBMavLogMsg *)self bbHwModemAppMdspClockState];
-  [v4 setObject:v22 forKeyedSubscript:@"ModemAppMdspClockState"];
+  bbHwModemAppMdspClockState = [(PLBBMavLogMsg *)self bbHwModemAppMdspClockState];
+  [otherCopy setObject:bbHwModemAppMdspClockState forKeyedSubscript:@"ModemAppMdspClockState"];
 
-  v23 = [(PLBBMavLogMsg *)self bbHwModemAppMdspSpeed];
-  [v4 setObject:v23 forKeyedSubscript:@"ModemAppMdspSpeed"];
+  bbHwModemAppMdspSpeed = [(PLBBMavLogMsg *)self bbHwModemAppMdspSpeed];
+  [otherCopy setObject:bbHwModemAppMdspSpeed forKeyedSubscript:@"ModemAppMdspSpeed"];
 
-  v24 = [(PLBBMavLogMsg *)self bbHwModemAppMdmState];
-  [v4 setObject:v24 forKeyedSubscript:@"ModemAppMdmState"];
+  bbHwModemAppMdmState = [(PLBBMavLogMsg *)self bbHwModemAppMdmState];
+  [otherCopy setObject:bbHwModemAppMdmState forKeyedSubscript:@"ModemAppMdmState"];
 
-  v25 = [(PLBBMavLogMsg *)self bbHwModemAppAdspState];
-  [v4 setObject:v25 forKeyedSubscript:@"ModemAppAdspState"];
+  bbHwModemAppAdspState = [(PLBBMavLogMsg *)self bbHwModemAppAdspState];
+  [otherCopy setObject:bbHwModemAppAdspState forKeyedSubscript:@"ModemAppAdspState"];
 
-  v26 = [(PLBBMavLogMsg *)self bbHwModemAppAdspClockState];
-  [v4 setObject:v26 forKeyedSubscript:@"ModemAppAdspClockState"];
+  bbHwModemAppAdspClockState = [(PLBBMavLogMsg *)self bbHwModemAppAdspClockState];
+  [otherCopy setObject:bbHwModemAppAdspClockState forKeyedSubscript:@"ModemAppAdspClockState"];
 
-  v27 = [(PLBBMavLogMsg *)self bbHwModemAppAdspSpeed];
-  [v4 setObject:v27 forKeyedSubscript:@"ModemAppAdspSpeed"];
+  bbHwModemAppAdspSpeed = [(PLBBMavLogMsg *)self bbHwModemAppAdspSpeed];
+  [otherCopy setObject:bbHwModemAppAdspSpeed forKeyedSubscript:@"ModemAppAdspSpeed"];
 
-  v28 = [(PLBBMavLogMsg *)self bbHwModemAppAdmState];
-  [v4 setObject:v28 forKeyedSubscript:@"ModemAppAdmState"];
+  bbHwModemAppAdmState = [(PLBBMavLogMsg *)self bbHwModemAppAdmState];
+  [otherCopy setObject:bbHwModemAppAdmState forKeyedSubscript:@"ModemAppAdmState"];
 
-  v29 = [(PLBBMavLogMsg *)self bbHwPeripheralUSBState];
-  [v4 setObject:v29 forKeyedSubscript:@"PeripheralUSBState"];
+  bbHwPeripheralUSBState = [(PLBBMavLogMsg *)self bbHwPeripheralUSBState];
+  [otherCopy setObject:bbHwPeripheralUSBState forKeyedSubscript:@"PeripheralUSBState"];
 
-  v30 = [(PLBBMavLogMsg *)self bbHwPeripheralSPIState];
-  [v4 setObject:v30 forKeyedSubscript:@"PeripheralSPIState"];
+  bbHwPeripheralSPIState = [(PLBBMavLogMsg *)self bbHwPeripheralSPIState];
+  [otherCopy setObject:bbHwPeripheralSPIState forKeyedSubscript:@"PeripheralSPIState"];
 
-  v31 = [(PLBBMavLogMsg *)self bbHwPeripheralGPSState];
-  [v4 setObject:v31 forKeyedSubscript:@"PeripheralGPSState"];
+  bbHwPeripheralGPSState = [(PLBBMavLogMsg *)self bbHwPeripheralGPSState];
+  [otherCopy setObject:bbHwPeripheralGPSState forKeyedSubscript:@"PeripheralGPSState"];
 
-  v32 = [(PLBBMavLogMsg *)self bbHwPeripheralUARTState];
-  [v4 setObject:v32 forKeyedSubscript:@"PeripheralUARTState"];
+  bbHwPeripheralUARTState = [(PLBBMavLogMsg *)self bbHwPeripheralUARTState];
+  [otherCopy setObject:bbHwPeripheralUARTState forKeyedSubscript:@"PeripheralUARTState"];
 }
 
 - (void)addToGroupPLBBMav2HwOther
@@ -2806,9 +2806,9 @@ uint64_t __37__PLBBMavLogMsg_refreshBBMav2HwOther__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg addToGroupPLBBMav2HwOther]", block, v14, v15, v16, v17];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg addToGroupPLBBMav2HwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:830];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:830];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -2858,9 +2858,9 @@ uint64_t __42__PLBBMavLogMsg_addToGroupPLBBMav2HwOther__block_invoke(uint64_t a1
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg refreshBBMav4HwOther]", block, v16, v17, v18, v19];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg refreshBBMav4HwOther]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:848];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:848];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2875,8 +2875,8 @@ uint64_t __42__PLBBMavLogMsg_addToGroupPLBBMav2HwOther__block_invoke(uint64_t a1
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"MavBBHwOther"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
   [v12 setIsErrorEntry:1];
-  v13 = [(PLBasebandMessage *)self agent];
-  [v13 logEntry:v12];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEntry:v12];
 
   objc_autoreleasePoolPop(v3);
   v14 = *MEMORY[0x277D85DE8];
@@ -2904,57 +2904,57 @@ uint64_t __37__PLBBMavLogMsg_refreshBBMav4HwOther__block_invoke(uint64_t a1)
   v79[0] = v48;
   v78[1] = *MEMORY[0x277D3F540];
   v74[0] = @"Error";
-  v47 = [MEMORY[0x277D3F198] sharedInstance];
-  v46 = [v47 commonTypeDict_BoolFormat];
-  v75[0] = v46;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v75[0] = commonTypeDict_BoolFormat;
   v74[1] = @"Type";
-  v45 = [MEMORY[0x277D3F198] sharedInstance];
-  v44 = [v45 commonTypeDict_IntegerFormat];
-  v75[1] = v44;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v75[1] = commonTypeDict_IntegerFormat;
   v74[2] = @"SeqNum";
-  v43 = [MEMORY[0x277D3F198] sharedInstance];
-  v42 = [v43 commonTypeDict_IntegerFormat];
-  v75[2] = v42;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v75[2] = commonTypeDict_IntegerFormat2;
   v74[3] = @"BBDate";
-  v41 = [MEMORY[0x277D3F198] sharedInstance];
-  v40 = [v41 commonTypeDict_DateFormat];
-  v75[3] = v40;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]4 commonTypeDict_DateFormat];
+  v75[3] = commonTypeDict_DateFormat;
   v74[4] = @"TimeCal";
-  v39 = [MEMORY[0x277D3F198] sharedInstance];
-  v38 = [v39 commonTypeDict_IntegerFormat];
-  v75[4] = v38;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v75[4] = commonTypeDict_IntegerFormat3;
   v74[5] = @"SWRevision";
-  v37 = [MEMORY[0x277D3F198] sharedInstance];
-  v36 = [v37 commonTypeDict_IntegerFormat];
-  v75[5] = v36;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v75[5] = commonTypeDict_IntegerFormat4;
   v74[6] = @"HWRevision";
-  v35 = [MEMORY[0x277D3F198] sharedInstance];
-  v34 = [v35 commonTypeDict_IntegerFormat];
-  v75[6] = v34;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v75[6] = commonTypeDict_IntegerFormat5;
   v74[7] = @"HWStatsType";
-  v33 = [MEMORY[0x277D3F198] sharedInstance];
-  v32 = [v33 commonTypeDict_IntegerFormat];
-  v75[7] = v32;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v75[7] = commonTypeDict_IntegerFormat6;
   v74[8] = @"HwStatsLength";
-  v31 = [MEMORY[0x277D3F198] sharedInstance];
-  v30 = [v31 commonTypeDict_IntegerFormat];
-  v75[8] = v30;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v75[8] = commonTypeDict_IntegerFormat7;
   v74[9] = @"HwStatsLevel";
-  v29 = [MEMORY[0x277D3F198] sharedInstance];
-  v28 = [v29 commonTypeDict_IntegerFormat];
-  v75[9] = v28;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v75[9] = commonTypeDict_IntegerFormat8;
   v74[10] = @"LastTimestamp";
-  v27 = [MEMORY[0x277D3F198] sharedInstance];
-  v26 = [v27 commonTypeDict_IntegerFormat];
-  v75[10] = v26;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v75[10] = commonTypeDict_IntegerFormat9;
   v74[11] = @"CurrentTimestamp";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v75[11] = v24;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v75[11] = commonTypeDict_IntegerFormat10;
   v74[12] = @"LogDuration";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_IntegerFormat];
-  v75[12] = v22;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v75[12] = commonTypeDict_IntegerFormat11;
   v74[13] = @"ProcSystemState";
   v4 = *MEMORY[0x277D3F598];
   v71[0] = *MEMORY[0x277D3F5A8];
@@ -3075,80 +3075,80 @@ uint64_t __37__PLBBMavLogMsg_refreshBBMav4HwOther__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (void)populateEntryBBMav4HwOther:(id)a3
+- (void)populateEntryBBMav4HwOther:(id)other
 {
-  v4 = a3;
-  v5 = [(PLBBMavLogMsg *)self bbSwRev];
-  [v4 setObject:v5 forKeyedSubscript:@"SWRevision"];
+  otherCopy = other;
+  bbSwRev = [(PLBBMavLogMsg *)self bbSwRev];
+  [otherCopy setObject:bbSwRev forKeyedSubscript:@"SWRevision"];
 
-  v6 = [(PLBBMavLogMsg *)self bbHwRev];
-  [v4 setObject:v6 forKeyedSubscript:@"HWRevision"];
+  bbHwRev = [(PLBBMavLogMsg *)self bbHwRev];
+  [otherCopy setObject:bbHwRev forKeyedSubscript:@"HWRevision"];
 
-  v7 = [(PLBBMavLogMsg *)self commonInfo];
-  v8 = [v7 objectForKey:@"BBDate"];
-  [v4 setObject:v8 forKeyedSubscript:@"BBDate"];
+  commonInfo = [(PLBBMavLogMsg *)self commonInfo];
+  v8 = [commonInfo objectForKey:@"BBDate"];
+  [otherCopy setObject:v8 forKeyedSubscript:@"BBDate"];
 
-  v9 = [(PLBBMavLogMsg *)self bbHwStatsType];
-  [v4 setObject:v9 forKeyedSubscript:@"HWStatsType"];
+  bbHwStatsType = [(PLBBMavLogMsg *)self bbHwStatsType];
+  [otherCopy setObject:bbHwStatsType forKeyedSubscript:@"HWStatsType"];
 
-  v10 = [(PLBBMavLogMsg *)self bbHwStatsLength];
-  [v4 setObject:v10 forKeyedSubscript:@"HwStatsLength"];
+  bbHwStatsLength = [(PLBBMavLogMsg *)self bbHwStatsLength];
+  [otherCopy setObject:bbHwStatsLength forKeyedSubscript:@"HwStatsLength"];
 
-  v11 = [(PLBBMavLogMsg *)self bbHwStatsLevel];
-  [v4 setObject:v11 forKeyedSubscript:@"HwStatsLevel"];
+  bbHwStatsLevel = [(PLBBMavLogMsg *)self bbHwStatsLevel];
+  [otherCopy setObject:bbHwStatsLevel forKeyedSubscript:@"HwStatsLevel"];
 
-  v12 = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
-  [v4 setObject:v12 forKeyedSubscript:@"CurrentTimestamp"];
+  bbHwCurrTimeStamp = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
+  [otherCopy setObject:bbHwCurrTimeStamp forKeyedSubscript:@"CurrentTimestamp"];
 
-  v13 = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
-  [v4 setObject:v13 forKeyedSubscript:@"LastTimestamp"];
+  bbHwLastTimeStamp = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
+  [otherCopy setObject:bbHwLastTimeStamp forKeyedSubscript:@"LastTimestamp"];
 
-  v14 = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
-  [v4 setObject:v14 forKeyedSubscript:@"LogDuration"];
+  bbHwLogDurationInTicks = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
+  [otherCopy setObject:bbHwLogDurationInTicks forKeyedSubscript:@"LogDuration"];
 
-  v15 = [(PLBBMavLogMsg *)self bbHwMsgType];
-  [v4 setObject:v15 forKeyedSubscript:@"Type"];
+  bbHwMsgType = [(PLBBMavLogMsg *)self bbHwMsgType];
+  [otherCopy setObject:bbHwMsgType forKeyedSubscript:@"Type"];
 
-  v16 = [(PLBBMavLogMsg *)self commonInfo];
-  v17 = [v16 objectForKey:@"BBDate"];
-  v18 = [v17 convertFromBasebandToMonotonic];
-  [v4 setEntryDate:v18];
+  commonInfo2 = [(PLBBMavLogMsg *)self commonInfo];
+  v17 = [commonInfo2 objectForKey:@"BBDate"];
+  convertFromBasebandToMonotonic = [v17 convertFromBasebandToMonotonic];
+  [otherCopy setEntryDate:convertFromBasebandToMonotonic];
 
-  v19 = [(PLBBMavLogMsg *)self bbHwProcSystemState];
-  [v4 setObject:v19 forKeyedSubscript:@"ProcSystemState"];
+  bbHwProcSystemState = [(PLBBMavLogMsg *)self bbHwProcSystemState];
+  [otherCopy setObject:bbHwProcSystemState forKeyedSubscript:@"ProcSystemState"];
 
-  v20 = [(PLBBMavLogMsg *)self bbHwProcArmPerfState];
-  [v4 setObject:v20 forKeyedSubscript:@"ProcArmPerfState"];
+  bbHwProcArmPerfState = [(PLBBMavLogMsg *)self bbHwProcArmPerfState];
+  [otherCopy setObject:bbHwProcArmPerfState forKeyedSubscript:@"ProcArmPerfState"];
 
-  v21 = [(PLBBMavLogMsg *)self bbHwModemAppMdspSpeed];
-  [v4 setObject:v21 forKeyedSubscript:@"ModemAppMdspSpeed"];
+  bbHwModemAppMdspSpeed = [(PLBBMavLogMsg *)self bbHwModemAppMdspSpeed];
+  [otherCopy setObject:bbHwModemAppMdspSpeed forKeyedSubscript:@"ModemAppMdspSpeed"];
 
-  v22 = [(PLBBMavLogMsg *)self bbHwModemAppMdmState];
-  [v4 setObject:v22 forKeyedSubscript:@"ModemAppMdmState"];
+  bbHwModemAppMdmState = [(PLBBMavLogMsg *)self bbHwModemAppMdmState];
+  [otherCopy setObject:bbHwModemAppMdmState forKeyedSubscript:@"ModemAppMdmState"];
 
-  v23 = [(PLBBMavLogMsg *)self bbHwModemAppQdspSpeed];
-  [v4 setObject:v23 forKeyedSubscript:@"ModemAppQdspSpeed"];
+  bbHwModemAppQdspSpeed = [(PLBBMavLogMsg *)self bbHwModemAppQdspSpeed];
+  [otherCopy setObject:bbHwModemAppQdspSpeed forKeyedSubscript:@"ModemAppQdspSpeed"];
 
-  v24 = [(PLBBMavLogMsg *)self bbHwModemAppAdmState];
-  [v4 setObject:v24 forKeyedSubscript:@"ModemAppAdmState"];
+  bbHwModemAppAdmState = [(PLBBMavLogMsg *)self bbHwModemAppAdmState];
+  [otherCopy setObject:bbHwModemAppAdmState forKeyedSubscript:@"ModemAppAdmState"];
 
-  v25 = [(PLBBMavLogMsg *)self bbHwPeripheralGPSState];
-  [v4 setObject:v25 forKeyedSubscript:@"PeripheralGPSState"];
+  bbHwPeripheralGPSState = [(PLBBMavLogMsg *)self bbHwPeripheralGPSState];
+  [otherCopy setObject:bbHwPeripheralGPSState forKeyedSubscript:@"PeripheralGPSState"];
 
-  v26 = [(PLBBMavLogMsg *)self bbHwPeripheralUSBState];
-  [v4 setObject:v26 forKeyedSubscript:@"PeripheralUSBState"];
+  bbHwPeripheralUSBState = [(PLBBMavLogMsg *)self bbHwPeripheralUSBState];
+  [otherCopy setObject:bbHwPeripheralUSBState forKeyedSubscript:@"PeripheralUSBState"];
 
-  v27 = [(PLBBMavLogMsg *)self bbHwPeripheralUARTState];
-  [v4 setObject:v27 forKeyedSubscript:@"PeripheralUARTState"];
+  bbHwPeripheralUARTState = [(PLBBMavLogMsg *)self bbHwPeripheralUARTState];
+  [otherCopy setObject:bbHwPeripheralUARTState forKeyedSubscript:@"PeripheralUARTState"];
 
-  v28 = [(PLBBMavLogMsg *)self bbHwPeripheralSPIState];
-  [v4 setObject:v28 forKeyedSubscript:@"PeripheralSPIState"];
+  bbHwPeripheralSPIState = [(PLBBMavLogMsg *)self bbHwPeripheralSPIState];
+  [otherCopy setObject:bbHwPeripheralSPIState forKeyedSubscript:@"PeripheralSPIState"];
 
-  v29 = [(PLBBMavLogMsg *)self bbHwSleepVetoClientListQdsp];
-  [v4 setObject:v29 forKeyedSubscript:@"SleepVetoClientListQdsp"];
+  bbHwSleepVetoClientListQdsp = [(PLBBMavLogMsg *)self bbHwSleepVetoClientListQdsp];
+  [otherCopy setObject:bbHwSleepVetoClientListQdsp forKeyedSubscript:@"SleepVetoClientListQdsp"];
 
-  v30 = [(PLBBMavLogMsg *)self bbHwSleepVetoClientListArm];
-  [v4 setObject:v30 forKeyedSubscript:@"SleepVetoClientListArm"];
+  bbHwSleepVetoClientListArm = [(PLBBMavLogMsg *)self bbHwSleepVetoClientListArm];
+  [otherCopy setObject:bbHwSleepVetoClientListArm forKeyedSubscript:@"SleepVetoClientListArm"];
 }
 
 - (void)addToGroupPLBBMav4HwOther
@@ -3172,9 +3172,9 @@ uint64_t __37__PLBBMavLogMsg_refreshBBMav4HwOther__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg addToGroupPLBBMav4HwOther]", block, v14, v15, v16, v17];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg addToGroupPLBBMav4HwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:965];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:965];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -3224,9 +3224,9 @@ uint64_t __42__PLBBMavLogMsg_addToGroupPLBBMav4HwOther__block_invoke(uint64_t a1
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg refreshBBMav10HwOther]", block, v12, v13, v14, v15];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg refreshBBMav10HwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:982];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:982];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -3264,69 +3264,69 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav10HwOther__block_invoke(uint64_t a1)
   v108[0] = v71;
   v107[1] = *MEMORY[0x277D3F540];
   v103[0] = @"Error";
-  v70 = [MEMORY[0x277D3F198] sharedInstance];
-  v69 = [v70 commonTypeDict_BoolFormat];
-  v104[0] = v69;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v104[0] = commonTypeDict_BoolFormat;
   v103[1] = @"SeqNum";
-  v68 = [MEMORY[0x277D3F198] sharedInstance];
-  v67 = [v68 commonTypeDict_IntegerFormat];
-  v104[1] = v67;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v104[1] = commonTypeDict_IntegerFormat;
   v103[2] = @"BBDate";
-  v66 = [MEMORY[0x277D3F198] sharedInstance];
-  v65 = [v66 commonTypeDict_DateFormat];
-  v104[2] = v65;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v104[2] = commonTypeDict_DateFormat;
   v103[3] = @"TimeCal";
-  v64 = [MEMORY[0x277D3F198] sharedInstance];
-  v63 = [v64 commonTypeDict_IntegerFormat];
-  v104[3] = v63;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v104[3] = commonTypeDict_IntegerFormat2;
   v103[4] = @"SWRevision";
-  v62 = [MEMORY[0x277D3F198] sharedInstance];
-  v61 = [v62 commonTypeDict_IntegerFormat];
-  v104[4] = v61;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v104[4] = commonTypeDict_IntegerFormat3;
   v103[5] = @"HWRevision";
-  v60 = [MEMORY[0x277D3F198] sharedInstance];
-  v59 = [v60 commonTypeDict_IntegerFormat];
-  v104[5] = v59;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v104[5] = commonTypeDict_IntegerFormat4;
   v103[6] = @"HWStatsType";
-  v58 = [MEMORY[0x277D3F198] sharedInstance];
-  v57 = [v58 commonTypeDict_IntegerFormat];
-  v104[6] = v57;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v104[6] = commonTypeDict_IntegerFormat5;
   v103[7] = @"HwStatsLength";
-  v56 = [MEMORY[0x277D3F198] sharedInstance];
-  v55 = [v56 commonTypeDict_IntegerFormat];
-  v104[7] = v55;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v104[7] = commonTypeDict_IntegerFormat6;
   v103[8] = @"HwStatsLevel";
-  v54 = [MEMORY[0x277D3F198] sharedInstance];
-  v53 = [v54 commonTypeDict_IntegerFormat];
-  v104[8] = v53;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v104[8] = commonTypeDict_IntegerFormat7;
   v103[9] = @"LastTimestamp";
-  v52 = [MEMORY[0x277D3F198] sharedInstance];
-  v51 = [v52 commonTypeDict_IntegerFormat];
-  v104[9] = v51;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v104[9] = commonTypeDict_IntegerFormat8;
   v103[10] = @"CurrentTimestamp";
-  v50 = [MEMORY[0x277D3F198] sharedInstance];
-  v49 = [v50 commonTypeDict_IntegerFormat];
-  v104[10] = v49;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v104[10] = commonTypeDict_IntegerFormat9;
   v103[11] = @"LogDuration";
-  v48 = [MEMORY[0x277D3F198] sharedInstance];
-  v47 = [v48 commonTypeDict_IntegerFormat];
-  v104[11] = v47;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v104[11] = commonTypeDict_IntegerFormat10;
   v103[12] = @"RPMXOShutdownDuration";
-  v46 = [MEMORY[0x277D3F198] sharedInstance];
-  v45 = [v46 commonTypeDict_IntegerFormat];
-  v104[12] = v45;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v104[12] = commonTypeDict_IntegerFormat11;
   v103[13] = @"RPMXOShutdownCount";
-  v44 = [MEMORY[0x277D3F198] sharedInstance];
-  v43 = [v44 commonTypeDict_IntegerFormat];
-  v104[13] = v43;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v104[13] = commonTypeDict_IntegerFormat12;
   v103[14] = @"RPMVDDMinDuration";
-  v42 = [MEMORY[0x277D3F198] sharedInstance];
-  v41 = [v42 commonTypeDict_IntegerFormat];
-  v104[14] = v41;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v104[14] = commonTypeDict_IntegerFormat13;
   v103[15] = @"RPMVDDMinEnterCount";
-  v40 = [MEMORY[0x277D3F198] sharedInstance];
-  v39 = [v40 commonTypeDict_IntegerFormat];
-  v104[15] = v39;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v104[15] = commonTypeDict_IntegerFormat14;
   v103[16] = @"AppsPerfStateCountHistogram";
   v4 = *MEMORY[0x277D3F598];
   v100[0] = *MEMORY[0x277D3F5A8];
@@ -3340,13 +3340,13 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav10HwOther__block_invoke(uint64_t a1)
   v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v102 forKeys:v100 count:3];
   v104[16] = v38;
   v103[17] = @"CXOShutdownDuration";
-  v37 = [MEMORY[0x277D3F198] sharedInstance];
-  v36 = [v37 commonTypeDict_IntegerFormat];
-  v104[17] = v36;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v104[17] = commonTypeDict_IntegerFormat15;
   v103[18] = @"CXOShutdownCount";
-  v35 = [MEMORY[0x277D3F198] sharedInstance];
-  v34 = [v35 commonTypeDict_IntegerFormat];
-  v104[18] = v34;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v104[18] = commonTypeDict_IntegerFormat16;
   v103[19] = @"USBStateCountHistogram";
   v98[0] = v3;
   v98[1] = v4;
@@ -3447,13 +3447,13 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav10HwOther__block_invoke(uint64_t a1)
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v79 forKeys:v78 count:3];
   v104[29] = v23;
   v103[30] = @"MPSSCXOShutdownDuration";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v104[30] = v21;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+  v104[30] = commonTypeDict_IntegerFormat17;
   v103[31] = @"MPSSCXOShutdownCount";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v104[31] = v19;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v104[31] = commonTypeDict_IntegerFormat18;
   v103[32] = @"MCPMVetoNumHistogram";
   v76[0] = v3;
   v76[1] = v4;
@@ -3464,9 +3464,9 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav10HwOther__block_invoke(uint64_t a1)
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v77 forKeys:v76 count:3];
   v104[32] = v18;
   v103[33] = @"NPAVetoMask";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v17 commonTypeDict_IntegerFormat];
-  v104[33] = v6;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v104[33] = commonTypeDict_IntegerFormat19;
   v103[34] = @"NPAVetoClientNumHistogram";
   v74[0] = v3;
   v74[1] = v4;
@@ -3477,13 +3477,13 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav10HwOther__block_invoke(uint64_t a1)
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v75 forKeys:v74 count:3];
   v104[34] = v7;
   v103[35] = @"AppsClockStateDurationStr";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v104[35] = v9;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]22 commonTypeDict_StringFormat];
+  v104[35] = commonTypeDict_StringFormat;
   v103[36] = @"MpssClockStateDurationStr";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v104[36] = v11;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]23 commonTypeDict_StringFormat];
+  v104[36] = commonTypeDict_StringFormat2;
   v103[37] = @"HsicStateSleepVetoNum";
   v72[0] = v3;
   v72[1] = v4;
@@ -3523,9 +3523,9 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav10HwOther__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg logEventBackwardMav10BBHwOther]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardMav10BBHwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1081];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1081];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -3559,9 +3559,9 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav10HwOther__block_invoke(uint64_t a1)
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"About to send to log at %s", "-[PLBBMavLogMsg logEventBackwardMav10BBHwOther]"];
       v15 = MEMORY[0x277D3F178];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v17 = [v16 lastPathComponent];
+      lastPathComponent2 = [v16 lastPathComponent];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardMav10BBHwOther]"];
-      [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:1087];
+      [v15 logMessage:v14 fromFile:lastPathComponent2 fromFunction:v18 fromLineNumber:1087];
 
       v19 = PLLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -3613,9 +3613,9 @@ uint64_t __47__PLBBMavLogMsg_logEventBackwardMav10BBHwOther__block_invoke_569(ui
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg addToGroupPLBBMav10HwOther]", block, v14, v15, v16, v17];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg addToGroupPLBBMav10HwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1096];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1096];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -3643,119 +3643,119 @@ uint64_t __43__PLBBMavLogMsg_addToGroupPLBBMav10HwOther__block_invoke(uint64_t a
   return result;
 }
 
-- (void)populateEntryBBMav10HwOther:(id)a3
+- (void)populateEntryBBMav10HwOther:(id)other
 {
-  v4 = a3;
-  v5 = [(PLBBMavLogMsg *)self commonInfo];
-  v6 = [v5 objectForKey:@"BBDate"];
-  [v4 setObject:v6 forKeyedSubscript:@"BBDate"];
+  otherCopy = other;
+  commonInfo = [(PLBBMavLogMsg *)self commonInfo];
+  v6 = [commonInfo objectForKey:@"BBDate"];
+  [otherCopy setObject:v6 forKeyedSubscript:@"BBDate"];
 
-  v7 = [(PLBBMavLogMsg *)self commonInfo];
-  v8 = [v7 objectForKey:@"BBDate"];
-  v9 = [v8 convertFromBasebandToMonotonic];
-  [v4 setEntryDate:v9];
+  commonInfo2 = [(PLBBMavLogMsg *)self commonInfo];
+  v8 = [commonInfo2 objectForKey:@"BBDate"];
+  convertFromBasebandToMonotonic = [v8 convertFromBasebandToMonotonic];
+  [otherCopy setEntryDate:convertFromBasebandToMonotonic];
 
-  v10 = [(PLBBMavLogMsg *)self bbSwRev];
-  [v4 setObject:v10 forKeyedSubscript:@"SWRevision"];
+  bbSwRev = [(PLBBMavLogMsg *)self bbSwRev];
+  [otherCopy setObject:bbSwRev forKeyedSubscript:@"SWRevision"];
 
-  v11 = [(PLBBMavLogMsg *)self bbHwRev];
-  [v4 setObject:v11 forKeyedSubscript:@"HWRevision"];
+  bbHwRev = [(PLBBMavLogMsg *)self bbHwRev];
+  [otherCopy setObject:bbHwRev forKeyedSubscript:@"HWRevision"];
 
-  v12 = [(PLBBMavLogMsg *)self bbHwStatsType];
-  [v4 setObject:v12 forKeyedSubscript:@"HWStatsType"];
+  bbHwStatsType = [(PLBBMavLogMsg *)self bbHwStatsType];
+  [otherCopy setObject:bbHwStatsType forKeyedSubscript:@"HWStatsType"];
 
-  v13 = [(PLBBMavLogMsg *)self bbHwStatsLength];
-  [v4 setObject:v13 forKeyedSubscript:@"HwStatsLength"];
+  bbHwStatsLength = [(PLBBMavLogMsg *)self bbHwStatsLength];
+  [otherCopy setObject:bbHwStatsLength forKeyedSubscript:@"HwStatsLength"];
 
-  v14 = [(PLBBMavLogMsg *)self bbHwStatsLevel];
-  [v4 setObject:v14 forKeyedSubscript:@"HwStatsLevel"];
+  bbHwStatsLevel = [(PLBBMavLogMsg *)self bbHwStatsLevel];
+  [otherCopy setObject:bbHwStatsLevel forKeyedSubscript:@"HwStatsLevel"];
 
-  v15 = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
-  [v4 setObject:v15 forKeyedSubscript:@"CurrentTimestamp"];
+  bbHwCurrTimeStamp = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
+  [otherCopy setObject:bbHwCurrTimeStamp forKeyedSubscript:@"CurrentTimestamp"];
 
-  v16 = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
-  [v4 setObject:v16 forKeyedSubscript:@"LastTimestamp"];
+  bbHwLastTimeStamp = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
+  [otherCopy setObject:bbHwLastTimeStamp forKeyedSubscript:@"LastTimestamp"];
 
-  v17 = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
-  [v4 setObject:v17 forKeyedSubscript:@"LogDuration"];
+  bbHwLogDurationInTicks = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
+  [otherCopy setObject:bbHwLogDurationInTicks forKeyedSubscript:@"LogDuration"];
 
-  v18 = [(PLBBMavLogMsg *)self rpmXOShutDuration];
-  [v4 setObject:v18 forKeyedSubscript:@"RPMXOShutdownDuration"];
+  rpmXOShutDuration = [(PLBBMavLogMsg *)self rpmXOShutDuration];
+  [otherCopy setObject:rpmXOShutDuration forKeyedSubscript:@"RPMXOShutdownDuration"];
 
-  v19 = [(PLBBMavLogMsg *)self rpmXOShutCnt];
-  [v4 setObject:v19 forKeyedSubscript:@"RPMXOShutdownCount"];
+  rpmXOShutCnt = [(PLBBMavLogMsg *)self rpmXOShutCnt];
+  [otherCopy setObject:rpmXOShutCnt forKeyedSubscript:@"RPMXOShutdownCount"];
 
-  v20 = [(PLBBMavLogMsg *)self rpmVDDMinDuration];
-  [v4 setObject:v20 forKeyedSubscript:@"RPMVDDMinDuration"];
+  rpmVDDMinDuration = [(PLBBMavLogMsg *)self rpmVDDMinDuration];
+  [otherCopy setObject:rpmVDDMinDuration forKeyedSubscript:@"RPMVDDMinDuration"];
 
-  v21 = [(PLBBMavLogMsg *)self rpmVDDMinEnterCnt];
-  [v4 setObject:v21 forKeyedSubscript:@"RPMVDDMinEnterCount"];
+  rpmVDDMinEnterCnt = [(PLBBMavLogMsg *)self rpmVDDMinEnterCnt];
+  [otherCopy setObject:rpmVDDMinEnterCnt forKeyedSubscript:@"RPMVDDMinEnterCount"];
 
-  v22 = [(PLBBMavLogMsg *)self appsPerfStateCountHist];
-  [v4 setObject:v22 forKeyedSubscript:@"AppsPerfStateCountHistogram"];
+  appsPerfStateCountHist = [(PLBBMavLogMsg *)self appsPerfStateCountHist];
+  [otherCopy setObject:appsPerfStateCountHist forKeyedSubscript:@"AppsPerfStateCountHistogram"];
 
-  v23 = [(PLBBMavLogMsg *)self cxoShutDownDuration];
-  [v4 setObject:v23 forKeyedSubscript:@"CXOShutdownDuration"];
+  cxoShutDownDuration = [(PLBBMavLogMsg *)self cxoShutDownDuration];
+  [otherCopy setObject:cxoShutDownDuration forKeyedSubscript:@"CXOShutdownDuration"];
 
-  v24 = [(PLBBMavLogMsg *)self cxoShutDownCount];
-  [v4 setObject:v24 forKeyedSubscript:@"CXOShutdownCount"];
+  cxoShutDownCount = [(PLBBMavLogMsg *)self cxoShutDownCount];
+  [otherCopy setObject:cxoShutDownCount forKeyedSubscript:@"CXOShutdownCount"];
 
-  v25 = [(PLBBMavLogMsg *)self usbStateCountHist];
-  [v4 setObject:v25 forKeyedSubscript:@"USBStateCountHistogram"];
+  usbStateCountHist = [(PLBBMavLogMsg *)self usbStateCountHist];
+  [otherCopy setObject:usbStateCountHist forKeyedSubscript:@"USBStateCountHistogram"];
 
-  v26 = [(PLBBMavLogMsg *)self uartOnOffState];
-  [v4 setObject:v26 forKeyedSubscript:@"UARTOnOffStateHistogram"];
+  uartOnOffState = [(PLBBMavLogMsg *)self uartOnOffState];
+  [otherCopy setObject:uartOnOffState forKeyedSubscript:@"UARTOnOffStateHistogram"];
 
-  v27 = [(PLBBMavLogMsg *)self spiOnOffState];
-  [v4 setObject:v27 forKeyedSubscript:@"SPIOnOffStateHistogram"];
+  spiOnOffState = [(PLBBMavLogMsg *)self spiOnOffState];
+  [otherCopy setObject:spiOnOffState forKeyedSubscript:@"SPIOnOffStateHistogram"];
 
-  v28 = [(PLBBMavLogMsg *)self admOnOffState];
-  [v4 setObject:v28 forKeyedSubscript:@"ADMOnOffStateHistogram"];
+  admOnOffState = [(PLBBMavLogMsg *)self admOnOffState];
+  [otherCopy setObject:admOnOffState forKeyedSubscript:@"ADMOnOffStateHistogram"];
 
-  v29 = [(PLBBMavLogMsg *)self lpassOnOffState];
-  [v4 setObject:v29 forKeyedSubscript:@"LPASSOnOffStateHistogram"];
+  lpassOnOffState = [(PLBBMavLogMsg *)self lpassOnOffState];
+  [otherCopy setObject:lpassOnOffState forKeyedSubscript:@"LPASSOnOffStateHistogram"];
 
-  v30 = [(PLBBMavLogMsg *)self appsSleepVeto];
-  [v4 setObject:v30 forKeyedSubscript:@"APPSSleepVetoState"];
+  appsSleepVeto = [(PLBBMavLogMsg *)self appsSleepVeto];
+  [otherCopy setObject:appsSleepVeto forKeyedSubscript:@"APPSSleepVetoState"];
 
-  v31 = [(PLBBMavLogMsg *)self mpssSleepVeto];
-  [v4 setObject:v31 forKeyedSubscript:@"MPSSSleepVetoHistogram"];
+  mpssSleepVeto = [(PLBBMavLogMsg *)self mpssSleepVeto];
+  [otherCopy setObject:mpssSleepVeto forKeyedSubscript:@"MPSSSleepVetoHistogram"];
 
-  v32 = [(PLBBMavLogMsg *)self qdspConfigCount];
-  [v4 setObject:v32 forKeyedSubscript:@"QDSPConfigCountHistogram"];
+  qdspConfigCount = [(PLBBMavLogMsg *)self qdspConfigCount];
+  [otherCopy setObject:qdspConfigCount forKeyedSubscript:@"QDSPConfigCountHistogram"];
 
-  v33 = [(PLBBMavLogMsg *)self gpsOnOff];
-  [v4 setObject:v33 forKeyedSubscript:@"GPSOnOffStateHistogram"];
+  gpsOnOff = [(PLBBMavLogMsg *)self gpsOnOff];
+  [otherCopy setObject:gpsOnOff forKeyedSubscript:@"GPSOnOffStateHistogram"];
 
-  v34 = [(PLBBMavLogMsg *)self gpsDPOOnOff];
-  [v4 setObject:v34 forKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
+  gpsDPOOnOff = [(PLBBMavLogMsg *)self gpsDPOOnOff];
+  [otherCopy setObject:gpsDPOOnOff forKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
 
-  v35 = [(PLBBMavLogMsg *)self gpsDPOBin];
-  [v4 setObject:v35 forKeyedSubscript:@"GPSDPOBins"];
+  gpsDPOBin = [(PLBBMavLogMsg *)self gpsDPOBin];
+  [otherCopy setObject:gpsDPOBin forKeyedSubscript:@"GPSDPOBins"];
 
-  v36 = [(PLBBMavLogMsg *)self mpssCxoShutDownDuration];
-  [v4 setObject:v36 forKeyedSubscript:@"MPSSCXOShutdownDuration"];
+  mpssCxoShutDownDuration = [(PLBBMavLogMsg *)self mpssCxoShutDownDuration];
+  [otherCopy setObject:mpssCxoShutDownDuration forKeyedSubscript:@"MPSSCXOShutdownDuration"];
 
-  v37 = [(PLBBMavLogMsg *)self mpssCxoShutDownCount];
-  [v4 setObject:v37 forKeyedSubscript:@"MPSSCXOShutdownCount"];
+  mpssCxoShutDownCount = [(PLBBMavLogMsg *)self mpssCxoShutDownCount];
+  [otherCopy setObject:mpssCxoShutDownCount forKeyedSubscript:@"MPSSCXOShutdownCount"];
 
-  v38 = [(PLBBMavLogMsg *)self mcpmVetoNumHistogram];
-  [v4 setObject:v38 forKeyedSubscript:@"MCPMVetoNumHistogram"];
+  mcpmVetoNumHistogram = [(PLBBMavLogMsg *)self mcpmVetoNumHistogram];
+  [otherCopy setObject:mcpmVetoNumHistogram forKeyedSubscript:@"MCPMVetoNumHistogram"];
 
-  v39 = [(PLBBMavLogMsg *)self npaVetoMask];
-  [v4 setObject:v39 forKeyedSubscript:@"NPAVetoMask"];
+  npaVetoMask = [(PLBBMavLogMsg *)self npaVetoMask];
+  [otherCopy setObject:npaVetoMask forKeyedSubscript:@"NPAVetoMask"];
 
-  v40 = [(PLBBMavLogMsg *)self npaVetoClientNumHistogram];
-  [v4 setObject:v40 forKeyedSubscript:@"NPAVetoClientNumHistogram"];
+  npaVetoClientNumHistogram = [(PLBBMavLogMsg *)self npaVetoClientNumHistogram];
+  [otherCopy setObject:npaVetoClientNumHistogram forKeyedSubscript:@"NPAVetoClientNumHistogram"];
 
-  v41 = [(PLBBMavLogMsg *)self appsClockStateDurationStr];
-  [v4 setObject:v41 forKeyedSubscript:@"AppsClockStateDurationStr"];
+  appsClockStateDurationStr = [(PLBBMavLogMsg *)self appsClockStateDurationStr];
+  [otherCopy setObject:appsClockStateDurationStr forKeyedSubscript:@"AppsClockStateDurationStr"];
 
-  v42 = [(PLBBMavLogMsg *)self mpssClockStateDurationStr];
-  [v4 setObject:v42 forKeyedSubscript:@"MpssClockStateDurationStr"];
+  mpssClockStateDurationStr = [(PLBBMavLogMsg *)self mpssClockStateDurationStr];
+  [otherCopy setObject:mpssClockStateDurationStr forKeyedSubscript:@"MpssClockStateDurationStr"];
 
-  v43 = [(PLBBMavLogMsg *)self hsicStateSleepVetoNum];
-  [v4 setObject:v43 forKeyedSubscript:@"HsicStateSleepVetoNum"];
+  hsicStateSleepVetoNum = [(PLBBMavLogMsg *)self hsicStateSleepVetoNum];
+  [otherCopy setObject:hsicStateSleepVetoNum forKeyedSubscript:@"HsicStateSleepVetoNum"];
 }
 
 - (void)refreshBBMav13HwOther
@@ -3780,9 +3780,9 @@ uint64_t __43__PLBBMavLogMsg_addToGroupPLBBMav10HwOther__block_invoke(uint64_t a
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg refreshBBMav13HwOther]", block, v12, v13, v14, v15];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg refreshBBMav13HwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1172];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1172];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -3820,69 +3820,69 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav13HwOther__block_invoke(uint64_t a1)
   v96[0] = v67;
   v95[1] = *MEMORY[0x277D3F540];
   v91[0] = @"Error";
-  v66 = [MEMORY[0x277D3F198] sharedInstance];
-  v65 = [v66 commonTypeDict_BoolFormat];
-  v92[0] = v65;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v92[0] = commonTypeDict_BoolFormat;
   v91[1] = @"SeqNum";
-  v64 = [MEMORY[0x277D3F198] sharedInstance];
-  v63 = [v64 commonTypeDict_IntegerFormat];
-  v92[1] = v63;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v92[1] = commonTypeDict_IntegerFormat;
   v91[2] = @"BBDate";
-  v62 = [MEMORY[0x277D3F198] sharedInstance];
-  v61 = [v62 commonTypeDict_DateFormat];
-  v92[2] = v61;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v92[2] = commonTypeDict_DateFormat;
   v91[3] = @"TimeCal";
-  v60 = [MEMORY[0x277D3F198] sharedInstance];
-  v59 = [v60 commonTypeDict_IntegerFormat];
-  v92[3] = v59;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v92[3] = commonTypeDict_IntegerFormat2;
   v91[4] = @"SWRevision";
-  v58 = [MEMORY[0x277D3F198] sharedInstance];
-  v57 = [v58 commonTypeDict_IntegerFormat];
-  v92[4] = v57;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v92[4] = commonTypeDict_IntegerFormat3;
   v91[5] = @"HWRevision";
-  v56 = [MEMORY[0x277D3F198] sharedInstance];
-  v55 = [v56 commonTypeDict_IntegerFormat];
-  v92[5] = v55;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v92[5] = commonTypeDict_IntegerFormat4;
   v91[6] = @"HWStatsType";
-  v54 = [MEMORY[0x277D3F198] sharedInstance];
-  v53 = [v54 commonTypeDict_IntegerFormat];
-  v92[6] = v53;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v92[6] = commonTypeDict_IntegerFormat5;
   v91[7] = @"HwStatsLength";
-  v52 = [MEMORY[0x277D3F198] sharedInstance];
-  v51 = [v52 commonTypeDict_IntegerFormat];
-  v92[7] = v51;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v92[7] = commonTypeDict_IntegerFormat6;
   v91[8] = @"HwStatsLevel";
-  v50 = [MEMORY[0x277D3F198] sharedInstance];
-  v49 = [v50 commonTypeDict_IntegerFormat];
-  v92[8] = v49;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v92[8] = commonTypeDict_IntegerFormat7;
   v91[9] = @"LastTimestamp";
-  v48 = [MEMORY[0x277D3F198] sharedInstance];
-  v47 = [v48 commonTypeDict_IntegerFormat];
-  v92[9] = v47;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v92[9] = commonTypeDict_IntegerFormat8;
   v91[10] = @"CurrentTimestamp";
-  v46 = [MEMORY[0x277D3F198] sharedInstance];
-  v45 = [v46 commonTypeDict_IntegerFormat];
-  v92[10] = v45;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v92[10] = commonTypeDict_IntegerFormat9;
   v91[11] = @"LogDuration";
-  v44 = [MEMORY[0x277D3F198] sharedInstance];
-  v43 = [v44 commonTypeDict_IntegerFormat];
-  v92[11] = v43;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v92[11] = commonTypeDict_IntegerFormat10;
   v91[12] = @"RPMXOShutdownDuration";
-  v42 = [MEMORY[0x277D3F198] sharedInstance];
-  v41 = [v42 commonTypeDict_IntegerFormat];
-  v92[12] = v41;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v92[12] = commonTypeDict_IntegerFormat11;
   v91[13] = @"RPMXOShutdownCount";
-  v40 = [MEMORY[0x277D3F198] sharedInstance];
-  v39 = [v40 commonTypeDict_IntegerFormat];
-  v92[13] = v39;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v92[13] = commonTypeDict_IntegerFormat12;
   v91[14] = @"RPMVDDMinDuration";
-  v38 = [MEMORY[0x277D3F198] sharedInstance];
-  v37 = [v38 commonTypeDict_IntegerFormat];
-  v92[14] = v37;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v92[14] = commonTypeDict_IntegerFormat13;
   v91[15] = @"RPMVDDMinEnterCount";
-  v36 = [MEMORY[0x277D3F198] sharedInstance];
-  v35 = [v36 commonTypeDict_IntegerFormat];
-  v92[15] = v35;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v92[15] = commonTypeDict_IntegerFormat14;
   v91[16] = @"AppsPerfStateCountHistogram";
   v4 = *MEMORY[0x277D3F598];
   v88[0] = *MEMORY[0x277D3F5A8];
@@ -3896,13 +3896,13 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav13HwOther__block_invoke(uint64_t a1)
   v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v90 forKeys:v88 count:3];
   v92[16] = v34;
   v91[17] = @"CXOShutdownDuration";
-  v33 = [MEMORY[0x277D3F198] sharedInstance];
-  v32 = [v33 commonTypeDict_IntegerFormat];
-  v92[17] = v32;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v92[17] = commonTypeDict_IntegerFormat15;
   v91[18] = @"CXOShutdownCount";
-  v31 = [MEMORY[0x277D3F198] sharedInstance];
-  v30 = [v31 commonTypeDict_IntegerFormat];
-  v92[18] = v30;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v92[18] = commonTypeDict_IntegerFormat16;
   v91[19] = @"LPASSOnOffStateHistogram";
   v86[0] = v3;
   v86[1] = v4;
@@ -3967,13 +3967,13 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav13HwOther__block_invoke(uint64_t a1)
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v75 forKeys:v74 count:3];
   v92[25] = v23;
   v91[26] = @"MPSSCXOShutdownDuration";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v92[26] = v21;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+  v92[26] = commonTypeDict_IntegerFormat17;
   v91[27] = @"MPSSCXOShutdownCount";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v92[27] = v19;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v92[27] = commonTypeDict_IntegerFormat18;
   v91[28] = @"MCPMVetoNumHistogram";
   v72[0] = v3;
   v72[1] = v4;
@@ -3984,9 +3984,9 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav13HwOther__block_invoke(uint64_t a1)
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v73 forKeys:v72 count:3];
   v92[28] = v18;
   v91[29] = @"NPAVetoMask";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v92[29] = v16;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v92[29] = commonTypeDict_IntegerFormat19;
   v91[30] = @"NPAVetoClientNumHistogram";
   v70[0] = v3;
   v70[1] = v4;
@@ -3997,13 +3997,13 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav13HwOther__block_invoke(uint64_t a1)
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v71 forKeys:v70 count:3];
   v92[30] = v6;
   v91[31] = @"AppsClockStateDurationStr";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat];
-  v92[31] = v8;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]22 commonTypeDict_StringFormat];
+  v92[31] = commonTypeDict_StringFormat;
   v91[32] = @"MpssClockStateDurationStr";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_StringFormat];
-  v92[32] = v10;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]23 commonTypeDict_StringFormat];
+  v92[32] = commonTypeDict_StringFormat2;
   v91[33] = @"PCIEStateHistogram";
   v68[0] = v3;
   v68[1] = v4;
@@ -4043,9 +4043,9 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav13HwOther__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg logEventBackwardMav13BBHwOther]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardMav13BBHwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1247];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1247];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -4079,9 +4079,9 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav13HwOther__block_invoke(uint64_t a1)
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"About to send to log at %s", "-[PLBBMavLogMsg logEventBackwardMav13BBHwOther]"];
       v15 = MEMORY[0x277D3F178];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v17 = [v16 lastPathComponent];
+      lastPathComponent2 = [v16 lastPathComponent];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardMav13BBHwOther]"];
-      [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:1253];
+      [v15 logMessage:v14 fromFile:lastPathComponent2 fromFunction:v18 fromLineNumber:1253];
 
       v19 = PLLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -4133,9 +4133,9 @@ uint64_t __47__PLBBMavLogMsg_logEventBackwardMav13BBHwOther__block_invoke_576(ui
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg addToGroupPLBBMav13HwOther]", block, v14, v15, v16, v17];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg addToGroupPLBBMav13HwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1262];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1262];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -4163,95 +4163,95 @@ uint64_t __43__PLBBMavLogMsg_addToGroupPLBBMav13HwOther__block_invoke(uint64_t a
   return result;
 }
 
-- (void)populateEntryBBMav13HwOther:(id)a3
+- (void)populateEntryBBMav13HwOther:(id)other
 {
-  v4 = a3;
-  v5 = [(PLBBMavLogMsg *)self commonInfo];
-  v6 = [v5 objectForKey:@"BBDate"];
-  [v4 setObject:v6 forKeyedSubscript:@"BBDate"];
+  otherCopy = other;
+  commonInfo = [(PLBBMavLogMsg *)self commonInfo];
+  v6 = [commonInfo objectForKey:@"BBDate"];
+  [otherCopy setObject:v6 forKeyedSubscript:@"BBDate"];
 
-  v7 = [(PLBBMavLogMsg *)self commonInfo];
-  v8 = [v7 objectForKey:@"BBDate"];
-  v9 = [v8 convertFromBasebandToMonotonic];
-  [v4 setEntryDate:v9];
+  commonInfo2 = [(PLBBMavLogMsg *)self commonInfo];
+  v8 = [commonInfo2 objectForKey:@"BBDate"];
+  convertFromBasebandToMonotonic = [v8 convertFromBasebandToMonotonic];
+  [otherCopy setEntryDate:convertFromBasebandToMonotonic];
 
-  v10 = [(PLBBMavLogMsg *)self bbSwRev];
-  [v4 setObject:v10 forKeyedSubscript:@"SWRevision"];
+  bbSwRev = [(PLBBMavLogMsg *)self bbSwRev];
+  [otherCopy setObject:bbSwRev forKeyedSubscript:@"SWRevision"];
 
-  v11 = [(PLBBMavLogMsg *)self bbHwRev];
-  [v4 setObject:v11 forKeyedSubscript:@"HWRevision"];
+  bbHwRev = [(PLBBMavLogMsg *)self bbHwRev];
+  [otherCopy setObject:bbHwRev forKeyedSubscript:@"HWRevision"];
 
-  v12 = [(PLBBMavLogMsg *)self bbHwStatsType];
-  [v4 setObject:v12 forKeyedSubscript:@"HWStatsType"];
+  bbHwStatsType = [(PLBBMavLogMsg *)self bbHwStatsType];
+  [otherCopy setObject:bbHwStatsType forKeyedSubscript:@"HWStatsType"];
 
-  v13 = [(PLBBMavLogMsg *)self bbHwStatsLength];
-  [v4 setObject:v13 forKeyedSubscript:@"HwStatsLength"];
+  bbHwStatsLength = [(PLBBMavLogMsg *)self bbHwStatsLength];
+  [otherCopy setObject:bbHwStatsLength forKeyedSubscript:@"HwStatsLength"];
 
-  v14 = [(PLBBMavLogMsg *)self bbHwStatsLevel];
-  [v4 setObject:v14 forKeyedSubscript:@"HwStatsLevel"];
+  bbHwStatsLevel = [(PLBBMavLogMsg *)self bbHwStatsLevel];
+  [otherCopy setObject:bbHwStatsLevel forKeyedSubscript:@"HwStatsLevel"];
 
-  v15 = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
-  [v4 setObject:v15 forKeyedSubscript:@"CurrentTimestamp"];
+  bbHwCurrTimeStamp = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
+  [otherCopy setObject:bbHwCurrTimeStamp forKeyedSubscript:@"CurrentTimestamp"];
 
-  v16 = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
-  [v4 setObject:v16 forKeyedSubscript:@"LastTimestamp"];
+  bbHwLastTimeStamp = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
+  [otherCopy setObject:bbHwLastTimeStamp forKeyedSubscript:@"LastTimestamp"];
 
-  v17 = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
-  [v4 setObject:v17 forKeyedSubscript:@"LogDuration"];
+  bbHwLogDurationInTicks = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
+  [otherCopy setObject:bbHwLogDurationInTicks forKeyedSubscript:@"LogDuration"];
 
-  v18 = [(PLBBMavLogMsg *)self rpmXOShutDuration];
-  [v4 setObject:v18 forKeyedSubscript:@"RPMXOShutdownDuration"];
+  rpmXOShutDuration = [(PLBBMavLogMsg *)self rpmXOShutDuration];
+  [otherCopy setObject:rpmXOShutDuration forKeyedSubscript:@"RPMXOShutdownDuration"];
 
-  v19 = [(PLBBMavLogMsg *)self rpmXOShutCnt];
-  [v4 setObject:v19 forKeyedSubscript:@"RPMXOShutdownCount"];
+  rpmXOShutCnt = [(PLBBMavLogMsg *)self rpmXOShutCnt];
+  [otherCopy setObject:rpmXOShutCnt forKeyedSubscript:@"RPMXOShutdownCount"];
 
-  v20 = [(PLBBMavLogMsg *)self rpmVDDMinDuration];
-  [v4 setObject:v20 forKeyedSubscript:@"RPMVDDMinDuration"];
+  rpmVDDMinDuration = [(PLBBMavLogMsg *)self rpmVDDMinDuration];
+  [otherCopy setObject:rpmVDDMinDuration forKeyedSubscript:@"RPMVDDMinDuration"];
 
-  v21 = [(PLBBMavLogMsg *)self rpmVDDMinEnterCnt];
-  [v4 setObject:v21 forKeyedSubscript:@"RPMVDDMinEnterCount"];
+  rpmVDDMinEnterCnt = [(PLBBMavLogMsg *)self rpmVDDMinEnterCnt];
+  [otherCopy setObject:rpmVDDMinEnterCnt forKeyedSubscript:@"RPMVDDMinEnterCount"];
 
-  v22 = [(PLBBMavLogMsg *)self appsPerfStateCountHist];
-  [v4 setObject:v22 forKeyedSubscript:@"AppsPerfStateCountHistogram"];
+  appsPerfStateCountHist = [(PLBBMavLogMsg *)self appsPerfStateCountHist];
+  [otherCopy setObject:appsPerfStateCountHist forKeyedSubscript:@"AppsPerfStateCountHistogram"];
 
-  v23 = [(PLBBMavLogMsg *)self cxoShutDownDuration];
-  [v4 setObject:v23 forKeyedSubscript:@"CXOShutdownDuration"];
+  cxoShutDownDuration = [(PLBBMavLogMsg *)self cxoShutDownDuration];
+  [otherCopy setObject:cxoShutDownDuration forKeyedSubscript:@"CXOShutdownDuration"];
 
-  v24 = [(PLBBMavLogMsg *)self cxoShutDownCount];
-  [v4 setObject:v24 forKeyedSubscript:@"CXOShutdownCount"];
+  cxoShutDownCount = [(PLBBMavLogMsg *)self cxoShutDownCount];
+  [otherCopy setObject:cxoShutDownCount forKeyedSubscript:@"CXOShutdownCount"];
 
-  v25 = [(PLBBMavLogMsg *)self lpassOnOffState];
-  [v4 setObject:v25 forKeyedSubscript:@"LPASSOnOffStateHistogram"];
+  lpassOnOffState = [(PLBBMavLogMsg *)self lpassOnOffState];
+  [otherCopy setObject:lpassOnOffState forKeyedSubscript:@"LPASSOnOffStateHistogram"];
 
-  v26 = [(PLBBMavLogMsg *)self appsSleepVeto];
-  [v4 setObject:v26 forKeyedSubscript:@"APPSSleepVetoState"];
+  appsSleepVeto = [(PLBBMavLogMsg *)self appsSleepVeto];
+  [otherCopy setObject:appsSleepVeto forKeyedSubscript:@"APPSSleepVetoState"];
 
-  v27 = [(PLBBMavLogMsg *)self mpssSleepVeto];
-  [v4 setObject:v27 forKeyedSubscript:@"MPSSSleepVetoHistogram"];
+  mpssSleepVeto = [(PLBBMavLogMsg *)self mpssSleepVeto];
+  [otherCopy setObject:mpssSleepVeto forKeyedSubscript:@"MPSSSleepVetoHistogram"];
 
-  v28 = [(PLBBMavLogMsg *)self qdspConfigCount];
-  [v4 setObject:v28 forKeyedSubscript:@"QDSPConfigCountHistogram"];
+  qdspConfigCount = [(PLBBMavLogMsg *)self qdspConfigCount];
+  [otherCopy setObject:qdspConfigCount forKeyedSubscript:@"QDSPConfigCountHistogram"];
 
-  v29 = [(PLBBMavLogMsg *)self gpsOnOff];
-  [v4 setObject:v29 forKeyedSubscript:@"GPSOnOffStateHistogram"];
+  gpsOnOff = [(PLBBMavLogMsg *)self gpsOnOff];
+  [otherCopy setObject:gpsOnOff forKeyedSubscript:@"GPSOnOffStateHistogram"];
 
-  v30 = [(PLBBMavLogMsg *)self gpsDPOOnOff];
-  [v4 setObject:v30 forKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
+  gpsDPOOnOff = [(PLBBMavLogMsg *)self gpsDPOOnOff];
+  [otherCopy setObject:gpsDPOOnOff forKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
 
-  v31 = [(PLBBMavLogMsg *)self gpsDPOBin];
-  [v4 setObject:v31 forKeyedSubscript:@"GPSDPOBins"];
+  gpsDPOBin = [(PLBBMavLogMsg *)self gpsDPOBin];
+  [otherCopy setObject:gpsDPOBin forKeyedSubscript:@"GPSDPOBins"];
 
-  v32 = [(PLBBMavLogMsg *)self mpssCxoShutDownDuration];
-  [v4 setObject:v32 forKeyedSubscript:@"MPSSCXOShutdownDuration"];
+  mpssCxoShutDownDuration = [(PLBBMavLogMsg *)self mpssCxoShutDownDuration];
+  [otherCopy setObject:mpssCxoShutDownDuration forKeyedSubscript:@"MPSSCXOShutdownDuration"];
 
-  v33 = [(PLBBMavLogMsg *)self mpssCxoShutDownCount];
-  [v4 setObject:v33 forKeyedSubscript:@"MPSSCXOShutdownCount"];
+  mpssCxoShutDownCount = [(PLBBMavLogMsg *)self mpssCxoShutDownCount];
+  [otherCopy setObject:mpssCxoShutDownCount forKeyedSubscript:@"MPSSCXOShutdownCount"];
 
-  v34 = [(PLBBMavLogMsg *)self mcpmVetoNumHistogram];
-  [v4 setObject:v34 forKeyedSubscript:@"MCPMVetoNumHistogram"];
+  mcpmVetoNumHistogram = [(PLBBMavLogMsg *)self mcpmVetoNumHistogram];
+  [otherCopy setObject:mcpmVetoNumHistogram forKeyedSubscript:@"MCPMVetoNumHistogram"];
 
-  v35 = [(PLBBMavLogMsg *)self pcieStateHistogram];
-  [v4 setObject:v35 forKeyedSubscript:@"PCIEStateHistogram"];
+  pcieStateHistogram = [(PLBBMavLogMsg *)self pcieStateHistogram];
+  [otherCopy setObject:pcieStateHistogram forKeyedSubscript:@"PCIEStateHistogram"];
 }
 
 - (void)refreshBBMav16HwOther
@@ -4276,9 +4276,9 @@ uint64_t __43__PLBBMavLogMsg_addToGroupPLBBMav13HwOther__block_invoke(uint64_t a
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg refreshBBMav16HwOther]", block, v12, v13, v14, v15];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg refreshBBMav16HwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1329];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1329];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -4316,69 +4316,69 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav16HwOther__block_invoke(uint64_t a1)
   v96[0] = v67;
   v95[1] = *MEMORY[0x277D3F540];
   v91[0] = @"Error";
-  v66 = [MEMORY[0x277D3F198] sharedInstance];
-  v65 = [v66 commonTypeDict_BoolFormat];
-  v92[0] = v65;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v92[0] = commonTypeDict_BoolFormat;
   v91[1] = @"SeqNum";
-  v64 = [MEMORY[0x277D3F198] sharedInstance];
-  v63 = [v64 commonTypeDict_IntegerFormat];
-  v92[1] = v63;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v92[1] = commonTypeDict_IntegerFormat;
   v91[2] = @"BBDate";
-  v62 = [MEMORY[0x277D3F198] sharedInstance];
-  v61 = [v62 commonTypeDict_DateFormat];
-  v92[2] = v61;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v92[2] = commonTypeDict_DateFormat;
   v91[3] = @"TimeCal";
-  v60 = [MEMORY[0x277D3F198] sharedInstance];
-  v59 = [v60 commonTypeDict_IntegerFormat];
-  v92[3] = v59;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v92[3] = commonTypeDict_IntegerFormat2;
   v91[4] = @"SWRevision";
-  v58 = [MEMORY[0x277D3F198] sharedInstance];
-  v57 = [v58 commonTypeDict_IntegerFormat];
-  v92[4] = v57;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v92[4] = commonTypeDict_IntegerFormat3;
   v91[5] = @"HWRevision";
-  v56 = [MEMORY[0x277D3F198] sharedInstance];
-  v55 = [v56 commonTypeDict_IntegerFormat];
-  v92[5] = v55;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v92[5] = commonTypeDict_IntegerFormat4;
   v91[6] = @"HWStatsType";
-  v54 = [MEMORY[0x277D3F198] sharedInstance];
-  v53 = [v54 commonTypeDict_IntegerFormat];
-  v92[6] = v53;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v92[6] = commonTypeDict_IntegerFormat5;
   v91[7] = @"HwStatsLength";
-  v52 = [MEMORY[0x277D3F198] sharedInstance];
-  v51 = [v52 commonTypeDict_IntegerFormat];
-  v92[7] = v51;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v92[7] = commonTypeDict_IntegerFormat6;
   v91[8] = @"HwStatsLevel";
-  v50 = [MEMORY[0x277D3F198] sharedInstance];
-  v49 = [v50 commonTypeDict_IntegerFormat];
-  v92[8] = v49;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v92[8] = commonTypeDict_IntegerFormat7;
   v91[9] = @"LastTimestamp";
-  v48 = [MEMORY[0x277D3F198] sharedInstance];
-  v47 = [v48 commonTypeDict_IntegerFormat];
-  v92[9] = v47;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v92[9] = commonTypeDict_IntegerFormat8;
   v91[10] = @"CurrentTimestamp";
-  v46 = [MEMORY[0x277D3F198] sharedInstance];
-  v45 = [v46 commonTypeDict_IntegerFormat];
-  v92[10] = v45;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v92[10] = commonTypeDict_IntegerFormat9;
   v91[11] = @"LogDuration";
-  v44 = [MEMORY[0x277D3F198] sharedInstance];
-  v43 = [v44 commonTypeDict_IntegerFormat];
-  v92[11] = v43;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v92[11] = commonTypeDict_IntegerFormat10;
   v91[12] = @"RPMXOShutdownDuration";
-  v42 = [MEMORY[0x277D3F198] sharedInstance];
-  v41 = [v42 commonTypeDict_IntegerFormat];
-  v92[12] = v41;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v92[12] = commonTypeDict_IntegerFormat11;
   v91[13] = @"RPMXOShutdownCount";
-  v40 = [MEMORY[0x277D3F198] sharedInstance];
-  v39 = [v40 commonTypeDict_IntegerFormat];
-  v92[13] = v39;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v92[13] = commonTypeDict_IntegerFormat12;
   v91[14] = @"RPMVDDMinDuration";
-  v38 = [MEMORY[0x277D3F198] sharedInstance];
-  v37 = [v38 commonTypeDict_IntegerFormat];
-  v92[14] = v37;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v92[14] = commonTypeDict_IntegerFormat13;
   v91[15] = @"RPMVDDMinEnterCount";
-  v36 = [MEMORY[0x277D3F198] sharedInstance];
-  v35 = [v36 commonTypeDict_IntegerFormat];
-  v92[15] = v35;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v92[15] = commonTypeDict_IntegerFormat14;
   v91[16] = @"AppsPerfStateCountHistogram";
   v4 = *MEMORY[0x277D3F598];
   v88[0] = *MEMORY[0x277D3F5A8];
@@ -4392,13 +4392,13 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav16HwOther__block_invoke(uint64_t a1)
   v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v90 forKeys:v88 count:3];
   v92[16] = v34;
   v91[17] = @"CXOShutdownDuration";
-  v33 = [MEMORY[0x277D3F198] sharedInstance];
-  v32 = [v33 commonTypeDict_IntegerFormat];
-  v92[17] = v32;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v92[17] = commonTypeDict_IntegerFormat15;
   v91[18] = @"CXOShutdownCount";
-  v31 = [MEMORY[0x277D3F198] sharedInstance];
-  v30 = [v31 commonTypeDict_IntegerFormat];
-  v92[18] = v30;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v92[18] = commonTypeDict_IntegerFormat16;
   v91[19] = @"LPASSOnOffStateHistogram";
   v86[0] = v3;
   v86[1] = v4;
@@ -4463,13 +4463,13 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav16HwOther__block_invoke(uint64_t a1)
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v75 forKeys:v74 count:3];
   v92[25] = v23;
   v91[26] = @"MPSSCXOShutdownDuration";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v92[26] = v21;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+  v92[26] = commonTypeDict_IntegerFormat17;
   v91[27] = @"MPSSCXOShutdownCount";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v92[27] = v19;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v92[27] = commonTypeDict_IntegerFormat18;
   v91[28] = @"MCPMVetoNumHistogram";
   v72[0] = v3;
   v72[1] = v4;
@@ -4480,9 +4480,9 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav16HwOther__block_invoke(uint64_t a1)
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v73 forKeys:v72 count:3];
   v92[28] = v18;
   v91[29] = @"NPAVetoMask";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v17 commonTypeDict_IntegerFormat];
-  v92[29] = v6;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v92[29] = commonTypeDict_IntegerFormat19;
   v91[30] = @"NPAVetoClientNumHistogram";
   v70[0] = v3;
   v70[1] = v4;
@@ -4493,13 +4493,13 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav16HwOther__block_invoke(uint64_t a1)
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v71 forKeys:v70 count:3];
   v92[30] = v7;
   v91[31] = @"AppsClockStateDurationStr";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v92[31] = v9;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]22 commonTypeDict_StringFormat];
+  v92[31] = commonTypeDict_StringFormat;
   v91[32] = @"MpssClockStateDurationStr";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v92[32] = v11;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]23 commonTypeDict_StringFormat];
+  v92[32] = commonTypeDict_StringFormat2;
   v91[33] = @"PCIEStateHistogram";
   v68[0] = v3;
   v68[1] = v4;
@@ -4539,9 +4539,9 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav16HwOther__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg logEventBackwardMav16BBHwOther]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardMav16BBHwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1405];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1405];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -4575,9 +4575,9 @@ uint64_t __38__PLBBMavLogMsg_refreshBBMav16HwOther__block_invoke(uint64_t a1)
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"About to send to log at %s", "-[PLBBMavLogMsg logEventBackwardMav16BBHwOther]"];
       v15 = MEMORY[0x277D3F178];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v17 = [v16 lastPathComponent];
+      lastPathComponent2 = [v16 lastPathComponent];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardMav16BBHwOther]"];
-      [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:1411];
+      [v15 logMessage:v14 fromFile:lastPathComponent2 fromFunction:v18 fromLineNumber:1411];
 
       v19 = PLLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -4629,9 +4629,9 @@ uint64_t __47__PLBBMavLogMsg_logEventBackwardMav16BBHwOther__block_invoke_581(ui
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg addToGroupPLBBMav16HwOther]", block, v14, v15, v16, v17];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg addToGroupPLBBMav16HwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1420];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1420];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -4659,95 +4659,95 @@ uint64_t __43__PLBBMavLogMsg_addToGroupPLBBMav16HwOther__block_invoke(uint64_t a
   return result;
 }
 
-- (void)populateEntryBBMav16HwOther:(id)a3
+- (void)populateEntryBBMav16HwOther:(id)other
 {
-  v4 = a3;
-  v5 = [(PLBBMavLogMsg *)self commonInfo];
-  v6 = [v5 objectForKey:@"BBDate"];
-  [v4 setObject:v6 forKeyedSubscript:@"BBDate"];
+  otherCopy = other;
+  commonInfo = [(PLBBMavLogMsg *)self commonInfo];
+  v6 = [commonInfo objectForKey:@"BBDate"];
+  [otherCopy setObject:v6 forKeyedSubscript:@"BBDate"];
 
-  v7 = [(PLBBMavLogMsg *)self commonInfo];
-  v8 = [v7 objectForKey:@"BBDate"];
-  v9 = [v8 convertFromBasebandToMonotonic];
-  [v4 setEntryDate:v9];
+  commonInfo2 = [(PLBBMavLogMsg *)self commonInfo];
+  v8 = [commonInfo2 objectForKey:@"BBDate"];
+  convertFromBasebandToMonotonic = [v8 convertFromBasebandToMonotonic];
+  [otherCopy setEntryDate:convertFromBasebandToMonotonic];
 
-  v10 = [(PLBBMavLogMsg *)self bbSwRev];
-  [v4 setObject:v10 forKeyedSubscript:@"SWRevision"];
+  bbSwRev = [(PLBBMavLogMsg *)self bbSwRev];
+  [otherCopy setObject:bbSwRev forKeyedSubscript:@"SWRevision"];
 
-  v11 = [(PLBBMavLogMsg *)self bbHwRev];
-  [v4 setObject:v11 forKeyedSubscript:@"HWRevision"];
+  bbHwRev = [(PLBBMavLogMsg *)self bbHwRev];
+  [otherCopy setObject:bbHwRev forKeyedSubscript:@"HWRevision"];
 
-  v12 = [(PLBBMavLogMsg *)self bbHwStatsType];
-  [v4 setObject:v12 forKeyedSubscript:@"HWStatsType"];
+  bbHwStatsType = [(PLBBMavLogMsg *)self bbHwStatsType];
+  [otherCopy setObject:bbHwStatsType forKeyedSubscript:@"HWStatsType"];
 
-  v13 = [(PLBBMavLogMsg *)self bbHwStatsLength];
-  [v4 setObject:v13 forKeyedSubscript:@"HwStatsLength"];
+  bbHwStatsLength = [(PLBBMavLogMsg *)self bbHwStatsLength];
+  [otherCopy setObject:bbHwStatsLength forKeyedSubscript:@"HwStatsLength"];
 
-  v14 = [(PLBBMavLogMsg *)self bbHwStatsLevel];
-  [v4 setObject:v14 forKeyedSubscript:@"HwStatsLevel"];
+  bbHwStatsLevel = [(PLBBMavLogMsg *)self bbHwStatsLevel];
+  [otherCopy setObject:bbHwStatsLevel forKeyedSubscript:@"HwStatsLevel"];
 
-  v15 = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
-  [v4 setObject:v15 forKeyedSubscript:@"CurrentTimestamp"];
+  bbHwCurrTimeStamp = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
+  [otherCopy setObject:bbHwCurrTimeStamp forKeyedSubscript:@"CurrentTimestamp"];
 
-  v16 = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
-  [v4 setObject:v16 forKeyedSubscript:@"LastTimestamp"];
+  bbHwLastTimeStamp = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
+  [otherCopy setObject:bbHwLastTimeStamp forKeyedSubscript:@"LastTimestamp"];
 
-  v17 = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
-  [v4 setObject:v17 forKeyedSubscript:@"LogDuration"];
+  bbHwLogDurationInTicks = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
+  [otherCopy setObject:bbHwLogDurationInTicks forKeyedSubscript:@"LogDuration"];
 
-  v18 = [(PLBBMavLogMsg *)self rpmXOShutDuration];
-  [v4 setObject:v18 forKeyedSubscript:@"RPMXOShutdownDuration"];
+  rpmXOShutDuration = [(PLBBMavLogMsg *)self rpmXOShutDuration];
+  [otherCopy setObject:rpmXOShutDuration forKeyedSubscript:@"RPMXOShutdownDuration"];
 
-  v19 = [(PLBBMavLogMsg *)self rpmXOShutCnt];
-  [v4 setObject:v19 forKeyedSubscript:@"RPMXOShutdownCount"];
+  rpmXOShutCnt = [(PLBBMavLogMsg *)self rpmXOShutCnt];
+  [otherCopy setObject:rpmXOShutCnt forKeyedSubscript:@"RPMXOShutdownCount"];
 
-  v20 = [(PLBBMavLogMsg *)self rpmVDDMinDuration];
-  [v4 setObject:v20 forKeyedSubscript:@"RPMVDDMinDuration"];
+  rpmVDDMinDuration = [(PLBBMavLogMsg *)self rpmVDDMinDuration];
+  [otherCopy setObject:rpmVDDMinDuration forKeyedSubscript:@"RPMVDDMinDuration"];
 
-  v21 = [(PLBBMavLogMsg *)self rpmVDDMinEnterCnt];
-  [v4 setObject:v21 forKeyedSubscript:@"RPMVDDMinEnterCount"];
+  rpmVDDMinEnterCnt = [(PLBBMavLogMsg *)self rpmVDDMinEnterCnt];
+  [otherCopy setObject:rpmVDDMinEnterCnt forKeyedSubscript:@"RPMVDDMinEnterCount"];
 
-  v22 = [(PLBBMavLogMsg *)self appsPerfStateCountHist];
-  [v4 setObject:v22 forKeyedSubscript:@"AppsPerfStateCountHistogram"];
+  appsPerfStateCountHist = [(PLBBMavLogMsg *)self appsPerfStateCountHist];
+  [otherCopy setObject:appsPerfStateCountHist forKeyedSubscript:@"AppsPerfStateCountHistogram"];
 
-  v23 = [(PLBBMavLogMsg *)self cxoShutDownDuration];
-  [v4 setObject:v23 forKeyedSubscript:@"CXOShutdownDuration"];
+  cxoShutDownDuration = [(PLBBMavLogMsg *)self cxoShutDownDuration];
+  [otherCopy setObject:cxoShutDownDuration forKeyedSubscript:@"CXOShutdownDuration"];
 
-  v24 = [(PLBBMavLogMsg *)self cxoShutDownCount];
-  [v4 setObject:v24 forKeyedSubscript:@"CXOShutdownCount"];
+  cxoShutDownCount = [(PLBBMavLogMsg *)self cxoShutDownCount];
+  [otherCopy setObject:cxoShutDownCount forKeyedSubscript:@"CXOShutdownCount"];
 
-  v25 = [(PLBBMavLogMsg *)self lpassOnOffState];
-  [v4 setObject:v25 forKeyedSubscript:@"LPASSOnOffStateHistogram"];
+  lpassOnOffState = [(PLBBMavLogMsg *)self lpassOnOffState];
+  [otherCopy setObject:lpassOnOffState forKeyedSubscript:@"LPASSOnOffStateHistogram"];
 
-  v26 = [(PLBBMavLogMsg *)self appsSleepVeto];
-  [v4 setObject:v26 forKeyedSubscript:@"APPSSleepVetoState"];
+  appsSleepVeto = [(PLBBMavLogMsg *)self appsSleepVeto];
+  [otherCopy setObject:appsSleepVeto forKeyedSubscript:@"APPSSleepVetoState"];
 
-  v27 = [(PLBBMavLogMsg *)self mpssSleepVeto];
-  [v4 setObject:v27 forKeyedSubscript:@"MPSSSleepVetoHistogram"];
+  mpssSleepVeto = [(PLBBMavLogMsg *)self mpssSleepVeto];
+  [otherCopy setObject:mpssSleepVeto forKeyedSubscript:@"MPSSSleepVetoHistogram"];
 
-  v28 = [(PLBBMavLogMsg *)self qdspConfigCount];
-  [v4 setObject:v28 forKeyedSubscript:@"QDSPConfigCountHistogram"];
+  qdspConfigCount = [(PLBBMavLogMsg *)self qdspConfigCount];
+  [otherCopy setObject:qdspConfigCount forKeyedSubscript:@"QDSPConfigCountHistogram"];
 
-  v29 = [(PLBBMavLogMsg *)self gpsOnOff];
-  [v4 setObject:v29 forKeyedSubscript:@"GPSOnOffStateHistogram"];
+  gpsOnOff = [(PLBBMavLogMsg *)self gpsOnOff];
+  [otherCopy setObject:gpsOnOff forKeyedSubscript:@"GPSOnOffStateHistogram"];
 
-  v30 = [(PLBBMavLogMsg *)self gpsDPOOnOff];
-  [v4 setObject:v30 forKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
+  gpsDPOOnOff = [(PLBBMavLogMsg *)self gpsDPOOnOff];
+  [otherCopy setObject:gpsDPOOnOff forKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
 
-  v31 = [(PLBBMavLogMsg *)self gpsDPOBin];
-  [v4 setObject:v31 forKeyedSubscript:@"GPSDPOBins"];
+  gpsDPOBin = [(PLBBMavLogMsg *)self gpsDPOBin];
+  [otherCopy setObject:gpsDPOBin forKeyedSubscript:@"GPSDPOBins"];
 
-  v32 = [(PLBBMavLogMsg *)self mpssCxoShutDownDuration];
-  [v4 setObject:v32 forKeyedSubscript:@"MPSSCXOShutdownDuration"];
+  mpssCxoShutDownDuration = [(PLBBMavLogMsg *)self mpssCxoShutDownDuration];
+  [otherCopy setObject:mpssCxoShutDownDuration forKeyedSubscript:@"MPSSCXOShutdownDuration"];
 
-  v33 = [(PLBBMavLogMsg *)self mpssCxoShutDownCount];
-  [v4 setObject:v33 forKeyedSubscript:@"MPSSCXOShutdownCount"];
+  mpssCxoShutDownCount = [(PLBBMavLogMsg *)self mpssCxoShutDownCount];
+  [otherCopy setObject:mpssCxoShutDownCount forKeyedSubscript:@"MPSSCXOShutdownCount"];
 
-  v34 = [(PLBBMavLogMsg *)self mcpmVetoNumHistogram];
-  [v4 setObject:v34 forKeyedSubscript:@"MCPMVetoNumHistogram"];
+  mcpmVetoNumHistogram = [(PLBBMavLogMsg *)self mcpmVetoNumHistogram];
+  [otherCopy setObject:mcpmVetoNumHistogram forKeyedSubscript:@"MCPMVetoNumHistogram"];
 
-  v35 = [(PLBBMavLogMsg *)self pcieStateHistogram];
-  [v4 setObject:v35 forKeyedSubscript:@"PCIEStateHistogram"];
+  pcieStateHistogram = [(PLBBMavLogMsg *)self pcieStateHistogram];
+  [otherCopy setObject:pcieStateHistogram forKeyedSubscript:@"PCIEStateHistogram"];
 }
 
 - (void)refreshBBMav16BHwOther
@@ -4772,9 +4772,9 @@ uint64_t __43__PLBBMavLogMsg_addToGroupPLBBMav16HwOther__block_invoke(uint64_t a
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg refreshBBMav16BHwOther]", block, v12, v13, v14, v15];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg refreshBBMav16BHwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1487];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1487];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -4812,69 +4812,69 @@ uint64_t __39__PLBBMavLogMsg_refreshBBMav16BHwOther__block_invoke(uint64_t a1)
   v99[0] = v68;
   v98[1] = *MEMORY[0x277D3F540];
   v94[0] = @"Error";
-  v67 = [MEMORY[0x277D3F198] sharedInstance];
-  v66 = [v67 commonTypeDict_BoolFormat];
-  v95[0] = v66;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v95[0] = commonTypeDict_BoolFormat;
   v94[1] = @"SeqNum";
-  v65 = [MEMORY[0x277D3F198] sharedInstance];
-  v64 = [v65 commonTypeDict_IntegerFormat];
-  v95[1] = v64;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v95[1] = commonTypeDict_IntegerFormat;
   v94[2] = @"BBDate";
-  v63 = [MEMORY[0x277D3F198] sharedInstance];
-  v62 = [v63 commonTypeDict_DateFormat];
-  v95[2] = v62;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v95[2] = commonTypeDict_DateFormat;
   v94[3] = @"TimeCal";
-  v61 = [MEMORY[0x277D3F198] sharedInstance];
-  v60 = [v61 commonTypeDict_IntegerFormat];
-  v95[3] = v60;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v95[3] = commonTypeDict_IntegerFormat2;
   v94[4] = @"SWRevision";
-  v59 = [MEMORY[0x277D3F198] sharedInstance];
-  v58 = [v59 commonTypeDict_IntegerFormat];
-  v95[4] = v58;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v95[4] = commonTypeDict_IntegerFormat3;
   v94[5] = @"HWRevision";
-  v57 = [MEMORY[0x277D3F198] sharedInstance];
-  v56 = [v57 commonTypeDict_IntegerFormat];
-  v95[5] = v56;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v95[5] = commonTypeDict_IntegerFormat4;
   v94[6] = @"HWStatsType";
-  v55 = [MEMORY[0x277D3F198] sharedInstance];
-  v54 = [v55 commonTypeDict_IntegerFormat];
-  v95[6] = v54;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v95[6] = commonTypeDict_IntegerFormat5;
   v94[7] = @"HwStatsLength";
-  v53 = [MEMORY[0x277D3F198] sharedInstance];
-  v52 = [v53 commonTypeDict_IntegerFormat];
-  v95[7] = v52;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v95[7] = commonTypeDict_IntegerFormat6;
   v94[8] = @"HwStatsLevel";
-  v51 = [MEMORY[0x277D3F198] sharedInstance];
-  v50 = [v51 commonTypeDict_IntegerFormat];
-  v95[8] = v50;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v95[8] = commonTypeDict_IntegerFormat7;
   v94[9] = @"LastTimestamp";
-  v49 = [MEMORY[0x277D3F198] sharedInstance];
-  v48 = [v49 commonTypeDict_IntegerFormat];
-  v95[9] = v48;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v95[9] = commonTypeDict_IntegerFormat8;
   v94[10] = @"CurrentTimestamp";
-  v47 = [MEMORY[0x277D3F198] sharedInstance];
-  v46 = [v47 commonTypeDict_IntegerFormat];
-  v95[10] = v46;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v95[10] = commonTypeDict_IntegerFormat9;
   v94[11] = @"LogDuration";
-  v45 = [MEMORY[0x277D3F198] sharedInstance];
-  v44 = [v45 commonTypeDict_IntegerFormat];
-  v95[11] = v44;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v95[11] = commonTypeDict_IntegerFormat10;
   v94[12] = @"RPMXOShutdownDuration";
-  v43 = [MEMORY[0x277D3F198] sharedInstance];
-  v42 = [v43 commonTypeDict_IntegerFormat];
-  v95[12] = v42;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v95[12] = commonTypeDict_IntegerFormat11;
   v94[13] = @"RPMXOShutdownCount";
-  v41 = [MEMORY[0x277D3F198] sharedInstance];
-  v40 = [v41 commonTypeDict_IntegerFormat];
-  v95[13] = v40;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v95[13] = commonTypeDict_IntegerFormat12;
   v94[14] = @"RPMVDDMinDuration";
-  v39 = [MEMORY[0x277D3F198] sharedInstance];
-  v38 = [v39 commonTypeDict_IntegerFormat];
-  v95[14] = v38;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v95[14] = commonTypeDict_IntegerFormat13;
   v94[15] = @"RPMVDDMinEnterCount";
-  v37 = [MEMORY[0x277D3F198] sharedInstance];
-  v36 = [v37 commonTypeDict_IntegerFormat];
-  v95[15] = v36;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v95[15] = commonTypeDict_IntegerFormat14;
   v94[16] = @"AppsPerfStateCountHistogram";
   v4 = *MEMORY[0x277D3F598];
   v91[0] = *MEMORY[0x277D3F5A8];
@@ -4888,13 +4888,13 @@ uint64_t __39__PLBBMavLogMsg_refreshBBMav16BHwOther__block_invoke(uint64_t a1)
   v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v93 forKeys:v91 count:3];
   v95[16] = v35;
   v94[17] = @"CXOShutdownDuration";
-  v34 = [MEMORY[0x277D3F198] sharedInstance];
-  v33 = [v34 commonTypeDict_IntegerFormat];
-  v95[17] = v33;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v95[17] = commonTypeDict_IntegerFormat15;
   v94[18] = @"CXOShutdownCount";
-  v32 = [MEMORY[0x277D3F198] sharedInstance];
-  v31 = [v32 commonTypeDict_IntegerFormat];
-  v95[18] = v31;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v95[18] = commonTypeDict_IntegerFormat16;
   v94[19] = @"LPASSOnOffStateHistogram";
   v89[0] = v3;
   v89[1] = v4;
@@ -4959,13 +4959,13 @@ uint64_t __39__PLBBMavLogMsg_refreshBBMav16BHwOther__block_invoke(uint64_t a1)
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v78 forKeys:v77 count:3];
   v95[25] = v24;
   v94[26] = @"MPSSCXOShutdownDuration";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_IntegerFormat];
-  v95[26] = v22;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+  v95[26] = commonTypeDict_IntegerFormat17;
   v94[27] = @"MPSSCXOShutdownCount";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v95[27] = v20;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v95[27] = commonTypeDict_IntegerFormat18;
   v94[28] = @"MCPMVetoNumHistogram";
   v75[0] = v3;
   v75[1] = v4;
@@ -4985,9 +4985,9 @@ uint64_t __39__PLBBMavLogMsg_refreshBBMav16BHwOther__block_invoke(uint64_t a1)
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v74 forKeys:v73 count:3];
   v95[29] = v18;
   v94[30] = @"NPAVetoMask";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v95[30] = v16;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v95[30] = commonTypeDict_IntegerFormat19;
   v94[31] = @"NPAVetoClientNumHistogram";
   v71[0] = v3;
   v71[1] = v4;
@@ -4998,13 +4998,13 @@ uint64_t __39__PLBBMavLogMsg_refreshBBMav16BHwOther__block_invoke(uint64_t a1)
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v72 forKeys:v71 count:3];
   v95[31] = v6;
   v94[32] = @"AppsClockStateDurationStr";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat];
-  v95[32] = v8;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]22 commonTypeDict_StringFormat];
+  v95[32] = commonTypeDict_StringFormat;
   v94[33] = @"MpssClockStateDurationStr";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_StringFormat];
-  v95[33] = v10;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]23 commonTypeDict_StringFormat];
+  v95[33] = commonTypeDict_StringFormat2;
   v94[34] = @"PCIEStateHistogram";
   v69[0] = v3;
   v69[1] = v4;
@@ -5044,9 +5044,9 @@ uint64_t __39__PLBBMavLogMsg_refreshBBMav16BHwOther__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg logEventBackwardMav16BBBHwOther]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardMav16BBBHwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1566];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1566];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -5080,9 +5080,9 @@ uint64_t __39__PLBBMavLogMsg_refreshBBMav16BHwOther__block_invoke(uint64_t a1)
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"About to send to log at %s", "-[PLBBMavLogMsg logEventBackwardMav16BBBHwOther]"];
       v15 = MEMORY[0x277D3F178];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v17 = [v16 lastPathComponent];
+      lastPathComponent2 = [v16 lastPathComponent];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg logEventBackwardMav16BBBHwOther]"];
-      [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:1572];
+      [v15 logMessage:v14 fromFile:lastPathComponent2 fromFunction:v18 fromLineNumber:1572];
 
       v19 = PLLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -5134,9 +5134,9 @@ uint64_t __48__PLBBMavLogMsg_logEventBackwardMav16BBBHwOther__block_invoke_589(u
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBMavLogMsg addToGroupPLBBMav16BHwOther]", block, v14, v15, v16, v17];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBMavLogMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBMavLogMsg addToGroupPLBBMav16BHwOther]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1581];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1581];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -5164,98 +5164,98 @@ uint64_t __44__PLBBMavLogMsg_addToGroupPLBBMav16BHwOther__block_invoke(uint64_t 
   return result;
 }
 
-- (void)populateEntryBBMav16BHwOther:(id)a3
+- (void)populateEntryBBMav16BHwOther:(id)other
 {
-  v4 = a3;
-  v5 = [(PLBBMavLogMsg *)self commonInfo];
-  v6 = [v5 objectForKey:@"BBDate"];
-  [v4 setObject:v6 forKeyedSubscript:@"BBDate"];
+  otherCopy = other;
+  commonInfo = [(PLBBMavLogMsg *)self commonInfo];
+  v6 = [commonInfo objectForKey:@"BBDate"];
+  [otherCopy setObject:v6 forKeyedSubscript:@"BBDate"];
 
-  v7 = [(PLBBMavLogMsg *)self commonInfo];
-  v8 = [v7 objectForKey:@"BBDate"];
-  v9 = [v8 convertFromBasebandToMonotonic];
-  [v4 setEntryDate:v9];
+  commonInfo2 = [(PLBBMavLogMsg *)self commonInfo];
+  v8 = [commonInfo2 objectForKey:@"BBDate"];
+  convertFromBasebandToMonotonic = [v8 convertFromBasebandToMonotonic];
+  [otherCopy setEntryDate:convertFromBasebandToMonotonic];
 
-  v10 = [(PLBBMavLogMsg *)self bbSwRev];
-  [v4 setObject:v10 forKeyedSubscript:@"SWRevision"];
+  bbSwRev = [(PLBBMavLogMsg *)self bbSwRev];
+  [otherCopy setObject:bbSwRev forKeyedSubscript:@"SWRevision"];
 
-  v11 = [(PLBBMavLogMsg *)self bbHwRev];
-  [v4 setObject:v11 forKeyedSubscript:@"HWRevision"];
+  bbHwRev = [(PLBBMavLogMsg *)self bbHwRev];
+  [otherCopy setObject:bbHwRev forKeyedSubscript:@"HWRevision"];
 
-  v12 = [(PLBBMavLogMsg *)self bbHwStatsType];
-  [v4 setObject:v12 forKeyedSubscript:@"HWStatsType"];
+  bbHwStatsType = [(PLBBMavLogMsg *)self bbHwStatsType];
+  [otherCopy setObject:bbHwStatsType forKeyedSubscript:@"HWStatsType"];
 
-  v13 = [(PLBBMavLogMsg *)self bbHwStatsLength];
-  [v4 setObject:v13 forKeyedSubscript:@"HwStatsLength"];
+  bbHwStatsLength = [(PLBBMavLogMsg *)self bbHwStatsLength];
+  [otherCopy setObject:bbHwStatsLength forKeyedSubscript:@"HwStatsLength"];
 
-  v14 = [(PLBBMavLogMsg *)self bbHwStatsLevel];
-  [v4 setObject:v14 forKeyedSubscript:@"HwStatsLevel"];
+  bbHwStatsLevel = [(PLBBMavLogMsg *)self bbHwStatsLevel];
+  [otherCopy setObject:bbHwStatsLevel forKeyedSubscript:@"HwStatsLevel"];
 
-  v15 = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
-  [v4 setObject:v15 forKeyedSubscript:@"CurrentTimestamp"];
+  bbHwCurrTimeStamp = [(PLBBMavLogMsg *)self bbHwCurrTimeStamp];
+  [otherCopy setObject:bbHwCurrTimeStamp forKeyedSubscript:@"CurrentTimestamp"];
 
-  v16 = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
-  [v4 setObject:v16 forKeyedSubscript:@"LastTimestamp"];
+  bbHwLastTimeStamp = [(PLBBMavLogMsg *)self bbHwLastTimeStamp];
+  [otherCopy setObject:bbHwLastTimeStamp forKeyedSubscript:@"LastTimestamp"];
 
-  v17 = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
-  [v4 setObject:v17 forKeyedSubscript:@"LogDuration"];
+  bbHwLogDurationInTicks = [(PLBBMavLogMsg *)self bbHwLogDurationInTicks];
+  [otherCopy setObject:bbHwLogDurationInTicks forKeyedSubscript:@"LogDuration"];
 
-  v18 = [(PLBBMavLogMsg *)self rpmXOShutDuration];
-  [v4 setObject:v18 forKeyedSubscript:@"RPMXOShutdownDuration"];
+  rpmXOShutDuration = [(PLBBMavLogMsg *)self rpmXOShutDuration];
+  [otherCopy setObject:rpmXOShutDuration forKeyedSubscript:@"RPMXOShutdownDuration"];
 
-  v19 = [(PLBBMavLogMsg *)self rpmXOShutCnt];
-  [v4 setObject:v19 forKeyedSubscript:@"RPMXOShutdownCount"];
+  rpmXOShutCnt = [(PLBBMavLogMsg *)self rpmXOShutCnt];
+  [otherCopy setObject:rpmXOShutCnt forKeyedSubscript:@"RPMXOShutdownCount"];
 
-  v20 = [(PLBBMavLogMsg *)self rpmVDDMinDuration];
-  [v4 setObject:v20 forKeyedSubscript:@"RPMVDDMinDuration"];
+  rpmVDDMinDuration = [(PLBBMavLogMsg *)self rpmVDDMinDuration];
+  [otherCopy setObject:rpmVDDMinDuration forKeyedSubscript:@"RPMVDDMinDuration"];
 
-  v21 = [(PLBBMavLogMsg *)self rpmVDDMinEnterCnt];
-  [v4 setObject:v21 forKeyedSubscript:@"RPMVDDMinEnterCount"];
+  rpmVDDMinEnterCnt = [(PLBBMavLogMsg *)self rpmVDDMinEnterCnt];
+  [otherCopy setObject:rpmVDDMinEnterCnt forKeyedSubscript:@"RPMVDDMinEnterCount"];
 
-  v22 = [(PLBBMavLogMsg *)self appsPerfStateCountHist];
-  [v4 setObject:v22 forKeyedSubscript:@"AppsPerfStateCountHistogram"];
+  appsPerfStateCountHist = [(PLBBMavLogMsg *)self appsPerfStateCountHist];
+  [otherCopy setObject:appsPerfStateCountHist forKeyedSubscript:@"AppsPerfStateCountHistogram"];
 
-  v23 = [(PLBBMavLogMsg *)self cxoShutDownDuration];
-  [v4 setObject:v23 forKeyedSubscript:@"CXOShutdownDuration"];
+  cxoShutDownDuration = [(PLBBMavLogMsg *)self cxoShutDownDuration];
+  [otherCopy setObject:cxoShutDownDuration forKeyedSubscript:@"CXOShutdownDuration"];
 
-  v24 = [(PLBBMavLogMsg *)self cxoShutDownCount];
-  [v4 setObject:v24 forKeyedSubscript:@"CXOShutdownCount"];
+  cxoShutDownCount = [(PLBBMavLogMsg *)self cxoShutDownCount];
+  [otherCopy setObject:cxoShutDownCount forKeyedSubscript:@"CXOShutdownCount"];
 
-  v25 = [(PLBBMavLogMsg *)self lpassOnOffState];
-  [v4 setObject:v25 forKeyedSubscript:@"LPASSOnOffStateHistogram"];
+  lpassOnOffState = [(PLBBMavLogMsg *)self lpassOnOffState];
+  [otherCopy setObject:lpassOnOffState forKeyedSubscript:@"LPASSOnOffStateHistogram"];
 
-  v26 = [(PLBBMavLogMsg *)self appsSleepVeto];
-  [v4 setObject:v26 forKeyedSubscript:@"APPSSleepVetoState"];
+  appsSleepVeto = [(PLBBMavLogMsg *)self appsSleepVeto];
+  [otherCopy setObject:appsSleepVeto forKeyedSubscript:@"APPSSleepVetoState"];
 
-  v27 = [(PLBBMavLogMsg *)self mpssSleepVeto];
-  [v4 setObject:v27 forKeyedSubscript:@"MPSSSleepVetoHistogram"];
+  mpssSleepVeto = [(PLBBMavLogMsg *)self mpssSleepVeto];
+  [otherCopy setObject:mpssSleepVeto forKeyedSubscript:@"MPSSSleepVetoHistogram"];
 
-  v28 = [(PLBBMavLogMsg *)self qdspConfigCount];
-  [v4 setObject:v28 forKeyedSubscript:@"QDSPConfigCountHistogram"];
+  qdspConfigCount = [(PLBBMavLogMsg *)self qdspConfigCount];
+  [otherCopy setObject:qdspConfigCount forKeyedSubscript:@"QDSPConfigCountHistogram"];
 
-  v29 = [(PLBBMavLogMsg *)self gpsOnOff];
-  [v4 setObject:v29 forKeyedSubscript:@"GPSOnOffStateHistogram"];
+  gpsOnOff = [(PLBBMavLogMsg *)self gpsOnOff];
+  [otherCopy setObject:gpsOnOff forKeyedSubscript:@"GPSOnOffStateHistogram"];
 
-  v30 = [(PLBBMavLogMsg *)self gpsDPOOnOff];
-  [v4 setObject:v30 forKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
+  gpsDPOOnOff = [(PLBBMavLogMsg *)self gpsDPOOnOff];
+  [otherCopy setObject:gpsDPOOnOff forKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
 
-  v31 = [(PLBBMavLogMsg *)self gpsDPOBin];
-  [v4 setObject:v31 forKeyedSubscript:@"GPSDPOBins"];
+  gpsDPOBin = [(PLBBMavLogMsg *)self gpsDPOBin];
+  [otherCopy setObject:gpsDPOBin forKeyedSubscript:@"GPSDPOBins"];
 
-  v32 = [(PLBBMavLogMsg *)self mpssCxoShutDownDuration];
-  [v4 setObject:v32 forKeyedSubscript:@"MPSSCXOShutdownDuration"];
+  mpssCxoShutDownDuration = [(PLBBMavLogMsg *)self mpssCxoShutDownDuration];
+  [otherCopy setObject:mpssCxoShutDownDuration forKeyedSubscript:@"MPSSCXOShutdownDuration"];
 
-  v33 = [(PLBBMavLogMsg *)self mpssCxoShutDownCount];
-  [v4 setObject:v33 forKeyedSubscript:@"MPSSCXOShutdownCount"];
+  mpssCxoShutDownCount = [(PLBBMavLogMsg *)self mpssCxoShutDownCount];
+  [otherCopy setObject:mpssCxoShutDownCount forKeyedSubscript:@"MPSSCXOShutdownCount"];
 
-  v34 = [(PLBBMavLogMsg *)self mcpmVetoNumHistogram];
-  [v4 setObject:v34 forKeyedSubscript:@"MCPMVetoNumHistogram"];
+  mcpmVetoNumHistogram = [(PLBBMavLogMsg *)self mcpmVetoNumHistogram];
+  [otherCopy setObject:mcpmVetoNumHistogram forKeyedSubscript:@"MCPMVetoNumHistogram"];
 
-  v35 = [(PLBBMavLogMsg *)self ProtocolActivityHistogram];
-  [v4 setObject:v35 forKeyedSubscript:@"ProtocolActivityHistogram"];
+  protocolActivityHistogram = [(PLBBMavLogMsg *)self ProtocolActivityHistogram];
+  [otherCopy setObject:protocolActivityHistogram forKeyedSubscript:@"ProtocolActivityHistogram"];
 
-  v36 = [(PLBBMavLogMsg *)self pcieStateHistogram];
-  [v4 setObject:v36 forKeyedSubscript:@"PCIEStateHistogram"];
+  pcieStateHistogram = [(PLBBMavLogMsg *)self pcieStateHistogram];
+  [otherCopy setObject:pcieStateHistogram forKeyedSubscript:@"PCIEStateHistogram"];
 }
 
 @end

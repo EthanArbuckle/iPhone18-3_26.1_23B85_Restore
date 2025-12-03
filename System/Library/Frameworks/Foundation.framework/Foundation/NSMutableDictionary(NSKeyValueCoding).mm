@@ -8,12 +8,12 @@
 {
   if (a3)
   {
-    return [a1 setObject:? forKey:?];
+    return [self setObject:? forKey:?];
   }
 
   else
   {
-    return [a1 removeObjectForKey:a4];
+    return [self removeObjectForKey:a4];
   }
 }
 

@@ -1,8 +1,8 @@
 @interface HoverTypingTextStyleViewController
-+ (id)visualTitleForEnumValue:(id)a3;
++ (id)visualTitleForEnumValue:(id)value;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation HoverTypingTextStyleViewController
@@ -65,44 +65,44 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  cellCopy = cell;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 hoverTextTypingTextStyle];
+  hoverTextTypingTextStyle = [v6 hoverTextTypingTextStyle];
 
-  if (!v7)
+  if (!hoverTextTypingTextStyle)
   {
-    v7 = UIFontTextStyleBody;
+    hoverTextTypingTextStyle = UIFontTextStyleBody;
   }
 
-  v11 = v5;
-  v8 = [v11 specifier];
-  v9 = [v8 propertyForKey:PSIDKey];
-  v10 = [v9 isEqual:v7];
+  v11 = cellCopy;
+  specifier = [v11 specifier];
+  v9 = [specifier propertyForKey:PSIDKey];
+  v10 = [v9 isEqual:hoverTextTypingTextStyle];
 
   [v11 setChecked:v10];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = HoverTypingTextStyleViewController;
-  v6 = a4;
-  [(HoverTypingTextStyleViewController *)&v10 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(HoverTypingTextStyleViewController *)self specifierAtIndex:[(HoverTypingTextStyleViewController *)self indexForIndexPath:v6, v10.receiver, v10.super_class]];
+  pathCopy = path;
+  [(HoverTypingTextStyleViewController *)&v10 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(HoverTypingTextStyleViewController *)self specifierAtIndex:[(HoverTypingTextStyleViewController *)self indexForIndexPath:pathCopy, v10.receiver, v10.super_class]];
   v8 = [v7 propertyForKey:PSIDKey];
   v9 = +[AXSettings sharedInstance];
   [v9 setHoverTextTypingTextStyle:v8];
 
-  [(HoverTypingTextStyleViewController *)self updateTableCheckedSelection:v6];
+  [(HoverTypingTextStyleViewController *)self updateTableCheckedSelection:pathCopy];
 }
 
-+ (id)visualTitleForEnumValue:(id)a3
++ (id)visualTitleForEnumValue:(id)value
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 isEqualToString:UIFontTextStyleBody] & 1) == 0)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (valueCopy && ([valueCopy isEqualToString:UIFontTextStyleBody] & 1) == 0)
   {
     if ([v4 isEqualToString:UIFontTextStyleSubheadline])
     {

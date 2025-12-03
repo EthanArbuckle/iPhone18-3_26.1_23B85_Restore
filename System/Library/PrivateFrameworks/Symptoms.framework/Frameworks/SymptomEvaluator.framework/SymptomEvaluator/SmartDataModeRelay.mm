@@ -1,10 +1,10 @@
 @interface SmartDataModeRelay
-+ (id)cellDataStatusToString:(unsigned __int8)a3;
++ (id)cellDataStatusToString:(unsigned __int8)string;
 + (id)sharedInstance;
 - (SmartDataModeRelay)init;
 - (void)_updateCellDataStatus;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SmartDataModeRelay
@@ -107,13 +107,13 @@
   [(SmartDataModeRelay *)&v7 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (self->_cellStateRelay == v10 && ([v9 isEqualToString:@"ratSelectionIsNR"] & 1) != 0 || self->_systemSettingsRelay == v10 && objc_msgSend(v9, "isEqualToString:", @"smartDataModeEnabled"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (self->_cellStateRelay == objectCopy && ([pathCopy isEqualToString:@"ratSelectionIsNR"] & 1) != 0 || self->_systemSettingsRelay == objectCopy && objc_msgSend(pathCopy, "isEqualToString:", @"smartDataModeEnabled"))
   {
     v12 = systemSettingsLogHandle;
     if (os_log_type_enabled(systemSettingsLogHandle, OS_LOG_TYPE_DEBUG))
@@ -131,9 +131,9 @@
     if (os_log_type_enabled(systemSettingsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412546;
-      v16 = v9;
+      v16 = pathCopy;
       v17 = 2112;
-      v18 = v10;
+      v18 = objectCopy;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_ERROR, "Got unexpected KVO update for keypath %@ of object %@", &v15, 0x16u);
     }
   }
@@ -159,9 +159,9 @@
   {
     cellStateRelay = self->_cellStateRelay;
     v8 = v6;
-    v9 = [(CellularStateRelay *)cellStateRelay ratSelectionIsNR];
+    ratSelectionIsNR = [(CellularStateRelay *)cellStateRelay ratSelectionIsNR];
     v14 = 67109120;
-    LODWORD(v15) = v9;
+    LODWORD(v15) = ratSelectionIsNR;
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEBUG, "SDM: _cellStateRelay.ratSelectionIsNR: %hhd", &v14, 8u);
   }
 
@@ -201,16 +201,16 @@ uint64_t __36__SmartDataModeRelay_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)cellDataStatusToString:(unsigned __int8)a3
++ (id)cellDataStatusToString:(unsigned __int8)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_278989FB0 + (a3 - 1));
+    return *(&off_278989FB0 + (string - 1));
   }
 }
 

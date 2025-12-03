@@ -35,8 +35,8 @@
   v14.super_class = DSSafetyResetCompletedController;
   [(DSOBWelcomeController *)&v14 viewDidLoad];
   v3 = DSUILocStringForKey(@"CONTINUE");
-  v4 = [(DSSafetyResetCompletedController *)self delegate];
-  v5 = [DSUIUtilities setUpBoldButtonForController:self title:v3 target:v4 selector:sel_pushNextPane];
+  delegate = [(DSSafetyResetCompletedController *)self delegate];
+  v5 = [DSUIUtilities setUpBoldButtonForController:self title:v3 target:delegate selector:sel_pushNextPane];
 
   v6 = DSUILocStringForKey(@"SKIP");
   v7 = [DSUIUtilities setUpLinkButtonForController:self title:v6 target:self selector:sel_skip];

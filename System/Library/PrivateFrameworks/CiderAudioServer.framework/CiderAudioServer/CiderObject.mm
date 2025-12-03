@@ -1,34 +1,34 @@
 @interface CiderObject
 - (CiderObject)init;
 - (id).cxx_construct;
-- (id)setPropertyDataPrivileged_NSHelper:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInData:(id)a5;
-- (pair<NSError)getPropertyData_Boolean:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4;
-- (pair<NSError)getPropertyData_NSHelper:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withClass:(Class)a5;
-- (void)connectADSDevice:(id)a3 withReply:(id)a4;
-- (void)connectADSDevices:(id)a3 withReply:(id)a4;
-- (void)disconnectADSDeviceByAOID:(id)a3 withReply:(id)a4;
-- (void)disconnectADSDeviceByUUID:(id)a3 withReply:(id)a4;
-- (void)disconnectADSDevicesByAOIDs:(id)a3 withReply:(id)a4;
-- (void)disconnectADSDevicesByUUIDs:(id)a3 withReply:(id)a4;
-- (void)disconnectAllADSDevices:(id)a3;
-- (void)getADSDeviceMap:(id)a3;
-- (void)getADSPluginAOID:(id)a3;
-- (void)getAOIDForUUID:(id)a3 withReply:(id)a4;
-- (void)getPropertyDataSize:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInQualifierData:(id)a5 withReply:(id)a6;
-- (void)getPropertyData_Arithmetic:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInQualifierData:(id)a5 withReply:(id)a6;
-- (void)getPropertyData_Array:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withReply:(id)a5;
-- (void)getPropertyData_Boolean:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withReply:(id)a5;
-- (void)getPropertyData_Dict:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withReply:(id)a5;
-- (void)getPropertyData_String:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withReply:(id)a5;
-- (void)getUUIDForAOID:(id)a3 withReply:(id)a4;
-- (void)hasProperty:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withReply:(id)a5;
-- (void)isDeviceWithAOIDConnected:(id)a3 withReply:(id)a4;
-- (void)isDeviceWithUUIDConnected:(id)a3 withReply:(id)a4;
-- (void)serializeNonADSDevices:(id)a3;
-- (void)setPropertyDataPrivileged_Arithmetic:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInQualifierData:(id)a5 withInData:(id)a6 withReply:(id)a7;
-- (void)setPropertyDataPrivileged_Array:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInData:(id)a5 withReply:(id)a6;
-- (void)setPropertyDataPrivileged_Dict:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInData:(id)a5 withReply:(id)a6;
-- (void)setPropertyDataPrivileged_String:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInData:(id)a5 withReply:(id)a6;
+- (id)setPropertyDataPrivileged_NSHelper:(id)helper withInAddress:(AudioObjectPropertyAddress *)address withInData:(id)data;
+- (pair<NSError)getPropertyData_Boolean:(id)boolean withInAddress:(AudioObjectPropertyAddress *)address;
+- (pair<NSError)getPropertyData_NSHelper:(id)helper withInAddress:(AudioObjectPropertyAddress *)address withClass:(Class)class;
+- (void)connectADSDevice:(id)device withReply:(id)reply;
+- (void)connectADSDevices:(id)devices withReply:(id)reply;
+- (void)disconnectADSDeviceByAOID:(id)d withReply:(id)reply;
+- (void)disconnectADSDeviceByUUID:(id)d withReply:(id)reply;
+- (void)disconnectADSDevicesByAOIDs:(id)ds withReply:(id)reply;
+- (void)disconnectADSDevicesByUUIDs:(id)ds withReply:(id)reply;
+- (void)disconnectAllADSDevices:(id)devices;
+- (void)getADSDeviceMap:(id)map;
+- (void)getADSPluginAOID:(id)d;
+- (void)getAOIDForUUID:(id)d withReply:(id)reply;
+- (void)getPropertyDataSize:(id)size withInAddress:(AudioObjectPropertyAddress *)address withInQualifierData:(id)data withReply:(id)reply;
+- (void)getPropertyData_Arithmetic:(id)arithmetic withInAddress:(AudioObjectPropertyAddress *)address withInQualifierData:(id)data withReply:(id)reply;
+- (void)getPropertyData_Array:(id)array withInAddress:(AudioObjectPropertyAddress *)address withReply:(id)reply;
+- (void)getPropertyData_Boolean:(id)boolean withInAddress:(AudioObjectPropertyAddress *)address withReply:(id)reply;
+- (void)getPropertyData_Dict:(id)dict withInAddress:(AudioObjectPropertyAddress *)address withReply:(id)reply;
+- (void)getPropertyData_String:(id)string withInAddress:(AudioObjectPropertyAddress *)address withReply:(id)reply;
+- (void)getUUIDForAOID:(id)d withReply:(id)reply;
+- (void)hasProperty:(id)property withInAddress:(AudioObjectPropertyAddress *)address withReply:(id)reply;
+- (void)isDeviceWithAOIDConnected:(id)connected withReply:(id)reply;
+- (void)isDeviceWithUUIDConnected:(id)connected withReply:(id)reply;
+- (void)serializeNonADSDevices:(id)devices;
+- (void)setPropertyDataPrivileged_Arithmetic:(id)arithmetic withInAddress:(AudioObjectPropertyAddress *)address withInQualifierData:(id)data withInData:(id)inData withReply:(id)reply;
+- (void)setPropertyDataPrivileged_Array:(id)array withInAddress:(AudioObjectPropertyAddress *)address withInData:(id)data withReply:(id)reply;
+- (void)setPropertyDataPrivileged_Dict:(id)dict withInAddress:(AudioObjectPropertyAddress *)address withInData:(id)data withReply:(id)reply;
+- (void)setPropertyDataPrivileged_String:(id)string withInAddress:(AudioObjectPropertyAddress *)address withInData:(id)data withReply:(id)reply;
 @end
 
 @implementation CiderObject
@@ -40,38 +40,38 @@
   return self;
 }
 
-- (void)setPropertyDataPrivileged_String:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInData:(id)a5 withReply:(id)a6
+- (void)setPropertyDataPrivileged_String:(id)string withInAddress:(AudioObjectPropertyAddress *)address withInData:(id)data withReply:(id)reply
 {
-  v11 = a6;
-  v10 = [(CiderObject *)self setPropertyDataPrivileged_NSHelper:a3 withInAddress:a4 withInData:a5];
-  v11[2](v11, v10);
+  replyCopy = reply;
+  v10 = [(CiderObject *)self setPropertyDataPrivileged_NSHelper:string withInAddress:address withInData:data];
+  replyCopy[2](replyCopy, v10);
 }
 
-- (void)setPropertyDataPrivileged_Dict:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInData:(id)a5 withReply:(id)a6
+- (void)setPropertyDataPrivileged_Dict:(id)dict withInAddress:(AudioObjectPropertyAddress *)address withInData:(id)data withReply:(id)reply
 {
-  v11 = a6;
-  v10 = [(CiderObject *)self setPropertyDataPrivileged_NSHelper:a3 withInAddress:a4 withInData:a5];
-  v11[2](v11, v10);
+  replyCopy = reply;
+  v10 = [(CiderObject *)self setPropertyDataPrivileged_NSHelper:dict withInAddress:address withInData:data];
+  replyCopy[2](replyCopy, v10);
 }
 
-- (void)setPropertyDataPrivileged_Array:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInData:(id)a5 withReply:(id)a6
+- (void)setPropertyDataPrivileged_Array:(id)array withInAddress:(AudioObjectPropertyAddress *)address withInData:(id)data withReply:(id)reply
 {
-  v11 = a6;
-  v10 = [(CiderObject *)self setPropertyDataPrivileged_NSHelper:a3 withInAddress:a4 withInData:a5];
-  v11[2](v11, v10);
+  replyCopy = reply;
+  v10 = [(CiderObject *)self setPropertyDataPrivileged_NSHelper:array withInAddress:address withInData:data];
+  replyCopy[2](replyCopy, v10);
 }
 
-- (void)setPropertyDataPrivileged_Arithmetic:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInQualifierData:(id)a5 withInData:(id)a6 withReply:(id)a7
+- (void)setPropertyDataPrivileged_Arithmetic:(id)arithmetic withInAddress:(AudioObjectPropertyAddress *)address withInQualifierData:(id)data withInData:(id)inData withReply:(id)reply
 {
   v73 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (!v13 || !v15 || (v16 = [v15 bytes]) == 0)
+  arithmeticCopy = arithmetic;
+  dataCopy = data;
+  inDataCopy = inData;
+  replyCopy = reply;
+  v17 = replyCopy;
+  if (!arithmeticCopy || !inDataCopy || (replyCopy = [inDataCopy bytes]) == 0)
   {
-    util::server_log(v16);
+    util::server_log(replyCopy);
     v30 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
@@ -93,36 +93,36 @@
     goto LABEL_52;
   }
 
-  v18 = [v13 unsignedIntValue];
-  if (v14 && [v14 bytes])
+  unsignedIntValue = [arithmeticCopy unsignedIntValue];
+  if (dataCopy && [dataCopy bytes])
   {
     ptr = self->mKernelPtr.__ptr_;
-    v20 = [v14 length];
-    v21 = [v14 bytes];
-    v22 = [v15 length];
-    v23 = [v15 bytes];
+    v20 = [dataCopy length];
+    bytes = [dataCopy bytes];
+    v22 = [inDataCopy length];
+    bytes2 = [inDataCopy bytes];
     v24 = ptr;
-    v25 = v18;
-    v26 = a4;
+    v25 = unsignedIntValue;
+    addressCopy2 = address;
     v27 = v20;
-    v28 = v21;
+    v28 = bytes;
     v29 = v22;
   }
 
   else
   {
     v35 = self->mKernelPtr.__ptr_;
-    v36 = [v15 length];
-    v23 = [v15 bytes];
+    v36 = [inDataCopy length];
+    bytes2 = [inDataCopy bytes];
     v24 = v35;
-    v25 = v18;
-    v26 = a4;
+    v25 = unsignedIntValue;
+    addressCopy2 = address;
     v27 = 0;
     v28 = 0;
     v29 = v36;
   }
 
-  v37 = ads::Kernel::setPropertyDataPrivileged(v24, v25, v26, v27, v28, v29, v23);
+  v37 = ads::Kernel::setPropertyDataPrivileged(v24, v25, addressCopy2, v27, v28, v29, bytes2);
   v38 = v37;
   util::server_log(v37);
   v39 = util::server_log(void)::sLogCat;
@@ -155,8 +155,8 @@
         v44 = v60.__r_.__value_.__r.__words[0];
       }
 
-      mSelector = a4->mSelector;
-      v46 = bswap32(a4->mSelector);
+      mSelector = address->mSelector;
+      v46 = bswap32(address->mSelector);
       *&buf[1] = v46;
       if ((v46 - 32) > 0x5E || ((v46 >> 8) - 32) > 0x5E || ((v46 << 8 >> 24) - 32) > 0x5E || ((v46 >> 24) - 32) > 0x5E)
       {
@@ -180,7 +180,7 @@
         v47 = v59.__r_.__value_.__r.__words[0];
       }
 
-      mScope = a4->mScope;
+      mScope = address->mScope;
       v49 = bswap32(mScope);
       *&buf[1] = v49;
       if ((v49 - 32) > 0x5E || ((v49 >> 8) - 32) > 0x5E || ((v49 << 8 >> 24) - 32) > 0x5E || ((v49 >> 24) - 32) > 0x5E)
@@ -201,7 +201,7 @@
         v50 = v58.__r_.__value_.__r.__words[0];
       }
 
-      mElement = a4->mElement;
+      mElement = address->mElement;
       *buf = 136316674;
       *&buf[4] = "InCider.mm";
       v62 = 1024;
@@ -215,7 +215,7 @@
       *&v69[8] = 1024;
       v70 = mElement;
       v71 = 1024;
-      v72 = v18;
+      v72 = unsignedIntValue;
       _os_log_impl(&dword_24348C000, v39, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel encountered error %s setting property [%s/%s/%u] on device with ID %u with privilege", buf, 0x3Cu);
       if (SHIBYTE(v58.__r_.__value_.__r.__words[2]) < 0)
       {
@@ -242,8 +242,8 @@ LABEL_52:
 
   if (v40)
   {
-    v42 = a4->mSelector;
-    v43 = bswap32(a4->mSelector);
+    v42 = address->mSelector;
+    v43 = bswap32(address->mSelector);
     *&buf[1] = v43;
     if ((v43 - 32) > 0x5E || ((v43 >> 8) - 32) > 0x5E || ((v43 << 8 >> 24) - 32) > 0x5E || ((v43 >> 24) - 32) > 0x5E)
     {
@@ -267,7 +267,7 @@ LABEL_52:
       v53 = v60.__r_.__value_.__r.__words[0];
     }
 
-    v54 = a4->mScope;
+    v54 = address->mScope;
     v55 = bswap32(v54);
     *&buf[1] = v55;
     if ((v55 - 32) > 0x5E || ((v55 >> 8) - 32) > 0x5E || ((v55 << 8 >> 24) - 32) > 0x5E || ((v55 >> 24) - 32) > 0x5E)
@@ -288,7 +288,7 @@ LABEL_52:
       v56 = v59.__r_.__value_.__r.__words[0];
     }
 
-    v57 = a4->mElement;
+    v57 = address->mElement;
     *buf = 136316418;
     *&buf[4] = "InCider.mm";
     v62 = 1024;
@@ -300,7 +300,7 @@ LABEL_52:
     v68 = 1024;
     *v69 = v57;
     *&v69[4] = 1024;
-    *&v69[6] = v18;
+    *&v69[6] = unsignedIntValue;
     _os_log_impl(&dword_24348C000, v39, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel successfully set property [%s/%s/%u] on device with ID %u with privilege", buf, 0x32u);
     if (SHIBYTE(v59.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -319,24 +319,24 @@ LABEL_53:
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPropertyData_Boolean:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withReply:(id)a5
+- (void)getPropertyData_Boolean:(id)boolean withInAddress:(AudioObjectPropertyAddress *)address withReply:(id)reply
 {
-  v8 = a5;
-  [(CiderObject *)self getPropertyData_Boolean:a3 withInAddress:a4];
-  v8[2](v8, v9, v10);
+  replyCopy = reply;
+  [(CiderObject *)self getPropertyData_Boolean:boolean withInAddress:address];
+  replyCopy[2](replyCopy, v9, v10);
 }
 
-- (pair<NSError)getPropertyData_Boolean:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4
+- (pair<NSError)getPropertyData_Boolean:(id)boolean withInAddress:(AudioObjectPropertyAddress *)address
 {
   v8 = v4;
   v57 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = v9;
-  if (v9)
+  booleanCopy = boolean;
+  v10 = booleanCopy;
+  if (booleanCopy)
   {
-    v11 = [v9 unsignedIntValue];
-    v12 = v11;
-    ads::Kernel::getPropertyData_TypeRef(&__val, self->mKernelPtr.__ptr_, v11, a4);
+    unsignedIntValue = [booleanCopy unsignedIntValue];
+    v12 = unsignedIntValue;
+    ads::Kernel::getPropertyData_TypeRef(&__val, self->mKernelPtr.__ptr_, unsignedIntValue, address);
     if (__val || !BOOLean)
     {
       util::server_log(v13);
@@ -367,8 +367,8 @@ LABEL_53:
           v23 = v42.__r_.__value_.__r.__words[0];
         }
 
-        mSelector = a4->mSelector;
-        v25 = bswap32(a4->mSelector);
+        mSelector = address->mSelector;
+        v25 = bswap32(address->mSelector);
         *&buf[1] = v25;
         if ((v25 - 32) > 0x5E || ((v25 >> 8) - 32) > 0x5E || ((v25 << 8 >> 24) - 32) > 0x5E || ((v25 >> 24) - 32) > 0x5E)
         {
@@ -392,7 +392,7 @@ LABEL_53:
           v26 = v41.__r_.__value_.__r.__words[0];
         }
 
-        mScope = a4->mScope;
+        mScope = address->mScope;
         v28 = bswap32(mScope);
         *&buf[1] = v28;
         if ((v28 - 32) > 0x5E || ((v28 >> 8) - 32) > 0x5E || ((v28 << 8 >> 24) - 32) > 0x5E || ((v28 >> 24) - 32) > 0x5E)
@@ -413,7 +413,7 @@ LABEL_53:
           v29 = v40.__r_.__value_.__r.__words[0];
         }
 
-        mElement = a4->mElement;
+        mElement = address->mElement;
         *buf = 136316674;
         *&buf[4] = "InCider.mm";
         v46 = 1024;
@@ -455,8 +455,8 @@ LABEL_53:
       v20 = util::server_log(void)::sLogCat;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = a4->mSelector;
-        v22 = bswap32(a4->mSelector);
+        v21 = address->mSelector;
+        v22 = bswap32(address->mSelector);
         *&buf[1] = v22;
         if ((v22 - 32) > 0x5E || ((v22 >> 8) - 32) > 0x5E || ((v22 << 8 >> 24) - 32) > 0x5E || ((v22 >> 24) - 32) > 0x5E)
         {
@@ -480,7 +480,7 @@ LABEL_53:
           v31 = v42.__r_.__value_.__r.__words[0];
         }
 
-        v32 = a4->mScope;
+        v32 = address->mScope;
         v33 = bswap32(v32);
         *&buf[1] = v33;
         if ((v33 - 32) > 0x5E || ((v33 >> 8) - 32) > 0x5E || ((v33 << 8 >> 24) - 32) > 0x5E || ((v33 >> 24) - 32) > 0x5E)
@@ -501,7 +501,7 @@ LABEL_53:
           v34 = v41.__r_.__value_.__r.__words[0];
         }
 
-        v35 = a4->mElement;
+        v35 = address->mElement;
         *buf = 136316418;
         *&buf[4] = "InCider.mm";
         v46 = 1024;
@@ -565,63 +565,63 @@ LABEL_53:
   return result;
 }
 
-- (void)getPropertyData_String:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withReply:(id)a5
+- (void)getPropertyData_String:(id)string withInAddress:(AudioObjectPropertyAddress *)address withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
-  [(CiderObject *)self getPropertyData_NSHelper:v8 withInAddress:a4 withClass:objc_opt_class()];
-  v9[2](v9, v10, v11);
+  stringCopy = string;
+  replyCopy = reply;
+  [(CiderObject *)self getPropertyData_NSHelper:stringCopy withInAddress:address withClass:objc_opt_class()];
+  replyCopy[2](replyCopy, v10, v11);
 }
 
-- (void)getPropertyData_Dict:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withReply:(id)a5
+- (void)getPropertyData_Dict:(id)dict withInAddress:(AudioObjectPropertyAddress *)address withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
-  [(CiderObject *)self getPropertyData_NSHelper:v8 withInAddress:a4 withClass:objc_opt_class()];
-  v9[2](v9, v10, v11);
+  dictCopy = dict;
+  replyCopy = reply;
+  [(CiderObject *)self getPropertyData_NSHelper:dictCopy withInAddress:address withClass:objc_opt_class()];
+  replyCopy[2](replyCopy, v10, v11);
 }
 
-- (void)getPropertyData_Array:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withReply:(id)a5
+- (void)getPropertyData_Array:(id)array withInAddress:(AudioObjectPropertyAddress *)address withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
-  [(CiderObject *)self getPropertyData_NSHelper:v8 withInAddress:a4 withClass:objc_opt_class()];
-  v9[2](v9, v10, v11);
+  arrayCopy = array;
+  replyCopy = reply;
+  [(CiderObject *)self getPropertyData_NSHelper:arrayCopy withInAddress:address withClass:objc_opt_class()];
+  replyCopy[2](replyCopy, v10, v11);
 }
 
-- (void)getPropertyData_Arithmetic:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInQualifierData:(id)a5 withReply:(id)a6
+- (void)getPropertyData_Arithmetic:(id)arithmetic withInAddress:(AudioObjectPropertyAddress *)address withInQualifierData:(id)data withReply:(id)reply
 {
   v67 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v11)
+  arithmeticCopy = arithmetic;
+  dataCopy = data;
+  replyCopy = reply;
+  v14 = replyCopy;
+  if (arithmeticCopy)
   {
-    v15 = [v11 unsignedIntValue];
+    unsignedIntValue = [arithmeticCopy unsignedIntValue];
     v55 = 0;
     v56 = 0;
-    if (v12 && [v12 bytes])
+    if (dataCopy && [dataCopy bytes])
     {
       ptr = self->mKernelPtr.__ptr_;
-      v17 = [v12 length];
-      v18 = [v12 bytes];
+      v17 = [dataCopy length];
+      bytes = [dataCopy bytes];
       v19 = ptr;
-      v20 = v15;
-      v21 = a4;
+      v20 = unsignedIntValue;
+      addressCopy2 = address;
       v22 = v17;
     }
 
     else
     {
       v19 = self->mKernelPtr.__ptr_;
-      v20 = v15;
-      v21 = a4;
+      v20 = unsignedIntValue;
+      addressCopy2 = address;
       v22 = 0;
-      v18 = 0;
+      bytes = 0;
     }
 
-    ads::Kernel::getPropertyData(buf, v19, v20, v21, v22, v18);
+    ads::Kernel::getPropertyData(buf, v19, v20, addressCopy2, v22, bytes);
     v23 = *buf;
     v55 = *buf;
     v24 = *&buf[8];
@@ -654,8 +654,8 @@ LABEL_53:
         }
 
         v51 = v36;
-        mSelector = a4->mSelector;
-        v38 = bswap32(a4->mSelector);
+        mSelector = address->mSelector;
+        v38 = bswap32(address->mSelector);
         *&buf[1] = v38;
         if ((v38 - 32) > 0x5E || ((v38 >> 8) - 32) > 0x5E || ((v38 << 8 >> 24) - 32) > 0x5E || ((v38 >> 24) - 32) > 0x5E)
         {
@@ -679,7 +679,7 @@ LABEL_53:
           v39 = v53.__r_.__value_.__r.__words[0];
         }
 
-        mScope = a4->mScope;
+        mScope = address->mScope;
         v41 = bswap32(mScope);
         *&buf[1] = v41;
         if ((v41 - 32) > 0x5E || ((v41 >> 8) - 32) > 0x5E || ((v41 << 8 >> 24) - 32) > 0x5E || ((v41 >> 24) - 32) > 0x5E)
@@ -700,7 +700,7 @@ LABEL_53:
           v42 = v52.__r_.__value_.__r.__words[0];
         }
 
-        mElement = a4->mElement;
+        mElement = address->mElement;
         *buf = 136316674;
         *&buf[4] = "InCider.mm";
         *&buf[12] = 1024;
@@ -714,7 +714,7 @@ LABEL_53:
         *&v63[8] = 1024;
         v64 = mElement;
         v65 = 1024;
-        v66 = v15;
+        v66 = unsignedIntValue;
         _os_log_impl(&dword_24348C000, v26, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel encountered error %s getting property [%s/%s/%u] on device with ID %u", buf, 0x3Cu);
         if (SHIBYTE(v52.__r_.__value_.__r.__words[2]) < 0)
         {
@@ -740,8 +740,8 @@ LABEL_53:
     {
       if (v27)
       {
-        v34 = a4->mSelector;
-        v35 = bswap32(a4->mSelector);
+        v34 = address->mSelector;
+        v35 = bswap32(address->mSelector);
         *&buf[1] = v35;
         if ((v35 - 32) > 0x5E || ((v35 >> 8) - 32) > 0x5E || ((v35 << 8 >> 24) - 32) > 0x5E || ((v35 >> 24) - 32) > 0x5E)
         {
@@ -765,7 +765,7 @@ LABEL_53:
           v45 = v54.__r_.__value_.__r.__words[0];
         }
 
-        v46 = a4->mScope;
+        v46 = address->mScope;
         v47 = bswap32(v46);
         *&buf[1] = v47;
         if ((v47 - 32) > 0x5E || ((v47 >> 8) - 32) > 0x5E || ((v47 << 8 >> 24) - 32) > 0x5E || ((v47 >> 24) - 32) > 0x5E)
@@ -786,7 +786,7 @@ LABEL_53:
           v48 = v53.__r_.__value_.__r.__words[0];
         }
 
-        v49 = a4->mElement;
+        v49 = address->mElement;
         *buf = 136316418;
         *&buf[4] = "InCider.mm";
         *&buf[12] = 1024;
@@ -798,7 +798,7 @@ LABEL_53:
         v62 = 1024;
         *v63 = v49;
         *&v63[4] = 1024;
-        *&v63[6] = v15;
+        *&v63[6] = unsignedIntValue;
         _os_log_impl(&dword_24348C000, v26, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel successfully got property [%s/%s/%u] on device with ID %u", buf, 0x32u);
         if (SHIBYTE(v53.__r_.__value_.__r.__words[2]) < 0)
         {
@@ -822,7 +822,7 @@ LABEL_53:
 
   else
   {
-    util::server_log(v13);
+    util::server_log(replyCopy);
     v29 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
@@ -845,16 +845,16 @@ LABEL_53:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPropertyDataSize:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInQualifierData:(id)a5 withReply:(id)a6
+- (void)getPropertyDataSize:(id)size withInAddress:(AudioObjectPropertyAddress *)address withInQualifierData:(id)data withReply:(id)reply
 {
   v63 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v11)
+  sizeCopy = size;
+  dataCopy = data;
+  replyCopy = reply;
+  v14 = replyCopy;
+  if (!sizeCopy)
   {
-    util::server_log(v13);
+    util::server_log(replyCopy);
     v27 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
@@ -876,28 +876,28 @@ LABEL_53:
     goto LABEL_50;
   }
 
-  v15 = [v11 unsignedIntValue];
-  if (v12 && [v12 bytes])
+  unsignedIntValue = [sizeCopy unsignedIntValue];
+  if (dataCopy && [dataCopy bytes])
   {
     ptr = self->mKernelPtr.__ptr_;
-    v17 = [v12 length];
-    v18 = [v12 bytes];
+    v17 = [dataCopy length];
+    bytes = [dataCopy bytes];
     v19 = ptr;
-    v20 = v15;
-    v21 = a4;
+    v20 = unsignedIntValue;
+    addressCopy2 = address;
     v22 = v17;
   }
 
   else
   {
     v19 = self->mKernelPtr.__ptr_;
-    v20 = v15;
-    v21 = a4;
+    v20 = unsignedIntValue;
+    addressCopy2 = address;
     v22 = 0;
-    v18 = 0;
+    bytes = 0;
   }
 
-  PropertyDataSize = ads::Kernel::getPropertyDataSize(v19, v20, v21, v22, v18);
+  PropertyDataSize = ads::Kernel::getPropertyDataSize(v19, v20, addressCopy2, v22, bytes);
   util::server_log(PropertyDataSize);
   v24 = util::server_log(void)::sLogCat;
   v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
@@ -929,8 +929,8 @@ LABEL_53:
         v34 = v50.__r_.__value_.__r.__words[0];
       }
 
-      mSelector = a4->mSelector;
-      v36 = bswap32(a4->mSelector);
+      mSelector = address->mSelector;
+      v36 = bswap32(address->mSelector);
       *&buf[1] = v36;
       if ((v36 - 32) > 0x5E || ((v36 >> 8) - 32) > 0x5E || ((v36 << 8 >> 24) - 32) > 0x5E || ((v36 >> 24) - 32) > 0x5E)
       {
@@ -954,7 +954,7 @@ LABEL_53:
         v37 = v49.__r_.__value_.__r.__words[0];
       }
 
-      mScope = a4->mScope;
+      mScope = address->mScope;
       v39 = bswap32(mScope);
       *&buf[1] = v39;
       if ((v39 - 32) > 0x5E || ((v39 >> 8) - 32) > 0x5E || ((v39 << 8 >> 24) - 32) > 0x5E || ((v39 >> 24) - 32) > 0x5E)
@@ -975,7 +975,7 @@ LABEL_53:
         v40 = v48.__r_.__value_.__r.__words[0];
       }
 
-      mElement = a4->mElement;
+      mElement = address->mElement;
       *buf = 136316674;
       *&buf[4] = "InCider.mm";
       v52 = 1024;
@@ -989,7 +989,7 @@ LABEL_53:
       *&v59[8] = 1024;
       v60 = mElement;
       v61 = 1024;
-      v62 = v15;
+      v62 = unsignedIntValue;
       _os_log_impl(&dword_24348C000, v24, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel encountered error %s getting property data size for [%s/%s/%u] on device with ID %u", buf, 0x3Cu);
       if (SHIBYTE(v48.__r_.__value_.__r.__words[2]) < 0)
       {
@@ -1016,8 +1016,8 @@ LABEL_50:
 
   if (v25)
   {
-    v32 = a4->mSelector;
-    v33 = bswap32(a4->mSelector);
+    v32 = address->mSelector;
+    v33 = bswap32(address->mSelector);
     *&buf[1] = v33;
     if ((v33 - 32) > 0x5E || ((v33 >> 8) - 32) > 0x5E || ((v33 << 8 >> 24) - 32) > 0x5E || ((v33 >> 24) - 32) > 0x5E)
     {
@@ -1041,7 +1041,7 @@ LABEL_50:
       v42 = v50.__r_.__value_.__r.__words[0];
     }
 
-    v43 = a4->mScope;
+    v43 = address->mScope;
     v44 = bswap32(v43);
     *&buf[1] = v44;
     if ((v44 - 32) > 0x5E || ((v44 >> 8) - 32) > 0x5E || ((v44 << 8 >> 24) - 32) > 0x5E || ((v44 >> 24) - 32) > 0x5E)
@@ -1062,7 +1062,7 @@ LABEL_50:
       v45 = v49.__r_.__value_.__r.__words[0];
     }
 
-    v46 = a4->mElement;
+    v46 = address->mElement;
     *buf = 136316418;
     *&buf[4] = "InCider.mm";
     v52 = 1024;
@@ -1074,7 +1074,7 @@ LABEL_50:
     v58 = 1024;
     *v59 = v46;
     *&v59[4] = 1024;
-    *&v59[6] = v15;
+    *&v59[6] = unsignedIntValue;
     _os_log_impl(&dword_24348C000, v24, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel successfully got property data size for [%s/%s/%u] on device with ID %u", buf, 0x32u);
     if (SHIBYTE(v49.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -1093,15 +1093,15 @@ LABEL_68:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hasProperty:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withReply:(id)a5
+- (void)hasProperty:(id)property withInAddress:(AudioObjectPropertyAddress *)address withReply:(id)reply
 {
   v49 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  propertyCopy = property;
+  replyCopy = reply;
+  v11 = replyCopy;
+  if (!propertyCopy)
   {
-    util::server_log(v10);
+    util::server_log(replyCopy);
     v21 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
@@ -1123,10 +1123,10 @@ LABEL_68:
     goto LABEL_46;
   }
 
-  v12 = [v9 unsignedIntValue];
+  unsignedIntValue = [propertyCopy unsignedIntValue];
   ptr = self->mKernelPtr.__ptr_;
-  v47 = v12;
-  __p.__r_.__value_.__r.__words[0] = a4;
+  v47 = unsignedIntValue;
+  __p.__r_.__value_.__r.__words[0] = address;
   v46.__r_.__value_.__r.__words[0] = ptr;
   v46.__r_.__value_.__l.__size_ = &v47;
   v46.__r_.__value_.__r.__words[2] = &__p;
@@ -1174,8 +1174,8 @@ LABEL_68:
         v28 = v46.__r_.__value_.__r.__words[0];
       }
 
-      mSelector = a4->mSelector;
-      v30 = bswap32(a4->mSelector);
+      mSelector = address->mSelector;
+      v30 = bswap32(address->mSelector);
       *&block[1] = v30;
       if ((v30 - 32) > 0x5E || ((v30 >> 8) - 32) > 0x5E || ((v30 << 8 >> 24) - 32) > 0x5E || ((v30 >> 24) - 32) > 0x5E)
       {
@@ -1199,7 +1199,7 @@ LABEL_68:
         v31 = v45.__r_.__value_.__r.__words[0];
       }
 
-      mScope = a4->mScope;
+      mScope = address->mScope;
       v33 = bswap32(mScope);
       *&block[1] = v33;
       if ((v33 - 32) > 0x5E || ((v33 >> 8) - 32) > 0x5E || ((v33 << 8 >> 24) - 32) > 0x5E || ((v33 >> 24) - 32) > 0x5E)
@@ -1220,7 +1220,7 @@ LABEL_68:
         p_p = __p.__r_.__value_.__r.__words[0];
       }
 
-      mElement = a4->mElement;
+      mElement = address->mElement;
       *block = 136316674;
       *&block[4] = "InCider.mm";
       *&block[12] = 1024;
@@ -1228,7 +1228,7 @@ LABEL_68:
       *&block[18] = 2080;
       *&block[20] = v28;
       *&block[28] = 1024;
-      *&block[30] = v12;
+      *&block[30] = unsignedIntValue;
       *&block[34] = 2080;
       *&block[36] = v31;
       *&block[44] = 2080;
@@ -1261,8 +1261,8 @@ LABEL_46:
 
   if (v19)
   {
-    v26 = a4->mSelector;
-    v27 = bswap32(a4->mSelector);
+    v26 = address->mSelector;
+    v27 = bswap32(address->mSelector);
     *&block[1] = v27;
     if ((v27 - 32) > 0x5E || ((v27 >> 8) - 32) > 0x5E || ((v27 << 8 >> 24) - 32) > 0x5E || ((v27 >> 24) - 32) > 0x5E)
     {
@@ -1286,7 +1286,7 @@ LABEL_46:
       v37 = v46.__r_.__value_.__r.__words[0];
     }
 
-    v38 = a4->mScope;
+    v38 = address->mScope;
     v39 = bswap32(v38);
     *&block[1] = v39;
     if ((v39 - 32) > 0x5E || ((v39 >> 8) - 32) > 0x5E || ((v39 << 8 >> 24) - 32) > 0x5E || ((v39 >> 24) - 32) > 0x5E)
@@ -1307,7 +1307,7 @@ LABEL_46:
       v40 = v45.__r_.__value_.__r.__words[0];
     }
 
-    v41 = a4->mElement;
+    v41 = address->mElement;
     v42 = "it does";
     *block = 136316674;
     v36 = v16 & 0x100000000;
@@ -1320,7 +1320,7 @@ LABEL_46:
     *&block[12] = 1024;
     *&block[14] = 611;
     *&block[18] = 1024;
-    *&block[20] = v12;
+    *&block[20] = unsignedIntValue;
     *&block[24] = 2080;
     *&block[26] = v37;
     *&block[34] = 2080;
@@ -1352,21 +1352,21 @@ LABEL_67:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serializeNonADSDevices:(id)a3
+- (void)serializeNonADSDevices:(id)devices
 {
-  v3 = a3;
+  devicesCopy = devices;
   util::WriteDevicesExceptionSafe(&v6);
   if (v6)
   {
     v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ads::Kernel::serializeNonADSDevices" code:? userInfo:?];
-    v3[2](v3, v4, 0);
+    devicesCopy[2](devicesCopy, v4, 0);
   }
 
   else
   {
     v5 = applesauce::CF::details::make_CFArrayRef<std::string>(v7);
     v8 = v5;
-    (v3)[2](v3, 0, v5);
+    (devicesCopy)[2](devicesCopy, 0, v5);
     CFRelease(v5);
   }
 
@@ -1374,15 +1374,15 @@ LABEL_67:
   std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&v8);
 }
 
-- (void)isDeviceWithUUIDConnected:(id)a3 withReply:(id)a4
+- (void)isDeviceWithUUIDConnected:(id)connected withReply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  connectedCopy = connected;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (connectedCopy)
   {
-    std::string::basic_string[abi:ne200100]<0>(&v25, [v7 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(&v25, [connectedCopy UTF8String]);
     ptr = self->mKernelPtr.__ptr_;
     if (SHIBYTE(v25.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -1449,7 +1449,7 @@ LABEL_67:
 
   else
   {
-    util::server_log(v8);
+    util::server_log(replyCopy);
     v11 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -1472,16 +1472,16 @@ LABEL_67:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isDeviceWithAOIDConnected:(id)a3 withReply:(id)a4
+- (void)isDeviceWithAOIDConnected:(id)connected withReply:(id)reply
 {
   *&v25[5] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  connectedCopy = connected;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (connectedCopy)
   {
-    v10 = [v7 unsignedIntValue];
-    isDeviceWithAOIDConnected = ads::Kernel::isDeviceWithAOIDConnected(self->mKernelPtr.__ptr_, v10);
+    unsignedIntValue = [connectedCopy unsignedIntValue];
+    isDeviceWithAOIDConnected = ads::Kernel::isDeviceWithAOIDConnected(self->mKernelPtr.__ptr_, unsignedIntValue);
     util::server_log(isDeviceWithAOIDConnected);
     v12 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(util::server_log(void)::sLogCat, OS_LOG_TYPE_DEFAULT))
@@ -1497,7 +1497,7 @@ LABEL_67:
       }
 
       v24 = 1024;
-      v25[0] = v10;
+      v25[0] = unsignedIntValue;
       LOWORD(v25[1]) = 2080;
       *(&v25[1] + 2) = v13;
       _os_log_impl(&dword_24348C000, v12, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel checked if device with AOID %u is connected (%s)", &v20, 0x22u);
@@ -1508,7 +1508,7 @@ LABEL_67:
 
   else
   {
-    util::server_log(v8);
+    util::server_log(replyCopy);
     v14 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -1531,10 +1531,10 @@ LABEL_67:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnectAllADSDevices:(id)a3
+- (void)disconnectAllADSDevices:(id)devices
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   v5 = ads::Kernel::disconnectAllADSDevices(self->mKernelPtr.__ptr_);
   v6 = v5;
   util::server_log(v5);
@@ -1579,7 +1579,7 @@ LABEL_67:
     }
 
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ads::Kernel::disconnectAllADSDevices" code:v6 userInfo:0];
-    v4[2](v4, v12);
+    devicesCopy[2](devicesCopy, v12);
   }
 
   else
@@ -1593,22 +1593,22 @@ LABEL_67:
       _os_log_impl(&dword_24348C000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel disconnected all ADS devices without error", buf, 0x12u);
     }
 
-    v4[2](v4, 0);
+    devicesCopy[2](devicesCopy, 0);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnectADSDevicesByUUIDs:(id)a3 withReply:(id)a4
+- (void)disconnectADSDevicesByUUIDs:(id)ds withReply:(id)reply
 {
   v66 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v54 = v6;
-  v52 = v5;
-  if (v5)
+  dsCopy = ds;
+  replyCopy = reply;
+  v54 = replyCopy;
+  v52 = dsCopy;
+  if (dsCopy)
   {
-    applesauce::CF::ArrayRef::from_get(cf, v5);
+    applesauce::CF::ArrayRef::from_get(cf, dsCopy);
     v7 = cf[0];
     if (!cf[0])
     {
@@ -1912,7 +1912,7 @@ LABEL_40:
     goto LABEL_39;
   }
 
-  util::server_log(v6);
+  util::server_log(replyCopy);
   v23 = util::server_log(void)::sLogCat;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
@@ -1935,15 +1935,15 @@ LABEL_44:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnectADSDeviceByUUID:(id)a3 withReply:(id)a4
+- (void)disconnectADSDeviceByUUID:(id)d withReply:(id)reply
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (dCopy)
   {
-    std::string::basic_string[abi:ne200100]<0>(&__p, [v7 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(&__p, [dCopy UTF8String]);
     ptr = self->mKernelPtr.__ptr_;
     if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -2045,7 +2045,7 @@ LABEL_44:
 
   else
   {
-    util::server_log(v8);
+    util::server_log(replyCopy);
     v11 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -2068,16 +2068,16 @@ LABEL_44:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnectADSDevicesByAOIDs:(id)a3 withReply:(id)a4
+- (void)disconnectADSDevicesByAOIDs:(id)ds withReply:(id)reply
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v40 = v6;
-  v41 = v7;
-  if (v6)
+  dsCopy = ds;
+  replyCopy = reply;
+  v40 = dsCopy;
+  v41 = replyCopy;
+  if (dsCopy)
   {
-    applesauce::CF::ArrayRef::from_get(cf, v6);
+    applesauce::CF::ArrayRef::from_get(cf, dsCopy);
     v8 = cf[0];
     if (!cf[0])
     {
@@ -2282,7 +2282,7 @@ LABEL_49:
     goto LABEL_48;
   }
 
-  util::server_log(v7);
+  util::server_log(replyCopy);
   v12 = util::server_log(void)::sLogCat;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -2305,15 +2305,15 @@ LABEL_51:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnectADSDeviceByAOID:(id)a3 withReply:(id)a4
+- (void)disconnectADSDeviceByAOID:(id)d withReply:(id)reply
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  dCopy = d;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (!dCopy)
   {
-    util::server_log(v8);
+    util::server_log(replyCopy);
     v17 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -2335,8 +2335,8 @@ LABEL_51:
     goto LABEL_21;
   }
 
-  v10 = [v7 unsignedIntValue];
-  v11 = ads::Kernel::disconnectADSDeviceByAOID(self->mKernelPtr.__ptr_, v10);
+  unsignedIntValue = [dCopy unsignedIntValue];
+  v11 = ads::Kernel::disconnectADSDeviceByAOID(self->mKernelPtr.__ptr_, unsignedIntValue);
   v12 = v11;
   util::server_log(v11);
   v13 = util::server_log(void)::sLogCat;
@@ -2373,7 +2373,7 @@ LABEL_51:
       v28 = 2080;
       v29 = v22;
       v30 = 1024;
-      v31 = v10;
+      v31 = unsignedIntValue;
       _os_log_impl(&dword_24348C000, v15, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel encountered error %s disconnecting ADS device with AOID %u", buf, 0x22u);
       if (SHIBYTE(v24.__r_.__value_.__r.__words[2]) < 0)
       {
@@ -2395,7 +2395,7 @@ LABEL_21:
     v26 = 1024;
     v27 = 424;
     v28 = 1024;
-    LODWORD(v29) = v10;
+    LODWORD(v29) = unsignedIntValue;
     _os_log_impl(&dword_24348C000, v13, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel disconnected ADS device with AOID %u without error", buf, 0x18u);
   }
 
@@ -2405,15 +2405,15 @@ LABEL_22:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectADSDevices:(id)a3 withReply:(id)a4
+- (void)connectADSDevices:(id)devices withReply:(id)reply
 {
   v67 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  devicesCopy = devices;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (devicesCopy)
   {
-    applesauce::CF::ArrayRef::from_get(&cf, v7);
+    applesauce::CF::ArrayRef::from_get(&cf, devicesCopy);
     if (!cf)
     {
       exception = __cxa_allocate_exception(0x10uLL);
@@ -2498,7 +2498,7 @@ LABEL_22:
         v50 = 0;
         v25 = v51;
         v26 = v52;
-        v45 = self;
+        selfCopy = self;
         for (i = v25; v25 != v26; ++v25)
         {
           ads::Kernel::getUUIDForAOID(&block, self->mKernelPtr.__ptr_, *v25);
@@ -2669,7 +2669,7 @@ LABEL_22:
 
   else
   {
-    util::server_log(v8);
+    util::server_log(replyCopy);
     v16 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -2692,15 +2692,15 @@ LABEL_22:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectADSDevice:(id)a3 withReply:(id)a4
+- (void)connectADSDevice:(id)device withReply:(id)reply
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  deviceCopy = device;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (deviceCopy)
   {
-    applesauce::CF::DictionaryRef::from_get(cf, v7);
+    applesauce::CF::DictionaryRef::from_get(cf, deviceCopy);
     ptr = self->mKernelPtr.__ptr_;
     v11 = cf[0];
     if (cf[0])
@@ -2891,7 +2891,7 @@ LABEL_22:
 
   else
   {
-    util::server_log(v8);
+    util::server_log(replyCopy);
     v16 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -2914,16 +2914,16 @@ LABEL_22:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getUUIDForAOID:(id)a3 withReply:(id)a4
+- (void)getUUIDForAOID:(id)d withReply:(id)reply
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (dCopy)
   {
-    v10 = [v7 unsignedIntValue];
-    ads::Kernel::getUUIDForAOID(buf, self->mKernelPtr.__ptr_, v10);
+    unsignedIntValue = [dCopy unsignedIntValue];
+    ads::Kernel::getUUIDForAOID(buf, self->mKernelPtr.__ptr_, unsignedIntValue);
     v11 = *buf;
     util::server_log(v12);
     v13 = util::server_log(void)::sLogCat;
@@ -2960,7 +2960,7 @@ LABEL_22:
         v31 = 2080;
         v32 = v25;
         v33 = 1024;
-        v34 = v10;
+        v34 = unsignedIntValue;
         _os_log_impl(&dword_24348C000, v15, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel encountered error %s retrieving UUID for AOID %u", v28, 0x22u);
         if (SHIBYTE(v27.__r_.__value_.__r.__words[2]) < 0)
         {
@@ -2989,7 +2989,7 @@ LABEL_22:
         v31 = 2080;
         v32 = v22;
         v33 = 1024;
-        v34 = v10;
+        v34 = unsignedIntValue;
         _os_log_impl(&dword_24348C000, v13, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel retrieved UUID %s for AOID %u without error", v28, 0x22u);
       }
 
@@ -3015,7 +3015,7 @@ LABEL_22:
 
   else
   {
-    util::server_log(v8);
+    util::server_log(replyCopy);
     v17 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -3038,15 +3038,15 @@ LABEL_22:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAOIDForUUID:(id)a3 withReply:(id)a4
+- (void)getAOIDForUUID:(id)d withReply:(id)reply
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (dCopy)
   {
-    std::string::basic_string[abi:ne200100]<0>(&__p, [v7 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(&__p, [dCopy UTF8String]);
     ptr = self->mKernelPtr.__ptr_;
     if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -3172,7 +3172,7 @@ LABEL_22:
 
   else
   {
-    util::server_log(v8);
+    util::server_log(replyCopy);
     v11 = util::server_log(void)::sLogCat;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -3195,10 +3195,10 @@ LABEL_22:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getADSDeviceMap:(id)a3
+- (void)getADSDeviceMap:(id)map
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mapCopy = map;
   ptr = self->mKernelPtr.__ptr_;
   v5 = applesauce::dispatch::v1::queue::get(*(ptr + 7));
   *__p = 0u;
@@ -3327,17 +3327,17 @@ LABEL_22:
     }
   }
 
-  v4[2](v4, 0, CFDictionaryRef);
+  mapCopy[2](mapCopy, 0, CFDictionaryRef);
   CFRelease(CFDictionaryRef);
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getADSPluginAOID:(id)a3
+- (void)getADSPluginAOID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  ADSPluginAOID = ads::Kernel::getADSPluginAOID(v3);
+  dCopy = d;
+  ADSPluginAOID = ads::Kernel::getADSPluginAOID(dCopy);
   util::server_log(ADSPluginAOID);
   v5 = util::server_log(void)::sLogCat;
   v6 = os_log_type_enabled(util::server_log(void)::sLogCat, OS_LOG_TYPE_DEFAULT);
@@ -3355,7 +3355,7 @@ LABEL_22:
     }
 
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:ADSPluginAOID];
-    (*(v3 + 2))(v3, 0, v7);
+    (*(dCopy + 2))(dCopy, 0, v7);
   }
 
   else
@@ -3370,21 +3370,21 @@ LABEL_22:
     }
 
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ads::Kernel::getADSPluginAOID" code:1852797029 userInfo:0];
-    (*(v3 + 2))(v3, v7, 0);
+    (*(dCopy + 2))(dCopy, v7, 0);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)setPropertyDataPrivileged_NSHelper:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withInData:(id)a5
+- (id)setPropertyDataPrivileged_NSHelper:(id)helper withInAddress:(AudioObjectPropertyAddress *)address withInData:(id)data
 {
   v61 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9 && v10)
+  helperCopy = helper;
+  dataCopy = data;
+  v11 = dataCopy;
+  if (helperCopy && dataCopy)
   {
-    v12 = [v9 unsignedIntValue];
+    unsignedIntValue = [helperCopy unsignedIntValue];
     v13 = v11;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -3446,7 +3446,7 @@ LABEL_17:
 
 LABEL_19:
 
-            v23 = ads::Kernel::setPropertyDataPrivileged_TypeRef(self->mKernelPtr.__ptr_, v12, a4, &v48);
+            v23 = ads::Kernel::setPropertyDataPrivileged_TypeRef(self->mKernelPtr.__ptr_, unsignedIntValue, address, &v48);
             v24 = v23;
             util::server_log(v23);
             v25 = util::server_log(void)::sLogCat;
@@ -3479,8 +3479,8 @@ LABEL_19:
                   v30 = v47.__r_.__value_.__r.__words[0];
                 }
 
-                mSelector = a4->mSelector;
-                v32 = bswap32(a4->mSelector);
+                mSelector = address->mSelector;
+                v32 = bswap32(address->mSelector);
                 *&cf[1] = v32;
                 if ((v32 - 32) > 0x5E || ((v32 >> 8) - 32) > 0x5E || ((v32 << 8 >> 24) - 32) > 0x5E || ((v32 >> 24) - 32) > 0x5E)
                 {
@@ -3504,7 +3504,7 @@ LABEL_19:
                   v33 = v46.__r_.__value_.__r.__words[0];
                 }
 
-                mScope = a4->mScope;
+                mScope = address->mScope;
                 v35 = bswap32(mScope);
                 *&cf[1] = v35;
                 if ((v35 - 32) > 0x5E || ((v35 >> 8) - 32) > 0x5E || ((v35 << 8 >> 24) - 32) > 0x5E || ((v35 >> 24) - 32) > 0x5E)
@@ -3525,7 +3525,7 @@ LABEL_19:
                   p_p = __p.__r_.__value_.__r.__words[0];
                 }
 
-                mElement = a4->mElement;
+                mElement = address->mElement;
                 *cf = 136316674;
                 *&cf[4] = "InCider.mm";
                 v50 = 1024;
@@ -3539,7 +3539,7 @@ LABEL_19:
                 *&v57[8] = 1024;
                 v58 = mElement;
                 v59 = 1024;
-                v60 = v12;
+                v60 = unsignedIntValue;
                 _os_log_impl(&dword_24348C000, v25, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel encountered error %s setting property [%s/%s/%u] on device with ID %u with privilege", cf, 0x3Cu);
                 if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
                 {
@@ -3564,8 +3564,8 @@ LABEL_19:
             {
               if (v26)
               {
-                v28 = a4->mSelector;
-                v29 = bswap32(a4->mSelector);
+                v28 = address->mSelector;
+                v29 = bswap32(address->mSelector);
                 *&cf[1] = v29;
                 if ((v29 - 32) > 0x5E || ((v29 >> 8) - 32) > 0x5E || ((v29 << 8 >> 24) - 32) > 0x5E || ((v29 >> 24) - 32) > 0x5E)
                 {
@@ -3589,7 +3589,7 @@ LABEL_19:
                   v38 = v47.__r_.__value_.__r.__words[0];
                 }
 
-                v39 = a4->mScope;
+                v39 = address->mScope;
                 v40 = bswap32(v39);
                 *&cf[1] = v40;
                 if ((v40 - 32) > 0x5E || ((v40 >> 8) - 32) > 0x5E || ((v40 << 8 >> 24) - 32) > 0x5E || ((v40 >> 24) - 32) > 0x5E)
@@ -3610,7 +3610,7 @@ LABEL_19:
                   v41 = v46.__r_.__value_.__r.__words[0];
                 }
 
-                v42 = a4->mElement;
+                v42 = address->mElement;
                 *cf = 136316418;
                 *&cf[4] = "InCider.mm";
                 v50 = 1024;
@@ -3622,7 +3622,7 @@ LABEL_19:
                 v56 = 1024;
                 *v57 = v42;
                 *&v57[4] = 1024;
-                *&v57[6] = v12;
+                *&v57[6] = unsignedIntValue;
                 _os_log_impl(&dword_24348C000, v25, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Kernel successfully set property [%s/%s/%u] on device with ID %u with privilege", cf, 0x32u);
                 if (SHIBYTE(v46.__r_.__value_.__r.__words[2]) < 0)
                 {
@@ -3653,7 +3653,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  util::server_log(v10);
+  util::server_log(dataCopy);
   v16 = util::server_log(void)::sLogCat;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -3677,17 +3677,17 @@ LABEL_79:
   return v20;
 }
 
-- (pair<NSError)getPropertyData_NSHelper:(id)a3 withInAddress:(AudioObjectPropertyAddress *)a4 withClass:(Class)a5
+- (pair<NSError)getPropertyData_NSHelper:(id)helper withInAddress:(AudioObjectPropertyAddress *)address withClass:(Class)class
 {
   v10 = v5;
   v82 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = v11;
-  if (v11)
+  helperCopy = helper;
+  v12 = helperCopy;
+  if (helperCopy)
   {
-    v13 = [v11 unsignedIntValue];
-    v14 = v13;
-    ads::Kernel::getPropertyData_TypeRef(&__val, self->mKernelPtr.__ptr_, v13, a4);
+    unsignedIntValue = [helperCopy unsignedIntValue];
+    v14 = unsignedIntValue;
+    ads::Kernel::getPropertyData_TypeRef(&__val, self->mKernelPtr.__ptr_, unsignedIntValue, address);
     if (__val)
     {
       util::server_log(v15);
@@ -3718,8 +3718,8 @@ LABEL_79:
           v25 = v66.__r_.__value_.__r.__words[0];
         }
 
-        mSelector = a4->mSelector;
-        v27 = bswap32(a4->mSelector);
+        mSelector = address->mSelector;
+        v27 = bswap32(address->mSelector);
         *&buf[1] = v27;
         if ((v27 - 32) > 0x5E || ((v27 >> 8) - 32) > 0x5E || ((v27 << 8 >> 24) - 32) > 0x5E || ((v27 >> 24) - 32) > 0x5E)
         {
@@ -3743,7 +3743,7 @@ LABEL_79:
           v28 = v70.__r_.__value_.__r.__words[0];
         }
 
-        mScope = a4->mScope;
+        mScope = address->mScope;
         v30 = bswap32(mScope);
         *&buf[1] = v30;
         if ((v30 - 32) > 0x5E || ((v30 >> 8) - 32) > 0x5E || ((v30 << 8 >> 24) - 32) > 0x5E || ((v30 >> 24) - 32) > 0x5E)
@@ -3764,7 +3764,7 @@ LABEL_79:
           v31 = v69.__r_.__value_.__r.__words[0];
         }
 
-        mElement = a4->mElement;
+        mElement = address->mElement;
         *buf = 136316674;
         *&buf[4] = "InCider.mm";
         v72 = 1024;
@@ -3807,7 +3807,7 @@ LABEL_109:
       goto LABEL_111;
     }
 
-    if (objc_opt_class() == a5)
+    if (objc_opt_class() == class)
     {
       *buf = 0;
       if (cf)
@@ -3838,10 +3838,10 @@ LABEL_109:
 
     else
     {
-      if (objc_opt_class() != a5)
+      if (objc_opt_class() != class)
       {
         v22 = objc_opt_class();
-        if (v22 != a5)
+        if (v22 != class)
         {
           goto LABEL_69;
         }
@@ -3881,8 +3881,8 @@ LABEL_62:
           v38 = util::server_log(void)::sLogCat;
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
           {
-            v39 = a4->mSelector;
-            v40 = bswap32(a4->mSelector);
+            v39 = address->mSelector;
+            v40 = bswap32(address->mSelector);
             *&buf[1] = v40;
             if ((v40 - 32) > 0x5E || ((v40 >> 8) - 32) > 0x5E || ((v40 << 8 >> 24) - 32) > 0x5E || ((v40 >> 24) - 32) > 0x5E)
             {
@@ -3906,7 +3906,7 @@ LABEL_62:
               v54 = v66.__r_.__value_.__r.__words[0];
             }
 
-            v55 = a4->mScope;
+            v55 = address->mScope;
             v56 = bswap32(v55);
             *&buf[1] = v56;
             if ((v56 - 32) > 0x5E || ((v56 >> 8) - 32) > 0x5E || ((v56 << 8 >> 24) - 32) > 0x5E || ((v56 >> 24) - 32) > 0x5E)
@@ -3927,7 +3927,7 @@ LABEL_62:
               v57 = v70.__r_.__value_.__r.__words[0];
             }
 
-            v58 = a4->mElement;
+            v58 = address->mElement;
             *buf = 136316418;
             *&buf[4] = "InCider.mm";
             v72 = 1024;
@@ -3962,8 +3962,8 @@ LABEL_69:
         v41 = util::server_log(void)::sLogCat;
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
-          v42 = a4->mSelector;
-          v43 = bswap32(a4->mSelector);
+          v42 = address->mSelector;
+          v43 = bswap32(address->mSelector);
           *(&v70.__r_.__value_.__l.__data_ + 1) = v43;
           if ((v43 - 32) > 0x5E || ((v43 >> 8) - 32) > 0x5E || ((v43 << 8 >> 24) - 32) > 0x5E || ((v43 >> 24) - 32) > 0x5E)
           {
@@ -3984,7 +3984,7 @@ LABEL_69:
           }
 
           v65 = v44;
-          v45 = a4->mScope;
+          v45 = address->mScope;
           v46 = bswap32(v45);
           *(&v69.__r_.__value_.__l.__data_ + 1) = v46;
           if ((v46 - 32) > 0x5E || ((v46 >> 8) - 32) > 0x5E || ((v46 << 8 >> 24) - 32) > 0x5E || ((v46 >> 24) - 32) > 0x5E)
@@ -4009,10 +4009,10 @@ LABEL_69:
             v47 = v70.__r_.__value_.__r.__words[0];
           }
 
-          v48 = a4->mElement;
-          v49 = NSStringFromClass(a5);
+          v48 = address->mElement;
+          v49 = NSStringFromClass(class);
           v50 = v49;
-          v51 = [v49 UTF8String];
+          uTF8String = [v49 UTF8String];
           *buf = 136316674;
           *&buf[4] = "InCider.mm";
           v72 = 1024;
@@ -4024,7 +4024,7 @@ LABEL_69:
           v78 = 1024;
           *v79 = v48;
           *&v79[4] = 2080;
-          *&v79[6] = v51;
+          *&v79[6] = uTF8String;
           v80 = 1024;
           v81 = v14;
           _os_log_impl(&dword_24348C000, v41, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Error: couldn't convert result for property [%s/%s/%u] to %s on device with ID %u", buf, 0x3Cu);

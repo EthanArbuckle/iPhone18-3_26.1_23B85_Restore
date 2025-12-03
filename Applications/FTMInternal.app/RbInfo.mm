@@ -1,25 +1,25 @@
 @interface RbInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRbPathType:(id)a3;
+- (int)StringAsRbPathType:(id)type;
 - (int)rbPathType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumSuccessfulPdu:(BOOL)a3;
-- (void)setHasRbId:(BOOL)a3;
-- (void)setHasRbMode:(BOOL)a3;
-- (void)setHasRbPathType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumSuccessfulPdu:(BOOL)pdu;
+- (void)setHasRbId:(BOOL)id;
+- (void)setHasRbMode:(BOOL)mode;
+- (void)setHasRbPathType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RbInfo
 
-- (void)setHasNumSuccessfulPdu:(BOOL)a3
+- (void)setHasNumSuccessfulPdu:(BOOL)pdu
 {
-  if (a3)
+  if (pdu)
   {
     v3 = 2;
   }
@@ -45,9 +45,9 @@
   }
 }
 
-- (void)setHasRbPathType:(BOOL)a3
+- (void)setHasRbPathType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -60,25 +60,25 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsRbPathType:(id)a3
+- (int)StringAsRbPathType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RB_PATH_NONE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"RB_PATH_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RB_PATH_LTE"])
+  else if ([typeCopy isEqualToString:@"RB_PATH_LTE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RB_PATH_NR"])
+  else if ([typeCopy isEqualToString:@"RB_PATH_NR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RB_PATH_LTE_AND_NR"])
+  else if ([typeCopy isEqualToString:@"RB_PATH_LTE_AND_NR"])
   {
     v4 = 3;
   }
@@ -91,9 +91,9 @@
   return v4;
 }
 
-- (void)setHasRbMode:(BOOL)a3
+- (void)setHasRbMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 8;
   }
@@ -106,9 +106,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasRbId:(BOOL)a3
+- (void)setHasRbId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -126,8 +126,8 @@
   v7.receiver = self;
   v7.super_class = RbInfo;
   v3 = [(RbInfo *)&v7 description];
-  v4 = [(RbInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RbInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -216,9 +216,9 @@ LABEL_7:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -284,14 +284,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_numDiscardPdu;
-    *(v4 + 28) |= 1u;
+    toCopy[2] = self->_numDiscardPdu;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -310,8 +310,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_numSuccessfulPdu;
-  *(v4 + 28) |= 2u;
+  toCopy[3] = self->_numSuccessfulPdu;
+  *(toCopy + 28) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -325,8 +325,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  v4[6] = self->_rbPathType;
-  *(v4 + 28) |= 0x10u;
+  toCopy[6] = self->_rbPathType;
+  *(toCopy + 28) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -340,21 +340,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  v4[5] = self->_rbMode;
-  *(v4 + 28) |= 8u;
+  toCopy[5] = self->_rbMode;
+  *(toCopy + 28) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
-    v4[4] = self->_rbId;
-    *(v4 + 28) |= 4u;
+    toCopy[4] = self->_rbId;
+    *(toCopy + 28) |= 4u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -421,23 +421,23 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_numDiscardPdu != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_numDiscardPdu != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_26:
     v5 = 0;
@@ -446,47 +446,47 @@ LABEL_26:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_numSuccessfulPdu != *(v4 + 3))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_numSuccessfulPdu != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 28) & 0x10) == 0 || self->_rbPathType != *(v4 + 6))
+    if ((*(equalCopy + 28) & 0x10) == 0 || self->_rbPathType != *(equalCopy + 6))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 0x10) != 0)
+  else if ((*(equalCopy + 28) & 0x10) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 28) & 8) == 0 || self->_rbMode != *(v4 + 5))
+    if ((*(equalCopy + 28) & 8) == 0 || self->_rbMode != *(equalCopy + 5))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 28) & 8) != 0)
+  else if ((*(equalCopy + 28) & 8) != 0)
   {
     goto LABEL_26;
   }
 
-  v5 = (*(v4 + 28) & 4) == 0;
+  v5 = (*(equalCopy + 28) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_rbId != *(v4 + 4))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_rbId != *(equalCopy + 4))
     {
       goto LABEL_26;
     }
@@ -567,15 +567,15 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_numDiscardPdu = *(v4 + 2);
+    self->_numDiscardPdu = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -588,14 +588,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_numSuccessfulPdu = *(v4 + 3);
+  self->_numSuccessfulPdu = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -608,9 +608,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_rbPathType = *(v4 + 6);
+  self->_rbPathType = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -623,12 +623,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_rbMode = *(v4 + 5);
+  self->_rbMode = *(fromCopy + 5);
   *&self->_has |= 8u;
-  if ((*(v4 + 28) & 4) != 0)
+  if ((*(fromCopy + 28) & 4) != 0)
   {
 LABEL_6:
-    self->_rbId = *(v4 + 4);
+    self->_rbId = *(fromCopy + 4);
     *&self->_has |= 4u;
   }
 

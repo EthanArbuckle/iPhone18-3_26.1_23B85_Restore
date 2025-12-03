@@ -4,12 +4,12 @@
 - (PHASEGroup)initWithIdentifier:(NSString *)identifier;
 - (uint64_t)unregisterFromEngine;
 - (void)fadeGain:(double)gain duration:(double)duration curveType:(PHASECurveType)curveType;
-- (void)fadeGainHighFrequency:(double)a3 duration:(double)a4 curveType:(int64_t)a5;
-- (void)fadeGainLowFrequency:(double)a3 duration:(double)a4 curveType:(int64_t)a5;
+- (void)fadeGainHighFrequency:(double)frequency duration:(double)duration curveType:(int64_t)type;
+- (void)fadeGainLowFrequency:(double)frequency duration:(double)duration curveType:(int64_t)type;
 - (void)fadeRate:(double)rate duration:(double)duration curveType:(PHASECurveType)curveType;
 - (void)mute;
 - (void)registerWithEngine:(PHASEEngine *)engine;
-- (void)registerWithEngine:(uint64_t)a1;
+- (void)registerWithEngine:(uint64_t)engine;
 - (void)solo;
 - (void)unmute;
 - (void)unregisterFromEngine;
@@ -60,8 +60,8 @@
 
   else
   {
-    v6 = [(PHASEEngine *)v4 groups];
-    v7 = [v6 objectForKey:self->_identifier];
+    groups = [(PHASEEngine *)v4 groups];
+    v7 = [groups objectForKey:self->_identifier];
 
     if (v7)
     {
@@ -76,7 +76,7 @@
       {
         objc_storeWeak(&self->_engine, v4);
         v9 = Phase::Controller::TaskManager::GetService<Phase::Controller::GroupManager>(([(PHASEEngine *)v4 implementation]+ 48), 10);
-        v10 = self;
+        selfCopy = self;
         v11 = **(v9 + 8);
         v18 = 0;
         v17 = 1;
@@ -118,7 +118,7 @@
 
         *v12 = &unk_284D35F60;
         v12[1] = v9;
-        v12[2] = v10;
+        v12[2] = selfCopy;
         Phase::LockFreeQueueSPSC::CommitBytes(v11, 24);
         atomic_store(0, (v11 + 40));
       }
@@ -255,7 +255,7 @@
   }
 }
 
-- (void)fadeGainHighFrequency:(double)a3 duration:(double)a4 curveType:(int64_t)a5
+- (void)fadeGainHighFrequency:(double)frequency duration:(double)duration curveType:(int64_t)type
 {
   v37 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_engine);
@@ -264,12 +264,12 @@
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     v13 = NSStringFromSelector(a2);
-    v14 = PHASEGetPropertyBounded<double>(v12, v13, a3, 0.0, 1.0);
+    v14 = PHASEGetPropertyBounded<double>(v12, v13, frequency, 0.0, 1.0);
 
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     v17 = NSStringFromSelector(a2);
-    v18 = PHASEGetPropertyBounded<double>(v16, v17, a4, 0.0, 1.79769313e308);
+    v18 = PHASEGetPropertyBounded<double>(v16, v17, duration, 0.0, 1.79769313e308);
 
     v19 = Phase::Controller::TaskManager::GetService<Phase::Controller::GroupManager>(([WeakRetained implementation] + 48), 10);
     hashId = self->_hashId;
@@ -317,14 +317,14 @@
     *(v22 + 2) = hashId;
     v22[3] = v14;
     v22[4] = v18;
-    *(v22 + 5) = a5;
+    *(v22 + 5) = type;
     Phase::LockFreeQueueSPSC::CommitBytes(v21, 48);
     atomic_store(0, (v21 + 40));
     self->_gainHighFrequency = v14;
   }
 }
 
-- (void)fadeGainLowFrequency:(double)a3 duration:(double)a4 curveType:(int64_t)a5
+- (void)fadeGainLowFrequency:(double)frequency duration:(double)duration curveType:(int64_t)type
 {
   v37 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_engine);
@@ -333,12 +333,12 @@
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     v13 = NSStringFromSelector(a2);
-    v14 = PHASEGetPropertyBounded<double>(v12, v13, a3, 0.0, 1.0);
+    v14 = PHASEGetPropertyBounded<double>(v12, v13, frequency, 0.0, 1.0);
 
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     v17 = NSStringFromSelector(a2);
-    v18 = PHASEGetPropertyBounded<double>(v16, v17, a4, 0.0, 1.79769313e308);
+    v18 = PHASEGetPropertyBounded<double>(v16, v17, duration, 0.0, 1.79769313e308);
 
     v19 = Phase::Controller::TaskManager::GetService<Phase::Controller::GroupManager>(([WeakRetained implementation] + 48), 10);
     hashId = self->_hashId;
@@ -386,7 +386,7 @@
     *(v22 + 2) = hashId;
     v22[3] = v14;
     v22[4] = v18;
-    *(v22 + 5) = a5;
+    *(v22 + 5) = type;
     Phase::LockFreeQueueSPSC::CommitBytes(v21, 48);
     atomic_store(0, (v21 + 40));
     self->_gainLowFrequency = v14;
@@ -464,8 +464,8 @@
 
 - (void)mute
 {
-  v1 = *(a1 + 8);
-  v3 = *(a1 + 16);
+  v1 = *(self + 8);
+  v3 = *(self + 16);
   result = std::__hash_table<std::__hash_value_type<unsigned long long,int>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,int>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,int>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,int>>>::find<unsigned long long>((v1 + 40), &v3);
   if (result)
   {
@@ -477,8 +477,8 @@
 
 - (void)unmute
 {
-  v1 = *(a1 + 8);
-  v3 = *(a1 + 16);
+  v1 = *(self + 8);
+  v3 = *(self + 16);
   result = std::__hash_table<std::__hash_value_type<unsigned long long,int>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,int>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,int>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,int>>>::find<unsigned long long>((v1 + 40), &v3);
   if (result)
   {
@@ -490,8 +490,8 @@
 
 - (void)solo
 {
-  v1 = *(a1 + 8);
-  v3 = *(a1 + 16);
+  v1 = *(self + 8);
+  v3 = *(self + 16);
   result = std::__hash_table<std::__hash_value_type<unsigned long long,int>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,int>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,int>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,int>>>::find<unsigned long long>((v1 + 40), &v3);
   if (result)
   {
@@ -503,8 +503,8 @@
 
 - (void)unsolo
 {
-  v1 = *(a1 + 8);
-  v3 = *(a1 + 16);
+  v1 = *(self + 8);
+  v3 = *(self + 16);
   result = std::__hash_table<std::__hash_value_type<unsigned long long,int>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,int>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,int>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,int>>>::find<unsigned long long>((v1 + 40), &v3);
   if (result)
   {
@@ -521,7 +521,7 @@
   return WeakRetained;
 }
 
-- (void)registerWithEngine:(uint64_t)a1
+- (void)registerWithEngine:(uint64_t)engine
 {
 
   JUMPOUT(0x23EE864A0);
@@ -529,8 +529,8 @@
 
 - (uint64_t)unregisterFromEngine
 {
-  v1 = *(a1 + 8);
-  v3 = *(a1 + 16);
+  v1 = *(self + 8);
+  v3 = *(self + 16);
   return std::__hash_table<std::__hash_value_type<unsigned long long,Phase::Controller::Group>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,Phase::Controller::Group>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,Phase::Controller::Group>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,Phase::Controller::Group>>>::__erase_unique<unsigned long long>((v1 + 40), &v3);
 }
 

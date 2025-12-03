@@ -1,5 +1,5 @@
 @interface SHListeningLayer
-- (SHListeningLayer)initWithIntroAnimation:(BOOL)a3 useCustomCompatibleBackground:(BOOL)a4;
+- (SHListeningLayer)initWithIntroAnimation:(BOOL)animation useCustomCompatibleBackground:(BOOL)background;
 - (SHListeningLayerDelegate)viewDelegate;
 - (void)addAutoAnimationInitialShazamButtonPulse;
 - (void)addAutoShadowLayer;
@@ -9,17 +9,17 @@
 - (void)addInnerCirclesToShazamButtonMaskLayer;
 - (void)addOuterCirclesLayer;
 - (void)addTouchDownAnimation;
-- (void)animateToStoppedStateWithCompletion:(id)a3;
+- (void)animateToStoppedStateWithCompletion:(id)completion;
 - (void)buildView;
 - (void)buttonWillFinishDrawingShazamShape;
-- (void)centerLayer:(id)a3 inSuperLayer:(id)a4 withRelativeSize:(double)a5;
+- (void)centerLayer:(id)layer inSuperLayer:(id)superLayer withRelativeSize:(double)size;
 - (void)layoutSublayers;
-- (void)processBass:(double)a3 treble:(double)a4;
-- (void)processBassForInnerCircle:(double)a3;
-- (void)processBassForShazamButton:(double)a3;
-- (void)processTrebleForOuterCircles:(double)a3;
+- (void)processBass:(double)bass treble:(double)treble;
+- (void)processBassForInnerCircle:(double)circle;
+- (void)processBassForShazamButton:(double)button;
+- (void)processTrebleForOuterCircles:(double)circles;
 - (void)removeAnimationLayers;
-- (void)setBass:(double)a3;
+- (void)setBass:(double)bass;
 - (void)startActiveListeningAnimation;
 - (void)startIdleAnimation;
 - (void)startPassiveListeningAnimation;
@@ -29,16 +29,16 @@
 
 @implementation SHListeningLayer
 
-- (SHListeningLayer)initWithIntroAnimation:(BOOL)a3 useCustomCompatibleBackground:(BOOL)a4
+- (SHListeningLayer)initWithIntroAnimation:(BOOL)animation useCustomCompatibleBackground:(BOOL)background
 {
-  v4 = a4;
-  v5 = a3;
+  backgroundCopy = background;
+  animationCopy = animation;
   v12.receiver = self;
   v12.super_class = SHListeningLayer;
   v6 = [(SHListeningLayer *)&v12 init];
   if (v6)
   {
-    if (v4)
+    if (backgroundCopy)
     {
       v7 = objc_alloc_init(SHCustomBackgroundCompatiblePalette);
     }
@@ -52,18 +52,18 @@
     v6->_palette = &v7->super;
 
     v6->_state = 1;
-    v6->_shouldPerformIntroAnimation = v5;
+    v6->_shouldPerformIntroAnimation = animationCopy;
     [(SHListeningLayer *)v6 buildView];
-    v9 = [(SHListeningLayer *)v6 shazamButtonLayer];
-    v10 = v9;
-    if (v5)
+    shazamButtonLayer = [(SHListeningLayer *)v6 shazamButtonLayer];
+    v10 = shazamButtonLayer;
+    if (animationCopy)
     {
-      [v9 performSDrawingIntroAnimation];
+      [shazamButtonLayer performSDrawingIntroAnimation];
     }
 
     else
     {
-      [v9 skipIntroAnimation];
+      [shazamButtonLayer skipIntroAnimation];
     }
   }
 
@@ -73,23 +73,23 @@
 - (void)buildView
 {
   v3 = [SHShazamButtonLayer alloc];
-  v4 = [(SHListeningLayer *)self palette];
-  v5 = [(SHPaletteLayer *)v3 initWithPalette:v4];
+  palette = [(SHListeningLayer *)self palette];
+  v5 = [(SHPaletteLayer *)v3 initWithPalette:palette];
   [(SHListeningLayer *)self setShazamButtonLayer:v5];
 
-  v6 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v6 setButtonDelegate:self];
+  shazamButtonLayer = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer setButtonDelegate:self];
 
-  v7 = [(SHListeningLayer *)self shazamButtonLayer];
-  [(SHListeningLayer *)self addSublayer:v7];
+  shazamButtonLayer2 = [(SHListeningLayer *)self shazamButtonLayer];
+  [(SHListeningLayer *)self addSublayer:shazamButtonLayer2];
 
   [(SHListeningLayer *)self bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  shazamButtonLayer3 = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer3 setFrame:{v9, v11, v13, v15}];
 }
 
 - (void)layoutSublayers
@@ -102,15 +102,15 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  shazamButtonLayer = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(SHListeningLayer *)self autoShadowContainerLayer];
-  [(SHListeningLayer *)self centerLayer:v12 inSuperLayer:self withRelativeSize:1.0];
+  autoShadowContainerLayer = [(SHListeningLayer *)self autoShadowContainerLayer];
+  [(SHListeningLayer *)self centerLayer:autoShadowContainerLayer inSuperLayer:self withRelativeSize:1.0];
 
-  v13 = [(SHListeningLayer *)self autoShadowLayer];
-  v14 = [(SHListeningLayer *)self autoShadowContainerLayer];
-  [(SHListeningLayer *)self centerLayer:v13 inSuperLayer:v14 withRelativeSize:1.0];
+  autoShadowLayer = [(SHListeningLayer *)self autoShadowLayer];
+  autoShadowContainerLayer2 = [(SHListeningLayer *)self autoShadowContainerLayer];
+  [(SHListeningLayer *)self centerLayer:autoShadowLayer inSuperLayer:autoShadowContainerLayer2 withRelativeSize:1.0];
 
   if ([(SHListeningLayer *)self state]== 4)
   {
@@ -122,110 +122,110 @@
     v15 = 2.70000005;
   }
 
-  v16 = [(SHListeningLayer *)self innerCirclesContainerLayer];
-  [(SHListeningLayer *)self centerLayer:v16 inSuperLayer:self withRelativeSize:v15];
+  innerCirclesContainerLayer = [(SHListeningLayer *)self innerCirclesContainerLayer];
+  [(SHListeningLayer *)self centerLayer:innerCirclesContainerLayer inSuperLayer:self withRelativeSize:v15];
 
-  v17 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
-  v18 = [(SHListeningLayer *)self innerCirclesContainerLayer];
-  [(SHListeningLayer *)self centerLayer:v17 inSuperLayer:v18 withRelativeSize:1.0];
+  innerCirclesSecondaryContainerLayer = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
+  innerCirclesContainerLayer2 = [(SHListeningLayer *)self innerCirclesContainerLayer];
+  [(SHListeningLayer *)self centerLayer:innerCirclesSecondaryContainerLayer inSuperLayer:innerCirclesContainerLayer2 withRelativeSize:1.0];
 
-  v19 = [(SHListeningLayer *)self innerCirclesLayer];
-  v20 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
-  [(SHListeningLayer *)self centerLayer:v19 inSuperLayer:v20 withRelativeSize:1.0];
+  innerCirclesLayer = [(SHListeningLayer *)self innerCirclesLayer];
+  innerCirclesSecondaryContainerLayer2 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
+  [(SHListeningLayer *)self centerLayer:innerCirclesLayer inSuperLayer:innerCirclesSecondaryContainerLayer2 withRelativeSize:1.0];
 
-  v21 = [(SHListeningLayer *)self outerCirclesLayer];
-  [(SHListeningLayer *)self centerLayer:v21 inSuperLayer:self withRelativeSize:6.30000019];
+  outerCirclesLayer = [(SHListeningLayer *)self outerCirclesLayer];
+  [(SHListeningLayer *)self centerLayer:outerCirclesLayer inSuperLayer:self withRelativeSize:6.30000019];
 
-  v22 = [(SHListeningLayer *)self innerCirclesContainerLayer];
-  [v22 bounds];
+  innerCirclesContainerLayer3 = [(SHListeningLayer *)self innerCirclesContainerLayer];
+  [innerCirclesContainerLayer3 bounds];
   MidX = CGRectGetMidX(v61);
-  v24 = [(SHListeningLayer *)self innerCirclesContainerLayer];
-  [v24 bounds];
+  innerCirclesContainerLayer4 = [(SHListeningLayer *)self innerCirclesContainerLayer];
+  [innerCirclesContainerLayer4 bounds];
   MidY = CGRectGetMidY(v62);
-  v26 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
-  [v26 setPosition:{MidX, MidY}];
+  innerCircleToShazamButtonMaskLayer = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
+  [innerCircleToShazamButtonMaskLayer setPosition:{MidX, MidY}];
 
-  v27 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v27 bounds];
+  shazamButtonLayer2 = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer2 bounds];
   v28 = CGRectGetWidth(v63) * 3.5;
-  v29 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v29 bounds];
+  shazamButtonLayer3 = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer3 bounds];
   v30 = CGRectGetHeight(v64) * 3.5;
-  v31 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
-  [v31 setBounds:{0.0, 0.0, v28, v30}];
+  innerCircleToShazamButtonMaskLayer2 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
+  [innerCircleToShazamButtonMaskLayer2 setBounds:{0.0, 0.0, v28, v30}];
 
-  v32 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
-  [v32 bounds];
+  innerCirclesSecondaryContainerLayer3 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
+  [innerCirclesSecondaryContainerLayer3 bounds];
   v33 = CGRectGetMidX(v65);
-  v34 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
-  [v34 bounds];
+  innerCirclesSecondaryContainerLayer4 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
+  [innerCirclesSecondaryContainerLayer4 bounds];
   v35 = CGRectGetMidY(v66);
-  v36 = [(SHListeningLayer *)self innerCircleToAutoShadowMaskLayer];
-  [v36 setPosition:{v33, v35}];
+  innerCircleToAutoShadowMaskLayer = [(SHListeningLayer *)self innerCircleToAutoShadowMaskLayer];
+  [innerCircleToAutoShadowMaskLayer setPosition:{v33, v35}];
 
-  v37 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v37 bounds];
+  shazamButtonLayer4 = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer4 bounds];
   v38 = CGRectGetWidth(v67) * 3.5;
-  v39 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v39 bounds];
+  shazamButtonLayer5 = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer5 bounds];
   v40 = CGRectGetHeight(v68) * 3.5;
-  v41 = [(SHListeningLayer *)self innerCircleToAutoShadowMaskLayer];
-  [v41 setBounds:{0.0, 0.0, v38, v40}];
+  innerCircleToAutoShadowMaskLayer2 = [(SHListeningLayer *)self innerCircleToAutoShadowMaskLayer];
+  [innerCircleToAutoShadowMaskLayer2 setBounds:{0.0, 0.0, v38, v40}];
 
-  v42 = [(SHListeningLayer *)self autoShadowContainerLayer];
-  [v42 bounds];
+  autoShadowContainerLayer3 = [(SHListeningLayer *)self autoShadowContainerLayer];
+  [autoShadowContainerLayer3 bounds];
   v43 = CGRectGetMidX(v69);
-  v44 = [(SHListeningLayer *)self autoShadowContainerLayer];
-  [v44 bounds];
+  autoShadowContainerLayer4 = [(SHListeningLayer *)self autoShadowContainerLayer];
+  [autoShadowContainerLayer4 bounds];
   v45 = CGRectGetMidY(v70);
-  v46 = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
-  [v46 setPosition:{v43, v45}];
+  autoShadowToShazamButtonMaskLayer = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
+  [autoShadowToShazamButtonMaskLayer setPosition:{v43, v45}];
 
-  v47 = [(SHListeningLayer *)self autoShadowLayer];
-  [v47 bounds];
+  autoShadowLayer2 = [(SHListeningLayer *)self autoShadowLayer];
+  [autoShadowLayer2 bounds];
   v48 = CGRectGetWidth(v71) * 3.5;
-  v49 = [(SHListeningLayer *)self autoShadowLayer];
-  [v49 bounds];
+  autoShadowLayer3 = [(SHListeningLayer *)self autoShadowLayer];
+  [autoShadowLayer3 bounds];
   v50 = CGRectGetHeight(v72) * 3.5;
-  v51 = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
-  [v51 setBounds:{0.0, 0.0, v48, v50}];
+  autoShadowToShazamButtonMaskLayer2 = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
+  [autoShadowToShazamButtonMaskLayer2 setBounds:{0.0, 0.0, v48, v50}];
 
-  v52 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v52 setNeedsLayout];
+  shazamButtonLayer6 = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer6 setNeedsLayout];
 
-  v53 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v53 layoutIfNeeded];
+  shazamButtonLayer7 = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer7 layoutIfNeeded];
 
-  v54 = [(SHListeningLayer *)self innerCirclesLayer];
-  [v54 setNeedsLayout];
+  innerCirclesLayer2 = [(SHListeningLayer *)self innerCirclesLayer];
+  [innerCirclesLayer2 setNeedsLayout];
 
-  v55 = [(SHListeningLayer *)self innerCirclesLayer];
-  [v55 layoutIfNeeded];
+  innerCirclesLayer3 = [(SHListeningLayer *)self innerCirclesLayer];
+  [innerCirclesLayer3 layoutIfNeeded];
 
-  v56 = [(SHListeningLayer *)self outerCirclesLayer];
-  [v56 setNeedsLayout];
+  outerCirclesLayer2 = [(SHListeningLayer *)self outerCirclesLayer];
+  [outerCirclesLayer2 setNeedsLayout];
 
-  v57 = [(SHListeningLayer *)self outerCirclesLayer];
-  [v57 layoutIfNeeded];
+  outerCirclesLayer3 = [(SHListeningLayer *)self outerCirclesLayer];
+  [outerCirclesLayer3 layoutIfNeeded];
 
-  v58 = [(SHListeningLayer *)self autoShadowLayer];
-  [v58 setNeedsLayout];
+  autoShadowLayer4 = [(SHListeningLayer *)self autoShadowLayer];
+  [autoShadowLayer4 setNeedsLayout];
 
-  v59 = [(SHListeningLayer *)self autoShadowLayer];
-  [v59 layoutIfNeeded];
+  autoShadowLayer5 = [(SHListeningLayer *)self autoShadowLayer];
+  [autoShadowLayer5 layoutIfNeeded];
 }
 
-- (void)centerLayer:(id)a3 inSuperLayer:(id)a4 withRelativeSize:(double)a5
+- (void)centerLayer:(id)layer inSuperLayer:(id)superLayer withRelativeSize:(double)size
 {
-  v7 = a4;
-  v18 = a3;
-  [v7 bounds];
-  v8 = CGRectGetWidth(v20) * a5;
-  [v7 bounds];
-  [v18 setBounds:{0.0, 0.0, v8, CGRectGetHeight(v21) * a5}];
-  [v7 bounds];
+  superLayerCopy = superLayer;
+  layerCopy = layer;
+  [superLayerCopy bounds];
+  v8 = CGRectGetWidth(v20) * size;
+  [superLayerCopy bounds];
+  [layerCopy setBounds:{0.0, 0.0, v8, CGRectGetHeight(v21) * size}];
+  [superLayerCopy bounds];
   MidX = CGRectGetMidX(v22);
-  [v7 bounds];
+  [superLayerCopy bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -235,90 +235,90 @@
   v23.origin.y = v13;
   v23.size.width = v15;
   v23.size.height = v17;
-  [v18 setPosition:{MidX, CGRectGetMidY(v23)}];
+  [layerCopy setPosition:{MidX, CGRectGetMidY(v23)}];
 }
 
-- (void)setBass:(double)a3
+- (void)setBass:(double)bass
 {
-  self->_bass = a3;
+  self->_bass = bass;
   [(SHListeningLayer *)self treble];
 
-  [(SHListeningLayer *)self processBass:a3 treble:v5];
+  [(SHListeningLayer *)self processBass:bass treble:v5];
 }
 
-- (void)processBass:(double)a3 treble:(double)a4
+- (void)processBass:(double)bass treble:(double)treble
 {
   if ([(SHListeningLayer *)self state]== 4)
   {
-    [(SHListeningLayer *)self processBassForInnerCircle:a3];
-    [(SHListeningLayer *)self processBassForShazamButton:a3];
+    [(SHListeningLayer *)self processBassForInnerCircle:bass];
+    [(SHListeningLayer *)self processBassForShazamButton:bass];
 
-    [(SHListeningLayer *)self processTrebleForOuterCircles:a4];
+    [(SHListeningLayer *)self processTrebleForOuterCircles:treble];
   }
 }
 
-- (void)processBassForInnerCircle:(double)a3
+- (void)processBassForInnerCircle:(double)circle
 {
-  [SHMaths interpolateValue:a3 leftMin:0.0 leftMax:1.0 rightMin:0.699999988 rightMax:1.29999995];
+  [SHMaths interpolateValue:circle leftMin:0.0 leftMax:1.0 rightMin:0.699999988 rightMax:1.29999995];
   v6 = v5;
-  [SHMaths interpolateValue:a3 leftMin:0.0 leftMax:1.0 rightMin:0.5 rightMax:0.899999976];
+  [SHMaths interpolateValue:circle leftMin:0.0 leftMax:1.0 rightMin:0.5 rightMax:0.899999976];
   v8 = v7;
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setValue:*MEMORY[0x277CBED28] forKey:*MEMORY[0x277CDA918]];
   CATransform3DMakeScale(&v13, v6, v6, 1.0);
-  v9 = [(SHListeningLayer *)self innerCirclesLayer];
+  innerCirclesLayer = [(SHListeningLayer *)self innerCirclesLayer];
   v12 = v13;
-  [v9 setTransform:&v12];
+  [innerCirclesLayer setTransform:&v12];
 
-  v10 = [(SHListeningLayer *)self innerCirclesLayer];
+  innerCirclesLayer2 = [(SHListeningLayer *)self innerCirclesLayer];
   *&v8 = v8;
   LODWORD(v11) = LODWORD(v8);
-  [v10 setOpacity:v11];
+  [innerCirclesLayer2 setOpacity:v11];
 
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)processTrebleForOuterCircles:(double)a3
+- (void)processTrebleForOuterCircles:(double)circles
 {
-  [SHMaths interpolateValue:a3 leftMin:0.0 leftMax:1.0 rightMin:0.899999976 rightMax:1.10000002];
+  [SHMaths interpolateValue:circles leftMin:0.0 leftMax:1.0 rightMin:0.899999976 rightMax:1.10000002];
   v6 = v5;
-  [SHMaths interpolateValue:a3 leftMin:0.0 leftMax:1.0 rightMin:0.300000012 rightMax:0.699999988];
+  [SHMaths interpolateValue:circles leftMin:0.0 leftMax:1.0 rightMin:0.300000012 rightMax:0.699999988];
   v8 = v7;
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setValue:*MEMORY[0x277CBED28] forKey:*MEMORY[0x277CDA918]];
   CATransform3DMakeScale(&v13, v6, v6, 1.0);
-  v9 = [(SHListeningLayer *)self outerCirclesLayer];
+  outerCirclesLayer = [(SHListeningLayer *)self outerCirclesLayer];
   v12 = v13;
-  [v9 setTransform:&v12];
+  [outerCirclesLayer setTransform:&v12];
 
-  v10 = [(SHListeningLayer *)self outerCirclesLayer];
+  outerCirclesLayer2 = [(SHListeningLayer *)self outerCirclesLayer];
   *&v8 = v8;
   LODWORD(v11) = LODWORD(v8);
-  [v10 setOpacity:v11];
+  [outerCirclesLayer2 setOpacity:v11];
 
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)processBassForShazamButton:(double)a3
+- (void)processBassForShazamButton:(double)button
 {
-  [SHMaths interpolateValue:a3 leftMin:0.0 leftMax:1.0 rightMin:0.75 rightMax:1.10000002];
+  [SHMaths interpolateValue:button leftMin:0.0 leftMax:1.0 rightMin:0.75 rightMax:1.10000002];
   v5 = v4;
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setValue:*MEMORY[0x277CBED28] forKey:*MEMORY[0x277CDA918]];
   CATransform3DMakeScale(&v12, v5, v5, 1.0);
-  v6 = [(SHListeningLayer *)self shazamButtonLayer];
+  shazamButtonLayer = [(SHListeningLayer *)self shazamButtonLayer];
   v11 = v12;
-  [v6 setSublayerTransform:&v11];
+  [shazamButtonLayer setSublayerTransform:&v11];
 
   CATransform3DMakeScale(&v10, v5, v5, 1.0);
-  v7 = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
+  autoShadowToShazamButtonMaskLayer = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
   v11 = v10;
-  [v7 setTransform:&v11];
+  [autoShadowToShazamButtonMaskLayer setTransform:&v11];
 
   CATransform3DMakeScale(&v9, v5, v5, 1.0);
-  v8 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
+  innerCircleToShazamButtonMaskLayer = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
   v11 = v9;
-  [v8 setTransform:&v11];
+  [innerCircleToShazamButtonMaskLayer setTransform:&v11];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -337,32 +337,32 @@
   v4 = +[SHListeningMediaTimingFunctionProvider inOutSineMediaTimingFunction];
   [v6 setTimingFunction:v4];
 
-  v5 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v5 addAnimation:v6 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
+  shazamButtonLayer = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer addAnimation:v6 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
 }
 
 - (void)startIdleAnimation
 {
-  v3 = [(SHListeningLayer *)self state];
+  state = [(SHListeningLayer *)self state];
   [(SHListeningLayer *)self setState:2];
-  if (v3 == 1)
+  if (state == 1)
   {
-    v4 = [(SHListeningLayer *)self shazamButtonLayer];
-    [v4 removeAllAnimations];
+    shazamButtonLayer = [(SHListeningLayer *)self shazamButtonLayer];
+    [shazamButtonLayer removeAllAnimations];
 
     [(SHListeningLayer *)self startShazamButtonIdleAnimation];
   }
 
   else
   {
-    v5 = [(SHListeningLayer *)self innerCirclesLayer];
+    innerCirclesLayer = [(SHListeningLayer *)self innerCirclesLayer];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __38__SHListeningLayer_startIdleAnimation__block_invoke;
     v7[3] = &unk_279BBFC38;
-    v8 = v5;
-    v9 = self;
-    v6 = v5;
+    v8 = innerCirclesLayer;
+    selfCopy = self;
+    v6 = innerCirclesLayer;
     [(SHListeningLayer *)self animateToStoppedStateWithCompletion:v7];
   }
 }
@@ -385,17 +385,17 @@ void __38__SHListeningLayer_startIdleAnimation__block_invoke(uint64_t a1)
   if ([(SHListeningLayer *)self state]== 2 || [(SHListeningLayer *)self state]== 1)
   {
     [(SHListeningLayer *)self setState:4];
-    v3 = [(SHListeningLayer *)self shazamButtonLayer];
-    [v3 removeAllAnimations];
+    shazamButtonLayer = [(SHListeningLayer *)self shazamButtonLayer];
+    [shazamButtonLayer removeAllAnimations];
 
     [(SHListeningLayer *)self addInnerCirclesLayer];
     [(SHListeningLayer *)self addOuterCirclesLayer];
     [(SHListeningLayer *)self addInnerCirclesToShazamButtonMaskLayer];
-    v4 = [(SHListeningLayer *)self innerCirclesLayer];
-    [v4 startListeningAnimation];
+    innerCirclesLayer = [(SHListeningLayer *)self innerCirclesLayer];
+    [innerCirclesLayer startListeningAnimation];
 
-    v5 = [(SHListeningLayer *)self outerCirclesLayer];
-    [v5 startListeningAnimation];
+    outerCirclesLayer = [(SHListeningLayer *)self outerCirclesLayer];
+    [outerCirclesLayer startListeningAnimation];
 
     [(SHListeningLayer *)self setNeedsLayout];
   }
@@ -412,8 +412,8 @@ void __38__SHListeningLayer_startIdleAnimation__block_invoke(uint64_t a1)
     [(SHListeningLayer *)self addInnerCirclesToShazamButtonMaskLayer];
     [(SHListeningLayer *)self addAutoShadowToShazamButtonMaskLayer];
     [(SHListeningLayer *)self addAutoAnimationInitialShazamButtonPulse];
-    v3 = [(SHListeningLayer *)self innerCirclesLayer];
-    [v3 startListeningAnimation];
+    innerCirclesLayer = [(SHListeningLayer *)self innerCirclesLayer];
+    [innerCirclesLayer startListeningAnimation];
 
     [(SHListeningLayer *)self setNeedsLayout];
   }
@@ -423,11 +423,11 @@ void __38__SHListeningLayer_startIdleAnimation__block_invoke(uint64_t a1)
 {
   if ([(SHListeningLayer *)self state]!= 1)
   {
-    v3 = [(SHListeningLayer *)self shazamButtonLayer];
-    [v3 removeAllAnimations];
+    shazamButtonLayer = [(SHListeningLayer *)self shazamButtonLayer];
+    [shazamButtonLayer removeAllAnimations];
 
     [(SHListeningLayer *)self removeAnimationLayers];
-    v4 = [(SHListeningLayer *)self shazamButtonLayer];
+    shazamButtonLayer2 = [(SHListeningLayer *)self shazamButtonLayer];
     v5 = *(MEMORY[0x277CD9DE8] + 80);
     v9[4] = *(MEMORY[0x277CD9DE8] + 64);
     v9[5] = v5;
@@ -440,7 +440,7 @@ void __38__SHListeningLayer_startIdleAnimation__block_invoke(uint64_t a1)
     v8 = *(MEMORY[0x277CD9DE8] + 48);
     v9[2] = *(MEMORY[0x277CD9DE8] + 32);
     v9[3] = v8;
-    [v4 setSublayerTransform:v9];
+    [shazamButtonLayer2 setSublayerTransform:v9];
   }
 }
 
@@ -453,8 +453,8 @@ void __38__SHListeningLayer_startIdleAnimation__block_invoke(uint64_t a1)
   [v8 setRemovedOnCompletion:0];
   v3 = *MEMORY[0x277CDA238];
   [v8 setFillMode:*MEMORY[0x277CDA238]];
-  v4 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v4 addAnimation:v8 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
+  shazamButtonLayer = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer addAnimation:v8 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
 
   v5 = [MEMORY[0x277CD9FA0] animationWithKeyPath:@"transform.scale"];
   [v5 setFromValue:&unk_2877AD108];
@@ -462,19 +462,19 @@ void __38__SHListeningLayer_startIdleAnimation__block_invoke(uint64_t a1)
   [v5 setDuration:0.200000003];
   [v5 setRemovedOnCompletion:0];
   [v5 setFillMode:v3];
-  v6 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
-  [v6 addAnimation:v5 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
+  innerCircleToShazamButtonMaskLayer = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
+  [innerCircleToShazamButtonMaskLayer addAnimation:v5 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
 
-  v7 = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
-  [v7 addAnimation:v5 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
+  autoShadowToShazamButtonMaskLayer = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
+  [autoShadowToShazamButtonMaskLayer addAnimation:v5 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
 }
 
 - (void)addTouchDownAnimation
 {
   v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale"];
-  v3 = [(SHListeningLayer *)self shazamButtonLayer];
-  v4 = [v3 presentationLayer];
-  v5 = [v4 valueForKeyPath:@"transform.scale"];
+  shazamButtonLayer = [(SHListeningLayer *)self shazamButtonLayer];
+  presentationLayer = [shazamButtonLayer presentationLayer];
+  v5 = [presentationLayer valueForKeyPath:@"transform.scale"];
   [v8 setFromValue:v5];
 
   [v8 setToValue:&unk_2877AD118];
@@ -484,28 +484,28 @@ void __38__SHListeningLayer_startIdleAnimation__block_invoke(uint64_t a1)
   v6 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C0]];
   [v8 setTimingFunction:v6];
 
-  v7 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v7 addAnimation:v8 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
+  shazamButtonLayer2 = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer2 addAnimation:v8 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
 }
 
-- (void)animateToStoppedStateWithCompletion:(id)a3
+- (void)animateToStoppedStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
-  [v5 removeAllAnimations];
+  completionCopy = completion;
+  innerCircleToShazamButtonMaskLayer = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
+  [innerCircleToShazamButtonMaskLayer removeAllAnimations];
 
-  v6 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v6 removeAllAnimations];
+  shazamButtonLayer = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer removeAllAnimations];
 
-  v7 = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
-  [v7 removeAllAnimations];
+  autoShadowToShazamButtonMaskLayer = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
+  [autoShadowToShazamButtonMaskLayer removeAllAnimations];
 
   [MEMORY[0x277CD9FF0] begin];
-  [MEMORY[0x277CD9FF0] setCompletionBlock:v4];
+  [MEMORY[0x277CD9FF0] setCompletionBlock:completionCopy];
 
-  v8 = [(SHListeningLayer *)self shazamButtonLayer];
-  v9 = [v8 presentationLayer];
-  v43 = [v9 valueForKeyPath:@"sublayerTransform.scale"];
+  shazamButtonLayer2 = [(SHListeningLayer *)self shazamButtonLayer];
+  presentationLayer = [shazamButtonLayer2 presentationLayer];
+  v43 = [presentationLayer valueForKeyPath:@"sublayerTransform.scale"];
 
   v10 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"sublayerTransform.scale"];
   [v10 setFromValue:v43];
@@ -519,12 +519,12 @@ void __38__SHListeningLayer_startIdleAnimation__block_invoke(uint64_t a1)
   v13 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C0]];
   [v10 setTimingFunction:v13];
 
-  v14 = [(SHListeningLayer *)self shazamButtonLayer];
-  [v14 addAnimation:v10 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
+  shazamButtonLayer3 = [(SHListeningLayer *)self shazamButtonLayer];
+  [shazamButtonLayer3 addAnimation:v10 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
 
-  v15 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
-  v16 = [v15 presentationLayer];
-  v42 = [v16 valueForKeyPath:@"transform.scale"];
+  innerCircleToShazamButtonMaskLayer2 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
+  presentationLayer2 = [innerCircleToShazamButtonMaskLayer2 presentationLayer];
+  v42 = [presentationLayer2 valueForKeyPath:@"transform.scale"];
 
   v17 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale"];
   [v17 setFromValue:v42];
@@ -535,15 +535,15 @@ void __38__SHListeningLayer_startIdleAnimation__block_invoke(uint64_t a1)
   v18 = [MEMORY[0x277CD9EF8] functionWithName:v12];
   [v17 setTimingFunction:v18];
 
-  v19 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
-  [v19 addAnimation:v17 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
+  innerCircleToShazamButtonMaskLayer3 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
+  [innerCircleToShazamButtonMaskLayer3 addAnimation:v17 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
 
-  v20 = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
-  [v20 addAnimation:v17 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
+  autoShadowToShazamButtonMaskLayer2 = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
+  [autoShadowToShazamButtonMaskLayer2 addAnimation:v17 forKey:@"SHListeningShazamButtonScaleAnimationKey"];
 
-  v21 = [(SHListeningLayer *)self innerCirclesLayer];
-  v22 = [v21 presentationLayer];
-  v41 = [v22 valueForKeyPath:@"transform.scale"];
+  innerCirclesLayer = [(SHListeningLayer *)self innerCirclesLayer];
+  presentationLayer3 = [innerCirclesLayer presentationLayer];
+  v41 = [presentationLayer3 valueForKeyPath:@"transform.scale"];
 
   v23 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale"];
   [v23 setFromValue:v41];
@@ -555,12 +555,12 @@ void __38__SHListeningLayer_startIdleAnimation__block_invoke(uint64_t a1)
   v24 = [MEMORY[0x277CD9EF8] functionWithName:?];
   [v23 setTimingFunction:v24];
 
-  v25 = [(SHListeningLayer *)self innerCirclesLayer];
-  [v25 addAnimation:v23 forKey:@"SHListeningInnerCirclesScaleAnimationKey"];
+  innerCirclesLayer2 = [(SHListeningLayer *)self innerCirclesLayer];
+  [innerCirclesLayer2 addAnimation:v23 forKey:@"SHListeningInnerCirclesScaleAnimationKey"];
 
-  v26 = [(SHListeningLayer *)self outerCirclesLayer];
-  v27 = [v26 presentationLayer];
-  v39 = [v27 valueForKeyPath:@"opacity"];
+  outerCirclesLayer = [(SHListeningLayer *)self outerCirclesLayer];
+  presentationLayer4 = [outerCirclesLayer presentationLayer];
+  v39 = [presentationLayer4 valueForKeyPath:@"opacity"];
 
   v28 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
   [v28 setFromValue:v39];
@@ -571,12 +571,12 @@ void __38__SHListeningLayer_startIdleAnimation__block_invoke(uint64_t a1)
   v29 = [MEMORY[0x277CD9EF8] functionWithName:v40];
   [v28 setTimingFunction:v29];
 
-  v30 = [(SHListeningLayer *)self outerCirclesLayer];
-  [v30 addAnimation:v28 forKey:@"SHListeningOuterCirclesOpacityAnimationKey"];
+  outerCirclesLayer2 = [(SHListeningLayer *)self outerCirclesLayer];
+  [outerCirclesLayer2 addAnimation:v28 forKey:@"SHListeningOuterCirclesOpacityAnimationKey"];
 
-  v31 = [(SHListeningLayer *)self autoShadowLayer];
-  v32 = [v31 presentationLayer];
-  v33 = [v32 valueForKeyPath:@"transform.scale"];
+  autoShadowLayer = [(SHListeningLayer *)self autoShadowLayer];
+  presentationLayer5 = [autoShadowLayer presentationLayer];
+  v33 = [presentationLayer5 valueForKeyPath:@"transform.scale"];
 
   v34 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale"];
   [v34 setFromValue:v33];
@@ -587,37 +587,37 @@ void __38__SHListeningLayer_startIdleAnimation__block_invoke(uint64_t a1)
   v35 = [MEMORY[0x277CD9EF8] functionWithName:v38];
   [v34 setTimingFunction:v35];
 
-  v36 = [(SHListeningLayer *)self autoShadowLayer];
-  [v36 addAnimation:v34 forKey:0];
+  autoShadowLayer2 = [(SHListeningLayer *)self autoShadowLayer];
+  [autoShadowLayer2 addAnimation:v34 forKey:0];
 
-  v37 = [(SHListeningLayer *)self innerCircleToAutoShadowMaskLayer];
-  [v37 addAnimation:v34 forKey:@"SHListeningAutoShadowScaleAnimationKey"];
+  innerCircleToAutoShadowMaskLayer = [(SHListeningLayer *)self innerCircleToAutoShadowMaskLayer];
+  [innerCircleToAutoShadowMaskLayer addAnimation:v34 forKey:@"SHListeningAutoShadowScaleAnimationKey"];
 
   [MEMORY[0x277CD9FF0] commit];
 }
 
 - (void)addInnerCirclesLayer
 {
-  v3 = [(SHListeningLayer *)self innerCirclesLayer];
-  if (v3 || ([(SHListeningLayer *)self innerCirclesContainerLayer], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  innerCirclesLayer = [(SHListeningLayer *)self innerCirclesLayer];
+  if (innerCirclesLayer || ([(SHListeningLayer *)self innerCirclesContainerLayer], (innerCirclesLayer = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_4:
-    v4 = [(SHListeningLayer *)self innerCirclesLayer];
-    [v4 removeFromSuperlayer];
+    innerCirclesLayer2 = [(SHListeningLayer *)self innerCirclesLayer];
+    [innerCirclesLayer2 removeFromSuperlayer];
 
-    v5 = [(SHListeningLayer *)self innerCirclesContainerLayer];
-    [v5 removeFromSuperlayer];
+    innerCirclesContainerLayer = [(SHListeningLayer *)self innerCirclesContainerLayer];
+    [innerCirclesContainerLayer removeFromSuperlayer];
 
-    v6 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
-    [v6 removeFromSuperlayer];
+    innerCirclesSecondaryContainerLayer = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
+    [innerCirclesSecondaryContainerLayer removeFromSuperlayer];
 
     goto LABEL_5;
   }
 
-  v17 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
+  innerCirclesSecondaryContainerLayer2 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
 
-  if (v17)
+  if (innerCirclesSecondaryContainerLayer2)
   {
     goto LABEL_4;
   }
@@ -626,142 +626,142 @@ LABEL_5:
   v7 = objc_alloc_init(MEMORY[0x277CD9ED0]);
   [(SHListeningLayer *)self setInnerCirclesContainerLayer:v7];
 
-  v8 = [(SHListeningLayer *)self innerCirclesContainerLayer];
-  v9 = [(SHListeningLayer *)self shazamButtonLayer];
-  [(SHListeningLayer *)self insertSublayer:v8 below:v9];
+  innerCirclesContainerLayer2 = [(SHListeningLayer *)self innerCirclesContainerLayer];
+  shazamButtonLayer = [(SHListeningLayer *)self shazamButtonLayer];
+  [(SHListeningLayer *)self insertSublayer:innerCirclesContainerLayer2 below:shazamButtonLayer];
 
   v10 = objc_alloc_init(MEMORY[0x277CD9ED0]);
   [(SHListeningLayer *)self setInnerCirclesSecondaryContainerLayer:v10];
 
-  v11 = [(SHListeningLayer *)self innerCirclesContainerLayer];
-  v12 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
-  [v11 addSublayer:v12];
+  innerCirclesContainerLayer3 = [(SHListeningLayer *)self innerCirclesContainerLayer];
+  innerCirclesSecondaryContainerLayer3 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
+  [innerCirclesContainerLayer3 addSublayer:innerCirclesSecondaryContainerLayer3];
 
   v13 = [SHListeningInnerCirclesLayer alloc];
-  v14 = [(SHListeningLayer *)self palette];
-  v15 = [(SHPaletteLayer *)v13 initWithPalette:v14];
+  palette = [(SHListeningLayer *)self palette];
+  v15 = [(SHPaletteLayer *)v13 initWithPalette:palette];
   [(SHListeningLayer *)self setInnerCirclesLayer:v15];
 
-  v18 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
-  v16 = [(SHListeningLayer *)self innerCirclesLayer];
-  [v18 addSublayer:v16];
+  innerCirclesSecondaryContainerLayer4 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
+  innerCirclesLayer3 = [(SHListeningLayer *)self innerCirclesLayer];
+  [innerCirclesSecondaryContainerLayer4 addSublayer:innerCirclesLayer3];
 }
 
 - (void)addOuterCirclesLayer
 {
-  v3 = [(SHListeningLayer *)self outerCirclesLayer];
+  outerCirclesLayer = [(SHListeningLayer *)self outerCirclesLayer];
 
-  if (v3)
+  if (outerCirclesLayer)
   {
-    v4 = [(SHListeningLayer *)self outerCirclesLayer];
-    [v4 removeFromSuperlayer];
+    outerCirclesLayer2 = [(SHListeningLayer *)self outerCirclesLayer];
+    [outerCirclesLayer2 removeFromSuperlayer];
   }
 
   v5 = [SHListeningOuterCirclesLayer alloc];
-  v6 = [(SHListeningLayer *)self palette];
-  v7 = [(SHPaletteLayer *)v5 initWithPalette:v6];
+  palette = [(SHListeningLayer *)self palette];
+  v7 = [(SHPaletteLayer *)v5 initWithPalette:palette];
   [(SHListeningLayer *)self setOuterCirclesLayer:v7];
 
-  v8 = [(SHListeningLayer *)self outerCirclesLayer];
-  [(SHListeningLayer *)self addSublayer:v8];
+  outerCirclesLayer3 = [(SHListeningLayer *)self outerCirclesLayer];
+  [(SHListeningLayer *)self addSublayer:outerCirclesLayer3];
 }
 
 - (void)addAutoShadowLayer
 {
-  v3 = [(SHListeningLayer *)self autoShadowLayer];
-  if (v3)
+  autoShadowLayer = [(SHListeningLayer *)self autoShadowLayer];
+  if (autoShadowLayer)
   {
   }
 
   else
   {
-    v4 = [(SHListeningLayer *)self autoShadowContainerLayer];
+    autoShadowContainerLayer = [(SHListeningLayer *)self autoShadowContainerLayer];
 
-    if (!v4)
+    if (!autoShadowContainerLayer)
     {
       goto LABEL_5;
     }
   }
 
-  v5 = [(SHListeningLayer *)self autoShadowLayer];
-  [v5 removeFromSuperlayer];
+  autoShadowLayer2 = [(SHListeningLayer *)self autoShadowLayer];
+  [autoShadowLayer2 removeFromSuperlayer];
 
-  v6 = [(SHListeningLayer *)self autoShadowContainerLayer];
-  [v6 removeFromSuperlayer];
+  autoShadowContainerLayer2 = [(SHListeningLayer *)self autoShadowContainerLayer];
+  [autoShadowContainerLayer2 removeFromSuperlayer];
 
 LABEL_5:
   v7 = objc_alloc_init(MEMORY[0x277CD9ED0]);
   [(SHListeningLayer *)self setAutoShadowContainerLayer:v7];
 
-  v8 = [(SHListeningLayer *)self autoShadowContainerLayer];
-  v9 = [(SHListeningLayer *)self shazamButtonLayer];
-  [(SHListeningLayer *)self insertSublayer:v8 below:v9];
+  autoShadowContainerLayer3 = [(SHListeningLayer *)self autoShadowContainerLayer];
+  shazamButtonLayer = [(SHListeningLayer *)self shazamButtonLayer];
+  [(SHListeningLayer *)self insertSublayer:autoShadowContainerLayer3 below:shazamButtonLayer];
 
   v10 = [SHListeningAutoShadowLayer alloc];
-  v11 = [(SHListeningLayer *)self palette];
-  v12 = [(SHPaletteLayer *)v10 initWithPalette:v11];
+  palette = [(SHListeningLayer *)self palette];
+  v12 = [(SHPaletteLayer *)v10 initWithPalette:palette];
   [(SHListeningLayer *)self setAutoShadowLayer:v12];
 
-  v14 = [(SHListeningLayer *)self autoShadowContainerLayer];
-  v13 = [(SHListeningLayer *)self autoShadowLayer];
-  [v14 addSublayer:v13];
+  autoShadowContainerLayer4 = [(SHListeningLayer *)self autoShadowContainerLayer];
+  autoShadowLayer3 = [(SHListeningLayer *)self autoShadowLayer];
+  [autoShadowContainerLayer4 addSublayer:autoShadowLayer3];
 }
 
 - (void)addInnerCirclesToShazamButtonMaskLayer
 {
   v3 = [SHInnerCircleMaskLayer alloc];
-  v4 = [(SHListeningLayer *)self palette];
-  v5 = [(SHPaletteLayer *)v3 initWithPalette:v4];
+  palette = [(SHListeningLayer *)self palette];
+  v5 = [(SHPaletteLayer *)v3 initWithPalette:palette];
   [(SHListeningLayer *)self setInnerCircleToShazamButtonMaskLayer:v5];
 
-  v6 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
-  [v6 setInnerCircleRelativeSize:3.5];
+  innerCircleToShazamButtonMaskLayer = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
+  [innerCircleToShazamButtonMaskLayer setInnerCircleRelativeSize:3.5];
 
-  v8 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
-  v7 = [(SHListeningLayer *)self innerCirclesContainerLayer];
-  [v7 setMask:v8];
+  innerCircleToShazamButtonMaskLayer2 = [(SHListeningLayer *)self innerCircleToShazamButtonMaskLayer];
+  innerCirclesContainerLayer = [(SHListeningLayer *)self innerCirclesContainerLayer];
+  [innerCirclesContainerLayer setMask:innerCircleToShazamButtonMaskLayer2];
 }
 
 - (void)addInnerCircleToAutoShadowMaskLayer
 {
   v3 = [SHInnerCircleMaskLayer alloc];
-  v4 = [(SHListeningLayer *)self palette];
-  v5 = [(SHPaletteLayer *)v3 initWithPalette:v4];
+  palette = [(SHListeningLayer *)self palette];
+  v5 = [(SHPaletteLayer *)v3 initWithPalette:palette];
   [(SHListeningLayer *)self setInnerCircleToAutoShadowMaskLayer:v5];
 
-  v6 = [(SHListeningLayer *)self innerCircleToAutoShadowMaskLayer];
-  [v6 setInnerCircleRelativeSize:3.5];
+  innerCircleToAutoShadowMaskLayer = [(SHListeningLayer *)self innerCircleToAutoShadowMaskLayer];
+  [innerCircleToAutoShadowMaskLayer setInnerCircleRelativeSize:3.5];
 
-  v8 = [(SHListeningLayer *)self innerCircleToAutoShadowMaskLayer];
-  v7 = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
-  [v7 setMask:v8];
+  innerCircleToAutoShadowMaskLayer2 = [(SHListeningLayer *)self innerCircleToAutoShadowMaskLayer];
+  innerCirclesSecondaryContainerLayer = [(SHListeningLayer *)self innerCirclesSecondaryContainerLayer];
+  [innerCirclesSecondaryContainerLayer setMask:innerCircleToAutoShadowMaskLayer2];
 }
 
 - (void)addAutoShadowToShazamButtonMaskLayer
 {
   v3 = [SHInnerCircleMaskLayer alloc];
-  v4 = [(SHListeningLayer *)self palette];
-  v5 = [(SHPaletteLayer *)v3 initWithPalette:v4];
+  palette = [(SHListeningLayer *)self palette];
+  v5 = [(SHPaletteLayer *)v3 initWithPalette:palette];
   [(SHListeningLayer *)self setAutoShadowToShazamButtonMaskLayer:v5];
 
-  v6 = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
-  [v6 setInnerCircleRelativeSize:3.5];
+  autoShadowToShazamButtonMaskLayer = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
+  [autoShadowToShazamButtonMaskLayer setInnerCircleRelativeSize:3.5];
 
-  v8 = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
-  v7 = [(SHListeningLayer *)self autoShadowContainerLayer];
-  [v7 setMask:v8];
+  autoShadowToShazamButtonMaskLayer2 = [(SHListeningLayer *)self autoShadowToShazamButtonMaskLayer];
+  autoShadowContainerLayer = [(SHListeningLayer *)self autoShadowContainerLayer];
+  [autoShadowContainerLayer setMask:autoShadowToShazamButtonMaskLayer2];
 }
 
 - (void)removeAnimationLayers
 {
-  v3 = [(SHListeningLayer *)self innerCirclesContainerLayer];
-  [v3 removeFromSuperlayer];
+  innerCirclesContainerLayer = [(SHListeningLayer *)self innerCirclesContainerLayer];
+  [innerCirclesContainerLayer removeFromSuperlayer];
 
-  v4 = [(SHListeningLayer *)self autoShadowContainerLayer];
-  [v4 removeFromSuperlayer];
+  autoShadowContainerLayer = [(SHListeningLayer *)self autoShadowContainerLayer];
+  [autoShadowContainerLayer removeFromSuperlayer];
 
-  v5 = [(SHListeningLayer *)self outerCirclesLayer];
-  [v5 removeFromSuperlayer];
+  outerCirclesLayer = [(SHListeningLayer *)self outerCirclesLayer];
+  [outerCirclesLayer removeFromSuperlayer];
 
   [(SHListeningLayer *)self setInnerCirclesLayer:0];
   [(SHListeningLayer *)self setOuterCirclesLayer:0];
@@ -777,8 +777,8 @@ LABEL_5:
 
 - (void)buttonWillFinishDrawingShazamShape
 {
-  v2 = [(SHListeningLayer *)self viewDelegate];
-  [v2 willFinishDrawingShazamShape];
+  viewDelegate = [(SHListeningLayer *)self viewDelegate];
+  [viewDelegate willFinishDrawingShazamShape];
 }
 
 - (SHListeningLayerDelegate)viewDelegate

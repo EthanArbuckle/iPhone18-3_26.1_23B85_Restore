@@ -1,73 +1,73 @@
 @interface CNDonationAgentXPCAdapter
 + (id)newXPCConnection;
-+ (void)changeFromAccount:(id)a3 toAccount:(id)a4 scope:(id)a5;
-+ (void)donateMeCardValues:(id)a3 scope:(id)a4;
-+ (void)fetchDonatedMeCardWithScope:(id)a3;
-+ (void)meCardDonationsWithScope:(id)a3;
-+ (void)rejectValueWithDonationIdentifier:(id)a3 scope:(id)a4;
-+ (void)rejectValuesWithClusterIdentifier:(id)a3 scope:(id)a4;
-+ (void)removeAllRejectionsWithScope:(id)a3;
-+ (void)removeDonatedMeCardValuesForIdentifiers:(id)a3 scope:(id)a4;
-- (id)changeFromAccount:(id)a3 toAccount:(id)a4;
-- (id)donateMeCardValues:(id)a3;
++ (void)changeFromAccount:(id)account toAccount:(id)toAccount scope:(id)scope;
++ (void)donateMeCardValues:(id)values scope:(id)scope;
++ (void)fetchDonatedMeCardWithScope:(id)scope;
++ (void)meCardDonationsWithScope:(id)scope;
++ (void)rejectValueWithDonationIdentifier:(id)identifier scope:(id)scope;
++ (void)rejectValuesWithClusterIdentifier:(id)identifier scope:(id)scope;
++ (void)removeAllRejectionsWithScope:(id)scope;
++ (void)removeDonatedMeCardValuesForIdentifiers:(id)identifiers scope:(id)scope;
+- (id)changeFromAccount:(id)account toAccount:(id)toAccount;
+- (id)donateMeCardValues:(id)values;
 - (id)donatedMeCardEither;
 - (id)fetchDonatedMeCard;
 - (id)meCardDonations;
-- (id)rejectValueWithDonationIdentifier:(id)a3;
-- (id)rejectValuesWithClusterIdentifier:(id)a3;
+- (id)rejectValueWithDonationIdentifier:(id)identifier;
+- (id)rejectValuesWithClusterIdentifier:(id)identifier;
 - (id)removeAllRejections;
-- (id)removeDonatedMeCardValuesForIdentifiers:(id)a3;
+- (id)removeDonatedMeCardValuesForIdentifiers:(id)identifiers;
 @end
 
 @implementation CNDonationAgentXPCAdapter
 
-- (id)donateMeCardValues:(id)a3
+- (id)donateMeCardValues:(id)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v4 = objc_alloc_init(_CNDonationAgentXPCMethodScope);
-  [objc_opt_class() donateMeCardValues:v3 scope:v4];
+  [objc_opt_class() donateMeCardValues:valuesCopy scope:v4];
 
-  v5 = [(_CNDonationAgentXPCMethodScope *)v4 promise];
-  v6 = [v5 future];
+  promise = [(_CNDonationAgentXPCMethodScope *)v4 promise];
+  future = [promise future];
 
-  return v6;
+  return future;
 }
 
-+ (void)donateMeCardValues:(id)a3 scope:(id)a4
++ (void)donateMeCardValues:(id)values scope:(id)scope
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v5 proxy];
-  v7 = [v5 promise];
+  scopeCopy = scope;
+  valuesCopy = values;
+  proxy = [scopeCopy proxy];
+  promise = [scopeCopy promise];
 
-  v8 = [v7 errorOnlyCompletionHandlerAdapter];
-  [v9 donateMeCardValues:v6 completionHandler:v8];
+  errorOnlyCompletionHandlerAdapter = [promise errorOnlyCompletionHandlerAdapter];
+  [proxy donateMeCardValues:valuesCopy completionHandler:errorOnlyCompletionHandlerAdapter];
 }
 
-- (id)removeDonatedMeCardValuesForIdentifiers:(id)a3
+- (id)removeDonatedMeCardValuesForIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = objc_alloc_init(_CNDonationAgentXPCMethodScope);
-  [objc_opt_class() removeDonatedMeCardValuesForIdentifiers:v3 scope:v4];
+  [objc_opt_class() removeDonatedMeCardValuesForIdentifiers:identifiersCopy scope:v4];
 
-  v5 = [(_CNDonationAgentXPCMethodScope *)v4 promise];
-  v6 = [v5 future];
+  promise = [(_CNDonationAgentXPCMethodScope *)v4 promise];
+  future = [promise future];
 
-  return v6;
+  return future;
 }
 
-+ (void)removeDonatedMeCardValuesForIdentifiers:(id)a3 scope:(id)a4
++ (void)removeDonatedMeCardValuesForIdentifiers:(id)identifiers scope:(id)scope
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 proxy];
+  scopeCopy = scope;
+  identifiersCopy = identifiers;
+  proxy = [scopeCopy proxy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__CNDonationAgentXPCAdapter_removeDonatedMeCardValuesForIdentifiers_scope___block_invoke;
   v9[3] = &unk_278569D98;
-  v10 = v5;
-  v8 = v5;
-  [v7 removeDonatedMeCardValuesForIdentifiers:v6 completionHandler:v9];
+  v10 = scopeCopy;
+  v8 = scopeCopy;
+  [proxy removeDonatedMeCardValuesForIdentifiers:identifiersCopy completionHandler:v9];
 }
 
 void __75__CNDonationAgentXPCAdapter_removeDonatedMeCardValuesForIdentifiers_scope___block_invoke(uint64_t a1, int a2, void *a3)
@@ -91,121 +91,121 @@ void __75__CNDonationAgentXPCAdapter_removeDonatedMeCardValuesForIdentifiers_sco
 {
   v2 = objc_alloc_init(_CNDonationAgentXPCMethodScope);
   [objc_opt_class() fetchDonatedMeCardWithScope:v2];
-  v3 = [(_CNDonationAgentXPCMethodScope *)v2 promise];
-  v4 = [v3 future];
+  promise = [(_CNDonationAgentXPCMethodScope *)v2 promise];
+  future = [promise future];
 
-  return v4;
+  return future;
 }
 
-+ (void)fetchDonatedMeCardWithScope:(id)a3
++ (void)fetchDonatedMeCardWithScope:(id)scope
 {
-  v3 = a3;
-  v6 = [v3 proxy];
-  v4 = [v3 promise];
+  scopeCopy = scope;
+  proxy = [scopeCopy proxy];
+  promise = [scopeCopy promise];
 
-  v5 = [v4 completionHandlerAdapter];
-  [v6 fetchDonatedMeCard:v5];
+  completionHandlerAdapter = [promise completionHandlerAdapter];
+  [proxy fetchDonatedMeCard:completionHandlerAdapter];
 }
 
 - (id)meCardDonations
 {
   v2 = objc_alloc_init(_CNDonationAgentXPCMethodScope);
   [objc_opt_class() meCardDonationsWithScope:v2];
-  v3 = [(_CNDonationAgentXPCMethodScope *)v2 promise];
-  v4 = [v3 future];
+  promise = [(_CNDonationAgentXPCMethodScope *)v2 promise];
+  future = [promise future];
 
-  return v4;
+  return future;
 }
 
-+ (void)meCardDonationsWithScope:(id)a3
++ (void)meCardDonationsWithScope:(id)scope
 {
-  v3 = a3;
-  v6 = [v3 proxy];
-  v4 = [v3 promise];
+  scopeCopy = scope;
+  proxy = [scopeCopy proxy];
+  promise = [scopeCopy promise];
 
-  v5 = [v4 completionHandlerAdapter];
-  [v6 meCardDonations:v5];
+  completionHandlerAdapter = [promise completionHandlerAdapter];
+  [proxy meCardDonations:completionHandlerAdapter];
 }
 
-- (id)rejectValueWithDonationIdentifier:(id)a3
+- (id)rejectValueWithDonationIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(_CNDonationAgentXPCMethodScope);
-  [objc_opt_class() rejectValueWithDonationIdentifier:v3 scope:v4];
+  [objc_opt_class() rejectValueWithDonationIdentifier:identifierCopy scope:v4];
 
-  v5 = [(_CNDonationAgentXPCMethodScope *)v4 promise];
-  v6 = [v5 future];
+  promise = [(_CNDonationAgentXPCMethodScope *)v4 promise];
+  future = [promise future];
 
-  return v6;
+  return future;
 }
 
-+ (void)changeFromAccount:(id)a3 toAccount:(id)a4 scope:(id)a5
++ (void)changeFromAccount:(id)account toAccount:(id)toAccount scope:(id)scope
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v12 = [v7 proxy];
-  v10 = [v7 promise];
+  scopeCopy = scope;
+  toAccountCopy = toAccount;
+  accountCopy = account;
+  proxy = [scopeCopy proxy];
+  promise = [scopeCopy promise];
 
-  v11 = [v10 errorOnlyCompletionHandlerAdapter];
-  [v12 changeFromAccount:v9 toAccount:v8 completionHandler:v11];
+  errorOnlyCompletionHandlerAdapter = [promise errorOnlyCompletionHandlerAdapter];
+  [proxy changeFromAccount:accountCopy toAccount:toAccountCopy completionHandler:errorOnlyCompletionHandlerAdapter];
 }
 
-- (id)changeFromAccount:(id)a3 toAccount:(id)a4
+- (id)changeFromAccount:(id)account toAccount:(id)toAccount
 {
-  v5 = a4;
-  v6 = a3;
+  toAccountCopy = toAccount;
+  accountCopy = account;
   v7 = objc_alloc_init(_CNDonationAgentXPCMethodScope);
-  [objc_opt_class() changeFromAccount:v6 toAccount:v5 scope:v7];
+  [objc_opt_class() changeFromAccount:accountCopy toAccount:toAccountCopy scope:v7];
 
-  v8 = [(_CNDonationAgentXPCMethodScope *)v7 promise];
-  v9 = [v8 future];
+  promise = [(_CNDonationAgentXPCMethodScope *)v7 promise];
+  future = [promise future];
 
-  return v9;
+  return future;
 }
 
-+ (void)rejectValueWithDonationIdentifier:(id)a3 scope:(id)a4
++ (void)rejectValueWithDonationIdentifier:(id)identifier scope:(id)scope
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v5 proxy];
-  v7 = [v5 promise];
+  scopeCopy = scope;
+  identifierCopy = identifier;
+  proxy = [scopeCopy proxy];
+  promise = [scopeCopy promise];
 
-  v8 = [v7 errorOnlyCompletionHandlerAdapter];
-  [v9 rejectValueWithDonationIdentifier:v6 completionHandler:v8];
+  errorOnlyCompletionHandlerAdapter = [promise errorOnlyCompletionHandlerAdapter];
+  [proxy rejectValueWithDonationIdentifier:identifierCopy completionHandler:errorOnlyCompletionHandlerAdapter];
 }
 
-- (id)rejectValuesWithClusterIdentifier:(id)a3
+- (id)rejectValuesWithClusterIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(_CNDonationAgentXPCMethodScope);
-  [objc_opt_class() rejectValuesWithClusterIdentifier:v3 scope:v4];
+  [objc_opt_class() rejectValuesWithClusterIdentifier:identifierCopy scope:v4];
 
-  v5 = [(_CNDonationAgentXPCMethodScope *)v4 promise];
-  v6 = [v5 future];
+  promise = [(_CNDonationAgentXPCMethodScope *)v4 promise];
+  future = [promise future];
 
-  return v6;
+  return future;
 }
 
-+ (void)rejectValuesWithClusterIdentifier:(id)a3 scope:(id)a4
++ (void)rejectValuesWithClusterIdentifier:(id)identifier scope:(id)scope
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v5 proxy];
-  v7 = [v5 promise];
+  scopeCopy = scope;
+  identifierCopy = identifier;
+  proxy = [scopeCopy proxy];
+  promise = [scopeCopy promise];
 
-  v8 = [v7 errorOnlyCompletionHandlerAdapter];
-  [v9 rejectValuesWithClusterIdentifier:v6 completionHandler:v8];
+  errorOnlyCompletionHandlerAdapter = [promise errorOnlyCompletionHandlerAdapter];
+  [proxy rejectValuesWithClusterIdentifier:identifierCopy completionHandler:errorOnlyCompletionHandlerAdapter];
 }
 
 - (id)removeAllRejections
 {
   v2 = objc_alloc_init(_CNDonationAgentXPCMethodScope);
   [objc_opt_class() removeAllRejectionsWithScope:v2];
-  v3 = [(_CNDonationAgentXPCMethodScope *)v2 promise];
-  v4 = [v3 future];
+  promise = [(_CNDonationAgentXPCMethodScope *)v2 promise];
+  future = [promise future];
 
-  return v4;
+  return future;
 }
 
 - (id)donatedMeCardEither
@@ -218,8 +218,8 @@ void __75__CNDonationAgentXPCAdapter_removeDonatedMeCardValuesForIdentifiers_sco
   v26[2] = objc_opt_class();
   v26[3] = objc_opt_class();
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:4];
-  v5 = [v2 remoteObjectInterface];
-  [v3 addAllowedClasses:v4 toInterface:v5 forSelector:sel_synchronousDonatedMeCard_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface = [v2 remoteObjectInterface];
+  [v3 addAllowedClasses:v4 toInterface:remoteObjectInterface forSelector:sel_synchronousDonatedMeCard_ argumentIndex:0 ofReply:1];
 
   [v2 resume];
   v20 = 0;
@@ -277,14 +277,14 @@ uint64_t __48__CNDonationAgentXPCAdapter_donatedMeCardEither__block_invoke(uint6
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)removeAllRejectionsWithScope:(id)a3
++ (void)removeAllRejectionsWithScope:(id)scope
 {
-  v3 = a3;
-  v6 = [v3 proxy];
-  v4 = [v3 promise];
+  scopeCopy = scope;
+  proxy = [scopeCopy proxy];
+  promise = [scopeCopy promise];
 
-  v5 = [v4 errorOnlyCompletionHandlerAdapter];
-  [v6 removeAllRejectionsWithCompletionHandler:v5];
+  errorOnlyCompletionHandlerAdapter = [promise errorOnlyCompletionHandlerAdapter];
+  [proxy removeAllRejectionsWithCompletionHandler:errorOnlyCompletionHandlerAdapter];
 }
 
 + (id)newXPCConnection

@@ -1,21 +1,21 @@
 @interface SPUIMutableSearchViewSceneSettings
 - (double)revealProgress;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (unint64_t)presentationIntent;
 - (unint64_t)presentationSource;
-- (void)setPresentationIntent:(unint64_t)a3;
-- (void)setPresentationSource:(unint64_t)a3;
-- (void)setRevealProgress:(double)a3;
+- (void)setPresentationIntent:(unint64_t)intent;
+- (void)setPresentationSource:(unint64_t)source;
+- (void)setRevealProgress:(double)progress;
 @end
 
 @implementation SPUIMutableSearchViewSceneSettings
 
 - (double)revealProgress
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1000];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1000];
 
   objc_opt_class();
   v4 = 0.0;
@@ -28,75 +28,75 @@
   return v4;
 }
 
-- (void)setRevealProgress:(double)a3
+- (void)setRevealProgress:(double)progress
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:1000];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:progress];
+  [otherSettings setObject:v4 forSetting:1000];
 }
 
-- (void)setPresentationSource:(unint64_t)a3
+- (void)setPresentationSource:(unint64_t)source
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:1002];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:source];
+  [otherSettings setObject:v4 forSetting:1002];
 }
 
 - (unint64_t)presentationSource
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1002];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1002];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setPresentationIntent:(unint64_t)a3
+- (void)setPresentationIntent:(unint64_t)intent
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:1003];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:intent];
+  [otherSettings setObject:v4 forSetting:1003];
 }
 
 - (unint64_t)presentationIntent
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1003];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1003];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPUISearchViewSceneSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  switch(a3)
+  switch(setting)
   {
     case 0x3E8uLL:
       v5 = @"revealProgress";
@@ -123,19 +123,19 @@
   return v5;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  if (a5 - 1000 > 3 || a5 == 1001)
+  objectCopy = object;
+  if (setting - 1000 > 3 || setting == 1001)
   {
     v13.receiver = self;
     v13.super_class = SPUIMutableSearchViewSceneSettings;
-    v10 = [(SPUIMutableLegibilitySceneSettings *)&v13 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v10 = [(SPUIMutableLegibilitySceneSettings *)&v13 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   else
   {
-    v10 = SPUISearchViewSceneSettingValueDescription(a5, v8);
+    v10 = SPUISearchViewSceneSettingValueDescription(setting, objectCopy);
   }
 
   v11 = v10;

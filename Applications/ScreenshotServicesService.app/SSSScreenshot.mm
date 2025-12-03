@@ -1,14 +1,14 @@
 @interface SSSScreenshot
-+ (id)_sanitizedFilenameString:(id)a3;
-+ (id)nameForScreenshot:(id)a3;
-- (BOOL)_elementHasValidPDFData:(id)a3;
++ (id)_sanitizedFilenameString:(id)string;
++ (id)nameForScreenshot:(id)screenshot;
+- (BOOL)_elementHasValidPDFData:(id)data;
 - (BOOL)_hasGeneratedPDF;
 - (BOOL)_screenshotWasTakenFromScreenshots;
 - (BOOL)canAutosaveToFiles;
-- (BOOL)canRedoForViewState:(id)a3;
-- (BOOL)canUndoForViewState:(id)a3;
-- (BOOL)hasEverBeenEditedForMode:(int64_t)a3;
-- (BOOL)isSavingForMode:(int64_t)a3;
+- (BOOL)canRedoForViewState:(id)state;
+- (BOOL)canUndoForViewState:(id)state;
+- (BOOL)hasEverBeenEditedForMode:(int64_t)mode;
+- (BOOL)isSavingForMode:(int64_t)mode;
 - (BOOL)isWaitingForPDF;
 - (BOOL)pdfCanBeConvertedToImage;
 - (CGRect)visiblePDFRectWhenScreenshotted;
@@ -19,67 +19,67 @@
 - (NSString)imageDescription;
 - (NSString)userActivityTitle;
 - (PDFDocument)PDFDocument;
-- (SSSScreenshot)initWithEnvironmentDescription:(id)a3;
+- (SSSScreenshot)initWithEnvironmentDescription:(id)description;
 - (SSSScreenshotImageGenerator)imageGenerator;
 - (SSSScreenshotPDFDocumentGenerator)documentGenerator;
 - (SSSScreenshotRepresentation)representation;
 - (SSScreenshotAssetManagerRegistrationOptions)registrationOptions;
 - (id)_actionNameForDeletePDFPage;
 - (id)_elementDocument;
-- (id)_savePDFToTemporaryPathWithData:(id)a3;
+- (id)_savePDFToTemporaryPathWithData:(id)data;
 - (id)editedPDFDataForShareSheet;
 - (id)itemProviderForDragItems;
 - (id)loggableDescription;
-- (id)modelModificationInfoForState:(id)a3;
+- (id)modelModificationInfoForState:(id)state;
 - (id)pdfAsImage;
 - (id)temporaryPDFFile;
-- (id)undoManagerForEditMode:(int64_t)a3;
-- (id)viewModificationInfoForState:(id)a3;
+- (id)undoManagerForEditMode:(int64_t)mode;
+- (id)viewModificationInfoForState:(id)state;
 - (int64_t)_elementIndexForDocument;
 - (int64_t)visiblePDFPageWhenScreenshotted;
 - (unint64_t)saveLocation;
-- (void)_addPageInPDF:(id)a3;
-- (void)_deletePageInPDF:(id)a3;
+- (void)_addPageInPDF:(id)f;
+- (void)_deletePageInPDF:(id)f;
 - (void)_harvestPDFIfNecessary;
 - (void)_informRepresentationOfUndoStackChange;
-- (void)_markAsBeingEditedForMode:(int64_t)a3;
+- (void)_markAsBeingEditedForMode:(int64_t)mode;
 - (void)_markImageAsBeingEdited;
-- (void)_removeSecurityScopedURL:(id)a3;
-- (void)_removeURL:(id)a3;
-- (void)_setDocumentIsSaving:(BOOL)a3;
-- (void)_setModelModificationDictionary:(id)a3 createUndoCommand:(BOOL)a4;
+- (void)_removeSecurityScopedURL:(id)l;
+- (void)_removeURL:(id)l;
+- (void)_setDocumentIsSaving:(BOOL)saving;
+- (void)_setModelModificationDictionary:(id)dictionary createUndoCommand:(BOOL)command;
 - (void)dealloc;
-- (void)deletePDFPage:(id)a3;
+- (void)deletePDFPage:(id)page;
 - (void)didProcessDocumentUpdate;
-- (void)insertIntoQuickNoteWithCompletion:(id)a3;
-- (void)promoteViewValueToModelValueForKey:(unint64_t)a3 forState:(id)a4 createUndoCommand:(BOOL)a5;
+- (void)insertIntoQuickNoteWithCompletion:(id)completion;
+- (void)promoteViewValueToModelValueForKey:(unint64_t)key forState:(id)state createUndoCommand:(BOOL)command;
 - (void)q_saveEditedPDF;
-- (void)redoForViewState:(id)a3;
+- (void)redoForViewState:(id)state;
 - (void)removePDF;
-- (void)requestImageInTransition:(BOOL)a3 withBlock:(id)a4;
-- (void)revertForViewState:(id)a3;
-- (void)savePDFWithBlock:(id)a3;
-- (void)screenshotMutableModificationInfo:(id)a3 valueChangedForKey:(unint64_t)a4;
-- (void)setModelModificationInfo:(id)a3 forState:(id)a4;
-- (void)setViewModificationInfo:(id)a3 forState:(id)a4;
-- (void)undoForViewState:(id)a3;
-- (void)wasJustSavedForMode:(int64_t)a3;
+- (void)requestImageInTransition:(BOOL)transition withBlock:(id)block;
+- (void)revertForViewState:(id)state;
+- (void)savePDFWithBlock:(id)block;
+- (void)screenshotMutableModificationInfo:(id)info valueChangedForKey:(unint64_t)key;
+- (void)setModelModificationInfo:(id)info forState:(id)state;
+- (void)setViewModificationInfo:(id)info forState:(id)state;
+- (void)undoForViewState:(id)state;
+- (void)wasJustSavedForMode:(int64_t)mode;
 @end
 
 @implementation SSSScreenshot
 
-- (SSSScreenshot)initWithEnvironmentDescription:(id)a3
+- (SSSScreenshot)initWithEnvironmentDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v44.receiver = self;
   v44.super_class = SSSScreenshot;
   v5 = [(SSSScreenshot *)&v44 init];
   environmentDescription = v5->_environmentDescription;
-  v5->_environmentDescription = v4;
-  v7 = v4;
+  v5->_environmentDescription = descriptionCopy;
+  v7 = descriptionCopy;
 
-  v8 = [(SSEnvironmentDescription *)v7 imageSurface];
-  v9 = [UIImage ss_imageFromImageSurface:v8];
+  imageSurface = [(SSEnvironmentDescription *)v7 imageSurface];
+  v9 = [UIImage ss_imageFromImageSurface:imageSurface];
   backingImage = v5->_backingImage;
   v5->_backingImage = v9;
 
@@ -91,8 +91,8 @@
   viewModificationInfo = v5->_viewModificationInfo;
   v5->_viewModificationInfo = v13;
 
-  v15 = [(SSSScreenshot *)v5 viewModificationInfo];
-  [v15 setChangeObserver:v5];
+  viewModificationInfo = [(SSSScreenshot *)v5 viewModificationInfo];
+  [viewModificationInfo setChangeObserver:v5];
 
   v16 = [[SSSScreenshotItemProviderImage alloc] initWithScreenshot:v5];
   itemProviderImage = v5->_itemProviderImage;
@@ -134,10 +134,10 @@
   v5->_pdfSavingQueue = v33;
 
   ct_green_tea_logger_create_static();
-  v35 = [(SSSScreenshot *)v5 saveLocation];
-  if (v35 > 1)
+  saveLocation = [(SSSScreenshot *)v5 saveLocation];
+  if (saveLocation > 1)
   {
-    if (v35 == 2)
+    if (saveLocation == 2)
     {
       v41 = getCTGreenTeaOsLogHandle();
       v37 = v41;
@@ -151,7 +151,7 @@
       goto LABEL_18;
     }
 
-    if (v35 == 3)
+    if (saveLocation == 3)
     {
       v39 = getCTGreenTeaOsLogHandle();
       v37 = v39;
@@ -168,7 +168,7 @@
 
   else
   {
-    if (!v35)
+    if (!saveLocation)
     {
       v40 = getCTGreenTeaOsLogHandle();
       v37 = v40;
@@ -182,7 +182,7 @@
       goto LABEL_18;
     }
 
-    if (v35 == 1)
+    if (saveLocation == 1)
     {
       v36 = getCTGreenTeaOsLogHandle();
       v37 = v36;
@@ -209,7 +209,7 @@ LABEL_19:
   {
     imageProvider = self->_imageProvider;
     *buf = 134218240;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
     v11 = imageProvider;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "dealloc: %p, _imageProvider: %p", buf, 0x16u);
@@ -229,45 +229,45 @@ LABEL_19:
   [(SSSScreenshot *)&v7 dealloc];
 }
 
-- (void)setViewModificationInfo:(id)a3 forState:(id)a4
+- (void)setViewModificationInfo:(id)info forState:(id)state
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v8 = a3;
-  [v8 setChangeObserver:0];
+  var1 = state.var1;
+  var0 = state.var0;
+  infoCopy = info;
+  [infoCopy setChangeObserver:0];
   if (var0)
   {
-    [(NSMutableArray *)self->_pdfViewModificationInfos setObject:v8 atIndexedSubscript:var1];
+    [(NSMutableArray *)self->_pdfViewModificationInfos setObject:infoCopy atIndexedSubscript:var1];
   }
 
   else
   {
-    objc_storeStrong(&self->_viewModificationInfo, a3);
+    objc_storeStrong(&self->_viewModificationInfo, info);
   }
 
-  [v8 setChangeObserver:self];
+  [infoCopy setChangeObserver:self];
 }
 
-- (void)setModelModificationInfo:(id)a3 forState:(id)a4
+- (void)setModelModificationInfo:(id)info forState:(id)state
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v8 = a3;
-  v9 = v8;
+  var1 = state.var1;
+  var0 = state.var0;
+  infoCopy = info;
+  v9 = infoCopy;
   if (var0)
   {
-    [(NSMutableArray *)self->_pdfModelModificationInfos setObject:v8 atIndexedSubscript:var1];
+    [(NSMutableArray *)self->_pdfModelModificationInfos setObject:infoCopy atIndexedSubscript:var1];
   }
 
   else
   {
-    objc_storeStrong(&self->_modelModificationInfo, a3);
+    objc_storeStrong(&self->_modelModificationInfo, info);
   }
 }
 
-- (id)viewModificationInfoForState:(id)a3
+- (id)viewModificationInfoForState:(id)state
 {
-  if (a3.var0 && (pdfViewModificationInfos = self->_pdfViewModificationInfos) != 0 && (var1 = a3.var1, [(NSMutableArray *)pdfViewModificationInfos count]> a3.var1))
+  if (state.var0 && (pdfViewModificationInfos = self->_pdfViewModificationInfos) != 0 && (var1 = state.var1, [(NSMutableArray *)pdfViewModificationInfos count]> state.var1))
   {
     v6 = [(NSMutableArray *)self->_pdfViewModificationInfos objectAtIndexedSubscript:var1];
   }
@@ -280,9 +280,9 @@ LABEL_19:
   return v6;
 }
 
-- (id)modelModificationInfoForState:(id)a3
+- (id)modelModificationInfoForState:(id)state
 {
-  if (a3.var0 && (pdfModelModificationInfos = self->_pdfModelModificationInfos) != 0 && (var1 = a3.var1, [(NSMutableArray *)pdfModelModificationInfos count]> a3.var1))
+  if (state.var0 && (pdfModelModificationInfos = self->_pdfModelModificationInfos) != 0 && (var1 = state.var1, [(NSMutableArray *)pdfModelModificationInfos count]> state.var1))
   {
     v6 = [(NSMutableArray *)self->_pdfModelModificationInfos objectAtIndexedSubscript:var1];
   }
@@ -295,19 +295,19 @@ LABEL_19:
   return v6;
 }
 
-- (void)promoteViewValueToModelValueForKey:(unint64_t)a3 forState:(id)a4 createUndoCommand:(BOOL)a5
+- (void)promoteViewValueToModelValueForKey:(unint64_t)key forState:(id)state createUndoCommand:(BOOL)command
 {
-  v5 = a5;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v10 = [(SSSScreenshot *)self modelModificationInfoForState:a4.var0, a4.var1];
+  commandCopy = command;
+  var1 = state.var1;
+  var0 = state.var0;
+  v10 = [(SSSScreenshot *)self modelModificationInfoForState:state.var0, state.var1];
   v11 = [v10 copy];
 
-  v12 = [(SSSScreenshot *)self modelModificationInfoForState:var0, var1];
-  v13 = [v12 mutableCopy];
+  var1 = [(SSSScreenshot *)self modelModificationInfoForState:var0, var1];
+  v13 = [var1 mutableCopy];
 
-  v14 = [(SSSScreenshot *)self viewModificationInfoForState:var0, var1];
-  [v13 takeValueFromModificationInfo:v14 forKey:a3];
+  var12 = [(SSSScreenshot *)self viewModificationInfoForState:var0, var1];
+  [v13 takeValueFromModificationInfo:var12 forKey:key];
 
   if (([v13 isEqual:v11] & 1) == 0)
   {
@@ -332,29 +332,29 @@ LABEL_19:
       v16 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
     }
 
-    [(SSSScreenshot *)self _setModelModificationDictionary:v16 createUndoCommand:v5];
+    [(SSSScreenshot *)self _setModelModificationDictionary:v16 createUndoCommand:commandCopy];
   }
 }
 
-- (void)_setModelModificationDictionary:(id)a3 createUndoCommand:(BOOL)a4
+- (void)_setModelModificationDictionary:(id)dictionary createUndoCommand:(BOOL)command
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"modelModificationInfo"];
-  v8 = [v6 objectForKeyedSubscript:@"previousModificationInfo"];
-  v9 = [v6 objectForKey:@"page"];
+  commandCopy = command;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"modelModificationInfo"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"previousModificationInfo"];
+  intValue = [dictionaryCopy objectForKey:@"page"];
 
-  if (v9)
+  if (intValue)
   {
-    v10 = [v6 objectForKeyedSubscript:@"page"];
-    v9 = [v10 intValue];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"page"];
+    intValue = [v10 intValue];
 
     v19[0] = @"modelModificationInfo";
     v19[1] = @"previousModificationInfo";
     v20[0] = v8;
     v20[1] = v7;
     v19[2] = @"page";
-    v11 = [NSNumber numberWithInteger:v9];
+    v11 = [NSNumber numberWithInteger:intValue];
     v20[2] = v11;
     v12 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:3];
 
@@ -372,13 +372,13 @@ LABEL_19:
   }
 
   v14 = [(SSSScreenshot *)self undoManagerForEditMode:v13];
-  if (v4)
+  if (commandCopy)
   {
     [(SSSScreenshot *)self _undoableModelChangePrequel:v14];
     [v14 registerUndoWithTarget:self selector:"_setModelModificationDictionary:" object:v12];
-    [(SSSScreenshot *)self setModelModificationInfo:v7 forState:v13, v9];
+    [(SSSScreenshot *)self setModelModificationInfo:v7 forState:v13, intValue];
     v15 = [v7 mutableCopy];
-    [(SSSScreenshot *)self setViewModificationInfo:v15 forState:v13, v9];
+    [(SSSScreenshot *)self setViewModificationInfo:v15 forState:v13, intValue];
 
     [(SSSScreenshot *)self _undoableModelChangeSequel:v14];
     [(SSSScreenshot *)self _markAsBeingEditedForMode:v13];
@@ -387,9 +387,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [(SSSScreenshot *)self setModelModificationInfo:v7 forState:v13, v9];
+  [(SSSScreenshot *)self setModelModificationInfo:v7 forState:v13, intValue];
   v16 = [v7 mutableCopy];
-  [(SSSScreenshot *)self setViewModificationInfo:v16 forState:v13, v9];
+  [(SSSScreenshot *)self setViewModificationInfo:v16 forState:v13, intValue];
 
   [(SSSScreenshot *)self _markAsBeingEditedForMode:v13];
   if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl())
@@ -400,35 +400,35 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)screenshotMutableModificationInfo:(id)a3 valueChangedForKey:(unint64_t)a4
+- (void)screenshotMutableModificationInfo:(id)info valueChangedForKey:(unint64_t)key
 {
-  v5 = [(SSSScreenshot *)self representation:a3];
+  v5 = [(SSSScreenshot *)self representation:info];
   [v5 screenshotDidHaveViewModificationInfoChanged:self];
 }
 
 - (NSData)imageModificationData
 {
-  v2 = [(SSSScreenshot *)self modelModificationInfo];
-  v3 = [NSKeyedArchiver archivedDataWithRootObject:v2 requiringSecureCoding:0 error:0];
+  modelModificationInfo = [(SSSScreenshot *)self modelModificationInfo];
+  v3 = [NSKeyedArchiver archivedDataWithRootObject:modelModificationInfo requiringSecureCoding:0 error:0];
 
   return v3;
 }
 
 - (unint64_t)saveLocation
 {
-  v2 = [(SSSScreenshot *)self environmentDescription];
-  v3 = [v2 serviceOptions];
-  v4 = [v3 saveLocation];
+  environmentDescription = [(SSSScreenshot *)self environmentDescription];
+  serviceOptions = [environmentDescription serviceOptions];
+  saveLocation = [serviceOptions saveLocation];
 
-  return v4;
+  return saveLocation;
 }
 
 - (int64_t)_elementIndexForDocument
 {
   if (![(SSSScreenshot *)self _screenshotWasTakenFromScreenshots])
   {
-    v3 = [(SSEnvironmentDescription *)self->_environmentDescription elements];
-    v4 = [v3 count];
+    elements = [(SSEnvironmentDescription *)self->_environmentDescription elements];
+    v4 = [elements count];
 
     if (v4)
     {
@@ -437,8 +437,8 @@ LABEL_9:
       v7 = 0x7FFFFFFFFFFFFFFFLL;
       while (1)
       {
-        v8 = [(SSEnvironmentDescription *)self->_environmentDescription elements];
-        v9 = [v8 objectAtIndexedSubscript:v5];
+        elements2 = [(SSEnvironmentDescription *)self->_environmentDescription elements];
+        v9 = [elements2 objectAtIndexedSubscript:v5];
 
         if (self->_didFinishReceivingDocumentUpdates)
         {
@@ -450,10 +450,10 @@ LABEL_9:
 
         else
         {
-          v10 = [v9 metadata];
-          v11 = [v10 canGenerateDocument];
+          metadata = [v9 metadata];
+          canGenerateDocument = [metadata canGenerateDocument];
 
-          if (!v11)
+          if (!canGenerateDocument)
           {
             goto LABEL_14;
           }
@@ -490,8 +490,8 @@ LABEL_14:
 LABEL_15:
 
         ++v5;
-        v17 = [(SSEnvironmentDescription *)self->_environmentDescription elements];
-        v18 = [v17 count];
+        elements3 = [(SSEnvironmentDescription *)self->_environmentDescription elements];
+        v18 = [elements3 count];
 
         v7 = v16;
         v6 = v15;
@@ -506,31 +506,31 @@ LABEL_15:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)_elementHasValidPDFData:(id)a3
+- (BOOL)_elementHasValidPDFData:(id)data
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 document];
-  v7 = [v6 PDFData];
+  dataCopy = data;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  document = [dataCopy document];
+  pDFData = [document PDFData];
 
-  if (v7)
+  if (pDFData)
   {
-    v8 = [(NSMutableDictionary *)v5->_elementPDFValidationDictionary allKeys];
-    v9 = [v8 containsObject:v4];
+    allKeys = [(NSMutableDictionary *)selfCopy->_elementPDFValidationDictionary allKeys];
+    v9 = [allKeys containsObject:dataCopy];
 
     if (v9)
     {
-      v10 = [(NSMutableDictionary *)v5->_elementPDFValidationDictionary objectForKeyedSubscript:v4];
-      LOBYTE(v7) = [v10 BOOLValue];
+      v10 = [(NSMutableDictionary *)selfCopy->_elementPDFValidationDictionary objectForKeyedSubscript:dataCopy];
+      LOBYTE(pDFData) = [v10 BOOLValue];
     }
 
     else
     {
       v11 = [PDFDocument alloc];
-      v12 = [v4 document];
-      v13 = [v12 PDFData];
-      v10 = [v11 initWithData:v13];
+      document2 = [dataCopy document];
+      pDFData2 = [document2 PDFData];
+      v10 = [v11 initWithData:pDFData2];
 
       if ([v10 pageCount])
       {
@@ -545,60 +545,60 @@ LABEL_15:
         v26.origin.y = v18;
         v26.size.width = v20;
         v26.size.height = v22;
-        v7 = !CGRectIsEmpty(v26);
+        pDFData = !CGRectIsEmpty(v26);
       }
 
       else
       {
-        v7 = 0;
+        pDFData = 0;
       }
 
-      elementPDFValidationDictionary = v5->_elementPDFValidationDictionary;
-      v24 = [NSNumber numberWithBool:v7];
-      [(NSMutableDictionary *)elementPDFValidationDictionary setObject:v24 forKey:v4];
+      elementPDFValidationDictionary = selfCopy->_elementPDFValidationDictionary;
+      v24 = [NSNumber numberWithBool:pDFData];
+      [(NSMutableDictionary *)elementPDFValidationDictionary setObject:v24 forKey:dataCopy];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return pDFData;
 }
 
 - (id)_elementDocument
 {
-  v3 = [(SSSScreenshot *)self _elementIndexForDocument];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  _elementIndexForDocument = [(SSSScreenshot *)self _elementIndexForDocument];
+  if (_elementIndexForDocument == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = 0;
+    document = 0;
   }
 
   else
   {
-    v5 = v3;
-    v6 = [(SSEnvironmentDescription *)self->_environmentDescription elements];
-    v7 = [v6 objectAtIndexedSubscript:v5];
-    v4 = [v7 document];
+    v5 = _elementIndexForDocument;
+    elements = [(SSEnvironmentDescription *)self->_environmentDescription elements];
+    v7 = [elements objectAtIndexedSubscript:v5];
+    document = [v7 document];
   }
 
-  return v4;
+  return document;
 }
 
 - (BOOL)_hasGeneratedPDF
 {
-  v2 = [(SSSScreenshot *)self _elementDocument];
-  v3 = v2 != 0;
+  _elementDocument = [(SSSScreenshot *)self _elementDocument];
+  v3 = _elementDocument != 0;
 
   return v3;
 }
 
 - (BOOL)isWaitingForPDF
 {
-  v3 = [(SSSScreenshot *)self _canProvidePDF];
-  v4 = [(SSEnvironmentDescription *)self->_environmentDescription elements];
-  if ([v4 count])
+  _canProvidePDF = [(SSSScreenshot *)self _canProvidePDF];
+  elements = [(SSEnvironmentDescription *)self->_environmentDescription elements];
+  if ([elements count])
   {
-    v5 = [(SSSScreenshot *)self _elementDocument];
-    v6 = v5 != 0;
+    _elementDocument = [(SSSScreenshot *)self _elementDocument];
+    v6 = _elementDocument != 0;
   }
 
   else
@@ -607,7 +607,7 @@ LABEL_15:
   }
 
   v7 = 0;
-  if (v3 && !v6)
+  if (_canProvidePDF && !v6)
   {
     return self->_isPDFRequested;
   }
@@ -623,8 +623,8 @@ LABEL_15:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SSEnvironmentDescription *)self->_environmentDescription elements];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  elements = [(SSEnvironmentDescription *)self->_environmentDescription elements];
+  v5 = [elements countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -636,16 +636,16 @@ LABEL_15:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(elements);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) metadata];
-        v11 = [v10 canGenerateDocument];
+        metadata = [*(*(&v13 + 1) + 8 * i) metadata];
+        canGenerateDocument = [metadata canGenerateDocument];
 
-        v7 += v11;
+        v7 += canGenerateDocument;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [elements countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -676,16 +676,16 @@ LABEL_15:
 {
   if ([(SSSScreenshot *)self _hasGeneratedPDF])
   {
-    v3 = [(SSSScreenshot *)self _elementDocument];
-    v4 = [v3 PDFData];
+    _elementDocument = [(SSSScreenshot *)self _elementDocument];
+    pDFData = [_elementDocument PDFData];
   }
 
   else
   {
-    v4 = 0;
+    pDFData = 0;
   }
 
-  return v4;
+  return pDFData;
 }
 
 - (int64_t)visiblePDFPageWhenScreenshotted
@@ -695,18 +695,18 @@ LABEL_15:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v3 = [(SSSScreenshot *)self _elementDocument];
-  v4 = [v3 PDFPage];
+  _elementDocument = [(SSSScreenshot *)self _elementDocument];
+  pDFPage = [_elementDocument PDFPage];
 
-  return v4;
+  return pDFPage;
 }
 
 - (CGRect)visiblePDFRectWhenScreenshotted
 {
   if ([(SSSScreenshot *)self _hasGeneratedPDF])
   {
-    v3 = [(SSSScreenshot *)self _elementDocument];
-    [v3 PDFVisibleRect];
+    _elementDocument = [(SSSScreenshot *)self _elementDocument];
+    [_elementDocument PDFVisibleRect];
     x = v4;
     y = v6;
     width = v8;
@@ -738,8 +738,8 @@ LABEL_15:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(SSEnvironmentDescription *)self->_environmentDescription elements];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  elements = [(SSEnvironmentDescription *)self->_environmentDescription elements];
+  v3 = [elements countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -749,19 +749,19 @@ LABEL_15:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(elements);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
-        v7 = [v6 bundleIdentifier];
-        if (!v7 && ![v6 isAppLauncher])
+        bundleIdentifier = [v6 bundleIdentifier];
+        if (!bundleIdentifier && ![v6 isAppLauncher])
         {
           LOBYTE(v3) = 1;
           goto LABEL_12;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [elements countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -780,13 +780,13 @@ LABEL_12:
 {
   self->_imageHasEverBeenEdited = 1;
   self->_imageHasUnsavedEdits = 1;
-  v3 = [(SSSScreenshot *)self imageGenerator];
-  [v3 imageGeneratorImageMarkedAsBeingEdited:self];
+  imageGenerator = [(SSSScreenshot *)self imageGenerator];
+  [imageGenerator imageGeneratorImageMarkedAsBeingEdited:self];
 }
 
-- (void)_markAsBeingEditedForMode:(int64_t)a3
+- (void)_markAsBeingEditedForMode:(int64_t)mode
 {
-  if (a3)
+  if (mode)
   {
 
     [(SSSScreenshot *)self _markPDFAsBeingEdited];
@@ -803,7 +803,7 @@ LABEL_12:
       v6[2] = sub_10001C114;
       v6[3] = &unk_1000BA690;
       v7 = v4;
-      v8 = self;
+      selfCopy = self;
       [NSUserActivity _fetchUserActivityWithUUID:v7 completionHandler:v6];
     }
 
@@ -814,10 +814,10 @@ LABEL_12:
   }
 }
 
-- (BOOL)hasEverBeenEditedForMode:(int64_t)a3
+- (BOOL)hasEverBeenEditedForMode:(int64_t)mode
 {
   v3 = 42;
-  if (a3)
+  if (mode)
   {
     v3 = 43;
   }
@@ -825,10 +825,10 @@ LABEL_12:
   return *(&self->super.isa + v3);
 }
 
-- (BOOL)isSavingForMode:(int64_t)a3
+- (BOOL)isSavingForMode:(int64_t)mode
 {
   v3 = 44;
-  if (a3)
+  if (mode)
   {
     v3 = 45;
   }
@@ -836,10 +836,10 @@ LABEL_12:
   return *(&self->super.isa + v3);
 }
 
-- (void)wasJustSavedForMode:(int64_t)a3
+- (void)wasJustSavedForMode:(int64_t)mode
 {
   v3 = 40;
-  if (a3)
+  if (mode)
   {
     v3 = 41;
   }
@@ -849,67 +849,67 @@ LABEL_12:
 
 - (void)_informRepresentationOfUndoStackChange
 {
-  v3 = [(SSSScreenshot *)self representation];
-  [v3 screenshotDidHaveUndoStackChanged:self];
+  representation = [(SSSScreenshot *)self representation];
+  [representation screenshotDidHaveUndoStackChanged:self];
 }
 
-- (BOOL)canUndoForViewState:(id)a3
+- (BOOL)canUndoForViewState:(id)state
 {
-  v3 = [(SSSScreenshot *)self undoManagerForEditMode:a3.var0, a3.var1];
-  v4 = [v3 canUndo];
+  v3 = [(SSSScreenshot *)self undoManagerForEditMode:state.var0, state.var1];
+  canUndo = [v3 canUndo];
 
-  return v4;
+  return canUndo;
 }
 
-- (BOOL)canRedoForViewState:(id)a3
+- (BOOL)canRedoForViewState:(id)state
 {
-  v3 = [(SSSScreenshot *)self undoManagerForEditMode:a3.var0, a3.var1];
-  v4 = [v3 canRedo];
+  v3 = [(SSSScreenshot *)self undoManagerForEditMode:state.var0, state.var1];
+  canRedo = [v3 canRedo];
 
-  return v4;
+  return canRedo;
 }
 
-- (void)undoForViewState:(id)a3
+- (void)undoForViewState:(id)state
 {
-  v4 = [(SSSScreenshot *)self undoManagerForEditMode:a3.var0, a3.var1];
+  v4 = [(SSSScreenshot *)self undoManagerForEditMode:state.var0, state.var1];
   [v4 undo];
 
   [(SSSScreenshot *)self _informRepresentationOfUndoStackChange];
 }
 
-- (void)revertForViewState:(id)a3
+- (void)revertForViewState:(id)state
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = state.var1;
+  var0 = state.var0;
   v6 = [SSSScreenshotModificationInfo alloc];
-  v7 = [(SSSScreenshot *)self environmentDescription];
-  v8 = [(SSSScreenshotModificationInfo *)v6 initForScreenshotWithEnvironmentDescription:v7];
+  environmentDescription = [(SSSScreenshot *)self environmentDescription];
+  v8 = [(SSSScreenshotModificationInfo *)v6 initForScreenshotWithEnvironmentDescription:environmentDescription];
   [(SSSScreenshot *)self setModelModificationInfo:v8 forState:var0, var1];
 
   v9 = [SSSScreenshotMutableModificationInfo alloc];
-  v10 = [(SSSScreenshot *)self environmentDescription];
-  v11 = [(SSSScreenshotModificationInfo *)v9 initForScreenshotWithEnvironmentDescription:v10];
+  environmentDescription2 = [(SSSScreenshot *)self environmentDescription];
+  v11 = [(SSSScreenshotModificationInfo *)v9 initForScreenshotWithEnvironmentDescription:environmentDescription2];
   [(SSSScreenshot *)self setViewModificationInfo:v11 forState:var0, var1];
 
   v12 = [(SSSScreenshot *)self undoManagerForEditMode:var0];
   [v12 removeAllActions];
 
-  v13 = [(SSSScreenshot *)self representation];
-  [v13 screenshotDidRevert:self];
+  representation = [(SSSScreenshot *)self representation];
+  [representation screenshotDidRevert:self];
 }
 
-- (void)redoForViewState:(id)a3
+- (void)redoForViewState:(id)state
 {
-  v4 = [(SSSScreenshot *)self undoManagerForEditMode:a3.var0, a3.var1];
+  v4 = [(SSSScreenshot *)self undoManagerForEditMode:state.var0, state.var1];
   [v4 redo];
 
   [(SSSScreenshot *)self _informRepresentationOfUndoStackChange];
 }
 
-- (id)undoManagerForEditMode:(int64_t)a3
+- (id)undoManagerForEditMode:(int64_t)mode
 {
   v3 = 56;
-  if (!a3)
+  if (!mode)
   {
     v3 = 48;
   }
@@ -917,13 +917,13 @@ LABEL_12:
   return *(&self->super.isa + v3);
 }
 
-- (void)requestImageInTransition:(BOOL)a3 withBlock:(id)a4
+- (void)requestImageInTransition:(BOOL)transition withBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
+  transitionCopy = transition;
+  blockCopy = block;
   self->_imageIsSaving = 1;
-  v7 = [(SSSScreenshot *)self imageGenerator];
-  v8 = [v7 isGeneratedImageHDR:self];
+  imageGenerator = [(SSSScreenshot *)self imageGenerator];
+  v8 = [imageGenerator isGeneratedImageHDR:self];
 
   v9 = &UTTypeHEIC;
   if (!v8)
@@ -933,19 +933,19 @@ LABEL_12:
 
   v10 = *v9;
   objc_initWeak(&location, self);
-  v11 = [(SSSScreenshot *)self imageProvider];
+  imageProvider = [(SSSScreenshot *)self imageProvider];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10001C6D8;
   v19[3] = &unk_1000BA6B8;
   objc_copyWeak(&v21, &location);
-  v12 = v6;
+  v12 = blockCopy;
   v20 = v12;
-  v13 = [v11 requestOutputImageDataInTransition:v4 imageType:v10 forSaving:v19];
+  v13 = [imageProvider requestOutputImageDataInTransition:transitionCopy imageType:v10 forSaving:v19];
 
   if ((v13 & 1) == 0)
   {
-    v14 = [(SSSScreenshot *)self imageProvider];
+    imageProvider2 = [(SSSScreenshot *)self imageProvider];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10001C7E0;
@@ -954,7 +954,7 @@ LABEL_12:
     v16 = v10;
     v17 = v12;
     v18 = v8;
-    [v14 requestOutputImageInTransition:v4 forSaving:v15];
+    [imageProvider2 requestOutputImageInTransition:transitionCopy forSaving:v15];
   }
 
   objc_destroyWeak(&v21);
@@ -964,42 +964,42 @@ LABEL_12:
 - (SSScreenshotAssetManagerRegistrationOptions)registrationOptions
 {
   v3 = objc_alloc_init(SSScreenshotAssetManagerRegistrationOptions);
-  v4 = [(SSSScreenshot *)self environmentDescription];
-  v5 = [v4 serviceOptions];
-  [v3 setSaveLocation:{objc_msgSend(v5, "saveLocation")}];
+  environmentDescription = [(SSSScreenshot *)self environmentDescription];
+  serviceOptions = [environmentDescription serviceOptions];
+  [v3 setSaveLocation:{objc_msgSend(serviceOptions, "saveLocation")}];
 
-  v6 = [(SSSScreenshot *)self environmentDescription];
-  v7 = [v6 serviceOptions];
-  v8 = [v7 assetMetadata];
-  [v3 setAssetMetadata:v8];
+  environmentDescription2 = [(SSSScreenshot *)self environmentDescription];
+  serviceOptions2 = [environmentDescription2 serviceOptions];
+  assetMetadata = [serviceOptions2 assetMetadata];
+  [v3 setAssetMetadata:assetMetadata];
 
-  v9 = [(SSSScreenshot *)self environmentDescription];
-  v10 = [v9 harvestedMetadata];
-  [v3 setHarvestedMetadata:v10];
+  environmentDescription3 = [(SSSScreenshot *)self environmentDescription];
+  harvestedMetadata = [environmentDescription3 harvestedMetadata];
+  [v3 setHarvestedMetadata:harvestedMetadata];
 
   return v3;
 }
 
 - (NSString)imageDescription
 {
-  v2 = [(SSSScreenshot *)self modelModificationInfo];
-  v3 = [v2 imageDescription];
+  modelModificationInfo = [(SSSScreenshot *)self modelModificationInfo];
+  imageDescription = [modelModificationInfo imageDescription];
 
-  return v3;
+  return imageDescription;
 }
 
-+ (id)nameForScreenshot:(id)a3
++ (id)nameForScreenshot:(id)screenshot
 {
-  v3 = a3;
+  screenshotCopy = screenshot;
   v22 = [NSDateFormatter dateFormatFromTemplate:@"yyyy-MM-dd" options:0 locale:0];
   v21 = objc_alloc_init(NSDateFormatter);
   [v21 setDateFormat:v22];
-  v4 = [v3 environmentDescription];
+  environmentDescription = [screenshotCopy environmentDescription];
 
-  v5 = [v4 date];
+  date = [environmentDescription date];
 
-  v6 = [v21 stringFromDate:v5];
-  v7 = [NSDateFormatter localizedStringFromDate:v5 dateStyle:0 timeStyle:2];
+  v6 = [v21 stringFromDate:date];
+  v7 = [NSDateFormatter localizedStringFromDate:date dateStyle:0 timeStyle:2];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"SCREENSHOT_SAVE_FILE_NAME" value:@"Screenshot" table:0];
 
@@ -1024,14 +1024,14 @@ LABEL_12:
 
 - (NSString)filename
 {
-  v3 = [(SSSScreenshot *)self userActivityTitle];
-  if (!v3)
+  userActivityTitle = [(SSSScreenshot *)self userActivityTitle];
+  if (!userActivityTitle)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [SSSScreenshot _sanitizedFilenameString:v3];
+  v4 = userActivityTitle;
+  v5 = [SSSScreenshot _sanitizedFilenameString:userActivityTitle];
 
   if (![v5 length] || (+[NSURL fileURLWithPath:](NSURL, "fileURLWithPath:", v5), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
@@ -1044,10 +1044,10 @@ LABEL_5:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(SSSScreenshot *)self environmentDescription];
-  v8 = [v7 elements];
+  environmentDescription = [(SSSScreenshot *)self environmentDescription];
+  elements = [environmentDescription elements];
 
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v9 = [elements countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1058,11 +1058,11 @@ LABEL_5:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(elements);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * i) bundleIdentifier];
-        v14 = [v13 isEqual:@"com.apple.MobileSMS"];
+        bundleIdentifier = [*(*(&v18 + 1) + 8 * i) bundleIdentifier];
+        v14 = [bundleIdentifier isEqual:@"com.apple.MobileSMS"];
 
         if (v14)
         {
@@ -1071,7 +1071,7 @@ LABEL_5:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [elements countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         continue;
@@ -1097,16 +1097,16 @@ LABEL_17:
   return v16;
 }
 
-+ (id)_sanitizedFilenameString:(id)a3
++ (id)_sanitizedFilenameString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if ([v3 length])
+  stringCopy = string;
+  v4 = stringCopy;
+  if ([stringCopy length])
   {
-    v5 = v3;
-    if ([v3 length] >= 0x81)
+    v5 = stringCopy;
+    if ([stringCopy length] >= 0x81)
     {
-      v5 = [v3 substringToIndex:128];
+      v5 = [stringCopy substringToIndex:128];
     }
 
     v6 = [NSCharacterSet characterSetWithCharactersInString:@"///\\?%*|<>:"];
@@ -1163,17 +1163,17 @@ LABEL_17:
 
 - (NSString)userActivityTitle
 {
-  v3 = [(SSSScreenshot *)self environmentDescription];
-  v4 = [v3 elements];
+  environmentDescription = [(SSSScreenshot *)self environmentDescription];
+  elements = [environmentDescription elements];
 
-  v5 = [(SSSScreenshot *)self _elementIndexForDocument];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  _elementIndexForDocument = [(SSSScreenshot *)self _elementIndexForDocument];
+  if (_elementIndexForDocument == 0x7FFFFFFFFFFFFFFFLL)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = elements;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -1188,10 +1188,10 @@ LABEL_4:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) metadata];
-        v12 = [v11 userActivityTitle];
+        metadata = [*(*(&v15 + 1) + 8 * v10) metadata];
+        userActivityTitle = [metadata userActivityTitle];
 
-        if (v12)
+        if (userActivityTitle)
         {
           break;
         }
@@ -1212,25 +1212,25 @@ LABEL_4:
     else
     {
 LABEL_10:
-      v12 = 0;
+      userActivityTitle = 0;
     }
   }
 
   else
   {
-    v6 = [v4 objectAtIndexedSubscript:v5];
-    v13 = [v6 metadata];
-    v12 = [v13 userActivityTitle];
+    v6 = [elements objectAtIndexedSubscript:_elementIndexForDocument];
+    metadata2 = [v6 metadata];
+    userActivityTitle = [metadata2 userActivityTitle];
   }
 
-  return v12;
+  return userActivityTitle;
 }
 
 - (NSArray)snapUnitRects
 {
   v3 = +[NSMutableArray array];
-  v4 = [(SSSScreenshot *)self environmentDescription];
-  [v4 imagePointSize];
+  environmentDescription = [(SSSScreenshot *)self environmentDescription];
+  [environmentDescription imagePointSize];
   v6 = v5;
   v8 = v7;
 
@@ -1238,11 +1238,11 @@ LABEL_10:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v9 = [(SSSScreenshot *)self environmentDescription];
-  v10 = [v9 elements];
+  environmentDescription2 = [(SSSScreenshot *)self environmentDescription];
+  elements = [environmentDescription2 elements];
 
-  obj = v10;
-  v35 = [v10 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  obj = elements;
+  v35 = [elements countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v35)
   {
     v34 = *v42;
@@ -1276,10 +1276,10 @@ LABEL_10:
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v23 = [v12 metadata];
-        v24 = [v23 contentRects];
+        metadata = [v12 metadata];
+        contentRects = [metadata contentRects];
 
-        v25 = [v24 countByEnumeratingWithState:&v36 objects:v45 count:16];
+        v25 = [contentRects countByEnumeratingWithState:&v36 objects:v45 count:16];
         if (v25)
         {
           v26 = v25;
@@ -1290,7 +1290,7 @@ LABEL_10:
             {
               if (*v37 != v27)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(contentRects);
               }
 
               [*(*(&v36 + 1) + 8 * j) CGRectValue];
@@ -1299,7 +1299,7 @@ LABEL_10:
               [v3 addObject:v31];
             }
 
-            v26 = [v24 countByEnumeratingWithState:&v36 objects:v45 count:16];
+            v26 = [contentRects countByEnumeratingWithState:&v36 objects:v45 count:16];
           }
 
           while (v26);
@@ -1317,16 +1317,16 @@ LABEL_10:
 
 - (PDFDocument)PDFDocument
 {
-  v3 = [(SSSScreenshot *)self documentGenerator];
+  documentGenerator = [(SSSScreenshot *)self documentGenerator];
 
-  if (!v3 || (-[SSSScreenshot documentGenerator](self, "documentGenerator"), v4 = objc_claimAutoreleasedReturnValue(), -[SSSScreenshot pdfData](self, "pdfData"), v5 = objc_claimAutoreleasedReturnValue(), [v4 documentFromPDFData:v5], v6 = objc_claimAutoreleasedReturnValue(), v5, v4, !v6))
+  if (!documentGenerator || (-[SSSScreenshot documentGenerator](self, "documentGenerator"), v4 = objc_claimAutoreleasedReturnValue(), -[SSSScreenshot pdfData](self, "pdfData"), v5 = objc_claimAutoreleasedReturnValue(), [v4 documentFromPDFData:v5], v6 = objc_claimAutoreleasedReturnValue(), v5, v4, !v6))
   {
     pdfDocument = self->_pdfDocument;
     if (!pdfDocument)
     {
       v8 = [PDFDocument alloc];
-      v9 = [(SSSScreenshot *)self pdfData];
-      v10 = [v8 initWithData:v9];
+      pdfData = [(SSSScreenshot *)self pdfData];
+      v10 = [v8 initWithData:pdfData];
 
       [(PDFDocument *)v10 setDelegate:self];
       v11 = self->_pdfDocument;
@@ -1343,25 +1343,25 @@ LABEL_10:
 
 - (void)_harvestPDFIfNecessary
 {
-  v3 = [(SSEnvironmentDescription *)self->_environmentDescription elements];
-  v4 = [v3 count];
+  elements = [(SSEnvironmentDescription *)self->_environmentDescription elements];
+  v4 = [elements count];
 
   if (v4)
   {
-    v5 = [(SSSScreenshot *)self pdfData];
-    if (!v5)
+    pdfData = [(SSSScreenshot *)self pdfData];
+    if (!pdfData)
     {
       goto LABEL_9;
     }
 
-    v21 = v5;
+    v21 = pdfData;
     v6 = +[NSMutableArray array];
     v7 = +[NSMutableArray array];
-    v8 = [(SSSScreenshot *)self PDFDocument];
-    v9 = [v8 pageCount];
-    if (v9 >= 1)
+    pDFDocument = [(SSSScreenshot *)self PDFDocument];
+    pageCount = [pDFDocument pageCount];
+    if (pageCount >= 1)
     {
-      v10 = v9;
+      v10 = pageCount;
       do
       {
         v11 = [[SSSScreenshotModificationInfo alloc] initForScreenshotWithEnvironmentDescription:self->_environmentDescription];
@@ -1383,8 +1383,8 @@ LABEL_10:
     pdfViewModificationInfos = self->_pdfViewModificationInfos;
     self->_pdfViewModificationInfos = v7;
 
-    v16 = [(SSSScreenshot *)self representation];
-    [v16 screenshotDidReceivePDFData];
+    representation = [(SSSScreenshot *)self representation];
+    [representation screenshotDidReceivePDFData];
   }
 
   else
@@ -1396,54 +1396,54 @@ LABEL_10:
 
     v21 = [(SSSScreenshotModificationInfo *)[SSSScreenshotMutableModificationInfo alloc] initForScreenshotWithEnvironmentDescription:self->_environmentDescription];
     v20 = [NSMutableArray arrayWithObject:?];
-    v8 = self->_pdfViewModificationInfos;
+    pDFDocument = self->_pdfViewModificationInfos;
     self->_pdfViewModificationInfos = v20;
   }
 
-  v5 = v21;
+  pdfData = v21;
 LABEL_9:
 }
 
 - (void)removePDF
 {
-  v3 = [(SSSScreenshot *)self PDFURL];
+  pDFURL = [(SSSScreenshot *)self PDFURL];
 
-  if (v3)
+  if (pDFURL)
   {
-    v4 = [(SSSScreenshot *)self PDFURL];
-    [(SSSScreenshot *)self _removeSecurityScopedURL:v4];
+    pDFURL2 = [(SSSScreenshot *)self PDFURL];
+    [(SSSScreenshot *)self _removeSecurityScopedURL:pDFURL2];
 
     [(SSSScreenshot *)self setPDFURL:0];
   }
 
-  v5 = [(SSSScreenshot *)self temporaryPDFURL];
+  temporaryPDFURL = [(SSSScreenshot *)self temporaryPDFURL];
 
-  if (v5)
+  if (temporaryPDFURL)
   {
-    v6 = [(SSSScreenshot *)self temporaryPDFURL];
-    [(SSSScreenshot *)self _removeURL:v6];
+    temporaryPDFURL2 = [(SSSScreenshot *)self temporaryPDFURL];
+    [(SSSScreenshot *)self _removeURL:temporaryPDFURL2];
 
     [(SSSScreenshot *)self setTemporaryPDFURL:0];
   }
 }
 
-- (void)_removeURL:(id)a3
+- (void)_removeURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[NSFileManager defaultManager];
   v12 = 0;
-  v5 = [v4 removeItemAtURL:v3 error:&v12];
+  v5 = [v4 removeItemAtURL:lCopy error:&v12];
   v6 = v12;
   v7 = v6;
   if (v6 || (v5 & 1) == 0)
   {
-    v8 = [v6 domain];
-    v9 = v8;
-    if (v8 == NSCocoaErrorDomain)
+    domain = [v6 domain];
+    v9 = domain;
+    if (domain == NSCocoaErrorDomain)
     {
-      v10 = [v7 code];
+      code = [v7 code];
 
-      if (v10 == 4)
+      if (code == 4)
       {
         v11 = os_log_create("com.apple.screenshotservices", "PDF");
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1469,22 +1469,22 @@ LABEL_10:
   }
 }
 
-- (void)_removeSecurityScopedURL:(id)a3
+- (void)_removeSecurityScopedURL:(id)l
 {
-  v5 = a3;
-  v4 = [v5 startAccessingSecurityScopedResource];
-  [(SSSScreenshot *)self _removeURL:v5];
-  if (v4)
+  lCopy = l;
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
+  [(SSSScreenshot *)self _removeURL:lCopy];
+  if (startAccessingSecurityScopedResource)
   {
-    [v5 stopAccessingSecurityScopedResource];
+    [lCopy stopAccessingSecurityScopedResource];
   }
 }
 
-- (void)savePDFWithBlock:(id)a3
+- (void)savePDFWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SSSScreenshot *)self PDFDocument];
-  if (v5 && (v6 = v5, v7 = [(SSSScreenshot *)self isDeleted], v6, (v7 & 1) == 0))
+  blockCopy = block;
+  pDFDocument = [(SSSScreenshot *)self PDFDocument];
+  if (pDFDocument && (v6 = pDFDocument, v7 = [(SSSScreenshot *)self isDeleted], v6, (v7 & 1) == 0))
   {
     self->_pdfIsSaving = 1;
     objc_initWeak(&location, self);
@@ -1494,41 +1494,41 @@ LABEL_10:
     block[2] = sub_10001DBB8;
     block[3] = &unk_1000BA728;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
+    v10 = blockCopy;
     dispatch_async(pdfSavingQueue, block);
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
 
-  else if (v4)
+  else if (blockCopy)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 
 - (id)editedPDFDataForShareSheet
 {
-  v3 = [(SSSScreenshot *)self PDFDocument];
+  pDFDocument = [(SSSScreenshot *)self PDFDocument];
 
-  if (v3)
+  if (pDFDocument)
   {
     [(SSSScreenshot *)self _setDocumentIsSaving:1];
-    v4 = [(SSSScreenshot *)self PDFDocument];
-    v3 = [v4 dataRepresentation];
+    pDFDocument2 = [(SSSScreenshot *)self PDFDocument];
+    pDFDocument = [pDFDocument2 dataRepresentation];
 
     [(SSSScreenshot *)self _setDocumentIsSaving:0];
   }
 
-  return v3;
+  return pDFDocument;
 }
 
 - (id)temporaryPDFFile
 {
-  v3 = [(SSSScreenshot *)self editedPDFDataForShareSheet];
-  if (v3)
+  editedPDFDataForShareSheet = [(SSSScreenshot *)self editedPDFDataForShareSheet];
+  if (editedPDFDataForShareSheet)
   {
-    v4 = [(SSSScreenshot *)self _savePDFToTemporaryPathWithData:v3];
+    v4 = [(SSSScreenshot *)self _savePDFToTemporaryPathWithData:editedPDFDataForShareSheet];
     [(SSSScreenshot *)self setTemporaryPDFURL:v4];
   }
 
@@ -1540,11 +1540,11 @@ LABEL_10:
   return v4;
 }
 
-- (id)_savePDFToTemporaryPathWithData:(id)a3
+- (id)_savePDFToTemporaryPathWithData:(id)data
 {
-  v4 = a3;
-  v5 = [(SSSScreenshot *)self filename];
-  v6 = [v5 stringByAppendingPathExtension:@"pdf"];
+  dataCopy = data;
+  filename = [(SSSScreenshot *)self filename];
+  v6 = [filename stringByAppendingPathExtension:@"pdf"];
 
   if (!v6)
   {
@@ -1563,7 +1563,7 @@ LABEL_10:
   v11 = [v10 URLByAppendingPathComponent:v6];
 
   v19 = 0;
-  v12 = [v4 writeToURL:v11 options:1 error:&v19];
+  v12 = [dataCopy writeToURL:v11 options:1 error:&v19];
 
   v13 = v19;
   v14 = os_log_create("com.apple.screenshotservices", "PDF");
@@ -1601,9 +1601,9 @@ LABEL_10:
 
 - (void)q_saveEditedPDF
 {
-  v3 = [(SSSScreenshot *)self PDFDocument];
+  pDFDocument = [(SSSScreenshot *)self PDFDocument];
 
-  if (v3)
+  if (pDFDocument)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1611,13 +1611,13 @@ LABEL_10:
     block[3] = &unk_1000BA068;
     block[4] = self;
     dispatch_sync(&_dispatch_main_q, block);
-    v4 = [(SSSScreenshot *)self PDFDocument];
-    v5 = [v4 dataRepresentation];
+    pDFDocument2 = [(SSSScreenshot *)self PDFDocument];
+    dataRepresentation = [pDFDocument2 dataRepresentation];
 
     v6 = os_log_create("com.apple.screenshotservices", "PDF");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      sub_100074714(v5);
+      sub_100074714(dataRepresentation);
     }
 
     v37[0] = _NSConcreteStackBlock;
@@ -1627,17 +1627,17 @@ LABEL_10:
     v37[4] = self;
     dispatch_sync(&_dispatch_main_q, v37);
 
-    if (v5)
+    if (dataRepresentation)
     {
       v33 = 0;
       v34 = &v33;
       v35 = 0x2020000000;
       v36 = 0;
-      v7 = [(SSSScreenshot *)self PDFURL];
-      v8 = v7;
-      if (v7)
+      pDFURL = [(SSSScreenshot *)self PDFURL];
+      v8 = pDFURL;
+      if (pDFURL)
       {
-        v9 = [v7 startAccessingSecurityScopedResource];
+        startAccessingSecurityScopedResource = [pDFURL startAccessingSecurityScopedResource];
         v10 = [[NSFileCoordinator alloc] initWithFilePresenter:0];
         v29[0] = _NSConcreteStackBlock;
         v29[1] = 3221225472;
@@ -1645,10 +1645,10 @@ LABEL_10:
         v29[3] = &unk_1000BA750;
         v31 = &v33;
         v32 = 0;
-        v30 = v5;
+        v30 = dataRepresentation;
         [v10 coordinateWritingItemAtURL:v8 options:0 error:&v32 byAccessor:v29];
         v11 = v32;
-        if (v9)
+        if (startAccessingSecurityScopedResource)
         {
           [v8 stopAccessingSecurityScopedResource];
         }
@@ -1667,7 +1667,7 @@ LABEL_10:
 
       else
       {
-        v13 = [(SSSScreenshot *)self _savePDFToTemporaryPathWithData:v5];
+        v13 = [(SSSScreenshot *)self _savePDFToTemporaryPathWithData:dataRepresentation];
 
         if (v13)
         {
@@ -1701,25 +1701,25 @@ LABEL_10:
   }
 }
 
-- (void)_setDocumentIsSaving:(BOOL)a3
+- (void)_setDocumentIsSaving:(BOOL)saving
 {
-  v3 = a3;
+  savingCopy = saving;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v5 = [(SSSScreenshot *)self PDFDocument];
+    pDFDocument = [(SSSScreenshot *)self PDFDocument];
 
-    if (v5)
+    if (pDFDocument)
     {
-      if (v3 && !self->_savedCropBoxes)
+      if (savingCopy && !self->_savedCropBoxes)
       {
-        v6 = [(SSSScreenshot *)self PDFDocument];
-        self->_savedCropBoxes = malloc_type_calloc([v6 pageCount], 0x20uLL, 0x1000040E0EAB150uLL);
+        pDFDocument2 = [(SSSScreenshot *)self PDFDocument];
+        self->_savedCropBoxes = malloc_type_calloc([pDFDocument2 pageCount], 0x20uLL, 0x1000040E0EAB150uLL);
       }
 
-      v7 = [(SSSScreenshot *)self PDFDocument];
-      v8 = [v7 pageCount];
+      pDFDocument3 = [(SSSScreenshot *)self PDFDocument];
+      pageCount = [pDFDocument3 pageCount];
 
-      if (v8)
+      if (pageCount)
       {
         v9 = 0;
         v10 = 0;
@@ -1731,11 +1731,11 @@ LABEL_10:
           v13 = v12;
           if (objc_opt_respondsToSelector())
           {
-            [v13 setIsSaving:v3];
+            [v13 setIsSaving:savingCopy];
           }
 
           savedCropBoxes = self->_savedCropBoxes;
-          if (v3)
+          if (savingCopy)
           {
             [v13 boundsForBox:1];
             p_x = &savedCropBoxes[v9].origin.x;
@@ -1790,16 +1790,16 @@ LABEL_10:
           }
 
           ++v10;
-          v33 = [(SSSScreenshot *)self PDFDocument];
-          v34 = [v33 pageCount];
+          pDFDocument4 = [(SSSScreenshot *)self PDFDocument];
+          pageCount2 = [pDFDocument4 pageCount];
 
           ++v9;
         }
 
-        while (v34 > v10);
+        while (pageCount2 > v10);
       }
 
-      if (!v3)
+      if (!savingCopy)
       {
         v35 = self->_savedCropBoxes;
         if (v35)
@@ -1814,22 +1814,22 @@ LABEL_10:
 
 - (BOOL)canAutosaveToFiles
 {
-  v2 = [(SSSScreenshot *)self environmentDescription];
-  v3 = [v2 canAutosaveToFiles];
+  environmentDescription = [(SSSScreenshot *)self environmentDescription];
+  canAutosaveToFiles = [environmentDescription canAutosaveToFiles];
 
-  return v3;
+  return canAutosaveToFiles;
 }
 
 - (BOOL)pdfCanBeConvertedToImage
 {
-  v2 = [(SSSScreenshot *)self PDFDocument];
-  v3 = v2;
-  if (v2)
+  pDFDocument = [(SSSScreenshot *)self PDFDocument];
+  v3 = pDFDocument;
+  if (pDFDocument)
   {
-    v4 = [v2 pageCount];
-    if (v4)
+    pageCount = [pDFDocument pageCount];
+    if (pageCount)
     {
-      v5 = v4;
+      v5 = pageCount;
       v6 = 0;
       v7 = 0.0;
       v8 = 0.0;
@@ -1914,24 +1914,24 @@ LABEL_9:
 
 - (id)pdfAsImage
 {
-  v2 = [(SSSScreenshot *)self PDFDocument];
-  v3 = [v2 asImage];
+  pDFDocument = [(SSSScreenshot *)self PDFDocument];
+  asImage = [pDFDocument asImage];
 
-  return v3;
+  return asImage;
 }
 
-- (void)deletePDFPage:(id)a3
+- (void)deletePDFPage:(id)page
 {
-  v9 = a3;
-  v4 = [(SSSScreenshot *)self PDFDocument];
+  pageCopy = page;
+  pDFDocument = [(SSSScreenshot *)self PDFDocument];
 
-  if (v4)
+  if (pDFDocument)
   {
-    v5 = [(SSSScreenshot *)self representation];
-    v6 = [v5 screenshotPDFPageIndex:v9];
+    representation = [(SSSScreenshot *)self representation];
+    v6 = [representation screenshotPDFPageIndex:pageCopy];
 
     v7 = [(SSSScreenshot *)self modelModificationInfoForState:1, v6];
-    v8 = [SSSPDFPageUndoObject newPageUndoObjectWithPDFPage:v9 index:v6 modificationInfo:v7];
+    v8 = [SSSPDFPageUndoObject newPageUndoObjectWithPDFPage:pageCopy index:v6 modificationInfo:v7];
     [(SSSScreenshot *)self _deletePageInPDF:v8];
   }
 }
@@ -1944,23 +1944,23 @@ LABEL_9:
   return v3;
 }
 
-- (void)_deletePageInPDF:(id)a3
+- (void)_deletePageInPDF:(id)f
 {
-  v4 = a3;
-  v5 = [v4 index];
-  v6 = [(SSSScreenshot *)self representation];
-  [v6 screenshotDeletePDFPage:v5];
+  fCopy = f;
+  index = [fCopy index];
+  representation = [(SSSScreenshot *)self representation];
+  [representation screenshotDeletePDFPage:index];
 
   v10 = [(SSSScreenshot *)self undoManagerForEditMode:1];
-  v7 = [(SSSScreenshot *)self _actionNameForDeletePDFPage];
-  [v10 setActionName:v7];
+  _actionNameForDeletePDFPage = [(SSSScreenshot *)self _actionNameForDeletePDFPage];
+  [v10 setActionName:_actionNameForDeletePDFPage];
 
-  [v10 registerUndoWithTarget:self selector:"_addPageInPDF:" object:v4];
-  [(NSMutableArray *)self->_pdfModelModificationInfos removeObjectAtIndex:v5];
-  [(NSMutableArray *)self->_pdfViewModificationInfos removeObjectAtIndex:v5];
-  if (v5)
+  [v10 registerUndoWithTarget:self selector:"_addPageInPDF:" object:fCopy];
+  [(NSMutableArray *)self->_pdfModelModificationInfos removeObjectAtIndex:index];
+  [(NSMutableArray *)self->_pdfViewModificationInfos removeObjectAtIndex:index];
+  if (index)
   {
-    v8 = v5 - 1;
+    v8 = index - 1;
   }
 
   else
@@ -1968,31 +1968,31 @@ LABEL_9:
     v8 = 0;
   }
 
-  v9 = [(SSSScreenshot *)self representation];
-  [v9 screenshotShouldJumpToPDFPageIndex:v8];
+  representation2 = [(SSSScreenshot *)self representation];
+  [representation2 screenshotShouldJumpToPDFPageIndex:v8];
 }
 
-- (void)_addPageInPDF:(id)a3
+- (void)_addPageInPDF:(id)f
 {
-  v4 = a3;
-  v5 = [v4 index];
-  v13 = [v4 modificationInfo];
-  v6 = [(SSSScreenshot *)self representation];
-  v7 = [v4 page];
-  [v6 screenshotInsertPDFPage:v7 pageIndex:{objc_msgSend(v4, "index")}];
+  fCopy = f;
+  index = [fCopy index];
+  modificationInfo = [fCopy modificationInfo];
+  representation = [(SSSScreenshot *)self representation];
+  page = [fCopy page];
+  [representation screenshotInsertPDFPage:page pageIndex:{objc_msgSend(fCopy, "index")}];
 
   v8 = [(SSSScreenshot *)self undoManagerForEditMode:1];
-  v9 = [(SSSScreenshot *)self _actionNameForDeletePDFPage];
-  [v8 setActionName:v9];
+  _actionNameForDeletePDFPage = [(SSSScreenshot *)self _actionNameForDeletePDFPage];
+  [v8 setActionName:_actionNameForDeletePDFPage];
 
-  [v8 registerUndoWithTarget:self selector:"_deletePageInPDF:" object:v4];
-  [(NSMutableArray *)self->_pdfModelModificationInfos insertObject:v13 atIndex:v5];
+  [v8 registerUndoWithTarget:self selector:"_deletePageInPDF:" object:fCopy];
+  [(NSMutableArray *)self->_pdfModelModificationInfos insertObject:modificationInfo atIndex:index];
   pdfViewModificationInfos = self->_pdfViewModificationInfos;
-  v11 = [v13 mutableCopy];
-  [(NSMutableArray *)pdfViewModificationInfos insertObject:v11 atIndex:v5];
+  v11 = [modificationInfo mutableCopy];
+  [(NSMutableArray *)pdfViewModificationInfos insertObject:v11 atIndex:index];
 
-  v12 = [(SSSScreenshot *)self representation];
-  [v12 screenshotShouldJumpToPDFPageIndex:v5];
+  representation2 = [(SSSScreenshot *)self representation];
+  [representation2 screenshotShouldJumpToPDFPageIndex:index];
 }
 
 - (id)itemProviderForDragItems
@@ -2000,13 +2000,13 @@ LABEL_9:
   v3 = objc_alloc_init(NSItemProvider);
   if ([(SSSScreenshot *)self lastViewEditMode])
   {
-    v4 = [UTTypePDF identifier];
+    identifier = [UTTypePDF identifier];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10001F154;
     v13[3] = &unk_1000BA7C8;
     v13[4] = self;
-    [v3 registerDataRepresentationForTypeIdentifier:v4 visibility:0 loadHandler:v13];
+    [v3 registerDataRepresentationForTypeIdentifier:identifier visibility:0 loadHandler:v13];
   }
 
   else
@@ -2019,14 +2019,14 @@ LABEL_9:
     [v3 registerObjectOfClass:objc_opt_class() visibility:0 loadHandler:v14];
   }
 
-  v5 = [(SSSScreenshot *)self filename];
-  [v3 setSuggestedName:v5];
+  filename = [(SSSScreenshot *)self filename];
+  [v3 setSuggestedName:filename];
 
-  v6 = [(SSSScreenshot *)self modelModificationInfo];
-  v7 = v6;
-  if (v6)
+  modelModificationInfo = [(SSSScreenshot *)self modelModificationInfo];
+  v7 = modelModificationInfo;
+  if (modelModificationInfo)
   {
-    [v6 cropInfo];
+    [modelModificationInfo cropInfo];
     v8 = v12;
     v9 = v11;
   }
@@ -2045,11 +2045,11 @@ LABEL_9:
 - (id)loggableDescription
 {
   v3 = +[NSMutableString string];
-  v4 = [(SSSScreenshot *)self modelModificationInfo];
-  v5 = v4;
-  if (v4)
+  modelModificationInfo = [(SSSScreenshot *)self modelModificationInfo];
+  v5 = modelModificationInfo;
+  if (modelModificationInfo)
   {
-    [v4 cropInfo];
+    [modelModificationInfo cropInfo];
     v7 = v24;
     v6 = v23;
     v9 = v26;
@@ -2068,23 +2068,23 @@ LABEL_9:
   v11 = [NSString stringWithFormat:@"image crop: %@ ", v10];
   [v3 appendString:v11];
 
-  v12 = [(SSSScreenshot *)self modelModificationInfo];
-  v13 = [v12 annotations];
-  v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"image # of annotations: %lu ", [v13 count]);
+  modelModificationInfo2 = [(SSSScreenshot *)self modelModificationInfo];
+  annotations = [modelModificationInfo2 annotations];
+  v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"image # of annotations: %lu ", [annotations count]);
   [v3 appendString:v14];
 
-  v15 = [(SSSScreenshot *)self modelModificationInfo];
-  [v15 vellumOpacity];
+  modelModificationInfo3 = [(SSSScreenshot *)self modelModificationInfo];
+  [modelModificationInfo3 vellumOpacity];
   v17 = [NSString stringWithFormat:@"image vellum opacity: %f ", v16];
   [v3 appendString:v17];
 
-  v18 = [(SSSScreenshot *)self pdfData];
+  pdfData = [(SSSScreenshot *)self pdfData];
 
-  if (v18)
+  if (pdfData)
   {
-    v19 = [(SSSScreenshot *)self PDFDocument];
-    v20 = [(SSSScreenshot *)self PDFDocument];
-    v21 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"PDF %@ available with %lu pages", v19, [v20 pageCount]);
+    pDFDocument = [(SSSScreenshot *)self PDFDocument];
+    pDFDocument2 = [(SSSScreenshot *)self PDFDocument];
+    v21 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"PDF %@ available with %lu pages", pDFDocument, [pDFDocument2 pageCount]);
     [v3 appendString:v21];
   }
 
@@ -2096,9 +2096,9 @@ LABEL_9:
   return v3;
 }
 
-- (void)insertIntoQuickNoteWithCompletion:(id)a3
+- (void)insertIntoQuickNoteWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_linkContextClient)
   {
     v15 = 0;
@@ -2132,8 +2132,8 @@ LABEL_9:
   v11[3] = &unk_1000BA320;
   objc_copyWeak(&v13, location);
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_async(pdfSavingQueue, v11);
 
   objc_destroyWeak(&v13);

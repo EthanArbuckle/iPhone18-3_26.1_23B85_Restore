@@ -1,9 +1,9 @@
 @interface BLSHDefaultsObserver
 - (BLSHDefaultsObserver)init;
-- (void)addHandlerForKey:(id)a3 attributes:(id)a4;
+- (void)addHandlerForKey:(id)key attributes:(id)attributes;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation BLSHDefaultsObserver
@@ -24,30 +24,30 @@
     handlers = v2->_handlers;
     v2->_handlers = v5;
 
-    v7 = [MEMORY[0x277CF0840] alwaysFillFlipbook];
-    v25[0] = v7;
+    alwaysFillFlipbook = [MEMORY[0x277CF0840] alwaysFillFlipbook];
+    v25[0] = alwaysFillFlipbook;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
     [(BLSHDefaultsObserver *)v2 addHandlerForKey:@"alwaysFillFlipbook" attributes:v8];
 
-    v9 = [MEMORY[0x277CF0900] disableWatchdogs];
-    v24 = v9;
+    disableWatchdogs = [MEMORY[0x277CF0900] disableWatchdogs];
+    v24 = disableWatchdogs;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
     [(BLSHDefaultsObserver *)v2 addHandlerForKey:@"backlightWatchdogsDisabled" attributes:v10];
 
-    v11 = [MEMORY[0x277CF0910] disableFlipbook];
-    v23[0] = v11;
-    v12 = [MEMORY[0x277CF0980] pauseOnSystemSleep];
-    v23[1] = v12;
+    disableFlipbook = [MEMORY[0x277CF0910] disableFlipbook];
+    v23[0] = disableFlipbook;
+    pauseOnSystemSleep = [MEMORY[0x277CF0980] pauseOnSystemSleep];
+    v23[1] = pauseOnSystemSleep;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
     [(BLSHDefaultsObserver *)v2 addHandlerForKey:@"disableFlipbook" attributes:v13];
 
-    v14 = [MEMORY[0x277CF09E0] transparentFlipbook];
-    v22 = v14;
+    transparentFlipbook = [MEMORY[0x277CF09E0] transparentFlipbook];
+    v22 = transparentFlipbook;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
     [(BLSHDefaultsObserver *)v2 addHandlerForKey:@"transparentFlipbook" attributes:v15];
 
-    v16 = [MEMORY[0x277CF0998] usePseudoFlipbook];
-    v21 = v16;
+    usePseudoFlipbook = [MEMORY[0x277CF0998] usePseudoFlipbook];
+    v21 = usePseudoFlipbook;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
     [(BLSHDefaultsObserver *)v2 addHandlerForKey:@"usePseudoFlipbook" attributes:v17];
   }
@@ -56,14 +56,14 @@
   return v2;
 }
 
-- (void)addHandlerForKey:(id)a3 attributes:(id)a4
+- (void)addHandlerForKey:(id)key attributes:(id)attributes
 {
   handlers = self->_handlers;
-  v8 = a3;
-  v7 = [BLSHDefaultHandler handlerForKey:v8 attributes:a4];
-  [(NSMapTable *)handlers setObject:v7 forKey:v8];
+  keyCopy = key;
+  v7 = [BLSHDefaultHandler handlerForKey:keyCopy attributes:attributes];
+  [(NSMapTable *)handlers setObject:v7 forKey:keyCopy];
 
-  [(NSUserDefaults *)self->_observedDefaults addObserver:self forKeyPath:v8 options:5 context:v8];
+  [(NSUserDefaults *)self->_observedDefaults addObserver:self forKeyPath:keyCopy options:5 context:keyCopy];
 }
 
 - (void)dealloc
@@ -71,7 +71,7 @@
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"[self invalidated]"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v3 = NSStringFromSelector(a1);
+    v3 = NSStringFromSelector(self);
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_0_0();
@@ -125,33 +125,33 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(NSMapTable *)self->_handlers objectForKey:a6];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = [(NSMapTable *)self->_handlers objectForKey:context];
   if (v13 && ![(BLSHDefaultsObserver *)self invalidated])
   {
-    v14 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v14 BOOLValue];
+      bOOLValue = [v14 BOOLValue];
     }
 
     else
     {
-      v15 = 0;
+      bOOLValue = 0;
     }
 
-    [v13 updateForNewValue:v15];
+    [v13 updateForNewValue:bOOLValue];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = BLSHDefaultsObserver;
-    [(BLSHDefaultsObserver *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BLSHDefaultsObserver *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

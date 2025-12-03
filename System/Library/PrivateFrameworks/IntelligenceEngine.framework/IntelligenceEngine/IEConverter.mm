@@ -1,12 +1,12 @@
 @interface IEConverter
-- (BOOL)convertFile:(id)a3 withFormat:(unint64_t)a4;
+- (BOOL)convertFile:(id)file withFormat:(unint64_t)format;
 @end
 
 @implementation IEConverter
 
-- (BOOL)convertFile:(id)a3 withFormat:(unint64_t)a4
+- (BOOL)convertFile:(id)file withFormat:(unint64_t)format
 {
-  v4 = a3;
+  fileCopy = file;
   if ((atomic_load_explicit(&qword_280AF4240, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF4240))
   {
     _MergedGlobals_6 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");

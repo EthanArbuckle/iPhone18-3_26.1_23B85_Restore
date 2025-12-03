@@ -1,25 +1,25 @@
 @interface AUAudioUnitViewService
-- (CGSize)determineViewSize:(id)a3;
+- (CGSize)determineViewSize:(id)size;
 - (void)connectChildView;
 - (void)dealloc;
 - (void)initializeBlankView;
 - (void)loadView;
-- (void)setAUContainerViewConstraints:(id)a3 childView:(id)a4 auViewSize:(CGSize)a5;
+- (void)setAUContainerViewConstraints:(id)constraints childView:(id)view auViewSize:(CGSize)size;
 @end
 
 @implementation AUAudioUnitViewService
 
-- (CGSize)determineViewSize:(id)a3
+- (CGSize)determineViewSize:(id)size
 {
-  v3 = a3;
-  [v3 preferredContentSize];
+  sizeCopy = size;
+  [sizeCopy preferredContentSize];
   v5 = v4;
-  [v3 preferredContentSize];
+  [sizeCopy preferredContentSize];
   v7 = v6;
   if (!v5)
   {
-    v10 = [v3 view];
-    [v10 frame];
+    view = [sizeCopy view];
+    [view frame];
     v8 = v11;
 
     if (v7)
@@ -28,8 +28,8 @@
     }
 
 LABEL_5:
-    v12 = [v3 view];
-    [v12 frame];
+    view2 = [sizeCopy view];
+    [view2 frame];
     v9 = v13;
 
     goto LABEL_6;
@@ -52,27 +52,27 @@ LABEL_6:
   return result;
 }
 
-- (void)setAUContainerViewConstraints:(id)a3 childView:(id)a4 auViewSize:(CGSize)a5
+- (void)setAUContainerViewConstraints:(id)constraints childView:(id)view auViewSize:(CGSize)size
 {
-  v6 = a3;
-  v9 = _NSDictionaryOfVariableBindings(&cfstr_Childview.isa, a4, 0);
+  constraintsCopy = constraints;
+  v9 = _NSDictionaryOfVariableBindings(&cfstr_Childview.isa, view, 0);
   v7 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[childView]|" options:0 metrics:0 views:v9];
-  [v6 addConstraints:v7];
+  [constraintsCopy addConstraints:v7];
 
   v8 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[childView]|" options:0 metrics:0 views:v9];
-  [v6 addConstraints:v8];
+  [constraintsCopy addConstraints:v8];
 }
 
 - (void)connectChildView
 {
   objc_initWeak(&location, self);
-  v3 = [(AUAudioUnitViewService *)self auRemoteExtensionContext];
+  auRemoteExtensionContext = [(AUAudioUnitViewService *)self auRemoteExtensionContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__AUAudioUnitViewService_connectChildView__block_invoke;
   v4[3] = &unk_278A25548;
   objc_copyWeak(&v5, &location);
-  [v3 requestViewControllerWithCompletionHandler:v4];
+  [auRemoteExtensionContext requestViewControllerWithCompletionHandler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -121,11 +121,11 @@ void __42__AUAudioUnitViewService_connectChildView__block_invoke(uint64_t a1, vo
 - (void)loadView
 {
   [(AUAudioUnitViewService *)self initializeBlankView];
-  v3 = [(AUAudioUnitViewService *)self extensionContext];
-  [(AUAudioUnitViewService *)self setAuRemoteExtensionContext:v3];
+  extensionContext = [(AUAudioUnitViewService *)self extensionContext];
+  [(AUAudioUnitViewService *)self setAuRemoteExtensionContext:extensionContext];
 
-  v4 = [(AUAudioUnitViewService *)self auRemoteExtensionContext];
-  [v4 setViewService:self];
+  auRemoteExtensionContext = [(AUAudioUnitViewService *)self auRemoteExtensionContext];
+  [auRemoteExtensionContext setViewService:self];
 
   [(AUAudioUnitViewService *)self connectChildView];
 }
@@ -137,8 +137,8 @@ void __42__AUAudioUnitViewService_connectChildView__block_invoke(uint64_t a1, vo
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(AUAudioUnitViewService *)self childViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  childViewControllers = [(AUAudioUnitViewService *)self childViewControllers];
+  v4 = [childViewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -150,17 +150,17 @@ void __42__AUAudioUnitViewService_connectChildView__block_invoke(uint64_t a1, vo
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) view];
-        [v8 removeFromSuperview];
+        view = [*(*(&v10 + 1) + 8 * v7) view];
+        [view removeFromSuperview];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);

@@ -1,18 +1,18 @@
 @interface UIEditingOverlayViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 @end
 
 @implementation UIEditingOverlayViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIEditingOverlayViewController" hasInstanceMethod:@"undoInteraction" withFullSignature:{"@", 0}];
   v4 = "B";
   v3 = @"UIUndoGestureInteraction";

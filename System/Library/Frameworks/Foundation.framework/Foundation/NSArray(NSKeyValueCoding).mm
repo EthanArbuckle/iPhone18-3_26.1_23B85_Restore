@@ -34,13 +34,13 @@
     v14 = 0;
   }
 
-  v6 = [a1 count];
+  v6 = [self count];
   if (v6)
   {
     v7 = v6;
     for (i = 0; i != v7; ++i)
     {
-      v9 = [a1 _valueForKeyPath:a3 ofObjectAtIndex:i];
+      v9 = [self _valueForKeyPath:a3 ofObjectAtIndex:i];
       if (v9)
       {
         LODWORD(v12) = 0;
@@ -57,11 +57,11 @@
 
 - (uint64_t)_avgForKeyPath:()NSKeyValueCoding
 {
-  result = [a1 count];
+  result = [self count];
   if (result)
   {
     v6 = result;
-    v7 = [a1 _sumForKeyPath:a3];
+    v7 = [self _sumForKeyPath:a3];
     v8 = [NSDecimalNumber numberWithUnsignedInteger:v6];
 
     return [v7 decimalNumberByDividingBy:v8];
@@ -72,14 +72,14 @@
 
 - (NSNumber)_countForKeyPath:()NSKeyValueCoding
 {
-  v1 = [a1 count];
+  v1 = [self count];
 
   return [NSNumber numberWithInteger:v1];
 }
 
 - (void)_maxForKeyPath:()NSKeyValueCoding
 {
-  v5 = [a1 count];
+  v5 = [self count];
   if (!v5)
   {
     return 0;
@@ -89,7 +89,7 @@
   v7 = 0;
   for (i = 0; i != v6; ++i)
   {
-    v9 = [a1 _valueForKeyPath:a3 ofObjectAtIndex:i];
+    v9 = [self _valueForKeyPath:a3 ofObjectAtIndex:i];
     if (v9)
     {
       v10 = v9;
@@ -105,7 +105,7 @@
 
 - (void)_minForKeyPath:()NSKeyValueCoding
 {
-  v5 = [a1 count];
+  v5 = [self count];
   if (!v5)
   {
     return 0;
@@ -115,7 +115,7 @@
   v7 = 0;
   for (i = 0; i != v6; ++i)
   {
-    v9 = [a1 _valueForKeyPath:a3 ofObjectAtIndex:i];
+    v9 = [self _valueForKeyPath:a3 ofObjectAtIndex:i];
     if (v9)
     {
       v10 = v9;
@@ -131,13 +131,13 @@
 
 - (void)_unionOfObjectsForKeyPath:()NSKeyValueCoding
 {
-  v5 = [a1 count];
+  v5 = [self count];
   v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
   if (v5)
   {
     for (i = 0; i != v5; ++i)
     {
-      v8 = [a1 _valueForKeyPath:a3 ofObjectAtIndex:i];
+      v8 = [self _valueForKeyPath:a3 ofObjectAtIndex:i];
       if (v8)
       {
         [v6 addObject:v8];
@@ -150,13 +150,13 @@
 
 - (void)_unionOfArraysForKeyPath:()NSKeyValueCoding
 {
-  v5 = [a1 count];
+  v5 = [self count];
   v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
   if (v5)
   {
     for (i = 0; i != v5; ++i)
     {
-      v8 = [a1 _valueForKeyPath:a3 ofObjectAtIndex:i];
+      v8 = [self _valueForKeyPath:a3 ofObjectAtIndex:i];
       if (v8)
       {
         [v6 addObjectsFromArray:v8];
@@ -169,13 +169,13 @@
 
 - (void)_unionOfSetsForKeyPath:()NSKeyValueCoding
 {
-  v5 = [a1 count];
+  v5 = [self count];
   v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
   if (v5)
   {
     for (i = 0; i != v5; ++i)
     {
-      v8 = [a1 _valueForKeyPath:a3 ofObjectAtIndex:i];
+      v8 = [self _valueForKeyPath:a3 ofObjectAtIndex:i];
       if (v8)
       {
         [v6 addObjectsFromArray:{objc_msgSend(v8, "allObjects")}];
@@ -188,27 +188,27 @@
 
 - (uint64_t)_distinctUnionOfArraysForKeyPath:()NSKeyValueCoding
 {
-  v1 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(a1, "_unionOfArraysForKeyPath:")}];
+  v1 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(self, "_unionOfArraysForKeyPath:")}];
 
   return [v1 allObjects];
 }
 
 - (uint64_t)_distinctUnionOfObjectsForKeyPath:()NSKeyValueCoding
 {
-  v1 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(a1, "_unionOfObjectsForKeyPath:")}];
+  v1 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(self, "_unionOfObjectsForKeyPath:")}];
 
   return [v1 allObjects];
 }
 
 - (uint64_t)_distinctUnionOfSetsForKeyPath:()NSKeyValueCoding
 {
-  v5 = [a1 count];
+  v5 = [self count];
   v6 = [MEMORY[0x1E695DFA8] setWithCapacity:v5];
   if (v5)
   {
     for (i = 0; i != v5; ++i)
     {
-      v8 = [a1 _valueForKeyPath:a3 ofObjectAtIndex:i];
+      v8 = [self _valueForKeyPath:a3 ofObjectAtIndex:i];
       if (v8)
       {
         [v6 unionSet:v8];
@@ -226,21 +226,21 @@
   if (v5 && (v6 = v5, [a3 characterAtIndex:0] == 64) && (v7 = objc_msgSend(a3, "_newSubstringWithRange:zone:", 1, v6 - 1, 0)) != 0)
   {
     v8 = v7;
-    v21.receiver = a1;
+    v21.receiver = self;
     v21.super_class = NSArray_0;
     v9 = objc_msgSendSuper2(&v21, sel_valueForKey_, v7);
   }
 
   else
   {
-    v10 = [a1 count];
+    v10 = [self count];
     v11 = NSAllocateObjectArray(v10);
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = [a1 countByEnumeratingWithState:&v23 objects:v22 count:16];
+    v13 = [self countByEnumeratingWithState:&v23 objects:v22 count:16];
     if (v13)
     {
       v14 = 0;
@@ -253,7 +253,7 @@
         {
           if (*v24 != v15)
           {
-            objc_enumerationMutation(a1);
+            objc_enumerationMutation(self);
           }
 
           v18 = [*(*(&v23 + 1) + 8 * v16) valueForKey:a3];
@@ -264,7 +264,7 @@
 
           else
           {
-            v19 = v12;
+            v19 = null;
           }
 
           v14 = v17 + 1;
@@ -274,7 +274,7 @@
         }
 
         while (v13 != v16);
-        v13 = [a1 countByEnumeratingWithState:&v23 objects:v22 count:16];
+        v13 = [self countByEnumeratingWithState:&v23 objects:v22 count:16];
       }
 
       while (v13);
@@ -294,7 +294,7 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  result = [a1 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  result = [self countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (result)
   {
     v8 = result;
@@ -306,14 +306,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         [*(*(&v12 + 1) + 8 * v10++) setValue:a3 forKey:a4];
       }
 
       while (v8 != v10);
-      result = [a1 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      result = [self countByEnumeratingWithState:&v12 objects:v11 count:16];
       v8 = result;
     }
 
@@ -353,7 +353,7 @@
             {
 
               v23 = v10;
-              v24 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"[<%@ %p> valueForKeyPath:]: this class does not implement the %@ operation.", objc_opt_class(), a1, v10), 0}];
+              v24 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"[<%@ %p> valueForKeyPath:]: this class does not implement the %@ operation.", objc_opt_class(), self, v10), 0}];
               objc_exception_throw(v24);
             }
           }
@@ -370,7 +370,7 @@
         v10 = [a3 _newSubstringWithRange:1 zone:{v6 - 1, 0}];
       }
 
-      v27.receiver = a1;
+      v27.receiver = self;
       v27.super_class = NSArray_0;
       v21 = objc_msgSendSuper2(&v27, sel_valueForKey_, v10);
 LABEL_11:
@@ -379,7 +379,7 @@ LABEL_11:
     }
   }
 
-  v26.receiver = a1;
+  v26.receiver = self;
   v26.super_class = NSArray_0;
   return objc_msgSendSuper2(&v26, sel_valueForKeyPath_, a3);
 }

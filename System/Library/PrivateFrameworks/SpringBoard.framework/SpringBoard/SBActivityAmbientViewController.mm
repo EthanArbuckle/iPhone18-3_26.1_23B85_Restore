@@ -1,108 +1,108 @@
 @interface SBActivityAmbientViewController
-- (BOOL)_activityHasDifferentAlertSceneTarget:(id)a3;
-- (BOOL)_canTransitionActivityItem:(id)a3 forTransitionType:(int64_t)a4;
-- (BOOL)_isActiveActivityItem:(id)a3;
-- (BOOL)_itemIsFirstPartyActivity:(id)a3;
-- (BOOL)_layerHasGaussianBlurFilter:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGRect)_compactOverlayFrameForContentSize:(CGSize)a3;
-- (SBActivityAmbientViewController)initWithPrimaryActivityItem:(id)a3 overlayMode:(int64_t)a4;
+- (BOOL)_activityHasDifferentAlertSceneTarget:(id)target;
+- (BOOL)_canTransitionActivityItem:(id)item forTransitionType:(int64_t)type;
+- (BOOL)_isActiveActivityItem:(id)item;
+- (BOOL)_itemIsFirstPartyActivity:(id)activity;
+- (BOOL)_layerHasGaussianBlurFilter:(id)filter;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGRect)_compactOverlayFrameForContentSize:(CGSize)size;
+- (SBActivityAmbientViewController)initWithPrimaryActivityItem:(id)item overlayMode:(int64_t)mode;
 - (SBActivityAmbientViewControllerDelegate)delegate;
-- (double)_blurWeightingForFullOverlayDismissalWithTranslation:(double)a3;
-- (double)_cornerRadiusForFullOverlayDismissalWithTranslation:(double)a3;
-- (double)_scaleForFullOverlayDismissalWithTranslation:(double)a3;
-- (id)_addNewSwitchingTransitionViewBelowSubview:(id)a3;
+- (double)_blurWeightingForFullOverlayDismissalWithTranslation:(double)translation;
+- (double)_cornerRadiusForFullOverlayDismissalWithTranslation:(double)translation;
+- (double)_scaleForFullOverlayDismissalWithTranslation:(double)translation;
+- (id)_addNewSwitchingTransitionViewBelowSubview:(id)subview;
 - (id)_ambientActivitySettings;
 - (id)_animationSettingsForFullOverlayDrag;
 - (id)_animationSettingsForFullOverlayDragCancel;
 - (id)_animationSettingsForFullOverlayTransitionYCurve;
-- (id)_animationSettingsForTransitionType:(int64_t)a3;
-- (id)_nextSecondaryActivityItemForTransitionType:(int64_t)a3;
-- (id)_sceneTargetBundleIdentifierForItem:(id)a3 configuringForAlert:(BOOL)a4;
+- (id)_animationSettingsForTransitionType:(int64_t)type;
+- (id)_nextSecondaryActivityItemForTransitionType:(int64_t)type;
+- (id)_sceneTargetBundleIdentifierForItem:(id)item configuringForAlert:(BOOL)alert;
 - (void)_addDismissGesture;
-- (void)_addGaussianBlurToLayer:(id)a3 inputRadius:(double)a4;
-- (void)_addNewBackgroundBlurMaterialViewWithInitialWeighting:(double)a3 hidden:(BOOL)a4;
-- (void)_addNewCompactOverlayTransitionViewWithParentView:(id)a3 alpha:(double)a4;
-- (void)_addNewFullOverlayTransitionBlurMaterialViewWithParentView:(id)a3 initialWeighting:(double)a4 hidden:(BOOL)a5;
+- (void)_addGaussianBlurToLayer:(id)layer inputRadius:(double)radius;
+- (void)_addNewBackgroundBlurMaterialViewWithInitialWeighting:(double)weighting hidden:(BOOL)hidden;
+- (void)_addNewCompactOverlayTransitionViewWithParentView:(id)view alpha:(double)alpha;
+- (void)_addNewFullOverlayTransitionBlurMaterialViewWithParentView:(id)view initialWeighting:(double)weighting hidden:(BOOL)hidden;
 - (void)_addOverlayForPrimaryActivity;
 - (void)_addSecondaryActivityItemIfAvailable;
-- (void)_animatePresentationOfCompactOverlayWithCompactViewController:(id)a3 completion:(id)a4;
-- (void)_animatePresentationOfFullOverlayWithViewController:(id)a3 completion:(id)a4;
-- (void)_animateTransitionToBecomeNewPrimaryAcivityWithItem:(id)a3 transitionType:(int64_t)a4 fullOverlayViewController:(id)a5 compactOverlayViewControllerForTransition:(id)a6 oldFullViewController:(id)a7 oldCompactViewController:(id)a8 completion:(id)a9;
-- (void)_animateTransitionToCompactOverlayForItem:(id)a3 transitionType:(int64_t)a4 compactOverlayViewController:(id)a5 completion:(id)a6;
-- (void)_animateTransitionToFullOverlayForPrimaryActivityItem:(id)a3 transitionType:(int64_t)a4 fullOverlayViewControllerForTransition:(id)a5 oldCompactOverlayViewController:(id)a6 completion:(id)a7;
-- (void)_beginFullOverlayDragWithTranslation:(CGPoint)a3;
-- (void)_beginTransitionForActivityItem:(id)a3 transitionType:(int64_t)a4 configuringForAlerting:(BOOL)a5 withCompletion:(id)a6;
+- (void)_animatePresentationOfCompactOverlayWithCompactViewController:(id)controller completion:(id)completion;
+- (void)_animatePresentationOfFullOverlayWithViewController:(id)controller completion:(id)completion;
+- (void)_animateTransitionToBecomeNewPrimaryAcivityWithItem:(id)item transitionType:(int64_t)type fullOverlayViewController:(id)controller compactOverlayViewControllerForTransition:(id)transition oldFullViewController:(id)viewController oldCompactViewController:(id)compactViewController completion:(id)completion;
+- (void)_animateTransitionToCompactOverlayForItem:(id)item transitionType:(int64_t)type compactOverlayViewController:(id)controller completion:(id)completion;
+- (void)_animateTransitionToFullOverlayForPrimaryActivityItem:(id)item transitionType:(int64_t)type fullOverlayViewControllerForTransition:(id)transition oldCompactOverlayViewController:(id)controller completion:(id)completion;
+- (void)_beginFullOverlayDragWithTranslation:(CGPoint)translation;
+- (void)_beginTransitionForActivityItem:(id)item transitionType:(int64_t)type configuringForAlerting:(BOOL)alerting withCompletion:(id)completion;
 - (void)_cancelFullOverlayDrag;
 - (void)_cleanupBackgroundBlurViewIfNecessary;
-- (void)_cleanupCompactViewController:(id)a3;
+- (void)_cleanupCompactViewController:(id)controller;
 - (void)_cleanupCurrentCompactOverlayViewController;
 - (void)_cleanupCurrentFullOverlayViewController;
-- (void)_cleanupFullViewController:(id)a3;
+- (void)_cleanupFullViewController:(id)controller;
 - (void)_cleanupSwitchingTransitionView;
 - (void)_cleanupTransitionBlurViewIfNecessary;
-- (void)_compactOverlayViewControllerForItem:(id)a3 completion:(id)a4;
+- (void)_compactOverlayViewControllerForItem:(id)item completion:(id)completion;
 - (void)_didUpdateVisibleActivityItems;
-- (void)_dismissCompactOverlayForActivityEnding:(BOOL)a3 completion:(id)a4;
-- (void)_dismissCompactOverlayWithView:(id)a3 forActivityEnding:(BOOL)a4 completion:(id)a5;
-- (void)_dismissFullOverlayWithCompletion:(id)a3;
-- (void)_endAndCleanupTransitionForActivityItem:(id)a3 forTransitionType:(int64_t)a4 compactOverlayViewController:(id)a5 fullOverlayViewController:(id)a6 completion:(id)a7;
-- (void)_fullOverlayViewControllerForItem:(id)a3 configuringForAlert:(BOOL)a4 completion:(id)a5;
-- (void)_handleDismissGesture:(id)a3;
-- (void)_handleDismissGestureBegan:(id)a3;
-- (void)_handleDismissGestureChanged:(id)a3;
-- (void)_handleDismissGestureEnded:(id)a3;
-- (void)_layoutCompactOverlayIfNecessaryWithView:(id)a3 frame:(CGRect)a4;
-- (void)_layoutFullOverlayWithActivityView:(id)a3;
-- (void)_prepareFullOverlayViewForDragWithLocation:(CGPoint)a3;
+- (void)_dismissCompactOverlayForActivityEnding:(BOOL)ending completion:(id)completion;
+- (void)_dismissCompactOverlayWithView:(id)view forActivityEnding:(BOOL)ending completion:(id)completion;
+- (void)_dismissFullOverlayWithCompletion:(id)completion;
+- (void)_endAndCleanupTransitionForActivityItem:(id)item forTransitionType:(int64_t)type compactOverlayViewController:(id)controller fullOverlayViewController:(id)viewController completion:(id)completion;
+- (void)_fullOverlayViewControllerForItem:(id)item configuringForAlert:(BOOL)alert completion:(id)completion;
+- (void)_handleDismissGesture:(id)gesture;
+- (void)_handleDismissGestureBegan:(id)began;
+- (void)_handleDismissGestureChanged:(id)changed;
+- (void)_handleDismissGestureEnded:(id)ended;
+- (void)_layoutCompactOverlayIfNecessaryWithView:(id)view frame:(CGRect)frame;
+- (void)_layoutFullOverlayWithActivityView:(id)view;
+- (void)_prepareFullOverlayViewForDragWithLocation:(CGPoint)location;
 - (void)_removeDismissGesture;
-- (void)_resetPrimaryActivityItemWithCompletion:(id)a3;
-- (void)_setAnchorPointForDrag:(CGPoint)a3 forView:(id)a4;
-- (void)_setPrimaryActivityItem:(id)a3;
-- (void)_setSecondaryActivityItem:(id)a3;
-- (void)_switchToAlertSceneForActivityItem:(id)a3;
-- (void)_transitionOverlayForActivityItem:(id)a3 withTransitionType:(int64_t)a4 configuringForAlerting:(BOOL)a5 withCompletion:(id)a6;
+- (void)_resetPrimaryActivityItemWithCompletion:(id)completion;
+- (void)_setAnchorPointForDrag:(CGPoint)drag forView:(id)view;
+- (void)_setPrimaryActivityItem:(id)item;
+- (void)_setSecondaryActivityItem:(id)item;
+- (void)_switchToAlertSceneForActivityItem:(id)item;
+- (void)_transitionOverlayForActivityItem:(id)item withTransitionType:(int64_t)type configuringForAlerting:(BOOL)alerting withCompletion:(id)completion;
 - (void)_updateAudioCategoriesDisablingVolumeHUD;
-- (void)_updateCompactActivityOverlayWithItem:(id)a3 withCompletion:(id)a4;
-- (void)_updateFullActivityOverlayWithItem:(id)a3 configuringForAlert:(BOOL)a4;
-- (void)activityViewController:(id)a3 didSetIdleTimerDisabled:(BOOL)a4;
-- (void)activityViewControllerContentRequestsCancellingGesture:(id)a3;
-- (void)activityViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:(id)a3;
-- (void)addOverlayForPrimaryActivityItem:(id)a3 withOverlayMode:(int64_t)a4;
-- (void)addOverlayForSecondaryActivityItem:(id)a3;
-- (void)alertActivityItem:(id)a3 withAlertBlock:(id)a4;
-- (void)alertDidDismissForActivityItem:(id)a3 completion:(id)a4;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)_updateCompactActivityOverlayWithItem:(id)item withCompletion:(id)completion;
+- (void)_updateFullActivityOverlayWithItem:(id)item configuringForAlert:(BOOL)alert;
+- (void)activityViewController:(id)controller didSetIdleTimerDisabled:(BOOL)disabled;
+- (void)activityViewControllerContentRequestsCancellingGesture:(id)gesture;
+- (void)activityViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:(id)d;
+- (void)addOverlayForPrimaryActivityItem:(id)item withOverlayMode:(int64_t)mode;
+- (void)addOverlayForSecondaryActivityItem:(id)item;
+- (void)alertActivityItem:(id)item withAlertBlock:(id)block;
+- (void)alertDidDismissForActivityItem:(id)item completion:(id)completion;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 - (void)invalidate;
 - (void)loadView;
-- (void)removeOverlayForActivityItem:(id)a3 withCompletion:(id)a4;
-- (void)setCompactOverlayHidden:(BOOL)a3;
-- (void)transitionToCompactOverlayModeWithCompletion:(id)a3;
+- (void)removeOverlayForActivityItem:(id)item withCompletion:(id)completion;
+- (void)setCompactOverlayHidden:(BOOL)hidden;
+- (void)transitionToCompactOverlayModeWithCompletion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SBActivityAmbientViewController
 
-- (SBActivityAmbientViewController)initWithPrimaryActivityItem:(id)a3 overlayMode:(int64_t)a4
+- (SBActivityAmbientViewController)initWithPrimaryActivityItem:(id)item overlayMode:(int64_t)mode
 {
-  v6 = a3;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = SBActivityAmbientViewController;
   v7 = [(SBActivityAmbientViewController *)&v12 initWithNibName:0 bundle:0];
   v8 = v7;
   if (v7)
   {
-    v7->_overlayMode = a4;
+    v7->_overlayMode = mode;
     v9 = objc_opt_new();
     itemsWithSwappedScenes = v8->_itemsWithSwappedScenes;
     v8->_itemsWithSwappedScenes = v9;
 
-    [(SBActivityAmbientViewController *)v8 _setPrimaryActivityItem:v6];
+    [(SBActivityAmbientViewController *)v8 _setPrimaryActivityItem:itemCopy];
   }
 
   return v8;
@@ -128,8 +128,8 @@
   v4.super_class = SBActivityAmbientViewController;
   [(SBActivityAmbientViewController *)&v4 viewDidLoad];
   [(SBActivityAmbientViewController *)self _addOverlayForPrimaryActivity];
-  v3 = [(SBActivityAmbientViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"sb-activity-ambient-view"];
+  view = [(SBActivityAmbientViewController *)self view];
+  [view setAccessibilityIdentifier:@"sb-activity-ambient-view"];
 }
 
 - (void)viewWillLayoutSubviews
@@ -156,19 +156,19 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBActivityAmbientViewController;
-  [(SBActivityAmbientViewController *)&v4 viewWillAppear:a3];
+  [(SBActivityAmbientViewController *)&v4 viewWillAppear:appear];
   [(SBActivityAmbientViewController *)self _addDismissGesture];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBActivityAmbientViewController;
-  [(SBActivityAmbientViewController *)&v4 viewWillDisappear:a3];
+  [(SBActivityAmbientViewController *)&v4 viewWillDisappear:disappear];
   [(SBActivityAmbientViewController *)self _cleanupCurrentCompactOverlayViewController];
   [(SBActivityAmbientViewController *)self _cleanupCurrentFullOverlayViewController];
   [(SBActivityAmbientViewController *)self _cleanupTransitionBlurViewIfNecessary];
@@ -176,36 +176,36 @@
   [(SBActivityAmbientViewController *)self _removeDismissGesture];
 }
 
-- (void)addOverlayForPrimaryActivityItem:(id)a3 withOverlayMode:(int64_t)a4
+- (void)addOverlayForPrimaryActivityItem:(id)item withOverlayMode:(int64_t)mode
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v6 = SBLogActivity();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 identifier];
+    identifier = [itemCopy identifier];
     v8 = 138543362;
-    v9 = v7;
+    v9 = identifier;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] adding ambient overlay for primary item", &v8, 0xCu);
   }
 
-  [(SBActivityAmbientViewController *)self _transitionOverlayForActivityItem:v5 withTransitionType:3 configuringForAlerting:0 withCompletion:0];
+  [(SBActivityAmbientViewController *)self _transitionOverlayForActivityItem:itemCopy withTransitionType:3 configuringForAlerting:0 withCompletion:0];
 }
 
-- (void)addOverlayForSecondaryActivityItem:(id)a3
+- (void)addOverlayForSecondaryActivityItem:(id)item
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = SBLogActivity();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [itemCopy identifier];
     v8 = 138543362;
-    v9 = v6;
+    v9 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] adding ambient overlay for secondary item", &v8, 0xCu);
   }
 
-  [(SBActivityAmbientViewController *)self _setSecondaryActivityItem:v4];
+  [(SBActivityAmbientViewController *)self _setSecondaryActivityItem:itemCopy];
   secondaryActivityItem = self->_secondaryActivityItem;
   if (secondaryActivityItem)
   {
@@ -213,36 +213,36 @@
   }
 }
 
-- (void)transitionToCompactOverlayModeWithCompletion:(id)a3
+- (void)transitionToCompactOverlayModeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_primaryActivityItem && !self->_overlayMode)
   {
-    v5 = v4;
+    v5 = completionCopy;
     [SBActivityAmbientViewController _transitionOverlayForActivityItem:"_transitionOverlayForActivityItem:withTransitionType:configuringForAlerting:withCompletion:" withTransitionType:? configuringForAlerting:? withCompletion:?];
-    v4 = v5;
+    completionCopy = v5;
   }
 }
 
-- (void)alertActivityItem:(id)a3 withAlertBlock:(id)a4
+- (void)alertActivityItem:(id)item withAlertBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  blockCopy = block;
   v8 = SBLogActivity();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(SBActivityItem *)v6 identifier];
+    identifier = [(SBActivityItem *)itemCopy identifier];
     v20 = 138543362;
-    v21 = v9;
+    v21 = identifier;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] ambient item alerting", &v20, 0xCu);
   }
 
   primaryActivityItem = self->_primaryActivityItem;
-  if (primaryActivityItem == v6)
+  if (primaryActivityItem == itemCopy)
   {
-    v12 = [(SBActivityViewController *)self->_fullOverlayViewController activityItem];
-    v11 = v12 == v6 || self->_isCreatingFullScreenOverlay;
+    activityItem = [(SBActivityViewController *)self->_fullOverlayViewController activityItem];
+    v11 = activityItem == itemCopy || self->_isCreatingFullScreenOverlay;
 
     primaryActivityItem = self->_primaryActivityItem;
   }
@@ -252,10 +252,10 @@
     v11 = 0;
   }
 
-  if (primaryActivityItem == v6)
+  if (primaryActivityItem == itemCopy)
   {
-    v14 = [(SBActivityViewController *)self->_compactOverlayViewController activityItem];
-    v13 = v14 == v6;
+    activityItem2 = [(SBActivityViewController *)self->_compactOverlayViewController activityItem];
+    v13 = activityItem2 == itemCopy;
   }
 
   else
@@ -264,19 +264,19 @@
   }
 
   secondaryActivityItem = self->_secondaryActivityItem;
-  v16 = [(SBActivityAmbientViewController *)self _activityHasDifferentAlertSceneTarget:v6];
+  v16 = [(SBActivityAmbientViewController *)self _activityHasDifferentAlertSceneTarget:itemCopy];
   if (v11)
   {
     if (v16)
     {
-      [(NSMutableSet *)self->_itemsWithSwappedScenes addObject:v6];
-      [(SBActivityAmbientViewController *)self _switchToAlertSceneForActivityItem:v6];
+      [(NSMutableSet *)self->_itemsWithSwappedScenes addObject:itemCopy];
+      [(SBActivityAmbientViewController *)self _switchToAlertSceneForActivityItem:itemCopy];
     }
   }
 
   else
   {
-    v17 = secondaryActivityItem == v6 || v13;
+    v17 = secondaryActivityItem == itemCopy || v13;
     if (v13)
     {
       v18 = 0;
@@ -289,34 +289,34 @@
 
     if ((v17 & 1) == 0)
     {
-      v19 = [(SBActivityAmbientViewController *)self delegate];
-      [v19 activityAmbientViewController:self removePendingItem:v6];
+      delegate = [(SBActivityAmbientViewController *)self delegate];
+      [delegate activityAmbientViewController:self removePendingItem:itemCopy];
 
       v18 = 4;
     }
 
-    if (([(NSMutableSet *)self->_itemsWithSwappedScenes containsObject:v6]& 1) == 0)
+    if (([(NSMutableSet *)self->_itemsWithSwappedScenes containsObject:itemCopy]& 1) == 0)
     {
-      [(SBActivityAmbientViewController *)self _transitionOverlayForActivityItem:v6 withTransitionType:v18 configuringForAlerting:1 withCompletion:0];
+      [(SBActivityAmbientViewController *)self _transitionOverlayForActivityItem:itemCopy withTransitionType:v18 configuringForAlerting:1 withCompletion:0];
     }
   }
 
-  v7[2](v7);
+  blockCopy[2](blockCopy);
 }
 
-- (void)alertDidDismissForActivityItem:(id)a3 completion:(id)a4
+- (void)alertDidDismissForActivityItem:(id)item completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(NSMutableSet *)self->_itemsWithSwappedScenes containsObject:v6])
+  itemCopy = item;
+  completionCopy = completion;
+  if ([(NSMutableSet *)self->_itemsWithSwappedScenes containsObject:itemCopy])
   {
     v8 = SBLogActivity();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v6 identifier];
+      identifier = [itemCopy identifier];
       *buf = 138543362;
-      v13 = v9;
+      v13 = identifier;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] ambient item restoring swapped scene", buf, 0xCu);
     }
 
@@ -325,38 +325,38 @@
     v10[2] = __77__SBActivityAmbientViewController_alertDidDismissForActivityItem_completion___block_invoke;
     v10[3] = &unk_2783A92D8;
     v10[4] = self;
-    v11 = v6;
+    v11 = itemCopy;
     [(SBActivityAmbientViewController *)self _dismissFullOverlayWithCompletion:v10];
   }
 
   else
   {
-    [(SBActivityAmbientViewController *)self transitionToCompactOverlayModeWithCompletion:v7];
+    [(SBActivityAmbientViewController *)self transitionToCompactOverlayModeWithCompletion:completionCopy];
   }
 }
 
-- (void)removeOverlayForActivityItem:(id)a3 withCompletion:(id)a4
+- (void)removeOverlayForActivityItem:(id)item withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBActivityViewController *)self->_fullOverlayViewController activityItem];
+  itemCopy = item;
+  completionCopy = completion;
+  activityItem = [(SBActivityViewController *)self->_fullOverlayViewController activityItem];
 
-  v9 = [(SBActivityViewController *)self->_compactOverlayViewController activityItem];
+  activityItem2 = [(SBActivityViewController *)self->_compactOverlayViewController activityItem];
 
   primaryActivityItem = self->_primaryActivityItem;
   secondaryActivityItem = self->_secondaryActivityItem;
-  [(NSMutableSet *)self->_itemsWithSwappedScenes removeObject:v6];
-  if (primaryActivityItem == v6)
+  [(NSMutableSet *)self->_itemsWithSwappedScenes removeObject:itemCopy];
+  if (primaryActivityItem == itemCopy)
   {
     [(SBActivityAmbientViewController *)self _setPrimaryActivityItem:0];
   }
 
-  if (secondaryActivityItem == v6)
+  if (secondaryActivityItem == itemCopy)
   {
     [(SBActivityAmbientViewController *)self _setSecondaryActivityItem:0];
   }
 
-  if (v8 == v6)
+  if (activityItem == itemCopy)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -364,12 +364,12 @@
     v16[3] = &unk_2783A98A0;
     v16[4] = self;
     v12 = &v17;
-    v17 = v7;
+    v17 = completionCopy;
     [(SBActivityAmbientViewController *)self _dismissFullOverlayWithCompletion:v16];
     goto LABEL_9;
   }
 
-  if (v9 == v6)
+  if (activityItem2 == itemCopy)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -377,8 +377,8 @@
     v13[3] = &unk_2783AA1E8;
     v13[4] = self;
     v12 = &v14;
-    v14 = v6;
-    v15 = v7;
+    v14 = itemCopy;
+    v15 = completionCopy;
     [(SBActivityAmbientViewController *)self _dismissCompactOverlayForActivityEnding:1 completion:v13];
 
 LABEL_9:
@@ -416,14 +416,14 @@ uint64_t __79__SBActivityAmbientViewController_removeOverlayForActivityItem_with
   return result;
 }
 
-- (void)setCompactOverlayHidden:(BOOL)a3
+- (void)setCompactOverlayHidden:(BOOL)hidden
 {
   compactOverlayViewController = self->_compactOverlayViewController;
   if (compactOverlayViewController)
   {
-    v4 = a3;
-    v5 = [(SBActivityAmbientCompactOverlayViewController *)compactOverlayViewController view];
-    v6 = !v4;
+    hiddenCopy = hidden;
+    view = [(SBActivityAmbientCompactOverlayViewController *)compactOverlayViewController view];
+    v6 = !hiddenCopy;
     v7 = 1.0;
     v8 = MEMORY[0x277D75D18];
     v10[1] = 3221225472;
@@ -435,40 +435,40 @@ uint64_t __79__SBActivityAmbientViewController_removeOverlayForActivityItem_with
       v7 = 0.0;
     }
 
-    v11 = v5;
+    v11 = view;
     v12 = v7;
-    v9 = v5;
+    v9 = view;
     [v8 _animateUsingSpringWithDuration:0 delay:v10 options:0 mass:0.1 stiffness:0.0 damping:0.0 initialVelocity:0.0 animations:50.0 completion:0.0];
   }
 }
 
-- (void)_setPrimaryActivityItem:(id)a3
+- (void)_setPrimaryActivityItem:(id)item
 {
-  v5 = a3;
-  if (self->_primaryActivityItem != v5)
+  itemCopy = item;
+  if (self->_primaryActivityItem != itemCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_primaryActivityItem, a3);
-    v6 = [(SBActivityAmbientViewController *)self delegate];
-    [v6 activityAmbientViewController:self removePendingItem:v7];
+    v7 = itemCopy;
+    objc_storeStrong(&self->_primaryActivityItem, item);
+    delegate = [(SBActivityAmbientViewController *)self delegate];
+    [delegate activityAmbientViewController:self removePendingItem:v7];
 
     [(SBActivityAmbientViewController *)self _didUpdateVisibleActivityItems];
-    v5 = v7;
+    itemCopy = v7;
   }
 }
 
-- (void)_setSecondaryActivityItem:(id)a3
+- (void)_setSecondaryActivityItem:(id)item
 {
-  v5 = a3;
-  if (self->_secondaryActivityItem != v5)
+  itemCopy = item;
+  if (self->_secondaryActivityItem != itemCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_secondaryActivityItem, a3);
-    v6 = [(SBActivityAmbientViewController *)self delegate];
-    [v6 activityAmbientViewController:self removePendingItem:v7];
+    v7 = itemCopy;
+    objc_storeStrong(&self->_secondaryActivityItem, item);
+    delegate = [(SBActivityAmbientViewController *)self delegate];
+    [delegate activityAmbientViewController:self removePendingItem:v7];
 
     [(SBActivityAmbientViewController *)self _didUpdateVisibleActivityItems];
-    v5 = v7;
+    itemCopy = v7;
   }
 }
 
@@ -489,28 +489,28 @@ uint64_t __79__SBActivityAmbientViewController_removeOverlayForActivityItem_with
   }
 }
 
-- (void)_updateCompactActivityOverlayWithItem:(id)a3 withCompletion:(id)a4
+- (void)_updateCompactActivityOverlayWithItem:(id)item withCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v8 = SBLogActivity();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 identifier];
+    identifier = [itemCopy identifier];
     *buf = 138543362;
-    v14 = v9;
+    v14 = identifier;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] adding compact ambient overlay", buf, 0xCu);
   }
 
-  v10 = [(SBActivityAmbientViewController *)self delegate];
-  [v10 activityAmbientViewController:self removePendingItem:v6];
+  delegate = [(SBActivityAmbientViewController *)self delegate];
+  [delegate activityAmbientViewController:self removePendingItem:itemCopy];
 
   if (self->_compactOverlayViewController)
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -521,8 +521,8 @@ uint64_t __79__SBActivityAmbientViewController_removeOverlayForActivityItem_with
     v11[2] = __88__SBActivityAmbientViewController__updateCompactActivityOverlayWithItem_withCompletion___block_invoke;
     v11[3] = &unk_2783B5B20;
     v11[4] = self;
-    v12 = v7;
-    [(SBActivityAmbientViewController *)self _compactOverlayViewControllerForItem:v6 completion:v11];
+    v12 = completionCopy;
+    [(SBActivityAmbientViewController *)self _compactOverlayViewControllerForItem:itemCopy completion:v11];
   }
 }
 
@@ -559,22 +559,22 @@ uint64_t __88__SBActivityAmbientViewController__updateCompactActivityOverlayWith
   return MEMORY[0x2821F9730]();
 }
 
-- (void)_updateFullActivityOverlayWithItem:(id)a3 configuringForAlert:(BOOL)a4
+- (void)_updateFullActivityOverlayWithItem:(id)item configuringForAlert:(BOOL)alert
 {
-  v4 = a4;
+  alertCopy = alert;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemCopy = item;
   v7 = SBLogActivity();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 identifier];
+    identifier = [itemCopy identifier];
     *buf = 138543362;
-    v13 = v8;
+    v13 = identifier;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] adding full ambient overlay", buf, 0xCu);
   }
 
-  v9 = [(SBActivityAmbientViewController *)self delegate];
-  [v9 activityAmbientViewController:self removePendingItem:v6];
+  delegate = [(SBActivityAmbientViewController *)self delegate];
+  [delegate activityAmbientViewController:self removePendingItem:itemCopy];
   if (!self->_fullOverlayViewController)
   {
     self->_isCreatingFullScreenOverlay = 1;
@@ -583,8 +583,8 @@ uint64_t __88__SBActivityAmbientViewController__updateCompactActivityOverlayWith
     v10[2] = __90__SBActivityAmbientViewController__updateFullActivityOverlayWithItem_configuringForAlert___block_invoke;
     v10[3] = &unk_2783B5B48;
     v10[4] = self;
-    v11 = v9;
-    [(SBActivityAmbientViewController *)self _fullOverlayViewControllerForItem:v6 configuringForAlert:v4 completion:v10];
+    v11 = delegate;
+    [(SBActivityAmbientViewController *)self _fullOverlayViewControllerForItem:itemCopy configuringForAlert:alertCopy completion:v10];
   }
 }
 
@@ -620,25 +620,25 @@ uint64_t __90__SBActivityAmbientViewController__updateFullActivityOverlayWithIte
   return [v2 _updateResolvedPreferences];
 }
 
-- (void)_fullOverlayViewControllerForItem:(id)a3 configuringForAlert:(BOOL)a4 completion:(id)a5
+- (void)_fullOverlayViewControllerForItem:(id)item configuringForAlert:(BOOL)alert completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SBActivityAmbientViewController *)self _sceneTargetBundleIdentifierForItem:v8 configuringForAlert:v6];
-  v11 = [(SBActivityViewController *)[SBActivityAmbientFullOverlayViewController alloc] initWithActivityItem:v8 sceneType:2 payloadID:0 targetBundleIdentifier:v10];
-  v12 = [(SBActivityAmbientFullOverlayViewController *)v11 view];
-  [v12 setClipsToBounds:1];
+  alertCopy = alert;
+  itemCopy = item;
+  completionCopy = completion;
+  v10 = [(SBActivityAmbientViewController *)self _sceneTargetBundleIdentifierForItem:itemCopy configuringForAlert:alertCopy];
+  v11 = [(SBActivityViewController *)[SBActivityAmbientFullOverlayViewController alloc] initWithActivityItem:itemCopy sceneType:2 payloadID:0 targetBundleIdentifier:v10];
+  view = [(SBActivityAmbientFullOverlayViewController *)v11 view];
+  [view setClipsToBounds:1];
 
-  v13 = [(SBActivityAmbientFullOverlayViewController *)v11 view];
-  [v13 setAlpha:0.0];
+  view2 = [(SBActivityAmbientFullOverlayViewController *)v11 view];
+  [view2 setAlpha:0.0];
 
-  v14 = [(SBActivityAmbientFullOverlayViewController *)v11 view];
+  view3 = [(SBActivityAmbientFullOverlayViewController *)v11 view];
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v8 descriptor];
-  v17 = [v16 platterTargetBundleIdentifier];
-  v18 = [v15 stringWithFormat:@"sb-activity-ambient-full-view, bundleIdentifier:%@", v17];
-  [v14 setAccessibilityIdentifier:v18];
+  descriptor = [itemCopy descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+  v18 = [v15 stringWithFormat:@"sb-activity-ambient-full-view, bundleIdentifier:%@", platterTargetBundleIdentifier];
+  [view3 setAccessibilityIdentifier:v18];
 
   [(SBActivityViewController *)v11 setDelegate:self];
   [(SBActivityViewController *)v11 setPresentationMode:1];
@@ -647,13 +647,13 @@ uint64_t __90__SBActivityAmbientViewController__updateFullActivityOverlayWithIte
   v22[1] = 3221225472;
   v22[2] = __100__SBActivityAmbientViewController__fullOverlayViewControllerForItem_configuringForAlert_completion___block_invoke;
   v22[3] = &unk_2783B5B98;
-  v23 = v8;
-  v24 = self;
+  v23 = itemCopy;
+  selfCopy = self;
   v25 = v11;
-  v26 = v9;
+  v26 = completionCopy;
   v19 = v11;
-  v20 = v9;
-  v21 = v8;
+  v20 = completionCopy;
+  v21 = itemCopy;
   [(SBActivityViewController *)v19 ensureContent:MEMORY[0x277D85CD0] queue:v22 completion:1.79769313e308];
 }
 
@@ -708,23 +708,23 @@ void __100__SBActivityAmbientViewController__fullOverlayViewControllerForItem_co
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_compactOverlayViewControllerForItem:(id)a3 completion:(id)a4
+- (void)_compactOverlayViewControllerForItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBActivityViewController *)[SBActivityAmbientCompactOverlayViewController alloc] initWithActivityItem:v6 sceneType:3 payloadID:0];
-  v9 = [(SBActivityAmbientCompactOverlayViewController *)v8 view];
-  [v9 setClipsToBounds:1];
+  itemCopy = item;
+  completionCopy = completion;
+  v8 = [(SBActivityViewController *)[SBActivityAmbientCompactOverlayViewController alloc] initWithActivityItem:itemCopy sceneType:3 payloadID:0];
+  view = [(SBActivityAmbientCompactOverlayViewController *)v8 view];
+  [view setClipsToBounds:1];
 
-  v10 = [(SBActivityAmbientCompactOverlayViewController *)v8 view];
-  [v10 setAlpha:0.0];
+  view2 = [(SBActivityAmbientCompactOverlayViewController *)v8 view];
+  [view2 setAlpha:0.0];
 
-  v11 = [(SBActivityAmbientCompactOverlayViewController *)v8 view];
+  view3 = [(SBActivityAmbientCompactOverlayViewController *)v8 view];
   v12 = MEMORY[0x277CCACA8];
-  v13 = [v6 descriptor];
-  v14 = [v13 platterTargetBundleIdentifier];
-  v15 = [v12 stringWithFormat:@"sb-activity-ambient-compact-view, bundleIdentifier:%@", v14];
-  [v11 setAccessibilityIdentifier:v15];
+  descriptor = [itemCopy descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+  v15 = [v12 stringWithFormat:@"sb-activity-ambient-compact-view, bundleIdentifier:%@", platterTargetBundleIdentifier];
+  [view3 setAccessibilityIdentifier:v15];
 
   [(SBActivityViewController *)v8 setDelegate:self];
   [(SBActivityAmbientCompactOverlayViewController *)v8 setCompactOverlayDelegate:self];
@@ -734,13 +734,13 @@ void __100__SBActivityAmbientViewController__fullOverlayViewControllerForItem_co
   v19[1] = 3221225472;
   v19[2] = __83__SBActivityAmbientViewController__compactOverlayViewControllerForItem_completion___block_invoke;
   v19[3] = &unk_2783B5B98;
-  v20 = v6;
+  v20 = itemCopy;
   v21 = v8;
-  v22 = self;
-  v23 = v7;
+  selfCopy = self;
+  v23 = completionCopy;
   v16 = v8;
-  v17 = v7;
-  v18 = v6;
+  v17 = completionCopy;
+  v18 = itemCopy;
   [(SBActivityViewController *)v16 ensureContent:MEMORY[0x277D85CD0] queue:v19 completion:1.79769313e308];
 }
 
@@ -771,20 +771,20 @@ void __83__SBActivityAmbientViewController__compactOverlayViewControllerForItem_
   v5();
 }
 
-- (void)_animatePresentationOfCompactOverlayWithCompactViewController:(id)a3 completion:(id)a4
+- (void)_animatePresentationOfCompactOverlayWithCompactViewController:(id)controller completion:(id)completion
 {
-  v5 = a4;
-  v6 = [a3 view];
+  completionCopy = completion;
+  view = [controller view];
   v7 = MEMORY[0x277D75D18];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __108__SBActivityAmbientViewController__animatePresentationOfCompactOverlayWithCompactViewController_completion___block_invoke;
   v16[3] = &unk_2783A8C18;
-  v8 = v6;
+  v8 = view;
   v17 = v8;
   [v7 performWithoutAnimation:v16];
   v9 = MEMORY[0x277D75D18];
-  v13 = v5;
+  v13 = completionCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __108__SBActivityAmbientViewController__animatePresentationOfCompactOverlayWithCompactViewController_completion___block_invoke_2;
@@ -794,7 +794,7 @@ void __83__SBActivityAmbientViewController__compactOverlayViewControllerForItem_
   v12[1] = 3221225472;
   v12[2] = __108__SBActivityAmbientViewController__animatePresentationOfCompactOverlayWithCompactViewController_completion___block_invoke_3;
   v12[3] = &unk_2783A9C70;
-  v10 = v5;
+  v10 = completionCopy;
   v11 = v8;
   [v9 _animateUsingSpringWithDuration:0 delay:v14 options:v12 mass:0.8888 stiffness:0.0 damping:2.0 initialVelocity:315.827 animations:34.0214 completion:0.0];
 }
@@ -831,18 +831,18 @@ uint64_t __108__SBActivityAmbientViewController__animatePresentationOfCompactOve
   return result;
 }
 
-- (void)_animatePresentationOfFullOverlayWithViewController:(id)a3 completion:(id)a4
+- (void)_animatePresentationOfFullOverlayWithViewController:(id)controller completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 view];
+  completionCopy = completion;
+  view = [controller view];
   v8 = MEMORY[0x277D75D18];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __98__SBActivityAmbientViewController__animatePresentationOfFullOverlayWithViewController_completion___block_invoke;
   v23[3] = &unk_2783A92D8;
-  v9 = v7;
+  v9 = view;
   v24 = v9;
-  v25 = self;
+  selfCopy = self;
   [v8 performWithoutAnimation:v23];
   v21[4] = self;
   v22[0] = MEMORY[0x277D85DD0];
@@ -864,7 +864,7 @@ uint64_t __108__SBActivityAmbientViewController__animatePresentationOfCompactOve
   v20 = v11;
   [v10 _animateUsingSpringWithDuration:0 delay:v19 options:0 mass:1.1117 stiffness:0.0 damping:2.0 initialVelocity:186.88 animations:27.3488 completion:0.0];
   v12 = MEMORY[0x277D75D18];
-  v16 = v6;
+  v16 = completionCopy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __98__SBActivityAmbientViewController__animatePresentationOfFullOverlayWithViewController_completion___block_invoke_5;
@@ -874,7 +874,7 @@ uint64_t __108__SBActivityAmbientViewController__animatePresentationOfCompactOve
   v15[1] = 3221225472;
   v15[2] = __98__SBActivityAmbientViewController__animatePresentationOfFullOverlayWithViewController_completion___block_invoke_6;
   v15[3] = &unk_2783A9C70;
-  v13 = v6;
+  v13 = completionCopy;
   v14 = v11;
   [v12 _animateUsingSpringWithDuration:0 delay:v17 options:v15 mass:0.8 stiffness:0.0 damping:2.0 initialVelocity:300.0 animations:50.0 completion:0.0];
 }
@@ -910,34 +910,34 @@ uint64_t __98__SBActivityAmbientViewController__animatePresentationOfFullOverlay
   return result;
 }
 
-- (void)_dismissCompactOverlayForActivityEnding:(BOOL)a3 completion:(id)a4
+- (void)_dismissCompactOverlayForActivityEnding:(BOOL)ending completion:(id)completion
 {
   compactOverlayViewController = self->_compactOverlayViewController;
   if (compactOverlayViewController)
   {
-    v6 = a4;
-    v7 = [(SBActivityAmbientCompactOverlayViewController *)compactOverlayViewController view];
-    [(SBActivityAmbientViewController *)self _dismissCompactOverlayWithView:v7 forActivityEnding:v7 != 0 completion:v6];
+    completionCopy = completion;
+    view = [(SBActivityAmbientCompactOverlayViewController *)compactOverlayViewController view];
+    [(SBActivityAmbientViewController *)self _dismissCompactOverlayWithView:view forActivityEnding:view != 0 completion:completionCopy];
   }
 }
 
-- (void)_dismissCompactOverlayWithView:(id)a3 forActivityEnding:(BOOL)a4 completion:(id)a5
+- (void)_dismissCompactOverlayWithView:(id)view forActivityEnding:(BOOL)ending completion:(id)completion
 {
-  v6 = a3;
-  v7 = a5;
+  viewCopy = view;
+  completionCopy = completion;
   v8 = MEMORY[0x277D75D18];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __95__SBActivityAmbientViewController__dismissCompactOverlayWithView_forActivityEnding_completion___block_invoke;
   v13[3] = &unk_2783A8C18;
-  v14 = v6;
+  v14 = viewCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __95__SBActivityAmbientViewController__dismissCompactOverlayWithView_forActivityEnding_completion___block_invoke_2;
   v11[3] = &unk_2783A9C70;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = completionCopy;
+  v9 = completionCopy;
+  v10 = viewCopy;
   [v8 _animateUsingSpringWithDuration:0 delay:v13 options:v11 mass:0.5845 stiffness:0.0 damping:2.0 initialVelocity:877.298 animations:51.1883 completion:0.0];
 }
 
@@ -952,10 +952,10 @@ uint64_t __95__SBActivityAmbientViewController__dismissCompactOverlayWithView_fo
   return result;
 }
 
-- (void)_dismissFullOverlayWithCompletion:(id)a3
+- (void)_dismissFullOverlayWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   fullOverlayViewController = self->_fullOverlayViewController;
   if (fullOverlayViewController)
   {
@@ -963,14 +963,14 @@ uint64_t __95__SBActivityAmbientViewController__dismissCompactOverlayWithView_fo
     v7 = self->_fullOverlayViewController;
     self->_fullOverlayViewController = 0;
 
-    v8 = [(SBActivityAmbientFullOverlayViewController *)v6 view];
+    view = [(SBActivityAmbientFullOverlayViewController *)v6 view];
     v9 = SBLogActivity();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(SBActivityViewController *)v6 activityItem];
-      v11 = [v10 identifier];
+      activityItem = [(SBActivityViewController *)v6 activityItem];
+      identifier = [activityItem identifier];
       *buf = 138543362;
-      v32 = v11;
+      v32 = identifier;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] dismissing ambient full screen overlay", buf, 0xCu);
     }
 
@@ -980,7 +980,7 @@ uint64_t __95__SBActivityAmbientViewController__dismissCompactOverlayWithView_fo
     v29[2] = __69__SBActivityAmbientViewController__dismissFullOverlayWithCompletion___block_invoke;
     v29[3] = &unk_2783A92D8;
     v29[4] = self;
-    v13 = v8;
+    v13 = view;
     v30 = v13;
     [v12 performWithoutAnimation:v29];
     v14 = MEMORY[0x277D75D18];
@@ -996,7 +996,7 @@ uint64_t __95__SBActivityAmbientViewController__dismissCompactOverlayWithView_fo
     v24[3] = &unk_2783A8BF0;
     v15 = v28;
     v25 = v15;
-    v26 = self;
+    selfCopy = self;
     [v14 _animateUsingSpringWithDuration:0 delay:v27 options:v24 mass:0.8 stiffness:0.0 damping:2.0 initialVelocity:300.0 animations:50.0 completion:0.0];
     v16 = MEMORY[0x277D75D18];
     v22[0] = MEMORY[0x277D85DD0];
@@ -1010,7 +1010,7 @@ uint64_t __95__SBActivityAmbientViewController__dismissCompactOverlayWithView_fo
     v19[3] = &unk_2783AE5A0;
     v19[4] = self;
     v20 = v6;
-    v21 = v4;
+    v21 = completionCopy;
     v17 = v6;
     v18 = v15;
     [v16 _animateUsingSpringWithDuration:0 delay:v22 options:v19 mass:1.1117 stiffness:0.0 damping:2.0 initialVelocity:186.88 animations:27.3488 completion:0.0];
@@ -1074,53 +1074,53 @@ uint64_t __69__SBActivityAmbientViewController__dismissFullOverlayWithCompletion
   return result;
 }
 
-- (void)_switchToAlertSceneForActivityItem:(id)a3
+- (void)_switchToAlertSceneForActivityItem:(id)item
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = SBLogActivity();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [itemCopy identifier];
     *buf = 138543362;
-    v11 = v6;
+    v11 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] ambient item switching to alerting scene", buf, 0xCu);
   }
 
-  v7 = [(SBActivityViewController *)self->_fullOverlayViewController activityItem];
+  activityItem = [(SBActivityViewController *)self->_fullOverlayViewController activityItem];
 
-  if (v7 == v4)
+  if (activityItem == itemCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __70__SBActivityAmbientViewController__switchToAlertSceneForActivityItem___block_invoke;
     v8[3] = &unk_2783A92D8;
     v8[4] = self;
-    v9 = v4;
+    v9 = itemCopy;
     [(SBActivityAmbientViewController *)self _dismissFullOverlayWithCompletion:v8];
   }
 }
 
-- (id)_sceneTargetBundleIdentifierForItem:(id)a3 configuringForAlert:(BOOL)a4
+- (id)_sceneTargetBundleIdentifierForItem:(id)item configuringForAlert:(BOOL)alert
 {
-  v4 = a4;
-  v5 = [a3 descriptor];
-  v6 = [v5 alertSceneTargetBundleIdentifiers];
-  v7 = [v5 sceneTargetBundleIdentifiers];
+  alertCopy = alert;
+  descriptor = [item descriptor];
+  alertSceneTargetBundleIdentifiers = [descriptor alertSceneTargetBundleIdentifiers];
+  sceneTargetBundleIdentifiers = [descriptor sceneTargetBundleIdentifiers];
   v8 = [objc_alloc(MEMORY[0x277CB98A8]) initWithDestination:3];
-  v9 = [v6 objectForKey:v8];
-  v10 = [v7 objectForKey:v8];
-  v11 = [v5 contentType];
-  if (v4 && v9)
+  v9 = [alertSceneTargetBundleIdentifiers objectForKey:v8];
+  v10 = [sceneTargetBundleIdentifiers objectForKey:v8];
+  contentType = [descriptor contentType];
+  if (alertCopy && v9)
   {
-    v12 = v9;
+    platterTargetBundleIdentifier = v9;
     goto LABEL_10;
   }
 
   if (v10)
   {
     v13 = @"com.apple.chrono.WidgetRenderer-Activities";
-    if (v11)
+    if (contentType)
     {
       v13 = v10;
     }
@@ -1128,50 +1128,50 @@ uint64_t __69__SBActivityAmbientViewController__dismissFullOverlayWithCompletion
     goto LABEL_7;
   }
 
-  if (!v11)
+  if (!contentType)
   {
     v13 = @"com.apple.chrono.WidgetRenderer-Activities";
 LABEL_7:
-    v12 = v13;
+    platterTargetBundleIdentifier = v13;
     goto LABEL_10;
   }
 
-  v12 = [v5 platterTargetBundleIdentifier];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 LABEL_10:
-  v14 = v12;
+  v14 = platterTargetBundleIdentifier;
 
   return v14;
 }
 
-- (BOOL)_itemIsFirstPartyActivity:(id)a3
+- (BOOL)_itemIsFirstPartyActivity:(id)activity
 {
-  v3 = [a3 descriptor];
-  v4 = [v3 platterTargetBundleIdentifier];
+  descriptor = [activity descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
   v5 = +[SBActivityManager sharedInstance];
-  v6 = [v5 firstPartyActivityGroupingIdentifiers];
-  v7 = [v6 containsObject:v4];
+  firstPartyActivityGroupingIdentifiers = [v5 firstPartyActivityGroupingIdentifiers];
+  v7 = [firstPartyActivityGroupingIdentifiers containsObject:platterTargetBundleIdentifier];
 
   return v7;
 }
 
-- (void)_cleanupCompactViewController:(id)a3
+- (void)_cleanupCompactViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = v4;
-    [(SBActivityAmbientViewController *)self bs_removeChildViewController:v4];
+    v5 = controllerCopy;
+    [(SBActivityAmbientViewController *)self bs_removeChildViewController:controllerCopy];
   }
 }
 
-- (void)_cleanupFullViewController:(id)a3
+- (void)_cleanupFullViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = v4;
-    [(SBActivityAmbientViewController *)self bs_removeChildViewController:v4];
+    v5 = controllerCopy;
+    [(SBActivityAmbientViewController *)self bs_removeChildViewController:controllerCopy];
   }
 }
 
@@ -1229,59 +1229,59 @@ LABEL_10:
 
 - (void)_didUpdateVisibleActivityItems
 {
-  v3 = [(SBActivityAmbientViewController *)self delegate];
-  [v3 activityAmbientViewControllerDidUpdateVisibleActivityItems:self];
+  delegate = [(SBActivityAmbientViewController *)self delegate];
+  [delegate activityAmbientViewControllerDidUpdateVisibleActivityItems:self];
 }
 
 - (id)_ambientActivitySettings
 {
   v2 = +[SBLiveActivityDomain rootSettings];
-  v3 = [v2 ambientSettings];
+  ambientSettings = [v2 ambientSettings];
 
-  return v3;
+  return ambientSettings;
 }
 
 - (void)_updateAudioCategoriesDisablingVolumeHUD
 {
   if (self->_overlayMode)
   {
-    v3 = 0;
+    audioCategoriesDisablingVolumeHUD = 0;
   }
 
   else
   {
-    v3 = [(SBActivityViewController *)self->_fullOverlayViewController audioCategoriesDisablingVolumeHUD];
+    audioCategoriesDisablingVolumeHUD = [(SBActivityViewController *)self->_fullOverlayViewController audioCategoriesDisablingVolumeHUD];
   }
 
-  obj = v3;
+  obj = audioCategoriesDisablingVolumeHUD;
   if ((BSEqualSets() & 1) == 0)
   {
     objc_storeStrong(&self->_audioCategoriesDisablingVolumeHUD, obj);
-    v4 = [(SBActivityAmbientViewController *)self delegate];
-    [v4 activityAmbientViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:self];
+    delegate = [(SBActivityAmbientViewController *)self delegate];
+    [delegate activityAmbientViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:self];
   }
 }
 
-- (BOOL)_isActiveActivityItem:(id)a3
+- (BOOL)_isActiveActivityItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SBActivityAmbientViewController *)self delegate];
-  LOBYTE(self) = [v5 activityAmbientViewController:self isActiveActivityItem:v4];
+  itemCopy = item;
+  delegate = [(SBActivityAmbientViewController *)self delegate];
+  LOBYTE(self) = [delegate activityAmbientViewController:self isActiveActivityItem:itemCopy];
 
   return self;
 }
 
-- (id)_nextSecondaryActivityItemForTransitionType:(int64_t)a3
+- (id)_nextSecondaryActivityItemForTransitionType:(int64_t)type
 {
-  v5 = [(SBActivityAmbientViewController *)self delegate];
-  v6 = [v5 activityAmbientViewControllerNextPendingActivityItem:self];
+  delegate = [(SBActivityAmbientViewController *)self delegate];
+  v6 = [delegate activityAmbientViewControllerNextPendingActivityItem:self];
   if (v6)
   {
-    [v5 activityAmbientViewController:self removePendingItem:v6];
-    [v5 activityAmbientViewController:self addPendingItem:self->_primaryActivityItem];
+    [delegate activityAmbientViewController:self removePendingItem:v6];
+    [delegate activityAmbientViewController:self addPendingItem:self->_primaryActivityItem];
   }
 
-  if ((a3 - 3) < 2)
+  if ((type - 3) < 2)
   {
     primaryActivityItem = self->_primaryActivityItem;
     if (!primaryActivityItem)
@@ -1298,7 +1298,7 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     primaryActivityItem = v6;
     if (!v6)
@@ -1315,21 +1315,21 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)_activityHasDifferentAlertSceneTarget:(id)a3
+- (BOOL)_activityHasDifferentAlertSceneTarget:(id)target
 {
-  v3 = a3;
-  v4 = [v3 descriptor];
-  v5 = [v4 alertSceneTargetBundleIdentifiers];
+  targetCopy = target;
+  descriptor = [targetCopy descriptor];
+  alertSceneTargetBundleIdentifiers = [descriptor alertSceneTargetBundleIdentifiers];
 
   v6 = [objc_alloc(MEMORY[0x277CB98A8]) initWithDestination:3];
-  v7 = [v5 objectForKey:v6];
-  v8 = [v3 descriptor];
+  v7 = [alertSceneTargetBundleIdentifiers objectForKey:v6];
+  descriptor2 = [targetCopy descriptor];
 
-  v9 = [v8 platterTargetBundleIdentifier];
+  platterTargetBundleIdentifier = [descriptor2 platterTargetBundleIdentifier];
 
   if (v7)
   {
-    v10 = [v9 isEqualToString:v7] ^ 1;
+    v10 = [platterTargetBundleIdentifier isEqualToString:v7] ^ 1;
   }
 
   else
@@ -1340,65 +1340,65 @@ LABEL_13:
   return v10;
 }
 
-- (void)_transitionOverlayForActivityItem:(id)a3 withTransitionType:(int64_t)a4 configuringForAlerting:(BOOL)a5 withCompletion:(id)a6
+- (void)_transitionOverlayForActivityItem:(id)item withTransitionType:(int64_t)type configuringForAlerting:(BOOL)alerting withCompletion:(id)completion
 {
-  v7 = a5;
-  v11 = a3;
-  v10 = a6;
-  if ([(SBActivityAmbientViewController *)self _canTransitionActivityItem:v11 forTransitionType:a4])
+  alertingCopy = alerting;
+  itemCopy = item;
+  completionCopy = completion;
+  if ([(SBActivityAmbientViewController *)self _canTransitionActivityItem:itemCopy forTransitionType:type])
   {
-    [(SBActivityAmbientViewController *)self _beginTransitionForActivityItem:v11 transitionType:a4 configuringForAlerting:v7 withCompletion:v10];
+    [(SBActivityAmbientViewController *)self _beginTransitionForActivityItem:itemCopy transitionType:type configuringForAlerting:alertingCopy withCompletion:completionCopy];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_beginTransitionForActivityItem:(id)a3 transitionType:(int64_t)a4 configuringForAlerting:(BOOL)a5 withCompletion:(id)a6
+- (void)_beginTransitionForActivityItem:(id)item transitionType:(int64_t)type configuringForAlerting:(BOOL)alerting withCompletion:(id)completion
 {
-  v7 = a5;
+  alertingCopy = alerting;
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  itemCopy = item;
+  completionCopy = completion;
   v12 = SBLogActivity();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(SBActivityItem *)v10 identifier];
+    identifier = [(SBActivityItem *)itemCopy identifier];
     *buf = 138543618;
-    v38 = v13;
+    v38 = identifier;
     v39 = 2048;
-    v40 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] begining ambient overlay transition for type: %ld", buf, 0x16u);
   }
 
   ++self->_transitionAnimationCount;
   v14 = self->_fullOverlayViewController;
   v15 = self->_compactOverlayViewController;
-  if ([(SBActivityAmbientViewController *)self _transitionTypeIsToFullOverlay:a4])
+  if ([(SBActivityAmbientViewController *)self _transitionTypeIsToFullOverlay:type])
   {
     self->_overlayMode = 0;
-    if (a4 == 2)
+    if (type == 2)
     {
       [(SBActivityAmbientViewController *)self _setSecondaryActivityItem:0];
     }
 
-    v16 = self->_primaryActivityItem == v10;
+    v16 = self->_primaryActivityItem == itemCopy;
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __120__SBActivityAmbientViewController__beginTransitionForActivityItem_transitionType_configuringForAlerting_withCompletion___block_invoke;
     v30[3] = &unk_2783B5BE8;
     v36 = v16;
     v30[4] = self;
-    v35 = a4;
-    v31 = v10;
+    typeCopy2 = type;
+    v31 = itemCopy;
     v32 = v14;
     v33 = v15;
-    v34 = v11;
+    v34 = completionCopy;
     v17 = v14;
     v18 = v15;
-    [(SBActivityAmbientViewController *)self _fullOverlayViewControllerForItem:v31 configuringForAlert:v7 completion:v30];
+    [(SBActivityAmbientViewController *)self _fullOverlayViewControllerForItem:v31 configuringForAlert:alertingCopy completion:v30];
 
     v19 = v31;
   }
@@ -1406,24 +1406,24 @@ LABEL_13:
   else
   {
     self->_overlayMode = 1;
-    v20 = [(SBActivityAmbientCompactOverlayViewController *)v15 view];
+    view = [(SBActivityAmbientCompactOverlayViewController *)v15 view];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __120__SBActivityAmbientViewController__beginTransitionForActivityItem_transitionType_configuringForAlerting_withCompletion___block_invoke_4;
     v29[3] = &unk_2783A8C18;
     v29[4] = self;
-    [(SBActivityAmbientViewController *)self _dismissCompactOverlayWithView:v20 forActivityEnding:0 completion:v29];
+    [(SBActivityAmbientViewController *)self _dismissCompactOverlayWithView:view forActivityEnding:0 completion:v29];
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __120__SBActivityAmbientViewController__beginTransitionForActivityItem_transitionType_configuringForAlerting_withCompletion___block_invoke_5;
     v23[3] = &unk_2783B5C38;
     v23[4] = self;
-    v24 = v10;
+    v24 = itemCopy;
     v25 = v15;
-    v28 = a4;
+    typeCopy3 = type;
     v26 = v14;
-    v27 = v11;
+    v27 = completionCopy;
     v21 = v14;
     v22 = v15;
     [(SBActivityAmbientViewController *)self _compactOverlayViewControllerForItem:v24 completion:v23];
@@ -1586,49 +1586,49 @@ uint64_t __120__SBActivityAmbientViewController__beginTransitionForActivityItem_
   return [v2 _endAndCleanupTransitionForActivityItem:v3 forTransitionType:v5 compactOverlayViewController:v4 fullOverlayViewController:0 completion:v6];
 }
 
-- (void)_animateTransitionToFullOverlayForPrimaryActivityItem:(id)a3 transitionType:(int64_t)a4 fullOverlayViewControllerForTransition:(id)a5 oldCompactOverlayViewController:(id)a6 completion:(id)a7
+- (void)_animateTransitionToFullOverlayForPrimaryActivityItem:(id)item transitionType:(int64_t)type fullOverlayViewControllerForTransition:(id)transition oldCompactOverlayViewController:(id)controller completion:(id)completion
 {
   v83[3] = *MEMORY[0x277D85DE8];
-  v59 = a3;
-  v12 = a5;
-  v13 = a6;
-  v62 = a7;
+  itemCopy = item;
+  transitionCopy = transition;
+  controllerCopy = controller;
+  completionCopy = completion;
   self->_isAnimatingTransition = 1;
-  v14 = [v12 view];
-  v15 = [v13 view];
-  [v15 frame];
+  view = [transitionCopy view];
+  view2 = [controllerCopy view];
+  [view2 frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  [v14 frame];
+  [view frame];
   v25 = v24;
   v84.origin.x = v17;
   v84.origin.y = v19;
   v84.size.width = v21;
   v84.size.height = v23;
   MidY = CGRectGetMidY(v84);
-  [v14 frame];
+  [view frame];
   v28 = v21 / v27;
-  [v14 frame];
+  [view frame];
   v29 = MEMORY[0x277D75D18];
   v80[0] = MEMORY[0x277D85DD0];
   v31 = v23 / v30;
   v80[1] = 3221225472;
   v80[2] = __186__SBActivityAmbientViewController__animateTransitionToFullOverlayForPrimaryActivityItem_transitionType_fullOverlayViewControllerForTransition_oldCompactOverlayViewController_completion___block_invoke;
   v80[3] = &unk_2783A92D8;
-  v32 = v14;
+  v32 = view;
   v81 = v32;
-  v82 = self;
+  selfCopy = self;
   [v29 performWithoutAnimation:v80];
-  v33 = [(SBActivityAmbientViewController *)self _animationSettingsForTransitionType:a4];
+  v33 = [(SBActivityAmbientViewController *)self _animationSettingsForTransitionType:type];
   v34 = MEMORY[0x277D75D18];
   v78[0] = MEMORY[0x277D85DD0];
   v78[1] = 3221225472;
   v78[2] = __186__SBActivityAmbientViewController__animateTransitionToFullOverlayForPrimaryActivityItem_transitionType_fullOverlayViewControllerForTransition_oldCompactOverlayViewController_completion___block_invoke_2;
   v78[3] = &unk_2783A8C18;
-  v79 = v15;
-  v64 = v15;
+  v79 = view2;
+  v64 = view2;
   [v34 animateWithDuration:0 delay:v78 options:0 animations:0.05 completion:0.0];
   v35 = MEMORY[0x277D75D18];
   v76[0] = MEMORY[0x277D85DD0];
@@ -1648,36 +1648,36 @@ uint64_t __120__SBActivityAmbientViewController__beginTransitionForActivityItem_
   v75 = v38;
   v65 = v33;
   [v37 sb_animateWithSettings:v33 mode:3 animations:v74 completion:0];
-  v39 = [(SBActivityAmbientViewController *)self _animationSettingsForFullOverlayTransitionYCurve];
-  v40 = [v39 BSAnimationSettings];
+  _animationSettingsForFullOverlayTransitionYCurve = [(SBActivityAmbientViewController *)self _animationSettingsForFullOverlayTransitionYCurve];
+  bSAnimationSettings = [_animationSettingsForFullOverlayTransitionYCurve BSAnimationSettings];
 
-  v41 = [v33 BSAnimationSettings];
+  bSAnimationSettings2 = [v33 BSAnimationSettings];
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __186__SBActivityAmbientViewController__animateTransitionToFullOverlayForPrimaryActivityItem_transitionType_fullOverlayViewControllerForTransition_oldCompactOverlayViewController_completion___block_invoke_5;
   v66[3] = &unk_2783B5C10;
   v67 = v38;
-  v68 = self;
-  v69 = v13;
-  v70 = v59;
-  v71 = v12;
-  v72 = v62;
-  v73 = a4;
-  v63 = v62;
-  v61 = v12;
-  v60 = v59;
-  v58 = v13;
+  selfCopy2 = self;
+  v69 = controllerCopy;
+  v70 = itemCopy;
+  v71 = transitionCopy;
+  v72 = completionCopy;
+  typeCopy = type;
+  v63 = completionCopy;
+  v61 = transitionCopy;
+  v60 = itemCopy;
+  v58 = controllerCopy;
   v57 = v38;
   v56 = MEMORY[0x223D6F7F0](v66);
   v42 = [MEMORY[0x277CD9FA0] animationWithKeyPath:@"position.y"];
   v43 = [MEMORY[0x277CCABB0] numberWithDouble:v25 * 0.5];
   [v42 setToValue:v43];
 
-  [v40 mass];
+  [bSAnimationSettings mass];
   [v42 setMass:?];
-  [v40 damping];
+  [bSAnimationSettings damping];
   [v42 setDamping:?];
-  [v40 stiffness];
+  [bSAnimationSettings stiffness];
   [v42 setStiffness:?];
   v44 = *MEMORY[0x277CDA238];
   [v42 setFillMode:*MEMORY[0x277CDA238]];
@@ -1687,11 +1687,11 @@ uint64_t __120__SBActivityAmbientViewController__beginTransitionForActivityItem_
   v46 = [MEMORY[0x277CCABB0] numberWithDouble:MidY];
   [v45 setFromValue:v46];
 
-  [v40 mass];
+  [bSAnimationSettings mass];
   [v45 setMass:?];
-  [v40 damping];
+  [bSAnimationSettings damping];
   [v45 setDamping:?];
-  [v40 stiffness];
+  [bSAnimationSettings stiffness];
   [v45 setStiffness:?];
   [v45 setFillMode:v44];
   [v45 settlingDuration];
@@ -1701,11 +1701,11 @@ uint64_t __120__SBActivityAmbientViewController__beginTransitionForActivityItem_
   [v47 setFromValue:v48];
 
   [v47 setToValue:&unk_28336F2A0];
-  [v41 mass];
+  [bSAnimationSettings2 mass];
   [v47 setMass:?];
-  [v41 damping];
+  [bSAnimationSettings2 damping];
   [v47 setDamping:?];
-  [v41 stiffness];
+  [bSAnimationSettings2 stiffness];
   [v47 setStiffness:?];
   [v47 setFillMode:v44];
   [v47 settlingDuration];
@@ -1715,34 +1715,34 @@ uint64_t __120__SBActivityAmbientViewController__beginTransitionForActivityItem_
   [v49 setFromValue:v50];
 
   [v49 setToValue:&unk_28336F2A0];
-  [v41 mass];
+  [bSAnimationSettings2 mass];
   [v49 setMass:?];
-  [v41 damping];
+  [bSAnimationSettings2 damping];
   [v49 setDamping:?];
-  [v41 stiffness];
+  [bSAnimationSettings2 stiffness];
   [v49 setStiffness:?];
   [v49 setFillMode:v44];
   [v49 settlingDuration];
   [v49 setDuration:?];
-  v51 = [MEMORY[0x277CD9E00] animation];
+  animation = [MEMORY[0x277CD9E00] animation];
   v83[0] = v45;
   v83[1] = v47;
   v83[2] = v49;
   v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:3];
-  [v51 setAnimations:v52];
+  [animation setAnimations:v52];
 
-  [v51 setFillMode:v44];
+  [animation setFillMode:v44];
   [v47 settlingDuration];
-  [v51 setDuration:?];
+  [animation setDuration:?];
   v53 = MEMORY[0x223D6F7F0](v56);
-  [v51 setValue:v53 forKey:@"SBActivityFullOverlayAnimationCompletionKey"];
+  [animation setValue:v53 forKey:@"SBActivityFullOverlayAnimationCompletionKey"];
 
-  [v51 setDelegate:self];
-  v54 = [v64 layer];
-  [v54 addAnimation:v42 forKey:@"position-y"];
+  [animation setDelegate:self];
+  layer = [v64 layer];
+  [layer addAnimation:v42 forKey:@"position-y"];
 
-  v55 = [v57 layer];
-  [v55 addAnimation:v51 forKey:@"scale-position"];
+  layer2 = [v57 layer];
+  [layer2 addAnimation:animation forKey:@"scale-position"];
 }
 
 uint64_t __186__SBActivityAmbientViewController__animateTransitionToFullOverlayForPrimaryActivityItem_transitionType_fullOverlayViewControllerForTransition_oldCompactOverlayViewController_completion___block_invoke(uint64_t a1)
@@ -1790,34 +1790,34 @@ uint64_t __186__SBActivityAmbientViewController__animateTransitionToFullOverlayF
   return [v3 _endAndCleanupTransitionForActivityItem:v4 forTransitionType:v6 compactOverlayViewController:0 fullOverlayViewController:v5 completion:v7];
 }
 
-- (void)_animateTransitionToBecomeNewPrimaryAcivityWithItem:(id)a3 transitionType:(int64_t)a4 fullOverlayViewController:(id)a5 compactOverlayViewControllerForTransition:(id)a6 oldFullViewController:(id)a7 oldCompactViewController:(id)a8 completion:(id)a9
+- (void)_animateTransitionToBecomeNewPrimaryAcivityWithItem:(id)item transitionType:(int64_t)type fullOverlayViewController:(id)controller compactOverlayViewControllerForTransition:(id)transition oldFullViewController:(id)viewController oldCompactViewController:(id)compactViewController completion:(id)completion
 {
-  v59 = a3;
-  v50 = a5;
-  v39 = a6;
-  v52 = a7;
-  v48 = a8;
-  v54 = a9;
+  itemCopy = item;
+  controllerCopy = controller;
+  transitionCopy = transition;
+  viewControllerCopy = viewController;
+  compactViewControllerCopy = compactViewController;
+  completionCopy = completion;
   self->_isAnimatingTransition = 1;
-  v14 = [(SBActivityAmbientViewController *)self traitCollection];
-  [v14 displayCornerRadius];
+  traitCollection = [(SBActivityAmbientViewController *)self traitCollection];
+  [traitCollection displayCornerRadius];
   v16 = v15;
 
-  v17 = [v52 view];
-  v64 = [v48 view];
-  v41 = [v50 view];
-  v18 = [v39 view];
-  [v64 setUserInteractionEnabled:0];
-  v63 = v17;
-  [v17 _setContinuousCornerRadius:v16];
-  [v41 _setContinuousCornerRadius:v16];
-  v44 = [(SBActivityAmbientViewController *)self _addNewSwitchingTransitionViewBelowSubview:v17];
+  view = [viewControllerCopy view];
+  view2 = [compactViewControllerCopy view];
+  view3 = [controllerCopy view];
+  view4 = [transitionCopy view];
+  [view2 setUserInteractionEnabled:0];
+  v63 = view;
+  [view _setContinuousCornerRadius:v16];
+  [view3 _setContinuousCornerRadius:v16];
+  v44 = [(SBActivityAmbientViewController *)self _addNewSwitchingTransitionViewBelowSubview:view];
   v19 = MEMORY[0x277D75D18];
   v85[0] = MEMORY[0x277D85DD0];
   v85[1] = 3221225472;
   v85[2] = __228__SBActivityAmbientViewController__animateTransitionToBecomeNewPrimaryAcivityWithItem_transitionType_fullOverlayViewController_compactOverlayViewControllerForTransition_oldFullViewController_oldCompactViewController_completion___block_invoke;
   v85[3] = &unk_2783A8C18;
-  v57 = v18;
+  v57 = view4;
   v86 = v57;
   [v19 performWithoutAnimation:v85];
   v68 = [MEMORY[0x277CD9FA0] animationWithKeyPath:@"filters.gaussianBlur.inputRadius"];
@@ -1912,7 +1912,7 @@ uint64_t __186__SBActivityAmbientViewController__animateTransitionToFullOverlayF
   v83[2] = __228__SBActivityAmbientViewController__animateTransitionToBecomeNewPrimaryAcivityWithItem_transitionType_fullOverlayViewController_compactOverlayViewControllerForTransition_oldFullViewController_oldCompactViewController_completion___block_invoke_79;
   v83[3] = &unk_2783A92D8;
   v83[4] = self;
-  v22 = v41;
+  v22 = view3;
   v84 = v22;
   v23 = MEMORY[0x223D6F7F0](v83);
   v73[0] = MEMORY[0x277D85DD0];
@@ -1920,20 +1920,20 @@ uint64_t __186__SBActivityAmbientViewController__animateTransitionToFullOverlayF
   v73[2] = __228__SBActivityAmbientViewController__animateTransitionToBecomeNewPrimaryAcivityWithItem_transitionType_fullOverlayViewController_compactOverlayViewControllerForTransition_oldFullViewController_oldCompactViewController_completion___block_invoke_2;
   v73[3] = &unk_2783B5C60;
   v74 = v44;
-  v75 = self;
-  v76 = v52;
-  v77 = v48;
-  v78 = v59;
-  v79 = v39;
-  v80 = v50;
-  v81 = v54;
-  v82 = a4;
-  v62 = v54;
-  v55 = v50;
-  v51 = v39;
-  v60 = v59;
-  v49 = v48;
-  v42 = v52;
+  selfCopy = self;
+  v76 = viewControllerCopy;
+  v77 = compactViewControllerCopy;
+  v78 = itemCopy;
+  v79 = transitionCopy;
+  v80 = controllerCopy;
+  v81 = completionCopy;
+  typeCopy = type;
+  v62 = completionCopy;
+  v55 = controllerCopy;
+  v51 = transitionCopy;
+  v60 = itemCopy;
+  v49 = compactViewControllerCopy;
+  v42 = viewControllerCopy;
   v53 = v44;
   v45 = MEMORY[0x223D6F7F0](v73);
   v24 = MEMORY[0x223D6F7F0]();
@@ -1970,32 +1970,32 @@ uint64_t __186__SBActivityAmbientViewController__animateTransitionToFullOverlayF
   v70 = v22;
   v29 = v22;
   [v28 _animateUsingSpringWithDuration:0 delay:v69 options:0 mass:0.8 stiffness:0.0 damping:2.0 initialVelocity:300.0 animations:50.0 completion:0.0];
-  v30 = [v63 layer];
-  [(SBActivityAmbientViewController *)self _addGaussianBlurToLayer:v30 inputRadius:0.0];
+  layer = [v63 layer];
+  [(SBActivityAmbientViewController *)self _addGaussianBlurToLayer:layer inputRadius:0.0];
 
-  v31 = [v29 layer];
-  [(SBActivityAmbientViewController *)self _addGaussianBlurToLayer:v31 inputRadius:50.0];
+  layer2 = [v29 layer];
+  [(SBActivityAmbientViewController *)self _addGaussianBlurToLayer:layer2 inputRadius:50.0];
 
-  v32 = [v63 layer];
-  [v32 addAnimation:v67 forKey:@"currentFullScale"];
+  layer3 = [v63 layer];
+  [layer3 addAnimation:v67 forKey:@"currentFullScale"];
 
-  v33 = [v63 layer];
-  [v33 addAnimation:v68 forKey:@"currentFullBlur"];
+  layer4 = [v63 layer];
+  [layer4 addAnimation:v68 forKey:@"currentFullBlur"];
 
-  v34 = [v63 layer];
-  [v34 addAnimation:v66 forKey:@"currentFullOverlayAlpha"];
+  layer5 = [v63 layer];
+  [layer5 addAnimation:v66 forKey:@"currentFullOverlayAlpha"];
 
-  v35 = [v64 layer];
-  [v35 addAnimation:v46 forKey:@"currentCompactScale"];
+  layer6 = [view2 layer];
+  [layer6 addAnimation:v46 forKey:@"currentCompactScale"];
 
-  v36 = [v64 layer];
-  [v36 addAnimation:v40 forKey:@"currrentCompactAlpha"];
+  layer7 = [view2 layer];
+  [layer7 addAnimation:v40 forKey:@"currrentCompactAlpha"];
 
-  v37 = [v29 layer];
-  [v37 addAnimation:v65 forKey:@"newFullScale"];
+  layer8 = [v29 layer];
+  [layer8 addAnimation:v65 forKey:@"newFullScale"];
 
-  v38 = [v29 layer];
-  [v38 addAnimation:v43 forKey:@"newFullBlur"];
+  layer9 = [v29 layer];
+  [layer9 addAnimation:v43 forKey:@"newFullBlur"];
 }
 
 uint64_t __228__SBActivityAmbientViewController__animateTransitionToBecomeNewPrimaryAcivityWithItem_transitionType_fullOverlayViewController_compactOverlayViewControllerForTransition_oldFullViewController_oldCompactViewController_completion___block_invoke(uint64_t a1)
@@ -2038,30 +2038,30 @@ uint64_t __228__SBActivityAmbientViewController__animateTransitionToBecomeNewPri
   return [v2 setTransform:v5];
 }
 
-- (void)_animateTransitionToCompactOverlayForItem:(id)a3 transitionType:(int64_t)a4 compactOverlayViewController:(id)a5 completion:(id)a6
+- (void)_animateTransitionToCompactOverlayForItem:(id)item transitionType:(int64_t)type compactOverlayViewController:(id)controller completion:(id)completion
 {
-  v9 = a5;
-  v10 = a6;
+  controllerCopy = controller;
+  completionCopy = completion;
   self->_isAnimatingTransition = 1;
-  v11 = [(SBActivityAmbientFullOverlayViewController *)self->_fullOverlayViewController view];
-  v12 = [v9 view];
-  [v9 contentSize];
+  view = [(SBActivityAmbientFullOverlayViewController *)self->_fullOverlayViewController view];
+  view2 = [controllerCopy view];
+  [controllerCopy contentSize];
   [(SBActivityAmbientViewController *)self _compactOverlayFrameForContentSize:?];
   v14 = v13;
   v16 = v15;
-  v17 = [v11 layer];
-  [v17 frame];
+  layer = [view layer];
+  [layer frame];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [(SBActivityAmbientViewController *)self view];
-  [v26 bounds];
+  view3 = [(SBActivityAmbientViewController *)self view];
+  [view3 bounds];
   v28 = v27;
 
-  v29 = [v11 layer];
-  [v29 cornerRadius];
+  layer2 = [view layer];
+  [layer2 cornerRadius];
   v31 = v30;
 
   v32 = v31 / v28;
@@ -2077,20 +2077,20 @@ uint64_t __228__SBActivityAmbientViewController__animateTransitionToBecomeNewPri
   v34 = CGRectGetMidY(v71) - v16 * 0.5;
   memset(&v69, 0, sizeof(v69));
   CGAffineTransformMakeScale(&v69, v23 / v14, v25 / v16);
-  [(SBActivityAmbientViewController *)self _layoutCompactOverlayIfNecessaryWithView:v12 frame:MidX - v14 * 0.5, v34, v14, v16];
+  [(SBActivityAmbientViewController *)self _layoutCompactOverlayIfNecessaryWithView:view2 frame:MidX - v14 * 0.5, v34, v14, v16];
   v35 = MEMORY[0x277D75D18];
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
   v63[2] = __132__SBActivityAmbientViewController__animateTransitionToCompactOverlayForItem_transitionType_compactOverlayViewController_completion___block_invoke;
   v63[3] = &unk_2783B5C88;
   v63[4] = self;
-  v36 = v12;
+  v36 = view2;
   v64 = v36;
   v67 = v16 * v32;
   v68 = v69;
-  v37 = v9;
+  v37 = controllerCopy;
   v65 = v37;
-  v38 = v11;
+  v38 = view;
   v66 = v38;
   [v35 performWithoutAnimation:v63];
   v39 = MEMORY[0x277D75D18];
@@ -2118,7 +2118,7 @@ uint64_t __228__SBActivityAmbientViewController__animateTransitionToBecomeNewPri
   v58 = v44;
   [v43 animateWithDuration:0 delay:v57 options:0 animations:0.2 completion:0.2];
   v45 = MEMORY[0x277D75D18];
-  v46 = [(SBActivityAmbientViewController *)self _animationSettingsForTransitionType:a4];
+  v46 = [(SBActivityAmbientViewController *)self _animationSettingsForTransitionType:type];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __132__SBActivityAmbientViewController__animateTransitionToCompactOverlayForItem_transitionType_compactOverlayViewController_completion___block_invoke_5;
@@ -2131,8 +2131,8 @@ uint64_t __228__SBActivityAmbientViewController__animateTransitionToBecomeNewPri
   v51[1] = 3221225472;
   v51[2] = __132__SBActivityAmbientViewController__animateTransitionToCompactOverlayForItem_transitionType_compactOverlayViewController_completion___block_invoke_6;
   v51[3] = &unk_2783AE778;
-  v52 = v10;
-  v47 = v10;
+  v52 = completionCopy;
+  v47 = completionCopy;
   v48 = v40;
   v49 = v36;
   v50 = v44;
@@ -2207,47 +2207,47 @@ uint64_t __132__SBActivityAmbientViewController__animateTransitionToCompactOverl
 
 - (id)_animationSettingsForFullOverlayTransitionYCurve
 {
-  v2 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v2 setBehaviorType:1];
-  [v2 setDampingRatio:0.84];
-  [v2 setResponse:0.435];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues setBehaviorType:1];
+  [initWithDefaultValues setDampingRatio:0.84];
+  [initWithDefaultValues setResponse:0.435];
   v5 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v2 setFrameRateRange:1114143 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
+  [initWithDefaultValues setFrameRateRange:1114143 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
 
-  return v2;
+  return initWithDefaultValues;
 }
 
-- (id)_animationSettingsForTransitionType:(int64_t)a3
+- (id)_animationSettingsForTransitionType:(int64_t)type
 {
-  v4 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v4 setBehaviorType:1];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues setBehaviorType:1];
   v5 = 0.0;
   v6 = 0.0;
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    v5 = dbl_21F8A6A48[a3];
-    v6 = dbl_21F8A6A70[a3];
+    v5 = dbl_21F8A6A48[type];
+    v6 = dbl_21F8A6A70[type];
   }
 
-  [v4 setDampingRatio:v6];
-  [v4 setResponse:v5];
+  [initWithDefaultValues setDampingRatio:v6];
+  [initWithDefaultValues setResponse:v5];
   v9 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v4 setFrameRateRange:1114143 highFrameRateReason:{*&v9.minimum, *&v9.maximum, *&v9.preferred}];
+  [initWithDefaultValues setFrameRateRange:1114143 highFrameRateReason:{*&v9.minimum, *&v9.maximum, *&v9.preferred}];
 
-  return v4;
+  return initWithDefaultValues;
 }
 
-- (BOOL)_canTransitionActivityItem:(id)a3 forTransitionType:(int64_t)a4
+- (BOOL)_canTransitionActivityItem:(id)item forTransitionType:(int64_t)type
 {
-  v6 = a3;
-  if (![(SBActivityAmbientViewController *)self _isActiveActivityItem:v6])
+  itemCopy = item;
+  if (![(SBActivityAmbientViewController *)self _isActiveActivityItem:itemCopy])
   {
     goto LABEL_13;
   }
 
-  if (a4 > 2)
+  if (type > 2)
   {
-    if ((a4 - 3) < 2)
+    if ((type - 3) < 2)
     {
       v8 = 1;
       goto LABEL_14;
@@ -2256,19 +2256,19 @@ uint64_t __132__SBActivityAmbientViewController__animateTransitionToCompactOverl
     goto LABEL_13;
   }
 
-  if (a4)
+  if (type)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v7 = 1104;
       goto LABEL_12;
     }
 
-    if (a4 == 2)
+    if (type == 2)
     {
       v7 = 1112;
 LABEL_12:
-      if (*(&self->super.super.super.isa + v7) != v6)
+      if (*(&self->super.super.super.isa + v7) != itemCopy)
       {
         goto LABEL_13;
       }
@@ -2282,7 +2282,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (self->_primaryActivityItem != v6)
+  if (self->_primaryActivityItem != itemCopy)
   {
     goto LABEL_13;
   }
@@ -2295,15 +2295,15 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)_layerHasGaussianBlurFilter:(id)a3
+- (BOOL)_layerHasGaussianBlurFilter:(id)filter
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a3 filters];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  filters = [filter filters];
+  v4 = [filters countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2315,11 +2315,11 @@ LABEL_14:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(filters);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) name];
-        v10 = [v9 isEqualToString:v7];
+        name = [*(*(&v13 + 1) + 8 * i) name];
+        v10 = [name isEqualToString:v7];
 
         if (v10)
         {
@@ -2328,7 +2328,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [filters countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -2344,134 +2344,134 @@ LABEL_11:
   return v11;
 }
 
-- (void)_addGaussianBlurToLayer:(id)a3 inputRadius:(double)a4
+- (void)_addGaussianBlurToLayer:(id)layer inputRadius:(double)radius
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (![(SBActivityAmbientViewController *)self _layerHasGaussianBlurFilter:v6])
+  layerCopy = layer;
+  if (![(SBActivityAmbientViewController *)self _layerHasGaussianBlurFilter:layerCopy])
   {
     v7 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
     [v7 setName:@"gaussianBlur"];
     [v7 setValue:@"default" forKey:@"inputQuality"];
     [v7 setValue:@"default" forKey:@"inputIntermediateBitDepth"];
-    v8 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v8 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
     [v7 setValue:v8 forKey:@"inputRadius"];
 
     v9 = MEMORY[0x277CBEC28];
     [v7 setValue:MEMORY[0x277CBEC28] forKey:@"inputNormalizeEdges"];
     [v7 setValue:v9 forKey:@"inputHardEdges"];
-    v10 = [v6 filters];
-    v11 = [v10 mutableCopy];
+    filters = [layerCopy filters];
+    v11 = [filters mutableCopy];
 
     [v11 addObject:v7];
     v13[0] = v7;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    [v6 setFilters:v12];
+    [layerCopy setFilters:v12];
   }
 }
 
-- (void)_addNewFullOverlayTransitionBlurMaterialViewWithParentView:(id)a3 initialWeighting:(double)a4 hidden:(BOOL)a5
+- (void)_addNewFullOverlayTransitionBlurMaterialViewWithParentView:(id)view initialWeighting:(double)weighting hidden:(BOOL)hidden
 {
-  v5 = a5;
-  v8 = a3;
+  hiddenCopy = hidden;
+  viewCopy = view;
   [(SBActivityAmbientViewController *)self _cleanupTransitionBlurViewIfNecessary];
   v9 = MEMORY[0x277D26718];
   v10 = SBHBundle();
-  v11 = [v9 materialViewWithRecipeNamed:@"ambientContentOverlay" inBundle:v10 options:0 initialWeighting:0 scaleAdjustment:a4];
+  v11 = [v9 materialViewWithRecipeNamed:@"ambientContentOverlay" inBundle:v10 options:0 initialWeighting:0 scaleAdjustment:weighting];
 
-  [v8 bounds];
+  [viewCopy bounds];
   [v11 setFrame:?];
   [v11 setOverrideUserInterfaceStyle:2];
   [v11 setAutoresizingMask:18];
-  [v11 setHidden:v5];
-  [v8 addSubview:v11];
-  [v8 bringSubviewToFront:v11];
-  [v8 layoutIfNeeded];
+  [v11 setHidden:hiddenCopy];
+  [viewCopy addSubview:v11];
+  [viewCopy bringSubviewToFront:v11];
+  [viewCopy layoutIfNeeded];
 
   fullOverlayTransitionBlurView = self->_fullOverlayTransitionBlurView;
   self->_fullOverlayTransitionBlurView = v11;
 }
 
-- (void)_addNewBackgroundBlurMaterialViewWithInitialWeighting:(double)a3 hidden:(BOOL)a4
+- (void)_addNewBackgroundBlurMaterialViewWithInitialWeighting:(double)weighting hidden:(BOOL)hidden
 {
   if (!self->_backgroundBlurMaterialView)
   {
-    v4 = a4;
-    v11 = [(SBActivityAmbientViewController *)self view];
+    hiddenCopy = hidden;
+    view = [(SBActivityAmbientViewController *)self view];
     v7 = MEMORY[0x277D26718];
     v8 = SBHBundle();
-    v9 = [v7 materialViewWithRecipeNamed:@"activityAmbientBackground" inBundle:v8 options:0 initialWeighting:0 scaleAdjustment:a3];
+    v9 = [v7 materialViewWithRecipeNamed:@"activityAmbientBackground" inBundle:v8 options:0 initialWeighting:0 scaleAdjustment:weighting];
 
-    [v11 bounds];
+    [view bounds];
     [v9 setFrame:?];
     [v9 setOverrideUserInterfaceStyle:2];
-    [v9 setHidden:v4];
+    [v9 setHidden:hiddenCopy];
     [v9 setAutoresizingMask:18];
-    [v11 addSubview:v9];
-    [v11 sendSubviewToBack:v9];
-    [v11 layoutIfNeeded];
+    [view addSubview:v9];
+    [view sendSubviewToBack:v9];
+    [view layoutIfNeeded];
     backgroundBlurMaterialView = self->_backgroundBlurMaterialView;
     self->_backgroundBlurMaterialView = v9;
   }
 }
 
-- (void)_addNewCompactOverlayTransitionViewWithParentView:(id)a3 alpha:(double)a4
+- (void)_addNewCompactOverlayTransitionViewWithParentView:(id)view alpha:(double)alpha
 {
   if (!self->_compactOverlayTransitionView)
   {
     v6 = MEMORY[0x277D75D18];
-    v7 = a3;
+    viewCopy = view;
     v8 = objc_alloc_init(v6);
-    [v7 bounds];
+    [viewCopy bounds];
     [(UIView *)v8 setFrame:?];
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [(UIView *)v8 setBackgroundColor:v9];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIView *)v8 setBackgroundColor:whiteColor];
 
-    [(UIView *)v8 setAlpha:a4];
+    [(UIView *)v8 setAlpha:alpha];
     [(UIView *)v8 setAutoresizingMask:18];
-    [v7 addSubview:v8];
-    [v7 bringSubviewToFront:v8];
-    [v7 layoutIfNeeded];
+    [viewCopy addSubview:v8];
+    [viewCopy bringSubviewToFront:v8];
+    [viewCopy layoutIfNeeded];
 
     compactOverlayTransitionView = self->_compactOverlayTransitionView;
     self->_compactOverlayTransitionView = v8;
   }
 }
 
-- (id)_addNewSwitchingTransitionViewBelowSubview:(id)a3
+- (id)_addNewSwitchingTransitionViewBelowSubview:(id)subview
 {
   v4 = MEMORY[0x277D75D18];
-  v5 = a3;
+  subviewCopy = subview;
   v6 = objc_alloc_init(v4);
-  v7 = [(SBActivityAmbientViewController *)self view];
-  [v7 bounds];
+  view = [(SBActivityAmbientViewController *)self view];
+  [view bounds];
   [v6 setFrame:?];
 
-  v8 = [MEMORY[0x277D75348] blackColor];
-  [v6 setBackgroundColor:v8];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v6 setBackgroundColor:blackColor];
 
-  v9 = [(SBActivityAmbientViewController *)self view];
-  [v9 insertSubview:v6 belowSubview:v5];
+  view2 = [(SBActivityAmbientViewController *)self view];
+  [view2 insertSubview:v6 belowSubview:subviewCopy];
 
-  v10 = [(SBActivityAmbientViewController *)self view];
-  [v10 layoutIfNeeded];
+  view3 = [(SBActivityAmbientViewController *)self view];
+  [view3 layoutIfNeeded];
 
   return v6;
 }
 
-- (void)_endAndCleanupTransitionForActivityItem:(id)a3 forTransitionType:(int64_t)a4 compactOverlayViewController:(id)a5 fullOverlayViewController:(id)a6 completion:(id)a7
+- (void)_endAndCleanupTransitionForActivityItem:(id)item forTransitionType:(int64_t)type compactOverlayViewController:(id)controller fullOverlayViewController:(id)viewController completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a7;
+  itemCopy = item;
+  completionCopy = completion;
   v12 = SBLogActivity();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 identifier];
+    identifier = [itemCopy identifier];
     v17 = 138543618;
-    v18 = v13;
+    v18 = identifier;
     v19 = 2048;
-    v20 = a4;
+    typeCopy2 = type;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] ending ambient overlay transition for type: %ld", &v17, 0x16u);
   }
 
@@ -2480,9 +2480,9 @@ LABEL_11:
   [(SBActivityAmbientViewController *)self _cleanupBackgroundBlurViewIfNecessary];
   [(SBActivityAmbientViewController *)self _cleanupSwitchingTransitionView];
   self->_isAnimatingTransition = 0;
-  if (a4)
+  if (type)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       [(SBActivityAmbientViewController *)self _cleanupCurrentFullOverlayViewController];
     }
@@ -2493,41 +2493,41 @@ LABEL_11:
     [(SBActivityAmbientViewController *)self _addSecondaryActivityItemIfAvailable];
   }
 
-  v14 = [(SBActivityAmbientViewController *)self delegate];
-  [v14 activityAmbientViewControllerResetIdleTimerBehavior:self];
+  delegate = [(SBActivityAmbientViewController *)self delegate];
+  [delegate activityAmbientViewControllerResetIdleTimerBehavior:self];
 
   [(SBActivityAmbientViewController *)self _updateResolvedPreferences];
   v15 = SBLogActivity();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v10 identifier];
+    identifier2 = [itemCopy identifier];
     v17 = 138543618;
-    v18 = v16;
+    v18 = identifier2;
     v19 = 2048;
-    v20 = a4;
+    typeCopy2 = type;
     _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] Transition completed for type: %ld", &v17, 0x16u);
   }
 
-  if (v11)
+  if (completionCopy)
   {
-    v11[2](v11);
+    completionCopy[2](completionCopy);
   }
 }
 
 - (void)_addSecondaryActivityItemIfAvailable
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(SBActivityAmbientViewController *)self delegate];
-  v4 = [v3 activityAmbientViewControllerNextPendingActivityItem:self];
+  delegate = [(SBActivityAmbientViewController *)self delegate];
+  v4 = [delegate activityAmbientViewControllerNextPendingActivityItem:self];
 
   if (v4)
   {
     v5 = SBLogActivity();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 identifier];
+      identifier = [v4 identifier];
       v7 = 138543362;
-      v8 = v6;
+      v8 = identifier;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] dequeueing ambient item to be secondary", &v7, 0xCu);
     }
 
@@ -2535,18 +2535,18 @@ LABEL_11:
   }
 }
 
-- (void)_resetPrimaryActivityItemWithCompletion:(id)a3
+- (void)_resetPrimaryActivityItemWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (!self->_isAnimatingTransition)
   {
     if (self->_primaryActivityItem)
     {
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4);
+        completionCopy[2](completionCopy);
       }
     }
 
@@ -2555,22 +2555,22 @@ LABEL_11:
       secondaryActivityItem = self->_secondaryActivityItem;
       if (secondaryActivityItem)
       {
-        [(SBActivityAmbientViewController *)self _transitionOverlayForActivityItem:secondaryActivityItem withTransitionType:2 configuringForAlerting:0 withCompletion:v4];
+        [(SBActivityAmbientViewController *)self _transitionOverlayForActivityItem:secondaryActivityItem withTransitionType:2 configuringForAlerting:0 withCompletion:completionCopy];
       }
 
       else
       {
-        v7 = [(SBActivityAmbientViewController *)self delegate];
-        v8 = [v7 activityAmbientViewControllerNextPendingActivityItem:self];
+        delegate = [(SBActivityAmbientViewController *)self delegate];
+        v8 = [delegate activityAmbientViewControllerNextPendingActivityItem:self];
 
         if (v8)
         {
           v9 = SBLogActivity();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
           {
-            v10 = [v8 identifier];
+            identifier = [v8 identifier];
             v11 = 138543362;
-            v12 = v10;
+            v12 = identifier;
             _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] dequeueing ambient item to be primary", &v11, 0xCu);
           }
 
@@ -2597,39 +2597,39 @@ LABEL_11:
   }
 }
 
-- (void)_layoutCompactOverlayIfNecessaryWithView:(id)a3 frame:(CGRect)a4
+- (void)_layoutCompactOverlayIfNecessaryWithView:(id)view frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v14 = v9;
-  if (v9)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  v14 = viewCopy;
+  if (viewCopy)
   {
-    v10 = v9;
+    view = viewCopy;
   }
 
   else
   {
-    v10 = [(SBActivityAmbientCompactOverlayViewController *)self->_compactOverlayViewController view];
+    view = [(SBActivityAmbientCompactOverlayViewController *)self->_compactOverlayViewController view];
   }
 
-  v11 = v10;
-  [v10 setFrame:{x, y, width, height}];
-  v12 = [(SBActivityAmbientViewController *)self view];
-  [v12 bringSubviewToFront:v11];
+  v11 = view;
+  [view setFrame:{x, y, width, height}];
+  view2 = [(SBActivityAmbientViewController *)self view];
+  [view2 bringSubviewToFront:v11];
 
-  v13 = [(SBActivityAmbientViewController *)self view];
-  [v13 layoutIfNeeded];
+  view3 = [(SBActivityAmbientViewController *)self view];
+  [view3 layoutIfNeeded];
 }
 
-- (CGRect)_compactOverlayFrameForContentSize:(CGSize)a3
+- (CGRect)_compactOverlayFrameForContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(SBActivityAmbientViewController *)self view];
-  [v5 bounds];
+  height = size.height;
+  width = size.width;
+  view = [(SBActivityAmbientViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -2651,15 +2651,15 @@ LABEL_11:
   return result;
 }
 
-- (void)_layoutFullOverlayWithActivityView:(id)a3
+- (void)_layoutFullOverlayWithActivityView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBActivityAmbientViewController *)self view];
-  [v5 bounds];
-  [v4 setFrame:?];
-  [v4 setAutoresizingMask:18];
+  viewCopy = view;
+  view = [(SBActivityAmbientViewController *)self view];
+  [view bounds];
+  [viewCopy setFrame:?];
+  [viewCopy setAutoresizingMask:18];
 
-  [v5 layoutIfNeeded];
+  [view layoutIfNeeded];
 }
 
 - (void)_addDismissGesture
@@ -2679,10 +2679,10 @@ LABEL_11:
 
   if (!self->_dismissPanGesture)
   {
-    v6 = [(SBActivityAmbientViewController *)self _ambientActivitySettings];
-    v7 = [v6 fullScreenDismissGestureEnabled];
+    _ambientActivitySettings = [(SBActivityAmbientViewController *)self _ambientActivitySettings];
+    fullScreenDismissGestureEnabled = [_ambientActivitySettings fullScreenDismissGestureEnabled];
 
-    if (v7)
+    if (fullScreenDismissGestureEnabled)
     {
       v8 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel__handleDismissGesture_];
       dismissPanGesture = self->_dismissPanGesture;
@@ -2690,8 +2690,8 @@ LABEL_11:
 
       [(UIPanGestureRecognizer *)self->_dismissPanGesture setAllowedTouchTypes:&unk_28336E328];
       [(UIPanGestureRecognizer *)self->_dismissPanGesture setDelegate:self];
-      v10 = [(SBActivityAmbientViewController *)self view];
-      [v10 addGestureRecognizer:self->_dismissPanGesture];
+      view = [(SBActivityAmbientViewController *)self view];
+      [view addGestureRecognizer:self->_dismissPanGesture];
     }
   }
 }
@@ -2709,80 +2709,80 @@ LABEL_11:
 
   if (self->_dismissPanGesture)
   {
-    v5 = [(SBActivityAmbientViewController *)self view];
-    [v5 removeGestureRecognizer:self->_dismissPanGesture];
+    view = [(SBActivityAmbientViewController *)self view];
+    [view removeGestureRecognizer:self->_dismissPanGesture];
 
     dismissPanGesture = self->_dismissPanGesture;
     self->_dismissPanGesture = 0;
   }
 }
 
-- (void)_handleDismissGesture:(id)a3
+- (void)_handleDismissGesture:(id)gesture
 {
-  v5 = a3;
-  v4 = [v5 state];
-  if (v4 == 2)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if (state == 2)
   {
     goto LABEL_4;
   }
 
-  if (v4 == 1)
+  if (state == 1)
   {
-    [(SBActivityAmbientViewController *)self _handleDismissGestureBegan:v5];
+    [(SBActivityAmbientViewController *)self _handleDismissGestureBegan:gestureCopy];
 LABEL_4:
-    [(SBActivityAmbientViewController *)self _handleDismissGestureChanged:v5];
+    [(SBActivityAmbientViewController *)self _handleDismissGestureChanged:gestureCopy];
     goto LABEL_6;
   }
 
-  [(SBActivityAmbientViewController *)self _handleDismissGestureEnded:v5];
+  [(SBActivityAmbientViewController *)self _handleDismissGestureEnded:gestureCopy];
 LABEL_6:
 }
 
-- (void)_handleDismissGestureBegan:(id)a3
+- (void)_handleDismissGestureBegan:(id)began
 {
   self->_isInFullOverlayDrag = 1;
-  v4 = a3;
-  v5 = [(SBActivityAmbientViewController *)self traitCollection];
-  [v5 displayCornerRadius];
+  beganCopy = began;
+  traitCollection = [(SBActivityAmbientViewController *)self traitCollection];
+  [traitCollection displayCornerRadius];
   v7 = v6;
 
-  v8 = [(SBActivityAmbientFullOverlayViewController *)self->_fullOverlayViewController view];
-  [v8 _setContinuousCornerRadius:v7];
+  view = [(SBActivityAmbientFullOverlayViewController *)self->_fullOverlayViewController view];
+  [view _setContinuousCornerRadius:v7];
 
   [(SBActivityAmbientViewController *)self setCompactOverlayHidden:1];
-  v9 = [(SBActivityAmbientViewController *)self view];
-  [v4 locationInView:v9];
+  view2 = [(SBActivityAmbientViewController *)self view];
+  [beganCopy locationInView:view2];
   v11 = v10;
   v13 = v12;
 
   [(SBActivityAmbientViewController *)self _prepareFullOverlayViewForDragWithLocation:v11, v13];
 }
 
-- (void)_handleDismissGestureChanged:(id)a3
+- (void)_handleDismissGestureChanged:(id)changed
 {
-  v4 = a3;
-  v9 = [(SBActivityAmbientViewController *)self view];
-  [v4 translationInView:v9];
+  changedCopy = changed;
+  view = [(SBActivityAmbientViewController *)self view];
+  [changedCopy translationInView:view];
   v6 = v5;
   v8 = v7;
 
   [(SBActivityAmbientViewController *)self _beginFullOverlayDragWithTranslation:v6, v8];
 }
 
-- (void)_handleDismissGestureEnded:(id)a3
+- (void)_handleDismissGestureEnded:(id)ended
 {
   v23 = *MEMORY[0x277D85DE8];
   self->_isInFullOverlayDrag = 0;
   self->_currentFullOverlayDragTranslationY = 9.22337204e18;
   self->_currentFullOverlayDragScale = 9.22337204e18;
   self->_currentFullOverlayDragOriginY = 9.22337204e18;
-  v4 = a3;
-  v5 = [(SBActivityAmbientViewController *)self view];
-  [v4 translationInView:v5];
+  endedCopy = ended;
+  view = [(SBActivityAmbientViewController *)self view];
+  [endedCopy translationInView:view];
   v7 = v6;
 
-  v8 = [(SBActivityAmbientViewController *)self view];
-  [v4 velocityInView:v8];
+  view2 = [(SBActivityAmbientViewController *)self view];
+  [endedCopy velocityInView:view2];
   v10 = v9;
 
   v11 = fabs(v7);
@@ -2794,23 +2794,23 @@ LABEL_6:
 
   else
   {
-    v14 = [(SBActivityItem *)self->_primaryActivityItem descriptor];
-    v15 = [v14 isMomentary];
+    descriptor = [(SBActivityItem *)self->_primaryActivityItem descriptor];
+    isMomentary = [descriptor isMomentary];
 
-    if (v15)
+    if (isMomentary)
     {
       v16 = SBLogActivity();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(SBActivityItem *)self->_primaryActivityItem identifier];
+        identifier = [(SBActivityItem *)self->_primaryActivityItem identifier];
         v21 = 138543362;
-        v22 = v17;
+        v22 = identifier;
         _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] ambient full screen dismissed but is momentary so ending activity", &v21, 0xCu);
       }
 
       v18 = objc_alloc_init(MEMORY[0x277CB98A0]);
-      v19 = [(SBActivityItem *)self->_primaryActivityItem identifier];
-      [v18 endActivity:v19];
+      identifier2 = [(SBActivityItem *)self->_primaryActivityItem identifier];
+      [v18 endActivity:identifier2];
     }
 
     else
@@ -2822,12 +2822,12 @@ LABEL_6:
   }
 }
 
-- (void)_prepareFullOverlayViewForDragWithLocation:(CGPoint)a3
+- (void)_prepareFullOverlayViewForDragWithLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBActivityAmbientFullOverlayViewController *)self->_fullOverlayViewController view];
-  [v6 frame];
+  y = location.y;
+  x = location.x;
+  view = [(SBActivityAmbientFullOverlayViewController *)self->_fullOverlayViewController view];
+  [view frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -2853,31 +2853,31 @@ void __78__SBActivityAmbientViewController__prepareFullOverlayViewForDragWithLoc
   [*(a1 + 32) _setAnchorPointForDrag:v2 forView:{vdivq_f64(*(a1 + 40), *(a1 + 72))}];
 }
 
-- (void)_setAnchorPointForDrag:(CGPoint)a3 forView:(id)a4
+- (void)_setAnchorPointForDrag:(CGPoint)drag forView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v18 = a4;
-  [v18 frame];
+  y = drag.y;
+  x = drag.x;
+  viewCopy = view;
+  [viewCopy frame];
   v7 = v6;
   v9 = v8;
-  v10 = [v18 layer];
-  [v10 setAnchorPoint:{x, y}];
+  layer = [viewCopy layer];
+  [layer setAnchorPoint:{x, y}];
 
-  [v18 frame];
+  [viewCopy frame];
   v12 = v11 - v7;
   v14 = v13 - v9;
-  [v18 center];
+  [viewCopy center];
   v16 = v15 - v12;
-  [v18 center];
-  [v18 setCenter:{v16, v17 - v14}];
+  [viewCopy center];
+  [viewCopy setCenter:{v16, v17 - v14}];
 }
 
-- (void)_beginFullOverlayDragWithTranslation:(CGPoint)a3
+- (void)_beginFullOverlayDragWithTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBActivityAmbientFullOverlayViewController *)self->_fullOverlayViewController view];
+  y = translation.y;
+  x = translation.x;
+  view = [(SBActivityAmbientFullOverlayViewController *)self->_fullOverlayViewController view];
   currentFullOverlayDragTranslationY = self->_currentFullOverlayDragTranslationY;
   v8 = y;
   if (currentFullOverlayDragTranslationY != 9.22337204e18)
@@ -2931,7 +2931,7 @@ void __78__SBActivityAmbientViewController__prepareFullOverlayViewForDragWithLoc
     currentFullOverlayDragScale = self->_currentFullOverlayDragScale;
   }
 
-  v15 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
   memset(&v33, 0, sizeof(v33));
   CGAffineTransformMakeScale(&v33, currentFullOverlayDragScale, currentFullOverlayDragScale);
   memset(&v32, 0, sizeof(v32));
@@ -2949,16 +2949,16 @@ void __78__SBActivityAmbientViewController__prepareFullOverlayViewForDragWithLoc
   v28[4] = self;
   [MEMORY[0x277D75D18] performWithoutAnimation:v28];
   v18 = MEMORY[0x277D75D18];
-  v19 = [(SBActivityAmbientViewController *)self _animationSettingsForFullOverlayDrag];
+  _animationSettingsForFullOverlayDrag = [(SBActivityAmbientViewController *)self _animationSettingsForFullOverlayDrag];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v26 = v31;
   v24[2] = __72__SBActivityAmbientViewController__beginFullOverlayDragWithTranslation___block_invoke_2;
   v24[3] = &unk_2783B5CB0;
-  v25 = v6;
+  v25 = view;
   v27 = v17;
-  v20 = v6;
-  [v18 sb_animateWithSettings:v19 mode:5 animations:v24 completion:0];
+  v20 = view;
+  [v18 sb_animateWithSettings:_animationSettingsForFullOverlayDrag mode:5 animations:v24 completion:0];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -2966,11 +2966,11 @@ void __78__SBActivityAmbientViewController__prepareFullOverlayViewForDragWithLoc
   v23[3] = &unk_2783A8BC8;
   v23[4] = self;
   *&v23[5] = v8;
-  [MEMORY[0x277D75D18] sb_animateWithSettings:v15 mode:3 animations:v23 completion:0];
+  [MEMORY[0x277D75D18] sb_animateWithSettings:initWithDefaultValues mode:3 animations:v23 completion:0];
   self->_currentFullOverlayDragTranslationY = v8;
   self->_currentFullOverlayDragScale = currentFullOverlayDragScale;
-  v21 = [v20 layer];
-  [v21 frame];
+  layer = [v20 layer];
+  [layer frame];
   self->_currentFullOverlayDragOriginY = v22;
 }
 
@@ -3000,11 +3000,11 @@ uint64_t __72__SBActivityAmbientViewController__beginFullOverlayDragWithTranslat
   return [v1 setWeighting:?];
 }
 
-- (double)_scaleForFullOverlayDismissalWithTranslation:(double)a3
+- (double)_scaleForFullOverlayDismissalWithTranslation:(double)translation
 {
-  v4 = [(SBActivityAmbientViewController *)self view];
-  [v4 bounds];
-  v6 = a3 / (v5 / 6.0) + 1.0;
+  view = [(SBActivityAmbientViewController *)self view];
+  [view bounds];
+  v6 = translation / (v5 / 6.0) + 1.0;
 
   BSUIConstrainValueWithRubberBand();
   if (v6 >= 1.0)
@@ -3020,11 +3020,11 @@ uint64_t __72__SBActivityAmbientViewController__beginFullOverlayDragWithTranslat
   return fmin(fmax(v8, 0.0), 1.1);
 }
 
-- (double)_blurWeightingForFullOverlayDismissalWithTranslation:(double)a3
+- (double)_blurWeightingForFullOverlayDismissalWithTranslation:(double)translation
 {
-  v4 = [(SBActivityAmbientViewController *)self view];
-  [v4 bounds];
-  v6 = a3 / (v5 * 0.25) + 1.0;
+  view = [(SBActivityAmbientViewController *)self view];
+  [view bounds];
+  v6 = translation / (v5 * 0.25) + 1.0;
 
   BSUIConstrainValueWithRubberBand();
   if (v6 >= 1.0)
@@ -3040,11 +3040,11 @@ uint64_t __72__SBActivityAmbientViewController__beginFullOverlayDragWithTranslat
   return fmin(fmax(v8, 0.0), 1.1);
 }
 
-- (double)_cornerRadiusForFullOverlayDismissalWithTranslation:(double)a3
+- (double)_cornerRadiusForFullOverlayDismissalWithTranslation:(double)translation
 {
-  v3 = fabs(a3);
-  v4 = [(SBActivityAmbientFullOverlayViewController *)self->_fullOverlayViewController view];
-  [v4 bounds];
+  v3 = fabs(translation);
+  view = [(SBActivityAmbientFullOverlayViewController *)self->_fullOverlayViewController view];
+  [view bounds];
   v6 = v5;
 
   result = v6 * 0.5;
@@ -3058,40 +3058,40 @@ uint64_t __72__SBActivityAmbientViewController__beginFullOverlayDragWithTranslat
 
 - (id)_animationSettingsForFullOverlayDrag
 {
-  v2 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v2 setBehaviorType:1];
-  [v2 setDefaultValues];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues setBehaviorType:1];
+  [initWithDefaultValues setDefaultValues];
   v5 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v2 setFrameRateRange:1114143 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
+  [initWithDefaultValues setFrameRateRange:1114143 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
 
-  return v2;
+  return initWithDefaultValues;
 }
 
 - (id)_animationSettingsForFullOverlayDragCancel
 {
-  v2 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-  [v2 setBehaviorType:1];
-  [v2 setDampingRatio:1.0];
-  [v2 setResponse:0.5];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  [initWithDefaultValues setBehaviorType:1];
+  [initWithDefaultValues setDampingRatio:1.0];
+  [initWithDefaultValues setResponse:0.5];
   v5 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v2 setFrameRateRange:1114143 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
+  [initWithDefaultValues setFrameRateRange:1114143 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
 
-  return v2;
+  return initWithDefaultValues;
 }
 
 - (void)_cancelFullOverlayDrag
 {
   [(SBActivityAmbientViewController *)self setCompactOverlayHidden:0];
-  v3 = [(SBActivityAmbientFullOverlayViewController *)self->_fullOverlayViewController view];
-  v4 = [(SBActivityAmbientViewController *)self view];
-  [v4 bounds];
+  view = [(SBActivityAmbientFullOverlayViewController *)self->_fullOverlayViewController view];
+  view2 = [(SBActivityAmbientViewController *)self view];
+  [view2 bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
   v13 = MEMORY[0x277D75D18];
-  v14 = [(SBActivityAmbientViewController *)self _animationSettingsForFullOverlayDragCancel];
+  _animationSettingsForFullOverlayDragCancel = [(SBActivityAmbientViewController *)self _animationSettingsForFullOverlayDragCancel];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __57__SBActivityAmbientViewController__cancelFullOverlayDrag__block_invoke;
@@ -3100,8 +3100,8 @@ uint64_t __72__SBActivityAmbientViewController__beginFullOverlayDragWithTranslat
   v22 = v8;
   v23 = v10;
   v24 = v12;
-  v19 = v3;
-  v20 = self;
+  v19 = view;
+  selfCopy = self;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __57__SBActivityAmbientViewController__cancelFullOverlayDrag__block_invoke_2;
@@ -3109,7 +3109,7 @@ uint64_t __72__SBActivityAmbientViewController__beginFullOverlayDragWithTranslat
   v16[4] = self;
   v17 = v19;
   v15 = v19;
-  [v13 sb_animateWithSettings:v14 mode:3 animations:v18 completion:v16];
+  [v13 sb_animateWithSettings:_animationSettingsForFullOverlayDragCancel mode:3 animations:v18 completion:v16];
 }
 
 uint64_t __57__SBActivityAmbientViewController__cancelFullOverlayDrag__block_invoke(uint64_t a1)
@@ -3139,18 +3139,18 @@ uint64_t __57__SBActivityAmbientViewController__cancelFullOverlayDrag__block_inv
   return [v2 _cleanupBackgroundBlurViewIfNecessary];
 }
 
-- (void)activityViewController:(id)a3 didSetIdleTimerDisabled:(BOOL)a4
+- (void)activityViewController:(id)controller didSetIdleTimerDisabled:(BOOL)disabled
 {
-  if (self->_fullOverlayViewController == a3)
+  if (self->_fullOverlayViewController == controller)
   {
-    v6 = [(SBActivityAmbientViewController *)self delegate];
-    [v6 activityAmbientViewControllerResetIdleTimerBehavior:self];
+    delegate = [(SBActivityAmbientViewController *)self delegate];
+    [delegate activityAmbientViewControllerResetIdleTimerBehavior:self];
   }
 }
 
-- (void)activityViewControllerContentRequestsCancellingGesture:(id)a3
+- (void)activityViewControllerContentRequestsCancellingGesture:(id)gesture
 {
-  if (self->_fullOverlayViewController == a3)
+  if (self->_fullOverlayViewController == gesture)
   {
     [(UIPanGestureRecognizer *)self->_dismissPanGesture setEnabled:0];
     [(UIPanGestureRecognizer *)self->_dismissPanGesture setEnabled:1];
@@ -3161,17 +3161,17 @@ uint64_t __57__SBActivityAmbientViewController__cancelFullOverlayDrag__block_inv
   }
 }
 
-- (void)activityViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:(id)a3
+- (void)activityViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:(id)d
 {
-  if (self->_fullOverlayViewController == a3)
+  if (self->_fullOverlayViewController == d)
   {
     [(SBActivityAmbientViewController *)self _updateAudioCategoriesDisablingVolumeHUD];
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = [a3 valueForKey:{@"SBActivityFullOverlayAnimationCompletionKey", a4}];
+  v4 = [stop valueForKey:{@"SBActivityFullOverlayAnimationCompletionKey", finished}];
   if (v4)
   {
     v5 = v4;
@@ -3180,25 +3180,25 @@ uint64_t __57__SBActivityAmbientViewController__cancelFullOverlayDrag__block_inv
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_dismissEdgePanGesture != a3 && self->_dismissPanGesture != a3)
+  if (self->_dismissEdgePanGesture != begin && self->_dismissPanGesture != begin)
   {
 LABEL_5:
     LOBYTE(fullOverlayViewController) = 0;
     return fullOverlayViewController & 1;
   }
 
-  v4 = [(SBActivityAmbientViewController *)self delegate];
-  v5 = [v4 activityAmbientViewControllerCanBeginFullOverlayDismissGesture:self];
+  delegate = [(SBActivityAmbientViewController *)self delegate];
+  v5 = [delegate activityAmbientViewControllerCanBeginFullOverlayDismissGesture:self];
 
-  v6 = [SBApp bannerManager];
-  v7 = [(SBActivityAmbientViewController *)self view];
-  v8 = [v7 _sbWindowScene];
-  v9 = [v6 isDisplayingBannerInWindowScene:v8];
+  bannerManager = [SBApp bannerManager];
+  view = [(SBActivityAmbientViewController *)self view];
+  _sbWindowScene = [view _sbWindowScene];
+  v9 = [bannerManager isDisplayingBannerInWindowScene:_sbWindowScene];
 
-  v10 = [(SBActivityViewController *)self->_fullOverlayViewController activityItem];
-  v11 = [(SBActivityAmbientViewController *)self _isActiveActivityItem:v10];
+  activityItem = [(SBActivityViewController *)self->_fullOverlayViewController activityItem];
+  v11 = [(SBActivityAmbientViewController *)self _isActiveActivityItem:activityItem];
 
   fullOverlayViewController = self->_fullOverlayViewController;
   if (fullOverlayViewController)
@@ -3215,13 +3215,13 @@ LABEL_5:
   return fullOverlayViewController & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   dismissPanGesture = self->_dismissPanGesture;
   dismissEdgePanGesture = self->_dismissEdgePanGesture;
-  v12 = dismissPanGesture == v6 && dismissEdgePanGesture == v7 || dismissPanGesture == v7 && dismissEdgePanGesture == v6;
+  v12 = dismissPanGesture == recognizerCopy && dismissEdgePanGesture == gestureRecognizerCopy || dismissPanGesture == gestureRecognizerCopy && dismissEdgePanGesture == recognizerCopy;
 
   return v12;
 }

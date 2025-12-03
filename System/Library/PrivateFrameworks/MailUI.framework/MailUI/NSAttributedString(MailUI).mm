@@ -47,7 +47,7 @@
   v7 = MEMORY[0x277CBEAC0];
   v8 = a4;
   v9 = [v7 dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  v10 = [v6 mui_attributedStringWithAttributedString:a1 attributes:v9];
+  v10 = [v6 mui_attributedStringWithAttributedString:self attributes:v9];
 
   [v10 boundingRectWithSize:3 options:0 context:{a2, 3.40282347e38}];
   v12 = v11;
@@ -66,8 +66,8 @@
   v13 = v12;
   if (v11 == 2)
   {
-    v14 = [v9 firstObject];
-    v15 = [v13 initWithString:v14];
+    firstObject = [v9 firstObject];
+    v15 = [v13 initWithString:firstObject];
 
     [v10 appendAttributedString:v15];
     v16 = [MEMORY[0x277D74270] mui_textAttachmentWithSystemImage:v7 systemImageColor:0];

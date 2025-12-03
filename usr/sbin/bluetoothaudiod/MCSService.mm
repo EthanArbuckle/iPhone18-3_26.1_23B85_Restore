@@ -1,6 +1,6 @@
 @interface MCSService
 + (id)sharedInstance;
-- (BOOL)currentTrackInfoItemDifferentFrom:(id)a3 forKey:(id)a4;
+- (BOOL)currentTrackInfoItemDifferentFrom:(id)from forKey:(id)key;
 - (MCSService)init;
 - (id)contentControlIdData;
 - (id)mediaControlPointOpcodesSupportedData;
@@ -11,14 +11,14 @@
 - (id)trackDurationData;
 - (id)trackPositionData;
 - (id)trackTitleData;
-- (unsigned)mcsMediaControlOpcodeToMrCommand:(unsigned __int8)a3;
-- (unsigned)mrPlaybackStateFromMCSMediaControlOpcode:(unsigned __int8)a3;
-- (void)applicationDidChange:(id)a3;
-- (void)handleMediaControlPointWrite:(id)a3;
-- (void)handleSubscribersForCharacteristic:(id)a3 withNotificationHandler:(id)a4;
-- (void)handleTrackPositionWrite:(id)a3;
-- (void)infoDidChange:(id)a3;
-- (void)mediaControlPointNotification:(unsigned __int8)a3 result:(unsigned __int8)a4;
+- (unsigned)mcsMediaControlOpcodeToMrCommand:(unsigned __int8)command;
+- (unsigned)mrPlaybackStateFromMCSMediaControlOpcode:(unsigned __int8)opcode;
+- (void)applicationDidChange:(id)change;
+- (void)handleMediaControlPointWrite:(id)write;
+- (void)handleSubscribersForCharacteristic:(id)characteristic withNotificationHandler:(id)handler;
+- (void)handleTrackPositionWrite:(id)write;
+- (void)infoDidChange:(id)change;
+- (void)mediaControlPointNotification:(unsigned __int8)notification result:(unsigned __int8)result;
 - (void)notifyMediaControlPointOpcodesSupported;
 - (void)notifyMediaPlayerName;
 - (void)notifyMediaState;
@@ -27,13 +27,13 @@
 - (void)notifyTrackDuration;
 - (void)notifyTrackPosition;
 - (void)notifyTrackTitle;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4;
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4;
-- (void)playbackQueueDidChange:(void *)a3;
-- (void)supportedCommandsDidChange:(__CFArray *)a3;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request;
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests;
+- (void)playbackQueueDidChange:(void *)change;
+- (void)supportedCommandsDidChange:(__CFArray *)change;
 @end
 
 @implementation MCSService
@@ -44,7 +44,7 @@
   block[1] = 3221225472;
   block[2] = sub_100029DD8;
   block[3] = &unk_1000953F0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000AA018 != -1)
   {
     dispatch_once(&qword_1000AA018, block);
@@ -179,8 +179,8 @@
     v71[9] = v2->_mediaControlPointOpcodesSupportedCharacteristic;
     v71[10] = v2->_contentControlIdCharacteristic;
     v64 = [NSArray arrayWithObjects:v71 count:11];
-    v65 = [(Service *)v2 service];
-    [v65 setCharacteristics:v64];
+    service = [(Service *)v2 service];
+    [service setCharacteristics:v64];
   }
 
   MRMediaRemoteSetWantsSupportedCommandsChangedNotifications();
@@ -196,11 +196,11 @@
   return v66;
 }
 
-- (void)supportedCommandsDidChange:(__CFArray *)a3
+- (void)supportedCommandsDidChange:(__CFArray *)change
 {
-  if (a3)
+  if (change)
   {
-    v4 = CFRetain(a3);
+    v4 = CFRetain(change);
   }
 
   else
@@ -216,13 +216,13 @@
   }
 }
 
-- (void)applicationDidChange:(id)a3
+- (void)applicationDidChange:(id)change
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  changeCopy = change;
+  v7 = changeCopy;
+  if (changeCopy)
   {
-    v5 = v4;
+    v5 = changeCopy;
   }
 
   else
@@ -236,17 +236,17 @@
   [(MCSService *)self notifyMediaPlayerName];
 }
 
-- (void)infoDidChange:(id)a3
+- (void)infoDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(MCSService *)self currentTrackInfo];
-  [(MCSService *)self setCurrentTrackInfo:v4];
+  changeCopy = change;
+  currentTrackInfo = [(MCSService *)self currentTrackInfo];
+  [(MCSService *)self setCurrentTrackInfo:changeCopy];
 
-  v6 = [(MCSService *)self currentTrackInfo];
+  currentTrackInfo2 = [(MCSService *)self currentTrackInfo];
 
-  if (v5)
+  if (currentTrackInfo)
   {
-    if (!v6)
+    if (!currentTrackInfo2)
     {
       v7 = qword_1000A9FE0;
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -260,23 +260,23 @@
     }
   }
 
-  else if (!v6)
+  else if (!currentTrackInfo2)
   {
     goto LABEL_20;
   }
 
   v8 = kMRMediaRemoteNowPlayingInfoTitle;
-  v9 = [(MCSService *)self currentTrackInfoItemDifferentFrom:v5 forKey:kMRMediaRemoteNowPlayingInfoTitle];
-  v10 = [(MCSService *)self currentTrackInfoItemDifferentFrom:v5 forKey:kMRMediaRemoteNowPlayingInfoDuration];
+  v9 = [(MCSService *)self currentTrackInfoItemDifferentFrom:currentTrackInfo forKey:kMRMediaRemoteNowPlayingInfoTitle];
+  v10 = [(MCSService *)self currentTrackInfoItemDifferentFrom:currentTrackInfo forKey:kMRMediaRemoteNowPlayingInfoDuration];
   if (v9)
   {
     v11 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [(MCSService *)self currentTrackInfo];
-      v14 = [v13 objectForKeyedSubscript:v8];
-      v15 = [v5 objectForKeyedSubscript:v8];
+      currentTrackInfo3 = [(MCSService *)self currentTrackInfo];
+      v14 = [currentTrackInfo3 objectForKeyedSubscript:v8];
+      v15 = [currentTrackInfo objectForKeyedSubscript:v8];
       v17 = 136315650;
       v18 = "[MCSService infoDidChange:]";
       v19 = 2112;
@@ -294,7 +294,7 @@
     [(MCSService *)self notifyTrackDuration];
   }
 
-  if ([(MCSService *)self currentTrackInfoItemDifferentFrom:v5 forKey:kMRMediaRemoteNowPlayingInfoTrackNumber])
+  if ([(MCSService *)self currentTrackInfoItemDifferentFrom:currentTrackInfo forKey:kMRMediaRemoteNowPlayingInfoTrackNumber])
   {
     [(MCSService *)self notifyTrackChanged];
   }
@@ -304,8 +304,8 @@
     [(MCSService *)self notifyTrackPosition];
   }
 
-  v16 = [(MCSService *)self prevMediaPlaybackState];
-  if (v16 != [(MCSService *)self mediaPlaybackState])
+  prevMediaPlaybackState = [(MCSService *)self prevMediaPlaybackState];
+  if (prevMediaPlaybackState != [(MCSService *)self mediaPlaybackState])
   {
     [(MCSService *)self setPrevMediaPlaybackState:[(MCSService *)self mediaPlaybackState]];
     [(MCSService *)self notifyMediaState];
@@ -314,7 +314,7 @@
 LABEL_20:
 }
 
-- (void)playbackQueueDidChange:(void *)a3
+- (void)playbackQueueDidChange:(void *)change
 {
   v4 = [NSNumber numberWithUnsignedLong:MRPlaybackQueueGetContentItemsCount()];
   [(MCSService *)self setPlaybackQueueCount:v4];
@@ -322,44 +322,44 @@ LABEL_20:
   [(MCSService *)self notifyPlayingOrder];
 }
 
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  requestCopy = request;
   v8 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v7 characteristic];
-    v11 = [v10 UUID];
+    characteristic = [requestCopy characteristic];
+    uUID = [characteristic UUID];
     v35 = 136315394;
     v36 = "[MCSService peripheralManager:didReceiveReadRequest:]";
     v37 = 2112;
-    v38 = v11;
+    v38 = uUID;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s : called for %@", &v35, 0x16u);
   }
 
-  v12 = [v7 characteristic];
-  v13 = [(MCSService *)self mediaPlayerNameCharacteristic];
+  characteristic2 = [requestCopy characteristic];
+  mediaPlayerNameCharacteristic = [(MCSService *)self mediaPlayerNameCharacteristic];
 
-  if (v12 == v13)
+  if (characteristic2 == mediaPlayerNameCharacteristic)
   {
-    v32 = [(MCSService *)self mediaPlayerNameData];
+    mediaPlayerNameData = [(MCSService *)self mediaPlayerNameData];
 LABEL_25:
-    v33 = v32;
+    trackTitleData = mediaPlayerNameData;
     goto LABEL_26;
   }
 
-  v14 = [v7 characteristic];
-  v15 = [(MCSService *)self trackTitleCharacteristic];
+  characteristic3 = [requestCopy characteristic];
+  trackTitleCharacteristic = [(MCSService *)self trackTitleCharacteristic];
 
-  if (v14 == v15)
+  if (characteristic3 == trackTitleCharacteristic)
   {
-    v33 = [(MCSService *)self trackTitleData];
-    if (![v33 length])
+    trackTitleData = [(MCSService *)self trackTitleData];
+    if (![trackTitleData length])
     {
       v34 = +[NSData data];
-      [v7 setValue:v34];
+      [requestCopy setValue:v34];
 
 LABEL_27:
       v31 = 0;
@@ -367,128 +367,128 @@ LABEL_27:
     }
 
 LABEL_26:
-    [v7 setValue:v33];
+    [requestCopy setValue:trackTitleData];
     goto LABEL_27;
   }
 
-  v16 = [v7 characteristic];
-  v17 = [(MCSService *)self trackDurationCharacteristic];
+  characteristic4 = [requestCopy characteristic];
+  trackDurationCharacteristic = [(MCSService *)self trackDurationCharacteristic];
 
-  if (v16 == v17)
+  if (characteristic4 == trackDurationCharacteristic)
   {
-    v32 = [(MCSService *)self trackDurationData];
+    mediaPlayerNameData = [(MCSService *)self trackDurationData];
     goto LABEL_25;
   }
 
-  v18 = [v7 characteristic];
-  v19 = [(MCSService *)self trackPositionCharacteristic];
+  characteristic5 = [requestCopy characteristic];
+  trackPositionCharacteristic = [(MCSService *)self trackPositionCharacteristic];
 
-  if (v18 == v19)
+  if (characteristic5 == trackPositionCharacteristic)
   {
-    v32 = [(MCSService *)self trackPositionData];
+    mediaPlayerNameData = [(MCSService *)self trackPositionData];
     goto LABEL_25;
   }
 
-  v20 = [v7 characteristic];
-  v21 = [(MCSService *)self playingOrderCharacteristic];
+  characteristic6 = [requestCopy characteristic];
+  playingOrderCharacteristic = [(MCSService *)self playingOrderCharacteristic];
 
-  if (v20 == v21)
+  if (characteristic6 == playingOrderCharacteristic)
   {
-    v32 = [(MCSService *)self playingOrderData];
+    mediaPlayerNameData = [(MCSService *)self playingOrderData];
     goto LABEL_25;
   }
 
-  v22 = [v7 characteristic];
-  v23 = [(MCSService *)self playingOrdersSupportedCharacteristic];
+  characteristic7 = [requestCopy characteristic];
+  playingOrdersSupportedCharacteristic = [(MCSService *)self playingOrdersSupportedCharacteristic];
 
-  if (v22 == v23)
+  if (characteristic7 == playingOrdersSupportedCharacteristic)
   {
-    v32 = [(MCSService *)self playingOrdersSupportedData];
+    mediaPlayerNameData = [(MCSService *)self playingOrdersSupportedData];
     goto LABEL_25;
   }
 
-  v24 = [v7 characteristic];
-  v25 = [(MCSService *)self mediaStateCharacteristic];
+  characteristic8 = [requestCopy characteristic];
+  mediaStateCharacteristic = [(MCSService *)self mediaStateCharacteristic];
 
-  if (v24 == v25)
+  if (characteristic8 == mediaStateCharacteristic)
   {
-    v32 = [(MCSService *)self mediaStateData];
+    mediaPlayerNameData = [(MCSService *)self mediaStateData];
     goto LABEL_25;
   }
 
-  v26 = [v7 characteristic];
-  v27 = [(MCSService *)self mediaControlPointOpcodesSupportedCharacteristic];
+  characteristic9 = [requestCopy characteristic];
+  mediaControlPointOpcodesSupportedCharacteristic = [(MCSService *)self mediaControlPointOpcodesSupportedCharacteristic];
 
-  if (v26 == v27)
+  if (characteristic9 == mediaControlPointOpcodesSupportedCharacteristic)
   {
-    v32 = [(MCSService *)self mediaControlPointOpcodesSupportedData];
+    mediaPlayerNameData = [(MCSService *)self mediaControlPointOpcodesSupportedData];
     goto LABEL_25;
   }
 
-  v28 = [v7 characteristic];
-  v29 = [(MCSService *)self contentControlIdCharacteristic];
+  characteristic10 = [requestCopy characteristic];
+  contentControlIdCharacteristic = [(MCSService *)self contentControlIdCharacteristic];
 
-  if (v28 == v29)
+  if (characteristic10 == contentControlIdCharacteristic)
   {
-    v32 = [(MCSService *)self contentControlIdData];
+    mediaPlayerNameData = [(MCSService *)self contentControlIdData];
     goto LABEL_25;
   }
 
   v30 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
   {
-    sub_10005C7A0(v30, v7);
+    sub_10005C7A0(v30, requestCopy);
   }
 
   v31 = 10;
 LABEL_28:
-  [(Service *)self respondToRequest:v7 withResult:v31];
+  [(Service *)self respondToRequest:requestCopy withResult:v31];
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(MCSService *)self subscribedCentrals];
-  v10 = [v8 UUID];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  subscribedCentrals = [(MCSService *)self subscribedCentrals];
+  uUID = [characteristicCopy UUID];
+  v11 = [subscribedCentrals objectForKeyedSubscript:uUID];
 
   if (!v11)
   {
     v12 = +[NSMutableArray array];
-    v13 = [(MCSService *)self subscribedCentrals];
-    v14 = [v8 UUID];
-    [v13 setObject:v12 forKeyedSubscript:v14];
+    subscribedCentrals2 = [(MCSService *)self subscribedCentrals];
+    uUID2 = [characteristicCopy UUID];
+    [subscribedCentrals2 setObject:v12 forKeyedSubscript:uUID2];
   }
 
-  v15 = [(MCSService *)self subscribedCentrals];
-  v16 = [v8 UUID];
-  v17 = [v15 objectForKeyedSubscript:v16];
-  v18 = [v17 containsObject:v7];
+  subscribedCentrals3 = [(MCSService *)self subscribedCentrals];
+  uUID3 = [characteristicCopy UUID];
+  v17 = [subscribedCentrals3 objectForKeyedSubscript:uUID3];
+  v18 = [v17 containsObject:centralCopy];
 
   if ((v18 & 1) == 0)
   {
-    v19 = [(MCSService *)self subscribedCentrals];
-    v20 = [v8 UUID];
-    v21 = [v19 objectForKeyedSubscript:v20];
-    [v21 addObject:v7];
+    subscribedCentrals4 = [(MCSService *)self subscribedCentrals];
+    uUID4 = [characteristicCopy UUID];
+    v21 = [subscribedCentrals4 objectForKeyedSubscript:uUID4];
+    [v21 addObject:centralCopy];
 
     v22 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v23 = v22;
-      v24 = [v7 identifier];
-      v25 = [v24 UUIDString];
-      v26 = [v8 UUID];
-      v27 = [(MCSService *)self subscribedCentrals];
-      v28 = [v8 UUID];
-      v29 = [v27 objectForKeyedSubscript:v28];
+      identifier = [centralCopy identifier];
+      uUIDString = [identifier UUIDString];
+      uUID5 = [characteristicCopy UUID];
+      subscribedCentrals5 = [(MCSService *)self subscribedCentrals];
+      uUID6 = [characteristicCopy UUID];
+      v29 = [subscribedCentrals5 objectForKeyedSubscript:uUID6];
       v30 = 136315906;
       v31 = "[MCSService peripheralManager:central:didSubscribeToCharacteristic:]";
       v32 = 2112;
-      v33 = v25;
+      v33 = uUIDString;
       v34 = 2112;
-      v35 = v26;
+      v35 = uUID5;
       v36 = 2048;
       v37 = [v29 count];
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, " %s: central %@ is now subscribed to characteristic %@, number of subscribers is now %lu", &v30, 0x2Au);
@@ -496,43 +496,43 @@ LABEL_28:
   }
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic
 {
-  v7 = a4;
-  v8 = a5;
+  centralCopy = central;
+  characteristicCopy = characteristic;
   v9 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v7 identifier];
-    v12 = [v11 UUIDString];
-    v13 = [v8 UUID];
+    identifier = [centralCopy identifier];
+    uUIDString = [identifier UUIDString];
+    uUID = [characteristicCopy UUID];
     v17 = 136315650;
     v18 = "[MCSService peripheralManager:central:didUnsubscribeFromCharacteristic:]";
     v19 = 2112;
-    v20 = v12;
+    v20 = uUIDString;
     v21 = 2112;
-    v22 = v13;
+    v22 = uUID;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, " %s: central %@ is now unsubscribed to characteristic %@", &v17, 0x20u);
   }
 
-  v14 = [(MCSService *)self subscribedCentrals];
-  v15 = [v8 UUID];
-  v16 = [v14 objectForKeyedSubscript:v15];
-  [v16 removeObject:v7];
+  subscribedCentrals = [(MCSService *)self subscribedCentrals];
+  uUID2 = [characteristicCopy UUID];
+  v16 = [subscribedCentrals objectForKeyedSubscript:uUID2];
+  [v16 removeObject:centralCopy];
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v11 = [v8 isNotifying];
+    isNotifying = [characteristicCopy isNotifying];
     v12 = qword_1000A9FE0;
     v13 = os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT);
-    if (v11)
+    if (isNotifying)
     {
       if (!v13)
       {
@@ -540,11 +540,11 @@ LABEL_28:
       }
 
       v14 = v12;
-      v15 = [v8 UUID];
+      uUID = [characteristicCopy UUID];
       v17 = 136315394;
       v18 = "[MCSService peripheral:didUpdateNotificationStateForCharacteristic:error:]";
       v19 = 2112;
-      v20 = v15;
+      v20 = uUID;
       v16 = "%s : Started notifying for characteristic %@";
     }
 
@@ -556,11 +556,11 @@ LABEL_28:
       }
 
       v14 = v12;
-      v15 = [v8 UUID];
+      uUID = [characteristicCopy UUID];
       v17 = 136315394;
       v18 = "[MCSService peripheral:didUpdateNotificationStateForCharacteristic:error:]";
       v19 = 2112;
-      v20 = v15;
+      v20 = uUID;
       v16 = "%s : Stopped notifying for characteristic %@";
     }
 
@@ -572,20 +572,20 @@ LABEL_28:
   v10 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
   {
-    sub_10005C86C(v10, v8, v9);
+    sub_10005C86C(v10, characteristicCopy, errorCopy);
   }
 
 LABEL_10:
 }
 
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests
 {
-  v5 = a4;
+  requestsCopy = requests;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  v6 = [requestsCopy countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v6)
   {
     v8 = v6;
@@ -599,7 +599,7 @@ LABEL_10:
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(requestsCopy);
         }
 
         v11 = *(*(&v26 + 1) + 8 * v10);
@@ -607,17 +607,17 @@ LABEL_10:
         if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
         {
           v13 = v12;
-          v14 = [v11 characteristic];
+          characteristic = [v11 characteristic];
           *buf = v25;
           v31 = "[MCSService peripheralManager:didReceiveWriteRequests:]";
           v32 = 2112;
-          v33 = v14;
+          v33 = characteristic;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s : %@", buf, 0x16u);
         }
 
-        v15 = [v11 characteristic];
-        v16 = [(MCSService *)self mediaControlPointCharacteristic];
-        v17 = [v15 isEqual:v16];
+        characteristic2 = [v11 characteristic];
+        mediaControlPointCharacteristic = [(MCSService *)self mediaControlPointCharacteristic];
+        v17 = [characteristic2 isEqual:mediaControlPointCharacteristic];
 
         if (v17)
         {
@@ -626,9 +626,9 @@ LABEL_10:
 
         else
         {
-          v18 = [v11 characteristic];
-          v19 = [(MCSService *)self trackPositionCharacteristic];
-          v20 = [v18 isEqual:v19];
+          characteristic3 = [v11 characteristic];
+          trackPositionCharacteristic = [(MCSService *)self trackPositionCharacteristic];
+          v20 = [characteristic3 isEqual:trackPositionCharacteristic];
 
           if (v20)
           {
@@ -641,12 +641,12 @@ LABEL_10:
             if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
             {
               v22 = v21;
-              v23 = [v11 characteristic];
-              v24 = [v23 UUID];
+              characteristic4 = [v11 characteristic];
+              uUID = [characteristic4 UUID];
               *buf = v25;
               v31 = "[MCSService peripheralManager:didReceiveWriteRequests:]";
               v32 = 2112;
-              v33 = v24;
+              v33 = uUID;
               _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%s : This characteristic %@ is not writable", buf, 0x16u);
             }
 
@@ -658,18 +658,18 @@ LABEL_10:
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v8 = [requestsCopy countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)handleMediaControlPointWrite:(id)a3
+- (void)handleMediaControlPointWrite:(id)write
 {
-  v4 = a3;
-  v5 = [v4 value];
-  v6 = [DataInputStream inputStreamWithData:v5 byteOrder:1];
+  writeCopy = write;
+  value = [writeCopy value];
+  v6 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v15 = 0;
   [v6 readUint8:&v15];
@@ -686,8 +686,8 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s : Received opcode %@", buf, 0x16u);
   }
 
-  v11 = [(MCSService *)self playerName];
-  v12 = [v11 length];
+  playerName = [(MCSService *)self playerName];
+  v12 = [playerName length];
 
   if (!v12)
   {
@@ -723,22 +723,22 @@ LABEL_10:
 LABEL_16:
     v14 = 14;
 LABEL_17:
-    [(Service *)self respondToRequest:v4 withResult:v14];
+    [(Service *)self respondToRequest:writeCopy withResult:v14];
     [(MCSService *)self mediaControlPointNotification:v15 result:v13];
     goto LABEL_18;
   }
 
-  [(Service *)self respondToRequest:v4 withResult:0];
+  [(Service *)self respondToRequest:writeCopy withResult:0];
   [(MCSService *)self mediaControlPointNotification:v15 result:1];
   [(MCSService *)self playbackStateDidChange:[(MCSService *)self mrPlaybackStateFromMCSMediaControlOpcode:v15]];
 LABEL_18:
 }
 
-- (void)handleTrackPositionWrite:(id)a3
+- (void)handleTrackPositionWrite:(id)write
 {
-  v4 = a3;
-  v5 = [v4 value];
-  v6 = [DataInputStream inputStreamWithData:v5 byteOrder:1];
+  writeCopy = write;
+  value = [writeCopy value];
+  v6 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v8 = 0;
   [v6 readUint32:&v8];
@@ -753,7 +753,7 @@ LABEL_18:
   }
 
   MRMediaRemoteSetElapsedTime();
-  [(Service *)self respondToRequest:v4 withResult:0];
+  [(Service *)self respondToRequest:writeCopy withResult:0];
 
   [(MCSService *)self notifyTrackPosition];
 }
@@ -761,8 +761,8 @@ LABEL_18:
 - (id)mediaPlayerNameData
 {
   v3 = [DataOutputStream outputStreamWithByteOrder:1];
-  v4 = [(MCSService *)self playerName];
-  if (v4)
+  playerName = [(MCSService *)self playerName];
+  if (playerName)
   {
     [(MCSService *)self playerName];
   }
@@ -781,21 +781,21 @@ LABEL_18:
     v11 = 136315394;
     v12 = "[MCSService mediaPlayerNameData]";
     v13 = 2080;
-    v14 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s : Media Player Name - %s", &v11, 0x16u);
   }
 
   [v3 writeString:v5];
-  v9 = [v3 data];
+  data = [v3 data];
 
-  return v9;
+  return data;
 }
 
 - (id)trackTitleData
 {
   v3 = [DataOutputStream outputStreamWithByteOrder:1];
-  v4 = [(MCSService *)self currentTrackInfo];
-  v5 = [v4 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTitle];
+  currentTrackInfo = [(MCSService *)self currentTrackInfo];
+  v5 = [currentTrackInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTitle];
   v6 = v5;
   v7 = &stru_100098610;
   if (v5)
@@ -807,7 +807,7 @@ LABEL_18:
 
   v9 = [(__CFString *)v8 dataUsingEncoding:4];
   [v3 writeData:v9];
-  v10 = [v3 data];
+  data = [v3 data];
   if ([(__CFString *)v8 length])
   {
     v11 = qword_1000A9FE0;
@@ -821,19 +821,19 @@ LABEL_18:
     }
   }
 
-  return v10;
+  return data;
 }
 
 - (id)trackDurationData
 {
   v3 = [DataOutputStream outputStreamWithByteOrder:1];
-  v4 = [(MCSService *)self currentTrackInfo];
+  currentTrackInfo = [(MCSService *)self currentTrackInfo];
   v5 = kMRMediaRemoteNowPlayingInfoDuration;
-  v6 = [v4 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoDuration];
+  v6 = [currentTrackInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoDuration];
   if (v6)
   {
-    v7 = [(MCSService *)self currentTrackInfo];
-    v8 = [v7 objectForKeyedSubscript:v5];
+    currentTrackInfo2 = [(MCSService *)self currentTrackInfo];
+    v8 = [currentTrackInfo2 objectForKeyedSubscript:v5];
     [v8 doubleValue];
     v10 = (v9 * 100.0);
   }
@@ -854,25 +854,25 @@ LABEL_18:
   }
 
   [v3 writeUint32:v10];
-  v12 = [v3 data];
+  data = [v3 data];
 
-  return v12;
+  return data;
 }
 
 - (id)trackPositionData
 {
   v3 = [DataOutputStream outputStreamWithByteOrder:1];
-  v4 = [(MCSService *)self currentTrackInfo];
-  v5 = [v4 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoElapsedTime];
+  currentTrackInfo = [(MCSService *)self currentTrackInfo];
+  v5 = [currentTrackInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoElapsedTime];
 
   v6 = 0.0;
   if (v5)
   {
-    v7 = [(MCSService *)self currentTrackInfo];
-    v8 = [v7 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTimestamp];
+    currentTrackInfo2 = [(MCSService *)self currentTrackInfo];
+    v8 = [currentTrackInfo2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTimestamp];
 
-    v9 = [(MCSService *)self currentTrackInfo];
-    v10 = [v9 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoPlaybackRate];
+    currentTrackInfo3 = [(MCSService *)self currentTrackInfo];
+    v10 = [currentTrackInfo3 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoPlaybackRate];
 
     if (v8)
     {
@@ -923,36 +923,36 @@ LABEL_18:
   }
 
   [v3 writeUint32:v12];
-  v21 = [v3 data];
+  data = [v3 data];
 
-  return v21;
+  return data;
 }
 
 - (id)playingOrderData
 {
   v3 = [DataOutputStream outputStreamWithByteOrder:1];
-  v4 = [(MCSService *)self currentTrackInfo];
+  currentTrackInfo = [(MCSService *)self currentTrackInfo];
   v5 = kMRMediaRemoteNowPlayingInfoRepeatMode;
-  v6 = [v4 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoRepeatMode];
+  v6 = [currentTrackInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoRepeatMode];
   if (v6)
   {
-    v7 = [(MCSService *)self currentTrackInfo];
-    v8 = [v7 objectForKeyedSubscript:v5];
-    v9 = [v8 intValue];
+    currentTrackInfo2 = [(MCSService *)self currentTrackInfo];
+    v8 = [currentTrackInfo2 objectForKeyedSubscript:v5];
+    intValue = [v8 intValue];
   }
 
   else
   {
-    v9 = 0;
+    intValue = 0;
   }
 
-  v10 = [(MCSService *)self currentTrackInfo];
+  currentTrackInfo3 = [(MCSService *)self currentTrackInfo];
   v11 = kMRMediaRemoteNowPlayingInfoShuffleMode;
-  v12 = [v10 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoShuffleMode];
+  v12 = [currentTrackInfo3 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoShuffleMode];
   if (v12)
   {
-    v13 = [(MCSService *)self currentTrackInfo];
-    v14 = [v13 objectForKeyedSubscript:v11];
+    currentTrackInfo4 = [(MCSService *)self currentTrackInfo];
+    v14 = [currentTrackInfo4 objectForKeyedSubscript:v11];
     v15 = ([v14 intValue] & 0xFFFFFFFE) == 2;
   }
 
@@ -961,8 +961,8 @@ LABEL_18:
     v15 = 0;
   }
 
-  v16 = [(MCSService *)self playbackQueueCount];
-  v17 = [v16 unsignedIntValue];
+  playbackQueueCount = [(MCSService *)self playbackQueueCount];
+  unsignedIntValue = [playbackQueueCount unsignedIntValue];
 
   if (v15)
   {
@@ -984,12 +984,12 @@ LABEL_18:
     v19 = 4;
   }
 
-  if (v9 == 3)
+  if (intValue == 3)
   {
     v18 = v19;
   }
 
-  if (v9 == 2)
+  if (intValue == 2)
   {
     v20 = 2;
   }
@@ -999,7 +999,7 @@ LABEL_18:
     v20 = v18;
   }
 
-  if (v17 >= 2)
+  if (unsignedIntValue >= 2)
   {
     v21 = v20;
   }
@@ -1010,22 +1010,22 @@ LABEL_18:
   }
 
   [v3 writeUint8:v21];
-  v22 = [v3 data];
+  data = [v3 data];
 
-  return v22;
+  return data;
 }
 
 - (id)playingOrdersSupportedData
 {
   v3 = [DataOutputStream outputStreamWithByteOrder:1];
-  v4 = [(MCSService *)self supportedCommands];
-  v5 = [v4 indexOfObjectPassingTest:&stru_1000954D0];
+  supportedCommands = [(MCSService *)self supportedCommands];
+  v5 = [supportedCommands indexOfObjectPassingTest:&stru_1000954D0];
 
-  v6 = [(MCSService *)self supportedCommands];
-  v7 = [v6 indexOfObjectPassingTest:&stru_1000954F0];
+  supportedCommands2 = [(MCSService *)self supportedCommands];
+  v7 = [supportedCommands2 indexOfObjectPassingTest:&stru_1000954F0];
 
-  v8 = [(MCSService *)self playbackQueueCount];
-  v9 = [v8 unsignedIntValue];
+  playbackQueueCount = [(MCSService *)self playbackQueueCount];
+  unsignedIntValue = [playbackQueueCount unsignedIntValue];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1067,7 +1067,7 @@ LABEL_18:
     v14 = v12;
   }
 
-  if (v9 >= 2)
+  if (unsignedIntValue >= 2)
   {
     v15 = v14;
   }
@@ -1078,9 +1078,9 @@ LABEL_18:
   }
 
   [v3 writeUint16:v15];
-  v16 = [v3 data];
+  data = [v3 data];
 
-  return v16;
+  return data;
 }
 
 - (id)mediaStateData
@@ -1091,17 +1091,17 @@ LABEL_18:
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [v3 data];
+    data = [v3 data];
     v9 = 136315394;
     v10 = "[MCSService mediaStateData]";
     v11 = 2112;
-    v12 = v6;
+    v12 = data;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s : Media State Data: %@", &v9, 0x16u);
   }
 
-  v7 = [v3 data];
+  data2 = [v3 data];
 
-  return v7;
+  return data2;
 }
 
 - (id)mediaControlPointOpcodesSupportedData
@@ -1111,8 +1111,8 @@ LABEL_18:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(MCSService *)self supportedCommands];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  supportedCommands = [(MCSService *)self supportedCommands];
+  v5 = [supportedCommands countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1124,7 +1124,7 @@ LABEL_18:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(supportedCommands);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -1182,7 +1182,7 @@ LABEL_18:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [supportedCommands countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1194,132 +1194,132 @@ LABEL_18:
   }
 
   [v3 writeUint32:v7];
-  v12 = [v3 data];
+  data = [v3 data];
 
-  return v12;
+  return data;
 }
 
 - (id)contentControlIdData
 {
   v2 = [DataOutputStream outputStreamWithByteOrder:1];
   [v2 writeUint8:0];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
 - (void)notifyTrackChanged
 {
-  v3 = [(MCSService *)self trackChangedCharacteristic];
+  trackChangedCharacteristic = [(MCSService *)self trackChangedCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002CFE8;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(MCSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(MCSService *)self handleSubscribersForCharacteristic:trackChangedCharacteristic withNotificationHandler:v4];
 }
 
 - (void)notifyMediaPlayerName
 {
-  v3 = [(MCSService *)self mediaPlayerNameCharacteristic];
+  mediaPlayerNameCharacteristic = [(MCSService *)self mediaPlayerNameCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002D10C;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(MCSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(MCSService *)self handleSubscribersForCharacteristic:mediaPlayerNameCharacteristic withNotificationHandler:v4];
 }
 
 - (void)notifyTrackTitle
 {
-  v3 = [(MCSService *)self trackTitleCharacteristic];
+  trackTitleCharacteristic = [(MCSService *)self trackTitleCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002D228;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(MCSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(MCSService *)self handleSubscribersForCharacteristic:trackTitleCharacteristic withNotificationHandler:v4];
 }
 
 - (void)notifyTrackDuration
 {
-  v3 = [(MCSService *)self trackDurationCharacteristic];
+  trackDurationCharacteristic = [(MCSService *)self trackDurationCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002D344;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(MCSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(MCSService *)self handleSubscribersForCharacteristic:trackDurationCharacteristic withNotificationHandler:v4];
 }
 
 - (void)notifyTrackPosition
 {
-  v3 = [(MCSService *)self trackPositionCharacteristic];
+  trackPositionCharacteristic = [(MCSService *)self trackPositionCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002D460;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(MCSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(MCSService *)self handleSubscribersForCharacteristic:trackPositionCharacteristic withNotificationHandler:v4];
 }
 
 - (void)notifyPlayingOrder
 {
-  v3 = [(MCSService *)self playingOrderCharacteristic];
+  playingOrderCharacteristic = [(MCSService *)self playingOrderCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002D57C;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(MCSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(MCSService *)self handleSubscribersForCharacteristic:playingOrderCharacteristic withNotificationHandler:v4];
 }
 
 - (void)notifyMediaState
 {
-  v3 = [(MCSService *)self mediaStateCharacteristic];
+  mediaStateCharacteristic = [(MCSService *)self mediaStateCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002D698;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(MCSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(MCSService *)self handleSubscribersForCharacteristic:mediaStateCharacteristic withNotificationHandler:v4];
 }
 
-- (void)mediaControlPointNotification:(unsigned __int8)a3 result:(unsigned __int8)a4
+- (void)mediaControlPointNotification:(unsigned __int8)notification result:(unsigned __int8)result
 {
-  v7 = [(MCSService *)self mediaControlPointCharacteristic];
+  mediaControlPointCharacteristic = [(MCSService *)self mediaControlPointCharacteristic];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002D7CC;
   v8[3] = &unk_100095540;
-  v9 = a3;
-  v10 = a4;
+  notificationCopy = notification;
+  resultCopy = result;
   v8[4] = self;
-  [(MCSService *)self handleSubscribersForCharacteristic:v7 withNotificationHandler:v8];
+  [(MCSService *)self handleSubscribersForCharacteristic:mediaControlPointCharacteristic withNotificationHandler:v8];
 }
 
 - (void)notifyMediaControlPointOpcodesSupported
 {
-  v3 = [(MCSService *)self mediaControlPointOpcodesSupportedCharacteristic];
+  mediaControlPointOpcodesSupportedCharacteristic = [(MCSService *)self mediaControlPointOpcodesSupportedCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002D9F0;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(MCSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(MCSService *)self handleSubscribersForCharacteristic:mediaControlPointOpcodesSupportedCharacteristic withNotificationHandler:v4];
 }
 
-- (void)handleSubscribersForCharacteristic:(id)a3 withNotificationHandler:(id)a4
+- (void)handleSubscribersForCharacteristic:(id)characteristic withNotificationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MCSService *)self subscribedCentrals];
-  v9 = [v6 UUID];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  characteristicCopy = characteristic;
+  handlerCopy = handler;
+  subscribedCentrals = [(MCSService *)self subscribedCentrals];
+  uUID = [characteristicCopy UUID];
+  v10 = [subscribedCentrals objectForKeyedSubscript:uUID];
 
   if ([v10 count])
   {
-    v7[2](v7, v10);
+    handlerCopy[2](handlerCopy, v10);
   }
 
   else
@@ -1328,22 +1328,22 @@ LABEL_18:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v6 UUID];
+      uUID2 = [characteristicCopy UUID];
       v14 = 136315394;
       v15 = "[MCSService handleSubscribersForCharacteristic:withNotificationHandler:]";
       v16 = 2112;
-      v17 = v13;
+      v17 = uUID2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s : No subscribers for update to characteristic %@", &v14, 0x16u);
     }
   }
 }
 
-- (BOOL)currentTrackInfoItemDifferentFrom:(id)a3 forKey:(id)a4
+- (BOOL)currentTrackInfoItemDifferentFrom:(id)from forKey:(id)key
 {
-  v6 = a4;
-  v7 = [a3 objectForKeyedSubscript:v6];
-  v8 = [(MCSService *)self currentTrackInfo];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  v7 = [from objectForKeyedSubscript:keyCopy];
+  currentTrackInfo = [(MCSService *)self currentTrackInfo];
+  v9 = [currentTrackInfo objectForKeyedSubscript:keyCopy];
 
   if (v7 && v9)
   {
@@ -1358,14 +1358,14 @@ LABEL_18:
   return v10;
 }
 
-- (unsigned)mrPlaybackStateFromMCSMediaControlOpcode:(unsigned __int8)a3
+- (unsigned)mrPlaybackStateFromMCSMediaControlOpcode:(unsigned __int8)opcode
 {
   result = 1;
-  if (a3 > 4)
+  if (opcode > 4)
   {
-    if ((a3 - 48) >= 2)
+    if ((opcode - 48) >= 2)
     {
-      if (a3 == 5)
+      if (opcode == 5)
       {
         return 3;
       }
@@ -1376,14 +1376,14 @@ LABEL_18:
 
   else
   {
-    if ((a3 - 3) < 2)
+    if ((opcode - 3) < 2)
     {
       return 5;
     }
 
-    if (a3 != 1)
+    if (opcode != 1)
     {
-      if (a3 == 2)
+      if (opcode == 2)
       {
         return 2;
       }
@@ -1395,11 +1395,11 @@ LABEL_18:
   return result;
 }
 
-- (unsigned)mcsMediaControlOpcodeToMrCommand:(unsigned __int8)a3
+- (unsigned)mcsMediaControlOpcodeToMrCommand:(unsigned __int8)command
 {
-  if (a3 <= 3)
+  if (command <= 3)
   {
-    switch(a3)
+    switch(command)
     {
       case 1u:
         return 0;
@@ -1410,14 +1410,14 @@ LABEL_18:
     }
   }
 
-  else if (a3 > 47)
+  else if (command > 47)
   {
-    if (a3 == 48)
+    if (command == 48)
     {
       return 5;
     }
 
-    if (a3 == 49)
+    if (command == 49)
     {
       return 4;
     }
@@ -1425,12 +1425,12 @@ LABEL_18:
 
   else
   {
-    if (a3 == 4)
+    if (command == 4)
     {
       return 8;
     }
 
-    if (a3 == 5)
+    if (command == 5)
     {
       return 3;
     }

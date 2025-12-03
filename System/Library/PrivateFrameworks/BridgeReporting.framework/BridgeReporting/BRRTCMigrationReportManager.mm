@@ -1,20 +1,20 @@
 @interface BRRTCMigrationReportManager
-- (BRRTCMigrationReportManager)initWithPairingID:(id)a3;
+- (BRRTCMigrationReportManager)initWithPairingID:(id)d;
 - (id)_likelyOffendingTransaction;
-- (id)_transactionNameFromKey:(id)a3;
-- (id)formatDate:(id)a3;
-- (void)addDeviceDetails:(id)a3;
-- (void)setErrorCode:(id)a3 domain:(id)a4 description:(id)a5;
-- (void)setLastActiveDate:(id)a3;
-- (void)setSessionID:(id)a3;
+- (id)_transactionNameFromKey:(id)key;
+- (id)formatDate:(id)date;
+- (void)addDeviceDetails:(id)details;
+- (void)setErrorCode:(id)code domain:(id)domain description:(id)description;
+- (void)setLastActiveDate:(id)date;
+- (void)setSessionID:(id)d;
 - (void)submitMetic;
 @end
 
 @implementation BRRTCMigrationReportManager
 
-- (BRRTCMigrationReportManager)initWithPairingID:(id)a3
+- (BRRTCMigrationReportManager)initWithPairingID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = BRRTCMigrationReportManager;
   v6 = [(BRRTCMigrationReportManager *)&v10 init];
@@ -24,84 +24,84 @@
     migrationMetric = v6->_migrationMetric;
     v6->_migrationMetric = v7;
 
-    objc_storeStrong(&v6->_pairingID, a3);
+    objc_storeStrong(&v6->_pairingID, d);
   }
 
   return v6;
 }
 
-- (void)addDeviceDetails:(id)a3
+- (void)addDeviceDetails:(id)details
 {
-  v4 = a3;
-  v5 = [(BRRTCMigrationReportManager *)self migrationMetric];
-  [v5 setDeviceDetails:v4];
+  detailsCopy = details;
+  migrationMetric = [(BRRTCMigrationReportManager *)self migrationMetric];
+  [migrationMetric setDeviceDetails:detailsCopy];
 }
 
-- (void)setErrorCode:(id)a3 domain:(id)a4 description:(id)a5
+- (void)setErrorCode:(id)code domain:(id)domain description:(id)description
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  codeCopy = code;
+  descriptionCopy = description;
+  domainCopy = domain;
   v11 = br_metriccollection_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v8;
+    v17 = codeCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = descriptionCopy;
     _os_log_impl(&dword_241ECA000, v11, OS_LOG_TYPE_DEFAULT, "Setting migration failure code %@ with description %@", &v16, 0x16u);
   }
 
-  v12 = [(BRRTCMigrationReportManager *)self migrationMetric];
-  [v12 setMigrationFailureCode:v8];
+  migrationMetric = [(BRRTCMigrationReportManager *)self migrationMetric];
+  [migrationMetric setMigrationFailureCode:codeCopy];
 
-  v13 = [(BRRTCMigrationReportManager *)self migrationMetric];
-  [v13 setMigrationFailureDomain:v10];
+  migrationMetric2 = [(BRRTCMigrationReportManager *)self migrationMetric];
+  [migrationMetric2 setMigrationFailureDomain:domainCopy];
 
-  v14 = [(BRRTCMigrationReportManager *)self migrationMetric];
-  [v14 setMigrationFailureDescription:v9];
+  migrationMetric3 = [(BRRTCMigrationReportManager *)self migrationMetric];
+  [migrationMetric3 setMigrationFailureDescription:descriptionCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLastActiveDate:(id)a3
+- (void)setLastActiveDate:(id)date
 {
-  v5 = [(BRRTCMigrationReportManager *)self formatDate:a3];
-  v4 = [(BRRTCMigrationReportManager *)self migrationMetric];
-  [v4 setLastActiveDate:v5];
+  v5 = [(BRRTCMigrationReportManager *)self formatDate:date];
+  migrationMetric = [(BRRTCMigrationReportManager *)self migrationMetric];
+  [migrationMetric setLastActiveDate:v5];
 }
 
-- (void)setSessionID:(id)a3
+- (void)setSessionID:(id)d
 {
-  v4 = a3;
-  v5 = [(BRRTCMigrationReportManager *)self migrationMetric];
-  [v5 setSessionID:v4];
+  dCopy = d;
+  migrationMetric = [(BRRTCMigrationReportManager *)self migrationMetric];
+  [migrationMetric setSessionID:dCopy];
 }
 
 - (void)submitMetic
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(BRRTCMigrationReportManager *)self _likelyOffendingTransaction];
-  if (v3)
+  _likelyOffendingTransaction = [(BRRTCMigrationReportManager *)self _likelyOffendingTransaction];
+  if (_likelyOffendingTransaction)
   {
-    v4 = [(BRRTCMigrationReportManager *)self migrationMetric];
-    [v4 setSuspectTransaction:v3];
+    migrationMetric = [(BRRTCMigrationReportManager *)self migrationMetric];
+    [migrationMetric setSuspectTransaction:_likelyOffendingTransaction];
   }
 
   v5 = br_metriccollection_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BRRTCMigrationReportManager *)self migrationMetric];
-    v7 = [v6 dictionaryRepresentation];
+    migrationMetric2 = [(BRRTCMigrationReportManager *)self migrationMetric];
+    dictionaryRepresentation = [migrationMetric2 dictionaryRepresentation];
     v11 = 138412290;
-    v12 = v7;
+    v12 = dictionaryRepresentation;
     _os_log_impl(&dword_241ECA000, v5, OS_LOG_TYPE_DEFAULT, "Request to submit migration Metric with these keys: %@", &v11, 0xCu);
   }
 
   v8 = [BRReportManager reporterWithCatergory:2000];
-  v9 = [(BRRTCMigrationReportManager *)self migrationMetric];
-  [v8 reportRTCMetric:v9];
+  migrationMetric3 = [(BRRTCMigrationReportManager *)self migrationMetric];
+  [v8 reportRTCMetric:migrationMetric3];
 
   [(BRRTCMigrationReportManager *)self setMetricSubmitted:1];
   [(BRRTCMigrationReportManager *)self setMigrationMetric:0];
@@ -109,10 +109,10 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_transactionNameFromKey:(id)a3
+- (id)_transactionNameFromKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 substringFromIndex:{objc_msgSend(@"MigrationPhonePhase", "length")}];
+  keyCopy = key;
+  v4 = [keyCopy substringFromIndex:{objc_msgSend(@"MigrationPhonePhase", "length")}];
 
   v5 = [v4 substringToIndex:{objc_msgSend(v4, "length") - 3}];
 
@@ -122,10 +122,10 @@
 - (id)_likelyOffendingTransaction
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(BRRTCMigrationReportManager *)self migrationMetric];
-  v4 = [v3 transactionPhases];
+  migrationMetric = [(BRRTCMigrationReportManager *)self migrationMetric];
+  transactionPhases = [migrationMetric transactionPhases];
 
-  if (v4)
+  if (transactionPhases)
   {
     v11 = 0;
     v12 = &v11;
@@ -139,7 +139,7 @@
     v10[3] = &unk_278D27360;
     v10[4] = self;
     v10[5] = &v11;
-    [v4 enumerateKeysAndObjectsUsingBlock:v10];
+    [transactionPhases enumerateKeysAndObjectsUsingBlock:v10];
     v5 = br_metriccollection_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -186,10 +186,10 @@ void __58__BRRTCMigrationReportManager__likelyOffendingTransaction__block_invoke
   }
 }
 
-- (id)formatDate:(id)a3
+- (id)formatDate:(id)date
 {
   v3 = MEMORY[0x277CCA968];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   if (BRIsInternalInstall())
   {
@@ -202,7 +202,7 @@ void __58__BRRTCMigrationReportManager__likelyOffendingTransaction__block_invoke
   }
 
   [v5 setDateFormat:v6];
-  v7 = [v5 stringFromDate:v4];
+  v7 = [v5 stringFromDate:dateCopy];
 
   return v7;
 }

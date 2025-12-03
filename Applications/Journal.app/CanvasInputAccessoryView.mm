@@ -1,10 +1,10 @@
 @interface CanvasInputAccessoryView
-- (_TtC7Journal24CanvasInputAccessoryView)initWithCoder:(id)a3;
+- (_TtC7Journal24CanvasInputAccessoryView)initWithCoder:(id)coder;
 @end
 
 @implementation CanvasInputAccessoryView
 
-- (_TtC7Journal24CanvasInputAccessoryView)initWithCoder:(id)a3
+- (_TtC7Journal24CanvasInputAccessoryView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Journal24CanvasInputAccessoryView_toolbar;
   v5 = [objc_allocWithZone(UIToolbar) init];

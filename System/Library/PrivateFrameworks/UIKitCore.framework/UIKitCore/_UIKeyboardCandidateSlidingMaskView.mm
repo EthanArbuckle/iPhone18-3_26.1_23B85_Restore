@@ -1,37 +1,37 @@
 @interface _UIKeyboardCandidateSlidingMaskView
-- (_UIKeyboardCandidateSlidingMaskView)initWithFrame:(CGRect)a3 opaqueHeight:(double)a4 fadeHeight:(double)a5;
+- (_UIKeyboardCandidateSlidingMaskView)initWithFrame:(CGRect)frame opaqueHeight:(double)height fadeHeight:(double)fadeHeight;
 @end
 
 @implementation _UIKeyboardCandidateSlidingMaskView
 
-- (_UIKeyboardCandidateSlidingMaskView)initWithFrame:(CGRect)a3 opaqueHeight:(double)a4 fadeHeight:(double)a5
+- (_UIKeyboardCandidateSlidingMaskView)initWithFrame:(CGRect)frame opaqueHeight:(double)height fadeHeight:(double)fadeHeight
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v17.receiver = self;
   v17.super_class = _UIKeyboardCandidateSlidingMaskView;
-  v8 = [(UIView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v8 = [(UIView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v8)
   {
-    v9 = [[UIImageView alloc] initWithFrame:0.0, 0.0, width, a4];
+    height = [[UIImageView alloc] initWithFrame:0.0, 0.0, width, height];
     v10 = +[UIKeyboardCandidateViewImageRenderer sharedImageRenderer];
-    v11 = [v10 extensionMaskImage];
+    extensionMaskImage = [v10 extensionMaskImage];
 
-    [(UIImageView *)v9 setImage:v11];
-    [(UIImageView *)v9 setContentMode:0];
-    v12 = [[UIView alloc] initWithFrame:0.0, 0.0, width, a4];
+    [(UIImageView *)height setImage:extensionMaskImage];
+    [(UIImageView *)height setContentMode:0];
+    height2 = [[UIView alloc] initWithFrame:0.0, 0.0, width, height];
     v13 = +[UIColor blackColor];
-    [(UIView *)v12 setBackgroundColor:v13];
+    [(UIView *)height2 setBackgroundColor:v13];
 
-    v14 = [[UIView alloc] initWithFrame:0.0, -a5, width, a5];
+    fadeHeight = [[UIView alloc] initWithFrame:0.0, -fadeHeight, width, fadeHeight];
     v15 = +[UIColor blackColor];
-    [(UIView *)v14 setBackgroundColor:v15];
+    [(UIView *)fadeHeight setBackgroundColor:v15];
 
-    [(UIView *)v8 addSubview:v9];
-    [(UIView *)v8 addSubview:v14];
-    [(UIView *)v8 addSubview:v12];
-    [(UIView *)v9 setAutoresizingMask:10];
-    [(UIView *)v12 setAutoresizingMask:34];
-    [(UIView *)v14 setAutoresizingMask:10];
+    [(UIView *)v8 addSubview:height];
+    [(UIView *)v8 addSubview:fadeHeight];
+    [(UIView *)v8 addSubview:height2];
+    [(UIView *)height setAutoresizingMask:10];
+    [(UIView *)height2 setAutoresizingMask:34];
+    [(UIView *)fadeHeight setAutoresizingMask:10];
   }
 
   return v8;

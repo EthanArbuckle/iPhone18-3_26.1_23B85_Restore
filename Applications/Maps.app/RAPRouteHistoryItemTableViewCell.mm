@@ -1,15 +1,15 @@
 @interface RAPRouteHistoryItemTableViewCell
-- (id)_formattedTimeStringSinceDirectionsWereTaken:(id)a3;
-- (void)setHistoryItem:(id)a3;
+- (id)_formattedTimeStringSinceDirectionsWereTaken:(id)taken;
+- (void)setHistoryItem:(id)item;
 @end
 
 @implementation RAPRouteHistoryItemTableViewCell
 
-- (id)_formattedTimeStringSinceDirectionsWereTaken:(id)a3
+- (id)_formattedTimeStringSinceDirectionsWereTaken:(id)taken
 {
-  v3 = a3;
+  takenCopy = taken;
   Current = CFAbsoluteTimeGetCurrent();
-  [v3 timestamp];
+  [takenCopy timestamp];
   v6 = v5;
 
   v7 = Current - v6;
@@ -67,12 +67,12 @@ LABEL_9:
   return v10;
 }
 
-- (void)setHistoryItem:(id)a3
+- (void)setHistoryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = &OBJC_PROTOCOL___MSPHistoryEntryRoute;
   objc_opt_class();
-  v6 = v4;
+  v6 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -99,8 +99,8 @@ LABEL_9:
   {
     v24 = 0;
     v25 = 0;
-    v12 = [v11 historyEntry];
-    [SearchResult newStartWaypointSearchResult:&v25 endWaypointSearchResult:&v24 forRouteHistoryEntry:v12];
+    historyEntry = [v11 historyEntry];
+    [SearchResult newStartWaypointSearchResult:&v25 endWaypointSearchResult:&v24 forRouteHistoryEntry:historyEntry];
     v13 = v25;
     v14 = v24;
 
@@ -111,25 +111,25 @@ LABEL_9:
     v17 = [(RAPRouteHistoryItemTableViewCell *)self _formattedTimeStringSinceDirectionsWereTaken:v6];
     [(RAPTwoLinesViewModelImpl *)v15 setSubtitle:v17];
 
-    v18 = [v11 historyEntry];
-    v19 = [v18 transportType];
+    historyEntry2 = [v11 historyEntry];
+    transportType = [historyEntry2 transportType];
 
-    if ((v19 - 2) > 3)
+    if ((transportType - 2) > 3)
     {
       v20 = @"rp_drive";
     }
 
     else
     {
-      v20 = *(&off_10162DAC8 + (v19 - 2));
+      v20 = *(&off_10162DAC8 + (transportType - 2));
     }
 
     v21 = [UIImage imageNamed:v20];
     [(RAPTwoLinesViewModelImpl *)v15 setImage:v21];
 
     v22 = +[UIColor labelColor];
-    v23 = [(RAPTwoLinesMenuTableViewCell *)self leftImageView];
-    [v23 setTintColor:v22];
+    leftImageView = [(RAPTwoLinesMenuTableViewCell *)self leftImageView];
+    [leftImageView setTintColor:v22];
 
     [(RAPTwoLinesMenuTableViewCell *)self setViewModel:v15];
   }

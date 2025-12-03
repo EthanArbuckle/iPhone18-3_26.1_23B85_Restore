@@ -1,27 +1,27 @@
 @interface TSPDatabase
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)documentVersion:(id *)a3 closedCleanlyToken:(int64_t *)a4 error:(id *)a5;
-- (BOOL)documentVersion:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)insertDataStateWithSize:(int)a3 identifier:(int64_t *)a4 error:(id *)a5;
-- (BOOL)insertObjectWithIdentifier:(int64_t)a3 stateIdentifier:(const ObjectStateIdentifier *)a4 classType:(int)a5 error:(id *)a6;
-- (BOOL)insertRelationshipWithSourceIdentifier:(int64_t)a3 targetIdentifier:(int64_t)a4 error:(id *)a5;
-- (BOOL)lastObjectIdentifier:(int64_t *)a3 error:(id *)a4;
-- (BOOL)numberOfDatabaseObjects:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)setClosedCleanlyToken:(int64_t)a3 error:(id *)a4;
-- (BOOL)setDocumentVersion:(id)a3 error:(id *)a4;
-- (BOOL)updateDataStateWithIdentifier:(int64_t)a3 size:(int)a4 error:(id *)a5;
-- (BOOL)upgradeFromSchemaVersion:(int)a3 error:(id *)a4;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)documentVersion:(id *)version closedCleanlyToken:(int64_t *)token error:(id *)error;
+- (BOOL)documentVersion:(unint64_t *)version error:(id *)error;
+- (BOOL)insertDataStateWithSize:(int)size identifier:(int64_t *)identifier error:(id *)error;
+- (BOOL)insertObjectWithIdentifier:(int64_t)identifier stateIdentifier:(const ObjectStateIdentifier *)stateIdentifier classType:(int)type error:(id *)error;
+- (BOOL)insertRelationshipWithSourceIdentifier:(int64_t)identifier targetIdentifier:(int64_t)targetIdentifier error:(id *)error;
+- (BOOL)lastObjectIdentifier:(int64_t *)identifier error:(id *)error;
+- (BOOL)numberOfDatabaseObjects:(unint64_t *)objects error:(id *)error;
+- (BOOL)setClosedCleanlyToken:(int64_t)token error:(id *)error;
+- (BOOL)setDocumentVersion:(id)version error:(id *)error;
+- (BOOL)updateDataStateWithIdentifier:(int64_t)identifier size:(int)size error:(id *)error;
+- (BOOL)upgradeFromSchemaVersion:(int)version error:(id *)error;
 - (TSPDatabase)init;
-- (TSPDatabase)initWithPath:(id)a3 error:(id *)a4;
-- (id)initReadonlyWithPath:(id)a3 error:(id *)a4;
-- (id)objectFromStatement:(sqlite3_stmt *)a3;
-- (id)queryFirstObjectWithStatement:(sqlite3_stmt *)a3 error:(id *)a4;
-- (id)queryObjectWithIdentifier:(int64_t)a3 error:(id *)a4;
-- (id)queryObjectsWithMessageTypes:(const int *)a3 messageTypesCount:(int)a4 error:(id *)a5;
-- (sqlite3_blob)openBlobForObject:(id)a3 error:(id *)a4;
-- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)a3 error:(id *)a4;
-- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)a3 willWrite:(BOOL)a4 error:(id *)a5;
-- (void)filterIdentifiers:(const void *)a3 error:(id *)a4;
+- (TSPDatabase)initWithPath:(id)path error:(id *)error;
+- (id)initReadonlyWithPath:(id)path error:(id *)error;
+- (id)objectFromStatement:(sqlite3_stmt *)statement;
+- (id)queryFirstObjectWithStatement:(sqlite3_stmt *)statement error:(id *)error;
+- (id)queryObjectWithIdentifier:(int64_t)identifier error:(id *)error;
+- (id)queryObjectsWithMessageTypes:(const int *)types messageTypesCount:(int)count error:(id *)error;
+- (sqlite3_blob)openBlobForObject:(id)object error:(id *)error;
+- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)identifier error:(id *)error;
+- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)identifier willWrite:(BOOL)write error:(id *)error;
+- (void)filterIdentifiers:(const void *)identifiers error:(id *)error;
 @end
 
 @implementation TSPDatabase
@@ -60,17 +60,17 @@
   objc_exception_throw(v7);
 }
 
-- (TSPDatabase)initWithPath:(id)a3 error:(id *)a4
+- (TSPDatabase)initWithPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 stringByAppendingPathComponent:@"index.db"];
+  pathCopy = path;
+  v7 = [pathCopy stringByAppendingPathComponent:@"index.db"];
   v12.receiver = self;
   v12.super_class = TSPDatabase;
-  v8 = [(TSUDatabase *)&v12 initWithPath:v7 error:a4];
+  v8 = [(TSUDatabase *)&v12 initWithPath:v7 error:error];
 
   if (v8)
   {
-    v9 = [[NSURL alloc] initFileURLWithPath:v6];
+    v9 = [[NSURL alloc] initFileURLWithPath:pathCopy];
     packageURL = v8->_packageURL;
     v8->_packageURL = v9;
 
@@ -79,23 +79,23 @@
 
   else
   {
-    sub_100020CA0(a4);
+    sub_100020CA0(error);
   }
 
   return v8;
 }
 
-- (id)initReadonlyWithPath:(id)a3 error:(id *)a4
+- (id)initReadonlyWithPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 stringByAppendingPathComponent:@"index.db"];
+  pathCopy = path;
+  v7 = [pathCopy stringByAppendingPathComponent:@"index.db"];
   v12.receiver = self;
   v12.super_class = TSPDatabase;
-  v8 = [(TSUDatabase *)&v12 initReadonlyWithPath:v7 error:a4];
+  v8 = [(TSUDatabase *)&v12 initReadonlyWithPath:v7 error:error];
 
   if (v8)
   {
-    v9 = [[NSURL alloc] initFileURLWithPath:v6];
+    v9 = [[NSURL alloc] initFileURLWithPath:pathCopy];
     v10 = v8[6];
     v8[6] = v9;
 
@@ -104,28 +104,28 @@
 
   else
   {
-    sub_100020CA0(a4);
+    sub_100020CA0(error);
   }
 
   return v8;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   v6.receiver = self;
   v6.super_class = TSPDatabase;
   v4 = [(TSUDatabase *)&v6 closeWithError:?];
   if (!v4)
   {
-    sub_100020CA0(a3);
+    sub_100020CA0(error);
   }
 
   return v4;
 }
 
-- (BOOL)documentVersion:(unint64_t *)a3 error:(id *)a4
+- (BOOL)documentVersion:(unint64_t *)version error:(id *)error
 {
-  if (!a3)
+  if (!version)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -146,31 +146,31 @@
   }
 
   v11 = 0;
-  if ([(TSUDatabase *)self prepareStatement:&v11 sql:"select version from document" error:a4])
+  if ([(TSUDatabase *)self prepareStatement:&v11 sql:"select version from document" error:error])
   {
-    if ([(TSUDatabase *)self startSingleResultQuery:v11 error:a4])
+    if ([(TSUDatabase *)self startSingleResultQuery:v11 error:error])
     {
-      *a3 = sqlite3_column_int64(v11, 0);
+      *version = sqlite3_column_int64(v11, 0);
       v9 = 1;
-      if ([(TSUDatabase *)self endSingleResultQuery:v11 shouldFinalize:1 error:a4])
+      if ([(TSUDatabase *)self endSingleResultQuery:v11 shouldFinalize:1 error:error])
       {
         return v9;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [NSError tsp_errorWithCode:6];
+      *error = [NSError tsp_errorWithCode:6];
     }
   }
 
-  sub_100020CA0(a4);
+  sub_100020CA0(error);
   return 0;
 }
 
-- (BOOL)lastObjectIdentifier:(int64_t *)a3 error:(id *)a4
+- (BOOL)lastObjectIdentifier:(int64_t *)identifier error:(id *)error
 {
-  if (!a3)
+  if (!identifier)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -191,13 +191,13 @@
   }
 
   v12 = 0;
-  if ([(TSUDatabase *)self prepareStatement:&v12 sql:"select max(identifier) from objects" error:a4]&& [(TSUDatabase *)self startSingleResultQuery:v12 error:a4])
+  if ([(TSUDatabase *)self prepareStatement:&v12 sql:"select max(identifier) from objects" error:error]&& [(TSUDatabase *)self startSingleResultQuery:v12 error:error])
   {
     v9 = sqlite3_column_int64(v12, 0);
-    v10 = [(TSUDatabase *)self endSingleResultQuery:v12 shouldFinalize:1 error:a4];
-    if (a3 && v10)
+    v10 = [(TSUDatabase *)self endSingleResultQuery:v12 shouldFinalize:1 error:error];
+    if (identifier && v10)
     {
-      *a3 = v9;
+      *identifier = v9;
       return 1;
     }
 
@@ -207,13 +207,13 @@
     }
   }
 
-  sub_100020CA0(a4);
+  sub_100020CA0(error);
   return 0;
 }
 
-- (BOOL)numberOfDatabaseObjects:(unint64_t *)a3 error:(id *)a4
+- (BOOL)numberOfDatabaseObjects:(unint64_t *)objects error:(id *)error
 {
-  if (!a3)
+  if (!objects)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -234,13 +234,13 @@
   }
 
   v12 = 0;
-  if ([(TSUDatabase *)self prepareStatement:&v12 sql:"select count(*) from objects" error:a4]&& [(TSUDatabase *)self startSingleResultQuery:v12 error:a4])
+  if ([(TSUDatabase *)self prepareStatement:&v12 sql:"select count(*) from objects" error:error]&& [(TSUDatabase *)self startSingleResultQuery:v12 error:error])
   {
     v9 = sqlite3_column_int(v12, 0);
-    v10 = [(TSUDatabase *)self endSingleResultQuery:v12 shouldFinalize:1 error:a4];
-    if (a3 && v10)
+    v10 = [(TSUDatabase *)self endSingleResultQuery:v12 shouldFinalize:1 error:error];
+    if (objects && v10)
     {
-      *a3 = v9;
+      *objects = v9;
       return 1;
     }
 
@@ -250,21 +250,21 @@
     }
   }
 
-  sub_100020CA0(a4);
+  sub_100020CA0(error);
   return 0;
 }
 
-- (void)filterIdentifiers:(const void *)a3 error:(id *)a4
+- (void)filterIdentifiers:(const void *)identifiers error:(id *)error
 {
-  v4 = a3 + 8;
-  if (*a3 == a3 + 8)
+  v4 = identifiers + 8;
+  if (*identifiers == identifiers + 8)
   {
     operator new();
   }
 
   v9 = objc_alloc_init(NSMutableString);
-  v10 = *a3;
-  if (*a3 != v4)
+  v10 = *identifiers;
+  if (*identifiers != v4)
   {
     do
     {
@@ -306,26 +306,26 @@
 
   v14 = [[NSString alloc] initWithFormat:@"select identifier from objects where identifier in (%@)"];
   pStmt = 0;
-  if (-[TSUDatabase prepareStatement:sql:error:](self, "prepareStatement:sql:error:", &pStmt, [v14 cStringUsingEncoding:4], a4))
+  if (-[TSUDatabase prepareStatement:sql:error:](self, "prepareStatement:sql:error:", &pStmt, [v14 cStringUsingEncoding:4], error))
   {
     operator new();
   }
 
   v15 = sqlite3_finalize(pStmt);
-  TSUHandleSqlite(v15, a4, 1, self, a2, 181, 0, v16, v9);
-  sub_100020CA0(a4);
+  TSUHandleSqlite(v15, error, 1, self, a2, 181, 0, v16, v9);
+  sub_100020CA0(error);
 
   return 0;
 }
 
-- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)a3 error:(id *)a4
+- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)identifier error:(id *)error
 {
   ppBlob = 0;
-  v7 = sqlite3_blob_open(self->super._db, "main", "dataStates", "state", a3, 0, &ppBlob);
-  v9 = TSUHandleSqlite(v7, a4, 1, self, a2, 198, @"Opening database blob", v8, v11);
+  v7 = sqlite3_blob_open(self->super._db, "main", "dataStates", "state", identifier, 0, &ppBlob);
+  v9 = TSUHandleSqlite(v7, error, 1, self, a2, 198, @"Opening database blob", v8, v11);
   if (!v9)
   {
-    sub_100020CA0(a4);
+    sub_100020CA0(error);
   }
 
   if (v9)
@@ -339,12 +339,12 @@
   }
 }
 
-- (sqlite3_blob)openBlobForObject:(id)a3 error:(id *)a4
+- (sqlite3_blob)openBlobForObject:(id)object error:(id *)error
 {
-  v6 = a3;
-  if ([v6 hasDataState])
+  objectCopy = object;
+  if ([objectCopy hasDataState])
   {
-    v7 = -[TSPDatabase openDataStateBlobWithIdentifier:error:](self, "openDataStateBlobWithIdentifier:error:", [v6 dataState], a4);
+    v7 = -[TSPDatabase openDataStateBlobWithIdentifier:error:](self, "openDataStateBlobWithIdentifier:error:", [objectCopy dataState], error);
   }
 
   else
@@ -359,7 +359,7 @@
       sub_1001537D0();
     }
 
-    if (*a4)
+    if (*error)
     {
       v7 = 0;
     }
@@ -367,19 +367,19 @@
     else
     {
       [NSError tsu_errorWithCode:1 userInfo:0];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
   }
 
   return v7;
 }
 
-- (id)queryObjectWithIdentifier:(int64_t)a3 error:(id *)a4
+- (id)queryObjectWithIdentifier:(int64_t)identifier error:(id *)error
 {
   pStmt = 0;
-  if ([(TSUDatabase *)self prepareStatement:&pStmt sql:"select identifier error:class, stateType, state from objects where identifier = ?", a4]&& (v8 = sqlite3_bind_int64(pStmt, 1, a3), TSUHandleSqlite(v8, a4, 1, self, a2, 227, 0, v9, v18)))
+  if ([(TSUDatabase *)self prepareStatement:&pStmt sql:"select identifier error:class, stateType, state from objects where identifier = ?", error]&& (v8 = sqlite3_bind_int64(pStmt, 1, identifier), TSUHandleSqlite(v8, error, 1, self, a2, 227, 0, v9, v18)))
   {
-    v10 = [(TSPDatabase *)self queryFirstObjectWithStatement:pStmt error:a4];
+    v10 = [(TSPDatabase *)self queryFirstObjectWithStatement:pStmt error:error];
     v11 = v10 != 0;
     v12 = v10;
   }
@@ -391,7 +391,7 @@
   }
 
   v13 = sqlite3_finalize(pStmt);
-  if (TSUHandleSqlite(v13, a4, 1, self, a2, 234, @"Finalizing statement", v14, v18) && v11)
+  if (TSUHandleSqlite(v13, error, 1, self, a2, 234, @"Finalizing statement", v14, v18) && v11)
   {
     v15 = v12;
   }
@@ -406,12 +406,12 @@
   return v16;
 }
 
-- (id)queryObjectsWithMessageTypes:(const int *)a3 messageTypesCount:(int)a4 error:(id *)a5
+- (id)queryObjectsWithMessageTypes:(const int *)types messageTypesCount:(int)count error:(id *)error
 {
   v10 = +[NSMutableArray array];
   pStmt = 0;
   v11 = +[NSMutableString stringWithString:](NSMutableString, "stringWithString:", @"(");
-  if (a4 >= 1)
+  if (count >= 1)
   {
     v12 = 0;
     do
@@ -425,26 +425,26 @@
       ++v12;
     }
 
-    while (a4 != v12);
+    while (count != v12);
   }
 
   [v11 appendString:@""]);
   v29 = v11;
   v13 = [NSString stringWithFormat:@"select identifier, class, stateType, state from objects where class in %@"];
-  v14 = [v13 UTF8String];
+  uTF8String = [v13 UTF8String];
 
-  v15 = [(TSUDatabase *)self prepareStatement:&pStmt sql:v14 error:a5];
-  if (a4 >= 1)
+  v15 = [(TSUDatabase *)self prepareStatement:&pStmt sql:uTF8String error:error];
+  if (count >= 1)
   {
     v16 = 0;
-    v17 = a4;
+    countCopy = count;
     do
     {
       if (v15)
       {
         v18 = v16 + 1;
-        v19 = sqlite3_bind_int64(pStmt, v16 + 1, a3[v16]);
-        v15 = TSUHandleSqlite(v19, a5, 1, self, a2, 260, 0, v20, v29);
+        v19 = sqlite3_bind_int64(pStmt, v16 + 1, types[v16]);
+        v15 = TSUHandleSqlite(v19, error, 1, self, a2, 260, 0, v20, v29);
         v16 = v18;
       }
 
@@ -455,7 +455,7 @@
       }
     }
 
-    while (v16 != v17);
+    while (v16 != countCopy);
   }
 
   v21 = sqlite3_step(pStmt);
@@ -469,12 +469,12 @@
   if (v21 != 101)
   {
     v23 = sqlite3_sql(pStmt);
-    TSUHandleSqlite(v21, a5, 1, self, a2, 273, @"Executing query %s", v24, v23);
+    TSUHandleSqlite(v21, error, 1, self, a2, 273, @"Executing query %s", v24, v23);
     v15 = 0;
   }
 
   v25 = sqlite3_finalize(pStmt);
-  if (TSUHandleSqlite(v25, a5, 1, self, a2, 277, @"Finalizing statement", v26, v29) && v15)
+  if (TSUHandleSqlite(v25, error, 1, self, a2, 277, @"Finalizing statement", v26, v29) && v15)
   {
     v27 = [v10 copy];
   }
@@ -487,20 +487,20 @@
   return v27;
 }
 
-- (id)queryFirstObjectWithStatement:(sqlite3_stmt *)a3 error:(id *)a4
+- (id)queryFirstObjectWithStatement:(sqlite3_stmt *)statement error:(id *)error
 {
-  v8 = sqlite3_step(a3);
+  v8 = sqlite3_step(statement);
   if (v8 != 101)
   {
     v9 = v8;
     if (v8 == 100)
     {
-      v10 = [(TSPDatabase *)self objectFromStatement:a3];
+      v10 = [(TSPDatabase *)self objectFromStatement:statement];
       goto LABEL_6;
     }
 
-    v11 = sqlite3_sql(a3);
-    TSUHandleSqlite(v9, a4, 1, self, a2, 287, @"Executing query %s", v12, v11);
+    v11 = sqlite3_sql(statement);
+    TSUHandleSqlite(v9, error, 1, self, a2, 287, @"Executing query %s", v12, v11);
   }
 
   v10 = 0;
@@ -509,32 +509,32 @@ LABEL_6:
   return v10;
 }
 
-- (id)objectFromStatement:(sqlite3_stmt *)a3
+- (id)objectFromStatement:(sqlite3_stmt *)statement
 {
-  v5 = sqlite3_column_int64(a3, 0);
-  v6 = sqlite3_column_int(a3, 1);
-  if (sqlite3_column_int(a3, 2))
+  v5 = sqlite3_column_int64(statement, 0);
+  v6 = sqlite3_column_int(statement, 1);
+  if (sqlite3_column_int(statement, 2))
   {
-    v7 = [[NSString alloc] initWithCString:sqlite3_column_text(a3 encoding:{3), 4}];
+    v7 = [[NSString alloc] initWithCString:sqlite3_column_text(statement encoding:{3), 4}];
     v8 = [TSPDatabaseObject databaseObjectWithIdentifier:v5 classType:v6 fileState:v7 packageURL:self->_packageURL];
   }
 
   else
   {
-    v8 = [TSPDatabaseObject databaseObjectWithIdentifier:v5 classType:v6 dataState:sqlite3_column_int64(a3, 3)];
+    v8 = [TSPDatabaseObject databaseObjectWithIdentifier:v5 classType:v6 dataState:sqlite3_column_int64(statement, 3)];
   }
 
   return v8;
 }
 
-- (BOOL)upgradeFromSchemaVersion:(int)a3 error:(id *)a4
+- (BOOL)upgradeFromSchemaVersion:(int)version error:(id *)error
 {
   if (self->_incrementalVacuum)
   {
     v25 = 0;
-    if ([(TSUDatabase *)self prepareStatement:&v25 sql:"pragma auto_vacuum" error:a4]&& [(TSUDatabase *)self startSingleResultQuery:v25 error:a4]&& [(TSUDatabase *)self executeUpdateWithSql:"pragma auto_vacuum = 2" error:a4])
+    if ([(TSUDatabase *)self prepareStatement:&v25 sql:"pragma auto_vacuum" error:error]&& [(TSUDatabase *)self startSingleResultQuery:v25 error:error]&& [(TSUDatabase *)self executeUpdateWithSql:"pragma auto_vacuum = 2" error:error])
     {
-      v8 = [(TSUDatabase *)self executeUpdateWithSql:"vacuum" error:a4];
+      v8 = [(TSUDatabase *)self executeUpdateWithSql:"vacuum" error:error];
     }
 
     else
@@ -548,7 +548,7 @@ LABEL_6:
     v8 = 1;
   }
 
-  if (a3 >= 6)
+  if (version >= 6)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -569,14 +569,14 @@ LABEL_6:
     if (v8)
     {
 LABEL_11:
-      v9 = [(TSUDatabase *)self beginTransactionWithError:a4];
+      error = [(TSUDatabase *)self beginTransactionWithError:error];
       goto LABEL_18;
     }
   }
 
   else
   {
-    if (a3 == 5)
+    if (version == 5)
     {
       return 1;
     }
@@ -587,32 +587,32 @@ LABEL_11:
     }
   }
 
-  v9 = 0;
+  error = 0;
 LABEL_18:
-  if (a3 == 1)
+  if (version == 1)
   {
-    if (v9 && [(TSUDatabase *)self executeUpdateWithSql:"alter table objects rename to temp_migration_objects" error:a4]&& [(TSUDatabase *)self executeUpdateWithSql:"create table objects (identifier integer primary key error:class integer, stateType integer, state)", a4]&& [(TSUDatabase *)self executeUpdateWithSql:"insert into objects (identifier error:class, stateType, state) select identifier, class, stateType, state from temp_migration_objects", a4]&& [(TSUDatabase *)self executeUpdateWithSql:"drop table temp_migration_objects" error:a4]&& [(TSUDatabase *)self executeUpdateWithSql:"alter table relationships rename to temp_migration_relationships" error:a4])
+    if (error && [(TSUDatabase *)self executeUpdateWithSql:"alter table objects rename to temp_migration_objects" error:error]&& [(TSUDatabase *)self executeUpdateWithSql:"create table objects (identifier integer primary key error:class integer, stateType integer, state)", error]&& [(TSUDatabase *)self executeUpdateWithSql:"insert into objects (identifier error:class, stateType, state) select identifier, class, stateType, state from temp_migration_objects", error]&& [(TSUDatabase *)self executeUpdateWithSql:"drop table temp_migration_objects" error:error]&& [(TSUDatabase *)self executeUpdateWithSql:"alter table relationships rename to temp_migration_relationships" error:error])
     {
-      v9 = [(TSUDatabase *)self executeUpdateWithSql:"create table relationships (sourceObject integer error:targetObject integer, primary key(sourceObject, targetObject))", a4];
+      error = [(TSUDatabase *)self executeUpdateWithSql:"create table relationships (sourceObject integer error:targetObject integer, primary key(sourceObject, targetObject))", error];
       v25 = 0;
-      if (!v9)
+      if (!error)
       {
 LABEL_38:
-        a3 = 2;
+        version = 2;
         goto LABEL_39;
       }
 
-      if ([(TSUDatabase *)self prepareStatement:&v25 sql:"insert into relationships (sourceObject error:targetObject) select sourceObject, targetObject from temp_migration_relationships where updateType != ?", a4])
+      if ([(TSUDatabase *)self prepareStatement:&v25 sql:"insert into relationships (sourceObject error:targetObject) select sourceObject, targetObject from temp_migration_relationships where updateType != ?", error])
       {
         v13 = sqlite3_bind_int(v25, 1, 0);
-        v9 = TSUHandleSqlite(v13, a4, 1, self, a2, 388, 0, v14, v23);
-        if (v9)
+        error = TSUHandleSqlite(v13, error, 1, self, a2, 388, 0, v14, v23);
+        if (error)
         {
-          v9 = [(TSUDatabase *)self executeUpdate:v25 shouldFinalize:1 error:a4];
+          error = [(TSUDatabase *)self executeUpdate:v25 shouldFinalize:1 error:error];
           v25 = 0;
-          if (v9)
+          if (error)
           {
-            v9 = [(TSUDatabase *)self executeUpdateWithSql:"drop table temp_migration_relationships" error:a4];
+            error = [(TSUDatabase *)self executeUpdateWithSql:"drop table temp_migration_relationships" error:error];
           }
         }
 
@@ -620,34 +620,34 @@ LABEL_38:
       }
     }
 
-    v9 = 0;
+    error = 0;
     goto LABEL_38;
   }
 
-  if (!a3)
+  if (!version)
   {
-    if (!v9 || ![(TSUDatabase *)self executeUpdateWithSql:"create table document (version integer error:compatibleVersion integer, closedCleanly integer)", a4]|| ![(TSUDatabase *)self executeUpdateWithSql:"create table objects (identifier integer primary key error:class integer, stateType integer, state)", a4]|| ![(TSUDatabase *)self executeUpdateWithSql:"create table relationships (sourceObject integer error:targetObject integer, primary key(sourceObject, targetObject))", a4]|| ![(TSUDatabase *)self executeUpdateWithSql:"create table dataStates (identifier integer primary key error:state blob)", a4])
+    if (!error || ![(TSUDatabase *)self executeUpdateWithSql:"create table document (version integer error:compatibleVersion integer, closedCleanly integer)", error]|| ![(TSUDatabase *)self executeUpdateWithSql:"create table objects (identifier integer primary key error:class integer, stateType integer, state)", error]|| ![(TSUDatabase *)self executeUpdateWithSql:"create table relationships (sourceObject integer error:targetObject integer, primary key(sourceObject, targetObject))", error]|| ![(TSUDatabase *)self executeUpdateWithSql:"create table dataStates (identifier integer primary key error:state blob)", error])
     {
       goto LABEL_63;
     }
 
     v12 = "create table cullingState (identifier integer primary key, change integer)";
 LABEL_54:
-    if ([(TSUDatabase *)self executeUpdateWithSql:v12 error:a4])
+    if ([(TSUDatabase *)self executeUpdateWithSql:v12 error:error])
     {
-      v20 = 5;
+      versionCopy = 5;
       goto LABEL_60;
     }
 
 LABEL_63:
-    [(TSUDatabase *)self commitTransactionWithError:a4];
+    [(TSUDatabase *)self commitTransactionWithError:error];
     goto LABEL_64;
   }
 
 LABEL_39:
-  if (a3 == 2 && v9)
+  if (version == 2 && error)
   {
-    if ([(TSUDatabase *)self executeUpdateWithSql:"create table cullingState (identifier integer primary key error:change integer)", a4])
+    if ([(TSUDatabase *)self executeUpdateWithSql:"create table cullingState (identifier integer primary key error:change integer)", error])
     {
       goto LABEL_42;
     }
@@ -655,34 +655,34 @@ LABEL_39:
     goto LABEL_49;
   }
 
-  v15 = a3 != 2 && v9;
-  if ((a3 - 4) >= 0xFFFFFFFE)
+  error2 = version != 2 && error;
+  if ((version - 4) >= 0xFFFFFFFE)
   {
-    if (v15)
+    if (error2)
     {
 LABEL_42:
-      v15 = [(TSUDatabase *)self executeUpdateWithSql:"create table document (version integer error:compatibleVersion integer, closedCleanly integer)", a4];
+      error2 = [(TSUDatabase *)self executeUpdateWithSql:"create table document (version integer error:compatibleVersion integer, closedCleanly integer)", error];
       v25 = 0;
-      if (v15)
+      if (error2)
       {
-        if ([(TSUDatabase *)self prepareStatement:&v25 sql:"insert into document (version error:compatibleVersion) values (?, ?)", a4])
+        if ([(TSUDatabase *)self prepareStatement:&v25 sql:"insert into document (version error:compatibleVersion) values (?, ?)", error])
         {
           v16 = sqlite3_bind_int64(v25, 1, 0x2CBCC7AB8);
-          v15 = TSUHandleSqlite(v16, a4, 1, self, a2, 413, 0, v17, v23);
-          if (v15)
+          error2 = TSUHandleSqlite(v16, error, 1, self, a2, 413, 0, v17, v23);
+          if (error2)
           {
             v18 = sqlite3_bind_int64(v25, 2, 0x2CBCC7AB8);
-            v15 = TSUHandleSqlite(v18, a4, 1, self, a2, 414, 0, v19, v24);
-            if (v15)
+            error2 = TSUHandleSqlite(v18, error, 1, self, a2, 414, 0, v19, v24);
+            if (error2)
             {
-              v15 = [(TSUDatabase *)self executeUpdate:v25 shouldFinalize:1 error:a4];
+              error2 = [(TSUDatabase *)self executeUpdate:v25 shouldFinalize:1 error:error];
             }
           }
         }
 
         else
         {
-          v15 = 0;
+          error2 = 0;
         }
       }
 
@@ -690,53 +690,53 @@ LABEL_42:
     }
 
 LABEL_49:
-    v15 = 0;
+    error2 = 0;
     v25 = 0;
 LABEL_50:
-    a3 = 4;
+    version = 4;
   }
 
-  if (a3 == 4 && v15)
+  if (version == 4 && error2)
   {
     v12 = "alter table document add column closedCleanly integer";
     goto LABEL_54;
   }
 
-  if (a3 == 4)
+  if (version == 4)
   {
-    v20 = 5;
+    versionCopy = 5;
   }
 
   else
   {
-    v20 = a3;
+    versionCopy = version;
   }
 
-  if (((a3 != 4) & v15) == 0)
+  if (((version != 4) & error2) == 0)
   {
     goto LABEL_63;
   }
 
 LABEL_60:
-  v21 = [(TSUDatabase *)self setSchemaVersion:v20 error:a4];
-  if ([(TSUDatabase *)self commitTransactionWithError:a4]&& (v21 & 1) != 0)
+  v21 = [(TSUDatabase *)self setSchemaVersion:versionCopy error:error];
+  if ([(TSUDatabase *)self commitTransactionWithError:error]&& (v21 & 1) != 0)
   {
     return 1;
   }
 
 LABEL_64:
-  sub_100020CA0(a4);
+  sub_100020CA0(error);
   return 0;
 }
 
-- (BOOL)setDocumentVersion:(id)a3 error:(id *)a4
+- (BOOL)setDocumentVersion:(id)version error:(id *)error
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = version.var1;
+  var0 = version.var0;
   v25 = 0;
-  if ([(TSUDatabase *)self prepareStatement:&v25 sql:"update document set version=? error:compatibleVersion=? where 1=1"]&& (v9 = sqlite3_bind_int64(v25, 1, var0), TSUHandleSqlite(v9, a4, 1, self, a2, 440, 0, v10, v23)) && (v11 = sqlite3_bind_int64(v25, 2, var1), TSUHandleSqlite(v11, a4, 1, self, a2, 441, 0, v12, v23)))
+  if ([(TSUDatabase *)self prepareStatement:&v25 sql:"update document set version=? error:compatibleVersion=? where 1=1"]&& (v9 = sqlite3_bind_int64(v25, 1, var0), TSUHandleSqlite(v9, error, 1, self, a2, 440, 0, v10, v23)) && (v11 = sqlite3_bind_int64(v25, 2, var1), TSUHandleSqlite(v11, error, 1, self, a2, 441, 0, v12, v23)))
   {
-    v13 = [(TSUDatabase *)self executeUpdate:v25 shouldFinalize:1 error:a4];
+    v13 = [(TSUDatabase *)self executeUpdate:v25 shouldFinalize:1 error:error];
   }
 
   else
@@ -779,7 +779,7 @@ LABEL_64:
     }
 
 LABEL_22:
-    sub_100020CA0(a4);
+    sub_100020CA0(error);
     return 0;
   }
 
@@ -789,25 +789,25 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (![(TSUDatabase *)self prepareStatement:&v25 sql:"insert into document (version error:compatibleVersion) values (?, ?)", a4])
+  if (![(TSUDatabase *)self prepareStatement:&v25 sql:"insert into document (version error:compatibleVersion) values (?, ?)", error])
   {
     goto LABEL_22;
   }
 
   v17 = sqlite3_bind_int64(v25, 1, var0);
-  if (!TSUHandleSqlite(v17, a4, 1, self, a2, 449, 0, v18, v23))
+  if (!TSUHandleSqlite(v17, error, 1, self, a2, 449, 0, v18, v23))
   {
     goto LABEL_22;
   }
 
   v19 = sqlite3_bind_int64(v25, 2, var1);
-  if (!TSUHandleSqlite(v19, a4, 1, self, a2, 450, 0, v20, v24))
+  if (!TSUHandleSqlite(v19, error, 1, self, a2, 450, 0, v20, v24))
   {
     goto LABEL_22;
   }
 
   v21 = 1;
-  if (![(TSUDatabase *)self executeUpdate:v25 shouldFinalize:1 error:a4])
+  if (![(TSUDatabase *)self executeUpdate:v25 shouldFinalize:1 error:error])
   {
     goto LABEL_22;
   }
@@ -815,12 +815,12 @@ LABEL_22:
   return v21;
 }
 
-- (BOOL)setClosedCleanlyToken:(int64_t)a3 error:(id *)a4
+- (BOOL)setClosedCleanlyToken:(int64_t)token error:(id *)error
 {
   v19 = 0;
-  if ([(TSUDatabase *)self prepareStatement:&v19 sql:"update document set closedCleanly=? where 1=1" error:a4]&& (v8 = sqlite3_bind_int64(v19, 1, a3), TSUHandleSqlite(v8, a4, 1, self, a2, 462, 0, v9, v18)))
+  if ([(TSUDatabase *)self prepareStatement:&v19 sql:"update document set closedCleanly=? where 1=1" error:error]&& (v8 = sqlite3_bind_int64(v19, 1, token), TSUHandleSqlite(v8, error, 1, self, a2, 462, 0, v9, v18)))
   {
-    v10 = [(TSUDatabase *)self executeUpdate:v19 shouldFinalize:1 error:a4];
+    v10 = [(TSUDatabase *)self executeUpdate:v19 shouldFinalize:1 error:error];
   }
 
   else
@@ -863,7 +863,7 @@ LABEL_22:
     }
 
 LABEL_20:
-    sub_100020CA0(a4);
+    sub_100020CA0(error);
     return 0;
   }
 
@@ -873,19 +873,19 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (![(TSUDatabase *)self prepareStatement:&v19 sql:"insert into document (closedCleanly) values (?)" error:a4])
+  if (![(TSUDatabase *)self prepareStatement:&v19 sql:"insert into document (closedCleanly) values (?)" error:error])
   {
     goto LABEL_20;
   }
 
-  v14 = sqlite3_bind_int64(v19, 1, a3);
-  if (!TSUHandleSqlite(v14, a4, 1, self, a2, 469, 0, v15, v18))
+  v14 = sqlite3_bind_int64(v19, 1, token);
+  if (!TSUHandleSqlite(v14, error, 1, self, a2, 469, 0, v15, v18))
   {
     goto LABEL_20;
   }
 
   v16 = 1;
-  if (![(TSUDatabase *)self executeUpdate:v19 shouldFinalize:1 error:a4])
+  if (![(TSUDatabase *)self executeUpdate:v19 shouldFinalize:1 error:error])
   {
     goto LABEL_20;
   }
@@ -893,11 +893,11 @@ LABEL_20:
   return v16;
 }
 
-- (BOOL)documentVersion:(id *)a3 closedCleanlyToken:(int64_t *)a4 error:(id *)a5
+- (BOOL)documentVersion:(id *)version closedCleanlyToken:(int64_t *)token error:(id *)error
 {
-  if (a3)
+  if (version)
   {
-    if (a4)
+    if (token)
     {
       goto LABEL_14;
     }
@@ -921,7 +921,7 @@ LABEL_20:
   [TSUAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:479 isFatal:0 description:"invalid nil value for '%{public}s'", "version"];
 
   +[TSUAssertionHandler logBacktraceThrottled];
-  if (!a4)
+  if (!token)
   {
 LABEL_9:
     +[TSUAssertionHandler _atomicIncrementAssertCount];
@@ -944,61 +944,61 @@ LABEL_9:
 
 LABEL_14:
   v15 = 0;
-  if ([(TSUDatabase *)self prepareStatement:&v15 sql:"select version error:compatibleVersion, closedCleanly from document", a5])
+  if ([(TSUDatabase *)self prepareStatement:&v15 sql:"select version error:compatibleVersion, closedCleanly from document", error])
   {
-    if ([(TSUDatabase *)self startSingleResultQuery:v15 error:a5])
+    if ([(TSUDatabase *)self startSingleResultQuery:v15 error:error])
     {
-      a3->var0 = sqlite3_column_int64(v15, 0);
+      version->var0 = sqlite3_column_int64(v15, 0);
       v13 = 1;
-      a3->var1 = sqlite3_column_int64(v15, 1);
-      *a4 = sqlite3_column_int64(v15, 2);
-      if ([(TSUDatabase *)self endSingleResultQuery:v15 shouldFinalize:1 error:a5])
+      version->var1 = sqlite3_column_int64(v15, 1);
+      *token = sqlite3_column_int64(v15, 2);
+      if ([(TSUDatabase *)self endSingleResultQuery:v15 shouldFinalize:1 error:error])
       {
         return v13;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
-      *a5 = [NSError tsp_errorWithCode:6];
+      *error = [NSError tsp_errorWithCode:6];
     }
   }
 
-  sub_100020CA0(a5);
+  sub_100020CA0(error);
   return 0;
 }
 
-- (BOOL)insertObjectWithIdentifier:(int64_t)a3 stateIdentifier:(const ObjectStateIdentifier *)a4 classType:(int)a5 error:(id *)a6
+- (BOOL)insertObjectWithIdentifier:(int64_t)identifier stateIdentifier:(const ObjectStateIdentifier *)stateIdentifier classType:(int)type error:(id *)error
 {
-  hasDataState = TSP::ObjectStateIdentifier::hasDataState(a4);
-  v13 = [(TSUDatabase *)self prepareStatement:&self->_insertObjectStatement sql:"insert into objects (identifier error:class, stateType, state) values (?, ?, ?, ?)", a6];
-  if (v13)
+  hasDataState = TSP::ObjectStateIdentifier::hasDataState(stateIdentifier);
+  error = [(TSUDatabase *)self prepareStatement:&self->_insertObjectStatement sql:"insert into objects (identifier error:class, stateType, state) values (?, ?, ?, ?)", error];
+  if (error)
   {
-    v14 = sqlite3_bind_int64(self->_insertObjectStatement, 1, a3);
-    v13 = TSUHandleSqlite(v14, a6, 1, self, a2, 509, 0, v15, v31);
-    if (v13)
+    v14 = sqlite3_bind_int64(self->_insertObjectStatement, 1, identifier);
+    error = TSUHandleSqlite(v14, error, 1, self, a2, 509, 0, v15, v31);
+    if (error)
     {
-      v16 = sqlite3_bind_int(self->_insertObjectStatement, 2, a5);
-      v13 = TSUHandleSqlite(v16, a6, 1, self, a2, 510, 0, v17, v31);
-      if (v13)
+      v16 = sqlite3_bind_int(self->_insertObjectStatement, 2, type);
+      error = TSUHandleSqlite(v16, error, 1, self, a2, 510, 0, v17, v31);
+      if (error)
       {
         v18 = sqlite3_bind_int(self->_insertObjectStatement, 3, hasDataState ^ 1);
-        v13 = TSUHandleSqlite(v18, a6, 1, self, a2, 511, 0, v19, v31);
+        error = TSUHandleSqlite(v18, error, 1, self, a2, 511, 0, v19, v31);
       }
     }
   }
 
   if (hasDataState)
   {
-    if (!v13)
+    if (!error)
     {
       goto LABEL_13;
     }
 
     insertObjectStatement = self->_insertObjectStatement;
-    v21 = TSP::ObjectStateIdentifier::dataState(a4);
+    v21 = TSP::ObjectStateIdentifier::dataState(stateIdentifier);
     v22 = sqlite3_bind_int64(insertObjectStatement, 4, v21);
-    if (!TSUHandleSqlite(v22, a6, 1, self, a2, 515, 0, v23, v31))
+    if (!TSUHandleSqlite(v22, error, 1, self, a2, 515, 0, v23, v31))
     {
       goto LABEL_13;
     }
@@ -1006,17 +1006,17 @@ LABEL_14:
 
   else
   {
-    if (!v13)
+    if (!error)
     {
       goto LABEL_13;
     }
 
-    v24 = TSP::ObjectStateIdentifier::fileState(a4);
+    v24 = TSP::ObjectStateIdentifier::fileState(stateIdentifier);
     v25 = [v24 maximumLengthOfBytesUsingEncoding:4];
     v26 = malloc_type_malloc(v25, 0x100004077774924uLL);
     [v24 getCString:v26 maxLength:v25 encoding:4];
     v27 = sqlite3_bind_text(self->_insertObjectStatement, 4, v26, -1, &_free);
-    v29 = TSUHandleSqlite(v27, a6, 1, self, a2, 525, 0, v28, v31);
+    v29 = TSUHandleSqlite(v27, error, 1, self, a2, 525, 0, v28, v31);
 
     if (!v29)
     {
@@ -1024,19 +1024,19 @@ LABEL_14:
     }
   }
 
-  if ([(TSUDatabase *)self executeUpdate:self->_insertObjectStatement shouldFinalize:0 error:a6])
+  if ([(TSUDatabase *)self executeUpdate:self->_insertObjectStatement shouldFinalize:0 error:error])
   {
     return 1;
   }
 
 LABEL_13:
-  sub_100020CA0(a6);
+  sub_100020CA0(error);
   return 0;
 }
 
-- (BOOL)insertDataStateWithSize:(int)a3 identifier:(int64_t *)a4 error:(id *)a5
+- (BOOL)insertDataStateWithSize:(int)size identifier:(int64_t *)identifier error:(id *)error
 {
-  if (!a4)
+  if (!identifier)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -1057,46 +1057,46 @@ LABEL_13:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if ([(TSUDatabase *)self prepareStatement:&self->_insertDataStateStatement sql:"insert into dataStates (state) values (?)" error:a5]&& (v12 = sqlite3_bind_zeroblob(self->_insertDataStateStatement, 1, a3), TSUHandleSqlite(v12, a5, 1, self, a2, 543, 0, v13, v15)) && [(TSUDatabase *)self executeUpdate:self->_insertDataStateStatement shouldFinalize:0 error:a5])
+  if ([(TSUDatabase *)self prepareStatement:&self->_insertDataStateStatement sql:"insert into dataStates (state) values (?)" error:error]&& (v12 = sqlite3_bind_zeroblob(self->_insertDataStateStatement, 1, size), TSUHandleSqlite(v12, error, 1, self, a2, 543, 0, v13, v15)) && [(TSUDatabase *)self executeUpdate:self->_insertDataStateStatement shouldFinalize:0 error:error])
   {
-    *a4 = sqlite3_last_insert_rowid(self->super._db);
+    *identifier = sqlite3_last_insert_rowid(self->super._db);
     return 1;
   }
 
   else
   {
-    sub_100020CA0(a5);
+    sub_100020CA0(error);
     return 0;
   }
 }
 
-- (BOOL)updateDataStateWithIdentifier:(int64_t)a3 size:(int)a4 error:(id *)a5
+- (BOOL)updateDataStateWithIdentifier:(int64_t)identifier size:(int)size error:(id *)error
 {
   if ([(TSUDatabase *)self prepareStatement:&self->_updateDataStateStatement sql:"update dataStates set state = ? where identifier = ?" error:?])
   {
-    v10 = sqlite3_bind_zeroblob(self->_updateDataStateStatement, 1, a4);
-    if (TSUHandleSqlite(v10, a5, 1, self, a2, 557, 0, v11, v15))
+    v10 = sqlite3_bind_zeroblob(self->_updateDataStateStatement, 1, size);
+    if (TSUHandleSqlite(v10, error, 1, self, a2, 557, 0, v11, v15))
     {
-      v12 = sqlite3_bind_int64(self->_updateDataStateStatement, 2, a3);
-      if (TSUHandleSqlite(v12, a5, 1, self, a2, 558, 0, v13, v16) && [(TSUDatabase *)self executeUpdate:self->_updateDataStateStatement shouldFinalize:0 error:a5])
+      v12 = sqlite3_bind_int64(self->_updateDataStateStatement, 2, identifier);
+      if (TSUHandleSqlite(v12, error, 1, self, a2, 558, 0, v13, v16) && [(TSUDatabase *)self executeUpdate:self->_updateDataStateStatement shouldFinalize:0 error:error])
       {
         return 1;
       }
     }
   }
 
-  sub_100020CA0(a5);
+  sub_100020CA0(error);
   return 0;
 }
 
-- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)a3 willWrite:(BOOL)a4 error:(id *)a5
+- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)identifier willWrite:(BOOL)write error:(id *)error
 {
   ppBlob = 0;
-  v8 = sqlite3_blob_open(self->super._db, "main", "dataStates", "state", a3, a4, &ppBlob);
-  v10 = TSUHandleSqlite(v8, a5, 1, self, a2, 568, @"Opening database blob", v9, v12);
+  v8 = sqlite3_blob_open(self->super._db, "main", "dataStates", "state", identifier, write, &ppBlob);
+  v10 = TSUHandleSqlite(v8, error, 1, self, a2, 568, @"Opening database blob", v9, v12);
   if (!v10)
   {
-    sub_100020CA0(a5);
+    sub_100020CA0(error);
   }
 
   if (v10)
@@ -1110,22 +1110,22 @@ LABEL_13:
   }
 }
 
-- (BOOL)insertRelationshipWithSourceIdentifier:(int64_t)a3 targetIdentifier:(int64_t)a4 error:(id *)a5
+- (BOOL)insertRelationshipWithSourceIdentifier:(int64_t)identifier targetIdentifier:(int64_t)targetIdentifier error:(id *)error
 {
   if ([(TSUDatabase *)self prepareStatement:&self->_insertRelationshipStatement sql:"insert into relationships (sourceObject error:targetObject) values (?, ?)"])
   {
-    v10 = sqlite3_bind_int64(self->_insertRelationshipStatement, 1, a3);
-    if (TSUHandleSqlite(v10, a5, 1, self, a2, 580, 0, v11, v15))
+    v10 = sqlite3_bind_int64(self->_insertRelationshipStatement, 1, identifier);
+    if (TSUHandleSqlite(v10, error, 1, self, a2, 580, 0, v11, v15))
     {
-      v12 = sqlite3_bind_int64(self->_insertRelationshipStatement, 2, a4);
-      if (TSUHandleSqlite(v12, a5, 1, self, a2, 581, 0, v13, v16) && [(TSUDatabase *)self executeUpdate:self->_insertRelationshipStatement shouldFinalize:0 error:a5])
+      v12 = sqlite3_bind_int64(self->_insertRelationshipStatement, 2, targetIdentifier);
+      if (TSUHandleSqlite(v12, error, 1, self, a2, 581, 0, v13, v16) && [(TSUDatabase *)self executeUpdate:self->_insertRelationshipStatement shouldFinalize:0 error:error])
       {
         return 1;
       }
     }
   }
 
-  sub_100020CA0(a5);
+  sub_100020CA0(error);
   return 0;
 }
 

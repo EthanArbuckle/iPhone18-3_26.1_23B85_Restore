@@ -1,16 +1,16 @@
 @interface HFNullValueSource
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
-- (id)readValuesForCharacteristicTypes:(id)a3 inServices:(id)a4;
-- (id)readValuesForCharacteristics:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)readValuesForCharacteristicTypes:(id)types inServices:(id)services;
+- (id)readValuesForCharacteristics:(id)characteristics;
 - (unint64_t)hash;
 @end
 
 @implementation HFNullValueSource
 
-- (id)readValuesForCharacteristics:(id)a3
+- (id)readValuesForCharacteristics:(id)characteristics
 {
-  v3 = [a3 na_map:&__block_literal_global_109];
+  v3 = [characteristics na_map:&__block_literal_global_109];
   v4 = [[HFCharacteristicBatchReadResponse alloc] initWithReadResponses:v3 contextProvider:0];
   v5 = [MEMORY[0x277D2C900] futureWithResult:v4];
 
@@ -27,19 +27,19 @@ HFCharacteristicReadResponse *__50__HFNullValueSource_readValuesForCharacteristi
   return v5;
 }
 
-- (id)readValuesForCharacteristicTypes:(id)a3 inServices:(id)a4
+- (id)readValuesForCharacteristicTypes:(id)types inServices:(id)services
 {
-  v5 = a3;
+  typesCopy = types;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__HFNullValueSource_readValuesForCharacteristicTypes_inServices___block_invoke;
   v12[3] = &unk_277DF7AF8;
-  v13 = v5;
-  v6 = v5;
-  v7 = [a4 na_map:v12];
-  v8 = [v7 na_setByFlattening];
+  v13 = typesCopy;
+  v6 = typesCopy;
+  v7 = [services na_map:v12];
+  na_setByFlattening = [v7 na_setByFlattening];
 
-  v9 = [[HFCharacteristicBatchReadResponse alloc] initWithReadResponses:v8 contextProvider:0];
+  v9 = [[HFCharacteristicBatchReadResponse alloc] initWithReadResponses:na_setByFlattening contextProvider:0];
   v10 = [MEMORY[0x277D2C900] futureWithResult:v9];
 
   return v10;
@@ -100,19 +100,19 @@ void __32__HFNullValueSource_na_identity__block_invoke_2()
   qword_280E03048 = v0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

@@ -1,32 +1,32 @@
 @interface ASDStream
-- (ASDStream)initWithDirection:(unsigned int)a3 withPlugin:(id)a4;
+- (ASDStream)initWithDirection:(unsigned int)direction withPlugin:(id)plugin;
 - (ASDStreamFormat)physicalFormat;
-- (BOOL)deviceChangedToSamplingRate:(double)a3;
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3;
+- (BOOL)deviceChangedToSamplingRate:(double)rate;
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property;
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable;
 - (NSArray)physicalFormats;
 - (id)controls;
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5;
-- (void)addControl:(id)a3;
-- (void)addPhysicalFormat:(id)a3;
-- (void)preferredChannelDescription:(AudioChannelDescription *)a3 forChannelIndex:(unsigned int)a4;
-- (void)removeControl:(id)a3;
-- (void)removePhysicalFormat:(id)a3;
-- (void)setConvertInputBlock:(id)a3;
-- (void)setConvertMixBlock:(id)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)setIsTapStream:(BOOL)a3;
-- (void)setLatency:(unsigned int)a3;
-- (void)setMixOutputBlock:(id)a3;
-- (void)setPhysicalFormat:(id)a3;
-- (void)setPhysicalFormats:(id)a3;
-- (void)setProcessInputBlock:(id)a3;
-- (void)setProcessMixBlock:(id)a3;
-- (void)setProcessOutputBlock:(id)a3;
-- (void)setReadInputBlock:(id)a3;
-- (void)setReadIsolatedInputBlock:(id)a3;
-- (void)setStreamName:(id)a3;
-- (void)setWriteMixBlock:(id)a3;
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data;
+- (void)addControl:(id)control;
+- (void)addPhysicalFormat:(id)format;
+- (void)preferredChannelDescription:(AudioChannelDescription *)description forChannelIndex:(unsigned int)index;
+- (void)removeControl:(id)control;
+- (void)removePhysicalFormat:(id)format;
+- (void)setConvertInputBlock:(id)block;
+- (void)setConvertMixBlock:(id)block;
+- (void)setIsActive:(BOOL)active;
+- (void)setIsTapStream:(BOOL)stream;
+- (void)setLatency:(unsigned int)latency;
+- (void)setMixOutputBlock:(id)block;
+- (void)setPhysicalFormat:(id)format;
+- (void)setPhysicalFormats:(id)formats;
+- (void)setProcessInputBlock:(id)block;
+- (void)setProcessMixBlock:(id)block;
+- (void)setProcessOutputBlock:(id)block;
+- (void)setReadInputBlock:(id)block;
+- (void)setReadIsolatedInputBlock:(id)block;
+- (void)setStreamName:(id)name;
+- (void)setWriteMixBlock:(id)block;
 - (void)startStream;
 - (void)stopStream;
 @end
@@ -57,56 +57,56 @@
 
 - (void)startStream
 {
-  v3 = [(ASDStream *)self readInputBlock];
-  v4 = [v3 copy];
+  readInputBlock = [(ASDStream *)self readInputBlock];
+  v4 = [readInputBlock copy];
   readInputBlock = self->_readInputBlock;
   self->_readInputBlock = v4;
 
   self->_readInputBlockUnretained = self->_readInputBlock;
-  v6 = [(ASDStream *)self convertInputBlock];
-  v7 = [v6 copy];
+  convertInputBlock = [(ASDStream *)self convertInputBlock];
+  v7 = [convertInputBlock copy];
   convertInputBlock = self->_convertInputBlock;
   self->_convertInputBlock = v7;
 
   self->_convertInputBlockUnretained = self->_convertInputBlock;
-  v9 = [(ASDStream *)self processInputBlock];
-  v10 = [v9 copy];
+  processInputBlock = [(ASDStream *)self processInputBlock];
+  v10 = [processInputBlock copy];
   processInputBlock = self->_processInputBlock;
   self->_processInputBlock = v10;
 
   self->_processInputBlockUnretained = self->_processInputBlock;
-  v12 = [(ASDStream *)self processOutputBlock];
-  v13 = [v12 copy];
+  processOutputBlock = [(ASDStream *)self processOutputBlock];
+  v13 = [processOutputBlock copy];
   processOutputBlock = self->_processOutputBlock;
   self->_processOutputBlock = v13;
 
   self->_processOutputBlockUnretained = self->_processOutputBlock;
-  v15 = [(ASDStream *)self mixOutputBlock];
-  v16 = [v15 copy];
+  mixOutputBlock = [(ASDStream *)self mixOutputBlock];
+  v16 = [mixOutputBlock copy];
   mixOutputBlock = self->_mixOutputBlock;
   self->_mixOutputBlock = v16;
 
   self->_mixOutputBlockUnretained = self->_mixOutputBlock;
-  v18 = [(ASDStream *)self processMixBlock];
-  v19 = [v18 copy];
+  processMixBlock = [(ASDStream *)self processMixBlock];
+  v19 = [processMixBlock copy];
   processMixBlock = self->_processMixBlock;
   self->_processMixBlock = v19;
 
   self->_processMixBlockUnretained = self->_processMixBlock;
-  v21 = [(ASDStream *)self convertMixBlock];
-  v22 = [v21 copy];
+  convertMixBlock = [(ASDStream *)self convertMixBlock];
+  v22 = [convertMixBlock copy];
   convertMixBlock = self->_convertMixBlock;
   self->_convertMixBlock = v22;
 
   self->_convertMixBlockUnretained = self->_convertMixBlock;
-  v24 = [(ASDStream *)self writeMixBlock];
-  v25 = [v24 copy];
+  writeMixBlock = [(ASDStream *)self writeMixBlock];
+  v25 = [writeMixBlock copy];
   writeMixBlock = self->_writeMixBlock;
   self->_writeMixBlock = v25;
 
   self->_writeMixBlockUnretained = self->_writeMixBlock;
-  v27 = [(ASDStream *)self readIsolatedInputBlock];
-  v28 = [v27 copy];
+  readIsolatedInputBlock = [(ASDStream *)self readIsolatedInputBlock];
+  v28 = [readIsolatedInputBlock copy];
   readIsolatedInputBlock = self->_readIsolatedInputBlock;
   self->_readIsolatedInputBlock = v28;
 
@@ -153,17 +153,17 @@
   self->_readIsolatedInputBlockUnretained = 0;
 }
 
-- (ASDStream)initWithDirection:(unsigned int)a3 withPlugin:(id)a4
+- (ASDStream)initWithDirection:(unsigned int)direction withPlugin:(id)plugin
 {
   v26.receiver = self;
   v26.super_class = ASDStream;
-  v5 = [(ASDObject *)&v26 initWithPlugin:a4];
+  v5 = [(ASDObject *)&v26 initWithPlugin:plugin];
   v6 = v5;
   if (v5)
   {
-    v5->_direction = a3;
+    v5->_direction = direction;
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v8 = [v7 bundleIdentifier];
+    bundleIdentifier = [v7 bundleIdentifier];
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     physicalFormats = v6->_physicalFormats;
     v6->_physicalFormats = v9;
@@ -171,7 +171,7 @@
     v11 = MEMORY[0x277CCACA8];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v11 stringWithFormat:@"%@.device.%@.%p.physicalFormats", v8, v13, v6];
+    v14 = [v11 stringWithFormat:@"%@.device.%@.%p.physicalFormats", bundleIdentifier, v13, v6];
     v15 = dispatch_queue_create([v14 UTF8String], 0);
     physicalFormatQueue = v6->_physicalFormatQueue;
     v6->_physicalFormatQueue = v15;
@@ -183,7 +183,7 @@
     v19 = MEMORY[0x277CCACA8];
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    v22 = [v19 stringWithFormat:@"%@.device.%@.%p.controls", v8, v21, v6];
+    v22 = [v19 stringWithFormat:@"%@.device.%@.%p.controls", bundleIdentifier, v21, v6];
     v23 = dispatch_queue_create([v22 UTF8String], 0);
     controlQueue = v6->_controlQueue;
     v6->_controlQueue = v23;
@@ -195,15 +195,15 @@
   return v6;
 }
 
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  mSelector = a3->mSelector;
-  if (a3->mSelector > 1935762291)
+  mSelector = property->mSelector;
+  if (property->mSelector > 1935762291)
   {
     if (mSelector > 1936092512)
     {
@@ -223,9 +223,9 @@ LABEL_17:
       goto LABEL_31;
     }
 
-    if (a3->mScope == 1735159650)
+    if (property->mScope == 1735159650)
     {
-      return a3->mElement == 0;
+      return property->mElement == 0;
     }
 
     return 0;
@@ -251,16 +251,16 @@ LABEL_31:
   return [(ASDObject *)&v11 hasProperty:?];
 }
 
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  mSelector = a3->mSelector;
+  mSelector = property->mSelector;
   v6 = 4;
-  if (a3->mSelector > 1935762291)
+  if (property->mSelector > 1935762291)
   {
     if (mSelector <= 1936092512)
     {
@@ -323,9 +323,9 @@ LABEL_25:
   if (mSelector == 1668575852)
   {
 LABEL_26:
-    if (a4)
+    if (size)
     {
-      if ((a4 & 3) != 0)
+      if ((size & 3) != 0)
       {
         return 0;
       }
@@ -339,9 +339,9 @@ LABEL_26:
       v16[1] = 3221225472;
       v16[2] = __68__ASDStream_dataSizeForProperty_withQualifierSize_andQualifierData___block_invoke_2;
       v16[3] = &unk_278CE4208;
-      v17 = a4 >> 2;
+      v17 = size >> 2;
       v16[5] = &v19;
-      v16[6] = a5;
+      v16[6] = data;
       v16[4] = self;
       v12 = v16;
     }
@@ -650,15 +650,15 @@ LABEL_6:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable
 {
-  if (!a3)
+  if (!settable)
   {
     return 0;
   }
 
-  mSelector = a3->mSelector;
-  if (a3->mSelector == 1952542835 || mSelector == 1935762292)
+  mSelector = settable->mSelector;
+  if (settable->mSelector == 1952542835 || mSelector == 1935762292)
   {
     return 1;
   }
@@ -725,17 +725,17 @@ LABEL_3:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPhysicalFormat:(id)a3
+- (void)addPhysicalFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   physicalFormatQueue = self->_physicalFormatQueue;
   block = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __31__ASDStream_addPhysicalFormat___block_invoke;
   v14 = &unk_278CE3E78;
-  v15 = self;
-  v16 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v16 = formatCopy;
+  v6 = formatCopy;
   dispatch_sync(physicalFormatQueue, &block);
   LODWORD(v10) = 0;
   v7 = [(ASDObject *)self propertyChangedDelegate:0x676C6F6270667461];
@@ -764,17 +764,17 @@ void __31__ASDStream_addPhysicalFormat___block_invoke(uint64_t a1)
   [v7 addObject:v8];
 }
 
-- (void)removePhysicalFormat:(id)a3
+- (void)removePhysicalFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   physicalFormatQueue = self->_physicalFormatQueue;
   block = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __34__ASDStream_removePhysicalFormat___block_invoke;
   v14 = &unk_278CE3E78;
-  v15 = self;
-  v16 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v16 = formatCopy;
+  v6 = formatCopy;
   dispatch_sync(physicalFormatQueue, &block);
   LODWORD(v10) = 0;
   v7 = [(ASDObject *)self propertyChangedDelegate:0x676C6F6270667461];
@@ -803,17 +803,17 @@ uint64_t __34__ASDStream_removePhysicalFormat___block_invoke(uint64_t a1)
   return [v7 removeObject:v6];
 }
 
-- (void)setPhysicalFormats:(id)a3
+- (void)setPhysicalFormats:(id)formats
 {
-  v4 = a3;
+  formatsCopy = formats;
   physicalFormatQueue = self->_physicalFormatQueue;
   block = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __32__ASDStream_setPhysicalFormats___block_invoke;
   v14 = &unk_278CE3E78;
-  v15 = self;
-  v16 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v16 = formatsCopy;
+  v6 = formatsCopy;
   dispatch_sync(physicalFormatQueue, &block);
   LODWORD(v10) = 0;
   v7 = [(ASDObject *)self propertyChangedDelegate:0x676C6F6270667461];
@@ -856,17 +856,17 @@ uint64_t __32__ASDStream_setPhysicalFormats___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setPhysicalFormat:(id)a3
+- (void)setPhysicalFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   physicalFormatQueue = self->_physicalFormatQueue;
   block = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __31__ASDStream_setPhysicalFormat___block_invoke;
   v14 = &unk_278CE3E78;
-  v15 = self;
-  v16 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v16 = formatCopy;
+  v6 = formatCopy;
   dispatch_sync(physicalFormatQueue, &block);
   LODWORD(v10) = 0;
   v7 = [(ASDObject *)self propertyChangedDelegate:0x676C6F6270667420];
@@ -887,17 +887,17 @@ uint64_t __31__ASDStream_setPhysicalFormat___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addControl:(id)a3
+- (void)addControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   controlQueue = self->_controlQueue;
   block = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __24__ASDStream_addControl___block_invoke;
   v14 = &unk_278CE3E78;
-  v15 = self;
-  v16 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v16 = controlCopy;
+  v6 = controlCopy;
   dispatch_sync(controlQueue, &block);
   [v6 setOwner:self];
   LODWORD(v10) = 0;
@@ -905,29 +905,29 @@ uint64_t __31__ASDStream_setPhysicalFormat___block_invoke(uint64_t a1)
   [v7 changedProperty:&v9 forObject:self];
 
   LODWORD(v9) = 1870098020;
-  v8 = [(ASDObject *)self propertyChangedDelegate];
-  [v8 changedProperty:&v9 forObject:self];
+  propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+  [propertyChangedDelegate changedProperty:&v9 forObject:self];
 }
 
-- (void)removeControl:(id)a3
+- (void)removeControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   controlQueue = self->_controlQueue;
   block = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __27__ASDStream_removeControl___block_invoke;
   v14 = &unk_278CE3E78;
-  v15 = self;
-  v16 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v16 = controlCopy;
+  v6 = controlCopy;
   dispatch_sync(controlQueue, &block);
   LODWORD(v10) = 0;
   v7 = [(ASDObject *)self propertyChangedDelegate:0x676C6F626374726CLL];
   [v7 changedProperty:&v9 forObject:self];
 
   LODWORD(v9) = 1870098020;
-  v8 = [(ASDObject *)self propertyChangedDelegate];
-  [v8 changedProperty:&v9 forObject:self];
+  propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+  [propertyChangedDelegate changedProperty:&v9 forObject:self];
 }
 
 - (id)controls
@@ -952,17 +952,17 @@ uint64_t __31__ASDStream_setPhysicalFormat___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  self->_isActive = a3;
+  self->_isActive = active;
   LODWORD(v6) = 0;
   v4 = [(ASDObject *)self propertyChangedDelegate:0x676C6F6273616374];
   [v4 changedProperty:&v5 forObject:self];
 }
 
-- (void)setStreamName:(id)a3
+- (void)setStreamName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   streamName = self->_streamName;
   self->_streamName = v4;
 
@@ -971,23 +971,23 @@ uint64_t __31__ASDStream_setPhysicalFormat___block_invoke(uint64_t a1)
   [v6 changedProperty:&v7 forObject:self];
 }
 
-- (void)setLatency:(unsigned int)a3
+- (void)setLatency:(unsigned int)latency
 {
-  self->_latency = a3;
+  self->_latency = latency;
   LODWORD(v6) = 0;
   v4 = [(ASDObject *)self propertyChangedDelegate:0x676C6F626C746E63];
   [v4 changedProperty:&v5 forObject:self];
 }
 
-- (void)setIsTapStream:(BOOL)a3
+- (void)setIsTapStream:(BOOL)stream
 {
-  self->_isTapStream = a3;
+  self->_isTapStream = stream;
   LODWORD(v6) = 0;
   v4 = [(ASDObject *)self propertyChangedDelegate:0x676C6F6274617073];
   [v4 changedProperty:&v5 forObject:self];
 }
 
-- (BOOL)deviceChangedToSamplingRate:(double)a3
+- (BOOL)deviceChangedToSamplingRate:(double)rate
 {
   v8 = 0;
   v9 = &v8;
@@ -1000,7 +1000,7 @@ uint64_t __31__ASDStream_setPhysicalFormat___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__ASDStream_deviceChangedToSamplingRate___block_invoke;
   block[3] = &unk_278CE4030;
-  *&block[6] = a3;
+  *&block[6] = rate;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(physicalFormatQueue, block);
@@ -1146,88 +1146,88 @@ LABEL_25:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)preferredChannelDescription:(AudioChannelDescription *)a3 forChannelIndex:(unsigned int)a4
+- (void)preferredChannelDescription:(AudioChannelDescription *)description forChannelIndex:(unsigned int)index
 {
-  a3->mChannelLabel = -1;
-  *&a3->mCoordinates[1] = 0;
-  *&a3->mChannelFlags = 0;
+  description->mChannelLabel = -1;
+  *&description->mCoordinates[1] = 0;
+  *&description->mChannelFlags = 0;
 }
 
-- (void)setReadInputBlock:(id)a3
+- (void)setReadInputBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   readInputBlock = self->_readInputBlock;
   self->_readInputBlock = v4;
 
   self->_readInputBlockUnretained = self->_readInputBlock;
 }
 
-- (void)setConvertInputBlock:(id)a3
+- (void)setConvertInputBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   convertInputBlock = self->_convertInputBlock;
   self->_convertInputBlock = v4;
 
   self->_convertInputBlockUnretained = self->_convertInputBlock;
 }
 
-- (void)setProcessInputBlock:(id)a3
+- (void)setProcessInputBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   processInputBlock = self->_processInputBlock;
   self->_processInputBlock = v4;
 
   self->_processInputBlockUnretained = self->_processInputBlock;
 }
 
-- (void)setProcessOutputBlock:(id)a3
+- (void)setProcessOutputBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   processOutputBlock = self->_processOutputBlock;
   self->_processOutputBlock = v4;
 
   self->_processOutputBlockUnretained = self->_processOutputBlock;
 }
 
-- (void)setMixOutputBlock:(id)a3
+- (void)setMixOutputBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   mixOutputBlock = self->_mixOutputBlock;
   self->_mixOutputBlock = v4;
 
   self->_mixOutputBlockUnretained = self->_mixOutputBlock;
 }
 
-- (void)setProcessMixBlock:(id)a3
+- (void)setProcessMixBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   processMixBlock = self->_processMixBlock;
   self->_processMixBlock = v4;
 
   self->_processMixBlockUnretained = self->_processMixBlock;
 }
 
-- (void)setConvertMixBlock:(id)a3
+- (void)setConvertMixBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   convertMixBlock = self->_convertMixBlock;
   self->_convertMixBlock = v4;
 
   self->_convertMixBlockUnretained = self->_convertMixBlock;
 }
 
-- (void)setWriteMixBlock:(id)a3
+- (void)setWriteMixBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   writeMixBlock = self->_writeMixBlock;
   self->_writeMixBlock = v4;
 
   self->_writeMixBlockUnretained = self->_writeMixBlock;
 }
 
-- (void)setReadIsolatedInputBlock:(id)a3
+- (void)setReadIsolatedInputBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   readIsolatedInputBlock = self->_readIsolatedInputBlock;
   self->_readIsolatedInputBlock = v4;
 

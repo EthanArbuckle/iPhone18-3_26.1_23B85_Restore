@@ -1,34 +1,34 @@
 @interface SecondaryComponentCarrier
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsState:(id)a3;
+- (int)StringAsState:(id)state;
 - (int)state;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDlEarfcn:(BOOL)a3;
-- (void)setHasDlRfBand:(BOOL)a3;
-- (void)setHasHasUplink:(BOOL)a3;
-- (void)setHasIndex:(BOOL)a3;
-- (void)setHasPci:(BOOL)a3;
-- (void)setHasRsrp:(BOOL)a3;
-- (void)setHasRsrq:(BOOL)a3;
-- (void)setHasRssi:(BOOL)a3;
-- (void)setHasSnr:(BOOL)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)setHasUlBandwidth:(BOOL)a3;
-- (void)setHasUlEarfcn:(BOOL)a3;
-- (void)setHasUlRfBand:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDlEarfcn:(BOOL)earfcn;
+- (void)setHasDlRfBand:(BOOL)band;
+- (void)setHasHasUplink:(BOOL)uplink;
+- (void)setHasIndex:(BOOL)index;
+- (void)setHasPci:(BOOL)pci;
+- (void)setHasRsrp:(BOOL)rsrp;
+- (void)setHasRsrq:(BOOL)rsrq;
+- (void)setHasRssi:(BOOL)rssi;
+- (void)setHasSnr:(BOOL)snr;
+- (void)setHasState:(BOOL)state;
+- (void)setHasUlBandwidth:(BOOL)bandwidth;
+- (void)setHasUlEarfcn:(BOOL)earfcn;
+- (void)setHasUlRfBand:(BOOL)band;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SecondaryComponentCarrier
 
-- (void)setHasIndex:(BOOL)a3
+- (void)setHasIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 8;
   }
@@ -54,9 +54,9 @@
   }
 }
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 512;
   }
@@ -69,20 +69,20 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (int)StringAsState:(id)a3
+- (int)StringAsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SCC_STATE_DECONFIGURED"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"SCC_STATE_DECONFIGURED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SCC_STATE_CONFIGURED_DEACTIVATED"])
+  else if ([stateCopy isEqualToString:@"SCC_STATE_CONFIGURED_DEACTIVATED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SCC_STATE_ACTIVATED"])
+  else if ([stateCopy isEqualToString:@"SCC_STATE_ACTIVATED"])
   {
     v4 = 2;
   }
@@ -95,9 +95,9 @@
   return v4;
 }
 
-- (void)setHasPci:(BOOL)a3
+- (void)setHasPci:(BOOL)pci
 {
-  if (a3)
+  if (pci)
   {
     v3 = 16;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasDlEarfcn:(BOOL)a3
+- (void)setHasDlEarfcn:(BOOL)earfcn
 {
-  if (a3)
+  if (earfcn)
   {
     v3 = 2;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasDlRfBand:(BOOL)a3
+- (void)setHasDlRfBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 4;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasHasUplink:(BOOL)a3
+- (void)setHasHasUplink:(BOOL)uplink
 {
-  if (a3)
+  if (uplink)
   {
     v3 = 0x2000;
   }
@@ -155,9 +155,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasUlEarfcn:(BOOL)a3
+- (void)setHasUlEarfcn:(BOOL)earfcn
 {
-  if (a3)
+  if (earfcn)
   {
     v3 = 2048;
   }
@@ -170,9 +170,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasUlRfBand:(BOOL)a3
+- (void)setHasUlRfBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 4096;
   }
@@ -185,9 +185,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasUlBandwidth:(BOOL)a3
+- (void)setHasUlBandwidth:(BOOL)bandwidth
 {
-  if (a3)
+  if (bandwidth)
   {
     v3 = 1024;
   }
@@ -200,9 +200,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasRsrp:(BOOL)a3
+- (void)setHasRsrp:(BOOL)rsrp
 {
-  if (a3)
+  if (rsrp)
   {
     v3 = 32;
   }
@@ -215,9 +215,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRsrq:(BOOL)a3
+- (void)setHasRsrq:(BOOL)rsrq
 {
-  if (a3)
+  if (rsrq)
   {
     v3 = 64;
   }
@@ -230,9 +230,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasSnr:(BOOL)a3
+- (void)setHasSnr:(BOOL)snr
 {
-  if (a3)
+  if (snr)
   {
     v3 = 256;
   }
@@ -245,9 +245,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRssi:(BOOL)a3
+- (void)setHasRssi:(BOOL)rssi
 {
-  if (a3)
+  if (rssi)
   {
     v3 = 128;
   }
@@ -265,8 +265,8 @@
   v7.receiver = self;
   v7.super_class = SecondaryComponentCarrier;
   v3 = [(SecondaryComponentCarrier *)&v7 description];
-  v4 = [(SecondaryComponentCarrier *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SecondaryComponentCarrier *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -499,9 +499,9 @@ LABEL_16:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v19 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -702,14 +702,14 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[5] = self->_index;
-    *(v4 + 32) |= 8u;
+    toCopy[5] = self->_index;
+    *(toCopy + 32) |= 8u;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -728,8 +728,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[11] = self->_state;
-  *(v4 + 32) |= 0x200u;
+  toCopy[11] = self->_state;
+  *(toCopy + 32) |= 0x200u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -743,8 +743,8 @@ LABEL_4:
   }
 
 LABEL_21:
-  v4[6] = self->_pci;
-  *(v4 + 32) |= 0x10u;
+  toCopy[6] = self->_pci;
+  *(toCopy + 32) |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -758,8 +758,8 @@ LABEL_5:
   }
 
 LABEL_22:
-  v4[3] = self->_dlEarfcn;
-  *(v4 + 32) |= 2u;
+  toCopy[3] = self->_dlEarfcn;
+  *(toCopy + 32) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -773,8 +773,8 @@ LABEL_6:
   }
 
 LABEL_23:
-  v4[4] = self->_dlRfBand;
-  *(v4 + 32) |= 4u;
+  toCopy[4] = self->_dlRfBand;
+  *(toCopy + 32) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -788,8 +788,8 @@ LABEL_7:
   }
 
 LABEL_24:
-  v4[2] = self->_dlBandwidth;
-  *(v4 + 32) |= 1u;
+  toCopy[2] = self->_dlBandwidth;
+  *(toCopy + 32) |= 1u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -803,8 +803,8 @@ LABEL_8:
   }
 
 LABEL_25:
-  *(v4 + 60) = self->_hasUplink;
-  *(v4 + 32) |= 0x2000u;
+  *(toCopy + 60) = self->_hasUplink;
+  *(toCopy + 32) |= 0x2000u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -818,8 +818,8 @@ LABEL_9:
   }
 
 LABEL_26:
-  v4[13] = self->_ulEarfcn;
-  *(v4 + 32) |= 0x800u;
+  toCopy[13] = self->_ulEarfcn;
+  *(toCopy + 32) |= 0x800u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -833,8 +833,8 @@ LABEL_10:
   }
 
 LABEL_27:
-  v4[14] = self->_ulRfBand;
-  *(v4 + 32) |= 0x1000u;
+  toCopy[14] = self->_ulRfBand;
+  *(toCopy + 32) |= 0x1000u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -848,8 +848,8 @@ LABEL_11:
   }
 
 LABEL_28:
-  v4[12] = self->_ulBandwidth;
-  *(v4 + 32) |= 0x400u;
+  toCopy[12] = self->_ulBandwidth;
+  *(toCopy + 32) |= 0x400u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -863,8 +863,8 @@ LABEL_12:
   }
 
 LABEL_29:
-  v4[7] = self->_rsrp;
-  *(v4 + 32) |= 0x20u;
+  toCopy[7] = self->_rsrp;
+  *(toCopy + 32) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -878,8 +878,8 @@ LABEL_13:
   }
 
 LABEL_30:
-  v4[8] = self->_rsrq;
-  *(v4 + 32) |= 0x40u;
+  toCopy[8] = self->_rsrq;
+  *(toCopy + 32) |= 0x40u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -893,21 +893,21 @@ LABEL_14:
   }
 
 LABEL_31:
-  v4[10] = self->_snr;
-  *(v4 + 32) |= 0x100u;
+  toCopy[10] = self->_snr;
+  *(toCopy + 32) |= 0x100u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_15:
-    v4[9] = self->_rssi;
-    *(v4 + 32) |= 0x80u;
+    toCopy[9] = self->_rssi;
+    *(toCopy + 32) |= 0x80u;
   }
 
 LABEL_16:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -1109,19 +1109,19 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_75;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_index != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_index != *(equalCopy + 5))
     {
       goto LABEL_75;
     }
@@ -1134,20 +1134,20 @@ LABEL_15:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 32) & 0x200) == 0 || self->_state != *(v4 + 11))
+    if ((*(equalCopy + 32) & 0x200) == 0 || self->_state != *(equalCopy + 11))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(v4 + 32) & 0x200) != 0)
+  else if ((*(equalCopy + 32) & 0x200) != 0)
   {
     goto LABEL_75;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_pci != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_pci != *(equalCopy + 6))
     {
       goto LABEL_75;
     }
@@ -1160,7 +1160,7 @@ LABEL_15:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_dlEarfcn != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_dlEarfcn != *(equalCopy + 3))
     {
       goto LABEL_75;
     }
@@ -1173,7 +1173,7 @@ LABEL_15:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_dlRfBand != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_dlRfBand != *(equalCopy + 4))
     {
       goto LABEL_75;
     }
@@ -1186,7 +1186,7 @@ LABEL_15:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_dlBandwidth != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_dlBandwidth != *(equalCopy + 2))
     {
       goto LABEL_75;
     }
@@ -1199,7 +1199,7 @@ LABEL_15:
 
   if ((*&self->_has & 0x2000) == 0)
   {
-    if ((*(v4 + 32) & 0x2000) == 0)
+    if ((*(equalCopy + 32) & 0x2000) == 0)
     {
       goto LABEL_34;
     }
@@ -1209,21 +1209,21 @@ LABEL_75:
     goto LABEL_76;
   }
 
-  if ((*(v4 + 32) & 0x2000) == 0)
+  if ((*(equalCopy + 32) & 0x2000) == 0)
   {
     goto LABEL_75;
   }
 
-  v7 = *(v4 + 60);
+  v7 = *(equalCopy + 60);
   if (self->_hasUplink)
   {
-    if ((*(v4 + 60) & 1) == 0)
+    if ((*(equalCopy + 60) & 1) == 0)
     {
       goto LABEL_75;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_75;
   }
@@ -1231,46 +1231,46 @@ LABEL_75:
 LABEL_34:
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 32) & 0x800) == 0 || self->_ulEarfcn != *(v4 + 13))
+    if ((*(equalCopy + 32) & 0x800) == 0 || self->_ulEarfcn != *(equalCopy + 13))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(v4 + 32) & 0x800) != 0)
+  else if ((*(equalCopy + 32) & 0x800) != 0)
   {
     goto LABEL_75;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 32) & 0x1000) == 0 || self->_ulRfBand != *(v4 + 14))
+    if ((*(equalCopy + 32) & 0x1000) == 0 || self->_ulRfBand != *(equalCopy + 14))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(v4 + 32) & 0x1000) != 0)
+  else if ((*(equalCopy + 32) & 0x1000) != 0)
   {
     goto LABEL_75;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 32) & 0x400) == 0 || self->_ulBandwidth != *(v4 + 12))
+    if ((*(equalCopy + 32) & 0x400) == 0 || self->_ulBandwidth != *(equalCopy + 12))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(v4 + 32) & 0x400) != 0)
+  else if ((*(equalCopy + 32) & 0x400) != 0)
   {
     goto LABEL_75;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_rsrp != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_rsrp != *(equalCopy + 7))
     {
       goto LABEL_75;
     }
@@ -1283,7 +1283,7 @@ LABEL_34:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_rsrq != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_rsrq != *(equalCopy + 8))
     {
       goto LABEL_75;
     }
@@ -1296,20 +1296,20 @@ LABEL_34:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 32) & 0x100) == 0 || self->_snr != *(v4 + 10))
+    if ((*(equalCopy + 32) & 0x100) == 0 || self->_snr != *(equalCopy + 10))
     {
       goto LABEL_75;
     }
   }
 
-  else if ((*(v4 + 32) & 0x100) != 0)
+  else if ((*(equalCopy + 32) & 0x100) != 0)
   {
     goto LABEL_75;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_rssi != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_rssi != *(equalCopy + 9))
     {
       goto LABEL_75;
     }
@@ -1522,15 +1522,15 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if ((v5 & 8) != 0)
   {
-    self->_index = *(v4 + 5);
+    self->_index = *(fromCopy + 5);
     *&self->_has |= 8u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 0x200) == 0)
     {
 LABEL_3:
@@ -1543,14 +1543,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 0x200) == 0)
+  else if ((*(fromCopy + 32) & 0x200) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_state = *(v4 + 11);
+  self->_state = *(fromCopy + 11);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -1563,9 +1563,9 @@ LABEL_4:
   }
 
 LABEL_21:
-  self->_pci = *(v4 + 6);
+  self->_pci = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) == 0)
   {
 LABEL_5:
@@ -1578,9 +1578,9 @@ LABEL_5:
   }
 
 LABEL_22:
-  self->_dlEarfcn = *(v4 + 3);
+  self->_dlEarfcn = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) == 0)
   {
 LABEL_6:
@@ -1593,9 +1593,9 @@ LABEL_6:
   }
 
 LABEL_23:
-  self->_dlRfBand = *(v4 + 4);
+  self->_dlRfBand = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 1) == 0)
   {
 LABEL_7:
@@ -1608,9 +1608,9 @@ LABEL_7:
   }
 
 LABEL_24:
-  self->_dlBandwidth = *(v4 + 2);
+  self->_dlBandwidth = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_8:
@@ -1623,9 +1623,9 @@ LABEL_8:
   }
 
 LABEL_25:
-  self->_hasUplink = *(v4 + 60);
+  self->_hasUplink = *(fromCopy + 60);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x800) == 0)
   {
 LABEL_9:
@@ -1638,9 +1638,9 @@ LABEL_9:
   }
 
 LABEL_26:
-  self->_ulEarfcn = *(v4 + 13);
+  self->_ulEarfcn = *(fromCopy + 13);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_10:
@@ -1653,9 +1653,9 @@ LABEL_10:
   }
 
 LABEL_27:
-  self->_ulRfBand = *(v4 + 14);
+  self->_ulRfBand = *(fromCopy + 14);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x400) == 0)
   {
 LABEL_11:
@@ -1668,9 +1668,9 @@ LABEL_11:
   }
 
 LABEL_28:
-  self->_ulBandwidth = *(v4 + 12);
+  self->_ulBandwidth = *(fromCopy + 12);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x20) == 0)
   {
 LABEL_12:
@@ -1683,9 +1683,9 @@ LABEL_12:
   }
 
 LABEL_29:
-  self->_rsrp = *(v4 + 7);
+  self->_rsrp = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x40) == 0)
   {
 LABEL_13:
@@ -1698,9 +1698,9 @@ LABEL_13:
   }
 
 LABEL_30:
-  self->_rsrq = *(v4 + 8);
+  self->_rsrq = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x100) == 0)
   {
 LABEL_14:
@@ -1713,12 +1713,12 @@ LABEL_14:
   }
 
 LABEL_31:
-  self->_snr = *(v4 + 10);
+  self->_snr = *(fromCopy + 10);
   *&self->_has |= 0x100u;
-  if ((*(v4 + 32) & 0x80) != 0)
+  if ((*(fromCopy + 32) & 0x80) != 0)
   {
 LABEL_15:
-    self->_rssi = *(v4 + 9);
+    self->_rssi = *(fromCopy + 9);
     *&self->_has |= 0x80u;
   }
 

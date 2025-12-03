@@ -1,19 +1,19 @@
 @interface SportsSessionObserver
 - (_TtC7NewsUI221SportsSessionObserver)init;
-- (void)bundleSubscriptionDidChange:(id)a3 previousBundleSubscription:(id)a4;
+- (void)bundleSubscriptionDidChange:(id)change previousBundleSubscription:(id)subscription;
 - (void)pushUserSubscriptionContextData;
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8;
-- (void)userInfoDidChangeSportsUserID:(id)a3;
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type;
+- (void)userInfoDidChangeSportsUserID:(id)d;
 @end
 
 @implementation SportsSessionObserver
 
-- (void)userInfoDidChangeSportsUserID:(id)a3
+- (void)userInfoDidChangeSportsUserID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  sub_218F33074(v4);
-  sub_218F331B8(v4);
+  dCopy = d;
+  selfCopy = self;
+  sub_218F33074(dCopy);
+  sub_218F331B8(dCopy);
 }
 
 - (_TtC7NewsUI221SportsSessionObserver)init
@@ -23,13 +23,13 @@
   return result;
 }
 
-- (void)bundleSubscriptionDidChange:(id)a3 previousBundleSubscription:(id)a4
+- (void)bundleSubscriptionDidChange:(id)change previousBundleSubscription:(id)subscription
 {
-  v5 = a3;
-  v6 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_219BDCDE4();
-  *(swift_allocObject() + 16) = v5;
-  v7 = v5;
+  *(swift_allocObject() + 16) = changeCopy;
+  v7 = changeCopy;
   sub_219BDD154();
 
   *(swift_allocObject() + 16) = v7;
@@ -39,19 +39,19 @@
 
 - (void)pushUserSubscriptionContextData
 {
-  v2 = self;
+  selfCopy = self;
   sub_2187561AC();
 }
 
-- (void)subscriptionController:(id)a3 didAddTags:(id)a4 changeTags:(id)a5 moveTags:(id)a6 removeTags:(id)a7 subscriptionType:(unint64_t)a8
+- (void)subscriptionController:(id)controller didAddTags:(id)tags changeTags:(id)changeTags moveTags:(id)moveTags removeTags:(id)removeTags subscriptionType:(unint64_t)type
 {
-  if (a3)
+  if (controller)
   {
-    v11 = self;
-    v9 = a3;
+    selfCopy = self;
+    controllerCopy = controller;
     sub_219BDCDE4();
-    *(swift_allocObject() + 16) = v9;
-    v10 = v9;
+    *(swift_allocObject() + 16) = controllerCopy;
+    v10 = controllerCopy;
     sub_219BDD154();
   }
 

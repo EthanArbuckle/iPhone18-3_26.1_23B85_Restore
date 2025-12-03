@@ -1,10 +1,10 @@
 @interface FCArticleDownloadService
-- (BOOL)isArticleDownloadedEnoughToListen:(id)a3;
-- (BOOL)isArticleDownloadedEnoughToRead:(id)a3;
+- (BOOL)isArticleDownloadedEnoughToListen:(id)listen;
+- (BOOL)isArticleDownloadedEnoughToRead:(id)read;
 - (FCArticleDownloadService)init;
-- (FCArticleDownloadService)initWithContext:(id)a3 ANFHelper:(id)a4;
-- (id)fetchCachedArticleWithID:(id)a3 completionHandler:(id)a4;
-- (id)fetchCachedAudioWithArticleID:(id)a3 completionHandler:(id)a4;
+- (FCArticleDownloadService)initWithContext:(id)context ANFHelper:(id)helper;
+- (id)fetchCachedArticleWithID:(id)d completionHandler:(id)handler;
+- (id)fetchCachedAudioWithArticleID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation FCArticleDownloadService
@@ -35,32 +35,32 @@
   objc_exception_throw(v6);
 }
 
-- (FCArticleDownloadService)initWithContext:(id)a3 ANFHelper:(id)a4
+- (FCArticleDownloadService)initWithContext:(id)context ANFHelper:(id)helper
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  helperCopy = helper;
   v12.receiver = self;
   v12.super_class = FCArticleDownloadService;
   v9 = [(FCArticleDownloadService *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_ANFHelper, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_ANFHelper, helper);
   }
 
   return v10;
 }
 
-- (id)fetchCachedArticleWithID:(id)a3 completionHandler:(id)a4
+- (id)fetchCachedArticleWithID:(id)d completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = [FCOfflineArticleFetchOperation alloc];
-  v9 = [(FCArticleDownloadService *)self context];
-  v10 = [(FCArticleDownloadService *)self ANFHelper];
-  v11 = [(FCOfflineArticleFetchOperation *)v8 initWithContext:v9 ANFHelper:v10 articleID:v6];
+  context = [(FCArticleDownloadService *)self context];
+  aNFHelper = [(FCArticleDownloadService *)self ANFHelper];
+  v11 = [(FCOfflineArticleFetchOperation *)v8 initWithContext:context ANFHelper:aNFHelper articleID:dCopy];
 
   [(FCOperation *)v11 setQualityOfService:9];
   [(FCOfflineArticleFetchOperation *)v11 setQueuePriority:0];
@@ -81,9 +81,9 @@
   v21 = 3221225472;
   v22 = __71__FCArticleDownloadService_fetchCachedArticleWithID_completionHandler___block_invoke_2;
   v23 = &unk_1E7C36F18;
-  v12 = v6;
+  v12 = dCopy;
   v24 = v12;
-  v13 = v7;
+  v13 = handlerCopy;
   v25 = v13;
   v26 = v28;
   [(FCOfflineArticleFetchOperation *)v11 setFetchCompletionHandler:&v20];
@@ -152,14 +152,14 @@ void __71__FCArticleDownloadService_fetchCachedArticleWithID_completionHandler__
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fetchCachedAudioWithArticleID:(id)a3 completionHandler:(id)a4
+- (id)fetchCachedAudioWithArticleID:(id)d completionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = [FCOfflineAudioFetchOperation alloc];
-  v9 = [(FCArticleDownloadService *)self context];
-  v10 = [(FCOfflineAudioFetchOperation *)v8 initWithContext:v9 articleID:v6];
+  context = [(FCArticleDownloadService *)self context];
+  v10 = [(FCOfflineAudioFetchOperation *)v8 initWithContext:context articleID:dCopy];
 
   [(FCOperation *)v10 setQualityOfService:9];
   [(FCOfflineAudioFetchOperation *)v10 setQueuePriority:0];
@@ -180,9 +180,9 @@ void __71__FCArticleDownloadService_fetchCachedArticleWithID_completionHandler__
   v20 = 3221225472;
   v21 = __76__FCArticleDownloadService_fetchCachedAudioWithArticleID_completionHandler___block_invoke_2;
   v22 = &unk_1E7C36F18;
-  v11 = v6;
+  v11 = dCopy;
   v23 = v11;
-  v12 = v7;
+  v12 = handlerCopy;
   v24 = v12;
   v25 = v27;
   [(FCOfflineAudioFetchOperation *)v10 setFetchCompletionHandler:&v19];
@@ -251,35 +251,35 @@ void __76__FCArticleDownloadService_fetchCachedAudioWithArticleID_completionHand
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isArticleDownloadedEnoughToRead:(id)a3
+- (BOOL)isArticleDownloadedEnoughToRead:(id)read
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCArticleDownloadService *)self context];
-  v6 = [v5 internalContentContext];
-  v7 = [v6 articleRecordSource];
-  v8 = [v7 cachedRecordWithID:v4];
+  readCopy = read;
+  context = [(FCArticleDownloadService *)self context];
+  internalContentContext = [context internalContentContext];
+  articleRecordSource = [internalContentContext articleRecordSource];
+  v8 = [articleRecordSource cachedRecordWithID:readCopy];
 
   if (v8)
   {
     v9 = v8;
     v10 = [FCArticleContent alloc];
-    v11 = [(FCArticleDownloadService *)self context];
-    v12 = [(FCArticleContent *)v10 initWithContext:v11 articleRecord:v9];
+    context2 = [(FCArticleDownloadService *)self context];
+    v12 = [(FCArticleContent *)v10 initWithContext:context2 articleRecord:v9];
 
     if (v12)
     {
-      v13 = [(FCArticleContent *)v12 anfContent];
-      if (v13)
+      anfContent = [(FCArticleContent *)v12 anfContent];
+      if (anfContent)
       {
-        v14 = v13;
+        v14 = anfContent;
         if ([v14 isANFDocumentCached])
         {
           v15 = FCOfflineDownloadsLog;
           if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v29 = v4;
+            v29 = readCopy;
             _os_log_impl(&dword_1B63EF000, v15, OS_LOG_TYPE_DEFAULT, "Article %{public}@ is readable", buf, 0xCu);
           }
 
@@ -292,7 +292,7 @@ void __76__FCArticleDownloadService_fetchCachedAudioWithArticleID_completionHand
           v19[1] = 3221225472;
           v19[2] = __60__FCArticleDownloadService_isArticleDownloadedEnoughToRead___block_invoke_23;
           v19[3] = &unk_1E7C36F68;
-          v20 = v4;
+          v20 = readCopy;
           v21 = v14;
           v16 = __60__FCArticleDownloadService_isArticleDownloadedEnoughToRead___block_invoke_23(v19);
         }
@@ -304,7 +304,7 @@ void __76__FCArticleDownloadService_fetchCachedAudioWithArticleID_completionHand
         v22[1] = 3221225472;
         v22[2] = __60__FCArticleDownloadService_isArticleDownloadedEnoughToRead___block_invoke_22;
         v22[3] = &unk_1E7C36F40;
-        v23 = v4;
+        v23 = readCopy;
         __60__FCArticleDownloadService_isArticleDownloadedEnoughToRead___block_invoke_22(v22);
 
         v14 = 0;
@@ -318,7 +318,7 @@ void __76__FCArticleDownloadService_fetchCachedAudioWithArticleID_completionHand
       v24[1] = 3221225472;
       v24[2] = __60__FCArticleDownloadService_isArticleDownloadedEnoughToRead___block_invoke_21;
       v24[3] = &unk_1E7C36F40;
-      v25 = v4;
+      v25 = readCopy;
       __60__FCArticleDownloadService_isArticleDownloadedEnoughToRead___block_invoke_21(v24);
       v16 = 0;
       v14 = v25;
@@ -331,7 +331,7 @@ void __76__FCArticleDownloadService_fetchCachedAudioWithArticleID_completionHand
     v26[1] = 3221225472;
     v26[2] = __60__FCArticleDownloadService_isArticleDownloadedEnoughToRead___block_invoke;
     v26[3] = &unk_1E7C36F40;
-    v27 = v4;
+    v27 = readCopy;
     __60__FCArticleDownloadService_isArticleDownloadedEnoughToRead___block_invoke(v26);
     v16 = 0;
     v9 = v27;
@@ -412,28 +412,28 @@ uint64_t __60__FCArticleDownloadService_isArticleDownloadedEnoughToRead___block_
   return 0;
 }
 
-- (BOOL)isArticleDownloadedEnoughToListen:(id)a3
+- (BOOL)isArticleDownloadedEnoughToListen:(id)listen
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCArticleDownloadService *)self context];
-  v6 = [v5 internalContentContext];
-  v7 = [v6 articleRecordSource];
-  v8 = [v7 cachedRecordWithID:v4];
+  listenCopy = listen;
+  context = [(FCArticleDownloadService *)self context];
+  internalContentContext = [context internalContentContext];
+  articleRecordSource = [internalContentContext articleRecordSource];
+  v8 = [articleRecordSource cachedRecordWithID:listenCopy];
 
   if (v8)
   {
-    v9 = [v8 narrativeTrackFullIdentifier];
-    if (v9)
+    narrativeTrackFullIdentifier = [v8 narrativeTrackFullIdentifier];
+    if (narrativeTrackFullIdentifier)
     {
-      v10 = v9;
-      v11 = [(FCArticleDownloadService *)self context];
-      v12 = [v11 internalContentContext];
-      v13 = [v12 avAssetDownloadManager];
-      if (v13)
+      v10 = narrativeTrackFullIdentifier;
+      context2 = [(FCArticleDownloadService *)self context];
+      internalContentContext2 = [context2 internalContentContext];
+      avAssetDownloadManager = [internalContentContext2 avAssetDownloadManager];
+      if (avAssetDownloadManager)
       {
-        v14 = v13;
-        v15 = [(FCAVAssetDownloadManager *)v13 _isAssetInCache:v10];
+        v14 = avAssetDownloadManager;
+        v15 = [(FCAVAssetDownloadManager *)avAssetDownloadManager _isAssetInCache:v10];
 
         if (v15)
         {
@@ -441,7 +441,7 @@ uint64_t __60__FCArticleDownloadService_isArticleDownloadedEnoughToRead___block_
           if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v27 = v4;
+            v27 = listenCopy;
             _os_log_impl(&dword_1B63EF000, v16, OS_LOG_TYPE_DEFAULT, "Article %{public}@ is listenable", buf, 0xCu);
           }
 
@@ -471,7 +471,7 @@ LABEL_12:
     v22[1] = 3221225472;
     v22[2] = __62__FCArticleDownloadService_isArticleDownloadedEnoughToListen___block_invoke_24;
     v22[3] = &unk_1E7C36F40;
-    v23 = v4;
+    v23 = listenCopy;
     __62__FCArticleDownloadService_isArticleDownloadedEnoughToListen___block_invoke_24(v22);
 
     v10 = 0;
@@ -484,7 +484,7 @@ LABEL_12:
     v24[1] = 3221225472;
     v24[2] = __62__FCArticleDownloadService_isArticleDownloadedEnoughToListen___block_invoke;
     v24[3] = &unk_1E7C36F40;
-    v25 = v4;
+    v25 = listenCopy;
     __62__FCArticleDownloadService_isArticleDownloadedEnoughToListen___block_invoke(v24);
     v17 = 0;
     v10 = v25;

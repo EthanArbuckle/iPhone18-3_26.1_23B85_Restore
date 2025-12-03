@@ -1,13 +1,13 @@
 @interface SleepScheduleDayPicker
-- (_TtC13SleepHealthUI22SleepScheduleDayPicker)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI22SleepScheduleDayPicker)initWithFrame:(CGRect)a3;
+- (_TtC13SleepHealthUI22SleepScheduleDayPicker)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI22SleepScheduleDayPicker)initWithFrame:(CGRect)frame;
 - (id)accessibilityPickerDays;
-- (void)didTapDay:(id)a3;
+- (void)didTapDay:(id)day;
 @end
 
 @implementation SleepScheduleDayPicker
 
-- (_TtC13SleepHealthUI22SleepScheduleDayPicker)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI22SleepScheduleDayPicker)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -43,7 +43,7 @@
   return v2;
 }
 
-- (_TtC13SleepHealthUI22SleepScheduleDayPicker)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI22SleepScheduleDayPicker)initWithFrame:(CGRect)frame
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -58,7 +58,7 @@
   return result;
 }
 
-- (void)didTapDay:(id)a3
+- (void)didTapDay:(id)day
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -68,9 +68,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_269D743E8(v5);
+  dayCopy = day;
+  selfCopy = self;
+  sub_269D743E8(dayCopy);
 }
 
 @end

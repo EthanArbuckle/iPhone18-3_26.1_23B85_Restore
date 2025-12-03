@@ -1,114 +1,114 @@
 @interface CNAvatarImageRendererSettings
-+ (id)defaultSettingsWithCacheSize:(unint64_t)a3 personaId:(id)a4;
-+ (id)defaultSettingsWithCacheSize:(unint64_t)a3 skipContactLookup:(BOOL)a4;
-+ (id)offMainThreadSynchronousRenderingOnlySettingsWithCacheSize:(unint64_t)a3;
-+ (id)settingsWithContactStore:(id)a3 cacheSize:(unint64_t)a4 schedulerProvider:(id)a5 concurrentCaches:(BOOL)a6 skipContactLookup:(BOOL)a7 personaId:(id)a8;
-+ (id)settingsWithContactStore:(id)a3 cacheSize:(unint64_t)a4 skipContactLookup:(BOOL)a5;
-- (CNAvatarImageRendererSettings)initWithLikenessResolver:(id)a3 likenessRenderer:(id)a4 schedulerProvider:(id)a5;
++ (id)defaultSettingsWithCacheSize:(unint64_t)size personaId:(id)id;
++ (id)defaultSettingsWithCacheSize:(unint64_t)size skipContactLookup:(BOOL)lookup;
++ (id)offMainThreadSynchronousRenderingOnlySettingsWithCacheSize:(unint64_t)size;
++ (id)settingsWithContactStore:(id)store cacheSize:(unint64_t)size schedulerProvider:(id)provider concurrentCaches:(BOOL)caches skipContactLookup:(BOOL)lookup personaId:(id)id;
++ (id)settingsWithContactStore:(id)store cacheSize:(unint64_t)size skipContactLookup:(BOOL)lookup;
+- (CNAvatarImageRendererSettings)initWithLikenessResolver:(id)resolver likenessRenderer:(id)renderer schedulerProvider:(id)provider;
 @end
 
 @implementation CNAvatarImageRendererSettings
 
-- (CNAvatarImageRendererSettings)initWithLikenessResolver:(id)a3 likenessRenderer:(id)a4 schedulerProvider:(id)a5
+- (CNAvatarImageRendererSettings)initWithLikenessResolver:(id)resolver likenessRenderer:(id)renderer schedulerProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resolverCopy = resolver;
+  rendererCopy = renderer;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = CNAvatarImageRendererSettings;
   v12 = [(CNAvatarImageRendererSettings *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_likenessResolver, a3);
-    objc_storeStrong(&v13->_likenessRenderer, a4);
-    objc_storeStrong(&v13->_schedulerProvider, a5);
+    objc_storeStrong(&v12->_likenessResolver, resolver);
+    objc_storeStrong(&v13->_likenessRenderer, renderer);
+    objc_storeStrong(&v13->_schedulerProvider, provider);
     v14 = v13;
   }
 
   return v13;
 }
 
-+ (id)settingsWithContactStore:(id)a3 cacheSize:(unint64_t)a4 schedulerProvider:(id)a5 concurrentCaches:(BOOL)a6 skipContactLookup:(BOOL)a7 personaId:(id)a8
++ (id)settingsWithContactStore:(id)store cacheSize:(unint64_t)size schedulerProvider:(id)provider concurrentCaches:(BOOL)caches skipContactLookup:(BOOL)lookup personaId:(id)id
 {
-  v9 = a7;
-  v10 = a6;
-  v13 = a3;
-  v14 = a5;
-  v15 = a8;
+  lookupCopy = lookup;
+  cachesCopy = caches;
+  storeCopy = store;
+  providerCopy = provider;
+  idCopy = id;
   v16 = objc_alloc(MEMORY[0x1E6996BB0]);
-  if (v15)
+  if (idCopy)
   {
-    v17 = [v16 initWithPersonaId:v15 schedulerProvider:v14];
+    v17 = [v16 initWithPersonaId:idCopy schedulerProvider:providerCopy];
   }
 
   else
   {
-    v17 = [v16 initWithContactStore:v13 schedulerProvider:v14];
+    v17 = [v16 initWithContactStore:storeCopy schedulerProvider:providerCopy];
   }
 
   v18 = v17;
   [v17 setProhibitedSources:8];
-  if (v9)
+  if (lookupCopy)
   {
     [v18 setLookupOptions:1];
   }
 
   v19 = v18;
-  v20 = [MEMORY[0x1E6996B90] rendererWithLikenessResolver:v19 schedulerProvider:v14];
-  if (a4 - 1 > 0xFFFFFFFFFFFFFFFDLL)
+  v20 = [MEMORY[0x1E6996B90] rendererWithLikenessResolver:v19 schedulerProvider:providerCopy];
+  if (size - 1 > 0xFFFFFFFFFFFFFFFDLL)
   {
     v21 = v19;
   }
 
   else
   {
-    v21 = [objc_alloc(MEMORY[0x1E6996BB8]) initWithLikenessResolver:v19 capacity:a4 schedulerProvider:v14];
+    v21 = [objc_alloc(MEMORY[0x1E6996BB8]) initWithLikenessResolver:v19 capacity:size schedulerProvider:providerCopy];
 
-    if (v10)
+    if (cachesCopy)
     {
-      [MEMORY[0x1E6996B90] concurrentCachingRendererWithLikenessResolver:v21 capacity:a4 schedulerProvider:v14];
+      [MEMORY[0x1E6996B90] concurrentCachingRendererWithLikenessResolver:v21 capacity:size schedulerProvider:providerCopy];
     }
 
     else
     {
-      [MEMORY[0x1E6996B90] cachingRendererWithLikenessResolver:v21 capacity:a4 schedulerProvider:v14];
+      [MEMORY[0x1E6996B90] cachingRendererWithLikenessResolver:v21 capacity:size schedulerProvider:providerCopy];
     }
     v22 = ;
 
     v20 = v22;
   }
 
-  v23 = [[CNAvatarImageRendererSettings alloc] initWithLikenessResolver:v21 likenessRenderer:v20 schedulerProvider:v14];
+  v23 = [[CNAvatarImageRendererSettings alloc] initWithLikenessResolver:v21 likenessRenderer:v20 schedulerProvider:providerCopy];
 
   return v23;
 }
 
-+ (id)settingsWithContactStore:(id)a3 cacheSize:(unint64_t)a4 skipContactLookup:(BOOL)a5
++ (id)settingsWithContactStore:(id)store cacheSize:(unint64_t)size skipContactLookup:(BOOL)lookup
 {
-  v5 = a5;
-  v8 = a3;
+  lookupCopy = lookup;
+  storeCopy = store;
   v9 = +[CNUIContactsEnvironment currentEnvironment];
-  v10 = [v9 defaultSchedulerProvider];
-  v11 = [a1 settingsWithContactStore:v8 cacheSize:a4 schedulerProvider:v10 skipContactLookup:v5];
+  defaultSchedulerProvider = [v9 defaultSchedulerProvider];
+  v11 = [self settingsWithContactStore:storeCopy cacheSize:size schedulerProvider:defaultSchedulerProvider skipContactLookup:lookupCopy];
 
   return v11;
 }
 
-+ (id)offMainThreadSynchronousRenderingOnlySettingsWithCacheSize:(unint64_t)a3
++ (id)offMainThreadSynchronousRenderingOnlySettingsWithCacheSize:(unint64_t)size
 {
   v22 = +[CNUIContactsEnvironment currentEnvironment];
-  v19 = [v22 contactStore];
-  v3 = [v22 defaultSchedulerProvider];
-  v17 = [v3 backgroundScheduler];
-  v4 = [v3 inlineScheduler];
-  v5 = [v3 inlineScheduler];
-  v6 = [v3 immediateScheduler];
+  contactStore = [v22 contactStore];
+  defaultSchedulerProvider = [v22 defaultSchedulerProvider];
+  backgroundScheduler = [defaultSchedulerProvider backgroundScheduler];
+  inlineScheduler = [defaultSchedulerProvider inlineScheduler];
+  inlineScheduler2 = [defaultSchedulerProvider inlineScheduler];
+  immediateScheduler = [defaultSchedulerProvider immediateScheduler];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __92__CNAvatarImageRendererSettings_offMainThreadSynchronousRenderingOnlySettingsWithCacheSize___block_invoke;
   aBlock[3] = &unk_1E74E2F90;
-  v7 = v3;
+  v7 = defaultSchedulerProvider;
   v30 = v7;
   v8 = _Block_copy(aBlock);
   v27[0] = MEMORY[0x1E69E9820];
@@ -132,8 +132,8 @@
   v24 = v11;
   v18 = v11;
   v13 = _Block_copy(v23);
-  v14 = [objc_alloc(MEMORY[0x1E6996820]) initWithBackgroundScheduler:v17 mainThreadScheduler:v4 inlineScheduler:v5 immediateScheduler:v6 serialSchedulerProvider:v8 workloopSchedulerProvider:v10 synchronousSerialSchedulerProvider:v12 readerWriterSchedulerProvider:v13];
-  v15 = [a1 settingsWithContactStore:v19 cacheSize:a3 schedulerProvider:v14 concurrentCaches:1 skipContactLookup:0 personaId:0];
+  v14 = [objc_alloc(MEMORY[0x1E6996820]) initWithBackgroundScheduler:backgroundScheduler mainThreadScheduler:inlineScheduler inlineScheduler:inlineScheduler2 immediateScheduler:immediateScheduler serialSchedulerProvider:v8 workloopSchedulerProvider:v10 synchronousSerialSchedulerProvider:v12 readerWriterSchedulerProvider:v13];
+  v15 = [self settingsWithContactStore:contactStore cacheSize:size schedulerProvider:v14 concurrentCaches:1 skipContactLookup:0 personaId:0];
 
   return v15;
 }
@@ -166,32 +166,32 @@ id __92__CNAvatarImageRendererSettings_offMainThreadSynchronousRenderingOnlySett
   return v2;
 }
 
-+ (id)defaultSettingsWithCacheSize:(unint64_t)a3 skipContactLookup:(BOOL)a4
++ (id)defaultSettingsWithCacheSize:(unint64_t)size skipContactLookup:(BOOL)lookup
 {
-  v4 = a4;
+  lookupCopy = lookup;
   v7 = +[CNUIContactsEnvironment currentEnvironment];
   v8 = v7;
-  if (v4)
+  if (lookupCopy)
   {
-    v9 = 0;
+    contactStore = 0;
   }
 
   else
   {
-    v9 = [v7 contactStore];
+    contactStore = [v7 contactStore];
   }
 
-  v10 = [a1 settingsWithContactStore:v9 cacheSize:a3 skipContactLookup:v4];
+  v10 = [self settingsWithContactStore:contactStore cacheSize:size skipContactLookup:lookupCopy];
 
   return v10;
 }
 
-+ (id)defaultSettingsWithCacheSize:(unint64_t)a3 personaId:(id)a4
++ (id)defaultSettingsWithCacheSize:(unint64_t)size personaId:(id)id
 {
-  v6 = a4;
+  idCopy = id;
   v7 = +[CNUIContactsEnvironment currentEnvironment];
-  v8 = [v7 defaultSchedulerProvider];
-  v9 = [a1 settingsWithContactStore:0 cacheSize:a3 schedulerProvider:v8 concurrentCaches:0 skipContactLookup:0 personaId:v6];
+  defaultSchedulerProvider = [v7 defaultSchedulerProvider];
+  v9 = [self settingsWithContactStore:0 cacheSize:size schedulerProvider:defaultSchedulerProvider concurrentCaches:0 skipContactLookup:0 personaId:idCopy];
 
   return v9;
 }

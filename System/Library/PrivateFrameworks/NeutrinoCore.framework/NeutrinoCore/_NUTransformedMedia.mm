@@ -1,16 +1,16 @@
 @interface _NUTransformedMedia
-- (_NUTransformedMedia)initWithBaseMedia:(id)a3;
-- (_NUTransformedMedia)initWithBaseMedia:(id)a3 transform:(id)a4;
+- (_NUTransformedMedia)initWithBaseMedia:(id)media;
+- (_NUTransformedMedia)initWithBaseMedia:(id)media transform:(id)transform;
 @end
 
 @implementation _NUTransformedMedia
 
-- (_NUTransformedMedia)initWithBaseMedia:(id)a3 transform:(id)a4
+- (_NUTransformedMedia)initWithBaseMedia:(id)media transform:(id)transform
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  mediaCopy = media;
+  transformCopy = transform;
+  if (!transformCopy)
   {
     v12 = NUAssertLogger_2109();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -31,8 +31,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v19;
         v31 = 2114;
@@ -43,8 +43,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -53,20 +53,20 @@
     _NUAssertFailHandler("[_NUTransformedMedia initWithBaseMedia:transform:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUMedia.m", 234, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "transform != nil");
   }
 
-  v8 = v7;
+  v8 = transformCopy;
   v28.receiver = self;
   v28.super_class = _NUTransformedMedia;
-  v9 = [(_NUComposedMedia *)&v28 initWithBaseMedia:v6];
+  v9 = [(_NUComposedMedia *)&v28 initWithBaseMedia:mediaCopy];
   transform = v9->_transform;
   v9->_transform = v8;
 
   return v9;
 }
 
-- (_NUTransformedMedia)initWithBaseMedia:(id)a3
+- (_NUTransformedMedia)initWithBaseMedia:(id)media
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_379);
@@ -110,8 +110,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -127,8 +127,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

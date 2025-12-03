@@ -14,80 +14,80 @@
 
 - (id)_musicKit_self_changeItemCommand
 {
-  if ([a1 conformsToProtocol:&unk_1F50DDC10])
+  if ([self conformsToProtocol:&unk_1F50DDC10])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)musicKit_changeItemCommand_previousItemCommandRequest
 {
-  v1 = [a1 _musicKit_self_changeItemCommand];
-  v2 = [v1 previousItem];
+  _musicKit_self_changeItemCommand = [self _musicKit_self_changeItemCommand];
+  previousItem = [_musicKit_self_changeItemCommand previousItem];
 
-  return v2;
+  return previousItem;
 }
 
 - (id)musicKit_changeItemCommand_previousItemDeferringToPlaybackQueuePositionCommandRequest
 {
-  v1 = [a1 _musicKit_self_changeItemCommand];
-  v2 = [v1 previousItemDeferringToPlaybackQueuePosition];
+  _musicKit_self_changeItemCommand = [self _musicKit_self_changeItemCommand];
+  previousItemDeferringToPlaybackQueuePosition = [_musicKit_self_changeItemCommand previousItemDeferringToPlaybackQueuePosition];
 
-  return v2;
+  return previousItemDeferringToPlaybackQueuePosition;
 }
 
 - (id)musicKit_changeItemCommand_previousSectionCommandRequest
 {
-  v1 = [a1 _musicKit_self_changeItemCommand];
-  v2 = [v1 previousSection];
+  _musicKit_self_changeItemCommand = [self _musicKit_self_changeItemCommand];
+  previousSection = [_musicKit_self_changeItemCommand previousSection];
 
-  return v2;
+  return previousSection;
 }
 
 - (id)musicKit_changeItemCommand_previousChapterCommandRequest
 {
-  v1 = [a1 _musicKit_self_changeItemCommand];
-  v2 = [v1 previousChapter];
+  _musicKit_self_changeItemCommand = [self _musicKit_self_changeItemCommand];
+  previousChapter = [_musicKit_self_changeItemCommand previousChapter];
 
-  return v2;
+  return previousChapter;
 }
 
 - (id)musicKit_changeItemCommand_nextItemCommandRequest
 {
-  v1 = [a1 _musicKit_self_changeItemCommand];
-  v2 = [v1 nextItem];
+  _musicKit_self_changeItemCommand = [self _musicKit_self_changeItemCommand];
+  nextItem = [_musicKit_self_changeItemCommand nextItem];
 
-  return v2;
+  return nextItem;
 }
 
 - (id)musicKit_changeItemCommand_nextSectionCommandRequest
 {
-  v1 = [a1 _musicKit_self_changeItemCommand];
-  v2 = [v1 nextSection];
+  _musicKit_self_changeItemCommand = [self _musicKit_self_changeItemCommand];
+  nextSection = [_musicKit_self_changeItemCommand nextSection];
 
-  return v2;
+  return nextSection;
 }
 
 - (id)musicKit_changeItemCommand_nextChapterCommandRequest
 {
-  v1 = [a1 _musicKit_self_changeItemCommand];
-  v2 = [v1 nextChapter];
+  _musicKit_self_changeItemCommand = [self _musicKit_self_changeItemCommand];
+  nextChapter = [_musicKit_self_changeItemCommand nextChapter];
 
-  return v2;
+  return nextChapter;
 }
 
 - (id)musicKit_changeItemCommand_changeToItem:()MusicKit_SoftLinking_MPCPlayerChangeItemCommand
 {
   v4 = a3;
-  v5 = [a1 _musicKit_self_changeItemCommand];
-  v6 = [v5 changeToItem:v4];
+  _musicKit_self_changeItemCommand = [self _musicKit_self_changeItemCommand];
+  v6 = [_musicKit_self_changeItemCommand changeToItem:v4];
 
   return v6;
 }

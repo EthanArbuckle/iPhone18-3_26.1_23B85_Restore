@@ -1,108 +1,108 @@
 @interface WFDownloadURLTask
-- (WFDownloadURLTask)initWithRequest:(id)a3;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (WFDownloadURLTask)initWithRequest:(id)request;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 - (void)start;
 @end
 
 @implementation WFDownloadURLTask
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v13 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(WFDownloadURLTask *)self completionHandler];
+  taskCopy = task;
+  errorCopy = error;
+  sessionCopy = session;
+  completionHandler = [(WFDownloadURLTask *)self completionHandler];
 
-  if (v8 && v10)
+  if (errorCopy && completionHandler)
   {
-    v11 = [(WFDownloadURLTask *)self completionHandler];
-    v12 = [v13 response];
-    (v11)[2](v11, 0, v12, v8);
+    completionHandler2 = [(WFDownloadURLTask *)self completionHandler];
+    response = [taskCopy response];
+    (completionHandler2)[2](completionHandler2, 0, response, errorCopy);
 
     [(WFDownloadURLTask *)self setCompletionHandler:0];
   }
 
   [(WFDownloadURLTask *)self setWrittenByteCountHandler:0];
-  [v9 finishTasksAndInvalidate];
+  [sessionCopy finishTasksAndInvalidate];
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v12 = a4;
-  v7 = a5;
-  v8 = [(WFDownloadURLTask *)self completionHandler];
+  taskCopy = task;
+  lCopy = l;
+  completionHandler = [(WFDownloadURLTask *)self completionHandler];
 
-  if (v8)
+  if (completionHandler)
   {
-    v9 = [(WFDownloadURLTask *)self completionHandler];
-    v10 = [v12 response];
-    v11 = [v12 error];
-    (v9)[2](v9, v7, v10, v11);
+    completionHandler2 = [(WFDownloadURLTask *)self completionHandler];
+    response = [taskCopy response];
+    error = [taskCopy error];
+    (completionHandler2)[2](completionHandler2, lCopy, response, error);
 
     [(WFDownloadURLTask *)self setCompletionHandler:0];
   }
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  v16 = a3;
-  v11 = a4;
-  if (*MEMORY[0x277CCA7A8] != a7)
+  sessionCopy = session;
+  taskCopy = task;
+  if (*MEMORY[0x277CCA7A8] != write)
   {
-    v12 = [(WFDownloadURLTask *)self expectedByteCountHandler];
+    expectedByteCountHandler = [(WFDownloadURLTask *)self expectedByteCountHandler];
 
-    if (v12)
+    if (expectedByteCountHandler)
     {
-      v13 = [(WFDownloadURLTask *)self expectedByteCountHandler];
-      v13[2](v13, a7);
+      expectedByteCountHandler2 = [(WFDownloadURLTask *)self expectedByteCountHandler];
+      expectedByteCountHandler2[2](expectedByteCountHandler2, write);
 
       [(WFDownloadURLTask *)self setExpectedByteCountHandler:0];
     }
 
-    v14 = [(WFDownloadURLTask *)self writtenByteCountHandler];
+    writtenByteCountHandler = [(WFDownloadURLTask *)self writtenByteCountHandler];
 
-    if (v14)
+    if (writtenByteCountHandler)
     {
-      v15 = [(WFDownloadURLTask *)self writtenByteCountHandler];
-      v15[2](v15, a5);
+      writtenByteCountHandler2 = [(WFDownloadURLTask *)self writtenByteCountHandler];
+      writtenByteCountHandler2[2](writtenByteCountHandler2, data);
     }
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a7;
-  v9 = a6;
-  v12 = [v9 mutableCopy];
+  handlerCopy = handler;
+  requestCopy = request;
+  v12 = [requestCopy mutableCopy];
   [v12 _setNonAppInitiated:1];
-  v10 = [v9 URL];
+  v10 = [requestCopy URL];
 
   v11 = WFAppTransportSecuredURL(v10);
   [v12 setURL:v11];
 
-  v8[2](v8, v12);
+  handlerCopy[2](handlerCopy, v12);
 }
 
 - (void)start
 {
   v3 = MEMORY[0x277CCAD30];
-  v4 = [MEMORY[0x277CCAD38] wf_defaultSessionConfiguration];
-  v6 = [v3 sessionWithConfiguration:v4 delegate:self delegateQueue:0];
+  wf_defaultSessionConfiguration = [MEMORY[0x277CCAD38] wf_defaultSessionConfiguration];
+  v6 = [v3 sessionWithConfiguration:wf_defaultSessionConfiguration delegate:self delegateQueue:0];
 
   v5 = [v6 downloadTaskWithRequest:self->_request];
   [v5 resume];
 }
 
-- (WFDownloadURLTask)initWithRequest:(id)a3
+- (WFDownloadURLTask)initWithRequest:(id)request
 {
-  v5 = a3;
-  if (!v5)
+  requestCopy = request;
+  if (!requestCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFDownloadURLTask.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDownloadURLTask.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"request"}];
   }
 
   v12.receiver = self;
@@ -110,7 +110,7 @@
   v6 = [(WFDownloadURLTask *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [requestCopy copy];
     request = v6->_request;
     v6->_request = v7;
 

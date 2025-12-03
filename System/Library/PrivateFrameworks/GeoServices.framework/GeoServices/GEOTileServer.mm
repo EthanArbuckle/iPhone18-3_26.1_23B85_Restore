@@ -1,32 +1,32 @@
 @interface GEOTileServer
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6;
-- (GEOTileServer)initWithDaemon:(id)a3;
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id;
+- (GEOTileServer)initWithDaemon:(id)daemon;
 - (NSString)description;
-- (void)_canShrinkBySize:(id)a3 fromPeer:(id)a4 synchronous:(BOOL)a5;
-- (void)_receivedTile:(void *)a3 error:(void *)a4 info:(void *)a5 forKey:(void *)a6 forPeer:(void *)a7;
-- (void)_shrinkDB:(id)a3 fromPeer:(id)a4 synchronous:(BOOL)a5;
-- (void)beginPreload:(id)a3 fromPeer:(id)a4;
-- (void)cancel:(id)a3 fromPeer:(id)a4;
-- (void)corrupt:(id)a3 fromPeer:(id)a4;
+- (void)_canShrinkBySize:(id)size fromPeer:(id)peer synchronous:(BOOL)synchronous;
+- (void)_receivedTile:(void *)tile error:(void *)error info:(void *)info forKey:(void *)key forPeer:(void *)peer;
+- (void)_shrinkDB:(id)b fromPeer:(id)peer synchronous:(BOOL)synchronous;
+- (void)beginPreload:(id)preload fromPeer:(id)peer;
+- (void)cancel:(id)cancel fromPeer:(id)peer;
+- (void)corrupt:(id)corrupt fromPeer:(id)peer;
 - (void)dealloc;
-- (void)endPreload:(id)a3 fromPeer:(id)a4;
-- (void)enumerateTiles:(id)a3 fromPeer:(id)a4;
-- (void)loadTiles:(id)a3 fromPeer:(id)a4;
-- (void)peerDidConnect:(id)a3;
-- (void)peerDidDisconnect:(id)a3;
-- (void)reprioritizeKey:(id)a3 fromPeer:(id)a4;
-- (void)runBackgroundTask:(id)a3;
-- (void)tileLoader:(id)a3 submittedTilesToNetwork:(id)a4 forClient:(id)a5;
+- (void)endPreload:(id)preload fromPeer:(id)peer;
+- (void)enumerateTiles:(id)tiles fromPeer:(id)peer;
+- (void)loadTiles:(id)tiles fromPeer:(id)peer;
+- (void)peerDidConnect:(id)connect;
+- (void)peerDidDisconnect:(id)disconnect;
+- (void)reprioritizeKey:(id)key fromPeer:(id)peer;
+- (void)runBackgroundTask:(id)task;
+- (void)tileLoader:(id)loader submittedTilesToNetwork:(id)network forClient:(id)client;
 @end
 
 @implementation GEOTileServer
 
-- (BOOL)handleIncomingMessage:(id)a3 withObject:(id)a4 fromPeer:(id)a5 signpostId:(unint64_t)a6
+- (BOOL)handleIncomingMessage:(id)message withObject:(id)object fromPeer:(id)peer signpostId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = sub_100001334(v10);
+  messageCopy = message;
+  objectCopy = object;
+  peerCopy = peer;
+  v13 = sub_100001334(messageCopy);
   v14 = 0;
   if (v13 <= 782)
   {
@@ -34,12 +34,12 @@
     {
       if (v13 == 120)
       {
-        [(GEOTileServer *)self cancel:v11 fromPeer:v12];
-        if (a6 != -1)
+        [(GEOTileServer *)self cancel:objectCopy fromPeer:peerCopy];
+        if (id != -1)
         {
           v20 = GEOGetGEODaemonLog();
           v16 = v20;
-          if (!a6 || !os_signpost_enabled(v20))
+          if (!id || !os_signpost_enabled(v20))
           {
             goto LABEL_65;
           }
@@ -55,12 +55,12 @@
           goto LABEL_67;
         }
 
-        [(GEOTileServer *)self loadTiles:v11 fromPeer:v12];
-        if (a6 != -1)
+        [(GEOTileServer *)self loadTiles:objectCopy fromPeer:peerCopy];
+        if (id != -1)
         {
           v19 = GEOGetGEODaemonLog();
           v16 = v19;
-          if (!a6 || !os_signpost_enabled(v19))
+          if (!id || !os_signpost_enabled(v19))
           {
             goto LABEL_65;
           }
@@ -74,20 +74,20 @@
     {
       if (v13 == 418)
       {
-        if (!sub_100001B78(v12, v11, @"tiles", v10, &off_100088EF8, 2))
+        if (!sub_100001B78(peerCopy, objectCopy, @"tiles", messageCopy, &off_100088EF8, 2))
         {
           goto LABEL_66;
         }
 
-        [(GEOTileServer *)self beginPreload:v11 fromPeer:v12];
-        if (a6 == -1)
+        [(GEOTileServer *)self beginPreload:objectCopy fromPeer:peerCopy];
+        if (id == -1)
         {
           goto LABEL_66;
         }
 
         v24 = GEOGetGEODaemonLog();
         v16 = v24;
-        if (!a6 || !os_signpost_enabled(v24))
+        if (!id || !os_signpost_enabled(v24))
         {
           goto LABEL_65;
         }
@@ -99,20 +99,20 @@
       {
         if (v13 == 655)
         {
-          if (!sub_100001B78(v12, v11, @"tiles", v10, &off_100088EC8, 2))
+          if (!sub_100001B78(peerCopy, objectCopy, @"tiles", messageCopy, &off_100088EC8, 2))
           {
             goto LABEL_66;
           }
 
-          [(GEOTileServer *)self shrinkDB:v11 fromPeer:v12];
-          if (a6 == -1)
+          [(GEOTileServer *)self shrinkDB:objectCopy fromPeer:peerCopy];
+          if (id == -1)
           {
             goto LABEL_66;
           }
 
           v17 = GEOGetGEODaemonLog();
           v16 = v17;
-          if (!a6 || !os_signpost_enabled(v17))
+          if (!id || !os_signpost_enabled(v17))
           {
             goto LABEL_65;
           }
@@ -123,12 +123,12 @@
         goto LABEL_67;
       }
 
-      [(GEOTileServer *)self endPreload:v11 fromPeer:v12];
-      if (a6 != -1)
+      [(GEOTileServer *)self endPreload:objectCopy fromPeer:peerCopy];
+      if (id != -1)
       {
         v21 = GEOGetGEODaemonLog();
         v16 = v21;
-        if (!a6 || !os_signpost_enabled(v21))
+        if (!id || !os_signpost_enabled(v21))
         {
           goto LABEL_65;
         }
@@ -144,20 +144,20 @@
   {
     if (v13 == 1068)
     {
-      if (!sub_100001B78(v12, v11, @"tiles", v10, &off_100088EE0, 2))
+      if (!sub_100001B78(peerCopy, objectCopy, @"tiles", messageCopy, &off_100088EE0, 2))
       {
         goto LABEL_66;
       }
 
-      [(GEOTileServer *)self shrinkDBSync:v11 fromPeer:v12];
-      if (a6 == -1)
+      [(GEOTileServer *)self shrinkDBSync:objectCopy fromPeer:peerCopy];
+      if (id == -1)
       {
         goto LABEL_66;
       }
 
       v26 = GEOGetGEODaemonLog();
       v16 = v26;
-      if (!a6 || !os_signpost_enabled(v26))
+      if (!id || !os_signpost_enabled(v26))
       {
         goto LABEL_65;
       }
@@ -169,20 +169,20 @@
     {
       if (v13 == 1374)
       {
-        if (!sub_100001B78(v12, v11, @"tiles", v10, &off_100088EB0, 2))
+        if (!sub_100001B78(peerCopy, objectCopy, @"tiles", messageCopy, &off_100088EB0, 2))
         {
           goto LABEL_66;
         }
 
-        [(GEOTileServer *)self canShrinkBySizeSync:v11 fromPeer:v12];
-        if (a6 == -1)
+        [(GEOTileServer *)self canShrinkBySizeSync:objectCopy fromPeer:peerCopy];
+        if (id == -1)
         {
           goto LABEL_66;
         }
 
         v18 = GEOGetGEODaemonLog();
         v16 = v18;
-        if (!a6 || !os_signpost_enabled(v18))
+        if (!id || !os_signpost_enabled(v18))
         {
           goto LABEL_65;
         }
@@ -193,12 +193,12 @@
       goto LABEL_67;
     }
 
-    [(GEOTileServer *)self reprioritizeKey:v11 fromPeer:v12];
-    if (a6 != -1)
+    [(GEOTileServer *)self reprioritizeKey:objectCopy fromPeer:peerCopy];
+    if (id != -1)
     {
       v23 = GEOGetGEODaemonLog();
       v16 = v23;
-      if (!a6 || !os_signpost_enabled(v23))
+      if (!id || !os_signpost_enabled(v23))
       {
         goto LABEL_65;
       }
@@ -214,12 +214,12 @@ LABEL_66:
   switch(v13)
   {
     case 783:
-      [(GEOTileServer *)self corrupt:v11 fromPeer:v12];
-      if (a6 != -1)
+      [(GEOTileServer *)self corrupt:objectCopy fromPeer:peerCopy];
+      if (id != -1)
       {
         v25 = GEOGetGEODaemonLog();
         v16 = v25;
-        if (!a6 || !os_signpost_enabled(v25))
+        if (!id || !os_signpost_enabled(v25))
         {
           goto LABEL_65;
         }
@@ -229,54 +229,54 @@ LABEL_66:
 
       goto LABEL_66;
     case 961:
-      if (!sub_100001B78(v12, v11, @"tiles", v10, &off_100088E98, 2))
+      if (!sub_100001B78(peerCopy, objectCopy, @"tiles", messageCopy, &off_100088E98, 2))
       {
         goto LABEL_66;
       }
 
-      [(GEOTileServer *)self canShrinkBySize:v11 fromPeer:v12];
-      if (a6 == -1)
+      [(GEOTileServer *)self canShrinkBySize:objectCopy fromPeer:peerCopy];
+      if (id == -1)
       {
         goto LABEL_66;
       }
 
       v22 = GEOGetGEODaemonLog();
       v16 = v22;
-      if (!a6 || !os_signpost_enabled(v22))
+      if (!id || !os_signpost_enabled(v22))
       {
         goto LABEL_65;
       }
 
       goto LABEL_64;
     case 966:
-      if (!sub_100001B78(v12, v11, @"tiles", v10, &off_100088F10, 2))
+      if (!sub_100001B78(peerCopy, objectCopy, @"tiles", messageCopy, &off_100088F10, 2))
       {
         goto LABEL_66;
       }
 
-      [(GEOTileServer *)self enumerateTiles:v11 fromPeer:v12];
-      if (a6 == -1)
+      [(GEOTileServer *)self enumerateTiles:objectCopy fromPeer:peerCopy];
+      if (id == -1)
       {
         goto LABEL_66;
       }
 
       v15 = GEOGetGEODaemonLog();
       v16 = v15;
-      if (!a6 || !os_signpost_enabled(v15))
+      if (!id || !os_signpost_enabled(v15))
       {
         goto LABEL_65;
       }
 
 LABEL_64:
-      v27 = [v12 bundleIdentifier];
-      v28 = [objc_opt_class() identifier];
+      bundleIdentifier = [peerCopy bundleIdentifier];
+      identifier = [objc_opt_class() identifier];
       v30 = 138412802;
-      v31 = v27;
+      v31 = bundleIdentifier;
       v32 = 2112;
-      v33 = v28;
+      v33 = identifier;
       v34 = 2112;
-      v35 = v10;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_END, a6, "HandleRequest", "type=raw_message,peer=%@,message=%@.%@", &v30, 0x20u);
+      v35 = messageCopy;
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_END, id, "HandleRequest", "type=raw_message,peer=%@,message=%@.%@", &v30, 0x20u);
 
 LABEL_65:
       goto LABEL_66;
@@ -287,24 +287,24 @@ LABEL_67:
   return v14;
 }
 
-- (void)runBackgroundTask:(id)a3
+- (void)runBackgroundTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  taskCopy = task;
+  identifier = [taskCopy identifier];
   GEOBackgroundTaskReportReportTaskInitiated();
 
-  v6 = [v4 identifier];
-  v7 = [v6 isEqualToString:GEOProactiveTileDownloaderTaskIdentifier];
+  identifier2 = [taskCopy identifier];
+  v7 = [identifier2 isEqualToString:GEOProactiveTileDownloaderTaskIdentifier];
 
   if (v7)
   {
     v8 = +[GEOTileLoader modernLoader];
-    v9 = [v8 proxy];
+    proxy = [v8 proxy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v9 runOpportunisticTileDownloader:v4];
+      [proxy runOpportunisticTileDownloader:taskCopy];
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
@@ -318,24 +318,24 @@ LABEL_67:
   {
     v10.receiver = self;
     v10.super_class = GEOTileServer;
-    [(GEOTileServer *)&v10 runBackgroundTask:v4];
+    [(GEOTileServer *)&v10 runBackgroundTask:taskCopy];
   }
 }
 
-- (void)enumerateTiles:(id)a3 fromPeer:(id)a4
+- (void)enumerateTiles:(id)tiles fromPeer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
-  reply = xpc_dictionary_create_reply(v6);
+  tilesCopy = tiles;
+  peerCopy = peer;
+  reply = xpc_dictionary_create_reply(tilesCopy);
   v9 = reply;
   if (reply)
   {
     v10 = xpc_dictionary_get_remote_connection(reply);
     if (v10)
     {
-      v11 = xpc_dictionary_get_BOOL(v6, "include_data");
+      v11 = xpc_dictionary_get_BOOL(tilesCopy, "include_data");
       v12 = dispatch_group_create();
-      v13 = sub_10003FD64(v7, v6);
+      v13 = sub_10003FD64(peerCopy, tilesCopy);
       queue = self->_queue;
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
@@ -361,29 +361,29 @@ LABEL_67:
   }
 }
 
-- (void)tileLoader:(id)a3 submittedTilesToNetwork:(id)a4 forClient:(id)a5
+- (void)tileLoader:(id)loader submittedTilesToNetwork:(id)network forClient:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  loaderCopy = loader;
+  networkCopy = network;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_queue);
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = [(GEOTileServer *)self daemon];
-  v12 = [v11 peers];
+  daemon = [(GEOTileServer *)self daemon];
+  peers = [daemon peers];
 
-  v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v13 = [peers countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (!v13)
   {
-    v16 = v12;
+    v16 = peers;
     goto LABEL_13;
   }
 
   v14 = v13;
-  v26 = v9;
-  v15 = v8;
+  v26 = networkCopy;
+  v15 = loaderCopy;
   v16 = 0;
   v17 = *v28;
   do
@@ -392,12 +392,12 @@ LABEL_67:
     {
       if (*v28 != v17)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(peers);
       }
 
       v19 = *(*(&v27 + 1) + 8 * i);
-      v20 = [v19 peerID];
-      v21 = [v10 isEqualToString:v20];
+      peerID = [v19 peerID];
+      v21 = [clientCopy isEqualToString:peerID];
 
       if (v21)
       {
@@ -407,47 +407,47 @@ LABEL_67:
       }
     }
 
-    v14 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    v14 = [peers countByEnumeratingWithState:&v27 objects:v31 count:16];
   }
 
   while (v14);
 
-  v8 = v15;
-  v9 = v26;
+  loaderCopy = v15;
+  networkCopy = v26;
   if (v16)
   {
     v23 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_string(v23, "event", "tiles.net");
-    v24 = [v26 newXPCData];
-    xpc_dictionary_set_value(v23, "list", v24);
-    v25 = [v16 connection];
-    [v25 sendMessage:v23];
+    newXPCData = [v26 newXPCData];
+    xpc_dictionary_set_value(v23, "list", newXPCData);
+    connection = [v16 connection];
+    [connection sendMessage:v23];
 
 LABEL_13:
   }
 }
 
-- (void)_receivedTile:(void *)a3 error:(void *)a4 info:(void *)a5 forKey:(void *)a6 forPeer:(void *)a7
+- (void)_receivedTile:(void *)tile error:(void *)error info:(void *)info forKey:(void *)key forPeer:(void *)peer
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  dispatch_assert_queue_V2(a1[2]);
+  tileCopy = tile;
+  errorCopy = error;
+  infoCopy = info;
+  peerCopy = peer;
+  dispatch_assert_queue_V2(self[2]);
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v16 = [(dispatch_queue_t *)a1 daemon];
-  v17 = [v16 peers];
+  daemon = [(dispatch_queue_t *)self daemon];
+  peers = [daemon peers];
 
-  v18 = [v17 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  v18 = [peers countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v18)
   {
-    bytes = a6;
-    v34 = v12;
-    v19 = v13;
-    v20 = v14;
+    bytes = key;
+    v34 = tileCopy;
+    v19 = errorCopy;
+    v20 = infoCopy;
     v21 = *v36;
 LABEL_3:
     v22 = 0;
@@ -455,12 +455,12 @@ LABEL_3:
     {
       if (*v36 != v21)
       {
-        objc_enumerationMutation(v17);
+        objc_enumerationMutation(peers);
       }
 
       v23 = *(*(&v35 + 1) + 8 * v22);
-      v24 = [v23 peerID];
-      v25 = [v15 isEqualToString:v24];
+      peerID = [v23 peerID];
+      v25 = [peerCopy isEqualToString:peerID];
 
       if (v25)
       {
@@ -469,58 +469,58 @@ LABEL_3:
 
       if (v18 == ++v22)
       {
-        v18 = [v17 countByEnumeratingWithState:&v35 objects:v39 count:16];
+        v18 = [peers countByEnumeratingWithState:&v35 objects:v39 count:16];
         if (v18)
         {
           goto LABEL_3;
         }
 
-        v14 = v20;
-        v13 = v19;
-        v12 = v34;
+        infoCopy = v20;
+        errorCopy = v19;
+        tileCopy = v34;
         goto LABEL_26;
       }
     }
 
     v18 = v23;
 
-    v14 = v20;
+    infoCopy = v20;
     if (v18)
     {
-      v13 = v19;
+      errorCopy = v19;
       if (!v19 || [v19 code] != -2 || (objc_msgSend(v19, "domain"), v26 = objc_claimAutoreleasedReturnValue(), GEOErrorDomain(), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v26, "isEqualToString:", v27), v27, v26, (v28 & 1) == 0))
       {
-        v17 = xpc_dictionary_create(0, 0, 0);
-        xpc_dictionary_set_data(v17, "tileKey", bytes, 0x10uLL);
-        v12 = v34;
-        if (v34 && (([v18 canPeerLikelyReadOurCache] & 1) != 0 || (v29 = objc_msgSend(v34, "copyWithoutURL"), v34, (v12 = v29) != 0)))
+        peers = xpc_dictionary_create(0, 0, 0);
+        xpc_dictionary_set_data(peers, "tileKey", bytes, 0x10uLL);
+        tileCopy = v34;
+        if (v34 && (([v18 canPeerLikelyReadOurCache] & 1) != 0 || (v29 = objc_msgSend(v34, "copyWithoutURL"), v34, (tileCopy = v29) != 0)))
         {
-          xpc_dictionary_set_string(v17, "event", "tiles.tile");
-          v30 = xpc_dictionary_create(0, 0, 0);
-          [v12 encodeToXPCDictionary:v30];
-          xpc_dictionary_set_value(v17, "tileData", v30);
+          xpc_dictionary_set_string(peers, "event", "tiles.tile");
+          _geo_newXPCData = xpc_dictionary_create(0, 0, 0);
+          [tileCopy encodeToXPCDictionary:_geo_newXPCData];
+          xpc_dictionary_set_value(peers, "tileData", _geo_newXPCData);
         }
 
         else
         {
-          xpc_dictionary_set_string(v17, "event", "tiles.err");
-          v30 = [v13 _geo_newXPCData];
-          if (v30)
+          xpc_dictionary_set_string(peers, "event", "tiles.err");
+          _geo_newXPCData = [errorCopy _geo_newXPCData];
+          if (_geo_newXPCData)
           {
-            xpc_dictionary_set_value(v17, "err", v30);
+            xpc_dictionary_set_value(peers, "err", _geo_newXPCData);
           }
 
-          v12 = 0;
+          tileCopy = 0;
         }
 
-        if (v14)
+        if (infoCopy)
         {
-          v31 = [v14 _geo_newXPCObject];
-          xpc_dictionary_set_value(v17, "tileInfo", v31);
+          _geo_newXPCObject = [infoCopy _geo_newXPCObject];
+          xpc_dictionary_set_value(peers, "tileInfo", _geo_newXPCObject);
         }
 
-        v32 = [v18 connection];
-        [v32 sendMessage:v17];
+        connection = [v18 connection];
+        [connection sendMessage:peers];
 
         goto LABEL_26;
       }
@@ -528,10 +528,10 @@ LABEL_3:
 
     else
     {
-      v13 = v19;
+      errorCopy = v19;
     }
 
-    v12 = v34;
+    tileCopy = v34;
     goto LABEL_27;
   }
 
@@ -540,17 +540,17 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)peerDidDisconnect:(id)a3
+- (void)peerDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   dispatch_assert_queue_V2(self->_queue);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
   pendingPeerToClientIdentifiers = self->_pendingPeerToClientIdentifiers;
-  v6 = [v4 peerID];
-  v7 = [(NSMutableDictionary *)pendingPeerToClientIdentifiers objectForKeyedSubscript:v6];
+  peerID = [disconnectCopy peerID];
+  v7 = [(NSMutableDictionary *)pendingPeerToClientIdentifiers objectForKeyedSubscript:peerID];
 
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
@@ -582,76 +582,76 @@ LABEL_27:
   }
 
   v14 = self->_pendingPeerToClientIdentifiers;
-  v15 = [v4 peerID];
-  [(NSMutableDictionary *)v14 removeObjectForKey:v15];
+  peerID2 = [disconnectCopy peerID];
+  [(NSMutableDictionary *)v14 removeObjectForKey:peerID2];
 
-  if ([v4 preloading])
+  if ([disconnectCopy preloading])
   {
     v16 = +[GEOTileLoader modernLoader];
-    v17 = [v4 peerID];
-    [v16 endPreloadSessionForClient:v17];
+    peerID3 = [disconnectCopy peerID];
+    [v16 endPreloadSessionForClient:peerID3];
 
-    [v4 setPreloading:0];
+    [disconnectCopy setPreloading:0];
   }
 
   v18 = +[GEOTileLoader modernLoader];
-  v19 = [v4 peerID];
-  [v18 closeForClient:v19];
+  peerID4 = [disconnectCopy peerID];
+  [v18 closeForClient:peerID4];
 
   v20.receiver = self;
   v20.super_class = GEOTileServer;
-  [(GEOTileServer *)&v20 peerDidDisconnect:v4];
+  [(GEOTileServer *)&v20 peerDidDisconnect:disconnectCopy];
 }
 
-- (void)peerDidConnect:(id)a3
+- (void)peerDidConnect:(id)connect
 {
-  v3 = a3;
+  connectCopy = connect;
   v5 = +[GEOTileLoader modernLoader];
-  v4 = [v3 peerID];
+  peerID = [connectCopy peerID];
 
-  [v5 openForClient:v4];
+  [v5 openForClient:peerID];
 }
 
-- (void)endPreload:(id)a3 fromPeer:(id)a4
+- (void)endPreload:(id)preload fromPeer:(id)peer
 {
-  v8 = a3;
-  v5 = a4;
-  if ([v5 preloading])
+  preloadCopy = preload;
+  peerCopy = peer;
+  if ([peerCopy preloading])
   {
-    [v5 setPreloading:0];
-    v6 = sub_10003FD64(v5, v8);
-    v7 = [v5 peerID];
-    [v6 endPreloadSessionForClient:v7];
+    [peerCopy setPreloading:0];
+    v6 = sub_10003FD64(peerCopy, preloadCopy);
+    peerID = [peerCopy peerID];
+    [v6 endPreloadSessionForClient:peerID];
   }
 }
 
-- (void)beginPreload:(id)a3 fromPeer:(id)a4
+- (void)beginPreload:(id)preload fromPeer:(id)peer
 {
   queue = self->_queue;
-  v6 = a4;
-  v7 = a3;
+  peerCopy = peer;
+  preloadCopy = preload;
   dispatch_assert_queue_V2(queue);
-  uint64 = xpc_dictionary_get_uint64(v7, "sz");
-  [v6 setPreloading:1];
-  v10 = sub_10003FD64(v6, v7);
+  uint64 = xpc_dictionary_get_uint64(preloadCopy, "sz");
+  [peerCopy setPreloading:1];
+  v10 = sub_10003FD64(peerCopy, preloadCopy);
 
-  v9 = [v6 peerID];
+  peerID = [peerCopy peerID];
 
-  [v10 beginPreloadSessionOfSize:uint64 forClient:v9];
+  [v10 beginPreloadSessionOfSize:uint64 forClient:peerID];
 }
 
-- (void)corrupt:(id)a3 fromPeer:(id)a4
+- (void)corrupt:(id)corrupt fromPeer:(id)peer
 {
-  v5 = a3;
-  v6 = a4;
+  corruptCopy = corrupt;
+  peerCopy = peer;
   length = 0;
-  data = xpc_dictionary_get_data(v5, "key", &length);
+  data = xpc_dictionary_get_data(corruptCopy, "key", &length);
   if (length == 16)
   {
     v11 = 1;
     *buf = xmmword_100062AB0;
     *buf = *data;
-    v8 = sub_10003FD64(v6, v5);
+    v8 = sub_10003FD64(peerCopy, corruptCopy);
     [v8 reportCorruptTile:buf];
   }
 
@@ -661,39 +661,39 @@ LABEL_27:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v6;
+      *&buf[4] = peerCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "Peer %@ provided incorrect tile key data for corrupt data", buf, 0xCu);
     }
   }
 }
 
-- (void)_shrinkDB:(id)a3 fromPeer:(id)a4 synchronous:(BOOL)a5
+- (void)_shrinkDB:(id)b fromPeer:(id)peer synchronous:(BOOL)synchronous
 {
-  v5 = a5;
-  v8 = a3;
-  v36 = a4;
+  synchronousCopy = synchronous;
+  bCopy = b;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
-  reply = xpc_dictionary_create_reply(v8);
+  reply = xpc_dictionary_create_reply(bCopy);
   if (reply)
   {
-    v35 = v5;
-    v10 = xpc_dictionary_get_remote_connection(v8);
-    v33 = self;
-    uint64 = xpc_dictionary_get_uint64(v8, "sz");
+    v35 = synchronousCopy;
+    v10 = xpc_dictionary_get_remote_connection(bCopy);
+    selfCopy = self;
+    uint64 = xpc_dictionary_get_uint64(bCopy, "sz");
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v11 = [(GEOTileServer *)self daemon];
-    v12 = [v11 peers];
+    daemon = [(GEOTileServer *)self daemon];
+    peers = [daemon peers];
 
-    v13 = [v12 countByEnumeratingWithState:&v40 objects:v44 count:16];
+    v13 = [peers countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v13)
     {
       v14 = v13;
       v30 = v10;
       v31 = reply;
-      v32 = v8;
+      v32 = bCopy;
       v15 = 0;
       v16 = 0;
       v17 = *v41;
@@ -703,42 +703,42 @@ LABEL_27:
         {
           if (*v41 != v17)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(peers);
           }
 
           v19 = *(*(&v40 + 1) + 8 * i);
-          v20 = [v36 bundleIdentifier];
-          v21 = [v19 bundleIdentifier];
-          if ([v20 isEqual:v21])
+          bundleIdentifier = [peerCopy bundleIdentifier];
+          bundleIdentifier2 = [v19 bundleIdentifier];
+          if ([bundleIdentifier isEqual:bundleIdentifier2])
           {
           }
 
           else
           {
-            v22 = [v19 isLocationd];
+            isLocationd = [v19 isLocationd];
 
-            if ((v22 & 1) == 0)
+            if ((isLocationd & 1) == 0)
             {
               if (!v16)
               {
                 v16 = +[NSMutableString string];
               }
 
-              v23 = [v19 bundleIdentifier];
-              [v16 appendFormat:@"%@, ", v23];
+              bundleIdentifier3 = [v19 bundleIdentifier];
+              [v16 appendFormat:@"%@, ", bundleIdentifier3];
 
               ++v15;
             }
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v40 objects:v44 count:16];
+        v14 = [peers countByEnumeratingWithState:&v40 objects:v44 count:16];
       }
 
       while (v14);
       v24 = v15 == 0;
       reply = v31;
-      v8 = v32;
+      bCopy = v32;
       v25 = v16;
       v10 = v30;
     }
@@ -759,9 +759,9 @@ LABEL_27:
     v27 = v10;
     v39 = v27;
     v28 = objc_retainBlock(v37);
-    if (v24 || ([v36 hasEntitlement:@"com.apple.geoservices.shrinkdb.force"] & 1) != 0)
+    if (v24 || ([peerCopy hasEntitlement:@"com.apple.geoservices.shrinkdb.force"] & 1) != 0)
     {
-      v29 = sub_10003FD64(v36, v8);
+      v29 = sub_10003FD64(peerCopy, bCopy);
       if (v35)
       {
         (v28[2])(v28, [v29 shrinkDiskCacheToSizeSync:uint64]);
@@ -769,7 +769,7 @@ LABEL_27:
 
       else
       {
-        [v29 shrinkDiskCacheToSize:uint64 callbackQ:v33->_queue finished:v28];
+        [v29 shrinkDiskCacheToSize:uint64 callbackQ:selfCopy->_queue finished:v28];
       }
     }
 
@@ -781,16 +781,16 @@ LABEL_27:
   }
 }
 
-- (void)_canShrinkBySize:(id)a3 fromPeer:(id)a4 synchronous:(BOOL)a5
+- (void)_canShrinkBySize:(id)size fromPeer:(id)peer synchronous:(BOOL)synchronous
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  synchronousCopy = synchronous;
+  sizeCopy = size;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
-  reply = xpc_dictionary_create_reply(v8);
+  reply = xpc_dictionary_create_reply(sizeCopy);
   if (reply)
   {
-    v11 = xpc_dictionary_get_remote_connection(v8);
+    v11 = xpc_dictionary_get_remote_connection(sizeCopy);
     v15 = _NSConcreteStackBlock;
     v16 = 3221225472;
     v17 = sub_100041050;
@@ -799,8 +799,8 @@ LABEL_27:
     v12 = v11;
     v20 = v12;
     v13 = objc_retainBlock(&v15);
-    sub_10003FD64(v9, v8);
-    if (v5)
+    sub_10003FD64(peerCopy, sizeCopy);
+    if (synchronousCopy)
       v14 = {;
       (v13[2])(v13, [v14 calculateFreeableSizeSync]);
     }
@@ -812,12 +812,12 @@ LABEL_27:
   }
 }
 
-- (void)reprioritizeKey:(id)a3 fromPeer:(id)a4
+- (void)reprioritizeKey:(id)key fromPeer:(id)peer
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  peerCopy = peer;
   *length = 0;
-  data = xpc_dictionary_get_data(v5, "key", length);
+  data = xpc_dictionary_get_data(keyCopy, "key", length);
   if (*length != 16)
   {
     v14 = 0uLL;
@@ -826,7 +826,7 @@ LABEL_27:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
       *length = 138412290;
-      *&length[4] = v6;
+      *&length[4] = peerCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_FAULT, "Received wrong length for tileKey from peer %@", length, 0xCu);
     }
 
@@ -836,38 +836,38 @@ LABEL_27:
   LOBYTE(v15) = 1;
   v14 = xmmword_100062AB0;
   v14 = *data;
-  uint64 = xpc_dictionary_get_uint64(v5, "priority");
+  uint64 = xpc_dictionary_get_uint64(keyCopy, "priority");
   if (uint64)
   {
-    int64 = xpc_dictionary_get_int64(v5, "batch");
-    v10 = v6;
-    v11 = [v10 peerID];
-    v12 = [NSString stringWithFormat:@"%@-%lli", v11, int64, v14, v15];
+    int64 = xpc_dictionary_get_int64(keyCopy, "batch");
+    v10 = peerCopy;
+    peerID = [v10 peerID];
+    v12 = [NSString stringWithFormat:@"%@-%lli", peerID, int64, v14, v15];
 
-    v13 = sub_10003FD64(v10, v5);
+    v13 = sub_10003FD64(v10, keyCopy);
     [v13 reprioritizeKey:&v14 forClient:v12 newPriority:uint64];
 
 LABEL_6:
   }
 }
 
-- (void)cancel:(id)a3 fromPeer:(id)a4
+- (void)cancel:(id)cancel fromPeer:(id)peer
 {
-  v5 = a3;
-  v6 = a4;
+  cancelCopy = cancel;
+  peerCopy = peer;
   *length = 0;
-  data = xpc_dictionary_get_data(v5, "key", length);
+  data = xpc_dictionary_get_data(cancelCopy, "key", length);
   if (*length == 16)
   {
     LOBYTE(v14) = 1;
     v13 = xmmword_100062AB0;
     v13 = *data;
-    int64 = xpc_dictionary_get_int64(v5, "batch");
-    v9 = v6;
-    v10 = [v9 peerID];
-    v11 = [NSString stringWithFormat:@"%@-%lli", v10, int64, v13, v14];
+    int64 = xpc_dictionary_get_int64(cancelCopy, "batch");
+    v9 = peerCopy;
+    peerID = [v9 peerID];
+    v11 = [NSString stringWithFormat:@"%@-%lli", peerID, int64, v13, v14];
 
-    v12 = sub_10003FD64(v9, v5);
+    v12 = sub_10003FD64(v9, cancelCopy);
     [v12 cancelKey:&v13 forClient:v11];
   }
 
@@ -879,29 +879,29 @@ LABEL_6:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
       *length = 138412290;
-      *&length[4] = v6;
+      *&length[4] = peerCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_FAULT, "Received wrong length for tileKey from peer %@", length, 0xCu);
     }
   }
 }
 
-- (void)loadTiles:(id)a3 fromPeer:(id)a4
+- (void)loadTiles:(id)tiles fromPeer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
+  tilesCopy = tiles;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = xpc_dictionary_get_value(v6, "list");
+  v8 = xpc_dictionary_get_value(tilesCopy, "list");
   v9 = [GEOTileKeyList listFromXPCData:v8];
 
-  v10 = xpc_dictionary_get_BOOL(v6, "disk");
-  LODWORD(v8) = xpc_dictionary_get_BOOL(v6, "net");
-  v11 = xpc_dictionary_get_BOOL(v6, "wifi");
-  v225 = xpc_dictionary_get_BOOL(v6, "preload");
-  v12 = xpc_dictionary_get_BOOL(v6, "proactively_load_on_failure");
-  v13 = xpc_dictionary_get_BOOL(v6, "prefer_stale");
+  v10 = xpc_dictionary_get_BOOL(tilesCopy, "disk");
+  LODWORD(v8) = xpc_dictionary_get_BOOL(tilesCopy, "net");
+  v11 = xpc_dictionary_get_BOOL(tilesCopy, "wifi");
+  v225 = xpc_dictionary_get_BOOL(tilesCopy, "preload");
+  v12 = xpc_dictionary_get_BOOL(tilesCopy, "proactively_load_on_failure");
+  v13 = xpc_dictionary_get_BOOL(tilesCopy, "prefer_stale");
   objc_opt_class();
   v14 = GEODecodeXPCValue();
-  v15 = sub_100002560(v6);
+  v15 = sub_100002560(tilesCopy);
   v16 = v10;
   v17 = v15;
   if (v8)
@@ -930,12 +930,12 @@ LABEL_6:
   }
 
   v19 = [GEOTileLoader modernLoaderForResourceManifestConfiguration:v14 locale:v15];
-  reply = xpc_dictionary_create_reply(v6);
+  reply = xpc_dictionary_create_reply(tilesCopy);
   v21 = reply;
   if (reply)
   {
     xpc_dictionary_set_string(reply, "event", "tiles.finished");
-    v22 = xpc_dictionary_get_remote_connection(v6);
+    v22 = xpc_dictionary_get_remote_connection(tilesCopy);
     if (![v9 count])
     {
       xpc_connection_send_message(v22, v21);
@@ -951,11 +951,11 @@ LABEL_52:
     v223 = v9;
     v224 = v19;
     v222 = v21;
-    if (v225 && ([v7 hasEntitlement:@"com.apple.geoservices.preload"] & 1) == 0)
+    if (v225 && ([peerCopy hasEntitlement:@"com.apple.geoservices.preload"] & 1) == 0)
     {
       v44 = NSStringFromSelector(a2);
-      v45 = [v7 bundleIdentifier];
-      v46 = [NSString stringWithFormat:@"%@ is not allowed for %@ because of missing entitlement", v44, v45];
+      bundleIdentifier = [peerCopy bundleIdentifier];
+      v46 = [NSString stringWithFormat:@"%@ is not allowed for %@ because of missing entitlement", v44, bundleIdentifier];
 
       NSLog(@"%@", v46);
       aSelectora = v46;
@@ -980,8 +980,8 @@ LABEL_52:
             }
 
             v53 = *(*(&v295 + 1) + 8 * i);
-            v54 = [v7 peerID];
-            [(GEOTileServer *)self _receivedTile:0 error:v47 info:0 forKey:v53 forPeer:v54];
+            peerID = [peerCopy peerID];
+            [(GEOTileServer *)self _receivedTile:0 error:v47 info:0 forKey:v53 forPeer:peerID];
           }
 
           v50 = [v48 countByEnumeratingWithState:&v295 objects:v313 count:16];
@@ -1000,7 +1000,7 @@ LABEL_52:
       goto LABEL_51;
     }
 
-    v23 = xpc_dictionary_get_value(v6, "priorities");
+    v23 = xpc_dictionary_get_value(tilesCopy, "priorities");
     v204 = v23;
     if (xpc_get_type(v23) != &_xpc_type_data)
     {
@@ -1027,8 +1027,8 @@ LABEL_52:
             }
 
             v32 = *(*(&v291 + 1) + 8 * j);
-            v33 = [v7 peerID];
-            [(GEOTileServer *)self _receivedTile:0 error:v26 info:0 forKey:v32 forPeer:v33];
+            peerID2 = [peerCopy peerID];
+            [(GEOTileServer *)self _receivedTile:0 error:v26 info:0 forKey:v32 forPeer:peerID2];
           }
 
           v29 = [v27 countByEnumeratingWithState:&v291 objects:v312 count:16];
@@ -1077,8 +1077,8 @@ LABEL_51:
             }
 
             v60 = *(*(&v287 + 1) + 8 * k);
-            v61 = [v7 peerID];
-            [(GEOTileServer *)self _receivedTile:0 error:v26 info:0 forKey:v60 forPeer:v61];
+            peerID3 = [peerCopy peerID];
+            [(GEOTileServer *)self _receivedTile:0 error:v26 info:0 forKey:v60 forPeer:peerID3];
           }
 
           v57 = [v27 countByEnumeratingWithState:&v287 objects:v311 count:16];
@@ -1091,8 +1091,8 @@ LABEL_51:
     }
 
     bytes_ptr = xpc_data_get_bytes_ptr(v23);
-    v26 = xpc_dictionary_get_value(v6, "has_additional_infos");
-    v186 = v6;
+    v26 = xpc_dictionary_get_value(tilesCopy, "has_additional_infos");
+    v186 = tilesCopy;
     if (xpc_get_type(v26) != &_xpc_type_data)
     {
       v36 = [NSError GEOErrorWithCode:-10 reason:@"Bad XPC request encoding (type)"];
@@ -1116,8 +1116,8 @@ LABEL_51:
             }
 
             v42 = *(*(&v283 + 1) + 8 * m);
-            v43 = [v7 peerID];
-            [(GEOTileServer *)self _receivedTile:0 error:v36 info:0 forKey:v42 forPeer:v43];
+            peerID4 = [peerCopy peerID];
+            [(GEOTileServer *)self _receivedTile:0 error:v36 info:0 forKey:v42 forPeer:peerID4];
           }
 
           v39 = [v37 countByEnumeratingWithState:&v283 objects:v310 count:16];
@@ -1133,7 +1133,7 @@ LABEL_71:
       v14 = v220;
 LABEL_72:
 
-      v6 = v186;
+      tilesCopy = v186;
       v22 = v221;
       v21 = v222;
       goto LABEL_50;
@@ -1163,8 +1163,8 @@ LABEL_72:
             }
 
             v75 = *(*(&v279 + 1) + 8 * n);
-            v76 = [v7 peerID];
-            [(GEOTileServer *)self _receivedTile:0 error:v36 info:0 forKey:v75 forPeer:v76];
+            peerID5 = [peerCopy peerID];
+            [(GEOTileServer *)self _receivedTile:0 error:v36 info:0 forKey:v75 forPeer:peerID5];
           }
 
           v72 = [v37 countByEnumeratingWithState:&v279 objects:v309 count:16];
@@ -1178,7 +1178,7 @@ LABEL_72:
 
     v203 = bytes_ptr;
     v63 = xpc_data_get_bytes_ptr(v26);
-    v36 = xpc_dictionary_get_value(v6, "additional_infos");
+    v36 = xpc_dictionary_get_value(tilesCopy, "additional_infos");
     if (xpc_get_type(v36) != &_xpc_type_data)
     {
       aSelectorb = [NSError GEOErrorWithCode:-10 reason:@"Bad XPC request encoding (type)"];
@@ -1202,8 +1202,8 @@ LABEL_72:
             }
 
             v69 = *(*(&v275 + 1) + 8 * ii);
-            v70 = [v7 peerID];
-            [(GEOTileServer *)self _receivedTile:0 error:aSelectorb info:0 forKey:v69 forPeer:v70];
+            peerID6 = [peerCopy peerID];
+            [(GEOTileServer *)self _receivedTile:0 error:aSelectorb info:0 forKey:v69 forPeer:peerID6];
           }
 
           v66 = [v64 countByEnumeratingWithState:&v275 objects:v308 count:16];
@@ -1247,8 +1247,8 @@ LABEL_92:
             }
 
             v91 = *(*(&v271 + 1) + 8 * jj);
-            v92 = [v7 peerID];
-            [(GEOTileServer *)self _receivedTile:0 error:aSelectorb info:0 forKey:v91 forPeer:v92];
+            peerID7 = [peerCopy peerID];
+            [(GEOTileServer *)self _receivedTile:0 error:aSelectorb info:0 forKey:v91 forPeer:peerID7];
           }
 
           v88 = [v64 countByEnumeratingWithState:&v271 objects:v307 count:16];
@@ -1261,7 +1261,7 @@ LABEL_92:
     }
 
     v199 = xpc_data_get_bytes_ptr(v36);
-    v78 = xpc_dictionary_get_value(v6, "signposts");
+    v78 = xpc_dictionary_get_value(tilesCopy, "signposts");
     aSelectorb = v78;
     if (v78)
     {
@@ -1289,8 +1289,8 @@ LABEL_92:
               }
 
               v85 = *(*(&v267 + 1) + 8 * kk);
-              v86 = [v7 peerID];
-              [(GEOTileServer *)self _receivedTile:0 error:v217 info:0 forKey:v85 forPeer:v86];
+              peerID8 = [peerCopy peerID];
+              [(GEOTileServer *)self _receivedTile:0 error:v217 info:0 forKey:v85 forPeer:peerID8];
             }
 
             v82 = [v80 countByEnumeratingWithState:&v267 objects:v306 count:16];
@@ -1334,8 +1334,8 @@ LABEL_210:
               }
 
               v108 = *(*(&v263 + 1) + 8 * mm);
-              v109 = [v7 peerID];
-              [(GEOTileServer *)self _receivedTile:0 error:v217 info:0 forKey:v108 forPeer:v109];
+              peerID9 = [peerCopy peerID];
+              [(GEOTileServer *)self _receivedTile:0 error:v217 info:0 forKey:v108 forPeer:peerID9];
             }
 
             v105 = [v80 countByEnumeratingWithState:&v263 objects:v305 count:16];
@@ -1355,7 +1355,7 @@ LABEL_210:
       v195 = 0;
     }
 
-    v95 = xpc_dictionary_get_value(v6, "ctime");
+    v95 = xpc_dictionary_get_value(tilesCopy, "ctime");
     v217 = v95;
     if (v95)
     {
@@ -1383,8 +1383,8 @@ LABEL_210:
               }
 
               v102 = *(*(&v259 + 1) + 8 * nn);
-              v103 = [v7 peerID];
-              [(GEOTileServer *)self _receivedTile:0 error:v216 info:0 forKey:v102 forPeer:v103];
+              peerID10 = [peerCopy peerID];
+              [(GEOTileServer *)self _receivedTile:0 error:v216 info:0 forKey:v102 forPeer:peerID10];
             }
 
             v99 = [v97 countByEnumeratingWithState:&v259 objects:v304 count:16];
@@ -1425,8 +1425,8 @@ LABEL_209:
               }
 
               v123 = *(*(&v255 + 1) + 8 * i1);
-              v124 = [v7 peerID];
-              [(GEOTileServer *)self _receivedTile:0 error:v216 info:0 forKey:v123 forPeer:v124];
+              peerID11 = [peerCopy peerID];
+              [(GEOTileServer *)self _receivedTile:0 error:v216 info:0 forKey:v123 forPeer:peerID11];
             }
 
             v120 = [v97 countByEnumeratingWithState:&v255 objects:v303 count:16];
@@ -1446,8 +1446,8 @@ LABEL_209:
       v191 = 0;
     }
 
-    uint64 = xpc_dictionary_get_uint64(v6, "reason");
-    v111 = xpc_dictionary_get_array(v6, "cis");
+    uint64 = xpc_dictionary_get_uint64(tilesCopy, "reason");
+    v111 = xpc_dictionary_get_array(tilesCopy, "cis");
     if (xpc_get_type(v111) == &_xpc_type_array && xpc_array_get_count(v111))
     {
       v216 = [NSArray _geo_arrayFromXPCObject:v111];
@@ -1458,18 +1458,18 @@ LABEL_209:
       v216 = 0;
     }
 
-    int64 = xpc_dictionary_get_int64(v6, "batch");
-    v198 = [v7 peerID];
-    v112 = [v7 auditToken];
+    int64 = xpc_dictionary_get_int64(tilesCopy, "batch");
+    peerID12 = [peerCopy peerID];
+    auditToken = [peerCopy auditToken];
     length[0] = 0;
-    data = xpc_dictionary_get_data(v6, "__audit_token", length);
-    if (data && (v114 = data, [v7 hasEntitlement:GEOAuditTokenOverrideEntitlement]))
+    data = xpc_dictionary_get_data(tilesCopy, "__audit_token", length);
+    if (data && (v114 = data, [peerCopy hasEntitlement:GEOAuditTokenOverrideEntitlement]))
     {
       v115 = [NSData dataWithBytes:v114 length:length[0]];
       v116 = [NSSet setWithObject:objc_opt_class()];
       v117 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v116 fromData:v115 error:0];
 
-      if (v112)
+      if (auditToken)
       {
         v118 = v117;
       }
@@ -1484,7 +1484,7 @@ LABEL_209:
 
     else
     {
-      v215 = v112;
+      v215 = auditToken;
     }
 
     v251 = 0u;
@@ -1514,7 +1514,7 @@ LABEL_138:
       }
 
       v126 = *(*(&v251 + 1) + 8 * v125);
-      v127 = v7;
+      v127 = peerCopy;
       v128 = v215;
       if (GEOTileKeyIsOffline())
       {
@@ -1539,9 +1539,9 @@ LABEL_138:
             v145 = GEOGetTileLoadingLog();
             if (os_log_type_enabled(v145, OS_LOG_TYPE_FAULT))
             {
-              v146 = [v205 offlineCohortId];
+              offlineCohortId = [v205 offlineCohortId];
               LODWORD(length[0]) = 138543362;
-              *(length + 4) = v146;
+              *(length + 4) = offlineCohortId;
               _os_log_impl(&_mh_execute_header, v145, OS_LOG_TYPE_FAULT, "Attempt to load offline tiles from un-entitled or mis-entitled client: %{public}@", length, 0xCu);
             }
 
@@ -1553,15 +1553,15 @@ LABEL_162:
             {
               v148 = GEOStringFromTileKey();
               LODWORD(length[0]) = 138543619;
-              *(length + 4) = v7;
+              *(length + 4) = peerCopy;
               WORD2(length[1]) = 2113;
               *(&length[1] + 6) = v148;
               _os_log_impl(&_mh_execute_header, v147, OS_LOG_TYPE_ERROR, "%{public}@ is not allowed to load tile %{private}@", length, 0x16u);
             }
 
             v149 = [NSError GEOErrorWithCode:-5 reason:@"Peer is not allowed to load this tile type"];
-            v150 = [v127 peerID];
-            [(GEOTileServer *)self _receivedTile:0 error:v149 info:0 forKey:v126 forPeer:v150];
+            peerID13 = [v127 peerID];
+            [(GEOTileServer *)self _receivedTile:0 error:v149 info:0 forKey:v126 forPeer:peerID13];
 
             v151 = group;
             if (!group)
@@ -1703,9 +1703,9 @@ LABEL_183:
             v182 = 0;
           }
 
-          v161 = v7;
-          v162 = [v161 peerID];
-          v197 = [NSString stringWithFormat:@"%@-%lli", v162, int64];
+          v161 = peerCopy;
+          peerID14 = [v161 peerID];
+          int64 = [NSString stringWithFormat:@"%@-%lli", peerID14, int64];
 
           pendingPeerToClientIdentifiers = self->_pendingPeerToClientIdentifiers;
           if (!pendingPeerToClientIdentifiers)
@@ -1717,19 +1717,19 @@ LABEL_183:
             pendingPeerToClientIdentifiers = self->_pendingPeerToClientIdentifiers;
           }
 
-          v166 = [(NSMutableDictionary *)pendingPeerToClientIdentifiers objectForKeyedSubscript:v198];
+          v166 = [(NSMutableDictionary *)pendingPeerToClientIdentifiers objectForKeyedSubscript:peerID12];
           if (!v166)
           {
             v166 = +[NSMutableArray array];
-            [(NSMutableDictionary *)self->_pendingPeerToClientIdentifiers setObject:v166 forKeyedSubscript:v198];
+            [(NSMutableDictionary *)self->_pendingPeerToClientIdentifiers setObject:v166 forKeyedSubscript:peerID12];
           }
 
           v184 = v166;
-          [v166 addObject:v197];
+          [v166 addObject:int64];
           groupa = dispatch_group_create();
           GEOMachAbsoluteTimeGetCurrent();
           v168 = v167;
-          v192 = [v161 offlineCohortId];
+          offlineCohortId2 = [v161 offlineCohortId];
           v243 = 0u;
           v244 = 0u;
           v245 = 0u;
@@ -1746,12 +1746,12 @@ LABEL_208:
             block[2] = sub_100042EA8;
             block[3] = &unk_100083288;
             block[4] = self;
-            v230 = v198;
-            v231 = v197;
+            v230 = peerID12;
+            v231 = int64;
             v232 = v221;
             v233 = v222;
-            v179 = v197;
-            v180 = v198;
+            v179 = int64;
+            v180 = peerID12;
             dispatch_group_notify(groupa, queue, block);
 
             goto LABEL_209;
@@ -1833,15 +1833,15 @@ LABEL_199:
             v234[3] = &unk_100083260;
             v240 = *length;
             v241 = v225;
-            v177 = v192;
+            v177 = offlineCohortId2;
             v239 = v168;
             v235 = v177;
-            v236 = self;
-            v237 = v198;
+            selfCopy = self;
+            v237 = peerID12;
             v238 = groupa;
             HIDWORD(v181) = v207;
             LOBYTE(v181) = uint64;
-            [v224 loadKey:length additionalInfo:v209 priority:v214 forClient:v197 auditToken:v215 options:v218 | 0x20 cacheInfo:v173 reason:v174 qos:v181 signpostID:v211 createTime:v176 callbackQ:0 beginNetwork:v234 callback:v182];
+            [v224 loadKey:length additionalInfo:v209 priority:v214 forClient:int64 auditToken:v215 options:v218 | 0x20 cacheInfo:v173 reason:v174 qos:v181 signpostID:v211 createTime:v176 callbackQ:0 beginNetwork:v234 callback:v182];
 
             if (obja == ++v170)
             {
@@ -1888,11 +1888,11 @@ LABEL_53:
   [(GEOTileServer *)&v4 dealloc];
 }
 
-- (GEOTileServer)initWithDaemon:(id)a3
+- (GEOTileServer)initWithDaemon:(id)daemon
 {
   v11.receiver = self;
   v11.super_class = GEOTileServer;
-  v3 = [(GEOTileServer *)&v11 initWithDaemon:a3];
+  v3 = [(GEOTileServer *)&v11 initWithDaemon:daemon];
   if (v3)
   {
     global_queue = geo_get_global_queue();

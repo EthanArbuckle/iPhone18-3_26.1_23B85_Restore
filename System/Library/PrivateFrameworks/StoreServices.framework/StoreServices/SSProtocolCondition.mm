@@ -1,15 +1,15 @@
 @interface SSProtocolCondition
-+ (id)newConditionWithDictionary:(id)a3;
-- (SSProtocolCondition)initWithDictionary:(id)a3;
++ (id)newConditionWithDictionary:(id)dictionary;
+- (SSProtocolCondition)initWithDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
 @implementation SSProtocolCondition
 
-+ (id)newConditionWithDictionary:(id)a3
++ (id)newConditionWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKey:@"condition-key"];
+  v4 = [dictionary objectForKey:@"condition-key"];
   v5 = off_1E84AF180;
   v6 = 8;
   while (![(NSString *)*(v5 - 1) isEqualToString:v4])
@@ -21,7 +21,7 @@
     }
   }
 
-  result = [objc_alloc(NSClassFromString(*v5)) initWithDictionary:a3];
+  result = [objc_alloc(NSClassFromString(*v5)) initWithDictionary:dictionary];
   if (result)
   {
     return result;
@@ -34,15 +34,15 @@ LABEL_6:
     v8 = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
   if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -72,12 +72,12 @@ LABEL_6:
   return 0;
 }
 
-- (SSProtocolCondition)initWithDictionary:(id)a3
+- (SSProtocolCondition)initWithDictionary:(id)dictionary
 {
   v4 = [(SSProtocolCondition *)self init];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"operator"];
+    v5 = [dictionary objectForKey:@"operator"];
     v6 = 0;
     v4->_operator = 0;
     while (![v5 isEqualToString:__OperationNames[v6]])
@@ -90,7 +90,7 @@ LABEL_6:
 
     v4->_operator = v6;
 LABEL_7:
-    v4->_value = [a3 objectForKey:@"value"];
+    v4->_value = [dictionary objectForKey:@"value"];
   }
 
   return v4;

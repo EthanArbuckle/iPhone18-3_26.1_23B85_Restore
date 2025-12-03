@@ -7,7 +7,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = dispatch_queue_create("SPDictionaryQuery.activation", 0);
     v3 = sActivationQueue;
@@ -45,16 +45,16 @@ void __31__SPDictionaryQuery_deactivate__block_invoke()
   [(SPKQuery *)&v17 start];
   if (![(SPKQuery *)self sendEmptyResponseIfNecessaryForSourceKind:5])
   {
-    v3 = [(SPKQuery *)self queryContext];
-    v4 = [(SPKQuery *)self delegate];
-    v5 = [v4 queryIdent];
-    v6 = [v4 clientBundleID];
+    queryContext = [(SPKQuery *)self queryContext];
+    delegate = [(SPKQuery *)self delegate];
+    queryIdent = [delegate queryIdent];
+    clientBundleID = [delegate clientBundleID];
     v7 = objc_alloc(MEMORY[0x277D4C658]);
-    v8 = [v3 searchString];
-    v9 = [v7 initWithInput:v8 triggerEvent:objc_msgSend(v3 indexType:"whyQuery") queryId:{6, v5}];
+    searchString = [queryContext searchString];
+    v9 = [v7 initWithInput:searchString triggerEvent:objc_msgSend(queryContext indexType:"whyQuery") queryId:{6, queryIdent}];
 
-    v10 = [MEMORY[0x277D4BEC0] sharedProxy];
-    [v10 sendFeedbackType:5 feedback:v9 queryId:v5 clientID:v6];
+    mEMORY[0x277D4BEC0] = [MEMORY[0x277D4BEC0] sharedProxy];
+    [mEMORY[0x277D4BEC0] sendFeedbackType:5 feedback:v9 queryId:queryIdent clientID:clientBundleID];
 
     v11 = sQueryQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -63,8 +63,8 @@ void __31__SPDictionaryQuery_deactivate__block_invoke()
     block[3] = &unk_279CFE1A8;
     block[4] = self;
     v15 = v9;
-    v16 = v6;
-    v12 = v6;
+    v16 = clientBundleID;
+    v12 = clientBundleID;
     v13 = v9;
     dispatch_async(v11, block);
   }

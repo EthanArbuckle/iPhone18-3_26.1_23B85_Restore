@@ -1,33 +1,33 @@
 @interface PDDPAsset
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addContentMetadata:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContentMetadata:(id)metadata;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPAsset
 
-- (void)addContentMetadata:(id)a3
+- (void)addContentMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   contentMetadatas = self->_contentMetadatas;
-  v8 = v4;
+  v8 = metadataCopy;
   if (!contentMetadatas)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_contentMetadatas;
     self->_contentMetadatas = v6;
 
-    v4 = v8;
+    metadataCopy = v8;
     contentMetadatas = self->_contentMetadatas;
   }
 
-  [(NSMutableArray *)contentMetadatas addObject:v4];
+  [(NSMutableArray *)contentMetadatas addObject:metadataCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = PDDPAsset;
   v3 = [(PDDPAsset *)&v7 description];
-  v4 = [(PDDPAsset *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPAsset *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -54,15 +54,15 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v7 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v9 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   etag = self->_etag;
@@ -104,8 +104,8 @@
   contentDownloadUrlExpiration = self->_contentDownloadUrlExpiration;
   if (contentDownloadUrlExpiration)
   {
-    v17 = [(PDDPDate *)contentDownloadUrlExpiration dictionaryRepresentation];
-    [v4 setObject:v17 forKey:@"content_download_url_expiration"];
+    dictionaryRepresentation3 = [(PDDPDate *)contentDownloadUrlExpiration dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"content_download_url_expiration"];
   }
 
   if ([(NSMutableArray *)self->_contentMetadatas count])
@@ -130,8 +130,8 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          [v18 addObject:v24];
+          dictionaryRepresentation4 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          [v18 addObject:dictionaryRepresentation4];
         }
 
         v21 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -146,9 +146,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_objectId)
   {
     PBDataWriterWriteStringField();
@@ -233,56 +233,56 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_objectId)
   {
-    [v4 setObjectId:?];
-    v4 = v9;
+    [toCopy setObjectId:?];
+    toCopy = v9;
   }
 
   if (self->_dateCreated)
   {
     [v9 setDateCreated:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_dateLastModified)
   {
     [v9 setDateLastModified:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_etag)
   {
     [v9 setEtag:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_uploadResponseJson)
   {
     [v9 setUploadResponseJson:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_contentFileName)
   {
     [v9 setContentFileName:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_contentUtType)
   {
     [v9 setContentUtType:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_contentSizeInBytes;
-    *(v4 + 96) |= 1u;
+    *(toCopy + 1) = self->_contentSizeInBytes;
+    *(toCopy + 96) |= 1u;
   }
 
   if (self->_contentDownloadUrl)
@@ -298,10 +298,10 @@
   if ([(PDDPAsset *)self contentMetadatasCount])
   {
     [v9 clearContentMetadatas];
-    v5 = [(PDDPAsset *)self contentMetadatasCount];
-    if (v5)
+    contentMetadatasCount = [(PDDPAsset *)self contentMetadatasCount];
+    if (contentMetadatasCount)
     {
-      v6 = v5;
+      v6 = contentMetadatasCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PDDPAsset *)self contentMetadataAtIndex:i];
@@ -311,34 +311,34 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_objectId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_objectId copyWithZone:zone];
   v7 = v5[10];
   v5[10] = v6;
 
-  v8 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v8 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
-  v10 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v10 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v11 = v5[8];
   v5[8] = v10;
 
-  v12 = [(NSString *)self->_etag copyWithZone:a3];
+  v12 = [(NSString *)self->_etag copyWithZone:zone];
   v13 = v5[9];
   v5[9] = v12;
 
-  v14 = [(NSString *)self->_uploadResponseJson copyWithZone:a3];
+  v14 = [(NSString *)self->_uploadResponseJson copyWithZone:zone];
   v15 = v5[11];
   v5[11] = v14;
 
-  v16 = [(NSString *)self->_contentFileName copyWithZone:a3];
+  v16 = [(NSString *)self->_contentFileName copyWithZone:zone];
   v17 = v5[4];
   v5[4] = v16;
 
-  v18 = [(NSString *)self->_contentUtType copyWithZone:a3];
+  v18 = [(NSString *)self->_contentUtType copyWithZone:zone];
   v19 = v5[6];
   v5[6] = v18;
 
@@ -348,11 +348,11 @@
     *(v5 + 96) |= 1u;
   }
 
-  v20 = [(NSString *)self->_contentDownloadUrl copyWithZone:a3];
+  v20 = [(NSString *)self->_contentDownloadUrl copyWithZone:zone];
   v21 = v5[2];
   v5[2] = v20;
 
-  v22 = [(PDDPDate *)self->_contentDownloadUrlExpiration copyWithZone:a3];
+  v22 = [(PDDPDate *)self->_contentDownloadUrlExpiration copyWithZone:zone];
   v23 = v5[3];
   v5[3] = v22;
 
@@ -375,7 +375,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v31 + 1) + 8 * i) copyWithZone:{a3, v31}];
+        v29 = [*(*(&v31 + 1) + 8 * i) copyWithZone:{zone, v31}];
         [v5 addContentMetadata:v29];
       }
 
@@ -388,16 +388,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   objectId = self->_objectId;
-  if (objectId | *(v4 + 10))
+  if (objectId | *(equalCopy + 10))
   {
     if (![(NSString *)objectId isEqual:?])
     {
@@ -406,7 +406,7 @@
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 7))
+  if (dateCreated | *(equalCopy + 7))
   {
     if (![(PDDPDate *)dateCreated isEqual:?])
     {
@@ -415,7 +415,7 @@
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 8))
+  if (dateLastModified | *(equalCopy + 8))
   {
     if (![(PDDPDate *)dateLastModified isEqual:?])
     {
@@ -424,7 +424,7 @@
   }
 
   etag = self->_etag;
-  if (etag | *(v4 + 9))
+  if (etag | *(equalCopy + 9))
   {
     if (![(NSString *)etag isEqual:?])
     {
@@ -433,7 +433,7 @@
   }
 
   uploadResponseJson = self->_uploadResponseJson;
-  if (uploadResponseJson | *(v4 + 11))
+  if (uploadResponseJson | *(equalCopy + 11))
   {
     if (![(NSString *)uploadResponseJson isEqual:?])
     {
@@ -442,7 +442,7 @@
   }
 
   contentFileName = self->_contentFileName;
-  if (contentFileName | *(v4 + 4))
+  if (contentFileName | *(equalCopy + 4))
   {
     if (![(NSString *)contentFileName isEqual:?])
     {
@@ -451,7 +451,7 @@
   }
 
   contentUtType = self->_contentUtType;
-  if (contentUtType | *(v4 + 6))
+  if (contentUtType | *(equalCopy + 6))
   {
     if (![(NSString *)contentUtType isEqual:?])
     {
@@ -459,16 +459,16 @@
     }
   }
 
-  v12 = *(v4 + 96);
+  v12 = *(equalCopy + 96);
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_contentSizeInBytes != *(v4 + 1))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_contentSizeInBytes != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
 LABEL_27:
     v16 = 0;
@@ -476,13 +476,13 @@ LABEL_27:
   }
 
   contentDownloadUrl = self->_contentDownloadUrl;
-  if (contentDownloadUrl | *(v4 + 2) && ![(NSString *)contentDownloadUrl isEqual:?])
+  if (contentDownloadUrl | *(equalCopy + 2) && ![(NSString *)contentDownloadUrl isEqual:?])
   {
     goto LABEL_27;
   }
 
   contentDownloadUrlExpiration = self->_contentDownloadUrlExpiration;
-  if (contentDownloadUrlExpiration | *(v4 + 3))
+  if (contentDownloadUrlExpiration | *(equalCopy + 3))
   {
     if (![(PDDPDate *)contentDownloadUrlExpiration isEqual:?])
     {
@@ -491,7 +491,7 @@ LABEL_27:
   }
 
   contentMetadatas = self->_contentMetadatas;
-  if (contentMetadatas | *(v4 + 5))
+  if (contentMetadatas | *(equalCopy + 5))
   {
     v16 = [(NSMutableArray *)contentMetadatas isEqual:?];
   }
@@ -531,16 +531,16 @@ LABEL_28:
   return v11 ^ v13 ^ [(NSMutableArray *)self->_contentMetadatas hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 10))
+  fromCopy = from;
+  if (*(fromCopy + 10))
   {
     [(PDDPAsset *)self setObjectId:?];
   }
 
   dateCreated = self->_dateCreated;
-  v6 = *(v4 + 7);
+  v6 = *(fromCopy + 7);
   if (dateCreated)
   {
     if (v6)
@@ -555,7 +555,7 @@ LABEL_28:
   }
 
   dateLastModified = self->_dateLastModified;
-  v8 = *(v4 + 8);
+  v8 = *(fromCopy + 8);
   if (dateLastModified)
   {
     if (v8)
@@ -569,39 +569,39 @@ LABEL_28:
     [(PDDPAsset *)self setDateLastModified:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PDDPAsset *)self setEtag:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PDDPAsset *)self setUploadResponseJson:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PDDPAsset *)self setContentFileName:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PDDPAsset *)self setContentUtType:?];
   }
 
-  if (*(v4 + 96))
+  if (*(fromCopy + 96))
   {
-    self->_contentSizeInBytes = *(v4 + 1);
+    self->_contentSizeInBytes = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PDDPAsset *)self setContentDownloadUrl:?];
   }
 
   contentDownloadUrlExpiration = self->_contentDownloadUrlExpiration;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   if (contentDownloadUrlExpiration)
   {
     if (v10)
@@ -619,7 +619,7 @@ LABEL_28:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = *(v4 + 5);
+  v11 = *(fromCopy + 5);
   v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {

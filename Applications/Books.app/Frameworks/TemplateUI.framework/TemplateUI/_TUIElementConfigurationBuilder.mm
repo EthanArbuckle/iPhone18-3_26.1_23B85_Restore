@@ -1,14 +1,14 @@
 @interface _TUIElementConfigurationBuilder
 - (id)finalizeConfiguration;
-- (void)addConfigurationData:(id)a3 withKey:(id)a4;
+- (void)addConfigurationData:(id)data withKey:(id)key;
 @end
 
 @implementation _TUIElementConfigurationBuilder
 
-- (void)addConfigurationData:(id)a3 withKey:(id)a4
+- (void)addConfigurationData:(id)data withKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  dataCopy = data;
+  keyCopy = key;
   data = self->_data;
   if (!data)
   {
@@ -19,7 +19,7 @@
     data = self->_data;
   }
 
-  [(NSMutableDictionary *)data setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)data setObject:dataCopy forKeyedSubscript:keyCopy];
 }
 
 - (id)finalizeConfiguration

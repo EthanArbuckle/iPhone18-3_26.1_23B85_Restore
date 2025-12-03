@@ -1,29 +1,29 @@
 @interface FPExceptionToErrorProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (FPExceptionToErrorProxy)initWithTarget:(id)a3;
-- (id)errorFromException:(id)a3 whileSendingToSelector:(SEL)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (FPExceptionToErrorProxy)initWithTarget:(id)target;
+- (id)errorFromException:(id)exception whileSendingToSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation FPExceptionToErrorProxy
 
-- (FPExceptionToErrorProxy)initWithTarget:(id)a3
+- (FPExceptionToErrorProxy)initWithTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   v9.receiver = self;
   v9.super_class = FPExceptionToErrorProxy;
   v6 = [(FPExceptionToErrorProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_target, a3);
+    objc_storeStrong(&v6->_target, target);
   }
 
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v5 = [self->_target methodSignatureForSelector:?];
   v6 = v5;
@@ -36,7 +36,7 @@
   {
     v10.receiver = self;
     v10.super_class = FPExceptionToErrorProxy;
-    v7 = [(FPExceptionToErrorProxy *)&v10 methodSignatureForSelector:a3];
+    v7 = [(FPExceptionToErrorProxy *)&v10 methodSignatureForSelector:selector];
   }
 
   v8 = v7;
@@ -44,7 +44,7 @@
   return v8;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   target = self->_target;
   if (objc_opt_respondsToSelector())
@@ -54,21 +54,21 @@
 
   v7.receiver = self;
   v7.super_class = FPExceptionToErrorProxy;
-  return [(FPExceptionToErrorProxy *)&v7 respondsToSelector:a3];
+  return [(FPExceptionToErrorProxy *)&v7 respondsToSelector:selector];
 }
 
-- (id)errorFromException:(id)a3 whileSendingToSelector:(SEL)a4
+- (id)errorFromException:(id)exception whileSendingToSelector:(SEL)selector
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 debugDescription];
-  v8 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v9 = [v7 componentsSeparatedByCharactersInSet:v8];
+  exceptionCopy = exception;
+  v7 = [exceptionCopy debugDescription];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v9 = [v7 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   v10 = [v9 indexOfObjectPassingTest:&__block_literal_global_61];
   if (v10 < 2 || v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = [v6 debugDescription];
+    v14 = [exceptionCopy debugDescription];
   }
 
   else
@@ -80,7 +80,7 @@
   }
 
   v15 = MEMORY[0x1E696AEC0];
-  v16 = NSStringFromSelector(a4);
+  v16 = NSStringFromSelector(selector);
   v17 = [v15 stringWithFormat:@"Exception caught sending %@ to %@:\n%@", v16, self->_target, v14];
 
   v18 = MEMORY[0x1E696ABC0];
@@ -95,11 +95,11 @@
   return v21;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  __FP_EXCEPTION_TO_ERROR_PROXY_CALLING_OUT__(v4, self->_target);
+  invocationCopy = invocation;
+  __FP_EXCEPTION_TO_ERROR_PROXY_CALLING_OUT__(invocationCopy, self->_target);
 
   v5 = *MEMORY[0x1E69E9840];
 }

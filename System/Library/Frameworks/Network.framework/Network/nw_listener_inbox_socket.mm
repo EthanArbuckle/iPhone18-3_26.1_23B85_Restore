@@ -4,8 +4,8 @@
 - (BOOL)suspend;
 - (id)description;
 - (id)start;
-- (nw_listener_inbox_socket)initWithParameters:(id)a3 delegate:(id)a4;
-- (void)initWithParameters:(void *)a3 delegate:(_OWORD *)a4 necpUUID:;
+- (nw_listener_inbox_socket)initWithParameters:(id)parameters delegate:(id)delegate;
+- (void)initWithParameters:(void *)parameters delegate:(_OWORD *)delegate necpUUID:;
 @end
 
 @implementation nw_listener_inbox_socket
@@ -505,7 +505,7 @@ LABEL_91:
       v80[2] = __33__nw_listener_inbox_socket_start__block_invoke_2;
       v80[3] = &unk_1E6A3D760;
       v81 = v6;
-      v82 = self;
+      selfCopy = self;
       self->_source = nw_queue_context_create_source(v52, v53, 1, 0, v83, v80);
 
       source = self->_source;
@@ -877,10 +877,10 @@ LABEL_161:
   v13 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = nw_listener_inbox_socket;
-  v3 = [(nw_listener_inbox *)&v8 resume];
-  if (v3 && self->_source)
+  resume = [(nw_listener_inbox *)&v8 resume];
+  if (resume && self->_source)
   {
-    v4 = v3;
+    v4 = resume;
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
     v5 = gLogObj;
@@ -889,15 +889,15 @@ LABEL_161:
       *buf = 136446466;
       v10 = "[nw_listener_inbox_socket resume]";
       v11 = 2114;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_181A37000, v5, OS_LOG_TYPE_INFO, "%{public}s Resumed inbox %{public}@", buf, 0x16u);
     }
 
     nw_queue_resume_source(self->_source, v6);
-    LOBYTE(v3) = v4;
+    LOBYTE(resume) = v4;
   }
 
-  return v3;
+  return resume;
 }
 
 - (BOOL)cancel
@@ -923,10 +923,10 @@ LABEL_161:
   v12 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = nw_listener_inbox_socket;
-  v3 = [(nw_listener_inbox *)&v7 suspend];
-  if (v3 && self->_source)
+  suspend = [(nw_listener_inbox *)&v7 suspend];
+  if (suspend && self->_source)
   {
-    v4 = v3;
+    v4 = suspend;
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
     v5 = gLogObj;
@@ -935,26 +935,26 @@ LABEL_161:
       *buf = 136446466;
       v9 = "[nw_listener_inbox_socket suspend]";
       v10 = 2114;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_181A37000, v5, OS_LOG_TYPE_INFO, "%{public}s Suspended inbox %{public}@", buf, 0x16u);
     }
 
     nw_queue_suspend_source(self->_source);
-    LOBYTE(v3) = v4;
+    LOBYTE(suspend) = v4;
   }
 
-  return v3;
+  return suspend;
 }
 
-- (nw_listener_inbox_socket)initWithParameters:(id)a3 delegate:(id)a4
+- (nw_listener_inbox_socket)initWithParameters:(id)parameters delegate:(id)delegate
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  parametersCopy = parameters;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = nw_listener_inbox_socket;
-  v9 = [(nw_listener_inbox *)&v24 initWithDelegate:v8];
-  ip_protocol = nw_parameters_get_ip_protocol(v7);
+  v9 = [(nw_listener_inbox *)&v24 initWithDelegate:delegateCopy];
+  ip_protocol = nw_parameters_get_ip_protocol(parametersCopy);
   v11 = ip_protocol;
   if (ip_protocol != 6 && ip_protocol != 17)
   {
@@ -1057,8 +1057,8 @@ LABEL_10:
   }
 
   v9->_ipProtocol = ip_protocol;
-  objc_storeStrong(&v9->super._parameters, a3);
-  objc_storeStrong(&v9->super._delegate, a4);
+  objc_storeStrong(&v9->super._parameters, parameters);
+  objc_storeStrong(&v9->super._delegate, delegate);
   v9->_sockfd_from_client = -1;
   v12 = v9;
 LABEL_12:
@@ -1066,21 +1066,21 @@ LABEL_12:
   return v12;
 }
 
-- (void)initWithParameters:(void *)a3 delegate:(_OWORD *)a4 necpUUID:
+- (void)initWithParameters:(void *)parameters delegate:(_OWORD *)delegate necpUUID:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  parametersCopy = parameters;
+  if (self)
   {
-    v9 = [a1 initWithParameters:v7 delegate:v8];
-    a1 = v9;
+    v9 = [self initWithParameters:v7 delegate:parametersCopy];
+    self = v9;
     if (v9)
     {
-      *(v9 + 89) = *a4;
+      *(v9 + 89) = *delegate;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

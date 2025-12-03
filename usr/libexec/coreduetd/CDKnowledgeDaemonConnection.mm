@@ -1,18 +1,18 @@
 @interface CDKnowledgeDaemonConnection
 - (id)unauthorizedClientError;
-- (void)confirmDatabaseConnectionWithReply:(id)a3;
-- (void)deleteAllEventsInEventStreamNamed:(id)a3 reply:(id)a4;
-- (void)deleteAllEventsMatchingPredicate:(id)a3 reply:(id)a4;
-- (void)deleteObjects:(id)a3 reply:(id)a4;
-- (void)deleteRemoteState:(id)a3;
-- (void)deviceUUIDWithReply:(id)a3;
-- (void)disableSyncPolicyForFeature:(unint64_t)a3 transportType:(int64_t)a4 withReply:(id)a5;
-- (void)executeQuery:(id)a3 reply:(id)a4;
-- (void)isSyncPolicyDisabledForFeature:(unint64_t)a3 transportType:(int64_t)a4 withReply:(id)a5;
-- (void)saveObjects:(id)a3 reply:(id)a4;
-- (void)sourceDeviceIdentityWithReply:(id)a3;
-- (void)synchronizeWithReply:(id)a3;
-- (void)synchronizeWithUrgency:(unint64_t)a3 client:(id)a4 reply:(id)a5;
+- (void)confirmDatabaseConnectionWithReply:(id)reply;
+- (void)deleteAllEventsInEventStreamNamed:(id)named reply:(id)reply;
+- (void)deleteAllEventsMatchingPredicate:(id)predicate reply:(id)reply;
+- (void)deleteObjects:(id)objects reply:(id)reply;
+- (void)deleteRemoteState:(id)state;
+- (void)deviceUUIDWithReply:(id)reply;
+- (void)disableSyncPolicyForFeature:(unint64_t)feature transportType:(int64_t)type withReply:(id)reply;
+- (void)executeQuery:(id)query reply:(id)reply;
+- (void)isSyncPolicyDisabledForFeature:(unint64_t)feature transportType:(int64_t)type withReply:(id)reply;
+- (void)saveObjects:(id)objects reply:(id)reply;
+- (void)sourceDeviceIdentityWithReply:(id)reply;
+- (void)synchronizeWithReply:(id)reply;
+- (void)synchronizeWithUrgency:(unint64_t)urgency client:(id)client reply:(id)reply;
 @end
 
 @implementation CDKnowledgeDaemonConnection
@@ -28,65 +28,65 @@
   return v4;
 }
 
-- (void)saveObjects:(id)a3 reply:(id)a4
+- (void)saveObjects:(id)objects reply:(id)reply
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
+  objectsCopy = objects;
+  replyCopy = reply;
+  authorizedEventStreamsToRead = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
 
-  if (v7)
+  if (authorizedEventStreamsToRead)
   {
-    v8 = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
-    v6[2](v6, 0, v8);
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
+    replyCopy[2](replyCopy, 0, unauthorizedClientError);
   }
 
   else
   {
-    v8 = [(CDKnowledgeDaemonConnection *)self daemon];
-    [v8 saveObjects:v9 reply:v6];
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self daemon];
+    [unauthorizedClientError saveObjects:objectsCopy reply:replyCopy];
   }
 }
 
-- (void)deleteObjects:(id)a3 reply:(id)a4
+- (void)deleteObjects:(id)objects reply:(id)reply
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
+  objectsCopy = objects;
+  replyCopy = reply;
+  authorizedEventStreamsToRead = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
 
-  if (v7)
+  if (authorizedEventStreamsToRead)
   {
-    v8 = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
-    v6[2](v6, 0, v8);
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
+    replyCopy[2](replyCopy, 0, unauthorizedClientError);
   }
 
   else
   {
-    v8 = [(CDKnowledgeDaemonConnection *)self daemon];
-    [v8 deleteObjects:v9 reply:v6];
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self daemon];
+    [unauthorizedClientError deleteObjects:objectsCopy reply:replyCopy];
   }
 }
 
-- (void)executeQuery:(id)a3 reply:(id)a4
+- (void)executeQuery:(id)query reply:(id)reply
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
+  queryCopy = query;
+  replyCopy = reply;
+  authorizedEventStreamsToRead = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
 
-  if (v7)
+  if (authorizedEventStreamsToRead)
   {
     v8 = objc_opt_class();
     if (![v8 isEqual:objc_opt_class()])
     {
 LABEL_6:
-      v14 = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
-      v6[2](v6, 0, v14);
+      unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
+      replyCopy[2](replyCopy, 0, unauthorizedClientError);
       goto LABEL_9;
     }
 
-    v9 = v17;
+    v9 = queryCopy;
     v10 = [NSMutableSet alloc];
-    v11 = [v9 eventStreams];
-    v12 = [v10 initWithArray:v11];
+    eventStreams = [v9 eventStreams];
+    v12 = [v10 initWithArray:eventStreams];
 
     if (![v12 count] || (-[CDKnowledgeDaemonConnection authorizedEventStreamsToRead](self, "authorizedEventStreamsToRead"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "minusSet:", v13), v13, objc_msgSend(v12, "count")))
     {
@@ -94,170 +94,170 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v15 = [v9 resultType];
+    resultType = [v9 resultType];
 
-    if (v15)
+    if (resultType)
     {
       goto LABEL_6;
     }
   }
 
-  v16 = [(CDKnowledgeDaemonConnection *)self processName];
-  [v17 setClientName:v16];
+  processName = [(CDKnowledgeDaemonConnection *)self processName];
+  [queryCopy setClientName:processName];
 
-  v14 = [(CDKnowledgeDaemonConnection *)self daemon];
-  [v14 executeQuery:v17 reply:v6];
+  unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self daemon];
+  [unauthorizedClientError executeQuery:queryCopy reply:replyCopy];
 LABEL_9:
 }
 
-- (void)deleteAllEventsInEventStreamNamed:(id)a3 reply:(id)a4
+- (void)deleteAllEventsInEventStreamNamed:(id)named reply:(id)reply
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
+  namedCopy = named;
+  replyCopy = reply;
+  authorizedEventStreamsToRead = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
 
-  if (v7)
+  if (authorizedEventStreamsToRead)
   {
-    v8 = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
-    v6[2](v6, 0, v8);
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
+    replyCopy[2](replyCopy, 0, unauthorizedClientError);
   }
 
   else
   {
-    v8 = [(CDKnowledgeDaemonConnection *)self daemon];
-    [v8 deleteAllEventsInEventStreamNamed:v9 reply:v6];
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self daemon];
+    [unauthorizedClientError deleteAllEventsInEventStreamNamed:namedCopy reply:replyCopy];
   }
 }
 
-- (void)deleteAllEventsMatchingPredicate:(id)a3 reply:(id)a4
+- (void)deleteAllEventsMatchingPredicate:(id)predicate reply:(id)reply
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
+  predicateCopy = predicate;
+  replyCopy = reply;
+  authorizedEventStreamsToRead = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
 
-  if (v7)
+  if (authorizedEventStreamsToRead)
   {
-    v8 = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
-    v6[2](v6, 0, v8);
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
+    replyCopy[2](replyCopy, 0, unauthorizedClientError);
   }
 
   else
   {
-    v8 = [(CDKnowledgeDaemonConnection *)self daemon];
-    [v8 deleteAllEventsMatchingPredicate:v9 reply:v6];
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self daemon];
+    [unauthorizedClientError deleteAllEventsMatchingPredicate:predicateCopy reply:replyCopy];
   }
 }
 
-- (void)synchronizeWithReply:(id)a3
+- (void)synchronizeWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
+  replyCopy = reply;
+  authorizedEventStreamsToRead = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
 
-  if (v5)
+  if (authorizedEventStreamsToRead)
   {
-    v6 = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
-    v4[2](v4, 0);
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
-    v6 = [(CDKnowledgeDaemonConnection *)self daemon];
-    [v6 synchronizeWithReply:v4];
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self daemon];
+    [unauthorizedClientError synchronizeWithReply:replyCopy];
   }
 }
 
-- (void)synchronizeWithUrgency:(unint64_t)a3 client:(id)a4 reply:(id)a5
+- (void)synchronizeWithUrgency:(unint64_t)urgency client:(id)client reply:(id)reply
 {
-  v11 = a4;
-  v8 = a5;
-  v9 = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
+  clientCopy = client;
+  replyCopy = reply;
+  authorizedEventStreamsToRead = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
 
-  if (v9)
+  if (authorizedEventStreamsToRead)
   {
-    v10 = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
-    v8[2](v8, 0, v10);
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
+    replyCopy[2](replyCopy, 0, unauthorizedClientError);
   }
 
   else
   {
-    v10 = [(CDKnowledgeDaemonConnection *)self daemon];
-    [v10 synchronizeWithUrgency:a3 client:v11 reply:v8];
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self daemon];
+    [unauthorizedClientError synchronizeWithUrgency:urgency client:clientCopy reply:replyCopy];
   }
 }
 
-- (void)deleteRemoteState:(id)a3
+- (void)deleteRemoteState:(id)state
 {
-  v4 = a3;
-  v5 = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
+  stateCopy = state;
+  authorizedEventStreamsToRead = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
 
-  if (v5)
+  if (authorizedEventStreamsToRead)
   {
-    v6 = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
-    v4[2](v4, 0);
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
+    stateCopy[2](stateCopy, 0);
   }
 
   else
   {
-    v6 = [(CDKnowledgeDaemonConnection *)self daemon];
-    [v6 deleteRemoteState:v4];
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self daemon];
+    [unauthorizedClientError deleteRemoteState:stateCopy];
   }
 }
 
-- (void)sourceDeviceIdentityWithReply:(id)a3
+- (void)sourceDeviceIdentityWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
+  replyCopy = reply;
+  authorizedEventStreamsToRead = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
 
-  if (v5)
+  if (authorizedEventStreamsToRead)
   {
-    v6 = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
-    v4[2](v4, 0);
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
-    v6 = [(CDKnowledgeDaemonConnection *)self daemon];
-    [v6 sourceDeviceIdentityWithReply:v4];
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self daemon];
+    [unauthorizedClientError sourceDeviceIdentityWithReply:replyCopy];
   }
 }
 
-- (void)deviceUUIDWithReply:(id)a3
+- (void)deviceUUIDWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
+  replyCopy = reply;
+  authorizedEventStreamsToRead = [(CDKnowledgeDaemonConnection *)self authorizedEventStreamsToRead];
 
-  if (v5)
+  if (authorizedEventStreamsToRead)
   {
-    v6 = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
-    v4[2](v4, 0);
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self unauthorizedClientError];
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
-    v6 = [(CDKnowledgeDaemonConnection *)self daemon];
-    [v6 deviceUUIDWithReply:v4];
+    unauthorizedClientError = [(CDKnowledgeDaemonConnection *)self daemon];
+    [unauthorizedClientError deviceUUIDWithReply:replyCopy];
   }
 }
 
-- (void)disableSyncPolicyForFeature:(unint64_t)a3 transportType:(int64_t)a4 withReply:(id)a5
+- (void)disableSyncPolicyForFeature:(unint64_t)feature transportType:(int64_t)type withReply:(id)reply
 {
-  v8 = a5;
-  v9 = [(CDKnowledgeDaemonConnection *)self daemon];
-  [v9 disableSyncPolicyForFeature:a3 transportType:a4 withReply:v8];
+  replyCopy = reply;
+  daemon = [(CDKnowledgeDaemonConnection *)self daemon];
+  [daemon disableSyncPolicyForFeature:feature transportType:type withReply:replyCopy];
 }
 
-- (void)isSyncPolicyDisabledForFeature:(unint64_t)a3 transportType:(int64_t)a4 withReply:(id)a5
+- (void)isSyncPolicyDisabledForFeature:(unint64_t)feature transportType:(int64_t)type withReply:(id)reply
 {
-  v8 = a5;
-  v9 = [(CDKnowledgeDaemonConnection *)self daemon];
-  [v9 isSyncPolicyDisabledForFeature:a3 transportType:a4 withReply:v8];
+  replyCopy = reply;
+  daemon = [(CDKnowledgeDaemonConnection *)self daemon];
+  [daemon isSyncPolicyDisabledForFeature:feature transportType:type withReply:replyCopy];
 }
 
-- (void)confirmDatabaseConnectionWithReply:(id)a3
+- (void)confirmDatabaseConnectionWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CDKnowledgeDaemonConnection *)self daemon];
-  [v5 confirmDatabaseConnectionWithReply:v4];
+  replyCopy = reply;
+  daemon = [(CDKnowledgeDaemonConnection *)self daemon];
+  [daemon confirmDatabaseConnectionWithReply:replyCopy];
 }
 
 @end

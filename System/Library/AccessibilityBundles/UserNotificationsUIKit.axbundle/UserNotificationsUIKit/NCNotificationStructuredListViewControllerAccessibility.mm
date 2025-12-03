@@ -1,23 +1,23 @@
 @interface NCNotificationStructuredListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
-- (id)_accessibilityNotificationSummary:(unint64_t)a3;
+- (id)_accessibilityNotificationSummary:(unint64_t)summary;
 - (id)_axRequests;
 - (unint64_t)_accessibilityNotificationCount;
 @end
 
 @implementation NCNotificationStructuredListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCNotificationStructuredListViewController" hasInstanceMethod:@"listModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationStructuredListViewController" hasInstanceMethod:@"dismissModalFullScreenAnimated:" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"listView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"allNotificationRequests" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationRootList" hasInstanceMethod:@"incomingSectionList" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationRootList" hasInstanceMethod:@"prominentIncomingSectionList" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"visibleViews" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCNotificationStructuredListViewController" hasInstanceMethod:@"listModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationStructuredListViewController" hasInstanceMethod:@"dismissModalFullScreenAnimated:" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"listView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"allNotificationRequests" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationRootList" hasInstanceMethod:@"incomingSectionList" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationRootList" hasInstanceMethod:@"prominentIncomingSectionList" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"visibleViews" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityPerformEscape
@@ -32,8 +32,8 @@
   _Block_object_dispose(&v7, 8);
   if ((v2 & 1) == 0)
   {
-    v3 = [MEMORY[0x29EDBDFA8] server];
-    [v3 hideNotificationCenter];
+    server = [MEMORY[0x29EDBDFA8] server];
+    [server hideNotificationCenter];
   }
 
   return 1;
@@ -46,7 +46,7 @@ uint64_t __85__NCNotificationStructuredListViewControllerAccessibility_accessibi
   return result;
 }
 
-- (id)_accessibilityNotificationSummary:(unint64_t)a3
+- (id)_accessibilityNotificationSummary:(unint64_t)summary
 {
   v4 = objc_alloc_init(MEMORY[0x29EDBA050]);
   v5 = [(NCNotificationStructuredListViewControllerAccessibility *)self safeValueForKey:@"listModel"];
@@ -62,8 +62,8 @@ uint64_t __85__NCNotificationStructuredListViewControllerAccessibility_accessibi
   v14 = [v13 mutableCopy];
 
   [v9 axSafelyAddEntriesFromDictionary:v14];
-  v15 = [v9 allKeys];
-  v16 = [v15 sortedArrayUsingComparator:&__block_literal_global_9];
+  allKeys = [v9 allKeys];
+  v16 = [allKeys sortedArrayUsingComparator:&__block_literal_global_9];
 
   v23[0] = MEMORY[0x29EDCA5F8];
   v23[1] = 3221225472;
@@ -72,7 +72,7 @@ uint64_t __85__NCNotificationStructuredListViewControllerAccessibility_accessibi
   v24 = v9;
   v17 = v4;
   v25 = v17;
-  v26 = a3;
+  summaryCopy = summary;
   v18 = v9;
   [v16 enumerateObjectsUsingBlock:v23];
   v19 = v25;
@@ -122,8 +122,8 @@ void __93__NCNotificationStructuredListViewControllerAccessibility__accessibilit
 
 - (unint64_t)_accessibilityNotificationCount
 {
-  v2 = [(NCNotificationStructuredListViewControllerAccessibility *)self _axRequests];
-  v3 = [v2 count];
+  _axRequests = [(NCNotificationStructuredListViewControllerAccessibility *)self _axRequests];
+  v3 = [_axRequests count];
 
   return v3;
 }

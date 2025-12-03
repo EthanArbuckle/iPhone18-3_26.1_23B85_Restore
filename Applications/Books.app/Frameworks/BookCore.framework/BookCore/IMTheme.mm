@@ -1,10 +1,10 @@
 @interface IMTheme
 + (BOOL)isAutoNightModeEnabled;
-+ (IMTheme)themeWithIdentifier:(id)a3;
-+ (id)_themeForIdentifier:(id)a3;
++ (IMTheme)themeWithIdentifier:(id)identifier;
++ (id)_themeForIdentifier:(id)identifier;
 + (void)initialize;
-+ (void)setAutoNightModeEnabled:(BOOL)a3;
-- (BOOL)isEqual:(id)a3;
++ (void)setAutoNightModeEnabled:(BOOL)enabled;
+- (BOOL)isEqual:(id)equal;
 - (IMTheme)init;
 - (NSString)identifier;
 - (UIColor)appearancePopoverBackgroundColor;
@@ -14,29 +14,29 @@
 - (UIColor)searchPopoverTextColor;
 - (UIColor)searchPopoverTintColor;
 - (id)compositingFilter;
-- (void)stylizeBCNavigationBar:(id)a3;
-- (void)stylizeBCNavigationBarTranslucent:(id)a3;
-- (void)stylizeBCNavigationBarTransparent:(id)a3;
-- (void)stylizeBCToolbar:(id)a3;
-- (void)stylizeBCToolbarTranslucent:(id)a3;
-- (void)stylizeBarButtonItemDelete:(id)a3;
-- (void)stylizeButton:(id)a3;
-- (void)stylizeKeyboard:(id)a3;
-- (void)stylizeMenuTableViewCell:(id)a3;
-- (void)stylizeNavigationController:(id)a3;
-- (void)stylizeOuterView:(id)a3;
-- (void)stylizeScrollView:(id)a3;
-- (void)stylizeSlider:(id)a3;
-- (void)stylizeTableView:(id)a3;
-- (void)stylizeTableViewCell:(id)a3;
-- (void)stylizeToolbarButtonDelete:(id)a3;
+- (void)stylizeBCNavigationBar:(id)bar;
+- (void)stylizeBCNavigationBarTranslucent:(id)translucent;
+- (void)stylizeBCNavigationBarTransparent:(id)transparent;
+- (void)stylizeBCToolbar:(id)toolbar;
+- (void)stylizeBCToolbarTranslucent:(id)translucent;
+- (void)stylizeBarButtonItemDelete:(id)delete;
+- (void)stylizeButton:(id)button;
+- (void)stylizeKeyboard:(id)keyboard;
+- (void)stylizeMenuTableViewCell:(id)cell;
+- (void)stylizeNavigationController:(id)controller;
+- (void)stylizeOuterView:(id)view;
+- (void)stylizeScrollView:(id)view;
+- (void)stylizeSlider:(id)slider;
+- (void)stylizeTableView:(id)view;
+- (void)stylizeTableViewCell:(id)cell;
+- (void)stylizeToolbarButtonDelete:(id)delete;
 @end
 
 @implementation IMTheme
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = +[NSUserDefaults standardUserDefaults];
     v4 = @"BKFlowingBookViewControllerAutoNightModeOnKey";
@@ -54,11 +54,11 @@
   return v3;
 }
 
-+ (void)setAutoNightModeEnabled:(BOOL)a3
++ (void)setAutoNightModeEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setBool:v3 forKey:@"BKFlowingBookViewControllerAutoNightModeOnKey"];
+  [v4 setBool:enabledCopy forKey:@"BKFlowingBookViewControllerAutoNightModeOnKey"];
 }
 
 - (IMTheme)init
@@ -156,22 +156,22 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = BUDynamicCast();
 
   if (v5)
   {
-    v6 = [(IMTheme *)self themeIdentifier];
-    v7 = [v5 themeIdentifier];
-    v8 = [v6 isEqual:v7];
+    themeIdentifier = [(IMTheme *)self themeIdentifier];
+    themeIdentifier2 = [v5 themeIdentifier];
+    v8 = [themeIdentifier isEqual:themeIdentifier2];
   }
 
   else
@@ -182,10 +182,10 @@
   return v8;
 }
 
-+ (id)_themeForIdentifier:(id)a3
++ (id)_themeForIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kIMThemeIdentifierBookshelfTheme[0]])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:kIMThemeIdentifierBookshelfTheme[0]])
   {
     v4 = off_2C6058;
 LABEL_19:
@@ -193,49 +193,49 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ([v3 isEqualToString:kIMThemeIdentifierBookshelfNightTheme[0]])
+  if ([identifierCopy isEqualToString:kIMThemeIdentifierBookshelfNightTheme[0]])
   {
     v4 = off_2C6060;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:kIMThemeIdentifierDefaultPageTheme[0]])
+  if ([identifierCopy isEqualToString:kIMThemeIdentifierDefaultPageTheme[0]])
   {
     v4 = off_2C6068;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:kIMThemeIdentifierWhitePageTheme[0]])
+  if ([identifierCopy isEqualToString:kIMThemeIdentifierWhitePageTheme[0]])
   {
     v4 = &off_2C6090;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:kIMThemeIdentifierSepiaPageTheme[0]])
+  if ([identifierCopy isEqualToString:kIMThemeIdentifierSepiaPageTheme[0]])
   {
     v4 = off_2C6088;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:kIMThemeIdentifierGrayPageTheme[0]])
+  if ([identifierCopy isEqualToString:kIMThemeIdentifierGrayPageTheme[0]])
   {
     v4 = off_2C6078;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:kIMThemeIdentifierNightPageTheme[0]])
+  if ([identifierCopy isEqualToString:kIMThemeIdentifierNightPageTheme[0]])
   {
     v4 = off_2C6080;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:kIMThemeIdentifierBlissClassicTheme[0]])
+  if ([identifierCopy isEqualToString:kIMThemeIdentifierBlissClassicTheme[0]])
   {
     v4 = off_2C6050;
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:kIMThemeIdentifierDynamicTheme[0]])
+  if ([identifierCopy isEqualToString:kIMThemeIdentifierDynamicTheme[0]])
   {
     v4 = off_2C6070;
     goto LABEL_19;
@@ -243,24 +243,24 @@ LABEL_19:
 
   v5 = 0;
 LABEL_20:
-  [v5 setThemeIdentifier:v3];
+  [v5 setThemeIdentifier:identifierCopy];
 
   return v5;
 }
 
-+ (IMTheme)themeWithIdentifier:(id)a3
++ (IMTheme)themeWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (qword_346210 != -1)
   {
     sub_1EDAC4();
   }
 
-  v5 = [qword_346208 objectForKeyedSubscript:v4];
+  v5 = [qword_346208 objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
-    v5 = [a1 _themeForIdentifier:v4];
-    [qword_346208 setObject:v5 forKeyedSubscript:v4];
+    v5 = [self _themeForIdentifier:identifierCopy];
+    [qword_346208 setObject:v5 forKeyedSubscript:identifierCopy];
   }
 
   return v5;
@@ -273,23 +273,23 @@ LABEL_20:
   return NSStringFromClass(v2);
 }
 
-- (void)stylizeOuterView:(id)a3
+- (void)stylizeOuterView:(id)view
 {
-  v4 = a3;
-  v5 = [(IMTheme *)self tintColor];
-  [v4 setTintColor:v5];
+  viewCopy = view;
+  tintColor = [(IMTheme *)self tintColor];
+  [viewCopy setTintColor:tintColor];
 }
 
-- (void)stylizeButton:(id)a3
+- (void)stylizeButton:(id)button
 {
-  v25 = a3;
-  v4 = [(IMTheme *)self buttonTitleFont];
+  buttonCopy = button;
+  buttonTitleFont = [(IMTheme *)self buttonTitleFont];
 
-  if (v4)
+  if (buttonTitleFont)
   {
-    v5 = [(IMTheme *)self buttonTitleFont];
-    v6 = [v25 titleLabel];
-    [v6 setFont:v5];
+    buttonTitleFont2 = [(IMTheme *)self buttonTitleFont];
+    titleLabel = [buttonCopy titleLabel];
+    [titleLabel setFont:buttonTitleFont2];
   }
 
   objc_opt_class();
@@ -297,161 +297,161 @@ LABEL_20:
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 keyColor];
-    [v25 setTitleColor:v9 forState:0];
+    keyColor = [v7 keyColor];
+    [buttonCopy setTitleColor:keyColor forState:0];
 
-    v10 = [v8 keyColor];
-    v11 = [v10 colorWithAlphaComponent:0.7];
-    [v25 setTitleColor:v11 forState:1];
+    keyColor2 = [v8 keyColor];
+    v11 = [keyColor2 colorWithAlphaComponent:0.7];
+    [buttonCopy setTitleColor:v11 forState:1];
 
-    v12 = [v8 quarternaryTextColor];
-    [v25 setTitleColor:v12 forState:2];
+    quarternaryTextColor = [v8 quarternaryTextColor];
+    [buttonCopy setTitleColor:quarternaryTextColor forState:2];
 
-    v13 = [v8 keyColor];
-    [v25 _setImageColor:v13 forState:0];
+    keyColor3 = [v8 keyColor];
+    [buttonCopy _setImageColor:keyColor3 forState:0];
 
-    v14 = [v8 keyColor];
-    v15 = [v14 colorWithAlphaComponent:0.7];
-    [v25 _setImageColor:v15 forState:1];
+    keyColor4 = [v8 keyColor];
+    v15 = [keyColor4 colorWithAlphaComponent:0.7];
+    [buttonCopy _setImageColor:v15 forState:1];
 
-    v16 = [v8 quarternaryTextColor];
+    quarternaryTextColor2 = [v8 quarternaryTextColor];
 LABEL_9:
-    v24 = v16;
-    [v25 _setImageColor:v16 forState:2];
+    v24 = quarternaryTextColor2;
+    [buttonCopy _setImageColor:quarternaryTextColor2 forState:2];
 
     goto LABEL_10;
   }
 
-  v17 = [(IMTheme *)self buttonTitleColor];
+  buttonTitleColor = [(IMTheme *)self buttonTitleColor];
 
-  if (v17)
+  if (buttonTitleColor)
   {
-    v18 = [(IMTheme *)self buttonTitleColor];
-    [v25 setTitleColor:v18 forState:0];
+    buttonTitleColor2 = [(IMTheme *)self buttonTitleColor];
+    [buttonCopy setTitleColor:buttonTitleColor2 forState:0];
 
-    v19 = [(IMTheme *)self buttonTitleColor];
-    [v25 setTitleColor:v19 forState:1];
+    buttonTitleColor3 = [(IMTheme *)self buttonTitleColor];
+    [buttonCopy setTitleColor:buttonTitleColor3 forState:1];
 
-    v20 = [(IMTheme *)self buttonTitleColor];
-    [v25 _setImageColor:v20 forState:0];
+    buttonTitleColor4 = [(IMTheme *)self buttonTitleColor];
+    [buttonCopy _setImageColor:buttonTitleColor4 forState:0];
 
-    v21 = [(IMTheme *)self buttonTitleColor];
-    [v25 _setImageColor:v21 forState:1];
+    buttonTitleColor5 = [(IMTheme *)self buttonTitleColor];
+    [buttonCopy _setImageColor:buttonTitleColor5 forState:1];
   }
 
-  v22 = [(IMTheme *)self buttonTitleColorDisabled];
+  buttonTitleColorDisabled = [(IMTheme *)self buttonTitleColorDisabled];
 
-  if (v22)
+  if (buttonTitleColorDisabled)
   {
-    v23 = [(IMTheme *)self buttonTitleColorDisabled];
-    [v25 setTitleColor:v23 forState:2];
+    buttonTitleColorDisabled2 = [(IMTheme *)self buttonTitleColorDisabled];
+    [buttonCopy setTitleColor:buttonTitleColorDisabled2 forState:2];
 
-    v16 = [(IMTheme *)self buttonTitleColorDisabled];
+    quarternaryTextColor2 = [(IMTheme *)self buttonTitleColorDisabled];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)stylizeBCNavigationBar:(id)a3
+- (void)stylizeBCNavigationBar:(id)bar
 {
-  v6 = a3;
-  [v6 setBarStyle:0];
-  [v6 setTranslucent:0];
-  v4 = [(IMTheme *)self backgroundColorForTraitEnvironment:v6];
-  [v6 setBarTintColor:v4];
+  barCopy = bar;
+  [barCopy setBarStyle:0];
+  [barCopy setTranslucent:0];
+  v4 = [(IMTheme *)self backgroundColorForTraitEnvironment:barCopy];
+  [barCopy setBarTintColor:v4];
 
-  v5 = [(IMTheme *)self keyColor];
-  [v6 setTintColor:v5];
+  keyColor = [(IMTheme *)self keyColor];
+  [barCopy setTintColor:keyColor];
 
-  [v6 setSeparatorsVisible:1];
-  [v6 setBackgroundHidden:0];
-  [v6 setBackgroundImage:0 forBarPosition:0 barMetrics:0];
+  [barCopy setSeparatorsVisible:1];
+  [barCopy setBackgroundHidden:0];
+  [barCopy setBackgroundImage:0 forBarPosition:0 barMetrics:0];
 }
 
-- (void)stylizeBCNavigationBarTranslucent:(id)a3
+- (void)stylizeBCNavigationBarTranslucent:(id)translucent
 {
-  v6 = a3;
-  [v6 setBarStyle:0];
-  [v6 setTranslucent:1];
-  v4 = [(IMTheme *)self backgroundColorForTraitEnvironment:v6];
-  [v6 setBarTintColor:v4];
+  translucentCopy = translucent;
+  [translucentCopy setBarStyle:0];
+  [translucentCopy setTranslucent:1];
+  v4 = [(IMTheme *)self backgroundColorForTraitEnvironment:translucentCopy];
+  [translucentCopy setBarTintColor:v4];
 
-  v5 = [(IMTheme *)self keyColor];
-  [v6 setTintColor:v5];
+  keyColor = [(IMTheme *)self keyColor];
+  [translucentCopy setTintColor:keyColor];
 
-  [v6 setSeparatorsVisible:1];
-  [v6 setBackgroundHidden:0];
-  [v6 setBackgroundImage:0 forBarPosition:0 barMetrics:0];
+  [translucentCopy setSeparatorsVisible:1];
+  [translucentCopy setBackgroundHidden:0];
+  [translucentCopy setBackgroundImage:0 forBarPosition:0 barMetrics:0];
 }
 
-- (void)stylizeBCNavigationBarTransparent:(id)a3
+- (void)stylizeBCNavigationBarTransparent:(id)transparent
 {
-  v4 = a3;
-  [(IMTheme *)self stylizeBCNavigationBar:v4];
-  [v4 setSeparatorsVisible:0];
+  transparentCopy = transparent;
+  [(IMTheme *)self stylizeBCNavigationBar:transparentCopy];
+  [transparentCopy setSeparatorsVisible:0];
   v5 = +[UIColor clearColor];
-  [v4 setBarTintColor:v5];
+  [transparentCopy setBarTintColor:v5];
 
   v6 = +[UIColor clearColor];
-  [v4 setBackgroundColor:v6];
+  [transparentCopy setBackgroundColor:v6];
 
   v7 = objc_alloc_init(UINavigationBarAppearance);
   [v7 configureWithTransparentBackground];
-  [v4 setStandardAppearance:v7];
+  [transparentCopy setStandardAppearance:v7];
 }
 
-- (void)stylizeBCToolbar:(id)a3
+- (void)stylizeBCToolbar:(id)toolbar
 {
-  v6 = a3;
-  [v6 setBarStyle:0];
-  [v6 setTranslucent:0];
-  v4 = [(IMTheme *)self backgroundColorForTraitEnvironment:v6];
-  [v6 setBarTintColor:v4];
+  toolbarCopy = toolbar;
+  [toolbarCopy setBarStyle:0];
+  [toolbarCopy setTranslucent:0];
+  v4 = [(IMTheme *)self backgroundColorForTraitEnvironment:toolbarCopy];
+  [toolbarCopy setBarTintColor:v4];
 
-  v5 = [(IMTheme *)self keyColor];
-  [v6 setTintColor:v5];
+  keyColor = [(IMTheme *)self keyColor];
+  [toolbarCopy setTintColor:keyColor];
 
-  [v6 setSeparatorsVisible:1];
-  [v6 setBackgroundImage:0 forToolbarPosition:0 barMetrics:0];
+  [toolbarCopy setSeparatorsVisible:1];
+  [toolbarCopy setBackgroundImage:0 forToolbarPosition:0 barMetrics:0];
 }
 
-- (void)stylizeBCToolbarTranslucent:(id)a3
+- (void)stylizeBCToolbarTranslucent:(id)translucent
 {
-  v6 = a3;
-  [v6 setBarStyle:0];
-  [v6 setTranslucent:1];
-  v4 = [(IMTheme *)self backgroundColorForTraitEnvironment:v6];
-  [v6 setBarTintColor:v4];
+  translucentCopy = translucent;
+  [translucentCopy setBarStyle:0];
+  [translucentCopy setTranslucent:1];
+  v4 = [(IMTheme *)self backgroundColorForTraitEnvironment:translucentCopy];
+  [translucentCopy setBarTintColor:v4];
 
-  v5 = [(IMTheme *)self keyColor];
-  [v6 setTintColor:v5];
+  keyColor = [(IMTheme *)self keyColor];
+  [translucentCopy setTintColor:keyColor];
 
-  [v6 setSeparatorsVisible:1];
-  [v6 setBackgroundImage:0 forToolbarPosition:0 barMetrics:0];
+  [translucentCopy setSeparatorsVisible:1];
+  [translucentCopy setBackgroundImage:0 forToolbarPosition:0 barMetrics:0];
 }
 
-- (void)stylizeToolbarButtonDelete:(id)a3
+- (void)stylizeToolbarButtonDelete:(id)delete
 {
-  v3 = a3;
+  deleteCopy = delete;
   v4 = +[UIColor systemRedColor];
-  [v3 setTintColor:v4];
+  [deleteCopy setTintColor:v4];
 }
 
-- (void)stylizeBarButtonItemDelete:(id)a3
+- (void)stylizeBarButtonItemDelete:(id)delete
 {
-  v3 = a3;
+  deleteCopy = delete;
   v4 = +[UIColor systemRedColor];
-  [v3 setTintColor:v4];
+  [deleteCopy setTintColor:v4];
 }
 
-- (void)stylizeKeyboard:(id)a3
+- (void)stylizeKeyboard:(id)keyboard
 {
-  v6 = a3;
-  v4 = [v6 keyboardAppearance];
-  if (v4 != [(IMTheme *)self keyboardAppearance])
+  keyboardCopy = keyboard;
+  keyboardAppearance = [keyboardCopy keyboardAppearance];
+  if (keyboardAppearance != [(IMTheme *)self keyboardAppearance])
   {
-    [v6 setKeyboardAppearance:{-[IMTheme keyboardAppearance](self, "keyboardAppearance")}];
+    [keyboardCopy setKeyboardAppearance:{-[IMTheme keyboardAppearance](self, "keyboardAppearance")}];
     objc_opt_class();
     v5 = BUDynamicCast();
     [v5 reloadInputViews];
@@ -460,156 +460,156 @@ LABEL_10:
 
 - (UIColor)popoverControlColor
 {
-  v3 = self->_popoverControlColor;
-  if (!v3)
+  headerTextColor = self->_popoverControlColor;
+  if (!headerTextColor)
   {
-    v3 = [(IMTheme *)self headerTextColor];
+    headerTextColor = [(IMTheme *)self headerTextColor];
   }
 
-  return v3;
+  return headerTextColor;
 }
 
 - (UIColor)appearancePopoverBackgroundColor
 {
-  v3 = self->_appearancePopoverBackgroundColor;
-  if (!v3)
+  groupTableViewBackgroundColor = self->_appearancePopoverBackgroundColor;
+  if (!groupTableViewBackgroundColor)
   {
-    v3 = [(IMTheme *)self groupTableViewBackgroundColor];
+    groupTableViewBackgroundColor = [(IMTheme *)self groupTableViewBackgroundColor];
   }
 
-  return v3;
+  return groupTableViewBackgroundColor;
 }
 
 - (UIColor)searchPopoverTextColor
 {
-  v3 = self->_searchPopoverTextColor;
-  if (!v3)
+  headerTextColor = self->_searchPopoverTextColor;
+  if (!headerTextColor)
   {
-    v3 = [(IMTheme *)self headerTextColor];
+    headerTextColor = [(IMTheme *)self headerTextColor];
   }
 
-  return v3;
+  return headerTextColor;
 }
 
 - (UIColor)searchPopoverTintColor
 {
-  v3 = self->_searchPopoverTintColor;
-  if (!v3)
+  tintColor = self->_searchPopoverTintColor;
+  if (!tintColor)
   {
-    v3 = [(IMTheme *)self tintColor];
+    tintColor = [(IMTheme *)self tintColor];
   }
 
-  return v3;
+  return tintColor;
 }
 
 - (UIColor)linkVisitedColor
 {
-  v3 = self->_linkVisitedColor;
-  if (!v3)
+  linkColor = self->_linkVisitedColor;
+  if (!linkColor)
   {
-    v3 = [(IMTheme *)self linkColor];
+    linkColor = [(IMTheme *)self linkColor];
   }
 
-  return v3;
+  return linkColor;
 }
 
 - (UIColor)linkActiveColor
 {
-  v3 = self->_linkActiveColor;
-  if (!v3)
+  linkColor = self->_linkActiveColor;
+  if (!linkColor)
   {
-    v3 = [(IMTheme *)self linkColor];
+    linkColor = [(IMTheme *)self linkColor];
   }
 
-  return v3;
+  return linkColor;
 }
 
-- (void)stylizeNavigationController:(id)a3
+- (void)stylizeNavigationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(IMTheme *)self tintColor];
-  v6 = [v4 view];
-  [v6 setTintColor:v5];
+  controllerCopy = controller;
+  tintColor = [(IMTheme *)self tintColor];
+  view = [controllerCopy view];
+  [view setTintColor:tintColor];
 
-  v7 = [(IMTheme *)self buttonTitleColor];
+  buttonTitleColor = [(IMTheme *)self buttonTitleColor];
 
-  if (v7)
+  if (buttonTitleColor)
   {
     v11 = NSForegroundColorAttributeName;
-    v8 = [(IMTheme *)self buttonTitleColor];
-    v12 = v8;
+    buttonTitleColor2 = [(IMTheme *)self buttonTitleColor];
+    v12 = buttonTitleColor2;
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    v10 = [v4 navigationBar];
-    [v10 setTitleTextAttributes:v9];
+    navigationBar = [controllerCopy navigationBar];
+    [navigationBar setTitleTextAttributes:v9];
   }
 }
 
-- (void)stylizeTableViewCell:(id)a3
+- (void)stylizeTableViewCell:(id)cell
 {
-  v15 = a3;
-  v4 = [(IMTheme *)self tableViewCellBackgroundColor];
-  [v15 setBackgroundColor:v4];
+  cellCopy = cell;
+  tableViewCellBackgroundColor = [(IMTheme *)self tableViewCellBackgroundColor];
+  [cellCopy setBackgroundColor:tableViewCellBackgroundColor];
 
-  v5 = [(IMTheme *)self buttonTitleFont];
-  v6 = [v15 textLabel];
-  [v6 setFont:v5];
+  buttonTitleFont = [(IMTheme *)self buttonTitleFont];
+  textLabel = [cellCopy textLabel];
+  [textLabel setFont:buttonTitleFont];
 
-  v7 = [(IMTheme *)self contentTextColor];
-  v8 = [v15 textLabel];
-  [v8 setTextColor:v7];
+  contentTextColor = [(IMTheme *)self contentTextColor];
+  textLabel2 = [cellCopy textLabel];
+  [textLabel2 setTextColor:contentTextColor];
 
-  v9 = [v15 selectedBackgroundView];
-  v10 = [v9 tag];
+  selectedBackgroundView = [cellCopy selectedBackgroundView];
+  v10 = [selectedBackgroundView tag];
 
   if (v10 != &loc_11E74 + 2)
   {
     v11 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    [v15 setSelectedBackgroundView:v11];
+    [cellCopy setSelectedBackgroundView:v11];
 
-    v12 = [v15 selectedBackgroundView];
-    [v12 setTag:73334];
+    selectedBackgroundView2 = [cellCopy selectedBackgroundView];
+    [selectedBackgroundView2 setTag:73334];
   }
 
-  v13 = [(IMTheme *)self tableViewCellSelectedColor];
-  v14 = [v15 selectedBackgroundView];
-  [v14 setBackgroundColor:v13];
+  tableViewCellSelectedColor = [(IMTheme *)self tableViewCellSelectedColor];
+  selectedBackgroundView3 = [cellCopy selectedBackgroundView];
+  [selectedBackgroundView3 setBackgroundColor:tableViewCellSelectedColor];
 }
 
-- (void)stylizeMenuTableViewCell:(id)a3
+- (void)stylizeMenuTableViewCell:(id)cell
 {
-  v15 = a3;
-  v4 = [(IMTheme *)self tableViewCellBackgroundColor];
-  [v15 setBackgroundColor:v4];
+  cellCopy = cell;
+  tableViewCellBackgroundColor = [(IMTheme *)self tableViewCellBackgroundColor];
+  [cellCopy setBackgroundColor:tableViewCellBackgroundColor];
 
-  v5 = [(IMTheme *)self menuTitleFont];
-  v6 = [v15 textLabel];
-  [v6 setFont:v5];
+  menuTitleFont = [(IMTheme *)self menuTitleFont];
+  textLabel = [cellCopy textLabel];
+  [textLabel setFont:menuTitleFont];
 
-  v7 = [(IMTheme *)self menuTitleColor];
-  v8 = [v15 textLabel];
-  [v8 setTextColor:v7];
+  menuTitleColor = [(IMTheme *)self menuTitleColor];
+  textLabel2 = [cellCopy textLabel];
+  [textLabel2 setTextColor:menuTitleColor];
 
-  v9 = [v15 selectedBackgroundView];
-  v10 = [v9 tag];
+  selectedBackgroundView = [cellCopy selectedBackgroundView];
+  v10 = [selectedBackgroundView tag];
 
   if (v10 != &loc_11E74 + 2)
   {
     v11 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    [v15 setSelectedBackgroundView:v11];
+    [cellCopy setSelectedBackgroundView:v11];
 
-    v12 = [v15 selectedBackgroundView];
-    [v12 setTag:73334];
+    selectedBackgroundView2 = [cellCopy selectedBackgroundView];
+    [selectedBackgroundView2 setTag:73334];
   }
 
-  v13 = [(IMTheme *)self tableViewCellSelectedColor];
-  v14 = [v15 selectedBackgroundView];
-  [v14 setBackgroundColor:v13];
+  tableViewCellSelectedColor = [(IMTheme *)self tableViewCellSelectedColor];
+  selectedBackgroundView3 = [cellCopy selectedBackgroundView];
+  [selectedBackgroundView3 setBackgroundColor:tableViewCellSelectedColor];
 }
 
-- (void)stylizeTableView:(id)a3
+- (void)stylizeTableView:(id)view
 {
-  v6 = a3;
-  if ([v6 style] == &dword_0 + 1)
+  viewCopy = view;
+  if ([viewCopy style] == &dword_0 + 1)
   {
     [(IMTheme *)self groupTableViewBackgroundColor];
   }
@@ -619,17 +619,17 @@ LABEL_10:
     [(IMTheme *)self tableViewBackgroundColor];
   }
   v4 = ;
-  [v6 setBackgroundColor:v4];
+  [viewCopy setBackgroundColor:v4];
 
-  v5 = [(IMTheme *)self tableViewSeparatorColor];
-  [v6 setSeparatorColor:v5];
+  tableViewSeparatorColor = [(IMTheme *)self tableViewSeparatorColor];
+  [viewCopy setSeparatorColor:tableViewSeparatorColor];
 }
 
-- (void)stylizeSlider:(id)a3
+- (void)stylizeSlider:(id)slider
 {
-  v8 = a3;
+  sliderCopy = slider;
   v4 = +[UIColor clearColor];
-  [v8 setBackgroundColor:v4];
+  [sliderCopy setBackgroundColor:v4];
 
   [(IMTheme *)self sliderAlpha];
   v6 = v5;
@@ -639,12 +639,12 @@ LABEL_10:
     [(IMTheme *)self sliderAlpha];
   }
 
-  [v8 setAlpha:v7];
+  [sliderCopy setAlpha:v7];
 }
 
-- (void)stylizeScrollView:(id)a3
+- (void)stylizeScrollView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   objc_opt_class();
   v3 = BUDynamicCast();
   v4 = v3;
@@ -660,7 +660,7 @@ LABEL_10:
       v5 = 1;
     }
 
-    [v6 setIndicatorStyle:v5];
+    [viewCopy setIndicatorStyle:v5];
   }
 }
 

@@ -1,16 +1,16 @@
 @interface DDMatchLink
-- (DDMatchLink)initWithDDScannerResult:(id)a3;
+- (DDMatchLink)initWithDDScannerResult:(id)result;
 @end
 
 @implementation DDMatchLink
 
-- (DDMatchLink)initWithDDScannerResult:(id)a3
+- (DDMatchLink)initWithDDScannerResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = DDMatchLink;
-  v5 = [(DDMatch *)&v10 initWithDDScannerResult:v4];
-  if (v5 && ([v4 url], v6 = objc_claimAutoreleasedReturnValue(), URL = v5->_URL, v5->_URL = v6, URL, !v5->_URL))
+  v5 = [(DDMatch *)&v10 initWithDDScannerResult:resultCopy];
+  if (v5 && ([resultCopy url], v6 = objc_claimAutoreleasedReturnValue(), URL = v5->_URL, v5->_URL = v6, URL, !v5->_URL))
   {
     v8 = 0;
   }

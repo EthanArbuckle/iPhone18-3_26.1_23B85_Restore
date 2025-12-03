@@ -1,25 +1,25 @@
 @interface MFSecureMIMEPersonHeaderView
 + (id)_explanationLabelDefaultAttributes;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MFSecureMIMEPersonHeaderView)initWithFrame:(CGRect)a3 warningLabelTextColor:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MFSecureMIMEPersonHeaderView)initWithFrame:(CGRect)frame warningLabelTextColor:(id)color;
 - (NSString)secureLabelText;
 - (NSString)signedLabelText;
 - (NSString)warningLabelText;
 - (double)heightOfBottomMargin;
 - (double)heightThatFitsButtons;
-- (double)heightThatFitsMainLabel:(CGSize)a3;
-- (double)heightThatFitsSubview:(id)a3 padding:(double)a4;
-- (double)widthForSizingToFitSize:(CGSize)a3;
-- (void)_insert:(BOOL)a3 subview:(id)a4;
-- (void)_setText:(id)a3 forLabel:(id)a4;
+- (double)heightThatFitsMainLabel:(CGSize)label;
+- (double)heightThatFitsSubview:(id)subview padding:(double)padding;
+- (double)widthForSizingToFitSize:(CGSize)size;
+- (void)_insert:(BOOL)_insert subview:(id)subview;
+- (void)_setText:(id)text forLabel:(id)label;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setButtons:(id)a3;
-- (void)setExplanationText:(id)a3;
-- (void)setSecureLabelText:(id)a3;
-- (void)setSignedLabelText:(id)a3;
-- (void)setWarningLabelText:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setButtons:(id)buttons;
+- (void)setExplanationText:(id)text;
+- (void)setSecureLabelText:(id)text;
+- (void)setSignedLabelText:(id)text;
+- (void)setWarningLabelText:(id)text;
 @end
 
 @implementation MFSecureMIMEPersonHeaderView
@@ -54,55 +54,55 @@ void __66__MFSecureMIMEPersonHeaderView__explanationLabelDefaultAttributes__bloc
   _explanationLabelDefaultAttributes_defaultAttributes = v3;
 }
 
-- (MFSecureMIMEPersonHeaderView)initWithFrame:(CGRect)a3 warningLabelTextColor:(id)a4
+- (MFSecureMIMEPersonHeaderView)initWithFrame:(CGRect)frame warningLabelTextColor:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
   v33.receiver = self;
   v33.super_class = MFSecureMIMEPersonHeaderView;
-  v10 = [(MFSecureMIMEPersonHeaderView *)&v33 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(MFSecureMIMEPersonHeaderView *)&v33 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(MFSecureMIMEPersonHeaderView *)v10 setAutoresizesSubviews:1];
+    [(MFSecureMIMEPersonHeaderView *)height setAutoresizesSubviews:1];
     [(MFSecureMIMEPersonHeaderView *)v11 setAutoresizingMask:2];
     v12 = objc_alloc(MEMORY[0x1E69DCC10]);
     v13 = [v12 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     label = v11->_label;
     v11->_label = v13;
 
-    v15 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v11->_label setBackgroundColor:v15];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v11->_label setBackgroundColor:clearColor];
 
     [(UILabel *)v11->_label setNumberOfLines:0];
     v16 = [_MFSecureMIMEPersonHeaderLabel alloc];
     v17 = [MEMORY[0x1E69DCAB8] mf_systemImageNamed:@"checkmark.circle.fill" forView:21];
-    v18 = [MEMORY[0x1E69DC888] mailSecureMIMERegularTextColor];
-    v19 = [(_MFSecureMIMEPersonHeaderLabel *)v16 initWithImage:v17 text:0 textColor:v18];
+    mailSecureMIMERegularTextColor = [MEMORY[0x1E69DC888] mailSecureMIMERegularTextColor];
+    v19 = [(_MFSecureMIMEPersonHeaderLabel *)v16 initWithImage:v17 text:0 textColor:mailSecureMIMERegularTextColor];
     signedLabel = v11->_signedLabel;
     v11->_signedLabel = v19;
 
     v21 = [_MFSecureMIMEPersonHeaderLabel alloc];
     v22 = [MEMORY[0x1E69DCAB8] mf_systemImageNamed:@"lock.fill" forView:21];
-    v23 = [MEMORY[0x1E69DC888] mailSecureMIMERegularTextColor];
-    v24 = [(_MFSecureMIMEPersonHeaderLabel *)v21 initWithImage:v22 text:0 textColor:v23];
+    mailSecureMIMERegularTextColor2 = [MEMORY[0x1E69DC888] mailSecureMIMERegularTextColor];
+    v24 = [(_MFSecureMIMEPersonHeaderLabel *)v21 initWithImage:v22 text:0 textColor:mailSecureMIMERegularTextColor2];
     secureLabel = v11->_secureLabel;
     v11->_secureLabel = v24;
 
-    if (v9)
+    if (colorCopy)
     {
-      v26 = v9;
+      mailSecureMIMEWarningColor = colorCopy;
     }
 
     else
     {
-      v26 = [MEMORY[0x1E69DC888] mailSecureMIMEWarningColor];
+      mailSecureMIMEWarningColor = [MEMORY[0x1E69DC888] mailSecureMIMEWarningColor];
     }
 
-    v27 = v26;
+    v27 = mailSecureMIMEWarningColor;
     v28 = [_MFSecureMIMEPersonHeaderLabel alloc];
     v29 = [MEMORY[0x1E69DCAB8] mf_systemImageNamed:@"questionmark.circle.fill" forView:21];
     v30 = [(_MFSecureMIMEPersonHeaderLabel *)v28 initWithImage:v29 text:0 textColor:v27];
@@ -113,59 +113,59 @@ void __66__MFSecureMIMEPersonHeaderView__explanationLabelDefaultAttributes__bloc
   return v11;
 }
 
-- (void)setSignedLabelText:(id)a3
+- (void)setSignedLabelText:(id)text
 {
-  v5 = a3;
-  v4 = [(MFSecureMIMEPersonHeaderView *)self _signedLabel];
-  [(MFSecureMIMEPersonHeaderView *)self _setText:v5 forLabel:v4];
+  textCopy = text;
+  _signedLabel = [(MFSecureMIMEPersonHeaderView *)self _signedLabel];
+  [(MFSecureMIMEPersonHeaderView *)self _setText:textCopy forLabel:_signedLabel];
 }
 
 - (NSString)signedLabelText
 {
-  v2 = [(MFSecureMIMEPersonHeaderView *)self _signedLabel];
-  v3 = [v2 text];
+  _signedLabel = [(MFSecureMIMEPersonHeaderView *)self _signedLabel];
+  text = [_signedLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setSecureLabelText:(id)a3
+- (void)setSecureLabelText:(id)text
 {
-  v5 = a3;
-  v4 = [(MFSecureMIMEPersonHeaderView *)self _secureLabel];
-  [(MFSecureMIMEPersonHeaderView *)self _setText:v5 forLabel:v4];
+  textCopy = text;
+  _secureLabel = [(MFSecureMIMEPersonHeaderView *)self _secureLabel];
+  [(MFSecureMIMEPersonHeaderView *)self _setText:textCopy forLabel:_secureLabel];
 }
 
 - (NSString)secureLabelText
 {
-  v2 = [(MFSecureMIMEPersonHeaderView *)self _secureLabel];
-  v3 = [v2 text];
+  _secureLabel = [(MFSecureMIMEPersonHeaderView *)self _secureLabel];
+  text = [_secureLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setWarningLabelText:(id)a3
+- (void)setWarningLabelText:(id)text
 {
-  v5 = a3;
-  v4 = [(MFSecureMIMEPersonHeaderView *)self _warningLabel];
-  [(MFSecureMIMEPersonHeaderView *)self _setText:v5 forLabel:v4];
+  textCopy = text;
+  _warningLabel = [(MFSecureMIMEPersonHeaderView *)self _warningLabel];
+  [(MFSecureMIMEPersonHeaderView *)self _setText:textCopy forLabel:_warningLabel];
 }
 
 - (NSString)warningLabelText
 {
-  v2 = [(MFSecureMIMEPersonHeaderView *)self _warningLabel];
-  v3 = [v2 text];
+  _warningLabel = [(MFSecureMIMEPersonHeaderView *)self _warningLabel];
+  text = [_warningLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setExplanationText:(id)a3
+- (void)setExplanationText:(id)text
 {
-  v8 = a3;
-  [(MFSecureMIMEPersonHeaderView *)self _insert:v8 != 0 subview:self->_label];
+  textCopy = text;
+  [(MFSecureMIMEPersonHeaderView *)self _insert:textCopy != 0 subview:self->_label];
   v4 = objc_alloc(MEMORY[0x1E696AAB0]);
-  if (v8)
+  if (textCopy)
   {
-    v5 = v8;
+    v5 = textCopy;
   }
 
   else
@@ -173,23 +173,23 @@ void __66__MFSecureMIMEPersonHeaderView__explanationLabelDefaultAttributes__bloc
     v5 = &stru_1F3CF3758;
   }
 
-  v6 = [objc_opt_class() _explanationLabelDefaultAttributes];
-  v7 = [v4 initWithString:v5 attributes:v6];
+  _explanationLabelDefaultAttributes = [objc_opt_class() _explanationLabelDefaultAttributes];
+  v7 = [v4 initWithString:v5 attributes:_explanationLabelDefaultAttributes];
 
   [(UILabel *)self->_label setAttributedText:v7];
   [(MFSecureMIMEPersonHeaderView *)self invalidateIntrinsicContentSize];
   [(MFSecureMIMEPersonHeaderView *)self setNeedsLayout];
 }
 
-- (void)setButtons:(id)a3
+- (void)setButtons:(id)buttons
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  buttonsCopy = buttons;
+  v5 = buttonsCopy;
   buttons = self->_buttons;
-  if (buttons == v4)
+  if (buttons == buttonsCopy)
   {
-    if (([(NSArray *)v4 isEqual:self->_buttons]& 1) != 0)
+    if (([(NSArray *)buttonsCopy isEqual:self->_buttons]& 1) != 0)
     {
       goto LABEL_12;
     }
@@ -235,10 +235,10 @@ void __66__MFSecureMIMEPersonHeaderView__explanationLabelDefaultAttributes__bloc
 LABEL_12:
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(MFSecureMIMEPersonHeaderView *)self heightThatFitsSubview:self->_signedLabel padding:5.0];
   v7 = v6 + 10.0;
   [(MFSecureMIMEPersonHeaderView *)self heightThatFitsSubview:self->_secureLabel padding:5.0];
@@ -257,16 +257,16 @@ LABEL_12:
   return result;
 }
 
-- (double)heightThatFitsSubview:(id)a3 padding:(double)a4
+- (double)heightThatFitsSubview:(id)subview padding:(double)padding
 {
-  v5 = a3;
-  v6 = [v5 superview];
+  subviewCopy = subview;
+  superview = [subviewCopy superview];
 
-  if (v6)
+  if (superview)
   {
-    [v5 bounds];
-    [v5 sizeThatFits:{v7, v8}];
-    v10 = v9 + a4;
+    [subviewCopy bounds];
+    [subviewCopy sizeThatFits:{v7, v8}];
+    v10 = v9 + padding;
   }
 
   else
@@ -277,35 +277,35 @@ LABEL_12:
   return v10;
 }
 
-- (double)heightThatFitsMainLabel:(CGSize)a3
+- (double)heightThatFitsMainLabel:(CGSize)label
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UILabel *)self->_label superview];
+  height = label.height;
+  width = label.width;
+  superview = [(UILabel *)self->_label superview];
 
-  if (!v6)
+  if (!superview)
   {
     return 0.0;
   }
 
   [(MFSecureMIMEPersonHeaderView *)self widthForSizingToFitSize:width, height];
   v8 = v7;
-  v9 = [(MFSecureMIMEPersonHeaderView *)self superview];
-  [v9 layoutMargins];
+  superview2 = [(MFSecureMIMEPersonHeaderView *)self superview];
+  [superview2 layoutMargins];
   v11 = v8 - v10;
 
-  v12 = [(UILabel *)self->_label attributedText];
-  [v12 boundingRectWithSize:1 options:0 context:{v11, 0.0}];
+  attributedText = [(UILabel *)self->_label attributedText];
+  [attributedText boundingRectWithSize:1 options:0 context:{v11, 0.0}];
 
   UICeilToViewScale();
   return v13 + 12.0;
 }
 
-- (double)widthForSizingToFitSize:(CGSize)a3
+- (double)widthForSizingToFitSize:(CGSize)size
 {
-  if (a3.width >= 0.0)
+  if (size.width >= 0.0)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
@@ -315,15 +315,15 @@ LABEL_12:
 
   if (width == 0.0)
   {
-    v5 = [(MFSecureMIMEPersonHeaderView *)self superview];
+    superview = [(MFSecureMIMEPersonHeaderView *)self superview];
 
-    if (v5)
+    if (superview)
     {
-      v6 = [(MFSecureMIMEPersonHeaderView *)self superview];
-      [v6 bounds];
+      superview2 = [(MFSecureMIMEPersonHeaderView *)self superview];
+      [superview2 bounds];
       v8 = v7;
-      v9 = [(MFSecureMIMEPersonHeaderView *)self superview];
-      [v9 layoutMargins];
+      superview3 = [(MFSecureMIMEPersonHeaderView *)self superview];
+      [superview3 layoutMargins];
       width = v8 - v10;
 
       if (width < 0.0)
@@ -344,9 +344,9 @@ LABEL_12:
 
 - (double)heightThatFitsButtons
 {
-  v3 = [(MFSecureMIMEPersonHeaderView *)self showsButtons];
+  showsButtons = [(MFSecureMIMEPersonHeaderView *)self showsButtons];
   result = 0.0;
-  if (v3)
+  if (showsButtons)
   {
     return ([(NSArray *)self->_buttons count]* 49.0);
   }
@@ -356,9 +356,9 @@ LABEL_12:
 
 - (double)heightOfBottomMargin
 {
-  v2 = [(MFSecureMIMEPersonHeaderView *)self showsButtons];
+  showsButtons = [(MFSecureMIMEPersonHeaderView *)self showsButtons];
   result = 10.0;
-  if (v2)
+  if (showsButtons)
   {
     return 6.0;
   }
@@ -381,9 +381,9 @@ LABEL_12:
   v37 = *MEMORY[0x1E69E9840];
   [(MFSecureMIMEPersonHeaderView *)self bounds];
   v4 = v3;
-  v5 = [(UIView *)self->_signedLabel superview];
+  superview = [(UIView *)self->_signedLabel superview];
 
-  if (v5)
+  if (superview)
   {
     v6 = self->_signedLabel;
     [(UIView *)v6 sizeToFit];
@@ -401,9 +401,9 @@ LABEL_12:
     v9 = 10.0;
   }
 
-  v10 = [(UIView *)self->_secureLabel superview];
+  superview2 = [(UIView *)self->_secureLabel superview];
 
-  if (v10)
+  if (superview2)
   {
     v11 = self->_secureLabel;
     [(UIView *)v11 sizeToFit];
@@ -415,9 +415,9 @@ LABEL_12:
     v9 = 5.0;
   }
 
-  v13 = [(UIView *)self->_warningLabel superview];
+  superview3 = [(UIView *)self->_warningLabel superview];
 
-  if (v13)
+  if (superview3)
   {
     v14 = self->_warningLabel;
     [(UIView *)v14 sizeToFit];
@@ -427,17 +427,17 @@ LABEL_12:
     MaxY = v15;
   }
 
-  v16 = [(UILabel *)self->_label superview];
+  superview4 = [(UILabel *)self->_label superview];
 
-  if (v16)
+  if (superview4)
   {
-    v17 = [(MFSecureMIMEPersonHeaderView *)self superview];
-    [v17 layoutMargins];
+    superview5 = [(MFSecureMIMEPersonHeaderView *)self superview];
+    [superview5 layoutMargins];
     v19 = v18;
 
-    v20 = [(UILabel *)self->_label attributedText];
+    attributedText = [(UILabel *)self->_label attributedText];
     v21 = v4 - v19;
-    [v20 boundingRectWithSize:1 options:0 context:{v21, 0.0}];
+    [attributedText boundingRectWithSize:1 options:0 context:{v21, 0.0}];
 
     [(UILabel *)self->_label frame];
     v22 = MaxY + 12.0;
@@ -502,12 +502,12 @@ LABEL_12:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MFSecureMIMEPersonHeaderView *)self bounds];
   if (width != v8)
   {
@@ -519,32 +519,32 @@ LABEL_12:
   [(MFSecureMIMEPersonHeaderView *)&v9 setBounds:x, y, width, height];
 }
 
-- (void)_setText:(id)a3 forLabel:(id)a4
+- (void)_setText:(id)text forLabel:(id)label
 {
-  v7 = a3;
-  v6 = a4;
-  [(MFSecureMIMEPersonHeaderView *)self _insert:v7 != 0 subview:v6];
-  [v6 setText:v7];
+  textCopy = text;
+  labelCopy = label;
+  [(MFSecureMIMEPersonHeaderView *)self _insert:textCopy != 0 subview:labelCopy];
+  [labelCopy setText:textCopy];
   [(MFSecureMIMEPersonHeaderView *)self setNeedsLayout];
 }
 
-- (void)_insert:(BOOL)a3 subview:(id)a4
+- (void)_insert:(BOOL)_insert subview:(id)subview
 {
-  v4 = a3;
-  v8 = a4;
-  v6 = [v8 superview];
-  v7 = v6;
-  if (v4)
+  _insertCopy = _insert;
+  subviewCopy = subview;
+  superview = [subviewCopy superview];
+  v7 = superview;
+  if (_insertCopy)
   {
-    if (v6 != self)
+    if (superview != self)
     {
-      [(MFSecureMIMEPersonHeaderView *)self addSubview:v8];
+      [(MFSecureMIMEPersonHeaderView *)self addSubview:subviewCopy];
     }
   }
 
-  else if (v6)
+  else if (superview)
   {
-    [v8 removeFromSuperview];
+    [subviewCopy removeFromSuperview];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface REInterfaceCache
-- (BOOL)_interface:(id)a3 implementsInterface:(id)a4;
+- (BOOL)_interface:(id)_interface implementsInterface:(id)interface;
 - (BOOL)_supportsCache;
-- (BOOL)exportedInterfaceClass:(Class)a3;
-- (BOOL)exportedInterfaceProtocol:(id)a3;
-- (id)_accessInterfaceForKey:(id)a3;
+- (BOOL)exportedInterfaceClass:(Class)class;
+- (BOOL)exportedInterfaceProtocol:(id)protocol;
+- (id)_accessInterfaceForKey:(id)key;
 - (id)_init;
-- (id)_queue_valueForKey:(id)a3 level:(unint64_t)a4;
+- (id)_queue_valueForKey:(id)key level:(unint64_t)level;
 - (id)_supportedProtocols;
-- (void)_enumerateMethodsOfInterface:(id)a3 forProtocol:(id)a4 usingBlock:(id)a5;
-- (void)_enumeratePropertiesOfInterface:(id)a3 forProtocol:(id)a4 usingBlock:(id)a5;
-- (void)enumerateExportedMethodsOfClass:(Class)a3 usingBlock:(id)a4;
-- (void)enumerateExportedMethodsOfProtocol:(id)a3 usingBlock:(id)a4;
-- (void)enumerateExportedPropertiesOfClass:(Class)a3 usingBlock:(id)a4;
-- (void)enumerateExportedPropertiesOfProtocol:(id)a3 usingBlock:(id)a4;
+- (void)_enumerateMethodsOfInterface:(id)interface forProtocol:(id)protocol usingBlock:(id)block;
+- (void)_enumeratePropertiesOfInterface:(id)interface forProtocol:(id)protocol usingBlock:(id)block;
+- (void)enumerateExportedMethodsOfClass:(Class)class usingBlock:(id)block;
+- (void)enumerateExportedMethodsOfProtocol:(id)protocol usingBlock:(id)block;
+- (void)enumerateExportedPropertiesOfClass:(Class)class usingBlock:(id)block;
+- (void)enumerateExportedPropertiesOfProtocol:(id)protocol usingBlock:(id)block;
 @end
 
 @implementation REInterfaceCache
@@ -58,19 +58,19 @@ uint64_t __34__REInterfaceCache__supportsCache__block_invoke_2()
 {
   v8.receiver = self;
   v8.super_class = REInterfaceCache;
-  v2 = [(RESingleton *)&v8 _init];
-  if (v2)
+  _init = [(RESingleton *)&v8 _init];
+  if (_init)
   {
     v3 = dispatch_queue_create("com.apple.RelevanceEngine.REInterfaceCache", 0);
-    v4 = v2[1];
-    v2[1] = v3;
+    v4 = _init[1];
+    _init[1] = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v6 = v2[2];
-    v2[2] = v5;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v6 = _init[2];
+    _init[2] = dictionary;
   }
 
-  return v2;
+  return _init;
 }
 
 - (id)_supportedProtocols
@@ -94,35 +94,35 @@ uint64_t __39__REInterfaceCache__supportedProtocols__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (id)_queue_valueForKey:(id)a3 level:(unint64_t)a4
+- (id)_queue_valueForKey:(id)key level:(unint64_t)level
 {
   v83 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_supportedInterfaces objectForKeyedSubscript:v6];
+  keyCopy = key;
+  v7 = [(NSMutableDictionary *)self->_supportedInterfaces objectForKeyedSubscript:keyCopy];
   if (!v7)
   {
-    if (a4 == 5)
+    if (level == 5)
     {
       v8 = *MEMORY[0x277CCA5A0];
-      if ([v6 isProtocol])
+      if ([keyCopy isProtocol])
       {
-        v9 = [v6 protocol];
-        v10 = NSStringFromProtocol(v9);
+        protocol = [keyCopy protocol];
+        v10 = NSStringFromProtocol(protocol);
         RERaiseInternalException(v8, @"Attempting to unwrap %@, but we're already 5 levels deep. Is this an error?", v11, v12, v13, v14, v15, v16, v10);
       }
 
       else
       {
-        v9 = NSStringFromClass([v6 cls]);
-        RERaiseInternalException(v8, @"Attempting to unwrap %@, but we're already 5 levels deep. Is this an error?", v42, v43, v44, v45, v46, v47, v9);
+        protocol = NSStringFromClass([keyCopy cls]);
+        RERaiseInternalException(v8, @"Attempting to unwrap %@, but we're already 5 levels deep. Is this an error?", v42, v43, v44, v45, v46, v47, protocol);
       }
 
       v7 = 0;
       goto LABEL_21;
     }
 
-    v17 = [MEMORY[0x277CBEB18] array];
-    v18 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v19 = [MEMORY[0x277CCAA50] hashTableWithOptions:256];
     v20 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:256 valueOptions:0];
     v21 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:256 valueOptions:0];
@@ -140,10 +140,10 @@ uint64_t __39__REInterfaceCache__supportedProtocols__block_invoke()
     v73[2] = __45__REInterfaceCache__queue_valueForKey_level___block_invoke_2;
     v73[3] = &unk_2785FCA08;
     v73[4] = self;
-    v78 = a4;
-    v53 = v17;
+    levelCopy = level;
+    v53 = array;
     v74 = v53;
-    v52 = v18;
+    v52 = array2;
     v75 = v52;
     v23 = v19;
     v76 = v23;
@@ -166,7 +166,7 @@ uint64_t __39__REInterfaceCache__supportedProtocols__block_invoke()
     v70 = v57;
     v28 = v23;
     v67 = v28;
-    v29 = v6;
+    v29 = keyCopy;
     v68 = v29;
     v30 = v24;
     v71 = v30;
@@ -174,8 +174,8 @@ uint64_t __39__REInterfaceCache__supportedProtocols__block_invoke()
     v56 = v28;
     if ([v29 isProtocol])
     {
-      v31 = [v29 protocol];
-      v32 = (*(v27 + 2))(v27, v31);
+      protocol2 = [v29 protocol];
+      v32 = (*(v27 + 2))(v27, protocol2);
 
       if (!v32)
       {
@@ -197,8 +197,8 @@ LABEL_20:
       v64[1] = 3221225472;
       v64[2] = __45__REInterfaceCache__queue_valueForKey_level___block_invoke_6;
       v64[3] = &unk_2785FCA58;
-      v34 = v33;
-      v65 = v34;
+      superclassKey = v33;
+      v65 = superclassKey;
       [v29 enumerateExposedProperties:v64];
       v35 = [MEMORY[0x277CCAA50] hashTableWithOptions:256];
       v62[0] = MEMORY[0x277D85DD0];
@@ -213,8 +213,8 @@ LABEL_20:
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v37 = [(REInterfaceCache *)self _supportedProtocols];
-      v38 = [v37 countByEnumeratingWithState:&v58 objects:v82 count:16];
+      _supportedProtocols = [(REInterfaceCache *)self _supportedProtocols];
+      v38 = [_supportedProtocols countByEnumeratingWithState:&v58 objects:v82 count:16];
       if (v38)
       {
         v39 = v38;
@@ -225,13 +225,13 @@ LABEL_20:
           {
             if (*v59 != v40)
             {
-              objc_enumerationMutation(v37);
+              objc_enumerationMutation(_supportedProtocols);
             }
 
-            (*(v30 + 2))(v30, *(*(&v58 + 1) + 8 * i), v34, v36);
+            (*(v30 + 2))(v30, *(*(&v58 + 1) + 8 * i), superclassKey, v36);
           }
 
-          v39 = [v37 countByEnumeratingWithState:&v58 objects:v82 count:16];
+          v39 = [_supportedProtocols countByEnumeratingWithState:&v58 objects:v82 count:16];
         }
 
         while (v39);
@@ -244,10 +244,10 @@ LABEL_20:
 
     else
     {
-      v34 = [v29 superclassKey];
-      if (v34)
+      superclassKey = [v29 superclassKey];
+      if (superclassKey)
       {
-        (*(v57 + 2))(v57, v34);
+        (*(v57 + 2))(v57, superclassKey);
       }
     }
 
@@ -447,9 +447,9 @@ void __45__REInterfaceCache__queue_valueForKey_level___block_invoke_4(uint64_t a
   }
 }
 
-- (id)_accessInterfaceForKey:(id)a3
+- (id)_accessInterfaceForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -461,10 +461,10 @@ void __45__REInterfaceCache__queue_valueForKey_level___block_invoke_4(uint64_t a
   block[1] = 3221225472;
   block[2] = __43__REInterfaceCache__accessInterfaceForKey___block_invoke;
   block[3] = &unk_2785FC2F0;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -483,21 +483,21 @@ uint64_t __43__REInterfaceCache__accessInterfaceForKey___block_invoke(uint64_t a
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)_enumeratePropertiesOfInterface:(id)a3 forProtocol:(id)a4 usingBlock:(id)a5
+- (void)_enumeratePropertiesOfInterface:(id)interface forProtocol:(id)protocol usingBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10 && [(REInterfaceCache *)self _supportsCache])
+  interfaceCopy = interface;
+  protocolCopy = protocol;
+  blockCopy = block;
+  if (blockCopy && [(REInterfaceCache *)self _supportsCache])
   {
-    v11 = [(REInterfaceCache *)self _accessInterfaceForKey:v8];
+    v11 = [(REInterfaceCache *)self _accessInterfaceForKey:interfaceCopy];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [v11 properties];
-    v13 = [v12 objectForKey:v9];
+    properties = [v11 properties];
+    v13 = [properties objectForKey:protocolCopy];
 
     v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v14)
@@ -514,7 +514,7 @@ uint64_t __43__REInterfaceCache__accessInterfaceForKey___block_invoke(uint64_t a
             objc_enumerationMutation(v13);
           }
 
-          v10[2](v10, *(*(&v19 + 1) + 8 * v17++));
+          blockCopy[2](blockCopy, *(*(&v19 + 1) + 8 * v17++));
         }
 
         while (v15 != v17);
@@ -528,21 +528,21 @@ uint64_t __43__REInterfaceCache__accessInterfaceForKey___block_invoke(uint64_t a
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enumerateMethodsOfInterface:(id)a3 forProtocol:(id)a4 usingBlock:(id)a5
+- (void)_enumerateMethodsOfInterface:(id)interface forProtocol:(id)protocol usingBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10 && [(REInterfaceCache *)self _supportsCache])
+  interfaceCopy = interface;
+  protocolCopy = protocol;
+  blockCopy = block;
+  if (blockCopy && [(REInterfaceCache *)self _supportsCache])
   {
-    v11 = [(REInterfaceCache *)self _accessInterfaceForKey:v8];
+    v11 = [(REInterfaceCache *)self _accessInterfaceForKey:interfaceCopy];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [v11 methods];
-    v13 = [v12 objectForKey:v9];
+    methods = [v11 methods];
+    v13 = [methods objectForKey:protocolCopy];
 
     v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v14)
@@ -559,7 +559,7 @@ uint64_t __43__REInterfaceCache__accessInterfaceForKey___block_invoke(uint64_t a
             objc_enumerationMutation(v13);
           }
 
-          v10[2](v10, *(*(&v19 + 1) + 8 * v17++));
+          blockCopy[2](blockCopy, *(*(&v19 + 1) + 8 * v17++));
         }
 
         while (v15 != v17);
@@ -573,15 +573,15 @@ uint64_t __43__REInterfaceCache__accessInterfaceForKey___block_invoke(uint64_t a
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_interface:(id)a3 implementsInterface:(id)a4
+- (BOOL)_interface:(id)_interface implementsInterface:(id)interface
 {
-  v6 = a3;
-  v7 = a4;
+  _interfaceCopy = _interface;
+  interfaceCopy = interface;
   if ([(REInterfaceCache *)self _supportsCache])
   {
-    v8 = [(REInterfaceCache *)self _accessInterfaceForKey:v6];
-    v9 = [v8 conformedProtocols];
-    v10 = [v9 containsObject:v7];
+    v8 = [(REInterfaceCache *)self _accessInterfaceForKey:_interfaceCopy];
+    conformedProtocols = [v8 conformedProtocols];
+    v10 = [conformedProtocols containsObject:interfaceCopy];
   }
 
   else
@@ -592,53 +592,53 @@ uint64_t __43__REInterfaceCache__accessInterfaceForKey___block_invoke(uint64_t a
   return v10;
 }
 
-- (BOOL)exportedInterfaceClass:(Class)a3
+- (BOOL)exportedInterfaceClass:(Class)class
 {
-  v4 = [[_REInterfaceKey alloc] initWithClass:a3];
+  v4 = [[_REInterfaceKey alloc] initWithClass:class];
   LOBYTE(self) = [(REInterfaceCache *)self _interface:v4 implementsInterface:&unk_283BBEB58];
 
   return self;
 }
 
-- (BOOL)exportedInterfaceProtocol:(id)a3
+- (BOOL)exportedInterfaceProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [[_REInterfaceKey alloc] initWithProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [[_REInterfaceKey alloc] initWithProtocol:protocolCopy];
 
   LOBYTE(self) = [(REInterfaceCache *)self _interface:v5 implementsInterface:&unk_283BBEB58];
   return self;
 }
 
-- (void)enumerateExportedPropertiesOfClass:(Class)a3 usingBlock:(id)a4
+- (void)enumerateExportedPropertiesOfClass:(Class)class usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [[_REInterfaceKey alloc] initWithClass:a3];
-  [(REInterfaceCache *)self _enumeratePropertiesOfInterface:v7 forProtocol:&unk_283BBEB58 usingBlock:v6];
+  blockCopy = block;
+  v7 = [[_REInterfaceKey alloc] initWithClass:class];
+  [(REInterfaceCache *)self _enumeratePropertiesOfInterface:v7 forProtocol:&unk_283BBEB58 usingBlock:blockCopy];
 }
 
-- (void)enumerateExportedPropertiesOfProtocol:(id)a3 usingBlock:(id)a4
+- (void)enumerateExportedPropertiesOfProtocol:(id)protocol usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_REInterfaceKey alloc] initWithProtocol:v7];
+  blockCopy = block;
+  protocolCopy = protocol;
+  v8 = [[_REInterfaceKey alloc] initWithProtocol:protocolCopy];
 
-  [(REInterfaceCache *)self _enumeratePropertiesOfInterface:v8 forProtocol:&unk_283BBEB58 usingBlock:v6];
+  [(REInterfaceCache *)self _enumeratePropertiesOfInterface:v8 forProtocol:&unk_283BBEB58 usingBlock:blockCopy];
 }
 
-- (void)enumerateExportedMethodsOfClass:(Class)a3 usingBlock:(id)a4
+- (void)enumerateExportedMethodsOfClass:(Class)class usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [[_REInterfaceKey alloc] initWithClass:a3];
-  [(REInterfaceCache *)self _enumerateMethodsOfInterface:v7 forProtocol:&unk_283BBEB58 usingBlock:v6];
+  blockCopy = block;
+  v7 = [[_REInterfaceKey alloc] initWithClass:class];
+  [(REInterfaceCache *)self _enumerateMethodsOfInterface:v7 forProtocol:&unk_283BBEB58 usingBlock:blockCopy];
 }
 
-- (void)enumerateExportedMethodsOfProtocol:(id)a3 usingBlock:(id)a4
+- (void)enumerateExportedMethodsOfProtocol:(id)protocol usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_REInterfaceKey alloc] initWithProtocol:v7];
+  blockCopy = block;
+  protocolCopy = protocol;
+  v8 = [[_REInterfaceKey alloc] initWithProtocol:protocolCopy];
 
-  [(REInterfaceCache *)self _enumerateMethodsOfInterface:v8 forProtocol:&unk_283BBEB58 usingBlock:v6];
+  [(REInterfaceCache *)self _enumerateMethodsOfInterface:v8 forProtocol:&unk_283BBEB58 usingBlock:blockCopy];
 }
 
 @end

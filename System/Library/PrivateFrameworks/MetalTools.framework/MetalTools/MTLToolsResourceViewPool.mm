@@ -1,17 +1,17 @@
 @interface MTLToolsResourceViewPool
-- (MTLResourceID)copyResourceViewsFromPool:(id)a3 sourceRange:(_NSRange)a4 destinationIndex:(unint64_t)a5;
-- (MTLToolsResourceViewPool)initWithBaseObject:(id)a3 parent:(id)a4;
-- (void)copyResourceStatesFromPool:(id)a3 sourceRange:(_NSRange)a4 destinationLocation:(unint64_t)a5;
+- (MTLResourceID)copyResourceViewsFromPool:(id)pool sourceRange:(_NSRange)range destinationIndex:(unint64_t)index;
+- (MTLToolsResourceViewPool)initWithBaseObject:(id)object parent:(id)parent;
+- (void)copyResourceStatesFromPool:(id)pool sourceRange:(_NSRange)range destinationLocation:(unint64_t)location;
 - (void)dealloc;
 @end
 
 @implementation MTLToolsResourceViewPool
 
-- (MTLToolsResourceViewPool)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLToolsResourceViewPool)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTLToolsResourceViewPool;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:object parent:parent];
 }
 
 - (void)dealloc
@@ -21,24 +21,24 @@
   [(MTLToolsObject *)&v2 dealloc];
 }
 
-- (MTLResourceID)copyResourceViewsFromPool:(id)a3 sourceRange:(_NSRange)a4 destinationIndex:(unint64_t)a5
+- (MTLResourceID)copyResourceViewsFromPool:(id)pool sourceRange:(_NSRange)range destinationIndex:(unint64_t)index
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
+  length = range.length;
+  location = range.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [pool baseObject];
 
-  return [v9 copyResourceViewsFromPool:v10 sourceRange:location destinationIndex:{length, a5}];
+  return [baseObject copyResourceViewsFromPool:baseObject2 sourceRange:location destinationIndex:{length, index}];
 }
 
-- (void)copyResourceStatesFromPool:(id)a3 sourceRange:(_NSRange)a4 destinationLocation:(unint64_t)a5
+- (void)copyResourceStatesFromPool:(id)pool sourceRange:(_NSRange)range destinationLocation:(unint64_t)location
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
+  length = range.length;
+  location = range.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [pool baseObject];
 
-  [v9 copyResourceStatesFromPool:v10 sourceRange:location destinationLocation:{length, a5}];
+  [baseObject copyResourceStatesFromPool:baseObject2 sourceRange:location destinationLocation:{length, location}];
 }
 
 @end

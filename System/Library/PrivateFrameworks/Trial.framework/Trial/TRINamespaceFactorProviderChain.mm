@@ -1,21 +1,21 @@
 @interface TRINamespaceFactorProviderChain
-+ (id)factorProviderWithPaths:(id)a3 namespaceName:(id)a4;
-+ (id)factorProviderWithPaths:(id)a3 namespaceName:(id)a4 excludingTreatmentLayers:(unint64_t)a5;
-- (BOOL)hasAnyTreatmentInLayers:(unint64_t)a3;
-- (TRINamespaceFactorProviderChain)initWithNamespaceName:(id)a3 typedProviderChain:(id)a4 paths:(id)a5 excludingTreatmentLayers:(unint64_t)a6;
-- (id)_dealiasedFactorLevelForFactorLevel:(id)a3 unaliasedName:(id)a4;
++ (id)factorProviderWithPaths:(id)paths namespaceName:(id)name;
++ (id)factorProviderWithPaths:(id)paths namespaceName:(id)name excludingTreatmentLayers:(unint64_t)layers;
+- (BOOL)hasAnyTreatmentInLayers:(unint64_t)layers;
+- (TRINamespaceFactorProviderChain)initWithNamespaceName:(id)name typedProviderChain:(id)chain paths:(id)paths excludingTreatmentLayers:(unint64_t)layers;
+- (id)_dealiasedFactorLevelForFactorLevel:(id)level unaliasedName:(id)name;
 - (id)experimentId;
 - (id)factorLevels;
-- (id)factorNamesWithObfuscation:(id)a3;
-- (id)levelForFactor:(id)a3 outProvider:(id *)a4;
+- (id)factorNamesWithObfuscation:(id)obfuscation;
+- (id)levelForFactor:(id)factor outProvider:(id *)provider;
 - (id)promotableFactorPackId;
-- (id)providerForTreatmentLayer:(unint64_t)a3;
+- (id)providerForTreatmentLayer:(unint64_t)layer;
 - (id)treatmentId;
 - (int)deploymentId;
 - (unsigned)namespaceCompatibilityVersion;
 - (unsigned)namespaceId;
 - (void)cacheFactorLevels;
-- (void)computeTreatmentAssetIndexes:(id *)a3 withAssociatedExperimentIds:(id *)a4 andFactorPackAssetIds:(id *)a5 withAssociatedRolloutDeployments:(id *)a6 withExperimentFactorNames:(id *)a7 andRolloutFactorNames:(id *)a8 forFactors:(id)a9 usingFilter:(id)a10;
+- (void)computeTreatmentAssetIndexes:(id *)indexes withAssociatedExperimentIds:(id *)ids andFactorPackAssetIds:(id *)assetIds withAssociatedRolloutDeployments:(id *)deployments withExperimentFactorNames:(id *)names andRolloutFactorNames:(id *)factorNames forFactors:(id)factors usingFilter:(id)self0;
 - (void)dispose;
 @end
 
@@ -51,8 +51,8 @@
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v29 = [v5 factorLevels];
-        v6 = [v29 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        factorLevels = [v5 factorLevels];
+        v6 = [factorLevels countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v6)
         {
           v7 = v6;
@@ -63,16 +63,16 @@
             {
               if (*v31 != v8)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(factorLevels);
               }
 
               v10 = *(*(&v30 + 1) + 8 * i);
               v11 = objc_autoreleasePoolPush();
               v12 = v10;
               aliasMap = self->_aliasMap;
-              v14 = [v12 factor];
-              v15 = [v14 name];
-              v16 = [(NSDictionary *)aliasMap allKeysForObject:v15];
+              factor = [v12 factor];
+              name = [factor name];
+              v16 = [(NSDictionary *)aliasMap allKeysForObject:name];
 
               if (v16 && [v16 count] == 1)
               {
@@ -82,14 +82,14 @@
                 v12 = v18;
               }
 
-              v19 = [v12 factor];
-              v20 = [v19 name];
-              [v3 setObject:v12 forKeyedSubscript:v20];
+              factor2 = [v12 factor];
+              name2 = [factor2 name];
+              [v3 setObject:v12 forKeyedSubscript:name2];
 
               objc_autoreleasePoolPop(v11);
             }
 
-            v7 = [v29 countByEnumeratingWithState:&v30 objects:v38 count:16];
+            v7 = [factorLevels countByEnumeratingWithState:&v30 objects:v38 count:16];
           }
 
           while (v7);
@@ -105,12 +105,12 @@
     while (v27);
   }
 
-  v21 = [v3 allValues];
+  allValues = [v3 allValues];
 
   objc_autoreleasePoolPop(context);
   v22 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return allValues;
 }
 
 - (void)dispose
@@ -149,53 +149,53 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)factorProviderWithPaths:(id)a3 namespaceName:(id)a4
++ (id)factorProviderWithPaths:(id)paths namespaceName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[TRINamespaceResolver alloc] initWithPaths:v7];
-  v9 = [a1 factorProviderWithPaths:v7 namespaceName:v6 resolver:v8 faultOnMissingInstalledFactors:0];
+  nameCopy = name;
+  pathsCopy = paths;
+  v8 = [[TRINamespaceResolver alloc] initWithPaths:pathsCopy];
+  v9 = [self factorProviderWithPaths:pathsCopy namespaceName:nameCopy resolver:v8 faultOnMissingInstalledFactors:0];
 
   return v9;
 }
 
-+ (id)factorProviderWithPaths:(id)a3 namespaceName:(id)a4 excludingTreatmentLayers:(unint64_t)a5
++ (id)factorProviderWithPaths:(id)paths namespaceName:(id)name excludingTreatmentLayers:(unint64_t)layers
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[TRINamespaceResolver alloc] initWithPaths:v9];
-  v11 = [(TRINamespaceResolver *)v10 resolveFactorProviderChainForNamespaceName:v8 faultOnMissingInstalledFactors:0 installedFactorsAccessible:0];
-  v12 = [[a1 alloc] initWithNamespaceName:v8 typedProviderChain:v11 paths:v9 excludingTreatmentLayers:a5];
+  nameCopy = name;
+  pathsCopy = paths;
+  v10 = [[TRINamespaceResolver alloc] initWithPaths:pathsCopy];
+  v11 = [(TRINamespaceResolver *)v10 resolveFactorProviderChainForNamespaceName:nameCopy faultOnMissingInstalledFactors:0 installedFactorsAccessible:0];
+  v12 = [[self alloc] initWithNamespaceName:nameCopy typedProviderChain:v11 paths:pathsCopy excludingTreatmentLayers:layers];
 
   return v12;
 }
 
-- (TRINamespaceFactorProviderChain)initWithNamespaceName:(id)a3 typedProviderChain:(id)a4 paths:(id)a5 excludingTreatmentLayers:(unint64_t)a6
+- (TRINamespaceFactorProviderChain)initWithNamespaceName:(id)name typedProviderChain:(id)chain paths:(id)paths excludingTreatmentLayers:(unint64_t)layers
 {
   v116 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v91 = a4;
-  v12 = a5;
-  if (!v11)
+  nameCopy = name;
+  chainCopy = chain;
+  pathsCopy = paths;
+  if (!nameCopy)
   {
-    v86 = v12;
-    v87 = [MEMORY[0x277CCA890] currentHandler];
-    [v87 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    v86 = pathsCopy;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
-    v12 = v86;
+    pathsCopy = v86;
   }
 
-  v90 = v12;
-  if (!v12)
+  v90 = pathsCopy;
+  if (!pathsCopy)
   {
-    v88 = [MEMORY[0x277CCA890] currentHandler];
-    [v88 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"paths"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"paths"}];
   }
 
   v109.receiver = self;
   v109.super_class = TRINamespaceFactorProviderChain;
   v13 = [(TRINamespaceFactorProviderChain *)&v109 init];
-  v14 = v91;
+  v14 = chainCopy;
   v92 = v13;
   if (!v13)
   {
@@ -203,25 +203,25 @@
   }
 
   v15 = v13;
-  objc_storeStrong(&v13->_namespaceName, a3);
-  objc_storeStrong(&v15->_paths, a5);
-  v95 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v91, "count")}];
-  v16 = [v90 namespaceDescriptorsDefaultDir];
-  v97 = [TRINamespaceDescriptor loadWithNamespaceName:v11 fromDirectory:v16];
+  objc_storeStrong(&v13->_namespaceName, name);
+  objc_storeStrong(&v15->_paths, paths);
+  v95 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(chainCopy, "count")}];
+  namespaceDescriptorsDefaultDir = [v90 namespaceDescriptorsDefaultDir];
+  v97 = [TRINamespaceDescriptor loadWithNamespaceName:nameCopy fromDirectory:namespaceDescriptorsDefaultDir];
 
-  v17 = [v91 lastObject];
-  if (v17)
+  lastObject = [chainCopy lastObject];
+  if (lastObject)
   {
-    v18 = [v91 lastObject];
-    v19 = [v18 provider];
-    v20 = v91;
-    v21 = [v19 namespaceCompatibilityVersion];
+    lastObject2 = [chainCopy lastObject];
+    provider = [lastObject2 provider];
+    v20 = chainCopy;
+    namespaceCompatibilityVersion = [provider namespaceCompatibilityVersion];
   }
 
   else
   {
-    v20 = v91;
-    v21 = 0;
+    v20 = chainCopy;
+    namespaceCompatibilityVersion = 0;
   }
 
   v107 = 0u;
@@ -230,12 +230,12 @@
   v106 = 0u;
   v22 = v20;
   v23 = [v22 countByEnumeratingWithState:&v105 objects:v115 count:16];
-  v89 = v11;
+  v89 = nameCopy;
   if (!v23)
   {
 
     v98 = 0;
-    v14 = v91;
+    v14 = chainCopy;
     v50 = v92;
     p_rolloutProvider = &v92->_rolloutProvider;
     goto LABEL_46;
@@ -255,63 +255,63 @@
       }
 
       v27 = *(*(&v105 + 1) + 8 * i);
-      v28 = [v27 provider];
-      v29 = [v28 namespaceCompatibilityVersion];
+      provider2 = [v27 provider];
+      namespaceCompatibilityVersion2 = [provider2 namespaceCompatibilityVersion];
 
-      v30 = [v27 type];
-      if (v29 != v21)
+      type = [v27 type];
+      if (namespaceCompatibilityVersion2 != namespaceCompatibilityVersion)
       {
-        if (v30 != 2)
+        if (type != 2)
         {
           goto LABEL_25;
         }
 
-        v32 = [v97 upgradeNCVs];
+        upgradeNCVs = [v97 upgradeNCVs];
         v33 = MEMORY[0x277CCABB0];
-        v34 = [v27 provider];
-        v35 = [v33 numberWithUnsignedInteger:{objc_msgSend(v34, "namespaceCompatibilityVersion")}];
-        v36 = [v32 containsObject:v35];
+        provider3 = [v27 provider];
+        v35 = [v33 numberWithUnsignedInteger:{objc_msgSend(provider3, "namespaceCompatibilityVersion")}];
+        v36 = [upgradeNCVs containsObject:v35];
 
         if (v36)
         {
           v37 = TRILogCategory_ClientFramework();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v38 = [v27 logDesc];
+            logDesc = [v27 logDesc];
             *buf = 138412290;
-            v112 = v38;
+            v112 = logDesc;
             _os_log_impl(&dword_22EA6B000, v37, OS_LOG_TYPE_DEFAULT, "Namespace factor provider %@ is upgrade compatible. Keeping it in case there's no factor provider matching the download NCV.", buf, 0xCu);
           }
 
-          v39 = v98;
+          provider6 = v98;
           v98 = v27;
         }
 
         else
         {
 LABEL_25:
-          v39 = TRILogCategory_ClientFramework();
-          if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+          provider6 = TRILogCategory_ClientFramework();
+          if (os_log_type_enabled(provider6, OS_LOG_TYPE_DEFAULT))
           {
-            v40 = [v27 logDesc];
-            v41 = [v27 provider];
-            v42 = [v41 namespaceCompatibilityVersion];
+            logDesc2 = [v27 logDesc];
+            provider4 = [v27 provider];
+            namespaceCompatibilityVersion3 = [provider4 namespaceCompatibilityVersion];
             *buf = 138412802;
-            v112 = v40;
+            v112 = logDesc2;
             v113 = 1024;
-            *v114 = v21;
+            *v114 = namespaceCompatibilityVersion;
             *&v114[4] = 1024;
-            *&v114[6] = v42;
-            _os_log_impl(&dword_22EA6B000, v39, OS_LOG_TYPE_DEFAULT, "Omitting namespace factor provider %@ due to NCV incompatibility (exp %u, act %u).", buf, 0x18u);
+            *&v114[6] = namespaceCompatibilityVersion3;
+            _os_log_impl(&dword_22EA6B000, provider6, OS_LOG_TYPE_DEFAULT, "Omitting namespace factor provider %@ due to NCV incompatibility (exp %u, act %u).", buf, 0x18u);
           }
         }
 
         goto LABEL_34;
       }
 
-      if (v30 <= 3)
+      if (type <= 3)
       {
-        if (v30 == 1)
+        if (type == 1)
         {
           p_installedProvider = &v92->_installedProvider;
         }
@@ -319,7 +319,7 @@ LABEL_25:
         else
         {
           p_installedProvider = &v92->_rolloutProvider;
-          if (v30 != 2)
+          if (type != 2)
           {
             goto LABEL_32;
           }
@@ -329,13 +329,13 @@ LABEL_25:
       else
       {
         p_installedProvider = &v92->_experimentProvider;
-        if (v30 != 4)
+        if (type != 4)
         {
           p_installedProvider = &v92->_devOverrideProvider;
-          if (v30 != 8)
+          if (type != 8)
           {
             p_installedProvider = &v92->_factorPackExperimentProvider;
-            if (v30 != 32)
+            if (type != 32)
             {
               goto LABEL_32;
             }
@@ -343,18 +343,18 @@ LABEL_25:
         }
       }
 
-      v43 = [v27 provider];
+      provider5 = [v27 provider];
       v44 = *p_installedProvider;
-      *p_installedProvider = v43;
+      *p_installedProvider = provider5;
 
 LABEL_32:
-      if (([v27 type] & a6) != 0)
+      if (([v27 type] & layers) != 0)
       {
         continue;
       }
 
-      v39 = [v27 provider];
-      [(NSArray *)v95 addObject:v39];
+      provider6 = [v27 provider];
+      [(NSArray *)v95 addObject:provider6];
 LABEL_34:
     }
 
@@ -366,32 +366,32 @@ LABEL_34:
   p_rolloutProvider = &v92->_rolloutProvider;
   if (*v93)
   {
-    v11 = v89;
-    v14 = v91;
+    nameCopy = v89;
+    v14 = chainCopy;
   }
 
   else
   {
-    v11 = v89;
-    v14 = v91;
+    nameCopy = v89;
+    v14 = chainCopy;
     if (v98)
     {
       v46 = TRILogCategory_ClientFramework();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
       {
-        v47 = [v98 logDesc];
+        logDesc3 = [v98 logDesc];
         *buf = 138412290;
-        v112 = v47;
+        v112 = logDesc3;
         _os_log_impl(&dword_22EA6B000, v46, OS_LOG_TYPE_DEFAULT, "Didn't find a download-NCV compatible rollout namespace factor provider. Using upgrade-NCV compatible factor provider instead: %@.", buf, 0xCu);
 
-        v14 = v91;
+        v14 = chainCopy;
       }
 
-      v48 = [v98 provider];
+      provider7 = [v98 provider];
       v49 = *v93;
-      *v93 = v48;
+      *v93 = provider7;
 
-      if ((a6 & 2) == 0)
+      if ((layers & 2) == 0)
       {
         [(NSArray *)v95 insertObject:*v93 atIndex:0];
       }
@@ -407,12 +407,12 @@ LABEL_46:
     {
       v52 = [v22 _pas_mappedArrayWithTransform:&__block_literal_global_5];
       *buf = 138412546;
-      v112 = v11;
+      v112 = nameCopy;
       v113 = 2112;
       *v114 = v52;
       _os_log_impl(&dword_22EA6B000, v51, OS_LOG_TYPE_DEFAULT, "no factor providers loaded for namespace %@ from directories %@", buf, 0x16u);
 
-      v14 = v91;
+      v14 = chainCopy;
     }
 
     v50 = v92;
@@ -431,8 +431,8 @@ LABEL_46:
   v101 = 0u;
   v102 = 0u;
   v96 = &v50->_installedProvider;
-  v54 = [*v53 factorLevels];
-  v55 = [v54 countByEnumeratingWithState:&v101 objects:v110 count:16];
+  factorLevels = [*v53 factorLevels];
+  v55 = [factorLevels countByEnumeratingWithState:&v101 objects:v110 count:16];
   if (!v55)
   {
     goto LABEL_62;
@@ -447,24 +447,24 @@ LABEL_46:
     {
       if (*v102 != v57)
       {
-        objc_enumerationMutation(v54);
+        objc_enumerationMutation(factorLevels);
       }
 
       v59 = *(*(&v101 + 1) + 8 * v58);
-      v60 = [v59 factor];
-      if ([v60 hasAlias])
+      factor = [v59 factor];
+      if ([factor hasAlias])
       {
-        v61 = [v59 factor];
-        v62 = [v61 alias];
-        v63 = [v62 isEqual:&stru_28435FC98];
+        factor2 = [v59 factor];
+        alias = [factor2 alias];
+        v63 = [alias isEqual:&stru_28435FC98];
 
         if ((v63 & 1) == 0)
         {
-          v60 = [v59 factor];
-          v64 = [v60 alias];
-          v65 = [v59 factor];
-          v66 = [v65 name];
-          [(NSDictionary *)v99 setObject:v64 forKeyedSubscript:v66];
+          factor = [v59 factor];
+          alias2 = [factor alias];
+          factor3 = [v59 factor];
+          name = [factor3 name];
+          [(NSDictionary *)v99 setObject:alias2 forKeyedSubscript:name];
 
           goto LABEL_59;
         }
@@ -483,7 +483,7 @@ LABEL_59:
       break;
     }
 
-    v56 = [v54 countByEnumeratingWithState:&v101 objects:v110 count:16];
+    v56 = [factorLevels countByEnumeratingWithState:&v101 objects:v110 count:16];
     if (v56)
     {
       continue;
@@ -494,10 +494,10 @@ LABEL_59:
 
 LABEL_62:
 
-  v67 = [(NSDictionary *)v99 allKeys];
-  v68 = [v67 count];
-  v69 = [(NSDictionary *)v99 allValues];
-  v70 = [v69 count];
+  allKeys = [(NSDictionary *)v99 allKeys];
+  v68 = [allKeys count];
+  allValues = [(NSDictionary *)v99 allValues];
+  v70 = [allValues count];
 
   if (v68 > v70)
   {
@@ -508,21 +508,21 @@ LABEL_62:
       _os_log_error_impl(&dword_22EA6B000, v71, OS_LOG_TYPE_ERROR, "Found multiple factor names sharing a common alias. Every factor name and any corresponding alias should be unique and 1-1 within a given namespace.", buf, 2u);
     }
 
-    v11 = v89;
-    v14 = v91;
+    nameCopy = v89;
+    v14 = chainCopy;
     v50 = v92;
     v53 = v96;
     goto LABEL_69;
   }
 
-  v72 = [(NSDictionary *)v99 allKeys];
-  v73 = [v72 count];
-  v74 = [(NSDictionary *)v99 allValues];
-  v75 = [v74 count];
+  allKeys2 = [(NSDictionary *)v99 allKeys];
+  v73 = [allKeys2 count];
+  allValues2 = [(NSDictionary *)v99 allValues];
+  v75 = [allValues2 count];
 
   v76 = v73 >= v75;
-  v11 = v89;
-  v14 = v91;
+  nameCopy = v89;
+  v14 = chainCopy;
   v50 = v92;
   v53 = v96;
   if (!v76)
@@ -542,7 +542,7 @@ LABEL_69:
 
   p_rolloutProvider = v94;
 LABEL_71:
-  if ((a6 & 2) != 0)
+  if ((layers & 2) != 0)
   {
     v78 = 0;
   }
@@ -553,7 +553,7 @@ LABEL_71:
   }
 
   objc_storeStrong(p_rolloutProvider, v78);
-  if ((a6 & 0x20) != 0)
+  if ((layers & 0x20) != 0)
   {
     factorPackExperimentProvider = 0;
   }
@@ -564,7 +564,7 @@ LABEL_71:
   }
 
   objc_storeStrong(&v50->_factorPackExperimentProvider, factorPackExperimentProvider);
-  if ((a6 & 4) != 0)
+  if ((layers & 4) != 0)
   {
     experimentProvider = 0;
   }
@@ -575,7 +575,7 @@ LABEL_71:
   }
 
   objc_storeStrong(&v50->_experimentProvider, experimentProvider);
-  if (a6)
+  if (layers)
   {
     v81 = 0;
   }
@@ -597,39 +597,39 @@ LABEL_84:
 
 - (id)experimentId
 {
-  v2 = [(NSArray *)self->_providerChain firstObject];
-  v3 = [v2 experimentId];
+  firstObject = [(NSArray *)self->_providerChain firstObject];
+  experimentId = [firstObject experimentId];
 
-  return v3;
+  return experimentId;
 }
 
 - (int)deploymentId
 {
-  v2 = [(NSArray *)self->_providerChain firstObject];
-  v3 = [v2 deploymentId];
+  firstObject = [(NSArray *)self->_providerChain firstObject];
+  deploymentId = [firstObject deploymentId];
 
-  return v3;
+  return deploymentId;
 }
 
 - (id)treatmentId
 {
-  v2 = [(NSArray *)self->_providerChain firstObject];
-  v3 = [v2 treatmentId];
+  firstObject = [(NSArray *)self->_providerChain firstObject];
+  treatmentId = [firstObject treatmentId];
 
-  return v3;
+  return treatmentId;
 }
 
-- (id)providerForTreatmentLayer:(unint64_t)a3
+- (id)providerForTreatmentLayer:(unint64_t)layer
 {
-  if (a3 <= 3)
+  if (layer <= 3)
   {
-    if (a3 == 1)
+    if (layer == 1)
     {
       installedProvider = self->_installedProvider;
       goto LABEL_12;
     }
 
-    if (a3 == 2)
+    if (layer == 2)
     {
       installedProvider = self->_rolloutProvider;
       goto LABEL_12;
@@ -638,7 +638,7 @@ LABEL_84:
 
   else
   {
-    switch(a3)
+    switch(layer)
     {
       case 4uLL:
         installedProvider = self->_experimentProvider;
@@ -654,8 +654,8 @@ LABEL_12:
     }
   }
 
-  v9 = [MEMORY[0x277CCA890] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:208 description:{@"Bad layer 0x%llx", a3}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:208 description:{@"Bad layer 0x%llx", layer}];
 
 LABEL_13:
 
@@ -664,20 +664,20 @@ LABEL_13:
 
 - (unsigned)namespaceCompatibilityVersion
 {
-  v2 = [(NSArray *)self->_providerChain lastObject];
-  v3 = [v2 namespaceCompatibilityVersion];
+  lastObject = [(NSArray *)self->_providerChain lastObject];
+  namespaceCompatibilityVersion = [lastObject namespaceCompatibilityVersion];
 
-  return v3;
+  return namespaceCompatibilityVersion;
 }
 
-- (BOOL)hasAnyTreatmentInLayers:(unint64_t)a3
+- (BOOL)hasAnyTreatmentInLayers:(unint64_t)layers
 {
-  if ((a3 & 1) != 0 && self->_installedProvider || (a3 & 2) != 0 && self->_rolloutProvider || (a3 & 4) != 0 && self->_experimentProvider)
+  if ((layers & 1) != 0 && self->_installedProvider || (layers & 2) != 0 && self->_rolloutProvider || (layers & 4) != 0 && self->_experimentProvider)
   {
     return 1;
   }
 
-  if ((a3 & 0x20) != 0)
+  if ((layers & 0x20) != 0)
   {
     return self->_factorPackExperimentProvider != 0;
   }
@@ -685,10 +685,10 @@ LABEL_13:
   return 0;
 }
 
-- (id)levelForFactor:(id)a3 outProvider:(id *)a4
+- (id)levelForFactor:(id)factor outProvider:(id *)provider
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  factorCopy = factor;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -709,13 +709,13 @@ LABEL_13:
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 levelForFactor:{v6, v25}];
+        v13 = [v12 levelForFactor:{factorCopy, v25}];
         if (v13)
         {
           v20 = v13;
-          if (a4)
+          if (provider)
           {
-            objc_storeStrong(a4, v12);
+            objc_storeStrong(provider, v12);
           }
 
           v21 = v20;
@@ -723,18 +723,18 @@ LABEL_13:
           goto LABEL_28;
         }
 
-        v14 = [(NSDictionary *)self->_aliasMap objectForKeyedSubscript:v6];
+        v14 = [(NSDictionary *)self->_aliasMap objectForKeyedSubscript:factorCopy];
 
         if (v14)
         {
-          v15 = [(NSDictionary *)self->_aliasMap objectForKeyedSubscript:v6];
+          v15 = [(NSDictionary *)self->_aliasMap objectForKeyedSubscript:factorCopy];
           v16 = [v12 levelForFactor:v15];
 
           if (v16)
           {
-            if (a4)
+            if (provider)
             {
-              objc_storeStrong(a4, v12);
+              objc_storeStrong(provider, v12);
             }
 
             v21 = 0;
@@ -754,8 +754,8 @@ LABEL_13:
   }
 
   namespaceName = self->_namespaceName;
-  v18 = [(TRIPaths *)self->_paths namespaceDescriptorsDefaultDir];
-  v7 = [TRINamespaceDescriptor loadWithNamespaceName:namespaceName fromDirectory:v18];
+  namespaceDescriptorsDefaultDir = [(TRIPaths *)self->_paths namespaceDescriptorsDefaultDir];
+  v7 = [TRINamespaceDescriptor loadWithNamespaceName:namespaceName fromDirectory:namespaceDescriptorsDefaultDir];
 
   if (([(NSArray *)v7 optedOutOfDefaults]& 1) == 0 && [(NSArray *)self->_providerChain count])
   {
@@ -769,7 +769,7 @@ LABEL_32:
         *buf = 138412546;
         v30 = v24;
         v31 = 2112;
-        v32 = v6;
+        v32 = factorCopy;
         _os_log_error_impl(&dword_22EA6B000, v19, OS_LOG_TYPE_ERROR, "Namespace %@ does not provide a factor with name %@.  Please check your factor name against your factor definitions on trial.apple.com.", buf, 0x16u);
       }
     }
@@ -785,10 +785,10 @@ LABEL_32:
   }
 
   v16 = 0;
-  if (a4)
+  if (provider)
   {
-    v21 = *a4;
-    *a4 = 0;
+    v21 = *provider;
+    *provider = 0;
 LABEL_28:
   }
 
@@ -833,24 +833,24 @@ LABEL_28:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)computeTreatmentAssetIndexes:(id *)a3 withAssociatedExperimentIds:(id *)a4 andFactorPackAssetIds:(id *)a5 withAssociatedRolloutDeployments:(id *)a6 withExperimentFactorNames:(id *)a7 andRolloutFactorNames:(id *)a8 forFactors:(id)a9 usingFilter:(id)a10
+- (void)computeTreatmentAssetIndexes:(id *)indexes withAssociatedExperimentIds:(id *)ids andFactorPackAssetIds:(id *)assetIds withAssociatedRolloutDeployments:(id *)deployments withExperimentFactorNames:(id *)names andRolloutFactorNames:(id *)factorNames forFactors:(id)factors usingFilter:(id)self0
 {
   v121 = *MEMORY[0x277D85DE8];
-  v13 = a9;
-  v14 = a10;
-  location = a3;
-  if (a3)
+  factorsCopy = factors;
+  filterCopy = filter;
+  location = indexes;
+  if (indexes)
   {
-    if (a5)
+    if (assetIds)
     {
       goto LABEL_3;
     }
 
 LABEL_77:
-    v66 = [MEMORY[0x277CCA890] currentHandler];
-    [v66 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:284 description:{@"Invalid parameter not satisfying: %@", @"assetIds"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:284 description:{@"Invalid parameter not satisfying: %@", @"assetIds"}];
 
-    if (v13)
+    if (factorsCopy)
     {
       goto LABEL_4;
     }
@@ -858,37 +858,37 @@ LABEL_77:
     goto LABEL_78;
   }
 
-  v65 = [MEMORY[0x277CCA890] currentHandler];
-  [v65 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:283 description:{@"Invalid parameter not satisfying: %@", @"assetIndexes"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:283 description:{@"Invalid parameter not satisfying: %@", @"assetIndexes"}];
 
-  if (!a5)
+  if (!assetIds)
   {
     goto LABEL_77;
   }
 
 LABEL_3:
-  if (v13)
+  if (factorsCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_78:
-  v67 = [MEMORY[0x277CCA890] currentHandler];
-  [v67 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"factorNames"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"factorNames"}];
 
 LABEL_4:
-  v77 = a5;
-  if (!v14)
+  assetIdsCopy = assetIds;
+  if (!filterCopy)
   {
-    v68 = [MEMORY[0x277CCA890] currentHandler];
-    [v68 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"filterBlock"}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"filterBlock"}];
   }
 
   v115[0] = MEMORY[0x277D85DD0];
   v115[1] = 3221225472;
   v115[2] = __218__TRINamespaceFactorProviderChain_computeTreatmentAssetIndexes_withAssociatedExperimentIds_andFactorPackAssetIds_withAssociatedRolloutDeployments_withExperimentFactorNames_andRolloutFactorNames_forFactors_usingFilter___block_invoke;
   v115[3] = &unk_27885E660;
-  v15 = v14;
+  v15 = filterCopy;
   v116 = v15;
   v115[4] = self;
   v16 = MEMORY[0x2318F2490](v115);
@@ -927,7 +927,7 @@ LABEL_4:
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v23 = v13;
+  v23 = factorsCopy;
   v92 = [v23 countByEnumeratingWithState:&v103 objects:v120 count:16];
   if (v92)
   {
@@ -936,7 +936,7 @@ LABEL_4:
     v85 = v23;
     v86 = v17;
     v87 = v15;
-    v88 = self;
+    selfCopy = self;
     do
     {
       v25 = 0;
@@ -962,8 +962,8 @@ LABEL_4:
         if (!v102)
         {
           v61 = v28;
-          v62 = [MEMORY[0x277CCA890] currentHandler];
-          [v62 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:370 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
+          currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler5 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:370 description:{@"Invalid parameter not satisfying: %@", @"provider"}];
 
           v28 = v61;
         }
@@ -980,16 +980,16 @@ LABEL_26:
 
         if ((*(v15 + 2))(v15, v26, v29, 0))
         {
-          v30 = [(TRINamespaceFactorProviding *)v102 treatmentId];
-          if (v30)
+          treatmentId = [(TRINamespaceFactorProviding *)v102 treatmentId];
+          if (treatmentId)
           {
           }
 
           else
           {
-            v32 = [(TRINamespaceFactorProviding *)v102 rolloutId];
+            rolloutId = [(TRINamespaceFactorProviding *)v102 rolloutId];
 
-            if (!v32)
+            if (!rolloutId)
             {
               goto LABEL_27;
             }
@@ -1023,16 +1023,16 @@ LABEL_26:
 
           else
           {
-            v35 = [(TRINamespaceFactorProviding *)v102 treatmentId];
+            treatmentId2 = [(TRINamespaceFactorProviding *)v102 treatmentId];
 
-            if (!v35)
+            if (!treatmentId2)
             {
               v41 = TRILogCategory_ClientFramework();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
               {
-                v60 = [(TRINamespaceFactorProviding *)v102 experimentId];
+                experimentId = [(TRINamespaceFactorProviding *)v102 experimentId];
                 *buf = 138412290;
-                v119 = v60;
+                v119 = experimentId;
                 _os_log_error_impl(&dword_22EA6B000, v41, OS_LOG_TYPE_ERROR, "Provider's treatmentId is unexpectedly nil for experiment %@", buf, 0xCu);
               }
 
@@ -1040,9 +1040,9 @@ LABEL_26:
             }
 
             v89 = v25;
-            v36 = [v94 asset];
-            v37 = [(TRINamespaceFactorProviding *)v102 treatmentId];
-            v38 = [v17 objectForKeyedSubscript:v37];
+            asset = [v94 asset];
+            treatmentId3 = [(TRINamespaceFactorProviding *)v102 treatmentId];
+            v38 = [v17 objectForKeyedSubscript:treatmentId3];
             v39 = v38;
             if (v38)
             {
@@ -1056,34 +1056,34 @@ LABEL_26:
 
             v42 = v40;
 
-            if ([v36 hasCloudKitIndex])
+            if ([asset hasCloudKitIndex])
             {
-              v43 = [v94 asset];
-              [v42 addIndex:{-[NSObject cloudKitIndex](v43, "cloudKitIndex")}];
+              asset2 = [v94 asset];
+              [v42 addIndex:{-[NSObject cloudKitIndex](asset2, "cloudKitIndex")}];
             }
 
             else
             {
-              v43 = TRILogCategory_ClientFramework();
-              if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+              asset2 = TRILogCategory_ClientFramework();
+              if (os_log_type_enabled(asset2, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
                 v119 = v94;
-                _os_log_impl(&dword_22EA6B000, v43, OS_LOG_TYPE_DEFAULT, "Level does not have a cloudKitIndex: %{public}@, this usually implies that the asset is coming from an MA reference", buf, 0xCu);
+                _os_log_impl(&dword_22EA6B000, asset2, OS_LOG_TYPE_DEFAULT, "Level does not have a cloudKitIndex: %{public}@, this usually implies that the asset is coming from an MA reference", buf, 0xCu);
               }
             }
 
-            v90 = v36;
+            v90 = asset;
 
-            v44 = [(TRINamespaceFactorProviding *)v102 treatmentId];
-            [v17 setObject:v42 forKeyedSubscript:v44];
+            treatmentId4 = [(TRINamespaceFactorProviding *)v102 treatmentId];
+            [v17 setObject:v42 forKeyedSubscript:treatmentId4];
 
-            v45 = [(TRINamespaceFactorProviding *)v102 experimentId];
+            experimentId2 = [(TRINamespaceFactorProviding *)v102 experimentId];
 
-            if (v45)
+            if (experimentId2)
             {
-              v46 = [(TRINamespaceFactorProviding *)v102 experimentId];
-              [v82 addObject:v46];
+              experimentId3 = [(TRINamespaceFactorProviding *)v102 experimentId];
+              [v82 addObject:experimentId3];
             }
 
             v100 = 0u;
@@ -1140,7 +1140,7 @@ LABEL_26:
             }
 
             v15 = v87;
-            self = v88;
+            self = selfCopy;
             v23 = v85;
             v17 = v86;
             v25 = v89;
@@ -1178,25 +1178,25 @@ LABEL_28:
   }
 
   objc_storeStrong(location, v17);
-  if (a4)
+  if (ids)
   {
-    objc_storeStrong(a4, obj);
+    objc_storeStrong(ids, obj);
   }
 
-  objc_storeStrong(v77, v74);
-  if (a7)
+  objc_storeStrong(assetIdsCopy, v74);
+  if (names)
   {
-    objc_storeStrong(a7, v81);
+    objc_storeStrong(names, v81);
   }
 
-  if (a8)
+  if (factorNames)
   {
-    objc_storeStrong(a8, v84);
+    objc_storeStrong(factorNames, v84);
   }
 
-  if (a6)
+  if (deployments)
   {
-    objc_storeStrong(a6, v71);
+    objc_storeStrong(deployments, v71);
   }
 
   v64 = *MEMORY[0x277D85DE8];
@@ -1391,8 +1391,8 @@ LABEL_2:
     {
       if ([(TRINamespaceFactorProviding *)v5 promotable])
       {
-        v6 = [(TRINamespaceFactorProviding *)v5 treatmentId];
-        rolloutProvider = TRIValidateFactorPackId(v6);
+        treatmentId = [(TRINamespaceFactorProviding *)v5 treatmentId];
+        rolloutProvider = TRIValidateFactorPackId(treatmentId);
 
         if (rolloutProvider)
         {
@@ -1412,77 +1412,77 @@ LABEL_3:
   return rolloutProvider;
 }
 
-- (id)_dealiasedFactorLevelForFactorLevel:(id)a3 unaliasedName:(id)a4
+- (id)_dealiasedFactorLevelForFactorLevel:(id)level unaliasedName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 descriptor];
-  v10 = [v9 fields];
-  v11 = [v10 count];
+  levelCopy = level;
+  nameCopy = name;
+  descriptor = [levelCopy descriptor];
+  fields = [descriptor fields];
+  v11 = [fields count];
 
   if (v11 != 2)
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:502 description:{@"Shallow copy of aliased TRIFactorLevel needs updating, not implemented to copy all currently available fields"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:502 description:{@"Shallow copy of aliased TRIFactorLevel needs updating, not implemented to copy all currently available fields"}];
   }
 
-  v12 = [v7 factor];
-  v13 = [v12 descriptor];
-  v14 = [v13 fields];
-  v15 = [v14 count];
+  factor = [levelCopy factor];
+  descriptor2 = [factor descriptor];
+  fields2 = [descriptor2 fields];
+  v15 = [fields2 count];
 
   if (v15 != 7)
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:503 description:{@"Shallow copy of aliased TRIFactor needs updating, not implemented to copy all currently available fields"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRINamespaceFactorProviderChain.m" lineNumber:503 description:{@"Shallow copy of aliased TRIFactor needs updating, not implemented to copy all currently available fields"}];
   }
 
   v16 = objc_opt_new();
-  v17 = [v7 level];
-  [v16 setLevel:v17];
+  level = [levelCopy level];
+  [v16 setLevel:level];
 
-  v18 = [v16 factor];
-  [v18 setName:v8];
+  factor2 = [v16 factor];
+  [factor2 setName:nameCopy];
 
-  v19 = [v7 factor];
-  v20 = [v19 id_p];
-  v21 = [v16 factor];
-  [v21 setId_p:v20];
+  factor3 = [levelCopy factor];
+  id_p = [factor3 id_p];
+  factor4 = [v16 factor];
+  [factor4 setId_p:id_p];
 
-  v22 = [v7 factor];
-  v23 = [v22 type];
-  v24 = [v16 factor];
-  [v24 setType:v23];
+  factor5 = [levelCopy factor];
+  type = [factor5 type];
+  factor6 = [v16 factor];
+  [factor6 setType:type];
 
-  v25 = [v7 factor];
-  v26 = [v25 namespaceId];
-  v27 = [v16 factor];
-  [v27 setNamespaceId:v26];
+  factor7 = [levelCopy factor];
+  namespaceId = [factor7 namespaceId];
+  factor8 = [v16 factor];
+  [factor8 setNamespaceId:namespaceId];
 
-  v28 = [v7 factor];
-  v29 = [v28 namespaceName];
-  v30 = [v16 factor];
-  [v30 setNamespaceName:v29];
+  factor9 = [levelCopy factor];
+  namespaceName = [factor9 namespaceName];
+  factor10 = [v16 factor];
+  [factor10 setNamespaceName:namespaceName];
 
-  v31 = [v7 factor];
-  v32 = [v31 metadataKeysArray];
-  v33 = [v16 factor];
-  [v33 setMetadataKeysArray:v32];
+  factor11 = [levelCopy factor];
+  metadataKeysArray = [factor11 metadataKeysArray];
+  factor12 = [v16 factor];
+  [factor12 setMetadataKeysArray:metadataKeysArray];
 
-  v34 = [v16 factor];
-  [v34 setAlias:0];
+  factor13 = [v16 factor];
+  [factor13 setAlias:0];
 
   return v16;
 }
 
-- (id)factorNamesWithObfuscation:(id)a3
+- (id)factorNamesWithObfuscation:(id)obfuscation
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __62__TRINamespaceFactorProviderChain_factorNamesWithObfuscation___block_invoke;
   v5[3] = &unk_27885E6D8;
   v5[4] = self;
-  v3 = [a3 _pas_mappedArrayWithTransform:v5];
+  v3 = [obfuscation _pas_mappedArrayWithTransform:v5];
 
   return v3;
 }

@@ -6,10 +6,10 @@
 
 - (id)supportedPresentationSizes
 {
-  v2 = [(ICAbstractTextAttachment *)self attachment];
-  v3 = [v2 attachmentType];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  attachmentType = [attachment attachmentType];
 
-  if (v3 > 6 || ((1 << v3) & 0x54) == 0)
+  if (attachmentType > 6 || ((1 << attachmentType) & 0x54) == 0)
   {
     if (supportedPresentationSizes_onceToken_0 != -1)
     {

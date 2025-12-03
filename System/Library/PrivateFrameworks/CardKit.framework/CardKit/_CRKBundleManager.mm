@@ -4,7 +4,7 @@
 - (NSSet)bundles;
 - (_CRKBundleManager)init;
 - (void)loadBundles;
-- (void)registerBundle:(id)a3;
+- (void)registerBundle:(id)bundle;
 @end
 
 @implementation _CRKBundleManager
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __35___CRKBundleManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -56,14 +56,14 @@
 - (void)loadBundles
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [objc_opt_class() bundleDirectoryPath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  bundleDirectoryPath = [objc_opt_class() bundleDirectoryPath];
   v5 = MEMORY[0x277CF93F0];
   v6 = *MEMORY[0x277CF93F0];
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v35 = v4;
+    v35 = bundleDirectoryPath;
     _os_log_impl(&dword_243247000, v6, OS_LOG_TYPE_INFO, "Looking for plugins in %@", buf, 0xCu);
   }
 
@@ -72,8 +72,8 @@
   v30 = 0u;
   v31 = 0u;
   v29 = 0;
-  v25 = v3;
-  obj = [v3 contentsOfDirectoryAtPath:v4 error:&v29];
+  v25 = defaultManager;
+  obj = [defaultManager contentsOfDirectoryAtPath:bundleDirectoryPath error:&v29];
   v27 = v29;
   v7 = [obj countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v7)
@@ -99,10 +99,10 @@
           _os_log_impl(&dword_243247000, v11, OS_LOG_TYPE_INFO, "Found plugin: %@", buf, 0xCu);
         }
 
-        v12 = v4;
-        v13 = [v4 stringByAppendingPathComponent:v10];
-        v14 = [objc_opt_class() bundleClass];
-        v15 = [v14 isSubclassOfClass:objc_opt_class()];
+        v12 = bundleDirectoryPath;
+        v13 = [bundleDirectoryPath stringByAppendingPathComponent:v10];
+        bundleClass = [objc_opt_class() bundleClass];
+        v15 = [bundleClass isSubclassOfClass:objc_opt_class()];
         v16 = v5;
         v17 = *v5;
         v18 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
@@ -111,7 +111,7 @@
           if (v18)
           {
             v19 = v17;
-            v20 = NSStringFromClass(v14);
+            v20 = NSStringFromClass(bundleClass);
             *buf = 138412546;
             v35 = v20;
             v36 = 2112;
@@ -125,7 +125,7 @@
           if (v18)
           {
             v21 = v17;
-            v22 = NSStringFromClass(v14);
+            v22 = NSStringFromClass(bundleClass);
             *buf = 138412546;
             v35 = v22;
             v36 = 2112;
@@ -133,11 +133,11 @@
             _os_log_impl(&dword_243247000, v21, OS_LOG_TYPE_INFO, "Defaulting to bundle of type %@ for plugin %@", buf, 0x16u);
           }
 
-          v14 = MEMORY[0x277CCA8D8];
+          bundleClass = MEMORY[0x277CCA8D8];
         }
 
-        v4 = v12;
-        v23 = [[v14 alloc] initWithPath:v13];
+        bundleDirectoryPath = v12;
+        v23 = [[bundleClass alloc] initWithPath:v13];
         v5 = v16;
         if (!v23 || v27)
         {
@@ -168,21 +168,21 @@
   }
 }
 
-- (void)registerBundle:(id)a3
+- (void)registerBundle:(id)bundle
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  bundleCopy = bundle;
+  if (bundleCopy)
   {
     v5 = *MEMORY[0x277CF93F0];
     if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = bundleCopy;
       _os_log_impl(&dword_243247000, v5, OS_LOG_TYPE_INFO, "Registering bundle: %@", &v6, 0xCu);
     }
 
-    [(NSMutableSet *)self->_bundles addObject:v4];
+    [(NSMutableSet *)self->_bundles addObject:bundleCopy];
   }
 }
 

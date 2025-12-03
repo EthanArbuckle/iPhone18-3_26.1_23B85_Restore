@@ -11,9 +11,9 @@
   v2 = [(_PXVisualDiagnosticsFillRectConfiguration *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     fillColor = v2->_fillColor;
-    v2->_fillColor = v3;
+    v2->_fillColor = clearColor;
   }
 
   return v2;

@@ -1,7 +1,7 @@
 @interface EDAddBusinessAddressesTableCategoryColumnUpgradeStep
 + (id)_businessCategoriesTableSchema;
 + (id)log;
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDAddBusinessAddressesTableCategoryColumnUpgradeStep
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __59__EDAddBusinessAddressesTableCategoryColumnUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_1 != -1)
   {
     dispatch_once(&log_onceToken_1, block);
@@ -31,17 +31,17 @@ void __59__EDAddBusinessAddressesTableCategoryColumnUpgradeStep_log__block_invok
   log_log_1 = v1;
 }
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 columnExists:@"address" inTable:@"business_categories" type:0])
+  connectionCopy = connection;
+  if ([connectionCopy columnExists:@"address" inTable:@"business_categories" type:0])
   {
-    v5 = sqlite3_exec([v4 sqlDB], "ALTER TABLE business_categories RENAME TO old_business_categories;", 0, 0, 0);
+    v5 = sqlite3_exec([connectionCopy sqlDB], "ALTER TABLE business_categories RENAME TO old_business_categories;", 0, 0, 0);
     if (v5)
     {
-      v6 = +[EDAddBusinessAddressesTableCategoryColumnUpgradeStep log];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      _businessCategoriesTableSchema = +[EDAddBusinessAddressesTableCategoryColumnUpgradeStep log];
+      if (os_log_type_enabled(_businessCategoriesTableSchema, OS_LOG_TYPE_ERROR))
       {
         +[EDAddBusinessAddressesTableCategoryColumnUpgradeStep runWithConnection:];
       }
@@ -49,9 +49,9 @@ void __59__EDAddBusinessAddressesTableCategoryColumnUpgradeStep_log__block_invok
       goto LABEL_30;
     }
 
-    v6 = [a1 _businessCategoriesTableSchema];
-    v7 = [v6 definitionWithDatabaseName:&stru_1F45B4608];
-    v5 = sqlite3_exec([v4 sqlDB], objc_msgSend(v7, "UTF8String"), 0, 0, 0);
+    _businessCategoriesTableSchema = [self _businessCategoriesTableSchema];
+    v7 = [_businessCategoriesTableSchema definitionWithDatabaseName:&stru_1F45B4608];
+    v5 = sqlite3_exec([connectionCopy sqlDB], objc_msgSend(v7, "UTF8String"), 0, 0, 0);
     if (v5)
     {
       v8 = +[EDAddBusinessAddressesTableCategoryColumnUpgradeStep log];
@@ -65,7 +65,7 @@ LABEL_14:
       goto LABEL_30;
     }
 
-    v5 = sqlite3_exec([v4 sqlDB], "INSERT INTO business_categories (business, category) SELECT business, category FROM old_business_categories;", 0, 0, 0);
+    v5 = sqlite3_exec([connectionCopy sqlDB], "INSERT INTO business_categories (business, category) SELECT business, category FROM old_business_categories;", 0, 0, 0);
     if (v5)
     {
       v8 = +[EDAddBusinessAddressesTableCategoryColumnUpgradeStep log];
@@ -77,7 +77,7 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    v5 = sqlite3_exec([v4 sqlDB], "DROP TABLE old_business_categories;", 0, 0, 0);
+    v5 = sqlite3_exec([connectionCopy sqlDB], "DROP TABLE old_business_categories;", 0, 0, 0);
     if (v5)
     {
       v8 = +[EDAddBusinessAddressesTableCategoryColumnUpgradeStep log];
@@ -90,10 +90,10 @@ LABEL_14:
     }
   }
 
-  if (([v4 columnExists:@"category" inTable:@"business_addresses" type:0] & 1) != 0 || (v5 = sqlite3_exec(objc_msgSend(v4, "sqlDB"), objc_msgSend(@"ALTER TABLE business_addresses ADD COLUMN category INTEGER;", "UTF8String"), 0, 0, 0)) == 0)
+  if (([connectionCopy columnExists:@"category" inTable:@"business_addresses" type:0] & 1) != 0 || (v5 = sqlite3_exec(objc_msgSend(connectionCopy, "sqlDB"), objc_msgSend(@"ALTER TABLE business_addresses ADD COLUMN category INTEGER;", "UTF8String"), 0, 0, 0)) == 0)
   {
-    v6 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"business" table:@"business_categories"];
-    [v6 addResultColumn:@"category"];
+    _businessCategoriesTableSchema = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"business" table:@"business_categories"];
+    [_businessCategoriesTableSchema addResultColumn:@"category"];
     *buf = 0;
     v21 = buf;
     v22 = 0x2020000000;
@@ -103,9 +103,9 @@ LABEL_14:
     v17[2] = __74__EDAddBusinessAddressesTableCategoryColumnUpgradeStep_runWithConnection___block_invoke;
     v17[3] = &unk_1E8250178;
     v19 = buf;
-    v18 = v4;
+    v18 = connectionCopy;
     v16 = 0;
-    v9 = [v18 executeSelectStatement:v6 withBlock:v17 error:&v16];
+    v9 = [v18 executeSelectStatement:_businessCategoriesTableSchema withBlock:v17 error:&v16];
     v10 = v16;
     if (v9)
     {
@@ -132,8 +132,8 @@ LABEL_29:
       v12 = +[EDAddBusinessAddressesTableCategoryColumnUpgradeStep log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v10 ef_publicDescription];
-        [(EDAddBusinessAddressesTableCategoryColumnUpgradeStep *)v13 runWithConnection:v24, v12];
+        ef_publicDescription = [v10 ef_publicDescription];
+        [(EDAddBusinessAddressesTableCategoryColumnUpgradeStep *)ef_publicDescription runWithConnection:v24, v12];
       }
     }
 
@@ -141,11 +141,11 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v6 = +[EDAddBusinessAddressesTableCategoryColumnUpgradeStep log];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  _businessCategoriesTableSchema = +[EDAddBusinessAddressesTableCategoryColumnUpgradeStep log];
+  if (os_log_type_enabled(_businessCategoriesTableSchema, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1C61EF000, v6, OS_LOG_TYPE_DEFAULT, "Failed to add category column in business_addresses table", buf, 2u);
+    _os_log_impl(&dword_1C61EF000, _businessCategoriesTableSchema, OS_LOG_TYPE_DEFAULT, "Failed to add category column in business_addresses table", buf, 2u);
   }
 
 LABEL_30:

@@ -1,7 +1,7 @@
 @interface IMServiceReachabilityPrecondition
 + (id)_preconditionClasses;
-+ (id)preconditionWithDictionary:(id)a3;
-- (id)_latestResultsForServiceName:(id)a3 fromLatestResults:(id)a4;
++ (id)preconditionWithDictionary:(id)dictionary;
+- (id)_latestResultsForServiceName:(id)name fromLatestResults:(id)results;
 @end
 
 @implementation IMServiceReachabilityPrecondition
@@ -15,10 +15,10 @@
   return v2;
 }
 
-+ (id)preconditionWithDictionary:(id)a3
++ (id)preconditionWithDictionary:(id)dictionary
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -38,7 +38,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) preconditionWithDictionary:v3];
+        v9 = [*(*(&v12 + 1) + 8 * i) preconditionWithDictionary:dictionaryCopy];
         if (v9)
         {
           v10 = v9;
@@ -62,18 +62,18 @@ LABEL_11:
   return v10;
 }
 
-- (id)_latestResultsForServiceName:(id)a3 fromLatestResults:(id)a4
+- (id)_latestResultsForServiceName:(id)name fromLatestResults:(id)results
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  resultsCopy = results;
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [v6 allValues];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allValues = [resultsCopy allValues];
+  v9 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -84,12 +84,12 @@ LABEL_11:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 service];
-        v15 = [v14 isEqualToString:v5];
+        service = [v13 service];
+        v15 = [service isEqualToString:nameCopy];
 
         if (v15)
         {
@@ -97,7 +97,7 @@ LABEL_11:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);

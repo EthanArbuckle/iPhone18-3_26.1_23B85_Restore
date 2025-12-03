@@ -1,11 +1,11 @@
 @interface RidesharingRatingView
-- (RidesharingRatingView)initWithCoder:(id)a3;
-- (RidesharingRatingView)initWithSelectedStars:(unint64_t)a3 updateBlock:(id)a4;
-- (void)_commonInitWithStars:(unint64_t)a3;
-- (void)handleStarTouches:(id)a3 withEvent:(id)a4;
+- (RidesharingRatingView)initWithCoder:(id)coder;
+- (RidesharingRatingView)initWithSelectedStars:(unint64_t)stars updateBlock:(id)block;
+- (void)_commonInitWithStars:(unint64_t)stars;
+- (void)handleStarTouches:(id)touches withEvent:(id)event;
 - (void)performCallBackWithStarValue;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 - (void)updateTheme;
 @end
 
@@ -20,17 +20,17 @@
   }
 }
 
-- (void)handleStarTouches:(id)a3 withEvent:(id)a4
+- (void)handleStarTouches:(id)touches withEvent:(id)event
 {
-  v23 = a3;
+  touchesCopy = touches;
   [(UIStackView *)self->_stackView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v23 allObjects];
-  v14 = [v13 lastObject];
-  [v14 locationInView:self->_stackView];
+  allObjects = [touchesCopy allObjects];
+  lastObject = [allObjects lastObject];
+  [lastObject locationInView:self->_stackView];
   v25.x = v15;
   v25.y = v16;
   v26.origin.x = v6;
@@ -41,9 +41,9 @@
 
   if (v17)
   {
-    v18 = [v23 allObjects];
-    v19 = [v18 lastObject];
-    [v19 locationInView:self->_stackView];
+    allObjects2 = [touchesCopy allObjects];
+    lastObject2 = [allObjects2 lastObject];
+    [lastObject2 locationInView:self->_stackView];
     v21 = v20;
 
     [(UIStackView *)self->_stackView bounds];
@@ -52,16 +52,16 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(RidesharingRatingView *)self updateTheme:a3];
+  [(RidesharingRatingView *)self updateTheme:cancelled];
 
   [(RidesharingRatingView *)self performCallBackWithStarValue];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(RidesharingRatingView *)self handleStarTouches:a3 withEvent:a4];
+  [(RidesharingRatingView *)self handleStarTouches:ended withEvent:event];
 
   [(RidesharingRatingView *)self performCallBackWithStarValue];
 }
@@ -72,8 +72,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -84,24 +84,24 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         v9 = ([v8 tag] & 0x8000000000000000) == 0 && objc_msgSend(v8, "tag") < self->_stars;
-        v10 = [(RidesharingRatingView *)self theme];
-        v11 = [v10 ridesharingRatingStarColorOn:v9];
+        theme = [(RidesharingRatingView *)self theme];
+        v11 = [theme ridesharingRatingStarColorOn:v9];
         [v8 setTintColor:v11];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_commonInitWithStars:(unint64_t)a3
+- (void)_commonInitWithStars:(unint64_t)stars
 {
   v4 = objc_alloc_init(UIStackView);
   stackView = self->_stackView;
@@ -125,32 +125,32 @@
   }
 
   [(RidesharingRatingView *)self addSubview:self->_stackView];
-  v10 = [(UIStackView *)self->_stackView topAnchor];
-  v11 = [(RidesharingRatingView *)self topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  topAnchor2 = [(RidesharingRatingView *)self topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v12 setActive:1];
 
-  v13 = [(UIStackView *)self->_stackView bottomAnchor];
-  v14 = [(RidesharingRatingView *)self bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [(RidesharingRatingView *)self bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v15 setActive:1];
 
-  v16 = [(UIStackView *)self->_stackView centerXAnchor];
-  v17 = [(RidesharingRatingView *)self centerXAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  centerXAnchor = [(UIStackView *)self->_stackView centerXAnchor];
+  centerXAnchor2 = [(RidesharingRatingView *)self centerXAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v18 setActive:1];
 
-  v21 = [(UIStackView *)self->_stackView widthAnchor];
-  v19 = [(RidesharingRatingView *)self widthAnchor];
-  v20 = [v21 constraintLessThanOrEqualToAnchor:v19 multiplier:1.0];
+  widthAnchor = [(UIStackView *)self->_stackView widthAnchor];
+  widthAnchor2 = [(RidesharingRatingView *)self widthAnchor];
+  v20 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2 multiplier:1.0];
   [v20 setActive:1];
 }
 
-- (RidesharingRatingView)initWithCoder:(id)a3
+- (RidesharingRatingView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RidesharingRatingView;
-  v3 = [(RidesharingRatingView *)&v6 initWithCoder:a3];
+  v3 = [(RidesharingRatingView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -160,18 +160,18 @@
   return v4;
 }
 
-- (RidesharingRatingView)initWithSelectedStars:(unint64_t)a3 updateBlock:(id)a4
+- (RidesharingRatingView)initWithSelectedStars:(unint64_t)stars updateBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = RidesharingRatingView;
   v7 = [(RidesharingRatingView *)&v12 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v8 = v7;
   if (v7)
   {
-    [(RidesharingRatingView *)v7 _commonInitWithStars:a3];
-    v8->_stars = a3;
-    v9 = [v6 copy];
+    [(RidesharingRatingView *)v7 _commonInitWithStars:stars];
+    v8->_stars = stars;
+    v9 = [blockCopy copy];
     updateBlock = v8->_updateBlock;
     v8->_updateBlock = v9;
   }

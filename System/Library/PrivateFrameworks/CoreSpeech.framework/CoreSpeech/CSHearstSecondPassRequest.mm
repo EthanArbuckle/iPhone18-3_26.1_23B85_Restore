@@ -1,9 +1,9 @@
 @interface CSHearstSecondPassRequest
-- (CSHearstSecondPassRequest)initWithDeviceID:(id)a3;
-- (CSHearstSecondPassRequest)initWithDeviceID:(id)a3 speechManager:(id)a4;
+- (CSHearstSecondPassRequest)initWithDeviceID:(id)d;
+- (CSHearstSecondPassRequest)initWithDeviceID:(id)d speechManager:(id)manager;
 - (void)cancelAudioStreamHold;
 - (void)dealloc;
-- (void)holdAudioStreamWithTimeout:(double)a3;
+- (void)holdAudioStreamWithTimeout:(double)timeout;
 - (void)reset;
 @end
 
@@ -11,18 +11,18 @@
 
 - (void)cancelAudioStreamHold
 {
-  v3 = [(CSHearstSecondPassRequest *)self audioProvider];
-  [v3 cancelAudioStreamHold:self->_audioStreamHolding];
+  audioProvider = [(CSHearstSecondPassRequest *)self audioProvider];
+  [audioProvider cancelAudioStreamHold:self->_audioStreamHolding];
 
   audioStreamHolding = self->_audioStreamHolding;
   self->_audioStreamHolding = 0;
 }
 
-- (void)holdAudioStreamWithTimeout:(double)a3
+- (void)holdAudioStreamWithTimeout:(double)timeout
 {
   v7 = [CSAudioStreamHoldRequestOption defaultOptionWithTimeout:5.0];
-  v4 = [(CSHearstSecondPassRequest *)self audioProvider];
-  v5 = [v4 holdAudioStreamWithDescription:@"CSHearstSecondPassRequest" option:v7];
+  audioProvider = [(CSHearstSecondPassRequest *)self audioProvider];
+  v5 = [audioProvider holdAudioStreamWithDescription:@"CSHearstSecondPassRequest" option:v7];
   audioStreamHolding = self->_audioStreamHolding;
   self->_audioStreamHolding = v5;
 }
@@ -49,27 +49,27 @@
   [(CSHearstSecondPassRequest *)&v4 dealloc];
 }
 
-- (CSHearstSecondPassRequest)initWithDeviceID:(id)a3
+- (CSHearstSecondPassRequest)initWithDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[CSSpeechManager sharedManager];
-  v6 = [(CSHearstSecondPassRequest *)self initWithDeviceID:v4 speechManager:v5];
+  v6 = [(CSHearstSecondPassRequest *)self initWithDeviceID:dCopy speechManager:v5];
 
   return v6;
 }
 
-- (CSHearstSecondPassRequest)initWithDeviceID:(id)a3 speechManager:(id)a4
+- (CSHearstSecondPassRequest)initWithDeviceID:(id)d speechManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = CSHearstSecondPassRequest;
   v9 = [(CSHearstSecondPassRequest *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_speechManager, a4);
-    objc_storeStrong(&v10->_firstPassDeviceID, a3);
+    objc_storeStrong(&v9->_speechManager, manager);
+    objc_storeStrong(&v10->_firstPassDeviceID, d);
     v11 = [[CSVoiceTriggerSecondPass alloc] initWithFirstPassSource:3 phsEnabled:0 speechManager:v10->_speechManager supportsMphDetection:0 secondPassQueue:0];
     voiceTriggerSecondPass = v10->_voiceTriggerSecondPass;
     v10->_voiceTriggerSecondPass = v11;

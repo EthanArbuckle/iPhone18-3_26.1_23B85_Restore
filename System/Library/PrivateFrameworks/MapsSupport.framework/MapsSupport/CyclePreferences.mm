@@ -1,9 +1,9 @@
 @interface CyclePreferences
 - (BOOL)hasAnyNonStandardPreferences;
-- (CyclePreferences)initWithAvoidHills:(BOOL)a3 avoidBusyRoads:(BOOL)a4 ebike:(BOOL)a5 defaults:(id)a6;
-- (CyclePreferences)initWithCopy:(id)a3;
-- (CyclePreferences)initWithCyclingOptions:(id)a3 defaults:(id)a4;
-- (CyclePreferences)initWithDefaults:(id)a3;
+- (CyclePreferences)initWithAvoidHills:(BOOL)hills avoidBusyRoads:(BOOL)roads ebike:(BOOL)ebike defaults:(id)defaults;
+- (CyclePreferences)initWithCopy:(id)copy;
+- (CyclePreferences)initWithCyclingOptions:(id)options defaults:(id)defaults;
+- (CyclePreferences)initWithDefaults:(id)defaults;
 - (id)_values;
 - (id)cyclingOptions;
 - (void)loadValuesFromDefaults;
@@ -11,56 +11,56 @@
 
 @implementation CyclePreferences
 
-- (CyclePreferences)initWithAvoidHills:(BOOL)a3 avoidBusyRoads:(BOOL)a4 ebike:(BOOL)a5 defaults:(id)a6
+- (CyclePreferences)initWithAvoidHills:(BOOL)hills avoidBusyRoads:(BOOL)roads ebike:(BOOL)ebike defaults:(id)defaults
 {
   v10.receiver = self;
   v10.super_class = CyclePreferences;
-  result = [(WatchSyncedPreferences *)&v10 initWithDefaults:a6];
+  result = [(WatchSyncedPreferences *)&v10 initWithDefaults:defaults];
   if (result)
   {
-    result->_avoidHills = a3;
-    result->_avoidBusyRoads = a4;
-    result->_ebike = a5;
+    result->_avoidHills = hills;
+    result->_avoidBusyRoads = roads;
+    result->_ebike = ebike;
   }
 
   return result;
 }
 
-- (CyclePreferences)initWithCyclingOptions:(id)a3 defaults:(id)a4
+- (CyclePreferences)initWithCyclingOptions:(id)options defaults:(id)defaults
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 cyclingUserPreferences];
-  v9 = [v7 cyclingVehicleSpecifications];
+  defaultsCopy = defaults;
+  optionsCopy = options;
+  cyclingUserPreferences = [optionsCopy cyclingUserPreferences];
+  cyclingVehicleSpecifications = [optionsCopy cyclingVehicleSpecifications];
 
-  v10 = -[CyclePreferences initWithAvoidHills:avoidBusyRoads:ebike:defaults:](self, "initWithAvoidHills:avoidBusyRoads:ebike:defaults:", [v8 avoidHills], objc_msgSend(v8, "avoidBusyRoads"), objc_msgSend(v9, "isEbike"), v6);
+  v10 = -[CyclePreferences initWithAvoidHills:avoidBusyRoads:ebike:defaults:](self, "initWithAvoidHills:avoidBusyRoads:ebike:defaults:", [cyclingUserPreferences avoidHills], objc_msgSend(cyclingUserPreferences, "avoidBusyRoads"), objc_msgSend(cyclingVehicleSpecifications, "isEbike"), defaultsCopy);
   return v10;
 }
 
-- (CyclePreferences)initWithDefaults:(id)a3
+- (CyclePreferences)initWithDefaults:(id)defaults
 {
   v4.receiver = self;
   v4.super_class = CyclePreferences;
-  return [(WatchSyncedPreferences *)&v4 initWithDefaults:a3];
+  return [(WatchSyncedPreferences *)&v4 initWithDefaults:defaults];
 }
 
-- (CyclePreferences)initWithCopy:(id)a3
+- (CyclePreferences)initWithCopy:(id)copy
 {
-  v4 = a3;
+  copyCopy = copy;
   v8.receiver = self;
   v8.super_class = CyclePreferences;
-  v5 = [(WatchSyncedPreferences *)&v8 initWithCopy:v4];
+  v5 = [(WatchSyncedPreferences *)&v8 initWithCopy:copyCopy];
   if (v5)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v4)
+    if (copyCopy)
     {
       if (isKindOfClass)
       {
-        v5->_avoidHills = v4[24];
-        v5->_avoidBusyRoads = v4[25];
-        v5->_ebike = v4[26];
+        v5->_avoidHills = copyCopy[24];
+        v5->_avoidBusyRoads = copyCopy[25];
+        v5->_ebike = copyCopy[26];
       }
     }
   }
@@ -94,14 +94,14 @@
 
 - (void)loadValuesFromDefaults
 {
-  v3 = [(WatchSyncedPreferences *)self defaults];
-  -[CyclePreferences setAvoidHills:](self, "setAvoidHills:", [v3 BOOLForKey:@"MapsDefaultAvoidHillsKey"]);
+  defaults = [(WatchSyncedPreferences *)self defaults];
+  -[CyclePreferences setAvoidHills:](self, "setAvoidHills:", [defaults BOOLForKey:@"MapsDefaultAvoidHillsKey"]);
 
-  v4 = [(WatchSyncedPreferences *)self defaults];
-  -[CyclePreferences setAvoidBusyRoads:](self, "setAvoidBusyRoads:", [v4 BOOLForKey:@"MapsDefaultAvoidBusyRoadsKey"]);
+  defaults2 = [(WatchSyncedPreferences *)self defaults];
+  -[CyclePreferences setAvoidBusyRoads:](self, "setAvoidBusyRoads:", [defaults2 BOOLForKey:@"MapsDefaultAvoidBusyRoadsKey"]);
 
-  v5 = [(WatchSyncedPreferences *)self defaults];
-  -[CyclePreferences setEbike:](self, "setEbike:", [v5 BOOLForKey:@"MapsDefaultUseEbikeKey"]);
+  defaults3 = [(WatchSyncedPreferences *)self defaults];
+  -[CyclePreferences setEbike:](self, "setEbike:", [defaults3 BOOLForKey:@"MapsDefaultUseEbikeKey"]);
 }
 
 - (id)_values

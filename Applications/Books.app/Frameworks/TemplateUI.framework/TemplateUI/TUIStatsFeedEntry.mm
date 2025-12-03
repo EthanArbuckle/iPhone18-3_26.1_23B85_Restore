@@ -1,12 +1,12 @@
 @interface TUIStatsFeedEntry
-- (TUIStatsFeedEntry)initWithCollector:(id)a3;
+- (TUIStatsFeedEntry)initWithCollector:(id)collector;
 @end
 
 @implementation TUIStatsFeedEntry
 
-- (TUIStatsFeedEntry)initWithCollector:(id)a3
+- (TUIStatsFeedEntry)initWithCollector:(id)collector
 {
-  v4 = a3;
+  collectorCopy = collector;
   v25.receiver = self;
   v25.super_class = TUIStatsFeedEntry;
   v5 = [(TUIStatsFeedEntry *)&v25 init];
@@ -14,17 +14,17 @@
   {
     for (i = 0; i != 5; ++i)
     {
-      [v4 elapsedTimeForPhase:i];
+      [collectorCopy elapsedTimeForPhase:i];
       v5->_elapsedTime[i] = v7;
     }
 
     for (j = 0; j != 29; ++j)
     {
-      v5->_eventCount[j] = [v4 countForEvent:j];
+      v5->_eventCount[j] = [collectorCopy countForEvent:j];
     }
 
-    v9 = [v4 passes];
-    v10 = [v9 copy];
+    passes = [collectorCopy passes];
+    v10 = [passes copy];
     passes = v5->_passes;
     v5->_passes = v10;
 

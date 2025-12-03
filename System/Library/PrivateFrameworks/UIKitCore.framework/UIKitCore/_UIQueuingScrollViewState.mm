@@ -1,31 +1,31 @@
 @interface _UIQueuingScrollViewState
-- (_UIQueuingScrollViewState)initWithTransitionDirection:(int64_t)a3 view:(id)a4 manual:(BOOL)a5 completion:(id)a6;
+- (_UIQueuingScrollViewState)initWithTransitionDirection:(int64_t)direction view:(id)view manual:(BOOL)manual completion:(id)completion;
 - (id)description;
 @end
 
 @implementation _UIQueuingScrollViewState
 
-- (_UIQueuingScrollViewState)initWithTransitionDirection:(int64_t)a3 view:(id)a4 manual:(BOOL)a5 completion:(id)a6
+- (_UIQueuingScrollViewState)initWithTransitionDirection:(int64_t)direction view:(id)view manual:(BOOL)manual completion:(id)completion
 {
-  v11 = a4;
-  v12 = a6;
-  if (!v11)
+  viewCopy = view;
+  completionCopy = completion;
+  if (!viewCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"-[_UIQueuingScrollViewState initWithTransitionDirection:view:completion:] called without a valid view."];
   }
 
   v18.receiver = self;
   v18.super_class = _UIQueuingScrollViewState;
-  v13 = [(_UITransitionState *)&v18 initWithTransitionDirection:a3 completion:v12];
+  v13 = [(_UITransitionState *)&v18 initWithTransitionDirection:direction completion:completionCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_view, a4);
+    objc_storeStrong(&v13->_view, view);
     v15 = [UIViewController viewControllerForView:v14->_view];
     viewController = v14->_viewController;
     v14->_viewController = v15;
 
-    v14->_manual = a5;
+    v14->_manual = manual;
   }
 
   return v14;
@@ -49,8 +49,8 @@
     v5 = @"NO";
   }
 
-  v6 = [(_UIQueuingScrollViewState *)self view];
-  [v4 appendFormat:@"; isManual: %@; view: %@>", v5, v6];
+  view = [(_UIQueuingScrollViewState *)self view];
+  [v4 appendFormat:@"; isManual: %@; view: %@>", v5, view];
 
   return v4;
 }

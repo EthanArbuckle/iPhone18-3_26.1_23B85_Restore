@@ -1,25 +1,25 @@
 @interface PSUsageBundleDetailController
-+ (void)setupSpecifier:(id)a3 forMediaGroups:(id)a4;
-- (id)size:(id)a3;
-- (id)sizeForSpecifier:(id)a3;
++ (void)setupSpecifier:(id)specifier forMediaGroups:(id)groups;
+- (id)size:(id)size;
+- (id)sizeForSpecifier:(id)specifier;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)loadView;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)updateSizesAfterDeletingSize:(float)a3 shouldPop:(BOOL)a4;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)updateSizesAfterDeletingSize:(float)size shouldPop:(BOOL)pop;
 @end
 
 @implementation PSUsageBundleDetailController
 
-+ (void)setupSpecifier:(id)a3 forMediaGroups:(id)a4
++ (void)setupSpecifier:(id)specifier forMediaGroups:(id)groups
 {
-  v4 = a3;
-  v9 = [v4 propertyForKey:@"USAGE_BUNDLE_APP"];
-  v5 = [v9 usageBundleStorageReporter];
+  specifierCopy = specifier;
+  v9 = [specifierCopy propertyForKey:@"USAGE_BUNDLE_APP"];
+  usageBundleStorageReporter = [v9 usageBundleStorageReporter];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v9 categories];
-    if ([v6 count])
+    categories = [v9 categories];
+    if ([categories count])
     {
       [v9 totalSize];
       if (v7 <= 0.0)
@@ -44,7 +44,7 @@
     v8 = 4;
   }
 
-  [v4 setCellType:v8];
+  [specifierCopy setCellType:v8];
 }
 
 - (void)loadView
@@ -52,10 +52,10 @@
   v8.receiver = self;
   v8.super_class = PSUsageBundleDetailController;
   [(PSListController *)&v8 loadView];
-  v3 = [(PSListController *)self table];
+  table = [(PSListController *)self table];
   v4 = objc_alloc(MEMORY[0x1E69DD250]);
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v5 sf_isiPad])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice sf_isiPad])
   {
     v6 = 20.0;
   }
@@ -67,13 +67,13 @@
 
   v7 = [v4 initWithFrame:{0.0, 0.0, 0.0, v6}];
 
-  [v3 setTableHeaderView:v7];
+  [table setTableHeaderView:v7];
   [(PSEditableListController *)self setEditingButtonHidden:1 animated:0];
 }
 
-- (id)size:(id)a3
+- (id)size:(id)size
 {
-  v3 = [a3 propertyForKey:@"USAGE_BUNDLE_APP"];
+  v3 = [size propertyForKey:@"USAGE_BUNDLE_APP"];
   v4 = MEMORY[0x1E696AAF0];
   [v3 totalSize];
   v6 = [v4 stringFromByteCount:v5 countStyle:2];
@@ -81,19 +81,19 @@
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = [(PSListController *)self specifierAtIndex:[(PSListController *)self indexForIndexPath:a4]];
-  v6 = [v5 cellType];
+  v5 = [(PSListController *)self specifierAtIndex:[(PSListController *)self indexForIndexPath:path]];
+  cellType = [v5 cellType];
   v7 = [v5 propertyForKey:@"USAGE_BUNDLE_CATEGORY"];
-  v8 = [(PSListController *)self specifier];
-  v9 = [v8 propertyForKey:@"USAGE_BUNDLE_APP"];
+  specifier = [(PSListController *)self specifier];
+  v9 = [specifier propertyForKey:@"USAGE_BUNDLE_APP"];
 
-  v10 = [v9 usageBundleStorageReporter];
-  if ([v10 allowDeletionForCategory:v7])
+  usageBundleStorageReporter = [v9 usageBundleStorageReporter];
+  if ([usageBundleStorageReporter allowDeletionForCategory:v7])
   {
-    v11 = v6 - 1;
-    v12 = [v9 usageBundleStorageReporter];
+    v11 = cellType - 1;
+    usageBundleStorageReporter2 = [v9 usageBundleStorageReporter];
     v13 = objc_opt_respondsToSelector();
 
     v14 = 0;
@@ -112,14 +112,14 @@
   return v14;
 }
 
-- (void)updateSizesAfterDeletingSize:(float)a3 shouldPop:(BOOL)a4
+- (void)updateSizesAfterDeletingSize:(float)size shouldPop:(BOOL)pop
 {
-  v4 = a4;
-  v7 = [(PSListController *)self specifier];
-  v14 = [v7 propertyForKey:@"USAGE_BUNDLE_APP"];
+  popCopy = pop;
+  specifier = [(PSListController *)self specifier];
+  v14 = [specifier propertyForKey:@"USAGE_BUNDLE_APP"];
 
   [v14 totalSize];
-  *&v9 = v8 - a3;
+  *&v9 = v8 - size;
   v10 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
   [v10 floatValue];
   [v14 setTotalSize:?];
@@ -128,23 +128,23 @@
   WeakRetained = objc_loadWeakRetained(&self->super.super.super._parentController);
   [WeakRetained reloadSpecifier:self->super.super.super._specifier];
 
-  if (v4)
+  if (popCopy)
   {
-    v12 = [(PSUsageBundleDetailController *)self navigationController];
-    v13 = [v12 popViewControllerAnimated:1];
+    navigationController = [(PSUsageBundleDetailController *)self navigationController];
+    v13 = [navigationController popViewControllerAnimated:1];
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v6 = [(PSListController *)self specifierAtIndex:[(PSListController *)self indexForIndexPath:a5, a4]];
-  v7 = [(PSListController *)self specifier];
-  v8 = [v7 propertyForKey:@"USAGE_BUNDLE_APP"];
+  v6 = [(PSListController *)self specifierAtIndex:[(PSListController *)self indexForIndexPath:path, style]];
+  specifier = [(PSListController *)self specifier];
+  v8 = [specifier propertyForKey:@"USAGE_BUNDLE_APP"];
 
-  v9 = [v8 bundleIdentifier];
+  bundleIdentifier = [v8 bundleIdentifier];
   v10 = [v6 propertyForKey:@"USAGE_BUNDLE_CATEGORY"];
-  v11 = [v8 usageBundleStorageReporter];
-  [v11 sizeForCategory:v10];
+  usageBundleStorageReporter = [v8 usageBundleStorageReporter];
+  [usageBundleStorageReporter sizeForCategory:v10];
   v13 = v12;
 
   v14 = dispatch_get_global_queue(-2, 0);
@@ -154,8 +154,8 @@
   block[3] = &unk_1E71DBCE8;
   v20 = v8;
   v21 = v10;
-  v22 = v9;
-  v15 = v9;
+  v22 = bundleIdentifier;
+  v15 = bundleIdentifier;
   v16 = v10;
   v17 = v8;
   dispatch_async(v14, block);
@@ -191,14 +191,14 @@ void __80__PSUsageBundleDetailController_tableView_commitEditingStyle_forRowAtIn
   }
 }
 
-- (id)sizeForSpecifier:(id)a3
+- (id)sizeForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"USAGE_BUNDLE_CATEGORY"];
-  v4 = [v3 usageBundleApp];
-  v5 = [v4 usageBundleStorageReporter];
+  v3 = [specifier propertyForKey:@"USAGE_BUNDLE_CATEGORY"];
+  usageBundleApp = [v3 usageBundleApp];
+  usageBundleStorageReporter = [usageBundleApp usageBundleStorageReporter];
 
   v6 = MEMORY[0x1E696AAF0];
-  [v5 sizeForCategory:v3];
+  [usageBundleStorageReporter sizeForCategory:v3];
   v8 = [v6 stringFromByteCount:v7 countStyle:2];
 
   return v8;
@@ -211,16 +211,16 @@ void __80__PSUsageBundleDetailController_tableView_commitEditingStyle_forRowAtIn
   if (!specifiers)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [(PSListController *)self specifier];
-    v6 = [v5 propertyForKey:@"USAGE_BUNDLE_APP"];
+    specifier = [(PSListController *)self specifier];
+    v6 = [specifier propertyForKey:@"USAGE_BUNDLE_APP"];
 
-    v7 = [v6 name];
-    v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:0 set:0 get:0 detail:0 cell:0 edit:0];
+    name = [v6 name];
+    v8 = [PSSpecifier preferenceSpecifierNamed:name target:0 set:0 get:0 detail:0 cell:0 edit:0];
 
     [v8 setProperty:@"PSUsageSizeHeader" forKey:@"headerCellClass"];
-    v24 = self;
-    v9 = [(PSListController *)self specifier];
-    v10 = [v9 propertyForKey:@"TOTAL_SIZE"];
+    selfCopy = self;
+    specifier2 = [(PSListController *)self specifier];
+    v10 = [specifier2 propertyForKey:@"TOTAL_SIZE"];
     [v8 setProperty:v10 forKey:@"SIZE"];
 
     v11 = v4;
@@ -246,12 +246,12 @@ void __80__PSUsageBundleDetailController_tableView_commitEditingStyle_forRowAtIn
           }
 
           v16 = *(*(&v25 + 1) + 8 * i);
-          v17 = [v16 name];
-          v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:v24 set:0 get:sel_sizeForSpecifier_ detail:0 cell:4 edit:0];
+          name2 = [v16 name];
+          v18 = [PSSpecifier preferenceSpecifierNamed:name2 target:selfCopy set:0 get:sel_sizeForSpecifier_ detail:0 cell:4 edit:0];
 
           [v18 setProperty:v16 forKey:@"USAGE_BUNDLE_CATEGORY"];
-          v19 = [v16 name];
-          [v18 setProperty:v19 forKey:@"id"];
+          name3 = [v16 name];
+          [v18 setProperty:name3 forKey:@"id"];
 
           [v18 setProperty:objc_opt_class() forKey:@"cellClass"];
           [(NSArray *)v11 addObject:v18];
@@ -263,10 +263,10 @@ void __80__PSUsageBundleDetailController_tableView_commitEditingStyle_forRowAtIn
       while (v13);
     }
 
-    v20 = v24->super.super._specifiers;
-    v24->super.super._specifiers = v11;
+    v20 = selfCopy->super.super._specifiers;
+    selfCopy->super.super._specifiers = v11;
 
-    specifiers = v24->super.super._specifiers;
+    specifiers = selfCopy->super.super._specifiers;
   }
 
   return specifiers;

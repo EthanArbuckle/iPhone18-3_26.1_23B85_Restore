@@ -1,40 +1,40 @@
 @interface PLFilteredAlbumList
-+ (id)filteredAlbumList:(id)a3 filter:(int)a4;
-- (BOOL)albumHasFixedOrder:(id)a3;
++ (id)filteredAlbumList:(id)list filter:(int)filter;
+- (BOOL)albumHasFixedOrder:(id)order;
 - (BOOL)canEditAlbums;
-- (BOOL)mappedDataSourceChanged:(id)a3 remoteNotificationData:(id)a4;
+- (BOOL)mappedDataSourceChanged:(id)changed remoteNotificationData:(id)data;
 - (BOOL)needsReordering;
-- (BOOL)shouldIncludeObjectAtIndex:(unint64_t)a3;
+- (BOOL)shouldIncludeObjectAtIndex:(unint64_t)index;
 - (NSIndexSet)filteredIndexes;
 - (NSMutableOrderedSet)_albums;
 - (NSMutableOrderedSet)albums;
 - (NSString)_typeDescription;
 - (NSString)description;
-- (PLFilteredAlbumList)initWithBackingAlbumList:(id)a3 filter:(int)a4;
+- (PLFilteredAlbumList)initWithBackingAlbumList:(id)list filter:(int)filter;
 - (PLPhotoLibrary)photoLibrary;
 - (id)albumsSortingComparator;
-- (id)filteredAlbumsAtIndexes:(id)a3;
+- (id)filteredAlbumsAtIndexes:(id)indexes;
 - (id)identifier;
 - (id)managedObjectContext;
-- (id)objectInFilteredAlbumsAtIndex:(unint64_t)a3;
+- (id)objectInFilteredAlbumsAtIndex:(unint64_t)index;
 - (signed)albumListType;
 - (unint64_t)albumsCount;
 - (unint64_t)countOfFilteredAlbums;
-- (unint64_t)indexInFilteredAlbumsOfObject:(id)a3;
+- (unint64_t)indexInFilteredAlbumsOfObject:(id)object;
 - (unint64_t)unreadAlbumsCount;
-- (void)_backingContextDidChange:(id)a3;
+- (void)_backingContextDidChange:(id)change;
 - (void)_invalidateFilteredIndexes;
 - (void)dealloc;
-- (void)enumerateDerivedAlbumLists:(id)a3;
-- (void)insertFilteredAlbums:(id)a3 atIndexes:(id)a4;
-- (void)insertObject:(id)a3 inFilteredAlbumsAtIndex:(unint64_t)a4;
-- (void)preheatAlbumsAtIndexes:(id)a3 forProperties:(id)a4 relationships:(id)a5;
-- (void)preheatAlbumsForProperties:(id)a3 relationships:(id)a4;
-- (void)registerDerivedAlbumList:(id)a3;
-- (void)removeFilteredAlbumsAtIndexes:(id)a3;
-- (void)removeObjectFromFilteredAlbumsAtIndex:(unint64_t)a3;
-- (void)replaceFilteredAlbumsAtIndexes:(id)a3 withFilteredValues:(id)a4;
-- (void)replaceObjectInFilteredAlbumsAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (void)enumerateDerivedAlbumLists:(id)lists;
+- (void)insertFilteredAlbums:(id)albums atIndexes:(id)indexes;
+- (void)insertObject:(id)object inFilteredAlbumsAtIndex:(unint64_t)index;
+- (void)preheatAlbumsAtIndexes:(id)indexes forProperties:(id)properties relationships:(id)relationships;
+- (void)preheatAlbumsForProperties:(id)properties relationships:(id)relationships;
+- (void)registerDerivedAlbumList:(id)list;
+- (void)removeFilteredAlbumsAtIndexes:(id)indexes;
+- (void)removeObjectFromFilteredAlbumsAtIndex:(unint64_t)index;
+- (void)replaceFilteredAlbumsAtIndexes:(id)indexes withFilteredValues:(id)values;
+- (void)replaceObjectInFilteredAlbumsAtIndex:(unint64_t)index withObject:(id)object;
 - (void)setNeedsReordering;
 - (void)unregisterAllDerivedAlbums;
 - (void)updateAlbumsOrderIfNeeded;
@@ -42,17 +42,17 @@
 
 @implementation PLFilteredAlbumList
 
-- (void)enumerateDerivedAlbumLists:(id)a3
+- (void)enumerateDerivedAlbumLists:(id)lists
 {
   derivedAlbumLists = self->_derivedAlbumLists;
-  v6 = a3;
+  listsCopy = lists;
   v4 = 5;
   do
   {
     WeakRetained = objc_loadWeakRetained(derivedAlbumLists);
     if (WeakRetained)
     {
-      v6[2](v6, WeakRetained);
+      listsCopy[2](listsCopy, WeakRetained);
     }
 
     ++derivedAlbumLists;
@@ -75,10 +75,10 @@
   while (v3);
 }
 
-- (void)registerDerivedAlbumList:(id)a3
+- (void)registerDerivedAlbumList:(id)list
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listCopy = list;
   v5 = objc_autoreleasePoolPush();
   derivedAlbumLists = self->_derivedAlbumLists;
   v7 = 5;
@@ -88,7 +88,7 @@
 
     if (!WeakRetained)
     {
-      objc_storeWeak(derivedAlbumLists, v4);
+      objc_storeWeak(derivedAlbumLists, listCopy);
       goto LABEL_8;
     }
 
@@ -109,88 +109,88 @@ LABEL_8:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)replaceFilteredAlbumsAtIndexes:(id)a3 withFilteredValues:(id)a4
+- (void)replaceFilteredAlbumsAtIndexes:(id)indexes withFilteredValues:(id)values
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v8 = [v10 albums];
-  v9 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:v7];
+  valuesCopy = values;
+  indexesCopy = indexes;
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  v9 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:indexesCopy];
 
-  [v8 replaceObjectsAtIndexes:v9 withObjects:v6];
+  [albums replaceObjectsAtIndexes:v9 withObjects:valuesCopy];
 }
 
-- (void)replaceObjectInFilteredAlbumsAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectInFilteredAlbumsAtIndex:(unint64_t)index withObject:(id)object
 {
-  v6 = a4;
-  v8 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v7 = [v8 albums];
-  [v7 replaceObjectAtIndex:-[PLIndexMapper backingIndexForIndex:](self->_indexMapper withObject:{"backingIndexForIndex:", a3), v6}];
+  objectCopy = object;
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  [albums replaceObjectAtIndex:-[PLIndexMapper backingIndexForIndex:](self->_indexMapper withObject:{"backingIndexForIndex:", index), objectCopy}];
 }
 
-- (void)removeFilteredAlbumsAtIndexes:(id)a3
+- (void)removeFilteredAlbumsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v7 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v5 = [v7 albums];
-  v6 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:v4];
+  indexesCopy = indexes;
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  v6 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:indexesCopy];
 
-  [v5 removeObjectsAtIndexes:v6];
+  [albums removeObjectsAtIndexes:v6];
 }
 
-- (void)insertFilteredAlbums:(id)a3 atIndexes:(id)a4
+- (void)insertFilteredAlbums:(id)albums atIndexes:(id)indexes
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v8 = [v10 albums];
-  v9 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:v6];
+  indexesCopy = indexes;
+  albumsCopy = albums;
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  v9 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:indexesCopy];
 
-  [v8 insertObjects:v7 atIndexes:v9];
+  [albums insertObjects:albumsCopy atIndexes:v9];
 }
 
-- (void)removeObjectFromFilteredAlbumsAtIndex:(unint64_t)a3
+- (void)removeObjectFromFilteredAlbumsAtIndex:(unint64_t)index
 {
-  v6 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v5 = [v6 albums];
-  [v5 removeObjectAtIndex:{-[PLIndexMapper backingIndexForIndex:](self->_indexMapper, "backingIndexForIndex:", a3)}];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  [albums removeObjectAtIndex:{-[PLIndexMapper backingIndexForIndex:](self->_indexMapper, "backingIndexForIndex:", index)}];
 }
 
-- (void)insertObject:(id)a3 inFilteredAlbumsAtIndex:(unint64_t)a4
+- (void)insertObject:(id)object inFilteredAlbumsAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v8 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v7 = [v8 albums];
-  [v7 insertObject:v6 atIndex:{-[PLIndexMapper backingIndexForIndex:](self->_indexMapper, "backingIndexForIndex:", a4)}];
+  objectCopy = object;
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  [albums insertObject:objectCopy atIndex:{-[PLIndexMapper backingIndexForIndex:](self->_indexMapper, "backingIndexForIndex:", index)}];
 }
 
-- (id)filteredAlbumsAtIndexes:(id)a3
+- (id)filteredAlbumsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v6 = [v5 albums];
-  v7 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:v4];
+  indexesCopy = indexes;
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  v7 = [(PLIndexMapper *)self->_indexMapper backingIndexesForIndexes:indexesCopy];
 
-  v8 = [v6 objectsAtIndexes:v7];
+  v8 = [albums objectsAtIndexes:v7];
 
   return v8;
 }
 
-- (id)objectInFilteredAlbumsAtIndex:(unint64_t)a3
+- (id)objectInFilteredAlbumsAtIndex:(unint64_t)index
 {
-  v5 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v6 = [v5 albums];
-  v7 = [v6 objectAtIndex:{-[PLIndexMapper backingIndexForIndex:](self->_indexMapper, "backingIndexForIndex:", a3)}];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  v7 = [albums objectAtIndex:{-[PLIndexMapper backingIndexForIndex:](self->_indexMapper, "backingIndexForIndex:", index)}];
 
   return v7;
 }
 
-- (unint64_t)indexInFilteredAlbumsOfObject:(id)a3
+- (unint64_t)indexInFilteredAlbumsOfObject:(id)object
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v6 = [v5 albums];
-  v7 = [v6 indexOfObject:v4];
+  objectCopy = object;
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  v7 = [albums indexOfObject:objectCopy];
 
   v8 = [(PLIndexMapper *)self->_indexMapper indexForBackingIndex:v7];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -209,8 +209,8 @@ LABEL_8:
 
 - (unint64_t)countOfFilteredAlbums
 {
-  v2 = [(PLFilteredAlbumList *)self filteredIndexes];
-  v3 = [v2 count];
+  filteredIndexes = [(PLFilteredAlbumList *)self filteredIndexes];
+  v3 = [filteredIndexes count];
 
   return v3;
 }
@@ -222,22 +222,22 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (BOOL)mappedDataSourceChanged:(id)a3 remoteNotificationData:(id)a4
+- (BOOL)mappedDataSourceChanged:(id)changed remoteNotificationData:(id)data
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  changedCopy = changed;
   [(PLFilteredAlbumList *)self set_albums:0];
-  if ([(PLIndexMapper *)self->_indexMapper applyContainerChangeNotification:v5 changeTypes:15 toFilteredIndexes:self->_filteredIndexes])
+  if ([(PLIndexMapper *)self->_indexMapper applyContainerChangeNotification:changedCopy changeTypes:15 toFilteredIndexes:self->_filteredIndexes])
   {
-    v6 = [(PLFilteredAlbumList *)self backingAlbumList];
-    v7 = [v6 albums];
-    v8 = [v7 array];
+    backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+    albums = [backingAlbumList albums];
+    array = [albums array];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v8;
+    v9 = array;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -287,13 +287,13 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)shouldIncludeObjectAtIndex:(unint64_t)a3
+- (BOOL)shouldIncludeObjectAtIndex:(unint64_t)index
 {
-  v5 = [(PLFilteredAlbumList *)self predicate];
-  v6 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v7 = [v6 albums];
-  v8 = [v7 objectAtIndex:a3];
-  v9 = [v5 evaluateWithObject:v8];
+  predicate = [(PLFilteredAlbumList *)self predicate];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  albums = [backingAlbumList albums];
+  v8 = [albums objectAtIndex:index];
+  v9 = [predicate evaluateWithObject:v8];
 
   return v9;
 }
@@ -304,15 +304,15 @@ LABEL_8:
   if (!filteredIndexes)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(PLFilteredAlbumList *)self backingAlbumList];
-    v7 = [v6 albums];
-    v8 = [v7 array];
+    backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+    albums = [backingAlbumList albums];
+    array = [albums array];
 
-    v9 = [(PLFilteredAlbumList *)self predicate];
-    v10 = [v8 filteredArrayUsingPredicate:v9];
+    predicate = [(PLFilteredAlbumList *)self predicate];
+    v10 = [array filteredArrayUsingPredicate:predicate];
 
-    v11 = [MEMORY[0x1E696AD50] indexSet];
-    v12 = [v8 count];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
+    v12 = [array count];
     v29[0] = 0;
     v29[1] = v29;
     v29[2] = 0x2020000000;
@@ -323,11 +323,11 @@ LABEL_8:
     v22 = &unk_1E756E328;
     v26 = v29;
     v27 = v12;
-    v13 = v8;
+    v13 = array;
     v28 = a2;
     v23 = v13;
-    v24 = self;
-    v14 = v11;
+    selfCopy = self;
+    v14 = indexSet;
     v25 = v14;
     [v10 enumerateObjectsUsingBlock:&v19];
     v15 = self->_filteredIndexes;
@@ -362,10 +362,10 @@ uint64_t __38__PLFilteredAlbumList_filteredIndexes__block_invoke(uint64_t a1, ui
 
 - (unint64_t)unreadAlbumsCount
 {
-  v2 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v3 = [v2 unreadAlbumsCount];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  unreadAlbumsCount = [backingAlbumList unreadAlbumsCount];
 
-  return v3;
+  return unreadAlbumsCount;
 }
 
 - (void)_invalidateFilteredIndexes
@@ -380,36 +380,36 @@ uint64_t __38__PLFilteredAlbumList_filteredIndexes__block_invoke(uint64_t a1, ui
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v7 = [v6 _typeDescription];
-  v8 = [v3 stringWithFormat:@"%@\nBacking album list = %@", v5, v7];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  _typeDescription = [backingAlbumList _typeDescription];
+  v8 = [v3 stringWithFormat:@"%@\nBacking album list = %@", v5, _typeDescription];
 
   return v8;
 }
 
 - (id)managedObjectContext
 {
-  v2 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v3 = [v2 managedObjectContext];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  managedObjectContext = [backingAlbumList managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (id)identifier
 {
-  v2 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v3 = [v2 identifier];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  identifier = [backingAlbumList identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (void)_backingContextDidChange:(id)a3
+- (void)_backingContextDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 objectForKey:*MEMORY[0x1E695D2F8]];
+  userInfo = [change userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E695D2F8]];
 
-  v5 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v6 = [v7 containsObject:v5];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  v6 = [v7 containsObject:backingAlbumList];
 
   if (v6)
   {
@@ -422,26 +422,26 @@ uint64_t __38__PLFilteredAlbumList_filteredIndexes__block_invoke(uint64_t a1, ui
 
 - (NSString)description
 {
-  v3 = [(PLFilteredAlbumList *)self backingAlbumList];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PLFilteredAlbumList *)self backingAlbumList];
-    v6 = [v5 _typeDescription];
+    backingAlbumList2 = [(PLFilteredAlbumList *)self backingAlbumList];
+    _typeDescription = [backingAlbumList2 _typeDescription];
   }
 
   else
   {
-    v6 = @"[]";
+    _typeDescription = @"[]";
   }
 
-  v7 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p> type: %@", objc_opt_class(), self, v6];
+  v7 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p> type: %@", objc_opt_class(), self, _typeDescription];
   filteredIndexes = self->_filteredIndexes;
   if (filteredIndexes)
   {
-    v9 = [(NSMutableIndexSet *)filteredIndexes pl_shortDescription];
-    [v7 appendFormat:@", filtered items: %@ (count: %lu)", v9, -[NSMutableIndexSet count](self->_filteredIndexes, "count")];
+    pl_shortDescription = [(NSMutableIndexSet *)filteredIndexes pl_shortDescription];
+    [v7 appendFormat:@", filtered items: %@ (count: %lu)", pl_shortDescription, -[NSMutableIndexSet count](self->_filteredIndexes, "count")];
   }
 
   else
@@ -449,20 +449,20 @@ uint64_t __38__PLFilteredAlbumList_filteredIndexes__block_invoke(uint64_t a1, ui
     [v7 appendString:{@", filtered items not calculated"}];
   }
 
-  v10 = [(PLFilteredAlbumList *)self backingAlbumList];
-  [v7 appendFormat:@", backing list: %p", v10];
+  backingAlbumList3 = [(PLFilteredAlbumList *)self backingAlbumList];
+  [v7 appendFormat:@", backing list: %p", backingAlbumList3];
 
   if (self->_filteredIndexes)
   {
-    v11 = [MEMORY[0x1E695DF70] array];
-    v12 = [(PLFilteredAlbumList *)self albums];
+    array = [MEMORY[0x1E695DF70] array];
+    albums = [(PLFilteredAlbumList *)self albums];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __34__PLFilteredAlbumList_description__block_invoke;
     v16[3] = &unk_1E7577F08;
-    v17 = v11;
-    v13 = v11;
-    [v12 enumerateObjectsUsingBlock:v16];
+    v17 = array;
+    v13 = array;
+    [albums enumerateObjectsUsingBlock:v16];
 
     v14 = [v13 componentsJoinedByString:{@", "}];
     [v7 appendFormat:@", albums: {%@}", v14];
@@ -486,26 +486,26 @@ void __34__PLFilteredAlbumList_description__block_invoke(uint64_t a1, uint64_t a
 
 - (PLPhotoLibrary)photoLibrary
 {
-  v2 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v3 = [v2 photoLibrary];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  photoLibrary = [backingAlbumList photoLibrary];
 
-  return v3;
+  return photoLibrary;
 }
 
 - (unint64_t)albumsCount
 {
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:8];
   v4 = MEMORY[0x1E696AE18];
-  v5 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v6 = [v5 objectID];
-  v7 = [v4 predicateWithFormat:@"%@ IN albumLists", v6];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  objectID = [backingAlbumList objectID];
+  v7 = [v4 predicateWithFormat:@"%@ IN albumLists", objectID];
   [v3 addObject:v7];
 
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(kind != %d) OR (cachedCount > 0)", 1552];
-  [v3 addObject:v8];
+  1552 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(kind != %d) OR (cachedCount > 0)", 1552];
+  [v3 addObject:1552];
 
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind != %d", 1602];
-  [v3 addObject:v9];
+  1602 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind != %d", 1602];
+  [v3 addObject:1602];
 
   v10 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v3];
   v11 = MEMORY[0x1E695D5E0];
@@ -514,9 +514,9 @@ void __34__PLFilteredAlbumList_description__block_invoke(uint64_t a1, uint64_t a
 
   [v13 setPredicate:v10];
   [v13 setFetchLimit:1];
-  v14 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v15 = [v14 managedObjectContext];
-  v16 = [v15 countForFetchRequest:v13 error:0];
+  backingAlbumList2 = [(PLFilteredAlbumList *)self backingAlbumList];
+  managedObjectContext = [backingAlbumList2 managedObjectContext];
+  v16 = [managedObjectContext countForFetchRequest:v13 error:0];
 
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -533,9 +533,9 @@ void __34__PLFilteredAlbumList_description__block_invoke(uint64_t a1, uint64_t a
 
 - (NSMutableOrderedSet)albums
 {
-  v3 = [(PLFilteredAlbumList *)self _albums];
+  _albums = [(PLFilteredAlbumList *)self _albums];
 
-  if (!v3)
+  if (!_albums)
   {
     v4 = [(PLFilteredAlbumList *)self mutableOrderedSetValueForKey:@"filteredAlbums"];
     [(PLFilteredAlbumList *)self set_albums:v4];
@@ -544,81 +544,81 @@ void __34__PLFilteredAlbumList_description__block_invoke(uint64_t a1, uint64_t a
   return [(PLFilteredAlbumList *)self _albums];
 }
 
-- (void)preheatAlbumsAtIndexes:(id)a3 forProperties:(id)a4 relationships:(id)a5
+- (void)preheatAlbumsAtIndexes:(id)indexes forProperties:(id)properties relationships:(id)relationships
 {
   indexMapper = self->_indexMapper;
-  v9 = a5;
-  v10 = a4;
-  v12 = [(PLIndexMapper *)indexMapper backingIndexesForIndexes:a3];
-  v11 = [(PLFilteredAlbumList *)self backingAlbumList];
-  [v11 preheatAlbumsAtIndexes:v12 forProperties:v10 relationships:v9];
+  relationshipsCopy = relationships;
+  propertiesCopy = properties;
+  v12 = [(PLIndexMapper *)indexMapper backingIndexesForIndexes:indexes];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  [backingAlbumList preheatAlbumsAtIndexes:v12 forProperties:propertiesCopy relationships:relationshipsCopy];
 }
 
-- (void)preheatAlbumsForProperties:(id)a3 relationships:(id)a4
+- (void)preheatAlbumsForProperties:(id)properties relationships:(id)relationships
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLFilteredAlbumList *)self backingAlbumList];
-  [v8 preheatAlbumsForProperties:v7 relationships:v6];
+  relationshipsCopy = relationships;
+  propertiesCopy = properties;
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  [backingAlbumList preheatAlbumsForProperties:propertiesCopy relationships:relationshipsCopy];
 }
 
 - (void)updateAlbumsOrderIfNeeded
 {
-  v2 = [(PLFilteredAlbumList *)self backingAlbumList];
-  [v2 updateAlbumsOrderIfNeeded];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  [backingAlbumList updateAlbumsOrderIfNeeded];
 }
 
 - (BOOL)needsReordering
 {
-  v2 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v3 = [v2 needsReordering];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  needsReordering = [backingAlbumList needsReordering];
 
-  return v3;
+  return needsReordering;
 }
 
 - (void)setNeedsReordering
 {
-  v2 = [(PLFilteredAlbumList *)self backingAlbumList];
-  [v2 setNeedsReordering];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  [backingAlbumList setNeedsReordering];
 }
 
 - (id)albumsSortingComparator
 {
-  v2 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v3 = [v2 albumsSortingComparator];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  albumsSortingComparator = [backingAlbumList albumsSortingComparator];
 
-  return v3;
+  return albumsSortingComparator;
 }
 
-- (BOOL)albumHasFixedOrder:(id)a3
+- (BOOL)albumHasFixedOrder:(id)order
 {
-  v4 = a3;
-  v5 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v6 = [v5 albumHasFixedOrder:v4];
+  orderCopy = order;
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  v6 = [backingAlbumList albumHasFixedOrder:orderCopy];
 
   return v6;
 }
 
 - (BOOL)canEditAlbums
 {
-  v2 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v3 = [v2 canEditAlbums];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  canEditAlbums = [backingAlbumList canEditAlbums];
 
-  return v3;
+  return canEditAlbums;
 }
 
 - (signed)albumListType
 {
-  v2 = [(PLFilteredAlbumList *)self backingAlbumList];
-  v3 = [v2 albumListType];
+  backingAlbumList = [(PLFilteredAlbumList *)self backingAlbumList];
+  albumListType = [backingAlbumList albumListType];
 
-  return v3;
+  return albumListType;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PLFilteredAlbumList *)self unregisterAllDerivedAlbums];
   [(PLFilteredAlbumList *)self _invalidateFilteredIndexes];
@@ -627,10 +627,10 @@ void __34__PLFilteredAlbumList_description__block_invoke(uint64_t a1, uint64_t a
   [(PLFilteredAlbumList *)&v4 dealloc];
 }
 
-- (PLFilteredAlbumList)initWithBackingAlbumList:(id)a3 filter:(int)a4
+- (PLFilteredAlbumList)initWithBackingAlbumList:(id)list filter:(int)filter
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&filter;
+  listCopy = list;
   v57.receiver = self;
   v57.super_class = PLFilteredAlbumList;
   v7 = [(PLFilteredAlbumList *)&v57 init];
@@ -643,25 +643,25 @@ void __34__PLFilteredAlbumList_description__block_invoke(uint64_t a1, uint64_t a
   indexMapper = v7->_indexMapper;
   v7->_indexMapper = v8;
 
-  [(PLFilteredAlbumList *)v7 setBackingAlbumList:v6];
-  v10 = [(PLFilteredAlbumList *)v7 backingAlbumList];
+  [(PLFilteredAlbumList *)v7 setBackingAlbumList:listCopy];
+  backingAlbumList = [(PLFilteredAlbumList *)v7 backingAlbumList];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(PLFilteredAlbumList *)v7 backingAlbumList];
-    [v12 registerDerivedAlbumList:v7];
+    backingAlbumList2 = [(PLFilteredAlbumList *)v7 backingAlbumList];
+    [backingAlbumList2 registerDerivedAlbumList:v7];
   }
 
   [(PLFilteredAlbumList *)v7 setFilter:v4];
   v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"TRUEPREDICATE"];
   [(PLFilteredAlbumList *)v7 setPredicate:v13];
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v15 = *MEMORY[0x1E695D360];
-  v16 = [(PLFilteredAlbumList *)v7 backingAlbumList];
-  v17 = [v16 managedObjectContext];
-  [v14 addObserver:v7 selector:sel__backingContextDidChange_ name:v15 object:v17];
+  backingAlbumList3 = [(PLFilteredAlbumList *)v7 backingAlbumList];
+  managedObjectContext = [backingAlbumList3 managedObjectContext];
+  [defaultCenter addObserver:v7 selector:sel__backingContextDidChange_ name:v15 object:managedObjectContext];
 
   v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:10];
   if (v4)
@@ -744,8 +744,8 @@ LABEL_15:
   }
 
 LABEL_34:
-  v30 = [MEMORY[0x1E696AE18] predicateWithFormat:@"isSmartAlbum == NO OR isEmpty == NO OR kind == %d", 1612];
-  [v18 addObject:v30];
+  1612 = [MEMORY[0x1E696AE18] predicateWithFormat:@"isSmartAlbum == NO OR isEmpty == NO OR kind == %d", 1612];
+  [v18 addObject:1612];
 
   if ((v4 & 0x100000) != 0)
   {
@@ -774,8 +774,8 @@ LABEL_17:
   }
 
 LABEL_36:
-  v32 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind != %d", 1612];
-  [v18 addObject:v32];
+  16122 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind != %d", 1612];
+  [v18 addObject:16122];
 
   if ((v4 & 0x1000000) != 0)
   {
@@ -792,8 +792,8 @@ LABEL_38:
   }
 
 LABEL_37:
-  v33 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind != %d", 1619];
-  [v18 addObject:v33];
+  1619 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind != %d", 1619];
+  [v18 addObject:1619];
 
   if ((v4 & 0x800000) != 0)
   {
@@ -930,11 +930,11 @@ LABEL_46:
   return v7;
 }
 
-+ (id)filteredAlbumList:(id)a3 filter:(int)a4
++ (id)filteredAlbumList:(id)list filter:(int)filter
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [[a1 alloc] initWithBackingAlbumList:v6 filter:v4];
+  v4 = *&filter;
+  listCopy = list;
+  v7 = [[self alloc] initWithBackingAlbumList:listCopy filter:v4];
 
   return v7;
 }

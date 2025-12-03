@@ -1,6 +1,6 @@
 @interface GKLeaderboardChallengeInviteeInternal
 + (id)secureCodedPropertyKeys;
-- (GKLeaderboardChallengeInviteeInternal)initWithServerFragment:(id)a3;
+- (GKLeaderboardChallengeInviteeInternal)initWithServerFragment:(id)fragment;
 @end
 
 @implementation GKLeaderboardChallengeInviteeInternal
@@ -35,21 +35,21 @@ void __64__GKLeaderboardChallengeInviteeInternal_secureCodedPropertyKeys__block_
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (GKLeaderboardChallengeInviteeInternal)initWithServerFragment:(id)a3
+- (GKLeaderboardChallengeInviteeInternal)initWithServerFragment:(id)fragment
 {
-  v4 = a3;
+  fragmentCopy = fragment;
   v15.receiver = self;
   v15.super_class = GKLeaderboardChallengeInviteeInternal;
   v5 = [(GKLeaderboardChallengeInviteeInternal *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"player-id"];
+    v6 = [fragmentCopy objectForKeyedSubscript:@"player-id"];
     [(GKLeaderboardChallengeInviteeInternal *)v5 setPlayerID:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"from-player-id"];
+    v7 = [fragmentCopy objectForKeyedSubscript:@"from-player-id"];
     [(GKLeaderboardChallengeInviteeInternal *)v5 setFromPlayerID:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"invited-timestamp"];
+    v8 = [fragmentCopy objectForKeyedSubscript:@"invited-timestamp"];
     v9 = v8;
     if (v8)
     {
@@ -59,7 +59,7 @@ void __64__GKLeaderboardChallengeInviteeInternal_secureCodedPropertyKeys__block_
       [(GKLeaderboardChallengeInviteeInternal *)v5 setInvitedDate:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"status"];
+    v13 = [fragmentCopy objectForKeyedSubscript:@"status"];
     [(GKLeaderboardChallengeInviteeInternal *)v5 setStatus:v13];
   }
 

@@ -3,25 +3,25 @@
 - (void)_reloadHighlight;
 - (void)_removeOverlay;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setCountdown:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setItemImage:(id)a3;
-- (void)setItemImageHidden:(BOOL)a3;
-- (void)setItemImageInsets:(UIEdgeInsets)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setBackgroundColor:(id)color;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setCountdown:(id)countdown;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setItemImage:(id)image;
+- (void)setItemImageHidden:(BOOL)hidden;
+- (void)setItemImageInsets:(UIEdgeInsets)insets;
+- (void)setSelected:(BOOL)selected;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SUUIBrickCollectionViewCell
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (self->_accessibilityLabel != a3)
+  if (self->_accessibilityLabel != label)
   {
-    v4 = [a3 copy];
+    v4 = [label copy];
     accessibilityLabel = self->_accessibilityLabel;
     self->_accessibilityLabel = v4;
 
@@ -32,15 +32,15 @@
   }
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v4 = [a3 primaryTextColor];
+  primaryTextColor = [scheme primaryTextColor];
   titleColor = self->_titleColor;
-  if (v4 != titleColor)
+  if (primaryTextColor != titleColor)
   {
-    obj = v4;
-    titleColor = [titleColor isEqual:v4];
-    v4 = obj;
+    obj = primaryTextColor;
+    titleColor = [titleColor isEqual:primaryTextColor];
+    primaryTextColor = obj;
     if ((titleColor & 1) == 0)
     {
       objc_storeStrong(&self->_titleColor, obj);
@@ -52,31 +52,31 @@
 
       else
       {
-        v7 = [MEMORY[0x277D75348] blackColor];
-        [(UILabel *)titleLabel setTextColor:v7];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        [(UILabel *)titleLabel setTextColor:blackColor];
       }
 
-      v4 = obj;
+      primaryTextColor = obj;
     }
   }
 
-  MEMORY[0x2821F96F8](titleColor, v4);
+  MEMORY[0x2821F96F8](titleColor, primaryTextColor);
 }
 
-- (void)setCountdown:(id)a3
+- (void)setCountdown:(id)countdown
 {
-  v8 = a3;
-  v4 = [(SUUICountdownView *)self->_countdownView countdown];
+  countdownCopy = countdown;
+  countdown = [(SUUICountdownView *)self->_countdownView countdown];
 
-  if (v4 != v8)
+  if (countdown != countdownCopy)
   {
     [(SUUICountdownView *)self->_countdownView removeFromSuperview];
     countdownView = self->_countdownView;
     self->_countdownView = 0;
 
-    if (v8)
+    if (countdownCopy)
     {
-      v6 = [[SUUICountdownView alloc] initWithCountdown:v8 clientContext:self->_clientContext];
+      v6 = [[SUUICountdownView alloc] initWithCountdown:countdownCopy clientContext:self->_clientContext];
       v7 = self->_countdownView;
       self->_countdownView = v6;
 
@@ -87,31 +87,31 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = SUUIBrickCollectionViewCell;
-  [(SUUIBrickCollectionViewCell *)&v4 setHighlighted:a3];
+  [(SUUIBrickCollectionViewCell *)&v4 setHighlighted:highlighted];
   [(SUUIBrickCollectionViewCell *)self _reloadHighlight];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = SUUIBrickCollectionViewCell;
-  [(SUUIBrickCollectionViewCell *)&v4 setSelected:a3];
+  [(SUUIBrickCollectionViewCell *)&v4 setSelected:selected];
   [(SUUIBrickCollectionViewCell *)self _reloadHighlight];
 }
 
-- (void)setItemImage:(id)a3
+- (void)setItemImage:(id)image
 {
-  v13 = a3;
-  v4 = [(UIImageView *)self->_itemImageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_itemImageView image];
 
-  if (v4 != v13)
+  if (image != imageCopy)
   {
     itemImageView = self->_itemImageView;
-    if (v13)
+    if (imageCopy)
     {
       if (!itemImageView)
       {
@@ -121,12 +121,12 @@
 
         [(UIImageView *)self->_itemImageView setAccessibilityLabel:self->_accessibilityLabel];
         v9 = self->_itemImageView;
-        v10 = [(SUUIBrickCollectionViewCell *)self backgroundColor];
-        [(UIImageView *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SUUIBrickCollectionViewCell *)self backgroundColor];
+        [(UIImageView *)v9 setBackgroundColor:backgroundColor];
 
         [(UIImageView *)self->_itemImageView setHidden:[(SUUIBrickCollectionViewCell *)self isItemImageHidden]];
-        v11 = [(SUUIBrickCollectionViewCell *)self contentView];
-        [v11 addSubview:self->_itemImageView];
+        contentView = [(SUUIBrickCollectionViewCell *)self contentView];
+        [contentView addSubview:self->_itemImageView];
 
         itemImageView = self->_itemImageView;
       }
@@ -142,42 +142,42 @@
       self->_itemImageView = 0;
     }
 
-    v5 = [(SUUIBrickCollectionViewCell *)self setNeedsLayout];
+    setNeedsLayout = [(SUUIBrickCollectionViewCell *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](setNeedsLayout);
 }
 
-- (void)setItemImageHidden:(BOOL)a3
+- (void)setItemImageHidden:(BOOL)hidden
 {
-  if (self->_itemImageHidden != a3)
+  if (self->_itemImageHidden != hidden)
   {
-    self->_itemImageHidden = a3;
+    self->_itemImageHidden = hidden;
     [(UIImageView *)self->_itemImageView setHidden:?];
   }
 }
 
-- (void)setItemImageInsets:(UIEdgeInsets)a3
+- (void)setItemImageInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_itemImageInsets.top, v3), vceqq_f64(*&self->_itemImageInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_itemImageInsets = a3;
+    self->_itemImageInsets = insets;
     [(SUUIBrickCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v15 = a3;
-  v4 = [(SUUIBrickCollectionViewCell *)self title];
-  if (v4 != v15 && ([v15 isEqualToString:v4] & 1) == 0)
+  titleCopy = title;
+  title = [(SUUIBrickCollectionViewCell *)self title];
+  if (title != titleCopy && ([titleCopy isEqualToString:title] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v15)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -186,8 +186,8 @@
         self->_titleLabel = v6;
 
         v8 = self->_titleLabel;
-        v9 = [(SUUIBrickCollectionViewCell *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SUUIBrickCollectionViewCell *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_titleLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
@@ -201,8 +201,8 @@
 
         else
         {
-          v14 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v12 setTextColor:v14];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v12 setTextColor:blackColor];
         }
 
         [(SUUIBrickCollectionViewCell *)self addSubview:self->_titleLabel];
@@ -224,15 +224,15 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   itemImageView = self->_itemImageView;
-  v5 = a3;
-  [(UIImageView *)itemImageView setBackgroundColor:v5];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIImageView *)itemImageView setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIBrickCollectionViewCell;
-  [(SUUIBrickCollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SUUIBrickCollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 - (void)layoutSubviews
@@ -275,32 +275,32 @@
       self->_overlayImageView = v3;
 
       v5 = self->_overlayImageView;
-      v6 = [(SUUIBrickCollectionViewCell *)self backgroundColor];
-      [(UIImageView *)v5 setBackgroundColor:v6];
+      backgroundColor = [(SUUIBrickCollectionViewCell *)self backgroundColor];
+      [(UIImageView *)v5 setBackgroundColor:backgroundColor];
 
-      v7 = [(SUUIBrickCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_overlayImageView];
+      contentView = [(SUUIBrickCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_overlayImageView];
 
       [(SUUIBrickCollectionViewCell *)self setNeedsLayout];
     }
 
-    v8 = [(SUUICountdownView *)self->_countdownView backgroundImage];
-    v9 = v8;
-    if (v8)
+    backgroundImage = [(SUUICountdownView *)self->_countdownView backgroundImage];
+    v9 = backgroundImage;
+    if (backgroundImage)
     {
-      v10 = v8;
+      image = backgroundImage;
     }
 
     else
     {
-      v10 = [(UIImageView *)self->_itemImageView image];
+      image = [(UIImageView *)self->_itemImageView image];
     }
 
-    v14 = v10;
+    v14 = image;
 
     v11 = self->_overlayImageView;
-    v12 = [MEMORY[0x277D75348] blackColor];
-    v13 = [v14 _flatImageWithColor:v12];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v13 = [v14 _flatImageWithColor:blackColor];
     [(UIImageView *)v11 setImage:v13];
 
     [(UIImageView *)self->_overlayImageView setAlpha:0.3];

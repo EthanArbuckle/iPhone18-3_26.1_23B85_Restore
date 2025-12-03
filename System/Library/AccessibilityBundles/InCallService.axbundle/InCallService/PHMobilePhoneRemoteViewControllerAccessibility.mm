@@ -1,15 +1,15 @@
 @interface PHMobilePhoneRemoteViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation PHMobilePhoneRemoteViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHMobilePhoneRemoteViewController" isKindOfClass:@"PHPhoneRemoteViewController"];
-  [v3 validateClass:@"PHPhoneRemoteViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PHPhoneRemoteViewController" hasInstanceMethod:@"viewWillDisappear:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHMobilePhoneRemoteViewController" isKindOfClass:@"PHPhoneRemoteViewController"];
+  [validationsCopy validateClass:@"PHPhoneRemoteViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PHPhoneRemoteViewController" hasInstanceMethod:@"viewWillDisappear:" withFullSignature:{"v", "B", 0}];
 }
 
 void __64__PHMobilePhoneRemoteViewControllerAccessibility_viewDidAppear___block_invoke(uint64_t a1)

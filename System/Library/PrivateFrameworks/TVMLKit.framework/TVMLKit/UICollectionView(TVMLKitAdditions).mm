@@ -6,36 +6,36 @@
 
 - (uint64_t)tv_isFocusOnNonOwnedCell
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  v3 = [v2 focusedView];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  focusedView = [mainScreen focusedView];
 
-  if (v3 == a1 || ![v3 isDescendantOfView:a1])
+  if (focusedView == self || ![focusedView isDescendantOfView:self])
   {
     v8 = 0;
   }
 
   else
   {
-    v4 = v3;
-    v5 = [v4 superview];
+    v4 = focusedView;
+    superview = [v4 superview];
 
-    if (v5 == a1)
+    if (superview == self)
     {
-      v6 = v4;
+      superview2 = v4;
     }
 
     else
     {
       do
       {
-        v6 = [v4 superview];
+        superview2 = [v4 superview];
 
-        v7 = [v6 superview];
+        v6Superview = [superview2 superview];
 
-        v4 = v6;
+        v4 = superview2;
       }
 
-      while (v7 != a1);
+      while (v6Superview != self);
     }
 
     objc_opt_class();

@@ -8,8 +8,8 @@
 
 - (BOOL)_accessibilityUseAccessibilityFrameForHittest
 {
-  v3 = [(TipsWidgetExtensionUIViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:kAXSingleTipsViewIdentifier];
+  accessibilityIdentifier = [(TipsWidgetExtensionUIViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:kAXSingleTipsViewIdentifier];
 
   if (v4)
   {
@@ -23,8 +23,8 @@
 
 - (BOOL)_accessibilityOverridesInvalidFrames
 {
-  v3 = [(TipsWidgetExtensionUIViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:kAXSingleTipsViewIdentifier];
+  accessibilityIdentifier = [(TipsWidgetExtensionUIViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:kAXSingleTipsViewIdentifier];
 
   if (v4)
   {
@@ -38,13 +38,13 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(TipsWidgetExtensionUIViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:kAXSingleTipsViewIdentifier];
+  accessibilityIdentifier = [(TipsWidgetExtensionUIViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:kAXSingleTipsViewIdentifier];
 
   if (v4)
   {
-    v5 = [(TipsWidgetExtensionUIViewAccessibility *)self superview];
-    [v5 accessibilityFrame];
+    superview = [(TipsWidgetExtensionUIViewAccessibility *)self superview];
+    [superview accessibilityFrame];
     v7 = v6;
     v9 = v8;
     v11 = v10;

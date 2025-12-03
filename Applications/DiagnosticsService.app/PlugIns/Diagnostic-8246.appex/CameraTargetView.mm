@@ -1,52 +1,52 @@
 @interface CameraTargetView
 - (CGSize)flipButtonIntrinsicContentSize;
 - (CGSize)shutterButtonIntrinsicContentSize;
-- (CameraTargetView)initWithFrame:(CGRect)a3 color:(id)a4 thickness:(double)a5 instructionText:(id)a6 presentationOptions:(int64_t)a7;
+- (CameraTargetView)initWithFrame:(CGRect)frame color:(id)color thickness:(double)thickness instructionText:(id)text presentationOptions:(int64_t)options;
 - (CameraTargetViewDelegate)delegate;
-- (void)cancelTapped:(id)a3;
-- (void)flashTapped:(id)a3;
-- (void)flipTapped:(id)a3;
-- (void)setFlashState:(BOOL)a3;
-- (void)takePicture:(id)a3;
+- (void)cancelTapped:(id)tapped;
+- (void)flashTapped:(id)tapped;
+- (void)flipTapped:(id)tapped;
+- (void)setFlashState:(BOOL)state;
+- (void)takePicture:(id)picture;
 - (void)updateConstraints;
 @end
 
 @implementation CameraTargetView
 
-- (CameraTargetView)initWithFrame:(CGRect)a3 color:(id)a4 thickness:(double)a5 instructionText:(id)a6 presentationOptions:(int64_t)a7
+- (CameraTargetView)initWithFrame:(CGRect)frame color:(id)color thickness:(double)thickness instructionText:(id)text presentationOptions:(int64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
-  v16 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
+  textCopy = text;
   v68.receiver = self;
   v68.super_class = CameraTargetView;
-  v17 = [(CameraTargetView *)&v68 initWithFrame:x, y, width, height];
-  v18 = v17;
-  if (v17)
+  height = [(CameraTargetView *)&v68 initWithFrame:x, y, width, height];
+  v18 = height;
+  if (height)
   {
-    v17->_cameraPresentation = a7;
-    [(CameraTargetView *)v17 setOpaque:0];
+    height->_cameraPresentation = options;
+    [(CameraTargetView *)height setOpaque:0];
     v19 = +[UIColor clearColor];
     [(CameraTargetView *)v18 setBackgroundColor:v19];
 
-    if (a7)
+    if (options)
     {
       v20 = +[UIBezierPath bezierPath];
       [(CameraTargetView *)v18 frame];
       [(CameraTargetView *)v18 center];
       [v20 addArcWithCenter:1 radius:? startAngle:? endAngle:? clockwise:?];
-      v21 = [(CameraTargetView *)v18 layer];
-      [v21 setPath:{objc_msgSend(v20, "CGPath")}];
-      [v21 setStrokeColor:{objc_msgSend(v15, "CGColor")}];
+      layer = [(CameraTargetView *)v18 layer];
+      [layer setPath:{objc_msgSend(v20, "CGPath")}];
+      [layer setStrokeColor:{objc_msgSend(colorCopy, "CGColor")}];
       v22 = +[UIColor clearColor];
-      [v21 setFillColor:{objc_msgSend(v22, "CGColor")}];
+      [layer setFillColor:{objc_msgSend(v22, "CGColor")}];
 
-      [v21 setLineWidth:a5];
-      [v21 setLineCap:kCALineCapRound];
-      [v21 setLineJoin:kCALineJoinRound];
+      [layer setLineWidth:thickness];
+      [layer setLineCap:kCALineCapRound];
+      [layer setLineJoin:kCALineJoinRound];
     }
 
     v23 = [UIColor colorWithWhite:0.0 alpha:0.5];
@@ -93,8 +93,8 @@
     v39 = +[UIColor whiteColor];
     [(UILabel *)v18->_viewfinderInstruction setTextColor:v39];
 
-    v67 = v16;
-    [(UILabel *)v18->_viewfinderInstruction setText:v16];
+    v67 = textCopy;
+    [(UILabel *)v18->_viewfinderInstruction setText:textCopy];
     [(UILabel *)v18->_viewfinderInstruction setTranslatesAutoresizingMaskIntoConstraints:0];
     v40 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
     v41 = [UIFont fontWithDescriptor:v40 size:18.0];
@@ -107,21 +107,21 @@
     v44 = +[UIColor clearColor];
     [(UIButton *)v18->_cancelButton setBackgroundColor:v44];
 
-    v45 = [(UIButton *)v18->_cancelButton titleLabel];
-    [v45 setContentMode:7];
+    titleLabel = [(UIButton *)v18->_cancelButton titleLabel];
+    [titleLabel setContentMode:7];
 
-    v46 = [(UIButton *)v18->_cancelButton titleLabel];
-    [v46 setTextAlignment:1];
+    titleLabel2 = [(UIButton *)v18->_cancelButton titleLabel];
+    [titleLabel2 setTextAlignment:1];
 
-    v47 = [(UIButton *)v18->_cancelButton titleLabel];
-    [v47 setLineBreakMode:4];
+    titleLabel3 = [(UIButton *)v18->_cancelButton titleLabel];
+    [titleLabel3 setLineBreakMode:4];
 
-    v48 = [(UIButton *)v18->_cancelButton titleLabel];
+    titleLabel4 = [(UIButton *)v18->_cancelButton titleLabel];
     v66 = v41;
-    [v48 setFont:v41];
+    [titleLabel4 setFont:v41];
 
-    v49 = [(UIButton *)v18->_cancelButton titleLabel];
-    [v49 setNumberOfLines:1];
+    titleLabel5 = [(UIButton *)v18->_cancelButton titleLabel];
+    [titleLabel5 setNumberOfLines:1];
 
     v50 = v18->_cancelButton;
     v51 = +[NSBundle mainBundle];
@@ -135,7 +135,7 @@
     [(UIButton *)v18->_cancelButton sizeToFit];
     [(UIButton *)v18->_cancelButton addTarget:v18 action:"cancelTapped:" forControlEvents:64];
     [(UIButton *)v18->_cancelButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    if ((a7 & 2) != 0)
+    if ((options & 2) != 0)
     {
       v55 = +[CUShutterButton shutterButton];
       shutterButton = v18->_shutterButton;
@@ -149,7 +149,7 @@
       [(CUShutterButton *)v18->_shutterButton setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
-    if ((a7 & 4) != 0)
+    if ((options & 4) != 0)
     {
       v59 = +[CAMFlipButton flipButtonOverContent];
       flipButton = v18->_flipButton;
@@ -163,7 +163,7 @@
       [(CAMFlipButton *)v18->_flipButton setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
-    if ((a7 & 8) != 0)
+    if ((options & 8) != 0)
     {
       v63 = [[CAMFlashButton alloc] initWithLayoutStyle:3];
       flashButton = v18->_flashButton;
@@ -179,20 +179,20 @@
 
     [(CameraTargetView *)v18 setNeedsUpdateConstraints];
     [(UIView *)v18->_viewfinderOutsideRegionBottom addSubview:v18->_cancelButton];
-    if ((a7 & 2) != 0)
+    if ((options & 2) != 0)
     {
       [(UIView *)v18->_viewfinderOutsideRegionBottom addSubview:v18->_shutterButton];
-      if ((a7 & 4) == 0)
+      if ((options & 4) == 0)
       {
 LABEL_12:
-        if ((a7 & 8) == 0)
+        if ((options & 8) == 0)
         {
 LABEL_14:
           [(CameraTargetView *)v18 addSubview:v18->_viewfinderOutsideRegionTop];
           [(CameraTargetView *)v18 addSubview:v18->_viewfinderOutsideRegionBottom];
           [(CameraTargetView *)v18 addSubview:v18->_viewfinderInstruction];
 
-          v16 = v67;
+          textCopy = v67;
           goto LABEL_15;
         }
 
@@ -202,13 +202,13 @@ LABEL_13:
       }
     }
 
-    else if ((a7 & 4) == 0)
+    else if ((options & 4) == 0)
     {
       goto LABEL_12;
     }
 
     [(UIView *)v18->_viewfinderOutsideRegionBottom addSubview:v18->_flipButton];
-    if ((a7 & 8) == 0)
+    if ((options & 8) == 0)
     {
       goto LABEL_14;
     }
@@ -221,144 +221,144 @@ LABEL_15:
   return v18;
 }
 
-- (void)setFlashState:(BOOL)a3
+- (void)setFlashState:(BOOL)state
 {
   if ((self->_cameraPresentation & 8) != 0)
   {
-    v4 = a3;
-    v5 = [(CameraTargetView *)self flashButton];
-    [v5 setFlashMode:v4];
+    stateCopy = state;
+    flashButton = [(CameraTargetView *)self flashButton];
+    [flashButton setFlashMode:stateCopy];
   }
 }
 
-- (void)cancelTapped:(id)a3
+- (void)cancelTapped:(id)tapped
 {
-  v3 = [(CameraTargetView *)self delegate];
-  [v3 cancelTapped];
+  delegate = [(CameraTargetView *)self delegate];
+  [delegate cancelTapped];
 }
 
-- (void)flipTapped:(id)a3
+- (void)flipTapped:(id)tapped
 {
-  v3 = [(CameraTargetView *)self delegate];
-  [v3 flipTapped];
+  delegate = [(CameraTargetView *)self delegate];
+  [delegate flipTapped];
 }
 
-- (void)flashTapped:(id)a3
+- (void)flashTapped:(id)tapped
 {
-  v3 = [(CameraTargetView *)self delegate];
-  [v3 flashTapped];
+  delegate = [(CameraTargetView *)self delegate];
+  [delegate flashTapped];
 }
 
-- (void)takePicture:(id)a3
+- (void)takePicture:(id)picture
 {
   if ((self->_cameraPresentation & 2) != 0)
   {
-    v4 = [(CameraTargetView *)self shutterButton];
-    [v4 setEnabled:0];
+    shutterButton = [(CameraTargetView *)self shutterButton];
+    [shutterButton setEnabled:0];
 
-    v5 = [(CameraTargetView *)self delegate];
+    delegate = [(CameraTargetView *)self delegate];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100001A6C;
     v6[3] = &unk_10000C398;
     v6[4] = self;
-    [v5 takePictureWithHandler:v6];
+    [delegate takePictureWithHandler:v6];
   }
 }
 
 - (void)updateConstraints
 {
-  v3 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
-  v4 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
+  viewfinderOutsideRegionTop = [(CameraTargetView *)self viewfinderOutsideRegionTop];
+  viewfinderOutsideRegionTop2 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
   [(CameraTargetView *)self frame];
-  v6 = [NSLayoutConstraint constraintWithItem:v4 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v5];
-  [v3 addConstraint:v6];
+  v6 = [NSLayoutConstraint constraintWithItem:viewfinderOutsideRegionTop2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v5];
+  [viewfinderOutsideRegionTop addConstraint:v6];
 
-  v7 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
-  v8 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
-  v9 = [NSLayoutConstraint constraintWithItem:v8 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:85.0];
-  [v7 addConstraint:v9];
+  viewfinderOutsideRegionTop3 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
+  viewfinderOutsideRegionTop4 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
+  v9 = [NSLayoutConstraint constraintWithItem:viewfinderOutsideRegionTop4 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:85.0];
+  [viewfinderOutsideRegionTop3 addConstraint:v9];
 
-  v10 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
-  v11 = [NSLayoutConstraint constraintWithItem:v10 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  viewfinderOutsideRegionTop5 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
+  v11 = [NSLayoutConstraint constraintWithItem:viewfinderOutsideRegionTop5 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [(CameraTargetView *)self addConstraint:v11];
 
-  v12 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
-  v13 = [NSLayoutConstraint constraintWithItem:v12 attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:0.0];
+  viewfinderOutsideRegionTop6 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
+  v13 = [NSLayoutConstraint constraintWithItem:viewfinderOutsideRegionTop6 attribute:3 relatedBy:0 toItem:self attribute:3 multiplier:1.0 constant:0.0];
   [(CameraTargetView *)self addConstraint:v13];
 
-  v14 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v15 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  viewfinderOutsideRegionBottom = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  viewfinderOutsideRegionBottom2 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
   [(CameraTargetView *)self frame];
-  v17 = [NSLayoutConstraint constraintWithItem:v15 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v16];
-  [v14 addConstraint:v17];
+  v17 = [NSLayoutConstraint constraintWithItem:viewfinderOutsideRegionBottom2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v16];
+  [viewfinderOutsideRegionBottom addConstraint:v17];
 
-  v18 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v19 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v20 = [NSLayoutConstraint constraintWithItem:v19 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:85.0];
-  [v18 addConstraint:v20];
+  viewfinderOutsideRegionBottom3 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  viewfinderOutsideRegionBottom4 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  v20 = [NSLayoutConstraint constraintWithItem:viewfinderOutsideRegionBottom4 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:85.0];
+  [viewfinderOutsideRegionBottom3 addConstraint:v20];
 
-  v21 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v22 = [NSLayoutConstraint constraintWithItem:v21 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  viewfinderOutsideRegionBottom5 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  v22 = [NSLayoutConstraint constraintWithItem:viewfinderOutsideRegionBottom5 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [(CameraTargetView *)self addConstraint:v22];
 
-  v23 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v24 = [NSLayoutConstraint constraintWithItem:v23 attribute:4 relatedBy:0 toItem:self attribute:4 multiplier:1.0 constant:0.0];
+  viewfinderOutsideRegionBottom6 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  v24 = [NSLayoutConstraint constraintWithItem:viewfinderOutsideRegionBottom6 attribute:4 relatedBy:0 toItem:self attribute:4 multiplier:1.0 constant:0.0];
   [(CameraTargetView *)self addConstraint:v24];
 
-  v25 = [(CameraTargetView *)self viewfinderInstruction];
-  v26 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
-  v27 = [NSLayoutConstraint constraintWithItem:v25 attribute:5 relatedBy:0 toItem:v26 attribute:5 multiplier:1.0 constant:15.0];
+  viewfinderInstruction = [(CameraTargetView *)self viewfinderInstruction];
+  viewfinderOutsideRegionTop7 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
+  v27 = [NSLayoutConstraint constraintWithItem:viewfinderInstruction attribute:5 relatedBy:0 toItem:viewfinderOutsideRegionTop7 attribute:5 multiplier:1.0 constant:15.0];
   [(CameraTargetView *)self addConstraint:v27];
 
-  v28 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
-  v29 = [(CameraTargetView *)self viewfinderInstruction];
-  v30 = [NSLayoutConstraint constraintWithItem:v28 attribute:6 relatedBy:0 toItem:v29 attribute:6 multiplier:1.0 constant:15.0];
+  viewfinderOutsideRegionTop8 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
+  viewfinderInstruction2 = [(CameraTargetView *)self viewfinderInstruction];
+  v30 = [NSLayoutConstraint constraintWithItem:viewfinderOutsideRegionTop8 attribute:6 relatedBy:0 toItem:viewfinderInstruction2 attribute:6 multiplier:1.0 constant:15.0];
   [(CameraTargetView *)self addConstraint:v30];
 
-  v31 = [(CameraTargetView *)self viewfinderInstruction];
-  v32 = [v31 topAnchor];
-  v33 = [(CameraTargetView *)self safeAreaLayoutGuide];
-  v34 = [v33 topAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34 constant:0.0];
+  viewfinderInstruction3 = [(CameraTargetView *)self viewfinderInstruction];
+  topAnchor = [viewfinderInstruction3 topAnchor];
+  safeAreaLayoutGuide = [(CameraTargetView *)self safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   [v35 setActive:1];
 
-  v36 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
-  v37 = [(CameraTargetView *)self viewfinderInstruction];
-  v38 = [NSLayoutConstraint constraintWithItem:v36 attribute:4 relatedBy:0 toItem:v37 attribute:4 multiplier:1.0 constant:5.0];
+  viewfinderOutsideRegionTop9 = [(CameraTargetView *)self viewfinderOutsideRegionTop];
+  viewfinderInstruction4 = [(CameraTargetView *)self viewfinderInstruction];
+  v38 = [NSLayoutConstraint constraintWithItem:viewfinderOutsideRegionTop9 attribute:4 relatedBy:0 toItem:viewfinderInstruction4 attribute:4 multiplier:1.0 constant:5.0];
 
   LODWORD(v39) = 1144750080;
   [v38 setPriority:v39];
   [(CameraTargetView *)self addConstraint:v38];
-  v40 = [(CameraTargetView *)self viewfinderInstruction];
-  v41 = [NSLayoutConstraint constraintWithItem:v40 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  viewfinderInstruction5 = [(CameraTargetView *)self viewfinderInstruction];
+  v41 = [NSLayoutConstraint constraintWithItem:viewfinderInstruction5 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [(CameraTargetView *)self addConstraint:v41];
 
-  v42 = [(CameraTargetView *)self cancelButton];
-  v43 = [(CameraTargetView *)self cancelButton];
-  v44 = [(CameraTargetView *)self cancelButton];
-  [v44 frame];
-  v46 = [NSLayoutConstraint constraintWithItem:v43 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v45];
-  [v42 addConstraint:v46];
+  cancelButton = [(CameraTargetView *)self cancelButton];
+  cancelButton2 = [(CameraTargetView *)self cancelButton];
+  cancelButton3 = [(CameraTargetView *)self cancelButton];
+  [cancelButton3 frame];
+  v46 = [NSLayoutConstraint constraintWithItem:cancelButton2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v45];
+  [cancelButton addConstraint:v46];
 
-  v47 = [(CameraTargetView *)self cancelButton];
-  v48 = [(CameraTargetView *)self cancelButton];
-  v49 = [(CameraTargetView *)self cancelButton];
-  [v49 frame];
-  v51 = [NSLayoutConstraint constraintWithItem:v48 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v50];
-  [v47 addConstraint:v51];
+  cancelButton4 = [(CameraTargetView *)self cancelButton];
+  cancelButton5 = [(CameraTargetView *)self cancelButton];
+  cancelButton6 = [(CameraTargetView *)self cancelButton];
+  [cancelButton6 frame];
+  v51 = [NSLayoutConstraint constraintWithItem:cancelButton5 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v50];
+  [cancelButton4 addConstraint:v51];
 
-  v52 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v53 = [(CameraTargetView *)self cancelButton];
-  v54 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v55 = [NSLayoutConstraint constraintWithItem:v53 attribute:5 relatedBy:0 toItem:v54 attribute:5 multiplier:1.0 constant:15.0];
-  [v52 addConstraint:v55];
+  viewfinderOutsideRegionBottom7 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  cancelButton7 = [(CameraTargetView *)self cancelButton];
+  viewfinderOutsideRegionBottom8 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  v55 = [NSLayoutConstraint constraintWithItem:cancelButton7 attribute:5 relatedBy:0 toItem:viewfinderOutsideRegionBottom8 attribute:5 multiplier:1.0 constant:15.0];
+  [viewfinderOutsideRegionBottom7 addConstraint:v55];
 
-  v56 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v57 = [(CameraTargetView *)self cancelButton];
-  v58 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v59 = [NSLayoutConstraint constraintWithItem:v57 attribute:10 relatedBy:0 toItem:v58 attribute:10 multiplier:1.0 constant:0.0];
-  [v56 addConstraint:v59];
+  viewfinderOutsideRegionBottom9 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  cancelButton8 = [(CameraTargetView *)self cancelButton];
+  viewfinderOutsideRegionBottom10 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  v59 = [NSLayoutConstraint constraintWithItem:cancelButton8 attribute:10 relatedBy:0 toItem:viewfinderOutsideRegionBottom10 attribute:10 multiplier:1.0 constant:0.0];
+  [viewfinderOutsideRegionBottom9 addConstraint:v59];
 
   cameraPresentation = self->_cameraPresentation;
   if ((cameraPresentation & 2) == 0)
@@ -369,29 +369,29 @@ LABEL_15:
     }
 
 LABEL_7:
-    v93 = [(CameraTargetView *)self flipButton];
-    v94 = [(CameraTargetView *)self flipButton];
+    flipButton = [(CameraTargetView *)self flipButton];
+    flipButton2 = [(CameraTargetView *)self flipButton];
     [(CameraTargetView *)self flipButtonIntrinsicContentSize];
-    v96 = [NSLayoutConstraint constraintWithItem:v94 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v95];
-    [v93 addConstraint:v96];
+    v96 = [NSLayoutConstraint constraintWithItem:flipButton2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v95];
+    [flipButton addConstraint:v96];
 
-    v97 = [(CameraTargetView *)self flipButton];
-    v98 = [(CameraTargetView *)self flipButton];
+    flipButton3 = [(CameraTargetView *)self flipButton];
+    flipButton4 = [(CameraTargetView *)self flipButton];
     [(CameraTargetView *)self flipButtonIntrinsicContentSize];
-    v99 = [NSLayoutConstraint constraintWithItem:v98 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:?];
-    [v97 addConstraint:v99];
+    v99 = [NSLayoutConstraint constraintWithItem:flipButton4 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:?];
+    [flipButton3 addConstraint:v99];
 
-    v100 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-    v101 = [(CameraTargetView *)self flipButton];
-    v102 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-    v103 = [NSLayoutConstraint constraintWithItem:v101 attribute:9 relatedBy:0 toItem:v102 attribute:9 multiplier:1.0 constant:0.0];
-    [v100 addConstraint:v103];
+    viewfinderOutsideRegionBottom11 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+    flipButton5 = [(CameraTargetView *)self flipButton];
+    viewfinderOutsideRegionBottom12 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+    v103 = [NSLayoutConstraint constraintWithItem:flipButton5 attribute:9 relatedBy:0 toItem:viewfinderOutsideRegionBottom12 attribute:9 multiplier:1.0 constant:0.0];
+    [viewfinderOutsideRegionBottom11 addConstraint:v103];
 
-    v104 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-    v105 = [(CameraTargetView *)self flipButton];
-    v106 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-    v107 = [NSLayoutConstraint constraintWithItem:v105 attribute:10 relatedBy:0 toItem:v106 attribute:10 multiplier:1.0 constant:0.0];
-    [v104 addConstraint:v107];
+    viewfinderOutsideRegionBottom13 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+    flipButton6 = [(CameraTargetView *)self flipButton];
+    viewfinderOutsideRegionBottom14 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+    v107 = [NSLayoutConstraint constraintWithItem:flipButton6 attribute:10 relatedBy:0 toItem:viewfinderOutsideRegionBottom14 attribute:10 multiplier:1.0 constant:0.0];
+    [viewfinderOutsideRegionBottom13 addConstraint:v107];
 
     if ((self->_cameraPresentation & 8) == 0)
     {
@@ -401,29 +401,29 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v78 = [(CameraTargetView *)self shutterButton];
-  v79 = [(CameraTargetView *)self shutterButton];
+  shutterButton = [(CameraTargetView *)self shutterButton];
+  shutterButton2 = [(CameraTargetView *)self shutterButton];
   [(CameraTargetView *)self shutterButtonIntrinsicContentSize];
-  v81 = [NSLayoutConstraint constraintWithItem:v79 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v80];
-  [v78 addConstraint:v81];
+  v81 = [NSLayoutConstraint constraintWithItem:shutterButton2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v80];
+  [shutterButton addConstraint:v81];
 
-  v82 = [(CameraTargetView *)self shutterButton];
-  v83 = [(CameraTargetView *)self shutterButton];
+  shutterButton3 = [(CameraTargetView *)self shutterButton];
+  shutterButton4 = [(CameraTargetView *)self shutterButton];
   [(CameraTargetView *)self shutterButtonIntrinsicContentSize];
-  v84 = [NSLayoutConstraint constraintWithItem:v83 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:?];
-  [v82 addConstraint:v84];
+  v84 = [NSLayoutConstraint constraintWithItem:shutterButton4 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:?];
+  [shutterButton3 addConstraint:v84];
 
-  v85 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v86 = [(CameraTargetView *)self shutterButton];
-  v87 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v88 = [NSLayoutConstraint constraintWithItem:v86 attribute:9 relatedBy:0 toItem:v87 attribute:9 multiplier:1.0 constant:0.0];
-  [v85 addConstraint:v88];
+  viewfinderOutsideRegionBottom15 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  shutterButton5 = [(CameraTargetView *)self shutterButton];
+  viewfinderOutsideRegionBottom16 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  v88 = [NSLayoutConstraint constraintWithItem:shutterButton5 attribute:9 relatedBy:0 toItem:viewfinderOutsideRegionBottom16 attribute:9 multiplier:1.0 constant:0.0];
+  [viewfinderOutsideRegionBottom15 addConstraint:v88];
 
-  v89 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v90 = [(CameraTargetView *)self shutterButton];
-  v91 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-  v92 = [NSLayoutConstraint constraintWithItem:v90 attribute:10 relatedBy:0 toItem:v91 attribute:10 multiplier:1.0 constant:0.0];
-  [v89 addConstraint:v92];
+  viewfinderOutsideRegionBottom17 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  shutterButton6 = [(CameraTargetView *)self shutterButton];
+  viewfinderOutsideRegionBottom18 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+  v92 = [NSLayoutConstraint constraintWithItem:shutterButton6 attribute:10 relatedBy:0 toItem:viewfinderOutsideRegionBottom18 attribute:10 multiplier:1.0 constant:0.0];
+  [viewfinderOutsideRegionBottom17 addConstraint:v92];
 
   cameraPresentation = self->_cameraPresentation;
   if ((cameraPresentation & 4) != 0)
@@ -435,31 +435,31 @@ LABEL_3:
   if ((cameraPresentation & 8) != 0)
   {
 LABEL_4:
-    v61 = [(CameraTargetView *)self flashButton];
-    v62 = [(CameraTargetView *)self flashButton];
-    v63 = [(CameraTargetView *)self flashButton];
-    [v63 intrinsicContentSize];
-    v65 = [NSLayoutConstraint constraintWithItem:v62 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v64];
-    [v61 addConstraint:v65];
+    flashButton = [(CameraTargetView *)self flashButton];
+    flashButton2 = [(CameraTargetView *)self flashButton];
+    flashButton3 = [(CameraTargetView *)self flashButton];
+    [flashButton3 intrinsicContentSize];
+    v65 = [NSLayoutConstraint constraintWithItem:flashButton2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v64];
+    [flashButton addConstraint:v65];
 
-    v66 = [(CameraTargetView *)self flashButton];
-    v67 = [(CameraTargetView *)self flashButton];
-    v68 = [(CameraTargetView *)self flashButton];
-    [v68 intrinsicContentSize];
-    v69 = [NSLayoutConstraint constraintWithItem:v67 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:?];
-    [v66 addConstraint:v69];
+    flashButton4 = [(CameraTargetView *)self flashButton];
+    flashButton5 = [(CameraTargetView *)self flashButton];
+    flashButton6 = [(CameraTargetView *)self flashButton];
+    [flashButton6 intrinsicContentSize];
+    v69 = [NSLayoutConstraint constraintWithItem:flashButton5 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:?];
+    [flashButton4 addConstraint:v69];
 
-    v70 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-    v71 = [(CameraTargetView *)self flashButton];
-    v72 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-    v73 = [NSLayoutConstraint constraintWithItem:v71 attribute:6 relatedBy:0 toItem:v72 attribute:6 multiplier:1.0 constant:-15.0];
-    [v70 addConstraint:v73];
+    viewfinderOutsideRegionBottom19 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+    flashButton7 = [(CameraTargetView *)self flashButton];
+    viewfinderOutsideRegionBottom20 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+    v73 = [NSLayoutConstraint constraintWithItem:flashButton7 attribute:6 relatedBy:0 toItem:viewfinderOutsideRegionBottom20 attribute:6 multiplier:1.0 constant:-15.0];
+    [viewfinderOutsideRegionBottom19 addConstraint:v73];
 
-    v74 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-    v75 = [(CameraTargetView *)self flashButton];
-    v76 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
-    v77 = [NSLayoutConstraint constraintWithItem:v75 attribute:10 relatedBy:0 toItem:v76 attribute:10 multiplier:1.0 constant:0.0];
-    [v74 addConstraint:v77];
+    viewfinderOutsideRegionBottom21 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+    flashButton8 = [(CameraTargetView *)self flashButton];
+    viewfinderOutsideRegionBottom22 = [(CameraTargetView *)self viewfinderOutsideRegionBottom];
+    v77 = [NSLayoutConstraint constraintWithItem:flashButton8 attribute:10 relatedBy:0 toItem:viewfinderOutsideRegionBottom22 attribute:10 multiplier:1.0 constant:0.0];
+    [viewfinderOutsideRegionBottom21 addConstraint:v77];
   }
 
 LABEL_5:

@@ -1,14 +1,14 @@
 @interface SXPlaceholderArticleThumbnailComponentSizer
-- (SXPlaceholderArticleThumbnailComponentSizer)initWithComponent:(id)a3 componentLayout:(id)a4 componentStyle:(id)a5 DOMObjectProvider:(id)a6 layoutOptions:(id)a7;
+- (SXPlaceholderArticleThumbnailComponentSizer)initWithComponent:(id)component componentLayout:(id)layout componentStyle:(id)style DOMObjectProvider:(id)provider layoutOptions:(id)options;
 @end
 
 @implementation SXPlaceholderArticleThumbnailComponentSizer
 
-- (SXPlaceholderArticleThumbnailComponentSizer)initWithComponent:(id)a3 componentLayout:(id)a4 componentStyle:(id)a5 DOMObjectProvider:(id)a6 layoutOptions:(id)a7
+- (SXPlaceholderArticleThumbnailComponentSizer)initWithComponent:(id)component componentLayout:(id)layout componentStyle:(id)style DOMObjectProvider:(id)provider layoutOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = SXPlaceholderArticleThumbnailComponentSizer;
-  return [(SXComponentSizer *)&v8 initWithComponent:a3 componentLayout:a4 componentStyle:a5 DOMObjectProvider:a6 layoutOptions:a7];
+  return [(SXComponentSizer *)&v8 initWithComponent:component componentLayout:layout componentStyle:style DOMObjectProvider:provider layoutOptions:options];
 }
 
 @end

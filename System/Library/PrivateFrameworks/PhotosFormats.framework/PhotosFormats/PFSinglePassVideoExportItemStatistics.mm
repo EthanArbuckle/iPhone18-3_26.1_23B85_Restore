@@ -1,12 +1,12 @@
 @interface PFSinglePassVideoExportItemStatistics
-+ (id)statisticsWithTargetPlaybackDuration:(id *)a3 frameRate:(float)a4 targetOutputTotalBytes:(unint64_t)a5;
++ (id)statisticsWithTargetPlaybackDuration:(id *)duration frameRate:(float)rate targetOutputTotalBytes:(unint64_t)bytes;
 - (PFSinglePassVideoExportItemStatistics)init;
 - (float)processingFramesPerSecond;
 - (id)outputChunkMeasurementsDescription;
 - (id)summaryDescription;
 - (int64_t)effectiveEncodingBitRate;
-- (void)addMeasurementForBytesDelivered:(unint64_t)a3;
-- (void)enumerateOutputChunkMeasurementsWithHandler:(id)a3;
+- (void)addMeasurementForBytesDelivered:(unint64_t)delivered;
+- (void)enumerateOutputChunkMeasurementsWithHandler:(id)handler;
 @end
 
 @implementation PFSinglePassVideoExportItemStatistics
@@ -14,7 +14,7 @@
 - (id)summaryDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PFSinglePassVideoExportItemStatistics *)self processedOutputTotalBytes];
+  processedOutputTotalBytes = [(PFSinglePassVideoExportItemStatistics *)self processedOutputTotalBytes];
   v5 = vcvts_n_f32_u64([(PFSinglePassVideoExportItemStatistics *)self processedOutputTotalBytes], 0x14uLL);
   [(PFSinglePassVideoExportItemStatistics *)self conversionDuration];
   v7 = v6;
@@ -22,7 +22,7 @@
   [(PFSinglePassVideoExportItemStatistics *)self processingFramesPerSecond];
   v10 = v9;
   [(PFSinglePassVideoExportItemStatistics *)self averageOutputChunkTimeInterval];
-  return [v3 stringWithFormat:@"Exported %lu bytes (%.2fMB) in %.1fs (%.2fMB/s), %.2fps, average output interval = %.2fs, average output size = %.2fKB", v4, *&v5, v7, *&v8, *&v10, v11, vcvts_n_f32_u64(-[PFSinglePassVideoExportItemStatistics averageOutputChunkBytes](self, "averageOutputChunkBytes"), 0xAuLL)];
+  return [v3 stringWithFormat:@"Exported %lu bytes (%.2fMB) in %.1fs (%.2fMB/s), %.2fps, average output interval = %.2fs, average output size = %.2fKB", processedOutputTotalBytes, *&v5, v7, *&v8, *&v10, v11, vcvts_n_f32_u64(-[PFSinglePassVideoExportItemStatistics averageOutputChunkBytes](self, "averageOutputChunkBytes"), 0xAuLL)];
 }
 
 - (id)outputChunkMeasurementsDescription
@@ -87,10 +87,10 @@ uint64_t __75__PFSinglePassVideoExportItemStatistics_outputChunkMeasurementsDesc
   }
 }
 
-- (void)enumerateOutputChunkMeasurementsWithHandler:(id)a3
+- (void)enumerateOutputChunkMeasurementsWithHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -116,10 +116,10 @@ LABEL_3:
       v13 = v12;
 
       v14 = [v10 objectAtIndexedSubscript:1];
-      v15 = [v14 unsignedIntegerValue];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
 
       v16 = 0;
-      v4[2](v4, v15, &v16, v13);
+      handlerCopy[2](handlerCopy, unsignedIntegerValue, &v16, v13);
       if (v16)
       {
         break;
@@ -139,7 +139,7 @@ LABEL_3:
   }
 }
 
-- (void)addMeasurementForBytesDelivered:(unint64_t)a3
+- (void)addMeasurementForBytesDelivered:(unint64_t)delivered
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v5 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
@@ -148,12 +148,12 @@ LABEL_3:
   self->_lastOutputChunkTimestamp = v5;
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
   v11[0] = v8;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:delivered];
   v11[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
   [(NSMutableArray *)outputChunkMeasurements addObject:v10];
 
-  self->_processedOutputTotalBytes += a3;
+  self->_processedOutputTotalBytes += delivered;
   self->_conversionDuration = v7 + self->_conversionDuration;
 }
 
@@ -165,9 +165,9 @@ LABEL_3:
   if (v2)
   {
     v3 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     outputChunkMeasurements = v2->_outputChunkMeasurements;
-    v2->_outputChunkMeasurements = v4;
+    v2->_outputChunkMeasurements = array;
 
     v2->_lastOutputChunkTimestamp = v3;
   }
@@ -175,14 +175,14 @@ LABEL_3:
   return v2;
 }
 
-+ (id)statisticsWithTargetPlaybackDuration:(id *)a3 frameRate:(float)a4 targetOutputTotalBytes:(unint64_t)a5
++ (id)statisticsWithTargetPlaybackDuration:(id *)duration frameRate:(float)rate targetOutputTotalBytes:(unint64_t)bytes
 {
   v8 = objc_opt_new();
-  v11 = *a3;
+  v11 = *duration;
   [v8 setTargetPlaybackDuration:CMTimeGetSeconds(&v11)];
-  *&v9 = a4;
+  *&v9 = rate;
   [v8 setFrameRate:v9];
-  [v8 setTargetOutputTotalBytes:a5];
+  [v8 setTargetOutputTotalBytes:bytes];
 
   return v8;
 }

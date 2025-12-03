@@ -1,15 +1,15 @@
 @interface CSDDemoModeCallFilter
-- (BOOL)shouldFilterIncomingCall:(id)a3 from:(id)a4;
+- (BOOL)shouldFilterIncomingCall:(id)call from:(id)from;
 @end
 
 @implementation CSDDemoModeCallFilter
 
-- (BOOL)shouldFilterIncomingCall:(id)a3 from:(id)a4
+- (BOOL)shouldFilterIncomingCall:(id)call from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1003C5FC8(v6);
+  callCopy = call;
+  fromCopy = from;
+  selfCopy = self;
+  v9 = sub_1003C5FC8(callCopy);
 
   return v9 & 1;
 }

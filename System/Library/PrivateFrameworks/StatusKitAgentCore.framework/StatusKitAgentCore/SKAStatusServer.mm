@@ -2,39 +2,39 @@
 + (id)logger;
 + (id)sharedInstance;
 - (BOOL)_inTextTrafficMode;
-- (BOOL)_presenceServiceListener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)_publishingServiceListener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)_shouldDonateToBiomeForStatusTypeIdentifier:(id)a3;
-- (BOOL)_subscriptionServiceListener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_presenceServiceListener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)_publishingServiceListener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)_shouldDonateToBiomeForStatusTypeIdentifier:(id)identifier;
+- (BOOL)_subscriptionServiceListener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SKAStatusServer)init;
-- (id)_onQueue_clientForPresenceIdentifier:(id)a3;
-- (id)_senderHandlesForChannel:(id)a3;
+- (id)_onQueue_clientForPresenceIdentifier:(id)identifier;
+- (id)_senderHandlesForChannel:(id)channel;
 - (void)_setupMaintenanceActivity;
-- (void)channelManager:(id)a3 didReceiveData:(id)a4 onChannel:(id)a5 identifier:(unint64_t)a6 dateReceived:(id)a7 dateExpired:(id)a8;
-- (void)channelManager:(id)a3 failedToSubscribeToChannel:(id)a4 withError:(id)a5;
+- (void)channelManager:(id)manager didReceiveData:(id)data onChannel:(id)channel identifier:(unint64_t)identifier dateReceived:(id)received dateExpired:(id)expired;
+- (void)channelManager:(id)manager failedToSubscribeToChannel:(id)channel withError:(id)error;
 - (void)databaseAccountStatusChanged;
-- (void)databaseDidReceiveRemoteChangesForChannels:(id)a3;
-- (void)databaseManager:(id)a3 didCreateChannel:(id)a4;
-- (void)donateReceivedStatusToBiomeOnChannel:(id)a3;
-- (void)drainUpdatesForPresenceIdentifier:(id)a3;
-- (void)enumeratePresenceClientsWithIdentifier:(id)a3 usingBlock:(id)a4;
-- (void)initialCloudKitImportReceived:(id)a3;
-- (void)invitationManager:(id)a3 didReceiveInvitationWithType:(int64_t)a4 forChannel:(id)a5 withExistingChannel:(id)a6;
-- (void)invitationManager:(id)a3 didRevokeInvitationOnChannel:(id)a4;
-- (void)invitationManager:(id)a3 didRollChannelFromExistingChannel:(id)a4;
+- (void)databaseDidReceiveRemoteChangesForChannels:(id)channels;
+- (void)databaseManager:(id)manager didCreateChannel:(id)channel;
+- (void)donateReceivedStatusToBiomeOnChannel:(id)channel;
+- (void)drainUpdatesForPresenceIdentifier:(id)identifier;
+- (void)enumeratePresenceClientsWithIdentifier:(id)identifier usingBlock:(id)block;
+- (void)initialCloudKitImportReceived:(id)received;
+- (void)invitationManager:(id)manager didReceiveInvitationWithType:(int64_t)type forChannel:(id)channel withExistingChannel:(id)existingChannel;
+- (void)invitationManager:(id)manager didRevokeInvitationOnChannel:(id)channel;
+- (void)invitationManager:(id)manager didRollChannelFromExistingChannel:(id)channel;
 - (void)logState;
 - (void)networkBecameReachable;
-- (void)presenceClientWasInvalidated:(id)a3;
-- (void)presenceManager:(id)a3 didCreateChannel:(id)a4;
-- (void)presenceManager:(id)a3 didReceivePresentDevicesUpdate:(id)a4 forPresenceIdentifier:(id)a5;
-- (void)presenceManager:(id)a3 didRequestToRollChannel:(id)a4;
-- (void)publishingServiceClientWasInvalidated:(id)a3;
-- (void)refreshAssertionsForPresenceIdentifier:(id)a3 existingChannelIdentifier:(id)a4;
-- (void)service:(id)a3 didReceiveIncomingMessage:(id)a4 fromID:(id)a5 fromMergeID:(id)a6 toID:(id)a7 messageGuid:(id)a8;
+- (void)presenceClientWasInvalidated:(id)invalidated;
+- (void)presenceManager:(id)manager didCreateChannel:(id)channel;
+- (void)presenceManager:(id)manager didReceivePresentDevicesUpdate:(id)update forPresenceIdentifier:(id)identifier;
+- (void)presenceManager:(id)manager didRequestToRollChannel:(id)channel;
+- (void)publishingServiceClientWasInvalidated:(id)invalidated;
+- (void)refreshAssertionsForPresenceIdentifier:(id)identifier existingChannelIdentifier:(id)channelIdentifier;
+- (void)service:(id)service didReceiveIncomingMessage:(id)message fromID:(id)d fromMergeID:(id)iD toID:(id)toID messageGuid:(id)guid;
 - (void)shutdown;
-- (void)statusReceivingManager:(id)a3 didReceiveStatusUpdate:(id)a4 onChannel:(id)a5;
-- (void)subscriptionServiceClientWasInvalidated:(id)a3;
+- (void)statusReceivingManager:(id)manager didReceiveStatusUpdate:(id)update onChannel:(id)channel;
+- (void)subscriptionServiceClientWasInvalidated:(id)invalidated;
 @end
 
 @implementation SKAStatusServer
@@ -108,9 +108,9 @@ uint64_t __33__SKAStatusServer_sharedInstance__block_invoke()
     databaseManager = v4->_databaseManager;
     v4->_databaseManager = v21;
 
-    v23 = [(SKAStatusServer *)v4 _inTextTrafficMode];
-    v4->_trafficModeEnabled = v23;
-    if (v23)
+    _inTextTrafficMode = [(SKAStatusServer *)v4 _inTextTrafficMode];
+    v4->_trafficModeEnabled = _inTextTrafficMode;
+    if (_inTextTrafficMode)
     {
       v24 = +[SKAStatusServer logger];
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -233,17 +233,17 @@ uint64_t __33__SKAStatusServer_sharedInstance__block_invoke()
   }
 }
 
-- (id)_onQueue_clientForPresenceIdentifier:(id)a3
+- (id)_onQueue_clientForPresenceIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_presenceConnectionQueue);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(SKAStatusServer *)self onQueue_presenceConnectedClientProxies];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  onQueue_presenceConnectedClientProxies = [(SKAStatusServer *)self onQueue_presenceConnectedClientProxies];
+  v5 = [onQueue_presenceConnectedClientProxies countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = *v19;
@@ -253,18 +253,18 @@ uint64_t __33__SKAStatusServer_sharedInstance__block_invoke()
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(onQueue_presenceConnectedClientProxies);
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [v8 underlyingClient];
-        v10 = [v9 presenceIdentifier];
-        if (v10)
+        underlyingClient = [v8 underlyingClient];
+        presenceIdentifier = [underlyingClient presenceIdentifier];
+        if (presenceIdentifier)
         {
-          v11 = v10;
-          v12 = [v8 underlyingClient];
-          v13 = [v12 presenceIdentifier];
-          v14 = [v13 isEqualToString:v17];
+          v11 = presenceIdentifier;
+          underlyingClient2 = [v8 underlyingClient];
+          presenceIdentifier2 = [underlyingClient2 presenceIdentifier];
+          v14 = [presenceIdentifier2 isEqualToString:identifierCopy];
 
           if (v14)
           {
@@ -278,7 +278,7 @@ uint64_t __33__SKAStatusServer_sharedInstance__block_invoke()
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [onQueue_presenceConnectedClientProxies countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -291,20 +291,20 @@ LABEL_12:
   return v5;
 }
 
-- (void)refreshAssertionsForPresenceIdentifier:(id)a3 existingChannelIdentifier:(id)a4
+- (void)refreshAssertionsForPresenceIdentifier:(id)identifier existingChannelIdentifier:(id)channelIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  channelIdentifierCopy = channelIdentifier;
   presenceConnectionQueue = self->_presenceConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__SKAStatusServer_refreshAssertionsForPresenceIdentifier_existingChannelIdentifier___block_invoke;
   block[3] = &unk_27843E358;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = channelIdentifierCopy;
+  v9 = channelIdentifierCopy;
+  v10 = identifierCopy;
   dispatch_async(presenceConnectionQueue, block);
 }
 
@@ -969,73 +969,73 @@ uint64_t __25__SKAStatusServer_logger__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 serviceName];
-  if ([v8 isEqualToString:@"com.apple.StatusKit.publish"])
+  listenerCopy = listener;
+  connectionCopy = connection;
+  serviceName = [listenerCopy serviceName];
+  if ([serviceName isEqualToString:@"com.apple.StatusKit.publish"])
   {
     v9 = +[SKAStatusServer logger];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v7 processIdentifier];
-      v11 = [v7 sk_applicationIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
+      sk_applicationIdentifier = [connectionCopy sk_applicationIdentifier];
       v24 = 134218242;
-      v25 = v10;
+      v25 = processIdentifier;
       v26 = 2112;
-      v27 = v11;
+      v27 = sk_applicationIdentifier;
       _os_log_impl(&dword_220099000, v9, OS_LOG_TYPE_DEFAULT, "Receiving XPC connection from PID %ld (%@) for publishing service", &v24, 0x16u);
     }
 
-    v12 = [(SKAStatusServer *)self _publishingServiceListener:v6 shouldAcceptNewConnection:v7];
+    v12 = [(SKAStatusServer *)self _publishingServiceListener:listenerCopy shouldAcceptNewConnection:connectionCopy];
 LABEL_13:
     v21 = v12;
     goto LABEL_14;
   }
 
-  if ([v8 isEqualToString:@"com.apple.StatusKit.subscribe"])
+  if ([serviceName isEqualToString:@"com.apple.StatusKit.subscribe"])
   {
     v13 = +[SKAStatusServer logger];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v7 processIdentifier];
-      v15 = [v7 sk_applicationIdentifier];
+      processIdentifier2 = [connectionCopy processIdentifier];
+      sk_applicationIdentifier2 = [connectionCopy sk_applicationIdentifier];
       v24 = 134218242;
-      v25 = v14;
+      v25 = processIdentifier2;
       v26 = 2112;
-      v27 = v15;
+      v27 = sk_applicationIdentifier2;
       _os_log_impl(&dword_220099000, v13, OS_LOG_TYPE_DEFAULT, "Receiving XPC connection from PID %ld (%@) for subscription service", &v24, 0x16u);
     }
 
-    v12 = [(SKAStatusServer *)self _subscriptionServiceListener:v6 shouldAcceptNewConnection:v7];
+    v12 = [(SKAStatusServer *)self _subscriptionServiceListener:listenerCopy shouldAcceptNewConnection:connectionCopy];
     goto LABEL_13;
   }
 
-  v16 = [v8 isEqualToString:@"com.apple.StatusKit.presence"];
+  v16 = [serviceName isEqualToString:@"com.apple.StatusKit.presence"];
   v17 = +[SKAStatusServer logger];
   v18 = v17;
   if (v16)
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v7 processIdentifier];
-      v20 = [v7 sk_applicationIdentifier];
+      processIdentifier3 = [connectionCopy processIdentifier];
+      sk_applicationIdentifier3 = [connectionCopy sk_applicationIdentifier];
       v24 = 134218242;
-      v25 = v19;
+      v25 = processIdentifier3;
       v26 = 2112;
-      v27 = v20;
+      v27 = sk_applicationIdentifier3;
       _os_log_impl(&dword_220099000, v18, OS_LOG_TYPE_DEFAULT, "Receiving XPC connection from PID %ld (%@) for presence service", &v24, 0x16u);
     }
 
-    v12 = [(SKAStatusServer *)self _presenceServiceListener:v6 shouldAcceptNewConnection:v7];
+    v12 = [(SKAStatusServer *)self _presenceServiceListener:listenerCopy shouldAcceptNewConnection:connectionCopy];
     goto LABEL_13;
   }
 
   if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
   {
-    [(SKAStatusServer *)v7 listener:v8 shouldAcceptNewConnection:v18];
+    [(SKAStatusServer *)connectionCopy listener:serviceName shouldAcceptNewConnection:v18];
   }
 
   v21 = 0;
@@ -1045,11 +1045,11 @@ LABEL_14:
   return v21;
 }
 
-- (BOOL)_publishingServiceListener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)_publishingServiceListener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [SKAStatusPublishingServiceClientConnection clientIsEntitledForAtLeastOnePublishingServiceType:v5];
+  connectionCopy = connection;
+  v6 = [SKAStatusPublishingServiceClientConnection clientIsEntitledForAtLeastOnePublishingServiceType:connectionCopy];
   v7 = +[SKAStatusServer logger];
   v8 = v7;
   if (v6)
@@ -1057,27 +1057,27 @@ LABEL_14:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v12 = [v5 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       _os_log_impl(&dword_220099000, &v8->super, OS_LOG_TYPE_DEFAULT, "Accepted XPC connection from PID %ld for publishing service", buf, 0xCu);
     }
 
-    v8 = [[SKAStatusPublishingServiceClientProxy alloc] initWithXPCConnection:v5 queue:self->_publishingServiceConnectionQueue delegate:self databaseManager:self->_databaseManager invitationManager:self->_invitationManager publishingManager:self->_publishingManager channelManager:self->_channelManager];
+    v8 = [[SKAStatusPublishingServiceClientProxy alloc] initWithXPCConnection:connectionCopy queue:self->_publishingServiceConnectionQueue delegate:self databaseManager:self->_databaseManager invitationManager:self->_invitationManager publishingManager:self->_publishingManager channelManager:self->_channelManager];
     [(NSMutableArray *)self->_publishingServiceConnectedClientProxies addObject:v8];
   }
 
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [SKAStatusServer _publishingServiceListener:v5 shouldAcceptNewConnection:?];
+    [SKAStatusServer _publishingServiceListener:connectionCopy shouldAcceptNewConnection:?];
   }
 
   v9 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (BOOL)_presenceServiceListener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)_presenceServiceListener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [SKAPresenceClientConnection clientIsEntitledForPresence:v5];
+  connectionCopy = connection;
+  v6 = [SKAPresenceClientConnection clientIsEntitledForPresence:connectionCopy];
   if (v6)
   {
     objc_initWeak(&location, self);
@@ -1087,8 +1087,8 @@ LABEL_14:
     v10[2] = __70__SKAStatusServer__presenceServiceListener_shouldAcceptNewConnection___block_invoke;
     v10[3] = &unk_27843F768;
     objc_copyWeak(&v13, &location);
-    v11 = v5;
-    v12 = self;
+    v11 = connectionCopy;
+    selfCopy = self;
     dispatch_async(presenceConnectionQueue, v10);
 
     objc_destroyWeak(&v13);
@@ -1100,7 +1100,7 @@ LABEL_14:
     v8 = +[SKAStatusServer logger];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [SKAStatusServer _presenceServiceListener:v5 shouldAcceptNewConnection:?];
+      [SKAStatusServer _presenceServiceListener:connectionCopy shouldAcceptNewConnection:?];
     }
   }
 
@@ -1139,11 +1139,11 @@ void __70__SKAStatusServer__presenceServiceListener_shouldAcceptNewConnection___
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_subscriptionServiceListener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)_subscriptionServiceListener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [SKAStatusSubscriptionServiceClientConnection clientIsEntitledForAtLeastOneSubscriptionServiceType:v5];
+  connectionCopy = connection;
+  v6 = [SKAStatusSubscriptionServiceClientConnection clientIsEntitledForAtLeastOneSubscriptionServiceType:connectionCopy];
   v7 = +[SKAStatusServer logger];
   v8 = v7;
   if (v6)
@@ -1151,28 +1151,28 @@ void __70__SKAStatusServer__presenceServiceListener_shouldAcceptNewConnection___
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v14 = [v5 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       _os_log_impl(&dword_220099000, v8, OS_LOG_TYPE_DEFAULT, "Accepted XPC connection from PID %ld for subscription service", buf, 0xCu);
     }
 
     v9 = [SKAStatusSubscriptionServiceClientProxy alloc];
     LOBYTE(v12) = self->_trafficModeEnabled;
-    v8 = [(SKAStatusSubscriptionServiceClientProxy *)v9 initWithXPCConnection:v5 queue:self->_subscriptionServiceConnectionQueue delegate:self databaseManager:self->_databaseManager subscriptionManager:self->_subscriptionManager encryptionManager:self->_encryptionManager inTrafficMode:v12];
+    v8 = [(SKAStatusSubscriptionServiceClientProxy *)v9 initWithXPCConnection:connectionCopy queue:self->_subscriptionServiceConnectionQueue delegate:self databaseManager:self->_databaseManager subscriptionManager:self->_subscriptionManager encryptionManager:self->_encryptionManager inTrafficMode:v12];
     [(NSMutableArray *)self->_subscriptionServiceConnectedClientProxies addObject:v8];
   }
 
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [SKAStatusServer _subscriptionServiceListener:v5 shouldAcceptNewConnection:?];
+    [SKAStatusServer _subscriptionServiceListener:connectionCopy shouldAcceptNewConnection:?];
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (void)subscriptionServiceClientWasInvalidated:(id)a3
+- (void)subscriptionServiceClientWasInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   objc_initWeak(&location, self);
   subscriptionServiceConnectionQueue = self->_subscriptionServiceConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1180,8 +1180,8 @@ void __70__SKAStatusServer__presenceServiceListener_shouldAcceptNewConnection___
   block[2] = __59__SKAStatusServer_subscriptionServiceClientWasInvalidated___block_invoke;
   block[3] = &unk_27843E820;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = invalidatedCopy;
+  v6 = invalidatedCopy;
   dispatch_async(subscriptionServiceConnectionQueue, block);
 
   objc_destroyWeak(&v9);
@@ -1253,9 +1253,9 @@ LABEL_15:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishingServiceClientWasInvalidated:(id)a3
+- (void)publishingServiceClientWasInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   objc_initWeak(&location, self);
   publishingServiceConnectionQueue = self->_publishingServiceConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1263,8 +1263,8 @@ LABEL_15:
   block[2] = __57__SKAStatusServer_publishingServiceClientWasInvalidated___block_invoke;
   block[3] = &unk_27843E820;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = invalidatedCopy;
+  v6 = invalidatedCopy;
   dispatch_async(publishingServiceConnectionQueue, block);
 
   objc_destroyWeak(&v9);
@@ -1336,9 +1336,9 @@ LABEL_15:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presenceClientWasInvalidated:(id)a3
+- (void)presenceClientWasInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   objc_initWeak(&location, self);
   presenceConnectionQueue = self->_presenceConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1346,8 +1346,8 @@ LABEL_15:
   block[2] = __48__SKAStatusServer_presenceClientWasInvalidated___block_invoke;
   block[3] = &unk_27843E820;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = invalidatedCopy;
+  v6 = invalidatedCopy;
   dispatch_async(presenceConnectionQueue, block);
 
   objc_destroyWeak(&v9);
@@ -1419,15 +1419,15 @@ LABEL_15:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)drainUpdatesForPresenceIdentifier:(id)a3
+- (void)drainUpdatesForPresenceIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SKAStatusServer logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = identifierCopy;
     _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Draining update queues for client with presenceIdentifier %@", buf, 0xCu);
   }
 
@@ -1438,9 +1438,9 @@ LABEL_15:
   block[2] = __53__SKAStatusServer_drainUpdatesForPresenceIdentifier___block_invoke;
   block[3] = &unk_27843F768;
   objc_copyWeak(&v12, buf);
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
   dispatch_async(presenceConnectionQueue, block);
 
   objc_destroyWeak(&v12);
@@ -1500,16 +1500,16 @@ void __53__SKAStatusServer_drainUpdatesForPresenceIdentifier___block_invoke(uint
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumeratePresenceClientsWithIdentifier:(id)a3 usingBlock:(id)a4
+- (void)enumeratePresenceClientsWithIdentifier:(id)identifier usingBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v8 = +[SKAStatusServer logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = identifierCopy;
     _os_log_impl(&dword_220099000, v8, OS_LOG_TYPE_DEFAULT, "Attempting to connect to existing clients for presenceIdentifier: %@", buf, 0xCu);
   }
 
@@ -1520,10 +1520,10 @@ void __53__SKAStatusServer_drainUpdatesForPresenceIdentifier___block_invoke(uint
   block[2] = __69__SKAStatusServer_enumeratePresenceClientsWithIdentifier_usingBlock___block_invoke;
   block[3] = &unk_27843E7A8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  v15 = blockCopy;
+  v10 = blockCopy;
+  v11 = identifierCopy;
   dispatch_async(presenceConnectionQueue, block);
 
   objc_destroyWeak(&v16);
@@ -1636,15 +1636,15 @@ LABEL_22:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)databaseDidReceiveRemoteChangesForChannels:(id)a3
+- (void)databaseDidReceiveRemoteChangesForChannels:(id)channels
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  channelsCopy = channels;
   v5 = +[SKAStatusServer logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = channelsCopy;
     _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Received remote database changes for channels: %@", buf, 0xCu);
   }
 
@@ -1656,8 +1656,8 @@ LABEL_22:
   v9[2] = __62__SKAStatusServer_databaseDidReceiveRemoteChangesForChannels___block_invoke_60;
   v9[3] = &unk_27843E820;
   objc_copyWeak(&v11, buf);
-  v10 = v4;
-  v7 = v4;
+  v10 = channelsCopy;
+  v7 = channelsCopy;
   dispatch_async(subscriptionServiceConnectionQueue, v9);
 
   objc_destroyWeak(&v11);
@@ -1782,7 +1782,7 @@ void __62__SKAStatusServer_databaseDidReceiveRemoteChangesForChannels___block_in
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initialCloudKitImportReceived:(id)a3
+- (void)initialCloudKitImportReceived:(id)received
 {
   objc_initWeak(&location, self);
   presenceConnectionQueue = self->_presenceConnectionQueue;
@@ -1894,24 +1894,24 @@ void __49__SKAStatusServer_initialCloudKitImportReceived___block_invoke_2(uint64
   [(SKAPresenceManaging *)self->_presenceManager recalculateActivityTracking];
 }
 
-- (void)service:(id)a3 didReceiveIncomingMessage:(id)a4 fromID:(id)a5 fromMergeID:(id)a6 toID:(id)a7 messageGuid:(id)a8
+- (void)service:(id)service didReceiveIncomingMessage:(id)message fromID:(id)d fromMergeID:(id)iD toID:(id)toID messageGuid:(id)guid
 {
   v33 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
+  serviceCopy = service;
+  messageCopy = message;
+  dCopy = d;
+  guidCopy = guid;
+  toIDCopy = toID;
+  iDCopy = iD;
   v20 = +[SKAStatusServer logger];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 138412802;
-    v28 = v14;
+    v28 = serviceCopy;
     v29 = 2112;
-    v30 = v16;
+    v30 = dCopy;
     v31 = 2112;
-    v32 = v15;
+    v32 = messageCopy;
     _os_log_impl(&dword_220099000, v20, OS_LOG_TYPE_DEFAULT, "Incoming message received. Service: %@ senderID: %@ guid: %@", &v27, 0x20u);
   }
 
@@ -1927,7 +1927,7 @@ void __49__SKAStatusServer_initialCloudKitImportReceived___block_invoke_2(uint64
 
   v24 = [objc_alloc(MEMORY[0x277D680C0]) initWithString:v22];
   v25 = [objc_alloc(MEMORY[0x277D680C0]) initWithString:v23];
-  [(SKAInvitationManaging *)self->_invitationManager handleIncomingInvitationMessage:v15 fromHandle:v24 fromID:v16 fromMergeID:v19 toHandle:v25 messageGuid:v17];
+  [(SKAInvitationManaging *)self->_invitationManager handleIncomingInvitationMessage:messageCopy fromHandle:v24 fromID:dCopy fromMergeID:iDCopy toHandle:v25 messageGuid:guidCopy];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -1944,60 +1944,60 @@ void __49__SKAStatusServer_initialCloudKitImportReceived___block_invoke_2(uint64
   [(SKAStatusPublishingManaging *)self->_publishingManager publishPendingRequestForReason:0];
 }
 
-- (void)channelManager:(id)a3 didReceiveData:(id)a4 onChannel:(id)a5 identifier:(unint64_t)a6 dateReceived:(id)a7 dateExpired:(id)a8
+- (void)channelManager:(id)manager didReceiveData:(id)data onChannel:(id)channel identifier:(unint64_t)identifier dateReceived:(id)received dateExpired:(id)expired
 {
   v36 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a8;
+  dataCopy = data;
+  channelCopy = channel;
+  receivedCopy = received;
+  expiredCopy = expired;
   v17 = +[SKAStatusServer logger];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v33 = v14;
+    v33 = channelCopy;
     v34 = 2048;
-    v35 = a6;
+    identifierCopy = identifier;
     _os_log_impl(&dword_220099000, v17, OS_LOG_TYPE_DEFAULT, "Received data on channel: %@ identifier: %lu", buf, 0x16u);
   }
 
-  v18 = [(SKAStatusServer *)self databaseManager];
-  v19 = [v18 newBackgroundContext];
+  databaseManager = [(SKAStatusServer *)self databaseManager];
+  newBackgroundContext = [databaseManager newBackgroundContext];
 
-  v20 = [(SKAStatusServer *)self databaseManager];
-  v21 = [v20 existingChannelForSubscriptionIdentifier:v14 databaseContext:v19];
+  databaseManager2 = [(SKAStatusServer *)self databaseManager];
+  v21 = [databaseManager2 existingChannelForSubscriptionIdentifier:channelCopy databaseContext:newBackgroundContext];
 
   if (v21)
   {
     if ([v21 channelType])
     {
-      v31 = v16;
-      v22 = v15;
-      v23 = [v21 channelType];
+      v31 = expiredCopy;
+      v22 = receivedCopy;
+      channelType = [v21 channelType];
       v24 = +[SKAStatusServer logger];
       v25 = v24;
-      if (v23 == 1)
+      if (channelType == 1)
       {
-        v15 = v22;
+        receivedCopy = v22;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
           _os_log_impl(&dword_220099000, v25, OS_LOG_TYPE_DEFAULT, "Handling as presence update", buf, 2u);
         }
 
-        [(SKAPresenceManaging *)self->_presenceManager channelReceivedIncomingPayloadUpdate:v13 channel:v21 withIdentifier:a6];
+        [(SKAPresenceManaging *)self->_presenceManager channelReceivedIncomingPayloadUpdate:dataCopy channel:v21 withIdentifier:identifier];
       }
 
       else
       {
-        v15 = v22;
+        receivedCopy = v22;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           [SKAStatusServer channelManager:didReceiveData:onChannel:identifier:dateReceived:dateExpired:];
         }
       }
 
-      v16 = v31;
+      expiredCopy = v31;
     }
 
     else
@@ -2011,8 +2011,8 @@ void __49__SKAStatusServer_initialCloudKitImportReceived___block_invoke_2(uint64
 
       if (self->_trafficModeEnabled)
       {
-        v28 = +[SKAStatusServer logger];
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+        serverTime = +[SKAStatusServer logger];
+        if (os_log_type_enabled(serverTime, OS_LOG_TYPE_ERROR))
         {
           [SKAStatusServer channelManager:didReceiveData:onChannel:identifier:dateReceived:dateExpired:];
         }
@@ -2021,8 +2021,8 @@ void __49__SKAStatusServer_initialCloudKitImportReceived___block_invoke_2(uint64
       else
       {
         statusReceivingManager = self->_statusReceivingManager;
-        v28 = [(SKAChannelManaging *)self->_channelManager serverTime];
-        [(SKAStatusReceivingManaging *)statusReceivingManager handleIncomingStatusData:v13 onChannelIdentifier:v14 dateReceived:v15 dateExpired:v16 serverTime:v28];
+        serverTime = [(SKAChannelManaging *)self->_channelManager serverTime];
+        [(SKAStatusReceivingManaging *)statusReceivingManager handleIncomingStatusData:dataCopy onChannelIdentifier:channelCopy dateReceived:receivedCopy dateExpired:expiredCopy serverTime:serverTime];
       }
     }
 
@@ -2042,10 +2042,10 @@ void __49__SKAStatusServer_initialCloudKitImportReceived___block_invoke_2(uint64
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)channelManager:(id)a3 failedToSubscribeToChannel:(id)a4 withError:(id)a5
+- (void)channelManager:(id)manager failedToSubscribeToChannel:(id)channel withError:(id)error
 {
-  v6 = a4;
-  v7 = a5;
+  channelCopy = channel;
+  errorCopy = error;
   v8 = +[SKAStatusServer logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -2053,17 +2053,17 @@ void __49__SKAStatusServer_initialCloudKitImportReceived___block_invoke_2(uint64
   }
 }
 
-- (void)statusReceivingManager:(id)a3 didReceiveStatusUpdate:(id)a4 onChannel:(id)a5
+- (void)statusReceivingManager:(id)manager didReceiveStatusUpdate:(id)update onChannel:(id)channel
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  updateCopy = update;
+  channelCopy = channel;
   v11 = +[SKAStatusServer logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v9;
+    v21 = updateCopy;
     _os_log_impl(&dword_220099000, v11, OS_LOG_TYPE_DEFAULT, "Server received status update: %@", buf, 0xCu);
   }
 
@@ -2074,9 +2074,9 @@ void __49__SKAStatusServer_initialCloudKitImportReceived___block_invoke_2(uint64
   block[2] = __75__SKAStatusServer_statusReceivingManager_didReceiveStatusUpdate_onChannel___block_invoke;
   block[3] = &unk_27843F768;
   objc_copyWeak(&v19, buf);
-  v13 = v9;
+  v13 = updateCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = channelCopy;
   v18 = v14;
   dispatch_async(subscriptionServiceConnectionQueue, block);
   [(SKAStatusServer *)self donateReceivedStatusToBiomeOnChannel:v14];
@@ -2127,46 +2127,46 @@ void __75__SKAStatusServer_statusReceivingManager_didReceiveStatusUpdate_onChann
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)donateReceivedStatusToBiomeOnChannel:(id)a3
+- (void)donateReceivedStatusToBiomeOnChannel:(id)channel
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 statusType];
-  if ([(SKAStatusServer *)self _shouldDonateToBiomeForStatusTypeIdentifier:v5])
+  channelCopy = channel;
+  statusType = [channelCopy statusType];
+  if ([(SKAStatusServer *)self _shouldDonateToBiomeForStatusTypeIdentifier:statusType])
   {
-    v6 = [(SKAStatusServer *)self _senderHandlesForChannel:v4];
+    v6 = [(SKAStatusServer *)self _senderHandlesForChannel:channelCopy];
     v7 = +[SKAStatusServer logger];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 allObjects];
+      allObjects = [v6 allObjects];
       v17 = 138412546;
-      v18 = v8;
+      v18 = allObjects;
       v19 = 2112;
-      v20 = v5;
+      v20 = statusType;
       _os_log_impl(&dword_220099000, v7, OS_LOG_TYPE_DEFAULT, "Writing to Biome event with IDSHandle: %@, statusTypeIdentifier %@", &v17, 0x16u);
     }
 
     v9 = BiomeLibrary();
-    v10 = [v9 UserFocus];
-    v11 = [v10 StatusChange];
+    userFocus = [v9 UserFocus];
+    statusChange = [userFocus StatusChange];
 
     v12 = objc_alloc(MEMORY[0x277CF1700]);
-    v13 = [v6 allObjects];
-    v14 = [v12 initWithIdsHandle:0 statusChangeType:v5 idsHandles:v13];
+    allObjects2 = [v6 allObjects];
+    v14 = [v12 initWithIdsHandle:0 statusChangeType:statusType idsHandles:allObjects2];
 
-    v15 = [v11 source];
-    [v15 sendEvent:v14];
+    source = [statusChange source];
+    [source sendEvent:v14];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_senderHandlesForChannel:(id)a3
+- (id)_senderHandlesForChannel:(id)channel
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
-  v6 = [(SKADatabaseManaging *)self->_databaseManager receivedInvitationsForChannel:v4 databaseContext:v5];
+  channelCopy = channel;
+  newBackgroundContext = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
+  v6 = [(SKADatabaseManaging *)self->_databaseManager receivedInvitationsForChannel:channelCopy databaseContext:newBackgroundContext];
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v19 = 0u;
   v20 = 0u;
@@ -2188,12 +2188,12 @@ void __75__SKAStatusServer_statusReceivingManager_didReceiveStatusUpdate_onChann
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 senderHandle];
+        senderHandle = [v13 senderHandle];
 
-        if (v14)
+        if (senderHandle)
         {
-          v15 = [v13 senderHandle];
-          [v7 addObject:v15];
+          senderHandle2 = [v13 senderHandle];
+          [v7 addObject:senderHandle2];
         }
       }
 
@@ -2209,13 +2209,13 @@ void __75__SKAStatusServer_statusReceivingManager_didReceiveStatusUpdate_onChann
   return v16;
 }
 
-- (BOOL)_shouldDonateToBiomeForStatusTypeIdentifier:(id)a3
+- (BOOL)_shouldDonateToBiomeForStatusTypeIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v5 = [v4 objectForKey:@"BiomeDonationEnabled"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:@"BiomeDonationEnabled"];
     v6 = v5;
     if (v5 && ![v5 BOOLValue])
     {
@@ -2224,7 +2224,7 @@ void __75__SKAStatusServer_statusReceivingManager_didReceiveStatusUpdate_onChann
 
     else
     {
-      v7 = [&unk_2833EBAE0 containsObject:v3];
+      v7 = [&unk_2833EBAE0 containsObject:identifierCopy];
     }
   }
 
@@ -2236,23 +2236,23 @@ void __75__SKAStatusServer_statusReceivingManager_didReceiveStatusUpdate_onChann
   return v7;
 }
 
-- (void)databaseManager:(id)a3 didCreateChannel:(id)a4
+- (void)databaseManager:(id)manager didCreateChannel:(id)channel
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 identifier];
-  v7 = [v5 statusType];
+  channelCopy = channel;
+  identifier = [channelCopy identifier];
+  statusType = [channelCopy statusType];
   v8 = +[SKAStatusServer logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v6;
+    v13 = identifier;
     v14 = 2112;
-    v15 = v7;
+    v15 = statusType;
     _os_log_impl(&dword_220099000, v8, OS_LOG_TYPE_DEFAULT, "Channel created with identifier: %@ type: %@", &v12, 0x16u);
   }
 
-  if ([v5 isPersonal])
+  if ([channelCopy isPersonal])
   {
     v9 = +[SKAStatusServer logger];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2261,8 +2261,8 @@ void __75__SKAStatusServer_statusReceivingManager_didReceiveStatusUpdate_onChann
       _os_log_impl(&dword_220099000, v9, OS_LOG_TYPE_DEFAULT, "Updating registered subscription to allow self subscription to personal channel, if necessary", &v12, 2u);
     }
 
-    v10 = [(SKAStatusServer *)self subscriptionManager];
-    [v10 updateRegisteredSubscriptionsForActiveAssertionsWithCompletion:&__block_literal_global_76_0];
+    subscriptionManager = [(SKAStatusServer *)self subscriptionManager];
+    [subscriptionManager updateRegisteredSubscriptionsForActiveAssertionsWithCompletion:&__block_literal_global_76_0];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -2288,16 +2288,16 @@ void __52__SKAStatusServer_databaseManager_didCreateChannel___block_invoke(uint6
   }
 }
 
-- (void)presenceManager:(id)a3 didReceivePresentDevicesUpdate:(id)a4 forPresenceIdentifier:(id)a5
+- (void)presenceManager:(id)manager didReceivePresentDevicesUpdate:(id)update forPresenceIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  updateCopy = update;
+  identifierCopy = identifier;
   v9 = +[SKAStatusServer logger];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v8;
+    v19 = identifierCopy;
     _os_log_impl(&dword_220099000, v9, OS_LOG_TYPE_DEFAULT, "Server received present devices update on presence identifier: %@", buf, 0xCu);
   }
 
@@ -2308,10 +2308,10 @@ void __52__SKAStatusServer_databaseManager_didCreateChannel___block_invoke(uint6
   block[2] = __88__SKAStatusServer_presenceManager_didReceivePresentDevicesUpdate_forPresenceIdentifier___block_invoke;
   block[3] = &unk_27843F768;
   objc_copyWeak(&v17, buf);
-  v15 = v8;
-  v16 = v7;
-  v11 = v7;
-  v12 = v8;
+  v15 = identifierCopy;
+  v16 = updateCopy;
+  v11 = updateCopy;
+  v12 = identifierCopy;
   dispatch_async(presenceConnectionQueue, block);
 
   objc_destroyWeak(&v17);
@@ -2338,21 +2338,21 @@ void __88__SKAStatusServer_presenceManager_didReceivePresentDevicesUpdate_forPre
   [v3 handleReceivedPresentDevicesUpdate:*(a1 + 32) forPresenceIdentifier:*(a1 + 40)];
 }
 
-- (void)presenceManager:(id)a3 didCreateChannel:(id)a4
+- (void)presenceManager:(id)manager didCreateChannel:(id)channel
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  channelCopy = channel;
   v6 = +[SKAStatusServer logger];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = channelCopy;
     _os_log_impl(&dword_220099000, v6, OS_LOG_TYPE_DEFAULT, "New presence channel created. Sending self invite for channel: %@", &v10, 0xCu);
   }
 
-  v7 = [(SKAStatusServer *)self invitationManager];
-  v8 = [v5 presenceIdentifier];
-  [v7 sendSelfInvitationForPresenceChannelWithPresenceIdentifier:v8 isPersonal:objc_msgSend(v5 completion:{"isPersonal"), &__block_literal_global_79}];
+  invitationManager = [(SKAStatusServer *)self invitationManager];
+  presenceIdentifier = [channelCopy presenceIdentifier];
+  [invitationManager sendSelfInvitationForPresenceChannelWithPresenceIdentifier:presenceIdentifier isPersonal:objc_msgSend(channelCopy completion:{"isPersonal"), &__block_literal_global_79}];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -2374,19 +2374,19 @@ void __52__SKAStatusServer_presenceManager_didCreateChannel___block_invoke(uint6
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presenceManager:(id)a3 didRequestToRollChannel:(id)a4
+- (void)presenceManager:(id)manager didRequestToRollChannel:(id)channel
 {
-  v5 = a4;
-  v6 = [(SKAStatusServer *)self invitationManager];
-  v7 = [v5 presenceIdentifier];
-  v8 = [v5 isPersonal];
+  channelCopy = channel;
+  invitationManager = [(SKAStatusServer *)self invitationManager];
+  presenceIdentifier = [channelCopy presenceIdentifier];
+  isPersonal = [channelCopy isPersonal];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__SKAStatusServer_presenceManager_didRequestToRollChannel___block_invoke;
   v10[3] = &unk_27843F7F8;
-  v11 = v5;
-  v9 = v5;
-  [v6 rollPresenceChannelWithPresenceIdentifier:v7 isPersonal:v8 completion:v10];
+  v11 = channelCopy;
+  v9 = channelCopy;
+  [invitationManager rollPresenceChannelWithPresenceIdentifier:presenceIdentifier isPersonal:isPersonal completion:v10];
 }
 
 void __59__SKAStatusServer_presenceManager_didRequestToRollChannel___block_invoke(uint64_t a1, int a2)
@@ -2406,41 +2406,41 @@ void __59__SKAStatusServer_presenceManager_didRequestToRollChannel___block_invok
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invitationManager:(id)a3 didRollChannelFromExistingChannel:(id)a4
+- (void)invitationManager:(id)manager didRollChannelFromExistingChannel:(id)channel
 {
-  v5 = a4;
-  v7 = [v5 presenceIdentifier];
-  v6 = [v5 identifier];
+  channelCopy = channel;
+  presenceIdentifier = [channelCopy presenceIdentifier];
+  identifier = [channelCopy identifier];
 
-  [(SKAStatusServer *)self refreshAssertionsForPresenceIdentifier:v7 existingChannelIdentifier:v6];
+  [(SKAStatusServer *)self refreshAssertionsForPresenceIdentifier:presenceIdentifier existingChannelIdentifier:identifier];
 }
 
-- (void)invitationManager:(id)a3 didReceiveInvitationWithType:(int64_t)a4 forChannel:(id)a5 withExistingChannel:(id)a6
+- (void)invitationManager:(id)manager didReceiveInvitationWithType:(int64_t)type forChannel:(id)channel withExistingChannel:(id)existingChannel
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  managerCopy = manager;
+  channelCopy = channel;
+  existingChannelCopy = existingChannel;
   v13 = +[SKAStatusServer logger];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v11;
+    v31 = channelCopy;
     _os_log_impl(&dword_220099000, v13, OS_LOG_TYPE_DEFAULT, "Received channel invitation on channel: %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  if (a4)
+  if (type)
   {
-    v14 = [v12 identifier];
-    v15 = [v11 identifier];
-    v16 = [v14 isEqualToString:v15];
+    identifier = [existingChannelCopy identifier];
+    identifier2 = [channelCopy identifier];
+    v16 = [identifier isEqualToString:identifier2];
 
     if ((v16 & 1) == 0)
     {
-      v17 = [v11 presenceIdentifier];
-      v18 = [v12 identifier];
-      [(SKAStatusServer *)self refreshAssertionsForPresenceIdentifier:v17 existingChannelIdentifier:v18];
+      presenceIdentifier = [channelCopy presenceIdentifier];
+      identifier3 = [existingChannelCopy identifier];
+      [(SKAStatusServer *)self refreshAssertionsForPresenceIdentifier:presenceIdentifier existingChannelIdentifier:identifier3];
     }
 
     v19 = +[SKAStatusServer logger];
@@ -2450,13 +2450,13 @@ void __59__SKAStatusServer_presenceManager_didRequestToRollChannel___block_invok
       _os_log_impl(&dword_220099000, v19, OS_LOG_TYPE_DEFAULT, "Handling invitation as presence invite, connecting to client", v29, 2u);
     }
 
-    v20 = [v11 presenceIdentifier];
+    presenceIdentifier2 = [channelCopy presenceIdentifier];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __97__SKAStatusServer_invitationManager_didReceiveInvitationWithType_forChannel_withExistingChannel___block_invoke_81;
     v24[3] = &unk_27843F820;
-    v25 = v11;
-    [(SKAStatusServer *)self enumeratePresenceClientsWithIdentifier:v20 usingBlock:v24];
+    v25 = channelCopy;
+    [(SKAStatusServer *)self enumeratePresenceClientsWithIdentifier:presenceIdentifier2 usingBlock:v24];
   }
 
   else
@@ -2474,7 +2474,7 @@ void __59__SKAStatusServer_presenceManager_didRequestToRollChannel___block_invok
     block[2] = __97__SKAStatusServer_invitationManager_didReceiveInvitationWithType_forChannel_withExistingChannel___block_invoke;
     block[3] = &unk_27843E820;
     objc_copyWeak(&v28, buf);
-    v27 = v11;
+    v27 = channelCopy;
     dispatch_async(subscriptionServiceConnectionQueue, block);
 
     objc_destroyWeak(&v28);
@@ -2532,43 +2532,43 @@ void __97__SKAStatusServer_invitationManager_didReceiveInvitationWithType_forCha
   [v4 handleReceivedInvitationForPresenceIdentifier:v3];
 }
 
-- (void)invitationManager:(id)a3 didRevokeInvitationOnChannel:(id)a4
+- (void)invitationManager:(id)manager didRevokeInvitationOnChannel:(id)channel
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  channelCopy = channel;
   v6 = +[SKAStatusServer logger];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v5;
+    v24 = channelCopy;
     _os_log_impl(&dword_220099000, v6, OS_LOG_TYPE_DEFAULT, "Revoked invitation(s) on channel: %@. Republishing current status", buf, 0xCu);
   }
 
-  v7 = [v5 statusType];
-  v8 = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
-  v9 = [(SKADatabaseManaging *)self->_databaseManager existingStatusForChannel:v5 databaseContext:v8];
+  statusType = [channelCopy statusType];
+  newBackgroundContext = [(SKADatabaseManaging *)self->_databaseManager newBackgroundContext];
+  v9 = [(SKADatabaseManaging *)self->_databaseManager existingStatusForChannel:channelCopy databaseContext:newBackgroundContext];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 rawData];
-    v12 = [(SKAStatusEncryptionManaging *)self->_encryptionManager decryptStatusPayloadFromStatusEnvelopeData:v11 channel:v5];
+    rawData = [v9 rawData];
+    v12 = [(SKAStatusEncryptionManaging *)self->_encryptionManager decryptStatusPayloadFromStatusEnvelopeData:rawData channel:channelCopy];
     v13 = v12;
     if (v12)
     {
-      v22 = [v12 statusPayload];
-      v14 = [objc_alloc(MEMORY[0x277D68138]) initWithStatusPayload:v22 isScheduledRequest:0];
-      v15 = [v10 dateCreated];
-      [v15 dateByAddingTimeInterval:1.0];
-      v16 = v8;
-      v18 = v17 = v7;
+      statusPayload = [v12 statusPayload];
+      v14 = [objc_alloc(MEMORY[0x277D68138]) initWithStatusPayload:statusPayload isScheduledRequest:0];
+      dateCreated = [v10 dateCreated];
+      [dateCreated dateByAddingTimeInterval:1.0];
+      v16 = newBackgroundContext;
+      v18 = v17 = statusType;
       [v14 setDateCreated:v18];
 
-      v7 = v17;
-      v8 = v16;
+      statusType = v17;
+      newBackgroundContext = v16;
 
       publishingManager = self->_publishingManager;
-      v20 = v22;
-      [(SKAStatusPublishingManaging *)publishingManager publishStatusRequest:v14 statusTypeIdentifier:v7 afterTime:0 isPendingPublish:&__block_literal_global_85 completion:0.0];
+      v20 = statusPayload;
+      [(SKAStatusPublishingManaging *)publishingManager publishStatusRequest:v14 statusTypeIdentifier:statusType afterTime:0 isPendingPublish:&__block_literal_global_85 completion:0.0];
     }
 
     else
@@ -2583,11 +2583,11 @@ void __97__SKAStatusServer_invitationManager_didReceiveInvitationWithType_forCha
 
   else
   {
-    v11 = +[SKAStatusServer logger];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    rawData = +[SKAStatusServer logger];
+    if (os_log_type_enabled(rawData, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_220099000, v11, OS_LOG_TYPE_DEFAULT, "No current status to republish", buf, 2u);
+      _os_log_impl(&dword_220099000, rawData, OS_LOG_TYPE_DEFAULT, "No current status to republish", buf, 2u);
     }
   }
 
@@ -2615,9 +2615,9 @@ void __66__SKAStatusServer_invitationManager_didRevokeInvitationOnChannel___bloc
 - (BOOL)_inTextTrafficMode
 {
   v2 = [MEMORY[0x223D774C0](@"LockdownModeManager" @"LockdownMode")];
-  v3 = [v2 enabled];
+  enabled = [v2 enabled];
 
-  return v3;
+  return enabled;
 }
 
 - (void)_setupMaintenanceActivity

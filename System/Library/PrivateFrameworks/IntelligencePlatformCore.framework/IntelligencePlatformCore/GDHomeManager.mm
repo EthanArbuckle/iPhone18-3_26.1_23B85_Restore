@@ -1,7 +1,7 @@
 @interface GDHomeManager
 - (GDHomeManager)init;
 - (NSArray)homes;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation GDHomeManager
@@ -52,15 +52,15 @@
   return v12;
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  homesCopy = homes;
   v5 = GDConstructionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = homesCopy;
     _os_log_impl(&dword_1C43F8000, v5, OS_LOG_TYPE_DEFAULT, "GDHomeManager: homeManagerDidUpdateHomes called with %@", buf, 0xCu);
   }
 
@@ -69,8 +69,8 @@
   v11[1] = 3221225472;
   v11[2] = sub_1C4EF6438;
   v11[3] = &unk_1E81EFA00;
-  v12 = v4;
-  v7 = v4;
+  v12 = homesCopy;
+  v7 = homesCopy;
   objc_msgSend_runWithLockAcquired_(guardedData, v8, v11, v9);
   dispatch_semaphore_signal(self->_homeUpdateSem);
 

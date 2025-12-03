@@ -1,9 +1,9 @@
 @interface TVLALSDataExtractor
 + (id)extractALSCalibrationData;
 + (unsigned)_displayID;
-+ (void)extract:(unint64_t)a3 ALSReadings:(id)a4;
++ (void)extract:(unint64_t)extract ALSReadings:(id)readings;
 + (void)extractALSCalibrationData;
-+ (void)extractALSData:(id)a3;
++ (void)extractALSData:(id)data;
 - (TVLALSDataExtractor)init;
 - (void)dealloc;
 @end
@@ -87,7 +87,7 @@
   }
 
   v10 = objc_alloc_init(TVLALSCalibrationData);
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a1, "_displayID")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(self, "_displayID")}];
   [(TVLALSCalibrationData *)v10 setDisplayID:v11];
 
   if (v8 > 10235)
@@ -683,16 +683,16 @@ LABEL_131:
   return mainPort[1];
 }
 
-+ (void)extractALSData:(id)a3
++ (void)extractALSData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__TVLALSDataExtractor_extractALSData___block_invoke;
   v6[3] = &unk_279D6BE18;
-  v7 = v4;
-  v5 = v4;
-  [a1 extract:1 ALSReadings:v6];
+  v7 = dataCopy;
+  v5 = dataCopy;
+  [self extract:1 ALSReadings:v6];
 }
 
 void __38__TVLALSDataExtractor_extractALSData___block_invoke(uint64_t a1, void *a2)
@@ -702,19 +702,19 @@ void __38__TVLALSDataExtractor_extractALSData___block_invoke(uint64_t a1, void *
   (*(v2 + 16))(v2, v3);
 }
 
-+ (void)extract:(unint64_t)a3 ALSReadings:(id)a4
++ (void)extract:(unint64_t)extract ALSReadings:(id)readings
 {
-  v5 = a4;
+  readingsCopy = readings;
   v6 = objc_alloc_init(TVLALSDataExtractor);
   [(NSTimer *)v6->_timer invalidate];
-  v6->_readCount = a3;
+  v6->_readCount = extract;
   objc_initWeak(&location, v6);
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __43__TVLALSDataExtractor_extract_ALSReadings___block_invoke;
   v27[3] = &unk_279D6BE68;
   objc_copyWeak(&v29, &location);
-  v7 = v5;
+  v7 = readingsCopy;
   v28 = v7;
   v8 = MEMORY[0x26D6AEC20](v27);
   completion = v6->_completion;
@@ -733,8 +733,8 @@ void __38__TVLALSDataExtractor_extractALSData___block_invoke(uint64_t a1, void *
   timer = v6->_timer;
   v6->_timer = v14;
 
-  v16 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v16 addTimer:v6->_timer forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [mainRunLoop addTimer:v6->_timer forMode:*MEMORY[0x277CBE738]];
 
   v17 = v13;
   if (!v17->_ioHIDSystemClient)
@@ -808,7 +808,7 @@ void __43__TVLALSDataExtractor_extract_ALSReadings___block_invoke_3(uint64_t a1,
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 134217984;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_26CD78000, a2, OS_LOG_TYPE_FAULT, "Unsupported HmCl format, size %ld", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

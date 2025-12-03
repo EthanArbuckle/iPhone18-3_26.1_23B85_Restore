@@ -1,14 +1,14 @@
 @interface CACodingCAMLWriterDelegate
-- (BOOL)CAMLWriter:(id)a3 shouldEncodeObject:(id)a4;
-- (CACodingCAMLWriterDelegate)initWithResourceDir:(id)a3;
-- (id)CAMLWriter:(id)a3 URLForResource:(id)a4;
-- (id)CAMLWriter:(id)a3 typeForObject:(id)a4;
+- (BOOL)CAMLWriter:(id)writer shouldEncodeObject:(id)object;
+- (CACodingCAMLWriterDelegate)initWithResourceDir:(id)dir;
+- (id)CAMLWriter:(id)writer URLForResource:(id)resource;
+- (id)CAMLWriter:(id)writer typeForObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation CACodingCAMLWriterDelegate
 
-- (BOOL)CAMLWriter:(id)a3 shouldEncodeObject:(id)a4
+- (BOOL)CAMLWriter:(id)writer shouldEncodeObject:(id)object
 {
   if (!self->_skipHiddenLayers)
   {
@@ -21,36 +21,36 @@
     return 1;
   }
 
-  if ([a4 isHidden])
+  if ([object isHidden])
   {
     return 0;
   }
 
-  [a4 opacity];
+  [object opacity];
   return v6 > 0.0;
 }
 
-- (id)CAMLWriter:(id)a3 URLForResource:(id)a4
+- (id)CAMLWriter:(id)writer URLForResource:(id)resource
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = CFGetTypeID(a4);
+  v6 = CFGetTypeID(resource);
   if (v6 != CGImageGetTypeID())
   {
     return 0;
   }
 
-  v7 = [(CACodingCAMLWriterDelegate *)self imageEncodeOptions];
-  v8 = [(CACodingCAMLWriterDelegate *)self imageFormat];
-  if (a4)
+  imageEncodeOptions = [(CACodingCAMLWriterDelegate *)self imageEncodeOptions];
+  imageFormat = [(CACodingCAMLWriterDelegate *)self imageFormat];
+  if (resource)
   {
-    if (CGImageGetBitsPerPixel(a4) == 8 && CGImageGetAlphaInfo(a4) == kCGImageAlphaNone)
+    if (CGImageGetBitsPerPixel(resource) == 8 && CGImageGetAlphaInfo(resource) == kCGImageAlphaNone)
     {
       CAGetColorSpace(3);
-      CGImageGetColorSpace(a4);
+      CGImageGetColorSpace(resource);
       if (CGColorSpaceEqualToColorSpace())
       {
-        v8 = @"public.png";
-        v7 = 0;
+        imageFormat = @"public.png";
+        imageEncodeOptions = 0;
       }
     }
   }
@@ -63,12 +63,12 @@
     [CACodingCAMLWriterDelegate CAMLWriter:URLForResource:]::extensions = v9;
   }
 
-  v10 = [v9 objectForKeyedSubscript:v8];
+  v10 = [v9 objectForKeyedSubscript:imageFormat];
   if (!v10)
   {
     v11 = CGImageSourceCopyTypeExtensions();
     v10 = [v11 objectAtIndexedSubscript:0];
-    [-[CACodingCAMLWriterDelegate CAMLWriter:URLForResource:]::extensions setObject:v10 forKeyedSubscript:v8];
+    [-[CACodingCAMLWriterDelegate CAMLWriter:URLForResource:]::extensions setObject:v10 forKeyedSubscript:imageFormat];
   }
 
   os_unfair_lock_unlock(&[CACodingCAMLWriterDelegate CAMLWriter:URLForResource:]::_extension_lock);
@@ -76,14 +76,14 @@
   serial = self->_serial;
   self->_serial = serial + 1;
   v14 = [v12 stringWithFormat:@"assets/image%d.%@", serial, v10];
-  v15 = CGImageDestinationCreateWithURL([MEMORY[0x1E695DFF8] URLWithString:v14 relativeToURL:{objc_msgSend(MEMORY[0x1E695DFF8], "fileURLWithPath:", self->_resourceDir)}], v8, 1uLL, 0);
+  v15 = CGImageDestinationCreateWithURL([MEMORY[0x1E695DFF8] URLWithString:v14 relativeToURL:{objc_msgSend(MEMORY[0x1E695DFF8], "fileURLWithPath:", self->_resourceDir)}], imageFormat, 1uLL, 0);
   if (!v15)
   {
     return 0;
   }
 
   v16 = v15;
-  CGImageDestinationAddImage(v15, a4, v7);
+  CGImageDestinationAddImage(v15, resource, imageEncodeOptions);
   v17 = objc_autoreleasePoolPush();
   v18 = CGImageDestinationFinalize(v16);
   objc_autoreleasePoolPop(v17);
@@ -99,7 +99,7 @@
     if (os_log_type_enabled(x_log_get_utilities::log, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315138;
-      v23 = [objc_msgSend(a4 "description")];
+      v23 = [objc_msgSend(resource "description")];
       _os_log_error_impl(&dword_183AA6000, v21, OS_LOG_TYPE_ERROR, "CAML: Failed to encode image: %s\n", buf, 0xCu);
     }
 
@@ -111,7 +111,7 @@
   return [v19 URLWithString:v14];
 }
 
-- (id)CAMLWriter:(id)a3 typeForObject:(id)a4
+- (id)CAMLWriter:(id)writer typeForObject:(id)object
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -147,13 +147,13 @@
   return NSStringFromClass(v4);
 }
 
-- (CACodingCAMLWriterDelegate)initWithResourceDir:(id)a3
+- (CACodingCAMLWriterDelegate)initWithResourceDir:(id)dir
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = CACodingCAMLWriterDelegate;
   result = [(CACodingCAMLWriterDelegate *)&v5 init];
-  result->_resourceDir = a3;
+  result->_resourceDir = dir;
   result->_serial = 0;
   return result;
 }

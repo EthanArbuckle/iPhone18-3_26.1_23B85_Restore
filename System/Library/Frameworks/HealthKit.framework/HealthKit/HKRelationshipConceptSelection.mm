@@ -1,10 +1,10 @@
 @interface HKRelationshipConceptSelection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKRelationshipConceptSelection)init;
-- (HKRelationshipConceptSelection)initWithCoder:(id)a3;
-- (HKRelationshipConceptSelection)initWithDirection:(unint64_t)a3 type:(int64_t)a4 selection:(id)a5;
+- (HKRelationshipConceptSelection)initWithCoder:(id)coder;
+- (HKRelationshipConceptSelection)initWithDirection:(unint64_t)direction type:(int64_t)type selection:(id)selection;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKRelationshipConceptSelection
@@ -19,10 +19,10 @@
   return 0;
 }
 
-- (HKRelationshipConceptSelection)initWithDirection:(unint64_t)a3 type:(int64_t)a4 selection:(id)a5
+- (HKRelationshipConceptSelection)initWithDirection:(unint64_t)direction type:(int64_t)type selection:(id)selection
 {
-  v9 = a5;
-  if (!v9)
+  selectionCopy = selection;
+  if (!selectionCopy)
   {
     [HKRelationshipConceptSelection initWithDirection:a2 type:self selection:?];
   }
@@ -33,9 +33,9 @@
   v11 = v10;
   if (v10)
   {
-    v10->_direction = a3;
-    v10->_type = a4;
-    v12 = [v9 copy];
+    v10->_direction = direction;
+    v10->_type = type;
+    v12 = [selectionCopy copy];
     selection = v11->_selection;
     v11->_selection = v12;
   }
@@ -60,67 +60,67 @@
   return [v3 stringWithFormat:@"<%@: %lld with %@ matching %@>", v4, self->_type, v5, self->_selection];
 }
 
-- (HKRelationshipConceptSelection)initWithCoder:(id)a3
+- (HKRelationshipConceptSelection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"DirectionKey"];
-  v6 = [v4 decodeIntegerForKey:@"TypeKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SelectionKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"DirectionKey"];
+  v6 = [coderCopy decodeIntegerForKey:@"TypeKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SelectionKey"];
 
   if (v7)
   {
     self = [(HKRelationshipConceptSelection *)self initWithDirection:v5 type:v6 selection:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   direction = self->_direction;
-  v5 = a3;
-  [v5 encodeInteger:direction forKey:@"DirectionKey"];
-  [v5 encodeInt64:self->_type forKey:@"TypeKey"];
-  [v5 encodeObject:self->_selection forKey:@"SelectionKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:direction forKey:@"DirectionKey"];
+  [coderCopy encodeInt64:self->_type forKey:@"TypeKey"];
+  [coderCopy encodeObject:self->_selection forKey:@"SelectionKey"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v18.receiver = self;
   v18.super_class = HKRelationshipConceptSelection;
-  if ([(HKConceptSelection *)&v18 isEqual:v4])
+  if ([(HKConceptSelection *)&v18 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(HKRelationshipConceptSelection *)self direction];
-    if (v6 != [v5 direction])
+    v5 = equalCopy;
+    direction = [(HKRelationshipConceptSelection *)self direction];
+    if (direction != [v5 direction])
     {
       goto LABEL_12;
     }
 
-    v7 = [(HKRelationshipConceptSelection *)self type];
-    if (v7 != [v5 type])
+    type = [(HKRelationshipConceptSelection *)self type];
+    if (type != [v5 type])
     {
       goto LABEL_12;
     }
 
-    v8 = [(HKRelationshipConceptSelection *)self selection];
-    v9 = [v5 selection];
-    v10 = v9;
-    if (v8 == v9)
+    selection = [(HKRelationshipConceptSelection *)self selection];
+    selection2 = [v5 selection];
+    v10 = selection2;
+    if (selection == selection2)
     {
     }
 
     else
     {
-      v11 = [v5 selection];
-      if (!v11)
+      selection3 = [v5 selection];
+      if (!selection3)
       {
 
 LABEL_12:
@@ -128,10 +128,10 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v12 = v11;
-      v13 = [(HKRelationshipConceptSelection *)self selection];
-      v14 = [v5 selection];
-      v15 = [v13 isEqual:v14];
+      v12 = selection3;
+      selection4 = [(HKRelationshipConceptSelection *)self selection];
+      selection5 = [v5 selection];
+      v15 = [selection4 isEqual:selection5];
 
       if ((v15 & 1) == 0)
       {

@@ -1,102 +1,102 @@
 @interface CDPUIInheritanceUIProviderImpl
-- (BOOL)accessCodeScanner:(id)a3 didScanCode:(id)a4;
-- (BOOL)manualAccessCodeEntry:(id)a3 shouldFinishWithAccessCode:(id)a4;
-- (CDPUIInheritanceUIProviderImpl)initWithPresentingViewController:(id)a3;
+- (BOOL)accessCodeScanner:(id)scanner didScanCode:(id)code;
+- (BOOL)manualAccessCodeEntry:(id)entry shouldFinishWithAccessCode:(id)code;
+- (CDPUIInheritanceUIProviderImpl)initWithPresentingViewController:(id)controller;
 - (id)_buildViewController;
 - (id)_cameraLabel;
 - (id)_cameraView;
 - (id)_contentStackView;
-- (void)_dismissViewControllerWithAccessKey:(id)a3 error:(id)a4;
-- (void)_keyOptionsTapped:(id)a3;
+- (void)_dismissViewControllerWithAccessKey:(id)key error:(id)error;
+- (void)_keyOptionsTapped:(id)tapped;
 - (void)_presentWelcomePage;
 - (void)_showEnterCodeLaterAlert;
 - (void)_showManualCodeEntryPage;
-- (void)_skipTapped:(id)a3;
-- (void)accessCodeScanner:(id)a3 didFailToStarCapture:(id)a4;
-- (void)manualAccessCodeEntryDidCancel:(id)a3;
-- (void)promptForAccessCodeForAccessKey:(id)a3 completion:(id)a4;
-- (void)welcomeViewController:(id)a3 didCompleteWithError:(id)a4;
+- (void)_skipTapped:(id)tapped;
+- (void)accessCodeScanner:(id)scanner didFailToStarCapture:(id)capture;
+- (void)manualAccessCodeEntryDidCancel:(id)cancel;
+- (void)promptForAccessCodeForAccessKey:(id)key completion:(id)completion;
+- (void)welcomeViewController:(id)controller didCompleteWithError:(id)error;
 @end
 
 @implementation CDPUIInheritanceUIProviderImpl
 
-- (CDPUIInheritanceUIProviderImpl)initWithPresentingViewController:(id)a3
+- (CDPUIInheritanceUIProviderImpl)initWithPresentingViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = CDPUIInheritanceUIProviderImpl;
   v6 = [(CDPUIInheritanceUIProviderImpl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_presentingViewController, a3);
+    objc_storeStrong(&v6->_presentingViewController, controller);
   }
 
   return v7;
 }
 
-- (void)promptForAccessCodeForAccessKey:(id)a3 completion:(id)a4
+- (void)promptForAccessCodeForAccessKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  [(CDPUIInheritanceUIProviderImpl *)self setCompletion:a4];
-  [(CDPUIInheritanceUIProviderImpl *)self setAccessKey:v6];
+  keyCopy = key;
+  [(CDPUIInheritanceUIProviderImpl *)self setCompletion:completion];
+  [(CDPUIInheritanceUIProviderImpl *)self setAccessKey:keyCopy];
 
-  v10 = [(CDPUIInheritanceUIProviderImpl *)self _buildViewController];
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  _buildViewController = [(CDPUIInheritanceUIProviderImpl *)self _buildViewController];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [v10 setModalPresentationStyle:2 * ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)];
-  v9 = [(CDPUIInheritanceUIProviderImpl *)self presentingViewController];
-  [v9 presentViewController:v10 animated:1 completion:0];
+  [_buildViewController setModalPresentationStyle:2 * ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)];
+  presentingViewController = [(CDPUIInheritanceUIProviderImpl *)self presentingViewController];
+  [presentingViewController presentViewController:_buildViewController animated:1 completion:0];
 }
 
 - (id)_buildViewController
 {
   v42[4] = *MEMORY[0x277D85DE8];
-  v41 = [MEMORY[0x277CFD480] sharedInstance];
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
   v40 = CDPLocalizedString();
   v3 = MEMORY[0x277CCACA8];
   v4 = CDPLocalizedString();
-  v5 = [v41 primaryAccountFirstName];
-  v39 = [v3 stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@" error:0, v5];
+  primaryAccountFirstName = [mEMORY[0x277CFD480] primaryAccountFirstName];
+  v39 = [v3 stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@" error:0, primaryAccountFirstName];
 
   v6 = [objc_alloc(MEMORY[0x277D37698]) initWithTitle:v40 detailText:v39 symbolName:0];
-  v7 = [(CDPUIInheritanceUIProviderImpl *)self _contentStackView];
-  v8 = [v6 contentView];
-  [v8 addSubview:v7];
+  _contentStackView = [(CDPUIInheritanceUIProviderImpl *)self _contentStackView];
+  contentView = [v6 contentView];
+  [contentView addSubview:_contentStackView];
 
   v29 = MEMORY[0x277CCAAD0];
-  v35 = [v7 leadingAnchor];
-  v36 = [v6 contentView];
-  v34 = [v36 leadingAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  leadingAnchor = [_contentStackView leadingAnchor];
+  contentView2 = [v6 contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v42[0] = v33;
-  v31 = [v7 trailingAnchor];
-  v32 = [v6 contentView];
-  v30 = [v32 trailingAnchor];
-  v28 = [v31 constraintEqualToAnchor:v30];
+  trailingAnchor = [_contentStackView trailingAnchor];
+  contentView3 = [v6 contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v42[1] = v28;
-  v38 = v7;
-  v9 = [v7 topAnchor];
-  v10 = [v6 contentView];
-  v11 = [v10 topAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:10.0];
+  v38 = _contentStackView;
+  topAnchor = [_contentStackView topAnchor];
+  contentView4 = [v6 contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   v42[2] = v12;
-  v13 = [v7 bottomAnchor];
-  v14 = [v6 contentView];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  bottomAnchor = [_contentStackView bottomAnchor];
+  contentView5 = [v6 contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v42[3] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:4];
   [v29 activateConstraints:v17];
 
-  v18 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   v19 = CDPLocalizedString();
-  [v18 setTitle:v19 forState:0];
+  [linkButton setTitle:v19 forState:0];
 
-  [v18 addTarget:self action:sel__keyOptionsTapped_ forControlEvents:64];
-  v20 = [v6 buttonTray];
-  [v20 addButton:v18];
+  [linkButton addTarget:self action:sel__keyOptionsTapped_ forControlEvents:64];
+  buttonTray = [v6 buttonTray];
+  [buttonTray addButton:linkButton];
 
   v21 = [objc_alloc(MEMORY[0x277D37660]) initWithRootViewController:v6];
   [(CDPUIInheritanceUIProviderImpl *)self setNavigationController:v21];
@@ -104,22 +104,22 @@
   v22 = objc_alloc(MEMORY[0x277D751E0]);
   v23 = CDPLocalizedString();
   v24 = [v22 initWithTitle:v23 style:0 target:self action:sel__skipTapped_];
-  v25 = [v6 navigationItem];
-  [v25 setLeftBarButtonItem:v24];
+  navigationItem = [v6 navigationItem];
+  [navigationItem setLeftBarButtonItem:v24];
 
-  v26 = [(CDPUIInheritanceUIProviderImpl *)self navigationController];
+  navigationController = [(CDPUIInheritanceUIProviderImpl *)self navigationController];
 
-  return v26;
+  return navigationController;
 }
 
 - (id)_contentStackView
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v3 = [(CDPUIInheritanceUIProviderImpl *)self _cameraView];
-  v4 = [(CDPUIInheritanceUIProviderImpl *)self _cameraLabel];
+  _cameraView = [(CDPUIInheritanceUIProviderImpl *)self _cameraView];
+  _cameraLabel = [(CDPUIInheritanceUIProviderImpl *)self _cameraLabel];
   v5 = objc_alloc(MEMORY[0x277D75A68]);
-  v17[0] = v3;
-  v17[1] = v4;
+  v17[0] = _cameraView;
+  v17[1] = _cameraLabel;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
   v7 = [v5 initWithArrangedSubviews:v6];
 
@@ -127,12 +127,12 @@
   [v7 setAxis:1];
   [v7 setSpacing:15.0];
   v8 = MEMORY[0x277CCAAD0];
-  v9 = [v3 widthAnchor];
-  v10 = [v9 constraintLessThanOrEqualToConstant:308.0];
+  widthAnchor = [_cameraView widthAnchor];
+  v10 = [widthAnchor constraintLessThanOrEqualToConstant:308.0];
   v16[0] = v10;
-  v11 = [v3 widthAnchor];
-  v12 = [v3 heightAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 multiplier:1.4];
+  widthAnchor2 = [_cameraView widthAnchor];
+  heightAnchor = [_cameraView heightAnchor];
+  v13 = [widthAnchor2 constraintEqualToAnchor:heightAnchor multiplier:1.4];
   v16[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   [v8 activateConstraints:v14];
@@ -154,8 +154,8 @@
 {
   v2 = objc_alloc(MEMORY[0x277D756B8]);
   v3 = [v2 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  v4 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v3 setTextColor:v4];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v3 setTextColor:secondaryLabelColor];
 
   [v3 setTextAlignment:1];
   [v3 setNumberOfLines:0];
@@ -168,9 +168,9 @@
   return v3;
 }
 
-- (void)_keyOptionsTapped:(id)a3
+- (void)_keyOptionsTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -205,8 +205,8 @@
   [v6 addAction:v9];
   [v6 addAction:v12];
   [v6 addAction:v15];
-  v16 = [(CDPUIInheritanceUIProviderImpl *)self navigationController];
-  [v16 presentViewController:v6 animated:1 completion:0];
+  navigationController = [(CDPUIInheritanceUIProviderImpl *)self navigationController];
+  [navigationController presentViewController:v6 animated:1 completion:0];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&v23);
@@ -229,17 +229,17 @@ void __52__CDPUIInheritanceUIProviderImpl__keyOptionsTapped___block_invoke_2(uin
 {
   v4 = objc_alloc_init(CDPUIManualAccessCodeEntryViewController);
   [(CDPUIManualAccessCodeEntryViewController *)v4 setDelegate:self];
-  v3 = [(CDPUIInheritanceUIProviderImpl *)self navigationController];
-  [v3 pushViewController:v4 animated:1];
+  navigationController = [(CDPUIInheritanceUIProviderImpl *)self navigationController];
+  [navigationController pushViewController:v4 animated:1];
 }
 
 - (void)_showEnterCodeLaterAlert
 {
-  v3 = [MEMORY[0x277CFD480] sharedInstance];
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
   v4 = MEMORY[0x277CCACA8];
   v5 = CDPLocalizedString();
-  v6 = [v3 primaryAccountFirstName];
-  v7 = [v4 stringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:0, v6];
+  primaryAccountFirstName = [mEMORY[0x277CFD480] primaryAccountFirstName];
+  v7 = [v4 stringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:0, primaryAccountFirstName];
 
   v8 = CDPLocalizedString();
   v9 = [MEMORY[0x277D75110] alertControllerWithTitle:v8 message:v7 preferredStyle:1];
@@ -259,8 +259,8 @@ void __52__CDPUIInheritanceUIProviderImpl__keyOptionsTapped___block_invoke_2(uin
 
   [v9 addAction:v12];
   [v9 addAction:v15];
-  v16 = [(CDPUIInheritanceUIProviderImpl *)self navigationController];
-  [v16 presentViewController:v9 animated:1 completion:0];
+  navigationController = [(CDPUIInheritanceUIProviderImpl *)self navigationController];
+  [navigationController presentViewController:v9 animated:1 completion:0];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -272,33 +272,33 @@ void __58__CDPUIInheritanceUIProviderImpl__showEnterCodeLaterAlert__block_invoke
   [WeakRetained _skipTapped:0];
 }
 
-- (void)_skipTapped:(id)a3
+- (void)_skipTapped:(id)tapped
 {
   v4 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5308];
   [(CDPUIInheritanceUIProviderImpl *)self _dismissViewControllerWithAccessKey:0 error:v4];
 }
 
-- (void)_dismissViewControllerWithAccessKey:(id)a3 error:(id)a4
+- (void)_dismissViewControllerWithAccessKey:(id)key error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  errorCopy = error;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
   v15[3] = __Block_byref_object_copy__1;
   v15[4] = __Block_byref_object_dispose__1;
-  v16 = self;
-  v8 = [(CDPUIInheritanceUIProviderImpl *)v16 presentingViewController];
+  selfCopy = self;
+  presentingViewController = [(CDPUIInheritanceUIProviderImpl *)selfCopy presentingViewController];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__CDPUIInheritanceUIProviderImpl__dismissViewControllerWithAccessKey_error___block_invoke;
   v11[3] = &unk_278E2BF58;
   v14 = v15;
-  v9 = v6;
+  v9 = keyCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = errorCopy;
   v13 = v10;
-  [v8 dismissViewControllerAnimated:1 completion:v11];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v11];
 
   _Block_object_dispose(v15, 8);
 }
@@ -322,28 +322,28 @@ void __76__CDPUIInheritanceUIProviderImpl__dismissViewControllerWithAccessKey_er
 
 - (void)_presentWelcomePage
 {
-  v3 = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
-  [(CDPUIInheritanceUIProviderImpl *)self _dismissViewControllerWithAccessKey:v3 error:0];
+  accessKey = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
+  [(CDPUIInheritanceUIProviderImpl *)self _dismissViewControllerWithAccessKey:accessKey error:0];
 }
 
-- (BOOL)manualAccessCodeEntry:(id)a3 shouldFinishWithAccessCode:(id)a4
+- (BOOL)manualAccessCodeEntry:(id)entry shouldFinishWithAccessCode:(id)code
 {
-  v5 = a4;
+  codeCopy = code;
   v6 = _CDPLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [CDPUIInheritanceUIProviderImpl manualAccessCodeEntry:v6 shouldFinishWithAccessCode:?];
   }
 
-  v7 = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
-  [v7 setWrappedKeyString:v5];
+  accessKey = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
+  [accessKey setWrappedKeyString:codeCopy];
 
-  v8 = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
-  [v8 setWrappingKeyString:v5];
+  accessKey2 = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
+  [accessKey2 setWrappingKeyString:codeCopy];
 
   v9 = objc_alloc_init(MEMORY[0x277CFD4E8]);
-  v10 = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
-  v11 = [v9 isInheritanceAccessKeyValid:v10];
+  accessKey3 = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
+  v11 = [v9 isInheritanceAccessKeyValid:accessKey3];
 
   v12 = _CDPLogSystem();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -370,15 +370,15 @@ void __76__CDPUIInheritanceUIProviderImpl__dismissViewControllerWithAccessKey_er
   return v11;
 }
 
-- (void)manualAccessCodeEntryDidCancel:(id)a3
+- (void)manualAccessCodeEntryDidCancel:(id)cancel
 {
-  v4 = [(CDPUIInheritanceUIProviderImpl *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(CDPUIInheritanceUIProviderImpl *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (BOOL)accessCodeScanner:(id)a3 didScanCode:(id)a4
+- (BOOL)accessCodeScanner:(id)scanner didScanCode:(id)code
 {
-  v5 = a4;
+  codeCopy = code;
   v6 = _CDPLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -386,12 +386,12 @@ void __76__CDPUIInheritanceUIProviderImpl__dismissViewControllerWithAccessKey_er
     _os_log_impl(&dword_2451DB000, v6, OS_LOG_TYPE_DEFAULT, "Successfully scanned the access key, checking if it's a valid inheritance key.", buf, 2u);
   }
 
-  v7 = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
-  [v7 setWrappingKeyString:v5];
+  accessKey = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
+  [accessKey setWrappingKeyString:codeCopy];
 
   v8 = objc_alloc_init(MEMORY[0x277CFD4E8]);
-  v9 = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
-  v10 = [v8 isInheritanceAccessKeyValid:v9];
+  accessKey2 = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
+  v10 = [v8 isInheritanceAccessKeyValid:accessKey2];
 
   v11 = _CDPLogSystem();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -418,33 +418,33 @@ void __76__CDPUIInheritanceUIProviderImpl__dismissViewControllerWithAccessKey_er
   return v10;
 }
 
-- (void)accessCodeScanner:(id)a3 didFailToStarCapture:(id)a4
+- (void)accessCodeScanner:(id)scanner didFailToStarCapture:(id)capture
 {
-  v5 = a4;
+  captureCopy = capture;
   v6 = _CDPLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [CDPUIInheritanceUIProviderImpl accessCodeScanner:v5 didFailToStarCapture:v6];
+    [CDPUIInheritanceUIProviderImpl accessCodeScanner:captureCopy didFailToStarCapture:v6];
   }
 
-  [(CDPUIInheritanceUIProviderImpl *)self _dismissViewControllerWithAccessKey:0 error:v5];
+  [(CDPUIInheritanceUIProviderImpl *)self _dismissViewControllerWithAccessKey:0 error:captureCopy];
 }
 
-- (void)welcomeViewController:(id)a3 didCompleteWithError:(id)a4
+- (void)welcomeViewController:(id)controller didCompleteWithError:(id)error
 {
-  v5 = a4;
-  v9 = v5;
-  if (v5)
+  errorCopy = error;
+  v9 = errorCopy;
+  if (errorCopy)
   {
-    v6 = v5;
+    v6 = errorCopy;
     v7 = 0;
   }
 
   else
   {
-    v8 = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
+    accessKey = [(CDPUIInheritanceUIProviderImpl *)self accessKey];
     v6 = 0;
-    v7 = v8;
+    v7 = accessKey;
   }
 
   [(CDPUIInheritanceUIProviderImpl *)self _dismissViewControllerWithAccessKey:v7 error:v6];

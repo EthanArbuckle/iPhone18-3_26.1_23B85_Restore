@@ -2,12 +2,12 @@
 + (NSSet)xpcClasses;
 + (id)queryTypes;
 + (id)targetTypes;
-- (BOOL)isEqual:(id)a3;
-- (LNConfigurableQueryRequest)initWithCoder:(id)a3;
-- (LNConfigurableQueryRequest)initWithQueryType:(id)a3 target:(id)a4 options:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNConfigurableQueryRequest)initWithCoder:(id)coder;
+- (LNConfigurableQueryRequest)initWithQueryType:(id)type target:(id)target options:(id)options;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNConfigurableQueryRequest
@@ -21,11 +21,11 @@
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v3 setWithObjects:{v4, v5, v6, v7, v8, objc_opt_class(), 0}];
-  v10 = [a1 queryTypes];
-  [v9 unionSet:v10];
+  queryTypes = [self queryTypes];
+  [v9 unionSet:queryTypes];
 
-  v11 = [a1 targetTypes];
-  [v9 unionSet:v11];
+  targetTypes = [self targetTypes];
+  [v9 unionSet:targetTypes];
 
   v12 = [v9 copy];
 
@@ -53,47 +53,47 @@
   return [v2 setWithObjects:{v3, v4, objc_opt_class(), 0}];
 }
 
-- (LNConfigurableQueryRequest)initWithCoder:(id)a3
+- (LNConfigurableQueryRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [objc_opt_class() queryTypes];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"queryType"];
+  coderCopy = coder;
+  queryTypes = [objc_opt_class() queryTypes];
+  v6 = [coderCopy decodeObjectOfClasses:queryTypes forKey:@"queryType"];
 
-  v7 = [objc_opt_class() targetTypes];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"target"];
+  targetTypes = [objc_opt_class() targetTypes];
+  v8 = [coderCopy decodeObjectOfClasses:targetTypes forKey:@"target"];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"options"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"options"];
 
-  v10 = 0;
+  selfCopy = 0;
   if (v6 && v8)
   {
     self = [(LNConfigurableQueryRequest *)self initWithQueryType:v6 target:v8 options:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNConfigurableQueryRequest *)self queryType];
-  [v4 encodeObject:v5 forKey:@"queryType"];
+  coderCopy = coder;
+  queryType = [(LNConfigurableQueryRequest *)self queryType];
+  [coderCopy encodeObject:queryType forKey:@"queryType"];
 
-  v6 = [(LNConfigurableQueryRequest *)self target];
-  [v4 encodeObject:v6 forKey:@"target"];
+  target = [(LNConfigurableQueryRequest *)self target];
+  [coderCopy encodeObject:target forKey:@"target"];
 
-  v7 = [(LNConfigurableQueryRequest *)self options];
-  [v4 encodeObject:v7 forKey:@"options"];
+  options = [(LNConfigurableQueryRequest *)self options];
+  [coderCopy encodeObject:options forKey:@"options"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -102,10 +102,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(LNConfigurableQueryRequest *)self queryType];
-    v8 = [(LNConfigurableQueryRequest *)v6 queryType];
-    v9 = v7;
-    v10 = v8;
+    queryType = [(LNConfigurableQueryRequest *)self queryType];
+    queryType2 = [(LNConfigurableQueryRequest *)v6 queryType];
+    v9 = queryType;
+    v10 = queryType2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -132,10 +132,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(LNConfigurableQueryRequest *)self target];
-    v17 = [(LNConfigurableQueryRequest *)v6 target];
-    v14 = v16;
-    v18 = v17;
+    target = [(LNConfigurableQueryRequest *)self target];
+    target2 = [(LNConfigurableQueryRequest *)v6 target];
+    v14 = target;
+    v18 = target2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -162,10 +162,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(LNConfigurableQueryRequest *)self options];
-    v22 = [(LNConfigurableQueryRequest *)v6 options];
-    v20 = v21;
-    v23 = v22;
+    options = [(LNConfigurableQueryRequest *)self options];
+    options2 = [(LNConfigurableQueryRequest *)v6 options];
+    v20 = options;
+    v23 = options2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -199,29 +199,29 @@ LABEL_28:
 
 - (id)description
 {
-  v3 = [(LNConfigurableQueryRequest *)self queryType];
-  v4 = [v3 description];
+  queryType = [(LNConfigurableQueryRequest *)self queryType];
+  v4 = [queryType description];
 
-  v5 = [(LNConfigurableQueryRequest *)self target];
-  v6 = [v5 description];
+  target = [(LNConfigurableQueryRequest *)self target];
+  v6 = [target description];
 
   v7 = MEMORY[0x1E696AEC0];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [(LNConfigurableQueryRequest *)self options];
-  v11 = [v7 stringWithFormat:@"<%@: %p, type: %@, target: %@, options: %@>", v9, self, v4, v6, v10];
+  options = [(LNConfigurableQueryRequest *)self options];
+  v11 = [v7 stringWithFormat:@"<%@: %p, type: %@, target: %@, options: %@>", v9, self, v4, v6, options];
 
   return v11;
 }
 
-- (LNConfigurableQueryRequest)initWithQueryType:(id)a3 target:(id)a4 options:(id)a5
+- (LNConfigurableQueryRequest)initWithQueryType:(id)type target:(id)target options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  typeCopy = type;
+  targetCopy = target;
+  optionsCopy = options;
+  if (typeCopy)
   {
-    if (v11)
+    if (targetCopy)
     {
       goto LABEL_3;
     }
@@ -229,17 +229,17 @@ LABEL_28:
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"LNConfigurableQueryRequest.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"queryType"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNConfigurableQueryRequest.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"queryType"}];
 
-    if (v11)
+    if (targetCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"LNConfigurableQueryRequest.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"target"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNConfigurableQueryRequest.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"target"}];
 
 LABEL_3:
   v21.receiver = self;
@@ -248,11 +248,11 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_queryType, a3);
-    objc_storeStrong(&v14->_target, a4);
-    if (v12)
+    objc_storeStrong(&v13->_queryType, type);
+    objc_storeStrong(&v14->_target, target);
+    if (optionsCopy)
     {
-      v15 = v12;
+      v15 = optionsCopy;
     }
 
     else

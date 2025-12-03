@@ -1,23 +1,23 @@
 @interface HOLocationListViewControllerAccessibility
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation HOLocationListViewControllerAccessibility
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = HOLocationListViewControllerAccessibility;
-  v8 = [(HOLocationListViewControllerAccessibility *)&v14 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(HOLocationListViewControllerAccessibility *)&v14 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   v9 = __UIAccessibilityCastAsClass();
-  v10 = [v9 tableView];
-  v11 = [v10 isEditing];
+  tableView = [v9 tableView];
+  isEditing = [tableView isEditing];
 
   v12 = *MEMORY[0x29EDC7FA8];
-  if (!v11)
+  if (!isEditing)
   {
     v12 = 0;
   }

@@ -1,37 +1,37 @@
 @interface STLimitUsageGroupSpecifierProvider
-+ (id)providerWithCoordinator:(id)a3 rootViewController:(id)a4;
++ (id)providerWithCoordinator:(id)coordinator rootViewController:(id)controller;
 - (BOOL)showDemoModeAlertIfNeeded;
 - (STLimitUsageGroupSpecifierProvider)init;
 - (UIViewController)rootViewController;
-- (id)_subtitleTextForDeviceBedtime:(id)a3;
+- (id)_subtitleTextForDeviceBedtime:(id)bedtime;
 - (id)alwaysAllowedDetailText;
 - (id)appLimitsDetailText;
 - (id)limitUsageSpecifers;
-- (void)_hasWatchOSDevicesOnlyDidChange:(BOOL)a3;
+- (void)_hasWatchOSDevicesOnlyDidChange:(BOOL)change;
 - (void)_isScreenTimeEnabledOrHasWatchOSDevicesOnlyDidChange;
-- (void)_refreshBedtimeSpecifiersForBedtime:(id)a3;
-- (void)alwaysAllowListController:(id)a3 didFinishEditingAlwaysAllowList:(id)a4;
+- (void)_refreshBedtimeSpecifiersForBedtime:(id)bedtime;
+- (void)alwaysAllowListController:(id)controller didFinishEditingAlwaysAllowList:(id)list;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)scheduleDowntimeRefreshAndReloadSpecifiersForBedtime:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)scheduleDowntimeRefreshAndReloadSpecifiersForBedtime:(id)bedtime;
 - (void)scheduleDowntimeRefreshIfNeeded;
-- (void)setCoordinator:(id)a3;
-- (void)setUpAppAndWebsiteActivity:(id)a3;
-- (void)setUpScreenDistance:(id)a3;
-- (void)showAlwaysAllowedViewController:(id)a3;
-- (void)showAppLimitsViewController:(id)a3;
-- (void)showDeviceBedtimeViewController:(id)a3;
-- (void)showScreenDistanceViewController:(id)a3;
+- (void)setCoordinator:(id)coordinator;
+- (void)setUpAppAndWebsiteActivity:(id)activity;
+- (void)setUpScreenDistance:(id)distance;
+- (void)showAlwaysAllowedViewController:(id)controller;
+- (void)showAppLimitsViewController:(id)controller;
+- (void)showDeviceBedtimeViewController:(id)controller;
+- (void)showScreenDistanceViewController:(id)controller;
 @end
 
 @implementation STLimitUsageGroupSpecifierProvider
 
-+ (id)providerWithCoordinator:(id)a3 rootViewController:(id)a4
++ (id)providerWithCoordinator:(id)coordinator rootViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [(STRootGroupSpecifierProvider *)STLimitUsageGroupSpecifierProvider providerWithCoordinator:a3];
-  [v6 setRootViewController:v5];
+  controllerCopy = controller;
+  v6 = [(STRootGroupSpecifierProvider *)STLimitUsageGroupSpecifierProvider providerWithCoordinator:coordinator];
+  [v6 setRootViewController:controllerCopy];
 
   return v6;
 }
@@ -49,7 +49,7 @@
     v6 = [v4 groupSpecifierWithName:v5];
     [(STGroupSpecifierProvider *)v2 setGroupSpecifier:v6];
 
-    v39 = [(STGroupSpecifierProvider *)v2 mutableSpecifiers];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v2 mutableSpecifiers];
     v7 = [v3 localizedStringForKey:@"AppAndWebsiteActivitySpecifierName" value:&stru_28766E5A8 table:0];
     v37 = [v3 localizedStringForKey:@"AppAndWebsiteActivitySpecifierSubtitleText" value:&stru_28766E5A8 table:0];
     v38 = v7;
@@ -107,8 +107,8 @@
     [v21 setIdentifier:@"APP_LIMITS"];
     [v21 setObject:v34 forKeyedSubscript:v41];
     [v21 setObject:@"APP_LIMITS" forKeyedSubscript:v40];
-    v22 = [(STLimitUsageGroupSpecifierProvider *)v2 appLimitsDetailText];
-    [v21 setObject:v22 forKeyedSubscript:v44];
+    appLimitsDetailText = [(STLimitUsageGroupSpecifierProvider *)v2 appLimitsDetailText];
+    [v21 setObject:appLimitsDetailText forKeyedSubscript:v44];
 
     [v21 setObject:objc_opt_class() forKeyedSubscript:v46];
     [v21 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v45];
@@ -120,8 +120,8 @@
     [v24 setIdentifier:@"ALWAYS_ALLOWED"];
     [v24 setObject:v23 forKeyedSubscript:v41];
     [v24 setObject:@"ALWAYS_ALLOWED" forKeyedSubscript:v40];
-    v25 = [(STLimitUsageGroupSpecifierProvider *)v2 alwaysAllowedDetailText];
-    [v24 setObject:v25 forKeyedSubscript:v44];
+    alwaysAllowedDetailText = [(STLimitUsageGroupSpecifierProvider *)v2 alwaysAllowedDetailText];
+    [v24 setObject:alwaysAllowedDetailText forKeyedSubscript:v44];
 
     [v24 setObject:objc_opt_class() forKeyedSubscript:v46];
     v26 = MEMORY[0x277CBEC38];
@@ -142,8 +142,8 @@
     [v29 setControllerLoadAction:sel_setUpScreenDistance_];
     [(STLimitUsageGroupSpecifierProvider *)v2 setScreenDistanceSpecifier:v29];
     [(STLimitUsageGroupSpecifierProvider *)v2 scheduleDowntimeRefreshIfNeeded];
-    v30 = [MEMORY[0x277D262A0] sharedConnection];
-    [v30 registerObserver:v2];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:v2];
   }
 
   return v2;
@@ -154,44 +154,44 @@
   v5.receiver = self;
   v5.super_class = STLimitUsageGroupSpecifierProvider;
   [(STRootGroupSpecifierProvider *)&v5 invalidate];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = STLimitUsageGroupSpecifierProvider;
   [(STGroupSpecifierProvider *)&v4 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"viewModel.isLocalOrRemotelyManagedUser" context:"STLimitUsageGroupSpecifierProviderObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"viewModel.screenTimeEnabled" context:"STLimitUsageGroupSpecifierProviderObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.bedtime" context:"STLimitUsageGroupSpecifierProviderObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"viewModel.hasWatchOSDevicesOnly"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.isLocalOrRemotelyManagedUser" context:"STLimitUsageGroupSpecifierProviderObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.screenTimeEnabled" context:"STLimitUsageGroupSpecifierProviderObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.bedtime" context:"STLimitUsageGroupSpecifierProviderObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.hasWatchOSDevicesOnly"];
   v6.receiver = self;
   v6.super_class = STLimitUsageGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"viewModel.isLocalOrRemotelyManagedUser" options:4 context:"STLimitUsageGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.bedtime" options:5 context:"STLimitUsageGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"viewModel.screenTimeEnabled" options:4 context:"STLimitUsageGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"viewModel.hasWatchOSDevicesOnly" options:5 context:"STLimitUsageGroupSpecifierProviderObservationContext"];
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.isLocalOrRemotelyManagedUser" options:4 context:"STLimitUsageGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"timeAllowancesCoordinator.viewModel.bedtime" options:5 context:"STLimitUsageGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.screenTimeEnabled" options:4 context:"STLimitUsageGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.hasWatchOSDevicesOnly" options:5 context:"STLimitUsageGroupSpecifierProviderObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "STLimitUsageGroupSpecifierProviderObservationContext")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "STLimitUsageGroupSpecifierProviderObservationContext")
   {
-    v12 = [(STRootGroupSpecifierProvider *)self coordinator];
-    if ([v10 isEqualToString:@"timeAllowancesCoordinator.viewModel.bedtime"])
+    coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+    if ([pathCopy isEqualToString:@"timeAllowancesCoordinator.viewModel.bedtime"])
     {
-      v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v14 = [MEMORY[0x277CBEB68] null];
+      v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v13 == v14)
+      if (v13 == null)
       {
 
         v13 = 0;
@@ -202,14 +202,14 @@
 
     else
     {
-      v15 = [MEMORY[0x277D262A0] sharedConnection];
-      v16 = [v15 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      v16 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-      if ([v10 isEqualToString:@"viewModel.isLocalOrRemotelyManagedUser"])
+      if ([pathCopy isEqualToString:@"viewModel.isLocalOrRemotelyManagedUser"])
       {
-        v17 = [(STRootGroupSpecifierProvider *)self coordinator];
-        v18 = [v17 viewModel];
-        v19 = [v18 isLocalOrRemotelyManagedUser] ^ 1;
+        coordinator2 = [(STRootGroupSpecifierProvider *)self coordinator];
+        viewModel = [coordinator2 viewModel];
+        v19 = [viewModel isLocalOrRemotelyManagedUser] ^ 1;
         if (v16 == 2)
         {
           v20 = 1;
@@ -223,7 +223,7 @@
         [(STGroupSpecifierProvider *)self setIsHidden:v20];
       }
 
-      else if (([v10 isEqualToString:@"viewModel.screenTimeEnabled"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"viewModel.hasWatchOSDevicesOnly"))
+      else if (([pathCopy isEqualToString:@"viewModel.screenTimeEnabled"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"viewModel.hasWatchOSDevicesOnly"))
       {
         [(STLimitUsageGroupSpecifierProvider *)self _isScreenTimeEnabledOrHasWatchOSDevicesOnlyDidChange];
       }
@@ -234,18 +234,18 @@
   {
     v21.receiver = self;
     v21.super_class = STLimitUsageGroupSpecifierProvider;
-    [(STLimitUsageGroupSpecifierProvider *)&v21 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+    [(STLimitUsageGroupSpecifierProvider *)&v21 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
   }
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v5 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v6 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-  v10 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v7 = [v10 viewModel];
-  v8 = [v7 isLocalOrRemotelyManagedUser] ^ 1;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v8 = [viewModel isLocalOrRemotelyManagedUser] ^ 1;
   if (v6 == 2)
   {
     v9 = 1;
@@ -261,46 +261,46 @@
 
 - (void)_isScreenTimeEnabledOrHasWatchOSDevicesOnlyDidChange
 {
-  v4 = [(STLimitUsageGroupSpecifierProvider *)self limitUsageSpecifers];
-  v3 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-  if (([v4 isEqualToArray:v3] & 1) == 0)
+  limitUsageSpecifers = [(STLimitUsageGroupSpecifierProvider *)self limitUsageSpecifers];
+  mutableSpecifiers = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+  if (([limitUsageSpecifers isEqualToArray:mutableSpecifiers] & 1) == 0)
   {
-    [v3 replaceObjectsInRange:0 withObjectsFromArray:{objc_msgSend(v3, "count"), v4}];
+    [mutableSpecifiers replaceObjectsInRange:0 withObjectsFromArray:{objc_msgSend(mutableSpecifiers, "count"), limitUsageSpecifers}];
   }
 }
 
 - (id)limitUsageSpecifers
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v4 = [v3 viewModel];
-  v5 = [v4 isScreenTimeEnabled];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  isScreenTimeEnabled = [viewModel isScreenTimeEnabled];
 
-  v6 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v7 = [v6 viewModel];
-  v8 = [v7 hasWatchOSDevicesOnly];
+  coordinator2 = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel2 = [coordinator2 viewModel];
+  hasWatchOSDevicesOnly = [viewModel2 hasWatchOSDevicesOnly];
 
   v9 = MEMORY[0x277CBEB18];
-  if (v5)
+  if (isScreenTimeEnabled)
   {
-    v10 = [(STLimitUsageGroupSpecifierProvider *)self deviceBedtimeSpecifier];
-    v11 = v10;
-    if (v8)
+    deviceBedtimeSpecifier = [(STLimitUsageGroupSpecifierProvider *)self deviceBedtimeSpecifier];
+    appAndWebsiteActivitySpecifier = deviceBedtimeSpecifier;
+    if (hasWatchOSDevicesOnly)
     {
-      v20[0] = v10;
-      v12 = [(STLimitUsageGroupSpecifierProvider *)self alwaysAllowedSpecifier];
-      v20[1] = v12;
-      v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
-      v14 = [v9 arrayWithArray:v13];
+      v20[0] = deviceBedtimeSpecifier;
+      alwaysAllowedSpecifier = [(STLimitUsageGroupSpecifierProvider *)self alwaysAllowedSpecifier];
+      v20[1] = alwaysAllowedSpecifier;
+      alwaysAllowedSpecifier2 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
+      v14 = [v9 arrayWithArray:alwaysAllowedSpecifier2];
     }
 
     else
     {
-      v21[0] = v10;
-      v12 = [(STLimitUsageGroupSpecifierProvider *)self appLimitsSpecifier];
-      v21[1] = v12;
-      v13 = [(STLimitUsageGroupSpecifierProvider *)self alwaysAllowedSpecifier];
-      v21[2] = v13;
+      v21[0] = deviceBedtimeSpecifier;
+      alwaysAllowedSpecifier = [(STLimitUsageGroupSpecifierProvider *)self appLimitsSpecifier];
+      v21[1] = alwaysAllowedSpecifier;
+      alwaysAllowedSpecifier2 = [(STLimitUsageGroupSpecifierProvider *)self alwaysAllowedSpecifier];
+      v21[2] = alwaysAllowedSpecifier2;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:3];
       v14 = [v9 arrayWithArray:v15];
     }
@@ -308,38 +308,38 @@
 
   else
   {
-    v11 = [(STLimitUsageGroupSpecifierProvider *)self appAndWebsiteActivitySpecifier];
-    v19 = v11;
-    v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
-    v14 = [v9 arrayWithArray:v12];
+    appAndWebsiteActivitySpecifier = [(STLimitUsageGroupSpecifierProvider *)self appAndWebsiteActivitySpecifier];
+    v19 = appAndWebsiteActivitySpecifier;
+    alwaysAllowedSpecifier = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
+    v14 = [v9 arrayWithArray:alwaysAllowedSpecifier];
   }
 
-  v16 = [(STLimitUsageGroupSpecifierProvider *)self screenDistanceSpecifier];
+  screenDistanceSpecifier = [(STLimitUsageGroupSpecifierProvider *)self screenDistanceSpecifier];
 
-  if (v16)
+  if (screenDistanceSpecifier)
   {
-    v17 = [(STLimitUsageGroupSpecifierProvider *)self screenDistanceSpecifier];
-    [v14 addObject:v17];
+    screenDistanceSpecifier2 = [(STLimitUsageGroupSpecifierProvider *)self screenDistanceSpecifier];
+    [v14 addObject:screenDistanceSpecifier2];
   }
 
   return v14;
 }
 
-- (void)setUpAppAndWebsiteActivity:(id)a3
+- (void)setUpAppAndWebsiteActivity:(id)activity
 {
-  v4 = [(STRootGroupSpecifierProvider *)self coordinator];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
   v5 = objc_opt_new();
   [(STLimitUsageGroupSpecifierProvider *)self setAppAndWebsiteActivityOnboardingController:v5];
 
-  v6 = [(STLimitUsageGroupSpecifierProvider *)self appAndWebsiteActivityOnboardingController];
-  v7 = [(STLimitUsageGroupSpecifierProvider *)self rootViewController];
+  appAndWebsiteActivityOnboardingController = [(STLimitUsageGroupSpecifierProvider *)self appAndWebsiteActivityOnboardingController];
+  rootViewController = [(STLimitUsageGroupSpecifierProvider *)self rootViewController];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__STLimitUsageGroupSpecifierProvider_setUpAppAndWebsiteActivity___block_invoke;
   v9[3] = &unk_279B7CC68;
-  v10 = v4;
-  v8 = v4;
-  [v6 presentOverViewController:v7 completionBlock:v9];
+  v10 = coordinator;
+  v8 = coordinator;
+  [appAndWebsiteActivityOnboardingController presentOverViewController:rootViewController completionBlock:v9];
 }
 
 uint64_t __65__STLimitUsageGroupSpecifierProvider_setUpAppAndWebsiteActivity___block_invoke(uint64_t result, int a2)
@@ -365,28 +365,28 @@ void __65__STLimitUsageGroupSpecifierProvider_setUpAppAndWebsiteActivity___block
   }
 }
 
-- (void)scheduleDowntimeRefreshAndReloadSpecifiersForBedtime:(id)a3
+- (void)scheduleDowntimeRefreshAndReloadSpecifiersForBedtime:(id)bedtime
 {
-  v4 = a3;
+  bedtimeCopy = bedtime;
   [(STLimitUsageGroupSpecifierProvider *)self scheduleDowntimeRefreshIfNeeded];
-  [(STLimitUsageGroupSpecifierProvider *)self _refreshBedtimeSpecifiersForBedtime:v4];
+  [(STLimitUsageGroupSpecifierProvider *)self _refreshBedtimeSpecifiersForBedtime:bedtimeCopy];
 }
 
 - (void)scheduleDowntimeRefreshIfNeeded
 {
-  v3 = [(STLimitUsageGroupSpecifierProvider *)self downtimeScheduleRefreshTimer];
+  downtimeScheduleRefreshTimer = [(STLimitUsageGroupSpecifierProvider *)self downtimeScheduleRefreshTimer];
 
-  if (v3)
+  if (downtimeScheduleRefreshTimer)
   {
-    v4 = [(STLimitUsageGroupSpecifierProvider *)self downtimeScheduleRefreshTimer];
-    [v4 invalidate];
+    downtimeScheduleRefreshTimer2 = [(STLimitUsageGroupSpecifierProvider *)self downtimeScheduleRefreshTimer];
+    [downtimeScheduleRefreshTimer2 invalidate];
 
     [(STLimitUsageGroupSpecifierProvider *)self setDowntimeScheduleRefreshTimer:0];
   }
 
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v6 = [v5 timeAllowancesCoordinator];
-  [v6 timeToNextExpectedStateChange];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
+  [timeAllowancesCoordinator timeToNextExpectedStateChange];
   v8 = v7;
 
   if (v8 >= 0.0)
@@ -418,12 +418,12 @@ void __69__STLimitUsageGroupSpecifierProvider_scheduleDowntimeRefreshIfNeeded__b
   [v6 scheduleDowntimeRefreshAndReloadSpecifiersForBedtime:v7];
 }
 
-- (void)_refreshBedtimeSpecifiersForBedtime:(id)a3
+- (void)_refreshBedtimeSpecifiersForBedtime:(id)bedtime
 {
-  v4 = a3;
-  v5 = [(STLimitUsageGroupSpecifierProvider *)self deviceBedtimeSpecifier];
-  v15 = v5;
-  if (v4 && (-[STRootGroupSpecifierProvider coordinator](self, "coordinator"), v6 = objc_claimAutoreleasedReturnValue(), [v6 viewModel], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isScreenTimeEnabled"), v7, v6, v5 = v15, (v8 & 1) != 0))
+  bedtimeCopy = bedtime;
+  deviceBedtimeSpecifier = [(STLimitUsageGroupSpecifierProvider *)self deviceBedtimeSpecifier];
+  v15 = deviceBedtimeSpecifier;
+  if (bedtimeCopy && (-[STRootGroupSpecifierProvider coordinator](self, "coordinator"), v6 = objc_claimAutoreleasedReturnValue(), [v6 viewModel], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isScreenTimeEnabled"), v7, v6, deviceBedtimeSpecifier = v15, (v8 & 1) != 0))
   {
     v9 = +[STScreenTimeSettingsUIBundle bundle];
     v10 = [v9 localizedStringForKey:@"DeviceDowntimeAlternateCustomScheduleDetailText" value:&stru_28766E5A8 table:0];
@@ -434,13 +434,13 @@ void __69__STLimitUsageGroupSpecifierProvider_scheduleDowntimeRefreshIfNeeded__b
 
   else
   {
-    [v5 removePropertyForKey:0x287678E68];
+    [deviceBedtimeSpecifier removePropertyForKey:0x287678E68];
     [v15 removePropertyForKey:0x287678E88];
   }
 
   v11 = *MEMORY[0x277D40160];
   v12 = [v15 objectForKeyedSubscript:*MEMORY[0x277D40160]];
-  v13 = [(STLimitUsageGroupSpecifierProvider *)self _subtitleTextForDeviceBedtime:v4];
+  v13 = [(STLimitUsageGroupSpecifierProvider *)self _subtitleTextForDeviceBedtime:bedtimeCopy];
 
   if (([v12 isEqualToString:v13] & 1) == 0)
   {
@@ -454,24 +454,24 @@ void __69__STLimitUsageGroupSpecifierProvider_scheduleDowntimeRefreshIfNeeded__b
   }
 }
 
-- (id)_subtitleTextForDeviceBedtime:(id)a3
+- (id)_subtitleTextForDeviceBedtime:(id)bedtime
 {
-  v4 = a3;
+  bedtimeCopy = bedtime;
   v5 = +[STScreenTimeSettingsUIBundle bundle];
-  if (!v4 || (-[STRootGroupSpecifierProvider coordinator](self, "coordinator"), v6 = objc_claimAutoreleasedReturnValue(), [v6 viewModel], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isScreenTimeEnabled"), v7, v6, !v8))
+  if (!bedtimeCopy || (-[STRootGroupSpecifierProvider coordinator](self, "coordinator"), v6 = objc_claimAutoreleasedReturnValue(), [v6 viewModel], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isScreenTimeEnabled"), v7, v6, !v8))
   {
     v13 = @"DeviceDowntimeDetailText";
     goto LABEL_7;
   }
 
-  v9 = [v4 deviceBedtimeEnabled];
-  v10 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v11 = [v10 timeAllowancesCoordinator];
-  v12 = [v11 currentDowntimeState];
+  deviceBedtimeEnabled = [bedtimeCopy deviceBedtimeEnabled];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
+  currentDowntimeState = [timeAllowancesCoordinator currentDowntimeState];
 
-  if ((v9 & 1) == 0)
+  if ((deviceBedtimeEnabled & 1) == 0)
   {
-    if (v12 == 4)
+    if (currentDowntimeState == 4)
     {
       v13 = @"DeviceDowntimeStatusScheduleOffWithOverrideOn";
     }
@@ -484,9 +484,9 @@ void __69__STLimitUsageGroupSpecifierProvider_scheduleDowntimeRefreshIfNeeded__b
     goto LABEL_7;
   }
 
-  if (v12 <= 4)
+  if (currentDowntimeState <= 4)
   {
-    v13 = off_279B7CCD8[v12];
+    v13 = off_279B7CCD8[currentDowntimeState];
 LABEL_7:
     v14 = [v5 localizedStringForKey:v13 value:&stru_28766E5A8 table:0];
     goto LABEL_8;
@@ -498,35 +498,35 @@ LABEL_8:
   return v14;
 }
 
-- (void)showDeviceBedtimeViewController:(id)a3
+- (void)showDeviceBedtimeViewController:(id)controller
 {
-  v16 = a3;
+  controllerCopy = controller;
   if (![(STLimitUsageGroupSpecifierProvider *)self showDemoModeAlertIfNeeded])
   {
     v4 = objc_opt_new();
-    v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-    v6 = [v5 timeAllowancesCoordinator];
-    v7 = [v6 viewModel];
-    v8 = [v7 bedtime];
-    [v4 setBedtime:v8];
+    coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+    timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
+    viewModel = [timeAllowancesCoordinator viewModel];
+    bedtime = [viewModel bedtime];
+    [v4 setBedtime:bedtime];
 
-    v9 = [(STRootGroupSpecifierProvider *)self coordinator];
-    v10 = [v9 viewModel];
-    v11 = [v10 me];
+    coordinator2 = [(STRootGroupSpecifierProvider *)self coordinator];
+    viewModel2 = [coordinator2 viewModel];
+    v11 = [viewModel2 me];
     [v4 setAffectedUser:v11];
 
-    v12 = [(STRootGroupSpecifierProvider *)self coordinator];
-    [v4 setCanAskForMoreTime:{objc_msgSend(v12, "isPasscodeEnabled")}];
+    coordinator3 = [(STRootGroupSpecifierProvider *)self coordinator];
+    [v4 setCanAskForMoreTime:{objc_msgSend(coordinator3, "isPasscodeEnabled")}];
 
-    v13 = [(STRootGroupSpecifierProvider *)self coordinator];
-    [v4 setCoordinator:v13];
+    coordinator4 = [(STRootGroupSpecifierProvider *)self coordinator];
+    [v4 setCoordinator:coordinator4];
 
-    v14 = [(STGroupSpecifierProvider *)self delegate];
-    [v4 setParentController:v14];
-    v15 = [v14 rootController];
-    [v4 setRootController:v15];
+    delegate = [(STGroupSpecifierProvider *)self delegate];
+    [v4 setParentController:delegate];
+    rootController = [delegate rootController];
+    [v4 setRootController:rootController];
 
-    [v4 setSpecifier:v16];
+    [v4 setSpecifier:controllerCopy];
     [(STGroupSpecifierProvider *)self showController:v4 animated:1];
   }
 }
@@ -539,56 +539,56 @@ LABEL_8:
   return v3;
 }
 
-- (void)showAppLimitsViewController:(id)a3
+- (void)showAppLimitsViewController:(id)controller
 {
-  v12 = a3;
+  controllerCopy = controller;
   if (![(STLimitUsageGroupSpecifierProvider *)self showDemoModeAlertIfNeeded])
   {
     if (_os_feature_enabled_impl())
     {
-      v4 = [(STRootGroupSpecifierProvider *)self coordinator];
-      v5 = [v4 viewModel];
-      v6 = [v5 me];
-      v7 = [v6 altDSID];
+      coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+      viewModel = [coordinator viewModel];
+      v6 = [viewModel me];
+      altDSID = [v6 altDSID];
 
-      v8 = [[_TtC20ScreenTimeSettingsUI24STAppLimitViewController alloc] initWithAltDSID:v7];
-      v9 = v8;
+      v8 = [[_TtC20ScreenTimeSettingsUI24STAppLimitViewController alloc] initWithAltDSID:altDSID];
+      delegate = v8;
     }
 
     else
     {
       v8 = objc_opt_new();
-      v10 = [(STRootGroupSpecifierProvider *)self coordinator];
-      [(STAppLimitViewController *)v8 setCoordinator:v10];
+      coordinator2 = [(STRootGroupSpecifierProvider *)self coordinator];
+      [(STAppLimitViewController *)v8 setCoordinator:coordinator2];
 
-      v9 = [(STGroupSpecifierProvider *)self delegate];
-      [(STAppLimitViewController *)v8 setParentController:v9];
-      v11 = [v9 rootController];
-      [(STAppLimitViewController *)v8 setRootController:v11];
+      delegate = [(STGroupSpecifierProvider *)self delegate];
+      [(STAppLimitViewController *)v8 setParentController:delegate];
+      rootController = [delegate rootController];
+      [(STAppLimitViewController *)v8 setRootController:rootController];
 
-      [(STAppLimitViewController *)v8 setSpecifier:v12];
-      v7 = v8;
+      [(STAppLimitViewController *)v8 setSpecifier:controllerCopy];
+      altDSID = v8;
     }
 
     [(STGroupSpecifierProvider *)self showController:v8 animated:1];
   }
 }
 
-- (void)_hasWatchOSDevicesOnlyDidChange:(BOOL)a3
+- (void)_hasWatchOSDevicesOnlyDidChange:(BOOL)change
 {
-  v3 = a3;
-  v8 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-  v5 = [(STLimitUsageGroupSpecifierProvider *)self appLimitsSpecifier];
-  v6 = [v8 containsObject:v5];
-  if (v6 && v3)
+  changeCopy = change;
+  mutableSpecifiers = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+  appLimitsSpecifier = [(STLimitUsageGroupSpecifierProvider *)self appLimitsSpecifier];
+  v6 = [mutableSpecifiers containsObject:appLimitsSpecifier];
+  if (v6 && changeCopy)
   {
-    [v8 removeObject:v5];
+    [mutableSpecifiers removeObject:appLimitsSpecifier];
   }
 
-  else if (((v6 | v3) & 1) == 0)
+  else if (((v6 | changeCopy) & 1) == 0)
   {
-    v7 = [(STLimitUsageGroupSpecifierProvider *)self deviceBedtimeSpecifier];
-    [v8 ps_insertObject:v5 afterObject:v7];
+    deviceBedtimeSpecifier = [(STLimitUsageGroupSpecifierProvider *)self deviceBedtimeSpecifier];
+    [mutableSpecifiers ps_insertObject:appLimitsSpecifier afterObject:deviceBedtimeSpecifier];
   }
 }
 
@@ -600,18 +600,18 @@ LABEL_8:
   return v3;
 }
 
-- (void)showAlwaysAllowedViewController:(id)a3
+- (void)showAlwaysAllowedViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (![(STLimitUsageGroupSpecifierProvider *)self showDemoModeAlertIfNeeded])
   {
-    v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-    v6 = [v5 timeAllowancesCoordinator];
-    v7 = [v6 viewModel];
+    coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+    timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
+    viewModel = [timeAllowancesCoordinator viewModel];
 
-    v28 = v7;
-    v8 = [v7 alwaysAllowList];
-    if (!v8)
+    v28 = viewModel;
+    alwaysAllowList = [viewModel alwaysAllowList];
+    if (!alwaysAllowList)
     {
       v9 = +[STUILog alwaysAllowed];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -620,13 +620,13 @@ LABEL_8:
         _os_log_impl(&dword_264BA2000, v9, OS_LOG_TYPE_DEFAULT, "View model has no existing Always Allow list. Creating view controller with default Always Allow list.", buf, 2u);
       }
 
-      v8 = objc_opt_new();
+      alwaysAllowList = objc_opt_new();
     }
 
     v10 = objc_opt_new();
-    [v10 setAlwaysAllowList:v8];
-    v29 = v5;
-    [v10 setCoordinator:v5];
+    [v10 setAlwaysAllowList:alwaysAllowList];
+    v29 = coordinator;
+    [v10 setCoordinator:coordinator];
     [v10 setDelegate:self];
     v11 = objc_opt_new();
     v12 = [MEMORY[0x277CF9650] systemUnblockableBundleIdentifiersForDeviceFamily:102];
@@ -666,41 +666,41 @@ LABEL_8:
     }
 
     v18 = objc_alloc(MEMORY[0x277CBEB58]);
-    v19 = [v8 allowedBundleIDs];
-    v20 = [v18 initWithArray:v19];
+    allowedBundleIDs = [alwaysAllowList allowedBundleIDs];
+    v20 = [v18 initWithArray:allowedBundleIDs];
 
     [v20 unionSet:v11];
-    v21 = [(STRootGroupSpecifierProvider *)self coordinator];
-    v22 = [v21 viewModel];
-    v23 = [v22 installedBundleIDs];
+    coordinator2 = [(STRootGroupSpecifierProvider *)self coordinator];
+    viewModel2 = [coordinator2 viewModel];
+    installedBundleIDs = [viewModel2 installedBundleIDs];
 
-    [v10 setInstalledBundleIDs:v23];
-    v24 = [v23 mutableCopy];
+    [v10 setInstalledBundleIDs:installedBundleIDs];
+    v24 = [installedBundleIDs mutableCopy];
     [v24 minusSet:v20];
-    v25 = [v24 allObjects];
-    [v10 setChooseBundleIDs:v25];
+    allObjects = [v24 allObjects];
+    [v10 setChooseBundleIDs:allObjects];
 
-    v26 = [(STGroupSpecifierProvider *)self delegate];
-    [v10 setParentController:v26];
-    v27 = [v26 rootController];
-    [v10 setRootController:v27];
+    delegate = [(STGroupSpecifierProvider *)self delegate];
+    [v10 setParentController:delegate];
+    rootController = [delegate rootController];
+    [v10 setRootController:rootController];
 
-    [v10 setSpecifier:v4];
+    [v10 setSpecifier:controllerCopy];
     [(STGroupSpecifierProvider *)self showController:v10 animated:1];
   }
 }
 
-- (void)alwaysAllowListController:(id)a3 didFinishEditingAlwaysAllowList:(id)a4
+- (void)alwaysAllowListController:(id)controller didFinishEditingAlwaysAllowList:(id)list
 {
-  v5 = a4;
-  v6 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v7 = [v6 timeAllowancesCoordinator];
+  listCopy = list;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  timeAllowancesCoordinator = [coordinator timeAllowancesCoordinator];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __96__STLimitUsageGroupSpecifierProvider_alwaysAllowListController_didFinishEditingAlwaysAllowList___block_invoke;
   v8[3] = &unk_279B7CC18;
   v8[4] = self;
-  [v7 saveAlwaysAllowList:v5 completionHandler:v8];
+  [timeAllowancesCoordinator saveAlwaysAllowList:listCopy completionHandler:v8];
 }
 
 void __96__STLimitUsageGroupSpecifierProvider_alwaysAllowListController_didFinishEditingAlwaysAllowList___block_invoke(uint64_t a1)
@@ -714,21 +714,21 @@ void __96__STLimitUsageGroupSpecifierProvider_alwaysAllowListController_didFinis
   [v4 reloadSpecifier:v5 animated:1];
 }
 
-- (void)setUpScreenDistance:(id)a3
+- (void)setUpScreenDistance:(id)distance
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v6 = [v5 eyeReliefCoordinator];
-  v7 = [v6 viewModel];
+  distanceCopy = distance;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  eyeReliefCoordinator = [coordinator eyeReliefCoordinator];
+  viewModel = [eyeReliefCoordinator viewModel];
 
-  v8 = [v7 hasAcknowledgedIntroScreens];
+  hasAcknowledgedIntroScreens = [viewModel hasAcknowledgedIntroScreens];
   v9 = +[STUILog eyeRelief];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 isEyeReliefEnabled];
+    isEyeReliefEnabled = [viewModel isEyeReliefEnabled];
     v11 = @"no";
-    if (v10)
+    if (isEyeReliefEnabled)
     {
       v12 = @"yes";
     }
@@ -738,7 +738,7 @@ void __96__STLimitUsageGroupSpecifierProvider_alwaysAllowListController_didFinis
       v12 = @"no";
     }
 
-    if (v8)
+    if (hasAcknowledgedIntroScreens)
     {
       v11 = @"yes";
     }
@@ -750,30 +750,30 @@ void __96__STLimitUsageGroupSpecifierProvider_alwaysAllowListController_didFinis
     _os_log_impl(&dword_264BA2000, v9, OS_LOG_TYPE_DEFAULT, "isEyeReliefEnabled: %@, hasAcknowledgedIntroScreens: %@", buf, 0x16u);
   }
 
-  if ((([v7 isEyeReliefEnabled] | v8) & 1) != 0 && (objc_msgSend(v7, "inDemoMode") & 1) == 0)
+  if ((([viewModel isEyeReliefEnabled] | hasAcknowledgedIntroScreens) & 1) != 0 && (objc_msgSend(viewModel, "inDemoMode") & 1) == 0)
   {
-    if ((v8 & 1) == 0)
+    if ((hasAcknowledgedIntroScreens & 1) == 0)
     {
-      [v7 acknowledgeIntroScreens];
+      [viewModel acknowledgeIntroScreens];
     }
 
-    [(STLimitUsageGroupSpecifierProvider *)self showScreenDistanceViewController:v4];
+    [(STLimitUsageGroupSpecifierProvider *)self showScreenDistanceViewController:distanceCopy];
   }
 
   else
   {
-    v13 = [[STEyeReliefOnboardingController alloc] initWithCoordinator:v5];
+    v13 = [[STEyeReliefOnboardingController alloc] initWithCoordinator:coordinator];
     [(STLimitUsageGroupSpecifierProvider *)self setEyeReliefOnboardingController:v13];
 
     objc_initWeak(buf, self);
-    v14 = [(STLimitUsageGroupSpecifierProvider *)self eyeReliefOnboardingController];
-    v15 = [(STLimitUsageGroupSpecifierProvider *)self rootViewController];
+    eyeReliefOnboardingController = [(STLimitUsageGroupSpecifierProvider *)self eyeReliefOnboardingController];
+    rootViewController = [(STLimitUsageGroupSpecifierProvider *)self rootViewController];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __58__STLimitUsageGroupSpecifierProvider_setUpScreenDistance___block_invoke;
     v16[3] = &unk_279B7CCB8;
     objc_copyWeak(&v17, buf);
-    [v14 presentOverViewController:v15 completionHandler:v16];
+    [eyeReliefOnboardingController presentOverViewController:rootViewController completionHandler:v16];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
@@ -825,34 +825,34 @@ void __58__STLimitUsageGroupSpecifierProvider_setUpScreenDistance___block_invoke
 LABEL_7:
 }
 
-- (void)showScreenDistanceViewController:(id)a3
+- (void)showScreenDistanceViewController:(id)controller
 {
-  v8 = a3;
+  controllerCopy = controller;
   if (![(STLimitUsageGroupSpecifierProvider *)self showDemoModeAlertIfNeeded])
   {
     v4 = objc_opt_new();
-    v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-    [v4 setCoordinator:v5];
+    coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+    [v4 setCoordinator:coordinator];
 
-    v6 = [(STGroupSpecifierProvider *)self delegate];
-    [v4 setParentController:v6];
-    v7 = [v6 rootController];
-    [v4 setRootController:v7];
+    delegate = [(STGroupSpecifierProvider *)self delegate];
+    [v4 setParentController:delegate];
+    rootController = [delegate rootController];
+    [v4 setRootController:rootController];
 
-    [v4 setSpecifier:v8];
+    [v4 setSpecifier:controllerCopy];
     [(STGroupSpecifierProvider *)self showController:v4 animated:1];
   }
 }
 
 - (BOOL)showDemoModeAlertIfNeeded
 {
-  v3 = [MEMORY[0x277D75128] isRunningInStoreDemoMode];
-  if (v3)
+  isRunningInStoreDemoMode = [MEMORY[0x277D75128] isRunningInStoreDemoMode];
+  if (isRunningInStoreDemoMode)
   {
     [(STGroupSpecifierProvider *)self showStoreDemoAlert];
   }
 
-  return v3;
+  return isRunningInStoreDemoMode;
 }
 
 - (UIViewController)rootViewController

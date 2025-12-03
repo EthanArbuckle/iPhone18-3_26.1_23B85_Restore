@@ -34,8 +34,8 @@ uint64_t __39__CTUIDataUsageSorting_usageComparator__block_invoke(uint64_t a1, v
 
 + (id)userSelectedComparator
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"CellularDataUsageAlphabeticalSortKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"CellularDataUsageAlphabeticalSortKey"];
 
   if (v3)
   {

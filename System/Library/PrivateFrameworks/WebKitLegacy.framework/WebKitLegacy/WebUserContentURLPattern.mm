@@ -1,6 +1,6 @@
 @interface WebUserContentURLPattern
-- (BOOL)matchesURL:(id)a3;
-- (WebUserContentURLPattern)initWithPatternString:(id)a3;
+- (BOOL)matchesURL:(id)l;
+- (WebUserContentURLPattern)initWithPatternString:(id)string;
 - (id)host;
 - (id)scheme;
 - (void)dealloc;
@@ -8,7 +8,7 @@
 
 @implementation WebUserContentURLPattern
 
-- (WebUserContentURLPattern)initWithPatternString:(id)a3
+- (WebUserContentURLPattern)initWithPatternString:(id)string
 {
   v23.receiver = self;
   v23.super_class = WebUserContentURLPattern;
@@ -19,7 +19,7 @@
   }
 
   v4->_private = objc_alloc_init(WebUserContentURLPatternPrivate);
-  MEMORY[0x1CCA63A40](&v18, a3);
+  MEMORY[0x1CCA63A40](&v18, string);
   v19 = 0;
   v20 = 0;
   v21 = 0;
@@ -184,7 +184,7 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)matchesURL:(id)a3
+- (BOOL)matchesURL:(id)l
 {
   v3 = self->_private;
   if (v3->pattern.m_error)
@@ -193,11 +193,11 @@ LABEL_5:
     return v4;
   }
 
-  MEMORY[0x1CCA63960](v24, a3);
+  MEMORY[0x1CCA63960](v24, l);
   v4 = WebCore::UserContentURLPattern::matchesScheme(&v3->pattern, v24);
   if (v4)
   {
-    MEMORY[0x1CCA63960](v23, a3);
+    MEMORY[0x1CCA63960](v23, l);
     WTF::URL::host(v23);
     if ((v7 & 0x100000000) != 0)
     {
@@ -239,7 +239,7 @@ LABEL_29:
         goto LABEL_32;
       }
 
-      MEMORY[0x1CCA63960](v22, a3);
+      MEMORY[0x1CCA63960](v22, l);
       WTF::URL::path(v22);
       if ((v11 & 0x100000000) != 0)
       {

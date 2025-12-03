@@ -1,11 +1,11 @@
 @interface MTVisitedEpisodeManager
-- (BOOL)hasEndedVisitingEpisode:(id)a3;
+- (BOOL)hasEndedVisitingEpisode:(id)episode;
 - (MTVisitedEpisodeManager)init;
 - (unint64_t)countOfEndedEpisodes;
 - (unint64_t)countOfStartedEpisodes;
-- (void)endVisitingEpisode:(id)a3;
+- (void)endVisitingEpisode:(id)episode;
 - (void)flushVisitedEpisodes;
-- (void)startVisitingEpisode:(id)a3;
+- (void)startVisitingEpisode:(id)episode;
 @end
 
 @implementation MTVisitedEpisodeManager
@@ -30,84 +30,84 @@
   return v2;
 }
 
-- (void)endVisitingEpisode:(id)a3
+- (void)endVisitingEpisode:(id)episode
 {
-  v6 = a3;
-  if ([v6 isNew])
+  episodeCopy = episode;
+  if ([episodeCopy isNew])
   {
-    v4 = [(MTVisitedEpisodeManager *)self endedEpisodeUuids];
-    v5 = [v6 uuid];
-    [v4 addObject:v5];
+    endedEpisodeUuids = [(MTVisitedEpisodeManager *)self endedEpisodeUuids];
+    uuid = [episodeCopy uuid];
+    [endedEpisodeUuids addObject:uuid];
   }
 }
 
-- (void)startVisitingEpisode:(id)a3
+- (void)startVisitingEpisode:(id)episode
 {
-  v7 = a3;
-  if ([v7 isNew])
+  episodeCopy = episode;
+  if ([episodeCopy isNew])
   {
-    v4 = [(MTVisitedEpisodeManager *)self startedEpisodeUuids];
-    v5 = [v7 uuid];
-    [v4 addObject:v5];
+    startedEpisodeUuids = [(MTVisitedEpisodeManager *)self startedEpisodeUuids];
+    uuid = [episodeCopy uuid];
+    [startedEpisodeUuids addObject:uuid];
 
     v6 = +[MTApplication appController];
     [v6 updateUnplayedBadgeCount];
   }
 }
 
-- (BOOL)hasEndedVisitingEpisode:(id)a3
+- (BOOL)hasEndedVisitingEpisode:(id)episode
 {
-  v4 = a3;
-  v5 = [(MTVisitedEpisodeManager *)self endedEpisodeUuids];
-  v6 = [v4 uuid];
+  episodeCopy = episode;
+  endedEpisodeUuids = [(MTVisitedEpisodeManager *)self endedEpisodeUuids];
+  uuid = [episodeCopy uuid];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(episodeCopy) = [endedEpisodeUuids containsObject:uuid];
+  return episodeCopy;
 }
 
 - (unint64_t)countOfStartedEpisodes
 {
-  v2 = [(MTVisitedEpisodeManager *)self startedEpisodeUuids];
-  v3 = [v2 count];
+  startedEpisodeUuids = [(MTVisitedEpisodeManager *)self startedEpisodeUuids];
+  v3 = [startedEpisodeUuids count];
 
   return v3;
 }
 
 - (unint64_t)countOfEndedEpisodes
 {
-  v2 = [(MTVisitedEpisodeManager *)self endedEpisodeUuids];
-  v3 = [v2 count];
+  endedEpisodeUuids = [(MTVisitedEpisodeManager *)self endedEpisodeUuids];
+  v3 = [endedEpisodeUuids count];
 
   return v3;
 }
 
 - (void)flushVisitedEpisodes
 {
-  v3 = [(MTVisitedEpisodeManager *)self startedEpisodeUuids];
-  v4 = [v3 count];
+  startedEpisodeUuids = [(MTVisitedEpisodeManager *)self startedEpisodeUuids];
+  v4 = [startedEpisodeUuids count];
 
   if (v4)
   {
-    v5 = [(MTVisitedEpisodeManager *)self startedEpisodeUuids];
-    v6 = [v5 copy];
+    startedEpisodeUuids2 = [(MTVisitedEpisodeManager *)self startedEpisodeUuids];
+    v6 = [startedEpisodeUuids2 copy];
 
     v7 = +[MTDB sharedInstance];
-    v8 = [v7 privateQueueContext];
+    privateQueueContext = [v7 privateQueueContext];
 
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_1000EE780;
     v16 = &unk_1004D8798;
     v17 = v6;
-    v18 = v8;
-    v9 = v8;
+    v18 = privateQueueContext;
+    v9 = privateQueueContext;
     v10 = v6;
     [v9 performBlock:&v13];
     v11 = [(MTVisitedEpisodeManager *)self startedEpisodeUuids:v13];
     [v11 removeAllObjects];
 
-    v12 = [(MTVisitedEpisodeManager *)self endedEpisodeUuids];
-    [v12 removeAllObjects];
+    endedEpisodeUuids = [(MTVisitedEpisodeManager *)self endedEpisodeUuids];
+    [endedEpisodeUuids removeAllObjects];
   }
 }
 

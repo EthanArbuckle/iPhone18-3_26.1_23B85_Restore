@@ -1,18 +1,18 @@
 @interface VUIDebugMetricsEventValidator
-+ (id)removeGladiatorPrefix:(id)a3;
-+ (id)validationResults:(id)a3 fromIndex:(unint64_t)a4;
-+ (void)validateEvents:(id)a3 forRuleset:(id)a4 withCompletion:(id)a5;
++ (id)removeGladiatorPrefix:(id)prefix;
++ (id)validationResults:(id)results fromIndex:(unint64_t)index;
++ (void)validateEvents:(id)events forRuleset:(id)ruleset withCompletion:(id)completion;
 @end
 
 @implementation VUIDebugMetricsEventValidator
 
-+ (void)validateEvents:(id)a3 forRuleset:(id)a4 withCompletion:(id)a5
++ (void)validateEvents:(id)events forRuleset:(id)ruleset withCompletion:(id)completion
 {
   v65[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v53 = a5;
-  v9 = [v8 hasPrefix:@"com.apple.amp.ae.validator.manifest"];
+  eventsCopy = events;
+  rulesetCopy = ruleset;
+  completionCopy = completion;
+  v9 = [rulesetCopy hasPrefix:@"com.apple.amp.ae.validator.manifest"];
   v10 = objc_alloc(MEMORY[0x1E695DFF8]);
   v11 = [@"https://ae-validator-service.amp.apple.com" stringByAppendingString:@"/v1/validate"];
   v12 = [v10 initWithString:v11];
@@ -27,10 +27,10 @@
   v14 = MEMORY[0x1E696ACB0];
   v64[0] = @"events";
   v64[1] = @"postTime";
-  v65[0] = v7;
+  v65[0] = eventsCopy;
   v15 = MEMORY[0x1E696AD98];
-  v16 = [MEMORY[0x1E695DF00] date];
-  [v16 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v18 = [v15 numberWithLong:v17];
   v65[1] = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:2];
@@ -42,11 +42,11 @@
   {
     v48 = v21;
     v49 = v12;
-    v50 = v7;
+    v50 = eventsCopy;
     v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v20 encoding:4];
     NSLog(&cfstr_JsonStringForG.isa, v22);
 
-    v23 = [MEMORY[0x1E695DF88] data];
+    data = [MEMORY[0x1E695DF88] data];
     v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v25 = @"ruleset";
     if (v9)
@@ -55,7 +55,7 @@
     }
 
     v47 = v25;
-    [v24 setObject:v8 forKey:?];
+    [v24 setObject:rulesetCopy forKey:?];
     [v24 setObject:v20 forKey:@"figarojson"];
     [v24 setObject:@"false" forKey:@"singleResult"];
     v60 = 0u;
@@ -81,15 +81,15 @@
           v30 = *(*(&v58 + 1) + 8 * i);
           v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"--%@\r\n", @"----------V2ymHFg03ehbqgZCaKO6jy"];
           v32 = [v31 dataUsingEncoding:4];
-          [v23 appendData:v32];
+          [data appendData:v32];
 
           v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Content-Disposition: form-data name=%@\r\n\r\n", v30];;
           v34 = [v33 dataUsingEncoding:4];
-          [v23 appendData:v34];
+          [data appendData:v34];
 
           if ([v30 isEqualToString:@"figarojson"])
           {
-            [v23 appendData:v20];
+            [data appendData:v20];
           }
 
           else
@@ -98,7 +98,7 @@
             v36 = [v54 objectForKey:v30];
             v37 = [v35 stringWithFormat:@"%@\r\n", v36];
             v38 = [v37 dataUsingEncoding:4];
-            [v23 appendData:v38];
+            [data appendData:v38];
           }
         }
 
@@ -110,24 +110,24 @@
 
     v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\r\n--%@--\r\n", @"----------V2ymHFg03ehbqgZCaKO6jy"];
     v40 = [v39 dataUsingEncoding:4];
-    [v23 appendData:v40];
+    [data appendData:v40];
 
     v41 = v52;
-    [v52 setHTTPBody:v23];
+    [v52 setHTTPBody:data];
     v42 = MEMORY[0x1E696AF78];
-    v43 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
-    v44 = [v42 sessionWithConfiguration:v43];
+    defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+    v44 = [v42 sessionWithConfiguration:defaultSessionConfiguration];
 
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
     v56[2] = __74__VUIDebugMetricsEventValidator_validateEvents_forRuleset_withCompletion___block_invoke;
     v56[3] = &unk_1E872E2D8;
-    v45 = v53;
-    v57 = v53;
+    v45 = completionCopy;
+    v57 = completionCopy;
     v46 = [v44 dataTaskWithRequest:v52 completionHandler:v56];
     [v46 resume];
 
-    v7 = v50;
+    eventsCopy = v50;
     v21 = v48;
     v12 = v49;
   }
@@ -136,7 +136,7 @@
   {
     NSLog(&cfstr_Nsjsonserializ.isa, v21);
     v41 = v52;
-    v45 = v53;
+    v45 = completionCopy;
   }
 }
 
@@ -167,20 +167,20 @@ void __74__VUIDebugMetricsEventValidator_validateEvents_forRuleset_withCompletio
   }
 }
 
-+ (id)validationResults:(id)a3 fromIndex:(unint64_t)a4
++ (id)validationResults:(id)results fromIndex:(unint64_t)index
 {
   v80[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultsCopy = results;
   v6 = MEMORY[0x1E695DF90];
   v79[0] = @"failedRulesets";
-  v7 = [MEMORY[0x1E695DF70] array];
-  v80[0] = v7;
+  array = [MEMORY[0x1E695DF70] array];
+  v80[0] = array;
   v79[1] = @"passedRulesets";
-  v8 = [MEMORY[0x1E695DF70] array];
-  v80[1] = v8;
+  array2 = [MEMORY[0x1E695DF70] array];
+  v80[1] = array2;
   v79[2] = @"filteredRulesets";
-  v9 = [MEMORY[0x1E695DF70] array];
-  v80[2] = v9;
+  array3 = [MEMORY[0x1E695DF70] array];
+  v80[2] = array3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:v79 count:3];
   v46 = [v6 dictionaryWithDictionary:v10];
 
@@ -189,7 +189,7 @@ void __74__VUIDebugMetricsEventValidator_validateEvents_forRuleset_withCompletio
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v12 = v5;
+  v12 = resultsCopy;
   v47 = [v12 countByEnumeratingWithState:&v61 objects:v78 count:16];
   if (v47)
   {
@@ -209,9 +209,9 @@ void __74__VUIDebugMetricsEventValidator_validateEvents_forRuleset_withCompletio
         v15 = [v12 valueForKey:?];
         v16 = [v15 valueForKey:v13];
 
-        v17 = [MEMORY[0x1E695DF70] array];
-        v51 = [MEMORY[0x1E695DF70] array];
-        v50 = [MEMORY[0x1E695DF70] array];
+        array4 = [MEMORY[0x1E695DF70] array];
+        array5 = [MEMORY[0x1E695DF70] array];
+        array6 = [MEMORY[0x1E695DF70] array];
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
@@ -221,7 +221,7 @@ void __74__VUIDebugMetricsEventValidator_validateEvents_forRuleset_withCompletio
         if (v19)
         {
           v20 = v19;
-          v53 = v17;
+          v53 = array4;
           obj = v18;
           v48 = i;
           v52 = 0;
@@ -239,7 +239,7 @@ void __74__VUIDebugMetricsEventValidator_validateEvents_forRuleset_withCompletio
               v22 = *(*(&v57 + 1) + 8 * j);
               v23 = [v22 valueForKey:@"ruleLabel"];
               v24 = [v22 valueForKey:v13];
-              v25 = [v24 objectAtIndexedSubscript:a4];
+              v25 = [v24 objectAtIndexedSubscript:index];
               if ([v25 isEqualToString:@"OK"])
               {
                 v75 = @"ruleLabel";
@@ -255,7 +255,7 @@ void __74__VUIDebugMetricsEventValidator_validateEvents_forRuleset_withCompletio
                 v73 = @"ruleLabel";
                 v74 = v23;
                 v27 = [*(v11 + 3872) dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-                [v51 addObject:v27];
+                [array5 addObject:v27];
               }
 
               else
@@ -270,10 +270,10 @@ void __74__VUIDebugMetricsEventValidator_validateEvents_forRuleset_withCompletio
                 [*(v11 + 3872) dictionaryWithObjects:v72 forKeys:v71 count:3];
                 v29 = v13;
                 v30 = v11;
-                v32 = v31 = a4;
-                [v50 addObject:v32];
+                v32 = v31 = index;
+                [array6 addObject:v32];
 
-                a4 = v31;
+                index = v31;
                 v11 = v30;
                 v13 = v29;
 
@@ -292,15 +292,15 @@ void __74__VUIDebugMetricsEventValidator_validateEvents_forRuleset_withCompletio
             v34 = [v46 valueForKey:@"failedRulesets"];
             v69[0] = @"ruleset";
             v69[1] = @"failedRules";
-            v35 = v50;
+            v35 = array6;
             v70[0] = v49;
-            v70[1] = v50;
+            v70[1] = array6;
             v69[2] = @"passedRules";
             v69[3] = @"filteredRules";
-            v17 = v53;
-            v36 = v51;
+            array4 = v53;
+            v36 = array5;
             v70[2] = v53;
-            v70[3] = v51;
+            v70[3] = array5;
             v37 = [*(v11 + 3872) dictionaryWithObjects:v70 forKeys:v69 count:4];
             [v34 addObject:v37];
             i = v48;
@@ -308,20 +308,20 @@ void __74__VUIDebugMetricsEventValidator_validateEvents_forRuleset_withCompletio
           }
 
           i = v48;
-          v17 = v53;
-          v35 = v50;
-          v36 = v51;
+          array4 = v53;
+          v35 = array6;
+          v36 = array5;
           if (v56)
           {
             v34 = [v46 valueForKey:@"passedRulesets"];
             v65[0] = @"ruleset";
             v65[1] = @"failedRules";
             v66[0] = v49;
-            v66[1] = v50;
+            v66[1] = array6;
             v65[2] = @"passedRules";
             v65[3] = @"filteredRules";
             v66[2] = v53;
-            v66[3] = v51;
+            v66[3] = array5;
             v38 = *(v11 + 3872);
             v39 = v66;
             v40 = v65;
@@ -333,8 +333,8 @@ void __74__VUIDebugMetricsEventValidator_validateEvents_forRuleset_withCompletio
         else
         {
 
-          v35 = v50;
-          v36 = v51;
+          v35 = array6;
+          v36 = array5;
           v33 = v18;
         }
 
@@ -368,18 +368,18 @@ LABEL_25:
   return v42;
 }
 
-+ (id)removeGladiatorPrefix:(id)a3
++ (id)removeGladiatorPrefix:(id)prefix
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"com.apple.amp.metrics.validator."];
+  prefixCopy = prefix;
+  v4 = [prefixCopy rangeOfString:@"com.apple.amp.metrics.validator."];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = v3;
+    v6 = prefixCopy;
   }
 
   else
   {
-    v6 = [v3 stringByReplacingCharactersInRange:v4 withString:{v5, &stru_1F5DB25C0}];
+    v6 = [prefixCopy stringByReplacingCharactersInRange:v4 withString:{v5, &stru_1F5DB25C0}];
   }
 
   v7 = v6;

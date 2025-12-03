@@ -9,25 +9,25 @@
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 fc_anefKeyIsValid:v4])
+  if ([self fc_anefKeyIsValid:v4])
   {
-    v5 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(a1, "length") + 28}];
+    v5 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(self, "length") + 28}];
     v6 = [MEMORY[0x1E695DEF0] fc_randomDataWithLength:12];
-    v7 = [v5 mutableBytes];
-    v8 = [v6 bytes];
-    v9 = *(v8 + 8);
-    *v7 = *v8;
-    *(v7 + 8) = v9;
+    mutableBytes = [v5 mutableBytes];
+    bytes = [v6 bytes];
+    v9 = *(bytes + 8);
+    *mutableBytes = *bytes;
+    *(mutableBytes + 8) = v9;
     [v4 bytes];
     [v4 length];
     [v6 bytes];
-    [a1 bytes];
-    v10 = [a1 length];
+    [self bytes];
+    v10 = [self length];
     v17 = [v5 mutableBytes] + 12;
     v11 = CCCryptorGCMOneshotEncrypt();
-    v12 = [v5 mutableBytes];
-    v13 = [a1 length];
-    *(v12 + v13 + 12) = v23;
+    mutableBytes2 = [v5 mutableBytes];
+    v13 = [self length];
+    *(mutableBytes2 + v13 + 12) = v23;
     if (v11)
     {
       v18[0] = MEMORY[0x1E69E9820];
@@ -35,7 +35,7 @@
       v18[2] = __40__NSData_FCANEF__fc_anefEncryptWithKey___block_invoke_2;
       v18[3] = &unk_1E7C41578;
       v20 = v11;
-      v18[4] = a1;
+      v18[4] = self;
       v19 = v4;
       v14 = __40__NSData_FCANEF__fc_anefEncryptWithKey___block_invoke_2(v18);
     }
@@ -52,7 +52,7 @@
     v21[1] = 3221225472;
     v21[2] = __40__NSData_FCANEF__fc_anefEncryptWithKey___block_invoke;
     v21[3] = &unk_1E7C397D0;
-    v21[4] = a1;
+    v21[4] = self;
     v22 = v4;
     v14 = __40__NSData_FCANEF__fc_anefEncryptWithKey___block_invoke(v21);
   }
@@ -65,23 +65,23 @@
 - (id)fc_anefDecryptWithKey:()FCANEF
 {
   v4 = a3;
-  if ([a1 fc_anefKeyIsValid:v4])
+  if ([self fc_anefKeyIsValid:v4])
   {
-    if ([a1 length] < 0x1D)
+    if ([self length] < 0x1D)
     {
       v7 = 0;
     }
 
     else
     {
-      [a1 bytes];
-      [a1 bytes];
-      [a1 length];
-      v5 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(a1, "length") - 28}];
+      [self bytes];
+      [self bytes];
+      [self length];
+      v5 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(self, "length") - 28}];
       [v4 bytes];
       [v4 length];
-      [a1 bytes];
-      [a1 length];
+      [self bytes];
+      [self length];
       [v5 mutableBytes];
       v6 = CCCryptorGCMOneshotDecrypt();
       if (v6)
@@ -91,7 +91,7 @@
         v9[2] = __40__NSData_FCANEF__fc_anefDecryptWithKey___block_invoke_2;
         v9[3] = &unk_1E7C41578;
         v11 = v6;
-        v9[4] = a1;
+        v9[4] = self;
         v10 = v4;
         v7 = __40__NSData_FCANEF__fc_anefDecryptWithKey___block_invoke_2(v9);
       }
@@ -109,7 +109,7 @@
     v12[1] = 3221225472;
     v12[2] = __40__NSData_FCANEF__fc_anefDecryptWithKey___block_invoke;
     v12[3] = &unk_1E7C397D0;
-    v12[4] = a1;
+    v12[4] = self;
     v13 = v4;
     v7 = __40__NSData_FCANEF__fc_anefDecryptWithKey___block_invoke(v12);
   }

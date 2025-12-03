@@ -1,16 +1,16 @@
 @interface TSWPObjectPlacement
-+ (id)objectPlacementWithObject:(id)a3 uuidPath:(id)a4 index:(int)a5;
-- (TSWPObjectPlacement)initWithObject:(id)a3 uuidPath:(id)a4 index:(int)a5;
++ (id)objectPlacementWithObject:(id)object uuidPath:(id)path index:(int)index;
+- (TSWPObjectPlacement)initWithObject:(id)object uuidPath:(id)path index:(int)index;
 @end
 
 @implementation TSWPObjectPlacement
 
-- (TSWPObjectPlacement)initWithObject:(id)a3 uuidPath:(id)a4 index:(int)a5
+- (TSWPObjectPlacement)initWithObject:(id)object uuidPath:(id)path index:(int)index
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9 && v10)
+  objectCopy = object;
+  pathCopy = path;
+  v11 = pathCopy;
+  if (objectCopy && pathCopy)
   {
     objc_opt_class();
     v12 = TSUDynamicCast();
@@ -18,7 +18,7 @@
     v18 = v15;
     if (v15)
     {
-      v42 = a5;
+      indexCopy = index;
       v19 = objc_msgSend_objectUUID(v15, v16, v17);
       v22 = objc_msgSend_lastUUID(v11, v20, v21);
       isEqual = objc_msgSend_isEqual_(v19, v23, v22);
@@ -35,7 +35,7 @@
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v34, v35);
       }
 
-      a5 = v42;
+      index = indexCopy;
     }
   }
 
@@ -45,21 +45,21 @@
   v37 = v36;
   if (v36)
   {
-    objc_storeStrong(&v36->_uuidPath, a4);
-    v37->_index = a5;
-    objc_storeStrong(&v37->_object, a3);
+    objc_storeStrong(&v36->_uuidPath, path);
+    v37->_index = index;
+    objc_storeStrong(&v37->_object, object);
   }
 
   return v37;
 }
 
-+ (id)objectPlacementWithObject:(id)a3 uuidPath:(id)a4 index:(int)a5
++ (id)objectPlacementWithObject:(id)object uuidPath:(id)path index:(int)index
 {
-  v5 = *&a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 alloc];
-  v12 = objc_msgSend_initWithObject_uuidPath_index_(v10, v11, v9, v8, v5);
+  v5 = *&index;
+  pathCopy = path;
+  objectCopy = object;
+  v10 = [self alloc];
+  v12 = objc_msgSend_initWithObject_uuidPath_index_(v10, v11, objectCopy, pathCopy, v5);
 
   return v12;
 }

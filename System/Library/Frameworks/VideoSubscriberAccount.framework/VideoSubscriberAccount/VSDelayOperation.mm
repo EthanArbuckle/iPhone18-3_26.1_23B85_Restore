@@ -1,9 +1,9 @@
 @interface VSDelayOperation
-+ (VSDelayOperation)delayOperationWithDelay:(double)a3;
-+ (VSDelayOperation)delayOperationWithFireDate:(id)a3;
++ (VSDelayOperation)delayOperationWithDelay:(double)delay;
++ (VSDelayOperation)delayOperationWithFireDate:(id)date;
 - (VSDelayOperation)init;
-- (VSDelayOperation)initWithDelay:(double)a3 tolerance:(double)a4;
-- (VSDelayOperation)initWithFireDate:(id)a3 tolerance:(double)a4;
+- (VSDelayOperation)initWithDelay:(double)delay tolerance:(double)tolerance;
+- (VSDelayOperation)initWithFireDate:(id)date tolerance:(double)tolerance;
 - (void)_cancelTimer;
 - (void)cancel;
 - (void)dealloc;
@@ -12,26 +12,26 @@
 
 @implementation VSDelayOperation
 
-+ (VSDelayOperation)delayOperationWithDelay:(double)a3
++ (VSDelayOperation)delayOperationWithDelay:(double)delay
 {
-  v3 = [[VSDelayOperation alloc] initWithDelay:a3 tolerance:a3 / 10.0];
+  v3 = [[VSDelayOperation alloc] initWithDelay:delay tolerance:delay / 10.0];
 
   return v3;
 }
 
-+ (VSDelayOperation)delayOperationWithFireDate:(id)a3
++ (VSDelayOperation)delayOperationWithFireDate:(id)date
 {
-  v3 = a3;
-  v4 = [[VSDelayOperation alloc] initWithFireDate:v3 tolerance:0.0];
+  dateCopy = date;
+  v4 = [[VSDelayOperation alloc] initWithFireDate:dateCopy tolerance:0.0];
 
   [(VSDelayOperation *)v4 setShouldIgnoreTolerance:1];
 
   return v4;
 }
 
-- (VSDelayOperation)initWithDelay:(double)a3 tolerance:(double)a4
+- (VSDelayOperation)initWithDelay:(double)delay tolerance:(double)tolerance
 {
-  if (a3 <= 0.0)
+  if (delay <= 0.0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The delay argument must be greater than zero."];
   }
@@ -41,17 +41,17 @@
   result = [(VSDelayOperation *)&v8 init];
   if (result)
   {
-    result->_delay = a3;
-    result->_tolerance = a4;
+    result->_delay = delay;
+    result->_tolerance = tolerance;
   }
 
   return result;
 }
 
-- (VSDelayOperation)initWithFireDate:(id)a3 tolerance:(double)a4
+- (VSDelayOperation)initWithFireDate:(id)date tolerance:(double)tolerance
 {
-  v6 = a3;
-  if (!v6)
+  dateCopy = date;
+  if (!dateCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The fireDate parameter must not be nil."];
   }
@@ -61,11 +61,11 @@
   v7 = [(VSDelayOperation *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dateCopy copy];
     fireDate = v7->_fireDate;
     v7->_fireDate = v8;
 
-    v7->_tolerance = a4;
+    v7->_tolerance = tolerance;
   }
 
   return v7;
@@ -121,11 +121,11 @@
   v7 = v6;
   [(VSDelayOperation *)self tolerance];
   v9 = v8;
-  v10 = [(VSDelayOperation *)self fireDate];
-  v11 = v10;
-  if (v10)
+  fireDate = [(VSDelayOperation *)self fireDate];
+  v11 = fireDate;
+  if (fireDate)
   {
-    [v10 timeIntervalSinceNow];
+    [fireDate timeIntervalSinceNow];
     v7 = v12;
     if ([(VSDelayOperation *)self shouldIgnoreTolerance])
     {
@@ -148,7 +148,7 @@
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23AB8E000, v14, OS_LOG_TYPE_DEFAULT, "Delay operation timer will begin %@", buf, 0xCu);
   }
 

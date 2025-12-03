@@ -1,6 +1,6 @@
 @interface CRLFillAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-+ (id)crlaxDescriptionForFill:(id)a3;
++ (id)crlaxCastFrom:(id)from;
++ (id)crlaxDescriptionForFill:(id)fill;
 - (CRLColorAccessibility)crlaxReferenceColor;
 - (NSString)crlaxStyleInfoDescription;
 - (int64_t)crlaxFillType;
@@ -8,31 +8,31 @@
 
 @implementation CRLFillAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (int64_t)crlaxFillType
 {
-  v2 = [(CRLFillAccessibility *)self crlaxTarget];
-  v3 = [v2 fillType];
+  crlaxTarget = [(CRLFillAccessibility *)self crlaxTarget];
+  fillType = [crlaxTarget fillType];
 
-  return v3;
+  return fillType;
 }
 
 - (CRLColorAccessibility)crlaxReferenceColor
 {
   v8 = 0;
-  v2 = [(CRLFillAccessibility *)self crlaxTarget];
-  v3 = [v2 referenceColor];
+  crlaxTarget = [(CRLFillAccessibility *)self crlaxTarget];
+  referenceColor = [crlaxTarget referenceColor];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, referenceColor, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -43,15 +43,15 @@
   return v6;
 }
 
-+ (id)crlaxDescriptionForFill:(id)a3
++ (id)crlaxDescriptionForFill:(id)fill
 {
-  v3 = a3;
-  if (!v3 || (+[NSNull null], v4 = objc_claimAutoreleasedReturnValue(), v4, v4 == v3))
+  fillCopy = fill;
+  if (!fillCopy || (+[NSNull null], v4 = objc_claimAutoreleasedReturnValue(), v4, v4 == fillCopy))
   {
     v8 = +[NSBundle mainBundle];
-    v9 = [v8 localizedStringForKey:@"No fill" value:0 table:0];
+    crlaxStyleInfoDescription = [v8 localizedStringForKey:@"No fill" value:0 table:0];
 LABEL_7:
-    v10 = v9;
+    v10 = crlaxStyleInfoDescription;
 
     goto LABEL_8;
   }
@@ -60,7 +60,7 @@ LABEL_7:
   if (objc_opt_isKindOfClass())
   {
     v12 = 0;
-    v5 = v3;
+    v5 = fillCopy;
     v6 = objc_opt_class();
     v7 = __CRLAccessibilityCastAsSafeCategory(v6, v5, 1, &v12);
     if (v12 == 1)
@@ -70,7 +70,7 @@ LABEL_7:
 
     v8 = v7;
 
-    v9 = [v8 crlaxStyleInfoDescription];
+    crlaxStyleInfoDescription = [v8 crlaxStyleInfoDescription];
     goto LABEL_7;
   }
 

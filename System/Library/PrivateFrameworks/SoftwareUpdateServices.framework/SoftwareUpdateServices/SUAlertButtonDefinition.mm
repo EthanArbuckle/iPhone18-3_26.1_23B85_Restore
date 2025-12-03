@@ -1,23 +1,23 @@
 @interface SUAlertButtonDefinition
-- (SUAlertButtonDefinition)initWithLabel:(id)a3 presentationStyle:(unint64_t)a4 isPreferredButton:(BOOL)a5 handler:(id)a6;
+- (SUAlertButtonDefinition)initWithLabel:(id)label presentationStyle:(unint64_t)style isPreferredButton:(BOOL)button handler:(id)handler;
 @end
 
 @implementation SUAlertButtonDefinition
 
-- (SUAlertButtonDefinition)initWithLabel:(id)a3 presentationStyle:(unint64_t)a4 isPreferredButton:(BOOL)a5 handler:(id)a6
+- (SUAlertButtonDefinition)initWithLabel:(id)label presentationStyle:(unint64_t)style isPreferredButton:(BOOL)button handler:(id)handler
 {
-  v11 = a3;
-  v12 = a6;
+  labelCopy = label;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = SUAlertButtonDefinition;
   v13 = [(SUAlertButtonDefinition *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_label, a3);
-    v14->_presentationStyle = a4;
-    v14->_isPreferredButton = a5;
-    v15 = MEMORY[0x26D668B30](v12);
+    objc_storeStrong(&v13->_label, label);
+    v14->_presentationStyle = style;
+    v14->_isPreferredButton = button;
+    v15 = MEMORY[0x26D668B30](handlerCopy);
     handler = v14->_handler;
     v14->_handler = v15;
   }

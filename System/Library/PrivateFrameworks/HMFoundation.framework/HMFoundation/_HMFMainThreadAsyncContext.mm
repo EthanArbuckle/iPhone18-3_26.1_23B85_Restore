@@ -1,6 +1,6 @@
 @interface _HMFMainThreadAsyncContext
 - (void)assertIsExecuting;
-- (void)performBlock:(id)a3;
+- (void)performBlock:(id)block;
 @end
 
 @implementation _HMFMainThreadAsyncContext
@@ -13,18 +13,18 @@
   }
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v4[2]();
+    blockCopy[2]();
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v3 performBlock:v4];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [mainRunLoop performBlock:blockCopy];
   }
 }
 

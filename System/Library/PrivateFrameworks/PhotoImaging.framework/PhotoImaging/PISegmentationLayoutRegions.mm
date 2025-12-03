@@ -1,11 +1,11 @@
 @interface PISegmentationLayoutRegions
-+ (id)dictionaryFromRegions:(id)a3;
-+ (id)regionsFromDictionary:(id)a3 error:(id *)a4;
++ (id)dictionaryFromRegions:(id)regions;
++ (id)regionsFromDictionary:(id)dictionary error:(id *)error;
 - (CGRect)acceptableCropRect;
 - (CGRect)gazeAreaRect;
 - (CGRect)preferredCropRect;
 - (NSString)debugDescription;
-- (double)initWithAcceptableRect:(double)a3 preferredRect:(double)a4 gazeAreaRect:(double)a5 faces:(double)a6 pets:(double)a7;
+- (double)initWithAcceptableRect:(double)rect preferredRect:(double)preferredRect gazeAreaRect:(double)areaRect faces:(double)faces pets:(double)pets;
 @end
 
 @implementation PISegmentationLayoutRegions
@@ -67,26 +67,26 @@
   v21[2] = v14;
   v21[3] = v15;
   v16 = [v11 valueWithBytes:v21 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  v17 = [(PISegmentationLayoutRegions *)self faceRegions];
-  v18 = [(PISegmentationLayoutRegions *)self petRegions];
-  v19 = [v3 stringWithFormat:@"<%@:%p accept=%@ pref=%@ faces=%@ pets=%@>", v4, self, v10, v16, v17, v18];
+  faceRegions = [(PISegmentationLayoutRegions *)self faceRegions];
+  petRegions = [(PISegmentationLayoutRegions *)self petRegions];
+  v19 = [v3 stringWithFormat:@"<%@:%p accept=%@ pref=%@ faces=%@ pets=%@>", v4, self, v10, v16, faceRegions, petRegions];
 
   return v19;
 }
 
-- (double)initWithAcceptableRect:(double)a3 preferredRect:(double)a4 gazeAreaRect:(double)a5 faces:(double)a6 pets:(double)a7
+- (double)initWithAcceptableRect:(double)rect preferredRect:(double)preferredRect gazeAreaRect:(double)areaRect faces:(double)faces pets:(double)pets
 {
   v30 = a11;
   v31 = a12;
-  v38.receiver = a1;
+  v38.receiver = self;
   v38.super_class = PISegmentationLayoutRegions;
   v32 = objc_msgSendSuper2(&v38, sel_init);
   v32[3] = a2;
-  v32[4] = a3;
-  v32[5] = a4;
-  v32[6] = a5;
-  v32[7] = a6;
-  v32[8] = a7;
+  v32[4] = rect;
+  v32[5] = preferredRect;
+  v32[6] = areaRect;
+  v32[7] = faces;
+  v32[8] = pets;
   v32[9] = a8;
   v32[10] = a9;
   if (v30)
@@ -123,11 +123,11 @@
   return v32;
 }
 
-+ (id)regionsFromDictionary:(id)a3 error:(id *)a4
++ (id)regionsFromDictionary:(id)dictionary error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v18 = NUAssertLogger_1052();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -149,8 +149,8 @@
         v26 = dispatch_get_specific(*v20);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(rect.origin.x) = 138543618;
         *(&rect.origin.x + 4) = v26;
         WORD2(rect.origin.y) = 2114;
@@ -161,8 +161,8 @@
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(rect.origin.x) = 138543362;
       *(&rect.origin.x + 4) = v25;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &rect, 0xCu);
@@ -171,9 +171,9 @@
     _NUAssertFailHandler();
   }
 
-  v6 = v5;
+  v6 = dictionaryCopy;
   memset(&rect, 0, sizeof(rect));
-  v7 = [v5 objectForKeyedSubscript:@"acceptable"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"acceptable"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -186,7 +186,7 @@
   {
 LABEL_12:
     [MEMORY[0x1E69B3A48] mismatchError:@"Expected a rect value" object:v7];
-    *a4 = v16 = 0;
+    *error = v16 = 0;
     goto LABEL_13;
   }
 
@@ -213,14 +213,14 @@ LABEL_12:
         else
         {
           [MEMORY[0x1E69B3A48] mismatchError:@"Expected an array of rect values" object:v13];
-          *a4 = v16 = 0;
+          *error = v16 = 0;
         }
       }
 
       else
       {
         [MEMORY[0x1E69B3A48] mismatchError:@"Expected an array of rect values" object:v11];
-        *a4 = v16 = 0;
+        *error = v16 = 0;
       }
 
       goto LABEL_18;
@@ -232,7 +232,7 @@ LABEL_12:
   }
 
   [MEMORY[0x1E69B3A48] mismatchError:@"Expected a rect value" object:v9];
-  *a4 = v16 = 0;
+  *error = v16 = 0;
 LABEL_18:
 
 LABEL_13:
@@ -316,11 +316,11 @@ LABEL_18:
   return v14;
 }
 
-+ (id)dictionaryFromRegions:(id)a3
++ (id)dictionaryFromRegions:(id)regions
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  regionsCopy = regions;
+  if (!regionsCopy)
   {
     v13 = NUAssertLogger_1052();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -342,8 +342,8 @@ LABEL_18:
         v21 = dispatch_get_specific(*v15);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v21;
         v28 = 2114;
@@ -354,8 +354,8 @@ LABEL_18:
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v20;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -364,7 +364,7 @@ LABEL_18:
     _NUAssertFailHandler();
   }
 
-  v4 = v3;
+  v4 = regionsCopy;
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:4];
   [v4 acceptableCropRect];
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v32);
@@ -374,12 +374,12 @@ LABEL_18:
   v7 = CGRectCreateDictionaryRepresentation(v33);
   [v5 setObject:v7 forKeyedSubscript:@"preferred"];
 
-  v8 = [v4 faceRegions];
-  v9 = __53__PISegmentationLayoutRegions_dictionaryFromRegions___block_invoke(v8);
+  faceRegions = [v4 faceRegions];
+  v9 = __53__PISegmentationLayoutRegions_dictionaryFromRegions___block_invoke(faceRegions);
   [v5 setObject:v9 forKeyedSubscript:@"faces"];
 
-  v10 = [v4 petRegions];
-  v11 = __53__PISegmentationLayoutRegions_dictionaryFromRegions___block_invoke(v10);
+  petRegions = [v4 petRegions];
+  v11 = __53__PISegmentationLayoutRegions_dictionaryFromRegions___block_invoke(petRegions);
   [v5 setObject:v11 forKeyedSubscript:@"pets"];
 
   return v5;

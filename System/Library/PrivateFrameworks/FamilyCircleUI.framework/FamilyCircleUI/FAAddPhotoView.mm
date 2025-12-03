@@ -1,14 +1,14 @@
 @interface FAAddPhotoView
-- (FAAddPhotoView)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)drawRect:(CGRect)a3;
+- (FAAddPhotoView)initWithTarget:(id)target action:(SEL)action;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 @end
 
 @implementation FAAddPhotoView
 
-- (FAAddPhotoView)initWithTarget:(id)a3 action:(SEL)a4
+- (FAAddPhotoView)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v19.receiver = self;
   v19.super_class = FAAddPhotoView;
   v7 = [(FAAddPhotoView *)&v19 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -24,37 +24,37 @@
     [(UIButton *)v10 setTitle:v12 forState:0];
 
     v13 = v7->_addPhotoButton;
-    v14 = [MEMORY[0x277D75348] systemBlueColor];
-    [(UIButton *)v13 setTintColor:v14];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(UIButton *)v13 setTintColor:systemBlueColor];
 
-    v15 = [(UIButton *)v7->_addPhotoButton titleLabel];
-    [v15 setNumberOfLines:0];
+    titleLabel = [(UIButton *)v7->_addPhotoButton titleLabel];
+    [titleLabel setNumberOfLines:0];
 
-    v16 = [(UIButton *)v7->_addPhotoButton titleLabel];
-    [v16 setTextAlignment:1];
+    titleLabel2 = [(UIButton *)v7->_addPhotoButton titleLabel];
+    [titleLabel2 setTextAlignment:1];
 
-    [(UIButton *)v7->_addPhotoButton addTarget:v6 action:a4 forControlEvents:64];
+    [(UIButton *)v7->_addPhotoButton addTarget:targetCopy action:action forControlEvents:64];
     [(FAAddPhotoView *)v7 addSubview:v7->_addPhotoButton];
-    v17 = [MEMORY[0x277D75348] clearColor];
-    [(FAAddPhotoView *)v7 setBackgroundColor:v17];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(FAAddPhotoView *)v7 setBackgroundColor:clearColor];
   }
 
   return v7;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v8.receiver = self;
   v8.super_class = FAAddPhotoView;
-  [(FAAddPhotoView *)&v8 drawRect:a3.origin.x, a3.origin.y];
+  [(FAAddPhotoView *)&v8 drawRect:rect.origin.x, rect.origin.y];
   CurrentContext = UIGraphicsGetCurrentContext();
-  v6 = [MEMORY[0x277D75348] clearColor];
-  CGContextSetFillColorWithColor(CurrentContext, [v6 CGColor]);
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  CGContextSetFillColorWithColor(CurrentContext, [clearColor CGColor]);
 
-  v7 = [MEMORY[0x277D75348] systemBlueColor];
-  CGContextSetStrokeColorWithColor(CurrentContext, [v7 CGColor]);
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  CGContextSetStrokeColorWithColor(CurrentContext, [systemBlueColor CGColor]);
 
   v9.origin.x = 1.0;
   v9.origin.y = 1.0;

@@ -1,31 +1,31 @@
 @interface PXDefaultAppleMusicStatusProvider
 - (NSError)error;
-- (int64_t)statusForCapability:(int64_t)a3;
-- (void)requestStatusForCapability:(int64_t)a3 handler:(id)a4;
+- (int64_t)statusForCapability:(int64_t)capability;
+- (void)requestStatusForCapability:(int64_t)capability handler:(id)handler;
 - (void)startGatheringCapabilityStatuses;
 @end
 
 @implementation PXDefaultAppleMusicStatusProvider
 
-- (int64_t)statusForCapability:(int64_t)a3
+- (int64_t)statusForCapability:(int64_t)capability
 {
   v4 = *(&self->super.isa + OBJC_IVAR___PXDefaultAppleMusicStatusProvider_lockedState);
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v4 + 8);
-  sub_1A3D947DC(&v4[4], a3, &v8);
+  sub_1A3D947DC(&v4[4], capability, &v8);
   os_unfair_lock_unlock(v4 + 8);
   v6 = v8;
 
   return v6;
 }
 
-- (void)requestStatusForCapability:(int64_t)a3 handler:(id)a4
+- (void)requestStatusForCapability:(int64_t)capability handler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  sub_1A3D949C0(a3, sub_1A3D96FA4, v7);
+  selfCopy = self;
+  sub_1A3D949C0(capability, sub_1A3D96FA4, v7);
 }
 
 - (void)startGatheringCapabilityStatuses
@@ -49,7 +49,7 @@
 - (NSError)error
 {
   v2 = *(&self->super.isa + OBJC_IVAR___PXDefaultAppleMusicStatusProvider_lockedState);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 32));
   v4 = *(v2 + 24);
   v5 = v4;

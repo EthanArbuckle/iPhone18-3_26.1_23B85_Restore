@@ -1,12 +1,12 @@
 @interface HAP2TLVParamServiceSignature
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAP2TLVParamServiceSignature)init;
-- (HAP2TLVParamServiceSignature)initWithInstanceID:(id)a3 serviceType:(id)a4 properties:(id)a5 linkedServices:(id)a6 characteristicList:(id)a7;
+- (HAP2TLVParamServiceSignature)initWithInstanceID:(id)d serviceType:(id)type properties:(id)properties linkedServices:(id)services characteristicList:(id)list;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAP2TLVParamServiceSignature
@@ -14,20 +14,20 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAP2TLVParamServiceSignature *)self instanceID];
-  v5 = [(HAP2TLVParamServiceSignature *)self serviceType];
-  v6 = [(HAP2TLVParamServiceSignature *)self properties];
-  v7 = [(HAP2TLVParamServiceSignature *)self linkedServices];
-  v8 = [(HAP2TLVParamServiceSignature *)self characteristicList];
-  v9 = [v3 stringWithFormat:@"<HAP2TLVParamServiceSignature instanceID=%@, serviceType=%@, properties=%@, linkedServices=%@, characteristicList=%@>", v4, v5, v6, v7, v8];
+  instanceID = [(HAP2TLVParamServiceSignature *)self instanceID];
+  serviceType = [(HAP2TLVParamServiceSignature *)self serviceType];
+  properties = [(HAP2TLVParamServiceSignature *)self properties];
+  linkedServices = [(HAP2TLVParamServiceSignature *)self linkedServices];
+  characteristicList = [(HAP2TLVParamServiceSignature *)self characteristicList];
+  v9 = [v3 stringWithFormat:@"<HAP2TLVParamServiceSignature instanceID=%@, serviceType=%@, properties=%@, linkedServices=%@, characteristicList=%@>", instanceID, serviceType, properties, linkedServices, characteristicList];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -37,35 +37,35 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAP2TLVParamServiceSignature *)self instanceID];
-      v8 = [(HAP2TLVParamServiceSignature *)v6 instanceID];
-      if (v7 != v8)
+      v6 = equalCopy;
+      instanceID = [(HAP2TLVParamServiceSignature *)self instanceID];
+      instanceID2 = [(HAP2TLVParamServiceSignature *)v6 instanceID];
+      if (instanceID != instanceID2)
       {
-        v9 = [(HAP2TLVParamServiceSignature *)self instanceID];
-        v39 = [(HAP2TLVParamServiceSignature *)v6 instanceID];
-        v40 = v9;
-        if (![v9 isEqual:?])
+        instanceID3 = [(HAP2TLVParamServiceSignature *)self instanceID];
+        instanceID4 = [(HAP2TLVParamServiceSignature *)v6 instanceID];
+        v40 = instanceID3;
+        if (![instanceID3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_29;
         }
       }
 
-      v11 = [(HAP2TLVParamServiceSignature *)self serviceType];
-      v12 = [(HAP2TLVParamServiceSignature *)v6 serviceType];
-      v41 = v11;
-      if (v11 != v12)
+      serviceType = [(HAP2TLVParamServiceSignature *)self serviceType];
+      serviceType2 = [(HAP2TLVParamServiceSignature *)v6 serviceType];
+      v41 = serviceType;
+      if (serviceType != serviceType2)
       {
-        v3 = [(HAP2TLVParamServiceSignature *)self serviceType];
-        v37 = [(HAP2TLVParamServiceSignature *)v6 serviceType];
-        if (![v3 isEqual:?])
+        serviceType3 = [(HAP2TLVParamServiceSignature *)self serviceType];
+        serviceType4 = [(HAP2TLVParamServiceSignature *)v6 serviceType];
+        if (![serviceType3 isEqual:?])
         {
           v10 = 0;
 LABEL_27:
 
 LABEL_28:
-          if (v7 == v8)
+          if (instanceID == instanceID2)
           {
 LABEL_30:
 
@@ -78,24 +78,24 @@ LABEL_29:
         }
       }
 
-      v13 = [(HAP2TLVParamServiceSignature *)self properties];
-      v14 = [(HAP2TLVParamServiceSignature *)v6 properties];
-      v38 = v13;
-      v27 = v13 == v14;
-      v15 = v14;
+      properties = [(HAP2TLVParamServiceSignature *)self properties];
+      properties2 = [(HAP2TLVParamServiceSignature *)v6 properties];
+      v38 = properties;
+      v27 = properties == properties2;
+      v15 = properties2;
       if (!v27)
       {
-        v16 = [(HAP2TLVParamServiceSignature *)self properties];
-        v33 = [(HAP2TLVParamServiceSignature *)v6 properties];
-        v34 = v16;
-        if (![v16 isEqual:?])
+        properties3 = [(HAP2TLVParamServiceSignature *)self properties];
+        properties4 = [(HAP2TLVParamServiceSignature *)v6 properties];
+        v34 = properties3;
+        if (![properties3 isEqual:?])
         {
           v10 = 0;
           v17 = v38;
 LABEL_25:
 
 LABEL_26:
-          if (v41 == v12)
+          if (v41 == serviceType2)
           {
             goto LABEL_28;
           }
@@ -104,56 +104,56 @@ LABEL_26:
         }
       }
 
-      v18 = [(HAP2TLVParamServiceSignature *)self linkedServices];
-      v35 = [(HAP2TLVParamServiceSignature *)v6 linkedServices];
+      linkedServices = [(HAP2TLVParamServiceSignature *)self linkedServices];
+      linkedServices2 = [(HAP2TLVParamServiceSignature *)v6 linkedServices];
       v36 = v15;
-      if (v18 == v35)
+      if (linkedServices == linkedServices2)
       {
-        v31 = v3;
-        v32 = v12;
+        v31 = serviceType3;
+        v32 = serviceType2;
       }
 
       else
       {
-        v19 = [(HAP2TLVParamServiceSignature *)self linkedServices];
-        v29 = [(HAP2TLVParamServiceSignature *)v6 linkedServices];
-        v30 = v19;
-        if (![v19 isEqual:?])
+        linkedServices3 = [(HAP2TLVParamServiceSignature *)self linkedServices];
+        linkedServices4 = [(HAP2TLVParamServiceSignature *)v6 linkedServices];
+        v30 = linkedServices3;
+        if (![linkedServices3 isEqual:?])
         {
           v10 = 0;
-          v26 = v35;
+          v26 = linkedServices2;
           goto LABEL_23;
         }
 
-        v31 = v3;
-        v32 = v12;
+        v31 = serviceType3;
+        v32 = serviceType2;
       }
 
-      v20 = [(HAP2TLVParamServiceSignature *)self characteristicList];
-      v21 = [(HAP2TLVParamServiceSignature *)v6 characteristicList];
-      v22 = v21;
-      if (v20 == v21)
+      characteristicList = [(HAP2TLVParamServiceSignature *)self characteristicList];
+      characteristicList2 = [(HAP2TLVParamServiceSignature *)v6 characteristicList];
+      v22 = characteristicList2;
+      if (characteristicList == characteristicList2)
       {
 
         v10 = 1;
-        v26 = v35;
-        v27 = v18 == v35;
+        v26 = linkedServices2;
+        v27 = linkedServices == linkedServices2;
       }
 
       else
       {
-        v23 = [(HAP2TLVParamServiceSignature *)self characteristicList];
+        characteristicList3 = [(HAP2TLVParamServiceSignature *)self characteristicList];
         [(HAP2TLVParamServiceSignature *)v6 characteristicList];
-        v25 = v24 = v18;
-        v10 = [v23 isEqual:v25];
+        v25 = v24 = linkedServices;
+        v10 = [characteristicList3 isEqual:v25];
 
-        v18 = v24;
-        v26 = v35;
-        v27 = v24 == v35;
+        linkedServices = v24;
+        v26 = linkedServices2;
+        v27 = v24 == linkedServices2;
       }
 
-      v3 = v31;
-      v12 = v32;
+      serviceType3 = v31;
+      serviceType2 = v32;
       if (v27)
       {
 LABEL_24:
@@ -181,20 +181,20 @@ LABEL_31:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAP2TLVParamServiceSignature allocWithZone:a3];
-  v5 = [(HAP2TLVParamServiceSignature *)self instanceID];
-  v6 = [(HAP2TLVParamServiceSignature *)self serviceType];
-  v7 = [(HAP2TLVParamServiceSignature *)self properties];
-  v8 = [(HAP2TLVParamServiceSignature *)self linkedServices];
-  v9 = [(HAP2TLVParamServiceSignature *)self characteristicList];
-  v10 = [(HAP2TLVParamServiceSignature *)v4 initWithInstanceID:v5 serviceType:v6 properties:v7 linkedServices:v8 characteristicList:v9];
+  v4 = [HAP2TLVParamServiceSignature allocWithZone:zone];
+  instanceID = [(HAP2TLVParamServiceSignature *)self instanceID];
+  serviceType = [(HAP2TLVParamServiceSignature *)self serviceType];
+  properties = [(HAP2TLVParamServiceSignature *)self properties];
+  linkedServices = [(HAP2TLVParamServiceSignature *)self linkedServices];
+  characteristicList = [(HAP2TLVParamServiceSignature *)self characteristicList];
+  v10 = [(HAP2TLVParamServiceSignature *)v4 initWithInstanceID:instanceID serviceType:serviceType properties:properties linkedServices:linkedServices characteristicList:characteristicList];
 
   return v10;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v61 = *MEMORY[0x277D85DE8];
   v59 = 0u;
@@ -219,13 +219,13 @@ LABEL_31:
   v40 = 0u;
   v41 = 0u;
   TLV8BufferInit();
-  v5 = [(HAP2TLVParamServiceSignature *)self instanceID];
+  instanceID = [(HAP2TLVParamServiceSignature *)self instanceID];
 
-  if (v5)
+  if (instanceID)
   {
-    v6 = [(HAP2TLVParamServiceSignature *)self instanceID];
+    instanceID2 = [(HAP2TLVParamServiceSignature *)self instanceID];
     v39 = 0;
-    v7 = [v6 serializeWithError:&v39];
+    v7 = [instanceID2 serializeWithError:&v39];
     v8 = v39;
 
     if (v8)
@@ -242,11 +242,11 @@ LABEL_4:
       v10 = v9;
 
 LABEL_5:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v10);
         v8 = 0;
-        *a3 = v11 = 0;
+        *error = v11 = 0;
         goto LABEL_36;
       }
 
@@ -257,30 +257,30 @@ LABEL_35:
     }
   }
 
-  v12 = [(HAP2TLVParamServiceSignature *)self serviceType];
+  serviceType = [(HAP2TLVParamServiceSignature *)self serviceType];
 
-  if (v12)
+  if (serviceType)
   {
-    v13 = [(HAP2TLVParamServiceSignature *)self serviceType];
+    serviceType2 = [(HAP2TLVParamServiceSignature *)self serviceType];
     v38 = 0;
-    v7 = [v13 serializeWithError:&v38];
+    v7 = [serviceType2 serializeWithError:&v38];
     v8 = v38;
 
     if (!v8)
     {
-      v14 = [v7 bytes];
-      v15 = v14 + [v7 length];
+      bytes = [v7 bytes];
+      v15 = bytes + [v7 length];
       while (1)
       {
-        v16 = (v15 - v14) >= 255 ? 255 : v15 - v14;
+        v16 = (v15 - bytes) >= 255 ? 255 : v15 - bytes;
         v9 = TLV8BufferAppend();
         if (v9)
         {
           goto LABEL_4;
         }
 
-        v14 += v16;
-        if (v14 >= v15)
+        bytes += v16;
+        if (bytes >= v15)
         {
 
           goto LABEL_18;
@@ -292,13 +292,13 @@ LABEL_35:
   }
 
 LABEL_18:
-  v17 = [(HAP2TLVParamServiceSignature *)self properties];
+  properties = [(HAP2TLVParamServiceSignature *)self properties];
 
-  if (v17)
+  if (properties)
   {
-    v18 = [(HAP2TLVParamServiceSignature *)self properties];
+    properties2 = [(HAP2TLVParamServiceSignature *)self properties];
     v37 = 0;
-    v7 = [v18 serializeWithError:&v37];
+    v7 = [properties2 serializeWithError:&v37];
     v8 = v37;
 
     if (v8)
@@ -315,30 +315,30 @@ LABEL_18:
     }
   }
 
-  v19 = [(HAP2TLVParamServiceSignature *)self linkedServices];
+  linkedServices = [(HAP2TLVParamServiceSignature *)self linkedServices];
 
-  if (v19)
+  if (linkedServices)
   {
-    v20 = [(HAP2TLVParamServiceSignature *)self linkedServices];
+    linkedServices2 = [(HAP2TLVParamServiceSignature *)self linkedServices];
     v36 = 0;
-    v7 = [v20 serializeWithError:&v36];
+    v7 = [linkedServices2 serializeWithError:&v36];
     v8 = v36;
 
     if (!v8)
     {
-      v21 = [v7 bytes];
-      v22 = v21 + [v7 length];
+      bytes2 = [v7 bytes];
+      v22 = bytes2 + [v7 length];
       while (1)
       {
-        v23 = (v22 - v21) >= 255 ? 255 : v22 - v21;
+        v23 = (v22 - bytes2) >= 255 ? 255 : v22 - bytes2;
         v9 = TLV8BufferAppend();
         if (v9)
         {
           goto LABEL_4;
         }
 
-        v21 += v23;
-        if (v21 >= v22)
+        bytes2 += v23;
+        if (bytes2 >= v22)
         {
 
           goto LABEL_31;
@@ -348,11 +348,11 @@ LABEL_18:
 
 LABEL_33:
 
-    if (a3)
+    if (error)
     {
       v26 = v8;
       v11 = 0;
-      *a3 = v8;
+      *error = v8;
       goto LABEL_36;
     }
 
@@ -360,13 +360,13 @@ LABEL_33:
   }
 
 LABEL_31:
-  v24 = [(HAP2TLVParamServiceSignature *)self characteristicList];
+  characteristicList = [(HAP2TLVParamServiceSignature *)self characteristicList];
 
-  if (v24)
+  if (characteristicList)
   {
-    v25 = [(HAP2TLVParamServiceSignature *)self characteristicList];
+    characteristicList2 = [(HAP2TLVParamServiceSignature *)self characteristicList];
     v35 = 0;
-    v7 = [v25 serializeWithError:&v35];
+    v7 = [characteristicList2 serializeWithError:&v35];
     v8 = v35;
 
     if (v8)
@@ -374,18 +374,18 @@ LABEL_31:
       goto LABEL_33;
     }
 
-    v29 = [v7 bytes];
-    v30 = v29 + [v7 length];
+    bytes3 = [v7 bytes];
+    v30 = bytes3 + [v7 length];
     do
     {
-      if ((v30 - v29) >= 255)
+      if ((v30 - bytes3) >= 255)
       {
         v31 = 255;
       }
 
       else
       {
-        v31 = v30 - v29;
+        v31 = v30 - bytes3;
       }
 
       v32 = TLV8BufferAppend();
@@ -399,7 +399,7 @@ LABEL_31:
         v33 = v31;
       }
 
-      v29 += v33;
+      bytes3 += v33;
       if (v32)
       {
         v34 = 1;
@@ -407,7 +407,7 @@ LABEL_31:
 
       else
       {
-        v34 = v29 >= v30;
+        v34 = bytes3 >= v30;
       }
     }
 
@@ -430,21 +430,21 @@ LABEL_36:
   return v11;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 >= 1)
   {
-    v31 = a4;
+    errorCopy = error;
     v32 = 0;
     v9 = 0;
     v10 = 0;
     v11 = 0;
     v12 = 0;
     v33 = 0;
-    v13 = v7 + v8;
+    v13 = bytes + v8;
     while (1)
     {
       v44 = 0;
@@ -454,10 +454,10 @@ LABEL_36:
       Next = TLV8GetNext();
       if (Next)
       {
-        if (v31)
+        if (errorCopy)
         {
           HMErrorFromOSStatus(Next);
-          *v31 = v28 = 0;
+          *errorCopy = v28 = 0;
         }
 
         else
@@ -488,7 +488,7 @@ LABEL_36:
         if (v44 == 6)
         {
           v40 = v9;
-          v15 = HAPTLVParseContiguousTlvs(6, v7, v13, v42, &v40);
+          v15 = HAPTLVParseContiguousTlvs(6, bytes, v13, v42, &v40);
           v16 = v40;
 
           if (v16)
@@ -537,7 +537,7 @@ LABEL_21:
             goto LABEL_20;
           case 0x10u:
             v37 = v9;
-            v15 = HAPTLVParseContiguousTlvs(16, v7, v13, v42, &v37);
+            v15 = HAPTLVParseContiguousTlvs(16, bytes, v13, v42, &v37);
             v16 = v37;
 
             if (v16)
@@ -553,7 +553,7 @@ LABEL_21:
             goto LABEL_20;
           case 0x14u:
             v35 = v9;
-            v15 = HAPTLVParseContiguousTlvs(20, v7, v13, v42, &v35);
+            v15 = HAPTLVParseContiguousTlvs(20, bytes, v13, v42, &v35);
             v16 = v35;
 
             if (!v16)
@@ -573,7 +573,7 @@ LABEL_18:
       }
 
 LABEL_22:
-      v7 = v42[0];
+      bytes = v42[0];
       if (v42[0] >= v13)
       {
         if (v9)
@@ -581,11 +581,11 @@ LABEL_22:
 LABEL_24:
           v26 = v32;
           v25 = v33;
-          if (v31)
+          if (errorCopy)
           {
             v27 = v9;
             v28 = 0;
-            *v31 = v9;
+            *errorCopy = v9;
           }
 
           else
@@ -622,24 +622,24 @@ LABEL_35:
   return v28;
 }
 
-- (HAP2TLVParamServiceSignature)initWithInstanceID:(id)a3 serviceType:(id)a4 properties:(id)a5 linkedServices:(id)a6 characteristicList:(id)a7
+- (HAP2TLVParamServiceSignature)initWithInstanceID:(id)d serviceType:(id)type properties:(id)properties linkedServices:(id)services characteristicList:(id)list
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  typeCopy = type;
+  propertiesCopy = properties;
+  servicesCopy = services;
+  listCopy = list;
   v21.receiver = self;
   v21.super_class = HAP2TLVParamServiceSignature;
   v17 = [(HAP2TLVParamServiceSignature *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_instanceID, a3);
-    objc_storeStrong(&v18->_serviceType, a4);
-    objc_storeStrong(&v18->_properties, a5);
-    objc_storeStrong(&v18->_linkedServices, a6);
-    objc_storeStrong(&v18->_characteristicList, a7);
+    objc_storeStrong(&v17->_instanceID, d);
+    objc_storeStrong(&v18->_serviceType, type);
+    objc_storeStrong(&v18->_properties, properties);
+    objc_storeStrong(&v18->_linkedServices, services);
+    objc_storeStrong(&v18->_characteristicList, list);
   }
 
   return v18;
@@ -652,24 +652,24 @@ LABEL_35:
   return [(HAP2TLVParamServiceSignature *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAP2TLVParamServiceSignature);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAP2TLVParamServiceSignature *)v6 parseFromData:v5 error:&v11];
+    [(HAP2TLVParamServiceSignature *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

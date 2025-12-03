@@ -1,25 +1,25 @@
 @interface CKDRecordResolveTokenURLRequest
 - (BOOL)sendRequestAnonymously;
-- (CKDRecordResolveTokenURLRequest)initWithOperation:(id)a3 shortTokenLookupInfos:(id)a4;
+- (CKDRecordResolveTokenURLRequest)initWithOperation:(id)operation shortTokenLookupInfos:(id)infos;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDRecordResolveTokenURLRequest
 
-- (CKDRecordResolveTokenURLRequest)initWithOperation:(id)a3 shortTokenLookupInfos:(id)a4
+- (CKDRecordResolveTokenURLRequest)initWithOperation:(id)operation shortTokenLookupInfos:(id)infos
 {
-  v7 = a4;
+  infosCopy = infos;
   v13.receiver = self;
   v13.super_class = CKDRecordResolveTokenURLRequest;
-  v8 = [(CKDURLRequest *)&v13 initWithOperation:a3];
+  v8 = [(CKDURLRequest *)&v13 initWithOperation:operation];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_lookupInfos, a4);
+    objc_storeStrong(&v8->_lookupInfos, infos);
     v10 = objc_opt_new();
     lookupInfosByRequestID = v9->_lookupInfosByRequestID;
     v9->_lookupInfosByRequestID = v10;
@@ -28,18 +28,18 @@
   return v9;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v15.receiver = self;
   v15.super_class = CKDRecordResolveTokenURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_lookupInfos(self, v6, v7, v15.receiver, v15.super_class);
   v11 = objc_msgSend_ckEquivalencyProperties(v8, v9, v10);
   v13 = objc_msgSend_setWithArray_(v5, v12, v11);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v14, v13, @"lookupInfos");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v14, v13, @"lookupInfos");
 }
 
 - (id)requestOperationClasses
@@ -81,23 +81,23 @@
   return v6;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v526 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_response(v4, v5, v6);
+  objectCopy = object;
+  v7 = objc_msgSend_response(objectCopy, v5, v6);
   v10 = objc_msgSend_operationUUID(v7, v8, v9);
 
   v13 = objc_msgSend_lookupInfosByRequestID(self, v11, v12);
   v496 = v10;
   v498 = objc_msgSend_objectForKeyedSubscript_(v13, v14, v10);
 
-  if (!objc_msgSend_hasRecordResolveTokenResponse(v4, v15, v16))
+  if (!objc_msgSend_hasRecordResolveTokenResponse(objectCopy, v15, v16))
   {
     inited = 0;
     v101 = 0;
 LABEL_136:
-    v421 = objc_msgSend_result(v4, v17, v18);
+    v421 = objc_msgSend_result(objectCopy, v17, v18);
     if (v101)
     {
       v422 = objc_opt_new();
@@ -138,7 +138,7 @@ LABEL_136:
     goto LABEL_141;
   }
 
-  v19 = objc_msgSend_recordResolveTokenResponse(v4, v17, v18);
+  v19 = objc_msgSend_recordResolveTokenResponse(objectCopy, v17, v18);
   v22 = objc_msgSend_shareMetadata(v19, v20, v21);
   v25 = v22;
   if (!v22 || !objc_msgSend_hasDenyAccessRequests(v22, v23, v24) || (objc_msgSend_denyAccessRequests(v25, v26, v27) & 1) != 0 || (objc_msgSend_hasCallerParticipant(v25, v28, v29) & 1) != 0 || (objc_msgSend_hasOwnerParticipant(v25, v30, v31) & 1) != 0 || (objc_msgSend_hasParticipantType(v25, v32, v33) & 1) != 0 || (objc_msgSend_hasParticipantState(v25, v34, v35) & 1) != 0 || (objc_msgSend_hasParticipantPermission(v25, v36, v37) & 1) != 0 || objc_msgSend_hasProtectedFullToken(v25, v38, v39))
@@ -368,10 +368,10 @@ LABEL_24:
 
         if (v218 > v204)
         {
-          v486 = 138543362;
+          selfCopy = 138543362;
           while (1)
           {
-            v221 = objc_msgSend_records(v19, v219, v220, v486);
+            v221 = objc_msgSend_records(v19, v219, v220, selfCopy);
             v223 = objc_msgSend_objectAtIndex_(v221, v222, v204);
 
             v224 = *MEMORY[0x277CBC878];
@@ -386,7 +386,7 @@ LABEL_24:
               v244 = objc_msgSend_recordIdentifier(v223, v226, v227);
               v247 = objc_msgSend_value(v244, v245, v246);
               v250 = objc_msgSend_name(v247, v248, v249);
-              *buf = v486;
+              *buf = selfCopy;
               v518 = v250;
               _os_log_debug_impl(&dword_22506F000, v225, OS_LOG_TYPE_DEBUG, "Parsing share hierarchy record %{public}@", buf, 0xCu);
             }
@@ -411,7 +411,7 @@ LABEL_24:
             v236 = *MEMORY[0x277CBC830];
             if (os_log_type_enabled(v236, OS_LOG_TYPE_DEBUG))
             {
-              *buf = v486;
+              *buf = selfCopy;
               v518 = v232;
               _os_log_debug_impl(&dword_22506F000, v236, OS_LOG_TYPE_DEBUG, "Parsed share hierarchy record ID %{public}@", buf, 0xCu);
             }
@@ -525,9 +525,9 @@ LABEL_74:
 
       if (v297)
       {
-        v488 = v4;
+        v488 = objectCopy;
         v491 = v19;
-        v486 = self;
+        selfCopy = self;
         v512 = 0u;
         v510 = 0u;
         v511 = 0u;
@@ -577,9 +577,9 @@ LABEL_74:
 
 LABEL_103:
 
-        v4 = v488;
+        objectCopy = v488;
         v19 = v491;
-        self = v486;
+        self = selfCopy;
       }
     }
 
@@ -637,7 +637,7 @@ LABEL_103:
     {
       v356 = v322;
       v357 = v19;
-      v358 = self;
+      selfCopy2 = self;
       v492 = v357;
       v359 = objc_msgSend_shareMetadata(v357, v354, v355);
       v362 = objc_msgSend_signedCryptoRequirements(v359, v360, v361);
@@ -659,7 +659,7 @@ LABEL_103:
           inited = v499;
           objc_msgSend_setRequiredFeatures_(v499, v377, v376);
 
-          self = v358;
+          self = selfCopy2;
           v19 = v492;
           v322 = v356;
           objc_msgSend_shareRecord(v492, v378, v379);
@@ -740,8 +740,8 @@ LABEL_103:
                 v467 = objc_msgSend_share(v407, v461, v462);
                 if (v467)
                 {
-                  v486 = objc_msgSend_share(v407, v465, v466);
-                  v468 = objc_msgSend_recordID(v486, v469, v470);
+                  selfCopy = objc_msgSend_share(v407, v465, v466);
+                  v468 = objc_msgSend_recordID(selfCopy, v469, v470);
                 }
 
                 else
@@ -802,7 +802,7 @@ LABEL_135:
         v101 = v381;
       }
 
-      self = v358;
+      self = selfCopy2;
       v322 = v356;
 
       v19 = v492;
@@ -824,7 +824,7 @@ LABEL_135:
   if (v479)
   {
     v482 = objc_msgSend_tokenResolveBlock(self, v480, v481);
-    v485 = objc_msgSend_result(v4, v483, v484);
+    v485 = objc_msgSend_result(objectCopy, v483, v484);
     (v482)[2](v482, v498, inited, v485);
   }
 
@@ -836,10 +836,10 @@ LABEL_141:
   return v451;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v24 = a3;
-  v6 = objc_msgSend_response(v24, v4, v5);
+  failureCopy = failure;
+  v6 = objc_msgSend_response(failureCopy, v4, v5);
   v9 = objc_msgSend_operationUUID(v6, v7, v8);
 
   v12 = objc_msgSend_lookupInfosByRequestID(self, v10, v11);
@@ -850,7 +850,7 @@ LABEL_141:
   if (v17)
   {
     v20 = objc_msgSend_tokenResolveBlock(self, v18, v19);
-    v23 = objc_msgSend_result(v24, v21, v22);
+    v23 = objc_msgSend_result(failureCopy, v21, v22);
     (v20)[2](v20, v14, 0, v23);
   }
 }

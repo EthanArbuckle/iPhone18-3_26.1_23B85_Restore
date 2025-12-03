@@ -1,7 +1,7 @@
 @interface AVOutputDeviceHID
-- (AVOutputDeviceHID)initWithUUID:(id)a3 screenUUID:(id)a4 endpoint:(OpaqueFigEndpoint *)a5;
+- (AVOutputDeviceHID)initWithUUID:(id)d screenUUID:(id)iD endpoint:(OpaqueFigEndpoint *)endpoint;
 - (void)dealloc;
-- (void)setInputMode:(int64_t)a3;
+- (void)setInputMode:(int64_t)mode;
 @end
 
 @implementation AVOutputDeviceHID
@@ -19,18 +19,18 @@
   [(AVOutputDeviceHID *)&v4 dealloc];
 }
 
-- (AVOutputDeviceHID)initWithUUID:(id)a3 screenUUID:(id)a4 endpoint:(OpaqueFigEndpoint *)a5
+- (AVOutputDeviceHID)initWithUUID:(id)d screenUUID:(id)iD endpoint:(OpaqueFigEndpoint *)endpoint
 {
   v16.receiver = self;
   v16.super_class = AVOutputDeviceHID;
   v8 = [(AVOutputDeviceHID *)&v16 init];
   if (v8)
   {
-    *(v8 + 1) = [a3 copy];
-    *(v8 + 2) = [a4 copy];
-    if (a5)
+    *(v8 + 1) = [d copy];
+    *(v8 + 2) = [iD copy];
+    if (endpoint)
     {
-      v9 = CFRetain(a5);
+      v9 = CFRetain(endpoint);
       *(v8 + 4) = v9;
       cf = 0;
       if (v9)
@@ -72,7 +72,7 @@
   return v13;
 }
 
-- (void)setInputMode:(int64_t)a3
+- (void)setInputMode:(int64_t)mode
 {
   v11 = *MEMORY[0x1E69E9840];
   endpoint = self->_endpoint;
@@ -81,7 +81,7 @@
     FigEndpointExtendedGetClassID();
     if (CMBaseObjectIsMemberOfClass())
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInt:a3];
+      v6 = [MEMORY[0x1E696AD98] numberWithInt:mode];
       if (dword_1ED6F6B68)
       {
         os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -93,7 +93,7 @@
       v9 = *(*(CMBaseObjectGetVTable() + 24) + 56);
       if (v9 && !v9(endpoint, UUID, v6))
       {
-        self->_inputMode = a3;
+        self->_inputMode = mode;
       }
     }
   }

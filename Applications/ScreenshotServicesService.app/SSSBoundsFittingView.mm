@@ -1,14 +1,14 @@
 @interface SSSBoundsFittingView
 - (UIView)managedView;
 - (void)layoutSubviews;
-- (void)setManagedView:(id)a3;
+- (void)setManagedView:(id)view;
 @end
 
 @implementation SSSBoundsFittingView
 
-- (void)setManagedView:(id)a3
+- (void)setManagedView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_managedView);
 
   if (WeakRetained != obj)

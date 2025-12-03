@@ -1,30 +1,30 @@
 @interface MOSuggestionSheetSettingsController
 + (BOOL)fetchSiginificantLocationEnablementStatus;
 + (id)onboardingSettingsBundle;
-+ (int)runCommand:(id)a3;
++ (int)runCommand:(id)command;
 - (BOOL)_isAnySettingEnabled;
 - (MOSuggestionSheetSettingsController)init;
-- (id)_getLocalizedSpecifier:(id)a3;
-- (id)_getStreamToggle:(id)a3;
+- (id)_getLocalizedSpecifier:(id)specifier;
+- (id)_getStreamToggle:(id)toggle;
 - (id)specifiers;
-- (void)_clearHistory:(id)a3;
-- (void)_clearHistoryWarmup:(id)a3;
-- (void)_processDevicesJSON:(id)a3;
-- (void)_setStreamToggle:(id)a3 withSpecifier:(id)a4;
-- (void)_setStreamToggleWarmup:(id)a3 withSpecifier:(id)a4;
-- (void)didTapSuggestionNotificationSettings:(id)a3;
-- (void)didTapTurnOffAll:(id)a3;
-- (void)didTapTurnOffAllWarmup:(id)a3;
-- (void)didTapTurnOnAll:(id)a3;
-- (void)didTapTurnOnJournalingSuggestion:(id)a3;
-- (void)didTransitionTo:(id)a3;
-- (void)dismissDataAccessExplanationSheet:(id)a3;
-- (void)fillSupportedApplicationsArray:(id)a3 andSupportedApplicationsWithDataAccess:(id)a4;
-- (void)navigateToiCloudTCC:(id)a3;
+- (void)_clearHistory:(id)history;
+- (void)_clearHistoryWarmup:(id)warmup;
+- (void)_processDevicesJSON:(id)n;
+- (void)_setStreamToggle:(id)toggle withSpecifier:(id)specifier;
+- (void)_setStreamToggleWarmup:(id)warmup withSpecifier:(id)specifier;
+- (void)didTapSuggestionNotificationSettings:(id)settings;
+- (void)didTapTurnOffAll:(id)all;
+- (void)didTapTurnOffAllWarmup:(id)warmup;
+- (void)didTapTurnOnAll:(id)all;
+- (void)didTapTurnOnJournalingSuggestion:(id)suggestion;
+- (void)didTransitionTo:(id)to;
+- (void)dismissDataAccessExplanationSheet:(id)sheet;
+- (void)fillSupportedApplicationsArray:(id)array andSupportedApplicationsWithDataAccess:(id)access;
+- (void)navigateToiCloudTCC:(id)c;
 - (void)shouldDismissOnboarding;
-- (void)showDataAccessExplanationSheet:(id)a3;
-- (void)showPrivacyExplanationSheet:(id)a3;
-- (void)syncFromPhone:(id)a3;
+- (void)showDataAccessExplanationSheet:(id)sheet;
+- (void)showPrivacyExplanationSheet:(id)sheet;
+- (void)syncFromPhone:(id)phone;
 @end
 
 @implementation MOSuggestionSheetSettingsController
@@ -45,7 +45,7 @@
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [MEMORY[0x277D01280] defaultManager];
+  defaultManager = [MEMORY[0x277D01280] defaultManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnablementStatus__block_invoke;
@@ -53,14 +53,14 @@
   v9 = &v10;
   v4 = v2;
   v8 = v4;
-  [v3 fetchRoutineStateWithHandler:v7];
+  [defaultManager fetchRoutineStateWithHandler:v7];
 
   v5 = dispatch_time(0, 3000000000);
   dispatch_group_wait(v4, v5);
-  LOBYTE(v3) = *(v11 + 24);
+  LOBYTE(defaultManager) = *(v11 + 24);
 
   _Block_object_dispose(&v10, 8);
-  return v3;
+  return defaultManager;
 }
 
 void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnablementStatus__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -73,11 +73,11 @@ void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnableme
   dispatch_group_leave(*(a1 + 32));
 }
 
-+ (int)runCommand:(id)a3
++ (int)runCommand:(id)command
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  commandCopy = command;
+  v4 = [commandCopy count];
   v5 = v4;
   v6 = (&v13 - ((8 * v4 + 23) & 0xFFFFFFFFFFFFFFF0));
   if ((8 * v4 + 8) >= 0x200)
@@ -92,12 +92,12 @@ void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnableme
 
   bzero(&v13 - ((8 * v4 + 23) & 0xFFFFFFFFFFFFFFF0), v7);
   v6[v5] = 0;
-  if ([v3 count])
+  if ([commandCopy count])
   {
     v8 = 0;
     do
     {
-      v9 = [v3 objectAtIndexedSubscript:v8];
+      v9 = [commandCopy objectAtIndexedSubscript:v8];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -109,7 +109,7 @@ void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnableme
       ++v8;
     }
 
-    while (v8 < [v3 count]);
+    while (v8 < [commandCopy count]);
   }
 
   v14 = 0;
@@ -145,15 +145,15 @@ void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnableme
   return v3;
 }
 
-- (void)_processDevicesJSON:(id)a3
+- (void)_processDevicesJSON:(id)n
 {
   v75 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 dataUsingEncoding:4];
+  nCopy = n;
+  v5 = [nCopy dataUsingEncoding:4];
   v6 = v5;
   if (v5)
   {
-    v45 = self;
+    selfCopy = self;
     v46 = v5;
     v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v5 options:16 error:0];
     v64 = 0u;
@@ -161,7 +161,7 @@ void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnableme
     v66 = 0u;
     v67 = 0u;
     v8 = [v7 countByEnumeratingWithState:&v64 objects:v74 count:16];
-    v47 = v4;
+    v47 = nCopy;
     if (v8)
     {
       v9 = v8;
@@ -281,30 +281,30 @@ void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnableme
               v61 = [v16 objectForKeyedSubscript:@"userModificationDate"];
               v29 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.momentsui"];
               v30 = [v29 objectForKey:@"StalePrimaryWarningThreshold"];
-              v31 = 604800;
+              intValue = 604800;
               if (v30)
               {
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v31 = [v30 intValue];
+                  intValue = [v30 intValue];
                 }
               }
 
-              v32 = [MEMORY[0x277CBEAA8] date];
-              [v32 timeIntervalSinceReferenceDate];
+              date = [MEMORY[0x277CBEAA8] date];
+              [date timeIntervalSinceReferenceDate];
               v34 = v33;
               [v61 doubleValue];
               v36 = v34 - v35;
 
-              v60 = (v36 >= v31) & v60;
+              v60 = (v36 >= intValue) & v60;
               v37 = _mo_log_facility_get_os_log(MOLogFacilitySettings);
               if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
               {
                 *buf = 67109632;
                 v69 = v60;
                 v70 = 1024;
-                v71 = v31;
+                v71 = intValue;
                 v72 = 2048;
                 v73 = v36;
                 _os_log_impl(&dword_25A200000, v37, OS_LOG_TYPE_INFO, "primaryIsStale=%d, stalePrimaryWarningThreshold=%d, primaryStaleness=%f", buf, 0x18u);
@@ -354,28 +354,28 @@ void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnableme
       LOBYTE(v55) = 0;
     }
 
-    currentDeviceID = v45->_currentDeviceID;
-    v45->_currentDeviceID = v50;
+    currentDeviceID = selfCopy->_currentDeviceID;
+    selfCopy->_currentDeviceID = v50;
     v39 = v50;
 
-    primaryDeviceID = v45->_primaryDeviceID;
-    v45->_primaryDeviceID = &v51->isa;
+    primaryDeviceID = selfCopy->_primaryDeviceID;
+    selfCopy->_primaryDeviceID = &v51->isa;
     v41 = v51;
 
-    primaryName = v45->_primaryName;
-    v45->_primaryName = v52;
+    primaryName = selfCopy->_primaryName;
+    selfCopy->_primaryName = v52;
     v43 = v52;
 
-    v45->_neverOnboarded = v48 & 1;
-    v45->_isOnboarded = v55 & 1;
-    v45->_isSignedIn = v54 & 1;
-    v45->_tcc = v49 & 1;
-    v45->_accountUnknown = BYTE4(v49) & 1;
-    v45->_numPhones = v10;
-    v45->_primaryIsStale = v60 & 1;
+    selfCopy->_neverOnboarded = v48 & 1;
+    selfCopy->_isOnboarded = v55 & 1;
+    selfCopy->_isSignedIn = v54 & 1;
+    selfCopy->_tcc = v49 & 1;
+    selfCopy->_accountUnknown = BYTE4(v49) & 1;
+    selfCopy->_numPhones = v10;
+    selfCopy->_primaryIsStale = v60 & 1;
 
     v6 = v46;
-    v4 = v47;
+    nCopy = v47;
   }
 
   v44 = *MEMORY[0x277D85DE8];
@@ -406,10 +406,10 @@ void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnableme
 
   [(MOSuggestionSheetSettingsController *)self _processDevicesJSON:v211[5]];
   v177 = [v2 localizedStringForKey:@"Go to Settings" value:&stru_286BDDEB8 table:0];
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v168 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v168)
+  if (!userInterfaceIdiom)
   {
     v12 = +[MOOnboardingManager sharedInstance];
     self->_isOnboarded = [v12 isOnboarded];
@@ -468,14 +468,14 @@ void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnableme
         v10 = [v2 localizedStringForKey:@"You’re using this iPhone to create journaling suggestions that can sync to iPad." value:&stru_286BDDEB8 table:0];
         v37 = MEMORY[0x277CCACA8];
         v38 = [v2 localizedStringForKey:@"%@\n\n%@ %@" value:&stru_286BDDEB8 table:0];
-        v190 = [v37 localizedStringWithFormat:v38, v10, v9, v177];
+        v177 = [v37 localizedStringWithFormat:v38, v10, v9, v177];
 
-        [v172 setObject:v190 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+        [v172 setObject:v177 forKeyedSubscript:*MEMORY[0x277D3FF88]];
         v39 = objc_opt_class();
         v40 = NSStringFromClass(v39);
         [v172 setProperty:v40 forKey:*MEMORY[0x277D3FF48]];
 
-        v41 = [v190 length];
+        v41 = [v177 length];
         v221.length = range;
         v221.location = v41 - range;
         v42 = NSStringFromRange(v221);
@@ -505,7 +505,7 @@ void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnableme
         v35 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:0 cell:13 edit:0];
         [v35 setButtonAction:sel_syncFromPhone_];
         v161 = v35;
-        v190 = [v2 localizedStringForKey:@"Use this iPhone to create journaling suggestions that can sync to iPad." value:&stru_286BDDEB8 table:0];
+        v177 = [v2 localizedStringForKey:@"Use this iPhone to create journaling suggestions that can sync to iPad." value:&stru_286BDDEB8 table:0];
         if (!self->_primaryDeviceID || self->_primaryIsStale)
         {
           goto LABEL_110;
@@ -523,13 +523,13 @@ void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnableme
         v129 = ;
         v130 = MEMORY[0x277CCACA8];
         v131 = [v2 localizedStringForKey:@"%@ %@." value:&stru_286BDDEB8 table:0];
-        v11 = [v130 localizedStringWithFormat:v131, v8, v129];
+        v129 = [v130 localizedStringWithFormat:v131, v8, v129];
 
-        if (v11)
+        if (v129)
         {
           v132 = MEMORY[0x277CCACA8];
           v133 = [v2 localizedStringForKey:@"%@ %@\n\n%@ %@" value:&stru_286BDDEB8 table:0];
-          v18 = [v132 localizedStringWithFormat:v133, v190, v11, v9, v177];
+          v1772 = [v132 localizedStringWithFormat:v133, v177, v129, v9, v177];
         }
 
         else
@@ -537,16 +537,16 @@ void __80__MOSuggestionSheetSettingsController_fetchSiginificantLocationEnableme
 LABEL_110:
           v134 = MEMORY[0x277CCACA8];
           v133 = [v2 localizedStringForKey:@"%@\n\n%@ %@" value:&stru_286BDDEB8 table:0];
-          v18 = [v134 localizedStringWithFormat:v133, v190, v9, v177];
-          v11 = 0;
+          v1772 = [v134 localizedStringWithFormat:v133, v177, v9, v177];
+          v129 = 0;
         }
 
-        [v172 setObject:v18 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+        [v172 setObject:v1772 forKeyedSubscript:*MEMORY[0x277D3FF88]];
         v135 = objc_opt_class();
         v136 = NSStringFromClass(v135);
         [v172 setProperty:v136 forKey:*MEMORY[0x277D3FF48]];
 
-        v137 = [v18 length];
+        v137 = [v1772 length];
         v224.length = range;
         v224.location = v137 - range;
         v138 = NSStringFromRange(v224);
@@ -568,8 +568,8 @@ LABEL_110:
         [v36 setButtonAction:sel_syncFromPhone_];
         [v36 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
         v161 = v36;
-        v190 = [v2 localizedStringForKey:@"Use this iPhone to create journaling suggestions that can sync to iPad." value:&stru_286BDDEB8 table:0];
-        v11 = [v2 localizedStringForKey:@"You'll need Journaling Suggestions enabled in iCloud settings." value:&stru_286BDDEB8 table:0];
+        v177 = [v2 localizedStringForKey:@"Use this iPhone to create journaling suggestions that can sync to iPad." value:&stru_286BDDEB8 table:0];
+        v129 = [v2 localizedStringForKey:@"You'll need Journaling Suggestions enabled in iCloud settings." value:&stru_286BDDEB8 table:0];
         if (!self->_primaryDeviceID || self->_primaryIsStale)
         {
           goto LABEL_115;
@@ -587,13 +587,13 @@ LABEL_110:
         v140 = ;
         v141 = MEMORY[0x277CCACA8];
         v142 = [v2 localizedStringForKey:@"%@ %@." value:&stru_286BDDEB8 table:0];
-        v18 = [v141 localizedStringWithFormat:v142, v8, v140];
+        v1772 = [v141 localizedStringWithFormat:v142, v8, v140];
 
-        if (v18)
+        if (v1772)
         {
           v143 = MEMORY[0x277CCACA8];
           v144 = [v2 localizedStringForKey:@"%@ %@\n\n%@ %@" value:&stru_286BDDEB8 table:0];
-          v21 = [v143 localizedStringWithFormat:v144, v190, v18, v11, v177];
+          v1773 = [v143 localizedStringWithFormat:v144, v177, v1772, v129, v177];
         }
 
         else
@@ -601,16 +601,16 @@ LABEL_110:
 LABEL_115:
           v145 = MEMORY[0x277CCACA8];
           v144 = [v2 localizedStringForKey:@"%@\n\n%@ %@" value:&stru_286BDDEB8 table:0];
-          v21 = [v145 localizedStringWithFormat:v144, v190, v11, v177];
-          v18 = 0;
+          v1773 = [v145 localizedStringWithFormat:v144, v177, v129, v177];
+          v1772 = 0;
         }
 
-        [v172 setObject:v21 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+        [v172 setObject:v1773 forKeyedSubscript:*MEMORY[0x277D3FF88]];
         v146 = objc_opt_class();
         v147 = NSStringFromClass(v146);
         [v172 setProperty:v147 forKey:*MEMORY[0x277D3FF48]];
 
-        v148 = [v21 length];
+        v148 = [v1773 length];
         v225.length = range;
         v225.location = v148 - range;
         v149 = NSStringFromRange(v225);
@@ -629,14 +629,14 @@ LABEL_115:
     v10 = [v2 localizedStringForKey:@"To use this iPhone to create journaling suggestions that can sync to iPad value:enable Journaling Suggestions in iCloud settings." table:{&stru_286BDDEB8, 0}];
     v28 = MEMORY[0x277CCACA8];
     v29 = [v2 localizedStringForKey:@"%@ %@" value:&stru_286BDDEB8 table:0];
-    v190 = [v28 localizedStringWithFormat:v29, v10, v177];
+    v177 = [v28 localizedStringWithFormat:v29, v10, v177];
 
-    [v172 setObject:v190 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    [v172 setObject:v177 forKeyedSubscript:*MEMORY[0x277D3FF88]];
     v30 = objc_opt_class();
     v31 = NSStringFromClass(v30);
     [v172 setProperty:v31 forKey:*MEMORY[0x277D3FF48]];
 
-    v32 = [v190 length];
+    v32 = [v177 length];
     v220.length = range;
     v220.location = v32 - range;
     v33 = NSStringFromRange(v220);
@@ -660,46 +660,46 @@ LABEL_43:
   v8 = [v2 localizedStringForKey:@"Show suggested moments created on your iPhone." value:&stru_286BDDEB8 table:0];
   v9 = [v2 localizedStringForKey:@"Suggestions use data from apps and services you turn on value:but can appear in any app using suggestions. Data used for suggestions is private and stored on-device." table:{&stru_286BDDEB8, 0}];
   v10 = [v2 localizedStringForKey:@"About Journaling Suggestions & Privacy" value:&stru_286BDDEB8 table:0];
-  v190 = [v2 localizedStringForKey:@"To customize journaling suggestions or clear history value:go to" table:{&stru_286BDDEB8, 0}];
+  v177 = [v2 localizedStringForKey:@"To customize journaling suggestions or clear history value:go to" table:{&stru_286BDDEB8, 0}];
   if (self->_primaryDeviceID && !self->_primaryIsStale)
   {
     v14 = v7;
     v15 = [v2 localizedStringForKey:@"the iPhone that’s set to sync journaling suggestions" value:&stru_286BDDEB8 table:0];
     v16 = MEMORY[0x277CCACA8];
     v17 = [v2 localizedStringForKey:@"%@ %@." value:&stru_286BDDEB8 table:0];
-    v11 = [v16 localizedStringWithFormat:v17, v190, v15];
+    v129 = [v16 localizedStringWithFormat:v17, v177, v15];
 
     v7 = v14;
   }
 
   else
   {
-    v11 = 0;
+    v129 = 0;
   }
 
-  v18 = [v2 localizedStringForKey:@"You can manage how journaling suggestions sync from iCloud to this iPad in Settings." value:&stru_286BDDEB8 table:0];
+  v1772 = [v2 localizedStringForKey:@"You can manage how journaling suggestions sync from iCloud to this iPad in Settings." value:&stru_286BDDEB8 table:0];
   v181 = v7;
   v19 = MEMORY[0x277CCACA8];
-  if (v11)
+  if (v129)
   {
     v20 = [v2 localizedStringForKey:@"%@\n\n%@ %@\n\n%@\n\n%@ %@" value:&stru_286BDDEB8 table:0];
-    [v19 localizedStringWithFormat:v20, v8, v9, v10, v11, v18, v177];
+    [v19 localizedStringWithFormat:v20, v8, v9, v10, v129, v1772, v177];
   }
 
   else
   {
     v20 = [v2 localizedStringForKey:@"%@\n\n%@ %@\n\n%@ %@" value:&stru_286BDDEB8 table:0];
-    [v19 localizedStringWithFormat:v20, v8, v9, v10, v18, v177];
+    [v19 localizedStringWithFormat:v20, v8, v9, v10, v1772, v177];
   }
-  v21 = ;
+  v1773 = ;
 
-  [v181 setObject:v21 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+  [v181 setObject:v1773 forKeyedSubscript:*MEMORY[0x277D3FF88]];
   v22 = objc_opt_class();
   v23 = NSStringFromClass(v22);
   [v181 setProperty:v23 forKey:*MEMORY[0x277D3FF48]];
 
   [v181 addFooterHyperlinkWithRange:objc_msgSend(v8 target:"length") + objc_msgSend(v9 action:{"length") + 3, objc_msgSend(v10, "length"), self, sel_showPrivacyExplanationSheet_}];
-  [v181 addFooterHyperlinkWithRange:objc_msgSend(v21 target:"length") - objc_msgSend(v177 action:{"length"), objc_msgSend(v177, "length"), self, sel_navigateToiCloudTCC_}];
+  [v181 addFooterHyperlinkWithRange:objc_msgSend(v1773 target:"length") - objc_msgSend(v177 action:{"length"), objc_msgSend(v177, "length"), self, sel_navigateToiCloudTCC_}];
   v24 = [v2 localizedStringForKey:@"Allow Sync to iPad" value:&stru_286BDDEB8 table:0];
   v171 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v24 target:self set:sel__setStreamToggle_withSpecifier_ get:sel__getStreamToggle_ detail:0 cell:6 edit:0];
   if (self->_isSignedIn && self->_tcc)
@@ -727,7 +727,7 @@ LABEL_17:
 LABEL_44:
 
 LABEL_45:
-  v44 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v175 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"PRE_ONBOARDING_NO_APP_WARMUP" name:&stru_286BDDEB8];
   [v175 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v179];
   v45 = [v2 localizedStringForKey:@"Journaling Suggestions are only available when there is a journaling App on iPhone" value:&stru_286BDDEB8 table:0];
@@ -755,9 +755,9 @@ LABEL_45:
   }
 
   v170 = [v48 preferenceSpecifierNamed:v49 target:self set:0 get:0 detail:0 cell:13 edit:0];
-  v50 = [(MOSuggestionSheetSettingsController *)self _isAnySettingEnabled];
+  _isAnySettingEnabled = [(MOSuggestionSheetSettingsController *)self _isAnySettingEnabled];
   v51 = &selRef_didTapTurnOffAllWarmup_;
-  if (!v50)
+  if (!_isAnySettingEnabled)
   {
     v51 = &selRef_didTapTurnOnAll_;
   }
@@ -768,19 +768,19 @@ LABEL_45:
   [v52 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v179];
   v191 = v52;
   v153 = [MEMORY[0x277D37630] bundleWithIdentifier:@"com.apple.onboarding.journal"];
-  v53 = [v153 privacyFlow];
-  v173 = [v53 localizedButtonTitle];
+  privacyFlow = [v153 privacyFlow];
+  localizedButtonTitle = [privacyFlow localizedButtonTitle];
 
   v164 = [v2 localizedStringForKey:@"Suggestions use data from apps and services you turn on value:but can appear in any app using suggestions. Data used for suggestions is private and stored on-device." table:{&stru_286BDDEB8, 0}];
-  v165 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v164, v173];
-  [v191 setObject:v165 forKeyedSubscript:v178];
+  v173 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v164, localizedButtonTitle];
+  [v191 setObject:v173 forKeyedSubscript:v178];
   v54 = objc_opt_class();
   v55 = NSStringFromClass(v54);
   v158 = *MEMORY[0x277D3FF48];
   [v191 setProperty:v55 forKey:?];
 
   v56 = [v164 length];
-  v222.length = [v173 length];
+  v222.length = [localizedButtonTitle length];
   v222.location = v56 + 1;
   v57 = NSStringFromRange(v222);
   v157 = *MEMORY[0x277D3FF58];
@@ -869,10 +869,10 @@ LABEL_45:
   [v183 setObject:v82 forKeyedSubscript:v65];
 
   [v183 setProperty:MEMORY[0x277CBEC38] forKey:v193];
-  v176 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  [v176 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v179];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  [emptyGroupSpecifier setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v179];
   v83 = [v2 localizedStringForKey:@"General prompts to reflect on gratitude value:kindness table:{purpose, and more", &stru_286BDDEB8, 0}];
-  [v176 setObject:v83 forKeyedSubscript:v178];
+  [emptyGroupSpecifier setObject:v83 forKeyedSubscript:v178];
 
   v84 = MEMORY[0x277D3FAD8];
   v85 = [v2 localizedStringForKey:@"Reflection Prompts" value:&stru_286BDDEB8 table:0];
@@ -881,7 +881,7 @@ LABEL_45:
   [v182 setObject:@"Reflection" forKeyedSubscript:v61];
   [v182 setObject:NSClassFromString(&cfstr_Pssubtitleswit.isa) forKeyedSubscript:v63];
   [v182 setProperty:MEMORY[0x277CBEC38] forKey:v193];
-  v160 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v86 = MEMORY[0x277D3FAD8];
   v87 = [v2 localizedStringForKey:@"Clear History" value:&stru_286BDDEB8 table:0];
   v169 = [v86 deleteButtonSpecifierWithName:v87 target:self action:sel__clearHistoryWarmup_];
@@ -900,7 +900,7 @@ LABEL_45:
   [v91 setObject:@"Prioritize Moments with Contacts" forKeyedSubscript:v61];
   [v91 setObject:NSClassFromString(&cfstr_Pssubtitleswit.isa) forKeyedSubscript:v63];
   [v91 setProperty:MEMORY[0x277CBEC38] forKey:v193];
-  v162 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  emptyGroupSpecifier3 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
   v92 = MEMORY[0x277D3FAD8];
   v93 = [v2 localizedStringForKey:@"Notifications" value:&stru_286BDDEB8 table:0];
   v94 = [v92 preferenceSpecifierNamed:v93 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -911,8 +911,8 @@ LABEL_45:
   v95 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"APPS_USING_PRIVATE_ACCESS_GROUP" name:?];
   v194 = [v2 localizedStringForKey:@"Learn More" value:&stru_286BDDEB8 table:0];
   v96 = [v2 localizedStringForKey:@"Apps using Private Access for suggestions data will appear here." value:&stru_286BDDEB8 table:0];
-  v180 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v96, v194];
-  [v95 setObject:v180 forKeyedSubscript:v178];
+  v194 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v96, v194];
+  [v95 setObject:v194 forKeyedSubscript:v178];
   v97 = objc_opt_class();
   v98 = NSStringFromClass(v97);
   [v95 setProperty:v98 forKey:v158];
@@ -959,7 +959,7 @@ LABEL_45:
     objc_destroyWeak(buf);
   }
 
-  if (v168)
+  if (userInterfaceIdiom)
   {
     if (self->_neverOnboarded)
     {
@@ -978,27 +978,27 @@ LABEL_45:
             v110 = v175;
           }
 
-          [v44 addObject:v110];
+          [array addObject:v110];
         }
       }
     }
 
     else if (v181)
     {
-      [v44 addObject:v181];
+      [array addObject:v181];
       if (v171)
       {
-        [v44 addObject:v171];
+        [array addObject:v171];
       }
     }
 
-    v112 = self;
+    selfCopy6 = self;
     if (!self->_neverOnboarded)
     {
-      [v44 addObject:v162];
-      [v44 addObject:v94];
-      [v44 addObject:v95];
-      v112 = self;
+      [array addObject:emptyGroupSpecifier3];
+      [array addObject:v94];
+      [array addObject:v95];
+      selfCopy6 = self;
       if (!self->supportedApplicationsLoading)
       {
         v113 = self->supportedApplicationsWithDataAccess;
@@ -1022,7 +1022,7 @@ LABEL_45:
                   objc_enumerationMutation(v114);
                 }
 
-                [v44 addObject:*(*(&v196 + 1) + 8 * i)];
+                [array addObject:*(*(&v196 + 1) + 8 * i)];
               }
 
               v115 = [(NSMutableArray *)v114 countByEnumeratingWithState:&v196 objects:v216 count:16];
@@ -1033,7 +1033,7 @@ LABEL_45:
 
 LABEL_103:
 
-          v112 = self;
+          selfCopy6 = self;
           goto LABEL_104;
         }
       }
@@ -1046,24 +1046,24 @@ LABEL_103:
   {
     if (v172)
     {
-      [v44 addObject:v172];
+      [array addObject:v172];
       if (v161)
       {
-        [v44 addObject:v161];
+        [array addObject:v161];
       }
     }
 
-    [v44 addObject:v191];
-    [v44 addObject:v170];
-    [v44 addObject:v187];
-    [v44 addObject:v186];
-    [v44 addObject:v185];
-    [v44 addObject:v184];
-    [v44 addObject:rangea];
-    [v44 addObject:v183];
-    [v44 addObject:v160];
-    [v44 addObject:v169];
-    [v44 addObject:v176];
+    [array addObject:v191];
+    [array addObject:v170];
+    [array addObject:v187];
+    [array addObject:v186];
+    [array addObject:v185];
+    [array addObject:v184];
+    [array addObject:rangea];
+    [array addObject:v183];
+    [array addObject:emptyGroupSpecifier2];
+    [array addObject:v169];
+    [array addObject:emptyGroupSpecifier];
     v111 = v182;
     goto LABEL_91;
   }
@@ -1084,22 +1084,22 @@ LABEL_103:
       }
 
 LABEL_91:
-      [v44 addObject:v111];
+      [array addObject:v111];
     }
   }
 
-  v112 = self;
+  selfCopy6 = self;
   if (self->_isOnboarded)
   {
-    [v44 addObject:v159];
-    [v44 addObject:v91];
-    v112 = self;
+    [array addObject:v159];
+    [array addObject:v91];
+    selfCopy6 = self;
     if (self->_isOnboarded)
     {
-      [v44 addObject:v162];
-      [v44 addObject:v94];
-      [v44 addObject:v95];
-      v112 = self;
+      [array addObject:emptyGroupSpecifier3];
+      [array addObject:v94];
+      [array addObject:v95];
+      selfCopy6 = self;
       if (!self->supportedApplicationsLoading)
       {
         v119 = self->supportedApplicationsWithDataAccess;
@@ -1123,7 +1123,7 @@ LABEL_91:
                   objc_enumerationMutation(v114);
                 }
 
-                [v44 addObject:*(*(&v200 + 1) + 8 * j)];
+                [array addObject:*(*(&v200 + 1) + 8 * j)];
               }
 
               v120 = [(NSMutableArray *)v114 countByEnumeratingWithState:&v200 objects:v217 count:16];
@@ -1140,9 +1140,9 @@ LABEL_91:
 
 LABEL_104:
   v123 = *MEMORY[0x277D3FC48];
-  v124 = *(&v112->super.super.super.super.super.isa + v123);
-  *(&v112->super.super.super.super.super.isa + v123) = v44;
-  v125 = v44;
+  v124 = *(&selfCopy6->super.super.super.super.super.isa + v123);
+  *(&selfCopy6->super.super.super.super.super.isa + v123) = array;
+  v125 = array;
 
   v126 = *(&self->super.super.super.super.super.isa + v123);
   _Block_object_dispose(&v210, 8);
@@ -1204,10 +1204,10 @@ void __49__MOSuggestionSheetSettingsController_specifiers__block_invoke_288(uint
   }
 }
 
-- (void)fillSupportedApplicationsArray:(id)a3 andSupportedApplicationsWithDataAccess:(id)a4
+- (void)fillSupportedApplicationsArray:(id)array andSupportedApplicationsWithDataAccess:(id)access
 {
-  v5 = a3;
-  v28 = a4;
+  arrayCopy = array;
+  accessCopy = access;
   v6 = +[MOApprovedApplicationsManager sharedInstance];
   v7 = [MEMORY[0x277CC1E70] enumeratorWithOptions:0];
   v29[0] = MEMORY[0x277D85DD0];
@@ -1216,32 +1216,32 @@ void __49__MOSuggestionSheetSettingsController_specifiers__block_invoke_288(uint
   v29[3] = &unk_27991F0A0;
   v25 = v6;
   v30 = v25;
-  v26 = v5;
+  v26 = arrayCopy;
   v31 = v26;
   [v7 setFilter:v29];
   v27 = v7;
-  v8 = [v7 nextObject];
-  if (v8)
+  nextObject = [v7 nextObject];
+  if (nextObject)
   {
-    v9 = v8;
+    v9 = nextObject;
     v10 = *MEMORY[0x277D3FFC0];
     v11 = *MEMORY[0x277D401A8];
     do
     {
       v12 = [v9 URL];
       v13 = [MEMORY[0x277CCA8D8] bundleWithURL:v12];
-      v14 = [v13 bundleIdentifier];
+      bundleIdentifier = [v13 bundleIdentifier];
       v15 = MEMORY[0x277D755B8];
-      v16 = [MEMORY[0x277D759A0] mainScreen];
-      [v16 scale];
-      v17 = [v15 _applicationIconImageForBundleIdentifier:v14 format:0 scale:?];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
+      v17 = [v15 _applicationIconImageForBundleIdentifier:bundleIdentifier format:0 scale:?];
 
       v18 = [v13 objectForInfoDictionaryKey:@"CFBundleDisplayName"];
       if (isValidString(v18))
       {
         v19 = v18;
 
-        v14 = v19;
+        bundleIdentifier = v19;
       }
 
       v20 = [v13 objectForInfoDictionaryKey:@"CFBundleName"];
@@ -1250,23 +1250,23 @@ void __49__MOSuggestionSheetSettingsController_specifiers__block_invoke_288(uint
       {
         v21 = v20;
 
-        v14 = v21;
+        bundleIdentifier = v21;
       }
 
-      v22 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v14 target:0 set:0 get:0 detail:0 cell:3 edit:0];
-      v23 = [v9 bundleIdentifier];
-      [v22 setUserInfo:v23];
+      v22 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:bundleIdentifier target:0 set:0 get:0 detail:0 cell:3 edit:0];
+      bundleIdentifier2 = [v9 bundleIdentifier];
+      [v22 setUserInfo:bundleIdentifier2];
 
       [v22 setObject:v17 forKeyedSubscript:v10];
-      [v22 setObject:v14 forKeyedSubscript:v11];
-      [v28 addObject:v22];
+      [v22 setObject:bundleIdentifier forKeyedSubscript:v11];
+      [accessCopy addObject:v22];
 
-      v24 = [v27 nextObject];
+      nextObject2 = [v27 nextObject];
 
-      v9 = v24;
+      v9 = nextObject2;
     }
 
-    while (v24);
+    while (nextObject2);
   }
 }
 
@@ -1306,9 +1306,9 @@ BOOL __109__MOSuggestionSheetSettingsController_fillSupportedApplicationsArray_a
   return v9 & 1;
 }
 
-- (void)_clearHistoryWarmup:(id)a3
+- (void)_clearHistoryWarmup:(id)warmup
 {
-  v4 = a3;
+  warmupCopy = warmup;
   objc_initWeak(&location, self);
   v5 = +[MOSuggestionSheetSettingsController onboardingSettingsBundle];
   v6 = MEMORY[0x277D75110];
@@ -1322,7 +1322,7 @@ BOOL __109__MOSuggestionSheetSettingsController_fillSupportedApplicationsArray_a
   v16[2] = __59__MOSuggestionSheetSettingsController__clearHistoryWarmup___block_invoke;
   v16[3] = &unk_27991F0C8;
   objc_copyWeak(&v18, &location);
-  v11 = v4;
+  v11 = warmupCopy;
   v17 = v11;
   v12 = [v9 actionWithTitle:v10 style:2 handler:v16];
   [v8 addAction:v12];
@@ -1344,7 +1344,7 @@ void __59__MOSuggestionSheetSettingsController__clearHistoryWarmup___block_invok
   [WeakRetained _clearHistory:*(a1 + 32)];
 }
 
-- (void)_clearHistory:(id)a3
+- (void)_clearHistory:(id)history
 {
   v12 = +[MOSettingsManager sharedInstance];
   v4 = [v12 getStateForSetting:1];
@@ -1383,21 +1383,21 @@ void __59__MOSuggestionSheetSettingsController__clearHistoryWarmup___block_invok
   [MOSuggestionSheetSettingsController runCommand:&unk_286BE0E60];
 }
 
-- (void)didTapTurnOnJournalingSuggestion:(id)a3
+- (void)didTapTurnOnJournalingSuggestion:(id)suggestion
 {
   v4 = objc_opt_new();
   connection = self->connection;
   self->connection = v4;
 
-  v6 = [(PresenterServerConnection *)self->connection remoteTarget];
-  v9 = [v6 getConnectionID];
+  remoteTarget = [(PresenterServerConnection *)self->connection remoteTarget];
+  getConnectionID = [remoteTarget getConnectionID];
 
   [(PresenterServerConnection *)self->connection setPresenterDelegate:self];
   v7 = objc_opt_new();
   [v7 setOnboardingOnlyPresentation:1];
   [(PresenterServerConnection *)self->connection requestPresentationFor:0 with:v7];
   v8 = objc_opt_new();
-  [v8 setupSceneHostingWithConnectionUUID:v9];
+  [v8 setupSceneHostingWithConnectionUUID:getConnectionID];
   [(MOSuggestionSheetSettingsController *)self presentViewController:v8 animated:1 completion:0];
 }
 
@@ -1408,16 +1408,16 @@ void __59__MOSuggestionSheetSettingsController__clearHistoryWarmup___block_invok
   [(MOSuggestionSheetSettingsController *)self reloadSpecifiers];
 }
 
-- (void)didTapSuggestionNotificationSettings:(id)a3
+- (void)didTapSuggestionNotificationSettings:(id)settings
 {
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"app-prefs:com.apple.momentsd.MOUserNotifications&target=com.apple.settings.notifications"];
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 openSensitiveURL:v4 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v4 withOptions:0];
 }
 
-- (void)didTapTurnOffAllWarmup:(id)a3
+- (void)didTapTurnOffAllWarmup:(id)warmup
 {
-  v4 = a3;
+  warmupCopy = warmup;
   objc_initWeak(&location, self);
   v5 = +[MOSuggestionSheetSettingsController onboardingSettingsBundle];
   v6 = MEMORY[0x277D75110];
@@ -1431,7 +1431,7 @@ void __59__MOSuggestionSheetSettingsController__clearHistoryWarmup___block_invok
   v16[2] = __62__MOSuggestionSheetSettingsController_didTapTurnOffAllWarmup___block_invoke;
   v16[3] = &unk_27991F0C8;
   objc_copyWeak(&v18, &location);
-  v11 = v4;
+  v11 = warmupCopy;
   v17 = v11;
   v12 = [v9 actionWithTitle:v10 style:2 handler:v16];
   [v8 addAction:v12];
@@ -1453,7 +1453,7 @@ void __62__MOSuggestionSheetSettingsController_didTapTurnOffAllWarmup___block_in
   [WeakRetained didTapTurnOffAll:*(a1 + 32)];
 }
 
-- (void)didTapTurnOffAll:(id)a3
+- (void)didTapTurnOffAll:(id)all
 {
   v4 = +[MOSettingsManager sharedInstance];
   [v4 setState:0 forSetting:1];
@@ -1467,7 +1467,7 @@ void __62__MOSuggestionSheetSettingsController_didTapTurnOffAllWarmup___block_in
   [MOSuggestionSheetSettingsController runCommand:&unk_286BE0E78];
 }
 
-- (void)didTapTurnOnAll:(id)a3
+- (void)didTapTurnOnAll:(id)all
 {
   v4 = +[MOSettingsManager sharedInstance];
   [v4 setState:1 forSetting:1];
@@ -1481,21 +1481,21 @@ void __62__MOSuggestionSheetSettingsController_didTapTurnOffAllWarmup___block_in
   [MOSuggestionSheetSettingsController runCommand:&unk_286BE0E90];
 }
 
-- (void)_setStreamToggleWarmup:(id)a3 withSpecifier:(id)a4
+- (void)_setStreamToggleWarmup:(id)warmup withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3FFB8]];
-  v10 = [v7 propertyForKey:*MEMORY[0x277D3FF38]];
+  warmupCopy = warmup;
+  specifierCopy = specifier;
+  bOOLValue = [warmupCopy BOOLValue];
+  v9 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277D3FFB8]];
+  v10 = [specifierCopy propertyForKey:*MEMORY[0x277D3FF38]];
   v11 = v10;
   if (!v10 || [v10 BOOLValue])
   {
     objc_initWeak(location, self);
-    if (v8)
+    if (bOOLValue)
     {
       WeakRetained = objc_loadWeakRetained(location);
-      [WeakRetained _setStreamToggle:MEMORY[0x277CBEC38] withSpecifier:v7];
+      [WeakRetained _setStreamToggle:MEMORY[0x277CBEC38] withSpecifier:specifierCopy];
 
       [(MOSuggestionSheetSettingsController *)self reloadSpecifiers];
     }
@@ -1521,9 +1521,9 @@ void __62__MOSuggestionSheetSettingsController_didTapTurnOffAllWarmup___block_in
       v33[2] = __76__MOSuggestionSheetSettingsController__setStreamToggleWarmup_withSpecifier___block_invoke;
       v33[3] = &unk_27991F0F0;
       objc_copyWeak(&v36, location);
-      v21 = v7;
+      v21 = specifierCopy;
       v34 = v21;
-      v35 = self;
+      selfCopy = self;
       v22 = [v20 actionWithTitle:v27 style:2 handler:v33];
       [v19 addAction:v22];
 
@@ -1534,7 +1534,7 @@ void __62__MOSuggestionSheetSettingsController_didTapTurnOffAllWarmup___block_in
       v29[3] = &unk_27991F0F0;
       objc_copyWeak(&v32, location);
       v30 = v21;
-      v31 = self;
+      selfCopy2 = self;
       v24 = [v23 actionWithTitle:v26 style:1 handler:v29];
       [v19 addAction:v24];
 
@@ -1568,63 +1568,63 @@ uint64_t __76__MOSuggestionSheetSettingsController__setStreamToggleWarmup_withSp
   return [v3 reloadSpecifiers];
 }
 
-- (void)_setStreamToggle:(id)a3 withSpecifier:(id)a4
+- (void)_setStreamToggle:(id)toggle withSpecifier:(id)specifier
 {
-  v19 = a3;
-  v7 = a4;
-  v8 = [v7 propertyForKey:*MEMORY[0x277D3FF38]];
+  toggleCopy = toggle;
+  specifierCopy = specifier;
+  v8 = [specifierCopy propertyForKey:*MEMORY[0x277D3FF38]];
   v9 = v8;
   if (!v8 || [v8 BOOLValue])
   {
     v10 = +[MOSettingsManager sharedInstance];
-    v11 = [v19 BOOLValue];
-    v12 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3FFB8]];
+    bOOLValue = [toggleCopy BOOLValue];
+    v12 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277D3FFB8]];
     if ([v12 isEqual:@"Activity"])
     {
       v13 = v10;
-      v14 = v11;
+      v14 = bOOLValue;
       v15 = 1;
     }
 
     else if ([v12 isEqual:@"Media"])
     {
       v13 = v10;
-      v14 = v11;
+      v14 = bOOLValue;
       v15 = 2;
     }
 
     else if ([v12 isEqual:@"Contacts"])
     {
       v13 = v10;
-      v14 = v11;
+      v14 = bOOLValue;
       v15 = 3;
     }
 
     else if ([v12 isEqual:@"Photos"])
     {
       v13 = v10;
-      v14 = v11;
+      v14 = bOOLValue;
       v15 = 4;
     }
 
     else if ([v12 isEqual:@"Significant Locations"])
     {
       v13 = v10;
-      v14 = v11;
+      v14 = bOOLValue;
       v15 = 5;
     }
 
     else if ([v12 isEqual:@"Prioritize Moments with Contacts"])
     {
       v13 = v10;
-      v14 = v11;
+      v14 = bOOLValue;
       v15 = 6;
     }
 
     else if ([v12 isEqual:@"State of Mind"])
     {
       v13 = v10;
-      v14 = v11;
+      v14 = bOOLValue;
       v15 = 9;
     }
 
@@ -1635,20 +1635,20 @@ uint64_t __76__MOSuggestionSheetSettingsController__setStreamToggleWarmup_withSp
         if ([v12 isEqual:@"Sync to iPad"])
         {
           v16 = objc_alloc_init(MEMORY[0x277D2A208]);
-          v17 = [v16 setOnboardedWithFlag:v19];
+          v17 = [v16 setOnboardedWithFlag:toggleCopy];
         }
 
         else
         {
-          v18 = [MEMORY[0x277CCA890] currentHandler];
-          [v18 handleFailureInMethod:a2 object:self file:@"MOSuggestionSheetSettingsController.m" lineNumber:1133 description:@"Specifier identifier is unknown"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"MOSuggestionSheetSettingsController.m" lineNumber:1133 description:@"Specifier identifier is unknown"];
         }
 
         goto LABEL_20;
       }
 
       v13 = v10;
-      v14 = v11;
+      v14 = bOOLValue;
       v15 = 10;
     }
 
@@ -1658,19 +1658,19 @@ LABEL_20:
   }
 }
 
-- (id)_getStreamToggle:(id)a3
+- (id)_getStreamToggle:(id)toggle
 {
-  v5 = a3;
-  v6 = [v5 propertyForKey:*MEMORY[0x277D3FF38]];
+  toggleCopy = toggle;
+  v6 = [toggleCopy propertyForKey:*MEMORY[0x277D3FF38]];
   v7 = v6;
   if (v6 && ![v6 BOOLValue])
   {
-    v13 = MEMORY[0x277CBEC28];
+    isOnboarded = MEMORY[0x277CBEC28];
     goto LABEL_22;
   }
 
   v8 = +[MOSettingsManager sharedInstance];
-  v9 = [v5 objectForKeyedSubscript:*MEMORY[0x277D3FFB8]];
+  v9 = [toggleCopy objectForKeyedSubscript:*MEMORY[0x277D3FFB8]];
   if ([v9 isEqual:@"Activity"])
   {
     v10 = MEMORY[0x277CCABB0];
@@ -1727,15 +1727,15 @@ LABEL_20:
       if ([v9 isEqual:@"Sync to iPad"])
       {
         v15 = objc_alloc_init(MEMORY[0x277D2A208]);
-        v13 = [v15 isOnboarded];
+        isOnboarded = [v15 isOnboarded];
       }
 
       else
       {
-        v16 = [MEMORY[0x277CCA890] currentHandler];
-        [v16 handleFailureInMethod:a2 object:self file:@"MOSuggestionSheetSettingsController.m" lineNumber:1170 description:@"Specifier identifier is unknown"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"MOSuggestionSheetSettingsController.m" lineNumber:1170 description:@"Specifier identifier is unknown"];
 
-        v13 = 0;
+        isOnboarded = 0;
       }
 
       goto LABEL_21;
@@ -1746,19 +1746,19 @@ LABEL_20:
     v12 = 10;
   }
 
-  v13 = [v10 numberWithBool:{objc_msgSend(v11, "getStateForSetting:", v12)}];
+  isOnboarded = [v10 numberWithBool:{objc_msgSend(v11, "getStateForSetting:", v12)}];
 LABEL_21:
 
 LABEL_22:
 
-  return v13;
+  return isOnboarded;
 }
 
-- (id)_getLocalizedSpecifier:(id)a3
+- (id)_getLocalizedSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v6 = +[MOSuggestionSheetSettingsController onboardingSettingsBundle];
-  if ([v5 isEqual:@"Activity"])
+  if ([specifierCopy isEqual:@"Activity"])
   {
     v7 = @"Activity";
 LABEL_19:
@@ -1766,56 +1766,56 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ([v5 isEqual:@"Media"])
+  if ([specifierCopy isEqual:@"Media"])
   {
     v7 = @"Media";
     goto LABEL_19;
   }
 
-  if ([v5 isEqual:@"Contacts"])
+  if ([specifierCopy isEqual:@"Contacts"])
   {
     v7 = @"Contacts";
     goto LABEL_19;
   }
 
-  if ([v5 isEqual:@"Photos"])
+  if ([specifierCopy isEqual:@"Photos"])
   {
     v7 = @"Photos";
     goto LABEL_19;
   }
 
-  if ([v5 isEqual:@"Significant Locations"])
+  if ([specifierCopy isEqual:@"Significant Locations"])
   {
     v7 = @"Significant Locations";
     goto LABEL_19;
   }
 
-  if ([v5 isEqual:@"Prioritize Moments with Contacts"])
+  if ([specifierCopy isEqual:@"Prioritize Moments with Contacts"])
   {
     v7 = @"Prioritize Moments with Contacts";
     goto LABEL_19;
   }
 
-  if ([v5 isEqual:@"State of Mind"])
+  if ([specifierCopy isEqual:@"State of Mind"])
   {
     v7 = @"State of Mind";
     goto LABEL_19;
   }
 
-  if ([v5 isEqual:@"Reflection"])
+  if ([specifierCopy isEqual:@"Reflection"])
   {
     v7 = @"Reflection Prompts";
     goto LABEL_19;
   }
 
-  if ([v5 isEqual:@"Sync to iPad"])
+  if ([specifierCopy isEqual:@"Sync to iPad"])
   {
     v7 = @"Sync to iPad";
     goto LABEL_19;
   }
 
-  v10 = [MEMORY[0x277CCA890] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"MOSuggestionSheetSettingsController.m" lineNumber:1198 description:@"Specifier identifier is unknown"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MOSuggestionSheetSettingsController.m" lineNumber:1198 description:@"Specifier identifier is unknown"];
 
   v8 = &stru_286BDDEB8;
 LABEL_20:
@@ -1823,27 +1823,27 @@ LABEL_20:
   return v8;
 }
 
-- (void)showPrivacyExplanationSheet:(id)a3
+- (void)showPrivacyExplanationSheet:(id)sheet
 {
   v4 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.journal"];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (void)showDataAccessExplanationSheet:(id)a3
+- (void)showDataAccessExplanationSheet:(id)sheet
 {
   v12 = +[MOSuggestionSheetSettingsController onboardingSettingsBundle];
   v4 = [v12 localizedStringForKey:@"Private Access & Suggestions" value:&stru_286BDDEB8 table:0];
   v5 = [v12 localizedStringForKey:@"Your journal only has access to suggestions when you start writing about them or save them.\n\nThe information used to create a suggestion value:such as a photo or workout table:{is also shared with your journal at that time.\n\nApps that use Private Access to offer suggestions will appear in Journaling Suggestions settings.", &stru_286BDDEB8, 0}];
   v6 = [MEMORY[0x277D755B8] imageNamed:@"momentsPrivacy-80-masked" inBundle:v12];
-  v7 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v8 = [v12 localizedStringForKey:@"Done" value:&stru_286BDDEB8 table:0];
-  [v7 setTitle:v8 forState:0];
+  [boldButton setTitle:v8 forState:0];
 
-  [v7 addTarget:self action:sel_dismissDataAccessExplanationSheet_ forControlEvents:0x2000];
+  [boldButton addTarget:self action:sel_dismissDataAccessExplanationSheet_ forControlEvents:0x2000];
   v9 = [objc_alloc(MEMORY[0x277D37698]) initWithTitle:v4 detailText:v5 icon:v6 contentLayout:2];
-  v10 = [(OBWelcomeController *)v9 buttonTray];
-  [v10 addButton:v7];
+  buttonTray = [(OBWelcomeController *)v9 buttonTray];
+  [buttonTray addButton:boldButton];
 
   [(OBWelcomeController *)v9 setModalInPresentation:1];
   [(MOSuggestionSheetSettingsController *)self presentViewController:v9 animated:1 completion:0];
@@ -1851,23 +1851,23 @@ LABEL_20:
   self->dataAccessPresenter = v9;
 }
 
-- (void)dismissDataAccessExplanationSheet:(id)a3
+- (void)dismissDataAccessExplanationSheet:(id)sheet
 {
   [(OBWelcomeController *)self->dataAccessPresenter dismissViewControllerAnimated:1 completion:0];
   dataAccessPresenter = self->dataAccessPresenter;
   self->dataAccessPresenter = 0;
 }
 
-- (void)navigateToiCloudTCC:(id)a3
+- (void)navigateToiCloudTCC:(id)c
 {
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.AppleAccount/ICLOUD_SERVICE/com.apple.Dataclass"];
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 openSensitiveURL:v4 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v4 withOptions:0];
 }
 
-- (void)syncFromPhone:(id)a3
+- (void)syncFromPhone:(id)phone
 {
-  v4 = a3;
+  phoneCopy = phone;
   v5 = objc_alloc_init(MEMORY[0x277D2A208]);
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
@@ -1902,19 +1902,19 @@ void __53__MOSuggestionSheetSettingsController_syncFromPhone___block_invoke_2(ui
   [WeakRetained reloadSpecifiers];
 }
 
-- (void)didTransitionTo:(id)a3
+- (void)didTransitionTo:(id)to
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v5 = _mo_log_facility_get_os_log(MOLogFacilitySettings);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = toCopy;
     _os_log_impl(&dword_25A200000, v5, OS_LOG_TYPE_INFO, "Sheet didTransitionTo: %@", buf, 0xCu);
   }
 
-  if (![v4 intValue])
+  if (![toCopy intValue])
   {
     objc_initWeak(buf, self);
     block[0] = MEMORY[0x277D85DD0];

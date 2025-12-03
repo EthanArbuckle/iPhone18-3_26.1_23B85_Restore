@@ -1,12 +1,12 @@
 @interface InteractiveRefreshTimer
-- (void)notifiedSignificantTimeChange:(id)a3;
+- (void)notifiedSignificantTimeChange:(id)change;
 @end
 
 @implementation InteractiveRefreshTimer
 
-- (void)notifiedSignificantTimeChange:(id)a3
+- (void)notifiedSignificantTimeChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
   sub_220EECB64();
 }

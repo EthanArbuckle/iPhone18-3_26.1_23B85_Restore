@@ -1,52 +1,52 @@
 @interface HMSoftwareUpdateDocumentation
-+ (id)localizationsForBundle:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)localizationsForBundle:(id)bundle;
+- (BOOL)isEqual:(id)equal;
 - (HMSoftwareUpdateDocumentation)init;
-- (HMSoftwareUpdateDocumentation)initWithBundle:(id)a3;
-- (HMSoftwareUpdateDocumentation)initWithCoder:(id)a3;
-- (HMSoftwareUpdateDocumentation)initWithReleaseNotesSummary:(id)a3 releaseNotes:(id)a4 textReleaseNotes:(id)a5 licenseAgreement:(id)a6 licenseAgreementVersion:(id)a7;
+- (HMSoftwareUpdateDocumentation)initWithBundle:(id)bundle;
+- (HMSoftwareUpdateDocumentation)initWithCoder:(id)coder;
+- (HMSoftwareUpdateDocumentation)initWithReleaseNotesSummary:(id)summary releaseNotes:(id)notes textReleaseNotes:(id)releaseNotes licenseAgreement:(id)agreement licenseAgreementVersion:(id)version;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMSoftwareUpdateDocumentation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMSoftwareUpdateDocumentation *)self releaseNotesSummary];
-  [v4 encodeObject:v5 forKey:@"HM.summary"];
+  coderCopy = coder;
+  releaseNotesSummary = [(HMSoftwareUpdateDocumentation *)self releaseNotesSummary];
+  [coderCopy encodeObject:releaseNotesSummary forKey:@"HM.summary"];
 
-  v6 = [(HMSoftwareUpdateDocumentation *)self releaseNotes];
-  [v4 encodeObject:v6 forKey:@"HM.releaseNotes"];
+  releaseNotes = [(HMSoftwareUpdateDocumentation *)self releaseNotes];
+  [coderCopy encodeObject:releaseNotes forKey:@"HM.releaseNotes"];
 
-  v7 = [(HMSoftwareUpdateDocumentation *)self textReleaseNotes];
-  [v4 encodeObject:v7 forKey:@"HM.textReleaseNotes"];
+  textReleaseNotes = [(HMSoftwareUpdateDocumentation *)self textReleaseNotes];
+  [coderCopy encodeObject:textReleaseNotes forKey:@"HM.textReleaseNotes"];
 
-  v8 = [(HMSoftwareUpdateDocumentation *)self licenseAgreement];
-  [v4 encodeObject:v8 forKey:@"HM.licenseAgreement"];
+  licenseAgreement = [(HMSoftwareUpdateDocumentation *)self licenseAgreement];
+  [coderCopy encodeObject:licenseAgreement forKey:@"HM.licenseAgreement"];
 
-  v9 = [(HMSoftwareUpdateDocumentation *)self licenseAgreementVersion];
-  [v4 encodeObject:v9 forKey:@"HM.slaVersion"];
+  licenseAgreementVersion = [(HMSoftwareUpdateDocumentation *)self licenseAgreementVersion];
+  [coderCopy encodeObject:licenseAgreementVersion forKey:@"HM.slaVersion"];
 }
 
-- (HMSoftwareUpdateDocumentation)initWithCoder:(id)a3
+- (HMSoftwareUpdateDocumentation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.summary"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.releaseNotes"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.textReleaseNotes"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.licenseAgreement"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.slaVersion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.summary"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.releaseNotes"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.textReleaseNotes"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.licenseAgreement"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.slaVersion"];
 
   v10 = [(HMSoftwareUpdateDocumentation *)self initWithReleaseNotesSummary:v5 releaseNotes:v6 textReleaseNotes:v7 licenseAgreement:v8 licenseAgreementVersion:v9];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v21 = 1;
   }
@@ -56,7 +56,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -70,8 +70,8 @@
       goto LABEL_11;
     }
 
-    v7 = [(HMSoftwareUpdateDocumentation *)self releaseNotesSummary];
-    v8 = [(HMSoftwareUpdateDocumentation *)v6 releaseNotesSummary];
+    releaseNotesSummary = [(HMSoftwareUpdateDocumentation *)self releaseNotesSummary];
+    releaseNotesSummary2 = [(HMSoftwareUpdateDocumentation *)v6 releaseNotesSummary];
     v9 = HMFEqualObjects();
 
     if (!v9)
@@ -79,8 +79,8 @@
       goto LABEL_11;
     }
 
-    v10 = [(HMSoftwareUpdateDocumentation *)self releaseNotes];
-    v11 = [(HMSoftwareUpdateDocumentation *)v6 releaseNotes];
+    releaseNotes = [(HMSoftwareUpdateDocumentation *)self releaseNotes];
+    releaseNotes2 = [(HMSoftwareUpdateDocumentation *)v6 releaseNotes];
     v12 = HMFEqualObjects();
 
     if (!v12)
@@ -88,8 +88,8 @@
       goto LABEL_11;
     }
 
-    v13 = [(HMSoftwareUpdateDocumentation *)self textReleaseNotes];
-    v14 = [(HMSoftwareUpdateDocumentation *)v6 textReleaseNotes];
+    textReleaseNotes = [(HMSoftwareUpdateDocumentation *)self textReleaseNotes];
+    textReleaseNotes2 = [(HMSoftwareUpdateDocumentation *)v6 textReleaseNotes];
     v15 = HMFEqualObjects();
 
     if (!v15)
@@ -97,14 +97,14 @@
       goto LABEL_11;
     }
 
-    v16 = [(HMSoftwareUpdateDocumentation *)self licenseAgreement];
-    v17 = [(HMSoftwareUpdateDocumentation *)v6 licenseAgreement];
+    licenseAgreement = [(HMSoftwareUpdateDocumentation *)self licenseAgreement];
+    licenseAgreement2 = [(HMSoftwareUpdateDocumentation *)v6 licenseAgreement];
     v18 = HMFEqualObjects();
 
     if (v18)
     {
-      v19 = [(HMSoftwareUpdateDocumentation *)self licenseAgreementVersion];
-      v20 = [(HMSoftwareUpdateDocumentation *)v6 licenseAgreementVersion];
+      licenseAgreementVersion = [(HMSoftwareUpdateDocumentation *)self licenseAgreementVersion];
+      licenseAgreementVersion2 = [(HMSoftwareUpdateDocumentation *)v6 licenseAgreementVersion];
       v21 = HMFEqualObjects();
     }
 
@@ -120,53 +120,53 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [(HMSoftwareUpdateDocumentation *)self releaseNotesSummary];
-  v4 = [v3 hash];
-  v5 = [(HMSoftwareUpdateDocumentation *)self releaseNotes];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HMSoftwareUpdateDocumentation *)self textReleaseNotes];
-  v8 = [v7 hash];
-  v9 = [(HMSoftwareUpdateDocumentation *)self licenseAgreement];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(HMSoftwareUpdateDocumentation *)self licenseAgreementVersion];
-  v12 = [v11 hash];
+  releaseNotesSummary = [(HMSoftwareUpdateDocumentation *)self releaseNotesSummary];
+  v4 = [releaseNotesSummary hash];
+  releaseNotes = [(HMSoftwareUpdateDocumentation *)self releaseNotes];
+  v6 = [releaseNotes hash] ^ v4;
+  textReleaseNotes = [(HMSoftwareUpdateDocumentation *)self textReleaseNotes];
+  v8 = [textReleaseNotes hash];
+  licenseAgreement = [(HMSoftwareUpdateDocumentation *)self licenseAgreement];
+  v10 = v6 ^ v8 ^ [licenseAgreement hash];
+  licenseAgreementVersion = [(HMSoftwareUpdateDocumentation *)self licenseAgreementVersion];
+  v12 = [licenseAgreementVersion hash];
 
   return v10 ^ v12;
 }
 
-- (HMSoftwareUpdateDocumentation)initWithReleaseNotesSummary:(id)a3 releaseNotes:(id)a4 textReleaseNotes:(id)a5 licenseAgreement:(id)a6 licenseAgreementVersion:(id)a7
+- (HMSoftwareUpdateDocumentation)initWithReleaseNotesSummary:(id)summary releaseNotes:(id)notes textReleaseNotes:(id)releaseNotes licenseAgreement:(id)agreement licenseAgreementVersion:(id)version
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  summaryCopy = summary;
+  notesCopy = notes;
+  releaseNotesCopy = releaseNotes;
+  agreementCopy = agreement;
+  versionCopy = version;
   v31.receiver = self;
   v31.super_class = HMSoftwareUpdateDocumentation;
   v17 = [(HMSoftwareUpdateDocumentation *)&v31 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [summaryCopy copy];
     releaseNotesSummary = v17->_releaseNotesSummary;
     v17->_releaseNotesSummary = v18;
 
-    v20 = [v13 copy];
+    v20 = [notesCopy copy];
     releaseNotes = v17->_releaseNotes;
     v17->_releaseNotes = v20;
 
-    v22 = [v14 copy];
+    v22 = [releaseNotesCopy copy];
     textReleaseNotes = v17->_textReleaseNotes;
     v17->_textReleaseNotes = v22;
 
-    v24 = [v15 copy];
+    v24 = [agreementCopy copy];
     licenseAgreement = v17->_licenseAgreement;
     v17->_licenseAgreement = v24;
 
-    v26 = [v16 copy];
+    v26 = [versionCopy copy];
     licenseAgreementVersion = v17->_licenseAgreementVersion;
     v17->_licenseAgreementVersion = v26;
 
-    v28 = [v12 copy];
+    v28 = [summaryCopy copy];
     v29 = v17->_releaseNotesSummary;
     v17->_releaseNotesSummary = v28;
   }
@@ -187,14 +187,14 @@ LABEL_11:
   objc_exception_throw(v7);
 }
 
-- (HMSoftwareUpdateDocumentation)initWithBundle:(id)a3
+- (HMSoftwareUpdateDocumentation)initWithBundle:(id)bundle
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  bundleCopy = bundle;
+  v5 = bundleCopy;
+  if (bundleCopy)
   {
-    v6 = __resourceBundleForBundle(v4);
+    v6 = __resourceBundleForBundle(bundleCopy);
     v7 = v6;
     if (!v6)
     {
@@ -211,13 +211,13 @@ LABEL_11:
       }
 
       objc_autoreleasePoolPop(v30);
-      v26 = 0;
+      selfCopy2 = 0;
       goto LABEL_46;
     }
 
     v8 = MEMORY[0x1E696AAE8];
-    v9 = [v6 localizations];
-    v10 = [v8 preferredLocalizationsFromArray:v9];
+    localizations = [v6 localizations];
+    v10 = [v8 preferredLocalizationsFromArray:localizations];
 
     if (![v10 count])
     {
@@ -226,7 +226,7 @@ LABEL_11:
     }
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -253,7 +253,7 @@ LABEL_11:
     {
       v56 = v16;
       v52 = v15;
-      v53 = v12;
+      v53 = selfCopy;
       v20 = *v61;
       while (2)
       {
@@ -275,7 +275,7 @@ LABEL_11:
             {
               v29 = v19;
               v15 = v52;
-              v12 = v53;
+              selfCopy = v53;
             }
 
             else
@@ -283,15 +283,15 @@ LABEL_11:
               context = objc_autoreleasePoolPush();
               v33 = HMFGetOSLogHandle();
               v15 = v52;
-              v12 = v53;
+              selfCopy = v53;
               if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
               {
                 v50 = HMFGetLogIdentifier();
-                v49 = [v27 path];
+                path = [v27 path];
                 *v64 = 138543874;
                 v65 = v50;
                 v66 = 2112;
-                v67 = v49;
+                v67 = path;
                 v68 = 2112;
                 v69 = v28;
                 _os_log_impl(&dword_19BB39000, v33, OS_LOG_TYPE_INFO, "%{public}@Unable to load document, %@, with error: %@", v64, 0x20u);
@@ -314,7 +314,7 @@ LABEL_11:
       }
 
       v15 = v52;
-      v12 = v53;
+      selfCopy = v53;
 LABEL_28:
       v16 = v56;
     }
@@ -322,7 +322,7 @@ LABEL_28:
     if (v16 && v19)
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = v12;
+      v35 = selfCopy;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
@@ -344,17 +344,17 @@ LABEL_28:
     {
       v41 = 0;
 LABEL_45:
-      self = [(HMSoftwareUpdateDocumentation *)v12 initWithReleaseNotesSummary:v15 releaseNotes:v16 textReleaseNotes:v19 licenseAgreement:v55 licenseAgreementVersion:v41, v49];
+      self = [(HMSoftwareUpdateDocumentation *)selfCopy initWithReleaseNotesSummary:v15 releaseNotes:v16 textReleaseNotes:v19 licenseAgreement:v55 licenseAgreementVersion:v41, path];
 
-      v26 = self;
+      selfCopy2 = self;
 LABEL_46:
 
       goto LABEL_47;
     }
 
     v58 = v16;
-    v38 = [v5 infoDictionary];
-    v39 = [v38 hmf_dictionaryForKey:@"MobileAssetProperties"];
+    infoDictionary = [v5 infoDictionary];
+    v39 = [infoDictionary hmf_dictionaryForKey:@"MobileAssetProperties"];
     v40 = v39;
     if (v39)
     {
@@ -368,7 +368,7 @@ LABEL_44:
       }
 
       v54 = objc_autoreleasePoolPush();
-      v42 = v12;
+      v42 = selfCopy;
       v43 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
@@ -386,7 +386,7 @@ LABEL_42:
     else
     {
       v54 = objc_autoreleasePoolPush();
-      v46 = v12;
+      v46 = selfCopy;
       v43 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
@@ -394,7 +394,7 @@ LABEL_42:
         *buf = 138543618;
         v71 = v44;
         v72 = 2112;
-        v73 = v38;
+        v73 = infoDictionary;
         v45 = "%{public}@Missing asset properties from asset info: %@";
         goto LABEL_42;
       }
@@ -417,28 +417,28 @@ LABEL_42:
   }
 
   objc_autoreleasePoolPop(v23);
-  v26 = 0;
+  selfCopy2 = 0;
 LABEL_47:
 
   v47 = *MEMORY[0x1E69E9840];
-  return v26;
+  return selfCopy2;
 }
 
-+ (id)localizationsForBundle:(id)a3
++ (id)localizationsForBundle:(id)bundle
 {
-  v3 = __resourceBundleForBundle(a3);
+  v3 = __resourceBundleForBundle(bundle);
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 localizations];
+    localizations = [v3 localizations];
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    localizations = MEMORY[0x1E695E0F0];
   }
 
-  return v5;
+  return localizations;
 }
 
 @end

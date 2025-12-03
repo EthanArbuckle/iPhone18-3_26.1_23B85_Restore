@@ -1,12 +1,12 @@
 @interface FMDeviceActionsViewController
-- (_TtC6FindMy29FMDeviceActionsViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC6FindMy29FMDeviceActionsViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)cancelActionWithSender:(id)a3;
+- (_TtC6FindMy29FMDeviceActionsViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC6FindMy29FMDeviceActionsViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)cancelActionWithSender:(id)sender;
 - (void)performAction;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMDeviceActionsViewController
@@ -16,37 +16,37 @@
   v4.receiver = self;
   v4.super_class = type metadata accessor for FMDeviceActionsViewController();
   v2 = v4.receiver;
-  v3 = [(FMDeviceActionsViewController *)&v4 viewDidLoad];
-  (*((swift_isaMask & *v2) + 0x160))(v3);
+  viewDidLoad = [(FMDeviceActionsViewController *)&v4 viewDidLoad];
+  (*((swift_isaMask & *v2) + 0x160))(viewDidLoad);
   sub_1003BC000();
   [*(v2 + OBJC_IVAR____TtC6FindMy29FMDeviceActionsViewController_performButton) addTarget:v2 action:"performAction" forControlEvents:{64, v4.receiver, v4.super_class}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1003BF970(a3);
+  selfCopy = self;
+  sub_1003BF970(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1003BFEC0(a3);
+  selfCopy = self;
+  sub_1003BFEC0(disappear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   sub_1003BC6AC();
 }
 
 - (void)performAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003BC8BC();
 }
 
-- (void)cancelActionWithSender:(id)a3
+- (void)cancelActionWithSender:(id)sender
 {
   v5[4] = State.rawValue.getter;
   v5[5] = 0;
@@ -59,14 +59,14 @@
   _Block_release(v4);
 }
 
-- (_TtC6FindMy29FMDeviceActionsViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy29FMDeviceActionsViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (!a4)
+  if (!text)
   {
     v13 = 0;
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -74,12 +74,12 @@
 LABEL_5:
     v14 = 0;
     v16 = 0;
-    return sub_1003C1554(v9, v11, a4, v13, v14, v16, a6);
+    return sub_1003C1554(v9, v11, text, v13, v14, v16, layout);
   }
 
-  a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  text = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  if (!a5)
+  if (!name)
   {
     goto LABEL_5;
   }
@@ -87,16 +87,16 @@ LABEL_5:
 LABEL_3:
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  return sub_1003C1554(v9, v11, a4, v13, v14, v16, a6);
+  return sub_1003C1554(v9, v11, text, v13, v14, v16, layout);
 }
 
-- (_TtC6FindMy29FMDeviceActionsViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy29FMDeviceActionsViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (a4)
+  if (text)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    text = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
   }
 
@@ -105,8 +105,8 @@ LABEL_3:
     v13 = 0;
   }
 
-  v14 = a5;
-  return sub_1003C18B0(v9, v11, a4, v13, a5, a6);
+  iconCopy = icon;
+  return sub_1003C18B0(v9, v11, text, v13, icon, layout);
 }
 
 @end

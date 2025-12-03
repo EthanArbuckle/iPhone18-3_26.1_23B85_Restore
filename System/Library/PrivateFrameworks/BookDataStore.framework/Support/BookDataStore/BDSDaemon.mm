@@ -3,9 +3,9 @@
 - (BDSDaemon)init;
 - (BOOL)preflightStartup;
 - (void)dealloc;
-- (void)lrq_setupBeforeListenersWithCompletion:(id)a3;
+- (void)lrq_setupBeforeListenersWithCompletion:(id)completion;
 - (void)lrq_setupListeners;
-- (void)serviceDelegate:(id)a3 didAcceptConnection:(id)a4;
+- (void)serviceDelegate:(id)delegate didAcceptConnection:(id)connection;
 - (void)sq_finishedStartingUp;
 - (void)start;
 @end
@@ -85,20 +85,20 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Startup: Daemon starting up.", buf, 2u);
   }
 
-  v4 = [(BDSDaemon *)self listenersReadyQueue];
+  listenersReadyQueue = [(BDSDaemon *)self listenersReadyQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000C50C;
   block[3] = &unk_10023F6B0;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(listenersReadyQueue, block);
 }
 
-- (void)serviceDelegate:(id)a3 didAcceptConnection:(id)a4
+- (void)serviceDelegate:(id)delegate didAcceptConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(BDSDaemon *)self notificationConnection];
-  [v6 didAcceptConnection:v5];
+  connectionCopy = connection;
+  notificationConnection = [(BDSDaemon *)self notificationConnection];
+  [notificationConnection didAcceptConnection:connectionCopy];
 }
 
 - (BOOL)preflightStartup
@@ -154,16 +154,16 @@ LABEL_8:
   return v11;
 }
 
-- (void)lrq_setupBeforeListenersWithCompletion:(id)a3
+- (void)lrq_setupBeforeListenersWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSDaemon *)self listenersReadyQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  listenersReadyQueue = [(BDSDaemon *)self listenersReadyQueue];
+  dispatch_assert_queue_V2(listenersReadyQueue);
 
   v6 = [[BDSServiceDelegate alloc] initWithServiceConnectionClient:self];
   [(BDSDaemon *)self setServiceDelegate:v6];
 
-  v8 = objc_retainBlock(v4);
+  v8 = objc_retainBlock(completionCopy);
   v7 = v8;
   if (v8)
   {
@@ -174,8 +174,8 @@ LABEL_8:
 
 - (void)lrq_setupListeners
 {
-  v3 = [(BDSDaemon *)self listenersReadyQueue];
-  dispatch_assert_queue_V2(v3);
+  listenersReadyQueue = [(BDSDaemon *)self listenersReadyQueue];
+  dispatch_assert_queue_V2(listenersReadyQueue);
 
   v4 = sub_1000023E8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -187,17 +187,17 @@ LABEL_8:
   v5 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.iBooks.BookDataStoreService"];
   [(BDSDaemon *)self setServiceListener:v5];
 
-  v6 = [(BDSDaemon *)self serviceDelegate];
-  v7 = [(BDSDaemon *)self serviceListener];
-  [v7 setDelegate:v6];
+  serviceDelegate = [(BDSDaemon *)self serviceDelegate];
+  serviceListener = [(BDSDaemon *)self serviceListener];
+  [serviceListener setDelegate:serviceDelegate];
 
-  v8 = [(BDSDaemon *)self serviceListener];
-  [v8 resume];
+  serviceListener2 = [(BDSDaemon *)self serviceListener];
+  [serviceListener2 resume];
 
-  LODWORD(v7) = notify_post("com.apple.iBooks.BookDataStoreService.Started");
+  LODWORD(serviceListener) = notify_post("com.apple.iBooks.BookDataStoreService.Started");
   v9 = sub_1000023E8();
   v10 = v9;
-  if (v7)
+  if (serviceListener)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -214,14 +214,14 @@ LABEL_8:
   v11 = objc_alloc_init(BDSNotificationConnection);
   [(BDSDaemon *)self setNotificationConnection:v11];
 
-  v12 = [(BDSDaemon *)self notificationConnection];
-  [v12 startListeningForNotifications];
+  notificationConnection = [(BDSDaemon *)self notificationConnection];
+  [notificationConnection startListeningForNotifications];
 }
 
 - (void)sq_finishedStartingUp
 {
-  v3 = [(BDSDaemon *)self startupQueue];
-  dispatch_assert_queue_V2(v3);
+  startupQueue = [(BDSDaemon *)self startupQueue];
+  dispatch_assert_queue_V2(startupQueue);
 
   v4 = +[BDSSyncUserDefaults makeOSStateHandler];
   [(BDSDaemon *)self setSyncUserDefaultsStateHandler:v4];

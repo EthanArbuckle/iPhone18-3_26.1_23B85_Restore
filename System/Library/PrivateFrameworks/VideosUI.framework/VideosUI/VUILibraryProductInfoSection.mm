@@ -1,41 +1,41 @@
 @interface VUILibraryProductInfoSection
-+ (id)dataViewWithString:(id)a3;
-+ (id)headerViewWithString:(id)a3;
++ (id)dataViewWithString:(id)string;
++ (id)headerViewWithString:(id)string;
 - (UIEdgeInsets)headerMargin;
 - (UIEdgeInsets)headerPadding;
 @end
 
 @implementation VUILibraryProductInfoSection
 
-+ (id)headerViewWithString:(id)a3
++ (id)headerViewWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(VUITextLayout);
   [(VUITextLayout *)v4 setTextStyle:15];
-  v5 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-  [(VUITextLayout *)v4 setColor:v5];
+  vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+  [(VUITextLayout *)v4 setColor:vui_primaryTextColor];
 
   [(VUITextLayout *)v4 setFontWeight:10];
   [(VUITextLayout *)v4 setTextTransform:2];
   [(VUITextLayout *)v4 setNumberOfLinesAXSmall:1];
   [(VUITextLayout *)v4 setNumberOfLinesAXLarge:1];
-  v6 = [VUILabel labelWithString:v3 textLayout:v4 existingLabel:0];
+  v6 = [VUILabel labelWithString:stringCopy textLayout:v4 existingLabel:0];
 
   return v6;
 }
 
-+ (id)dataViewWithString:(id)a3
++ (id)dataViewWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(VUITextLayout);
   [(VUITextLayout *)v4 setTextStyle:14];
-  v5 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-  [(VUITextLayout *)v4 setColor:v5];
+  vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+  [(VUITextLayout *)v4 setColor:vui_secondaryTextColor];
 
   [(VUITextLayout *)v4 setNumberOfLinesAXSmall:1];
   [(VUITextLayout *)v4 setNumberOfLinesAXLarge:1];
   [(VUITextLayout *)v4 setMinimumScaleFactor:0.7];
-  v6 = [VUILabel labelWithString:v3 textLayout:v4 existingLabel:0];
+  v6 = [VUILabel labelWithString:stringCopy textLayout:v4 existingLabel:0];
 
   return v6;
 }

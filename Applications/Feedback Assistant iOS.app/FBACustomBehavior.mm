@@ -2,17 +2,17 @@
 - (NSDictionary)answers;
 - (NSString)description;
 - (_TtC18Feedback_Assistant17FBACustomBehavior)init;
-- (void)setAnswers:(id)a3;
-- (void)setFormId:(id)a3;
+- (void)setAnswers:(id)answers;
+- (void)setFormId:(id)id;
 @end
 
 @implementation FBACustomBehavior
 
-- (void)setFormId:(id)a3
+- (void)setFormId:(id)id
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant17FBACustomBehavior_formId);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant17FBACustomBehavior_formId) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant17FBACustomBehavior_formId) = id;
+  idCopy = id;
 }
 
 - (NSDictionary)answers
@@ -32,9 +32,9 @@
   return v3.super.isa;
 }
 
-- (void)setAnswers:(id)a3
+- (void)setAnswers:(id)answers
 {
-  if (a3)
+  if (answers)
   {
     v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -50,7 +50,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   FBACustomBehavior.description.getter();
 
   v3 = String._bridgeToObjectiveC()();

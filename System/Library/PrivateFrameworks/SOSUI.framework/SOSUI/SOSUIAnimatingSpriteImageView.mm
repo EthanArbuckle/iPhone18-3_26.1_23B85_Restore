@@ -1,26 +1,26 @@
 @interface SOSUIAnimatingSpriteImageView
-+ (id)_createNewSpriteArray:(id)a3 currentFrame:(unint64_t)a4 arraySize:(unint64_t)a5 interrupted:(BOOL)a6;
++ (id)_createNewSpriteArray:(id)array currentFrame:(unint64_t)frame arraySize:(unint64_t)size interrupted:(BOOL)interrupted;
 - (BOOL)isAnimating;
 - (CGSize)_spriteFrameSize;
-- (SOSUIAnimatingSpriteImageView)initWithFrame:(CGRect)a3;
+- (SOSUIAnimatingSpriteImageView)initWithFrame:(CGRect)frame;
 - (id)_centerPointValues;
-- (unint64_t)_findSpriteIndex:(CGPoint)a3 centerPoints:(id)a4;
+- (unint64_t)_findSpriteIndex:(CGPoint)index centerPoints:(id)points;
 - (void)animateOnce;
 - (void)layoutSubviews;
-- (void)setSpriteImage:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)setSpriteImage:(id)image;
+- (void)setTintColor:(id)color;
 - (void)startAnimating;
-- (void)stopAnimatingFinishingCycle:(BOOL)a3;
+- (void)stopAnimatingFinishingCycle:(BOOL)cycle;
 - (void)updateLayerWithTintColor;
 @end
 
 @implementation SOSUIAnimatingSpriteImageView
 
-- (SOSUIAnimatingSpriteImageView)initWithFrame:(CGRect)a3
+- (SOSUIAnimatingSpriteImageView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SOSUIAnimatingSpriteImageView;
-  v3 = [(SOSUIAnimatingSpriteImageView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SOSUIAnimatingSpriteImageView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,8 +30,8 @@
     imageLayer = v4->_imageLayer;
     v4->_imageLayer = v5;
 
-    v7 = [(SOSUIAnimatingSpriteImageView *)v4 layer];
-    [v7 addSublayer:v4->_imageLayer];
+    layer = [(SOSUIAnimatingSpriteImageView *)v4 layer];
+    [layer addSublayer:v4->_imageLayer];
   }
 
   return v4;
@@ -87,12 +87,12 @@
   return result;
 }
 
-- (void)setSpriteImage:(id)a3
+- (void)setSpriteImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   [(SOSUIAnimatingSpriteImageView *)self stopAnimatingFinishingCycle:0];
-  v5 = [(SOSUIAnimatingSpriteImageView *)self tintColor];
-  v6 = [v4 imageWithTintColor:v5 renderingMode:2];
+  tintColor = [(SOSUIAnimatingSpriteImageView *)self tintColor];
+  v6 = [imageCopy imageWithTintColor:tintColor renderingMode:2];
 
   spriteImage = self->_spriteImage;
   self->_spriteImage = v6;
@@ -103,11 +103,11 @@
   [(SOSUIAnimatingSpriteImageView *)self setNeedsLayout];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = SOSUIAnimatingSpriteImageView;
-  [(SOSUIAnimatingSpriteImageView *)&v4 setTintColor:a3];
+  [(SOSUIAnimatingSpriteImageView *)&v4 setTintColor:color];
   if (self->_spriteImage)
   {
     [(SOSUIAnimatingSpriteImageView *)self setSpriteImage:?];
@@ -117,14 +117,14 @@
 - (void)updateLayerWithTintColor
 {
   imageLayer = self->_imageLayer;
-  v4 = [(SOSUIAnimatingSpriteImageView *)self layer];
-  [v4 setMask:imageLayer];
+  layer = [(SOSUIAnimatingSpriteImageView *)self layer];
+  [layer setMask:imageLayer];
 
-  v8 = [(SOSUIAnimatingSpriteImageView *)self tintColor];
-  v5 = v8;
-  v6 = [v8 CGColor];
-  v7 = [(SOSUIAnimatingSpriteImageView *)self layer];
-  [v7 setBackgroundColor:v6];
+  tintColor = [(SOSUIAnimatingSpriteImageView *)self tintColor];
+  v5 = tintColor;
+  cGColor = [tintColor CGColor];
+  layer2 = [(SOSUIAnimatingSpriteImageView *)self layer];
+  [layer2 setBackgroundColor:cGColor];
 }
 
 - (id)_centerPointValues
@@ -152,34 +152,34 @@
   return v3;
 }
 
-- (unint64_t)_findSpriteIndex:(CGPoint)a3 centerPoints:(id)a4
+- (unint64_t)_findSpriteIndex:(CGPoint)index centerPoints:(id)points
 {
-  y = a3.y;
-  x = a3.x;
+  y = index.y;
+  x = index.x;
   v6 = MEMORY[0x277CCAE60];
-  v7 = a4;
+  pointsCopy = points;
   v8 = [v6 valueWithCGPoint:{x, y}];
-  v9 = [v7 indexOfObject:v8];
+  v9 = [pointsCopy indexOfObject:v8];
 
   return v9;
 }
 
-+ (id)_createNewSpriteArray:(id)a3 currentFrame:(unint64_t)a4 arraySize:(unint64_t)a5 interrupted:(BOOL)a6
++ (id)_createNewSpriteArray:(id)array currentFrame:(unint64_t)frame arraySize:(unint64_t)size interrupted:(BOOL)interrupted
 {
-  v9 = a3;
-  v10 = v9;
-  if (a5 - 1 == a4)
+  arrayCopy = array;
+  v10 = arrayCopy;
+  if (size - 1 == frame)
   {
-    v11 = v9;
+    v11 = arrayCopy;
   }
 
   else
   {
-    v12 = [v9 subarrayWithRange:{a4 + 1, ~a4 + a5}];
+    v12 = [arrayCopy subarrayWithRange:{frame + 1, ~frame + size}];
     v13 = v12;
-    if (a6)
+    if (interrupted)
     {
-      v14 = [v10 subarrayWithRange:{0, a4 + 1}];
+      v14 = [v10 subarrayWithRange:{0, frame + 1}];
       v11 = [v13 arrayByAddingObjectsFromArray:v14];
     }
 
@@ -201,55 +201,55 @@
     {
       if ([(SOSUIAnimatingSpriteImageView *)self isAnimating])
       {
-        v3 = [(CALayer *)self->_imageLayer presentationLayer];
-        [v3 position];
+        presentationLayer = [(CALayer *)self->_imageLayer presentationLayer];
+        [presentationLayer position];
         v5 = v4;
         v7 = v6;
 
-        v8 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
-        v9 = [(SOSUIAnimatingSpriteImageView *)self _findSpriteIndex:v8 centerPoints:v5, v7];
+        _centerPointValues = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
+        v9 = [(SOSUIAnimatingSpriteImageView *)self _findSpriteIndex:_centerPointValues centerPoints:v5, v7];
 
-        v10 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
-        v11 = [v10 count];
+        _centerPointValues2 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
+        v11 = [_centerPointValues2 count];
 
         [(CALayer *)self->_imageLayer removeAnimationForKey:@"PositionKeyframeAnimation"];
-        v12 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
-        v15 = [SOSUIAnimatingSpriteImageView _createNewSpriteArray:v12 currentFrame:v9 arraySize:v11 interrupted:1];
+        _centerPointValues3 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
+        _centerPointValues4 = [SOSUIAnimatingSpriteImageView _createNewSpriteArray:_centerPointValues3 currentFrame:v9 arraySize:v11 interrupted:1];
       }
 
       else
       {
-        v15 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
+        _centerPointValues4 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
       }
 
       imageLayer = self->_imageLayer;
-      v14 = _PositionAnimation(v15, self->_spriteFrameCount / self->_framesPerSecond, 3.4028e38);
+      v14 = _PositionAnimation(_centerPointValues4, self->_spriteFrameCount / self->_framesPerSecond, 3.4028e38);
       [(CALayer *)imageLayer addAnimation:v14 forKey:@"PositionKeyframeAnimation"];
     }
   }
 }
 
-- (void)stopAnimatingFinishingCycle:(BOOL)a3
+- (void)stopAnimatingFinishingCycle:(BOOL)cycle
 {
   imageLayer = self->_imageLayer;
-  if (a3)
+  if (cycle)
   {
-    v5 = [(CALayer *)imageLayer presentationLayer];
-    [v5 position];
+    presentationLayer = [(CALayer *)imageLayer presentationLayer];
+    [presentationLayer position];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
-    v11 = [(SOSUIAnimatingSpriteImageView *)self _findSpriteIndex:v10 centerPoints:v7, v9];
+    _centerPointValues = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
+    v11 = [(SOSUIAnimatingSpriteImageView *)self _findSpriteIndex:_centerPointValues centerPoints:v7, v9];
 
-    v12 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
-    v13 = [v12 count];
+    _centerPointValues2 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
+    v13 = [_centerPointValues2 count];
 
     [(CALayer *)self->_imageLayer removeAnimationForKey:@"PositionKeyframeAnimation"];
     if (v11 != v13 - 1)
     {
-      v14 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
-      v18 = [SOSUIAnimatingSpriteImageView _createNewSpriteArray:v14 currentFrame:v11 arraySize:v13 interrupted:0];
+      _centerPointValues3 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
+      v18 = [SOSUIAnimatingSpriteImageView _createNewSpriteArray:_centerPointValues3 currentFrame:v11 arraySize:v13 interrupted:0];
 
       v15 = [v18 count];
       v16 = self->_imageLayer;
@@ -280,15 +280,15 @@
     [(CALayer *)self->_imageLayer removeAnimationForKey:@"PositionKeyframeAnimation"];
   }
 
-  v6 = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
+  _centerPointValues = [(SOSUIAnimatingSpriteImageView *)self _centerPointValues];
   imageLayer = self->_imageLayer;
-  v4 = _PositionAnimation(v6, self->_spriteFrameCount / self->_framesPerSecond, 1.0);
+  v4 = _PositionAnimation(_centerPointValues, self->_spriteFrameCount / self->_framesPerSecond, 1.0);
   [(CALayer *)imageLayer addAnimation:v4 forKey:@"PositionKeyframeAnimation"];
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v5 = [v6 lastObject];
-  [v5 CGPointValue];
+  lastObject = [_centerPointValues lastObject];
+  [lastObject CGPointValue];
   [(CALayer *)self->_imageLayer setPosition:?];
 
   [MEMORY[0x277CD9FF0] commit];

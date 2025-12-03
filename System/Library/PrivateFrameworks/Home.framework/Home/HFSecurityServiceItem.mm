@@ -1,48 +1,48 @@
 @interface HFSecurityServiceItem
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createControlItemsWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createControlItemsWithOptions:(id)options;
 @end
 
 @implementation HFSecurityServiceItem
 
-- (id)createControlItemsWithOptions:(id)a3
+- (id)createControlItemsWithOptions:(id)options
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
-  v6 = [(HFServiceItem *)self service];
+  optionsCopy = options;
+  controlItemValueSourceForPrimaryService = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
+  service = [(HFServiceItem *)self service];
   v7 = *MEMORY[0x277CCFB60];
-  v8 = [v6 hf_characteristicOfType:*MEMORY[0x277CCFB60]];
-  v9 = [v8 metadata];
+  v8 = [service hf_characteristicOfType:*MEMORY[0x277CCFB60]];
+  metadata = [v8 metadata];
 
-  v10 = [[HFMultiStateValueSet alloc] initWithCharacteristicMetadata:v9];
+  v10 = [[HFMultiStateValueSet alloc] initWithCharacteristicMetadata:metadata];
   v48 = @"title";
-  v11 = HFItemOptionalLocalizedString(@"HFServiceSecuritySystemStateStayArm", v4);
+  v11 = HFItemOptionalLocalizedString(@"HFServiceSecuritySystemStateStayArm", optionsCopy);
   v49[0] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
   [(HFMultiStateValueSet *)v10 addValue:&unk_2825233A0 displayResults:v12];
 
   v46 = @"title";
-  v13 = HFItemOptionalLocalizedString(@"HFServiceSecuritySystemStateAwayArm", v4);
+  v13 = HFItemOptionalLocalizedString(@"HFServiceSecuritySystemStateAwayArm", optionsCopy);
   v47 = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
   [(HFMultiStateValueSet *)v10 addValue:&unk_2825233B8 displayResults:v14];
 
   v44 = @"title";
-  v15 = HFItemOptionalLocalizedString(@"HFServiceSecuritySystemStateNightArm", v4);
+  v15 = HFItemOptionalLocalizedString(@"HFServiceSecuritySystemStateNightArm", optionsCopy);
   v45 = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
   [(HFMultiStateValueSet *)v10 addValue:&unk_2825233D0 displayResults:v16];
 
   v42 = @"title";
-  v17 = HFItemOptionalLocalizedString(@"HFServiceSecuritySystemStateDisarm", v4);
+  v17 = HFItemOptionalLocalizedString(@"HFServiceSecuritySystemStateDisarm", optionsCopy);
   v43 = v17;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
   [(HFMultiStateValueSet *)v10 addValue:&unk_2825233E8 displayResults:v18];
 
   v19 = [MEMORY[0x277CBEB98] set];
-  v20 = [(HFMultiStateValueSet *)v10 allValues];
-  v21 = [v20 count];
+  allValues = [(HFMultiStateValueSet *)v10 allValues];
+  v21 = [allValues count];
 
   if (v21 >= 2)
   {
@@ -55,32 +55,32 @@
     {
       v24 = [HFValueTransformer transformerForValueClass:objc_opt_class() transformBlock:&__block_literal_global_7 reverseTransformBlock:&__block_literal_global_25];
       v36 = v22;
-      v25 = v9;
-      v26 = v5;
+      v25 = metadata;
+      v26 = controlItemValueSourceForPrimaryService;
       v27 = [HFPrimaryStateControlItem alloc];
       v40[0] = @"title";
-      v28 = HFItemOptionalLocalizedString(@"HFControlShortTitleSecuritySystemState", v4);
+      v28 = HFItemOptionalLocalizedString(@"HFControlShortTitleSecuritySystemState", optionsCopy);
       v40[1] = @"actionRequiresDeviceUnlock";
       v41[0] = v28;
       v41[1] = MEMORY[0x277CBEC38];
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:2];
       v30 = v27;
-      v5 = v26;
-      v9 = v25;
+      controlItemValueSourceForPrimaryService = v26;
+      metadata = v25;
       v22 = v36;
-      v31 = [(HFPrimaryStateControlItem *)v30 initWithValueSource:v5 characteristicType:v37 valueTransformer:v24 displayResults:v29];
+      v31 = [(HFPrimaryStateControlItem *)v30 initWithValueSource:controlItemValueSourceForPrimaryService characteristicType:v37 valueTransformer:v24 displayResults:v29];
     }
 
     else
     {
       v32 = [HFMultiStateControlItem alloc];
       v38[0] = @"title";
-      v24 = HFItemOptionalLocalizedString(@"HFControlShortTitleSecuritySystemState", v4);
+      v24 = HFItemOptionalLocalizedString(@"HFControlShortTitleSecuritySystemState", optionsCopy);
       v38[1] = @"actionRequiresDeviceUnlock";
       v39[0] = v24;
       v39[1] = MEMORY[0x277CBEC38];
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
-      v31 = [(HFMultiStateControlItem *)v32 initWithValueSource:v5 characteristicType:v37 possibleValueSet:v10 displayResults:v28];
+      v31 = [(HFMultiStateControlItem *)v32 initWithValueSource:controlItemValueSourceForPrimaryService characteristicType:v37 possibleValueSet:v10 displayResults:v28];
     }
 
     v33 = [MEMORY[0x277CBEB98] setWithObject:v31];
@@ -136,7 +136,7 @@ uint64_t __55__HFSecurityServiceItem_createControlItemsWithOptions___block_invok
   return [v2 numberWithInteger:v3];
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
@@ -144,11 +144,11 @@ uint64_t __55__HFSecurityServiceItem_createControlItemsWithOptions___block_invok
   v15[0] = *MEMORY[0x277CCFB60];
   v15[1] = v5;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
+  optionsCopy = options;
   v8 = [v6 arrayWithObjects:v15 count:2];
   v9 = [v4 setWithArray:v8];
 
-  v10 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v9 options:v7];
+  v10 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v9 options:optionsCopy];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;

@@ -2,129 +2,129 @@
 - ($2FE3C3292E52C4A5B67D27538456EAD9)loopTimeRange;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)crossfadeDuration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)startTime;
-- (void)setCrossfadeDuration:(id *)a3;
-- (void)setLoopTimeRange:(id *)a3;
-- (void)setStartTime:(id *)a3;
+- (void)setCrossfadeDuration:(id *)duration;
+- (void)setLoopTimeRange:(id *)range;
+- (void)setStartTime:(id *)time;
 @end
 
 @implementation PIVideoCrossfadeLoopAdjustmentController
 
-- (void)setStartTime:(id *)a3
+- (void)setStartTime:(id *)time
 {
-  if (a3->var2)
+  if (time->var2)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3->var0];
-    v9 = [(PIAdjustmentController *)self adjustment];
+    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:time->var0];
+    adjustment = [(PIAdjustmentController *)self adjustment];
     v10 = +[PIVideoCrossfadeLoopAdjustmentController startTimeValueKey];
-    [v9 setObject:v8 forKeyedSubscript:v10];
+    [adjustment setObject:v8 forKeyedSubscript:v10];
 
-    v12 = [MEMORY[0x1E696AD98] numberWithInt:a3->var1];
-    v6 = [(PIAdjustmentController *)self adjustment];
+    adjustment4 = [MEMORY[0x1E696AD98] numberWithInt:time->var1];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
     v11 = +[PIVideoCrossfadeLoopAdjustmentController startTimeTimescaleKey];
-    [v6 setObject:v12 forKeyedSubscript:v11];
+    [adjustment2 setObject:adjustment4 forKeyedSubscript:v11];
   }
 
   else
   {
-    v4 = [(PIAdjustmentController *)self adjustment];
+    adjustment3 = [(PIAdjustmentController *)self adjustment];
     v5 = +[PIVideoCrossfadeLoopAdjustmentController startTimeValueKey];
-    [v4 setObject:0 forKeyedSubscript:v5];
+    [adjustment3 setObject:0 forKeyedSubscript:v5];
 
-    v12 = [(PIAdjustmentController *)self adjustment];
-    v6 = +[PIVideoCrossfadeLoopAdjustmentController startTimeTimescaleKey];
-    [v12 setObject:0 forKeyedSubscript:v6];
+    adjustment4 = [(PIAdjustmentController *)self adjustment];
+    adjustment2 = +[PIVideoCrossfadeLoopAdjustmentController startTimeTimescaleKey];
+    [adjustment4 setObject:0 forKeyedSubscript:adjustment2];
   }
 }
 
-- (void)setCrossfadeDuration:(id *)a3
+- (void)setCrossfadeDuration:(id *)duration
 {
-  if (a3->var2)
+  if (duration->var2)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3->var0];
-    v9 = [(PIAdjustmentController *)self adjustment];
+    v8 = [MEMORY[0x1E696AD98] numberWithLongLong:duration->var0];
+    adjustment = [(PIAdjustmentController *)self adjustment];
     v10 = +[PIVideoCrossfadeLoopAdjustmentController crossfadeDurationValueKey];
-    [v9 setObject:v8 forKeyedSubscript:v10];
+    [adjustment setObject:v8 forKeyedSubscript:v10];
 
-    v12 = [MEMORY[0x1E696AD98] numberWithInt:a3->var1];
-    v6 = [(PIAdjustmentController *)self adjustment];
+    adjustment4 = [MEMORY[0x1E696AD98] numberWithInt:duration->var1];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
     v11 = +[PIVideoCrossfadeLoopAdjustmentController crossfadeDurationTimescaleKey];
-    [v6 setObject:v12 forKeyedSubscript:v11];
+    [adjustment2 setObject:adjustment4 forKeyedSubscript:v11];
   }
 
   else
   {
-    v4 = [(PIAdjustmentController *)self adjustment];
+    adjustment3 = [(PIAdjustmentController *)self adjustment];
     v5 = +[PIVideoCrossfadeLoopAdjustmentController crossfadeDurationValueKey];
-    [v4 setObject:0 forKeyedSubscript:v5];
+    [adjustment3 setObject:0 forKeyedSubscript:v5];
 
-    v12 = [(PIAdjustmentController *)self adjustment];
-    v6 = +[PIVideoCrossfadeLoopAdjustmentController crossfadeDurationTimescaleKey];
-    [v12 setObject:0 forKeyedSubscript:v6];
+    adjustment4 = [(PIAdjustmentController *)self adjustment];
+    adjustment2 = +[PIVideoCrossfadeLoopAdjustmentController crossfadeDurationTimescaleKey];
+    [adjustment4 setObject:0 forKeyedSubscript:adjustment2];
   }
 }
 
-- (void)setLoopTimeRange:(id *)a3
+- (void)setLoopTimeRange:(id *)range
 {
-  if ((a3->var0.var2 & 1) == 0 || (a3->var1.var2 & 1) == 0 || a3->var1.var3 || a3->var1.var0 < 0)
+  if ((range->var0.var2 & 1) == 0 || (range->var1.var2 & 1) == 0 || range->var1.var3 || range->var1.var0 < 0)
   {
-    v5 = [(PIAdjustmentController *)self adjustment];
+    adjustment = [(PIAdjustmentController *)self adjustment];
     v6 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeStartValueKey];
-    [v5 setObject:0 forKeyedSubscript:v6];
+    [adjustment setObject:0 forKeyedSubscript:v6];
 
-    v7 = [(PIAdjustmentController *)self adjustment];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
     v8 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeStartTimescaleKey];
-    [v7 setObject:0 forKeyedSubscript:v8];
+    [adjustment2 setObject:0 forKeyedSubscript:v8];
 
-    v9 = [(PIAdjustmentController *)self adjustment];
+    adjustment3 = [(PIAdjustmentController *)self adjustment];
     v10 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeDurationValueKey];
-    [v9 setObject:0 forKeyedSubscript:v10];
+    [adjustment3 setObject:0 forKeyedSubscript:v10];
 
-    v22 = [(PIAdjustmentController *)self adjustment];
-    v11 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeDurationTimescaleKey];
-    [v22 setObject:0 forKeyedSubscript:v11];
+    adjustment4 = [(PIAdjustmentController *)self adjustment];
+    adjustment8 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeDurationTimescaleKey];
+    [adjustment4 setObject:0 forKeyedSubscript:adjustment8];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AD98] numberWithLongLong:a3->var0.var0];
-    v13 = [(PIAdjustmentController *)self adjustment];
+    v12 = [MEMORY[0x1E696AD98] numberWithLongLong:range->var0.var0];
+    adjustment5 = [(PIAdjustmentController *)self adjustment];
     v14 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeStartValueKey];
-    [v13 setObject:v12 forKeyedSubscript:v14];
+    [adjustment5 setObject:v12 forKeyedSubscript:v14];
 
-    v15 = [MEMORY[0x1E696AD98] numberWithInt:a3->var0.var1];
-    v16 = [(PIAdjustmentController *)self adjustment];
+    v15 = [MEMORY[0x1E696AD98] numberWithInt:range->var0.var1];
+    adjustment6 = [(PIAdjustmentController *)self adjustment];
     v17 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeStartTimescaleKey];
-    [v16 setObject:v15 forKeyedSubscript:v17];
+    [adjustment6 setObject:v15 forKeyedSubscript:v17];
 
-    v18 = [MEMORY[0x1E696AD98] numberWithLongLong:a3->var1.var0];
-    v19 = [(PIAdjustmentController *)self adjustment];
+    v18 = [MEMORY[0x1E696AD98] numberWithLongLong:range->var1.var0];
+    adjustment7 = [(PIAdjustmentController *)self adjustment];
     v20 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeDurationValueKey];
-    [v19 setObject:v18 forKeyedSubscript:v20];
+    [adjustment7 setObject:v18 forKeyedSubscript:v20];
 
-    v22 = [MEMORY[0x1E696AD98] numberWithInt:a3->var1.var1];
-    v11 = [(PIAdjustmentController *)self adjustment];
+    adjustment4 = [MEMORY[0x1E696AD98] numberWithInt:range->var1.var1];
+    adjustment8 = [(PIAdjustmentController *)self adjustment];
     v21 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeDurationTimescaleKey];
-    [v11 setObject:v22 forKeyedSubscript:v21];
+    [adjustment8 setObject:adjustment4 forKeyedSubscript:v21];
   }
 }
 
 - ($2FE3C3292E52C4A5B67D27538456EAD9)loopTimeRange
 {
-  v5 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v6 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeStartValueKey];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [adjustment objectForKeyedSubscript:v6];
 
-  v8 = [(PIAdjustmentController *)self adjustment];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
   v9 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeStartTimescaleKey];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [adjustment2 objectForKeyedSubscript:v9];
 
-  v11 = [(PIAdjustmentController *)self adjustment];
+  adjustment3 = [(PIAdjustmentController *)self adjustment];
   v12 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeDurationValueKey];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  v13 = [adjustment3 objectForKeyedSubscript:v12];
 
-  v14 = [(PIAdjustmentController *)self adjustment];
+  adjustment4 = [(PIAdjustmentController *)self adjustment];
   v15 = +[PIVideoCrossfadeLoopAdjustmentController loopTimeRangeDurationTimescaleKey];
-  v16 = [v14 objectForKeyedSubscript:v15];
+  v16 = [adjustment4 objectForKeyedSubscript:v15];
 
   if (v7 && v10 && v13 && v16)
   {
@@ -147,13 +147,13 @@
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)startTime
 {
-  v5 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v6 = +[PIVideoCrossfadeLoopAdjustmentController startTimeValueKey];
-  v13 = [v5 objectForKeyedSubscript:v6];
+  v13 = [adjustment objectForKeyedSubscript:v6];
 
-  v7 = [(PIAdjustmentController *)self adjustment];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
   v8 = +[PIVideoCrossfadeLoopAdjustmentController startTimeTimescaleKey];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [adjustment2 objectForKeyedSubscript:v8];
 
   if (v13)
   {
@@ -182,13 +182,13 @@
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)crossfadeDuration
 {
-  v5 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v6 = +[PIVideoCrossfadeLoopAdjustmentController crossfadeDurationValueKey];
-  v13 = [v5 objectForKeyedSubscript:v6];
+  v13 = [adjustment objectForKeyedSubscript:v6];
 
-  v7 = [(PIAdjustmentController *)self adjustment];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
   v8 = +[PIVideoCrossfadeLoopAdjustmentController crossfadeDurationTimescaleKey];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [adjustment2 objectForKeyedSubscript:v8];
 
   if (v13)
   {

@@ -1,9 +1,9 @@
 @interface WelcomeInteractor
 - (_TtC7NewsUI217WelcomeInteractor)init;
-- (void)dataManager:(id)a3 error:(int64_t)a4;
-- (void)dataManager:(id)a3 userType:(int64_t)a4;
-- (void)dataManagerFeedPrepared:(id)a3;
-- (void)networkReachabilityDidChange:(id)a3;
+- (void)dataManager:(id)manager error:(int64_t)error;
+- (void)dataManager:(id)manager userType:(int64_t)type;
+- (void)dataManagerFeedPrepared:(id)prepared;
+- (void)networkReachabilityDidChange:(id)change;
 @end
 
 @implementation WelcomeInteractor
@@ -15,40 +15,40 @@
   return result;
 }
 
-- (void)dataManager:(id)a3 error:(int64_t)a4
+- (void)dataManager:(id)manager error:(int64_t)error
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_218CCC1B0();
   swift_unknownObjectRelease();
 }
 
-- (void)dataManagerFeedPrepared:(id)a3
+- (void)dataManagerFeedPrepared:(id)prepared
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_218CCC264();
   swift_unknownObjectRelease();
 }
 
-- (void)dataManager:(id)a3 userType:(int64_t)a4
+- (void)dataManager:(id)manager userType:(int64_t)type
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_218CCC350(a4);
+  selfCopy = self;
+  sub_218CCC350(type);
   swift_unknownObjectRelease();
 }
 
-- (void)networkReachabilityDidChange:(id)a3
+- (void)networkReachabilityDidChange:(id)change
 {
-  v4 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
   sub_218CCB970();
-  if (a3)
+  if (change)
   {
-    if ([a3 isNetworkReachable])
+    if ([change isNetworkReachable])
     {
-      [*(&v4->super.isa + OBJC_IVAR____TtC7NewsUI217WelcomeInteractor_dataManager) beginFetchingUserType];
+      [*(&selfCopy->super.isa + OBJC_IVAR____TtC7NewsUI217WelcomeInteractor_dataManager) beginFetchingUserType];
 
       swift_unknownObjectRelease();
     }

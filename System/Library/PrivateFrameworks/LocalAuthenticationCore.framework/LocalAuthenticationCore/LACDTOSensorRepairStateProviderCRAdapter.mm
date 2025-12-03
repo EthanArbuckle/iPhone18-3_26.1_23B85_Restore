@@ -1,8 +1,8 @@
 @interface LACDTOSensorRepairStateProviderCRAdapter
-- (LACDTOSensorRepairStateProviderCRAdapter)initWithReplyQueue:(id)a3;
-- (void)_fetchRepairStateWithCompletion:(id)a3;
+- (LACDTOSensorRepairStateProviderCRAdapter)initWithReplyQueue:(id)queue;
+- (void)_fetchRepairStateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)fetchRepairStateWithCompletion:(id)a3;
+- (void)fetchRepairStateWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOSensorRepairStateProviderCRAdapter
@@ -11,21 +11,21 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1B0233000, a2, OS_LOG_TYPE_DEBUG, "%{public}@ will dealloc", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (LACDTOSensorRepairStateProviderCRAdapter)initWithReplyQueue:(id)a3
+- (LACDTOSensorRepairStateProviderCRAdapter)initWithReplyQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = LACDTOSensorRepairStateProviderCRAdapter;
   v6 = [(LACDTOSensorRepairStateProviderCRAdapter *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_replyQueue, a3);
+    objc_storeStrong(&v6->_replyQueue, queue);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = [LACConcurrencyUtilities createUserInitiatedSerialQueueWithIdentifier:v9];
@@ -36,9 +36,9 @@
   return v7;
 }
 
-- (void)fetchRepairStateWithCompletion:(id)a3
+- (void)fetchRepairStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -46,8 +46,8 @@
   block[2] = __75__LACDTOSensorRepairStateProviderCRAdapter_fetchRepairStateWithCompletion___block_invoke;
   block[3] = &unk_1E7A957E8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
@@ -107,17 +107,17 @@ void __75__LACDTOSensorRepairStateProviderCRAdapter_fetchRepairStateWithCompleti
   }
 }
 
-- (void)_fetchRepairStateWithCompletion:(id)a3
+- (void)_fetchRepairStateWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (CoreRepairCoreLibraryCore() && CoreRepairCoreLibraryCore() && getCRIsSelfRepairedComponentSymbolLoc())
   {
     v5 = LACLogDTOSensor();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ will start self-repair query", &v15, 0xCu);
     }
 
@@ -133,7 +133,7 @@ void __75__LACDTOSensorRepairStateProviderCRAdapter_fetchRepairStateWithCompleti
     {
       v10 = [MEMORY[0x1E696AD98] numberWithBool:v7];
       v15 = 138543618;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = v10;
       _os_log_impl(&dword_1B0233000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ did finish self-repair query with result %@", &v15, 0x16u);
@@ -150,7 +150,7 @@ void __75__LACDTOSensorRepairStateProviderCRAdapter_fetchRepairStateWithCompleti
     }
 
     v12 = [[LACDTOMutableSensorRepairState alloc] initWithFlag:v11];
-    v4[2](v4, v12, 0);
+    completionCopy[2](completionCopy, v12, 0);
   }
 
   else
@@ -162,7 +162,7 @@ void __75__LACDTOSensorRepairStateProviderCRAdapter_fetchRepairStateWithCompleti
       [(LACDTOSensorRepairStateProviderCRAdapter *)self _fetchRepairStateWithCompletion:v12, v13];
     }
 
-    (v4)[2](v4, 0, v12);
+    (completionCopy)[2](completionCopy, 0, v12);
   }
 
   v14 = *MEMORY[0x1E69E9840];

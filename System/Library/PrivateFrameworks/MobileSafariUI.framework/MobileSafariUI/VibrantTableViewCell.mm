@@ -1,19 +1,19 @@
 @interface VibrantTableViewCell
-- (void)setUsesVibrantEffect:(BOOL)a3;
+- (void)setUsesVibrantEffect:(BOOL)effect;
 @end
 
 @implementation VibrantTableViewCell
 
-- (void)setUsesVibrantEffect:(BOOL)a3
+- (void)setUsesVibrantEffect:(BOOL)effect
 {
-  if (self->_usesVibrantEffect != a3)
+  if (self->_usesVibrantEffect != effect)
   {
-    v4 = a3;
-    self->_usesVibrantEffect = a3;
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(VibrantTableViewCell *)self setBackgroundColor:v6];
+    effectCopy = effect;
+    self->_usesVibrantEffect = effect;
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(VibrantTableViewCell *)self setBackgroundColor:clearColor];
 
-    [(VibrantTableViewCell *)self sf_setUsesVibrantSelection:v4];
+    [(VibrantTableViewCell *)self sf_setUsesVibrantSelection:effectCopy];
   }
 }
 

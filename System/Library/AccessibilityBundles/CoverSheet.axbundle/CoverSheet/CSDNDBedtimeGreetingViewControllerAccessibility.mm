@@ -1,16 +1,16 @@
 @interface CSDNDBedtimeGreetingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CSDNDBedtimeGreetingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSDNDBedtimeGreetingViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CSModalView" hasInstanceMethod:@"_secondaryActionButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSDNDBedtimeGreetingViewController" hasInstanceMethod:@"handleSecondaryActionForView:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSDNDBedtimeGreetingViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CSModalView" hasInstanceMethod:@"_secondaryActionButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSDNDBedtimeGreetingViewController" hasInstanceMethod:@"handleSecondaryActionForView:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

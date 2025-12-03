@@ -1,13 +1,13 @@
 @interface APPBAttributionResponse
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addVersionedAttributionDetails:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addVersionedAttributionDetails:(id)details;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAttributionResponse
@@ -24,22 +24,22 @@
   return v3;
 }
 
-- (void)addVersionedAttributionDetails:(id)a3
+- (void)addVersionedAttributionDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   versionedAttributionDetails = self->_versionedAttributionDetails;
-  v8 = v4;
+  v8 = detailsCopy;
   if (!versionedAttributionDetails)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_versionedAttributionDetails;
     self->_versionedAttributionDetails = v6;
 
-    v4 = v8;
+    detailsCopy = v8;
     versionedAttributionDetails = self->_versionedAttributionDetails;
   }
 
-  [(NSMutableArray *)versionedAttributionDetails addObject:v4];
+  [(NSMutableArray *)versionedAttributionDetails addObject:detailsCopy];
 }
 
 - (id)description
@@ -47,8 +47,8 @@
   v7.receiver = self;
   v7.super_class = APPBAttributionResponse;
   v3 = [(APPBAttributionResponse *)&v7 description];
-  v4 = [(APPBAttributionResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAttributionResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -78,8 +78,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -94,9 +94,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -129,28 +129,28 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(APPBAttributionResponse *)self versionedAttributionDetailsCount])
   {
-    [v8 clearVersionedAttributionDetails];
-    v4 = [(APPBAttributionResponse *)self versionedAttributionDetailsCount];
-    if (v4)
+    [toCopy clearVersionedAttributionDetails];
+    versionedAttributionDetailsCount = [(APPBAttributionResponse *)self versionedAttributionDetailsCount];
+    if (versionedAttributionDetailsCount)
     {
-      v5 = v4;
+      v5 = versionedAttributionDetailsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(APPBAttributionResponse *)self versionedAttributionDetailsAtIndex:i];
-        [v8 addVersionedAttributionDetails:v7];
+        [toCopy addVersionedAttributionDetails:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -171,7 +171,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addVersionedAttributionDetails:v11];
 
         v10 = v10 + 1;
@@ -187,13 +187,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     versionedAttributionDetails = self->_versionedAttributionDetails;
-    if (versionedAttributionDetails | v4[1])
+    if (versionedAttributionDetails | equalCopy[1])
     {
       v6 = [(NSMutableArray *)versionedAttributionDetails isEqual:?];
     }
@@ -212,13 +212,13 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

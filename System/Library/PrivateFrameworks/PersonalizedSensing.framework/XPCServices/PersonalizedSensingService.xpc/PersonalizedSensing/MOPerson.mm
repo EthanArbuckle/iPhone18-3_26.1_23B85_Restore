@@ -1,175 +1,175 @@
 @interface MOPerson
-- (BOOL)isEqual:(id)a3;
-- (MOPerson)initWithCoder:(id)a3;
-- (MOPerson)initWithLocalIdentifier:(id)a3 name:(id)a4 contactIdentifier:(id)a5 family:(id)a6 isPHPersonTypeImportant:(BOOL)a7 isMePerson:(BOOL)a8 mePersonIdentified:(BOOL)a9 personRelationships:(id)a10 priorityScore:(double)a11 significanceScore:(double)a12;
-- (MOPerson)initWithPersonDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MOPerson)initWithCoder:(id)coder;
+- (MOPerson)initWithLocalIdentifier:(id)identifier name:(id)name contactIdentifier:(id)contactIdentifier family:(id)family isPHPersonTypeImportant:(BOOL)important isMePerson:(BOOL)person mePersonIdentified:(BOOL)identified personRelationships:(id)self0 priorityScore:(double)self1 significanceScore:(double)self2;
+- (MOPerson)initWithPersonDictionary:(id)dictionary;
 - (id)description;
-- (int64_t)comparePersons:(id)a3;
+- (int64_t)comparePersons:(id)persons;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOPerson
 
-- (MOPerson)initWithLocalIdentifier:(id)a3 name:(id)a4 contactIdentifier:(id)a5 family:(id)a6 isPHPersonTypeImportant:(BOOL)a7 isMePerson:(BOOL)a8 mePersonIdentified:(BOOL)a9 personRelationships:(id)a10 priorityScore:(double)a11 significanceScore:(double)a12
+- (MOPerson)initWithLocalIdentifier:(id)identifier name:(id)name contactIdentifier:(id)contactIdentifier family:(id)family isPHPersonTypeImportant:(BOOL)important isMePerson:(BOOL)person mePersonIdentified:(BOOL)identified personRelationships:(id)self0 priorityScore:(double)self1 significanceScore:(double)self2
 {
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = a10;
+  identifierCopy = identifier;
+  nameCopy = name;
+  contactIdentifierCopy = contactIdentifier;
+  familyCopy = family;
+  relationshipsCopy = relationships;
   v37.receiver = self;
   v37.super_class = MOPerson;
   v25 = [(MOPerson *)&v37 init];
   if (v25)
   {
-    v26 = [v20 copy];
+    v26 = [identifierCopy copy];
     localIdentifier = v25->_localIdentifier;
     v25->_localIdentifier = v26;
 
-    v28 = [v21 copy];
+    v28 = [nameCopy copy];
     name = v25->_name;
     v25->_name = v28;
 
-    v30 = [v22 copy];
+    v30 = [contactIdentifierCopy copy];
     contactIdentifier = v25->_contactIdentifier;
     v25->_contactIdentifier = v30;
 
-    v32 = [v23 copy];
+    v32 = [familyCopy copy];
     family = v25->_family;
     v25->_family = v32;
 
-    v25->_isPHPersonTypeImportant = a7;
-    v25->_isMePerson = a8;
-    v25->_mePersonIdentified = a9;
-    v34 = [v24 copy];
+    v25->_isPHPersonTypeImportant = important;
+    v25->_isMePerson = person;
+    v25->_mePersonIdentified = identified;
+    v34 = [relationshipsCopy copy];
     personRelationships = v25->_personRelationships;
     v25->_personRelationships = v34;
 
-    v25->_priorityScore = a11;
-    v25->_significanceScore = a12;
+    v25->_priorityScore = score;
+    v25->_significanceScore = significanceScore;
   }
 
   return v25;
 }
 
-- (MOPerson)initWithPersonDictionary:(id)a3
+- (MOPerson)initWithPersonDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"localIdentifier"];
-  v6 = [v4 objectForKey:@"name"];
-  v7 = [v4 objectForKey:@"contactIdentifier"];
-  v8 = [v4 objectForKey:@"family"];
-  v9 = [v4 objectForKey:@"priorityScore"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"localIdentifier"];
+  v6 = [dictionaryCopy objectForKey:@"name"];
+  v7 = [dictionaryCopy objectForKey:@"contactIdentifier"];
+  v8 = [dictionaryCopy objectForKey:@"family"];
+  v9 = [dictionaryCopy objectForKey:@"priorityScore"];
   [v9 doubleValue];
   v11 = v10;
 
-  v12 = [v4 objectForKey:@"significanceScore"];
+  v12 = [dictionaryCopy objectForKey:@"significanceScore"];
   [v12 doubleValue];
   v14 = v13;
 
-  v15 = [v4 objectForKey:@"isPHPersonTypeImportant"];
-  v16 = [v15 BOOLValue];
+  v15 = [dictionaryCopy objectForKey:@"isPHPersonTypeImportant"];
+  bOOLValue = [v15 BOOLValue];
 
-  v17 = [v4 objectForKey:@"isMePerson"];
-  v18 = [v17 BOOLValue];
+  v17 = [dictionaryCopy objectForKey:@"isMePerson"];
+  bOOLValue2 = [v17 BOOLValue];
 
-  v19 = [v4 objectForKey:@"mePersonIdentified"];
+  v19 = [dictionaryCopy objectForKey:@"mePersonIdentified"];
 
-  LOBYTE(v4) = [v19 BOOLValue];
-  LOBYTE(v22) = v4;
-  v20 = [(MOPerson *)self initWithLocalIdentifier:v5 name:v6 contactIdentifier:v7 family:v8 isPHPersonTypeImportant:v16 isMePerson:v18 mePersonIdentified:v11 personRelationships:v14 priorityScore:v22 significanceScore:0];
+  LOBYTE(dictionaryCopy) = [v19 BOOLValue];
+  LOBYTE(v22) = dictionaryCopy;
+  v20 = [(MOPerson *)self initWithLocalIdentifier:v5 name:v6 contactIdentifier:v7 family:v8 isPHPersonTypeImportant:bOOLValue isMePerson:bOOLValue2 mePersonIdentified:v11 personRelationships:v14 priorityScore:v22 significanceScore:0];
 
   return v20;
 }
 
 - (id)description
 {
-  v3 = [(MOPerson *)self localIdentifier];
-  v4 = [(MOPerson *)self name];
-  v5 = [v4 mask];
-  v6 = [(MOPerson *)self contactIdentifier];
-  v7 = [(MOPerson *)self isPHPersonTypeImportant];
-  v8 = [(MOPerson *)self isMePerson];
-  v9 = [(MOPerson *)self mePersonIdentified];
-  v10 = [(MOPerson *)self personRelationships];
-  v11 = [(MOPerson *)self family];
+  localIdentifier = [(MOPerson *)self localIdentifier];
+  name = [(MOPerson *)self name];
+  mask = [name mask];
+  contactIdentifier = [(MOPerson *)self contactIdentifier];
+  isPHPersonTypeImportant = [(MOPerson *)self isPHPersonTypeImportant];
+  isMePerson = [(MOPerson *)self isMePerson];
+  mePersonIdentified = [(MOPerson *)self mePersonIdentified];
+  personRelationships = [(MOPerson *)self personRelationships];
+  family = [(MOPerson *)self family];
   [(MOPerson *)self significanceScore];
   v13 = v12;
   [(MOPerson *)self priorityScore];
-  v15 = [NSString stringWithFormat:@"<MOPerson localIdentifier, %@, name, %@, contactIdentifier, %@, isPHPersonTypeImportant, %d, isMePerson, %d, mePersonIdentified, %d, peopleClassification, %@, family, %@, significanceScore, %.1f, priorityScore, %.1f>", v3, v5, v6, v7, v8, v9, v10, v11, v13, v14];
+  v15 = [NSString stringWithFormat:@"<MOPerson localIdentifier, %@, name, %@, contactIdentifier, %@, isPHPersonTypeImportant, %d, isMePerson, %d, mePersonIdentified, %d, peopleClassification, %@, family, %@, significanceScore, %.1f, priorityScore, %.1f>", localIdentifier, mask, contactIdentifier, isPHPersonTypeImportant, isMePerson, mePersonIdentified, personRelationships, family, v13, v14];
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   localIdentifier = self->_localIdentifier;
-  v5 = a3;
-  [v5 encodeObject:localIdentifier forKey:@"localIdentifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_givenName forKey:@"givenName"];
-  [v5 encodeObject:self->_contactIdentifier forKey:@"contactIdentifier"];
-  [v5 encodeObject:self->_family forKey:@"family"];
-  [v5 encodeBool:self->_isPHPersonTypeImportant forKey:@"isPHPersonTypeImportant"];
-  [v5 encodeBool:self->_isMePerson forKey:@"isMePerson"];
-  [v5 encodeBool:self->_mePersonIdentified forKey:@"mePersonIdentified"];
-  [v5 encodeObject:self->_personRelationships forKey:@"personRelationships"];
-  [v5 encodeDouble:@"priorityScore" forKey:self->_priorityScore];
-  [v5 encodeDouble:@"significanceScore" forKey:self->_significanceScore];
-  [v5 encodeInt64:self->_sourceEventAccessType forKey:@"sourceEventAccessType"];
-  [v5 encodeObject:self->_sourceEventIdentifier forKey:@"sourceEventIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:localIdentifier forKey:@"localIdentifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_givenName forKey:@"givenName"];
+  [coderCopy encodeObject:self->_contactIdentifier forKey:@"contactIdentifier"];
+  [coderCopy encodeObject:self->_family forKey:@"family"];
+  [coderCopy encodeBool:self->_isPHPersonTypeImportant forKey:@"isPHPersonTypeImportant"];
+  [coderCopy encodeBool:self->_isMePerson forKey:@"isMePerson"];
+  [coderCopy encodeBool:self->_mePersonIdentified forKey:@"mePersonIdentified"];
+  [coderCopy encodeObject:self->_personRelationships forKey:@"personRelationships"];
+  [coderCopy encodeDouble:@"priorityScore" forKey:self->_priorityScore];
+  [coderCopy encodeDouble:@"significanceScore" forKey:self->_significanceScore];
+  [coderCopy encodeInt64:self->_sourceEventAccessType forKey:@"sourceEventAccessType"];
+  [coderCopy encodeObject:self->_sourceEventIdentifier forKey:@"sourceEventIdentifier"];
 }
 
-- (MOPerson)initWithCoder:(id)a3
+- (MOPerson)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"localIdentifier"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"family"];
-  v8 = [v3 decodeBoolForKey:@"isPHPersonTypeImportant"];
-  v9 = [v3 decodeBoolForKey:@"isMePerson"];
-  v10 = [v3 decodeBoolForKey:@"mePersonIdentified"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localIdentifier"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"family"];
+  v8 = [coderCopy decodeBoolForKey:@"isPHPersonTypeImportant"];
+  v9 = [coderCopy decodeBoolForKey:@"isMePerson"];
+  v10 = [coderCopy decodeBoolForKey:@"mePersonIdentified"];
   v11 = objc_opt_class();
   v12 = [NSSet setWithObjects:v11, objc_opt_class(), 0];
-  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"personRelationships"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"personRelationships"];
 
-  [v3 decodeDoubleForKey:@"priorityScore"];
+  [coderCopy decodeDoubleForKey:@"priorityScore"];
   v15 = v14;
-  [v3 decodeDoubleForKey:@"significanceScore"];
+  [coderCopy decodeDoubleForKey:@"significanceScore"];
   LOBYTE(v21) = v10;
   v17 = [(MOPerson *)self initWithLocalIdentifier:v4 name:v5 contactIdentifier:v6 family:v7 isPHPersonTypeImportant:v8 isMePerson:v9 mePersonIdentified:v15 personRelationships:v16 priorityScore:v21 significanceScore:v13];
   if (v17)
   {
-    v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sourceEventIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceEventIdentifier"];
     [(MOPerson *)v17 setSourceEventIdentifier:v18];
 
-    -[MOPerson setSourceEventAccessType:](v17, "setSourceEventAccessType:", [v3 decodeInt64ForKey:@"sourceEventAccessType"]);
-    v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"givenName"];
+    -[MOPerson setSourceEventAccessType:](v17, "setSourceEventAccessType:", [coderCopy decodeInt64ForKey:@"sourceEventAccessType"]);
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"givenName"];
     [(MOPerson *)v17 setGivenName:v19];
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v6 = v4;
-    v7 = [(MOPerson *)self localIdentifier];
-    if (v7)
+    v6 = equalCopy;
+    localIdentifier = [(MOPerson *)self localIdentifier];
+    if (localIdentifier)
     {
-      v8 = [(MOPerson *)v6 localIdentifier];
-      LODWORD(v9) = v8 != 0;
+      localIdentifier2 = [(MOPerson *)v6 localIdentifier];
+      LODWORD(v9) = localIdentifier2 != 0;
     }
 
     else
@@ -177,11 +177,11 @@
       LODWORD(v9) = 0;
     }
 
-    v11 = [(MOPerson *)self contactIdentifier];
-    if (v11)
+    contactIdentifier = [(MOPerson *)self contactIdentifier];
+    if (contactIdentifier)
     {
-      v12 = [(MOPerson *)v6 contactIdentifier];
-      v13 = v12 != 0;
+      contactIdentifier2 = [(MOPerson *)v6 contactIdentifier];
+      v13 = contactIdentifier2 != 0;
     }
 
     else
@@ -191,9 +191,9 @@
 
     if (v9)
     {
-      v14 = [(MOPerson *)self localIdentifier];
-      v15 = [(MOPerson *)v6 localIdentifier];
-      v16 = [v14 isEqualToString:v15];
+      localIdentifier3 = [(MOPerson *)self localIdentifier];
+      localIdentifier4 = [(MOPerson *)v6 localIdentifier];
+      v16 = [localIdentifier3 isEqualToString:localIdentifier4];
     }
 
     else
@@ -201,11 +201,11 @@
       v16 = 0;
     }
 
-    v17 = [(MOPerson *)self name];
-    if (v17)
+    name = [(MOPerson *)self name];
+    if (name)
     {
-      v18 = [(MOPerson *)v6 name];
-      if (v18)
+      name2 = [(MOPerson *)v6 name];
+      if (name2)
       {
         [(MOPerson *)self name];
         v9 = v27 = v9;
@@ -233,9 +233,9 @@
 
     if (v13)
     {
-      v23 = [(MOPerson *)self contactIdentifier];
-      v24 = [(MOPerson *)v6 contactIdentifier];
-      v25 = [v23 isEqualToString:v24];
+      contactIdentifier3 = [(MOPerson *)self contactIdentifier];
+      contactIdentifier4 = [(MOPerson *)v6 contactIdentifier];
+      v25 = [contactIdentifier3 isEqualToString:contactIdentifier4];
     }
 
     else
@@ -259,11 +259,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MOPerson *)self localIdentifier];
-  if (v3)
+  localIdentifier = [(MOPerson *)self localIdentifier];
+  if (localIdentifier)
   {
-    v4 = [(MOPerson *)self localIdentifier];
-    v5 = [v4 hash];
+    localIdentifier2 = [(MOPerson *)self localIdentifier];
+    v5 = [localIdentifier2 hash];
   }
 
   else
@@ -271,11 +271,11 @@
     v5 = 0;
   }
 
-  v6 = [(MOPerson *)self name];
-  if (v6)
+  name = [(MOPerson *)self name];
+  if (name)
   {
-    v7 = [(MOPerson *)self name];
-    v8 = [v7 hash];
+    name2 = [(MOPerson *)self name];
+    v8 = [name2 hash];
   }
 
   else
@@ -283,11 +283,11 @@
     v8 = 0;
   }
 
-  v9 = [(MOPerson *)self givenName];
-  if (v9)
+  givenName = [(MOPerson *)self givenName];
+  if (givenName)
   {
-    v10 = [(MOPerson *)self givenName];
-    v11 = [v10 hash];
+    givenName2 = [(MOPerson *)self givenName];
+    v11 = [givenName2 hash];
   }
 
   else
@@ -295,11 +295,11 @@
     v11 = 0;
   }
 
-  v12 = [(MOPerson *)self contactIdentifier];
-  if (v12)
+  contactIdentifier = [(MOPerson *)self contactIdentifier];
+  if (contactIdentifier)
   {
-    v13 = [(MOPerson *)self contactIdentifier];
-    v14 = [v13 hash];
+    contactIdentifier2 = [(MOPerson *)self contactIdentifier];
+    v14 = [contactIdentifier2 hash];
   }
 
   else
@@ -310,28 +310,28 @@
   return v8 ^ v5 ^ v11 ^ v14;
 }
 
-- (int64_t)comparePersons:(id)a3
+- (int64_t)comparePersons:(id)persons
 {
-  v4 = a3;
+  personsCopy = persons;
   if (![(MOPerson *)self isMePerson])
   {
-    if ([v4 isMePerson])
+    if ([personsCopy isMePerson])
     {
-      v5 = 1;
+      isPHPersonTypeImportant = 1;
       goto LABEL_7;
     }
 
     if (![(MOPerson *)self isPHPersonTypeImportant])
     {
-      v5 = [v4 isPHPersonTypeImportant];
+      isPHPersonTypeImportant = [personsCopy isPHPersonTypeImportant];
       goto LABEL_7;
     }
   }
 
-  v5 = -1;
+  isPHPersonTypeImportant = -1;
 LABEL_7:
 
-  return v5;
+  return isPHPersonTypeImportant;
 }
 
 @end

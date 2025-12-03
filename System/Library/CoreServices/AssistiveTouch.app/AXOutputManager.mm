@@ -1,39 +1,39 @@
 @interface AXOutputManager
 + (AXOutputManager)sharedOutputManager;
 - (AXOutputManager)init;
-- (BOOL)_scatLanguage:(id)a3 matchesOverrideLanguage:(id)a4;
-- (BOOL)_scatOutputCanSpeakString:(id)a3 withLanguage:(id)a4;
+- (BOOL)_scatLanguage:(id)language matchesOverrideLanguage:(id)overrideLanguage;
+- (BOOL)_scatOutputCanSpeakString:(id)string withLanguage:(id)language;
 - (BOOL)areSoundEffectsEnabled;
 - (BOOL)isSpeechEnabled;
 - (BOOL)scanningInterruptsSpeech;
 - (float)_volume;
-- (id)_scatProcessAttributedString:(id)a3;
-- (id)_urlForSoundEffect:(int)a3;
-- (id)processAXOutputAction:(id)a3;
-- (id)selectionForLanguage:(id)a3;
-- (void)_applySelectionToAction:(id)a3 selection:(id)a4;
-- (void)_audioPlayerFinished:(id)a3;
+- (id)_scatProcessAttributedString:(id)string;
+- (id)_urlForSoundEffect:(int)effect;
+- (id)processAXOutputAction:(id)action;
+- (id)selectionForLanguage:(id)language;
+- (void)_applySelectionToAction:(id)action selection:(id)selection;
+- (void)_audioPlayerFinished:(id)finished;
 - (void)_flushSoundIDs;
-- (void)_scatAddCompletionBlockToAction:(id)a3 completionBlock:(id)a4;
-- (void)_setDuckingLevelAlways:(double)a3;
-- (void)_setDuckingLevelOnlySpeaking:(double)a3;
+- (void)_scatAddCompletionBlockToAction:(id)action completionBlock:(id)block;
+- (void)_setDuckingLevelAlways:(double)always;
+- (void)_setDuckingLevelOnlySpeaking:(double)speaking;
 - (void)_setDuckingProperties;
 - (void)_setUnDuckingProperties;
 - (void)_updateAudioSessionProperties;
 - (void)_updateDuckingMode;
-- (void)_updateSoundEffect:(int)a3 isActive:(BOOL)a4;
+- (void)_updateSoundEffect:(int)effect isActive:(BOOL)active;
 - (void)cancelSpeech;
 - (void)clearRecentSpeech;
 - (void)dealloc;
-- (void)dispatchSpeechAction:(id)a3;
-- (void)outputScannerAnnouncement:(id)a3 completionBlock:(id)a4;
-- (void)outputScannerAttributedString:(id)a3 completionBlock:(id)a4;
-- (void)outputScannerFocusContext:(id)a3 completion:(id)a4;
+- (void)dispatchSpeechAction:(id)action;
+- (void)outputScannerAnnouncement:(id)announcement completionBlock:(id)block;
+- (void)outputScannerAttributedString:(id)string completionBlock:(id)block;
+- (void)outputScannerFocusContext:(id)context completion:(id)completion;
 - (void)playMouseClickSound;
-- (void)playSound:(int)a3;
-- (void)setSoundAudioSessionActive:(BOOL)a3;
-- (void)setSpeechAudioSessionActive:(BOOL)a3;
-- (void)setSpeechEnabled:(BOOL)a3;
+- (void)playSound:(int)sound;
+- (void)setSoundAudioSessionActive:(BOOL)active;
+- (void)setSpeechAudioSessionActive:(BOOL)active;
+- (void)setSpeechEnabled:(BOOL)enabled;
 @end
 
 @implementation AXOutputManager
@@ -117,11 +117,11 @@
   [(AXOutputManager *)&v3 dealloc];
 }
 
-- (void)setSpeechEnabled:(BOOL)a3
+- (void)setSpeechEnabled:(BOOL)enabled
 {
-  if (self->_speechEnabled != a3)
+  if (self->_speechEnabled != enabled)
   {
-    if (a3)
+    if (enabled)
     {
       if (!self->_speechManager)
       {
@@ -138,8 +138,8 @@
 
     else
     {
-      v7 = [(AXOutputManager *)self unfinishedSpeechActionsWithCompletionBlocks];
-      v8 = [v7 copy];
+      unfinishedSpeechActionsWithCompletionBlocks = [(AXOutputManager *)self unfinishedSpeechActionsWithCompletionBlocks];
+      v8 = [unfinishedSpeechActionsWithCompletionBlocks copy];
 
       v23 = 0u;
       v24 = 0u;
@@ -161,8 +161,8 @@
             }
 
             v14 = *(*(&v21 + 1) + 8 * i);
-            v15 = [v14 completionCallback];
-            (v15)[2](v15, v14, 0);
+            completionCallback = [v14 completionCallback];
+            (completionCallback)[2](completionCallback, v14, 0);
           }
 
           v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -171,8 +171,8 @@
         while (v11);
       }
 
-      v16 = [(AXOutputManager *)self unfinishedSpeechActionsWithCompletionBlocks];
-      v17 = [v16 count];
+      unfinishedSpeechActionsWithCompletionBlocks2 = [(AXOutputManager *)self unfinishedSpeechActionsWithCompletionBlocks];
+      v17 = [unfinishedSpeechActionsWithCompletionBlocks2 count];
 
       if (v17)
       {
@@ -183,8 +183,8 @@
         }
       }
 
-      v19 = [(AXOutputManager *)self unfinishedSpeechActionsWithCompletionBlocks];
-      [v19 removeAllObjects];
+      unfinishedSpeechActionsWithCompletionBlocks3 = [(AXOutputManager *)self unfinishedSpeechActionsWithCompletionBlocks];
+      [unfinishedSpeechActionsWithCompletionBlocks3 removeAllObjects];
 
       [(TTSSpeechManager *)self->_speechManager tearDown];
       v20 = self->_speechManager;
@@ -193,23 +193,23 @@
       self->_lastSetOptions = 0;
     }
 
-    self->_speechEnabled = a3;
+    self->_speechEnabled = enabled;
   }
 }
 
-- (void)setSpeechAudioSessionActive:(BOOL)a3
+- (void)setSpeechAudioSessionActive:(BOOL)active
 {
-  if (self->_speechAudioSessionActive != a3)
+  if (self->_speechAudioSessionActive != active)
   {
-    self->_speechAudioSessionActive = a3;
+    self->_speechAudioSessionActive = active;
   }
 }
 
-- (void)setSoundAudioSessionActive:(BOOL)a3
+- (void)setSoundAudioSessionActive:(BOOL)active
 {
-  if (self->_soundAudioSessionActive != a3)
+  if (self->_soundAudioSessionActive != active)
   {
-    self->_soundAudioSessionActive = a3;
+    self->_soundAudioSessionActive = active;
   }
 }
 
@@ -245,27 +245,27 @@
   return v3;
 }
 
-- (void)playSound:(int)a3
+- (void)playSound:(int)sound
 {
   if ([(AXOutputManager *)self areSoundEffectsEnabled])
   {
-    v5 = [(AXOutputManager *)self outputAccessQueue];
+    outputAccessQueue = [(AXOutputManager *)self outputAccessQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000CDD60;
     v6[3] = &unk_1001D70C0;
     v6[4] = self;
-    v7 = a3;
-    [v5 performAsynchronousWritingBlock:v6];
+    soundCopy = sound;
+    [outputAccessQueue performAsynchronousWritingBlock:v6];
   }
 }
 
 - (void)playMouseClickSound
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchMouseClickSoundsEnabled];
+  assistiveTouchMouseClickSoundsEnabled = [v2 assistiveTouchMouseClickSoundsEnabled];
 
-  if (v3)
+  if (assistiveTouchMouseClickSoundsEnabled)
   {
     if (qword_100218BF8 != -1)
     {
@@ -278,27 +278,27 @@
   }
 }
 
-- (void)dispatchSpeechAction:(id)a3
+- (void)dispatchSpeechAction:(id)action
 {
-  v10 = a3;
-  [v10 setShouldProcessEmoji:1];
+  actionCopy = action;
+  [actionCopy setShouldProcessEmoji:1];
   [(AXOutputManager *)self _volume];
-  [v10 setVolume:v4];
-  [(TTSSpeechManager *)self->_speechManager dispatchSpeechAction:v10];
-  v5 = [(AXOutputManager *)self cachedRecentSpeechOutputRequests];
-  v6 = [v5 count];
+  [actionCopy setVolume:v4];
+  [(TTSSpeechManager *)self->_speechManager dispatchSpeechAction:actionCopy];
+  cachedRecentSpeechOutputRequests = [(AXOutputManager *)self cachedRecentSpeechOutputRequests];
+  v6 = [cachedRecentSpeechOutputRequests count];
 
   if (v6 == 10)
   {
-    v7 = [(AXOutputManager *)self cachedRecentSpeechOutputRequests];
-    [v7 removeObjectAtIndex:0];
+    cachedRecentSpeechOutputRequests2 = [(AXOutputManager *)self cachedRecentSpeechOutputRequests];
+    [cachedRecentSpeechOutputRequests2 removeObjectAtIndex:0];
   }
 
-  v8 = [v10 string];
-  if ([v8 length])
+  string = [actionCopy string];
+  if ([string length])
   {
-    v9 = [(AXOutputManager *)self cachedRecentSpeechOutputRequests];
-    [v9 addObject:v8];
+    cachedRecentSpeechOutputRequests3 = [(AXOutputManager *)self cachedRecentSpeechOutputRequests];
+    [cachedRecentSpeechOutputRequests3 addObject:string];
   }
 }
 
@@ -312,61 +312,61 @@
 
 - (void)clearRecentSpeech
 {
-  v2 = [(AXOutputManager *)self cachedRecentSpeechOutputRequests];
-  [v2 removeAllObjects];
+  cachedRecentSpeechOutputRequests = [(AXOutputManager *)self cachedRecentSpeechOutputRequests];
+  [cachedRecentSpeechOutputRequests removeAllObjects];
 }
 
 - (void)_flushSoundIDs
 {
-  v3 = [(AXOutputManager *)self outputAccessQueue];
+  outputAccessQueue = [(AXOutputManager *)self outputAccessQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000CE32C;
   v4[3] = &unk_1001D3488;
   v4[4] = self;
-  [v3 performSynchronousWritingBlock:v4];
+  [outputAccessQueue performSynchronousWritingBlock:v4];
 }
 
-- (id)_urlForSoundEffect:(int)a3
+- (id)_urlForSoundEffect:(int)effect
 {
-  if (a3 > 1002)
+  if (effect > 1002)
   {
-    if (a3 <= 1004)
+    if (effect <= 1004)
     {
-      if (a3 == 1003)
+      if (effect == 1003)
       {
         v4 = objc_allocWithZone(NSURL);
-        v5 = [(AXOutputManager *)self _voiceOverBundle];
-        v6 = [v5 resourcePath];
-        [NSString stringWithFormat:@"%@/Sounds/Alert.aiff", v6];
+        _voiceOverBundle = [(AXOutputManager *)self _voiceOverBundle];
+        resourcePath = [_voiceOverBundle resourcePath];
+        [NSString stringWithFormat:@"%@/Sounds/Alert.aiff", resourcePath];
       }
 
       else
       {
         v4 = objc_allocWithZone(NSURL);
-        v5 = [(AXOutputManager *)self _voiceOverBundle];
-        v6 = [v5 resourcePath];
-        [NSString stringWithFormat:@"%@/Sounds/WrapBoundary.aiff", v6];
+        _voiceOverBundle = [(AXOutputManager *)self _voiceOverBundle];
+        resourcePath = [_voiceOverBundle resourcePath];
+        [NSString stringWithFormat:@"%@/Sounds/WrapBoundary.aiff", resourcePath];
       }
 
       goto LABEL_17;
     }
 
-    if (a3 == 1005)
+    if (effect == 1005)
     {
       v4 = objc_allocWithZone(NSURL);
-      v5 = [(AXOutputManager *)self _voiceOverBundle];
-      v6 = [v5 resourcePath];
-      [NSString stringWithFormat:@"%@/Sounds/ScreenChange.aiff", v6];
+      _voiceOverBundle = [(AXOutputManager *)self _voiceOverBundle];
+      resourcePath = [_voiceOverBundle resourcePath];
+      [NSString stringWithFormat:@"%@/Sounds/ScreenChange.aiff", resourcePath];
       goto LABEL_17;
     }
 
-    if (a3 == 1006)
+    if (effect == 1006)
     {
       v4 = objc_allocWithZone(NSURL);
-      v5 = [(AXOutputManager *)self _voiceOverBundle];
-      v6 = [v5 resourcePath];
-      [NSString stringWithFormat:@"%@/Sounds/iOSScreenOff.aiff", v6];
+      _voiceOverBundle = [(AXOutputManager *)self _voiceOverBundle];
+      resourcePath = [_voiceOverBundle resourcePath];
+      [NSString stringWithFormat:@"%@/Sounds/iOSScreenOff.aiff", resourcePath];
       goto LABEL_17;
     }
 
@@ -376,33 +376,33 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  if (a3 == 1000)
+  if (effect == 1000)
   {
     v4 = objc_allocWithZone(NSURL);
-    v5 = [(AXOutputManager *)self _voiceOverBundle];
-    v6 = [v5 resourcePath];
-    [NSString stringWithFormat:@"%@/Sounds/ElementBorder.aiff", v6];
+    _voiceOverBundle = [(AXOutputManager *)self _voiceOverBundle];
+    resourcePath = [_voiceOverBundle resourcePath];
+    [NSString stringWithFormat:@"%@/Sounds/ElementBorder.aiff", resourcePath];
     goto LABEL_17;
   }
 
-  if (a3 == 1001)
+  if (effect == 1001)
   {
     v4 = objc_allocWithZone(NSURL);
-    v5 = [(AXOutputManager *)self _voiceOverBundle];
-    v6 = [v5 resourcePath];
-    [NSString stringWithFormat:@"%@/Sounds/Select.aiff", v6];
+    _voiceOverBundle = [(AXOutputManager *)self _voiceOverBundle];
+    resourcePath = [_voiceOverBundle resourcePath];
+    [NSString stringWithFormat:@"%@/Sounds/Select.aiff", resourcePath];
     goto LABEL_17;
   }
 
-  if (a3 != 1002)
+  if (effect != 1002)
   {
     goto LABEL_13;
   }
 
   v4 = objc_allocWithZone(NSURL);
-  v5 = [(AXOutputManager *)self _voiceOverBundle];
-  v6 = [v5 resourcePath];
-  [NSString stringWithFormat:@"%@/Sounds/PopupAppeared.aiff", v6];
+  _voiceOverBundle = [(AXOutputManager *)self _voiceOverBundle];
+  resourcePath = [_voiceOverBundle resourcePath];
+  [NSString stringWithFormat:@"%@/Sounds/PopupAppeared.aiff", resourcePath];
   v8 = LABEL_17:;
   v7 = [v4 initFileURLWithPath:v8 isDirectory:0];
 
@@ -426,9 +426,9 @@ LABEL_18:
     }
 
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 voiceOverMediaDuckingMode];
+    voiceOverMediaDuckingMode = [v6 voiceOverMediaDuckingMode];
 
-    if (v7)
+    if (voiceOverMediaDuckingMode)
     {
       v8 = +[AXSettings sharedInstance];
       if ([v8 voiceOverMediaDuckingMode] == 2)
@@ -518,9 +518,9 @@ LABEL_18:
     v8 = 1.0 - v7;
 
     v9 = +[AXSettings sharedInstance];
-    v10 = [v9 voiceOverMediaDuckingMode];
+    voiceOverMediaDuckingMode = [v9 voiceOverMediaDuckingMode];
 
-    if (v10 == 2)
+    if (voiceOverMediaDuckingMode == 2)
     {
       [(AXOutputManager *)self _setDuckingLevelAlways:1.0 - v8];
     }
@@ -576,21 +576,21 @@ LABEL_18:
   }
 }
 
-- (void)_setDuckingLevelAlways:(double)a3
+- (void)_setDuckingLevelAlways:(double)always
 {
   if (self->_speechManager)
   {
     v4 = SWCHLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [NSNumber numberWithDouble:a3];
+      v5 = [NSNumber numberWithDouble:always];
       v11 = 138412290;
       v12 = v5;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Setting audio ducking ALWAYS to duckingVolume level %@.", &v11, 0xCu);
     }
 
     v6 = +[AVSystemController sharedAVSystemController];
-    *&v7 = a3;
+    *&v7 = always;
     v8 = [v6 setDuckScalarForVoiceOver:v7];
     if (v8)
     {
@@ -604,23 +604,23 @@ LABEL_18:
   }
 }
 
-- (void)_setDuckingLevelOnlySpeaking:(double)a3
+- (void)_setDuckingLevelOnlySpeaking:(double)speaking
 {
   if (self->_speechManager)
   {
     v5 = SWCHLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [NSNumber numberWithDouble:a3];
+      v6 = [NSNumber numberWithDouble:speaking];
       *buf = 138412290;
       v16 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting audio ducking WHEN SPEAKING to ducking amount level %@.", buf, 0xCu);
     }
 
-    v7 = [(TTSSpeechManager *)self->_speechManager audioSession];
-    v8 = [NSNumber numberWithDouble:a3];
+    audioSession = [(TTSSpeechManager *)self->_speechManager audioSession];
+    v8 = [NSNumber numberWithDouble:speaking];
     v14 = 0;
-    v9 = [v7 setDuckToLevelScalar:v8 unduckToLevelScalar:0 error:&v14];
+    v9 = [audioSession setDuckToLevelScalar:v8 unduckToLevelScalar:0 error:&v14];
     v10 = v14;
 
     if (v10)
@@ -643,24 +643,24 @@ LABEL_18:
   }
 }
 
-- (void)_updateSoundEffect:(int)a3 isActive:(BOOL)a4
+- (void)_updateSoundEffect:(int)effect isActive:(BOOL)active
 {
-  v4 = a4;
-  v5 = *&a3;
-  v7 = [(AXOutputManager *)self activeSoundIDs];
+  activeCopy = active;
+  v5 = *&effect;
+  activeSoundIDs = [(AXOutputManager *)self activeSoundIDs];
   v8 = [NSNumber numberWithUnsignedInt:v5];
-  if (v4)
+  if (activeCopy)
   {
-    [v7 addObject:v8];
+    [activeSoundIDs addObject:v8];
   }
 
   else
   {
-    [v7 removeObject:v8];
+    [activeSoundIDs removeObject:v8];
   }
 
-  v9 = [(AXOutputManager *)self activeSoundIDs];
-  v10 = [v9 count];
+  activeSoundIDs2 = [(AXOutputManager *)self activeSoundIDs];
+  v10 = [activeSoundIDs2 count];
 
   v11 = +[AVAudioSession sharedInstance];
   v12 = (v10 != 0) ^ [v11 isActive];
@@ -683,23 +683,23 @@ LABEL_18:
   }
 }
 
-- (void)_audioPlayerFinished:(id)a3
+- (void)_audioPlayerFinished:(id)finished
 {
-  v4 = a3;
-  v5 = [(AXOutputManager *)self soundIDsToAudioPlayer];
+  finishedCopy = finished;
+  soundIDsToAudioPlayer = [(AXOutputManager *)self soundIDsToAudioPlayer];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000CF1DC;
   v7[3] = &unk_1001D7108;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = finishedCopy;
+  selfCopy = self;
+  v6 = finishedCopy;
+  [soundIDsToAudioPlayer enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (id)selectionForLanguage:(id)a3
+- (id)selectionForLanguage:(id)language
 {
-  v3 = a3;
+  languageCopy = language;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -713,7 +713,7 @@ LABEL_18:
   v9 = &v10;
   v4 = dispatch_semaphore_create(0);
   v8 = v4;
-  [_TtC15assistivetouchd13AXPrefsBridge voiceSelectionForLanguageCode:v3 completionHandler:v7];
+  [_TtC15assistivetouchd13AXPrefsBridge voiceSelectionForLanguageCode:languageCopy completionHandler:v7];
   dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
   v5 = v11[5];
 
@@ -722,29 +722,29 @@ LABEL_18:
   return v5;
 }
 
-- (id)_scatProcessAttributedString:(id)a3
+- (id)_scatProcessAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = +[NSMutableArray array];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v27 = 0;
     v28 = 0;
-    v26 = [v4 length];
+    v26 = [stringCopy length];
     if (v26)
     {
       v6 = 0;
       while (1)
       {
-        v7 = [v4 attributesAtIndex:v6 effectiveRange:&v27];
+        v7 = [stringCopy attributesAtIndex:v6 effectiveRange:&v27];
         v8 = v7;
         if (v27 == 0x7FFFFFFFFFFFFFFFLL)
         {
           break;
         }
 
-        v9 = [v4 substringWithRange:{v27, v28}];
+        v9 = [stringCopy substringWithRange:{v27, v28}];
         v10 = [[AXOutputAction alloc] initWithString:v9];
         v11 = [AXOutputRequest addAttributesToAction:v10 fromDictionary:v8];
 
@@ -762,18 +762,18 @@ LABEL_18:
         }
 
         v17 = +[AXLanguageManager sharedInstance];
-        v18 = [v17 systemLanguageID];
+        systemLanguageID = [v17 systemLanguageID];
 
-        v19 = [v12 language];
-        v20 = v19;
-        if (v19)
+        language = [v12 language];
+        v20 = language;
+        if (language)
         {
-          v21 = v19;
+          v21 = language;
         }
 
         else
         {
-          v21 = v18;
+          v21 = systemLanguageID;
         }
 
         v22 = v21;
@@ -795,7 +795,7 @@ LABEL_18:
 
   else
   {
-    v24 = [TTSSpeechAction actionWithString:v4 shouldQueue:1];
+    v24 = [TTSSpeechAction actionWithString:stringCopy shouldQueue:1];
     [v24 setShouldProcessEmoji:1];
     [v5 addObject:v24];
   }
@@ -805,45 +805,45 @@ LABEL_15:
   return v5;
 }
 
-- (void)_applySelectionToAction:(id)a3 selection:(id)a4
+- (void)_applySelectionToAction:(id)action selection:(id)selection
 {
-  v22 = a3;
-  v5 = a4;
-  v6 = [v5 voiceId];
-  [v22 setVoiceIdentifier:v6];
+  actionCopy = action;
+  selectionCopy = selection;
+  voiceId = [selectionCopy voiceId];
+  [actionCopy setVoiceIdentifier:voiceId];
 
-  v7 = [v5 rate];
-  if (v7)
+  rate = [selectionCopy rate];
+  if (rate)
   {
-    v8 = [v5 rate];
-    [v8 floatValue];
-    [v22 setSpeakingRate:v9];
+    rate2 = [selectionCopy rate];
+    [rate2 floatValue];
+    [actionCopy setSpeakingRate:v9];
   }
 
   else
   {
-    [v22 setSpeakingRate:0.5];
+    [actionCopy setSpeakingRate:0.5];
   }
 
-  v10 = [v5 pitch];
-  if (v10)
+  pitch = [selectionCopy pitch];
+  if (pitch)
   {
-    v11 = [v5 pitch];
-    [v11 floatValue];
-    [v22 setPitch:v12];
+    pitch2 = [selectionCopy pitch];
+    [pitch2 floatValue];
+    [actionCopy setPitch:v12];
   }
 
   else
   {
-    [v22 setPitch:0.5];
+    [actionCopy setPitch:0.5];
   }
 
-  [v22 pitch];
+  [actionCopy pitch];
   v14 = v13;
-  [v22 pitch];
+  [actionCopy pitch];
   if (v15 >= 0.5)
   {
-    [v22 pitch];
+    [actionCopy pitch];
     v16 = (v17 + -1.0) * 2.0 + 2.0;
   }
 
@@ -853,63 +853,63 @@ LABEL_15:
   }
 
   v18 = v16;
-  [v22 setPitch:v18];
-  v19 = [v5 volume];
-  if (v19)
+  [actionCopy setPitch:v18];
+  volume = [selectionCopy volume];
+  if (volume)
   {
-    v20 = [v5 volume];
-    [v20 floatValue];
-    [v22 setVolume:v21];
+    volume2 = [selectionCopy volume];
+    [volume2 floatValue];
+    [actionCopy setVolume:v21];
   }
 
   else
   {
-    [v22 setVolume:1.0];
+    [actionCopy setVolume:1.0];
   }
 }
 
-- (id)processAXOutputAction:(id)a3
+- (id)processAXOutputAction:(id)action
 {
-  v3 = [a3 string];
-  v4 = [TTSSpeechAction actionWithString:v3 shouldQueue:1];
+  string = [action string];
+  v4 = [TTSSpeechAction actionWithString:string shouldQueue:1];
 
   return v4;
 }
 
-- (BOOL)_scatLanguage:(id)a3 matchesOverrideLanguage:(id)a4
+- (BOOL)_scatLanguage:(id)language matchesOverrideLanguage:(id)overrideLanguage
 {
-  v5 = a3;
-  v6 = [a4 lowercaseString];
-  v7 = [v6 rangeOfString:@"-"];
-  v8 = v6;
+  languageCopy = language;
+  lowercaseString = [overrideLanguage lowercaseString];
+  v7 = [lowercaseString rangeOfString:@"-"];
+  v8 = lowercaseString;
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [v6 substringToIndex:v7];
+    v8 = [lowercaseString substringToIndex:v7];
   }
 
-  v9 = [v5 hasPrefix:v8];
+  v9 = [languageCopy hasPrefix:v8];
 
   return v9;
 }
 
-- (BOOL)_scatOutputCanSpeakString:(id)a3 withLanguage:(id)a4
+- (BOOL)_scatOutputCanSpeakString:(id)string withLanguage:(id)language
 {
-  v5 = a4;
-  v6 = a3;
+  languageCopy = language;
+  stringCopy = string;
   v7 = +[AXLanguageManager sharedInstance];
-  v8 = [v7 dialectForLanguageID:v5];
+  v8 = [v7 dialectForLanguageID:languageCopy];
 
   v9 = +[AXLanguageManager sharedInstance];
-  v10 = [v9 dialectsThatCanSpeakString:v6];
+  v10 = [v9 dialectsThatCanSpeakString:stringCopy];
 
-  LOBYTE(v6) = [v10 containsObject:v8];
-  return v6;
+  LOBYTE(stringCopy) = [v10 containsObject:v8];
+  return stringCopy;
 }
 
-- (void)outputScannerFocusContext:(id)a3 completion:(id)a4
+- (void)outputScannerFocusContext:(id)context completion:(id)completion
 {
-  v16 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if (![(AXOutputManager *)self isSpeechEnabled])
   {
     _AXAssert();
@@ -917,11 +917,11 @@ LABEL_15:
 
   if (![(AXOutputManager *)self isSpeechEnabled])
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_19;
   }
 
-  if ([v16 selectBehavior] == 4)
+  if ([contextCopy selectBehavior] == 4)
   {
     v7 = @"EXIT_GROUP";
 LABEL_11:
@@ -929,73 +929,73 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v8 = [v16 element];
-  v9 = [v16 menuElement];
+  element = [contextCopy element];
+  menuElement = [contextCopy menuElement];
 
-  if (v8 == v9)
+  if (element == menuElement)
   {
     v7 = @"EXIT_MENU";
     goto LABEL_11;
   }
 
-  v10 = [v16 element];
+  element2 = [contextCopy element];
   v11 = objc_opt_respondsToSelector();
 
-  v12 = [v16 element];
-  v13 = v12;
+  element3 = [contextCopy element];
+  v13 = element3;
   if (v11)
   {
-    [v12 scatSpeakableDescription:{objc_msgSend(v16, "isFirstInSequence")}];
+    [element3 scatSpeakableDescription:{objc_msgSend(contextCopy, "isFirstInSequence")}];
   }
 
   else
   {
-    [v12 scatSpeakableDescription];
+    [element3 scatSpeakableDescription];
   }
   v14 = ;
 
 LABEL_14:
   v15 = [v14 length];
-  if (!v6 || v15)
+  if (!completionCopy || v15)
   {
-    [(AXOutputManager *)self outputScannerAnnouncement:v14 completionBlock:v6];
+    [(AXOutputManager *)self outputScannerAnnouncement:v14 completionBlock:completionCopy];
   }
 
   else
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_19:
 }
 
-- (void)outputScannerAnnouncement:(id)a3 completionBlock:(id)a4
+- (void)outputScannerAnnouncement:(id)announcement completionBlock:(id)block
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(AXOutputManager *)self speechManager];
-  [v7 stopSpeaking:0];
+  announcementCopy = announcement;
+  blockCopy = block;
+  speechManager = [(AXOutputManager *)self speechManager];
+  [speechManager stopSpeaking:0];
 
-  v8 = [(AXOutputManager *)self speechManager];
-  [v8 clearSpeechQueue];
+  speechManager2 = [(AXOutputManager *)self speechManager];
+  [speechManager2 clearSpeechQueue];
 
-  if ([v15 isAXAttributedString])
+  if ([announcementCopy isAXAttributedString])
   {
-    v9 = [[AXAttributedString alloc] initWithString:v15];
-    [(AXOutputManager *)self outputScannerAttributedString:v9 completionBlock:v6];
+    v9 = [[AXAttributedString alloc] initWithString:announcementCopy];
+    [(AXOutputManager *)self outputScannerAttributedString:v9 completionBlock:blockCopy];
   }
 
   else
   {
-    v9 = [TTSSpeechAction actionWithString:v15 shouldQueue:1];
+    v9 = [TTSSpeechAction actionWithString:announcementCopy shouldQueue:1];
     [v9 setShouldProcessEmoji:1];
     v10 = +[AXLanguageManager sharedInstance];
-    v11 = [v10 systemLanguageID];
+    systemLanguageID = [v10 systemLanguageID];
 
-    v12 = [(AXOutputManager *)self selectionForLanguage:v11];
+    v12 = [(AXOutputManager *)self selectionForLanguage:systemLanguageID];
     [(AXOutputManager *)self _applySelectionToAction:v9 selection:v12];
 
-    [(AXOutputManager *)self _scatAddCompletionBlockToAction:v9 completionBlock:v6];
+    [(AXOutputManager *)self _scatAddCompletionBlockToAction:v9 completionBlock:blockCopy];
     v13 = +[HNDAccessibilityManager sharedManager];
     LOBYTE(v12) = [v13 isOKToSpeak];
 
@@ -1006,25 +1006,25 @@ LABEL_19:
 
     else
     {
-      v14 = [v9 completionCallback];
-      (v14)[2](v14, v9, 0);
+      completionCallback = [v9 completionCallback];
+      (completionCallback)[2](completionCallback, v9, 0);
     }
 
-    v6 = v11;
+    blockCopy = systemLanguageID;
   }
 }
 
-- (void)outputScannerAttributedString:(id)a3 completionBlock:(id)a4
+- (void)outputScannerAttributedString:(id)string completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(AXOutputManager *)self _scatProcessAttributedString:a3];
-  v8 = [v7 lastObject];
-  [(AXOutputManager *)self _scatAddCompletionBlockToAction:v8 completionBlock:v6];
+  blockCopy = block;
+  v7 = [(AXOutputManager *)self _scatProcessAttributedString:string];
+  lastObject = [v7 lastObject];
+  [(AXOutputManager *)self _scatAddCompletionBlockToAction:lastObject completionBlock:blockCopy];
 
   v9 = +[HNDAccessibilityManager sharedManager];
-  v10 = [v9 isOKToSpeak];
+  isOKToSpeak = [v9 isOKToSpeak];
 
-  if (v10)
+  if (isOKToSpeak)
   {
     v21 = 0u;
     v22 = 0u;
@@ -1060,25 +1060,25 @@ LABEL_19:
 
   else
   {
-    v16 = [v7 lastObject];
-    v17 = [v16 completionCallback];
+    lastObject2 = [v7 lastObject];
+    completionCallback = [lastObject2 completionCallback];
 
-    if (v17)
+    if (completionCallback)
     {
-      v18 = [v16 completionCallback];
-      (v18)[2](v18, v16, 0);
+      completionCallback2 = [lastObject2 completionCallback];
+      (completionCallback2)[2](completionCallback2, lastObject2, 0);
     }
   }
 }
 
-- (void)_scatAddCompletionBlockToAction:(id)a3 completionBlock:(id)a4
+- (void)_scatAddCompletionBlockToAction:(id)action completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  actionCopy = action;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v8 = [(AXOutputManager *)self unfinishedSpeechActionsWithCompletionBlocks];
-    [v8 addObject:v6];
+    unfinishedSpeechActionsWithCompletionBlocks = [(AXOutputManager *)self unfinishedSpeechActionsWithCompletionBlocks];
+    [unfinishedSpeechActionsWithCompletionBlocks addObject:actionCopy];
 
     objc_initWeak(&location, self);
     v9[0] = _NSConcreteStackBlock;
@@ -1086,8 +1086,8 @@ LABEL_19:
     v9[2] = sub_1000D01A8;
     v9[3] = &unk_1001D7180;
     objc_copyWeak(&v11, &location);
-    v10 = v7;
-    [v6 setCompletionCallback:v9];
+    v10 = blockCopy;
+    [actionCopy setCompletionCallback:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -1097,9 +1097,9 @@ LABEL_19:
 - (BOOL)scanningInterruptsSpeech
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchScannerSpeechIsInterruptedByScanning];
+  assistiveTouchScannerSpeechIsInterruptedByScanning = [v2 assistiveTouchScannerSpeechIsInterruptedByScanning];
 
-  return v3 ^ 1;
+  return assistiveTouchScannerSpeechIsInterruptedByScanning ^ 1;
 }
 
 @end

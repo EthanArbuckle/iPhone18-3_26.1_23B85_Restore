@@ -7,18 +7,18 @@
 
 + (BOOL)shouldBehaveAsRestart
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [a1 _pathForSentinelFile];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _pathForSentinelFile = [self _pathForSentinelFile];
+  v5 = [defaultManager fileExistsAtPath:_pathForSentinelFile];
 
   return v5 ^ 1;
 }
 
 + (void)createSentinelFileIfNeeded
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [a1 _pathForSentinelFile];
-  v5 = [v3 createFileAtPath:v4 contents:0 attributes:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _pathForSentinelFile = [self _pathForSentinelFile];
+  v5 = [defaultManager createFileAtPath:_pathForSentinelFile contents:0 attributes:0];
 
   v6 = +[CALNLogSubsystem calendar];
   v7 = v6;

@@ -1,10 +1,10 @@
 @interface MapsBaseLightMonitor
 - (MapsBaseLightMonitor)init;
 - (void)_notifyDidChange;
-- (void)_setMonitoring:(BOOL)a3;
+- (void)_setMonitoring:(BOOL)monitoring;
 - (void)dealloc;
-- (void)startMonitoringWithObserver:(id)a3;
-- (void)stopMonitoringWithObserver:(id)a3;
+- (void)startMonitoringWithObserver:(id)observer;
+- (void)stopMonitoringWithObserver:(id)observer;
 @end
 
 @implementation MapsBaseLightMonitor
@@ -30,7 +30,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@: notifying observers", &v4, 0xCu);
   }
 
@@ -45,20 +45,20 @@
   [(MapsBaseLightMonitor *)&v3 dealloc];
 }
 
-- (void)_setMonitoring:(BOOL)a3
+- (void)_setMonitoring:(BOOL)monitoring
 {
-  if (self->_monitoring != a3)
+  if (self->_monitoring != monitoring)
   {
-    v3 = a3;
-    self->_monitoring = a3;
+    monitoringCopy = monitoring;
+    self->_monitoring = monitoring;
     v5 = sub_100014EFC();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-    if (v3)
+    if (monitoringCopy)
     {
       if (v6)
       {
         v8 = 138412290;
-        v9 = self;
+        selfCopy2 = self;
         v7 = "%@: started monitoring";
 LABEL_7:
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, v7, &v8, 0xCu);
@@ -68,24 +68,24 @@ LABEL_7:
     else if (v6)
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy2 = self;
       v7 = "%@: stopped monitoring";
       goto LABEL_7;
     }
   }
 }
 
-- (void)stopMonitoringWithObserver:(id)a3
+- (void)stopMonitoringWithObserver:(id)observer
 {
-  [(GEOObserverHashTable *)self->_observers unregisterObserver:a3];
-  v4 = [(GEOObserverHashTable *)self->_observers hasObservers];
+  [(GEOObserverHashTable *)self->_observers unregisterObserver:observer];
+  hasObservers = [(GEOObserverHashTable *)self->_observers hasObservers];
 
-  [(MapsBaseLightMonitor *)self _setMonitoring:v4];
+  [(MapsBaseLightMonitor *)self _setMonitoring:hasObservers];
 }
 
-- (void)startMonitoringWithObserver:(id)a3
+- (void)startMonitoringWithObserver:(id)observer
 {
-  [(GEOObserverHashTable *)self->_observers registerObserver:a3];
+  [(GEOObserverHashTable *)self->_observers registerObserver:observer];
 
   [(MapsBaseLightMonitor *)self _setMonitoring:1];
 }

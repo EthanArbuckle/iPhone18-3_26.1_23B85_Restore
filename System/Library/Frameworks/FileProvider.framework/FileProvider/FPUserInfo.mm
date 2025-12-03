@@ -1,10 +1,10 @@
 @interface FPUserInfo
-+ (id)mergeWithUserInfo:(id)a3 intoParentUserInfo:(id)a4;
-+ (id)unzipKeysWithZippedArray:(id)a3;
-+ (id)unzipValuesWithZippedArray:(id)a3;
-+ (id)zipWithArray1:(id)a3 array2:(id)a4;
-- (FPUserInfo)initWithKeys:(id)a3 values:(id)a4;
-- (FPUserInfo)initWithUserInfo:(id)a3;
++ (id)mergeWithUserInfo:(id)info intoParentUserInfo:(id)userInfo;
++ (id)unzipKeysWithZippedArray:(id)array;
++ (id)unzipValuesWithZippedArray:(id)array;
++ (id)zipWithArray1:(id)array1 array2:(id)array2;
+- (FPUserInfo)initWithKeys:(id)keys values:(id)values;
+- (FPUserInfo)initWithUserInfo:(id)info;
 - (NSDictionary)userInfo;
 @end
 
@@ -12,24 +12,24 @@
 
 - (NSDictionary)userInfo
 {
-  v3 = [(FPUserInfo *)self keys];
-  v4 = [(FPUserInfo *)self values];
-  v5 = FPDecodeUserInfo(v3, v4);
+  keys = [(FPUserInfo *)self keys];
+  values = [(FPUserInfo *)self values];
+  v5 = FPDecodeUserInfo(keys, values);
 
   return v5;
 }
 
-- (FPUserInfo)initWithUserInfo:(id)a3
+- (FPUserInfo)initWithUserInfo:(id)info
 {
   v16 = 0;
   v17 = 0;
-  v5 = FPEncodeUserInfo(a3, &v17, &v16);
+  v5 = FPEncodeUserInfo(info, &v17, &v16);
   v6 = v17;
   v7 = v16;
   if ((v5 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"FPUserInfo.m" lineNumber:37 description:@"cannot pack user info"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPUserInfo.m" lineNumber:37 description:@"cannot pack user info"];
   }
 
   v9 = [FPUserInfo zipWithArray1:v6 array2:v7];
@@ -55,75 +55,75 @@ uint64_t __31__FPUserInfo_initWithUserInfo___block_invoke(uint64_t a1, void *a2,
   return v7;
 }
 
-- (FPUserInfo)initWithKeys:(id)a3 values:(id)a4
+- (FPUserInfo)initWithKeys:(id)keys values:(id)values
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSArray *)v6 count];
-  if (v8 != [(NSArray *)v7 count])
+  keysCopy = keys;
+  valuesCopy = values;
+  v8 = [(NSArray *)keysCopy count];
+  if (v8 != [(NSArray *)valuesCopy count])
   {
-    v9 = [(NSArray *)v6 count];
-    if (v9 != [(NSArray *)v7 count])
+    v9 = [(NSArray *)keysCopy count];
+    if (v9 != [(NSArray *)valuesCopy count])
     {
       [FPUserInfo initWithKeys:values:];
     }
   }
 
   keys = self->_keys;
-  self->_keys = v6;
-  v11 = v6;
+  self->_keys = keysCopy;
+  v11 = keysCopy;
 
   values = self->_values;
-  self->_values = v7;
+  self->_values = valuesCopy;
 
   return self;
 }
 
-+ (id)zipWithArray1:(id)a3 array2:(id)a4
++ (id)zipWithArray1:(id)array1 array2:(id)array2
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 != [v6 count])
+  array1Copy = array1;
+  array2Copy = array2;
+  v7 = [array1Copy count];
+  if (v7 != [array2Copy count])
   {
-    v8 = [v5 count];
-    if (v8 != [v6 count])
+    v8 = [array1Copy count];
+    if (v8 != [array2Copy count])
     {
       +[FPUserInfo zipWithArray1:array2:];
     }
   }
 
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v5 count])
+  if ([array1Copy count])
   {
     v10 = 0;
     do
     {
       v11 = [FPUserInfoPair alloc];
-      v12 = [v5 objectAtIndex:v10];
-      v13 = [v6 objectAtIndex:v10];
+      v12 = [array1Copy objectAtIndex:v10];
+      v13 = [array2Copy objectAtIndex:v10];
       v14 = [(FPUserInfoPair *)v11 initWithA:v12 b:v13];
 
       [v9 addObject:v14];
       ++v10;
     }
 
-    while (v10 < [v5 count]);
+    while (v10 < [array1Copy count]);
   }
 
   return v9;
 }
 
-+ (id)unzipKeysWithZippedArray:(id)a3
++ (id)unzipKeysWithZippedArray:(id)array
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -166,16 +166,16 @@ uint64_t __31__FPUserInfo_initWithUserInfo___block_invoke(uint64_t a1, void *a2,
   return v4;
 }
 
-+ (id)unzipValuesWithZippedArray:(id)a3
++ (id)unzipValuesWithZippedArray:(id)array
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -218,42 +218,42 @@ uint64_t __31__FPUserInfo_initWithUserInfo___block_invoke(uint64_t a1, void *a2,
   return v4;
 }
 
-+ (id)mergeWithUserInfo:(id)a3 intoParentUserInfo:(id)a4
++ (id)mergeWithUserInfo:(id)info intoParentUserInfo:(id)userInfo
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  infoCopy = info;
+  userInfoCopy = userInfo;
+  v7 = userInfoCopy;
+  if (userInfoCopy)
   {
-    v8 = v6;
-    if (v5)
+    v8 = userInfoCopy;
+    if (infoCopy)
     {
 LABEL_3:
       v64 = v7;
-      v9 = [v5 keys];
-      v10 = [v5 values];
-      v11 = [FPUserInfo zipWithArray1:v9 array2:v10];
+      keys = [infoCopy keys];
+      values = [infoCopy values];
+      v11 = [FPUserInfo zipWithArray1:keys array2:values];
 
       v12 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_40];
       v62 = v11;
       v13 = [v11 filteredArrayUsingPredicate:v12];
 
       v61 = v13;
-      v14 = [v13 objectEnumerator];
-      v15 = [(FPUserInfo *)v8 keys];
+      objectEnumerator = [v13 objectEnumerator];
+      keys2 = [(FPUserInfo *)v8 keys];
       v63 = v8;
-      v16 = [(FPUserInfo *)v8 values];
-      v17 = [FPUserInfo zipWithArray1:v15 array2:v16];
+      values2 = [(FPUserInfo *)v8 values];
+      v17 = [FPUserInfo zipWithArray1:keys2 array2:values2];
 
       v60 = v17;
-      v18 = [v17 objectEnumerator];
+      objectEnumerator2 = [v17 objectEnumerator];
       v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v21 = [v14 nextObject];
-      v22 = [v18 nextObject];
-      v23 = v21 == 0;
-      v24 = v22 == 0;
-      if (!(v21 | v22))
+      nextObject = [objectEnumerator nextObject];
+      nextObject2 = [objectEnumerator2 nextObject];
+      v23 = nextObject == 0;
+      v24 = nextObject2 == 0;
+      if (!(nextObject | nextObject2))
       {
 LABEL_4:
         v25 = [[FPUserInfo alloc] initWithKeys:v19 values:v20];
@@ -263,16 +263,16 @@ LABEL_4:
         goto LABEL_7;
       }
 
-      v29 = v22;
+      v29 = nextObject2;
       while (1)
       {
-        if (v21 && v24)
+        if (nextObject && v24)
         {
-          v30 = [v21 a];
+          v30 = [nextObject a];
 
           if (!v30)
           {
-            v31 = [v21 a];
+            v31 = [nextObject a];
 
             if (!v31)
             {
@@ -280,11 +280,11 @@ LABEL_4:
             }
           }
 
-          v32 = [v21 b];
+          v32 = [nextObject b];
 
           if (!v32)
           {
-            v33 = [v21 b];
+            v33 = [nextObject b];
 
             if (!v33)
             {
@@ -292,14 +292,14 @@ LABEL_4:
             }
           }
 
-          v34 = [v21 a];
+          v34 = [nextObject a];
           [v19 addObject:v34];
 
-          v35 = [v21 b];
+          v35 = [nextObject b];
           [v20 addObject:v35];
 
-          v36 = [v14 nextObject];
-          v37 = 0;
+          nextObject3 = [objectEnumerator nextObject];
+          nextObject4 = 0;
         }
 
         else
@@ -336,12 +336,12 @@ LABEL_4:
             v43 = [v29 b];
             [v20 addObject:v43];
 
-            v37 = [v18 nextObject];
-            v21 = 0;
+            nextObject4 = [objectEnumerator2 nextObject];
+            nextObject = 0;
             goto LABEL_46;
           }
 
-          v44 = [v21 a];
+          v44 = [nextObject a];
           v45 = [v29 a];
           v46 = [v44 compare:v45];
 
@@ -377,15 +377,15 @@ LABEL_4:
             v59 = [v29 b];
             [v20 addObject:v59];
 
-            v37 = [v18 nextObject];
+            nextObject4 = [objectEnumerator2 nextObject];
             goto LABEL_46;
           }
 
-          v47 = [v21 a];
+          v47 = [nextObject a];
 
           if (!v47)
           {
-            v48 = [v21 a];
+            v48 = [nextObject a];
 
             if (!v48)
             {
@@ -393,11 +393,11 @@ LABEL_4:
             }
           }
 
-          v49 = [v21 b];
+          v49 = [nextObject b];
 
           if (!v49)
           {
-            v50 = [v21 b];
+            v50 = [nextObject b];
 
             if (!v50)
             {
@@ -405,31 +405,31 @@ LABEL_4:
             }
           }
 
-          v51 = [v21 a];
+          v51 = [nextObject a];
           [v19 addObject:v51];
 
-          v52 = [v21 b];
+          v52 = [nextObject b];
           [v20 addObject:v52];
 
           if (!v46)
           {
-            v53 = [v18 nextObject];
+            nextObject5 = [objectEnumerator2 nextObject];
 
-            v29 = v53;
+            v29 = nextObject5;
           }
 
-          v37 = v29;
-          v36 = [v14 nextObject];
+          nextObject4 = v29;
+          nextObject3 = [objectEnumerator nextObject];
         }
 
-        v29 = v21;
-        v21 = v36;
+        v29 = nextObject;
+        nextObject = nextObject3;
 LABEL_46:
 
-        v23 = v21 == 0;
-        v24 = v37 == 0;
-        v29 = v37;
-        if (!(v21 | v37))
+        v23 = nextObject == 0;
+        v24 = nextObject4 == 0;
+        v29 = nextObject4;
+        if (!(nextObject | nextObject4))
         {
           goto LABEL_4;
         }
@@ -443,7 +443,7 @@ LABEL_46:
     v27 = objc_alloc_init(MEMORY[0x1E695DF20]);
     v8 = [(FPUserInfo *)v26 initWithUserInfo:v27];
 
-    if (v5)
+    if (infoCopy)
     {
       goto LABEL_3;
     }

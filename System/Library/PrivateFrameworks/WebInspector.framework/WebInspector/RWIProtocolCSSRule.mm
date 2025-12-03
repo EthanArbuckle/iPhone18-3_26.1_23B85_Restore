@@ -7,21 +7,21 @@
 - (RWIProtocolCSSStyle)style;
 - (int)sourceLine;
 - (int64_t)origin;
-- (void)setGroupings:(id)a3;
-- (void)setOrigin:(int64_t)a3;
-- (void)setRuleId:(id)a3;
-- (void)setSelectorList:(id)a3;
-- (void)setSourceURL:(id)a3;
-- (void)setStyle:(id)a3;
+- (void)setGroupings:(id)groupings;
+- (void)setOrigin:(int64_t)origin;
+- (void)setRuleId:(id)id;
+- (void)setSelectorList:(id)list;
+- (void)setSourceURL:(id)l;
+- (void)setStyle:(id)style;
 @end
 
 @implementation RWIProtocolCSSRule
 
-- (void)setRuleId:(id)a3
+- (void)setRuleId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSRule;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"ruleId"];
+  [(RWIProtocolJSONObject *)&v3 setObject:id forKey:@"ruleId"];
 }
 
 - (RWIProtocolCSSRuleId)ruleId
@@ -79,11 +79,11 @@
   return v7;
 }
 
-- (void)setSelectorList:(id)a3
+- (void)setSelectorList:(id)list
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSRule;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"selectorList"];
+  [(RWIProtocolJSONObject *)&v3 setObject:list forKey:@"selectorList"];
 }
 
 - (RWIProtocolCSSSelectorList)selectorList
@@ -141,11 +141,11 @@
   return v7;
 }
 
-- (void)setSourceURL:(id)a3
+- (void)setSourceURL:(id)l
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSRule;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"sourceURL"];
+  [(RWIProtocolJSONObject *)&v3 setString:l forKey:@"sourceURL"];
 }
 
 - (NSString)sourceURL
@@ -164,7 +164,7 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"sourceLine"];
 }
 
-- (void)setOrigin:(int64_t)a3
+- (void)setOrigin:(int64_t)origin
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -232,11 +232,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSRule;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"style"];
+  [(RWIProtocolJSONObject *)&v3 setObject:style forKey:@"style"];
 }
 
 - (RWIProtocolCSSStyle)style
@@ -294,14 +294,14 @@ LABEL_8:
   return v7;
 }
 
-- (void)setGroupings:(id)a3
+- (void)setGroupings:(id)groupings
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = groupings;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {

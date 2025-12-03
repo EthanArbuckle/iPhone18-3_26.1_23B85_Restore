@@ -1,45 +1,45 @@
 @interface TFFeedbackEntryGroup
-- (TFFeedbackEntryGroup)initWithIdentifier:(id)a3 entries:(id)a4 title:(id)a5 election:(unint64_t)a6 headerText:(id)a7 headerTextLinkMap:(id)a8 footerText:(id)a9 footerTextLinkMap:(id)a10;
-- (id)visibleEntryForIndex:(unint64_t)a3;
-- (unint64_t)numberOfVisibleItemsForIncludeState:(BOOL)a3;
+- (TFFeedbackEntryGroup)initWithIdentifier:(id)identifier entries:(id)entries title:(id)title election:(unint64_t)election headerText:(id)text headerTextLinkMap:(id)map footerText:(id)footerText footerTextLinkMap:(id)self0;
+- (id)visibleEntryForIndex:(unint64_t)index;
+- (unint64_t)numberOfVisibleItemsForIncludeState:(BOOL)state;
 @end
 
 @implementation TFFeedbackEntryGroup
 
-- (TFFeedbackEntryGroup)initWithIdentifier:(id)a3 entries:(id)a4 title:(id)a5 election:(unint64_t)a6 headerText:(id)a7 headerTextLinkMap:(id)a8 footerText:(id)a9 footerTextLinkMap:(id)a10
+- (TFFeedbackEntryGroup)initWithIdentifier:(id)identifier entries:(id)entries title:(id)title election:(unint64_t)election headerText:(id)text headerTextLinkMap:(id)map footerText:(id)footerText footerTextLinkMap:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  identifierCopy = identifier;
+  entriesCopy = entries;
+  titleCopy = title;
+  textCopy = text;
+  mapCopy = map;
+  footerTextCopy = footerText;
+  linkMapCopy = linkMap;
   v42.receiver = self;
   v42.super_class = TFFeedbackEntryGroup;
   v23 = [(TFFeedbackEntryGroup *)&v42 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [identifierCopy copy];
     identifier = v23->_identifier;
     v23->_identifier = v24;
 
-    v26 = [v17 copy];
+    v26 = [entriesCopy copy];
     entries = v23->_entries;
     v23->_entries = v26;
 
-    v28 = [v18 copy];
+    v28 = [titleCopy copy];
     title = v23->_title;
     v23->_title = v28;
 
-    v23->_election = a6;
-    v30 = [v19 copy];
+    v23->_election = election;
+    v30 = [textCopy copy];
     headerText = v23->_headerText;
     v23->_headerText = v30;
 
-    if (v19)
+    if (textCopy)
     {
-      v32 = [v20 copy];
+      v32 = [mapCopy copy];
     }
 
     else
@@ -50,13 +50,13 @@
     headerTextLinkMap = v23->_headerTextLinkMap;
     v23->_headerTextLinkMap = v32;
 
-    v34 = [v21 copy];
+    v34 = [footerTextCopy copy];
     footerText = v23->_footerText;
     v23->_footerText = v34;
 
-    if (v21)
+    if (footerTextCopy)
     {
-      v36 = [v22 copy];
+      v36 = [linkMapCopy copy];
     }
 
     else
@@ -71,7 +71,7 @@
     v23->_toggleable = election != 0;
     if (election)
     {
-      v39 = [[TFFeedbackEntryGroupToggle alloc] initWithGroupIdentifier:v16 title:v18];
+      v39 = [[TFFeedbackEntryGroupToggle alloc] initWithGroupIdentifier:identifierCopy title:titleCopy];
     }
 
     else
@@ -86,35 +86,35 @@
   return v23;
 }
 
-- (unint64_t)numberOfVisibleItemsForIncludeState:(BOOL)a3
+- (unint64_t)numberOfVisibleItemsForIncludeState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(TFFeedbackEntryGroup *)self isToggleable];
-  if (![(TFFeedbackEntryGroup *)self isToggleable]|| v3)
+  stateCopy = state;
+  isToggleable = [(TFFeedbackEntryGroup *)self isToggleable];
+  if (![(TFFeedbackEntryGroup *)self isToggleable]|| stateCopy)
   {
-    v6 = [(TFFeedbackEntryGroup *)self entries];
-    v5 = [v6 count] + v5;
+    entries = [(TFFeedbackEntryGroup *)self entries];
+    isToggleable = [entries count] + isToggleable;
   }
 
-  return v5;
+  return isToggleable;
 }
 
-- (id)visibleEntryForIndex:(unint64_t)a3
+- (id)visibleEntryForIndex:(unint64_t)index
 {
-  v5 = [(TFFeedbackEntryGroup *)self isToggleable];
-  if (a3 || !v5)
+  isToggleable = [(TFFeedbackEntryGroup *)self isToggleable];
+  if (index || !isToggleable)
   {
-    v7 = a3 - v5;
-    v8 = [(TFFeedbackEntryGroup *)self entries];
-    v6 = [v8 objectAtIndex:v7];
+    v7 = index - isToggleable;
+    entries = [(TFFeedbackEntryGroup *)self entries];
+    groupToggleEntry = [entries objectAtIndex:v7];
   }
 
   else
   {
-    v6 = [(TFFeedbackEntryGroup *)self groupToggleEntry];
+    groupToggleEntry = [(TFFeedbackEntryGroup *)self groupToggleEntry];
   }
 
-  return v6;
+  return groupToggleEntry;
 }
 
 @end

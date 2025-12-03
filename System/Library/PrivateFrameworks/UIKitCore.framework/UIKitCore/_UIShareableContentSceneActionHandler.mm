@@ -1,6 +1,6 @@
 @interface _UIShareableContentSceneActionHandler
 - (_UISceneBSActionHandler)shareableContentActionHandler;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation _UIShareableContentSceneActionHandler
@@ -38,18 +38,18 @@
   return shareableContentActionHandler;
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  actionsCopy = actions;
+  sceneCopy = scene;
+  iSceneCopy = iScene;
+  contextCopy = context;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = v9;
+  v13 = actionsCopy;
   v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v14)
   {
@@ -64,8 +64,8 @@ LABEL_3:
         objc_enumerationMutation(v13);
       }
 
-      v18 = [*(*(&v25 + 1) + 8 * v17) info];
-      v19 = [v18 objectForSetting:30295];
+      info = [*(*(&v25 + 1) + 8 * v17) info];
+      v19 = [info objectForSetting:30295];
 
       if (v19)
       {
@@ -88,15 +88,15 @@ LABEL_3:
       }
     }
 
-    v20 = [(_UIShareableContentSceneActionHandler *)self shareableContentActionHandler];
+    shareableContentActionHandler = [(_UIShareableContentSceneActionHandler *)self shareableContentActionHandler];
 
-    if (!v20)
+    if (!shareableContentActionHandler)
     {
       goto LABEL_13;
     }
 
-    v21 = [(_UIShareableContentSceneActionHandler *)self shareableContentActionHandler];
-    v22 = [v21 _respondToActions:v13 forFBSScene:v10 inUIScene:v11 fromTransitionContext:v12];
+    shareableContentActionHandler2 = [(_UIShareableContentSceneActionHandler *)self shareableContentActionHandler];
+    v22 = [shareableContentActionHandler2 _respondToActions:v13 forFBSScene:sceneCopy inUIScene:iSceneCopy fromTransitionContext:contextCopy];
   }
 
   else

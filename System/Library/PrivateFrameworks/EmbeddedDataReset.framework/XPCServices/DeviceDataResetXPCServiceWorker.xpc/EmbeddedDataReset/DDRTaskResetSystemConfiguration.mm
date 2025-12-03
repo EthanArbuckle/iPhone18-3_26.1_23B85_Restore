@@ -20,9 +20,9 @@
 
   v3 = v2;
   v4 = +[MCProfileConnection sharedConnection];
-  v5 = [v4 managedSystemConfigurationServiceIDs];
+  managedSystemConfigurationServiceIDs = [v4 managedSystemConfigurationServiceIDs];
 
-  v6 = v5;
+  v6 = managedSystemConfigurationServiceIDs;
   if (!SCPreferencesLock(v3, 1u))
   {
     SCPreferencesSynchronize(v3);
@@ -174,12 +174,12 @@ LABEL_11:
   v3 = prefs;
   v39 = SCPreferencesPathGetValue(prefs, @"/");
   v40 = [[NSMutableDictionary alloc] initWithDictionary:v39];
-  v41 = [v40 allKeys];
+  allKeys = [v40 allKeys];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v42 = [v41 countByEnumeratingWithState:&v76 objects:buf count:16];
+  v42 = [allKeys countByEnumeratingWithState:&v76 objects:buf count:16];
   if (v42)
   {
     v43 = v42;
@@ -190,7 +190,7 @@ LABEL_11:
       {
         if (*v77 != v44)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(allKeys);
         }
 
         v46 = *(*(&v76 + 1) + 8 * i);
@@ -200,7 +200,7 @@ LABEL_11:
         }
       }
 
-      v43 = [v41 countByEnumeratingWithState:&v76 objects:buf count:16];
+      v43 = [allKeys countByEnumeratingWithState:&v76 objects:buf count:16];
     }
 
     while (v43);

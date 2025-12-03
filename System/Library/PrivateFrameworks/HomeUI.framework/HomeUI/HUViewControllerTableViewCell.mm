@@ -1,11 +1,11 @@
 @interface HUViewControllerTableViewCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (UIViewController)parentViewController;
-- (void)_removeFromParentViewControllerAndClearProperty:(BOOL)a3;
-- (void)addToParentViewController:(id)a3;
+- (void)_removeFromParentViewControllerAndClearProperty:(BOOL)property;
+- (void)addToParentViewController:(id)controller;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setViewController:(id)a3;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation HUViewControllerTableViewCell
@@ -20,31 +20,31 @@
   [(HUViewControllerTableViewCell *)&v3 prepareForReuse];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  width = a3.width;
-  v7 = [(HUViewControllerTableViewCell *)self viewController:a3.width];
-  v8 = [v7 view];
-  [v8 frame];
+  width = size.width;
+  v7 = [(HUViewControllerTableViewCell *)self viewController:size.width];
+  view = [v7 view];
+  [view frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(HUViewControllerTableViewCell *)self viewController];
-  v18 = [v17 view];
-  [v18 setFrame:{v10, v12, width, v16}];
+  viewController = [(HUViewControllerTableViewCell *)self viewController];
+  view2 = [viewController view];
+  [view2 setFrame:{v10, v12, width, v16}];
 
-  v19 = [(HUViewControllerTableViewCell *)self viewController];
-  v20 = [v19 view];
-  [v20 layoutIfNeeded];
+  viewController2 = [(HUViewControllerTableViewCell *)self viewController];
+  view3 = [viewController2 view];
+  [view3 layoutIfNeeded];
 
-  v21 = [(HUViewControllerTableViewCell *)self viewController];
-  v22 = [v21 view];
-  [v22 setFrame:{v10, v12, v14, v16}];
+  viewController3 = [(HUViewControllerTableViewCell *)self viewController];
+  view4 = [viewController3 view];
+  [view4 setFrame:{v10, v12, v14, v16}];
 
-  v23 = [(HUViewControllerTableViewCell *)self viewController];
-  [v23 preferredContentSize];
+  viewController4 = [(HUViewControllerTableViewCell *)self viewController];
+  [viewController4 preferredContentSize];
   v25 = v24;
   v27 = v26;
 
@@ -65,9 +65,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HUViewControllerTableViewCell *)self viewController];
-  v12 = [v11 view];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  viewController = [(HUViewControllerTableViewCell *)self viewController];
+  view = [viewController view];
+  [view setFrame:{v4, v6, v8, v10}];
 
   if ([(HUViewControllerTableViewCell *)self ignoreRounding])
   {
@@ -75,14 +75,14 @@
   }
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_viewController != v5)
+  controllerCopy = controller;
+  if (self->_viewController != controllerCopy)
   {
-    v10 = v5;
-    v6 = [(HUViewControllerTableViewCell *)self parentViewController];
-    if (v6)
+    v10 = controllerCopy;
+    parentViewController = [(HUViewControllerTableViewCell *)self parentViewController];
+    if (parentViewController)
     {
       viewController = self->_viewController;
 
@@ -92,62 +92,62 @@
       }
     }
 
-    objc_storeStrong(&self->_viewController, a3);
+    objc_storeStrong(&self->_viewController, controller);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(UIViewController *)v10 setWantsPreferredContentSize:1];
     }
 
-    v8 = [(HUViewControllerTableViewCell *)self parentViewController];
+    parentViewController2 = [(HUViewControllerTableViewCell *)self parentViewController];
 
-    v5 = v10;
-    if (v10 && v8)
+    controllerCopy = v10;
+    if (v10 && parentViewController2)
     {
-      v9 = [(HUViewControllerTableViewCell *)self parentViewController];
-      [(HUViewControllerTableViewCell *)self addToParentViewController:v9];
+      parentViewController3 = [(HUViewControllerTableViewCell *)self parentViewController];
+      [(HUViewControllerTableViewCell *)self addToParentViewController:parentViewController3];
 
-      v5 = v10;
+      controllerCopy = v10;
     }
   }
 }
 
-- (void)addToParentViewController:(id)a3
+- (void)addToParentViewController:(id)controller
 {
-  v10 = a3;
-  v4 = [(HUViewControllerTableViewCell *)self viewController];
+  controllerCopy = controller;
+  viewController = [(HUViewControllerTableViewCell *)self viewController];
 
-  if (v4)
+  if (viewController)
   {
-    v5 = [(HUViewControllerTableViewCell *)self viewController];
-    [v10 addChildViewController:v5];
+    viewController2 = [(HUViewControllerTableViewCell *)self viewController];
+    [controllerCopy addChildViewController:viewController2];
 
-    v6 = [(HUViewControllerTableViewCell *)self contentView];
-    v7 = [(HUViewControllerTableViewCell *)self viewController];
-    v8 = [v7 view];
-    [v6 addSubview:v8];
+    contentView = [(HUViewControllerTableViewCell *)self contentView];
+    viewController3 = [(HUViewControllerTableViewCell *)self viewController];
+    view = [viewController3 view];
+    [contentView addSubview:view];
 
-    v9 = [(HUViewControllerTableViewCell *)self viewController];
-    [v9 didMoveToParentViewController:v10];
+    viewController4 = [(HUViewControllerTableViewCell *)self viewController];
+    [viewController4 didMoveToParentViewController:controllerCopy];
   }
 
-  [(HUViewControllerTableViewCell *)self setParentViewController:v10];
+  [(HUViewControllerTableViewCell *)self setParentViewController:controllerCopy];
 }
 
-- (void)_removeFromParentViewControllerAndClearProperty:(BOOL)a3
+- (void)_removeFromParentViewControllerAndClearProperty:(BOOL)property
 {
-  v3 = a3;
-  v5 = [(HUViewControllerTableViewCell *)self viewController];
-  [v5 willMoveToParentViewController:0];
+  propertyCopy = property;
+  viewController = [(HUViewControllerTableViewCell *)self viewController];
+  [viewController willMoveToParentViewController:0];
 
-  v6 = [(HUViewControllerTableViewCell *)self viewController];
-  v7 = [v6 view];
-  [v7 removeFromSuperview];
+  viewController2 = [(HUViewControllerTableViewCell *)self viewController];
+  view = [viewController2 view];
+  [view removeFromSuperview];
 
-  v8 = [(HUViewControllerTableViewCell *)self viewController];
-  [v8 removeFromParentViewController];
+  viewController3 = [(HUViewControllerTableViewCell *)self viewController];
+  [viewController3 removeFromParentViewController];
 
-  if (v3)
+  if (propertyCopy)
   {
 
     [(HUViewControllerTableViewCell *)self setParentViewController:0];

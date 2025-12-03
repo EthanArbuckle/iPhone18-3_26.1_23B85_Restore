@@ -9,18 +9,18 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for NotificationSystem();
   [(NotificationSystem *)&v6 dealloc];
 }
 
 - (void)notificationSuppressionChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DB1163BC();
 }
 

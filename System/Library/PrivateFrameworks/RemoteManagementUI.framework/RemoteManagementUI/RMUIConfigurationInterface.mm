@@ -1,35 +1,35 @@
 @interface RMUIConfigurationInterface
 - (NSString)scopeHeading;
-- (RMUIConfigurationInterface)initWithAccount:(id)a3 scope:(int64_t)a4 initialLoad:(BOOL)a5;
-- (RMUIConfigurationInterface)initWithDeclarationsPayloadIdentifiers:(id)a3 scope:(int64_t)a4 initialLoad:(BOOL)a5;
-- (RMUIConfigurationInterface)initWithMDMProfileIdentifier:(id)a3 scope:(int64_t)a4 initialLoad:(BOOL)a5;
-- (RMUIConfigurationInterface)initWithScope:(int64_t)a3;
-- (RMUIConfigurationInterface)initWithStore:(id)a3;
-- (id)initForTest:(int64_t)a3;
+- (RMUIConfigurationInterface)initWithAccount:(id)account scope:(int64_t)scope initialLoad:(BOOL)load;
+- (RMUIConfigurationInterface)initWithDeclarationsPayloadIdentifiers:(id)identifiers scope:(int64_t)scope initialLoad:(BOOL)load;
+- (RMUIConfigurationInterface)initWithMDMProfileIdentifier:(id)identifier scope:(int64_t)scope initialLoad:(BOOL)load;
+- (RMUIConfigurationInterface)initWithScope:(int64_t)scope;
+- (RMUIConfigurationInterface)initWithStore:(id)store;
+- (id)initForTest:(int64_t)test;
 - (id)viewModels;
-- (void)_activateConfiguration:(id)a3 observerStore:(id)a4 completionHandler:(id)a5;
-- (void)_deactivateConfiguration:(id)a3 observerStore:(id)a4 completionHandler:(id)a5;
-- (void)_loadObserverStoreForDDMWithCompletion:(id)a3;
-- (void)_loadObserverStoreForDeclarationsPayloadWithCompletion:(id)a3;
-- (void)_loadObserverStoreWithCompletion:(id)a3;
-- (void)_reloadUIWithCompletion:(id)a3;
-- (void)_reloadViewModelsWithCompletion:(id)a3;
-- (void)refreshWithCompletion:(id)a3;
+- (void)_activateConfiguration:(id)configuration observerStore:(id)store completionHandler:(id)handler;
+- (void)_deactivateConfiguration:(id)configuration observerStore:(id)store completionHandler:(id)handler;
+- (void)_loadObserverStoreForDDMWithCompletion:(id)completion;
+- (void)_loadObserverStoreForDeclarationsPayloadWithCompletion:(id)completion;
+- (void)_loadObserverStoreWithCompletion:(id)completion;
+- (void)_reloadUIWithCompletion:(id)completion;
+- (void)_reloadViewModelsWithCompletion:(id)completion;
+- (void)refreshWithCompletion:(id)completion;
 @end
 
 @implementation RMUIConfigurationInterface
 
-- (RMUIConfigurationInterface)initWithScope:(int64_t)a3
+- (RMUIConfigurationInterface)initWithScope:(int64_t)scope
 {
   v15.receiver = self;
   v15.super_class = RMUIConfigurationInterface;
   v4 = [(RMUIConfigurationInterface *)&v15 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v5 addObserver:v4 selector:sel_reloadNotificationPosted_ name:*MEMORY[0x277D460D0] object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_reloadNotificationPosted_ name:*MEMORY[0x277D460D0] object:0];
 
-    v4->_scope = a3;
+    v4->_scope = scope;
     v6 = [[RMUILegacyProfilesViewModelProvider alloc] initWithScope:[(RMUIConfigurationInterface *)v4 _rmStoreScope]];
     legacyProfilesProvider = v4->_legacyProfilesProvider;
     v4->_legacyProfilesProvider = v6;
@@ -52,32 +52,32 @@
   return v4;
 }
 
-- (RMUIConfigurationInterface)initWithStore:(id)a3
+- (RMUIConfigurationInterface)initWithStore:(id)store
 {
-  v5 = a3;
-  v6 = -[RMUIConfigurationInterface initWithScope:](self, "initWithScope:", [v5 scope]);
+  storeCopy = store;
+  v6 = -[RMUIConfigurationInterface initWithScope:](self, "initWithScope:", [storeCopy scope]);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_observerStore, a3);
-    [(RMUILegacyProfilesViewModelProvider *)v7->_legacyProfilesProvider setObserverStore:v5];
-    [(RMUIPluginViewModelProvider *)v7->_pluginProvider setObserverStore:v5];
+    objc_storeStrong(&v6->_observerStore, store);
+    [(RMUILegacyProfilesViewModelProvider *)v7->_legacyProfilesProvider setObserverStore:storeCopy];
+    [(RMUIPluginViewModelProvider *)v7->_pluginProvider setObserverStore:storeCopy];
     [(RMUIConfigurationInterface *)v7 reloadNotificationPosted:0];
   }
 
   return v7;
 }
 
-- (RMUIConfigurationInterface)initWithAccount:(id)a3 scope:(int64_t)a4 initialLoad:(BOOL)a5
+- (RMUIConfigurationInterface)initWithAccount:(id)account scope:(int64_t)scope initialLoad:(BOOL)load
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = [(RMUIConfigurationInterface *)self initWithScope:a4];
+  loadCopy = load;
+  accountCopy = account;
+  v10 = [(RMUIConfigurationInterface *)self initWithScope:scope];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_rmAccount, a3);
-    if (v5)
+    objc_storeStrong(&v10->_rmAccount, account);
+    if (loadCopy)
     {
       [(RMUIConfigurationInterface *)v11 reloadNotificationPosted:0];
     }
@@ -86,16 +86,16 @@
   return v11;
 }
 
-- (RMUIConfigurationInterface)initWithMDMProfileIdentifier:(id)a3 scope:(int64_t)a4 initialLoad:(BOOL)a5
+- (RMUIConfigurationInterface)initWithMDMProfileIdentifier:(id)identifier scope:(int64_t)scope initialLoad:(BOOL)load
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = [(RMUIConfigurationInterface *)self initWithScope:a4];
+  loadCopy = load;
+  identifierCopy = identifier;
+  v10 = [(RMUIConfigurationInterface *)self initWithScope:scope];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_mdmProfileIdentifier, a3);
-    if (v5)
+    objc_storeStrong(&v10->_mdmProfileIdentifier, identifier);
+    if (loadCopy)
     {
       [(RMUIConfigurationInterface *)v11 reloadNotificationPosted:0];
     }
@@ -104,16 +104,16 @@
   return v11;
 }
 
-- (RMUIConfigurationInterface)initWithDeclarationsPayloadIdentifiers:(id)a3 scope:(int64_t)a4 initialLoad:(BOOL)a5
+- (RMUIConfigurationInterface)initWithDeclarationsPayloadIdentifiers:(id)identifiers scope:(int64_t)scope initialLoad:(BOOL)load
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = [(RMUIConfigurationInterface *)self initWithScope:a4];
+  loadCopy = load;
+  identifiersCopy = identifiers;
+  v10 = [(RMUIConfigurationInterface *)self initWithScope:scope];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_declarationsPayloadIdentifiers, a3);
-    if (v5)
+    objc_storeStrong(&v10->_declarationsPayloadIdentifiers, identifiers);
+    if (loadCopy)
     {
       [(RMUIConfigurationInterface *)v11 reloadNotificationPosted:0];
     }
@@ -122,14 +122,14 @@
   return v11;
 }
 
-- (id)initForTest:(int64_t)a3
+- (id)initForTest:(int64_t)test
 {
   v5.receiver = self;
   v5.super_class = RMUIConfigurationInterface;
   result = [(RMUIConfigurationInterface *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = test;
   }
 
   return result;
@@ -168,17 +168,17 @@
   }
 }
 
-- (void)_reloadUIWithCompletion:(id)a3
+- (void)_reloadUIWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__RMUIConfigurationInterface__reloadUIWithCompletion___block_invoke;
   block[3] = &unk_279B07B20;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v8);
@@ -242,72 +242,72 @@ uint64_t __54__RMUIConfigurationInterface__reloadUIWithCompletion___block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_reloadViewModelsWithCompletion:(id)a3
+- (void)_reloadViewModelsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
-  v6 = [(RMUIConfigurationInterface *)self legacyProfilesProvider];
+  legacyProfilesProvider = [(RMUIConfigurationInterface *)self legacyProfilesProvider];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__RMUIConfigurationInterface__reloadViewModelsWithCompletion___block_invoke;
   v15[3] = &unk_279B07AD8;
   v7 = v5;
   v16 = v7;
-  [v6 loadProfilesFromConfigurationsWithCompletionHandler:v15];
+  [legacyProfilesProvider loadProfilesFromConfigurationsWithCompletionHandler:v15];
 
   dispatch_group_enter(v7);
-  v8 = [(RMUIConfigurationInterface *)self pluginProvider];
+  pluginProvider = [(RMUIConfigurationInterface *)self pluginProvider];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__RMUIConfigurationInterface__reloadViewModelsWithCompletion___block_invoke_2;
   v13[3] = &unk_279B07AD8;
   v14 = v7;
   v9 = v7;
-  [v8 loadPluginsFromConfigurationsWithCompletionHandler:v13];
+  [pluginProvider loadPluginsFromConfigurationsWithCompletionHandler:v13];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__RMUIConfigurationInterface__reloadViewModelsWithCompletion___block_invoke_3;
   v11[3] = &unk_279B07B48;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_group_notify(v9, MEMORY[0x277D85CD0], v11);
 }
 
-- (void)refreshWithCompletion:(id)a3
+- (void)refreshWithCompletion:(id)completion
 {
-  v8 = a3;
-  v4 = [(RMUIConfigurationInterface *)self observerStore];
-  if (v4)
+  completionCopy = completion;
+  observerStore = [(RMUIConfigurationInterface *)self observerStore];
+  if (observerStore)
   {
 
     goto LABEL_3;
   }
 
-  v6 = [(RMUIConfigurationInterface *)self mdmProfileIdentifier];
-  if (v6 || ([(RMUIConfigurationInterface *)self rmAccount], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  mdmProfileIdentifier = [(RMUIConfigurationInterface *)self mdmProfileIdentifier];
+  if (mdmProfileIdentifier || ([(RMUIConfigurationInterface *)self rmAccount], (mdmProfileIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_8:
-    [(RMUIConfigurationInterface *)self _loadObserverStoreWithCompletion:v8];
+    [(RMUIConfigurationInterface *)self _loadObserverStoreWithCompletion:completionCopy];
     goto LABEL_9;
   }
 
-  v7 = [(RMUIConfigurationInterface *)self declarationsPayloadIdentifiers];
+  declarationsPayloadIdentifiers = [(RMUIConfigurationInterface *)self declarationsPayloadIdentifiers];
 
-  if (v7)
+  if (declarationsPayloadIdentifiers)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  v5 = [(RMUIConfigurationInterface *)self observerStore];
+  observerStore2 = [(RMUIConfigurationInterface *)self observerStore];
 
-  if (v5)
+  if (observerStore2)
   {
-    [(RMUIConfigurationInterface *)self _reloadViewModelsWithCompletion:v8];
+    [(RMUIConfigurationInterface *)self _reloadViewModelsWithCompletion:completionCopy];
   }
 
 LABEL_9:
@@ -315,58 +315,58 @@ LABEL_9:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_loadObserverStoreWithCompletion:(id)a3
+- (void)_loadObserverStoreWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(RMUIConfigurationInterface *)self declarationsPayloadIdentifiers];
+  completionCopy = completion;
+  declarationsPayloadIdentifiers = [(RMUIConfigurationInterface *)self declarationsPayloadIdentifiers];
 
-  if (v4)
+  if (declarationsPayloadIdentifiers)
   {
-    [(RMUIConfigurationInterface *)self _loadObserverStoreForDeclarationsPayloadWithCompletion:v5];
+    [(RMUIConfigurationInterface *)self _loadObserverStoreForDeclarationsPayloadWithCompletion:completionCopy];
   }
 
   else
   {
-    [(RMUIConfigurationInterface *)self _loadObserverStoreForDDMWithCompletion:v5];
+    [(RMUIConfigurationInterface *)self _loadObserverStoreForDDMWithCompletion:completionCopy];
   }
 }
 
-- (void)_loadObserverStoreForDDMWithCompletion:(id)a3
+- (void)_loadObserverStoreForDDMWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([MEMORY[0x277D45F60] isActiveForScope:{-[RMUIConfigurationInterface _rmManagementScope](self, "_rmManagementScope")}])
   {
-    v5 = [(RMUIConfigurationInterface *)self mdmProfileIdentifier];
-    v6 = v5;
-    if (v5)
+    mdmProfileIdentifier = [(RMUIConfigurationInterface *)self mdmProfileIdentifier];
+    v6 = mdmProfileIdentifier;
+    if (mdmProfileIdentifier)
     {
-      v7 = v5;
+      dmc_managementProfileIdentifier = mdmProfileIdentifier;
     }
 
     else
     {
-      v9 = [(RMUIConfigurationInterface *)self rmAccount];
-      v7 = [v9 dmc_managementProfileIdentifier];
+      rmAccount = [(RMUIConfigurationInterface *)self rmAccount];
+      dmc_managementProfileIdentifier = [rmAccount dmc_managementProfileIdentifier];
     }
 
     v10 = objc_opt_new();
     [v10 setScheme:@"mdm"];
-    [v10 setPath:v7];
+    [v10 setPath:dmc_managementProfileIdentifier];
     v11 = [v10 URL];
     objc_initWeak(&location, self);
     v12 = MEMORY[0x277D460A0];
-    v13 = [(RMUIConfigurationInterface *)self _rmStoreScope];
+    _rmStoreScope = [(RMUIConfigurationInterface *)self _rmStoreScope];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __69__RMUIConfigurationInterface__loadObserverStoreForDDMWithCompletion___block_invoke;
     v16[3] = &unk_279B07B70;
     objc_copyWeak(&v20, &location);
-    v14 = v7;
+    v14 = dmc_managementProfileIdentifier;
     v17 = v14;
-    v19 = v4;
+    v19 = completionCopy;
     v15 = v11;
     v18 = v15;
-    [v12 storesWithScope:v13 completionHandler:v16];
+    [v12 storesWithScope:_rmStoreScope completionHandler:v16];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
@@ -380,7 +380,7 @@ LABEL_9:
       [RMUIConfigurationInterface _loadObserverStoreForDDMWithCompletion:v8];
     }
 
-    [(RMUIConfigurationInterface *)self _reloadUIWithCompletion:v4];
+    [(RMUIConfigurationInterface *)self _reloadUIWithCompletion:completionCopy];
   }
 }
 
@@ -490,19 +490,19 @@ LABEL_21:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_loadObserverStoreForDeclarationsPayloadWithCompletion:(id)a3
+- (void)_loadObserverStoreForDeclarationsPayloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MEMORY[0x277D460A8] profileStoreForOwner:*MEMORY[0x277D460E0] scope:{-[RMUIConfigurationInterface _rmStoreScope](self, "_rmStoreScope")}];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __85__RMUIConfigurationInterface__loadObserverStoreForDeclarationsPayloadWithCompletion___block_invoke;
   v8[3] = &unk_279B07BC0;
   v9 = v5;
-  v10 = v4;
+  v10 = completionCopy;
   v8[4] = self;
   v6 = v5;
-  v7 = v4;
+  v7 = completionCopy;
   [v6 observerStoreWithCompletionHandler:v8];
 }
 
@@ -610,16 +610,16 @@ void __87__RMUIConfigurationInterface_setConfigurationActivated_forViewModel_com
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_activateConfiguration:(id)a3 observerStore:(id)a4 completionHandler:(id)a5
+- (void)_activateConfiguration:(id)configuration observerStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 declarationIdentifier];
-  v12 = [v8 payloadProfileURL];
-  if (v12)
+  configurationCopy = configuration;
+  storeCopy = store;
+  handlerCopy = handler;
+  declarationIdentifier = [configurationCopy declarationIdentifier];
+  payloadProfileURL = [configurationCopy payloadProfileURL];
+  if (payloadProfileURL)
   {
-    v13 = [MEMORY[0x277CBEBC0] URLWithString:v12];
+    v13 = [MEMORY[0x277CBEBC0] URLWithString:payloadProfileURL];
     if (v13)
     {
       v14 = [MEMORY[0x277D460C0] newProfileControllerWithPrefix:*MEMORY[0x277D46080] scope:{-[RMUIConfigurationInterface _rmStoreScope](self, "_rmStoreScope")}];
@@ -628,8 +628,8 @@ void __87__RMUIConfigurationInterface_setConfigurationActivated_forViewModel_com
       v17[2] = __85__RMUIConfigurationInterface__activateConfiguration_observerStore_completionHandler___block_invoke;
       v17[3] = &unk_279B07C38;
       v18 = v13;
-      v19 = v10;
-      [v14 downloadAndInstallProfileDeclaration:v8 store:v9 fromURL:v18 completionHandler:v17];
+      v19 = handlerCopy;
+      [v14 downloadAndInstallProfileDeclaration:configurationCopy store:storeCopy fromURL:v18 completionHandler:v17];
     }
 
     else
@@ -640,8 +640,8 @@ void __87__RMUIConfigurationInterface_setConfigurationActivated_forViewModel_com
         [RMUIConfigurationInterface _activateConfiguration:observerStore:completionHandler:];
       }
 
-      v14 = [RMUIError legacyProfilesInvalidURLForDeclarationID:v11 urlString:v12];
-      (*(v10 + 2))(v10, 0, v14);
+      v14 = [RMUIError legacyProfilesInvalidURLForDeclarationID:declarationIdentifier urlString:payloadProfileURL];
+      (*(handlerCopy + 2))(handlerCopy, 0, v14);
     }
   }
 
@@ -653,8 +653,8 @@ void __87__RMUIConfigurationInterface_setConfigurationActivated_forViewModel_com
       [RMUIConfigurationInterface _activateConfiguration:observerStore:completionHandler:];
     }
 
-    v13 = [RMUIError legacyProfilesInvalidURLForDeclarationID:v11 urlString:&stru_287475138];
-    (*(v10 + 2))(v10, 0, v13);
+    v13 = [RMUIError legacyProfilesInvalidURLForDeclarationID:declarationIdentifier urlString:&stru_287475138];
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
@@ -680,25 +680,25 @@ void __85__RMUIConfigurationInterface__activateConfiguration_observerStore_compl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_deactivateConfiguration:(id)a3 observerStore:(id)a4 completionHandler:(id)a5
+- (void)_deactivateConfiguration:(id)configuration observerStore:(id)store completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = MEMORY[0x277D460C0];
   v10 = *MEMORY[0x277D46080];
-  v11 = a4;
-  v12 = a3;
+  storeCopy = store;
+  configurationCopy = configuration;
   v13 = [v9 newProfileControllerWithPrefix:v10 scope:{-[RMUIConfigurationInterface _rmStoreScope](self, "_rmStoreScope")}];
-  v14 = [v13 profileIdentifierForDeclaration:v12 store:v11];
+  v14 = [v13 profileIdentifierForDeclaration:configurationCopy store:storeCopy];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __87__RMUIConfigurationInterface__deactivateConfiguration_observerStore_completionHandler___block_invoke;
   v17[3] = &unk_279B07C60;
   v18 = v14;
-  v19 = v8;
-  v15 = v8;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
   v16 = v14;
-  [v13 uninstallProfileWithIdentifier:v16 store:v11 completionHandler:v17];
+  [v13 uninstallProfileWithIdentifier:v16 store:storeCopy completionHandler:v17];
 }
 
 void __87__RMUIConfigurationInterface__deactivateConfiguration_observerStore_completionHandler___block_invoke(uint64_t a1, void *a2)

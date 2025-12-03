@@ -1,14 +1,14 @@
 @interface BKSceneProviderBridge
 - (BKSceneProviderBridge)init;
-- (void)registerWindowScene:(id)a3 containerHost:(id)a4;
+- (void)registerWindowScene:(id)scene containerHost:(id)host;
 @end
 
 @implementation BKSceneProviderBridge
 
-- (void)registerWindowScene:(id)a3 containerHost:(id)a4
+- (void)registerWindowScene:(id)scene containerHost:(id)host
 {
-  v5 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  hostCopy = host;
   sub_1000076D8(v9);
   sub_10000E3E8(v9, v9[3]);
   sub_1001F1160(&qword_100AF6028);

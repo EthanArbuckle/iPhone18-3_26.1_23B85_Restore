@@ -1,6 +1,6 @@
 @interface LibcoreReflectWildcardTypeImpl
-- (BOOL)isEqual:(id)a3;
-- (LibcoreReflectWildcardTypeImpl)initWithLibcoreReflectListOfTypes:(id)a3 withLibcoreReflectListOfTypes:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LibcoreReflectWildcardTypeImpl)initWithLibcoreReflectListOfTypes:(id)types withLibcoreReflectListOfTypes:(id)ofTypes;
 - (NSString)description;
 - (id)getLowerBounds;
 - (id)getUpperBounds;
@@ -9,10 +9,10 @@
 
 @implementation LibcoreReflectWildcardTypeImpl
 
-- (LibcoreReflectWildcardTypeImpl)initWithLibcoreReflectListOfTypes:(id)a3 withLibcoreReflectListOfTypes:(id)a4
+- (LibcoreReflectWildcardTypeImpl)initWithLibcoreReflectListOfTypes:(id)types withLibcoreReflectListOfTypes:(id)ofTypes
 {
-  JreStrongAssign(&self->extendsBound_, a3);
-  JreStrongAssign(&self->superBound_, a4);
+  JreStrongAssign(&self->extendsBound_, types);
+  JreStrongAssign(&self->superBound_, ofTypes);
   return self;
 }
 
@@ -38,34 +38,34 @@
   return [v3 clone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![JavaLangReflectWildcardType_class_() isInstance:a3])
+  if (![JavaLangReflectWildcardType_class_() isInstance:equal])
   {
     return 0;
   }
 
   v5 = JavaLangReflectWildcardType_class_();
-  if (!a3)
+  if (!equal)
   {
     [(LibcoreReflectWildcardTypeImpl *)self getLowerBounds];
     JreThrowNullPointerException();
   }
 
-  if (([v5 isInstance:a3] & 1) == 0)
+  if (([v5 isInstance:equal] & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  if (!JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(-[LibcoreReflectWildcardTypeImpl getLowerBounds](self, "getLowerBounds"), [a3 getLowerBounds]))
+  if (!JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(-[LibcoreReflectWildcardTypeImpl getLowerBounds](self, "getLowerBounds"), [equal getLowerBounds]))
   {
     return 0;
   }
 
-  v6 = [(LibcoreReflectWildcardTypeImpl *)self getUpperBounds];
-  v7 = [a3 getUpperBounds];
+  getUpperBounds = [(LibcoreReflectWildcardTypeImpl *)self getUpperBounds];
+  getUpperBounds2 = [equal getUpperBounds];
 
-  return JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(v6, v7);
+  return JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(getUpperBounds, getUpperBounds2);
 }
 
 - (NSString)description
@@ -81,14 +81,14 @@ LABEL_17:
 
   if ([(LibcoreReflectListOfTypes *)extendsBound length]== 1)
   {
-    v6 = [(LibcoreReflectListOfTypes *)*p_extendsBound getResolvedTypes];
-    if (!v6)
+    getResolvedTypes = [(LibcoreReflectListOfTypes *)*p_extendsBound getResolvedTypes];
+    if (!getResolvedTypes)
     {
       goto LABEL_17;
     }
 
-    v7 = v6;
-    v8 = v6[2];
+    v7 = getResolvedTypes;
+    v8 = getResolvedTypes[2];
     if (v8 <= 0)
     {
       IOSArray_throwOutOfBoundsWithMsg(v8, 0);

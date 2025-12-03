@@ -1,26 +1,26 @@
 @interface SFUCryptoInputStream
-- (id)initForDecryptionWithInputStream:(id)a3 key:(id)a4;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
+- (id)initForDecryptionWithInputStream:(id)stream key:(id)key;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
 - (void)dealloc;
-- (void)seekToOffset:(int64_t)a3;
+- (void)seekToOffset:(int64_t)offset;
 @end
 
 @implementation SFUCryptoInputStream
 
-- (id)initForDecryptionWithInputStream:(id)a3 key:(id)a4
+- (id)initForDecryptionWithInputStream:(id)stream key:(id)key
 {
   v6 = [(SFUCryptoInputStream *)self init];
   if (v6)
   {
-    v6->mBaseStream = a3;
-    v7 = [SFUCryptoUtils ivLengthForKey:a4];
+    v6->mBaseStream = stream;
+    v7 = [SFUCryptoUtils ivLengthForKey:key];
     v8 = &v11 - ((v7 + 15) & 0x1FFFFFFF0);
     if ([(SFUInputStream *)v6->mBaseStream readToBuffer:v8 size:v7]!= v7)
     {
       [NSException raise:NSGenericException format:@"Failed to read IV"];
     }
 
-    v9 = [[SFUCryptor alloc] initWithKey:a4 operation:1 iv:v8 ivLength:v7];
+    v9 = [[SFUCryptor alloc] initWithKey:key operation:1 iv:v8 ivLength:v7];
     v6->mCryptor = v9;
     if (!v9)
     {
@@ -48,14 +48,14 @@
   [(SFUCryptoInputStream *)&v3 dealloc];
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
   v7 = 0;
   v8 = 0;
-  if (![(SFUCryptor *)self->mCryptor cryptDataFromStream:self->mBaseStream toBuffer:a3 length:a4 bytesRead:&v7 error:&v8])
+  if (![(SFUCryptor *)self->mCryptor cryptDataFromStream:self->mBaseStream toBuffer:buffer length:size bytesRead:&v7 error:&v8])
   {
-    v5 = [v8 localizedDescription];
-    +[NSException raise:format:](NSException, "raise:format:", NSGenericException, @"SFUCryptor failed. %@: %@", v5, [v8 localizedFailureReason]);
+    localizedDescription = [v8 localizedDescription];
+    +[NSException raise:format:](NSException, "raise:format:", NSGenericException, @"SFUCryptor failed. %@: %@", localizedDescription, [v8 localizedFailureReason]);
   }
 
   result = v7;
@@ -63,7 +63,7 @@
   return result;
 }
 
-- (void)seekToOffset:(int64_t)a3
+- (void)seekToOffset:(int64_t)offset
 {
   v3 = +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)

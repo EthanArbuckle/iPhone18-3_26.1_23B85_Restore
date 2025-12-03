@@ -6,12 +6,12 @@
 
 - (HFServiceNameComponents)hf_serviceNameComponents
 {
-  v2 = [HFNamingComponents namingComponentFromMediaSystem:a1];
+  v2 = [HFNamingComponents namingComponentFromMediaSystem:self];
   v3 = [HFServiceNameComponents alloc];
-  v4 = [v2 name];
-  v5 = [a1 hf_parentRoom];
-  v6 = [v5 name];
-  v7 = [(HFServiceNameComponents *)v3 initWithRawServiceName:v4 rawRoomName:v6];
+  name = [v2 name];
+  hf_parentRoom = [self hf_parentRoom];
+  name2 = [hf_parentRoom name];
+  v7 = [(HFServiceNameComponents *)v3 initWithRawServiceName:name rawRoomName:name2];
 
   return v7;
 }

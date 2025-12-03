@@ -1,9 +1,9 @@
 @interface _UINavigationBarTransitionContextPresentSearch
 - (void)_animateBackgroundView;
-- (void)_animateFromPalette:(id)a3 fromPaletteFrame:(CGRect)a4 toPalette:(id)a5 toPaletteFrame:(CGRect)a6;
+- (void)_animateFromPalette:(id)palette fromPaletteFrame:(CGRect)frame toPalette:(id)toPalette toPaletteFrame:(CGRect)paletteFrame;
 - (void)_prepareBackgroundView;
-- (void)_prepareTransitionFromPalette:(id)a3 toPalette:(id)a4 toPaletteFrame:(CGRect)a5;
-- (void)_resetContentAndLargeTitleViewCompleted:(BOOL)a3;
+- (void)_prepareTransitionFromPalette:(id)palette toPalette:(id)toPalette toPaletteFrame:(CGRect)frame;
+- (void)_resetContentAndLargeTitleViewCompleted:(BOOL)completed;
 - (void)animate;
 - (void)cancel;
 - (void)complete;
@@ -90,19 +90,19 @@ LABEL_9:
   }
 }
 
-- (void)_prepareTransitionFromPalette:(id)a3 toPalette:(id)a4 toPaletteFrame:(CGRect)a5
+- (void)_prepareTransitionFromPalette:(id)palette toPalette:(id)toPalette toPaletteFrame:(CGRect)frame
 {
-  if (a4 && a4 != a3)
+  if (toPalette && toPalette != palette)
   {
-    height = a5.size.height;
-    width = a5.size.width;
-    y = a5.origin.y;
-    x = a5.origin.x;
-    v10 = a4;
-    [v10 setAlpha:0.0];
-    [v10 setFrame:{x, y, width, height}];
-    [v10 layoutIfNeeded];
-    [v10 setTransitioning:1];
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    toPaletteCopy = toPalette;
+    [toPaletteCopy setAlpha:0.0];
+    [toPaletteCopy setFrame:{x, y, width, height}];
+    [toPaletteCopy layoutIfNeeded];
+    [toPaletteCopy setTransitioning:1];
   }
 }
 
@@ -133,7 +133,7 @@ LABEL_9:
 
   if ([(_UINavigationBarTransitionContext *)self observedScrollViewOffsetIsApplicable]&& (([(_UINavigationBarTransitionContext *)self startingContentOffsetForObservedScrollView], (fromLayout = self->super._fromLayout) == 0) ? (height = 0.0) : (height = fromLayout->_layoutSize.height), v7 > -height))
   {
-    v10 = [(_UINavigationBarLayout *)self->super._toLayout layoutHeights];
+    layoutHeights = [(_UINavigationBarLayout *)self->super._toLayout layoutHeights];
   }
 
   else
@@ -141,17 +141,17 @@ LABEL_9:
     [(_UINavigationBarLayout *)self->super._toLayout layoutHeights];
   }
 
-  [(_UINavigationBarLayout *)self->super._toLayout setLayoutSize:v10];
+  [(_UINavigationBarLayout *)self->super._toLayout setLayoutSize:layoutHeights];
   [(_UINavigationBarTransitionContextPresentSearch *)self _prepareBackgroundView];
   [(_UINavigationBarTransitionContext *)self _preparePalettes];
   [(UIView *)self->super._tabBarHostedView setAlpha:1.0];
-  v11 = [(_UINavigationBarLayout *)v4 _searchController];
-  v12 = [v11 _hidesNavigationBarDuringPresentationRespectingInlineSearch];
+  _searchController = [(_UINavigationBarLayout *)v4 _searchController];
+  _hidesNavigationBarDuringPresentationRespectingInlineSearch = [_searchController _hidesNavigationBarDuringPresentationRespectingInlineSearch];
 
-  if (v12)
+  if (_hidesNavigationBarDuringPresentationRespectingInlineSearch)
   {
-    v13 = [(_UINavigationBarTransitionContext *)self navigationBar];
-    -[_UINavigationBarLayout _setBarPosition:](v4, "_setBarPosition:", [v13 barPosition]);
+    navigationBar = [(_UINavigationBarTransitionContext *)self navigationBar];
+    -[_UINavigationBarLayout _setBarPosition:](v4, "_setBarPosition:", [navigationBar barPosition]);
   }
 
   else
@@ -159,9 +159,9 @@ LABEL_9:
     [(_UINavigationBarLayout *)v4 _setBarPosition:2];
     if ([(_UINavigationBarLayout *)v4 _isIntegratedIntoToolbarOrNavigationBarContent])
     {
-      v14 = [(_UINavigationBarLayout *)v4 _viewStackedInNavigationBar];
+      _viewStackedInNavigationBar = [(_UINavigationBarLayout *)v4 _viewStackedInNavigationBar];
       transitioningScopeBarContainer = self->_transitioningScopeBarContainer;
-      self->_transitioningScopeBarContainer = v14;
+      self->_transitioningScopeBarContainer = _viewStackedInNavigationBar;
 
       [(UIView *)self->_transitioningScopeBarContainer setAlpha:0.0];
       [(UIView *)self->_transitioningScopeBarContainer setHidden:0];
@@ -222,35 +222,35 @@ LABEL_9:
   }
 }
 
-- (void)_animateFromPalette:(id)a3 fromPaletteFrame:(CGRect)a4 toPalette:(id)a5 toPaletteFrame:(CGRect)a6
+- (void)_animateFromPalette:(id)palette fromPaletteFrame:(CGRect)frame toPalette:(id)toPalette toPaletteFrame:(CGRect)paletteFrame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  v13 = a4.origin.y;
-  v14 = a4.origin.x;
-  v16 = a3;
-  v17 = a5;
-  if (v16 != v17)
+  height = paletteFrame.size.height;
+  width = paletteFrame.size.width;
+  y = paletteFrame.origin.y;
+  x = paletteFrame.origin.x;
+  v11 = frame.size.height;
+  v12 = frame.size.width;
+  v13 = frame.origin.y;
+  v14 = frame.origin.x;
+  paletteCopy = palette;
+  toPaletteCopy = toPalette;
+  if (paletteCopy != toPaletteCopy)
   {
-    if (v16)
+    if (paletteCopy)
     {
-      [v16 setAlpha:0.0];
-      [v16 setTransitioning:1];
-      [v16 setFrame:{v14, v13, v12, v11}];
+      [paletteCopy setAlpha:0.0];
+      [paletteCopy setTransitioning:1];
+      [paletteCopy setFrame:{v14, v13, v12, v11}];
     }
 
-    if (v17)
+    if (toPaletteCopy)
     {
-      [v17 setFrame:{x, y, width, height}];
+      [toPaletteCopy setFrame:{x, y, width, height}];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __112___UINavigationBarTransitionContextPresentSearch__animateFromPalette_fromPaletteFrame_toPalette_toPaletteFrame___block_invoke;
       aBlock[3] = &unk_1E70F3590;
-      v20 = v17;
+      v20 = toPaletteCopy;
       v18 = _Block_copy(aBlock);
     }
 
@@ -274,8 +274,8 @@ LABEL_9:
   v5 = toLayout;
   if ([(_UINavigationBarLayout *)v5 _usesLegacyVisualProvider])
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"_UINavigationBarTransitionContext.m" lineNumber:3090 description:@"A search bar with a legacy visual provider should not end up in this code path. This is a UIKit bug"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UINavigationBarTransitionContext.m" lineNumber:3090 description:@"A search bar with a legacy visual provider should not end up in this code path. This is a UIKit bug"];
   }
 
   v6 = self->super._toLayout;
@@ -295,17 +295,17 @@ LABEL_9:
   v29.super_class = _UINavigationBarTransitionContextPresentSearch;
   [(_UINavigationBarTransitionContext *)&v29 animate];
   [(_UINavigationBarLayout *)self->super._toLayout updateLayout];
-  v8 = [(_UINavigationBarTransitionContext *)self navigationBar];
-  [v8 frame];
-  [v8 setFrame:?];
-  v9 = [(_UINavigationBarLayout *)self->super._toLayout searchBarLayoutFrame];
+  navigationBar = [(_UINavigationBarTransitionContext *)self navigationBar];
+  [navigationBar frame];
+  [navigationBar setFrame:?];
+  searchBarLayoutFrame = [(_UINavigationBarLayout *)self->super._toLayout searchBarLayoutFrame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(_UINavigationBarLayout *)v5 _isIntegratedIntoToolbarOrNavigationBarContent];
-  if (v16)
+  _isIntegratedIntoToolbarOrNavigationBarContent = [(_UINavigationBarLayout *)v5 _isIntegratedIntoToolbarOrNavigationBarContent];
+  if (_isIntegratedIntoToolbarOrNavigationBarContent)
   {
-    [(UIView *)self->_transitioningScopeBarContainer setFrame:v9, v11, v13, v15];
+    [(UIView *)self->_transitioningScopeBarContainer setFrame:searchBarLayoutFrame, v11, v13, v15];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __57___UINavigationBarTransitionContextPresentSearch_animate__block_invoke;
@@ -316,12 +316,12 @@ LABEL_9:
 
   else
   {
-    [(_UINavigationBarLayout *)v5 setFrame:v9, v11, v13, v15];
+    [(_UINavigationBarLayout *)v5 setFrame:searchBarLayoutFrame, v11, v13, v15];
   }
 
-  v17 = [v8 _stack];
-  v18 = [v17 topItem];
-  [v18 _updateSearchBarItemGroup];
+  _stack = [navigationBar _stack];
+  topItem = [_stack topItem];
+  [topItem _updateSearchBarItemGroup];
 
   [(_UINavigationBarLayout *)v5 _animateTransitionToSearchLayoutState:3];
   v19 = self->super._toLayout;
@@ -343,7 +343,7 @@ LABEL_9:
 
     v22 = fromLayout;
     [(_UINavigationBarLayout *)v22 frame];
-    [(_UINavigationBarLayout *)v22 setFrame:v23, _hiddenLargeTitleMinY(self->super._toLayout, self->super._fromLayout, v16), v24, v25];
+    [(_UINavigationBarLayout *)v22 setFrame:v23, _hiddenLargeTitleMinY(self->super._toLayout, self->super._fromLayout, _isIntegratedIntoToolbarOrNavigationBarContent), v24, v25];
     [(_UINavigationBarLayout *)v22 layoutIfNeeded];
   }
 
@@ -357,11 +357,11 @@ LABEL_9:
   [(UIView *)self->super._tabBarHostedView setAlpha:0.0];
 }
 
-- (void)_resetContentAndLargeTitleViewCompleted:(BOOL)a3
+- (void)_resetContentAndLargeTitleViewCompleted:(BOOL)completed
 {
   v4.receiver = self;
   v4.super_class = _UINavigationBarTransitionContextPresentSearch;
-  [(_UINavigationBarTransitionContext *)&v4 _resetContentAndLargeTitleViewCompleted:a3];
+  [(_UINavigationBarTransitionContext *)&v4 _resetContentAndLargeTitleViewCompleted:completed];
   [(UIView *)self->super._contentView setAlpha:1.0];
 }
 

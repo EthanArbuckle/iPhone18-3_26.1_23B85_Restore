@@ -1,8 +1,8 @@
 @interface DBTDuxburyFormatParser
 + (id)allCodeNodes;
 - (DBTDuxburyFormatParser)init;
-- (id)LaTeXRepresentationOfString:(id)a3 error:(id *)a4;
-- (id)_parseInputString:(id)a3 error:(id *)a4;
+- (id)LaTeXRepresentationOfString:(id)string error:(id *)error;
+- (id)_parseInputString:(id)string error:(id *)error;
 - (void)_initState;
 - (void)closeENodeIfNeeded;
 @end
@@ -49,26 +49,26 @@
   self->_advanceIndex = 0;
 }
 
-- (id)LaTeXRepresentationOfString:(id)a3 error:(id *)a4
+- (id)LaTeXRepresentationOfString:(id)string error:(id *)error
 {
-  v5 = [(DBTDuxburyFormatParser *)self _parseInputString:a3 error:?];
+  v5 = [(DBTDuxburyFormatParser *)self _parseInputString:string error:?];
   v6 = v5;
-  if (a4 && *a4)
+  if (error && *error)
   {
-    v7 = 0;
+    laTeXRepresentation = 0;
   }
 
   else
   {
-    v7 = [v5 LaTeXRepresentation];
+    laTeXRepresentation = [v5 LaTeXRepresentation];
   }
 
-  return v7;
+  return laTeXRepresentation;
 }
 
-- (id)_parseInputString:(id)a3 error:(id *)a4
+- (id)_parseInputString:(id)string error:(id *)error
 {
-  v6 = a3;
+  stringCopy = string;
   [(DBTDuxburyFormatParser *)self _initState];
   v92 = 0;
   v7 = [NSRegularExpression regularExpressionWithPattern:@"\\x{1c}([a-zA-Z0-9]+)\\x{1f}" options:1 error:&v92];
@@ -79,24 +79,24 @@
 
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      v11 = 0;
-      *a4 = v9;
+      lastObject4 = 0;
+      *error = v9;
     }
 
     else
     {
-      v11 = 0;
+      lastObject4 = 0;
     }
 
     goto LABEL_67;
   }
 
-  v12 = [v6 length];
+  v12 = [stringCopy length];
   v76 = v7;
-  if (![v6 length])
+  if (![stringCopy length])
   {
     v13 = 0;
 LABEL_59:
@@ -106,16 +106,16 @@ LABEL_59:
     {
       do
       {
-        v64 = [(NSMutableArray *)*p_parserStack lastObject];
+        lastObject = [(NSMutableArray *)*p_parserStack lastObject];
         [(NSMutableArray *)*p_parserStack removeLastObject];
-        v65 = [(NSMutableArray *)*p_parserStack lastObject];
-        v66 = [v65 children];
-        v67 = [v66 containsObject:v64];
+        lastObject2 = [(NSMutableArray *)*p_parserStack lastObject];
+        children = [lastObject2 children];
+        v67 = [children containsObject:lastObject];
 
         if ((v67 & 1) == 0)
         {
-          v68 = [(NSMutableArray *)*p_parserStack lastObject];
-          [v68 addChild:v64];
+          lastObject3 = [(NSMutableArray *)*p_parserStack lastObject];
+          [lastObject3 addChild:lastObject];
         }
       }
 
@@ -128,36 +128,36 @@ LABEL_59:
       [DBTDuxburyFormatParser _parseInputString:v69 error:?];
     }
 
-    v11 = [(NSMutableArray *)*p_parserStack lastObject];
+    lastObject4 = [(NSMutableArray *)*p_parserStack lastObject];
     goto LABEL_66;
   }
 
-  v74 = a4;
+  errorCopy = error;
   v13 = 0;
   v14 = 0;
-  v75 = v6;
+  v75 = stringCopy;
   while (1)
   {
     v15 = v13;
-    v13 = [v7 firstMatchInString:v6 options:4 range:{v14, v12}];
+    v13 = [v7 firstMatchInString:stringCopy options:4 range:{v14, v12}];
 
     if (v13)
     {
       break;
     }
 
-    v13 = [v78 firstMatchInString:v6 options:4 range:{v14, v12}];
+    v13 = [v78 firstMatchInString:stringCopy options:4 range:{v14, v12}];
     if (v13)
     {
       [(DBTDuxburyFormatParser *)self closeENodeIfNeeded];
-      v35 = [v13 range];
-      v18 = [v6 substringWithRange:{v35, v36}];
+      range = [v13 range];
+      v18 = [stringCopy substringWithRange:{range, v36}];
       v37 = [[DBTDuxburyFormatTextNode alloc] initWithText:v18];
-      v38 = [(NSMutableArray *)self->_parserStack lastObject];
-      [v38 addChild:v37];
+      lastObject5 = [(NSMutableArray *)self->_parserStack lastObject];
+      [lastObject5 addChild:v37];
 
-      v39 = [v13 range];
-      v14 = v39 + v40;
+      range2 = [v13 range];
+      v14 = range2 + v40;
       [v13 range];
       v42 = v41;
 
@@ -166,7 +166,7 @@ LABEL_33:
     }
 
 LABEL_34:
-    if (v14 >= [v6 length])
+    if (v14 >= [stringCopy length])
     {
       goto LABEL_59;
     }
@@ -179,13 +179,13 @@ LABEL_34:
 
   v77 = v12;
   v16 = [v13 rangeAtIndex:1];
-  v18 = [v6 substringWithRange:{v16, v17}];
+  v18 = [stringCopy substringWithRange:{v16, v17}];
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v19 = [(NSMutableArray *)self->_parserStack reverseObjectEnumerator];
-  v20 = [v19 countByEnumeratingWithState:&v87 objects:v97 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_parserStack reverseObjectEnumerator];
+  v20 = [reverseObjectEnumerator countByEnumeratingWithState:&v87 objects:v97 count:16];
   if (v20)
   {
     v21 = v20;
@@ -196,21 +196,21 @@ LABEL_10:
     {
       if (*v88 != v22)
       {
-        objc_enumerationMutation(v19);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v24 = *(*(&v87 + 1) + 8 * v23);
-      v25 = [objc_opt_class() endCode];
-      if ([v18 isEqualToString:v25])
+      endCode = [objc_opt_class() endCode];
+      if ([v18 isEqualToString:endCode])
       {
-        v26 = [v24 isClosed];
+        isClosed = [v24 isClosed];
 
-        if ((v26 & 1) == 0)
+        if ((isClosed & 1) == 0)
         {
           [v24 foundEndCode:v18];
           [(NSMutableArray *)self->_parserStack removeObject:v24];
 LABEL_30:
-          v6 = v75;
+          stringCopy = v75;
           v7 = v76;
           v12 = v77;
 LABEL_31:
@@ -225,7 +225,7 @@ LABEL_31:
 
       if (v21 == ++v23)
       {
-        v21 = [v19 countByEnumeratingWithState:&v87 objects:v97 count:16];
+        v21 = [reverseObjectEnumerator countByEnumeratingWithState:&v87 objects:v97 count:16];
         if (!v21)
         {
           break;
@@ -240,8 +240,8 @@ LABEL_31:
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v27 = [(NSMutableArray *)self->_parserStack reverseObjectEnumerator];
-  v28 = [v27 countByEnumeratingWithState:&v83 objects:v96 count:16];
+  reverseObjectEnumerator2 = [(NSMutableArray *)self->_parserStack reverseObjectEnumerator];
+  v28 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v83 objects:v96 count:16];
   if (!v28)
   {
     goto LABEL_27;
@@ -255,12 +255,12 @@ LABEL_21:
   {
     if (*v84 != v30)
     {
-      objc_enumerationMutation(v27);
+      objc_enumerationMutation(reverseObjectEnumerator2);
     }
 
     v32 = *(*(&v83 + 1) + 8 * v31);
-    v33 = [objc_opt_class() innerCodes];
-    v34 = [v33 containsObject:v18];
+    innerCodes = [objc_opt_class() innerCodes];
+    v34 = [innerCodes containsObject:v18];
 
     if (v34)
     {
@@ -269,7 +269,7 @@ LABEL_21:
 
     if (v29 == ++v31)
     {
-      v29 = [v27 countByEnumeratingWithState:&v83 objects:v96 count:16];
+      v29 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v83 objects:v96 count:16];
       if (!v29)
       {
 LABEL_27:
@@ -284,9 +284,9 @@ LABEL_27:
   v46 = [v32 foundInnerCode:v18];
   while (1)
   {
-    v47 = [(NSMutableArray *)self->_parserStack lastObject];
+    lastObject6 = [(NSMutableArray *)self->_parserStack lastObject];
 
-    if (v47 == v32)
+    if (lastObject6 == v32)
     {
       break;
     }
@@ -294,14 +294,14 @@ LABEL_27:
     [(NSMutableArray *)self->_parserStack removeLastObject];
   }
 
-  v6 = v75;
+  stringCopy = v75;
   v7 = v76;
   v12 = v77;
   if (v46)
   {
 LABEL_32:
-    v43 = [v13 range];
-    v14 = v43 + v44;
+    range3 = [v13 range];
+    v14 = range3 + v44;
     [v13 range];
     v42 = v45;
     goto LABEL_33;
@@ -312,8 +312,8 @@ LABEL_40:
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v19 = [objc_opt_class() allCodeNodes];
-  v48 = [v19 countByEnumeratingWithState:&v79 objects:v95 count:16];
+  reverseObjectEnumerator = [objc_opt_class() allCodeNodes];
+  v48 = [reverseObjectEnumerator countByEnumeratingWithState:&v79 objects:v95 count:16];
   if (!v48)
   {
     goto LABEL_70;
@@ -328,12 +328,12 @@ LABEL_40:
     {
       if (*v80 != v50)
       {
-        objc_enumerationMutation(v19);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v52 = *(*(&v79 + 1) + 8 * v51);
-      v53 = [v52 beginCode];
-      v54 = [v53 isEqualToString:v18];
+      beginCode = [v52 beginCode];
+      v54 = [beginCode isEqualToString:v18];
 
       if (v54)
       {
@@ -346,14 +346,14 @@ LABEL_40:
         }
 
         v59 = objc_alloc_init(v52);
-        v60 = [(NSMutableArray *)self->_parserStack lastObject];
-        [v60 addChild:v59];
+        lastObject7 = [(NSMutableArray *)self->_parserStack lastObject];
+        [lastObject7 addChild:v59];
 
-        v61 = [objc_opt_class() endCode];
-        v6 = v75;
+        endCode2 = [objc_opt_class() endCode];
+        stringCopy = v75;
         v7 = v76;
         v12 = v77;
-        if (v61)
+        if (endCode2)
         {
         }
 
@@ -372,8 +372,8 @@ LABEL_56:
         goto LABEL_56;
       }
 
-      v55 = [v52 endCode];
-      v56 = [v55 isEqualToString:v18];
+      endCode3 = [v52 endCode];
+      v56 = [endCode3 isEqualToString:v18];
 
       if (v56)
       {
@@ -388,7 +388,7 @@ LABEL_56:
       break;
     }
 
-    v49 = [v19 countByEnumeratingWithState:&v79 objects:v95 count:16];
+    v49 = [reverseObjectEnumerator countByEnumeratingWithState:&v79 objects:v95 count:16];
     if (v49)
     {
       continue;
@@ -399,7 +399,7 @@ LABEL_56:
 
 LABEL_70:
 
-  if (v74)
+  if (errorCopy)
   {
     v93 = NSLocalizedDescriptionKey;
     v71 = [NSString stringWithFormat:@"Found unexpected Duxbury format code: %@", v18];
@@ -407,18 +407,18 @@ LABEL_70:
     v72 = [NSDictionary dictionaryWithObjects:&v94 forKeys:&v93 count:1];
 
     v73 = [NSError errorWithDomain:@"com.apple.accessibility.duxbury.dbtParserErrorDomain" code:1 userInfo:v72];
-    *v74 = v73;
+    *errorCopy = v73;
   }
 
-  v11 = 0;
-  v6 = v75;
+  lastObject4 = 0;
+  stringCopy = v75;
 LABEL_66:
   v7 = v76;
 
   v9 = 0;
 LABEL_67:
 
-  return v11;
+  return lastObject4;
 }
 
 - (void)closeENodeIfNeeded
@@ -427,8 +427,8 @@ LABEL_67:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSMutableArray *)self->_parserStack reverseObjectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_parserStack reverseObjectEnumerator];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -440,7 +440,7 @@ LABEL_67:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -451,15 +451,15 @@ LABEL_67:
 
           if (!(v6 & 1 | (v10 == 0)))
           {
-            v11 = [v10 expressionNode];
+            expressionNode = [v10 expressionNode];
 
-            if (v11)
+            if (expressionNode)
             {
               while (1)
               {
-                v12 = [(NSMutableArray *)self->_parserStack lastObject];
+                lastObject = [(NSMutableArray *)self->_parserStack lastObject];
 
-                if (v12 == v10)
+                if (lastObject == v10)
                 {
                   break;
                 }
@@ -487,7 +487,7 @@ LABEL_67:
         v6 = 1;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;

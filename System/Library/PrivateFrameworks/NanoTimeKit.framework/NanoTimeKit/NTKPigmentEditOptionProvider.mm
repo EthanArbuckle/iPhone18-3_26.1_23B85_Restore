@@ -1,40 +1,40 @@
 @interface NTKPigmentEditOptionProvider
 - (NTKFace)face;
-- (NTKPigmentEditOptionProvider)initWithDomain:(id)a3 bundle:(id)a4;
-- (NTKPigmentEditOptionProvider)initWithFace:(id)a3;
-- (void)colorEditOptionStore:(id)a3 didChangeForDomain:(id)a4;
+- (NTKPigmentEditOptionProvider)initWithDomain:(id)domain bundle:(id)bundle;
+- (NTKPigmentEditOptionProvider)initWithFace:(id)face;
+- (void)colorEditOptionStore:(id)store didChangeForDomain:(id)domain;
 - (void)dealloc;
 @end
 
 @implementation NTKPigmentEditOptionProvider
 
-- (NTKPigmentEditOptionProvider)initWithFace:(id)a3
+- (NTKPigmentEditOptionProvider)initWithFace:(id)face
 {
-  v4 = a3;
-  v5 = [objc_opt_class() pigmentFaceDomain];
+  faceCopy = face;
+  pigmentFaceDomain = [objc_opt_class() pigmentFaceDomain];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v7 = [(NTKPigmentEditOptionProvider *)self initWithDomain:v5 bundle:v6];
+  v7 = [(NTKPigmentEditOptionProvider *)self initWithDomain:pigmentFaceDomain bundle:v6];
 
   if (v7)
   {
-    objc_storeWeak(&v7->_face, v4);
+    objc_storeWeak(&v7->_face, faceCopy);
   }
 
   return v7;
 }
 
-- (NTKPigmentEditOptionProvider)initWithDomain:(id)a3 bundle:(id)a4
+- (NTKPigmentEditOptionProvider)initWithDomain:(id)domain bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
+  domainCopy = domain;
+  bundleCopy = bundle;
   v14.receiver = self;
   v14.super_class = NTKPigmentEditOptionProvider;
   v9 = [(NTKPigmentEditOptionProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundle, a4);
-    objc_storeStrong(&v10->_domain, a3);
+    objc_storeStrong(&v9->_bundle, bundle);
+    objc_storeStrong(&v10->_domain, domain);
     v11 = +[NTKPigmentEditOptionStore sharedInstance];
     store = v10->_store;
     v10->_store = v11;
@@ -53,16 +53,16 @@
   [(NTKPigmentEditOptionProvider *)&v3 dealloc];
 }
 
-- (void)colorEditOptionStore:(id)a3 didChangeForDomain:(id)a4
+- (void)colorEditOptionStore:(id)store didChangeForDomain:(id)domain
 {
-  if ([a4 isEqualToString:self->_domain])
+  if ([domain isEqualToString:self->_domain])
   {
-    v5 = [(NTKPigmentEditOptionProvider *)self face];
+    face = [(NTKPigmentEditOptionProvider *)self face];
 
-    if (v5)
+    if (face)
     {
-      v6 = [(NTKPigmentEditOptionProvider *)self face];
-      [v6 _handleColorEditOptionsChanged];
+      face2 = [(NTKPigmentEditOptionProvider *)self face];
+      [face2 _handleColorEditOptionsChanged];
     }
   }
 }

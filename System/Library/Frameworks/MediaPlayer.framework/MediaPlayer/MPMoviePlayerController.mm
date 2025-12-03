@@ -20,23 +20,23 @@
 - (UIViewController)hostingViewController;
 - (double)currentPlaybackTime;
 - (float)currentPlaybackRate;
-- (void)_avPlayerItemDidPlayToEndNotification:(id)a3;
+- (void)_avPlayerItemDidPlayToEndNotification:(id)notification;
 - (void)beginSeekingBackward;
 - (void)beginSeekingForward;
 - (void)dealloc;
 - (void)endSeeking;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)play;
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4;
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
 - (void)prepareToPlay;
 - (void)requestThumbnailImagesAtTimes:(NSArray *)playbackTimes timeOption:(MPMovieTimeOption)option;
 - (void)setAllowsAirPlay:(BOOL)allowsAirPlay;
 - (void)setContentURL:(NSURL *)contentURL;
 - (void)setControlStyle:(MPMovieControlStyle)controlStyle;
-- (void)setCurrentPlaybackRate:(float)a3;
-- (void)setCurrentPlaybackTime:(double)a3;
+- (void)setCurrentPlaybackRate:(float)rate;
+- (void)setCurrentPlaybackTime:(double)time;
 - (void)setEndPlaybackTime:(NSTimeInterval)endPlaybackTime;
 - (void)setFullscreen:(BOOL)fullscreen animated:(BOOL)animated;
 - (void)setInitialPlaybackTime:(NSTimeInterval)initialPlaybackTime;
@@ -55,23 +55,23 @@
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = v10;
-  if (a6 != &_MPMoviePlayerControllerObservationContext)
+  pathCopy = path;
+  v11 = pathCopy;
+  if (context != &_MPMoviePlayerControllerObservationContext)
   {
     v24.receiver = self;
     v24.super_class = MPMoviePlayerController;
-    [(MPMoviePlayerController *)&v24 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(MPMoviePlayerController *)&v24 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
     goto LABEL_7;
   }
 
-  if ([v10 isEqualToString:@"videoGravity"])
+  if ([pathCopy isEqualToString:@"videoGravity"])
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    v13 = v12;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter5 = defaultCenter;
     v14 = @"MPMoviePlayerScalingModeDidChangeNotification";
     goto LABEL_5;
   }
@@ -80,8 +80,8 @@
   {
     if ([v11 isEqualToString:@"isReadyForDisplay"])
     {
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
-      v13 = v12;
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter5 = defaultCenter;
       v14 = @"MPMoviePlayerReadyForDisplayDidChangeNotification";
     }
 
@@ -89,8 +89,8 @@
     {
       if ([v11 isEqualToString:@"player.currentItem"])
       {
-        v22 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v22 postNotificationName:@"MPMoviePlayerNowPlayingMovieDidChangeNotification" object:self];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 postNotificationName:@"MPMoviePlayerNowPlayingMovieDidChangeNotification" object:self];
 
         v23 = MEMORY[0x1E696AD88];
       }
@@ -99,8 +99,8 @@
       {
         if ([v11 isEqualToString:@"player.isExternalPlaybackActive"])
         {
-          v12 = [MEMORY[0x1E696AD88] defaultCenter];
-          v13 = v12;
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          defaultCenter5 = defaultCenter;
           v14 = @"MPMoviePlayerIsAirPlayVideoActiveDidChangeNotification";
           goto LABEL_5;
         }
@@ -109,8 +109,8 @@
         {
           if ([v11 isEqualToString:@"playerController.contentDimensions"])
           {
-            v12 = [MEMORY[0x1E696AD88] defaultCenter];
-            v13 = v12;
+            defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+            defaultCenter5 = defaultCenter;
             v14 = @"MPMovieNaturalSizeAvailableNotification";
           }
 
@@ -121,8 +121,8 @@
               goto LABEL_7;
             }
 
-            v12 = [MEMORY[0x1E696AD88] defaultCenter];
-            v13 = v12;
+            defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+            defaultCenter5 = defaultCenter;
             v14 = @"MPMovieDurationAvailableNotification";
           }
 
@@ -132,40 +132,40 @@
         v23 = MEMORY[0x1E696AD88];
       }
 
-      v12 = [v23 defaultCenter];
-      v13 = v12;
+      defaultCenter = [v23 defaultCenter];
+      defaultCenter5 = defaultCenter;
       v14 = @"MPMoviePlayerPlaybackStateDidChangeNotification";
     }
 
 LABEL_5:
-    [v12 postNotificationName:v14 object:self];
+    [defaultCenter postNotificationName:v14 object:self];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v15 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v15 postNotificationName:@"MPMoviePlayerLoadStateDidChangeNotification" object:self];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 postNotificationName:@"MPMoviePlayerLoadStateDidChangeNotification" object:self];
 
-  v16 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  v17 = [v16 status];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  status = [playerController status];
 
-  if (v17 == 2)
+  if (status == 2)
   {
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 postNotificationName:@"MPMediaPlaybackIsPreparedToPlayDidChangeNotification" object:self];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 postNotificationName:@"MPMediaPlaybackIsPreparedToPlayDidChangeNotification" object:self];
   }
 
-  v19 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  v20 = [v19 status];
+  playerController2 = [(AVPlayerViewController *)self->_playerViewController playerController];
+  status2 = [playerController2 status];
 
-  if (v20 == 3)
+  if (status2 == 3)
   {
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
     v25 = @"MPMoviePlayerPlaybackDidFinishReasonUserInfoKey";
     v26[0] = &unk_1F1509CE8;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-    [v13 postNotificationName:@"MPMoviePlayerPlaybackDidFinishNotification" object:self userInfo:v21];
+    [defaultCenter5 postNotificationName:@"MPMoviePlayerPlaybackDidFinishNotification" object:self userInfo:v21];
 
     goto LABEL_6;
   }
@@ -173,36 +173,36 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_avPlayerItemDidPlayToEndNotification:(id)a3
+- (void)_avPlayerItemDidPlayToEndNotification:(id)notification
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
-  v5 = [(AVPlayerViewController *)self->_playerViewController player];
-  v6 = [v5 currentItem];
+  object = [notification object];
+  player = [(AVPlayerViewController *)self->_playerViewController player];
+  currentItem = [player currentItem];
 
-  if (v4 == v6)
+  if (object == currentItem)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v9 = @"MPMoviePlayerPlaybackDidFinishReasonUserInfoKey";
     v10[0] = &unk_1F1509CD0;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    [v7 postNotificationName:@"MPMoviePlayerPlaybackDidFinishNotification" object:self userInfo:v8];
+    [defaultCenter postNotificationName:@"MPMoviePlayerPlaybackDidFinishNotification" object:self userInfo:v8];
   }
 }
 
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   v5 = MEMORY[0x1E696AD88];
-  v6 = a4;
-  v7 = [v5 defaultCenter];
-  [v7 postNotificationName:@"MPMoviePlayerWillExitFullscreenNotification" object:self];
+  coordinatorCopy = coordinator;
+  defaultCenter = [v5 defaultCenter];
+  [defaultCenter postNotificationName:@"MPMoviePlayerWillExitFullscreenNotification" object:self];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __102__MPMoviePlayerController_playerViewController_willEndFullScreenPresentationWithAnimationCoordinator___block_invoke_2;
   v8[3] = &unk_1E7680318;
   v8[4] = self;
-  [v6 animateAlongsideTransition:&__block_literal_global_42 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:&__block_literal_global_42 completion:v8];
 }
 
 void __102__MPMoviePlayerController_playerViewController_willEndFullScreenPresentationWithAnimationCoordinator___block_invoke_2(uint64_t a1, void *a2)
@@ -215,19 +215,19 @@ void __102__MPMoviePlayerController_playerViewController_willEndFullScreenPresen
   }
 }
 
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   v5 = MEMORY[0x1E696AD88];
-  v6 = a4;
-  v7 = [v5 defaultCenter];
-  [v7 postNotificationName:@"MPMoviePlayerWillEnterFullscreenNotification" object:self];
+  coordinatorCopy = coordinator;
+  defaultCenter = [v5 defaultCenter];
+  [defaultCenter postNotificationName:@"MPMoviePlayerWillEnterFullscreenNotification" object:self];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __104__MPMoviePlayerController_playerViewController_willBeginFullScreenPresentationWithAnimationCoordinator___block_invoke_2;
   v8[3] = &unk_1E7680318;
   v8[4] = self;
-  [v6 animateAlongsideTransition:&__block_literal_global_50701 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:&__block_literal_global_50701 completion:v8];
 }
 
 void __104__MPMoviePlayerController_playerViewController_willBeginFullScreenPresentationWithAnimationCoordinator___block_invoke_2(uint64_t a1, void *a2)
@@ -245,19 +245,19 @@ void __104__MPMoviePlayerController_playerViewController_willBeginFullScreenPres
   if (self->_useApplicationAudioSession != useApplicationAudioSession)
   {
     self->_useApplicationAudioSession = useApplicationAudioSession;
-    v6 = [MEMORY[0x1E6958460] auxiliarySession];
-    v5 = [(AVPlayerViewController *)self->_playerViewController player];
-    [v5 setAudioSession:v6];
+    auxiliarySession = [MEMORY[0x1E6958460] auxiliarySession];
+    player = [(AVPlayerViewController *)self->_playerViewController player];
+    [player setAudioSession:auxiliarySession];
   }
 }
 
 - (MPMovieErrorLog)errorLog
 {
   v3 = [MPMovieErrorLog alloc];
-  v4 = [(AVPlayerViewController *)self->_playerViewController player];
-  v5 = [v4 currentItem];
-  v6 = [v5 errorLog];
-  v7 = [(MPMovieErrorLog *)v3 _initWithAVItemErrorLog:v6];
+  player = [(AVPlayerViewController *)self->_playerViewController player];
+  currentItem = [player currentItem];
+  errorLog = [currentItem errorLog];
+  v7 = [(MPMovieErrorLog *)v3 _initWithAVItemErrorLog:errorLog];
 
   return v7;
 }
@@ -265,10 +265,10 @@ void __104__MPMoviePlayerController_playerViewController_willBeginFullScreenPres
 - (MPMovieAccessLog)accessLog
 {
   v3 = [MPMovieAccessLog alloc];
-  v4 = [(AVPlayerViewController *)self->_playerViewController player];
-  v5 = [v4 currentItem];
-  v6 = [v5 accessLog];
-  v7 = [(MPMovieAccessLog *)v3 _initWithAVItemAccessLog:v6];
+  player = [(AVPlayerViewController *)self->_playerViewController player];
+  currentItem = [player currentItem];
+  accessLog = [currentItem accessLog];
+  v7 = [(MPMovieAccessLog *)v3 _initWithAVItemAccessLog:accessLog];
 
   return v7;
 }
@@ -276,16 +276,16 @@ void __104__MPMoviePlayerController_playerViewController_willBeginFullScreenPres
 - (NSArray)timedMetadata
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(AVPlayerViewController *)self->_playerViewController player];
-  v3 = [v2 currentItem];
-  v4 = [v3 timedMetadata];
+  player = [(AVPlayerViewController *)self->_playerViewController player];
+  currentItem = [player currentItem];
+  timedMetadata = [currentItem timedMetadata];
 
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(timedMetadata, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = timedMetadata;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -326,10 +326,10 @@ void __104__MPMoviePlayerController_playerViewController_willBeginFullScreenPres
   if (!generator)
   {
     v8 = MEMORY[0x1E6987E68];
-    v9 = [(AVPlayerViewController *)self->_playerViewController player];
-    v10 = [v9 currentItem];
-    v11 = [v10 asset];
-    v12 = [v8 assetImageGeneratorWithAsset:v11];
+    player = [(AVPlayerViewController *)self->_playerViewController player];
+    currentItem = [player currentItem];
+    asset = [currentItem asset];
+    v12 = [v8 assetImageGeneratorWithAsset:asset];
     v13 = self->_generator;
     self->_generator = v12;
 
@@ -434,10 +434,10 @@ void __68__MPMoviePlayerController_requestThumbnailImagesAtTimes_timeOption___bl
 - (UIImage)thumbnailImageAtTime:(NSTimeInterval)playbackTime timeOption:(MPMovieTimeOption)option
 {
   v6 = MEMORY[0x1E6987E68];
-  v7 = [(AVPlayerViewController *)self->_playerViewController player];
-  v8 = [v7 currentItem];
-  v9 = [v8 asset];
-  v10 = [v6 assetImageGeneratorWithAsset:v9];
+  player = [(AVPlayerViewController *)self->_playerViewController player];
+  currentItem = [player currentItem];
+  asset = [currentItem asset];
+  v10 = [v6 assetImageGeneratorWithAsset:asset];
 
   [v10 setAppliesPreferredTrackTransform:1];
   if (option == MPMovieTimeOptionExact)
@@ -484,50 +484,50 @@ void __68__MPMoviePlayerController_requestThumbnailImagesAtTimes_timeOption___bl
 
 - (void)endSeeking
 {
-  v3 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v3 endScanningBackward:self];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController endScanningBackward:self];
 
-  v4 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v4 endScanningForward:self];
+  playerController2 = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController2 endScanningForward:self];
 }
 
 - (void)beginSeekingBackward
 {
-  v3 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v3 beginScanningBackward:self];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController beginScanningBackward:self];
 }
 
 - (void)beginSeekingForward
 {
-  v3 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v3 beginScanningForward:self];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController beginScanningForward:self];
 }
 
-- (void)setCurrentPlaybackRate:(float)a3
+- (void)setCurrentPlaybackRate:(float)rate
 {
-  v4 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v4 setRate:a3];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController setRate:rate];
 }
 
 - (float)currentPlaybackRate
 {
-  v2 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v2 rate];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController rate];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCurrentPlaybackTime:(double)a3
+- (void)setCurrentPlaybackTime:(double)time
 {
-  v4 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v4 seekToTime:a3];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController seekToTime:time];
 }
 
 - (double)currentPlaybackTime
 {
-  v2 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v2 currentTime];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController currentTime];
   v4 = v3;
 
   return v4;
@@ -535,81 +535,81 @@ void __68__MPMoviePlayerController_requestThumbnailImagesAtTimes_timeOption___bl
 
 - (void)pause
 {
-  v3 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v3 pause:self];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController pause:self];
 }
 
 - (void)play
 {
   [(MPMoviePlayerController *)self prepareToPlay];
-  v3 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v3 play:self];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController play:self];
 }
 
 - (BOOL)isPreparedToPlay
 {
-  v2 = [(AVPlayerViewController *)self->_playerViewController player];
-  v3 = v2 != 0;
+  player = [(AVPlayerViewController *)self->_playerViewController player];
+  v3 = player != 0;
 
   return v3;
 }
 
 - (void)prepareToPlay
 {
-  v3 = [(AVPlayerViewController *)self->_playerViewController player];
-  v4 = [v3 currentItem];
+  player = [(AVPlayerViewController *)self->_playerViewController player];
+  currentItem = [player currentItem];
 
-  if (!v4)
+  if (!currentItem)
   {
     v5 = [MEMORY[0x1E6988098] playerWithURL:self->_contentURL];
     [(AVPlayerViewController *)self->_playerViewController setPlayer:v5];
 
     shouldAutoplay = self->_shouldAutoplay;
-    v7 = [(AVPlayerViewController *)self->_playerViewController player];
-    [v7 setAutomaticallyWaitsToMinimizeStalling:shouldAutoplay];
+    player2 = [(AVPlayerViewController *)self->_playerViewController player];
+    [player2 setAutomaticallyWaitsToMinimizeStalling:shouldAutoplay];
 
     if (self->_useApplicationAudioSession)
     {
-      v9 = [MEMORY[0x1E6958460] auxiliarySession];
-      v8 = [(AVPlayerViewController *)self->_playerViewController player];
-      [v8 setAudioSession:v9];
+      auxiliarySession = [MEMORY[0x1E6958460] auxiliarySession];
+      player3 = [(AVPlayerViewController *)self->_playerViewController player];
+      [player3 setAudioSession:auxiliarySession];
     }
   }
 }
 
 - (BOOL)isAirPlayVideoActive
 {
-  v2 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  v3 = [v2 isExternalPlaybackActive];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  isExternalPlaybackActive = [playerController isExternalPlaybackActive];
 
-  return v3;
+  return isExternalPlaybackActive;
 }
 
 - (void)setAllowsAirPlay:(BOOL)allowsAirPlay
 {
   v3 = allowsAirPlay;
-  v4 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v4 setAllowsExternalPlayback:v3];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController setAllowsExternalPlayback:v3];
 }
 
 - (BOOL)allowsAirPlay
 {
-  v2 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  v3 = [v2 allowsExternalPlayback];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  allowsExternalPlayback = [playerController allowsExternalPlayback];
 
-  return v3;
+  return allowsExternalPlayback;
 }
 
 - (void)setEndPlaybackTime:(NSTimeInterval)endPlaybackTime
 {
-  v4 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v4 setMaxTime:endPlaybackTime];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController setMaxTime:endPlaybackTime];
 }
 
 - (NSTimeInterval)endPlaybackTime
 {
-  v2 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v2 maxTime];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController maxTime];
   v4 = v3;
 
   return v4;
@@ -617,14 +617,14 @@ void __68__MPMoviePlayerController_requestThumbnailImagesAtTimes_timeOption___bl
 
 - (void)setInitialPlaybackTime:(NSTimeInterval)initialPlaybackTime
 {
-  v4 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v4 setMinTime:initialPlaybackTime];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController setMinTime:initialPlaybackTime];
 }
 
 - (NSTimeInterval)initialPlaybackTime
 {
-  v2 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v2 minTime];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController minTime];
   v4 = v3;
 
   return v4;
@@ -632,8 +632,8 @@ void __68__MPMoviePlayerController_requestThumbnailImagesAtTimes_timeOption___bl
 
 - (CGSize)naturalSize
 {
-  v2 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v2 contentDimensions];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController contentDimensions];
   v4 = v3;
   v6 = v5;
 
@@ -646,8 +646,8 @@ void __68__MPMoviePlayerController_requestThumbnailImagesAtTimes_timeOption___bl
 
 - (NSTimeInterval)playableDuration
 {
-  v2 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v2 contentDurationWithinEndTimes];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController contentDurationWithinEndTimes];
   v4 = v3;
 
   return v4;
@@ -655,8 +655,8 @@ void __68__MPMoviePlayerController_requestThumbnailImagesAtTimes_timeOption___bl
 
 - (NSTimeInterval)duration
 {
-  v2 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  [v2 contentDuration];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  [playerController contentDuration];
   v4 = v3;
 
   return v4;
@@ -693,20 +693,20 @@ LABEL_6:
 
 - (MPMovieScalingMode)scalingMode
 {
-  v2 = [(AVPlayerViewController *)self->_playerViewController videoGravity];
-  if (v2 == *MEMORY[0x1E69874E0])
+  videoGravity = [(AVPlayerViewController *)self->_playerViewController videoGravity];
+  if (videoGravity == *MEMORY[0x1E69874E0])
   {
     v3 = MPMovieScalingModeFill;
   }
 
-  else if (v2 == *MEMORY[0x1E69874E8])
+  else if (videoGravity == *MEMORY[0x1E69874E8])
   {
     v3 = MPMovieScalingModeAspectFit;
   }
 
   else
   {
-    v3 = 2 * (v2 == *MEMORY[0x1E69874F0]);
+    v3 = 2 * (videoGravity == *MEMORY[0x1E69874F0]);
   }
 
   return v3;
@@ -732,8 +732,8 @@ LABEL_6:
   {
     v4 = shouldAutoplay;
     self->_shouldAutoplay = shouldAutoplay;
-    v5 = [(AVPlayerViewController *)self->_playerViewController player];
-    [v5 setAutomaticallyWaitsToMinimizeStalling:v4];
+    player = [(AVPlayerViewController *)self->_playerViewController player];
+    [player setAutomaticallyWaitsToMinimizeStalling:v4];
   }
 }
 
@@ -743,8 +743,8 @@ LABEL_6:
   {
     self->_repeatMode = repeatMode;
     v4 = repeatMode == MPMovieRepeatModeOne;
-    v5 = [(AVPlayerViewController *)self->_playerViewController playerController];
-    [v5 setLooping:v4];
+    playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+    [playerController setLooping:v4];
   }
 }
 
@@ -766,34 +766,34 @@ LABEL_6:
 
 - (MPMovieLoadState)loadState
 {
-  v2 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  v3 = [v2 status];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  status = [playerController status];
 
-  if (v3 == 2)
+  if (status == 2)
   {
     return 1;
   }
 
   else
   {
-    return 4 * (v3 == 1);
+    return 4 * (status == 1);
   }
 }
 
 - (MPMoviePlaybackState)playbackState
 {
-  v3 = [(AVPlayerViewController *)self->_playerViewController player];
-  v4 = [v3 currentItem];
+  player = [(AVPlayerViewController *)self->_playerViewController player];
+  currentItem = [player currentItem];
 
-  if (!v4)
+  if (!currentItem)
   {
     return 0;
   }
 
-  v5 = [(AVPlayerViewController *)self->_playerViewController playerController];
-  v6 = [v5 isPlaying];
+  playerController = [(AVPlayerViewController *)self->_playerViewController playerController];
+  isPlaying = [playerController isPlaying];
 
-  if (v6)
+  if (isPlaying)
   {
     return 1;
   }
@@ -856,8 +856,8 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(AVPlayerViewController *)self->_playerViewController removeObserver:self forKeyPath:@"videoGravity" context:_MPMoviePlayerControllerObservationContext];
   [(AVPlayerViewController *)self->_playerViewController removeObserver:self forKeyPath:@"playerController.status" context:_MPMoviePlayerControllerObservationContext];
@@ -913,8 +913,8 @@ LABEL_6:
     [(AVPlayerViewController *)v5->_playerViewController addObserver:v5 forKeyPath:@"playerController.isPlaying" options:1 context:_MPMoviePlayerControllerObservationContext];
     [(AVPlayerViewController *)v5->_playerViewController addObserver:v5 forKeyPath:@"playerController.contentDuration" options:1 context:_MPMoviePlayerControllerObservationContext];
     [(AVPlayerViewController *)v5->_playerViewController addObserver:v5 forKeyPath:@"playerController.contentDimensions" options:1 context:_MPMoviePlayerControllerObservationContext];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v5 selector:sel__avPlayerItemDidPlayToEndNotification_ name:*MEMORY[0x1E6987A10] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__avPlayerItemDidPlayToEndNotification_ name:*MEMORY[0x1E6987A10] object:0];
 
     [(MPMoviePlayerController *)v5 setContentURL:v4];
     [(MPMoviePlayerController *)v5 setControlStyle:1];

@@ -1,7 +1,7 @@
 @interface UIPDFPageContentTiledLayer
 - (UIPDFPageContentTiledLayer)init;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)layoutSublayers;
 - (void)setNeedsDisplay;
 - (void)setSelectionNeedsDisplay;
@@ -65,15 +65,15 @@
 
 - (void)layoutSublayers
 {
-  v3 = [(UIPDFPageContentTiledLayer *)self delegate];
-  if (v3)
+  delegate = [(UIPDFPageContentTiledLayer *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    [v3 computeTransform];
-    v5 = [v4 pageHasSelection];
+    v4 = delegate;
+    [delegate computeTransform];
+    pageHasSelection = [v4 pageHasSelection];
     if (self->_selectionLayer)
     {
-      if ((v5 & 1) == 0)
+      if ((pageHasSelection & 1) == 0)
       {
         [(CALayer *)self->_selectionLayer removeFromSuperlayer];
 
@@ -81,7 +81,7 @@
       }
     }
 
-    else if (v5)
+    else if (pageHasSelection)
     {
       v6 = objc_alloc_init(MEMORY[0x1E6979398]);
       self->_selectionLayer = v6;
@@ -97,13 +97,13 @@
   }
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  v6 = [(UIPDFPageContentTiledLayer *)self delegate];
-  if (v6)
+  delegate = [(UIPDFPageContentTiledLayer *)self delegate];
+  if (delegate)
   {
 
-    [v6 drawSelectionLayer:a3 inContext:a4];
+    [delegate drawSelectionLayer:layer inContext:context];
   }
 }
 

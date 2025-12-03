@@ -1,44 +1,44 @@
 @interface UIStatusBar_Base
-+ (CGRect)_frameInSceneReferenceSpaceForStyle:(int64_t)a3 orientation:(int64_t)a4 inSceneWithReferenceSize:(CGSize)a5;
++ (CGRect)_frameInSceneReferenceSpaceForStyle:(int64_t)style orientation:(int64_t)orientation inSceneWithReferenceSize:(CGSize)size;
 + (Class)_implementationClass;
-+ (int64_t)_defaultStyleForRequestedStyle:(int64_t)a3 styleOverrides:(unint64_t)a4 activeStyleOverride:(unint64_t *)a5;
++ (int64_t)_defaultStyleForRequestedStyle:(int64_t)style styleOverrides:(unint64_t)overrides activeStyleOverride:(unint64_t *)override;
 - (BOOL)_shouldSeekHigherPriorityTouchTarget;
 - (BOOL)_usesModernBar;
 - (BOOL)showsContentsOnScreen;
-- (CGAffineTransform)_hiddenTransformForHideAnimationParameters:(SEL)a3;
+- (CGAffineTransform)_hiddenTransformForHideAnimationParameters:(SEL)parameters;
 - (CGRect)avoidanceFrame;
 - (CGRect)currentFrame;
-- (CGRect)frameForOrientation:(int64_t)a3;
-- (CGRect)frameForPartWithIdentifier:(id)a3;
+- (CGRect)frameForOrientation:(int64_t)orientation;
+- (CGRect)frameForPartWithIdentifier:(id)identifier;
 - (CGSize)intrinsicContentSize;
-- (UIOffset)offsetForPartWithIdentifier:(id)a3;
+- (UIOffset)offsetForPartWithIdentifier:(id)identifier;
 - (UIStatusBarCarPlayDockDataProviding)dockDataProvider;
 - (UIStatusBarManager)manager;
 - (UIStatusBarStyleDelegate)styleDelegate;
 - (UIStatusBarWindow)statusBarWindow;
-- (UIStatusBar_Base)initWithFrame:(CGRect)a3 showForegroundView:(BOOL)a4 inProcessStateProvider:(id)a5;
+- (UIStatusBar_Base)initWithFrame:(CGRect)frame showForegroundView:(BOOL)view inProcessStateProvider:(id)provider;
 - (UIViewControllerTransitionCoordinator)_transitionCoordinator;
-- (double)_hiddenAlphaForHideAnimationParameters:(id)a3;
+- (double)_hiddenAlphaForHideAnimationParameters:(id)parameters;
 - (double)currentHeight;
-- (double)heightForOrientation:(int64_t)a3 isAzulBLinked:(BOOL)a4;
-- (id)_initWithFrame:(CGRect)a3 showForegroundView:(BOOL)a4 wantsServer:(BOOL)a5 inProcessStateProvider:(id)a6;
-- (int64_t)styleForRequestedStyle:(int64_t)a3;
+- (double)heightForOrientation:(int64_t)orientation isAzulBLinked:(BOOL)linked;
+- (id)_initWithFrame:(CGRect)frame showForegroundView:(BOOL)view wantsServer:(BOOL)server inProcessStateProvider:(id)provider;
+- (int64_t)styleForRequestedStyle:(int64_t)style;
 - (void)_evaluateServerRegistration;
-- (void)_getStyle:(int64_t *)a3 andActiveOverride:(unint64_t *)a4 forRequestedStyle:(int64_t)a5;
-- (void)_performAnimations:(id)a3 withParameters:(id)a4 completion:(id)a5;
-- (void)_performBlockWhileIgnoringForegroundViewChanges:(id)a3;
-- (void)_setHidden:(BOOL)a3 animationParameters:(id)a4;
-- (void)_styleOverridesDidChange:(id)a3;
+- (void)_getStyle:(int64_t *)style andActiveOverride:(unint64_t *)override forRequestedStyle:(int64_t)requestedStyle;
+- (void)_performAnimations:(id)animations withParameters:(id)parameters completion:(id)completion;
+- (void)_performBlockWhileIgnoringForegroundViewChanges:(id)changes;
+- (void)_setHidden:(BOOL)hidden animationParameters:(id)parameters;
+- (void)_styleOverridesDidChange:(id)change;
 - (void)dealloc;
-- (void)forceUpdateStyleOverrides:(BOOL)a3;
-- (void)requestStyle:(int64_t)a3 animated:(BOOL)a4 forced:(BOOL)a5;
-- (void)requestStyle:(int64_t)a3 partStyles:(id)a4 animationParameters:(id)a5 forced:(BOOL)a6;
-- (void)setAlpha:(double)a3;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setLocalDataOverrides:(id *)a3;
-- (void)setServerUpdatesDisabled:(BOOL)a3;
-- (void)setStyleRequest:(id)a3 animationParameters:(id)a4;
-- (void)setSuppressesHiddenSideEffects:(BOOL)a3;
+- (void)forceUpdateStyleOverrides:(BOOL)overrides;
+- (void)requestStyle:(int64_t)style animated:(BOOL)animated forced:(BOOL)forced;
+- (void)requestStyle:(int64_t)style partStyles:(id)styles animationParameters:(id)parameters forced:(BOOL)forced;
+- (void)setAlpha:(double)alpha;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setLocalDataOverrides:(id *)overrides;
+- (void)setServerUpdatesDisabled:(BOOL)disabled;
+- (void)setStyleRequest:(id)request animationParameters:(id)parameters;
+- (void)setSuppressesHiddenSideEffects:(BOOL)effects;
 @end
 
 @implementation UIStatusBar_Base
@@ -84,9 +84,9 @@
 
 - (double)currentHeight
 {
-  v3 = [(UIStatusBar_Base *)self orientation];
+  orientation = [(UIStatusBar_Base *)self orientation];
 
-  [(UIStatusBar_Base *)self heightForOrientation:v3];
+  [(UIStatusBar_Base *)self heightForOrientation:orientation];
   return result;
 }
 
@@ -94,22 +94,22 @@
 {
   if (self->_statusBarServer)
   {
-    v3 = [(UIView *)self superview];
-    if (self->_hidden && !self->_suppressesHiddenSideEffects || (self->_foreground ? (v4 = v3 == 0) : (v4 = 1), v4))
+    superview = [(UIView *)self superview];
+    if (self->_hidden && !self->_suppressesHiddenSideEffects || (self->_foreground ? (v4 = superview == 0) : (v4 = 1), v4))
     {
       v5 = 0;
     }
 
     else
     {
-      v7 = v3;
+      v7 = superview;
       v5 = ![(UIStatusBar_Base *)self serverUpdatesDisabled];
-      v3 = v7;
+      superview = v7;
     }
 
     if (self->_registered != v5)
     {
-      v8 = v3;
+      v8 = superview;
       [(UIStatusBar_Base *)self setRegistered:?];
       statusBarServer = self->_statusBarServer;
       if (self->_registered)
@@ -126,7 +126,7 @@
         [(UIStatusBarServer *)statusBarServer setStatusBar:0];
       }
 
-      v3 = v8;
+      superview = v8;
     }
   }
 }
@@ -158,10 +158,10 @@
   if (statusBarServer)
   {
     [(UIStatusBarServer *)statusBarServer setStatusBar:0];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:@"UIApplicationDidEnterBackgroundNotification" object:0];
-    [v4 removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:0];
-    [v4 removeObserver:self name:0x1EFB9C730 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    [defaultCenter removeObserver:self name:0x1EFB9C730 object:0];
   }
 
   inProcessStateProvider = self->_inProcessStateProvider;
@@ -182,89 +182,89 @@
   [(UIView *)&v7 dealloc];
 }
 
-- (id)_initWithFrame:(CGRect)a3 showForegroundView:(BOOL)a4 wantsServer:(BOOL)a5 inProcessStateProvider:(id)a6
+- (id)_initWithFrame:(CGRect)frame showForegroundView:(BOOL)view wantsServer:(BOOL)server inProcessStateProvider:(id)provider
 {
-  v7 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a6;
+  serverCopy = server;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = UIStatusBar_Base;
-  v14 = [(UIView *)&v19 initWithFrame:x, y, width, height];
-  v14->_persistentAnimationsEnabled = 1;
-  v14->_requestedStyle = -1;
-  v14->_foreground = [UIApp applicationState] != 2;
-  objc_storeStrong(&v14->_inProcessStateProvider, a6);
-  if (v13)
+  height = [(UIView *)&v19 initWithFrame:x, y, width, height];
+  height->_persistentAnimationsEnabled = 1;
+  height->_requestedStyle = -1;
+  height->_foreground = [UIApp applicationState] != 2;
+  objc_storeStrong(&height->_inProcessStateProvider, provider);
+  if (providerCopy)
   {
-    [v13 addStatusBarStateObserver:v14];
+    [providerCopy addStatusBarStateObserver:height];
   }
 
-  else if (v7)
+  else if (serverCopy)
   {
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v14 selector:sel__didEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:UIApp];
-    [v15 addObserver:v14 selector:sel__willEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:UIApp];
-    [v15 addObserver:v14 selector:sel__styleOverridesDidChange_ name:0x1EFB9C730 object:0];
-    v14->_styleOverrides = +[UIStatusBarServer getStyleOverrides];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:height selector:sel__didEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:UIApp];
+    [defaultCenter addObserver:height selector:sel__willEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:UIApp];
+    [defaultCenter addObserver:height selector:sel__styleOverridesDidChange_ name:0x1EFB9C730 object:0];
+    height->_styleOverrides = +[UIStatusBarServer getStyleOverrides];
     v16 = [[UIStatusBarServer alloc] initWithStatusBar:0];
-    statusBarServer = v14->_statusBarServer;
-    v14->_statusBarServer = v16;
+    statusBarServer = height->_statusBarServer;
+    height->_statusBarServer = v16;
   }
 
-  return v14;
+  return height;
 }
 
-- (UIStatusBar_Base)initWithFrame:(CGRect)a3 showForegroundView:(BOOL)a4 inProcessStateProvider:(id)a5
+- (UIStatusBar_Base)initWithFrame:(CGRect)frame showForegroundView:(BOOL)view inProcessStateProvider:(id)provider
 {
-  v5 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  viewCopy = view;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  providerCopy = provider;
   v12 = objc_opt_class();
   v13 = objc_opt_class();
-  if (v11 || v12 != v13)
+  if (providerCopy || v12 != v13)
   {
-    v14 = [(UIStatusBar_Base *)self _initWithFrame:v5 showForegroundView:1 wantsServer:v11 inProcessStateProvider:x, y, width, height];
-    self = v14;
+    height = [(UIStatusBar_Base *)self _initWithFrame:viewCopy showForegroundView:1 wantsServer:providerCopy inProcessStateProvider:x, y, width, height];
+    self = height;
   }
 
   else
   {
-    v14 = [objc_alloc(objc_msgSend(objc_opt_class() "_implementationClass"))];
+    height = [objc_alloc(objc_msgSend(objc_opt_class() "_implementationClass"))];
   }
 
-  v15 = v14;
+  v15 = height;
 
   return v15;
 }
 
 - (BOOL)_shouldSeekHigherPriorityTouchTarget
 {
-  v2 = [UIApp _systemNavigationAction];
-  v3 = v2 == 0;
+  _systemNavigationAction = [UIApp _systemNavigationAction];
+  v3 = _systemNavigationAction == 0;
 
   return v3;
 }
 
-- (void)setServerUpdatesDisabled:(BOOL)a3
+- (void)setServerUpdatesDisabled:(BOOL)disabled
 {
-  if (self->_serverUpdatesDisabled != a3)
+  if (self->_serverUpdatesDisabled != disabled)
   {
-    self->_serverUpdatesDisabled = a3;
+    self->_serverUpdatesDisabled = disabled;
     [(UIStatusBar_Base *)self _evaluateServerRegistration];
   }
 }
 
-- (void)_styleOverridesDidChange:(id)a3
+- (void)_styleOverridesDidChange:(id)change
 {
-  v4 = [(UIStatusBar_Base *)self _requestStyle];
+  _requestStyle = [(UIStatusBar_Base *)self _requestStyle];
 
-  [(UIStatusBar_Base *)self requestStyle:v4 animated:0];
+  [(UIStatusBar_Base *)self requestStyle:_requestStyle animated:0];
 }
 
 - (CGSize)intrinsicContentSize
@@ -279,9 +279,9 @@
 
 - (CGRect)currentFrame
 {
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
   [(UIStatusBar_Base *)self frameForOrientation:[(UIStatusBar_Base *)self orientation]];
-  [v3 _convertRectFromSceneReferenceSpace:?];
+  [window _convertRectFromSceneReferenceSpace:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -298,15 +298,15 @@
   return result;
 }
 
-- (CGRect)frameForOrientation:(int64_t)a3
+- (CGRect)frameForOrientation:(int64_t)orientation
 {
   [objc_msgSend(objc_opt_class() "_statusBarWindowClass")];
   v6 = v5;
   v8 = v7;
   v9 = objc_opt_class();
-  v10 = [(UIStatusBar_Base *)self currentStyle];
+  currentStyle = [(UIStatusBar_Base *)self currentStyle];
 
-  [v9 _frameInSceneReferenceSpaceForStyle:v10 orientation:a3 inSceneWithReferenceSize:{v6, v8}];
+  [v9 _frameInSceneReferenceSpaceForStyle:currentStyle orientation:orientation inSceneWithReferenceSize:{v6, v8}];
   result.size.height = v14;
   result.size.width = v13;
   result.origin.y = v12;
@@ -314,20 +314,20 @@
   return result;
 }
 
-- (double)heightForOrientation:(int64_t)a3 isAzulBLinked:(BOOL)a4
+- (double)heightForOrientation:(int64_t)orientation isAzulBLinked:(BOOL)linked
 {
-  v4 = a4;
+  linkedCopy = linked;
   v6 = objc_opt_class();
 
-  [v6 heightForStyle:0 orientation:a3 inWindow:0 isAzulBLinked:v4];
+  [v6 heightForStyle:0 orientation:orientation inWindow:0 isAzulBLinked:linkedCopy];
   return result;
 }
 
-- (void)_getStyle:(int64_t *)a3 andActiveOverride:(unint64_t *)a4 forRequestedStyle:(int64_t)a5
+- (void)_getStyle:(int64_t *)style andActiveOverride:(unint64_t *)override forRequestedStyle:(int64_t)requestedStyle
 {
-  v15 = [(UIStatusBar_Base *)self styleDelegate];
-  v9 = [(UIStatusBar_Base *)self styleDelegate];
-  if (v15)
+  styleDelegate = [(UIStatusBar_Base *)self styleDelegate];
+  styleDelegate2 = [(UIStatusBar_Base *)self styleDelegate];
+  if (styleDelegate)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -344,8 +344,8 @@
         }
 
 LABEL_8:
-        v14 = [v9 overriddenRequestedStyleFromStyle:a5];
-        a5 = [objc_opt_class() _defaultStyleForRequestedStyle:v14 styleOverrides:objc_msgSend(v9 activeStyleOverride:{"statusBar:effectiveStyleOverridesForRequestedStyle:overrides:", self, v14, -[UIStatusBar_Base styleOverrides](self, "styleOverrides")), a4}];
+        v14 = [styleDelegate2 overriddenRequestedStyleFromStyle:requestedStyle];
+        requestedStyle = [objc_opt_class() _defaultStyleForRequestedStyle:v14 styleOverrides:objc_msgSend(styleDelegate2 activeStyleOverride:{"statusBar:effectiveStyleOverridesForRequestedStyle:overrides:", self, v14, -[UIStatusBar_Base styleOverrides](self, "styleOverrides")), override}];
         goto LABEL_12;
       }
     }
@@ -355,10 +355,10 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    a5 = [v15 statusBar:self styleForRequestedStyle:a5 overrides:{-[UIStatusBar_Base styleOverrides](self, "styleOverrides")}];
-    if (a4)
+    requestedStyle = [styleDelegate statusBar:self styleForRequestedStyle:requestedStyle overrides:{-[UIStatusBar_Base styleOverrides](self, "styleOverrides")}];
+    if (override)
     {
-      *a4 = 0;
+      *override = 0;
     }
   }
 
@@ -368,58 +368,58 @@ LABEL_8:
   }
 
 LABEL_12:
-  if (a3)
+  if (style)
   {
-    *a3 = a5;
+    *style = requestedStyle;
   }
 }
 
-- (int64_t)styleForRequestedStyle:(int64_t)a3
+- (int64_t)styleForRequestedStyle:(int64_t)style
 {
   v4 = 0;
-  [(UIStatusBar_Base *)self _getStyle:&v4 andActiveOverride:0 forRequestedStyle:a3];
+  [(UIStatusBar_Base *)self _getStyle:&v4 andActiveOverride:0 forRequestedStyle:style];
   return v4;
 }
 
-- (void)requestStyle:(int64_t)a3 partStyles:(id)a4 animationParameters:(id)a5 forced:(BOOL)a6
+- (void)requestStyle:(int64_t)style partStyles:(id)styles animationParameters:(id)parameters forced:(BOOL)forced
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  [(UIStatusBar_Base *)self _setRequestedStyle:a3];
-  [(UIStatusBar_Base *)self _requestStyle:a3 partStyles:v11 animationParameters:v10 forced:v6];
+  forcedCopy = forced;
+  parametersCopy = parameters;
+  stylesCopy = styles;
+  [(UIStatusBar_Base *)self _setRequestedStyle:style];
+  [(UIStatusBar_Base *)self _requestStyle:style partStyles:stylesCopy animationParameters:parametersCopy forced:forcedCopy];
 }
 
-- (void)requestStyle:(int64_t)a3 animated:(BOOL)a4 forced:(BOOL)a5
+- (void)requestStyle:(int64_t)style animated:(BOOL)animated forced:(BOOL)forced
 {
-  v5 = a5;
-  if (a4)
+  forcedCopy = forced;
+  if (animated)
   {
-    v8 = [[UIStatusBarStyleAnimationParameters alloc] initWithDefaultParameters];
+    initWithDefaultParameters = [[UIStatusBarStyleAnimationParameters alloc] initWithDefaultParameters];
   }
 
   else
   {
-    v8 = 0;
+    initWithDefaultParameters = 0;
   }
 
-  v9 = v8;
-  [(UIStatusBar_Base *)self requestStyle:a3 animationParameters:v8 forced:v5];
+  v9 = initWithDefaultParameters;
+  [(UIStatusBar_Base *)self requestStyle:style animationParameters:initWithDefaultParameters forced:forcedCopy];
 }
 
-- (void)_setHidden:(BOOL)a3 animationParameters:(id)a4
+- (void)_setHidden:(BOOL)hidden animationParameters:(id)parameters
 {
-  v4 = a3;
-  v6 = a4;
-  if (self->_hidden != v4)
+  hiddenCopy = hidden;
+  parametersCopy = parameters;
+  if (self->_hidden != hiddenCopy)
   {
-    self->_hidden = v4;
+    self->_hidden = hiddenCopy;
     [(UIStatusBar_Base *)self _evaluateServerRegistration];
     v21 = 0u;
     v22 = 0u;
     v20 = 0u;
-    [(UIStatusBar_Base *)self _hiddenTransformForHideAnimationParameters:v6];
-    [(UIStatusBar_Base *)self _hiddenAlphaForHideAnimationParameters:v6];
+    [(UIStatusBar_Base *)self _hiddenTransformForHideAnimationParameters:parametersCopy];
+    [(UIStatusBar_Base *)self _hiddenAlphaForHideAnimationParameters:parametersCopy];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __51__UIStatusBar_Base__setHidden_animationParameters___block_invoke;
@@ -430,7 +430,7 @@ LABEL_12:
     v18 = v21;
     v19 = v22;
     v8 = _Block_copy(aBlock);
-    if ([v6 shouldAnimate] && !v4)
+    if ([parametersCopy shouldAnimate] && !hiddenCopy)
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -446,71 +446,71 @@ LABEL_12:
     v11[2] = __51__UIStatusBar_Base__setHidden_animationParameters___block_invoke_3;
     v11[3] = &unk_1E7101B70;
     v12 = v8;
-    v13 = v4;
+    v13 = hiddenCopy;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __51__UIStatusBar_Base__setHidden_animationParameters___block_invoke_4;
     v10[3] = &unk_1E70F5AC0;
     v9 = v8;
-    [UIStatusBarAnimationParameters animateWithParameters:v6 animations:v11 completion:v10];
+    [UIStatusBarAnimationParameters animateWithParameters:parametersCopy animations:v11 completion:v10];
   }
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a3;
-  if (a4)
+  hiddenCopy = hidden;
+  if (animated)
   {
-    v6 = [[UIStatusBarHideAnimationParameters alloc] initWithDefaultParameters];
+    initWithDefaultParameters = [[UIStatusBarHideAnimationParameters alloc] initWithDefaultParameters];
   }
 
   else
   {
-    v6 = 0;
+    initWithDefaultParameters = 0;
   }
 
-  v7 = v6;
-  [(UIStatusBar_Base *)self setHidden:v4 animationParameters:v6];
+  v7 = initWithDefaultParameters;
+  [(UIStatusBar_Base *)self setHidden:hiddenCopy animationParameters:initWithDefaultParameters];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  v5 = [(UIStatusBar_Base *)self manager];
-  if (!v5 || (v6 = v5, -[UIStatusBar_Base manager](self, "manager"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 statusBar:self shouldSetAlpha:a3], v7, v6, v8))
+  manager = [(UIStatusBar_Base *)self manager];
+  if (!manager || (v6 = manager, -[UIStatusBar_Base manager](self, "manager"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 statusBar:self shouldSetAlpha:alpha], v7, v6, v8))
   {
     v9.receiver = self;
     v9.super_class = UIStatusBar_Base;
-    [(UIView *)&v9 setAlpha:a3];
+    [(UIView *)&v9 setAlpha:alpha];
   }
 }
 
-- (void)setSuppressesHiddenSideEffects:(BOOL)a3
+- (void)setSuppressesHiddenSideEffects:(BOOL)effects
 {
-  if (self->_suppressesHiddenSideEffects != a3)
+  if (self->_suppressesHiddenSideEffects != effects)
   {
-    self->_suppressesHiddenSideEffects = a3;
+    self->_suppressesHiddenSideEffects = effects;
     [(UIStatusBar_Base *)self _evaluateServerRegistration];
   }
 }
 
-- (void)forceUpdateStyleOverrides:(BOOL)a3
+- (void)forceUpdateStyleOverrides:(BOOL)overrides
 {
-  v3 = a3;
+  overridesCopy = overrides;
   self->_styleOverrides = +[UIStatusBarServer getStyleOverrides];
-  v5 = [(UIStatusBar_Base *)self _requestStyle];
+  _requestStyle = [(UIStatusBar_Base *)self _requestStyle];
 
-  [(UIStatusBar_Base *)self requestStyle:v5 animated:v3 forced:1];
+  [(UIStatusBar_Base *)self requestStyle:_requestStyle animated:overridesCopy forced:1];
 }
 
-- (void)setLocalDataOverrides:(id *)a3
+- (void)setLocalDataOverrides:(id *)overrides
 {
   localDataOverrides = self->_localDataOverrides;
-  if (a3)
+  if (overrides)
   {
     if (localDataOverrides || (localDataOverrides = malloc_type_malloc(0xF68uLL, 0x100004064C31AF5uLL), (self->_localDataOverrides = localDataOverrides) != 0))
     {
 
-      memcpy(localDataOverrides, a3, sizeof($38BCDC8E708A2560E43DD4D455FC8F47));
+      memcpy(localDataOverrides, overrides, sizeof($38BCDC8E708A2560E43DD4D455FC8F47));
     }
   }
 
@@ -523,11 +523,11 @@ LABEL_12:
 
 - (BOOL)showsContentsOnScreen
 {
-  v3 = [(UIStatusBar_Base *)self enabledPartIdentifiers];
-  if (v3)
+  enabledPartIdentifiers = [(UIStatusBar_Base *)self enabledPartIdentifiers];
+  if (enabledPartIdentifiers)
   {
-    v4 = [(UIStatusBar_Base *)self enabledPartIdentifiers];
-    v5 = [v4 count] != 0;
+    enabledPartIdentifiers2 = [(UIStatusBar_Base *)self enabledPartIdentifiers];
+    v5 = [enabledPartIdentifiers2 count] != 0;
   }
 
   else
@@ -538,19 +538,19 @@ LABEL_12:
   return v5;
 }
 
-- (void)setStyleRequest:(id)a3 animationParameters:(id)a4
+- (void)setStyleRequest:(id)request animationParameters:(id)parameters
 {
-  v5 = a3;
-  self->_requestedStyle = [v5 style];
-  v6 = [v5 foregroundColor];
+  requestCopy = request;
+  self->_requestedStyle = [requestCopy style];
+  foregroundColor = [requestCopy foregroundColor];
   foregroundColor = self->_foregroundColor;
-  self->_foregroundColor = v6;
+  self->_foregroundColor = foregroundColor;
 
-  v8 = [v5 legibilityStyle];
-  self->_legibilityStyle = v8;
+  legibilityStyle = [requestCopy legibilityStyle];
+  self->_legibilityStyle = legibilityStyle;
 }
 
-- (UIOffset)offsetForPartWithIdentifier:(id)a3
+- (UIOffset)offsetForPartWithIdentifier:(id)identifier
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -559,7 +559,7 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)frameForPartWithIdentifier:(id)a3
+- (CGRect)frameForPartWithIdentifier:(id)identifier
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -572,18 +572,18 @@ LABEL_12:
   return result;
 }
 
-+ (CGRect)_frameInSceneReferenceSpaceForStyle:(int64_t)a3 orientation:(int64_t)a4 inSceneWithReferenceSize:(CGSize)a5
++ (CGRect)_frameInSceneReferenceSpaceForStyle:(int64_t)style orientation:(int64_t)orientation inSceneWithReferenceSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  [a1 heightForStyle:a3 orientation:a4 inWindow:0];
+  height = size.height;
+  width = size.width;
+  [self heightForStyle:style orientation:orientation inWindow:0];
   v9 = *MEMORY[0x1E695F058];
   v10 = *(MEMORY[0x1E695F058] + 8);
   v11 = *(MEMORY[0x1E695F058] + 16);
   v12 = *(MEMORY[0x1E695F058] + 24);
   v13 = width - v8;
   v14 = 0.0;
-  if (a4 == 4)
+  if (orientation == 4)
   {
     v15 = height;
   }
@@ -593,7 +593,7 @@ LABEL_12:
     v15 = *(MEMORY[0x1E695F058] + 24);
   }
 
-  if (a4 == 4)
+  if (orientation == 4)
   {
     v16 = v8;
   }
@@ -603,7 +603,7 @@ LABEL_12:
     v16 = *(MEMORY[0x1E695F058] + 16);
   }
 
-  if (a4 == 4)
+  if (orientation == 4)
   {
     v17 = 0.0;
   }
@@ -613,7 +613,7 @@ LABEL_12:
     v17 = *(MEMORY[0x1E695F058] + 8);
   }
 
-  if (a4 == 4)
+  if (orientation == 4)
   {
     v18 = 0.0;
   }
@@ -623,7 +623,7 @@ LABEL_12:
     v18 = *MEMORY[0x1E695F058];
   }
 
-  if (a4 == 3)
+  if (orientation == 3)
   {
     v15 = height;
     v16 = v8;
@@ -635,7 +635,7 @@ LABEL_12:
     v13 = v18;
   }
 
-  if (a4 == 2)
+  if (orientation == 2)
   {
     v12 = v8;
     v11 = width;
@@ -643,7 +643,7 @@ LABEL_12:
     v9 = 0.0;
   }
 
-  if (a4 == 1)
+  if (orientation == 1)
   {
     v19 = width;
   }
@@ -654,7 +654,7 @@ LABEL_12:
     v19 = v11;
   }
 
-  if (a4 == 1)
+  if (orientation == 1)
   {
     v20 = 0.0;
   }
@@ -664,12 +664,12 @@ LABEL_12:
     v20 = v10;
   }
 
-  if (a4 != 1)
+  if (orientation != 1)
   {
     v14 = v9;
   }
 
-  if (a4 <= 2)
+  if (orientation <= 2)
   {
     v21 = v8;
   }
@@ -679,7 +679,7 @@ LABEL_12:
     v21 = v15;
   }
 
-  if (a4 <= 2)
+  if (orientation <= 2)
   {
     v22 = v19;
   }
@@ -689,7 +689,7 @@ LABEL_12:
     v22 = v16;
   }
 
-  if (a4 <= 2)
+  if (orientation <= 2)
   {
     v23 = v20;
   }
@@ -699,7 +699,7 @@ LABEL_12:
     v23 = v17;
   }
 
-  if (a4 <= 2)
+  if (orientation <= 2)
   {
     v24 = v14;
   }
@@ -716,7 +716,7 @@ LABEL_12:
   return result;
 }
 
-- (CGAffineTransform)_hiddenTransformForHideAnimationParameters:(SEL)a3
+- (CGAffineTransform)_hiddenTransformForHideAnimationParameters:(SEL)parameters
 {
   v6 = a4;
   v7 = MEMORY[0x1E695EFD0];
@@ -725,8 +725,8 @@ LABEL_12:
   *&retstr->c = v8;
   *&retstr->tx = *(v7 + 32);
   v19 = v6;
-  v9 = [v6 hideAnimation];
-  if (v9 == 3)
+  hideAnimation = [v6 hideAnimation];
+  if (hideAnimation == 3)
   {
     [objc_msgSend(objc_opt_class() "_statusBarWindowClass")];
     v15 = v14;
@@ -744,7 +744,7 @@ LABEL_12:
 
   else
   {
-    if (v9 != 2)
+    if (hideAnimation != 2)
     {
       goto LABEL_8;
     }
@@ -761,11 +761,11 @@ LABEL_8:
   return result;
 }
 
-- (double)_hiddenAlphaForHideAnimationParameters:(id)a3
+- (double)_hiddenAlphaForHideAnimationParameters:(id)parameters
 {
-  v3 = [a3 hideAnimation];
+  hideAnimation = [parameters hideAnimation];
   result = 0.0;
-  if ((v3 & 0xFFFFFFFE) == 2)
+  if ((hideAnimation & 0xFFFFFFFE) == 2)
   {
     return 1.0;
   }
@@ -773,173 +773,173 @@ LABEL_8:
   return result;
 }
 
-+ (int64_t)_defaultStyleForRequestedStyle:(int64_t)a3 styleOverrides:(unint64_t)a4 activeStyleOverride:(unint64_t *)a5
++ (int64_t)_defaultStyleForRequestedStyle:(int64_t)style styleOverrides:(unint64_t)overrides activeStyleOverride:(unint64_t *)override
 {
-  if ((a3 - 108) < 2 || a3 == 306)
+  if ((style - 108) < 2 || style == 306)
   {
-    if ((a4 & 0x20000000) != 0)
+    if ((overrides & 0x20000000) != 0)
     {
       v6 = 0x20000000;
       result = 1017;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x800000000) != 0)
+    if ((overrides & 0x800000000) != 0)
     {
       v6 = 0x800000000;
       result = 1018;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x2000) != 0)
+    if ((overrides & 0x2000) != 0)
     {
       v6 = 0x2000;
       result = 1003;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x100000) != 0)
+    if ((overrides & 0x100000) != 0)
     {
       v6 = 0x100000;
       result = 1016;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x10000000) != 0)
+    if ((overrides & 0x10000000) != 0)
     {
       v6 = 0x10000000;
       result = 1010;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x8000000) != 0)
+    if ((overrides & 0x8000000) != 0)
     {
       v6 = 0x8000000;
       result = 1011;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x10) != 0)
+    if ((overrides & 0x10) != 0)
     {
       v6 = 16;
       result = 1012;
       goto LABEL_132;
     }
 
-    if (a4)
+    if (overrides)
     {
       v6 = 1;
       result = 1013;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x1000000000) != 0)
+    if ((overrides & 0x1000000000) != 0)
     {
       v6 = 0x1000000000;
       result = 1023;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x4000000000) != 0)
+    if ((overrides & 0x4000000000) != 0)
     {
       v6 = 0x4000000000;
       result = 1026;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x8000000000) != 0)
+    if ((overrides & 0x8000000000) != 0)
     {
       v6 = 0x8000000000;
       result = 1025;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x80000) != 0)
+    if ((overrides & 0x80000) != 0)
     {
       v6 = 0x80000;
       result = 1014;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x40000) != 0)
+    if ((overrides & 0x40000) != 0)
     {
       v6 = 0x40000;
       result = 1015;
       goto LABEL_132;
     }
 
-    if ((a4 & 8) != 0)
+    if ((overrides & 8) != 0)
     {
       v6 = 8;
       result = 1001;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x40000000) != 0)
+    if ((overrides & 0x40000000) != 0)
     {
       v6 = 0x40000000;
       result = 1019;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x80000000) != 0)
+    if ((overrides & 0x80000000) != 0)
     {
       v6 = 0x80000000;
       result = 1020;
       goto LABEL_132;
     }
 
-    if ((a4 & 0x20) == 0)
+    if ((overrides & 0x20) == 0)
     {
-      if ((a4 & 0x10000000000) != 0)
+      if ((overrides & 0x10000000000) != 0)
       {
         v6 = 0x10000000000;
         result = 1021;
       }
 
-      else if ((a4 & 0x10000) != 0)
+      else if ((overrides & 0x10000) != 0)
       {
         v6 = 0x10000;
         result = 1005;
       }
 
-      else if ((a4 & 0x20000) != 0)
+      else if ((overrides & 0x20000) != 0)
       {
         v6 = 0x20000;
         result = 1006;
       }
 
-      else if ((a4 & 0x1000000) != 0)
+      else if ((overrides & 0x1000000) != 0)
       {
         v6 = 0x1000000;
         result = 1007;
       }
 
-      else if ((a4 & 0x2000000) != 0)
+      else if ((overrides & 0x2000000) != 0)
       {
         v6 = 0x2000000;
         result = 1008;
       }
 
-      else if ((a4 & 0x4000000) != 0)
+      else if ((overrides & 0x4000000) != 0)
       {
         v6 = 0x4000000;
         result = 1009;
       }
 
-      else if ((a4 & 4) != 0)
+      else if ((overrides & 4) != 0)
       {
         v6 = 4;
         result = 1004;
       }
 
-      else if ((a4 & 0x800) != 0)
+      else if ((overrides & 0x800) != 0)
       {
         v6 = 2048;
         result = 1002;
       }
 
-      else if ((a4 & 0x20000000000) != 0)
+      else if ((overrides & 0x20000000000) != 0)
       {
         v6 = 0x20000000000;
         result = 1027;
@@ -947,10 +947,10 @@ LABEL_8:
 
       else
       {
-        if ((a4 & 0x400000000) == 0)
+        if ((overrides & 0x400000000) == 0)
         {
-          v6 = a4 & 0x2000000000;
-          v5 = (a4 & 0x2000000000) == 0;
+          v6 = overrides & 0x2000000000;
+          v5 = (overrides & 0x2000000000) == 0;
           v7 = 1024;
           goto LABEL_31;
         }
@@ -965,189 +965,189 @@ LABEL_8:
     goto LABEL_105;
   }
 
-  if ((a4 & 0x20000000) != 0)
+  if ((overrides & 0x20000000) != 0)
   {
     v6 = 0x20000000;
     result = 222;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x800000000) != 0)
+  if ((overrides & 0x800000000) != 0)
   {
     v6 = 0x800000000;
     result = 223;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x8000) != 0)
+  if ((overrides & 0x8000) != 0)
   {
     v6 = 0x8000;
     result = 215;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x2000) != 0)
+  if ((overrides & 0x2000) != 0)
   {
     v6 = 0x2000;
     result = 213;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x4000) != 0)
+  if ((overrides & 0x4000) != 0)
   {
     v6 = 0x4000;
     result = 214;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x100000) != 0)
+  if ((overrides & 0x100000) != 0)
   {
     v6 = 0x100000;
     result = 111;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x10000000) != 0)
+  if ((overrides & 0x10000000) != 0)
   {
     v6 = 0x10000000;
     result = 221;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x8000000) != 0)
+  if ((overrides & 0x8000000) != 0)
   {
     v6 = 0x8000000;
     result = 220;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x10) != 0)
+  if ((overrides & 0x10) != 0)
   {
     v6 = 16;
     result = 208;
     goto LABEL_132;
   }
 
-  if (a4)
+  if (overrides)
   {
     v6 = 1;
     result = 200;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x1000000000) != 0)
+  if ((overrides & 0x1000000000) != 0)
   {
     v6 = 0x1000000000;
     result = 226;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x4000000000) != 0)
+  if ((overrides & 0x4000000000) != 0)
   {
     v6 = 0x4000000000;
     result = 228;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x8000000000) != 0)
+  if ((overrides & 0x8000000000) != 0)
   {
     v6 = 0x8000000000;
     result = 229;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x40) != 0)
+  if ((overrides & 0x40) != 0)
   {
     v6 = 64;
     result = 209;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x80) != 0)
+  if ((overrides & 0x80) != 0)
   {
     v6 = 128;
     result = 210;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x10000) != 0)
+  if ((overrides & 0x10000) != 0)
   {
     v6 = 0x10000;
     result = 217;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x80000) != 0)
+  if ((overrides & 0x80000) != 0)
   {
     v6 = 0x80000;
     result = 218;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x40000) != 0)
+  if ((overrides & 0x40000) != 0)
   {
     v6 = 0x40000;
     result = 219;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x20000) != 0)
+  if ((overrides & 0x20000) != 0)
   {
     v6 = 0x20000;
     result = 202;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x1000000) != 0)
+  if ((overrides & 0x1000000) != 0)
   {
     v6 = 0x1000000;
     result = 203;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x2000000) != 0)
+  if ((overrides & 0x2000000) != 0)
   {
     v6 = 0x2000000;
     result = 204;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x4000000) != 0)
+  if ((overrides & 0x4000000) != 0)
   {
     v6 = 0x4000000;
     result = 205;
     goto LABEL_132;
   }
 
-  if ((a4 & 4) != 0)
+  if ((overrides & 4) != 0)
   {
     v6 = 4;
     result = 206;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x400) != 0)
+  if ((overrides & 0x400) != 0)
   {
     v6 = 1024;
     result = 211;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x200000) != 0)
+  if ((overrides & 0x200000) != 0)
   {
     v6 = 0x200000;
     result = 216;
     goto LABEL_132;
   }
 
-  if ((a4 & 8) != 0)
+  if ((overrides & 8) != 0)
   {
     v6 = 8;
     result = 207;
     goto LABEL_132;
   }
 
-  if ((a4 & 0x40000000) != 0)
+  if ((overrides & 0x40000000) != 0)
   {
     v6 = 0x40000000;
 LABEL_131:
@@ -1155,19 +1155,19 @@ LABEL_131:
     goto LABEL_132;
   }
 
-  if ((a4 & 0x80000000) != 0)
+  if ((overrides & 0x80000000) != 0)
   {
     v6 = 0x80000000;
     goto LABEL_131;
   }
 
-  if ((a4 & 0x10000000000) != 0)
+  if ((overrides & 0x10000000000) != 0)
   {
     v6 = 0x10000000000;
     goto LABEL_131;
   }
 
-  if ((a4 & 0x20) != 0)
+  if ((overrides & 0x20) != 0)
   {
 LABEL_105:
     v6 = 32;
@@ -1176,49 +1176,49 @@ LABEL_106:
     goto LABEL_132;
   }
 
-  if ((a4 & 0x200) != 0)
+  if ((overrides & 0x200) != 0)
   {
     v6 = 512;
     goto LABEL_106;
   }
 
-  if ((a4 & 0x1000) != 0)
+  if ((overrides & 0x1000) != 0)
   {
     v6 = 4096;
     result = 112;
   }
 
-  else if ((a4 & 0x400000) != 0)
+  else if ((overrides & 0x400000) != 0)
   {
     v6 = 0x400000;
     result = 113;
   }
 
-  else if ((a4 & 0x800000) != 0)
+  else if ((overrides & 0x800000) != 0)
   {
     v6 = 0x800000;
     result = 114;
   }
 
-  else if ((a4 & 0x100) != 0)
+  else if ((overrides & 0x100) != 0)
   {
     v6 = 256;
     result = 105;
   }
 
-  else if ((a4 & 2) != 0)
+  else if ((overrides & 2) != 0)
   {
     v6 = 2;
     result = 201;
   }
 
-  else if ((a4 & 0x800) != 0)
+  else if ((overrides & 0x800) != 0)
   {
     v6 = 2048;
     result = 212;
   }
 
-  else if ((a4 & 0x20000000000) != 0)
+  else if ((overrides & 0x20000000000) != 0)
   {
     v6 = 0x20000000000;
     result = 230;
@@ -1226,15 +1226,15 @@ LABEL_106:
 
   else
   {
-    if ((a4 & 0x400000000) == 0)
+    if ((overrides & 0x400000000) == 0)
     {
-      v6 = a4 & 0x2000000000;
-      v5 = (a4 & 0x2000000000) == 0;
+      v6 = overrides & 0x2000000000;
+      v5 = (overrides & 0x2000000000) == 0;
       v7 = 227;
 LABEL_31:
       if (v5)
       {
-        result = a3;
+        result = style;
       }
 
       else
@@ -1250,33 +1250,33 @@ LABEL_31:
   }
 
 LABEL_132:
-  if (a5)
+  if (override)
   {
-    *a5 = v6;
+    *override = v6;
   }
 
   return result;
 }
 
-- (void)_performBlockWhileIgnoringForegroundViewChanges:(id)a3
+- (void)_performBlockWhileIgnoringForegroundViewChanges:(id)changes
 {
-  if (a3)
+  if (changes)
   {
-    (*(a3 + 2))(a3);
+    (*(changes + 2))(changes);
   }
 }
 
-- (void)_performAnimations:(id)a3 withParameters:(id)a4 completion:(id)a5
+- (void)_performAnimations:(id)animations withParameters:(id)parameters completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(UIStatusBar_Base *)self _transitionCoordinator];
+  animationsCopy = animations;
+  parametersCopy = parameters;
+  completionCopy = completion;
+  _transitionCoordinator = [(UIStatusBar_Base *)self _transitionCoordinator];
 
-  if (v12)
+  if (_transitionCoordinator)
   {
     v13 = "_UIMonochromaticTreatment";
-    if (v9)
+    if (animationsCopy)
     {
       v14 = v21;
       v21[0] = MEMORY[0x1E69E9820];
@@ -1284,7 +1284,7 @@ LABEL_132:
       v21[2] = __65__UIStatusBar_Base__performAnimations_withParameters_completion___block_invoke;
       v21[3] = &unk_1E70F3770;
       v5 = &v22;
-      v22 = v9;
+      v22 = animationsCopy;
     }
 
     else
@@ -1293,7 +1293,7 @@ LABEL_132:
     }
 
     v15 = _Block_copy(v14);
-    if (v11)
+    if (completionCopy)
     {
       v16 = v19;
       v19[0] = MEMORY[0x1E69E9820];
@@ -1301,7 +1301,7 @@ LABEL_132:
       v19[2] = __65__UIStatusBar_Base__performAnimations_withParameters_completion___block_invoke_2;
       v19[3] = &unk_1E70F3770;
       v13 = &v20;
-      v20 = v11;
+      v20 = completionCopy;
     }
 
     else
@@ -1310,21 +1310,21 @@ LABEL_132:
     }
 
     v17 = _Block_copy(v16);
-    v18 = [(UIStatusBar_Base *)self _transitionCoordinator];
-    [v18 animateAlongsideTransitionInView:self animation:v15 completion:v17];
+    _transitionCoordinator2 = [(UIStatusBar_Base *)self _transitionCoordinator];
+    [_transitionCoordinator2 animateAlongsideTransitionInView:self animation:v15 completion:v17];
 
-    if (v11)
+    if (completionCopy)
     {
     }
 
-    if (v9)
+    if (animationsCopy)
     {
     }
   }
 
   else
   {
-    [UIStatusBarAnimationParameters animateWithParameters:v10 fromCurrentState:1 animations:v9 completion:v11];
+    [UIStatusBarAnimationParameters animateWithParameters:parametersCopy fromCurrentState:1 animations:animationsCopy completion:completionCopy];
   }
 }
 

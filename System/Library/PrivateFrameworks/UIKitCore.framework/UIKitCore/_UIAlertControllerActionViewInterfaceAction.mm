@@ -1,5 +1,5 @@
 @interface _UIAlertControllerActionViewInterfaceAction
-+ (id)actionWithAlertControllerActionView:(id)a3;
++ (id)actionWithAlertControllerActionView:(id)view;
 - (id)classificationTitle;
 - (id)leadingImage;
 - (int64_t)type;
@@ -10,11 +10,11 @@
 
 @implementation _UIAlertControllerActionViewInterfaceAction
 
-+ (id)actionWithAlertControllerActionView:(id)a3
++ (id)actionWithAlertControllerActionView:(id)view
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS____UIAlertControllerActionViewInterfaceAction;
-  v3 = objc_msgSendSuper2(&v5, sel_actionWithCustomContentView_handler_, a3, 0);
+  v3 = objc_msgSendSuper2(&v5, sel_actionWithCustomContentView_handler_, view, 0);
   [v3 _initializeStateFromUnderlyingAlertAction];
 
   return v3;
@@ -22,37 +22,37 @@
 
 - (void)_initializeStateFromUnderlyingAlertAction
 {
-  v8 = [(_UIAlertControllerActionViewInterfaceAction *)self alertControllerActionView];
-  v3 = [v8 action];
+  alertControllerActionView = [(_UIAlertControllerActionViewInterfaceAction *)self alertControllerActionView];
+  action = [alertControllerActionView action];
   underlyingAlertAction = self->_underlyingAlertAction;
-  self->_underlyingAlertAction = v3;
+  self->_underlyingAlertAction = action;
 
   [(UIAlertAction *)self->_underlyingAlertAction _setInterfaceActionRepresentation:self];
   [(UIInterfaceAction *)self setEnabled:[(UIAlertAction *)self->_underlyingAlertAction isEnabled]];
-  v5 = [(UIAlertAction *)self->_underlyingAlertAction title];
-  [(UIInterfaceAction *)self setTitle:v5];
+  title = [(UIAlertAction *)self->_underlyingAlertAction title];
+  [(UIInterfaceAction *)self setTitle:title];
 
   [(UIInterfaceAction *)self setTitleAlignment:[(UIAlertAction *)self->_underlyingAlertAction _titleTextAlignment]];
-  v6 = [(UIAlertAction *)self->_underlyingAlertAction _titleTextColor];
-  [(UIInterfaceAction *)self _setTitleTextColor:v6];
+  _titleTextColor = [(UIAlertAction *)self->_underlyingAlertAction _titleTextColor];
+  [(UIInterfaceAction *)self _setTitleTextColor:_titleTextColor];
 
-  v7 = [(UIAlertAction *)self->_underlyingAlertAction _imageTintColor];
-  [(UIInterfaceAction *)self _setImageTintColor:v7];
+  _imageTintColor = [(UIAlertAction *)self->_underlyingAlertAction _imageTintColor];
+  [(UIInterfaceAction *)self _setImageTintColor:_imageTintColor];
 
   [(UIInterfaceAction *)self _setIsPreferred:[(UIAlertAction *)self->_underlyingAlertAction _isPreferred]];
-  [v8 underlyingInterfaceActionRepresentationDidChange];
+  [alertControllerActionView underlyingInterfaceActionRepresentationDidChange];
   self->_valid = 1;
 }
 
 - (void)invalidate
 {
   self->_valid = 0;
-  v5 = [(_UIAlertControllerActionViewInterfaceAction *)self underlyingAlertAction];
-  v3 = [v5 _interfaceActionRepresentation];
+  underlyingAlertAction = [(_UIAlertControllerActionViewInterfaceAction *)self underlyingAlertAction];
+  _interfaceActionRepresentation = [underlyingAlertAction _interfaceActionRepresentation];
 
-  if (v3 == self)
+  if (_interfaceActionRepresentation == self)
   {
-    [v5 _setInterfaceActionRepresentation:0];
+    [underlyingAlertAction _setInterfaceActionRepresentation:0];
   }
 
   underlyingAlertAction = self->_underlyingAlertAction;
@@ -69,33 +69,33 @@
 
 - (id)classificationTitle
 {
-  v2 = [(_UIAlertControllerActionViewInterfaceAction *)self underlyingAlertAction];
-  v3 = [v2 _descriptiveText];
+  underlyingAlertAction = [(_UIAlertControllerActionViewInterfaceAction *)self underlyingAlertAction];
+  _descriptiveText = [underlyingAlertAction _descriptiveText];
 
-  return v3;
+  return _descriptiveText;
 }
 
 - (id)leadingImage
 {
-  v2 = [(_UIAlertControllerActionViewInterfaceAction *)self underlyingAlertAction];
-  v3 = [v2 image];
+  underlyingAlertAction = [(_UIAlertControllerActionViewInterfaceAction *)self underlyingAlertAction];
+  image = [underlyingAlertAction image];
 
-  return v3;
+  return image;
 }
 
 - (int64_t)type
 {
-  v2 = [(_UIAlertControllerActionViewInterfaceAction *)self underlyingAlertAction];
-  v3 = [v2 style];
+  underlyingAlertAction = [(_UIAlertControllerActionViewInterfaceAction *)self underlyingAlertAction];
+  style = [underlyingAlertAction style];
 
-  if (v3 == 1)
+  if (style == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 == 2);
+    return 2 * (style == 2);
   }
 }
 

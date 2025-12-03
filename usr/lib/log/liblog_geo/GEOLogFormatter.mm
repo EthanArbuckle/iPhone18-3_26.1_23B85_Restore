@@ -1,27 +1,27 @@
 @interface GEOLogFormatter
 + (id)sharedFormatter;
 - (GEOLogFormatter)init;
-- (id)descriptionForPropertyListData:(id)a3 capturedStateType:(id)a4;
-- (id)formattedAttributedStringForType:(id)a3 value:(id)a4;
-- (id)formattedStringForEnumType:(id)a3 number:(id)a4;
-- (id)formattedStringForEnumType:(id)a3 value:(id)a4;
-- (id)formattedStringForProtobufType:(id)a3 data:(id)a4;
-- (id)formattedStringForProtobufType:(id)a3 value:(id)a4;
-- (id)formattedStringForRequestResponse:(id)a3;
-- (id)formattedStringForRequestResponseMultipart:(id)a3 partData:(id)a4 className:(id)a5 compressed:(unsigned __int8)a6;
-- (id)formattedStringForRequestResponseType:(id)a3 value:(id)a4;
-- (id)formattedStringForSinglePartRequestResponse:(id)a3 compressed:(unsigned __int8)a4;
-- (id)formattedStringForStateType:(id)a3 data:(id)a4;
-- (id)formattedStringForStructType:(id)a3 data:(id)a4;
-- (id)formattedStringForStructType:(id)a3 value:(id)a4;
+- (id)descriptionForPropertyListData:(id)data capturedStateType:(id)type;
+- (id)formattedAttributedStringForType:(id)type value:(id)value;
+- (id)formattedStringForEnumType:(id)type number:(id)number;
+- (id)formattedStringForEnumType:(id)type value:(id)value;
+- (id)formattedStringForProtobufType:(id)type data:(id)data;
+- (id)formattedStringForProtobufType:(id)type value:(id)value;
+- (id)formattedStringForRequestResponse:(id)response;
+- (id)formattedStringForRequestResponseMultipart:(id)multipart partData:(id)data className:(id)name compressed:(unsigned __int8)compressed;
+- (id)formattedStringForRequestResponseType:(id)type value:(id)value;
+- (id)formattedStringForSinglePartRequestResponse:(id)response compressed:(unsigned __int8)compressed;
+- (id)formattedStringForStateType:(id)type data:(id)data;
+- (id)formattedStringForStructType:(id)type data:(id)data;
+- (id)formattedStringForStructType:(id)type value:(id)value;
 @end
 
 @implementation GEOLogFormatter
 
-- (id)descriptionForPropertyListData:(id)a3 capturedStateType:(id)a4
+- (id)descriptionForPropertyListData:(id)data capturedStateType:(id)type
 {
   v8 = 0;
-  v4 = [MEMORY[0x29EDBA0C0] propertyListWithData:a3 options:0 format:0 error:&v8];
+  v4 = [MEMORY[0x29EDBA0C0] propertyListWithData:data options:0 format:0 error:&v8];
   v5 = v4;
   if (v4)
   {
@@ -36,18 +36,18 @@
   return v6;
 }
 
-- (id)formattedStringForStructType:(id)a3 data:(id)a4
+- (id)formattedStringForStructType:(id)type data:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  if (!StringsCaseInsensitiveEqual(v5, @"coordinate"))
+  typeCopy = type;
+  dataCopy = data;
+  if (!StringsCaseInsensitiveEqual(typeCopy, @"coordinate"))
   {
     v7 = &formatters;
     v8 = 3;
     while (1)
     {
       v9 = v7[1];
-      if ((v9 == -1 || v9 == [v6 length]) && StringsCaseInsensitiveEqual(v5, *v7))
+      if ((v9 == -1 || v9 == [dataCopy length]) && StringsCaseInsensitiveEqual(typeCopy, *v7))
       {
         break;
       }
@@ -59,13 +59,13 @@
       }
     }
 
-    v11 = (v7[2])(v6);
+    v11 = (v7[2])(dataCopy);
     goto LABEL_20;
   }
 
-  if ([v6 length] != 16)
+  if ([dataCopy length] != 16)
   {
-    if ([v6 length] != 24)
+    if ([dataCopy length] != 24)
     {
 LABEL_16:
       v10 = 0;
@@ -75,7 +75,7 @@ LABEL_16:
     v14 = 0.0;
     v15 = 0.0;
     v16 = 0;
-    [v6 getBytes:&v14 length:24];
+    [dataCopy getBytes:&v14 length:24];
     if (v14 != -180.0 || v15 != -180.0)
     {
       [MEMORY[0x29EDBA0F8] stringWithFormat:@"%f, %f, %f", v14, v15, *&v14, *&v15, v16];
@@ -89,7 +89,7 @@ LABEL_15:
 
   v14 = 0.0;
   v15 = 0.0;
-  [v6 getBytes:&v14 length:16];
+  [dataCopy getBytes:&v14 length:16];
   if (v14 == -180.0 && v15 == -180.0)
   {
     goto LABEL_15;
@@ -104,14 +104,14 @@ LABEL_21:
   return v10;
 }
 
-- (id)formattedStringForStructType:(id)a3 value:(id)a4
+- (id)formattedStringForStructType:(id)type value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(GEOLogFormatter *)self formattedStringForStructType:v6 data:v7];
+    v8 = [(GEOLogFormatter *)self formattedStringForStructType:typeCopy data:valueCopy];
   }
 
   else
@@ -122,36 +122,36 @@ LABEL_21:
   return v8;
 }
 
-- (id)formattedStringForStateType:(id)a3 data:(id)a4
+- (id)formattedStringForStateType:(id)type data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 hasSuffix:@"/plist"] || (objc_msgSend(v6, "substringToIndex:", objc_msgSend(v6, "length") - objc_msgSend(@"/plist", "length")), v8 = objc_claimAutoreleasedReturnValue(), -[GEOLogFormatter descriptionForPropertyListData:capturedStateType:](self, "descriptionForPropertyListData:capturedStateType:", v7, v8), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  typeCopy = type;
+  dataCopy = data;
+  if (![typeCopy hasSuffix:@"/plist"] || (objc_msgSend(typeCopy, "substringToIndex:", objc_msgSend(typeCopy, "length") - objc_msgSend(@"/plist", "length")), v8 = objc_claimAutoreleasedReturnValue(), -[GEOLogFormatter descriptionForPropertyListData:capturedStateType:](self, "descriptionForPropertyListData:capturedStateType:", dataCopy, v8), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
-    v9 = [v7 description];
+    v9 = [dataCopy description];
   }
 
   return v9;
 }
 
-- (id)formattedAttributedStringForType:(id)a3 value:(id)a4
+- (id)formattedAttributedStringForType:(id)type value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  valueCopy = value;
   v8 = objc_autoreleasePoolPush();
-  v9 = [(GEOLogFormatter *)self formattedStringForStructType:v6 value:v7];
+  v9 = [(GEOLogFormatter *)self formattedStringForStructType:typeCopy value:valueCopy];
   if (!v9)
   {
-    v9 = [(GEOLogFormatter *)self formattedStringForEnumType:v6 value:v7];
+    v9 = [(GEOLogFormatter *)self formattedStringForEnumType:typeCopy value:valueCopy];
     if (!v9)
     {
-      v9 = [(GEOLogFormatter *)self formattedStringForProtobufType:v6 value:v7];
+      v9 = [(GEOLogFormatter *)self formattedStringForProtobufType:typeCopy value:valueCopy];
       if (!v9)
       {
-        v9 = [(GEOLogFormatter *)self formattedStringForRequestResponseType:v6 value:v7];
+        v9 = [(GEOLogFormatter *)self formattedStringForRequestResponseType:typeCopy value:valueCopy];
         if (!v9)
         {
-          v9 = [v7 description];
+          v9 = [valueCopy description];
         }
       }
     }
@@ -186,9 +186,9 @@ LABEL_21:
     isolation = v2->_isolation;
     v2->_isolation = v3;
 
-    v5 = [MEMORY[0x29EDB8E00] dictionary];
+    dictionary = [MEMORY[0x29EDB8E00] dictionary];
     requestResponseCollector = v2->_requestResponseCollector;
-    v2->_requestResponseCollector = v5;
+    v2->_requestResponseCollector = dictionary;
   }
 
   return v2;
@@ -200,7 +200,7 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = __34__GEOLogFormatter_sharedFormatter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedFormatter_onceToken != -1)
   {
     dispatch_once(&sharedFormatter_onceToken, block);
@@ -218,31 +218,31 @@ uint64_t __34__GEOLogFormatter_sharedFormatter__block_invoke(uint64_t a1)
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)formattedStringForProtobufType:(id)a3 data:(id)a4
+- (id)formattedStringForProtobufType:(id)type data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"PBCodable"])
+  typeCopy = type;
+  dataCopy = data;
+  if ([typeCopy isEqualToString:@"PBCodable"])
   {
-    v8 = [(GEOLogFormatter *)self formattedStringForPBCodableData:v7];
+    formattedText = [(GEOLogFormatter *)self formattedStringForPBCodableData:dataCopy];
     goto LABEL_14;
   }
 
-  if (![v6 hasPrefix:@"pb/"])
+  if (![typeCopy hasPrefix:@"pb/"])
   {
     goto LABEL_10;
   }
 
-  v9 = [v6 substringFromIndex:3];
+  v9 = [typeCopy substringFromIndex:3];
 
-  v6 = v9;
+  typeCopy = v9;
   if (protobufClassForType_onceToken != -1)
   {
     dispatch_once(&protobufClassForType_onceToken, &__block_literal_global_44);
   }
 
-  v10 = [protobufClassForType_typeToClassName objectForKeyedSubscript:v6];
-  v8 = v10;
+  v10 = [protobufClassForType_typeToClassName objectForKeyedSubscript:typeCopy];
+  formattedText = v10;
   if (v10)
   {
     v11 = NSClassFromString(v10);
@@ -254,36 +254,36 @@ uint64_t __34__GEOLogFormatter_sharedFormatter__block_invoke(uint64_t a1)
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v13 initWithData:v7];
-        v8 = [v14 formattedText];
+        v14 = [v13 initWithData:dataCopy];
+        formattedText = [v14 formattedText];
       }
 
       else
       {
-        v8 = 0;
+        formattedText = 0;
       }
 
       goto LABEL_14;
     }
 
 LABEL_10:
-    v8 = 0;
+    formattedText = 0;
     goto LABEL_14;
   }
 
 LABEL_14:
 
-  return v8;
+  return formattedText;
 }
 
-- (id)formattedStringForProtobufType:(id)a3 value:(id)a4
+- (id)formattedStringForProtobufType:(id)type value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(GEOLogFormatter *)self formattedStringForProtobufType:v6 data:v7];
+    v8 = [(GEOLogFormatter *)self formattedStringForProtobufType:typeCopy data:valueCopy];
   }
 
   else
@@ -294,32 +294,32 @@ LABEL_14:
   return v8;
 }
 
-- (id)formattedStringForRequestResponseMultipart:(id)a3 partData:(id)a4 className:(id)a5 compressed:(unsigned __int8)a6
+- (id)formattedStringForRequestResponseMultipart:(id)multipart partData:(id)data className:(id)name compressed:(unsigned __int8)compressed
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v10[17];
-  if (v13 > 0x64 || v13 <= v10[16])
+  compressedCopy = compressed;
+  multipartCopy = multipart;
+  dataCopy = data;
+  nameCopy = name;
+  v13 = multipartCopy[17];
+  if (v13 > 0x64 || v13 <= multipartCopy[16])
   {
     v22 = 0;
   }
 
   else
   {
-    v14 = [(GEOLogFormatter *)self requestResponseCollector];
-    [v14 setObject:v11 forKeyedSubscript:v10];
+    requestResponseCollector = [(GEOLogFormatter *)self requestResponseCollector];
+    [requestResponseCollector setObject:dataCopy forKeyedSubscript:multipartCopy];
 
-    v15 = [MEMORY[0x29EDB8E00] dictionaryWithCapacity:v10[17]];
-    if (v10[17])
+    v15 = [MEMORY[0x29EDB8E00] dictionaryWithCapacity:multipartCopy[17]];
+    if (multipartCopy[17])
     {
       v16 = 0;
       while (1)
       {
-        v17 = [v10 copyWithIndex:v16];
-        v18 = [(GEOLogFormatter *)self requestResponseCollector];
-        v19 = [v18 objectForKeyedSubscript:v17];
+        v17 = [multipartCopy copyWithIndex:v16];
+        requestResponseCollector2 = [(GEOLogFormatter *)self requestResponseCollector];
+        v19 = [requestResponseCollector2 objectForKeyedSubscript:v17];
 
         if (!v19)
         {
@@ -329,7 +329,7 @@ LABEL_14:
         [v15 setObject:v19 forKeyedSubscript:v17];
 
         ++v16;
-        v20 = v10[17];
+        v20 = multipartCopy[17];
         if (v20 <= v16)
         {
           v21 = v20 << 15;
@@ -337,7 +337,7 @@ LABEL_14:
         }
       }
 
-      v22 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"[%016llx/%u/%u] (waiting for %u)", *(v10 + 1), v10[16], v10[17], v16];
+      v22 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"[%016llx/%u/%u] (waiting for %u)", *(multipartCopy + 1), multipartCopy[16], multipartCopy[17], v16];
     }
 
     else
@@ -345,31 +345,31 @@ LABEL_14:
       v21 = 0;
 LABEL_10:
       v17 = [MEMORY[0x29EDB8DF8] dataWithCapacity:v21];
-      v23 = v10[17];
-      if (v10[17])
+      v23 = multipartCopy[17];
+      if (multipartCopy[17])
       {
-        v35 = v6;
+        v35 = compressedCopy;
         v24 = 0;
         do
         {
-          v25 = [v10 copyWithIndex:v24];
+          v25 = [multipartCopy copyWithIndex:v24];
           v26 = [v15 objectForKeyedSubscript:v25];
-          v27 = [(GEOLogFormatter *)self requestResponseCollector];
-          [v27 setObject:0 forKeyedSubscript:v25];
+          requestResponseCollector3 = [(GEOLogFormatter *)self requestResponseCollector];
+          [requestResponseCollector3 setObject:0 forKeyedSubscript:v25];
 
           [v17 appendData:v26];
           ++v24;
-          v23 = v10[17];
+          v23 = multipartCopy[17];
         }
 
         while (v23 > v24);
-        v6 = v35;
+        compressedCopy = v35;
       }
 
-      if (v6)
+      if (compressedCopy)
       {
         v28 = objc_autoreleasePoolPush();
-        v29 = decompress(v17, v6);
+        v29 = decompress(v17, compressedCopy);
         v30 = v29;
         if (v29)
         {
@@ -379,11 +379,11 @@ LABEL_10:
         }
 
         objc_autoreleasePoolPop(v28);
-        v23 = v10[17];
+        v23 = multipartCopy[17];
       }
 
-      v32 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"[%016llx/%u/%u] ", *(v10 + 1), v10[16], v23];
-      v33 = formattedStringFromProtobuf(v12, v17);
+      v32 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"[%016llx/%u/%u] ", *(multipartCopy + 1), multipartCopy[16], v23];
+      v33 = formattedStringFromProtobuf(nameCopy, v17);
       v22 = [v32 stringByAppendingString:v33];
     }
   }
@@ -391,21 +391,21 @@ LABEL_10:
   return v22;
 }
 
-- (id)formattedStringForSinglePartRequestResponse:(id)a3 compressed:(unsigned __int8)a4
+- (id)formattedStringForSinglePartRequestResponse:(id)response compressed:(unsigned __int8)compressed
 {
-  v4 = a4;
-  v5 = a3;
+  compressedCopy = compressed;
+  responseCopy = response;
   v15 = 0;
   v16 = 0;
-  NameAndRemainderAtOffset = getNameAndRemainderAtOffset(v5, 1uLL, &v16, &v15);
+  NameAndRemainderAtOffset = getNameAndRemainderAtOffset(responseCopy, 1uLL, &v16, &v15);
   v7 = v16;
   v8 = v15;
   if (NameAndRemainderAtOffset)
   {
-    if (v4)
+    if (compressedCopy)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = decompress(v8, v4);
+      v10 = decompress(v8, compressedCopy);
       v11 = v10;
       if (v10)
       {
@@ -428,17 +428,17 @@ LABEL_10:
   return v13;
 }
 
-- (id)formattedStringForRequestResponse:(id)a3
+- (id)formattedStringForRequestResponse:(id)response
 {
-  v4 = a3;
-  if ([v4 length])
+  responseCopy = response;
+  if ([responseCopy length])
   {
     v9 = 0;
-    [v4 getBytes:&v9 range:{0, 1}];
+    [responseCopy getBytes:&v9 range:{0, 1}];
     v5 = v9 & 3;
     if (v5 == 2)
     {
-      v7 = [(GEOLogFormatter *)self formattedStringForMultiPartRequestResponse:v4 compressed:v9 & 0x3C];
+      0x3C = [(GEOLogFormatter *)self formattedStringForMultiPartRequestResponse:responseCopy compressed:v9 & 0x3C];
     }
 
     else
@@ -449,10 +449,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v7 = [(GEOLogFormatter *)self formattedStringForSinglePartRequestResponse:v4 compressed:v9 & 0x3C];
+      0x3C = [(GEOLogFormatter *)self formattedStringForSinglePartRequestResponse:responseCopy compressed:v9 & 0x3C];
     }
 
-    v6 = v7;
+    v6 = 0x3C;
   }
 
   else
@@ -465,13 +465,13 @@ LABEL_8:
   return v6;
 }
 
-- (id)formattedStringForRequestResponseType:(id)a3 value:(id)a4
+- (id)formattedStringForRequestResponseType:(id)type value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqualToString:@"requestresponse/pbcodable"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"requestresponseV2/pbcodable") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"requestresponseV3/pbcodable"))
+  typeCopy = type;
+  valueCopy = value;
+  if (([typeCopy isEqualToString:@"requestresponse/pbcodable"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"requestresponseV2/pbcodable") & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"requestresponseV3/pbcodable"))
   {
-    v8 = v7;
+    v8 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -488,7 +488,7 @@ LABEL_8:
         v16 = __Block_byref_object_copy_;
         v17 = __Block_byref_object_dispose_;
         v18 = 0;
-        v10 = [(GEOLogFormatter *)self isolation];
+        isolation = [(GEOLogFormatter *)self isolation];
         v12 = v8;
         geo_isolate_sync();
 
@@ -521,16 +521,16 @@ uint64_t __80__GEOLogFormatter_RequestResponse__formattedStringForRequestRespons
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)formattedStringForEnumType:(id)a3 number:(id)a4
+- (id)formattedStringForEnumType:(id)type number:(id)number
 {
-  v5 = a4;
+  numberCopy = number;
   v6 = 0;
   v7 = 1;
   while (1)
   {
     v8 = v7;
     v9 = (&formatters_114 + 16 * v6);
-    if (StringsCaseInsensitiveEqual(a3, *v9))
+    if (StringsCaseInsensitiveEqual(type, *v9))
     {
       break;
     }
@@ -544,23 +544,23 @@ uint64_t __80__GEOLogFormatter_RequestResponse__formattedStringForRequestRespons
     }
   }
 
-  v10 = v9[1](v5);
+  v10 = v9[1](numberCopy);
 LABEL_6:
 
   return v10;
 }
 
-- (id)formattedStringForEnumType:(id)a3 value:(id)a4
+- (id)formattedStringForEnumType:(id)type value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(GEOLogFormatter *)self formattedStringForEnumType:v6 number:v7];
+    v8 = [(GEOLogFormatter *)self formattedStringForEnumType:typeCopy number:valueCopy];
     if (!v8)
     {
-      v8 = -[GEOLogFormatter formattedStringForNumberType:unsignedLongLong:](self, "formattedStringForNumberType:unsignedLongLong:", v6, [v7 unsignedLongLongValue]);
+      v8 = -[GEOLogFormatter formattedStringForNumberType:unsignedLongLong:](self, "formattedStringForNumberType:unsignedLongLong:", typeCopy, [valueCopy unsignedLongLongValue]);
     }
   }
 

@@ -1,13 +1,13 @@
 @interface CompanionTestObject
 + (id)sharedObject;
 - (CompanionTestObject)init;
-- (void)clearAllSeenArticleIdentifiersWithReply:(id)a3;
-- (void)consumeSeenArticleIdentifiers:(id)a3 withReply:(id)a4;
-- (void)fetchHeadlineMetadataWithReply:(id)a3;
-- (void)markArticleIdentifiersAsSaved:(id)a3 articleIdentifiersAsNotSaved:(id)a4 withReply:(id)a5;
-- (void)setPreferredRefreshDates:(id)a3 withReply:(id)a4;
-- (void)setSavedArticleIdentifiers:(id)a3 withReply:(id)a4;
-- (void)updateAndSyncHeadlinesWithReply:(id)a3;
+- (void)clearAllSeenArticleIdentifiersWithReply:(id)reply;
+- (void)consumeSeenArticleIdentifiers:(id)identifiers withReply:(id)reply;
+- (void)fetchHeadlineMetadataWithReply:(id)reply;
+- (void)markArticleIdentifiersAsSaved:(id)saved articleIdentifiersAsNotSaved:(id)notSaved withReply:(id)reply;
+- (void)setPreferredRefreshDates:(id)dates withReply:(id)reply;
+- (void)setSavedArticleIdentifiers:(id)identifiers withReply:(id)reply;
+- (void)updateAndSyncHeadlinesWithReply:(id)reply;
 @end
 
 @implementation CompanionTestObject
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_100001F14;
   block[3] = &unk_1000103B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100016E90 != -1)
   {
     dispatch_once(&qword_100016E90, block);
@@ -45,9 +45,9 @@
   return v2;
 }
 
-- (void)updateAndSyncHeadlinesWithReply:(id)a3
+- (void)updateAndSyncHeadlinesWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = NNSetupCompanionSyncLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -58,103 +58,103 @@
   v5 = +[NNCompanionSyncService sharedCompanionSyncService];
   [v5 updateHeadlines];
 
-  if (v3)
+  if (replyCopy)
   {
-    v3[2](v3);
+    replyCopy[2](replyCopy);
   }
 }
 
-- (void)fetchHeadlineMetadataWithReply:(id)a3
+- (void)fetchHeadlineMetadataWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CompanionTestObject *)self serialQueue];
+  replyCopy = reply;
+  serialQueue = [(CompanionTestObject *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002120;
   block[3] = &unk_1000103E0;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)clearAllSeenArticleIdentifiersWithReply:(id)a3
+- (void)clearAllSeenArticleIdentifiersWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CompanionTestObject *)self serialQueue];
+  replyCopy = reply;
+  serialQueue = [(CompanionTestObject *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002320;
   block[3] = &unk_1000103E0;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)setSavedArticleIdentifiers:(id)a3 withReply:(id)a4
+- (void)setSavedArticleIdentifiers:(id)identifiers withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CompanionTestObject *)self serialQueue];
+  identifiersCopy = identifiers;
+  replyCopy = reply;
+  serialQueue = [(CompanionTestObject *)self serialQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000244C;
   v11[3] = &unk_100010408;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = identifiersCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = identifiersCopy;
+  dispatch_async(serialQueue, v11);
 }
 
-- (void)setPreferredRefreshDates:(id)a3 withReply:(id)a4
+- (void)setPreferredRefreshDates:(id)dates withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CompanionTestObject *)self serialQueue];
+  datesCopy = dates;
+  replyCopy = reply;
+  serialQueue = [(CompanionTestObject *)self serialQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000257C;
   v11[3] = &unk_100010408;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = datesCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = datesCopy;
+  dispatch_async(serialQueue, v11);
 }
 
-- (void)markArticleIdentifiersAsSaved:(id)a3 articleIdentifiersAsNotSaved:(id)a4 withReply:(id)a5
+- (void)markArticleIdentifiersAsSaved:(id)saved articleIdentifiersAsNotSaved:(id)notSaved withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CompanionTestObject *)self serialQueue];
+  savedCopy = saved;
+  notSavedCopy = notSaved;
+  replyCopy = reply;
+  serialQueue = [(CompanionTestObject *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002750;
   block[3] = &unk_100010430;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = savedCopy;
+  v17 = notSavedCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = notSavedCopy;
+  v14 = savedCopy;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)consumeSeenArticleIdentifiers:(id)a3 withReply:(id)a4
+- (void)consumeSeenArticleIdentifiers:(id)identifiers withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CompanionTestObject *)self serialQueue];
+  identifiersCopy = identifiers;
+  replyCopy = reply;
+  serialQueue = [(CompanionTestObject *)self serialQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100002AA0;
   v11[3] = &unk_100010408;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = identifiersCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = identifiersCopy;
+  dispatch_async(serialQueue, v11);
 }
 
 @end

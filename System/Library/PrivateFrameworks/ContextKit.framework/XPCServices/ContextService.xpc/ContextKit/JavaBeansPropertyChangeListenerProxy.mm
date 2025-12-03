@@ -1,33 +1,33 @@
 @interface JavaBeansPropertyChangeListenerProxy
-- (JavaBeansPropertyChangeListenerProxy)initWithNSString:(id)a3 withJavaBeansPropertyChangeListener:(id)a4;
+- (JavaBeansPropertyChangeListenerProxy)initWithNSString:(id)string withJavaBeansPropertyChangeListener:(id)listener;
 - (void)dealloc;
-- (void)propertyChangeWithJavaBeansPropertyChangeEvent:(id)a3;
+- (void)propertyChangeWithJavaBeansPropertyChangeEvent:(id)event;
 @end
 
 @implementation JavaBeansPropertyChangeListenerProxy
 
-- (JavaBeansPropertyChangeListenerProxy)initWithNSString:(id)a3 withJavaBeansPropertyChangeListener:(id)a4
+- (JavaBeansPropertyChangeListenerProxy)initWithNSString:(id)string withJavaBeansPropertyChangeListener:(id)listener
 {
-  JavaUtilEventListenerProxy_initWithJavaUtilEventListener_(self, a4);
-  JreStrongAssign(&self->propertyName_, a3);
+  JavaUtilEventListenerProxy_initWithJavaUtilEventListener_(self, listener);
+  JreStrongAssign(&self->propertyName_, string);
   return self;
 }
 
-- (void)propertyChangeWithJavaBeansPropertyChangeEvent:(id)a3
+- (void)propertyChangeWithJavaBeansPropertyChangeEvent:(id)event
 {
-  v4 = [(JavaUtilEventListenerProxy *)self getListener];
+  getListener = [(JavaUtilEventListenerProxy *)self getListener];
   v5 = JavaBeansPropertyChangeListener_class_();
-  if (!v4)
+  if (!getListener)
   {
     JreThrowNullPointerException();
   }
 
-  if (([v5 isInstance:v4] & 1) == 0)
+  if (([v5 isInstance:getListener] & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  [v4 propertyChangeWithJavaBeansPropertyChangeEvent:a3];
+  [getListener propertyChangeWithJavaBeansPropertyChangeEvent:event];
 }
 
 - (void)dealloc

@@ -1,7 +1,7 @@
 @interface HKInteractiveChartNumberFormatter
 - (HKInteractiveChartNumberFormatter)init;
-- (id)_formattedStringWithValue:(id)a3 formatter:(id)a4;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
+- (id)_formattedStringWithValue:(id)value formatter:(id)formatter;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
 @end
 
 @implementation HKInteractiveChartNumberFormatter
@@ -21,29 +21,29 @@
   return v3;
 }
 
-- (id)_formattedStringWithValue:(id)a3 formatter:(id)a4
+- (id)_formattedStringWithValue:(id)value formatter:(id)formatter
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v5 = [a4 stringFromNumber:a3];
+  v5 = [formatter stringFromNumber:value];
   v6 = objc_alloc(MEMORY[0x1E696AAB0]);
   v12[0] = *MEMORY[0x1E69DB648];
-  v7 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v13[0] = v7;
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  v13[0] = majorFont;
   v12[1] = *MEMORY[0x1E69DB650];
-  v8 = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
-  v13[1] = v8;
+  hk_chartLollipopValueColor = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
+  v13[1] = hk_chartLollipopValueColor;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v10 = [v6 initWithString:v5 attributes:v9];
 
   return v10;
 }
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  dataCopy = data;
+  v6 = dataCopy;
+  if (dataCopy && [dataCopy count])
   {
     v38 = 0u;
     v39 = 0u;
@@ -65,8 +65,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v13 = [*(*(&v36 + 1) + 8 * i) value];
-          [v13 doubleValue];
+          value = [*(*(&v36 + 1) + 8 * i) value];
+          [value doubleValue];
           v11 = v11 + v14;
         }
 
@@ -83,27 +83,27 @@
 
     v16 = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
     v17 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-    v18 = [v7 firstObject];
-    v19 = [v18 numberFormatter];
-    v20 = [(HKInteractiveChartNumberFormatter *)self _formattedStringWithValue:v17 formatter:v19];
+    firstObject = [v7 firstObject];
+    numberFormatter = [firstObject numberFormatter];
+    v20 = [(HKInteractiveChartNumberFormatter *)self _formattedStringWithValue:v17 formatter:numberFormatter];
 
-    v21 = [(HKInteractiveChartNumberFormatter *)self unitFormatString];
+    unitFormatString = [(HKInteractiveChartNumberFormatter *)self unitFormatString];
 
-    if (v21)
+    if (unitFormatString)
     {
       v22 = MEMORY[0x1E696AEC0];
       v23 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-      v24 = [(HKInteractiveChartNumberFormatter *)self unitFormatString];
-      v25 = [v23 localizedStringForKey:v24 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+      unitFormatString2 = [(HKInteractiveChartNumberFormatter *)self unitFormatString];
+      v25 = [v23 localizedStringForKey:unitFormatString2 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
       v26 = [v22 localizedStringWithFormat:v25, *&v11];
 
       v27 = objc_alloc(MEMORY[0x1E696AAB0]);
       v42[0] = *MEMORY[0x1E69DB648];
-      v28 = [(HKInteractiveChartDataFormatter *)self minorFont];
-      v43[0] = v28;
+      minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
+      v43[0] = minorFont;
       v42[1] = *MEMORY[0x1E69DB650];
-      v29 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
-      v43[1] = v29;
+      hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+      v43[1] = hk_chartLollipopLabelColor;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:2];
       v31 = [v27 initWithString:v26 attributes:v30];
 

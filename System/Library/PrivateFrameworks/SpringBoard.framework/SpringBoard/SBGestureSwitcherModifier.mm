@@ -1,36 +1,36 @@
 @interface SBGestureSwitcherModifier
-- (SBGestureSwitcherModifier)initWithGestureID:(id)a3;
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)handleEvent:(id)a3;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (SBGestureSwitcherModifier)initWithGestureID:(id)d;
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)handleEvent:(id)event;
+- (id)handleGestureEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 @end
 
 @implementation SBGestureSwitcherModifier
 
-- (SBGestureSwitcherModifier)initWithGestureID:(id)a3
+- (SBGestureSwitcherModifier)initWithGestureID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = SBGestureSwitcherModifier;
   v6 = [(SBSwitcherModifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_gestureID, a3);
+    objc_storeStrong(&v6->_gestureID, d);
     v7->_gesturePhase = 0;
   }
 
   return v7;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v6.receiver = self;
   v6.super_class = SBGestureSwitcherModifier;
-  v3 = [(SBGestureSwitcherModifier *)&v6 animationAttributesForLayoutElement:a3];
+  v3 = [(SBGestureSwitcherModifier *)&v6 animationAttributesForLayoutElement:element];
   v4 = [v3 mutableCopy];
 
   [v4 setUpdateMode:5];
@@ -38,17 +38,17 @@
   return v4;
 }
 
-- (double)visibleMarginForItemContainerAtIndex:(unint64_t)a3
+- (double)visibleMarginForItemContainerAtIndex:(unint64_t)index
 {
-  [(SBGestureSwitcherModifier *)self frameForIndex:a3];
+  [(SBGestureSwitcherModifier *)self frameForIndex:index];
 
   return CGRectGetWidth(*&v3);
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 isGestureEvent] && (objc_msgSend(v4, "gestureID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqual:", self->_gestureID), v5, (v6 & 1) == 0))
+  eventCopy = event;
+  if ([eventCopy isGestureEvent] && (objc_msgSend(eventCopy, "gestureID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqual:", self->_gestureID), v5, (v6 & 1) == 0))
   {
     lastGestureEvent = self->_lastGestureEvent;
     if (lastGestureEvent && self->_gesturePhase != 3)
@@ -74,28 +74,28 @@
   {
     v12.receiver = self;
     v12.super_class = SBGestureSwitcherModifier;
-    v7 = [(SBChainableModifier *)&v12 handleEvent:v4];
+    v7 = [(SBChainableModifier *)&v12 handleEvent:eventCopy];
   }
 
   return v7;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = SBGestureSwitcherModifier;
-  v7 = [(SBSwitcherModifier *)&v15 handleGestureEvent:v6];
-  v8 = [v6 gestureID];
-  v9 = [v8 isEqual:self->_gestureID];
+  v7 = [(SBSwitcherModifier *)&v15 handleGestureEvent:eventCopy];
+  gestureID = [eventCopy gestureID];
+  v9 = [gestureID isEqual:self->_gestureID];
 
   if (v9)
   {
-    v10 = [v6 phase];
-    v11 = v10;
-    if (v10 < self->_gesturePhase)
+    phase = [eventCopy phase];
+    v11 = phase;
+    if (phase < self->_gesturePhase)
     {
-      [(SBGestureSwitcherModifier *)v10 handleGestureEvent:a2, self];
+      [(SBGestureSwitcherModifier *)phase handleGestureEvent:a2, self];
     }
 
     self->_gesturePhase = v11;
@@ -107,32 +107,32 @@
       v7 = v13;
     }
 
-    objc_storeStrong(&self->_lastGestureEvent, a3);
+    objc_storeStrong(&self->_lastGestureEvent, event);
   }
 
   return v7;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  if (([v4 isGestureInitiated] & 1) == 0 && (objc_msgSend(v4, "isAppLaunchDuringWindowDragGestureTransition") & 1) == 0 && (objc_msgSend(v4, "isUnstashFromHomeTransition") & 1) == 0)
+  eventCopy = event;
+  if (([eventCopy isGestureInitiated] & 1) == 0 && (objc_msgSend(eventCopy, "isAppLaunchDuringWindowDragGestureTransition") & 1) == 0 && (objc_msgSend(eventCopy, "isUnstashFromHomeTransition") & 1) == 0)
   {
     [(SBChainableModifier *)self setState:1];
   }
 
   v7.receiver = self;
   v7.super_class = SBGestureSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v7 handleTransitionEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v7 handleTransitionEvent:eventCopy];
 
   return v5;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = SBGestureSwitcherModifier;
-  v4 = [(SBChainableModifier *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifier *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = SBStringFromGesturePhase(self->_gesturePhase);
   [v4 appendString:v5 withName:@"phase"];
 

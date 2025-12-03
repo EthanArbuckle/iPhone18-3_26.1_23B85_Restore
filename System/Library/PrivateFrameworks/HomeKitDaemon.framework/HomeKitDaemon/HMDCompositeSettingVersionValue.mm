@@ -1,5 +1,5 @@
 @interface HMDCompositeSettingVersionValue
-- (HMDCompositeSettingVersionValue)initWithVersion:(id)a3 type:(int64_t)a4;
+- (HMDCompositeSettingVersionValue)initWithVersion:(id)version type:(int64_t)type;
 - (id)attributeDescriptions;
 @end
 
@@ -9,8 +9,8 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDCompositeSettingVersionValue *)self version];
-  v5 = [v3 initWithName:@"version" value:v4];
+  version = [(HMDCompositeSettingVersionValue *)self version];
+  v5 = [v3 initWithName:@"version" value:version];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDCompositeSettingVersionValue *)self type];
@@ -24,20 +24,20 @@
   return v9;
 }
 
-- (HMDCompositeSettingVersionValue)initWithVersion:(id)a3 type:(int64_t)a4
+- (HMDCompositeSettingVersionValue)initWithVersion:(id)version type:(int64_t)type
 {
-  v7 = a3;
-  if (v7)
+  versionCopy = version;
+  if (versionCopy)
   {
-    v8 = v7;
+    v8 = versionCopy;
     v14.receiver = self;
     v14.super_class = HMDCompositeSettingVersionValue;
     v9 = [(HMDCompositeSettingValue *)&v14 init];
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_version, a3);
-      v10->_type = a4;
+      objc_storeStrong(&v9->_version, version);
+      v10->_type = type;
     }
 
     return v10;

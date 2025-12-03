@@ -1,5 +1,5 @@
 @interface CKConversationMutedChatListMigrator
-- (id)_dnd_deprecated_globalIdentifierForChat:(id)a3;
+- (id)_dnd_deprecated_globalIdentifierForChat:(id)chat;
 - (void)migrateMutedChatListInfoIfNeeded;
 - (void)performMutedChatListMigrationIfNecessary;
 @end
@@ -9,8 +9,8 @@
 - (void)migrateMutedChatListInfoIfNeeded
 {
   v3 = +[CKConversationList sharedConversationList];
-  v4 = [v3 conversations];
-  v5 = [v4 count];
+  conversations = [v3 conversations];
+  v5 = [conversations count];
 
   if (v5)
   {
@@ -42,25 +42,25 @@
     v44 = 0u;
     v45 = 0u;
     v5 = +[CKConversationList sharedConversationList];
-    v6 = [v5 conversations];
+    conversations = [v5 conversations];
 
-    v7 = [v6 countByEnumeratingWithState:&v44 objects:v51 count:16];
+    v7 = [conversations countByEnumeratingWithState:&v44 objects:v51 count:16];
     if (v7)
     {
       v8 = v7;
       v9 = *v45;
-      v39 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v8; ++i)
         {
           if (*v45 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(conversations);
           }
 
-          v11 = [*(*(&v44 + 1) + 8 * i) chat];
-          v12 = [v11 valueForChatProperty:@"CKChatUnmuteTime"];
+          chat = [*(*(&v44 + 1) + 8 * i) chat];
+          v12 = [chat valueForChatProperty:@"CKChatUnmuteTime"];
           v13 = v12;
           if (v12)
           {
@@ -73,11 +73,11 @@
               if (v16)
               {
                 v17 = v16;
-                v18 = [MEMORY[0x1E695DFB0] null];
-                [v11 setValue:v18 forChatProperty:@"CKChatUnmuteTime"];
+                null = [MEMORY[0x1E695DFB0] null];
+                [chat setValue:null forChatProperty:@"CKChatUnmuteTime"];
 
-                v19 = [MEMORY[0x1E69A8180] sharedList];
-                v20 = [(CKConversationMutedChatListMigrator *)self _dnd_deprecated_globalIdentifierForChat:v11];
+                mEMORY[0x1E69A8180] = [MEMORY[0x1E69A8180] sharedList];
+                v20 = [(CKConversationMutedChatListMigrator *)self _dnd_deprecated_globalIdentifierForChat:chat];
                 v21 = v20;
                 if (v20)
                 {
@@ -85,21 +85,21 @@
                   [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
                   v22 = v8;
                   v23 = v9;
-                  v25 = v24 = v6;
-                  [v19 muteChatWithMuteIdentifiers:v25 untilDate:v17 syncToPairedDevice:0];
+                  v25 = v24 = conversations;
+                  [mEMORY[0x1E69A8180] muteChatWithMuteIdentifiers:v25 untilDate:v17 syncToPairedDevice:0];
 
-                  v6 = v24;
+                  conversations = v24;
                   v9 = v23;
                   v8 = v22;
                 }
 
-                self = v39;
+                self = selfCopy;
               }
             }
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v44 objects:v51 count:16];
+        v8 = [conversations countByEnumeratingWithState:&v44 objects:v51 count:16];
       }
 
       while (v8);
@@ -115,9 +115,9 @@
     v40 = 0u;
     v41 = 0u;
     v26 = +[CKConversationList sharedConversationList];
-    v27 = [v26 conversations];
+    conversations2 = [v26 conversations];
 
-    v28 = [v27 countByEnumeratingWithState:&v40 objects:v49 count:16];
+    v28 = [conversations2 countByEnumeratingWithState:&v40 objects:v49 count:16];
     if (v28)
     {
       v29 = v28;
@@ -128,22 +128,22 @@
         {
           if (*v41 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(conversations2);
           }
 
-          v32 = [*(*(&v40 + 1) + 8 * j) chat];
-          v33 = [MEMORY[0x1E69A8180] sharedList];
-          v34 = [(CKConversationMutedChatListMigrator *)self _dnd_deprecated_globalIdentifierForChat:v32];
-          v35 = [v33 unmuteDateForMuteIdentifier:v34];
+          chat2 = [*(*(&v40 + 1) + 8 * j) chat];
+          mEMORY[0x1E69A8180]2 = [MEMORY[0x1E69A8180] sharedList];
+          v34 = [(CKConversationMutedChatListMigrator *)self _dnd_deprecated_globalIdentifierForChat:chat2];
+          v35 = [mEMORY[0x1E69A8180]2 unmuteDateForMuteIdentifier:v34];
 
           if (v35)
           {
-            v36 = [MEMORY[0x1E69A8180] sharedList];
-            [v36 muteChat:v32 untilDate:v35 syncToPairedDevice:0];
+            mEMORY[0x1E69A8180]3 = [MEMORY[0x1E69A8180] sharedList];
+            [mEMORY[0x1E69A8180]3 muteChat:chat2 untilDate:v35 syncToPairedDevice:0];
           }
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v40 objects:v49 count:16];
+        v29 = [conversations2 countByEnumeratingWithState:&v40 objects:v49 count:16];
       }
 
       while (v29);
@@ -151,22 +151,22 @@
 
     CFPreferencesSetAppValue(@"CKDNDMigrationKey", &unk_1F04E7AD0, @"com.apple.MobileSMS.CKDNDList");
     CFPreferencesAppSynchronize(@"com.apple.MobileSMS.CKDNDList");
-    v37 = [MEMORY[0x1E69A8180] sharedList];
-    [v37 syncToPairedDeviceIncludingVersion:1];
+    mEMORY[0x1E69A8180]4 = [MEMORY[0x1E69A8180] sharedList];
+    [mEMORY[0x1E69A8180]4 syncToPairedDeviceIncludingVersion:1];
   }
 }
 
-- (id)_dnd_deprecated_globalIdentifierForChat:(id)a3
+- (id)_dnd_deprecated_globalIdentifierForChat:(id)chat
 {
-  v3 = a3;
-  if ([v3 chatStyle] == 45)
+  chatCopy = chat;
+  if ([chatCopy chatStyle] == 45)
   {
-    [v3 chatIdentifier];
+    [chatCopy chatIdentifier];
   }
 
   else
   {
-    [v3 groupID];
+    [chatCopy groupID];
   }
   v4 = ;
 

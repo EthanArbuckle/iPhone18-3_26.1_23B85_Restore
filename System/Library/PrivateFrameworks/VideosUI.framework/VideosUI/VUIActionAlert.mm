@@ -1,34 +1,34 @@
 @interface VUIActionAlert
-- (VUIActionAlert)initWithContextData:(id)a3 appContext:(id)a4 controllerClass:(Class)a5;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (VUIActionAlert)initWithContextData:(id)data appContext:(id)context controllerClass:(Class)class;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIActionAlert
 
-- (VUIActionAlert)initWithContextData:(id)a3 appContext:(id)a4 controllerClass:(Class)a5
+- (VUIActionAlert)initWithContextData:(id)data appContext:(id)context controllerClass:(Class)class
 {
   v59 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v49 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v57.receiver = self;
   v57.super_class = VUIActionAlert;
   v9 = [(VUIActionAlert *)&v57 init];
   if (v9)
   {
-    v10 = [v8 vui_stringForKey:@"title"];
+    v10 = [dataCopy vui_stringForKey:@"title"];
     title = v9->_title;
     v9->_title = v10;
 
-    v12 = [v8 vui_stringForKey:@"description"];
+    v12 = [dataCopy vui_stringForKey:@"description"];
     descriptionString = v9->_descriptionString;
     v9->_descriptionString = v12;
 
-    v14 = [v8 vui_dictionaryForKey:@"metrics"];
+    v14 = [dataCopy vui_dictionaryForKey:@"metrics"];
     dialogMetrics = v9->_dialogMetrics;
     v9->_dialogMetrics = v14;
 
-    objc_storeStrong(&v9->_controllerClass, a5);
-    v16 = [v8 vui_stringForKey:@"dismissButtonTitle"];
+    objc_storeStrong(&v9->_controllerClass, class);
+    v16 = [dataCopy vui_stringForKey:@"dismissButtonTitle"];
     if ([v16 length])
     {
       v17 = v16;
@@ -44,15 +44,15 @@
       v9->_dismissButtonTitle = v19;
     }
 
-    v21 = [v8 vui_stringForKey:@"style"];
+    v21 = [dataCopy vui_stringForKey:@"style"];
     v22 = ![v21 length] || (objc_msgSend(v21, "isEqualToString:", @"actionSheet") & 1) == 0;
     v9->_style = v22;
-    v23 = [v8 vui_arrayForKey:@"actionItems"];
+    v23 = [dataCopy vui_arrayForKey:@"actionItems"];
     if ([v23 count])
     {
       v44 = v21;
       v45 = v16;
-      v46 = v8;
+      v46 = dataCopy;
       v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
       actionItems = v9->_actionItems;
       v9->_actionItems = v24;
@@ -85,7 +85,7 @@
             v32 = [v31 vui_dictionaryForKey:@"actionDataSource"];
             v33 = [v32 vui_dictionaryForKey:@"contextData"];
             v34 = [v33 vui_dictionaryForKey:@"metrics"];
-            v35 = [VUIAction actionWithDictionary:v32 appContext:v49];
+            v35 = [VUIAction actionWithDictionary:v32 appContext:contextCopy];
             if (v35)
             {
               v51 = v31;
@@ -113,15 +113,15 @@
       }
 
       v16 = v45;
-      v8 = v46;
+      dataCopy = v46;
       v23 = v43;
       v21 = v44;
     }
 
-    v39 = [v8 vui_dictionaryForKey:{@"cancelAction", v43}];
+    v39 = [dataCopy vui_dictionaryForKey:{@"cancelAction", v43}];
     if (v39)
     {
-      v40 = [VUIAction actionWithDictionary:v39 appContext:v49];
+      v40 = [VUIAction actionWithDictionary:v39 appContext:contextCopy];
       cancelAction = v9->_cancelAction;
       v9->_cancelAction = v40;
     }
@@ -130,14 +130,14 @@
   return v9;
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
   v50 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v31 = a4;
+  responderCopy = responder;
+  handlerCopy = handler;
   v33 = [(objc_class *)self->_controllerClass vui_alertControllerWithTitle:self->_title message:self->_descriptionString preferredStyle:self->_style];
-  v6 = [(VUIActionAlert *)self dialogMetrics];
-  v29 = self;
+  dialogMetrics = [(VUIActionAlert *)self dialogMetrics];
+  selfCopy = self;
   [(VUIActionAlert *)self actionItems];
   v45 = 0u;
   v46 = 0u;
@@ -158,18 +158,18 @@
         }
 
         v11 = *(*(&v45 + 1) + 8 * i);
-        v12 = [v11 title];
-        v13 = [v11 titleImage];
-        v14 = [v11 metrics];
+        title = [v11 title];
+        titleImage = [v11 titleImage];
+        metrics = [v11 metrics];
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __63__VUIActionAlert_performWithTargetResponder_completionHandler___block_invoke;
         v41[3] = &unk_1E8732E80;
         v41[4] = v11;
-        v42 = v6;
-        v43 = v32;
-        v44 = v31;
-        v15 = [VUIAlertAction vui_actionWithTitle:v12 titleImage:v13 style:0 metrics:v14 handler:v41];
+        v42 = dialogMetrics;
+        v43 = responderCopy;
+        v44 = handlerCopy;
+        v15 = [VUIAlertAction vui_actionWithTitle:title titleImage:titleImage style:0 metrics:metrics handler:v41];
 
         [v33 vui_addAction:v15];
       }
@@ -180,24 +180,24 @@
     while (v8);
   }
 
-  v16 = [(VUIActionAlert *)v29 cancelAction];
-  v17 = [(VUIActionAlert *)v29 dismissButtonTitle];
-  dismissButtonTitle = v29->_dismissButtonTitle;
+  cancelAction = [(VUIActionAlert *)selfCopy cancelAction];
+  dismissButtonTitle = [(VUIActionAlert *)selfCopy dismissButtonTitle];
+  dismissButtonTitle = selfCopy->_dismissButtonTitle;
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __63__VUIActionAlert_performWithTargetResponder_completionHandler___block_invoke_2;
   v34[3] = &unk_1E8732EA8;
   v19 = obj;
   v35 = v19;
-  v20 = v17;
+  v20 = dismissButtonTitle;
   v36 = v20;
-  v21 = v6;
+  v21 = dialogMetrics;
   v37 = v21;
-  v22 = v16;
+  v22 = cancelAction;
   v38 = v22;
-  v23 = v32;
+  v23 = responderCopy;
   v39 = v23;
-  v24 = v31;
+  v24 = handlerCopy;
   v40 = v24;
   v25 = [VUIAlertAction vui_actionWithTitle:dismissButtonTitle titleImage:0 style:1 handler:v34];
   [v33 vui_addAction:v25 isPreferred:0];
@@ -211,9 +211,9 @@
 
   if (v24)
   {
-    v28 = [(VUIActionAlert *)v29 cancelAction];
+    cancelAction2 = [(VUIActionAlert *)selfCopy cancelAction];
 
-    if (!v28)
+    if (!cancelAction2)
     {
       (*(v24 + 2))(v24, 1);
     }

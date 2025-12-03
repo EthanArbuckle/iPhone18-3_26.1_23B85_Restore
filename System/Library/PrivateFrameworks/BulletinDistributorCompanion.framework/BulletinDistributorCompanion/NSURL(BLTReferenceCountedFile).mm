@@ -6,22 +6,22 @@
 
 - (id)blt_metadataURL
 {
-  v2 = [a1 pathExtension];
-  v3 = [objc_opt_class() blt_metadataExtension];
-  v4 = [v2 isEqualToString:v3];
+  pathExtension = [self pathExtension];
+  blt_metadataExtension = [objc_opt_class() blt_metadataExtension];
+  v4 = [pathExtension isEqualToString:blt_metadataExtension];
 
   if (v4)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [objc_opt_class() blt_metadataExtension];
-    v5 = [a1 URLByAppendingPathExtension:v6];
+    blt_metadataExtension2 = [objc_opt_class() blt_metadataExtension];
+    selfCopy = [self URLByAppendingPathExtension:blt_metadataExtension2];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface NSData
-+ (id)sha1StringForNSData:(id)a3;
++ (id)sha1StringForNSData:(id)data;
 - (NSString)sha1String;
 @end
 
 @implementation NSData
 
-+ (id)sha1StringForNSData:(id)a3
++ (id)sha1StringForNSData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   memset(&c, 0, sizeof(c));
   CC_SHA1_Init(&c);
   v9[0] = 0;
@@ -19,7 +19,7 @@
   v8[2] = sub_92F8;
   v8[3] = &unk_2CA30;
   v8[4] = v9;
-  [v3 enumerateByteRangesUsingBlock:v8];
+  [dataCopy enumerateByteRangesUsingBlock:v8];
   CC_SHA1_Final(md, &c);
   v4 = [NSMutableString stringWithCapacity:40];
   for (i = 0; i != 20; ++i)

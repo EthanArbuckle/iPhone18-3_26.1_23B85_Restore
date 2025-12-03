@@ -1,54 +1,54 @@
 @interface CACSpokenCommand
-+ (id)attributedStringFromRecognizedCommandParameters:(id)a3 variantOverrides:(id)a4;
-+ (id)languageModelFromCommandDictionary:(id)a3 tokenResolution:(id)a4 containsBuiltInIdentifier:(BOOL *)a5 error:(id *)a6;
-+ (id)stringFromContextEvaluationDictionary:(id)a3 isCustom:(BOOL)a4;
-+ (void)displayRecognizedMessageUsingAttributedString:(id)a3;
-- (BOOL)_endDragForLabeledElement:(id)a3;
-- (BOOL)_handleDisambiguationIfNeededWithBlock:(id)a3;
++ (id)attributedStringFromRecognizedCommandParameters:(id)parameters variantOverrides:(id)overrides;
++ (id)languageModelFromCommandDictionary:(id)dictionary tokenResolution:(id)resolution containsBuiltInIdentifier:(BOOL *)identifier error:(id *)error;
++ (id)stringFromContextEvaluationDictionary:(id)dictionary isCustom:(BOOL)custom;
++ (void)displayRecognizedMessageUsingAttributedString:(id)string;
+- (BOOL)_endDragForLabeledElement:(id)element;
+- (BOOL)_handleDisambiguationIfNeededWithBlock:(id)block;
 - (BOOL)_isLeftToRightWritingSystem;
-- (BOOL)_performActionOnTextSegment:(id)a3;
-- (BOOL)_performActionOnTextSegmentRange:(id)a3;
-- (BOOL)_performScrollingAction:(int)a3;
-- (BOOL)_performUncheckedScrollAction:(int)a3 forScrollAreaSupportingAction:(int)a4;
-- (BOOL)_startDragForLabeledElement:(id)a3;
-- (BOOL)_updateGridWithNumberOfColumnsAndRows:(BOOL)a3;
+- (BOOL)_performActionOnTextSegment:(id)segment;
+- (BOOL)_performActionOnTextSegmentRange:(id)range;
+- (BOOL)_performScrollingAction:(int)action;
+- (BOOL)_performUncheckedScrollAction:(int)action forScrollAreaSupportingAction:(int)supportingAction;
+- (BOOL)_startDragForLabeledElement:(id)element;
+- (BOOL)_updateGridWithNumberOfColumnsAndRows:(BOOL)rows;
 - (BOOL)isListening;
 - (BOOL)isRestrictedForAAC;
 - (BOOL)scrollToLandmark;
 - (CACCommandRecognizer)commandRecognizer;
 - (CACLanguageModel)languageModel;
-- (CACSpokenCommand)initWithProperties:(id)a3;
-- (CACSpokenCommand)initWithSpokenCommand:(id)a3;
+- (CACSpokenCommand)initWithProperties:(id)properties;
+- (CACSpokenCommand)initWithSpokenCommand:(id)command;
 - (SEL)action;
-- (_NSRange)_rangeFromPreviousTextInsertionForAXElement:(id)a3;
-- (id)_axActionOfType:(int64_t)a3 forElement:(id)a4;
-- (id)_dragActionForLabeledElement:(id)a3;
-- (id)_dropActionForLabeledElement:(id)a3;
+- (_NSRange)_rangeFromPreviousTextInsertionForAXElement:(id)element;
+- (id)_axActionOfType:(int64_t)type forElement:(id)element;
+- (id)_dragActionForLabeledElement:(id)element;
+- (id)_dropActionForLabeledElement:(id)element;
 - (id)_elementActionManager;
 - (id)_markerRangeForTextSegment;
 - (id)_markerRangeForTextSegmentRange;
-- (id)_nBestListFromPreviousTextInsertionForAXElement:(id)a3;
-- (id)_scrollAncestorsFromTopLevelElementsForAction:(int)a3 categorizedElements:(id *)a4;
-- (id)_strippedPhraseStringsFromStrings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_nBestListFromPreviousTextInsertionForAXElement:(id)element;
+- (id)_scrollAncestorsFromTopLevelElementsForAction:(int)action categorizedElements:(id *)elements;
+- (id)_strippedPhraseStringsFromStrings:(id)strings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)_textSegmentCardinalNumber;
 - (int64_t)_textSegmentCardinalNumberEnd;
 - (int64_t)_textSegmentCardinalNumberStart;
 - (unsigned)_getModifierFlag;
-- (void)_activateKeyboardReturnKey:(id)a3;
-- (void)_didShowOverlayWithHintIdentifier:(id)a3 hint:(id)a4;
+- (void)_activateKeyboardReturnKey:(id)key;
+- (void)_didShowOverlayWithHintIdentifier:(id)identifier hint:(id)hint;
 - (void)_displayNumberedGridAtCurrentNumberOfColumnsAndRows;
-- (void)_handleGestureWithBlock:(id)a3;
-- (void)_handleGestureWithBlock:(id)a3 repeating:(int64_t)a4 interval:(double)a5;
-- (void)_handleTwoPointGestureWithBlock:(id)a3;
-- (void)_insertProgrammingSymbol:(id)a3 combineStrings:(id)a4;
-- (void)_postKeyboardEventsForModifierFlags:(unsigned int)a3 isKeyDown:(BOOL)a4;
-- (void)_scrollWithCount:(unint64_t)a3 forAction:(int)a4;
-- (void)_selectTextSegment:(id)a3 insertionString:(id)a4 commandIdentifier:(id)a5;
-- (void)_selectTextSegmentRange:(id)a3 insertionString:(id)a4 commandIdentifier:(id)a5;
-- (void)_smartInsertComment:(id)a3;
-- (void)_updateGridWithNumberOfRows:(BOOL)a3;
+- (void)_handleGestureWithBlock:(id)block;
+- (void)_handleGestureWithBlock:(id)block repeating:(int64_t)repeating interval:(double)interval;
+- (void)_handleTwoPointGestureWithBlock:(id)block;
+- (void)_insertProgrammingSymbol:(id)symbol combineStrings:(id)strings;
+- (void)_postKeyboardEventsForModifierFlags:(unsigned int)flags isKeyDown:(BOOL)down;
+- (void)_scrollWithCount:(unint64_t)count forAction:(int)action;
+- (void)_selectTextSegment:(id)segment insertionString:(id)string commandIdentifier:(id)identifier;
+- (void)_selectTextSegmentRange:(id)range insertionString:(id)string commandIdentifier:(id)identifier;
+- (void)_smartInsertComment:(id)comment;
+- (void)_updateGridWithNumberOfRows:(BOOL)rows;
 - (void)activateAppLibrary;
 - (void)activateAppSwitcher;
 - (void)activateApplePay;
@@ -65,51 +65,51 @@
 - (void)activateSysdiagnose;
 - (void)activateTripleClick;
 - (void)activateTypeToSiri;
-- (void)addSelectionToVocabulary:(id)a3;
+- (void)addSelectionToVocabulary:(id)vocabulary;
 - (void)alwaysShowOverlayGrid;
 - (void)alwaysShowOverlayGridWithNumberOfColumns;
 - (void)alwaysShowOverlayGridWithNumberOfRows;
 - (void)alwaysShowOverlayNames;
 - (void)alwaysShowOverlayNumbers;
-- (void)applyFormat:(id)a3;
+- (void)applyFormat:(id)format;
 - (void)armApplePay;
 - (void)cancelGesture;
-- (void)changeTextSegment:(id)a3;
-- (void)changeTextSegmentRange:(id)a3;
+- (void)changeTextSegment:(id)segment;
+- (void)changeTextSegmentRange:(id)range;
 - (void)chooseAllOverlayItems;
 - (void)chooseOverlayItem;
 - (void)closeApplication;
 - (void)closeFrontApplication;
-- (void)copyTextSegment:(id)a3;
-- (void)copyTextSegmentRange:(id)a3;
-- (void)correctSelection:(id)a3;
-- (void)correctTextSegment:(id)a3;
-- (void)correctTextSegmentRange:(id)a3;
+- (void)copyTextSegment:(id)segment;
+- (void)copyTextSegmentRange:(id)range;
+- (void)correctSelection:(id)selection;
+- (void)correctTextSegment:(id)segment;
+- (void)correctTextSegmentRange:(id)range;
 - (void)createCustomCommand;
-- (void)cutTextSegment:(id)a3;
-- (void)cutTextSegmentRange:(id)a3;
+- (void)cutTextSegment:(id)segment;
+- (void)cutTextSegmentRange:(id)range;
 - (void)decreaseVolume;
 - (void)decreaseZoomLevel;
 - (void)decrementItem;
-- (void)delete:(id)a3;
-- (void)deleteAll:(id)a3;
-- (void)deleteCurrentCharacter:(id)a3;
-- (void)deleteCurrentLine:(id)a3;
-- (void)deleteCurrentParagraph:(id)a3;
-- (void)deleteCurrentSentence:(id)a3;
-- (void)deleteCurrentWord:(id)a3;
-- (void)deleteNextCharacter:(id)a3;
-- (void)deleteNextLine:(id)a3;
-- (void)deleteNextParagraph:(id)a3;
-- (void)deleteNextSentence:(id)a3;
-- (void)deleteNextWord:(id)a3;
-- (void)deletePreviousCharacter:(id)a3;
-- (void)deletePreviousLine:(id)a3;
-- (void)deletePreviousParagraph:(id)a3;
-- (void)deletePreviousSentence:(id)a3;
-- (void)deletePreviousWord:(id)a3;
-- (void)deleteTextSegment:(id)a3;
-- (void)deleteTextSegmentRange:(id)a3;
+- (void)delete:(id)delete;
+- (void)deleteAll:(id)all;
+- (void)deleteCurrentCharacter:(id)character;
+- (void)deleteCurrentLine:(id)line;
+- (void)deleteCurrentParagraph:(id)paragraph;
+- (void)deleteCurrentSentence:(id)sentence;
+- (void)deleteCurrentWord:(id)word;
+- (void)deleteNextCharacter:(id)character;
+- (void)deleteNextLine:(id)line;
+- (void)deleteNextParagraph:(id)paragraph;
+- (void)deleteNextSentence:(id)sentence;
+- (void)deleteNextWord:(id)word;
+- (void)deletePreviousCharacter:(id)character;
+- (void)deletePreviousLine:(id)line;
+- (void)deletePreviousParagraph:(id)paragraph;
+- (void)deletePreviousSentence:(id)sentence;
+- (void)deletePreviousWord:(id)word;
+- (void)deleteTextSegment:(id)segment;
+- (void)deleteTextSegmentRange:(id)range;
 - (void)disableAssistiveTouch;
 - (void)disableAttentionAwareness;
 - (void)disableClassicInvertColors;
@@ -142,34 +142,34 @@
 - (void)enableWatchRemoteControl;
 - (void)enableZoom;
 - (void)endDrag;
-- (void)extendSelectionBackwardCharactersUsingCardinalNumber:(id)a3;
-- (void)extendSelectionBackwardLinesUsingCardinalNumber:(id)a3;
-- (void)extendSelectionBackwardParagraphsUsingCardinalNumber:(id)a3;
-- (void)extendSelectionBackwardSentencesUsingCardinalNumber:(id)a3;
-- (void)extendSelectionBackwardWordsUsingCardinalNumber:(id)a3;
-- (void)extendSelectionForwardCharactersUsingCardinalNumber:(id)a3;
-- (void)extendSelectionForwardLinesUsingCardinalNumber:(id)a3;
-- (void)extendSelectionForwardParagraphsUsingCardinalNumber:(id)a3;
-- (void)extendSelectionForwardSentencesUsingCardinalNumber:(id)a3;
-- (void)extendSelectionForwardWordsUsingCardinalNumber:(id)a3;
-- (void)extendSelectionToBeginning:(id)a3;
-- (void)extendSelectionToEnd:(id)a3;
-- (void)extendSelectionToTextSegment:(id)a3;
+- (void)extendSelectionBackwardCharactersUsingCardinalNumber:(id)number;
+- (void)extendSelectionBackwardLinesUsingCardinalNumber:(id)number;
+- (void)extendSelectionBackwardParagraphsUsingCardinalNumber:(id)number;
+- (void)extendSelectionBackwardSentencesUsingCardinalNumber:(id)number;
+- (void)extendSelectionBackwardWordsUsingCardinalNumber:(id)number;
+- (void)extendSelectionForwardCharactersUsingCardinalNumber:(id)number;
+- (void)extendSelectionForwardLinesUsingCardinalNumber:(id)number;
+- (void)extendSelectionForwardParagraphsUsingCardinalNumber:(id)number;
+- (void)extendSelectionForwardSentencesUsingCardinalNumber:(id)number;
+- (void)extendSelectionForwardWordsUsingCardinalNumber:(id)number;
+- (void)extendSelectionToBeginning:(id)beginning;
+- (void)extendSelectionToEnd:(id)end;
+- (void)extendSelectionToTextSegment:(id)segment;
 - (void)goBack;
-- (void)goToEndOfDocument:(id)a3;
-- (void)goToEndOfLine:(id)a3;
-- (void)goToEndOfParagraph:(id)a3;
-- (void)goToEndOfSelection:(id)a3;
-- (void)goToEndOfSentence:(id)a3;
-- (void)goToEndOfWord:(id)a3;
-- (void)goToStartOfDocument:(id)a3;
-- (void)goToStartOfLine:(id)a3;
-- (void)goToStartOfParagraph:(id)a3;
-- (void)goToStartOfSelection:(id)a3;
-- (void)goToStartOfSentence:(id)a3;
-- (void)goToStartOfWord:(id)a3;
-- (void)handleLabeledElementFromNameOrNumberWithBlock:(id)a3;
-- (void)handleLabeledElementsFromTwoNumbersWithBlock:(id)a3;
+- (void)goToEndOfDocument:(id)document;
+- (void)goToEndOfLine:(id)line;
+- (void)goToEndOfParagraph:(id)paragraph;
+- (void)goToEndOfSelection:(id)selection;
+- (void)goToEndOfSentence:(id)sentence;
+- (void)goToEndOfWord:(id)word;
+- (void)goToStartOfDocument:(id)document;
+- (void)goToStartOfLine:(id)line;
+- (void)goToStartOfParagraph:(id)paragraph;
+- (void)goToStartOfSelection:(id)selection;
+- (void)goToStartOfSentence:(id)sentence;
+- (void)goToStartOfWord:(id)word;
+- (void)handleLabeledElementFromNameOrNumberWithBlock:(id)block;
+- (void)handleLabeledElementsFromTwoNumbersWithBlock:(id)block;
 - (void)handleSleepListening;
 - (void)handleWakeListening;
 - (void)hangUp;
@@ -184,38 +184,38 @@
 - (void)increaseVolume;
 - (void)increaseZoomLevel;
 - (void)incrementItem;
-- (void)insertDate:(id)a3;
-- (void)insertEmoji:(id)a3;
-- (void)insertLineAbove:(id)a3;
-- (void)insertLineBelow:(id)a3;
-- (void)insertPhraseAfterTextSegment:(id)a3;
-- (void)insertPhraseBeforeTextSegment:(id)a3;
-- (void)insertSingleLineComment:(id)a3;
+- (void)insertDate:(id)date;
+- (void)insertEmoji:(id)emoji;
+- (void)insertLineAbove:(id)above;
+- (void)insertLineBelow:(id)below;
+- (void)insertPhraseAfterTextSegment:(id)segment;
+- (void)insertPhraseBeforeTextSegment:(id)segment;
+- (void)insertSingleLineComment:(id)comment;
 - (void)lockScreen;
 - (void)maximizeZoomLevel;
 - (void)minimizeZoomLevel;
-- (void)moveBackwardCharactersUsingCardinalNumber:(id)a3;
-- (void)moveBackwardLinesUsingCardinalNumber:(id)a3;
-- (void)moveBackwardParagraphsUsingCardinalNumber:(id)a3;
-- (void)moveBackwardSentencesUsingCardinalNumber:(id)a3;
-- (void)moveBackwardWordsUsingCardinalNumber:(id)a3;
-- (void)moveDown:(id)a3;
-- (void)moveForwardCharactersUsingCardinalNumber:(id)a3;
-- (void)moveForwardLinesUsingCardinalNumber:(id)a3;
-- (void)moveForwardParagraphsUsingCardinalNumber:(id)a3;
-- (void)moveForwardSentencesUsingCardinalNumber:(id)a3;
-- (void)moveForwardWordsUsingCardinalNumber:(id)a3;
-- (void)moveLeft:(id)a3;
-- (void)moveLeftCharactersUsingCardinalNumber:(id)a3;
-- (void)moveLeftSentencesUsingCardinalNumber:(id)a3;
-- (void)moveLeftWordsUsingCardinalNumber:(id)a3;
-- (void)moveRight:(id)a3;
-- (void)moveRightCharactersUsingCardinalNumber:(id)a3;
-- (void)moveRightSentencesUsingCardinalNumber:(id)a3;
-- (void)moveRightWordsUsingCardinalNumber:(id)a3;
-- (void)moveToEndOfTextSegment:(id)a3;
-- (void)moveToStartOfTextSegment:(id)a3;
-- (void)moveUp:(id)a3;
+- (void)moveBackwardCharactersUsingCardinalNumber:(id)number;
+- (void)moveBackwardLinesUsingCardinalNumber:(id)number;
+- (void)moveBackwardParagraphsUsingCardinalNumber:(id)number;
+- (void)moveBackwardSentencesUsingCardinalNumber:(id)number;
+- (void)moveBackwardWordsUsingCardinalNumber:(id)number;
+- (void)moveDown:(id)down;
+- (void)moveForwardCharactersUsingCardinalNumber:(id)number;
+- (void)moveForwardLinesUsingCardinalNumber:(id)number;
+- (void)moveForwardParagraphsUsingCardinalNumber:(id)number;
+- (void)moveForwardSentencesUsingCardinalNumber:(id)number;
+- (void)moveForwardWordsUsingCardinalNumber:(id)number;
+- (void)moveLeft:(id)left;
+- (void)moveLeftCharactersUsingCardinalNumber:(id)number;
+- (void)moveLeftSentencesUsingCardinalNumber:(id)number;
+- (void)moveLeftWordsUsingCardinalNumber:(id)number;
+- (void)moveRight:(id)right;
+- (void)moveRightCharactersUsingCardinalNumber:(id)number;
+- (void)moveRightSentencesUsingCardinalNumber:(id)number;
+- (void)moveRightWordsUsingCardinalNumber:(id)number;
+- (void)moveToEndOfTextSegment:(id)segment;
+- (void)moveToStartOfTextSegment:(id)segment;
+- (void)moveUp:(id)up;
 - (void)openApplication;
 - (void)panDown;
 - (void)panLeft;
@@ -225,11 +225,11 @@
 - (void)panZoomLeft;
 - (void)panZoomRight;
 - (void)panZoomUp;
-- (void)pasteboardCopy:(id)a3;
-- (void)pasteboardCut:(id)a3;
-- (void)pasteboardPaste:(id)a3;
+- (void)pasteboardCopy:(id)copy;
+- (void)pasteboardCut:(id)cut;
+- (void)pasteboardPaste:(id)paste;
 - (void)performAction;
-- (void)postKeyboardEventWithKeyCode:(unsigned __int16)a3 modifierFlags:(unsigned int)a4 isKeyDown:(BOOL)a5;
+- (void)postKeyboardEventWithKeyCode:(unsigned __int16)code modifierFlags:(unsigned int)flags isKeyDown:(BOOL)down;
 - (void)pressKeyboardKey;
 - (void)pressOverlayItem;
 - (void)reboot;
@@ -244,33 +244,33 @@
 - (void)scrollToTop;
 - (void)searchSpotlight;
 - (void)searchWeb;
-- (void)selectAll:(id)a3;
-- (void)selectCurrentCharacter:(id)a3;
-- (void)selectCurrentLine:(id)a3;
-- (void)selectCurrentParagraph:(id)a3;
-- (void)selectCurrentSentence:(id)a3;
-- (void)selectCurrentWord:(id)a3;
-- (void)selectNext:(id)a3;
-- (void)selectNextCharacter:(id)a3;
-- (void)selectNextLine:(id)a3;
-- (void)selectNextParagraph:(id)a3;
-- (void)selectNextSentence:(id)a3;
-- (void)selectNextWord:(id)a3;
-- (void)selectPhrase:(id)a3;
-- (void)selectPhraseThroughPhrase:(id)a3;
-- (void)selectPrevious:(id)a3;
-- (void)selectPreviousCharacter:(id)a3;
-- (void)selectPreviousLine:(id)a3;
-- (void)selectPreviousParagraph:(id)a3;
-- (void)selectPreviousSentence:(id)a3;
-- (void)selectPreviousTextInsertion:(id)a3;
-- (void)selectPreviousWord:(id)a3;
-- (void)selectTextSegment:(id)a3 postAction:(id)a4;
-- (void)selectTextSegmentRange:(id)a3;
-- (void)selectTextSegmentRange:(id)a3 postAction:(id)a4;
-- (void)setAction:(SEL)a3;
-- (void)setCompletionBlock:(id)a3;
-- (void)setExecuting:(BOOL)a3;
+- (void)selectAll:(id)all;
+- (void)selectCurrentCharacter:(id)character;
+- (void)selectCurrentLine:(id)line;
+- (void)selectCurrentParagraph:(id)paragraph;
+- (void)selectCurrentSentence:(id)sentence;
+- (void)selectCurrentWord:(id)word;
+- (void)selectNext:(id)next;
+- (void)selectNextCharacter:(id)character;
+- (void)selectNextLine:(id)line;
+- (void)selectNextParagraph:(id)paragraph;
+- (void)selectNextSentence:(id)sentence;
+- (void)selectNextWord:(id)word;
+- (void)selectPhrase:(id)phrase;
+- (void)selectPhraseThroughPhrase:(id)phrase;
+- (void)selectPrevious:(id)previous;
+- (void)selectPreviousCharacter:(id)character;
+- (void)selectPreviousLine:(id)line;
+- (void)selectPreviousParagraph:(id)paragraph;
+- (void)selectPreviousSentence:(id)sentence;
+- (void)selectPreviousTextInsertion:(id)insertion;
+- (void)selectPreviousWord:(id)word;
+- (void)selectTextSegment:(id)segment postAction:(id)action;
+- (void)selectTextSegmentRange:(id)range;
+- (void)selectTextSegmentRange:(id)range postAction:(id)action;
+- (void)setAction:(SEL)action;
+- (void)setCompletionBlock:(id)block;
+- (void)setExecuting:(BOOL)executing;
 - (void)shake;
 - (void)showActiveCommands;
 - (void)showCommands;
@@ -293,7 +293,7 @@
 - (void)startSpellingMode;
 - (void)stopRecordingGesture;
 - (void)stopRecordingUserActions;
-- (void)surroundSelectionWithPunctuation:(id)a3;
+- (void)surroundSelectionWithPunctuation:(id)punctuation;
 - (void)swipeDown;
 - (void)swipeLeft;
 - (void)swipeRight;
@@ -317,7 +317,7 @@
 - (void)twoFingerSwipeLeft;
 - (void)twoFingerSwipeRight;
 - (void)twoFingerSwipeUp;
-- (void)unselect:(id)a3;
+- (void)unselect:(id)unselect;
 - (void)voActivate;
 - (void)voMagicTap;
 - (void)voReadAll;
@@ -362,41 +362,41 @@ void __67__CACSpokenCommand_CACSpokenCommandGestures___elementActionManager__blo
   _elementActionManager_sElementActionManager = v1;
 }
 
-- (void)_handleGestureWithBlock:(id)a3 repeating:(int64_t)a4 interval:(double)a5
+- (void)_handleGestureWithBlock:(id)block repeating:(int64_t)repeating interval:(double)interval
 {
-  v8 = a3;
-  if (a4 >= 1)
+  blockCopy = block;
+  if (repeating >= 1)
   {
     v9 = 0;
     do
     {
-      v10 = dispatch_time(0, (v9 * a5 * 1000000000.0));
+      v10 = dispatch_time(0, (v9 * interval * 1000000000.0));
       v11 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-      v12 = [v11 commandExecutionDispatchQueue];
+      commandExecutionDispatchQueue = [v11 commandExecutionDispatchQueue];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __89__CACSpokenCommand_CACSpokenCommandGestures___handleGestureWithBlock_repeating_interval___block_invoke;
       v13[3] = &unk_279CEB3E0;
       v13[4] = self;
-      v14 = v8;
-      dispatch_after(v10, v12, v13);
+      v14 = blockCopy;
+      dispatch_after(v10, commandExecutionDispatchQueue, v13);
 
       ++v9;
     }
 
-    while (a4 != v9);
+    while (repeating != v9);
   }
 }
 
-- (void)_handleGestureWithBlock:(id)a3
+- (void)_handleGestureWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__CACSpokenCommand_CACSpokenCommandGestures___handleGestureWithBlock___block_invoke;
   v6[3] = &unk_279CEB408;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(CACSpokenCommand *)self handleLabeledElementFromNameOrNumberWithBlock:v6];
 }
 
@@ -444,15 +444,15 @@ uint64_t __70__CACSpokenCommand_CACSpokenCommandGestures___handleGestureWithBloc
   return v13(v11, v12, v14, v15);
 }
 
-- (void)_handleTwoPointGestureWithBlock:(id)a3
+- (void)_handleTwoPointGestureWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __78__CACSpokenCommand_CACSpokenCommandGestures___handleTwoPointGestureWithBlock___block_invoke;
   v6[3] = &unk_279CEB458;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(CACSpokenCommand *)self handleLabeledElementsFromTwoNumbersWithBlock:v6];
 }
 
@@ -552,21 +552,21 @@ void __56__CACSpokenCommand_CACSpokenCommandGestures__rotateLeft__block_invoke(d
 
 - (void)swipeUp
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_296 repeating:v5 interval:0.5];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_296 repeating:intValue interval:0.5];
 }
 
 void __53__CACSpokenCommand_CACSpokenCommandGestures__swipeUp__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -577,21 +577,21 @@ void __53__CACSpokenCommand_CACSpokenCommandGestures__swipeUp__block_invoke(doub
 
 - (void)swipeDown
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_298 repeating:v5 interval:0.5];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_298 repeating:intValue interval:0.5];
 }
 
 void __55__CACSpokenCommand_CACSpokenCommandGestures__swipeDown__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -602,21 +602,21 @@ void __55__CACSpokenCommand_CACSpokenCommandGestures__swipeDown__block_invoke(do
 
 - (void)swipeLeft
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_300 repeating:v5 interval:0.5];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_300 repeating:intValue interval:0.5];
 }
 
 void __55__CACSpokenCommand_CACSpokenCommandGestures__swipeLeft__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -627,21 +627,21 @@ void __55__CACSpokenCommand_CACSpokenCommandGestures__swipeLeft__block_invoke(do
 
 - (void)swipeRight
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_302 repeating:v5 interval:0.5];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_302 repeating:intValue interval:0.5];
 }
 
 void __56__CACSpokenCommand_CACSpokenCommandGestures__swipeRight__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -732,21 +732,21 @@ void __60__CACSpokenCommand_CACSpokenCommandGestures__swipeFromRight__block_invo
 
 - (void)panUp
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_312 repeating:v5 interval:1.0];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_312 repeating:intValue interval:1.0];
 }
 
 void __51__CACSpokenCommand_CACSpokenCommandGestures__panUp__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -757,21 +757,21 @@ void __51__CACSpokenCommand_CACSpokenCommandGestures__panUp__block_invoke(double
 
 - (void)panDown
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_314 repeating:v5 interval:1.0];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_314 repeating:intValue interval:1.0];
 }
 
 void __53__CACSpokenCommand_CACSpokenCommandGestures__panDown__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -782,21 +782,21 @@ void __53__CACSpokenCommand_CACSpokenCommandGestures__panDown__block_invoke(doub
 
 - (void)panLeft
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_316 repeating:v5 interval:1.0];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_316 repeating:intValue interval:1.0];
 }
 
 void __53__CACSpokenCommand_CACSpokenCommandGestures__panLeft__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -807,21 +807,21 @@ void __53__CACSpokenCommand_CACSpokenCommandGestures__panLeft__block_invoke(doub
 
 - (void)panRight
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_318 repeating:v5 interval:1.0];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_318 repeating:intValue interval:1.0];
 }
 
 void __54__CACSpokenCommand_CACSpokenCommandGestures__panRight__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -832,21 +832,21 @@ void __54__CACSpokenCommand_CACSpokenCommandGestures__panRight__block_invoke(dou
 
 - (void)twoFingerSwipeUp
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_320 repeating:v5 interval:0.5];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_320 repeating:intValue interval:0.5];
 }
 
 void __62__CACSpokenCommand_CACSpokenCommandGestures__twoFingerSwipeUp__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -857,21 +857,21 @@ void __62__CACSpokenCommand_CACSpokenCommandGestures__twoFingerSwipeUp__block_in
 
 - (void)twoFingerSwipeDown
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_322 repeating:v5 interval:0.5];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_322 repeating:intValue interval:0.5];
 }
 
 void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerSwipeDown__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -882,21 +882,21 @@ void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerSwipeDown__block_
 
 - (void)twoFingerSwipeLeft
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_324 repeating:v5 interval:0.5];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_324 repeating:intValue interval:0.5];
 }
 
 void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerSwipeLeft__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -907,21 +907,21 @@ void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerSwipeLeft__block_
 
 - (void)twoFingerSwipeRight
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_326 repeating:v5 interval:0.5];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_326 repeating:intValue interval:0.5];
 }
 
 void __65__CACSpokenCommand_CACSpokenCommandGestures__twoFingerSwipeRight__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -932,21 +932,21 @@ void __65__CACSpokenCommand_CACSpokenCommandGestures__twoFingerSwipeRight__block
 
 - (void)twoFingerPanUp
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_328 repeating:v5 interval:1.0];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_328 repeating:intValue interval:1.0];
 }
 
 void __60__CACSpokenCommand_CACSpokenCommandGestures__twoFingerPanUp__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -957,21 +957,21 @@ void __60__CACSpokenCommand_CACSpokenCommandGestures__twoFingerPanUp__block_invo
 
 - (void)twoFingerPanDown
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_330 repeating:v5 interval:1.0];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_330 repeating:intValue interval:1.0];
 }
 
 void __62__CACSpokenCommand_CACSpokenCommandGestures__twoFingerPanDown__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -982,21 +982,21 @@ void __62__CACSpokenCommand_CACSpokenCommandGestures__twoFingerPanDown__block_in
 
 - (void)twoFingerPanLeft
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_332 repeating:v5 interval:1.0];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_332 repeating:intValue interval:1.0];
 }
 
 void __62__CACSpokenCommand_CACSpokenCommandGestures__twoFingerPanLeft__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -1007,21 +1007,21 @@ void __62__CACSpokenCommand_CACSpokenCommandGestures__twoFingerPanLeft__block_in
 
 - (void)twoFingerPanRight
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_334 repeating:v5 interval:1.0];
+  [(CACSpokenCommand *)self _handleGestureWithBlock:&__block_literal_global_334 repeating:intValue interval:1.0];
 }
 
 void __63__CACSpokenCommand_CACSpokenCommandGestures__twoFingerPanRight__block_invoke(double a1, double a2, uint64_t a3, uint64_t a4)
@@ -1054,31 +1054,31 @@ void __58__CACSpokenCommand_CACSpokenCommandGestures__twoFingerTap__block_invoke
   [v6 performTapAtPoint:2 numberOfFingers:{a1, a2}];
 }
 
-- (id)_dragActionForLabeledElement:(id)a3
+- (id)_dragActionForLabeledElement:(id)element
 {
-  v4 = [a3 element];
-  v5 = [(CACSpokenCommand *)self _axActionOfType:1 forElement:v4];
+  element = [element element];
+  v5 = [(CACSpokenCommand *)self _axActionOfType:1 forElement:element];
 
   return v5;
 }
 
-- (id)_dropActionForLabeledElement:(id)a3
+- (id)_dropActionForLabeledElement:(id)element
 {
-  v4 = [a3 element];
-  v5 = [(CACSpokenCommand *)self _axActionOfType:2 forElement:v4];
+  element = [element element];
+  v5 = [(CACSpokenCommand *)self _axActionOfType:2 forElement:element];
 
   return v5;
 }
 
-- (id)_axActionOfType:(int64_t)a3 forElement:(id)a4
+- (id)_axActionOfType:(int64_t)type forElement:(id)element
 {
-  if (a4)
+  if (element)
   {
-    v6 = a4;
-    v7 = [(CACSpokenCommand *)self _elementActionManager];
-    v8 = [v7 actionsForElement:v6];
+    elementCopy = element;
+    _elementActionManager = [(CACSpokenCommand *)self _elementActionManager];
+    v8 = [_elementActionManager actionsForElement:elementCopy];
 
-    if ([v8 count] && (v12[0] = MEMORY[0x277D85DD0], v12[1] = 3221225472, v12[2] = __73__CACSpokenCommand_CACSpokenCommandGestures___axActionOfType_forElement___block_invoke, v12[3] = &__block_descriptor_40_e32_B32__0__AXElementAction_8Q16_B24l, v12[4] = a3, v9 = objc_msgSend(v8, "indexOfObjectPassingTest:", v12), v9 != 0x7FFFFFFFFFFFFFFFLL))
+    if ([v8 count] && (v12[0] = MEMORY[0x277D85DD0], v12[1] = 3221225472, v12[2] = __73__CACSpokenCommand_CACSpokenCommandGestures___axActionOfType_forElement___block_invoke, v12[3] = &__block_descriptor_40_e32_B32__0__AXElementAction_8Q16_B24l, v12[4] = type, v9 = objc_msgSend(v8, "indexOfObjectPassingTest:", v12), v9 != 0x7FFFFFFFFFFFFFFFLL))
     {
       v10 = [v8 objectAtIndexedSubscript:v9];
     }
@@ -1097,13 +1097,13 @@ void __58__CACSpokenCommand_CACSpokenCommandGestures__twoFingerTap__block_invoke
   return v10;
 }
 
-- (BOOL)_startDragForLabeledElement:(id)a3
+- (BOOL)_startDragForLabeledElement:(id)element
 {
-  v4 = [(CACSpokenCommand *)self _dragActionForLabeledElement:a3];
+  v4 = [(CACSpokenCommand *)self _dragActionForLabeledElement:element];
   if (v4)
   {
-    v5 = [(CACSpokenCommand *)self _elementActionManager];
-    v6 = [v5 performAction:v4];
+    _elementActionManager = [(CACSpokenCommand *)self _elementActionManager];
+    v6 = [_elementActionManager performAction:v4];
   }
 
   else
@@ -1114,13 +1114,13 @@ void __58__CACSpokenCommand_CACSpokenCommandGestures__twoFingerTap__block_invoke
   return v6;
 }
 
-- (BOOL)_endDragForLabeledElement:(id)a3
+- (BOOL)_endDragForLabeledElement:(id)element
 {
-  v4 = [(CACSpokenCommand *)self _dropActionForLabeledElement:a3];
+  v4 = [(CACSpokenCommand *)self _dropActionForLabeledElement:element];
   if (v4)
   {
-    v5 = [(CACSpokenCommand *)self _elementActionManager];
-    v6 = [v5 performAction:v4];
+    _elementActionManager = [(CACSpokenCommand *)self _elementActionManager];
+    v6 = [_elementActionManager performAction:v4];
   }
 
   else
@@ -1177,9 +1177,9 @@ void __62__CACSpokenCommand_CACSpokenCommandGestures__startHoldAndDrag__block_in
 - (void)endDrag
 {
   v3 = +[CACAXDragManager sharedManager];
-  v4 = [v3 isDragActive];
+  isDragActive = [v3 isDragActive];
 
-  if (v4)
+  if (isDragActive)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -1394,9 +1394,9 @@ void __66__CACSpokenCommand_CACSpokenCommandGestures__dragFromPointToPoint__bloc
   }
 
   v7 = +[CACAXDragManager sharedManager];
-  v8 = [v7 isDragActive];
+  isDragActive = [v7 isDragActive];
 
-  if (v8)
+  if (isDragActive)
   {
     dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global_359);
   }
@@ -1420,9 +1420,9 @@ void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerLongPress__block_
   [v6 performLongPressAtPoint:2 numberOfFingers:{a1, a2}];
 }
 
-- (void)_postKeyboardEventsForModifierFlags:(unsigned int)a3 isKeyDown:(BOOL)a4
+- (void)_postKeyboardEventsForModifierFlags:(unsigned int)flags isKeyDown:(BOOL)down
 {
-  v4 = a4;
+  downCopy = down;
   v25[5] = *MEMORY[0x277D85DE8];
   v24[0] = &unk_287BEFB80;
   v24[1] = &unk_287BEFBB0;
@@ -1436,7 +1436,7 @@ void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerLongPress__block_
   v25[4] = &unk_287BEFC58;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:5];
   v7 = v6;
-  if (a3)
+  if (flags)
   {
     v21 = 0u;
     v22 = 0u;
@@ -1447,14 +1447,14 @@ void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerLongPress__block_
     if (v8)
     {
       v9 = v8;
-      if (v4)
+      if (downCopy)
       {
         LODWORD(v10) = 0;
       }
 
       else
       {
-        LODWORD(v10) = a3;
+        LODWORD(v10) = flags;
       }
 
       v11 = *v20;
@@ -1468,23 +1468,23 @@ void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerLongPress__block_
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v13 unsignedIntValue];
+          unsignedIntValue = [v13 unsignedIntValue];
           v15 = [v7 objectForKey:v13];
-          v16 = [v15 unsignedIntValue];
+          unsignedIntValue2 = [v15 unsignedIntValue];
 
-          if ((v14 & a3) != 0)
+          if ((unsignedIntValue & flags) != 0)
           {
-            if (v4)
+            if (downCopy)
             {
-              v10 = v14 | v10;
+              v10 = unsignedIntValue | v10;
             }
 
             else
             {
-              v10 = v10 & ~v14;
+              v10 = v10 & ~unsignedIntValue;
             }
 
-            [(CACSpokenCommand *)self postKeyboardEventWithKeyCode:v16 modifierFlags:v10 isKeyDown:v4];
+            [(CACSpokenCommand *)self postKeyboardEventWithKeyCode:unsignedIntValue2 modifierFlags:v10 isKeyDown:downCopy];
           }
         }
 
@@ -1496,11 +1496,11 @@ void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerLongPress__block_
   }
 }
 
-- (void)postKeyboardEventWithKeyCode:(unsigned __int16)a3 modifierFlags:(unsigned int)a4 isKeyDown:(BOOL)a5
+- (void)postKeyboardEventWithKeyCode:(unsigned __int16)code modifierFlags:(unsigned int)flags isKeyDown:(BOOL)down
 {
-  v5 = *&a4;
-  v6 = a3;
-  if (a5)
+  v5 = *&flags;
+  codeCopy = code;
+  if (down)
   {
     v7 = 10;
   }
@@ -1511,13 +1511,13 @@ void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerLongPress__block_
   }
 
   v10 = [MEMORY[0x277CE7D78] keyRepresentationWithType:v7];
-  v8 = [v10 keyInfo];
-  [v8 setKeyCode:v6];
-  [v8 setModifierState:v5];
-  [v8 setUnmodifiedInput:&stru_287BD8610];
-  [v8 setModifiedInput:&stru_287BD8610];
-  v9 = [MEMORY[0x277CE7D30] server];
-  [v9 postEvent:v10 systemEvent:0];
+  keyInfo = [v10 keyInfo];
+  [keyInfo setKeyCode:codeCopy];
+  [keyInfo setModifierState:v5];
+  [keyInfo setUnmodifiedInput:&stru_287BD8610];
+  [keyInfo setModifiedInput:&stru_287BD8610];
+  server = [MEMORY[0x277CE7D30] server];
+  [server postEvent:v10 systemEvent:0];
 
   usleep(0x3E8u);
 }
@@ -1525,15 +1525,15 @@ void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerLongPress__block_
 - (void)pressKeyboardKey
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655D8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655D8]];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1544,7 +1544,7 @@ void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerLongPress__block_
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
@@ -1558,7 +1558,7 @@ void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerLongPress__block_
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v7)
       {
         continue;
@@ -1571,46 +1571,46 @@ void __64__CACSpokenCommand_CACSpokenCommandGestures__twoFingerLongPress__block_
   v11 = 0;
 LABEL_11:
 
-  v13 = [(CACSpokenCommand *)self _getModifierFlag];
-  v14 = [(CACSpokenCommand *)self recognizedParameters];
-  v15 = [v14 objectForKey:*MEMORY[0x277D655E8]];
+  _getModifierFlag = [(CACSpokenCommand *)self _getModifierFlag];
+  recognizedParameters2 = [(CACSpokenCommand *)self recognizedParameters];
+  v15 = [recognizedParameters2 objectForKey:*MEMORY[0x277D655E8]];
   v16 = [v15 objectForKey:kCACCommandParameterText];
 
   if (v16)
   {
-    v17 = [v16 intValue];
+    intValue = [v16 intValue];
   }
 
   else
   {
-    v17 = 1;
+    intValue = 1;
   }
 
   v18 = [v11 objectForKey:kCACCommandParameterHIDKeyCode];
 
-  if (v18 && v17 >= 1)
+  if (v18 && intValue >= 1)
   {
-    v19 = v17;
+    v19 = intValue;
     do
     {
       v20 = [v11 objectForKey:kCACCommandParameterHIDKeyCode];
-      v21 = [v20 integerValue];
+      integerValue = [v20 integerValue];
 
-      if (v13)
+      if (_getModifierFlag)
       {
-        [(CACSpokenCommand *)self _postKeyboardEventsForModifierFlags:v13 isKeyDown:1];
-        [(CACSpokenCommand *)self postKeyboardEventWithKeyCode:v21 modifierFlags:v13 isKeyDown:1];
-        [(CACSpokenCommand *)self postKeyboardEventWithKeyCode:v21 modifierFlags:v13 isKeyDown:0];
-        [(CACSpokenCommand *)self _postKeyboardEventsForModifierFlags:v13 isKeyDown:0];
+        [(CACSpokenCommand *)self _postKeyboardEventsForModifierFlags:_getModifierFlag isKeyDown:1];
+        [(CACSpokenCommand *)self postKeyboardEventWithKeyCode:integerValue modifierFlags:_getModifierFlag isKeyDown:1];
+        [(CACSpokenCommand *)self postKeyboardEventWithKeyCode:integerValue modifierFlags:_getModifierFlag isKeyDown:0];
+        [(CACSpokenCommand *)self _postKeyboardEventsForModifierFlags:_getModifierFlag isKeyDown:0];
       }
 
       else
       {
-        [(CACSpokenCommand *)self postKeyboardEventWithKeyCode:v21 modifierFlags:0 isKeyDown:1];
-        [(CACSpokenCommand *)self postKeyboardEventWithKeyCode:v21 modifierFlags:0 isKeyDown:0];
+        [(CACSpokenCommand *)self postKeyboardEventWithKeyCode:integerValue modifierFlags:0 isKeyDown:1];
+        [(CACSpokenCommand *)self postKeyboardEventWithKeyCode:integerValue modifierFlags:0 isKeyDown:0];
       }
 
-      if (v17 >= 2)
+      if (intValue >= 2)
       {
         usleep(0xC350u);
       }
@@ -1632,11 +1632,11 @@ LABEL_11:
 - (unsigned)_getModifierFlag
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v21 = [v3 objectForKey:*MEMORY[0x277D655E0]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v21 = [recognizedParameters objectForKey:*MEMORY[0x277D655E0]];
 
-  v4 = [(CACSpokenCommand *)self recognizedParameters];
-  v5 = [v4 objectForKey:kCACCommandParameterTextSequence];
+  recognizedParameters2 = [(CACSpokenCommand *)self recognizedParameters];
+  v5 = [recognizedParameters2 objectForKey:kCACCommandParameterTextSequence];
 
   v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v22 = 0u;
@@ -1670,9 +1670,9 @@ LABEL_11:
         {
           v13 = [v21 objectForKey:v12];
           v14 = [v13 objectForKey:kCACCommandParameterAXModifierFlag];
-          v15 = [v14 unsignedIntegerValue];
+          unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-          v9 |= v15;
+          v9 |= unsignedIntegerValue;
         }
       }
 
@@ -1717,123 +1717,123 @@ void __39__CACSpokenCommand_VoiceOver__voSelect__block_invoke(uint64_t a1, void 
 
 - (void)voSelectFirstItem
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:10];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:10];
 }
 
 - (void)voSelectLastItem
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:11];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:11];
 }
 
 - (void)voSelectNextApp
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:36];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:36];
 }
 
 - (void)voSelectPreviousApp
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:37];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:37];
 }
 
 - (void)voToggleScreenCurtain
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:2];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:2];
 }
 
 - (void)voStopSpeaking
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:20];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:20];
 }
 
 - (void)voShowItemChooser
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:18];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:18];
 }
 
 - (void)voSelectStatusBar
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:12];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:12];
 }
 
 - (void)voSpeakSummary
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:7];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:7];
 }
 
 - (void)voMagicTap
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:28];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:28];
 }
 
 - (void)voActivate
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:19];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:19];
 }
 
 - (void)voSelectNextItem
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:9];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:9];
 }
 
 - (void)voSelectPreviousItem
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:8];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:8];
 }
 
 - (void)voSelectNextRotor
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:14];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:14];
 }
 
 - (void)voSelectPreviousRotor
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:15];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:15];
 }
 
 - (void)voSelectNextRotorOption
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:17];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:17];
 }
 
 - (void)voSelectPreviousRotorOption
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:16];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:16];
 }
 
 - (void)voReadAll
 {
-  v2 = [MEMORY[0x277CE7E80] server];
-  [v2 triggerCommand:38];
+  server = [MEMORY[0x277CE7E80] server];
+  [server triggerCommand:38];
 }
 
-+ (id)stringFromContextEvaluationDictionary:(id)a3 isCustom:(BOOL)a4
++ (id)stringFromContextEvaluationDictionary:(id)dictionary isCustom:(BOOL)custom
 {
-  v19 = a4;
+  customCopy = custom;
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = [v4 allKeys];
+  obj = [dictionaryCopy allKeys];
   v6 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -1850,7 +1850,7 @@ void __39__CACSpokenCommand_VoiceOver__voSelect__block_invoke(uint64_t a1, void 
 
         v10 = *(*(&v21 + 1) + 8 * i);
         v11 = MEMORY[0x277CCACA8];
-        v12 = [v4 objectForKey:v10];
+        v12 = [dictionaryCopy objectForKey:v10];
         v13 = [v12 description];
         v14 = [v11 stringWithFormat:@"%@_%@", v10, v13];
         [v5 addObject:v14];
@@ -1864,7 +1864,7 @@ void __39__CACSpokenCommand_VoiceOver__voSelect__block_invoke(uint64_t a1, void 
 
   if (![v5 count])
   {
-    if (v19)
+    if (customCopy)
     {
       v15 = @"CustomDefaultRecognizer";
     }
@@ -1883,17 +1883,17 @@ void __39__CACSpokenCommand_VoiceOver__voSelect__block_invoke(uint64_t a1, void 
   return v17;
 }
 
-+ (id)attributedStringFromRecognizedCommandParameters:(id)a3 variantOverrides:(id)a4
++ (id)attributedStringFromRecognizedCommandParameters:(id)parameters variantOverrides:(id)overrides
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v39 = a4;
+  parametersCopy = parameters;
+  overridesCopy = overrides;
   v6 = objc_opt_new();
-  v7 = [v5 objectForKey:kCACCommandParameterTextSequence];
+  v7 = [parametersCopy objectForKey:kCACCommandParameterTextSequence];
   if ([v7 count])
   {
     v37 = v7;
-    v38 = v5;
+    v38 = parametersCopy;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
@@ -1922,7 +1922,7 @@ void __39__CACSpokenCommand_VoiceOver__voSelect__block_invoke(uint64_t a1, void 
         v16 = v15;
         if (v14)
         {
-          v17 = [v39 objectForKey:v14];
+          v17 = [overridesCopy objectForKey:v14];
           if (v17)
           {
             objc_opt_class();
@@ -1935,9 +1935,9 @@ LABEL_22:
               if ([v6 length])
               {
                 v26 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-                v27 = [v26 doesCurrentLanguageSupportInterWordSpaces];
+                doesCurrentLanguageSupportInterWordSpaces = [v26 doesCurrentLanguageSupportInterWordSpaces];
 
-                if (v27)
+                if (doesCurrentLanguageSupportInterWordSpaces)
                 {
                   v28 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@" "];
                   [v6 appendAttributedString:v28];
@@ -1955,12 +1955,12 @@ LABEL_22:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v22 = [v17 BOOLValue];
+              bOOLValue = [v17 BOOLValue];
               v23 = [v38 objectForKey:kCACCommandParameterTextVariants];
               v24 = v23;
-              if (v22 && [v23 count] > v22)
+              if (bOOLValue && [v23 count] > bOOLValue)
               {
-                v25 = [v24 objectAtIndex:v22];
+                v25 = [v24 objectAtIndex:bOOLValue];
 
                 v16 = v25;
               }
@@ -1983,9 +1983,9 @@ LABEL_22:
           if ([v6 length])
           {
             v19 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-            v20 = [v19 doesCurrentLanguageSupportInterWordSpaces];
+            doesCurrentLanguageSupportInterWordSpaces2 = [v19 doesCurrentLanguageSupportInterWordSpaces];
 
-            if (v20)
+            if (doesCurrentLanguageSupportInterWordSpaces2)
             {
               v21 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@" " attributes:0];
               [v6 appendAttributedString:v21];
@@ -2007,18 +2007,18 @@ LABEL_27:
 LABEL_29:
 
         v7 = v37;
-        v5 = v38;
+        parametersCopy = v38;
         goto LABEL_32;
       }
     }
   }
 
-  v32 = [v5 objectForKey:kCACCommandParameterText];
+  v32 = [parametersCopy objectForKey:kCACCommandParameterText];
 
   if (v32)
   {
     v33 = objc_alloc(MEMORY[0x277CCAB48]);
-    v34 = [v5 objectForKey:kCACCommandParameterText];
+    v34 = [parametersCopy objectForKey:kCACCommandParameterText];
     v35 = [v33 initWithString:v34];
 
     v6 = v35;
@@ -2029,9 +2029,9 @@ LABEL_32:
   return v6;
 }
 
-+ (void)displayRecognizedMessageUsingAttributedString:(id)a3
++ (void)displayRecognizedMessageUsingAttributedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[CACPreferences sharedPreferences];
   if ([v4 playSoundUponRecognition])
   {
@@ -2041,9 +2041,9 @@ LABEL_3:
     v6 = [v5 URLForResource:@"DefaultRecognitionSound" withExtension:@"aiff"];
 
     v7 = +[CACDisplayManager sharedManager];
-    v8 = [v7 carPlayConnected];
+    carPlayConnected = [v7 carPlayConnected];
 
-    if (v8)
+    if (carPlayConnected)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -2089,9 +2089,9 @@ LABEL_3:
   }
 
   v11 = +[CACDisplayManager sharedManager];
-  v12 = [v11 carPlayConnectedWirelessly];
+  carPlayConnectedWirelessly = [v11 carPlayConnectedWirelessly];
 
-  if ((v12 & 1) == 0)
+  if ((carPlayConnectedWirelessly & 1) == 0)
   {
     goto LABEL_3;
   }
@@ -2106,20 +2106,20 @@ LABEL_23:
   }
 
   v14 = +[CACDisplayManager sharedManager];
-  v15 = [v14 carPlayConnected];
+  carPlayConnected2 = [v14 carPlayConnected];
 
-  if ((v15 & 1) == 0)
+  if ((carPlayConnected2 & 1) == 0)
   {
     v16 = dispatch_semaphore_create(0);
     v17 = +[CACDisplayManager sharedManager];
-    v18 = [v3 string];
+    string = [stringCopy string];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __66__CACSpokenCommand_displayRecognizedMessageUsingAttributedString___block_invoke_4;
     v21[3] = &unk_279CEB2D0;
     v13 = v16;
     v22 = v13;
-    [v17 displayMessageString:v18 type:2 announcementCompletion:v21];
+    [v17 displayMessageString:string type:2 announcementCompletion:v21];
 
     v19 = dispatch_time(0, 15000000000);
     if (dispatch_semaphore_wait(v13, v19))
@@ -2127,7 +2127,7 @@ LABEL_23:
       v20 = CACLogAccessibility();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        [(CACSpokenCommand *)v3 displayRecognizedMessageUsingAttributedString:v20];
+        [(CACSpokenCommand *)stringCopy displayRecognizedMessageUsingAttributedString:v20];
       }
     }
 
@@ -2160,36 +2160,36 @@ void __66__CACSpokenCommand_displayRecognizedMessageUsingAttributedString___bloc
   [v3 setCategory:*MEMORY[0x277CB8020] error:0];
 }
 
-+ (id)languageModelFromCommandDictionary:(id)a3 tokenResolution:(id)a4 containsBuiltInIdentifier:(BOOL *)a5 error:(id *)a6
++ (id)languageModelFromCommandDictionary:(id)dictionary tokenResolution:(id)resolution containsBuiltInIdentifier:(BOOL *)identifier error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 objectForKey:*MEMORY[0x277D65658]];
-  v12 = [v11 BOOLValue];
+  dictionaryCopy = dictionary;
+  resolutionCopy = resolution;
+  v11 = [dictionaryCopy objectForKey:*MEMORY[0x277D65658]];
+  bOOLValue = [v11 BOOLValue];
 
-  if (!v12)
+  if (!bOOLValue)
   {
-    v16 = [v9 objectForKey:*MEMORY[0x277D65660]];
-    v22 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v23 = [v16 stringByTrimmingCharactersInSet:v22];
+    children = [dictionaryCopy objectForKey:*MEMORY[0x277D65660]];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v23 = [children stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    if ([v23 length] || (objc_msgSend(v9, "objectForKey:", *MEMORY[0x277D65648]), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "count"), v24, v25))
+    if ([v23 length] || (objc_msgSend(dictionaryCopy, "objectForKey:", *MEMORY[0x277D65648]), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "count"), v24, v25))
     {
       v26 = [CACLanguageModel alloc];
-      v27 = [v9 objectForKey:*MEMORY[0x277D65650]];
-      v28 = [v9 objectForKey:*MEMORY[0x277D65640]];
+      v27 = [dictionaryCopy objectForKey:*MEMORY[0x277D65650]];
+      v28 = [dictionaryCopy objectForKey:*MEMORY[0x277D65640]];
       v15 = [(CACLanguageModel *)v26 initWithText:v23 identifier:v27 attributes:v28];
 
       if (v15)
       {
-        v36 = v16;
+        v36 = children;
         v40 = 0u;
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v37 = v9;
-        v29 = [v9 objectForKey:*MEMORY[0x277D65648]];
+        v37 = dictionaryCopy;
+        v29 = [dictionaryCopy objectForKey:*MEMORY[0x277D65648]];
         v30 = [v29 countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v30)
         {
@@ -2204,7 +2204,7 @@ void __66__CACSpokenCommand_displayRecognizedMessageUsingAttributedString___bloc
                 objc_enumerationMutation(v29);
               }
 
-              v34 = [CACSpokenCommand languageModelFromCommandDictionary:*(*(&v38 + 1) + 8 * i) tokenResolution:v10 containsBuiltInIdentifier:a5 error:a6];
+              v34 = [CACSpokenCommand languageModelFromCommandDictionary:*(*(&v38 + 1) + 8 * i) tokenResolution:resolutionCopy containsBuiltInIdentifier:identifier error:error];
               if (v34)
               {
                 [(CACLanguageModel *)v15 addChildLanguageModel:v34];
@@ -2217,8 +2217,8 @@ void __66__CACSpokenCommand_displayRecognizedMessageUsingAttributedString___bloc
           while (v31);
         }
 
-        v16 = v36;
-        v9 = v37;
+        children = v36;
+        dictionaryCopy = v37;
       }
     }
 
@@ -2230,23 +2230,23 @@ void __66__CACSpokenCommand_displayRecognizedMessageUsingAttributedString___bloc
     goto LABEL_31;
   }
 
-  if (a5)
+  if (identifier)
   {
-    *a5 = 1;
+    *identifier = 1;
   }
 
   v13 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v14 = [v9 objectForKey:*MEMORY[0x277D65650]];
+  v14 = [dictionaryCopy objectForKey:*MEMORY[0x277D65650]];
   v15 = [v13 languageModelForBuiltInLMIdentifier:v14];
 
-  if (v10 && ![v10 count])
+  if (resolutionCopy && ![resolutionCopy count])
   {
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v16 = [(CACLanguageModel *)v15 children];
-    v17 = [v16 countByEnumeratingWithState:&v42 objects:v47 count:16];
+    children = [(CACLanguageModel *)v15 children];
+    v17 = [children countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v17)
     {
       v18 = v17;
@@ -2257,17 +2257,17 @@ void __66__CACSpokenCommand_displayRecognizedMessageUsingAttributedString___bloc
         {
           if (*v43 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(children);
           }
 
-          v21 = [*(*(&v42 + 1) + 8 * j) text];
-          if (v21)
+          text = [*(*(&v42 + 1) + 8 * j) text];
+          if (text)
           {
-            [v10 addObject:v21];
+            [resolutionCopy addObject:text];
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v42 objects:v47 count:16];
+        v18 = [children countByEnumeratingWithState:&v42 objects:v47 count:16];
       }
 
       while (v18);
@@ -2279,10 +2279,10 @@ LABEL_31:
   return v15;
 }
 
-- (CACSpokenCommand)initWithProperties:(id)a3
+- (CACSpokenCommand)initWithProperties:(id)properties
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   v35.receiver = self;
   v35.super_class = CACSpokenCommand;
   v5 = [(CACSpokenCommand *)&v35 init];
@@ -2291,38 +2291,38 @@ LABEL_31:
     v6 = objc_opt_new();
     [(CACSpokenCommand *)v5 setContextEvaluation:v6];
 
-    if (v4)
+    if (propertiesCopy)
     {
-      v7 = [v4 objectForKey:kCACCommandPropertyIdentifier];
+      v7 = [propertiesCopy objectForKey:kCACCommandPropertyIdentifier];
       [(CACSpokenCommand *)v5 setIdentifier:v7];
 
-      v8 = [v4 objectForKey:kCACCommandPropertyStrings];
+      v8 = [propertiesCopy objectForKey:kCACCommandPropertyStrings];
       [(CACSpokenCommand *)v5 setStrings:v8];
 
-      v9 = [v4 objectForKey:@"ActionMethod"];
+      v9 = [propertiesCopy objectForKey:@"ActionMethod"];
       v10 = v9;
       if (v9)
       {
         [(CACSpokenCommand *)v5 setAction:NSSelectorFromString(v9)];
       }
 
-      v11 = [v4 objectForKey:@"ContextEvaluation"];
+      v11 = [propertiesCopy objectForKey:@"ContextEvaluation"];
 
       if (v11)
       {
-        v12 = [(CACSpokenCommand *)v5 contextEvaluation];
-        v30 = v4;
-        v13 = [v4 objectForKey:@"ContextEvaluation"];
-        [v12 addEntriesFromDictionary:v13];
+        contextEvaluation = [(CACSpokenCommand *)v5 contextEvaluation];
+        v30 = propertiesCopy;
+        v13 = [propertiesCopy objectForKey:@"ContextEvaluation"];
+        [contextEvaluation addEntriesFromDictionary:v13];
 
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v14 = [(CACSpokenCommand *)v5 contextEvaluation];
-        v15 = [v14 allKeys];
+        contextEvaluation2 = [(CACSpokenCommand *)v5 contextEvaluation];
+        allKeys = [contextEvaluation2 allKeys];
 
-        v16 = [v15 countByEnumeratingWithState:&v31 objects:v40 count:16];
+        v16 = [allKeys countByEnumeratingWithState:&v31 objects:v40 count:16];
         if (v16)
         {
           v17 = v16;
@@ -2333,7 +2333,7 @@ LABEL_31:
             {
               if (*v32 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(allKeys);
               }
 
               v20 = *(*(&v31 + 1) + 8 * i);
@@ -2342,8 +2342,8 @@ LABEL_31:
 
               if (v22)
               {
-                v23 = [(CACSpokenCommand *)v5 contextEvaluation];
-                v24 = [v23 objectForKey:v20];
+                contextEvaluation3 = [(CACSpokenCommand *)v5 contextEvaluation];
+                v24 = [contextEvaluation3 objectForKey:v20];
                 v25 = [CACSpokenCommandManager doesEvaluatorKey:v20 matchValue:v24];
 
                 if (!v25)
@@ -2360,13 +2360,13 @@ LABEL_31:
                   }
 
                   v26 = 0;
-                  v4 = v30;
+                  propertiesCopy = v30;
                   goto LABEL_18;
                 }
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v31 objects:v40 count:16];
+            v17 = [allKeys countByEnumeratingWithState:&v31 objects:v40 count:16];
             if (v17)
             {
               continue;
@@ -2376,7 +2376,7 @@ LABEL_31:
           }
         }
 
-        v4 = v30;
+        propertiesCopy = v30;
       }
     }
   }
@@ -2387,71 +2387,71 @@ LABEL_18:
   return v26;
 }
 
-- (CACSpokenCommand)initWithSpokenCommand:(id)a3
+- (CACSpokenCommand)initWithSpokenCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v15.receiver = self;
   v15.super_class = CACSpokenCommand;
   v5 = [(CACSpokenCommand *)&v15 init];
   if (v5)
   {
-    v6 = [v4 identifier];
-    [(CACSpokenCommand *)v5 setIdentifier:v6];
+    identifier = [commandCopy identifier];
+    [(CACSpokenCommand *)v5 setIdentifier:identifier];
 
-    v7 = [v4 strings];
-    [(CACSpokenCommand *)v5 setStrings:v7];
+    strings = [commandCopy strings];
+    [(CACSpokenCommand *)v5 setStrings:strings];
 
-    -[CACSpokenCommand setAction:](v5, "setAction:", [v4 action]);
-    v8 = [v4 commandRecognizer];
-    [(CACSpokenCommand *)v5 setCommandRecognizer:v8];
+    -[CACSpokenCommand setAction:](v5, "setAction:", [commandCopy action]);
+    commandRecognizer = [commandCopy commandRecognizer];
+    [(CACSpokenCommand *)v5 setCommandRecognizer:commandRecognizer];
 
-    v9 = [v4 recognizedParameters];
-    [(CACSpokenCommand *)v5 setRecognizedParameters:v9];
+    recognizedParameters = [commandCopy recognizedParameters];
+    [(CACSpokenCommand *)v5 setRecognizedParameters:recognizedParameters];
 
-    v10 = [v4 contextEvaluation];
-    [(CACSpokenCommand *)v5 setContextEvaluation:v10];
+    contextEvaluation = [commandCopy contextEvaluation];
+    [(CACSpokenCommand *)v5 setContextEvaluation:contextEvaluation];
 
-    v11 = [v4 languageObject];
-    [(CACSpokenCommand *)v5 setLanguageObject:v11];
+    languageObject = [commandCopy languageObject];
+    [(CACSpokenCommand *)v5 setLanguageObject:languageObject];
 
-    v12 = [v4 languageModelCache];
+    languageModelCache = [commandCopy languageModelCache];
     languageModelCache = v5->_languageModelCache;
-    v5->_languageModelCache = v12;
+    v5->_languageModelCache = languageModelCache;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithSpokenCommand:self];
 }
 
 - (CACLanguageModel)languageModel
 {
-  v2 = self;
+  selfCopy = self;
   v66 = *MEMORY[0x277D85DE8];
   languageModelCache = self->_languageModelCache;
   if (!languageModelCache)
   {
     v4 = [CACLanguageModel alloc];
-    v5 = [(CACSpokenCommand *)v2 identifier];
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v2->_identifier, kCACLanguageModelAttributeCommandIdentifier, 0}];
-    v7 = [(CACLanguageModel *)v4 initWithText:&stru_287BD8610 identifier:v5 attributes:v6];
-    v8 = v2->_languageModelCache;
-    v2->_languageModelCache = v7;
+    identifier = [(CACSpokenCommand *)selfCopy identifier];
+    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{selfCopy->_identifier, kCACLanguageModelAttributeCommandIdentifier, 0}];
+    v7 = [(CACLanguageModel *)v4 initWithText:&stru_287BD8610 identifier:identifier attributes:v6];
+    v8 = selfCopy->_languageModelCache;
+    selfCopy->_languageModelCache = v7;
 
-    v9 = [(CACSpokenCommand *)v2 identifier];
-    LODWORD(v5) = [v9 isEqualToString:@"System.IgnoreSiriKeywordAndOptionalPhrase"];
+    identifier2 = [(CACSpokenCommand *)selfCopy identifier];
+    LODWORD(identifier) = [identifier2 isEqualToString:@"System.IgnoreSiriKeywordAndOptionalPhrase"];
 
-    if (v5)
+    if (identifier)
     {
-      v10 = [MEMORY[0x277D7A8C8] sharedPreferences];
+      mEMORY[0x277D7A8C8] = [MEMORY[0x277D7A8C8] sharedPreferences];
       v11 = +[CACPreferences sharedPreferences];
-      v12 = [v11 bestLocaleIdentifier];
-      v13 = [v10 localizedTriggerPhraseForLanguageCode:v12];
+      bestLocaleIdentifier = [v11 bestLocaleIdentifier];
+      v13 = [mEMORY[0x277D7A8C8] localizedTriggerPhraseForLanguageCode:bestLocaleIdentifier];
 
       if (![(__CFString *)v13 length])
       {
@@ -2460,10 +2460,10 @@ LABEL_18:
       }
 
       v14 = [CACLanguageModel alloc];
-      v15 = [(CACSpokenCommand *)v2 identifier];
+      identifier3 = [(CACSpokenCommand *)selfCopy identifier];
       v16 = *MEMORY[0x277CBED28];
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x277CBED28], *MEMORY[0x277D65638], 0}];
-      v18 = [(CACLanguageModel *)v14 initWithText:&stru_287BD8610 identifier:v15 attributes:v17];
+      v18 = [(CACLanguageModel *)v14 initWithText:&stru_287BD8610 identifier:identifier3 attributes:v17];
 
       v19 = [[CACLanguageModel alloc] initWithText:v13 identifier:0 attributes:0];
       v20 = [CACLanguageModel alloc];
@@ -2473,20 +2473,20 @@ LABEL_18:
 
       [(CACLanguageModel *)v18 addChildLanguageModel:v19];
       [(CACLanguageModel *)v18 addChildLanguageModel:v23];
-      [(CACLanguageModel *)v2->_languageModelCache addChildLanguageModel:v18];
+      [(CACLanguageModel *)selfCopy->_languageModelCache addChildLanguageModel:v18];
       v24 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{&stru_287BD8610, 0}];
-      strings = v2->_strings;
-      v2->_strings = v24;
+      strings = selfCopy->_strings;
+      selfCopy->_strings = v24;
     }
 
-    else if ([(CACSpokenCommand *)v2 isCustomCommand])
+    else if ([(CACSpokenCommand *)selfCopy isCustomCommand])
     {
       v60 = 0u;
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v55 = v2;
-      v26 = v2->_strings;
+      v55 = selfCopy;
+      v26 = selfCopy->_strings;
       v27 = [(NSArray *)v26 countByEnumeratingWithState:&v58 objects:v65 count:16];
       if (v27)
       {
@@ -2528,74 +2528,74 @@ LABEL_18:
         while (v28);
       }
 
-      v2 = v55;
+      selfCopy = v55;
     }
 
     else
     {
       v35 = +[CACPreferences sharedPreferences];
-      v36 = [v35 bestLocaleIdentifier];
-      v37 = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
-      v38 = [v37 commandStringsTableForLocaleIdentifier:v36];
+      bestLocaleIdentifier2 = [v35 bestLocaleIdentifier];
+      mEMORY[0x277D655A0] = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
+      v38 = [mEMORY[0x277D655A0] commandStringsTableForLocaleIdentifier:bestLocaleIdentifier2];
 
-      v39 = [(CACSpokenCommand *)v2 identifier];
-      v40 = [MEMORY[0x277D65598] activeTargetTypes];
+      identifier4 = [(CACSpokenCommand *)selfCopy identifier];
+      activeTargetTypes = [MEMORY[0x277D65598] activeTargetTypes];
       v64 = 0;
-      v41 = [v38 languageModelDictionaryForCommandIdentifier:v39 targetTypes:v40 parsingErrorString:&v64];
+      v41 = [v38 languageModelDictionaryForCommandIdentifier:identifier4 targetTypes:activeTargetTypes parsingErrorString:&v64];
       v42 = v64;
 
-      if (!v2->_strings)
+      if (!selfCopy->_strings)
       {
-        v43 = [v35 builtInCommandsStringsTableForLocaleIdentifier:v36];
+        v43 = [v35 builtInCommandsStringsTableForLocaleIdentifier:bestLocaleIdentifier2];
         v44 = [v38 spokenStringPermutationsOfLanguageModelDictionary:v41 stringsTable:v43];
         if ([v44 count])
         {
           v45 = objc_alloc(MEMORY[0x277CBEA60]);
-          v46 = [v44 firstObject];
-          v47 = [v45 initWithObjects:{v46, 0}];
-          v48 = v2->_strings;
-          v2->_strings = v47;
+          firstObject = [v44 firstObject];
+          v47 = [v45 initWithObjects:{firstObject, 0}];
+          v48 = selfCopy->_strings;
+          selfCopy->_strings = v47;
         }
 
         else
         {
-          v46 = v2->_strings;
-          v2->_strings = 0;
+          firstObject = selfCopy->_strings;
+          selfCopy->_strings = 0;
         }
       }
 
       if (v41 && ![v42 length])
       {
-        v49 = objc_opt_new();
+        identifier6 = objc_opt_new();
         v63 = 0;
         v62 = 0;
-        v51 = [CACSpokenCommand languageModelFromCommandDictionary:v41 tokenResolution:v49 containsBuiltInIdentifier:&v63 error:&v62];
+        v51 = [CACSpokenCommand languageModelFromCommandDictionary:v41 tokenResolution:identifier6 containsBuiltInIdentifier:&v63 error:&v62];
         v50 = v62;
         if (v50)
         {
-          v52 = [(CACSpokenCommand *)v2 identifier];
+          identifier5 = [(CACSpokenCommand *)selfCopy identifier];
           [v50 localizedDescription];
           v53 = v56 = v51;
-          NSLog(&cfstr_ErrorCreatingL.isa, v52, v53);
+          NSLog(&cfstr_ErrorCreatingL.isa, identifier5, v53);
 
           v51 = v56;
         }
 
         else
         {
-          [(CACLanguageModel *)v2->_languageModelCache addChildLanguageModel:v51];
+          [(CACLanguageModel *)selfCopy->_languageModelCache addChildLanguageModel:v51];
         }
       }
 
       else
       {
-        v49 = [(CACSpokenCommand *)v2 identifier];
-        NSLog(&cfstr_ErrorCreatingL.isa, v49, v42);
+        identifier6 = [(CACSpokenCommand *)selfCopy identifier];
+        NSLog(&cfstr_ErrorCreatingL.isa, identifier6, v42);
         v50 = 0;
       }
     }
 
-    languageModelCache = v2->_languageModelCache;
+    languageModelCache = selfCopy->_languageModelCache;
   }
 
   return languageModelCache;
@@ -2604,14 +2604,14 @@ LABEL_18:
 - (BOOL)isListening
 {
   WeakRetained = objc_loadWeakRetained(&self->_commandRecognizer);
-  v3 = [WeakRetained isListening];
+  isListening = [WeakRetained isListening];
 
-  return v3;
+  return isListening;
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  if (a3)
+  if (executing)
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     self->_exectutionStartTime = v4;
@@ -2640,9 +2640,9 @@ LABEL_18:
   }
 }
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
-  self->_executionCompletionBlock = _Block_copy(a3);
+  self->_executionCompletionBlock = _Block_copy(block);
 
   MEMORY[0x2821F96F8]();
 }
@@ -2653,36 +2653,36 @@ LABEL_18:
   v3 = RXSignpostLog();
   if (os_signpost_enabled(v3))
   {
-    v4 = [(NSString *)self->_identifier UTF8String];
+    uTF8String = [(NSString *)self->_identifier UTF8String];
     *buf = 136315138;
-    v68 = v4;
+    v68 = uTF8String;
     _os_signpost_emit_with_name_impl(&dword_26B354000, v3, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "CAC, CmdRec: Performing action.", "%s", buf, 0xCu);
   }
 
   v5 = CACLogRecognition();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NSString *)self->_identifier UTF8String];
+    uTF8String2 = [(NSString *)self->_identifier UTF8String];
     *buf = 136315138;
-    v68 = v6;
+    v68 = uTF8String2;
     _os_log_impl(&dword_26B354000, v5, OS_LOG_TYPE_DEFAULT, "CAC, CmdRec: Performing action. %s", buf, 0xCu);
   }
 
   v7 = +[CACDisplayManager sharedManager];
   [v7 hideDictationRecognizerModeOverlayNow];
 
-  v8 = [(CACSpokenCommand *)self identifier];
-  v9 = [v8 hasPrefix:@"Dictation."];
+  identifier = [(CACSpokenCommand *)self identifier];
+  v9 = [identifier hasPrefix:@"Dictation."];
 
   if (v9)
   {
     v10 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v11 = [v10 disambiguationHandler];
-    v12 = [v11 labeledElements];
-    v13 = [v12 firstObject];
-    v14 = [v13 textMarkerRange];
+    disambiguationHandler = [v10 disambiguationHandler];
+    labeledElements = [disambiguationHandler labeledElements];
+    firstObject = [labeledElements firstObject];
+    textMarkerRange = [firstObject textMarkerRange];
 
-    if (!v14)
+    if (!textMarkerRange)
     {
       goto LABEL_20;
     }
@@ -2700,14 +2700,14 @@ LABEL_18:
 
     if (![(NSString *)self->_identifier isEqualToString:@"VoiceOver.StopSpeaking"])
     {
-      v17 = [(CACSpokenCommand *)self contextEvaluation];
-      v18 = [v17 objectForKey:kCACCommandContextDeferRecognizedStringDisplay];
-      v19 = [v18 BOOLValue];
+      contextEvaluation = [(CACSpokenCommand *)self contextEvaluation];
+      v18 = [contextEvaluation objectForKey:kCACCommandContextDeferRecognizedStringDisplay];
+      bOOLValue = [v18 BOOLValue];
 
-      if ((v19 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
-        v20 = [(CACSpokenCommand *)self recognizedParameters];
-        v21 = [CACSpokenCommand attributedStringFromRecognizedCommandParameters:v20 variantOverrides:0];
+        recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+        v21 = [CACSpokenCommand attributedStringFromRecognizedCommandParameters:recognizedParameters variantOverrides:0];
         [CACSpokenCommand displayRecognizedMessageUsingAttributedString:v21];
       }
     }
@@ -2847,7 +2847,7 @@ LABEL_24:
   }
 
   v30 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v31 = [v30 focusedElement];
+  focusedElement = [v30 focusedElement];
 
   [(CACSpokenCommand *)self setExecuting:1];
   p_action = &self->_action;
@@ -2863,20 +2863,20 @@ LABEL_24:
       action = 0;
     }
 
-    v42 = self;
-    v43 = v31;
+    selfCopy = self;
+    selfCopy2 = focusedElement;
   }
 
   else
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v44 = [MEMORY[0x277CE6BA0] systemWideElement];
+      systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
       v54 = objc_opt_respondsToSelector();
 
       if (v54)
       {
-        v55 = [MEMORY[0x277CE6BA0] systemWideElement];
+        systemWideElement2 = [MEMORY[0x277CE6BA0] systemWideElement];
       }
 
       else
@@ -2890,10 +2890,10 @@ LABEL_24:
           goto LABEL_65;
         }
 
-        v55 = objc_loadWeakRetained(&self->_commandRecognizer);
+        systemWideElement2 = objc_loadWeakRetained(&self->_commandRecognizer);
       }
 
-      v58 = v55;
+      v58 = systemWideElement2;
       if (*p_action)
       {
         v59 = *p_action;
@@ -2904,7 +2904,7 @@ LABEL_24:
         v59 = 0;
       }
 
-      [v55 performSelector:v59 withObject:self];
+      [systemWideElement2 performSelector:v59 withObject:self];
 
       goto LABEL_65;
     }
@@ -2919,11 +2919,11 @@ LABEL_24:
       action = 0;
     }
 
-    v42 = v31;
-    v43 = self;
+    selfCopy = focusedElement;
+    selfCopy2 = self;
   }
 
-  [(CACSpokenCommand *)v42 performSelector:action withObject:v43];
+  [(CACSpokenCommand *)selfCopy performSelector:action withObject:selfCopy2];
 LABEL_65:
 
 LABEL_66:
@@ -2935,32 +2935,32 @@ LABEL_66:
   v50 = RXSignpostLog();
   if (os_signpost_enabled(v50))
   {
-    v51 = [(NSString *)self->_identifier UTF8String];
+    uTF8String3 = [(NSString *)self->_identifier UTF8String];
     *buf = 136315138;
-    v68 = v51;
+    v68 = uTF8String3;
     _os_signpost_emit_with_name_impl(&dword_26B354000, v50, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "CAC, CmdRec: Performing action.", "%s", buf, 0xCu);
   }
 
   v52 = CACLogRecognition();
   if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
   {
-    v53 = [(NSString *)self->_identifier UTF8String];
+    uTF8String4 = [(NSString *)self->_identifier UTF8String];
     *buf = 136315138;
-    v68 = v53;
+    v68 = uTF8String4;
     _os_log_impl(&dword_26B354000, v52, OS_LOG_TYPE_DEFAULT, "CAC, CmdRec: Performed action. %s", buf, 0xCu);
   }
 }
 
 - (void)openApplication
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:@"Text"];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:@"Text"];
   v5 = [v4 hasPrefix:@"Show"];
   v6 = MEMORY[0x277D65608];
   if (v5)
   {
-    v7 = [(CACSpokenCommand *)self recognizedParameters];
-    v8 = [v7 objectForKey:*v6];
+    recognizedParameters2 = [(CACSpokenCommand *)self recognizedParameters];
+    v8 = [recognizedParameters2 objectForKey:*v6];
     v9 = [v8 objectForKey:@"Text"];
     v10 = [v9 isEqualToString:@"Numbers"];
 
@@ -2976,14 +2976,14 @@ LABEL_66:
   {
   }
 
-  v11 = [(CACSpokenCommand *)self recognizedParameters];
-  v12 = [v11 objectForKey:*v6];
+  recognizedParameters3 = [(CACSpokenCommand *)self recognizedParameters];
+  v12 = [recognizedParameters3 objectForKey:*v6];
   v13 = [v12 objectForKey:kCACCommandParameterMatchingApps];
 
   if ([v13 count] == 1)
   {
-    v14 = [v13 firstObject];
-    v15 = [v14 objectForKey:kCACCommandParameterAppIdentifier];
+    firstObject = [v13 firstObject];
+    v15 = [firstObject objectForKey:kCACCommandParameterAppIdentifier];
     if (v15)
     {
       [CACApplicationUtilities launchApplicationWithIdentifier:v15];
@@ -2992,8 +2992,8 @@ LABEL_66:
 
   else
   {
-    v14 = CACLogGeneral();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    firstObject = CACLogGeneral();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       [CACSpokenCommand openApplication];
     }
@@ -3008,14 +3008,14 @@ LABEL_66:
     [CACSpokenCommand closeApplication];
   }
 
-  v4 = [(CACSpokenCommand *)self recognizedParameters];
-  v5 = [v4 objectForKey:*MEMORY[0x277D65608]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v5 = [recognizedParameters objectForKey:*MEMORY[0x277D65608]];
 
   v6 = [v5 objectForKey:kCACCommandParameterMatchingApps];
   if ([v6 count] == 1)
   {
-    v7 = [v6 firstObject];
-    v8 = [v7 objectForKey:kCACCommandParameterAppIdentifier];
+    firstObject = [v6 firstObject];
+    v8 = [firstObject objectForKey:kCACCommandParameterAppIdentifier];
     if (v8)
     {
       [CACApplicationUtilities terminateApplicationWithIdentifier:v8];
@@ -3032,21 +3032,21 @@ LABEL_66:
   }
 
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 activeApplications];
-  v5 = [v4 firstObject];
+  activeApplications = [v3 activeApplications];
+  firstObject = [activeApplications firstObject];
 
-  v6 = [v5 bundleId];
-  if (v6)
+  bundleId = [firstObject bundleId];
+  if (bundleId)
   {
-    v7 = [MEMORY[0x277CE6BA0] systemApplication];
-    v8 = [v7 uiElement];
-    v9 = [v8 objectWithAXAttribute:1508];
+    systemApplication = [MEMORY[0x277CE6BA0] systemApplication];
+    uiElement = [systemApplication uiElement];
+    v9 = [uiElement objectWithAXAttribute:1508];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __41__CACSpokenCommand_closeFrontApplication__block_invoke;
     v10[3] = &unk_279CEB8F0;
-    v11 = v6;
+    v11 = bundleId;
     [v9 enumerateKeysAndObjectsUsingBlock:v10];
   }
 }
@@ -3063,20 +3063,20 @@ uint64_t __41__CACSpokenCommand_closeFrontApplication__block_invoke(uint64_t a1,
   return result;
 }
 
-- (void)_didShowOverlayWithHintIdentifier:(id)a3 hint:(id)a4
+- (void)_didShowOverlayWithHintIdentifier:(id)identifier hint:(id)hint
 {
-  v10 = a3;
-  v5 = a4;
+  identifierCopy = identifier;
+  hintCopy = hint;
   v6 = +[CACPreferences sharedPreferences];
   if (([v6 userHintsFeatures] & 2) != 0)
   {
     v7 = +[CACUserHintsManager sharedManager];
-    v8 = [v7 shouldDisplayUserHintAfterRegisteringIdentifier:v10];
+    v8 = [v7 shouldDisplayUserHintAfterRegisteringIdentifier:identifierCopy];
 
     if (v8)
     {
       v9 = +[CACDisplayManager sharedManager];
-      [v9 displayMessageString:v5 type:0 announcementCompletion:&__block_literal_global_617];
+      [v9 displayMessageString:hintCopy type:0 announcementCompletion:&__block_literal_global_617];
       goto LABEL_6;
     }
   }
@@ -3096,18 +3096,18 @@ void __59__CACSpokenCommand__didShowOverlayWithHintIdentifier_hint___block_invok
   [v0 speakVoiceOverDescriptionForActiveOverlayIfNeeded];
 }
 
-- (BOOL)_handleDisambiguationIfNeededWithBlock:(id)a3
+- (BOOL)_handleDisambiguationIfNeededWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CACSpokenCommand *)self recognizedParameters];
-  v6 = [v5 objectForKey:*MEMORY[0x277D65628]];
+  blockCopy = block;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v6 = [recognizedParameters objectForKey:*MEMORY[0x277D65628]];
 
   v7 = [v6 objectForKey:kCACCommandParameterLabeledElementForDisambiguation];
   v8 = +[CACDisplayManager sharedManager];
-  v9 = [v8 carPlayConnected];
+  carPlayConnected = [v8 carPlayConnected];
   if (v7)
   {
-    v10 = v9;
+    v10 = carPlayConnected;
   }
 
   else
@@ -3117,14 +3117,14 @@ void __59__CACSpokenCommand__didShowOverlayWithHintIdentifier_hint___block_invok
 
   if ((v10 & 1) == 0)
   {
-    v28 = self;
+    selfCopy = self;
     v11 = [v6 objectForKey:kCACCommandParameterText];
     v12 = v11;
     if (!v11 || ![v11 length])
     {
-      v13 = [v7 label];
+      label = [v7 label];
 
-      v12 = v13;
+      v12 = label;
     }
 
     v14 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
@@ -3132,7 +3132,7 @@ void __59__CACSpokenCommand__didShowOverlayWithHintIdentifier_hint___block_invok
 
     v27 = v15;
     v16 = [[CACDisambiguationHandler alloc] initWithLabeledElements:v15];
-    [(CACDisambiguationHandler *)v16 setChosenLabeledElementHandler:v4];
+    [(CACDisambiguationHandler *)v16 setChosenLabeledElementHandler:blockCopy];
     v17 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
     [v17 setDisambiguationHandler:v16];
 
@@ -3149,15 +3149,15 @@ void __59__CACSpokenCommand__didShowOverlayWithHintIdentifier_hint___block_invok
     {
       v21 = MEMORY[0x277CCACA8];
       [CACLocaleUtilities localizedUIStringForKey:@"InfoMessage.DisambiguationPromptWithCommandAsArgument"];
-      v22 = v26 = v4;
+      v22 = v26 = blockCopy;
       v23 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
       v24 = [v23 primaryStringForCommandIdentifier:@"System.OverlayChooseLabel"];
       v20 = [v21 stringWithValidatedFormat:v22 validFormatSpecifiers:@"%@" error:0, v24];
 
-      v4 = v26;
+      blockCopy = v26;
     }
 
-    [(CACSpokenCommand *)v28 _didShowOverlayWithHintIdentifier:@"DisambiguationPrompt" hint:v20];
+    [(CACSpokenCommand *)selfCopy _didShowOverlayWithHintIdentifier:@"DisambiguationPrompt" hint:v20];
   }
 
   return v10 ^ 1;
@@ -3167,8 +3167,8 @@ void __59__CACSpokenCommand__didShowOverlayWithHintIdentifier_hint___block_invok
 {
   if (![(CACSpokenCommand *)self _handleDisambiguationIfNeededWithBlock:0])
   {
-    v3 = [(CACSpokenCommand *)self recognizedParameters];
-    v4 = [v3 objectForKey:*MEMORY[0x277D65628]];
+    recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+    v4 = [recognizedParameters objectForKey:*MEMORY[0x277D65628]];
 
     v5 = [v4 objectForKey:kCACCommandParameterText];
     if (v5)
@@ -3176,11 +3176,11 @@ void __59__CACSpokenCommand__didShowOverlayWithHintIdentifier_hint___block_invok
       v6 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
       v7 = [v6 labeledElementsFromScreenWithTitle:v5];
 
-      v8 = [v7 firstObject];
-      v9 = v8;
-      if (v8)
+      firstObject = [v7 firstObject];
+      v9 = firstObject;
+      if (firstObject)
       {
-        v10 = [v8 element];
+        element = [firstObject element];
         v11 = objc_opt_respondsToSelector();
 
         if (v11)
@@ -3199,7 +3199,7 @@ void __59__CACSpokenCommand__didShowOverlayWithHintIdentifier_hint___block_invok
     else
     {
       v7 = [v4 objectForKey:kCACCommandParameterLabeledElement];
-      v12 = [v7 element];
+      element2 = [v7 element];
       v13 = objc_opt_respondsToSelector();
 
       if ((v13 & 1) == 0)
@@ -3235,59 +3235,59 @@ void __38__CACSpokenCommand_activateScreenItem__block_invoke_2(uint64_t a1)
   [v1 cacActivate];
 }
 
-- (void)handleLabeledElementFromNameOrNumberWithBlock:(id)a3
+- (void)handleLabeledElementFromNameOrNumberWithBlock:(id)block
 {
-  v9 = a3;
+  blockCopy = block;
   if (![(CACSpokenCommand *)self _handleDisambiguationIfNeededWithBlock:?])
   {
-    v4 = [(CACSpokenCommand *)self recognizedParameters];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D65628]];
+    recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+    v5 = [recognizedParameters objectForKeyedSubscript:*MEMORY[0x277D65628]];
     v6 = [v5 objectForKeyedSubscript:kCACCommandParameterLabeledElement];
 
     if (!v6)
     {
-      v7 = [(CACSpokenCommand *)self recognizedParameters];
-      v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D655F8]];
+      recognizedParameters2 = [(CACSpokenCommand *)self recognizedParameters];
+      v8 = [recognizedParameters2 objectForKeyedSubscript:*MEMORY[0x277D655F8]];
       v6 = [v8 objectForKeyedSubscript:kCACCommandParameterLabeledElement];
     }
 
-    v9[2](v9, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
-- (void)handleLabeledElementsFromTwoNumbersWithBlock:(id)a3
+- (void)handleLabeledElementsFromTwoNumbersWithBlock:(id)block
 {
-  v5 = a3;
-  v11 = [(CACSpokenCommand *)self recognizedParameters];
-  v6 = [v11 objectForKeyedSubscript:*MEMORY[0x277D655F8]];
+  blockCopy = block;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v6 = [recognizedParameters objectForKeyedSubscript:*MEMORY[0x277D655F8]];
   v7 = [v6 objectForKeyedSubscript:kCACCommandParameterLabeledElement];
-  v8 = [(CACSpokenCommand *)self recognizedParameters];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D65600]];
+  recognizedParameters2 = [(CACSpokenCommand *)self recognizedParameters];
+  v9 = [recognizedParameters2 objectForKeyedSubscript:*MEMORY[0x277D65600]];
   v10 = [v9 objectForKeyedSubscript:kCACCommandParameterLabeledElement];
-  (*(a3 + 2))(v5, v7, v10);
+  (*(block + 2))(blockCopy, v7, v10);
 }
 
 - (void)incrementItem
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v5 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v5)
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = 1;
+    intValue = 1;
   }
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__CACSpokenCommand_incrementItem__block_invoke;
   v7[3] = &__block_descriptor_40_e27_v16__0__CACLabeledElement_8l;
-  v7[4] = v6;
+  v7[4] = intValue;
   [(CACSpokenCommand *)self handleLabeledElementFromNameOrNumberWithBlock:v7];
 }
 
@@ -3300,25 +3300,25 @@ void __33__CACSpokenCommand_incrementItem__block_invoke(uint64_t a1, void *a2)
 
 - (void)decrementItem
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v5 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v5)
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = 1;
+    intValue = 1;
   }
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__CACSpokenCommand_decrementItem__block_invoke;
   v7[3] = &__block_descriptor_40_e27_v16__0__CACLabeledElement_8l;
-  v7[4] = v6;
+  v7[4] = intValue;
   [(CACSpokenCommand *)self handleLabeledElementFromNameOrNumberWithBlock:v7];
 }
 
@@ -3331,7 +3331,7 @@ void __33__CACSpokenCommand_decrementItem__block_invoke(uint64_t a1, void *a2)
 
 - (void)showVocabulary
 {
-  v2 = [MEMORY[0x277CE7E40] server];
+  server = [MEMORY[0x277CE7E40] server];
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
@@ -3357,13 +3357,13 @@ void __34__CACSpokenCommand_showVocabulary__block_invoke()
     _os_log_impl(&dword_26B354000, v2, OS_LOG_TYPE_INFO, "Opening Voice Control training.", v4, 2u);
   }
 
-  v3 = [MEMORY[0x277CE7E40] server];
-  [v3 launchOnboardingViewService:@"voicecontrol"];
+  server = [MEMORY[0x277CE7E40] server];
+  [server launchOnboardingViewService:@"voicecontrol"];
 }
 
 - (void)showCommands
 {
-  v2 = [MEMORY[0x277CE7E40] server];
+  server = [MEMORY[0x277CE7E40] server];
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
@@ -3384,22 +3384,22 @@ void __32__CACSpokenCommand_showCommands__block_invoke()
 {
   v40 = *MEMORY[0x277D85DE8];
   v2 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v3 = [v2 activeCommandIdentifiers];
+  activeCommandIdentifiers = [v2 activeCommandIdentifiers];
 
   v4 = +[CACUserHintsManager sharedManager];
-  v30 = v3;
-  v5 = [v4 suggestedCommandIdentifiersFromActiveCommandIdentifiers:v3 maximumCount:10];
+  v30 = activeCommandIdentifiers;
+  v5 = [v4 suggestedCommandIdentifiersFromActiveCommandIdentifiers:activeCommandIdentifiers maximumCount:10];
 
-  v34 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = +[CACPreferences sharedPreferences];
-  v7 = [v6 bestLocaleIdentifier];
+  bestLocaleIdentifier = [v6 bestLocaleIdentifier];
 
-  v8 = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
-  v9 = [v8 commandStringsTableForLocaleIdentifier:v7];
+  mEMORY[0x277D655A0] = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
+  v9 = [mEMORY[0x277D655A0] commandStringsTableForLocaleIdentifier:bestLocaleIdentifier];
 
   v10 = +[CACPreferences sharedPreferences];
-  v29 = v7;
-  v32 = [v10 builtInCommandsStringsTableForLocaleIdentifier:v7];
+  v29 = bestLocaleIdentifier;
+  v32 = [v10 builtInCommandsStringsTableForLocaleIdentifier:bestLocaleIdentifier];
 
   v37 = 0u;
   v38 = 0u;
@@ -3423,8 +3423,8 @@ void __32__CACSpokenCommand_showCommands__block_invoke()
         }
 
         v15 = *(*(&v35 + 1) + 8 * v14);
-        v16 = [MEMORY[0x277D65598] activeTargetTypes];
-        v17 = [v9 descriptionStringForCommandIdentifier:v15 descriptionType:@"SUMM" targetTypes:v16];
+        activeTargetTypes = [MEMORY[0x277D65598] activeTargetTypes];
+        v17 = [v9 descriptionStringForCommandIdentifier:v15 descriptionType:@"SUMM" targetTypes:activeTargetTypes];
 
         v18 = [v17 length];
         v19 = objc_alloc(MEMORY[0x277CCAB48]);
@@ -3444,10 +3444,10 @@ void __32__CACSpokenCommand_showCommands__block_invoke()
         v23 = [v22 primaryStringForCommandIdentifier:v15];
         v24 = [v21 stringWithFormat:@"“%@”", v23];
 
-        v25 = [v20 string];
-        if ([v25 length])
+        string = [v20 string];
+        if ([string length])
         {
-          v26 = [*(v13 + 3240) stringWithFormat:@"%@", v25];
+          v26 = [*(v13 + 3240) stringWithFormat:@"%@", string];
         }
 
         else
@@ -3456,7 +3456,7 @@ void __32__CACSpokenCommand_showCommands__block_invoke()
         }
 
         v27 = [CACOnboardingFeature featureWithTitleText:v24 helperText:v26 imageBundleName:@"onboarding-gestures"];
-        [v34 addObject:v27];
+        [array addObject:v27];
 
         ++v14;
         v13 = 0x277CCA000;
@@ -3470,7 +3470,7 @@ void __32__CACSpokenCommand_showCommands__block_invoke()
   }
 
   v28 = +[CACDisplayManager sharedManager];
-  [v28 showContextCluesViewWithCommands:v34];
+  [v28 showContextCluesViewWithCommands:array];
 }
 
 - (void)showNumberedElements
@@ -3479,8 +3479,8 @@ void __32__CACSpokenCommand_showCommands__block_invoke()
   [v3 setDisambiguationHandler:0];
 
   v4 = +[CACPreferences sharedPreferences];
-  v5 = [v4 alwaysShowOverlayType];
-  v6 = [v5 isEqualToString:@"NumberedElements"];
+  alwaysShowOverlayType = [v4 alwaysShowOverlayType];
+  v6 = [alwaysShowOverlayType isEqualToString:@"NumberedElements"];
 
   if (v6)
   {
@@ -3492,8 +3492,8 @@ void __32__CACSpokenCommand_showCommands__block_invoke()
   else
   {
     v10 = +[CACPreferences sharedPreferences];
-    v11 = [v10 alwaysShowOverlayType];
-    v12 = [v11 isEqualToString:@"NumberedGrid"];
+    alwaysShowOverlayType2 = [v10 alwaysShowOverlayType];
+    v12 = [alwaysShowOverlayType2 isEqualToString:@"NumberedGrid"];
 
     if (v12)
     {
@@ -3529,8 +3529,8 @@ void __32__CACSpokenCommand_showCommands__block_invoke()
 - (void)hideNumberedElements
 {
   v2 = +[CACPreferences sharedPreferences];
-  v3 = [v2 alwaysShowOverlayType];
-  v4 = [v3 isEqualToString:@"NumberedElements"];
+  alwaysShowOverlayType = [v2 alwaysShowOverlayType];
+  v4 = [alwaysShowOverlayType isEqualToString:@"NumberedElements"];
 
   if (v4)
   {
@@ -3539,8 +3539,8 @@ void __32__CACSpokenCommand_showCommands__block_invoke()
   }
 
   v6 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v7 = [v6 transientOverlayType];
-  v8 = [v7 isEqualToString:@"NumberedElements"];
+  transientOverlayType = [v6 transientOverlayType];
+  v8 = [transientOverlayType isEqualToString:@"NumberedElements"];
 
   if (v8)
   {
@@ -3586,8 +3586,8 @@ uint64_t __36__CACSpokenCommand_showNumberedGrid__block_invoke(uint64_t a1)
 - (void)_displayNumberedGridAtCurrentNumberOfColumnsAndRows
 {
   v2 = +[CACPreferences sharedPreferences];
-  v3 = [v2 alwaysShowOverlayType];
-  v4 = [v3 isEqualToString:@"NumberedGrid"];
+  alwaysShowOverlayType = [v2 alwaysShowOverlayType];
+  v4 = [alwaysShowOverlayType isEqualToString:@"NumberedGrid"];
 
   v5 = +[CACDisplayManager sharedManager];
   v6 = v5;
@@ -3624,8 +3624,8 @@ uint64_t __36__CACSpokenCommand_showNumberedGrid__block_invoke(uint64_t a1)
 - (void)hideNumberedGrid
 {
   v2 = +[CACPreferences sharedPreferences];
-  v3 = [v2 alwaysShowOverlayType];
-  v4 = [v3 isEqualToString:@"NumberedGrid"];
+  alwaysShowOverlayType = [v2 alwaysShowOverlayType];
+  v4 = [alwaysShowOverlayType isEqualToString:@"NumberedGrid"];
 
   if (v4)
   {
@@ -3634,8 +3634,8 @@ uint64_t __36__CACSpokenCommand_showNumberedGrid__block_invoke(uint64_t a1)
   }
 
   v6 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v7 = [v6 transientOverlayType];
-  v8 = [v7 isEqualToString:@"NumberedGrid"];
+  transientOverlayType = [v6 transientOverlayType];
+  v8 = [transientOverlayType isEqualToString:@"NumberedGrid"];
 
   if (v8)
   {
@@ -3701,8 +3701,8 @@ void __57__CACSpokenCommand_alwaysShowOverlayGridWithNumberOfRows__block_invoke(
 - (void)showElementNames
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 alwaysShowOverlayType];
-  v5 = [v4 isEqualToString:@"NamedElements"];
+  alwaysShowOverlayType = [v3 alwaysShowOverlayType];
+  v5 = [alwaysShowOverlayType isEqualToString:@"NamedElements"];
 
   if (v5)
   {
@@ -3714,8 +3714,8 @@ void __57__CACSpokenCommand_alwaysShowOverlayGridWithNumberOfRows__block_invoke(
   else
   {
     v9 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v10 = [v9 activeOverlayType];
-    v11 = [v10 isEqualToString:@"NumberedGrid"];
+    activeOverlayType = [v9 activeOverlayType];
+    v11 = [activeOverlayType isEqualToString:@"NumberedGrid"];
 
     if (v11)
     {
@@ -3768,8 +3768,8 @@ LABEL_12:
 - (void)hideElementNames
 {
   v2 = +[CACPreferences sharedPreferences];
-  v3 = [v2 alwaysShowOverlayType];
-  v4 = [v3 isEqualToString:@"NamedElements"];
+  alwaysShowOverlayType = [v2 alwaysShowOverlayType];
+  v4 = [alwaysShowOverlayType isEqualToString:@"NamedElements"];
 
   if (v4)
   {
@@ -3778,8 +3778,8 @@ LABEL_12:
   }
 
   v6 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v7 = [v6 transientOverlayType];
-  v8 = [v7 isEqualToString:@"NamedElements"];
+  transientOverlayType = [v6 transientOverlayType];
+  v8 = [transientOverlayType isEqualToString:@"NamedElements"];
 
   if (v8)
   {
@@ -3822,25 +3822,25 @@ LABEL_12:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (BOOL)_updateGridWithNumberOfColumnsAndRows:(BOOL)a3
+- (BOOL)_updateGridWithNumberOfColumnsAndRows:(BOOL)rows
 {
-  v3 = a3;
-  v5 = [(CACSpokenCommand *)self recognizedParameters];
-  v6 = [v5 objectForKey:*MEMORY[0x277D655E8]];
+  rowsCopy = rows;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v6 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v7 = [v6 objectForKey:kCACCommandParameterText];
 
   if (v7)
   {
-    v8 = [v7 integerValue];
-    v9 = [(CACSpokenCommand *)self recognizedParameters];
-    v10 = [v9 objectForKey:*MEMORY[0x277D655F0]];
+    integerValue = [v7 integerValue];
+    recognizedParameters2 = [(CACSpokenCommand *)self recognizedParameters];
+    v10 = [recognizedParameters2 objectForKey:*MEMORY[0x277D655F0]];
     v11 = [v10 objectForKey:kCACCommandParameterText];
 
-    v12 = [v11 integerValue];
+    integerValue2 = [v11 integerValue];
     v13 = +[CACDisplayManager sharedManager];
-    [v13 updateGridLayoutWithNumberOfRows:v12 numberOfColumns:v8 shouldPreferRows:0];
+    [v13 updateGridLayoutWithNumberOfRows:integerValue2 numberOfColumns:integerValue shouldPreferRows:0];
 
-    if (v3)
+    if (rowsCopy)
     {
       [(CACSpokenCommand *)self _displayNumberedGridAtCurrentNumberOfColumnsAndRows];
     }
@@ -3856,22 +3856,22 @@ LABEL_12:
   return v14;
 }
 
-- (void)_updateGridWithNumberOfRows:(BOOL)a3
+- (void)_updateGridWithNumberOfRows:(BOOL)rows
 {
-  v3 = a3;
-  v5 = [(CACSpokenCommand *)self recognizedParameters];
-  v6 = [v5 objectForKey:*MEMORY[0x277D655E8]];
+  rowsCopy = rows;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v6 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v10 = [v6 objectForKey:kCACCommandParameterText];
 
   v7 = v10;
   if (v10)
   {
-    v8 = [v10 integerValue];
+    integerValue = [v10 integerValue];
     v9 = +[CACDisplayManager sharedManager];
-    [v9 updateGridLayoutWithNumberOfRows:v8 numberOfColumns:0 shouldPreferRows:1];
+    [v9 updateGridLayoutWithNumberOfRows:integerValue numberOfColumns:0 shouldPreferRows:1];
 
     v7 = v10;
-    if (v3)
+    if (rowsCopy)
     {
       [(CACSpokenCommand *)self _displayNumberedGridAtCurrentNumberOfColumnsAndRows];
       v7 = v10;
@@ -3881,21 +3881,21 @@ LABEL_12:
 
 - (void)chooseOverlayItem
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655F8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655F8]];
   v27 = [v4 objectForKey:kCACCommandParameterLabeledElement];
 
-  v5 = [v27 element];
-  if (v5)
+  element = [v27 element];
+  if (element)
   {
     v6 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v7 = [v6 disambiguationHandler];
+    disambiguationHandler = [v6 disambiguationHandler];
 
-    v8 = [v27 textMarkerRange];
-    v9 = v8;
-    if (v8)
+    textMarkerRange = [v27 textMarkerRange];
+    v9 = textMarkerRange;
+    if (textMarkerRange)
     {
-      v10 = v7 == 0;
+      v10 = disambiguationHandler == 0;
     }
 
     else
@@ -3905,11 +3905,11 @@ LABEL_12:
 
     if (v10)
     {
-      v23 = [v8 startMarker];
-      v24 = [v9 startMarker];
-      v25 = [CACTextMarkerRange markerRangeWithStartMarker:v23 endMarker:v24];
+      startMarker = [textMarkerRange startMarker];
+      startMarker2 = [v9 startMarker];
+      v25 = [CACTextMarkerRange markerRangeWithStartMarker:startMarker endMarker:startMarker2];
 
-      [v5 cacSetTextSelectionToCACTextMarkerRange:v25];
+      [element cacSetTextSelectionToCACTextMarkerRange:v25];
       v26 = +[CACDisplayManager sharedManager];
       [v26 refreshOverlays];
     }
@@ -3928,8 +3928,8 @@ LABEL_12:
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [v27 label];
-    v21 = [v11 updateGridWithPortraitUpRect:v20 gridContainingLabel:{v13, v15, v17, v19}];
+    label = [v27 label];
+    v21 = [v11 updateGridWithPortraitUpRect:label gridContainingLabel:{v13, v15, v17, v19}];
 
     if ((v21 & 1) == 0)
     {
@@ -3944,32 +3944,32 @@ LABEL_12:
 - (void)pressOverlayItem
 {
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 disambiguationHandler];
+  disambiguationHandler = [v3 disambiguationHandler];
 
   v5 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
   [v5 cancelAnyTransientOverlay];
 
-  v6 = [(CACSpokenCommand *)self recognizedParameters];
-  v7 = [v6 objectForKey:*MEMORY[0x277D655F8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v7 = [recognizedParameters objectForKey:*MEMORY[0x277D655F8]];
   v8 = [v7 objectForKey:kCACCommandParameterLabeledElement];
 
-  if (v4)
+  if (disambiguationHandler)
   {
-    [v4 handleChosenLabeledElement:v8];
-    v9 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    [v9 setDisambiguationHandler:0];
+    [disambiguationHandler handleChosenLabeledElement:v8];
+    element = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
+    [element setDisambiguationHandler:0];
   }
 
   else
   {
-    v9 = [v8 element];
-    if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+    element = [v8 element];
+    if (element && (objc_opt_respondsToSelector() & 1) != 0)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __36__CACSpokenCommand_pressOverlayItem__block_invoke;
       block[3] = &unk_279CEB2D0;
-      v16 = v9;
+      v16 = element;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
 
@@ -3982,9 +3982,9 @@ LABEL_12:
       if (v11)
       {
         v12 = +[CACDisplayManager sharedManager];
-        v13 = [v12 updateGridLayoutFromPreferences];
+        updateGridLayoutFromPreferences = [v12 updateGridLayoutFromPreferences];
 
-        if (v13)
+        if (updateGridLayoutFromPreferences)
         {
           v14 = +[CACDisplayManager sharedManager];
           [v14 resetGrid];
@@ -3997,16 +3997,16 @@ LABEL_12:
 - (void)chooseAllOverlayItems
 {
   v2 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v3 = [v2 disambiguationHandler];
+  disambiguationHandler = [v2 disambiguationHandler];
 
-  if (v3)
+  if (disambiguationHandler)
   {
-    v4 = [v3 chosenLabeledElementHandler];
+    chosenLabeledElementHandler = [disambiguationHandler chosenLabeledElementHandler];
 
-    if (v4)
+    if (chosenLabeledElementHandler)
     {
-      v5 = [v3 labeledElements];
-      v6 = [v5 count] - 1;
+      labeledElements = [disambiguationHandler labeledElements];
+      v6 = [labeledElements count] - 1;
       if (v6 >= 0)
       {
         v7 = MEMORY[0x277D85CD0];
@@ -4019,8 +4019,8 @@ LABEL_12:
           block[1] = 3221225472;
           block[2] = __41__CACSpokenCommand_chooseAllOverlayItems__block_invoke;
           block[3] = &unk_279CEB958;
-          v11 = v3;
-          v12 = v5;
+          v11 = disambiguationHandler;
+          v12 = labeledElements;
           v13 = v6;
           dispatch_async(v7, block);
           usleep(0x7A120u);
@@ -4110,9 +4110,9 @@ void __31__CACSpokenCommand_wakeCarPlay__block_invoke()
   [v2 setDictationRecognizerMode:1];
 
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 dictationRecognizerMode];
+  dictationRecognizerMode = [v3 dictationRecognizerMode];
 
-  if (v4)
+  if (dictationRecognizerMode)
   {
     v6 = +[CACDisplayManager sharedManager];
     v5 = [CACLocaleUtilities localizedUIStringForKey:@"InfoMessage.ExitingDictationMode"];
@@ -4126,9 +4126,9 @@ void __31__CACSpokenCommand_wakeCarPlay__block_invoke()
   [v2 setDictationRecognizerMode:3];
 
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 dictationRecognizerMode];
+  dictationRecognizerMode = [v3 dictationRecognizerMode];
 
-  if (v4)
+  if (dictationRecognizerMode)
   {
     v6 = +[CACDisplayManager sharedManager];
     v5 = [CACLocaleUtilities localizedUIStringForKey:@"InfoMessage.ExitingDictationMode"];
@@ -4142,9 +4142,9 @@ void __31__CACSpokenCommand_wakeCarPlay__block_invoke()
   [v2 setDictationRecognizerMode:2];
 
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 dictationRecognizerMode];
+  dictationRecognizerMode = [v3 dictationRecognizerMode];
 
-  if (v4)
+  if (dictationRecognizerMode)
   {
     v6 = +[CACDisplayManager sharedManager];
     v5 = [CACLocaleUtilities localizedUIStringForKey:@"InfoMessage.ExitingDictationMode"];
@@ -4165,24 +4165,24 @@ void __31__CACSpokenCommand_wakeCarPlay__block_invoke()
 
     if ([v6 count])
     {
-      v10 = [v6 firstObject];
-      v11 = [v10 element];
+      firstObject = [v6 firstObject];
+      element = [firstObject element];
 
       v12 = v15;
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __26__CACSpokenCommand_goBack__block_invoke_2;
       v15[3] = &unk_279CEB2D0;
-      v15[4] = v11;
-      v7 = v11;
+      v15[4] = element;
+      screenElementsForEscape = element;
     }
 
     else
     {
       v13 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-      v7 = [v13 screenElementsForEscape];
+      screenElementsForEscape = [v13 screenElementsForEscape];
 
-      if (![v7 count])
+      if (![screenElementsForEscape count])
       {
         goto LABEL_8;
       }
@@ -4192,8 +4192,8 @@ void __31__CACSpokenCommand_wakeCarPlay__block_invoke()
       v14[1] = 3221225472;
       v14[2] = __26__CACSpokenCommand_goBack__block_invoke_3;
       v14[3] = &unk_279CEB2D0;
-      v7 = v7;
-      v14[4] = v7;
+      screenElementsForEscape = screenElementsForEscape;
+      v14[4] = screenElementsForEscape;
     }
 
     dispatch_async(MEMORY[0x277D85CD0], v12);
@@ -4201,17 +4201,17 @@ void __31__CACSpokenCommand_wakeCarPlay__block_invoke()
     goto LABEL_8;
   }
 
-  v4 = [v3 firstObject];
-  v5 = [v4 element];
+  firstObject2 = [v3 firstObject];
+  element2 = [firstObject2 element];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __26__CACSpokenCommand_goBack__block_invoke;
   block[3] = &unk_279CEB2D0;
-  v17 = v5;
-  v6 = v5;
+  v17 = element2;
+  v6 = element2;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v7 = v17;
+  screenElementsForEscape = v17;
 LABEL_8:
 }
 
@@ -4286,22 +4286,22 @@ void __44__CACSpokenCommand_showAccessibilityActions__block_invoke(uint64_t a1, 
 {
   if (AXUIKeyboardIsOOP())
   {
-    v2 = [MEMORY[0x277CE6BA0] systemWideElement];
-    v7 = [v2 uiElement];
+    systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+    uiElement = [systemWideElement uiElement];
 
-    v3 = [v7 uiElementsWithAttribute:1011];
-    v4 = [v3 lastObject];
+    v3 = [uiElement uiElementsWithAttribute:1011];
+    lastObject = [v3 lastObject];
 
-    [v4 performAXAction:2066];
+    [lastObject performAXAction:2066];
   }
 
   else
   {
     v5 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v6 = [v5 focusedElement];
-    v7 = [v6 application];
+    focusedElement = [v5 focusedElement];
+    uiElement = [focusedElement application];
 
-    [v7 performAction:2066];
+    [uiElement performAction:2066];
   }
 }
 
@@ -4309,31 +4309,31 @@ void __44__CACSpokenCommand_showAccessibilityActions__block_invoke(uint64_t a1, 
 {
   if (AXUIKeyboardIsOOP())
   {
-    v2 = [MEMORY[0x277CE6BA0] systemWideElement];
-    v7 = [v2 uiElement];
+    systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+    uiElement = [systemWideElement uiElement];
 
-    v3 = [v7 uiElementsWithAttribute:1011];
-    v4 = [v3 lastObject];
+    v3 = [uiElement uiElementsWithAttribute:1011];
+    lastObject = [v3 lastObject];
 
-    [v4 performAXAction:2067];
+    [lastObject performAXAction:2067];
   }
 
   else
   {
     v5 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v6 = [v5 focusedElement];
-    v7 = [v6 application];
+    focusedElement = [v5 focusedElement];
+    uiElement = [focusedElement application];
 
-    [v7 performAction:2067];
+    [uiElement performAction:2067];
   }
 }
 
 - (void)createCustomCommand
 {
   v2 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v12 = [v2 focusedElement];
+  focusedElement = [v2 focusedElement];
 
-  if (!v12 || ((v3 = [v12 selectedTextRange], v3 != 0x7FFFFFFF) ? (v5 = v4 == 0) : (v5 = 1), v5))
+  if (!focusedElement || ((v3 = [focusedElement selectedTextRange], v3 != 0x7FFFFFFF) ? (v5 = v4 == 0) : (v5 = 1), v5))
   {
     v6 = 0;
   }
@@ -4342,8 +4342,8 @@ void __44__CACSpokenCommand_showAccessibilityActions__block_invoke(uint64_t a1, 
   {
     v7 = v3;
     v8 = v4;
-    v9 = [v12 value];
-    v10 = [v9 substringWithRange:{v7, v8}];
+    value = [focusedElement value];
+    v10 = [value substringWithRange:{v7, v8}];
 
     if ([v10 length])
     {
@@ -4362,16 +4362,16 @@ void __44__CACSpokenCommand_showAccessibilityActions__block_invoke(uint64_t a1, 
 
 - (void)repeatPreviousCommand
 {
-  v3 = 1;
+  intValue = 1;
   [(CACSpokenCommand *)self setCompletionDeterminedManually:1];
-  v4 = [(CACSpokenCommand *)self recognizedParameters];
-  v5 = [v4 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v5 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v5 objectForKey:kCACCommandParameterText];
 
   v7 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
   if (v6)
   {
-    v3 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   v8[0] = MEMORY[0x277D85DD0];
@@ -4379,7 +4379,7 @@ void __44__CACSpokenCommand_showAccessibilityActions__block_invoke(uint64_t a1, 
   v8[2] = __41__CACSpokenCommand_repeatPreviousCommand__block_invoke;
   v8[3] = &unk_279CEB980;
   v8[4] = self;
-  [v7 beginExecutingRepeatingSpokenCommandNumberOfTimes:v3 completionBlock:v8];
+  [v7 beginExecutingRepeatingSpokenCommandNumberOfTimes:intValue completionBlock:v8];
 }
 
 void __41__CACSpokenCommand_repeatPreviousCommand__block_invoke(uint64_t a1, void *a2)
@@ -4412,14 +4412,14 @@ void __41__CACSpokenCommand_repeatPreviousCommand__block_invoke(uint64_t a1, voi
 - (void)stopRecordingGesture
 {
   v2 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v9 = [v2 stopRecordingGesture];
+  stopRecordingGesture = [v2 stopRecordingGesture];
 
-  v3 = [v9 numberOfEvents];
+  numberOfEvents = [stopRecordingGesture numberOfEvents];
   v4 = +[CACDisplayManager sharedManager];
   v5 = v4;
-  if (v3)
+  if (numberOfEvents)
   {
-    [v4 showCustomCommandEditorWithGesture:v9];
+    [v4 showCustomCommandEditorWithGesture:stopRecordingGesture];
   }
 
   else
@@ -4445,9 +4445,9 @@ void __41__CACSpokenCommand_repeatPreviousCommand__block_invoke(uint64_t a1, voi
 - (void)stopRecordingUserActions
 {
   v2 = +[CACRecordedUserActionManager sharedManager];
-  v3 = [v2 isRecording];
+  isRecording = [v2 isRecording];
 
-  if (v3)
+  if (isRecording)
   {
     v4 = +[CACRecordedUserActionManager sharedManager];
     [v4 stopRecordingUserActions];
@@ -4456,22 +4456,22 @@ void __41__CACSpokenCommand_repeatPreviousCommand__block_invoke(uint64_t a1, voi
     [v5 updateStatusIndicatorView];
 
     v6 = +[CACRecordedUserActionManager sharedManager];
-    v8 = [v6 recordedUserActionFlow];
+    recordedUserActionFlow = [v6 recordedUserActionFlow];
 
     v7 = +[CACDisplayManager sharedManager];
-    [v7 showCustomCommandEditorWithRecordedUserActionFlow:v8];
+    [v7 showCustomCommandEditorWithRecordedUserActionFlow:recordedUserActionFlow];
   }
 }
 
 - (void)searchSpotlight
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = [a1 value];
-  v7 = [a1 label];
+  value = [self value];
+  label = [self label];
   v8 = 138412802;
-  v9 = v6;
+  v9 = value;
   v10 = 2112;
-  v11 = v7;
+  v11 = label;
   v12 = 2048;
   v13 = a2;
   _os_log_debug_impl(&dword_26B354000, a3, OS_LOG_TYPE_DEBUG, "Search Spotlight 5.2. Spotlight search field focused. value: %@, label: %@, numTrysLeft: %ld", &v8, 0x20u);
@@ -4571,8 +4571,8 @@ void __35__CACSpokenCommand_searchSpotlight__block_invoke_723(uint64_t a1)
 
 - (void)hideSearch
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 toggleSpotlight];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] toggleSpotlight];
 }
 
 - (void)enableAttentionAwareness
@@ -4596,16 +4596,16 @@ void __35__CACSpokenCommand_searchSpotlight__block_invoke_723(uint64_t a1)
 - (void)searchWeb
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(CACSpokenCommand *)self recognizedParameters];
-  v3 = [v2 objectForKey:*MEMORY[0x277D655C8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v3 = [recognizedParameters objectForKey:*MEMORY[0x277D655C8]];
   v4 = [v3 objectForKey:kCACCommandParameterText];
 
   if ([v4 length])
   {
     v5 = MEMORY[0x277CBEBC0];
     v6 = MEMORY[0x277CCACA8];
-    v7 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-    v8 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:v7];
+    uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+    v8 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
     v9 = [v6 stringWithFormat:@"x-web-search://?%@", v8];
     v10 = [v5 URLWithString:v9];
 
@@ -4617,14 +4617,14 @@ void __35__CACSpokenCommand_searchSpotlight__block_invoke_723(uint64_t a1)
       _os_log_impl(&dword_26B354000, v11, OS_LOG_TYPE_INFO, "Asking UIApplication to open URL %@", buf, 0xCu);
     }
 
-    v12 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __29__CACSpokenCommand_searchWeb__block_invoke;
     v14[3] = &unk_279CEB760;
     v15 = v10;
     v13 = v10;
-    [v12 openURL:v13 options:MEMORY[0x277CBEC10] completionHandler:v14];
+    [mEMORY[0x277D75128] openURL:v13 options:MEMORY[0x277CBEC10] completionHandler:v14];
   }
 }
 
@@ -4683,9 +4683,9 @@ void __26__CACSpokenCommand_hangUp__block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CACSpokenCommand *)self identifier];
-  v5 = [(CACSpokenCommand *)self strings];
-  v6 = [v3 stringWithFormat:@"%@, %@, Rec Params: %@", v4, v5, self->_recognizedParameters];
+  identifier = [(CACSpokenCommand *)self identifier];
+  strings = [(CACSpokenCommand *)self strings];
+  v6 = [v3 stringWithFormat:@"%@, %@, Rec Params: %@", identifier, strings, self->_recognizedParameters];
 
   return v6;
 }
@@ -4703,19 +4703,19 @@ void __26__CACSpokenCommand_hangUp__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 - (CACCommandRecognizer)commandRecognizer
@@ -4725,15 +4725,15 @@ void __26__CACSpokenCommand_hangUp__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)_scrollWithCount:(unint64_t)a3 forAction:(int)a4
+- (void)_scrollWithCount:(unint64_t)count forAction:(int)action
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__CACSpokenCommand_CACSpokenCommandScrolling___scrollWithCount_forAction___block_invoke;
   block[3] = &unk_279CEBB60;
   block[4] = self;
-  block[5] = a3;
-  v5 = a4;
+  block[5] = count;
+  actionCopy = action;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -4763,18 +4763,18 @@ uint64_t __74__CACSpokenCommand_CACSpokenCommandScrolling___scrollWithCount_forA
 
 - (void)scrollPageUp
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v5 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v5)
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = 1;
+    intValue = 1;
   }
 
   v7[0] = MEMORY[0x277D85DD0];
@@ -4782,7 +4782,7 @@ uint64_t __74__CACSpokenCommand_CACSpokenCommandScrolling___scrollWithCount_forA
   v7[2] = __59__CACSpokenCommand_CACSpokenCommandScrolling__scrollPageUp__block_invoke;
   v7[3] = &unk_279CEBB88;
   v7[4] = self;
-  v7[5] = v6;
+  v7[5] = intValue;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -4815,18 +4815,18 @@ uint64_t __59__CACSpokenCommand_CACSpokenCommandScrolling__scrollPageUp__block_i
 
 - (void)scrollPageDown
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v5 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v5)
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = 1;
+    intValue = 1;
   }
 
   v7[0] = MEMORY[0x277D85DD0];
@@ -4834,7 +4834,7 @@ uint64_t __59__CACSpokenCommand_CACSpokenCommandScrolling__scrollPageUp__block_i
   v7[2] = __61__CACSpokenCommand_CACSpokenCommandScrolling__scrollPageDown__block_invoke;
   v7[3] = &unk_279CEBB88;
   v7[4] = self;
-  v7[5] = v6;
+  v7[5] = intValue;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -4886,8 +4886,8 @@ uint64_t __61__CACSpokenCommand_CACSpokenCommandScrolling__scrollPageDown__block
 - (BOOL)scrollToLandmark
 {
   v37 = *MEMORY[0x277D85DE8];
-  v2 = [(CACSpokenCommand *)self recognizedParameters];
-  v3 = [v2 objectForKey:*MEMORY[0x277D65628]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v3 = [recognizedParameters objectForKey:*MEMORY[0x277D65628]];
 
   v4 = [v3 objectForKey:kCACCommandParameterText];
   v5 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
@@ -4915,9 +4915,9 @@ uint64_t __61__CACSpokenCommand_CACSpokenCommandScrolling__scrollPageDown__block
         }
 
         v12 = *(*(&v31 + 1) + 8 * i);
-        v13 = [v12 element];
-        v14 = [v13 uiElement];
-        v15 = [v14 arrayWithAXAttribute:2239];
+        element = [v12 element];
+        uiElement = [element uiElement];
+        v15 = [uiElement arrayWithAXAttribute:2239];
 
         v29 = 0u;
         v30 = 0u;
@@ -4941,8 +4941,8 @@ uint64_t __61__CACSpokenCommand_CACSpokenCommandScrolling__scrollPageDown__block
               v21 = *(*(&v27 + 1) + 8 * j);
               if (![v21 compare:v4 options:129])
               {
-                v23 = [v12 element];
-                [v23 performAction:2022 withValue:v21];
+                element2 = [v12 element];
+                [element2 performAction:2022 withValue:v21];
 
                 v22 = 1;
                 v3 = v26;
@@ -4983,56 +4983,56 @@ LABEL_19:
 
 - (void)scrollPageLeft
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _scrollWithCount:v5 forAction:2008];
+  [(CACSpokenCommand *)self _scrollWithCount:intValue forAction:2008];
 }
 
 - (void)scrollPageRight
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D655E8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v4 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v5 = [v6 intValue];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v5 = 1;
+    intValue = 1;
   }
 
-  [(CACSpokenCommand *)self _scrollWithCount:v5 forAction:2009];
+  [(CACSpokenCommand *)self _scrollWithCount:intValue forAction:2009];
 }
 
-- (id)_scrollAncestorsFromTopLevelElementsForAction:(int)a3 categorizedElements:(id *)a4
+- (id)_scrollAncestorsFromTopLevelElementsForAction:(int)action categorizedElements:(id *)elements
 {
-  v4 = *&a3;
+  v4 = *&action;
   v29 = *MEMORY[0x277D85DE8];
   v5 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v6 = [v5 screenElementsForScrolling];
+  screenElementsForScrolling = [v5 screenElementsForScrolling];
 
-  v7 = [MEMORY[0x277CBEB40] orderedSet];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = v6;
+  v9 = screenElementsForScrolling;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -5054,22 +5054,22 @@ LABEL_19:
           if (v15)
           {
             v16 = v15;
-            v17 = [v7 indexOfObject:v15];
+            v17 = [orderedSet indexOfObject:v15];
             if (v17 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v17 = [v7 count];
-              [v7 addObject:v16];
+              v17 = [orderedSet count];
+              [orderedSet addObject:v16];
             }
 
             v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v17];
-            v19 = [v8 objectForKey:v18];
-            if (!v19)
+            array = [dictionary objectForKey:v18];
+            if (!array)
             {
-              v19 = [MEMORY[0x277CBEB18] array];
-              [v8 setObject:v19 forKey:v18];
+              array = [MEMORY[0x277CBEB18] array];
+              [dictionary setObject:array forKey:v18];
             }
 
-            [v19 addObject:v14];
+            [array addObject:v14];
           }
         }
       }
@@ -5080,30 +5080,30 @@ LABEL_19:
     while (v11);
   }
 
-  if (a4)
+  if (elements)
   {
-    v20 = v8;
-    *a4 = v8;
+    v20 = dictionary;
+    *elements = dictionary;
   }
 
-  v21 = [v7 array];
+  array2 = [orderedSet array];
 
-  return v21;
+  return array2;
 }
 
-- (BOOL)_performUncheckedScrollAction:(int)a3 forScrollAreaSupportingAction:(int)a4
+- (BOOL)_performUncheckedScrollAction:(int)action forScrollAreaSupportingAction:(int)supportingAction
 {
-  v4 = *&a3;
+  v4 = *&action;
   v21 = *MEMORY[0x277D85DE8];
   v19 = 0;
-  v5 = [(CACSpokenCommand *)self _scrollAncestorsFromTopLevelElementsForAction:*&a4 categorizedElements:&v19];
+  v5 = [(CACSpokenCommand *)self _scrollAncestorsFromTopLevelElementsForAction:*&supportingAction categorizedElements:&v19];
   v6 = v19;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 allValues];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  allValues = [v6 allValues];
+  v8 = [allValues countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -5114,14 +5114,14 @@ LABEL_19:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) lastObject];
-        v13 = [v12 performAction:v4];
+        lastObject = [*(*(&v15 + 1) + 8 * i) lastObject];
+        v13 = [lastObject performAction:v4];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v9);
@@ -5135,12 +5135,12 @@ LABEL_19:
   return v13;
 }
 
-- (BOOL)_performScrollingAction:(int)a3
+- (BOOL)_performScrollingAction:(int)action
 {
-  v3 = *&a3;
+  v3 = *&action;
   v34 = *MEMORY[0x277D85DE8];
   v31 = 0;
-  v4 = [(CACSpokenCommand *)self _scrollAncestorsFromTopLevelElementsForAction:*&a3 categorizedElements:&v31];
+  v4 = [(CACSpokenCommand *)self _scrollAncestorsFromTopLevelElementsForAction:*&action categorizedElements:&v31];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -5167,8 +5167,8 @@ LABEL_19:
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v11 = [v10 reverseObjectEnumerator];
-        v12 = [v11 countByEnumeratingWithState:&v23 objects:v32 count:16];
+        reverseObjectEnumerator = [v10 reverseObjectEnumerator];
+        v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v32 count:16];
         if (v12)
         {
           v13 = v12;
@@ -5179,15 +5179,15 @@ LABEL_19:
             {
               if (*v24 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(reverseObjectEnumerator);
               }
 
               v16 = *(*(&v23 + 1) + 8 * j);
               if ([v16 supportsAction:v3] && objc_msgSend(v16, "performAction:", v3))
               {
-                v17 = [v10 lastObject];
+                lastObject = [v10 lastObject];
 
-                if (v16 != v17)
+                if (v16 != lastObject)
                 {
                   v18 = CACLogElementEvaluation();
                   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -5202,7 +5202,7 @@ LABEL_19:
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v23 objects:v32 count:16];
+            v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v32 count:16];
             if (v13)
             {
               continue;
@@ -5233,37 +5233,37 @@ LABEL_21:
 
 - (void)enableAssistiveTouch
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v2 setAssistiveTouchEnabled:1];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20] setAssistiveTouchEnabled:1];
 }
 
 - (void)disableAssistiveTouch
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v2 setAssistiveTouchEnabled:0];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20] setAssistiveTouchEnabled:0];
 }
 
 - (void)enableClassicInvertColors
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  v3 = [v2 classicInvertColors];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  classicInvertColors = [mEMORY[0x277CE7E20] classicInvertColors];
 
-  if ((v3 & 1) == 0)
+  if ((classicInvertColors & 1) == 0)
   {
-    v4 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v4 setClassicInvertColors:1];
+    mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20]2 setClassicInvertColors:1];
   }
 }
 
 - (void)disableClassicInvertColors
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  v3 = [v2 classicInvertColors];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  classicInvertColors = [mEMORY[0x277CE7E20] classicInvertColors];
 
-  if (v3)
+  if (classicInvertColors)
   {
-    v4 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v4 setClassicInvertColors:0];
+    mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20]2 setClassicInvertColors:0];
   }
 }
 
@@ -5359,14 +5359,14 @@ uint64_t __75__CACSpokenCommand_CACSpokenCommandAccessibility__disableSmartInver
 
 - (void)enableSwitchControl
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v2 setSwitchControlEnabled:1];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20] setSwitchControlEnabled:1];
 }
 
 - (void)disableSwitchControl
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v2 setSwitchControlEnabled:0];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20] setSwitchControlEnabled:0];
 }
 
 - (void)enableVoiceOver
@@ -5480,8 +5480,8 @@ uint64_t __75__CACSpokenCommand_CACSpokenCommandAccessibility__disableSmartInver
 {
   if (!_AXSOnDeviceEyeTrackingEnabled())
   {
-    v2 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v2 setAssistiveTouchMouseOnDeviceEyeTrackingEnabled:1];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setAssistiveTouchMouseOnDeviceEyeTrackingEnabled:1];
   }
 }
 
@@ -5489,56 +5489,56 @@ uint64_t __75__CACSpokenCommand_CACSpokenCommandAccessibility__disableSmartInver
 {
   if (_AXSOnDeviceEyeTrackingEnabled())
   {
-    v2 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v2 setAssistiveTouchMouseOnDeviceEyeTrackingEnabled:0];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20] setAssistiveTouchMouseOnDeviceEyeTrackingEnabled:0];
   }
 }
 
 - (void)enableHeadTracking
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  v3 = [v2 assistiveTouchHeadTrackingEnabled];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  assistiveTouchHeadTrackingEnabled = [mEMORY[0x277CE7E20] assistiveTouchHeadTrackingEnabled];
 
-  if ((v3 & 1) == 0)
+  if ((assistiveTouchHeadTrackingEnabled & 1) == 0)
   {
-    v4 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v4 setAssistiveTouchHeadTrackingEnabled:1];
+    mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20]2 setAssistiveTouchHeadTrackingEnabled:1];
   }
 }
 
 - (void)disableHeadTracking
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  v3 = [v2 assistiveTouchHeadTrackingEnabled];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  assistiveTouchHeadTrackingEnabled = [mEMORY[0x277CE7E20] assistiveTouchHeadTrackingEnabled];
 
-  if (v3)
+  if (assistiveTouchHeadTrackingEnabled)
   {
-    v4 = [MEMORY[0x277CE7E20] sharedInstance];
-    [v4 setAssistiveTouchHeadTrackingEnabled:0];
+    mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+    [mEMORY[0x277CE7E20]2 setAssistiveTouchHeadTrackingEnabled:0];
   }
 }
 
 - (BOOL)isRestrictedForAAC
 {
-  v2 = [MEMORY[0x277CE7D30] server];
-  if ([v2 isRestrictedForAAC])
+  server = [MEMORY[0x277CE7D30] server];
+  if ([server isRestrictedForAAC])
   {
-    v3 = 1;
+    isActive = 1;
   }
 
   else
   {
     v4 = objc_opt_new();
-    v3 = [v4 isActive];
+    isActive = [v4 isActive];
   }
 
-  return v3;
+  return isActive;
 }
 
 - (void)activateSiri
 {
-  v2 = [(CACSpokenCommand *)self recognizedParameters];
-  v3 = [v2 objectForKey:*MEMORY[0x277D655C8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v3 = [recognizedParameters objectForKey:*MEMORY[0x277D655C8]];
   v8 = [v3 objectForKey:kCACCommandParameterText];
 
   if ([v8 length])
@@ -5558,26 +5558,26 @@ uint64_t __75__CACSpokenCommand_CACSpokenCommandAccessibility__disableSmartInver
 
   else
   {
-    v7 = [MEMORY[0x277CE7178] sharedInstance];
-    [v7 activateSiri];
+    mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+    [mEMORY[0x277CE7178] activateSiri];
   }
 }
 
 - (void)activateTypeToSiri
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 activateTypeToSiri];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] activateTypeToSiri];
 }
 
 - (void)dismissSiri
 {
-  v3 = [MEMORY[0x277CE7E50] server];
-  v4 = [v3 isSiriVisible];
+  server = [MEMORY[0x277CE7E50] server];
+  isSiriVisible = [server isSiriVisible];
 
-  v5 = [MEMORY[0x277CE7E40] server];
-  v6 = [v5 isTypeToSiriVisible];
+  server2 = [MEMORY[0x277CE7E40] server];
+  isTypeToSiriVisible = [server2 isTypeToSiriVisible];
 
-  if ((v4 & 1) != 0 || v6)
+  if ((isSiriVisible & 1) != 0 || isTypeToSiriVisible)
   {
 
     [(CACSpokenCommand *)self activateHomeButton];
@@ -5612,25 +5612,25 @@ void __64__CACSpokenCommand_CACSpokenCommandHardware__activateHomeButton__block_
 
 - (void)armApplePay
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 armApplePay];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] armApplePay];
 }
 
 - (void)toggleDock
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 toggleDock];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] toggleDock];
 }
 
 - (void)activateAppLibrary
 {
-  v2 = [MEMORY[0x277CE7E40] server];
-  v3 = [v2 isShowingHomescreen];
+  server = [MEMORY[0x277CE7E40] server];
+  isShowingHomescreen = [server isShowingHomescreen];
 
-  if ((v3 & 1) == 0)
+  if ((isShowingHomescreen & 1) == 0)
   {
-    v4 = [MEMORY[0x277CE7178] sharedInstance];
-    [v4 activateHomeButton];
+    mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+    [mEMORY[0x277CE7178] activateHomeButton];
   }
 
   v5 = dispatch_time(0, 500000000);
@@ -5647,28 +5647,28 @@ void __64__CACSpokenCommand_CACSpokenCommandHardware__activateAppLibrary__block_
 
 - (void)activateAppSwitcher
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 toggleAppSwitcher];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] toggleAppSwitcher];
 }
 
 - (void)activateLockButton
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 activateLockButton];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] activateLockButton];
 }
 
 - (void)toggleRingerSwitchOn
 {
   if (AXDeviceHasStaccato())
   {
-    v2 = [MEMORY[0x277D26E58] sharedInstance];
-    [v2 setSilentMode:0 untilTime:0 reason:@"Voice Control Disable Silent Mode" clientType:4];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
+    [mEMORY[0x277D26E58] setSilentMode:0 untilTime:0 reason:@"Voice Control Disable Silent Mode" clientType:4];
   }
 
   else
   {
-    v2 = [MEMORY[0x277CE7178] sharedInstance];
-    [v2 toggleRingerSwitch:1];
+    mEMORY[0x277D26E58] = [MEMORY[0x277CE7178] sharedInstance];
+    [mEMORY[0x277D26E58] toggleRingerSwitch:1];
   }
 }
 
@@ -5676,52 +5676,52 @@ void __64__CACSpokenCommand_CACSpokenCommandHardware__activateAppLibrary__block_
 {
   if (AXDeviceHasStaccato())
   {
-    v2 = [MEMORY[0x277D26E58] sharedInstance];
-    [v2 setSilentMode:1 untilTime:0 reason:@"Voice Control Enable Silent Mode" clientType:4];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedInstance];
+    [mEMORY[0x277D26E58] setSilentMode:1 untilTime:0 reason:@"Voice Control Enable Silent Mode" clientType:4];
   }
 
   else
   {
-    v2 = [MEMORY[0x277CE7178] sharedInstance];
-    [v2 toggleRingerSwitch:0];
+    mEMORY[0x277D26E58] = [MEMORY[0x277CE7178] sharedInstance];
+    [mEMORY[0x277D26E58] toggleRingerSwitch:0];
   }
 }
 
 - (void)toggleMute
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 toggleMute];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] toggleMute];
 }
 
 - (void)decreaseVolume
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 decreaseVolume];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] decreaseVolume];
 }
 
 - (void)increaseVolume
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 increaseVolume];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] increaseVolume];
 }
 
 - (void)activateSpotlight
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 revealSpotlight];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] revealSpotlight];
 }
 
 - (void)activateTripleClick
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 activateTripleClick];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] activateTripleClick];
 }
 
 - (void)takeScreenshot
 {
   [(CACSpokenCommand *)self setCompletionDeterminedManually:1];
-  v3 = [MEMORY[0x277CE7178] sharedInstance];
-  [v3 takeScreenshot];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] takeScreenshot];
 
   v4 = dispatch_time(0, 1000000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -5752,26 +5752,26 @@ uint64_t __60__CACSpokenCommand_CACSpokenCommandHardware__takeScreenshot__block_
 
 - (void)activateControlCenter
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 toggleControlCenter];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] toggleControlCenter];
 }
 
 - (void)hideControlCenter
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 toggleControlCenter];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] toggleControlCenter];
 }
 
 - (void)activateNotificationCenter
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 toggleNotificationCenter];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] toggleNotificationCenter];
 }
 
 - (void)hideNotificationCenter
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 toggleNotificationCenter];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] toggleNotificationCenter];
 }
 
 - (void)lockScreen
@@ -5790,116 +5790,116 @@ void __56__CACSpokenCommand_CACSpokenCommandHardware__lockScreen__block_invoke()
 
 - (void)rotateToPortrait
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 orientation];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  orientation = [currentDevice orientation];
 
-  v4 = [MEMORY[0x277CE7178] sharedInstance];
-  v5 = v4;
-  if (v3 == 5)
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  v5 = mEMORY[0x277CE7178];
+  if (orientation == 5)
   {
-    [v4 rotateUpsideDown];
+    [mEMORY[0x277CE7178] rotateUpsideDown];
   }
 
   else
   {
-    [v4 rotatePortrait];
+    [mEMORY[0x277CE7178] rotatePortrait];
   }
 }
 
 - (void)rotateToLandscape
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 orientation];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  orientation = [currentDevice orientation];
 
-  v4 = [MEMORY[0x277CE7178] sharedInstance];
-  v5 = v4;
-  if (v3 == 3)
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  v5 = mEMORY[0x277CE7178];
+  if (orientation == 3)
   {
-    [v4 rotateRight];
+    [mEMORY[0x277CE7178] rotateRight];
   }
 
   else
   {
-    [v4 rotateLeft];
+    [mEMORY[0x277CE7178] rotateLeft];
   }
 }
 
 - (void)tripleClick
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 activateTripleClick];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] activateTripleClick];
 }
 
 - (void)shake
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 shake];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] shake];
 }
 
 - (void)increaseZoomLevel
 {
-  v2 = [MEMORY[0x277D7EA38] sharedInstance];
-  [v2 zoomLevel];
+  mEMORY[0x277D7EA38] = [MEMORY[0x277D7EA38] sharedInstance];
+  [mEMORY[0x277D7EA38] zoomLevel];
   v4 = v3;
 
-  v5 = [MEMORY[0x277D7EA38] sharedInstance];
-  [v5 setZoomLevel:v4 * 1.2];
+  mEMORY[0x277D7EA38]2 = [MEMORY[0x277D7EA38] sharedInstance];
+  [mEMORY[0x277D7EA38]2 setZoomLevel:v4 * 1.2];
 }
 
 - (void)decreaseZoomLevel
 {
-  v2 = [MEMORY[0x277D7EA38] sharedInstance];
-  [v2 zoomLevel];
+  mEMORY[0x277D7EA38] = [MEMORY[0x277D7EA38] sharedInstance];
+  [mEMORY[0x277D7EA38] zoomLevel];
   v4 = v3;
 
-  v5 = [MEMORY[0x277D7EA38] sharedInstance];
-  [v5 setZoomLevel:v4 / 1.2];
+  mEMORY[0x277D7EA38]2 = [MEMORY[0x277D7EA38] sharedInstance];
+  [mEMORY[0x277D7EA38]2 setZoomLevel:v4 / 1.2];
 }
 
 - (void)minimizeZoomLevel
 {
-  v2 = [MEMORY[0x277D7EA38] sharedInstance];
-  [v2 setZoomLevel:1.0];
+  mEMORY[0x277D7EA38] = [MEMORY[0x277D7EA38] sharedInstance];
+  [mEMORY[0x277D7EA38] setZoomLevel:1.0];
 }
 
 - (void)maximizeZoomLevel
 {
-  v2 = [MEMORY[0x277CE7E20] sharedInstance];
-  [v2 zoomPreferredMaximumZoomScale];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  [mEMORY[0x277CE7E20] zoomPreferredMaximumZoomScale];
   v4 = v3;
 
-  v5 = [MEMORY[0x277D7EA38] sharedInstance];
-  [v5 setZoomLevel:v4];
+  mEMORY[0x277D7EA38] = [MEMORY[0x277D7EA38] sharedInstance];
+  [mEMORY[0x277D7EA38] setZoomLevel:v4];
 }
 
 - (void)panZoomLeft
 {
-  v2 = [MEMORY[0x277D7EA38] sharedInstance];
-  [v2 panLeft];
+  mEMORY[0x277D7EA38] = [MEMORY[0x277D7EA38] sharedInstance];
+  [mEMORY[0x277D7EA38] panLeft];
 }
 
 - (void)panZoomRight
 {
-  v2 = [MEMORY[0x277D7EA38] sharedInstance];
-  [v2 panRight];
+  mEMORY[0x277D7EA38] = [MEMORY[0x277D7EA38] sharedInstance];
+  [mEMORY[0x277D7EA38] panRight];
 }
 
 - (void)panZoomUp
 {
-  v2 = [MEMORY[0x277D7EA38] sharedInstance];
-  [v2 panUp];
+  mEMORY[0x277D7EA38] = [MEMORY[0x277D7EA38] sharedInstance];
+  [mEMORY[0x277D7EA38] panUp];
 }
 
 - (void)panZoomDown
 {
-  v2 = [MEMORY[0x277D7EA38] sharedInstance];
-  [v2 panDown];
+  mEMORY[0x277D7EA38] = [MEMORY[0x277D7EA38] sharedInstance];
+  [mEMORY[0x277D7EA38] panDown];
 }
 
 - (void)activateSpeakScreen
 {
-  v2 = [MEMORY[0x277D65360] sharedInstance];
-  [v2 speakThisWithOptions:12 errorHandler:&__block_literal_global_307];
+  mEMORY[0x277D65360] = [MEMORY[0x277D65360] sharedInstance];
+  [mEMORY[0x277D65360] speakThisWithOptions:12 errorHandler:&__block_literal_global_307];
 }
 
 void __65__CACSpokenCommand_CACSpokenCommandHardware__activateSpeakScreen__block_invoke(uint64_t a1, void *a2)
@@ -5914,65 +5914,65 @@ void __65__CACSpokenCommand_CACSpokenCommandHardware__activateSpeakScreen__block
 
 - (void)activateSOS
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 activateSOSMode];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] activateSOSMode];
 }
 
 - (void)activateDock
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 toggleDock];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] toggleDock];
 }
 
 - (void)activateMenuBar
 {
-  v2 = [MEMORY[0x277CE7E40] server];
-  v3 = [v2 isMenuBarVisible];
+  server = [MEMORY[0x277CE7E40] server];
+  isMenuBarVisible = [server isMenuBarVisible];
 
-  v4 = [MEMORY[0x277CE7E40] server];
-  [v4 setMenuBarVisible:v3 ^ 1u];
+  server2 = [MEMORY[0x277CE7E40] server];
+  [server2 setMenuBarVisible:isMenuBarVisible ^ 1u];
 }
 
 - (void)activateApplePay
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 armApplePay];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] armApplePay];
 }
 
 - (void)systemPressCameraButton
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 pressCameraButton];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] pressCameraButton];
 }
 
 - (void)systemLightPressCameraButton
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 lightPressCameraButton];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] lightPressCameraButton];
 }
 
 - (void)systemDoubleLightPressCameraButton
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 doubleLightPressCameraButton];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] doubleLightPressCameraButton];
 }
 
 - (void)systemLongPressCameraButton
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
   {
-    v4 = [MEMORY[0x277CE7178] sharedInstance];
-    [v4 performSelector:sel_openVisualIntelligence];
+    mEMORY[0x277CE7178]2 = [MEMORY[0x277CE7178] sharedInstance];
+    [mEMORY[0x277CE7178]2 performSelector:sel_openVisualIntelligence];
   }
 }
 
 - (void)activateSysdiagnose
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 performSysdiagnoseWithStatusUpdateHandler:&__block_literal_global_310_0];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] performSysdiagnoseWithStatusUpdateHandler:&__block_literal_global_310_0];
 }
 
 void __65__CACSpokenCommand_CACSpokenCommandHardware__activateSysdiagnose__block_invoke(uint64_t a1, void *a2)
@@ -6011,269 +6011,269 @@ void __65__CACSpokenCommand_CACSpokenCommandHardware__activateSysdiagnose__block
 
 - (void)reboot
 {
-  v2 = [MEMORY[0x277CE7178] sharedInstance];
-  [v2 rebootDevice];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] rebootDevice];
 }
 
-- (void)selectCurrentCharacter:(id)a3
+- (void)selectCurrentCharacter:(id)character
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  characterCopy = character;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:characterCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectCurrentCharacter];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectCurrentCharacter];
 }
 
-- (void)selectPreviousCharacter:(id)a3
+- (void)selectPreviousCharacter:(id)character
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  characterCopy = character;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:characterCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectPreviousCharacterWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectPreviousCharacterWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)selectNextCharacter:(id)a3
+- (void)selectNextCharacter:(id)character
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  characterCopy = character;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:characterCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectNextCharacterWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectNextCharacterWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)selectCurrentWord:(id)a3
+- (void)selectCurrentWord:(id)word
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  wordCopy = word;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:wordCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectCurrentWord];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectCurrentWord];
 }
 
-- (void)selectPreviousWord:(id)a3
+- (void)selectPreviousWord:(id)word
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  wordCopy = word;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:wordCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectPreviousWordWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectPreviousWordWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)selectNextWord:(id)a3
+- (void)selectNextWord:(id)word
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  wordCopy = word;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:wordCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectNextWordWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectNextWordWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)selectCurrentSentence:(id)a3
+- (void)selectCurrentSentence:(id)sentence
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  sentenceCopy = sentence;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:sentenceCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectCurrentSentence];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectCurrentSentence];
 }
 
-- (void)selectPreviousSentence:(id)a3
+- (void)selectPreviousSentence:(id)sentence
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  sentenceCopy = sentence;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:sentenceCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectPreviousSentenceWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectPreviousSentenceWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)selectNextSentence:(id)a3
+- (void)selectNextSentence:(id)sentence
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  sentenceCopy = sentence;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:sentenceCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectNextSentenceWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectNextSentenceWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)selectCurrentParagraph:(id)a3
+- (void)selectCurrentParagraph:(id)paragraph
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  paragraphCopy = paragraph;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:paragraphCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectCurrentParagraph];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectCurrentParagraph];
 }
 
-- (void)selectPreviousParagraph:(id)a3
+- (void)selectPreviousParagraph:(id)paragraph
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  paragraphCopy = paragraph;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:paragraphCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectPreviousParagraphWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectPreviousParagraphWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)selectNextParagraph:(id)a3
+- (void)selectNextParagraph:(id)paragraph
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  paragraphCopy = paragraph;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:paragraphCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectNextParagraphWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectNextParagraphWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)selectCurrentLine:(id)a3
+- (void)selectCurrentLine:(id)line
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  lineCopy = line;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:lineCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectCurrentLine];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectCurrentLine];
 }
 
-- (void)selectPreviousLine:(id)a3
+- (void)selectPreviousLine:(id)line
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  lineCopy = line;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:lineCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectPreviousLineWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectPreviousLineWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)selectNextLine:(id)a3
+- (void)selectNextLine:(id)line
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  lineCopy = line;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:lineCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 selectNextLineWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine selectNextLineWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)extendSelectionToEnd:(id)a3
+- (void)extendSelectionToEnd:(id)end
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  endCopy = end;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:endCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 extendSelectionToEnd];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine extendSelectionToEnd];
 }
 
-- (void)extendSelectionToBeginning:(id)a3
+- (void)extendSelectionToBeginning:(id)beginning
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  beginningCopy = beginning;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:beginningCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 extendSelectionToBeginning];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine extendSelectionToBeginning];
 }
 
-- (void)extendSelectionForwardCharactersUsingCardinalNumber:(id)a3
+- (void)extendSelectionForwardCharactersUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 extendSelectionForwardCharactersWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine extendSelectionForwardCharactersWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)extendSelectionBackwardCharactersUsingCardinalNumber:(id)a3
+- (void)extendSelectionBackwardCharactersUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 extendSelectionBackwardCharactersWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine extendSelectionBackwardCharactersWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)extendSelectionForwardWordsUsingCardinalNumber:(id)a3
+- (void)extendSelectionForwardWordsUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 extendSelectionForwardWordsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine extendSelectionForwardWordsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)extendSelectionBackwardWordsUsingCardinalNumber:(id)a3
+- (void)extendSelectionBackwardWordsUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 extendSelectionBackwardWordsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine extendSelectionBackwardWordsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)extendSelectionForwardSentencesUsingCardinalNumber:(id)a3
+- (void)extendSelectionForwardSentencesUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 extendSelectionForwardSentencesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine extendSelectionForwardSentencesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)extendSelectionBackwardSentencesUsingCardinalNumber:(id)a3
+- (void)extendSelectionBackwardSentencesUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 extendSelectionBackwardSentencesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine extendSelectionBackwardSentencesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)extendSelectionForwardParagraphsUsingCardinalNumber:(id)a3
+- (void)extendSelectionForwardParagraphsUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 extendSelectionForwardParagraphsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine extendSelectionForwardParagraphsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)extendSelectionBackwardParagraphsUsingCardinalNumber:(id)a3
+- (void)extendSelectionBackwardParagraphsUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 extendSelectionBackwardParagraphsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine extendSelectionBackwardParagraphsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)extendSelectionForwardLinesUsingCardinalNumber:(id)a3
+- (void)extendSelectionForwardLinesUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 extendSelectionForwardLinesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine extendSelectionForwardLinesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)extendSelectionBackwardLinesUsingCardinalNumber:(id)a3
+- (void)extendSelectionBackwardLinesUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 extendSelectionBackwardLinesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine extendSelectionBackwardLinesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)selectPhrase:(id)a3
+- (void)selectPhrase:(id)phrase
 {
-  v4 = a3;
-  v15 = [(CACSpokenCommand *)self recognizedParameters];
-  v5 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  phraseCopy = phrase;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v5 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:phraseCopy];
 
-  v6 = [(CACTextEditingProvider *)v5 textEditingEngine];
-  v7 = [v15 objectForKey:*MEMORY[0x277D655C8]];
+  textEditingEngine = [(CACTextEditingProvider *)v5 textEditingEngine];
+  v7 = [recognizedParameters objectForKey:*MEMORY[0x277D655C8]];
   v8 = [v7 objectForKey:*MEMORY[0x277D65620]];
-  v9 = [v15 objectForKey:*MEMORY[0x277D655D0]];
+  v9 = [recognizedParameters objectForKey:*MEMORY[0x277D655D0]];
   v10 = [v9 objectForKey:*MEMORY[0x277D65610]];
-  v11 = [(CACSpokenCommand *)self contextEvaluation];
-  v12 = [v11 objectForKey:kCACCommandContextDeferRecognizedStringDisplay];
+  contextEvaluation = [(CACSpokenCommand *)self contextEvaluation];
+  v12 = [contextEvaluation objectForKey:kCACCommandContextDeferRecognizedStringDisplay];
   if ([v12 BOOLValue])
   {
-    v13 = v15;
+    v13 = recognizedParameters;
   }
 
   else
@@ -6281,27 +6281,27 @@ void __65__CACSpokenCommand_CACSpokenCommandHardware__activateSysdiagnose__block
     v13 = 0;
   }
 
-  v14 = [(CACSpokenCommand *)self identifier];
-  [v6 selectFromPhraseVariants:v8 insertionString:v10 recognizedParameters:v13 commandIdentifer:v14];
+  identifier = [(CACSpokenCommand *)self identifier];
+  [textEditingEngine selectFromPhraseVariants:v8 insertionString:v10 recognizedParameters:v13 commandIdentifer:identifier];
 }
 
-- (void)selectPhraseThroughPhrase:(id)a3
+- (void)selectPhraseThroughPhrase:(id)phrase
 {
-  v4 = a3;
-  v16 = [(CACSpokenCommand *)self recognizedParameters];
-  v5 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  phraseCopy = phrase;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v5 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:phraseCopy];
 
-  v6 = [(CACTextEditingProvider *)v5 textEditingEngine];
-  v7 = [v16 objectForKey:*MEMORY[0x277D655C8]];
+  textEditingEngine = [(CACTextEditingProvider *)v5 textEditingEngine];
+  v7 = [recognizedParameters objectForKey:*MEMORY[0x277D655C8]];
   v8 = MEMORY[0x277D65620];
   v9 = [v7 objectForKey:*MEMORY[0x277D65620]];
-  v10 = [v16 objectForKey:*MEMORY[0x277D655D0]];
+  v10 = [recognizedParameters objectForKey:*MEMORY[0x277D655D0]];
   v11 = [v10 objectForKey:*v8];
-  v12 = [(CACSpokenCommand *)self contextEvaluation];
-  v13 = [v12 objectForKey:kCACCommandContextDeferRecognizedStringDisplay];
+  contextEvaluation = [(CACSpokenCommand *)self contextEvaluation];
+  v13 = [contextEvaluation objectForKey:kCACCommandContextDeferRecognizedStringDisplay];
   if ([v13 BOOLValue])
   {
-    v14 = v16;
+    v14 = recognizedParameters;
   }
 
   else
@@ -6309,28 +6309,28 @@ void __65__CACSpokenCommand_CACSpokenCommandHardware__activateSysdiagnose__block
     v14 = 0;
   }
 
-  v15 = [(CACSpokenCommand *)self identifier];
-  [v6 selectFromPhraseVariants:v9 throughPhraseVariants:v11 recognizedParameters:v14 commandIdentifer:v15];
+  identifier = [(CACSpokenCommand *)self identifier];
+  [textEditingEngine selectFromPhraseVariants:v9 throughPhraseVariants:v11 recognizedParameters:v14 commandIdentifer:identifier];
 }
 
-- (void)selectNext:(id)a3
+- (void)selectNext:(id)next
 {
   v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v10 = [v4 resolvedNextSpokenCommand];
+  resolvedNextSpokenCommand = [v4 resolvedNextSpokenCommand];
 
-  if (v10)
+  if (resolvedNextSpokenCommand)
   {
     v5 = objc_opt_new();
-    v6 = [v10 recognizedParameters];
-    [v5 addEntriesFromDictionary:v6];
+    recognizedParameters = [resolvedNextSpokenCommand recognizedParameters];
+    [v5 addEntriesFromDictionary:recognizedParameters];
 
-    v7 = [(CACSpokenCommand *)self recognizedParameters];
-    v8 = [v7 objectForKey:kCACCommandParameterText];
+    recognizedParameters2 = [(CACSpokenCommand *)self recognizedParameters];
+    v8 = [recognizedParameters2 objectForKey:kCACCommandParameterText];
     [v5 setObject:v8 forKey:kCACCommandParameterText];
 
-    [v10 setRecognizedParameters:v5];
+    [resolvedNextSpokenCommand setRecognizedParameters:v5];
     v9 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    [v9 handleRecognizedCommand:v10];
+    [v9 handleRecognizedCommand:resolvedNextSpokenCommand];
   }
 
   else
@@ -6341,24 +6341,24 @@ void __65__CACSpokenCommand_CACSpokenCommandHardware__activateSysdiagnose__block
   }
 }
 
-- (void)selectPrevious:(id)a3
+- (void)selectPrevious:(id)previous
 {
   v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v10 = [v4 resolvedPreviousSpokenCommand];
+  resolvedPreviousSpokenCommand = [v4 resolvedPreviousSpokenCommand];
 
-  if (v10)
+  if (resolvedPreviousSpokenCommand)
   {
     v5 = objc_opt_new();
-    v6 = [v10 recognizedParameters];
-    [v5 addEntriesFromDictionary:v6];
+    recognizedParameters = [resolvedPreviousSpokenCommand recognizedParameters];
+    [v5 addEntriesFromDictionary:recognizedParameters];
 
-    v7 = [(CACSpokenCommand *)self recognizedParameters];
-    v8 = [v7 objectForKey:kCACCommandParameterText];
+    recognizedParameters2 = [(CACSpokenCommand *)self recognizedParameters];
+    v8 = [recognizedParameters2 objectForKey:kCACCommandParameterText];
     [v5 setObject:v8 forKey:kCACCommandParameterText];
 
-    [v10 setRecognizedParameters:v5];
+    [resolvedPreviousSpokenCommand setRecognizedParameters:v5];
     v9 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    [v9 handleRecognizedCommand:v10];
+    [v9 handleRecognizedCommand:resolvedPreviousSpokenCommand];
   }
 
   else
@@ -6369,23 +6369,23 @@ void __65__CACSpokenCommand_CACSpokenCommandHardware__activateSysdiagnose__block
   }
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v4 = a3;
-  v5 = [v4 cacTextSelectionCACTextMarkerRange];
-  v6 = [v4 cacStringForCACTextMarkerRange:v5];
+  allCopy = all;
+  cacTextSelectionCACTextMarkerRange = [allCopy cacTextSelectionCACTextMarkerRange];
+  v6 = [allCopy cacStringForCACTextMarkerRange:cacTextSelectionCACTextMarkerRange];
 
   if ([v6 length])
   {
-    [(CACSpokenCommand *)self goToStartOfDocument:v4];
+    [(CACSpokenCommand *)self goToStartOfDocument:allCopy];
     v7 = dispatch_time(0, 250000000);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __59__CACSpokenCommand_CACSpokenCommandTextEditing__selectAll___block_invoke_2;
     v11[3] = &unk_279CEB2D0;
     v8 = &v12;
-    v12 = v4;
-    v9 = v4;
+    v12 = allCopy;
+    v9 = allCopy;
     dispatch_after(v7, MEMORY[0x277D85CD0], v11);
   }
 
@@ -6396,51 +6396,51 @@ void __65__CACSpokenCommand_CACSpokenCommandHardware__activateSysdiagnose__block
     block[2] = __59__CACSpokenCommand_CACSpokenCommandTextEditing__selectAll___block_invoke;
     block[3] = &unk_279CEB2D0;
     v8 = &v14;
-    v14 = v4;
-    v10 = v4;
+    v14 = allCopy;
+    v10 = allCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
 
-- (void)selectPreviousTextInsertion:(id)a3
+- (void)selectPreviousTextInsertion:(id)insertion
 {
-  v7 = a3;
-  [v7 selectedTextRange];
+  insertionCopy = insertion;
+  [insertionCopy selectedTextRange];
   if (!v4)
   {
-    v5 = [(CACSpokenCommand *)self _rangeFromPreviousTextInsertionForAXElement:v7];
+    v5 = [(CACSpokenCommand *)self _rangeFromPreviousTextInsertionForAXElement:insertionCopy];
     if (v6)
     {
-      [v7 cacSetTextSelectionToRange:{v5, v6}];
+      [insertionCopy cacSetTextSelectionToRange:{v5, v6}];
     }
   }
 }
 
-- (void)unselect:(id)a3
+- (void)unselect:(id)unselect
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  unselectCopy = unselect;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:unselectCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToStartOfSelection];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToStartOfSelection];
 }
 
-- (void)moveLeft:(id)a3
+- (void)moveLeft:(id)left
 {
-  v9 = a3;
-  v4 = [(CACSpokenCommand *)self recognizedParameters];
-  v5 = [v4 objectForKey:*MEMORY[0x277D655E8]];
+  leftCopy = left;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v5 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v5 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v7 = [v6 intValue];
-    if (v7 < 1)
+    intValue = [v6 intValue];
+    if (intValue < 1)
     {
       goto LABEL_6;
     }
 
-    v8 = v7;
+    v8 = intValue;
   }
 
   else
@@ -6450,7 +6450,7 @@ void __65__CACSpokenCommand_CACSpokenCommandHardware__activateSysdiagnose__block
 
   do
   {
-    [(CACSpokenCommand *)self moveLeftCharactersUsingCardinalNumber:v9];
+    [(CACSpokenCommand *)self moveLeftCharactersUsingCardinalNumber:leftCopy];
     --v8;
   }
 
@@ -6458,22 +6458,22 @@ void __65__CACSpokenCommand_CACSpokenCommandHardware__activateSysdiagnose__block
 LABEL_6:
 }
 
-- (void)moveRight:(id)a3
+- (void)moveRight:(id)right
 {
-  v9 = a3;
-  v4 = [(CACSpokenCommand *)self recognizedParameters];
-  v5 = [v4 objectForKey:*MEMORY[0x277D655E8]];
+  rightCopy = right;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v5 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v6 = [v5 objectForKey:kCACCommandParameterText];
 
   if (v6)
   {
-    v7 = [v6 intValue];
-    if (v7 < 1)
+    intValue = [v6 intValue];
+    if (intValue < 1)
     {
       goto LABEL_6;
     }
 
-    v8 = v7;
+    v8 = intValue;
   }
 
   else
@@ -6483,7 +6483,7 @@ LABEL_6:
 
   do
   {
-    [(CACSpokenCommand *)self moveRightCharactersUsingCardinalNumber:v9];
+    [(CACSpokenCommand *)self moveRightCharactersUsingCardinalNumber:rightCopy];
     --v8;
   }
 
@@ -6491,23 +6491,23 @@ LABEL_6:
 LABEL_6:
 }
 
-- (void)moveUp:(id)a3
+- (void)moveUp:(id)up
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CACSpokenCommand *)self recognizedParameters];
-  v6 = [v5 objectForKey:*MEMORY[0x277D655E8]];
+  upCopy = up;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v6 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v7 = [v6 objectForKey:kCACCommandParameterText];
 
   if (v7)
   {
-    v8 = [v7 intValue];
-    if (v8 < 1)
+    intValue = [v7 intValue];
+    if (intValue < 1)
     {
       goto LABEL_11;
     }
 
-    v9 = v8;
+    v9 = intValue;
   }
 
   else
@@ -6518,27 +6518,27 @@ LABEL_6:
   v10 = MEMORY[0x277CE6E38];
   do
   {
-    v11 = [v4 cacTextSelectionCACTextMarkerRange];
-    v12 = [v11 nsRange];
+    cacTextSelectionCACTextMarkerRange = [upCopy cacTextSelectionCACTextMarkerRange];
+    nsRange = [cacTextSelectionCACTextMarkerRange nsRange];
 
-    v13 = [v4 uiElement];
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
+    uiElement = [upCopy uiElement];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:nsRange];
     v18[0] = v14;
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:4];
     v18[1] = v15;
     v18[2] = &unk_287BEFEB0;
-    v16 = [v13 objectWithAXAttribute:94015 parameter:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v18, 3)}];
+    v16 = [uiElement objectWithAXAttribute:94015 parameter:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v18, 3)}];
 
     if (v16 && [v16 unsignedIntegerValue] != 0x7FFFFFFF)
     {
-      v17 = +[CACTextMarkerRange markerRangeWithNSRange:](CACTextMarkerRange, "markerRangeWithNSRange:", [v16 unsignedIntegerValue], 0);
-      [v4 cacSetTextSelectionToCACTextMarkerRange:v17];
+      textOperationsOperator = +[CACTextMarkerRange markerRangeWithNSRange:](CACTextMarkerRange, "markerRangeWithNSRange:", [v16 unsignedIntegerValue], 0);
+      [upCopy cacSetTextSelectionToCACTextMarkerRange:textOperationsOperator];
     }
 
     else
     {
-      v17 = [v4 textOperationsOperator];
-      [v17 performAction:2012 withValue:*v10];
+      textOperationsOperator = [upCopy textOperationsOperator];
+      [textOperationsOperator performAction:2012 withValue:*v10];
     }
 
     --v9;
@@ -6548,23 +6548,23 @@ LABEL_6:
 LABEL_11:
 }
 
-- (void)moveDown:(id)a3
+- (void)moveDown:(id)down
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CACSpokenCommand *)self recognizedParameters];
-  v6 = [v5 objectForKey:*MEMORY[0x277D655E8]];
+  downCopy = down;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v6 = [recognizedParameters objectForKey:*MEMORY[0x277D655E8]];
   v7 = [v6 objectForKey:kCACCommandParameterText];
 
   if (v7)
   {
-    v8 = [v7 intValue];
-    if (v8 < 1)
+    intValue = [v7 intValue];
+    if (intValue < 1)
     {
       goto LABEL_11;
     }
 
-    v9 = v8;
+    v9 = intValue;
   }
 
   else
@@ -6575,28 +6575,28 @@ LABEL_11:
   v10 = MEMORY[0x277CE6E30];
   do
   {
-    v11 = [v4 cacTextSelectionCACTextMarkerRange];
-    v12 = [v11 nsRange];
+    cacTextSelectionCACTextMarkerRange = [downCopy cacTextSelectionCACTextMarkerRange];
+    nsRange = [cacTextSelectionCACTextMarkerRange nsRange];
     v14 = v13;
 
-    v15 = [v4 uiElement];
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12 + v14];
+    uiElement = [downCopy uiElement];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:nsRange + v14];
     v20[0] = v16;
     v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:5];
     v20[1] = v17;
     v20[2] = &unk_287BEFEB0;
-    v18 = [v15 objectWithAXAttribute:94015 parameter:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v20, 3)}];
+    v18 = [uiElement objectWithAXAttribute:94015 parameter:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v20, 3)}];
 
     if (v18 && [v18 unsignedIntegerValue] != 0x7FFFFFFF)
     {
-      v19 = +[CACTextMarkerRange markerRangeWithNSRange:](CACTextMarkerRange, "markerRangeWithNSRange:", [v18 unsignedIntegerValue], 0);
-      [v4 cacSetTextSelectionToCACTextMarkerRange:v19];
+      textOperationsOperator = +[CACTextMarkerRange markerRangeWithNSRange:](CACTextMarkerRange, "markerRangeWithNSRange:", [v18 unsignedIntegerValue], 0);
+      [downCopy cacSetTextSelectionToCACTextMarkerRange:textOperationsOperator];
     }
 
     else
     {
-      v19 = [v4 textOperationsOperator];
-      [v19 performAction:2012 withValue:*v10];
+      textOperationsOperator = [downCopy textOperationsOperator];
+      [textOperationsOperator performAction:2012 withValue:*v10];
     }
 
     --v9;
@@ -6606,566 +6606,566 @@ LABEL_11:
 LABEL_11:
 }
 
-- (void)goToStartOfSelection:(id)a3
+- (void)goToStartOfSelection:(id)selection
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  selectionCopy = selection;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:selectionCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToStartOfSelection];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToStartOfSelection];
 }
 
-- (void)goToEndOfSelection:(id)a3
+- (void)goToEndOfSelection:(id)selection
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  selectionCopy = selection;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:selectionCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToEndOfSelection];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToEndOfSelection];
 }
 
-- (void)goToStartOfWord:(id)a3
+- (void)goToStartOfWord:(id)word
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  wordCopy = word;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:wordCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToStartOfWordWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToStartOfWordWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)goToEndOfWord:(id)a3
+- (void)goToEndOfWord:(id)word
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  wordCopy = word;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:wordCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToEndOfWordWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToEndOfWordWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)goToStartOfSentence:(id)a3
+- (void)goToStartOfSentence:(id)sentence
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  sentenceCopy = sentence;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:sentenceCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToStartOfSentenceWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToStartOfSentenceWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)goToEndOfSentence:(id)a3
+- (void)goToEndOfSentence:(id)sentence
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  sentenceCopy = sentence;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:sentenceCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToEndOfSentenceWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToEndOfSentenceWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)goToStartOfParagraph:(id)a3
+- (void)goToStartOfParagraph:(id)paragraph
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  paragraphCopy = paragraph;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:paragraphCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToStartOfParagraphWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToStartOfParagraphWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)goToEndOfParagraph:(id)a3
+- (void)goToEndOfParagraph:(id)paragraph
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  paragraphCopy = paragraph;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:paragraphCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToEndOfParagraphWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToEndOfParagraphWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)goToStartOfLine:(id)a3
+- (void)goToStartOfLine:(id)line
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  lineCopy = line;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:lineCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToStartOfLineWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToStartOfLineWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)goToEndOfLine:(id)a3
+- (void)goToEndOfLine:(id)line
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  lineCopy = line;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:lineCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToEndOfLineWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToEndOfLineWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)goToStartOfDocument:(id)a3
+- (void)goToStartOfDocument:(id)document
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  documentCopy = document;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:documentCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToStartOfTextArea];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToStartOfTextArea];
 }
 
-- (void)goToEndOfDocument:(id)a3
+- (void)goToEndOfDocument:(id)document
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  documentCopy = document;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:documentCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveToEndOfTextArea];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveToEndOfTextArea];
 }
 
-- (void)moveForwardCharactersUsingCardinalNumber:(id)a3
+- (void)moveForwardCharactersUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveForwardCharactersWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveForwardCharactersWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)moveBackwardCharactersUsingCardinalNumber:(id)a3
+- (void)moveBackwardCharactersUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveBackwardCharactersWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveBackwardCharactersWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)moveForwardWordsUsingCardinalNumber:(id)a3
+- (void)moveForwardWordsUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveForwardWordsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveForwardWordsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)moveBackwardWordsUsingCardinalNumber:(id)a3
+- (void)moveBackwardWordsUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveBackwardWordsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveBackwardWordsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)moveForwardSentencesUsingCardinalNumber:(id)a3
+- (void)moveForwardSentencesUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveForwardSentencesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveForwardSentencesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)moveBackwardSentencesUsingCardinalNumber:(id)a3
+- (void)moveBackwardSentencesUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveBackwardSentencesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveBackwardSentencesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)moveForwardParagraphsUsingCardinalNumber:(id)a3
+- (void)moveForwardParagraphsUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveForwardParagraphsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveForwardParagraphsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)moveBackwardParagraphsUsingCardinalNumber:(id)a3
+- (void)moveBackwardParagraphsUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveBackwardParagraphsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveBackwardParagraphsWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)moveForwardLinesUsingCardinalNumber:(id)a3
+- (void)moveForwardLinesUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveForwardLinesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveForwardLinesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)moveBackwardLinesUsingCardinalNumber:(id)a3
+- (void)moveBackwardLinesUsingCardinalNumber:(id)number
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  numberCopy = number;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:numberCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 moveBackwardLinesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine moveBackwardLinesWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
 - (BOOL)_isLeftToRightWritingSystem
 {
   v2 = MEMORY[0x277CBEAF8];
-  v3 = [MEMORY[0x277D79890] shared];
-  v4 = [v3 activeLocale];
-  v5 = [v4 localeIdentifier];
-  LOBYTE(v2) = [v2 characterDirectionForLanguage:v5] != 2;
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  activeLocale = [mEMORY[0x277D79890] activeLocale];
+  localeIdentifier = [activeLocale localeIdentifier];
+  LOBYTE(v2) = [v2 characterDirectionForLanguage:localeIdentifier] != 2;
 
   return v2;
 }
 
-- (void)moveRightCharactersUsingCardinalNumber:(id)a3
+- (void)moveRightCharactersUsingCardinalNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   if ([(CACSpokenCommand *)self _isLeftToRightWritingSystem])
   {
-    [(CACSpokenCommand *)self moveForwardCharactersUsingCardinalNumber:v4];
+    [(CACSpokenCommand *)self moveForwardCharactersUsingCardinalNumber:numberCopy];
   }
 
   else
   {
-    [(CACSpokenCommand *)self moveBackwardCharactersUsingCardinalNumber:v4];
+    [(CACSpokenCommand *)self moveBackwardCharactersUsingCardinalNumber:numberCopy];
   }
 }
 
-- (void)moveLeftCharactersUsingCardinalNumber:(id)a3
+- (void)moveLeftCharactersUsingCardinalNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   if ([(CACSpokenCommand *)self _isLeftToRightWritingSystem])
   {
-    [(CACSpokenCommand *)self moveBackwardCharactersUsingCardinalNumber:v4];
+    [(CACSpokenCommand *)self moveBackwardCharactersUsingCardinalNumber:numberCopy];
   }
 
   else
   {
-    [(CACSpokenCommand *)self moveForwardCharactersUsingCardinalNumber:v4];
+    [(CACSpokenCommand *)self moveForwardCharactersUsingCardinalNumber:numberCopy];
   }
 }
 
-- (void)moveRightWordsUsingCardinalNumber:(id)a3
+- (void)moveRightWordsUsingCardinalNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   if ([(CACSpokenCommand *)self _isLeftToRightWritingSystem])
   {
-    [(CACSpokenCommand *)self moveForwardWordsUsingCardinalNumber:v4];
+    [(CACSpokenCommand *)self moveForwardWordsUsingCardinalNumber:numberCopy];
   }
 
   else
   {
-    [(CACSpokenCommand *)self moveBackwardWordsUsingCardinalNumber:v4];
+    [(CACSpokenCommand *)self moveBackwardWordsUsingCardinalNumber:numberCopy];
   }
 }
 
-- (void)moveLeftWordsUsingCardinalNumber:(id)a3
+- (void)moveLeftWordsUsingCardinalNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   if ([(CACSpokenCommand *)self _isLeftToRightWritingSystem])
   {
-    [(CACSpokenCommand *)self moveBackwardWordsUsingCardinalNumber:v4];
+    [(CACSpokenCommand *)self moveBackwardWordsUsingCardinalNumber:numberCopy];
   }
 
   else
   {
-    [(CACSpokenCommand *)self moveForwardWordsUsingCardinalNumber:v4];
+    [(CACSpokenCommand *)self moveForwardWordsUsingCardinalNumber:numberCopy];
   }
 }
 
-- (void)moveRightSentencesUsingCardinalNumber:(id)a3
+- (void)moveRightSentencesUsingCardinalNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   if ([(CACSpokenCommand *)self _isLeftToRightWritingSystem])
   {
-    [(CACSpokenCommand *)self moveForwardSentencesUsingCardinalNumber:v4];
+    [(CACSpokenCommand *)self moveForwardSentencesUsingCardinalNumber:numberCopy];
   }
 
   else
   {
-    [(CACSpokenCommand *)self moveBackwardSentencesUsingCardinalNumber:v4];
+    [(CACSpokenCommand *)self moveBackwardSentencesUsingCardinalNumber:numberCopy];
   }
 }
 
-- (void)moveLeftSentencesUsingCardinalNumber:(id)a3
+- (void)moveLeftSentencesUsingCardinalNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   if ([(CACSpokenCommand *)self _isLeftToRightWritingSystem])
   {
-    [(CACSpokenCommand *)self moveBackwardSentencesUsingCardinalNumber:v4];
+    [(CACSpokenCommand *)self moveBackwardSentencesUsingCardinalNumber:numberCopy];
   }
 
   else
   {
-    [(CACSpokenCommand *)self moveForwardSentencesUsingCardinalNumber:v4];
+    [(CACSpokenCommand *)self moveForwardSentencesUsingCardinalNumber:numberCopy];
   }
 }
 
-- (void)insertLineBelow:(id)a3
+- (void)insertLineBelow:(id)below
 {
-  v4 = a3;
-  v7 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  belowCopy = below;
+  v7 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:belowCopy];
 
-  v5 = [(CACTextEditingProvider *)v7 textEditingEngine];
-  [v5 moveToEndOfLineWithCount:1];
+  textEditingEngine = [(CACTextEditingProvider *)v7 textEditingEngine];
+  [textEditingEngine moveToEndOfLineWithCount:1];
 
   v6 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
   [v6 insertDictatedString:@"\n"];
 }
 
-- (void)insertLineAbove:(id)a3
+- (void)insertLineAbove:(id)above
 {
-  v9 = a3;
-  v4 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v9];
+  aboveCopy = above;
+  v4 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:aboveCopy];
   v5 = [(CACTextEditingProvider *)v4 markerRangeForEnumerationType:0 desiredBlock:2 count:1 options:0];
   v6 = [(CACTextEditingProvider *)v4 markerRangeForEnumerationType:0 desiredBlock:1 count:1 options:0];
   if (v6)
   {
     if (v5 && ![v5 isEqual:v6])
     {
-      [(CACSpokenCommand *)self moveUp:v9];
-      [(CACSpokenCommand *)self insertLineBelow:v9];
+      [(CACSpokenCommand *)self moveUp:aboveCopy];
+      [(CACSpokenCommand *)self insertLineBelow:aboveCopy];
     }
 
     else
     {
-      v7 = [(CACTextEditingProvider *)v4 textEditingEngine];
-      [v7 moveToStartOfLineWithCount:1];
+      textEditingEngine = [(CACTextEditingProvider *)v4 textEditingEngine];
+      [textEditingEngine moveToStartOfLineWithCount:1];
 
       v8 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
       [v8 insertDictatedString:@"\n"];
 
-      [(CACSpokenCommand *)self moveUp:v9];
+      [(CACSpokenCommand *)self moveUp:aboveCopy];
     }
   }
 }
 
-- (void)deleteCurrentCharacter:(id)a3
+- (void)deleteCurrentCharacter:(id)character
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  characterCopy = character;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:characterCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deleteCurrentCharacter];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deleteCurrentCharacter];
 }
 
-- (void)deletePreviousCharacter:(id)a3
+- (void)deletePreviousCharacter:(id)character
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  characterCopy = character;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:characterCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deletePreviousCharacterWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deletePreviousCharacterWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)deleteNextCharacter:(id)a3
+- (void)deleteNextCharacter:(id)character
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  characterCopy = character;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:characterCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deleteNextCharacterWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deleteNextCharacterWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)deleteCurrentWord:(id)a3
+- (void)deleteCurrentWord:(id)word
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  wordCopy = word;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:wordCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deleteCurrentWord];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deleteCurrentWord];
 }
 
-- (void)deletePreviousWord:(id)a3
+- (void)deletePreviousWord:(id)word
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  wordCopy = word;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:wordCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deletePreviousWordWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deletePreviousWordWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)deleteNextWord:(id)a3
+- (void)deleteNextWord:(id)word
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  wordCopy = word;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:wordCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deleteNextWordWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deleteNextWordWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)deleteCurrentSentence:(id)a3
+- (void)deleteCurrentSentence:(id)sentence
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  sentenceCopy = sentence;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:sentenceCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deleteCurrentSentence];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deleteCurrentSentence];
 }
 
-- (void)deletePreviousSentence:(id)a3
+- (void)deletePreviousSentence:(id)sentence
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  sentenceCopy = sentence;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:sentenceCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deletePreviousSentenceWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deletePreviousSentenceWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)deleteNextSentence:(id)a3
+- (void)deleteNextSentence:(id)sentence
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  sentenceCopy = sentence;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:sentenceCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deleteNextSentenceWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deleteNextSentenceWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)deleteCurrentParagraph:(id)a3
+- (void)deleteCurrentParagraph:(id)paragraph
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  paragraphCopy = paragraph;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:paragraphCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deleteCurrentParagraph];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deleteCurrentParagraph];
 }
 
-- (void)deletePreviousParagraph:(id)a3
+- (void)deletePreviousParagraph:(id)paragraph
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  paragraphCopy = paragraph;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:paragraphCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deletePreviousParagraphWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deletePreviousParagraphWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)deleteNextParagraph:(id)a3
+- (void)deleteNextParagraph:(id)paragraph
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  paragraphCopy = paragraph;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:paragraphCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deleteNextParagraphWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deleteNextParagraphWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)deleteCurrentLine:(id)a3
+- (void)deleteCurrentLine:(id)line
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  lineCopy = line;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:lineCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deleteCurrentLine];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deleteCurrentLine];
 }
 
-- (void)deletePreviousLine:(id)a3
+- (void)deletePreviousLine:(id)line
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  lineCopy = line;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:lineCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deletePreviousLineWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deletePreviousLineWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)deleteNextLine:(id)a3
+- (void)deleteNextLine:(id)line
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  lineCopy = line;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:lineCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deleteNextLineWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deleteNextLineWithCount:{-[CACSpokenCommand _textSegmentCardinalNumber](self, "_textSegmentCardinalNumber")}];
 }
 
-- (void)deleteAll:(id)a3
+- (void)deleteAll:(id)all
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  allCopy = all;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:allCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deleteAll];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deleteAll];
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  deleteCopy = delete;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:deleteCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 deleteSelection];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine deleteSelection];
 }
 
-- (void)surroundSelectionWithPunctuation:(id)a3
+- (void)surroundSelectionWithPunctuation:(id)punctuation
 {
-  v4 = a3;
-  v7 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  punctuationCopy = punctuation;
+  v7 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:punctuationCopy];
 
-  v5 = [(CACTextEditingProvider *)v7 textEditingEngine];
-  v6 = [(CACSpokenCommand *)self identifier];
-  [v5 surroundSelectionWithPunctuationForCommandIdentifier:v6];
+  textEditingEngine = [(CACTextEditingProvider *)v7 textEditingEngine];
+  identifier = [(CACSpokenCommand *)self identifier];
+  [textEditingEngine surroundSelectionWithPunctuationForCommandIdentifier:identifier];
 }
 
-- (void)applyFormat:(id)a3
+- (void)applyFormat:(id)format
 {
-  v4 = a3;
-  v7 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  formatCopy = format;
+  v7 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:formatCopy];
 
-  v5 = [(CACTextEditingProvider *)v7 textEditingEngine];
-  v6 = [(CACSpokenCommand *)self identifier];
-  [v5 applyFormatWithCommandIdentifier:v6];
+  textEditingEngine = [(CACTextEditingProvider *)v7 textEditingEngine];
+  identifier = [(CACSpokenCommand *)self identifier];
+  [textEditingEngine applyFormatWithCommandIdentifier:identifier];
 }
 
-- (void)pasteboardPaste:(id)a3
+- (void)pasteboardPaste:(id)paste
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  pasteCopy = paste;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:pasteCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 pasteboardPaste];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine pasteboardPaste];
 }
 
-- (void)pasteboardCopy:(id)a3
+- (void)pasteboardCopy:(id)copy
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  copyCopy = copy;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:copyCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 pasteboardCopy];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine pasteboardCopy];
 }
 
-- (void)pasteboardCut:(id)a3
+- (void)pasteboardCut:(id)cut
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  cutCopy = cut;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:cutCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 pasteboardCut];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine pasteboardCut];
 }
 
-- (void)correctSelection:(id)a3
+- (void)correctSelection:(id)selection
 {
-  v4 = a3;
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  selectionCopy = selection;
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:selectionCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 correctSelection];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine correctSelection];
 }
 
-- (void)addSelectionToVocabulary:(id)a3
+- (void)addSelectionToVocabulary:(id)vocabulary
 {
-  v3 = a3;
-  v5 = [v3 cacTextSelectionCACTextMarkerRange];
-  v4 = [v3 cacStringForCACTextMarkerRange:v5];
+  vocabularyCopy = vocabulary;
+  cacTextSelectionCACTextMarkerRange = [vocabularyCopy cacTextSelectionCACTextMarkerRange];
+  v4 = [vocabularyCopy cacStringForCACTextMarkerRange:cacTextSelectionCACTextMarkerRange];
 
   [VCVocabularyObjC addVocabularyEntryWithString:v4];
 }
 
-- (void)_activateKeyboardReturnKey:(id)a3
+- (void)_activateKeyboardReturnKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __76__CACSpokenCommand_CACSpokenCommandTextEditing___activateKeyboardReturnKey___block_invoke;
   v6[3] = &unk_279CEB4C0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = keyCopy;
+  selfCopy = self;
+  v5 = keyCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -7193,7 +7193,7 @@ void __76__CACSpokenCommand_CACSpokenCommandTextEditing___activateKeyboardReturn
   }
 }
 
-- (void)insertDate:(id)a3
+- (void)insertDate:(id)date
 {
   v3 = +[CACPreferences sharedPreferences];
   v4 = CFLocaleCreate(0, [v3 bestLocaleIdentifier]);
@@ -7229,13 +7229,13 @@ void __60__CACSpokenCommand_CACSpokenCommandTextEditing__insertDate___block_invo
   [v2 insertDictatedString:*(a1 + 32)];
 }
 
-- (void)insertEmoji:(id)a3
+- (void)insertEmoji:(id)emoji
 {
   v42 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v4 = [(CACSpokenCommand *)self recognizedParameters];
+  emojiCopy = emoji;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
   v5 = MEMORY[0x277D655C8];
-  v6 = [v4 objectForKey:*MEMORY[0x277D655C8]];
+  v6 = [recognizedParameters objectForKey:*MEMORY[0x277D655C8]];
   v24 = [v6 objectForKey:kCACCommandParameterText];
 
   if ([v24 length])
@@ -7264,8 +7264,8 @@ void __60__CACSpokenCommand_CACSpokenCommandTextEditing__insertDate___block_invo
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v10 = [(CACSpokenCommand *)self recognizedParameters];
-    v11 = [v10 objectForKey:*v5];
+    recognizedParameters2 = [(CACSpokenCommand *)self recognizedParameters];
+    v11 = [recognizedParameters2 objectForKey:*v5];
     obj = [v11 objectForKey:kCACCommandParameterTextVariants];
 
     v12 = [obj countByEnumeratingWithState:&v30 objects:v41 count:16];
@@ -7394,15 +7394,15 @@ void __61__CACSpokenCommand_CACSpokenCommandTextEditing__insertEmoji___block_inv
   [v2 insertDictatedAttributedString:*(a1 + 32)];
 }
 
-- (void)_smartInsertComment:(id)a3
+- (void)_smartInsertComment:(id)comment
 {
-  v3 = a3;
+  commentCopy = comment;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__CACSpokenCommand_CACSpokenCommandTextEditing___smartInsertComment___block_invoke;
   block[3] = &unk_279CEB2D0;
-  v6 = v3;
-  v4 = v3;
+  v6 = commentCopy;
+  v4 = commentCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -7435,7 +7435,7 @@ void __69__CACSpokenCommand_CACSpokenCommandTextEditing___smartInsertComment___b
   [v10 insertDictatedString:v12];
 }
 
-- (void)insertSingleLineComment:(id)a3
+- (void)insertSingleLineComment:(id)comment
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -7476,12 +7476,12 @@ void __73__CACSpokenCommand_CACSpokenCommandTextEditing__insertSingleLineComment
   }
 }
 
-- (void)_insertProgrammingSymbol:(id)a3 combineStrings:(id)a4
+- (void)_insertProgrammingSymbol:(id)symbol combineStrings:(id)strings
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(CACSpokenCommand *)self recognizedParameters];
-  v7 = [v6 objectForKey:*MEMORY[0x277D655C8]];
+  stringsCopy = strings;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v7 = [recognizedParameters objectForKey:*MEMORY[0x277D655C8]];
   v8 = [v7 objectForKey:kCACCommandParameterText];
 
   if (![v8 length])
@@ -7494,9 +7494,9 @@ void __73__CACSpokenCommand_CACSpokenCommandTextEditing__insertSingleLineComment
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-  v11 = [v10 invertedSet];
-  v12 = [v8 componentsSeparatedByCharactersInSet:v11];
+  alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+  invertedSet = [alphanumericCharacterSet invertedSet];
+  v12 = [v8 componentsSeparatedByCharactersInSet:invertedSet];
 
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
@@ -7531,7 +7531,7 @@ void __73__CACSpokenCommand_CACSpokenCommandTextEditing__insertSingleLineComment
     goto LABEL_15;
   }
 
-  v18 = v5[2](v5, v9);
+  v18 = stringsCopy[2](stringsCopy, v9);
 
   if (!v18)
   {
@@ -7834,34 +7834,34 @@ id __72__CACSpokenCommand_CACSpokenCommandTextEditing__insertAllCapsKebabCase___
 
 - (int64_t)_textSegmentCardinalNumberStart
 {
-  v2 = [(CACSpokenCommand *)self recognizedParameters];
-  v3 = [v2 objectForKey:*MEMORY[0x277D655F8]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v3 = [recognizedParameters objectForKey:*MEMORY[0x277D655F8]];
   v4 = [v3 objectForKey:kCACCommandParameterText];
 
-  v5 = [v4 integerValue];
-  return v5;
+  integerValue = [v4 integerValue];
+  return integerValue;
 }
 
 - (int64_t)_textSegmentCardinalNumberEnd
 {
-  v2 = [(CACSpokenCommand *)self recognizedParameters];
-  v3 = [v2 objectForKey:*MEMORY[0x277D65600]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v3 = [recognizedParameters objectForKey:*MEMORY[0x277D65600]];
   v4 = [v3 objectForKey:kCACCommandParameterText];
 
-  v5 = [v4 integerValue];
-  return v5;
+  integerValue = [v4 integerValue];
+  return integerValue;
 }
 
 - (id)_markerRangeForTextSegment
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(CACSpokenCommand *)self _textSegmentCardinalNumber];
+  _textSegmentCardinalNumber = [(CACSpokenCommand *)self _textSegmentCardinalNumber];
   v3 = +[CACDisplayManager sharedManager];
-  v4 = [v3 labeledTextSegmentElements];
+  labeledTextSegmentElements = [v3 labeledTextSegmentElements];
 
-  if (v2 < 1)
+  if (_textSegmentCardinalNumber < 1)
   {
-    v11 = 0;
+    textMarkerRange = 0;
   }
 
   else
@@ -7870,7 +7870,7 @@ id __72__CACSpokenCommand_CACSpokenCommandTextEditing__insertAllCapsKebabCase___
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = v4;
+    v5 = labeledTextSegmentElements;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -7886,9 +7886,9 @@ id __72__CACSpokenCommand_CACSpokenCommandTextEditing__insertAllCapsKebabCase___
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          if ([v10 number] == v2)
+          if ([v10 number] == _textSegmentCardinalNumber)
           {
-            v11 = [v10 textMarkerRange];
+            textMarkerRange = [v10 textMarkerRange];
             goto LABEL_12;
           }
         }
@@ -7903,33 +7903,33 @@ id __72__CACSpokenCommand_CACSpokenCommandTextEditing__insertAllCapsKebabCase___
       }
     }
 
-    v11 = 0;
+    textMarkerRange = 0;
 LABEL_12:
   }
 
-  return v11;
+  return textMarkerRange;
 }
 
 - (id)_markerRangeForTextSegmentRange
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(CACSpokenCommand *)self _textSegmentCardinalNumberStart];
-  v4 = [(CACSpokenCommand *)self _textSegmentCardinalNumberEnd];
+  _textSegmentCardinalNumberStart = [(CACSpokenCommand *)self _textSegmentCardinalNumberStart];
+  _textSegmentCardinalNumberEnd = [(CACSpokenCommand *)self _textSegmentCardinalNumberEnd];
   v5 = +[CACDisplayManager sharedManager];
-  v6 = [v5 labeledTextSegmentElements];
+  labeledTextSegmentElements = [v5 labeledTextSegmentElements];
 
   v7 = 0;
-  if (v3 >= 1 && v4 >= 1)
+  if (_textSegmentCardinalNumberStart >= 1 && _textSegmentCardinalNumberEnd >= 1)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = v6;
-    v7 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    textMarkerRange = labeledTextSegmentElements;
+    v7 = [textMarkerRange countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v7)
     {
-      v21 = v6;
+      v21 = labeledTextSegmentElements;
       v9 = 0;
       v10 = 0;
       v11 = *v23;
@@ -7939,18 +7939,18 @@ LABEL_12:
         {
           if (*v23 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(textMarkerRange);
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          if ([v13 number] == v3)
+          if ([v13 number] == _textSegmentCardinalNumberStart)
           {
             v14 = v13;
 
             v9 = v14;
           }
 
-          if ([v13 number] == v4)
+          if ([v13 number] == _textSegmentCardinalNumberEnd)
           {
             v15 = v13;
 
@@ -7958,25 +7958,25 @@ LABEL_12:
           }
         }
 
-        v7 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v7 = [textMarkerRange countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v7);
 
       if (!v9 || !v10)
       {
-        v6 = v21;
+        labeledTextSegmentElements = v21;
         goto LABEL_20;
       }
 
       v16 = [CACTextMarkerRange alloc];
-      v8 = [v9 textMarkerRange];
-      v17 = [v8 startMarker];
-      v18 = [v10 textMarkerRange];
-      v19 = [v18 endMarker];
-      v7 = [(CACTextMarkerRange *)v16 initWithStartMarker:v17 endMarker:v19];
+      textMarkerRange = [v9 textMarkerRange];
+      startMarker = [textMarkerRange startMarker];
+      textMarkerRange2 = [v10 textMarkerRange];
+      endMarker = [textMarkerRange2 endMarker];
+      v7 = [(CACTextMarkerRange *)v16 initWithStartMarker:startMarker endMarker:endMarker];
 
-      v6 = v21;
+      labeledTextSegmentElements = v21;
     }
 
     else
@@ -7991,86 +7991,86 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)_performActionOnTextSegment:(id)a3
+- (BOOL)_performActionOnTextSegment:(id)segment
 {
-  v4 = a3;
-  v5 = [(CACSpokenCommand *)self _markerRangeForTextSegment];
-  if (v5)
+  segmentCopy = segment;
+  _markerRangeForTextSegment = [(CACSpokenCommand *)self _markerRangeForTextSegment];
+  if (_markerRangeForTextSegment)
   {
-    v4[2](v4, v5);
+    segmentCopy[2](segmentCopy, _markerRangeForTextSegment);
   }
 
-  return v5 != 0;
+  return _markerRangeForTextSegment != 0;
 }
 
-- (BOOL)_performActionOnTextSegmentRange:(id)a3
+- (BOOL)_performActionOnTextSegmentRange:(id)range
 {
-  v4 = a3;
-  v5 = [(CACSpokenCommand *)self _markerRangeForTextSegmentRange];
-  if (v5)
+  rangeCopy = range;
+  _markerRangeForTextSegmentRange = [(CACSpokenCommand *)self _markerRangeForTextSegmentRange];
+  if (_markerRangeForTextSegmentRange)
   {
-    v4[2](v4, v5);
+    rangeCopy[2](rangeCopy, _markerRangeForTextSegmentRange);
   }
 
-  return v5 != 0;
+  return _markerRangeForTextSegmentRange != 0;
 }
 
-- (void)deleteTextSegment:(id)a3
+- (void)deleteTextSegment:(id)segment
 {
-  v4 = a3;
+  segmentCopy = segment;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__CACSpokenCommand_CACSpokenCommandTextEditing__deleteTextSegment___block_invoke;
   v6[3] = &unk_279CEC828;
-  v7 = v4;
-  v5 = v4;
+  v7 = segmentCopy;
+  v5 = segmentCopy;
   [(CACSpokenCommand *)self _performActionOnTextSegment:v6];
 }
 
-- (void)deleteTextSegmentRange:(id)a3
+- (void)deleteTextSegmentRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__CACSpokenCommand_CACSpokenCommandTextEditing__deleteTextSegmentRange___block_invoke;
   v6[3] = &unk_279CEC828;
-  v7 = v4;
-  v5 = v4;
+  v7 = rangeCopy;
+  v5 = rangeCopy;
   [(CACSpokenCommand *)self _performActionOnTextSegmentRange:v6];
 }
 
-- (void)correctTextSegment:(id)a3
+- (void)correctTextSegment:(id)segment
 {
-  v4 = a3;
-  [(CACSpokenCommand *)self selectTextSegment:v4];
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  segmentCopy = segment;
+  [(CACSpokenCommand *)self selectTextSegment:segmentCopy];
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:segmentCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 correctSelection];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine correctSelection];
 }
 
-- (void)correctTextSegmentRange:(id)a3
+- (void)correctTextSegmentRange:(id)range
 {
-  v4 = a3;
-  [(CACSpokenCommand *)self selectTextSegmentRange:v4];
-  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v4];
+  rangeCopy = range;
+  [(CACSpokenCommand *)self selectTextSegmentRange:rangeCopy];
+  v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:rangeCopy];
 
-  v5 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v5 correctSelection];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine correctSelection];
 }
 
-- (void)selectTextSegment:(id)a3 postAction:(id)a4
+- (void)selectTextSegment:(id)segment postAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  segmentCopy = segment;
+  actionCopy = action;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __78__CACSpokenCommand_CACSpokenCommandTextEditing__selectTextSegment_postAction___block_invoke;
   v10[3] = &unk_279CEC870;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = segmentCopy;
+  v12 = actionCopy;
+  v8 = actionCopy;
+  v9 = segmentCopy;
   [(CACSpokenCommand *)self _performActionOnTextSegment:v10];
 }
 
@@ -8089,15 +8089,15 @@ uint64_t __78__CACSpokenCommand_CACSpokenCommandTextEditing__selectTextSegment_p
   return v11(v7, v8, v10);
 }
 
-- (void)selectTextSegmentRange:(id)a3
+- (void)selectTextSegmentRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__CACSpokenCommand_CACSpokenCommandTextEditing__selectTextSegmentRange___block_invoke;
   v6[3] = &unk_279CEC828;
-  v7 = v4;
-  v5 = v4;
+  v7 = rangeCopy;
+  v5 = rangeCopy;
   [(CACSpokenCommand *)self _performActionOnTextSegmentRange:v6];
 }
 
@@ -8109,18 +8109,18 @@ uint64_t __72__CACSpokenCommand_CACSpokenCommandTextEditing__selectTextSegmentRa
   return [v2 cacSetTextSelectionToRange:{v4, v3}];
 }
 
-- (void)selectTextSegmentRange:(id)a3 postAction:(id)a4
+- (void)selectTextSegmentRange:(id)range postAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  rangeCopy = range;
+  actionCopy = action;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__CACSpokenCommand_CACSpokenCommandTextEditing__selectTextSegmentRange_postAction___block_invoke;
   v10[3] = &unk_279CEC870;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = rangeCopy;
+  v12 = actionCopy;
+  v8 = actionCopy;
+  v9 = rangeCopy;
   [(CACSpokenCommand *)self _performActionOnTextSegmentRange:v10];
 }
 
@@ -8139,22 +8139,22 @@ uint64_t __83__CACSpokenCommand_CACSpokenCommandTextEditing__selectTextSegmentRa
   return v11(v7, v8, v10);
 }
 
-- (void)_selectTextSegment:(id)a3 insertionString:(id)a4 commandIdentifier:(id)a5
+- (void)_selectTextSegment:(id)segment insertionString:(id)string commandIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  segmentCopy = segment;
+  stringCopy = string;
+  identifierCopy = identifier;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __102__CACSpokenCommand_CACSpokenCommandTextEditing___selectTextSegment_insertionString_commandIdentifier___block_invoke;
   v14[3] = &unk_279CEC898;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = segmentCopy;
+  selfCopy = self;
+  v17 = stringCopy;
+  v18 = identifierCopy;
+  v11 = identifierCopy;
+  v12 = stringCopy;
+  v13 = segmentCopy;
   [(CACSpokenCommand *)self _performActionOnTextSegment:v14];
 }
 
@@ -8194,22 +8194,22 @@ uint64_t __102__CACSpokenCommand_CACSpokenCommandTextEditing___selectTextSegment
   return [v1 cacSetTextSelectionToRange:{v2, 0}];
 }
 
-- (void)_selectTextSegmentRange:(id)a3 insertionString:(id)a4 commandIdentifier:(id)a5
+- (void)_selectTextSegmentRange:(id)range insertionString:(id)string commandIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  rangeCopy = range;
+  stringCopy = string;
+  identifierCopy = identifier;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __107__CACSpokenCommand_CACSpokenCommandTextEditing___selectTextSegmentRange_insertionString_commandIdentifier___block_invoke;
   v14[3] = &unk_279CEC898;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = rangeCopy;
+  selfCopy = self;
+  v17 = stringCopy;
+  v18 = identifierCopy;
+  v11 = identifierCopy;
+  v12 = stringCopy;
+  v13 = rangeCopy;
   [(CACSpokenCommand *)self _performActionOnTextSegmentRange:v14];
 }
 
@@ -8249,42 +8249,42 @@ uint64_t __107__CACSpokenCommand_CACSpokenCommandTextEditing___selectTextSegment
   return [v1 cacSetTextSelectionToRange:{v2, 0}];
 }
 
-- (void)insertPhraseAfterTextSegment:(id)a3
+- (void)insertPhraseAfterTextSegment:(id)segment
 {
-  v4 = a3;
-  v5 = [(CACSpokenCommand *)self recognizedParameters];
-  v6 = [v5 objectForKey:*MEMORY[0x277D655C8]];
+  segmentCopy = segment;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v6 = [recognizedParameters objectForKey:*MEMORY[0x277D655C8]];
   v7 = [v6 objectForKey:kCACCommandParameterText];
 
-  [(CACSpokenCommand *)self _selectTextSegment:v4 insertionString:v7 commandIdentifier:@"Text.InsertPhraseAfterPhrase"];
+  [(CACSpokenCommand *)self _selectTextSegment:segmentCopy insertionString:v7 commandIdentifier:@"Text.InsertPhraseAfterPhrase"];
 }
 
-- (void)insertPhraseBeforeTextSegment:(id)a3
+- (void)insertPhraseBeforeTextSegment:(id)segment
 {
-  v4 = a3;
-  v5 = [(CACSpokenCommand *)self recognizedParameters];
-  v6 = [v5 objectForKey:*MEMORY[0x277D655C8]];
+  segmentCopy = segment;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v6 = [recognizedParameters objectForKey:*MEMORY[0x277D655C8]];
   v7 = [v6 objectForKey:kCACCommandParameterText];
 
-  [(CACSpokenCommand *)self _selectTextSegment:v4 insertionString:v7 commandIdentifier:@"Text.InsertPhraseBeforePhrase"];
+  [(CACSpokenCommand *)self _selectTextSegment:segmentCopy insertionString:v7 commandIdentifier:@"Text.InsertPhraseBeforePhrase"];
 }
 
-- (void)changeTextSegment:(id)a3
+- (void)changeTextSegment:(id)segment
 {
-  v4 = a3;
-  v5 = [(CACSpokenCommand *)self recognizedParameters];
-  v6 = [v5 objectForKey:*MEMORY[0x277D655C8]];
+  segmentCopy = segment;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v6 = [recognizedParameters objectForKey:*MEMORY[0x277D655C8]];
   v7 = [v6 objectForKey:kCACCommandParameterText];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __67__CACSpokenCommand_CACSpokenCommandTextEditing__changeTextSegment___block_invoke;
   v10[3] = &unk_279CEC8C0;
-  v11 = v4;
-  v12 = self;
+  v11 = segmentCopy;
+  selfCopy = self;
   v13 = v7;
   v8 = v7;
-  v9 = v4;
+  v9 = segmentCopy;
   [(CACSpokenCommand *)self _performActionOnTextSegment:v10];
 }
 
@@ -8305,25 +8305,25 @@ void __67__CACSpokenCommand_CACSpokenCommandTextEditing__changeTextSegment___blo
   }
 }
 
-- (void)changeTextSegmentRange:(id)a3
+- (void)changeTextSegmentRange:(id)range
 {
-  v4 = a3;
-  v5 = [(CACSpokenCommand *)self recognizedParameters];
-  v6 = [v5 objectForKey:*MEMORY[0x277D655C8]];
+  rangeCopy = range;
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v6 = [recognizedParameters objectForKey:*MEMORY[0x277D655C8]];
   v7 = [v6 objectForKey:kCACCommandParameterText];
 
-  [(CACSpokenCommand *)self _selectTextSegmentRange:v4 insertionString:v7 commandIdentifier:@"Text.ChangePhrase"];
+  [(CACSpokenCommand *)self _selectTextSegmentRange:rangeCopy insertionString:v7 commandIdentifier:@"Text.ChangePhrase"];
 }
 
-- (void)moveToEndOfTextSegment:(id)a3
+- (void)moveToEndOfTextSegment:(id)segment
 {
-  v4 = a3;
+  segmentCopy = segment;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__CACSpokenCommand_CACSpokenCommandTextEditing__moveToEndOfTextSegment___block_invoke;
   v6[3] = &unk_279CEC828;
-  v7 = v4;
-  v5 = v4;
+  v7 = segmentCopy;
+  v5 = segmentCopy;
   [(CACSpokenCommand *)self _performActionOnTextSegment:v6];
 }
 
@@ -8335,15 +8335,15 @@ uint64_t __72__CACSpokenCommand_CACSpokenCommandTextEditing__moveToEndOfTextSegm
   return [v2 cacSetTextSelectionToRange:{v3 + v4, 0}];
 }
 
-- (void)moveToStartOfTextSegment:(id)a3
+- (void)moveToStartOfTextSegment:(id)segment
 {
-  v4 = a3;
+  segmentCopy = segment;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __74__CACSpokenCommand_CACSpokenCommandTextEditing__moveToStartOfTextSegment___block_invoke;
   v6[3] = &unk_279CEC828;
-  v7 = v4;
-  v5 = v4;
+  v7 = segmentCopy;
+  v5 = segmentCopy;
   [(CACSpokenCommand *)self _performActionOnTextSegment:v6];
 }
 
@@ -8355,15 +8355,15 @@ uint64_t __74__CACSpokenCommand_CACSpokenCommandTextEditing__moveToStartOfTextSe
   return [v2 cacSetTextSelectionToRange:{v3, 0}];
 }
 
-- (void)extendSelectionToTextSegment:(id)a3
+- (void)extendSelectionToTextSegment:(id)segment
 {
-  v4 = a3;
+  segmentCopy = segment;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __78__CACSpokenCommand_CACSpokenCommandTextEditing__extendSelectionToTextSegment___block_invoke;
   v6[3] = &unk_279CEC828;
-  v7 = v4;
-  v5 = v4;
+  v7 = segmentCopy;
+  v5 = segmentCopy;
   [(CACSpokenCommand *)self _performActionOnTextSegmentRange:v6];
 }
 
@@ -8385,19 +8385,19 @@ uint64_t __78__CACSpokenCommand_CACSpokenCommandTextEditing__extendSelectionToTe
   return [v8 cacSetTextSelectionToRange:{v10.location, v10.length}];
 }
 
-- (void)cutTextSegment:(id)a3
+- (void)cutTextSegment:(id)segment
 {
-  v4 = a3;
+  segmentCopy = segment;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__CACSpokenCommand_CACSpokenCommandTextEditing__cutTextSegment___block_invoke;
   v8[3] = &unk_279CEC910;
-  v9 = v4;
-  v5 = v4;
+  v9 = segmentCopy;
+  v5 = segmentCopy;
   [(CACSpokenCommand *)self selectTextSegment:v5 postAction:v8];
   v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v5];
-  v7 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v7 pasteboardCut];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine pasteboardCut];
 }
 
 void __64__CACSpokenCommand_CACSpokenCommandTextEditing__cutTextSegment___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -8413,19 +8413,19 @@ void __64__CACSpokenCommand_CACSpokenCommandTextEditing__cutTextSegment___block_
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
 }
 
-- (void)cutTextSegmentRange:(id)a3
+- (void)cutTextSegmentRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__CACSpokenCommand_CACSpokenCommandTextEditing__cutTextSegmentRange___block_invoke;
   v8[3] = &unk_279CEC910;
-  v9 = v4;
-  v5 = v4;
+  v9 = rangeCopy;
+  v5 = rangeCopy;
   [(CACSpokenCommand *)self selectTextSegmentRange:v5 postAction:v8];
   v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v5];
-  v7 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v7 pasteboardCut];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine pasteboardCut];
 }
 
 void __69__CACSpokenCommand_CACSpokenCommandTextEditing__cutTextSegmentRange___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -8441,19 +8441,19 @@ void __69__CACSpokenCommand_CACSpokenCommandTextEditing__cutTextSegmentRange___b
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
 }
 
-- (void)copyTextSegment:(id)a3
+- (void)copyTextSegment:(id)segment
 {
-  v4 = a3;
+  segmentCopy = segment;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__CACSpokenCommand_CACSpokenCommandTextEditing__copyTextSegment___block_invoke;
   v8[3] = &unk_279CEC910;
-  v9 = v4;
-  v5 = v4;
+  v9 = segmentCopy;
+  v5 = segmentCopy;
   [(CACSpokenCommand *)self selectTextSegment:v5 postAction:v8];
   v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v5];
-  v7 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v7 pasteboardCopy];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine pasteboardCopy];
 }
 
 void __65__CACSpokenCommand_CACSpokenCommandTextEditing__copyTextSegment___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -8469,19 +8469,19 @@ void __65__CACSpokenCommand_CACSpokenCommandTextEditing__copyTextSegment___block
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
 }
 
-- (void)copyTextSegmentRange:(id)a3
+- (void)copyTextSegmentRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__CACSpokenCommand_CACSpokenCommandTextEditing__copyTextSegmentRange___block_invoke;
   v8[3] = &unk_279CEC910;
-  v9 = v4;
-  v5 = v4;
+  v9 = rangeCopy;
+  v5 = rangeCopy;
   [(CACSpokenCommand *)self selectTextSegmentRange:v5 postAction:v8];
   v6 = [[CACTextEditingProvider alloc] initWithSpokenCommand:self axElement:v5];
-  v7 = [(CACTextEditingProvider *)v6 textEditingEngine];
-  [v7 pasteboardCopy];
+  textEditingEngine = [(CACTextEditingProvider *)v6 textEditingEngine];
+  [textEditingEngine pasteboardCopy];
 }
 
 void __70__CACSpokenCommand_CACSpokenCommandTextEditing__copyTextSegmentRange___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -8497,17 +8497,17 @@ void __70__CACSpokenCommand_CACSpokenCommandTextEditing__copyTextSegmentRange___
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
 }
 
-- (id)_strippedPhraseStringsFromStrings:(id)a3
+- (id)_strippedPhraseStringsFromStrings:(id)strings
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v20 = [MEMORY[0x277CBEB18] array];
-  v19 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  stringsCopy = strings;
+  array = [MEMORY[0x277CBEB18] array];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v3;
+  obj = stringsCopy;
   v4 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v4)
   {
@@ -8559,15 +8559,15 @@ void __70__CACSpokenCommand_CACSpokenCommandTextEditing__copyTextSegmentRange___
         if (v11)
         {
           v15 = [v8 substringFromIndex:v11];
-          v16 = [v15 stringByTrimmingCharactersInSet:v19];
-          [v20 addObject:v16];
+          v16 = [v15 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
+          [array addObject:v16];
         }
 
         else
         {
 LABEL_17:
-          v15 = [v8 stringByTrimmingCharactersInSet:v19];
-          [v20 addObject:v15];
+          v15 = [v8 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
+          [array addObject:v15];
         }
       }
 
@@ -8577,51 +8577,51 @@ LABEL_17:
     while (v5);
   }
 
-  return v20;
+  return array;
 }
 
-- (_NSRange)_rangeFromPreviousTextInsertionForAXElement:(id)a3
+- (_NSRange)_rangeFromPreviousTextInsertionForAXElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v5 = [v4 previousTextInsertionSpecifier];
+  previousTextInsertionSpecifier = [v4 previousTextInsertionSpecifier];
 
-  v6 = [v5 axElement];
-  v7 = [v3 isEqual:v6];
+  axElement = [previousTextInsertionSpecifier axElement];
+  v7 = [elementCopy isEqual:axElement];
 
   if (v7)
   {
-    v8 = [v5 insertedRange];
+    insertedRange = [previousTextInsertionSpecifier insertedRange];
     v10 = v9;
   }
 
   else
   {
     v10 = 0;
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    insertedRange = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v11 = v8;
+  v11 = insertedRange;
   v12 = v10;
   result.length = v12;
   result.location = v11;
   return result;
 }
 
-- (id)_nBestListFromPreviousTextInsertionForAXElement:(id)a3
+- (id)_nBestListFromPreviousTextInsertionForAXElement:(id)element
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  elementCopy = element;
   v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v5 = [v4 previousTextInsertionSpecifier];
+  previousTextInsertionSpecifier = [v4 previousTextInsertionSpecifier];
 
-  v6 = [v5 insertedCategoryID];
-  v7 = [v5 axElement];
-  v8 = [v3 isEqual:v7];
+  insertedCategoryID = [previousTextInsertionSpecifier insertedCategoryID];
+  axElement = [previousTextInsertionSpecifier axElement];
+  v8 = [elementCopy isEqual:axElement];
 
   if (v8)
   {
-    v9 = v6 == 0;
+    v9 = insertedCategoryID == 0;
   }
 
   else
@@ -8640,14 +8640,14 @@ LABEL_17:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = [v5 recognizedParams];
-    v12 = [v11 objectForKey:kCACCommandParameterTextSequence];
+    recognizedParams = [previousTextInsertionSpecifier recognizedParams];
+    v12 = [recognizedParams objectForKey:kCACCommandParameterTextSequence];
 
     v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
     v10 = v13;
     if (v13)
     {
-      v20 = v3;
+      v20 = elementCopy;
       v14 = *v22;
       while (2)
       {
@@ -8661,7 +8661,7 @@ LABEL_17:
 
           v16 = *(*(&v21 + 1) + 8 * v15);
           v17 = [v16 objectForKey:kCACCommandParameterBuiltInIdentifier];
-          v18 = [v17 isEqualToString:v6];
+          v18 = [v17 isEqualToString:insertedCategoryID];
 
           if (v18)
           {
@@ -8683,7 +8683,7 @@ LABEL_17:
       }
 
 LABEL_17:
-      v3 = v20;
+      elementCopy = v20;
     }
   }
 
@@ -8692,14 +8692,14 @@ LABEL_17:
 
 - (int64_t)_textSegmentCardinalNumber
 {
-  v3 = [(CACSpokenCommand *)self recognizedParameters];
-  v4 = [v3 objectForKey:*MEMORY[0x277D65618]];
+  recognizedParameters = [(CACSpokenCommand *)self recognizedParameters];
+  v4 = [recognizedParameters objectForKey:*MEMORY[0x277D65618]];
   v5 = [v4 objectForKey:kCACCommandParameterText];
 
   if (!v5)
   {
-    v6 = [(CACSpokenCommand *)self recognizedParameters];
-    v7 = [v6 objectForKey:*MEMORY[0x277D655F8]];
+    recognizedParameters2 = [(CACSpokenCommand *)self recognizedParameters];
+    v7 = [recognizedParameters2 objectForKey:*MEMORY[0x277D655F8]];
     v5 = [v7 objectForKey:kCACCommandParameterText];
 
     if (!v5)
@@ -8708,9 +8708,9 @@ LABEL_17:
     }
   }
 
-  v8 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  return v8;
+  return intValue;
 }
 
 + (void)displayRecognizedMessageUsingAttributedString:(void *)a1 .cold.1(void *a1, NSObject *a2)

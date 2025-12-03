@@ -1,14 +1,14 @@
 @interface PDFRevealManager
-- (PDFRevealManager)initWithPDFView:(id)a3;
+- (PDFRevealManager)initWithPDFView:(id)view;
 - (id)PDFRVPresenter;
 - (void)reset;
 @end
 
 @implementation PDFRevealManager
 
-- (PDFRevealManager)initWithPDFView:(id)a3
+- (PDFRevealManager)initWithPDFView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = PDFRevealManager;
   v5 = [(PDFRevealManager *)&v9 init];
@@ -18,7 +18,7 @@
     v7 = v5->_private;
     v5->_private = v6;
 
-    objc_storeWeak(&v5->_private->pdfView, v4);
+    objc_storeWeak(&v5->_private->pdfView, viewCopy);
   }
 
   return v5;

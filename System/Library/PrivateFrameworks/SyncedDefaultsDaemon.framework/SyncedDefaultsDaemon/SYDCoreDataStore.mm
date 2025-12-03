@@ -1,64 +1,64 @@
 @interface SYDCoreDataStore
-+ (BOOL)isCorruptionError:(id)a3;
-+ (BOOL)isInvalidTokenError:(id)a3;
++ (BOOL)isCorruptionError:(id)error;
++ (BOOL)isInvalidTokenError:(id)error;
 + (id)managedObjectModel;
-- (BOOL)_queue_handleCorruptionIfNecessaryFromError:(id)a3 inPersistentStoreCoordinator:(id)a4;
-- (BOOL)_saveKeyValues:(id)a3 excludeFromChangeTracking:(BOOL)a4 enforceQuota:(BOOL)a5 forceCreateNewRow:(BOOL)a6 error:(id *)a7;
-- (BOOL)clearServerSystemFieldsRecordsForAllKeyValuesInStoreWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)clearServerSystemFieldsRecordsForAllStoresWithError:(id *)a3;
-- (BOOL)deleteDataForAllStoresWithError:(id *)a3;
-- (BOOL)deleteDataForStoreWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)deleteDataForStoresMatchingPredicate:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)didMigrateFromPlistsWithError:(id *)a3;
+- (BOOL)_queue_handleCorruptionIfNecessaryFromError:(id)error inPersistentStoreCoordinator:(id)coordinator;
+- (BOOL)_saveKeyValues:(id)values excludeFromChangeTracking:(BOOL)tracking enforceQuota:(BOOL)quota forceCreateNewRow:(BOOL)row error:(id *)error;
+- (BOOL)clearServerSystemFieldsRecordsForAllKeyValuesInStoreWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)clearServerSystemFieldsRecordsForAllStoresWithError:(id *)error;
+- (BOOL)deleteDataForAllStoresWithError:(id *)error;
+- (BOOL)deleteDataForStoreWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)deleteDataForStoresMatchingPredicate:(id)predicate context:(id)context error:(id *)error;
+- (BOOL)didMigrateFromPlistsWithError:(id *)error;
 - (BOOL)hasPerformedOneTimeDataSeparatedLocalDataReset;
-- (BOOL)removeKeyValueForKey:(id)a3 inStoreWithIdentifier:(id)a4 excludeFromChangeTracking:(BOOL)a5 error:(id *)a6;
-- (BOOL)removeKeyValueForRecordName:(id)a3 inStoreWithIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)saveContext:(id)a3 reason:(id)a4 includingTransactionContext:(BOOL)a5 error:(id *)a6;
-- (BOOL)saveDeprecatedSyncEngineMetadata:(id)a3 error:(id *)a4;
-- (BOOL)saveServerSyncAnchorSystemFieldsRecordData:(id)a3 forStoreWithIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)saveSyncEngineStateSerialization:(id)a3 error:(id *)a4;
-- (BOOL)saveTransaction:(id *)a3;
-- (BOOL)setACAccountIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)setDidMigrateFromPlists:(BOOL)a3 error:(id *)a4;
-- (BOOL)setFailedMigrationCount:(signed __int16)a3 error:(id *)a4;
-- (BOOL)setHasPerformedOneTimeDataSeparatedLocalDataReset:(BOOL)a3 error:(id *)a4;
-- (SYDCoreDataStore)initWithURL:(id)a3 fileProtectionType:(id)a4 persistentContainer:(id)a5 isTransactional:(BOOL)a6;
+- (BOOL)removeKeyValueForKey:(id)key inStoreWithIdentifier:(id)identifier excludeFromChangeTracking:(BOOL)tracking error:(id *)error;
+- (BOOL)removeKeyValueForRecordName:(id)name inStoreWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)saveContext:(id)context reason:(id)reason includingTransactionContext:(BOOL)transactionContext error:(id *)error;
+- (BOOL)saveDeprecatedSyncEngineMetadata:(id)metadata error:(id *)error;
+- (BOOL)saveServerSyncAnchorSystemFieldsRecordData:(id)data forStoreWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)saveSyncEngineStateSerialization:(id)serialization error:(id *)error;
+- (BOOL)saveTransaction:(id *)transaction;
+- (BOOL)setACAccountIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setDidMigrateFromPlists:(BOOL)plists error:(id *)error;
+- (BOOL)setFailedMigrationCount:(signed __int16)count error:(id *)error;
+- (BOOL)setHasPerformedOneTimeDataSeparatedLocalDataReset:(BOOL)reset error:(id *)error;
+- (SYDCoreDataStore)initWithURL:(id)l fileProtectionType:(id)type persistentContainer:(id)container isTransactional:(BOOL)transactional;
 - (SYDCoreDataStoreDelegate)delegate;
-- (id)_contextForStoreIdentifier:(id)a3 persistentContainer:(id)a4;
-- (id)_loadPersistentContainerWithError:(id *)a3;
-- (id)_persistentContainerWithError:(id *)a3;
-- (id)acAccountIdentifierWithError:(id *)a3;
-- (id)allRecordNamesInStoreWithIdentifier:(id)a3 error:(id *)a4;
-- (id)allStoreIdentifiersWithError:(id *)a3;
-- (id)changedKeysForStoreIdentifier:(id)a3 sinceChangeToken:(id)a4 error:(id *)a5;
-- (id)contextForStoreIdentifier:(id)a3 error:(id *)a4;
-- (id)currentChangeTokenForStoreIdentifier:(id)a3 error:(id *)a4;
-- (id)deprecatedSyncEngineMetadataWithError:(id *)a3;
+- (id)_contextForStoreIdentifier:(id)identifier persistentContainer:(id)container;
+- (id)_loadPersistentContainerWithError:(id *)error;
+- (id)_persistentContainerWithError:(id *)error;
+- (id)acAccountIdentifierWithError:(id *)error;
+- (id)allRecordNamesInStoreWithIdentifier:(id)identifier error:(id *)error;
+- (id)allStoreIdentifiersWithError:(id *)error;
+- (id)changedKeysForStoreIdentifier:(id)identifier sinceChangeToken:(id)token error:(id *)error;
+- (id)contextForStoreIdentifier:(id)identifier error:(id *)error;
+- (id)currentChangeTokenForStoreIdentifier:(id)identifier error:(id *)error;
+- (id)deprecatedSyncEngineMetadataWithError:(id *)error;
 - (id)description;
-- (id)dictionaryRepresentationForStoreWithIdentifier:(id)a3 error:(id *)a4;
-- (id)keyValueForRecordName:(id)a3 inStoreWithIdentifier:(id)a4 error:(id *)a5;
-- (id)keyValueFromManagedKeyValue:(id)a3 inStoreWithIdentifier:(id)a4;
-- (id)keyValuesForKeyIDs:(id)a3 createIfNecessary:(BOOL)a4 error:(id *)a5;
-- (id)managedDatabaseCreateIfNecessary:(BOOL)a3 inContext:(id)a4 error:(id *)a5;
-- (id)managedKeyValueWithRecordName:(id)a3 inStoreWithIdentifier:(id)a4 inContext:(id)a5 error:(id *)a6;
-- (id)managedKeyValuesForKeyIDs:(id)a3 inContext:(id)a4 error:(id *)a5;
-- (id)managedKeyValuesMatchingPredicate:(id)a3 inContext:(id)a4 error:(id *)a5;
-- (id)managedStoreWithIdentifier:(id)a3 createIfNecessary:(BOOL)a4 inContext:(id)a5 error:(id *)a6;
-- (id)persistentContainerWithError:(id *)a3;
-- (id)serverSyncAnchorSystemFieldsRecordDataForStoreWithIdentifier:(id)a3 error:(id *)a4;
-- (id)syncEngineStateSerializationWithError:(id *)a3;
-- (id)transactionalStoreWithError:(id *)a3;
-- (signed)failedMigrationCountWithError:(id *)a3;
+- (id)dictionaryRepresentationForStoreWithIdentifier:(id)identifier error:(id *)error;
+- (id)keyValueForRecordName:(id)name inStoreWithIdentifier:(id)identifier error:(id *)error;
+- (id)keyValueFromManagedKeyValue:(id)value inStoreWithIdentifier:(id)identifier;
+- (id)keyValuesForKeyIDs:(id)ds createIfNecessary:(BOOL)necessary error:(id *)error;
+- (id)managedDatabaseCreateIfNecessary:(BOOL)necessary inContext:(id)context error:(id *)error;
+- (id)managedKeyValueWithRecordName:(id)name inStoreWithIdentifier:(id)identifier inContext:(id)context error:(id *)error;
+- (id)managedKeyValuesForKeyIDs:(id)ds inContext:(id)context error:(id *)error;
+- (id)managedKeyValuesMatchingPredicate:(id)predicate inContext:(id)context error:(id *)error;
+- (id)managedStoreWithIdentifier:(id)identifier createIfNecessary:(BOOL)necessary inContext:(id)context error:(id *)error;
+- (id)persistentContainerWithError:(id *)error;
+- (id)serverSyncAnchorSystemFieldsRecordDataForStoreWithIdentifier:(id)identifier error:(id *)error;
+- (id)syncEngineStateSerializationWithError:(id *)error;
+- (id)transactionalStoreWithError:(id *)error;
+- (signed)failedMigrationCountWithError:(id *)error;
 - (unint64_t)fileSizeBytes;
-- (unint64_t)numberOfKeyValuesInStoreWithIdentifier:(id)a3 error:(id *)a4;
-- (void)_queue_destroyPersistentStoreInPersistentStoreCoordinator:(id)a3;
+- (unint64_t)numberOfKeyValuesInStoreWithIdentifier:(id)identifier error:(id *)error;
+- (void)_queue_destroyPersistentStoreInPersistentStoreCoordinator:(id)coordinator;
 - (void)clearContexts;
 - (void)dealloc;
 - (void)destroyPersistentStore;
 - (void)fileSizeBytes;
-- (void)handleCorruptionIfNecessaryFromError:(id)a3 inPersistentStoreCoordinator:(id)a4;
+- (void)handleCorruptionIfNecessaryFromError:(id)error inPersistentStoreCoordinator:(id)coordinator;
 - (void)resetPersistentStore;
-- (void)transactionStoreDidSave:(id)a3;
+- (void)transactionStoreDidSave:(id)save;
 @end
 
 @implementation SYDCoreDataStore
@@ -81,13 +81,13 @@
   return v7;
 }
 
-- (SYDCoreDataStore)initWithURL:(id)a3 fileProtectionType:(id)a4 persistentContainer:(id)a5 isTransactional:(BOOL)a6
+- (SYDCoreDataStore)initWithURL:(id)l fileProtectionType:(id)type persistentContainer:(id)container isTransactional:(BOOL)transactional
 {
-  v6 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v12)
+  transactionalCopy = transactional;
+  lCopy = l;
+  typeCopy = type;
+  containerCopy = container;
+  if (!lCopy)
   {
     [SYDCoreDataStore initWithURL:fileProtectionType:persistentContainer:isTransactional:];
   }
@@ -98,14 +98,14 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_URL, a3);
-    objc_storeStrong(&v16->_fileProtectionType, a4);
+    objc_storeStrong(&v15->_URL, l);
+    objc_storeStrong(&v16->_fileProtectionType, type);
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_create("com.apple.kvs.coredata.persistent-container", v17);
     persistentContainerQueue = v16->_persistentContainerQueue;
     v16->_persistentContainerQueue = v18;
 
-    objc_storeStrong(&v16->__persistentContainer, a5);
+    objc_storeStrong(&v16->__persistentContainer, container);
     v20 = objc_alloc_init(MEMORY[0x277CBEA78]);
     contexts = v16->_contexts;
     v16->_contexts = v20;
@@ -114,7 +114,7 @@
     contextsLock = v16->_contextsLock;
     v16->_contextsLock = v22;
 
-    if (v6)
+    if (transactionalCopy)
     {
       if (!v16->__persistentContainer)
       {
@@ -144,19 +144,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SYDCoreDataStore;
   [(SYDCoreDataStore *)&v4 dealloc];
 }
 
-- (id)keyValuesForKeyIDs:(id)a3 createIfNecessary:(BOOL)a4 error:(id *)a5
+- (id)keyValuesForKeyIDs:(id)ds createIfNecessary:(BOOL)necessary error:(id *)error
 {
-  v20 = self;
+  selfCopy = self;
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dsCopy = ds;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -174,7 +174,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v6;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v24 objects:v40 count:16];
   if (v9)
   {
@@ -189,14 +189,14 @@
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 storeIdentifier];
-        v14 = [v7 objectForKeyedSubscript:v13];
+        storeIdentifier = [v12 storeIdentifier];
+        v14 = [v7 objectForKeyedSubscript:storeIdentifier];
 
         if (!v14)
         {
           v14 = objc_opt_new();
-          v15 = [v12 storeIdentifier];
-          [v7 setObject:v14 forKeyedSubscript:v15];
+          storeIdentifier2 = [v12 storeIdentifier];
+          [v7 setObject:v14 forKeyedSubscript:storeIdentifier2];
         }
 
         [v14 addObject:v12];
@@ -212,9 +212,9 @@
   v22[1] = 3221225472;
   v22[2] = __63__SYDCoreDataStore_keyValuesForKeyIDs_createIfNecessary_error___block_invoke;
   v22[3] = &unk_279D2FD50;
-  v22[4] = v20;
+  v22[4] = selfCopy;
   v22[5] = &v28;
-  v23 = a4;
+  necessaryCopy = necessary;
   v22[6] = &v34;
   [v7 enumerateKeysAndObjectsUsingBlock:v22];
   if (v29[5])
@@ -223,9 +223,9 @@
     v35[5] = 0;
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v29[5];
+    *error = v29[5];
   }
 
   v17 = [v35[5] copy];
@@ -401,10 +401,10 @@ LABEL_26:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)keyValueForRecordName:(id)a3 inStoreWithIdentifier:(id)a4 error:(id *)a5
+- (id)keyValueForRecordName:(id)name inStoreWithIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v10 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -424,25 +424,25 @@ LABEL_26:
   v28 = __Block_byref_object_dispose__3;
   v29 = 0;
   obj = 0;
-  v11 = [(SYDCoreDataStore *)self contextForStoreIdentifier:v9 error:&obj];
+  v11 = [(SYDCoreDataStore *)self contextForStoreIdentifier:identifierCopy error:&obj];
   objc_storeStrong(&v29, obj);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __70__SYDCoreDataStore_keyValueForRecordName_inStoreWithIdentifier_error___block_invoke;
   v17[3] = &unk_279D2FD78;
   v17[4] = self;
-  v12 = v8;
+  v12 = nameCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = identifierCopy;
   v19 = v13;
   v14 = v11;
   v20 = v14;
   v21 = &v24;
   v22 = &v30;
   [v14 performBlockAndWait:v17];
-  if (a5)
+  if (error)
   {
-    *a5 = v25[5];
+    *error = v25[5];
   }
 
   v15 = v31[5];
@@ -488,31 +488,31 @@ void __70__SYDCoreDataStore_keyValueForRecordName_inStoreWithIdentifier_error___
   }
 }
 
-- (id)keyValueFromManagedKeyValue:(id)a3 inStoreWithIdentifier:(id)a4
+- (id)keyValueFromManagedKeyValue:(id)value inStoreWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  valueCopy = value;
+  identifierCopy = identifier;
+  if (!valueCopy)
   {
     [SYDCoreDataStore keyValueFromManagedKeyValue:inStoreWithIdentifier:];
   }
 
-  if (![v6 length])
+  if (![identifierCopy length])
   {
     [SYDCoreDataStore keyValueFromManagedKeyValue:inStoreWithIdentifier:];
   }
 
-  v7 = [v5 store];
-  v8 = [v7 identifier];
-  v9 = [v8 length];
+  store = [valueCopy store];
+  identifier = [store identifier];
+  v9 = [identifier length];
 
   if (v9)
   {
     v10 = [SYDKeyValue alloc];
-    v11 = [v5 key];
-    v12 = [v5 store];
-    v13 = [v12 identifier];
-    v14 = [(SYDKeyValue *)v10 initWithKey:v11 storeIdentifier:v13];
+    v11 = [valueCopy key];
+    store2 = [valueCopy store];
+    identifier2 = [store2 identifier];
+    v14 = [(SYDKeyValue *)v10 initWithKey:v11 storeIdentifier:identifier2];
   }
 
   else
@@ -524,28 +524,28 @@ void __70__SYDCoreDataStore_keyValueForRecordName_inStoreWithIdentifier_error___
     }
 
     v16 = [SYDKeyValue alloc];
-    v11 = [v5 key];
-    v14 = [(SYDKeyValue *)v16 initWithKey:v11 storeIdentifier:v6];
+    v11 = [valueCopy key];
+    v14 = [(SYDKeyValue *)v16 initWithKey:v11 storeIdentifier:identifierCopy];
   }
 
-  v17 = [v5 value];
-  v18 = [v5 valueModificationDate];
-  [(SYDKeyValue *)v14 setValue:v17 withModificationDate:v18];
+  value = [valueCopy value];
+  valueModificationDate = [valueCopy valueModificationDate];
+  [(SYDKeyValue *)v14 setValue:value withModificationDate:valueModificationDate];
 
-  v19 = [v5 recordName];
-  [(SYDKeyValue *)v14 setRecordName:v19];
+  recordName = [valueCopy recordName];
+  [(SYDKeyValue *)v14 setRecordName:recordName];
 
-  v20 = [v5 serverSystemFieldsRecordData];
-  [(SYDKeyValue *)v14 setServerSystemFieldsRecordData:v20];
+  serverSystemFieldsRecordData = [valueCopy serverSystemFieldsRecordData];
+  [(SYDKeyValue *)v14 setServerSystemFieldsRecordData:serverSystemFieldsRecordData];
 
   return v14;
 }
 
-- (BOOL)_saveKeyValues:(id)a3 excludeFromChangeTracking:(BOOL)a4 enforceQuota:(BOOL)a5 forceCreateNewRow:(BOOL)a6 error:(id *)a7
+- (BOOL)_saveKeyValues:(id)values excludeFromChangeTracking:(BOOL)tracking enforceQuota:(BOOL)quota forceCreateNewRow:(BOOL)row error:(id *)error
 {
-  v21 = self;
+  selfCopy = self;
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  valuesCopy = values;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -557,7 +557,7 @@ void __70__SYDCoreDataStore_keyValueForRecordName_inStoreWithIdentifier_error___
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = v8;
+  v10 = valuesCopy;
   v11 = [v10 countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v11)
   {
@@ -572,14 +572,14 @@ void __70__SYDCoreDataStore_keyValueForRecordName_inStoreWithIdentifier_error___
         }
 
         v14 = *(*(&v29 + 1) + 8 * i);
-        v15 = [v14 storeIdentifier];
-        v16 = [v9 objectForKeyedSubscript:v15];
+        storeIdentifier = [v14 storeIdentifier];
+        v16 = [v9 objectForKeyedSubscript:storeIdentifier];
 
         if (!v16)
         {
           v16 = objc_opt_new();
-          v17 = [v14 storeIdentifier];
-          [v9 setObject:v16 forKeyedSubscript:v17];
+          storeIdentifier2 = [v14 storeIdentifier];
+          [v9 setObject:v16 forKeyedSubscript:storeIdentifier2];
         }
 
         [v16 addObject:v14];
@@ -595,15 +595,15 @@ void __70__SYDCoreDataStore_keyValueForRecordName_inStoreWithIdentifier_error___
   v25[1] = 3221225472;
   v25[2] = __98__SYDCoreDataStore__saveKeyValues_excludeFromChangeTracking_enforceQuota_forceCreateNewRow_error___block_invoke;
   v25[3] = &unk_279D2FDC8;
-  v25[4] = v21;
+  v25[4] = selfCopy;
   v25[5] = &v33;
-  v26 = a4;
-  v27 = a6;
-  v28 = a5;
+  trackingCopy = tracking;
+  rowCopy = row;
+  quotaCopy = quota;
   [v9 enumerateKeysAndObjectsUsingBlock:v25];
-  if (a7)
+  if (error)
   {
-    *a7 = v34[5];
+    *error = v34[5];
   }
 
   v18 = v34[5] == 0;
@@ -965,17 +965,17 @@ LABEL_56:
   v67 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeKeyValueForKey:(id)a3 inStoreWithIdentifier:(id)a4 excludeFromChangeTracking:(BOOL)a5 error:(id *)a6
+- (BOOL)removeKeyValueForKey:(id)key inStoreWithIdentifier:(id)identifier excludeFromChangeTracking:(BOOL)tracking error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  if (!v10)
+  trackingCopy = tracking;
+  keyCopy = key;
+  identifierCopy = identifier;
+  if (!keyCopy)
   {
     [SYDCoreDataStore removeKeyValueForKey:inStoreWithIdentifier:excludeFromChangeTracking:error:];
   }
 
-  if (![v11 length])
+  if (![identifierCopy length])
   {
     [SYDCoreDataStore removeKeyValueForKey:inStoreWithIdentifier:excludeFromChangeTracking:error:];
   }
@@ -993,9 +993,9 @@ LABEL_56:
   v31 = __Block_byref_object_dispose__3;
   v32 = 0;
   obj = 0;
-  v13 = [(SYDCoreDataStore *)self contextForStoreIdentifier:v11 error:&obj];
+  v13 = [(SYDCoreDataStore *)self contextForStoreIdentifier:identifierCopy error:&obj];
   objc_storeStrong(&v32, obj);
-  if (v7)
+  if (trackingCopy)
   {
     v14 = @"no-change-tracking";
   }
@@ -1010,18 +1010,18 @@ LABEL_56:
   v20[1] = 3221225472;
   v20[2] = __95__SYDCoreDataStore_removeKeyValueForKey_inStoreWithIdentifier_excludeFromChangeTracking_error___block_invoke;
   v20[3] = &unk_279D2FDF0;
-  v15 = v10;
+  v15 = keyCopy;
   v21 = v15;
-  v16 = v11;
+  v16 = identifierCopy;
   v22 = v16;
-  v23 = self;
+  selfCopy = self;
   v17 = v13;
   v24 = v17;
   v25 = &v27;
   [v17 performBlockAndWait:v20];
-  if (a6)
+  if (error)
   {
-    *a6 = v28[5];
+    *error = v28[5];
   }
 
   v18 = v28[5] == 0;
@@ -1084,16 +1084,16 @@ void __95__SYDCoreDataStore_removeKeyValueForKey_inStoreWithIdentifier_excludeFr
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeKeyValueForRecordName:(id)a3 inStoreWithIdentifier:(id)a4 error:(id *)a5
+- (BOOL)removeKeyValueForRecordName:(id)name inStoreWithIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  nameCopy = name;
+  identifierCopy = identifier;
+  if (!nameCopy)
   {
     [SYDCoreDataStore removeKeyValueForRecordName:inStoreWithIdentifier:error:];
   }
 
-  if (![v9 length])
+  if (![identifierCopy length])
   {
     [SYDCoreDataStore removeKeyValueForRecordName:inStoreWithIdentifier:error:];
   }
@@ -1111,24 +1111,24 @@ void __95__SYDCoreDataStore_removeKeyValueForKey_inStoreWithIdentifier_excludeFr
   v27 = __Block_byref_object_dispose__3;
   v28 = 0;
   obj = 0;
-  v11 = [(SYDCoreDataStore *)self contextForStoreIdentifier:v9 error:&obj];
+  v11 = [(SYDCoreDataStore *)self contextForStoreIdentifier:identifierCopy error:&obj];
   objc_storeStrong(&v28, obj);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __76__SYDCoreDataStore_removeKeyValueForRecordName_inStoreWithIdentifier_error___block_invoke;
   v17[3] = &unk_279D2FDF0;
   v17[4] = self;
-  v12 = v8;
+  v12 = nameCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = identifierCopy;
   v19 = v13;
   v14 = v11;
   v20 = v14;
   v21 = &v23;
   [v14 performBlockAndWait:v17];
-  if (a5)
+  if (error)
   {
-    *a5 = v24[5];
+    *error = v24[5];
   }
 
   v15 = v24[5] == 0;
@@ -1177,9 +1177,9 @@ void __76__SYDCoreDataStore_removeKeyValueForRecordName_inStoreWithIdentifier_er
   }
 }
 
-- (id)serverSyncAnchorSystemFieldsRecordDataForStoreWithIdentifier:(id)a3 error:(id *)a4
+- (id)serverSyncAnchorSystemFieldsRecordDataForStoreWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1199,23 +1199,23 @@ void __76__SYDCoreDataStore_removeKeyValueForRecordName_inStoreWithIdentifier_er
   v23 = __Block_byref_object_dispose__3;
   v24 = 0;
   obj = 0;
-  v8 = [(SYDCoreDataStore *)self contextForStoreIdentifier:v6 error:&obj];
+  v8 = [(SYDCoreDataStore *)self contextForStoreIdentifier:identifierCopy error:&obj];
   objc_storeStrong(&v24, obj);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __87__SYDCoreDataStore_serverSyncAnchorSystemFieldsRecordDataForStoreWithIdentifier_error___block_invoke;
   v13[3] = &unk_279D2FA08;
   v13[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v14 = v9;
   v10 = v8;
   v15 = v10;
   v16 = &v19;
   v17 = &v25;
   [v10 performBlockAndWait:v13];
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v11 = v26[5];
@@ -1264,13 +1264,13 @@ void __87__SYDCoreDataStore_serverSyncAnchorSystemFieldsRecordDataForStoreWithId
   }
 }
 
-- (BOOL)saveServerSyncAnchorSystemFieldsRecordData:(id)a3 forStoreWithIdentifier:(id)a4 error:(id *)a5
+- (BOOL)saveServerSyncAnchorSystemFieldsRecordData:(id)data forStoreWithIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v10 = SYDGetCoreDataLog();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
-  if (v8)
+  if (dataCopy)
   {
     if (v11)
     {
@@ -1290,24 +1290,24 @@ void __87__SYDCoreDataStore_serverSyncAnchorSystemFieldsRecordDataForStoreWithId
   v28 = __Block_byref_object_dispose__3;
   v29 = 0;
   obj = 0;
-  v12 = [(SYDCoreDataStore *)self contextForStoreIdentifier:v9 error:&obj];
+  v12 = [(SYDCoreDataStore *)self contextForStoreIdentifier:identifierCopy error:&obj];
   objc_storeStrong(&v29, obj);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __92__SYDCoreDataStore_saveServerSyncAnchorSystemFieldsRecordData_forStoreWithIdentifier_error___block_invoke;
   v18[3] = &unk_279D2FE18;
   v18[4] = self;
-  v13 = v9;
+  v13 = identifierCopy;
   v19 = v13;
   v14 = v12;
   v20 = v14;
   v22 = &v24;
-  v15 = v8;
+  v15 = dataCopy;
   v21 = v15;
   [v14 performBlockAndWait:v18];
-  if (a5)
+  if (error)
   {
-    *a5 = v25[5];
+    *error = v25[5];
   }
 
   v16 = v25[5] == 0;
@@ -1359,32 +1359,32 @@ void __92__SYDCoreDataStore_saveServerSyncAnchorSystemFieldsRecordData_forStoreW
   }
 }
 
-- (BOOL)deleteDataForStoreWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteDataForStoreWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v14 = 0;
-  v7 = [(SYDCoreDataStore *)self contextForStoreIdentifier:v6 error:&v14];
+  v7 = [(SYDCoreDataStore *)self contextForStoreIdentifier:identifierCopy error:&v14];
   v8 = v14;
   if (v7)
   {
-    v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier == %@", v6];
+    identifierCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier == %@", identifierCopy];
     v13 = v8;
-    [(SYDCoreDataStore *)self deleteDataForStoresMatchingPredicate:v9 context:v7 error:&v13];
+    [(SYDCoreDataStore *)self deleteDataForStoresMatchingPredicate:identifierCopy context:v7 error:&v13];
     v10 = v13;
 
     v8 = v10;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v8 == 0;
 }
 
-- (BOOL)deleteDataForAllStoresWithError:(id *)a3
+- (BOOL)deleteDataForAllStoresWithError:(id *)error
 {
   v12 = 0;
   v5 = [(SYDCoreDataStore *)self contextForStoreIdentifier:0 error:&v12];
@@ -1399,19 +1399,19 @@ void __92__SYDCoreDataStore_saveServerSyncAnchorSystemFieldsRecordData_forStoreW
     v7 = v8;
   }
 
-  if (a3)
+  if (error)
   {
     v9 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   return v7 == 0;
 }
 
-- (BOOL)deleteDataForStoresMatchingPredicate:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)deleteDataForStoresMatchingPredicate:(id)predicate context:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  predicateCopy = predicate;
+  contextCopy = context;
   v10 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1428,16 +1428,16 @@ void __92__SYDCoreDataStore_saveServerSyncAnchorSystemFieldsRecordData_forStoreW
   v15[1] = 3221225472;
   v15[2] = __71__SYDCoreDataStore_deleteDataForStoresMatchingPredicate_context_error___block_invoke;
   v15[3] = &unk_279D2F560;
-  v11 = v8;
+  v11 = predicateCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = contextCopy;
   v17 = v12;
   v18 = &v19;
   [v12 performBlockAndWait:v15];
   [(SYDCoreDataStore *)self clearContexts];
-  if (a5)
+  if (error)
   {
-    *a5 = v20[5];
+    *error = v20[5];
   }
 
   v13 = v20[5] == 0;
@@ -1476,10 +1476,10 @@ void __71__SYDCoreDataStore_deleteDataForStoresMatchingPredicate_context_error__
   }
 }
 
-- (id)allRecordNamesInStoreWithIdentifier:(id)a3 error:(id *)a4
+- (id)allRecordNamesInStoreWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
+  identifierCopy = identifier;
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1487,23 +1487,23 @@ void __71__SYDCoreDataStore_deleteDataForStoresMatchingPredicate_context_error__
   v25 = __Block_byref_object_dispose__3;
   v26 = 0;
   obj = 0;
-  v8 = [(SYDCoreDataStore *)self contextForStoreIdentifier:v6 error:&obj];
+  v8 = [(SYDCoreDataStore *)self contextForStoreIdentifier:identifierCopy error:&obj];
   objc_storeStrong(&v26, obj);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__SYDCoreDataStore_allRecordNamesInStoreWithIdentifier_error___block_invoke;
   v15[3] = &unk_279D2FE40;
-  v9 = v6;
+  v9 = identifierCopy;
   v16 = v9;
   v10 = v8;
   v17 = v10;
   v19 = &v21;
-  v11 = v7;
+  v11 = array;
   v18 = v11;
   [v10 performBlockAndWait:v15];
-  if (a4)
+  if (error)
   {
-    *a4 = v22[5];
+    *error = v22[5];
   }
 
   v12 = v18;
@@ -1587,7 +1587,7 @@ void __62__SYDCoreDataStore_allRecordNamesInStoreWithIdentifier_error___block_in
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allStoreIdentifiersWithError:(id *)a3
+- (id)allStoreIdentifiersWithError:(id *)error
 {
   v5 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1612,7 +1612,7 @@ void __62__SYDCoreDataStore_allRecordNamesInStoreWithIdentifier_error___block_in
   v8 = v7;
   v17 = &v19;
   v14 = v8;
-  v15 = self;
+  selfCopy = self;
   v9 = v6;
   v16 = v9;
   [v8 performBlockAndWait:v13];
@@ -1622,16 +1622,16 @@ void __62__SYDCoreDataStore_allRecordNamesInStoreWithIdentifier_error___block_in
     [SYDCoreDataStore allStoreIdentifiersWithError:];
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v20[5];
+    *error = v20[5];
   }
 
-  v11 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
   _Block_object_dispose(&v19, 8);
 
-  return v11;
+  return allObjects;
 }
 
 void __49__SYDCoreDataStore_allStoreIdentifiersWithError___block_invoke(uint64_t a1)
@@ -1713,9 +1713,9 @@ void __49__SYDCoreDataStore_allStoreIdentifiersWithError___block_invoke(uint64_t
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)clearServerSystemFieldsRecordsForAllKeyValuesInStoreWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)clearServerSystemFieldsRecordsForAllKeyValuesInStoreWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1729,23 +1729,23 @@ void __49__SYDCoreDataStore_allStoreIdentifiersWithError___block_invoke(uint64_t
   v22 = __Block_byref_object_dispose__3;
   v23 = 0;
   obj = 0;
-  v8 = [(SYDCoreDataStore *)self contextForStoreIdentifier:v6 error:&obj];
+  v8 = [(SYDCoreDataStore *)self contextForStoreIdentifier:identifierCopy error:&obj];
   objc_storeStrong(&v23, obj);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __93__SYDCoreDataStore_clearServerSystemFieldsRecordsForAllKeyValuesInStoreWithIdentifier_error___block_invoke;
   v13[3] = &unk_279D2FE90;
   v13[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v14 = v9;
   v10 = v8;
   v15 = v10;
   v16 = &v18;
   [v10 performBlockAndWait:v13];
   [(SYDCoreDataStore *)self clearContexts];
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v11 = v19[5] == 0;
@@ -1837,9 +1837,9 @@ void __93__SYDCoreDataStore_clearServerSystemFieldsRecordsForAllKeyValuesInStore
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)numberOfKeyValuesInStoreWithIdentifier:(id)a3 error:(id *)a4
+- (unint64_t)numberOfKeyValuesInStoreWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1851,22 +1851,22 @@ void __93__SYDCoreDataStore_clearServerSystemFieldsRecordsForAllKeyValuesInStore
   v22 = __Block_byref_object_dispose__3;
   v23 = 0;
   obj = 0;
-  v7 = [(SYDCoreDataStore *)self contextForStoreIdentifier:v6 error:&obj];
+  v7 = [(SYDCoreDataStore *)self contextForStoreIdentifier:identifierCopy error:&obj];
   objc_storeStrong(&v23, obj);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__SYDCoreDataStore_numberOfKeyValuesInStoreWithIdentifier_error___block_invoke;
   v12[3] = &unk_279D2F718;
-  v8 = v6;
+  v8 = identifierCopy;
   v13 = v8;
   v15 = &v24;
   v9 = v7;
   v14 = v9;
   v16 = &v18;
   [v9 performBlockAndWait:v12];
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v10 = v25[3];
@@ -1901,9 +1901,9 @@ void __65__SYDCoreDataStore_numberOfKeyValuesInStoreWithIdentifier_error___block
   }
 }
 
-- (id)currentChangeTokenForStoreIdentifier:(id)a3 error:(id *)a4
+- (id)currentChangeTokenForStoreIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1925,20 +1925,20 @@ void __65__SYDCoreDataStore_numberOfKeyValuesInStoreWithIdentifier_error___block
   obj = 0;
   v8 = [(SYDCoreDataStore *)self persistentContainerWithError:&obj];
   objc_storeStrong(&v29, obj);
-  v9 = [v8 persistentStoreCoordinator];
+  persistentStoreCoordinator = [v8 persistentStoreCoordinator];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __63__SYDCoreDataStore_currentChangeTokenForStoreIdentifier_error___block_invoke;
   v13[3] = &unk_279D2FEB8;
-  v10 = v9;
+  v10 = persistentStoreCoordinator;
   v14 = v10;
   v15 = &v24;
   v16 = &v18;
   [v10 performBlockAndWait:v13];
-  if (a4)
+  if (error)
   {
-    *a4 = v25[5];
+    *error = v25[5];
   }
 
   v11 = v19[5];
@@ -2015,11 +2015,11 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)changedKeysForStoreIdentifier:(id)a3 sinceChangeToken:(id)a4 error:(id *)a5
+- (id)changedKeysForStoreIdentifier:(id)identifier sinceChangeToken:(id)token error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  tokenCopy = token;
   v10 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -2039,25 +2039,25 @@ LABEL_11:
   v31 = __Block_byref_object_dispose__3;
   v32 = 0;
   obj = 0;
-  v11 = [(SYDCoreDataStore *)self contextForStoreIdentifier:v8 error:&obj];
+  v11 = [(SYDCoreDataStore *)self contextForStoreIdentifier:identifierCopy error:&obj];
   objc_storeStrong(&v38, obj);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __73__SYDCoreDataStore_changedKeysForStoreIdentifier_sinceChangeToken_error___block_invoke;
   v19[3] = &unk_279D2FEE0;
-  v12 = v9;
+  v12 = tokenCopy;
   v20 = v12;
   v24 = &v33;
-  v13 = v8;
+  v13 = identifierCopy;
   v21 = v13;
   v14 = v11;
   v22 = v14;
-  v23 = self;
+  selfCopy = self;
   v25 = &v27;
   [v14 performBlockAndWait:v19];
-  if (a5)
+  if (error)
   {
-    *a5 = v34[5];
+    *error = v34[5];
   }
 
   if (!v34[5])
@@ -2590,7 +2590,7 @@ LABEL_111:
   v84 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)clearServerSystemFieldsRecordsForAllStoresWithError:(id *)a3
+- (BOOL)clearServerSystemFieldsRecordsForAllStoresWithError:(id *)error
 {
   v5 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -2616,9 +2616,9 @@ LABEL_111:
   v12 = &v14;
   [v7 performBlockAndWait:v10];
   [(SYDCoreDataStore *)self clearContexts];
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   v8 = v15[5] == 0;
@@ -2707,9 +2707,9 @@ void __72__SYDCoreDataStore_clearServerSystemFieldsRecordsForAllStoresWithError_
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setACAccountIdentifier:(id)a3 error:(id *)a4
+- (BOOL)setACAccountIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -2727,12 +2727,12 @@ void __72__SYDCoreDataStore_clearServerSystemFieldsRecordsForAllStoresWithError_
   v8 = v7;
   v13 = v8;
   v15 = &v17;
-  v9 = v6;
+  v9 = identifierCopy;
   v14 = v9;
   [v8 performBlockAndWait:v12];
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v10 = v18[5] == 0;
@@ -2770,7 +2770,7 @@ void __49__SYDCoreDataStore_setACAccountIdentifier_error___block_invoke(void *a1
   }
 }
 
-- (id)acAccountIdentifierWithError:(id *)a3
+- (id)acAccountIdentifierWithError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -2797,9 +2797,9 @@ void __49__SYDCoreDataStore_setACAccountIdentifier_error___block_invoke(void *a1
   v11 = &v14;
   v12 = &v20;
   [v6 performBlockAndWait:v9];
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   v7 = v21[5];
@@ -2824,7 +2824,7 @@ void __49__SYDCoreDataStore_acAccountIdentifierWithError___block_invoke(void *a1
   *(v7 + 40) = v6;
 }
 
-- (BOOL)setDidMigrateFromPlists:(BOOL)a3 error:(id *)a4
+- (BOOL)setDidMigrateFromPlists:(BOOL)plists error:(id *)error
 {
   v7 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -2849,11 +2849,11 @@ void __49__SYDCoreDataStore_acAccountIdentifierWithError___block_invoke(void *a1
   v9 = v8;
   v13 = v9;
   v14 = &v17;
-  v15 = a3;
+  plistsCopy = plists;
   [v9 performBlockAndWait:v12];
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v10 = v18[5] == 0;
@@ -2908,7 +2908,7 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)didMigrateFromPlistsWithError:(id *)a3
+- (BOOL)didMigrateFromPlistsWithError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -2933,9 +2933,9 @@ LABEL_9:
   v11 = &v14;
   v12 = &v20;
   [v6 performBlockAndWait:v9];
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   v7 = *(v21 + 24);
@@ -2956,7 +2956,7 @@ void __50__SYDCoreDataStore_didMigrateFromPlistsWithError___block_invoke(void *a
   *(*(a1[7] + 8) + 24) = [v5 didMigrateFromPlists];
 }
 
-- (BOOL)setFailedMigrationCount:(signed __int16)a3 error:(id *)a4
+- (BOOL)setFailedMigrationCount:(signed __int16)count error:(id *)error
 {
   v7 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -2981,11 +2981,11 @@ void __50__SYDCoreDataStore_didMigrateFromPlistsWithError___block_invoke(void *a
   v9 = v8;
   v13 = v9;
   v14 = &v17;
-  v15 = a3;
+  countCopy = count;
   [v9 performBlockAndWait:v12];
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v10 = v18[5] == 0;
@@ -3040,7 +3040,7 @@ LABEL_8:
 LABEL_9:
 }
 
-- (signed)failedMigrationCountWithError:(id *)a3
+- (signed)failedMigrationCountWithError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -3065,9 +3065,9 @@ LABEL_9:
   v11 = &v14;
   v12 = &v20;
   [v6 performBlockAndWait:v9];
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   v7 = *(v21 + 12);
@@ -3134,7 +3134,7 @@ void __66__SYDCoreDataStore_hasPerformedOneTimeDataSeparatedLocalDataReset__bloc
   }
 }
 
-- (BOOL)setHasPerformedOneTimeDataSeparatedLocalDataReset:(BOOL)a3 error:(id *)a4
+- (BOOL)setHasPerformedOneTimeDataSeparatedLocalDataReset:(BOOL)reset error:(id *)error
 {
   v7 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -3159,11 +3159,11 @@ void __66__SYDCoreDataStore_hasPerformedOneTimeDataSeparatedLocalDataReset__bloc
   v9 = v8;
   v13 = v9;
   v14 = &v17;
-  v15 = a3;
+  resetCopy = reset;
   [v9 performBlockAndWait:v12];
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v10 = v18[5] == 0;
@@ -3218,9 +3218,9 @@ LABEL_4:
 LABEL_5:
 }
 
-- (id)dictionaryRepresentationForStoreWithIdentifier:(id)a3 error:(id *)a4
+- (id)dictionaryRepresentationForStoreWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -3240,16 +3240,16 @@ LABEL_5:
   v24 = __Block_byref_object_dispose__3;
   v25 = 0;
   obj = 0;
-  v8 = [(SYDCoreDataStore *)self contextForStoreIdentifier:v6 error:&obj];
+  v8 = [(SYDCoreDataStore *)self contextForStoreIdentifier:identifierCopy error:&obj];
   objc_storeStrong(&v25, obj);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__SYDCoreDataStore_dictionaryRepresentationForStoreWithIdentifier_error___block_invoke;
   v13[3] = &unk_279D2FF80;
-  v9 = v6;
+  v9 = identifierCopy;
   v17 = &v20;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   v10 = v8;
   v16 = v10;
   v18 = &v26;
@@ -3259,9 +3259,9 @@ LABEL_5:
     v27[5] = MEMORY[0x277CBEC10];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v11 = v27[5];
@@ -3414,13 +3414,13 @@ void __73__SYDCoreDataStore_dictionaryRepresentationForStoreWithIdentifier_error
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)saveSyncEngineStateSerialization:(id)a3 error:(id *)a4
+- (BOOL)saveSyncEngineStateSerialization:(id)serialization error:(id *)error
 {
-  v6 = a3;
+  serializationCopy = serialization;
   v7 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [SYDCoreDataStore saveSyncEngineStateSerialization:v6 error:?];
+    [SYDCoreDataStore saveSyncEngineStateSerialization:serializationCopy error:?];
   }
 
   v18 = 0;
@@ -3440,12 +3440,12 @@ void __73__SYDCoreDataStore_dictionaryRepresentationForStoreWithIdentifier_error
   v9 = v8;
   v14 = v9;
   v16 = &v18;
-  v10 = v6;
+  v10 = serializationCopy;
   v15 = v10;
   [v9 performBlockAndWait:v13];
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v11 = v19[5] == 0;
@@ -3472,7 +3472,7 @@ void __59__SYDCoreDataStore_saveSyncEngineStateSerialization_error___block_invok
   objc_storeStrong((v8 + 40), v9);
 }
 
-- (id)syncEngineStateSerializationWithError:(id *)a3
+- (id)syncEngineStateSerializationWithError:(id *)error
 {
   v5 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -3505,9 +3505,9 @@ void __59__SYDCoreDataStore_saveSyncEngineStateSerialization_error___block_invok
   v12 = &v15;
   v13 = &v21;
   [v7 performBlockAndWait:v10];
-  if (a3)
+  if (error)
   {
-    *a3 = v16[5];
+    *error = v16[5];
   }
 
   v8 = v22[5];
@@ -3532,13 +3532,13 @@ void __58__SYDCoreDataStore_syncEngineStateSerializationWithError___block_invoke
   *(v7 + 40) = v6;
 }
 
-- (BOOL)saveDeprecatedSyncEngineMetadata:(id)a3 error:(id *)a4
+- (BOOL)saveDeprecatedSyncEngineMetadata:(id)metadata error:(id *)error
 {
-  v6 = a3;
+  metadataCopy = metadata;
   v7 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [SYDCoreDataStore saveDeprecatedSyncEngineMetadata:v6 error:?];
+    [SYDCoreDataStore saveDeprecatedSyncEngineMetadata:metadataCopy error:?];
   }
 
   v18 = 0;
@@ -3558,12 +3558,12 @@ void __58__SYDCoreDataStore_syncEngineStateSerializationWithError___block_invoke
   v9 = v8;
   v14 = v9;
   v16 = &v18;
-  v10 = v6;
+  v10 = metadataCopy;
   v15 = v10;
   [v9 performBlockAndWait:v13];
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v11 = v19[5] == 0;
@@ -3589,7 +3589,7 @@ void __59__SYDCoreDataStore_saveDeprecatedSyncEngineMetadata_error___block_invok
   objc_storeStrong((v8 + 40), v9);
 }
 
-- (id)deprecatedSyncEngineMetadataWithError:(id *)a3
+- (id)deprecatedSyncEngineMetadataWithError:(id *)error
 {
   v5 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -3622,9 +3622,9 @@ void __59__SYDCoreDataStore_saveDeprecatedSyncEngineMetadata_error___block_invok
   v12 = &v15;
   v13 = &v21;
   [v7 performBlockAndWait:v10];
-  if (a3)
+  if (error)
   {
-    *a3 = v16[5];
+    *error = v16[5];
   }
 
   v8 = v22[5];
@@ -3649,10 +3649,10 @@ void __58__SYDCoreDataStore_deprecatedSyncEngineMetadataWithError___block_invoke
   *(v7 + 40) = v6;
 }
 
-- (id)managedDatabaseCreateIfNecessary:(BOOL)a3 inContext:(id)a4 error:(id *)a5
+- (id)managedDatabaseCreateIfNecessary:(BOOL)necessary inContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v8 = a4;
+  necessaryCopy = necessary;
+  contextCopy = context;
   v9 = +[SYDManagedDatabase fetchRequest];
   v21 = 0;
   v10 = [v9 execute:&v21];
@@ -3666,8 +3666,8 @@ void __58__SYDCoreDataStore_deprecatedSyncEngineMetadataWithError___block_invoke
     }
   }
 
-  v13 = [v10 firstObject];
-  v14 = v13;
+  firstObject = [v10 firstObject];
+  v14 = firstObject;
   if (v11)
   {
     v15 = SYDGetCoreDataLog();
@@ -3676,20 +3676,20 @@ void __58__SYDCoreDataStore_deprecatedSyncEngineMetadataWithError___block_invoke
       [SYDCoreDataStore managedDatabaseCreateIfNecessary:inContext:error:];
     }
 
-    v16 = [v8 persistentStoreCoordinator];
-    [(SYDCoreDataStore *)self handleCorruptionIfNecessaryFromError:v11 inPersistentStoreCoordinator:v16];
+    persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+    [(SYDCoreDataStore *)self handleCorruptionIfNecessaryFromError:v11 inPersistentStoreCoordinator:persistentStoreCoordinator];
   }
 
   else
   {
-    if (v13)
+    if (firstObject)
     {
       v17 = 1;
     }
 
     else
     {
-      v17 = !v6;
+      v17 = !necessaryCopy;
     }
 
     if (!v17)
@@ -3700,28 +3700,28 @@ void __58__SYDCoreDataStore_deprecatedSyncEngineMetadataWithError___block_invoke
         [SYDCoreDataStore managedDatabaseCreateIfNecessary:inContext:error:];
       }
 
-      v14 = [[SYDManagedDatabase alloc] initWithContext:v8];
+      v14 = [[SYDManagedDatabase alloc] initWithContext:contextCopy];
       [(SYDManagedDatabase *)v14 setHasPerformedOneTimeDataSeparatedLocalDataReset:1];
     }
   }
 
-  if (a5)
+  if (error)
   {
     v19 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v14;
 }
 
-- (id)managedStoreWithIdentifier:(id)a3 createIfNecessary:(BOOL)a4 inContext:(id)a5 error:(id *)a6
+- (id)managedStoreWithIdentifier:(id)identifier createIfNecessary:(BOOL)necessary inContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
+  necessaryCopy = necessary;
+  identifierCopy = identifier;
+  contextCopy = context;
   v12 = +[SYDManagedStore fetchRequest];
-  v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier == %@", v10];
-  [v12 setPredicate:v13];
+  identifierCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier == %@", identifierCopy];
+  [v12 setPredicate:identifierCopy];
 
   v25 = 0;
   v14 = [v12 execute:&v25];
@@ -3735,8 +3735,8 @@ void __58__SYDCoreDataStore_deprecatedSyncEngineMetadataWithError___block_invoke
     }
   }
 
-  v17 = [v14 firstObject];
-  v18 = v17;
+  firstObject = [v14 firstObject];
+  v18 = firstObject;
   if (v15)
   {
     v19 = SYDGetCoreDataLog();
@@ -3745,14 +3745,14 @@ void __58__SYDCoreDataStore_deprecatedSyncEngineMetadataWithError___block_invoke
       [SYDCoreDataStore managedStoreWithIdentifier:createIfNecessary:inContext:error:];
     }
 
-    v20 = [v11 persistentStoreCoordinator];
-    [(SYDCoreDataStore *)self handleCorruptionIfNecessaryFromError:v15 inPersistentStoreCoordinator:v20];
+    persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+    [(SYDCoreDataStore *)self handleCorruptionIfNecessaryFromError:v15 inPersistentStoreCoordinator:persistentStoreCoordinator];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  if (!v17 && v8)
+  if (!firstObject && necessaryCopy)
   {
     v21 = SYDGetCoreDataLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -3760,40 +3760,40 @@ LABEL_14:
       [SYDCoreDataStore managedStoreWithIdentifier:createIfNecessary:inContext:error:];
     }
 
-    v18 = [[SYDManagedStore alloc] initWithContext:v11];
-    [(SYDManagedStore *)v18 setIdentifier:v10];
+    v18 = [[SYDManagedStore alloc] initWithContext:contextCopy];
+    [(SYDManagedStore *)v18 setIdentifier:identifierCopy];
     v24 = 0;
-    v20 = [(SYDCoreDataStore *)self managedDatabaseCreateIfNecessary:1 inContext:v11 error:&v24];
+    persistentStoreCoordinator = [(SYDCoreDataStore *)self managedDatabaseCreateIfNecessary:1 inContext:contextCopy error:&v24];
     v15 = v24;
-    [(SYDManagedStore *)v18 setDatabase:v20];
+    [(SYDManagedStore *)v18 setDatabase:persistentStoreCoordinator];
     goto LABEL_14;
   }
 
 LABEL_15:
-  if (a6)
+  if (error)
   {
     v22 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   return v18;
 }
 
-- (id)managedKeyValueWithRecordName:(id)a3 inStoreWithIdentifier:(id)a4 inContext:(id)a5 error:(id *)a6
+- (id)managedKeyValueWithRecordName:(id)name inStoreWithIdentifier:(id)identifier inContext:(id)context error:(id *)error
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v12 = MEMORY[0x277CCAC30];
-  v13 = a5;
-  v14 = [v12 predicateWithFormat:@"recordName == %@", v10];
-  v34[0] = v14;
-  v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"store.identifier == %@", v11];
-  v34[1] = v15;
+  contextCopy = context;
+  nameCopy = [v12 predicateWithFormat:@"recordName == %@", nameCopy];
+  v34[0] = nameCopy;
+  identifierCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"store.identifier == %@", identifierCopy];
+  v34[1] = identifierCopy;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
 
   v17 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v16];
-  v18 = [(SYDCoreDataStore *)self managedKeyValuesMatchingPredicate:v17 inContext:v13 error:a6];
+  v18 = [(SYDCoreDataStore *)self managedKeyValuesMatchingPredicate:v17 inContext:contextCopy error:error];
 
   if ([v18 count] >= 2)
   {
@@ -3801,18 +3801,18 @@ LABEL_15:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v31 = v10;
+      v31 = nameCopy;
       v32 = 2112;
-      v33 = v11;
+      v33 = identifierCopy;
       _os_log_impl(&dword_26C384000, v19, OS_LOG_TYPE_INFO, "Found multiple key values for the same record name (%@) in store <(%@)>", buf, 0x16u);
     }
   }
 
-  v20 = [v18 firstObject];
-  if ([v11 length])
+  firstObject = [v18 firstObject];
+  if ([identifierCopy length])
   {
     v21 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -3832,31 +3832,31 @@ LABEL_15:
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
   v21 = [v26 errorWithDomain:@"SyncedDefaults" code:2222 userInfo:v27];
 
-  if (a6)
+  if (error)
   {
 LABEL_7:
     v22 = v21;
-    *a6 = v21;
+    *error = v21;
   }
 
 LABEL_8:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return firstObject;
 }
 
-- (id)managedKeyValuesForKeyIDs:(id)a3 inContext:(id)a4 error:(id *)a5
+- (id)managedKeyValuesForKeyIDs:(id)ds inContext:(id)context error:(id *)error
 {
   v67 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v50 = a4;
+  dsCopy = ds;
+  contextCopy = context;
   v8 = objc_opt_new();
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v7;
+  obj = dsCopy;
   v9 = [obj countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v9)
   {
@@ -3872,14 +3872,14 @@ LABEL_8:
         }
 
         v13 = *(*(&v61 + 1) + 8 * i);
-        v14 = [v13 storeIdentifier];
-        v15 = [v8 objectForKeyedSubscript:v14];
+        storeIdentifier = [v13 storeIdentifier];
+        v15 = [v8 objectForKeyedSubscript:storeIdentifier];
 
         if (!v15)
         {
           v15 = [MEMORY[0x277CBEB58] set];
-          v16 = [v13 storeIdentifier];
-          [v8 setObject:v15 forKeyedSubscript:v16];
+          storeIdentifier2 = [v13 storeIdentifier];
+          [v8 setObject:v15 forKeyedSubscript:storeIdentifier2];
         }
 
         v17 = [v13 key];
@@ -3902,8 +3902,8 @@ LABEL_8:
   [v8 enumerateKeysAndObjectsUsingBlock:v59];
   v20 = [MEMORY[0x277CCA920] orPredicateWithSubpredicates:v19];
   v58 = 0;
-  v21 = v50;
-  v22 = [(SYDCoreDataStore *)self managedKeyValuesMatchingPredicate:v20 inContext:v50 error:&v58];
+  v21 = contextCopy;
+  v22 = [(SYDCoreDataStore *)self managedKeyValuesMatchingPredicate:v20 inContext:contextCopy error:&v58];
   v23 = v58;
   if (v23)
   {
@@ -3927,7 +3927,7 @@ LABEL_8:
   if (!v26)
   {
 LABEL_14:
-    v25 = a5;
+    errorCopy2 = error;
     goto LABEL_26;
   }
 
@@ -3948,9 +3948,9 @@ LABEL_14:
       v29 = *(*(&v54 + 1) + 8 * j);
       v30 = [SYDKeyID alloc];
       v31 = [v29 key];
-      v32 = [v29 store];
-      v33 = [v32 identifier];
-      v34 = [(SYDKeyID *)v30 initWithKey:v31 storeIdentifier:v33];
+      store = [v29 store];
+      identifier = [store identifier];
+      v34 = [(SYDKeyID *)v30 initWithKey:v31 storeIdentifier:identifier];
 
       v35 = [v24 objectForKeyedSubscript:v34];
       v36 = v35;
@@ -3959,11 +3959,11 @@ LABEL_14:
         goto LABEL_22;
       }
 
-      v37 = [v35 valueModificationDate];
-      [v37 timeIntervalSinceNow];
+      valueModificationDate = [v35 valueModificationDate];
+      [valueModificationDate timeIntervalSinceNow];
       v39 = v38;
-      v40 = [v29 valueModificationDate];
-      [v40 timeIntervalSinceNow];
+      valueModificationDate2 = [v29 valueModificationDate];
+      [valueModificationDate2 timeIntervalSinceNow];
       v42 = v41;
 
       if (v39 < v42)
@@ -3977,18 +3977,18 @@ LABEL_22:
   }
 
   while (v27);
-  v25 = a5;
-  v21 = v50;
+  errorCopy2 = error;
+  v21 = contextCopy;
   v20 = v47;
   v19 = v48;
   v23 = 0;
   v22 = v46;
 LABEL_26:
 
-  if (v25)
+  if (errorCopy2)
   {
     v43 = v23;
-    *v25 = v23;
+    *errorCopy2 = v23;
   }
 
   v44 = *MEMORY[0x277D85DE8];
@@ -4013,13 +4013,13 @@ void __62__SYDCoreDataStore_managedKeyValuesForKeyIDs_inContext_error___block_in
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)managedKeyValuesMatchingPredicate:(id)a3 inContext:(id)a4 error:(id *)a5
+- (id)managedKeyValuesMatchingPredicate:(id)predicate inContext:(id)context error:(id *)error
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  predicateCopy = predicate;
+  contextCopy = context;
   v10 = +[SYDManagedKeyValue fetchRequest];
-  [v10 setPredicate:v8];
+  [v10 setPredicate:predicateCopy];
   v11 = MEMORY[0x277CCAC98];
   v12 = NSStringFromSelector(sel_valueModificationDate);
   v13 = [v11 sortDescriptorWithKey:v12 ascending:0];
@@ -4038,14 +4038,14 @@ void __62__SYDCoreDataStore_managedKeyValuesForKeyIDs_inContext_error___block_in
       [SYDCoreDataStore managedKeyValuesMatchingPredicate:inContext:error:];
     }
 
-    v18 = [v9 persistentStoreCoordinator];
-    [(SYDCoreDataStore *)self handleCorruptionIfNecessaryFromError:v16 inPersistentStoreCoordinator:v18];
+    persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+    [(SYDCoreDataStore *)self handleCorruptionIfNecessaryFromError:v16 inPersistentStoreCoordinator:persistentStoreCoordinator];
   }
 
-  if (a5)
+  if (error)
   {
     v19 = v16;
-    *a5 = v16;
+    *error = v16;
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -4053,22 +4053,22 @@ void __62__SYDCoreDataStore_managedKeyValuesForKeyIDs_inContext_error___block_in
   return v15;
 }
 
-- (id)contextForStoreIdentifier:(id)a3 error:(id *)a4
+- (id)contextForStoreIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SYDCoreDataStore *)self transactionContext];
+  identifierCopy = identifier;
+  transactionContext = [(SYDCoreDataStore *)self transactionContext];
 
-  if (v7)
+  if (transactionContext)
   {
-    v8 = [(SYDCoreDataStore *)self transactionContext];
+    transactionContext2 = [(SYDCoreDataStore *)self transactionContext];
   }
 
   else
   {
-    v9 = [(SYDCoreDataStore *)self persistentContainerWithError:a4];
+    v9 = [(SYDCoreDataStore *)self persistentContainerWithError:error];
     if (v9)
     {
-      v8 = [(SYDCoreDataStore *)self _contextForStoreIdentifier:v6 persistentContainer:v9];
+      transactionContext2 = [(SYDCoreDataStore *)self _contextForStoreIdentifier:identifierCopy persistentContainer:v9];
     }
 
     else
@@ -4079,71 +4079,71 @@ void __62__SYDCoreDataStore_managedKeyValuesForKeyIDs_inContext_error___block_in
         [SYDCoreDataStore contextForStoreIdentifier:error:];
       }
 
-      v8 = 0;
+      transactionContext2 = 0;
     }
   }
 
-  return v8;
+  return transactionContext2;
 }
 
-- (id)_contextForStoreIdentifier:(id)a3 persistentContainer:(id)a4
+- (id)_contextForStoreIdentifier:(id)identifier persistentContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  containerCopy = container;
   v8 = @"__no_store__";
-  if (v6)
+  if (identifierCopy)
   {
-    v8 = v6;
+    v8 = identifierCopy;
   }
 
   v9 = v8;
-  v10 = [(SYDCoreDataStore *)self contextsLock];
-  [v10 lock];
+  contextsLock = [(SYDCoreDataStore *)self contextsLock];
+  [contextsLock lock];
 
-  v11 = [(SYDCoreDataStore *)self contexts];
-  v12 = [v11 objectForKey:v9];
+  contexts = [(SYDCoreDataStore *)self contexts];
+  newBackgroundContext = [contexts objectForKey:v9];
 
-  if (!v12)
+  if (!newBackgroundContext)
   {
-    v12 = [v7 newBackgroundContext];
-    [v12 setMergePolicy:*MEMORY[0x277CBE1C8]];
-    if (v6)
+    newBackgroundContext = [containerCopy newBackgroundContext];
+    [newBackgroundContext setMergePolicy:*MEMORY[0x277CBE1C8]];
+    if (identifierCopy)
     {
-      [v12 setName:v6];
+      [newBackgroundContext setName:identifierCopy];
     }
 
-    v13 = [(SYDCoreDataStore *)self contexts];
-    [v13 setObject:v12 forKey:v9];
+    contexts2 = [(SYDCoreDataStore *)self contexts];
+    [contexts2 setObject:newBackgroundContext forKey:v9];
   }
 
-  v14 = [(SYDCoreDataStore *)self contextsLock];
-  [v14 unlock];
+  contextsLock2 = [(SYDCoreDataStore *)self contextsLock];
+  [contextsLock2 unlock];
 
-  return v12;
+  return newBackgroundContext;
 }
 
 - (void)clearContexts
 {
-  v3 = [(SYDCoreDataStore *)self contextsLock];
-  [v3 lock];
+  contextsLock = [(SYDCoreDataStore *)self contextsLock];
+  [contextsLock lock];
 
-  v4 = [(SYDCoreDataStore *)self contexts];
-  [v4 removeAllObjects];
+  contexts = [(SYDCoreDataStore *)self contexts];
+  [contexts removeAllObjects];
 
-  v5 = [(SYDCoreDataStore *)self contextsLock];
-  [v5 unlock];
+  contextsLock2 = [(SYDCoreDataStore *)self contextsLock];
+  [contextsLock2 unlock];
 }
 
-- (BOOL)saveContext:(id)a3 reason:(id)a4 includingTransactionContext:(BOOL)a5 error:(id *)a6
+- (BOOL)saveContext:(id)context reason:(id)reason includingTransactionContext:(BOOL)transactionContext error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if (a5 || ([(SYDCoreDataStore *)self transactionContext], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != v10))
+  contextCopy = context;
+  reasonCopy = reason;
+  if (transactionContext || ([(SYDCoreDataStore *)self transactionContext], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != contextCopy))
   {
-    if (![v10 hasChanges])
+    if (![contextCopy hasChanges])
     {
       v15 = 0;
-      if (!a6)
+      if (!error)
       {
         goto LABEL_28;
       }
@@ -4152,13 +4152,13 @@ void __62__SYDCoreDataStore_managedKeyValuesForKeyIDs_inContext_error___block_in
     }
 
     v29 = 0;
-    v13 = [v10 save:&v29];
+    v13 = [contextCopy save:&v29];
     v14 = v29;
     v15 = v14;
     if (v13)
     {
-      v16 = SYDGetCoreDataLog();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+      persistentStoreCoordinator = SYDGetCoreDataLog();
+      if (os_log_type_enabled(persistentStoreCoordinator, OS_LOG_TYPE_DEBUG))
       {
         [SYDCoreDataStore saveContext:reason:includingTransactionContext:error:];
       }
@@ -4166,44 +4166,44 @@ void __62__SYDCoreDataStore_managedKeyValuesForKeyIDs_inContext_error___block_in
       goto LABEL_26;
     }
 
-    v17 = [v14 domain];
+    domain = [v14 domain];
     v18 = *MEMORY[0x277CBE2C8];
-    v19 = [v17 isEqualToString:*MEMORY[0x277CBE2C8]];
+    v19 = [domain isEqualToString:*MEMORY[0x277CBE2C8]];
 
     if (v19)
     {
-      v20 = [v15 code];
+      code = [v15 code];
       v21 = 0;
     }
 
     else
     {
-      v22 = [v15 domain];
-      v23 = [v22 isEqualToString:*MEMORY[0x277CCA050]];
+      domain2 = [v15 domain];
+      v23 = [domain2 isEqualToString:*MEMORY[0x277CCA050]];
 
       if (!v23)
       {
         goto LABEL_21;
       }
 
-      v24 = [v15 userInfo];
-      v25 = [v24 objectForKeyedSubscript:v18];
+      userInfo = [v15 userInfo];
+      v25 = [userInfo objectForKeyedSubscript:v18];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = [v25 integerValue];
+        code = [v25 integerValue];
       }
 
       else
       {
-        v20 = 0;
+        code = 0;
       }
 
       v21 = [v15 code] == 640;
     }
 
-    if (v20 == 13 || v21)
+    if (code == 13 || v21)
     {
       v26 = SYDGetCoreDataLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -4223,13 +4223,13 @@ LABEL_21:
 
 LABEL_25:
 
-    v16 = [v10 persistentStoreCoordinator];
-    [(SYDCoreDataStore *)self handleCorruptionIfNecessaryFromError:v15 inPersistentStoreCoordinator:v16];
+    persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+    [(SYDCoreDataStore *)self handleCorruptionIfNecessaryFromError:v15 inPersistentStoreCoordinator:persistentStoreCoordinator];
     goto LABEL_26;
   }
 
-  v16 = SYDGetCoreDataLog();
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+  persistentStoreCoordinator = SYDGetCoreDataLog();
+  if (os_log_type_enabled(persistentStoreCoordinator, OS_LOG_TYPE_DEBUG))
   {
     [SYDCoreDataStore saveContext:reason:includingTransactionContext:error:];
   }
@@ -4237,11 +4237,11 @@ LABEL_25:
   v15 = 0;
 LABEL_26:
 
-  if (a6)
+  if (error)
   {
 LABEL_27:
     v27 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
 LABEL_28:
@@ -4249,7 +4249,7 @@ LABEL_28:
   return v15 == 0;
 }
 
-- (id)persistentContainerWithError:(id *)a3
+- (id)persistentContainerWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -4263,7 +4263,7 @@ LABEL_28:
   v12 = __Block_byref_object_copy__3;
   v13 = __Block_byref_object_dispose__3;
   v14 = 0;
-  v5 = [(SYDCoreDataStore *)self persistentContainerQueue];
+  persistentContainerQueue = [(SYDCoreDataStore *)self persistentContainerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__SYDCoreDataStore_persistentContainerWithError___block_invoke;
@@ -4271,11 +4271,11 @@ LABEL_28:
   block[4] = self;
   block[5] = &v15;
   block[6] = &v9;
-  dispatch_sync(v5, block);
+  dispatch_sync(persistentContainerQueue, block);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   v6 = v16[5];
@@ -4298,19 +4298,19 @@ void __49__SYDCoreDataStore_persistentContainerWithError___block_invoke(void *a1
   *(v5 + 40) = v4;
 }
 
-- (id)_persistentContainerWithError:(id *)a3
+- (id)_persistentContainerWithError:(id *)error
 {
-  v5 = [(SYDCoreDataStore *)self persistentContainerQueue];
-  dispatch_assert_queue_V2(v5);
+  persistentContainerQueue = [(SYDCoreDataStore *)self persistentContainerQueue];
+  dispatch_assert_queue_V2(persistentContainerQueue);
 
-  return [(SYDCoreDataStore *)self _loadPersistentContainerWithError:a3];
+  return [(SYDCoreDataStore *)self _loadPersistentContainerWithError:error];
 }
 
-- (id)_loadPersistentContainerWithError:(id *)a3
+- (id)_loadPersistentContainerWithError:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v5 = [(SYDCoreDataStore *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v5 store:self shouldLoadPersistentStore:a3])
+  delegate = [(SYDCoreDataStore *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate store:self shouldLoadPersistentStore:error])
   {
     v7 = 0;
   }
@@ -4331,8 +4331,8 @@ void __49__SYDCoreDataStore_persistentContainerWithError___block_invoke(void *a1
         [SYDCoreDataStore _loadPersistentContainerWithError:];
       }
 
-      v9 = [objc_opt_class() managedObjectModel];
-      v10 = [objc_alloc(MEMORY[0x277CBE4A0]) initWithName:@"SYDManagedObjectModel" managedObjectModel:v9];
+      managedObjectModel = [objc_opt_class() managedObjectModel];
+      v10 = [objc_alloc(MEMORY[0x277CBE4A0]) initWithName:@"SYDManagedObjectModel" managedObjectModel:managedObjectModel];
       v11 = objc_alloc(MEMORY[0x277CBE4E0]);
       v12 = [(SYDCoreDataStore *)self URL];
       v13 = [v11 initWithURL:v12];
@@ -4342,8 +4342,8 @@ void __49__SYDCoreDataStore_persistentContainerWithError___block_invoke(void *a1
       [v13 setShouldInferMappingModelAutomatically:1];
       [v13 setShouldAddStoreAsynchronously:0];
       [v13 setOption:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CBE210]];
-      v14 = [(SYDCoreDataStore *)self fileProtectionType];
-      [v13 setOption:v14 forKey:*MEMORY[0x277CBE240]];
+      fileProtectionType = [(SYDCoreDataStore *)self fileProtectionType];
+      [v13 setOption:fileProtectionType forKey:*MEMORY[0x277CBE240]];
 
       v42[0] = v13;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
@@ -4409,9 +4409,9 @@ LABEL_8:
         }
       }
 
-      if (a3)
+      if (error)
       {
-        *a3 = v37[5];
+        *error = v37[5];
       }
 
       v7 = self->__persistentContainer;
@@ -4497,7 +4497,7 @@ void __54__SYDCoreDataStore__loadPersistentContainerWithError___block_invoke_194
   block[1] = 3221225472;
   block[2] = __38__SYDCoreDataStore_managedObjectModel__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (managedObjectModel_onceToken != -1)
   {
     dispatch_once(&managedObjectModel_onceToken, block);
@@ -4551,13 +4551,13 @@ void __38__SYDCoreDataStore_managedObjectModel__block_invoke(uint64_t a1)
 
 - (void)destroyPersistentStore
 {
-  v3 = [(SYDCoreDataStore *)self persistentContainerQueue];
+  persistentContainerQueue = [(SYDCoreDataStore *)self persistentContainerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__SYDCoreDataStore_destroyPersistentStore__block_invoke;
   block[3] = &unk_279D2F628;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(persistentContainerQueue, block);
 }
 
 void __42__SYDCoreDataStore_destroyPersistentStore__block_invoke(uint64_t a1)
@@ -4592,13 +4592,13 @@ void __42__SYDCoreDataStore_destroyPersistentStore__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_queue_destroyPersistentStoreInPersistentStoreCoordinator:(id)a3
+- (void)_queue_destroyPersistentStoreInPersistentStoreCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(SYDCoreDataStore *)self persistentContainerQueue];
-  dispatch_assert_queue_V2(v5);
+  coordinatorCopy = coordinator;
+  persistentContainerQueue = [(SYDCoreDataStore *)self persistentContainerQueue];
+  dispatch_assert_queue_V2(persistentContainerQueue);
 
-  if (v4)
+  if (coordinatorCopy)
   {
     v6 = SYDGetCoreDataLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -4609,7 +4609,7 @@ void __42__SYDCoreDataStore_destroyPersistentStore__block_invoke(uint64_t a1)
     v7 = [(SYDCoreDataStore *)self URL];
     v8 = *MEMORY[0x277CBE2E8];
     v13 = 0;
-    v9 = [v4 destroyPersistentStoreAtURL:v7 withType:v8 options:0 error:&v13];
+    v9 = [coordinatorCopy destroyPersistentStoreAtURL:v7 withType:v8 options:0 error:&v13];
     v10 = v13;
 
     v11 = SYDGetCoreDataLog();
@@ -4636,21 +4636,21 @@ void __42__SYDCoreDataStore_destroyPersistentStore__block_invoke(uint64_t a1)
 {
   v41[3] = *MEMORY[0x277D85DE8];
   v2 = [(SYDCoreDataStore *)self URL];
-  v3 = [v2 lastPathComponent];
-  v4 = [v3 stringByAppendingString:@"-wal"];
+  lastPathComponent = [v2 lastPathComponent];
+  v4 = [lastPathComponent stringByAppendingString:@"-wal"];
 
-  v5 = [v2 lastPathComponent];
-  v6 = [v5 stringByAppendingString:@"-shm"];
+  lastPathComponent2 = [v2 lastPathComponent];
+  v6 = [lastPathComponent2 stringByAppendingString:@"-shm"];
 
   v41[0] = v2;
-  v7 = [v2 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [v2 URLByDeletingLastPathComponent];
   v28 = v4;
-  v8 = [v7 URLByAppendingPathComponent:v4];
+  v8 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v4];
   v41[1] = v8;
   v29 = v2;
-  v9 = [v2 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent2 = [v2 URLByDeletingLastPathComponent];
   v27 = v6;
-  v10 = [v9 URLByAppendingPathComponent:v6];
+  v10 = [uRLByDeletingLastPathComponent2 URLByAppendingPathComponent:v6];
   v41[2] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:3];
 
@@ -4721,7 +4721,7 @@ void __42__SYDCoreDataStore_destroyPersistentStore__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (id)transactionalStoreWithError:(id *)a3
+- (id)transactionalStoreWithError:(id *)error
 {
   v13 = 0;
   v5 = [(SYDCoreDataStore *)self persistentContainerWithError:&v13];
@@ -4730,8 +4730,8 @@ void __42__SYDCoreDataStore_destroyPersistentStore__block_invoke(uint64_t a1)
   {
     v7 = [SYDCoreDataStore alloc];
     v8 = [(SYDCoreDataStore *)self URL];
-    v9 = [(SYDCoreDataStore *)self fileProtectionType];
-    v10 = [(SYDCoreDataStore *)v7 initWithURL:v8 fileProtectionType:v9 persistentContainer:v5 isTransactional:1];
+    fileProtectionType = [(SYDCoreDataStore *)self fileProtectionType];
+    v10 = [(SYDCoreDataStore *)v7 initWithURL:v8 fileProtectionType:fileProtectionType persistentContainer:v5 isTransactional:1];
   }
 
   else
@@ -4745,16 +4745,16 @@ void __42__SYDCoreDataStore_destroyPersistentStore__block_invoke(uint64_t a1)
     v10 = 0;
   }
 
-  if (a3)
+  if (error)
   {
     v11 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   return v10;
 }
 
-- (BOOL)saveTransaction:(id *)a3
+- (BOOL)saveTransaction:(id *)transaction
 {
   v13 = 0;
   v14 = &v13;
@@ -4762,9 +4762,9 @@ void __42__SYDCoreDataStore_destroyPersistentStore__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v5 = [(SYDCoreDataStore *)self transactionContext];
+  transactionContext = [(SYDCoreDataStore *)self transactionContext];
 
-  if (v5)
+  if (transactionContext)
   {
     v6 = SYDGetCoreDataLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -4772,22 +4772,22 @@ void __42__SYDCoreDataStore_destroyPersistentStore__block_invoke(uint64_t a1)
       [SYDCoreDataStore saveTransaction:];
     }
 
-    v7 = [(SYDCoreDataStore *)self transactionContext];
+    transactionContext2 = [(SYDCoreDataStore *)self transactionContext];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __36__SYDCoreDataStore_saveTransaction___block_invoke;
     v12[3] = &unk_279D2F650;
     v12[4] = self;
     v12[5] = &v13;
-    [v7 performBlockAndWait:v12];
+    [transactionContext2 performBlockAndWait:v12];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"TransactionStoreDidSave" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"TransactionStoreDidSave" object:self];
 
-    if (a3)
+    if (transaction)
     {
 LABEL_5:
-      *a3 = v14[5];
+      *transaction = v14[5];
     }
   }
 
@@ -4799,7 +4799,7 @@ LABEL_5:
       [SYDCoreDataStore saveTransaction:];
     }
 
-    if (a3)
+    if (transaction)
     {
       goto LABEL_5;
     }
@@ -4821,7 +4821,7 @@ void __36__SYDCoreDataStore_saveTransaction___block_invoke(uint64_t a1)
   objc_storeStrong((v4 + 40), obj);
 }
 
-- (void)transactionStoreDidSave:(id)a3
+- (void)transactionStoreDidSave:(id)save
 {
   v4 = SYDGetCoreDataLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -4833,21 +4833,21 @@ void __36__SYDCoreDataStore_saveTransaction___block_invoke(uint64_t a1)
   [(SYDCoreDataStore *)self clearContexts];
 }
 
-- (void)handleCorruptionIfNecessaryFromError:(id)a3 inPersistentStoreCoordinator:(id)a4
+- (void)handleCorruptionIfNecessaryFromError:(id)error inPersistentStoreCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SYDCoreDataStore *)self persistentContainerQueue];
+  errorCopy = error;
+  coordinatorCopy = coordinator;
+  persistentContainerQueue = [(SYDCoreDataStore *)self persistentContainerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__SYDCoreDataStore_handleCorruptionIfNecessaryFromError_inPersistentStoreCoordinator___block_invoke;
   block[3] = &unk_279D2F768;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = errorCopy;
+  v13 = coordinatorCopy;
+  v9 = coordinatorCopy;
+  v10 = errorCopy;
+  dispatch_sync(persistentContainerQueue, block);
 }
 
 void __86__SYDCoreDataStore_handleCorruptionIfNecessaryFromError_inPersistentStoreCoordinator___block_invoke(uint64_t a1)
@@ -4860,15 +4860,15 @@ void __86__SYDCoreDataStore_handleCorruptionIfNecessaryFromError_inPersistentSto
   }
 }
 
-+ (BOOL)isCorruptionError:(id)a3
++ (BOOL)isCorruptionError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CCA050]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]])
   {
-    v5 = [v3 code];
+    code = [errorCopy code];
 
-    if (v5 == 259)
+    if (code == 259)
     {
       v6 = SYDGetCoreDataLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -4884,9 +4884,9 @@ void __86__SYDCoreDataStore_handleCorruptionIfNecessaryFromError_inPersistentSto
   {
   }
 
-  v7 = [v3 userInfo];
+  userInfo = [errorCopy userInfo];
   v8 = *MEMORY[0x277CBE2C8];
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x277CBE2C8]];
+  v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBE2C8]];
   v10 = [v9 isEqual:&unk_287CF2478];
 
   if (v10)
@@ -4900,8 +4900,8 @@ void __86__SYDCoreDataStore_handleCorruptionIfNecessaryFromError_inPersistentSto
 
   else
   {
-    v11 = [v3 userInfo];
-    v12 = [v11 objectForKeyedSubscript:v8];
+    userInfo2 = [errorCopy userInfo];
+    v12 = [userInfo2 objectForKeyedSubscript:v8];
     v13 = [v12 isEqual:&unk_287CF2490];
 
     if (!v13)
@@ -4925,14 +4925,14 @@ LABEL_13:
   return v14;
 }
 
-- (BOOL)_queue_handleCorruptionIfNecessaryFromError:(id)a3 inPersistentStoreCoordinator:(id)a4
+- (BOOL)_queue_handleCorruptionIfNecessaryFromError:(id)error inPersistentStoreCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SYDCoreDataStore *)self persistentContainerQueue];
-  dispatch_assert_queue_V2(v8);
+  errorCopy = error;
+  coordinatorCopy = coordinator;
+  persistentContainerQueue = [(SYDCoreDataStore *)self persistentContainerQueue];
+  dispatch_assert_queue_V2(persistentContainerQueue);
 
-  if (v6 && [objc_opt_class() isCorruptionError:v6])
+  if (errorCopy && [objc_opt_class() isCorruptionError:errorCopy])
   {
     v9 = SYDGetCoreDataLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -4940,25 +4940,25 @@ LABEL_13:
       [SYDCoreDataStore _queue_handleCorruptionIfNecessaryFromError:inPersistentStoreCoordinator:];
     }
 
-    [(SYDCoreDataStore *)self _queue_destroyPersistentStoreInPersistentStoreCoordinator:v7];
+    [(SYDCoreDataStore *)self _queue_destroyPersistentStoreInPersistentStoreCoordinator:coordinatorCopy];
     if ([(SYDCoreDataStore *)self shouldSendAnalytics])
     {
-      v10 = [MEMORY[0x277CBEB38] dictionary];
-      v11 = [v6 domain];
-      [v10 setObject:v11 forKeyedSubscript:@"errorDomain"];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      domain = [errorCopy domain];
+      [dictionary setObject:domain forKeyedSubscript:@"errorDomain"];
 
-      v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "code")}];
-      [v10 setObject:v12 forKeyedSubscript:@"errorCode"];
+      v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+      [dictionary setObject:v12 forKeyedSubscript:@"errorCode"];
 
-      v13 = [v6 userInfo];
+      userInfo = [errorCopy userInfo];
       v14 = *MEMORY[0x277CBE2C8];
-      v15 = [v13 objectForKeyedSubscript:*MEMORY[0x277CBE2C8]];
+      v15 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBE2C8]];
 
       if (v15)
       {
-        v16 = [v6 userInfo];
-        v17 = [v16 objectForKeyedSubscript:v14];
-        [v10 setObject:v17 forKeyedSubscript:@"sqliteError"];
+        userInfo2 = [errorCopy userInfo];
+        v17 = [userInfo2 objectForKeyedSubscript:v14];
+        [dictionary setObject:v17 forKeyedSubscript:@"sqliteError"];
       }
 
       AnalyticsSendEvent();
@@ -4975,21 +4975,21 @@ LABEL_13:
   return v18;
 }
 
-+ (BOOL)isInvalidTokenError:(id)a3
++ (BOOL)isInvalidTokenError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if (![v4 isEqualToString:*MEMORY[0x277CCA050]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:*MEMORY[0x277CCA050]])
   {
 
     goto LABEL_7;
   }
 
-  if ([v3 code] != 134301 && objc_msgSend(v3, "code") != 134501)
+  if ([errorCopy code] != 134301 && objc_msgSend(errorCopy, "code") != 134501)
   {
-    v7 = [v3 code];
+    code = [errorCopy code];
 
-    if (v7 == 4864)
+    if (code == 4864)
     {
       goto LABEL_5;
     }

@@ -1,6 +1,6 @@
 @interface AX_FunCamAvatarCarousel
-- (AX_FunCamAvatarCarousel)initWithFunCamAvatarPickerController:(id)a3 accessibilityContainer:(id)a4;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (AX_FunCamAvatarCarousel)initWithFunCamAvatarPickerController:(id)controller accessibilityContainer:(id)container;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrameInContainerSpace;
 - (id)accessibilityValue;
@@ -12,16 +12,16 @@
 
 @implementation AX_FunCamAvatarCarousel
 
-- (AX_FunCamAvatarCarousel)initWithFunCamAvatarPickerController:(id)a3 accessibilityContainer:(id)a4
+- (AX_FunCamAvatarCarousel)initWithFunCamAvatarPickerController:(id)controller accessibilityContainer:(id)container
 {
-  v6 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = AX_FunCamAvatarCarousel;
-  v7 = [(AX_FunCamAvatarCarousel *)&v10 initWithAccessibilityContainer:a4];
+  v7 = [(AX_FunCamAvatarCarousel *)&v10 initWithAccessibilityContainer:container];
   v8 = v7;
   if (v7)
   {
-    [(AX_FunCamAvatarCarousel *)v7 setFcAVTPickerController:v6];
+    [(AX_FunCamAvatarCarousel *)v7 setFcAVTPickerController:controllerCopy];
   }
 
   return v8;
@@ -68,8 +68,8 @@
   v8 = __UIAccessibilityCastAsClass();
 
   v9 = [MEMORY[0x29EDB9FE0] indexPathForItem:objc_msgSend(v8 inSection:{"item") + 1, objc_msgSend(v8, "section")}];
-  v10 = [v9 item];
-  if (v10 < [v5 count])
+  item = [v9 item];
+  if (item < [v5 count])
   {
     v11 = objc_loadWeakRetained(&self->_fcAVTPickerController);
     v12 = [v11 safeValueForKey:@"collectionView"];
@@ -99,37 +99,37 @@
   }
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   WeakRetained = objc_loadWeakRetained(&self->_fcAVTPickerController);
   v6 = [WeakRetained safeValueForKey:@"collectionView"];
 
-  if (a3 == 1)
+  if (scroll == 1)
   {
-    v7 = [v6 accessibilityScrollRightPage];
+    accessibilityScrollRightPage = [v6 accessibilityScrollRightPage];
   }
 
-  else if (a3 == 2)
+  else if (scroll == 2)
   {
-    v7 = [v6 accessibilityScrollLeftPage];
+    accessibilityScrollRightPage = [v6 accessibilityScrollLeftPage];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = AX_FunCamAvatarCarousel;
-    v7 = [(AX_FunCamAvatarCarousel *)&v10 accessibilityScroll:a3];
+    accessibilityScrollRightPage = [(AX_FunCamAvatarCarousel *)&v10 accessibilityScroll:scroll];
   }
 
-  v8 = v7;
+  v8 = accessibilityScrollRightPage;
 
   return v8;
 }
 
 - (CGRect)accessibilityFrameInContainerSpace
 {
-  v2 = [(AX_FunCamAvatarCarousel *)self accessibilityContainer];
-  [v2 frame];
+  accessibilityContainer = [(AX_FunCamAvatarCarousel *)self accessibilityContainer];
+  [accessibilityContainer frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;

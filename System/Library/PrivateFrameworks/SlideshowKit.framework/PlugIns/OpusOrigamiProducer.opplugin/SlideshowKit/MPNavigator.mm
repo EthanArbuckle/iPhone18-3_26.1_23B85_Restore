@@ -2,49 +2,49 @@
 - (CGPoint)position;
 - (CGSize)size;
 - (MPNavigator)init;
-- (id)actionableObjectForID:(id)a3;
-- (id)allSlides:(BOOL)a3;
+- (id)actionableObjectForID:(id)d;
+- (id)allSlides:(BOOL)slides;
 - (id)allSongs;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)layerKey;
 - (id)navigatorKey;
 - (id)parentDocument;
 - (int64_t)zIndex;
 - (void)cleanup;
 - (void)configureActions;
-- (void)copyActions:(id)a3;
-- (void)copyAnimationPaths:(id)a3;
-- (void)copyLayers:(id)a3;
-- (void)copyStruct:(id)a3;
+- (void)copyActions:(id)actions;
+- (void)copyAnimationPaths:(id)paths;
+- (void)copyLayers:(id)layers;
+- (void)copyStruct:(id)struct;
 - (void)dealloc;
 - (void)reconnectAll;
-- (void)removeActionForKey:(id)a3;
+- (void)removeActionForKey:(id)key;
 - (void)removeAllLayers;
-- (void)removeAnimationPathForKey:(id)a3;
-- (void)removeLayerForKey:(id)a3;
-- (void)setAction:(id)a3 forKey:(id)a4;
-- (void)setAnimationPath:(id)a3 forKey:(id)a4;
-- (void)setContainer:(id)a3;
-- (void)setDuration:(double)a3;
-- (void)setInitialLayer:(id)a3;
-- (void)setIsTriggered:(BOOL)a3;
-- (void)setLayer:(id)a3 forKey:(id)a4;
-- (void)setNumberOfLoops:(double)a3;
-- (void)setOpacity:(double)a3;
-- (void)setParent:(id)a3;
-- (void)setPhaseInDuration:(double)a3;
-- (void)setPhaseOutDuration:(double)a3;
-- (void)setPlug:(id)a3;
-- (void)setPosition:(CGPoint)a3;
-- (void)setRotationAngle:(double)a3;
-- (void)setScale:(double)a3;
-- (void)setSize:(CGSize)a3;
-- (void)setStartsPaused:(BOOL)a3;
-- (void)setTimeIn:(double)a3;
-- (void)setXRotationAngle:(double)a3;
-- (void)setYRotationAngle:(double)a3;
-- (void)setZIndex:(int64_t)a3;
-- (void)setZPosition:(double)a3;
+- (void)removeAnimationPathForKey:(id)key;
+- (void)removeLayerForKey:(id)key;
+- (void)setAction:(id)action forKey:(id)key;
+- (void)setAnimationPath:(id)path forKey:(id)key;
+- (void)setContainer:(id)container;
+- (void)setDuration:(double)duration;
+- (void)setInitialLayer:(id)layer;
+- (void)setIsTriggered:(BOOL)triggered;
+- (void)setLayer:(id)layer forKey:(id)key;
+- (void)setNumberOfLoops:(double)loops;
+- (void)setOpacity:(double)opacity;
+- (void)setParent:(id)parent;
+- (void)setPhaseInDuration:(double)duration;
+- (void)setPhaseOutDuration:(double)duration;
+- (void)setPlug:(id)plug;
+- (void)setPosition:(CGPoint)position;
+- (void)setRotationAngle:(double)angle;
+- (void)setScale:(double)scale;
+- (void)setSize:(CGSize)size;
+- (void)setStartsPaused:(BOOL)paused;
+- (void)setTimeIn:(double)in;
+- (void)setXRotationAngle:(double)angle;
+- (void)setYRotationAngle:(double)angle;
+- (void)setZIndex:(int64_t)index;
+- (void)setZPosition:(double)position;
 @end
 
 @implementation MPNavigator
@@ -85,9 +85,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 copyStruct:self->_internal];
   [v4 copyLayers:self->_layers];
   [v4 copyAnimationPaths:self->_animationPaths];
@@ -120,10 +120,10 @@
     return 0;
   }
 
-  v3 = [self->_parent layerKeyDictionary];
-  v4 = [(MPNavigator *)self uuid];
+  layerKeyDictionary = [self->_parent layerKeyDictionary];
+  uuid = [(MPNavigator *)self uuid];
 
-  return [v3 objectForKey:v4];
+  return [layerKeyDictionary objectForKey:uuid];
 }
 
 - (id)layerKey
@@ -134,16 +134,16 @@
   }
 
   v3 = [-[MPNavigator parent](self "parent")];
-  v4 = [(MPNavigator *)self uuid];
+  uuid = [(MPNavigator *)self uuid];
 
-  return [v3 objectForKey:v4];
+  return [v3 objectForKey:uuid];
 }
 
-- (void)setLayer:(id)a3 forKey:(id)a4
+- (void)setLayer:(id)layer forKey:(id)key
 {
-  if ([(NSMutableDictionary *)self->_layers objectForKey:a4])
+  if ([(NSMutableDictionary *)self->_layers objectForKey:key])
   {
-    [(MPNavigator *)self removeLayerForKey:a4];
+    [(MPNavigator *)self removeLayerForKey:key];
   }
 
   if (!self->_layers)
@@ -151,9 +151,9 @@
     self->_layers = objc_alloc_init(NSMutableDictionary);
   }
 
-  [a3 setParent:self];
-  [(NSMutableDictionary *)self->_layers setObject:a3 forKey:a4];
-  -[NSMutableDictionary setObject:forKey:](-[MPNavigatorInternal layerKeyDictionary](self->_internal, "layerKeyDictionary"), "setObject:forKey:", a4, [a3 uuid]);
+  [layer setParent:self];
+  [(NSMutableDictionary *)self->_layers setObject:layer forKey:key];
+  -[NSMutableDictionary setObject:forKey:](-[MPNavigatorInternal layerKeyDictionary](self->_internal, "layerKeyDictionary"), "setObject:forKey:", key, [layer uuid]);
   if (self->_navigator)
   {
     objc_opt_class();
@@ -161,40 +161,40 @@
     v8 = [-[MPNavigator parentDocument](self "parentDocument")];
     if (isKindOfClass)
     {
-      v9 = [v8 createNavigatorContainer];
-      v10 = [(MCContainerNavigator *)self->_navigator setPlugForContainer:v9 forID:a4];
-      [a3 setContainer:v9];
-      [a3 setPlug:v10];
+      createNavigatorContainer = [v8 createNavigatorContainer];
+      v10 = [(MCContainerNavigator *)self->_navigator setPlugForContainer:createNavigatorContainer forID:key];
+      [layer setContainer:createNavigatorContainer];
+      [layer setPlug:v10];
     }
 
     else
     {
-      v11 = [v8 createParallelizerContainer];
-      v12 = [(MCContainerNavigator *)self->_navigator setPlugForContainer:v11 forID:a4];
-      [a3 setContainer:v11];
-      [a3 setPlug:v12];
-      [a3 resetDuration];
+      createParallelizerContainer = [v8 createParallelizerContainer];
+      v12 = [(MCContainerNavigator *)self->_navigator setPlugForContainer:createParallelizerContainer forID:key];
+      [layer setContainer:createParallelizerContainer];
+      [layer setPlug:v12];
+      [layer resetDuration];
     }
 
     [-[MPNavigator parentDocument](self "parentDocument")];
     if (![(MPNavigatorInternal *)self->_internal startPlugID])
     {
 
-      [(MPNavigator *)self setInitialLayer:a4];
+      [(MPNavigator *)self setInitialLayer:key];
     }
   }
 }
 
-- (void)removeLayerForKey:(id)a3
+- (void)removeLayerForKey:(id)key
 {
   v5 = [(NSMutableDictionary *)self->_layers objectForKey:?];
   v6 = v5;
   if (self->_navigator)
   {
-    v7 = [v5 plug];
-    if (v7)
+    plug = [v5 plug];
+    if (plug)
     {
-      [(MCContainerNavigator *)self->_navigator removePlug:v7];
+      [(MCContainerNavigator *)self->_navigator removePlug:plug];
     }
   }
 
@@ -202,8 +202,8 @@
   [v6 setContainer:0];
   [v6 setParent:0];
   -[NSMutableDictionary removeObjectForKey:](-[MPNavigatorInternal layerKeyDictionary](self->_internal, "layerKeyDictionary"), "removeObjectForKey:", [v6 uuid]);
-  [(NSMutableDictionary *)self->_layers removeObjectForKey:a3];
-  if ([(NSString *)[(MPNavigatorInternal *)self->_internal startPlugID] isEqualToString:a3])
+  [(NSMutableDictionary *)self->_layers removeObjectForKey:key];
+  if ([(NSString *)[(MPNavigatorInternal *)self->_internal startPlugID] isEqualToString:key])
   {
     if ([(NSMutableDictionary *)self->_layers count])
     {
@@ -253,15 +253,15 @@
   }
 }
 
-- (void)setInitialLayer:(id)a3
+- (void)setInitialLayer:(id)layer
 {
   [(MPNavigatorInternal *)self->_internal setStartPlugID:?];
   navigator = self->_navigator;
   if (navigator)
   {
-    if (a3)
+    if (layer)
     {
-      v6 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->_layers objectForKey:{a3), "plug"), "idInSupercontainer"}];
+      v6 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->_layers objectForKey:{layer), "plug"), "idInSupercontainer"}];
       navigator = self->_navigator;
     }
 
@@ -274,11 +274,11 @@
   }
 }
 
-- (void)setAnimationPath:(id)a3 forKey:(id)a4
+- (void)setAnimationPath:(id)path forKey:(id)key
 {
-  if (a3)
+  if (path)
   {
-    v7 = [(MPNavigator *)self animationPathForKey:a4];
+    v7 = [(MPNavigator *)self animationPathForKey:key];
     if (v7)
     {
       v8 = v7;
@@ -291,12 +291,12 @@
       self->_animationPaths = objc_alloc_init(NSMutableDictionary);
     }
 
-    [a3 setParent:self];
-    [(NSMutableDictionary *)self->_animationPaths setObject:a3 forKey:a4];
+    [path setParent:self];
+    [(NSMutableDictionary *)self->_animationPaths setObject:path forKey:key];
     plug = self->_plug;
     if (plug)
     {
-      [(MCPlug *)plug removeAnimationPathForKey:a4];
+      [(MCPlug *)plug removeAnimationPathForKey:key];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v11 = off_1A4CB0;
@@ -305,21 +305,21 @@
         v11 = off_1A4CB8;
       }
 
-      v12 = [(__objc2_class *)*v11 animationPathWithKey:a4];
+      v12 = [(__objc2_class *)*v11 animationPathWithKey:key];
       [(MCPlug *)self->_plug addAnimationPath:v12];
 
-      [a3 setAnimationPath:v12];
+      [path setAnimationPath:v12];
     }
   }
 
   else
   {
 
-    [(MPNavigator *)self removeAnimationPathForKey:a4];
+    [(MPNavigator *)self removeAnimationPathForKey:key];
   }
 }
 
-- (void)removeAnimationPathForKey:(id)a3
+- (void)removeAnimationPathForKey:(id)key
 {
   v5 = [(MPNavigator *)self animationPathForKey:?];
   if (self->_plug)
@@ -327,7 +327,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(MCPlug *)self->_plug removeAnimationPathForKey:a3];
+      [(MCPlug *)self->_plug removeAnimationPathForKey:key];
       [v5 setAnimationPath:0];
     }
   }
@@ -335,10 +335,10 @@
   [v5 setParent:0];
   animationPaths = self->_animationPaths;
 
-  [(NSMutableDictionary *)animationPaths removeObjectForKey:a3];
+  [(NSMutableDictionary *)animationPaths removeObjectForKey:key];
 }
 
-- (void)setOpacity:(double)a3
+- (void)setOpacity:(double)opacity
 {
   [(MPNavigatorInternal *)self->_internal setOpacity:?];
   if (self->_plug)
@@ -348,7 +348,7 @@
     {
       plug = self->_plug;
 
-      [(MCPlug *)plug setOpacity:a3];
+      [(MCPlug *)plug setOpacity:opacity];
     }
   }
 }
@@ -361,10 +361,10 @@
   return result;
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [(MPNavigatorInternal *)self->_internal setPosition:?];
   if (self->_plug)
   {
@@ -378,7 +378,7 @@
   }
 }
 
-- (void)setZPosition:(double)a3
+- (void)setZPosition:(double)position
 {
   [(MPNavigatorInternal *)self->_internal setZPosition:?];
   if (self->_plug)
@@ -388,12 +388,12 @@
     {
       plug = self->_plug;
 
-      [(MCPlug *)plug setZPosition:a3];
+      [(MCPlug *)plug setZPosition:position];
     }
   }
 }
 
-- (void)setRotationAngle:(double)a3
+- (void)setRotationAngle:(double)angle
 {
   [(MPNavigatorInternal *)self->_internal setRotationAngle:?];
   if (self->_plug)
@@ -403,7 +403,7 @@
     {
       plug = self->_plug;
 
-      [(MCPlug *)plug setRotationAngle:a3];
+      [(MCPlug *)plug setRotationAngle:angle];
     }
   }
 }
@@ -416,10 +416,10 @@
   return result;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(MPNavigatorInternal *)self->_internal setSize:?];
   if (self->_plug)
   {
@@ -433,7 +433,7 @@
   }
 }
 
-- (void)setXRotationAngle:(double)a3
+- (void)setXRotationAngle:(double)angle
 {
   [(MPNavigatorInternal *)self->_internal setXRotationAngle:?];
   if (self->_plug)
@@ -443,12 +443,12 @@
     {
       plug = self->_plug;
 
-      [(MCPlug *)plug setXRotationAngle:a3];
+      [(MCPlug *)plug setXRotationAngle:angle];
     }
   }
 }
 
-- (void)setYRotationAngle:(double)a3
+- (void)setYRotationAngle:(double)angle
 {
   [(MPNavigatorInternal *)self->_internal setYRotationAngle:?];
   if (self->_plug)
@@ -458,12 +458,12 @@
     {
       plug = self->_plug;
 
-      [(MCPlug *)plug setYRotationAngle:a3];
+      [(MCPlug *)plug setYRotationAngle:angle];
     }
   }
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
   [(MPNavigatorInternal *)self->_internal setScale:?];
   if (self->_plug)
@@ -473,7 +473,7 @@
     {
       plug = self->_plug;
 
-      [(MCPlug *)plug setScale:a3];
+      [(MCPlug *)plug setScale:scale];
     }
   }
 }
@@ -491,9 +491,9 @@
   return [(MPNavigatorInternal *)internal zIndex];
 }
 
-- (void)setZIndex:(int64_t)a3
+- (void)setZIndex:(int64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   [(MPNavigatorInternal *)self->_internal setZIndex:?];
   if ([-[MPNavigator parent](self "parent")])
   {
@@ -501,12 +501,12 @@
     if (plug)
     {
 
-      [(MCPlug *)plug setZIndex:v3];
+      [(MCPlug *)plug setZIndex:indexCopy];
     }
   }
 }
 
-- (void)setTimeIn:(double)a3
+- (void)setTimeIn:(double)in
 {
   [(MPNavigatorInternal *)self->_internal setTimeIn:?];
   if (self->_plug)
@@ -516,18 +516,18 @@
     {
       plug = self->_plug;
 
-      [(MCPlug *)plug setTimeIn:a3];
+      [(MCPlug *)plug setTimeIn:in];
     }
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   [(MPNavigatorInternal *)self->_internal setDuration:?];
   if (self->_plug)
   {
     [(MPNavigatorInternal *)self->_internal phaseInDuration];
-    v6 = a3 - v5;
+    v6 = duration - v5;
     [(MPNavigatorInternal *)self->_internal phaseOutDuration];
     v8 = v6 - v7;
     if (v8 < 0.0)
@@ -541,13 +541,13 @@
   }
 }
 
-- (void)setPhaseInDuration:(double)a3
+- (void)setPhaseInDuration:(double)duration
 {
   [(MPNavigatorInternal *)self->_internal setPhaseInDuration:?];
   plug = self->_plug;
   if (plug)
   {
-    [(MCPlug *)plug setPhaseInDuration:a3];
+    [(MCPlug *)plug setPhaseInDuration:duration];
     [(MPNavigatorInternal *)self->_internal duration];
     v7 = v6;
     [(MPNavigatorInternal *)self->_internal phaseInDuration];
@@ -565,13 +565,13 @@
   }
 }
 
-- (void)setPhaseOutDuration:(double)a3
+- (void)setPhaseOutDuration:(double)duration
 {
   [(MPNavigatorInternal *)self->_internal setPhaseOutDuration:?];
   plug = self->_plug;
   if (plug)
   {
-    [(MCPlug *)plug setPhaseOutDuration:a3];
+    [(MCPlug *)plug setPhaseOutDuration:duration];
     [(MPNavigatorInternal *)self->_internal duration];
     v7 = v6;
     [(MPNavigatorInternal *)self->_internal phaseInDuration];
@@ -589,13 +589,13 @@
   }
 }
 
-- (void)setNumberOfLoops:(double)a3
+- (void)setNumberOfLoops:(double)loops
 {
   [(MPNavigatorInternal *)self->_internal setNumberOfLoops:?];
   plug = self->_plug;
   if (plug)
   {
-    [(MCPlug *)plug setNumberOfLoops:a3];
+    [(MCPlug *)plug setNumberOfLoops:loops];
     [(MPNavigatorInternal *)self->_internal duration];
     v7 = v6;
     [(MPNavigatorInternal *)self->_internal phaseInDuration];
@@ -613,9 +613,9 @@
   }
 }
 
-- (void)setIsTriggered:(BOOL)a3
+- (void)setIsTriggered:(BOOL)triggered
 {
-  v3 = a3;
+  triggeredCopy = triggered;
   [(MPNavigatorInternal *)self->_internal setIsTriggered:?];
   if (self->_plug)
   {
@@ -624,28 +624,28 @@
     {
       plug = self->_plug;
 
-      [(MCPlug *)plug setIsTriggered:v3];
+      [(MCPlug *)plug setIsTriggered:triggeredCopy];
     }
   }
 }
 
-- (void)setStartsPaused:(BOOL)a3
+- (void)setStartsPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   [(MPNavigatorInternal *)self->_internal setStartsPaused:?];
   plug = self->_plug;
   if (plug)
   {
 
-    [(MCPlug *)plug setStartsPaused:v3];
+    [(MCPlug *)plug setStartsPaused:pausedCopy];
   }
 }
 
-- (void)setAction:(id)a3 forKey:(id)a4
+- (void)setAction:(id)action forKey:(id)key
 {
-  if (a3)
+  if (action)
   {
-    v7 = [(MPNavigator *)self actionForKey:a4];
+    v7 = [(MPNavigator *)self actionForKey:key];
     if (v7)
     {
       [v7 setParent:0];
@@ -656,42 +656,42 @@
       self->_actions = objc_alloc_init(NSMutableDictionary);
     }
 
-    [a3 setParent:self];
-    [(NSMutableDictionary *)self->_actions setObject:a3 forKey:a4];
+    [action setParent:self];
+    [(NSMutableDictionary *)self->_actions setObject:action forKey:key];
     plug = self->_plug;
     if (plug)
     {
-      v9 = [MPUtilities createMCAction:a3 forPlug:plug withKey:a4];
+      v9 = [MPUtilities createMCAction:action forPlug:plug withKey:key];
 
-      [a3 setAction:v9];
+      [action setAction:v9];
     }
   }
 
   else
   {
 
-    [(MPNavigator *)self removeActionForKey:a4];
+    [(MPNavigator *)self removeActionForKey:key];
   }
 }
 
-- (void)removeActionForKey:(id)a3
+- (void)removeActionForKey:(id)key
 {
   v5 = [(MPNavigator *)self actionForKey:?];
   plug = self->_plug;
   if (plug)
   {
-    [(MCPlug *)plug removeActionForKey:a3];
+    [(MCPlug *)plug removeActionForKey:key];
   }
 
   [v5 setParent:0];
   actions = self->_actions;
 
-  [(NSMutableDictionary *)actions removeObjectForKey:a3];
+  [(NSMutableDictionary *)actions removeObjectForKey:key];
 }
 
-- (id)allSlides:(BOOL)a3
+- (id)allSlides:(BOOL)slides
 {
-  v3 = a3;
+  slidesCopy = slides;
   v5 = +[NSMutableArray array];
   v12 = 0u;
   v13 = 0u;
@@ -712,7 +712,7 @@
           objc_enumerationMutation(layers);
         }
 
-        [v5 addObjectsFromArray:{objc_msgSend(-[NSMutableDictionary objectForKey:](self->_layers, "objectForKey:", *(*(&v12 + 1) + 8 * i)), "allSlides:", v3)}];
+        [v5 addObjectsFromArray:{objc_msgSend(-[NSMutableDictionary objectForKey:](self->_layers, "objectForKey:", *(*(&v12 + 1) + 8 * i)), "allSlides:", slidesCopy)}];
       }
 
       v8 = [(NSMutableDictionary *)layers countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -760,25 +760,25 @@
 
 - (id)parentDocument
 {
-  v2 = [(MPNavigator *)self parent];
+  parent = [(MPNavigator *)self parent];
   objc_opt_class();
-  while ((objc_opt_isKindOfClass() & 1) == 0 && v2)
+  while ((objc_opt_isKindOfClass() & 1) == 0 && parent)
   {
-    v2 = [v2 parent];
+    parent = [parent parent];
     objc_opt_class();
   }
 
-  return v2;
+  return parent;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  if (a3 && self->_parent)
+  if (parent && self->_parent)
   {
     objc_exception_throw([NSException exceptionWithName:@"ManyToOneException" reason:@"A layer may one have one parent.  Please remove it first.  This is unsupported." userInfo:0]);
   }
 
-  self->_parent = a3;
+  self->_parent = parent;
   if (![(MPNavigatorInternal *)self->_internal uuid])
   {
     v4 = +[MPUtilities stringWithNewUUID];
@@ -850,7 +850,7 @@
   }
 }
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
   navigator = self->_navigator;
   if (navigator)
@@ -859,10 +859,10 @@
     self->_navigator = 0;
   }
 
-  self->_navigator = [a3 specialRetain];
+  self->_navigator = [container specialRetain];
 }
 
-- (void)setPlug:(id)a3
+- (void)setPlug:(id)plug
 {
   plug = self->_plug;
   if (plug)
@@ -871,9 +871,9 @@
     self->_plug = 0;
   }
 
-  v6 = a3;
-  self->_plug = v6;
-  if (v6)
+  plugCopy = plug;
+  self->_plug = plugCopy;
+  if (plugCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1060,8 +1060,8 @@
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v39 = [(NSMutableDictionary *)self->_layers allValues];
-    v40 = [v39 countByEnumeratingWithState:&v63 objects:v81 count:16];
+    allValues = [(NSMutableDictionary *)self->_layers allValues];
+    v40 = [allValues countByEnumeratingWithState:&v63 objects:v81 count:16];
     if (v40)
     {
       v41 = v40;
@@ -1072,7 +1072,7 @@
         {
           if (*v64 != v42)
           {
-            objc_enumerationMutation(v39);
+            objc_enumerationMutation(allValues);
           }
 
           v44 = *(*(&v63 + 1) + 8 * m);
@@ -1080,7 +1080,7 @@
           [v44 setContainer:0];
         }
 
-        v41 = [v39 countByEnumeratingWithState:&v63 objects:v81 count:16];
+        v41 = [allValues countByEnumeratingWithState:&v63 objects:v81 count:16];
       }
 
       while (v41);
@@ -1150,8 +1150,8 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v3 = [(NSMutableDictionary *)self->_layers allValues];
-  v4 = [v3 countByEnumeratingWithState:&v26 objects:v32 count:16];
+  allValues = [(NSMutableDictionary *)self->_layers allValues];
+  v4 = [allValues countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1163,7 +1163,7 @@
       {
         if (*v27 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v26 + 1) + 8 * v7) cleanup];
@@ -1171,19 +1171,19 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v26 objects:v32 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v26 objects:v32 count:16];
     }
 
     while (v5);
   }
 
   [(MPNavigator *)self removeAllLayers];
-  v8 = [(NSMutableDictionary *)self->_animationPaths allKeys];
+  allKeys = [(NSMutableDictionary *)self->_animationPaths allKeys];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v31 count:16];
+  v9 = [allKeys countByEnumeratingWithState:&v22 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1195,7 +1195,7 @@
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         [(MPNavigator *)self removeAnimationPathForKey:*(*(&v22 + 1) + 8 * v12)];
@@ -1203,18 +1203,18 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v31 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v22 objects:v31 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [(NSMutableDictionary *)self->_actions allKeys];
+  allKeys2 = [(NSMutableDictionary *)self->_actions allKeys];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = [v13 countByEnumeratingWithState:&v18 objects:v30 count:16];
+  v14 = [allKeys2 countByEnumeratingWithState:&v18 objects:v30 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1226,7 +1226,7 @@
       {
         if (*v19 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys2);
         }
 
         [(MPNavigator *)self removeActionForKey:*(*(&v18 + 1) + 8 * v17)];
@@ -1234,7 +1234,7 @@
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v18 objects:v30 count:16];
+      v15 = [allKeys2 countByEnumeratingWithState:&v18 objects:v30 count:16];
     }
 
     while (v15);
@@ -1243,51 +1243,51 @@
   self->_parent = 0;
 }
 
-- (void)copyStruct:(id)a3
+- (void)copyStruct:(id)struct
 {
-  -[MPNavigatorInternal setStartPlugID:](self->_internal, "setStartPlugID:", [a3 startPlugID]);
-  [a3 position];
+  -[MPNavigatorInternal setStartPlugID:](self->_internal, "setStartPlugID:", [struct startPlugID]);
+  [struct position];
   [(MPNavigatorInternal *)self->_internal setPosition:?];
-  [a3 size];
+  [struct size];
   [(MPNavigatorInternal *)self->_internal setSize:?];
-  [a3 zPosition];
+  [struct zPosition];
   [(MPNavigatorInternal *)self->_internal setZPosition:?];
-  [a3 rotationAngle];
+  [struct rotationAngle];
   [(MPNavigatorInternal *)self->_internal setRotationAngle:?];
-  [a3 xRotationAngle];
+  [struct xRotationAngle];
   [(MPNavigatorInternal *)self->_internal setXRotationAngle:?];
-  [a3 yRotationAngle];
+  [struct yRotationAngle];
   [(MPNavigatorInternal *)self->_internal setYRotationAngle:?];
-  [a3 scale];
+  [struct scale];
   [(MPNavigatorInternal *)self->_internal setScale:?];
-  [a3 opacity];
+  [struct opacity];
   [(MPNavigatorInternal *)self->_internal setOpacity:?];
-  -[MPNavigatorInternal setZIndex:](self->_internal, "setZIndex:", [a3 zIndex]);
-  [a3 numberOfLoops];
+  -[MPNavigatorInternal setZIndex:](self->_internal, "setZIndex:", [struct zIndex]);
+  [struct numberOfLoops];
   [(MPNavigatorInternal *)self->_internal setNumberOfLoops:?];
-  [a3 duration];
+  [struct duration];
   [(MPNavigatorInternal *)self->_internal setDuration:?];
-  [a3 timeIn];
+  [struct timeIn];
   [(MPNavigatorInternal *)self->_internal setTimeIn:?];
-  -[MPNavigatorInternal setIsTriggered:](self->_internal, "setIsTriggered:", [a3 isTriggered]);
-  -[MPNavigatorInternal setStartsPaused:](self->_internal, "setStartsPaused:", [a3 startsPaused]);
-  [a3 phaseInDuration];
+  -[MPNavigatorInternal setIsTriggered:](self->_internal, "setIsTriggered:", [struct isTriggered]);
+  -[MPNavigatorInternal setStartsPaused:](self->_internal, "setStartsPaused:", [struct startsPaused]);
+  [struct phaseInDuration];
   [(MPNavigatorInternal *)self->_internal setPhaseInDuration:?];
-  [a3 phaseOutDuration];
+  [struct phaseOutDuration];
   [(MPNavigatorInternal *)self->_internal setPhaseOutDuration:?];
   internal = self->_internal;
 
   [(MPNavigatorInternal *)internal setUuid:0];
 }
 
-- (void)copyLayers:(id)a3
+- (void)copyLayers:(id)layers
 {
   v5 = +[NSMutableDictionary dictionary];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v6 = [layers countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1298,15 +1298,15 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(layers);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [objc_msgSend(a3 objectForKey:{v10), "copy"}];
+        v11 = [objc_msgSend(layers objectForKey:{v10), "copy"}];
         [v5 setObject:v11 forKey:v10];
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v7 = [layers countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v7);
@@ -1340,13 +1340,13 @@
   }
 }
 
-- (void)copyAnimationPaths:(id)a3
+- (void)copyAnimationPaths:(id)paths
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [paths countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1357,28 +1357,28 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(paths);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [objc_msgSend(a3 objectForKey:{v9), "copy"}];
+        v10 = [objc_msgSend(paths objectForKey:{v9), "copy"}];
         [(MPNavigator *)self setAnimationPath:v10 forKey:v9];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [paths countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)copyActions:(id)a3
+- (void)copyActions:(id)actions
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1389,15 +1389,15 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(actions);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [objc_msgSend(a3 objectForKey:{v9), "copy"}];
+        v10 = [objc_msgSend(actions objectForKey:{v9), "copy"}];
         [(MPNavigator *)self setAction:v10 forKey:v9];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1435,7 +1435,7 @@
   }
 }
 
-- (id)actionableObjectForID:(id)a3
+- (id)actionableObjectForID:(id)d
 {
   v13 = 0u;
   v14 = 0u;
@@ -1465,7 +1465,7 @@ LABEL_3:
       return v10;
     }
 
-    v11 = [v10 actionableObjectForID:a3];
+    v11 = [v10 actionableObjectForID:d];
     if (v11)
     {
       return v11;

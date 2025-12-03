@@ -5,28 +5,28 @@
 - (double)naturalLightingEnabledRetryInterval;
 - (int64_t)naturalLightingEnabledMaxRetryCount;
 - (int64_t)naturalLightingStartUpColorTemperature;
-- (unint64_t)millisecondsElapsedSinceStartOfDayWithDate:(id)a3 timeZone:(id)a4;
-- (void)dispatchAfterTimeInterval:(double)a3 queue:(id)a4 block:(id)a5;
+- (unint64_t)millisecondsElapsedSinceStartOfDayWithDate:(id)date timeZone:(id)zone;
+- (void)dispatchAfterTimeInterval:(double)interval queue:(id)queue block:(id)block;
 @end
 
 @implementation HMDLightProfileDataSource
 
 - (int64_t)naturalLightingStartUpColorTemperature
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"naturalLightingStartUpColorTemperature"];
-  v4 = [v3 numberValue];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"naturalLightingStartUpColorTemperature"];
+  numberValue = [v3 numberValue];
+  integerValue = [numberValue integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (double)naturalLightingEnabledRetryInterval
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"naturalLightingEnabledRetryInterval"];
-  v4 = [v3 numberValue];
-  [v4 doubleValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"naturalLightingEnabledRetryInterval"];
+  numberValue = [v3 numberValue];
+  [numberValue doubleValue];
   v6 = v5;
 
   return v6;
@@ -34,33 +34,33 @@
 
 - (int64_t)naturalLightingEnabledMaxRetryCount
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"naturalLightingEnabledMaxRetryCount"];
-  v4 = [v3 numberValue];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"naturalLightingEnabledMaxRetryCount"];
+  numberValue = [v3 numberValue];
+  integerValue = [numberValue integerValue];
 
-  return v5;
+  return integerValue;
 }
 
-- (void)dispatchAfterTimeInterval:(double)a3 queue:(id)a4 block:(id)a5
+- (void)dispatchAfterTimeInterval:(double)interval queue:(id)queue block:(id)block
 {
-  v6 = (a3 * 1000000000.0);
-  v7 = a5;
-  queue = a4;
+  v6 = (interval * 1000000000.0);
+  blockCopy = block;
+  queue = queue;
   v8 = dispatch_time(0, v6);
-  dispatch_after(v8, queue, v7);
+  dispatch_after(v8, queue, blockCopy);
 }
 
 - (double)naturalLightingCurveUpdateAccessoryTimeDifferenceThreshold
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"naturalLightingCurveUpdateAccessoryTimeDifferenceThreshold"];
-  v4 = [v3 numberValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"naturalLightingCurveUpdateAccessoryTimeDifferenceThreshold"];
+  numberValue = [v3 numberValue];
 
-  [v4 doubleValue];
+  [numberValue doubleValue];
   if (v5 >= 0.0)
   {
-    [v4 doubleValue];
+    [numberValue doubleValue];
     v6 = v7;
   }
 
@@ -74,14 +74,14 @@
 
 - (double)naturalLightingCurveUpdateInterval
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"naturalLightingCurveUpdateInterval"];
-  v4 = [v3 numberValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"naturalLightingCurveUpdateInterval"];
+  numberValue = [v3 numberValue];
 
-  [v4 doubleValue];
+  [numberValue doubleValue];
   if (v5 >= 0.0)
   {
-    [v4 doubleValue];
+    [numberValue doubleValue];
     v6 = v7;
   }
 
@@ -156,16 +156,16 @@
   return v7;
 }
 
-- (unint64_t)millisecondsElapsedSinceStartOfDayWithDate:(id)a3 timeZone:(id)a4
+- (unint64_t)millisecondsElapsedSinceStartOfDayWithDate:(id)date timeZone:(id)zone
 {
   v5 = MEMORY[0x277CBEA80];
   v6 = *MEMORY[0x277CBE5C0];
-  v7 = a4;
-  v8 = a3;
+  zoneCopy = zone;
+  dateCopy = date;
   v9 = [v5 calendarWithIdentifier:v6];
-  [v9 setTimeZone:v7];
+  [v9 setTimeZone:zoneCopy];
 
-  v10 = [v9 components:224 fromDate:v8];
+  v10 = [v9 components:224 fromDate:dateCopy];
 
   v11 = 3600 * [v10 hour];
   v12 = v11 + 60 * [v10 minute];

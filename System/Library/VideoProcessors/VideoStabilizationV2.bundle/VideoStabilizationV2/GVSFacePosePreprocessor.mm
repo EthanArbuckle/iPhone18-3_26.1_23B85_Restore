@@ -1,6 +1,6 @@
 @interface GVSFacePosePreprocessor
 - (GVSFacePosePreprocessor)init;
-- (double)updateWithFacePose:(uint64_t)a3 faceIdentifier:(__int32)a4;
+- (double)updateWithFacePose:(uint64_t)pose faceIdentifier:(__int32)identifier;
 - (void)reset;
 @end
 
@@ -27,11 +27,11 @@
   self->_previousFaceIdentifier = -1;
 }
 
-- (double)updateWithFacePose:(uint64_t)a3 faceIdentifier:(__int32)a4
+- (double)updateWithFacePose:(uint64_t)pose faceIdentifier:(__int32)identifier
 {
-  v4 = a1[1];
+  v4 = self[1];
   v5 = xmmword_433D0;
-  if ((vmaxvq_u32(vmvnq_s8(vceqq_f32(v4, v4))) & 0x80000000) == 0 && (vmaxvq_u32(vmvnq_s8(vceqq_f32(a2, a2))) & 0x80000000) == 0 && a1[3].i32[0] == a4)
+  if ((vmaxvq_u32(vmvnq_s8(vceqq_f32(v4, v4))) & 0x80000000) == 0 && (vmaxvq_u32(vmvnq_s8(vceqq_f32(a2, a2))) & 0x80000000) == 0 && self[3].i32[0] == identifier)
   {
     v6 = vmulq_f32(v4, xmmword_433E0);
     v7 = vnegq_f32(a2);
@@ -52,7 +52,7 @@
     }
   }
 
-  v16 = a1[2];
+  v16 = self[2];
   v17 = vnegq_f32(v5);
   v18 = vtrn2q_s32(v5, vtrn1q_s32(v5, v17));
   v19 = vmlaq_n_f32(vmulq_lane_f32(vextq_s8(v5, v17, 8uLL), *v16.f32, 1), vextq_s8(v18, v18, 8uLL), v16.f32[0]);
@@ -60,9 +60,9 @@
   v20.i32[0] = v17.i32[1];
   v20.i32[3] = v17.i32[2];
   v21 = vaddq_f32(v19, vmlaq_laneq_f32(vmulq_laneq_f32(v5, v16, 3), v20, v16, 2));
-  a1[1] = a2;
-  a1[2] = v21;
-  a1[3].i32[0] = a4;
+  self[1] = a2;
+  self[2] = v21;
+  self[3].i32[0] = identifier;
   return *v21.i64;
 }
 

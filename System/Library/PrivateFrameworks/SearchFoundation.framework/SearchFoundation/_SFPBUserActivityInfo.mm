@@ -1,52 +1,52 @@
 @interface _SFPBUserActivityInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBUserActivityInfo)initWithDictionary:(id)a3;
-- (_SFPBUserActivityInfo)initWithFacade:(id)a3;
-- (_SFPBUserActivityInfo)initWithJSON:(id)a3;
+- (_SFPBUserActivityInfo)initWithDictionary:(id)dictionary;
+- (_SFPBUserActivityInfo)initWithFacade:(id)facade;
+- (_SFPBUserActivityInfo)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setKey:(id)a3;
-- (void)setStringValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setKey:(id)key;
+- (void)setStringValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBUserActivityInfo
 
-- (_SFPBUserActivityInfo)initWithFacade:(id)a3
+- (_SFPBUserActivityInfo)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBUserActivityInfo *)self init];
   if (v5)
   {
-    if ([v4 hasValueType])
+    if ([facadeCopy hasValueType])
     {
-      -[_SFPBUserActivityInfo setValueType:](v5, "setValueType:", [v4 valueType]);
+      -[_SFPBUserActivityInfo setValueType:](v5, "setValueType:", [facadeCopy valueType]);
     }
 
-    v6 = [v4 key];
+    v6 = [facadeCopy key];
 
     if (v6)
     {
-      v7 = [v4 key];
+      v7 = [facadeCopy key];
       [(_SFPBUserActivityInfo *)v5 setKey:v7];
     }
 
-    v8 = [v4 stringValue];
+    stringValue = [facadeCopy stringValue];
 
-    if (v8)
+    if (stringValue)
     {
-      v9 = [v4 stringValue];
-      [(_SFPBUserActivityInfo *)v5 setStringValue:v9];
+      stringValue2 = [facadeCopy stringValue];
+      [(_SFPBUserActivityInfo *)v5 setStringValue:stringValue2];
     }
 
-    v10 = [v4 urlValue];
+    urlValue = [facadeCopy urlValue];
 
-    if (v10)
+    if (urlValue)
     {
       v11 = [_SFPBURL alloc];
-      v12 = [v4 urlValue];
-      v13 = [(_SFPBURL *)v11 initWithNSURL:v12];
+      urlValue2 = [facadeCopy urlValue];
+      v13 = [(_SFPBURL *)v11 initWithNSURL:urlValue2];
       [(_SFPBUserActivityInfo *)v5 setUrlValue:v13];
     }
 
@@ -56,22 +56,22 @@
   return v5;
 }
 
-- (_SFPBUserActivityInfo)initWithDictionary:(id)a3
+- (_SFPBUserActivityInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = _SFPBUserActivityInfo;
   v5 = [(_SFPBUserActivityInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"valueType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"valueType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBUserActivityInfo setValueType:](v5, "setValueType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"key"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"key"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,7 +79,7 @@
       [(_SFPBUserActivityInfo *)v5 setKey:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"stringValue"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"stringValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,7 +87,7 @@
       [(_SFPBUserActivityInfo *)v5 setStringValue:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"urlValue"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"urlValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,30 +101,30 @@
   return v5;
 }
 
-- (_SFPBUserActivityInfo)initWithJSON:(id)a3
+- (_SFPBUserActivityInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBUserActivityInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBUserActivityInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBUserActivityInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -137,50 +137,50 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_key)
   {
     v4 = [(_SFPBUserActivityInfo *)self key];
     v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"key"];
+    [dictionary setObject:v5 forKeyedSubscript:@"key"];
   }
 
   if (self->_stringValue)
   {
-    v6 = [(_SFPBUserActivityInfo *)self stringValue];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"stringValue"];
+    stringValue = [(_SFPBUserActivityInfo *)self stringValue];
+    v7 = [stringValue copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"stringValue"];
   }
 
   if (self->_urlValue)
   {
-    v8 = [(_SFPBUserActivityInfo *)self urlValue];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    urlValue = [(_SFPBUserActivityInfo *)self urlValue];
+    dictionaryRepresentation = [urlValue dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"urlValue"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"urlValue"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"urlValue"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"urlValue"];
     }
   }
 
   if (self->_valueType)
   {
-    v11 = [(_SFPBUserActivityInfo *)self valueType];
-    if (v11)
+    valueType = [(_SFPBUserActivityInfo *)self valueType];
+    if (valueType)
     {
-      if (v11 == 1)
+      if (valueType == 1)
       {
         v12 = @"1";
       }
 
       else
       {
-        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v11];
+        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", valueType];
       }
     }
 
@@ -189,10 +189,10 @@
       v12 = @"0";
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"valueType"];
+    [dictionary setObject:v12 forKeyedSubscript:@"valueType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -203,23 +203,23 @@
   return v5 ^ [(_SFPBURL *)self->_urlValue hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   valueType = self->_valueType;
-  if (valueType != [v4 valueType])
+  if (valueType != [equalCopy valueType])
   {
     goto LABEL_18;
   }
 
-  v6 = [(_SFPBUserActivityInfo *)self key];
-  v7 = [v4 key];
-  if ((v6 != 0) == (v7 == 0))
+  stringValue = [(_SFPBUserActivityInfo *)self key];
+  stringValue2 = [equalCopy key];
+  if ((stringValue != 0) == (stringValue2 == 0))
   {
     goto LABEL_17;
   }
@@ -229,7 +229,7 @@
   {
     v9 = v8;
     v10 = [(_SFPBUserActivityInfo *)self key];
-    v11 = [v4 key];
+    v11 = [equalCopy key];
     v12 = [v10 isEqual:v11];
 
     if (!v12)
@@ -242,20 +242,20 @@
   {
   }
 
-  v6 = [(_SFPBUserActivityInfo *)self stringValue];
-  v7 = [v4 stringValue];
-  if ((v6 != 0) == (v7 == 0))
+  stringValue = [(_SFPBUserActivityInfo *)self stringValue];
+  stringValue2 = [equalCopy stringValue];
+  if ((stringValue != 0) == (stringValue2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(_SFPBUserActivityInfo *)self stringValue];
-  if (v13)
+  stringValue3 = [(_SFPBUserActivityInfo *)self stringValue];
+  if (stringValue3)
   {
-    v14 = v13;
-    v15 = [(_SFPBUserActivityInfo *)self stringValue];
-    v16 = [v4 stringValue];
-    v17 = [v15 isEqual:v16];
+    v14 = stringValue3;
+    stringValue4 = [(_SFPBUserActivityInfo *)self stringValue];
+    stringValue5 = [equalCopy stringValue];
+    v17 = [stringValue4 isEqual:stringValue5];
 
     if (!v17)
     {
@@ -267,12 +267,12 @@
   {
   }
 
-  v6 = [(_SFPBUserActivityInfo *)self urlValue];
-  v7 = [v4 urlValue];
-  if ((v6 != 0) != (v7 == 0))
+  stringValue = [(_SFPBUserActivityInfo *)self urlValue];
+  stringValue2 = [equalCopy urlValue];
+  if ((stringValue != 0) != (stringValue2 == 0))
   {
-    v18 = [(_SFPBUserActivityInfo *)self urlValue];
-    if (!v18)
+    urlValue = [(_SFPBUserActivityInfo *)self urlValue];
+    if (!urlValue)
     {
 
 LABEL_21:
@@ -280,10 +280,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(_SFPBUserActivityInfo *)self urlValue];
-    v21 = [v4 urlValue];
-    v22 = [v20 isEqual:v21];
+    v19 = urlValue;
+    urlValue2 = [(_SFPBUserActivityInfo *)self urlValue];
+    urlValue3 = [equalCopy urlValue];
+    v22 = [urlValue2 isEqual:urlValue3];
 
     if (v22)
     {
@@ -303,9 +303,9 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(_SFPBUserActivityInfo *)self valueType])
   {
     PBDataWriterWriteInt32Field();
@@ -317,31 +317,31 @@ LABEL_19:
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBUserActivityInfo *)self stringValue];
-  if (v5)
+  stringValue = [(_SFPBUserActivityInfo *)self stringValue];
+  if (stringValue)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBUserActivityInfo *)self urlValue];
-  if (v6)
+  urlValue = [(_SFPBUserActivityInfo *)self urlValue];
+  if (urlValue)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   stringValue = self->_stringValue;
   self->_stringValue = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setKey:(id)a3
+- (void)setKey:(id)key
 {
-  v4 = [a3 copy];
+  v4 = [key copy];
   key = self->_key;
   self->_key = v4;
 

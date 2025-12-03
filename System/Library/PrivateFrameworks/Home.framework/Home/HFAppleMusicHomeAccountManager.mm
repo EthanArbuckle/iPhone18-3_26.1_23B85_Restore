@@ -1,13 +1,13 @@
 @interface HFAppleMusicHomeAccountManager
 + (id)sharedInstance;
 - (HFAppleMusicHomeAccountManager)init;
-- (id)_fetchMediaAccountForHome:(id)a3;
-- (id)_futureForQueryLimitForHome:(id)a3;
-- (id)mediaAccountForHomeIdentifier:(id)a3;
-- (void)_finishPendingPromisesWithMediaAccountInfo:(id)a3 forHome:(id)a4;
+- (id)_fetchMediaAccountForHome:(id)home;
+- (id)_futureForQueryLimitForHome:(id)home;
+- (id)mediaAccountForHomeIdentifier:(id)identifier;
+- (void)_finishPendingPromisesWithMediaAccountInfo:(id)info forHome:(id)home;
 - (void)executeHomeMediaAccountFetchForAllHomes;
-- (void)getHomeMediaAccountForHome:(id)a3 withCompletion:(id)a4;
-- (void)setAMSiTunesAccount:(id)a3 forHome:(id)a4 completion:(id)a5;
+- (void)getHomeMediaAccountForHome:(id)home withCompletion:(id)completion;
+- (void)setAMSiTunesAccount:(id)account forHome:(id)home completion:(id)completion;
 @end
 
 @implementation HFAppleMusicHomeAccountManager
@@ -46,8 +46,8 @@ void __48__HFAppleMusicHomeAccountManager_sharedInstance__block_invoke()
     concurrentQueryQueue = v2->_concurrentQueryQueue;
     v2->_concurrentQueryQueue = v5;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel_applicationWillEnterForeground name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_applicationWillEnterForeground name:*MEMORY[0x277D76758] object:0];
 
     v8 = objc_opt_new();
     homeIdentifierToMediaAccountMapping = v2->_homeIdentifierToMediaAccountMapping;
@@ -70,8 +70,8 @@ void __48__HFAppleMusicHomeAccountManager_sharedInstance__block_invoke()
     _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "%@ Fetching Media Accounts for All Homes", buf, 0xCu);
   }
 
-  v6 = [(HFAppleMusicHomeAccountManager *)self homeIdentifierToMediaAccountMapping];
-  v7 = v6 == 0;
+  homeIdentifierToMediaAccountMapping = [(HFAppleMusicHomeAccountManager *)self homeIdentifierToMediaAccountMapping];
+  v7 = homeIdentifierToMediaAccountMapping == 0;
 
   if (v7)
   {
@@ -80,15 +80,15 @@ void __48__HFAppleMusicHomeAccountManager_sharedInstance__block_invoke()
   }
 
   v9 = +[HFHomeKitDispatcher sharedDispatcher];
-  v10 = [v9 homeManager];
-  v11 = [v10 homes];
+  homeManager = [v9 homeManager];
+  homes = [homeManager homes];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__HFAppleMusicHomeAccountManager_executeHomeMediaAccountFetchForAllHomes__block_invoke;
   v13[3] = &unk_277DF5A80;
   objc_copyWeak(v14, &location);
   v14[1] = a2;
-  [v11 na_each:v13];
+  [homes na_each:v13];
 
   objc_destroyWeak(v14);
   objc_destroyWeak(&location);
@@ -115,25 +115,25 @@ void __73__HFAppleMusicHomeAccountManager_executeHomeMediaAccountFetchForAllHome
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)mediaAccountForHomeIdentifier:(id)a3
+- (id)mediaAccountForHomeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__6;
   v16 = __Block_byref_object_dispose__6;
   v17 = 0;
-  v5 = [(HFAppleMusicHomeAccountManager *)self dataModelUpdateQueue];
+  dataModelUpdateQueue = [(HFAppleMusicHomeAccountManager *)self dataModelUpdateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__HFAppleMusicHomeAccountManager_mediaAccountForHomeIdentifier___block_invoke;
   block[3] = &unk_277DF5AA8;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_barrier_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_barrier_sync(dataModelUpdateQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -150,27 +150,27 @@ void __64__HFAppleMusicHomeAccountManager_mediaAccountForHomeIdentifier___block_
   *(v3 + 40) = v2;
 }
 
-- (void)setAMSiTunesAccount:(id)a3 forHome:(id)a4 completion:(id)a5
+- (void)setAMSiTunesAccount:(id)account forHome:(id)home completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v13 = [v10 uniqueIdentifier];
-  v14 = [v12 ams_setiTunesAccount:v9 forHomeWithIdentifier:v13];
+  accountCopy = account;
+  homeCopy = home;
+  completionCopy = completion;
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  v14 = [ams_sharedAccountStore ams_setiTunesAccount:accountCopy forHomeWithIdentifier:uniqueIdentifier];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __73__HFAppleMusicHomeAccountManager_setAMSiTunesAccount_forHome_completion___block_invoke;
   v18[3] = &unk_277DF5AF8;
-  v22 = v11;
+  v22 = completionCopy;
   v23 = a2;
-  v19 = v10;
-  v20 = self;
-  v21 = v9;
-  v15 = v9;
-  v16 = v11;
-  v17 = v10;
+  v19 = homeCopy;
+  selfCopy = self;
+  v21 = accountCopy;
+  v15 = accountCopy;
+  v16 = completionCopy;
+  v17 = homeCopy;
   [v14 addFinishBlock:v18];
 }
 
@@ -237,19 +237,19 @@ void __73__HFAppleMusicHomeAccountManager_setAMSiTunesAccount_forHome_completion
   [v8 finishWithNoResult];
 }
 
-- (id)_fetchMediaAccountForHome:(id)a3
+- (id)_fetchMediaAccountForHome:(id)home
 {
-  v5 = a3;
-  if (![v5 isMultiUserEnabled] || (-[HFAppleMusicHomeAccountManager _futureForQueryLimitForHome:](self, "_futureForQueryLimitForHome:", v5), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  homeCopy = home;
+  if (![homeCopy isMultiUserEnabled] || (-[HFAppleMusicHomeAccountManager _futureForQueryLimitForHome:](self, "_futureForQueryLimitForHome:", homeCopy), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     objc_initWeak(&location, self);
     v7 = MEMORY[0x277D2C900];
     v10 = MEMORY[0x277D85DD0];
     objc_copyWeak(v12, &location);
-    v11 = v5;
+    v11 = homeCopy;
     v12[1] = a2;
-    v8 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-    v6 = [v7 futureWithBlock:&v10 scheduler:v8];
+    globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+    v6 = [v7 futureWithBlock:&v10 scheduler:globalAsyncScheduler];
 
     objc_destroyWeak(v12);
     objc_destroyWeak(&location);
@@ -498,30 +498,30 @@ void __60__HFAppleMusicHomeAccountManager__fetchMediaAccountForHome___block_invo
   [v14 setObject:v15 forKey:v17];
 }
 
-- (id)_futureForQueryLimitForHome:(id)a3
+- (id)_futureForQueryLimitForHome:(id)home
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  homeCopy = home;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
   objc_initWeak(&location, self);
-  v6 = [(HFAppleMusicHomeAccountManager *)self concurrentQueryQueue];
+  concurrentQueryQueue = [(HFAppleMusicHomeAccountManager *)self concurrentQueryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__HFAppleMusicHomeAccountManager__futureForQueryLimitForHome___block_invoke;
   block[3] = &unk_277DF5B48;
   objc_copyWeak(&v22, &location);
-  v7 = v5;
+  v7 = homeCopy;
   v20 = v7;
   v21 = &v24;
-  dispatch_sync(v6, block);
+  dispatch_sync(concurrentQueryQueue, block);
 
   if (*(v25 + 24) == 1)
   {
-    v8 = [(HFAppleMusicHomeAccountManager *)self homeIdentifierToFuturePromiseMapping];
-    v9 = v8 == 0;
+    homeIdentifierToFuturePromiseMapping = [(HFAppleMusicHomeAccountManager *)self homeIdentifierToFuturePromiseMapping];
+    v9 = homeIdentifierToFuturePromiseMapping == 0;
 
     if (v9)
     {
@@ -654,21 +654,21 @@ void __62__HFAppleMusicHomeAccountManager__futureForQueryLimitForHome___block_in
   [v12 setObject:v13 forKey:v15];
 }
 
-- (void)_finishPendingPromisesWithMediaAccountInfo:(id)a3 forHome:(id)a4
+- (void)_finishPendingPromisesWithMediaAccountInfo:(id)info forHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFAppleMusicHomeAccountManager *)self concurrentQueryQueue];
+  infoCopy = info;
+  homeCopy = home;
+  concurrentQueryQueue = [(HFAppleMusicHomeAccountManager *)self concurrentQueryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__HFAppleMusicHomeAccountManager__finishPendingPromisesWithMediaAccountInfo_forHome___block_invoke;
   block[3] = &unk_277DF32A8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = homeCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = homeCopy;
+  dispatch_async(concurrentQueryQueue, block);
 }
 
 void __85__HFAppleMusicHomeAccountManager__finishPendingPromisesWithMediaAccountInfo_forHome___block_invoke(id *a1)
@@ -749,30 +749,30 @@ uint64_t __85__HFAppleMusicHomeAccountManager__finishPendingPromisesWithMediaAcc
   return result;
 }
 
-- (void)getHomeMediaAccountForHome:(id)a3 withCompletion:(id)a4
+- (void)getHomeMediaAccountForHome:(id)home withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 uniqueIdentifier];
-  v10 = [v9 UUIDString];
-  v11 = [(HFAppleMusicHomeAccountManager *)self mediaAccountForHomeIdentifier:v10];
+  homeCopy = home;
+  completionCopy = completion;
+  uniqueIdentifier = [homeCopy uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v11 = [(HFAppleMusicHomeAccountManager *)self mediaAccountForHomeIdentifier:uUIDString];
 
   if (v11)
   {
-    v8[2](v8, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
   else
   {
-    v12 = [(HFAppleMusicHomeAccountManager *)self executeHomeMediaAccountFetchForHome:v7];
+    v12 = [(HFAppleMusicHomeAccountManager *)self executeHomeMediaAccountFetchForHome:homeCopy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __76__HFAppleMusicHomeAccountManager_getHomeMediaAccountForHome_withCompletion___block_invoke;
     v14[3] = &unk_277DF5B70;
     v17 = a2;
     v14[4] = self;
-    v15 = v7;
-    v16 = v8;
+    v15 = homeCopy;
+    v16 = completionCopy;
     v13 = [v12 addCompletionBlock:v14];
   }
 }

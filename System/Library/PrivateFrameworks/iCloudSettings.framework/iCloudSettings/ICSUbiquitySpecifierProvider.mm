@@ -1,20 +1,20 @@
 @interface ICSUbiquitySpecifierProvider
-+ (BOOL)isSpecifierHiddenForBundleID:(id)a3 ubiquityAccessManager:(id)a4;
-+ (id)appAccessGrantedForBundleID:(id)a3 ubiquityAccessManager:(id)a4;
++ (BOOL)isSpecifierHiddenForBundleID:(id)d ubiquityAccessManager:(id)manager;
++ (id)appAccessGrantedForBundleID:(id)d ubiquityAccessManager:(id)manager;
 - (BOOL)_isAccountInGrayMode;
 - (BOOL)_shouldShowUbiquitySpecifier;
-- (BOOL)shouldShowSpecifierForDataclass:(id)a3;
+- (BOOL)shouldShowSpecifierForDataclass:(id)dataclass;
 - (ICSSpecifierProviderDelegate)delegate;
 - (ICSUbiquitySpecifierProvider)init;
-- (ICSUbiquitySpecifierProvider)initWithAccountManager:(id)a3;
+- (ICSUbiquitySpecifierProvider)initWithAccountManager:(id)manager;
 - (ICSUbiquitySpecifierProviderDelegate)ubiquityDelegate;
 - (id)_account;
-- (id)_appAccessGrantedForSpecifier:(id)a3;
-- (id)_appSpecifierWithBundleID:(id)a3;
+- (id)_appAccessGrantedForSpecifier:(id)specifier;
+- (id)_appSpecifierWithBundleID:(id)d;
 - (id)_appSpecifiersForUbiquityServices;
-- (id)_dataclassState:(id)a3;
-- (id)_groupUbiquityServices:(id)a3;
-- (id)_isDocumentsAndDataEnabled:(id)a3;
+- (id)_dataclassState:(id)state;
+- (id)_groupUbiquityServices:(id)services;
+- (id)_isDocumentsAndDataEnabled:(id)enabled;
 - (id)_ubiquitySpecifier;
 - (id)specifiers;
 - (id)ubiquityDataclassSwitchSpecifier;
@@ -22,11 +22,11 @@
 - (id)ubiquitySpecifier;
 - (void)_clearSpecifiers;
 - (void)_loadiCloudDriveSettingsBundleIfNeeded;
-- (void)_presentiCloudUpgradeFlowForSpecifier:(id)a3;
-- (void)_setAppAccessGranted:(id)a3 forSpecifier:(id)a4;
-- (void)_setDocumentsAndDataEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)_presentiCloudUpgradeFlowForSpecifier:(id)specifier;
+- (void)_setAppAccessGranted:(id)granted forSpecifier:(id)specifier;
+- (void)_setDocumentsAndDataEnabled:(id)enabled forSpecifier:(id)specifier;
 - (void)_startObservingTCCAccessChanges;
-- (void)_startUsingiCloudDriveWithSpecifier:(id)a3;
+- (void)_startUsingiCloudDriveWithSpecifier:(id)specifier;
 - (void)_stopObservingTCCAccessChanges;
 - (void)dealloc;
 @end
@@ -40,23 +40,23 @@
   return 0;
 }
 
-- (ICSUbiquitySpecifierProvider)initWithAccountManager:(id)a3
+- (ICSUbiquitySpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = ICSUbiquitySpecifierProvider;
   v6 = [(ICSUbiquitySpecifierProvider *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
     v8 = +[ICSUbiquityAccessManager sharedInstance];
     ubiquityAccessManager = v7->_ubiquityAccessManager;
     v7->_ubiquityAccessManager = v8;
 
     v10 = [_TtC14iCloudSettings22ICSAnalyticsController alloc];
-    v11 = [(AIDAAccountManager *)v7->_accountManager accounts];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+    accounts = [(AIDAAccountManager *)v7->_accountManager accounts];
+    v12 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
     v13 = [(ICSAnalyticsController *)v10 initWithAccount:v12];
     analyticsController = v7->_analyticsController;
     v7->_analyticsController = v13;
@@ -77,8 +77,8 @@
 
 - (id)_account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -90,8 +90,8 @@
   {
     if ([(ICSUbiquitySpecifierProvider *)self shouldShowSpecifierForDataclass:*MEMORY[0x277CB91D8]])
     {
-      v4 = [(ICSUbiquitySpecifierProvider *)self _appSpecifiersForUbiquityServices];
-      v5 = [(ICSUbiquitySpecifierProvider *)self _groupUbiquityServices:v4];
+      _appSpecifiersForUbiquityServices = [(ICSUbiquitySpecifierProvider *)self _appSpecifiersForUbiquityServices];
+      v5 = [(ICSUbiquitySpecifierProvider *)self _groupUbiquityServices:_appSpecifiersForUbiquityServices];
     }
 
     else
@@ -108,18 +108,18 @@
   return specifiers;
 }
 
-- (BOOL)shouldShowSpecifierForDataclass:(id)a3
+- (BOOL)shouldShowSpecifierForDataclass:(id)dataclass
 {
   v4 = MEMORY[0x277CEC7A0];
-  v5 = a3;
-  v6 = [v4 sharedManager];
-  v7 = [(ICSUbiquitySpecifierProvider *)self _account];
-  v8 = [v6 shouldShowDataclass:v5 forAccount:v7];
+  dataclassCopy = dataclass;
+  sharedManager = [v4 sharedManager];
+  _account = [(ICSUbiquitySpecifierProvider *)self _account];
+  v8 = [sharedManager shouldShowDataclass:dataclassCopy forAccount:_account];
 
   if (v8)
   {
-    v9 = [(ICSUbiquitySpecifierProvider *)self _account];
-    v10 = [v9 aa_isAccountClass:*MEMORY[0x277CEC688]];
+    _account2 = [(ICSUbiquitySpecifierProvider *)self _account];
+    v10 = [_account2 aa_isAccountClass:*MEMORY[0x277CEC688]];
   }
 
   else
@@ -132,33 +132,33 @@
 
 - (id)ubiquitySpecifier
 {
-  v3 = [MEMORY[0x277CEC7A0] sharedManager];
+  mEMORY[0x277CEC7A0] = [MEMORY[0x277CEC7A0] sharedManager];
   v4 = *MEMORY[0x277CB91D8];
-  v5 = [(ICSUbiquitySpecifierProvider *)self _account];
-  LODWORD(v4) = [v3 shouldShowDataclass:v4 forAccount:v5];
+  _account = [(ICSUbiquitySpecifierProvider *)self _account];
+  LODWORD(v4) = [mEMORY[0x277CEC7A0] shouldShowDataclass:v4 forAccount:_account];
 
   if (v4)
   {
-    v6 = [(ICSUbiquitySpecifierProvider *)self _ubiquitySpecifier];
+    _ubiquitySpecifier = [(ICSUbiquitySpecifierProvider *)self _ubiquitySpecifier];
   }
 
   else
   {
-    v6 = 0;
+    _ubiquitySpecifier = 0;
   }
 
-  return v6;
+  return _ubiquitySpecifier;
 }
 
 - (id)_ubiquitySpecifier
 {
   v3 = MEMORY[0x277D3FAD8];
   v4 = *MEMORY[0x277CB91D8];
-  v5 = [(ICSUbiquitySpecifierProvider *)self _account];
-  v6 = [v3 acui_specifierForDataclass:v4 account:v5 target:self set:sel__setDocumentsAndDataEnabled_forSpecifier_ get:sel__isDocumentsAndDataEnabled_];
+  _account = [(ICSUbiquitySpecifierProvider *)self _account];
+  v6 = [v3 acui_specifierForDataclass:v4 account:_account target:self set:sel__setDocumentsAndDataEnabled_forSpecifier_ get:sel__isDocumentsAndDataEnabled_];
 
-  v7 = [MEMORY[0x277D262A0] sharedConnection];
-  LODWORD(v4) = [v7 effectiveBoolValueForSetting:*MEMORY[0x277D25E38]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  LODWORD(v4) = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E38]];
 
   if (v4 == 2)
   {
@@ -183,8 +183,8 @@
     v9 = *MEMORY[0x277CB8A58];
     [v7 setObject:*MEMORY[0x277CB8A58] forKeyedSubscript:*MEMORY[0x277D3FFB8]];
     [v7 setObject:v9 forKeyedSubscript:@"com.apple.accountsui.dataclass"];
-    v10 = [MEMORY[0x277D262A0] sharedConnection];
-    v11 = [v10 effectiveBoolValueForSetting:*MEMORY[0x277D25E38]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v11 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E38]];
 
     if (v11 == 2)
     {
@@ -206,11 +206,11 @@
   {
     v3 = MEMORY[0x277D3FAD8];
     v4 = *MEMORY[0x277CB8A58];
-    v5 = [(ICSUbiquitySpecifierProvider *)self _account];
-    v6 = [v3 acui_linkListCellSpecifierForDataclass:v4 account:v5 target:self set:0 get:sel__dataclassState_ detail:objc_opt_class()];
+    _account = [(ICSUbiquitySpecifierProvider *)self _account];
+    v6 = [v3 acui_linkListCellSpecifierForDataclass:v4 account:_account target:self set:0 get:sel__dataclassState_ detail:objc_opt_class()];
 
-    v7 = [MEMORY[0x277D262A0] sharedConnection];
-    v8 = [v7 effectiveBoolValueForSetting:*MEMORY[0x277D25E38]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v8 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E38]];
 
     if (v8 == 2)
     {
@@ -229,13 +229,13 @@
   return v6;
 }
 
-- (id)_dataclassState:(id)a3
+- (id)_dataclassState:(id)state
 {
-  v3 = [(ICSUbiquitySpecifierProvider *)self _isDocumentsAndDataEnabled:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(ICSUbiquitySpecifierProvider *)self _isDocumentsAndDataEnabled:state];
+  bOOLValue = [v3 BOOLValue];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v4)
+  if (bOOLValue)
   {
     v7 = @"ON";
   }
@@ -252,25 +252,25 @@
 
 - (BOOL)_shouldShowUbiquitySpecifier
 {
-  v3 = [MEMORY[0x277CEC7A0] sharedManager];
+  mEMORY[0x277CEC7A0] = [MEMORY[0x277CEC7A0] sharedManager];
   v4 = *MEMORY[0x277CB8A58];
-  v5 = [(ICSUbiquitySpecifierProvider *)self _account];
-  LOBYTE(v4) = [v3 shouldShowDataclass:v4 forAccount:v5];
+  _account = [(ICSUbiquitySpecifierProvider *)self _account];
+  LOBYTE(v4) = [mEMORY[0x277CEC7A0] shouldShowDataclass:v4 forAccount:_account];
 
   return v4;
 }
 
-- (id)_groupUbiquityServices:(id)a3
+- (id)_groupUbiquityServices:(id)services
 {
   v53 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v39 = v3;
-  v5 = [v3 mutableCopy];
+  servicesCopy = services;
+  array = [MEMORY[0x277CBEB18] array];
+  v39 = servicesCopy;
+  v5 = [servicesCopy mutableCopy];
   v6 = [v5 specifierForID:@"com.apple.iBooks"];
   if (v6)
   {
-    [v4 addObject:v6];
+    [array addObject:v6];
     [v5 removeObject:v6];
   }
 
@@ -278,7 +278,7 @@
 
   if (v7)
   {
-    [v4 addObject:v7];
+    [array addObject:v7];
     [v5 removeObject:v7];
   }
 
@@ -286,7 +286,7 @@
 
   if (v8)
   {
-    [v4 addObject:v8];
+    [array addObject:v8];
     [v5 removeObject:v8];
   }
 
@@ -294,7 +294,7 @@
 
   if (v9)
   {
-    [v4 addObject:v9];
+    [array addObject:v9];
     [v5 removeObject:v9];
   }
 
@@ -302,7 +302,7 @@
 
   if (v10)
   {
-    [v4 addObject:v10];
+    [array addObject:v10];
     [v5 removeObject:v10];
   }
 
@@ -310,7 +310,7 @@
 
   if (v11)
   {
-    [v4 addObject:v11];
+    [array addObject:v11];
     [v5 removeObject:v11];
   }
 
@@ -335,12 +335,12 @@
         }
 
         v17 = *(*(&v47 + 1) + 8 * i);
-        v18 = [v17 identifier];
-        v19 = [v18 hasPrefix:@"com.apple."];
+        identifier = [v17 identifier];
+        v19 = [identifier hasPrefix:@"com.apple."];
 
         if (v19)
         {
-          [v4 addObject:v17];
+          [array addObject:v17];
           [v5 removeObject:v17];
         }
       }
@@ -351,10 +351,10 @@
     while (v14);
   }
 
-  if ([v4 count])
+  if ([array count])
   {
     v20 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"APPS_GROUP_3"];
-    [v4 insertObject:v20 atIndex:0];
+    [array insertObject:v20 atIndex:0];
   }
 
   if ([v5 count])
@@ -364,8 +364,8 @@
   }
 
   v37 = v5;
-  v38 = v4;
-  [v4 arrayByAddingObjectsFromArray:v5];
+  v38 = array;
+  [array arrayByAddingObjectsFromArray:v5];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -425,22 +425,22 @@
 - (id)_appSpecifiersForUbiquityServices
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([MEMORY[0x277CEC7B8] isMultiUserMode])
   {
-    v4 = [v3 copy];
-    v5 = v3;
+    v4 = [array copy];
+    v5 = array;
   }
 
   else
   {
-    v6 = [(ICSUbiquityAccessManager *)self->_ubiquityAccessManager allBundleIDs];
+    allBundleIDs = [(ICSUbiquityAccessManager *)self->_ubiquityAccessManager allBundleIDs];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __65__ICSUbiquitySpecifierProvider__appSpecifiersForUbiquityServices__block_invoke;
     v11[3] = &unk_27A666668;
     v11[4] = self;
-    v7 = [v6 aaf_map:v11];
+    v7 = [allBundleIDs aaf_map:v11];
     v5 = [v7 mutableCopy];
 
     [v5 sortUsingComparator:&__block_literal_global_0];
@@ -470,27 +470,27 @@ uint64_t __65__ICSUbiquitySpecifierProvider__appSpecifiersForUbiquityServices__b
   return v7;
 }
 
-- (id)_appSpecifierWithBundleID:(id)a3
+- (id)_appSpecifierWithBundleID:(id)d
 {
-  v4 = a3;
-  if ([ICSUbiquitySpecifierProvider isSpecifierHiddenForBundleID:v4 ubiquityAccessManager:self->_ubiquityAccessManager])
+  dCopy = d;
+  if ([ICSUbiquitySpecifierProvider isSpecifierHiddenForBundleID:dCopy ubiquityAccessManager:self->_ubiquityAccessManager])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v4];
+    v6 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:dCopy];
     v7 = MEMORY[0x277D3FAD8];
-    v8 = [v6 localizedName];
-    v5 = [v7 preferenceSpecifierNamed:v8 target:self set:sel__setAppAccessGranted_forSpecifier_ get:sel__appAccessGrantedForSpecifier_ detail:0 cell:6 edit:0];
+    localizedName = [v6 localizedName];
+    v5 = [v7 preferenceSpecifierNamed:localizedName target:self set:sel__setAppAccessGranted_forSpecifier_ get:sel__appAccessGrantedForSpecifier_ detail:0 cell:6 edit:0];
 
-    [v5 setIdentifier:v4];
-    [v5 setProperty:v4 forKey:*MEMORY[0x277D40008]];
+    [v5 setIdentifier:dCopy];
+    [v5 setProperty:dCopy forKey:*MEMORY[0x277D40008]];
     v9 = MEMORY[0x277CBEC38];
     [v5 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D40020]];
-    v10 = [MEMORY[0x277D262A0] sharedConnection];
-    v11 = [v10 isCloudSyncAllowed:v4];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v11 = [mEMORY[0x277D262A0] isCloudSyncAllowed:dCopy];
 
     if (v11)
     {
@@ -520,8 +520,8 @@ uint64_t __65__ICSUbiquitySpecifierProvider__appSpecifiersForUbiquityServices__b
 
 - (BOOL)_isAccountInGrayMode
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   if (v3)
   {
@@ -532,8 +532,8 @@ uint64_t __65__ICSUbiquitySpecifierProvider__appSpecifiersForUbiquityServices__b
 
     else
     {
-      v4 = [v3 aa_repairState];
-      v5 = [v4 unsignedIntegerValue] == 3;
+      aa_repairState = [v3 aa_repairState];
+      v5 = [aa_repairState unsignedIntegerValue] == 3;
     }
   }
 
@@ -545,21 +545,21 @@ uint64_t __65__ICSUbiquitySpecifierProvider__appSpecifiersForUbiquityServices__b
   return v5;
 }
 
-+ (BOOL)isSpecifierHiddenForBundleID:(id)a3 ubiquityAccessManager:(id)a4
++ (BOOL)isSpecifierHiddenForBundleID:(id)d ubiquityAccessManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v5];
-  v8 = [v7 appState];
-  v9 = [v8 isInstalled];
+  dCopy = d;
+  managerCopy = manager;
+  v7 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:dCopy];
+  appState = [v7 appState];
+  isInstalled = [appState isInstalled];
 
-  if (v9)
+  if (isInstalled)
   {
     v10 = [v7 entitlementValueForKey:@"com.apple.private.appleaccount.app-hidden-from-icloud-settings" ofClass:objc_opt_class()];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 BOOLValue])
     {
-      v11 = [ICSUbiquitySpecifierProvider appAccessGrantedForBundleID:v5 ubiquityAccessManager:v6];
+      v11 = [ICSUbiquitySpecifierProvider appAccessGrantedForBundleID:dCopy ubiquityAccessManager:managerCopy];
 
       if (v11)
       {
@@ -569,7 +569,7 @@ uint64_t __65__ICSUbiquitySpecifierProvider__appSpecifiersForUbiquityServices__b
       else
       {
         v12 = 1;
-        [v6 setAppAccessGranted:1 forBundleID:v5];
+        [managerCopy setAppAccessGranted:1 forBundleID:dCopy];
       }
     }
 
@@ -587,25 +587,25 @@ uint64_t __65__ICSUbiquitySpecifierProvider__appSpecifiersForUbiquityServices__b
   return v12;
 }
 
-- (id)_isDocumentsAndDataEnabled:(id)a3
+- (id)_isDocumentsAndDataEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 specifierProvider:self isDataclassAvailableForSpecifier:v4];
+    v8 = [v7 specifierProvider:self isDataclassAvailableForSpecifier:enabledCopy];
 
     if (v8)
     {
       v9 = MEMORY[0x277CCABB0];
-      v10 = [(ICSUbiquitySpecifierProvider *)self _account];
-      if ([v10 isEnabledForDataclass:*MEMORY[0x277CB91D8]])
+      _account = [(ICSUbiquitySpecifierProvider *)self _account];
+      if ([_account isEnabledForDataclass:*MEMORY[0x277CB91D8]])
       {
-        v11 = [(ICSUbiquitySpecifierProvider *)self _account];
-        v12 = [v9 numberWithInt:{objc_msgSend(v11, "aa_isUsingCloudDocs")}];
+        _account2 = [(ICSUbiquitySpecifierProvider *)self _account];
+        v12 = [v9 numberWithInt:{objc_msgSend(_account2, "aa_isUsingCloudDocs")}];
       }
 
       else
@@ -632,30 +632,30 @@ LABEL_11:
   return v12;
 }
 
-- (void)_setDocumentsAndDataEnabled:(id)a3 forSpecifier:(id)a4
+- (void)_setDocumentsAndDataEnabled:(id)enabled forSpecifier:(id)specifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  -[ICSAnalyticsController sendToggleEventForDataclassID:actionType:enabled:](self->_analyticsController, "sendToggleEventForDataclassID:actionType:enabled:", *MEMORY[0x277CB8A58], 0, [v6 BOOLValue]);
-  v8 = [(ICSUbiquitySpecifierProvider *)self _account];
-  v9 = [v8 aa_isUsingCloudDocs];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  -[ICSAnalyticsController sendToggleEventForDataclassID:actionType:enabled:](self->_analyticsController, "sendToggleEventForDataclassID:actionType:enabled:", *MEMORY[0x277CB8A58], 0, [enabledCopy BOOLValue]);
+  _account = [(ICSUbiquitySpecifierProvider *)self _account];
+  aa_isUsingCloudDocs = [_account aa_isUsingCloudDocs];
 
-  if (v9)
+  if (aa_isUsingCloudDocs)
   {
     v10 = LogSubsystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(ICSUbiquitySpecifierProvider *)self _account];
-      v12 = [v6 BOOLValue];
+      _account2 = [(ICSUbiquitySpecifierProvider *)self _account];
+      bOOLValue = [enabledCopy BOOLValue];
       v13 = @"NO";
-      if (v12)
+      if (bOOLValue)
       {
         v13 = @"YES";
       }
 
       v18 = 138412546;
-      v19 = v11;
+      v19 = _account2;
       v20 = 2112;
       v21 = v13;
       _os_log_impl(&dword_275819000, v10, OS_LOG_TYPE_DEFAULT, "Updating account %@ ubiquity state to %@.", &v18, 0x16u);
@@ -667,40 +667,40 @@ LABEL_11:
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 specifierProvider:self dataclassSwitchStateDidChange:v6 withSpecifier:v7];
+      [v16 specifierProvider:self dataclassSwitchStateDidChange:enabledCopy withSpecifier:specifierCopy];
     }
   }
 
   else
   {
-    [(ICSUbiquitySpecifierProvider *)self _presentiCloudUpgradeFlowForSpecifier:v7];
+    [(ICSUbiquitySpecifierProvider *)self _presentiCloudUpgradeFlowForSpecifier:specifierCopy];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startUsingiCloudDriveWithSpecifier:(id)a3
+- (void)_startUsingiCloudDriveWithSpecifier:(id)specifier
 {
-  v15 = a3;
+  specifierCopy = specifier;
   [(ICSUbiquitySpecifierProvider *)self _loadiCloudDriveSettingsBundleIfNeeded];
   v4 = objc_alloc_init(NSClassFromString(&cfstr_Cdsupgradeview.isa));
-  v5 = [v15 userInfo];
-  if (v5)
+  userInfo = [specifierCopy userInfo];
+  if (userInfo)
   {
-    v6 = v5;
-    v7 = [v15 userInfo];
+    v6 = userInfo;
+    userInfo2 = [specifierCopy userInfo];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
 
 LABEL_5:
-      v10 = [v15 userInfo];
-      v11 = [v10 mutableCopy];
+      userInfo3 = [specifierCopy userInfo];
+      dictionary = [userInfo3 mutableCopy];
 
       goto LABEL_7;
     }
 
-    v8 = [v15 userInfo];
+    userInfo4 = [specifierCopy userInfo];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -710,22 +710,22 @@ LABEL_5:
     }
   }
 
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
 LABEL_7:
-  v12 = [(ICSUbiquitySpecifierProvider *)self _account];
-  [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x277CE8550]];
+  _account = [(ICSUbiquitySpecifierProvider *)self _account];
+  [dictionary setObject:_account forKeyedSubscript:*MEMORY[0x277CE8550]];
 
-  v13 = [v11 copy];
-  [v15 setUserInfo:v13];
+  v13 = [dictionary copy];
+  [specifierCopy setUserInfo:v13];
 
-  [v4 setSpecifier:v15];
+  [v4 setSpecifier:specifierCopy];
   WeakRetained = objc_loadWeakRetained(&self->_ubiquityDelegate);
   [WeakRetained ubiquityProviderShowViewController:v4];
 }
 
-- (void)_presentiCloudUpgradeFlowForSpecifier:(id)a3
+- (void)_presentiCloudUpgradeFlowForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"ICLOUD_SERVICE_UBIQUITY_UPGRAGE_TITLE" value:&stru_288487370 table:@"Localizable-AppleID"];
 
@@ -743,12 +743,12 @@ LABEL_7:
   v18 = 3221225472;
   v19 = __70__ICSUbiquitySpecifierProvider__presentiCloudUpgradeFlowForSpecifier___block_invoke;
   v20 = &unk_27A666488;
-  v21 = self;
-  v22 = v4;
-  v14 = v4;
+  selfCopy = self;
+  v22 = specifierCopy;
+  v14 = specifierCopy;
   v15 = [v13 alertWithTitle:v6 message:v8 cancelButtonTitle:v12 defaultButtonTitle:v10 actionHandler:&v17];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained specifierProvider:self showViewController:{v15, v17, v18, v19, v20, v21}];
+  [WeakRetained specifierProvider:self showViewController:{v15, v17, v18, v19, v20, selfCopy}];
 }
 
 void __70__ICSUbiquitySpecifierProvider__presentiCloudUpgradeFlowForSpecifier___block_invoke(uint64_t a1, char a2)
@@ -787,7 +787,7 @@ void __70__ICSUbiquitySpecifierProvider__presentiCloudUpgradeFlowForSpecifier___
 
 - (void)_startObservingTCCAccessChanges
 {
-  v2 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
   v3 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
@@ -796,9 +796,9 @@ void __70__ICSUbiquitySpecifierProvider__presentiCloudUpgradeFlowForSpecifier___
   handler[2] = __63__ICSUbiquitySpecifierProvider__startObservingTCCAccessChanges__block_invoke;
   handler[3] = &unk_27A6666B0;
   objc_copyWeak(&v8, &location);
-  LODWORD(v2) = notify_register_dispatch("com.apple.tcc.access.changed", &v2->_tccObserverToken, v3, handler);
+  LODWORD(selfCopy) = notify_register_dispatch("com.apple.tcc.access.changed", &selfCopy->_tccObserverToken, v3, handler);
 
-  if (v2)
+  if (selfCopy)
   {
     v5 = LogSubsystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -852,21 +852,21 @@ void __63__ICSUbiquitySpecifierProvider__startObservingTCCAccessChanges__block_i
   }
 }
 
-- (id)_appAccessGrantedForSpecifier:(id)a3
+- (id)_appAccessGrantedForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 specifierProvider:self isDataclassAvailableForSpecifier:v4];
+    v8 = [v7 specifierProvider:self isDataclassAvailableForSpecifier:specifierCopy];
 
     if (v8)
     {
-      v9 = [v4 identifier];
-      v10 = [ICSUbiquitySpecifierProvider appAccessGrantedForBundleID:v9 ubiquityAccessManager:self->_ubiquityAccessManager];
+      identifier = [specifierCopy identifier];
+      v10 = [ICSUbiquitySpecifierProvider appAccessGrantedForBundleID:identifier ubiquityAccessManager:self->_ubiquityAccessManager];
 
       goto LABEL_8;
     }
@@ -887,16 +887,16 @@ LABEL_8:
   return v10;
 }
 
-+ (id)appAccessGrantedForBundleID:(id)a3 ubiquityAccessManager:(id)a4
++ (id)appAccessGrantedForBundleID:(id)d ubiquityAccessManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D262A0] sharedConnection];
-  v8 = [v7 isCloudSyncAllowed:v5];
+  dCopy = d;
+  managerCopy = manager;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v8 = [mEMORY[0x277D262A0] isCloudSyncAllowed:dCopy];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "isAccessGrantedForBundleID:", v5)}];
+    v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(managerCopy, "isAccessGrantedForBundleID:", dCopy)}];
   }
 
   else
@@ -907,10 +907,10 @@ LABEL_8:
   return v9;
 }
 
-- (void)_setAppAccessGranted:(id)a3 forSpecifier:(id)a4
+- (void)_setAppAccessGranted:(id)granted forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  grantedCopy = granted;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
@@ -924,8 +924,8 @@ LABEL_8:
     v11[3] = &unk_27A6666D8;
     objc_copyWeak(&v14, &location);
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = grantedCopy;
+    v13 = specifierCopy;
     [v10 validateDataclassAccessForProvider:self specifier:v13 completion:v11];
 
     objc_destroyWeak(&v14);

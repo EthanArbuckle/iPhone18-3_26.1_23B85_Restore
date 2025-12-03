@@ -10,7 +10,7 @@
   v5[0] = *a3;
   v5[1] = v3;
   v5[2] = a3[2];
-  return [a1 setTransform:v5];
+  return [self setTransform:v5];
 }
 
 @end

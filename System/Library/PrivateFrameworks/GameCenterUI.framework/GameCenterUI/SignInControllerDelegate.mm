@@ -1,23 +1,23 @@
 @interface SignInControllerDelegate
-- (void)signInController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)signInControllerDidCancel:(id)a3;
+- (void)signInController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)signInControllerDidCancel:(id)cancel;
 @end
 
 @implementation SignInControllerDelegate
 
-- (void)signInController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5
+- (void)signInController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a5;
-  sub_24E14F3DC(v7, 0, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  errorCopy = error;
+  sub_24E14F3DC(controllerCopy, 0, error);
 }
 
-- (void)signInControllerDidCancel:(id)a3
+- (void)signInControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E14F894(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  sub_24E14F894(cancelCopy);
 }
 
 @end

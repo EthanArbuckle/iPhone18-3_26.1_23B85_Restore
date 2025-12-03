@@ -6,58 +6,58 @@
 - (BOOL)isOpenGLQueue;
 - (BOOL)isProfilingEnabled;
 - (BOOL)isStatEnabled;
-- (BOOL)setBackgroundGPUPriority:(unint64_t)a3;
-- (BOOL)setGPUPriority:(unint64_t)a3;
+- (BOOL)setBackgroundGPUPriority:(unint64_t)priority;
+- (BOOL)setGPUPriority:(unint64_t)priority;
 - (BOOL)skipRender;
-- (MTLToolsCommandQueue)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTLToolsCommandQueue)initWithBaseObject:(id)object parent:(id)parent;
 - (NSString)label;
 - (OS_dispatch_queue)commitQueue;
 - (OS_dispatch_queue)completionQueue;
 - (id)availableCounters;
 - (id)commandBuffer;
-- (id)commandBufferWithDescriptor:(id)a3;
+- (id)commandBufferWithDescriptor:(id)descriptor;
 - (id)commandBufferWithUnretainedReferences;
 - (id)counterInfo;
 - (id)getRequestedCounters;
 - (id)getSPIStats;
-- (id)snapshotPerfSampleHandlerAndStatEnabled:(BOOL *)a3 forCommandBuffer:(id)a4;
-- (id)subdivideCounterList:(id)a3;
+- (id)snapshotPerfSampleHandlerAndStatEnabled:(BOOL *)enabled forCommandBuffer:(id)buffer;
+- (id)subdivideCounterList:(id)list;
 - (int)backgroundTrackingPID;
-- (int)requestCounters:(id)a3;
-- (int)requestCounters:(id)a3 withIndex:(unint64_t)a4;
+- (int)requestCounters:(id)counters;
+- (int)requestCounters:(id)counters withIndex:(unint64_t)index;
 - (unint64_t)getBackgroundGPUPriority;
 - (unint64_t)getGPUPriority;
 - (unint64_t)getStatLocations;
 - (unint64_t)getStatOptions;
 - (unint64_t)maxCommandBufferCount;
 - (unint64_t)qosLevel;
-- (void)addInternalResidencySet:(id)a3;
-- (void)addInternalResidencySets:(id *)a3 count:(unint64_t)a4;
-- (void)addPerfSampleHandler:(id)a3;
-- (void)addResidencySet:(id)a3;
-- (void)addResidencySets:(const void *)a3 count:(unint64_t)a4;
+- (void)addInternalResidencySet:(id)set;
+- (void)addInternalResidencySets:(id *)sets count:(unint64_t)count;
+- (void)addPerfSampleHandler:(id)handler;
+- (void)addResidencySet:(id)set;
+- (void)addResidencySets:(const void *)sets count:(unint64_t)count;
 - (void)dealloc;
 - (void)dispatchAvailableCompletionNotifications;
 - (void)finish;
 - (void)insertDebugCaptureBoundary;
-- (void)removeInternalResidencySet:(id)a3;
-- (void)removeInternalResidencySets:(id *)a3 count:(unint64_t)a4;
-- (void)removeResidencySet:(id)a3;
-- (void)removeResidencySets:(const void *)a3 count:(unint64_t)a4;
-- (void)setCompletionQueue:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setStatLocations:(unint64_t)a3;
-- (void)setStatOptions:(unint64_t)a3;
-- (void)setSubmissionQueue:(id)a3;
+- (void)removeInternalResidencySet:(id)set;
+- (void)removeInternalResidencySets:(id *)sets count:(unint64_t)count;
+- (void)removeResidencySet:(id)set;
+- (void)removeResidencySets:(const void *)sets count:(unint64_t)count;
+- (void)setCompletionQueue:(id)queue;
+- (void)setLabel:(id)label;
+- (void)setStatLocations:(unint64_t)locations;
+- (void)setStatOptions:(unint64_t)options;
+- (void)setSubmissionQueue:(id)queue;
 @end
 
 @implementation MTLToolsCommandQueue
 
-- (MTLToolsCommandQueue)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLToolsCommandQueue)initWithBaseObject:(id)object parent:(id)parent
 {
   v7.receiver = self;
   v7.super_class = MTLToolsCommandQueue;
-  v4 = [(MTLToolsObject *)&v7 initWithBaseObject:a3 parent:a4];
+  v4 = [(MTLToolsObject *)&v7 initWithBaseObject:object parent:parent];
   v5 = v4;
   if (v4)
   {
@@ -81,16 +81,16 @@
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
 - (id)commandBuffer
@@ -131,13 +131,13 @@
   return v5;
 }
 
-- (id)commandBufferWithDescriptor:(id)a3
+- (id)commandBufferWithDescriptor:(id)descriptor
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v6)
   {
-    v6 = [[MTLToolsCommandBuffer alloc] initWithCommandBuffer:v6 parent:self descriptor:a3];
+    v6 = [[MTLToolsCommandBuffer alloc] initWithCommandBuffer:v6 parent:self descriptor:descriptor];
   }
 
   v7 = v6;
@@ -147,126 +147,126 @@
 
 - (void)insertDebugCaptureBoundary
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 insertDebugCaptureBoundary];
+  [baseObject insertDebugCaptureBoundary];
 }
 
 - (void)dispatchAvailableCompletionNotifications
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 dispatchAvailableCompletionNotifications];
+  [baseObject dispatchAvailableCompletionNotifications];
 }
 
 - (unint64_t)getGPUPriority
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getGPUPriority];
+  return [baseObject getGPUPriority];
 }
 
-- (BOOL)setGPUPriority:(unint64_t)a3
+- (BOOL)setGPUPriority:(unint64_t)priority
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 setGPUPriority:a3];
+  return [baseObject setGPUPriority:priority];
 }
 
 - (unint64_t)getBackgroundGPUPriority
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getBackgroundGPUPriority];
+  return [baseObject getBackgroundGPUPriority];
 }
 
-- (BOOL)setBackgroundGPUPriority:(unint64_t)a3
+- (BOOL)setBackgroundGPUPriority:(unint64_t)priority
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 setBackgroundGPUPriority:a3];
+  return [baseObject setBackgroundGPUPriority:priority];
 }
 
 - (unint64_t)maxCommandBufferCount
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 maxCommandBufferCount];
+  return [baseObject maxCommandBufferCount];
 }
 
 - (int)backgroundTrackingPID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 backgroundTrackingPID];
+  return [baseObject backgroundTrackingPID];
 }
 
 - (void)finish
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 finish];
+  [baseObject finish];
 }
 
 - (BOOL)skipRender
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 skipRender];
+  return [baseObject skipRender];
 }
 
 - (BOOL)executionEnabled
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 executionEnabled];
+  return [baseObject executionEnabled];
 }
 
 - (BOOL)isProfilingEnabled
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isProfilingEnabled];
+  return [baseObject isProfilingEnabled];
 }
 
-- (void)setCompletionQueue:(id)a3
+- (void)setCompletionQueue:(id)queue
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setCompletionQueue:a3];
+  [baseObject setCompletionQueue:queue];
 }
 
-- (void)setSubmissionQueue:(id)a3
+- (void)setSubmissionQueue:(id)queue
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setSubmissionQueue:a3];
+  [baseObject setSubmissionQueue:queue];
 }
 
 - (BOOL)isOpenGLQueue
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isOpenGLQueue];
+  return [baseObject isOpenGLQueue];
 }
 
 - (id)getSPIStats
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getSPIStats];
+  return [baseObject getSPIStats];
 }
 
-- (int)requestCounters:(id)a3
+- (int)requestCounters:(id)counters
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 requestCounters:a3];
+  return [baseObject requestCounters:counters];
 }
 
-- (void)addPerfSampleHandler:(id)a3
+- (void)addPerfSampleHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   os_unfair_lock_lock(&self->_perfHandlerLock);
   if (!self->_perfSampleMailbox)
   {
@@ -287,165 +287,165 @@
   _Block_release(perfSampleHandlerBlock);
 }
 
-- (id)snapshotPerfSampleHandlerAndStatEnabled:(BOOL *)a3 forCommandBuffer:(id)a4
+- (id)snapshotPerfSampleHandlerAndStatEnabled:(BOOL *)enabled forCommandBuffer:(id)buffer
 {
   os_unfair_lock_lock(&self->_perfHandlerLock);
-  if ([a4 isStatEnabled])
+  if ([buffer isStatEnabled])
   {
-    *a3 = 1;
+    *enabled = 1;
     v7 = _Block_copy(self->_perfSampleHandlerBlock);
   }
 
   else
   {
     v7 = 0;
-    *a3 = 0;
+    *enabled = 0;
   }
 
   os_unfair_lock_unlock(&self->_perfHandlerLock);
   return v7;
 }
 
-- (int)requestCounters:(id)a3 withIndex:(unint64_t)a4
+- (int)requestCounters:(id)counters withIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 requestCounters:a3 withIndex:a4];
+  return [baseObject requestCounters:counters withIndex:index];
 }
 
-- (id)subdivideCounterList:(id)a3
+- (id)subdivideCounterList:(id)list
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 subdivideCounterList:a3];
+  return [baseObject subdivideCounterList:list];
 }
 
 - (unint64_t)qosLevel
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 qosLevel];
+  return [baseObject qosLevel];
 }
 
 - (OS_dispatch_queue)commitQueue
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 commitQueue];
+  return [baseObject commitQueue];
 }
 
 - (BOOL)commitSynchronously
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 commitSynchronously];
+  return [baseObject commitSynchronously];
 }
 
 - (OS_dispatch_queue)completionQueue
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 completionQueue];
+  return [baseObject completionQueue];
 }
 
 - (BOOL)disableCrossQueueHazardTracking
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 disableCrossQueueHazardTracking];
+  return [baseObject disableCrossQueueHazardTracking];
 }
 
 - (id)availableCounters
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 availableCounters];
+  return [baseObject availableCounters];
 }
 
 - (id)getRequestedCounters
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getRequestedCounters];
+  return [baseObject getRequestedCounters];
 }
 
 - (BOOL)isStatEnabled
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isStatEnabled];
+  return [baseObject isStatEnabled];
 }
 
 - (unint64_t)getStatOptions
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getStatOptions];
+  return [baseObject getStatOptions];
 }
 
-- (void)setStatOptions:(unint64_t)a3
+- (void)setStatOptions:(unint64_t)options
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setStatOptions:a3];
+  [baseObject setStatOptions:options];
 }
 
 - (unint64_t)getStatLocations
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getStatLocations];
+  return [baseObject getStatLocations];
 }
 
-- (void)setStatLocations:(unint64_t)a3
+- (void)setStatLocations:(unint64_t)locations
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setStatLocations:a3];
+  [baseObject setStatLocations:locations];
 }
 
 - (id)counterInfo
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 counterInfo];
+  return [baseObject counterInfo];
 }
 
 - (BOOL)commitsWithQoS
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 commitsWithQoS];
+  return [baseObject commitsWithQoS];
 }
 
-- (void)addResidencySet:(id)a3
+- (void)addResidencySet:(id)set
 {
   os_unfair_lock_lock(&self->_residencySetsLock);
-  [(NSCountedSet *)self->_residencySets addObject:a3];
+  [(NSCountedSet *)self->_residencySets addObject:set];
   [-[MTLToolsObject baseObject](self "baseObject")];
 
   os_unfair_lock_unlock(&self->_residencySetsLock);
 }
 
-- (void)addResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)addResidencySets:(const void *)sets count:(unint64_t)count
 {
   os_unfair_lock_lock(&self->_residencySetsLock);
-  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      [(NSCountedSet *)self->_residencySets addObject:a3[v7]];
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7++) = v8;
+      [(NSCountedSet *)self->_residencySets addObject:sets[v7]];
+      baseObject = [sets[v7] baseObject];
+      *(__p[0] + v7++) = baseObject;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 addResidencySets:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 addResidencySets:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -455,34 +455,34 @@
   os_unfair_lock_unlock(&self->_residencySetsLock);
 }
 
-- (void)removeResidencySet:(id)a3
+- (void)removeResidencySet:(id)set
 {
   os_unfair_lock_lock(&self->_residencySetsLock);
-  [(NSCountedSet *)self->_residencySets removeObject:a3];
+  [(NSCountedSet *)self->_residencySets removeObject:set];
   [-[MTLToolsObject baseObject](self "baseObject")];
 
   os_unfair_lock_unlock(&self->_residencySetsLock);
 }
 
-- (void)removeResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)removeResidencySets:(const void *)sets count:(unint64_t)count
 {
   os_unfair_lock_lock(&self->_residencySetsLock);
-  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      [(NSCountedSet *)self->_residencySets removeObject:a3[v7]];
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7++) = v8;
+      [(NSCountedSet *)self->_residencySets removeObject:sets[v7]];
+      baseObject = [sets[v7] baseObject];
+      *(__p[0] + v7++) = baseObject;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 removeResidencySets:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 removeResidencySets:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -492,34 +492,34 @@
   os_unfair_lock_unlock(&self->_residencySetsLock);
 }
 
-- (void)addInternalResidencySet:(id)a3
+- (void)addInternalResidencySet:(id)set
 {
   os_unfair_lock_lock(&self->_residencySetsLock);
-  [(NSCountedSet *)self->_internalResidencySets addObject:a3];
+  [(NSCountedSet *)self->_internalResidencySets addObject:set];
   [-[MTLToolsObject baseObject](self "baseObject")];
 
   os_unfair_lock_unlock(&self->_residencySetsLock);
 }
 
-- (void)addInternalResidencySets:(id *)a3 count:(unint64_t)a4
+- (void)addInternalResidencySets:(id *)sets count:(unint64_t)count
 {
   os_unfair_lock_lock(&self->_residencySetsLock);
-  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      [(NSCountedSet *)self->_internalResidencySets addObject:a3[v7]];
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7++) = v8;
+      [(NSCountedSet *)self->_internalResidencySets addObject:sets[v7]];
+      baseObject = [sets[v7] baseObject];
+      *(__p[0] + v7++) = baseObject;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 addInternalResidencySets:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 addInternalResidencySets:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -529,34 +529,34 @@
   os_unfair_lock_unlock(&self->_residencySetsLock);
 }
 
-- (void)removeInternalResidencySet:(id)a3
+- (void)removeInternalResidencySet:(id)set
 {
   os_unfair_lock_lock(&self->_residencySetsLock);
-  [(NSCountedSet *)self->_internalResidencySets removeObject:a3];
+  [(NSCountedSet *)self->_internalResidencySets removeObject:set];
   [-[MTLToolsObject baseObject](self "baseObject")];
 
   os_unfair_lock_unlock(&self->_residencySetsLock);
 }
 
-- (void)removeInternalResidencySets:(id *)a3 count:(unint64_t)a4
+- (void)removeInternalResidencySets:(id *)sets count:(unint64_t)count
 {
   os_unfair_lock_lock(&self->_residencySetsLock);
-  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      [(NSCountedSet *)self->_internalResidencySets removeObject:a3[v7]];
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7++) = v8;
+      [(NSCountedSet *)self->_internalResidencySets removeObject:sets[v7]];
+      baseObject = [sets[v7] baseObject];
+      *(__p[0] + v7++) = baseObject;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 removeInternalResidencySets:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 removeInternalResidencySets:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];

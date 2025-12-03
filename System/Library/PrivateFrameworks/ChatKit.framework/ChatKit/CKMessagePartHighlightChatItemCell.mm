@@ -1,35 +1,35 @@
 @interface CKMessagePartHighlightChatItemCell
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviewsForAlignmentContents;
-- (void)performHide:(id)a3;
-- (void)performInsertion:(id)a3;
-- (void)performReload:(id)a3 completion:(id)a4;
-- (void)performRemoval:(id)a3;
-- (void)performReveal:(id)a3;
+- (void)performHide:(id)hide;
+- (void)performInsertion:(id)insertion;
+- (void)performReload:(id)reload completion:(id)completion;
+- (void)performRemoval:(id)removal;
+- (void)performReveal:(id)reveal;
 - (void)prepareForReuse;
-- (void)setHighlightBalloonView:(id)a3;
+- (void)setHighlightBalloonView:(id)view;
 @end
 
 @implementation CKMessagePartHighlightChatItemCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
+  animatedCopy = animated;
   v15.receiver = self;
   v15.super_class = CKMessagePartHighlightChatItemCell;
-  v12 = a3;
-  [(CKAssociatedMessageTranscriptCell *)&v15 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
+  itemCopy = item;
+  [(CKAssociatedMessageTranscriptCell *)&v15 configureForChatItem:itemCopy context:context animated:animatedCopy animationDuration:curve animationCurve:duration];
   v13 = objc_opt_class();
   v14 = CKBalloonViewForClass(v13);
   [(CKMessagePartHighlightChatItemCell *)self setHighlightBalloonView:v14, v15.receiver, v15.super_class];
-  [v14 configureForMessagePartHighlightChatItem:v12];
+  [v14 configureForMessagePartHighlightChatItem:itemCopy];
 }
 
-- (void)setHighlightBalloonView:(id)a3
+- (void)setHighlightBalloonView:(id)view
 {
   v3.receiver = self;
   v3.super_class = CKMessagePartHighlightChatItemCell;
-  [(CKAssociatedMessageTranscriptCell *)&v3 setAssociatedItemView:a3];
+  [(CKAssociatedMessageTranscriptCell *)&v3 setAssociatedItemView:view];
 }
 
 - (void)layoutSubviewsForAlignmentContents
@@ -37,8 +37,8 @@
   v49.receiver = self;
   v49.super_class = CKMessagePartHighlightChatItemCell;
   [(CKAssociatedMessageTranscriptCell *)&v49 layoutSubviewsForAlignmentContents];
-  v3 = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
-  [v3 frame];
+  highlightBalloonView = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
+  [highlightBalloonView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -70,12 +70,12 @@
     v5 = v5 + v17;
   }
 
-  v18 = [(CKTranscriptMessageCell *)self failureButton];
+  failureButton = [(CKTranscriptMessageCell *)self failureButton];
 
-  if (v18)
+  if (failureButton)
   {
-    v19 = [(CKTranscriptMessageCell *)self failureButton];
-    [v19 frame];
+    failureButton2 = [(CKTranscriptMessageCell *)self failureButton];
+    [failureButton2 frame];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -108,8 +108,8 @@ LABEL_14:
         }
 
         v36 = round(v34 * v35) / v35;
-        v37 = [(CKTranscriptMessageCell *)self failureButton];
-        [v37 setFrame:{v21, v36, v25, v27}];
+        failureButton3 = [(CKTranscriptMessageCell *)self failureButton];
+        [failureButton3 setFrame:{v21, v36, v25, v27}];
 
         goto LABEL_19;
       }
@@ -140,8 +140,8 @@ LABEL_14:
   }
 
 LABEL_19:
-  v38 = [(CKMessagePartHighlightChatItemCell *)self traitCollection];
-  [v38 displayScale];
+  traitCollection = [(CKMessagePartHighlightChatItemCell *)self traitCollection];
+  [traitCollection displayScale];
   if (v39 == 0.0)
   {
     if (CKMainScreenScale_once_103 != -1)
@@ -186,35 +186,35 @@ LABEL_19:
   v45 = floor(v7 * v39) / v39;
   v46 = ceil(rect * v41) / v41;
 
-  v47 = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
-  [v47 setFrame:{v42, v45, v44, v46}];
+  highlightBalloonView2 = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
+  [highlightBalloonView2 setFrame:{v42, v45, v44, v46}];
 }
 
-- (void)performInsertion:(id)a3
+- (void)performInsertion:(id)insertion
 {
-  v4 = a3;
-  v5 = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
-  [v5 performTranscriptInsertionAnimation:v4];
+  insertionCopy = insertion;
+  highlightBalloonView = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
+  [highlightBalloonView performTranscriptInsertionAnimation:insertionCopy];
 }
 
-- (void)performRemoval:(id)a3
+- (void)performRemoval:(id)removal
 {
-  v4 = a3;
-  v5 = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
-  [v5 performTranscriptRemovalAnimation:v4];
+  removalCopy = removal;
+  highlightBalloonView = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
+  [highlightBalloonView performTranscriptRemovalAnimation:removalCopy];
 }
 
-- (void)performHide:(id)a3
+- (void)performHide:(id)hide
 {
-  v4 = a3;
-  v5 = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
+  hideCopy = hide;
+  highlightBalloonView = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__CKMessagePartHighlightChatItemCell_performHide___block_invoke;
   v7[3] = &unk_1E72ED1F0;
-  v8 = v4;
-  v6 = v4;
-  [v5 performTranscriptHideAnimation:v7];
+  v8 = hideCopy;
+  v6 = hideCopy;
+  [highlightBalloonView performTranscriptHideAnimation:v7];
 }
 
 uint64_t __50__CKMessagePartHighlightChatItemCell_performHide___block_invoke(uint64_t a1)
@@ -228,17 +228,17 @@ uint64_t __50__CKMessagePartHighlightChatItemCell_performHide___block_invoke(uin
   return result;
 }
 
-- (void)performReveal:(id)a3
+- (void)performReveal:(id)reveal
 {
-  v4 = a3;
-  v5 = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
+  revealCopy = reveal;
+  highlightBalloonView = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__CKMessagePartHighlightChatItemCell_performReveal___block_invoke;
   v7[3] = &unk_1E72ED1F0;
-  v8 = v4;
-  v6 = v4;
-  [v5 performTranscriptRevealAnimation:v7];
+  v8 = revealCopy;
+  v6 = revealCopy;
+  [highlightBalloonView performTranscriptRevealAnimation:v7];
 }
 
 uint64_t __52__CKMessagePartHighlightChatItemCell_performReveal___block_invoke(uint64_t a1)
@@ -252,22 +252,22 @@ uint64_t __52__CKMessagePartHighlightChatItemCell_performReveal___block_invoke(u
   return result;
 }
 
-- (void)performReload:(id)a3 completion:(id)a4
+- (void)performReload:(id)reload completion:(id)completion
 {
-  v7 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (reload)
   {
-    (*(a3 + 2))(a3);
+    (*(reload + 2))(reload);
   }
 
-  v6 = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
-  [v6 performTranscriptReloadAnimation:v7];
+  highlightBalloonView = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
+  [highlightBalloonView performTranscriptReloadAnimation:completionCopy];
 }
 
 - (void)prepareForReuse
 {
-  v3 = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
-  CKBalloonViewReuse(v3);
+  highlightBalloonView = [(CKMessagePartHighlightChatItemCell *)self highlightBalloonView];
+  CKBalloonViewReuse(highlightBalloonView);
 
   v4.receiver = self;
   v4.super_class = CKMessagePartHighlightChatItemCell;

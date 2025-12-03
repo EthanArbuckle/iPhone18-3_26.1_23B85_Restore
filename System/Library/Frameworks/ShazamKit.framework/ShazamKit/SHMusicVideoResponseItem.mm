@@ -1,20 +1,20 @@
 @interface SHMusicVideoResponseItem
 - (NSURL)url;
-- (SHMusicVideoResponseItem)initWithMusicVideoItemDictionary:(id)a3;
+- (SHMusicVideoResponseItem)initWithMusicVideoItemDictionary:(id)dictionary;
 @end
 
 @implementation SHMusicVideoResponseItem
 
-- (SHMusicVideoResponseItem)initWithMusicVideoItemDictionary:(id)a3
+- (SHMusicVideoResponseItem)initWithMusicVideoItemDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SHMusicVideoResponseItem;
   v6 = [(SHMusicVideoResponseItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_musicVideoItemDictionary, a3);
+    objc_storeStrong(&v6->_musicVideoItemDictionary, dictionary);
   }
 
   return v7;
@@ -22,8 +22,8 @@
 
 - (NSURL)url
 {
-  v2 = [(SHMusicVideoResponseItem *)self musicVideoItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  musicVideoItemDictionary = [(SHMusicVideoResponseItem *)self musicVideoItemDictionary];
+  v3 = [musicVideoItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"url"];
 
   if (v4)

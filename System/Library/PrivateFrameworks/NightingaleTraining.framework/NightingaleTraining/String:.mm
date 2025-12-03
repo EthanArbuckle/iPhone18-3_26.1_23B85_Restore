@@ -21,7 +21,7 @@
 
 - (Class)NSObject
 {
-  v5 = *(a1 + 32);
+  v5 = *(self + 32);
 
   if (v5(v1))
   {

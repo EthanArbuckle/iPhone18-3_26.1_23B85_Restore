@@ -1,21 +1,21 @@
 @interface SKUIQuicklinksView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIQuicklinksView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIQuicklinksView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCollectionView:(id)a3;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setCollectionView:(id)view;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIQuicklinksView
 
-- (SKUIQuicklinksView)initWithFrame:(CGRect)a3
+- (SKUIQuicklinksView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIQuicklinksView initWithFrame:];
@@ -23,32 +23,32 @@
 
   v14.receiver = self;
   v14.super_class = SKUIQuicklinksView;
-  v8 = [(SKUIQuicklinksView *)&v14 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIQuicklinksView *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277D75D18]);
-    borderView = v8->_borderView;
-    v8->_borderView = v9;
+    borderView = height->_borderView;
+    height->_borderView = v9;
 
-    v11 = v8->_borderView;
+    v11 = height->_borderView;
     v12 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
     [(UIView *)v11 setBackgroundColor:v12];
 
-    [(SKUIQuicklinksView *)v8 addSubview:v8->_borderView];
+    [(SKUIQuicklinksView *)height addSubview:height->_borderView];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   collectionView = self->_collectionView;
-  v7 = v5;
-  if (collectionView != v5)
+  v7 = viewCopy;
+  if (collectionView != viewCopy)
   {
     [(UIView *)collectionView removeFromSuperview];
-    objc_storeStrong(&self->_collectionView, a3);
+    objc_storeStrong(&self->_collectionView, view);
     if (self->_collectionView)
     {
       [(SKUIQuicklinksView *)self addSubview:?];
@@ -56,28 +56,28 @@
   }
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v17 = a3;
-  v4 = [v17 backgroundColor];
-  v5 = v4;
-  if (v4)
+  schemeCopy = scheme;
+  backgroundColor = [schemeCopy backgroundColor];
+  v5 = backgroundColor;
+  if (backgroundColor)
   {
-    v6 = v4;
+    whiteColor = backgroundColor;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v7 = v6;
+  v7 = whiteColor;
 
   [(SKUIQuicklinksView *)self setBackgroundColor:v7];
   [(UIView *)self->_collectionView setBackgroundColor:v7];
-  v8 = [v17 secondaryTextColor];
+  secondaryTextColor = [schemeCopy secondaryTextColor];
   titleColor = self->_titleColor;
-  self->_titleColor = v8;
+  self->_titleColor = secondaryTextColor;
 
   if (self->_titleColor)
   {
@@ -87,9 +87,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [v17 primaryTextColor];
+  primaryTextColor = [schemeCopy primaryTextColor];
   v12 = self->_titleColor;
-  self->_titleColor = v11;
+  self->_titleColor = primaryTextColor;
 
   titleLabel = self->_titleLabel;
   if (self->_titleColor)
@@ -97,15 +97,15 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v16 = [MEMORY[0x277D75348] blackColor];
-  [(UILabel *)titleLabel setTextColor:v16];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UILabel *)titleLabel setTextColor:blackColor];
 
 LABEL_8:
-  v13 = [v17 primaryTextColor];
+  primaryTextColor2 = [schemeCopy primaryTextColor];
   borderView = self->_borderView;
-  if (v13)
+  if (primaryTextColor2)
   {
-    [(UIView *)borderView setBackgroundColor:v13];
+    [(UIView *)borderView setBackgroundColor:primaryTextColor2];
   }
 
   else
@@ -115,14 +115,14 @@ LABEL_8:
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v15 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  if (v4 != v15 && ([v4 isEqualToString:v15] & 1) == 0)
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  if (text != titleCopy && ([text isEqualToString:titleCopy] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v15)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -131,8 +131,8 @@ LABEL_8:
         self->_titleLabel = v6;
 
         v8 = self->_titleLabel;
-        v9 = [(SKUIQuicklinksView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SKUIQuicklinksView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_titleLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
@@ -146,8 +146,8 @@ LABEL_8:
 
         else
         {
-          v14 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v12 setTextColor:v14];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v12 setTextColor:blackColor];
         }
 
         [(SKUIQuicklinksView *)self addSubview:self->_titleLabel];
@@ -193,8 +193,8 @@ LABEL_8:
 
   [(UIView *)self->_collectionView frame];
   [(UIView *)self->_collectionView setFrame:0.0, v8, v4];
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v11 = 1.0 / v10;
 
   borderView = self->_borderView;
@@ -202,24 +202,24 @@ LABEL_8:
   [(UIView *)borderView setFrame:0.0, v8 - v11, v4, v11];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   collectionView = self->_collectionView;
-  v5 = a3;
-  [(UIView *)collectionView setBackgroundColor:v5];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIView *)collectionView setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIQuicklinksView;
-  [(SKUIQuicklinksView *)&v6 setBackgroundColor:v5];
+  [(SKUIQuicklinksView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   titleLabel = self->_titleLabel;
   if (titleLabel)
   {
-    [(UILabel *)titleLabel frame:a3.width];
+    [(UILabel *)titleLabel frame:fits.width];
     v7 = v6 + 30.0;
   }
 

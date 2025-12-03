@@ -1,26 +1,26 @@
 @interface TSWClipView
 - (BOOL)needInnerMask;
-- (TSWClipView)initWithFrame:(CGRect)a3;
+- (TSWClipView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)fadeSizes;
-- (id)p_innerMaskLayerWithBounds:(CGRect)a3 path:(CGPath *)a4 fadeSizes:(UIEdgeInsets)a5;
-- (id)p_outerMaskLayerWithFrame:(CGRect)a3 path:(CGPath *)a4;
-- (void)addBackgroundView:(id)a3;
-- (void)addContentView:(id)a3;
+- (id)p_innerMaskLayerWithBounds:(CGRect)bounds path:(CGPath *)path fadeSizes:(UIEdgeInsets)sizes;
+- (id)p_outerMaskLayerWithFrame:(CGRect)frame path:(CGPath *)path;
+- (void)addBackgroundView:(id)view;
+- (void)addContentView:(id)view;
 - (void)dealloc;
 - (void)p_clearViewMasks;
 - (void)p_updateViewMasks;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)updateClipWithOuterPath:(CGPath *)a3 innerPath:(CGPath *)a4 fadeSizes:(UIEdgeInsets)a5;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)updateClipWithOuterPath:(CGPath *)path innerPath:(CGPath *)innerPath fadeSizes:(UIEdgeInsets)sizes;
 @end
 
 @implementation TSWClipView
 
-- (TSWClipView)initWithFrame:(CGRect)a3
+- (TSWClipView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = TSWClipView;
-  v3 = [(TSWClipView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TSWClipView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -45,11 +45,11 @@
   [(TSWClipView *)&v3 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = TSWClipView;
-  [(TSWClipView *)&v12 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TSWClipView *)&v12 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(TSWClipView *)self bounds];
   [(UIView *)[(TSWClipView *)self outerClipView] setFrame:v4, v5, v6, v7];
   [(TSWClipView *)self bounds];
@@ -58,11 +58,11 @@
   [(TSWClipView *)self p_updateViewMasks];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v12.receiver = self;
   v12.super_class = TSWClipView;
-  [(TSWClipView *)&v12 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TSWClipView *)&v12 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(TSWClipView *)self bounds];
   [(UIView *)[(TSWClipView *)self outerClipView] setFrame:v4, v5, v6, v7];
   [(TSWClipView *)self bounds];
@@ -71,15 +71,15 @@
   [(TSWClipView *)self p_updateViewMasks];
 }
 
-- (void)updateClipWithOuterPath:(CGPath *)a3 innerPath:(CGPath *)a4 fadeSizes:(UIEdgeInsets)a5
+- (void)updateClipWithOuterPath:(CGPath *)path innerPath:(CGPath *)innerPath fadeSizes:(UIEdgeInsets)sizes
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
+  right = sizes.right;
+  bottom = sizes.bottom;
+  left = sizes.left;
+  top = sizes.top;
 
-  self->_outerPath = [TSDBezierPath bezierPathWithCGPath:a3];
-  self->_innerPath = [TSDBezierPath bezierPathWithCGPath:a4];
+  self->_outerPath = [TSDBezierPath bezierPathWithCGPath:path];
+  self->_innerPath = [TSDBezierPath bezierPathWithCGPath:innerPath];
   self->_fadeSizes.top = top;
   self->_fadeSizes.left = left;
   self->_fadeSizes.bottom = bottom;
@@ -97,16 +97,16 @@
   [(TSWClipView *)self p_updateViewMasks];
 }
 
-- (void)addBackgroundView:(id)a3
+- (void)addBackgroundView:(id)view
 {
-  [(UIView *)self->_outerClipView insertSubview:a3 belowSubview:self->_innerClipView];
+  [(UIView *)self->_outerClipView insertSubview:view belowSubview:self->_innerClipView];
 
   [(TSWClipView *)self p_updateViewMasks];
 }
 
-- (void)addContentView:(id)a3
+- (void)addContentView:(id)view
 {
-  [(UIView *)self->_innerClipView addSubview:a3];
+  [(UIView *)self->_innerClipView addSubview:view];
 
   [(TSWClipView *)self p_updateViewMasks];
 }
@@ -125,25 +125,25 @@
 - (void)p_clearViewMasks
 {
   [(CALayer *)[(UIView *)self->_outerClipView layer] setMask:0];
-  v3 = [(UIView *)self->_innerClipView layer];
+  layer = [(UIView *)self->_innerClipView layer];
 
-  [(CALayer *)v3 setMask:0];
+  [(CALayer *)layer setMask:0];
 }
 
 - (void)p_updateViewMasks
 {
-  v3 = [(TSWClipView *)self needOuterMask];
-  v4 = [(UIView *)self->_outerClipView layer];
-  if (v3)
+  needOuterMask = [(TSWClipView *)self needOuterMask];
+  layer = [(UIView *)self->_outerClipView layer];
+  if (needOuterMask)
   {
-    if ([(CALayer *)v4 mask])
+    if ([(CALayer *)layer mask])
     {
       goto LABEL_6;
     }
 
     [(UIView *)self->_outerClipView bounds];
     v9 = [(TSWClipView *)self p_outerMaskLayerWithFrame:[(TSDBezierPath *)self->_outerPath CGPath] path:v5, v6, v7, v8];
-    v4 = [(UIView *)self->_outerClipView layer];
+    layer = [(UIView *)self->_outerClipView layer];
     v10 = v9;
   }
 
@@ -152,20 +152,20 @@
     v10 = 0;
   }
 
-  [(CALayer *)v4 setMask:v10];
+  [(CALayer *)layer setMask:v10];
 LABEL_6:
-  v11 = [(TSWClipView *)self needInnerMask];
-  v12 = [(UIView *)self->_innerClipView layer];
-  if (v11)
+  needInnerMask = [(TSWClipView *)self needInnerMask];
+  layer2 = [(UIView *)self->_innerClipView layer];
+  if (needInnerMask)
   {
-    if ([(CALayer *)v12 mask])
+    if ([(CALayer *)layer2 mask])
     {
       return;
     }
 
     [(UIView *)self->_innerClipView bounds];
     v18 = [(TSWClipView *)self p_innerMaskLayerWithBounds:[(TSDBezierPath *)self->_innerPath CGPath] path:v14 fadeSizes:v15, v16, v17, self->_fadeSizes.top, self->_fadeSizes.left, self->_fadeSizes.bottom, self->_fadeSizes.right];
-    v12 = [(UIView *)self->_innerClipView layer];
+    layer2 = [(UIView *)self->_innerClipView layer];
     v13 = v18;
   }
 
@@ -174,20 +174,20 @@ LABEL_6:
     v13 = 0;
   }
 
-  [(CALayer *)v12 setMask:v13];
+  [(CALayer *)layer2 setMask:v13];
 }
 
-- (id)p_innerMaskLayerWithBounds:(CGRect)a3 path:(CGPath *)a4 fadeSizes:(UIEdgeInsets)a5
+- (id)p_innerMaskLayerWithBounds:(CGRect)bounds path:(CGPath *)path fadeSizes:(UIEdgeInsets)sizes
 {
-  rect_8 = a5.bottom;
-  rect_16 = a3.size.width;
-  top = a5.top;
-  rect_24 = a3.size.height;
-  x = a3.origin.x;
-  y = a3.origin.y;
-  [(TSWClipView *)self maskGroupVerticalInset:a3.origin.x];
+  rect_8 = sizes.bottom;
+  rect_16 = bounds.size.width;
+  top = sizes.top;
+  rect_24 = bounds.size.height;
+  x = bounds.origin.x;
+  y = bounds.origin.y;
+  [(TSWClipView *)self maskGroupVerticalInset:bounds.origin.x];
   v7 = top;
-  CGPathGetBoundingBox(a4);
+  CGPathGetBoundingBox(path);
   TSDRoundedRectForMainScreen();
   v9 = v8;
   v11 = v10;
@@ -197,7 +197,7 @@ LABEL_6:
   v17 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", [+[TSUColor colorWithWhite:alpha:](TSUColor CGColor:0.0], [[TSUColor colorWithWhite:0 alpha:?];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v19 = CGGradientCreateWithColors(DeviceRGB, v17, 0);
-  CGContextAddPath(v16, a4);
+  CGContextAddPath(v16, path);
   CGContextClip(v16);
   v38.origin.x = v9;
   v38.origin.y = v11;
@@ -264,15 +264,15 @@ LABEL_6:
   return v25;
 }
 
-- (id)p_outerMaskLayerWithFrame:(CGRect)a3 path:(CGPath *)a4
+- (id)p_outerMaskLayerWithFrame:(CGRect)frame path:(CGPath *)path
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = objc_alloc_init(CAShapeLayer);
   [v9 setFrame:{x, y, width, height}];
-  [v9 setPath:a4];
+  [v9 setPath:path];
 
   return v9;
 }

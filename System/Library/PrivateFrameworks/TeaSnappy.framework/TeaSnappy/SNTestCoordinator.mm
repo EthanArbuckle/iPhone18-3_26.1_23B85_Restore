@@ -1,27 +1,27 @@
 @interface SNTestCoordinator
-- (BOOL)requiresRotationForOrientation:(int64_t)a3;
+- (BOOL)requiresRotationForOrientation:(int64_t)orientation;
 - (NSString)launchTestName;
-- (SNTestCoordinator)initWithApplication:(id)a3;
-- (int64_t)lengthForNumberOfScreens:(int64_t)a3 direction:(unint64_t)a4 size:(CGSize)a5;
-- (unint64_t)axisForDirection:(unint64_t)a3;
-- (void)failedTestWithTestName:(id)a3 failureMessage:(id)a4;
-- (void)recapScrollTestWithTestName:(id)a3 scrollView:(id)a4;
-- (void)rotateToOrientation:(int64_t)a3 beforeRotation:(id)a4 afterRotation:(id)a5;
-- (void)scrollTestWithTestName:(id)a3 scrollView:(id)a4 iterations:(int64_t)a5 offset:(int64_t)a6 direction:(unint64_t)a7;
-- (void)scrollTestWithTestName:(id)a3 scrollView:(id)a4 iterations:(int64_t)a5 offset:(int64_t)a6 numberOfScreens:(int64_t)a7 direction:(unint64_t)a8;
-- (void)startedTestWithTestName:(id)a3;
+- (SNTestCoordinator)initWithApplication:(id)application;
+- (int64_t)lengthForNumberOfScreens:(int64_t)screens direction:(unint64_t)direction size:(CGSize)size;
+- (unint64_t)axisForDirection:(unint64_t)direction;
+- (void)failedTestWithTestName:(id)name failureMessage:(id)message;
+- (void)recapScrollTestWithTestName:(id)name scrollView:(id)view;
+- (void)rotateToOrientation:(int64_t)orientation beforeRotation:(id)rotation afterRotation:(id)afterRotation;
+- (void)scrollTestWithTestName:(id)name scrollView:(id)view iterations:(int64_t)iterations offset:(int64_t)offset direction:(unint64_t)direction;
+- (void)scrollTestWithTestName:(id)name scrollView:(id)view iterations:(int64_t)iterations offset:(int64_t)offset numberOfScreens:(int64_t)screens direction:(unint64_t)direction;
+- (void)startedTestWithTestName:(id)name;
 @end
 
 @implementation SNTestCoordinator
 
 - (NSString)launchTestName
 {
-  v2 = [(SNTestCoordinator *)self application];
-  v3 = [v2 _launchTestName];
-  v4 = v3;
-  if (v3)
+  application = [(SNTestCoordinator *)self application];
+  _launchTestName = [application _launchTestName];
+  v4 = _launchTestName;
+  if (_launchTestName)
   {
-    v5 = v3;
+    v5 = _launchTestName;
   }
 
   else
@@ -34,15 +34,15 @@
   return &v5->isa;
 }
 
-- (SNTestCoordinator)initWithApplication:(id)a3
+- (SNTestCoordinator)initWithApplication:(id)application
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  applicationCopy = application;
   v6 = SNDefaultLog;
   if (os_log_type_enabled(SNDefaultLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v5;
+    v13 = applicationCopy;
     _os_log_impl(&dword_26D1A2000, v6, OS_LOG_TYPE_DEFAULT, "Creating SNTestCoordinator with application %@", buf, 0xCu);
   }
 
@@ -52,86 +52,86 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_application, a3);
+    objc_storeStrong(&v7->_application, application);
   }
 
   v9 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (void)startedTestWithTestName:(id)a3
+- (void)startedTestWithTestName:(id)name
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = SNDefaultLog;
   if (os_log_type_enabled(SNDefaultLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(SNTestCoordinator *)self application];
+    application = [(SNTestCoordinator *)self application];
     v10 = 138412546;
-    v11 = v4;
+    v11 = nameCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = application;
     _os_log_impl(&dword_26D1A2000, v6, OS_LOG_TYPE_DEFAULT, "Marking test %@ started on application %@", &v10, 0x16u);
   }
 
-  v8 = [(SNTestCoordinator *)self application];
-  [v8 startedTest:v4];
+  application2 = [(SNTestCoordinator *)self application];
+  [application2 startedTest:nameCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)failedTestWithTestName:(id)a3 failureMessage:(id)a4
+- (void)failedTestWithTestName:(id)name failureMessage:(id)message
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  messageCopy = message;
   v8 = SNDefaultLog;
   if (os_log_type_enabled(SNDefaultLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(SNTestCoordinator *)self application];
+    application = [(SNTestCoordinator *)self application];
     v13 = 138412802;
-    v14 = v6;
+    v14 = nameCopy;
     v15 = 2112;
-    v16 = v10;
+    v16 = application;
     v17 = 2112;
-    v18 = v7;
+    v18 = messageCopy;
     _os_log_impl(&dword_26D1A2000, v9, OS_LOG_TYPE_DEFAULT, "Marking test %@ failed on application %@ with error %@", &v13, 0x20u);
   }
 
-  v11 = [(SNTestCoordinator *)self application];
-  [v11 failedTest:v6 withFailure:v7];
+  application2 = [(SNTestCoordinator *)self application];
+  [application2 failedTest:nameCopy withFailure:messageCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)requiresRotationForOrientation:(int64_t)a3
+- (BOOL)requiresRotationForOrientation:(int64_t)orientation
 {
-  v4 = [(SNTestCoordinator *)self application];
-  LOBYTE(a3) = [v4 statusBarOrientation] != a3;
+  application = [(SNTestCoordinator *)self application];
+  LOBYTE(orientation) = [application statusBarOrientation] != orientation;
 
-  return a3;
+  return orientation;
 }
 
-- (void)rotateToOrientation:(int64_t)a3 beforeRotation:(id)a4 afterRotation:(id)a5
+- (void)rotateToOrientation:(int64_t)orientation beforeRotation:(id)rotation afterRotation:(id)afterRotation
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SNTestCoordinator *)self application];
-  v14 = v9;
+  rotationCopy = rotation;
+  afterRotationCopy = afterRotation;
+  application = [(SNTestCoordinator *)self application];
+  v14 = afterRotationCopy;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__SNTestCoordinator_rotateToOrientation_beforeRotation_afterRotation___block_invoke;
   v15[3] = &unk_279D942C0;
-  v16 = v8;
+  v16 = rotationCopy;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__SNTestCoordinator_rotateToOrientation_beforeRotation_afterRotation___block_invoke_2;
   v13[3] = &unk_279D942C0;
-  v11 = v9;
-  v12 = v8;
-  [v10 rotateIfNeeded:a3 before:v15 after:v13];
+  v11 = afterRotationCopy;
+  v12 = rotationCopy;
+  [application rotateIfNeeded:orientation before:v15 after:v13];
 }
 
 uint64_t __70__SNTestCoordinator_rotateToOrientation_beforeRotation_afterRotation___block_invoke(uint64_t a1)
@@ -156,35 +156,35 @@ uint64_t __70__SNTestCoordinator_rotateToOrientation_beforeRotation_afterRotatio
   return result;
 }
 
-- (void)scrollTestWithTestName:(id)a3 scrollView:(id)a4 iterations:(int64_t)a5 offset:(int64_t)a6 direction:(unint64_t)a7
+- (void)scrollTestWithTestName:(id)name scrollView:(id)view iterations:(int64_t)iterations offset:(int64_t)offset direction:(unint64_t)direction
 {
-  v12 = a4;
-  v13 = a3;
-  [v12 _performScrollTest:v13 iterations:a5 delta:a6 scrollAxis:{-[SNTestCoordinator axisForDirection:](self, "axisForDirection:", a7)}];
+  viewCopy = view;
+  nameCopy = name;
+  [viewCopy _performScrollTest:nameCopy iterations:iterations delta:offset scrollAxis:{-[SNTestCoordinator axisForDirection:](self, "axisForDirection:", direction)}];
 }
 
-- (void)scrollTestWithTestName:(id)a3 scrollView:(id)a4 iterations:(int64_t)a5 offset:(int64_t)a6 numberOfScreens:(int64_t)a7 direction:(unint64_t)a8
+- (void)scrollTestWithTestName:(id)name scrollView:(id)view iterations:(int64_t)iterations offset:(int64_t)offset numberOfScreens:(int64_t)screens direction:(unint64_t)direction
 {
-  v14 = a4;
-  v18 = a3;
-  v15 = [(SNTestCoordinator *)self axisForDirection:a8];
-  [v14 bounds];
-  [v14 _performScrollTest:v18 iterations:a5 delta:a6 length:-[SNTestCoordinator lengthForNumberOfScreens:direction:size:](self scrollAxis:{"lengthForNumberOfScreens:direction:size:", a7, a8, v16, v17), v15}];
+  viewCopy = view;
+  nameCopy = name;
+  v15 = [(SNTestCoordinator *)self axisForDirection:direction];
+  [viewCopy bounds];
+  [viewCopy _performScrollTest:nameCopy iterations:iterations delta:offset length:-[SNTestCoordinator lengthForNumberOfScreens:direction:size:](self scrollAxis:{"lengthForNumberOfScreens:direction:size:", screens, direction, v16, v17), v15}];
 }
 
-- (void)recapScrollTestWithTestName:(id)a3 scrollView:(id)a4
+- (void)recapScrollTestWithTestName:(id)name scrollView:(id)view
 {
   v5 = MEMORY[0x277D44360];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithTestName:v7 scrollView:v6 completionHandler:0];
+  viewCopy = view;
+  nameCopy = name;
+  v8 = [[v5 alloc] initWithTestName:nameCopy scrollView:viewCopy completionHandler:0];
 
   [MEMORY[0x277D44368] runTestWithParameters:v8];
 }
 
-- (unint64_t)axisForDirection:(unint64_t)a3
+- (unint64_t)axisForDirection:(unint64_t)direction
 {
-  if (a3)
+  if (direction)
   {
     return 1;
   }
@@ -195,24 +195,24 @@ uint64_t __70__SNTestCoordinator_rotateToOrientation_beforeRotation_afterRotatio
   }
 }
 
-- (int64_t)lengthForNumberOfScreens:(int64_t)a3 direction:(unint64_t)a4 size:(CGSize)a5
+- (int64_t)lengthForNumberOfScreens:(int64_t)screens direction:(unint64_t)direction size:(CGSize)size
 {
-  if (a4 == 1)
+  if (direction == 1)
   {
-    width = a5.width;
+    width = size.width;
   }
 
   else
   {
-    if (a4)
+    if (direction)
     {
       return self;
     }
 
-    width = a5.height;
+    width = size.height;
   }
 
-  return width * a3;
+  return width * screens;
 }
 
 @end

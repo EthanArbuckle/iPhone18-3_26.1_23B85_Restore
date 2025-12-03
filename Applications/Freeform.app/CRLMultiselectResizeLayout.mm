@@ -8,18 +8,18 @@
 - (id)p_multiselectInfo;
 - (id)reliedOnLayouts;
 - (void)invalidate;
-- (void)recursivelyAddLayoutAndDependentLayoutsToValidateSet:(id)a3;
-- (void)takeSizeFromTracker:(id)a3;
+- (void)recursivelyAddLayoutAndDependentLayoutsToValidateSet:(id)set;
+- (void)takeSizeFromTracker:(id)tracker;
 @end
 
 @implementation CRLMultiselectResizeLayout
 
 - (NSSet)representedSelectedLayouts
 {
-  v3 = [(CRLCanvasLayout *)self layoutController];
-  v4 = [(CRLMultiselectResizeLayout *)self p_multiselectInfo];
-  v5 = [v4 representedSelectedBoardItems];
-  v6 = [v3 layoutsForInfos:v5];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  p_multiselectInfo = [(CRLMultiselectResizeLayout *)self p_multiselectInfo];
+  representedSelectedBoardItems = [p_multiselectInfo representedSelectedBoardItems];
+  v6 = [layoutController layoutsForInfos:representedSelectedBoardItems];
 
   return v6;
 }
@@ -66,31 +66,31 @@ LABEL_11:
   return v3;
 }
 
-- (void)takeSizeFromTracker:(id)a3
+- (void)takeSizeFromTracker:(id)tracker
 {
-  v4 = a3;
-  v5 = v4;
+  trackerCopy = tracker;
+  v5 = trackerCopy;
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
-  if (v4)
+  if (trackerCopy)
   {
-    [v4 transformForLayout:self];
+    [trackerCopy transformForLayout:self];
   }
 
-  v6 = [(CRLCanvasLayout *)self originalGeometry];
+  originalGeometry = [(CRLCanvasLayout *)self originalGeometry];
   v18[0] = v19;
   v18[1] = v20;
   v18[2] = v21;
-  v7 = [v6 geometryByTransformingBy:v18];
+  v7 = [originalGeometry geometryByTransformingBy:v18];
 
   [(CRLCanvasLayout *)self setDynamicGeometry:v7];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(CRLMultiselectResizeLayout *)self representedSelectedLayouts];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  representedSelectedLayouts = [(CRLMultiselectResizeLayout *)self representedSelectedLayouts];
+  v9 = [representedSelectedLayouts countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -101,7 +101,7 @@ LABEL_11:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(representedSelectedLayouts);
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
@@ -111,7 +111,7 @@ LABEL_11:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v10 = [representedSelectedLayouts countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v10);
@@ -131,38 +131,38 @@ LABEL_11:
   }
 }
 
-- (void)recursivelyAddLayoutAndDependentLayoutsToValidateSet:(id)a3
+- (void)recursivelyAddLayoutAndDependentLayoutsToValidateSet:(id)set
 {
   v7.receiver = self;
   v7.super_class = CRLMultiselectResizeLayout;
-  v5 = a3;
-  [(CRLCanvasLayout *)&v7 recursivelyAddLayoutAndDependentLayoutsToValidateSet:v5];
+  setCopy = set;
+  [(CRLCanvasLayout *)&v7 recursivelyAddLayoutAndDependentLayoutsToValidateSet:setCopy];
   v6 = [(CRLMultiselectResizeLayout *)self representedSelectedLayouts:v7.receiver];
-  [v6 makeObjectsPerformSelector:a2 withObject:v5];
+  [v6 makeObjectsPerformSelector:a2 withObject:setCopy];
 }
 
 - (id)computeLayoutGeometry
 {
-  v3 = [(CRLCanvasLayout *)self layoutController];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
 
-  if (v3)
+  if (layoutController)
   {
-    v4 = [(CRLCanvasLayout *)self layoutController];
-    v5 = [(CRLMultiselectResizeLayout *)self p_multiselectInfo];
-    v6 = [v5 representedSelectedBoardItems];
-    v7 = [v4 layoutsForInfos:v6];
+    layoutController2 = [(CRLCanvasLayout *)self layoutController];
+    p_multiselectInfo = [(CRLMultiselectResizeLayout *)self p_multiselectInfo];
+    representedSelectedBoardItems = [p_multiselectInfo representedSelectedBoardItems];
+    v7 = [layoutController2 layoutsForInfos:representedSelectedBoardItems];
   }
 
   else
   {
-    v8 = [(CRLCanvasAbstractLayout *)self parent];
-    v9 = [v8 children];
+    parent = [(CRLCanvasAbstractLayout *)self parent];
+    children = [parent children];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_10012B69C;
     v37[3] = &unk_10183EBB8;
     v37[4] = self;
-    v10 = [v9 crl_arrayOfObjectsPassingTest:v37];
+    v10 = [children crl_arrayOfObjectsPassingTest:v37];
     v7 = [NSSet setWithArray:v10];
   }
 
@@ -189,8 +189,8 @@ LABEL_11:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v33 + 1) + 8 * i) pureGeometry];
-        [v20 frame];
+        pureGeometry = [*(*(&v33 + 1) + 8 * i) pureGeometry];
+        [pureGeometry frame];
         v43.origin.x = v21;
         v43.origin.y = v22;
         v43.size.width = v23;
@@ -252,16 +252,16 @@ LABEL_11:
     x = 0.0;
   }
 
-  v31 = [[CRLCanvasLayoutGeometry alloc] initWithFrame:x, y, width, height];
+  height = [[CRLCanvasLayoutGeometry alloc] initWithFrame:x, y, width, height];
 
-  return v31;
+  return height;
 }
 
 - (id)reliedOnLayouts
 {
-  v3 = [(CRLCanvasLayout *)self layoutController];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
 
-  if (!v3)
+  if (!layoutController)
   {
     v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -291,10 +291,10 @@ LABEL_11:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:105 isFatal:0 description:"invalid nil value for '%{public}s'", "self.layoutController"];
   }
 
-  v9 = [(CRLCanvasLayout *)self layoutController];
-  v10 = [(CRLMultiselectResizeLayout *)self p_multiselectInfo];
-  v11 = [v10 representedSelectedBoardItems];
-  v12 = [v9 layoutsForInfos:v11];
+  layoutController2 = [(CRLCanvasLayout *)self layoutController];
+  p_multiselectInfo = [(CRLMultiselectResizeLayout *)self p_multiselectInfo];
+  representedSelectedBoardItems = [p_multiselectInfo representedSelectedBoardItems];
+  v12 = [layoutController2 layoutsForInfos:representedSelectedBoardItems];
 
   return v12;
 }
@@ -305,10 +305,10 @@ LABEL_11:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [(CRLMultiselectResizeLayout *)self p_multiselectInfo];
-  v4 = [v3 representedSelectedBoardItems];
+  p_multiselectInfo = [(CRLMultiselectResizeLayout *)self p_multiselectInfo];
+  representedSelectedBoardItems = [p_multiselectInfo representedSelectedBoardItems];
 
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v5 = [representedSelectedBoardItems countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -319,7 +319,7 @@ LABEL_3:
     {
       if (*v23 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(representedSelectedBoardItems);
       }
 
       if (![*(*(&v22 + 1) + 8 * v8) allowsParentGroupToBeResizedWithoutAspectRatioLock])
@@ -329,7 +329,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v6 = [representedSelectedBoardItems countByEnumeratingWithState:&v22 objects:v27 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -348,12 +348,12 @@ LABEL_9:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(CRLCanvasLayout *)self layoutController];
-    v10 = [(CRLMultiselectResizeLayout *)self p_multiselectInfo];
-    v11 = [v10 representedSelectedBoardItems];
-    v4 = [v9 layoutsForInfos:v11];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    p_multiselectInfo2 = [(CRLMultiselectResizeLayout *)self p_multiselectInfo];
+    representedSelectedBoardItems2 = [p_multiselectInfo2 representedSelectedBoardItems];
+    representedSelectedBoardItems = [layoutController layoutsForInfos:representedSelectedBoardItems2];
 
-    v12 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    v12 = [representedSelectedBoardItems countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (!v12)
     {
       v16 = 1;
@@ -368,7 +368,7 @@ LABEL_11:
     {
       if (*v19 != v14)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(representedSelectedBoardItems);
       }
 
       if (![*(*(&v18 + 1) + 8 * v15) resizeMayChangeAspectRatio])
@@ -378,7 +378,7 @@ LABEL_11:
 
       if (v13 == ++v15)
       {
-        v13 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v13 = [representedSelectedBoardItems countByEnumeratingWithState:&v18 objects:v26 count:16];
         v16 = 1;
         if (v13)
         {
@@ -398,20 +398,20 @@ LABEL_19:
 
 - (CGSize)minimumSize
 {
-  v3 = [(CRLCanvasAbstractLayout *)self geometry];
-  [v3 size];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  [geometry size];
   v44 = v4;
   v6 = v5;
 
-  v7 = [(CRLMultiselectResizeLayout *)self resizeMayChangeAspectRatio];
+  resizeMayChangeAspectRatio = [(CRLMultiselectResizeLayout *)self resizeMayChangeAspectRatio];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v8 = [(CRLCanvasLayout *)self layoutController];
-  v9 = [(CRLMultiselectResizeLayout *)self p_multiselectInfo];
-  v10 = [v9 representedSelectedBoardItems];
-  v11 = [v8 layoutsForInfos:v10];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  p_multiselectInfo = [(CRLMultiselectResizeLayout *)self p_multiselectInfo];
+  representedSelectedBoardItems = [p_multiselectInfo representedSelectedBoardItems];
+  v11 = [layoutController layoutsForInfos:representedSelectedBoardItems];
 
   v12 = [v11 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v12)
@@ -433,10 +433,10 @@ LABEL_19:
         [v18 minimumSize];
         v20 = v19;
         v22 = v21;
-        if ((v7 & 1) == 0)
+        if ((resizeMayChangeAspectRatio & 1) == 0)
         {
-          v23 = [v18 pureGeometry];
-          [v23 size];
+          pureGeometry = [v18 pureGeometry];
+          [pureGeometry size];
           sub_100121C3C(v20, v22, v24, v25);
         }
 
@@ -444,11 +444,11 @@ LABEL_19:
         v28 = v27;
         v30 = v29;
         v32 = v31;
-        v33 = [v18 pureGeometry];
-        v34 = v33;
-        if (v33)
+        pureGeometry2 = [v18 pureGeometry];
+        v34 = pureGeometry2;
+        if (pureGeometry2)
         {
-          [v33 transform];
+          [pureGeometry2 transform];
         }
 
         else
@@ -464,8 +464,8 @@ LABEL_19:
         width = v53.size.width;
         height = v53.size.height;
 
-        v37 = [v18 pureGeometry];
-        [v37 frame];
+        pureGeometry3 = [v18 pureGeometry];
+        [pureGeometry3 frame];
         v39 = v38;
         v41 = v40;
 
@@ -503,13 +503,13 @@ LABEL_19:
 {
   v9.receiver = self;
   v9.super_class = CRLMultiselectResizeLayout;
-  v3 = [(CRLCanvasAbstractLayout *)&v9 parentLayoutForProvidingGuides];
-  v4 = [v3 layoutsForProvidingGuidesForChildLayouts];
-  v5 = [v4 mutableCopy];
+  parentLayoutForProvidingGuides = [(CRLCanvasAbstractLayout *)&v9 parentLayoutForProvidingGuides];
+  layoutsForProvidingGuidesForChildLayouts = [parentLayoutForProvidingGuides layoutsForProvidingGuidesForChildLayouts];
+  v5 = [layoutsForProvidingGuidesForChildLayouts mutableCopy];
 
-  v6 = [(CRLMultiselectResizeLayout *)self representedSelectedLayouts];
-  v7 = [v6 allObjects];
-  [v5 removeObjectsInArray:v7];
+  representedSelectedLayouts = [(CRLMultiselectResizeLayout *)self representedSelectedLayouts];
+  allObjects = [representedSelectedLayouts allObjects];
+  [v5 removeObjectsInArray:allObjects];
 
   return v5;
 }
@@ -517,8 +517,8 @@ LABEL_19:
 - (id)p_multiselectInfo
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }

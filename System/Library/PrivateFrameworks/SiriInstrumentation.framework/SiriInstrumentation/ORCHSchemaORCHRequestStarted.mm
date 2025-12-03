@@ -1,31 +1,31 @@
 @interface ORCHSchemaORCHRequestStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHRequestStarted)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHRequestStarted)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ORCHSchemaORCHRequestStarted)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHRequestStarted)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsAssistantEngineRequest:(BOOL)a3;
-- (void)setHasSiriAsrMode:(BOOL)a3;
-- (void)setHasSiriNlMode:(BOOL)a3;
-- (void)setHasSiriUODEnabled:(BOOL)a3;
-- (void)setHasSiriUODMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsAssistantEngineRequest:(BOOL)request;
+- (void)setHasSiriAsrMode:(BOOL)mode;
+- (void)setHasSiriNlMode:(BOOL)mode;
+- (void)setHasSiriUODEnabled:(BOOL)enabled;
+- (void)setHasSiriUODMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHRequestStarted
 
-- (ORCHSchemaORCHRequestStarted)initWithDictionary:(id)a3
+- (ORCHSchemaORCHRequestStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = ORCHSchemaORCHRequestStarted;
   v5 = [(ORCHSchemaORCHRequestStarted *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"orchestratorSessionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"orchestratorSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,42 +33,42 @@
       [(ORCHSchemaORCHRequestStarted *)v5 setOrchestratorSessionId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHRequestStarted setRequestType:](v5, "setRequestType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"siriUODEnabled"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"siriUODEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHRequestStarted setSiriUODEnabled:](v5, "setSiriUODEnabled:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"siriUODMode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"siriUODMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHRequestStarted setSiriUODMode:](v5, "setSiriUODMode:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"siriAsrMode"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"siriAsrMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHRequestStarted setSiriAsrMode:](v5, "setSiriAsrMode:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"siriNlMode"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"siriNlMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHRequestStarted setSiriNlMode:](v5, "setSiriNlMode:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"nlv3DeprecationFlags"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"nlv3DeprecationFlags"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
       [(ORCHSchemaORCHRequestStarted *)v5 setNlv3DeprecationFlags:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"isAssistantEngineRequest"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isAssistantEngineRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHRequestStarted)initWithJSON:(id)a3
+- (ORCHSchemaORCHRequestStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHRequestStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHRequestStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHRequestStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,42 +125,42 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*(&self->_isAssistantEngineRequest + 1) & 0x20) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHRequestStarted isAssistantEngineRequest](self, "isAssistantEngineRequest")}];
-    [v3 setObject:v4 forKeyedSubscript:@"isAssistantEngineRequest"];
+    [dictionary setObject:v4 forKeyedSubscript:@"isAssistantEngineRequest"];
   }
 
   if (self->_nlv3DeprecationFlags)
   {
-    v5 = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    nlv3DeprecationFlags = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
+    dictionaryRepresentation = [nlv3DeprecationFlags dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"nlv3DeprecationFlags"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"nlv3DeprecationFlags"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"nlv3DeprecationFlags"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"nlv3DeprecationFlags"];
     }
   }
 
   if (self->_orchestratorSessionId)
   {
-    v8 = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    orchestratorSessionId = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
+    dictionaryRepresentation2 = [orchestratorSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"orchestratorSessionId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"orchestratorSessionId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"orchestratorSessionId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"orchestratorSessionId"];
     }
   }
 
@@ -178,7 +178,7 @@
       v15 = off_1E78DEEC8[v14];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"requestType"];
+    [dictionary setObject:v15 forKeyedSubscript:@"requestType"];
     v11 = *(&self->_isAssistantEngineRequest + 1);
     if ((v11 & 8) == 0)
     {
@@ -197,14 +197,14 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v16 = [(ORCHSchemaORCHRequestStarted *)self siriAsrMode];
+  siriAsrMode = [(ORCHSchemaORCHRequestStarted *)self siriAsrMode];
   v17 = @"ORCHSIRIASRMODE_UNKNOWN";
-  if (v16 == 1)
+  if (siriAsrMode == 1)
   {
     v17 = @"ORCHSIRIASRMODE_SERVER";
   }
 
-  if (v16 == 2)
+  if (siriAsrMode == 2)
   {
     v18 = @"ORCHSIRIASRMODE_DEVICE";
   }
@@ -214,7 +214,7 @@ LABEL_15:
     v18 = v17;
   }
 
-  [v3 setObject:v18 forKeyedSubscript:@"siriAsrMode"];
+  [dictionary setObject:v18 forKeyedSubscript:@"siriAsrMode"];
   v11 = *(&self->_isAssistantEngineRequest + 1);
   if ((v11 & 0x10) == 0)
   {
@@ -226,7 +226,7 @@ LABEL_16:
 
 LABEL_41:
     v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHRequestStarted siriUODEnabled](self, "siriUODEnabled")}];
-    [v3 setObject:v22 forKeyedSubscript:@"siriUODEnabled"];
+    [dictionary setObject:v22 forKeyedSubscript:@"siriUODEnabled"];
 
     if ((*(&self->_isAssistantEngineRequest + 1) & 4) != 0)
     {
@@ -237,14 +237,14 @@ LABEL_41:
   }
 
 LABEL_35:
-  v19 = [(ORCHSchemaORCHRequestStarted *)self siriNlMode];
+  siriNlMode = [(ORCHSchemaORCHRequestStarted *)self siriNlMode];
   v20 = @"ORCHSIRINLMODE_UNKNOWN";
-  if (v19 == 1)
+  if (siriNlMode == 1)
   {
     v20 = @"ORCHSIRINLMODE_NLV3_SERVER";
   }
 
-  if (v19 == 2)
+  if (siriNlMode == 2)
   {
     v21 = @"ORCHSIRINLMODE_NLX_DEVICE";
   }
@@ -254,7 +254,7 @@ LABEL_35:
     v21 = v20;
   }
 
-  [v3 setObject:v21 forKeyedSubscript:@"siriNlMode"];
+  [dictionary setObject:v21 forKeyedSubscript:@"siriNlMode"];
   v11 = *(&self->_isAssistantEngineRequest + 1);
   if ((v11 & 2) != 0)
   {
@@ -275,13 +275,13 @@ LABEL_18:
       v12 = @"ORCHSIRIUNDERSTANDINGONDEVICEMODE_FULL_UOD";
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"siriUODMode"];
+    [dictionary setObject:v12 forKeyedSubscript:@"siriUODMode"];
   }
 
 LABEL_22:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -365,28 +365,28 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  v5 = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
-  v6 = [v4 orchestratorSessionId];
-  if ((v5 != 0) == (v6 == 0))
+  orchestratorSessionId = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
+  orchestratorSessionId2 = [equalCopy orchestratorSessionId];
+  if ((orchestratorSessionId != 0) == (orchestratorSessionId2 == 0))
   {
     goto LABEL_30;
   }
 
-  v7 = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
-  if (v7)
+  orchestratorSessionId3 = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
+  if (orchestratorSessionId3)
   {
-    v8 = v7;
-    v9 = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
-    v10 = [v4 orchestratorSessionId];
-    v11 = [v9 isEqual:v10];
+    v8 = orchestratorSessionId3;
+    orchestratorSessionId4 = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
+    orchestratorSessionId5 = [equalCopy orchestratorSessionId];
+    v11 = [orchestratorSessionId4 isEqual:orchestratorSessionId5];
 
     if (!v11)
     {
@@ -399,7 +399,7 @@ LABEL_12:
   }
 
   v12 = *(&self->_isAssistantEngineRequest + 1);
-  v13 = v4[49];
+  v13 = equalCopy[49];
   if ((v12 & 1) != (v13 & 1))
   {
     goto LABEL_31;
@@ -408,13 +408,13 @@ LABEL_12:
   if (v12)
   {
     requestType = self->_requestType;
-    if (requestType != [v4 requestType])
+    if (requestType != [equalCopy requestType])
     {
       goto LABEL_31;
     }
 
     v12 = *(&self->_isAssistantEngineRequest + 1);
-    v13 = v4[49];
+    v13 = equalCopy[49];
   }
 
   v15 = (v12 >> 1) & 1;
@@ -426,13 +426,13 @@ LABEL_12:
   if (v15)
   {
     siriUODEnabled = self->_siriUODEnabled;
-    if (siriUODEnabled != [v4 siriUODEnabled])
+    if (siriUODEnabled != [equalCopy siriUODEnabled])
     {
       goto LABEL_31;
     }
 
     v12 = *(&self->_isAssistantEngineRequest + 1);
-    v13 = v4[49];
+    v13 = equalCopy[49];
   }
 
   v17 = (v12 >> 2) & 1;
@@ -444,13 +444,13 @@ LABEL_12:
   if (v17)
   {
     siriUODMode = self->_siriUODMode;
-    if (siriUODMode != [v4 siriUODMode])
+    if (siriUODMode != [equalCopy siriUODMode])
     {
       goto LABEL_31;
     }
 
     v12 = *(&self->_isAssistantEngineRequest + 1);
-    v13 = v4[49];
+    v13 = equalCopy[49];
   }
 
   v19 = (v12 >> 3) & 1;
@@ -462,13 +462,13 @@ LABEL_12:
   if (v19)
   {
     siriAsrMode = self->_siriAsrMode;
-    if (siriAsrMode != [v4 siriAsrMode])
+    if (siriAsrMode != [equalCopy siriAsrMode])
     {
       goto LABEL_31;
     }
 
     v12 = *(&self->_isAssistantEngineRequest + 1);
-    v13 = v4[49];
+    v13 = equalCopy[49];
   }
 
   v21 = (v12 >> 4) & 1;
@@ -480,28 +480,28 @@ LABEL_12:
   if (v21)
   {
     siriNlMode = self->_siriNlMode;
-    if (siriNlMode != [v4 siriNlMode])
+    if (siriNlMode != [equalCopy siriNlMode])
     {
       goto LABEL_31;
     }
   }
 
-  v5 = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
-  v6 = [v4 nlv3DeprecationFlags];
-  if ((v5 != 0) == (v6 == 0))
+  orchestratorSessionId = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
+  orchestratorSessionId2 = [equalCopy nlv3DeprecationFlags];
+  if ((orchestratorSessionId != 0) == (orchestratorSessionId2 == 0))
   {
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  v23 = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
-  if (v23)
+  nlv3DeprecationFlags = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
+  if (nlv3DeprecationFlags)
   {
-    v24 = v23;
-    v25 = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
-    v26 = [v4 nlv3DeprecationFlags];
-    v27 = [v25 isEqual:v26];
+    v24 = nlv3DeprecationFlags;
+    nlv3DeprecationFlags2 = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
+    nlv3DeprecationFlags3 = [equalCopy nlv3DeprecationFlags];
+    v27 = [nlv3DeprecationFlags2 isEqual:nlv3DeprecationFlags3];
 
     if (!v27)
     {
@@ -514,9 +514,9 @@ LABEL_30:
   }
 
   v30 = (*(&self->_isAssistantEngineRequest + 1) >> 5) & 1;
-  if (v30 == ((v4[49] >> 5) & 1))
+  if (v30 == ((equalCopy[49] >> 5) & 1))
   {
-    if (!v30 || (isAssistantEngineRequest = self->_isAssistantEngineRequest, isAssistantEngineRequest == [v4 isAssistantEngineRequest]))
+    if (!v30 || (isAssistantEngineRequest = self->_isAssistantEngineRequest, isAssistantEngineRequest == [equalCopy isAssistantEngineRequest]))
     {
       v28 = 1;
       goto LABEL_32;
@@ -530,14 +530,14 @@ LABEL_32:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
+  toCopy = to;
+  orchestratorSessionId = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
 
-  if (v4)
+  if (orchestratorSessionId)
   {
-    v5 = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
+    orchestratorSessionId2 = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -599,11 +599,11 @@ LABEL_8:
   }
 
 LABEL_9:
-  v7 = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
+  nlv3DeprecationFlags = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
 
-  if (v7)
+  if (nlv3DeprecationFlags)
   {
-    v8 = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
+    nlv3DeprecationFlags2 = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
     PBDataWriterWriteSubmessage();
   }
 
@@ -613,9 +613,9 @@ LABEL_9:
   }
 }
 
-- (void)setHasIsAssistantEngineRequest:(BOOL)a3
+- (void)setHasIsAssistantEngineRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 32;
   }
@@ -628,9 +628,9 @@ LABEL_9:
   *(&self->_isAssistantEngineRequest + 1) = *(&self->_isAssistantEngineRequest + 1) & 0xDF | v3;
 }
 
-- (void)setHasSiriNlMode:(BOOL)a3
+- (void)setHasSiriNlMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 16;
   }
@@ -643,9 +643,9 @@ LABEL_9:
   *(&self->_isAssistantEngineRequest + 1) = *(&self->_isAssistantEngineRequest + 1) & 0xEF | v3;
 }
 
-- (void)setHasSiriAsrMode:(BOOL)a3
+- (void)setHasSiriAsrMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 8;
   }
@@ -658,9 +658,9 @@ LABEL_9:
   *(&self->_isAssistantEngineRequest + 1) = *(&self->_isAssistantEngineRequest + 1) & 0xF7 | v3;
 }
 
-- (void)setHasSiriUODMode:(BOOL)a3
+- (void)setHasSiriUODMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 4;
   }
@@ -673,9 +673,9 @@ LABEL_9:
   *(&self->_isAssistantEngineRequest + 1) = *(&self->_isAssistantEngineRequest + 1) & 0xFB | v3;
 }
 
-- (void)setHasSiriUODEnabled:(BOOL)a3
+- (void)setHasSiriUODEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -688,26 +688,26 @@ LABEL_9:
   *(&self->_isAssistantEngineRequest + 1) = *(&self->_isAssistantEngineRequest + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ORCHSchemaORCHRequestStarted;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  orchestratorSessionId = [(ORCHSchemaORCHRequestStarted *)self orchestratorSessionId];
+  v7 = [orchestratorSessionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ORCHSchemaORCHRequestStarted *)self deleteOrchestratorSessionId];
   }
 
-  v9 = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  nlv3DeprecationFlags = [(ORCHSchemaORCHRequestStarted *)self nlv3DeprecationFlags];
+  v10 = [nlv3DeprecationFlags applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ORCHSchemaORCHRequestStarted *)self deleteNlv3DeprecationFlags];
   }

@@ -1,13 +1,13 @@
 @interface ExchangeManager
 + (id)sharedManager;
-- (BOOL)containsExchange:(id)a3;
+- (BOOL)containsExchange:(id)exchange;
 - (ExchangeManager)init;
-- (id)exchangeWithName:(id)a3 createIfNotFound:(BOOL)a4;
-- (void)_addExchange:(id)a3;
+- (id)exchangeWithName:(id)name createIfNotFound:(BOOL)found;
+- (void)_addExchange:(id)exchange;
 - (void)_loadExchangesFromDefaults;
-- (void)addExchange:(id)a3;
+- (void)addExchange:(id)exchange;
 - (void)reloadExchangesFromDefaults;
-- (void)removeExchange:(id)a3;
+- (void)removeExchange:(id)exchange;
 - (void)saveChanges;
 @end
 
@@ -49,16 +49,16 @@ uint64_t __32__ExchangeManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (id)exchangeWithName:(id)a3 createIfNotFound:(BOOL)a4
+- (id)exchangeWithName:(id)name createIfNotFound:(BOOL)found
 {
-  v4 = a4;
-  v6 = [Exchange formattedExchangeNameForName:a3];
+  foundCopy = found;
+  v6 = [Exchange formattedExchangeNameForName:name];
   v7 = [(NSMutableDictionary *)self->_exchangesByName objectForKeyedSubscript:v6];
   if (!v7)
   {
     if (v6)
     {
-      v8 = !v4;
+      v8 = !foundCopy;
     }
 
     else
@@ -87,68 +87,68 @@ uint64_t __32__ExchangeManager_sharedManager__block_invoke()
   return v7;
 }
 
-- (BOOL)containsExchange:(id)a3
+- (BOOL)containsExchange:(id)exchange
 {
-  if (!a3)
+  if (!exchange)
   {
     return 0;
   }
 
-  v4 = [a3 name];
-  v5 = [(ExchangeManager *)self exchangeWithName:v4];
+  name = [exchange name];
+  v5 = [(ExchangeManager *)self exchangeWithName:name];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (void)addExchange:(id)a3
+- (void)addExchange:(id)exchange
 {
-  v4 = a3;
+  exchangeCopy = exchange;
   v5 = StocksLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ExchangeManager addExchange:];
   }
 
-  [(ExchangeManager *)self _addExchange:v4];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"ExchangeWasAddedNotification" object:v4];
+  [(ExchangeManager *)self _addExchange:exchangeCopy];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ExchangeWasAddedNotification" object:exchangeCopy];
 }
 
-- (void)_addExchange:(id)a3
+- (void)_addExchange:(id)exchange
 {
-  if (a3)
+  if (exchange)
   {
     exchangesByName = self->_exchangesByName;
-    v4 = a3;
-    v5 = [v4 name];
-    [(NSMutableDictionary *)exchangesByName setObject:v4 forKeyedSubscript:v5];
+    exchangeCopy = exchange;
+    name = [exchangeCopy name];
+    [(NSMutableDictionary *)exchangesByName setObject:exchangeCopy forKeyedSubscript:name];
   }
 }
 
-- (void)removeExchange:(id)a3
+- (void)removeExchange:(id)exchange
 {
-  v4 = a3;
+  exchangeCopy = exchange;
   v5 = StocksLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ExchangeManager removeExchange:];
   }
 
-  if (v4)
+  if (exchangeCopy)
   {
     exchangesByName = self->_exchangesByName;
-    v7 = [v4 name];
-    v8 = [(NSMutableDictionary *)exchangesByName objectForKeyedSubscript:v7];
+    name = [exchangeCopy name];
+    v8 = [(NSMutableDictionary *)exchangesByName objectForKeyedSubscript:name];
 
     if (v8)
     {
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 postNotificationName:@"ExchangeWillBeRemovedNotification" object:v4];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"ExchangeWillBeRemovedNotification" object:exchangeCopy];
 
       v10 = self->_exchangesByName;
-      v11 = [v4 name];
-      [(NSMutableDictionary *)v10 removeObjectForKey:v11];
+      name2 = [exchangeCopy name];
+      [(NSMutableDictionary *)v10 removeObjectForKey:name2];
     }
   }
 }
@@ -214,9 +214,9 @@ uint64_t __32__ExchangeManager_sharedManager__block_invoke()
   v14 = StocksLogForCategory(0);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(ExchangeManager *)self exchangeList];
+    exchangeList = [(ExchangeManager *)self exchangeList];
     *buf = 138412290;
-    v21 = v15;
+    v21 = exchangeList;
     _os_log_impl(&dword_26BAAD000, v14, OS_LOG_TYPE_DEFAULT, "#ExchangeManager Loaded exchanges %@", buf, 0xCu);
   }
 }

@@ -1,47 +1,47 @@
 @interface PDPaymentFPANCardImportManager
-- (PDPaymentFPANCardImportManager)initWithWebService:(id)a3 webServiceQueue:(id)a4 databaseManager:(id)a5;
-- (void)_associateCredentialsForItem:(id)a3;
+- (PDPaymentFPANCardImportManager)initWithWebService:(id)service webServiceQueue:(id)queue databaseManager:(id)manager;
+- (void)_associateCredentialsForItem:(id)item;
 - (void)_cleanupQueueResources;
 - (void)_popEligibilityQueue;
-- (void)_processEligibilityItem:(id)a3;
-- (void)processFPANCredentialEligibility:(id)a3 completion:(id)a4;
+- (void)_processEligibilityItem:(id)item;
+- (void)processFPANCredentialEligibility:(id)eligibility completion:(id)completion;
 @end
 
 @implementation PDPaymentFPANCardImportManager
 
-- (PDPaymentFPANCardImportManager)initWithWebService:(id)a3 webServiceQueue:(id)a4 databaseManager:(id)a5
+- (PDPaymentFPANCardImportManager)initWithWebService:(id)service webServiceQueue:(id)queue databaseManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  serviceCopy = service;
+  queueCopy = queue;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = PDPaymentFPANCardImportManager;
   v12 = [(PDPaymentFPANCardImportManager *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_webService, a3);
-    objc_storeStrong(&v13->_webServiceQueue, a4);
-    objc_storeStrong(&v13->_databaseManager, a5);
+    objc_storeStrong(&v12->_webService, service);
+    objc_storeStrong(&v13->_webServiceQueue, queue);
+    objc_storeStrong(&v13->_databaseManager, manager);
   }
 
   return v13;
 }
 
-- (void)processFPANCredentialEligibility:(id)a3 completion:(id)a4
+- (void)processFPANCredentialEligibility:(id)eligibility completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eligibilityCopy = eligibility;
+  completionCopy = completion;
   v8 = PDDefaultQueue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100075CF4;
   block[3] = &unk_10083D320;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eligibilityCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = eligibilityCopy;
   dispatch_async(v8, block);
 }
 
@@ -65,9 +65,9 @@
   self->_provisioningController = 0;
 }
 
-- (void)_processEligibilityItem:(id)a3
+- (void)_processEligibilityItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   provisioningController = self->_provisioningController;
   v6 = PKLogFacilityTypeGetObject();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -79,7 +79,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Safari Import: Provisioning controller exists, associating immediately", buf, 2u);
     }
 
-    [(PDPaymentFPANCardImportManager *)self _associateCredentialsForItem:v4];
+    [(PDPaymentFPANCardImportManager *)self _associateCredentialsForItem:itemCopy];
   }
 
   else
@@ -98,7 +98,7 @@
     block[3] = &unk_100840820;
     block[4] = self;
     objc_copyWeak(&v11, buf);
-    v10 = v4;
+    v10 = itemCopy;
     dispatch_async(webServiceQueue, block);
 
     objc_destroyWeak(&v11);
@@ -106,17 +106,17 @@
   }
 }
 
-- (void)_associateCredentialsForItem:(id)a3
+- (void)_associateCredentialsForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   webServiceQueue = self->_webServiceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000768B8;
   v7[3] = &unk_10083C420;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemCopy;
+  v6 = itemCopy;
   dispatch_async(webServiceQueue, v7);
 }
 

@@ -1,19 +1,19 @@
 @interface ODIState
 - (CGRect)logicalBounds;
-- (ODIState)initWithDiagram:(id)a3 group:(id)a4 drawingTheme:(id)a5;
-- (id)defaultStyleLabelNameForPointType:(int)a3;
-- (id)presentationNameForPointType:(int)a3;
-- (void)setLogicalBounds:(CGRect)a3 maintainAspectRatio:(BOOL)a4;
-- (void)setPresentationName:(id)a3 forPointType:(int)a4;
+- (ODIState)initWithDiagram:(id)diagram group:(id)group drawingTheme:(id)theme;
+- (id)defaultStyleLabelNameForPointType:(int)type;
+- (id)presentationNameForPointType:(int)type;
+- (void)setLogicalBounds:(CGRect)bounds maintainAspectRatio:(BOOL)ratio;
+- (void)setPresentationName:(id)name forPointType:(int)type;
 @end
 
 @implementation ODIState
 
-- (ODIState)initWithDiagram:(id)a3 group:(id)a4 drawingTheme:(id)a5
+- (ODIState)initWithDiagram:(id)diagram group:(id)group drawingTheme:(id)theme
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  diagramCopy = diagram;
+  groupCopy = group;
+  themeCopy = theme;
   v31.receiver = self;
   v31.super_class = ODIState;
   v12 = [(ODIState *)&v31 init];
@@ -21,10 +21,10 @@
   v14 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->mDiagram, a3);
-    objc_storeStrong(&v13->mGroup, a4);
-    objc_storeStrong(&v13->mDrawingTheme, a5);
-    v15 = [OAITOrientedBounds absoluteOrientedBoundsOfDrawable:v9];
+    objc_storeStrong(&v12->mDiagram, diagram);
+    objc_storeStrong(&v13->mGroup, group);
+    objc_storeStrong(&v13->mDrawingTheme, theme);
+    v15 = [OAITOrientedBounds absoluteOrientedBoundsOfDrawable:diagramCopy];
     mDiagramOrientedBounds = v14->mDiagramOrientedBounds;
     v14->mDiagramOrientedBounds = v15;
 
@@ -36,8 +36,8 @@
     do
     {
       v20 = v14->mPresentationNames;
-      v21 = [MEMORY[0x277CBEB68] null];
-      [(NSMutableArray *)v20 addObject:v21];
+      null = [MEMORY[0x277CBEB68] null];
+      [(NSMutableArray *)v20 addObject:null];
 
       --v19;
     }
@@ -49,19 +49,19 @@
 
     [(NSMutableArray *)v14->mDefaultStyleLabelNames addObject:@"asst0"];
     v24 = v14->mDefaultStyleLabelNames;
-    v25 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableArray *)v24 addObject:v25];
+    null2 = [MEMORY[0x277CBEB68] null];
+    [(NSMutableArray *)v24 addObject:null2];
 
     [(NSMutableArray *)v14->mDefaultStyleLabelNames addObject:@"node1"];
     [(NSMutableArray *)v14->mDefaultStyleLabelNames addObject:@"parChTrans2D1"];
     v26 = v14->mDefaultStyleLabelNames;
-    v27 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableArray *)v26 addObject:v27];
+    null3 = [MEMORY[0x277CBEB68] null];
+    [(NSMutableArray *)v26 addObject:null3];
 
     [(NSMutableArray *)v14->mDefaultStyleLabelNames addObject:@"sibTrans2D1"];
     v28 = v14->mDefaultStyleLabelNames;
-    v29 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableArray *)v28 addObject:v29];
+    null4 = [MEMORY[0x277CBEB68] null];
+    [(NSMutableArray *)v28 addObject:null4];
   }
 
   return v14;
@@ -80,13 +80,13 @@
   return result;
 }
 
-- (void)setLogicalBounds:(CGRect)a3 maintainAspectRatio:(BOOL)a4
+- (void)setLogicalBounds:(CGRect)bounds maintainAspectRatio:(BOOL)ratio
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (ratio)
   {
     [ODIDrawable sizeOfDiagram:self->mDiagram];
     v11 = v10 / v9;
@@ -170,12 +170,12 @@
   [(OADGroup *)mGroup setLogicalBounds:v24, v25, v26, v27];
 }
 
-- (id)presentationNameForPointType:(int)a3
+- (id)presentationNameForPointType:(int)type
 {
-  v3 = [(NSMutableArray *)self->mPresentationNames objectAtIndex:a3];
-  v4 = [MEMORY[0x277CBEB68] null];
+  v3 = [(NSMutableArray *)self->mPresentationNames objectAtIndex:type];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v3 == v4)
+  if (v3 == null)
   {
 
     v3 = 0;
@@ -184,18 +184,18 @@
   return v3;
 }
 
-- (void)setPresentationName:(id)a3 forPointType:(int)a4
+- (void)setPresentationName:(id)name forPointType:(int)type
 {
-  v6 = a3;
+  nameCopy = name;
   mPresentationNames = self->mPresentationNames;
-  v8 = v6;
-  v10 = v6;
-  if (!v6)
+  null = nameCopy;
+  v10 = nameCopy;
+  if (!nameCopy)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  [(NSMutableArray *)mPresentationNames replaceObjectAtIndex:a4 withObject:v8];
+  [(NSMutableArray *)mPresentationNames replaceObjectAtIndex:type withObject:null];
   v9 = v10;
   if (!v10)
   {
@@ -204,12 +204,12 @@
   }
 }
 
-- (id)defaultStyleLabelNameForPointType:(int)a3
+- (id)defaultStyleLabelNameForPointType:(int)type
 {
-  v3 = [(NSMutableArray *)self->mDefaultStyleLabelNames objectAtIndex:a3];
-  v4 = [MEMORY[0x277CBEB68] null];
+  v3 = [(NSMutableArray *)self->mDefaultStyleLabelNames objectAtIndex:type];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v3 == v4)
+  if (v3 == null)
   {
 
     v3 = 0;

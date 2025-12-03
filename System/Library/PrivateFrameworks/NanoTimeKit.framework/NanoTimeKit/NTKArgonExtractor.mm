@@ -1,23 +1,23 @@
 @interface NTKArgonExtractor
-+ (BOOL)_createUnprotectedDirectoryAtPath:(id)a3 error:(id *)a4;
-- (NTKArgonExtractor)initWithSourcePath:(id)a3 inProgressPath:(id)a4 extractionPath:(id)a5;
-- (void)_queue_extractKeyDescriptor:(id)a3;
-- (void)_queue_extractUsingKeyDescriptor:(id)a3 completion:(id)a4;
++ (BOOL)_createUnprotectedDirectoryAtPath:(id)path error:(id *)error;
+- (NTKArgonExtractor)initWithSourcePath:(id)path inProgressPath:(id)progressPath extractionPath:(id)extractionPath;
+- (void)_queue_extractKeyDescriptor:(id)descriptor;
+- (void)_queue_extractUsingKeyDescriptor:(id)descriptor completion:(id)completion;
 - (void)_queue_performNextOperationIfNeeded;
-- (void)_queue_removeKeyDescriptor:(id)a3;
-- (void)_queue_removeKeyDescriptor:(id)a3 completion:(id)a4;
-- (void)extractUsingKeyDescriptor:(id)a3 completion:(id)a4;
-- (void)removeExtractedKeyDescriptor:(id)a3 completion:(id)a4;
+- (void)_queue_removeKeyDescriptor:(id)descriptor;
+- (void)_queue_removeKeyDescriptor:(id)descriptor completion:(id)completion;
+- (void)extractUsingKeyDescriptor:(id)descriptor completion:(id)completion;
+- (void)removeExtractedKeyDescriptor:(id)descriptor completion:(id)completion;
 @end
 
 @implementation NTKArgonExtractor
 
-+ (BOOL)_createUnprotectedDirectoryAtPath:(id)a3 error:(id *)a4
++ (BOOL)_createUnprotectedDirectoryAtPath:(id)path error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v7)
   {
@@ -26,27 +26,27 @@
 
   else
   {
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v12 = *MEMORY[0x277CCA1B0];
     v13[0] = *MEMORY[0x277CCA1B8];
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-    v8 = [v9 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:v10 error:a4];
+    v8 = [defaultManager2 createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:v10 error:error];
   }
 
   return v8;
 }
 
-- (NTKArgonExtractor)initWithSourcePath:(id)a3 inProgressPath:(id)a4 extractionPath:(id)a5
+- (NTKArgonExtractor)initWithSourcePath:(id)path inProgressPath:(id)progressPath extractionPath:(id)extractionPath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  progressPathCopy = progressPath;
+  extractionPathCopy = extractionPath;
   v38.receiver = self;
   v38.super_class = NTKArgonExtractor;
   v11 = [(NTKArgonExtractor *)&v38 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [extractionPathCopy copy];
     extractionPath = v11->_extractionPath;
     v11->_extractionPath = v12;
 
@@ -63,7 +63,7 @@
       }
     }
 
-    v18 = [v9 copy];
+    v18 = [progressPathCopy copy];
     inProgressPath = v11->_inProgressPath;
     v11->_inProgressPath = v18;
 
@@ -80,7 +80,7 @@
       }
     }
 
-    v24 = [v8 copy];
+    v24 = [pathCopy copy];
     sourcePath = v11->_sourcePath;
     v11->_sourcePath = v24;
 
@@ -89,159 +89,159 @@
     workQueue = v11->_workQueue;
     v11->_workQueue = v27;
 
-    v29 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     extractionCallbacksByDescriptor = v11->_extractionCallbacksByDescriptor;
-    v11->_extractionCallbacksByDescriptor = v29;
+    v11->_extractionCallbacksByDescriptor = strongToStrongObjectsMapTable;
 
-    v31 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     removalCallbacksByDescriptor = v11->_removalCallbacksByDescriptor;
-    v11->_removalCallbacksByDescriptor = v31;
+    v11->_removalCallbacksByDescriptor = strongToStrongObjectsMapTable2;
 
-    v33 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     queuedKeyDescriptorOperations = v11->_queuedKeyDescriptorOperations;
-    v11->_queuedKeyDescriptorOperations = v33;
+    v11->_queuedKeyDescriptorOperations = orderedSet;
   }
 
   return v11;
 }
 
-- (void)removeExtractedKeyDescriptor:(id)a3 completion:(id)a4
+- (void)removeExtractedKeyDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  descriptorCopy = descriptor;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (descriptorCopy)
     {
-      v8 = [(NTKArgonExtractor *)self workQueue];
+      workQueue = [(NTKArgonExtractor *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __61__NTKArgonExtractor_removeExtractedKeyDescriptor_completion___block_invoke;
       block[3] = &unk_27877DC88;
       block[4] = self;
-      v11 = v6;
-      v12 = v7;
-      dispatch_async(v8, block);
+      v11 = descriptorCopy;
+      v12 = completionCopy;
+      dispatch_async(workQueue, block);
     }
 
     else
     {
       v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NTKArgonExtractorErrorDomain" code:300 userInfo:&unk_2841899A8];
-      (*(v7 + 2))(v7, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, v9);
     }
   }
 }
 
-- (void)_queue_removeKeyDescriptor:(id)a3 completion:(id)a4
+- (void)_queue_removeKeyDescriptor:(id)descriptor completion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(NTKArgonExtractor *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  descriptorCopy = descriptor;
+  completionCopy = completion;
+  workQueue = [(NTKArgonExtractor *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(NTKArgonExtractor *)self removalCallbacksByDescriptor];
-  v9 = [v8 objectForKey:v13];
-  if (!v9)
+  removalCallbacksByDescriptor = [(NTKArgonExtractor *)self removalCallbacksByDescriptor];
+  array = [removalCallbacksByDescriptor objectForKey:descriptorCopy];
+  if (!array)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
-    [v8 setObject:v9 forKey:v13];
+    array = [MEMORY[0x277CBEB18] array];
+    [removalCallbacksByDescriptor setObject:array forKey:descriptorCopy];
   }
 
-  v10 = _Block_copy(v6);
-  [v9 addObject:v10];
+  v10 = _Block_copy(completionCopy);
+  [array addObject:v10];
 
-  v11 = [[NTKArgonExtractorOperation alloc] initWithKeyDescriptor:v13 operationType:2];
-  v12 = [(NTKArgonExtractor *)self queuedKeyDescriptorOperations];
-  [v12 addObject:v11];
+  v11 = [[NTKArgonExtractorOperation alloc] initWithKeyDescriptor:descriptorCopy operationType:2];
+  queuedKeyDescriptorOperations = [(NTKArgonExtractor *)self queuedKeyDescriptorOperations];
+  [queuedKeyDescriptorOperations addObject:v11];
 
   [(NTKArgonExtractor *)self _queue_performNextOperationIfNeeded];
 }
 
-- (void)extractUsingKeyDescriptor:(id)a3 completion:(id)a4
+- (void)extractUsingKeyDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  descriptorCopy = descriptor;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (descriptorCopy)
     {
-      v8 = [(NTKArgonExtractor *)self workQueue];
+      workQueue = [(NTKArgonExtractor *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __58__NTKArgonExtractor_extractUsingKeyDescriptor_completion___block_invoke;
       block[3] = &unk_27877DC88;
       block[4] = self;
-      v11 = v6;
-      v12 = v7;
-      dispatch_async(v8, block);
+      v11 = descriptorCopy;
+      v12 = completionCopy;
+      dispatch_async(workQueue, block);
     }
 
     else
     {
       v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NTKArgonExtractorErrorDomain" code:300 userInfo:&unk_2841899D0];
-      (*(v7 + 2))(v7, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, v9);
     }
   }
 }
 
-- (void)_queue_extractUsingKeyDescriptor:(id)a3 completion:(id)a4
+- (void)_queue_extractUsingKeyDescriptor:(id)descriptor completion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(NTKArgonExtractor *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  descriptorCopy = descriptor;
+  completionCopy = completion;
+  workQueue = [(NTKArgonExtractor *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(NTKArgonExtractor *)self extractionCallbacksByDescriptor];
-  v9 = [v8 objectForKey:v13];
-  if (!v9)
+  extractionCallbacksByDescriptor = [(NTKArgonExtractor *)self extractionCallbacksByDescriptor];
+  array = [extractionCallbacksByDescriptor objectForKey:descriptorCopy];
+  if (!array)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
-    [v8 setObject:v9 forKey:v13];
+    array = [MEMORY[0x277CBEB18] array];
+    [extractionCallbacksByDescriptor setObject:array forKey:descriptorCopy];
   }
 
-  v10 = _Block_copy(v6);
-  [v9 addObject:v10];
+  v10 = _Block_copy(completionCopy);
+  [array addObject:v10];
 
-  v11 = [[NTKArgonExtractorOperation alloc] initWithKeyDescriptor:v13 operationType:1];
-  v12 = [(NTKArgonExtractor *)self queuedKeyDescriptorOperations];
-  [v12 addObject:v11];
+  v11 = [[NTKArgonExtractorOperation alloc] initWithKeyDescriptor:descriptorCopy operationType:1];
+  queuedKeyDescriptorOperations = [(NTKArgonExtractor *)self queuedKeyDescriptorOperations];
+  [queuedKeyDescriptorOperations addObject:v11];
 
   [(NTKArgonExtractor *)self _queue_performNextOperationIfNeeded];
 }
 
 - (void)_queue_performNextOperationIfNeeded
 {
-  v3 = [(NTKArgonExtractor *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(NTKArgonExtractor *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(NTKArgonExtractor *)self performingOperation];
+  performingOperation = [(NTKArgonExtractor *)self performingOperation];
 
-  if (!v4)
+  if (!performingOperation)
   {
-    v5 = [(NTKArgonExtractor *)self queuedKeyDescriptorOperations];
-    v6 = [v5 firstObject];
+    queuedKeyDescriptorOperations = [(NTKArgonExtractor *)self queuedKeyDescriptorOperations];
+    firstObject = [queuedKeyDescriptorOperations firstObject];
 
-    [(NTKArgonExtractor *)self setPerformingOperation:v6];
-    if (v6)
+    [(NTKArgonExtractor *)self setPerformingOperation:firstObject];
+    if (firstObject)
     {
-      v7 = [(NTKArgonExtractor *)self queuedKeyDescriptorOperations];
-      [v7 removeObjectAtIndex:0];
+      queuedKeyDescriptorOperations2 = [(NTKArgonExtractor *)self queuedKeyDescriptorOperations];
+      [queuedKeyDescriptorOperations2 removeObjectAtIndex:0];
 
-      v8 = [v6 keyDescriptor];
-      v9 = [v6 operationType];
-      if (v9 == 2)
+      keyDescriptor = [firstObject keyDescriptor];
+      operationType = [firstObject operationType];
+      if (operationType == 2)
       {
-        [(NTKArgonExtractor *)self _queue_removeKeyDescriptor:v8];
+        [(NTKArgonExtractor *)self _queue_removeKeyDescriptor:keyDescriptor];
       }
 
-      else if (v9 == 1)
+      else if (operationType == 1)
       {
-        [(NTKArgonExtractor *)self _queue_extractKeyDescriptor:v8];
+        [(NTKArgonExtractor *)self _queue_extractKeyDescriptor:keyDescriptor];
       }
 
       else
       {
-        if (v9)
+        if (operationType)
         {
           v10 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
           if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -263,26 +263,26 @@
   }
 }
 
-- (void)_queue_extractKeyDescriptor:(id)a3
+- (void)_queue_extractKeyDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(NTKArgonExtractor *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  descriptorCopy = descriptor;
+  workQueue = [(NTKArgonExtractor *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v34 = [(NTKArgonExtractor *)self extractionCallbacksByDescriptor];
-  v6 = [v34 objectForKey:v4];
-  v7 = [(NTKArgonExtractor *)self sourcePath];
-  v8 = [v4 fileName];
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  extractionCallbacksByDescriptor = [(NTKArgonExtractor *)self extractionCallbacksByDescriptor];
+  v6 = [extractionCallbacksByDescriptor objectForKey:descriptorCopy];
+  sourcePath = [(NTKArgonExtractor *)self sourcePath];
+  fileName = [descriptorCopy fileName];
+  v9 = [sourcePath stringByAppendingPathComponent:fileName];
 
   v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
   v11 = objc_alloc(MEMORY[0x277CBEA90]);
-  v12 = [v4 key];
+  v12 = [descriptorCopy key];
   v35 = [v11 initWithBase64EncodedString:v12 options:0];
 
-  v33 = [MEMORY[0x277CCAD78] UUID];
-  v13 = [v33 UUIDString];
-  v14 = [(NSString *)self->_inProgressPath stringByAppendingPathComponent:v13];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v14 = [(NSString *)self->_inProgressPath stringByAppendingPathComponent:uUIDString];
   v50[0] = 0;
   LOBYTE(v11) = [NTKArgonExtractor _createUnprotectedDirectoryAtPath:v14 error:v50];
   v15 = v50[0];
@@ -291,7 +291,7 @@
     v16 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [(NTKArgonExtractor *)v4 _queue_extractKeyDescriptor:v15, v16];
+      [(NTKArgonExtractor *)descriptorCopy _queue_extractKeyDescriptor:v15, v16];
     }
   }
 
@@ -329,14 +329,14 @@
   v28 = v37;
   if (v27)
   {
-    v29 = [v45[5] outputDirectoryURL];
-    v30 = [v27 unsignedIntValue];
+    outputDirectoryURL = [v45[5] outputDirectoryURL];
+    unsignedIntValue = [v27 unsignedIntValue];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __49__NTKArgonExtractor__queue_extractKeyDescriptor___block_invoke_56;
     v36[3] = &unk_27877DD00;
     v36[4] = &v44;
-    NTKRequestFreeSpaceOnVolume(v29, v30, v36);
+    NTKRequestFreeSpaceOnVolume(outputDirectoryURL, unsignedIntValue, v36);
   }
 
   else
@@ -608,18 +608,18 @@ LABEL_9:
   [*(*(*(a1 + 32) + 8) + 40) resume];
 }
 
-- (void)_queue_removeKeyDescriptor:(id)a3
+- (void)_queue_removeKeyDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(NTKArgonExtractor *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  descriptorCopy = descriptor;
+  workQueue = [(NTKArgonExtractor *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(NTKArgonExtractor *)self removalCallbacksByDescriptor];
-  v7 = [v6 objectForKey:v4];
-  v8 = [(NTKArgonExtractor *)self extractionPath];
-  v9 = [v4 fileName];
+  removalCallbacksByDescriptor = [(NTKArgonExtractor *)self removalCallbacksByDescriptor];
+  v7 = [removalCallbacksByDescriptor objectForKey:descriptorCopy];
+  extractionPath = [(NTKArgonExtractor *)self extractionPath];
+  fileName = [descriptorCopy fileName];
 
-  v10 = [v8 stringByAppendingPathComponent:v9];
+  v10 = [extractionPath stringByAppendingPathComponent:fileName];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -627,11 +627,11 @@ LABEL_9:
   aBlock[3] = &unk_27877DD28;
   v11 = v7;
   v20 = v11;
-  v21 = self;
+  selfCopy = self;
   v12 = _Block_copy(aBlock);
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v18 = 0;
-  v14 = [v13 removeItemAtPath:v10 error:&v18];
+  v14 = [defaultManager removeItemAtPath:v10 error:&v18];
   v15 = v18;
 
   if (v14)

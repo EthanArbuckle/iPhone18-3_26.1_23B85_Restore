@@ -1,49 +1,49 @@
 @interface PKStrokeProviderSlice
-- (BOOL)isEqual:(id)a3;
-- (CGPoint)_interpolatedPointForSplineSegment:(int64_t)a3 t:(double)a4 transform:(CGAffineTransform *)a5;
-- (CGPoint)_splineControlPoint:(int64_t)a3 transform:(CGAffineTransform *)a4;
+- (BOOL)isEqual:(id)equal;
+- (CGPoint)_interpolatedPointForSplineSegment:(int64_t)segment t:(double)t transform:(CGAffineTransform *)transform;
+- (CGPoint)_splineControlPoint:(int64_t)point transform:(CGAffineTransform *)transform;
 - (CGRect)bounds;
 - (CHEncodedStrokeIdentifier)encodedStrokeIdentifier;
 - (NSString)description;
-- (PKStrokeProviderSlice)initWithIdentifier:(id)a3;
-- (PKStrokeProviderSlice)initWithStroke:(id)a3 tStart:(double)a4 tEnd:(double)a5;
-- (double)_interpolatedTimeForSplineSegment:(int64_t)a3 t:(double)a4;
-- (double)_lengthOfSplineSegment:(unint64_t)a3 transform:(CGAffineTransform *)a4;
+- (PKStrokeProviderSlice)initWithIdentifier:(id)identifier;
+- (PKStrokeProviderSlice)initWithStroke:(id)stroke tStart:(double)start tEnd:(double)end;
+- (double)_interpolatedTimeForSplineSegment:(int64_t)segment t:(double)t;
+- (double)_lengthOfSplineSegment:(unint64_t)segment transform:(CGAffineTransform *)transform;
 - (double)_strokeLength;
 - (double)endTimestamp;
 - (double)startTimestamp;
 - (int64_t)_firstPointIndex;
 - (int64_t)_lastPointIndex;
-- (int64_t)compareTo:(id)a3;
+- (int64_t)compareTo:(id)to;
 - (unint64_t)hash;
 - (unint64_t)strokeAttributes;
-- (void)enumeratePointsWithDataStep:(double)a3 usingBlock:(id)a4;
-- (void)enumeratePointsWithDistanceStep:(double)a3 usingBlock:(id)a4;
-- (void)enumeratePointsWithTimestep:(double)a3 usingBlock:(id)a4;
+- (void)enumeratePointsWithDataStep:(double)step usingBlock:(id)block;
+- (void)enumeratePointsWithDistanceStep:(double)step usingBlock:(id)block;
+- (void)enumeratePointsWithTimestep:(double)timestep usingBlock:(id)block;
 @end
 
 @implementation PKStrokeProviderSlice
 
-- (PKStrokeProviderSlice)initWithStroke:(id)a3 tStart:(double)a4 tEnd:(double)a5
+- (PKStrokeProviderSlice)initWithStroke:(id)stroke tStart:(double)start tEnd:(double)end
 {
-  v9 = a3;
+  strokeCopy = stroke;
   v15.receiver = self;
   v15.super_class = PKStrokeProviderSlice;
   v10 = [(PKStrokeProviderSlice *)&v15 init];
   v11 = *(MEMORY[0x1E695F050] + 16);
   v10->_bounds.origin = *MEMORY[0x1E695F050];
   v10->_bounds.size = v11;
-  objc_storeStrong(&v10->_stroke, a3);
-  v12 = [v9 sliceIdentifierForTStart:a4 tEnd:a5];
+  objc_storeStrong(&v10->_stroke, stroke);
+  v12 = [strokeCopy sliceIdentifierForTStart:start tEnd:end];
   identifier = v10->_identifier;
   v10->_identifier = v12;
 
   return v10;
 }
 
-- (PKStrokeProviderSlice)initWithIdentifier:(id)a3
+- (PKStrokeProviderSlice)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PKStrokeProviderSlice;
   v5 = [(PKStrokeProviderSlice *)&v9 init];
@@ -51,20 +51,20 @@
   v5->_bounds.origin = *MEMORY[0x1E695F050];
   v5->_bounds.size = v6;
   identifier = v5->_identifier;
-  v5->_identifier = v4;
+  v5->_identifier = identifierCopy;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PKStrokeProviderSlice *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [(PKStrokeProviderSlice *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -77,46 +77,46 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PKStrokeProviderSlice *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(PKStrokeProviderSlice *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
 - (CHEncodedStrokeIdentifier)encodedStrokeIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  encodedStrokeIdentifier = v2->_encodedStrokeIdentifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  encodedStrokeIdentifier = selfCopy->_encodedStrokeIdentifier;
   if (!encodedStrokeIdentifier)
   {
     v4 = MEMORY[0x1E696ACC8];
-    v5 = [(PKStrokeProviderSlice *)v2 strokeIdentifier];
+    strokeIdentifier = [(PKStrokeProviderSlice *)selfCopy strokeIdentifier];
     v12 = 0;
-    v6 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v12];
+    v6 = [v4 archivedDataWithRootObject:strokeIdentifier requiringSecureCoding:1 error:&v12];
     v7 = v12;
 
     if (v6)
     {
       v8 = [objc_alloc(MEMORY[0x1E6997B58]) initWithData:v6];
-      v9 = v2->_encodedStrokeIdentifier;
-      v2->_encodedStrokeIdentifier = v8;
+      v9 = selfCopy->_encodedStrokeIdentifier;
+      selfCopy->_encodedStrokeIdentifier = v8;
     }
 
-    encodedStrokeIdentifier = v2->_encodedStrokeIdentifier;
+    encodedStrokeIdentifier = selfCopy->_encodedStrokeIdentifier;
   }
 
   v10 = encodedStrokeIdentifier;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
 - (CGRect)bounds
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (CGRectIsNull(v2->_bounds) && (-[PKStrokeProviderSlice stroke](v2, "stroke"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 _pointsCount], v3, v4))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (CGRectIsNull(selfCopy->_bounds) && (-[PKStrokeProviderSlice stroke](selfCopy, "stroke"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 _pointsCount], v3, v4))
   {
     v26 = 0;
     v27 = &v26;
@@ -142,7 +142,7 @@
     v13[5] = &v22;
     v13[6] = &v18;
     v13[7] = &v14;
-    [(PKStrokeProviderSlice *)v2 enumeratePointsWithDataStep:v13 usingBlock:0.25];
+    [(PKStrokeProviderSlice *)selfCopy enumeratePointsWithDataStep:v13 usingBlock:0.25];
     *&v30.origin.x = v27[3];
     *&v30.origin.y = v19[3];
     v30.size.width = v23[3] - v30.origin.x;
@@ -153,7 +153,7 @@
     y = v32.origin.y;
     width = v32.size.width;
     height = v32.size.height;
-    v2->_bounds = v32;
+    selfCopy->_bounds = v32;
     _Block_object_dispose(&v14, 8);
     _Block_object_dispose(&v18, 8);
     _Block_object_dispose(&v22, 8);
@@ -162,13 +162,13 @@
 
   else
   {
-    x = v2->_bounds.origin.x;
-    y = v2->_bounds.origin.y;
-    width = v2->_bounds.size.width;
-    height = v2->_bounds.size.height;
+    x = selfCopy->_bounds.origin.x;
+    y = selfCopy->_bounds.origin.y;
+    width = selfCopy->_bounds.size.width;
+    height = selfCopy->_bounds.size.height;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v9 = x;
   v10 = y;
@@ -219,16 +219,16 @@ void *__31__PKStrokeProviderSlice_bounds__block_invoke(void *result, double a2, 
 
 - (double)startTimestamp
 {
-  v3 = [(PKStrokeProviderSlice *)self stroke];
-  v4 = [v3 path];
-  v5 = [v4 creationDate];
-  [v5 timeIntervalSinceReferenceDate];
+  stroke = [(PKStrokeProviderSlice *)self stroke];
+  path = [stroke path];
+  creationDate = [path creationDate];
+  [creationDate timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [(PKStrokeProviderSlice *)self stroke];
-  v9 = [v8 path];
-  v10 = [(PKStrokeProviderSlice *)self identifier];
-  [v10 tStart];
-  [v9 interpolatedTimeoffsetAt:?];
+  stroke2 = [(PKStrokeProviderSlice *)self stroke];
+  path2 = [stroke2 path];
+  identifier = [(PKStrokeProviderSlice *)self identifier];
+  [identifier tStart];
+  [path2 interpolatedTimeoffsetAt:?];
   v12 = v7 + v11;
 
   return v12;
@@ -236,16 +236,16 @@ void *__31__PKStrokeProviderSlice_bounds__block_invoke(void *result, double a2, 
 
 - (double)endTimestamp
 {
-  v3 = [(PKStrokeProviderSlice *)self stroke];
-  v4 = [v3 path];
-  v5 = [v4 creationDate];
-  [v5 timeIntervalSinceReferenceDate];
+  stroke = [(PKStrokeProviderSlice *)self stroke];
+  path = [stroke path];
+  creationDate = [path creationDate];
+  [creationDate timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [(PKStrokeProviderSlice *)self stroke];
-  v9 = [v8 _strokeData];
-  v10 = [(PKStrokeProviderSlice *)self identifier];
-  [v10 tEnd];
-  [v9 interpolatedTimeoffsetAt:?];
+  stroke2 = [(PKStrokeProviderSlice *)self stroke];
+  _strokeData = [stroke2 _strokeData];
+  identifier = [(PKStrokeProviderSlice *)self identifier];
+  [identifier tEnd];
+  [_strokeData interpolatedTimeoffsetAt:?];
   v12 = v7 + v11;
 
   return v12;
@@ -253,60 +253,60 @@ void *__31__PKStrokeProviderSlice_bounds__block_invoke(void *result, double a2, 
 
 - (unint64_t)strokeAttributes
 {
-  v3 = [(PKStrokeProviderSlice *)self stroke];
-  v4 = [v3 _shapeType];
+  stroke = [(PKStrokeProviderSlice *)self stroke];
+  _shapeType = [stroke _shapeType];
 
-  v5 = [(PKStrokeProviderSlice *)self stroke];
-  v6 = [v5 _isSynthesizedInk];
+  stroke2 = [(PKStrokeProviderSlice *)self stroke];
+  _isSynthesizedInk = [stroke2 _isSynthesizedInk];
 
-  v7 = [(PKStrokeProviderSlice *)self stroke];
-  v8 = [v7 _inputType];
+  stroke3 = [(PKStrokeProviderSlice *)self stroke];
+  _inputType = [stroke3 _inputType];
 
-  v9 = [(PKStrokeProviderSlice *)self stroke];
-  if ([v9 _isSynthesizedInk])
+  stroke4 = [(PKStrokeProviderSlice *)self stroke];
+  if ([stroke4 _isSynthesizedInk])
   {
-    v10 = 1;
+    _isSharedStroke = 1;
   }
 
   else
   {
-    v11 = [(PKStrokeProviderSlice *)self stroke];
-    if ([v11 _isPastedStroke])
+    stroke5 = [(PKStrokeProviderSlice *)self stroke];
+    if ([stroke5 _isPastedStroke])
     {
-      v10 = 1;
+      _isSharedStroke = 1;
     }
 
     else
     {
-      v12 = [(PKStrokeProviderSlice *)self stroke];
-      v10 = [v12 _isSharedStroke];
+      stroke6 = [(PKStrokeProviderSlice *)self stroke];
+      _isSharedStroke = [stroke6 _isSharedStroke];
     }
   }
 
-  v13 = [(PKStrokeProviderSlice *)self stroke];
-  v14 = [v13 _isSafeForStyleInventory];
+  stroke7 = [(PKStrokeProviderSlice *)self stroke];
+  _isSafeForStyleInventory = [stroke7 _isSafeForStyleInventory];
 
-  v15 = [(PKStrokeProviderSlice *)self stroke];
-  v16 = [v15 _isPastedStroke];
+  stroke8 = [(PKStrokeProviderSlice *)self stroke];
+  _isPastedStroke = [stroke8 _isPastedStroke];
 
-  v17 = [(PKStrokeProviderSlice *)self stroke];
-  v18 = [v17 _isSharedStroke];
-  if (v6)
+  stroke9 = [(PKStrokeProviderSlice *)self stroke];
+  _isSharedStroke2 = [stroke9 _isSharedStroke];
+  if (_isSynthesizedInk)
   {
-    v19 = (2 * (v4 != 0)) | 4;
+    v19 = (2 * (_shapeType != 0)) | 4;
   }
 
   else
   {
-    v19 = 2 * (v4 != 0);
+    v19 = 2 * (_shapeType != 0);
   }
 
-  if (!v8)
+  if (!_inputType)
   {
     v19 |= 8uLL;
   }
 
-  if ((v14 | v10))
+  if ((_isSafeForStyleInventory | _isSharedStroke))
   {
     v20 = v19;
   }
@@ -316,7 +316,7 @@ void *__31__PKStrokeProviderSlice_bounds__block_invoke(void *result, double a2, 
     v20 = v19 | 0x40;
   }
 
-  if (v16)
+  if (_isPastedStroke)
   {
     v21 = v20 | 0x10;
   }
@@ -327,7 +327,7 @@ void *__31__PKStrokeProviderSlice_bounds__block_invoke(void *result, double a2, 
   }
 
   v22 = v21 | 0x20;
-  if (!v18)
+  if (!_isSharedStroke2)
   {
     v22 = v21;
   }
@@ -343,29 +343,29 @@ void *__31__PKStrokeProviderSlice_bounds__block_invoke(void *result, double a2, 
   }
 }
 
-- (int64_t)compareTo:(id)a3
+- (int64_t)compareTo:(id)to
 {
-  v4 = a3;
-  v5 = [(PKStrokeProviderSlice *)self stroke];
-  v6 = [v4 stroke];
-  v7 = [v5 compareToStroke:v6];
+  toCopy = to;
+  stroke = [(PKStrokeProviderSlice *)self stroke];
+  stroke2 = [toCopy stroke];
+  v7 = [stroke compareToStroke:stroke2];
 
   if (!v7)
   {
-    v8 = [(PKStrokeProviderSlice *)self identifier];
-    [v8 tStart];
+    identifier = [(PKStrokeProviderSlice *)self identifier];
+    [identifier tStart];
     v10 = v9;
-    v11 = [v4 identifier];
-    [v11 tStart];
+    identifier2 = [toCopy identifier];
+    [identifier2 tStart];
     v13 = v12;
 
     if (v10 >= v13)
     {
-      v14 = [(PKStrokeProviderSlice *)self identifier];
-      [v14 tStart];
+      identifier3 = [(PKStrokeProviderSlice *)self identifier];
+      [identifier3 tStart];
       v16 = v15;
-      v17 = [v4 identifier];
-      [v17 tStart];
+      identifier4 = [toCopy identifier];
+      [identifier4 tStart];
       v19 = v18;
 
       v7 = v16 > v19;
@@ -380,45 +380,45 @@ void *__31__PKStrokeProviderSlice_bounds__block_invoke(void *result, double a2, 
   return v7;
 }
 
-- (CGPoint)_splineControlPoint:(int64_t)a3 transform:(CGAffineTransform *)a4
+- (CGPoint)_splineControlPoint:(int64_t)point transform:(CGAffineTransform *)transform
 {
-  v7 = [(PKStrokeProviderSlice *)self stroke];
-  v8 = [v7 _strokeData];
+  stroke = [(PKStrokeProviderSlice *)self stroke];
+  _strokeData = [stroke _strokeData];
 
-  v9 = [(PKStrokeProviderSlice *)self stroke];
-  v10 = [v9 _pointsCount];
+  stroke2 = [(PKStrokeProviderSlice *)self stroke];
+  _pointsCount = [stroke2 _pointsCount];
 
-  if (a3 < 0)
+  if (point < 0)
   {
-    [v8 locationAtIndex:0];
+    [_strokeData locationAtIndex:0];
     v30 = v14;
     v32 = v13;
-    v27 = *&a4->c;
-    v28 = *&a4->tx;
-    v29 = *&a4->a;
-    [v8 locationAtIndex:1];
+    v27 = *&transform->c;
+    v28 = *&transform->tx;
+    v29 = *&transform->a;
+    [_strokeData locationAtIndex:1];
 LABEL_6:
-    v19 = vnegq_f64(vaddq_f64(*&a4->tx, vmlaq_n_f64(vmulq_n_f64(*&a4->c, v16), *&a4->a, v15)));
+    v19 = vnegq_f64(vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v16), *&transform->a, v15)));
     __asm { FMOV            V0.2D, #2.0 }
 
     v31 = vmlaq_f64(v19, _Q0, vaddq_f64(v28, vmlaq_n_f64(vmulq_n_f64(v27, v30), v29, v32)));
     goto LABEL_7;
   }
 
-  if (v10 <= a3)
+  if (_pointsCount <= point)
   {
-    [v8 locationAtIndex:v10 - 1];
+    [_strokeData locationAtIndex:_pointsCount - 1];
     v30 = v18;
     v32 = v17;
-    v27 = *&a4->c;
-    v28 = *&a4->tx;
-    v29 = *&a4->a;
-    [v8 locationAtIndex:v10 - 2];
+    v27 = *&transform->c;
+    v28 = *&transform->tx;
+    v29 = *&transform->a;
+    [_strokeData locationAtIndex:_pointsCount - 2];
     goto LABEL_6;
   }
 
-  [v8 locationAtIndex:a3];
-  v31 = vaddq_f64(*&a4->tx, vmlaq_n_f64(vmulq_n_f64(*&a4->c, v11), *&a4->a, v12));
+  [_strokeData locationAtIndex:point];
+  v31 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v11), *&transform->a, v12));
 LABEL_7:
 
   v26 = v31.f64[1];
@@ -428,24 +428,24 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)_interpolatedPointForSplineSegment:(int64_t)a3 t:(double)a4 transform:(CGAffineTransform *)a5
+- (CGPoint)_interpolatedPointForSplineSegment:(int64_t)segment t:(double)t transform:(CGAffineTransform *)transform
 {
   v9 = *MEMORY[0x1E695EFF8];
   v8 = *(MEMORY[0x1E695EFF8] + 8);
-  v10 = a3 - 1;
+  v10 = segment - 1;
   v11 = 0.0;
   v12 = -2;
   v13 = 4;
   do
   {
-    v14 = *&a5->c;
-    v22[0] = *&a5->a;
+    v14 = *&transform->c;
+    v22[0] = *&transform->a;
     v22[1] = v14;
-    v22[2] = *&a5->tx;
+    v22[2] = *&transform->tx;
     [(PKStrokeProviderSlice *)self _splineControlPoint:v10 transform:v22];
     v16 = v15;
     v18 = v17;
-    v19 = b(v12, a4);
+    v19 = b(v12, t);
     v9 = v9 + v19 * v16;
     v8 = v8 + v19 * v18;
     v11 = v11 + v19;
@@ -462,56 +462,56 @@ LABEL_7:
   return result;
 }
 
-- (double)_interpolatedTimeForSplineSegment:(int64_t)a3 t:(double)a4
+- (double)_interpolatedTimeForSplineSegment:(int64_t)segment t:(double)t
 {
-  v6 = [(PKStrokeProviderSlice *)self stroke];
-  v7 = [v6 _strokeData];
-  [v7 timestampAtIndex:a3];
+  stroke = [(PKStrokeProviderSlice *)self stroke];
+  _strokeData = [stroke _strokeData];
+  [_strokeData timestampAtIndex:segment];
   v9 = v8;
 
-  v10 = [(PKStrokeProviderSlice *)self stroke];
-  v11 = [v10 _strokeData];
-  [v11 timestampAtIndex:a3 + 1];
+  stroke2 = [(PKStrokeProviderSlice *)self stroke];
+  _strokeData2 = [stroke2 _strokeData];
+  [_strokeData2 timestampAtIndex:segment + 1];
   v13 = v12;
 
-  return v9 + (v13 - v9) * a3;
+  return v9 + (v13 - v9) * segment;
 }
 
-- (double)_lengthOfSplineSegment:(unint64_t)a3 transform:(CGAffineTransform *)a4
+- (double)_lengthOfSplineSegment:(unint64_t)segment transform:(CGAffineTransform *)transform
 {
-  v7 = *&a4->c;
-  v26 = *&a4->a;
+  v7 = *&transform->c;
+  v26 = *&transform->a;
   v27 = v7;
-  v28 = *&a4->tx;
-  [(PKStrokeProviderSlice *)self _splineControlPoint:a3 - 1 transform:&v26];
+  v28 = *&transform->tx;
+  [(PKStrokeProviderSlice *)self _splineControlPoint:segment - 1 transform:&v26];
   v9 = v8;
   v11 = v10;
-  v12 = *&a4->c;
-  v26 = *&a4->a;
+  v12 = *&transform->c;
+  v26 = *&transform->a;
   v27 = v12;
-  v28 = *&a4->tx;
-  [(PKStrokeProviderSlice *)self _splineControlPoint:a3 transform:&v26];
+  v28 = *&transform->tx;
+  [(PKStrokeProviderSlice *)self _splineControlPoint:segment transform:&v26];
   v14 = v13;
   v16 = v15;
-  v17 = *&a4->c;
-  v26 = *&a4->a;
+  v17 = *&transform->c;
+  v26 = *&transform->a;
   v27 = v17;
-  v28 = *&a4->tx;
-  [(PKStrokeProviderSlice *)self _splineControlPoint:a3 + 1 transform:&v26];
+  v28 = *&transform->tx;
+  [(PKStrokeProviderSlice *)self _splineControlPoint:segment + 1 transform:&v26];
   v19 = v18;
   v21 = v20;
-  v22 = *&a4->c;
-  v26 = *&a4->a;
+  v22 = *&transform->c;
+  v26 = *&transform->a;
   v27 = v22;
-  v28 = *&a4->tx;
-  [(PKStrokeProviderSlice *)self _splineControlPoint:a3 + 2 transform:&v26];
+  v28 = *&transform->tx;
+  [(PKStrokeProviderSlice *)self _splineControlPoint:segment + 2 transform:&v26];
   return approximateSplineLength(v9, v11, v14, v16, v19, v21, v23, v24);
 }
 
 - (int64_t)_firstPointIndex
 {
-  v2 = [(PKStrokeProviderSlice *)self identifier];
-  [v2 tStart];
+  identifier = [(PKStrokeProviderSlice *)self identifier];
+  [identifier tStart];
   v4 = v3;
 
   return v4;
@@ -519,13 +519,13 @@ LABEL_7:
 
 - (int64_t)_lastPointIndex
 {
-  v3 = [(PKStrokeProviderSlice *)self _firstPointIndex];
-  v4 = [(PKStrokeProviderSlice *)self identifier];
-  [v4 tEnd];
+  _firstPointIndex = [(PKStrokeProviderSlice *)self _firstPointIndex];
+  identifier = [(PKStrokeProviderSlice *)self identifier];
+  [identifier tEnd];
   v6 = v5;
 
-  v7 = [(PKStrokeProviderSlice *)self stroke];
-  v8 = [v7 _pointsCount] - 1;
+  stroke = [(PKStrokeProviderSlice *)self stroke];
+  v8 = [stroke _pointsCount] - 1;
 
   if (v8 >= v6)
   {
@@ -537,9 +537,9 @@ LABEL_7:
     v9 = v8;
   }
 
-  if (v9 <= v3)
+  if (v9 <= _firstPointIndex)
   {
-    return v3;
+    return _firstPointIndex;
   }
 
   else
@@ -550,21 +550,21 @@ LABEL_7:
 
 - (double)_strokeLength
 {
-  v3 = [(PKStrokeProviderSlice *)self stroke];
-  v4 = [v3 _pointsCount];
+  stroke = [(PKStrokeProviderSlice *)self stroke];
+  _pointsCount = [stroke _pointsCount];
 
   v5 = 0.0;
-  if (v4 != 1)
+  if (_pointsCount != 1)
   {
-    v6 = [(PKStrokeProviderSlice *)self _lastPointIndex];
+    _lastPointIndex = [(PKStrokeProviderSlice *)self _lastPointIndex];
     v15 = 0u;
     v16 = 0u;
     v14 = 0u;
-    v7 = [(PKStrokeProviderSlice *)self stroke];
-    v8 = v7;
-    if (v7)
+    stroke2 = [(PKStrokeProviderSlice *)self stroke];
+    v8 = stroke2;
+    if (stroke2)
     {
-      [v7 transform];
+      [stroke2 transform];
     }
 
     else
@@ -574,10 +574,10 @@ LABEL_7:
       v14 = 0u;
     }
 
-    v9 = [(PKStrokeProviderSlice *)self _firstPointIndex];
-    if (v9 < v6)
+    _firstPointIndex = [(PKStrokeProviderSlice *)self _firstPointIndex];
+    if (_firstPointIndex < _lastPointIndex)
     {
-      v10 = v9;
+      v10 = _firstPointIndex;
       do
       {
         v13[0] = v14;
@@ -588,33 +588,33 @@ LABEL_7:
         ++v10;
       }
 
-      while (v6 != v10);
+      while (_lastPointIndex != v10);
     }
   }
 
   return v5;
 }
 
-- (void)enumeratePointsWithTimestep:(double)a3 usingBlock:(id)a4
+- (void)enumeratePointsWithTimestep:(double)timestep usingBlock:(id)block
 {
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v7 = [(PKStrokeProviderSlice *)self stroke];
-    v8 = [v7 _strokeData];
+    stroke = [(PKStrokeProviderSlice *)self stroke];
+    _strokeData = [stroke _strokeData];
 
-    v9 = [(PKStrokeProviderSlice *)self stroke];
-    v10 = [v9 _pointsCount];
+    stroke2 = [(PKStrokeProviderSlice *)self stroke];
+    _pointsCount = [stroke2 _pointsCount];
 
-    v11 = [(PKStrokeProviderSlice *)self _firstPointIndex];
+    _firstPointIndex = [(PKStrokeProviderSlice *)self _firstPointIndex];
     v43 = 0u;
     v44 = 0u;
     v42 = 0u;
-    v12 = [(PKStrokeProviderSlice *)self stroke];
-    v13 = v12;
-    if (v12)
+    stroke3 = [(PKStrokeProviderSlice *)self stroke];
+    v13 = stroke3;
+    if (stroke3)
     {
-      [v12 transform];
+      [stroke3 transform];
     }
 
     else
@@ -624,40 +624,40 @@ LABEL_7:
       v42 = 0u;
     }
 
-    [v8 timestampAtIndex:v11];
+    [_strokeData timestampAtIndex:_firstPointIndex];
     v15 = v14;
-    v16 = v10 - 1;
-    if (v10 == 1)
+    v16 = _pointsCount - 1;
+    if (_pointsCount == 1)
     {
       LOBYTE(v41[0]) = 0;
-      [v8 locationAtIndex:v11];
+      [_strokeData locationAtIndex:_firstPointIndex];
       v19 = vaddq_f64(v44, vmlaq_n_f64(vmulq_n_f64(v43, v17), v42, v18));
       v20 = v19.f64[1];
       v40 = v19;
-      v6[2](v6, v41);
+      blockCopy[2](blockCopy, v41);
       if ((v41[0] & 1) == 0)
       {
-        (v6[2])(v6, v41, v40, v20, v15);
+        (blockCopy[2])(blockCopy, v41, v40, v20, v15);
       }
     }
 
     else
     {
-      v21 = [(PKStrokeProviderSlice *)self stroke];
-      v22 = [v21 _strokeData];
-      v23 = [v22 hasValidPointTimestampData];
+      stroke4 = [(PKStrokeProviderSlice *)self stroke];
+      _strokeData2 = [stroke4 _strokeData];
+      hasValidPointTimestampData = [_strokeData2 hasValidPointTimestampData];
 
-      if (v23)
+      if (hasValidPointTimestampData)
       {
-        v24 = [(PKStrokeProviderSlice *)self _lastPointIndex];
-        [v8 timestampAtIndex:v11];
+        _lastPointIndex = [(PKStrokeProviderSlice *)self _lastPointIndex];
+        [_strokeData timestampAtIndex:_firstPointIndex];
         v26 = v25;
-        [v8 timestampAtIndex:v24];
+        [_strokeData timestampAtIndex:_lastPointIndex];
         v28 = v27;
-        v29 = [(PKStrokeProviderSlice *)self _firstPointIndex];
+        _firstPointIndex2 = [(PKStrokeProviderSlice *)self _firstPointIndex];
         while (v15 < v28)
         {
-          if (v29 >= v16)
+          if (_firstPointIndex2 >= v16)
           {
             v36 = v15 - v26;
             v35 = 0.0;
@@ -667,12 +667,12 @@ LABEL_7:
           {
             while (1)
             {
-              [v8 timestampAtIndex:v29];
+              [_strokeData timestampAtIndex:_firstPointIndex2];
               v26 = v30;
-              v31 = v29 + 1;
-              [v8 timestampAtIndex:v29 + 1];
+              v31 = _firstPointIndex2 + 1;
+              [_strokeData timestampAtIndex:_firstPointIndex2 + 1];
               v33 = v32;
-              [v8 timestampAtIndex:v29];
+              [_strokeData timestampAtIndex:_firstPointIndex2];
               v35 = v33 - v34;
               v36 = v15 - v26;
               if (v15 - v26 < v35)
@@ -680,10 +680,10 @@ LABEL_7:
                 break;
               }
 
-              ++v29;
+              ++_firstPointIndex2;
               if (v16 == v31)
               {
-                v29 = v16;
+                _firstPointIndex2 = v16;
                 break;
               }
             }
@@ -692,10 +692,10 @@ LABEL_7:
           v41[0] = v42;
           v41[1] = v43;
           v41[2] = v44;
-          [(PKStrokeProviderSlice *)self _interpolatedPointForSplineSegment:v29 t:v41 transform:v36 / v35];
+          [(PKStrokeProviderSlice *)self _interpolatedPointForSplineSegment:_firstPointIndex2 t:v41 transform:v36 / v35];
           LOBYTE(v41[0]) = 0;
-          v6[2](v6, v41);
-          v15 = v15 + a3;
+          blockCopy[2](blockCopy, v41);
+          v15 = v15 + timestep;
           if (v41[0])
           {
             goto LABEL_20;
@@ -703,14 +703,14 @@ LABEL_7:
         }
 
         LOBYTE(v41[0]) = 0;
-        [v8 locationAtIndex:v24];
+        [_strokeData locationAtIndex:_lastPointIndex];
         v39 = vaddq_f64(v44, vmlaq_n_f64(vmulq_n_f64(v43, v37), v42, v38));
-        (v6[2])(v6, v41, v39, v39.n128_f64[1], v28);
+        (blockCopy[2])(blockCopy, v41, v39, v39.n128_f64[1], v28);
       }
 
       else
       {
-        [(PKStrokeProviderSlice *)self enumeratePointsWithDistanceStep:v6 usingBlock:a3 * 240.0];
+        [(PKStrokeProviderSlice *)self enumeratePointsWithDistanceStep:blockCopy usingBlock:timestep * 240.0];
       }
     }
 
@@ -718,29 +718,29 @@ LABEL_20:
   }
 }
 
-- (void)enumeratePointsWithDistanceStep:(double)a3 usingBlock:(id)a4
+- (void)enumeratePointsWithDistanceStep:(double)step usingBlock:(id)block
 {
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v7 = [(PKStrokeProviderSlice *)self stroke];
-    v8 = [v7 _strokeData];
+    stroke = [(PKStrokeProviderSlice *)self stroke];
+    _strokeData = [stroke _strokeData];
 
-    v9 = [(PKStrokeProviderSlice *)self stroke];
-    v10 = [v9 _pointsCount];
+    stroke2 = [(PKStrokeProviderSlice *)self stroke];
+    _pointsCount = [stroke2 _pointsCount];
 
-    v11 = [(PKStrokeProviderSlice *)self _firstPointIndex];
-    v12 = [(PKStrokeProviderSlice *)self _lastPointIndex];
+    _firstPointIndex = [(PKStrokeProviderSlice *)self _firstPointIndex];
+    _lastPointIndex = [(PKStrokeProviderSlice *)self _lastPointIndex];
     [(PKStrokeProviderSlice *)self _strokeLength];
     v14 = v13;
     v47 = 0u;
     v48 = 0u;
     v46 = 0u;
-    v15 = [(PKStrokeProviderSlice *)self stroke];
-    v16 = v15;
-    if (v15)
+    stroke3 = [(PKStrokeProviderSlice *)self stroke];
+    v16 = stroke3;
+    if (stroke3)
     {
-      [v15 transform];
+      [stroke3 transform];
     }
 
     else
@@ -750,18 +750,18 @@ LABEL_20:
       v46 = 0u;
     }
 
-    v17 = v10 - 1;
+    v17 = _pointsCount - 1;
     if (!v17 || v14 == 0.0)
     {
       LOBYTE(v43) = 0;
-      [v8 locationAtIndex:{v11, v43}];
+      [_strokeData locationAtIndex:{_firstPointIndex, v43}];
       v28 = v27;
       v30 = v29;
       v31 = v46;
       v32 = v47;
       v33 = v48;
-      [v8 timestampAtIndex:v11];
-      v6[2](v6, &v43, *&v33 + v30 * *&v32 + *&v31 * v28, *(&v33 + 1) + v30 * *(&v32 + 1) + *(&v31 + 1) * v28, v34);
+      [_strokeData timestampAtIndex:_firstPointIndex];
+      blockCopy[2](blockCopy, &v43, *&v33 + v30 * *&v32 + *&v31 * v28, *(&v33 + 1) + v30 * *(&v32 + 1) + *(&v31 + 1) * v28, v34);
       if (v43)
       {
 LABEL_17:
@@ -777,23 +777,23 @@ LABEL_17:
       while (v18 < v14)
       {
         v20 = 0.0;
-        if (v11 < v17)
+        if (_firstPointIndex < v17)
         {
           while (1)
           {
             v43 = v46;
             v44 = v47;
             v45 = v48;
-            [(PKStrokeProviderSlice *)self _lengthOfSplineSegment:v11 transform:&v43];
+            [(PKStrokeProviderSlice *)self _lengthOfSplineSegment:_firstPointIndex transform:&v43];
             if (v18 - v19 < v20)
             {
               break;
             }
 
             v19 = v19 + v20;
-            if (v17 == ++v11)
+            if (v17 == ++_firstPointIndex)
             {
-              v11 = v17;
+              _firstPointIndex = v17;
               break;
             }
           }
@@ -803,13 +803,13 @@ LABEL_17:
         v44 = v47;
         v45 = v48;
         v21 = (v18 - v19) / v20;
-        [(PKStrokeProviderSlice *)self _interpolatedPointForSplineSegment:v11 t:&v43 transform:v21];
+        [(PKStrokeProviderSlice *)self _interpolatedPointForSplineSegment:_firstPointIndex t:&v43 transform:v21];
         v23 = v22;
         v25 = v24;
-        [(PKStrokeProviderSlice *)self _interpolatedTimeForSplineSegment:v11 t:v21];
+        [(PKStrokeProviderSlice *)self _interpolatedTimeForSplineSegment:_firstPointIndex t:v21];
         LOBYTE(v43) = 0;
-        v6[2](v6, &v43, v23, v25, v26);
-        v18 = v18 + a3;
+        blockCopy[2](blockCopy, &v43, v23, v25, v26);
+        v18 = v18 + step;
         if (v43)
         {
           goto LABEL_17;
@@ -818,41 +818,41 @@ LABEL_17:
     }
 
     LOBYTE(v43) = 0;
-    [v8 locationAtIndex:{v12, v43}];
+    [_strokeData locationAtIndex:{_lastPointIndex, v43}];
     v36 = v35;
     v38 = v37;
     v39 = v46;
     v40 = v47;
     v41 = v48;
-    [v8 timestampAtIndex:v12];
-    v6[2](v6, &v43, *&v41 + v38 * *&v40 + *&v39 * v36, *(&v41 + 1) + v38 * *(&v40 + 1) + *(&v39 + 1) * v36, v42);
+    [_strokeData timestampAtIndex:_lastPointIndex];
+    blockCopy[2](blockCopy, &v43, *&v41 + v38 * *&v40 + *&v39 * v36, *(&v41 + 1) + v38 * *(&v40 + 1) + *(&v39 + 1) * v36, v42);
     goto LABEL_17;
   }
 
 LABEL_18:
 }
 
-- (void)enumeratePointsWithDataStep:(double)a3 usingBlock:(id)a4
+- (void)enumeratePointsWithDataStep:(double)step usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(PKStrokeProviderSlice *)self stroke];
-  v8 = [v7 _pointsCount];
+  blockCopy = block;
+  stroke = [(PKStrokeProviderSlice *)self stroke];
+  _pointsCount = [stroke _pointsCount];
 
-  if (v6)
+  if (blockCopy)
   {
-    v9 = [(PKStrokeProviderSlice *)self stroke];
-    v10 = [v9 _strokeData];
+    stroke2 = [(PKStrokeProviderSlice *)self stroke];
+    _strokeData = [stroke2 _strokeData];
 
-    v11 = [(PKStrokeProviderSlice *)self _firstPointIndex];
-    v12 = [(PKStrokeProviderSlice *)self _lastPointIndex];
+    _firstPointIndex = [(PKStrokeProviderSlice *)self _firstPointIndex];
+    _lastPointIndex = [(PKStrokeProviderSlice *)self _lastPointIndex];
     v24 = 0u;
     v25 = 0u;
     v23 = 0u;
-    v13 = [(PKStrokeProviderSlice *)self stroke];
-    v14 = v13;
-    if (v13)
+    stroke3 = [(PKStrokeProviderSlice *)self stroke];
+    v14 = stroke3;
+    if (stroke3)
     {
-      [v13 transform];
+      [stroke3 transform];
     }
 
     else
@@ -862,28 +862,28 @@ LABEL_18:
       v23 = 0u;
     }
 
-    if (v8 == 1)
+    if (_pointsCount == 1)
     {
-      [v10 locationAtIndex:v11];
+      [_strokeData locationAtIndex:_firstPointIndex];
       v17 = vaddq_f64(v25, vmlaq_n_f64(vmulq_n_f64(v24, v15), v23, v16));
-      v6[2](v6, v17, v17.n128_f64[1]);
+      blockCopy[2](blockCopy, v17, v17.n128_f64[1]);
     }
 
     else
     {
-      for (i = v11; i < v12; i = i + a3)
+      for (i = _firstPointIndex; i < _lastPointIndex; i = i + step)
       {
         v22[0] = v23;
         v22[1] = v24;
         v22[2] = v25;
         [(PKStrokeProviderSlice *)self _interpolatedPointForSplineSegment:i t:v22 transform:i - i];
-        (v6[2])(v6);
+        (blockCopy[2])(blockCopy);
       }
     }
 
-    [v10 locationAtIndex:v12];
+    [_strokeData locationAtIndex:_lastPointIndex];
     v21 = vaddq_f64(v25, vmlaq_n_f64(vmulq_n_f64(v24, v19), v23, v20));
-    v6[2](v6, v21, v21.n128_f64[1]);
+    blockCopy[2](blockCopy, v21, v21.n128_f64[1]);
   }
 }
 
@@ -892,9 +892,9 @@ LABEL_18:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PKStrokeProviderSlice *)self identifier];
-  v7 = [(PKStrokeProviderSlice *)self stroke];
-  v8 = [v3 stringWithFormat:@"<%@: %p id=%@ stroke=%@>", v5, self, v6, v7];
+  identifier = [(PKStrokeProviderSlice *)self identifier];
+  stroke = [(PKStrokeProviderSlice *)self stroke];
+  v8 = [v3 stringWithFormat:@"<%@: %p id=%@ stroke=%@>", v5, self, identifier, stroke];
 
   return v8;
 }

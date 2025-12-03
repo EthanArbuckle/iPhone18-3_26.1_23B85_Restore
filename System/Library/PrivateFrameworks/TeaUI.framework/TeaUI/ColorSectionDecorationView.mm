@@ -1,29 +1,29 @@
 @interface ColorSectionDecorationView
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)didMoveToSuperview;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation ColorSectionDecorationView
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v5 = a3;
-  v6 = self;
-  ColorSectionDecorationView.willMove(toSuperview:)(a3);
+  superviewCopy = superview;
+  selfCopy = self;
+  ColorSectionDecorationView.willMove(toSuperview:)(superview);
 }
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   ColorSectionDecorationView.didMoveToSuperview()();
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  ColorSectionDecorationView.apply(_:)(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  ColorSectionDecorationView.apply(_:)(attributesCopy);
 }
 
 @end

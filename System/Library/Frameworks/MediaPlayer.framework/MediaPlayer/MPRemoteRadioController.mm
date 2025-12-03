@@ -1,13 +1,13 @@
 @interface MPRemoteRadioController
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MPRemoteRadioController)init;
-- (void)_addConnection:(id)a3;
+- (void)_addConnection:(id)connection;
 - (void)_handleRecentStationsControllerDidChange;
-- (void)_playActivityReportingControllerDidFlushEventsNotification:(id)a3;
-- (void)_radioAvailabilityControllerRadioAvailableDidChangeNotification:(id)a3;
-- (void)_removeConnection:(id)a3;
+- (void)_playActivityReportingControllerDidFlushEventsNotification:(id)notification;
+- (void)_radioAvailabilityControllerRadioAvailableDidChangeNotification:(id)notification;
+- (void)_removeConnection:(id)connection;
 - (void)dealloc;
-- (void)serviceRadioControllerGetRecentStationGroupsWithCompletionHandler:(id)a3;
+- (void)serviceRadioControllerGetRecentStationGroupsWithCompletionHandler:(id)handler;
 - (void)start;
 @end
 
@@ -25,7 +25,7 @@
   }
 
   v2->_lock._os_unfair_lock_opaque = 0;
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v31 = 0;
   v32 = &v31;
   v33 = 0x2050000000;
@@ -70,7 +70,7 @@
   _Block_object_dispose(&v31, 8);
   if (v9)
   {
-    [v4 addObserver:v3 selector:sel__radioAvailabilityControllerRadioAvailableDidChangeNotification_ name:*v9 object:v3->_availabilityController];
+    [defaultCenter addObserver:v3 selector:sel__radioAvailabilityControllerRadioAvailableDidChangeNotification_ name:*v9 object:v3->_availabilityController];
     v31 = 0;
     v32 = &v31;
     v33 = 0x2050000000;
@@ -115,7 +115,7 @@
     _Block_object_dispose(&v31, 8);
     if (v16)
     {
-      [v4 addObserver:v3 selector:sel__recentStationsControllerDidChangeStationsNotification_ name:*v16 object:v3->_recentStationsController];
+      [defaultCenter addObserver:v3 selector:sel__recentStationsControllerDidChangeStationsNotification_ name:*v16 object:v3->_recentStationsController];
       v31 = 0;
       v32 = &v31;
       v33 = 0x2020000000;
@@ -138,29 +138,29 @@
       _Block_object_dispose(&v31, 8);
       if (v19)
       {
-        [v4 addObserver:v3 selector:sel__playActivityReportingControllerDidFlushEventsNotification_ name:*v19 object:0];
+        [defaultCenter addObserver:v3 selector:sel__playActivityReportingControllerDidFlushEventsNotification_ name:*v19 object:0];
 
         return v3;
       }
 
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPCJinglePlayActivityReportingControllerDidFlushEventsNotification(void)"];
-      [v23 handleFailureInFunction:v24 file:@"MPRemoteRadioController.m" lineNumber:25 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v24 file:@"MPRemoteRadioController.m" lineNumber:25 description:{@"%s", dlerror()}];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getRadioRecentStationsControllerStationsDidChangeNotification(void)"];
-      [v23 handleFailureInFunction:v24 file:@"MPRemoteRadioController.m" lineNumber:33 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v24 file:@"MPRemoteRadioController.m" lineNumber:33 description:{@"%s", dlerror()}];
     }
   }
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getRadioAvailabilityControllerRadioAvailableDidChangeNotification(void)"];
-    [v23 handleFailureInFunction:v24 file:@"MPRemoteRadioController.m" lineNumber:32 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v24 file:@"MPRemoteRadioController.m" lineNumber:32 description:{@"%s", dlerror()}];
   }
 
   __break(1u);
@@ -209,8 +209,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) remoteObjectProxy];
-        [v9 clientRadioControllerRecentStationsDidChange];
+        remoteObjectProxy = [*(*(&v10 + 1) + 8 * v8) remoteObjectProxy];
+        [remoteObjectProxy clientRadioControllerRecentStationsDidChange];
 
         ++v8;
       }
@@ -223,11 +223,11 @@
   }
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_connections removeObject:v4];
+  [(NSMutableSet *)self->_connections removeObject:connectionCopy];
 
   if (![(NSMutableSet *)self->_connections count])
   {
@@ -238,9 +238,9 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
-  v7 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
   connections = self->_connections;
   if (!connections)
@@ -252,14 +252,14 @@
     connections = self->_connections;
   }
 
-  [(NSMutableSet *)connections addObject:v7];
+  [(NSMutableSet *)connections addObject:connectionCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_playActivityReportingControllerDidFlushEventsNotification:(id)a3
+- (void)_playActivityReportingControllerDidFlushEventsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -276,7 +276,7 @@
   _Block_object_dispose(&v11, 8);
   if (v6)
   {
-    v8 = [v5 objectForKey:*v6];
+    v8 = [userInfo objectForKey:*v6];
 
     if (objc_opt_respondsToSelector())
     {
@@ -289,21 +289,21 @@
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPCJinglePlayActivityReportingControllerUserInfoDidIncludeRadioStationStartEvent(void)"];
-    [v9 handleFailureInFunction:v10 file:@"MPRemoteRadioController.m" lineNumber:26 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"MPRemoteRadioController.m" lineNumber:26 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (void)_radioAvailabilityControllerRadioAvailableDidChangeNotification:(id)a3
+- (void)_radioAvailabilityControllerRadioAvailableDidChangeNotification:(id)notification
 {
   v17 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   v4 = [(NSMutableSet *)self->_connections copy];
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [(RadioAvailabilityController *)self->_availabilityController isRadioAvailable];
+  isRadioAvailable = [(RadioAvailabilityController *)self->_availabilityController isRadioAvailable];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -324,8 +324,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) remoteObjectProxy];
-        [v11 clientRadioControllerRadioAvailabilityDidChange:v5];
+        remoteObjectProxy = [*(*(&v12 + 1) + 8 * v10) remoteObjectProxy];
+        [remoteObjectProxy clientRadioControllerRadioAvailabilityDidChange:isRadioAvailable];
 
         ++v10;
       }
@@ -338,23 +338,23 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"com.apple.mediaplayer.radio.private"];
-  v9 = [v8 BOOLValue];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.mediaplayer.radio.private"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v7);
+    objc_initWeak(&from, connectionCopy);
     v10 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F154C308];
-    [v7 setRemoteObjectInterface:v10];
+    [connectionCopy setRemoteObjectInterface:v10];
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v11 = MPServiceRadioControllerGetXPCInterface();
-    [v7 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -362,16 +362,16 @@
     v19[3] = &unk_1E767D468;
     objc_copyWeak(&v20, &location);
     objc_copyWeak(&v21, &from);
-    [v7 setInterruptionHandler:v19];
+    [connectionCopy setInterruptionHandler:v19];
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __62__MPRemoteRadioController_listener_shouldAcceptNewConnection___block_invoke_12;
     v16 = &unk_1E767D468;
     objc_copyWeak(&v17, &location);
     objc_copyWeak(&v18, &from);
-    [v7 setInvalidationHandler:&v13];
-    [(MPRemoteRadioController *)self _addConnection:v7, v13, v14, v15, v16];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:&v13];
+    [(MPRemoteRadioController *)self _addConnection:connectionCopy, v13, v14, v15, v16];
+    [connectionCopy resume];
     objc_destroyWeak(&v18);
     objc_destroyWeak(&v17);
     objc_destroyWeak(&v21);
@@ -380,7 +380,7 @@
     objc_destroyWeak(&location);
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 void __62__MPRemoteRadioController_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -423,10 +423,10 @@ void __62__MPRemoteRadioController_listener_shouldAcceptNewConnection___block_in
   }
 }
 
-- (void)serviceRadioControllerGetRecentStationGroupsWithCompletionHandler:(id)a3
+- (void)serviceRadioControllerGetRecentStationGroupsWithCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_hasRefreshedStations)
   {
@@ -434,11 +434,11 @@ void __62__MPRemoteRadioController_listener_shouldAcceptNewConnection___block_in
     [(RadioRecentStationsController *)self->_recentStationsController refreshWithCompletionHandler:0];
   }
 
-  v5 = [(RadioRecentStationsController *)self->_recentStationsController stationGroups];
-  v6 = [v5 copy];
+  stationGroups = [(RadioRecentStationsController *)self->_recentStationsController stationGroups];
+  v6 = [stationGroups copy];
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v4)
+  if (handlerCopy)
   {
     v19 = v6;
     v30 = 0u;
@@ -465,8 +465,8 @@ void __62__MPRemoteRadioController_listener_shouldAcceptNewConnection___block_in
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v9 = [v8 stations];
-          v10 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          stations = [v8 stations];
+          v10 = [stations countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v10)
           {
             v11 = v10;
@@ -478,7 +478,7 @@ void __62__MPRemoteRadioController_listener_shouldAcceptNewConnection___block_in
               {
                 if (*v25 != v13)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(stations);
                 }
 
                 v15 = [[MPRadioStation alloc] initWithStation:*(*(&v24 + 1) + 8 * j)];
@@ -493,7 +493,7 @@ void __62__MPRemoteRadioController_listener_shouldAcceptNewConnection___block_in
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
+              v11 = [stations countByEnumeratingWithState:&v24 objects:v32 count:16];
             }
 
             while (v11);
@@ -507,8 +507,8 @@ void __62__MPRemoteRadioController_listener_shouldAcceptNewConnection___block_in
           if ([v12 count])
           {
             v16 = objc_alloc_init(MPRadioRecentStationsGroup);
-            v17 = [v8 localizedTitle];
-            [(MPRadioRecentStationsGroup *)v16 setLocalizedTitle:v17];
+            localizedTitle = [v8 localizedTitle];
+            [(MPRadioRecentStationsGroup *)v16 setLocalizedTitle:localizedTitle];
 
             [(MPRadioRecentStationsGroup *)v16 setStations:v12];
             if (v16)
@@ -536,7 +536,7 @@ void __62__MPRemoteRadioController_listener_shouldAcceptNewConnection___block_in
       v21 = 0;
     }
 
-    v4[2](v4, v21, 0);
+    handlerCopy[2](handlerCopy, v21, 0);
     v6 = v19;
   }
 }

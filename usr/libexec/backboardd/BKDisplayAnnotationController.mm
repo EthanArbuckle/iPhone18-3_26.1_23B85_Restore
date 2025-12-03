@@ -1,30 +1,30 @@
 @interface BKDisplayAnnotationController
-+ (id)annotationControllerForDisplay:(id)a3;
-+ (void)performBlockForEveryAnnotationController:(id)a3;
-- (id)_lock_supernodeForRenderingAtKeyPath:(id)a3;
-- (id)allAnnotationsForKeyPath:(id)a3;
-- (id)annotationForKeyPath:(id)a3;
-- (void)_configureReferenceSpaceLayerTransformWithScale:(double)a3;
-- (void)_lock_CATransaction:(id)a3;
++ (id)annotationControllerForDisplay:(id)display;
++ (void)performBlockForEveryAnnotationController:(id)controller;
+- (id)_lock_supernodeForRenderingAtKeyPath:(id)path;
+- (id)allAnnotationsForKeyPath:(id)path;
+- (id)annotationForKeyPath:(id)path;
+- (void)_configureReferenceSpaceLayerTransformWithScale:(double)scale;
+- (void)_lock_CATransaction:(id)transaction;
 - (void)_lock_invalidate;
 - (void)_lock_locationDidChanges;
-- (void)_lock_removeAnnotation:(id)a3;
+- (void)_lock_removeAnnotation:(id)annotation;
 - (void)_lock_setupLayerTree;
 - (void)_lock_tearDownLayerTree;
 - (void)_lock_updateLayerTree;
 - (void)invalidate;
-- (void)monitor:(id)a3 activeDisplayPropertiesDidChange:(id)a4;
-- (void)monitor:(id)a3 displayDidBecomeActive:(id)a4;
-- (void)monitor:(id)a3 displayDidBecomeInactive:(id)a4;
-- (void)performSynchronized:(id)a3;
-- (void)performSynchronizedWithCATransaction:(id)a3;
-- (void)removeAnnotationsForKeyPath:(id)a3 afterDelay:(double)a4 queue:(id)a5;
-- (void)setAnnotation:(id)a3 forKeyPath:(id)a4;
+- (void)monitor:(id)monitor activeDisplayPropertiesDidChange:(id)change;
+- (void)monitor:(id)monitor displayDidBecomeActive:(id)active;
+- (void)monitor:(id)monitor displayDidBecomeInactive:(id)inactive;
+- (void)performSynchronized:(id)synchronized;
+- (void)performSynchronizedWithCATransaction:(id)transaction;
+- (void)removeAnnotationsForKeyPath:(id)path afterDelay:(double)delay queue:(id)queue;
+- (void)setAnnotation:(id)annotation forKeyPath:(id)path;
 @end
 
 @implementation BKDisplayAnnotationController
 
-- (void)_configureReferenceSpaceLayerTransformWithScale:(double)a3
+- (void)_configureReferenceSpaceLayerTransformWithScale:(double)scale
 {
   v16 = *&CGAffineTransformIdentity.a;
   v17 = *&CGAffineTransformIdentity.c;
@@ -33,8 +33,8 @@
   v22 = 0.0;
   v23 = 0.0;
   v21 = 0;
-  v7 = [(CADisplay *)self->_display uniqueId];
-  sub_100007090(v7, &v23, &v22, 0, &v21, 0);
+  uniqueId = [(CADisplay *)self->_display uniqueId];
+  sub_100007090(uniqueId, &v23, &v22, 0, &v21, 0);
 
   if (v21 == 1)
   {
@@ -70,13 +70,13 @@
   v22 = v23;
   v23 = v12;
 LABEL_7:
-  v13 = v12 / a3;
+  v13 = v12 / scale;
   referenceSpaceLayer = self->_referenceSpaceLayer;
   *&v20.c = vrndaq_f64(v9);
   *&v20.a = vrndaq_f64(v10);
   v20.tx = round(tx);
   v20.ty = round(ty);
-  v15 = v11 / a3;
+  v15 = v11 / scale;
   [(CALayer *)referenceSpaceLayer setAffineTransform:&v20];
   [(CALayer *)self->_referenceSpaceLayer setFrame:0.0, 0.0, v13, v15];
 }
@@ -89,31 +89,31 @@ LABEL_7:
   [(BKNamespaceNode *)rootNode enumerateNodesWithOptions:1 usingBlock:&stru_1000FC0F0];
 }
 
-- (void)_lock_removeAnnotation:(id)a3
+- (void)_lock_removeAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   os_unfair_lock_assert_owner(&self->_lock);
-  [v4 setAnnotationController:0];
-  v5 = [v4 renderer];
+  [annotationCopy setAnnotationController:0];
+  renderer = [annotationCopy renderer];
 
-  [v5 didRemoveAnnotation];
+  [renderer didRemoveAnnotation];
 }
 
-- (void)_lock_CATransaction:(id)a3
+- (void)_lock_CATransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_assert_owner(&self->_lock);
   +[CATransaction begin];
-  v4[2](v4);
+  transactionCopy[2](transactionCopy);
 
   +[CATransaction flush];
 
   +[CATransaction commit];
 }
 
-- (id)_lock_supernodeForRenderingAtKeyPath:(id)a3
+- (id)_lock_supernodeForRenderingAtKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -126,32 +126,32 @@ LABEL_7:
   v9[2] = sub_10006CE98;
   v9[3] = &unk_1000FD378;
   v9[4] = &v10;
-  v6 = [(BKNamespaceNode *)rootNode enumerateKeyPathNodes:v4 options:1 ifFound:v9 ifMissing:0];
+  v6 = [(BKNamespaceNode *)rootNode enumerateKeyPathNodes:pathCopy options:1 ifFound:v9 ifMissing:0];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
   return v7;
 }
 
-- (void)performSynchronizedWithCATransaction:(id)a3
+- (void)performSynchronizedWithCATransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_lock(&self->_lock);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006CFD8;
   v6[3] = &unk_1000FC0D0;
-  v7 = v4;
-  v5 = v4;
+  v7 = transactionCopy;
+  v5 = transactionCopy;
   [(BKDisplayAnnotationController *)self _lock_CATransaction:v6];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)performSynchronized:(id)a3
+- (void)performSynchronized:(id)synchronized
 {
-  v4 = a3;
+  synchronizedCopy = synchronized;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  synchronizedCopy[2](synchronizedCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -184,8 +184,8 @@ LABEL_7:
     +[CATransaction begin];
     v3 = self->_display;
     *&v43 = 1.0;
-    v4 = [(CADisplay *)v3 uniqueId];
-    v5 = sub_10000717C(v4);
+    uniqueId = [(CADisplay *)v3 uniqueId];
+    v5 = sub_10000717C(uniqueId);
 
     if (v5)
     {
@@ -217,12 +217,12 @@ LABEL_7:
     v16 = sub_1000525A0();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(CADisplay *)self->_display uniqueId];
-      v18 = [v17 length];
+      uniqueId2 = [(CADisplay *)self->_display uniqueId];
+      v18 = [uniqueId2 length];
       v19 = BKSDisplayUUIDMainKey;
       if (v18)
       {
-        v19 = v17;
+        v19 = uniqueId2;
       }
 
       v20 = v19;
@@ -239,12 +239,12 @@ LABEL_7:
     v21 = sub_1000525A0();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(CADisplay *)self->_display uniqueId];
-      v23 = [v22 length];
+      uniqueId3 = [(CADisplay *)self->_display uniqueId];
+      v23 = [uniqueId3 length];
       v24 = BKSDisplayUUIDMainKey;
       if (v23)
       {
-        v24 = v22;
+        v24 = uniqueId3;
       }
 
       v25 = v24;
@@ -263,12 +263,12 @@ LABEL_7:
     v26 = sub_1000525A0();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(CADisplay *)self->_display uniqueId];
-      v28 = [v27 length];
+      uniqueId4 = [(CADisplay *)self->_display uniqueId];
+      v28 = [uniqueId4 length];
       v29 = BKSDisplayUUIDMainKey;
       if (v28)
       {
-        v29 = v27;
+        v29 = uniqueId4;
       }
 
       v30 = v29;
@@ -311,8 +311,8 @@ LABEL_7:
     v45[0] = &__kCFBooleanTrue;
     v44[0] = kCAContextDisplayable;
     v44[1] = kCAContextDisplayName;
-    v38 = [(CADisplay *)self->_display name];
-    v45[1] = v38;
+    name = [(CADisplay *)self->_display name];
+    v45[1] = name;
     v45[2] = &__kCFBooleanTrue;
     v44[2] = kCAContextIgnoresHitTest;
     v44[3] = kCAContextSecure;
@@ -352,10 +352,10 @@ LABEL_7:
   +[CATransaction commit];
 }
 
-- (void)monitor:(id)a3 displayDidBecomeInactive:(id)a4
+- (void)monitor:(id)monitor displayDidBecomeInactive:(id)inactive
 {
-  v5 = [a4 displayId];
-  if (v5 == [(CADisplay *)self->_display displayId])
+  displayId = [inactive displayId];
+  if (displayId == [(CADisplay *)self->_display displayId])
   {
     os_unfair_lock_lock(&self->_lock);
     [(BKDisplayAnnotationController *)self _lock_tearDownLayerTree];
@@ -364,41 +364,41 @@ LABEL_7:
   }
 }
 
-- (void)monitor:(id)a3 displayDidBecomeActive:(id)a4
+- (void)monitor:(id)monitor displayDidBecomeActive:(id)active
 {
-  v7 = a4;
-  v6 = [v7 displayId];
-  if (v6 == [(CADisplay *)self->_display displayId])
+  activeCopy = active;
+  displayId = [activeCopy displayId];
+  if (displayId == [(CADisplay *)self->_display displayId])
   {
     os_unfair_lock_lock(&self->_lock);
-    objc_storeStrong(&self->_display, a4);
+    objc_storeStrong(&self->_display, active);
     [(BKDisplayAnnotationController *)self _lock_setupLayerTree];
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)monitor:(id)a3 activeDisplayPropertiesDidChange:(id)a4
+- (void)monitor:(id)monitor activeDisplayPropertiesDidChange:(id)change
 {
-  v7 = a4;
-  v6 = [v7 displayId];
-  if (v6 == [(CADisplay *)self->_display displayId])
+  changeCopy = change;
+  displayId = [changeCopy displayId];
+  if (displayId == [(CADisplay *)self->_display displayId])
   {
     os_unfair_lock_lock(&self->_lock);
-    objc_storeStrong(&self->_display, a4);
+    objc_storeStrong(&self->_display, change);
     [(BKDisplayAnnotationController *)self _lock_updateLayerTree];
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)removeAnnotationsForKeyPath:(id)a3 afterDelay:(double)a4 queue:(id)a5
+- (void)removeAnnotationsForKeyPath:(id)path afterDelay:(double)delay queue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  queueCopy = queue;
   v10 = sub_1000525A0();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v8;
+    v18 = pathCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "remove %{public}@", buf, 0xCu);
   }
 
@@ -407,40 +407,40 @@ LABEL_7:
   v13[2] = sub_10006DB60;
   v13[3] = &unk_1000FD238;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = pathCopy;
+  delayCopy = delay;
+  v15 = queueCopy;
+  v11 = queueCopy;
+  v12 = pathCopy;
   [(BKDisplayAnnotationController *)self performSynchronizedWithCATransaction:v13];
 }
 
-- (void)setAnnotation:(id)a3 forKeyPath:(id)a4
+- (void)setAnnotation:(id)annotation forKeyPath:(id)path
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006E164;
   v8[3] = &unk_1000FC068;
-  v9 = a3;
-  v10 = self;
-  v11 = a4;
-  v6 = v11;
-  v7 = v9;
+  annotationCopy = annotation;
+  selfCopy = self;
+  pathCopy = path;
+  v6 = pathCopy;
+  v7 = annotationCopy;
   [(BKDisplayAnnotationController *)self performSynchronizedWithCATransaction:v8];
 }
 
-- (id)allAnnotationsForKeyPath:(id)a3
+- (id)allAnnotationsForKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   +[NSMutableArray array];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10006E3BC;
   v10[3] = &unk_1000FC068;
   v10[4] = self;
-  v5 = v11 = v4;
+  v5 = v11 = pathCopy;
   v12 = v5;
-  v6 = v4;
+  v6 = pathCopy;
   [(BKDisplayAnnotationController *)self performSynchronized:v10];
   v7 = v12;
   v8 = v5;
@@ -448,7 +448,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)annotationForKeyPath:(id)a3
+- (id)annotationForKeyPath:(id)path
 {
   v10 = 0;
   v11 = &v10;
@@ -461,10 +461,10 @@ LABEL_7:
   v6[2] = sub_10006E5D0;
   v6[3] = &unk_1000FD1C8;
   v9 = &v10;
-  v7 = self;
-  v3 = a3;
-  v8 = v3;
-  [(BKDisplayAnnotationController *)v7 performSynchronized:v6];
+  selfCopy = self;
+  pathCopy = path;
+  v8 = pathCopy;
+  [(BKDisplayAnnotationController *)selfCopy performSynchronized:v6];
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -497,11 +497,11 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-+ (void)performBlockForEveryAnnotationController:(id)a3
++ (void)performBlockForEveryAnnotationController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v6 = sub_10003FD10();
-  v4 = v3;
+  v4 = controllerCopy;
   if (v6)
   {
     os_unfair_lock_assert_not_owner(v6 + 2);
@@ -517,11 +517,11 @@ LABEL_7:
   }
 }
 
-+ (id)annotationControllerForDisplay:(id)a3
++ (id)annotationControllerForDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v5 = sub_10003FD10();
-  v6 = v4;
+  v6 = displayCopy;
   if (v5)
   {
     os_unfair_lock_lock((v5 + 8));
@@ -532,12 +532,12 @@ LABEL_7:
       *(v5 + 16) = v7;
     }
 
-    v9 = [v6 uniqueId];
-    v10 = [v9 length];
+    uniqueId = [v6 uniqueId];
+    v10 = [uniqueId length];
     v11 = BKSDisplayUUIDMainKey;
     if (v10)
     {
-      v12 = v9;
+      v12 = uniqueId;
     }
 
     else
@@ -562,7 +562,7 @@ LABEL_7:
         if (v17)
         {
           v17->_lock._os_unfair_lock_opaque = 0;
-          objc_storeStrong(&v17->_display, a3);
+          objc_storeStrong(&v17->_display, display);
           objc_storeStrong(&v14->_displayController, v5);
           displayController = v14->_displayController;
           if (displayController)
@@ -589,10 +589,10 @@ LABEL_7:
           }
 
           v28 = Property;
-          v29 = [(CADisplay *)v14->_display uniqueId];
-          if ([v29 length])
+          uniqueId2 = [(CADisplay *)v14->_display uniqueId];
+          if ([uniqueId2 length])
           {
-            v30 = v29;
+            v30 = uniqueId2;
           }
 
           else
@@ -614,8 +614,8 @@ LABEL_7:
           v16 = v40;
           if (([(CADisplay *)v14->_display isExternal]& 1) == 0)
           {
-            v33 = [(CADisplay *)v14->_display uniqueId];
-            v34 = sub_10000717C(v33);
+            uniqueId3 = [(CADisplay *)v14->_display uniqueId];
+            v34 = sub_10000717C(uniqueId3);
 
             if (v34)
             {

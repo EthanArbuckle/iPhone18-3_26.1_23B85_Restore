@@ -1,16 +1,16 @@
 @interface AVMediaSelection
-- (AVMediaSelection)initWithAsset:(id)a3 propertyList:(id)a4;
+- (AVMediaSelection)initWithAsset:(id)asset propertyList:(id)list;
 - (AVMediaSelectionOption)selectedMediaOptionInMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)mediaSelectionCriteriaCanBeAppliedAutomaticallyToMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup;
 - (id)_dictionaryGroupsWithSelectedOption;
-- (id)_initWithAsset:(id)a3 selectedMediaArray:(id)a4;
-- (id)_initWithAssetWithoutGroupDictionaries:(id)a3;
-- (id)_initWithDeferredLoadingOfAsset:(id)a3 selectedMediaArray:(id)a4;
-- (id)_propertyListForSelectedMediaOptionInMediaSelectionGroup:(id)a3;
+- (id)_initWithAsset:(id)asset selectedMediaArray:(id)array;
+- (id)_initWithAssetWithoutGroupDictionaries:(id)dictionaries;
+- (id)_initWithDeferredLoadingOfAsset:(id)asset selectedMediaArray:(id)array;
+- (id)_propertyListForSelectedMediaOptionInMediaSelectionGroup:(id)group;
 - (id)_selectedMediaArray;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_createDefaultMediaSelectionOptions;
 - (void)_loadiVarsIfNeeded;
@@ -19,7 +19,7 @@
 
 @implementation AVMediaSelection
 
-- (id)_initWithAsset:(id)a3 selectedMediaArray:(id)a4
+- (id)_initWithAsset:(id)asset selectedMediaArray:(id)array
 {
   v9.receiver = self;
   v9.super_class = AVMediaSelection;
@@ -30,11 +30,11 @@
     v6->_mediaSelection = v7;
     if (v7)
     {
-      v6->_mediaSelection->assetWeakReference = [a3 _weakReference];
-      v6->_mediaSelection->groupDictionaries = [objc_msgSend(a3 "_mediaSelectionGroupDictionaries")];
-      if (a4)
+      v6->_mediaSelection->assetWeakReference = [asset _weakReference];
+      v6->_mediaSelection->groupDictionaries = [objc_msgSend(asset "_mediaSelectionGroupDictionaries")];
+      if (array)
       {
-        v6->_mediaSelection->selectedMediaArray = [a4 mutableCopy];
+        v6->_mediaSelection->selectedMediaArray = [array mutableCopy];
       }
 
       else
@@ -53,7 +53,7 @@
   return v6;
 }
 
-- (id)_initWithDeferredLoadingOfAsset:(id)a3 selectedMediaArray:(id)a4
+- (id)_initWithDeferredLoadingOfAsset:(id)asset selectedMediaArray:(id)array
 {
   v9.receiver = self;
   v9.super_class = AVMediaSelection;
@@ -64,9 +64,9 @@
     v6->_mediaSelection = v7;
     if (v7)
     {
-      v6->_mediaSelection->assetWeakReference = [a3 _weakReference];
+      v6->_mediaSelection->assetWeakReference = [asset _weakReference];
       v6->_mediaSelection->groupDictionaries = 0;
-      v6->_mediaSelection->selectedMediaArray = [a4 mutableCopy];
+      v6->_mediaSelection->selectedMediaArray = [array mutableCopy];
     }
 
     else
@@ -79,7 +79,7 @@
   return v6;
 }
 
-- (id)_initWithAssetWithoutGroupDictionaries:(id)a3
+- (id)_initWithAssetWithoutGroupDictionaries:(id)dictionaries
 {
   v7.receiver = self;
   v7.super_class = AVMediaSelection;
@@ -90,7 +90,7 @@
     v4->_mediaSelection = v5;
     if (v5)
     {
-      v4->_mediaSelection->assetWeakReference = [a3 _weakReference];
+      v4->_mediaSelection->assetWeakReference = [dictionaries _weakReference];
       v4->_mediaSelection->groupDictionaries = objc_alloc_init(MEMORY[0x1E695DEC8]);
       v4->_mediaSelection->selectedMediaArray = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -137,7 +137,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v17 = self;
+  selfCopy = self;
   obj = self->_mediaSelection->groupDictionaries;
   v22 = [(NSArray *)obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v22)
@@ -219,20 +219,20 @@ LABEL_20:
     while (v22);
   }
 
-  v17->_mediaSelection->selectedMediaArray = v19;
+  selfCopy->_mediaSelection->selectedMediaArray = v19;
 }
 
-- (AVMediaSelection)initWithAsset:(id)a3 propertyList:(id)a4
+- (AVMediaSelection)initWithAsset:(id)asset propertyList:(id)list
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = self;
+    selfCopy = self;
     v15 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v10, v11, v12, v13, v14, "[propertyList isKindOfClass:[NSArray class]]"), 0}];
     objc_exception_throw(v15);
   }
 
-  return [(AVMediaSelection *)self _initWithAsset:a3 selectedMediaArray:a4];
+  return [(AVMediaSelection *)self _initWithAsset:asset selectedMediaArray:list];
 }
 
 - (void)dealloc
@@ -250,7 +250,7 @@ LABEL_20:
 - (id)_dictionaryGroupsWithSelectedOption
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   [(AVMediaSelection *)self _loadiVarsIfNeeded];
   v15 = 0u;
   v16 = 0u;
@@ -276,7 +276,7 @@ LABEL_20:
         v10 = [(AVAsset *)[(AVMediaSelection *)self asset] mediaSelectionGroupForPropertyList:v9 mediaSelectionOption:&v12];
         if (v12)
         {
-          [v3 setObject:v12 forKey:v10];
+          [dictionary setObject:v12 forKey:v10];
         }
       }
 
@@ -286,18 +286,18 @@ LABEL_20:
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [(AVMediaSelection *)self _dictionaryGroupsWithSelectedOption];
+  _dictionaryGroupsWithSelectedOption = [(AVMediaSelection *)self _dictionaryGroupsWithSelectedOption];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v3 = [_dictionaryGroupsWithSelectedOption countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v3)
   {
     v4 = v3;
@@ -312,7 +312,7 @@ LABEL_20:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_dictionaryGroupsWithSelectedOption);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
@@ -322,13 +322,13 @@ LABEL_20:
         }
 
         ++v5;
-        v7 = -[__CFString stringByAppendingFormat:](v7, "stringByAppendingFormat:", @" %@ : %@ ", [v9 _primaryMediaCharacteristic], objc_msgSend(v2, "objectForKey:", v9));
+        v7 = -[__CFString stringByAppendingFormat:](v7, "stringByAppendingFormat:", @" %@ : %@ ", [v9 _primaryMediaCharacteristic], objc_msgSend(_dictionaryGroupsWithSelectedOption, "objectForKey:", v9));
         ++v8;
       }
 
       while (v4 != v8);
       v5 = v15 + v4;
-      v4 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v4 = [_dictionaryGroupsWithSelectedOption countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v4);
@@ -345,9 +345,9 @@ LABEL_20:
   return [v11 stringWithFormat:@"<%@: %p, group characteristics and selected options = %@>", NSStringFromClass(v12), self, v10];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -358,29 +358,29 @@ LABEL_20:
     return 0;
   }
 
-  v5 = [(AVMediaSelection *)self _dictionaryGroupsWithSelectedOption];
-  v6 = [a3 _dictionaryGroupsWithSelectedOption];
+  _dictionaryGroupsWithSelectedOption = [(AVMediaSelection *)self _dictionaryGroupsWithSelectedOption];
+  _dictionaryGroupsWithSelectedOption2 = [equal _dictionaryGroupsWithSelectedOption];
 
-  return [v5 isEqualToDictionary:v6];
+  return [_dictionaryGroupsWithSelectedOption isEqualToDictionary:_dictionaryGroupsWithSelectedOption2];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(AVMediaSelection *)self _dictionaryGroupsWithSelectedOption];
+  _dictionaryGroupsWithSelectedOption = [(AVMediaSelection *)self _dictionaryGroupsWithSelectedOption];
 
-  return [v2 hash];
+  return [_dictionaryGroupsWithSelectedOption hash];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [AVMutableMediaSelection alloc];
-  v5 = [(AVMediaSelection *)self asset];
-  v6 = [(AVMediaSelection *)self _selectedMediaArray];
+  asset = [(AVMediaSelection *)self asset];
+  _selectedMediaArray = [(AVMediaSelection *)self _selectedMediaArray];
 
-  return [(AVMediaSelection *)v4 _initWithAsset:v5 selectedMediaArray:v6];
+  return [(AVMediaSelection *)v4 _initWithAsset:asset selectedMediaArray:_selectedMediaArray];
 }
 
-- (id)_propertyListForSelectedMediaOptionInMediaSelectionGroup:(id)a3
+- (id)_propertyListForSelectedMediaOptionInMediaSelectionGroup:(id)group
 {
   v19 = *MEMORY[0x1E69E9840];
   [(AVMediaSelection *)self _loadiVarsIfNeeded];
@@ -406,7 +406,7 @@ LABEL_20:
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if (([objc_msgSend(v12 objectForKey:{v9), "isEqual:", objc_msgSend(a3, "_groupID")}] & 1) != 0 || objc_msgSend(objc_msgSend(v12, "objectForKey:", v10), "isEqual:", objc_msgSend(a3, "_groupMediaType")))
+        if (([objc_msgSend(v12 objectForKey:{v9), "isEqual:", objc_msgSend(group, "_groupID")}] & 1) != 0 || objc_msgSend(objc_msgSend(v12, "objectForKey:", v10), "isEqual:", objc_msgSend(group, "_groupMediaType")))
         {
           v6 = [v12 copy];
           return v6;

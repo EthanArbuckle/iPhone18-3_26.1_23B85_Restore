@@ -1,39 +1,39 @@
 @interface RTIDocumentState
-+ (RTIDocumentState)documentStateWithRequest:(id)a3;
-+ (void)_enumerateDocumentRects:(id)a3 options:(unint64_t)a4 block:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (RTIDocumentState)documentStateWithRequest:(id)request;
++ (void)_enumerateDocumentRects:(id)rects options:(unint64_t)options block:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)caretRectInWindow;
 - (CGRect)clientFrameInEntitySpace;
 - (CGRect)clientFrameInWindow;
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3;
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3 actualRange:(_NSRange *)a4;
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3 withGranularity:(int64_t)a4;
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3 withGranularity:(int64_t)a4 isVerticalOut:(BOOL *)a5;
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3 withGranularity:(int64_t)a4 isVerticalOut:(BOOL *)a5 actualRange:(_NSRange *)a6;
+- (CGRect)firstRectForCharacterRange:(_NSRange)range;
+- (CGRect)firstRectForCharacterRange:(_NSRange)range actualRange:(_NSRange *)actualRange;
+- (CGRect)firstRectForCharacterRange:(_NSRange)range withGranularity:(int64_t)granularity;
+- (CGRect)firstRectForCharacterRange:(_NSRange)range withGranularity:(int64_t)granularity isVerticalOut:(BOOL *)out;
+- (CGRect)firstRectForCharacterRange:(_NSRange)range withGranularity:(int64_t)granularity isVerticalOut:(BOOL *)out actualRange:(_NSRange *)actualRange;
 - (CGRect)firstSelectionRectInEntitySpace;
 - (CGRect)firstSelectionRectInWindow;
 - (CGSize)displayZoom;
 - (RTIDocumentState)init;
-- (RTIDocumentState)initWithCoder:(id)a3;
-- (RTIRange)deltaRangeForSelection:(_NSRange)a3;
-- (_NSRange)deltaForSelectionRange:(_NSRange)a3;
-- (_NSRange)documentStateRangeForSelectionRange:(_NSRange)a3;
+- (RTIDocumentState)initWithCoder:(id)coder;
+- (RTIRange)deltaRangeForSelection:(_NSRange)selection;
+- (_NSRange)deltaForSelectionRange:(_NSRange)range;
+- (_NSRange)documentStateRangeForSelectionRange:(_NSRange)range;
 - (_NSRange)markedTextRange;
 - (_NSRange)selectedTextRange;
-- (_NSRange)selectionRangeForDocumentStateRange:(_NSRange)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_NSRange)selectionRangeForDocumentStateRange:(_NSRange)range;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)documentStateByMergingInDocumentState:(id)a3 mergeResultOut:(unint64_t *)a4;
-- (id)rectsForCharacterRange:(_NSRange)a3 withGranularity:(int64_t)a4;
-- (unint64_t)characterIndexForPoint:(CGPoint)a3;
-- (unint64_t)mergeInDocumentState:(id)a3;
-- (void)_enumerateDocumentRectsWithOptions:(unint64_t)a3 block:(id)a4;
-- (void)addTextRect:(CGRect)a3 forCharacterRange:(_NSRange)a4 granularity:(int64_t)a5 isVertical:(BOOL)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateRectsWithOptions:(unint64_t)a3 range:(_NSRange)a4 granularity:(int64_t)a5 block:(id)a6;
-- (void)setAttributedDocumentState:(id)a3;
-- (void)setDocumentState:(id)a3;
-- (void)setSelectedTextRange:(_NSRange)a3;
+- (id)documentStateByMergingInDocumentState:(id)state mergeResultOut:(unint64_t *)out;
+- (id)rectsForCharacterRange:(_NSRange)range withGranularity:(int64_t)granularity;
+- (unint64_t)characterIndexForPoint:(CGPoint)point;
+- (unint64_t)mergeInDocumentState:(id)state;
+- (void)_enumerateDocumentRectsWithOptions:(unint64_t)options block:(id)block;
+- (void)addTextRect:(CGRect)rect forCharacterRange:(_NSRange)range granularity:(int64_t)granularity isVertical:(BOOL)vertical;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateRectsWithOptions:(unint64_t)options range:(_NSRange)range granularity:(int64_t)granularity block:(id)block;
+- (void)setAttributedDocumentState:(id)state;
+- (void)setDocumentState:(id)state;
+- (void)setSelectedTextRange:(_NSRange)range;
 @end
 
 @implementation RTIDocumentState
@@ -82,7 +82,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(RTIDocumentState);
   if (v5)
@@ -98,7 +98,7 @@
     documentState = self->_documentState;
     if (documentState)
     {
-      v10 = [(TIDocumentState *)documentState copyWithZone:a3];
+      v10 = [(TIDocumentState *)documentState copyWithZone:zone];
       v11 = v5->_documentState;
       v5->_documentState = v10;
     }
@@ -106,7 +106,7 @@
     attributedDocumentState = self->_attributedDocumentState;
     if (attributedDocumentState)
     {
-      v13 = [(TIAttributedDocumentState *)attributedDocumentState copyWithZone:a3];
+      v13 = [(TIAttributedDocumentState *)attributedDocumentState copyWithZone:zone];
       v14 = v5->_attributedDocumentState;
       v5->_attributedDocumentState = v13;
     }
@@ -189,84 +189,84 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v23 = a3;
-  if (([v23 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The coder must allow keyed coding."];
   }
 
-  [v23 encodeInt32:self->_updateMask.integerValue forKey:@"updateMask"];
+  [coderCopy encodeInt32:self->_updateMask.integerValue forKey:@"updateMask"];
   request = self->_request;
   if (request)
   {
-    [v23 encodeObject:request forKey:@"docReq"];
+    [coderCopy encodeObject:request forKey:@"docReq"];
   }
 
   documentState = self->_documentState;
   if (documentState)
   {
-    [v23 encodeObject:documentState forKey:@"docSt"];
+    [coderCopy encodeObject:documentState forKey:@"docSt"];
   }
 
   attributedDocumentState = self->_attributedDocumentState;
   if (attributedDocumentState)
   {
     v7 = [(TIAttributedDocumentState *)attributedDocumentState documentStateWithAttributeIterator:&__block_literal_global_0];
-    [v23 encodeObject:v7 forKey:@"attrDocSt"];
+    [coderCopy encodeObject:v7 forKey:@"attrDocSt"];
   }
 
   if (self->_hasText)
   {
-    [v23 encodeBool:1 forKey:@"docHasText"];
+    [coderCopy encodeBool:1 forKey:@"docHasText"];
   }
 
   if (!CGRectIsNull(self->_caretRectInWindow))
   {
     v8 = [MEMORY[0x1E696B098] valueWithRect:{self->_caretRectInWindow.origin.x, self->_caretRectInWindow.origin.y, self->_caretRectInWindow.size.width, self->_caretRectInWindow.size.height}];
-    [v23 encodeObject:v8 forKey:@"caretRect"];
+    [coderCopy encodeObject:v8 forKey:@"caretRect"];
   }
 
   if (!CGRectIsNull(self->_firstSelectionRectInWindow))
   {
     v9 = [MEMORY[0x1E696B098] valueWithRect:{self->_firstSelectionRectInWindow.origin.x, self->_firstSelectionRectInWindow.origin.y, self->_firstSelectionRectInWindow.size.width, self->_firstSelectionRectInWindow.size.height}];
-    [v23 encodeObject:v9 forKey:@"firstRect"];
+    [coderCopy encodeObject:v9 forKey:@"firstRect"];
   }
 
   if (!CGRectIsNull(self->_clientFrameInWindow))
   {
     v10 = [MEMORY[0x1E696B098] valueWithRect:{self->_clientFrameInWindow.origin.x, self->_clientFrameInWindow.origin.y, self->_clientFrameInWindow.size.width, self->_clientFrameInWindow.size.height}];
-    [v23 encodeObject:v10 forKey:@"clientFrame"];
+    [coderCopy encodeObject:v10 forKey:@"clientFrame"];
   }
 
   if (!CGRectIsNull(self->_firstSelectionRectInEntitySpace))
   {
     v11 = [MEMORY[0x1E696B098] valueWithRect:{self->_firstSelectionRectInEntitySpace.origin.x, self->_firstSelectionRectInEntitySpace.origin.y, self->_firstSelectionRectInEntitySpace.size.width, self->_firstSelectionRectInEntitySpace.size.height}];
-    [v23 encodeObject:v11 forKey:@"firstRectEntitySpace"];
+    [coderCopy encodeObject:v11 forKey:@"firstRectEntitySpace"];
   }
 
   if (!CGRectIsNull(self->_clientFrameInEntitySpace))
   {
     v12 = [MEMORY[0x1E696B098] valueWithRect:{self->_clientFrameInEntitySpace.origin.x, self->_clientFrameInEntitySpace.origin.y, self->_clientFrameInEntitySpace.size.width, self->_clientFrameInEntitySpace.size.height}];
-    [v23 encodeObject:v12 forKey:@"clientFrameEntitySpace"];
+    [coderCopy encodeObject:v12 forKey:@"clientFrameEntitySpace"];
   }
 
   if (self->_displayZoom.width != 1.0 || self->_displayZoom.height != 1.0)
   {
     v13 = [MEMORY[0x1E696B098] valueWithSize:?];
-    [v23 encodeObject:v13 forKey:@"displayZoom"];
+    [coderCopy encodeObject:v13 forKey:@"displayZoom"];
   }
 
   if (self->_scrolling)
   {
-    [v23 encodeBool:1 forKey:@"scrolling"];
+    [coderCopy encodeBool:1 forKey:@"scrolling"];
   }
 
   documentRects = self->__documentRects;
   if (documentRects)
   {
-    [v23 encodeObject:documentRects forKey:@"docRects"];
+    [coderCopy encodeObject:documentRects forKey:@"docRects"];
   }
 
   textCheckingAnnotatedString = self->_textCheckingAnnotatedString;
@@ -275,41 +275,41 @@
     v16 = +[RTIUtilities _textAnnotationAttributes];
     v17 = [(NSAttributedString *)textCheckingAnnotatedString _ti_attributedStringByKeepingAttributes:v16];
 
-    [v23 encodeObject:v17 forKey:@"textCheckingAnnotatedString"];
+    [coderCopy encodeObject:v17 forKey:@"textCheckingAnnotatedString"];
   }
 
   autocorrectBubbleStyling = self->_autocorrectBubbleStyling;
   if (autocorrectBubbleStyling)
   {
-    [v23 encodeObject:autocorrectBubbleStyling forKey:@"acBubbleStyling"];
+    [coderCopy encodeObject:autocorrectBubbleStyling forKey:@"acBubbleStyling"];
   }
 
   autocorrectTextColor = self->_autocorrectTextColor;
-  v20 = v23;
+  v20 = coderCopy;
   if (autocorrectTextColor)
   {
-    [v23 encodeObject:autocorrectTextColor forKey:@"acTextColor"];
-    v20 = v23;
+    [coderCopy encodeObject:autocorrectTextColor forKey:@"acTextColor"];
+    v20 = coderCopy;
   }
 
   autocorrectTextBackgroundColor = self->_autocorrectTextBackgroundColor;
   if (autocorrectTextBackgroundColor)
   {
-    [v23 encodeObject:autocorrectTextBackgroundColor forKey:@"acTextBGColor"];
-    v20 = v23;
+    [coderCopy encodeObject:autocorrectTextBackgroundColor forKey:@"acTextBGColor"];
+    v20 = coderCopy;
   }
 
   insertionPointColor = self->_insertionPointColor;
   if (insertionPointColor)
   {
-    [v23 encodeObject:insertionPointColor forKey:@"insertionPointColor"];
-    v20 = v23;
+    [coderCopy encodeObject:insertionPointColor forKey:@"insertionPointColor"];
+    v20 = coderCopy;
   }
 
   [v20 encodeBool:self->_originatedFromSource forKey:@"originatedFromSource"];
   if (self->_canSuggestSupplementalItemsForCurrentSelection)
   {
-    [v23 encodeBool:1 forKey:@"supplementalLexiconForSelection"];
+    [coderCopy encodeBool:1 forKey:@"supplementalLexiconForSelection"];
   }
 }
 
@@ -360,10 +360,10 @@ void __36__RTIDocumentState_encodeWithCoder___block_invoke_2(uint64_t a1, uint64
   }
 }
 
-- (RTIDocumentState)initWithCoder:(id)a3
+- (RTIDocumentState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The decoder must allow keyed coding."];
   }
@@ -373,16 +373,16 @@ void __36__RTIDocumentState_encodeWithCoder___block_invoke_2(uint64_t a1, uint64
   v5 = [(RTIDocumentState *)&v69 init];
   if (v5)
   {
-    v5->_updateMask.integerValue = [v4 decodeInt32ForKey:@"updateMask"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"docReq"];
+    v5->_updateMask.integerValue = [coderCopy decodeInt32ForKey:@"updateMask"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"docReq"];
     request = v5->_request;
     v5->_request = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"docSt"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"docSt"];
     documentState = v5->_documentState;
     v5->_documentState = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attrDocSt"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attrDocSt"];
     attributedDocumentState = v5->_attributedDocumentState;
     v5->_attributedDocumentState = v10;
 
@@ -394,8 +394,8 @@ void __36__RTIDocumentState_encodeWithCoder___block_invoke_2(uint64_t a1, uint64
       v5->_attributedDocumentState = v13;
     }
 
-    v5->_hasText = [v4 decodeBoolForKey:@"docHasText"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"caretRect"];
+    v5->_hasText = [coderCopy decodeBoolForKey:@"docHasText"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"caretRect"];
     v16 = v15;
     if (v15)
     {
@@ -413,7 +413,7 @@ void __36__RTIDocumentState_encodeWithCoder___block_invoke_2(uint64_t a1, uint64
       v5->_caretRectInWindow.size = v21;
     }
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstRect"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstRect"];
     v23 = v22;
     if (v22)
     {
@@ -431,7 +431,7 @@ void __36__RTIDocumentState_encodeWithCoder___block_invoke_2(uint64_t a1, uint64
       v5->_firstSelectionRectInWindow.size = v28;
     }
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientFrame"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientFrame"];
     v30 = v29;
     if (v29)
     {
@@ -449,7 +449,7 @@ void __36__RTIDocumentState_encodeWithCoder___block_invoke_2(uint64_t a1, uint64
       v5->_clientFrameInWindow.size = v35;
     }
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstRectEntitySpace"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstRectEntitySpace"];
     v37 = v36;
     if (v36)
     {
@@ -467,7 +467,7 @@ void __36__RTIDocumentState_encodeWithCoder___block_invoke_2(uint64_t a1, uint64
       v5->_firstSelectionRectInEntitySpace.size = v42;
     }
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientFrameEntitySpace"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientFrameEntitySpace"];
     v44 = v43;
     if (v43)
     {
@@ -485,7 +485,7 @@ void __36__RTIDocumentState_encodeWithCoder___block_invoke_2(uint64_t a1, uint64
       v5->_clientFrameInEntitySpace.size = v49;
     }
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayZoom"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayZoom"];
     v51 = v50;
     if (v50)
     {
@@ -500,33 +500,33 @@ void __36__RTIDocumentState_encodeWithCoder___block_invoke_2(uint64_t a1, uint64
 
     v5->_displayZoom.width = v52;
     v5->_displayZoom.height = v53;
-    v5->_scrolling = [v4 decodeBoolForKey:@"scrolling"];
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"docRects"];
+    v5->_scrolling = [coderCopy decodeBoolForKey:@"scrolling"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"docRects"];
     v55 = [v54 mutableCopy];
     documentRects = v5->__documentRects;
     v5->__documentRects = v55;
 
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textCheckingAnnotatedString"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textCheckingAnnotatedString"];
     textCheckingAnnotatedString = v5->_textCheckingAnnotatedString;
     v5->_textCheckingAnnotatedString = v57;
 
-    v59 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acBubbleStyling"];
+    v59 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acBubbleStyling"];
     autocorrectBubbleStyling = v5->_autocorrectBubbleStyling;
     v5->_autocorrectBubbleStyling = v59;
 
-    v61 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acTextColor"];
+    v61 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acTextColor"];
     autocorrectTextColor = v5->_autocorrectTextColor;
     v5->_autocorrectTextColor = v61;
 
-    v63 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acTextBGColor"];
+    v63 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acTextBGColor"];
     autocorrectTextBackgroundColor = v5->_autocorrectTextBackgroundColor;
     v5->_autocorrectTextBackgroundColor = v63;
 
-    v5->_originatedFromSource = [v4 decodeBoolForKey:@"originatedFromSource"];
-    v65 = [v4 decodeBoolForKey:@"supplementalLexiconForSelection"];
+    v5->_originatedFromSource = [coderCopy decodeBoolForKey:@"originatedFromSource"];
+    v65 = [coderCopy decodeBoolForKey:@"supplementalLexiconForSelection"];
     v5->_canSuggestSupplementalItemsForCurrentSelection = v65;
     v5->_clearCanSuggestOnNextDocumentState = v65;
-    v66 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"insertionPointColor"];
+    v66 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"insertionPointColor"];
     insertionPointColor = v5->_insertionPointColor;
     v5->_insertionPointColor = v66;
   }
@@ -554,12 +554,12 @@ void *__34__RTIDocumentState_initWithCoder___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (RTIDocumentState)documentStateWithRequest:(id)a3
++ (RTIDocumentState)documentStateWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  requestCopy = request;
+  v5 = objc_alloc_init(self);
   v6 = v5[3];
-  v5[3] = v4;
+  v5[3] = requestCopy;
 
   return v5;
 }
@@ -678,10 +678,10 @@ void *__34__RTIDocumentState_initWithCoder___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -691,19 +691,19 @@ void *__34__RTIDocumentState_initWithCoder___block_invoke(uint64_t a1, void *a2)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTIDocumentState *)self request];
-      v7 = [(RTIDocumentState *)v5 request];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      request = [(RTIDocumentState *)self request];
+      request2 = [(RTIDocumentState *)v5 request];
+      v8 = request2;
+      if (request == request2)
       {
       }
 
       else
       {
-        v9 = [(RTIDocumentState *)self request];
-        v10 = [(RTIDocumentState *)v5 request];
-        v11 = [v9 isEqual:v10];
+        request3 = [(RTIDocumentState *)self request];
+        request4 = [(RTIDocumentState *)v5 request];
+        v11 = [request3 isEqual:request4];
 
         if (!v11)
         {
@@ -711,18 +711,18 @@ void *__34__RTIDocumentState_initWithCoder___block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v13 = [(RTIDocumentState *)self documentState];
-      v14 = [(RTIDocumentState *)v5 documentState];
-      v15 = v14;
-      if (v13 == v14)
+      documentState = [(RTIDocumentState *)self documentState];
+      documentState2 = [(RTIDocumentState *)v5 documentState];
+      v15 = documentState2;
+      if (documentState == documentState2)
       {
       }
 
       else
       {
-        v16 = [(RTIDocumentState *)self documentState];
-        v17 = [(RTIDocumentState *)v5 documentState];
-        v18 = [v16 isEqual:v17];
+        documentState3 = [(RTIDocumentState *)self documentState];
+        documentState4 = [(RTIDocumentState *)v5 documentState];
+        v18 = [documentState3 isEqual:documentState4];
 
         if (!v18)
         {
@@ -730,18 +730,18 @@ void *__34__RTIDocumentState_initWithCoder___block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v19 = [(RTIDocumentState *)self attributedDocumentState];
-      v20 = [(RTIDocumentState *)v5 attributedDocumentState];
-      v21 = v20;
-      if (v19 == v20)
+      attributedDocumentState = [(RTIDocumentState *)self attributedDocumentState];
+      attributedDocumentState2 = [(RTIDocumentState *)v5 attributedDocumentState];
+      v21 = attributedDocumentState2;
+      if (attributedDocumentState == attributedDocumentState2)
       {
       }
 
       else
       {
-        v22 = [(RTIDocumentState *)self attributedDocumentState];
-        v23 = [(RTIDocumentState *)v5 attributedDocumentState];
-        v24 = [v22 isEqual:v23];
+        attributedDocumentState3 = [(RTIDocumentState *)self attributedDocumentState];
+        attributedDocumentState4 = [(RTIDocumentState *)v5 attributedDocumentState];
+        v24 = [attributedDocumentState3 isEqual:attributedDocumentState4];
 
         if (!v24)
         {
@@ -749,8 +749,8 @@ void *__34__RTIDocumentState_initWithCoder___block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v25 = [(RTIDocumentState *)self hasText];
-      if (v25 == [(RTIDocumentState *)v5 hasText])
+      hasText = [(RTIDocumentState *)self hasText];
+      if (hasText == [(RTIDocumentState *)v5 hasText])
       {
         [(RTIDocumentState *)self caretRectInWindow];
         v27 = v26;
@@ -826,21 +826,21 @@ void *__34__RTIDocumentState_initWithCoder___block_invoke(uint64_t a1, void *a2)
                   goto LABEL_48;
                 }
 
-                v80 = [(RTIDocumentState *)self scrolling];
-                if (v80 == [(RTIDocumentState *)v5 scrolling])
+                scrolling = [(RTIDocumentState *)self scrolling];
+                if (scrolling == [(RTIDocumentState *)v5 scrolling])
                 {
-                  v81 = [(RTIDocumentState *)self _documentRects];
-                  v82 = [(RTIDocumentState *)v5 _documentRects];
-                  v83 = v82;
-                  if (v81 == v82)
+                  _documentRects = [(RTIDocumentState *)self _documentRects];
+                  _documentRects2 = [(RTIDocumentState *)v5 _documentRects];
+                  v83 = _documentRects2;
+                  if (_documentRects == _documentRects2)
                   {
                   }
 
                   else
                   {
-                    v84 = [(RTIDocumentState *)self _documentRects];
-                    v85 = [(RTIDocumentState *)v5 _documentRects];
-                    v86 = [v84 isEqual:v85];
+                    _documentRects3 = [(RTIDocumentState *)self _documentRects];
+                    _documentRects4 = [(RTIDocumentState *)v5 _documentRects];
+                    v86 = [_documentRects3 isEqual:_documentRects4];
 
                     if (!v86)
                     {
@@ -848,18 +848,18 @@ void *__34__RTIDocumentState_initWithCoder___block_invoke(uint64_t a1, void *a2)
                     }
                   }
 
-                  v87 = [(RTIDocumentState *)self textCheckingAnnotatedString];
-                  v88 = [(RTIDocumentState *)v5 textCheckingAnnotatedString];
-                  v89 = v88;
-                  if (v87 == v88)
+                  textCheckingAnnotatedString = [(RTIDocumentState *)self textCheckingAnnotatedString];
+                  textCheckingAnnotatedString2 = [(RTIDocumentState *)v5 textCheckingAnnotatedString];
+                  v89 = textCheckingAnnotatedString2;
+                  if (textCheckingAnnotatedString == textCheckingAnnotatedString2)
                   {
                   }
 
                   else
                   {
-                    v90 = [(RTIDocumentState *)self textCheckingAnnotatedString];
-                    v91 = [(RTIDocumentState *)v5 textCheckingAnnotatedString];
-                    v92 = [v90 isEqual:v91];
+                    textCheckingAnnotatedString3 = [(RTIDocumentState *)self textCheckingAnnotatedString];
+                    textCheckingAnnotatedString4 = [(RTIDocumentState *)v5 textCheckingAnnotatedString];
+                    v92 = [textCheckingAnnotatedString3 isEqual:textCheckingAnnotatedString4];
 
                     if (!v92)
                     {
@@ -867,18 +867,18 @@ void *__34__RTIDocumentState_initWithCoder___block_invoke(uint64_t a1, void *a2)
                     }
                   }
 
-                  v93 = [(RTIDocumentState *)self autocorrectBubbleStyling];
-                  v94 = [(RTIDocumentState *)v5 autocorrectBubbleStyling];
-                  v95 = v94;
-                  if (v93 == v94)
+                  autocorrectBubbleStyling = [(RTIDocumentState *)self autocorrectBubbleStyling];
+                  autocorrectBubbleStyling2 = [(RTIDocumentState *)v5 autocorrectBubbleStyling];
+                  v95 = autocorrectBubbleStyling2;
+                  if (autocorrectBubbleStyling == autocorrectBubbleStyling2)
                   {
                   }
 
                   else
                   {
-                    v96 = [(RTIDocumentState *)self autocorrectBubbleStyling];
-                    v97 = [(RTIDocumentState *)v5 autocorrectBubbleStyling];
-                    v98 = [v96 isEqual:v97];
+                    autocorrectBubbleStyling3 = [(RTIDocumentState *)self autocorrectBubbleStyling];
+                    autocorrectBubbleStyling4 = [(RTIDocumentState *)v5 autocorrectBubbleStyling];
+                    v98 = [autocorrectBubbleStyling3 isEqual:autocorrectBubbleStyling4];
 
                     if (!v98)
                     {
@@ -886,18 +886,18 @@ void *__34__RTIDocumentState_initWithCoder___block_invoke(uint64_t a1, void *a2)
                     }
                   }
 
-                  v99 = [(RTIDocumentState *)self autocorrectTextColor];
-                  v100 = [(RTIDocumentState *)v5 autocorrectTextColor];
-                  v101 = v100;
-                  if (v99 == v100)
+                  autocorrectTextColor = [(RTIDocumentState *)self autocorrectTextColor];
+                  autocorrectTextColor2 = [(RTIDocumentState *)v5 autocorrectTextColor];
+                  v101 = autocorrectTextColor2;
+                  if (autocorrectTextColor == autocorrectTextColor2)
                   {
                   }
 
                   else
                   {
-                    v102 = [(RTIDocumentState *)self autocorrectTextColor];
-                    v103 = [(RTIDocumentState *)v5 autocorrectTextColor];
-                    v104 = [v102 isEqual:v103];
+                    autocorrectTextColor3 = [(RTIDocumentState *)self autocorrectTextColor];
+                    autocorrectTextColor4 = [(RTIDocumentState *)v5 autocorrectTextColor];
+                    v104 = [autocorrectTextColor3 isEqual:autocorrectTextColor4];
 
                     if (!v104)
                     {
@@ -905,18 +905,18 @@ void *__34__RTIDocumentState_initWithCoder___block_invoke(uint64_t a1, void *a2)
                     }
                   }
 
-                  v105 = [(RTIDocumentState *)self autocorrectTextBackgroundColor];
-                  v106 = [(RTIDocumentState *)v5 autocorrectTextBackgroundColor];
-                  v107 = v106;
-                  if (v105 == v106)
+                  autocorrectTextBackgroundColor = [(RTIDocumentState *)self autocorrectTextBackgroundColor];
+                  autocorrectTextBackgroundColor2 = [(RTIDocumentState *)v5 autocorrectTextBackgroundColor];
+                  v107 = autocorrectTextBackgroundColor2;
+                  if (autocorrectTextBackgroundColor == autocorrectTextBackgroundColor2)
                   {
                   }
 
                   else
                   {
-                    v108 = [(RTIDocumentState *)self autocorrectTextBackgroundColor];
-                    v109 = [(RTIDocumentState *)v5 autocorrectTextBackgroundColor];
-                    v110 = [v108 isEqual:v109];
+                    autocorrectTextBackgroundColor3 = [(RTIDocumentState *)self autocorrectTextBackgroundColor];
+                    autocorrectTextBackgroundColor4 = [(RTIDocumentState *)v5 autocorrectTextBackgroundColor];
+                    v110 = [autocorrectTextBackgroundColor3 isEqual:autocorrectTextBackgroundColor4];
 
                     if (!v110)
                     {
@@ -924,24 +924,24 @@ void *__34__RTIDocumentState_initWithCoder___block_invoke(uint64_t a1, void *a2)
                     }
                   }
 
-                  v111 = [(RTIDocumentState *)self originatedFromSource];
-                  if (v111 == [(RTIDocumentState *)v5 originatedFromSource])
+                  originatedFromSource = [(RTIDocumentState *)self originatedFromSource];
+                  if (originatedFromSource == [(RTIDocumentState *)v5 originatedFromSource])
                   {
-                    v112 = [(RTIDocumentState *)self canSuggestSupplementalItemsForCurrentSelection];
-                    if (v112 == [(RTIDocumentState *)v5 canSuggestSupplementalItemsForCurrentSelection])
+                    canSuggestSupplementalItemsForCurrentSelection = [(RTIDocumentState *)self canSuggestSupplementalItemsForCurrentSelection];
+                    if (canSuggestSupplementalItemsForCurrentSelection == [(RTIDocumentState *)v5 canSuggestSupplementalItemsForCurrentSelection])
                     {
-                      v114 = [(RTIDocumentState *)self insertionPointColor];
-                      v115 = [(RTIDocumentState *)v5 insertionPointColor];
-                      if (v114 == v115)
+                      insertionPointColor = [(RTIDocumentState *)self insertionPointColor];
+                      insertionPointColor2 = [(RTIDocumentState *)v5 insertionPointColor];
+                      if (insertionPointColor == insertionPointColor2)
                       {
                         v12 = 1;
                       }
 
                       else
                       {
-                        v116 = [(RTIDocumentState *)self insertionPointColor];
-                        v117 = [(RTIDocumentState *)v5 insertionPointColor];
-                        v12 = [v116 isEqual:v117];
+                        insertionPointColor3 = [(RTIDocumentState *)self insertionPointColor];
+                        insertionPointColor4 = [(RTIDocumentState *)v5 insertionPointColor];
+                        v12 = [insertionPointColor3 isEqual:insertionPointColor4];
                       }
 
                       goto LABEL_48;
@@ -969,9 +969,9 @@ LABEL_49:
   return v12;
 }
 
-- (void)setDocumentState:(id)a3
+- (void)setDocumentState:(id)state
 {
-  objc_storeStrong(&self->_documentState, a3);
+  objc_storeStrong(&self->_documentState, state);
   if (self->_clearCanSuggestOnNextDocumentState)
   {
     self->_canSuggestSupplementalItemsForCurrentSelection = 0;
@@ -979,9 +979,9 @@ LABEL_49:
   }
 }
 
-- (void)setAttributedDocumentState:(id)a3
+- (void)setAttributedDocumentState:(id)state
 {
-  objc_storeStrong(&self->_attributedDocumentState, a3);
+  objc_storeStrong(&self->_attributedDocumentState, state);
   if (self->_clearCanSuggestOnNextDocumentState)
   {
     self->_canSuggestSupplementalItemsForCurrentSelection = 0;
@@ -989,27 +989,27 @@ LABEL_49:
   }
 }
 
-- (_NSRange)selectionRangeForDocumentStateRange:(_NSRange)a3
+- (_NSRange)selectionRangeForDocumentStateRange:(_NSRange)range
 {
-  length = a3.length;
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  length = range.length;
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     location = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    location = a3.location;
+    location = range.location;
     documentState = self->_documentState;
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(TIDocumentState *)self->_documentState truncatedRangeInSelectedText];
-      if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+      truncatedRangeInSelectedText = [(TIDocumentState *)self->_documentState truncatedRangeInSelectedText];
+      if (truncatedRangeInSelectedText != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v9 = v7;
+        v9 = truncatedRangeInSelectedText;
         v10 = v8;
-        v11 = [(TIDocumentState *)self->_documentState contextBeforeInput];
-        v12 = [v11 length] + v9;
+        contextBeforeInput = [(TIDocumentState *)self->_documentState contextBeforeInput];
+        v12 = [contextBeforeInput length] + v9;
 
         if (v12 < location || v12 - location >= length)
         {
@@ -1041,19 +1041,19 @@ LABEL_49:
   return result;
 }
 
-- (_NSRange)documentStateRangeForSelectionRange:(_NSRange)a3
+- (_NSRange)documentStateRangeForSelectionRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location != 0x7FFFFFFFFFFFFFFFLL)
+  length = range.length;
+  location = range.location;
+  if (range.location != 0x7FFFFFFFFFFFFFFFLL)
   {
     documentState = self->_documentState;
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(TIDocumentState *)self->_documentState truncatedRangeInSelectedText];
-      if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+      truncatedRangeInSelectedText = [(TIDocumentState *)self->_documentState truncatedRangeInSelectedText];
+      if (truncatedRangeInSelectedText != 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (v7 + v8 >= length)
+        if (truncatedRangeInSelectedText + v8 >= length)
         {
           v9 = 0;
         }
@@ -1077,11 +1077,11 @@ LABEL_49:
 
 - (_NSRange)selectedTextRange
 {
-  v3 = [(TIDocumentState *)self->_documentState contextBeforeInput];
-  v4 = [v3 length];
+  contextBeforeInput = [(TIDocumentState *)self->_documentState contextBeforeInput];
+  v4 = [contextBeforeInput length];
 
-  v5 = [(TIDocumentState *)self->_documentState selectedText];
-  v6 = [v5 length];
+  selectedText = [(TIDocumentState *)self->_documentState selectedText];
+  v6 = [selectedText length];
 
   v7 = v4;
   v8 = v6;
@@ -1090,10 +1090,10 @@ LABEL_49:
   return result;
 }
 
-- (void)setSelectedTextRange:(_NSRange)a3
+- (void)setSelectedTextRange:(_NSRange)range
 {
   documentState = self->_documentState;
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = [(TIDocumentState *)documentState documentStateAfterCollapsingSelection:0x7FFFFFFFFFFFFFFFLL];
     v6 = self->_documentState;
@@ -1102,13 +1102,13 @@ LABEL_49:
 
   else
   {
-    length = a3.length;
-    location = a3.location;
-    v9 = [(TIDocumentState *)documentState contextBeforeInput];
-    v10 = v9;
-    if (v9)
+    length = range.length;
+    location = range.location;
+    contextBeforeInput = [(TIDocumentState *)documentState contextBeforeInput];
+    v10 = contextBeforeInput;
+    if (contextBeforeInput)
     {
-      v11 = v9;
+      v11 = contextBeforeInput;
     }
 
     else
@@ -1118,11 +1118,11 @@ LABEL_49:
 
     v26 = v11;
 
-    v12 = [(TIDocumentState *)self->_documentState selectedText];
-    v13 = v12;
-    if (v12)
+    selectedText = [(TIDocumentState *)self->_documentState selectedText];
+    v13 = selectedText;
+    if (selectedText)
     {
-      v14 = v12;
+      v14 = selectedText;
     }
 
     else
@@ -1132,11 +1132,11 @@ LABEL_49:
 
     v15 = v14;
 
-    v16 = [(TIDocumentState *)self->_documentState contextAfterInput];
-    v17 = v16;
-    if (v16)
+    contextAfterInput = [(TIDocumentState *)self->_documentState contextAfterInput];
+    v17 = contextAfterInput;
+    if (contextAfterInput)
     {
-      v18 = v16;
+      v18 = contextAfterInput;
     }
 
     else
@@ -1190,15 +1190,15 @@ LABEL_49:
 
 - (_NSRange)markedTextRange
 {
-  v3 = [(TIDocumentState *)self->_documentState markedText];
+  markedText = [(TIDocumentState *)self->_documentState markedText];
 
-  if (v3)
+  if (markedText)
   {
-    v4 = [(TIDocumentState *)self->_documentState contextBeforeInput];
-    v5 = [v4 length];
+    contextBeforeInput = [(TIDocumentState *)self->_documentState contextBeforeInput];
+    v5 = [contextBeforeInput length];
 
-    v6 = [(TIDocumentState *)self->_documentState markedText];
-    v7 = [v6 length];
+    markedText2 = [(TIDocumentState *)self->_documentState markedText];
+    v7 = [markedText2 length];
   }
 
   else
@@ -1214,17 +1214,17 @@ LABEL_49:
   return result;
 }
 
-- (unint64_t)mergeInDocumentState:(id)a3
+- (unint64_t)mergeInDocumentState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (!stateCopy)
   {
     v18 = 0;
     goto LABEL_61;
   }
 
-  [v4 caretRectInWindow];
+  [stateCopy caretRectInWindow];
   if (CGRectIsNull(v131))
   {
     goto LABEL_4;
@@ -1420,145 +1420,145 @@ LABEL_28:
   }
 
 LABEL_29:
-  v76 = [v5 autocorrectBubbleStyling];
-  if (v76)
+  autocorrectBubbleStyling = [v5 autocorrectBubbleStyling];
+  if (autocorrectBubbleStyling)
   {
-    v77 = v76;
-    v78 = [(RTIDocumentState *)self autocorrectBubbleStyling];
-    v79 = [v5 autocorrectBubbleStyling];
-    v80 = [v78 isEqual:v79];
+    v77 = autocorrectBubbleStyling;
+    autocorrectBubbleStyling2 = [(RTIDocumentState *)self autocorrectBubbleStyling];
+    autocorrectBubbleStyling3 = [v5 autocorrectBubbleStyling];
+    v80 = [autocorrectBubbleStyling2 isEqual:autocorrectBubbleStyling3];
 
     if ((v80 & 1) == 0)
     {
-      v81 = [v5 autocorrectBubbleStyling];
-      [(RTIDocumentState *)self setAutocorrectBubbleStyling:v81];
+      autocorrectBubbleStyling4 = [v5 autocorrectBubbleStyling];
+      [(RTIDocumentState *)self setAutocorrectBubbleStyling:autocorrectBubbleStyling4];
 
       v18 |= 0x10uLL;
     }
   }
 
-  v82 = [v5 autocorrectTextColor];
-  if (v82)
+  autocorrectTextColor = [v5 autocorrectTextColor];
+  if (autocorrectTextColor)
   {
-    v83 = v82;
-    v84 = [(RTIDocumentState *)self autocorrectTextColor];
-    v85 = [v5 autocorrectTextColor];
-    v86 = [v84 isEqual:v85];
+    v83 = autocorrectTextColor;
+    autocorrectTextColor2 = [(RTIDocumentState *)self autocorrectTextColor];
+    autocorrectTextColor3 = [v5 autocorrectTextColor];
+    v86 = [autocorrectTextColor2 isEqual:autocorrectTextColor3];
 
     if ((v86 & 1) == 0)
     {
-      v87 = [v5 autocorrectTextColor];
-      [(RTIDocumentState *)self setAutocorrectTextColor:v87];
+      autocorrectTextColor4 = [v5 autocorrectTextColor];
+      [(RTIDocumentState *)self setAutocorrectTextColor:autocorrectTextColor4];
 
       v18 |= 0x10uLL;
     }
   }
 
-  v88 = [v5 autocorrectTextBackgroundColor];
-  if (v88)
+  autocorrectTextBackgroundColor = [v5 autocorrectTextBackgroundColor];
+  if (autocorrectTextBackgroundColor)
   {
-    v89 = v88;
-    v90 = [(RTIDocumentState *)self autocorrectTextBackgroundColor];
-    v91 = [v5 autocorrectTextBackgroundColor];
-    v92 = [v90 isEqual:v91];
+    v89 = autocorrectTextBackgroundColor;
+    autocorrectTextBackgroundColor2 = [(RTIDocumentState *)self autocorrectTextBackgroundColor];
+    autocorrectTextBackgroundColor3 = [v5 autocorrectTextBackgroundColor];
+    v92 = [autocorrectTextBackgroundColor2 isEqual:autocorrectTextBackgroundColor3];
 
     if ((v92 & 1) == 0)
     {
-      v93 = [v5 autocorrectTextBackgroundColor];
-      [(RTIDocumentState *)self setAutocorrectTextBackgroundColor:v93];
+      autocorrectTextBackgroundColor4 = [v5 autocorrectTextBackgroundColor];
+      [(RTIDocumentState *)self setAutocorrectTextBackgroundColor:autocorrectTextBackgroundColor4];
 
       v18 |= 0x10uLL;
     }
   }
 
-  v94 = [v5 insertionPointColor];
-  if (v94)
+  insertionPointColor = [v5 insertionPointColor];
+  if (insertionPointColor)
   {
-    v95 = v94;
-    v96 = [(RTIDocumentState *)self insertionPointColor];
-    v97 = [v5 insertionPointColor];
-    v98 = [v96 isEqual:v97];
+    v95 = insertionPointColor;
+    insertionPointColor2 = [(RTIDocumentState *)self insertionPointColor];
+    insertionPointColor3 = [v5 insertionPointColor];
+    v98 = [insertionPointColor2 isEqual:insertionPointColor3];
 
     if ((v98 & 1) == 0)
     {
-      v99 = [v5 insertionPointColor];
-      [(RTIDocumentState *)self setInsertionPointColor:v99];
+      insertionPointColor4 = [v5 insertionPointColor];
+      [(RTIDocumentState *)self setInsertionPointColor:insertionPointColor4];
 
       v18 |= 0x10uLL;
     }
   }
 
-  v100 = [v5 textCheckingAnnotatedString];
-  if (v100)
+  textCheckingAnnotatedString = [v5 textCheckingAnnotatedString];
+  if (textCheckingAnnotatedString)
   {
-    v101 = v100;
-    v102 = [(RTIDocumentState *)self textCheckingAnnotatedString];
-    v103 = [v5 textCheckingAnnotatedString];
-    v104 = [v102 isEqualToAttributedString:v103];
+    v101 = textCheckingAnnotatedString;
+    textCheckingAnnotatedString2 = [(RTIDocumentState *)self textCheckingAnnotatedString];
+    textCheckingAnnotatedString3 = [v5 textCheckingAnnotatedString];
+    v104 = [textCheckingAnnotatedString2 isEqualToAttributedString:textCheckingAnnotatedString3];
 
     if ((v104 & 1) == 0)
     {
-      v105 = [v5 textCheckingAnnotatedString];
-      v106 = [v105 copy];
+      textCheckingAnnotatedString4 = [v5 textCheckingAnnotatedString];
+      v106 = [textCheckingAnnotatedString4 copy];
       [(RTIDocumentState *)self setTextCheckingAnnotatedString:v106];
 
       v18 |= 1uLL;
     }
   }
 
-  v107 = [v5 documentState];
-  if (v107)
+  documentState = [v5 documentState];
+  if (documentState)
   {
-    v108 = v107;
-    v109 = [(RTIDocumentState *)self documentState];
-    v110 = [v5 documentState];
-    v111 = [v109 isEqual:v110];
+    v108 = documentState;
+    documentState2 = [(RTIDocumentState *)self documentState];
+    documentState3 = [v5 documentState];
+    v111 = [documentState2 isEqual:documentState3];
 
     if ((v111 & 1) == 0)
     {
-      v112 = [v5 documentState];
-      v113 = [v112 copy];
+      documentState4 = [v5 documentState];
+      v113 = [documentState4 copy];
       [(RTIDocumentState *)self setDocumentState:v113];
 
       v18 |= 1uLL;
     }
   }
 
-  v114 = [v5 attributedDocumentState];
-  if (!v114)
+  attributedDocumentState = [v5 attributedDocumentState];
+  if (!attributedDocumentState)
   {
     goto LABEL_57;
   }
 
-  v115 = v114;
+  v115 = attributedDocumentState;
   if (v18)
   {
 
     goto LABEL_56;
   }
 
-  v116 = [(RTIDocumentState *)self attributedDocumentState];
-  v117 = [v5 attributedDocumentState];
-  v118 = [v116 isEqual:v117];
+  attributedDocumentState2 = [(RTIDocumentState *)self attributedDocumentState];
+  attributedDocumentState3 = [v5 attributedDocumentState];
+  v118 = [attributedDocumentState2 isEqual:attributedDocumentState3];
 
   if ((v118 & 1) == 0)
   {
 LABEL_56:
-    v119 = [v5 attributedDocumentState];
-    v120 = [v119 copy];
+    attributedDocumentState4 = [v5 attributedDocumentState];
+    v120 = [attributedDocumentState4 copy];
     [(RTIDocumentState *)self setAttributedDocumentState:v120];
 
     v18 |= 2uLL;
   }
 
 LABEL_57:
-  v121 = [v5 _documentRects];
+  _documentRects = [v5 _documentRects];
 
-  if (v121)
+  if (_documentRects)
   {
-    v122 = [(RTIDocumentState *)self _documentRects];
-    v123 = [v5 _documentRects];
-    v124 = [v123 mutableCopy];
+    _documentRects2 = [(RTIDocumentState *)self _documentRects];
+    _documentRects3 = [v5 _documentRects];
+    v124 = [_documentRects3 mutableCopy];
     [(RTIDocumentState *)self set_documentRects:v124];
 
     if ((v18 & 1) == 0)
@@ -1581,7 +1581,7 @@ LABEL_57:
       v127[3] = &unk_1E75145E8;
       v127[4] = self;
       v127[5] = v129;
-      [v125 _enumerateDocumentRects:v122 options:0 block:v127];
+      [v125 _enumerateDocumentRects:_documentRects2 options:0 block:v127];
       _Block_object_dispose(v129, 8);
     }
 
@@ -1604,23 +1604,23 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
   }
 }
 
-- (id)documentStateByMergingInDocumentState:(id)a3 mergeResultOut:(unint64_t *)a4
+- (id)documentStateByMergingInDocumentState:(id)state mergeResultOut:(unint64_t *)out
 {
-  v6 = a3;
+  stateCopy = state;
   v7 = [(RTIDocumentState *)self copy];
-  v8 = [v7 mergeInDocumentState:v6];
+  v8 = [v7 mergeInDocumentState:stateCopy];
 
-  if (a4)
+  if (out)
   {
-    *a4 = v8;
+    *out = v8;
   }
 
   return v7;
 }
 
-- (_NSRange)deltaForSelectionRange:(_NSRange)a3
+- (_NSRange)deltaForSelectionRange:(_NSRange)range
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
     v4 = 0;
@@ -1628,8 +1628,8 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
 
   else
   {
-    length = a3.length;
-    v4 = a3.location - [(RTIDocumentState *)self selectedTextRange];
+    length = range.length;
+    v4 = range.location - [(RTIDocumentState *)self selectedTextRange];
     v3 = length - v6;
   }
 
@@ -1638,9 +1638,9 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
   return result;
 }
 
-- (RTIRange)deltaRangeForSelection:(_NSRange)a3
+- (RTIRange)deltaRangeForSelection:(_NSRange)selection
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (selection.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
     v4 = 0;
@@ -1648,8 +1648,8 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
 
   else
   {
-    length = a3.length;
-    v4 = a3.location - [(RTIDocumentState *)self selectedTextRange];
+    length = selection.length;
+    v4 = selection.location - [(RTIDocumentState *)self selectedTextRange];
     v3 = length - v6;
   }
 
@@ -1658,18 +1658,18 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
   return result;
 }
 
-- (void)addTextRect:(CGRect)a3 forCharacterRange:(_NSRange)a4 granularity:(int64_t)a5 isVertical:(BOOL)a6
+- (void)addTextRect:(CGRect)rect forCharacterRange:(_NSRange)range granularity:(int64_t)granularity isVertical:(BOOL)vertical
 {
-  v7 = a5;
-  length = a4.length;
-  location = a4.location;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = [(RTIDocumentState *)self _documentRects];
+  granularityCopy = granularity;
+  length = range.length;
+  location = range.location;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  _documentRects = [(RTIDocumentState *)self _documentRects];
 
-  if (!v15)
+  if (!_documentRects)
   {
     v16 = [MEMORY[0x1E695DF88] dataWithCapacity:640];
     [(RTIDocumentState *)self set_documentRects:v16];
@@ -1680,38 +1680,38 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
   v23 = __PAIR64__(v18, v17);
   *&v19 = width;
   *&v20 = height;
-  LODWORD(v24) = v7;
-  HIDWORD(v24) = a6;
+  LODWORD(v24) = granularityCopy;
+  HIDWORD(v24) = vertical;
   v21 = [(RTIDocumentState *)self _documentRects:__PAIR64__(length];
   [v21 appendBytes:&v22 length:32];
 }
 
-+ (void)_enumerateDocumentRects:(id)a3 options:(unint64_t)a4 block:(id)a5
++ (void)_enumerateDocumentRects:(id)rects options:(unint64_t)options block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  if (v8)
+  optionsCopy = options;
+  rectsCopy = rects;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v9 = ([v7 length] >> 5);
-    v10 = [v7 bytes];
-    v11 = v10;
+    v9 = ([rectsCopy length] >> 5);
+    bytes = [rectsCopy bytes];
+    v11 = bytes;
     v24 = 0;
-    if ((v6 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       v16 = v9 - 1;
       if ((v9 - 1) >= 0)
       {
-        v17 = (v10 + 32 * v9 - 32);
+        v17 = (bytes + 32 * v9 - 32);
         do
         {
           v18 = v17[1];
           v22 = *v17;
           v23 = v18;
-          v19 = v8[2];
+          v19 = blockCopy[2];
           v20 = v22;
           v21 = v18;
-          v19(v8, &v20, &v24);
+          v19(blockCopy, &v20, &v24);
           if (!v16)
           {
             break;
@@ -1733,10 +1733,10 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
         v13 = v11[1];
         v22 = *v11;
         v23 = v13;
-        v14 = v8[2];
+        v14 = blockCopy[2];
         v20 = v22;
         v21 = v13;
-        v14(v8, &v20, &v24);
+        v14(blockCopy, &v20, &v24);
         if (v24)
         {
           break;
@@ -1750,25 +1750,25 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
   }
 }
 
-- (void)_enumerateDocumentRectsWithOptions:(unint64_t)a3 block:(id)a4
+- (void)_enumerateDocumentRectsWithOptions:(unint64_t)options block:(id)block
 {
-  v9 = a4;
-  if (v9)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v6 = [(RTIDocumentState *)self _documentRects];
+    _documentRects = [(RTIDocumentState *)self _documentRects];
 
-    if (v6)
+    if (_documentRects)
     {
       v7 = objc_opt_class();
-      v8 = [(RTIDocumentState *)self _documentRects];
-      [v7 _enumerateDocumentRects:v8 options:a3 block:v9];
+      _documentRects2 = [(RTIDocumentState *)self _documentRects];
+      [v7 _enumerateDocumentRects:_documentRects2 options:options block:blockCopy];
     }
   }
 }
 
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3
+- (CGRect)firstRectForCharacterRange:(_NSRange)range
 {
-  [(RTIDocumentState *)self firstRectForCharacterRange:a3.location withGranularity:a3.length isVerticalOut:-1, 0];
+  [(RTIDocumentState *)self firstRectForCharacterRange:range.location withGranularity:range.length isVerticalOut:-1, 0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -1776,9 +1776,9 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
   return result;
 }
 
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3 actualRange:(_NSRange *)a4
+- (CGRect)firstRectForCharacterRange:(_NSRange)range actualRange:(_NSRange *)actualRange
 {
-  [(RTIDocumentState *)self firstRectForCharacterRange:a3.location withGranularity:a3.length isVerticalOut:-1 actualRange:0, a4];
+  [(RTIDocumentState *)self firstRectForCharacterRange:range.location withGranularity:range.length isVerticalOut:-1 actualRange:0, actualRange];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -1786,9 +1786,9 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
   return result;
 }
 
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3 withGranularity:(int64_t)a4
+- (CGRect)firstRectForCharacterRange:(_NSRange)range withGranularity:(int64_t)granularity
 {
-  [(RTIDocumentState *)self firstRectForCharacterRange:a3.location withGranularity:a3.length isVerticalOut:a4, 0];
+  [(RTIDocumentState *)self firstRectForCharacterRange:range.location withGranularity:range.length isVerticalOut:granularity, 0];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -1796,9 +1796,9 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
   return result;
 }
 
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3 withGranularity:(int64_t)a4 isVerticalOut:(BOOL *)a5
+- (CGRect)firstRectForCharacterRange:(_NSRange)range withGranularity:(int64_t)granularity isVerticalOut:(BOOL *)out
 {
-  [(RTIDocumentState *)self firstRectForCharacterRange:a3.location withGranularity:a3.length isVerticalOut:a4 actualRange:a5, 0];
+  [(RTIDocumentState *)self firstRectForCharacterRange:range.location withGranularity:range.length isVerticalOut:granularity actualRange:out, 0];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -1806,7 +1806,7 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
   return result;
 }
 
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3 withGranularity:(int64_t)a4 isVerticalOut:(BOOL *)a5 actualRange:(_NSRange *)a6
+- (CGRect)firstRectForCharacterRange:(_NSRange)range withGranularity:(int64_t)granularity isVerticalOut:(BOOL *)out actualRange:(_NSRange *)actualRange
 {
   v35 = 0;
   v36 = &v35;
@@ -1829,8 +1829,8 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
   v26[1] = 3221225472;
   v26[2] = __89__RTIDocumentState_firstRectForCharacterRange_withGranularity_isVerticalOut_actualRange___block_invoke;
   v26[3] = &unk_1E7514610;
-  v26[6] = a4;
-  v27 = a3;
+  v26[6] = granularity;
+  rangeCopy = range;
   v26[4] = &v35;
   v26[5] = &v28;
   [(RTIDocumentState *)self _enumerateDocumentRectsWithOptions:0 block:v26];
@@ -1854,7 +1854,7 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
     v15 = *(v36 + 3);
     *(v29 + 2) = *(v36 + 2);
     *(v14 + 3) = v15;
-    if (a5)
+    if (out)
     {
       goto LABEL_6;
     }
@@ -1863,19 +1863,19 @@ void __41__RTIDocumentState_mergeInDocumentState___block_invoke_2(uint64_t a1, u
   else
   {
     v14 = v29;
-    if (a5)
+    if (out)
     {
 LABEL_6:
-      *a5 = *(v14 + 60);
+      *out = *(v14 + 60);
     }
   }
 
-  if (a6)
+  if (actualRange)
   {
     v16 = *(v14 + 4);
     v17.location = v16;
     v17.length = HIDWORD(v16);
-    *a6 = v17;
+    *actualRange = v17;
   }
 
   v18 = v14[10];
@@ -1930,10 +1930,10 @@ __n128 __89__RTIDocumentState_firstRectForCharacterRange_withGranularity_isVerti
   return result;
 }
 
-- (id)rectsForCharacterRange:(_NSRange)a3 withGranularity:(int64_t)a4
+- (id)rectsForCharacterRange:(_NSRange)range withGranularity:(int64_t)granularity
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1947,7 +1947,7 @@ __n128 __89__RTIDocumentState_firstRectForCharacterRange_withGranularity_isVerti
   v10[6] = location;
   v10[7] = length;
   v10[4] = &v11;
-  v10[5] = a4;
+  v10[5] = granularity;
   [(RTIDocumentState *)self _enumerateDocumentRectsWithOptions:0 block:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -1972,23 +1972,23 @@ void __59__RTIDocumentState_rectsForCharacterRange_withGranularity___block_invok
   }
 }
 
-- (void)enumerateRectsWithOptions:(unint64_t)a3 range:(_NSRange)a4 granularity:(int64_t)a5 block:(id)a6
+- (void)enumerateRectsWithOptions:(unint64_t)options range:(_NSRange)range granularity:(int64_t)granularity block:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a6;
-  v12 = v11;
-  if (v11)
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
+  v12 = blockCopy;
+  if (blockCopy)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __70__RTIDocumentState_enumerateRectsWithOptions_range_granularity_block___block_invoke;
     v13[3] = &unk_1E7514660;
-    v15 = a5;
+    granularityCopy = granularity;
     v16 = location;
     v17 = length;
-    v14 = v11;
-    [(RTIDocumentState *)self _enumerateDocumentRectsWithOptions:a3 block:v13];
+    v14 = blockCopy;
+    [(RTIDocumentState *)self _enumerateDocumentRectsWithOptions:options block:v13];
   }
 }
 
@@ -2022,7 +2022,7 @@ NSUInteger __70__RTIDocumentState_enumerateRectsWithOptions_range_granularity_bl
   return result;
 }
 
-- (unint64_t)characterIndexForPoint:(CGPoint)a3
+- (unint64_t)characterIndexForPoint:(CGPoint)point
 {
   v7 = 0;
   v8 = &v7;
@@ -2033,7 +2033,7 @@ NSUInteger __70__RTIDocumentState_enumerateRectsWithOptions_range_granularity_bl
   v5[1] = 3221225472;
   v5[2] = __43__RTIDocumentState_characterIndexForPoint___block_invoke;
   v5[3] = &unk_1E7514688;
-  v6 = a3;
+  pointCopy = point;
   v5[4] = &v7;
   [(RTIDocumentState *)self _enumerateDocumentRectsWithOptions:0 block:v5];
   v3 = v8[4];

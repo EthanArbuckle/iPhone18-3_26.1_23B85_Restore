@@ -1,11 +1,11 @@
 @interface WBSHistoryActivityThrottler
-- (BOOL)shouldRecordHistoryVisitAtTime:(double)a3;
-- (WBSHistoryActivityThrottler)initWithLimitPerSecond:(unint64_t)a3;
+- (BOOL)shouldRecordHistoryVisitAtTime:(double)time;
+- (WBSHistoryActivityThrottler)initWithLimitPerSecond:(unint64_t)second;
 @end
 
 @implementation WBSHistoryActivityThrottler
 
-- (WBSHistoryActivityThrottler)initWithLimitPerSecond:(unint64_t)a3
+- (WBSHistoryActivityThrottler)initWithLimitPerSecond:(unint64_t)second
 {
   v10.receiver = self;
   v10.super_class = WBSHistoryActivityThrottler;
@@ -13,8 +13,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_activityLimitPerSecond = a3;
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
+    v4->_activityLimitPerSecond = second;
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:second];
     activityTimes = v5->_activityTimes;
     v5->_activityTimes = v6;
 
@@ -24,7 +24,7 @@
   return v5;
 }
 
-- (BOOL)shouldRecordHistoryVisitAtTime:(double)a3
+- (BOOL)shouldRecordHistoryVisitAtTime:(double)time
 {
   v5 = [(NSMutableArray *)self->_activityTimes count];
   activityTimes = self->_activityTimes;
@@ -33,16 +33,16 @@
     goto LABEL_4;
   }
 
-  v7 = [(NSMutableArray *)self->_activityTimes firstObject];
-  [v7 doubleValue];
+  firstObject = [(NSMutableArray *)self->_activityTimes firstObject];
+  [firstObject doubleValue];
   v9 = v8;
 
-  if (a3 - v9 >= 1.0)
+  if (time - v9 >= 1.0)
   {
-    [(NSMutableArray *)self->_activityTimes removeObjectAtIndex:0, a3 - v9];
+    [(NSMutableArray *)self->_activityTimes removeObjectAtIndex:0, time - v9];
     activityTimes = self->_activityTimes;
 LABEL_4:
-    v10 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithDouble:time];
     [(NSMutableArray *)activityTimes addObject:v10];
 
     return 1;

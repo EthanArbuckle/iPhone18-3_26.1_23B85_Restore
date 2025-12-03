@@ -1,29 +1,29 @@
 @interface AXElement
-+ (AXElement)elementWithData:(id)a3;
-+ (AXElement)elementWithUIElement:(id)a3;
++ (AXElement)elementWithData:(id)data;
++ (AXElement)elementWithUIElement:(id)element;
 + (AXElement)systemEventDispatchElement;
-+ (id)applicationAtCoordinate:(CGPoint)a3;
-+ (id)elementAtCoordinate:(CGPoint)a3 withVisualPadding:(BOOL)a4 displayID:(unsigned int)a5 allowSameProcess:(BOOL)a6;
-+ (id)elementWithAXUIElement:(__AXUIElement *)a3;
-+ (id)elementsWithUIElements:(id)a3;
++ (id)applicationAtCoordinate:(CGPoint)coordinate;
++ (id)elementAtCoordinate:(CGPoint)coordinate withVisualPadding:(BOOL)padding displayID:(unsigned int)d allowSameProcess:(BOOL)process;
++ (id)elementWithAXUIElement:(__AXUIElement *)element;
++ (id)elementsWithUIElements:(id)elements;
 + (id)primaryApp;
 + (id)systemApplication;
 + (id)systemWideElement;
 + (int)systemAppPid;
-+ (void)registerNotifications:(id)a3 withIdentifier:(id)a4 withHandler:(id)a5;
++ (void)registerNotifications:(id)notifications withIdentifier:(id)identifier withHandler:(id)handler;
 - (AXElement)accessibleAncestor;
 - (AXElement)autoscrollTarget;
 - (AXElement)currentApplication;
 - (AXElement)elementForTextInsertionAndDeletion;
-- (AXElement)initWithAXUIElement:(__AXUIElement *)a3;
-- (AXElement)initWithUIElement:(id)a3;
+- (AXElement)initWithAXUIElement:(__AXUIElement *)element;
+- (AXElement)initWithUIElement:(id)element;
 - (AXElement)remoteParent;
 - (AXElement)touchContainer;
 - (BOOL)_performActivate;
-- (BOOL)_showContextMenuWithTargetPointValue:(id)a3;
-- (BOOL)_zoomInOrOut:(BOOL)a3;
+- (BOOL)_showContextMenuWithTargetPointValue:(id)value;
+- (BOOL)_zoomInOrOut:(BOOL)out;
 - (BOOL)applicationIsModal;
-- (BOOL)autoscrollInDirection:(unint64_t)a3;
+- (BOOL)autoscrollInDirection:(unint64_t)direction;
 - (BOOL)canPerformActivate;
 - (BOOL)canPerformEscape;
 - (BOOL)canPerformSecondaryActivate;
@@ -35,7 +35,7 @@
 - (BOOL)isAutoscrolling;
 - (BOOL)isComboBox;
 - (BOOL)isDictationListening;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMap;
 - (BOOL)isPassivelyListeningForEvents;
 - (BOOL)isScreenLocked;
@@ -43,31 +43,31 @@
 - (BOOL)isSystemApplication;
 - (BOOL)isSystemWideElement;
 - (BOOL)longPress;
-- (BOOL)performAction:(int)a3;
-- (BOOL)performAction:(int)a3 withValue:(id)a4;
+- (BOOL)performAction:(int)action;
+- (BOOL)performAction:(int)action withValue:(id)value;
 - (BOOL)press;
 - (BOOL)required;
 - (BOOL)respondsToUserInteraction;
 - (BOOL)scrollToVisible;
 - (BOOL)showContextMenu;
-- (BOOL)simulateTapWithFingerIndex:(unint64_t)a3;
-- (BOOL)simulateTapWithFingerIndex:(unint64_t)a3 withPoint:(CGPoint)a4;
-- (BOOL)supportsAction:(int)a3;
-- (CGPath)convertPath:(CGPath *)a3 fromContextId:(unsigned int)a4 displayId:(unsigned int)a5;
+- (BOOL)simulateTapWithFingerIndex:(unint64_t)index;
+- (BOOL)simulateTapWithFingerIndex:(unint64_t)index withPoint:(CGPoint)point;
+- (BOOL)supportsAction:(int)action;
+- (CGPath)convertPath:(CGPath *)path fromContextId:(unsigned int)id displayId:(unsigned int)displayId;
 - (CGPath)path;
 - (CGPoint)centerPoint;
-- (CGPoint)convertPoint:(CGPoint)a3 fromContextId:(unsigned int)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 fromContextId:(unsigned int)a4 displayId:(unsigned int)a5;
-- (CGPoint)convertPoint:(CGPoint)a3 toContextId:(unsigned int)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toContextId:(unsigned int)a4 displayId:(unsigned int)a5;
+- (CGPoint)convertPoint:(CGPoint)point fromContextId:(unsigned int)id;
+- (CGPoint)convertPoint:(CGPoint)point fromContextId:(unsigned int)id displayId:(unsigned int)displayId;
+- (CGPoint)convertPoint:(CGPoint)point toContextId:(unsigned int)id;
+- (CGPoint)convertPoint:(CGPoint)point toContextId:(unsigned int)id displayId:(unsigned int)displayId;
 - (CGPoint)visiblePoint;
-- (CGRect)boundsForTextRange:(_NSRange)a3;
+- (CGRect)boundsForTextRange:(_NSRange)range;
 - (CGRect)cachedFrame;
 - (CGRect)cachedVisibleFrame;
-- (CGRect)convertRect:(CGRect)a3 fromContextId:(unsigned int)a4;
-- (CGRect)convertRect:(CGRect)a3 fromContextId:(unsigned int)a4 displayId:(unsigned int)a5;
-- (CGRect)convertRect:(CGRect)a3 toContextId:(unsigned int)a4;
-- (CGRect)convertRect:(CGRect)a3 toContextId:(unsigned int)a4 displayId:(unsigned int)a5;
+- (CGRect)convertRect:(CGRect)rect fromContextId:(unsigned int)id;
+- (CGRect)convertRect:(CGRect)rect fromContextId:(unsigned int)id displayId:(unsigned int)displayId;
+- (CGRect)convertRect:(CGRect)rect toContextId:(unsigned int)id;
+- (CGRect)convertRect:(CGRect)rect toContextId:(unsigned int)id displayId:(unsigned int)displayId;
 - (CGRect)focusableFrameForZoom;
 - (CGRect)frame;
 - (CGRect)textCursorFrame;
@@ -101,28 +101,28 @@
 - (NSURL)url;
 - (_NSRange)rowRange;
 - (_NSRange)selectedTextRange;
-- (__AXUIElement)scrollAncestorForScrollAction:(int)a3;
-- (double)distanceToElement:(id)a3;
-- (double)distanceToPoint:(CGPoint)a3;
-- (id)_axElementsForAXUIElements:(id)a3;
-- (id)_elementForAttribute:(int64_t)a3 shouldUpdateCache:(BOOL)a4 shouldFetchAttributes:(BOOL)a5;
-- (id)_makeTinkerKitRequest:(id)a3;
-- (id)_objectForRange:(_NSRange)a3 withParameterizedAttribute:(int64_t)a4;
+- (__AXUIElement)scrollAncestorForScrollAction:(int)action;
+- (double)distanceToElement:(id)element;
+- (double)distanceToPoint:(CGPoint)point;
+- (id)_axElementsForAXUIElements:(id)elements;
+- (id)_elementForAttribute:(int64_t)attribute shouldUpdateCache:(BOOL)cache shouldFetchAttributes:(BOOL)attributes;
+- (id)_makeTinkerKitRequest:(id)request;
+- (id)_objectForRange:(_NSRange)range withParameterizedAttribute:(int64_t)attribute;
 - (id)_remoteParentForContextID;
 - (id)_textOperationsOperator;
 - (id)_uiElementForTextInsertionAndDeletion;
-- (id)alternativesForTextAtPosition:(unint64_t)a3;
-- (id)auditIssuesForOptions:(id)a3;
-- (id)elementForAttribute:(int64_t)a3 parameter:(id)a4;
-- (id)elementsForAttribute:(int64_t)a3;
-- (id)elementsForAttribute:(int64_t)a3 parameter:(id)a4;
-- (id)elementsMatchingText:(id)a3;
-- (id)focusContainersForCurrentSceneIdentifier:(id)a3;
+- (id)alternativesForTextAtPosition:(unint64_t)position;
+- (id)auditIssuesForOptions:(id)options;
+- (id)elementForAttribute:(int64_t)attribute parameter:(id)parameter;
+- (id)elementsForAttribute:(int64_t)attribute;
+- (id)elementsForAttribute:(int64_t)attribute parameter:(id)parameter;
+- (id)elementsMatchingText:(id)text;
+- (id)focusContainersForCurrentSceneIdentifier:(id)identifier;
 - (id)highestAncestorGroup;
 - (id)keyboardContainer;
-- (id)makeLookingGlassRequest:(id)a3;
-- (id)nextElementsWithCount:(unint64_t)a3;
-- (id)previousElementsWithCount:(unint64_t)a3;
+- (id)makeLookingGlassRequest:(id)request;
+- (id)nextElementsWithCount:(unint64_t)count;
+- (id)previousElementsWithCount:(unint64_t)count;
 - (id)remoteApplication;
 - (id)scrollViewsForAutoScroll;
 - (id)serializeToData;
@@ -132,57 +132,57 @@
 - (unint64_t)containerType;
 - (unint64_t)scanningBehaviorTraits;
 - (unint64_t)traits;
-- (unsigned)contextIdForPoint:(CGPoint)a3;
-- (unsigned)displayIdForContextId:(unsigned int)a3;
+- (unsigned)contextIdForPoint:(CGPoint)point;
+- (unsigned)displayIdForContextId:(unsigned int)id;
 - (unsigned)windowContextId;
 - (unsigned)windowDisplayId;
 - (void)_updateLabel;
-- (void)clearCachedFrame:(BOOL)a3 cachedVisibleFrame:(BOOL)a4;
+- (void)clearCachedFrame:(BOOL)frame cachedVisibleFrame:(BOOL)visibleFrame;
 - (void)dealloc;
 - (void)decreaseAutoscrollSpeed;
 - (void)deleteText;
 - (void)increaseAutoscrollSpeed;
-- (void)insertText:(id)a3 asUndoableAction:(BOOL)a4;
-- (void)insertTextWithAlternatives:(id)a3;
+- (void)insertText:(id)text asUndoableAction:(BOOL)action;
+- (void)insertTextWithAlternatives:(id)alternatives;
 - (void)pauseAutoscrolling;
 - (void)scrollToBottom;
 - (void)scrollToTop;
-- (void)setAssistiveTechFocused:(BOOL)a3;
-- (void)setAutoscrollSpeed:(double)a3;
-- (void)setAutoscrollTarget:(id)a3;
-- (void)setPassivelyListeningForEvents:(BOOL)a3;
-- (void)setSelectedTextRange:(_NSRange)a3;
+- (void)setAssistiveTechFocused:(BOOL)focused;
+- (void)setAutoscrollSpeed:(double)speed;
+- (void)setAutoscrollTarget:(id)target;
+- (void)setPassivelyListeningForEvents:(BOOL)events;
+- (void)setSelectedTextRange:(_NSRange)range;
 @end
 
 @implementation AXElement
 
-+ (id)elementWithAXUIElement:(__AXUIElement *)a3
++ (id)elementWithAXUIElement:(__AXUIElement *)element
 {
-  v3 = [[AXElement alloc] initWithAXUIElement:a3];
+  v3 = [[AXElement alloc] initWithAXUIElement:element];
 
   return v3;
 }
 
-+ (AXElement)elementWithUIElement:(id)a3
++ (AXElement)elementWithUIElement:(id)element
 {
-  v3 = a3;
-  v4 = [[AXElement alloc] initWithUIElement:v3];
+  elementCopy = element;
+  v4 = [[AXElement alloc] initWithUIElement:elementCopy];
 
   return v4;
 }
 
-+ (id)elementsWithUIElements:(id)a3
++ (id)elementsWithUIElements:(id)elements
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  elementsCopy = elements;
+  if (elementsCopy)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = elementsCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -198,7 +198,7 @@
           }
 
           v10 = [AXElement elementWithUIElement:*(*(&v12 + 1) + 8 * i), v12];
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -210,28 +210,28 @@
 
   else
   {
-    v4 = 0;
+    array = 0;
   }
 
-  return v4;
+  return array;
 }
 
 + (id)primaryApp
 {
   v2 = +[AXElement systemWideElement];
-  v3 = [v2 systemApplication];
-  v4 = [v3 currentApplications];
-  v5 = [v4 firstObject];
+  systemApplication = [v2 systemApplication];
+  currentApplications = [systemApplication currentApplications];
+  firstObject = [currentApplications firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-+ (void)registerNotifications:(id)a3 withIdentifier:(id)a4 withHandler:(id)a5
++ (void)registerNotifications:(id)notifications withIdentifier:(id)identifier withHandler:(id)handler
 {
   v59 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  notificationsCopy = notifications;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v10 = AXRuntimeLogCommon();
@@ -242,8 +242,8 @@
   }
 
   v11 = +[AXElement systemWideElement];
-  v12 = [v11 uiElement];
-  v13 = [v12 axElement];
+  uiElement = [v11 uiElement];
+  axElement = [uiElement axElement];
 
   v14 = &AccessibilityPhysicalInteractionLibraryCore_frameworkLibrary;
   if (Observer)
@@ -253,15 +253,15 @@ LABEL_6:
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v15 = v7;
+    v15 = notificationsCopy;
     obj = v15;
     v45 = [v15 countByEnumeratingWithState:&v50 objects:v58 count:16];
     if (v45)
     {
-      v39 = v7;
-      element = v13;
-      v37 = v9;
-      v38 = v8;
+      v39 = notificationsCopy;
+      element = axElement;
+      v37 = handlerCopy;
+      v38 = identifierCopy;
       v41 = kAXErrorSuccess;
       v44 = *v51;
       do
@@ -279,8 +279,8 @@ LABEL_6:
           v48 = 0u;
           v49 = 0u;
           v18 = v14;
-          v19 = [v14[11] allValues];
-          v20 = [v19 countByEnumeratingWithState:&v46 objects:v57 count:16];
+          allValues = [v14[11] allValues];
+          v20 = [allValues countByEnumeratingWithState:&v46 objects:v57 count:16];
           if (v20)
           {
             v21 = v20;
@@ -291,7 +291,7 @@ LABEL_6:
               {
                 if (*v47 != v22)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(allValues);
                 }
 
                 v24 = [*(*(&v46 + 1) + 8 * j) objectForKey:@"notifications"];
@@ -304,7 +304,7 @@ LABEL_6:
                 }
               }
 
-              v21 = [v19 countByEnumeratingWithState:&v46 objects:v57 count:16];
+              v21 = [allValues countByEnumeratingWithState:&v46 objects:v57 count:16];
               if (v21)
               {
                 continue;
@@ -314,7 +314,7 @@ LABEL_6:
             }
           }
 
-          v41 = AXObserverAddNotification(Observer, element, [v17 intValue], a1);
+          v41 = AXObserverAddNotification(Observer, element, [v17 intValue], self);
 LABEL_21:
           v14 = v18;
         }
@@ -324,9 +324,9 @@ LABEL_21:
 
       while (v45);
 
-      v8 = v38;
-      v7 = v39;
-      v9 = v37;
+      identifierCopy = v38;
+      notificationsCopy = v39;
+      handlerCopy = v37;
       if (v41 == kAXErrorSuccess)
       {
         goto LABEL_27;
@@ -344,10 +344,10 @@ LABEL_27:
     v55[0] = @"notifications";
     v55[1] = @"handler";
     v56[0] = obj;
-    v27 = [v9 copy];
+    v27 = [handlerCopy copy];
     v56[1] = v27;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:2];
-    [v26 setObject:v28 forKey:v8];
+    [v26 setObject:v28 forKey:identifierCopy];
 
 LABEL_31:
     goto LABEL_32;
@@ -358,7 +358,7 @@ LABEL_31:
   Handlers = v29;
 
   pid = 0;
-  AXUIElementGetPid(v13, &pid);
+  AXUIElementGetPid(axElement, &pid);
   v31 = AXObserverCreate(pid, _accessibilityEventsHandler, &Observer);
   if (v31)
   {
@@ -390,13 +390,13 @@ LABEL_31:
 LABEL_32:
 }
 
-- (unsigned)displayIdForContextId:(unsigned int)a3
+- (unsigned)displayIdForContextId:(unsigned int)id
 {
-  v3 = *&a3;
+  v3 = *&id;
   valuePtr = 0;
   cf = 0;
-  v4 = [(AXElement *)self elementRef];
-  AXUIElementCopyParameterizedAttributeValue(v4, 0x16575, [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3], &cf);
+  elementRef = [(AXElement *)self elementRef];
+  AXUIElementCopyParameterizedAttributeValue(elementRef, 0x16575, [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3], &cf);
   if (cf)
   {
     v5 = CFGetTypeID(cf);
@@ -414,9 +414,9 @@ LABEL_32:
   return valuePtr;
 }
 
-- (unsigned)contextIdForPoint:(CGPoint)a3
+- (unsigned)contextIdForPoint:(CGPoint)point
 {
-  valuePtr = a3;
+  valuePtr = point;
   v8 = 0;
   cf = 0;
   v4 = AXValueCreate(kAXValueTypeCGPoint, &valuePtr);
@@ -444,12 +444,12 @@ LABEL_32:
   return v8;
 }
 
-+ (id)elementAtCoordinate:(CGPoint)a3 withVisualPadding:(BOOL)a4 displayID:(unsigned int)a5 allowSameProcess:(BOOL)a6
++ (id)elementAtCoordinate:(CGPoint)coordinate withVisualPadding:(BOOL)padding displayID:(unsigned int)d allowSameProcess:(BOOL)process
 {
-  v6 = a4;
-  y = a3.y;
-  x = a3.x;
-  v9 = [AXUIElement uiElementAtCoordinate:*&a5 displayId:a6 allowSameProcess:?];
+  paddingCopy = padding;
+  y = coordinate.y;
+  x = coordinate.x;
+  v9 = [AXUIElement uiElementAtCoordinate:*&d displayId:process allowSameProcess:?];
   v10 = [AXElement elementWithUIElement:v9];
   v11 = v10;
   if (!v9)
@@ -458,7 +458,7 @@ LABEL_32:
   }
 
   [v10 frame];
-  if (v6)
+  if (paddingCopy)
   {
     *&v12 = CGRectInset(*&v12, -5.0, -5.0);
   }
@@ -505,17 +505,17 @@ void __30__AXElement_systemWideElement__block_invoke()
   }
 }
 
-+ (id)applicationAtCoordinate:(CGPoint)a3
++ (id)applicationAtCoordinate:(CGPoint)coordinate
 {
-  y = a3.y;
-  x = a3.x;
+  y = coordinate.y;
+  x = coordinate.x;
   v5 = +[AXElement systemWideElement];
   cf = 0;
-  v6 = [v5 elementRef];
+  elementRef = [v5 elementRef];
   v7 = x;
   v8 = y;
   v9 = 0;
-  if (!AXUIElementCopyApplicationAtPosition(v6, &cf, v7, v8))
+  if (!AXUIElementCopyApplicationAtPosition(elementRef, &cf, v7, v8))
   {
     v9 = [AXElement elementWithAXUIElement:cf];
   }
@@ -534,38 +534,38 @@ void __30__AXElement_systemWideElement__block_invoke()
   v2 = +[AXElement systemWideElement];
   if (_AXSMossdeepEnabled())
   {
-    v3 = [v2 systemApplication];
+    systemApplication = [v2 systemApplication];
   }
 
   else
   {
-    v3 = v2;
+    systemApplication = v2;
   }
 
-  v4 = v3;
+  v4 = systemApplication;
 
   return v4;
 }
 
-- (AXElement)initWithAXUIElement:(__AXUIElement *)a3
+- (AXElement)initWithAXUIElement:(__AXUIElement *)element
 {
-  v4 = [AXUIElement uiElementWithAXElement:a3];
+  v4 = [AXUIElement uiElementWithAXElement:element];
   v5 = [(AXElement *)self initWithUIElement:v4];
 
   return v5;
 }
 
-- (AXElement)initWithUIElement:(id)a3
+- (AXElement)initWithUIElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = AXElement;
   v6 = [(AXElement *)&v14 init];
   v7 = v6;
   v8 = 0;
-  if (v5 && v6)
+  if (elementCopy && v6)
   {
-    objc_storeStrong(&v6->_uiElement, a3);
+    objc_storeStrong(&v6->_uiElement, element);
     v9 = *MEMORY[0x1E695F050];
     v10 = *(MEMORY[0x1E695F050] + 8);
     v11 = *(MEMORY[0x1E695F050] + 16);
@@ -578,11 +578,11 @@ void __30__AXElement_systemWideElement__block_invoke()
   return v8;
 }
 
-+ (AXElement)elementWithData:(id)a3
++ (AXElement)elementWithData:(id)data
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (v5 = _AXUIElementCreateWithData(v3)) != 0)
+  dataCopy = data;
+  v4 = dataCopy;
+  if (dataCopy && (v5 = _AXUIElementCreateWithData(dataCopy)) != 0)
   {
     v6 = v5;
     v7 = [AXElement elementWithAXUIElement:v5];
@@ -616,23 +616,23 @@ void __30__AXElement_systemWideElement__block_invoke()
   [(AXElement *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AXElement *)self uiElement];
-    v6 = [v4 uiElement];
-    v7 = v6;
-    if (v5 && v6)
+    uiElement = [(AXElement *)self uiElement];
+    uiElement2 = [equalCopy uiElement];
+    v7 = uiElement2;
+    if (uiElement && uiElement2)
     {
-      v8 = CFEqual(v5, v6) != 0;
+      v8 = CFEqual(uiElement, uiElement2) != 0;
     }
 
     else
     {
-      v8 = (v5 | v6) == 0;
+      v8 = (uiElement | uiElement2) == 0;
     }
   }
 
@@ -647,37 +647,37 @@ void __30__AXElement_systemWideElement__block_invoke()
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXElement *)self uiElement];
-  v5 = [v3 stringWithFormat:@"AXElement<%p>. uiElement:%@", self, v4];
+  uiElement = [(AXElement *)self uiElement];
+  v5 = [v3 stringWithFormat:@"AXElement<%p>. uiElement:%@", self, uiElement];
 
   return v5;
 }
 
-- (id)_elementForAttribute:(int64_t)a3 shouldUpdateCache:(BOOL)a4 shouldFetchAttributes:(BOOL)a5
+- (id)_elementForAttribute:(int64_t)attribute shouldUpdateCache:(BOOL)cache shouldFetchAttributes:(BOOL)attributes
 {
-  v5 = a5;
-  if (a4)
+  attributesCopy = attributes;
+  if (cache)
   {
-    [(AXUIElement *)self->_uiElement updateCache:a3];
+    [(AXUIElement *)self->_uiElement updateCache:attribute];
   }
 
-  v8 = [(AXUIElement *)self->_uiElement objectWithAXAttribute:a3];
+  axElement = [(AXUIElement *)self->_uiElement objectWithAXAttribute:attribute];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v8 axElement];
+    axElement = [axElement axElement];
   }
 
-  if (v8)
+  if (axElement)
   {
-    if (v5)
+    if (attributesCopy)
     {
-      v9 = [AXElement elementWithAXUIElement:v8];
+      v9 = [AXElement elementWithAXUIElement:axElement];
     }
 
     else
     {
-      v10 = [AXUIElement uiElementWithAXElement:v8 cache:0];
+      v10 = [AXUIElement uiElementWithAXElement:axElement cache:0];
       v9 = [AXElement elementWithUIElement:v10];
     }
   }
@@ -690,9 +690,9 @@ void __30__AXElement_systemWideElement__block_invoke()
   return v9;
 }
 
-- (id)elementForAttribute:(int64_t)a3 parameter:(id)a4
+- (id)elementForAttribute:(int64_t)attribute parameter:(id)parameter
 {
-  v4 = [(AXUIElement *)self->_uiElement objectWithAXAttribute:a3 parameter:a4];
+  v4 = [(AXUIElement *)self->_uiElement objectWithAXAttribute:attribute parameter:parameter];
   if (v4)
   {
     v4 = [AXElement elementWithAXUIElement:v4];
@@ -701,10 +701,10 @@ void __30__AXElement_systemWideElement__block_invoke()
   return v4;
 }
 
-- (id)elementsForAttribute:(int64_t)a3 parameter:(id)a4
+- (id)elementsForAttribute:(int64_t)attribute parameter:(id)parameter
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(AXUIElement *)self->_uiElement uiElementsWithAttribute:a3 parameter:a4];
+  v4 = [(AXUIElement *)self->_uiElement uiElementsWithAttribute:attribute parameter:parameter];
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
   v13 = 0u;
   v14 = 0u;
@@ -741,10 +741,10 @@ void __30__AXElement_systemWideElement__block_invoke()
   return v5;
 }
 
-- (id)elementsForAttribute:(int64_t)a3
+- (id)elementsForAttribute:(int64_t)attribute
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(AXUIElement *)self->_uiElement uiElementsWithAttribute:a3];
+  v3 = [(AXUIElement *)self->_uiElement uiElementsWithAttribute:attribute];
   v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
   v12 = 0u;
   v13 = 0u;
@@ -791,43 +791,43 @@ void __30__AXElement_systemWideElement__block_invoke()
 
 - (BOOL)isPassivelyListeningForEvents
 {
-  v3 = [(AXElement *)self isSystemWideElement];
-  if (v3)
+  isSystemWideElement = [(AXElement *)self isSystemWideElement];
+  if (isSystemWideElement)
   {
-    v4 = [(AXElement *)self uiElement];
-    v5 = [v4 BOOLWithAXAttribute:1002];
+    uiElement = [(AXElement *)self uiElement];
+    v5 = [uiElement BOOLWithAXAttribute:1002];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isSystemWideElement) = v5;
   }
 
-  return v3;
+  return isSystemWideElement;
 }
 
-- (void)setPassivelyListeningForEvents:(BOOL)a3
+- (void)setPassivelyListeningForEvents:(BOOL)events
 {
-  v3 = a3;
+  eventsCopy = events;
   if ([(AXElement *)self isSystemWideElement])
   {
-    v5 = [(AXElement *)self uiElement];
-    [v5 setAXAttribute:1002 withBOOL:v3];
+    uiElement = [(AXElement *)self uiElement];
+    [uiElement setAXAttribute:1002 withBOOL:eventsCopy];
   }
 }
 
 - (AXElement)currentApplication
 {
-  v2 = [(AXElement *)self currentApplications];
-  v3 = [v2 firstObject];
+  currentApplications = [(AXElement *)self currentApplications];
+  firstObject = [currentApplications firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSArray)currentApplications
 {
-  v3 = [(AXElement *)self uiElement];
-  [v3 updateCache:1102];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement updateCache:1102];
 
-  v4 = [(AXElement *)self uiElement];
-  v5 = [v4 uiElementsWithAttribute:1102];
+  uiElement2 = [(AXElement *)self uiElement];
+  v5 = [uiElement2 uiElementsWithAttribute:1102];
   v6 = [(AXElement *)self _axElementsForAXUIElements:v5];
 
   return v6;
@@ -835,11 +835,11 @@ void __30__AXElement_systemWideElement__block_invoke()
 
 - (NSArray)currentApplicationsIgnoringSiri
 {
-  v3 = [(AXElement *)self uiElement];
-  [v3 updateCache:1105];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement updateCache:1105];
 
-  v4 = [(AXElement *)self uiElement];
-  v5 = [v4 uiElementsWithAttribute:1105];
+  uiElement2 = [(AXElement *)self uiElement];
+  v5 = [uiElement2 uiElementsWithAttribute:1105];
   v6 = [(AXElement *)self _axElementsForAXUIElements:v5];
 
   return v6;
@@ -847,16 +847,16 @@ void __30__AXElement_systemWideElement__block_invoke()
 
 - (BOOL)applicationIsModal
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 BOOLWithAXAttribute:1514];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement BOOLWithAXAttribute:1514];
 
   return v3;
 }
 
 - (NSArray)focusedOccludedAppSceneIdentifiers
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 arrayWithAXAttribute:1519];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement arrayWithAXAttribute:1519];
 
   return v3;
 }
@@ -876,9 +876,9 @@ void __30__AXElement_systemWideElement__block_invoke()
   return pid;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toContextId:(unsigned int)a4
+- (CGRect)convertRect:(CGRect)rect toContextId:(unsigned int)id
 {
-  [(AXElement *)self convertRect:*&a4 toContextId:0 displayId:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AXElement *)self convertRect:*&id toContextId:0 displayId:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -886,13 +886,13 @@ void __30__AXElement_systemWideElement__block_invoke()
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toContextId:(unsigned int)a4 displayId:(unsigned int)a5
+- (CGRect)convertRect:(CGRect)rect toContextId:(unsigned int)id displayId:(unsigned int)displayId
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&displayId;
+  v6 = *&id;
   v18[3] = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v8 = AXValueCreate(kAXValueTypeCGRect, &v17);
+  rectCopy = rect;
+  v8 = AXValueCreate(kAXValueTypeCGRect, &rectCopy);
   uiElement = self->_uiElement;
   v18[0] = v8;
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
@@ -908,13 +908,13 @@ void __30__AXElement_systemWideElement__block_invoke()
 
   if (v12)
   {
-    AXValueGetValue(v12, kAXValueTypeCGRect, &v17);
+    AXValueGetValue(v12, kAXValueTypeCGRect, &rectCopy);
   }
 
-  width = v17.size.width;
-  height = v17.size.height;
-  x = v17.origin.x;
-  y = v17.origin.y;
+  width = rectCopy.size.width;
+  height = rectCopy.size.height;
+  x = rectCopy.origin.x;
+  y = rectCopy.origin.y;
   result.size.height = height;
   result.size.width = width;
   result.origin.y = y;
@@ -922,9 +922,9 @@ void __30__AXElement_systemWideElement__block_invoke()
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromContextId:(unsigned int)a4
+- (CGRect)convertRect:(CGRect)rect fromContextId:(unsigned int)id
 {
-  [(AXElement *)self convertRect:*&a4 fromContextId:0 displayId:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AXElement *)self convertRect:*&id fromContextId:0 displayId:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -932,13 +932,13 @@ void __30__AXElement_systemWideElement__block_invoke()
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromContextId:(unsigned int)a4 displayId:(unsigned int)a5
+- (CGRect)convertRect:(CGRect)rect fromContextId:(unsigned int)id displayId:(unsigned int)displayId
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&displayId;
+  v6 = *&id;
   v18[3] = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v8 = AXValueCreate(kAXValueTypeCGRect, &v17);
+  rectCopy = rect;
+  v8 = AXValueCreate(kAXValueTypeCGRect, &rectCopy);
   uiElement = self->_uiElement;
   v18[0] = v8;
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
@@ -954,13 +954,13 @@ void __30__AXElement_systemWideElement__block_invoke()
 
   if (v12)
   {
-    AXValueGetValue(v12, kAXValueTypeCGRect, &v17);
+    AXValueGetValue(v12, kAXValueTypeCGRect, &rectCopy);
   }
 
-  width = v17.size.width;
-  height = v17.size.height;
-  x = v17.origin.x;
-  y = v17.origin.y;
+  width = rectCopy.size.width;
+  height = rectCopy.size.height;
+  x = rectCopy.origin.x;
+  y = rectCopy.origin.y;
   result.size.height = height;
   result.size.width = width;
   result.origin.y = y;
@@ -968,41 +968,41 @@ void __30__AXElement_systemWideElement__block_invoke()
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromContextId:(unsigned int)a4
+- (CGPoint)convertPoint:(CGPoint)point fromContextId:(unsigned int)id
 {
-  [(AXElement *)self convertPoint:*&a4 fromContextId:0 displayId:a3.x, a3.y];
+  [(AXElement *)self convertPoint:*&id fromContextId:0 displayId:point.x, point.y];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromContextId:(unsigned int)a4 displayId:(unsigned int)a5
+- (CGPoint)convertPoint:(CGPoint)point fromContextId:(unsigned int)id displayId:(unsigned int)displayId
 {
-  v5 = AXConvertPointFromHostedCoordinates(*&a4, *&a5, a3.x, a3.y);
+  v5 = AXConvertPointFromHostedCoordinates(*&id, *&displayId, point.x, point.y);
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toContextId:(unsigned int)a4
+- (CGPoint)convertPoint:(CGPoint)point toContextId:(unsigned int)id
 {
-  [(AXElement *)self convertPoint:*&a4 toContextId:0 displayId:a3.x, a3.y];
+  [(AXElement *)self convertPoint:*&id toContextId:0 displayId:point.x, point.y];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toContextId:(unsigned int)a4 displayId:(unsigned int)a5
+- (CGPoint)convertPoint:(CGPoint)point toContextId:(unsigned int)id displayId:(unsigned int)displayId
 {
-  v5 = AXConvertPointToHostedCoordinates(*&a4, *&a5, a3.x, a3.y);
+  v5 = AXConvertPointToHostedCoordinates(*&id, *&displayId, point.x, point.y);
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (CGPath)convertPath:(CGPath *)a3 fromContextId:(unsigned int)a4 displayId:(unsigned int)a5
+- (CGPath)convertPath:(CGPath *)path fromContextId:(unsigned int)id displayId:(unsigned int)displayId
 {
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
@@ -1012,11 +1012,11 @@ void __30__AXElement_systemWideElement__block_invoke()
   v11[1] = 3221225472;
   v11[2] = __49__AXElement_convertPath_fromContextId_displayId___block_invoke;
   v11[3] = &unk_1E80D44A8;
-  v12 = a4;
-  v13 = a5;
+  idCopy = id;
+  displayIdCopy = displayId;
   v11[4] = self;
   v11[5] = Mutable;
-  AX_CGPathEnumerateElementsUsingBlock(a3, v11);
+  AX_CGPathEnumerateElementsUsingBlock(path, v11);
   return CFAutorelease(Mutable);
 }
 
@@ -1095,16 +1095,16 @@ void __49__AXElement_convertPath_fromContextId_displayId___block_invoke(uint64_t
   }
 }
 
-- (void)clearCachedFrame:(BOOL)a3 cachedVisibleFrame:(BOOL)a4
+- (void)clearCachedFrame:(BOOL)frame cachedVisibleFrame:(BOOL)visibleFrame
 {
-  v4 = a4;
+  visibleFrameCopy = visibleFrame;
   v6 = MEMORY[0x1E695F050];
-  if (a3)
+  if (frame)
   {
     [(AXElement *)self setCachedFrame:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
   }
 
-  if (v4)
+  if (visibleFrameCopy)
   {
     v7 = *v6;
     v8 = v6[1];
@@ -1117,17 +1117,17 @@ void __49__AXElement_convertPath_fromContextId_displayId___block_invoke(uint64_t
 
 - (int64_t)applicationOrientation
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 numberWithAXAttribute:1503];
-  v4 = [v3 intValue];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement numberWithAXAttribute:1503];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)isScreenLocked
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 BOOLWithAXAttribute:1500];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement BOOLWithAXAttribute:1500];
 
   return v3;
 }
@@ -1143,23 +1143,23 @@ void __49__AXElement_convertPath_fromContextId_displayId___block_invoke(uint64_t
 
 - (BOOL)isSpringBoard
 {
-  v2 = [(AXElement *)self bundleId];
-  v3 = [v2 isEqualToString:@"com.apple.springboard"];
+  bundleId = [(AXElement *)self bundleId];
+  v3 = [bundleId isEqualToString:@"com.apple.springboard"];
 
   return v3;
 }
 
 - (BOOL)isSystemApplication
 {
-  v2 = [(AXElement *)self bundleId];
-  if ([v2 isEqualToString:@"com.apple.springboard"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"com.apple.PineBoard") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"com.apple.Carousel"))
+  bundleId = [(AXElement *)self bundleId];
+  if ([bundleId isEqualToString:@"com.apple.springboard"] & 1) != 0 || (objc_msgSend(bundleId, "isEqualToString:", @"com.apple.PineBoard") & 1) != 0 || (objc_msgSend(bundleId, "isEqualToString:", @"com.apple.Carousel"))
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:@"com.apple.ClarityBoard"];
+    v3 = [bundleId isEqualToString:@"com.apple.ClarityBoard"];
   }
 
   return v3;
@@ -1175,8 +1175,8 @@ void __49__AXElement_convertPath_fromContextId_displayId___block_invoke(uint64_t
 
 - (BOOL)isAXUIServer
 {
-  v2 = [(AXElement *)self bundleId];
-  v3 = [v2 isEqualToString:@"com.apple.AccessibilityUIServer"];
+  bundleId = [(AXElement *)self bundleId];
+  v3 = [bundleId isEqualToString:@"com.apple.AccessibilityUIServer"];
 
   return v3;
 }
@@ -1221,14 +1221,14 @@ void __49__AXElement_convertPath_fromContextId_displayId___block_invoke(uint64_t
   return v4;
 }
 
-- (id)focusContainersForCurrentSceneIdentifier:(id)a3
+- (id)focusContainersForCurrentSceneIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(v4);
-  if (v5)
+  if (identifierCopy)
   {
-    v7 = v5;
+    v7 = identifierCopy;
   }
 
   else
@@ -1256,21 +1256,21 @@ void __54__AXElement_focusContainersForCurrentSceneIdentifier___block_invoke(uin
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)elementsMatchingText:(id)a3
+- (id)elementsMatchingText:(id)text
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AB08];
-  v5 = a3;
-  v6 = [v4 whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  textCopy = text;
+  whitespaceAndNewlineCharacterSet = [v4 whitespaceAndNewlineCharacterSet];
+  v7 = [textCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  [v8 setObject:v7 forKey:@"searchText"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v7 forKey:@"searchText"];
   v9 = [MEMORY[0x1E696AD98] numberWithInt:0];
-  [v8 setObject:v9 forKey:@"resultLimit"];
+  [dictionary setObject:v9 forKey:@"resultLimit"];
 
-  v10 = [(AXUIElement *)self->_uiElement uiElementsWithAttribute:92516 parameter:v8];
-  v11 = [MEMORY[0x1E695DF70] array];
+  v10 = [(AXUIElement *)self->_uiElement uiElementsWithAttribute:92516 parameter:dictionary];
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1293,7 +1293,7 @@ void __54__AXElement_focusContainersForCurrentSceneIdentifier___block_invoke(uin
         v17 = [AXElement elementWithAXUIElement:*(*(&v19 + 1) + 8 * i), v19];
         if (v17)
         {
-          [v11 addObject:v17];
+          [array addObject:v17];
         }
       }
 
@@ -1303,7 +1303,7 @@ void __54__AXElement_focusContainersForCurrentSceneIdentifier___block_invoke(uin
     while (v14);
   }
 
-  return v11;
+  return array;
 }
 
 - (id)remoteApplication
@@ -1322,10 +1322,10 @@ void __54__AXElement_focusContainersForCurrentSceneIdentifier___block_invoke(uin
 
 - (NSString)speechInputLabel
 {
-  v2 = [(AXElement *)self userInputLabels];
-  v3 = [v2 firstObject];
+  userInputLabels = [(AXElement *)self userInputLabels];
+  firstObject = [userInputLabels firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSURL)url
@@ -1360,14 +1360,14 @@ void __54__AXElement_focusContainersForCurrentSceneIdentifier___block_invoke(uin
 - (unint64_t)traits
 {
   v2 = [(AXUIElement *)self->_uiElement numberWithAXAttribute:2004];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
-- (id)auditIssuesForOptions:(id)a3
+- (id)auditIssuesForOptions:(id)options
 {
-  v3 = [(AXUIElement *)self->_uiElement objectWithAXAttribute:95005 parameter:a3];
+  v3 = [(AXUIElement *)self->_uiElement objectWithAXAttribute:95005 parameter:options];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1499,16 +1499,16 @@ void __54__AXElement_focusContainersForCurrentSceneIdentifier___block_invoke(uin
 - (unint64_t)containerType
 {
   v2 = [(AXUIElement *)self->_uiElement numberWithAXAttribute:2187];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (AXElement)touchContainer
 {
-  v3 = [(AXElement *)self containerTypes];
+  containerTypes = [(AXElement *)self containerTypes];
   v4 = &unk_1F3E6BFE8;
-  if (([v3 containsObject:&unk_1F3E6BFE8] & 1) != 0 || (v4 = &unk_1F3E6C000, (objc_msgSend(v3, "containsObject:", &unk_1F3E6C000)) || (v4 = &unk_1F3E6C018, (objc_msgSend(v3, "containsObject:", &unk_1F3E6C018)) || (v4 = &unk_1F3E6C030, (objc_msgSend(v3, "containsObject:", &unk_1F3E6C030)) || (v4 = &unk_1F3E6C048, (objc_msgSend(v3, "containsObject:", &unk_1F3E6C048)) || (v4 = &unk_1F3E6C060, (objc_msgSend(v3, "containsObject:", &unk_1F3E6C060)) || (v4 = &unk_1F3E6C078, (objc_msgSend(v3, "containsObject:", &unk_1F3E6C078)) || (v4 = &unk_1F3E6C090, objc_msgSend(v3, "containsObject:", &unk_1F3E6C090))) && (v5 = -[AXUIElement objectWithAXAttribute:parameter:](self->_uiElement, "objectWithAXAttribute:parameter:", 92515, v4)) != 0 && (v6 = v5, v7 = CFGetTypeID(v5), v7 == AXUIElementGetTypeID()) || (-[AXUIElement updateCache:](self->_uiElement, "updateCache:", 2012), (v8 = -[AXUIElement objectWithAXAttribute:](self->_uiElement, "objectWithAXAttribute:", 2012)) != 0) && (v6 = v8, v9 = CFGetTypeID(v8), v9 == AXUIElementGetTypeID()))
+  if (([containerTypes containsObject:&unk_1F3E6BFE8] & 1) != 0 || (v4 = &unk_1F3E6C000, (objc_msgSend(containerTypes, "containsObject:", &unk_1F3E6C000)) || (v4 = &unk_1F3E6C018, (objc_msgSend(containerTypes, "containsObject:", &unk_1F3E6C018)) || (v4 = &unk_1F3E6C030, (objc_msgSend(containerTypes, "containsObject:", &unk_1F3E6C030)) || (v4 = &unk_1F3E6C048, (objc_msgSend(containerTypes, "containsObject:", &unk_1F3E6C048)) || (v4 = &unk_1F3E6C060, (objc_msgSend(containerTypes, "containsObject:", &unk_1F3E6C060)) || (v4 = &unk_1F3E6C078, (objc_msgSend(containerTypes, "containsObject:", &unk_1F3E6C078)) || (v4 = &unk_1F3E6C090, objc_msgSend(containerTypes, "containsObject:", &unk_1F3E6C090))) && (v5 = -[AXUIElement objectWithAXAttribute:parameter:](self->_uiElement, "objectWithAXAttribute:parameter:", 92515, v4)) != 0 && (v6 = v5, v7 = CFGetTypeID(v5), v7 == AXUIElementGetTypeID()) || (-[AXUIElement updateCache:](self->_uiElement, "updateCache:", 2012), (v8 = -[AXUIElement objectWithAXAttribute:](self->_uiElement, "objectWithAXAttribute:", 2012)) != 0) && (v6 = v8, v9 = CFGetTypeID(v8), v9 == AXUIElementGetTypeID()))
   {
     v10 = [AXElement elementWithAXUIElement:v6];
   }
@@ -1544,11 +1544,11 @@ void __54__AXElement_focusContainersForCurrentSceneIdentifier___block_invoke(uin
 
 - (NSArray)accessibleDescendants
 {
-  v3 = [(AXElement *)self uiElement];
-  [v3 updateCache:2095];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement updateCache:2095];
 
-  v4 = [(AXElement *)self uiElement];
-  v5 = [v4 uiElementsWithAttribute:2095];
+  uiElement2 = [(AXElement *)self uiElement];
+  v5 = [uiElement2 uiElementsWithAttribute:2095];
   v6 = [(AXElement *)self _axElementsForAXUIElements:v5];
 
   return v6;
@@ -1556,26 +1556,26 @@ void __54__AXElement_focusContainersForCurrentSceneIdentifier___block_invoke(uin
 
 - (id)keyboardContainer
 {
-  v2 = [(AXElement *)self parentGroup];
-  if (v2)
+  parentGroup = [(AXElement *)self parentGroup];
+  if (parentGroup)
   {
-    while (![v2 isKeyboardContainer])
+    while (![parentGroup isKeyboardContainer])
     {
-      v3 = [v2 parentGroup];
+      v2ParentGroup = [parentGroup parentGroup];
 
-      v2 = v3;
-      if (!v3)
+      parentGroup = v2ParentGroup;
+      if (!v2ParentGroup)
       {
         goto LABEL_6;
       }
     }
 
-    v2 = v2;
+    parentGroup = parentGroup;
   }
 
 LABEL_6:
 
-  return v2;
+  return parentGroup;
 }
 
 - (BOOL)isMap
@@ -1585,19 +1585,19 @@ LABEL_6:
     return 1;
   }
 
-  v4 = [(AXElement *)self touchContainer];
-  v5 = [v4 hasAnyTraits:0x1000000000];
+  touchContainer = [(AXElement *)self touchContainer];
+  v5 = [touchContainer hasAnyTraits:0x1000000000];
 
   return v5;
 }
 
 - (NSArray)variantKeys
 {
-  v3 = [(AXElement *)self uiElement];
-  [v3 updateCache:12002];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement updateCache:12002];
 
-  v4 = [(AXElement *)self uiElement];
-  v5 = [v4 uiElementsWithAttribute:12002];
+  uiElement2 = [(AXElement *)self uiElement];
+  v5 = [uiElement2 uiElementsWithAttribute:12002];
   v6 = [(AXElement *)self _axElementsForAXUIElements:v5];
 
   return v6;
@@ -1605,55 +1605,55 @@ LABEL_6:
 
 - (BOOL)hasVariantKeys
 {
-  v3 = [(AXElement *)self uiElement];
-  [v3 updateCache:12003];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement updateCache:12003];
 
-  v4 = [(AXElement *)self uiElement];
-  LOBYTE(v3) = [v4 BOOLWithAXAttribute:12003];
+  uiElement2 = [(AXElement *)self uiElement];
+  LOBYTE(uiElement) = [uiElement2 BOOLWithAXAttribute:12003];
 
-  return v3;
+  return uiElement;
 }
 
 - (id)_textOperationsOperator
 {
-  v2 = self;
-  if ([(AXElement *)v2 hasWebContent])
+  selfCopy = self;
+  if ([(AXElement *)selfCopy hasWebContent])
   {
-    v3 = [(AXElement *)v2 elementForAttribute:2011];
+    v3 = [(AXElement *)selfCopy elementForAttribute:2011];
 
-    v2 = v3;
+    selfCopy = v3;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSArray)textOperations
 {
-  v2 = [(AXElement *)self _textOperationsOperator];
-  v3 = [v2 uiElement];
-  [v3 updateCache:2010];
+  _textOperationsOperator = [(AXElement *)self _textOperationsOperator];
+  uiElement = [_textOperationsOperator uiElement];
+  [uiElement updateCache:2010];
 
-  v4 = [v2 uiElement];
-  v5 = [v4 objectWithAXAttribute:2010];
+  uiElement2 = [_textOperationsOperator uiElement];
+  v5 = [uiElement2 objectWithAXAttribute:2010];
 
   return v5;
 }
 
 - (NSArray)typingCandidates
 {
-  v3 = [(AXElement *)self uiElement];
-  v4 = [v3 uiElementsWithAttribute:3004];
+  uiElement = [(AXElement *)self uiElement];
+  v4 = [uiElement uiElementsWithAttribute:3004];
   v5 = [(AXElement *)self _axElementsForAXUIElements:v4];
 
   return v5;
 }
 
-- (void)setAssistiveTechFocused:(BOOL)a3
+- (void)setAssistiveTechFocused:(BOOL)focused
 {
-  v3 = a3;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v7 setObject:v5 forKey:@"focused"];
+  focusedCopy = focused;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:focusedCopy];
+  [dictionary setObject:v5 forKey:@"focused"];
 
   if (setAssistiveTechFocused__onceToken != -1)
   {
@@ -1675,9 +1675,9 @@ LABEL_6:
     v6 = @"UIAccessibilityNotificationVoiceOverIdentifier";
   }
 
-  [v7 setObject:v6 forKey:@"assistiveTech"];
+  [dictionary setObject:v6 forKey:@"assistiveTech"];
 LABEL_8:
-  [(AXUIElement *)self->_uiElement setAXAttribute:2018 withObject:v7 synchronous:0];
+  [(AXUIElement *)self->_uiElement setAXAttribute:2018 withObject:dictionary synchronous:0];
 }
 
 void __37__AXElement_setAssistiveTechFocused___block_invoke()
@@ -1701,39 +1701,39 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
 
 - (NSArray)customActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(AXElement *)self remoteParent];
-  v5 = v4;
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  remoteParent = [(AXElement *)self remoteParent];
+  v5 = remoteParent;
+  if (remoteParent)
   {
-    v6 = [v4 customActions];
-    if ([v6 count])
+    customActions = [remoteParent customActions];
+    if ([customActions count])
     {
-      [v3 addObjectsFromArray:v6];
+      [array addObjectsFromArray:customActions];
     }
   }
 
-  v7 = [(AXElement *)self uiElement];
-  v8 = [v7 arrayWithAXAttribute:2036];
+  uiElement = [(AXElement *)self uiElement];
+  v8 = [uiElement arrayWithAXAttribute:2036];
 
   if ([v8 count])
   {
-    [v3 addObjectsFromArray:v8];
+    [array addObjectsFromArray:v8];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)drags
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(AXElement *)self uiElement];
-  v5 = [v4 arrayWithAXAttribute:2175];
+  uiElement = [(AXElement *)self uiElement];
+  v5 = [uiElement arrayWithAXAttribute:2175];
 
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
@@ -1752,7 +1752,7 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
         v10 = *(*(&v12 + 1) + 8 * i);
         if (AXValidateDictionaryAsDragWireFormat(v10))
         {
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -1762,19 +1762,19 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)drops
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(AXElement *)self uiElement];
-  v5 = [v4 arrayWithAXAttribute:2176];
+  uiElement = [(AXElement *)self uiElement];
+  v5 = [uiElement arrayWithAXAttribute:2176];
 
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
@@ -1793,7 +1793,7 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
         v10 = *(*(&v12 + 1) + 8 * i);
         if (AXValidateDictionaryAsDropWireFormat(v10))
         {
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -1803,21 +1803,21 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)roleDescription
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 stringWithAXAttribute:2077];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement stringWithAXAttribute:2077];
 
   return v3;
 }
 
 - (_NSRange)rowRange
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 rangeWithAXAttribute:2027];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement rangeWithAXAttribute:2027];
   v5 = v4;
 
   v6 = v3;
@@ -1829,35 +1829,35 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
 
 - (NSString)textualContext
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 stringWithAXAttribute:2193];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement stringWithAXAttribute:2193];
 
   return v3;
 }
 
 - (BOOL)isComboBox
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 BOOLWithAXAttribute:2030];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement BOOLWithAXAttribute:2030];
 
   return v3;
 }
 
 - (BOOL)required
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 BOOLWithAXAttribute:2029];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement BOOLWithAXAttribute:2029];
 
   return v3;
 }
 
 - (_NSRange)selectedTextRange
 {
-  v3 = [(AXElement *)self uiElement];
-  [v3 updateCache:2005];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement updateCache:2005];
 
-  v4 = [(AXElement *)self uiElement];
-  v5 = [v4 rangeWithAXAttribute:2005];
+  uiElement2 = [(AXElement *)self uiElement];
+  v5 = [uiElement2 rangeWithAXAttribute:2005];
   v7 = v6;
 
   v8 = v5;
@@ -1867,22 +1867,22 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
   return result;
 }
 
-- (void)setSelectedTextRange:(_NSRange)a3
+- (void)setSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(AXElement *)self uiElement];
-  [v5 setAXAttribute:2005 withRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement setAXAttribute:2005 withRange:{location, length}];
 }
 
-- (id)_objectForRange:(_NSRange)a3 withParameterizedAttribute:(int64_t)a4
+- (id)_objectForRange:(_NSRange)range withParameterizedAttribute:(int64_t)attribute
 {
-  v10 = a3;
-  v6 = AXValueCreate(kAXValueTypeCFRange, &v10);
+  rangeCopy = range;
+  v6 = AXValueCreate(kAXValueTypeCFRange, &rangeCopy);
   if (v6)
   {
     v7 = v6;
-    v8 = [(AXUIElement *)self->_uiElement objectWithAXAttribute:a4 parameter:v6];
+    v8 = [(AXUIElement *)self->_uiElement objectWithAXAttribute:attribute parameter:v6];
     CFRelease(v7);
   }
 
@@ -1894,17 +1894,17 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
   return v8;
 }
 
-- (CGRect)boundsForTextRange:(_NSRange)a3
+- (CGRect)boundsForTextRange:(_NSRange)range
 {
   v4 = MEMORY[0x1E695F058];
   v5 = *(MEMORY[0x1E695F058] + 16);
   v20.origin = *MEMORY[0x1E695F058];
   v20.size = v5;
-  v6 = [(AXElement *)self _objectForRange:a3.location withParameterizedAttribute:a3.length, 92506];
-  if (v6)
+  92506 = [(AXElement *)self _objectForRange:range.location withParameterizedAttribute:range.length, 92506];
+  if (92506)
   {
-    v7 = v6;
-    v8 = CFGetTypeID(v6);
+    v7 = 92506;
+    v8 = CFGetTypeID(92506);
     if (v8 == AXValueGetTypeID() && AXValueGetType(v7) == kAXValueTypeCGRect)
     {
       AXValueGetValue(v7, kAXValueTypeCGRect, &v20);
@@ -1914,9 +1914,9 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
   if (!CGRectEqualToRect(v20, *v4) && !CGRectEqualToRect(v20, *MEMORY[0x1E695F050]))
   {
     v9 = +[AXElement systemWideElement];
-    v10 = [(AXElement *)self windowContextId];
-    v11 = [(AXElement *)self windowDisplayId];
-    [v9 convertRect:v10 fromContextId:v11 displayId:{*&v20.origin, *&v20.size}];
+    windowContextId = [(AXElement *)self windowContextId];
+    windowDisplayId = [(AXElement *)self windowDisplayId];
+    [v9 convertRect:windowContextId fromContextId:windowDisplayId displayId:{*&v20.origin, *&v20.size}];
     v20.origin.x = v12;
     v20.origin.y = v13;
     v20.size.width = v14;
@@ -1934,35 +1934,35 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
   return result;
 }
 
-- (id)nextElementsWithCount:(unint64_t)a3
+- (id)nextElementsWithCount:(unint64_t)count
 {
-  v3 = a3;
-  v5 = [(AXElement *)self uiElement];
-  v6 = [v5 nextElementsWithCount:v3];
+  countCopy = count;
+  uiElement = [(AXElement *)self uiElement];
+  v6 = [uiElement nextElementsWithCount:countCopy];
   v7 = [(AXElement *)self _axElementsForAXUIElements:v6];
 
   return v7;
 }
 
-- (id)previousElementsWithCount:(unint64_t)a3
+- (id)previousElementsWithCount:(unint64_t)count
 {
-  v3 = a3;
-  v5 = [(AXElement *)self uiElement];
-  v6 = [v5 previousElementsWithCount:v3];
+  countCopy = count;
+  uiElement = [(AXElement *)self uiElement];
+  v6 = [uiElement previousElementsWithCount:countCopy];
   v7 = [(AXElement *)self _axElementsForAXUIElements:v6];
 
   return v7;
 }
 
-- (double)distanceToElement:(id)a3
+- (double)distanceToElement:(id)element
 {
-  v4 = a3;
-  if (v4)
+  elementCopy = element;
+  if (elementCopy)
   {
     v5 = 0.0;
-    if (![(AXElement *)self isEqual:v4])
+    if (![(AXElement *)self isEqual:elementCopy])
     {
-      [v4 visibleFrame];
+      [elementCopy visibleFrame];
       x = v13.origin.x;
       y = v13.origin.y;
       width = v13.size.width;
@@ -1985,10 +1985,10 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
   return v5;
 }
 
-- (double)distanceToPoint:(CGPoint)a3
+- (double)distanceToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(AXElement *)self visibleFrame];
   v5 = v12.origin.x;
   v6 = v12.origin.y;
@@ -2013,9 +2013,9 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
   else
   {
     v4 = [(AXUIElement *)self->_uiElement numberWithAXAttribute:2701];
-    v5 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-    return (v5 >> 15) & 1;
+    return (unsignedIntegerValue >> 15) & 1;
   }
 
   return v3;
@@ -2040,17 +2040,17 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
 
 - (int)pid
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 pid];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement pid];
 
   return v3;
 }
 
 - (AXElement)remoteParent
 {
-  v3 = [(AXElement *)self cachedRemoteParent];
+  cachedRemoteParent = [(AXElement *)self cachedRemoteParent];
 
-  if (!v3)
+  if (!cachedRemoteParent)
   {
     v4 = [(AXElement *)self _elementForAttribute:2092 shouldUpdateCache:0 shouldFetchAttributes:0];
     [(AXElement *)self setCachedRemoteParent:v4];
@@ -2061,18 +2061,18 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
 
 - (unint64_t)scanningBehaviorTraits
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 numberWithAXAttribute:2147];
-  v4 = [v3 intValue];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement numberWithAXAttribute:2147];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (id)_remoteParentForContextID
 {
-  v3 = [(AXElement *)self cachedRemoteParentForContextID];
+  cachedRemoteParentForContextID = [(AXElement *)self cachedRemoteParentForContextID];
 
-  if (!v3)
+  if (!cachedRemoteParentForContextID)
   {
     v4 = [(AXElement *)self _elementForAttribute:2310 shouldUpdateCache:0 shouldFetchAttributes:0];
     [(AXElement *)self setCachedRemoteParentForContextID:v4];
@@ -2085,44 +2085,44 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
 {
   if ([(AXElement *)self hasAnyTraits:0x400000000000]|| [(AXElement *)self isMap])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(hasWebContent) = 1;
   }
 
   else
   {
-    v3 = [(AXElement *)self hasWebContent];
-    if (v3)
+    hasWebContent = [(AXElement *)self hasWebContent];
+    if (hasWebContent)
     {
       if ([(AXElement *)self hasTextEntry]|| [(AXElement *)self isKeyboardKey])
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(hasWebContent) = 0;
       }
 
       else
       {
-        LOBYTE(v3) = ![(AXElement *)self isMathEquation];
+        LOBYTE(hasWebContent) = ![(AXElement *)self isMathEquation];
       }
     }
   }
 
-  return v3;
+  return hasWebContent;
 }
 
-- (BOOL)_showContextMenuWithTargetPointValue:(id)a3
+- (BOOL)_showContextMenuWithTargetPointValue:(id)value
 {
-  v4 = a3;
-  if ([(AXUIElement *)self->_uiElement performAXAction:2051 withValue:v4])
+  valueCopy = value;
+  if ([(AXUIElement *)self->_uiElement performAXAction:2051 withValue:valueCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(AXElement *)self remoteParent];
-    v7 = v6;
-    if (v6)
+    remoteParent = [(AXElement *)self remoteParent];
+    v7 = remoteParent;
+    if (remoteParent)
     {
-      v5 = [v6 _showContextMenuWithTargetPointValue:v4];
+      v5 = [remoteParent _showContextMenuWithTargetPointValue:valueCopy];
     }
 
     else
@@ -2155,82 +2155,82 @@ void __37__AXElement_setAssistiveTechFocused___block_invoke()
 
 - (BOOL)scrollToVisible
 {
-  v3 = [(AXElement *)self uiElement];
-  v4 = [v3 performAXAction:2003];
+  uiElement = [(AXElement *)self uiElement];
+  v4 = [uiElement performAXAction:2003];
 
-  v5 = [(AXElement *)self uiElement];
-  v6 = [v5 BOOLWithAXAttribute:2093];
+  uiElement2 = [(AXElement *)self uiElement];
+  v6 = [uiElement2 BOOLWithAXAttribute:2093];
 
   if (v6)
   {
-    v7 = [(AXElement *)self remoteParent];
-    if (v7)
+    remoteParent = [(AXElement *)self remoteParent];
+    if (remoteParent)
     {
-      v8 = [(AXElement *)self uiElement];
-      [v8 updateCache:2003];
+      uiElement3 = [(AXElement *)self uiElement];
+      [uiElement3 updateCache:2003];
 
       [(AXElement *)self frame];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
-      v17 = [v7 uiElement];
+      uiElement4 = [remoteParent uiElement];
       v18 = [MEMORY[0x1E696B098] valueWithRect:{v10, v12, v14, v16}];
-      v4 = [v17 performAXAction:2039 withValue:v18];
+      v4 = [uiElement4 performAXAction:2039 withValue:v18];
     }
   }
 
-  v19 = [(AXElement *)self uiElement];
-  [v19 updateCache:2057];
+  uiElement5 = [(AXElement *)self uiElement];
+  [uiElement5 updateCache:2057];
 
   return v4;
 }
 
 - (BOOL)canScrollInAtLeastOneDirection
 {
-  v3 = [(AXElement *)self uiElement];
-  v4 = [v3 BOOLWithAXAttribute:2064];
+  uiElement = [(AXElement *)self uiElement];
+  v4 = [uiElement BOOLWithAXAttribute:2064];
 
   if (v4)
   {
     return 1;
   }
 
-  v6 = [(AXElement *)self uiElement];
-  v7 = [v6 BOOLWithAXAttribute:2093];
+  uiElement2 = [(AXElement *)self uiElement];
+  v7 = [uiElement2 BOOLWithAXAttribute:2093];
 
   if (!v7)
   {
     return 0;
   }
 
-  v8 = [(AXElement *)self remoteParent];
-  v9 = [v8 uiElement];
-  v10 = [v9 BOOLWithAXAttribute:2064];
+  remoteParent = [(AXElement *)self remoteParent];
+  uiElement3 = [remoteParent uiElement];
+  v10 = [uiElement3 BOOLWithAXAttribute:2064];
 
   return v10;
 }
 
-- (BOOL)supportsAction:(int)a3
+- (BOOL)supportsAction:(int)action
 {
-  v3 = *&a3;
+  v3 = *&action;
   result = 0;
-  if (a3 > 2011)
+  if (action > 2011)
   {
-    if (a3 <= 2035)
+    if (action <= 2035)
     {
-      switch(a3)
+      switch(action)
       {
         case 2012:
-          v8 = [(AXElement *)self _textOperationsOperator];
-          v9 = [v8 hasAnyTraits:0x2000000000];
+          _textOperationsOperator = [(AXElement *)self _textOperationsOperator];
+          v9 = [_textOperationsOperator hasAnyTraits:0x2000000000];
           break;
         case 2013:
 
           return [(AXElement *)self canPerformEscape];
         case 2030:
-          v8 = [(AXElement *)self uiElement];
-          v9 = [v8 canPerformAXAction:2030];
+          _textOperationsOperator = [(AXElement *)self uiElement];
+          v9 = [_textOperationsOperator canPerformAXAction:2030];
           break;
         default:
           return result;
@@ -2242,9 +2242,9 @@ LABEL_31:
       return v13;
     }
 
-    if ((a3 - 2037) >= 2)
+    if ((action - 2037) >= 2)
     {
-      if (a3 == 2036)
+      if (action == 2036)
       {
 
         return [(AXElement *)self canPerformSecondaryActivate];
@@ -2260,34 +2260,34 @@ LABEL_31:
 
   else
   {
-    if ((a3 - 2006) < 4)
+    if ((action - 2006) < 4)
     {
-      v6 = [(AXElement *)self uiElement];
-      v7 = [v6 canPerformAXAction:v3];
+      uiElement = [(AXElement *)self uiElement];
+      v7 = [uiElement canPerformAXAction:v3];
 
       if (v7)
       {
         return 1;
       }
 
-      v10 = [(AXElement *)self uiElement];
-      v11 = [v10 BOOLWithAXAttribute:2093];
+      uiElement2 = [(AXElement *)self uiElement];
+      v11 = [uiElement2 BOOLWithAXAttribute:2093];
 
       if (!v11)
       {
         return 0;
       }
 
-      v8 = [(AXElement *)self remoteParent];
-      v12 = [v8 uiElement];
-      v13 = [v12 canPerformAXAction:v3];
+      _textOperationsOperator = [(AXElement *)self remoteParent];
+      uiElement3 = [_textOperationsOperator uiElement];
+      v13 = [uiElement3 canPerformAXAction:v3];
 
       goto LABEL_31;
     }
 
-    if ((a3 - 2001) >= 2)
+    if ((action - 2001) >= 2)
     {
-      if (a3 == 2010)
+      if (action == 2010)
       {
 
         return [(AXElement *)self canPerformActivate];
@@ -2304,32 +2304,32 @@ LABEL_31:
   return result;
 }
 
-- (BOOL)performAction:(int)a3
+- (BOOL)performAction:(int)action
 {
-  v3 = *&a3;
-  if ((a3 - 2006) > 0xE)
+  v3 = *&action;
+  if ((action - 2006) > 0xE)
   {
     goto LABEL_20;
   }
 
-  if (((1 << (a3 + 42)) & 0x600F) != 0)
+  if (((1 << (action + 42)) & 0x600F) != 0)
   {
-    v5 = [(AXElement *)self uiElement];
-    v6 = [v5 performAXAction:v3];
+    uiElement = [(AXElement *)self uiElement];
+    v6 = [uiElement performAXAction:v3];
 
     if (v6)
     {
       return 1;
     }
 
-    v8 = [(AXElement *)self uiElement];
-    v9 = [v8 BOOLWithAXAttribute:2093];
+    uiElement2 = [(AXElement *)self uiElement];
+    v9 = [uiElement2 BOOLWithAXAttribute:2093];
 
     if (v9)
     {
-      v10 = [(AXElement *)self remoteParent];
-      v11 = [v10 uiElement];
-      v12 = [v11 performAXAction:v3];
+      remoteParent = [(AXElement *)self remoteParent];
+      uiElement3 = [remoteParent uiElement];
+      v12 = [uiElement3 performAXAction:v3];
 
 LABEL_21:
       return v12;
@@ -2338,24 +2338,24 @@ LABEL_21:
     return 0;
   }
 
-  if (a3 != 2010)
+  if (action != 2010)
   {
-    if (a3 == 2013)
+    if (action == 2013)
     {
-      v13 = [(AXElement *)self uiElement];
-      v14 = [v13 performAXAction:2013];
+      uiElement4 = [(AXElement *)self uiElement];
+      v14 = [uiElement4 performAXAction:2013];
 
       if (v14)
       {
         return 1;
       }
 
-      v15 = [(AXElement *)self remoteParent];
-      if (v15)
+      remoteParent2 = [(AXElement *)self remoteParent];
+      if (remoteParent2)
       {
-        v16 = v15;
-        v17 = [v15 uiElement];
-        v18 = [v17 performAXAction:2013];
+        v16 = remoteParent2;
+        uiElement5 = [remoteParent2 uiElement];
+        v18 = [uiElement5 performAXAction:2013];
 
         if (v18)
         {
@@ -2366,8 +2366,8 @@ LABEL_21:
       if (_AXSClarityBoardEnabled())
       {
         v19 = +[AXElement systemApplication];
-        v20 = [(AXElement *)self application];
-        v21 = [v20 isEqual:v19];
+        application = [(AXElement *)self application];
+        v21 = [application isEqual:v19];
 
         if (v21)
         {
@@ -2376,8 +2376,8 @@ LABEL_21:
 
         else
         {
-          v23 = [v19 firstElementInApplication];
-          v7 = [v23 performAction:2013];
+          firstElementInApplication = [v19 firstElementInApplication];
+          v7 = [firstElementInApplication performAction:2013];
         }
 
         return v7;
@@ -2387,45 +2387,45 @@ LABEL_21:
     }
 
 LABEL_20:
-    v10 = [(AXElement *)self uiElement];
-    v12 = [v10 performAXAction:v3];
+    remoteParent = [(AXElement *)self uiElement];
+    v12 = [remoteParent performAXAction:v3];
     goto LABEL_21;
   }
 
   return [(AXElement *)self press];
 }
 
-- (BOOL)performAction:(int)a3 withValue:(id)a4
+- (BOOL)performAction:(int)action withValue:(id)value
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&action;
+  valueCopy = value;
   if (v4 == 2012)
   {
-    v7 = [(AXElement *)self _textOperationsOperator];
-    v8 = [v7 uiElement];
-    v9 = v8;
+    _textOperationsOperator = [(AXElement *)self _textOperationsOperator];
+    uiElement = [_textOperationsOperator uiElement];
+    v9 = uiElement;
     v10 = 2012;
     goto LABEL_7;
   }
 
-  v11 = [(AXElement *)self uiElement];
-  v12 = [v11 performAXAction:v4 withValue:v6];
+  uiElement2 = [(AXElement *)self uiElement];
+  v12 = [uiElement2 performAXAction:v4 withValue:valueCopy];
 
   if (v4 == 2021 && (v12 & 1) == 0)
   {
-    v13 = [(AXElement *)self remoteParent];
-    v7 = v13;
-    if (!v13)
+    remoteParent = [(AXElement *)self remoteParent];
+    _textOperationsOperator = remoteParent;
+    if (!remoteParent)
     {
       v12 = 0;
       goto LABEL_8;
     }
 
-    v8 = [v13 uiElement];
-    v9 = v8;
+    uiElement = [remoteParent uiElement];
+    v9 = uiElement;
     v10 = 2021;
 LABEL_7:
-    v12 = [v8 performAXAction:v10 withValue:v6];
+    v12 = [uiElement performAXAction:v10 withValue:valueCopy];
 
 LABEL_8:
   }
@@ -2433,101 +2433,101 @@ LABEL_8:
   return v12;
 }
 
-- (__AXUIElement)scrollAncestorForScrollAction:(int)a3
+- (__AXUIElement)scrollAncestorForScrollAction:(int)action
 {
-  if ((a3 - 2006) > 2)
+  if ((action - 2006) > 2)
   {
     v4 = 2107;
   }
 
   else
   {
-    v4 = qword_1BF7DE7A8[a3 - 2006];
+    v4 = qword_1BF7DE7A8[action - 2006];
   }
 
-  v5 = [(AXElement *)self uiElement];
-  v6 = [v5 objectWithAXAttribute:v4];
+  uiElement = [(AXElement *)self uiElement];
+  axElement = [uiElement objectWithAXAttribute:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v6 axElement];
+    axElement = [axElement axElement];
   }
 
-  if (v6)
+  if (axElement)
   {
-    return v6;
+    return axElement;
   }
 
-  v7 = [(AXElement *)self uiElement];
-  v8 = [v7 BOOLWithAXAttribute:2093];
+  uiElement2 = [(AXElement *)self uiElement];
+  v8 = [uiElement2 BOOLWithAXAttribute:2093];
 
   if (!v8)
   {
     return 0;
   }
 
-  v9 = [(AXElement *)self remoteParent];
-  v10 = [v9 uiElement];
-  v6 = [v10 objectWithAXAttribute:v4];
+  remoteParent = [(AXElement *)self remoteParent];
+  uiElement3 = [remoteParent uiElement];
+  axElement = [uiElement3 objectWithAXAttribute:v4];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    return v6;
+    return axElement;
   }
 
-  return [v6 axElement];
+  return [axElement axElement];
 }
 
 - (unsigned)windowDisplayId
 {
   v3 = [(AXUIElement *)self->_uiElement numberWithAXAttribute:2123];
-  v4 = [v3 unsignedIntValue];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  if (!v4)
+  if (!unsignedIntValue)
   {
-    v5 = [(AXElement *)self _remoteParentForContextID];
-    v6 = v5;
-    if (v5)
+    _remoteParentForContextID = [(AXElement *)self _remoteParentForContextID];
+    v6 = _remoteParentForContextID;
+    if (_remoteParentForContextID)
     {
-      v7 = [v5 uiElement];
-      v8 = [v7 numberWithAXAttribute:2123];
-      v4 = [v8 unsignedIntValue];
+      uiElement = [_remoteParentForContextID uiElement];
+      v8 = [uiElement numberWithAXAttribute:2123];
+      unsignedIntValue = [v8 unsignedIntValue];
     }
 
     else
     {
-      v4 = 0;
+      unsignedIntValue = 0;
     }
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unsigned)windowContextId
 {
   v3 = [(AXUIElement *)self->_uiElement numberWithAXAttribute:2021];
-  v4 = [v3 unsignedIntValue];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  if (!v4)
+  if (!unsignedIntValue)
   {
-    v5 = [(AXElement *)self _remoteParentForContextID];
-    v6 = v5;
-    if (v5)
+    _remoteParentForContextID = [(AXElement *)self _remoteParentForContextID];
+    v6 = _remoteParentForContextID;
+    if (_remoteParentForContextID)
     {
-      v7 = [v5 uiElement];
-      v8 = [v7 numberWithAXAttribute:2021];
-      v4 = [v8 unsignedIntValue];
+      uiElement = [_remoteParentForContextID uiElement];
+      v8 = [uiElement numberWithAXAttribute:2021];
+      unsignedIntValue = [v8 unsignedIntValue];
     }
 
     else
     {
-      v4 = 0;
+      unsignedIntValue = 0;
     }
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (NSString)fbSceneIdentifier
@@ -2535,12 +2535,12 @@ LABEL_8:
   v3 = [(AXUIElement *)self->_uiElement stringWithAXAttribute:2721];
   if (!v3)
   {
-    v4 = [(AXElement *)self _remoteParentForContextID];
-    v5 = v4;
-    if (v4)
+    _remoteParentForContextID = [(AXElement *)self _remoteParentForContextID];
+    v5 = _remoteParentForContextID;
+    if (_remoteParentForContextID)
     {
-      v6 = [v4 uiElement];
-      v3 = [v6 stringWithAXAttribute:2721];
+      uiElement = [_remoteParentForContextID uiElement];
+      v3 = [uiElement stringWithAXAttribute:2721];
     }
 
     else
@@ -2554,46 +2554,46 @@ LABEL_8:
 
 - (NSString)windowSceneIdentifier
 {
-  v3 = [(AXUIElement *)self->_uiElement stringWithAXAttribute:3056];
-  if (!v3)
+  windowSceneIdentifier = [(AXUIElement *)self->_uiElement stringWithAXAttribute:3056];
+  if (!windowSceneIdentifier)
   {
-    v4 = [(AXElement *)self _remoteParentForContextID];
-    v3 = [v4 windowSceneIdentifier];
+    _remoteParentForContextID = [(AXElement *)self _remoteParentForContextID];
+    windowSceneIdentifier = [_remoteParentForContextID windowSceneIdentifier];
   }
 
-  return v3;
+  return windowSceneIdentifier;
 }
 
 - (BOOL)canPerformActivate
 {
-  v3 = [(AXElement *)self uiElement];
-  [v3 updateCache:2019];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement updateCache:2019];
 
-  v4 = [(AXElement *)self uiElement];
-  v5 = [v4 BOOLWithAXAttribute:2019];
+  uiElement2 = [(AXElement *)self uiElement];
+  v5 = [uiElement2 BOOLWithAXAttribute:2019];
 
   if (v5)
   {
     return 1;
   }
 
-  v7 = [(AXElement *)self uiElement];
-  v8 = [v7 BOOLWithAXAttribute:2101];
+  uiElement3 = [(AXElement *)self uiElement];
+  v8 = [uiElement3 BOOLWithAXAttribute:2101];
 
   if (!v8)
   {
     return 0;
   }
 
-  v9 = [(AXElement *)self remoteParent];
-  v10 = v9;
-  if (v9)
+  remoteParent = [(AXElement *)self remoteParent];
+  v10 = remoteParent;
+  if (remoteParent)
   {
-    v11 = [v9 uiElement];
-    [v11 updateCache:2019];
+    uiElement4 = [remoteParent uiElement];
+    [uiElement4 updateCache:2019];
 
-    v12 = [v10 uiElement];
-    v6 = [v12 BOOLWithAXAttribute:2019];
+    uiElement5 = [v10 uiElement];
+    v6 = [uiElement5 BOOLWithAXAttribute:2019];
   }
 
   else
@@ -2606,28 +2606,28 @@ LABEL_8:
 
 - (BOOL)_performActivate
 {
-  v3 = [(AXElement *)self uiElement];
-  v4 = [v3 performAXAction:2010];
+  uiElement = [(AXElement *)self uiElement];
+  v4 = [uiElement performAXAction:2010];
 
   if (v4)
   {
     return 1;
   }
 
-  v6 = [(AXElement *)self uiElement];
-  v7 = [v6 BOOLWithAXAttribute:2101];
+  uiElement2 = [(AXElement *)self uiElement];
+  v7 = [uiElement2 BOOLWithAXAttribute:2101];
 
   if (!v7)
   {
     return 0;
   }
 
-  v8 = [(AXElement *)self remoteParent];
-  v9 = v8;
-  if (v8)
+  remoteParent = [(AXElement *)self remoteParent];
+  v9 = remoteParent;
+  if (remoteParent)
   {
-    v10 = [v8 uiElement];
-    v5 = [v10 performAXAction:2010];
+    uiElement3 = [remoteParent uiElement];
+    v5 = [uiElement3 performAXAction:2010];
   }
 
   else
@@ -2671,16 +2671,16 @@ LABEL_11:
   v6 = [(AXElement *)self simulateTapWithFingerIndex:1 withPoint:?];
 LABEL_12:
   v7 = [(AXElement *)self elementForAttribute:2017];
-  v8 = [v7 bundleId];
+  bundleId = [v7 bundleId];
 
-  if (([v8 hasPrefix:@"com.apple."] & 1) == 0)
+  if (([bundleId hasPrefix:@"com.apple."] & 1) == 0)
   {
     v9 = dispatch_time(0, 500000000);
     dispatch_after(v9, MEMORY[0x1E69E96A0], &__block_literal_global_97);
   }
 
-  v10 = [(AXElement *)self uiElement];
-  v11 = [v10 numberWithAXAttribute:2068];
+  uiElement = [(AXElement *)self uiElement];
+  v11 = [uiElement numberWithAXAttribute:2068];
   [v11 doubleValue];
   v13 = v12;
 
@@ -2697,17 +2697,17 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)simulateTapWithFingerIndex:(unint64_t)a3
+- (BOOL)simulateTapWithFingerIndex:(unint64_t)index
 {
   [(AXElement *)self visiblePoint];
 
-  return [(AXElement *)self simulateTapWithFingerIndex:a3 withPoint:?];
+  return [(AXElement *)self simulateTapWithFingerIndex:index withPoint:?];
 }
 
-- (BOOL)simulateTapWithFingerIndex:(unint64_t)a3 withPoint:(CGPoint)a4
+- (BOOL)simulateTapWithFingerIndex:(unint64_t)index withPoint:(CGPoint)point
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  valuePtr = a4;
+  valuePtr = point;
   if (_AXSMossdeepEnabled())
   {
     v6 = [(AXUIElement *)self->_uiElement objectWithAXAttribute:5063];
@@ -2719,7 +2719,7 @@ LABEL_12:
       v17[1] = &unk_1F3E6C3D0;
       v16[1] = @"delay";
       v16[2] = @"fingerIndex";
-      v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
       v17[2] = v8;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
     }
@@ -2741,7 +2741,7 @@ LABEL_12:
     v19[2] = &unk_1F3E6C3D0;
     v18[2] = @"delay";
     v18[3] = @"fingerIndex";
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
     v19[3] = v11;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:4];
 
@@ -2780,9 +2780,9 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)_zoomInOrOut:(BOOL)a3
+- (BOOL)_zoomInOrOut:(BOOL)out
 {
-  if (a3)
+  if (out)
   {
     v4 = 2001;
   }
@@ -2795,11 +2795,11 @@ LABEL_12:
   [(AXElement *)self centerPoint];
   v5 = [MEMORY[0x1E696B098] valueWithPoint:?];
   [(AXElement *)self performAction:v4 withValue:v5];
-  v6 = [(AXElement *)self remoteParent];
-  v7 = v6;
-  if (v6)
+  remoteParent = [(AXElement *)self remoteParent];
+  v7 = remoteParent;
+  if (remoteParent)
   {
-    [v6 performAction:v4 withValue:v5];
+    [remoteParent performAction:v4 withValue:v5];
   }
 
   return 1;
@@ -2814,109 +2814,109 @@ LABEL_12:
   return v4;
 }
 
-- (void)insertText:(id)a3 asUndoableAction:(BOOL)a4
+- (void)insertText:(id)text asUndoableAction:(BOOL)action
 {
-  v4 = a4;
+  actionCopy = action;
   v14[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  textCopy = text;
+  if (textCopy)
   {
-    if (v4)
+    if (actionCopy)
     {
-      v7 = [(AXElement *)self _textOperationsOperator];
-      v8 = v7;
-      if (v7 == self)
+      _textOperationsOperator = [(AXElement *)self _textOperationsOperator];
+      _uiElementForTextInsertionAndDeletion3 = _textOperationsOperator;
+      if (_textOperationsOperator == self)
       {
-        v10 = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
+        _uiElementForTextInsertionAndDeletion = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
         v13[0] = @"text";
         v13[1] = @"createsUndoableAction";
-        v14[0] = v6;
+        v14[0] = textCopy;
         v11 = [MEMORY[0x1E696AD98] numberWithBool:1];
         v14[1] = v11;
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
-        [v10 performAXAction:2056 withValue:v12];
+        [_uiElementForTextInsertionAndDeletion performAXAction:2056 withValue:v12];
       }
 
       else
       {
-        [(AXElement *)v7 performAction:2060];
-        v9 = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
-        [v9 performAXAction:2056 withValue:v6];
+        [(AXElement *)_textOperationsOperator performAction:2060];
+        _uiElementForTextInsertionAndDeletion2 = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
+        [_uiElementForTextInsertionAndDeletion2 performAXAction:2056 withValue:textCopy];
 
-        [v8 performAction:2061];
+        [_uiElementForTextInsertionAndDeletion3 performAction:2061];
       }
     }
 
     else
     {
-      v8 = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
-      [v8 performAXAction:2056 withValue:v6];
+      _uiElementForTextInsertionAndDeletion3 = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
+      [_uiElementForTextInsertionAndDeletion3 performAXAction:2056 withValue:textCopy];
     }
   }
 }
 
-- (void)insertTextWithAlternatives:(id)a3
+- (void)insertTextWithAlternatives:(id)alternatives
 {
-  v4 = a3;
-  v5 = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
-  [v5 performAXAction:2055 withValue:v4];
+  alternativesCopy = alternatives;
+  _uiElementForTextInsertionAndDeletion = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
+  [_uiElementForTextInsertionAndDeletion performAXAction:2055 withValue:alternativesCopy];
 }
 
 - (void)deleteText
 {
-  v2 = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
-  [v2 performAXAction:2052];
+  _uiElementForTextInsertionAndDeletion = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
+  [_uiElementForTextInsertionAndDeletion performAXAction:2052];
 }
 
-- (id)alternativesForTextAtPosition:(unint64_t)a3
+- (id)alternativesForTextAtPosition:(unint64_t)position
 {
-  v4 = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
-  v5 = [v4 objectWithAXAttribute:95237 parameter:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", a3)}];
+  _uiElementForTextInsertionAndDeletion = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
+  v5 = [_uiElementForTextInsertionAndDeletion objectWithAXAttribute:95237 parameter:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", position)}];
 
   return v5;
 }
 
 - (AXElement)elementForTextInsertionAndDeletion
 {
-  v2 = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
-  v3 = [AXElement elementWithUIElement:v2];
+  _uiElementForTextInsertionAndDeletion = [(AXElement *)self _uiElementForTextInsertionAndDeletion];
+  v3 = [AXElement elementWithUIElement:_uiElementForTextInsertionAndDeletion];
 
   return v3;
 }
 
 - (BOOL)respondsToUserInteraction
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 BOOLWithAXAttribute:12000];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement BOOLWithAXAttribute:12000];
 
   return v3;
 }
 
 - (int64_t)scannerActivateBehavior
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 numberWithAXAttribute:12004];
-  v4 = [v3 intValue];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement numberWithAXAttribute:12004];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)canPerformEscape
 {
-  v3 = [(AXElement *)self uiElement];
-  v4 = [v3 BOOLWithAXAttribute:2061];
+  uiElement = [(AXElement *)self uiElement];
+  v4 = [uiElement BOOLWithAXAttribute:2061];
 
   if (v4)
   {
     return 1;
   }
 
-  v6 = [(AXElement *)self remoteParent];
-  v7 = v6;
-  if (v6)
+  remoteParent = [(AXElement *)self remoteParent];
+  v7 = remoteParent;
+  if (remoteParent)
   {
-    v8 = [v6 uiElement];
-    v5 = [v8 BOOLWithAXAttribute:2061];
+    uiElement2 = [remoteParent uiElement];
+    v5 = [uiElement2 BOOLWithAXAttribute:2061];
   }
 
   else
@@ -2929,73 +2929,73 @@ LABEL_12:
 
 - (AXElement)autoscrollTarget
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 objectWithAXAttribute:2054];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement objectWithAXAttribute:2054];
 
   return v3;
 }
 
-- (void)setAutoscrollTarget:(id)a3
+- (void)setAutoscrollTarget:(id)target
 {
-  v4 = a3;
-  v6 = [(AXElement *)self uiElement];
-  v5 = v4[2];
+  targetCopy = target;
+  uiElement = [(AXElement *)self uiElement];
+  v5 = targetCopy[2];
 
-  [v6 setAXAttribute:2054 withUIElement:v5];
+  [uiElement setAXAttribute:2054 withUIElement:v5];
 }
 
-- (BOOL)autoscrollInDirection:(unint64_t)a3
+- (BOOL)autoscrollInDirection:(unint64_t)direction
 {
-  v4 = [(AXElement *)self uiElement];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3];
-  v6 = [v4 performAXAction:2026 withValue:v5];
+  uiElement = [(AXElement *)self uiElement];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:direction];
+  v6 = [uiElement performAXAction:2026 withValue:v5];
 
   return v6;
 }
 
 - (void)pauseAutoscrolling
 {
-  v2 = [(AXElement *)self uiElement];
-  [v2 performAXAction:2027];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement performAXAction:2027];
 }
 
 - (BOOL)isAutoscrolling
 {
-  v3 = [(AXElement *)self uiElement];
-  [v3 updateCache:2055];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement updateCache:2055];
 
-  v4 = [(AXElement *)self uiElement];
-  LOBYTE(v3) = [v4 BOOLWithAXAttribute:2055];
+  uiElement2 = [(AXElement *)self uiElement];
+  LOBYTE(uiElement) = [uiElement2 BOOLWithAXAttribute:2055];
 
-  return v3;
+  return uiElement;
 }
 
 - (void)increaseAutoscrollSpeed
 {
-  v2 = [(AXElement *)self uiElement];
-  [v2 performAXAction:2028];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement performAXAction:2028];
 }
 
 - (void)decreaseAutoscrollSpeed
 {
-  v2 = [(AXElement *)self uiElement];
-  [v2 performAXAction:2029];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement performAXAction:2029];
 }
 
-- (void)setAutoscrollSpeed:(double)a3
+- (void)setAutoscrollSpeed:(double)speed
 {
-  v5 = [(AXElement *)self uiElement];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 performAXAction:2032 withValue:v4];
+  uiElement = [(AXElement *)self uiElement];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:speed];
+  [uiElement performAXAction:2032 withValue:v4];
 }
 
 - (id)scrollViewsForAutoScroll
 {
-  v3 = [(AXElement *)self uiElement];
-  [v3 updateCache:3070];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement updateCache:3070];
 
-  v4 = [(AXElement *)self uiElement];
-  v5 = [v4 uiElementsWithAttribute:3070];
+  uiElement2 = [(AXElement *)self uiElement];
+  v5 = [uiElement2 uiElementsWithAttribute:3070];
 
   v6 = [(AXElement *)self _axElementsForAXUIElements:v5];
 
@@ -3004,11 +3004,11 @@ LABEL_12:
 
 - (NSArray)ornamentWindows
 {
-  v3 = [(AXElement *)self uiElement];
-  [v3 updateCache:3074];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement updateCache:3074];
 
-  v4 = [(AXElement *)self uiElement];
-  v5 = [v4 uiElementsWithAttribute:3074];
+  uiElement2 = [(AXElement *)self uiElement];
+  v5 = [uiElement2 uiElementsWithAttribute:3074];
 
   v6 = [(AXElement *)self _axElementsForAXUIElements:v5];
 
@@ -3017,14 +3017,14 @@ LABEL_12:
 
 - (void)scrollToTop
 {
-  v2 = [(AXElement *)self uiElement];
-  [v2 performAXAction:2030];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement performAXAction:2030];
 }
 
 - (void)scrollToBottom
 {
-  v2 = [(AXElement *)self uiElement];
-  [v2 performAXAction:2031];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement performAXAction:2031];
 }
 
 - (NSArray)customContent
@@ -3070,21 +3070,21 @@ LABEL_12:
 
 - (id)highestAncestorGroup
 {
-  v2 = [(AXElement *)self parentGroup];
-  if (v2)
+  parentGroup = [(AXElement *)self parentGroup];
+  if (parentGroup)
   {
-    v3 = v2;
-    v4 = v2;
+    parentGroup2 = parentGroup;
+    v4 = parentGroup;
     do
     {
-      v5 = v3;
+      v5 = parentGroup2;
 
-      v3 = [v5 parentGroup];
+      parentGroup2 = [v5 parentGroup];
 
       v4 = v5;
     }
 
-    while (v3);
+    while (parentGroup2);
   }
 
   else
@@ -3103,18 +3103,18 @@ LABEL_12:
   return v4;
 }
 
-- (id)_axElementsForAXUIElements:(id)a3
+- (id)_axElementsForAXUIElements:(id)elements
 {
-  v3 = a3;
-  v4 = [objc_opt_class() elementsWithUIElements:v3];
+  elementsCopy = elements;
+  v4 = [objc_opt_class() elementsWithUIElements:elementsCopy];
 
   return v4;
 }
 
 - (void)_updateLabel
 {
-  v2 = [(AXElement *)self uiElement];
-  [v2 updateCache:2001];
+  uiElement = [(AXElement *)self uiElement];
+  [uiElement updateCache:2001];
 }
 
 - (CGRect)cachedFrame
@@ -3143,24 +3143,24 @@ LABEL_12:
   return result;
 }
 
-- (id)makeLookingGlassRequest:(id)a3
+- (id)makeLookingGlassRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   AXUIElementSetMessagingTimeout([(AXElement *)self elementRef], 20.0);
-  v5 = [(AXElement *)self uiElement];
-  v6 = [v5 objectWithAXAttribute:96001 parameter:v4];
+  uiElement = [(AXElement *)self uiElement];
+  v6 = [uiElement objectWithAXAttribute:96001 parameter:requestCopy];
 
   AXUIElementSetMessagingTimeout([(AXElement *)self elementRef], 0.0);
 
   return v6;
 }
 
-- (id)_makeTinkerKitRequest:(id)a3
+- (id)_makeTinkerKitRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   AXUIElementSetMessagingTimeout([(AXElement *)self elementRef], 20.0);
-  v5 = [(AXElement *)self uiElement];
-  v6 = [v5 objectWithAXAttribute:96002 parameter:v4];
+  uiElement = [(AXElement *)self uiElement];
+  v6 = [uiElement objectWithAXAttribute:96002 parameter:requestCopy];
 
   AXUIElementSetMessagingTimeout([(AXElement *)self elementRef], 0.0);
 

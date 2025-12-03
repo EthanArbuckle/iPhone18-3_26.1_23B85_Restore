@@ -1,44 +1,44 @@
 @interface SUSUILaggardsUIAlertAction
 - (SUDescriptor)descriptor;
-- (SUSUILaggardsUIAlertAction)initWithDescriptor:(id)a3 completionBlock:(id)a4;
-- (void)decodeFromCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SUSUILaggardsUIAlertAction)initWithDescriptor:(id)descriptor completionBlock:(id)block;
+- (void)decodeFromCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadIfNecessary;
 @end
 
 @implementation SUSUILaggardsUIAlertAction
 
-- (SUSUILaggardsUIAlertAction)initWithDescriptor:(id)a3 completionBlock:(id)a4
+- (SUSUILaggardsUIAlertAction)initWithDescriptor:(id)descriptor completionBlock:(id)block
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptor);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  objc_storeStrong(&v24->_descriptor, location[0]);
+  objc_storeStrong(&v22, block);
+  objc_storeStrong(&selfCopy->_descriptor, location[0]);
   v21 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-  [(SUSUILaggardsUIAlertAction *)v24 encodeWithCoder:v21];
+  [(SUSUILaggardsUIAlertAction *)selfCopy encodeWithCoder:v21];
   v20 = objc_alloc_init(MEMORY[0x277CF0C80]);
   v6 = v20;
-  v7 = [v21 encodedData];
+  encodedData = [v21 encodedData];
   [v6 setObject:? forSetting:?];
-  MEMORY[0x277D82BD8](v7);
-  v9 = v24;
+  MEMORY[0x277D82BD8](encodedData);
+  v9 = selfCopy;
   v10 = v20;
   v8 = MEMORY[0x277CF0B60];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __65__SUSUILaggardsUIAlertAction_initWithDescriptor_completionBlock___block_invoke;
   v17 = &unk_279CB5948;
-  v18 = MEMORY[0x277D82BE0](v24);
+  v18 = MEMORY[0x277D82BE0](selfCopy);
   v19 = MEMORY[0x277D82BE0](v22);
   v11 = [v8 responderWithHandler:?];
-  v24 = 0;
+  selfCopy = 0;
   v13.receiver = v9;
   v13.super_class = SUSUILaggardsUIAlertAction;
-  v24 = [(SUSUILaggardsUIAlertAction *)&v13 initWithInfo:v10 responder:?];
-  v12 = MEMORY[0x277D82BE0](v24);
+  selfCopy = [(SUSUILaggardsUIAlertAction *)&v13 initWithInfo:v10 responder:?];
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   MEMORY[0x277D82BD8](v11);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v18, 0);
@@ -46,7 +46,7 @@
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v12;
 }
 
@@ -107,46 +107,46 @@ void __65__SUSUILaggardsUIAlertAction_initWithDescriptor_completionBlock___block
 
 - (void)loadIfNecessary
 {
-  v6 = self;
+  selfCopy = self;
   v5[1] = a2;
   if (!self->_loaded)
   {
-    v3 = [(SUSUILaggardsUIAlertAction *)v6 info];
-    v5[0] = [v3 objectForSetting:SUSUILaggardsUIAlertActionInput];
-    MEMORY[0x277D82BD8](v3);
+    info = [(SUSUILaggardsUIAlertAction *)selfCopy info];
+    v5[0] = [info objectForSetting:SUSUILaggardsUIAlertActionInput];
+    MEMORY[0x277D82BD8](info);
     v2 = objc_alloc(MEMORY[0x277CCAAC8]);
     v4 = [v2 initForReadingFromData:v5[0] error:?];
-    [(SUSUILaggardsUIAlertAction *)v6 decodeFromCoder:v4];
+    [(SUSUILaggardsUIAlertAction *)selfCopy decodeFromCoder:v4];
     [v4 finishDecoding];
-    v6->_loaded = 1;
+    selfCopy->_loaded = 1;
     objc_storeStrong(&v4, 0);
     objc_storeStrong(v5, 0);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v4->_descriptor)
+  objc_storeStrong(location, coder);
+  if (selfCopy->_descriptor)
   {
-    [location[0] encodeObject:v4->_descriptor forKey:@"_susDescriptor"];
+    [location[0] encodeObject:selfCopy->_descriptor forKey:@"_susDescriptor"];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)decodeFromCoder:(id)a3
+- (void)decodeFromCoder:(id)coder
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v3 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_susDescriptor"];
-  descriptor = v6->_descriptor;
-  v6->_descriptor = v3;
+  descriptor = selfCopy->_descriptor;
+  selfCopy->_descriptor = v3;
   MEMORY[0x277D82BD8](descriptor);
   objc_storeStrong(location, 0);
 }

@@ -1,23 +1,23 @@
 @interface CRLiOSPresetRenderer
 - (BOOL)cancelSwatchRenderingIfNeeded;
-- (BOOL)contextIsLowContrast:(id)a3 forBackgroundColor:(id)a4;
-- (BOOL)isDefaultLocalizedNameForPresetAtIndexPath:(id)a3 context:(id)a4;
-- (BOOL)p_shouldWaitBeforeDeliveringSwatchesInContext:(id)a3;
-- (CRLiOSPresetRenderer)initWithPresetProvider:(id)a3;
+- (BOOL)contextIsLowContrast:(id)contrast forBackgroundColor:(id)color;
+- (BOOL)isDefaultLocalizedNameForPresetAtIndexPath:(id)path context:(id)context;
+- (BOOL)p_shouldWaitBeforeDeliveringSwatchesInContext:(id)context;
+- (CRLiOSPresetRenderer)initWithPresetProvider:(id)provider;
 - (UIEdgeInsets)swatchInsets;
-- (id)defaultLocalizedNameForPresetAtIndexPath:(id)a3 context:(id)a4;
-- (id)localizedAccessibilityNameForPresetAtIndexPath:(id)a3 context:(id)a4;
-- (id)localizedNameForPresetAtIndexPath:(id)a3 context:(id)a4;
-- (id)p_swatchOperationForCellWithSize:(CGSize)a3 atIndexPath:(id)a4 context:(id)a5;
-- (void)renderSwatchInView:(id)a3 withSize:(CGSize)a4 backgroundColor:(id)a5 atIndexPath:(id)a6 context:(id)a7;
-- (void)waitOnSwatchRenderingAndDeliverResultsIfNeededInContext:(id)a3;
+- (id)defaultLocalizedNameForPresetAtIndexPath:(id)path context:(id)context;
+- (id)localizedAccessibilityNameForPresetAtIndexPath:(id)path context:(id)context;
+- (id)localizedNameForPresetAtIndexPath:(id)path context:(id)context;
+- (id)p_swatchOperationForCellWithSize:(CGSize)size atIndexPath:(id)path context:(id)context;
+- (void)renderSwatchInView:(id)view withSize:(CGSize)size backgroundColor:(id)color atIndexPath:(id)path context:(id)context;
+- (void)waitOnSwatchRenderingAndDeliverResultsIfNeededInContext:(id)context;
 @end
 
 @implementation CRLiOSPresetRenderer
 
-- (CRLiOSPresetRenderer)initWithPresetProvider:(id)a3
+- (CRLiOSPresetRenderer)initWithPresetProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = CRLiOSPresetRenderer;
   v6 = [(CRLiOSPresetRenderer *)&v13 init];
@@ -29,16 +29,16 @@
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v5 maxConcurrentOperationCount];
+      maxConcurrentOperationCount = [providerCopy maxConcurrentOperationCount];
     }
 
     else
     {
-      v9 = -1;
+      maxConcurrentOperationCount = -1;
     }
 
-    [(NSOperationQueue *)v6->_swatchOperationQueue setMaxConcurrentOperationCount:v9];
-    objc_storeStrong(&v6->_presetProvider, a3);
+    [(NSOperationQueue *)v6->_swatchOperationQueue setMaxConcurrentOperationCount:maxConcurrentOperationCount];
+    objc_storeStrong(&v6->_presetProvider, provider);
     v10 = +[NSArray array];
     inFlightOperations = v6->_inFlightOperations;
     v6->_inFlightOperations = v10;
@@ -49,33 +49,33 @@
 
 - (BOOL)cancelSwatchRenderingIfNeeded
 {
-  v3 = [(CRLiOSPresetRenderer *)self p_swatchOperationQueue];
-  v4 = [v3 operationCount];
-  if (v4)
+  p_swatchOperationQueue = [(CRLiOSPresetRenderer *)self p_swatchOperationQueue];
+  operationCount = [p_swatchOperationQueue operationCount];
+  if (operationCount)
   {
-    v5 = [(CRLiOSPresetRenderer *)self p_swatchOperationQueue];
-    [v5 cancelAllOperations];
+    p_swatchOperationQueue2 = [(CRLiOSPresetRenderer *)self p_swatchOperationQueue];
+    [p_swatchOperationQueue2 cancelAllOperations];
 
     v6 = +[NSArray array];
     [(CRLiOSPresetRenderer *)self setP_inFlightOperations:v6];
   }
 
-  return v4 != 0;
+  return operationCount != 0;
 }
 
-- (void)waitOnSwatchRenderingAndDeliverResultsIfNeededInContext:(id)a3
+- (void)waitOnSwatchRenderingAndDeliverResultsIfNeededInContext:(id)context
 {
-  if ([(CRLiOSPresetRenderer *)self p_shouldWaitBeforeDeliveringSwatchesInContext:a3])
+  if ([(CRLiOSPresetRenderer *)self p_shouldWaitBeforeDeliveringSwatchesInContext:context])
   {
-    v4 = [(CRLiOSPresetRenderer *)self p_swatchOperationQueue];
-    [v4 waitUntilAllOperationsAreFinished];
+    p_swatchOperationQueue = [(CRLiOSPresetRenderer *)self p_swatchOperationQueue];
+    [p_swatchOperationQueue waitUntilAllOperationsAreFinished];
 
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(CRLiOSPresetRenderer *)self p_inFlightOperations];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    p_inFlightOperations = [(CRLiOSPresetRenderer *)self p_inFlightOperations];
+    v6 = [p_inFlightOperations countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -87,7 +87,7 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(p_inFlightOperations);
           }
 
           [*(*(&v11 + 1) + 8 * v9) deliverSwatch];
@@ -95,7 +95,7 @@
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [p_inFlightOperations countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -106,69 +106,69 @@
   [(CRLiOSPresetRenderer *)self setP_inFlightOperations:v10];
 }
 
-- (BOOL)contextIsLowContrast:(id)a3 forBackgroundColor:(id)a4
+- (BOOL)contextIsLowContrast:(id)contrast forBackgroundColor:(id)color
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRLiOSPresetRenderer *)self p_presetProvider];
-  v9 = [v8 contextIsLowContrast:v7 forBackgroundColor:v6];
+  colorCopy = color;
+  contrastCopy = contrast;
+  p_presetProvider = [(CRLiOSPresetRenderer *)self p_presetProvider];
+  v9 = [p_presetProvider contextIsLowContrast:contrastCopy forBackgroundColor:colorCopy];
 
   return v9;
 }
 
-- (void)renderSwatchInView:(id)a3 withSize:(CGSize)a4 backgroundColor:(id)a5 atIndexPath:(id)a6 context:(id)a7
+- (void)renderSwatchInView:(id)view withSize:(CGSize)size backgroundColor:(id)color atIndexPath:(id)path context:(id)context
 {
-  height = a4.height;
-  width = a4.width;
-  v27 = a3;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = [(CRLiOSPresetRenderer *)self p_presetProvider];
-  v17 = [v16 suppressesAnimation];
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  contextCopy = context;
+  pathCopy = path;
+  colorCopy = color;
+  p_presetProvider = [(CRLiOSPresetRenderer *)self p_presetProvider];
+  suppressesAnimation = [p_presetProvider suppressesAnimation];
 
-  [v27 setExclusiveTouch:1];
-  if ((v17 & 1) == 0)
+  [viewCopy setExclusiveTouch:1];
+  if ((suppressesAnimation & 1) == 0)
   {
-    [v27 setHidden:1];
+    [viewCopy setHidden:1];
   }
 
-  [v27 crl_prepareForPresetRendering];
-  v18 = [(CRLiOSPresetRenderer *)self p_swatchOperationForCellWithSize:v14 atIndexPath:v13 context:width, height];
-  [v18 setView:v27];
-  v19 = [v15 CGColor];
+  [viewCopy crl_prepareForPresetRendering];
+  height = [(CRLiOSPresetRenderer *)self p_swatchOperationForCellWithSize:pathCopy atIndexPath:contextCopy context:width, height];
+  [height setView:viewCopy];
+  cGColor = [colorCopy CGColor];
 
-  v20 = [v18 view];
-  v21 = [v20 layer];
-  [v21 setBackgroundColor:v19];
+  view = [height view];
+  layer = [view layer];
+  [layer setBackgroundColor:cGColor];
 
-  [v18 setSuppressesAnimation:v17];
-  [v18 setTargetIndexPath:v14];
-  v22 = [v18 view];
-  objc_setAssociatedObject(v22, "CRLSwatchRenderingOperationTargetIndexPathKey", v14, 3);
+  [height setSuppressesAnimation:suppressesAnimation];
+  [height setTargetIndexPath:pathCopy];
+  view2 = [height view];
+  objc_setAssociatedObject(view2, "CRLSwatchRenderingOperationTargetIndexPathKey", pathCopy, 3);
 
-  v23 = [(CRLiOSPresetRenderer *)self p_shouldWaitBeforeDeliveringSwatchesInContext:v13];
+  v23 = [(CRLiOSPresetRenderer *)self p_shouldWaitBeforeDeliveringSwatchesInContext:contextCopy];
   if (v23)
   {
-    [v18 setDeliversImageAutomatically:0];
+    [height setDeliversImageAutomatically:0];
   }
 
-  v24 = [(CRLiOSPresetRenderer *)self p_swatchOperationQueue];
-  [v24 addOperation:v18];
+  p_swatchOperationQueue = [(CRLiOSPresetRenderer *)self p_swatchOperationQueue];
+  [p_swatchOperationQueue addOperation:height];
 
-  v25 = [(CRLiOSPresetRenderer *)self p_inFlightOperations];
-  v26 = [v25 arrayByAddingObject:v18];
+  p_inFlightOperations = [(CRLiOSPresetRenderer *)self p_inFlightOperations];
+  v26 = [p_inFlightOperations arrayByAddingObject:height];
   [(CRLiOSPresetRenderer *)self setP_inFlightOperations:v26];
 }
 
-- (id)localizedNameForPresetAtIndexPath:(id)a3 context:(id)a4
+- (id)localizedNameForPresetAtIndexPath:(id)path context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLiOSPresetRenderer *)self p_presetProvider];
+  pathCopy = path;
+  contextCopy = context;
+  p_presetProvider = [(CRLiOSPresetRenderer *)self p_presetProvider];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 localizedNameForPresetAtIndexPath:v6 context:v7];
+    v9 = [p_presetProvider localizedNameForPresetAtIndexPath:pathCopy context:contextCopy];
   }
 
   else
@@ -179,14 +179,14 @@
   return v9;
 }
 
-- (BOOL)isDefaultLocalizedNameForPresetAtIndexPath:(id)a3 context:(id)a4
+- (BOOL)isDefaultLocalizedNameForPresetAtIndexPath:(id)path context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLiOSPresetRenderer *)self p_presetProvider];
+  pathCopy = path;
+  contextCopy = context;
+  p_presetProvider = [(CRLiOSPresetRenderer *)self p_presetProvider];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 isDefaultLocalizedNameForPresetAtIndexPath:v6 context:v7];
+    v9 = [p_presetProvider isDefaultLocalizedNameForPresetAtIndexPath:pathCopy context:contextCopy];
   }
 
   else
@@ -197,14 +197,14 @@
   return v9;
 }
 
-- (id)defaultLocalizedNameForPresetAtIndexPath:(id)a3 context:(id)a4
+- (id)defaultLocalizedNameForPresetAtIndexPath:(id)path context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLiOSPresetRenderer *)self p_presetProvider];
+  pathCopy = path;
+  contextCopy = context;
+  p_presetProvider = [(CRLiOSPresetRenderer *)self p_presetProvider];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 defaultLocalizedNameForPresetAtIndexPath:v6 context:v7];
+    v9 = [p_presetProvider defaultLocalizedNameForPresetAtIndexPath:pathCopy context:contextCopy];
   }
 
   else
@@ -215,14 +215,14 @@
   return v9;
 }
 
-- (id)localizedAccessibilityNameForPresetAtIndexPath:(id)a3 context:(id)a4
+- (id)localizedAccessibilityNameForPresetAtIndexPath:(id)path context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLiOSPresetRenderer *)self p_presetProvider];
+  pathCopy = path;
+  contextCopy = context;
+  p_presetProvider = [(CRLiOSPresetRenderer *)self p_presetProvider];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 localizedAccessibilityNameForPresetAtIndexPath:v6 context:v7];
+    v9 = [p_presetProvider localizedAccessibilityNameForPresetAtIndexPath:pathCopy context:contextCopy];
   }
 
   else
@@ -235,8 +235,8 @@
 
 - (UIEdgeInsets)swatchInsets
 {
-  v2 = [(CRLiOSPresetRenderer *)self p_presetProvider];
-  [v2 swatchInsets];
+  p_presetProvider = [(CRLiOSPresetRenderer *)self p_presetProvider];
+  [p_presetProvider swatchInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -253,25 +253,25 @@
   return result;
 }
 
-- (id)p_swatchOperationForCellWithSize:(CGSize)a3 atIndexPath:(id)a4 context:(id)a5
+- (id)p_swatchOperationForCellWithSize:(CGSize)size atIndexPath:(id)path context:(id)context
 {
-  width = a3.width;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(CRLiOSPresetRenderer *)self p_presetProvider];
-  v11 = [v10 swatchOperationWithSize:v9 atIndexPath:v8 context:sub_10012211C(width)];
+  width = size.width;
+  contextCopy = context;
+  pathCopy = path;
+  p_presetProvider = [(CRLiOSPresetRenderer *)self p_presetProvider];
+  v11 = [p_presetProvider swatchOperationWithSize:pathCopy atIndexPath:contextCopy context:sub_10012211C(width)];
 
   return v11;
 }
 
-- (BOOL)p_shouldWaitBeforeDeliveringSwatchesInContext:(id)a3
+- (BOOL)p_shouldWaitBeforeDeliveringSwatchesInContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CRLiOSPresetRenderer *)self p_presetProvider];
+  contextCopy = context;
+  p_presetProvider = [(CRLiOSPresetRenderer *)self p_presetProvider];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(CRLiOSPresetRenderer *)self p_presetProvider];
-    v7 = [v6 shouldWaitBeforeDeliveringSwatchesInContext:v4];
+    p_presetProvider2 = [(CRLiOSPresetRenderer *)self p_presetProvider];
+    v7 = [p_presetProvider2 shouldWaitBeforeDeliveringSwatchesInContext:contextCopy];
   }
 
   else

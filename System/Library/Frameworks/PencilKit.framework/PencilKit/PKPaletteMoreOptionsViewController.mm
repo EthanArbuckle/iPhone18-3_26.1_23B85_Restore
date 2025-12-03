@@ -1,5 +1,5 @@
 @interface PKPaletteMoreOptionsViewController
-- (BOOL)_isCellInstalled:(id)a3;
+- (BOOL)_isCellInstalled:(id)installed;
 - (BOOL)_shouldInstallOpenPencilSettingsCell;
 - (BOOL)_shouldInstallResetHandwritingEducationPanelCell;
 - (BOOL)_shouldInstallTapToRadarCell;
@@ -8,14 +8,14 @@
 - (BOOL)_shouldRemoveTapToRadarCell;
 - (PKPaletteMoreOptionsViewControllerDelegate)delegate;
 - (double)_contentSizeMinWidth;
-- (void)_autoMinimizeCellDidChangeValue:(id)a3;
-- (void)_autoRefineCellDidChangeValue:(id)a3;
-- (void)_fingerDrawsCellDidChangeValue:(id)a3;
+- (void)_autoMinimizeCellDidChangeValue:(id)value;
+- (void)_autoRefineCellDidChangeValue:(id)value;
+- (void)_fingerDrawsCellDidChangeValue:(id)value;
 - (void)_handleOpenPencilSettingsCellTapped;
 - (void)_handleResetHandwritingEducationPaneCellTapped;
-- (void)_handleResetImageWandOnboardingCellTapped:(id)a3;
+- (void)_handleResetImageWandOnboardingCellTapped:(id)tapped;
 - (void)_handleTapToRadarCellTapped;
-- (void)_proofreadingCellDidChangeValue:(id)a3;
+- (void)_proofreadingCellDidChangeValue:(id)value;
 - (void)_reloadItems;
 - (void)_reloadResetImageWandOnboardingCell;
 - (void)_updateAutoMinimizeCell;
@@ -23,16 +23,16 @@
 - (void)_updateContentSize;
 - (void)_updateFingerDrawsCell;
 - (void)_updateProofreadingCell;
-- (void)setAutoHideOn:(BOOL)a3;
-- (void)setExternalTraitCollection:(id)a3;
-- (void)setIsAutoRefineOn:(BOOL)a3;
-- (void)setIsFingerDrawsOn:(BOOL)a3;
-- (void)setIsProofreadingOn:(BOOL)a3;
-- (void)setShouldAlwaysShowAutoRefineControls:(BOOL)a3;
-- (void)setShouldShowFingerDrawsOption:(BOOL)a3;
-- (void)setShouldShowOpenPencilSettingsOption:(BOOL)a3;
-- (void)setShouldShowResetHandwritingEducationPane:(BOOL)a3;
-- (void)setShouldShowTapToRadarOption:(BOOL)a3;
+- (void)setAutoHideOn:(BOOL)on;
+- (void)setExternalTraitCollection:(id)collection;
+- (void)setIsAutoRefineOn:(BOOL)on;
+- (void)setIsFingerDrawsOn:(BOOL)on;
+- (void)setIsProofreadingOn:(BOOL)on;
+- (void)setShouldAlwaysShowAutoRefineControls:(BOOL)controls;
+- (void)setShouldShowFingerDrawsOption:(BOOL)option;
+- (void)setShouldShowOpenPencilSettingsOption:(BOOL)option;
+- (void)setShouldShowResetHandwritingEducationPane:(BOOL)pane;
+- (void)setShouldShowTapToRadarOption:(BOOL)option;
 - (void)viewDidLoad;
 @end
 
@@ -44,58 +44,58 @@
   v88.receiver = self;
   v88.super_class = PKPaletteMoreOptionsViewController;
   [(PKPaletteMoreOptionsViewController *)&v88 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(PKPaletteMoreOptionsViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(PKPaletteMoreOptionsViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
   v5 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
   [(PKPaletteMoreOptionsViewController *)self setScrollView:v5];
 
-  v6 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollView = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  [scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  [v7 setShowsVerticalScrollIndicator:1];
+  scrollView2 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  [scrollView2 setShowsVerticalScrollIndicator:1];
 
-  v8 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  [v8 setShowsHorizontalScrollIndicator:0];
+  scrollView3 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  [scrollView3 setShowsHorizontalScrollIndicator:0];
 
-  v9 = [(PKPaletteMoreOptionsViewController *)self view];
-  v10 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  [v9 addSubview:v10];
+  view2 = [(PKPaletteMoreOptionsViewController *)self view];
+  scrollView4 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  [view2 addSubview:scrollView4];
 
-  v11 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  v12 = [v11 bottomAnchor];
-  v13 = [(PKPaletteMoreOptionsViewController *)self view];
-  v14 = [v13 safeAreaLayoutGuide];
-  v15 = [v14 bottomAnchor];
-  v16 = [v12 constraintEqualToAnchor:v15 constant:-12.0];
+  scrollView5 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  bottomAnchor = [scrollView5 bottomAnchor];
+  view3 = [(PKPaletteMoreOptionsViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-12.0];
 
   LODWORD(v17) = 1144750080;
   v18 = v16;
   v87 = v16;
   [v16 setPriority:v17];
   v71 = MEMORY[0x1E696ACD8];
-  v85 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  v81 = [v85 leadingAnchor];
-  v83 = [(PKPaletteMoreOptionsViewController *)self view];
-  v79 = [v83 safeAreaLayoutGuide];
-  v77 = [v79 leadingAnchor];
-  v75 = [v81 constraintEqualToAnchor:v77];
+  scrollView6 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  leadingAnchor = [scrollView6 leadingAnchor];
+  view4 = [(PKPaletteMoreOptionsViewController *)self view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+  v75 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v90[0] = v75;
-  v73 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  v67 = [v73 trailingAnchor];
-  v69 = [(PKPaletteMoreOptionsViewController *)self view];
-  v65 = [v69 safeAreaLayoutGuide];
-  v19 = [v65 trailingAnchor];
-  v20 = [v67 constraintEqualToAnchor:v19];
+  scrollView7 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  trailingAnchor = [scrollView7 trailingAnchor];
+  view5 = [(PKPaletteMoreOptionsViewController *)self view];
+  safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v90[1] = v20;
-  v21 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  v22 = [v21 topAnchor];
-  v23 = [(PKPaletteMoreOptionsViewController *)self view];
-  v24 = [v23 safeAreaLayoutGuide];
-  v25 = [v24 topAnchor];
-  v26 = [v22 constraintEqualToAnchor:v25];
+  scrollView8 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  topAnchor = [scrollView8 topAnchor];
+  view6 = [(PKPaletteMoreOptionsViewController *)self view];
+  safeAreaLayoutGuide4 = [view6 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide4 topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v90[2] = v26;
   v90[3] = v18;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:4];
@@ -105,156 +105,156 @@
   v29 = [v28 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(PKPaletteMoreOptionsViewController *)self setStackView:v29];
 
-  v30 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  [v30 setDistribution:0];
+  stackView = [(PKPaletteMoreOptionsViewController *)self stackView];
+  [stackView setDistribution:0];
 
-  v31 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  [v31 setAlignment:0];
+  stackView2 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  [stackView2 setAlignment:0];
 
-  v32 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  [v32 setAxis:1];
+  stackView3 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  [stackView3 setAxis:1];
 
-  v33 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackView4 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  [stackView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v34 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  v35 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  [v34 addSubview:v35];
+  scrollView9 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  stackView5 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  [scrollView9 addSubview:stackView5];
 
-  v86 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  v82 = [v86 leadingAnchor];
-  v84 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  v80 = [v84 leadingAnchor];
-  v78 = [v82 constraintEqualToAnchor:v80];
+  stackView6 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  leadingAnchor3 = [stackView6 leadingAnchor];
+  scrollView10 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  leadingAnchor4 = [scrollView10 leadingAnchor];
+  v78 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v89[0] = v78;
-  v76 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  v72 = [v76 trailingAnchor];
-  v74 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  v70 = [v74 trailingAnchor];
-  v68 = [v72 constraintEqualToAnchor:v70];
+  stackView7 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  trailingAnchor3 = [stackView7 trailingAnchor];
+  scrollView11 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  trailingAnchor4 = [scrollView11 trailingAnchor];
+  v68 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v89[1] = v68;
-  v66 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  v63 = [v66 topAnchor];
-  v64 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  v62 = [v64 topAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62 constant:12.0];
+  stackView8 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  topAnchor3 = [stackView8 topAnchor];
+  scrollView12 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  topAnchor4 = [scrollView12 topAnchor];
+  v61 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:12.0];
   v89[2] = v61;
-  v60 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  v59 = [v60 bottomAnchor];
-  v36 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  v37 = [v36 bottomAnchor];
-  v38 = [v59 constraintEqualToAnchor:v37];
+  stackView9 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  bottomAnchor3 = [stackView9 bottomAnchor];
+  scrollView13 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  bottomAnchor4 = [scrollView13 bottomAnchor];
+  v38 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v89[3] = v38;
-  v39 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  v40 = [v39 widthAnchor];
-  v41 = [(PKPaletteMoreOptionsViewController *)self scrollView];
-  v42 = [v41 widthAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
+  stackView10 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  widthAnchor = [stackView10 widthAnchor];
+  scrollView14 = [(PKPaletteMoreOptionsViewController *)self scrollView];
+  widthAnchor2 = [scrollView14 widthAnchor];
+  v43 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v89[4] = v43;
   v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v89 count:5];
   [(PKPaletteMoreOptionsViewController *)self setStackViewPositioningConstraints:v44];
 
   v45 = MEMORY[0x1E696ACD8];
-  v46 = [(PKPaletteMoreOptionsViewController *)self stackViewPositioningConstraints];
-  [v45 activateConstraints:v46];
+  stackViewPositioningConstraints = [(PKPaletteMoreOptionsViewController *)self stackViewPositioningConstraints];
+  [v45 activateConstraints:stackViewPositioningConstraints];
 
   v47 = objc_alloc_init(MEMORY[0x1E69DCF90]);
   [(PKPaletteMoreOptionsViewController *)self setAutoMinimizeAndFingerDrawsCellsContainer:v47];
 
-  v48 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
-  [v48 setAxis:1];
+  autoMinimizeAndFingerDrawsCellsContainer = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
+  [autoMinimizeAndFingerDrawsCellsContainer setAxis:1];
 
-  v49 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  [v49 spacing];
+  stackView11 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  [stackView11 spacing];
   v51 = v50;
-  v52 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
-  [v52 setSpacing:v51];
+  autoMinimizeAndFingerDrawsCellsContainer2 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
+  [autoMinimizeAndFingerDrawsCellsContainer2 setSpacing:v51];
 
-  v53 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  v54 = [v53 distribution];
-  v55 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
-  [v55 setDistribution:v54];
+  stackView12 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  distribution = [stackView12 distribution];
+  autoMinimizeAndFingerDrawsCellsContainer3 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
+  [autoMinimizeAndFingerDrawsCellsContainer3 setDistribution:distribution];
 
-  v56 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  v57 = [v56 alignment];
-  v58 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
-  [v58 setAlignment:v57];
+  stackView13 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  alignment = [stackView13 alignment];
+  autoMinimizeAndFingerDrawsCellsContainer4 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
+  [autoMinimizeAndFingerDrawsCellsContainer4 setAlignment:alignment];
 
   [(PKPaletteMoreOptionsViewController *)self _reloadItems];
 }
 
-- (void)setShouldShowFingerDrawsOption:(BOOL)a3
+- (void)setShouldShowFingerDrawsOption:(BOOL)option
 {
-  if (self->_shouldShowFingerDrawsOption != a3)
+  if (self->_shouldShowFingerDrawsOption != option)
   {
-    self->_shouldShowFingerDrawsOption = a3;
+    self->_shouldShowFingerDrawsOption = option;
     [(PKPaletteMoreOptionsViewController *)self _reloadItems];
   }
 }
 
-- (void)setIsFingerDrawsOn:(BOOL)a3
+- (void)setIsFingerDrawsOn:(BOOL)on
 {
-  if (self->_isFingerDrawsOn != a3)
+  if (self->_isFingerDrawsOn != on)
   {
-    v4 = a3;
-    self->_isFingerDrawsOn = a3;
-    v5 = [(PKPaletteMoreOptionsViewController *)self fingerDrawsCell];
-    if (v5)
+    onCopy = on;
+    self->_isFingerDrawsOn = on;
+    fingerDrawsCell = [(PKPaletteMoreOptionsViewController *)self fingerDrawsCell];
+    if (fingerDrawsCell)
     {
-      v6 = v5;
-      [v5[52] setOn:v4];
-      v5 = v6;
+      v6 = fingerDrawsCell;
+      [fingerDrawsCell[52] setOn:onCopy];
+      fingerDrawsCell = v6;
     }
   }
 }
 
-- (void)setShouldAlwaysShowAutoRefineControls:(BOOL)a3
+- (void)setShouldAlwaysShowAutoRefineControls:(BOOL)controls
 {
-  if (self->_shouldAlwaysShowAutoRefineControls != a3)
+  if (self->_shouldAlwaysShowAutoRefineControls != controls)
   {
-    self->_shouldAlwaysShowAutoRefineControls = a3;
+    self->_shouldAlwaysShowAutoRefineControls = controls;
     [(PKPaletteMoreOptionsViewController *)self _reloadItems];
   }
 }
 
-- (void)setExternalTraitCollection:(id)a3
+- (void)setExternalTraitCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_externalTraitCollection != v5)
+  collectionCopy = collection;
+  if (self->_externalTraitCollection != collectionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_externalTraitCollection, a3);
+    v6 = collectionCopy;
+    objc_storeStrong(&self->_externalTraitCollection, collection);
     [(PKPaletteMoreOptionsViewController *)self _updateContentSize];
-    v5 = v6;
+    collectionCopy = v6;
   }
 }
 
-- (void)setAutoHideOn:(BOOL)a3
+- (void)setAutoHideOn:(BOOL)on
 {
-  if (self->_autoHideOn != a3)
+  if (self->_autoHideOn != on)
   {
-    self->_autoHideOn = a3;
+    self->_autoHideOn = on;
     [(PKPaletteMoreOptionsViewController *)self _updateAutoMinimizeCell];
   }
 }
 
 - (void)_updateAutoMinimizeCell
 {
-  v3 = [(PKPaletteMoreOptionsViewController *)self isAutoHideOn];
-  v4 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeCell];
-  if (v4)
+  isAutoHideOn = [(PKPaletteMoreOptionsViewController *)self isAutoHideOn];
+  autoMinimizeCell = [(PKPaletteMoreOptionsViewController *)self autoMinimizeCell];
+  if (autoMinimizeCell)
   {
-    v5 = v4;
-    [v4[52] setOn:v3];
-    v4 = v5;
+    v5 = autoMinimizeCell;
+    [autoMinimizeCell[52] setOn:isAutoHideOn];
+    autoMinimizeCell = v5;
   }
 }
 
 - (void)_updateFingerDrawsCell
 {
-  v3 = [(PKPaletteMoreOptionsViewController *)self fingerDrawsCell];
+  fingerDrawsCell = [(PKPaletteMoreOptionsViewController *)self fingerDrawsCell];
 
-  if (!v3)
+  if (!fingerDrawsCell)
   {
     v4 = _PencilKitBundle();
     v5 = [v4 localizedStringForKey:@"Draw with Finger" value:@"Draw with Finger" table:@"Localizable"];
@@ -262,107 +262,107 @@
     v6 = [[PKPaletteOptionSwitchCell alloc] initWithTitle:v5 subtitle:0 target:self action:sel__fingerDrawsCellDidChangeValue_];
     [(PKPaletteMoreOptionsViewController *)self setFingerDrawsCell:v6];
 
-    v7 = [(PKPaletteMoreOptionsViewController *)self fingerDrawsCell];
-    [v7 setAccessibilityIdentifier:@"Draw-with-Finger-Switch"];
+    fingerDrawsCell2 = [(PKPaletteMoreOptionsViewController *)self fingerDrawsCell];
+    [fingerDrawsCell2 setAccessibilityIdentifier:@"Draw-with-Finger-Switch"];
   }
 
-  v8 = [(PKPaletteMoreOptionsViewController *)self isFingerDrawsOn];
-  v9 = [(PKPaletteMoreOptionsViewController *)self fingerDrawsCell];
-  if (v9)
+  isFingerDrawsOn = [(PKPaletteMoreOptionsViewController *)self isFingerDrawsOn];
+  fingerDrawsCell3 = [(PKPaletteMoreOptionsViewController *)self fingerDrawsCell];
+  if (fingerDrawsCell3)
   {
-    v10 = v9;
-    [v9[52] setOn:v8];
-    v9 = v10;
+    v10 = fingerDrawsCell3;
+    [fingerDrawsCell3[52] setOn:isFingerDrawsOn];
+    fingerDrawsCell3 = v10;
   }
 }
 
 - (void)_updateAutoRefineCell
 {
-  v3 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
+  autoRefineCell = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
 
-  if (v3)
+  if (autoRefineCell)
   {
-    v4 = [(PKPaletteMoreOptionsViewController *)self isAutoRefineOn];
-    v5 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
-    if (v5)
+    isAutoRefineOn = [(PKPaletteMoreOptionsViewController *)self isAutoRefineOn];
+    autoRefineCell2 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
+    if (autoRefineCell2)
     {
-      v6 = v5;
-      [v5[52] setOn:v4];
-      v5 = v6;
+      v6 = autoRefineCell2;
+      [autoRefineCell2[52] setOn:isAutoRefineOn];
+      autoRefineCell2 = v6;
     }
   }
 }
 
-- (void)_autoMinimizeCellDidChangeValue:(id)a3
+- (void)_autoMinimizeCellDidChangeValue:(id)value
 {
-  self->_autoHideOn = [a3 isOn];
+  self->_autoHideOn = [value isOn];
   [(PKPaletteMoreOptionsViewController *)self _updateAutoMinimizeCell];
-  v4 = [(PKPaletteMoreOptionsViewController *)self delegate];
-  [v4 moreOptionsViewControllerDidToggleAutoHide:self];
+  delegate = [(PKPaletteMoreOptionsViewController *)self delegate];
+  [delegate moreOptionsViewControllerDidToggleAutoHide:self];
 }
 
-- (void)_fingerDrawsCellDidChangeValue:(id)a3
+- (void)_fingerDrawsCellDidChangeValue:(id)value
 {
-  self->_isFingerDrawsOn = [a3 isOn];
+  self->_isFingerDrawsOn = [value isOn];
   [(PKPaletteMoreOptionsViewController *)self _updateFingerDrawsCell];
-  v4 = [(PKPaletteMoreOptionsViewController *)self delegate];
-  [v4 moreOptionsViewControllerDidToggleFingerDraws:self];
+  delegate = [(PKPaletteMoreOptionsViewController *)self delegate];
+  [delegate moreOptionsViewControllerDidToggleFingerDraws:self];
 }
 
-- (void)_autoRefineCellDidChangeValue:(id)a3
+- (void)_autoRefineCellDidChangeValue:(id)value
 {
-  self->_isAutoRefineOn = [a3 isOn];
+  self->_isAutoRefineOn = [value isOn];
   [(PKPaletteMoreOptionsViewController *)self _updateAutoRefineCell];
-  v4 = [(PKPaletteMoreOptionsViewController *)self delegate];
-  [v4 moreOptionsViewControllerDidToggleAutoRefine:self];
+  delegate = [(PKPaletteMoreOptionsViewController *)self delegate];
+  [delegate moreOptionsViewControllerDidToggleAutoRefine:self];
 }
 
 - (void)_updateProofreadingCell
 {
-  v3 = [(PKPaletteMoreOptionsViewController *)self proofreadingCell];
+  proofreadingCell = [(PKPaletteMoreOptionsViewController *)self proofreadingCell];
 
-  if (v3)
+  if (proofreadingCell)
   {
-    v4 = [(PKPaletteMoreOptionsViewController *)self isProofreadingOn];
-    v5 = [(PKPaletteMoreOptionsViewController *)self proofreadingCell];
-    if (v5)
+    isProofreadingOn = [(PKPaletteMoreOptionsViewController *)self isProofreadingOn];
+    proofreadingCell2 = [(PKPaletteMoreOptionsViewController *)self proofreadingCell];
+    if (proofreadingCell2)
     {
-      v6 = v5;
-      [v5[52] setOn:v4];
-      v5 = v6;
+      v6 = proofreadingCell2;
+      [proofreadingCell2[52] setOn:isProofreadingOn];
+      proofreadingCell2 = v6;
     }
   }
 }
 
-- (void)_proofreadingCellDidChangeValue:(id)a3
+- (void)_proofreadingCellDidChangeValue:(id)value
 {
-  self->_isProofreadingOn = [a3 isOn];
+  self->_isProofreadingOn = [value isOn];
   [(PKPaletteMoreOptionsViewController *)self _updateProofreadingCell];
-  v4 = [(PKPaletteMoreOptionsViewController *)self delegate];
-  [v4 moreOptionsViewControllerDidToggleProofreading:self];
+  delegate = [(PKPaletteMoreOptionsViewController *)self delegate];
+  [delegate moreOptionsViewControllerDidToggleProofreading:self];
 }
 
-- (void)setIsProofreadingOn:(BOOL)a3
+- (void)setIsProofreadingOn:(BOOL)on
 {
-  if (self->_isProofreadingOn != a3)
+  if (self->_isProofreadingOn != on)
   {
-    v4 = a3;
-    self->_isProofreadingOn = a3;
-    v5 = [(PKPaletteMoreOptionsViewController *)self proofreadingCell];
-    if (v5)
+    onCopy = on;
+    self->_isProofreadingOn = on;
+    proofreadingCell = [(PKPaletteMoreOptionsViewController *)self proofreadingCell];
+    if (proofreadingCell)
     {
-      v6 = v5;
-      [v5[52] setOn:v4];
-      v5 = v6;
+      v6 = proofreadingCell;
+      [proofreadingCell[52] setOn:onCopy];
+      proofreadingCell = v6;
     }
   }
 }
 
-- (void)setShouldShowTapToRadarOption:(BOOL)a3
+- (void)setShouldShowTapToRadarOption:(BOOL)option
 {
-  if (self->_shouldShowTapToRadarOption != a3)
+  if (self->_shouldShowTapToRadarOption != option)
   {
-    self->_shouldShowTapToRadarOption = a3;
+    self->_shouldShowTapToRadarOption = option;
     [(PKPaletteMoreOptionsViewController *)self _reloadItems];
   }
 }
@@ -371,8 +371,8 @@
 {
   if (os_variant_has_internal_diagnostics() && [(PKPaletteMoreOptionsViewController *)self shouldShowTapToRadarOption])
   {
-    v5 = [(PKPaletteMoreOptionsViewController *)self tapToRadarCell];
-    v3 = ![(PKPaletteMoreOptionsViewController *)self _isCellInstalled:v5];
+    tapToRadarCell = [(PKPaletteMoreOptionsViewController *)self tapToRadarCell];
+    v3 = ![(PKPaletteMoreOptionsViewController *)self _isCellInstalled:tapToRadarCell];
   }
 
   else
@@ -390,29 +390,29 @@
     return 0;
   }
 
-  v4 = [(PKPaletteMoreOptionsViewController *)self tapToRadarCell];
-  v5 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:v4];
+  tapToRadarCell = [(PKPaletteMoreOptionsViewController *)self tapToRadarCell];
+  v5 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:tapToRadarCell];
 
   return v5;
 }
 
 - (void)_handleTapToRadarCellTapped
 {
-  v3 = [(PKPaletteMoreOptionsViewController *)self delegate];
+  delegate = [(PKPaletteMoreOptionsViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PKPaletteMoreOptionsViewController *)self delegate];
-    [v5 moreOptionsViewControllerDidSelectTapToRadar:self];
+    delegate2 = [(PKPaletteMoreOptionsViewController *)self delegate];
+    [delegate2 moreOptionsViewControllerDidSelectTapToRadar:self];
   }
 }
 
-- (void)setShouldShowResetHandwritingEducationPane:(BOOL)a3
+- (void)setShouldShowResetHandwritingEducationPane:(BOOL)pane
 {
-  if (self->_shouldShowResetHandwritingEducationPane != a3)
+  if (self->_shouldShowResetHandwritingEducationPane != pane)
   {
-    self->_shouldShowResetHandwritingEducationPane = a3;
+    self->_shouldShowResetHandwritingEducationPane = pane;
     [(PKPaletteMoreOptionsViewController *)self _reloadItems];
   }
 }
@@ -421,8 +421,8 @@
 {
   if ([(PKPaletteMoreOptionsViewController *)self shouldShowResetHandwritingEducationPane])
   {
-    v3 = [(PKPaletteMoreOptionsViewController *)self resetHandwritingEducationPaneCell];
-    v4 = ![(PKPaletteMoreOptionsViewController *)self _isCellInstalled:v3];
+    resetHandwritingEducationPaneCell = [(PKPaletteMoreOptionsViewController *)self resetHandwritingEducationPaneCell];
+    v4 = ![(PKPaletteMoreOptionsViewController *)self _isCellInstalled:resetHandwritingEducationPaneCell];
   }
 
   else
@@ -440,29 +440,29 @@
     return 0;
   }
 
-  v4 = [(PKPaletteMoreOptionsViewController *)self resetHandwritingEducationPaneCell];
-  v5 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:v4];
+  resetHandwritingEducationPaneCell = [(PKPaletteMoreOptionsViewController *)self resetHandwritingEducationPaneCell];
+  v5 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:resetHandwritingEducationPaneCell];
 
   return v5;
 }
 
 - (void)_handleResetHandwritingEducationPaneCellTapped
 {
-  v3 = [(PKPaletteMoreOptionsViewController *)self delegate];
+  delegate = [(PKPaletteMoreOptionsViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PKPaletteMoreOptionsViewController *)self delegate];
-    [v5 moreOptionsViewControllerDidSelectResetHandwritingEducationPane:self];
+    delegate2 = [(PKPaletteMoreOptionsViewController *)self delegate];
+    [delegate2 moreOptionsViewControllerDidSelectResetHandwritingEducationPane:self];
   }
 }
 
-- (void)setShouldShowOpenPencilSettingsOption:(BOOL)a3
+- (void)setShouldShowOpenPencilSettingsOption:(BOOL)option
 {
-  if (self->_shouldShowOpenPencilSettingsOption != a3)
+  if (self->_shouldShowOpenPencilSettingsOption != option)
   {
-    self->_shouldShowOpenPencilSettingsOption = a3;
+    self->_shouldShowOpenPencilSettingsOption = option;
     [(PKPaletteMoreOptionsViewController *)self _reloadItems];
   }
 }
@@ -471,8 +471,8 @@
 {
   if ([(PKPaletteMoreOptionsViewController *)self shouldShowOpenPencilSettingsOption])
   {
-    v3 = [(PKPaletteMoreOptionsViewController *)self openPencilSettingsCell];
-    v4 = ![(PKPaletteMoreOptionsViewController *)self _isCellInstalled:v3];
+    openPencilSettingsCell = [(PKPaletteMoreOptionsViewController *)self openPencilSettingsCell];
+    v4 = ![(PKPaletteMoreOptionsViewController *)self _isCellInstalled:openPencilSettingsCell];
   }
 
   else
@@ -490,30 +490,30 @@
     return 0;
   }
 
-  v4 = [(PKPaletteMoreOptionsViewController *)self openPencilSettingsCell];
-  v5 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:v4];
+  openPencilSettingsCell = [(PKPaletteMoreOptionsViewController *)self openPencilSettingsCell];
+  v5 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:openPencilSettingsCell];
 
   return v5;
 }
 
 - (void)_handleOpenPencilSettingsCellTapped
 {
-  v3 = [(PKPaletteMoreOptionsViewController *)self delegate];
+  delegate = [(PKPaletteMoreOptionsViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PKPaletteMoreOptionsViewController *)self delegate];
-    [v5 moreOptionsViewControllerDidSelectOpenPencilSettings:self];
+    delegate2 = [(PKPaletteMoreOptionsViewController *)self delegate];
+    [delegate2 moreOptionsViewControllerDidSelectOpenPencilSettings:self];
   }
 }
 
 - (void)_reloadItems
 {
   v126 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  stackView = [(PKPaletteMoreOptionsViewController *)self stackView];
 
-  if (!v3)
+  if (!stackView)
   {
     return;
   }
@@ -522,10 +522,10 @@
   v122 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v4 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  v5 = [v4 arrangedSubviews];
+  stackView2 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  arrangedSubviews = [stackView2 arrangedSubviews];
 
-  v6 = [v5 countByEnumeratingWithState:&v119 objects:v125 count:16];
+  v6 = [arrangedSubviews countByEnumeratingWithState:&v119 objects:v125 count:16];
   if (v6)
   {
     v7 = v6;
@@ -536,17 +536,17 @@
       {
         if (*v120 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v10 = *(*(&v119 + 1) + 8 * i);
-        v11 = [(PKPaletteMoreOptionsViewController *)self stackView];
-        [v11 removeArrangedSubview:v10];
+        stackView3 = [(PKPaletteMoreOptionsViewController *)self stackView];
+        [stackView3 removeArrangedSubview:v10];
 
         [v10 removeFromSuperview];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v119 objects:v125 count:16];
+      v7 = [arrangedSubviews countByEnumeratingWithState:&v119 objects:v125 count:16];
     }
 
     while (v7);
@@ -556,10 +556,10 @@
   v118 = 0u;
   v115 = 0u;
   v116 = 0u;
-  v12 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
-  v13 = [v12 arrangedSubviews];
+  autoMinimizeAndFingerDrawsCellsContainer = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
+  arrangedSubviews2 = [autoMinimizeAndFingerDrawsCellsContainer arrangedSubviews];
 
-  v14 = [v13 countByEnumeratingWithState:&v115 objects:v124 count:16];
+  v14 = [arrangedSubviews2 countByEnumeratingWithState:&v115 objects:v124 count:16];
   if (v14)
   {
     v15 = v14;
@@ -570,17 +570,17 @@
       {
         if (*v116 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(arrangedSubviews2);
         }
 
         v18 = *(*(&v115 + 1) + 8 * j);
-        v19 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
-        [v19 removeArrangedSubview:v18];
+        autoMinimizeAndFingerDrawsCellsContainer2 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
+        [autoMinimizeAndFingerDrawsCellsContainer2 removeArrangedSubview:v18];
 
         [v18 removeFromSuperview];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v115 objects:v124 count:16];
+      v15 = [arrangedSubviews2 countByEnumeratingWithState:&v115 objects:v124 count:16];
     }
 
     while (v15);
@@ -594,30 +594,30 @@
     v27 = [[PKPaletteOptionSwitchCell alloc] initWithTitle:v26 subtitle:0 target:self action:sel__autoMinimizeCellDidChangeValue_];
     [(PKPaletteMoreOptionsViewController *)self setAutoMinimizeCell:v27];
 
-    v28 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeCell];
-    [v28 setAccessibilityIdentifier:@"Auto-minimize-Switch"];
+    autoMinimizeCell = [(PKPaletteMoreOptionsViewController *)self autoMinimizeCell];
+    [autoMinimizeCell setAccessibilityIdentifier:@"Auto-minimize-Switch"];
 
-    v29 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
-    v30 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeCell];
-    [v29 addArrangedSubview:v30];
+    autoMinimizeAndFingerDrawsCellsContainer3 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
+    autoMinimizeCell2 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeCell];
+    [autoMinimizeAndFingerDrawsCellsContainer3 addArrangedSubview:autoMinimizeCell2];
   }
 
   else if (![(PKPaletteMoreOptionsViewController *)self shouldShowAutoMinimizeOption])
   {
-    v22 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeCell];
-    v23 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:v22];
+    autoMinimizeCell3 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeCell];
+    v23 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:autoMinimizeCell3];
 
     if (v23)
     {
-      v24 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeCell];
-      [v24 removeFromSuperview];
+      autoMinimizeCell4 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeCell];
+      [autoMinimizeCell4 removeFromSuperview];
 
       [(PKPaletteMoreOptionsViewController *)self setAutoMinimizeCell:0];
     }
   }
 
-  v31 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeCell];
-  v32 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:v31];
+  autoMinimizeCell5 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeCell];
+  v32 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:autoMinimizeCell5];
 
   if (v32)
   {
@@ -627,40 +627,40 @@
   if ([(PKPaletteMoreOptionsViewController *)self shouldShowFingerDrawsOption])
   {
     [(PKPaletteMoreOptionsViewController *)self _updateFingerDrawsCell];
-    v33 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
-    v34 = [(PKPaletteMoreOptionsViewController *)self fingerDrawsCell];
-    [v33 addArrangedSubview:v34];
+    autoMinimizeAndFingerDrawsCellsContainer4 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
+    fingerDrawsCell = [(PKPaletteMoreOptionsViewController *)self fingerDrawsCell];
+    [autoMinimizeAndFingerDrawsCellsContainer4 addArrangedSubview:fingerDrawsCell];
   }
 
-  v35 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
-  v36 = [v35 arrangedSubviews];
-  v37 = [v36 count];
+  autoMinimizeAndFingerDrawsCellsContainer5 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
+  arrangedSubviews3 = [autoMinimizeAndFingerDrawsCellsContainer5 arrangedSubviews];
+  v37 = [arrangedSubviews3 count];
 
   if (v37)
   {
-    v38 = [(PKPaletteMoreOptionsViewController *)self stackView];
-    v39 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
-    [v38 addArrangedSubview:v39];
+    stackView4 = [(PKPaletteMoreOptionsViewController *)self stackView];
+    autoMinimizeAndFingerDrawsCellsContainer6 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
+    [stackView4 addArrangedSubview:autoMinimizeAndFingerDrawsCellsContainer6];
   }
 
   if (PKIsAutoRefineEnabled() && ((PKCurrentAppSupportsRefinement() & 1) != 0 || self->_shouldAlwaysShowAutoRefineControls) && [objc_opt_class() hasAutoRefineLocaleEnabled])
   {
     if (PKIsPadDevice() && CHGetPersonalizedSynthesisSupportState() >= 3)
     {
-      v40 = [(PKPaletteMoreOptionsViewController *)self autoRefineNotReadyCell];
-      v41 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:v40];
+      autoRefineNotReadyCell = [(PKPaletteMoreOptionsViewController *)self autoRefineNotReadyCell];
+      v41 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:autoRefineNotReadyCell];
 
       if (v41)
       {
-        v42 = [(PKPaletteMoreOptionsViewController *)self autoRefineNotReadyCell];
-        [v42 removeFromSuperview];
+        autoRefineNotReadyCell2 = [(PKPaletteMoreOptionsViewController *)self autoRefineNotReadyCell];
+        [autoRefineNotReadyCell2 removeFromSuperview];
 
         [(PKPaletteMoreOptionsViewController *)self setAutoRefineNotReadyCell:0];
       }
 
-      v43 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
+      autoRefineCell = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
 
-      if (!v43)
+      if (!autoRefineCell)
       {
         v44 = _PencilKitBundle();
         v45 = [v44 localizedStringForKey:@"Auto-Refine Handwriting" value:@"Auto-Refine Handwriting" table:@"Localizable"];
@@ -668,13 +668,13 @@
         v46 = [[PKPaletteOptionSwitchCell alloc] initWithTitle:v45 subtitle:0 target:self action:sel__autoRefineCellDidChangeValue_];
         [(PKPaletteMoreOptionsViewController *)self setAutoRefineCell:v46];
 
-        v47 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
-        [v47 setAccessibilityIdentifier:@"Auto-refine-Switch"];
+        autoRefineCell2 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
+        [autoRefineCell2 setAccessibilityIdentifier:@"Auto-refine-Switch"];
       }
 
       [(PKPaletteMoreOptionsViewController *)self _updateAutoRefineCell];
-      v48 = [(PKPaletteMoreOptionsViewController *)self stackView];
-      v49 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
+      stackView5 = [(PKPaletteMoreOptionsViewController *)self stackView];
+      autoRefineCell3 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
     }
 
     else
@@ -685,20 +685,20 @@
         goto LABEL_55;
       }
 
-      v51 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
-      v52 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:v51];
+      autoRefineCell4 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
+      v52 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:autoRefineCell4];
 
       if (v52)
       {
-        v53 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
-        [v53 removeFromSuperview];
+        autoRefineCell5 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
+        [autoRefineCell5 removeFromSuperview];
 
         [(PKPaletteMoreOptionsViewController *)self setAutoRefineCell:0];
       }
 
-      v54 = [(PKPaletteMoreOptionsViewController *)self autoRefineNotReadyCell];
+      autoRefineNotReadyCell3 = [(PKPaletteMoreOptionsViewController *)self autoRefineNotReadyCell];
 
-      if (!v54)
+      if (!autoRefineNotReadyCell3)
       {
         v55 = PKIsPadDevice() && CHGetPersonalizedSynthesisSupportState() == 2;
         v56 = _PencilKitBundle();
@@ -732,24 +732,24 @@
         v63 = [[PKPaletteOptionInfoCell alloc] initWithTitle:v57 detailText:v62];
         [(PKPaletteMoreOptionsViewController *)self setAutoRefineNotReadyCell:v63];
 
-        v64 = [(PKPaletteMoreOptionsViewController *)self autoRefineNotReadyCell];
-        [v64 setAccessibilityIdentifier:@"Auto-refine-Info"];
+        autoRefineNotReadyCell4 = [(PKPaletteMoreOptionsViewController *)self autoRefineNotReadyCell];
+        [autoRefineNotReadyCell4 setAccessibilityIdentifier:@"Auto-refine-Info"];
       }
 
-      v48 = [(PKPaletteMoreOptionsViewController *)self stackView];
-      v49 = [(PKPaletteMoreOptionsViewController *)self autoRefineNotReadyCell];
+      stackView5 = [(PKPaletteMoreOptionsViewController *)self stackView];
+      autoRefineCell3 = [(PKPaletteMoreOptionsViewController *)self autoRefineNotReadyCell];
     }
 
-    v65 = v49;
-    [v48 addArrangedSubview:v49];
+    v65 = autoRefineCell3;
+    [stackView5 addArrangedSubview:autoRefineCell3];
   }
 
 LABEL_55:
   if (PKCurrentDeviceSupportsProofreading() && PKCurrentAppSupportsRefinement())
   {
-    v66 = [(PKPaletteMoreOptionsViewController *)self proofreadingCell];
+    proofreadingCell = [(PKPaletteMoreOptionsViewController *)self proofreadingCell];
 
-    if (!v66)
+    if (!proofreadingCell)
     {
       v67 = _PencilKitBundle();
       v68 = [v67 localizedStringForKey:@"Check Handwritten Spelling" value:@"Check Handwritten Spelling" table:@"Localizable"];
@@ -757,12 +757,12 @@ LABEL_55:
       v69 = [[PKPaletteOptionSwitchCell alloc] initWithTitle:v68 subtitle:0 target:self action:sel__proofreadingCellDidChangeValue_];
       [(PKPaletteMoreOptionsViewController *)self setProofreadingCell:v69];
 
-      v70 = [(PKPaletteMoreOptionsViewController *)self proofreadingCell];
-      [v70 setAccessibilityIdentifier:@"Check-Handwritten-Spelling-Switch"];
+      proofreadingCell2 = [(PKPaletteMoreOptionsViewController *)self proofreadingCell];
+      [proofreadingCell2 setAccessibilityIdentifier:@"Check-Handwritten-Spelling-Switch"];
 
-      v71 = [(PKPaletteMoreOptionsViewController *)self stackView];
-      v72 = [(PKPaletteMoreOptionsViewController *)self proofreadingCell];
-      [v71 addArrangedSubview:v72];
+      stackView6 = [(PKPaletteMoreOptionsViewController *)self stackView];
+      proofreadingCell3 = [(PKPaletteMoreOptionsViewController *)self proofreadingCell];
+      [stackView6 addArrangedSubview:proofreadingCell3];
     }
 
     [(PKPaletteMoreOptionsViewController *)self _updateProofreadingCell];
@@ -776,15 +776,15 @@ LABEL_55:
     v75 = [[PKPaletteOptionTitleCell alloc] initWithTitle:v74 target:self action:sel__handleTapToRadarCellTapped];
     [(PKPaletteMoreOptionsViewController *)self setTapToRadarCell:v75];
 
-    v76 = [(PKPaletteMoreOptionsViewController *)self stackView];
-    v77 = [(PKPaletteMoreOptionsViewController *)self tapToRadarCell];
-    [v76 addArrangedSubview:v77];
+    stackView7 = [(PKPaletteMoreOptionsViewController *)self stackView];
+    tapToRadarCell = [(PKPaletteMoreOptionsViewController *)self tapToRadarCell];
+    [stackView7 addArrangedSubview:tapToRadarCell];
   }
 
   else if ([(PKPaletteMoreOptionsViewController *)self _shouldRemoveTapToRadarCell])
   {
-    v78 = [(PKPaletteMoreOptionsViewController *)self tapToRadarCell];
-    [v78 removeFromSuperview];
+    tapToRadarCell2 = [(PKPaletteMoreOptionsViewController *)self tapToRadarCell];
+    [tapToRadarCell2 removeFromSuperview];
 
     [(PKPaletteMoreOptionsViewController *)self setTapToRadarCell:0];
   }
@@ -797,15 +797,15 @@ LABEL_55:
     v81 = [[PKPaletteOptionTitleCell alloc] initWithTitle:v80 target:self action:sel__handleResetHandwritingEducationPaneCellTapped];
     [(PKPaletteMoreOptionsViewController *)self setResetHandwritingEducationPaneCell:v81];
 
-    v82 = [(PKPaletteMoreOptionsViewController *)self stackView];
-    v83 = [(PKPaletteMoreOptionsViewController *)self resetHandwritingEducationPaneCell];
-    [v82 addArrangedSubview:v83];
+    stackView8 = [(PKPaletteMoreOptionsViewController *)self stackView];
+    resetHandwritingEducationPaneCell = [(PKPaletteMoreOptionsViewController *)self resetHandwritingEducationPaneCell];
+    [stackView8 addArrangedSubview:resetHandwritingEducationPaneCell];
   }
 
   else if ([(PKPaletteMoreOptionsViewController *)self _shouldRemoveResetHandwritingEducationPanelCell])
   {
-    v84 = [(PKPaletteMoreOptionsViewController *)self resetHandwritingEducationPaneCell];
-    [v84 removeFromSuperview];
+    resetHandwritingEducationPaneCell2 = [(PKPaletteMoreOptionsViewController *)self resetHandwritingEducationPaneCell];
+    [resetHandwritingEducationPaneCell2 removeFromSuperview];
 
     [(PKPaletteMoreOptionsViewController *)self setResetHandwritingEducationPaneCell:0];
   }
@@ -819,28 +819,28 @@ LABEL_55:
     v87 = [[PKPaletteOptionTitleCell alloc] initWithTitle:v86 target:self action:sel__handleOpenPencilSettingsCellTapped];
     [(PKPaletteMoreOptionsViewController *)self setOpenPencilSettingsCell:v87];
 
-    v88 = [(PKPaletteMoreOptionsViewController *)self stackView];
-    v89 = [(PKPaletteMoreOptionsViewController *)self openPencilSettingsCell];
-    [v88 addArrangedSubview:v89];
+    stackView9 = [(PKPaletteMoreOptionsViewController *)self stackView];
+    openPencilSettingsCell = [(PKPaletteMoreOptionsViewController *)self openPencilSettingsCell];
+    [stackView9 addArrangedSubview:openPencilSettingsCell];
   }
 
   else if ([(PKPaletteMoreOptionsViewController *)self _shouldRemoveOpenPencilSettingsCell])
   {
-    v90 = [(PKPaletteMoreOptionsViewController *)self openPencilSettingsCell];
-    [v90 removeFromSuperview];
+    openPencilSettingsCell2 = [(PKPaletteMoreOptionsViewController *)self openPencilSettingsCell];
+    [openPencilSettingsCell2 removeFromSuperview];
 
     [(PKPaletteMoreOptionsViewController *)self setOpenPencilSettingsCell:0];
   }
 
-  v91 = [(PKPaletteMoreOptionsViewController *)self stackView];
-  v92 = [v91 arrangedSubviews];
-  v93 = [v92 count];
+  stackView10 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  arrangedSubviews4 = [stackView10 arrangedSubviews];
+  v93 = [arrangedSubviews4 count];
 
   if (v93 >= 2)
   {
-    v94 = [(PKPaletteMoreOptionsViewController *)self stackView];
-    v95 = [v94 arrangedSubviews];
-    v96 = [v95 count];
+    stackView11 = [(PKPaletteMoreOptionsViewController *)self stackView];
+    arrangedSubviews5 = [stackView11 arrangedSubviews];
+    v96 = [arrangedSubviews5 count];
 
     if (v96 != 1)
     {
@@ -849,30 +849,30 @@ LABEL_55:
       {
         v98 = objc_alloc_init(PKPaletteOptionCellDividerView);
         [(PKPaletteOptionCellDividerView *)v98 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v99 = [(PKPaletteMoreOptionsViewController *)self stackView];
-        [v99 insertArrangedSubview:v98 atIndex:v97 + 1];
+        stackView12 = [(PKPaletteMoreOptionsViewController *)self stackView];
+        [stackView12 insertArrangedSubview:v98 atIndex:v97 + 1];
 
         v110 = MEMORY[0x1E696ACD8];
-        v114 = [(PKPaletteOptionCellDividerView *)v98 heightAnchor];
-        v113 = [v114 constraintEqualToConstant:0.5];
+        heightAnchor = [(PKPaletteOptionCellDividerView *)v98 heightAnchor];
+        v113 = [heightAnchor constraintEqualToConstant:0.5];
         v123[0] = v113;
-        v111 = [(PKPaletteOptionCellDividerView *)v98 leadingAnchor];
-        v112 = [(PKPaletteMoreOptionsViewController *)self stackView];
-        v100 = [v112 leadingAnchor];
-        v101 = [v111 constraintEqualToAnchor:v100 constant:16.0];
+        leadingAnchor = [(PKPaletteOptionCellDividerView *)v98 leadingAnchor];
+        stackView13 = [(PKPaletteMoreOptionsViewController *)self stackView];
+        leadingAnchor2 = [stackView13 leadingAnchor];
+        v101 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
         v123[1] = v101;
-        v102 = [(PKPaletteOptionCellDividerView *)v98 trailingAnchor];
-        v103 = [(PKPaletteMoreOptionsViewController *)self stackView];
-        v104 = [v103 trailingAnchor];
-        v105 = [v102 constraintEqualToAnchor:v104 constant:-16.0];
+        trailingAnchor = [(PKPaletteOptionCellDividerView *)v98 trailingAnchor];
+        stackView14 = [(PKPaletteMoreOptionsViewController *)self stackView];
+        trailingAnchor2 = [stackView14 trailingAnchor];
+        v105 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
         v123[2] = v105;
         v106 = [MEMORY[0x1E695DEC8] arrayWithObjects:v123 count:3];
         [v110 activateConstraints:v106];
 
         v97 += 2;
-        v107 = [(PKPaletteMoreOptionsViewController *)self stackView];
-        v108 = [v107 arrangedSubviews];
-        v109 = [v108 count] - 1;
+        stackView15 = [(PKPaletteMoreOptionsViewController *)self stackView];
+        arrangedSubviews6 = [stackView15 arrangedSubviews];
+        v109 = [arrangedSubviews6 count] - 1;
       }
 
       while (v97 < v109);
@@ -885,12 +885,12 @@ LABEL_55:
 - (void)_reloadResetImageWandOnboardingCell
 {
   v3 = +[PKInternalSettings sharedInstance];
-  v4 = [(PKInternalSettings *)v3 showResetImageWandOnboardingInPalette];
+  showResetImageWandOnboardingInPalette = [(PKInternalSettings *)v3 showResetImageWandOnboardingInPalette];
 
   v5 = [(PKPaletteMoreOptionsViewController *)self _isCellInstalled:self->_resetImageWandOnboardingPaneCell];
-  if (!v4 || v5)
+  if (!showResetImageWandOnboardingInPalette || v5)
   {
-    if (v4 & 1 | !v5)
+    if (showResetImageWandOnboardingInPalette & 1 | !v5)
     {
       return;
     }
@@ -906,13 +906,13 @@ LABEL_55:
     v7 = self->_resetImageWandOnboardingPaneCell;
     self->_resetImageWandOnboardingPaneCell = v6;
 
-    v9 = [(PKPaletteMoreOptionsViewController *)self stackView];
-    [(PKPaletteOptionTitleCell *)v9 addArrangedSubview:self->_resetImageWandOnboardingPaneCell];
-    resetImageWandOnboardingPaneCell = v9;
+    stackView = [(PKPaletteMoreOptionsViewController *)self stackView];
+    [(PKPaletteOptionTitleCell *)stackView addArrangedSubview:self->_resetImageWandOnboardingPaneCell];
+    resetImageWandOnboardingPaneCell = stackView;
   }
 }
 
-- (void)_handleResetImageWandOnboardingCellTapped:(id)a3
+- (void)_handleResetImageWandOnboardingCellTapped:(id)tapped
 {
   if (os_variant_has_internal_diagnostics())
   {
@@ -922,23 +922,23 @@ LABEL_55:
   }
 }
 
-- (BOOL)_isCellInstalled:(id)a3
+- (BOOL)_isCellInstalled:(id)installed
 {
-  v4 = a3;
-  if (v4)
+  installedCopy = installed;
+  if (installedCopy)
   {
-    v5 = [(PKPaletteMoreOptionsViewController *)self stackView];
-    v6 = [v5 arrangedSubviews];
-    if ([v6 containsObject:v4])
+    stackView = [(PKPaletteMoreOptionsViewController *)self stackView];
+    arrangedSubviews = [stackView arrangedSubviews];
+    if ([arrangedSubviews containsObject:installedCopy])
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
-      v9 = [v8 arrangedSubviews];
-      v7 = [v9 containsObject:v4];
+      autoMinimizeAndFingerDrawsCellsContainer = [(PKPaletteMoreOptionsViewController *)self autoMinimizeAndFingerDrawsCellsContainer];
+      arrangedSubviews2 = [autoMinimizeAndFingerDrawsCellsContainer arrangedSubviews];
+      v7 = [arrangedSubviews2 containsObject:installedCopy];
     }
   }
 
@@ -952,16 +952,16 @@ LABEL_55:
 
 - (void)_updateContentSize
 {
-  v3 = [(PKPaletteMoreOptionsViewController *)self stackView];
+  stackView = [(PKPaletteMoreOptionsViewController *)self stackView];
 
-  if (v3)
+  if (stackView)
   {
     v4 = MEMORY[0x1E696ACD8];
-    v5 = [(PKPaletteMoreOptionsViewController *)self stackViewPositioningConstraints];
-    [v4 deactivateConstraints:v5];
+    stackViewPositioningConstraints = [(PKPaletteMoreOptionsViewController *)self stackViewPositioningConstraints];
+    [v4 deactivateConstraints:stackViewPositioningConstraints];
 
-    v6 = [(PKPaletteMoreOptionsViewController *)self stackView];
-    [v6 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
+    stackView2 = [(PKPaletteMoreOptionsViewController *)self stackView];
+    [stackView2 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
     v8 = v7;
     v10 = v9;
 
@@ -978,15 +978,15 @@ LABEL_55:
 
     [(PKPaletteMoreOptionsViewController *)self setPreferredContentSize:v11, v10 + 24.0];
     v12 = MEMORY[0x1E696ACD8];
-    v13 = [(PKPaletteMoreOptionsViewController *)self stackViewPositioningConstraints];
-    [v12 activateConstraints:v13];
+    stackViewPositioningConstraints2 = [(PKPaletteMoreOptionsViewController *)self stackViewPositioningConstraints];
+    [v12 activateConstraints:stackViewPositioningConstraints2];
   }
 }
 
 - (double)_contentSizeMinWidth
 {
-  v2 = [(PKPaletteMoreOptionsViewController *)self externalTraitCollection];
-  if ([v2 horizontalSizeClass] == 1)
+  externalTraitCollection = [(PKPaletteMoreOptionsViewController *)self externalTraitCollection];
+  if ([externalTraitCollection horizontalSizeClass] == 1)
   {
     v3 = 200.0;
   }
@@ -999,18 +999,18 @@ LABEL_55:
   return v3;
 }
 
-- (void)setIsAutoRefineOn:(BOOL)a3
+- (void)setIsAutoRefineOn:(BOOL)on
 {
-  if (self->_isAutoRefineOn != a3)
+  if (self->_isAutoRefineOn != on)
   {
-    v4 = a3;
-    self->_isAutoRefineOn = a3;
-    v5 = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
-    if (v5)
+    onCopy = on;
+    self->_isAutoRefineOn = on;
+    autoRefineCell = [(PKPaletteMoreOptionsViewController *)self autoRefineCell];
+    if (autoRefineCell)
     {
-      v6 = v5;
-      [v5[52] setOn:v4];
-      v5 = v6;
+      v6 = autoRefineCell;
+      [autoRefineCell[52] setOn:onCopy];
+      autoRefineCell = v6;
     }
   }
 }

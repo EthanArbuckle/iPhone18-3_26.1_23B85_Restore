@@ -1,21 +1,21 @@
 @interface CCUIControlCenterPositionProviderPackingRule
-- (CCUIControlCenterPositionProviderPackingRule)initWithPackFrom:(unint64_t)a3 packingOrder:(unint64_t)a4 sizeLimit:(CCUILayoutSize)a5;
+- (CCUIControlCenterPositionProviderPackingRule)initWithPackFrom:(unint64_t)from packingOrder:(unint64_t)order sizeLimit:(CCUILayoutSize)limit;
 - (CCUILayoutSize)sizeLimit;
 @end
 
 @implementation CCUIControlCenterPositionProviderPackingRule
 
-- (CCUIControlCenterPositionProviderPackingRule)initWithPackFrom:(unint64_t)a3 packingOrder:(unint64_t)a4 sizeLimit:(CCUILayoutSize)a5
+- (CCUIControlCenterPositionProviderPackingRule)initWithPackFrom:(unint64_t)from packingOrder:(unint64_t)order sizeLimit:(CCUILayoutSize)limit
 {
-  height = a5.height;
-  width = a5.width;
+  height = limit.height;
+  width = limit.width;
   v10.receiver = self;
   v10.super_class = CCUIControlCenterPositionProviderPackingRule;
   result = [(CCUIControlCenterPositionProviderPackingRule *)&v10 init];
   if (result)
   {
-    result->_packFrom = a3;
-    result->_packingOrder = a4;
+    result->_packFrom = from;
+    result->_packingOrder = order;
     result->_sizeLimit.width = width;
     result->_sizeLimit.height = height;
   }

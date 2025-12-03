@@ -1,6 +1,6 @@
 @interface OITSUDeferredInvocationQueue
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)performInvocations;
 @end
 
@@ -13,18 +13,18 @@
   [(OITSUDeferredInvocationQueue *)&v3 dealloc];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   if (!self->_invocations)
   {
     self->_invocations = objc_alloc_init(MEMORY[0x277CBEB18]);
   }
 
-  [a3 setTarget:self->_target];
+  [invocation setTarget:self->_target];
   self->_target = 0;
   invocations = self->_invocations;
 
-  [(NSMutableArray *)invocations addObject:a3];
+  [(NSMutableArray *)invocations addObject:invocation];
 }
 
 - (void)performInvocations

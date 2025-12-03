@@ -2,9 +2,9 @@
 - (NSString)_dateFormat;
 - (NSString)dateFormat;
 - (PSSpecifier)dateFormatSpecifier;
-- (void)setDateFormat:(id)a3;
-- (void)setDateFormatAndUpdateFooterTextWithDateFormat:(id)a3 specifier:(id)a4;
-- (void)set_dateFormat:(id)a3;
+- (void)setDateFormat:(id)format;
+- (void)setDateFormatAndUpdateFooterTextWithDateFormat:(id)format specifier:(id)specifier;
+- (void)set_dateFormat:(id)format;
 @end
 
 @implementation DateFormatSetting
@@ -27,9 +27,9 @@
   return v4;
 }
 
-- (void)set_dateFormat:(id)a3
+- (void)set_dateFormat:(id)format
 {
-  if (a3)
+  if (format)
   {
     v4 = sub_1ABF8();
   }
@@ -50,11 +50,11 @@
 {
   swift_getKeyPath();
   sub_12640(&qword_30118, type metadata accessor for DateFormatSetting);
-  v3 = self;
+  selfCopy = self;
   sub_1AB48();
 
-  v5 = *(v3 + OBJC_IVAR____TtC30CompanionInternationalSettings17DateFormatSetting__dateFormat);
-  v4 = *(v3 + OBJC_IVAR____TtC30CompanionInternationalSettings17DateFormatSetting__dateFormat + 8);
+  v5 = *(selfCopy + OBJC_IVAR____TtC30CompanionInternationalSettings17DateFormatSetting__dateFormat);
+  v4 = *(selfCopy + OBJC_IVAR____TtC30CompanionInternationalSettings17DateFormatSetting__dateFormat + 8);
 
   if (v4)
   {
@@ -69,9 +69,9 @@
   return v6;
 }
 
-- (void)setDateFormat:(id)a3
+- (void)setDateFormat:(id)format
 {
-  if (a3)
+  if (format)
   {
     v4 = sub_1ABF8();
     v6 = v5;
@@ -83,25 +83,25 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_10150(v4, v6);
 }
 
 - (PSSpecifier)dateFormatSpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10E14();
 
   return v3;
 }
 
-- (void)setDateFormatAndUpdateFooterTextWithDateFormat:(id)a3 specifier:(id)a4
+- (void)setDateFormatAndUpdateFooterTextWithDateFormat:(id)format specifier:(id)specifier
 {
   v6 = sub_1ABF8();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  sub_12394(v6, v8, v9);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_12394(v6, v8, specifierCopy);
 }
 
 @end

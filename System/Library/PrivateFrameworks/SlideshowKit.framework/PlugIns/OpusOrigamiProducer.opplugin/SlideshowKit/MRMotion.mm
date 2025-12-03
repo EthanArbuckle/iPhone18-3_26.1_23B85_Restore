@@ -1,24 +1,24 @@
 @interface MRMotion
-- (MRMotion)initWithKey:(id)a3 value:(double)a4 duration:(double)a5 easeIn:(double)a6 easeOut:(double)a7;
-- (double)valueAtTime:(double)a3;
+- (MRMotion)initWithKey:(id)key value:(double)value duration:(double)duration easeIn:(double)in easeOut:(double)out;
+- (double)valueAtTime:(double)time;
 - (void)dealloc;
 @end
 
 @implementation MRMotion
 
-- (MRMotion)initWithKey:(id)a3 value:(double)a4 duration:(double)a5 easeIn:(double)a6 easeOut:(double)a7
+- (MRMotion)initWithKey:(id)key value:(double)value duration:(double)duration easeIn:(double)in easeOut:(double)out
 {
   v14.receiver = self;
   v14.super_class = MRMotion;
   v12 = [(MRMotion *)&v14 init];
   if (v12)
   {
-    v12->_key = a3;
-    v12->_value = a4;
+    v12->_key = key;
+    v12->_value = value;
     v12->_startTime = -1.0;
-    v12->_duration = a5;
-    v12->_easeIn = a6;
-    v12->_easeOut = a7;
+    v12->_duration = duration;
+    v12->_easeIn = in;
+    v12->_easeOut = out;
   }
 
   return v12;
@@ -32,17 +32,17 @@
   [(MRMotion *)&v3 dealloc];
 }
 
-- (double)valueAtTime:(double)a3
+- (double)valueAtTime:(double)time
 {
   startTime = self->_startTime;
   v5 = 0.0;
-  if (startTime < a3)
+  if (startTime < time)
   {
     duration = self->_duration;
     v5 = 1.0;
-    if (startTime + duration > a3)
+    if (startTime + duration > time)
     {
-      v5 = (a3 - startTime) / duration;
+      v5 = (time - startTime) / duration;
     }
   }
 

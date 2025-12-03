@@ -1,33 +1,33 @@
 @interface HPStringSettingValue
-- (BOOL)isEqual:(id)a3;
-- (HPStringSettingValue)initWithCoder:(id)a3;
-- (HPStringSettingValue)initWithKeyPath:(id)a3 settingStringValue:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HPStringSettingValue)initWithCoder:(id)coder;
+- (HPStringSettingValue)initWithKeyPath:(id)path settingStringValue:(id)value;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HPStringSettingValue
 
-- (HPStringSettingValue)initWithKeyPath:(id)a3 settingStringValue:(id)a4
+- (HPStringSettingValue)initWithKeyPath:(id)path settingStringValue:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = HPStringSettingValue;
-  v8 = [(HPSettingValue *)&v11 initWithKeyPath:a3];
+  v8 = [(HPSettingValue *)&v11 initWithKeyPath:path];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_stringValue, a4);
+    objc_storeStrong(&v8->_stringValue, value);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -37,9 +37,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HPStringSettingValue *)v4 stringValue];
-      v6 = [(HPStringSettingValue *)self stringValue];
-      v7 = v5 == v6;
+      stringValue = [(HPStringSettingValue *)equalCopy stringValue];
+      stringValue2 = [(HPStringSettingValue *)self stringValue];
+      v7 = stringValue == stringValue2;
     }
 
     else
@@ -53,37 +53,37 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HPStringSettingValue *)self stringValue];
-  v3 = [v2 hash];
+  stringValue = [(HPStringSettingValue *)self stringValue];
+  v3 = [stringValue hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HPStringSettingValue *)self stringValue];
-  [v4 encodeObject:v5 forKey:@"setting.stringkey"];
+  coderCopy = coder;
+  stringValue = [(HPStringSettingValue *)self stringValue];
+  [coderCopy encodeObject:stringValue forKey:@"setting.stringkey"];
 
-  v6 = [(HPSettingValue *)self keyPath];
-  [v4 encodeObject:v6 forKey:@"setting.keypath"];
+  keyPath = [(HPSettingValue *)self keyPath];
+  [coderCopy encodeObject:keyPath forKey:@"setting.keypath"];
 }
 
-- (HPStringSettingValue)initWithCoder:(id)a3
+- (HPStringSettingValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HPSettingValue *)self keyPath];
+  coderCopy = coder;
+  keyPath = [(HPSettingValue *)self keyPath];
   v11.receiver = self;
   v11.super_class = HPStringSettingValue;
-  v6 = [(HPSettingValue *)&v11 initWithKeyPath:v5];
+  v6 = [(HPSettingValue *)&v11 initWithKeyPath:keyPath];
 
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setting.stringkey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setting.stringkey"];
     stringValue = v6->_stringValue;
     v6->_stringValue = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setting.keypath"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setting.keypath"];
     [(HPSettingValue *)v6 setKeyPath:v9];
   }
 
@@ -93,9 +93,9 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HPSettingValue *)self keyPath];
-  v5 = [(HPStringSettingValue *)self stringValue];
-  v6 = [v3 stringWithFormat:@"\n KeyPath %@ \n StringValue %@", v4, v5];
+  keyPath = [(HPSettingValue *)self keyPath];
+  stringValue = [(HPStringSettingValue *)self stringValue];
+  v6 = [v3 stringWithFormat:@"\n KeyPath %@ \n StringValue %@", keyPath, stringValue];
 
   return v6;
 }

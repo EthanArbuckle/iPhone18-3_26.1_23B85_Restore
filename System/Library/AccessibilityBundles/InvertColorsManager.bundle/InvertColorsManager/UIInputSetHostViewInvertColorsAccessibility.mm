@@ -15,8 +15,8 @@
     v5 = [v4 safeBoolForKey:@"lightKeyboard"];
 
     v6 = +[NSBundle mainBundle];
-    v7 = [v6 bundleIdentifier];
-    v8 = [v7 isEqualToString:AX_InputUIBundleName];
+    bundleIdentifier = [v6 bundleIdentifier];
+    v8 = [bundleIdentifier isEqualToString:AX_InputUIBundleName];
 
     if (!v8)
     {
@@ -41,9 +41,9 @@
   else
   {
     v17 = +[AXSubsystemInvertColors sharedInstance];
-    v18 = [v17 ignoreLogging];
+    ignoreLogging = [v17 ignoreLogging];
 
-    if ((v18 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v19 = +[AXSubsystemInvertColors identifier];
       v20 = AXLoggerForFacility();

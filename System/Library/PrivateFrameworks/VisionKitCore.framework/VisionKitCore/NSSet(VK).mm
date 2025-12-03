@@ -11,15 +11,15 @@
 
 - (id)vk_objectPassingTest:()VK
 {
-  v1 = [a1 objectsPassingTest:?];
-  v2 = [v1 anyObject];
+  v1 = [self objectsPassingTest:?];
+  anyObject = [v1 anyObject];
 
-  return v2;
+  return anyObject;
 }
 
 - (BOOL)vk_containsObjectPassingTest:()VK
 {
-  v1 = [a1 vk_objectPassingTest:?];
+  v1 = [self vk_objectPassingTest:?];
   v2 = v1 != 0;
 
   return v2;
@@ -34,7 +34,7 @@
   v8[3] = &unk_1E7BE74D0;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 objectsPassingTest:v8];
+  v6 = [self objectsPassingTest:v8];
 
   return v6;
 }
@@ -46,7 +46,7 @@
   v5[2] = __31__NSSet_VK__vk_objectsOfClass___block_invoke;
   v5[3] = &__block_descriptor_40_e12_B24__0_8_B16lu32l8;
   v5[4] = a3;
-  v3 = [a1 objectsPassingTest:v5];
+  v3 = [self objectsPassingTest:v5];
 
   return v3;
 }
@@ -54,7 +54,7 @@
 - (id)vk_compactMap:()VK
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __27__NSSet_VK__vk_compactMap___block_invoke;
@@ -63,7 +63,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:&v10];
+  [self enumerateObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -72,7 +72,7 @@
 - (id)vk_map:()VK
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __20__NSSet_VK__vk_map___block_invoke;
@@ -81,7 +81,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:&v10];
+  [self enumerateObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;

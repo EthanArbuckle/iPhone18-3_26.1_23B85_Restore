@@ -1,54 +1,54 @@
 @interface HMKTDumpObjects
-- (int)main:(id)a3;
+- (int)main:(id)main;
 @end
 
 @implementation HMKTDumpObjects
 
-- (int)main:(id)a3
+- (int)main:(id)main
 {
-  v3 = a3;
-  v4 = [v3 firstObject];
-  v5 = [v4 isEqualToString:@"-r"];
+  mainCopy = main;
+  firstObject = [mainCopy firstObject];
+  v5 = [firstObject isEqualToString:@"-r"];
 
   if (v5)
   {
     self->_useRawValues = 1;
-    [v3 removeObjectAtIndex:0];
+    [mainCopy removeObjectAtIndex:0];
   }
 
   v6 = __stdoutp;
-  if ([v3 count] == 2)
+  if ([mainCopy count] == 2)
   {
-    v7 = [v3 lastObject];
-    v8 = fopen([v7 cString], "w");
+    lastObject = [mainCopy lastObject];
+    v8 = fopen([lastObject cString], "w");
 
     if (v8)
     {
       v6 = v8;
     }
 
-    [v3 removeLastObject];
+    [mainCopy removeLastObject];
   }
 
-  if ([v3 count] == 1)
+  if ([mainCopy count] == 1)
   {
-    v9 = [v3 firstObject];
+    firstObject2 = [mainCopy firstObject];
     if (self)
     {
       context = objc_autoreleasePoolPush();
-      v10 = [NSURL fileURLWithPath:v9];
+      v10 = [NSURL fileURLWithPath:firstObject2];
       v11 = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:v10];
       [v11 setReadOnly:1];
       [v11 setUsesPersistentHistoryTracking:1];
-      v12 = [v11 options];
+      options = [v11 options];
       v55 = 0;
-      v13 = [NSPersistentStore cachedModelForPersistentStoreWithURL:v10 options:v12 error:&v55];
+      v13 = [NSPersistentStore cachedModelForPersistentStoreWithURL:v10 options:options error:&v55];
       v14 = v55;
 
       if (v13)
       {
-        v21 = [v13 entities];
-        [v21 hmf_enumerateWithAutoreleasePoolUsingBlock:&stru_1000309D8];
+        entities = [v13 entities];
+        [entities hmf_enumerateWithAutoreleasePoolUsingBlock:&stru_1000309D8];
 
         v22 = [NSPersistentContainer persistentContainerWithName:@"hmktool" managedObjectModel:v13];
         v60 = v11;
@@ -93,19 +93,19 @@
       v56 = &v55;
       v57 = 0x2020000000;
       v58 = 0;
-      v41 = [v32 managedObjectModel];
-      v42 = [v32 newBackgroundContext];
+      managedObjectModel = [v32 managedObjectModel];
+      newBackgroundContext = [v32 newBackgroundContext];
       v49[0] = _NSConcreteStackBlock;
       v49[1] = 3221225472;
       v49[2] = sub_10000C094;
       v49[3] = &unk_100030998;
-      v43 = v41;
+      v43 = managedObjectModel;
       v50 = v43;
-      v44 = v42;
+      v44 = newBackgroundContext;
       v53 = &v55;
       v54 = v6;
       v51 = v44;
-      v52 = self;
+      selfCopy = self;
       [v44 performBlockAndWait:v49];
       if (v6 && v6 != __stdoutp && v6 != __stderrp && v6 != __stdinp)
       {
@@ -132,7 +132,7 @@
   else
   {
     v33 = __stderrp;
-    v46 = [objc_opt_class() name];
+    name = [objc_opt_class() name];
     sub_1000055DC(v33, @"Usage: %@ %@ [-r] <sqlite store file>\n", v34, v35, v36, v37, v38, v39, @"hmktool");
 
     v40 = 1;

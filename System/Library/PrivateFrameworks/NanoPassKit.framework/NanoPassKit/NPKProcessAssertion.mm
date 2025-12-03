@@ -1,33 +1,33 @@
 @interface NPKProcessAssertion
-+ (id)acquireBackgroundTaskAssertionWithExplanation:(id)a3 acquiredHandler:(id)a4 invalidationHandler:(id)a5;
++ (id)acquireBackgroundTaskAssertionWithExplanation:(id)explanation acquiredHandler:(id)handler invalidationHandler:(id)invalidationHandler;
 @end
 
 @implementation NPKProcessAssertion
 
-+ (id)acquireBackgroundTaskAssertionWithExplanation:(id)a3 acquiredHandler:(id)a4 invalidationHandler:(id)a5
++ (id)acquireBackgroundTaskAssertionWithExplanation:(id)explanation acquiredHandler:(id)handler invalidationHandler:(id)invalidationHandler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  explanationCopy = explanation;
+  handlerCopy = handler;
+  invalidationHandlerCopy = invalidationHandler;
   v10 = NPKMyPid();
   v11 = objc_alloc(MEMORY[0x277CEEEA8]);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __105__NPKProcessAssertion_acquireBackgroundTaskAssertionWithExplanation_acquiredHandler_invalidationHandler___block_invoke;
   v21[3] = &unk_279945508;
-  v12 = v7;
+  v12 = explanationCopy;
   v24 = v10;
   v22 = v12;
-  v23 = v8;
-  v13 = v8;
+  v23 = handlerCopy;
+  v13 = handlerCopy;
   v14 = [v11 initWithPID:v10 flags:1 reason:4 name:v12 withHandler:v21];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __105__NPKProcessAssertion_acquireBackgroundTaskAssertionWithExplanation_acquiredHandler_invalidationHandler___block_invoke_14;
   v18[3] = &unk_279945530;
   v19 = v12;
-  v20 = v9;
-  v15 = v9;
+  v20 = invalidationHandlerCopy;
+  v15 = invalidationHandlerCopy;
   v16 = v12;
   [v14 setInvalidationHandler:v18];
 

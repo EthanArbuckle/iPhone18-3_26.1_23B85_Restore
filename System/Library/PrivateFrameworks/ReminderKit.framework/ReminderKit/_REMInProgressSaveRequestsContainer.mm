@@ -1,15 +1,15 @@
 @interface _REMInProgressSaveRequestsContainer
 - (_REMInProgressSaveRequestsContainer)init;
-- (id)_firstMatchInSaveRequests:(id)a3;
-- (id)_latestSaveInProgressAccountForObjectID:(id)a3 saveRequest:(id)a4;
-- (id)_latestSaveInProgressListForObjectID:(id)a3 fallbackAccount:(id)a4 fallbackParentList:(id)a5 saveRequest:(id)a6;
-- (id)_latestSaveInProgressReminderForObjectID:(id)a3 fallbackAccount:(id)a4 fallbackList:(id)a5 fallbackParentList:(id)a6 fallbackParentReminder:(id)a7 saveRequest:(id)a8;
-- (id)latestSaveInProgressAccount:(id)a3;
-- (id)latestSaveInProgressList:(id)a3;
-- (id)latestSaveInProgressReminder:(id)a3;
-- (id)latestSaveInProgressReminderForReminderChangeItem:(id)a3;
-- (void)saveRequestSaveDidFinish:(id)a3;
-- (void)saveRequestSaveDidStart:(id)a3;
+- (id)_firstMatchInSaveRequests:(id)requests;
+- (id)_latestSaveInProgressAccountForObjectID:(id)d saveRequest:(id)request;
+- (id)_latestSaveInProgressListForObjectID:(id)d fallbackAccount:(id)account fallbackParentList:(id)list saveRequest:(id)request;
+- (id)_latestSaveInProgressReminderForObjectID:(id)d fallbackAccount:(id)account fallbackList:(id)list fallbackParentList:(id)parentList fallbackParentReminder:(id)reminder saveRequest:(id)request;
+- (id)latestSaveInProgressAccount:(id)account;
+- (id)latestSaveInProgressList:(id)list;
+- (id)latestSaveInProgressReminder:(id)reminder;
+- (id)latestSaveInProgressReminderForReminderChangeItem:(id)item;
+- (void)saveRequestSaveDidFinish:(id)finish;
+- (void)saveRequestSaveDidStart:(id)start;
 @end
 
 @implementation _REMInProgressSaveRequestsContainer
@@ -29,18 +29,18 @@
   return v2;
 }
 
-- (void)saveRequestSaveDidStart:(id)a3
+- (void)saveRequestSaveDidStart:(id)start
 {
-  v4 = a3;
-  v5 = [(_REMInProgressSaveRequestsContainer *)self inProgressSaveRequests];
-  v6 = [v5 containsObject:v4];
+  startCopy = start;
+  inProgressSaveRequests = [(_REMInProgressSaveRequestsContainer *)self inProgressSaveRequests];
+  v6 = [inProgressSaveRequests containsObject:startCopy];
 
   if (v6)
   {
-    [(_REMInProgressSaveRequestsContainer *)v4 saveRequestSaveDidStart:?];
+    [(_REMInProgressSaveRequestsContainer *)startCopy saveRequestSaveDidStart:?];
   }
 
-  if (([v4 isSaved] & 1) == 0)
+  if (([startCopy isSaved] & 1) == 0)
   {
     v7 = +[REMLogStore write];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -50,15 +50,15 @@
     }
   }
 
-  v8 = [(_REMInProgressSaveRequestsContainer *)self inProgressSaveRequests];
-  [v8 addObject:v4];
+  inProgressSaveRequests2 = [(_REMInProgressSaveRequestsContainer *)self inProgressSaveRequests];
+  [inProgressSaveRequests2 addObject:startCopy];
 }
 
-- (void)saveRequestSaveDidFinish:(id)a3
+- (void)saveRequestSaveDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(_REMInProgressSaveRequestsContainer *)self inProgressSaveRequests];
-  v6 = [v5 indexOfObject:v4];
+  finishCopy = finish;
+  inProgressSaveRequests = [(_REMInProgressSaveRequestsContainer *)self inProgressSaveRequests];
+  v6 = [inProgressSaveRequests indexOfObject:finishCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -71,85 +71,85 @@
 
   else
   {
-    v8 = [(_REMInProgressSaveRequestsContainer *)self inProgressSaveRequests];
-    [v8 removeObjectAtIndex:v6];
+    inProgressSaveRequests2 = [(_REMInProgressSaveRequestsContainer *)self inProgressSaveRequests];
+    [inProgressSaveRequests2 removeObjectAtIndex:v6];
   }
 }
 
-- (id)latestSaveInProgressAccount:(id)a3
+- (id)latestSaveInProgressAccount:(id)account
 {
-  v4 = [a3 objectID];
+  objectID = [account objectID];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67___REMInProgressSaveRequestsContainer_latestSaveInProgressAccount___block_invoke;
   v8[3] = &unk_1E7509008;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = objectID;
+  v5 = objectID;
   v6 = [(_REMInProgressSaveRequestsContainer *)self _firstMatchInSaveRequests:v8];
 
   return v6;
 }
 
-- (id)latestSaveInProgressList:(id)a3
+- (id)latestSaveInProgressList:(id)list
 {
-  v4 = a3;
-  v5 = [v4 objectID];
-  v6 = [v4 account];
-  v7 = [v4 parentList];
+  listCopy = list;
+  objectID = [listCopy objectID];
+  account = [listCopy account];
+  parentList = [listCopy parentList];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64___REMInProgressSaveRequestsContainer_latestSaveInProgressList___block_invoke;
   v13[3] = &unk_1E7509030;
   v13[4] = self;
-  v14 = v5;
-  v15 = v6;
-  v16 = v7;
-  v8 = v7;
-  v9 = v6;
-  v10 = v5;
+  v14 = objectID;
+  v15 = account;
+  v16 = parentList;
+  v8 = parentList;
+  v9 = account;
+  v10 = objectID;
   v11 = [(_REMInProgressSaveRequestsContainer *)self _firstMatchInSaveRequests:v13];
 
   return v11;
 }
 
-- (id)latestSaveInProgressReminder:(id)a3
+- (id)latestSaveInProgressReminder:(id)reminder
 {
-  v4 = a3;
-  v5 = [v4 objectID];
-  v6 = [v4 account];
-  v7 = [v4 list];
-  v8 = [v7 parentList];
-  v9 = [v4 parentReminder];
+  reminderCopy = reminder;
+  objectID = [reminderCopy objectID];
+  account = [reminderCopy account];
+  list = [reminderCopy list];
+  parentList = [list parentList];
+  parentReminder = [reminderCopy parentReminder];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __68___REMInProgressSaveRequestsContainer_latestSaveInProgressReminder___block_invoke;
   v17[3] = &unk_1E7509058;
   v17[4] = self;
-  v18 = v5;
-  v19 = v6;
-  v20 = v7;
-  v21 = v8;
-  v22 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = v7;
-  v13 = v6;
-  v14 = v5;
+  v18 = objectID;
+  v19 = account;
+  v20 = list;
+  v21 = parentList;
+  v22 = parentReminder;
+  v10 = parentReminder;
+  v11 = parentList;
+  v12 = list;
+  v13 = account;
+  v14 = objectID;
   v15 = [(_REMInProgressSaveRequestsContainer *)self _firstMatchInSaveRequests:v17];
 
   return v15;
 }
 
-- (id)latestSaveInProgressReminderForReminderChangeItem:(id)a3
+- (id)latestSaveInProgressReminderForReminderChangeItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 saveRequest];
-  v6 = [v5 isSaved];
+  itemCopy = item;
+  saveRequest = [itemCopy saveRequest];
+  isSaved = [saveRequest isSaved];
 
-  if ((v6 & 1) == 0)
+  if ((isSaved & 1) == 0)
   {
     v7 = +[REMLogStore write];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -159,29 +159,29 @@
     }
   }
 
-  v8 = [v4 objectID];
+  objectID = [itemCopy objectID];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __89___REMInProgressSaveRequestsContainer_latestSaveInProgressReminderForReminderChangeItem___block_invoke;
   v12[3] = &unk_1E7509080;
   v12[4] = self;
-  v13 = v8;
-  v9 = v8;
+  v13 = objectID;
+  v9 = objectID;
   v10 = [(_REMInProgressSaveRequestsContainer *)self _firstMatchInSaveRequests:v12];
 
   return v10;
 }
 
-- (id)_latestSaveInProgressAccountForObjectID:(id)a3 saveRequest:(id)a4
+- (id)_latestSaveInProgressAccountForObjectID:(id)d saveRequest:(id)request
 {
-  v5 = a4;
-  v6 = [v5 _trackedAccountChangeItemForObjectID:a3];
+  requestCopy = request;
+  v6 = [requestCopy _trackedAccountChangeItemForObjectID:d];
   if (v6)
   {
     v7 = [REMAccount alloc];
-    v8 = [v5 store];
-    v9 = [v6 storage];
-    v10 = [(REMAccount *)v7 initWithStore:v8 storage:v9];
+    store = [requestCopy store];
+    storage = [v6 storage];
+    v10 = [(REMAccount *)v7 initWithStore:store storage:storage];
   }
 
   else
@@ -192,13 +192,13 @@
   return v10;
 }
 
-- (id)_latestSaveInProgressListForObjectID:(id)a3 fallbackAccount:(id)a4 fallbackParentList:(id)a5 saveRequest:(id)a6
+- (id)_latestSaveInProgressListForObjectID:(id)d fallbackAccount:(id)account fallbackParentList:(id)list saveRequest:(id)request
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 _trackedListChangeItemForObjectID:v10];
+  dCopy = d;
+  accountCopy = account;
+  listCopy = list;
+  requestCopy = request;
+  v14 = [requestCopy _trackedListChangeItemForObjectID:dCopy];
   v15 = v14;
   if (!v14)
   {
@@ -206,8 +206,8 @@
     goto LABEL_21;
   }
 
-  v16 = [v14 accountID];
-  v17 = [(_REMInProgressSaveRequestsContainer *)self _latestSaveInProgressAccountForObjectID:v16 saveRequest:v13];
+  accountID = [v14 accountID];
+  v17 = [(_REMInProgressSaveRequestsContainer *)self _latestSaveInProgressAccountForObjectID:accountID saveRequest:requestCopy];
   v18 = v17;
   if (v17)
   {
@@ -216,7 +216,7 @@
 
   else
   {
-    v19 = v11;
+    v19 = accountCopy;
   }
 
   v20 = v19;
@@ -232,16 +232,16 @@
     goto LABEL_16;
   }
 
-  v21 = [v15 parentListID];
+  parentListID = [v15 parentListID];
 
-  if (!v21)
+  if (!parentListID)
   {
     v26 = 0;
     goto LABEL_18;
   }
 
-  v22 = [v15 parentListID];
-  v23 = [(_REMInProgressSaveRequestsContainer *)self _latestSaveInProgressListForObjectID:v22 fallbackAccount:v20 fallbackParentList:0 saveRequest:v13];
+  parentListID2 = [v15 parentListID];
+  v23 = [(_REMInProgressSaveRequestsContainer *)self _latestSaveInProgressListForObjectID:parentListID2 fallbackAccount:v20 fallbackParentList:0 saveRequest:requestCopy];
   v24 = v23;
   if (v23)
   {
@@ -250,7 +250,7 @@
 
   else
   {
-    v25 = v12;
+    v25 = listCopy;
   }
 
   v26 = v25;
@@ -259,9 +259,9 @@
   {
 LABEL_18:
     v28 = [REMList alloc];
-    v29 = [v13 store];
-    v30 = [v15 storage];
-    v27 = [(REMList *)v28 initWithStore:v29 account:v20 storage:v30];
+    store = [requestCopy store];
+    storage = [v15 storage];
+    v27 = [(REMList *)v28 initWithStore:store account:v20 storage:storage];
 
     if (v26)
     {
@@ -286,15 +286,15 @@ LABEL_21:
   return v27;
 }
 
-- (id)_latestSaveInProgressReminderForObjectID:(id)a3 fallbackAccount:(id)a4 fallbackList:(id)a5 fallbackParentList:(id)a6 fallbackParentReminder:(id)a7 saveRequest:(id)a8
+- (id)_latestSaveInProgressReminderForObjectID:(id)d fallbackAccount:(id)account fallbackList:(id)list fallbackParentList:(id)parentList fallbackParentReminder:(id)reminder saveRequest:(id)request
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [v19 _trackedReminderChangeItemForObjectID:v14];
+  dCopy = d;
+  accountCopy = account;
+  listCopy = list;
+  parentListCopy = parentList;
+  reminderCopy = reminder;
+  requestCopy = request;
+  v20 = [requestCopy _trackedReminderChangeItemForObjectID:dCopy];
   v21 = v20;
   if (!v20)
   {
@@ -302,13 +302,13 @@ LABEL_21:
     goto LABEL_26;
   }
 
-  v22 = [v20 listID];
+  listID = [v20 listID];
 
-  if (v22)
+  if (listID)
   {
-    v43 = v18;
-    v23 = [v21 listID];
-    v24 = [(_REMInProgressSaveRequestsContainer *)self _latestSaveInProgressListForObjectID:v23 fallbackAccount:v15 fallbackParentList:v17 saveRequest:v19];
+    v43 = reminderCopy;
+    listID2 = [v21 listID];
+    v24 = [(_REMInProgressSaveRequestsContainer *)self _latestSaveInProgressListForObjectID:listID2 fallbackAccount:accountCopy fallbackParentList:parentListCopy saveRequest:requestCopy];
     v25 = v24;
     if (v24)
     {
@@ -317,7 +317,7 @@ LABEL_21:
 
     else
     {
-      v26 = v16;
+      v26 = listCopy;
     }
 
     v27 = v26;
@@ -325,9 +325,9 @@ LABEL_21:
     if (v27)
     {
       v28 = [REMReminder alloc];
-      v29 = [v19 store];
-      v30 = [v21 storage];
-      v31 = [(REMReminder *)v28 initWithStore:v29 list:v27 storage:v30];
+      store = [requestCopy store];
+      storage = [v21 storage];
+      v31 = [(REMReminder *)v28 initWithStore:store list:v27 storage:storage];
     }
 
     else
@@ -341,25 +341,25 @@ LABEL_21:
       v31 = 0;
     }
 
-    v18 = v43;
+    reminderCopy = v43;
     goto LABEL_25;
   }
 
-  v32 = [v21 parentReminderID];
+  parentReminderID = [v21 parentReminderID];
 
-  if (!v32)
+  if (!parentReminderID)
   {
     v27 = +[REMLogStore write];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      [_REMInProgressSaveRequestsContainer _latestSaveInProgressReminderForObjectID:v14 fallbackAccount:v27 fallbackList:? fallbackParentList:? fallbackParentReminder:? saveRequest:?];
+      [_REMInProgressSaveRequestsContainer _latestSaveInProgressReminderForObjectID:dCopy fallbackAccount:v27 fallbackList:? fallbackParentList:? fallbackParentReminder:? saveRequest:?];
     }
 
     goto LABEL_24;
   }
 
-  v33 = [v21 parentReminderID];
-  v34 = [(_REMInProgressSaveRequestsContainer *)self _latestSaveInProgressReminderForObjectID:v33 fallbackAccount:v15 fallbackList:v16 fallbackParentList:v17 fallbackParentReminder:0 saveRequest:v19];
+  parentReminderID2 = [v21 parentReminderID];
+  v34 = [(_REMInProgressSaveRequestsContainer *)self _latestSaveInProgressReminderForObjectID:parentReminderID2 fallbackAccount:accountCopy fallbackList:listCopy fallbackParentList:parentListCopy fallbackParentReminder:0 saveRequest:requestCopy];
   v35 = v34;
   if (v34)
   {
@@ -368,7 +368,7 @@ LABEL_21:
 
   else
   {
-    v36 = v18;
+    v36 = reminderCopy;
   }
 
   v27 = v36;
@@ -387,12 +387,12 @@ LABEL_24:
   }
 
   v37 = [REMReminder alloc];
-  [v19 store];
-  v38 = v44 = v18;
-  v39 = [v21 storage];
-  v31 = [(REMReminder *)v37 initWithStore:v38 storage:v39];
+  [requestCopy store];
+  v38 = v44 = reminderCopy;
+  storage2 = [v21 storage];
+  v31 = [(REMReminder *)v37 initWithStore:v38 storage:storage2];
 
-  v18 = v44;
+  reminderCopy = v44;
   [(REMReminder *)v31 setParentReminder:v27];
 LABEL_25:
 
@@ -401,18 +401,18 @@ LABEL_26:
   return v31;
 }
 
-- (id)_firstMatchInSaveRequests:(id)a3
+- (id)_firstMatchInSaveRequests:(id)requests
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestsCopy = requests;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(_REMInProgressSaveRequestsContainer *)self inProgressSaveRequests];
-  v6 = [v5 reverseObjectEnumerator];
+  inProgressSaveRequests = [(_REMInProgressSaveRequestsContainer *)self inProgressSaveRequests];
+  reverseObjectEnumerator = [inProgressSaveRequests reverseObjectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -423,7 +423,7 @@ LABEL_26:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
@@ -437,7 +437,7 @@ LABEL_26:
           }
         }
 
-        v13 = v4[2](v4, v11);
+        v13 = requestsCopy[2](requestsCopy, v11);
         if (v13)
         {
           v14 = v13;
@@ -445,7 +445,7 @@ LABEL_26:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
       {
         continue;

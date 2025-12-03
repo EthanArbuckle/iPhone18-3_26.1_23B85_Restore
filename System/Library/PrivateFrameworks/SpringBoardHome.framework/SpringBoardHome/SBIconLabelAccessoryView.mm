@@ -1,46 +1,46 @@
 @interface SBIconLabelAccessoryView
 - (CGSize)intrinsicContentSize;
-- (SBIconLabelAccessoryView)initWithCoder:(id)a3;
+- (SBIconLabelAccessoryView)initWithCoder:(id)coder;
 - (UIEdgeInsets)alignmentRectInsets;
-- (void)updateWithLegibilitySettings:(id)a3 labelFont:(id)a4;
+- (void)updateWithLegibilitySettings:(id)settings labelFont:(id)font;
 @end
 
 @implementation SBIconLabelAccessoryView
 
-- (SBIconLabelAccessoryView)initWithCoder:(id)a3
+- (SBIconLabelAccessoryView)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"This class does not support unarchiving from a nib" userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (void)updateWithLegibilitySettings:(id)a3 labelFont:(id)a4
+- (void)updateWithLegibilitySettings:(id)settings labelFont:(id)font
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() labelAccessorySystemImageName];
-  v9 = [MEMORY[0x1E69DCAD8] configurationWithFont:v6 scale:{objc_msgSend(objc_opt_class(), "labelAccessorySystemImageScale")}];
+  fontCopy = font;
+  settingsCopy = settings;
+  labelAccessorySystemImageName = [objc_opt_class() labelAccessorySystemImageName];
+  v9 = [MEMORY[0x1E69DCAD8] configurationWithFont:fontCopy scale:{objc_msgSend(objc_opt_class(), "labelAccessorySystemImageScale")}];
 
-  v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:v8 withConfiguration:v9];
+  v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:labelAccessorySystemImageName withConfiguration:v9];
   if (!v10)
   {
     v11 = SBLogIcon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [SBIconLabelAccessoryView updateWithLegibilitySettings:v8 labelFont:v11];
+      [SBIconLabelAccessoryView updateWithLegibilitySettings:labelAccessorySystemImageName labelFont:v11];
     }
   }
 
   [(SBIconLabelAccessoryView *)self setBaseImage:v10];
-  [(SBIconLabelAccessoryView *)self updateWithBaseImage:v10 legibilitySettings:v7];
+  [(SBIconLabelAccessoryView *)self updateWithBaseImage:v10 legibilitySettings:settingsCopy];
 
   [(SBIconLabelAccessoryView *)self invalidateIntrinsicContentSize];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(SBIconLabelAccessoryView *)self baseImage];
-  [v2 size];
+  baseImage = [(SBIconLabelAccessoryView *)self baseImage];
+  [baseImage size];
   v4 = v3;
   v6 = v5;
 

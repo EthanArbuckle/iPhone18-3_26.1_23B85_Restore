@@ -1,12 +1,12 @@
 @interface AAPSyncStatePersistence
-- (id)_errWithCode:(int64_t)a3 desc:(id)a4 err:(id)a5;
+- (id)_errWithCode:(int64_t)code desc:(id)desc err:(id)err;
 - (id)_fileManager;
-- (id)_generateURLIfNeededWithError:(id *)a3;
+- (id)_generateURLIfNeededWithError:(id *)error;
 - (id)load;
 - (id)reset;
-- (id)save:(id)a3;
+- (id)save:(id)save;
 - (void)dealloc;
-- (void)setURL:(id)a3;
+- (void)setURL:(id)l;
 @end
 
 @implementation AAPSyncStatePersistence
@@ -18,13 +18,13 @@
   [(AAPSyncStatePersistence *)&v3 dealloc];
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
   url = self->_url;
-  if (url != a3 && ([(NSURL *)url isEqual:?]& 1) == 0)
+  if (url != l && ([(NSURL *)url isEqual:?]& 1) == 0)
   {
 
-    self->_url = [a3 copy];
+    self->_url = [l copy];
   }
 }
 
@@ -35,10 +35,10 @@
   if (v14)
   {
     v4 = @"could not create saved state URL";
-    v5 = self;
+    selfCopy2 = self;
     v6 = 101;
 LABEL_3:
-    v7 = [(AAPSyncStatePersistence *)v5 _errWithCode:v6 desc:v4 err:?];
+    v7 = [(AAPSyncStatePersistence *)selfCopy2 _errWithCode:v6 desc:v4 err:?];
     goto LABEL_4;
   }
 
@@ -53,7 +53,7 @@ LABEL_3:
     }
 
     v4 = @"could not read saved state";
-    v5 = self;
+    selfCopy2 = self;
     v6 = 102;
     goto LABEL_3;
   }
@@ -94,16 +94,16 @@ LABEL_5:
   return v14;
 }
 
-- (id)save:(id)a3
+- (id)save:(id)save
 {
   v13 = 0;
-  if (a3)
+  if (save)
   {
     v5 = [(AAPSyncStatePersistence *)self _generateURLIfNeededWithError:&v13];
     if (v13)
     {
-      v6 = @"could not create saved state URL";
-      v7 = self;
+      save = @"could not create saved state URL";
+      selfCopy3 = self;
       v8 = 202;
     }
 
@@ -116,11 +116,11 @@ LABEL_5:
       }
 
       v12 = 0;
-      v11 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v12];
+      v11 = [NSKeyedArchiver archivedDataWithRootObject:save requiringSecureCoding:1 error:&v12];
       if (!v11 || v12)
       {
-        v6 = [NSString stringWithFormat:@"could not archive state -> %@ -> error -> %@", a3, v12];
-        v7 = self;
+        save = [NSString stringWithFormat:@"could not archive state -> %@ -> error -> %@", save, v12];
+        selfCopy3 = self;
         v8 = 204;
       }
 
@@ -129,17 +129,17 @@ LABEL_5:
         if ([(NSData *)v11 writeToURL:v10 options:1 error:&v13])
         {
 
-          self->_state = [a3 copy];
+          self->_state = [save copy];
           return v13;
         }
 
-        v6 = [NSString stringWithFormat:@"could not save state -> %@", a3];
-        v7 = self;
+        save = [NSString stringWithFormat:@"could not save state -> %@", save];
+        selfCopy3 = self;
         v8 = 205;
       }
     }
 
-    return [(AAPSyncStatePersistence *)v7 _errWithCode:v8 desc:v6 err:?];
+    return [(AAPSyncStatePersistence *)selfCopy3 _errWithCode:v8 desc:save err:?];
   }
 
   else
@@ -156,9 +156,9 @@ LABEL_5:
   if (v10)
   {
     v4 = @"could not create saved state URL";
-    v5 = self;
+    selfCopy2 = self;
     v6 = 301;
-    return [(AAPSyncStatePersistence *)v5 _errWithCode:v6 desc:v4 err:?];
+    return [(AAPSyncStatePersistence *)selfCopy2 _errWithCode:v6 desc:v4 err:?];
   }
 
   v7 = [-[AAPSyncStatePersistence _fileManager](self "_fileManager")];
@@ -166,9 +166,9 @@ LABEL_5:
   if ((v7 & 1) == 0)
   {
     v4 = @"could not reset state";
-    v5 = self;
+    selfCopy2 = self;
     v6 = 302;
-    return [(AAPSyncStatePersistence *)v5 _errWithCode:v6 desc:v4 err:?];
+    return [(AAPSyncStatePersistence *)selfCopy2 _errWithCode:v6 desc:v4 err:?];
   }
 
   return v8;
@@ -191,7 +191,7 @@ LABEL_5:
   return result;
 }
 
-- (id)_generateURLIfNeededWithError:(id *)a3
+- (id)_generateURLIfNeededWithError:(id *)error
 {
   url = self->_url;
   if (!url)
@@ -205,21 +205,21 @@ LABEL_5:
   return v5;
 }
 
-- (id)_errWithCode:(int64_t)a3 desc:(id)a4 err:(id)a5
+- (id)_errWithCode:(int64_t)code desc:(id)desc err:(id)err
 {
   v8 = [[NSMutableDictionary alloc] initWithCapacity:2];
   v9 = v8;
-  if (a4)
+  if (desc)
   {
-    [v8 setObject:a4 forKey:NSLocalizedDescriptionKey];
+    [v8 setObject:desc forKey:NSLocalizedDescriptionKey];
   }
 
-  if (a5)
+  if (err)
   {
-    [v9 setObject:a5 forKey:NSUnderlyingErrorKey];
+    [v9 setObject:err forKey:NSUnderlyingErrorKey];
   }
 
-  v10 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", [objc_opt_class() description], a3, v9);
+  v10 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", [objc_opt_class() description], code, v9);
 
   return v10;
 }

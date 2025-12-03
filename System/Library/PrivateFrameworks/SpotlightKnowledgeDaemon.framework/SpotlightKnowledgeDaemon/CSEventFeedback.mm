@@ -1,58 +1,58 @@
 @interface CSEventFeedback
-+ (BOOL)eventAllowed:(id)a3;
-+ (BOOL)flagWithKey:(id)a3;
-+ (double)elapsedTimeSinceFlushForEvent:(int64_t)a3;
-+ (double)timeWithKey:(id)a3;
++ (BOOL)eventAllowed:(id)allowed;
++ (BOOL)flagWithKey:(id)key;
++ (double)elapsedTimeSinceFlushForEvent:(int64_t)event;
++ (double)timeWithKey:(id)key;
 + (id)defaultProperties;
-+ (id)defaultValueWithKey:(id)a3;
-+ (id)defaultValueWithKey:(id)a3 versionName:(id)a4;
++ (id)defaultValueWithKey:(id)key;
++ (id)defaultValueWithKey:(id)key versionName:(id)name;
 + (id)defaults;
 + (id)receiverFeedback;
 + (void)logEmbeddingPrewarmRequestTime;
 + (void)removeDefaults;
-+ (void)removeKey:(id)a3;
++ (void)removeKey:(id)key;
 + (void)reset;
-+ (void)setDefaultWithKey:(id)a3 value:(id)a4;
-+ (void)setIndexWithKey:(id)a3 value:(unint64_t)a4;
-+ (void)setTimeWithKey:(id)a3 value:(double)a4;
-+ (void)updateDefaultWithKey:(id)a3 value:(id)a4;
-- (BOOL)canProcessEvent:(id)a3;
++ (void)setDefaultWithKey:(id)key value:(id)value;
++ (void)setIndexWithKey:(id)key value:(unint64_t)value;
++ (void)setTimeWithKey:(id)key value:(double)value;
++ (void)updateDefaultWithKey:(id)key value:(id)value;
+- (BOOL)canProcessEvent:(id)event;
 - (CSEventFeedback)init;
-- (CSEventFeedback)initWithVersionName:(id)a3 dateComponents:(id)a4;
+- (CSEventFeedback)initWithVersionName:(id)name dateComponents:(id)components;
 - (NSCalendar)currentCalendar;
 - (NSDate)currentDate;
 - (id)feedback;
-- (int64_t)periodForMax:(int64_t)a3;
-- (unint64_t)bucketedSizeForValue:(id)a3 numBuckets:(unint64_t)a4;
-- (unint64_t)indexWithKey:(id)a3;
+- (int64_t)periodForMax:(int64_t)max;
+- (unint64_t)bucketedSizeForValue:(id)value numBuckets:(unint64_t)buckets;
+- (unint64_t)indexWithKey:(id)key;
 - (void)clear;
-- (void)commonInitWithVersionName:(id)a3 dateComponents:(id)a4;
+- (void)commonInitWithVersionName:(id)name dateComponents:(id)components;
 - (void)end;
 - (void)flush;
-- (void)logCachedItemForBundleID:(id)a3 counts:(id)a4;
-- (void)logError:(int64_t)a3;
-- (void)logError:(int64_t)a3 message:(id)a4;
-- (void)logErrorItemForBundleID:(id)a3 counts:(id)a4;
-- (void)logFlag:(int64_t)a3 message:(id)a4;
-- (void)logProcessedItemForBundleID:(id)a3 language:(id)a4 textSize:(unint64_t)a5 counts:(id)a6;
-- (void)logReceivedItemForBundleID:(id)a3 counts:(id)a4 onBattery:(BOOL)a5;
+- (void)logCachedItemForBundleID:(id)d counts:(id)counts;
+- (void)logError:(int64_t)error;
+- (void)logError:(int64_t)error message:(id)message;
+- (void)logErrorItemForBundleID:(id)d counts:(id)counts;
+- (void)logFlag:(int64_t)flag message:(id)message;
+- (void)logProcessedItemForBundleID:(id)d language:(id)language textSize:(unint64_t)size counts:(id)counts;
+- (void)logReceivedItemForBundleID:(id)d counts:(id)counts onBattery:(BOOL)battery;
 - (void)reset;
 - (void)sendAnalytics;
-- (void)setCurrentDate:(id)a3;
-- (void)setUnitGranularity:(unint64_t)a3 periods:(int64_t)a4;
+- (void)setCurrentDate:(id)date;
+- (void)setUnitGranularity:(unint64_t)granularity periods:(int64_t)periods;
 - (void)updateProcessedItemsDefaults;
 @end
 
 @implementation CSEventFeedback
 
-+ (BOOL)eventAllowed:(id)a3
++ (BOOL)eventAllowed:(id)allowed
 {
-  v3 = a3;
-  if ([v3 intValue] == 10)
+  allowedCopy = allowed;
+  if ([allowedCopy intValue] == 10)
   {
     v4 = objc_opt_class();
-    v5 = [v3 stringValue];
-    v6 = [v4 defaultValueWithKey:v5];
+    stringValue = [allowedCopy stringValue];
+    v6 = [v4 defaultValueWithKey:stringValue];
     v7 = v6;
     v8 = &unk_2846E7668;
     if (v6)
@@ -62,8 +62,8 @@
 
     v9 = v8;
 
-    v10 = [v9 unsignedIntValue];
-    v11 = v10 < 0x186A1;
+    unsignedIntValue = [v9 unsignedIntValue];
+    v11 = unsignedIntValue < 0x186A1;
   }
 
   else
@@ -74,10 +74,10 @@
   return v11;
 }
 
-+ (double)elapsedTimeSinceFlushForEvent:(int64_t)a3
++ (double)elapsedTimeSinceFlushForEvent:(int64_t)event
 {
   v3 = 0.0;
-  switch(a3)
+  switch(event)
   {
     case 14:
       v4 = @"lastEmbeddingPreWarmRequest";
@@ -118,16 +118,16 @@
   return v2;
 }
 
-- (void)commonInitWithVersionName:(id)a3 dateComponents:(id)a4
+- (void)commonInitWithVersionName:(id)name dateComponents:(id)components
 {
-  v13 = a4;
+  componentsCopy = components;
   v5 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"GMT"];
   v6 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
   currentCalendar = self->_currentCalendar;
   self->_currentCalendar = v6;
 
   [(NSCalendar *)self->_currentCalendar setTimeZone:v5];
-  if (v13)
+  if (componentsCopy)
   {
     v8 = [(NSCalendar *)self->_currentCalendar dateFromComponents:?];
   }
@@ -170,17 +170,17 @@
   return v3;
 }
 
-- (CSEventFeedback)initWithVersionName:(id)a3 dateComponents:(id)a4
+- (CSEventFeedback)initWithVersionName:(id)name dateComponents:(id)components
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  componentsCopy = components;
   v11.receiver = self;
   v11.super_class = CSEventFeedback;
   v8 = [(CSEventFeedback *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CSEventFeedback *)v8 commonInitWithVersionName:v6 dateComponents:v7];
+    [(CSEventFeedback *)v8 commonInitWithVersionName:nameCopy dateComponents:componentsCopy];
     v9->_forTesting = 1;
   }
 
@@ -192,21 +192,21 @@
   currentCalendar = self->_currentCalendar;
   if (currentCalendar)
   {
-    v3 = currentCalendar;
+    currentCalendar = currentCalendar;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   }
 
-  return v3;
+  return currentCalendar;
 }
 
-- (void)setCurrentDate:(id)a3
+- (void)setCurrentDate:(id)date
 {
-  objc_storeStrong(&self->_currentDate, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_currentDate, date);
+  dateCopy = date;
   [objc_opt_class() setDefaultWithKey:@"currentDate" value:self->_currentDate];
 }
 
@@ -226,26 +226,26 @@
   return v3;
 }
 
-- (void)setUnitGranularity:(unint64_t)a3 periods:(int64_t)a4
+- (void)setUnitGranularity:(unint64_t)granularity periods:(int64_t)periods
 {
-  self->_unitGranularity = a3;
-  if (a3 == 16)
+  self->_unitGranularity = granularity;
+  if (granularity == 16)
   {
     self->_unitGranularity = 32;
-    if (a4 == 0x7FFFFFFFFFFFFFFFLL || a4 == 0)
+    if (periods == 0x7FFFFFFFFFFFFFFFLL || periods == 0)
     {
       length = 1;
     }
 
     else
     {
-      length = a4;
+      length = periods;
     }
   }
 
   else
   {
-    v7 = [(CSEventFeedback *)self currentCalendar:a3];
+    v7 = [(CSEventFeedback *)self currentCalendar:granularity];
     unitGranularity = self->_unitGranularity;
     Current = CFAbsoluteTimeGetCurrent();
     length = CFCalendarGetRangeOfUnit(v7, unitGranularity, 0x10uLL, Current).length;
@@ -254,18 +254,18 @@
   self->_numPeriods = length;
 }
 
-- (int64_t)periodForMax:(int64_t)a3
+- (int64_t)periodForMax:(int64_t)max
 {
-  v5 = [(CSEventFeedback *)self currentCalendar];
+  currentCalendar = [(CSEventFeedback *)self currentCalendar];
   unitGranularity = self->_unitGranularity;
-  v7 = [(CSEventFeedback *)self currentDate];
-  v8 = [v5 component:unitGranularity fromDate:v7];
+  currentDate = [(CSEventFeedback *)self currentDate];
+  v8 = [currentCalendar component:unitGranularity fromDate:currentDate];
 
   v9 = self->_unitGranularity;
   Current = CFAbsoluteTimeGetCurrent();
-  RangeOfUnit = CFCalendarGetRangeOfUnit(v5, v9, 0x10uLL, Current);
+  RangeOfUnit = CFCalendarGetRangeOfUnit(currentCalendar, v9, 0x10uLL, Current);
 
-  return (v8 - RangeOfUnit.location) * (a3 - RangeOfUnit.location) / (RangeOfUnit.length - RangeOfUnit.location) + RangeOfUnit.location;
+  return (v8 - RangeOfUnit.location) * (max - RangeOfUnit.location) / (RangeOfUnit.length - RangeOfUnit.location) + RangeOfUnit.location;
 }
 
 + (void)logEmbeddingPrewarmRequestTime
@@ -275,17 +275,17 @@
   [v2 setDefaultWithKey:@"lastEmbeddingPreWarmRequest" value:v3];
 }
 
-- (void)logErrorItemForBundleID:(id)a3 counts:(id)a4
+- (void)logErrorItemForBundleID:(id)d counts:(id)counts
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSEventFeedback *)self bundleID];
-  v9 = [v6 isEqualToString:v8];
+  dCopy = d;
+  countsCopy = counts;
+  bundleID = [(CSEventFeedback *)self bundleID];
+  v9 = [dCopy isEqualToString:bundleID];
 
   if ((v9 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [CSEventFeedback logErrorItemForBundleID:v6 counts:self];
+    [CSEventFeedback logErrorItemForBundleID:dCopy counts:self];
   }
 
   [(CSEventFeedback *)self flush];
@@ -293,7 +293,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = v7;
+  v10 = countsCopy;
   v11 = [v10 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v11)
   {
@@ -315,8 +315,8 @@
         if (!v16)
         {
           stats = self->_stats;
-          v18 = [MEMORY[0x277CBEB38] dictionary];
-          [(NSMutableDictionary *)stats setObject:v18 forKey:v14];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [(NSMutableDictionary *)stats setObject:dictionary forKey:v14];
         }
 
         v19 = [(NSMutableDictionary *)self->_stats objectForKeyedSubscript:v14];
@@ -345,25 +345,25 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCachedItemForBundleID:(id)a3 counts:(id)a4
+- (void)logCachedItemForBundleID:(id)d counts:(id)counts
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSEventFeedback *)self bundleID];
-  v9 = [v6 isEqualToString:v8];
+  dCopy = d;
+  countsCopy = counts;
+  bundleID = [(CSEventFeedback *)self bundleID];
+  v9 = [dCopy isEqualToString:bundleID];
 
   if ((v9 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [CSEventFeedback logErrorItemForBundleID:v6 counts:self];
+    [CSEventFeedback logErrorItemForBundleID:dCopy counts:self];
   }
 
-  v27 = v6;
+  v27 = dCopy;
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = v7;
+  v10 = countsCopy;
   v11 = [v10 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v11)
   {
@@ -385,8 +385,8 @@
         if (!v16)
         {
           stats = self->_stats;
-          v18 = [MEMORY[0x277CBEB38] dictionary];
-          [(NSMutableDictionary *)stats setObject:v18 forKey:v14];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [(NSMutableDictionary *)stats setObject:dictionary forKey:v14];
         }
 
         v19 = [(NSMutableDictionary *)self->_stats objectForKeyedSubscript:v14];
@@ -415,27 +415,27 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logProcessedItemForBundleID:(id)a3 language:(id)a4 textSize:(unint64_t)a5 counts:(id)a6
+- (void)logProcessedItemForBundleID:(id)d language:(id)language textSize:(unint64_t)size counts:(id)counts
 {
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v47 = a4;
-  v10 = a6;
-  v11 = [(CSEventFeedback *)self bundleID];
-  v12 = [v9 isEqualToString:v11];
+  dCopy = d;
+  languageCopy = language;
+  countsCopy = counts;
+  bundleID = [(CSEventFeedback *)self bundleID];
+  v12 = [dCopy isEqualToString:bundleID];
 
   if ((v12 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [CSEventFeedback logProcessedItemForBundleID:v9 language:self textSize:? counts:?];
+    [CSEventFeedback logProcessedItemForBundleID:dCopy language:self textSize:? counts:?];
   }
 
-  v48 = v9;
+  v48 = dCopy;
   [(CSEventFeedback *)self flush];
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v13 = v10;
+  v13 = countsCopy;
   v14 = [v13 countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v14)
   {
@@ -457,8 +457,8 @@
         if (!v19)
         {
           stats = self->_stats;
-          v21 = [MEMORY[0x277CBEB38] dictionary];
-          [(NSMutableDictionary *)stats setObject:v21 forKey:v17];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [(NSMutableDictionary *)stats setObject:dictionary forKey:v17];
         }
 
         v22 = [(NSMutableDictionary *)self->_stats objectForKeyedSubscript:v17];
@@ -467,8 +467,8 @@
         if (!v23)
         {
           v24 = [(NSMutableDictionary *)self->_stats objectForKeyedSubscript:v17];
-          v25 = [(CSEventFeedback *)self currentDate];
-          [v24 setObject:v25 forKey:@"lastProcessedDate"];
+          currentDate = [(CSEventFeedback *)self currentDate];
+          [v24 setObject:currentDate forKey:@"lastProcessedDate"];
         }
 
         v26 = [(NSMutableDictionary *)self->_stats objectForKeyedSubscript:v17];
@@ -490,23 +490,23 @@
         if ([v17 unsignedIntValue] == 9)
         {
           v33 = objc_opt_class();
-          v34 = [(CSEventFeedback *)self currentDate];
-          [v33 setDefaultWithKey:@"lastEmbeddingDate" value:v34];
+          currentDate2 = [(CSEventFeedback *)self currentDate];
+          [v33 setDefaultWithKey:@"lastEmbeddingDate" value:currentDate2];
         }
 
         if ([v17 unsignedIntValue] == 8 && objc_msgSend(v18, "unsignedIntValue"))
         {
           v35 = objc_opt_class();
-          v36 = [(CSEventFeedback *)self currentDate];
-          [v35 setDefaultWithKey:@"lastPriorityDate" value:v36];
+          currentDate3 = [(CSEventFeedback *)self currentDate];
+          [v35 setDefaultWithKey:@"lastPriorityDate" value:currentDate3];
 
           self->_numProcessedOnBudget += [v18 unsignedIntValue];
           [objc_opt_class() updateDefaultWithKey:@"processedEmbedCountOnBudget" value:v18];
         }
 
         v37 = objc_opt_class();
-        v38 = [v17 stringValue];
-        [v37 updateDefaultWithKey:v38 value:&unk_2846E7680];
+        stringValue = [v17 stringValue];
+        [v37 updateDefaultWithKey:stringValue value:&unk_2846E7680];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v50 objects:v54 count:16];
@@ -515,7 +515,7 @@
     while (v15);
   }
 
-  if (v47)
+  if (languageCopy)
   {
     LanguageIDForIdentifier = SILanguagesGetLanguageIDForIdentifier();
   }
@@ -537,18 +537,18 @@
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logReceivedItemForBundleID:(id)a3 counts:(id)a4 onBattery:(BOOL)a5
+- (void)logReceivedItemForBundleID:(id)d counts:(id)counts onBattery:(BOOL)battery
 {
-  v33 = a5;
+  batteryCopy = battery;
   v40 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v7 = a4;
+  dCopy = d;
+  countsCopy = counts;
   [(CSEventFeedback *)self flush];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = v7;
+  v8 = countsCopy;
   v34 = [v8 countByEnumeratingWithState:&v35 objects:v39 count:16];
   v9 = 0;
   if (v34)
@@ -570,8 +570,8 @@
         if (!v13)
         {
           receiverStats = self->_receiverStats;
-          v15 = [MEMORY[0x277CBEB38] dictionary];
-          [(NSMutableDictionary *)receiverStats setObject:v15 forKey:v11];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [(NSMutableDictionary *)receiverStats setObject:dictionary forKey:v11];
         }
 
         v16 = [(NSMutableDictionary *)self->_receiverStats objectForKeyedSubscript:v11];
@@ -580,8 +580,8 @@
         if (!v17)
         {
           v18 = [(NSMutableDictionary *)self->_receiverStats objectForKeyedSubscript:v11];
-          v19 = [(CSEventFeedback *)self currentDate];
-          [v18 setObject:v19 forKey:@"lastProcessedDate"];
+          currentDate = [(CSEventFeedback *)self currentDate];
+          [v18 setObject:currentDate forKey:@"lastProcessedDate"];
         }
 
         v20 = [(NSMutableDictionary *)self->_receiverStats objectForKeyedSubscript:v11];
@@ -600,13 +600,13 @@
         v26 = [(NSMutableDictionary *)self->_receiverStats objectForKeyedSubscript:v11];
         [v26 setObject:v25 forKeyedSubscript:@"count"];
 
-        if (v33 && [v12 unsignedIntValue])
+        if (batteryCopy && [v12 unsignedIntValue])
         {
           v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-lastPriorityDate", v11];
 
           v28 = objc_opt_class();
-          v29 = [(CSEventFeedback *)self currentDate];
-          [v28 setDefaultWithKey:v27 value:v29];
+          currentDate2 = [(CSEventFeedback *)self currentDate];
+          [v28 setDefaultWithKey:v27 value:currentDate2];
 
           self->_numProcessedOnBudget += [v12 unsignedIntValue];
           v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-processedOnBudget", v11];
@@ -627,24 +627,24 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)bucketedSizeForValue:(id)a3 numBuckets:(unint64_t)a4
+- (unint64_t)bucketedSizeForValue:(id)value numBuckets:(unint64_t)buckets
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 unsignedIntValue])
+  valueCopy = value;
+  v6 = valueCopy;
+  if (valueCopy && [valueCopy unsignedIntValue])
   {
     if ([v6 unsignedIntValue] <= 0x1388)
     {
-      a4 = ([v6 unsignedIntValue] / 5000.0) % a4;
+      buckets = ([v6 unsignedIntValue] / 5000.0) % buckets;
     }
   }
 
   else
   {
-    a4 = 0;
+    buckets = 0;
   }
 
-  return a4;
+  return buckets;
 }
 
 - (id)feedback
@@ -665,13 +665,13 @@
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[CSEventFeedback indexType](self, "indexType")}];
   [v3 setObject:v8 forKey:@"protectionClass"];
 
-  v9 = [(CSEventFeedback *)self bundleID];
-  v10 = [v9 length];
+  bundleID = [(CSEventFeedback *)self bundleID];
+  v10 = [bundleID length];
 
   if (v10)
   {
-    v11 = [(CSEventFeedback *)self bundleID];
-    [v3 setObject:v11 forKey:@"bundleID"];
+    bundleID2 = [(CSEventFeedback *)self bundleID];
+    [v3 setObject:bundleID2 forKey:@"bundleID"];
   }
 
   if ([(NSMutableSet *)self->_textSizes count])
@@ -721,12 +721,12 @@
           v24 = &unk_2846E7668;
         }
 
-        v25 = [v21 unsignedIntValue];
-        if (v25 > 12)
+        unsignedIntValue = [v21 unsignedIntValue];
+        if (unsignedIntValue > 12)
         {
-          if (v25 <= 15)
+          if (unsignedIntValue <= 15)
           {
-            if (v25 == 13)
+            if (unsignedIntValue == 13)
             {
               v26 = v3;
               v27 = v24;
@@ -735,7 +735,7 @@
 
             else
             {
-              if (v25 != 15)
+              if (unsignedIntValue != 15)
               {
                 goto LABEL_39;
               }
@@ -748,7 +748,7 @@
 
           else
           {
-            switch(v25)
+            switch(unsignedIntValue)
             {
               case 16:
                 v26 = v3;
@@ -773,16 +773,16 @@
           goto LABEL_38;
         }
 
-        if (v25 > 9)
+        if (unsignedIntValue > 9)
         {
-          if (v25 == 10)
+          if (unsignedIntValue == 10)
           {
             v26 = v3;
             v27 = v24;
             v28 = @"keyphraseCount";
           }
 
-          else if (v25 == 11)
+          else if (unsignedIntValue == 11)
           {
             v26 = v3;
             v27 = v24;
@@ -799,7 +799,7 @@
           goto LABEL_38;
         }
 
-        if (v25 == 8)
+        if (unsignedIntValue == 8)
         {
           v26 = v3;
           v27 = v24;
@@ -809,7 +809,7 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        if (v25 == 9)
+        if (unsignedIntValue == 9)
         {
           [v3 setObject:v24 forKey:@"embeddingCount"];
           v29 = [(NSMutableDictionary *)self->_stats objectForKeyedSubscript:v21];
@@ -881,15 +881,15 @@ LABEL_39:
 {
   if ((self->_numProcessedItemsInBatch || [(NSMutableDictionary *)self->_stats count]|| [(NSMutableSet *)self->_textSizes count]|| [(NSMutableSet *)self->_languages count]|| [(NSMutableSet *)self->_errors count]|| self->_completedBatch || self->_ignoredBatch) && !self->_forTesting)
   {
-    v3 = [(CSEventFeedback *)self feedback];
+    feedback = [(CSEventFeedback *)self feedback];
     AnalyticsSendEvent();
   }
 }
 
-- (void)logError:(int64_t)a3
+- (void)logError:(int64_t)error
 {
   errors = self->_errors;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:error];
   [(NSMutableSet *)errors addObject:v4];
 }
 
@@ -918,9 +918,9 @@ LABEL_39:
 
     v8 = MEMORY[0x277CCABB0];
     numProcessedOnBudget = self->_numProcessedOnBudget;
-    v10 = [v7 unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
 
-    v11 = [v8 numberWithUnsignedInteger:numProcessedOnBudget + v10];
+    v11 = [v8 numberWithUnsignedInteger:numProcessedOnBudget + unsignedIntValue];
     [objc_opt_class() updateDefaultWithKey:@"processedCount" value:v11];
   }
 
@@ -930,8 +930,8 @@ LABEL_39:
 - (void)end
 {
   v3 = objc_opt_class();
-  v4 = [(CSEventFeedback *)self currentDate];
-  [v3 setDefaultWithKey:@"lastFlushDate" value:v4];
+  currentDate = [(CSEventFeedback *)self currentDate];
+  [v3 setDefaultWithKey:@"lastFlushDate" value:currentDate];
 
   [(CSEventFeedback *)self updateProcessedItemsDefaults];
   [(CSEventFeedback *)self sendAnalytics];
@@ -941,10 +941,10 @@ LABEL_39:
 
 - (void)flush
 {
-  v3 = [(CSEventFeedback *)self currentDate];
+  currentDate = [(CSEventFeedback *)self currentDate];
   v4 = [objc_opt_class() defaultValueWithKey:@"currentDate"];
-  v5 = [(CSEventFeedback *)self currentCalendar];
-  v6 = [v5 isDate:v3 equalToDate:v4 toUnitGranularity:16];
+  currentCalendar = [(CSEventFeedback *)self currentCalendar];
+  v6 = [currentCalendar isDate:currentDate equalToDate:v4 toUnitGranularity:16];
 
   if ((v6 & 1) == 0)
   {
@@ -984,24 +984,24 @@ LABEL_39:
   self->_errors = v11;
 
   *&self->_completedBatch = 0;
-  v26 = [(CSEventFeedback *)self currentDate];
+  currentDate = [(CSEventFeedback *)self currentDate];
   v13 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  v14 = [(CSEventFeedback *)self currentCalendar];
-  [v13 setDay:{objc_msgSend(v14, "component:fromDate:", 16, v26)}];
+  currentCalendar = [(CSEventFeedback *)self currentCalendar];
+  [v13 setDay:{objc_msgSend(currentCalendar, "component:fromDate:", 16, currentDate)}];
 
-  v15 = [(CSEventFeedback *)self currentCalendar];
-  [v13 setMonth:{objc_msgSend(v15, "component:fromDate:", 8, v26)}];
+  currentCalendar2 = [(CSEventFeedback *)self currentCalendar];
+  [v13 setMonth:{objc_msgSend(currentCalendar2, "component:fromDate:", 8, currentDate)}];
 
-  v16 = [(CSEventFeedback *)self currentCalendar];
-  [v13 setYear:{objc_msgSend(v16, "component:fromDate:", 4, v26)}];
+  currentCalendar3 = [(CSEventFeedback *)self currentCalendar];
+  [v13 setYear:{objc_msgSend(currentCalendar3, "component:fromDate:", 4, currentDate)}];
 
   v17 = objc_alloc_init(MEMORY[0x277CCA968]);
-  v18 = [(CSEventFeedback *)self currentCalendar];
-  [v17 setCalendar:v18];
+  currentCalendar4 = [(CSEventFeedback *)self currentCalendar];
+  [v17 setCalendar:currentCalendar4];
 
   [v17 setDateStyle:1];
-  v19 = [(CSEventFeedback *)self currentDate];
-  v20 = [v17 stringFromDate:v19];
+  currentDate2 = [(CSEventFeedback *)self currentDate];
+  v20 = [v17 stringFromDate:currentDate2];
   currentDateKey = self->_currentDateKey;
   self->_currentDateKey = v20;
 
@@ -1010,8 +1010,8 @@ LABEL_39:
   [v22 setDefaultWithKey:@"version" value:v23];
 
   v24 = objc_opt_class();
-  v25 = [(CSEventFeedback *)self currentDate];
-  [v24 setDefaultWithKey:@"currentDate" value:v25];
+  currentDate3 = [(CSEventFeedback *)self currentDate];
+  [v24 setDefaultWithKey:@"currentDate" value:currentDate3];
 }
 
 - (void)clear
@@ -1021,17 +1021,17 @@ LABEL_39:
   [(CSEventFeedback *)self reset];
 }
 
-- (BOOL)canProcessEvent:(id)a3
+- (BOOL)canProcessEvent:(id)event
 {
-  v4 = a3;
-  if ([CSEventFeedback eventAllowed:v4])
+  eventCopy = event;
+  if ([CSEventFeedback eventAllowed:eventCopy])
   {
-    v5 = [v4 intValue];
-    if (v5 == 19)
+    intValue = [eventCopy intValue];
+    if (intValue == 19)
     {
       v17 = objc_opt_class();
-      v18 = [v4 stringValue];
-      v19 = [v17 defaultValueWithKey:v18];
+      stringValue = [eventCopy stringValue];
+      v19 = [v17 defaultValueWithKey:stringValue];
       v20 = v19;
       v21 = &unk_2846E7668;
       if (v19)
@@ -1041,11 +1041,11 @@ LABEL_39:
 
       v22 = v21;
 
-      v23 = [v22 unsignedIntValue];
-      v16 = v23 < 0x1389;
+      unsignedIntValue = [v22 unsignedIntValue];
+      v16 = unsignedIntValue < 0x1389;
     }
 
-    else if (v5 == 8)
+    else if (intValue == 8)
     {
       v6 = [objc_opt_class() defaultValueWithKey:@"processedEmbedCountOnBudget"];
       v7 = v6;
@@ -1057,9 +1057,9 @@ LABEL_39:
 
       v9 = v8;
 
-      v10 = [v9 unsignedIntValue];
+      unsignedIntValue2 = [v9 unsignedIntValue];
       maxCount = self->_maxCount;
-      if (maxCount <= v10)
+      if (maxCount <= unsignedIntValue2)
       {
         v16 = 0;
       }
@@ -1102,29 +1102,29 @@ LABEL_39:
   return v16;
 }
 
-- (void)logError:(int64_t)a3 message:(id)a4
+- (void)logError:(int64_t)error message:(id)message
 {
-  v6 = a4;
-  if (v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  messageCopy = message;
+  if (messageCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [(CSEventFeedback *)v6 logError:a3 message:v7, v8, v9, v10, v11, v12];
+    [(CSEventFeedback *)messageCopy logError:error message:v7, v8, v9, v10, v11, v12];
   }
 
   errors = self->_errors;
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:error];
   [(NSMutableSet *)errors addObject:v14];
 }
 
-- (void)logFlag:(int64_t)a3 message:(id)a4
+- (void)logFlag:(int64_t)flag message:(id)message
 {
-  if (a3 == 10)
+  if (flag == 10)
   {
     v4 = 130;
   }
 
   else
   {
-    if (a3 != 22)
+    if (flag != 22)
     {
       return;
     }
@@ -1145,15 +1145,15 @@ LABEL_39:
 + (id)defaultProperties
 {
   os_unfair_lock_lock(&gFeedbackLock);
-  v2 = [objc_opt_class() defaults];
-  v3 = [objc_opt_class() versionName];
-  v4 = [v2 dictionaryRepresentation];
-  v5 = [v4 objectForKey:v3];
+  defaults = [objc_opt_class() defaults];
+  versionName = [objc_opt_class() versionName];
+  dictionaryRepresentation = [defaults dictionaryRepresentation];
+  v5 = [dictionaryRepresentation objectForKey:versionName];
 
   if (!v5)
   {
-    v6 = [v2 dictionaryRepresentation];
-    v5 = [v6 objectForKey:v3];
+    dictionaryRepresentation2 = [defaults dictionaryRepresentation];
+    v5 = [dictionaryRepresentation2 objectForKey:versionName];
   }
 
   os_unfair_lock_unlock(&gFeedbackLock);
@@ -1161,17 +1161,17 @@ LABEL_39:
   return v5;
 }
 
-+ (void)setDefaultWithKey:(id)a3 value:(id)a4
++ (void)setDefaultWithKey:(id)key value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [objc_opt_class() versionName];
-  v8 = [objc_opt_class() defaultProperties];
+  valueCopy = value;
+  keyCopy = key;
+  versionName = [objc_opt_class() versionName];
+  defaultProperties = [objc_opt_class() defaultProperties];
   os_unfair_lock_lock(&gFeedbackLock);
-  v9 = [a1 defaults];
-  if (v8)
+  defaults = [self defaults];
+  if (defaultProperties)
   {
-    v10 = [v8 mutableCopy];
+    v10 = [defaultProperties mutableCopy];
   }
 
   else
@@ -1180,23 +1180,23 @@ LABEL_39:
   }
 
   v11 = v10;
-  [v10 setObject:v6 forKey:v7];
+  [v10 setObject:valueCopy forKey:keyCopy];
 
-  [v9 setObject:v11 forKey:v12];
+  [defaults setObject:v11 forKey:versionName];
   os_unfair_lock_unlock(&gFeedbackLock);
 }
 
-+ (void)updateDefaultWithKey:(id)a3 value:(id)a4
++ (void)updateDefaultWithKey:(id)key value:(id)value
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() versionName];
-  v8 = [objc_opt_class() defaultProperties];
+  keyCopy = key;
+  valueCopy = value;
+  versionName = [objc_opt_class() versionName];
+  defaultProperties = [objc_opt_class() defaultProperties];
   os_unfair_lock_lock(&gFeedbackLock);
-  v9 = [a1 defaults];
-  if (v8)
+  defaults = [self defaults];
+  if (defaultProperties)
   {
-    v10 = [v8 mutableCopy];
+    v10 = [defaultProperties mutableCopy];
   }
 
   else
@@ -1205,14 +1205,14 @@ LABEL_39:
   }
 
   v11 = v10;
-  v12 = [v10 objectForKeyedSubscript:v16];
+  v12 = [v10 objectForKeyedSubscript:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      [v13 addObject:v6];
+      [v13 addObject:valueCopy];
       if (v12)
       {
         [v13 addObject:v12];
@@ -1230,7 +1230,7 @@ LABEL_39:
 
   if (!v12)
   {
-    v15 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [valueCopy unsignedIntegerValue];
     goto LABEL_15;
   }
 
@@ -1238,104 +1238,104 @@ LABEL_39:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_13:
-    [v11 setObject:v6 forKey:v16];
+    [v11 setObject:valueCopy forKey:keyCopy];
     goto LABEL_17;
   }
 
-  v14 = [v6 unsignedIntegerValue];
-  v15 = [v12 unsignedIntegerValue] + v14;
+  unsignedIntegerValue2 = [valueCopy unsignedIntegerValue];
+  unsignedIntegerValue = [v12 unsignedIntegerValue] + unsignedIntegerValue2;
 LABEL_15:
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
 LABEL_16:
-  [v11 setObject:v13 forKey:v16];
+  [v11 setObject:v13 forKey:keyCopy];
 
 LABEL_17:
-  [v9 setObject:v11 forKey:v7];
+  [defaults setObject:v11 forKey:versionName];
   os_unfair_lock_unlock(&gFeedbackLock);
 }
 
-+ (id)defaultValueWithKey:(id)a3 versionName:(id)a4
++ (id)defaultValueWithKey:(id)key versionName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultProperties];
+  keyCopy = key;
+  defaultProperties = [objc_opt_class() defaultProperties];
   os_unfair_lock_lock(&gFeedbackLock);
-  v6 = [v5 objectForKey:v4];
-
-  os_unfair_lock_unlock(&gFeedbackLock);
-
-  return v6;
-}
-
-+ (id)defaultValueWithKey:(id)a3
-{
-  v4 = a3;
-  v5 = [a1 defaultProperties];
-  os_unfair_lock_lock(&gFeedbackLock);
-  v6 = [v5 objectForKey:v4];
+  v6 = [defaultProperties objectForKey:keyCopy];
 
   os_unfair_lock_unlock(&gFeedbackLock);
 
   return v6;
 }
 
-+ (void)removeKey:(id)a3
++ (id)defaultValueWithKey:(id)key
 {
-  v4 = a3;
-  v8 = [objc_opt_class() versionName];
-  v5 = [a1 defaultProperties];
+  keyCopy = key;
+  defaultProperties = [self defaultProperties];
   os_unfair_lock_lock(&gFeedbackLock);
-  v6 = [a1 defaults];
-  v7 = [v5 mutableCopy];
-  [v7 removeObjectForKey:v4];
+  v6 = [defaultProperties objectForKey:keyCopy];
 
-  [v6 setObject:v7 forKey:v8];
+  os_unfair_lock_unlock(&gFeedbackLock);
+
+  return v6;
+}
+
++ (void)removeKey:(id)key
+{
+  keyCopy = key;
+  versionName = [objc_opt_class() versionName];
+  defaultProperties = [self defaultProperties];
+  os_unfair_lock_lock(&gFeedbackLock);
+  defaults = [self defaults];
+  v7 = [defaultProperties mutableCopy];
+  [v7 removeObjectForKey:keyCopy];
+
+  [defaults setObject:v7 forKey:versionName];
   os_unfair_lock_unlock(&gFeedbackLock);
 }
 
 + (void)removeDefaults
 {
   os_unfair_lock_lock(&gFeedbackLock);
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 removePersistentDomainForName:@"com.apple.cseventlistener"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removePersistentDomainForName:@"com.apple.cseventlistener"];
 
   [MEMORY[0x277CBEBD0] resetStandardUserDefaults];
 
   os_unfair_lock_unlock(&gFeedbackLock);
 }
 
-+ (BOOL)flagWithKey:(id)a3
++ (BOOL)flagWithKey:(id)key
 {
-  v3 = a3;
-  v4 = [objc_opt_class() defaultValueWithKey:v3];
+  keyCopy = key;
+  v4 = [objc_opt_class() defaultValueWithKey:keyCopy];
   if (v4)
   {
-    v5 = [objc_opt_class() defaultValueWithKey:v3];
-    v6 = [v5 BOOLValue];
+    v5 = [objc_opt_class() defaultValueWithKey:keyCopy];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-+ (void)setTimeWithKey:(id)a3 value:(double)a4
++ (void)setTimeWithKey:(id)key value:(double)value
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = objc_opt_class();
-  v7 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  [v6 setDefaultWithKey:v5 value:v7];
+  v7 = [MEMORY[0x277CCABB0] numberWithDouble:value];
+  [v6 setDefaultWithKey:keyCopy value:v7];
 }
 
-+ (double)timeWithKey:(id)a3
++ (double)timeWithKey:(id)key
 {
-  v3 = a3;
-  v4 = [objc_opt_class() defaultValueWithKey:v3];
+  keyCopy = key;
+  v4 = [objc_opt_class() defaultValueWithKey:keyCopy];
   if (v4)
   {
-    v5 = [objc_opt_class() defaultValueWithKey:v3];
+    v5 = [objc_opt_class() defaultValueWithKey:keyCopy];
     [v5 doubleValue];
     v7 = v6;
   }
@@ -1348,30 +1348,30 @@ LABEL_17:
   return v7;
 }
 
-+ (void)setIndexWithKey:(id)a3 value:(unint64_t)a4
++ (void)setIndexWithKey:(id)key value:(unint64_t)value
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = objc_opt_class();
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  [v6 setDefaultWithKey:v5 value:v7];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:value];
+  [v6 setDefaultWithKey:keyCopy value:v7];
 }
 
-- (unint64_t)indexWithKey:(id)a3
+- (unint64_t)indexWithKey:(id)key
 {
-  v3 = a3;
-  v4 = [objc_opt_class() defaultValueWithKey:v3];
+  keyCopy = key;
+  v4 = [objc_opt_class() defaultValueWithKey:keyCopy];
   if (v4)
   {
-    v5 = [objc_opt_class() defaultValueWithKey:v3];
-    v6 = [v5 intValue];
+    v5 = [objc_opt_class() defaultValueWithKey:keyCopy];
+    intValue = [v5 intValue];
   }
 
   else
   {
-    v6 = 0;
+    intValue = 0;
   }
 
-  return v6;
+  return intValue;
 }
 
 - (void)logErrorItemForBundleID:(uint64_t)a1 counts:(void *)a2 .cold.1(uint64_t a1, void *a2)

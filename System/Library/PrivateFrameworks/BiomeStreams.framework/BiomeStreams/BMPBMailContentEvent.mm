@@ -1,54 +1,54 @@
 @interface BMPBMailContentEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAccountHandles:(id)a3;
-- (void)addAttachments:(id)a3;
-- (void)addBccHandles:(id)a3;
-- (void)addCcHandles:(id)a3;
-- (void)addHeaders:(id)a3;
-- (void)addMailboxIdentifiers:(id)a3;
-- (void)addToHandles:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDateReceived:(BOOL)a3;
-- (void)setHasIsFlagged:(BOOL)a3;
-- (void)setHasIsFromMe:(BOOL)a3;
-- (void)setHasIsFullyDownloaded:(BOOL)a3;
-- (void)setHasIsJunk:(BOOL)a3;
-- (void)setHasIsNew:(BOOL)a3;
-- (void)setHasIsRead:(BOOL)a3;
-- (void)setHasIsTwoFactorCode:(BOOL)a3;
-- (void)setHasIsVIP:(BOOL)a3;
-- (void)setHasMailCategories:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAccountHandles:(id)handles;
+- (void)addAttachments:(id)attachments;
+- (void)addBccHandles:(id)handles;
+- (void)addCcHandles:(id)handles;
+- (void)addHeaders:(id)headers;
+- (void)addMailboxIdentifiers:(id)identifiers;
+- (void)addToHandles:(id)handles;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDateReceived:(BOOL)received;
+- (void)setHasIsFlagged:(BOOL)flagged;
+- (void)setHasIsFromMe:(BOOL)me;
+- (void)setHasIsFullyDownloaded:(BOOL)downloaded;
+- (void)setHasIsJunk:(BOOL)junk;
+- (void)setHasIsNew:(BOOL)new;
+- (void)setHasIsRead:(BOOL)read;
+- (void)setHasIsTwoFactorCode:(BOOL)code;
+- (void)setHasIsVIP:(BOOL)p;
+- (void)setHasMailCategories:(BOOL)categories;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBMailContentEvent
 
-- (void)addHeaders:(id)a3
+- (void)addHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   headers = self->_headers;
-  v8 = v4;
+  v8 = headersCopy;
   if (!headers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_headers;
     self->_headers = v6;
 
-    v4 = v8;
+    headersCopy = v8;
     headers = self->_headers;
   }
 
-  [(NSMutableArray *)headers addObject:v4];
+  [(NSMutableArray *)headers addObject:headersCopy];
 }
 
-- (void)setHasIsFullyDownloaded:(BOOL)a3
+- (void)setHasIsFullyDownloaded:(BOOL)downloaded
 {
-  if (a3)
+  if (downloaded)
   {
     v3 = 32;
   }
@@ -61,117 +61,117 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)addAccountHandles:(id)a3
+- (void)addAccountHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   accountHandles = self->_accountHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!accountHandles)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_accountHandles;
     self->_accountHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     accountHandles = self->_accountHandles;
   }
 
-  [(NSMutableArray *)accountHandles addObject:v4];
+  [(NSMutableArray *)accountHandles addObject:handlesCopy];
 }
 
-- (void)addMailboxIdentifiers:(id)a3
+- (void)addMailboxIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   mailboxIdentifiers = self->_mailboxIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!mailboxIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_mailboxIdentifiers;
     self->_mailboxIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     mailboxIdentifiers = self->_mailboxIdentifiers;
   }
 
-  [(NSMutableArray *)mailboxIdentifiers addObject:v4];
+  [(NSMutableArray *)mailboxIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addAttachments:(id)a3
+- (void)addAttachments:(id)attachments
 {
-  v4 = a3;
+  attachmentsCopy = attachments;
   attachments = self->_attachments;
-  v8 = v4;
+  v8 = attachmentsCopy;
   if (!attachments)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_attachments;
     self->_attachments = v6;
 
-    v4 = v8;
+    attachmentsCopy = v8;
     attachments = self->_attachments;
   }
 
-  [(NSMutableArray *)attachments addObject:v4];
+  [(NSMutableArray *)attachments addObject:attachmentsCopy];
 }
 
-- (void)addToHandles:(id)a3
+- (void)addToHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   toHandles = self->_toHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!toHandles)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_toHandles;
     self->_toHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     toHandles = self->_toHandles;
   }
 
-  [(NSMutableArray *)toHandles addObject:v4];
+  [(NSMutableArray *)toHandles addObject:handlesCopy];
 }
 
-- (void)addCcHandles:(id)a3
+- (void)addCcHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   ccHandles = self->_ccHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!ccHandles)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_ccHandles;
     self->_ccHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     ccHandles = self->_ccHandles;
   }
 
-  [(NSMutableArray *)ccHandles addObject:v4];
+  [(NSMutableArray *)ccHandles addObject:handlesCopy];
 }
 
-- (void)addBccHandles:(id)a3
+- (void)addBccHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   bccHandles = self->_bccHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!bccHandles)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_bccHandles;
     self->_bccHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     bccHandles = self->_bccHandles;
   }
 
-  [(NSMutableArray *)bccHandles addObject:v4];
+  [(NSMutableArray *)bccHandles addObject:handlesCopy];
 }
 
-- (void)setHasDateReceived:(BOOL)a3
+- (void)setHasDateReceived:(BOOL)received
 {
-  if (a3)
+  if (received)
   {
     v3 = 2;
   }
@@ -184,9 +184,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasMailCategories:(BOOL)a3
+- (void)setHasMailCategories:(BOOL)categories
 {
-  if (a3)
+  if (categories)
   {
     v3 = 4;
   }
@@ -199,9 +199,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasIsNew:(BOOL)a3
+- (void)setHasIsNew:(BOOL)new
 {
-  if (a3)
+  if (new)
   {
     v3 = 128;
   }
@@ -214,9 +214,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasIsTwoFactorCode:(BOOL)a3
+- (void)setHasIsTwoFactorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 512;
   }
@@ -229,9 +229,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasIsFromMe:(BOOL)a3
+- (void)setHasIsFromMe:(BOOL)me
 {
-  if (a3)
+  if (me)
   {
     v3 = 16;
   }
@@ -244,9 +244,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasIsJunk:(BOOL)a3
+- (void)setHasIsJunk:(BOOL)junk
 {
-  if (a3)
+  if (junk)
   {
     v3 = 64;
   }
@@ -259,9 +259,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasIsRead:(BOOL)a3
+- (void)setHasIsRead:(BOOL)read
 {
-  if (a3)
+  if (read)
   {
     v3 = 256;
   }
@@ -274,9 +274,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsVIP:(BOOL)a3
+- (void)setHasIsVIP:(BOOL)p
 {
-  if (a3)
+  if (p)
   {
     v3 = 1024;
   }
@@ -289,9 +289,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasIsFlagged:(BOOL)a3
+- (void)setHasIsFlagged:(BOOL)flagged
 {
-  if (a3)
+  if (flagged)
   {
     v3 = 8;
   }
@@ -310,8 +310,8 @@
   v8.receiver = self;
   v8.super_class = BMPBMailContentEvent;
   v4 = [(BMPBMailContentEvent *)&v8 description];
-  v5 = [(BMPBMailContentEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBMailContentEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -319,12 +319,12 @@
 - (id)dictionaryRepresentation
 {
   v105 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uniqueId = self->_uniqueId;
   if (uniqueId)
   {
-    [v3 setObject:uniqueId forKey:@"uniqueId"];
+    [dictionary setObject:uniqueId forKey:@"uniqueId"];
   }
 
   domainId = self->_domainId;
@@ -397,8 +397,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v96 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation = [*(*(&v96 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v96 objects:v104 count:16];
@@ -455,8 +455,8 @@
   replyTo = self->_replyTo;
   if (replyTo)
   {
-    v29 = [(BMPBNamedHandle *)replyTo dictionaryRepresentation];
-    [v4 setObject:v29 forKey:@"replyTo"];
+    dictionaryRepresentation2 = [(BMPBNamedHandle *)replyTo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"replyTo"];
   }
 
   mailboxIdentifiers = self->_mailboxIdentifiers;
@@ -468,8 +468,8 @@
   listId = self->_listId;
   if (listId)
   {
-    v32 = [(BMPBNamedHandle *)listId dictionaryRepresentation];
-    [v4 setObject:v32 forKey:@"listId"];
+    dictionaryRepresentation3 = [(BMPBNamedHandle *)listId dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"listId"];
   }
 
   accountType = self->_accountType;
@@ -500,8 +500,8 @@
             objc_enumerationMutation(v35);
           }
 
-          v40 = [*(*(&v92 + 1) + 8 * j) dictionaryRepresentation];
-          [v34 addObject:v40];
+          dictionaryRepresentation4 = [*(*(&v92 + 1) + 8 * j) dictionaryRepresentation];
+          [v34 addObject:dictionaryRepresentation4];
         }
 
         v37 = [(NSMutableArray *)v35 countByEnumeratingWithState:&v92 objects:v103 count:16];
@@ -516,8 +516,8 @@
   fromHandle = self->_fromHandle;
   if (fromHandle)
   {
-    v42 = [(BMPBNamedHandle *)fromHandle dictionaryRepresentation];
-    [v4 setObject:v42 forKey:@"fromHandle"];
+    dictionaryRepresentation5 = [(BMPBNamedHandle *)fromHandle dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"fromHandle"];
   }
 
   if ([(NSMutableArray *)self->_toHandles count])
@@ -542,8 +542,8 @@
             objc_enumerationMutation(v44);
           }
 
-          v49 = [*(*(&v88 + 1) + 8 * k) dictionaryRepresentation];
-          [v43 addObject:v49];
+          dictionaryRepresentation6 = [*(*(&v88 + 1) + 8 * k) dictionaryRepresentation];
+          [v43 addObject:dictionaryRepresentation6];
         }
 
         v46 = [(NSMutableArray *)v44 countByEnumeratingWithState:&v88 objects:v102 count:16];
@@ -577,8 +577,8 @@
             objc_enumerationMutation(v51);
           }
 
-          v56 = [*(*(&v84 + 1) + 8 * m) dictionaryRepresentation];
-          [v50 addObject:v56];
+          dictionaryRepresentation7 = [*(*(&v84 + 1) + 8 * m) dictionaryRepresentation];
+          [v50 addObject:dictionaryRepresentation7];
         }
 
         v53 = [(NSMutableArray *)v51 countByEnumeratingWithState:&v84 objects:v101 count:16];
@@ -612,8 +612,8 @@
             objc_enumerationMutation(v58);
           }
 
-          v63 = [*(*(&v80 + 1) + 8 * n) dictionaryRepresentation];
-          [v57 addObject:v63];
+          dictionaryRepresentation8 = [*(*(&v80 + 1) + 8 * n) dictionaryRepresentation];
+          [v57 addObject:dictionaryRepresentation8];
         }
 
         v60 = [(NSMutableArray *)v58 countByEnumeratingWithState:&v80 objects:v100 count:16];
@@ -780,10 +780,10 @@ LABEL_104:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v95 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_uniqueId)
   {
     PBDataWriterWriteStringField();
@@ -1226,26 +1226,26 @@ LABEL_104:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v36 = v4;
+  toCopy = to;
+  v36 = toCopy;
   if (self->_uniqueId)
   {
-    [v4 setUniqueId:?];
-    v4 = v36;
+    [toCopy setUniqueId:?];
+    toCopy = v36;
   }
 
   if (self->_domainId)
   {
     [v36 setDomainId:?];
-    v4 = v36;
+    toCopy = v36;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_absoluteTimestamp;
-    *(v4 + 128) |= 1u;
+    *(toCopy + 1) = *&self->_absoluteTimestamp;
+    *(toCopy + 128) |= 1u;
   }
 
   if (self->_accountIdentifier)
@@ -1281,10 +1281,10 @@ LABEL_104:
   if ([(BMPBMailContentEvent *)self headersCount])
   {
     [v36 clearHeaders];
-    v5 = [(BMPBMailContentEvent *)self headersCount];
-    if (v5)
+    headersCount = [(BMPBMailContentEvent *)self headersCount];
+    if (headersCount)
     {
-      v6 = v5;
+      v6 = headersCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BMPBMailContentEvent *)self headersAtIndex:i];
@@ -1329,10 +1329,10 @@ LABEL_104:
   if ([(BMPBMailContentEvent *)self accountHandlesCount])
   {
     [v36 clearAccountHandles];
-    v10 = [(BMPBMailContentEvent *)self accountHandlesCount];
-    if (v10)
+    accountHandlesCount = [(BMPBMailContentEvent *)self accountHandlesCount];
+    if (accountHandlesCount)
     {
-      v11 = v10;
+      v11 = accountHandlesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(BMPBMailContentEvent *)self accountHandlesAtIndex:j];
@@ -1349,10 +1349,10 @@ LABEL_104:
   if ([(BMPBMailContentEvent *)self mailboxIdentifiersCount])
   {
     [v36 clearMailboxIdentifiers];
-    v14 = [(BMPBMailContentEvent *)self mailboxIdentifiersCount];
-    if (v14)
+    mailboxIdentifiersCount = [(BMPBMailContentEvent *)self mailboxIdentifiersCount];
+    if (mailboxIdentifiersCount)
     {
-      v15 = v14;
+      v15 = mailboxIdentifiersCount;
       for (k = 0; k != v15; ++k)
       {
         v17 = [(BMPBMailContentEvent *)self mailboxIdentifiersAtIndex:k];
@@ -1374,10 +1374,10 @@ LABEL_104:
   if ([(BMPBMailContentEvent *)self attachmentsCount])
   {
     [v36 clearAttachments];
-    v18 = [(BMPBMailContentEvent *)self attachmentsCount];
-    if (v18)
+    attachmentsCount = [(BMPBMailContentEvent *)self attachmentsCount];
+    if (attachmentsCount)
     {
-      v19 = v18;
+      v19 = attachmentsCount;
       for (m = 0; m != v19; ++m)
       {
         v21 = [(BMPBMailContentEvent *)self attachmentsAtIndex:m];
@@ -1394,10 +1394,10 @@ LABEL_104:
   if ([(BMPBMailContentEvent *)self toHandlesCount])
   {
     [v36 clearToHandles];
-    v22 = [(BMPBMailContentEvent *)self toHandlesCount];
-    if (v22)
+    toHandlesCount = [(BMPBMailContentEvent *)self toHandlesCount];
+    if (toHandlesCount)
     {
-      v23 = v22;
+      v23 = toHandlesCount;
       for (n = 0; n != v23; ++n)
       {
         v25 = [(BMPBMailContentEvent *)self toHandlesAtIndex:n];
@@ -1409,10 +1409,10 @@ LABEL_104:
   if ([(BMPBMailContentEvent *)self ccHandlesCount])
   {
     [v36 clearCcHandles];
-    v26 = [(BMPBMailContentEvent *)self ccHandlesCount];
-    if (v26)
+    ccHandlesCount = [(BMPBMailContentEvent *)self ccHandlesCount];
+    if (ccHandlesCount)
     {
-      v27 = v26;
+      v27 = ccHandlesCount;
       for (ii = 0; ii != v27; ++ii)
       {
         v29 = [(BMPBMailContentEvent *)self ccHandlesAtIndex:ii];
@@ -1424,10 +1424,10 @@ LABEL_104:
   if ([(BMPBMailContentEvent *)self bccHandlesCount])
   {
     [v36 clearBccHandles];
-    v30 = [(BMPBMailContentEvent *)self bccHandlesCount];
-    if (v30)
+    bccHandlesCount = [(BMPBMailContentEvent *)self bccHandlesCount];
+    if (bccHandlesCount)
     {
-      v31 = v30;
+      v31 = bccHandlesCount;
       for (jj = 0; jj != v31; ++jj)
       {
         v33 = [(BMPBMailContentEvent *)self bccHandlesAtIndex:jj];
@@ -1579,15 +1579,15 @@ LABEL_82:
 LABEL_83:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v126 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueId copyWithZone:zone];
   v7 = *(v5 + 240);
   *(v5 + 240) = v6;
 
-  v8 = [(NSString *)self->_domainId copyWithZone:a3];
+  v8 = [(NSString *)self->_domainId copyWithZone:zone];
   v9 = *(v5 + 104);
   *(v5 + 104) = v8;
 
@@ -1597,27 +1597,27 @@ LABEL_83:
     *(v5 + 256) |= 1u;
   }
 
-  v10 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSString *)self->_messageIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_messageIdentifier copyWithZone:zone];
   v13 = *(v5 + 176);
   *(v5 + 176) = v12;
 
-  v14 = [(NSString *)self->_from copyWithZone:a3];
+  v14 = [(NSString *)self->_from copyWithZone:zone];
   v15 = *(v5 + 112);
   *(v5 + 112) = v14;
 
-  v16 = [(NSString *)self->_to copyWithZone:a3];
+  v16 = [(NSString *)self->_to copyWithZone:zone];
   v17 = *(v5 + 224);
   *(v5 + 224) = v16;
 
-  v18 = [(NSString *)self->_cc copyWithZone:a3];
+  v18 = [(NSString *)self->_cc copyWithZone:zone];
   v19 = *(v5 + 72);
   *(v5 + 72) = v18;
 
-  v20 = [(NSString *)self->_bcc copyWithZone:a3];
+  v20 = [(NSString *)self->_bcc copyWithZone:zone];
   v21 = *(v5 + 56);
   *(v5 + 56) = v20;
 
@@ -1640,7 +1640,7 @@ LABEL_83:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v115 + 1) + 8 * i) copyWithZone:a3];
+        v27 = [*(*(&v115 + 1) + 8 * i) copyWithZone:zone];
         [v5 addHeaders:v27];
       }
 
@@ -1650,11 +1650,11 @@ LABEL_83:
     while (v24);
   }
 
-  v28 = [(NSString *)self->_subject copyWithZone:a3];
+  v28 = [(NSString *)self->_subject copyWithZone:zone];
   v29 = *(v5 + 208);
   *(v5 + 208) = v28;
 
-  v30 = [(NSString *)self->_htmlContentData copyWithZone:a3];
+  v30 = [(NSString *)self->_htmlContentData copyWithZone:zone];
   v31 = *(v5 + 144);
   *(v5 + 144) = v30;
 
@@ -1664,15 +1664,15 @@ LABEL_83:
     *(v5 + 256) |= 0x20u;
   }
 
-  v32 = [(NSData *)self->_htmlContent copyWithZone:a3];
+  v32 = [(NSData *)self->_htmlContent copyWithZone:zone];
   v33 = *(v5 + 136);
   *(v5 + 136) = v32;
 
-  v34 = [(NSString *)self->_textContent copyWithZone:a3];
+  v34 = [(NSString *)self->_textContent copyWithZone:zone];
   v35 = *(v5 + 216);
   *(v5 + 216) = v34;
 
-  v36 = [(NSString *)self->_securityMethod copyWithZone:a3];
+  v36 = [(NSString *)self->_securityMethod copyWithZone:zone];
   v37 = *(v5 + 200);
   *(v5 + 200) = v36;
 
@@ -1695,7 +1695,7 @@ LABEL_83:
           objc_enumerationMutation(v38);
         }
 
-        v43 = [*(*(&v111 + 1) + 8 * j) copyWithZone:a3];
+        v43 = [*(*(&v111 + 1) + 8 * j) copyWithZone:zone];
         [v5 addAccountHandles:v43];
       }
 
@@ -1705,7 +1705,7 @@ LABEL_83:
     while (v40);
   }
 
-  v44 = [(BMPBNamedHandle *)self->_replyTo copyWithZone:a3];
+  v44 = [(BMPBNamedHandle *)self->_replyTo copyWithZone:zone];
   v45 = *(v5 + 192);
   *(v5 + 192) = v44;
 
@@ -1728,7 +1728,7 @@ LABEL_83:
           objc_enumerationMutation(v46);
         }
 
-        v51 = [*(*(&v107 + 1) + 8 * k) copyWithZone:a3];
+        v51 = [*(*(&v107 + 1) + 8 * k) copyWithZone:zone];
         [v5 addMailboxIdentifiers:v51];
       }
 
@@ -1738,11 +1738,11 @@ LABEL_83:
     while (v48);
   }
 
-  v52 = [(BMPBNamedHandle *)self->_listId copyWithZone:a3];
+  v52 = [(BMPBNamedHandle *)self->_listId copyWithZone:zone];
   v53 = *(v5 + 152);
   *(v5 + 152) = v52;
 
-  v54 = [(NSString *)self->_accountType copyWithZone:a3];
+  v54 = [(NSString *)self->_accountType copyWithZone:zone];
   v55 = *(v5 + 40);
   *(v5 + 40) = v54;
 
@@ -1765,7 +1765,7 @@ LABEL_83:
           objc_enumerationMutation(v56);
         }
 
-        v61 = [*(*(&v103 + 1) + 8 * m) copyWithZone:a3];
+        v61 = [*(*(&v103 + 1) + 8 * m) copyWithZone:zone];
         [v5 addAttachments:v61];
       }
 
@@ -1775,7 +1775,7 @@ LABEL_83:
     while (v58);
   }
 
-  v62 = [(BMPBNamedHandle *)self->_fromHandle copyWithZone:a3];
+  v62 = [(BMPBNamedHandle *)self->_fromHandle copyWithZone:zone];
   v63 = *(v5 + 120);
   *(v5 + 120) = v62;
 
@@ -1798,7 +1798,7 @@ LABEL_83:
           objc_enumerationMutation(v64);
         }
 
-        v69 = [*(*(&v99 + 1) + 8 * n) copyWithZone:a3];
+        v69 = [*(*(&v99 + 1) + 8 * n) copyWithZone:zone];
         [v5 addToHandles:v69];
       }
 
@@ -1827,7 +1827,7 @@ LABEL_83:
           objc_enumerationMutation(v70);
         }
 
-        v75 = [*(*(&v95 + 1) + 8 * ii) copyWithZone:a3];
+        v75 = [*(*(&v95 + 1) + 8 * ii) copyWithZone:zone];
         [v5 addCcHandles:v75];
       }
 
@@ -1856,7 +1856,7 @@ LABEL_83:
           objc_enumerationMutation(v76);
         }
 
-        v81 = [*(*(&v91 + 1) + 8 * jj) copyWithZone:{a3, v91}];
+        v81 = [*(*(&v91 + 1) + 8 * jj) copyWithZone:{zone, v91}];
         [v5 addBccHandles:v81];
       }
 
@@ -1866,15 +1866,15 @@ LABEL_83:
     while (v78);
   }
 
-  v82 = [(NSString *)self->_contentProtection copyWithZone:a3];
+  v82 = [(NSString *)self->_contentProtection copyWithZone:zone];
   v83 = *(v5 + 88);
   *(v5 + 88) = v82;
 
-  v84 = [(NSString *)self->_personaId copyWithZone:a3];
+  v84 = [(NSString *)self->_personaId copyWithZone:zone];
   v85 = *(v5 + 184);
   *(v5 + 184) = v84;
 
-  v86 = [(NSString *)self->_conversationId copyWithZone:a3];
+  v86 = [(NSString *)self->_conversationId copyWithZone:zone];
   v87 = *(v5 + 96);
   *(v5 + 96) = v86;
 
@@ -2005,16 +2005,16 @@ LABEL_64:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_67;
   }
 
   uniqueId = self->_uniqueId;
-  if (uniqueId | *(v4 + 30))
+  if (uniqueId | *(equalCopy + 30))
   {
     if (![(NSString *)uniqueId isEqual:?])
     {
@@ -2023,7 +2023,7 @@ LABEL_64:
   }
 
   domainId = self->_domainId;
-  if (domainId | *(v4 + 13))
+  if (domainId | *(equalCopy + 13))
   {
     if (![(NSString *)domainId isEqual:?])
     {
@@ -2031,10 +2031,10 @@ LABEL_64:
     }
   }
 
-  v7 = *(v4 + 128);
+  v7 = *(equalCopy + 128);
   if (*&self->_has)
   {
-    if ((v7 & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_67;
     }
@@ -2046,13 +2046,13 @@ LABEL_64:
   }
 
   accountIdentifier = self->_accountIdentifier;
-  if (accountIdentifier | *(v4 + 4) && ![(NSString *)accountIdentifier isEqual:?])
+  if (accountIdentifier | *(equalCopy + 4) && ![(NSString *)accountIdentifier isEqual:?])
   {
     goto LABEL_67;
   }
 
   messageIdentifier = self->_messageIdentifier;
-  if (messageIdentifier | *(v4 + 22))
+  if (messageIdentifier | *(equalCopy + 22))
   {
     if (![(NSString *)messageIdentifier isEqual:?])
     {
@@ -2061,7 +2061,7 @@ LABEL_64:
   }
 
   from = self->_from;
-  if (from | *(v4 + 14))
+  if (from | *(equalCopy + 14))
   {
     if (![(NSString *)from isEqual:?])
     {
@@ -2070,7 +2070,7 @@ LABEL_64:
   }
 
   to = self->_to;
-  if (to | *(v4 + 28))
+  if (to | *(equalCopy + 28))
   {
     if (![(NSString *)to isEqual:?])
     {
@@ -2079,7 +2079,7 @@ LABEL_64:
   }
 
   cc = self->_cc;
-  if (cc | *(v4 + 9))
+  if (cc | *(equalCopy + 9))
   {
     if (![(NSString *)cc isEqual:?])
     {
@@ -2088,7 +2088,7 @@ LABEL_64:
   }
 
   bcc = self->_bcc;
-  if (bcc | *(v4 + 7))
+  if (bcc | *(equalCopy + 7))
   {
     if (![(NSString *)bcc isEqual:?])
     {
@@ -2097,7 +2097,7 @@ LABEL_64:
   }
 
   headers = self->_headers;
-  if (headers | *(v4 + 16))
+  if (headers | *(equalCopy + 16))
   {
     if (![(NSMutableArray *)headers isEqual:?])
     {
@@ -2106,7 +2106,7 @@ LABEL_64:
   }
 
   subject = self->_subject;
-  if (subject | *(v4 + 26))
+  if (subject | *(equalCopy + 26))
   {
     if (![(NSString *)subject isEqual:?])
     {
@@ -2115,7 +2115,7 @@ LABEL_64:
   }
 
   htmlContentData = self->_htmlContentData;
-  if (htmlContentData | *(v4 + 18))
+  if (htmlContentData | *(equalCopy + 18))
   {
     if (![(NSString *)htmlContentData isEqual:?])
     {
@@ -2123,7 +2123,7 @@ LABEL_64:
     }
   }
 
-  v17 = *(v4 + 128);
+  v17 = *(equalCopy + 128);
   if ((*&self->_has & 0x20) != 0)
   {
     if ((v17 & 0x20) == 0)
@@ -2131,16 +2131,16 @@ LABEL_64:
       goto LABEL_67;
     }
 
-    v38 = *(v4 + 250);
+    v38 = *(equalCopy + 250);
     if (self->_isFullyDownloaded)
     {
-      if ((*(v4 + 250) & 1) == 0)
+      if ((*(equalCopy + 250) & 1) == 0)
       {
         goto LABEL_67;
       }
     }
 
-    else if (*(v4 + 250))
+    else if (*(equalCopy + 250))
     {
       goto LABEL_67;
     }
@@ -2152,13 +2152,13 @@ LABEL_64:
   }
 
   htmlContent = self->_htmlContent;
-  if (htmlContent | *(v4 + 17) && ![(NSData *)htmlContent isEqual:?])
+  if (htmlContent | *(equalCopy + 17) && ![(NSData *)htmlContent isEqual:?])
   {
     goto LABEL_67;
   }
 
   textContent = self->_textContent;
-  if (textContent | *(v4 + 27))
+  if (textContent | *(equalCopy + 27))
   {
     if (![(NSString *)textContent isEqual:?])
     {
@@ -2167,7 +2167,7 @@ LABEL_64:
   }
 
   securityMethod = self->_securityMethod;
-  if (securityMethod | *(v4 + 25))
+  if (securityMethod | *(equalCopy + 25))
   {
     if (![(NSString *)securityMethod isEqual:?])
     {
@@ -2176,7 +2176,7 @@ LABEL_64:
   }
 
   accountHandles = self->_accountHandles;
-  if (accountHandles | *(v4 + 3))
+  if (accountHandles | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)accountHandles isEqual:?])
     {
@@ -2185,7 +2185,7 @@ LABEL_64:
   }
 
   replyTo = self->_replyTo;
-  if (replyTo | *(v4 + 24))
+  if (replyTo | *(equalCopy + 24))
   {
     if (![(BMPBNamedHandle *)replyTo isEqual:?])
     {
@@ -2194,7 +2194,7 @@ LABEL_64:
   }
 
   mailboxIdentifiers = self->_mailboxIdentifiers;
-  if (mailboxIdentifiers | *(v4 + 21))
+  if (mailboxIdentifiers | *(equalCopy + 21))
   {
     if (![(NSMutableArray *)mailboxIdentifiers isEqual:?])
     {
@@ -2203,7 +2203,7 @@ LABEL_64:
   }
 
   listId = self->_listId;
-  if (listId | *(v4 + 19))
+  if (listId | *(equalCopy + 19))
   {
     if (![(BMPBNamedHandle *)listId isEqual:?])
     {
@@ -2212,7 +2212,7 @@ LABEL_64:
   }
 
   accountType = self->_accountType;
-  if (accountType | *(v4 + 5))
+  if (accountType | *(equalCopy + 5))
   {
     if (![(NSString *)accountType isEqual:?])
     {
@@ -2221,7 +2221,7 @@ LABEL_64:
   }
 
   attachments = self->_attachments;
-  if (attachments | *(v4 + 6))
+  if (attachments | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)attachments isEqual:?])
     {
@@ -2230,7 +2230,7 @@ LABEL_64:
   }
 
   fromHandle = self->_fromHandle;
-  if (fromHandle | *(v4 + 15))
+  if (fromHandle | *(equalCopy + 15))
   {
     if (![(BMPBNamedHandle *)fromHandle isEqual:?])
     {
@@ -2239,7 +2239,7 @@ LABEL_64:
   }
 
   toHandles = self->_toHandles;
-  if (toHandles | *(v4 + 29))
+  if (toHandles | *(equalCopy + 29))
   {
     if (![(NSMutableArray *)toHandles isEqual:?])
     {
@@ -2248,7 +2248,7 @@ LABEL_64:
   }
 
   ccHandles = self->_ccHandles;
-  if (ccHandles | *(v4 + 10))
+  if (ccHandles | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)ccHandles isEqual:?])
     {
@@ -2257,7 +2257,7 @@ LABEL_64:
   }
 
   bccHandles = self->_bccHandles;
-  if (bccHandles | *(v4 + 8))
+  if (bccHandles | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)bccHandles isEqual:?])
     {
@@ -2266,7 +2266,7 @@ LABEL_64:
   }
 
   contentProtection = self->_contentProtection;
-  if (contentProtection | *(v4 + 11))
+  if (contentProtection | *(equalCopy + 11))
   {
     if (![(NSString *)contentProtection isEqual:?])
     {
@@ -2275,7 +2275,7 @@ LABEL_64:
   }
 
   personaId = self->_personaId;
-  if (personaId | *(v4 + 23))
+  if (personaId | *(equalCopy + 23))
   {
     if (![(NSString *)personaId isEqual:?])
     {
@@ -2284,7 +2284,7 @@ LABEL_64:
   }
 
   conversationId = self->_conversationId;
-  if (conversationId | *(v4 + 12))
+  if (conversationId | *(equalCopy + 12))
   {
     if (![(NSString *)conversationId isEqual:?])
     {
@@ -2293,10 +2293,10 @@ LABEL_64:
   }
 
   has = self->_has;
-  v35 = *(v4 + 128);
+  v35 = *(equalCopy + 128);
   if ((has & 2) != 0)
   {
-    if ((v35 & 2) == 0 || self->_dateReceived != *(v4 + 2))
+    if ((v35 & 2) == 0 || self->_dateReceived != *(equalCopy + 2))
     {
       goto LABEL_67;
     }
@@ -2309,7 +2309,7 @@ LABEL_64:
 
   if ((has & 4) != 0)
   {
-    if ((v35 & 4) == 0 || self->_mailCategories != *(v4 + 40))
+    if ((v35 & 4) == 0 || self->_mailCategories != *(equalCopy + 40))
     {
       goto LABEL_67;
     }
@@ -2327,16 +2327,16 @@ LABEL_64:
       goto LABEL_67;
     }
 
-    v39 = *(v4 + 252);
+    v39 = *(equalCopy + 252);
     if (self->_isNew)
     {
-      if ((*(v4 + 252) & 1) == 0)
+      if ((*(equalCopy + 252) & 1) == 0)
       {
         goto LABEL_67;
       }
     }
 
-    else if (*(v4 + 252))
+    else if (*(equalCopy + 252))
     {
       goto LABEL_67;
     }
@@ -2349,27 +2349,27 @@ LABEL_64:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 128) & 0x200) == 0)
+    if ((*(equalCopy + 128) & 0x200) == 0)
     {
       goto LABEL_67;
     }
 
-    v40 = *(v4 + 254);
+    v40 = *(equalCopy + 254);
     if (self->_isTwoFactorCode)
     {
-      if ((*(v4 + 254) & 1) == 0)
+      if ((*(equalCopy + 254) & 1) == 0)
       {
         goto LABEL_67;
       }
     }
 
-    else if (*(v4 + 254))
+    else if (*(equalCopy + 254))
     {
       goto LABEL_67;
     }
   }
 
-  else if ((*(v4 + 128) & 0x200) != 0)
+  else if ((*(equalCopy + 128) & 0x200) != 0)
   {
     goto LABEL_67;
   }
@@ -2381,16 +2381,16 @@ LABEL_64:
       goto LABEL_67;
     }
 
-    v41 = *(v4 + 249);
+    v41 = *(equalCopy + 249);
     if (self->_isFromMe)
     {
-      if ((*(v4 + 249) & 1) == 0)
+      if ((*(equalCopy + 249) & 1) == 0)
       {
         goto LABEL_67;
       }
     }
 
-    else if (*(v4 + 249))
+    else if (*(equalCopy + 249))
     {
       goto LABEL_67;
     }
@@ -2408,16 +2408,16 @@ LABEL_64:
       goto LABEL_67;
     }
 
-    v42 = *(v4 + 251);
+    v42 = *(equalCopy + 251);
     if (self->_isJunk)
     {
-      if ((*(v4 + 251) & 1) == 0)
+      if ((*(equalCopy + 251) & 1) == 0)
       {
         goto LABEL_67;
       }
     }
 
-    else if (*(v4 + 251))
+    else if (*(equalCopy + 251))
     {
       goto LABEL_67;
     }
@@ -2430,54 +2430,54 @@ LABEL_64:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 128) & 0x100) == 0)
+    if ((*(equalCopy + 128) & 0x100) == 0)
     {
       goto LABEL_67;
     }
 
-    v43 = *(v4 + 253);
+    v43 = *(equalCopy + 253);
     if (self->_isRead)
     {
-      if ((*(v4 + 253) & 1) == 0)
+      if ((*(equalCopy + 253) & 1) == 0)
       {
         goto LABEL_67;
       }
     }
 
-    else if (*(v4 + 253))
+    else if (*(equalCopy + 253))
     {
       goto LABEL_67;
     }
   }
 
-  else if ((*(v4 + 128) & 0x100) != 0)
+  else if ((*(equalCopy + 128) & 0x100) != 0)
   {
     goto LABEL_67;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 128) & 0x400) == 0)
+    if ((*(equalCopy + 128) & 0x400) == 0)
     {
       goto LABEL_67;
     }
 
-    v44 = *(v4 + 255);
+    v44 = *(equalCopy + 255);
     if (self->_isVIP)
     {
-      if ((*(v4 + 255) & 1) == 0)
+      if ((*(equalCopy + 255) & 1) == 0)
       {
         goto LABEL_67;
       }
     }
 
-    else if (*(v4 + 255))
+    else if (*(equalCopy + 255))
     {
       goto LABEL_67;
     }
   }
 
-  else if ((*(v4 + 128) & 0x400) != 0)
+  else if ((*(equalCopy + 128) & 0x400) != 0)
   {
     goto LABEL_67;
   }
@@ -2492,13 +2492,13 @@ LABEL_64:
   {
     if (self->_isFlagged)
     {
-      if (*(v4 + 248))
+      if (*(equalCopy + 248))
       {
         goto LABEL_136;
       }
     }
 
-    else if (!*(v4 + 248))
+    else if (!*(equalCopy + 248))
     {
 LABEL_136:
       v36 = 1;
@@ -2729,52 +2729,52 @@ LABEL_29:
   return v54 ^ v55 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v23 ^ v27 ^ v28 ^ v29 ^ v30 ^ v31 ^ v32 ^ v33 ^ v34;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v83 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 30))
+  fromCopy = from;
+  if (*(fromCopy + 30))
   {
     [(BMPBMailContentEvent *)self setUniqueId:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(BMPBMailContentEvent *)self setDomainId:?];
   }
 
-  if (*(v4 + 128))
+  if (*(fromCopy + 128))
   {
-    self->_absoluteTimestamp = *(v4 + 1);
+    self->_absoluteTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBMailContentEvent *)self setAccountIdentifier:?];
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(BMPBMailContentEvent *)self setMessageIdentifier:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(BMPBMailContentEvent *)self setFrom:?];
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
     [(BMPBMailContentEvent *)self setTo:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(BMPBMailContentEvent *)self setCc:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BMPBMailContentEvent *)self setBcc:?];
   }
@@ -2783,7 +2783,7 @@ LABEL_29:
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v5 = *(v4 + 16);
+  v5 = *(fromCopy + 16);
   v6 = [v5 countByEnumeratingWithState:&v72 objects:v82 count:16];
   if (v6)
   {
@@ -2807,33 +2807,33 @@ LABEL_29:
     while (v7);
   }
 
-  if (*(v4 + 26))
+  if (*(fromCopy + 26))
   {
     [(BMPBMailContentEvent *)self setSubject:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(BMPBMailContentEvent *)self setHtmlContentData:?];
   }
 
-  if ((*(v4 + 128) & 0x20) != 0)
+  if ((*(fromCopy + 128) & 0x20) != 0)
   {
-    self->_isFullyDownloaded = *(v4 + 250);
+    self->_isFullyDownloaded = *(fromCopy + 250);
     *&self->_has |= 0x20u;
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(BMPBMailContentEvent *)self setHtmlContent:?];
   }
 
-  if (*(v4 + 27))
+  if (*(fromCopy + 27))
   {
     [(BMPBMailContentEvent *)self setTextContent:?];
   }
 
-  if (*(v4 + 25))
+  if (*(fromCopy + 25))
   {
     [(BMPBMailContentEvent *)self setSecurityMethod:?];
   }
@@ -2842,7 +2842,7 @@ LABEL_29:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v68 objects:v81 count:16];
   if (v11)
   {
@@ -2867,7 +2867,7 @@ LABEL_29:
   }
 
   replyTo = self->_replyTo;
-  v16 = *(v4 + 24);
+  v16 = *(fromCopy + 24);
   if (replyTo)
   {
     if (v16)
@@ -2885,7 +2885,7 @@ LABEL_29:
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v17 = *(v4 + 21);
+  v17 = *(fromCopy + 21);
   v18 = [v17 countByEnumeratingWithState:&v64 objects:v80 count:16];
   if (v18)
   {
@@ -2910,7 +2910,7 @@ LABEL_29:
   }
 
   listId = self->_listId;
-  v23 = *(v4 + 19);
+  v23 = *(fromCopy + 19);
   if (listId)
   {
     if (v23)
@@ -2924,7 +2924,7 @@ LABEL_29:
     [(BMPBMailContentEvent *)self setListId:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BMPBMailContentEvent *)self setAccountType:?];
   }
@@ -2933,7 +2933,7 @@ LABEL_29:
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v24 = *(v4 + 6);
+  v24 = *(fromCopy + 6);
   v25 = [v24 countByEnumeratingWithState:&v60 objects:v79 count:16];
   if (v25)
   {
@@ -2958,7 +2958,7 @@ LABEL_29:
   }
 
   fromHandle = self->_fromHandle;
-  v30 = *(v4 + 15);
+  v30 = *(fromCopy + 15);
   if (fromHandle)
   {
     if (v30)
@@ -2976,7 +2976,7 @@ LABEL_29:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v31 = *(v4 + 29);
+  v31 = *(fromCopy + 29);
   v32 = [v31 countByEnumeratingWithState:&v56 objects:v78 count:16];
   if (v32)
   {
@@ -3004,7 +3004,7 @@ LABEL_29:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v36 = *(v4 + 10);
+  v36 = *(fromCopy + 10);
   v37 = [v36 countByEnumeratingWithState:&v52 objects:v77 count:16];
   if (v37)
   {
@@ -3032,7 +3032,7 @@ LABEL_29:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v41 = *(v4 + 8);
+  v41 = *(fromCopy + 8);
   v42 = [v41 countByEnumeratingWithState:&v48 objects:v76 count:16];
   if (v42)
   {
@@ -3056,27 +3056,27 @@ LABEL_29:
     while (v43);
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(BMPBMailContentEvent *)self setContentProtection:?];
   }
 
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(BMPBMailContentEvent *)self setPersonaId:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(BMPBMailContentEvent *)self setConversationId:?];
   }
 
-  v46 = *(v4 + 128);
+  v46 = *(fromCopy + 128);
   if ((v46 & 2) != 0)
   {
-    self->_dateReceived = *(v4 + 2);
+    self->_dateReceived = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v46 = *(v4 + 128);
+    v46 = *(fromCopy + 128);
     if ((v46 & 4) == 0)
     {
 LABEL_105:
@@ -3094,9 +3094,9 @@ LABEL_105:
     goto LABEL_105;
   }
 
-  self->_mailCategories = *(v4 + 40);
+  self->_mailCategories = *(fromCopy + 40);
   *&self->_has |= 4u;
-  v46 = *(v4 + 128);
+  v46 = *(fromCopy + 128);
   if ((v46 & 0x80) == 0)
   {
 LABEL_106:
@@ -3109,9 +3109,9 @@ LABEL_106:
   }
 
 LABEL_116:
-  self->_isNew = *(v4 + 252);
+  self->_isNew = *(fromCopy + 252);
   *&self->_has |= 0x80u;
-  v46 = *(v4 + 128);
+  v46 = *(fromCopy + 128);
   if ((v46 & 0x200) == 0)
   {
 LABEL_107:
@@ -3124,9 +3124,9 @@ LABEL_107:
   }
 
 LABEL_117:
-  self->_isTwoFactorCode = *(v4 + 254);
+  self->_isTwoFactorCode = *(fromCopy + 254);
   *&self->_has |= 0x200u;
-  v46 = *(v4 + 128);
+  v46 = *(fromCopy + 128);
   if ((v46 & 0x10) == 0)
   {
 LABEL_108:
@@ -3139,9 +3139,9 @@ LABEL_108:
   }
 
 LABEL_118:
-  self->_isFromMe = *(v4 + 249);
+  self->_isFromMe = *(fromCopy + 249);
   *&self->_has |= 0x10u;
-  v46 = *(v4 + 128);
+  v46 = *(fromCopy + 128);
   if ((v46 & 0x40) == 0)
   {
 LABEL_109:
@@ -3154,9 +3154,9 @@ LABEL_109:
   }
 
 LABEL_119:
-  self->_isJunk = *(v4 + 251);
+  self->_isJunk = *(fromCopy + 251);
   *&self->_has |= 0x40u;
-  v46 = *(v4 + 128);
+  v46 = *(fromCopy + 128);
   if ((v46 & 0x100) == 0)
   {
 LABEL_110:
@@ -3166,9 +3166,9 @@ LABEL_110:
     }
 
 LABEL_121:
-    self->_isVIP = *(v4 + 255);
+    self->_isVIP = *(fromCopy + 255);
     *&self->_has |= 0x400u;
-    if ((*(v4 + 128) & 8) == 0)
+    if ((*(fromCopy + 128) & 8) == 0)
     {
       goto LABEL_113;
     }
@@ -3177,9 +3177,9 @@ LABEL_121:
   }
 
 LABEL_120:
-  self->_isRead = *(v4 + 253);
+  self->_isRead = *(fromCopy + 253);
   *&self->_has |= 0x100u;
-  v46 = *(v4 + 128);
+  v46 = *(fromCopy + 128);
   if ((v46 & 0x400) != 0)
   {
     goto LABEL_121;
@@ -3189,7 +3189,7 @@ LABEL_111:
   if ((v46 & 8) != 0)
   {
 LABEL_112:
-    self->_isFlagged = *(v4 + 248);
+    self->_isFlagged = *(fromCopy + 248);
     *&self->_has |= 8u;
   }
 

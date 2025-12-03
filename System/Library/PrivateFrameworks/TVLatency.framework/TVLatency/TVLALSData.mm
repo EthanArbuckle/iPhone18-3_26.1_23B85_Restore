@@ -1,5 +1,5 @@
 @interface TVLALSData
-+ (id)instanceFromDictionary:(id)a3;
++ (id)instanceFromDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
@@ -67,13 +67,13 @@
     [v3 appendString:v29];
   }
 
-  v30 = [(TVLALSData *)self channelData];
+  channelData = [(TVLALSData *)self channelData];
 
-  if (v30)
+  if (channelData)
   {
     v31 = MEMORY[0x277CCACA8];
-    v32 = [(TVLALSData *)self channelData];
-    v33 = [v31 stringWithFormat:@"Channel Data: %@", v32];
+    channelData2 = [(TVLALSData *)self channelData];
+    v33 = [v31 stringWithFormat:@"Channel Data: %@", channelData2];
     [v3 appendString:v33];
   }
 
@@ -126,9 +126,9 @@ LABEL_9:
   }
 
   v12 = v11;
-  v13 = [(TVLALSData *)self channelData];
+  channelData = [(TVLALSData *)self channelData];
 
-  if (v13)
+  if (channelData)
   {
     v23[0] = @"ALS_DATA_X";
     v14 = [(TVLALSData *)self x];
@@ -146,8 +146,8 @@ LABEL_9:
     v18 = [(TVLALSData *)self cct];
     v24[4] = v18;
     v23[5] = @"ALS_DATA_CHANNELS";
-    v19 = [(TVLALSData *)self channelData];
-    v24[5] = v19;
+    channelData2 = [(TVLALSData *)self channelData];
+    v24[5] = channelData2;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:6];
 
     goto LABEL_13;
@@ -161,26 +161,26 @@ LABEL_13:
   return v20;
 }
 
-+ (id)instanceFromDictionary:(id)a3
++ (id)instanceFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(TVLALSData);
-  v5 = [v3 objectForKey:@"ALS_DATA_X"];
+  v5 = [dictionaryCopy objectForKey:@"ALS_DATA_X"];
   [(TVLALSData *)v4 setX:v5];
 
-  v6 = [v3 objectForKey:@"ALS_DATA_Y"];
+  v6 = [dictionaryCopy objectForKey:@"ALS_DATA_Y"];
   [(TVLALSData *)v4 setY:v6];
 
-  v7 = [v3 objectForKey:@"ALS_DATA_Z"];
+  v7 = [dictionaryCopy objectForKey:@"ALS_DATA_Z"];
   [(TVLALSData *)v4 setZ:v7];
 
-  v8 = [v3 objectForKey:@"ALS_DATA_LUX"];
+  v8 = [dictionaryCopy objectForKey:@"ALS_DATA_LUX"];
   [(TVLALSData *)v4 setLux:v8];
 
-  v9 = [v3 objectForKey:@"ALS_DATA_CCT"];
+  v9 = [dictionaryCopy objectForKey:@"ALS_DATA_CCT"];
   [(TVLALSData *)v4 setCct:v9];
 
-  v10 = [v3 objectForKey:@"ALS_DATA_CHANNELS"];
+  v10 = [dictionaryCopy objectForKey:@"ALS_DATA_CHANNELS"];
 
   [(TVLALSData *)v4 setChannelData:v10];
   v11 = [(TVLALSData *)v4 x];
@@ -202,9 +202,9 @@ LABEL_13:
           if (v18)
           {
             v19 = v18;
-            v20 = [(TVLALSData *)v4 channelData];
+            channelData = [(TVLALSData *)v4 channelData];
 
-            if (v20)
+            if (channelData)
             {
               v11 = v4;
               goto LABEL_13;

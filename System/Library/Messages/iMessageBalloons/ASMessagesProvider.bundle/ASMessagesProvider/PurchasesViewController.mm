@@ -1,53 +1,53 @@
 @interface PurchasesViewController
-- (CGRect)_searchBar:(id)a3 proposedSearchFieldFrame:(CGRect)a4;
+- (CGRect)_searchBar:(id)bar proposedSearchFieldFrame:(CGRect)frame;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)traitCollectionDidChange:(id)change;
 - (void)unhideAll;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PurchasesViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_5AB4AC();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_5ACAE4();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_5ACE2C(a4, width, height);
+  selfCopy = self;
+  sub_5ACE2C(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_5AD27C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_5AD27C(change);
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(PurchasesViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(PurchasesViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     return 30;
   }
@@ -60,50 +60,50 @@
 
 - (void)unhideAll
 {
-  v2 = self;
+  selfCopy = self;
   sub_7616B0();
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   sub_769240();
-  v5 = self;
+  selfCopy = self;
 
   sub_761670();
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v7 = a3;
-  v4 = self;
-  [v7 resignFirstResponder];
-  v5 = [v7 text];
-  if (v5)
+  clickedCopy = clicked;
+  selfCopy = self;
+  [clickedCopy resignFirstResponder];
+  text = [clickedCopy text];
+  if (text)
   {
-    v6 = v5;
+    v6 = text;
     sub_769240();
   }
 
   sub_761670();
 }
 
-- (CGRect)_searchBar:(id)a3 proposedSearchFieldFrame:(CGRect)a4
+- (CGRect)_searchBar:(id)bar proposedSearchFieldFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  y = a4.origin.y;
-  v6 = self;
-  [(PurchasesViewController *)v6 pageMarginInsets];
+  height = frame.size.height;
+  y = frame.origin.y;
+  selfCopy = self;
+  [(PurchasesViewController *)selfCopy pageMarginInsets];
   v8 = v7;
   v10 = v9;
-  v11 = [(PurchasesViewController *)v6 view];
-  if (v11)
+  view = [(PurchasesViewController *)selfCopy view];
+  if (view)
   {
-    v16 = v11;
-    [v11 bounds];
+    v16 = view;
+    [view bounds];
     v18 = v17;
 
     v19 = v18 - v8 - v10;
-    [(PurchasesViewController *)v6 pageMarginInsets];
+    [(PurchasesViewController *)selfCopy pageMarginInsets];
     v21 = v20;
 
     v12 = v21;

@@ -1,19 +1,19 @@
 @interface ISUIVisibilityOffsetHelper
-- (CGRect)boundsForView:(id)a3 inScrollView:(id)a4;
-- (CGRect)visibleRectForScrollView:(id)a3;
+- (CGRect)boundsForView:(id)view inScrollView:(id)scrollView;
+- (CGRect)visibleRectForScrollView:(id)view;
 @end
 
 @implementation ISUIVisibilityOffsetHelper
 
-- (CGRect)boundsForView:(id)a3 inScrollView:(id)a4
+- (CGRect)boundsForView:(id)view inScrollView:(id)scrollView
 {
-  v5 = a3;
-  v6 = a4;
+  viewCopy = view;
+  scrollViewCopy = scrollView;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
-    v8 = v6;
+    v7 = viewCopy;
+    v8 = scrollViewCopy;
     [v7 bounds];
     [v8 convertRect:v7 fromView:?];
     v10 = v9;
@@ -41,13 +41,13 @@
   return result;
 }
 
-- (CGRect)visibleRectForScrollView:(id)a3
+- (CGRect)visibleRectForScrollView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 bounds];
+    [viewCopy bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;

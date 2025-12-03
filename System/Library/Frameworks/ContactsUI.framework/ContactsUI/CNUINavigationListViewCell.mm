@@ -1,13 +1,13 @@
 @interface CNUINavigationListViewCell
-+ (CGSize)desiredContentSizeForTitle:(id)a3 subTitle:(id)a4 navigationListStyle:(id)a5;
-+ (double)contentViewBottomAnchorConstraintConstantForNavigationListStyle:(id)a3;
-+ (double)subtitleLabelFirstBaselineAnchorConstraintConstantForSubtitle:(id)a3 navigationListStyle:(id)a4;
-+ (double)titleLabelFirstBaselineAnchorConstraintConstantForNavigationListStyle:(id)a3;
++ (CGSize)desiredContentSizeForTitle:(id)title subTitle:(id)subTitle navigationListStyle:(id)style;
++ (double)contentViewBottomAnchorConstraintConstantForNavigationListStyle:(id)style;
++ (double)subtitleLabelFirstBaselineAnchorConstraintConstantForSubtitle:(id)subtitle navigationListStyle:(id)style;
++ (double)titleLabelFirstBaselineAnchorConstraintConstantForNavigationListStyle:(id)style;
 + (id)accessoryImageViewAccessibilityLabel;
 + (id)expandedAccessoryImageViewAccessibilityLabel;
 + (id)highlightedDisclosureImage;
-- (CNUINavigationListViewCell)initWithCoder:(id)a3;
-- (CNUINavigationListViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNUINavigationListViewCell)initWithCoder:(id)coder;
+- (CNUINavigationListViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)contentViewBottomAnchorConstraintConstant;
 - (double)minimumContentHeight;
 - (double)subtitleLabelFirstBaselineAnchorConstraintConstant;
@@ -16,44 +16,44 @@
 - (void)dealloc;
 - (void)loadContentView;
 - (void)loadContentViewConstraints;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareForReuse;
-- (void)setAccessoryControlExpanded:(BOOL)a3;
-- (void)setAccessoryControlExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setNavigationListStyle:(id)a3;
-- (void)setSeparatorStyle:(int64_t)a3;
-- (void)setSubtitleLabelFirstBaselineAnchorConstraint:(id)a3;
-- (void)setSubtitleLabelLeadingAnchorConstraint:(id)a3;
-- (void)setSubtitleLabelTrailingAnchorConstraint:(id)a3;
-- (void)setTitleLabelFirstBaselineAnchorConstraint:(id)a3;
-- (void)setTitleLabelLeadingAnchorConstraint:(id)a3;
-- (void)setTitleLabelTrailingAnchorConstraint:(id)a3;
-- (void)setupAccessoryImageViewInView:(id)a3;
+- (void)setAccessoryControlExpanded:(BOOL)expanded;
+- (void)setAccessoryControlExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setNavigationListStyle:(id)style;
+- (void)setSeparatorStyle:(int64_t)style;
+- (void)setSubtitleLabelFirstBaselineAnchorConstraint:(id)constraint;
+- (void)setSubtitleLabelLeadingAnchorConstraint:(id)constraint;
+- (void)setSubtitleLabelTrailingAnchorConstraint:(id)constraint;
+- (void)setTitleLabelFirstBaselineAnchorConstraint:(id)constraint;
+- (void)setTitleLabelLeadingAnchorConstraint:(id)constraint;
+- (void)setTitleLabelTrailingAnchorConstraint:(id)constraint;
+- (void)setupAccessoryImageViewInView:(id)view;
 - (void)styleUpdated;
 - (void)updateConstraints;
 - (void)updateConstraintsConstants;
-- (void)updateVisualStateAnimated:(BOOL)a3;
+- (void)updateVisualStateAnimated:(BOOL)animated;
 @end
 
 @implementation CNUINavigationListViewCell
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(CNUINavigationListViewCell *)self subtitleLabel];
-  v14 = v13;
-  if (v13 == v11)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  subtitleLabel = [(CNUINavigationListViewCell *)self subtitleLabel];
+  v14 = subtitleLabel;
+  if (subtitleLabel == objectCopy)
   {
-    if ([v10 isEqualToString:@"text"])
+    if ([pathCopy isEqualToString:@"text"])
     {
     }
 
     else
     {
-      v15 = [v10 isEqualToString:@"attributedText"];
+      v15 = [pathCopy isEqualToString:@"attributedText"];
 
       if ((v15 & 1) == 0)
       {
@@ -68,14 +68,14 @@
 LABEL_3:
   v16.receiver = self;
   v16.super_class = CNUINavigationListViewCell;
-  [(CNUINavigationListViewCell *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(CNUINavigationListViewCell *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_8:
 }
 
-- (void)updateVisualStateAnimated:(BOOL)a3
+- (void)updateVisualStateAnimated:(BOOL)animated
 {
   v3 = 0.2;
-  if (!a3)
+  if (!animated)
   {
     v3 = 0.0;
   }
@@ -157,24 +157,24 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
 {
   [(CNUINavigationListViewCell *)self contentViewBottomAnchorConstraintConstant];
   v4 = v3;
-  v5 = [(CNUINavigationListViewCell *)self contentViewBottomAnchorConstraint];
-  [v5 setConstant:v4];
+  contentViewBottomAnchorConstraint = [(CNUINavigationListViewCell *)self contentViewBottomAnchorConstraint];
+  [contentViewBottomAnchorConstraint setConstant:v4];
 
   [(CNUINavigationListViewCell *)self subtitleLabelFirstBaselineAnchorConstraintConstant];
   v7 = v6;
-  v8 = [(CNUINavigationListViewCell *)self subtitleLabelFirstBaselineAnchorConstraint];
-  [v8 setConstant:v7];
+  subtitleLabelFirstBaselineAnchorConstraint = [(CNUINavigationListViewCell *)self subtitleLabelFirstBaselineAnchorConstraint];
+  [subtitleLabelFirstBaselineAnchorConstraint setConstant:v7];
 
   [(CNUINavigationListViewCell *)self titleLabelFirstBaselineAnchorConstraintConstant];
   v10 = v9;
-  v11 = [(CNUINavigationListViewCell *)self titleLabelFirstBaselineAnchorConstraint];
-  [v11 setConstant:v10];
+  titleLabelFirstBaselineAnchorConstraint = [(CNUINavigationListViewCell *)self titleLabelFirstBaselineAnchorConstraint];
+  [titleLabelFirstBaselineAnchorConstraint setConstant:v10];
 
-  v15 = [(CNUINavigationListViewCell *)self navigationListStyle];
-  [v15 cellUserActionLeftMargin];
+  navigationListStyle = [(CNUINavigationListViewCell *)self navigationListStyle];
+  [navigationListStyle cellUserActionLeftMargin];
   v13 = v12;
-  v14 = [(CNUINavigationListViewCell *)self titleLabelLeadingAnchorConstraint];
-  [v14 setConstant:v13];
+  titleLabelLeadingAnchorConstraint = [(CNUINavigationListViewCell *)self titleLabelLeadingAnchorConstraint];
+  [titleLabelLeadingAnchorConstraint setConstant:v13];
 }
 
 - (void)updateConstraints
@@ -195,66 +195,66 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
   v87[6] = *MEMORY[0x1E69E9840];
   if (!self->_contentViewConstraintsLoaded)
   {
-    v3 = [(CNUINavigationListViewCell *)self contentView];
-    v83 = [MEMORY[0x1E695DF70] array];
-    v80 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
-    v82 = [(UILayoutGuide *)self->_titleImageViewLayoutGuide leadingAnchor];
-    v78 = [v3 leadingAnchor];
-    v76 = [v82 constraintEqualToAnchor:v78];
+    contentView = [(CNUINavigationListViewCell *)self contentView];
+    array = [MEMORY[0x1E695DF70] array];
+    ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+    leadingAnchor = [(UILayoutGuide *)self->_titleImageViewLayoutGuide leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v76 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v87[0] = v76;
-    v74 = [(UILayoutGuide *)self->_titleImageViewLayoutGuide trailingAnchor];
-    v72 = [(UILabel *)self->_titleLabel leadingAnchor];
-    v70 = [v74 constraintEqualToAnchor:v72];
+    trailingAnchor = [(UILayoutGuide *)self->_titleImageViewLayoutGuide trailingAnchor];
+    leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+    v70 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
     v87[1] = v70;
-    v68 = [(UILayoutGuide *)self->_titleImageViewLayoutGuide topAnchor];
-    v66 = [v3 topAnchor];
-    v64 = [v68 constraintEqualToAnchor:v66];
+    topAnchor = [(UILayoutGuide *)self->_titleImageViewLayoutGuide topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v64 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v87[2] = v64;
-    v62 = [(UILayoutGuide *)self->_titleImageViewLayoutGuide bottomAnchor];
-    v60 = [v3 bottomAnchor];
-    v58 = [v62 constraintEqualToAnchor:v60];
+    bottomAnchor = [(UILayoutGuide *)self->_titleImageViewLayoutGuide bottomAnchor];
+    bottomAnchor2 = [contentView bottomAnchor];
+    v58 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v87[3] = v58;
-    v4 = [(UIImageView *)self->_titleImageView imageContentGuide];
-    v5 = [v4 centerXAnchor];
-    v6 = [(UILayoutGuide *)self->_titleImageViewLayoutGuide centerXAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6];
+    imageContentGuide = [(UIImageView *)self->_titleImageView imageContentGuide];
+    centerXAnchor = [imageContentGuide centerXAnchor];
+    centerXAnchor2 = [(UILayoutGuide *)self->_titleImageViewLayoutGuide centerXAnchor];
+    v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v87[4] = v7;
-    v8 = [(UIImageView *)self->_titleImageView firstBaselineAnchor];
-    v9 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    firstBaselineAnchor = [(UIImageView *)self->_titleImageView firstBaselineAnchor];
+    firstBaselineAnchor2 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+    v10 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
     v87[5] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:6];
-    [v83 addObjectsFromArray:v11];
+    [array addObjectsFromArray:v11];
 
-    v12 = v3;
-    v13 = [(UILabel *)self->_titleLabel leadingAnchor];
-    v14 = [v3 leadingAnchor];
-    v15 = [(CNUINavigationListViewCell *)self navigationListStyle];
-    [v15 cellUserActionLeftMargin];
-    v16 = [v13 constraintEqualToAnchor:v14 constant:?];
+    v12 = contentView;
+    leadingAnchor4 = [(UILabel *)self->_titleLabel leadingAnchor];
+    leadingAnchor5 = [contentView leadingAnchor];
+    navigationListStyle = [(CNUINavigationListViewCell *)self navigationListStyle];
+    [navigationListStyle cellUserActionLeftMargin];
+    v16 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:?];
     titleLabelLeadingAnchorConstraint = self->_titleLabelLeadingAnchorConstraint;
     self->_titleLabelLeadingAnchorConstraint = v16;
 
-    if (v80)
+    if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
     {
-      v18 = [(UILabel *)self->_titleLabel trailingAnchor];
-      v19 = [v3 trailingAnchor];
-      [v18 constraintLessThanOrEqualToAnchor:v19 constant:5.0];
+      trailingAnchor2 = [(UILabel *)self->_titleLabel trailingAnchor];
+      trailingAnchor3 = [contentView trailingAnchor];
+      [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3 constant:5.0];
     }
 
     else
     {
-      v18 = [(UILabel *)self->_subtitleLabel leadingAnchor];
-      v19 = [(UILabel *)self->_titleLabel trailingAnchor];
-      [v18 constraintEqualToAnchor:v19 constant:8.0];
+      trailingAnchor2 = [(UILabel *)self->_subtitleLabel leadingAnchor];
+      trailingAnchor3 = [(UILabel *)self->_titleLabel trailingAnchor];
+      [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:8.0];
     }
     v20 = ;
     objc_storeStrong(&self->_titleLabelTrailingAnchorConstraint, v20);
 
-    v21 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-    v22 = [v3 topAnchor];
+    firstBaselineAnchor3 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+    topAnchor3 = [contentView topAnchor];
     [(CNUINavigationListViewCell *)self titleLabelFirstBaselineAnchorConstraintConstant];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:?];
+    v23 = [firstBaselineAnchor3 constraintEqualToAnchor:topAnchor3 constant:?];
     titleLabelFirstBaselineAnchorConstraint = self->_titleLabelFirstBaselineAnchorConstraint;
     self->_titleLabelFirstBaselineAnchorConstraint = v23;
 
@@ -262,16 +262,16 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
     v86[0] = self->_titleLabelLeadingAnchorConstraint;
     v86[1] = titleLabelTrailingAnchorConstraint;
     v86[2] = self->_titleLabelFirstBaselineAnchorConstraint;
-    v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:3];
-    v27 = 1056;
-    v28 = v83;
-    [v83 addObjectsFromArray:v26];
+    leadingAnchor6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:3];
+    leadingAnchor7 = 1056;
+    v28 = array;
+    [array addObjectsFromArray:leadingAnchor6];
 
-    if (v80)
+    if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
     {
-      v26 = [(UILabel *)self->_subtitleLabel leadingAnchor];
-      v27 = [(UILabel *)self->_titleLabel leadingAnchor];
-      v29 = [v26 constraintEqualToAnchor:v27];
+      leadingAnchor6 = [(UILabel *)self->_subtitleLabel leadingAnchor];
+      leadingAnchor7 = [(UILabel *)self->_titleLabel leadingAnchor];
+      v29 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     }
 
     else
@@ -280,14 +280,14 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
     }
 
     objc_storeStrong(&self->_subtitleLabelLeadingAnchorConstraint, v29);
-    if (v80)
+    if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
     {
     }
 
-    v30 = [(UILabel *)self->_subtitleLabel firstBaselineAnchor];
-    v31 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+    firstBaselineAnchor4 = [(UILabel *)self->_subtitleLabel firstBaselineAnchor];
+    firstBaselineAnchor5 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
     [(CNUINavigationListViewCell *)self subtitleLabelFirstBaselineAnchorConstraintConstant];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:?];
+    v32 = [firstBaselineAnchor4 constraintEqualToAnchor:firstBaselineAnchor5 constant:?];
     subtitleLabelFirstBaselineAnchorConstraint = self->_subtitleLabelFirstBaselineAnchorConstraint;
     self->_subtitleLabelFirstBaselineAnchorConstraint = v32;
 
@@ -295,12 +295,12 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
     v85[0] = self->_subtitleLabelLeadingAnchorConstraint;
     v85[1] = v34;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:2];
-    [v83 addObjectsFromArray:v35];
+    [array addObjectsFromArray:v35];
 
     if (self->_accessoryImageView)
     {
-      v36 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide leadingAnchor];
-      if (v80)
+      leadingAnchor8 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide leadingAnchor];
+      if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
       {
         [(CNUINavigationListViewCell *)self titleLabel];
       }
@@ -310,54 +310,54 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
         [(CNUINavigationListViewCell *)self subtitleLabel];
       }
       v37 = ;
-      v38 = [v37 trailingAnchor];
-      v39 = [v36 constraintGreaterThanOrEqualToAnchor:v38 constant:0.0];
+      trailingAnchor4 = [v37 trailingAnchor];
+      v39 = [leadingAnchor8 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:0.0];
       objc_storeStrong(&self->_subtitleLabelTrailingAnchorConstraint, v39);
 
       subtitleLabelTrailingAnchorConstraint = self->_subtitleLabelTrailingAnchorConstraint;
       v84[0] = self->_subtitleLabelLeadingAnchorConstraint;
       v84[1] = subtitleLabelTrailingAnchorConstraint;
-      v79 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide trailingAnchor];
-      v77 = [v3 trailingAnchor];
-      v75 = [v79 constraintEqualToAnchor:v77 constant:-22.0];
+      trailingAnchor5 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide trailingAnchor];
+      trailingAnchor6 = [contentView trailingAnchor];
+      v75 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-22.0];
       v84[2] = v75;
-      v73 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide topAnchor];
-      v71 = [v3 topAnchor];
-      v69 = [v73 constraintEqualToAnchor:v71];
+      topAnchor4 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide topAnchor];
+      topAnchor5 = [contentView topAnchor];
+      v69 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
       v84[3] = v69;
-      v67 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide bottomAnchor];
-      v65 = [v3 bottomAnchor];
-      v63 = [v67 constraintEqualToAnchor:v65];
+      bottomAnchor3 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide bottomAnchor];
+      bottomAnchor4 = [contentView bottomAnchor];
+      v63 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v84[4] = v63;
-      v61 = [(UIImageView *)self->_accessoryImageView centerXAnchor];
-      v59 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide centerXAnchor];
-      v57 = [v61 constraintEqualToAnchor:v59];
+      centerXAnchor3 = [(UIImageView *)self->_accessoryImageView centerXAnchor];
+      centerXAnchor4 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide centerXAnchor];
+      v57 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
       v84[5] = v57;
-      v56 = [(UIImageView *)self->_accessoryImageView widthAnchor];
-      v55 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide widthAnchor];
-      v54 = [v56 constraintLessThanOrEqualToAnchor:v55];
+      widthAnchor = [(UIImageView *)self->_accessoryImageView widthAnchor];
+      widthAnchor2 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide widthAnchor];
+      v54 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
       v84[6] = v54;
       [(UIImageView *)self->_accessoryImageView firstBaselineAnchor];
-      v41 = v81 = v3;
-      v42 = [(CNUINavigationListViewCell *)self titleLabel];
-      v43 = [v42 firstBaselineAnchor];
-      v44 = [v41 constraintEqualToAnchor:v43];
+      v41 = v81 = contentView;
+      titleLabel = [(CNUINavigationListViewCell *)self titleLabel];
+      firstBaselineAnchor6 = [titleLabel firstBaselineAnchor];
+      v44 = [v41 constraintEqualToAnchor:firstBaselineAnchor6];
       v84[7] = v44;
-      v45 = [(UIImageView *)self->_accessoryImageView heightAnchor];
-      v46 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide heightAnchor];
-      v47 = [v45 constraintLessThanOrEqualToAnchor:v46];
+      heightAnchor = [(UIImageView *)self->_accessoryImageView heightAnchor];
+      heightAnchor2 = [(UILayoutGuide *)self->_accessoryImageViewLayoutGuide heightAnchor];
+      v47 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
       v84[8] = v47;
       v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:9];
-      v28 = v83;
-      [v83 addObjectsFromArray:v48];
+      v28 = array;
+      [array addObjectsFromArray:v48];
 
       v12 = v81;
     }
 
-    v49 = [v12 bottomAnchor];
-    v50 = [(UILabel *)self->_subtitleLabel firstBaselineAnchor];
+    bottomAnchor5 = [v12 bottomAnchor];
+    firstBaselineAnchor7 = [(UILabel *)self->_subtitleLabel firstBaselineAnchor];
     [(CNUINavigationListViewCell *)self contentViewBottomAnchorConstraintConstant];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:?];
+    v51 = [bottomAnchor5 constraintEqualToAnchor:firstBaselineAnchor7 constant:?];
     contentViewBottomAnchorConstraint = self->_contentViewBottomAnchorConstraint;
     self->_contentViewBottomAnchorConstraint = v51;
 
@@ -369,141 +369,141 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
   }
 }
 
-- (void)setTitleLabelTrailingAnchorConstraint:(id)a3
+- (void)setTitleLabelTrailingAnchorConstraint:(id)constraint
 {
-  v5 = a3;
+  constraintCopy = constraint;
   titleLabelTrailingAnchorConstraint = self->_titleLabelTrailingAnchorConstraint;
-  if (titleLabelTrailingAnchorConstraint != v5)
+  if (titleLabelTrailingAnchorConstraint != constraintCopy)
   {
-    v7 = v5;
+    v7 = constraintCopy;
     [(NSLayoutConstraint *)titleLabelTrailingAnchorConstraint setActive:0];
-    objc_storeStrong(&self->_titleLabelTrailingAnchorConstraint, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_titleLabelTrailingAnchorConstraint, constraint);
+    constraintCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](titleLabelTrailingAnchorConstraint, v5);
+  MEMORY[0x1EEE66BB8](titleLabelTrailingAnchorConstraint, constraintCopy);
 }
 
-- (void)setTitleLabelLeadingAnchorConstraint:(id)a3
+- (void)setTitleLabelLeadingAnchorConstraint:(id)constraint
 {
-  v5 = a3;
+  constraintCopy = constraint;
   titleLabelLeadingAnchorConstraint = self->_titleLabelLeadingAnchorConstraint;
-  if (titleLabelLeadingAnchorConstraint != v5)
+  if (titleLabelLeadingAnchorConstraint != constraintCopy)
   {
-    v7 = v5;
+    v7 = constraintCopy;
     [(NSLayoutConstraint *)titleLabelLeadingAnchorConstraint setActive:0];
-    objc_storeStrong(&self->_titleLabelLeadingAnchorConstraint, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_titleLabelLeadingAnchorConstraint, constraint);
+    constraintCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](titleLabelLeadingAnchorConstraint, v5);
+  MEMORY[0x1EEE66BB8](titleLabelLeadingAnchorConstraint, constraintCopy);
 }
 
-- (void)setTitleLabelFirstBaselineAnchorConstraint:(id)a3
+- (void)setTitleLabelFirstBaselineAnchorConstraint:(id)constraint
 {
-  v5 = a3;
+  constraintCopy = constraint;
   titleLabelFirstBaselineAnchorConstraint = self->_titleLabelFirstBaselineAnchorConstraint;
-  if (titleLabelFirstBaselineAnchorConstraint != v5)
+  if (titleLabelFirstBaselineAnchorConstraint != constraintCopy)
   {
-    v7 = v5;
+    v7 = constraintCopy;
     [(NSLayoutConstraint *)titleLabelFirstBaselineAnchorConstraint setActive:0];
-    objc_storeStrong(&self->_titleLabelFirstBaselineAnchorConstraint, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_titleLabelFirstBaselineAnchorConstraint, constraint);
+    constraintCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](titleLabelFirstBaselineAnchorConstraint, v5);
+  MEMORY[0x1EEE66BB8](titleLabelFirstBaselineAnchorConstraint, constraintCopy);
 }
 
-- (void)setSubtitleLabelTrailingAnchorConstraint:(id)a3
+- (void)setSubtitleLabelTrailingAnchorConstraint:(id)constraint
 {
-  v5 = a3;
+  constraintCopy = constraint;
   subtitleLabelTrailingAnchorConstraint = self->_subtitleLabelTrailingAnchorConstraint;
-  if (subtitleLabelTrailingAnchorConstraint != v5)
+  if (subtitleLabelTrailingAnchorConstraint != constraintCopy)
   {
-    v7 = v5;
+    v7 = constraintCopy;
     [(NSLayoutConstraint *)subtitleLabelTrailingAnchorConstraint setActive:0];
-    objc_storeStrong(&self->_subtitleLabelTrailingAnchorConstraint, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_subtitleLabelTrailingAnchorConstraint, constraint);
+    constraintCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](subtitleLabelTrailingAnchorConstraint, v5);
+  MEMORY[0x1EEE66BB8](subtitleLabelTrailingAnchorConstraint, constraintCopy);
 }
 
-- (void)setSubtitleLabelLeadingAnchorConstraint:(id)a3
+- (void)setSubtitleLabelLeadingAnchorConstraint:(id)constraint
 {
-  v5 = a3;
+  constraintCopy = constraint;
   subtitleLabelLeadingAnchorConstraint = self->_subtitleLabelLeadingAnchorConstraint;
-  if (subtitleLabelLeadingAnchorConstraint != v5)
+  if (subtitleLabelLeadingAnchorConstraint != constraintCopy)
   {
-    v7 = v5;
+    v7 = constraintCopy;
     [(NSLayoutConstraint *)subtitleLabelLeadingAnchorConstraint setActive:0];
-    objc_storeStrong(&self->_subtitleLabelLeadingAnchorConstraint, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_subtitleLabelLeadingAnchorConstraint, constraint);
+    constraintCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](subtitleLabelLeadingAnchorConstraint, v5);
+  MEMORY[0x1EEE66BB8](subtitleLabelLeadingAnchorConstraint, constraintCopy);
 }
 
-- (void)setSubtitleLabelFirstBaselineAnchorConstraint:(id)a3
+- (void)setSubtitleLabelFirstBaselineAnchorConstraint:(id)constraint
 {
-  v5 = a3;
+  constraintCopy = constraint;
   subtitleLabelFirstBaselineAnchorConstraint = self->_subtitleLabelFirstBaselineAnchorConstraint;
-  if (subtitleLabelFirstBaselineAnchorConstraint != v5)
+  if (subtitleLabelFirstBaselineAnchorConstraint != constraintCopy)
   {
-    v7 = v5;
+    v7 = constraintCopy;
     [(NSLayoutConstraint *)subtitleLabelFirstBaselineAnchorConstraint setActive:0];
-    objc_storeStrong(&self->_subtitleLabelFirstBaselineAnchorConstraint, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_subtitleLabelFirstBaselineAnchorConstraint, constraint);
+    constraintCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](subtitleLabelFirstBaselineAnchorConstraint, v5);
+  MEMORY[0x1EEE66BB8](subtitleLabelFirstBaselineAnchorConstraint, constraintCopy);
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = CNUINavigationListViewCell;
   [(CNUINavigationListViewCell *)&v3 setSeparatorStyle:[(CNUINavigationListViewCell *)self showSeparator]];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
   v8.receiver = self;
   v8.super_class = CNUINavigationListViewCell;
-  if ([(CNUINavigationListViewCell *)&v8 isHighlighted]!= a3)
+  if ([(CNUINavigationListViewCell *)&v8 isHighlighted]!= highlighted)
   {
     v7.receiver = self;
     v7.super_class = CNUINavigationListViewCell;
-    [(CNUINavigationListViewCell *)&v7 setHighlighted:v5 animated:v4];
-    [(CNUINavigationListViewCell *)self updateVisualStateAnimated:v4];
+    [(CNUINavigationListViewCell *)&v7 setHighlighted:highlightedCopy animated:animatedCopy];
+    [(CNUINavigationListViewCell *)self updateVisualStateAnimated:animatedCopy];
   }
 }
 
-- (void)setAccessoryControlExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setAccessoryControlExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CNUINavigationListViewCell *)self isAccessoryControlExpanded];
-  [(CNUINavigationListViewCell *)self setAccessoryControlExpanded:v5];
-  if (v7 != [(CNUINavigationListViewCell *)self isAccessoryControlExpanded])
+  animatedCopy = animated;
+  expandedCopy = expanded;
+  isAccessoryControlExpanded = [(CNUINavigationListViewCell *)self isAccessoryControlExpanded];
+  [(CNUINavigationListViewCell *)self setAccessoryControlExpanded:expandedCopy];
+  if (isAccessoryControlExpanded != [(CNUINavigationListViewCell *)self isAccessoryControlExpanded])
   {
 
-    [(CNUINavigationListViewCell *)self updateVisualStateAnimated:v4];
+    [(CNUINavigationListViewCell *)self updateVisualStateAnimated:animatedCopy];
   }
 }
 
-- (void)setAccessoryControlExpanded:(BOOL)a3
+- (void)setAccessoryControlExpanded:(BOOL)expanded
 {
-  if (self->_accessoryControlExpanded != a3)
+  if (self->_accessoryControlExpanded != expanded)
   {
-    v5 = [(CNUINavigationListViewCell *)self accessoryImageView];
-    v6 = [v5 isHidden];
+    accessoryImageView = [(CNUINavigationListViewCell *)self accessoryImageView];
+    isHidden = [accessoryImageView isHidden];
 
-    if ((v6 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      self->_accessoryControlExpanded = a3;
+      self->_accessoryControlExpanded = expanded;
     }
   }
 }
@@ -518,92 +518,92 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
   [(CNUINavigationListViewCell *)self updateVisualStateAnimated:0];
 }
 
-- (void)setupAccessoryImageViewInView:(id)a3
+- (void)setupAccessoryImageViewInView:(id)view
 {
   v4 = MEMORY[0x1E69DCC20];
-  v12 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(v4);
   accessoryImageViewLayoutGuide = self->_accessoryImageViewLayoutGuide;
   self->_accessoryImageViewLayoutGuide = v5;
 
-  [v12 addLayoutGuide:self->_accessoryImageViewLayoutGuide];
+  [viewCopy addLayoutGuide:self->_accessoryImageViewLayoutGuide];
   v7 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   accessoryImageView = self->_accessoryImageView;
   self->_accessoryImageView = v7;
 
-  v9 = [objc_opt_class() disclosureImage];
-  [(UIImageView *)self->_accessoryImageView setImage:v9];
+  disclosureImage = [objc_opt_class() disclosureImage];
+  [(UIImageView *)self->_accessoryImageView setImage:disclosureImage];
 
   [(UIImageView *)self->_accessoryImageView setHidden:1];
-  v10 = [objc_opt_class() highlightedDisclosureImage];
-  [(UIImageView *)self->_accessoryImageView setHighlightedImage:v10];
+  highlightedDisclosureImage = [objc_opt_class() highlightedDisclosureImage];
+  [(UIImageView *)self->_accessoryImageView setHighlightedImage:highlightedDisclosureImage];
 
-  v11 = [objc_opt_class() accessoryImageViewAccessibilityLabel];
-  [(UIImageView *)self->_accessoryImageView setAccessibilityLabel:v11];
+  accessoryImageViewAccessibilityLabel = [objc_opt_class() accessoryImageViewAccessibilityLabel];
+  [(UIImageView *)self->_accessoryImageView setAccessibilityLabel:accessoryImageViewAccessibilityLabel];
 
   [(UIImageView *)self->_accessoryImageView setIsAccessibilityElement:1];
   [(UIImageView *)self->_accessoryImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v12 addSubview:self->_accessoryImageView];
+  [viewCopy addSubview:self->_accessoryImageView];
 }
 
 - (void)loadContentView
 {
-  v15 = [(CNUINavigationListViewCell *)self contentView];
+  contentView = [(CNUINavigationListViewCell *)self contentView];
   v3 = [MEMORY[0x1E69DC730] effectWithStyle:3];
   v4 = [MEMORY[0x1E69DD248] effectForBlurEffect:v3 style:4];
   v5 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v4];
   [v5 setAutoresizingMask:18];
-  [v15 bounds];
+  [contentView bounds];
   [v5 setFrame:?];
-  [v15 addSubview:v5];
+  [contentView addSubview:v5];
   v6 = objc_alloc_init(MEMORY[0x1E69DCC20]);
   titleImageViewLayoutGuide = self->_titleImageViewLayoutGuide;
   self->_titleImageViewLayoutGuide = v6;
 
-  [v15 addLayoutGuide:self->_titleImageViewLayoutGuide];
+  [contentView addLayoutGuide:self->_titleImageViewLayoutGuide];
   v8 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   titleImageView = self->_titleImageView;
   self->_titleImageView = v8;
 
   [(UIImageView *)self->_titleImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [v5 contentView];
-  [v10 addSubview:self->_titleImageView];
+  contentView2 = [v5 contentView];
+  [contentView2 addSubview:self->_titleImageView];
 
   v11 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   titleLabel = self->_titleLabel;
   self->_titleLabel = v11;
 
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v15 addSubview:self->_titleLabel];
+  [contentView addSubview:self->_titleLabel];
   v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   subtitleLabel = self->_subtitleLabel;
   self->_subtitleLabel = v13;
 
   [(UILabel *)self->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v15 addSubview:self->_subtitleLabel];
+  [contentView addSubview:self->_subtitleLabel];
   [(CNUINavigationListViewCell *)self applyStyle];
-  [(CNUINavigationListViewCell *)self setupAccessoryImageViewInView:v15];
+  [(CNUINavigationListViewCell *)self setupAccessoryImageViewInView:contentView];
 }
 
 - (void)applyStyle
 {
-  v3 = [(CNUINavigationListViewCell *)self styleApplier];
-  [v3 applyNavigationListStyleToCell:self];
+  styleApplier = [(CNUINavigationListViewCell *)self styleApplier];
+  [styleApplier applyNavigationListStyleToCell:self];
 }
 
 - (void)styleUpdated
 {
   v3 = [CNUINavigationListStyleApplier alloc];
-  v4 = [(CNUINavigationListViewCell *)self navigationListStyle];
-  v5 = [(CNUINavigationListStyleApplier *)v3 initWithNavigationListStyle:v4];
+  navigationListStyle = [(CNUINavigationListViewCell *)self navigationListStyle];
+  v5 = [(CNUINavigationListStyleApplier *)v3 initWithNavigationListStyle:navigationListStyle];
   [(CNUINavigationListViewCell *)self setStyleApplier:v5];
 
   [(CNUINavigationListViewCell *)self applyStyle];
 }
 
-- (void)setNavigationListStyle:(id)a3
+- (void)setNavigationListStyle:(id)style
 {
-  objc_storeStrong(&self->_navigationListStyle, a3);
+  objc_storeStrong(&self->_navigationListStyle, style);
 
   [(CNUINavigationListViewCell *)self styleUpdated];
 }
@@ -617,11 +617,11 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
   [(CNUINavigationListViewCell *)&v3 dealloc];
 }
 
-- (CNUINavigationListViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNUINavigationListViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = CNUINavigationListViewCell;
-  v4 = [(CNUINavigationListViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNUINavigationListViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -637,7 +637,7 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
   return v5;
 }
 
-- (CNUINavigationListViewCell)initWithCoder:(id)a3
+- (CNUINavigationListViewCell)initWithCoder:(id)coder
 {
   [(CNUINavigationListViewCell *)self doesNotRecognizeSelector:a2];
 
@@ -647,8 +647,8 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
 - (double)titleLabelFirstBaselineAnchorConstraintConstant
 {
   v3 = objc_opt_class();
-  v4 = [(CNUINavigationListViewCell *)self navigationListStyle];
-  [v3 titleLabelFirstBaselineAnchorConstraintConstantForNavigationListStyle:v4];
+  navigationListStyle = [(CNUINavigationListViewCell *)self navigationListStyle];
+  [v3 titleLabelFirstBaselineAnchorConstraintConstantForNavigationListStyle:navigationListStyle];
   v6 = v5;
 
   return v6;
@@ -657,10 +657,10 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
 - (double)subtitleLabelFirstBaselineAnchorConstraintConstant
 {
   v3 = objc_opt_class();
-  v4 = [(CNUINavigationListViewCell *)self subtitleLabel];
-  v5 = [v4 text];
-  v6 = [(CNUINavigationListViewCell *)self navigationListStyle];
-  [v3 subtitleLabelFirstBaselineAnchorConstraintConstantForSubtitle:v5 navigationListStyle:v6];
+  subtitleLabel = [(CNUINavigationListViewCell *)self subtitleLabel];
+  text = [subtitleLabel text];
+  navigationListStyle = [(CNUINavigationListViewCell *)self navigationListStyle];
+  [v3 subtitleLabelFirstBaselineAnchorConstraintConstantForSubtitle:text navigationListStyle:navigationListStyle];
   v8 = v7;
 
   return v8;
@@ -669,8 +669,8 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
 - (double)contentViewBottomAnchorConstraintConstant
 {
   v3 = objc_opt_class();
-  v4 = [(CNUINavigationListViewCell *)self navigationListStyle];
-  [v3 contentViewBottomAnchorConstraintConstantForNavigationListStyle:v4];
+  navigationListStyle = [(CNUINavigationListViewCell *)self navigationListStyle];
+  [v3 contentViewBottomAnchorConstraintConstantForNavigationListStyle:navigationListStyle];
   v6 = v5;
 
   return v6;
@@ -709,30 +709,30 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
   return v4;
 }
 
-+ (CGSize)desiredContentSizeForTitle:(id)a3 subTitle:(id)a4 navigationListStyle:(id)a5
++ (CGSize)desiredContentSizeForTitle:(id)title subTitle:(id)subTitle navigationListStyle:(id)style
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v10 cellUserActionLeftMargin];
+  titleCopy = title;
+  subTitleCopy = subTitle;
+  styleCopy = style;
+  [styleCopy cellUserActionLeftMargin];
   v12 = v11 + 22.0 + 8.0 + 5.0;
-  v13 = [v10 cellTitleFont];
-  v14 = [v10 cellSubtitleFont];
-  [a1 titleLabelFirstBaselineAnchorConstraintConstantForNavigationListStyle:v10];
+  cellTitleFont = [styleCopy cellTitleFont];
+  cellSubtitleFont = [styleCopy cellSubtitleFont];
+  [self titleLabelFirstBaselineAnchorConstraintConstantForNavigationListStyle:styleCopy];
   v16 = v15;
-  [a1 contentViewBottomAnchorConstraintConstantForNavigationListStyle:v10];
+  [self contentViewBottomAnchorConstraintConstantForNavigationListStyle:styleCopy];
   v18 = v17;
-  [a1 subtitleLabelFirstBaselineAnchorConstraintConstantForSubtitle:v9 navigationListStyle:v10];
+  [self subtitleLabelFirstBaselineAnchorConstraintConstantForSubtitle:subTitleCopy navigationListStyle:styleCopy];
   v20 = v19;
 
   v21 = *MEMORY[0x1E6996568];
-  if (((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v8) & 1) == 0)
+  if (((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], titleCopy) & 1) == 0)
   {
-    if (v13)
+    if (cellTitleFont)
     {
       v33 = *MEMORY[0x1E69DB648];
-      v34[0] = v13;
+      v34[0] = cellTitleFont;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     }
 
@@ -741,16 +741,16 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
       v22 = 0;
     }
 
-    [v8 sizeWithAttributes:v22];
+    [titleCopy sizeWithAttributes:v22];
     v12 = v12 + ceil(v23);
   }
 
-  if (((*(v21 + 16))(v21, v9) & 1) == 0)
+  if (((*(v21 + 16))(v21, subTitleCopy) & 1) == 0)
   {
-    if (v14)
+    if (cellSubtitleFont)
     {
       v31 = *MEMORY[0x1E69DB648];
-      v32 = v14;
+      v32 = cellSubtitleFont;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     }
 
@@ -759,12 +759,12 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
       v24 = 0;
     }
 
-    [v9 sizeWithAttributes:v24];
+    [subTitleCopy sizeWithAttributes:v24];
     v12 = v12 + ceil(v25);
   }
 
-  v26 = [a1 disclosureImage];
-  [v26 size];
+  disclosureImage = [self disclosureImage];
+  [disclosureImage size];
   v28 = v27;
 
   v29 = ceil(v16 + v18 + v20);
@@ -774,43 +774,43 @@ void __56__CNUINavigationListViewCell_updateVisualStateAnimated___block_invoke(u
   return result;
 }
 
-+ (double)subtitleLabelFirstBaselineAnchorConstraintConstantForSubtitle:(id)a3 navigationListStyle:(id)a4
++ (double)subtitleLabelFirstBaselineAnchorConstraintConstantForSubtitle:(id)subtitle navigationListStyle:(id)style
 {
-  v5 = a3;
-  v6 = a4;
+  subtitleCopy = subtitle;
+  styleCopy = style;
   v7 = 0.0;
   if ([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] && ((*(*MEMORY[0x1E6996568] + 16))() & 1) == 0)
   {
-    v8 = [v6 cellSubtitleFont];
-    [v6 cellSubtitleLabelFirstBaselineAnchorConstraintConstant];
-    [v8 _scaledValueForValue:?];
+    cellSubtitleFont = [styleCopy cellSubtitleFont];
+    [styleCopy cellSubtitleLabelFirstBaselineAnchorConstraintConstant];
+    [cellSubtitleFont _scaledValueForValue:?];
     v7 = ceil(v9);
   }
 
   return v7;
 }
 
-+ (double)contentViewBottomAnchorConstraintConstantForNavigationListStyle:(id)a3
++ (double)contentViewBottomAnchorConstraintConstantForNavigationListStyle:(id)style
 {
-  v3 = a3;
-  v4 = [v3 cellSubtitleFont];
-  [v3 cellContentViewBottomAnchorConstraintConstant];
+  styleCopy = style;
+  cellSubtitleFont = [styleCopy cellSubtitleFont];
+  [styleCopy cellContentViewBottomAnchorConstraintConstant];
   v6 = v5;
 
-  [v4 _scaledValueForValue:v6];
+  [cellSubtitleFont _scaledValueForValue:v6];
   v8 = ceil(v7);
 
   return v8;
 }
 
-+ (double)titleLabelFirstBaselineAnchorConstraintConstantForNavigationListStyle:(id)a3
++ (double)titleLabelFirstBaselineAnchorConstraintConstantForNavigationListStyle:(id)style
 {
-  v3 = a3;
-  v4 = [v3 cellTitleFont];
-  [v3 cellTitleLabelFirstBaselineAnchorConstraintConstant];
+  styleCopy = style;
+  cellTitleFont = [styleCopy cellTitleFont];
+  [styleCopy cellTitleLabelFirstBaselineAnchorConstraintConstant];
   v6 = v5;
 
-  [v4 _scaledValueForValue:v6];
+  [cellTitleFont _scaledValueForValue:v6];
   v8 = ceil(v7);
 
   return v8;

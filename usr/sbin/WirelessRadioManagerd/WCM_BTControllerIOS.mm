@@ -3,48 +3,48 @@
 - (WCM_BTControllerIOS)init;
 - (double)getBtRxPer;
 - (double)getBtTxPer;
-- (id)createBTHCIExternalFrameConfigParams:(id)a3;
-- (id)createChannelParameters:(id)a3;
+- (id)createBTHCIExternalFrameConfigParams:(id)params;
+- (id)createChannelParameters:(id)parameters;
 - (int)getBTRole;
 - (int)getBTState;
-- (void)bspBandSwitchReject:(int)a3 targetBand:(int)a4;
-- (void)bspNotifyChannelQuality:(int)a3 quality:(unint64_t)a4;
-- (void)bspRegulatoryInfoRequest:(id)a3 timeStamp:(int64_t)a4;
-- (void)bspSetFrequencyBandToUse:(int)a3 allowedBands:(int)a4;
+- (void)bspBandSwitchReject:(int)reject targetBand:(int)band;
+- (void)bspNotifyChannelQuality:(int)quality quality:(unint64_t)a4;
+- (void)bspRegulatoryInfoRequest:(id)request timeStamp:(int64_t)stamp;
+- (void)bspSetFrequencyBandToUse:(int)use allowedBands:(int)bands;
 - (void)bspStatusRequest;
-- (void)bspUpdateWiFiStatus:(BOOL)a3;
+- (void)bspUpdateWiFiStatus:(BOOL)status;
 - (void)dealloc;
-- (void)handelAFHMap:(id)a3;
-- (void)handleAntennaPreferenceBResponse:(id)a3;
-- (void)handleAntennaSwitchNotification:(id)a3;
-- (void)handleBTBandwidthLoad:(id)a3;
-- (void)handleBTMetricsRpt:(id)a3;
-- (void)handleBTPhyRpt:(id)a3;
-- (void)handleDisconnection:(id)a3;
-- (void)handleHFBTChannelMap:(id)a3;
-- (void)handleLTELinkQuality:(id)a3;
-- (void)handleLeConn:(id)a3;
-- (void)handleLeDiscoveryScanStateChange:(id)a3;
-- (void)handleMessage:(id)a3;
-- (void)handleRawRSSI:(id)a3;
-- (void)printAFHMap:(char *)a3;
-- (void)printBLEAFHMap:(char *)a3;
-- (void)printHFBTChannelMap:(char *)a3;
+- (void)handelAFHMap:(id)map;
+- (void)handleAntennaPreferenceBResponse:(id)response;
+- (void)handleAntennaSwitchNotification:(id)notification;
+- (void)handleBTBandwidthLoad:(id)load;
+- (void)handleBTMetricsRpt:(id)rpt;
+- (void)handleBTPhyRpt:(id)rpt;
+- (void)handleDisconnection:(id)disconnection;
+- (void)handleHFBTChannelMap:(id)map;
+- (void)handleLTELinkQuality:(id)quality;
+- (void)handleLeConn:(id)conn;
+- (void)handleLeDiscoveryScanStateChange:(id)change;
+- (void)handleMessage:(id)message;
+- (void)handleRawRSSI:(id)i;
+- (void)printAFHMap:(char *)map;
+- (void)printBLEAFHMap:(char *)map;
+- (void)printHFBTChannelMap:(char *)map;
 - (void)resetBtMetrics;
 - (void)updateAntennaRSSIOffset;
-- (void)updateBLEActiveScanPwrLmtAssertionInterval:(unint64_t)a3;
-- (void)updateBTRCU2TimingArray:(id)a3;
-- (void)updateCoexRxGainMode:(id)a3;
-- (void)updateHPCellularCoexMode:(BOOL)a3;
-- (void)updateMWSChannelParameters:(id)a3;
-- (void)updateMWSFrameConfig:(id)a3;
-- (void)updateMWSScanFrequencyTable:(id)a3;
+- (void)updateBLEActiveScanPwrLmtAssertionInterval:(unint64_t)interval;
+- (void)updateBTRCU2TimingArray:(id)array;
+- (void)updateCoexRxGainMode:(id)mode;
+- (void)updateHPCellularCoexMode:(BOOL)mode;
+- (void)updateMWSChannelParameters:(id)parameters;
+- (void)updateMWSFrameConfig:(id)config;
+- (void)updateMWSScanFrequencyTable:(id)table;
 - (void)updateMWSSignalingConfig;
-- (void)updatePreferredAFHMap:(id)a3;
-- (void)updatePreferredHFBTChannelMap:(id)a3;
-- (void)updateWCI2Mode:(BOOL)a3;
-- (void)updateWiFiCatsState:(unsigned __int8)a3 bitmap:(unint64_t)a4 band:(int)a5 desiredBtDc:(int)a6;
-- (void)updateWiFiCriticalEnabled:(BOOL)a3;
+- (void)updatePreferredAFHMap:(id)map;
+- (void)updatePreferredHFBTChannelMap:(id)map;
+- (void)updateWCI2Mode:(BOOL)mode;
+- (void)updateWiFiCatsState:(unsigned __int8)state bitmap:(unint64_t)bitmap band:(int)band desiredBtDc:(int)dc;
+- (void)updateWiFiCriticalEnabled:(BOOL)enabled;
 @end
 
 @implementation WCM_BTControllerIOS
@@ -70,9 +70,9 @@
 
 - (double)getBtTxPer
 {
-  v3 = [(WCM_BTControllerIOS *)self mMovingAvgReTxCount];
-  v4 = [(WCM_BTControllerIOS *)self mMovingAvgSuccessfulTxCount];
-  return v3 / (([(WCM_BTControllerIOS *)self mMovingAvgReTxCount]+ v4) + 0.000001);
+  mMovingAvgReTxCount = [(WCM_BTControllerIOS *)self mMovingAvgReTxCount];
+  mMovingAvgSuccessfulTxCount = [(WCM_BTControllerIOS *)self mMovingAvgSuccessfulTxCount];
+  return mMovingAvgReTxCount / (([(WCM_BTControllerIOS *)self mMovingAvgReTxCount]+ mMovingAvgSuccessfulTxCount) + 0.000001);
 }
 
 - (WCM_BTControllerIOS)init
@@ -178,49 +178,49 @@
   [(WCM_BTController *)&v4 dealloc];
 }
 
-- (void)handleDisconnection:(id)a3
+- (void)handleDisconnection:(id)disconnection
 {
   [WCM_Logging logLevel:2 message:@"BTControllerIOS handleDisconnection"];
 
   [(WCM_BTControllerIOS *)self handlePowerState:0];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
   switch(uint64)
   {
     case 0x1F5uLL:
 
-      [(WCM_BTController *)self handleAudioConfig:a3];
+      [(WCM_BTController *)self handleAudioConfig:message];
       break;
     case 0x1F6uLL:
 
-      [(WCM_BTControllerIOS *)self handleScanStart:a3];
+      [(WCM_BTControllerIOS *)self handleScanStart:message];
       break;
     case 0x1F7uLL:
 
-      [(WCM_BTControllerIOS *)self handleScanStop:a3];
+      [(WCM_BTControllerIOS *)self handleScanStop:message];
       break;
     case 0x1F8uLL:
 
-      [(WCM_BTControllerIOS *)self handleLinkQaulity:a3];
+      [(WCM_BTControllerIOS *)self handleLinkQaulity:message];
       break;
     case 0x1F9uLL:
 
-      [(WCM_BTControllerIOS *)self handleLTELinkQuality:a3];
+      [(WCM_BTControllerIOS *)self handleLTELinkQuality:message];
       break;
     case 0x1FAuLL:
 
-      [(WCM_BTController *)self handleLocalDeviceState:a3];
+      [(WCM_BTController *)self handleLocalDeviceState:message];
       break;
     case 0x1FBuLL:
 
-      [(WCM_BTControllerIOS *)self handelAFHMap:a3];
+      [(WCM_BTControllerIOS *)self handelAFHMap:message];
       break;
     case 0x1FCuLL:
 
-      [(WCM_BTControllerIOS *)self handleRawRSSI:a3];
+      [(WCM_BTControllerIOS *)self handleRawRSSI:message];
       break;
     case 0x1FDuLL:
     case 0x202uLL:
@@ -229,43 +229,43 @@
       goto LABEL_10;
     case 0x1FEuLL:
 
-      [(WCM_BTControllerIOS *)self handleAntennaPreferenceBResponse:a3];
+      [(WCM_BTControllerIOS *)self handleAntennaPreferenceBResponse:message];
       break;
     case 0x1FFuLL:
 
-      [(WCM_BTControllerIOS *)self handleAntennaSwitchNotification:a3];
+      [(WCM_BTControllerIOS *)self handleAntennaSwitchNotification:message];
       break;
     case 0x200uLL:
 
-      [(WCM_BTControllerIOS *)self handleBTMetricsRpt:a3];
+      [(WCM_BTControllerIOS *)self handleBTMetricsRpt:message];
       break;
     case 0x201uLL:
 
-      [(WCM_BTControllerIOS *)self handleBTPhyRpt:a3];
+      [(WCM_BTControllerIOS *)self handleBTPhyRpt:message];
       break;
     case 0x205uLL:
 
-      [(WCM_BTControllerIOS *)self handleHFBTChannelMap:a3];
+      [(WCM_BTControllerIOS *)self handleHFBTChannelMap:message];
       break;
     case 0x206uLL:
 
-      [(WCM_BTControllerIOS *)self handleLeDiscoveryScanStateChange:a3];
+      [(WCM_BTControllerIOS *)self handleLeDiscoveryScanStateChange:message];
       break;
     case 0x207uLL:
 
-      [(WCM_BTController *)self handleLeAdvePaState:a3];
+      [(WCM_BTController *)self handleLeAdvePaState:message];
       break;
     default:
       if (uint64 == 108)
       {
 
-        [(WCM_BTControllerIOS *)self handleLeConn:a3];
+        [(WCM_BTControllerIOS *)self handleLeConn:message];
       }
 
       else if (uint64 == 1406)
       {
 
-        [(WCM_BTControllerIOS *)self handleBTBandwidthLoad:a3];
+        [(WCM_BTControllerIOS *)self handleBTBandwidthLoad:message];
       }
 
       else
@@ -294,8 +294,8 @@ LABEL_10:
       v13 = 0u;
       v10 = 0u;
       v11 = 0u;
-      v5 = [(WCM_BTController *)self btConnections];
-      v4 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      btConnections = [(WCM_BTController *)self btConnections];
+      v4 = [(NSMutableArray *)btConnections countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         v6 = v4;
@@ -306,7 +306,7 @@ LABEL_10:
           {
             if (*v11 != v7)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(btConnections);
             }
 
             if ([*(*(&v10 + 1) + 8 * i) getRole] != 2)
@@ -316,7 +316,7 @@ LABEL_10:
             }
           }
 
-          v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+          v6 = [(NSMutableArray *)btConnections countByEnumeratingWithState:&v10 objects:v14 count:16];
           LODWORD(v4) = 0;
           if (v6)
           {
@@ -337,32 +337,32 @@ LABEL_10:
   return v4;
 }
 
-- (void)updateWCI2Mode:(BOOL)a3
+- (void)updateWCI2Mode:(BOOL)mode
 {
-  if (LOBYTE(self->mKeepWake) != a3)
+  if (LOBYTE(self->mKeepWake) != mode)
   {
-    v3 = a3;
-    LOBYTE(self->mKeepWake) = a3;
+    modeCopy = mode;
+    LOBYTE(self->mKeepWake) = mode;
     v5 = [+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
-    if (v3)
+    if (modeCopy)
     {
       v6 = v5;
-      v7 = [v5 wcmBTWCI2ModeSendMsgBitmap];
-      v8 = [v6 wcmBTWCI2ModeRecvMsgBitmap];
+      wcmBTWCI2ModeSendMsgBitmap = [v5 wcmBTWCI2ModeSendMsgBitmap];
+      wcmBTWCI2ModeRecvMsgBitmap = [v6 wcmBTWCI2ModeRecvMsgBitmap];
     }
 
     else
     {
-      v8 = 128;
-      v7 = 2;
+      wcmBTWCI2ModeRecvMsgBitmap = 128;
+      wcmBTWCI2ModeSendMsgBitmap = 2;
     }
 
     v9 = xpc_dictionary_create(0, 0, 0);
-    [WCM_Logging logLevel:3 message:@"ConfigureWCI2 mode : RX=%lld, TX=%lld", v8, v7];
+    [WCM_Logging logLevel:3 message:@"ConfigureWCI2 mode : RX=%lld, TX=%lld", wcmBTWCI2ModeRecvMsgBitmap, wcmBTWCI2ModeSendMsgBitmap];
     if (v9)
     {
-      xpc_dictionary_set_uint64(v9, "kWCMBTSetWCI2Mode_ReceiveMessage", v8);
-      xpc_dictionary_set_uint64(v9, "kWCMBTSetWCI2Mode_SendMessage", v7);
+      xpc_dictionary_set_uint64(v9, "kWCMBTSetWCI2Mode_ReceiveMessage", wcmBTWCI2ModeRecvMsgBitmap);
+      xpc_dictionary_set_uint64(v9, "kWCMBTSetWCI2Mode_SendMessage", wcmBTWCI2ModeSendMsgBitmap);
       [(WCM_Controller *)self sendMessage:1413 withArgs:v9];
 
       xpc_release(v9);
@@ -406,38 +406,38 @@ LABEL_10:
   xpc_release(v4);
 }
 
-- (void)updateMWSChannelParameters:(id)a3
+- (void)updateMWSChannelParameters:(id)parameters
 {
   if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
   {
     return;
   }
 
-  if (a3)
+  if (parameters)
   {
     v5 = &self->mRoleRequested + 1;
     v6 = BYTE1(self->mRoleRequested);
     v7 = 1;
 LABEL_6:
-    if (v7 == v6 && ([a3 cachedULCenterFreq], v8 == *&self->mDefaultAntenna) && (objc_msgSend(a3, "cachedULBandwidth"), v9 == *(&self->mMWSDlCenterFreq + 4)) && (objc_msgSend(a3, "dlCenterFreq"), v10 == *(&self->mMWSUlCenterFreq + 4)) && (objc_msgSend(a3, "dlBandwidth"), v11 == *(&self->mMWSUlBandwidth + 4)) && BYTE2(self->mRoleRequested) == objc_msgSend(a3, "tddBand"))
+    if (v7 == v6 && ([parameters cachedULCenterFreq], v8 == *&self->mDefaultAntenna) && (objc_msgSend(parameters, "cachedULBandwidth"), v9 == *(&self->mMWSDlCenterFreq + 4)) && (objc_msgSend(parameters, "dlCenterFreq"), v10 == *(&self->mMWSUlCenterFreq + 4)) && (objc_msgSend(parameters, "dlBandwidth"), v11 == *(&self->mMWSUlBandwidth + 4)) && BYTE2(self->mRoleRequested) == objc_msgSend(parameters, "tddBand"))
     {
-      +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 4, @"Same MWS Enabled - NOT updating. cellular.tddBand=%d, mWSTDDBand=%d", [a3 tddBand], BYTE2(self->mRoleRequested));
+      +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 4, @"Same MWS Enabled - NOT updating. cellular.tddBand=%d, mWSTDDBand=%d", [parameters tddBand], BYTE2(self->mRoleRequested));
     }
 
     else
     {
-      +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 4, @"MWS needs Enabling - Something Changed. cellular.tddBand=%d, mWSTDDBand=%d", [a3 tddBand], BYTE2(self->mRoleRequested));
-      [a3 cachedULCenterFreq];
+      +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 4, @"MWS needs Enabling - Something Changed. cellular.tddBand=%d, mWSTDDBand=%d", [parameters tddBand], BYTE2(self->mRoleRequested));
+      [parameters cachedULCenterFreq];
       *&self->mDefaultAntenna = v12;
-      [a3 cachedULBandwidth];
+      [parameters cachedULBandwidth];
       *(&self->mMWSDlCenterFreq + 4) = v13;
-      [a3 dlCenterFreq];
+      [parameters dlCenterFreq];
       *(&self->mMWSUlCenterFreq + 4) = v14;
-      [a3 dlBandwidth];
+      [parameters dlBandwidth];
       *(&self->mMWSUlBandwidth + 4) = v15;
-      BYTE2(self->mRoleRequested) = [a3 tddBand];
-      *v5 = a3 != 0;
-      v16 = [(WCM_BTControllerIOS *)self createChannelParameters:a3];
+      BYTE2(self->mRoleRequested) = [parameters tddBand];
+      *v5 = parameters != 0;
+      v16 = [(WCM_BTControllerIOS *)self createChannelParameters:parameters];
 
       [(WCM_Controller *)self sendMessage:1410 withArgs:v16];
     }
@@ -461,9 +461,9 @@ LABEL_6:
   [WCM_Logging logLevel:4 message:@"MWS already disabled"];
 }
 
-- (void)updateMWSFrameConfig:(id)a3
+- (void)updateMWSFrameConfig:(id)config
 {
-  if (!a3)
+  if (!config)
   {
     return;
   }
@@ -493,20 +493,20 @@ LABEL_6:
   [(WCM_Controller *)self sendMessage:1411 withArgs:v7];
 }
 
-- (void)updateBLEActiveScanPwrLmtAssertionInterval:(unint64_t)a3
+- (void)updateBLEActiveScanPwrLmtAssertionInterval:(unint64_t)interval
 {
-  v5 = xpc_uint64_create(a3);
-  [WCM_Logging logLevel:4 message:@"DLDebug_ Configuring BLE Active Scan Power Limiting (Type6 MSG) Assertion Interval as %llu", a3];
+  v5 = xpc_uint64_create(interval);
+  [WCM_Logging logLevel:4 message:@"DLDebug_ Configuring BLE Active Scan Power Limiting (Type6 MSG) Assertion Interval as %llu", interval];
   [(WCM_Controller *)self sendMessage:1427 withArgs:v5];
 
   xpc_release(v5);
 }
 
-- (void)updateHPCellularCoexMode:(BOOL)a3
+- (void)updateHPCellularCoexMode:(BOOL)mode
 {
-  v3 = a3;
-  v5 = xpc_BOOL_create(a3);
-  if (v3)
+  modeCopy = mode;
+  v5 = xpc_BOOL_create(mode);
+  if (modeCopy)
   {
     [WCM_Logging logLevel:4 message:@"HPCellular_ To disable BT due to HPCellularCoexMode %d", 1];
     v6 = 1445;
@@ -523,20 +523,20 @@ LABEL_6:
   xpc_release(v5);
 }
 
-- (void)updatePreferredAFHMap:(id)a3
+- (void)updatePreferredAFHMap:(id)map
 {
-  [a3 getBytes:&bytes length:10];
+  [map getBytes:&bytes length:10];
   v5 = bytes == *(&self->mRoleRequested + 3) && v37 == *&self->mCurrentAFHMap[4];
   v6 = WRM_IPTelephonyController;
   if (v5)
   {
-    [WCM_Logging logLevel:4 message:@"AFH already set to %@", a3];
+    [WCM_Logging logLevel:4 message:@"AFH already set to %@", map];
   }
 
   else
   {
     [(WCM_BTControllerIOS *)self printAFHMap:&self->mRoleRequested + 3];
-    [WCM_Logging logLevel:2 message:@"AFH needs update to %@", a3];
+    [WCM_Logging logLevel:2 message:@"AFH needs update to %@", map];
     [(WCM_BTControllerIOS *)self printAFHMap:&bytes];
     *(&self->mRoleRequested + 3) = bytes;
     *&self->mCurrentAFHMap[4] = v37;
@@ -547,9 +547,9 @@ LABEL_6:
   }
 
   v8 = [objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
-  if (a3 && v8)
+  if (map && v8)
   {
-    v31 = self;
+    selfCopy = self;
     for (i = 0; i != 10; ++i)
     {
       v10 = 0;
@@ -634,21 +634,21 @@ LABEL_6:
     }
 
     v28 = [NSData dataWithBytes:&v33 length:5];
-    if (v33 == *&v31->mCurrentAFHMap[6] && v34 == v31->mCurrentBLEAFHMap[0])
+    if (v33 == *&selfCopy->mCurrentAFHMap[6] && v34 == selfCopy->mCurrentBLEAFHMap[0])
     {
       [&v26[98] logLevel:4 message:{@"DLDebug_ BLE AFH already set to %@", v28}];
     }
 
     else
     {
-      [(WCM_BTControllerIOS *)v31 printBLEAFHMap:&v31->mCurrentAFHMap[6]];
+      [(WCM_BTControllerIOS *)selfCopy printBLEAFHMap:&selfCopy->mCurrentAFHMap[6]];
       [&v26[98] logLevel:2 message:{@"DLDebug_ BLE AFH newBLEMap_BitVector needs update to %@", v28}];
-      [(WCM_BTControllerIOS *)v31 printBLEAFHMap:&v33];
-      *&v31->mCurrentAFHMap[6] = v33;
-      v31->mCurrentBLEAFHMap[0] = v34;
+      [(WCM_BTControllerIOS *)selfCopy printBLEAFHMap:&v33];
+      *&selfCopy->mCurrentAFHMap[6] = v33;
+      selfCopy->mCurrentBLEAFHMap[0] = v34;
       v30 = xpc_data_create(&v33, 5uLL);
       [&v6[98] logLevel:2 message:@"DLDebug_ Sending XPC Message for coexBLEAFHMap"];
-      [(WCM_Controller *)v31 sendMessage:1425 withArgs:v30];
+      [(WCM_Controller *)selfCopy sendMessage:1425 withArgs:v30];
       xpc_release(v30);
     }
 
@@ -658,11 +658,11 @@ LABEL_6:
   }
 }
 
-- (void)updatePreferredHFBTChannelMap:(id)a3
+- (void)updatePreferredHFBTChannelMap:(id)map
 {
-  [WCM_Logging logLevel:2 message:@"HFAFHDebug_ channel map update to %@", a3];
-  v5 = [a3 bytes];
-  if (!memcmp(v5, &self->mCurrentBLEAFHMap[1], 0x60uLL))
+  [WCM_Logging logLevel:2 message:@"HFAFHDebug_ channel map update to %@", map];
+  bytes = [map bytes];
+  if (!memcmp(bytes, &self->mCurrentBLEAFHMap[1], 0x60uLL))
   {
 
     [WCM_Logging logLevel:4 message:@"HFAFHDebug_ Channel map already set to the same"];
@@ -672,18 +672,18 @@ LABEL_6:
   {
     [WCM_Logging logLevel:2 message:@"HFAFHDebug_ Channel map needs update"];
     [WCM_Logging logLevel:2 message:@"HFAFHDebug_ New channel map"];
-    [(WCM_BTControllerIOS *)self printHFBTChannelMap:v5];
-    v6 = v5[1];
-    *&self->mCurrentBLEAFHMap[1] = *v5;
+    [(WCM_BTControllerIOS *)self printHFBTChannelMap:bytes];
+    v6 = bytes[1];
+    *&self->mCurrentBLEAFHMap[1] = *bytes;
     *&self->mCurrentHFBTChannelMap[12] = v6;
-    v7 = v5[2];
-    v8 = v5[3];
-    v9 = v5[5];
-    *&self->mCurrentHFBTChannelMap[60] = v5[4];
+    v7 = bytes[2];
+    v8 = bytes[3];
+    v9 = bytes[5];
+    *&self->mCurrentHFBTChannelMap[60] = bytes[4];
     *&self->mCurrentHFBTChannelMap[76] = v9;
     *&self->mCurrentHFBTChannelMap[28] = v7;
     *&self->mCurrentHFBTChannelMap[44] = v8;
-    v10 = xpc_data_create(v5, 0x60uLL);
+    v10 = xpc_data_create(bytes, 0x60uLL);
     [(WCM_Controller *)self sendMessage:1432 withArgs:v10];
 
     xpc_release(v10);
@@ -706,16 +706,16 @@ LABEL_6:
   }
 }
 
-- (void)updateMWSScanFrequencyTable:(id)a3
+- (void)updateMWSScanFrequencyTable:(id)table
 {
   v5 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_uint64(v5, "kWCMBTNumScanFrequencies", [a3 count]);
+  xpc_dictionary_set_uint64(v5, "kWCMBTNumScanFrequencies", [table count]);
   v6 = xpc_array_create(0, 0);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [table countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -726,7 +726,7 @@ LABEL_6:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(table);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -741,7 +741,7 @@ LABEL_6:
         xpc_release(v14);
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [table countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -754,10 +754,10 @@ LABEL_6:
   xpc_release(v5);
 }
 
-- (void)updateCoexRxGainMode:(id)a3
+- (void)updateCoexRxGainMode:(id)mode
 {
   v5 = self->mCurrentHFBTChannelMap[92];
-  if (v5 == [a3 BOOLValue])
+  if (v5 == [mode BOOLValue])
   {
     [WCM_Logging logLevel:2 message:@"BT Agc Rx Coex Gain Mode already set to %d", self->mCurrentHFBTChannelMap[92]];
   }
@@ -765,26 +765,26 @@ LABEL_6:
   else
   {
     v6 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_uint64(v6, "kWCMBTCoexRxGainModeEnable", [a3 intValue]);
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 2, @"Setting BT Agc Rx Coex Gain Mode %d", [a3 intValue]);
-    self->mCurrentHFBTChannelMap[92] = [a3 BOOLValue];
+    xpc_dictionary_set_uint64(v6, "kWCMBTCoexRxGainModeEnable", [mode intValue]);
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 2, @"Setting BT Agc Rx Coex Gain Mode %d", [mode intValue]);
+    self->mCurrentHFBTChannelMap[92] = [mode BOOLValue];
     [(WCM_Controller *)self sendMessage:1424 withArgs:v6];
 
     xpc_release(v6);
   }
 }
 
-- (void)updateBTRCU2TimingArray:(id)a3
+- (void)updateBTRCU2TimingArray:(id)array
 {
   v5 = xpc_dictionary_create(0, 0, 0);
   if (v5)
   {
     v6 = v5;
-    xpc_dictionary_set_BOOL(v5, "kWCMBTRC2GrantEnable", [objc_msgSend(a3 objectAtIndex:{0), "BOOLValue"}]);
-    xpc_dictionary_set_uint64(v6, "kWCMBTRC2TimingT3", [objc_msgSend(a3 objectAtIndex:{1), "unsignedIntValue"}]);
-    xpc_dictionary_set_uint64(v6, "kWCMBTRC2TimingT4", [objc_msgSend(a3 objectAtIndex:{2), "unsignedIntValue"}]);
+    xpc_dictionary_set_BOOL(v5, "kWCMBTRC2GrantEnable", [objc_msgSend(array objectAtIndex:{0), "BOOLValue"}]);
+    xpc_dictionary_set_uint64(v6, "kWCMBTRC2TimingT3", [objc_msgSend(array objectAtIndex:{1), "unsignedIntValue"}]);
+    xpc_dictionary_set_uint64(v6, "kWCMBTRC2TimingT4", [objc_msgSend(array objectAtIndex:{2), "unsignedIntValue"}]);
     [(WCM_Controller *)self sendMessage:1428 withArgs:v6];
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 2, @"Sent message to BT: RC2 grant En:%d T3:%d T4:%d", [objc_msgSend(a3 objectAtIndex:{0), "BOOLValue"}], objc_msgSend(objc_msgSend(a3, "objectAtIndex:", 1), "unsignedIntValue"), objc_msgSend(objc_msgSend(a3, "objectAtIndex:", 2), "unsignedIntValue"));
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 2, @"Sent message to BT: RC2 grant En:%d T3:%d T4:%d", [objc_msgSend(array objectAtIndex:{0), "BOOLValue"}], objc_msgSend(objc_msgSend(array, "objectAtIndex:", 1), "unsignedIntValue"), objc_msgSend(objc_msgSend(array, "objectAtIndex:", 2), "unsignedIntValue"));
 
     xpc_release(v6);
   }
@@ -796,29 +796,29 @@ LABEL_6:
   }
 }
 
-- (void)updateWiFiCriticalEnabled:(BOOL)a3
+- (void)updateWiFiCriticalEnabled:(BOOL)enabled
 {
   v5 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_BOOL(v5, "kWCMAirplayCritical", a3);
+  xpc_dictionary_set_BOOL(v5, "kWCMAirplayCritical", enabled);
   [(WCM_Controller *)self sendMessage:106 withArgs:v5];
 
   xpc_release(v5);
 }
 
-- (void)updateWiFiCatsState:(unsigned __int8)a3 bitmap:(unint64_t)a4 band:(int)a5 desiredBtDc:(int)a6
+- (void)updateWiFiCatsState:(unsigned __int8)state bitmap:(unint64_t)bitmap band:(int)band desiredBtDc:(int)dc
 {
-  v9 = a3;
+  stateCopy = state;
   v11 = xpc_dictionary_create(0, 0, 0);
-  v12 = xpc_uint64_create(v9);
+  v12 = xpc_uint64_create(stateCopy);
   xpc_dictionary_set_value(v11, "kWCMBTWiFiState_Priority", v12);
   xpc_release(v12);
-  v13 = xpc_uint64_create(a4);
+  v13 = xpc_uint64_create(bitmap);
   xpc_dictionary_set_value(v11, "kWCMWiFiState_Bitmap", v13);
   xpc_release(v13);
-  v14 = xpc_uint64_create(a5);
+  v14 = xpc_uint64_create(band);
   xpc_dictionary_set_value(v11, "kWCMWiFiState_Band", v14);
   xpc_release(v14);
-  v15 = xpc_uint64_create(a6);
+  v15 = xpc_uint64_create(dc);
   xpc_dictionary_set_value(v11, "kWCMWiFiState_DesiredBtDc", v15);
   xpc_release(v15);
   [(WCM_Controller *)self sendMessage:107 withArgs:v11];
@@ -826,9 +826,9 @@ LABEL_6:
   xpc_release(v11);
 }
 
-- (void)bspUpdateWiFiStatus:(BOOL)a3
+- (void)bspUpdateWiFiStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v5 = xpc_dictionary_create(0, 0, 0);
   if (v5)
   {
@@ -840,7 +840,7 @@ LABEL_6:
     if (v8)
     {
       v9 = v8;
-      v10 = xpc_uint64_create(v3);
+      v10 = xpc_uint64_create(statusCopy);
       xpc_dictionary_set_value(v9, "BSP_PowerState", v10);
       xpc_release(v10);
       xpc_dictionary_set_value(v6, "BSP_CommandParams", v9);
@@ -853,7 +853,7 @@ LABEL_6:
   }
 }
 
-- (void)bspSetFrequencyBandToUse:(int)a3 allowedBands:(int)a4
+- (void)bspSetFrequencyBandToUse:(int)use allowedBands:(int)bands
 {
   v7 = xpc_dictionary_create(0, 0, 0);
   if (v7)
@@ -866,10 +866,10 @@ LABEL_6:
     if (v10)
     {
       v11 = v10;
-      v12 = xpc_uint64_create(a3);
+      v12 = xpc_uint64_create(use);
       xpc_dictionary_set_value(v11, "BSP_FrequencyBand", v12);
       xpc_release(v12);
-      v13 = xpc_uint64_create(a4);
+      v13 = xpc_uint64_create(bands);
       xpc_dictionary_set_value(v11, "BSP_AllowedBands", v13);
       xpc_release(v13);
       xpc_dictionary_set_value(v8, "BSP_CommandParams", v11);
@@ -882,7 +882,7 @@ LABEL_6:
   }
 }
 
-- (void)bspNotifyChannelQuality:(int)a3 quality:(unint64_t)a4
+- (void)bspNotifyChannelQuality:(int)quality quality:(unint64_t)a4
 {
   v7 = xpc_dictionary_create(0, 0, 0);
   if (v7)
@@ -895,7 +895,7 @@ LABEL_6:
     if (v10)
     {
       v11 = v10;
-      v12 = xpc_uint64_create(a3);
+      v12 = xpc_uint64_create(quality);
       xpc_dictionary_set_value(v11, "BSP_FrequencyBand", v12);
       xpc_release(v12);
       v13 = xpc_uint64_create(a4);
@@ -937,7 +937,7 @@ LABEL_6:
   }
 }
 
-- (void)bspBandSwitchReject:(int)a3 targetBand:(int)a4
+- (void)bspBandSwitchReject:(int)reject targetBand:(int)band
 {
   v7 = xpc_dictionary_create(0, 0, 0);
   if (v7)
@@ -950,10 +950,10 @@ LABEL_6:
     if (v10)
     {
       v11 = v10;
-      v12 = xpc_uint64_create(a3);
+      v12 = xpc_uint64_create(reject);
       xpc_dictionary_set_value(v11, "BSP_ReasonCode", v12);
       xpc_release(v12);
-      v13 = xpc_uint64_create(a4);
+      v13 = xpc_uint64_create(band);
       xpc_dictionary_set_value(v11, "BSP_TargetBand", v13);
       xpc_release(v13);
       xpc_dictionary_set_value(v8, "BSP_CommandParams", v11);
@@ -966,7 +966,7 @@ LABEL_6:
   }
 }
 
-- (void)bspRegulatoryInfoRequest:(id)a3 timeStamp:(int64_t)a4
+- (void)bspRegulatoryInfoRequest:(id)request timeStamp:(int64_t)stamp
 {
   v7 = xpc_dictionary_create(0, 0, 0);
   if (v7)
@@ -979,8 +979,8 @@ LABEL_6:
     if (v10)
     {
       v11 = v10;
-      xpc_dictionary_set_string(v10, "BSP_CountryCode", [a3 UTF8String]);
-      xpc_dictionary_set_int64(v11, "BSP_CountryCodeTimeStamp", a4);
+      xpc_dictionary_set_string(v10, "BSP_CountryCode", [request UTF8String]);
+      xpc_dictionary_set_int64(v11, "BSP_CountryCodeTimeStamp", stamp);
       xpc_dictionary_set_value(v8, "BSP_CommandParams", v11);
       xpc_release(v11);
     }
@@ -991,10 +991,10 @@ LABEL_6:
   }
 }
 
-- (void)handleLeConn:(id)a3
+- (void)handleLeConn:(id)conn
 {
-  [WCM_Logging logLevel:2 message:@"Received LeConn msg: %@", a3];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  [WCM_Logging logLevel:2 message:@"Received LeConn msg: %@", conn];
+  value = xpc_dictionary_get_value(conn, "kMessageArgs");
   if (value)
   {
     v6 = value;
@@ -1014,10 +1014,10 @@ LABEL_6:
   }
 }
 
-- (void)handleLeDiscoveryScanStateChange:(id)a3
+- (void)handleLeDiscoveryScanStateChange:(id)change
 {
   [WCM_Logging logLevel:2 message:@"Received LeScanStateChange msg"];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(change, "kMessageArgs");
   if (value)
   {
     v6 = value;
@@ -1037,18 +1037,18 @@ LABEL_6:
   }
 }
 
-- (void)handleBTBandwidthLoad:(id)a3
+- (void)handleBTBandwidthLoad:(id)load
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(load, "kMessageArgs");
   uint64 = xpc_dictionary_get_uint64(value, "kWCMBTWirelessLoadValue");
   v5 = [objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")];
 
   [v5 setWirelessLoad:uint64];
 }
 
-- (void)handleLTELinkQuality:(id)a3
+- (void)handleLTELinkQuality:(id)quality
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(quality, "kMessageArgs");
   uint64 = xpc_dictionary_get_uint64(value, "kWCMBTLTELinkQuality_Type");
   v5 = xpc_dictionary_get_value(value, "kWCMBTLTELinkQuality_ChannelMap");
   if (v5)
@@ -1169,32 +1169,32 @@ LABEL_27:
   [(WCM_BTControllerIOS *)self setMNumberofSamples:0];
 }
 
-- (void)handleBTMetricsRpt:(id)a3
+- (void)handleBTMetricsRpt:(id)rpt
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000A529C;
   v3[3] = &unk_10023DC80;
-  v3[4] = a3;
+  v3[4] = rpt;
   v3[5] = self;
   dispatch_async([(WCM_BTControllerIOS *)self queue], v3);
 }
 
-- (void)handleBTPhyRpt:(id)a3
+- (void)handleBTPhyRpt:(id)rpt
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000A5B2C;
   v3[3] = &unk_10023DC80;
-  v3[4] = a3;
+  v3[4] = rpt;
   v3[5] = self;
   dispatch_async([(WCM_BTControllerIOS *)self queue], v3);
 }
 
-- (void)handelAFHMap:(id)a3
+- (void)handelAFHMap:(id)map
 {
-  [WCM_Logging logLevel:3 message:@"Received AFH Map Message %@", a3];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  [WCM_Logging logLevel:3 message:@"Received AFH Map Message %@", map];
+  value = xpc_dictionary_get_value(map, "kMessageArgs");
   if (!value)
   {
     v9 = @"Error Getting Args";
@@ -1241,11 +1241,11 @@ LABEL_9:
   [WCM_Logging logLevel:0 message:v10];
 }
 
-- (void)handleHFBTChannelMap:(id)a3
+- (void)handleHFBTChannelMap:(id)map
 {
-  [WCM_Logging logLevel:3 message:@"HFAFHDebug_ Received Channel Map Message %@", a3];
+  [WCM_Logging logLevel:3 message:@"HFAFHDebug_ Received Channel Map Message %@", map];
   length = 0;
-  data = xpc_dictionary_get_data(a3, "kMessageArgs", &length);
+  data = xpc_dictionary_get_data(map, "kMessageArgs", &length);
   if (data && length > 0x5F)
   {
     for (i = 0; i != 96; ++i)
@@ -1262,10 +1262,10 @@ LABEL_9:
   }
 }
 
-- (void)handleRawRSSI:(id)a3
+- (void)handleRawRSSI:(id)i
 {
-  [WCM_Logging logLevel:3 message:@"Received RAW RSSI Message %@", a3];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  [WCM_Logging logLevel:3 message:@"Received RAW RSSI Message %@", i];
+  value = xpc_dictionary_get_value(i, "kMessageArgs");
   if (value)
   {
     v5 = value;
@@ -1297,10 +1297,10 @@ LABEL_9:
   [WCM_Logging logLevel:0 message:v7];
 }
 
-- (void)handleAntennaPreferenceBResponse:(id)a3
+- (void)handleAntennaPreferenceBResponse:(id)response
 {
   [WCM_Logging logLevel:4 message:@"YYDebug_ Received BT Antenna PreferenceB Response"];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(response, "kMessageArgs");
   if (value)
   {
     v5 = value;
@@ -1311,10 +1311,10 @@ LABEL_9:
   }
 }
 
-- (void)handleAntennaSwitchNotification:(id)a3
+- (void)handleAntennaSwitchNotification:(id)notification
 {
   [WCM_Logging logLevel:3 message:@"Received BT Antenna Switch Notification"];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(notification, "kMessageArgs");
   if (value)
   {
     v5 = value;
@@ -1323,7 +1323,7 @@ LABEL_9:
   }
 }
 
-- (void)printAFHMap:(char *)a3
+- (void)printAFHMap:(char *)map
 {
   v4 = 0;
   v14 = 0;
@@ -1339,7 +1339,7 @@ LABEL_9:
     v6 = v8;
     do
     {
-      if ((a3[v4] >> v5))
+      if ((map[v4] >> v5))
       {
         v7 = 88;
       }
@@ -1362,7 +1362,7 @@ LABEL_9:
   while (v4 != 10);
 }
 
-- (void)printHFBTChannelMap:(char *)a3
+- (void)printHFBTChannelMap:(char *)map
 {
   v4 = 0;
   v14 = 0;
@@ -1378,7 +1378,7 @@ LABEL_9:
     v6 = 8;
     do
     {
-      if ((a3[v4] >> --v6))
+      if ((map[v4] >> --v6))
       {
         v7 = 88;
       }
@@ -1400,7 +1400,7 @@ LABEL_9:
   while (v4 != 96);
 }
 
-- (void)printBLEAFHMap:(char *)a3
+- (void)printBLEAFHMap:(char *)map
 {
   [WCM_Logging logLevel:4 message:@"DLDebug_ Printing BLE AFH Map"];
   v4 = 0;
@@ -1417,7 +1417,7 @@ LABEL_9:
     v6 = v8;
     do
     {
-      if ((a3[v4] >> v5))
+      if ((map[v4] >> v5))
       {
         v7 = 89;
       }
@@ -1440,7 +1440,7 @@ LABEL_9:
   while (v4 != 5);
 }
 
-- (id)createBTHCIExternalFrameConfigParams:(id)a3
+- (id)createBTHCIExternalFrameConfigParams:(id)params
 {
   v4 = xpc_dictionary_create(0, 0, 0);
   v5 = xpc_array_create(0, 0);
@@ -1455,7 +1455,7 @@ LABEL_9:
   v10 = xpc_uint64_create([v7 wcmWCI2FrameSyncAssertJitter]);
   xpc_dictionary_set_value(v4, "kWCMBTSetMWSExternalConfig_ExtFrameSyncAssertJitter", v10);
   xpc_release(v10);
-  if (![a3 tddBand] || (objc_msgSend(v7, "wcmBTSupportTDDFrameConfig") & 1) == 0)
+  if (![params tddBand] || (objc_msgSend(v7, "wcmBTSupportTDDFrameConfig") & 1) == 0)
   {
     v36 = xpc_uint64_create(1uLL);
     xpc_dictionary_set_value(v4, "kWCMBTSetMWSExternalConfig_ExtNumPeriods", v36);
@@ -1470,31 +1470,31 @@ LABEL_9:
     goto LABEL_25;
   }
 
-  v11 = [a3 tddULDLConfig];
-  v12 = [a3 subframeFormat];
-  v13 = [a3 dlCPConfig];
-  v14 = [a3 ulCPConfig];
-  if (v11 > 6 || v12 > 9)
+  tddULDLConfig = [params tddULDLConfig];
+  subframeFormat = [params subframeFormat];
+  dlCPConfig = [params dlCPConfig];
+  ulCPConfig = [params ulCPConfig];
+  if (tddULDLConfig > 6 || subframeFormat > 9)
   {
-    [WCM_Logging logLevel:0 message:@"ExtFrameConfig : Invalid Config ULDL = %llu, sff = %llu", v11, v12];
+    [WCM_Logging logLevel:0 message:@"ExtFrameConfig : Invalid Config ULDL = %llu, sff = %llu", tddULDLConfig, subframeFormat];
     goto LABEL_25;
   }
 
   v15 = 0;
   v16 = 0;
   v17 = 120;
-  if (!v14)
+  if (!ulCPConfig)
   {
     v17 = 80;
   }
 
   xdict = v4;
-  v46 = (&unk_1001986F8 + 4 * v12 + v17);
-  v47 = (&unk_1001986F8 + 40 * (v13 != 0) + 4 * v12);
-  v48 = &aDsuuudsuuudsuu[10 * v11 + 1];
+  v46 = (&unk_1001986F8 + 4 * subframeFormat + v17);
+  v47 = (&unk_1001986F8 + 40 * (dlCPConfig != 0) + 4 * subframeFormat);
+  v48 = &aDsuuudsuuudsuu[10 * tddULDLConfig + 1];
   do
   {
-    v18 = aDsuuudsuuudsuu[10 * v11 + v15];
+    v18 = aDsuuudsuuudsuu[10 * tddULDLConfig + v15];
     v19 = xpc_uint64_create(v18 != 68);
     xpc_array_append_value(v5, v19);
     xpc_release(v19);
@@ -1527,7 +1527,7 @@ LABEL_21:
 
     v24 = v6;
     v25 = llroundf(*v47);
-    v26 = v11;
+    v26 = tddULDLConfig;
     v27 = llroundf(*v46);
     v28 = v15 + v20;
     if (v18 == 68)
@@ -1556,7 +1556,7 @@ LABEL_21:
     v31 = xpc_uint64_create(3uLL);
     xpc_array_append_value(v5, v31);
     v32 = v25 + v27;
-    v11 = v26;
+    tddULDLConfig = v26;
     xpc_release(v31);
     v33 = 1000 - v32;
     v6 = v24;
@@ -1583,7 +1583,7 @@ LABEL_25:
   return v4;
 }
 
-- (id)createChannelParameters:(id)a3
+- (id)createChannelParameters:(id)parameters
 {
   *keys = *off_100240228;
   v19 = *off_100240238;
@@ -1591,11 +1591,11 @@ LABEL_25:
   v16 = 0u;
   v17 = 0u;
   *values = 0u;
-  if (a3)
+  if (parameters)
   {
     if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
     {
-      if ([a3 btClkAlgnFlag])
+      if ([parameters btClkAlgnFlag])
       {
         values[0] = xpc_uint64_create(1uLL);
         v4 = @"clkAlgnTDDFreqCheck: channelParamValue[0] is set to 1, because cellular.btClkAlgnFlag is %d";
@@ -1614,16 +1614,16 @@ LABEL_25:
       v4 = @"clkAlgnTDDFreqCheck: channelParamValue[0] is set to 1 with cellular.btClkAlgnFlag being %d. This is to take care of legacy devices that is not covered by the feature flag Clk_Algn_TDD_Fix";
     }
 
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 4, v4, [a3 btClkAlgnFlag]);
-    [a3 dlCenterFreq];
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 4, v4, [parameters btClkAlgnFlag]);
+    [parameters dlCenterFreq];
     values[1] = xpc_uint64_create(v7);
-    [a3 cachedULCenterFreq];
+    [parameters cachedULCenterFreq];
     *&v16 = xpc_uint64_create(v8);
-    [a3 dlBandwidth];
+    [parameters dlBandwidth];
     *(&v16 + 1) = xpc_uint64_create(v9);
-    [a3 cachedULBandwidth];
+    [parameters cachedULBandwidth];
     *&v17 = xpc_uint64_create(v10);
-    v6 = [a3 tddBand] ^ 1;
+    v6 = [parameters tddBand] ^ 1;
   }
 
   else
@@ -1652,16 +1652,16 @@ LABEL_25:
 
 - (double)getBtRxPer
 {
-  v3 = [(WCM_BTControllerIOS *)self mMovingAvgRxErrorCount];
-  v4 = [(WCM_BTControllerIOS *)self mMovingAvgSuccessfulRxCount];
-  return v3 / (([(WCM_BTControllerIOS *)self mMovingAvgRxErrorCount]+ v4) + 0.000001);
+  mMovingAvgRxErrorCount = [(WCM_BTControllerIOS *)self mMovingAvgRxErrorCount];
+  mMovingAvgSuccessfulRxCount = [(WCM_BTControllerIOS *)self mMovingAvgSuccessfulRxCount];
+  return mMovingAvgRxErrorCount / (([(WCM_BTControllerIOS *)self mMovingAvgRxErrorCount]+ mMovingAvgSuccessfulRxCount) + 0.000001);
 }
 
 - (BOOL)isBTMetricsValid
 {
   v3 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-  v4 = [(WCM_BTControllerIOS *)self mNumberofSamples];
-  return v4 >= [v3 dataBtMovingAvgAlphaDenum];
+  mNumberofSamples = [(WCM_BTControllerIOS *)self mNumberofSamples];
+  return mNumberofSamples >= [v3 dataBtMovingAvgAlphaDenum];
 }
 
 @end

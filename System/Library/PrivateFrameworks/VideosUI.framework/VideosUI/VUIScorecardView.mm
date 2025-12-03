@@ -1,20 +1,20 @@
 @interface VUIScorecardView
 - (CGSize)_calculateMetricsOfScorecard;
 - (CGSize)scorecardSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (VUIScorecardViewDelegate)delegate;
 - (void)_calculateColumnSpacing;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)invalidateData;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation VUIScorecardView
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   self->_delegateRespondsToBackgroundImageForScorecardViewMaterial = objc_opt_respondsToSelector() & 1;
   v5 = objc_opt_respondsToSelector();
 
@@ -33,11 +33,11 @@
   self->_delegateRespondsToBackgroundBlendModeForScoreValueInRowAtIndex = 0;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (!self->_didCalculatedSize)
   {
-    [(VUIScorecardView *)self _calculateMetricsOfScorecard:a3.width];
+    [(VUIScorecardView *)self _calculateMetricsOfScorecard:fits.width];
   }
 
   width = self->_scorecardSize.width;
@@ -49,8 +49,8 @@
 
 - (void)_calculateColumnSpacing
 {
-  v19 = [(VUIScorecardView *)self delegate];
-  if ([v19 styleForScorecardView:self] == 1)
+  delegate = [(VUIScorecardView *)self delegate];
+  if ([delegate styleForScorecardView:self] == 1)
   {
     v3 = [(NSArray *)self->_rowScoreValueSizes count];
 
@@ -59,7 +59,7 @@
       return;
     }
 
-    v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    delegate = objc_alloc_init(MEMORY[0x1E695DF70]);
     v4 = [(NSArray *)self->_rowScoreValueSizes objectAtIndexedSubscript:0];
     v5 = [v4 count];
 
@@ -93,7 +93,7 @@
         v13 = MEMORY[0x1E696AD98];
         VUIRoundValue();
         v14 = [v13 numberWithDouble:?];
-        [v19 setObject:v14 atIndexedSubscript:v6];
+        [delegate setObject:v14 atIndexedSubscript:v6];
 
         ++v6;
         v15 = [(NSArray *)self->_rowScoreValueSizes objectAtIndexedSubscript:0];
@@ -103,22 +103,22 @@
       while (v6 < v16);
     }
 
-    v17 = [v19 copy];
+    v17 = [delegate copy];
     columnWidths = self->_columnWidths;
     self->_columnWidths = v17;
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self->_delegateRespondsToBackgroundImageForScorecardViewMaterial)
   {
     if (!self->_didCalculatedSize)
     {
-      [(VUIScorecardView *)self _calculateMetricsOfScorecard:a3.origin.x];
+      [(VUIScorecardView *)self _calculateMetricsOfScorecard:rect.origin.x];
     }
 
-    v55 = [(VUIScorecardView *)self delegate:a3.origin.x];
+    v55 = [(VUIScorecardView *)self delegate:rect.origin.x];
     v49 = [v55 backgroundImageForScorecardViewMaterial:self];
     if (v49)
     {
@@ -192,27 +192,27 @@
                 v26 = v9;
                 v27 = v5;
                 v28 = v22 + v52 * 2.0;
-                v29 = [v54 backgroundColor];
+                backgroundColor = [v54 backgroundColor];
 
-                if (v29)
+                if (backgroundColor)
                 {
-                  v30 = [v54 backgroundColor];
-                  [v30 setFill];
+                  backgroundColor2 = [v54 backgroundColor];
+                  [backgroundColor2 setFill];
 
-                  v31 = [v54 backgroundBlendMode];
+                  backgroundBlendMode = [v54 backgroundBlendMode];
                   v56.origin.x = v15;
                   v56.origin.y = v11;
                   v56.size.width = v20;
                   v56.size.height = v28;
-                  UIRectFillUsingBlendMode(v56, v31);
+                  UIRectFillUsingBlendMode(v56, backgroundBlendMode);
                 }
 
-                v32 = [(VUIScoreboardLayout *)self->_scoreboardLayout textLayout];
-                v33 = [v32 color];
+                textLayout = [(VUIScoreboardLayout *)self->_scoreboardLayout textLayout];
+                color = [textLayout color];
 
-                [v33 set];
-                v34 = [(VUIScoreboardLayout *)self->_scoreboardLayout textLayout];
-                v35 = v34;
+                [color set];
+                textLayout2 = [(VUIScoreboardLayout *)self->_scoreboardLayout textLayout];
+                v35 = textLayout2;
                 if (v8 == 2)
                 {
                   v36 = 1;
@@ -223,7 +223,7 @@
                   v36 = 2 * (v14 != 0);
                 }
 
-                [v34 setAlignment:v36];
+                [textLayout2 setAlignment:v36];
                 v37 = [v35 attributedStringWithString:v16 view:self];
                 v38 = [v37 attribute:v51 atIndex:0 effectiveRange:0];
                 [v55 marginsForRow:v8 atIndex:v14];
@@ -291,9 +291,9 @@
   else
   {
     v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [(VUIScorecardView *)self delegate];
-    v6 = [v5 numberOfRowsInScorecardView:self];
-    v42 = [MEMORY[0x1E695DF70] array];
+    delegate = [(VUIScorecardView *)self delegate];
+    v6 = [delegate numberOfRowsInScorecardView:self];
+    array = [MEMORY[0x1E695DF70] array];
     v40 = v6;
     if (v6 < 1)
     {
@@ -312,7 +312,7 @@
       {
         v44 = v11;
         v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v13 = [v5 numberOfScoreValuesForScorecardView:self inRow:v7];
+        v13 = [delegate numberOfScoreValuesForScorecardView:self inRow:v7];
         v14 = 0.0;
         v15 = 0.0;
         v43 = v13 - 1;
@@ -321,13 +321,13 @@
           v16 = v13;
           for (i = 0; i != v16; ++i)
           {
-            v18 = [v5 scoreValue:self inRow:v7 atIndex:i];
-            v19 = [(VUIScoreboardLayout *)self->_scoreboardLayout textLayout];
-            v20 = [v19 attributedStringWithString:v18];
+            v18 = [delegate scoreValue:self inRow:v7 atIndex:i];
+            textLayout = [(VUIScoreboardLayout *)self->_scoreboardLayout textLayout];
+            v20 = [textLayout attributedStringWithString:v18];
 
             [v20 boundingRectWithSize:41 options:0 context:{v8, v9}];
             [v20 boundingRectWithSize:33 options:0 context:{v8, v9}];
-            [v5 marginsForRow:v7 atIndex:i];
+            [delegate marginsForRow:v7 atIndex:i];
             v22 = v21;
             v24 = v23;
             VUIRoundValue();
@@ -345,10 +345,10 @@
           }
         }
 
-        [v5 marginsForRow:v7 atIndex:0];
+        [delegate marginsForRow:v7 atIndex:0];
         v31 = v30 + v15 + v29;
         v32 = [MEMORY[0x1E696AD98] numberWithDouble:v31];
-        [v42 setObject:v32 atIndexedSubscript:v7];
+        [array setObject:v32 atIndexedSubscript:v7];
 
         v11 = v44 + v31;
         [v41 addObject:v12];
@@ -363,7 +363,7 @@
       while (v7 != v40);
     }
 
-    v33 = [v42 copy];
+    v33 = [array copy];
     rowHeights = self->_rowHeights;
     self->_rowHeights = v33;
 

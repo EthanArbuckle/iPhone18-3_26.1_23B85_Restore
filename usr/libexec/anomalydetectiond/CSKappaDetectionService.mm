@@ -1,77 +1,77 @@
 @interface CSKappaDetectionService
-- (BOOL)coinflip:(double)a3;
+- (BOOL)coinflip:(double)coinflip;
 - (BOOL)curationSampling;
 - (BOOL)isArmedForKappa;
 - (BOOL)performanceSampling;
 - (BOOL)shouldKeepEarlyCrashTTR;
 - (BOOL)shouldUploadRecording;
-- (CSKappaDetectionService)initWithSilo:(id)a3 vendor:(id)a4 aopService:(void *)a5 sosStateMachine:(id)a6;
-- (float)querySamplingBin:(id)a3 atIndex:(int)a4 withDefault:(float)a5;
-- (float)querySamplingRate:(id)a3 withDefault:(float)a4;
+- (CSKappaDetectionService)initWithSilo:(id)silo vendor:(id)vendor aopService:(void *)service sosStateMachine:(id)machine;
+- (float)querySamplingBin:(id)bin atIndex:(int)index withDefault:(float)default;
+- (float)querySamplingRate:(id)rate withDefault:(float)default;
 - (id).cxx_construct;
 - (id)userInfoUploader;
-- (int64_t)daysSinceTimestamp:(double)a3;
+- (int64_t)daysSinceTimestamp:(double)timestamp;
 - (int64_t)getMaxTriggerSessionInSecondsDefault;
 - (shared_ptr<CLKappaEstimatesAlgCrash>)getCrashBlock;
 - (shared_ptr<CLKappaFeaturesAlgDataIntegrity>)getDataIntegrityBlock;
-- (void)companionConnectedAckHandler:(int)a3 data:(id)a4 receivedTimestamp:(double)a5;
-- (void)companionConnectedAckHandler_Deprecated:(int)a3 data:(id)a4 receivedTimestamp:(double)a5;
-- (void)companionDecidedToUploadHandler:(int)a3 data:(id)a4 receivedTimestamp:(double)a5;
-- (void)companionTriggerHandler:(int)a3 data:(id)a4 receivedTimestamp:(double)a5;
-- (void)consumeSampleArray:(id)a3;
+- (void)companionConnectedAckHandler:(int)handler data:(id)data receivedTimestamp:(double)timestamp;
+- (void)companionConnectedAckHandler_Deprecated:(int)deprecated data:(id)data receivedTimestamp:(double)timestamp;
+- (void)companionDecidedToUploadHandler:(int)handler data:(id)data receivedTimestamp:(double)timestamp;
+- (void)companionTriggerHandler:(int)handler data:(id)data receivedTimestamp:(double)timestamp;
+- (void)consumeSampleArray:(id)array;
 - (void)decideToShowTTR;
-- (void)didReceiveSOSAck:(int64_t)a3 forMode:(unsigned __int8)a4;
-- (void)didReceiveSOSStatusUpdate:(id)a3 forMode:(unsigned __int8)a4;
-- (void)dumpSample:(id)a3;
+- (void)didReceiveSOSAck:(int64_t)ack forMode:(unsigned __int8)mode;
+- (void)didReceiveSOSStatusUpdate:(id)update forMode:(unsigned __int8)mode;
+- (void)dumpSample:(id)sample;
 - (void)escalateCrashDecision;
 - (void)evaluateCrashWithPOI;
 - (void)evaluatePossibleCrashDetectorDecision;
 - (void)evaluateSamplingAlgFeatures;
-- (void)feedAccel800:(id)a3;
-- (void)feedAccel:(id)a3;
-- (void)feedCompanionStatus:(id)a3;
-- (void)feedDeviceMotion:(id)a3;
-- (void)feedGPS:(id)a3;
-- (void)feedHertzSample:(id)a3;
-- (void)feedHgAccel:(id)a3;
-- (void)feedKappaTrigger:(id)a3;
-- (void)feedLocationManagerResults:(id)a3;
-- (void)feedMag:(id)a3;
-- (void)feedPressure:(id)a3;
-- (void)feedRemoteSample:(id)a3;
-- (void)feedRoads:(id)a3;
-- (void)feedSoundPressureLevel:(id)a3;
-- (void)feedSteps:(id)a3;
-- (void)feedTrustedAudioResult:(id)a3;
+- (void)feedAccel800:(id)accel800;
+- (void)feedAccel:(id)accel;
+- (void)feedCompanionStatus:(id)status;
+- (void)feedDeviceMotion:(id)motion;
+- (void)feedGPS:(id)s;
+- (void)feedHertzSample:(id)sample;
+- (void)feedHgAccel:(id)accel;
+- (void)feedKappaTrigger:(id)trigger;
+- (void)feedLocationManagerResults:(id)results;
+- (void)feedMag:(id)mag;
+- (void)feedPressure:(id)pressure;
+- (void)feedRemoteSample:(id)sample;
+- (void)feedRoads:(id)roads;
+- (void)feedSoundPressureLevel:(id)level;
+- (void)feedSteps:(id)steps;
+- (void)feedTrustedAudioResult:(id)result;
 - (void)finishAnomalyEvent;
-- (void)forceBehavior:(int)a3 withValue:(int)a4;
-- (void)forceCompanionTrigger:(id)a3;
+- (void)forceBehavior:(int)behavior withValue:(int)value;
+- (void)forceCompanionTrigger:(id)trigger;
 - (void)initFlowController;
 - (void)initSession;
-- (void)kappaSessionCompanionHandler:(int)a3 data:(id)a4 receivedTimestamp:(double)a5;
+- (void)kappaSessionCompanionHandler:(int)handler data:(id)data receivedTimestamp:(double)timestamp;
 - (void)logAudioStats;
-- (void)messageReceived:(id)a3 fromConnection:(id)a4;
+- (void)messageReceived:(id)received fromConnection:(id)connection;
 - (void)notifyCompanionOfUploadedCompanionUUID;
-- (void)onCompanionMessage:(int)a3 data:(id)a4 receivedTimestamp:(double)a5;
-- (void)onCompanionStatusUpdate:(BOOL)a3 pairedDevice:(id)a4 updatedTimestamp:(double)a5;
-- (void)onCompanionTestTrigger:(double)a3;
+- (void)onCompanionMessage:(int)message data:(id)data receivedTimestamp:(double)timestamp;
+- (void)onCompanionStatusUpdate:(BOOL)update pairedDevice:(id)device updatedTimestamp:(double)timestamp;
+- (void)onCompanionTestTrigger:(double)trigger;
 - (void)populateSessionDetails;
 - (void)printSamplingDefaults;
 - (void)queryIfNearAmusementPark;
-- (void)receiveForceTriggerProtobuf:(id)a3;
+- (void)receiveForceTriggerProtobuf:(id)protobuf;
 - (void)resetSession;
-- (void)saveForceState:(int)a3 withValue:(int)a4;
-- (void)sendCompanionUUID:(id)a3;
+- (void)saveForceState:(int)state withValue:(int)value;
+- (void)sendCompanionUUID:(id)d;
 - (void)sendDeviceInfoProtobuf;
-- (void)sendForceTriggerProtobuf:(id)a3;
+- (void)sendForceTriggerProtobuf:(id)protobuf;
 - (void)sendLocalAudioToWatch;
-- (void)sendRemoteSampleToCompanion:(unint64_t)a3 epochTs:(unint64_t)a4 epochNumber:(int)a5;
-- (void)setRecording:(id)a3 withUUID:(id)a4;
+- (void)sendRemoteSampleToCompanion:(unint64_t)companion epochTs:(unint64_t)ts epochNumber:(int)number;
+- (void)setRecording:(id)recording withUUID:(id)d;
 - (void)sosActivated;
 - (void)start;
-- (void)stop:(unint64_t)a3;
+- (void)stop:(unint64_t)stop;
 - (void)stopSession;
-- (void)triggered:(id)a3;
+- (void)triggered:(id)triggered;
 - (void)updateCompanion;
 - (void)updateTrustedAudioMetadata;
 @end
@@ -158,7 +158,7 @@
   }
 
   v13 = +[CSPlatformInfo sharedInstance];
-  v14 = [v13 getSystemHardware];
+  getSystemHardware = [v13 getSystemHardware];
   if (qword_100456818 != -1)
   {
     sub_10030620C();
@@ -168,7 +168,7 @@
   if (os_log_type_enabled(qword_100456820, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 134349056;
-    v23 = v14;
+    v23 = getSystemHardware;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "start hw = %{public}lu", &v22, 0xCu);
   }
 
@@ -211,11 +211,11 @@
   [(CSKappaDetectionService *)self updateKappaSessionClients:0 data:0];
 }
 
-- (CSKappaDetectionService)initWithSilo:(id)a3 vendor:(id)a4 aopService:(void *)a5 sosStateMachine:(id)a6
+- (CSKappaDetectionService)initWithSilo:(id)silo vendor:(id)vendor aopService:(void *)service sosStateMachine:(id)machine
 {
-  v64 = a3;
-  v11 = a4;
-  v65 = a6;
+  siloCopy = silo;
+  vendorCopy = vendor;
+  machineCopy = machine;
   v12 = objc_initWeak(&location, self);
   if (qword_100456818 != -1)
   {
@@ -229,20 +229,20 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "beginService", buf, 2u);
   }
 
-  objc_storeStrong(&self->_silo, a3);
-  objc_storeStrong(&self->_vendor, a4);
-  objc_storeStrong(&self->_silo, a3);
+  objc_storeStrong(&self->_silo, silo);
+  objc_storeStrong(&self->_vendor, vendor);
+  objc_storeStrong(&self->_silo, silo);
   mslRecording = self->_mslRecording;
   self->_mslRecording = 0;
 
   self->_detectionEvent = 0;
-  objc_storeStrong(&self->_sosSM, a6);
-  v15 = [v11 proxyForService:@"CSInjectionService"];
+  objc_storeStrong(&self->_sosSM, machine);
+  v15 = [vendorCopy proxyForService:@"CSInjectionService"];
   v16 = [objc_alloc(objc_msgSend(v15 syncgetClassForName:{@"CSKappaConnectionServer", "initWithDispatchSilo:andDelegate:", self->_silo, self}];
   kappaConnectionServer = self->_kappaConnectionServer;
   self->_kappaConnectionServer = v16;
 
-  v18 = [v11 proxyForService:@"CSCompanionService"];
+  v18 = [vendorCopy proxyForService:@"CSCompanionService"];
   companionProxy = self->_companionProxy;
   self->_companionProxy = v18;
 
@@ -252,14 +252,14 @@
   powerAssertion = self->_powerAssertion;
   self->_powerAssertion = v20;
 
-  v22 = [[CSKappaCoreAnalytics alloc] initWithSilo:self->_silo vendor:v11 aopService:a5];
+  v22 = [[CSKappaCoreAnalytics alloc] initWithSilo:self->_silo vendor:vendorCopy aopService:service];
   coreAnalytics = self->_coreAnalytics;
   self->_coreAnalytics = v22;
 
   v24 = +[CSPlatformInfo sharedInstance];
-  v25 = [v24 isInternalInstall];
+  isInternalInstall = [v24 isInternalInstall];
 
-  if (v25)
+  if (isInternalInstall)
   {
     v26 = NSTemporaryDirectory();
     v27 = [v26 stringByAppendingPathComponent:@"kappaTTRSpooler"];
@@ -302,9 +302,9 @@
 
   v36 = +[CSPlatformInfo sharedInstance];
   self->_isLoggingDevice = [v36 isKappaLoggingDevice];
-  v37 = [v36 isKappaDetectionDevice];
-  self->_isDetectionDevice = v37;
-  if (self->_isLoggingDevice & v37)
+  isKappaDetectionDevice = [v36 isKappaDetectionDevice];
+  self->_isDetectionDevice = isKappaDetectionDevice;
+  if (self->_isLoggingDevice & isKappaDetectionDevice)
   {
     sub_10030635C(buf);
 
@@ -316,17 +316,17 @@
   v74[1] = 3221225472;
   v74[2] = sub_1002F7B88;
   v74[3] = &unk_1004316E0;
-  v38 = self;
-  v75 = v38;
+  selfCopy = self;
+  v75 = selfCopy;
   v39 = objc_retainBlock(v74);
-  idleState = v38->_idleState;
-  v38->_idleState = v39;
+  idleState = selfCopy->_idleState;
+  selfCopy->_idleState = v39;
 
   v72[0] = _NSConcreteStackBlock;
   v72[1] = 3221225472;
   v72[2] = sub_1002F7C00;
   v72[3] = &unk_1004316E0;
-  v41 = v38;
+  v41 = selfCopy;
   v73 = v41;
   v42 = objc_retainBlock(v72);
   readingState = v41->_readingState;
@@ -359,13 +359,13 @@
   }
 
   v51 = qword_100456820;
-  v52 = [(CSHSMObjc *)v50 initWithCategory:v51 state:v38->_idleState];
+  v52 = [(CSHSMObjc *)v50 initWithCategory:v51 state:selfCopy->_idleState];
   hsm = v47->_hsm;
   v47->_hsm = v52;
 
-  v54 = [(CLSilo *)self->_silo newTimer];
+  newTimer = [(CLSilo *)self->_silo newTimer];
   triggerTimer = v47->_triggerTimer;
-  v47->_triggerTimer = v54;
+  v47->_triggerTimer = newTimer;
 
   v66[0] = _NSConcreteStackBlock;
   v66[1] = 3221225472;
@@ -400,7 +400,7 @@
     }
   }
 
-  v56->_aop = a5;
+  v56->_aop = service;
   v61 = v67;
   v62 = v56;
 
@@ -453,8 +453,8 @@
     v19 = v15;
     v20 = v11;
     v21 = v12;
-    v16 = [(CLSilo *)self->_silo queue];
-    [v14 submitWithHandler:v18 queue:v16];
+    queue = [(CLSilo *)self->_silo queue];
+    [v14 submitWithHandler:v18 queue:queue];
   }
 
   else
@@ -518,7 +518,7 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
   {
     v48 = v6;
-    v11 = [(NSUUID *)self->_uuid UUIDString];
+    uUIDString = [(NSUUID *)self->_uuid UUIDString];
     canCollectData = self->_canCollectData;
     companionConnected = self->_companionConnected;
     fractionalAudio = self->_trustedAudioStats.fractionalAudio;
@@ -551,7 +551,7 @@
     possibleRollerCoaster = self->_possibleRollerCoaster;
     v42 = *(v51 + 59);
     *buf = 138551298;
-    v58 = v11;
+    v58 = uUIDString;
     v59 = 1026;
     v60 = canCollectData;
     v61 = 1026;
@@ -733,7 +733,7 @@
     v9 = qword_100456820;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(NSUUID *)self->_uuid UUIDString];
+      uUIDString = [(NSUUID *)self->_uuid UUIDString];
       canCollectData = self->_canCollectData;
       companionConnected = self->_companionConnected;
       fractionalAudio = self->_trustedAudioStats.fractionalAudio;
@@ -766,7 +766,7 @@
       possibleRollerCoaster = self->_possibleRollerCoaster;
       v41 = *(v45 + 59);
       *buf = 138551298;
-      *v52 = v10;
+      *v52 = uUIDString;
       *&v52[8] = 1026;
       v53 = canCollectData;
       v54 = 1026;
@@ -886,10 +886,10 @@
   [(CSCompanionServiceProtocol *)companionProxy sendData:v6 type:1];
 }
 
-- (void)sendCompanionUUID:(id)a3
+- (void)sendCompanionUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  sub_10029F5A0(&__p, [v4 UTF8String]);
+  uUIDString = [d UUIDString];
+  sub_10029F5A0(&__p, [uUIDString UTF8String]);
 
   v6 = KappaCompanion::serializeCompanionUUID(&__p, v5);
   [(CSCompanionServiceProtocol *)self->_companionProxy sendData:v6 type:203];
@@ -900,9 +900,9 @@
   }
 }
 
-- (void)forceCompanionTrigger:(id)a3
+- (void)forceCompanionTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   if (qword_100456818 != -1)
   {
     sub_1003061F8();
@@ -916,18 +916,18 @@
   }
 
   triggerTime = self->_triggerTime;
-  v6 = [v4 c_struct];
-  v7 = *v6;
-  v12 = v6[1];
+  c_struct = [triggerCopy c_struct];
+  v7 = *c_struct;
+  v12 = c_struct[1];
   v11 = v7;
   companionProxy = self->_companionProxy;
   v9 = [NSData dataWithBytes:&triggerTime length:40];
   [(CSCompanionServiceProtocol *)companionProxy sendData:v9 type:3];
 }
 
-- (void)companionConnectedAckHandler:(int)a3 data:(id)a4 receivedTimestamp:(double)a5
+- (void)companionConnectedAckHandler:(int)handler data:(id)data receivedTimestamp:(double)timestamp
 {
-  v9 = a4;
+  dataCopy = data;
   if (qword_100456818 != -1)
   {
     sub_1003061F8();
@@ -941,7 +941,7 @@
   }
 
   *buf = 1;
-  [v9 getBytes:buf length:40];
+  [dataCopy getBytes:buf length:40];
   if (self->_inSession)
   {
     if (*buf < 1)
@@ -1054,9 +1054,9 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)companionDecidedToUploadHandler:(int)a3 data:(id)a4 receivedTimestamp:(double)a5
+- (void)companionDecidedToUploadHandler:(int)handler data:(id)data receivedTimestamp:(double)timestamp
 {
-  v6 = a4;
+  dataCopy = data;
   if (qword_100456818 != -1)
   {
     sub_1003061F8();
@@ -1069,7 +1069,7 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Companion decided to upload", buf, 2u);
   }
 
-  if ([v6 length] == 16)
+  if ([dataCopy length] == 16)
   {
     mslRecording = self->_mslRecording;
     if (mslRecording)
@@ -1081,13 +1081,13 @@ LABEL_22:
     {
       *buf = 0;
       v19 = 0;
-      v10 = v6;
-      memcpy(buf, [v6 bytes], objc_msgSend(v6, "length"));
+      v10 = dataCopy;
+      memcpy(buf, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
       v11 = [[NSUUID alloc] initWithUUIDBytes:buf];
-      v12 = [v11 UUIDString];
+      uUIDString = [v11 UUIDString];
 
       v13 = [CSStudiesServerUploadOutOfBandMetadata alloc];
-      v16 = v12;
+      v16 = uUIDString;
       v17 = @"companionUploaded";
       v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
       v15 = [(CSStudiesServerUploadOutOfBandMetadata *)v13 initWithLookingBack:v14 keyValuePairs:300.0];
@@ -1112,12 +1112,12 @@ LABEL_22:
   }
 }
 
-- (void)triggered:(id)a3
+- (void)triggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   [(CSHSMObjc *)self->_hsm signal:1 data:0];
-  v5 = [v4 c_struct];
-  self->_triggerPathBitmap |= *([v4 c_struct] + 1);
+  c_struct = [triggeredCopy c_struct];
+  self->_triggerPathBitmap |= *([triggeredCopy c_struct] + 1);
   if (qword_100456818 != -1)
   {
     sub_1003061F8();
@@ -1135,9 +1135,9 @@ LABEL_22:
   if (self->_triggerTime == 0.0)
   {
     self->_triggerTime = CFAbsoluteTimeGetCurrent();
-    self->_triggerAOPTime = *([v4 c_struct] + 1);
-    self->_triggerAOPArmedSec = *([v4 c_struct] + 1);
-    self->_triggerAOPHasBTCarplay = *([v4 c_struct] + 28) == 1;
+    self->_triggerAOPTime = *([triggeredCopy c_struct] + 1);
+    self->_triggerAOPArmedSec = *([triggeredCopy c_struct] + 1);
+    self->_triggerAOPHasBTCarplay = *([triggeredCopy c_struct] + 28) == 1;
     if (qword_100456818 != -1)
     {
       sub_10030620C();
@@ -1176,11 +1176,11 @@ LABEL_22:
     if (v14 != 0.0)
     {
       v15 = [NSNumber numberWithDouble:self->_triggerTime - v14];
-      v16 = [v15 stringValue];
+      stringValue = [v15 stringValue];
 
       mslRecording = self->_mslRecording;
       v21 = @"deltaTrigger";
-      v22 = v16;
+      v22 = stringValue;
       v18 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       [(CSMSLDataRecording *)mslRecording updateMetadata:v18];
     }
@@ -1189,14 +1189,14 @@ LABEL_22:
     [(CSKappaDetectionService *)self sendDeviceInfoProtobuf];
   }
 
-  if ((*([v4 c_struct] + 1) & 0xB) != 0)
+  if ((*([triggeredCopy c_struct] + 1) & 0xB) != 0)
   {
-    [(CSKappaDetectionService *)self forceCompanionTrigger:v4];
-    [(CSKappaDetectionService *)self sendForceTriggerProtobuf:v4];
+    [(CSKappaDetectionService *)self forceCompanionTrigger:triggeredCopy];
+    [(CSKappaDetectionService *)self sendForceTriggerProtobuf:triggeredCopy];
   }
 
-  [(CSSafetySOSStateMachine *)self->_sosSM feedPotentialEventWithTimestamp:v5[1] forMode:1];
-  v19 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v4 c_struct], 112);
+  [(CSSafetySOSStateMachine *)self->_sosSM feedPotentialEventWithTimestamp:c_struct[1] forMode:1];
+  v19 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [triggeredCopy c_struct], 112);
   [(CSKappaDetectionService *)self updateKappaSessionClients:2 data:v19];
 
   if (qword_100456818 != -1)
@@ -1211,15 +1211,15 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "(re)start the flow controller", buf, 2u);
   }
 
-  CLKappaAlgFlowController::start(self->fFlowControl.__ptr_, *([v4 c_struct] + 1));
+  CLKappaAlgFlowController::start(self->fFlowControl.__ptr_, *([triggeredCopy c_struct] + 1));
 }
 
 - (void)sendDeviceInfoProtobuf
 {
   v3 = +[CSPlatformInfo sharedInstance];
-  v4 = [v3 getSystemHardware];
-  v5 = [v3 getSystemModel];
-  v6 = [v5 UTF8String];
+  getSystemHardware = [v3 getSystemHardware];
+  getSystemModel = [v3 getSystemModel];
+  uTF8String = [getSystemModel UTF8String];
 
   if ([v3 isKappaLoggingDevice])
   {
@@ -1264,15 +1264,15 @@ LABEL_22:
     }
   }
 
-  v13 = v4;
-  sub_10029F5A0(&__p, v6);
+  v13 = getSystemHardware;
+  sub_10029F5A0(&__p, uTF8String);
   v16 = v7;
   v17 = 0;
   KappaToken = getKappaToken(0);
   MartyToken = getMartyToken(0);
-  v20 = [(CSArmedClients *)v9 kappaArmedSeconds];
-  v21 = [(CSArmedClients *)v9 martyArmedSecondsLocal];
-  v22 = [(CSArmedClients *)v9 enableMode];
+  kappaArmedSeconds = [(CSArmedClients *)v9 kappaArmedSeconds];
+  martyArmedSecondsLocal = [(CSArmedClients *)v9 martyArmedSecondsLocal];
+  enableMode = [(CSArmedClients *)v9 enableMode];
   v12 = KappaCompanion::serializeDeviceInfo(&v13, v11);
   [(CSCompanionServiceProtocol *)self->_companionProxy sendData:v12 type:201];
 
@@ -1282,10 +1282,10 @@ LABEL_22:
   }
 }
 
-- (void)sendForceTriggerProtobuf:(id)a3
+- (void)sendForceTriggerProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (!v4)
+  protobufCopy = protobuf;
+  if (!protobufCopy)
   {
     sub_1003064AC(&Current);
 
@@ -1294,16 +1294,16 @@ LABEL_22:
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v5 = [v4 c_struct];
-  v6 = *v5;
-  v7 = v5[1];
-  v16 = v5[2];
+  c_struct = [protobufCopy c_struct];
+  v6 = *c_struct;
+  v7 = c_struct[1];
+  v16 = c_struct[2];
   v15 = v7;
   v14 = v6;
-  v8 = v5[3];
-  v9 = v5[4];
-  v10 = v5[5];
-  v20 = v5[6];
+  v8 = c_struct[3];
+  v9 = c_struct[4];
+  v10 = c_struct[5];
+  v20 = c_struct[6];
   v19 = v10;
   v18 = v9;
   v17 = v8;
@@ -1311,9 +1311,9 @@ LABEL_22:
   [(CSCompanionServiceProtocol *)self->_companionProxy sendData:v12 type:202];
 }
 
-- (void)receiveForceTriggerProtobuf:(id)a3
+- (void)receiveForceTriggerProtobuf:(id)protobuf
 {
-  KappaCompanion::deserializeTrigger(a3, a2);
+  KappaCompanion::deserializeTrigger(protobuf, a2);
   if ((*(v8 + 9) & 4) != 0)
   {
     v8 = 0;
@@ -1361,7 +1361,7 @@ LABEL_5:
 
 - (void)initFlowController
 {
-  v2 = [(CSKappaDetectionService *)self getMaxTriggerSessionInSecondsDefault];
+  getMaxTriggerSessionInSecondsDefault = [(CSKappaDetectionService *)self getMaxTriggerSessionInSecondsDefault];
   if (qword_100456818 != -1)
   {
     sub_1003061F8();
@@ -1371,7 +1371,7 @@ LABEL_5:
   if (os_log_type_enabled(qword_100456820, OS_LOG_TYPE_DEBUG))
   {
     v4 = 134217984;
-    v5 = v2;
+    v5 = getMaxTriggerSessionInSecondsDefault;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "configuring flow controller to have a max session of %llu seconds", &v4, 0xCu);
   }
 
@@ -1660,20 +1660,20 @@ LABEL_41:
   mslRecording = self->_mslRecording;
   v17[0] = @"fractionalAudioAvailability";
   v6 = [NSNumber numberWithDouble:*&Stats];
-  v7 = [v6 stringValue];
-  v18[0] = v7;
+  stringValue = [v6 stringValue];
+  v18[0] = stringValue;
   v17[1] = @"numEpochsMissingAudioAtStart";
   v8 = [NSNumber numberWithInt:self->_trustedAudioStats.numEpochsMissingAudioAtStart];
-  v9 = [v8 stringValue];
-  v18[1] = v9;
+  stringValue2 = [v8 stringValue];
+  v18[1] = stringValue2;
   v17[2] = @"numEpochsMissingAudioAfterStart";
   v10 = [NSNumber numberWithInt:self->_trustedAudioStats.numEpochsMissingAudioAfterStart];
-  v11 = [v10 stringValue];
-  v18[2] = v11;
+  stringValue3 = [v10 stringValue];
+  v18[2] = stringValue3;
   v17[3] = @"preTriggerAudioSec";
   v12 = [NSNumber numberWithDouble:self->_trustedAudioStats.preTriggerAudioSec];
-  v13 = [v12 stringValue];
-  v18[3] = v13;
+  stringValue4 = [v12 stringValue];
+  v18[3] = stringValue4;
   v14 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:4];
   [(CSMSLDataRecording *)mslRecording updateMetadata:v14];
 
@@ -2350,7 +2350,7 @@ LABEL_42:
   }
 }
 
-- (void)sendRemoteSampleToCompanion:(unint64_t)a3 epochTs:(unint64_t)a4 epochNumber:(int)a5
+- (void)sendRemoteSampleToCompanion:(unint64_t)companion epochTs:(unint64_t)ts epochNumber:(int)number
 {
   ptr = self->fFlowControl.__ptr_;
   if (ptr)
@@ -2358,18 +2358,18 @@ LABEL_42:
     CLKappaAlgFlowController::createRemoteSample(ptr, &v11);
     if (v14 == 1)
     {
-      v11.i32[2] = a5;
-      v12 = a3;
-      v13 = a4;
+      v11.i32[2] = number;
+      companionCopy = companion;
+      tsCopy = ts;
       v10 = sub_1000193B4(&v11);
       [(CSCompanionServiceProtocol *)self->_companionProxy sendData:v10 type:401];
     }
   }
 }
 
-- (int64_t)daysSinceTimestamp:(double)a3
+- (int64_t)daysSinceTimestamp:(double)timestamp
 {
-  v3 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3];
+  v3 = [NSDate dateWithTimeIntervalSinceReferenceDate:timestamp];
   v4 = +[NSCalendar currentCalendar];
   v5 = +[NSDate now];
   v6 = [v4 components:16 fromDate:v3 toDate:v5 options:0];
@@ -2438,7 +2438,7 @@ LABEL_42:
   return v9;
 }
 
-- (void)stop:(unint64_t)a3
+- (void)stop:(unint64_t)stop
 {
   if (qword_100456818 != -1)
   {
@@ -2468,7 +2468,7 @@ LABEL_42:
 
   [(CSKappaDetectionService *)self stopSession];
   [(CSPower *)self->_powerAssertion powerlogActivity:6 event:0 isActive:CFAbsoluteTimeGetCurrent()];
-  v7 = [(CSKappaDetectionService *)self logAudioStats];
+  logAudioStats = [(CSKappaDetectionService *)self logAudioStats];
   if (self->_detectionEvent >= 2)
   {
     if (qword_100456818 != -1)
@@ -2489,7 +2489,7 @@ LABEL_42:
   ptr = self->fFlowControl.__ptr_;
   if (!ptr)
   {
-    sub_100307044(v7);
+    sub_100307044(logAudioStats);
   }
 
   v10 = *(ptr + 54);
@@ -2520,7 +2520,7 @@ LABEL_42:
     sub_10030620C();
   }
 
-  v17 = a3;
+  stopCopy = stop;
   v18 = qword_100456820;
   if (os_log_type_enabled(qword_100456820, OS_LOG_TYPE_DEBUG))
   {
@@ -2535,7 +2535,7 @@ LABEL_42:
 
   if (self->_SOSInProgress || v13)
   {
-    a3 = v17;
+    stop = stopCopy;
     if (qword_100456818 != -1)
     {
       sub_10030620C();
@@ -2556,7 +2556,7 @@ LABEL_42:
     goto LABEL_36;
   }
 
-  a3 = v17;
+  stop = stopCopy;
   if (KappaLowSenseCrashToken >= 1 && v43)
   {
     v19 = v11;
@@ -2696,16 +2696,16 @@ LABEL_57:
 
 LABEL_61:
   v33 = objc_initWeak(&buf, self);
-  v34 = [(CLSilo *)self->_silo newTimer];
+  newTimer = [(CLSilo *)self->_silo newTimer];
   sosTimer = self->_sosTimer;
-  self->_sosTimer = v34;
+  self->_sosTimer = newTimer;
 
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
   v44[2] = sub_1002FD810;
   v44[3] = &unk_1004234F0;
   v44[4] = self;
-  v44[5] = a3;
+  v44[5] = stop;
   [(CLTimer *)self->_sosTimer setHandler:v44];
   v36 = +[CSPersistentConfiguration sharedConfiguration];
   v37 = [v36 integerForKey:@"SOSTimeoutExpiration"];
@@ -2728,11 +2728,11 @@ LABEL_61:
   objc_destroyWeak(&buf);
 }
 
-- (void)saveForceState:(int)a3 withValue:(int)a4
+- (void)saveForceState:(int)state withValue:(int)value
 {
-  if (a3 < 0x18)
+  if (state < 0x18)
   {
-    self->_savedForceState[a3] = a4;
+    self->_savedForceState[state] = value;
   }
 
   else
@@ -2753,13 +2753,13 @@ LABEL_61:
   }
 }
 
-- (void)forceBehavior:(int)a3 withValue:(int)a4
+- (void)forceBehavior:(int)behavior withValue:(int)value
 {
-  if (a3 <= 9)
+  if (behavior <= 9)
   {
-    if (a3 >= 6)
+    if (behavior >= 6)
     {
-      if ((a3 - 6) < 4)
+      if ((behavior - 6) < 4)
       {
         [CSKappaDetectionService forceRolloverCrashDetector:"forceRolloverCrashDetector:withValue:" withValue:?];
       }
@@ -2771,21 +2771,21 @@ LABEL_61:
     }
   }
 
-  else if (a3 < 16)
+  else if (behavior < 16)
   {
     [CSKappaDetectionService forceHighSpeedCrashDetector:"forceHighSpeedCrashDetector:withValue:" withValue:?];
   }
 
   else
   {
-    if (a3 < 21)
+    if (behavior < 21)
     {
 LABEL_4:
       [CSKappaDetectionService forceSevereCrashDetector:"forceSevereCrashDetector:withValue:" withValue:?];
       return;
     }
 
-    switch(a3)
+    switch(behavior)
     {
       case 21:
         [CSKappaDetectionService forceSamplingBits:"forceSamplingBits:withValue:" withValue:?];
@@ -2799,9 +2799,9 @@ LABEL_4:
   }
 }
 
-- (BOOL)coinflip:(double)a3
+- (BOOL)coinflip:(double)coinflip
 {
-  if (a3 >= 0.0 && a3 <= 1.0)
+  if (coinflip >= 0.0 && coinflip <= 1.0)
   {
     v7 = drand48();
     if (qword_100456818 != -1)
@@ -2810,7 +2810,7 @@ LABEL_4:
     }
 
     v8 = v7 * 100.0;
-    v9 = a3 * 100.0;
+    v9 = coinflip * 100.0;
     v10 = qword_100456820;
     if (os_log_type_enabled(qword_100456820, OS_LOG_TYPE_INFO))
     {
@@ -2844,36 +2844,36 @@ LABEL_4:
   return v6;
 }
 
-- (float)querySamplingRate:(id)a3 withDefault:(float)a4
+- (float)querySamplingRate:(id)rate withDefault:(float)default
 {
-  v5 = a3;
+  rateCopy = rate;
   v6 = +[CSPersistentConfiguration sharedConfiguration];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:rateCopy];
   if (v7)
   {
-    [v6 floatForKey:v5];
-    a4 = v8;
+    [v6 floatForKey:rateCopy];
+    default = v8;
   }
 
-  return a4;
+  return default;
 }
 
-- (float)querySamplingBin:(id)a3 atIndex:(int)a4 withDefault:(float)a5
+- (float)querySamplingBin:(id)bin atIndex:(int)index withDefault:(float)default
 {
-  v7 = a3;
+  binCopy = bin;
   v8 = +[CSPersistentConfiguration sharedConfiguration];
-  v9 = a4;
-  v10 = [v7 stringByAppendingFormat:@"%lu", a4];
-  v11 = [v8 objectForKey:v10];
+  indexCopy = index;
+  index = [binCopy stringByAppendingFormat:@"%lu", index];
+  v11 = [v8 objectForKey:index];
   if (v11)
   {
     LODWORD(v12) = 1120403456;
-    *&v13 = a5;
-    [v8 algorithmThresholdNumber:v9 inArrayForKey:@"CurDetectionPhoneDetectionWatchAcceptanceRateBitmap" withMinValue:0.0 maxValue:v12 defaultValue:v13];
-    a5 = v14;
+    *&v13 = default;
+    [v8 algorithmThresholdNumber:indexCopy inArrayForKey:@"CurDetectionPhoneDetectionWatchAcceptanceRateBitmap" withMinValue:0.0 maxValue:v12 defaultValue:v13];
+    default = v14;
   }
 
-  return a5;
+  return default;
 }
 
 - (void)printSamplingDefaults
@@ -3201,9 +3201,9 @@ LABEL_22:
 
 - (BOOL)shouldUploadRecording
 {
-  v3 = [(CSKappaDetectionService *)self curationSampling];
-  v4 = [(CSKappaDetectionService *)self performanceSampling];
-  return (v3 | v4 | [(CSKappaDetectionService *)self isHighOrLowSenseDetection]) & 1;
+  curationSampling = [(CSKappaDetectionService *)self curationSampling];
+  performanceSampling = [(CSKappaDetectionService *)self performanceSampling];
+  return (curationSampling | performanceSampling | [(CSKappaDetectionService *)self isHighOrLowSenseDetection]) & 1;
 }
 
 - (void)notifyCompanionOfUploadedCompanionUUID
@@ -3289,11 +3289,11 @@ LABEL_22:
   if (v44)
   {
     v17 = +[CSPlatformInfo sharedInstance];
-    v18 = [v17 getSerialNumber];
+    getSerialNumber = [v17 getSerialNumber];
 
     v19 = self->_mslRecording;
     v56 = @"serialNumber";
-    v57 = v18;
+    v57 = getSerialNumber;
     v20 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
     [(CSMSLDataRecording *)v19 updateMetadata:v20];
   }
@@ -3327,16 +3327,16 @@ LABEL_22:
 
   if (self->_canCollectData)
   {
-    v26 = [(CSKappaDetectionService *)self shouldUploadRecording];
-    v27 = [(CSMSLDataRecording *)self->_mslRecording metadata];
-    v28 = [v27 objectForKey:@"shouldUploadIndependentlyOfSOS"];
+    shouldUploadRecording = [(CSKappaDetectionService *)self shouldUploadRecording];
+    metadata = [(CSMSLDataRecording *)self->_mslRecording metadata];
+    v28 = [metadata objectForKey:@"shouldUploadIndependentlyOfSOS"];
 
     if (v28)
     {
-      v26 = [v28 isEqual:&off_10043D648];
+      shouldUploadRecording = [v28 isEqual:&off_10043D648];
     }
 
-    if (self->_companionUUID && ((v26 & 1) != 0 || self->_tellCompanionToUpload))
+    if (self->_companionUUID && ((shouldUploadRecording & 1) != 0 || self->_tellCompanionToUpload))
     {
       if (qword_100456818 != -1)
       {
@@ -3361,7 +3361,7 @@ LABEL_22:
     v33 = &off_10043D648;
     v50[1] = @"shouldUploadIndependentlyOfSOS";
     v51[0] = v32;
-    if (!v26)
+    if (!shouldUploadRecording)
     {
       v33 = &off_10043D660;
     }
@@ -3421,8 +3421,8 @@ LABEL_22:
   {
     mslRecording = self->_mslRecording;
     v16 = @"collectionUUID";
-    v8 = [(NSUUID *)self->_uuid UUIDString];
-    v17 = v8;
+    uUIDString = [(NSUUID *)self->_uuid UUIDString];
+    v17 = uUIDString;
     v9 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     [(CSMSLDataRecording *)mslRecording updateMetadata:v9];
   }
@@ -3431,8 +3431,8 @@ LABEL_22:
   {
     v10 = self->_mslRecording;
     v18 = @"collectionUUID";
-    v8 = [(NSUUID *)self->_uuid UUIDString];
-    v19 = v8;
+    uUIDString = [(NSUUID *)self->_uuid UUIDString];
+    v19 = uUIDString;
     v9 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     [(CSMSLDataRecording *)v10 updateMetadata:v9];
   }
@@ -3450,9 +3450,9 @@ LABEL_22:
   if (self->_canCollectData)
   {
     v13 = +[CSPermissions sharedInstance];
-    v14 = [v13 isAuthorizedToCollectData];
+    isAuthorizedToCollectData = [v13 isAuthorizedToCollectData];
 
-    if ((v14 & 1) == 0)
+    if ((isAuthorizedToCollectData & 1) == 0)
     {
       self->_canCollectData = 0;
     }
@@ -3466,9 +3466,9 @@ LABEL_22:
   self->_detectionEvent = 0;
   [(CSKappaDetectionService *)self decideToShowTTR];
   v3 = +[CSPlatformInfo sharedInstance];
-  v4 = [v3 isFeedbackAssistantEligible];
+  isFeedbackAssistantEligible = [v3 isFeedbackAssistantEligible];
 
-  if (v4 && !self->_SOSInProgress)
+  if (isFeedbackAssistantEligible && !self->_SOSInProgress)
   {
     if (qword_100456818 != -1)
     {
@@ -3482,8 +3482,8 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[fba] SOS not in progress, attempt to enqueue UUID, if it was held", v7, 2u);
     }
 
-    v6 = [(NSUUID *)self->_uuid UUIDString];
-    [CSAnomalyEventService enqueueHeldRecordingForUpload:v6];
+    uUIDString = [(NSUUID *)self->_uuid UUIDString];
+    [CSAnomalyEventService enqueueHeldRecordingForUpload:uUIDString];
   }
 }
 
@@ -3504,9 +3504,9 @@ LABEL_22:
   }
 
   v5 = +[CSPlatformInfo sharedInstance];
-  v6 = [v5 isInternalInstall];
+  isInternalInstall = [v5 isInternalInstall];
 
-  if (v6)
+  if (isInternalInstall)
   {
     v7 = +[CSPersistentConfiguration sharedConfiguration];
     v8 = self->_sessionDetails.ttrType;
@@ -3520,26 +3520,26 @@ LABEL_11:
       }
 
       ttr = self->_ttr;
-      v10 = [(NSUUID *)self->_uuid UUIDString];
-      [(CSKappaTap2Radar *)ttr enqueueTTRWithTriggerUUID:v10 error:0];
+      uUIDString = [(NSUUID *)self->_uuid UUIDString];
+      [(CSKappaTap2Radar *)ttr enqueueTTRWithTriggerUUID:uUIDString error:0];
     }
 
     else
     {
       [v7 setDouble:@"KappaLastTTREarlyCrashTimestamp" forKey:CFAbsoluteTimeGetCurrent()];
       v9 = self->_ttr;
-      v10 = [(NSUUID *)self->_uuid UUIDString];
-      [(CSKappaTap2Radar *)v9 showTTRWithTriggerUUID:v10 andEventType:self->_sessionDetails.ttrType];
+      uUIDString = [(NSUUID *)self->_uuid UUIDString];
+      [(CSKappaTap2Radar *)v9 showTTRWithTriggerUUID:uUIDString andEventType:self->_sessionDetails.ttrType];
     }
 
     goto LABEL_11;
   }
 }
 
-- (void)setRecording:(id)a3 withUUID:(id)a4
+- (void)setRecording:(id)recording withUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
+  recordingCopy = recording;
+  dCopy = d;
   if (self->_hsm)
   {
     p_vtable = GPBRootObject.vtable;
@@ -3562,7 +3562,7 @@ LABEL_3:
   v10 = qword_100456820;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = v8;
+    v11 = recordingCopy;
     v12 = [(CSHSMObjc *)self->_hsm isIn:self->_idleState];
     v13 = [(CSHSMObjc *)self->_hsm isIn:self->_readingState];
     v14 = [(CSHSMObjc *)self->_hsm isIn:self->_waitForSOSState];
@@ -3576,14 +3576,14 @@ LABEL_3:
     v22 = 1024;
     v23 = v15;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "set recording state %d %d %d %d", buf, 0x1Au);
-    v8 = v11;
+    recordingCopy = v11;
     p_vtable = GPBRootObject.vtable;
   }
 
   if ([(CSHSMObjc *)self->_hsm isIn:self->_idleState])
   {
-    objc_storeStrong(&self->_mslRecording, a3);
-    objc_storeStrong(&self->_uuid, a4);
+    objc_storeStrong(&self->_mslRecording, recording);
+    objc_storeStrong(&self->_uuid, d);
   }
 
   else
@@ -3602,13 +3602,13 @@ LABEL_3:
   }
 }
 
-- (void)dumpSample:(id)a3
+- (void)dumpSample:(id)sample
 {
-  v3 = a3;
+  sampleCopy = sample;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sampleCopy;
     if (qword_100456818 != -1)
     {
       sub_1003061F8();
@@ -3639,7 +3639,7 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v3;
+    v11 = sampleCopy;
     if (qword_100456818 != -1)
     {
       sub_1003061F8();
@@ -3670,7 +3670,7 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v3;
+    v16 = sampleCopy;
     if (qword_100456818 != -1)
     {
       sub_1003061F8();
@@ -3706,7 +3706,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = v3;
+    v23 = sampleCopy;
     if (qword_100456818 != -1)
     {
       sub_1003061F8();
@@ -3730,7 +3730,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = v3;
+    v25 = sampleCopy;
     if (qword_100456818 != -1)
     {
       sub_1003061F8();
@@ -3775,7 +3775,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v34 = v3;
+    v34 = sampleCopy;
     v5 = sub_1002F7258();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -3809,7 +3809,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v41 = v3;
+    v41 = sampleCopy;
     v5 = sub_1002F7258();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -3840,7 +3840,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v47 = v3;
+    v47 = sampleCopy;
     v5 = sub_1002F7258();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -3860,7 +3860,7 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v50 = v3;
+    v50 = sampleCopy;
     v5 = sub_1002F7258();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -3883,7 +3883,7 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  v53 = v3;
+  v53 = sampleCopy;
   v5 = sub_1002F7258();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3938,13 +3938,13 @@ LABEL_19:
   self->_tellCompanionToUpload = 1;
 }
 
-- (void)feedAccel800:(id)a3
+- (void)feedAccel800:(id)accel800
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  accel800Copy = accel800;
+  v5 = accel800Copy;
+  if (accel800Copy)
   {
-    CLKappaAlgFlowController::feedFastAccel(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedFastAccel(self->fFlowControl.__ptr_, accel800Copy);
   }
 
   else
@@ -3956,13 +3956,13 @@ LABEL_19:
   }
 }
 
-- (void)feedHgAccel:(id)a3
+- (void)feedHgAccel:(id)accel
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  accelCopy = accel;
+  v5 = accelCopy;
+  if (accelCopy)
   {
-    CLKappaAlgFlowController::feedHgAccel(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedHgAccel(self->fFlowControl.__ptr_, accelCopy);
   }
 
   else
@@ -3974,22 +3974,22 @@ LABEL_19:
   }
 }
 
-- (void)feedAccel:(id)a3
+- (void)feedAccel:(id)accel
 {
-  v3 = a3;
-  if (!v3)
+  accelCopy = accel;
+  if (!accelCopy)
   {
     sub_100308008();
   }
 }
 
-- (void)feedDeviceMotion:(id)a3
+- (void)feedDeviceMotion:(id)motion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  motionCopy = motion;
+  v5 = motionCopy;
+  if (motionCopy)
   {
-    CLKappaAlgFlowController::feedDM(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedDM(self->fFlowControl.__ptr_, motionCopy);
   }
 
   else
@@ -4001,11 +4001,11 @@ LABEL_19:
   }
 }
 
-- (void)feedGPS:(id)a3
+- (void)feedGPS:(id)s
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  sCopy = s;
+  v6 = sCopy;
+  if (!sCopy)
   {
     sub_100308244(&v15);
 
@@ -4014,7 +4014,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (*([(CSSPUGps *)v5 c_struct]+ 15) != 3)
+  if (*([(CSSPUGps *)sCopy c_struct]+ 15) != 3)
   {
 LABEL_5:
     if (!self->_gpsCount)
@@ -4034,7 +4034,7 @@ LABEL_5:
       self->_sessionDetails.gpsCount = v9;
     }
 
-    objc_storeStrong(&self->_poiGpsSample, a3);
+    objc_storeStrong(&self->_poiGpsSample, s);
     CLKappaAlgFlowController::feedGPS(self->fFlowControl.__ptr_, v6);
     goto LABEL_18;
   }
@@ -4085,13 +4085,13 @@ LABEL_20:
 LABEL_18:
 }
 
-- (void)feedSteps:(id)a3
+- (void)feedSteps:(id)steps
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stepsCopy = steps;
+  v5 = stepsCopy;
+  if (stepsCopy)
   {
-    CLKappaAlgFlowController::feedSteps(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedSteps(self->fFlowControl.__ptr_, stepsCopy);
   }
 
   else
@@ -4103,13 +4103,13 @@ LABEL_18:
   }
 }
 
-- (void)feedKappaTrigger:(id)a3
+- (void)feedKappaTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  triggerCopy = trigger;
+  v5 = triggerCopy;
+  if (triggerCopy)
   {
-    CLKappaAlgFlowController::feedTrigger(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedTrigger(self->fFlowControl.__ptr_, triggerCopy);
   }
 
   else
@@ -4121,22 +4121,22 @@ LABEL_18:
   }
 }
 
-- (void)feedMag:(id)a3
+- (void)feedMag:(id)mag
 {
-  v3 = a3;
-  if (!v3)
+  magCopy = mag;
+  if (!magCopy)
   {
     sub_100308580();
   }
 }
 
-- (void)feedPressure:(id)a3
+- (void)feedPressure:(id)pressure
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pressureCopy = pressure;
+  v5 = pressureCopy;
+  if (pressureCopy)
   {
-    CLKappaAlgFlowController::feedPressure(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedPressure(self->fFlowControl.__ptr_, pressureCopy);
   }
 
   else
@@ -4148,13 +4148,13 @@ LABEL_18:
   }
 }
 
-- (void)feedSoundPressureLevel:(id)a3
+- (void)feedSoundPressureLevel:(id)level
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  levelCopy = level;
+  v5 = levelCopy;
+  if (levelCopy)
   {
-    CLKappaAlgFlowController::feedAudioRms(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedAudioRms(self->fFlowControl.__ptr_, levelCopy);
   }
 
   else
@@ -4166,13 +4166,13 @@ LABEL_18:
   }
 }
 
-- (void)feedTrustedAudioResult:(id)a3
+- (void)feedTrustedAudioResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (resultCopy)
   {
-    CLKappaAlgFlowController::feedTrustedAudioResult(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedTrustedAudioResult(self->fFlowControl.__ptr_, resultCopy);
   }
 
   else
@@ -4184,13 +4184,13 @@ LABEL_18:
   }
 }
 
-- (void)feedRoads:(id)a3
+- (void)feedRoads:(id)roads
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  roadsCopy = roads;
+  v5 = roadsCopy;
+  if (roadsCopy)
   {
-    CLKappaAlgFlowController::feedRoads(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedRoads(self->fFlowControl.__ptr_, roadsCopy);
   }
 
   else
@@ -4202,13 +4202,13 @@ LABEL_18:
   }
 }
 
-- (void)feedHertzSample:(id)a3
+- (void)feedHertzSample:(id)sample
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sampleCopy = sample;
+  v5 = sampleCopy;
+  if (sampleCopy)
   {
-    CLKappaAlgFlowController::feedHertzSample(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedHertzSample(self->fFlowControl.__ptr_, sampleCopy);
   }
 
   else
@@ -4220,13 +4220,13 @@ LABEL_18:
   }
 }
 
-- (void)feedCompanionStatus:(id)a3
+- (void)feedCompanionStatus:(id)status
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  statusCopy = status;
+  v5 = statusCopy;
+  if (statusCopy)
   {
-    CLKappaAlgFlowController::feedCompanionStatus(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedCompanionStatus(self->fFlowControl.__ptr_, statusCopy);
   }
 
   else
@@ -4238,13 +4238,13 @@ LABEL_18:
   }
 }
 
-- (void)feedRemoteSample:(id)a3
+- (void)feedRemoteSample:(id)sample
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sampleCopy = sample;
+  v5 = sampleCopy;
+  if (sampleCopy)
   {
-    CLKappaAlgFlowController::feedRemoteSample(self->fFlowControl.__ptr_, v4);
+    CLKappaAlgFlowController::feedRemoteSample(self->fFlowControl.__ptr_, sampleCopy);
   }
 
   else
@@ -4256,10 +4256,10 @@ LABEL_18:
   }
 }
 
-- (void)consumeSampleArray:(id)a3
+- (void)consumeSampleArray:(id)array
 {
-  v4 = a3;
-  for (i = 0; [v4 count] > i; ++i)
+  arrayCopy = array;
+  for (i = 0; [arrayCopy count] > i; ++i)
   {
     ptr = self->fFlowControl.__ptr_;
     if (!ptr)
@@ -4291,7 +4291,7 @@ LABEL_45:
       goto LABEL_49;
     }
 
-    v7 = [v4 objectAtIndexedSubscript:i];
+    v7 = [arrayCopy objectAtIndexedSubscript:i];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -4332,9 +4332,9 @@ LABEL_39:
         v9 = qword_100456820;
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
-          v10 = [v8 timestamp];
+          timestamp = [v8 timestamp];
           *buf = 134217984;
-          *&buf[4] = v10;
+          *&buf[4] = timestamp;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "ignoring stop trigger from aop %llu", buf, 0xCu);
         }
       }
@@ -4445,18 +4445,18 @@ LABEL_40:
   }
 }
 
-- (void)feedLocationManagerResults:(id)a3
+- (void)feedLocationManagerResults:(id)results
 {
-  v4 = a3;
-  v5 = v4;
+  resultsCopy = results;
+  v5 = resultsCopy;
   if (self->_mslRecording)
   {
-    v6 = [v4 firstObject];
-    [v6 coordinate];
+    firstObject = [resultsCopy firstObject];
+    [firstObject coordinate];
     v8 = v7;
 
-    v9 = [v5 firstObject];
-    [v9 coordinate];
+    firstObject2 = [v5 firstObject];
+    [firstObject2 coordinate];
     v11 = v10 * 1000.0;
 
     *&v8 = v8 * 1000.0;
@@ -4480,9 +4480,9 @@ LABEL_40:
   }
 }
 
-- (void)companionConnectedAckHandler_Deprecated:(int)a3 data:(id)a4 receivedTimestamp:(double)a5
+- (void)companionConnectedAckHandler_Deprecated:(int)deprecated data:(id)data receivedTimestamp:(double)timestamp
 {
-  v6 = a4;
+  dataCopy = data;
   if (qword_100456818 != -1)
   {
     sub_1003061F8();
@@ -4492,18 +4492,18 @@ LABEL_40:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109376;
-    *v39 = [v6 length];
+    *v39 = [dataCopy length];
     *&v39[4] = 1024;
     *&v39[6] = 36;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "companionConnectedAckHandler %d %d", buf, 0xEu);
   }
 
-  if ([v6 length] < 0x25)
+  if ([dataCopy length] < 0x25)
   {
     if (self->_inSession)
     {
-      v15 = v6;
-      memcpy(&__dst, [v6 bytes], objc_msgSend(v6, "length"));
+      v15 = dataCopy;
+      memcpy(&__dst, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
       if (qword_100456818 != -1)
       {
         sub_10030620C();
@@ -4658,7 +4658,7 @@ LABEL_40:
     v9 = qword_100456820;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v6 length];
+      v10 = [dataCopy length];
       *buf = 134217984;
       *v39 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "data length %lu", buf, 0xCu);
@@ -4685,10 +4685,10 @@ LABEL_44:
 LABEL_47:
 }
 
-- (void)messageReceived:(id)a3 fromConnection:(id)a4
+- (void)messageReceived:(id)received fromConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  connectionCopy = connection;
   if (qword_100456818 != -1)
   {
     sub_1003061F8();
@@ -4697,20 +4697,20 @@ LABEL_47:
   v8 = qword_100456820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v6 name];
+    name = [receivedCopy name];
     *buf = 68289538;
     *&buf[4] = 0;
     *&buf[8] = 2082;
     *&buf[10] = "";
     v88 = 2114;
-    v89 = v7;
+    v89 = connectionCopy;
     v90 = 2114;
-    v91 = v9;
+    v91 = name;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:messageReceived, connection:%{public, location:escape_only}@, name:%{public, location:escape_only}@}", buf, 0x26u);
   }
 
-  v10 = [v6 name];
-  v11 = [v10 isEqualToString:@"com.apple.anomalydetectiond.kappa.message.test"];
+  name2 = [receivedCopy name];
+  v11 = [name2 isEqualToString:@"com.apple.anomalydetectiond.kappa.message.test"];
 
   if (v11)
   {
@@ -4729,8 +4729,8 @@ LABEL_47:
     goto LABEL_125;
   }
 
-  v13 = [v6 name];
-  v14 = [v13 isEqualToString:@"com.apple.anomalydetectiond.kappa.ttr.test"];
+  name3 = [receivedCopy name];
+  v14 = [name3 isEqualToString:@"com.apple.anomalydetectiond.kappa.ttr.test"];
 
   if (v14)
   {
@@ -4758,10 +4758,10 @@ LABEL_47:
     }
 
     v16 = +[NSUUID UUID];
-    v17 = [v16 UUIDString];
+    uUIDString = [v16 UUIDString];
 
     v84 = 0;
-    [qword_100458890 enqueueTTRWithTriggerUUID:v17 error:&v84];
+    [qword_100458890 enqueueTTRWithTriggerUUID:uUIDString error:&v84];
     v18 = v84;
     if (v18)
     {
@@ -4782,14 +4782,14 @@ LABEL_47:
     goto LABEL_125;
   }
 
-  v20 = [v6 name];
-  v21 = [v20 isEqualToString:@"com.apple.anomalydetectiond.kappa.feedbackConsentResponse"];
+  name4 = [receivedCopy name];
+  v21 = [name4 isEqualToString:@"com.apple.anomalydetectiond.kappa.feedbackConsentResponse"];
 
   if (v21)
   {
-    if (v6)
+    if (receivedCopy)
     {
-      [v6 message];
+      [receivedCopy message];
       v22 = *buf;
     }
 
@@ -4815,7 +4815,7 @@ LABEL_47:
       if (!v33)
       {
         v34 = [v30 objectForKey:@"CSKappaFeedbackAssistantConsentKey"];
-        v35 = [v34 BOOLValue];
+        bOOLValue = [v34 BOOLValue];
 
         v36 = [v30 objectForKey:@"CSKappaFeedbackAssistantUUIDKey"];
         v37 = [[NSUUID alloc] initWithUUIDString:v36];
@@ -4830,7 +4830,7 @@ LABEL_47:
           if (os_log_type_enabled(qword_100456820, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109378;
-            *&buf[4] = v35;
+            *&buf[4] = bOOLValue;
             *&buf[8] = 2112;
             *&buf[10] = v36;
             _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "[fba] Received Feedback Assistant Consent Response: consented,%d uuid,%@", buf, 0x12u);
@@ -4840,7 +4840,7 @@ LABEL_47:
           v40 = v39;
           if (v39)
           {
-            v41 = v35;
+            v41 = bOOLValue;
           }
 
           else
@@ -4912,13 +4912,13 @@ LABEL_60:
     goto LABEL_125;
   }
 
-  v23 = [v6 name];
-  v24 = [v23 isEqualToString:@"CSKappaConnectionBringupFeedbackAssistantMessage"];
+  name5 = [receivedCopy name];
+  v24 = [name5 isEqualToString:@"CSKappaConnectionBringupFeedbackAssistantMessage"];
 
   if (!v24)
   {
-    v26 = [v6 name];
-    v27 = [v26 isEqualToString:@"CSKappaConnectionTestSensorAccessQuery"];
+    name6 = [receivedCopy name];
+    v27 = [name6 isEqualToString:@"CSKappaConnectionTestSensorAccessQuery"];
 
     if (v27)
     {
@@ -4935,9 +4935,9 @@ LABEL_60:
       }
 
       v29 = +[CSKappaDetectionService testSensorAccessQuery];
-      if (v6)
+      if (receivedCopy)
       {
-        [v6 message];
+        [receivedCopy message];
       }
 
       else
@@ -4960,14 +4960,14 @@ LABEL_60:
       goto LABEL_125;
     }
 
-    v47 = [v6 name];
-    v48 = [v47 isEqualToString:@"com.apple.anomalydetectiond.kappa.command"];
+    name7 = [receivedCopy name];
+    v48 = [name7 isEqualToString:@"com.apple.anomalydetectiond.kappa.command"];
 
     if (v48)
     {
-      if (v6)
+      if (receivedCopy)
       {
-        [v6 message];
+        [receivedCopy message];
         v49 = *buf;
       }
 
@@ -4998,25 +4998,25 @@ LABEL_60:
       else
       {
         v72 = [v68 objectForKeyedSubscript:@"CSKappaCommandKey"];
-        v73 = [v72 intValue];
+        intValue = [v72 intValue];
 
         v74 = [v68 objectForKeyedSubscript:@"CSKappaValueKey"];
-        v75 = [v74 intValue];
+        intValue2 = [v74 intValue];
 
         v76 = sub_1002F7258();
         if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
         {
           *buf = 67109376;
-          *&buf[4] = v73;
+          *&buf[4] = intValue;
           *&buf[8] = 1024;
-          *&buf[10] = v75;
+          *&buf[10] = intValue2;
           _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_INFO, "cmd = %d val = %d", buf, 0xEu);
         }
 
-        [(CSKappaDetectionService *)self saveForceState:v73 withValue:v75];
-        if (v6)
+        [(CSKappaDetectionService *)self saveForceState:intValue withValue:intValue2];
+        if (receivedCopy)
         {
-          [v6 message];
+          [receivedCopy message];
         }
 
         else
@@ -5035,13 +5035,13 @@ LABEL_60:
 
     else
     {
-      v57 = [v6 name];
-      v58 = [v57 isEqualToString:@"com.apple.anomalydetectiond.kappa.powerassertion.test"];
+      name8 = [receivedCopy name];
+      v58 = [name8 isEqualToString:@"com.apple.anomalydetectiond.kappa.powerassertion.test"];
 
       if (!v58)
       {
-        v64 = [v6 name];
-        v65 = [v64 isEqualToString:@"com.apple.anomalydetectiond.kappa.aoi.test"];
+        name9 = [receivedCopy name];
+        v65 = [name9 isEqualToString:@"com.apple.anomalydetectiond.kappa.aoi.test"];
 
         if (v65)
         {
@@ -5052,9 +5052,9 @@ LABEL_60:
             _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEBUG, "testAOIReceived", buf, 2u);
           }
 
-          if (v6)
+          if (receivedCopy)
           {
-            [v6 message];
+            [receivedCopy message];
             v67 = *buf;
           }
 
@@ -5084,9 +5084,9 @@ LABEL_60:
         _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEBUG, "testPowerAssertionReceived", buf, 2u);
       }
 
-      if (v6)
+      if (receivedCopy)
       {
-        [v6 message];
+        [receivedCopy message];
         v60 = *buf;
       }
 
@@ -5122,9 +5122,9 @@ LABEL_60:
     goto LABEL_125;
   }
 
-  if (v6)
+  if (receivedCopy)
   {
-    [v6 message];
+    [receivedCopy message];
     v25 = *buf;
   }
 
@@ -5196,7 +5196,7 @@ LABEL_60:
 LABEL_125:
 }
 
-- (void)onCompanionTestTrigger:(double)a3
+- (void)onCompanionTestTrigger:(double)trigger
 {
   if (qword_100456818 != -1)
   {
@@ -5207,19 +5207,19 @@ LABEL_125:
   if (os_log_type_enabled(qword_100456820, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v10 = a3;
+    triggerCopy = trigger;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "onCompanionTestTrigger: timestamp: %f", buf, 0xCu);
   }
 
-  v6 = [NSString stringWithFormat:@"test message data %f", *&a3];
+  v6 = [NSString stringWithFormat:@"test message data %f", *&trigger];
   companionProxy = self->_companionProxy;
   v8 = [v6 dataUsingEncoding:4];
   [(CSCompanionServiceProtocol *)companionProxy sendData:v8 type:0];
 }
 
-- (void)kappaSessionCompanionHandler:(int)a3 data:(id)a4 receivedTimestamp:(double)a5
+- (void)kappaSessionCompanionHandler:(int)handler data:(id)data receivedTimestamp:(double)timestamp
 {
-  v6 = a4;
+  dataCopy = data;
   if (self->_inSession)
   {
     if (self->_canCollectData)
@@ -5248,15 +5248,15 @@ LABEL_12:
   }
 
   v12 = +[CSPermissions sharedInstance];
-  v13 = [v12 isAuthorizedToCollectData];
+  isAuthorizedToCollectData = [v12 isAuthorizedToCollectData];
 
-  if ((v13 & 1) == 0)
+  if ((isAuthorizedToCollectData & 1) == 0)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  if ([v6 length] > 0xF)
+  if ([dataCopy length] > 0xF)
   {
     if (![(CSKappaDetectionService *)self isArmedForKappa])
     {
@@ -5272,7 +5272,7 @@ LABEL_23:
         goto LABEL_23;
       }
 
-      v7 = [[NSUUID alloc] initWithUUIDBytes:{objc_msgSend(v6, "bytes")}];
+      v7 = [[NSUUID alloc] initWithUUIDBytes:{objc_msgSend(dataCopy, "bytes")}];
       companionUUID = self->_companionUUID;
       self->_companionUUID = v7;
 
@@ -5300,7 +5300,7 @@ LABEL_23:
         goto LABEL_23;
       }
 
-      v18 = [[NSUUID alloc] initWithUUIDBytes:{objc_msgSend(v6, "bytes")}];
+      v18 = [[NSUUID alloc] initWithUUIDBytes:{objc_msgSend(dataCopy, "bytes")}];
       companionUUIDPreSession = self->_companionUUIDPreSession;
       self->_companionUUIDPreSession = v18;
 
@@ -5363,10 +5363,10 @@ LABEL_16:
   return v4;
 }
 
-- (void)companionTriggerHandler:(int)a3 data:(id)a4 receivedTimestamp:(double)a5
+- (void)companionTriggerHandler:(int)handler data:(id)data receivedTimestamp:(double)timestamp
 {
-  v6 = a4;
-  if ([v6 length] <= 0x27)
+  dataCopy = data;
+  if ([dataCopy length] <= 0x27)
   {
     sub_100309084(&__dst);
 
@@ -5374,7 +5374,7 @@ LABEL_16:
     __break(1u);
   }
 
-  memcpy(&__dst, [v6 bytes], objc_msgSend(v6, "length"));
+  memcpy(&__dst, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
   v7 = v13;
   if ((v13 & 4) != 0)
   {
@@ -5421,10 +5421,10 @@ LABEL_16:
   }
 }
 
-- (void)onCompanionMessage:(int)a3 data:(id)a4 receivedTimestamp:(double)a5
+- (void)onCompanionMessage:(int)message data:(id)data receivedTimestamp:(double)timestamp
 {
-  v8 = a4;
-  v9 = [[NSString alloc] initWithData:v8 encoding:4];
+  dataCopy = data;
+  v9 = [[NSString alloc] initWithData:dataCopy encoding:4];
   if (qword_100456818 != -1)
   {
     sub_1003061F8();
@@ -5434,46 +5434,46 @@ LABEL_16:
   if (os_log_type_enabled(qword_100456820, OS_LOG_TYPE_INFO))
   {
     v13[0] = 67109890;
-    v13[1] = a3;
+    v13[1] = message;
     v14 = 2112;
     v15 = v9;
     v16 = 2112;
-    v17 = v8;
+    v17 = dataCopy;
     v18 = 2048;
-    v19 = a5;
+    timestampCopy = timestamp;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "onCompanionMessage: type: %d, msg: %@ data: %@, receivedTimestamp: %f", v13, 0x26u);
   }
 
   if (self->_isLoggingDevice || self->_isDetectionDevice)
   {
-    if (a3 > 100)
+    if (message > 100)
     {
-      if (a3 <= 200)
+      if (message <= 200)
       {
-        if (a3 == 101)
+        if (message == 101)
         {
           v12 = 102;
           goto LABEL_31;
         }
 
-        if (a3 == 102)
+        if (message == 102)
         {
-          [(CSKappaDetectionService *)self companionConnectedAckHandler:102 data:v8 receivedTimestamp:a5];
+          [(CSKappaDetectionService *)self companionConnectedAckHandler:102 data:dataCopy receivedTimestamp:timestamp];
         }
       }
 
       else
       {
-        switch(a3)
+        switch(message)
         {
           case 201:
-            [(CSKappaDetectionService *)self receiveDeviceInfoProtobuf:v8];
+            [(CSKappaDetectionService *)self receiveDeviceInfoProtobuf:dataCopy];
             break;
           case 202:
-            [(CSKappaDetectionService *)self receiveForceTriggerProtobuf:v8];
+            [(CSKappaDetectionService *)self receiveForceTriggerProtobuf:dataCopy];
             break;
           case 203:
-            [(CSKappaDetectionService *)self receiveCompanionUUID:v8];
+            [(CSKappaDetectionService *)self receiveCompanionUUID:dataCopy];
             break;
         }
       }
@@ -5481,18 +5481,18 @@ LABEL_16:
 
     else
     {
-      if (a3 > 3)
+      if (message > 3)
       {
-        if (a3 != 4)
+        if (message != 4)
         {
-          if (a3 == 5)
+          if (message == 5)
           {
-            [(CSKappaDetectionService *)self companionConnectedAckHandler_Deprecated:5 data:v8 receivedTimestamp:a5];
+            [(CSKappaDetectionService *)self companionConnectedAckHandler_Deprecated:5 data:dataCopy receivedTimestamp:timestamp];
           }
 
-          else if (a3 == 7)
+          else if (message == 7)
           {
-            [(CSKappaDetectionService *)self companionDecidedToUploadHandler:7 data:v8 receivedTimestamp:a5];
+            [(CSKappaDetectionService *)self companionDecidedToUploadHandler:7 data:dataCopy receivedTimestamp:timestamp];
           }
 
           goto LABEL_35;
@@ -5504,14 +5504,14 @@ LABEL_31:
         goto LABEL_35;
       }
 
-      if (a3 == 1)
+      if (message == 1)
       {
-        [(CSKappaDetectionService *)self kappaSessionCompanionHandler:1 data:v8 receivedTimestamp:a5];
+        [(CSKappaDetectionService *)self kappaSessionCompanionHandler:1 data:dataCopy receivedTimestamp:timestamp];
       }
 
-      else if (a3 == 3)
+      else if (message == 3)
       {
-        [(CSKappaDetectionService *)self companionTriggerHandler:3 data:v8 receivedTimestamp:a5];
+        [(CSKappaDetectionService *)self companionTriggerHandler:3 data:dataCopy receivedTimestamp:timestamp];
       }
     }
   }
@@ -5534,10 +5534,10 @@ LABEL_31:
 LABEL_35:
 }
 
-- (void)onCompanionStatusUpdate:(BOOL)a3 pairedDevice:(id)a4 updatedTimestamp:(double)a5
+- (void)onCompanionStatusUpdate:(BOOL)update pairedDevice:(id)device updatedTimestamp:(double)timestamp
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  deviceCopy = device;
   if (qword_100456818 != -1)
   {
     sub_1003061F8();
@@ -5547,9 +5547,9 @@ LABEL_35:
   if (os_log_type_enabled(qword_100456820, OS_LOG_TYPE_DEBUG))
   {
     v16 = 67109376;
-    *v17 = v6;
+    *v17 = updateCopy;
     *&v17[4] = 2048;
-    *&v17[6] = a5;
+    *&v17[6] = timestamp;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "onCompanionStatusUpdate: isConnected: %d, updatedTimestamp: %f", &v16, 0x12u);
   }
 
@@ -5561,28 +5561,28 @@ LABEL_35:
   v9 = qword_100456820;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v7 name];
-    v11 = v10;
-    v12 = [v10 UTF8String];
-    v13 = [v7 isNearby];
-    v14 = [v7 isDefaultPairedDevice];
-    v15 = [v7 isConnected];
+    name = [deviceCopy name];
+    v11 = name;
+    uTF8String = [name UTF8String];
+    isNearby = [deviceCopy isNearby];
+    isDefaultPairedDevice = [deviceCopy isDefaultPairedDevice];
+    isConnected = [deviceCopy isConnected];
     v16 = 136315906;
-    *v17 = v12;
+    *v17 = uTF8String;
     *&v17[8] = 1024;
-    *&v17[10] = v13;
+    *&v17[10] = isNearby;
     v18 = 1024;
-    v19 = v14;
+    v19 = isDefaultPairedDevice;
     v20 = 1024;
-    v21 = v15;
+    v21 = isConnected;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Paired device info: name %s, isNearby %d, isDefaultPairedDevice %d, isConnected %d", &v16, 0x1Eu);
   }
 }
 
-- (void)didReceiveSOSAck:(int64_t)a3 forMode:(unsigned __int8)a4
+- (void)didReceiveSOSAck:(int64_t)ack forMode:(unsigned __int8)mode
 {
-  v11 = a3;
-  if (a4 == 1)
+  ackCopy = ack;
+  if (mode == 1)
   {
     if (qword_100456818 != -1)
     {
@@ -5593,13 +5593,13 @@ LABEL_35:
     if (os_log_type_enabled(qword_100456820, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v13 = a3;
+      ackCopy2 = ack;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "didReceiveSOSAck response:%ld", buf, 0xCu);
     }
 
-    if (a3 <= 6)
+    if (ack <= 6)
     {
-      if (((1 << a3) & 0x65) != 0)
+      if (((1 << ack) & 0x65) != 0)
       {
         self->_SOSInProgress = 1;
         if (qword_100456818 != -1)
@@ -5612,7 +5612,7 @@ LABEL_35:
         {
           SOSInProgress = self->_SOSInProgress;
           *buf = 67109120;
-          LODWORD(v13) = SOSInProgress;
+          LODWORD(ackCopy2) = SOSInProgress;
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "didReceiveSOSAck setting _SOSInProgress to %d", buf, 8u);
         }
 
@@ -5626,7 +5626,7 @@ LABEL_35:
       }
     }
 
-    v10 = [NSData dataWithBytes:&v11 length:8];
+    v10 = [NSData dataWithBytes:&ackCopy length:8];
     [(CSKappaDetectionService *)self updateKappaSessionClients:4 data:v10];
   }
 
@@ -5646,11 +5646,11 @@ LABEL_35:
   }
 }
 
-- (void)didReceiveSOSStatusUpdate:(id)a3 forMode:(unsigned __int8)a4
+- (void)didReceiveSOSStatusUpdate:(id)update forMode:(unsigned __int8)mode
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 == 1)
+  modeCopy = mode;
+  updateCopy = update;
+  if (modeCopy == 1)
   {
     if (qword_100456818 != -1)
     {
@@ -5660,23 +5660,23 @@ LABEL_35:
     v7 = qword_100456820;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [v6 sosStatus];
-      v9 = [v8 flowState];
-      v10 = [v6 isKappaFlow];
-      v11 = [v6 isKappaFlowActive];
-      v12 = [v6 sosStatus];
+      sosStatus = [updateCopy sosStatus];
+      flowState = [sosStatus flowState];
+      isKappaFlow = [updateCopy isKappaFlow];
+      isKappaFlowActive = [updateCopy isKappaFlowActive];
+      sosStatus2 = [updateCopy sosStatus];
       *buf = 134218752;
-      *v45 = v9;
+      *v45 = flowState;
       *&v45[8] = 1024;
-      v46 = v10;
+      v46 = isKappaFlow;
       v47 = 1024;
-      v48 = v11;
+      v48 = isKappaFlowActive;
       v49 = 1024;
-      v50 = [v12 isPairedDeviceStatus];
+      isPairedDeviceStatus = [sosStatus2 isPairedDeviceStatus];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "didReceiveSOSStatusUpdate state:%ld, isKappaFlow:%d, isKappaFlowActive:%d isFromPaired:%d", buf, 0x1Eu);
     }
 
-    if (([v6 isKappaFlow] & 1) == 0)
+    if (([updateCopy isKappaFlow] & 1) == 0)
     {
       if (qword_100456818 != -1)
       {
@@ -5691,14 +5691,14 @@ LABEL_35:
       }
     }
 
-    v14 = [v6 sosStatus];
-    v15 = [v14 isPairedDeviceStatus];
+    sosStatus3 = [updateCopy sosStatus];
+    isPairedDeviceStatus2 = [sosStatus3 isPairedDeviceStatus];
 
-    v37 = v15 ^ 1;
-    v16 = [v6 sosKappaState];
-    if (v16 <= 3)
+    v37 = isPairedDeviceStatus2 ^ 1;
+    sosKappaState = [updateCopy sosKappaState];
+    if (sosKappaState <= 3)
     {
-      if (v16 == 1)
+      if (sosKappaState == 1)
       {
         if (v37)
         {
@@ -5711,19 +5711,19 @@ LABEL_35:
         }
 
         [(CSMSLDataRecording *)self->_mslRecording updateMetadata:v28];
-        v27 = [NSData dataWithBytes:&v37 length:1];
-        [(CSKappaDetectionService *)self updateKappaSessionClients:5 data:v27];
+        uUIDString = [NSData dataWithBytes:&v37 length:1];
+        [(CSKappaDetectionService *)self updateKappaSessionClients:5 data:uUIDString];
         goto LABEL_29;
       }
 
-      if (v16 != 3)
+      if (sosKappaState != 3)
       {
         goto LABEL_30;
       }
 
       mslRecording = self->_mslRecording;
       v42 = @"userResponse";
-      v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 sosKappaState]);
+      v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [updateCopy sosKappaState]);
       v43 = v18;
       v19 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
       [(CSMSLDataRecording *)mslRecording updateMetadata:v19];
@@ -5742,11 +5742,11 @@ LABEL_35:
       goto LABEL_28;
     }
 
-    if (v16 == 4)
+    if (sosKappaState == 4)
     {
       v29 = self->_mslRecording;
       v40 = @"userResponse";
-      v30 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 sosKappaState]);
+      v30 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [updateCopy sosKappaState]);
       v41 = v30;
       v31 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
       [(CSMSLDataRecording *)v29 updateMetadata:v31];
@@ -5760,32 +5760,32 @@ LABEL_35:
       if (v29)
       {
 LABEL_28:
-        v27 = [(NSUUID *)self->_uuid UUIDString];
-        [CSAnomalyEventService enqueueHeldRecordingForUpload:v27];
+        uUIDString = [(NSUUID *)self->_uuid UUIDString];
+        [CSAnomalyEventService enqueueHeldRecordingForUpload:uUIDString];
         goto LABEL_29;
       }
     }
 
-    else if (v16 == 6)
+    else if (sosKappaState == 6)
     {
-      v23 = [(NSUUID *)self->_uuid UUIDString];
-      [CSFeedbackAssistant showFeedbackAssistantSurveyWithUUID:v23];
+      uUIDString2 = [(NSUUID *)self->_uuid UUIDString];
+      [CSFeedbackAssistant showFeedbackAssistantSurveyWithUUID:uUIDString2];
 
       v24 = self->_mslRecording;
       v38 = @"userResponse";
-      v25 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 sosKappaState]);
+      v25 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [updateCopy sosKappaState]);
       v39 = v25;
       v26 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
       [(CSMSLDataRecording *)v24 updateMetadata:v26];
 
-      v27 = [NSData dataWithBytes:&v37 length:1];
-      [(CSKappaDetectionService *)self updateKappaSessionClients:6 data:v27];
+      uUIDString = [NSData dataWithBytes:&v37 length:1];
+      [(CSKappaDetectionService *)self updateKappaSessionClients:6 data:uUIDString];
 LABEL_29:
     }
 
 LABEL_30:
     SOSInProgress = self->_SOSInProgress;
-    v35 = [v6 isKappaFlowActive];
+    isKappaFlowActive2 = [updateCopy isKappaFlowActive];
     if (qword_100456818 != -1)
     {
       sub_10030620C();
@@ -5797,11 +5797,11 @@ LABEL_30:
       *buf = 67109376;
       *v45 = SOSInProgress;
       *&v45[4] = 1024;
-      *&v45[6] = v35;
+      *&v45[6] = isKappaFlowActive2;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEBUG, "_SOSInProgress prev %d, current %d", buf, 0xEu);
     }
 
-    if (!(v35 & 1 | !SOSInProgress))
+    if (!(isKappaFlowActive2 & 1 | !SOSInProgress))
     {
       [(CSHSMObjc *)self->_hsm signal:7 data:0];
     }

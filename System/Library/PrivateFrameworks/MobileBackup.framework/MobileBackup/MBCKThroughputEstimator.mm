@@ -1,13 +1,13 @@
 @interface MBCKThroughputEstimator
-- (MBCKThroughputEstimator)initWithSamplingPeriod:(double)a3 maximumNumberOfPeriods:(unint64_t)a4;
-- (void)_storeAndComputeThroughput:(id)a3;
+- (MBCKThroughputEstimator)initWithSamplingPeriod:(double)period maximumNumberOfPeriods:(unint64_t)periods;
+- (void)_storeAndComputeThroughput:(id)throughput;
 - (void)finishSampling;
-- (void)sampleUploadedBytes:(unint64_t)a3;
+- (void)sampleUploadedBytes:(unint64_t)bytes;
 @end
 
 @implementation MBCKThroughputEstimator
 
-- (MBCKThroughputEstimator)initWithSamplingPeriod:(double)a3 maximumNumberOfPeriods:(unint64_t)a4
+- (MBCKThroughputEstimator)initWithSamplingPeriod:(double)period maximumNumberOfPeriods:(unint64_t)periods
 {
   v10.receiver = self;
   v10.super_class = MBCKThroughputEstimator;
@@ -15,8 +15,8 @@
   v7 = v6;
   if (v6)
   {
-    [(MBCKThroughputEstimator *)v6 setSamplingPeriod:a3];
-    [(MBCKThroughputEstimator *)v7 setMaxSamplingPeriods:a4];
+    [(MBCKThroughputEstimator *)v6 setSamplingPeriod:period];
+    [(MBCKThroughputEstimator *)v7 setMaxSamplingPeriods:periods];
     v8 = objc_opt_new();
     [(MBCKThroughputEstimator *)v7 setThroughputs:v8];
 
@@ -28,20 +28,20 @@
   return v7;
 }
 
-- (void)sampleUploadedBytes:(unint64_t)a3
+- (void)sampleUploadedBytes:(unint64_t)bytes
 {
   obj = self;
   objc_sync_enter(obj);
   v4 = +[NSDate now];
-  v5 = [(MBCKThroughputEstimator *)obj startDateOfCurrentPeriod];
+  startDateOfCurrentPeriod = [(MBCKThroughputEstimator *)obj startDateOfCurrentPeriod];
 
-  if (!v5)
+  if (!startDateOfCurrentPeriod)
   {
     [(MBCKThroughputEstimator *)obj setStartDateOfCurrentPeriod:v4];
   }
 
-  v6 = [(MBCKThroughputEstimator *)obj startDateOfCurrentPeriod];
-  [v4 timeIntervalSinceDate:v6];
+  startDateOfCurrentPeriod2 = [(MBCKThroughputEstimator *)obj startDateOfCurrentPeriod];
+  [v4 timeIntervalSinceDate:startDateOfCurrentPeriod2];
   v8 = v7;
   [(MBCKThroughputEstimator *)obj samplingPeriod];
   v10 = v9;
@@ -54,45 +54,45 @@
 
   else
   {
-    a3 += [(MBCKThroughputEstimator *)obj uploadedBytesInCurrentPeriod];
+    bytes += [(MBCKThroughputEstimator *)obj uploadedBytesInCurrentPeriod];
   }
 
-  [(MBCKThroughputEstimator *)obj setUploadedBytesInCurrentPeriod:a3];
+  [(MBCKThroughputEstimator *)obj setUploadedBytesInCurrentPeriod:bytes];
 
   objc_sync_exit(obj);
 }
 
-- (void)_storeAndComputeThroughput:(id)a3
+- (void)_storeAndComputeThroughput:(id)throughput
 {
-  v17 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MBCKThroughputEstimator *)v4 startDateOfCurrentPeriod];
+  throughputCopy = throughput;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  startDateOfCurrentPeriod = [(MBCKThroughputEstimator *)selfCopy startDateOfCurrentPeriod];
 
-  if (v5)
+  if (startDateOfCurrentPeriod)
   {
     v6 = +[NSDateFormatter ISO8601Formatter];
-    v7 = [(MBCKThroughputEstimator *)v4 startDateOfCurrentPeriod];
-    v8 = [v6 stringFromDate:v7];
+    startDateOfCurrentPeriod2 = [(MBCKThroughputEstimator *)selfCopy startDateOfCurrentPeriod];
+    v8 = [v6 stringFromDate:startDateOfCurrentPeriod2];
 
-    v9 = atomic_exchange(&v4->_retriesInCurrentPeriod, 0);
-    v10 = [(MBCKThroughputEstimator *)v4 uploadedBytesInCurrentPeriod];
-    v11 = [(MBCKThroughputEstimator *)v4 startDateOfCurrentPeriod];
-    [v17 timeIntervalSinceDate:v11];
-    v13 = (v10 / v12);
+    v9 = atomic_exchange(&selfCopy->_retriesInCurrentPeriod, 0);
+    uploadedBytesInCurrentPeriod = [(MBCKThroughputEstimator *)selfCopy uploadedBytesInCurrentPeriod];
+    startDateOfCurrentPeriod3 = [(MBCKThroughputEstimator *)selfCopy startDateOfCurrentPeriod];
+    [throughputCopy timeIntervalSinceDate:startDateOfCurrentPeriod3];
+    v13 = (uploadedBytesInCurrentPeriod / v12);
 
-    throughputs = v4->_throughputs;
+    throughputs = selfCopy->_throughputs;
     v15 = [NSString stringWithFormat:@"%@|%lu|%lu", v8, v13, v9];
     [(NSMutableArray *)throughputs addObject:v15];
 
-    v16 = [(NSMutableArray *)v4->_throughputs count];
-    if (v16 > [(MBCKThroughputEstimator *)v4 maxSamplingPeriods])
+    v16 = [(NSMutableArray *)selfCopy->_throughputs count];
+    if (v16 > [(MBCKThroughputEstimator *)selfCopy maxSamplingPeriods])
     {
-      [(NSMutableArray *)v4->_throughputs removeObjectAtIndex:0];
+      [(NSMutableArray *)selfCopy->_throughputs removeObjectAtIndex:0];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)finishSampling

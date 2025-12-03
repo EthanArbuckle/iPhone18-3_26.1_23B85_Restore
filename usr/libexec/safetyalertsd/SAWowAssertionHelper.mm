@@ -1,16 +1,16 @@
 @interface SAWowAssertionHelper
-- (void)assertWoW:(BOOL)a3;
+- (void)assertWoW:(BOOL)w;
 @end
 
 @implementation SAWowAssertionHelper
 
-- (void)assertWoW:(BOOL)a3
+- (void)assertWoW:(BOOL)w
 {
-  v3 = a3;
+  wCopy = w;
   isAsserted = self->isAsserted;
   v6 = SALogObjectGeneral;
   v7 = os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT);
-  if (isAsserted == v3)
+  if (isAsserted == wCopy)
   {
     if (v7)
     {
@@ -31,14 +31,14 @@
       v12 = 2082;
       v13 = "";
       v14 = 1026;
-      v15 = v3;
+      v15 = wCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#wow,assertWoW,triggered, state:%{public}hhd}", &v10, 0x18u);
     }
 
-    self->isAsserted = v3;
+    self->isAsserted = wCopy;
     v8 = +[CUTWiFiManager sharedInstance];
     v9 = v8;
-    if (v3)
+    if (wCopy)
     {
       [v8 addWoWClient:self];
     }

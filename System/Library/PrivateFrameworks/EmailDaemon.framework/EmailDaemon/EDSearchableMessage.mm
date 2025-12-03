@@ -1,9 +1,9 @@
 @interface EDSearchableMessage
 + (NSString)userHandle;
-+ (id)peopleFromCommentedAddresses:(id)a3;
++ (id)peopleFromCommentedAddresses:(id)addresses;
 - (EDSearchableMessage)init;
-- (EDSearchableMessage)initWithSubjectWithoutPrefix:(id)a3 dateSent:(id)a4 dateReceived:(id)a5 isEncrypted:(BOOL)a6 priority:(id)a7 senders:(id)a8 to:(id)a9 cc:(id)a10 bcc:(id)a11 allHeaders:(id)a12 htmlContent:(id)a13 summary:(id)a14 messageID:(id)a15 notificationID:(id)a16 isPartOfExistingThread:(BOOL)a17 hasCompleteData:(BOOL)a18 accountIdentifier:(id)a19 accountIsManaged:(BOOL)a20 accountType:(id)a21 accountEmailAddresses:(id)a22 update:(id)a23 attachments:(id)a24 category:(id)a25;
-- (void)addToAttributes:(id)a3 forIdentifier:(id)a4;
+- (EDSearchableMessage)initWithSubjectWithoutPrefix:(id)prefix dateSent:(id)sent dateReceived:(id)received isEncrypted:(BOOL)encrypted priority:(id)priority senders:(id)senders to:(id)to cc:(id)self0 bcc:(id)self1 allHeaders:(id)self2 htmlContent:(id)self3 summary:(id)self4 messageID:(id)self5 notificationID:(id)self6 isPartOfExistingThread:(BOOL)self7 hasCompleteData:(BOOL)self8 accountIdentifier:(id)self9 accountIsManaged:(BOOL)managed accountType:(id)type accountEmailAddresses:(id)addresses update:(id)update attachments:(id)attachments category:(id)category;
+- (void)addToAttributes:(id)attributes forIdentifier:(id)identifier;
 @end
 
 @implementation EDSearchableMessage
@@ -20,7 +20,7 @@
   return v2;
 }
 
-+ (id)peopleFromCommentedAddresses:(id)a3
++ (id)peopleFromCommentedAddresses:(id)addresses
 {
   v3 = sub_1C645CA14();
   sub_1C643361C(v3);
@@ -31,21 +31,21 @@
   return v4;
 }
 
-- (EDSearchableMessage)initWithSubjectWithoutPrefix:(id)a3 dateSent:(id)a4 dateReceived:(id)a5 isEncrypted:(BOOL)a6 priority:(id)a7 senders:(id)a8 to:(id)a9 cc:(id)a10 bcc:(id)a11 allHeaders:(id)a12 htmlContent:(id)a13 summary:(id)a14 messageID:(id)a15 notificationID:(id)a16 isPartOfExistingThread:(BOOL)a17 hasCompleteData:(BOOL)a18 accountIdentifier:(id)a19 accountIsManaged:(BOOL)a20 accountType:(id)a21 accountEmailAddresses:(id)a22 update:(id)a23 attachments:(id)a24 category:(id)a25
+- (EDSearchableMessage)initWithSubjectWithoutPrefix:(id)prefix dateSent:(id)sent dateReceived:(id)received isEncrypted:(BOOL)encrypted priority:(id)priority senders:(id)senders to:(id)to cc:(id)self0 bcc:(id)self1 allHeaders:(id)self2 htmlContent:(id)self3 summary:(id)self4 messageID:(id)self5 notificationID:(id)self6 isPartOfExistingThread:(BOOL)self7 hasCompleteData:(BOOL)self8 accountIdentifier:(id)self9 accountIsManaged:(BOOL)managed accountType:(id)type accountEmailAddresses:(id)addresses update:(id)update attachments:(id)attachments category:(id)category
 {
-  v88 = a6;
-  v89 = self;
-  v73 = a7;
-  v74 = a24;
-  v76 = a23;
-  v77 = a25;
-  v69 = a21;
-  v81 = a19;
-  v75 = a16;
-  v71 = a22;
-  v72 = a15;
-  v68 = a14;
-  v70 = a13;
+  encryptedCopy = encrypted;
+  selfCopy = self;
+  priorityCopy = priority;
+  attachmentsCopy = attachments;
+  updateCopy = update;
+  categoryCopy = category;
+  typeCopy = type;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  addressesCopy = addresses;
+  dCopy = d;
+  summaryCopy = summary;
+  contentCopy = content;
   v25 = sub_1C645C674();
   v26 = *(*(v25 - 8) + 64);
   v27 = MEMORY[0x1EEE9AC00](v25 - 8);
@@ -63,7 +63,7 @@
   v82 = sub_1C645CA14();
   v80 = sub_1C645CA14();
   v79 = sub_1C645CA14();
-  if (a12)
+  if (headers)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC1C4450, &qword_1C6473900);
     v78 = sub_1C645C7E4();
@@ -74,22 +74,22 @@
     v78 = 0;
   }
 
-  v67 = v69;
-  v71 = v71;
-  v76 = v76;
-  v77 = v77;
-  v74 = v74;
-  v34 = v81;
-  v35 = v75;
-  v36 = v72;
-  v37 = v68;
-  v73 = v73;
-  if (v70)
+  v67 = typeCopy;
+  addressesCopy = addressesCopy;
+  updateCopy = updateCopy;
+  categoryCopy = categoryCopy;
+  attachmentsCopy = attachmentsCopy;
+  v34 = identifierCopy;
+  v35 = iDCopy;
+  v36 = dCopy;
+  v37 = summaryCopy;
+  priorityCopy = priorityCopy;
+  if (contentCopy)
   {
-    v38 = v70;
+    v38 = contentCopy;
     v39 = sub_1C645C594();
-    v69 = v40;
-    v70 = v39;
+    typeCopy = v40;
+    contentCopy = v39;
 
     if (v37)
     {
@@ -99,12 +99,12 @@
 
   else
   {
-    v69 = 0xF000000000000000;
-    v70 = 0;
+    typeCopy = 0xF000000000000000;
+    contentCopy = 0;
     if (v37)
     {
 LABEL_6:
-      v68 = sub_1C645C874();
+      summaryCopy = sub_1C645C874();
       v66 = v41;
 
       if (v36)
@@ -113,7 +113,7 @@ LABEL_6:
       }
 
 LABEL_11:
-      v72 = 0;
+      dCopy = 0;
       v65 = 0;
       if (v35)
       {
@@ -124,7 +124,7 @@ LABEL_11:
     }
   }
 
-  v68 = 0;
+  summaryCopy = 0;
   v66 = 0;
   if (!v36)
   {
@@ -132,23 +132,23 @@ LABEL_11:
   }
 
 LABEL_7:
-  v72 = sub_1C645C874();
+  dCopy = sub_1C645C874();
   v65 = v42;
 
   if (v35)
   {
 LABEL_8:
-    v75 = sub_1C645C874();
+    iDCopy = sub_1C645C874();
     v64 = v43;
 
     goto LABEL_13;
   }
 
 LABEL_12:
-  v75 = 0;
+  iDCopy = 0;
   v64 = 0;
 LABEL_13:
-  v63 = a17;
+  threadCopy = thread;
   if (v34)
   {
     v44 = sub_1C645C874();
@@ -165,23 +165,23 @@ LABEL_13:
   v48 = sub_1C645C874();
   v50 = v49;
 
-  v51 = v71;
+  v51 = addressesCopy;
   v52 = sub_1C645CA14();
 
-  v53 = v77;
-  v54 = v74;
-  v55 = v76;
+  v53 = categoryCopy;
+  v54 = attachmentsCopy;
+  v55 = updateCopy;
   v61 = v48;
-  v56 = v69;
-  v57 = v70;
-  v58 = v73;
-  v59 = sub_1C6433808(v85, v84, v86, v87, v88, v73, v83, v82, v80, v79, v78, v70, v69, v68, v66, v72, v65, v75, v64, v63, a18, v44, v46, a20, v61, v50, v52, v76, v74, v77);
+  v56 = typeCopy;
+  v57 = contentCopy;
+  v58 = priorityCopy;
+  v59 = sub_1C6433808(v85, v84, v86, v87, encryptedCopy, priorityCopy, v83, v82, v80, v79, v78, contentCopy, typeCopy, summaryCopy, v66, dCopy, v65, iDCopy, v64, threadCopy, data, v44, v46, managed, v61, v50, v52, updateCopy, attachmentsCopy, categoryCopy);
 
   sub_1C641711C(v57, v56);
   return v59;
 }
 
-- (void)addToAttributes:(id)a3 forIdentifier:(id)a4
+- (void)addToAttributes:(id)attributes forIdentifier:(id)identifier
 {
   v6 = type metadata accessor for SearchableMessage(0);
   v7 = *(*(v6 - 8) + 64);
@@ -190,10 +190,10 @@ LABEL_13:
   v10 = sub_1C645C874();
   v12 = v11;
   sub_1C640DBAC(self + OBJC_IVAR___EDSearchableMessage__underlying, v15);
-  v13 = a3;
-  v14 = self;
+  attributesCopy = attributes;
+  selfCopy = self;
   swift_dynamicCast();
-  sub_1C643C638(v13, v10, v12);
+  sub_1C643C638(attributesCopy, v10, v12);
 
   sub_1C6434174(v9, type metadata accessor for SearchableMessage);
 }

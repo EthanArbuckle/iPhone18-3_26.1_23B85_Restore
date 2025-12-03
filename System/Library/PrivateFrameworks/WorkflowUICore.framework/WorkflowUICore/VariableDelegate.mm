@@ -1,13 +1,13 @@
 @interface VariableDelegate
-- (void)variableDidChange:(id)a3;
+- (void)variableDidChange:(id)change;
 @end
 
 @implementation VariableDelegate
 
-- (void)variableDidChange:(id)a3
+- (void)variableDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_274B69628();
 }
 

@@ -1,22 +1,22 @@
 @interface PRSPosterUpdater
-+ (BOOL)canUpdatesBeAppliedLocally:(id)a3;
-+ (id)updaterForPath:(id)a3;
-- (BOOL)applyUpdateLocally:(id)a3 error:(id *)a4;
-- (BOOL)applyUpdatesLocally:(id)a3 error:(id *)a4;
-- (id)_initWithWeakPath:(id)a3;
++ (BOOL)canUpdatesBeAppliedLocally:(id)locally;
++ (id)updaterForPath:(id)path;
+- (BOOL)applyUpdateLocally:(id)locally error:(id *)error;
+- (BOOL)applyUpdatesLocally:(id)locally error:(id *)error;
+- (id)_initWithWeakPath:(id)path;
 @end
 
 @implementation PRSPosterUpdater
 
-+ (BOOL)canUpdatesBeAppliedLocally:(id)a3
++ (BOOL)canUpdatesBeAppliedLocally:(id)locally
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  locallyCopy = locally;
+  v4 = [locallyCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -27,18 +27,18 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(locallyCopy);
         }
 
-        v8 = [*(*(&v13 + 1) + 8 * i) type];
-        if (v8 > 0x15 || ((1 << v8) & 0x3BE001) == 0)
+        type = [*(*(&v13 + 1) + 8 * i) type];
+        if (type > 0x15 || ((1 << type) & 0x3BE001) == 0)
         {
           v10 = 0;
           goto LABEL_14;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [locallyCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -55,21 +55,21 @@ LABEL_14:
   return v10;
 }
 
-+ (id)updaterForPath:(id)a3
++ (id)updaterForPath:(id)path
 {
-  v5 = a3;
-  if (v5)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v6 = a1;
-    objc_sync_enter(v6);
-    v7 = objc_getAssociatedObject(v5, a2);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v7 = objc_getAssociatedObject(pathCopy, a2);
     if (!v7)
     {
-      v7 = [[PRSPosterUpdater alloc] _initWithWeakPath:v5];
-      objc_setAssociatedObject(v5, a2, v7, 1);
+      v7 = [[PRSPosterUpdater alloc] _initWithWeakPath:pathCopy];
+      objc_setAssociatedObject(pathCopy, a2, v7, 1);
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -80,32 +80,32 @@ LABEL_14:
   return v7;
 }
 
-- (id)_initWithWeakPath:(id)a3
+- (id)_initWithWeakPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v8.receiver = self;
   v8.super_class = PRSPosterUpdater;
   v5 = [(PRSPosterUpdater *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_weakPath, v4);
+    objc_storeWeak(&v5->_weakPath, pathCopy);
   }
 
   return v6;
 }
 
-- (BOOL)applyUpdateLocally:(id)a3 error:(id *)a4
+- (BOOL)applyUpdateLocally:(id)locally error:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (locally)
   {
-    v12 = a3;
+    locallyCopy = locally;
     v6 = MEMORY[0x1E695DEC8];
-    v7 = a3;
-    v8 = [v6 arrayWithObjects:&v12 count:1];
+    locallyCopy2 = locally;
+    v8 = [v6 arrayWithObjects:&locallyCopy count:1];
 
-    v9 = [(PRSPosterUpdater *)self applyUpdatesLocally:v8 error:a4, v12, v13];
+    v9 = [(PRSPosterUpdater *)self applyUpdatesLocally:v8 error:error, locallyCopy, v13];
   }
 
   else
@@ -117,16 +117,16 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)applyUpdatesLocally:(id)a3 error:(id *)a4
+- (BOOL)applyUpdatesLocally:(id)locally error:(id *)error
 {
   v68[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count])
+  locallyCopy = locally;
+  if ([locallyCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_weakPath);
     if (!WeakRetained)
     {
-      if (!a4)
+      if (!error)
       {
         LOBYTE(v24) = 0;
 LABEL_56:
@@ -137,35 +137,35 @@ LABEL_56:
       v25 = MEMORY[0x1E696ABC0];
       v67 = *MEMORY[0x1E696A588];
       v68[0] = @"path is no longer valid.";
-      v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v68 forKeys:&v67 count:1];
-      [v25 errorWithDomain:@"com.apple.PosterBoardServices" code:-1 userInfo:v8];
-      *a4 = LOBYTE(v24) = 0;
+      selfCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:v68 forKeys:&v67 count:1];
+      [v25 errorWithDomain:@"com.apple.PosterBoardServices" code:-1 userInfo:selfCopy];
+      *error = LOBYTE(v24) = 0;
 LABEL_55:
 
       goto LABEL_56;
     }
 
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [WeakRetained instanceURL];
-    if (([v9 checkResourceIsReachableAndReturnError:a4] & 1) == 0)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    instanceURL = [WeakRetained instanceURL];
+    if (([instanceURL checkResourceIsReachableAndReturnError:error] & 1) == 0)
     {
       LOBYTE(v24) = 0;
 LABEL_54:
 
-      objc_sync_exit(v8);
+      objc_sync_exit(selfCopy);
       goto LABEL_55;
     }
 
-    v10 = [WeakRetained role];
-    v47 = a4;
-    v45 = v9;
+    role = [WeakRetained role];
+    errorCopy = error;
+    v45 = instanceURL;
     v46 = WeakRetained;
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v11 = v6;
+    v11 = locallyCopy;
     v12 = [v11 countByEnumeratingWithState:&v51 objects:v66 count:16];
     if (v12)
     {
@@ -182,21 +182,21 @@ LABEL_54:
             objc_enumerationMutation(v11);
           }
 
-          v17 = [*(*(&v51 + 1) + 8 * v16) type];
-          if (v17 <= 0x15)
+          type = [*(*(&v51 + 1) + 8 * v16) type];
+          if (type <= 0x15)
           {
-            if (((1 << v17) & 0x3BE1C6) != 0)
+            if (((1 << type) & 0x3BE1C6) != 0)
             {
-              if (([v10 isEqualToString:v14] & 1) == 0)
+              if (([role isEqualToString:v14] & 1) == 0)
               {
-                v26 = v47;
-                if (v47)
+                v26 = errorCopy;
+                if (errorCopy)
                 {
                   v27 = MEMORY[0x1E696ABC0];
                   v62 = *MEMORY[0x1E696A588];
                   v63 = @"Lockscreen role is inconsistent with provided updates.";
                   [MEMORY[0x1E695DF20] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
-                  v9 = v45;
+                  instanceURL = v45;
                   v28 = WeakRetained = v46;
                   v29 = [v27 errorWithDomain:@"com.apple.PosterBoardServices" code:-1 userInfo:v28];
 LABEL_43:
@@ -209,18 +209,18 @@ LABEL_43:
               }
             }
 
-            else if (((1 << v17) & 0x1200) != 0)
+            else if (((1 << type) & 0x1200) != 0)
             {
-              if (([v10 isEqualToString:v15] & 1) == 0)
+              if (([role isEqualToString:v15] & 1) == 0)
               {
-                v26 = v47;
-                if (v47)
+                v26 = errorCopy;
+                if (errorCopy)
                 {
                   v38 = MEMORY[0x1E696ABC0];
                   v60 = *MEMORY[0x1E696A588];
                   v61 = @"Ambient role is inconsistent with provided updates.";
                   [MEMORY[0x1E695DF20] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
-                  v9 = v45;
+                  instanceURL = v45;
                   v28 = WeakRetained = v46;
                   v29 = [v38 errorWithDomain:@"com.apple.PosterBoardServices" code:-1 userInfo:v28];
                   goto LABEL_43;
@@ -229,21 +229,21 @@ LABEL_43:
 LABEL_44:
                 LOBYTE(v24) = 0;
                 WeakRetained = v46;
-                v9 = v45;
+                instanceURL = v45;
                 goto LABEL_53;
               }
             }
 
-            else if (((1 << v17) & 0xC38) != 0)
+            else if (((1 << type) & 0xC38) != 0)
             {
-              v26 = v47;
-              if (v47)
+              v26 = errorCopy;
+              if (errorCopy)
               {
                 v30 = MEMORY[0x1E696ABC0];
                 v64 = *MEMORY[0x1E696A588];
                 v65 = @"update type is not valid for PRSPosterUpdater.";
                 [MEMORY[0x1E695DF20] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
-                v9 = v45;
+                instanceURL = v45;
                 v28 = WeakRetained = v46;
                 v29 = [v30 errorWithDomain:@"com.apple.PosterBoardServices" code:-1 userInfo:v28];
                 goto LABEL_43;
@@ -265,7 +265,7 @@ LABEL_44:
     }
 
     WeakRetained = v46;
-    v9 = v45;
+    instanceURL = v45;
     v50 = 0;
     v19 = [getPRPosterPathUtilitiesClass() loadConfiguredPropertiesForPath:v46 error:&v50];
     v20 = v50;
@@ -296,18 +296,18 @@ LABEL_44:
 
       v32 = v31;
       _Block_object_dispose(&v56, 8);
-      v23 = [v31 defaultConfiguredPropertiesForRole:v10];
+      v23 = [v31 defaultConfiguredPropertiesForRole:role];
     }
 
     v28 = v23;
 
     if (v20)
     {
-      if (v47)
+      if (errorCopy)
       {
         v33 = v20;
         LOBYTE(v24) = 0;
-        *v47 = v20;
+        *errorCopy = v20;
       }
 
       else
@@ -324,11 +324,11 @@ LABEL_44:
     v36 = v35;
     if (v35)
     {
-      if (v47)
+      if (errorCopy)
       {
         v37 = v35;
         LOBYTE(v24) = 0;
-        *v47 = v36;
+        *errorCopy = v36;
       }
 
       else
@@ -343,7 +343,7 @@ LABEL_44:
     {
       PRPosterPathUtilitiesClass = getPRPosterPathUtilitiesClass();
       v40 = [v28 copy];
-      v24 = [PRPosterPathUtilitiesClass storeConfiguredPropertiesForPath:v46 configuredProperties:v40 error:v47];
+      v24 = [PRPosterPathUtilitiesClass storeConfiguredPropertiesForPath:v46 configuredProperties:v40 error:errorCopy];
 
       if (!v24)
       {
@@ -358,9 +358,9 @@ LABEL_53:
       }
 
       v48 = objc_alloc_init(PRSService);
-      v41 = [v46 identity];
-      v42 = [v41 posterUUID];
-      [(PRSService *)v48 notePosterConfigurationUnderlyingModelDidChange:v42];
+      identity = [v46 identity];
+      posterUUID = [identity posterUUID];
+      [(PRSService *)v48 notePosterConfigurationUnderlyingModelDidChange:posterUUID];
     }
 
     LOBYTE(v24) = 1;

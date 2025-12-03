@@ -1,17 +1,17 @@
 @interface HDRaceRouteClusterWorkout
-+ (id)clusterWorkoutWithWorkoutEntity:(id)a3 transaction:(id)a4 metadataManager:(id)a5 error:(id *)a6;
-+ (id)clusterWorkoutWithWorkoutUUID:(id)a3 transaction:(id)a4 metadataManager:(id)a5 error:(id *)a6;
++ (id)clusterWorkoutWithWorkoutEntity:(id)entity transaction:(id)transaction metadataManager:(id)manager error:(id *)error;
++ (id)clusterWorkoutWithWorkoutUUID:(id)d transaction:(id)transaction metadataManager:(id)manager error:(id *)error;
 @end
 
 @implementation HDRaceRouteClusterWorkout
 
-+ (id)clusterWorkoutWithWorkoutEntity:(id)a3 transaction:(id)a4 metadataManager:(id)a5 error:(id *)a6
++ (id)clusterWorkoutWithWorkoutEntity:(id)entity transaction:(id)transaction metadataManager:(id)manager error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [HDMetadataValueStatement metadataValueStatementWithTransaction:v10];
-  v13 = [v11 metadataForObjectID:objc_msgSend(v9 baseMetadata:"persistentID") keyFilter:0 statement:0 error:{v12, a6}];
+  entityCopy = entity;
+  transactionCopy = transaction;
+  managerCopy = manager;
+  v12 = [HDMetadataValueStatement metadataValueStatementWithTransaction:transactionCopy];
+  v13 = [managerCopy metadataForObjectID:objc_msgSend(entityCopy baseMetadata:"persistentID") keyFilter:0 statement:0 error:{v12, error}];
 
   if (!v13)
   {
@@ -21,8 +21,8 @@
 
   v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCE0B0]];
 
-  v15 = [v10 databaseForEntity:v9];
-  v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v9, "persistentID")}];
+  v15 = [transactionCopy databaseForEntity:entityCopy];
+  v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(entityCopy, "persistentID")}];
   v17 = HDDataEntityPredicateForRowID(v16, 1);
 
   v18 = v15;
@@ -34,7 +34,7 @@
   v21 = _HDUUIDForSQLiteValue();
   if (v21)
   {
-    v22 = [v9 mainWorkoutActivityTypeWithTransaction:v10 error:a6];
+    v22 = [entityCopy mainWorkoutActivityTypeWithTransaction:transactionCopy error:error];
     if (v22)
     {
       if (v14)
@@ -46,7 +46,7 @@
         }
       }
 
-      obj = [v9 workoutStartDateWithTransaction:v10 error:a6];
+      obj = [entityCopy workoutStartDateWithTransaction:transactionCopy error:error];
       if (obj)
       {
         if (!v14)
@@ -55,7 +55,7 @@
           v23 = 0;
 LABEL_20:
           v63 = v23;
-          v27 = [v9 totalDistanceInCanonicalUnitWithTransaction:v10 error:a6];
+          v27 = [entityCopy totalDistanceInCanonicalUnitWithTransaction:transactionCopy error:error];
           if (!v27)
           {
             v25 = 0;
@@ -71,8 +71,8 @@ LABEL_20:
           v30 = v58 = v21;
 
           v54 = MEMORY[0x277CCABB0];
-          v31 = [MEMORY[0x277CCDAB0] meterUnit];
-          [v30 doubleValueForUnit:v31];
+          meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+          [v30 doubleValueForUnit:meterUnit];
           [v54 numberWithDouble:?];
           v32 = v55 = v28;
 
@@ -104,7 +104,7 @@ LABEL_22:
             v37 = 0;
           }
 
-          v38 = [v9 workoutDurationWithTransaction:v10 error:a6];
+          v38 = [entityCopy workoutDurationWithTransaction:transactionCopy error:error];
           if (!v38)
           {
             v50 = v37;
@@ -126,7 +126,7 @@ LABEL_27:
           [v37 doubleValue];
           v43 = v42;
           v25 = [HDRaceRouteClusterWorkout alloc];
-          v52 = [v22 integerValue];
+          integerValue = [v22 integerValue];
           [v37 doubleValue];
           v45 = v44;
           [v39 doubleValue];
@@ -138,7 +138,7 @@ LABEL_27:
           {
             v50 = v37;
             objc_storeStrong(v49 + 1, v21);
-            v25->_activityType = v52;
+            v25->_activityType = integerValue;
             objc_storeStrong(&v25->_startDate, obj);
             v25->_distance = v34 - v36;
             v25->_duration = v41 - v43;
@@ -188,11 +188,11 @@ LABEL_8:
       }
     }
 
-    if (a6)
+    if (error)
     {
       v26 = v22;
       v25 = 0;
-      *a6 = v22;
+      *error = v22;
     }
 
     else
@@ -212,19 +212,19 @@ LABEL_37:
   return v25;
 }
 
-+ (id)clusterWorkoutWithWorkoutUUID:(id)a3 transaction:(id)a4 metadataManager:(id)a5 error:(id *)a6
++ (id)clusterWorkoutWithWorkoutUUID:(id)d transaction:(id)transaction metadataManager:(id)manager error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  v13 = [v10 databaseForEntityClass:objc_opt_class()];
+  transactionCopy = transaction;
+  managerCopy = manager;
+  dCopy = d;
+  v13 = [transactionCopy databaseForEntityClass:objc_opt_class()];
   v14 = HDDataEntityPredicateForDataUUID();
 
-  v15 = [(HDDataEntity *)HDWorkoutEntity anyInDatabase:v13 predicate:v14 error:a6];
+  v15 = [(HDDataEntity *)HDWorkoutEntity anyInDatabase:v13 predicate:v14 error:error];
 
   if (v15)
   {
-    v16 = [a1 clusterWorkoutWithWorkoutEntity:v15 transaction:v10 metadataManager:v11 error:a6];
+    v16 = [self clusterWorkoutWithWorkoutEntity:v15 transaction:transactionCopy metadataManager:managerCopy error:error];
   }
 
   else

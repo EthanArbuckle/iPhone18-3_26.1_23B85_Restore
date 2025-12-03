@@ -1,35 +1,35 @@
 @interface ASDTIOServiceManager
-+ (id)dependencyForConfiguration:(id)a3;
-+ (id)dependencyForID:(id)a3 andConfiguration:(id)a4;
-+ (id)dependencyForIdentifier:(id)a3 andConfiguration:(id)a4;
-+ (id)forIOServiceWithClassName:(id)a3 withIDProperty:(id)a4 managerClass:(Class)a5;
++ (id)dependencyForConfiguration:(id)configuration;
++ (id)dependencyForID:(id)d andConfiguration:(id)configuration;
++ (id)dependencyForIdentifier:(id)identifier andConfiguration:(id)configuration;
++ (id)forIOServiceWithClassName:(id)name withIDProperty:(id)property managerClass:(Class)class;
 + (id)get;
-+ (id)matchedIOServiceForID:(id)a3;
++ (id)matchedIOServiceForID:(id)d;
 + (void)resetAll;
 - (NSArray)delegateList;
 - (id)allocateMatcher;
-- (id)findOrAddIOServiceForID:(id)a3;
-- (id)initForIOServiceWithClassName:(id)a3 andIDProperty:(id)a4;
-- (id)matchedIOServiceForID:(id)a3;
-- (void)addDelegate:(id)a3 forIDValues:(id)a4;
-- (void)removeDelegate:(id)a3;
+- (id)findOrAddIOServiceForID:(id)d;
+- (id)initForIOServiceWithClassName:(id)name andIDProperty:(id)property;
+- (id)matchedIOServiceForID:(id)d;
+- (void)addDelegate:(id)delegate forIDValues:(id)values;
+- (void)removeDelegate:(id)delegate;
 - (void)reset;
 @end
 
 @implementation ASDTIOServiceManager
 
-+ (id)forIOServiceWithClassName:(id)a3 withIDProperty:(id)a4 managerClass:(Class)a5
++ (id)forIOServiceWithClassName:(id)name withIDProperty:(id)property managerClass:(Class)class
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  propertyCopy = property;
   if (forIOServiceWithClassName_withIDProperty_managerClass__predicate == -1)
   {
-    if (a5)
+    if (class)
     {
 LABEL_3:
-      v9 = [(objc_class *)a5 isSubclassOfClass:objc_opt_class()];
+      v9 = [(objc_class *)class isSubclassOfClass:objc_opt_class()];
       v10 = 0;
-      if (!v7 || (v9 & 1) == 0)
+      if (!nameCopy || (v9 & 1) == 0)
       {
         goto LABEL_15;
       }
@@ -41,13 +41,13 @@ LABEL_3:
   else
   {
     +[ASDTIOServiceManager forIOServiceWithClassName:withIDProperty:managerClass:];
-    if (a5)
+    if (class)
     {
       goto LABEL_3;
     }
   }
 
-  if (!v7)
+  if (!nameCopy)
   {
 LABEL_9:
     v10 = 0;
@@ -55,22 +55,22 @@ LABEL_9:
   }
 
 LABEL_8:
-  if ([v7 isEqualToString:&stru_28534DD28])
+  if ([nameCopy isEqualToString:&stru_28534DD28])
   {
     goto LABEL_9;
   }
 
   [gServiceManagerLock lock];
-  v11 = [gServiceManagerDictionary objectForKey:v7];
+  v11 = [gServiceManagerDictionary objectForKey:nameCopy];
   v10 = v11;
-  if (a5)
+  if (class)
   {
     if (!v11)
     {
-      v10 = [[a5 alloc] initForIOServiceWithClassName:v7 andIDProperty:v8];
+      v10 = [[class alloc] initForIOServiceWithClassName:nameCopy andIDProperty:propertyCopy];
       if (v10)
       {
-        [gServiceManagerDictionary setObject:v10 forKey:v7];
+        [gServiceManagerDictionary setObject:v10 forKey:nameCopy];
       }
     }
   }
@@ -95,18 +95,18 @@ uint64_t __78__ASDTIOServiceManager_forIOServiceWithClassName_withIDProperty_man
 
 + (id)get
 {
-  v3 = [a1 ioServiceClassName];
-  v4 = [a1 ioServiceIDProperty];
-  v5 = [a1 forIOServiceWithClassName:v3 withIDProperty:v4 managerClass:a1];
+  ioServiceClassName = [self ioServiceClassName];
+  ioServiceIDProperty = [self ioServiceIDProperty];
+  v5 = [self forIOServiceWithClassName:ioServiceClassName withIDProperty:ioServiceIDProperty managerClass:self];
 
   return v5;
 }
 
-- (id)initForIOServiceWithClassName:(id)a3 andIDProperty:(id)a4
+- (id)initForIOServiceWithClassName:(id)name andIDProperty:(id)property
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 || [v7 isEqualToString:&stru_28534DD28])
+  nameCopy = name;
+  propertyCopy = property;
+  if (!nameCopy || [nameCopy isEqualToString:&stru_28534DD28])
   {
     v9 = ASDTBaseLogType();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -114,7 +114,7 @@ uint64_t __78__ASDTIOServiceManager_forIOServiceWithClassName_withIDProperty_man
       [ASDTIOServiceManager initForIOServiceWithClassName:v9 andIDProperty:?];
     }
 
-    if (!v7 || [v7 isEqualToString:&stru_28534DD28])
+    if (!nameCopy || [nameCopy isEqualToString:&stru_28534DD28])
     {
       [ASDTIOServiceManager initForIOServiceWithClassName:a2 andIDProperty:self];
     }
@@ -129,46 +129,46 @@ uint64_t __78__ASDTIOServiceManager_forIOServiceWithClassName_withIDProperty_man
     goto LABEL_13;
   }
 
-  [(ASDTIOServiceManager *)v10 setIdProperty:v8];
-  [(ASDTIOServiceManager *)v11 setIoServiceClassName:v7];
+  [(ASDTIOServiceManager *)v10 setIdProperty:propertyCopy];
+  [(ASDTIOServiceManager *)v11 setIoServiceClassName:nameCopy];
   v12 = MEMORY[0x277CCACA8];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [(ASDTIOServiceManager *)v11 ioServiceClassName];
-  v16 = [v12 stringWithFormat:@"%@.%@", v14, v15];
+  ioServiceClassName = [(ASDTIOServiceManager *)v11 ioServiceClassName];
+  v16 = [v12 stringWithFormat:@"%@.%@", v14, ioServiceClassName];
   [(ASDTIOServiceManager *)v11 setName:v16];
 
   v17 = MEMORY[0x277CCACA8];
-  v18 = [(ASDTIOServiceManager *)v11 name];
-  v19 = [v17 stringWithFormat:@"%s.%@", "com.apple.AudioServerDriverTransports", v18];
+  name = [(ASDTIOServiceManager *)v11 name];
+  v19 = [v17 stringWithFormat:@"%s.%@", "com.apple.AudioServerDriverTransports", name];
   v20 = [ASDTCondition conditionWithName:v19];
   [(ASDTIOServiceManager *)v11 setCond:v20];
 
-  v21 = [MEMORY[0x277CBEB18] array];
-  [(ASDTIOServiceManager *)v11 setDelegates:v21];
+  array = [MEMORY[0x277CBEB18] array];
+  [(ASDTIOServiceManager *)v11 setDelegates:array];
 
-  v22 = [MEMORY[0x277CBEB38] dictionary];
-  [(ASDTIOServiceManager *)v11 setIoServices:v22];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(ASDTIOServiceManager *)v11 setIoServices:dictionary];
 
-  v23 = [MEMORY[0x277CBEB38] dictionary];
-  [(ASDTIOServiceManager *)v11 setIoServicesByIdentifier:v23];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [(ASDTIOServiceManager *)v11 setIoServicesByIdentifier:dictionary2];
 
-  v24 = [(ASDTIOServiceManager *)v11 cond];
-  if (!v24)
+  cond = [(ASDTIOServiceManager *)v11 cond];
+  if (!cond)
   {
     goto LABEL_16;
   }
 
-  v25 = v24;
-  v26 = [(ASDTIOServiceManager *)v11 delegates];
-  if (!v26)
+  v25 = cond;
+  delegates = [(ASDTIOServiceManager *)v11 delegates];
+  if (!delegates)
   {
     goto LABEL_15;
   }
 
-  v27 = v26;
-  v28 = [(ASDTIOServiceManager *)v11 ioServices];
-  if (!v28)
+  v27 = delegates;
+  ioServices = [(ASDTIOServiceManager *)v11 ioServices];
+  if (!ioServices)
   {
 
 LABEL_15:
@@ -182,20 +182,20 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v29 = v28;
-  v30 = [(ASDTIOServiceManager *)v11 ioServicesByIdentifier];
+  v29 = ioServices;
+  ioServicesByIdentifier = [(ASDTIOServiceManager *)v11 ioServicesByIdentifier];
 
-  if (!v30)
+  if (!ioServicesByIdentifier)
   {
     goto LABEL_16;
   }
 
-  v31 = [(ASDTIOServiceManager *)v11 allocateMatcher];
-  [(ASDTIOServiceManager *)v11 setMatcher:v31];
+  allocateMatcher = [(ASDTIOServiceManager *)v11 allocateMatcher];
+  [(ASDTIOServiceManager *)v11 setMatcher:allocateMatcher];
 
-  v32 = [(ASDTIOServiceManager *)v11 matcher];
+  matcher = [(ASDTIOServiceManager *)v11 matcher];
 
-  if (!v32)
+  if (!matcher)
   {
     v34 = ASDTBaseLogType();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -219,31 +219,31 @@ LABEL_19:
 - (id)allocateMatcher
 {
   v3 = objc_alloc([objc_opt_class() ioServiceMatcherClass]);
-  v4 = [(ASDTIOServiceManager *)self ioServiceClassName];
-  v5 = [v3 initForIOServiceWithClassName:v4 withDelegate:self];
+  ioServiceClassName = [(ASDTIOServiceManager *)self ioServiceClassName];
+  v5 = [v3 initForIOServiceWithClassName:ioServiceClassName withDelegate:self];
 
   return v5;
 }
 
 - (NSArray)delegateList
 {
-  v3 = [(ASDTIOServiceManager *)self cond];
-  [v3 lock];
+  cond = [(ASDTIOServiceManager *)self cond];
+  [cond lock];
 
-  v4 = [(ASDTIOServiceManager *)self delegates];
-  v5 = [v4 copy];
+  delegates = [(ASDTIOServiceManager *)self delegates];
+  v5 = [delegates copy];
 
-  v6 = [(ASDTIOServiceManager *)self cond];
-  [v6 unlock];
+  cond2 = [(ASDTIOServiceManager *)self cond];
+  [cond2 unlock];
 
   return v5;
 }
 
-- (id)findOrAddIOServiceForID:(id)a3
+- (id)findOrAddIOServiceForID:(id)d
 {
-  v4 = a3;
-  v5 = [(ASDTIOServiceManager *)self ioServices];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  ioServices = [(ASDTIOServiceManager *)self ioServices];
+  v6 = [ioServices objectForKey:dCopy];
 
   if (v6)
   {
@@ -252,13 +252,13 @@ LABEL_19:
 
   else
   {
-    v8 = [(ASDTIOServiceManager *)self ioServicesByIdentifier];
-    v9 = [v4 identifier];
-    v10 = [v8 objectForKey:v9];
+    ioServicesByIdentifier = [(ASDTIOServiceManager *)self ioServicesByIdentifier];
+    identifier = [dCopy identifier];
+    v10 = [ioServicesByIdentifier objectForKey:identifier];
 
     if (v10)
     {
-      v7 = -[ASDTIOServiceManager createIOServiceForIOObject:andIDValue:](self, "createIOServiceForIOObject:andIDValue:", [v10 ioObject], v4);
+      v7 = -[ASDTIOServiceManager createIOServiceForIOObject:andIDValue:](self, "createIOServiceForIOObject:andIDValue:", [v10 ioObject], dCopy);
     }
 
     else
@@ -270,17 +270,17 @@ LABEL_19:
   return v7;
 }
 
-- (void)addDelegate:(id)a3 forIDValues:(id)a4
+- (void)addDelegate:(id)delegate forIDValues:(id)values
 {
   v77 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(ASDTIOServiceManager *)self cond];
-  [v9 lock];
+  delegateCopy = delegate;
+  valuesCopy = values;
+  cond = [(ASDTIOServiceManager *)self cond];
+  [cond lock];
 
-  v10 = [(ASDTIOServiceManager *)self matcher];
+  matcher = [(ASDTIOServiceManager *)self matcher];
 
-  if (!v10)
+  if (!matcher)
   {
     v11 = ASDTBaseLogType();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -288,9 +288,9 @@ LABEL_19:
       [ASDTIOServiceManager addDelegate:? forIDValues:?];
     }
 
-    v12 = [(ASDTIOServiceManager *)self matcher];
+    matcher2 = [(ASDTIOServiceManager *)self matcher];
 
-    if (!v12)
+    if (!matcher2)
     {
       [ASDTIOServiceManager addDelegate:a2 forIDValues:?];
     }
@@ -300,8 +300,8 @@ LABEL_19:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v13 = [(ASDTIOServiceManager *)self delegates];
-  v14 = [v13 countByEnumeratingWithState:&v68 objects:v76 count:16];
+  delegates = [(ASDTIOServiceManager *)self delegates];
+  v14 = [delegates countByEnumeratingWithState:&v68 objects:v76 count:16];
   if (v14)
   {
     v15 = v14;
@@ -312,28 +312,28 @@ LABEL_19:
       {
         if (*v69 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(delegates);
         }
 
         v18 = *(*(&v68 + 1) + 8 * i);
-        v19 = [v18 delegate];
+        delegate = [v18 delegate];
 
-        if (v19 == v7)
+        if (delegate == delegateCopy)
         {
-          if (v8)
+          if (valuesCopy)
           {
             v22 = [MEMORY[0x277CBEB58] set];
-            v23 = [v18 idValues];
-            v24 = [v23 count];
+            idValues = [v18 idValues];
+            v24 = [idValues count];
 
             if (v24)
             {
-              v25 = [v18 idValues];
-              v26 = [v25 allObjects];
-              [v22 addObjectsFromArray:v26];
+              idValues2 = [v18 idValues];
+              allObjects = [idValues2 allObjects];
+              [v22 addObjectsFromArray:allObjects];
             }
 
-            [v22 addObjectsFromArray:v8];
+            [v22 addObjectsFromArray:valuesCopy];
             v27 = [v22 copy];
             [v18 setIdValues:v27];
           }
@@ -347,7 +347,7 @@ LABEL_19:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v68 objects:v76 count:16];
+      v15 = [delegates countByEnumeratingWithState:&v68 objects:v76 count:16];
       if (v15)
       {
         continue;
@@ -357,12 +357,12 @@ LABEL_19:
     }
   }
 
-  v20 = [ASDTIOServiceManagerDelegateProxy forDelegate:v7 andIDValues:v8];
+  v20 = [ASDTIOServiceManagerDelegateProxy forDelegate:delegateCopy andIDValues:valuesCopy];
   if (v20)
   {
-    v13 = v20;
-    v21 = [(ASDTIOServiceManager *)self delegates];
-    [v21 addObject:v13];
+    delegates = v20;
+    delegates2 = [(ASDTIOServiceManager *)self delegates];
+    [delegates2 addObject:delegates];
 
 LABEL_21:
     v28 = ASDTBaseLogType();
@@ -371,26 +371,26 @@ LABEL_21:
       [ASDTIOServiceManager addDelegate:forIDValues:];
     }
 
-    v29 = [MEMORY[0x277CBEB18] array];
-    v30 = [MEMORY[0x277CBEB18] array];
-    v31 = v30;
-    if (v8)
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    v31 = array2;
+    if (valuesCopy)
     {
-      [v30 addObjectsFromArray:v8];
+      [array2 addObjectsFromArray:valuesCopy];
     }
 
     else
     {
-      v55 = v7;
+      v55 = delegateCopy;
       v66 = 0u;
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v32 = [(ASDTIOServiceManager *)self ioServicesByIdentifier];
-      v33 = [v32 allKeys];
+      ioServicesByIdentifier = [(ASDTIOServiceManager *)self ioServicesByIdentifier];
+      allKeys = [ioServicesByIdentifier allKeys];
 
-      v34 = v33;
-      v35 = [v33 countByEnumeratingWithState:&v64 objects:v75 count:16];
+      v34 = allKeys;
+      v35 = [allKeys countByEnumeratingWithState:&v64 objects:v75 count:16];
       if (v35)
       {
         v36 = v35;
@@ -426,8 +426,8 @@ LABEL_21:
         while (v36);
       }
 
-      v7 = v55;
-      v8 = 0;
+      delegateCopy = v55;
+      valuesCopy = 0;
     }
 
     v62 = 0u;
@@ -452,7 +452,7 @@ LABEL_21:
           v46 = [(ASDTIOServiceManager *)self findOrAddIOServiceForID:*(*(&v60 + 1) + 8 * k)];
           if (v46)
           {
-            [v29 addObject:v46];
+            [array addObject:v46];
           }
         }
 
@@ -462,15 +462,15 @@ LABEL_21:
       while (v43);
     }
 
-    v47 = [(ASDTIOServiceManager *)self cond];
-    [v47 unlock];
+    cond2 = [(ASDTIOServiceManager *)self cond];
+    [cond2 unlock];
 
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v48 = v29;
-    v49 = [v48 countByEnumeratingWithState:&v56 objects:v72 count:16];
+    cond3 = array;
+    v49 = [cond3 countByEnumeratingWithState:&v56 objects:v72 count:16];
     if (v49)
     {
       v50 = v49;
@@ -481,13 +481,13 @@ LABEL_21:
         {
           if (*v57 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(cond3);
           }
 
-          [v7 ioServiceAvailable:*(*(&v56 + 1) + 8 * m) withManager:self];
+          [delegateCopy ioServiceAvailable:*(*(&v56 + 1) + 8 * m) withManager:self];
         }
 
-        v50 = [v48 countByEnumeratingWithState:&v56 objects:v72 count:16];
+        v50 = [cond3 countByEnumeratingWithState:&v56 objects:v72 count:16];
       }
 
       while (v50);
@@ -502,27 +502,27 @@ LABEL_21:
       [ASDTPMAction initWithConfig:? forSequencer:?];
     }
 
-    v48 = [(ASDTIOServiceManager *)self cond];
-    [v48 unlock];
+    cond3 = [(ASDTIOServiceManager *)self cond];
+    [cond3 unlock];
   }
 
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASDTIOServiceManager *)self cond];
-  [v5 lock];
+  delegateCopy = delegate;
+  cond = [(ASDTIOServiceManager *)self cond];
+  [cond lock];
 
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(ASDTIOServiceManager *)self delegates];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  delegates = [(ASDTIOServiceManager *)self delegates];
+  v8 = [delegates countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -533,17 +533,17 @@ LABEL_21:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(delegates);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 delegate];
-        if (v13)
+        delegate = [v12 delegate];
+        if (delegate)
         {
-          v14 = v13;
-          v15 = [v12 delegate];
+          v14 = delegate;
+          delegate2 = [v12 delegate];
 
-          if (v15 != v4)
+          if (delegate2 != delegateCopy)
           {
             continue;
           }
@@ -552,33 +552,33 @@ LABEL_21:
         [v6 addObject:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [delegates countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
   }
 
-  v16 = [(ASDTIOServiceManager *)self delegates];
-  [v16 removeObjectsInArray:v6];
+  delegates2 = [(ASDTIOServiceManager *)self delegates];
+  [delegates2 removeObjectsInArray:v6];
 
-  v17 = [(ASDTIOServiceManager *)self cond];
-  [v17 unlock];
+  cond2 = [(ASDTIOServiceManager *)self cond];
+  [cond2 unlock];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)matchedIOServiceForID:(id)a3
+- (id)matchedIOServiceForID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(ASDTIOServiceManager *)self cond];
-    [v5 lock];
+    dCopy = d;
+    cond = [(ASDTIOServiceManager *)self cond];
+    [cond lock];
 
-    v6 = [(ASDTIOServiceManager *)self findOrAddIOServiceForID:v4];
+    v6 = [(ASDTIOServiceManager *)self findOrAddIOServiceForID:dCopy];
 
-    v7 = [(ASDTIOServiceManager *)self cond];
-    [v7 unlock];
+    cond2 = [(ASDTIOServiceManager *)self cond];
+    [cond2 unlock];
   }
 
   else
@@ -589,47 +589,47 @@ LABEL_21:
   return v6;
 }
 
-+ (id)matchedIOServiceForID:(id)a3
++ (id)matchedIOServiceForID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 get];
-  v6 = [v5 matchedIOServiceForID:v4];
+  dCopy = d;
+  v5 = [self get];
+  v6 = [v5 matchedIOServiceForID:dCopy];
 
   return v6;
 }
 
 - (void)reset
 {
-  v3 = [(ASDTIOServiceManager *)self cond];
-  [v3 lock];
+  cond = [(ASDTIOServiceManager *)self cond];
+  [cond lock];
 
-  v4 = [(ASDTIOServiceManager *)self ioServices];
-  [v4 removeAllObjects];
+  ioServices = [(ASDTIOServiceManager *)self ioServices];
+  [ioServices removeAllObjects];
 
-  v5 = [(ASDTIOServiceManager *)self ioServicesByIdentifier];
-  [v5 removeAllObjects];
+  ioServicesByIdentifier = [(ASDTIOServiceManager *)self ioServicesByIdentifier];
+  [ioServicesByIdentifier removeAllObjects];
 
-  v6 = [(ASDTIOServiceManager *)self delegates];
-  [v6 removeAllObjects];
+  delegates = [(ASDTIOServiceManager *)self delegates];
+  [delegates removeAllObjects];
 
-  v7 = [(ASDTIOServiceManager *)self allocateMatcher];
-  [(ASDTIOServiceManager *)self setMatcher:v7];
+  allocateMatcher = [(ASDTIOServiceManager *)self allocateMatcher];
+  [(ASDTIOServiceManager *)self setMatcher:allocateMatcher];
 
-  v8 = [(ASDTIOServiceManager *)self cond];
-  [v8 unlock];
+  cond2 = [(ASDTIOServiceManager *)self cond];
+  [cond2 unlock];
 }
 
 + (void)resetAll
 {
   v14 = *MEMORY[0x277D85DE8];
   [gServiceManagerLock lock];
-  v2 = [gServiceManagerDictionary allValues];
+  allValues = [gServiceManagerDictionary allValues];
   [gServiceManagerLock unlock];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = v2;
+  v3 = allValues;
   v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
@@ -658,36 +658,36 @@ LABEL_21:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)dependencyForID:(id)a3 andConfiguration:(id)a4
++ (id)dependencyForID:(id)d andConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 get];
-  v9 = [v8 ioServiceClassName];
-  v10 = [ASDTIOServiceDependency forClassName:v9 idValue:v7 andConfiguration:v6];
+  configurationCopy = configuration;
+  dCopy = d;
+  v8 = [self get];
+  ioServiceClassName = [v8 ioServiceClassName];
+  v10 = [ASDTIOServiceDependency forClassName:ioServiceClassName idValue:dCopy andConfiguration:configurationCopy];
 
   return v10;
 }
 
-+ (id)dependencyForIdentifier:(id)a3 andConfiguration:(id)a4
++ (id)dependencyForIdentifier:(id)identifier andConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 get];
-  v9 = [v8 ioServiceClassName];
-  v10 = [ASDTIOServiceID forIdentifier:v7 andClientType:0];
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  v8 = [self get];
+  ioServiceClassName = [v8 ioServiceClassName];
+  v10 = [ASDTIOServiceID forIdentifier:identifierCopy andClientType:0];
 
-  v11 = [ASDTIOServiceDependency forClassName:v9 idValue:v10 andConfiguration:v6];
+  v11 = [ASDTIOServiceDependency forClassName:ioServiceClassName idValue:v10 andConfiguration:configurationCopy];
 
   return v11;
 }
 
-+ (id)dependencyForConfiguration:(id)a3
++ (id)dependencyForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [a1 get];
-  v6 = [v5 ioServiceClassName];
-  v7 = [ASDTIOServiceDependency forAnyInstanceOfClassName:v6 andConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [self get];
+  ioServiceClassName = [v5 ioServiceClassName];
+  v7 = [ASDTIOServiceDependency forAnyInstanceOfClassName:ioServiceClassName andConfiguration:configurationCopy];
 
   return v7;
 }

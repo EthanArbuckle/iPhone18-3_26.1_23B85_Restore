@@ -1,15 +1,15 @@
 @interface StickerSearchResult
 - (_TtC10StickerKitP33_0209F597C25C7378B6F590430344EB1F19StickerSearchResult)init;
-- (void)setSticker:(id)a3;
+- (void)setSticker:(id)sticker;
 @end
 
 @implementation StickerSearchResult
 
-- (void)setSticker:(id)a3
+- (void)setSticker:(id)sticker
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC10StickerKitP33_0209F597C25C7378B6F590430344EB1F19StickerSearchResult_sticker);
-  *(&self->super.isa + OBJC_IVAR____TtC10StickerKitP33_0209F597C25C7378B6F590430344EB1F19StickerSearchResult_sticker) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC10StickerKitP33_0209F597C25C7378B6F590430344EB1F19StickerSearchResult_sticker) = sticker;
+  stickerCopy = sticker;
 }
 
 - (_TtC10StickerKitP33_0209F597C25C7378B6F590430344EB1F19StickerSearchResult)init

@@ -8,11 +8,11 @@
 - (void)performTakeScreenshotAction
 {
   v2 = +[SBLockScreenManager sharedInstance];
-  v3 = [v2 lockScreenEnvironment];
-  v4 = [v3 backlightController];
-  v5 = [v4 isInScreenOffMode];
+  lockScreenEnvironment = [v2 lockScreenEnvironment];
+  backlightController = [lockScreenEnvironment backlightController];
+  isInScreenOffMode = [backlightController isInScreenOffMode];
 
-  if ((v5 & 1) == 0)
+  if ((isInScreenOffMode & 1) == 0)
   {
     v6 = SBApp;
 

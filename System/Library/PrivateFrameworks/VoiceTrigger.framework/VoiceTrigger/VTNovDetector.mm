@@ -1,26 +1,26 @@
 @interface VTNovDetector
-- (VTNovDetector)initWithConfigPath:(id)a3 resourcePath:(id)a4;
-- (id)_getAnalyzedResultFromNdresult:(_ndresult *)a3;
-- (id)getAnalyzedResultForPhId:(unsigned int)a3;
+- (VTNovDetector)initWithConfigPath:(id)path resourcePath:(id)resourcePath;
+- (id)_getAnalyzedResultFromNdresult:(_ndresult *)ndresult;
+- (id)getAnalyzedResultForPhId:(unsigned int)id;
 - (id)getBestAnalyzedResult;
-- (id)getOptionValue:(id)a3;
-- (id)getSuperVectorWithEndPoint:(unint64_t)a3;
-- (void)analyzeWavData:(id)a3 numSamples:(unint64_t)a4;
-- (void)analyzeWavFloatData:(id)a3 numSamples:(unint64_t)a4;
+- (id)getOptionValue:(id)value;
+- (id)getSuperVectorWithEndPoint:(unint64_t)point;
+- (void)analyzeWavData:(id)data numSamples:(unint64_t)samples;
+- (void)analyzeWavFloatData:(id)data numSamples:(unint64_t)samples;
 - (void)dealloc;
 @end
 
 @implementation VTNovDetector
 
-- (id)getOptionValue:(id)a3
+- (id)getOptionValue:(id)value
 {
   v5 = 0;
-  if (a3)
+  if (value)
   {
     novDetect = self->_novDetect;
     if (novDetect)
     {
-      v5 = nd_getoption(novDetect, [a3 UTF8String]);
+      v5 = nd_getoption(novDetect, [value UTF8String]);
       if (v5)
       {
         v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:v5];
@@ -33,12 +33,12 @@
   return v5;
 }
 
-- (id)getSuperVectorWithEndPoint:(unint64_t)a3
+- (id)getSuperVectorWithEndPoint:(unint64_t)point
 {
   novDetect = self->_novDetect;
   if (novDetect)
   {
-    novDetect = nd_getsupervector(novDetect, a3, v4);
+    novDetect = nd_getsupervector(novDetect, point, v4);
     if (novDetect)
     {
       novDetect = [MEMORY[0x277CBEA90] dataWithBytes:*novDetect length:4 * novDetect[2]];
@@ -50,19 +50,19 @@
   return novDetect;
 }
 
-- (id)_getAnalyzedResultFromNdresult:(_ndresult *)a3
+- (id)_getAnalyzedResultFromNdresult:(_ndresult *)ndresult
 {
-  if (a3)
+  if (ndresult)
   {
     v4 = objc_alloc_init(VTNovDetectorResult);
-    [(VTNovDetectorResult *)v4 setSampleFed:a3->var0];
-    [(VTNovDetectorResult *)v4 setBestPhrase:a3->var3];
-    [(VTNovDetectorResult *)v4 setBestStart:a3->var1];
-    [(VTNovDetectorResult *)v4 setBestEnd:a3->var2];
-    *&v5 = a3->var4;
+    [(VTNovDetectorResult *)v4 setSampleFed:ndresult->var0];
+    [(VTNovDetectorResult *)v4 setBestPhrase:ndresult->var3];
+    [(VTNovDetectorResult *)v4 setBestStart:ndresult->var1];
+    [(VTNovDetectorResult *)v4 setBestEnd:ndresult->var2];
+    *&v5 = ndresult->var4;
     [(VTNovDetectorResult *)v4 setBestScore:v5];
-    [(VTNovDetectorResult *)v4 setEarlyWarning:a3->var5];
-    [(VTNovDetectorResult *)v4 setIsRescoring:a3->var6];
+    [(VTNovDetectorResult *)v4 setEarlyWarning:ndresult->var5];
+    [(VTNovDetectorResult *)v4 setIsRescoring:ndresult->var6];
   }
 
   else
@@ -84,12 +84,12 @@
   return novDetect;
 }
 
-- (id)getAnalyzedResultForPhId:(unsigned int)a3
+- (id)getAnalyzedResultForPhId:(unsigned int)id
 {
   novDetect = self->_novDetect;
   if (novDetect)
   {
-    v5 = *&a3;
+    v5 = *&id;
     v7 = nd_phrasecount(novDetect, a2);
     v8 = self->_novDetect;
     if (v7 < 1)
@@ -108,24 +108,24 @@
   return novDetect;
 }
 
-- (void)analyzeWavFloatData:(id)a3 numSamples:(unint64_t)a4
+- (void)analyzeWavFloatData:(id)data numSamples:(unint64_t)samples
 {
-  v4 = a4;
+  samplesCopy = samples;
   novDetect = self->_novDetect;
-  v7 = a3;
-  v8 = [a3 bytes];
+  dataCopy = data;
+  bytes = [data bytes];
 
-  nd_wavedataf(novDetect, v8, v4);
+  nd_wavedataf(novDetect, bytes, samplesCopy);
 }
 
-- (void)analyzeWavData:(id)a3 numSamples:(unint64_t)a4
+- (void)analyzeWavData:(id)data numSamples:(unint64_t)samples
 {
-  v4 = a4;
+  samplesCopy = samples;
   novDetect = self->_novDetect;
-  v7 = a3;
-  v8 = [a3 bytes];
+  dataCopy = data;
+  bytes = [data bytes];
 
-  nd_wavedata(novDetect, v8, v4);
+  nd_wavedata(novDetect, bytes, samplesCopy);
 }
 
 - (void)dealloc
@@ -143,11 +143,11 @@
   [(VTNovDetector *)&v4 dealloc];
 }
 
-- (VTNovDetector)initWithConfigPath:(id)a3 resourcePath:(id)a4
+- (VTNovDetector)initWithConfigPath:(id)path resourcePath:(id)resourcePath
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  resourcePathCopy = resourcePath;
   v10.receiver = self;
   v10.super_class = VTNovDetector;
   if ([(VTNovDetector *)&v10 init])

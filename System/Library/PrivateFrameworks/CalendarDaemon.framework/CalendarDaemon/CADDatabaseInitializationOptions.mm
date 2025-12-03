@@ -1,10 +1,10 @@
 @interface CADDatabaseInitializationOptions
-- (BOOL)isEqualToOptions:(id)a3;
+- (BOOL)isEqualToOptions:(id)options;
 - (CADDatabaseInitializationOptions)init;
-- (CADDatabaseInitializationOptions)initWithCoder:(id)a3;
+- (CADDatabaseInitializationOptions)initWithCoder:(id)coder;
 - (id)description;
-- (id)validOptionsForConnection:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)validOptionsForConnection:(id)connection;
+- (void)encodeWithCoder:(id)coder;
 - (void)purifyOptions;
 @end
 
@@ -53,9 +53,9 @@
 {
   if (([(CADDatabaseInitializationOptions *)self databaseInitOptions]& 0x20) != 0)
   {
-    v3 = [(CADDatabaseInitializationOptions *)self databaseDirectory];
-    v4 = [v3 relativeString];
-    v5 = [v4 isEqual:@":memory:"];
+    databaseDirectory = [(CADDatabaseInitializationOptions *)self databaseDirectory];
+    relativeString = [databaseDirectory relativeString];
+    v5 = [relativeString isEqual:@":memory:"];
 
     if (v5)
     {
@@ -65,11 +65,11 @@
   }
 }
 
-- (BOOL)isEqualToOptions:(id)a3
+- (BOOL)isEqualToOptions:(id)options
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_databaseInitOptions == *(v4 + 3) && self->_enablePropertyModificationLogging == *(v4 + 8) && self->_unitTesting == *(v4 + 9) && self->_allowDelegateSources == *(v4 + 10) && self->_allowIntegrations == *(v4 + 11) && self->_management == *(v4 + 4) && ((managementBundleIdentifier = self->_managementBundleIdentifier, !(managementBundleIdentifier | v5[4])) || [(NSString *)managementBundleIdentifier isEqual:?]) && ((changeTrackingClientId = self->_changeTrackingClientId, changeTrackingClientId == v5[3]) || [(CADChangeTrackingClientId *)changeTrackingClientId isEqualToChangeTrackingClientId:?]) && ((databaseDirectory = self->_databaseDirectory, databaseDirectory == v5[5]) || [(NSURL *)databaseDirectory isEqual:?]) && ((calendarDataContainerProvider = self->_calendarDataContainerProvider, !(calendarDataContainerProvider | v5[6])) || [(CalCalendarDataContainerProvider *)calendarDataContainerProvider isEqual:?]) && ((allowedSourceIdentifiers = self->_allowedSourceIdentifiers, !(allowedSourceIdentifiers | v5[7])) || [(NSArray *)allowedSourceIdentifiers isEqual:?]) && ((privacyClientIdentity = self->_privacyClientIdentity, !(privacyClientIdentity | v5[8])) || [(OS_tcc_identity *)privacyClientIdentity isEqual:?]) && ((mockPermissions = self->_mockPermissions, !(mockPermissions | v5[9])) || [(CADMockPermissionValidator *)mockPermissions isEqual:?]))
+  optionsCopy = options;
+  v5 = optionsCopy;
+  if (optionsCopy && self->_databaseInitOptions == *(optionsCopy + 3) && self->_enablePropertyModificationLogging == *(optionsCopy + 8) && self->_unitTesting == *(optionsCopy + 9) && self->_allowDelegateSources == *(optionsCopy + 10) && self->_allowIntegrations == *(optionsCopy + 11) && self->_management == *(optionsCopy + 4) && ((managementBundleIdentifier = self->_managementBundleIdentifier, !(managementBundleIdentifier | v5[4])) || [(NSString *)managementBundleIdentifier isEqual:?]) && ((changeTrackingClientId = self->_changeTrackingClientId, changeTrackingClientId == v5[3]) || [(CADChangeTrackingClientId *)changeTrackingClientId isEqualToChangeTrackingClientId:?]) && ((databaseDirectory = self->_databaseDirectory, databaseDirectory == v5[5]) || [(NSURL *)databaseDirectory isEqual:?]) && ((calendarDataContainerProvider = self->_calendarDataContainerProvider, !(calendarDataContainerProvider | v5[6])) || [(CalCalendarDataContainerProvider *)calendarDataContainerProvider isEqual:?]) && ((allowedSourceIdentifiers = self->_allowedSourceIdentifiers, !(allowedSourceIdentifiers | v5[7])) || [(NSArray *)allowedSourceIdentifiers isEqual:?]) && ((privacyClientIdentity = self->_privacyClientIdentity, !(privacyClientIdentity | v5[8])) || [(OS_tcc_identity *)privacyClientIdentity isEqual:?]) && ((mockPermissions = self->_mockPermissions, !(mockPermissions | v5[9])) || [(CADMockPermissionValidator *)mockPermissions isEqual:?]))
   {
     remoteClientIdentity = self->_remoteClientIdentity;
     if (remoteClientIdentity | v5[10])
@@ -91,36 +91,36 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  [v12 encodeInt:self->_databaseInitOptions forKey:@"opts"];
-  v4 = [(CADDatabaseInitializationOptions *)self changeTrackingClientId];
-  [v12 encodeObject:v4 forKey:@"changeTrackingClientIdKey"];
+  coderCopy = coder;
+  [coderCopy encodeInt:self->_databaseInitOptions forKey:@"opts"];
+  changeTrackingClientId = [(CADDatabaseInitializationOptions *)self changeTrackingClientId];
+  [coderCopy encodeObject:changeTrackingClientId forKey:@"changeTrackingClientIdKey"];
 
-  [v12 encodeBool:self->_enablePropertyModificationLogging forKey:@"log"];
-  v5 = [(CADDatabaseInitializationOptions *)self databaseDirectory];
+  [coderCopy encodeBool:self->_enablePropertyModificationLogging forKey:@"log"];
+  databaseDirectory = [(CADDatabaseInitializationOptions *)self databaseDirectory];
 
-  if (v5)
+  if (databaseDirectory)
   {
     v6 = objc_alloc(MEMORY[0x277CCAC90]);
-    v7 = [(CADDatabaseInitializationOptions *)self databaseDirectory];
-    v5 = [v6 initWithURL:v7 readonly:0];
+    databaseDirectory2 = [(CADDatabaseInitializationOptions *)self databaseDirectory];
+    databaseDirectory = [v6 initWithURL:databaseDirectory2 readonly:0];
   }
 
-  [v12 encodeObject:v5 forKey:@"directory"];
-  [v12 encodeObject:self->_calendarDataContainerProvider forKey:@"containerProvider"];
-  [v12 encodeBool:self->_unitTesting forKey:@"test"];
-  [v12 encodeBool:self->_allowDelegateSources forKey:@"dels"];
-  [v12 encodeBool:self->_allowIntegrations forKey:@"allowIntegrations"];
-  [v12 encodeInt:self->_management forKey:@"mgmt"];
-  [v12 encodeObject:self->_managementBundleIdentifier forKey:@"managementBundleIDKey"];
-  [v12 encodeObject:self->_allowedSourceIdentifiers forKey:@"allowedSourceIdentifiers"];
-  [v12 encodeObject:self->_mockPermissions forKey:@"mockPermissions"];
+  [coderCopy encodeObject:databaseDirectory forKey:@"directory"];
+  [coderCopy encodeObject:self->_calendarDataContainerProvider forKey:@"containerProvider"];
+  [coderCopy encodeBool:self->_unitTesting forKey:@"test"];
+  [coderCopy encodeBool:self->_allowDelegateSources forKey:@"dels"];
+  [coderCopy encodeBool:self->_allowIntegrations forKey:@"allowIntegrations"];
+  [coderCopy encodeInt:self->_management forKey:@"mgmt"];
+  [coderCopy encodeObject:self->_managementBundleIdentifier forKey:@"managementBundleIDKey"];
+  [coderCopy encodeObject:self->_allowedSourceIdentifiers forKey:@"allowedSourceIdentifiers"];
+  [coderCopy encodeObject:self->_mockPermissions forKey:@"mockPermissions"];
   remoteClientIdentity = self->_remoteClientIdentity;
   if (remoteClientIdentity)
   {
-    [v12 encodeObject:remoteClientIdentity forKey:@"remoteClientIdentity"];
+    [coderCopy encodeObject:remoteClientIdentity forKey:@"remoteClientIdentity"];
   }
 
   if (self->_privacyClientIdentity)
@@ -130,29 +130,29 @@
     {
       v10 = v9;
       Data = CFPropertyListCreateData(0, v9, kCFPropertyListBinaryFormat_v1_0, 0, 0);
-      [v12 encodeObject:Data forKey:@"PrivacyClientIdentity"];
+      [coderCopy encodeObject:Data forKey:@"PrivacyClientIdentity"];
       CFRelease(v10);
     }
   }
 }
 
-- (CADDatabaseInitializationOptions)initWithCoder:(id)a3
+- (CADDatabaseInitializationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = CADDatabaseInitializationOptions;
   v5 = [(CADDatabaseInitializationOptions *)&v27 init];
   if (v5)
   {
-    v5->_databaseInitOptions = [v4 decodeIntForKey:@"opts"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"changeTrackingClientIdKey"];
+    v5->_databaseInitOptions = [coderCopy decodeIntForKey:@"opts"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"changeTrackingClientIdKey"];
     changeTrackingClientId = v5->_changeTrackingClientId;
     v5->_changeTrackingClientId = v6;
 
-    v5->_enablePropertyModificationLogging = [v4 decodeBoolForKey:@"log"];
-    v5->_unitTesting = [v4 decodeBoolForKey:@"test"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"directory"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerProvider"];
+    v5->_enablePropertyModificationLogging = [coderCopy decodeBoolForKey:@"log"];
+    v5->_unitTesting = [coderCopy decodeBoolForKey:@"test"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"directory"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerProvider"];
     calendarDataContainerProvider = v5->_calendarDataContainerProvider;
     v5->_calendarDataContainerProvider = v9;
 
@@ -160,26 +160,26 @@
     databaseDirectory = v5->_databaseDirectory;
     v5->_databaseDirectory = v11;
 
-    v5->_allowDelegateSources = [v4 decodeBoolForKey:@"dels"];
-    v5->_allowIntegrations = [v4 decodeBoolForKey:@"allowIntegrations"];
-    v5->_management = [v4 decodeIntForKey:@"mgmt"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"managementBundleIDKey"];
+    v5->_allowDelegateSources = [coderCopy decodeBoolForKey:@"dels"];
+    v5->_allowIntegrations = [coderCopy decodeBoolForKey:@"allowIntegrations"];
+    v5->_management = [coderCopy decodeIntForKey:@"mgmt"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"managementBundleIDKey"];
     managementBundleIdentifier = v5->_managementBundleIdentifier;
     v5->_managementBundleIdentifier = v13;
 
-    v15 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"allowedSourceIdentifiers"];
+    v15 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"allowedSourceIdentifiers"];
     allowedSourceIdentifiers = v5->_allowedSourceIdentifiers;
     v5->_allowedSourceIdentifiers = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mockPermissions"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mockPermissions"];
     mockPermissions = v5->_mockPermissions;
     v5->_mockPermissions = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteClientIdentity"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteClientIdentity"];
     remoteClientIdentity = v5->_remoteClientIdentity;
     v5->_remoteClientIdentity = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyClientIdentity"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyClientIdentity"];
     if (v21)
     {
       v22 = CFPropertyListCreateWithData(0, v21, 0, 0, 0);
@@ -198,39 +198,39 @@
   return v5;
 }
 
-- (id)validOptionsForConnection:(id)a3
+- (id)validOptionsForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = objc_alloc_init(CADDatabaseInitializationOptions);
-  v6 = [v4 permissionValidator];
+  permissionValidator = [connectionCopy permissionValidator];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v7 = [CADDefaultPermissionValidator alloc];
-    v8 = [v4 identity];
-    v9 = [v4 tccPermissionChecker];
-    v10 = [(CADDefaultPermissionValidator *)v7 initWithClientIdentity:v8 tccPermissionChecker:v9];
+    identity = [connectionCopy identity];
+    tccPermissionChecker = [connectionCopy tccPermissionChecker];
+    v10 = [(CADDefaultPermissionValidator *)v7 initWithClientIdentity:identity tccPermissionChecker:tccPermissionChecker];
 
-    v6 = v10;
+    permissionValidator = v10;
   }
 
-  v11 = [v6 testingAccessLevelGranted];
-  if (v11 && self->_mockPermissions)
+  testingAccessLevelGranted = [permissionValidator testingAccessLevelGranted];
+  if (testingAccessLevelGranted && self->_mockPermissions)
   {
-    v12 = [[CADCombinedPermissionValidator alloc] initWithPermissionValidator:v6 andValidator:self->_mockPermissions];
+    v12 = [[CADCombinedPermissionValidator alloc] initWithPermissionValidator:permissionValidator andValidator:self->_mockPermissions];
 
     [(CADDatabaseInitializationOptions *)v5 setMockPermissions:self->_mockPermissions];
-    v6 = v12;
+    permissionValidator = v12;
   }
 
   [(CADDatabaseInitializationOptions *)v5 setAllowDelegateSources:self->_allowDelegateSources];
   [(CADDatabaseInitializationOptions *)v5 setChangeTrackingClientId:self->_changeTrackingClientId];
-  if ([v6 allowsIntegrations])
+  if ([permissionValidator allowsIntegrations])
   {
     [(CADDatabaseInitializationOptions *)v5 setAllowIntegrations:self->_allowIntegrations];
   }
 
-  if ([v6 eventAccessLevel] || (v11 | objc_msgSend(v6, "hasReminderAccess")) == 1)
+  if ([permissionValidator eventAccessLevel] || (testingAccessLevelGranted | objc_msgSend(permissionValidator, "hasReminderAccess")) == 1)
   {
     [(CADDatabaseInitializationOptions *)v5 setDatabaseInitOptions:self->_databaseInitOptions];
     [(CADDatabaseInitializationOptions *)v5 setEnablePropertyModificationLogging:self->_enablePropertyModificationLogging];
@@ -248,51 +248,51 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (v11)
+  if (testingAccessLevelGranted)
   {
     [(CADDatabaseInitializationOptions *)v5 setUnitTesting:self->_unitTesting];
     [(CADDatabaseInitializationOptions *)v5 setCalendarDataContainerProvider:self->_calendarDataContainerProvider];
   }
 
-  else if (![v6 allowsCustomDatabasePath])
+  else if (![permissionValidator allowsCustomDatabasePath])
   {
     goto LABEL_16;
   }
 
   [(CADDatabaseInitializationOptions *)v5 setDatabaseDirectory:self->_databaseDirectory];
 LABEL_16:
-  v14 = [(CADDatabaseInitializationOptions *)self changeTrackingClientId];
-  if ([(CADChangeTrackingClientId *)v14 hasCustomClientId])
+  changeTrackingClientId = [(CADDatabaseInitializationOptions *)self changeTrackingClientId];
+  if ([(CADChangeTrackingClientId *)changeTrackingClientId hasCustomClientId])
   {
-    v15 = [v6 hasChangeIdTrackingOverrideEntitlement];
+    hasChangeIdTrackingOverrideEntitlement = [permissionValidator hasChangeIdTrackingOverrideEntitlement];
 
-    if (v15)
+    if (hasChangeIdTrackingOverrideEntitlement)
     {
       goto LABEL_20;
     }
 
-    v14 = objc_alloc_init(CADChangeTrackingClientId);
-    [(CADDatabaseInitializationOptions *)v5 setChangeTrackingClientId:v14];
+    changeTrackingClientId = objc_alloc_init(CADChangeTrackingClientId);
+    [(CADDatabaseInitializationOptions *)v5 setChangeTrackingClientId:changeTrackingClientId];
   }
 
 LABEL_20:
-  if ([v6 isRemoteUIExtension])
+  if ([permissionValidator isRemoteUIExtension])
   {
     [(CADDatabaseInitializationOptions *)v5 setRemoteClientIdentity:self->_remoteClientIdentity];
   }
 
-  if ([v6 hasManagedConfigurationBundleIDOverrideEntitlement])
+  if ([permissionValidator hasManagedConfigurationBundleIDOverrideEntitlement])
   {
     [(CADDatabaseInitializationOptions *)v5 setManagementBundleIdentifier:self->_managementBundleIdentifier];
   }
 
   if (_os_feature_enabled_impl() && self->_privacyClientIdentity)
   {
-    v16 = [v4 identity];
-    v17 = v16;
-    if (v16)
+    identity2 = [connectionCopy identity];
+    v17 = identity2;
+    if (identity2)
     {
-      [v16 auditToken];
+      [identity2 auditToken];
     }
 
     privacyClientIdentity = self->_privacyClientIdentity;

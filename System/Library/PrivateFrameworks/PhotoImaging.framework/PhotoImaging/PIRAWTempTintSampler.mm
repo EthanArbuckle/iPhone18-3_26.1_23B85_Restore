@@ -1,5 +1,5 @@
 @interface PIRAWTempTintSampler
-- (PIRAWTempTintSampler)initWithComposition:(id)a3 responseQueue:(id)a4;
+- (PIRAWTempTintSampler)initWithComposition:(id)composition responseQueue:(id)queue;
 - (id)_pipelineFilters;
 @end
 
@@ -17,13 +17,13 @@
   return v4;
 }
 
-- (PIRAWTempTintSampler)initWithComposition:(id)a3 responseQueue:(id)a4
+- (PIRAWTempTintSampler)initWithComposition:(id)composition responseQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = PIRAWTempTintSampler;
-  v4 = [(NUTagColorSampler *)&v7 initWithComposition:a3 tag:@"/RAW/SushiLevel1" responseQueue:a4];
-  v5 = [MEMORY[0x1E69B3A10] sRGBLinearColorSpace];
-  [(NUColorSampler *)v4 setColorSpace:v5];
+  v4 = [(NUTagColorSampler *)&v7 initWithComposition:composition tag:@"/RAW/SushiLevel1" responseQueue:queue];
+  sRGBLinearColorSpace = [MEMORY[0x1E69B3A10] sRGBLinearColorSpace];
+  [(NUColorSampler *)v4 setColorSpace:sRGBLinearColorSpace];
 
   return v4;
 }

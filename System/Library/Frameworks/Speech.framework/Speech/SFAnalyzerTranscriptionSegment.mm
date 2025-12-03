@@ -1,26 +1,26 @@
 @interface SFAnalyzerTranscriptionSegment
-- (SFAnalyzerTranscriptionSegment)initWithText:(id)a3 alternatives:(id)a4 confidence:(double)a5;
+- (SFAnalyzerTranscriptionSegment)initWithText:(id)text alternatives:(id)alternatives confidence:(double)confidence;
 @end
 
 @implementation SFAnalyzerTranscriptionSegment
 
-- (SFAnalyzerTranscriptionSegment)initWithText:(id)a3 alternatives:(id)a4 confidence:(double)a5
+- (SFAnalyzerTranscriptionSegment)initWithText:(id)text alternatives:(id)alternatives confidence:(double)confidence
 {
   v15.receiver = self;
   v15.super_class = SFAnalyzerTranscriptionSegment;
-  v7 = a4;
-  v8 = a3;
+  alternativesCopy = alternatives;
+  textCopy = text;
   v9 = [(SFAnalyzerTranscriptionSegment *)&v15 init];
-  v10 = [v8 copy];
+  v10 = [textCopy copy];
 
   text = v9->_text;
   v9->_text = v10;
 
-  v12 = [v7 copy];
+  v12 = [alternativesCopy copy];
   alternatives = v9->_alternatives;
   v9->_alternatives = v12;
 
-  v9->_confidence = a5;
+  v9->_confidence = confidence;
   return v9;
 }
 

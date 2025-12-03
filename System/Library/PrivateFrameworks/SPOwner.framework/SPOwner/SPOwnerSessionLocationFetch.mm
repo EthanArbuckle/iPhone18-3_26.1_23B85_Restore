@@ -3,13 +3,13 @@
 + (id)remoteInterface;
 - (SPOwnerSessionLocationFetch)init;
 - (SPOwnerSessionXPCProtocol)proxy;
-- (void)interruptionHandler:(id)a3;
-- (void)invalidationHandler:(id)a3;
-- (void)locationForContext:(id)a3 completion:(id)a4;
-- (void)receivedUpdatedDeviceEvents:(id)a3;
-- (void)receivedUpdatedLocation:(id)a3;
-- (void)subscribeAndFetchLocationForContext:(id)a3 completion:(id)a4;
-- (void)unsubscribeLocationUpdatesWithCompletion:(id)a3;
+- (void)interruptionHandler:(id)handler;
+- (void)invalidationHandler:(id)handler;
+- (void)locationForContext:(id)context completion:(id)completion;
+- (void)receivedUpdatedDeviceEvents:(id)events;
+- (void)receivedUpdatedLocation:(id)location;
+- (void)subscribeAndFetchLocationForContext:(id)context completion:(id)completion;
+- (void)unsubscribeLocationUpdatesWithCompletion:(id)completion;
 @end
 
 @implementation SPOwnerSessionLocationFetch
@@ -29,15 +29,15 @@
   return v2;
 }
 
-- (void)interruptionHandler:(id)a3
+- (void)interruptionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_LocationFetch();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPOwnerSessionLocationFetch interruptionHandler %@", buf, 0xCu);
   }
 
@@ -100,25 +100,25 @@ void __51__SPOwnerSessionLocationFetch_interruptionHandler___block_invoke_2(uint
   }
 }
 
-- (void)invalidationHandler:(id)a3
+- (void)invalidationHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_LocationFetch();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPOwnerSessionLocationFetch invalidationHandler %@", &v10, 0xCu);
   }
 
-  v6 = [(SPOwnerSessionLocationFetch *)self locationFetchSessionInvalidationBlock];
+  locationFetchSessionInvalidationBlock = [(SPOwnerSessionLocationFetch *)self locationFetchSessionInvalidationBlock];
 
-  if (v6)
+  if (locationFetchSessionInvalidationBlock)
   {
-    v7 = [(SPOwnerSessionLocationFetch *)self locationFetchSessionInvalidationBlock];
+    locationFetchSessionInvalidationBlock2 = [(SPOwnerSessionLocationFetch *)self locationFetchSessionInvalidationBlock];
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.icloud.searchpartyd.SPOwnerSession.ErrorDomain" code:19 userInfo:0];
-    (v7)[2](v7, v8);
+    (locationFetchSessionInvalidationBlock2)[2](locationFetchSessionInvalidationBlock2, v8);
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -127,9 +127,9 @@ void __51__SPOwnerSessionLocationFetch_interruptionHandler___block_invoke_2(uint
 - (SPOwnerSessionXPCProtocol)proxy
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(SPOwnerSessionLocationFetch *)self session];
+  session = [(SPOwnerSessionLocationFetch *)self session];
 
-  if (!v3)
+  if (!session)
   {
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -155,26 +155,26 @@ void __51__SPOwnerSessionLocationFetch_interruptionHandler___block_invoke_2(uint
     v11 = LogCategory_SecureLocations();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v9 machService];
+      machService = [v9 machService];
       *buf = 138412290;
-      v27 = v12;
+      v27 = machService;
       _os_log_impl(&dword_2643D0000, v11, OS_LOG_TYPE_DEFAULT, "SPOwnerSessionLocationFetch: Establishing XPC connection to %@", buf, 0xCu);
     }
 
-    v13 = [(SPOwnerSessionLocationFetch *)self session];
-    [v13 resume];
+    session2 = [(SPOwnerSessionLocationFetch *)self session];
+    [session2 resume];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
   }
 
-  v14 = [(SPOwnerSessionLocationFetch *)self session];
-  v15 = [v14 proxy];
+  session3 = [(SPOwnerSessionLocationFetch *)self session];
+  proxy = [session3 proxy];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return proxy;
 }
 
 void __36__SPOwnerSessionLocationFetch_proxy__block_invoke(uint64_t a1, void *a2)
@@ -229,16 +229,16 @@ uint64_t __46__SPOwnerSessionLocationFetch_remoteInterface__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)receivedUpdatedLocation:(id)a3
+- (void)receivedUpdatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__SPOwnerSessionLocationFetch_receivedUpdatedLocation___block_invoke;
   v6[3] = &unk_279B58C78;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = locationCopy;
+  selfCopy = self;
+  v5 = locationCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSessionLocationFetch.receivedUpdatedLocation", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -275,16 +275,16 @@ void __55__SPOwnerSessionLocationFetch_receivedUpdatedLocation___block_invoke(ui
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedUpdatedDeviceEvents:(id)a3
+- (void)receivedUpdatedDeviceEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__SPOwnerSessionLocationFetch_receivedUpdatedDeviceEvents___block_invoke;
   v6[3] = &unk_279B58C78;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = eventsCopy;
+  selfCopy = self;
+  v5 = eventsCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSessionLocationFetch.receivedUpdatedLocation", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -321,36 +321,36 @@ void __59__SPOwnerSessionLocationFetch_receivedUpdatedDeviceEvents___block_invok
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeAndFetchLocationForContext:(id)a3 completion:(id)a4
+- (void)subscribeAndFetchLocationForContext:(id)context completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 bundleIdentifier];
-  [v7 setBundleIdentifier:v10];
+  contextCopy = context;
+  completionCopy = completion;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [contextCopy setBundleIdentifier:bundleIdentifier];
 
-  v11 = [(SPOwnerSessionLocationFetch *)self locationUpdates];
+  locationUpdates = [(SPOwnerSessionLocationFetch *)self locationUpdates];
 
-  if (v11)
+  if (locationUpdates)
   {
-    [v7 setSubscribe:1];
+    [contextCopy setSubscribe:1];
   }
 
-  v12 = [(SPOwnerSessionLocationFetch *)self deviceEventUpdates];
+  deviceEventUpdates = [(SPOwnerSessionLocationFetch *)self deviceEventUpdates];
 
-  if (v12)
+  if (deviceEventUpdates)
   {
-    [v7 setReportDeviceEvents:1];
+    [contextCopy setReportDeviceEvents:1];
   }
 
-  objc_storeStrong(&self->_lastContext, a3);
+  objc_storeStrong(&self->_lastContext, context);
   v13 = LogCategory_LocationFetch();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v7 searchIdentifiers];
+    searchIdentifiers = [contextCopy searchIdentifiers];
     *buf = 134217984;
-    v23 = [v14 count];
+    v23 = [searchIdentifiers count];
     _os_log_impl(&dword_2643D0000, v13, OS_LOG_TYPE_DEFAULT, "SPOwnerSessionLocationFetch.subscribeAndFetchLocationForContext %lu", buf, 0xCu);
   }
 
@@ -360,10 +360,10 @@ void __59__SPOwnerSessionLocationFetch_receivedUpdatedDeviceEvents___block_invok
   activity_block[2] = __78__SPOwnerSessionLocationFetch_subscribeAndFetchLocationForContext_completion___block_invoke;
   activity_block[3] = &unk_279B58BA8;
   objc_copyWeak(&v21, buf);
-  v19 = v7;
-  v20 = v8;
-  v15 = v8;
-  v16 = v7;
+  v19 = contextCopy;
+  v20 = completionCopy;
+  v15 = completionCopy;
+  v16 = contextCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSessionLocationFetch.subscribeAndFetchLocationForContext:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   objc_destroyWeak(&v21);
@@ -408,9 +408,9 @@ void __78__SPOwnerSessionLocationFetch_subscribeAndFetchLocationForContext_compl
   }
 }
 
-- (void)unsubscribeLocationUpdatesWithCompletion:(id)a3
+- (void)unsubscribeLocationUpdatesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = LogCategory_LocationFetch();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -420,24 +420,24 @@ void __78__SPOwnerSessionLocationFetch_subscribeAndFetchLocationForContext_compl
 
   [(SPOwnerSessionLocationFetch *)self setLocationFetchSessionInvalidationBlock:0];
   [(SPOwnerSessionLocationFetch *)self setLocationUpdates:0];
-  v6 = [(SPOwnerSessionLocationFetch *)self session];
-  [v6 invalidate];
+  session = [(SPOwnerSessionLocationFetch *)self session];
+  [session invalidate];
 
   [(SPOwnerSessionLocationFetch *)self setSession:0];
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)locationForContext:(id)a3 completion:(id)a4
+- (void)locationForContext:(id)context completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = LogCategory_LocationFetch();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 searchIdentifiers];
+    searchIdentifiers = [contextCopy searchIdentifiers];
     *buf = 134217984;
-    v18 = [v9 count];
+    v18 = [searchIdentifiers count];
     _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "SPOwnerSessionLocationFetch.locationForContext:completion: %lu", buf, 0xCu);
   }
 
@@ -446,11 +446,11 @@ void __78__SPOwnerSessionLocationFetch_subscribeAndFetchLocationForContext_compl
   activity_block[1] = 3221225472;
   activity_block[2] = __61__SPOwnerSessionLocationFetch_locationForContext_completion___block_invoke;
   activity_block[3] = &unk_279B59718;
-  v14 = v6;
-  v10 = v6;
+  v14 = contextCopy;
+  v10 = contextCopy;
   objc_copyWeak(&v16, buf);
-  v15 = v7;
-  v11 = v7;
+  v15 = completionCopy;
+  v11 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSessionLocationFetch.locationForContext:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   objc_destroyWeak(&v16);

@@ -1,23 +1,23 @@
 @interface SLSWActionDispatcher
-- (SLSWActionDispatcher)initWithQueue:(id)a3;
-- (id)bundleIDForProcess:(id)a3 error:(id *)a4;
-- (void)_sendAction:(id)a3 toProcess:(id)a4 completion:(id)a5;
-- (void)dispatchAction:(id)a3 toProcess:(id)a4 completion:(id)a5;
-- (void)dispatchAction:(id)a3 withAssertionForProcess:(id)a4 completion:(id)a5;
+- (SLSWActionDispatcher)initWithQueue:(id)queue;
+- (id)bundleIDForProcess:(id)process error:(id *)error;
+- (void)_sendAction:(id)action toProcess:(id)process completion:(id)completion;
+- (void)dispatchAction:(id)action toProcess:(id)process completion:(id)completion;
+- (void)dispatchAction:(id)action withAssertionForProcess:(id)process completion:(id)completion;
 @end
 
 @implementation SLSWActionDispatcher
 
-- (SLSWActionDispatcher)initWithQueue:(id)a3
+- (SLSWActionDispatcher)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = SLSWActionDispatcher;
   v6 = [(SLSWActionDispatcher *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callbackQueue, a3);
+    objc_storeStrong(&v6->_callbackQueue, queue);
     v8 = SLDGlobalWorkloop();
     v9 = dispatch_queue_create_with_target_V2("com.apple.sociallayerd.SLSWActionDispatcher", 0, v8);
     workQueue = v7->_workQueue;
@@ -27,18 +27,18 @@
   return v7;
 }
 
-- (id)bundleIDForProcess:(id)a3 error:(id *)a4
+- (id)bundleIDForProcess:(id)process error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277D46FA0] predicateMatchingIdentity:v5];
+  processCopy = process;
+  v6 = [MEMORY[0x277D46FA0] predicateMatchingIdentity:processCopy];
   v18 = 0;
   v7 = [MEMORY[0x277D46F48] handleForPredicate:v6 error:&v18];
   v8 = v18;
   if (v7)
   {
-    v9 = [v7 bundle];
-    v10 = [v9 identifier];
+    bundle = [v7 bundle];
+    identifier = [bundle identifier];
     goto LABEL_10;
   }
 
@@ -46,7 +46,7 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v22 = v5;
+    v22 = processCopy;
     v23 = 2112;
     v24 = v6;
     v25 = 2112;
@@ -56,13 +56,13 @@
 
   if (v8)
   {
-    v9 = v8;
-    if (a4)
+    bundle = v8;
+    if (error)
     {
 LABEL_7:
-      v12 = v9;
-      v10 = 0;
-      *a4 = v9;
+      v12 = bundle;
+      identifier = 0;
+      *error = bundle;
       goto LABEL_10;
     }
   }
@@ -71,36 +71,36 @@ LABEL_7:
   {
     v13 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277CCA068];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to get bundle ID from process identity: %@", v5];
-    v20 = v14;
+    processCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to get bundle ID from process identity: %@", processCopy];
+    v20 = processCopy;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-    v9 = [v13 errorWithDomain:@"com.apple.sociallayerd.SLDCollaborationHandshakeService" code:1 userInfo:v15];
+    bundle = [v13 errorWithDomain:@"com.apple.sociallayerd.SLDCollaborationHandshakeService" code:1 userInfo:v15];
 
-    if (a4)
+    if (error)
     {
       goto LABEL_7;
     }
   }
 
-  v10 = 0;
+  identifier = 0;
 LABEL_10:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return identifier;
 }
 
-- (void)dispatchAction:(id)a3 withAssertionForProcess:(id)a4 completion:(id)a5
+- (void)dispatchAction:(id)action withAssertionForProcess:(id)process completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__SLSWActionDispatcher_dispatchAction_withAssertionForProcess_completion___block_invoke;
   v10[3] = &unk_278926358;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [(SLSWActionDispatcher *)self _sendAction:a3 toProcess:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(SLSWActionDispatcher *)self _sendAction:action toProcess:process completion:v10];
 }
 
 void __74__SLSWActionDispatcher_dispatchAction_withAssertionForProcess_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -162,17 +162,17 @@ void __74__SLSWActionDispatcher_dispatchAction_withAssertionForProcess_completio
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatchAction:(id)a3 toProcess:(id)a4 completion:(id)a5
+- (void)dispatchAction:(id)action toProcess:(id)process completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__SLSWActionDispatcher_dispatchAction_toProcess_completion___block_invoke;
   v10[3] = &unk_278926380;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [(SLSWActionDispatcher *)self _sendAction:a3 toProcess:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(SLSWActionDispatcher *)self _sendAction:action toProcess:process completion:v10];
 }
 
 void __60__SLSWActionDispatcher_dispatchAction_toProcess_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -214,28 +214,28 @@ void __60__SLSWActionDispatcher_dispatchAction_toProcess_completion___block_invo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendAction:(id)a3 toProcess:(id)a4 completion:(id)a5
+- (void)_sendAction:(id)action toProcess:(id)process completion:(id)completion
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  processCopy = process;
+  completionCopy = completion;
   v27 = 0;
-  v11 = [(SLSWActionDispatcher *)self bundleIDForProcess:v9 error:&v27];
+  v11 = [(SLSWActionDispatcher *)self bundleIDForProcess:processCopy error:&v27];
   v12 = v27;
   if (v11)
   {
-    v13 = [v8 sourceBSAction];
-    if (v13)
+    sourceBSAction = [actionCopy sourceBSAction];
+    if (sourceBSAction)
     {
-      v14 = [MEMORY[0x277CBEB38] dictionary];
-      [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D0ABF0]];
-      v32 = v13;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D0ABF0]];
+      v32 = sourceBSAction;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
-      [v14 setObject:v15 forKeyedSubscript:*MEMORY[0x277D0ABD0]];
+      [dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x277D0ABD0]];
 
-      v16 = [MEMORY[0x277D0AD60] optionsWithDictionary:v14];
-      v17 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+      v16 = [MEMORY[0x277D0AD60] optionsWithDictionary:dictionary];
+      serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
       v18 = SLDaemonLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -251,20 +251,20 @@ void __60__SLSWActionDispatcher_dispatchAction_toProcess_completion___block_invo
       v24[2] = __57__SLSWActionDispatcher__sendAction_toProcess_completion___block_invoke;
       v24[3] = &unk_278926380;
       v25 = v11;
-      v26 = v10;
-      [v17 openApplication:v25 withOptions:v16 completion:v24];
+      v26 = completionCopy;
+      [serviceWithDefaultShellEndpoint openApplication:v25 withOptions:v16 completion:v24];
     }
 
     else
     {
       v20 = MEMORY[0x277CCA9B8];
       v33 = *MEMORY[0x277CCA068];
-      v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to retrieve a BSAction for: %@", v8];
-      v34[0] = v21;
+      actionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to retrieve a BSAction for: %@", actionCopy];
+      v34[0] = actionCopy;
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-      v14 = [v20 errorWithDomain:@"com.apple.sociallayerd.SLDCollaborationHandshakeService" code:1 userInfo:v22];
+      dictionary = [v20 errorWithDomain:@"com.apple.sociallayerd.SLDCollaborationHandshakeService" code:1 userInfo:v22];
 
-      (*(v10 + 2))(v10, 0, v14);
+      (*(completionCopy + 2))(completionCopy, 0, dictionary);
     }
   }
 
@@ -273,10 +273,10 @@ void __60__SLSWActionDispatcher_dispatchAction_toProcess_completion___block_invo
     v19 = SLDaemonLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [SLSWActionDispatcher _sendAction:v8 toProcess:v9 completion:v19];
+      [SLSWActionDispatcher _sendAction:actionCopy toProcess:processCopy completion:v19];
     }
 
-    (*(v10 + 2))(v10, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
   v23 = *MEMORY[0x277D85DE8];

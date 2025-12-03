@@ -1,20 +1,20 @@
 @interface TVSettingsAddLanguageController
-- (TVSettingsAddLanguageController)initWithTopLevelController:(id)a3;
+- (TVSettingsAddLanguageController)initWithTopLevelController:(id)controller;
 - (void)_cancelButtonTapped;
-- (void)_preferredLanguagesDidChange:(id)a3;
+- (void)_preferredLanguagesDidChange:(id)change;
 - (void)_setupNavigationBar;
 - (void)dealloc;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation TVSettingsAddLanguageController
 
-- (TVSettingsAddLanguageController)initWithTopLevelController:(id)a3
+- (TVSettingsAddLanguageController)initWithTopLevelController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (qword_27FF8 != -1)
   {
     sub_12490();
@@ -26,7 +26,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_topLevelController, a3);
+    objc_storeStrong(&v6->_topLevelController, controller);
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 addObserver:v7 selector:"_willEnterForeground:" name:UIApplicationWillEnterForegroundNotification object:0];
   }
@@ -46,8 +46,8 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(TVSettingsAddLanguageController *)self selectedLanguages];
-  v4 = [v3 mutableCopy];
+  selectedLanguages = [(TVSettingsAddLanguageController *)self selectedLanguages];
+  v4 = [selectedLanguages mutableCopy];
   stagedLanguages = self->_stagedLanguages;
   self->_stagedLanguages = v4;
 
@@ -58,9 +58,9 @@
     self->_stagedLanguages = v6;
   }
 
-  v8 = [(TVSettingsAddLanguageController *)self unselectedLanguages];
+  unselectedLanguages = [(TVSettingsAddLanguageController *)self unselectedLanguages];
   filteredLanguages = self->_filteredLanguages;
-  self->_filteredLanguages = v8;
+  self->_filteredLanguages = unselectedLanguages;
 
   v10 = OBJC_IVAR___PSListController__table;
   [*&self->PSListController_opaque[OBJC_IVAR___PSListController__table] setEstimatedSectionHeaderHeight:0.0];
@@ -71,19 +71,19 @@
   [(TVSettingsAddLanguageController *)&v11 viewDidLoad];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = TVSettingsAddLanguageController;
-  v7 = a3;
-  [(TVSettingsAddLanguageController *)&v14 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [v7 cellForRowAtIndexPath:{v6, v14.receiver, v14.super_class}];
+  viewCopy = view;
+  [(TVSettingsAddLanguageController *)&v14 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:{pathCopy, v14.receiver, v14.super_class}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(TVSettingsAddLanguageController *)self specifierAtIndex:[(TVSettingsAddLanguageController *)self indexForIndexPath:v6]];
+    v9 = [(TVSettingsAddLanguageController *)self specifierAtIndex:[(TVSettingsAddLanguageController *)self indexForIndexPath:pathCopy]];
     v10 = v9;
     if (v8)
     {
@@ -98,27 +98,27 @@
 
       [(NSMutableArray *)self->_stagedLanguages addObject:v11];
       [(TVSettingsAddLanguageController *)self setSelectedLanguages:self->_stagedLanguages];
-      v13 = [(TVSettingsAddLanguageController *)self parentController];
-      [v13 dismiss];
+      parentController = [(TVSettingsAddLanguageController *)self parentController];
+      [parentController dismiss];
     }
   }
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [v5 length];
-  v7 = [(TVSettingsAddLanguageController *)self unselectedLanguages];
-  v8 = v7;
+  changeCopy = change;
+  v6 = [changeCopy length];
+  unselectedLanguages = [(TVSettingsAddLanguageController *)self unselectedLanguages];
+  v8 = unselectedLanguages;
   if (v6)
   {
-    v9 = [(NSArray *)v7 mutableCopy];
+    v9 = [(NSArray *)unselectedLanguages mutableCopy];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_27CC;
     v14[3] = &unk_208E8;
-    v15 = v5;
+    v15 = changeCopy;
     v10 = [NSPredicate predicateWithBlock:v14];
     [(NSArray *)v9 filterUsingPredicate:v10];
 
@@ -132,17 +132,17 @@
   else
   {
     v13 = self->_filteredLanguages;
-    self->_filteredLanguages = v7;
+    self->_filteredLanguages = unselectedLanguages;
 
     [(TVSettingsAddLanguageController *)self reloadSpecifiers];
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = [(TVSettingsAddLanguageController *)self unselectedLanguages];
+  unselectedLanguages = [(TVSettingsAddLanguageController *)self unselectedLanguages];
   filteredLanguages = self->_filteredLanguages;
-  self->_filteredLanguages = v4;
+  self->_filteredLanguages = unselectedLanguages;
 
   [(TVSettingsAddLanguageController *)self reloadSpecifiers];
 }
@@ -150,26 +150,26 @@
 - (void)_setupNavigationBar
 {
   v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelButtonTapped"];
-  v4 = [(TVSettingsAddLanguageController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(TVSettingsAddLanguageController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   v5 = objc_alloc_init(UISearchController);
   searchController = self->_searchController;
   self->_searchController = v5;
 
-  v7 = [(UISearchController *)self->_searchController searchBar];
-  [v7 setDelegate:self];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  [searchBar setDelegate:self];
 
   v8 = self->_searchController;
-  v9 = [(TVSettingsAddLanguageController *)self navigationItem];
-  [v9 setSearchController:v8];
+  navigationItem2 = [(TVSettingsAddLanguageController *)self navigationItem];
+  [navigationItem2 setSearchController:v8];
 
-  v10 = [(TVSettingsAddLanguageController *)self navigationItem];
-  [v10 setHidesSearchBarWhenScrolling:0];
+  navigationItem3 = [(TVSettingsAddLanguageController *)self navigationItem];
+  [navigationItem3 setHidesSearchBarWhenScrolling:0];
 
-  v12 = [(TVSettingsAddLanguageController *)self navigationItem];
-  v11 = [v12 searchController];
-  [v11 setObscuresBackgroundDuringPresentation:0];
+  navigationItem4 = [(TVSettingsAddLanguageController *)self navigationItem];
+  searchController = [navigationItem4 searchController];
+  [searchController setObscuresBackgroundDuringPresentation:0];
 }
 
 - (void)_cancelButtonTapped
@@ -181,14 +181,14 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Dismissing AddLanguages view.", v5, 2u);
   }
 
-  v4 = [(TVSettingsAddLanguageController *)self parentController];
-  [v4 dismiss];
+  parentController = [(TVSettingsAddLanguageController *)self parentController];
+  [parentController dismiss];
 }
 
-- (void)_preferredLanguagesDidChange:(id)a3
+- (void)_preferredLanguagesDidChange:(id)change
 {
-  v4 = [(TVSettingsAddLanguageController *)self selectedLanguages];
-  v5 = [v4 mutableCopy];
+  selectedLanguages = [(TVSettingsAddLanguageController *)self selectedLanguages];
+  v5 = [selectedLanguages mutableCopy];
   stagedLanguages = self->_stagedLanguages;
   self->_stagedLanguages = v5;
 
@@ -202,15 +202,15 @@
   unselectedLanguages = self->_unselectedLanguages;
   self->_unselectedLanguages = 0;
 
-  v10 = [(TVSettingsAddLanguageController *)self unselectedLanguages];
+  unselectedLanguages = [(TVSettingsAddLanguageController *)self unselectedLanguages];
   filteredLanguages = self->_filteredLanguages;
-  self->_filteredLanguages = v10;
+  self->_filteredLanguages = unselectedLanguages;
 
-  v12 = [(UISearchController *)self->_searchController searchBar];
-  v14 = [v12 text];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  text = [searchBar text];
 
-  v13 = [(UISearchController *)self->_searchController searchBar];
-  [(TVSettingsAddLanguageController *)self searchBar:v13 textDidChange:v14];
+  searchBar2 = [(UISearchController *)self->_searchController searchBar];
+  [(TVSettingsAddLanguageController *)self searchBar:searchBar2 textDidChange:text];
 }
 
 @end

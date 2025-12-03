@@ -1,21 +1,21 @@
 @interface SUUIGallerySwooshCollectionViewCell
 - (void)layoutSubviews;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setContentChildView:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setContentChildView:(id)view;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SUUIGallerySwooshCollectionViewCell
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v4 = [a3 primaryTextColor];
+  primaryTextColor = [scheme primaryTextColor];
   titleColor = self->_titleColor;
-  if (titleColor != v4)
+  if (titleColor != primaryTextColor)
   {
-    obj = v4;
-    titleColor = [titleColor isEqual:v4];
-    v4 = obj;
+    obj = primaryTextColor;
+    titleColor = [titleColor isEqual:primaryTextColor];
+    primaryTextColor = obj;
     if ((titleColor & 1) == 0)
     {
       objc_storeStrong(&self->_titleColor, obj);
@@ -31,46 +31,46 @@
         [(UILabel *)titleLabel setTextColor:v7];
       }
 
-      v4 = obj;
+      primaryTextColor = obj;
     }
   }
 
-  MEMORY[0x2821F96F8](titleColor, v4);
+  MEMORY[0x2821F96F8](titleColor, primaryTextColor);
 }
 
-- (void)setContentChildView:(id)a3
+- (void)setContentChildView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentChildView = self->_contentChildView;
-  v8 = v5;
-  if (contentChildView != v5)
+  v8 = viewCopy;
+  if (contentChildView != viewCopy)
   {
     if ([(UIView *)contentChildView isDescendantOfView:self])
     {
       [(UIView *)self->_contentChildView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_contentChildView, a3);
+    objc_storeStrong(&self->_contentChildView, view);
     [(SUUIGallerySwooshCollectionViewCell *)self setNeedsLayout];
     contentChildView = self->_contentChildView;
   }
 
   if (contentChildView && ![(UIView *)contentChildView isDescendantOfView:self])
   {
-    v7 = [(SUUIGallerySwooshCollectionViewCell *)self contentView];
-    [v7 addSubview:self->_contentChildView];
+    contentView = [(SUUIGallerySwooshCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_contentChildView];
     [(SUUIGallerySwooshCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v16 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  if (v4 != v16 && ([v4 isEqualToString:v16] & 1) == 0)
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  if (text != titleCopy && ([text isEqualToString:titleCopy] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v16)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -79,8 +79,8 @@
         self->_titleLabel = v6;
 
         v8 = self->_titleLabel;
-        v9 = [(SUUIGallerySwooshCollectionViewCell *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SUUIGallerySwooshCollectionViewCell *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_titleLabel;
         v11 = [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
@@ -98,8 +98,8 @@
           [(UILabel *)v12 setTextColor:v14];
         }
 
-        v15 = [(SUUIGallerySwooshCollectionViewCell *)self contentView];
-        [v15 addSubview:self->_titleLabel];
+        contentView = [(SUUIGallerySwooshCollectionViewCell *)self contentView];
+        [contentView addSubview:self->_titleLabel];
 
         titleLabel = self->_titleLabel;
       }
@@ -124,8 +124,8 @@
   v19.receiver = self;
   v19.super_class = SUUIGallerySwooshCollectionViewCell;
   [(SUUIGallerySwooshCollectionViewCell *)&v19 layoutSubviews];
-  v3 = [(SUUIGallerySwooshCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUIGallerySwooshCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;

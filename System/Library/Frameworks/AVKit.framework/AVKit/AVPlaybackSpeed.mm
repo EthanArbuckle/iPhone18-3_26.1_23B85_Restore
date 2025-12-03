@@ -1,7 +1,7 @@
 @interface AVPlaybackSpeed
 + (NSArray)systemDefaultSpeeds;
-+ (id)_rateFormattedAsString:(float)a3 locale:(id)a4;
-- (AVPlaybackSpeed)initWithRate:(float)a3 localizedName:(id)a4 synthesized:(BOOL)a5;
++ (id)_rateFormattedAsString:(float)string locale:(id)locale;
+- (AVPlaybackSpeed)initWithRate:(float)rate localizedName:(id)name synthesized:(BOOL)synthesized;
 - (id)description;
 - (id)internalDescription;
 @end
@@ -20,9 +20,9 @@
 
 - (id)internalDescription
 {
-  v3 = [(AVPlaybackSpeed *)self isSynthesized];
+  isSynthesized = [(AVPlaybackSpeed *)self isSynthesized];
   v4 = @"selectable";
-  if (v3)
+  if (isSynthesized)
   {
     v4 = @"not selectable";
   }
@@ -36,42 +36,42 @@
   return v7;
 }
 
-- (AVPlaybackSpeed)initWithRate:(float)a3 localizedName:(id)a4 synthesized:(BOOL)a5
+- (AVPlaybackSpeed)initWithRate:(float)rate localizedName:(id)name synthesized:(BOOL)synthesized
 {
-  v8 = a4;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = AVPlaybackSpeed;
   v9 = [(AVPlaybackSpeed *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    v9->_rate = a3;
-    v11 = [v8 copy];
+    v9->_rate = rate;
+    v11 = [nameCopy copy];
     localizedName = v10->_localizedName;
     v10->_localizedName = v11;
 
     v13 = objc_opt_self();
     v14 = MEMORY[0x1E696AEC0];
     v15 = AVLocalizedString(@"%@\\U00D7");
-    v16 = [MEMORY[0x1E695DF58] currentLocale];
-    *&v17 = a3;
-    v18 = [v13 _rateFormattedAsString:v16 locale:v17];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    *&v17 = rate;
+    v18 = [v13 _rateFormattedAsString:currentLocale locale:v17];
     v19 = [v14 stringWithFormat:v15, v18];
 
     localizedNumericName = v10->_localizedNumericName;
     v10->_localizedNumericName = v19;
 
-    v10->_synthesized = a5;
+    v10->_synthesized = synthesized;
   }
 
   return v10;
 }
 
-+ (id)_rateFormattedAsString:(float)a3 locale:(id)a4
++ (id)_rateFormattedAsString:(float)string locale:(id)locale
 {
-  v5 = a4;
-  v6 = a3;
-  if (v6 <= 0.01)
+  localeCopy = locale;
+  stringCopy = string;
+  if (stringCopy <= 0.01)
   {
     v9 = @"0.01";
   }
@@ -80,20 +80,20 @@
   {
     v7 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     v8 = v7;
-    if (v5)
+    if (localeCopy)
     {
-      [v7 setLocale:v5];
+      [v7 setLocale:localeCopy];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DF58] currentLocale];
-      [v8 setLocale:v10];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      [v8 setLocale:currentLocale];
     }
 
     [v8 setNumberStyle:1];
     [v8 setMaximumFractionDigits:2];
-    v11 = [MEMORY[0x1E696AD98] numberWithDouble:fabs(v6)];
+    v11 = [MEMORY[0x1E696AD98] numberWithDouble:fabs(stringCopy)];
     v9 = [v8 stringFromNumber:v11];
   }
 
@@ -106,7 +106,7 @@
   block[1] = 3221225472;
   block[2] = __38__AVPlaybackSpeed_systemDefaultSpeeds__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (systemDefaultSpeeds_createSystemDefaultSpeedsOnce != -1)
   {
     dispatch_once(&systemDefaultSpeeds_createSystemDefaultSpeedsOnce, block);

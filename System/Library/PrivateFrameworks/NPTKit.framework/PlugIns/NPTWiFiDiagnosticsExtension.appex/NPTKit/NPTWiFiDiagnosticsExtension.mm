@@ -1,11 +1,11 @@
 @interface NPTWiFiDiagnosticsExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 - (void)saveResults;
 @end
 
 @implementation NPTWiFiDiagnosticsExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v4 = objc_alloc_init(NSMutableDictionary);
   [(NPTWiFiDiagnosticsExtension *)self setResults:v4];
@@ -19,27 +19,27 @@
   v7 = [NPTPerformanceTest performanceTestWithConfiguration:v5];
   [(NPTWiFiDiagnosticsExtension *)self setPass:v7];
 
-  v8 = [(NPTWiFiDiagnosticsExtension *)self pass];
-  v9 = [v8 metadata];
-  v10 = [(NPTWiFiDiagnosticsExtension *)self results];
-  [v10 setObject:v9 forKeyedSubscript:@"metadata"];
+  pass = [(NPTWiFiDiagnosticsExtension *)self pass];
+  metadata = [pass metadata];
+  results = [(NPTWiFiDiagnosticsExtension *)self results];
+  [results setObject:metadata forKeyedSubscript:@"metadata"];
 
-  v11 = [(NPTWiFiDiagnosticsExtension *)self pass];
+  pass2 = [(NPTWiFiDiagnosticsExtension *)self pass];
   v20 = _NSConcreteStackBlock;
   v21 = 3221225472;
   v22 = sub_100000DF0;
   v23 = &unk_100004120;
-  v24 = self;
+  selfCopy = self;
   v25 = v6;
   v12 = v6;
-  [v11 startDownloadWithCompletion:&v20];
+  [pass2 startDownloadWithCompletion:&v20];
 
   v13 = dispatch_time(0, 25000000000);
   dispatch_semaphore_wait(v12, v13);
   v14 = [(NPTWiFiDiagnosticsExtension *)self finalPath:v20];
   v15 = [NSURL URLWithString:v14];
-  v16 = [v15 path];
-  v17 = [DEAttachmentItem attachmentWithPath:v16];
+  path = [v15 path];
+  v17 = [DEAttachmentItem attachmentWithPath:path];
   v26 = v17;
   v18 = [NSArray arrayWithObjects:&v26 count:1];
 
@@ -49,24 +49,24 @@
 - (void)saveResults
 {
   v3 = +[NSFileManager defaultManager];
-  v14 = [v3 temporaryDirectory];
+  temporaryDirectory = [v3 temporaryDirectory];
 
-  v4 = [v14 path];
-  v5 = [v4 stringByAppendingPathComponent:@"performanceTestWiFi.json"];
+  path = [temporaryDirectory path];
+  v5 = [path stringByAppendingPathComponent:@"performanceTestWiFi.json"];
   [(NPTWiFiDiagnosticsExtension *)self setFinalPath:v5];
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [(NPTWiFiDiagnosticsExtension *)self finalPath];
-  [v6 removeItemAtPath:v7 error:0];
+  finalPath = [(NPTWiFiDiagnosticsExtension *)self finalPath];
+  [v6 removeItemAtPath:finalPath error:0];
 
-  v8 = [(NPTWiFiDiagnosticsExtension *)self results];
-  v9 = [NSJSONSerialization dataWithJSONObject:v8 options:3 error:0];
+  results = [(NPTWiFiDiagnosticsExtension *)self results];
+  v9 = [NSJSONSerialization dataWithJSONObject:results options:3 error:0];
 
   v10 = +[NSFileManager defaultManager];
-  v11 = [(NPTWiFiDiagnosticsExtension *)self finalPath];
-  v12 = [NSURL URLWithString:v11];
-  v13 = [v12 path];
-  [v10 createFileAtPath:v13 contents:v9 attributes:0];
+  finalPath2 = [(NPTWiFiDiagnosticsExtension *)self finalPath];
+  v12 = [NSURL URLWithString:finalPath2];
+  path2 = [v12 path];
+  [v10 createFileAtPath:path2 contents:v9 attributes:0];
 }
 
 @end

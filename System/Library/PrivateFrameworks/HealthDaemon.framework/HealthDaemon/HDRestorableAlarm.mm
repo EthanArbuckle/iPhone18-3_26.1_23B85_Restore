@@ -1,51 +1,51 @@
 @interface HDRestorableAlarm
-- (BOOL)removeAllEventsWithError:(id *)a3;
-- (BOOL)removeEvents:(id)a3 error:(id *)a4;
-- (BOOL)scheduleEvents:(id)a3 error:(id *)a4;
-- (HDRestorableAlarm)initWithProfile:(id)a3 clientIdentifier:(id)a4 eventHandlerQueue:(id)a5;
-- (HDRestorableAlarm)initWithScheduler:(id)a3 clientIdentifier:(id)a4 eventHandlerQueue:(id)a5;
-- (id)allScheduledEventsWithError:(id *)a3;
+- (BOOL)removeAllEventsWithError:(id *)error;
+- (BOOL)removeEvents:(id)events error:(id *)error;
+- (BOOL)scheduleEvents:(id)events error:(id *)error;
+- (HDRestorableAlarm)initWithProfile:(id)profile clientIdentifier:(id)identifier eventHandlerQueue:(id)queue;
+- (HDRestorableAlarm)initWithScheduler:(id)scheduler clientIdentifier:(id)identifier eventHandlerQueue:(id)queue;
+- (id)allScheduledEventsWithError:(id *)error;
 - (id)diagnosticDescription;
-- (id)eventWithIdentifier:(id)a3 dueDate:(id)a4 eventOptions:(unint64_t)a5;
-- (id)eventWithIdentifier:(id)a3 dueDate:(id)a4 eventOptions:(unint64_t)a5 clientOptions:(unint64_t)a6;
-- (id)eventWithIdentifier:(id)a3 dueDateComponents:(id)a4 eventOptions:(unint64_t)a5;
-- (id)eventWithIdentifier:(id)a3 dueDateComponents:(id)a4 eventOptions:(unint64_t)a5 clientOptions:(unint64_t)a6;
-- (id)replaceAllScheduledEventsWithEvents:(id)a3 error:(id *)a4;
-- (void)beginReceivingEventsWithHandler:(id)a3;
-- (void)checkForDueEventsWithCompletion:(id)a3;
-- (void)eventsDidFire:(id)a3;
+- (id)eventWithIdentifier:(id)identifier dueDate:(id)date eventOptions:(unint64_t)options;
+- (id)eventWithIdentifier:(id)identifier dueDate:(id)date eventOptions:(unint64_t)options clientOptions:(unint64_t)clientOptions;
+- (id)eventWithIdentifier:(id)identifier dueDateComponents:(id)components eventOptions:(unint64_t)options;
+- (id)eventWithIdentifier:(id)identifier dueDateComponents:(id)components eventOptions:(unint64_t)options clientOptions:(unint64_t)clientOptions;
+- (id)replaceAllScheduledEventsWithEvents:(id)events error:(id *)error;
+- (void)beginReceivingEventsWithHandler:(id)handler;
+- (void)checkForDueEventsWithCompletion:(id)completion;
+- (void)eventsDidFire:(id)fire;
 - (void)invalidate;
 @end
 
 @implementation HDRestorableAlarm
 
-- (HDRestorableAlarm)initWithProfile:(id)a3 clientIdentifier:(id)a4 eventHandlerQueue:(id)a5
+- (HDRestorableAlarm)initWithProfile:(id)profile clientIdentifier:(id)identifier eventHandlerQueue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 alarmScheduler];
-  v11 = [(HDRestorableAlarm *)self initWithScheduler:v10 clientIdentifier:v9 eventHandlerQueue:v8];
+  queueCopy = queue;
+  identifierCopy = identifier;
+  alarmScheduler = [profile alarmScheduler];
+  v11 = [(HDRestorableAlarm *)self initWithScheduler:alarmScheduler clientIdentifier:identifierCopy eventHandlerQueue:queueCopy];
 
   return v11;
 }
 
-- (HDRestorableAlarm)initWithScheduler:(id)a3 clientIdentifier:(id)a4 eventHandlerQueue:(id)a5
+- (HDRestorableAlarm)initWithScheduler:(id)scheduler clientIdentifier:(id)identifier eventHandlerQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  schedulerCopy = scheduler;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = HDRestorableAlarm;
   v12 = [(HDRestorableAlarm *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_scheduler, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_scheduler, scheduler);
+    v14 = [identifierCopy copy];
     clientIdentifier = v13->_clientIdentifier;
     v13->_clientIdentifier = v14;
 
-    objc_storeStrong(&v13->_eventHandlerQueue, a5);
+    objc_storeStrong(&v13->_eventHandlerQueue, queue);
     v13->_lock._os_unfair_lock_opaque = 0;
     v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
     outstandingEventIdentifiers = v13->_outstandingEventIdentifiers;
@@ -55,17 +55,17 @@
   return v13;
 }
 
-- (void)beginReceivingEventsWithHandler:(id)a3
+- (void)beginReceivingEventsWithHandler:(id)handler
 {
-  v8 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   if (self->_eventsHandler)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDRestorableAlarm.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"_eventsHandler == nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDRestorableAlarm.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"_eventsHandler == nil"}];
   }
 
-  v5 = [v8 copy];
+  v5 = [handlerCopy copy];
   eventsHandler = self->_eventsHandler;
   self->_eventsHandler = v5;
 
@@ -83,81 +83,81 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)eventWithIdentifier:(id)a3 dueDate:(id)a4 eventOptions:(unint64_t)a5
+- (id)eventWithIdentifier:(id)identifier dueDate:(id)date eventOptions:(unint64_t)options
 {
-  v8 = a4;
-  v9 = a3;
+  dateCopy = date;
+  identifierCopy = identifier;
   v10 = [HDAlarmEvent alloc];
-  v11 = [(HDRestorableAlarm *)self clientIdentifier];
-  v12 = [(HDAlarmEvent *)v10 initWithClientIdentifier:v11 eventIdentifier:v9 dueDate:v8 eventOptions:a5];
+  clientIdentifier = [(HDRestorableAlarm *)self clientIdentifier];
+  v12 = [(HDAlarmEvent *)v10 initWithClientIdentifier:clientIdentifier eventIdentifier:identifierCopy dueDate:dateCopy eventOptions:options];
 
   return v12;
 }
 
-- (id)eventWithIdentifier:(id)a3 dueDate:(id)a4 eventOptions:(unint64_t)a5 clientOptions:(unint64_t)a6
+- (id)eventWithIdentifier:(id)identifier dueDate:(id)date eventOptions:(unint64_t)options clientOptions:(unint64_t)clientOptions
 {
-  v10 = a4;
-  v11 = a3;
+  dateCopy = date;
+  identifierCopy = identifier;
   v12 = [HDAlarmEvent alloc];
-  v13 = [(HDRestorableAlarm *)self clientIdentifier];
-  v14 = [(HDAlarmEvent *)v12 initWithClientIdentifier:v13 eventIdentifier:v11 dueDate:v10 eventOptions:a5 clientOptions:a6];
+  clientIdentifier = [(HDRestorableAlarm *)self clientIdentifier];
+  v14 = [(HDAlarmEvent *)v12 initWithClientIdentifier:clientIdentifier eventIdentifier:identifierCopy dueDate:dateCopy eventOptions:options clientOptions:clientOptions];
 
   return v14;
 }
 
-- (id)eventWithIdentifier:(id)a3 dueDateComponents:(id)a4 eventOptions:(unint64_t)a5
+- (id)eventWithIdentifier:(id)identifier dueDateComponents:(id)components eventOptions:(unint64_t)options
 {
-  v8 = a4;
-  v9 = a3;
+  componentsCopy = components;
+  identifierCopy = identifier;
   v10 = [HDAlarmEvent alloc];
-  v11 = [(HDRestorableAlarm *)self clientIdentifier];
-  v12 = [(HDAlarmEvent *)v10 initWithClientIdentifier:v11 eventIdentifier:v9 dueDateComponents:v8 eventOptions:a5];
+  clientIdentifier = [(HDRestorableAlarm *)self clientIdentifier];
+  v12 = [(HDAlarmEvent *)v10 initWithClientIdentifier:clientIdentifier eventIdentifier:identifierCopy dueDateComponents:componentsCopy eventOptions:options];
 
   return v12;
 }
 
-- (id)eventWithIdentifier:(id)a3 dueDateComponents:(id)a4 eventOptions:(unint64_t)a5 clientOptions:(unint64_t)a6
+- (id)eventWithIdentifier:(id)identifier dueDateComponents:(id)components eventOptions:(unint64_t)options clientOptions:(unint64_t)clientOptions
 {
-  v10 = a4;
-  v11 = a3;
+  componentsCopy = components;
+  identifierCopy = identifier;
   v12 = [HDAlarmEvent alloc];
-  v13 = [(HDRestorableAlarm *)self clientIdentifier];
-  v14 = [(HDAlarmEvent *)v12 initWithClientIdentifier:v13 eventIdentifier:v11 dueDateComponents:v10 eventOptions:a5 clientOptions:a6];
+  clientIdentifier = [(HDRestorableAlarm *)self clientIdentifier];
+  v14 = [(HDAlarmEvent *)v12 initWithClientIdentifier:clientIdentifier eventIdentifier:identifierCopy dueDateComponents:componentsCopy eventOptions:options clientOptions:clientOptions];
 
   return v14;
 }
 
-- (id)allScheduledEventsWithError:(id *)a3
+- (id)allScheduledEventsWithError:(id *)error
 {
   scheduler = self->_scheduler;
-  v5 = [(HDRestorableAlarm *)self clientIdentifier];
-  v6 = [(HDRestorableAlarmSchedulerProtocol *)scheduler scheduledEventsForClientIdentifier:v5 error:a3];
+  clientIdentifier = [(HDRestorableAlarm *)self clientIdentifier];
+  v6 = [(HDRestorableAlarmSchedulerProtocol *)scheduler scheduledEventsForClientIdentifier:clientIdentifier error:error];
 
   return v6;
 }
 
-- (BOOL)scheduleEvents:(id)a3 error:(id *)a4
+- (BOOL)scheduleEvents:(id)events error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  eventsCopy = events;
   _HKInitializeLogging();
   v7 = HKLogInfrastructure();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v24 = self;
+    selfCopy = self;
     v25 = 2048;
-    v26 = [v6 count];
+    v26 = [eventsCopy count];
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Scheduled %lu new events", buf, 0x16u);
   }
 
-  v8 = [(HDRestorableAlarmSchedulerProtocol *)self->_scheduler scheduleEvents:v6 error:a4];
+  v8 = [(HDRestorableAlarmSchedulerProtocol *)self->_scheduler scheduleEvents:eventsCopy error:error];
   os_unfair_lock_lock(&self->_lock);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = eventsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -174,8 +174,8 @@
         }
 
         outstandingEventIdentifiers = self->_outstandingEventIdentifiers;
-        v15 = [*(*(&v18 + 1) + 8 * v13) eventIdentifier];
-        [(NSMutableSet *)outstandingEventIdentifiers removeObject:v15];
+        eventIdentifier = [*(*(&v18 + 1) + 8 * v13) eventIdentifier];
+        [(NSMutableSet *)outstandingEventIdentifiers removeObject:eventIdentifier];
 
         ++v13;
       }
@@ -192,28 +192,28 @@
   return v8;
 }
 
-- (BOOL)removeEvents:(id)a3 error:(id *)a4
+- (BOOL)removeEvents:(id)events error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  eventsCopy = events;
   _HKInitializeLogging();
   v7 = HKLogInfrastructure();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v24 = self;
+    selfCopy = self;
     v25 = 2048;
-    v26 = [v6 count];
+    v26 = [eventsCopy count];
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing %lu events", buf, 0x16u);
   }
 
-  v8 = [(HDRestorableAlarmSchedulerProtocol *)self->_scheduler removeEvents:v6 error:a4];
+  v8 = [(HDRestorableAlarmSchedulerProtocol *)self->_scheduler removeEvents:eventsCopy error:error];
   os_unfair_lock_lock(&self->_lock);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = eventsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -230,8 +230,8 @@
         }
 
         outstandingEventIdentifiers = self->_outstandingEventIdentifiers;
-        v15 = [*(*(&v18 + 1) + 8 * v13) eventIdentifier];
-        [(NSMutableSet *)outstandingEventIdentifiers removeObject:v15];
+        eventIdentifier = [*(*(&v18 + 1) + 8 * v13) eventIdentifier];
+        [(NSMutableSet *)outstandingEventIdentifiers removeObject:eventIdentifier];
 
         ++v13;
       }
@@ -248,24 +248,24 @@
   return v8;
 }
 
-- (id)replaceAllScheduledEventsWithEvents:(id)a3 error:(id *)a4
+- (id)replaceAllScheduledEventsWithEvents:(id)events error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  eventsCopy = events;
   _HKInitializeLogging();
   v7 = HKLogInfrastructure();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2048;
-    v16 = [v6 count];
+    v16 = [eventsCopy count];
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Replacing all scheduled events with %lu new events", &v13, 0x16u);
   }
 
   scheduler = self->_scheduler;
-  v9 = [(HDRestorableAlarm *)self clientIdentifier];
-  v10 = [(HDRestorableAlarmSchedulerProtocol *)scheduler replaceAllScheduledEventsWithClientIdentifier:v9 newEvents:v6 error:a4];
+  clientIdentifier = [(HDRestorableAlarm *)self clientIdentifier];
+  v10 = [(HDRestorableAlarmSchedulerProtocol *)scheduler replaceAllScheduledEventsWithClientIdentifier:clientIdentifier newEvents:eventsCopy error:error];
 
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableSet *)self->_outstandingEventIdentifiers removeAllObjects];
@@ -276,7 +276,7 @@
   return v10;
 }
 
-- (BOOL)removeAllEventsWithError:(id *)a3
+- (BOOL)removeAllEventsWithError:(id *)error
 {
   v13 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -284,13 +284,13 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing all scheduled events", &v11, 0xCu);
   }
 
   scheduler = self->_scheduler;
-  v7 = [(HDRestorableAlarm *)self clientIdentifier];
-  v8 = [(HDRestorableAlarmSchedulerProtocol *)scheduler removeAllEventsWithClientIdentifier:v7 error:a3];
+  clientIdentifier = [(HDRestorableAlarm *)self clientIdentifier];
+  v8 = [(HDRestorableAlarmSchedulerProtocol *)scheduler removeAllEventsWithClientIdentifier:clientIdentifier error:error];
 
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableSet *)self->_outstandingEventIdentifiers removeAllObjects];
@@ -299,17 +299,17 @@
   return v8;
 }
 
-- (void)checkForDueEventsWithCompletion:(id)a3
+- (void)checkForDueEventsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   scheduler = self->_scheduler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__HDRestorableAlarm_checkForDueEventsWithCompletion___block_invoke;
   v7[3] = &unk_278628BB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(HDRestorableAlarmSchedulerProtocol *)scheduler checkForDueEventsImmediatelyWithCompletion:v7];
 }
 
@@ -331,18 +331,18 @@ void __53__HDRestorableAlarm_checkForDueEventsWithCompletion___block_invoke(uint
   dispatch_async(v7, v11);
 }
 
-- (void)eventsDidFire:(id)a3
+- (void)eventsDidFire:(id)fire
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  fireCopy = fire;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(fireCopy, "count")}];
   os_unfair_lock_lock(&self->_lock);
   v22 = _Block_copy(self->_eventsHandler);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = v4;
+  v6 = fireCopy;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v7)
   {
@@ -359,8 +359,8 @@ void __53__HDRestorableAlarm_checkForDueEventsWithCompletion___block_invoke(uint
 
         v11 = *(*(&v26 + 1) + 8 * i);
         outstandingEventIdentifiers = self->_outstandingEventIdentifiers;
-        v13 = [v11 eventIdentifier];
-        LODWORD(outstandingEventIdentifiers) = [(NSMutableSet *)outstandingEventIdentifiers containsObject:v13];
+        eventIdentifier = [v11 eventIdentifier];
+        LODWORD(outstandingEventIdentifiers) = [(NSMutableSet *)outstandingEventIdentifiers containsObject:eventIdentifier];
 
         if (outstandingEventIdentifiers)
         {
@@ -368,11 +368,11 @@ void __53__HDRestorableAlarm_checkForDueEventsWithCompletion___block_invoke(uint
           v14 = HKLogInfrastructure();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v11 eventIdentifier];
+            eventIdentifier2 = [v11 eventIdentifier];
             *buf = 138543618;
-            v31 = self;
+            selfCopy = self;
             v32 = 2114;
-            v33 = v15;
+            v33 = eventIdentifier2;
             _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping notification for in-flight event %{public}@", buf, 0x16u);
           }
         }
@@ -380,8 +380,8 @@ void __53__HDRestorableAlarm_checkForDueEventsWithCompletion___block_invoke(uint
         else
         {
           v16 = self->_outstandingEventIdentifiers;
-          v17 = [v11 eventIdentifier];
-          [(NSMutableSet *)v16 addObject:v17];
+          eventIdentifier3 = [v11 eventIdentifier];
+          [(NSMutableSet *)v16 addObject:eventIdentifier3];
 
           [v5 addObject:v11];
         }
@@ -398,8 +398,8 @@ void __53__HDRestorableAlarm_checkForDueEventsWithCompletion___block_invoke(uint
   {
     if (!v22)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"HDRestorableAlarm.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"eventsHandler != nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDRestorableAlarm.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"eventsHandler != nil"}];
     }
 
     eventHandlerQueue = self->_eventHandlerQueue;

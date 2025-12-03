@@ -1,36 +1,36 @@
 @interface MBCKCacheTracker
-- (BOOL)_removeDatabaseAtPath:(id)a3 error:(id *)a4;
-- (BOOL)_resetDatabaseForAccount:(id)a3 error:(id *)a4;
-- (BOOL)resetDatabaseForAccount:(id)a3 error:(id *)a4;
-- (MBCKCacheTracker)initWithCacheDirectory:(id)a3;
-- (MBCKCacheTracker)initWithPath:(id)a3;
+- (BOOL)_removeDatabaseAtPath:(id)path error:(id *)error;
+- (BOOL)_resetDatabaseForAccount:(id)account error:(id *)error;
+- (BOOL)resetDatabaseForAccount:(id)account error:(id *)error;
+- (MBCKCacheTracker)initWithCacheDirectory:(id)directory;
+- (MBCKCacheTracker)initWithPath:(id)path;
 - (id)cacheCreationDate;
-- (id)openCacheWithAccessType:(int)a3 cached:(BOOL)a4 error:(id *)a5;
-- (void)_addCache:(id)a3;
-- (void)_closeCache:(id)a3;
+- (id)openCacheWithAccessType:(int)type cached:(BOOL)cached error:(id *)error;
+- (void)_addCache:(id)cache;
+- (void)_closeCache:(id)cache;
 - (void)_invalidateConnections;
-- (void)_removeCache:(id)a3;
-- (void)_removeCorruptDatabaseWithError:(id)a3;
+- (void)_removeCache:(id)cache;
+- (void)_removeCorruptDatabaseWithError:(id)error;
 @end
 
 @implementation MBCKCacheTracker
 
-- (MBCKCacheTracker)initWithPath:(id)a3
+- (MBCKCacheTracker)initWithPath:(id)path
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
     __assert_rtn("[MBCKCacheTracker initWithPath:]", "MBCKCache.m", 73, "path");
   }
 
-  v6 = v5;
+  v6 = pathCopy;
   v15.receiver = self;
   v15.super_class = MBCKCacheTracker;
   v7 = [(MBCKCacheTracker *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_path, a3);
+    objc_storeStrong(&v7->_path, path);
     v9 = objc_opt_class();
     Name = class_getName(v9);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -42,15 +42,15 @@
   return v8;
 }
 
-- (MBCKCacheTracker)initWithCacheDirectory:(id)a3
+- (MBCKCacheTracker)initWithCacheDirectory:(id)directory
 {
-  v4 = a3;
-  if (!v4)
+  directoryCopy = directory;
+  if (!directoryCopy)
   {
     __assert_rtn("[MBCKCacheTracker initWithCacheDirectory:]", "MBCKCache.m", 83, "cacheDirectory");
   }
 
-  v5 = v4;
+  v5 = directoryCopy;
   if (qword_1004216A0 != -1)
   {
     dispatch_once(&qword_1004216A0, &stru_1003BDB78);
@@ -64,13 +64,13 @@
 
 - (id)cacheCreationDate
 {
-  v2 = [(MBCKCacheTracker *)self path];
-  if (!v2)
+  path = [(MBCKCacheTracker *)self path];
+  if (!path)
   {
     __assert_rtn("[MBCKCacheTracker cacheCreationDate]", "MBCKCache.m", 103, "path");
   }
 
-  v3 = v2;
+  v3 = path;
   v4 = +[NSFileManager defaultManager];
   v8 = 0;
   v5 = [v4 attributesOfItemAtPath:v3 error:&v8];
@@ -88,14 +88,14 @@
   return v6;
 }
 
-- (id)openCacheWithAccessType:(int)a3 cached:(BOOL)a4 error:(id *)a5
+- (id)openCacheWithAccessType:(int)type cached:(BOOL)cached error:(id *)error
 {
-  if ((a3 - 3) <= 0xFFFFFFFD)
+  if ((type - 3) <= 0xFFFFFFFD)
   {
     __assert_rtn("[MBCKCacheTracker openCacheWithAccessType:cached:error:]", "MBCKCache.m", 113, "accessType == MBCKCacheAccessTypeReadWrite || accessType == MBCKCacheAccessTypeReadOnly");
   }
 
-  if (!a5)
+  if (!error)
   {
     __assert_rtn("[MBCKCacheTracker openCacheWithAccessType:cached:error:]", "MBCKCache.m", 114, "error");
   }
@@ -118,8 +118,8 @@
   v14[1] = 3221225472;
   v14[2] = sub_1000BE810;
   v14[3] = &unk_1003BDBA0;
-  v16 = a4;
-  v15 = a3;
+  cachedCopy = cached;
+  typeCopy = type;
   v14[4] = self;
   v14[5] = &v17;
   v14[6] = &v23;
@@ -138,7 +138,7 @@
       __assert_rtn("[MBCKCacheTracker openCacheWithAccessType:cached:error:]", "MBCKCache.m", 158, "localError");
     }
 
-    *a5 = v12;
+    *error = v12;
   }
 
   _Block_object_dispose(&v17, 8);
@@ -148,9 +148,9 @@
   return v10;
 }
 
-- (void)_addCache:(id)a3
+- (void)_addCache:(id)cache
 {
-  v7 = a3;
+  cacheCopy = cache;
   dispatch_assert_queue_V2(self->_sharedQueue);
   connections = self->_connections;
   if (!connections)
@@ -162,15 +162,15 @@
     connections = self->_connections;
   }
 
-  [(NSHashTable *)connections addObject:v7];
+  [(NSHashTable *)connections addObject:cacheCopy];
 }
 
-- (void)_removeCache:(id)a3
+- (void)_removeCache:(id)cache
 {
   sharedQueue = self->_sharedQueue;
-  v5 = a3;
+  cacheCopy = cache;
   dispatch_assert_queue_V2(sharedQueue);
-  [(NSHashTable *)self->_connections removeObject:v5];
+  [(NSHashTable *)self->_connections removeObject:cacheCopy];
 
   connections = self->_connections;
   if (connections && ![(NSHashTable *)connections count])
@@ -180,19 +180,19 @@
   }
 }
 
-- (void)_closeCache:(id)a3
+- (void)_closeCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   dispatch_assert_queue_not_V2(self->_sharedQueue);
-  if (v4)
+  if (cacheCopy)
   {
     sharedQueue = self->_sharedQueue;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000BECE0;
     v6[3] = &unk_1003BC060;
-    v7 = v4;
-    v8 = self;
+    v7 = cacheCopy;
+    selfCopy = self;
     dispatch_sync(sharedQueue, v6);
   }
 }
@@ -200,40 +200,40 @@
 - (void)_invalidateConnections
 {
   dispatch_assert_queue_V2(self->_sharedQueue);
-  v7 = [(NSHashTable *)self->_connections objectEnumerator];
-  v3 = [v7 nextObject];
-  if (v3)
+  objectEnumerator = [(NSHashTable *)self->_connections objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v4 = v3;
+    v4 = nextObject;
     do
     {
       [v4 _invalidate];
-      v5 = [v7 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v4 = v5;
+      v4 = nextObject2;
     }
 
-    while (v5);
+    while (nextObject2);
   }
 
   connections = self->_connections;
   self->_connections = 0;
 }
 
-- (BOOL)_removeDatabaseAtPath:(id)a3 error:(id *)a4
+- (BOOL)_removeDatabaseAtPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
     __assert_rtn("[MBCKCacheTracker _removeDatabaseAtPath:error:]", "MBCKCache.m", 198, "path");
   }
 
-  if (!a4)
+  if (!error)
   {
     __assert_rtn("[MBCKCacheTracker _removeDatabaseAtPath:error:]", "MBCKCache.m", 199, "error");
   }
 
-  v7 = v6;
+  v7 = pathCopy;
   dispatch_assert_queue_V2(self->_sharedQueue);
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -270,7 +270,7 @@
 
         v16 = v12;
         v17 = 0;
-        *a4 = v12;
+        *error = v12;
         goto LABEL_31;
       }
     }
@@ -290,7 +290,7 @@
   if (v19)
   {
     v20 = v19;
-    v32 = a4;
+    errorCopy = error;
     v21 = *v35;
     while (2)
     {
@@ -325,7 +325,7 @@
               }
 
               v29 = v12;
-              *v32 = v12;
+              *errorCopy = v12;
 
               v17 = 0;
               goto LABEL_30;
@@ -356,23 +356,23 @@ LABEL_31:
   return v17;
 }
 
-- (void)_removeCorruptDatabaseWithError:(id)a3
+- (void)_removeCorruptDatabaseWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     __assert_rtn("[MBCKCacheTracker _removeCorruptDatabaseWithError:]", "MBCKCache.m", 253, "error");
   }
 
-  v5 = v4;
+  v5 = errorCopy;
   dispatch_assert_queue_V2(self->_sharedQueue);
-  v6 = [(MBCKCacheTracker *)self path];
-  if (!v6)
+  path = [(MBCKCacheTracker *)self path];
+  if (!path)
   {
     __assert_rtn("[MBCKCacheTracker _removeCorruptDatabaseWithError:]", "MBCKCache.m", 256, "path");
   }
 
-  v7 = v6;
+  v7 = path;
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -451,8 +451,8 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  v18 = [v5 domain];
-  v19 = [v18 isEqualToString:PQLSqliteErrorDomain];
+  domain = [v5 domain];
+  v19 = [domain isEqualToString:PQLSqliteErrorDomain];
 
   if (!v19)
   {
@@ -473,13 +473,13 @@ LABEL_21:
     v20 = MBGetDefaultLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
-      v21 = [v5 code];
-      v22 = [v5 extendedSqliteCode];
+      code = [v5 code];
+      extendedSqliteCode = [v5 extendedSqliteCode];
       v23 = [v5 description];
       *buf = 134218498;
-      v30 = v21;
+      v30 = code;
       v31 = 2048;
-      v32 = v22;
+      v32 = extendedSqliteCode;
       v33 = 2112;
       v34 = v23;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_FAULT, "Removed cache database, code:%ld, extendedCode:%ld, description:%@", buf, 0x20u);
@@ -496,23 +496,23 @@ LABEL_21:
 LABEL_23:
 }
 
-- (BOOL)_resetDatabaseForAccount:(id)a3 error:(id *)a4
+- (BOOL)_resetDatabaseForAccount:(id)account error:(id *)error
 {
-  v6 = a3;
-  if (!a4)
+  accountCopy = account;
+  if (!error)
   {
     __assert_rtn("[MBCKCacheTracker _resetDatabaseForAccount:error:]", "MBCKCache.m", 289, "error");
   }
 
-  v7 = v6;
+  v7 = accountCopy;
   dispatch_assert_queue_V2(self->_sharedQueue);
-  v8 = [(MBCKCacheTracker *)self path];
-  if (!v8)
+  path = [(MBCKCacheTracker *)self path];
+  if (!path)
   {
     __assert_rtn("[MBCKCacheTracker _resetDatabaseForAccount:error:]", "MBCKCache.m", 292, "path");
   }
 
-  v9 = v8;
+  v9 = path;
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -523,20 +523,20 @@ LABEL_23:
     _MBLog();
   }
 
-  v11 = [v7 persona];
-  [v11 setPreferencesValue:0 forKey:@"SyncZoneFetched"];
+  persona = [v7 persona];
+  [persona setPreferencesValue:0 forKey:@"SyncZoneFetched"];
 
   [(MBCKCacheTracker *)self _invalidateConnections];
   if (MBIsInternalInstall())
   {
-    v12 = [v9 stringByDeletingLastPathComponent];
-    if (!v12)
+    stringByDeletingLastPathComponent = [v9 stringByDeletingLastPathComponent];
+    if (!stringByDeletingLastPathComponent)
     {
       __assert_rtn("[MBCKCacheTracker _resetDatabaseForAccount:error:]", "MBCKCache.m", 307, "dir");
     }
 
-    v13 = v12;
-    v14 = [v12 stringByAppendingPathComponent:@"cloudkit_cache_previous.db"];
+    v13 = stringByDeletingLastPathComponent;
+    v14 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"cloudkit_cache_previous.db"];
     if (!v14)
     {
       __assert_rtn("[MBCKCacheTracker _resetDatabaseForAccount:error:]", "MBCKCache.m", 309, "destinationPath");
@@ -563,14 +563,14 @@ LABEL_23:
     }
   }
 
-  v19 = [(MBCKCacheTracker *)self _removeDatabaseAtPath:v9 error:a4, v21, v22];
+  v19 = [(MBCKCacheTracker *)self _removeDatabaseAtPath:v9 error:error, v21, v22];
 
   return v19;
 }
 
-- (BOOL)resetDatabaseForAccount:(id)a3 error:(id *)a4
+- (BOOL)resetDatabaseForAccount:(id)account error:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   dispatch_assert_queue_not_V2(self->_sharedQueue);
   v19 = 0;
   v20 = &v19;
@@ -589,13 +589,13 @@ LABEL_23:
   v11[3] = &unk_1003BDFC8;
   v13 = &v15;
   v11[4] = self;
-  v8 = v6;
+  v8 = accountCopy;
   v12 = v8;
   v14 = &v19;
   dispatch_sync(sharedQueue, v11);
   if (v16[3])
   {
-    LOBYTE(a4) = 1;
+    LOBYTE(error) = 1;
   }
 
   else
@@ -606,17 +606,17 @@ LABEL_23:
       __assert_rtn("[MBCKCacheTracker resetDatabaseForAccount:error:]", "MBCKCache.m", 328, "localError");
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = v9;
-      LOBYTE(a4) = *(v16 + 24);
+      *error = v9;
+      LOBYTE(error) = *(v16 + 24);
     }
   }
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v19, 8);
 
-  return a4 & 1;
+  return error & 1;
 }
 
 @end

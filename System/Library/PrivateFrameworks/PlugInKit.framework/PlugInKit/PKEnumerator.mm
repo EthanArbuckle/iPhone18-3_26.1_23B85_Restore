@@ -1,8 +1,8 @@
 @interface PKEnumerator
 - (PKEnumerator)init;
-- (PKEnumerator)initWithNSEnumerator:(id)a3;
+- (PKEnumerator)initWithNSEnumerator:(id)enumerator;
 - (id)nextObject;
-- (void)setFilter:(id)a3;
+- (void)setFilter:(id)filter;
 @end
 
 @implementation PKEnumerator
@@ -26,16 +26,16 @@
   return v3;
 }
 
-- (PKEnumerator)initWithNSEnumerator:(id)a3
+- (PKEnumerator)initWithNSEnumerator:(id)enumerator
 {
-  v5 = a3;
+  enumeratorCopy = enumerator;
   v11.receiver = self;
   v11.super_class = PKEnumerator;
   v6 = [(PKEnumerator *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingEnumerator, a3);
+    objc_storeStrong(&v6->_underlyingEnumerator, enumerator);
     v8 = +[PKEnumerator defaultFilter];
     filter = v7->_filter;
     v7->_filter = v8;
@@ -44,16 +44,16 @@
   return v7;
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4)
+  filterCopy = filter;
+  v8 = filterCopy;
+  if (!filterCopy)
   {
-    v4 = +[PKEnumerator defaultFilter];
+    filterCopy = +[PKEnumerator defaultFilter];
   }
 
-  v5 = MEMORY[0x1C6960190](v4);
+  v5 = MEMORY[0x1C6960190](filterCopy);
   filter = self->_filter;
   self->_filter = v5;
 
@@ -67,24 +67,24 @@
 
 - (id)nextObject
 {
-  v3 = 0;
+  nextObject = 0;
   while (1)
   {
-    v4 = v3;
-    v5 = [(PKEnumerator *)self underlyingEnumerator];
-    v3 = [v5 nextObject];
+    v4 = nextObject;
+    underlyingEnumerator = [(PKEnumerator *)self underlyingEnumerator];
+    nextObject = [underlyingEnumerator nextObject];
 
-    if (!v3)
+    if (!nextObject)
     {
       break;
     }
 
-    v6 = [(PKEnumerator *)self filter];
-    v7 = (v6)[2](v6, v3);
+    filter = [(PKEnumerator *)self filter];
+    v7 = (filter)[2](filter, nextObject);
 
     if (v7)
     {
-      v8 = v3;
+      v8 = nextObject;
       goto LABEL_6;
     }
   }

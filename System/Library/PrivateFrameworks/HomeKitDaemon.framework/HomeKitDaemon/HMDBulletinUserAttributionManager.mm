@@ -1,31 +1,31 @@
 @interface HMDBulletinUserAttributionManager
-+ (BOOL)currentStateCharacteristicSupportsUserAttribution:(id)a3;
-+ (BOOL)targetStateCharacteristicSupportsUserAttribution:(id)a3;
++ (BOOL)currentStateCharacteristicSupportsUserAttribution:(id)attribution;
++ (BOOL)targetStateCharacteristicSupportsUserAttribution:(id)attribution;
 + (id)logCategory;
-- (HMDBulletinUserAttributionManager)initWithAccountRegistry:(id)a3;
-- (id)attributedUserUUIDForCurrentStateCharacteristic:(id)a3 destination:(id)a4;
-- (void)removeAttributedUserUUIDForTargetStateCharacteristic:(id)a3;
-- (void)saveAttributedUserUUID:(id)a3 forTargetStateCharacteristic:(id)a4;
+- (HMDBulletinUserAttributionManager)initWithAccountRegistry:(id)registry;
+- (id)attributedUserUUIDForCurrentStateCharacteristic:(id)characteristic destination:(id)destination;
+- (void)removeAttributedUserUUIDForTargetStateCharacteristic:(id)characteristic;
+- (void)saveAttributedUserUUID:(id)d forTargetStateCharacteristic:(id)characteristic;
 @end
 
 @implementation HMDBulletinUserAttributionManager
 
-- (void)removeAttributedUserUUIDForTargetStateCharacteristic:(id)a3
+- (void)removeAttributedUserUUIDForTargetStateCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [v4 instanceID];
-  v6 = [v4 value];
+  characteristicCopy = characteristic;
+  instanceID = [characteristicCopy instanceID];
+  value = [characteristicCopy value];
   os_unfair_lock_lock_with_options();
-  v7 = [(HMDBulletinUserAttributionManager *)self userAttributions];
+  userAttributions = [(HMDBulletinUserAttributionManager *)self userAttributions];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __90__HMDBulletinUserAttributionManager_removeAttributedUserUUIDForTargetStateCharacteristic___block_invoke;
   v12[3] = &unk_278678800;
-  v8 = v5;
+  v8 = instanceID;
   v13 = v8;
-  v9 = v6;
+  v9 = value;
   v14 = v9;
-  v10 = [v7 na_filter:v12];
+  v10 = [userAttributions na_filter:v12];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -83,13 +83,13 @@ void __90__HMDBulletinUserAttributionManager_removeAttributedUserUUIDForTargetSt
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)attributedUserUUIDForCurrentStateCharacteristic:(id)a3 destination:(id)a4
+- (id)attributedUserUUIDForCurrentStateCharacteristic:(id)characteristic destination:(id)destination
 {
   v95 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v76 = a4;
+  characteristicCopy = characteristic;
+  destinationCopy = destination;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -97,56 +97,56 @@ void __90__HMDBulletinUserAttributionManager_removeAttributedUserUUIDForTargetSt
     *buf = 138543618;
     v86 = v10;
     v87 = 2112;
-    v88 = v6;
+    v88 = characteristicCopy;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Attempting to retrieve user attribution for current state characteristic=%@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [objc_opt_class() currentTargetStateCharacteristicTypeMap];
-  v12 = [v6 type];
-  v13 = [v11 hmf_stringForKey:v12];
+  currentTargetStateCharacteristicTypeMap = [objc_opt_class() currentTargetStateCharacteristicTypeMap];
+  type = [characteristicCopy type];
+  v13 = [currentTargetStateCharacteristicTypeMap hmf_stringForKey:type];
 
-  v14 = [v6 service];
-  v15 = [v14 characteristics];
+  service = [characteristicCopy service];
+  characteristics = [service characteristics];
   v83[0] = MEMORY[0x277D85DD0];
   v83[1] = 3221225472;
   v83[2] = __97__HMDBulletinUserAttributionManager_attributedUserUUIDForCurrentStateCharacteristic_destination___block_invoke;
   v83[3] = &unk_278687EB0;
   v75 = v13;
   v84 = v75;
-  v16 = [v15 na_firstObjectPassingTest:v83];
+  v16 = [characteristics na_firstObjectPassingTest:v83];
 
   if (v16)
   {
     os_unfair_lock_lock_with_options();
-    v17 = [(HMDBulletinUserAttributionManager *)v8 userAttributions];
+    userAttributions = [(HMDBulletinUserAttributionManager *)selfCopy userAttributions];
     v80[0] = MEMORY[0x277D85DD0];
     v80[1] = 3221225472;
     v80[2] = __97__HMDBulletinUserAttributionManager_attributedUserUUIDForCurrentStateCharacteristic_destination___block_invoke_40;
     v80[3] = &unk_278678800;
     v18 = v16;
     v81 = v18;
-    v19 = v6;
+    v19 = characteristicCopy;
     v82 = v19;
-    v20 = [v17 na_firstObjectPassingTest:v80];
+    v20 = [userAttributions na_firstObjectPassingTest:v80];
 
-    os_unfair_lock_unlock(&v8->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     if (!v20)
     {
       v37 = objc_autoreleasePoolPush();
-      v38 = v8;
+      v38 = selfCopy;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
         v40 = HMFGetLogIdentifier();
-        v41 = [v18 instanceID];
-        v42 = [v19 value];
+        instanceID = [v18 instanceID];
+        value = [v19 value];
         *buf = 138543874;
         v86 = v40;
         v87 = 2112;
-        v88 = v41;
+        v88 = instanceID;
         v89 = 2112;
-        v90 = v42;
+        v90 = value;
         _os_log_impl(&dword_229538000, v39, OS_LOG_TYPE_INFO, "%{public}@No saved tuple found for target state characteristic with instanceID=%@ and value=%@", buf, 0x20u);
       }
 
@@ -154,16 +154,16 @@ void __90__HMDBulletinUserAttributionManager_removeAttributedUserUUIDForTargetSt
       goto LABEL_15;
     }
 
-    v21 = [v19 lastKnownValueUpdateTime];
-    v22 = [v20 lastKnownValueUpdateTime];
-    [v21 timeIntervalSinceDate:v22];
+    lastKnownValueUpdateTime = [v19 lastKnownValueUpdateTime];
+    lastKnownValueUpdateTime2 = [v20 lastKnownValueUpdateTime];
+    [lastKnownValueUpdateTime timeIntervalSinceDate:lastKnownValueUpdateTime2];
     v24 = v23;
 
     HMDSecureClassBulletinUserAttributionTime();
     if (v24 > v25)
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = v8;
+      v27 = selfCopy;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
@@ -178,10 +178,10 @@ void __90__HMDBulletinUserAttributionManager_removeAttributedUserUUIDForTargetSt
 
       objc_autoreleasePoolPop(v26);
       os_unfair_lock_lock_with_options();
-      v31 = [(HMDBulletinUserAttributionManager *)v27 userAttributions];
-      [v31 removeObject:v20];
+      userAttributions2 = [(HMDBulletinUserAttributionManager *)v27 userAttributions];
+      [userAttributions2 removeObject:v20];
 
-      os_unfair_lock_unlock(&v8->_lock);
+      os_unfair_lock_unlock(&selfCopy->_lock);
 LABEL_15:
       v36 = 0;
 LABEL_40:
@@ -189,27 +189,27 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v43 = [v20 userUUID];
-    v44 = [v19 accessory];
-    v74 = [v44 home];
+    userUUID = [v20 userUUID];
+    accessory = [v19 accessory];
+    home = [accessory home];
 
-    v45 = [v74 userWithUUID:v43];
+    v45 = [home userWithUUID:userUUID];
     v46 = v45;
     if (!v45)
     {
       v51 = objc_autoreleasePoolPush();
-      v52 = v8;
+      v52 = selfCopy;
       v53 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
       {
         v54 = HMFGetLogIdentifier();
-        v55 = [v19 shortDescription];
+        shortDescription = [v19 shortDescription];
         *buf = 138543874;
         v86 = v54;
         v87 = 2112;
-        v88 = v55;
+        v88 = shortDescription;
         v89 = 2112;
-        v90 = v43;
+        v90 = userUUID;
         _os_log_impl(&dword_229538000, v53, OS_LOG_TYPE_INFO, "%{public}@Not returning attributedUserUUID for current state characteristic=%@ because the attributedUser cannot be determined from uuid=%@", buf, 0x20u);
       }
 
@@ -221,7 +221,7 @@ LABEL_40:
     if ([v45 isOwner])
     {
       v47 = objc_autoreleasePoolPush();
-      v48 = v8;
+      v48 = selfCopy;
       v49 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
       {
@@ -229,7 +229,7 @@ LABEL_40:
         *buf = 138544130;
         v86 = v50;
         v87 = 2112;
-        v88 = v43;
+        v88 = userUUID;
         v89 = 2112;
         v90 = v19;
         v91 = 2112;
@@ -238,21 +238,21 @@ LABEL_40:
       }
 
       objc_autoreleasePoolPop(v47);
-      v36 = v43;
+      v36 = userUUID;
       goto LABEL_39;
     }
 
-    v73 = [HMDDeviceHandle deviceHandleForDestination:v76];
+    v73 = [HMDDeviceHandle deviceHandleForDestination:destinationCopy];
     if (v73)
     {
       v79 = 0;
-      v56 = [(HMDBulletinUserAttributionManager *)v8 accountRegistry];
-      v57 = [v56 deviceForHandle:v73 exists:&v79];
+      accountRegistry = [(HMDBulletinUserAttributionManager *)selfCopy accountRegistry];
+      v57 = [accountRegistry deviceForHandle:v73 exists:&v79];
 
       if ((v79 & 1) == 0)
       {
         context = objc_autoreleasePoolPush();
-        v58 = v8;
+        v58 = selfCopy;
         v59 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
         {
@@ -262,7 +262,7 @@ LABEL_40:
           v87 = 2112;
           v88 = v19;
           v89 = 2112;
-          v90 = v76;
+          v90 = destinationCopy;
           _os_log_impl(&dword_229538000, v59, OS_LOG_TYPE_INFO, "%{public}@Not returning attributedUserUUID for current state characteristic=%@ because we cannot determine an account for the device with destination=%@", buf, 0x20u);
         }
 
@@ -280,21 +280,21 @@ LABEL_39:
       v57 = 0;
     }
 
-    v61 = [v74 users];
+    users = [home users];
     v77[0] = MEMORY[0x277D85DD0];
     v77[1] = 3221225472;
     v77[2] = __97__HMDBulletinUserAttributionManager_attributedUserUUIDForCurrentStateCharacteristic_destination___block_invoke_43;
     v77[3] = &unk_278688680;
     v57 = v57;
     v78 = v57;
-    contexta = [v61 na_firstObjectPassingTest:v77];
+    contexta = [users na_firstObjectPassingTest:v77];
 
-    LODWORD(v61) = [contexta isAdministrator];
+    LODWORD(users) = [contexta isAdministrator];
     v70 = objc_autoreleasePoolPush();
-    v62 = v8;
+    v62 = selfCopy;
     v63 = HMFGetOSLogHandle();
     v64 = os_log_type_enabled(v63, OS_LOG_TYPE_INFO);
-    if (v61)
+    if (users)
     {
       if (v64)
       {
@@ -302,7 +302,7 @@ LABEL_39:
         *buf = 138544130;
         v86 = v65;
         v87 = 2112;
-        v88 = v43;
+        v88 = userUUID;
         v89 = 2112;
         v90 = v19;
         v91 = 2112;
@@ -311,7 +311,7 @@ LABEL_39:
       }
 
       objc_autoreleasePoolPop(v70);
-      v36 = v43;
+      v36 = userUUID;
     }
 
     else
@@ -341,7 +341,7 @@ LABEL_39:
   }
 
   v32 = objc_autoreleasePoolPush();
-  v33 = v8;
+  v33 = selfCopy;
   v34 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
   {
@@ -349,7 +349,7 @@ LABEL_39:
     *buf = 138543618;
     v86 = v35;
     v87 = 2112;
-    v88 = v6;
+    v88 = characteristicCopy;
     _os_log_impl(&dword_229538000, v34, OS_LOG_TYPE_DEBUG, "%{public}@No targetStateCounterpart available for characteristic=%@", buf, 0x16u);
   }
 
@@ -403,21 +403,21 @@ uint64_t __97__HMDBulletinUserAttributionManager_attributedUserUUIDForCurrentSta
   return v9;
 }
 
-- (void)saveAttributedUserUUID:(id)a3 forTargetStateCharacteristic:(id)a4
+- (void)saveAttributedUserUUID:(id)d forTargetStateCharacteristic:(id)characteristic
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  characteristicCopy = characteristic;
   v8 = [MEMORY[0x277CBEB58] set];
   os_unfair_lock_lock_with_options();
-  v9 = [(HMDBulletinUserAttributionManager *)self userAttributions];
+  userAttributions = [(HMDBulletinUserAttributionManager *)self userAttributions];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __89__HMDBulletinUserAttributionManager_saveAttributedUserUUID_forTargetStateCharacteristic___block_invoke;
   v27[3] = &unk_2786787D8;
   v10 = v8;
   v28 = v10;
-  [v9 na_each:v27];
+  [userAttributions na_each:v27];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -426,40 +426,40 @@ uint64_t __97__HMDBulletinUserAttributionManager_attributedUserUUIDForCurrentSta
   v26[4] = self;
   [v10 na_each:v26];
   v11 = objc_opt_new();
-  v12 = [v7 instanceID];
-  [v11 setTargetCharacteristicInstanceID:v12];
+  instanceID = [characteristicCopy instanceID];
+  [v11 setTargetCharacteristicInstanceID:instanceID];
 
-  v13 = [v7 value];
-  [v11 setValue:v13];
+  value = [characteristicCopy value];
+  [v11 setValue:value];
 
-  v14 = [v7 lastKnownValueUpdateTime];
-  [v11 setLastKnownValueUpdateTime:v14];
+  lastKnownValueUpdateTime = [characteristicCopy lastKnownValueUpdateTime];
+  [v11 setLastKnownValueUpdateTime:lastKnownValueUpdateTime];
 
-  [v11 setUserUUID:v6];
-  v15 = [(HMDBulletinUserAttributionManager *)self userAttributions];
-  [v15 addObject:v11];
+  [v11 setUserUUID:dCopy];
+  userAttributions2 = [(HMDBulletinUserAttributionManager *)self userAttributions];
+  [userAttributions2 addObject:v11];
 
   context = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v23 = v6;
+    v23 = dCopy;
     v18 = HMFGetLogIdentifier();
-    v19 = [v11 userUUID];
-    v20 = [v11 targetCharacteristicInstanceID];
-    v21 = [v11 value];
+    userUUID = [v11 userUUID];
+    targetCharacteristicInstanceID = [v11 targetCharacteristicInstanceID];
+    value2 = [v11 value];
     *buf = 138544130;
     v30 = v18;
     v31 = 2112;
-    v32 = v19;
+    v32 = userUUID;
     v33 = 2112;
-    v34 = v20;
+    v34 = targetCharacteristicInstanceID;
     v35 = 2112;
-    v36 = v21;
+    v36 = value2;
     _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Saved attributedUserUUID=%@ for targetCharacteristicInstanceID=%@ value=%@", buf, 0x2Au);
 
-    v6 = v23;
+    dCopy = v23;
   }
 
   objc_autoreleasePoolPop(context);
@@ -468,7 +468,7 @@ uint64_t __97__HMDBulletinUserAttributionManager_attributedUserUUIDForCurrentSta
   v25[1] = 3221225472;
   v25[2] = __89__HMDBulletinUserAttributionManager_saveAttributedUserUUID_forTargetStateCharacteristic___block_invoke_38;
   v25[3] = &unk_2786787D8;
-  v25[4] = v16;
+  v25[4] = selfCopy;
   [v10 na_each:v25];
 
   v22 = *MEMORY[0x277D85DE8];
@@ -519,34 +519,34 @@ void __89__HMDBulletinUserAttributionManager_saveAttributedUserUUID_forTargetSta
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDBulletinUserAttributionManager)initWithAccountRegistry:(id)a3
+- (HMDBulletinUserAttributionManager)initWithAccountRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v10.receiver = self;
   v10.super_class = HMDBulletinUserAttributionManager;
   v6 = [(HMDBulletinUserAttributionManager *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     userAttributions = v6->_userAttributions;
-    v6->_userAttributions = v7;
+    v6->_userAttributions = array;
 
-    objc_storeStrong(&v6->_accountRegistry, a3);
+    objc_storeStrong(&v6->_accountRegistry, registry);
   }
 
   return v6;
 }
 
-+ (BOOL)targetStateCharacteristicSupportsUserAttribution:(id)a3
++ (BOOL)targetStateCharacteristicSupportsUserAttribution:(id)attribution
 {
-  v3 = a3;
-  v4 = [v3 service];
-  v5 = [v3 type];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CCFB40]];
+  attributionCopy = attribution;
+  service = [attributionCopy service];
+  type = [attributionCopy type];
+  v6 = [type isEqualToString:*MEMORY[0x277CCFB40]];
   if (v6)
   {
-    v7 = [v4 type];
-    if ([v7 isEqualToString:*MEMORY[0x277CD0EB0]])
+    type2 = [service type];
+    if ([type2 isEqualToString:*MEMORY[0x277CD0EB0]])
     {
       v8 = 1;
 LABEL_21:
@@ -554,49 +554,49 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v22 = v7;
+    v22 = type2;
   }
 
-  v9 = [v3 type];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CCFB08]];
+  type3 = [attributionCopy type];
+  v10 = [type3 isEqualToString:*MEMORY[0x277CCFB08]];
   if (v10)
   {
-    v11 = [v4 type];
-    if ([v11 isEqualToString:*MEMORY[0x277CD0E58]])
+    type4 = [service type];
+    if ([type4 isEqualToString:*MEMORY[0x277CD0E58]])
     {
       v8 = 1;
       goto LABEL_20;
     }
 
-    v21 = v11;
+    v21 = type4;
   }
 
-  v12 = [v3 type];
-  v13 = [v12 isEqualToString:*MEMORY[0x277CCFB60]];
+  type5 = [attributionCopy type];
+  v13 = [type5 isEqualToString:*MEMORY[0x277CCFB60]];
   if (v13)
   {
-    v14 = [v4 type];
-    if ([v14 isEqualToString:*MEMORY[0x277CD0ED8]])
+    type6 = [service type];
+    if ([type6 isEqualToString:*MEMORY[0x277CD0ED8]])
     {
       v8 = 1;
       goto LABEL_19;
     }
 
-    v20 = v14;
+    v20 = type6;
   }
 
-  v15 = [v3 type];
-  if ([v15 isEqualToString:*MEMORY[0x277CCFB50]])
+  type7 = [attributionCopy type];
+  if ([type7 isEqualToString:*MEMORY[0x277CCFB50]])
   {
-    [v4 type];
-    v19 = v9;
-    v17 = v16 = v5;
+    [service type];
+    v19 = type3;
+    v17 = v16 = type;
     v8 = [v17 isEqualToString:*MEMORY[0x277CD0F58]];
 
-    v5 = v16;
-    v9 = v19;
+    type = v16;
+    type3 = v19;
 
-    v14 = v20;
+    type6 = v20;
     if ((v13 & 1) == 0)
     {
       goto LABEL_15;
@@ -607,12 +607,12 @@ LABEL_21:
   {
 
     v8 = 0;
-    v14 = v20;
+    type6 = v20;
     if (!v13)
     {
 LABEL_15:
 
-      v11 = v21;
+      type4 = v21;
       if (v10)
       {
         goto LABEL_20;
@@ -620,7 +620,7 @@ LABEL_15:
 
 LABEL_16:
 
-      v7 = v22;
+      type2 = v22;
       if (!v6)
       {
         goto LABEL_22;
@@ -632,7 +632,7 @@ LABEL_16:
 
 LABEL_19:
 
-  v11 = v21;
+  type4 = v21;
   if ((v10 & 1) == 0)
   {
     goto LABEL_16;
@@ -640,7 +640,7 @@ LABEL_19:
 
 LABEL_20:
 
-  v7 = v22;
+  type2 = v22;
   if (v6)
   {
     goto LABEL_21;
@@ -651,16 +651,16 @@ LABEL_22:
   return v8;
 }
 
-+ (BOOL)currentStateCharacteristicSupportsUserAttribution:(id)a3
++ (BOOL)currentStateCharacteristicSupportsUserAttribution:(id)attribution
 {
-  v3 = a3;
-  v4 = [v3 service];
-  v5 = [v3 type];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CCF838]];
+  attributionCopy = attribution;
+  service = [attributionCopy service];
+  type = [attributionCopy type];
+  v6 = [type isEqualToString:*MEMORY[0x277CCF838]];
   if (v6)
   {
-    v7 = [v4 type];
-    if ([v7 isEqualToString:*MEMORY[0x277CD0EB0]])
+    type2 = [service type];
+    if ([type2 isEqualToString:*MEMORY[0x277CD0EB0]])
     {
       v8 = 1;
 LABEL_21:
@@ -668,49 +668,49 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v22 = v7;
+    v22 = type2;
   }
 
-  v9 = [v3 type];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CCF800]];
+  type3 = [attributionCopy type];
+  v10 = [type3 isEqualToString:*MEMORY[0x277CCF800]];
   if (v10)
   {
-    v11 = [v4 type];
-    if ([v11 isEqualToString:*MEMORY[0x277CD0E58]])
+    type4 = [service type];
+    if ([type4 isEqualToString:*MEMORY[0x277CD0E58]])
     {
       v8 = 1;
       goto LABEL_20;
     }
 
-    v21 = v11;
+    v21 = type4;
   }
 
-  v12 = [v3 type];
-  v13 = [v12 isEqualToString:*MEMORY[0x277CCF858]];
+  type5 = [attributionCopy type];
+  v13 = [type5 isEqualToString:*MEMORY[0x277CCF858]];
   if (v13)
   {
-    v14 = [v4 type];
-    if ([v14 isEqualToString:*MEMORY[0x277CD0ED8]])
+    type6 = [service type];
+    if ([type6 isEqualToString:*MEMORY[0x277CD0ED8]])
     {
       v8 = 1;
       goto LABEL_19;
     }
 
-    v20 = v14;
+    v20 = type6;
   }
 
-  v15 = [v3 type];
-  if ([v15 isEqualToString:*MEMORY[0x277CCF848]])
+  type7 = [attributionCopy type];
+  if ([type7 isEqualToString:*MEMORY[0x277CCF848]])
   {
-    [v4 type];
-    v19 = v9;
-    v17 = v16 = v5;
+    [service type];
+    v19 = type3;
+    v17 = v16 = type;
     v8 = [v17 isEqualToString:*MEMORY[0x277CD0F58]];
 
-    v5 = v16;
-    v9 = v19;
+    type = v16;
+    type3 = v19;
 
-    v14 = v20;
+    type6 = v20;
     if ((v13 & 1) == 0)
     {
       goto LABEL_15;
@@ -721,12 +721,12 @@ LABEL_21:
   {
 
     v8 = 0;
-    v14 = v20;
+    type6 = v20;
     if (!v13)
     {
 LABEL_15:
 
-      v11 = v21;
+      type4 = v21;
       if (v10)
       {
         goto LABEL_20;
@@ -734,7 +734,7 @@ LABEL_15:
 
 LABEL_16:
 
-      v7 = v22;
+      type2 = v22;
       if (!v6)
       {
         goto LABEL_22;
@@ -746,7 +746,7 @@ LABEL_16:
 
 LABEL_19:
 
-  v11 = v21;
+  type4 = v21;
   if ((v10 & 1) == 0)
   {
     goto LABEL_16;
@@ -754,7 +754,7 @@ LABEL_19:
 
 LABEL_20:
 
-  v7 = v22;
+  type2 = v22;
   if (v6)
   {
     goto LABEL_21;

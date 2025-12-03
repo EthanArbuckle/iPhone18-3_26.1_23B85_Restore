@@ -1,10 +1,10 @@
 @interface WFAppDisplayRepresentation
-+ (id)withTitle:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (WFAppDisplayRepresentation)initWithCoder:(id)a3;
-- (WFAppDisplayRepresentation)initWithTitle:(id)a3 subtitle:(id)a4 altText:(id)a5 imageData:(id)a6 snippetPluginModelData:(id)a7 snippetPluginModelBundleIdentifier:(id)a8 synonyms:(id)a9;
++ (id)withTitle:(id)title;
+- (BOOL)isEqual:(id)equal;
+- (WFAppDisplayRepresentation)initWithCoder:(id)coder;
+- (WFAppDisplayRepresentation)initWithTitle:(id)title subtitle:(id)subtitle altText:(id)text imageData:(id)data snippetPluginModelData:(id)modelData snippetPluginModelBundleIdentifier:(id)identifier synonyms:(id)synonyms;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAppDisplayRepresentation
@@ -14,49 +14,49 @@
   v22.receiver = self;
   v22.super_class = WFAppDisplayRepresentation;
   v3 = [(WFAppDisplayRepresentation *)&v22 hash];
-  v4 = [(WFAppDisplayRepresentation *)self title];
-  v5 = [v4 hash];
-  v6 = [(WFAppDisplayRepresentation *)self subtitle];
-  v7 = v6;
-  if (!v6)
+  title = [(WFAppDisplayRepresentation *)self title];
+  v5 = [title hash];
+  subtitle = [(WFAppDisplayRepresentation *)self subtitle];
+  v7 = subtitle;
+  if (!subtitle)
   {
-    v6 = &stru_282F53518;
+    subtitle = &stru_282F53518;
   }
 
-  v8 = v5 ^ [(__CFString *)v6 hash];
-  v9 = [(WFAppDisplayRepresentation *)self altText];
-  v10 = v9;
-  if (!v9)
+  v8 = v5 ^ [(__CFString *)subtitle hash];
+  altText = [(WFAppDisplayRepresentation *)self altText];
+  v10 = altText;
+  if (!altText)
   {
-    v9 = &stru_282F53518;
+    altText = &stru_282F53518;
   }
 
-  v11 = v8 ^ [(__CFString *)v9 hash]^ v3;
-  v12 = [(WFAppDisplayRepresentation *)self imageData];
-  v13 = [v12 hash];
-  v14 = [(WFAppDisplayRepresentation *)self snippetPluginModelData];
-  v15 = v13 ^ [v14 hash];
-  v16 = [(WFAppDisplayRepresentation *)self snippetPluginModelBundleIdentifier];
-  v17 = v16;
-  if (!v16)
+  v11 = v8 ^ [(__CFString *)altText hash]^ v3;
+  imageData = [(WFAppDisplayRepresentation *)self imageData];
+  v13 = [imageData hash];
+  snippetPluginModelData = [(WFAppDisplayRepresentation *)self snippetPluginModelData];
+  v15 = v13 ^ [snippetPluginModelData hash];
+  snippetPluginModelBundleIdentifier = [(WFAppDisplayRepresentation *)self snippetPluginModelBundleIdentifier];
+  v17 = snippetPluginModelBundleIdentifier;
+  if (!snippetPluginModelBundleIdentifier)
   {
-    v16 = &stru_282F53518;
+    snippetPluginModelBundleIdentifier = &stru_282F53518;
   }
 
-  v18 = v15 ^ [(__CFString *)v16 hash];
-  v19 = [(WFAppDisplayRepresentation *)self synonyms];
-  v20 = v18 ^ [v19 hash];
+  v18 = v15 ^ [(__CFString *)snippetPluginModelBundleIdentifier hash];
+  synonyms = [(WFAppDisplayRepresentation *)self synonyms];
+  v20 = v18 ^ [synonyms hash];
 
   return v11 ^ v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     v56.receiver = self;
     v56.super_class = WFAppDisplayRepresentation;
     if (![(WFAppDisplayRepresentation *)&v56 isEqual:v6])
@@ -67,10 +67,10 @@ LABEL_60:
       goto LABEL_61;
     }
 
-    v7 = [(WFAppDisplayRepresentation *)self title];
-    v8 = [(WFAppDisplayRepresentation *)v6 title];
-    v9 = v7;
-    v10 = v8;
+    title = [(WFAppDisplayRepresentation *)self title];
+    title2 = [(WFAppDisplayRepresentation *)v6 title];
+    v9 = title;
+    v10 = title2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -97,10 +97,10 @@ LABEL_59:
       }
     }
 
-    v16 = [(WFAppDisplayRepresentation *)self subtitle];
-    v17 = [(WFAppDisplayRepresentation *)v6 subtitle];
-    v14 = v16;
-    v18 = v17;
+    subtitle = [(WFAppDisplayRepresentation *)self subtitle];
+    subtitle2 = [(WFAppDisplayRepresentation *)v6 subtitle];
+    v14 = subtitle;
+    v18 = subtitle2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -127,10 +127,10 @@ LABEL_58:
       }
     }
 
-    v22 = [(WFAppDisplayRepresentation *)self altText];
-    v23 = [(WFAppDisplayRepresentation *)v6 altText];
-    v20 = v22;
-    v24 = v23;
+    altText = [(WFAppDisplayRepresentation *)self altText];
+    altText2 = [(WFAppDisplayRepresentation *)v6 altText];
+    v20 = altText;
+    v24 = altText2;
     v19 = v24;
     v55 = v20;
     if (v20 == v24)
@@ -155,10 +155,10 @@ LABEL_58:
     }
 
     v54 = v19;
-    v26 = [(WFAppDisplayRepresentation *)self imageData];
-    v27 = [(WFAppDisplayRepresentation *)v6 imageData];
-    v28 = v26;
-    v29 = v27;
+    imageData = [(WFAppDisplayRepresentation *)self imageData];
+    imageData2 = [(WFAppDisplayRepresentation *)v6 imageData];
+    v28 = imageData;
+    v29 = imageData2;
     v52 = v29;
     v53 = v28;
     if (v28 == v29)
@@ -202,10 +202,10 @@ LABEL_57:
       }
     }
 
-    v32 = [(WFAppDisplayRepresentation *)self snippetPluginModelData];
-    v33 = [(WFAppDisplayRepresentation *)v6 snippetPluginModelData];
-    v28 = v32;
-    v34 = v33;
+    snippetPluginModelData = [(WFAppDisplayRepresentation *)self snippetPluginModelData];
+    snippetPluginModelData2 = [(WFAppDisplayRepresentation *)v6 snippetPluginModelData];
+    v28 = snippetPluginModelData;
+    v34 = snippetPluginModelData2;
     v50 = v28;
     v51 = v34;
     if (v28 != v34)
@@ -228,10 +228,10 @@ LABEL_57:
           }
 
 LABEL_35:
-          v37 = [(WFAppDisplayRepresentation *)self snippetPluginModelBundleIdentifier];
-          v38 = [(WFAppDisplayRepresentation *)v6 snippetPluginModelBundleIdentifier];
-          v39 = v37;
-          v40 = v38;
+          snippetPluginModelBundleIdentifier = [(WFAppDisplayRepresentation *)self snippetPluginModelBundleIdentifier];
+          snippetPluginModelBundleIdentifier2 = [(WFAppDisplayRepresentation *)v6 snippetPluginModelBundleIdentifier];
+          v39 = snippetPluginModelBundleIdentifier;
+          v40 = snippetPluginModelBundleIdentifier2;
           v48 = v40;
           v49 = v39;
           if (v39 == v40)
@@ -271,9 +271,9 @@ LABEL_52:
           }
 
           v43 = [(WFAppDisplayRepresentation *)self synonyms:v48];
-          v44 = [(WFAppDisplayRepresentation *)v6 synonyms];
+          synonyms = [(WFAppDisplayRepresentation *)v6 synonyms];
           v39 = v43;
-          v45 = v44;
+          v45 = synonyms;
           v46 = v45;
           if (v39 == v45)
           {
@@ -325,69 +325,69 @@ LABEL_61:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFAppDisplayRepresentation *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(WFAppDisplayRepresentation *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(WFAppDisplayRepresentation *)self subtitle];
-  [v4 encodeObject:v6 forKey:@"subtitle"];
+  subtitle = [(WFAppDisplayRepresentation *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v7 = [(WFAppDisplayRepresentation *)self altText];
-  [v4 encodeObject:v7 forKey:@"altText"];
+  altText = [(WFAppDisplayRepresentation *)self altText];
+  [coderCopy encodeObject:altText forKey:@"altText"];
 
-  v8 = [(WFAppDisplayRepresentation *)self imageData];
-  [v4 encodeObject:v8 forKey:@"imageData"];
+  imageData = [(WFAppDisplayRepresentation *)self imageData];
+  [coderCopy encodeObject:imageData forKey:@"imageData"];
 
-  v9 = [(WFAppDisplayRepresentation *)self snippetPluginModelData];
-  [v4 encodeObject:v9 forKey:@"snippetPluginModelData"];
+  snippetPluginModelData = [(WFAppDisplayRepresentation *)self snippetPluginModelData];
+  [coderCopy encodeObject:snippetPluginModelData forKey:@"snippetPluginModelData"];
 
-  v10 = [(WFAppDisplayRepresentation *)self snippetPluginModelBundleIdentifier];
-  [v4 encodeObject:v10 forKey:@"snippetPluginModelBundleIdentifier"];
+  snippetPluginModelBundleIdentifier = [(WFAppDisplayRepresentation *)self snippetPluginModelBundleIdentifier];
+  [coderCopy encodeObject:snippetPluginModelBundleIdentifier forKey:@"snippetPluginModelBundleIdentifier"];
 
-  v11 = [(WFAppDisplayRepresentation *)self synonyms];
-  [v4 encodeObject:v11 forKey:@"synonyms"];
+  synonyms = [(WFAppDisplayRepresentation *)self synonyms];
+  [coderCopy encodeObject:synonyms forKey:@"synonyms"];
 }
 
-- (WFAppDisplayRepresentation)initWithCoder:(id)a3
+- (WFAppDisplayRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altText"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"snippetPluginModelData"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"snippetPluginModelBundleIdentifier"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"synonyms"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"snippetPluginModelData"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"snippetPluginModelBundleIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"synonyms"];
     self = [(WFAppDisplayRepresentation *)self initWithTitle:v5 subtitle:v6 altText:v7 imageData:v8 snippetPluginModelData:v9 snippetPluginModelBundleIdentifier:v10 synonyms:v11];
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (WFAppDisplayRepresentation)initWithTitle:(id)a3 subtitle:(id)a4 altText:(id)a5 imageData:(id)a6 snippetPluginModelData:(id)a7 snippetPluginModelBundleIdentifier:(id)a8 synonyms:(id)a9
+- (WFAppDisplayRepresentation)initWithTitle:(id)title subtitle:(id)subtitle altText:(id)text imageData:(id)data snippetPluginModelData:(id)modelData snippetPluginModelBundleIdentifier:(id)identifier synonyms:(id)synonyms
 {
-  v16 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v24 = a8;
-  v17 = a9;
-  if (!v16)
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  textCopy = text;
+  dataCopy = data;
+  modelDataCopy = modelData;
+  identifierCopy = identifier;
+  synonymsCopy = synonyms;
+  if (!titleCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFApp.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFApp.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"title"}];
   }
 
   v29.receiver = self;
@@ -396,24 +396,24 @@ LABEL_61:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_title, a3);
-    objc_storeStrong(&v19->_subtitle, a4);
-    objc_storeStrong(&v19->_altText, a5);
-    objc_storeStrong(&v19->_imageData, a6);
-    objc_storeStrong(&v19->_snippetPluginModelData, a7);
-    objc_storeStrong(&v19->_snippetPluginModelBundleIdentifier, a8);
-    objc_storeStrong(&v19->_synonyms, a9);
+    objc_storeStrong(&v18->_title, title);
+    objc_storeStrong(&v19->_subtitle, subtitle);
+    objc_storeStrong(&v19->_altText, text);
+    objc_storeStrong(&v19->_imageData, data);
+    objc_storeStrong(&v19->_snippetPluginModelData, modelData);
+    objc_storeStrong(&v19->_snippetPluginModelBundleIdentifier, identifier);
+    objc_storeStrong(&v19->_synonyms, synonyms);
     v20 = v19;
   }
 
   return v19;
 }
 
-+ (id)withTitle:(id)a3
++ (id)withTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = [WFAppDisplayRepresentation alloc];
-  v5 = [(WFAppDisplayRepresentation *)v4 initWithTitle:v3 subtitle:0 altText:0 imageData:0 snippetPluginModelData:0 snippetPluginModelBundleIdentifier:0 synonyms:MEMORY[0x277CBEBF8]];
+  v5 = [(WFAppDisplayRepresentation *)v4 initWithTitle:titleCopy subtitle:0 altText:0 imageData:0 snippetPluginModelData:0 snippetPluginModelBundleIdentifier:0 synonyms:MEMORY[0x277CBEBF8]];
 
   return v5;
 }

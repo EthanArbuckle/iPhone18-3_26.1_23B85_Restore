@@ -1,84 +1,84 @@
 @interface PLBatteryUIResponseTypeBatteryBreakdown
-- (BOOL)canSetQualifier:(int64_t)a3 forBundleID:(id)a4;
-- (BOOL)filterFgBg:(id)a3 filterArray:(id)a4;
-- (BOOL)gizmoConnectedInRange:(_PLTimeIntervalRange)a3;
+- (BOOL)canSetQualifier:(int64_t)qualifier forBundleID:(id)d;
+- (BOOL)filterFgBg:(id)bg filterArray:(id)array;
+- (BOOL)gizmoConnectedInRange:(_PLTimeIntervalRange)range;
 - (BOOL)hasHomeKitEvents;
-- (BOOL)shouldShowBreakdown:(id)a3;
-- (_PLTimeIntervalRange)generateRange:(_PLTimeIntervalRange)result withDataRange:(_PLTimeIntervalRange)a4;
-- (_PLTimeIntervalRange)getDataRange:(id)a3;
-- (double)getDataDurationFromRange:(_PLTimeIntervalRange)a3;
-- (double)getEnergyToRemoveForSlopAdjustment:(id)a3 withEnergyKey:(id)a4 forBucket:(id)a5;
-- (double)getNonAppRuntimesWith:(id)a3 identificationKey:(id)a4 andRange:(_PLTimeIntervalRange)a5 withNow:(id)a6;
-- (id)buildBucketWithEnergyEntries:(id)a3 andRange:(_PLTimeIntervalRange)a4;
-- (id)buildEnergyEntriesWithRootNodes:(id)a3 andQualificationNodes:(id)a4 andRange:(_PLTimeIntervalRange)a5;
-- (id)combineQualifiers:(id)a3;
-- (id)getAppRuntimesInRange:(_PLTimeIntervalRange)a3;
+- (BOOL)shouldShowBreakdown:(id)breakdown;
+- (_PLTimeIntervalRange)generateRange:(_PLTimeIntervalRange)result withDataRange:(_PLTimeIntervalRange)range;
+- (_PLTimeIntervalRange)getDataRange:(id)range;
+- (double)getDataDurationFromRange:(_PLTimeIntervalRange)range;
+- (double)getEnergyToRemoveForSlopAdjustment:(id)adjustment withEnergyKey:(id)key forBucket:(id)bucket;
+- (double)getNonAppRuntimesWith:(id)with identificationKey:(id)key andRange:(_PLTimeIntervalRange)range withNow:(id)now;
+- (id)buildBucketWithEnergyEntries:(id)entries andRange:(_PLTimeIntervalRange)range;
+- (id)buildEnergyEntriesWithRootNodes:(id)nodes andQualificationNodes:(id)qualificationNodes andRange:(_PLTimeIntervalRange)range;
+- (id)combineQualifiers:(id)qualifiers;
+- (id)getAppRuntimesInRange:(_PLTimeIntervalRange)range;
 - (id)getBundleIDToDisplayNameMap;
 - (id)getBundleIDToReplacementBundleIDMap;
 - (id)getBundleIDsToEnergyKeyForSlopAdjustmentMap;
 - (id)getDeletedAppBundleIDs;
 - (id)getDeletedAppClipBundleIDs;
-- (id)getDrainPerBucketIn:(_PLTimeIntervalRange)a3;
-- (id)getEnergyEntry:(id)a3 forBundleID:(id)a4;
+- (id)getDrainPerBucketIn:(_PLTimeIntervalRange)in;
+- (id)getEnergyEntry:(id)entry forBundleID:(id)d;
 - (id)getInstalledPluginEntries;
 - (id)getLastBatteryEntry;
-- (id)getNodeEntriesForEntryKey:(id)a3 withRange:(_PLTimeIntervalRange)a4 andTimeInterval:(double)a5;
+- (id)getNodeEntriesForEntryKey:(id)key withRange:(_PLTimeIntervalRange)range andTimeInterval:(double)interval;
 - (id)getNodeIDToNodeNameMap;
-- (id)getNonAppRuntimesInRange:(_PLTimeIntervalRange)a3 withNow:(id)a4;
-- (id)getNotificationEntriesInRange:(_PLTimeIntervalRange)a3;
+- (id)getNonAppRuntimesInRange:(_PLTimeIntervalRange)range withNow:(id)now;
+- (id)getNotificationEntriesInRange:(_PLTimeIntervalRange)range;
 - (id)getPluginBundleIDToEntryMap;
-- (id)getQualificationNodeEntriesInRange:(_PLTimeIntervalRange)a3 withTimeInterval:(double)a4;
-- (id)getRootNodeEntriesInRange:(_PLTimeIntervalRange)a3 withTimeInterval:(double)a4;
+- (id)getQualificationNodeEntriesInRange:(_PLTimeIntervalRange)range withTimeInterval:(double)interval;
+- (id)getRootNodeEntriesInRange:(_PLTimeIntervalRange)range withTimeInterval:(double)interval;
 - (id)getRootNodeIDToRootNodeEnergyKeys;
 - (id)getWebAppBundleIDs;
-- (id)getWidgetUpdateTypeToCount:(id)a3 inRange:(_PLTimeIntervalRange)a4;
+- (id)getWidgetUpdateTypeToCount:(id)count inRange:(_PLTimeIntervalRange)range;
 - (id)ongoingUpdateRestoreEntryInitializer;
-- (id)processAppTimeEntries:(id)a3 inRange:(_PLTimeIntervalRange)a4 withAppArray:(id)a5;
-- (id)processNotificationEntries:(id)a3 inRange:(_PLTimeIntervalRange)a4 withAppArray:(id)a5;
-- (id)processQualificationNodes:(id)a3 inRange:(_PLTimeIntervalRange)a4;
-- (id)processRootNodes:(id)a3 inRange:(_PLTimeIntervalRange)a4;
+- (id)processAppTimeEntries:(id)entries inRange:(_PLTimeIntervalRange)range withAppArray:(id)array;
+- (id)processNotificationEntries:(id)entries inRange:(_PLTimeIntervalRange)range withAppArray:(id)array;
+- (id)processQualificationNodes:(id)nodes inRange:(_PLTimeIntervalRange)range;
+- (id)processRootNodes:(id)nodes inRange:(_PLTimeIntervalRange)range;
 - (id)result;
-- (id)stringifyKeysForDict:(id)a3;
+- (id)stringifyKeysForDict:(id)dict;
 - (int)computeNumberOfBuckets;
-- (int)getBatteryMaximumCapacityPercentWithError:(id *)a3;
-- (signed)getEnergyMetricBucketForRootNodeID:(id)a3;
-- (signed)getWidgetTypeForEnergyEntry:(id)a3;
-- (signed)getWidgetTypeForHostName:(id)a3;
-- (void)addEntryTypes:(id)a3;
-- (void)addErrorCode:(id)a3;
-- (void)addQualifiers:(id)a3;
-- (void)addTotalEnergy:(id)a3;
-- (void)addTotals:(id)a3;
-- (void)adjustEnergyValues:(id)a3;
-- (void)adjustExtensionBackgroundTimeWithEnergyEntries:(id)a3;
-- (void)adjustRuntimes:(id)a3;
-- (void)applyDisplayNameTransformation:(id)a3;
-- (void)applyDynamicNameTransformation:(id)a3;
-- (void)applySlopAdjustment:(id)a3;
-- (void)applyStaticNameTransformation:(id)a3;
-- (void)buildBucketsForRange:(_PLTimeIntervalRange)a3;
+- (int)getBatteryMaximumCapacityPercentWithError:(id *)error;
+- (signed)getEnergyMetricBucketForRootNodeID:(id)d;
+- (signed)getWidgetTypeForEnergyEntry:(id)entry;
+- (signed)getWidgetTypeForHostName:(id)name;
+- (void)addEntryTypes:(id)types;
+- (void)addErrorCode:(id)code;
+- (void)addQualifiers:(id)qualifiers;
+- (void)addTotalEnergy:(id)energy;
+- (void)addTotals:(id)totals;
+- (void)adjustEnergyValues:(id)values;
+- (void)adjustExtensionBackgroundTimeWithEnergyEntries:(id)entries;
+- (void)adjustRuntimes:(id)runtimes;
+- (void)applyDisplayNameTransformation:(id)transformation;
+- (void)applyDynamicNameTransformation:(id)transformation;
+- (void)applySlopAdjustment:(id)adjustment;
+- (void)applyStaticNameTransformation:(id)transformation;
+- (void)buildBucketsForRange:(_PLTimeIntervalRange)range;
 - (void)buildUtilityCache;
-- (void)cleanEntries:(id)a3;
+- (void)cleanEntries:(id)entries;
 - (void)coalesce;
-- (void)collapseEnergyEntries:(id)a3;
-- (void)configure:(id)a3;
-- (void)createPerAppBreakdown:(id)a3;
-- (void)enumerateBucketsUsingBlock:(id)a3;
-- (void)filterEnergyEntries:(id)a3;
-- (void)filterEnergyEntriesWithRuntimes:(id)a3;
+- (void)collapseEnergyEntries:(id)entries;
+- (void)configure:(id)configure;
+- (void)createPerAppBreakdown:(id)breakdown;
+- (void)enumerateBucketsUsingBlock:(id)block;
+- (void)filterEnergyEntries:(id)entries;
+- (void)filterEnergyEntriesWithRuntimes:(id)runtimes;
 - (void)getStaticData;
-- (void)identifyBucket:(id)a3 withRange:(_PLTimeIntervalRange)a4;
-- (void)initializeBucketsWithRange:(_PLTimeIntervalRange)a3;
-- (void)normalizeBucket:(id)a3 to:(int)a4;
-- (void)normalizeForBucket:(id)a3 with:(int)a4;
-- (void)ongoingUpdateRestoreTransformations:(id)a3;
-- (void)prepareBucketsWithRange:(_PLTimeIntervalRange)a3;
-- (void)reaccountBackupRestore:(id)a3;
-- (void)reaccountExchangeEntries:(id)a3;
-- (void)transformCloudDocs:(id)a3;
-- (void)transformDeletedApps:(id)a3;
-- (void)transformGizmoDaemons:(id)a3;
-- (void)transformPlugins:(id)a3 withBucket:(id)a4;
+- (void)identifyBucket:(id)bucket withRange:(_PLTimeIntervalRange)range;
+- (void)initializeBucketsWithRange:(_PLTimeIntervalRange)range;
+- (void)normalizeBucket:(id)bucket to:(int)to;
+- (void)normalizeForBucket:(id)bucket with:(int)with;
+- (void)ongoingUpdateRestoreTransformations:(id)transformations;
+- (void)prepareBucketsWithRange:(_PLTimeIntervalRange)range;
+- (void)reaccountBackupRestore:(id)restore;
+- (void)reaccountExchangeEntries:(id)entries;
+- (void)transformCloudDocs:(id)docs;
+- (void)transformDeletedApps:(id)apps;
+- (void)transformGizmoDaemons:(id)daemons;
+- (void)transformPlugins:(id)plugins withBucket:(id)bucket;
 @end
 
 @implementation PLBatteryUIResponseTypeBatteryBreakdown
@@ -144,9 +144,9 @@
   return v11;
 }
 
-- (signed)getEnergyMetricBucketForRootNodeID:(id)a3
+- (signed)getEnergyMetricBucketForRootNodeID:(id)d
 {
-  v3 = [a3 intValue] - 2;
+  v3 = [d intValue] - 2;
   if (v3 > 0x3C)
   {
     return 0;
@@ -158,20 +158,20 @@
   }
 }
 
-- (_PLTimeIntervalRange)getDataRange:(id)a3
+- (_PLTimeIntervalRange)getDataRange:(id)range
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rangeCopy = range;
   v5 = *MEMORY[0x277D3F5B8];
   v6 = [(PLOperator *)PLAppTimeService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"UsageTime"];
   v38 = [MEMORY[0x277D3F128] entryKeyForType:v5 andName:*MEMORY[0x277D3F318]];
-  v7 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v8 = [v7 storage];
-  v9 = [v8 firstEntryForKey:v6];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
+  v9 = [storage firstEntryForKey:v6];
 
   if (v9)
   {
-    v10 = [v9 entryDate];
+    entryDate = [v9 entryDate];
     v11 = PLLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -187,16 +187,16 @@
       [PLBatteryUIResponseTypeBatteryBreakdown(Utilities) getDataRange:v12];
     }
 
-    v10 = v4;
+    entryDate = rangeCopy;
   }
 
-  v13 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v14 = [v13 storage];
-  v15 = [v14 firstEntryForKey:v38];
+  responderService2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage2 = [responderService2 storage];
+  v15 = [storage2 firstEntryForKey:v38];
 
   if (v15)
   {
-    v16 = [v15 entryDate];
+    entryDate2 = [v15 entryDate];
     v17 = PLLogCommon();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
@@ -212,11 +212,11 @@
       [PLBatteryUIResponseTypeBatteryBreakdown(Utilities) getDataRange:v18];
     }
 
-    v16 = v4;
+    entryDate2 = rangeCopy;
   }
 
-  v19 = [v16 laterDate:v10];
-  v20 = v4;
+  v19 = [entryDate2 laterDate:entryDate];
+  v20 = rangeCopy;
   [v19 timeIntervalSince1970];
   v22 = v21;
   [v20 timeIntervalSince1970];
@@ -230,14 +230,14 @@
     v37 = v9;
     [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v22];
     v28 = v15;
-    v29 = v10;
+    v29 = entryDate;
     v31 = v30 = v6;
     v32 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v22 + v25];
     v33 = [v27 stringWithFormat:@"Start: %@, End %@", v31, v32];
 
     v9 = v37;
     v6 = v30;
-    v10 = v29;
+    entryDate = v29;
     v15 = v28;
     *buf = 138412290;
     v40 = v33;
@@ -252,19 +252,19 @@
   return result;
 }
 
-- (double)getDataDurationFromRange:(_PLTimeIntervalRange)a3
+- (double)getDataDurationFromRange:(_PLTimeIntervalRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = MEMORY[0x277CBEAA8];
   v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:?];
-  v7 = [v6 convertFromMonotonicToSystem];
-  v8 = [v5 nearestMidnightBeforeDate:v7];
+  convertFromMonotonicToSystem = [v6 convertFromMonotonicToSystem];
+  v8 = [v5 nearestMidnightBeforeDate:convertFromMonotonicToSystem];
 
   v9 = MEMORY[0x277CBEAA8];
   v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:location + length];
-  v11 = [v10 convertFromMonotonicToSystem];
-  v12 = [v9 nearestMidnightAfterDate:v11];
+  convertFromMonotonicToSystem2 = [v10 convertFromMonotonicToSystem];
+  v12 = [v9 nearestMidnightAfterDate:convertFromMonotonicToSystem2];
 
   [v12 timeIntervalSinceDate:v8];
   v14 = v13;
@@ -272,54 +272,54 @@
   return v14;
 }
 
-- (id)getNodeEntriesForEntryKey:(id)a3 withRange:(_PLTimeIntervalRange)a4 andTimeInterval:(double)a5
+- (id)getNodeEntriesForEntryKey:(id)key withRange:(_PLTimeIntervalRange)range andTimeInterval:(double)interval
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
+  length = range.length;
+  location = range.location;
+  keyCopy = key;
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@ NOT NULL) AND (%@ NOT LIKE '%%%@%%') AND (%@ NOT LIKE '%%%@%%')", *MEMORY[0x277D3F3E0], *MEMORY[0x277D3F3E0], @"null", *MEMORY[0x277D3F3E0], @"unknown"];
   v11 = MEMORY[0x277CCACA8];
   v12 = *MEMORY[0x277D3F300];
-  v13 = [MEMORY[0x277D3F0C8] entryKey];
-  v14 = [v11 stringWithFormat:@"%@ IN (SELECT ID FROM '%@' WHERE %@)", v12, v13, v10];
+  entryKey = [MEMORY[0x277D3F0C8] entryKey];
+  v14 = [v11 stringWithFormat:@"%@ IN (SELECT ID FROM '%@' WHERE %@)", v12, entryKey, v10];
 
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ > %d", *MEMORY[0x277D3F320], 100];
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT * FROM '%@' WHERE (timestamp>%f AND timestamp<%f AND timeInterval=%f AND (%@) AND (%@))", v9, *&location, location + length, *&a5, v14, v15];;
+  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT * FROM '%@' WHERE (timestamp>%f AND timestamp<%f AND timeInterval=%f AND (%@) AND (%@))", keyCopy, *&location, location + length, *&interval, v14, v15];;
   v17 = PLLogCommon();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     [PLBatteryUIResponseTypeBatteryBreakdown(Utilities) getNodeEntriesForEntryKey:withRange:andTimeInterval:];
   }
 
-  v18 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v19 = [v18 storage];
-  v20 = [v19 entriesForKey:v9 withQuery:v16];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
+  v20 = [storage entriesForKey:keyCopy withQuery:v16];
 
   return v20;
 }
 
-- (id)getAppRuntimesInRange:(_PLTimeIntervalRange)a3
+- (id)getAppRuntimesInRange:(_PLTimeIntervalRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v6 = [v5 storage];
+  length = range.length;
+  location = range.location;
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
   v7 = [(PLOperator *)PLAppTimeService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"AppRunTime"];
-  v8 = [v6 aggregateEntriesForKey:v7 withBucketLength:3600.0 inTimeIntervalRange:{location, length}];
+  v8 = [storage aggregateEntriesForKey:v7 withBucketLength:3600.0 inTimeIntervalRange:{location, length}];
 
   return v8;
 }
 
-- (id)getNonAppRuntimesInRange:(_PLTimeIntervalRange)a3 withNow:(id)a4
+- (id)getNonAppRuntimesInRange:(_PLTimeIntervalRange)range withNow:(id)now
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v17[3] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  if (v8)
+  nowCopy = now;
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  if (responderService)
   {
-    [(PLBatteryUIResponseTypeBatteryBreakdown *)self getNonAppRuntimesWith:@"PLCameraAgent_EventForward_Torch" identificationKey:@"Level" andRange:v7 withNow:location, length];
+    [(PLBatteryUIResponseTypeBatteryBreakdown *)self getNonAppRuntimesWith:@"PLCameraAgent_EventForward_Torch" identificationKey:@"Level" andRange:nowCopy withNow:location, length];
     v10 = v9;
   }
 
@@ -328,7 +328,7 @@
     v10 = 0.0;
   }
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v10 > 0.0)
   {
     v16[0] = @"BundleID";
@@ -340,40 +340,40 @@
     v17[2] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:3];
 
-    [v11 addObject:v13];
+    [array addObject:v13];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return array;
 }
 
-- (double)getNonAppRuntimesWith:(id)a3 identificationKey:(id)a4 andRange:(_PLTimeIntervalRange)a5 withNow:(id)a6
+- (double)getNonAppRuntimesWith:(id)with identificationKey:(id)key andRange:(_PLTimeIntervalRange)range withNow:(id)now
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v54[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v47 = a6;
+  withCopy = with;
+  keyCopy = key;
+  nowCopy = now;
   v13 = location + 1800.0;
   v14 = objc_alloc(MEMORY[0x277D3F260]);
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
   v16 = [v14 initWithKey:@"timestamp" withValue:v15 withComparisonOperation:5];
 
-  v17 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v18 = [v17 storage];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
   v46 = v16;
   v54[0] = v16;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:1];
-  v20 = [v18 lastEntryForKey:v11 withComparisons:v19 isSingleton:0];
+  v20 = [storage lastEntryForKey:withCopy withComparisons:v19 isSingleton:0];
 
   if (v20)
   {
-    v21 = [v20 objectForKeyedSubscript:v12];
-    v22 = [v21 BOOLValue];
+    v21 = [v20 objectForKeyedSubscript:keyCopy];
+    bOOLValue = [v21 BOOLValue];
 
-    if (v22)
+    if (bOOLValue)
     {
       v23 = v13;
     }
@@ -389,17 +389,17 @@
     v23 = -1.0;
   }
 
-  v24 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v25 = [v24 storage];
-  v48 = v11;
-  v26 = [v25 entriesForKey:v11 inTimeRange:0 withFilters:{v13, length}];
+  responderService2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage2 = [responderService2 storage];
+  v48 = withCopy;
+  v26 = [storage2 entriesForKey:withCopy inTimeRange:0 withFilters:{v13, length}];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v27 = [v26 reverseObjectEnumerator];
-  v28 = [v27 countByEnumeratingWithState:&v49 objects:v53 count:16];
+  reverseObjectEnumerator = [v26 reverseObjectEnumerator];
+  v28 = [reverseObjectEnumerator countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v28)
   {
     v29 = v28;
@@ -411,19 +411,19 @@
       {
         if (*v50 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v33 = *(*(&v49 + 1) + 8 * i);
-        v34 = [v33 objectForKeyedSubscript:v12];
-        v35 = [v34 BOOLValue];
+        v34 = [v33 objectForKeyedSubscript:keyCopy];
+        bOOLValue2 = [v34 BOOLValue];
 
-        if (v35)
+        if (bOOLValue2)
         {
           if (v23 == -1.0)
           {
-            v36 = [v33 entryDate];
-            [v36 timeIntervalSince1970];
+            entryDate = [v33 entryDate];
+            [entryDate timeIntervalSince1970];
             v23 = v37;
           }
         }
@@ -432,8 +432,8 @@
         {
           if (v23 != -1.0)
           {
-            v38 = [v33 entryDate];
-            [v38 timeIntervalSince1970];
+            entryDate2 = [v33 entryDate];
+            [entryDate2 timeIntervalSince1970];
             v40 = v39 - v23;
 
             v31 = v31 + v40;
@@ -443,7 +443,7 @@
         }
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v49 objects:v53 count:16];
+      v29 = [reverseObjectEnumerator countByEnumeratingWithState:&v49 objects:v53 count:16];
     }
 
     while (v29);
@@ -456,14 +456,14 @@
 
   if (v23 == -1.0)
   {
-    v41 = v47;
+    v41 = nowCopy;
     v43 = v48;
   }
 
   else
   {
-    v41 = v47;
-    [v47 timeIntervalSince1970];
+    v41 = nowCopy;
+    [nowCopy timeIntervalSince1970];
     if (v42 >= length + v13)
     {
       v42 = length + v13;
@@ -489,12 +489,12 @@
 
   v4 = [(PLOperator *)PLApplicationAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"AllApps"];
   v5 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"AppDeletedDate" withValue:&unk_2871456D0 withComparisonOperation:1];
-  v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v7 = [v6 storage];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
   v36[0] = v5;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
   v25 = v4;
-  v9 = [v7 entriesForKey:v4 withComparisons:v8];
+  v9 = [storage entriesForKey:v4 withComparisons:v8];
 
   v10 = PLLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -530,11 +530,11 @@
         v19 = PLLogCommon();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v18 intValue];
+          intValue = [v18 intValue];
           *buf = 138412546;
           v32 = v17;
           v33 = 1024;
-          v34 = v20;
+          v34 = intValue;
           _os_log_impl(&dword_25EE51000, v19, OS_LOG_TYPE_DEFAULT, "bundleID=%@, appIsClip=%d", buf, 0x12u);
         }
 
@@ -576,12 +576,12 @@
 
   v4 = [(PLOperator *)PLApplicationAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"AllApps"];
   v5 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"AppDeletedDate" withValue:&unk_2871456D0 withComparisonOperation:1];
-  v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v7 = [v6 storage];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
   v36[0] = v5;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
   v25 = v4;
-  v9 = [v7 entriesForKey:v4 withComparisons:v8];
+  v9 = [storage entriesForKey:v4 withComparisons:v8];
 
   v10 = PLLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -617,11 +617,11 @@
         v19 = PLLogCommon();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v18 intValue];
+          intValue = [v18 intValue];
           *buf = 138412546;
           v32 = v17;
           v33 = 1024;
-          v34 = v20;
+          v34 = intValue;
           _os_log_impl(&dword_25EE51000, v19, OS_LOG_TYPE_DEFAULT, "bundleID=%@, appIsClip=%d", buf, 0x12u);
         }
 
@@ -660,9 +660,9 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v6 = [v5 storage];
-  v7 = [v6 entriesForKey:v3];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
+  v7 = [storage entriesForKey:v3];
 
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
@@ -705,15 +705,15 @@
   v77[1] = *MEMORY[0x277D85DE8];
   v3 = [(PLOperator *)PLApplicationAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"AllApps"];
   v4 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"AppDeletedDate" withValue:&unk_2871456D0 withComparisonOperation:0];
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v6 = [v5 storage];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
   v54 = v4;
   v77[0] = v4;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:1];
   v55 = v3;
-  v8 = [v6 entriesForKey:v3 withComparisons:v7];
+  v8 = [storage entriesForKey:v3 withComparisons:v7];
 
-  v58 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9 = PLLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -744,9 +744,9 @@
 
         v16 = *(*(&v65 + 1) + 8 * v15);
         v17 = [v16 objectForKeyedSubscript:@"AppType"];
-        v18 = [v17 intValue];
+        intValue = [v17 intValue];
 
-        if (v18 == 101 || ([v16 objectForKeyedSubscript:@"AppBundleId"], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", @"com.apple.NanoUniverse.AegirProxyApp"), v19, v20))
+        if (intValue == 101 || ([v16 objectForKeyedSubscript:@"AppBundleId"], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", @"com.apple.NanoUniverse.AegirProxyApp"), v19, v20))
         {
           v21 = [v16 objectForKeyedSubscript:@"AppBundleId"];
           v22 = [v16 objectForKeyedSubscript:@"AppName"];
@@ -768,9 +768,9 @@
               v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundleID=%@, displayName=%@", v21, v22];
               v25 = MEMORY[0x277D3F178];
               v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown+Utilities.m"];
-              v27 = [v26 lastPathComponent];
+              lastPathComponent = [v26 lastPathComponent];
               v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown(Utilities) getBundleIDToDisplayNameMap]"];
-              [v25 logMessage:v24 fromFile:v27 fromFunction:v28 fromLineNumber:338];
+              [v25 logMessage:v24 fromFile:lastPathComponent fromFunction:v28 fromLineNumber:338];
 
               v29 = PLLogCommon();
               if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -785,7 +785,7 @@
             }
           }
 
-          [v58 setObject:v22 forKeyedSubscript:v21];
+          [dictionary setObject:v22 forKeyedSubscript:v21];
         }
 
         else
@@ -832,13 +832,13 @@
         v36 = *(*(&v60 + 1) + 8 * v35);
         if (([v36 mayBeBUIVisible] & 1) == 0)
         {
-          v37 = [v36 bundleIdentifier];
-          v38 = [v37 isEqualToString:@"com.apple.NanoUniverse.AegirProxyApp"];
+          bundleIdentifier = [v36 bundleIdentifier];
+          v38 = [bundleIdentifier isEqualToString:@"com.apple.NanoUniverse.AegirProxyApp"];
 
           if (!v38)
           {
-            v41 = PLLogCommon();
-            if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
+            bundleIdentifier2 = PLLogCommon();
+            if (os_log_type_enabled(bundleIdentifier2, OS_LOG_TYPE_DEBUG))
             {
               [(PLBatteryUIResponseTypeBatteryBreakdown(Utilities) *)&v69 getBundleIDToDisplayNameMap];
             }
@@ -849,12 +849,12 @@
 
         if (([*(v32 + 3200) hasScreenPresence:v36] & 1) != 0 || (objc_msgSend(v36, "bundleIdentifier"), v39 = objc_claimAutoreleasedReturnValue(), v40 = objc_msgSend(v39, "isEqualToString:", @"com.apple.NanoUniverse.AegirProxyApp"), v39, v40))
         {
-          v41 = [v36 bundleIdentifier];
-          v42 = [v58 objectForKeyedSubscript:v41];
+          bundleIdentifier2 = [v36 bundleIdentifier];
+          v42 = [dictionary objectForKeyedSubscript:bundleIdentifier2];
 
           if (!v42)
           {
-            v43 = [v36 localizedName];
+            localizedName = [v36 localizedName];
             if ([MEMORY[0x277D3F180] debugEnabled])
             {
               v44 = objc_opt_class();
@@ -870,12 +870,12 @@
 
               if (getBundleIDToDisplayNameMap_classDebugEnabled_400 == 1)
               {
-                v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundleID=%@, displayName=%@", v41, v43];
+                v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundleID=%@, displayName=%@", bundleIdentifier2, localizedName];
                 v46 = MEMORY[0x277D3F178];
                 v47 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown+Utilities.m"];
-                v48 = [v47 lastPathComponent];
+                lastPathComponent2 = [v47 lastPathComponent];
                 v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown(Utilities) getBundleIDToDisplayNameMap]"];
-                [v46 logMessage:v45 fromFile:v48 fromFunction:v49 fromLineNumber:356];
+                [v46 logMessage:v45 fromFile:lastPathComponent2 fromFunction:v49 fromLineNumber:356];
 
                 v50 = PLLogCommon();
                 if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -890,7 +890,7 @@
               }
             }
 
-            [v58 setObject:v43 forKeyedSubscript:v41];
+            [dictionary setObject:localizedName forKeyedSubscript:bundleIdentifier2];
           }
 
 LABEL_42:
@@ -906,8 +906,8 @@ LABEL_42:
     while (v33);
   }
 
-  [v58 setObject:@"Apple Watch" forKeyedSubscript:@"com.apple.Bridge"];
-  v51 = [v58 copy];
+  [dictionary setObject:@"Apple Watch" forKeyedSubscript:@"com.apple.Bridge"];
+  v51 = [dictionary copy];
 
   v52 = *MEMORY[0x277D85DE8];
 
@@ -934,19 +934,19 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@ NOT NULL) AND (%@ NOT LIKE '%%%@%%') AND (%@ NOT LIKE '%%%@%%')", *MEMORY[0x277D3F3E0], *MEMORY[0x277D3F3E0], @"null", *MEMORY[0x277D3F3E0], @"unknown"];
   v4 = MEMORY[0x277CCACA8];
   v5 = *MEMORY[0x277D3F300];
-  v6 = [MEMORY[0x277D3F0C8] entryKey];
+  entryKey = [MEMORY[0x277D3F0C8] entryKey];
   v25 = v3;
-  v7 = [v4 stringWithFormat:@"%@ IN (SELECT ID FROM '%@' WHERE %@)", v5, v6, v3];
+  v7 = [v4 stringWithFormat:@"%@ IN (SELECT ID FROM '%@' WHERE %@)", v5, entryKey, v3];
 
-  v8 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v9 = [v8 storage];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
   v10 = [MEMORY[0x277D3F128] entryKeyForType:*MEMORY[0x277D3F5E0] andName:*MEMORY[0x277D3F3D0]];
   v31 = @"WHERE";
   v32[0] = v7;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-  v12 = [v9 entriesForKey:v10 withProperties:v11];
+  v12 = [storage entriesForKey:v10 withProperties:v11];
 
-  v13 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -967,9 +967,9 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
         }
 
         v19 = *(*(&v26 + 1) + 8 * i);
-        v20 = [v19 name];
+        name = [v19 name];
         v21 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v19, "entryID")}];
-        [v13 setObject:v20 forKeyedSubscript:v21];
+        [dictionary setObject:name forKeyedSubscript:v21];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -978,7 +978,7 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
     while (v16);
   }
 
-  v22 = [v13 copy];
+  v22 = [dictionary copy];
   v23 = *MEMORY[0x277D85DE8];
 
   return v22;
@@ -989,13 +989,13 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
   v73[1] = *MEMORY[0x277D85DE8];
   v3 = [(PLOperator *)PLApplicationAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"AllPlugins"];
   v4 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"PluginDeletedDate" withValue:&unk_2871456D0 withComparisonOperation:0];
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v6 = [v5 storage];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
   v50 = v4;
   v73[0] = v4;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:1];
   v51 = v3;
-  v8 = [v6 entriesForKey:v3 withComparisons:v7];
+  v8 = [storage entriesForKey:v3 withComparisons:v7];
 
   v9 = 0x277D3F000uLL;
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -1016,9 +1016,9 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"installedPluginEntries=%@", v8];
       v12 = MEMORY[0x277D3F178];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown+Utilities.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown(Utilities) getPluginBundleIDToEntryMap]"];
-      [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:396];
+      [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:396];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -1030,7 +1030,7 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
     }
   }
 
-  v57 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
@@ -1038,7 +1038,7 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
   v17 = v8;
   v18 = [v17 countByEnumeratingWithState:&v64 objects:v72 count:16];
   v53 = v17;
-  v54 = self;
+  selfCopy = self;
   if (v18)
   {
     v19 = v18;
@@ -1073,9 +1073,9 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
             v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"pluginBundleID=%@", v23];
             v26 = MEMORY[0x277D3F178];
             v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown+Utilities.m"];
-            v28 = [v27 lastPathComponent];
+            lastPathComponent2 = [v27 lastPathComponent];
             v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown(Utilities) getPluginBundleIDToEntryMap]"];
-            [v26 logMessage:v25 fromFile:v28 fromFunction:v29 fromLineNumber:401];
+            [v26 logMessage:v25 fromFile:lastPathComponent2 fromFunction:v29 fromLineNumber:401];
 
             v30 = PLLogCommon();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -1086,12 +1086,12 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
             }
 
             v17 = v53;
-            self = v54;
+            self = selfCopy;
             v9 = 0x277D3F000uLL;
           }
         }
 
-        [v57 setObject:v22 forKeyedSubscript:v23];
+        [dictionary setObject:v22 forKeyedSubscript:v23];
 
         ++v21;
       }
@@ -1107,13 +1107,13 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v31 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getInstalledPluginEntries];
-  v32 = v57;
-  v56 = [v31 countByEnumeratingWithState:&v59 objects:v69 count:16];
+  getInstalledPluginEntries = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getInstalledPluginEntries];
+  v32 = dictionary;
+  v56 = [getInstalledPluginEntries countByEnumeratingWithState:&v59 objects:v69 count:16];
   if (v56)
   {
     v55 = *v60;
-    v52 = v31;
+    v52 = getInstalledPluginEntries;
     do
     {
       v33 = 0;
@@ -1121,7 +1121,7 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
       {
         if (*v60 != v55)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(getInstalledPluginEntries);
         }
 
         v34 = *(*(&v59 + 1) + 8 * v33);
@@ -1153,9 +1153,9 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
 
               v43 = MEMORY[0x277D3F178];
               v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown+Utilities.m"];
-              v45 = [v44 lastPathComponent];
+              lastPathComponent3 = [v44 lastPathComponent];
               v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown(Utilities) getPluginBundleIDToEntryMap]"];
-              [v43 logMessage:v42 fromFile:v45 fromFunction:v46 fromLineNumber:412];
+              [v43 logMessage:v42 fromFile:lastPathComponent3 fromFunction:v46 fromLineNumber:412];
 
               v47 = PLLogCommon();
               if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
@@ -1166,8 +1166,8 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
               }
 
               v9 = 0x277D3F000;
-              v32 = v57;
-              v31 = v52;
+              v32 = dictionary;
+              getInstalledPluginEntries = v52;
             }
           }
 
@@ -1178,7 +1178,7 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getBundleIDToD
       }
 
       while (v56 != v33);
-      v56 = [v31 countByEnumeratingWithState:&v59 objects:v69 count:16];
+      v56 = [getInstalledPluginEntries countByEnumeratingWithState:&v59 objects:v69 count:16];
     }
 
     while (v56);
@@ -1210,13 +1210,13 @@ uint64_t __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getPluginBundl
   return result;
 }
 
-- (id)getNotificationEntriesInRange:(_PLTimeIntervalRange)a3
+- (id)getNotificationEntriesInRange:(_PLTimeIntervalRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v6 = [v5 storage];
-  v7 = [v6 aggregateEntriesForKey:@"PLSpringBoardAgent_Aggregate_SBNotifications_Aggregate" withBucketLength:3600.0 inTimeIntervalRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
+  v7 = [storage aggregateEntriesForKey:@"PLSpringBoardAgent_Aggregate_SBNotifications_Aggregate" withBucketLength:3600.0 inTimeIntervalRange:{location, length}];
 
   v8 = objc_opt_new();
   v12[0] = MEMORY[0x277D85DD0];
@@ -1257,7 +1257,7 @@ void __84__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getNotificationEnt
 - (id)getInstalledPluginEntries
 {
   v40 = *MEMORY[0x277D85DE8];
-  v30 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -1281,39 +1281,39 @@ void __84__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getNotificationEnt
         }
 
         v7 = *(*(&v35 + 1) + 8 * v6);
-        v8 = [v7 bundleIdentifier];
-        if (!v8)
+        bundleIdentifier = [v7 bundleIdentifier];
+        if (!bundleIdentifier)
         {
           goto LABEL_20;
         }
 
-        v9 = v8;
-        v10 = [v7 executableURL];
-        if (!v10)
+        v9 = bundleIdentifier;
+        executableURL = [v7 executableURL];
+        if (!executableURL)
         {
           goto LABEL_19;
         }
 
-        v11 = v10;
-        v12 = [v7 containingBundleRecord];
-        if (!v12)
+        v11 = executableURL;
+        containingBundleRecord = [v7 containingBundleRecord];
+        if (!containingBundleRecord)
         {
           goto LABEL_12;
         }
 
-        v34 = [v7 containingBundleRecord];
-        v13 = [v34 bundleIdentifier];
-        if (!v13)
+        containingBundleRecord2 = [v7 containingBundleRecord];
+        bundleIdentifier2 = [containingBundleRecord2 bundleIdentifier];
+        if (!bundleIdentifier2)
         {
           v33 = 0;
 LABEL_12:
           v15 = v5;
           v16 = v2;
-          v17 = [v7 extensionPointRecord];
-          v18 = [v17 identifier];
-          v14 = [v18 isEqualToString:@"com.apple.posterkit.provider"];
+          extensionPointRecord = [v7 extensionPointRecord];
+          identifier = [extensionPointRecord identifier];
+          v14 = [identifier isEqualToString:@"com.apple.posterkit.provider"];
 
-          if (!v12)
+          if (!containingBundleRecord)
           {
 
             v2 = v16;
@@ -1329,20 +1329,20 @@ LABEL_17:
             v20 = [(PLOperator *)PLApplicationAgent entryKeyForType:v31 andName:@"AllPlugins"];
             v9 = [v19 initWithEntryKey:v20];
 
-            v21 = [v7 bundleIdentifier];
-            [v9 setObject:v21 forKeyedSubscript:@"PluginId"];
+            bundleIdentifier3 = [v7 bundleIdentifier];
+            [v9 setObject:bundleIdentifier3 forKeyedSubscript:@"PluginId"];
 
-            v22 = [v7 containingBundleRecord];
-            v23 = [v22 bundleIdentifier];
-            [v9 setObject:v23 forKeyedSubscript:@"PluginParentApp"];
+            containingBundleRecord3 = [v7 containingBundleRecord];
+            bundleIdentifier4 = [containingBundleRecord3 bundleIdentifier];
+            [v9 setObject:bundleIdentifier4 forKeyedSubscript:@"PluginParentApp"];
 
-            v24 = [v7 extensionPointRecord];
-            v25 = [v24 identifier];
-            [v9 setObject:v25 forKeyedSubscript:@"PluginType"];
+            extensionPointRecord2 = [v7 extensionPointRecord];
+            identifier2 = [extensionPointRecord2 identifier];
+            [v9 setObject:identifier2 forKeyedSubscript:@"PluginType"];
 
-            v26 = [v7 executableURL];
-            v27 = [v26 path];
-            [v9 setObject:v27 forKeyedSubscript:@"PluginExecutableName"];
+            executableURL2 = [v7 executableURL];
+            path = [executableURL2 path];
+            [v9 setObject:path forKeyedSubscript:@"PluginExecutableName"];
 
             [v9 setObject:&unk_2871456D0 forKeyedSubscript:@"PluginDeletedDate"];
             if (!v9)
@@ -1350,7 +1350,7 @@ LABEL_17:
               goto LABEL_20;
             }
 
-            [v30 addObject:v9];
+            [array addObject:v9];
 LABEL_19:
 
             goto LABEL_20;
@@ -1359,13 +1359,13 @@ LABEL_19:
           v2 = v16;
           v5 = v15;
           v4 = v32;
-          v13 = v33;
+          bundleIdentifier2 = v33;
           goto LABEL_14;
         }
 
         LOBYTE(v14) = 1;
 LABEL_14:
-        v33 = v13;
+        v33 = bundleIdentifier2;
 
         if (v14)
         {
@@ -1385,16 +1385,16 @@ LABEL_20:
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v30;
+  return array;
 }
 
 - (id)getLastBatteryEntry
 {
   v19[2] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277D3F1A0] entryKeyForOperatorName:@"PLBatteryAgent" withType:*MEMORY[0x277D3F5C8] withName:@"Battery"];
-  v4 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v5 = [v4 storage];
-  v6 = [v5 lastEntryForKey:v3];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
+  v6 = [storage lastEntryForKey:v3];
 
   if (v6)
   {
@@ -1426,15 +1426,15 @@ LABEL_20:
   return v15;
 }
 
-- (BOOL)gizmoConnectedInRange:(_PLTimeIntervalRange)a3
+- (BOOL)gizmoConnectedInRange:(_PLTimeIntervalRange)range
 {
-  location = a3.location;
-  v5 = a3.location + a3.length;
+  location = range.location;
+  v5 = range.location + range.length;
   v6 = [MEMORY[0x277D3F1A0] entryKeyForOperatorName:@"PLIdentityServicesAgent" withType:*MEMORY[0x277D3F5D0] withName:@"LocalLinkType"];
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"select * from %@ where linkType=1 and timestamp>=%f and timestamp<=%f limit 1", v6, *&location, *&v5];
-  v8 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v9 = [v8 storage];
-  v10 = [v9 entriesForKey:v6 withQuery:v7];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
+  v10 = [storage entriesForKey:v6 withQuery:v7];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -1454,9 +1454,9 @@ LABEL_20:
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Query Result %@", v10];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown+Utilities.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown(Utilities) gizmoConnectedInRange:]"];
-      [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:493];
+      [v13 logMessage:v12 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:493];
 
       v17 = PLLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1481,9 +1481,9 @@ uint64_t __76__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__gizmoConnected
 - (BOOL)hasHomeKitEvents
 {
   v3 = [MEMORY[0x277D3F1A0] entryKeyForOperatorName:@"PLHomeKitAgent" withType:*MEMORY[0x277D3F5E8] withName:@"HomeKitEvents"];
-  v4 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v5 = [v4 storage];
-  v6 = [v5 countOfEntriesForKey:v3] > 0;
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
+  v6 = [storage countOfEntriesForKey:v3] > 0;
 
   return v6;
 }
@@ -1847,10 +1847,10 @@ uint64_t __76__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__gizmoConnected
   return v7;
 }
 
-- (id)getEnergyEntry:(id)a3 forBundleID:(id)a4
+- (id)getEnergyEntry:(id)entry forBundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  entryCopy = entry;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1861,10 +1861,10 @@ uint64_t __76__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__gizmoConnected
   v10[1] = 3221225472;
   v10[2] = __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getEnergyEntry_forBundleID___block_invoke;
   v10[3] = &unk_279A5C168;
-  v7 = v6;
+  v7 = dCopy;
   v11 = v7;
   v12 = &v13;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [entryCopy enumerateObjectsUsingBlock:v10];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -1902,14 +1902,14 @@ void __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getEnergyEntry_for
   return v2;
 }
 
-- (void)configure:(id)a3
+- (void)configure:(id)configure
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"start"];
+  configureCopy = configure;
+  v5 = [configureCopy objectForKeyedSubscript:@"start"];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [v4 objectForKeyedSubscript:@"end"];
+  v8 = [configureCopy objectForKeyedSubscript:@"end"];
   [v8 doubleValue];
   v10 = v9;
 
@@ -1925,7 +1925,7 @@ void __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getEnergyEntry_for
     [(PLBatteryUIResponseTypeBatteryBreakdown *)self setExcludeTimeOnCharger:0];
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"isDynamicEnd"];
+  v11 = [configureCopy objectForKeyedSubscript:@"isDynamicEnd"];
   -[PLBatteryUIResponseTypeBatteryBreakdown setIsDynamicEnd:](self, "setIsDynamicEnd:", [v11 BOOLValue]);
 
   v12 = +[PLUtilities getOverridableMonotonicNow];
@@ -1937,14 +1937,14 @@ void __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getEnergyEntry_for
   v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v10];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self setEnd:v14];
 
-  v15 = [v4 objectForKeyedSubscript:@"bucket"];
+  v15 = [configureCopy objectForKeyedSubscript:@"bucket"];
   [v15 doubleValue];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self setBucketSize:?];
 
   if ([(PLBatteryUIResponseTypeBatteryBreakdown *)self isDynamicEnd])
   {
-    v16 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self monotonicNow];
-    [v16 timeIntervalSince1970];
+    monotonicNow = [(PLBatteryUIResponseTypeBatteryBreakdown *)self monotonicNow];
+    [monotonicNow timeIntervalSince1970];
     [(PLBatteryUIResponseTypeBatteryBreakdown *)self setDynamicEndOffset:v10 - v17];
   }
 
@@ -1953,22 +1953,22 @@ void __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getEnergyEntry_for
     [(PLBatteryUIResponseTypeBatteryBreakdown *)self setDynamicEndOffset:0.0];
   }
 
-  v18 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getNodeIDToNodeNameMap];
-  [(PLBatteryUIResponseTypeBatteryBreakdown *)self setNodeIDsToNodeNames:v18];
+  getNodeIDToNodeNameMap = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getNodeIDToNodeNameMap];
+  [(PLBatteryUIResponseTypeBatteryBreakdown *)self setNodeIDsToNodeNames:getNodeIDToNodeNameMap];
 
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self setHasHomeKit:[(PLBatteryUIResponseTypeBatteryBreakdown *)self hasHomeKitEvents]];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self setIsSlopAdjustmentEnabled:1];
-  v19 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getLastBatteryEntry];
-  [(PLBatteryUIResponseTypeBatteryBreakdown *)self setLastBatteryEntry:v19];
+  getLastBatteryEntry = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getLastBatteryEntry];
+  [(PLBatteryUIResponseTypeBatteryBreakdown *)self setLastBatteryEntry:getLastBatteryEntry];
 
   v20 = [MEMORY[0x277D3F180] objectForKey:@"LastUpgradeTimestamp" forApplicationID:@"com.apple.powerlogd" synchronize:1];
   [v20 doubleValue];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self setLastUpgradeTimestamp:?];
 
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self buildUtilityCache];
-  v21 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self start];
+  start = [(PLBatteryUIResponseTypeBatteryBreakdown *)self start];
   v22 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self end];
-  [v21 timeIntervalSince1970];
+  [start timeIntervalSince1970];
   v24 = v23;
   [v22 timeIntervalSince1970];
   v26 = v25 - v24;
@@ -1990,9 +1990,9 @@ void __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getEnergyEntry_for
     v36 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getDrainPerBucketIn:v33, v35];
     [(PLBatteryUIResponseTypeBatteryBreakdown *)self setUiLevelDrainEntries:v36];
 
-    v37 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self uiLevelDrainEntries];
+    uiLevelDrainEntries = [(PLBatteryUIResponseTypeBatteryBreakdown *)self uiLevelDrainEntries];
 
-    if (!v37)
+    if (!uiLevelDrainEntries)
     {
       v38 = PLLogCommon();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -2003,22 +2003,22 @@ void __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getEnergyEntry_for
   }
 }
 
-- (id)getDrainPerBucketIn:(_PLTimeIntervalRange)a3
+- (id)getDrainPerBucketIn:(_PLTimeIntervalRange)in
 {
-  length = a3.length;
-  location = a3.location;
+  length = in.length;
+  location = in.location;
   v6 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"UILevel"];
-  v7 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v8 = [v7 storage];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
   v35 = v6;
-  v9 = [v8 entriesForKey:v6 inTimeRange:0 withFilters:{location, length}];
+  v9 = [storage entriesForKey:v6 inTimeRange:0 withFilters:{location, length}];
 
   v37 = objc_opt_new();
   v10 = location + length;
   v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v10];
   v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v10];
-  v36 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self computeNumberOfBuckets];
-  if (v36 >= 1)
+  computeNumberOfBuckets = [(PLBatteryUIResponseTypeBatteryBreakdown *)self computeNumberOfBuckets];
+  if (computeNumberOfBuckets >= 1)
   {
     v13 = 0;
     LODWORD(v14) = 0;
@@ -2045,8 +2045,8 @@ void __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getEnergyEntry_for
           v19 = [v9 objectAtIndexedSubscript:v14];
           [v12 timeIntervalSince1970];
           v21 = v20;
-          v22 = [v19 entryDate];
-          [v22 timeIntervalSince1970];
+          entryDate = [v19 entryDate];
+          [entryDate timeIntervalSince1970];
           v24 = v23;
 
           if (v21 > v24)
@@ -2058,8 +2058,8 @@ void __81__PLBatteryUIResponseTypeBatteryBreakdown_Utilities__getEnergyEntry_for
           v26 = v25;
           [(PLBatteryUIResponseTypeBatteryBreakdown *)self dynamicEndOffset];
           v28 = v26 - v27;
-          v29 = [v19 entryDate];
-          [v29 timeIntervalSince1970];
+          entryDate2 = [v19 entryDate];
+          [entryDate2 timeIntervalSince1970];
           v31 = v30;
 
           if (v28 > v31)
@@ -2084,7 +2084,7 @@ LABEL_12:
       ++v13;
     }
 
-    while (v13 != v36);
+    while (v13 != computeNumberOfBuckets);
   }
 
   return v37;
@@ -2092,22 +2092,22 @@ LABEL_12:
 
 - (void)coalesce
 {
-  v3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self buckets];
-  v4 = [v3 count];
+  buckets = [(PLBatteryUIResponseTypeBatteryBreakdown *)self buckets];
+  v4 = [buckets count];
 
   if (v4)
   {
     [(PLBatteryUIResponseTypeBatteryBreakdown *)self getStaticData];
-    v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self buckets];
-    v6 = [v5 count];
+    buckets2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self buckets];
+    v6 = [buckets2 count];
 
     if (v6 >= 1)
     {
       v7 = 0;
       while (1)
       {
-        v8 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self buckets];
-        v9 = [v8 objectAtIndexedSubscript:v7];
+        buckets3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self buckets];
+        v9 = [buckets3 objectAtIndexedSubscript:v7];
 
         [(PLBatteryUIResponseTypeBatteryBreakdown *)self populateEnergyBucketKeysWithEntries:v9];
         [(PLBatteryUIResponseTypeBatteryBreakdown *)self populateInternalRootNodeEnergyKeys:v9];
@@ -2121,10 +2121,10 @@ LABEL_12:
         [(PLBatteryUIResponseTypeBatteryBreakdown *)self filterEnergyEntries:v9];
         [(PLBatteryUIResponseTypeBatteryBreakdown *)self filterEnergyEntriesWithRuntimes:v9];
         [(PLBatteryUIResponseTypeBatteryBreakdown *)self addTotalEnergy:v9];
-        LODWORD(v8) = [(PLBatteryUIResponseTypeBatteryBreakdown *)self percentageOption];
+        LODWORD(buckets3) = [(PLBatteryUIResponseTypeBatteryBreakdown *)self percentageOption];
         [(PLBatteryUIResponseTypeBatteryBreakdown *)self addTotals:v9];
         [(PLBatteryUIResponseTypeBatteryBreakdown *)self adjustEnergyValues:v9];
-        if (v8)
+        if (buckets3)
         {
           break;
         }
@@ -2161,25 +2161,25 @@ LABEL_8:
   }
 }
 
-- (void)normalizeForBucket:(id)a3 with:(int)a4
+- (void)normalizeForBucket:(id)bucket with:(int)with
 {
-  v11 = a3;
-  v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self uiLevelDrainEntries];
-  v7 = [v6 count];
+  bucketCopy = bucket;
+  uiLevelDrainEntries = [(PLBatteryUIResponseTypeBatteryBreakdown *)self uiLevelDrainEntries];
+  v7 = [uiLevelDrainEntries count];
 
-  if (v7 <= a4)
+  if (v7 <= with)
   {
-    v10 = 0;
+    intValue = 0;
   }
 
   else
   {
-    v8 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self uiLevelDrainEntries];
-    v9 = [v8 objectAtIndexedSubscript:a4];
-    v10 = [v9 intValue];
+    uiLevelDrainEntries2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self uiLevelDrainEntries];
+    v9 = [uiLevelDrainEntries2 objectAtIndexedSubscript:with];
+    intValue = [v9 intValue];
   }
 
-  [(PLBatteryUIResponseTypeBatteryBreakdown *)self normalizeBucket:v11 to:v10];
+  [(PLBatteryUIResponseTypeBatteryBreakdown *)self normalizeBucket:bucketCopy to:intValue];
 }
 
 - (id)result
@@ -2201,11 +2201,11 @@ LABEL_8:
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self setIsDynamicEnd:0];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self setDynamicEndOffset:0.0];
   v11[0] = @"PLBatteryUIBreakdownKey";
-  v3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self buckets];
-  v4 = [v3 reverseObjectEnumerator];
-  v5 = [v4 allObjects];
+  buckets = [(PLBatteryUIResponseTypeBatteryBreakdown *)self buckets];
+  reverseObjectEnumerator = [buckets reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
   v11[1] = @"PLBatteryUIDataDurationKey";
-  v12[0] = v5;
+  v12[0] = allObjects;
   v6 = MEMORY[0x277CCABB0];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self dataDuration];
   v7 = [v6 numberWithDouble:?];
@@ -2217,19 +2217,19 @@ LABEL_8:
   return v8;
 }
 
-- (_PLTimeIntervalRange)generateRange:(_PLTimeIntervalRange)result withDataRange:(_PLTimeIntervalRange)a4
+- (_PLTimeIntervalRange)generateRange:(_PLTimeIntervalRange)result withDataRange:(_PLTimeIntervalRange)range
 {
-  if (a4.location == 0.0 && a4.length == 0.0)
+  if (range.location == 0.0 && range.length == 0.0)
   {
     location = result.location;
     goto LABEL_21;
   }
 
   v5 = result.location + result.length;
-  if (result.location < a4.location)
+  if (result.location < range.location)
   {
-    v6 = v5 == a4.location;
-    v7 = v5 < a4.location;
+    v6 = v5 == range.location;
+    v7 = v5 < range.location;
   }
 
   else
@@ -2240,16 +2240,16 @@ LABEL_8:
 
   if (!v7 && !v6)
   {
-    v8 = a4.location + a4.length;
+    v8 = range.location + range.length;
 LABEL_14:
-    if (result.location >= a4.location)
+    if (result.location >= range.location)
     {
       location = result.location;
     }
 
     else
     {
-      location = a4.location;
+      location = range.location;
     }
 
     if (v5 >= v8)
@@ -2266,21 +2266,21 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v8 = a4.location + a4.length;
-  if (a4.location < result.location && v8 > result.location)
+  v8 = range.location + range.length;
+  if (range.location < result.location && v8 > result.location)
   {
     goto LABEL_14;
   }
 
   location = 0.0;
-  if (result.location != a4.location || result.length <= 0.0)
+  if (result.location != range.location || result.length <= 0.0)
   {
     result.length = 0.0;
     goto LABEL_21;
   }
 
   result.length = 0.0;
-  if (a4.length > 0.0)
+  if (range.length > 0.0)
   {
     goto LABEL_14;
   }
@@ -2291,15 +2291,15 @@ LABEL_21:
   return result;
 }
 
-- (void)addTotalEnergy:(id)a3
+- (void)addTotalEnergy:(id)energy
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  energyCopy = energy;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  v4 = [energyCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -2334,25 +2334,25 @@ LABEL_21:
 
   +[PLUtilities defaultBatteryEnergyCapacity];
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.00f%% of Battery", v12 / v13];
-  [v3 setObject:v14 forKeyedSubscript:@"PLBatteryUIBatteryCyclesKey"];
+  [energyCopy setObject:v14 forKeyedSubscript:@"PLBatteryUIBatteryCyclesKey"];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)filterFgBg:(id)a3 filterArray:(id)a4
+- (BOOL)filterFgBg:(id)bg filterArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-  v8 = [v5 objectForKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
+  bgCopy = bg;
+  arrayCopy = array;
+  v7 = [bgCopy objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+  v8 = [bgCopy objectForKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
   [v8 doubleValue];
   v10 = v9;
 
-  v11 = [v5 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
+  v11 = [bgCopy objectForKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
   [v11 doubleValue];
   v13 = v12;
 
-  v14 = [v5 objectForKeyedSubscript:@"PLBatteryUIAppAlwaysOnRuntimeKey"];
+  v14 = [bgCopy objectForKeyedSubscript:@"PLBatteryUIAppAlwaysOnRuntimeKey"];
   [v14 doubleValue];
   v16 = v15;
 
@@ -2362,7 +2362,7 @@ LABEL_21:
     if ([v7 isEqualToString:@"com.apple.findmy"])
     {
       v18 = [&unk_28714D628 objectAtIndexedSubscript:59];
-      v19 = [v5 objectForKeyedSubscript:v18];
+      v19 = [bgCopy objectForKeyedSubscript:v18];
       [v19 doubleValue];
       v21 = v20;
 
@@ -2374,7 +2374,7 @@ LABEL_21:
           [PLBatteryUIResponseTypeBatteryBreakdown filterFgBg:filterArray:];
         }
 
-        [v6 addObject:v5];
+        [arrayCopy addObject:bgCopy];
       }
     }
 
@@ -2384,127 +2384,127 @@ LABEL_21:
   return v17;
 }
 
-- (id)getRootNodeEntriesInRange:(_PLTimeIntervalRange)a3 withTimeInterval:(double)a4
+- (id)getRootNodeEntriesInRange:(_PLTimeIntervalRange)range withTimeInterval:(double)interval
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v8 = [MEMORY[0x277D3F128] entryKeyForType:*MEMORY[0x277D3F5B8] andName:*MEMORY[0x277D3F318]];
-  v9 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getNodeEntriesForEntryKey:v8 withRange:location andTimeInterval:length, a4];
+  interval = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getNodeEntriesForEntryKey:v8 withRange:location andTimeInterval:length, interval];
 
-  return v9;
+  return interval;
 }
 
-- (id)getQualificationNodeEntriesInRange:(_PLTimeIntervalRange)a3 withTimeInterval:(double)a4
+- (id)getQualificationNodeEntriesInRange:(_PLTimeIntervalRange)range withTimeInterval:(double)interval
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v8 = [MEMORY[0x277D3F128] entryKeyForType:*MEMORY[0x277D3F5B8] andName:*MEMORY[0x277D3F2F0]];
-  v9 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getNodeEntriesForEntryKey:v8 withRange:location andTimeInterval:length, a4];
+  interval = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getNodeEntriesForEntryKey:v8 withRange:location andTimeInterval:length, interval];
 
-  return v9;
+  return interval;
 }
 
 - (void)getStaticData
 {
-  v3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self rootNodeBundleIDs];
+  rootNodeBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self rootNodeBundleIDs];
 
-  if (!v3)
+  if (!rootNodeBundleIDs)
   {
-    v4 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getRootNodeBundleIDs];
-    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setRootNodeBundleIDs:v4];
+    getRootNodeBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getRootNodeBundleIDs];
+    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setRootNodeBundleIDs:getRootNodeBundleIDs];
   }
 
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nonAppBundleIDs];
+  nonAppBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nonAppBundleIDs];
 
-  if (!v5)
+  if (!nonAppBundleIDs)
   {
-    v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getNonAppBundleIDs];
-    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setNonAppBundleIDs:v6];
+    getNonAppBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getNonAppBundleIDs];
+    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setNonAppBundleIDs:getNonAppBundleIDs];
   }
 
-  v7 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self exchangeBundleIDs];
+  exchangeBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self exchangeBundleIDs];
 
-  if (!v7)
+  if (!exchangeBundleIDs)
   {
-    v8 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getExchangeBundleIDs];
-    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setExchangeBundleIDs:v8];
+    getExchangeBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getExchangeBundleIDs];
+    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setExchangeBundleIDs:getExchangeBundleIDs];
   }
 
-  v9 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
+  bundleIDsToReplacementBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
 
-  if (!v9)
+  if (!bundleIDsToReplacementBundleIDs)
   {
-    v10 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getBundleIDToReplacementBundleIDMap];
-    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setBundleIDsToReplacementBundleIDs:v10];
+    getBundleIDToReplacementBundleIDMap = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getBundleIDToReplacementBundleIDMap];
+    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setBundleIDsToReplacementBundleIDs:getBundleIDToReplacementBundleIDMap];
   }
 
-  v11 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToForegroundTimes];
+  bundleIDsToForegroundTimes = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToForegroundTimes];
 
-  if (!v11)
+  if (!bundleIDsToForegroundTimes)
   {
-    v12 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getBundleIDToForegroundTimeMap];
-    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setBundleIDsToForegroundTimes:v12];
+    getBundleIDToForegroundTimeMap = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getBundleIDToForegroundTimeMap];
+    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setBundleIDsToForegroundTimes:getBundleIDToForegroundTimeMap];
   }
 
-  v13 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToBackgroundTimes];
+  bundleIDsToBackgroundTimes = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToBackgroundTimes];
 
-  if (!v13)
+  if (!bundleIDsToBackgroundTimes)
   {
-    v14 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getBundleIDToBackgroundTimeMap];
-    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setBundleIDsToBackgroundTimes:v14];
+    getBundleIDToBackgroundTimeMap = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getBundleIDToBackgroundTimeMap];
+    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setBundleIDsToBackgroundTimes:getBundleIDToBackgroundTimeMap];
   }
 
-  v15 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToEnergyKeyForSlopAdjustment];
+  bundleIDsToEnergyKeyForSlopAdjustment = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToEnergyKeyForSlopAdjustment];
 
-  if (!v15)
+  if (!bundleIDsToEnergyKeyForSlopAdjustment)
   {
-    v16 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getBundleIDsToEnergyKeyForSlopAdjustmentMap];
-    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setBundleIDsToEnergyKeyForSlopAdjustment:v16];
+    getBundleIDsToEnergyKeyForSlopAdjustmentMap = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getBundleIDsToEnergyKeyForSlopAdjustmentMap];
+    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setBundleIDsToEnergyKeyForSlopAdjustment:getBundleIDsToEnergyKeyForSlopAdjustmentMap];
   }
 
-  v17 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self rootNodeIDToRootNodeEnergyKeys];
+  rootNodeIDToRootNodeEnergyKeys = [(PLBatteryUIResponseTypeBatteryBreakdown *)self rootNodeIDToRootNodeEnergyKeys];
 
-  if (!v17)
+  if (!rootNodeIDToRootNodeEnergyKeys)
   {
-    v18 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getRootNodeIDToRootNodeEnergyKeys];
-    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setRootNodeIDToRootNodeEnergyKeys:v18];
+    getRootNodeIDToRootNodeEnergyKeys = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getRootNodeIDToRootNodeEnergyKeys];
+    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setRootNodeIDToRootNodeEnergyKeys:getRootNodeIDToRootNodeEnergyKeys];
   }
 
-  v19 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self intermediateRootNodes];
+  intermediateRootNodes = [(PLBatteryUIResponseTypeBatteryBreakdown *)self intermediateRootNodes];
 
-  if (!v19)
+  if (!intermediateRootNodes)
   {
-    v20 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getIntermediateRootNodes];
-    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setIntermediateRootNodes:v20];
+    getIntermediateRootNodes = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getIntermediateRootNodes];
+    [(PLBatteryUIResponseTypeBatteryBreakdown *)self setIntermediateRootNodes:getIntermediateRootNodes];
   }
 }
 
-- (void)addEntryTypes:(id)a3
+- (void)addEntryTypes:(id)types
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self rootNodeBundleIDs];
+  typesCopy = types;
+  rootNodeBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self rootNodeBundleIDs];
 
-  if (v5)
+  if (rootNodeBundleIDs)
   {
-    v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nonAppBundleIDs];
+    nonAppBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nonAppBundleIDs];
 
-    if (v6)
+    if (nonAppBundleIDs)
     {
-      v7 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self webAppBundleIDs];
+      webAppBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self webAppBundleIDs];
 
-      if (v7)
+      if (webAppBundleIDs)
       {
-        v8 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
+        bundleIDsToDisplayNames = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
 
-        if (v8)
+        if (bundleIDsToDisplayNames)
         {
-          [v4 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUITotalAccountedEnergyKey"];
+          [typesCopy setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUITotalAccountedEnergyKey"];
           v37 = 0u;
           v38 = 0u;
           v35 = 0u;
           v36 = 0u;
-          obj = [v4 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+          obj = [typesCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
           v9 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
           if (v9)
           {
@@ -2521,38 +2521,38 @@ LABEL_21:
 
                 v12 = *(*(&v35 + 1) + 8 * i);
                 v13 = MEMORY[0x277CCABB0];
-                v14 = [v4 objectForKeyedSubscript:@"PLBatteryUITotalAccountedEnergyKey"];
+                v14 = [typesCopy objectForKeyedSubscript:@"PLBatteryUITotalAccountedEnergyKey"];
                 [v14 doubleValue];
                 v16 = v15;
                 v17 = [v12 objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
                 [v17 doubleValue];
                 v19 = [v13 numberWithDouble:v16 + v18];
-                [v4 setObject:v19 forKeyedSubscript:@"PLBatteryUITotalAccountedEnergyKey"];
+                [typesCopy setObject:v19 forKeyedSubscript:@"PLBatteryUITotalAccountedEnergyKey"];
 
-                v20 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self rootNodeBundleIDs];
+                rootNodeBundleIDs2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self rootNodeBundleIDs];
                 v21 = [v12 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-                LOBYTE(v17) = [v20 containsObject:v21];
+                LOBYTE(v17) = [rootNodeBundleIDs2 containsObject:v21];
 
                 v22 = &unk_287146A38;
                 if ((v17 & 1) == 0)
                 {
-                  v23 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nonAppBundleIDs];
+                  nonAppBundleIDs2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nonAppBundleIDs];
                   v24 = [v12 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-                  v25 = [v23 containsObject:v24];
+                  v25 = [nonAppBundleIDs2 containsObject:v24];
 
                   v22 = &unk_287146A50;
                   if ((v25 & 1) == 0)
                   {
-                    v26 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self webAppBundleIDs];
+                    webAppBundleIDs2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self webAppBundleIDs];
                     v27 = [v12 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-                    v28 = [v26 containsObject:v27];
+                    v28 = [webAppBundleIDs2 containsObject:v27];
 
                     v22 = &unk_287146A68;
                     if ((v28 & 1) == 0)
                     {
-                      v29 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
+                      bundleIDsToDisplayNames2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
                       v30 = [v12 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-                      v31 = [v29 objectForKeyedSubscript:v30];
+                      v31 = [bundleIDsToDisplayNames2 objectForKeyedSubscript:v30];
 
                       if (v31)
                       {
@@ -2619,15 +2619,15 @@ LABEL_21:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addQualifiers:(id)a3
+- (void)addQualifiers:(id)qualifiers
 {
   v235 = *MEMORY[0x277D85DE8];
   v222 = 0u;
   v223 = 0u;
   v224 = 0u;
   v225 = 0u;
-  v207 = a3;
-  obj = [v207 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  qualifiersCopy = qualifiers;
+  obj = [qualifiersCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v4 = [obj countByEnumeratingWithState:&v222 objects:v234 count:16];
   if (v4)
   {
@@ -2635,7 +2635,7 @@ LABEL_21:
     v6 = *v223;
     v7 = 0x277CBE000uLL;
     v8 = 0.33;
-    v208 = self;
+    selfCopy = self;
     v209 = *v223;
     do
     {
@@ -2649,7 +2649,7 @@ LABEL_21:
         }
 
         v10 = *(*(&v222 + 1) + 8 * v9);
-        v219 = [*(v7 + 2840) array];
+        array = [*(v7 + 2840) array];
         v11 = [v10 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
         v12 = [v10 objectForKeyedSubscript:@"PLBatteryUIAppEnergyUsedKey"];
         [v12 doubleValue];
@@ -2726,14 +2726,14 @@ LABEL_21:
                 _os_log_debug_impl(&dword_25EE51000, v42, OS_LOG_TYPE_DEBUG, "adding AppQualifierPluggedIn pluggedInSecs=%f, totalRuntime=%f", buf, 0x16u);
               }
 
-              [v219 addObject:&unk_287146A98];
+              [array addObject:&unk_287146A98];
             }
           }
 
           if (v14 == 0.0)
           {
             [v10 setObject:&unk_287146A20 forKeyedSubscript:{@"PLBatteryUIAppAlwaysOnRuntimeKey", v38}];
-            [v10 setObject:v219 forKeyedSubscript:@"PLBatteryUIAppQualifiersKey"];
+            [v10 setObject:array forKeyedSubscript:@"PLBatteryUIAppQualifiersKey"];
             v8 = v18;
           }
 
@@ -2748,7 +2748,7 @@ LABEL_21:
             v8 = v18;
             if (v46 / v14 > v18 && [(PLBatteryUIResponseTypeBatteryBreakdown *)self canSetQualifier:1 forBundleID:v11, v47])
             {
-              [v219 addObject:&unk_287146AB0];
+              [array addObject:&unk_287146AB0];
             }
 
             v48 = [&unk_28714D658 objectAtIndexedSubscript:{2, v47}];
@@ -2760,10 +2760,10 @@ LABEL_21:
             v53 = v52 / v14;
             if (v52 / v14 > 0.5 && [(PLBatteryUIResponseTypeBatteryBreakdown *)self canSetQualifier:2 forBundleID:v11])
             {
-              v54 = [MEMORY[0x277D3F180] debugEnabled];
+              debugEnabled = [MEMORY[0x277D3F180] debugEnabled];
               if (v21 < 300.0 || (v55 = v21 / v217, v21 / v217 < v18))
               {
-                if (v54)
+                if (debugEnabled)
                 {
                   v67 = objc_opt_class();
                   v220[0] = MEMORY[0x277D85DD0];
@@ -2786,9 +2786,9 @@ LABEL_21:
 
                     v73 = MEMORY[0x277D3F178];
                     v74 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown.m"];
-                    v75 = [v74 lastPathComponent];
+                    lastPathComponent = [v74 lastPathComponent];
                     v76 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown addQualifiers:]"];
-                    [v73 logMessage:v72 fromFile:v75 fromFunction:v76 fromLineNumber:563];
+                    [v73 logMessage:v72 fromFile:lastPathComponent fromFunction:v76 fromLineNumber:563];
 
                     v77 = PLLogCommon();
                     if (os_log_type_enabled(v77, OS_LOG_TYPE_DEBUG))
@@ -2803,7 +2803,7 @@ LABEL_21:
 
               else
               {
-                if (v54)
+                if (debugEnabled)
                 {
                   v56 = objc_opt_class();
                   v221[0] = MEMORY[0x277D85DD0];
@@ -2826,9 +2826,9 @@ LABEL_21:
 
                     v62 = MEMORY[0x277D3F178];
                     v63 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown.m"];
-                    v64 = [v63 lastPathComponent];
+                    lastPathComponent2 = [v63 lastPathComponent];
                     v65 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown addQualifiers:]"];
-                    [v62 logMessage:v61 fromFile:v64 fromFunction:v65 fromLineNumber:560];
+                    [v62 logMessage:v61 fromFile:lastPathComponent2 fromFunction:v65 fromLineNumber:560];
 
                     v66 = PLLogCommon();
                     if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
@@ -2840,7 +2840,7 @@ LABEL_21:
                   }
                 }
 
-                [v219 addObject:{&unk_287146AC8, v55}];
+                [array addObject:{&unk_287146AC8, v55}];
               }
             }
 
@@ -2851,16 +2851,16 @@ LABEL_21:
               [v79 doubleValue];
               v81 = v80;
 
-              if (v81 / v14 > v18 && ([v219 containsObject:{&unk_287146AC8, v81 / v14}] & 1) == 0)
+              if (v81 / v14 > v18 && ([array containsObject:{&unk_287146AC8, v81 / v14}] & 1) == 0)
               {
-                [v219 addObject:&unk_287146AC8];
+                [array addObject:&unk_287146AC8];
               }
 
               v82 = PLLogCommon();
               if (os_log_type_enabled(v82, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
-                v227 = *&v219;
+                v227 = *&array;
                 _os_log_debug_impl(&dword_25EE51000, v82, OS_LOG_TYPE_DEBUG, "IT Qualifier: %@", buf, 0xCu);
               }
             }
@@ -2890,22 +2890,22 @@ LABEL_21:
             v99 = MEMORY[0x277CCACA8];
             v100 = [&unk_28714D700 objectAtIndexedSubscript:15];
             v101 = [&unk_28714D718 objectAtIndexedSubscript:7];
-            v102 = [v99 stringWithFormat:@"%@-%@", v100, v101];
+            v101 = [v99 stringWithFormat:@"%@-%@", v100, v101];
 
             v103 = MEMORY[0x277CCACA8];
             v104 = [&unk_28714D730 objectAtIndexedSubscript:15];
             v105 = [&unk_28714D748 objectAtIndexedSubscript:9];
-            v106 = [v103 stringWithFormat:@"%@-%@", v104, v105];
+            v105 = [v103 stringWithFormat:@"%@-%@", v104, v105];
 
             v107 = MEMORY[0x277CCACA8];
             v108 = [&unk_28714D760 objectAtIndexedSubscript:15];
             v109 = [&unk_28714D778 objectAtIndexedSubscript:52];
-            v110 = [v107 stringWithFormat:@"%@-%@", v108, v109];
+            v109 = [v107 stringWithFormat:@"%@-%@", v108, v109];
 
             v111 = MEMORY[0x277CCACA8];
             v112 = [&unk_28714D790 objectAtIndexedSubscript:15];
             v113 = [&unk_28714D7A8 objectAtIndexedSubscript:54];
-            v114 = [v111 stringWithFormat:@"%@-%@", v112, v113];
+            v113 = [v111 stringWithFormat:@"%@-%@", v112, v113];
 
             v218 = v98;
             v115 = v98;
@@ -2914,22 +2914,22 @@ LABEL_21:
             [v116 doubleValue];
             v118 = v94 + v117;
 
-            v215 = v102;
-            v119 = [v10 objectForKeyedSubscript:v102];
+            v215 = v101;
+            v119 = [v10 objectForKeyedSubscript:v101];
             [v119 doubleValue];
             v121 = v118 + v120;
 
-            v213 = v106;
-            v122 = [v10 objectForKeyedSubscript:v106];
+            v213 = v105;
+            v122 = [v10 objectForKeyedSubscript:v105];
             [v122 doubleValue];
             v124 = v121 + v123;
 
-            v212 = v110;
-            v125 = [v10 objectForKeyedSubscript:v110];
+            v212 = v109;
+            v125 = [v10 objectForKeyedSubscript:v109];
             [v125 doubleValue];
             v127 = v124 + v126;
 
-            v128 = [v10 objectForKeyedSubscript:v114];
+            v128 = [v10 objectForKeyedSubscript:v113];
             [v128 doubleValue];
             v130 = v127 + v129;
 
@@ -2945,7 +2945,7 @@ LABEL_21:
 
             v132 = v130 / v14;
             v9 = v214;
-            if (v130 / v14 > v18 && [(PLBatteryUIResponseTypeBatteryBreakdown *)v208 canSetQualifier:3 forBundleID:v216, v132])
+            if (v130 / v14 > v18 && [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy canSetQualifier:3 forBundleID:v216, v132])
             {
               v133 = [&unk_28714D7C0 objectAtIndexedSubscript:15];
               v134 = [v10 objectForKeyedSubscript:v133];
@@ -2962,9 +2962,9 @@ LABEL_21:
                 _os_log_debug_impl(&dword_25EE51000, v137, OS_LOG_TYPE_DEBUG, "%@ bgLocEnergy: %.3f", buf, 0x16u);
               }
 
-              if (v136 / v52 > v18 && [v219 containsObject:{&unk_287146AC8, v136 / v52}])
+              if (v136 / v52 > v18 && [array containsObject:{&unk_287146AC8, v136 / v52}])
               {
-                [v219 removeObject:&unk_287146AC8];
+                [array removeObject:&unk_287146AC8];
                 v138 = &unk_287146AE0;
               }
 
@@ -2973,7 +2973,7 @@ LABEL_21:
                 v138 = &unk_287146AF8;
               }
 
-              [v219 addObject:v138];
+              [array addObject:v138];
             }
 
             v139 = [&unk_28714D7D8 objectAtIndexedSubscript:{17, v132}];
@@ -2999,7 +2999,7 @@ LABEL_21:
               _os_log_debug_impl(&dword_25EE51000, v147, OS_LOG_TYPE_DEBUG, "Notification energy: %.3f", buf, 0xCu);
             }
 
-            if (v143 > 0.0 && [(PLBatteryUIResponseTypeBatteryBreakdown *)v208 canSetQualifier:9 forBundleID:v216])
+            if (v143 > 0.0 && [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy canSetQualifier:9 forBundleID:v216])
             {
               +[PLUtilities defaultBatteryEnergyCapacity];
               v149 = v143 * 100.0 / v148;
@@ -3018,7 +3018,7 @@ LABEL_21:
               v151 = v143 / v14;
               if (v143 / v14 > v8 || (v151 = 1.0, v149 > 1.0))
               {
-                [v219 addObject:{&unk_287146B10, v151}];
+                [array addObject:{&unk_287146B10, v151}];
               }
             }
 
@@ -3028,9 +3028,9 @@ LABEL_21:
             v155 = v154;
 
             v156 = v155 / v14;
-            if (v155 / v14 > v8 && [(PLBatteryUIResponseTypeBatteryBreakdown *)v208 canSetQualifier:4 forBundleID:v216, v156])
+            if (v155 / v14 > v8 && [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy canSetQualifier:4 forBundleID:v216, v156])
             {
-              [v219 addObject:&unk_287146B28];
+              [array addObject:&unk_287146B28];
             }
 
             v157 = [&unk_28714D808 objectAtIndexedSubscript:{4, v156}];
@@ -3039,9 +3039,9 @@ LABEL_21:
             v160 = v159;
 
             v161 = v160 / v14;
-            if (v160 / v14 > v8 && [(PLBatteryUIResponseTypeBatteryBreakdown *)v208 canSetQualifier:5 forBundleID:v216, v161])
+            if (v160 / v14 > v8 && [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy canSetQualifier:5 forBundleID:v216, v161])
             {
-              [v219 addObject:&unk_287146B40];
+              [array addObject:&unk_287146B40];
             }
 
             v162 = [&unk_28714D820 objectAtIndexedSubscript:{14, v161}];
@@ -3059,23 +3059,23 @@ LABEL_21:
             [v171 doubleValue];
             v173 = v172;
 
-            if ((v165 + v169 + v173) / v14 > v8 && [(PLBatteryUIResponseTypeBatteryBreakdown *)v208 canSetQualifier:7 forBundleID:v216])
+            if ((v165 + v169 + v173) / v14 > v8 && [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy canSetQualifier:7 forBundleID:v216])
             {
-              [v219 addObject:&unk_287146B58];
+              [array addObject:&unk_287146B58];
             }
 
             v174 = [v10 objectForKeyedSubscript:@"WatchEnergy"];
             [v174 doubleValue];
             v176 = v175;
 
-            if ([(PLBatteryUIResponseTypeBatteryBreakdown *)v208 gizmoConnected])
+            if ([(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy gizmoConnected])
             {
               v177 = v176 / v14;
               if (v176 / v14 > v8)
               {
-                if ([(PLBatteryUIResponseTypeBatteryBreakdown *)v208 canSetQualifier:10 forBundleID:v216, v177])
+                if ([(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy canSetQualifier:10 forBundleID:v216, v177])
                 {
-                  [v219 addObject:&unk_287146B70];
+                  [array addObject:&unk_287146B70];
                 }
               }
             }
@@ -3085,7 +3085,7 @@ LABEL_21:
             v180 = v179;
 
             v181 = v180 / v14;
-            if (v180 / v14 > v8 && -[PLBatteryUIResponseTypeBatteryBreakdown canSetQualifier:forBundleID:](v208, "canSetQualifier:forBundleID:", 14, v216, v181) || [v216 isEqualToString:{@"com.apple.NanoUniverse.AegirProxyApp", v181}])
+            if (v180 / v14 > v8 && -[PLBatteryUIResponseTypeBatteryBreakdown canSetQualifier:forBundleID:](selfCopy, "canSetQualifier:forBundleID:", 14, v216, v181) || [v216 isEqualToString:{@"com.apple.NanoUniverse.AegirProxyApp", v181}])
             {
               v182 = PLLogCommon();
               if (os_log_type_enabled(v182, OS_LOG_TYPE_DEBUG))
@@ -3101,7 +3101,7 @@ LABEL_21:
                 _os_log_debug_impl(&dword_25EE51000, v182, OS_LOG_TYPE_DEBUG, "Adding Poster Qualifer: energyEntry=%@, posterEnergy=%f, energy=%f, bundleID=%@", buf, 0x2Au);
               }
 
-              [v219 addObject:&unk_287146B88];
+              [array addObject:&unk_287146B88];
             }
 
             v183 = [v10 objectForKeyedSubscript:@"ChronoWidgetEnergy"];
@@ -3111,15 +3111,15 @@ LABEL_21:
             v186 = v185 / v14;
             if (v185 / v14 > v8)
             {
-              if ([(PLBatteryUIResponseTypeBatteryBreakdown *)v208 canSetQualifier:12 forBundleID:v216, v186])
+              if ([(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy canSetQualifier:12 forBundleID:v216, v186])
               {
-                [v219 addObject:&unk_287146BA0];
-                if ([(PLBatteryUIResponseTypeBatteryBreakdown *)v208 getWidgetTypeForEnergyEntry:v10]== 2)
+                [array addObject:&unk_287146BA0];
+                if ([(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy getWidgetTypeForEnergyEntry:v10]== 2)
                 {
-                  if ([(PLBatteryUIResponseTypeBatteryBreakdown *)v208 canSetQualifier:16 forBundleID:v216])
+                  if ([(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy canSetQualifier:16 forBundleID:v216])
                   {
-                    [v219 removeObject:&unk_287146BA0];
-                    [v219 addObject:&unk_287146BB8];
+                    [array removeObject:&unk_287146BA0];
+                    [array addObject:&unk_287146BB8];
                   }
                 }
               }
@@ -3131,9 +3131,9 @@ LABEL_21:
             v190 = v189;
 
             v191 = v190 / v14;
-            if (v190 / v14 > v8 && [(PLBatteryUIResponseTypeBatteryBreakdown *)v208 canSetQualifier:9 forBundleID:v216, v191])
+            if (v190 / v14 > v8 && [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy canSetQualifier:9 forBundleID:v216, v191])
             {
-              [v219 addObject:&unk_287146B10];
+              [array addObject:&unk_287146B10];
             }
 
             v192 = [v10 objectForKeyedSubscript:{@"PLBatteryUIAppBundleIDKey", v191}];
@@ -3148,46 +3148,46 @@ LABEL_21:
               v194 = v197 / v14;
               if (v197 / v14 > v8)
               {
-                if ([(PLBatteryUIResponseTypeBatteryBreakdown *)v208 canSetQualifier:13 forBundleID:v216, v194])
+                if ([(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy canSetQualifier:13 forBundleID:v216, v194])
                 {
-                  [v219 addObject:&unk_287146BD0];
+                  [array addObject:&unk_287146BD0];
                 }
               }
             }
 
-            v198 = [(PLBatteryUIResponseTypeBatteryBreakdown *)v208 combineQualifiers:v219, v194];
-            if ([v219 containsObject:&unk_287146B58])
+            v194 = [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy combineQualifiers:array, v194];
+            if ([array containsObject:&unk_287146B58])
             {
-              v199 = [v219 containsObject:&unk_287146AC8];
-              if (v53 > 0.5 && v199 && ([v198 containsObject:&unk_287146A98] & 1) == 0)
+              v199 = [array containsObject:&unk_287146AC8];
+              if (v53 > 0.5 && v199 && ([v194 containsObject:&unk_287146A98] & 1) == 0)
               {
-                v200 = [v198 arrayByAddingObject:&unk_287146AC8];
+                v200 = [v194 arrayByAddingObject:&unk_287146AC8];
 
-                v198 = v200;
+                v194 = v200;
               }
             }
 
-            v201 = [MEMORY[0x277CBEB18] array];
-            if ([v198 containsObject:&unk_287146A98])
+            array2 = [MEMORY[0x277CBEB18] array];
+            if ([v194 containsObject:&unk_287146A98])
             {
-              [v201 addObject:&unk_287146A98];
+              [array2 addObject:&unk_287146A98];
             }
 
-            if ([v198 count])
+            if ([v194 count])
             {
               v202 = 0;
               do
               {
-                v203 = [v198 objectAtIndexedSubscript:v202];
-                v204 = [v203 intValue];
+                v203 = [v194 objectAtIndexedSubscript:v202];
+                intValue = [v203 intValue];
 
-                if (v204 != 11)
+                if (intValue != 11)
                 {
-                  v205 = [v198 objectAtIndexedSubscript:v202];
-                  [v201 addObject:v205];
+                  v205 = [v194 objectAtIndexedSubscript:v202];
+                  [array2 addObject:v205];
                 }
 
-                if ([v201 count] == 2)
+                if ([array2 count] == 2)
                 {
                   break;
                 }
@@ -3195,12 +3195,12 @@ LABEL_21:
                 ++v202;
               }
 
-              while ([v198 count] > v202);
+              while ([v194 count] > v202);
             }
 
-            [v10 setObject:v201 forKeyedSubscript:@"PLBatteryUIAppQualifiersKey"];
+            [v10 setObject:array2 forKeyedSubscript:@"PLBatteryUIAppQualifiersKey"];
 
-            self = v208;
+            self = selfCopy;
             v6 = v209;
             v5 = v210;
             v7 = 0x277CBE000;
@@ -3234,13 +3234,13 @@ uint64_t __57__PLBatteryUIResponseTypeBatteryBreakdown_addQualifiers___block_inv
   return result;
 }
 
-- (void)applyStaticNameTransformation:(id)a3
+- (void)applyStaticNameTransformation:(id)transformation
 {
   v81 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
+  transformationCopy = transformation;
+  bundleIDsToReplacementBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
 
-  if (!v5)
+  if (!bundleIDsToReplacementBundleIDs)
   {
     v63 = PLLogCommon();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
@@ -3251,9 +3251,9 @@ uint64_t __57__PLBatteryUIResponseTypeBatteryBreakdown_addQualifiers___block_inv
     goto LABEL_50;
   }
 
-  v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
+  bundleIDsToDisplayNames = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
 
-  if (!v6)
+  if (!bundleIDsToDisplayNames)
   {
     v63 = PLLogCommon();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
@@ -3270,8 +3270,8 @@ LABEL_50:
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v65 = v4;
-  obj = [v4 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  v65 = transformationCopy;
+  obj = [transformationCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v7 = [obj countByEnumeratingWithState:&v70 objects:v80 count:16];
   if (!v7)
   {
@@ -3442,8 +3442,8 @@ LABEL_10:
       }
 
 LABEL_34:
-      v50 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
-      v51 = [v50 objectForKeyedSubscript:v13];
+      bundleIDsToReplacementBundleIDs2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
+      v51 = [bundleIDsToReplacementBundleIDs2 objectForKeyedSubscript:v13];
 
       if (v51)
       {
@@ -3468,8 +3468,8 @@ LABEL_34:
 
         if (v54)
         {
-          v55 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
-          v56 = [v55 objectForKeyedSubscript:@"com.apple.Home"];
+          bundleIDsToDisplayNames2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
+          v56 = [bundleIDsToDisplayNames2 objectForKeyedSubscript:@"com.apple.Home"];
 
           if (v56)
           {
@@ -3490,55 +3490,55 @@ LABEL_34:
   while (v8);
 LABEL_45:
 
-  v4 = v65;
+  transformationCopy = v65;
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self collapseEnergyEntries:v65];
 LABEL_51:
 
   v64 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyDynamicNameTransformation:(id)a3
+- (void)applyDynamicNameTransformation:(id)transformation
 {
-  v10 = a3;
-  v4 = [v10 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  transformationCopy = transformation;
+  v4 = [transformationCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self transformDeletedApps:v4];
 
-  v5 = [v10 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
-  [(PLBatteryUIResponseTypeBatteryBreakdown *)self transformPlugins:v5 withBucket:v10];
+  v5 = [transformationCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  [(PLBatteryUIResponseTypeBatteryBreakdown *)self transformPlugins:v5 withBucket:transformationCopy];
 
-  v6 = [v10 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  v6 = [transformationCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self transformGizmoDaemons:v6];
 
-  v7 = [v10 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  v7 = [transformationCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self reaccountExchangeEntries:v7];
 
-  v8 = [v10 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  v8 = [transformationCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self reaccountBackupRestore:v8];
 
-  v9 = [v10 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  v9 = [transformationCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self ongoingUpdateRestoreTransformations:v9];
 
-  [(PLBatteryUIResponseTypeBatteryBreakdown *)self collapseEnergyEntries:v10];
+  [(PLBatteryUIResponseTypeBatteryBreakdown *)self collapseEnergyEntries:transformationCopy];
 }
 
-- (void)applyDisplayNameTransformation:(id)a3
+- (void)applyDisplayNameTransformation:(id)transformation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
+  transformationCopy = transformation;
+  bundleIDsToDisplayNames = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
 
-  if (v5)
+  if (bundleIDsToDisplayNames)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    obj = [v4 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+    obj = [transformationCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
     v6 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
       v7 = v6;
-      v17 = v4;
+      v17 = transformationCopy;
       v8 = *v20;
       do
       {
@@ -3551,12 +3551,12 @@ LABEL_51:
 
           v10 = *(*(&v19 + 1) + 8 * i);
           v11 = [v10 objectForKeyedSubscript:{@"PLBatteryUIAppBundleIDKey", v17}];
-          v12 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
-          v13 = [v12 objectForKeyedSubscript:v11];
+          bundleIDsToDisplayNames2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
+          v13 = [bundleIDsToDisplayNames2 objectForKeyedSubscript:v11];
           if (v13)
           {
-            v14 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
-            v15 = [v14 objectForKeyedSubscript:v11];
+            bundleIDsToDisplayNames3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToDisplayNames];
+            v15 = [bundleIDsToDisplayNames3 objectForKeyedSubscript:v11];
             [v10 setObject:v15 forKeyedSubscript:@"PLBatteryUIAppNameKey"];
           }
 
@@ -3570,7 +3570,7 @@ LABEL_51:
       }
 
       while (v7);
-      v4 = v17;
+      transformationCopy = v17;
     }
   }
 
@@ -3586,16 +3586,16 @@ LABEL_51:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)filterEnergyEntries:(id)a3
+- (void)filterEnergyEntries:(id)entries
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  entriesCopy = entries;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v3 objectForKeyedSubscript:{@"PLBatteryUIAppArrayKey", 0}];
+  v5 = [entriesCopy objectForKeyedSubscript:{@"PLBatteryUIAppArrayKey", 0}];
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -3612,11 +3612,11 @@ LABEL_51:
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"PLBatteryUIAppTypeKey"];
-        v12 = [v11 intValue];
+        intValue = [v11 intValue];
 
-        if (v12 != 2 && v12 != 5)
+        if (intValue != 2 && intValue != 5)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -3626,21 +3626,21 @@ LABEL_51:
     while (v7);
   }
 
-  [v3 setObject:v4 forKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  [entriesCopy setObject:array forKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)filterEnergyEntriesWithRuntimes:(id)a3
+- (void)filterEnergyEntriesWithRuntimes:(id)runtimes
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  runtimesCopy = runtimes;
+  array = [MEMORY[0x277CBEB18] array];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v40 = v3;
-  obj = [v3 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  v40 = runtimesCopy;
+  obj = [runtimesCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v5 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v5)
   {
@@ -3721,7 +3721,7 @@ LABEL_9:
         [v17 doubleValue];
         v19 = v18;
 
-        if (![(PLBatteryUIResponseTypeBatteryBreakdown *)self filterFgBg:v9 filterArray:v4])
+        if (![(PLBatteryUIResponseTypeBatteryBreakdown *)self filterFgBg:v9 filterArray:array])
         {
           if (v19 > 0.0 && v19 < 60.0)
           {
@@ -3749,7 +3749,7 @@ LABEL_9:
 LABEL_16:
           [v9 setObject:&unk_287146BE8 forKeyedSubscript:?];
 LABEL_17:
-          [v4 addObject:{v9, v16}];
+          [array addObject:{v9, v16}];
         }
 
         ++v8;
@@ -3763,17 +3763,17 @@ LABEL_17:
     while (v38);
   }
 
-  [v40 setObject:v4 forKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  [v40 setObject:array forKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)adjustEnergyValues:(id)a3
+- (void)adjustEnergyValues:(id)values
 {
   v68 = *MEMORY[0x277D85DE8];
-  v56 = a3;
+  valuesCopy = values;
   if ([(PLBatteryUIResponseTypeBatteryBreakdown *)self isSlopAdjustmentEnabled])
   {
-    [(PLBatteryUIResponseTypeBatteryBreakdown *)self applySlopAdjustment:v56];
+    [(PLBatteryUIResponseTypeBatteryBreakdown *)self applySlopAdjustment:valuesCopy];
   }
 
   if ([(PLBatteryUIResponseTypeBatteryBreakdown *)self percentageOption]== 1)
@@ -3796,7 +3796,7 @@ LABEL_17:
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v8 = [v56 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+    v8 = [valuesCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
     v9 = [v8 countByEnumeratingWithState:&v61 objects:v67 count:16];
     if (v9)
     {
@@ -3847,7 +3847,7 @@ LABEL_17:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = [v56 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  obj = [valuesCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v20 = [obj countByEnumeratingWithState:&v57 objects:v66 count:16];
   if (!v20)
   {
@@ -3885,10 +3885,10 @@ LABEL_44:
         v31 = 0.0;
       }
 
-      v32 = [v56 objectForKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
+      v32 = [valuesCopy objectForKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
       [v32 doubleValue];
       v34 = v33;
-      v35 = [v56 objectForKeyedSubscript:@"PLBatteryUITotalEnergyToRemoveForPercentageAdjustmentKey"];
+      v35 = [valuesCopy objectForKeyedSubscript:@"PLBatteryUITotalEnergyToRemoveForPercentageAdjustmentKey"];
       [v35 doubleValue];
       v37 = v36;
 
@@ -3973,16 +3973,16 @@ LABEL_45:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applySlopAdjustment:(id)a3
+- (void)applySlopAdjustment:(id)adjustment
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
+  adjustmentCopy = adjustment;
+  v5 = [adjustmentCopy objectForKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
   [v5 doubleValue];
   v7 = v6;
 
-  v34 = v4;
-  v8 = [v4 objectForKeyedSubscript:@"PLBatteryUITotalAccountedEnergyKey"];
+  v34 = adjustmentCopy;
+  v8 = [adjustmentCopy objectForKeyedSubscript:@"PLBatteryUITotalAccountedEnergyKey"];
   [v8 doubleValue];
   v10 = v9;
 
@@ -3995,13 +3995,13 @@ LABEL_45:
   if (v10 > 0.0 && v7 <= v10)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithDouble:v7 / v10];
-    [v4 setObject:v14 forKeyedSubscript:@"PLBatteryUIExternalDrainRatio"];
+    [adjustmentCopy setObject:v14 forKeyedSubscript:@"PLBatteryUIExternalDrainRatio"];
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = [v4 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+    obj = [adjustmentCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
     v15 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
     if (v15)
     {
@@ -4021,14 +4021,14 @@ LABEL_45:
 
           v21 = *(*(&v35 + 1) + 8 * i);
           v22 = [v21 objectForKeyedSubscript:{@"PLBatteryUIAppBundleIDKey", v32}];
-          v23 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToEnergyKeyForSlopAdjustment];
+          bundleIDsToEnergyKeyForSlopAdjustment = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToEnergyKeyForSlopAdjustment];
           v24 = [v21 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-          v25 = [v23 objectForKey:v24];
+          v25 = [bundleIDsToEnergyKeyForSlopAdjustment objectForKey:v24];
 
           if (v25)
           {
-            v26 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToEnergyKeyForSlopAdjustment];
-            v27 = [v26 objectForKeyedSubscript:v22];
+            bundleIDsToEnergyKeyForSlopAdjustment2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToEnergyKeyForSlopAdjustment];
+            v27 = [bundleIDsToEnergyKeyForSlopAdjustment2 objectForKeyedSubscript:v22];
 
             [(PLBatteryUIResponseTypeBatteryBreakdown *)self getEnergyToRemoveForSlopAdjustment:v21 withEnergyKey:v27 forBucket:v34];
             v29 = v28;
@@ -4073,29 +4073,29 @@ LABEL_45:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (double)getEnergyToRemoveForSlopAdjustment:(id)a3 withEnergyKey:(id)a4 forBucket:(id)a5
+- (double)getEnergyToRemoveForSlopAdjustment:(id)adjustment withEnergyKey:(id)key forBucket:(id)bucket
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToEnergyKeyForSlopAdjustment];
-  v12 = [v8 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-  v13 = [v11 objectForKey:v12];
+  adjustmentCopy = adjustment;
+  keyCopy = key;
+  bucketCopy = bucket;
+  bundleIDsToEnergyKeyForSlopAdjustment = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToEnergyKeyForSlopAdjustment];
+  v12 = [adjustmentCopy objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+  v13 = [bundleIDsToEnergyKeyForSlopAdjustment objectForKey:v12];
   if (v13)
   {
     v14 = v13;
-    v15 = [v8 objectForKeyedSubscript:v9];
+    v15 = [adjustmentCopy objectForKeyedSubscript:keyCopy];
     [v15 doubleValue];
     v17 = v16;
 
     if (v17 > 0.0)
     {
-      v18 = [v8 objectForKeyedSubscript:v9];
+      v18 = [adjustmentCopy objectForKeyedSubscript:keyCopy];
       [v18 doubleValue];
       v20 = v19;
 
-      v21 = [v10 objectForKeyedSubscript:@"PLBatteryUIExternalDrainRatio"];
+      v21 = [bucketCopy objectForKeyedSubscript:@"PLBatteryUIExternalDrainRatio"];
       [v21 doubleValue];
       v23 = v22;
 
@@ -4124,13 +4124,13 @@ LABEL_45:
       }
 
       v26 = [MEMORY[0x277CCABB0] numberWithDouble:v24];
-      [v8 setObject:v26 forKeyedSubscript:@"PLBatteryUIAppEnergyToRemoveForPercentageAdjustmentKey"];
+      [adjustmentCopy setObject:v26 forKeyedSubscript:@"PLBatteryUIAppEnergyToRemoveForPercentageAdjustmentKey"];
 
       v27 = MEMORY[0x277CCABB0];
-      v28 = [v10 objectForKeyedSubscript:@"PLBatteryUITotalEnergyToRemoveForPercentageAdjustmentKey"];
+      v28 = [bucketCopy objectForKeyedSubscript:@"PLBatteryUITotalEnergyToRemoveForPercentageAdjustmentKey"];
       [v28 doubleValue];
       v30 = [v27 numberWithDouble:v24 + v29];
-      [v10 setObject:v30 forKeyedSubscript:@"PLBatteryUITotalEnergyToRemoveForPercentageAdjustmentKey"];
+      [bucketCopy setObject:v30 forKeyedSubscript:@"PLBatteryUITotalEnergyToRemoveForPercentageAdjustmentKey"];
 
       goto LABEL_12;
     }
@@ -4144,7 +4144,7 @@ LABEL_45:
   v24 = 0.0;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
-    [PLBatteryUIResponseTypeBatteryBreakdown getEnergyToRemoveForSlopAdjustment:v8 withEnergyKey:v9 forBucket:?];
+    [PLBatteryUIResponseTypeBatteryBreakdown getEnergyToRemoveForSlopAdjustment:adjustmentCopy withEnergyKey:keyCopy forBucket:?];
   }
 
 LABEL_12:
@@ -4153,28 +4153,28 @@ LABEL_12:
   return v24;
 }
 
-- (void)adjustRuntimes:(id)a3
+- (void)adjustRuntimes:(id)runtimes
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToForegroundTimes];
+  runtimesCopy = runtimes;
+  bundleIDsToForegroundTimes = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToForegroundTimes];
 
-  if (v5)
+  if (bundleIDsToForegroundTimes)
   {
-    v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToBackgroundTimes];
+    bundleIDsToBackgroundTimes = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToBackgroundTimes];
 
-    if (v6)
+    if (bundleIDsToBackgroundTimes)
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v7 = [v4 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+      v7 = [runtimesCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
       v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v8)
       {
         v9 = v8;
-        v23 = v4;
+        v23 = runtimesCopy;
         v10 = *v25;
         do
         {
@@ -4189,23 +4189,23 @@ LABEL_12:
             v13 = [v12 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
             if (v13)
             {
-              v14 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToForegroundTimes];
-              v15 = [v14 objectForKeyedSubscript:v13];
+              bundleIDsToForegroundTimes2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToForegroundTimes];
+              v15 = [bundleIDsToForegroundTimes2 objectForKeyedSubscript:v13];
 
               if (v15)
               {
-                v16 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToForegroundTimes];
-                v17 = [v16 objectForKeyedSubscript:v13];
+                bundleIDsToForegroundTimes3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToForegroundTimes];
+                v17 = [bundleIDsToForegroundTimes3 objectForKeyedSubscript:v13];
                 [v12 setObject:v17 forKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
               }
 
-              v18 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToBackgroundTimes];
-              v19 = [v18 objectForKeyedSubscript:v13];
+              bundleIDsToBackgroundTimes2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToBackgroundTimes];
+              v19 = [bundleIDsToBackgroundTimes2 objectForKeyedSubscript:v13];
 
               if (v19)
               {
-                v20 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToBackgroundTimes];
-                v21 = [v20 objectForKeyedSubscript:v13];
+                bundleIDsToBackgroundTimes3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToBackgroundTimes];
+                v21 = [bundleIDsToBackgroundTimes3 objectForKeyedSubscript:v13];
                 [v12 setObject:v21 forKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
               }
             }
@@ -4215,7 +4215,7 @@ LABEL_12:
         }
 
         while (v9);
-        v4 = v23;
+        runtimesCopy = v23;
       }
     }
 
@@ -4241,14 +4241,14 @@ LABEL_12:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)adjustExtensionBackgroundTimeWithEnergyEntries:(id)a3
+- (void)adjustExtensionBackgroundTimeWithEnergyEntries:(id)entries
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 objectForKeyedSubscript:{@"PLBatteryUIAppArrayKey", 0}];
+  v3 = [entries objectForKeyedSubscript:{@"PLBatteryUIAppArrayKey", 0}];
   v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
@@ -4282,18 +4282,18 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addTotals:(id)a3
+- (void)addTotals:(id)totals
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIForegroundTimeKey"];
-  [v3 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIBackgroundTimeKey"];
-  [v3 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
+  totalsCopy = totals;
+  [totalsCopy setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIForegroundTimeKey"];
+  [totalsCopy setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIBackgroundTimeKey"];
+  [totalsCopy setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = [v3 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  obj = [totalsCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v4 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v4)
   {
@@ -4311,31 +4311,31 @@ LABEL_12:
 
         v7 = *(*(&v32 + 1) + 8 * v6);
         v8 = MEMORY[0x277CCABB0];
-        v9 = [v3 objectForKeyedSubscript:@"PLBatteryUIForegroundTimeKey"];
+        v9 = [totalsCopy objectForKeyedSubscript:@"PLBatteryUIForegroundTimeKey"];
         [v9 doubleValue];
         v11 = v10;
         v12 = [v7 objectForKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
         [v12 doubleValue];
         v14 = [v8 numberWithDouble:v11 + v13];
-        [v3 setObject:v14 forKeyedSubscript:@"PLBatteryUIForegroundTimeKey"];
+        [totalsCopy setObject:v14 forKeyedSubscript:@"PLBatteryUIForegroundTimeKey"];
 
         v15 = MEMORY[0x277CCABB0];
-        v16 = [v3 objectForKeyedSubscript:@"PLBatteryUIBackgroundTimeKey"];
+        v16 = [totalsCopy objectForKeyedSubscript:@"PLBatteryUIBackgroundTimeKey"];
         [v16 doubleValue];
         v18 = v17;
         v19 = [v7 objectForKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
         [v19 doubleValue];
         v21 = [v15 numberWithDouble:v18 + v20];
-        [v3 setObject:v21 forKeyedSubscript:@"PLBatteryUIBackgroundTimeKey"];
+        [totalsCopy setObject:v21 forKeyedSubscript:@"PLBatteryUIBackgroundTimeKey"];
 
         v22 = MEMORY[0x277CCABB0];
-        v23 = [v3 objectForKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
+        v23 = [totalsCopy objectForKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
         [v23 doubleValue];
         v25 = v24;
         v26 = [v7 objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
         [v26 doubleValue];
         v28 = [v22 numberWithDouble:v25 + v27];
-        [v3 setObject:v28 forKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
+        [totalsCopy setObject:v28 forKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
 
         ++v6;
       }
@@ -4350,12 +4350,12 @@ LABEL_12:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addErrorCode:(id)a3
+- (void)addErrorCode:(id)code
 {
-  v11 = a3;
+  codeCopy = code;
   if (![(PLBatteryUIResponseTypeBatteryBreakdown *)self shouldShowBreakdown:?])
   {
-    v4 = [v11 objectForKeyedSubscript:@"PLBatteryUIForegroundTimeKey"];
+    v4 = [codeCopy objectForKeyedSubscript:@"PLBatteryUIForegroundTimeKey"];
     [v4 doubleValue];
     if (v5 >= 60.0)
     {
@@ -4363,13 +4363,13 @@ LABEL_12:
 
     else
     {
-      v6 = [v11 objectForKeyedSubscript:@"PLBatteryUIBackgroundTimeKey"];
+      v6 = [codeCopy objectForKeyedSubscript:@"PLBatteryUIBackgroundTimeKey"];
       [v6 doubleValue];
       v8 = v7;
 
       if (v8 < 60.0)
       {
-        [v11 setObject:&unk_287146A50 forKeyedSubscript:@"PLBatteryUIErrorCodeKey"];
+        [codeCopy setObject:&unk_287146A50 forKeyedSubscript:@"PLBatteryUIErrorCodeKey"];
         v9 = MEMORY[0x277CBEBF8];
         v10 = @"PLBatteryUIAppArrayKey";
         goto LABEL_7;
@@ -4380,33 +4380,33 @@ LABEL_12:
   v9 = &unk_287146A20;
   v10 = @"PLBatteryUIErrorCodeKey";
 LABEL_7:
-  [v11 setObject:v9 forKeyedSubscript:v10];
+  [codeCopy setObject:v9 forKeyedSubscript:v10];
 }
 
-- (BOOL)shouldShowBreakdown:(id)a3
+- (BOOL)shouldShowBreakdown:(id)breakdown
 {
-  v4 = a3;
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self lastBatteryEntry];
-  v6 = [v5 objectForKeyedSubscript:@"DesignCapacity"];
+  breakdownCopy = breakdown;
+  lastBatteryEntry = [(PLBatteryUIResponseTypeBatteryBreakdown *)self lastBatteryEntry];
+  v6 = [lastBatteryEntry objectForKeyedSubscript:@"DesignCapacity"];
   [v6 doubleValue];
   v8 = v7;
 
-  v9 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self lastBatteryEntry];
-  v10 = [v9 objectForKeyedSubscript:@"Voltage"];
+  lastBatteryEntry2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self lastBatteryEntry];
+  v10 = [lastBatteryEntry2 objectForKeyedSubscript:@"Voltage"];
   [v10 doubleValue];
   v12 = v11 / 1000.0;
 
-  v13 = [v4 objectForKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
+  v13 = [breakdownCopy objectForKeyedSubscript:@"PLBatteryUITotalEnergyKey"];
 
   [v13 doubleValue];
-  LOBYTE(v4) = v14 > v8 * v12 * 0.001;
+  LOBYTE(breakdownCopy) = v14 > v8 * v12 * 0.001;
 
-  return v4;
+  return breakdownCopy;
 }
 
-- (void)cleanEntries:(id)a3
+- (void)cleanEntries:(id)entries
 {
-  v4 = [a3 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  v4 = [entries objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__PLBatteryUIResponseTypeBatteryBreakdown_cleanEntries___block_invoke;
@@ -4427,10 +4427,10 @@ void __56__PLBatteryUIResponseTypeBatteryBreakdown_cleanEntries___block_invoke(u
   }
 }
 
-- (void)normalizeBucket:(id)a3 to:(int)a4
+- (void)normalizeBucket:(id)bucket to:(int)to
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  v5 = [bucket objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -4522,7 +4522,7 @@ LABEL_19:
         [v24 doubleValue];
         v26 = v25;
 
-        LODWORD(v27) = llround(v26 / v9 * a4);
+        LODWORD(v27) = llround(v26 / v9 * to);
         v28 = [MEMORY[0x277CCABB0] numberWithInt:v27];
         [v23 setObject:v28 forKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
       }
@@ -4536,10 +4536,10 @@ LABEL_19:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createPerAppBreakdown:(id)a3
+- (void)createPerAppBreakdown:(id)breakdown
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  breakdownCopy = breakdown;
+  v4 = [breakdownCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_29];
   v6 = objc_opt_new();
   v7 = objc_opt_new();
@@ -4552,8 +4552,8 @@ LABEL_19:
   v8 = v7;
   v9 = v6;
   [v5 enumerateObjectsUsingBlock:&v10];
-  [v3 setObject:v9 forKeyedSubscript:{@"PLBatteryUIPerAppBreakdownKey", v10, v11, v12, v13}];
-  [v3 setObject:v8 forKeyedSubscript:@"PLBatteryUIAppBreakdownSortOrderKey"];
+  [breakdownCopy setObject:v9 forKeyedSubscript:{@"PLBatteryUIPerAppBreakdownKey", v10, v11, v12, v13}];
+  [breakdownCopy setObject:v8 forKeyedSubscript:@"PLBatteryUIAppBreakdownSortOrderKey"];
 }
 
 uint64_t __65__PLBatteryUIResponseTypeBatteryBreakdown_createPerAppBreakdown___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4588,16 +4588,16 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_createPerAppBreakdown___block
   [*(a1 + 40) addObject:v4];
 }
 
-- (void)collapseEnergyEntries:(id)a3
+- (void)collapseEnergyEntries:(id)entries
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  entriesCopy = entries;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v3 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  v5 = [entriesCopy objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -4616,7 +4616,7 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_createPerAppBreakdown___block
         v11 = [v10 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
         if (v11)
         {
-          v12 = [v4 objectForKeyedSubscript:v11];
+          v12 = [dictionary objectForKeyedSubscript:v11];
 
           if (v12)
           {
@@ -4624,14 +4624,14 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_createPerAppBreakdown___block
             v16[1] = 3221225472;
             v16[2] = __65__PLBatteryUIResponseTypeBatteryBreakdown_collapseEnergyEntries___block_invoke;
             v16[3] = &unk_279A5C140;
-            v17 = v4;
+            v17 = dictionary;
             v18 = v11;
             [v10 enumerateKeysAndObjectsUsingBlock:v16];
           }
 
           else
           {
-            [v4 setObject:v10 forKeyedSubscript:v11];
+            [dictionary setObject:v10 forKeyedSubscript:v11];
           }
         }
       }
@@ -4642,9 +4642,9 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_createPerAppBreakdown___block
     while (v7);
   }
 
-  v13 = [v4 allValues];
-  v14 = [v13 mutableCopy];
-  [v3 setObject:v14 forKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+  allValues = [dictionary allValues];
+  v14 = [allValues mutableCopy];
+  [entriesCopy setObject:v14 forKeyedSubscript:@"PLBatteryUIAppArrayKey"];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -4757,11 +4757,11 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_collapseEnergyEntries___block
   }
 }
 
-- (id)combineQualifiers:(id)a3
+- (id)combineQualifiers:(id)qualifiers
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  qualifiersCopy = qualifiers;
+  v4 = qualifiersCopy;
+  if (qualifiersCopy && [qualifiersCopy count])
   {
     v5 = [MEMORY[0x277CBEB58] setWithArray:v4];
     if ([v5 containsObject:&unk_287146AC8] && objc_msgSend(v5, "containsObject:", &unk_287146B58))
@@ -4814,32 +4814,32 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_collapseEnergyEntries___block
       [v5 removeObject:&unk_287146AC8];
     }
 
-    v6 = [v5 allObjects];
+    allObjects = [v5 allObjects];
   }
 
   else
   {
-    v6 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
-  return v6;
+  return allObjects;
 }
 
-- (void)reaccountExchangeEntries:(id)a3
+- (void)reaccountExchangeEntries:(id)entries
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self exchangeBundleIDs];
+  entriesCopy = entries;
+  exchangeBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self exchangeBundleIDs];
 
-  if (v5)
+  if (exchangeBundleIDs)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v41 = v4;
-    v7 = v4;
+    v41 = entriesCopy;
+    v7 = entriesCopy;
     v8 = [v7 countByEnumeratingWithState:&v54 objects:v60 count:16];
     if (v8)
     {
@@ -4860,7 +4860,7 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_collapseEnergyEntries___block
           if (v13)
           {
             v14 = [v12 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-            [v6 setObject:v12 forKeyedSubscript:v14];
+            [dictionary setObject:v12 forKeyedSubscript:v14];
           }
         }
 
@@ -4870,7 +4870,7 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_collapseEnergyEntries___block
       while (v9);
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"com.apple.activesync"];
+    v15 = [dictionary objectForKeyedSubscript:@"com.apple.activesync"];
     v16 = v15;
     if (v15)
     {
@@ -4885,8 +4885,8 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_collapseEnergyEntries___block
         v53 = 0u;
         v51 = 0u;
         v50 = 0u;
-        v20 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self exchangeBundleIDs];
-        v21 = [v20 countByEnumeratingWithState:&v50 objects:v59 count:16];
+        exchangeBundleIDs2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self exchangeBundleIDs];
+        v21 = [exchangeBundleIDs2 countByEnumeratingWithState:&v50 objects:v59 count:16];
         if (v21)
         {
           v22 = v21;
@@ -4898,10 +4898,10 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_collapseEnergyEntries___block
             {
               if (*v51 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(exchangeBundleIDs2);
               }
 
-              v26 = [v6 objectForKeyedSubscript:*(*(&v50 + 1) + 8 * j)];
+              v26 = [dictionary objectForKeyedSubscript:*(*(&v50 + 1) + 8 * j)];
               v27 = v26;
               if (v26)
               {
@@ -4923,7 +4923,7 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_collapseEnergyEntries___block
               }
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v50 objects:v59 count:16];
+            v22 = [exchangeBundleIDs2 countByEnumeratingWithState:&v50 objects:v59 count:16];
           }
 
           while (v22);
@@ -4938,8 +4938,8 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_collapseEnergyEntries___block
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v32 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self exchangeBundleIDs];
-        v33 = [v32 countByEnumeratingWithState:&v46 objects:v58 count:16];
+        exchangeBundleIDs3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self exchangeBundleIDs];
+        v33 = [exchangeBundleIDs3 countByEnumeratingWithState:&v46 objects:v58 count:16];
         if (v33)
         {
           v34 = v33;
@@ -4950,10 +4950,10 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_collapseEnergyEntries___block
             {
               if (*v47 != v35)
               {
-                objc_enumerationMutation(v32);
+                objc_enumerationMutation(exchangeBundleIDs3);
               }
 
-              v37 = [v6 objectForKeyedSubscript:*(*(&v46 + 1) + 8 * k)];
+              v37 = [dictionary objectForKeyedSubscript:*(*(&v46 + 1) + 8 * k)];
               v38 = v37;
               if (v37)
               {
@@ -4968,7 +4968,7 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_collapseEnergyEntries___block
               }
             }
 
-            v34 = [v32 countByEnumeratingWithState:&v46 objects:v58 count:16];
+            v34 = [exchangeBundleIDs3 countByEnumeratingWithState:&v46 objects:v58 count:16];
           }
 
           while (v34);
@@ -4979,13 +4979,13 @@ void __65__PLBatteryUIResponseTypeBatteryBreakdown_collapseEnergyEntries___block
       }
     }
 
-    v4 = v41;
+    entriesCopy = v41;
   }
 
   else
   {
-    v6 = PLLogCommon();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    dictionary = PLLogCommon();
+    if (os_log_type_enabled(dictionary, OS_LOG_TYPE_DEBUG))
     {
       [PLBatteryUIResponseTypeBatteryBreakdown applyStaticNameTransformation:];
     }
@@ -5010,39 +5010,39 @@ void __68__PLBatteryUIResponseTypeBatteryBreakdown_reaccountExchangeEntries___bl
 
 - (id)ongoingUpdateRestoreEntryInitializer
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  [v2 setObject:@"DeviceSetup" forKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-  [v2 setObject:&unk_287146A50 forKeyedSubscript:@"PLBatteryUIAppTypeKey"];
-  [v2 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
-  [v2 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
-  [v2 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppForegroundPluggedInRuntimeKey"];
-  [v2 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppBackgroundPluggedInRuntimeKey"];
-  [v2 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"DeviceSetup" forKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+  [dictionary setObject:&unk_287146A50 forKeyedSubscript:@"PLBatteryUIAppTypeKey"];
+  [dictionary setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
+  [dictionary setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
+  [dictionary setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppForegroundPluggedInRuntimeKey"];
+  [dictionary setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppBackgroundPluggedInRuntimeKey"];
+  [dictionary setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
 
-  return v2;
+  return dictionary;
 }
 
-- (void)ongoingUpdateRestoreTransformations:(id)a3
+- (void)ongoingUpdateRestoreTransformations:(id)transformations
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transformationsCopy = transformations;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v41 objects:v51 count:16];
+  v5 = [transformationsCopy countByEnumeratingWithState:&v41 objects:v51 count:16];
   if (!v5)
   {
-    v7 = 0;
+    ongoingUpdateRestoreEntryInitializer = 0;
     goto LABEL_36;
   }
 
   v6 = v5;
-  v37 = self;
-  v7 = 0;
+  selfCopy = self;
+  ongoingUpdateRestoreEntryInitializer = 0;
   v8 = *v42;
   v9 = 0.0;
-  v38 = v4;
+  v38 = transformationsCopy;
   do
   {
     v10 = 0;
@@ -5050,7 +5050,7 @@ void __68__PLBatteryUIResponseTypeBatteryBreakdown_reaccountExchangeEntries___bl
     {
       if (*v42 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(transformationsCopy);
       }
 
       v11 = *(*(&v41 + 1) + 8 * v10);
@@ -5069,7 +5069,7 @@ void __68__PLBatteryUIResponseTypeBatteryBreakdown_reaccountExchangeEntries___bl
         v21 = [v23 objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
         [v21 doubleValue];
         v9 = v24;
-        v7 = v23;
+        ongoingUpdateRestoreEntryInitializer = v23;
         goto LABEL_18;
       }
 
@@ -5110,7 +5110,7 @@ void __68__PLBatteryUIResponseTypeBatteryBreakdown_reaccountExchangeEntries___bl
 
           v9 = v9 + v16;
           v21 = PLLogCommon();
-          v4 = v38;
+          transformationsCopy = v38;
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
             *buf = 134217984;
@@ -5134,7 +5134,7 @@ void __68__PLBatteryUIResponseTypeBatteryBreakdown_reaccountExchangeEntries___bl
             _os_log_error_impl(&dword_25EE51000, v21, OS_LOG_TYPE_ERROR, "Ongoing Restore: qualified ongoing restore energy for Bundle ID %@ is %f but total energy is %f", buf, 0x20u);
           }
 
-          v4 = v38;
+          transformationsCopy = v38;
         }
 
 LABEL_18:
@@ -5142,24 +5142,24 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v4 = v38;
+      transformationsCopy = v38;
 LABEL_19:
 
       ++v10;
     }
 
     while (v6 != v10);
-    v29 = [v4 countByEnumeratingWithState:&v41 objects:v51 count:16];
+    v29 = [transformationsCopy countByEnumeratingWithState:&v41 objects:v51 count:16];
     v6 = v29;
   }
 
   while (v29);
   if (v9 != 0.0)
   {
-    if (!v7)
+    if (!ongoingUpdateRestoreEntryInitializer)
     {
-      v7 = [(PLBatteryUIResponseTypeBatteryBreakdown *)v37 ongoingUpdateRestoreEntryInitializer];
-      [v4 addObject:v7];
+      ongoingUpdateRestoreEntryInitializer = [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy ongoingUpdateRestoreEntryInitializer];
+      [transformationsCopy addObject:ongoingUpdateRestoreEntryInitializer];
       v30 = PLLogCommon();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
@@ -5168,10 +5168,10 @@ LABEL_19:
     }
 
     v31 = MEMORY[0x277CCABB0];
-    v32 = [v7 objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
+    v32 = [ongoingUpdateRestoreEntryInitializer objectForKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
     [v32 doubleValue];
     v34 = [v31 numberWithDouble:v9 + v33];
-    [v7 setObject:v34 forKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
+    [ongoingUpdateRestoreEntryInitializer setObject:v34 forKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
 
     v35 = PLLogCommon();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -5179,7 +5179,7 @@ LABEL_19:
       [PLBatteryUIResponseTypeBatteryBreakdown ongoingUpdateRestoreTransformations:];
     }
 
-    v4 = v38;
+    transformationsCopy = v38;
   }
 
 LABEL_36:
@@ -5187,14 +5187,14 @@ LABEL_36:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reaccountBackupRestore:(id)a3
+- (void)reaccountBackupRestore:(id)restore
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  restoreCopy = restore;
+  v4 = restoreCopy;
+  if (restoreCopy && [restoreCopy count])
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -5220,7 +5220,7 @@ LABEL_36:
           if (v12)
           {
             v13 = [v11 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-            [v5 setObject:v11 forKeyedSubscript:v13];
+            [dictionary setObject:v11 forKeyedSubscript:v13];
           }
         }
 
@@ -5230,8 +5230,8 @@ LABEL_36:
       while (v8);
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"Backup"];
-    v15 = [v5 objectForKeyedSubscript:@"Restore"];
+    v14 = [dictionary objectForKeyedSubscript:@"Backup"];
+    v15 = [dictionary objectForKeyedSubscript:@"Restore"];
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
       v16 = objc_opt_class();
@@ -5250,9 +5250,9 @@ LABEL_36:
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"backupEnergyEntry=%@, restoreEnergyEntry=%@", v14, v15];
         v18 = MEMORY[0x277D3F178];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent = [v19 lastPathComponent];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown reaccountBackupRestore:]"];
-        [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:1407];
+        [v18 logMessage:v17 fromFile:lastPathComponent fromFunction:v21 fromLineNumber:1407];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -5293,9 +5293,9 @@ LABEL_36:
           v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"combined backupEnergyEntry=%@", v23];
           v33 = MEMORY[0x277D3F178];
           v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown.m"];
-          v28 = [v27 lastPathComponent];
+          lastPathComponent2 = [v27 lastPathComponent];
           v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown reaccountBackupRestore:]"];
-          [v33 logMessage:v26 fromFile:v28 fromFunction:v29 fromLineNumber:1421];
+          [v33 logMessage:v26 fromFile:lastPathComponent2 fromFunction:v29 fromLineNumber:1421];
 
           v30 = v26;
           v31 = PLLogCommon();
@@ -5344,19 +5344,19 @@ uint64_t __66__PLBatteryUIResponseTypeBatteryBreakdown_reaccountBackupRestore___
   return result;
 }
 
-- (void)transformDeletedApps:(id)a3
+- (void)transformDeletedApps:(id)apps
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppBundleIDs];
-  if ([v5 count])
+  appsCopy = apps;
+  deletedAppBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppBundleIDs];
+  if ([deletedAppBundleIDs count])
   {
   }
 
   else
   {
-    v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppClipBundleIDs];
-    v7 = [v6 count];
+    deletedAppClipBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppClipBundleIDs];
+    v7 = [deletedAppClipBundleIDs count];
 
     if (!v7)
     {
@@ -5370,11 +5370,11 @@ uint64_t __66__PLBatteryUIResponseTypeBatteryBreakdown_reaccountBackupRestore___
     }
   }
 
-  v8 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppClipBundleIDs];
-  if ([v8 count])
+  deletedAppClipBundleIDs2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppClipBundleIDs];
+  if ([deletedAppClipBundleIDs2 count])
   {
-    v9 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppBundleIDs];
-    v10 = [v9 count];
+    deletedAppBundleIDs2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppBundleIDs];
+    v10 = [deletedAppBundleIDs2 count];
 
     if (v10)
     {
@@ -5387,8 +5387,8 @@ uint64_t __66__PLBatteryUIResponseTypeBatteryBreakdown_reaccountBackupRestore___
   {
   }
 
-  v12 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppBundleIDs];
-  v13 = [v12 count];
+  deletedAppBundleIDs3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppBundleIDs];
+  v13 = [deletedAppBundleIDs3 count];
 
   if (v13)
   {
@@ -5397,8 +5397,8 @@ uint64_t __66__PLBatteryUIResponseTypeBatteryBreakdown_reaccountBackupRestore___
 
   else
   {
-    v14 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppClipBundleIDs];
-    v15 = [v14 count];
+    deletedAppClipBundleIDs3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppClipBundleIDs];
+    v15 = [deletedAppClipBundleIDs3 count];
 
     v11 = @"DeletedAppClip";
     if (!v15)
@@ -5419,12 +5419,12 @@ LABEL_12:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v4;
+  obj = appsCopy;
   v17 = [obj countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v17)
   {
     v18 = v17;
-    v38 = v4;
+    v38 = appsCopy;
     v41 = *v46;
     while (1)
     {
@@ -5455,9 +5455,9 @@ LABEL_12:
             v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEntry=%@", v20];
             v23 = MEMORY[0x277D3F178];
             v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown.m"];
-            v25 = [v24 lastPathComponent];
+            lastPathComponent = [v24 lastPathComponent];
             v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown transformDeletedApps:]"];
-            [v23 logMessage:v22 fromFile:v25 fromFunction:v26 fromLineNumber:1447];
+            [v23 logMessage:v22 fromFile:lastPathComponent fromFunction:v26 fromLineNumber:1447];
 
             v27 = PLLogCommon();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -5469,17 +5469,17 @@ LABEL_12:
           }
         }
 
-        v28 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppBundleIDs];
+        deletedAppBundleIDs4 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppBundleIDs];
         v29 = [v20 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-        if ([v28 containsObject:v29])
+        if ([deletedAppBundleIDs4 containsObject:v29])
         {
         }
 
         else
         {
-          v30 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppClipBundleIDs];
+          deletedAppClipBundleIDs4 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self deletedAppClipBundleIDs];
           v31 = [v20 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-          v32 = [v30 containsObject:v31];
+          v32 = [deletedAppClipBundleIDs4 containsObject:v31];
 
           if (!v32)
           {
@@ -5517,7 +5517,7 @@ LABEL_32:
       v18 = [obj countByEnumeratingWithState:&v45 objects:v51 count:16];
       if (!v18)
       {
-        v4 = v38;
+        appsCopy = v38;
         break;
       }
     }
@@ -5535,25 +5535,25 @@ uint64_t __64__PLBatteryUIResponseTypeBatteryBreakdown_transformDeletedApps___bl
   return result;
 }
 
-- (void)transformPlugins:(id)a3 withBucket:(id)a4
+- (void)transformPlugins:(id)plugins withBucket:(id)bucket
 {
   v118 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v96 = a4;
-  v7 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self pluginBundleIDsToEntries];
+  pluginsCopy = plugins;
+  bucketCopy = bucket;
+  pluginBundleIDsToEntries = [(PLBatteryUIResponseTypeBatteryBreakdown *)self pluginBundleIDsToEntries];
 
-  if (v7)
+  if (pluginBundleIDsToEntries)
   {
     v105 = 0u;
     v106 = 0u;
     v103 = 0u;
     v104 = 0u;
-    v8 = v6;
+    v8 = pluginsCopy;
     v9 = [v8 countByEnumeratingWithState:&v103 objects:v117 count:16];
     if (v9)
     {
       v10 = v9;
-      v92 = v6;
+      v92 = pluginsCopy;
       v100 = *v104;
       v11 = 0x277D3F000uLL;
       v95 = *MEMORY[0x277D0AB98];
@@ -5588,9 +5588,9 @@ uint64_t __64__PLBatteryUIResponseTypeBatteryBreakdown_transformDeletedApps___bl
               v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEntry=%@", v13];
               v16 = MEMORY[0x277D3F178];
               v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown.m"];
-              v18 = [v17 lastPathComponent];
+              lastPathComponent = [v17 lastPathComponent];
               v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown transformPlugins:withBucket:]"];
-              [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:1470];
+              [v16 logMessage:v15 fromFile:lastPathComponent fromFunction:v19 fromLineNumber:1470];
 
               v20 = PLLogCommon();
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -5604,9 +5604,9 @@ uint64_t __64__PLBatteryUIResponseTypeBatteryBreakdown_transformDeletedApps___bl
             }
           }
 
-          v21 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self pluginBundleIDsToEntries];
+          pluginBundleIDsToEntries2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self pluginBundleIDsToEntries];
           v22 = [(__CFString *)v13 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-          v23 = [v21 objectForKeyedSubscript:v22];
+          v23 = [pluginBundleIDsToEntries2 objectForKeyedSubscript:v22];
 
           if (v23)
           {
@@ -5628,9 +5628,9 @@ uint64_t __64__PLBatteryUIResponseTypeBatteryBreakdown_transformDeletedApps___bl
                 v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"this is a plugin"];
                 v26 = MEMORY[0x277D3F178];
                 v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/BatteryUIResponseTypes/PLBatteryUIResponseTypeBatteryBreakdown.m"];
-                v28 = [v27 lastPathComponent];
+                lastPathComponent2 = [v27 lastPathComponent];
                 v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryUIResponseTypeBatteryBreakdown transformPlugins:withBucket:]"];
-                [v26 logMessage:v25 fromFile:v28 fromFunction:v29 fromLineNumber:1475];
+                [v26 logMessage:v25 fromFile:lastPathComponent2 fromFunction:v29 fromLineNumber:1475];
 
                 v30 = PLLogCommon();
                 if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -5715,13 +5715,13 @@ uint64_t __64__PLBatteryUIResponseTypeBatteryBreakdown_transformDeletedApps___bl
                 v40 = v35;
                 if (v53 > 0.0)
                 {
-                  v54 = [v96 objectForKeyedSubscript:@"PLBatteryUIBucketStartKey"];
+                  v54 = [bucketCopy objectForKeyedSubscript:@"PLBatteryUIBucketStartKey"];
                   [v54 doubleValue];
                   v56 = v55;
-                  v57 = [v96 objectForKeyedSubscript:@"PLBatteryUIBucketEndKey"];
+                  v57 = [bucketCopy objectForKeyedSubscript:@"PLBatteryUIBucketEndKey"];
                   [v57 doubleValue];
                   v59 = v58;
-                  v60 = [v96 objectForKeyedSubscript:@"PLBatteryUIBucketStartKey"];
+                  v60 = [bucketCopy objectForKeyedSubscript:@"PLBatteryUIBucketStartKey"];
                   [v60 doubleValue];
                   v62 = v59 - v61;
 
@@ -5770,8 +5770,8 @@ LABEL_31:
                     if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
                     {
                       v87 = [(__CFString *)v13 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-                      v88 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
-                      v89 = [v88 objectForKeyedSubscript:v95];
+                      bundleIDsToReplacementBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
+                      v89 = [bundleIDsToReplacementBundleIDs objectForKeyedSubscript:v95];
                       *buf = 138412546;
                       v108 = v87;
                       v109 = 2112;
@@ -5779,8 +5779,8 @@ LABEL_31:
                       _os_log_debug_impl(&dword_25EE51000, v67, OS_LOG_TYPE_DEBUG, "Static mapping: Changed %@ to %@", buf, 0x16u);
                     }
 
-                    v68 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
-                    v69 = [v68 objectForKeyedSubscript:v95];
+                    bundleIDsToReplacementBundleIDs2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
+                    v69 = [bundleIDsToReplacementBundleIDs2 objectForKeyedSubscript:v95];
                     [(__CFString *)v13 setObject:v69 forKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
 
                     v8 = v97;
@@ -5915,7 +5915,7 @@ LABEL_31:
         v10 = v90;
         if (!v90)
         {
-          v6 = v92;
+          pluginsCopy = v92;
           break;
         }
       }
@@ -5948,19 +5948,19 @@ uint64_t __71__PLBatteryUIResponseTypeBatteryBreakdown_transformPlugins_withBuck
   return result;
 }
 
-- (void)transformGizmoDaemons:(id)a3
+- (void)transformGizmoDaemons:(id)daemons
 {
   v79 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
+  daemonsCopy = daemons;
+  bundleIDsToReplacementBundleIDs = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
 
-  if (v5)
+  if (bundleIDsToReplacementBundleIDs)
   {
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v6 = v4;
+    v6 = daemonsCopy;
     v7 = [v6 countByEnumeratingWithState:&v67 objects:v78 count:16];
     if (v7)
     {
@@ -5976,9 +5976,9 @@ uint64_t __71__PLBatteryUIResponseTypeBatteryBreakdown_transformPlugins_withBuck
           }
 
           v11 = *(*(&v67 + 1) + 8 * i);
-          v12 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
+          bundleIDsToReplacementBundleIDs2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
           v13 = [v11 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-          v14 = [v12 objectForKeyedSubscript:v13];
+          v14 = [bundleIDsToReplacementBundleIDs2 objectForKeyedSubscript:v13];
 
           if (v14)
           {
@@ -6123,9 +6123,9 @@ uint64_t __71__PLBatteryUIResponseTypeBatteryBreakdown_transformPlugins_withBuck
           }
 
           v43 = *(*(&v55 + 1) + 8 * m);
-          v44 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
+          bundleIDsToReplacementBundleIDs3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self bundleIDsToReplacementBundleIDs];
           v45 = [v43 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-          v46 = [v44 objectForKeyedSubscript:v45];
+          v46 = [bundleIDsToReplacementBundleIDs3 objectForKeyedSubscript:v45];
 
           if (v46)
           {
@@ -6165,15 +6165,15 @@ uint64_t __71__PLBatteryUIResponseTypeBatteryBreakdown_transformPlugins_withBuck
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transformCloudDocs:(id)a3
+- (void)transformCloudDocs:(id)docs
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  docsCopy = docs;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v4 = [docsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -6188,7 +6188,7 @@ uint64_t __71__PLBatteryUIResponseTypeBatteryBreakdown_transformPlugins_withBuck
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(docsCopy);
         }
 
         v10 = *(*(&v22 + 1) + 8 * v9);
@@ -6201,7 +6201,7 @@ uint64_t __71__PLBatteryUIResponseTypeBatteryBreakdown_transformPlugins_withBuck
           {
             v15 = v6;
             v16 = v7;
-            v17 = v3;
+            v17 = docsCopy;
             v18 = v8;
             v19 = [v12 substringFromIndex:v13 + v14];
             if (v19)
@@ -6210,7 +6210,7 @@ uint64_t __71__PLBatteryUIResponseTypeBatteryBreakdown_transformPlugins_withBuck
             }
 
             v8 = v18;
-            v3 = v17;
+            docsCopy = v17;
             v7 = v16;
             v6 = v15;
             v5 = v21;
@@ -6221,7 +6221,7 @@ uint64_t __71__PLBatteryUIResponseTypeBatteryBreakdown_transformPlugins_withBuck
       }
 
       while (v5 != v9);
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v5 = [docsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v5);
@@ -6230,52 +6230,52 @@ uint64_t __71__PLBatteryUIResponseTypeBatteryBreakdown_transformPlugins_withBuck
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canSetQualifier:(int64_t)a3 forBundleID:(id)a4
+- (BOOL)canSetQualifier:(int64_t)qualifier forBundleID:(id)d
 {
-  v5 = a4;
-  v6 = [v5 isEqualToString:@"com.apple.mobilephone"];
-  if (a3 == 2 && (v6 & 1) != 0)
+  dCopy = d;
+  v6 = [dCopy isEqualToString:@"com.apple.mobilephone"];
+  if (qualifier == 2 && (v6 & 1) != 0)
   {
     goto LABEL_9;
   }
 
-  v7 = [v5 isEqualToString:@"com.apple.facetime"];
-  if (a3 == 2 && (v7 & 1) != 0)
+  v7 = [dCopy isEqualToString:@"com.apple.facetime"];
+  if (qualifier == 2 && (v7 & 1) != 0)
   {
     goto LABEL_9;
   }
 
-  v8 = [v5 isEqualToString:@"HLS"];
-  if (a3 == 2 && (v8 & 1) != 0)
+  v8 = [dCopy isEqualToString:@"HLS"];
+  if (qualifier == 2 && (v8 & 1) != 0)
   {
     goto LABEL_9;
   }
 
-  v9 = [v5 isEqualToString:@"Flashlight"];
-  if (a3 == 2 && (v9 & 1) != 0)
+  v9 = [dCopy isEqualToString:@"Flashlight"];
+  if (qualifier == 2 && (v9 & 1) != 0)
   {
     goto LABEL_9;
   }
 
-  if (([v5 isEqualToString:@"Backup & Restore"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"Backup") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"Restore") & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", @"SoundRecognition"))
+  if (([dCopy isEqualToString:@"Backup & Restore"] & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"Backup") & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"Restore") & 1) == 0 && !objc_msgSend(dCopy, "isEqualToString:", @"SoundRecognition"))
   {
-    v13 = [v5 isEqualToString:@"com.apple.mobilesafari"];
-    if (a3 != 2 || (v13 & 1) == 0)
+    v13 = [dCopy isEqualToString:@"com.apple.mobilesafari"];
+    if (qualifier != 2 || (v13 & 1) == 0)
     {
-      v14 = [v5 isEqualToString:@"Hotspot"];
-      if (a3 != 2 || (v14 & 1) == 0)
+      v14 = [dCopy isEqualToString:@"Hotspot"];
+      if (qualifier != 2 || (v14 & 1) == 0)
       {
-        v15 = [v5 isEqualToString:@"com.apple.Maps"];
-        if (a3 != 2 || (v15 & 1) == 0)
+        v15 = [dCopy isEqualToString:@"com.apple.Maps"];
+        if (qualifier != 2 || (v15 & 1) == 0)
         {
-          v16 = [v5 isEqualToString:@"Siri"];
-          if ((a3 != 2 || (v16 & 1) == 0) && ([v5 isEqualToString:@"Flashlight"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"PowerOutAccessories") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"DeletedApp") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"DeletedAppClip") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"DeletedAppAndAppClip") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"EN") & 1) == 0)
+          v16 = [dCopy isEqualToString:@"Siri"];
+          if ((qualifier != 2 || (v16 & 1) == 0) && ([dCopy isEqualToString:@"Flashlight"] & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"PowerOutAccessories") & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"DeletedApp") & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"DeletedAppClip") & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"DeletedAppAndAppClip") & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"EN") & 1) == 0)
           {
-            if ([v5 isEqualToString:@"com.apple.Bridge"])
+            if ([dCopy isEqualToString:@"com.apple.Bridge"])
             {
-              if (a3 < 0xB)
+              if (qualifier < 0xB)
               {
-                v10 = 0x2FBu >> a3;
+                v10 = 0x2FBu >> qualifier;
                 goto LABEL_10;
               }
 
@@ -6284,8 +6284,8 @@ LABEL_42:
               goto LABEL_10;
             }
 
-            v17 = [v5 isEqualToString:@"com.apple.camera"];
-            if ((a3 != 10 || (v17 & 1) == 0) && ([v5 isEqualToString:@"PoorCellCondition"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"com.apple.Preferences") & 1) == 0)
+            v17 = [dCopy isEqualToString:@"com.apple.camera"];
+            if ((qualifier != 10 || (v17 & 1) == 0) && ([dCopy isEqualToString:@"PoorCellCondition"] & 1) == 0 && (objc_msgSend(dCopy, "isEqualToString:", @"com.apple.Preferences") & 1) == 0)
             {
               goto LABEL_42;
             }
@@ -6299,7 +6299,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  LOBYTE(v10) = a3 != 7 && a3 != 2;
+  LOBYTE(v10) = qualifier != 7 && qualifier != 2;
 LABEL_10:
 
   return v10 & 1;
@@ -6307,24 +6307,24 @@ LABEL_10:
 
 - (int)computeNumberOfBuckets
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self end];
-  v4 = [(PLBatteryUIResponseTypeBatteryBreakdown *)v2 start];
-  [v3 timeIntervalSinceDate:v4];
+  start = [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy start];
+  [v3 timeIntervalSinceDate:start];
   v6 = v5;
-  [(PLBatteryUIResponseTypeBatteryBreakdown *)v2 bucketSize];
-  LODWORD(v2) = llround(v6 / v7);
+  [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy bucketSize];
+  LODWORD(selfCopy) = llround(v6 / v7);
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)enumerateBucketsUsingBlock:(id)a3
+- (void)enumerateBucketsUsingBlock:(id)block
 {
-  v20 = a3;
-  v4 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self computeNumberOfBuckets];
-  if (v4 >= 1)
+  blockCopy = block;
+  computeNumberOfBuckets = [(PLBatteryUIResponseTypeBatteryBreakdown *)self computeNumberOfBuckets];
+  if (computeNumberOfBuckets >= 1)
   {
-    v5 = v4;
+    v5 = computeNumberOfBuckets;
     v6 = 0;
     v7 = 0.0;
     do
@@ -6348,7 +6348,7 @@ LABEL_10:
       [v15 timeIntervalSince1970];
       v19 = v18;
 
-      v20[2](v20, v6, v14, v15, v17 + -1800.0, v19 - v17);
+      blockCopy[2](blockCopy, v6, v14, v15, v17 + -1800.0, v19 - v17);
       v7 = v7 + 1.0;
       v6 = (v6 + 1);
     }
@@ -6364,44 +6364,44 @@ LABEL_10:
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)buildBucketsForRange:(_PLTimeIntervalRange)a3
+- (void)buildBucketsForRange:(_PLTimeIntervalRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self computeNumberOfBuckets];
+  length = range.length;
+  location = range.location;
+  computeNumberOfBuckets = [(PLBatteryUIResponseTypeBatteryBreakdown *)self computeNumberOfBuckets];
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [PLBatteryUIResponseTypeBatteryBreakdown buildBucketsForRange:];
   }
 
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:v6];
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:computeNumberOfBuckets];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self setBuckets:v8];
 
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self initializeBucketsWithRange:location, length];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self prepareBucketsWithRange:location, length];
 }
 
-- (void)identifyBucket:(id)a3 withRange:(_PLTimeIntervalRange)a4
+- (void)identifyBucket:(id)bucket withRange:(_PLTimeIntervalRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
+  length = range.length;
+  location = range.location;
+  bucketCopy = bucket;
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self lastUpgradeTimestamp];
   if (location <= v7 && location + length >= v7)
   {
     v9 = MEMORY[0x277CCABB0];
     [(PLBatteryUIResponseTypeBatteryBreakdown *)self lastUpgradeTimestamp];
     v10 = [v9 numberWithDouble:?];
-    [v11 setObject:v10 forKeyedSubscript:@"PLBatteryUIHasUpgradeKey"];
+    [bucketCopy setObject:v10 forKeyedSubscript:@"PLBatteryUIHasUpgradeKey"];
   }
 }
 
-- (void)initializeBucketsWithRange:(_PLTimeIntervalRange)a3
+- (void)initializeBucketsWithRange:(_PLTimeIntervalRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getRootNodeEntriesInRange:a3.location withTimeInterval:a3.length, 3600.0];
+  length = range.length;
+  location = range.location;
+  v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getRootNodeEntriesInRange:range.location withTimeInterval:range.length, 3600.0];
   v7 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getQualificationNodeEntriesInRange:location withTimeInterval:length, 3600.0];
   v8 = PLLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -6447,10 +6447,10 @@ void __70__PLBatteryUIResponseTypeBatteryBreakdown_initializeBucketsWithRange___
   }
 }
 
-- (void)prepareBucketsWithRange:(_PLTimeIntervalRange)a3
+- (void)prepareBucketsWithRange:(_PLTimeIntervalRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getAppRuntimesInRange:?];
   v7 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self getNotificationEntriesInRange:location, length];
   v8 = PLLogCommon();
@@ -6545,23 +6545,23 @@ void __67__PLBatteryUIResponseTypeBatteryBreakdown_prepareBucketsWithRange___blo
   [v40 setObject:v19 forKeyedSubscript:@"PLBatteryUIAppArrayKey"];
 }
 
-- (id)buildBucketWithEnergyEntries:(id)a3 andRange:(_PLTimeIntervalRange)a4
+- (id)buildBucketWithEnergyEntries:(id)entries andRange:(_PLTimeIntervalRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithObject:a3 forKey:@"PLBatteryUIAppArrayKey"];
+  length = range.length;
+  location = range.location;
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithObject:entries forKey:@"PLBatteryUIAppArrayKey"];
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self identifyBucket:v7 withRange:location, length];
 
   return v7;
 }
 
-- (id)buildEnergyEntriesWithRootNodes:(id)a3 andQualificationNodes:(id)a4 andRange:(_PLTimeIntervalRange)a5
+- (id)buildEnergyEntriesWithRootNodes:(id)nodes andQualificationNodes:(id)qualificationNodes andRange:(_PLTimeIntervalRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a4;
-  v10 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self processRootNodes:a3 inRange:location, length];
-  v11 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self processQualificationNodes:v9 inRange:location, length];
+  length = range.length;
+  location = range.location;
+  qualificationNodesCopy = qualificationNodes;
+  v10 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self processRootNodes:nodes inRange:location, length];
+  v11 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self processQualificationNodes:qualificationNodesCopy inRange:location, length];
 
   v12 = [v10 arrayByAddingObjectsFromArray:v11];
   v13 = [v12 mutableCopy];
@@ -6569,18 +6569,18 @@ void __67__PLBatteryUIResponseTypeBatteryBreakdown_prepareBucketsWithRange___blo
   return v13;
 }
 
-- (id)processRootNodes:(id)a3 inRange:(_PLTimeIntervalRange)a4
+- (id)processRootNodes:(id)nodes inRange:(_PLTimeIntervalRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v87 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  nodesCopy = nodes;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v9 = v7;
+  v9 = nodesCopy;
   v10 = [v9 countByEnumeratingWithState:&v80 objects:v86 count:16];
   if (v10)
   {
@@ -6591,10 +6591,10 @@ void __67__PLBatteryUIResponseTypeBatteryBreakdown_prepareBucketsWithRange___blo
     v75 = *MEMORY[0x277D3F330];
     v71 = *MEMORY[0x277D3F320];
     v70 = *MEMORY[0x277D0AB98];
-    v72 = v8;
+    v72 = dictionary;
     v76 = *v81;
     v77 = v9;
-    v69 = self;
+    selfCopy = self;
     do
     {
       v14 = 0;
@@ -6607,11 +6607,11 @@ void __67__PLBatteryUIResponseTypeBatteryBreakdown_prepareBucketsWithRange___blo
 
         v15 = *(*(&v80 + 1) + 8 * v14);
         v16 = objc_autoreleasePoolPush();
-        v17 = [v15 entryDate];
-        v18 = v17;
-        if (v17)
+        entryDate = [v15 entryDate];
+        v18 = entryDate;
+        if (entryDate)
         {
-          [v17 timeIntervalSince1970];
+          [entryDate timeIntervalSince1970];
           if (location <= v19)
           {
             v20 = v19;
@@ -6624,38 +6624,38 @@ void __67__PLBatteryUIResponseTypeBatteryBreakdown_prepareBucketsWithRange___blo
             v18 = [v15 objectForKeyedSubscript:v78];
             if (v18)
             {
-              v21 = [v8 objectForKeyedSubscript:v18];
+              v21 = [dictionary objectForKeyedSubscript:v18];
 
               if (v21)
               {
                 goto LABEL_13;
               }
 
-              v22 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nodeIDsToNodeNames];
-              v23 = [v22 objectForKeyedSubscript:v18];
+              nodeIDsToNodeNames = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nodeIDsToNodeNames];
+              v23 = [nodeIDsToNodeNames objectForKeyedSubscript:v18];
 
               if (v23)
               {
                 v24 = MEMORY[0x277CBEB38];
-                v25 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nodeIDsToNodeNames];
-                v26 = [v25 objectForKeyedSubscript:v18];
+                nodeIDsToNodeNames2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nodeIDsToNodeNames];
+                v26 = [nodeIDsToNodeNames2 objectForKeyedSubscript:v18];
                 v27 = [v24 dictionaryWithObject:v26 forKey:@"PLBatteryUIAppBundleIDKey"];
-                [v8 setObject:v27 forKeyedSubscript:v18];
+                [dictionary setObject:v27 forKeyedSubscript:v18];
 
 LABEL_13:
-                v28 = [v8 objectForKeyedSubscript:v18];
+                v28 = [dictionary objectForKeyedSubscript:v18];
                 v29 = [v15 objectForKeyedSubscript:v75];
-                v30 = [v29 intValue];
-                if ([&unk_28714D898 count] <= v30)
+                intValue = [v29 intValue];
+                if ([&unk_28714D898 count] <= intValue)
                 {
                   log = PLLogCommon();
                   v9 = v77;
                   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
                   {
-                    v37 = [v29 intValue];
+                    intValue2 = [v29 intValue];
                     v38 = [&unk_28714D8B0 count];
                     *buf = 67109376;
-                    *v85 = v37;
+                    *v85 = intValue2;
                     *&v85[4] = 2048;
                     *&v85[6] = v38;
                     _os_log_error_impl(&dword_25EE51000, log, OS_LOG_TYPE_ERROR, "rootNodeID=%d out of bounds=%lu", buf, 0x12u);
@@ -6671,10 +6671,10 @@ LABEL_13:
                     v32 = PLLogCommon();
                     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
                     {
-                      v59 = [v29 intValue];
+                      intValue3 = [v29 intValue];
                       [v31 doubleValue];
                       *buf = 67109376;
-                      *v85 = v59;
+                      *v85 = intValue3;
                       *&v85[4] = 2048;
                       *&v85[6] = v60;
                       _os_log_debug_impl(&dword_25EE51000, v32, OS_LOG_TYPE_DEBUG, "before clamping for rootNodeID=%d, rootNodeEnergy=%f", buf, 0x12u);
@@ -6698,10 +6698,10 @@ LABEL_13:
                     v39 = PLLogCommon();
                     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
                     {
-                      v61 = [v29 intValue];
+                      intValue4 = [v29 intValue];
                       [v31 doubleValue];
                       *buf = 67109376;
-                      *v85 = v61;
+                      *v85 = intValue4;
                       *&v85[4] = 2048;
                       *&v85[6] = v62;
                       _os_log_debug_impl(&dword_25EE51000, v39, OS_LOG_TYPE_DEBUG, "before clamping for rootNodeID=%d, rootNodeEnergy=%f", buf, 0x12u);
@@ -6715,10 +6715,10 @@ LABEL_13:
                     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
                     {
 LABEL_42:
-                      v63 = [v29 intValue];
+                      intValue5 = [v29 intValue];
                       [v35 doubleValue];
                       *buf = 67109376;
-                      *v85 = v63;
+                      *v85 = intValue5;
                       *&v85[4] = 2048;
                       *&v85[6] = v64;
                       _os_log_debug_impl(&dword_25EE51000, v36, OS_LOG_TYPE_DEBUG, "after clamping for rootNodeID=%d, rootNodeEnergy=%f", buf, 0x12u);
@@ -6729,8 +6729,8 @@ LABEL_25:
                     v31 = v35;
                   }
 
-                  v42 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nodeIDsToNodeNames];
-                  v43 = [v42 objectForKeyedSubscript:v18];
+                  nodeIDsToNodeNames3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nodeIDsToNodeNames];
+                  v43 = [nodeIDsToNodeNames3 objectForKeyedSubscript:v18];
 
                   v73 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v70, @"aod"];
                   v74 = v43;
@@ -6766,8 +6766,8 @@ LABEL_31:
                     v56 = [v51 numberWithDouble:v54 + v55 / 1000.0];
                     [v28 setObject:v56 forKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
 
-                    self = v69;
-                    [(PLBatteryUIResponseTypeBatteryBreakdown *)v69 addRNEForMetrics:v29 rootNodeEnergy:v31 energyEntry:v28];
+                    self = selfCopy;
+                    [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy addRNEForMetrics:v29 rootNodeEnergy:v31 energyEntry:v28];
                   }
 
                   else
@@ -6784,7 +6784,7 @@ LABEL_31:
                     }
                   }
 
-                  v8 = v72;
+                  dictionary = v72;
                   v9 = v77;
                 }
               }
@@ -6812,25 +6812,25 @@ LABEL_36:
     while (v65);
   }
 
-  v66 = [v8 allValues];
+  allValues = [dictionary allValues];
 
   v67 = *MEMORY[0x277D85DE8];
 
-  return v66;
+  return allValues;
 }
 
-- (id)processQualificationNodes:(id)a3 inRange:(_PLTimeIntervalRange)a4
+- (id)processQualificationNodes:(id)nodes inRange:(_PLTimeIntervalRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v83 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  nodesCopy = nodes;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v9 = v7;
+  v9 = nodesCopy;
   v10 = [v9 countByEnumeratingWithState:&v76 objects:v82 count:16];
   if (v10)
   {
@@ -6843,8 +6843,8 @@ LABEL_36:
     v61 = *MEMORY[0x277D0AB98];
     v62 = *MEMORY[0x277D3F2F8];
     v72 = v9;
-    v73 = v8;
-    v70 = self;
+    v73 = dictionary;
+    selfCopy = self;
     do
     {
       v14 = 0;
@@ -6857,11 +6857,11 @@ LABEL_36:
 
         v15 = *(*(&v76 + 1) + 8 * v14);
         v16 = objc_autoreleasePoolPush();
-        v17 = [v15 entryDate];
-        v18 = v17;
-        if (v17)
+        entryDate = [v15 entryDate];
+        v18 = entryDate;
+        if (entryDate)
         {
-          [v17 timeIntervalSince1970];
+          [entryDate timeIntervalSince1970];
           if (location <= v19)
           {
             v20 = v19;
@@ -6874,38 +6874,38 @@ LABEL_36:
             v18 = [v15 objectForKeyedSubscript:v74];
             if (v18)
             {
-              v21 = [v8 objectForKeyedSubscript:v18];
+              v21 = [dictionary objectForKeyedSubscript:v18];
 
               if (v21)
               {
                 goto LABEL_13;
               }
 
-              v22 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nodeIDsToNodeNames];
-              v23 = [v22 objectForKeyedSubscript:v18];
+              nodeIDsToNodeNames = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nodeIDsToNodeNames];
+              v23 = [nodeIDsToNodeNames objectForKeyedSubscript:v18];
 
               if (v23)
               {
                 v24 = MEMORY[0x277CBEB38];
-                v25 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nodeIDsToNodeNames];
-                v26 = [v25 objectForKeyedSubscript:v18];
+                nodeIDsToNodeNames2 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self nodeIDsToNodeNames];
+                v26 = [nodeIDsToNodeNames2 objectForKeyedSubscript:v18];
                 v27 = [v24 dictionaryWithObject:v26 forKey:@"PLBatteryUIAppBundleIDKey"];
                 [v73 setObject:v27 forKeyedSubscript:v18];
 
-                v8 = v73;
+                dictionary = v73;
 LABEL_13:
-                v75 = [v8 objectForKeyedSubscript:v18];
+                v75 = [dictionary objectForKeyedSubscript:v18];
                 v28 = [v15 objectForKeyedSubscript:v71];
-                v29 = [v28 intValue];
-                if ([&unk_28714D8E0 count] <= v29)
+                intValue = [v28 intValue];
+                if ([&unk_28714D8E0 count] <= intValue)
                 {
                   v30 = PLLogCommon();
                   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
                   {
-                    v51 = [v28 intValue];
+                    intValue2 = [v28 intValue];
                     v52 = [&unk_28714D8F8 count];
                     *buf = 67109376;
-                    *v81 = v51;
+                    *v81 = intValue2;
                     *&v81[4] = 2048;
                     *&v81[6] = v52;
                     _os_log_error_impl(&dword_25EE51000, v30, OS_LOG_TYPE_ERROR, "rootNodeID=%d out of bounds=%lu", buf, 0x12u);
@@ -6916,16 +6916,16 @@ LABEL_13:
                 {
                   v30 = [&unk_28714D910 objectAtIndexedSubscript:{objc_msgSend(v28, "intValue")}];
                   v31 = [v15 objectForKeyedSubscript:v67];
-                  v32 = [v31 intValue];
-                  if ([&unk_28714D928 count] <= v32)
+                  intValue3 = [v31 intValue];
+                  if ([&unk_28714D928 count] <= intValue3)
                   {
                     v33 = PLLogCommon();
                     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
                     {
-                      v55 = [v31 intValue];
+                      intValue4 = [v31 intValue];
                       v56 = [&unk_28714D940 count];
                       *buf = 67109376;
-                      *v81 = v55;
+                      *v81 = intValue4;
                       *&v81[4] = 2048;
                       *&v81[6] = v56;
                       _os_log_error_impl(&dword_25EE51000, v33, OS_LOG_TYPE_ERROR, "qualificationID=%d out of bounds=%lu", buf, 0x12u);
@@ -6938,8 +6938,8 @@ LABEL_13:
                     v33 = [&unk_28714D958 objectAtIndexedSubscript:{objc_msgSend(v31, "intValue")}];
                     v65 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v33, v30];
                     v68 = [v15 objectForKeyedSubscript:v62];
-                    v34 = [(PLBatteryUIResponseTypeBatteryBreakdown *)v70 nodeIDsToNodeNames];
-                    v35 = [v34 objectForKeyedSubscript:v18];
+                    nodeIDsToNodeNames3 = [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy nodeIDsToNodeNames];
+                    v35 = [nodeIDsToNodeNames3 objectForKeyedSubscript:v18];
 
                     v63 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v61, @"aod"];
                     v64 = v35;
@@ -6979,7 +6979,7 @@ LABEL_20:
 
                       v50 = v65;
                       v31 = v66;
-                      [(PLBatteryUIResponseTypeBatteryBreakdown *)v70 addFgEnergyForMetrics:v69 qualificationID:v66 rootNodeQualificationEnergy:v68 energyEntry:v75];
+                      [(PLBatteryUIResponseTypeBatteryBreakdown *)selfCopy addFgEnergyForMetrics:v69 qualificationID:v66 rootNodeQualificationEnergy:v68 energyEntry:v75];
                     }
 
                     else
@@ -7003,10 +7003,10 @@ LABEL_20:
                     v28 = v69;
                   }
 
-                  self = v70;
+                  self = selfCopy;
                 }
 
-                v8 = v73;
+                dictionary = v73;
               }
 
               v9 = v72;
@@ -7027,33 +7027,33 @@ LABEL_30:
     while (v57);
   }
 
-  v58 = [v8 allValues];
+  allValues = [dictionary allValues];
 
   v59 = *MEMORY[0x277D85DE8];
 
-  return v58;
+  return allValues;
 }
 
-- (id)processAppTimeEntries:(id)a3 inRange:(_PLTimeIntervalRange)a4 withAppArray:(id)a5
+- (id)processAppTimeEntries:(id)entries inRange:(_PLTimeIntervalRange)range withAppArray:(id)array
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v159 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v117 = a5;
-  v133 = [MEMORY[0x277CBEB38] dictionary];
-  v132 = [MEMORY[0x277CBEB38] dictionary];
-  v129 = [MEMORY[0x277CBEB38] dictionary];
-  v128 = [MEMORY[0x277CBEB38] dictionary];
+  entriesCopy = entries;
+  arrayCopy = array;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
   [MEMORY[0x277CBEB38] dictionary];
   v127 = v126 = self;
   [(PLBatteryUIResponseTypeBatteryBreakdown *)self initBackgroundLocationAudioTime];
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v150 = 0u;
   v151 = 0u;
   v152 = 0u;
   v153 = 0u;
-  v11 = v9;
+  v11 = entriesCopy;
   v12 = [v11 countByEnumeratingWithState:&v150 objects:v158 count:16];
   if (v12)
   {
@@ -7069,16 +7069,16 @@ LABEL_30:
         }
 
         v16 = *(*(&v150 + 1) + 8 * i);
-        v17 = [v16 entryDate];
-        if (v17)
+        entryDate = [v16 entryDate];
+        if (entryDate)
         {
-          v18 = v17;
-          [v17 timeIntervalSince1970];
+          v18 = entryDate;
+          [entryDate timeIntervalSince1970];
           v20 = v19;
 
           if (location <= v20 && v20 < location + length)
           {
-            [v10 addObject:v16];
+            [array addObject:v16];
           }
         }
       }
@@ -7096,8 +7096,8 @@ LABEL_30:
   v147 = 0u;
   v148 = 0u;
   v149 = 0u;
-  v118 = v10;
-  obj = [MEMORY[0x277D3F190] summarizeAggregateEntries:v10];
+  v118 = array;
+  obj = [MEMORY[0x277D3F190] summarizeAggregateEntries:array];
   v22 = [obj countByEnumeratingWithState:&v146 objects:v157 count:16];
   if (v22)
   {
@@ -7125,16 +7125,16 @@ LABEL_30:
         v34 = [v25 objectForKeyedSubscript:@"InCallBackgroundTime"];
         [v34 doubleValue];
         v36 = [v27 numberWithDouble:v33 + v35];
-        [v133 setObject:v36 forKeyedSubscript:v26];
+        [dictionary setObject:v36 forKeyedSubscript:v26];
 
         v37 = [v25 objectForKeyedSubscript:@"BackgroundTime"];
-        [v132 setObject:v37 forKeyedSubscript:v26];
+        [dictionary2 setObject:v37 forKeyedSubscript:v26];
 
         v38 = [v25 objectForKeyedSubscript:@"InCallBackgroundTime"];
-        [v129 setObject:v38 forKeyedSubscript:v26];
+        [dictionary3 setObject:v38 forKeyedSubscript:v26];
 
         v39 = [v25 objectForKeyedSubscript:@"ScreenOnPluggedInTime"];
-        [v128 setObject:v39 forKeyedSubscript:v26];
+        [dictionary4 setObject:v39 forKeyedSubscript:v26];
 
         v40 = [v25 objectForKeyedSubscript:@"BackgroundPluggedInTime"];
         [v127 setObject:v40 forKeyedSubscript:v26];
@@ -7152,8 +7152,8 @@ LABEL_30:
   v145 = 0u;
   v142 = 0u;
   v143 = 0u;
-  v41 = [(PLBatteryUIResponseTypeBatteryBreakdown *)v126 monotonicNow];
-  v42 = [(PLBatteryUIResponseTypeBatteryBreakdown *)v126 getNonAppRuntimesInRange:v41 withNow:location, length];
+  monotonicNow = [(PLBatteryUIResponseTypeBatteryBreakdown *)v126 monotonicNow];
+  v42 = [(PLBatteryUIResponseTypeBatteryBreakdown *)v126 getNonAppRuntimesInRange:monotonicNow withNow:location, length];
 
   v121 = v42;
   v43 = [v42 countByEnumeratingWithState:&v142 objects:v156 count:16];
@@ -7185,11 +7185,11 @@ LABEL_30:
         [v55 doubleValue];
         v57 = [v48 numberWithDouble:v54 + v56];
         v58 = [v46 objectForKeyedSubscript:@"BundleID"];
-        [v133 setObject:v57 forKeyedSubscript:v58];
+        [dictionary setObject:v57 forKeyedSubscript:v58];
 
         v59 = [v46 objectForKeyedSubscript:@"BackgroundTime"];
         v60 = [v46 objectForKeyedSubscript:@"BundleID"];
-        [v132 setObject:v59 forKeyedSubscript:v60];
+        [dictionary2 setObject:v59 forKeyedSubscript:v60];
       }
 
       v44 = [v121 countByEnumeratingWithState:&v142 objects:v156 count:16];
@@ -7202,7 +7202,7 @@ LABEL_30:
   v141 = 0u;
   v138 = 0u;
   v139 = 0u;
-  v61 = v117;
+  v61 = arrayCopy;
   v62 = [v61 countByEnumeratingWithState:&v138 objects:v155 count:16];
   v122 = v61;
   if (v62)
@@ -7230,25 +7230,25 @@ LABEL_30:
 
         v69 = [v65 objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
         v70 = MEMORY[0x277CCABB0];
-        v71 = [v133 objectForKeyedSubscript:v69];
+        v71 = [dictionary objectForKeyedSubscript:v69];
         [v71 doubleValue];
         v72 = [v70 numberWithDouble:?];
         [v65 setObject:v72 forKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
 
         v73 = MEMORY[0x277CCABB0];
-        v74 = [v132 objectForKeyedSubscript:v69];
+        v74 = [dictionary2 objectForKeyedSubscript:v69];
         [v74 doubleValue];
         v75 = [v73 numberWithDouble:?];
         [v65 setObject:v75 forKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
 
         v76 = MEMORY[0x277CCABB0];
-        v77 = [v129 objectForKeyedSubscript:v69];
+        v77 = [dictionary3 objectForKeyedSubscript:v69];
         [v77 doubleValue];
         v78 = [v76 numberWithDouble:?];
         [v65 setObject:v78 forKeyedSubscript:@"PLBatteryUIAppCallOffScreenTimeKey"];
 
         v79 = MEMORY[0x277CCABB0];
-        v80 = [v128 objectForKeyedSubscript:v69];
+        v80 = [dictionary4 objectForKeyedSubscript:v69];
         [v80 doubleValue];
         v81 = [v79 numberWithDouble:?];
         [v65 setObject:v81 forKeyedSubscript:@"PLBatteryUIAppForegroundPluggedInRuntimeKey"];
@@ -7333,27 +7333,27 @@ LABEL_30:
         }
 
         v108 = *(*(&v134 + 1) + 8 * n);
-        v109 = [MEMORY[0x277CBEB38] dictionary];
-        [v109 setObject:v108 forKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
-        [v109 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppTypeKey"];
-        v110 = [v133 objectForKeyedSubscript:v108];
-        [v109 setObject:v110 forKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
+        dictionary5 = [MEMORY[0x277CBEB38] dictionary];
+        [dictionary5 setObject:v108 forKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
+        [dictionary5 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppTypeKey"];
+        v110 = [dictionary objectForKeyedSubscript:v108];
+        [dictionary5 setObject:v110 forKeyedSubscript:@"PLBatteryUIAppForegroundRuntimeKey"];
 
-        v111 = [v132 objectForKeyedSubscript:v108];
-        [v109 setObject:v111 forKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
+        v111 = [dictionary2 objectForKeyedSubscript:v108];
+        [dictionary5 setObject:v111 forKeyedSubscript:@"PLBatteryUIAppBackgroundRuntimeKey"];
 
-        v112 = [v129 objectForKeyedSubscript:v108];
-        [v109 setObject:v112 forKeyedSubscript:@"PLBatteryUIAppCallOffScreenTimeKey"];
+        v112 = [dictionary3 objectForKeyedSubscript:v108];
+        [dictionary5 setObject:v112 forKeyedSubscript:@"PLBatteryUIAppCallOffScreenTimeKey"];
 
-        v113 = [v128 objectForKeyedSubscript:v108];
-        [v109 setObject:v113 forKeyedSubscript:@"PLBatteryUIAppForegroundPluggedInRuntimeKey"];
+        v113 = [dictionary4 objectForKeyedSubscript:v108];
+        [dictionary5 setObject:v113 forKeyedSubscript:@"PLBatteryUIAppForegroundPluggedInRuntimeKey"];
 
         v114 = [v127 objectForKeyedSubscript:v108];
-        [v109 setObject:v114 forKeyedSubscript:@"PLBatteryUIAppBackgroundPluggedInRuntimeKey"];
+        [dictionary5 setObject:v114 forKeyedSubscript:@"PLBatteryUIAppBackgroundPluggedInRuntimeKey"];
 
-        [(PLBatteryUIResponseTypeBatteryBreakdown *)v126 bgLocationAudioTimeApps:v109];
-        [v109 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
-        [v103 addObject:v109];
+        [(PLBatteryUIResponseTypeBatteryBreakdown *)v126 bgLocationAudioTimeApps:dictionary5];
+        [dictionary5 setObject:&unk_287146A20 forKeyedSubscript:@"PLBatteryUIAppEnergyValueKey"];
+        [v103 addObject:dictionary5];
       }
 
       v105 = [v131 countByEnumeratingWithState:&v134 objects:v154 count:16];
@@ -7367,21 +7367,21 @@ LABEL_30:
   return v103;
 }
 
-- (id)processNotificationEntries:(id)a3 inRange:(_PLTimeIntervalRange)a4 withAppArray:(id)a5
+- (id)processNotificationEntries:(id)entries inRange:(_PLTimeIntervalRange)range withAppArray:(id)array
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v45 = a5;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  entriesCopy = entries;
+  arrayCopy = array;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v10 = v8;
+  v10 = entriesCopy;
   v11 = [v10 countByEnumeratingWithState:&v51 objects:v60 count:16];
-  v46 = v9;
+  v46 = dictionary;
   if (v11)
   {
     v12 = v11;
@@ -7398,14 +7398,14 @@ LABEL_30:
         }
 
         v16 = *(*(&v51 + 1) + 8 * v15);
-        v17 = [(PLBatteryBreakdownNotificationInfo *)v16 entryDate];
-        v18 = v17;
-        if (!v17)
+        entryDate = [(PLBatteryBreakdownNotificationInfo *)v16 entryDate];
+        v18 = entryDate;
+        if (!entryDate)
         {
           goto LABEL_8;
         }
 
-        [v17 timeIntervalSince1970];
+        [entryDate timeIntervalSince1970];
         if (location > v19)
         {
           goto LABEL_8;
@@ -7437,17 +7437,17 @@ LABEL_17:
                 v25 = [[PLBatteryBreakdownNotificationInfo alloc] initWithEntry:v16];
                 if (v25)
                 {
-                  v26 = [v9 objectForKeyedSubscript:v18];
+                  v26 = [dictionary objectForKeyedSubscript:v18];
 
                   if (v26)
                   {
-                    v27 = [v9 objectForKeyedSubscript:v18];
+                    v27 = [dictionary objectForKeyedSubscript:v18];
                     [v27 combineWith:v25];
                   }
 
                   else
                   {
-                    [v9 setObject:v25 forKeyedSubscript:v18];
+                    [dictionary setObject:v25 forKeyedSubscript:v18];
                   }
 
                   v31 = PLLogCommon();
@@ -7492,10 +7492,10 @@ LABEL_8:
             }
 
             v28 = [(PLBatteryBreakdownNotificationInfo *)v16 objectForKeyedSubscript:@"NotificationType"];
-            v29 = [v28 intValue];
+            intValue = [v28 intValue];
 
-            v30 = v29 == -1;
-            v9 = v46;
+            v30 = intValue == -1;
+            dictionary = v46;
             if (v30)
             {
               goto LABEL_17;
@@ -7519,7 +7519,7 @@ LABEL_9:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v35 = v45;
+  v35 = arrayCopy;
   v36 = [v35 countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v36)
   {
@@ -7535,7 +7535,7 @@ LABEL_34:
       }
 
       v40 = *(*(&v47 + 1) + 8 * v39);
-      v9 = v46;
+      dictionary = v46;
       if (![v46 count])
       {
         break;
@@ -7552,7 +7552,7 @@ LABEL_34:
       if (v37 == ++v39)
       {
         v37 = [v35 countByEnumeratingWithState:&v47 objects:v55 count:16];
-        v9 = v46;
+        dictionary = v46;
         if (v37)
         {
           goto LABEL_34;
@@ -7568,21 +7568,21 @@ LABEL_34:
   return v35;
 }
 
-- (id)getWidgetUpdateTypeToCount:(id)a3 inRange:(_PLTimeIntervalRange)a4
+- (id)getWidgetUpdateTypeToCount:(id)count inRange:(_PLTimeIntervalRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v23[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  countCopy = count;
   v8 = [(PLOperator *)PLApplicationAgent entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"WidgetUpdates"];
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@='%@'", @"bundleID", v7];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%f", @"timeInterval", 0x40AC200000000000];
-  v11 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v12 = [v11 storage];
-  v23[0] = v9;
-  v23[1] = v10;
+  countCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@='%@'", @"bundleID", countCopy];
+  0x40AC200000000000 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%f", @"timeInterval", 0x40AC200000000000];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  storage = [responderService storage];
+  v23[0] = countCopy;
+  v23[1] = 0x40AC200000000000;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
-  v14 = [v12 entriesForKey:v8 inTimeRange:v13 withFilters:{location, length}];
+  v14 = [storage entriesForKey:v8 inTimeRange:v13 withFilters:{location, length}];
 
   v20 = 0;
   v21[0] = &v20;
@@ -7600,7 +7600,7 @@ LABEL_34:
   v15 = PLLogCommon();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [PLBatteryUIResponseTypeBatteryBreakdown getWidgetUpdateTypeToCount:v7 inRange:v21];
+    [PLBatteryUIResponseTypeBatteryBreakdown getWidgetUpdateTypeToCount:countCopy inRange:v21];
   }
 
   v16 = *(v21[0] + 40);
@@ -7644,49 +7644,49 @@ void __78__PLBatteryUIResponseTypeBatteryBreakdown_getWidgetUpdateTypeToCount_in
   }
 }
 
-- (signed)getWidgetTypeForEnergyEntry:(id)a3
+- (signed)getWidgetTypeForEnergyEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"WidgetUpdateTypeToCount"];
-  v5 = [v4 allValues];
-  v6 = [v5 valueForKeyPath:@"@max.self"];
+  entryCopy = entry;
+  v4 = [entryCopy objectForKeyedSubscript:@"WidgetUpdateTypeToCount"];
+  allValues = [v4 allValues];
+  v6 = [allValues valueForKeyPath:@"@max.self"];
 
   v7 = [v4 allKeysForObject:v6];
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
   v9 = PLLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [PLBatteryUIResponseTypeBatteryBreakdown getWidgetTypeForEnergyEntry:v3];
+    [PLBatteryUIResponseTypeBatteryBreakdown getWidgetTypeForEnergyEntry:entryCopy];
   }
 
   if ([v7 containsObject:&unk_287146C00])
   {
 
-    v8 = &unk_287146C00;
+    firstObject = &unk_287146C00;
   }
 
   if ([v6 intValue] < 1)
   {
-    v10 = 0;
+    intValue = 0;
   }
 
   else
   {
-    v10 = [v8 intValue];
+    intValue = [firstObject intValue];
   }
 
-  return v10;
+  return intValue;
 }
 
-- (signed)getWidgetTypeForHostName:(id)a3
+- (signed)getWidgetTypeForHostName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Local"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Local"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Remote-NotificationCenter"])
+  else if ([nameCopy isEqualToString:@"Remote-NotificationCenter"])
   {
     v4 = 2;
   }
@@ -7699,9 +7699,9 @@ void __78__PLBatteryUIResponseTypeBatteryBreakdown_getWidgetUpdateTypeToCount_in
   return v4;
 }
 
-- (id)stringifyKeysForDict:(id)a3
+- (id)stringifyKeysForDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -7709,7 +7709,7 @@ void __78__PLBatteryUIResponseTypeBatteryBreakdown_getWidgetUpdateTypeToCount_in
   v7[3] = &unk_279A5E518;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [dictCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -7721,7 +7721,7 @@ void __64__PLBatteryUIResponseTypeBatteryBreakdown_stringifyKeysForDict___block_
   [*(a1 + 32) setObject:v5 forKeyedSubscript:v6];
 }
 
-- (int)getBatteryMaximumCapacityPercentWithError:(id *)a3
+- (int)getBatteryMaximumCapacityPercentWithError:(id *)error
 {
   v4 = IOPSCopyPowerSourcesByType();
   v5 = v4;
@@ -7729,20 +7729,20 @@ void __64__PLBatteryUIResponseTypeBatteryBreakdown_stringifyKeysForDict___block_
   {
     v8 = [v5 objectAtIndexedSubscript:0];
     v9 = [v8 objectForKeyedSubscript:@"Maximum Capacity Percent"];
-    v10 = [v9 intValue];
+    intValue = [v9 intValue];
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"noBatteryData" code:-1 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"noBatteryData" code:-1 userInfo:0];
     }
 
-    v10 = -1;
+    intValue = -1;
   }
 
-  return v10;
+  return intValue;
 }
 
 - (void)configure:.cold.1()

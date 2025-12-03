@@ -1,20 +1,20 @@
 @interface ATXPBActivitySuggestionFeedbackEvent
 + (uint64_t)serializedAcceptedTriggersType;
 - (BOOL)hasActivity;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)eventTypeAsString:(__CFString *)a1;
-- (__CFString)locationAsString:(__CFString *)a1;
-- (__CFString)suggestionTypeAsString:(__CFString *)a1;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)eventTypeAsString:(__CFString *)string;
+- (__CFString)locationAsString:(__CFString *)string;
+- (__CFString)suggestionTypeAsString:(__CFString *)string;
 - (double)date;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)serializedAcceptedTriggersAtIndex:(id *)a1;
-- (uint64_t)StringAsEventType:(uint64_t)a1;
-- (uint64_t)StringAsLocation:(uint64_t)a1;
-- (uint64_t)StringAsSuggestionType:(uint64_t)a1;
+- (id)serializedAcceptedTriggersAtIndex:(id *)index;
+- (uint64_t)StringAsEventType:(uint64_t)type;
+- (uint64_t)StringAsLocation:(uint64_t)location;
+- (uint64_t)StringAsSuggestionType:(uint64_t)type;
 - (uint64_t)activity;
-- (uint64_t)addSerializedAcceptedTriggers:(uint64_t)a1;
+- (uint64_t)addSerializedAcceptedTriggers:(uint64_t)triggers;
 - (uint64_t)clearSerializedAcceptedTriggers;
 - (uint64_t)eventType;
 - (uint64_t)hasDate;
@@ -34,11 +34,11 @@
 - (uint64_t)setSuggestionType:(uint64_t)result;
 - (uint64_t)suggestionType;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setActivity:(uint64_t)a1;
-- (void)setSerializedAcceptedTriggers:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setActivity:(uint64_t)activity;
+- (void)setSerializedAcceptedTriggers:(uint64_t)triggers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBActivitySuggestionFeedbackEvent
@@ -56,20 +56,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBActivitySuggestionFeedbackEvent;
   v4 = [(ATXPBActivitySuggestionFeedbackEvent *)&v8 description];
-  v5 = [(ATXPBActivitySuggestionFeedbackEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBActivitySuggestionFeedbackEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_date];
-    [v3 setObject:v5 forKey:@"date"];
+    [dictionary setObject:v5 forKey:@"date"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -100,7 +100,7 @@ LABEL_3:
     v7 = off_1E80C07B0[eventType];
   }
 
-  [v3 setObject:v7 forKey:@"eventType"];
+  [dictionary setObject:v7 forKey:@"eventType"];
 
   if ((*&self->_has & 8) != 0)
   {
@@ -116,21 +116,21 @@ LABEL_10:
       v9 = off_1E80C07D8[suggestionType];
     }
 
-    [v3 setObject:v9 forKey:@"suggestionType"];
+    [dictionary setObject:v9 forKey:@"suggestionType"];
   }
 
 LABEL_14:
   activity = self->_activity;
   if (activity)
   {
-    v11 = [(ATXPBActivity *)activity dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"activity"];
+    dictionaryRepresentation = [(ATXPBActivity *)activity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"activity"];
   }
 
   serializedAcceptedTriggers = self->_serializedAcceptedTriggers;
   if (serializedAcceptedTriggers)
   {
-    [v3 setObject:serializedAcceptedTriggers forKey:@"serializedAcceptedTriggers"];
+    [dictionary setObject:serializedAcceptedTriggers forKey:@"serializedAcceptedTriggers"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -154,16 +154,16 @@ LABEL_14:
       v14 = @"ControlCenter";
     }
 
-    [v3 setObject:v14 forKey:@"location"];
+    [dictionary setObject:v14 forKey:@"location"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -233,10 +233,10 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -271,7 +271,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(ATXPBActivity *)self->_activity copyWithZone:a3];
+  v8 = [(ATXPBActivity *)self->_activity copyWithZone:zone];
   v9 = *(v6 + 16);
   *(v6 + 16) = v8;
 
@@ -294,7 +294,7 @@ LABEL_5:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        v15 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{zone, v17}];
         [(ATXPBActivitySuggestionFeedbackEvent *)v6 addSerializedAcceptedTriggers:v15];
       }
 
@@ -313,23 +313,23 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_date != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_date != *(equalCopy + 1))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
 LABEL_25:
     v7 = 0;
@@ -338,38 +338,38 @@ LABEL_25:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_eventType != *(v4 + 6))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_eventType != *(equalCopy + 6))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0 || self->_suggestionType != *(v4 + 10))
+    if ((*(equalCopy + 44) & 8) == 0 || self->_suggestionType != *(equalCopy + 10))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_25;
   }
 
   activity = self->_activity;
-  if (activity | *(v4 + 2) && ![(ATXPBActivity *)activity isEqual:?])
+  if (activity | *(equalCopy + 2) && ![(ATXPBActivity *)activity isEqual:?])
   {
     goto LABEL_25;
   }
 
   serializedAcceptedTriggers = self->_serializedAcceptedTriggers;
-  if (serializedAcceptedTriggers | *(v4 + 4))
+  if (serializedAcceptedTriggers | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)serializedAcceptedTriggers isEqual:?])
     {
@@ -377,10 +377,10 @@ LABEL_25:
     }
   }
 
-  v7 = (*(v4 + 44) & 4) == 0;
+  v7 = (*(equalCopy + 44) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_location != *(v4 + 7))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_location != *(equalCopy + 7))
     {
       goto LABEL_25;
     }
@@ -555,31 +555,31 @@ LABEL_14:
   return result;
 }
 
-- (__CFString)eventTypeAsString:(__CFString *)a1
+- (__CFString)eventTypeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 5)
   {
-    a1 = off_1E80C07B0[a2];
+    string = off_1E80C07B0[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsEventType:(uint64_t)a1
+- (uint64_t)StringAsEventType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Suggested"])
@@ -680,31 +680,31 @@ LABEL_4:
   return result;
 }
 
-- (__CFString)suggestionTypeAsString:(__CFString *)a1
+- (__CFString)suggestionTypeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 3)
   {
-    a1 = off_1E80C07D8[a2];
+    string = off_1E80C07D8[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsSuggestionType:(uint64_t)a1
+- (uint64_t)StringAsSuggestionType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"SetUp"])
@@ -756,21 +756,21 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addSerializedAcceptedTriggers:(uint64_t)a1
+- (uint64_t)addSerializedAcceptedTriggers:(uint64_t)triggers
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (triggers)
   {
-    v5 = *(a1 + 32);
+    v5 = *(triggers + 32);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 32);
-      *(a1 + 32) = v6;
+      v7 = *(triggers + 32);
+      *(triggers + 32) = v6;
 
-      v5 = *(a1 + 32);
+      v5 = *(triggers + 32);
     }
 
     v3 = [v5 addObject:v9];
@@ -790,15 +790,15 @@ LABEL_4:
   return result;
 }
 
-- (id)serializedAcceptedTriggersAtIndex:(id *)a1
+- (id)serializedAcceptedTriggersAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[4] objectAtIndex:a2];
+    index = [index[4] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)location
@@ -860,65 +860,65 @@ LABEL_4:
   return result;
 }
 
-- (__CFString)locationAsString:(__CFString *)a1
+- (__CFString)locationAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_11:
 
-    return a1;
+    return string;
   }
 
   if (a2)
   {
     if (a2 == 1)
     {
-      a1 = @"LockScreen";
+      string = @"LockScreen";
 
-      return a1;
+      return string;
     }
 
-    a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+    string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
     goto LABEL_11;
   }
 
-  a1 = @"ControlCenter";
+  string = @"ControlCenter";
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsLocation:(uint64_t)a1
+- (uint64_t)StringAsLocation:(uint64_t)location
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (location)
   {
     if ([v3 isEqualToString:@"ControlCenter"])
     {
-      a1 = 0;
+      location = 0;
     }
 
     else
     {
-      a1 = [v4 isEqualToString:@"LockScreen"];
+      location = [v4 isEqualToString:@"LockScreen"];
     }
   }
 
-  return a1;
+  return location;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (!a1)
+  if (!to)
   {
     goto LABEL_16;
   }
 
-  v4 = *(a1 + 44);
+  v4 = *(to + 44);
   if ((v4 & 1) == 0)
   {
-    if ((*(a1 + 44) & 2) == 0)
+    if ((*(to + 44) & 2) == 0)
     {
       goto LABEL_4;
     }
@@ -926,7 +926,7 @@ LABEL_11:
 LABEL_20:
     v3 = OUTLINED_FUNCTION_0_7(v3, 24);
     v3[v15] = v14 | 2;
-    if ((*(a1 + 44) & 8) == 0)
+    if ((*(to + 44) & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -934,9 +934,9 @@ LABEL_20:
     goto LABEL_5;
   }
 
-  *(v3 + 1) = *(a1 + 8);
+  *(v3 + 1) = *(to + 8);
   v3[44] |= 1u;
-  v4 = *(a1 + 44);
+  v4 = *(to + 44);
   if ((v4 & 2) != 0)
   {
     goto LABEL_20;
@@ -952,33 +952,33 @@ LABEL_5:
 
 LABEL_6:
   v16 = v3;
-  v7 = *(a1 + 16);
+  v7 = *(to + 16);
   if (v7)
   {
     [(ATXPBActivitySuggestionFeedbackEvent *)v3 setActivity:v7];
   }
 
-  if ([*(a1 + 32) count])
+  if ([*(to + 32) count])
   {
     if (v16)
     {
       [*(v16 + 32) removeAllObjects];
     }
 
-    v8 = [*(a1 + 32) count];
+    v8 = [*(to + 32) count];
     if (v8)
     {
       v9 = v8;
       for (i = 0; i != v9; ++i)
       {
-        v11 = [*(a1 + 32) objectAtIndex:i];
+        v11 = [*(to + 32) objectAtIndex:i];
         [(ATXPBActivitySuggestionFeedbackEvent *)v16 addSerializedAcceptedTriggers:v11];
       }
     }
   }
 
   v3 = v16;
-  if ((*(a1 + 44) & 4) != 0)
+  if ((*(to + 44) & 4) != 0)
   {
     v3 = OUTLINED_FUNCTION_0_7(v16, 28);
     v3[v13] = v12 | 4;
@@ -987,20 +987,20 @@ LABEL_6:
 LABEL_16:
 }
 
-- (void)setActivity:(uint64_t)a1
+- (void)setActivity:(uint64_t)activity
 {
-  if (a1)
+  if (activity)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 16);
+    OUTLINED_FUNCTION_2(activity, a2, 16);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v24 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!from)
   {
     goto LABEL_23;
   }
@@ -1015,7 +1015,7 @@ LABEL_16:
 
 LABEL_10:
     OUTLINED_FUNCTION_1_5(24);
-    *(a1 + v11) = v10 | 2;
+    *(from + v11) = v10 | 2;
     if ((*(v4 + 44) & 8) == 0)
     {
       goto LABEL_6;
@@ -1024,8 +1024,8 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  *(a1 + 8) = *(v3 + 1);
-  *(a1 + 44) |= 1u;
+  *(from + 8) = *(v3 + 1);
+  *(from + 44) |= 1u;
   v5 = v3[44];
   if ((v5 & 2) != 0)
   {
@@ -1037,11 +1037,11 @@ LABEL_4:
   {
 LABEL_5:
     OUTLINED_FUNCTION_1_5(40);
-    *(a1 + v7) = v6 | 8;
+    *(from + v7) = v6 | 8;
   }
 
 LABEL_6:
-  v8 = *(a1 + 16);
+  v8 = *(from + 16);
   v9 = *(v4 + 2);
   if (v8)
   {
@@ -1053,7 +1053,7 @@ LABEL_6:
 
   else if (v9)
   {
-    objc_storeStrong((a1 + 16), v9);
+    objc_storeStrong((from + 16), v9);
   }
 
   v21 = 0u;
@@ -1075,7 +1075,7 @@ LABEL_6:
           objc_enumerationMutation(v12);
         }
 
-        [(ATXPBActivitySuggestionFeedbackEvent *)a1 addSerializedAcceptedTriggers:?];
+        [(ATXPBActivitySuggestionFeedbackEvent *)from addSerializedAcceptedTriggers:?];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -1087,7 +1087,7 @@ LABEL_6:
   if ((*(v4 + 44) & 4) != 0)
   {
     OUTLINED_FUNCTION_1_5(28);
-    *(a1 + v18) = v17 | 4;
+    *(from + v18) = v17 | 4;
   }
 
 LABEL_23:
@@ -1095,9 +1095,9 @@ LABEL_23:
 
 - (double)date
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else
@@ -1126,11 +1126,11 @@ LABEL_23:
   return result;
 }
 
-- (void)setSerializedAcceptedTriggers:(uint64_t)a1
+- (void)setSerializedAcceptedTriggers:(uint64_t)triggers
 {
-  if (a1)
+  if (triggers)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 32);
+    OUTLINED_FUNCTION_2(triggers, a2, 32);
   }
 }
 

@@ -1,12 +1,12 @@
 @interface SCNSceneSource
-+ (BOOL)_shouldCacheWithOptions:(id)a3;
++ (BOOL)_shouldCacheWithOptions:(id)options;
 + (SCNSceneSource)sceneSourceWithData:(NSData *)data options:(NSDictionary *)options;
 + (SCNSceneSource)sceneSourceWithURL:(NSURL *)url options:(NSDictionary *)options;
-+ (id)_cachedSceneSourceForURL:(id)a3 options:(id)a4;
-+ (void)_cacheSceneSource:(id)a3 forURL:(id)a4 options:(id)a5;
-+ (void)_removeCachedSceneSourceIfNeededForURL:(id)a3;
-- (BOOL)_appendToEntries:(id)a3 entriesWithType:(unint64_t)a4 passingTest:(id)a5 entryObjectConstructor:(id)a6;
-- (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5;
++ (id)_cachedSceneSourceForURL:(id)l options:(id)options;
++ (void)_cacheSceneSource:(id)source forURL:(id)l options:(id)options;
++ (void)_removeCachedSceneSourceIfNeededForURL:(id)l;
+- (BOOL)_appendToEntries:(id)entries entriesWithType:(unint64_t)type passingTest:(id)test entryObjectConstructor:(id)constructor;
+- (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes;
 - (NSArray)entriesPassingTest:(void *)predicate;
 - (NSArray)identifiersOfEntriesWithClass:(Class)entryClass;
 - (NSString)description;
@@ -15,18 +15,18 @@
 - (SCNSceneSource)initWithData:(NSData *)data options:(NSDictionary *)options;
 - (SCNSceneSource)initWithURL:(NSURL *)url options:(NSDictionary *)options;
 - (__C3DLibrary)library;
-- (__C3DScene)_createSceneRefWithOptions:(id)a3 statusHandler:(id)a4;
-- (id)_sceneWithClass:(Class)a3 options:(id)a4 statusHandler:(id)a5;
+- (__C3DScene)_createSceneRefWithOptions:(id)options statusHandler:(id)handler;
+- (id)_sceneWithClass:(Class)class options:(id)options statusHandler:(id)handler;
 - (id)c3dDataRepresentation;
 - (id)debugQuickLookData;
 - (id)debugQuickLookObject;
 - (id)entryWithIdentifier:(NSString *)uid withClass:(Class)entryClass;
 - (id)performConsistencyCheck;
 - (id)propertyForKey:(NSString *)key;
-- (id)sceneAtIndex:(unint64_t)a3 options:(id)a4;
-- (id)sceneAtIndex:(unint64_t)a3 options:(id)a4 error:(id *)a5;
-- (id)sceneWithClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (id)sceneWithClass:(Class)a3 options:(id)a4 statusHandler:(id)a5;
+- (id)sceneAtIndex:(unint64_t)index options:(id)options;
+- (id)sceneAtIndex:(unint64_t)index options:(id)options error:(id *)error;
+- (id)sceneWithClass:(Class)class options:(id)options error:(id *)error;
+- (id)sceneWithClass:(Class)class options:(id)options statusHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -46,32 +46,32 @@
   return v6;
 }
 
-+ (BOOL)_shouldCacheWithOptions:(id)a3
++ (BOOL)_shouldCacheWithOptions:(id)options
 {
-  v3 = [a3 objectForKey:@"kSceneSourceCacheScenesByURLKey"];
+  v3 = [options objectForKey:@"kSceneSourceCacheScenesByURLKey"];
 
   return [v3 BOOLValue];
 }
 
-+ (id)_cachedSceneSourceForURL:(id)a3 options:(id)a4
++ (id)_cachedSceneSourceForURL:(id)l options:(id)options
 {
-  objc_sync_enter(a1);
-  if (a3)
+  objc_sync_enter(self);
+  if (l)
   {
-    if (![a1 _shouldCacheWithOptions:a4] || (v7 = objc_msgSend(_sceneSourceCache, "objectForKey:", a3), (a3 = v7) == 0) || (v8 = objc_msgSend(v7, "sceneSourceOptions"), v8 != a4) && (!a4 || (objc_msgSend(v8, "isEqualToDictionary:", a4) & 1) == 0))
+    if (![self _shouldCacheWithOptions:options] || (v7 = objc_msgSend(_sceneSourceCache, "objectForKey:", l), (l = v7) == 0) || (v8 = objc_msgSend(v7, "sceneSourceOptions"), v8 != options) && (!options || (objc_msgSend(v8, "isEqualToDictionary:", options) & 1) == 0))
     {
-      a3 = 0;
+      l = 0;
     }
   }
 
-  objc_sync_exit(a1);
-  return a3;
+  objc_sync_exit(self);
+  return l;
 }
 
-+ (void)_cacheSceneSource:(id)a3 forURL:(id)a4 options:(id)a5
++ (void)_cacheSceneSource:(id)source forURL:(id)l options:(id)options
 {
-  objc_sync_enter(a1);
-  if ([a1 _shouldCacheWithOptions:a5])
+  objc_sync_enter(self);
+  if ([self _shouldCacheWithOptions:options])
   {
     v9 = _sceneSourceCache;
     if (!_sceneSourceCache)
@@ -80,21 +80,21 @@
       _sceneSourceCache = v9;
     }
 
-    [v9 setObject:a3 forKey:a4];
+    [v9 setObject:source forKey:l];
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
 }
 
-+ (void)_removeCachedSceneSourceIfNeededForURL:(id)a3
++ (void)_removeCachedSceneSourceIfNeededForURL:(id)l
 {
-  objc_sync_enter(a1);
-  if (a3)
+  objc_sync_enter(self);
+  if (l)
   {
-    [_sceneSourceCache removeObjectForKey:a3];
+    [_sceneSourceCache removeObjectForKey:l];
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
 }
 
 - (SCNSceneSource)initWithURL:(NSURL *)url options:(NSDictionary *)options
@@ -146,7 +146,7 @@
 {
   if (url)
   {
-    v4 = [[a1 alloc] initWithURL:url options:options];
+    v4 = [[self alloc] initWithURL:url options:options];
 
     return v4;
   }
@@ -160,7 +160,7 @@
 
 + (SCNSceneSource)sceneSourceWithData:(NSData *)data options:(NSDictionary *)options
 {
-  v4 = [[a1 alloc] initWithData:data options:options];
+  v4 = [[self alloc] initWithData:data options:options];
 
   return v4;
 }
@@ -182,28 +182,28 @@
   }
 }
 
-- (id)sceneAtIndex:(unint64_t)a3 options:(id)a4
+- (id)sceneAtIndex:(unint64_t)index options:(id)options
 {
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a4];
-  [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", a3), @"kSceneSourceSceneIndexKey"}];
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:options];
+  [v6 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", index), @"kSceneSourceSceneIndexKey"}];
 
   return [(SCNSceneSource *)self sceneWithOptions:v6 error:0];
 }
 
-- (id)sceneAtIndex:(unint64_t)a3 options:(id)a4 error:(id *)a5
+- (id)sceneAtIndex:(unint64_t)index options:(id)options error:(id *)error
 {
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a4];
-  [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", a3), @"kSceneSourceSceneIndexKey"}];
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:options];
+  [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", index), @"kSceneSourceSceneIndexKey"}];
 
-  return [(SCNSceneSource *)self sceneWithOptions:v8 error:a5];
+  return [(SCNSceneSource *)self sceneWithOptions:v8 error:error];
 }
 
-- (__C3DScene)_createSceneRefWithOptions:(id)a3 statusHandler:(id)a4
+- (__C3DScene)_createSceneRefWithOptions:(id)options statusHandler:(id)handler
 {
-  v5 = a3;
-  if (a3 && [a3 objectForKey:@"kSceneSourceSceneIndexKey"])
+  optionsCopy = options;
+  if (options && [options objectForKey:@"kSceneSourceSceneIndexKey"])
   {
-    v7 = [-[NSDictionary objectForKey:](v5 objectForKey:{@"kSceneSourceSceneIndexKey", "unsignedIntegerValue"}];
+    v7 = [-[NSDictionary objectForKey:](optionsCopy objectForKey:{@"kSceneSourceSceneIndexKey", "unsignedIntegerValue"}];
   }
 
   else
@@ -217,49 +217,49 @@
   v22 = __59__SCNSceneSource__createSceneRefWithOptions_statusHandler___block_invoke;
   v23 = &unk_2782FF578;
   v24 = v8;
-  v25 = a4;
+  handlerCopy = handler;
   if (v8)
   {
     v9 = v8;
-    if (!-[NSString isEqualToString:](-[NSString lowercaseString](-[NSURL pathExtension](v8, "pathExtension", v20, v21, v22, v23, v24, v25), "lowercaseString"), "isEqualToString:", @"dae") || [-[NSDictionary valueForKey:](v5 valueForKey:{@"SCNSceneSourceUseModelIOToLoadDAEFiles", "BOOLValue"}])
+    if (!-[NSString isEqualToString:](-[NSString lowercaseString](-[NSURL pathExtension](v8, "pathExtension", v20, v21, v22, v23, v24, handlerCopy), "lowercaseString"), "isEqualToString:", @"dae") || [-[NSDictionary valueForKey:](optionsCopy valueForKey:{@"SCNSceneSourceUseModelIOToLoadDAEFiles", "BOOLValue"}])
     {
       if ([MEMORY[0x277CD7AD0] canImportFileExtension:{-[NSURL pathExtension](v9, "pathExtension")}])
       {
-        if ([-[NSDictionary valueForKey:](v5 valueForKey:{@"triggerOptionsForRealtimeViewer", "BOOLValue"}])
+        if ([-[NSDictionary valueForKey:](optionsCopy valueForKey:{@"triggerOptionsForRealtimeViewer", "BOOLValue"}])
         {
-          if (v5)
+          if (optionsCopy)
           {
-            v10 = [(NSDictionary *)v5 mutableCopy];
+            dictionary = [(NSDictionary *)optionsCopy mutableCopy];
           }
 
           else
           {
-            v10 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
           }
 
-          v5 = v10;
+          optionsCopy = dictionary;
           v11 = MEMORY[0x277CBEC38];
-          [(NSDictionary *)v10 setValue:MEMORY[0x277CBEC38] forKey:@"kSceneSourceCreateCameraIfAbsent"];
-          [(NSDictionary *)v5 setValue:v11 forKey:@"kSceneSourceCreateNormalsIfAbsent"];
-          [(NSDictionary *)v5 setValue:v11 forKey:@"kSceneSourceCreateLightIfAbsent"];
-          [(NSDictionary *)v5 setValue:v11 forKey:@"kSceneSourceAdjustInvalidClippingPlanes"];
-          [(NSDictionary *)v5 setValue:v11 forKey:@"kSceneSourceFlattenScene"];
-          [(NSDictionary *)v5 setValue:v11 forKey:0x282DCB518];
-          [(NSDictionary *)v5 setValue:@"playUsingSceneTime" forKey:@"kSceneSourceAnimationLoadingMode"];
+          [(NSDictionary *)dictionary setValue:MEMORY[0x277CBEC38] forKey:@"kSceneSourceCreateCameraIfAbsent"];
+          [(NSDictionary *)optionsCopy setValue:v11 forKey:@"kSceneSourceCreateNormalsIfAbsent"];
+          [(NSDictionary *)optionsCopy setValue:v11 forKey:@"kSceneSourceCreateLightIfAbsent"];
+          [(NSDictionary *)optionsCopy setValue:v11 forKey:@"kSceneSourceAdjustInvalidClippingPlanes"];
+          [(NSDictionary *)optionsCopy setValue:v11 forKey:@"kSceneSourceFlattenScene"];
+          [(NSDictionary *)optionsCopy setValue:v11 forKey:0x282DCB518];
+          [(NSDictionary *)optionsCopy setValue:@"playUsingSceneTime" forKey:@"kSceneSourceAnimationLoadingMode"];
         }
 
         +[SCNTransaction begin];
         [SCNTransaction setImmediateMode:1];
-        MDLAssetWithURL = loadMDLAssetWithURL(v9, v5);
-        v13 = [(SCNScene *)MDLAssetWithURL sceneRef];
-        if (v13)
+        MDLAssetWithURL = loadMDLAssetWithURL(v9, optionsCopy);
+        sceneRef = [(SCNScene *)MDLAssetWithURL sceneRef];
+        if (sceneRef)
         {
-          SceneAtIndex = v13;
-          CFRetain(v13);
+          SceneAtIndex = sceneRef;
+          CFRetain(sceneRef);
           [(SCNScene *)MDLAssetWithURL _clearSceneRef];
           +[SCNTransaction commit];
           +[SCNTransaction flush];
-          C3DIOFinalizeLoadScene(SceneAtIndex, 0, v5, 0, -1);
+          C3DIOFinalizeLoadScene(SceneAtIndex, 0, optionsCopy, 0, -1);
           [(SCNNode *)[(SCNScene *)MDLAssetWithURL rootNode] _syncObjCModelAfterC3DIOSceneLoadingWithNodeRef:C3DSceneGetRootNode(SceneAtIndex)];
           if (v7)
           {
@@ -275,7 +275,7 @@
     }
   }
 
-  SceneAtIndex = C3DSceneSourceCreateSceneAtIndex(self->_sceneSource, v7, v5, &v20);
+  SceneAtIndex = C3DSceneSourceCreateSceneAtIndex(self->_sceneSource, v7, optionsCopy, &v20);
   if (v7)
   {
     goto LABEL_21;
@@ -299,7 +299,7 @@ LABEL_21:
     self->_lastLoadedScene = SceneAtIndex;
     if (SceneAtIndex)
     {
-      v16 = [objc_opt_class() _shouldCacheWithOptions:v5];
+      v16 = [objc_opt_class() _shouldCacheWithOptions:optionsCopy];
       v17 = self->_lastLoadedScene;
       if (v16)
       {
@@ -314,10 +314,10 @@ LABEL_21:
   }
 
   lastOptions = self->_lastOptions;
-  if (lastOptions != v5)
+  if (lastOptions != optionsCopy)
   {
 
-    self->_lastOptions = v5;
+    self->_lastOptions = optionsCopy;
   }
 
   return SceneAtIndex;
@@ -456,20 +456,20 @@ LABEL_28:
   return result;
 }
 
-- (id)_sceneWithClass:(Class)a3 options:(id)a4 statusHandler:(id)a5
+- (id)_sceneWithClass:(Class)class options:(id)options statusHandler:(id)handler
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  if (![(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if (![(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  if (!a4)
+  if (!options)
   {
-    a4 = [MEMORY[0x277CBEAC0] dictionary];
+    options = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  if (self->_lastLoadedScene && [a4 isEqual:self->_lastOptions])
+  if (self->_lastLoadedScene && [options isEqual:self->_lastOptions])
   {
     ObjCWrapper = [MEMORY[0x277CCAAC8] unarchiveObjectWithData:{objc_msgSend(MEMORY[0x277CCAAB0], "archivedDataWithRootObject:requiringSecureCoding:error:", C3DEntityGetObjCWrapper(self->_lastLoadedScene), 0, 0)}];
     [ObjCWrapper setSceneSource:self];
@@ -479,7 +479,7 @@ LABEL_28:
   URL = C3DSceneSourceGetURL(self->_sceneSource);
   Data = C3DSceneSourceGetData(self->_sceneSource);
   v12 = [objc_msgSend(objc_msgSend(URL "pathExtension")];
-  if (([objc_msgSend(a4 valueForKey:{@"kSceneSourceFormat", "isEqualToString:", @"scn"}] & 1) != 0 || ((objc_msgSend(objc_msgSend(objc_msgSend(URL, "pathExtension"), "lowercaseString"), "isEqualToString:", @"scn") | v12) & 1) != 0 || objc_msgSend(Data, "length") >= 7 && !strncmp(objc_msgSend(Data, "bytes"), "bplist", 6uLL))
+  if (([objc_msgSend(options valueForKey:{@"kSceneSourceFormat", "isEqualToString:", @"scn"}] & 1) != 0 || ((objc_msgSend(objc_msgSend(objc_msgSend(URL, "pathExtension"), "lowercaseString"), "isEqualToString:", @"scn") | v12) & 1) != 0 || objc_msgSend(Data, "length") >= 7 && !strncmp(objc_msgSend(Data, "bytes"), "bplist", 6uLL))
   {
     v33 = 0;
     if (!Data)
@@ -487,10 +487,10 @@ LABEL_28:
       Data = [MEMORY[0x277CBEA90] dataWithContentsOfURL:URL options:0 error:&v33];
       if (!Data)
       {
-        if (a5)
+        if (handler)
         {
           v32 = 1;
-          (*(a5 + 2))(a5, -1, v33, &v32, 1.0);
+          (*(handler + 2))(handler, -1, v33, &v32, 1.0);
         }
 
         return 0;
@@ -506,7 +506,7 @@ LABEL_28:
       }
     }
 
-    v13 = [[SCNKeyedUnarchiver alloc] initForReadingWithData:Data secure:C3DIOShouldActivateSecurityChecks(URL, a4)];
+    v13 = [[SCNKeyedUnarchiver alloc] initForReadingWithData:Data secure:C3DIOShouldActivateSecurityChecks(URL, options)];
     v14 = v13;
     if (v13)
     {
@@ -514,7 +514,7 @@ LABEL_28:
       context = objc_autoreleasePoolPush();
       if (URL)
       {
-        cf = C3DIOCreateImportContextFromOptions(a4, URL);
+        cf = C3DIOCreateImportContextFromOptions(options, URL);
         [v14 setContext:cf];
         [v14 setAssetCatalog:{+[SCNAssetCatalog assetCatalogForResourceURL:](SCNAssetCatalog, "assetCatalogForResourceURL:", URL)}];
         [v14 setDocumentURL:URL];
@@ -525,10 +525,10 @@ LABEL_28:
         cf = 0;
       }
 
-      if (objc_opt_class() != a3)
+      if (objc_opt_class() != class)
       {
         v15 = objc_opt_class();
-        [v14 setClass:a3 forClassName:NSStringFromClass(v15)];
+        [v14 setClass:class forClassName:NSStringFromClass(v15)];
       }
 
       v16 = MEMORY[0x277CBEB98];
@@ -539,7 +539,7 @@ LABEL_28:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = v18;
+        scene = v18;
       }
 
       else
@@ -547,8 +547,8 @@ LABEL_28:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v19 = [(objc_class *)a3 scene];
-          [objc_msgSend(v19 "rootNode")];
+          scene = [(objc_class *)class scene];
+          [objc_msgSend(scene "rootNode")];
         }
 
         else
@@ -559,11 +559,11 @@ LABEL_28:
             [SCNSceneSource _sceneWithClass:options:statusHandler:];
           }
 
-          v19 = 0;
+          scene = 0;
         }
       }
 
-      v21 = v19;
+      v21 = scene;
       [v14 finishDecoding];
 
       if (cf)
@@ -572,7 +572,7 @@ LABEL_28:
       }
 
       objc_autoreleasePoolPop(context);
-      if (v19)
+      if (scene)
       {
         self->_sceneLoaded = 1;
         lastLoadedScene = self->_lastLoadedScene;
@@ -581,11 +581,11 @@ LABEL_28:
           CFRelease(lastLoadedScene);
         }
 
-        v23 = [v19 sceneRef];
-        self->_lastLoadedScene = v23;
-        if (v23)
+        sceneRef = [scene sceneRef];
+        self->_lastLoadedScene = sceneRef;
+        if (sceneRef)
         {
-          v24 = [objc_opt_class() _shouldCacheWithOptions:a4];
+          v24 = [objc_opt_class() _shouldCacheWithOptions:options];
           v25 = self->_lastLoadedScene;
           if (v24)
           {
@@ -599,19 +599,19 @@ LABEL_28:
         }
 
         lastOptions = self->_lastOptions;
-        if (lastOptions != a4)
+        if (lastOptions != options)
         {
 
-          self->_lastOptions = a4;
+          self->_lastOptions = options;
         }
 
-        [v19 setSceneSource:self];
-        return v19;
+        [scene setSceneSource:self];
+        return scene;
       }
     }
   }
 
-  v27 = [(SCNSceneSource *)self _createSceneRefWithOptions:a4 statusHandler:a5];
+  v27 = [(SCNSceneSource *)self _createSceneRefWithOptions:options statusHandler:handler];
   v28 = v27;
   if (!v27)
   {
@@ -621,7 +621,7 @@ LABEL_28:
   ObjCWrapper = C3DEntityGetObjCWrapper(v27);
   if (!ObjCWrapper)
   {
-    ObjCWrapper = [(objc_class *)a3 sceneWithSceneRef:v28];
+    ObjCWrapper = [(objc_class *)class sceneWithSceneRef:v28];
   }
 
   CFRelease(v28);
@@ -629,7 +629,7 @@ LABEL_28:
   return ObjCWrapper;
 }
 
-- (id)sceneWithClass:(Class)a3 options:(id)a4 statusHandler:(id)a5
+- (id)sceneWithClass:(Class)class options:(id)options statusHandler:(id)handler
 {
   v9 = sceneWithClass_options_statusHandler__nestCounter;
   v10 = sceneWithClass_options_statusHandler__nestCounter;
@@ -640,7 +640,7 @@ LABEL_28:
   }
 
   sceneWithClass_options_statusHandler__nestCounter = v10 + 1;
-  v11 = [(SCNSceneSource *)self _sceneWithClass:a3 options:a4 statusHandler:a5];
+  v11 = [(SCNSceneSource *)self _sceneWithClass:class options:options statusHandler:handler];
   v12 = [(SCNSceneSource *)self url];
   if (v12)
   {
@@ -663,22 +663,22 @@ LABEL_28:
   return [(SCNSceneSource *)self sceneWithClass:v7 options:options statusHandler:statusHandler];
 }
 
-- (id)sceneWithClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)sceneWithClass:(Class)class options:(id)options error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__SCNSceneSource_sceneWithClass_options_error___block_invoke;
   v9[3] = &__block_descriptor_40_e27_v36__0f8q12__NSError_20_B28l;
-  v9[4] = a5;
-  v6 = [(SCNSceneSource *)self sceneWithClass:a3 options:a4 statusHandler:v9];
-  if (a5)
+  v9[4] = error;
+  v6 = [(SCNSceneSource *)self sceneWithClass:class options:options statusHandler:v9];
+  if (error)
   {
-    v7 = *a5;
+    v7 = *error;
   }
 
   return v6;
@@ -771,8 +771,8 @@ LABEL_11:
   }
 
   lastLoadedScene = self->_lastLoadedScene;
-  v4 = [(SCNSceneSource *)self library];
-  v6 = C3DCreatePropertyListFromScene(lastLoadedScene, v4, MEMORY[0x277CBEC10], v5);
+  library = [(SCNSceneSource *)self library];
+  v6 = C3DCreatePropertyListFromScene(lastLoadedScene, library, MEMORY[0x277CBEC10], v5);
   if (v6)
   {
     v7 = v6;
@@ -1046,7 +1046,7 @@ LABEL_71:
     v29 = [SCNScene sceneWithSceneRef:?];
     if (objc_opt_class() == entryClass)
     {
-      v30 = [(SCNScene *)v29 rootNode];
+      rootNode = [(SCNScene *)v29 rootNode];
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __48__SCNSceneSource_entryWithIdentifier_withClass___block_invoke;
@@ -1058,7 +1058,7 @@ LABEL_71:
 
     if (objc_opt_class() == entryClass)
     {
-      v30 = [(SCNScene *)v29 rootNode];
+      rootNode = [(SCNScene *)v29 rootNode];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __48__SCNSceneSource_entryWithIdentifier_withClass___block_invoke_2;
@@ -1070,7 +1070,7 @@ LABEL_71:
 
     if (objc_opt_class() == entryClass)
     {
-      v30 = [(SCNScene *)v29 rootNode];
+      rootNode = [(SCNScene *)v29 rootNode];
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __48__SCNSceneSource_entryWithIdentifier_withClass___block_invoke_3;
@@ -1082,7 +1082,7 @@ LABEL_71:
 
     if (objc_opt_class() == entryClass)
     {
-      v30 = [(SCNScene *)v29 rootNode];
+      rootNode = [(SCNScene *)v29 rootNode];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __48__SCNSceneSource_entryWithIdentifier_withClass___block_invoke_4;
@@ -1094,7 +1094,7 @@ LABEL_71:
 
     if (objc_opt_class() == entryClass)
     {
-      v30 = [(SCNScene *)v29 rootNode];
+      rootNode = [(SCNScene *)v29 rootNode];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __48__SCNSceneSource_entryWithIdentifier_withClass___block_invoke_5;
@@ -1102,7 +1102,7 @@ LABEL_71:
       v34[4] = URL;
       v31 = v34;
 LABEL_84:
-      [(SCNNode *)v30 childNodesPassingTest:v31];
+      [(SCNNode *)rootNode childNodesPassingTest:v31];
     }
   }
 
@@ -1162,7 +1162,7 @@ uint64_t __48__SCNSceneSource_entryWithIdentifier_withClass___block_invoke_5(uin
 - (NSArray)identifiersOfEntriesWithClass:(Class)entryClass
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (objc_opt_class() == entryClass)
   {
     v36[0] = [MEMORY[0x277CCABB0] numberWithUnsignedLong:C3DGeometryGetTypeID()];
@@ -1285,7 +1285,7 @@ LABEL_18:
               for (i = 0; i < v26; ++i)
               {
                 v20 = [v18[i] copy];
-                [(NSArray *)v5 addObject:v20];
+                [(NSArray *)array addObject:v20];
               }
             }
 
@@ -1302,14 +1302,14 @@ LABEL_18:
     }
   }
 
-  return v5;
+  return array;
 }
 
-- (BOOL)_appendToEntries:(id)a3 entriesWithType:(unint64_t)a4 passingTest:(id)a5 entryObjectConstructor:(id)a6
+- (BOOL)_appendToEntries:(id)entries entriesWithType:(unint64_t)type passingTest:(id)test entryObjectConstructor:(id)constructor
 {
   Library = C3DSceneSourceGetLibrary(self->_sceneSource);
   v23 = 0;
-  v11 = C3DLibraryCopyIDsWithKind(Library, a4, &v23);
+  v11 = C3DLibraryCopyIDsWithKind(Library, type, &v23);
   v22 = 0;
   v21 = v11;
   if (v23 < 1)
@@ -1326,10 +1326,10 @@ LABEL_18:
       v14 = *v13;
       EntryWithDocumentID = C3DLibraryGetEntryWithDocumentID(Library, *v13);
       v16 = [v14 copy];
-      v17 = (*(a6 + 2))(a6, EntryWithDocumentID);
-      if ((*(a5 + 2))(a5, v17, v16, &v22))
+      v17 = (*(constructor + 2))(constructor, EntryWithDocumentID);
+      if ((*(test + 2))(test, v17, v16, &v22))
       {
-        [a3 addObject:v17];
+        [entries addObject:v17];
       }
 
       v18 = v22;
@@ -1350,19 +1350,19 @@ LABEL_18:
 
 - (NSArray)entriesPassingTest:(void *)predicate
 {
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (!self->_sceneLoaded)
   {
     [(SCNSceneSource *)self sceneWithOptions:self->_sceneSourceOptions error:0];
   }
 
   sceneSource = self->_sceneSource;
-  if (sceneSource && C3DSceneSourceGetLibrary(sceneSource) && ![(SCNSceneSource *)self _appendToEntries:v5 entriesWithType:C3DGeometryGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_76]&& ![(SCNSceneSource *)self _appendToEntries:v5 entriesWithType:C3DMaterialGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_226]&& ![(SCNSceneSource *)self _appendToEntries:v5 entriesWithType:C3DAnimationGroupGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_228]&& ![(SCNSceneSource *)self _appendToEntries:v5 entriesWithType:C3DAnimationClusterGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_230_0]&& ![(SCNSceneSource *)self _appendToEntries:v5 entriesWithType:C3DNodeGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_232]&& ![(SCNSceneSource *)self _appendToEntries:v5 entriesWithType:C3DLightGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_234]&& ![(SCNSceneSource *)self _appendToEntries:v5 entriesWithType:C3DCameraGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_236_0]&& ![(SCNSceneSource *)self _appendToEntries:v5 entriesWithType:C3DSceneGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_238_0]&& ![(SCNSceneSource *)self _appendToEntries:v5 entriesWithType:C3DSkinnerGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_240_0])
+  if (sceneSource && C3DSceneSourceGetLibrary(sceneSource) && ![(SCNSceneSource *)self _appendToEntries:array entriesWithType:C3DGeometryGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_76]&& ![(SCNSceneSource *)self _appendToEntries:array entriesWithType:C3DMaterialGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_226]&& ![(SCNSceneSource *)self _appendToEntries:array entriesWithType:C3DAnimationGroupGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_228]&& ![(SCNSceneSource *)self _appendToEntries:array entriesWithType:C3DAnimationClusterGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_230_0]&& ![(SCNSceneSource *)self _appendToEntries:array entriesWithType:C3DNodeGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_232]&& ![(SCNSceneSource *)self _appendToEntries:array entriesWithType:C3DLightGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_234]&& ![(SCNSceneSource *)self _appendToEntries:array entriesWithType:C3DCameraGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_236_0]&& ![(SCNSceneSource *)self _appendToEntries:array entriesWithType:C3DSceneGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_238_0]&& ![(SCNSceneSource *)self _appendToEntries:array entriesWithType:C3DSkinnerGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_240_0])
   {
-    [(SCNSceneSource *)self _appendToEntries:v5 entriesWithType:C3DMorphGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_242];
+    [(SCNSceneSource *)self _appendToEntries:array entriesWithType:C3DMorphGetTypeID() passingTest:predicate entryObjectConstructor:&__block_literal_global_242];
   }
 
-  return v5;
+  return array;
 }
 
 - (id)performConsistencyCheck
@@ -1392,7 +1392,7 @@ void *__41__SCNSceneSource_performConsistencyCheck__block_invoke(void *result, i
   return result;
 }
 
-- (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5
+- (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes
 {
   v35 = *MEMORY[0x277D85DE8];
   v7 = SCNGetSceneKitBundle();
@@ -1400,7 +1400,7 @@ void *__41__SCNSceneSource_performConsistencyCheck__block_invoke(void *result, i
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = [a5 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v8 = [classes countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (!v8)
   {
     return 0;
@@ -1414,14 +1414,14 @@ void *__41__SCNSceneSource_performConsistencyCheck__block_invoke(void *result, i
     {
       if (*v30 != v10)
       {
-        objc_enumerationMutation(a5);
+        objc_enumerationMutation(classes);
       }
 
       v12 = [v7 classNamed:*(*(&v29 + 1) + 8 * i)];
       if (v12)
       {
         v13 = v12;
-        if (![a3 requiresSecureCoding])
+        if (![unarchiver requiresSecureCoding])
         {
           return v13;
         }
@@ -1430,16 +1430,16 @@ void *__41__SCNSceneSource_performConsistencyCheck__block_invoke(void *result, i
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v14 = [a3 allowedClasses];
-        v15 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        allowedClasses = [unarchiver allowedClasses];
+        v15 = [allowedClasses countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v15)
         {
           v16 = v15;
           v17 = *v26;
           v24 = v9;
 LABEL_10:
-          v18 = a3;
-          v19 = a5;
+          unarchiverCopy = unarchiver;
+          classesCopy = classes;
           v20 = v7;
           v21 = v10;
           v22 = 0;
@@ -1447,7 +1447,7 @@ LABEL_10:
           {
             if (*v26 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(allowedClasses);
             }
 
             if (([(objc_class *)v13 isSubclassOfClass:*(*(&v25 + 1) + 8 * v22)]& 1) != 0)
@@ -1457,11 +1457,11 @@ LABEL_10:
 
             if (v16 == ++v22)
             {
-              v16 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
+              v16 = [allowedClasses countByEnumeratingWithState:&v25 objects:v33 count:16];
               v10 = v21;
               v7 = v20;
-              a5 = v19;
-              a3 = v18;
+              classes = classesCopy;
+              unarchiver = unarchiverCopy;
               v9 = v24;
               if (v16)
               {
@@ -1475,7 +1475,7 @@ LABEL_10:
       }
     }
 
-    v9 = [a5 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    v9 = [classes countByEnumeratingWithState:&v29 objects:v34 count:16];
     v13 = 0;
     if (v9)
     {
@@ -1495,9 +1495,9 @@ LABEL_10:
 
 - (id)debugQuickLookData
 {
-  v2 = [(SCNSceneSource *)self debugQuickLookObject];
+  debugQuickLookObject = [(SCNSceneSource *)self debugQuickLookObject];
 
-  return UIImagePNGRepresentation(v2);
+  return UIImagePNGRepresentation(debugQuickLookObject);
 }
 
 void __59__SCNSceneSource__createSceneRefWithOptions_statusHandler___block_invoke_cold_1(int a1, NSObject *a2)

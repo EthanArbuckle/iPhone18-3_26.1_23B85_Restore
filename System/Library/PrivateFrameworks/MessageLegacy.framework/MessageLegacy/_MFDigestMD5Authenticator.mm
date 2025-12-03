@@ -1,9 +1,9 @@
 @interface _MFDigestMD5Authenticator
-- (id)responseForServerData:(id)a3;
+- (id)responseForServerData:(id)data;
 - (void)dealloc;
-- (void)setAuthenticationState:(int)a3;
-- (void)setCryptInfo:(void *)a3;
-- (void)setExpectedResponse:(id)a3;
+- (void)setAuthenticationState:(int)state;
+- (void)setCryptInfo:(void *)info;
+- (void)setExpectedResponse:(id)response;
 @end
 
 @implementation _MFDigestMD5Authenticator
@@ -20,12 +20,12 @@
   [(MFSASLAuthenticator *)&v3 dealloc];
 }
 
-- (void)setAuthenticationState:(int)a3
+- (void)setAuthenticationState:(int)state
 {
   v6.receiver = self;
   v6.super_class = _MFDigestMD5Authenticator;
   [(MFSASLAuthenticator *)&v6 setAuthenticationState:?];
-  if (a3 != 1)
+  if (state != 1)
   {
     v5 = *(self + 5);
     if (v5)
@@ -39,14 +39,14 @@
   }
 }
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
   v87 = *MEMORY[0x277D85DE8];
   if ([(MFSASLAuthenticator *)self authenticationState]== 1)
   {
-    v75 = [a3 bytes];
-    v5 = [a3 length];
-    v76 = &v75[v5];
+    bytes = [data bytes];
+    v5 = [data length];
+    v76 = &bytes[v5];
     v77 = 1;
     v78 = 0u;
     v79 = 0u;
@@ -60,11 +60,11 @@
           goto LABEL_142;
         }
 
-        v6 = copyToken(&v75);
+        v6 = copyToken(&bytes);
         v7 = v6;
-        v8 = v75;
+        v8 = bytes;
         v9 = v76;
-        if (v75 >= v76)
+        if (bytes >= v76)
         {
           v10 = 0;
         }
@@ -76,7 +76,7 @@ LABEL_5:
         }
 
         v11 = v8;
-        v8 = v75;
+        v8 = bytes;
         do
         {
           while (1)
@@ -98,14 +98,14 @@ LABEL_5:
             v11 = v8;
             if (v8 < v76)
             {
-              v75 = v8;
+              bytes = v8;
               goto LABEL_5;
             }
           }
         }
 
         while (v12);
-        v75 = v8;
+        bytes = v8;
         if (v6)
         {
           if (v11 >= v76 || *v11 != 61)
@@ -130,7 +130,7 @@ LABEL_5:
           }
 
           v13 = v11 + 1;
-          v75 = v11 + 1;
+          bytes = v11 + 1;
           if (v11 + 1 >= v76)
           {
             v14 = 0;
@@ -143,7 +143,7 @@ LABEL_18:
           }
 
           v17 = v13;
-          v13 = v75;
+          v13 = bytes;
           do
           {
             while (1)
@@ -165,14 +165,14 @@ LABEL_18:
               v17 = v13;
               if (v13 < v76)
               {
-                v75 = v13;
+                bytes = v13;
                 goto LABEL_18;
               }
             }
           }
 
           while (v18);
-          v75 = v13;
+          bytes = v13;
           if ([(__CFString *)v6 caseInsensitiveCompare:@"realm"])
           {
             if ([(__CFString *)v7 caseInsensitiveCompare:@"nonce"])
@@ -189,7 +189,7 @@ LABEL_18:
                       {
                         if (![(__CFString *)v7 caseInsensitiveCompare:@"cipher-opts"])
                         {
-                          v53 = copyQuotedTokenList(&v75);
+                          v53 = copyQuotedTokenList(&bytes);
                           v21 = v53;
                           if (v53)
                           {
@@ -217,7 +217,7 @@ LABEL_60:
                         }
 
                         v19 = [(__CFString *)v7 caseInsensitiveCompare:@"rspauth"];
-                        v20 = copyToken(&v75);
+                        v20 = copyToken(&bytes);
                         v21 = v20;
                         if (v19)
                         {
@@ -226,7 +226,7 @@ LABEL_60:
                             goto LABEL_118;
                           }
 
-                          v21 = quoted_string(&v75);
+                          v21 = quoted_string(&bytes);
                           if (v21)
                           {
                             goto LABEL_118;
@@ -268,7 +268,7 @@ LABEL_127:
 
                       else
                       {
-                        v51 = copyToken(&v75);
+                        v51 = copyToken(&bytes);
                         if (v51)
                         {
                           v34 = v51;
@@ -298,7 +298,7 @@ LABEL_77:
                           goto LABEL_54;
                         }
 
-                        v54 = quoted_string(&v75);
+                        v54 = quoted_string(&bytes);
                         if (v54)
                         {
                           v55 = v54;
@@ -320,7 +320,7 @@ LABEL_77:
 
                     else
                     {
-                      v49 = copyToken(&v75);
+                      v49 = copyToken(&bytes);
                       if (v49)
                       {
                         v21 = v49;
@@ -361,17 +361,17 @@ LABEL_117:
 
                   else
                   {
-                    v47 = copyToken(&v75);
+                    v47 = copyToken(&bytes);
                     if (v47)
                     {
                       v21 = v47;
-                      v48 = [(__CFString *)v47 intValue];
-                      if ((v48 - 1) > 0xFFFD)
+                      intValue = [(__CFString *)v47 intValue];
+                      if ((intValue - 1) > 0xFFFD)
                       {
                         goto LABEL_118;
                       }
 
-                      v46 = v80 & 0xFFC0003F | (v48 << 6);
+                      v46 = v80 & 0xFFC0003F | (intValue << 6);
                       goto LABEL_117;
                     }
 
@@ -385,7 +385,7 @@ LABEL_117:
 
                 else
                 {
-                  v44 = copyToken(&v75);
+                  v44 = copyToken(&bytes);
                   if (v44)
                   {
                     v21 = v44;
@@ -413,7 +413,7 @@ LABEL_117:
 
               else
               {
-                v33 = copyQuotedTokenList(&v75);
+                v33 = copyQuotedTokenList(&bytes);
                 if (v33)
                 {
                   v34 = v33;
@@ -460,7 +460,7 @@ LABEL_117:
 
             else
             {
-              v31 = quoted_string(&v75);
+              v31 = quoted_string(&bytes);
               if (v31)
               {
                 v21 = v31;
@@ -494,7 +494,7 @@ LABEL_117:
 
           else
           {
-            v26 = quoted_string(&v75);
+            v26 = quoted_string(&bytes);
             if (v26)
             {
               v21 = v26;
@@ -560,12 +560,12 @@ LABEL_53:
             goto LABEL_54;
           }
 
-          v75 = v11 + 1;
+          bytes = v11 + 1;
         }
 
 LABEL_54:
 
-        if (v75 >= v76)
+        if (bytes >= v76)
         {
           if (!v77)
           {
@@ -584,7 +584,7 @@ LABEL_54:
         if ([*(&v79 + 1) isEqual:?])
         {
           [(_MFDigestMD5Authenticator *)self setAuthenticationState:4];
-          v57 = [MEMORY[0x277CBEA90] data];
+          data = [MEMORY[0x277CBEA90] data];
 LABEL_143:
 
           goto LABEL_144;
@@ -613,7 +613,7 @@ LABEL_141:
 
 LABEL_142:
       [(_MFDigestMD5Authenticator *)self setAuthenticationState:3];
-      v57 = 0;
+      data = 0;
       goto LABEL_143;
     }
 
@@ -650,11 +650,11 @@ LABEL_142:
         }
 
         *&v82 = MFCreateDataWithString();
-        v67 = [(MFSASLAuthenticator *)self account];
-        [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", objc_msgSend(objc_opt_class(), "saslProfileName"), objc_msgSend(v67, "hostname")];
-        [v67 username];
+        account = [(MFSASLAuthenticator *)self account];
+        [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", objc_msgSend(objc_opt_class(), "saslProfileName"), objc_msgSend(account, "hostname")];
+        [account username];
         *(&v82 + 1) = MFCreateDataWithString();
-        [v67 password];
+        [account password];
         *&v83 = MFCreateDataWithString();
         *(&v83 + 1) = MFCreateDataWithString();
         v68 = v78;
@@ -662,8 +662,8 @@ LABEL_142:
         *(&v84 + 1) = _createResponseData(self, &v78, &v81, 1);
         if (*(&v84 + 1))
         {
-          v69 = [(_MFDigestMD5Authenticator *)self securityLevel];
-          if (v69 == 2)
+          securityLevel = [(_MFDigestMD5Authenticator *)self securityLevel];
+          if (securityLevel == 2)
           {
             memset(&buf, 0, sizeof(buf));
             [(_MFDigestMD5Authenticator *)self setCryptInfo:NSZoneCalloc([(_MFDigestMD5Authenticator *)self zone], 1uLL, 0x28uLL)];
@@ -677,7 +677,7 @@ LABEL_142:
             CC_MD5_Final(&self->_expectedResponse[1], &buf);
           }
 
-          else if (v69 == 3)
+          else if (securityLevel == 3)
           {
             v70 = MFLogGeneral();
             if (os_log_type_enabled(v70, OS_LOG_TYPE_INFO))
@@ -724,7 +724,7 @@ LABEL_142:
             _appendValue(v73, "charset", [@"utf-8" dataUsingEncoding:1]);
           }
 
-          v57 = v73;
+          data = v73;
           goto LABEL_157;
         }
       }
@@ -741,7 +741,7 @@ LABEL_142:
     }
 
     [(_MFDigestMD5Authenticator *)self setAuthenticationState:3];
-    v57 = 0;
+    data = 0;
 LABEL_157:
     if (v81)
     {
@@ -778,27 +778,27 @@ LABEL_157:
     goto LABEL_143;
   }
 
-  v57 = 0;
+  data = 0;
 LABEL_144:
   v62 = *MEMORY[0x277D85DE8];
-  return v57;
+  return data;
 }
 
-- (void)setCryptInfo:(void *)a3
+- (void)setCryptInfo:(void *)info
 {
   if (self->_expectedResponse)
   {
     NSZoneFree([(_MFDigestMD5Authenticator *)self zone], self->_expectedResponse);
   }
 
-  self->_expectedResponse = a3;
+  self->_expectedResponse = info;
 }
 
-- (void)setExpectedResponse:(id)a3
+- (void)setExpectedResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
 
-  *(self + 5) = a3;
+  *(self + 5) = response;
 }
 
 @end

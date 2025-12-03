@@ -1,41 +1,41 @@
 @interface RCPlaybackViewController
 - (BOOL)_shouldCollapseToolbarButtons;
 - (UISplitViewController)parentSplitViewController;
-- (id)_createMoreOptionsMenu:(BOOL)a3 shouldShowTranscriptionOption:(BOOL)a4;
+- (id)_createMoreOptionsMenu:(BOOL)menu shouldShowTranscriptionOption:(BOOL)option;
 - (id)_navigationItemToUseForToolbarItems;
-- (id)createNewWaveformViewControllerWithDataSource:(id)a3 isOverview:(BOOL)a4 isCompact:(BOOL)a5 waveformOnly:(BOOL)a6;
+- (id)createNewWaveformViewControllerWithDataSource:(id)source isOverview:(BOOL)overview isCompact:(BOOL)compact waveformOnly:(BOOL)only;
 - (id)createView;
 - (id)deferredTranscriptMenuElement;
 - (id)showTranscriptMenuElement;
 - (void)_classSpecificLoadView;
-- (void)_doDelete:(id)a3;
-- (void)_doDisplayPlaybackSettings:(id)a3;
+- (void)_doDelete:(id)delete;
+- (void)_doDisplayPlaybackSettings:(id)settings;
 - (void)_doEdit;
-- (void)_doErase:(id)a3;
-- (void)_doMoveToFolder:(id)a3;
-- (void)_doRecover:(id)a3;
-- (void)_doShare:(id)a3;
-- (void)_doShowTranscriptionView:(id)a3;
+- (void)_doErase:(id)erase;
+- (void)_doMoveToFolder:(id)folder;
+- (void)_doRecover:(id)recover;
+- (void)_doShare:(id)share;
+- (void)_doShowTranscriptionView:(id)view;
 - (void)_reset;
 - (void)_setupToolbarWithButtonItemsIfNeeded;
 - (void)_toggleFavorite;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)_updateBarButtonItemsState:(id)a3 enabled:(BOOL)a4;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)_updateBarButtonItemsState:(id)state enabled:(BOOL)enabled;
 - (void)_updateMoreOptionsMenu;
-- (void)_updatePlaybackSettingsButtonTint:(BOOL)a3;
+- (void)_updatePlaybackSettingsButtonTint:(BOOL)tint;
 - (void)_updateToolbarItems;
-- (void)_updateTranscriptionButtonTint:(BOOL)a3;
+- (void)_updateTranscriptionButtonTint:(BOOL)tint;
 - (void)clear;
-- (void)deviceTranscriptionSupportDidChange:(BOOL)a3;
+- (void)deviceTranscriptionSupportDidChange:(BOOL)change;
 - (void)didUpdateRecordingCenterContentViewState;
-- (void)enablePlaybackWithComposition:(id)a3 displayModel:(id)a4 timeController:(id)a5;
-- (void)enableWaveformScrolling:(BOOL)a3;
-- (void)updateActionButtonState:(BOOL)a3;
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3;
-- (void)updateContentUnavailableViewState:(int64_t)a3;
-- (void)updateWithPlaybackSettings:(id)a3;
-- (void)updateWithRecordingModel:(id)a3;
-- (void)updateWithRecordingModel:(id)a3 requireMatchingUUID:(BOOL)a4;
+- (void)enablePlaybackWithComposition:(id)composition displayModel:(id)model timeController:(id)controller;
+- (void)enableWaveformScrolling:(BOOL)scrolling;
+- (void)updateActionButtonState:(BOOL)state;
+- (void)updateContentUnavailableConfigurationUsingState:(id)state;
+- (void)updateContentUnavailableViewState:(int64_t)state;
+- (void)updateWithPlaybackSettings:(id)settings;
+- (void)updateWithRecordingModel:(id)model;
+- (void)updateWithRecordingModel:(id)model requireMatchingUUID:(BOOL)d;
 - (void)viewDidLoad;
 @end
 
@@ -51,8 +51,8 @@
   v4 = [NSArray arrayWithObjects:&v8 count:1];
   v5 = [(RCPlaybackViewController *)self registerForTraitChanges:v4 withAction:"_traitCollectionDidChange:previousTraitCollection:"];
 
-  v6 = [(RCPlaybackViewController *)self view];
-  [v6 setAccessibilityIdentifier:@"PlaybackView"];
+  view = [(RCPlaybackViewController *)self view];
+  [view setAccessibilityIdentifier:@"PlaybackView"];
 }
 
 - (id)createView
@@ -62,26 +62,26 @@
   return v2;
 }
 
-- (void)updateActionButtonState:(BOOL)a3
+- (void)updateActionButtonState:(BOOL)state
 {
-  v3 = a3;
-  v7 = [(RCPlaybackViewController *)self _navigationItemToUseForToolbarItems];
-  v5 = [v7 leftBarButtonItems];
-  [(RCPlaybackViewController *)self _updateBarButtonItemsState:v5 enabled:v3];
+  stateCopy = state;
+  _navigationItemToUseForToolbarItems = [(RCPlaybackViewController *)self _navigationItemToUseForToolbarItems];
+  leftBarButtonItems = [_navigationItemToUseForToolbarItems leftBarButtonItems];
+  [(RCPlaybackViewController *)self _updateBarButtonItemsState:leftBarButtonItems enabled:stateCopy];
 
-  v6 = [v7 rightBarButtonItems];
-  [(RCPlaybackViewController *)self _updateBarButtonItemsState:v6 enabled:v3];
+  rightBarButtonItems = [_navigationItemToUseForToolbarItems rightBarButtonItems];
+  [(RCPlaybackViewController *)self _updateBarButtonItemsState:rightBarButtonItems enabled:stateCopy];
 }
 
-- (void)_updateBarButtonItemsState:(id)a3 enabled:(BOOL)a4
+- (void)_updateBarButtonItemsState:(id)state enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = a3;
+  enabledCopy = enabled;
+  stateCopy = state;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [stateCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -93,15 +93,15 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(stateCopy);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setEnabled:v4];
+        [*(*(&v10 + 1) + 8 * v9) setEnabled:enabledCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [stateCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -110,12 +110,12 @@
 
 - (void)_classSpecificLoadView
 {
-  v3 = [(RCRecordingViewController *)self waveformContainerViewControllers];
-  [v3 setIsPlayback:1];
+  waveformContainerViewControllers = [(RCRecordingViewController *)self waveformContainerViewControllers];
+  [waveformContainerViewControllers setIsPlayback:1];
 
-  v5 = [(RCRecordingViewController *)self overviewWaveformViewController];
-  v4 = [v5 waveformViewController];
-  [v4 setIsPlayback:1];
+  overviewWaveformViewController = [(RCRecordingViewController *)self overviewWaveformViewController];
+  waveformViewController = [overviewWaveformViewController waveformViewController];
+  [waveformViewController setIsPlayback:1];
 }
 
 - (void)_reset
@@ -123,32 +123,32 @@
   v4.receiver = self;
   v4.super_class = RCPlaybackViewController;
   [(RCRecordingViewController *)&v4 _reset];
-  v3 = [(RCPlaybackViewController *)self view];
-  [v3 reset];
+  view = [(RCPlaybackViewController *)self view];
+  [view reset];
 
   [(RCRecordingViewController *)self setUUID:0];
   [(RCPlaybackViewController *)self _updateToolbarItems];
 }
 
-- (void)updateWithRecordingModel:(id)a3 requireMatchingUUID:(BOOL)a4
+- (void)updateWithRecordingModel:(id)model requireMatchingUUID:(BOOL)d
 {
-  v4 = a4;
-  v6 = a3;
+  dCopy = d;
+  modelCopy = model;
   v27.receiver = self;
   v27.super_class = RCPlaybackViewController;
-  [(RCRecordingViewController *)&v27 updateWithRecordingModel:v6 requireMatchingUUID:v4];
-  if (!v4 || ([v6 UUID], v7 = objc_claimAutoreleasedReturnValue(), -[RCRecordingViewController UUID](self, "UUID"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, v9))
+  [(RCRecordingViewController *)&v27 updateWithRecordingModel:modelCopy requireMatchingUUID:dCopy];
+  if (!dCopy || ([modelCopy UUID], v7 = objc_claimAutoreleasedReturnValue(), -[RCRecordingViewController UUID](self, "UUID"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, v9))
   {
-    if (v6)
+    if (modelCopy)
     {
       [(RCPlaybackViewController *)self _setupToolbarWithButtonItemsIfNeeded];
     }
 
-    -[RCPlaybackViewController setIsFavorite:](self, "setIsFavorite:", [v6 isFavorite]);
-    v10 = [v6 isFavorite];
+    -[RCPlaybackViewController setIsFavorite:](self, "setIsFavorite:", [modelCopy isFavorite]);
+    isFavorite = [modelCopy isFavorite];
     v11 = +[RCRecorderStyleProvider sharedStyleProvider];
     v12 = v11;
-    if (v10)
+    if (isFavorite)
     {
       [v11 favoriteImage];
     }
@@ -158,13 +158,13 @@
       [v11 notFavoriteImage];
     }
     v13 = ;
-    v14 = [(RCPlaybackViewController *)self favoriteButtonItem];
-    [v14 setImage:v13];
+    favoriteButtonItem = [(RCPlaybackViewController *)self favoriteButtonItem];
+    [favoriteButtonItem setImage:v13];
 
-    v15 = [v6 isFavorite];
+    isFavorite2 = [modelCopy isFavorite];
     v16 = +[NSBundle mainBundle];
     v17 = v16;
-    if (v15)
+    if (isFavorite2)
     {
       v18 = @"Unfavorite";
     }
@@ -175,13 +175,13 @@
     }
 
     v19 = [v16 localizedStringForKey:v18 value:&stru_100295BB8 table:0];
-    v20 = [(RCPlaybackViewController *)self favoriteButtonItem];
-    [v20 setTitle:v19];
+    favoriteButtonItem2 = [(RCPlaybackViewController *)self favoriteButtonItem];
+    [favoriteButtonItem2 setTitle:v19];
 
-    v21 = [v6 isFavorite];
+    isFavorite3 = [modelCopy isFavorite];
     v22 = +[NSBundle mainBundle];
     v23 = v22;
-    if (v21)
+    if (isFavorite3)
     {
       v24 = @"AX_REMOVE_FROM_FAVORITES";
     }
@@ -192,30 +192,30 @@
     }
 
     v25 = [v22 localizedStringForKey:v24 value:&stru_100295BB8 table:0];
-    v26 = [(RCPlaybackViewController *)self favoriteButtonItem];
-    [v26 setAccessibilityLabel:v25];
+    favoriteButtonItem3 = [(RCPlaybackViewController *)self favoriteButtonItem];
+    [favoriteButtonItem3 setAccessibilityLabel:v25];
 
     [(RCPlaybackViewController *)self _updateMoreOptionsMenu];
   }
 }
 
-- (void)updateWithRecordingModel:(id)a3
+- (void)updateWithRecordingModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v26.receiver = self;
   v26.super_class = RCPlaybackViewController;
-  [(RCRecordingViewController *)&v26 updateWithRecordingModel:v4];
-  -[RCPlaybackViewController setIsRecentlyDeleted:](self, "setIsRecentlyDeleted:", [v4 recentlyDeleted]);
-  -[RCPlaybackViewController setIsFavorite:](self, "setIsFavorite:", [v4 isFavorite]);
-  v5 = [(RCRecordingViewController *)self UUID];
+  [(RCRecordingViewController *)&v26 updateWithRecordingModel:modelCopy];
+  -[RCPlaybackViewController setIsRecentlyDeleted:](self, "setIsRecentlyDeleted:", [modelCopy recentlyDeleted]);
+  -[RCPlaybackViewController setIsFavorite:](self, "setIsFavorite:", [modelCopy isFavorite]);
+  uUID = [(RCRecordingViewController *)self UUID];
 
-  v6 = [(RCPlaybackViewController *)self view];
-  [v6 setUserInteractionEnabled:v5 != 0];
+  view = [(RCPlaybackViewController *)self view];
+  [view setUserInteractionEnabled:uUID != 0];
 
-  v7 = [v4 isFavorite];
+  isFavorite = [modelCopy isFavorite];
   v8 = +[RCRecorderStyleProvider sharedStyleProvider];
   v9 = v8;
-  if (v7)
+  if (isFavorite)
   {
     [v8 favoriteImage];
   }
@@ -225,41 +225,41 @@
     [v8 notFavoriteImage];
   }
   v10 = ;
-  v11 = v5 != 0;
-  v12 = [(RCPlaybackViewController *)self favoriteButtonItem];
-  [v12 setImage:v10];
+  v11 = uUID != 0;
+  favoriteButtonItem = [(RCPlaybackViewController *)self favoriteButtonItem];
+  [favoriteButtonItem setImage:v10];
 
-  v13 = [(RCPlaybackViewController *)self favoriteButtonItem];
-  [v13 setEnabled:v5 != 0];
+  favoriteButtonItem2 = [(RCPlaybackViewController *)self favoriteButtonItem];
+  [favoriteButtonItem2 setEnabled:uUID != 0];
 
-  v14 = [(RCPlaybackViewController *)self shareButtonItem];
-  [v14 setEnabled:v5 != 0];
+  shareButtonItem = [(RCPlaybackViewController *)self shareButtonItem];
+  [shareButtonItem setEnabled:uUID != 0];
 
-  v15 = [(RCPlaybackViewController *)self moveToFolderButtonItem];
-  [v15 setEnabled:v5 != 0];
+  moveToFolderButtonItem = [(RCPlaybackViewController *)self moveToFolderButtonItem];
+  [moveToFolderButtonItem setEnabled:uUID != 0];
 
-  v16 = [(RCPlaybackViewController *)self moreOptionsButtonItem];
-  [v16 setEnabled:v5 != 0];
+  moreOptionsButtonItem = [(RCPlaybackViewController *)self moreOptionsButtonItem];
+  [moreOptionsButtonItem setEnabled:uUID != 0];
 
-  v17 = [(RCPlaybackViewController *)self deleteButtonItem];
-  [v17 setEnabled:v5 != 0];
+  deleteButtonItem = [(RCPlaybackViewController *)self deleteButtonItem];
+  [deleteButtonItem setEnabled:uUID != 0];
 
-  v18 = [(RCPlaybackViewController *)self eraseButtonItem];
-  [v18 setEnabled:v5 != 0];
+  eraseButtonItem = [(RCPlaybackViewController *)self eraseButtonItem];
+  [eraseButtonItem setEnabled:uUID != 0];
 
-  v19 = [(RCPlaybackViewController *)self recoverButtonItem];
-  [v19 setEnabled:v5 != 0];
+  recoverButtonItem = [(RCPlaybackViewController *)self recoverButtonItem];
+  [recoverButtonItem setEnabled:uUID != 0];
 
-  LODWORD(v19) = [v4 recentlyDeleted];
-  v20 = [(RCPlaybackViewController *)self playbackSettingsButtonItem];
-  [v20 setEnabled:v11 & ~v19];
+  LODWORD(recoverButtonItem) = [modelCopy recentlyDeleted];
+  playbackSettingsButtonItem = [(RCPlaybackViewController *)self playbackSettingsButtonItem];
+  [playbackSettingsButtonItem setEnabled:v11 & ~recoverButtonItem];
 
-  LODWORD(v19) = [v4 recentlyDeleted];
-  v21 = [(RCPlaybackViewController *)self transcriptionButtonItem];
-  [v21 setEnabled:v11 & ~v19];
+  LODWORD(recoverButtonItem) = [modelCopy recentlyDeleted];
+  transcriptionButtonItem = [(RCPlaybackViewController *)self transcriptionButtonItem];
+  [transcriptionButtonItem setEnabled:v11 & ~recoverButtonItem];
 
-  v22 = [v4 recentlyDeleted] ^ 1;
-  if (v5)
+  v22 = [modelCopy recentlyDeleted] ^ 1;
+  if (uUID)
   {
     v23 = v22;
   }
@@ -269,10 +269,10 @@
     v23 = 0;
   }
 
-  v24 = [(RCPlaybackViewController *)self editButtonItem];
-  [v24 setEnabled:v23];
+  editButtonItem = [(RCPlaybackViewController *)self editButtonItem];
+  [editButtonItem setEnabled:v23];
 
-  if (v4)
+  if (modelCopy)
   {
     [(RCPlaybackViewController *)self _updateToolbarItems];
   }
@@ -282,8 +282,8 @@
     [(RCPlaybackViewController *)self updateContentUnavailableViewState:0];
   }
 
-  v25 = [(RCRecordingViewController *)self recordingViewControllerDelegate];
-  [v25 didUpdateWithRecordingModel:v4];
+  recordingViewControllerDelegate = [(RCRecordingViewController *)self recordingViewControllerDelegate];
+  [recordingViewControllerDelegate didUpdateWithRecordingModel:modelCopy];
 }
 
 - (void)didUpdateRecordingCenterContentViewState
@@ -291,128 +291,128 @@
   v5.receiver = self;
   v5.super_class = RCPlaybackViewController;
   [(RCRecordingViewController *)&v5 didUpdateRecordingCenterContentViewState];
-  v3 = [(RCPlaybackViewController *)self view];
-  v4 = [v3 centerContentViewState] == 1;
+  view = [(RCPlaybackViewController *)self view];
+  v4 = [view centerContentViewState] == 1;
 
   [(RCPlaybackViewController *)self _updateTranscriptionButtonTint:v4];
 }
 
-- (void)updateWithPlaybackSettings:(id)a3
+- (void)updateWithPlaybackSettings:(id)settings
 {
-  v4 = [a3 hasCustomizedPlaybackSettings];
+  hasCustomizedPlaybackSettings = [settings hasCustomizedPlaybackSettings];
 
-  [(RCPlaybackViewController *)self _updatePlaybackSettingsButtonTint:v4];
+  [(RCPlaybackViewController *)self _updatePlaybackSettingsButtonTint:hasCustomizedPlaybackSettings];
 }
 
 - (id)_navigationItemToUseForToolbarItems
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
-  v4 = [v3 defaultSceneDelegate];
-  v5 = [v4 rootSplitViewController];
+  defaultSceneDelegate = [delegate defaultSceneDelegate];
+  rootSplitViewController = [defaultSceneDelegate rootSplitViewController];
 
-  v6 = [v5 playbackViewNavigationItem];
+  playbackViewNavigationItem = [rootSplitViewController playbackViewNavigationItem];
 
-  return v6;
+  return playbackViewNavigationItem;
 }
 
 - (void)_updateToolbarItems
 {
   if ([(RCPlaybackViewController *)self didSetupToolbarWithButtonItems])
   {
-    v3 = [(RCPlaybackViewController *)self _navigationItemToUseForToolbarItems];
-    v4 = [(RCRecordingViewController *)self UUID];
+    _navigationItemToUseForToolbarItems = [(RCPlaybackViewController *)self _navigationItemToUseForToolbarItems];
+    uUID = [(RCRecordingViewController *)self UUID];
 
-    if (v4)
+    if (uUID)
     {
       if ([(RCPlaybackViewController *)self isRecentlyDeleted])
       {
-        v5 = [(RCPlaybackViewController *)self recoverButtonItem];
-        v29 = v5;
+        recoverButtonItem = [(RCPlaybackViewController *)self recoverButtonItem];
+        v29 = recoverButtonItem;
         v6 = [NSArray arrayWithObjects:&v29 count:1];
 
-        v7 = [(RCPlaybackViewController *)self eraseButtonItem];
-        v28 = v7;
-        v8 = [NSArray arrayWithObjects:&v28 count:1];
+        eraseButtonItem = [(RCPlaybackViewController *)self eraseButtonItem];
+        v28 = eraseButtonItem;
+        allObjects = [NSArray arrayWithObjects:&v28 count:1];
       }
 
       else
       {
         v9 = +[RCRecorderStyleProvider sharedStyleProvider];
-        v10 = [v9 playbackToolbarHasMoveToFolder];
+        playbackToolbarHasMoveToFolder = [v9 playbackToolbarHasMoveToFolder];
 
-        v11 = [(RCPlaybackViewController *)self shareButtonItem];
-        v12 = v11;
-        if (v10)
+        shareButtonItem = [(RCPlaybackViewController *)self shareButtonItem];
+        v12 = shareButtonItem;
+        if (playbackToolbarHasMoveToFolder)
         {
-          v27[0] = v11;
-          v13 = [(RCPlaybackViewController *)self favoriteButtonItem];
-          v27[1] = v13;
-          v14 = [(RCPlaybackViewController *)self moveToFolderButtonItem];
-          v27[2] = v14;
-          v15 = [(RCPlaybackViewController *)self deleteButtonItem];
-          v27[3] = v15;
+          v27[0] = shareButtonItem;
+          favoriteButtonItem = [(RCPlaybackViewController *)self favoriteButtonItem];
+          v27[1] = favoriteButtonItem;
+          moveToFolderButtonItem = [(RCPlaybackViewController *)self moveToFolderButtonItem];
+          v27[2] = moveToFolderButtonItem;
+          deleteButtonItem = [(RCPlaybackViewController *)self deleteButtonItem];
+          v27[3] = deleteButtonItem;
           v6 = [NSArray arrayWithObjects:v27 count:4];
         }
 
         else
         {
-          v26[0] = v11;
-          v13 = [(RCPlaybackViewController *)self favoriteButtonItem];
-          v26[1] = v13;
-          v14 = [(RCPlaybackViewController *)self deleteButtonItem];
-          v26[2] = v14;
+          v26[0] = shareButtonItem;
+          favoriteButtonItem = [(RCPlaybackViewController *)self favoriteButtonItem];
+          v26[1] = favoriteButtonItem;
+          moveToFolderButtonItem = [(RCPlaybackViewController *)self deleteButtonItem];
+          v26[2] = moveToFolderButtonItem;
           v6 = [NSArray arrayWithObjects:v26 count:3];
         }
 
-        v16 = [(RCPlaybackViewController *)self playbackSettingsButtonItem];
-        v25 = v16;
+        playbackSettingsButtonItem = [(RCPlaybackViewController *)self playbackSettingsButtonItem];
+        v25 = playbackSettingsButtonItem;
         v17 = [NSArray arrayWithObjects:&v25 count:1];
-        v7 = [NSMutableArray arrayWithArray:v17];
+        eraseButtonItem = [NSMutableArray arrayWithArray:v17];
 
         v18 = +[_TtC10VoiceMemos33TranscriptionAvailabilityProvider shared];
         LODWORD(v17) = [v18 deviceIsSupported];
 
         if (v17)
         {
-          v19 = [(RCPlaybackViewController *)self transcriptionButtonItem];
-          [v7 addObject:v19];
+          transcriptionButtonItem = [(RCPlaybackViewController *)self transcriptionButtonItem];
+          [eraseButtonItem addObject:transcriptionButtonItem];
         }
 
         v20 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:6 target:0 action:0];
         v24[0] = v20;
-        v21 = [(RCPlaybackViewController *)self editButtonItem];
-        v24[1] = v21;
+        editButtonItem = [(RCPlaybackViewController *)self editButtonItem];
+        v24[1] = editButtonItem;
         v22 = [NSArray arrayWithObjects:v24 count:2];
-        [v7 addObjectsFromArray:v22];
+        [eraseButtonItem addObjectsFromArray:v22];
 
-        v23 = [v7 reverseObjectEnumerator];
-        v8 = [v23 allObjects];
+        reverseObjectEnumerator = [eraseButtonItem reverseObjectEnumerator];
+        allObjects = [reverseObjectEnumerator allObjects];
       }
 
-      [v3 setLeftBarButtonItems:v6];
-      [v3 setRightBarButtonItems:v8];
+      [_navigationItemToUseForToolbarItems setLeftBarButtonItems:v6];
+      [_navigationItemToUseForToolbarItems setRightBarButtonItems:allObjects];
     }
 
     else
     {
-      [v3 setLeftBarButtonItems:0];
-      [v3 setRightBarButtonItems:0];
+      [_navigationItemToUseForToolbarItems setLeftBarButtonItems:0];
+      [_navigationItemToUseForToolbarItems setRightBarButtonItems:0];
     }
   }
 }
 
-- (void)_updatePlaybackSettingsButtonTint:(BOOL)a3
+- (void)_updatePlaybackSettingsButtonTint:(BOOL)tint
 {
-  v3 = a3;
-  v5 = [(RCPlaybackViewController *)self playbackSettingsButtonItem];
-  [v5 setSelected:v3];
+  tintCopy = tint;
+  playbackSettingsButtonItem = [(RCPlaybackViewController *)self playbackSettingsButtonItem];
+  [playbackSettingsButtonItem setSelected:tintCopy];
 
   v8 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([v8 shouldUseTintedImageForSelectedUIBarButtonItems])
   {
-    if (v3)
+    if (tintCopy)
     {
       [v8 playbackSettingsImageForNavBarSelectedState];
     }
@@ -422,21 +422,21 @@
       [v8 playbackSettingsImage];
     }
     v6 = ;
-    v7 = [(RCPlaybackViewController *)self playbackSettingsButtonItem];
-    [v7 setImage:v6];
+    playbackSettingsButtonItem2 = [(RCPlaybackViewController *)self playbackSettingsButtonItem];
+    [playbackSettingsButtonItem2 setImage:v6];
   }
 }
 
-- (void)_updateTranscriptionButtonTint:(BOOL)a3
+- (void)_updateTranscriptionButtonTint:(BOOL)tint
 {
-  v3 = a3;
-  v5 = [(RCPlaybackViewController *)self transcriptionButtonItem];
-  [v5 setSelected:v3];
+  tintCopy = tint;
+  transcriptionButtonItem = [(RCPlaybackViewController *)self transcriptionButtonItem];
+  [transcriptionButtonItem setSelected:tintCopy];
 
   v8 = +[RCRecorderStyleProvider sharedStyleProvider];
   if ([v8 shouldUseTintedImageForSelectedUIBarButtonItems])
   {
-    if (v3)
+    if (tintCopy)
     {
       [v8 transcriptionImageForNavBarSelectedState];
     }
@@ -446,8 +446,8 @@
       [v8 transcriptionImage];
     }
     v6 = ;
-    v7 = [(RCPlaybackViewController *)self transcriptionButtonItem];
-    [v7 setImage:v6];
+    transcriptionButtonItem2 = [(RCPlaybackViewController *)self transcriptionButtonItem];
+    [transcriptionButtonItem2 setImage:v6];
   }
 }
 
@@ -456,158 +456,158 @@
   v59 = +[RCRecorderStyleProvider sharedStyleProvider];
   if (![(RCPlaybackViewController *)self didSetupToolbarWithButtonItems])
   {
-    v3 = [(RCPlaybackViewController *)self favoriteButtonItem];
-    if (!v3)
+    favoriteButtonItem = [(RCPlaybackViewController *)self favoriteButtonItem];
+    if (!favoriteButtonItem)
     {
       v4 = [UIBarButtonItem alloc];
-      v5 = [v59 notFavoriteImage];
-      v3 = [v4 initWithImage:v5 style:0 target:self action:"_toggleFavorite"];
+      notFavoriteImage = [v59 notFavoriteImage];
+      favoriteButtonItem = [v4 initWithImage:notFavoriteImage style:0 target:self action:"_toggleFavorite"];
 
-      [v3 setAccessibilityIdentifier:@"PlaybackView/FavoriteButton"];
-      [(RCPlaybackViewController *)self setFavoriteButtonItem:v3];
+      [favoriteButtonItem setAccessibilityIdentifier:@"PlaybackView/FavoriteButton"];
+      [(RCPlaybackViewController *)self setFavoriteButtonItem:favoriteButtonItem];
     }
 
-    v6 = [(RCPlaybackViewController *)self shareButtonItem];
-    if (!v6)
+    shareButtonItem = [(RCPlaybackViewController *)self shareButtonItem];
+    if (!shareButtonItem)
     {
-      v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:9 target:self action:"_doShare:"];
-      [v6 setAccessibilityIdentifier:@"PlaybackView/ShareButton"];
-      [(RCPlaybackViewController *)self setShareButtonItem:v6];
+      shareButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:9 target:self action:"_doShare:"];
+      [shareButtonItem setAccessibilityIdentifier:@"PlaybackView/ShareButton"];
+      [(RCPlaybackViewController *)self setShareButtonItem:shareButtonItem];
     }
 
-    v7 = [(RCPlaybackViewController *)self deleteButtonItem];
-    if (!v7)
+    deleteButtonItem = [(RCPlaybackViewController *)self deleteButtonItem];
+    if (!deleteButtonItem)
     {
-      v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:16 target:self action:"_doDelete:"];
-      [v7 setAccessibilityIdentifier:@"PlaybackView/DeleteButton"];
-      [(RCPlaybackViewController *)self setDeleteButtonItem:v7];
+      deleteButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:16 target:self action:"_doDelete:"];
+      [deleteButtonItem setAccessibilityIdentifier:@"PlaybackView/DeleteButton"];
+      [(RCPlaybackViewController *)self setDeleteButtonItem:deleteButtonItem];
     }
 
-    v58 = v7;
-    v8 = [(RCPlaybackViewController *)self recoverButtonItem];
-    if (!v8)
+    v58 = deleteButtonItem;
+    recoverButtonItem = [(RCPlaybackViewController *)self recoverButtonItem];
+    if (!recoverButtonItem)
     {
       v9 = [UIBarButtonItem alloc];
       +[NSBundle mainBundle];
-      v11 = v10 = v6;
+      v11 = v10 = shareButtonItem;
       v12 = [v11 localizedStringForKey:@"RECOVER" value:&stru_100295BB8 table:0];
       v13 = [v9 initWithTitle:v12 style:0 target:self action:"_doRecover:"];
 
-      v8 = v13;
-      v6 = v10;
+      recoverButtonItem = v13;
+      shareButtonItem = v10;
       [v13 setAccessibilityIdentifier:@"PlaybackView/RecoverButton"];
       [(RCPlaybackViewController *)self setRecoverButtonItem:v13];
     }
 
-    v14 = [(RCPlaybackViewController *)self playbackSettingsButtonItem];
-    if (!v14)
+    playbackSettingsButtonItem = [(RCPlaybackViewController *)self playbackSettingsButtonItem];
+    if (!playbackSettingsButtonItem)
     {
       v15 = [UIBarButtonItem alloc];
       [v59 playbackSettingsImage];
-      v17 = v16 = v8;
-      v14 = [v15 initWithImage:v17 style:0 target:self action:"_doDisplayPlaybackSettings:"];
+      v17 = v16 = recoverButtonItem;
+      playbackSettingsButtonItem = [v15 initWithImage:v17 style:0 target:self action:"_doDisplayPlaybackSettings:"];
 
-      [v14 setAccessibilityIdentifier:@"PlaybackView/PlaybackSettingsButton"];
+      [playbackSettingsButtonItem setAccessibilityIdentifier:@"PlaybackView/PlaybackSettingsButton"];
       v18 = +[NSBundle mainBundle];
       v19 = [v18 localizedStringForKey:@"PLAYBACK_SETTINGS_VIEW_TITLE" value:&stru_100295BB8 table:0];
-      [v14 setTitle:v19];
+      [playbackSettingsButtonItem setTitle:v19];
 
-      v8 = v16;
-      [(RCPlaybackViewController *)self setPlaybackSettingsButtonItem:v14];
+      recoverButtonItem = v16;
+      [(RCPlaybackViewController *)self setPlaybackSettingsButtonItem:playbackSettingsButtonItem];
     }
 
-    v20 = [(RCPlaybackViewController *)self transcriptionButtonItem];
-    if (!v20)
+    transcriptionButtonItem = [(RCPlaybackViewController *)self transcriptionButtonItem];
+    if (!transcriptionButtonItem)
     {
       v21 = [UIBarButtonItem alloc];
       [v59 transcriptionImage];
-      v23 = v22 = v14;
-      v20 = [v21 initWithImage:v23 style:0 target:self action:"_doShowTranscriptionView:"];
+      v23 = v22 = playbackSettingsButtonItem;
+      transcriptionButtonItem = [v21 initWithImage:v23 style:0 target:self action:"_doShowTranscriptionView:"];
 
-      [v20 setAccessibilityIdentifier:@"PlaybackView/TranscriptionButton"];
+      [transcriptionButtonItem setAccessibilityIdentifier:@"PlaybackView/TranscriptionButton"];
       v24 = +[NSBundle mainBundle];
       v25 = [v24 localizedStringForKey:@"Transcription" value:&stru_100295BB8 table:0];
-      [v20 setTitle:v25];
+      [transcriptionButtonItem setTitle:v25];
 
-      v14 = v22;
-      [(RCPlaybackViewController *)self setTranscriptionButtonItem:v20];
+      playbackSettingsButtonItem = v22;
+      [(RCPlaybackViewController *)self setTranscriptionButtonItem:transcriptionButtonItem];
     }
 
-    v57 = v20;
-    v26 = [(RCPlaybackViewController *)self editButtonItem];
-    if (!v26)
+    v57 = transcriptionButtonItem;
+    editButtonItem = [(RCPlaybackViewController *)self editButtonItem];
+    if (!editButtonItem)
     {
       v27 = [UIBarButtonItem alloc];
-      v28 = [v59 editButtonImage];
-      v26 = [v27 initWithImage:v28 style:0 target:self action:"_doEdit"];
+      editButtonImage = [v59 editButtonImage];
+      editButtonItem = [v27 initWithImage:editButtonImage style:0 target:self action:"_doEdit"];
 
-      [v26 setAccessibilityIdentifier:@"PlaybackView/EditRecordingButton"];
+      [editButtonItem setAccessibilityIdentifier:@"PlaybackView/EditRecordingButton"];
       v29 = +[NSBundle mainBundle];
       v30 = [v29 localizedStringForKey:@"Edit Recording" value:&stru_100295BB8 table:0];
-      [v26 setTitle:v30];
+      [editButtonItem setTitle:v30];
 
-      [(RCPlaybackViewController *)self setEditButtonItem:v26];
+      [(RCPlaybackViewController *)self setEditButtonItem:editButtonItem];
     }
 
-    v56 = v26;
+    v56 = editButtonItem;
     v31 = +[NSBundle mainBundle];
     v32 = [v31 localizedStringForKey:@"AX_EDIT" value:&stru_100295BB8 table:0];
-    v33 = [(RCPlaybackViewController *)self editButtonItem];
-    [v33 setAccessibilityLabel:v32];
+    editButtonItem2 = [(RCPlaybackViewController *)self editButtonItem];
+    [editButtonItem2 setAccessibilityLabel:v32];
 
-    v34 = [(RCPlaybackViewController *)self eraseButtonItem];
-    if (!v34)
+    eraseButtonItem = [(RCPlaybackViewController *)self eraseButtonItem];
+    if (!eraseButtonItem)
     {
       v35 = [UIBarButtonItem alloc];
       v36 = +[NSBundle mainBundle];
       v37 = [v36 localizedStringForKey:@"DELETE" value:&stru_100295BB8 table:0];
-      v34 = [v35 initWithTitle:v37 style:0 target:self action:"_doErase:"];
+      eraseButtonItem = [v35 initWithTitle:v37 style:0 target:self action:"_doErase:"];
 
-      [v34 setAccessibilityIdentifier:@"PlaybackView/EraseButton"];
-      [(RCPlaybackViewController *)self setEraseButtonItem:v34];
+      [eraseButtonItem setAccessibilityIdentifier:@"PlaybackView/EraseButton"];
+      [(RCPlaybackViewController *)self setEraseButtonItem:eraseButtonItem];
     }
 
-    v55 = v34;
-    v38 = [(RCPlaybackViewController *)self moveToFolderButtonItem];
-    if (!v38)
+    v55 = eraseButtonItem;
+    moveToFolderButtonItem = [(RCPlaybackViewController *)self moveToFolderButtonItem];
+    if (!moveToFolderButtonItem)
     {
       v39 = [UIBarButtonItem alloc];
-      v40 = [v59 moveToFolderImage];
-      v38 = [v39 initWithImage:v40 style:0 target:self action:"_doMoveToFolder:"];
+      moveToFolderImage = [v59 moveToFolderImage];
+      moveToFolderButtonItem = [v39 initWithImage:moveToFolderImage style:0 target:self action:"_doMoveToFolder:"];
 
-      [v38 setAccessibilityIdentifier:@"PlaybackView/MoveToFolderButton"];
+      [moveToFolderButtonItem setAccessibilityIdentifier:@"PlaybackView/MoveToFolderButton"];
       v41 = +[NSBundle mainBundle];
       v42 = [v41 localizedStringForKey:@"Move to Folder" value:&stru_100295BB8 table:0];
-      [v38 setTitle:v42];
+      [moveToFolderButtonItem setTitle:v42];
 
-      [(RCPlaybackViewController *)self setMoveToFolderButtonItem:v38];
+      [(RCPlaybackViewController *)self setMoveToFolderButtonItem:moveToFolderButtonItem];
     }
 
-    v43 = [(RCPlaybackViewController *)self moreOptionsButtonItem];
-    if (!v43)
+    moreOptionsButtonItem = [(RCPlaybackViewController *)self moreOptionsButtonItem];
+    if (!moreOptionsButtonItem)
     {
       v44 = +[_TtC10VoiceMemos33TranscriptionAvailabilityProvider shared];
-      v45 = [v44 deviceIsSupported];
+      deviceIsSupported = [v44 deviceIsSupported];
 
-      v46 = [(RCPlaybackViewController *)self _createMoreOptionsMenu:0 shouldShowTranscriptionOption:v45];
+      v46 = [(RCPlaybackViewController *)self _createMoreOptionsMenu:0 shouldShowTranscriptionOption:deviceIsSupported];
       v47 = [UIImage systemImageNamed:@"ellipsis.circle"];
-      v48 = v14;
-      v49 = v8;
-      v50 = v6;
-      v51 = v3;
+      v48 = playbackSettingsButtonItem;
+      v49 = recoverButtonItem;
+      v50 = shareButtonItem;
+      v51 = favoriteButtonItem;
       v52 = [[UIBarButtonItem alloc] initWithImage:v47 menu:v46];
       [(RCPlaybackViewController *)self setMoreOptionsButtonItem:v52];
 
-      v3 = v51;
-      v6 = v50;
-      v8 = v49;
-      v14 = v48;
+      favoriteButtonItem = v51;
+      shareButtonItem = v50;
+      recoverButtonItem = v49;
+      playbackSettingsButtonItem = v48;
     }
 
-    v53 = [(RCRecordingViewController *)self UUID];
-    v54 = v53 != 0;
+    uUID = [(RCRecordingViewController *)self UUID];
+    v54 = uUID != 0;
 
-    [v6 setEnabled:v54];
+    [shareButtonItem setEnabled:v54];
     [v58 setEnabled:v54];
     [v56 setEnabled:v54];
     [(RCPlaybackViewController *)self setDidSetupToolbarWithButtonItems:1];
@@ -618,20 +618,20 @@
 - (void)_updateMoreOptionsMenu
 {
   v3 = +[_TtC10VoiceMemos33TranscriptionAvailabilityProvider shared];
-  v4 = [v3 deviceIsSupported];
+  deviceIsSupported = [v3 deviceIsSupported];
 
-  v6 = [(RCPlaybackViewController *)self _createMoreOptionsMenu:[(RCPlaybackViewController *)self isFavorite] shouldShowTranscriptionOption:v4];
-  v5 = [(RCPlaybackViewController *)self moreOptionsButtonItem];
-  [v5 setMenu:v6];
+  v6 = [(RCPlaybackViewController *)self _createMoreOptionsMenu:[(RCPlaybackViewController *)self isFavorite] shouldShowTranscriptionOption:deviceIsSupported];
+  moreOptionsButtonItem = [(RCPlaybackViewController *)self moreOptionsButtonItem];
+  [moreOptionsButtonItem setMenu:v6];
 }
 
-- (id)_createMoreOptionsMenu:(BOOL)a3 shouldShowTranscriptionOption:(BOOL)a4
+- (id)_createMoreOptionsMenu:(BOOL)menu shouldShowTranscriptionOption:(BOOL)option
 {
-  v21 = a4;
-  v4 = a3;
+  optionCopy = option;
+  menuCopy = menu;
   objc_initWeak(&location, self);
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v24 = [v5 shareToolbarMenuImage];
+  shareToolbarMenuImage = [v5 shareToolbarMenuImage];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"SHARE_CURRENT_RECORDING_MENU_ITEM" value:&stru_100295BB8 table:0];
   v30[0] = _NSConcreteStackBlock;
@@ -639,10 +639,10 @@
   v30[2] = sub_100056880;
   v30[3] = &unk_10028AE08;
   objc_copyWeak(&v31, &location);
-  v25 = [UIAction actionWithTitle:v7 image:v24 identifier:0 handler:v30];
+  v25 = [UIAction actionWithTitle:v7 image:shareToolbarMenuImage identifier:0 handler:v30];
 
   v8 = +[NSBundle mainBundle];
-  if (v4)
+  if (menuCopy)
   {
     v23 = [v8 localizedStringForKey:@"REMOVE_FROM_FAVORITES" value:&stru_100295BB8 table:0];
 
@@ -664,13 +664,13 @@
   v9 = [UIAction actionWithTitle:v23 image:v22 identifier:0 handler:v28];
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"MOVE_TO_FOLDER" value:&stru_100295BB8 table:0];
-  v12 = [v5 moveToFolderImage];
+  moveToFolderImage = [v5 moveToFolderImage];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100056934;
   v26[3] = &unk_10028AE08;
   objc_copyWeak(&v27, &location);
-  v13 = [UIAction actionWithTitle:v11 image:v12 identifier:0 handler:v26];
+  v13 = [UIAction actionWithTitle:v11 image:moveToFolderImage identifier:0 handler:v26];
 
   v34[0] = v25;
   v34[1] = v9;
@@ -678,13 +678,13 @@
   v14 = [NSArray arrayWithObjects:v34 count:3];
   v15 = [UIMenu menuWithChildren:v14];
 
-  if (v21)
+  if (optionCopy)
   {
-    v16 = [(RCPlaybackViewController *)self deferredTranscriptMenuElement];
+    deferredTranscriptMenuElement = [(RCPlaybackViewController *)self deferredTranscriptMenuElement];
     v33[0] = v25;
     v33[1] = v9;
     v33[2] = v13;
-    v33[3] = v16;
+    v33[3] = deferredTranscriptMenuElement;
     v17 = [NSArray arrayWithObjects:v33 count:4];
     v18 = [UIMenu menuWithChildren:v17];
 
@@ -702,8 +702,8 @@
 
 - (id)showTranscriptMenuElement
 {
-  v3 = [(RCPlaybackViewController *)self view];
-  v4 = [v3 centerContentViewState] == 1;
+  view = [(RCPlaybackViewController *)self view];
+  v4 = [view centerContentViewState] == 1;
 
   v5 = +[NSBundle mainBundle];
   v6 = v5;
@@ -723,12 +723,12 @@
   v10 = v9;
   if (v4)
   {
-    v11 = 0;
+    transcriptionImage = 0;
   }
 
   else
   {
-    v11 = [v9 transcriptionImage];
+    transcriptionImage = [v9 transcriptionImage];
   }
 
   objc_initWeak(&location, self);
@@ -737,10 +737,10 @@
   v17[2] = sub_100056BEC;
   v17[3] = &unk_10028AE08;
   objc_copyWeak(&v18, &location);
-  v12 = [UIAction actionWithTitle:v8 image:v11 identifier:0 handler:v17];
+  v12 = [UIAction actionWithTitle:v8 image:transcriptionImage identifier:0 handler:v17];
   v21 = v12;
   v13 = [NSArray arrayWithObjects:&v21 count:1];
-  v14 = [UIMenu menuWithTitle:&stru_100295BB8 image:v11 identifier:0 options:1 children:v13];
+  v14 = [UIMenu menuWithTitle:&stru_100295BB8 image:transcriptionImage identifier:0 options:1 children:v13];
 
   v20 = v14;
   v15 = [NSArray arrayWithObjects:&v20 count:1];
@@ -768,15 +768,15 @@
 
 - (BOOL)_shouldCollapseToolbarButtons
 {
-  v3 = [(RCPlaybackViewController *)self view];
-  v4 = [v3 window];
+  view = [(RCPlaybackViewController *)self view];
+  window = [view window];
 
   result = 0;
-  if (v4)
+  if (window)
   {
     v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v6 = [(RCPlaybackViewController *)self view];
-    [v6 frame];
+    view2 = [(RCPlaybackViewController *)self view];
+    [view2 frame];
     v8 = v7;
     [v5 playbackViewWidthToCollapseToolbarButtons];
     v10 = v9;
@@ -790,18 +790,18 @@
   return result;
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = a4;
+  collectionCopy = collection;
   v6 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v7 = [(RCPlaybackViewController *)self traitCollection];
-  [v6 setCurrentUserInterfaceStyle:{objc_msgSend(v7, "userInterfaceStyle")}];
+  traitCollection = [(RCPlaybackViewController *)self traitCollection];
+  [v6 setCurrentUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-  v8 = [v5 userInterfaceStyle];
-  v9 = [(RCPlaybackViewController *)self traitCollection];
-  v10 = [v9 userInterfaceStyle];
+  userInterfaceStyle = [collectionCopy userInterfaceStyle];
+  traitCollection2 = [(RCPlaybackViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
-  if (v8 != v10)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     v11 = +[NSNotificationCenter defaultCenter];
     [v11 postNotificationName:@"RCTraitCollectionUserInterfaceStyleChangedNotification" object:0];
@@ -810,135 +810,135 @@
 
 - (void)_toggleFavorite
 {
-  v3 = [(RCRecordingViewController *)self UUID];
+  uUID = [(RCRecordingViewController *)self UUID];
 
-  if (v3)
+  if (uUID)
   {
-    v5 = [(RCRecordingViewController *)self recordingViewControllerDelegate];
-    v4 = [(RCRecordingViewController *)self UUID];
-    [v5 toggleFavoriteForUUID:v4];
+    recordingViewControllerDelegate = [(RCRecordingViewController *)self recordingViewControllerDelegate];
+    uUID2 = [(RCRecordingViewController *)self UUID];
+    [recordingViewControllerDelegate toggleFavoriteForUUID:uUID2];
   }
 }
 
-- (void)_doShare:(id)a3
+- (void)_doShare:(id)share
 {
-  v4 = a3;
-  v6 = [(RCRecordingViewController *)self recordingViewControllerDelegate];
-  v5 = [(RCRecordingViewController *)self UUID];
-  [v6 performAction:28 atPosition:v5 forUUID:self sourceController:v4 source:0.0];
+  shareCopy = share;
+  recordingViewControllerDelegate = [(RCRecordingViewController *)self recordingViewControllerDelegate];
+  uUID = [(RCRecordingViewController *)self UUID];
+  [recordingViewControllerDelegate performAction:28 atPosition:uUID forUUID:self sourceController:shareCopy source:0.0];
 }
 
-- (void)_doDelete:(id)a3
+- (void)_doDelete:(id)delete
 {
-  v4 = a3;
-  v6 = [(RCRecordingViewController *)self recordingViewControllerDelegate];
-  v5 = [(RCRecordingViewController *)self UUID];
-  [v6 performAction:14 atPosition:v5 forUUID:self sourceController:v4 source:0.0];
+  deleteCopy = delete;
+  recordingViewControllerDelegate = [(RCRecordingViewController *)self recordingViewControllerDelegate];
+  uUID = [(RCRecordingViewController *)self UUID];
+  [recordingViewControllerDelegate performAction:14 atPosition:uUID forUUID:self sourceController:deleteCopy source:0.0];
 }
 
-- (void)_doRecover:(id)a3
+- (void)_doRecover:(id)recover
 {
-  v4 = a3;
-  v6 = [(RCRecordingViewController *)self recordingViewControllerDelegate];
-  v5 = [(RCRecordingViewController *)self UUID];
-  [v6 performAction:19 atPosition:v5 forUUID:self sourceController:v4 source:0.0];
+  recoverCopy = recover;
+  recordingViewControllerDelegate = [(RCRecordingViewController *)self recordingViewControllerDelegate];
+  uUID = [(RCRecordingViewController *)self UUID];
+  [recordingViewControllerDelegate performAction:19 atPosition:uUID forUUID:self sourceController:recoverCopy source:0.0];
 }
 
-- (void)_doErase:(id)a3
+- (void)_doErase:(id)erase
 {
-  v4 = a3;
-  v6 = [(RCRecordingViewController *)self recordingViewControllerDelegate];
-  v5 = [(RCRecordingViewController *)self UUID];
-  [v6 performAction:16 atPosition:v5 forUUID:self sourceController:v4 source:0.0];
+  eraseCopy = erase;
+  recordingViewControllerDelegate = [(RCRecordingViewController *)self recordingViewControllerDelegate];
+  uUID = [(RCRecordingViewController *)self UUID];
+  [recordingViewControllerDelegate performAction:16 atPosition:uUID forUUID:self sourceController:eraseCopy source:0.0];
 }
 
-- (void)_doDisplayPlaybackSettings:(id)a3
+- (void)_doDisplayPlaybackSettings:(id)settings
 {
-  v4 = a3;
-  v6 = [(RCRecordingViewController *)self recordingViewControllerDelegate];
-  v5 = [(RCRecordingViewController *)self UUID];
-  [v6 performAction:41 atPosition:v5 forUUID:self sourceController:v4 source:0.0];
+  settingsCopy = settings;
+  recordingViewControllerDelegate = [(RCRecordingViewController *)self recordingViewControllerDelegate];
+  uUID = [(RCRecordingViewController *)self UUID];
+  [recordingViewControllerDelegate performAction:41 atPosition:uUID forUUID:self sourceController:settingsCopy source:0.0];
 }
 
-- (void)_doShowTranscriptionView:(id)a3
+- (void)_doShowTranscriptionView:(id)view
 {
-  v4 = a3;
-  v6 = [(RCRecordingViewController *)self recordingViewControllerDelegate];
-  v5 = [(RCRecordingViewController *)self UUID];
-  [v6 performAction:42 atPosition:v5 forUUID:self sourceController:v4 source:0.0];
+  viewCopy = view;
+  recordingViewControllerDelegate = [(RCRecordingViewController *)self recordingViewControllerDelegate];
+  uUID = [(RCRecordingViewController *)self UUID];
+  [recordingViewControllerDelegate performAction:42 atPosition:uUID forUUID:self sourceController:viewCopy source:0.0];
 }
 
 - (void)_doEdit
 {
   [(RCRecordingViewController *)self stopScrolling];
-  v4 = [(RCRecordingViewController *)self recordingViewControllerDelegate];
-  v3 = [(RCRecordingViewController *)self UUID];
-  [v4 performAction:22 atPosition:v3 forUUID:0 sourceController:0 source:0.0];
+  recordingViewControllerDelegate = [(RCRecordingViewController *)self recordingViewControllerDelegate];
+  uUID = [(RCRecordingViewController *)self UUID];
+  [recordingViewControllerDelegate performAction:22 atPosition:uUID forUUID:0 sourceController:0 source:0.0];
 }
 
-- (void)_doMoveToFolder:(id)a3
+- (void)_doMoveToFolder:(id)folder
 {
-  v4 = a3;
-  v6 = [(RCRecordingViewController *)self recordingViewControllerDelegate];
-  v5 = [(RCRecordingViewController *)self UUID];
-  [v6 performAction:40 atPosition:v5 forUUID:self sourceController:v4 source:0.0];
+  folderCopy = folder;
+  recordingViewControllerDelegate = [(RCRecordingViewController *)self recordingViewControllerDelegate];
+  uUID = [(RCRecordingViewController *)self UUID];
+  [recordingViewControllerDelegate performAction:40 atPosition:uUID forUUID:self sourceController:folderCopy source:0.0];
 }
 
-- (void)enableWaveformScrolling:(BOOL)a3
+- (void)enableWaveformScrolling:(BOOL)scrolling
 {
-  v3 = a3;
-  v4 = [(RCRecordingViewController *)self waveformContainerViewControllers];
-  [v4 enableWaveformScrolling:v3];
+  scrollingCopy = scrolling;
+  waveformContainerViewControllers = [(RCRecordingViewController *)self waveformContainerViewControllers];
+  [waveformContainerViewControllers enableWaveformScrolling:scrollingCopy];
 }
 
-- (id)createNewWaveformViewControllerWithDataSource:(id)a3 isOverview:(BOOL)a4 isCompact:(BOOL)a5 waveformOnly:(BOOL)a6
+- (id)createNewWaveformViewControllerWithDataSource:(id)source isOverview:(BOOL)overview isCompact:(BOOL)compact waveformOnly:(BOOL)only
 {
   v11.receiver = self;
   v11.super_class = RCPlaybackViewController;
-  v7 = [(RCRecordingViewController *)&v11 createNewWaveformViewControllerWithDataSource:a3 isOverview:a4 isCompact:a5 waveformOnly:a6];
-  v8 = [v7 waveformViewController];
-  [v8 setIsPlayback:1];
+  v7 = [(RCRecordingViewController *)&v11 createNewWaveformViewControllerWithDataSource:source isOverview:overview isCompact:compact waveformOnly:only];
+  waveformViewController = [v7 waveformViewController];
+  [waveformViewController setIsPlayback:1];
 
-  v9 = [(RCPlaybackViewController *)self view];
-  [v9 setDisplayStyle:3];
+  view = [(RCPlaybackViewController *)self view];
+  [view setDisplayStyle:3];
 
   return v7;
 }
 
-- (void)enablePlaybackWithComposition:(id)a3 displayModel:(id)a4 timeController:(id)a5
+- (void)enablePlaybackWithComposition:(id)composition displayModel:(id)model timeController:(id)controller
 {
-  v8 = a4;
-  v9 = a3;
-  [(RCRecordingViewController *)self setActiveTimeController:a5];
-  [(RCRecordingViewController *)self reloadWaveformsFromComposition:v9];
+  modelCopy = model;
+  compositionCopy = composition;
+  [(RCRecordingViewController *)self setActiveTimeController:controller];
+  [(RCRecordingViewController *)self reloadWaveformsFromComposition:compositionCopy];
 
-  [(RCPlaybackViewController *)self updateWithRecordingModel:v8];
-  v10 = [(RCRecordingViewController *)self waveformContainerViewControllers];
-  [v10 setIsPlayback:1];
+  [(RCPlaybackViewController *)self updateWithRecordingModel:modelCopy];
+  waveformContainerViewControllers = [(RCRecordingViewController *)self waveformContainerViewControllers];
+  [waveformContainerViewControllers setIsPlayback:1];
 
-  v11 = [(RCRecordingViewController *)self waveformContainerViewControllers];
-  [v11 resetZoomScale];
+  waveformContainerViewControllers2 = [(RCRecordingViewController *)self waveformContainerViewControllers];
+  [waveformContainerViewControllers2 resetZoomScale];
 
-  v12 = [(RCRecordingViewController *)self overviewWaveformViewController];
-  v13 = [v12 waveformViewController];
-  [v13 setIsPlayback:1];
+  overviewWaveformViewController = [(RCRecordingViewController *)self overviewWaveformViewController];
+  waveformViewController = [overviewWaveformViewController waveformViewController];
+  [waveformViewController setIsPlayback:1];
 
-  v14 = [(RCPlaybackViewController *)self view];
-  [v14 setRecordingViewState:2 * (v8 != 0)];
+  view = [(RCPlaybackViewController *)self view];
+  [view setRecordingViewState:2 * (modelCopy != 0)];
   [(RCRecordingViewController *)self _beginFileTranscriptionIfNeeded];
 }
 
-- (void)updateContentUnavailableViewState:(int64_t)a3
+- (void)updateContentUnavailableViewState:(int64_t)state
 {
-  [(RCPlaybackViewController *)self setContentUnavailableState:a3];
+  [(RCPlaybackViewController *)self setContentUnavailableState:state];
 
   [(RCPlaybackViewController *)self setNeedsUpdateContentUnavailableConfiguration];
 }
 
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = [(RCPlaybackViewController *)self contentUnavailableState];
-  if (v4 == -1)
+  contentUnavailableState = [(RCPlaybackViewController *)self contentUnavailableState];
+  if (contentUnavailableState == -1)
   {
     v10 = 0;
   }
@@ -947,9 +947,9 @@
   {
     v5 = +[RCRecorderStyleProvider sharedStyleProvider];
     v12 = +[UIContentUnavailableConfiguration emptyConfiguration];
-    v6 = [v5 playbackContentUnavailableViewBackgroundColor];
-    v7 = [v12 background];
-    [v7 setBackgroundColor:v6];
+    playbackContentUnavailableViewBackgroundColor = [v5 playbackContentUnavailableViewBackgroundColor];
+    background = [v12 background];
+    [background setBackgroundColor:playbackContentUnavailableViewBackgroundColor];
 
     if ([(RCPlaybackViewController *)self contentUnavailableState]== 1)
     {
@@ -963,8 +963,8 @@
 
   v13 = v10;
   [(RCPlaybackViewController *)self setContentUnavailableConfiguration:v10];
-  v11 = [(RCPlaybackViewController *)self view];
-  [v11 updateUIForContentUnavailable:v4 != -1];
+  view = [(RCPlaybackViewController *)self view];
+  [view updateUIForContentUnavailable:contentUnavailableState != -1];
 }
 
 - (void)clear
@@ -976,7 +976,7 @@
   }
 }
 
-- (void)deviceTranscriptionSupportDidChange:(BOOL)a3
+- (void)deviceTranscriptionSupportDidChange:(BOOL)change
 {
   [(RCRecordingViewController *)self _setupTranscriptViewDependenciesIfNeeded];
   [(RCPlaybackViewController *)self _updateMoreOptionsMenu];

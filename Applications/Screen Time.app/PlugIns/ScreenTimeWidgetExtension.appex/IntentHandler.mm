@@ -1,23 +1,23 @@
 @interface IntentHandler
 - (_TtC25ScreenTimeWidgetExtension13IntentHandler)init;
-- (id)defaultUserForSelectUser:(id)a3;
-- (void)provideUserOptionsCollectionForSelectUser:(id)a3 withCompletion:(id)a4;
+- (id)defaultUserForSelectUser:(id)user;
+- (void)provideUserOptionsCollectionForSelectUser:(id)user withCompletion:(id)completion;
 @end
 
 @implementation IntentHandler
 
-- (void)provideUserOptionsCollectionForSelectUser:(id)a3 withCompletion:(id)a4
+- (void)provideUserOptionsCollectionForSelectUser:(id)user withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
+  userCopy = user;
+  selfCopy = self;
   sub_10001B484(v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (id)defaultUserForSelectUser:(id)a3
+- (id)defaultUserForSelectUser:(id)user
 {
   v3 = sub_10001BC8C();
 

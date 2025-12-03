@@ -3,18 +3,18 @@
 - (BOOL)isVisibleOnScreen;
 - (NSString)description;
 - (id)acquireSystemUIScenePresentingAssertion;
-- (id)dismissScene:(id)a3;
+- (id)dismissScene:(id)scene;
 - (id)parentSceneIdentityToken;
-- (id)presentScene:(id)a3 viewControllerBuilderBlock:(id)a4;
+- (id)presentScene:(id)scene viewControllerBuilderBlock:(id)block;
 - (id)presentingDelegate;
 - (void)_acquireSystemUIScenePresentingAssertionIfNecessary;
 - (void)_activateIfPossible;
 - (void)_deactivateIfPossible;
 - (void)_invalidateSystemUIScenePresentingAssertion;
-- (void)_windowManagementStyleDidChange:(id)a3;
+- (void)_windowManagementStyleDidChange:(id)change;
 - (void)dealloc;
-- (void)noteDisplayModeChange:(int64_t)a3;
-- (void)scene:(id)a3 didChangeTraitsParticipantDelegate:(id)a4;
+- (void)noteDisplayModeChange:(int64_t)change;
+- (void)scene:(id)scene didChangeTraitsParticipantDelegate:(id)delegate;
 @end
 
 @implementation SBDeviceApplicationSystemUISceneAbstractViewProvider
@@ -31,8 +31,8 @@
 
   else
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel__windowManagementStyleDidChange_ name:@"SBSwitcherControllerWindowManagementStyleDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__windowManagementStyleDidChange_ name:@"SBSwitcherControllerWindowManagementStyleDidChangeNotification" object:0];
     [(SBDeviceApplicationSystemUISceneAbstractViewProvider *)self _acquireSystemUIScenePresentingAssertionIfNecessary];
   }
 }
@@ -41,16 +41,16 @@
 {
   if (!self->_systemUIScenePresenterAssertion)
   {
-    v3 = [(SBDeviceApplicationSystemUISceneAbstractViewProvider *)self acquireSystemUIScenePresentingAssertion];
+    acquireSystemUIScenePresentingAssertion = [(SBDeviceApplicationSystemUISceneAbstractViewProvider *)self acquireSystemUIScenePresentingAssertion];
     systemUIScenePresenterAssertion = self->_systemUIScenePresenterAssertion;
-    self->_systemUIScenePresenterAssertion = v3;
+    self->_systemUIScenePresenterAssertion = acquireSystemUIScenePresentingAssertion;
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SBDeviceApplicationSystemUISceneAbstractViewProvider *)self _invalidateSystemUIScenePresentingAssertion];
   v4.receiver = self;
@@ -60,10 +60,10 @@
 
 - (id)acquireSystemUIScenePresentingAssertion
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"SBDeviceApplicationSystemUISceneAbstractViewProvider.m" lineNumber:46 description:{@"For subclasses to override, [%@] cannot be used on its own", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBDeviceApplicationSystemUISceneAbstractViewProvider.m" lineNumber:46 description:{@"For subclasses to override, [%@] cannot be used on its own", v6}];
 
   return 0;
 }
@@ -84,22 +84,22 @@
   }
 }
 
-- (void)noteDisplayModeChange:(int64_t)a3
+- (void)noteDisplayModeChange:(int64_t)change
 {
-  self->_displayMode = a3;
+  self->_displayMode = change;
   WeakRetained = objc_loadWeakRetained(&self->_systemUIScenePresentingDelegate);
   [WeakRetained scenePresenterVisibilityDidChange:self];
 }
 
-- (id)presentScene:(id)a3 viewControllerBuilderBlock:(id)a4
+- (id)presentScene:(id)scene viewControllerBuilderBlock:(id)block
 {
-  v6 = a3;
-  v7 = (*(a4 + 2))(a4);
+  sceneCopy = scene;
+  v7 = (*(block + 2))(block);
   v8 = [(SBDeviceApplicationSystemUISceneAbstractViewProvider *)self viewControllerWithBuilder:v7];
 
   if (!self->_isActive || v8 != self->_systemSceneUIViewController)
   {
-    objc_storeWeak(&self->_presentedScene, v6);
+    objc_storeWeak(&self->_presentedScene, sceneCopy);
     objc_storeStrong(&self->_systemSceneUIViewController, v8);
     [(SBDeviceApplicationSystemUISceneAbstractViewProvider *)self _activateIfPossible];
     systemSceneUIViewController = self->_systemSceneUIViewController;
@@ -131,26 +131,26 @@
   WeakRetained = objc_loadWeakRetained(&self->_systemUIScenePresentingDelegate);
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-    v16 = [v15 sceneIfExists];
-    v17 = [v16 settings];
-    v18 = [v17 displayConfiguration];
+    sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+    sceneIfExists = [sceneHandle sceneIfExists];
+    settings = [sceneIfExists settings];
+    displayConfiguration = [settings displayConfiguration];
 
-    [WeakRetained scenePresenter:self updateDisplayConfiguration:v18 forScene:v6];
+    [WeakRetained scenePresenter:self updateDisplayConfiguration:displayConfiguration forScene:sceneCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v19 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-    v20 = [v19 wantsEnhancedWindowingEnabled];
+    sceneHandle2 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+    wantsEnhancedWindowingEnabled = [sceneHandle2 wantsEnhancedWindowingEnabled];
 
-    [WeakRetained scenePresenter:self updateEnhancedWindowingModeEnabled:v20 forScene:v6];
+    [WeakRetained scenePresenter:self updateEnhancedWindowingModeEnabled:wantsEnhancedWindowingEnabled forScene:sceneCopy];
   }
 
   return 0;
 }
 
-- (id)dismissScene:(id)a3
+- (id)dismissScene:(id)scene
 {
   objc_storeWeak(&self->_presentedScene, 0);
   [(SBDeviceApplicationSystemUISceneAbstractViewProvider *)self _deactivateIfPossible];
@@ -159,11 +159,11 @@
 
 - (id)parentSceneIdentityToken
 {
-  v2 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  v3 = [v2 sceneIfExists];
-  v4 = [v3 identityToken];
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
+  identityToken = [sceneIfExists identityToken];
 
-  return v4;
+  return identityToken;
 }
 
 - (id)presentingDelegate
@@ -175,20 +175,20 @@
 
 - (BOOL)isVisibleOnScreen
 {
-  v3 = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
-  v4 = [v3 overlayViewProviderIsHostedInSecureWindow:self];
+  delegate = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
+  v4 = [delegate overlayViewProviderIsHostedInSecureWindow:self];
 
   return ((v4 & 1) != 0 || ![(SBDeviceApplicationSystemUISceneAbstractViewProvider *)self _isUnderUILock]) && self->_displayMode == 4;
 }
 
 - (BOOL)_isUnderUILock
 {
-  v3 = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
-  v4 = [v3 windowSceneForOverlayViewProvider:self];
-  v5 = [v4 uiLockStateProvider];
-  v6 = [v5 isUILocked];
+  delegate = [(SBDeviceApplicationSceneOverlayViewProvider *)self delegate];
+  v4 = [delegate windowSceneForOverlayViewProvider:self];
+  uiLockStateProvider = [v4 uiLockStateProvider];
+  isUILocked = [uiLockStateProvider isUILocked];
 
-  return v6;
+  return isUILocked;
 }
 
 - (void)_invalidateSystemUIScenePresentingAssertion
@@ -198,7 +198,7 @@
   self->_systemUIScenePresenterAssertion = 0;
 }
 
-- (void)scene:(id)a3 didChangeTraitsParticipantDelegate:(id)a4
+- (void)scene:(id)scene didChangeTraitsParticipantDelegate:(id)delegate
 {
   systemSceneUIViewController = self->_systemSceneUIViewController;
   v5 = objc_opt_class();
@@ -232,29 +232,29 @@
   v9.receiver = self;
   v9.super_class = SBDeviceApplicationSystemUISceneAbstractViewProvider;
   v4 = [(SBDeviceApplicationSystemUISceneAbstractViewProvider *)&v9 description];
-  v5 = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
-  v6 = [v5 sceneIdentifier];
-  v7 = [v3 stringWithFormat:@"%@ - %@", v4, v6];
+  sceneHandle = [(SBDeviceApplicationSceneOverlayViewProvider *)self sceneHandle];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
+  v7 = [v3 stringWithFormat:@"%@ - %@", v4, sceneIdentifier];
 
   return v7;
 }
 
-- (void)_windowManagementStyleDidChange:(id)a3
+- (void)_windowManagementStyleDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = objc_opt_class();
-  v6 = [v4 object];
+  object = [changeCopy object];
 
-  v11 = SBSafeCast(v5, v6);
+  v11 = SBSafeCast(v5, object);
 
-  v7 = [v11 windowManagementContext];
-  v8 = [v7 isChamoisOrFlexibleWindowing];
+  windowManagementContext = [v11 windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
   WeakRetained = objc_loadWeakRetained(&self->_systemUIScenePresentingDelegate);
   if (objc_opt_respondsToSelector())
   {
     v10 = objc_loadWeakRetained(&self->_presentedScene);
-    [WeakRetained scenePresenter:self updateEnhancedWindowingModeEnabled:v8 forScene:v10];
+    [WeakRetained scenePresenter:self updateEnhancedWindowingModeEnabled:isChamoisOrFlexibleWindowing forScene:v10];
   }
 }
 

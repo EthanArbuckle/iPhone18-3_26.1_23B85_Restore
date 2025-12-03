@@ -1,6 +1,6 @@
 @interface BaseNativeViewController
 - (_TtC7Preview24BaseNativeViewController)init;
-- (_TtC7Preview24BaseNativeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7Preview24BaseNativeViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation BaseNativeViewController
@@ -22,7 +22,7 @@
   return v3;
 }
 
-- (_TtC7Preview24BaseNativeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Preview24BaseNativeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

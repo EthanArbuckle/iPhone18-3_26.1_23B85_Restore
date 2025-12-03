@@ -8,13 +8,13 @@
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v2 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v3 = [a1 domain];
-  v4 = [a1 code];
+  domain = [self domain];
+  code = [self code];
   v10 = *MEMORY[0x1E696A578];
-  v5 = [a1 localizedDescription];
-  v11[0] = v5;
+  localizedDescription = [self localizedDescription];
+  v11[0] = localizedDescription;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v7 = [v2 initWithDomain:v3 code:v4 userInfo:v6];
+  v7 = [v2 initWithDomain:domain code:code userInfo:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 

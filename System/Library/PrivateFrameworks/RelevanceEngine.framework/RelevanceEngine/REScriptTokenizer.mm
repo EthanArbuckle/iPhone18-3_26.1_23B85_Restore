@@ -1,6 +1,6 @@
 @interface REScriptTokenizer
-- (BOOL)_matchTokenStart:(void *)a3 body:(void *)a4 value:(id *)a5;
-- (REScriptTokenizer)initWithScriptBuffer:(id)a3;
+- (BOOL)_matchTokenStart:(void *)start body:(void *)body value:(id *)value;
+- (REScriptTokenizer)initWithScriptBuffer:(id)buffer;
 - (REScriptTokenizerDelegate)delegate;
 - (id)_readMultilineComment;
 - (id)_readSingleComment;
@@ -11,16 +11,16 @@
 
 @implementation REScriptTokenizer
 
-- (REScriptTokenizer)initWithScriptBuffer:(id)a3
+- (REScriptTokenizer)initWithScriptBuffer:(id)buffer
 {
-  v5 = a3;
+  bufferCopy = buffer;
   v10.receiver = self;
   v10.super_class = REScriptTokenizer;
   v6 = [(REScriptTokenizer *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_buffer, a3);
+    objc_storeStrong(&v6->_buffer, buffer);
     currentToken = v7->_currentToken;
     v7->_currentToken = 0;
 
@@ -84,9 +84,9 @@ LABEL_4:
       v14 = v13;
       if (v13)
       {
-        v15 = [v13 unsignedIntegerValue];
+        unsignedIntegerValue = [v13 unsignedIntegerValue];
 LABEL_10:
-        v16 = v15;
+        v16 = unsignedIntegerValue;
 
         v45[3] = v16;
         goto LABEL_34;
@@ -106,7 +106,7 @@ LABEL_20:
         {
           v45[3] = 7;
           [(REScriptTokenizer *)self _popChar];
-          v17 = [(REScriptTokenizer *)self _readSingleComment];
+          _readSingleComment = [(REScriptTokenizer *)self _readSingleComment];
           goto LABEL_32;
         }
 
@@ -114,7 +114,7 @@ LABEL_20:
         {
           v45[3] = 8;
           [(REScriptTokenizer *)self _popChar];
-          v17 = [(REScriptTokenizer *)self _readMultilineComment];
+          _readSingleComment = [(REScriptTokenizer *)self _readMultilineComment];
           goto LABEL_32;
         }
       }
@@ -134,13 +134,13 @@ LABEL_20:
     {
       if ([(REScriptTokenizer *)self _peekChar]!= 34)
       {
-        v25 = [(REScriptTokenizer *)self _peekChar];
+        _peekChar = [(REScriptTokenizer *)self _peekChar];
         if (RELoadControlCharacterMap_onceToken != -1)
         {
           [REScriptTokenizer next];
         }
 
-        if ([REControlCharacterSet characterIsMember:v25])
+        if ([REControlCharacterSet characterIsMember:_peekChar])
         {
           v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", -[REScriptTokenizer _peekChar](self, "_peekChar")];
           v27 = v49[5];
@@ -157,7 +157,7 @@ LABEL_20:
           v14 = v28;
           if (v28)
           {
-            v15 = [v28 unsignedIntegerValue];
+            unsignedIntegerValue = [v28 unsignedIntegerValue];
             goto LABEL_10;
           }
         }
@@ -188,10 +188,10 @@ LABEL_20:
 
       v45[3] = 5;
       [(REScriptTokenizer *)self _popChar];
-      v17 = [(REScriptTokenizer *)self _readString];
+      _readSingleComment = [(REScriptTokenizer *)self _readString];
 LABEL_32:
       v29 = v49[5];
-      v49[5] = v17;
+      v49[5] = _readSingleComment;
 
       goto LABEL_34;
     }
@@ -263,13 +263,13 @@ void __25__REScriptTokenizer_next__block_invoke(uint64_t a1)
   {
     do
     {
-      v4 = [(REScriptTokenizer *)self _peekChar];
-      if (v4 == 10)
+      _peekChar = [(REScriptTokenizer *)self _peekChar];
+      if (_peekChar == 10)
       {
         break;
       }
 
-      if (v4 == 13)
+      if (_peekChar == 13)
       {
         break;
       }
@@ -310,8 +310,8 @@ void __25__REScriptTokenizer_next__block_invoke(uint64_t a1)
 
   if (v15)
   {
-    v19 = [(REScriptTokenizer *)self delegate];
-    [v19 tokenizer:self didEncouterTokenError:v15];
+    delegate = [(REScriptTokenizer *)self delegate];
+    [delegate tokenizer:self didEncouterTokenError:v15];
   }
 
 LABEL_23:
@@ -324,8 +324,8 @@ LABEL_23:
   {
     do
     {
-      v3 = [(REScriptTokenizer *)self _peekChar];
-      if ((v3 - 9) >= 5 && v3 != 32)
+      _peekChar = [(REScriptTokenizer *)self _peekChar];
+      if ((_peekChar - 9) >= 5 && _peekChar != 32)
       {
         break;
       }
@@ -340,9 +340,9 @@ LABEL_23:
 - (void)_popChar
 {
   ++self->_column;
-  v3 = [(REScriptTokenizer *)self _peekChar];
-  v4 = v3;
-  if (v3 == 10 || v3 == 13)
+  _peekChar = [(REScriptTokenizer *)self _peekChar];
+  v4 = _peekChar;
+  if (_peekChar == 10 || _peekChar == 13)
   {
     buffer = self->_buffer;
     p_buffer = &self->_buffer;
@@ -365,47 +365,47 @@ LABEL_23:
   [(REScriptBuffer *)v7 next];
 }
 
-- (BOOL)_matchTokenStart:(void *)a3 body:(void *)a4 value:(id *)a5
+- (BOOL)_matchTokenStart:(void *)start body:(void *)body value:(id *)value
 {
-  v9 = [(REScriptTokenizer *)self _hasChar];
+  _hasChar = [(REScriptTokenizer *)self _hasChar];
   LOBYTE(v10) = 0;
-  if (a4)
+  if (body)
   {
-    if (a3)
+    if (start)
     {
-      if (v9)
+      if (_hasChar)
       {
-        v11 = [(REScriptTokenizer *)self _peekChar];
-        v10 = (a3)();
+        _peekChar = [(REScriptTokenizer *)self _peekChar];
+        v10 = (start)();
         if (v10)
         {
-          v12 = [MEMORY[0x277CCAB68] string];
-          [v12 appendFormat:@"%c", v11];
+          string = [MEMORY[0x277CCAB68] string];
+          [string appendFormat:@"%c", _peekChar];
           [(REScriptTokenizer *)self _popChar];
           if ([(REScriptTokenizer *)self _hasChar])
           {
-            v13 = [(REScriptTokenizer *)self _peekChar];
-            if ((a4)())
+            _peekChar2 = [(REScriptTokenizer *)self _peekChar];
+            if ((body)())
             {
               do
               {
-                [v12 appendFormat:@"%c", v13];
+                [string appendFormat:@"%c", _peekChar2];
                 [(REScriptTokenizer *)self _popChar];
                 if (![(REScriptTokenizer *)self _hasChar])
                 {
                   break;
                 }
 
-                v13 = [(REScriptTokenizer *)self _peekChar];
+                _peekChar2 = [(REScriptTokenizer *)self _peekChar];
               }
 
-              while (((a4)() & 1) != 0);
+              while (((body)() & 1) != 0);
             }
           }
 
-          if (a5)
+          if (value)
           {
-            *a5 = [v12 copy];
+            *value = [string copy];
           }
 
           LOBYTE(v10) = 1;

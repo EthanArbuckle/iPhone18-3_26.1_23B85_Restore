@@ -1,129 +1,129 @@
 @interface EKSuggestionsServiceLogger
-+ (void)logEventConfirmedDetailsWithUniqueKey:(id)a3;
-+ (void)logEventConfirmedInboxWithUniqueKey:(id)a3;
-+ (void)logEventConfirmedNotificationWithUniqueKey:(id)a3;
-+ (void)logEventDismissedNotificationWithUniqueKey:(id)a3;
-+ (void)logEventEngagedNotificationWithUniqueKey:(id)a3;
-+ (void)logEventRejectedDetailsWithUniqueKey:(id)a3;
-+ (void)logEventRejectedInboxWithUniqueKey:(id)a3;
-+ (void)logEventRejectedNotificationWithUniqueKey:(id)a3;
-+ (void)logEventShowedDetailsWithUniqueKey:(id)a3;
-+ (void)logEventShowedNotificationWithUniqueKey:(id)a3;
-+ (void)logEventShowedTimeToLeaveNotificationWithUniqueKey:(id)a3;
++ (void)logEventConfirmedDetailsWithUniqueKey:(id)key;
++ (void)logEventConfirmedInboxWithUniqueKey:(id)key;
++ (void)logEventConfirmedNotificationWithUniqueKey:(id)key;
++ (void)logEventDismissedNotificationWithUniqueKey:(id)key;
++ (void)logEventEngagedNotificationWithUniqueKey:(id)key;
++ (void)logEventRejectedDetailsWithUniqueKey:(id)key;
++ (void)logEventRejectedInboxWithUniqueKey:(id)key;
++ (void)logEventRejectedNotificationWithUniqueKey:(id)key;
++ (void)logEventShowedDetailsWithUniqueKey:(id)key;
++ (void)logEventShowedNotificationWithUniqueKey:(id)key;
++ (void)logEventShowedTimeToLeaveNotificationWithUniqueKey:(id)key;
 @end
 
 @implementation EKSuggestionsServiceLogger
 
-+ (void)logEventShowedNotificationWithUniqueKey:(id)a3
++ (void)logEventShowedNotificationWithUniqueKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v3 = a3;
+    keyCopy = key;
     v4 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-    [v4 logEventInteractionForEventWithUniqueKey:v3 interface:8 actionType:4];
+    [v4 logEventInteractionForEventWithUniqueKey:keyCopy interface:8 actionType:4];
   }
 }
 
-+ (void)logEventEngagedNotificationWithUniqueKey:(id)a3
++ (void)logEventEngagedNotificationWithUniqueKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v3 = a3;
+    keyCopy = key;
     v4 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-    [v4 logEventInteractionForEventWithUniqueKey:v3 interface:8 actionType:5];
+    [v4 logEventInteractionForEventWithUniqueKey:keyCopy interface:8 actionType:5];
   }
 }
 
-+ (void)logEventDismissedNotificationWithUniqueKey:(id)a3
++ (void)logEventDismissedNotificationWithUniqueKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v3 = a3;
+    keyCopy = key;
     v4 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-    [v4 logEventInteractionForEventWithUniqueKey:v3 interface:8 actionType:8];
+    [v4 logEventInteractionForEventWithUniqueKey:keyCopy interface:8 actionType:8];
   }
 }
 
-+ (void)logEventRejectedNotificationWithUniqueKey:(id)a3
++ (void)logEventRejectedNotificationWithUniqueKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v3 = a3;
+    keyCopy = key;
     v4 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-    [v4 logEventInteractionForEventWithUniqueKey:v3 interface:8 actionType:7];
+    [v4 logEventInteractionForEventWithUniqueKey:keyCopy interface:8 actionType:7];
   }
 }
 
-+ (void)logEventConfirmedNotificationWithUniqueKey:(id)a3
++ (void)logEventConfirmedNotificationWithUniqueKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v3 = a3;
+    keyCopy = key;
     v4 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-    [v4 logEventInteractionForEventWithUniqueKey:v3 interface:8 actionType:6];
+    [v4 logEventInteractionForEventWithUniqueKey:keyCopy interface:8 actionType:6];
   }
 }
 
-+ (void)logEventConfirmedInboxWithUniqueKey:(id)a3
++ (void)logEventConfirmedInboxWithUniqueKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v3 = a3;
+    keyCopy = key;
     v4 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-    [v4 logEventInteractionForEventWithUniqueKey:v3 interface:9 actionType:6];
+    [v4 logEventInteractionForEventWithUniqueKey:keyCopy interface:9 actionType:6];
   }
 }
 
-+ (void)logEventRejectedInboxWithUniqueKey:(id)a3
++ (void)logEventRejectedInboxWithUniqueKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v3 = a3;
+    keyCopy = key;
     v4 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-    [v4 logEventInteractionForEventWithUniqueKey:v3 interface:9 actionType:7];
+    [v4 logEventInteractionForEventWithUniqueKey:keyCopy interface:9 actionType:7];
   }
 }
 
-+ (void)logEventShowedDetailsWithUniqueKey:(id)a3
++ (void)logEventShowedDetailsWithUniqueKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v3 = +[CalEntitlementsVerifier currentProcessIsFirstPartyCalendarApp];
-  if (v5 && v3)
+  if (keyCopy && v3)
   {
     v4 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-    [v4 logEventInteractionForEventWithUniqueKey:v5 interface:10 actionType:4];
+    [v4 logEventInteractionForEventWithUniqueKey:keyCopy interface:10 actionType:4];
   }
 }
 
-+ (void)logEventConfirmedDetailsWithUniqueKey:(id)a3
++ (void)logEventConfirmedDetailsWithUniqueKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v3 = +[CalEntitlementsVerifier currentProcessIsFirstPartyCalendarApp];
-  if (v5 && v3)
+  if (keyCopy && v3)
   {
     v4 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-    [v4 logEventInteractionForEventWithUniqueKey:v5 interface:10 actionType:6];
+    [v4 logEventInteractionForEventWithUniqueKey:keyCopy interface:10 actionType:6];
   }
 }
 
-+ (void)logEventRejectedDetailsWithUniqueKey:(id)a3
++ (void)logEventRejectedDetailsWithUniqueKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v3 = +[CalEntitlementsVerifier currentProcessIsFirstPartyCalendarApp];
-  if (v5 && v3)
+  if (keyCopy && v3)
   {
     v4 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-    [v4 logEventInteractionForEventWithUniqueKey:v5 interface:10 actionType:7];
+    [v4 logEventInteractionForEventWithUniqueKey:keyCopy interface:10 actionType:7];
   }
 }
 
-+ (void)logEventShowedTimeToLeaveNotificationWithUniqueKey:(id)a3
++ (void)logEventShowedTimeToLeaveNotificationWithUniqueKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v3 = a3;
+    keyCopy = key;
     v4 = [objc_msgSend(objc_opt_class() "_SGSuggestionsServiceClass")];
-    [v4 logEventInteractionForEventWithUniqueKey:v3 interface:18 actionType:4];
+    [v4 logEventInteractionForEventWithUniqueKey:keyCopy interface:18 actionType:4];
   }
 }
 

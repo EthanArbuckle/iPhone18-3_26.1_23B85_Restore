@@ -1,20 +1,20 @@
 @interface BRLTBrailleMusicParser
 + (id)sharedParser;
-- (BRLTBrailleMusicParser)initWithUnderlyingObject:(id)a3;
+- (BRLTBrailleMusicParser)initWithUnderlyingObject:(id)object;
 @end
 
 @implementation BRLTBrailleMusicParser
 
-- (BRLTBrailleMusicParser)initWithUnderlyingObject:(id)a3
+- (BRLTBrailleMusicParser)initWithUnderlyingObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = BRLTBrailleMusicParser;
   v6 = [(BRLTBrailleMusicParser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingObject, a3);
+    objc_storeStrong(&v6->_underlyingObject, object);
   }
 
   return v7;

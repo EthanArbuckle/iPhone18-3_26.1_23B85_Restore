@@ -1,6 +1,6 @@
 @interface _SFWebsiteButton
 - (_SFWebsiteButton)init;
-- (void)_activate:(id)a3;
+- (void)_activate:(id)_activate;
 @end
 
 @implementation _SFWebsiteButton
@@ -12,8 +12,8 @@
   v2 = [(_SFWebsiteButton *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [(_SFWebsiteButton *)v2 setTintColor:v3];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [(_SFWebsiteButton *)v2 setTintColor:systemGrayColor];
 
     v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"safari"];
     [(_SFWebsiteButton *)v2 setImage:v4 forState:0];
@@ -26,15 +26,15 @@
   return v2;
 }
 
-- (void)_activate:(id)a3
+- (void)_activate:(id)_activate
 {
-  v6 = a3;
-  v4 = [(_SFWebsiteButton *)self activationHandler];
+  _activateCopy = _activate;
+  activationHandler = [(_SFWebsiteButton *)self activationHandler];
 
-  if (v4)
+  if (activationHandler)
   {
-    v5 = [(_SFWebsiteButton *)self activationHandler];
-    (v5)[2](v5, v6);
+    activationHandler2 = [(_SFWebsiteButton *)self activationHandler];
+    (activationHandler2)[2](activationHandler2, _activateCopy);
   }
 }
 

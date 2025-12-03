@@ -1,87 +1,87 @@
 @interface BuddyPendingRestoreState
-- (BuddyPendingRestoreState)initWithExistingSettings:(id)a3 setupMethod:(id)a4;
+- (BuddyPendingRestoreState)initWithExistingSettings:(id)settings setupMethod:(id)method;
 - (void)clearBackupItem;
-- (void)setAttemptedBackupItem:(id)a3;
-- (void)setBackupItem:(id)a3 updateBackupMetadata:(BOOL)a4 prefetchAccounts:(BOOL)a5;
+- (void)setAttemptedBackupItem:(id)item;
+- (void)setBackupItem:(id)item updateBackupMetadata:(BOOL)metadata prefetchAccounts:(BOOL)accounts;
 @end
 
 @implementation BuddyPendingRestoreState
 
-- (BuddyPendingRestoreState)initWithExistingSettings:(id)a3 setupMethod:(id)a4
+- (BuddyPendingRestoreState)initWithExistingSettings:(id)settings setupMethod:(id)method
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, settings);
   obj = 0;
-  objc_storeStrong(&obj, a4);
-  v5 = v12;
-  v12 = 0;
+  objc_storeStrong(&obj, method);
+  v5 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v5;
   v9.super_class = BuddyPendingRestoreState;
   v6 = [(BuddyPendingRestoreState *)&v9 init];
-  v12 = v6;
-  objc_storeStrong(&v12, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(v12 + 5, location[0]);
-    objc_storeStrong(v12 + 6, obj);
+    objc_storeStrong(selfCopy + 5, location[0]);
+    objc_storeStrong(selfCopy + 6, obj);
   }
 
-  v7 = v12;
+  v7 = selfCopy;
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)setBackupItem:(id)a3 updateBackupMetadata:(BOOL)a4 prefetchAccounts:(BOOL)a5
+- (void)setBackupItem:(id)item updateBackupMetadata:(BOOL)metadata prefetchAccounts:(BOOL)accounts
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v31 = a4;
-  v30 = a5;
+  objc_storeStrong(location, item);
+  metadataCopy = metadata;
+  accountsCopy = accounts;
   oslog = _BYLoggingFacility();
   v28 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [location[0] snapshot];
-    v8 = [v7 systemVersion];
-    sub_100071CBC(buf, v8);
+    snapshot = [location[0] snapshot];
+    systemVersion = [snapshot systemVersion];
+    sub_100071CBC(buf, systemVersion);
     _os_log_impl(&_mh_execute_header, oslog, v28, "Set pending backup item from OS: %{public}@", buf, 0xCu);
   }
 
   objc_storeStrong(&oslog, 0);
-  [v33 setBackupItem:location[0]];
-  v9 = [v33 setupMethod];
-  [v9 setDataTransferMethod:1];
+  [selfCopy setBackupItem:location[0]];
+  setupMethod = [selfCopy setupMethod];
+  [setupMethod setDataTransferMethod:1];
 
-  v10 = [location[0] snapshot];
-  v11 = [v10 date];
-  [v33 setSnapshotDate:v11];
+  snapshot2 = [location[0] snapshot];
+  date = [snapshot2 date];
+  [selfCopy setSnapshotDate:date];
 
-  [v33 setUseLatestSnapshot:0];
-  [v33 setForceSoftwareUpdateRestore:0];
+  [selfCopy setUseLatestSnapshot:0];
+  [selfCopy setForceSoftwareUpdateRestore:0];
   if (location[0])
   {
-    if (v30)
+    if (accountsCopy)
     {
-      v12 = [v33 backupItem];
-      [v12 prefetchAccounts];
+      backupItem = [selfCopy backupItem];
+      [backupItem prefetchAccounts];
     }
 
-    if (v31)
+    if (metadataCopy)
     {
-      v13 = [location[0] backupUDID];
+      backupUDID = [location[0] backupUDID];
       v14 = 0;
-      if (v13)
+      if (backupUDID)
       {
-        v15 = v13;
-        v16 = [location[0] snapshotID];
-        v13 = v15;
-        v14 = v16 != 0;
+        v15 = backupUDID;
+        snapshotID = [location[0] snapshotID];
+        backupUDID = v15;
+        v14 = snapshotID != 0;
       }
 
       if (v14)
@@ -92,7 +92,7 @@
         v22 = 0;
         v23 = sub_1001C79DC;
         v24 = &unk_10032B838;
-        v25 = v33;
+        v25 = selfCopy;
         v26 = location[0];
         dispatch_async(v17, &block);
 
@@ -105,8 +105,8 @@
         v19 = _BYLoggingFacility();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
         {
-          v18 = [location[0] backupUDID];
-          sub_10007B2CC(v34, v18, [location[0] snapshotID]);
+          backupUDID2 = [location[0] backupUDID];
+          sub_10007B2CC(v34, backupUDID2, [location[0] snapshotID]);
           _os_log_fault_impl(&_mh_execute_header, v19, OS_LOG_TYPE_FAULT, "Unable to fetch backup metadata for backup UDID %@ and snapshot ID %ld", v34, 0x16u);
         }
 
@@ -127,7 +127,7 @@
 
 - (void)clearBackupItem
 {
-  v10 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v8 = OS_LOG_TYPE_DEFAULT;
@@ -140,28 +140,28 @@
   }
 
   objc_storeStrong(oslog, 0);
-  [(BuddyPendingRestoreState *)v10 setBackupItem:0];
-  [(BuddyPendingRestoreState *)v10 setSnapshotDate:0];
-  [(BuddyPendingRestoreState *)v10 setUseLatestSnapshot:0];
-  [(BuddyPendingRestoreState *)v10 setForceSoftwareUpdateRestore:0];
-  [(BuddyPendingRestoreState *)v10 setAllowCellularNetwork:0];
-  v4 = [(BuddyPendingRestoreState *)v10 setupMethod];
-  v5 = [(BuddySetupMethod *)v4 dataTransferMethod];
+  [(BuddyPendingRestoreState *)selfCopy setBackupItem:0];
+  [(BuddyPendingRestoreState *)selfCopy setSnapshotDate:0];
+  [(BuddyPendingRestoreState *)selfCopy setUseLatestSnapshot:0];
+  [(BuddyPendingRestoreState *)selfCopy setForceSoftwareUpdateRestore:0];
+  [(BuddyPendingRestoreState *)selfCopy setAllowCellularNetwork:0];
+  setupMethod = [(BuddyPendingRestoreState *)selfCopy setupMethod];
+  dataTransferMethod = [(BuddySetupMethod *)setupMethod dataTransferMethod];
 
-  if (v5 == 1)
+  if (dataTransferMethod == 1)
   {
-    v6 = [(BuddyPendingRestoreState *)v10 setupMethod];
-    [(BuddySetupMethod *)v6 setDataTransferMethod:0];
+    setupMethod2 = [(BuddyPendingRestoreState *)selfCopy setupMethod];
+    [(BuddySetupMethod *)setupMethod2 setDataTransferMethod:0];
   }
 }
 
-- (void)setAttemptedBackupItem:(id)a3
+- (void)setAttemptedBackupItem:(id)item
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_attemptedBackupItem, location[0]);
+  objc_storeStrong(location, item);
+  objc_storeStrong(&selfCopy->_attemptedBackupItem, location[0]);
   objc_storeStrong(location, 0);
 }
 

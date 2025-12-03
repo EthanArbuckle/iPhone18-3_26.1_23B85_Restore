@@ -1,11 +1,11 @@
 @interface PrivacyProxyInfo
-- (PrivacyProxyInfo)initWithCoder:(id)a3;
-- (PrivacyProxyInfo)initWithData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PrivacyProxyInfo)initWithCoder:(id)coder;
+- (PrivacyProxyInfo)initWithData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)diagnostics;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PrivacyProxyInfo
@@ -15,27 +15,27 @@
   v48 = *MEMORY[0x1E69E9840];
   if (self)
   {
-    v2 = self;
+    selfCopy = self;
     v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:0];
-    v4 = [(PrivacyProxyInfo *)v2 ingressProxyURL];
-    [(NSMutableString *)v3 appendPrettyObject:v4 withName:@"Ingress proxy URL" andIndent:0 options:14];
+    ingressProxyURL = [(PrivacyProxyInfo *)selfCopy ingressProxyURL];
+    [(NSMutableString *)v3 appendPrettyObject:ingressProxyURL withName:@"Ingress proxy URL" andIndent:0 options:14];
 
-    v5 = [(PrivacyProxyInfo *)v2 egressProxyURL];
-    [(NSMutableString *)v3 appendPrettyObject:v5 withName:@"Egress proxy URL" andIndent:0 options:14];
+    egressProxyURL = [(PrivacyProxyInfo *)selfCopy egressProxyURL];
+    [(NSMutableString *)v3 appendPrettyObject:egressProxyURL withName:@"Egress proxy URL" andIndent:0 options:14];
 
-    v6 = [(PrivacyProxyInfo *)v2 ingressFallbackProxyURL];
-    [(NSMutableString *)v3 appendPrettyObject:v6 withName:@"Ingress fallback proxy URL" andIndent:0 options:14];
+    ingressFallbackProxyURL = [(PrivacyProxyInfo *)selfCopy ingressFallbackProxyURL];
+    [(NSMutableString *)v3 appendPrettyObject:ingressFallbackProxyURL withName:@"Ingress fallback proxy URL" andIndent:0 options:14];
 
-    v7 = [(PrivacyProxyInfo *)v2 egressFallbackProxyURL];
-    [(NSMutableString *)v3 appendPrettyObject:v7 withName:@"Egress fallback proxy URL" andIndent:0 options:14];
+    egressFallbackProxyURL = [(PrivacyProxyInfo *)selfCopy egressFallbackProxyURL];
+    [(NSMutableString *)v3 appendPrettyObject:egressFallbackProxyURL withName:@"Egress fallback proxy URL" andIndent:0 options:14];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    obj = [(PrivacyProxyInfo *)v2 tokenCounts];
+    obj = [(PrivacyProxyInfo *)selfCopy tokenCounts];
     v8 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
-    v37 = v2;
+    v37 = selfCopy;
     if (v8)
     {
       v9 = v8;
@@ -50,26 +50,26 @@
           }
 
           v12 = *(*(&v42 + 1) + 8 * i);
-          v13 = [(PrivacyProxyInfo *)v2 tokenCounts];
-          v14 = [v13 objectForKeyedSubscript:v12];
+          tokenCounts = [(PrivacyProxyInfo *)selfCopy tokenCounts];
+          v14 = [tokenCounts objectForKeyedSubscript:v12];
 
-          v15 = [v14 cachedTokens];
+          cachedTokens = [v14 cachedTokens];
           v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ cached token count", v12];
-          [(NSMutableString *)v3 appendPrettyInt:v15 withName:v16 andIndent:0 options:14];
+          [(NSMutableString *)v3 appendPrettyInt:cachedTokens withName:v16 andIndent:0 options:14];
 
-          v17 = [v14 agentTokens];
+          agentTokens = [v14 agentTokens];
           v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ agent token count", v12];
-          [(NSMutableString *)v3 appendPrettyInt:v17 withName:v18 andIndent:0 options:14];
+          [(NSMutableString *)v3 appendPrettyInt:agentTokens withName:v18 andIndent:0 options:14];
 
-          v19 = [v14 cacheLowWaterMark];
+          cacheLowWaterMark = [v14 cacheLowWaterMark];
           v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ cache low water mark", v12];
-          [(NSMutableString *)v3 appendPrettyInt:v19 withName:v20 andIndent:0 options:14];
+          [(NSMutableString *)v3 appendPrettyInt:cacheLowWaterMark withName:v20 andIndent:0 options:14];
 
-          v21 = [v14 agentLowWaterMark];
+          agentLowWaterMark = [v14 agentLowWaterMark];
           v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ agent low water mark", v12];
-          [(NSMutableString *)v3 appendPrettyInt:v21 withName:v22 andIndent:0 options:14];
+          [(NSMutableString *)v3 appendPrettyInt:agentLowWaterMark withName:v22 andIndent:0 options:14];
 
-          v2 = v37;
+          selfCopy = v37;
         }
 
         v9 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
@@ -100,8 +100,8 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v23 = [(PrivacyProxyInfo *)v2 resumableSessionCounts];
-    v24 = [v23 countByEnumeratingWithState:&v38 objects:v46 count:16];
+    resumableSessionCounts = [(PrivacyProxyInfo *)selfCopy resumableSessionCounts];
+    v24 = [resumableSessionCounts countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v24)
     {
       v25 = v24;
@@ -112,26 +112,26 @@
         {
           if (*v39 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(resumableSessionCounts);
           }
 
           v28 = *(*(&v38 + 1) + 8 * j);
-          v29 = [(PrivacyProxyInfo *)v37 resumableSessionCounts];
-          v30 = [v29 objectForKeyedSubscript:v28];
+          resumableSessionCounts2 = [(PrivacyProxyInfo *)v37 resumableSessionCounts];
+          v30 = [resumableSessionCounts2 objectForKeyedSubscript:v28];
 
-          v31 = [v30 unsignedIntValue];
+          unsignedIntValue = [v30 unsignedIntValue];
           v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ resumable session count", v28];
-          [(NSMutableString *)v3 appendPrettyInt:v31 withName:v32 andIndent:0 options:14];
+          [(NSMutableString *)v3 appendPrettyInt:unsignedIntValue withName:v32 andIndent:0 options:14];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        v25 = [resumableSessionCounts countByEnumeratingWithState:&v38 objects:v46 count:16];
       }
 
       while (v25);
     }
 
-    v33 = [(PrivacyProxyInfo *)v37 enabledProxiedContentMaps];
-    [(NSMutableString *)v3 appendPrettyObject:v33 withName:@"Enabled proxied content maps" andIndent:0 options:14];
+    enabledProxiedContentMaps = [(PrivacyProxyInfo *)v37 enabledProxiedContentMaps];
+    [(NSMutableString *)v3 appendPrettyObject:enabledProxiedContentMaps withName:@"Enabled proxied content maps" andIndent:0 options:14];
   }
 
   else
@@ -144,31 +144,31 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PrivacyProxyInfo allocWithZone:](PrivacyProxyInfo init];
-  v6 = [(PrivacyProxyInfo *)self ingressProxyURL];
-  [(PrivacyProxyInfo *)v5 setIngressProxyURL:v6];
+  ingressProxyURL = [(PrivacyProxyInfo *)self ingressProxyURL];
+  [(PrivacyProxyInfo *)v5 setIngressProxyURL:ingressProxyURL];
 
-  v7 = [(PrivacyProxyInfo *)self egressProxyURL];
-  [(PrivacyProxyInfo *)v5 setEgressProxyURL:v7];
+  egressProxyURL = [(PrivacyProxyInfo *)self egressProxyURL];
+  [(PrivacyProxyInfo *)v5 setEgressProxyURL:egressProxyURL];
 
-  v8 = [(PrivacyProxyInfo *)self ingressFallbackProxyURL];
-  [(PrivacyProxyInfo *)v5 setIngressFallbackProxyURL:v8];
+  ingressFallbackProxyURL = [(PrivacyProxyInfo *)self ingressFallbackProxyURL];
+  [(PrivacyProxyInfo *)v5 setIngressFallbackProxyURL:ingressFallbackProxyURL];
 
-  v9 = [(PrivacyProxyInfo *)self egressFallbackProxyURL];
-  [(PrivacyProxyInfo *)v5 setEgressFallbackProxyURL:v9];
+  egressFallbackProxyURL = [(PrivacyProxyInfo *)self egressFallbackProxyURL];
+  [(PrivacyProxyInfo *)v5 setEgressFallbackProxyURL:egressFallbackProxyURL];
 
-  v10 = [(PrivacyProxyInfo *)self tokenCounts];
-  v11 = [v10 copyWithZone:a3];
+  tokenCounts = [(PrivacyProxyInfo *)self tokenCounts];
+  v11 = [tokenCounts copyWithZone:zone];
   [(PrivacyProxyInfo *)v5 setTokenCounts:v11];
 
-  v12 = [(PrivacyProxyInfo *)self resumableSessionCounts];
-  v13 = [v12 copyWithZone:a3];
+  resumableSessionCounts = [(PrivacyProxyInfo *)self resumableSessionCounts];
+  v13 = [resumableSessionCounts copyWithZone:zone];
   [(PrivacyProxyInfo *)v5 setResumableSessionCounts:v13];
 
-  v14 = [(PrivacyProxyInfo *)self enabledProxiedContentMaps];
-  v15 = [v14 copyWithZone:a3];
+  enabledProxiedContentMaps = [(PrivacyProxyInfo *)self enabledProxiedContentMaps];
+  v15 = [enabledProxiedContentMaps copyWithZone:zone];
   [(PrivacyProxyInfo *)v5 setEnabledProxiedContentMaps:v15];
 
   [(PrivacyProxyInfo *)v5 setDeviceIdentityValidationCount:[(PrivacyProxyInfo *)self deviceIdentityValidationCount]];
@@ -192,27 +192,27 @@
   return v5;
 }
 
-- (PrivacyProxyInfo)initWithCoder:(id)a3
+- (PrivacyProxyInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = PrivacyProxyInfo;
   v5 = [(PrivacyProxyInfo *)&v32 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyInfoIngressProxyURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyInfoIngressProxyURL"];
     ingressProxyURL = v5->_ingressProxyURL;
     v5->_ingressProxyURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyInfoEgressProxyURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyInfoEgressProxyURL"];
     egressProxyURL = v5->_egressProxyURL;
     v5->_egressProxyURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyInfoIngressFallbackProxyURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyInfoIngressFallbackProxyURL"];
     ingressFallbackProxyURL = v5->_ingressFallbackProxyURL;
     v5->_ingressFallbackProxyURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyInfoEgressFallbackProxyURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyInfoEgressFallbackProxyURL"];
     egressFallbackProxyURL = v5->_egressFallbackProxyURL;
     v5->_egressFallbackProxyURL = v12;
 
@@ -220,7 +220,7 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v14 setWithObjects:{v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"PrivacyProxyInfoTokenCounts"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"PrivacyProxyInfoTokenCounts"];
     tokenCounts = v5->_tokenCounts;
     v5->_tokenCounts = v18;
 
@@ -228,82 +228,82 @@
     v21 = objc_opt_class();
     v22 = objc_opt_class();
     v23 = [v20 setWithObjects:{v21, v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"PrivacyProxyInfoResumableSessionCounts"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"PrivacyProxyInfoResumableSessionCounts"];
     resumableSessionCounts = v5->_resumableSessionCounts;
     v5->_resumableSessionCounts = v24;
 
     v26 = MEMORY[0x1E695DFD8];
     v27 = objc_opt_class();
     v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"PrivacyProxyInfoEnabledProxiedContentMaps"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"PrivacyProxyInfoEnabledProxiedContentMaps"];
     enabledProxiedContentMaps = v5->_enabledProxiedContentMaps;
     v5->_enabledProxiedContentMaps = v29;
 
-    v5->_deviceIdentityValidationCount = [v4 decodeIntForKey:@"PrivacyProxyInfoDeviceValidationCount"];
-    v5->_anisetteValidationCount = [v4 decodeIntForKey:@"PrivacyProxyInfoAnisetteValidationCount"];
-    v5->_requestedTokenCount = [v4 decodeIntForKey:@"PrivacyProxyInfoRequestedTokenCount"];
-    v5->_unactivatedTokenCount = [v4 decodeIntForKey:@"PrivacyProxyInfoUnactivatedTokenCount"];
-    v5->_activatedTokenCount = [v4 decodeIntForKey:@"PrivacyProxyInfoActivatedTokenCount"];
-    v5->_proxyTokenFetchSuccessCount = [v4 decodeIntForKey:@"PrivacyProxyInfoProxyTokenFetchSuccessCount"];
-    v5->_proxyTokenFetchFailedCount = [v4 decodeIntForKey:@"PrivacyProxyInfoProxyTokenFetchFailedCount"];
-    v5->_proxyTokenConsumedCount = [v4 decodeIntForKey:@"PrivacyProxyInfoProxyTokenConsumedCount"];
-    v5->_proxyTokenExpiredCount = [v4 decodeIntForKey:@"PrivacyProxyInfoProxyTokenExpiredCount"];
-    v5->_proxyAgentLowWaterMarkHitCount = [v4 decodeIntForKey:@"PrivacyProxyInfoProxyAgentLowWaterMarkHitCount"];
-    v5->_proxyCacheLowWaterMarkHitCount = [v4 decodeIntForKey:@"PrivacyProxyInfoProxyCacheLowWaterMarkHitCount"];
-    v5->_badTokenCount = [v4 decodeIntForKey:@"PrivacyProxyInfoBadTokensCount"];
-    v5->_missingTokenCount = [v4 decodeIntForKey:@"PrivacyProxyInfoMissingTokensCount"];
-    v5->_networkProxiesRotated = [v4 decodeIntForKey:@"PrivacyProxyInfoNetworkProxiesRotated"];
-    v5->_networkFallbackProxiesRotated = [v4 decodeIntForKey:@"PrivacyProxyInfoNetworkFallbackProxiesRotated"];
-    v5->_proxiesRotated = [v4 decodeIntForKey:@"PrivacyProxyInfoProxiesRotated"];
-    v5->_configFetchedSuccessCount = [v4 decodeIntForKey:@"PrivacyProxyInfoConfigFetchSuccessCount"];
-    v5->_configFetchedFailedCount = [v4 decodeIntForKey:@"PrivacyProxyInfoConfigFetchFailedCount"];
+    v5->_deviceIdentityValidationCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoDeviceValidationCount"];
+    v5->_anisetteValidationCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoAnisetteValidationCount"];
+    v5->_requestedTokenCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoRequestedTokenCount"];
+    v5->_unactivatedTokenCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoUnactivatedTokenCount"];
+    v5->_activatedTokenCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoActivatedTokenCount"];
+    v5->_proxyTokenFetchSuccessCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoProxyTokenFetchSuccessCount"];
+    v5->_proxyTokenFetchFailedCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoProxyTokenFetchFailedCount"];
+    v5->_proxyTokenConsumedCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoProxyTokenConsumedCount"];
+    v5->_proxyTokenExpiredCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoProxyTokenExpiredCount"];
+    v5->_proxyAgentLowWaterMarkHitCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoProxyAgentLowWaterMarkHitCount"];
+    v5->_proxyCacheLowWaterMarkHitCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoProxyCacheLowWaterMarkHitCount"];
+    v5->_badTokenCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoBadTokensCount"];
+    v5->_missingTokenCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoMissingTokensCount"];
+    v5->_networkProxiesRotated = [coderCopy decodeIntForKey:@"PrivacyProxyInfoNetworkProxiesRotated"];
+    v5->_networkFallbackProxiesRotated = [coderCopy decodeIntForKey:@"PrivacyProxyInfoNetworkFallbackProxiesRotated"];
+    v5->_proxiesRotated = [coderCopy decodeIntForKey:@"PrivacyProxyInfoProxiesRotated"];
+    v5->_configFetchedSuccessCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoConfigFetchSuccessCount"];
+    v5->_configFetchedFailedCount = [coderCopy decodeIntForKey:@"PrivacyProxyInfoConfigFetchFailedCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(PrivacyProxyInfo *)self ingressProxyURL];
-  [v11 encodeObject:v4 forKey:@"PrivacyProxyInfoIngressProxyURL"];
+  coderCopy = coder;
+  ingressProxyURL = [(PrivacyProxyInfo *)self ingressProxyURL];
+  [coderCopy encodeObject:ingressProxyURL forKey:@"PrivacyProxyInfoIngressProxyURL"];
 
-  v5 = [(PrivacyProxyInfo *)self egressProxyURL];
-  [v11 encodeObject:v5 forKey:@"PrivacyProxyInfoEgressProxyURL"];
+  egressProxyURL = [(PrivacyProxyInfo *)self egressProxyURL];
+  [coderCopy encodeObject:egressProxyURL forKey:@"PrivacyProxyInfoEgressProxyURL"];
 
-  v6 = [(PrivacyProxyInfo *)self ingressFallbackProxyURL];
-  [v11 encodeObject:v6 forKey:@"PrivacyProxyInfoIngressFallbackProxyURL"];
+  ingressFallbackProxyURL = [(PrivacyProxyInfo *)self ingressFallbackProxyURL];
+  [coderCopy encodeObject:ingressFallbackProxyURL forKey:@"PrivacyProxyInfoIngressFallbackProxyURL"];
 
-  v7 = [(PrivacyProxyInfo *)self egressFallbackProxyURL];
-  [v11 encodeObject:v7 forKey:@"PrivacyProxyInfoEgressFallbackProxyURL"];
+  egressFallbackProxyURL = [(PrivacyProxyInfo *)self egressFallbackProxyURL];
+  [coderCopy encodeObject:egressFallbackProxyURL forKey:@"PrivacyProxyInfoEgressFallbackProxyURL"];
 
-  v8 = [(PrivacyProxyInfo *)self tokenCounts];
-  [v11 encodeObject:v8 forKey:@"PrivacyProxyInfoTokenCounts"];
+  tokenCounts = [(PrivacyProxyInfo *)self tokenCounts];
+  [coderCopy encodeObject:tokenCounts forKey:@"PrivacyProxyInfoTokenCounts"];
 
-  v9 = [(PrivacyProxyInfo *)self resumableSessionCounts];
-  [v11 encodeObject:v9 forKey:@"PrivacyProxyInfoResumableSessionCounts"];
+  resumableSessionCounts = [(PrivacyProxyInfo *)self resumableSessionCounts];
+  [coderCopy encodeObject:resumableSessionCounts forKey:@"PrivacyProxyInfoResumableSessionCounts"];
 
-  v10 = [(PrivacyProxyInfo *)self enabledProxiedContentMaps];
-  [v11 encodeObject:v10 forKey:@"PrivacyProxyInfoEnabledProxiedContentMaps"];
+  enabledProxiedContentMaps = [(PrivacyProxyInfo *)self enabledProxiedContentMaps];
+  [coderCopy encodeObject:enabledProxiedContentMaps forKey:@"PrivacyProxyInfoEnabledProxiedContentMaps"];
 
-  [v11 encodeInt:-[PrivacyProxyInfo deviceIdentityValidationCount](self forKey:{"deviceIdentityValidationCount"), @"PrivacyProxyInfoDeviceValidationCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo anisetteValidationCount](self forKey:{"anisetteValidationCount"), @"PrivacyProxyInfoAnisetteValidationCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo requestedTokenCount](self forKey:{"requestedTokenCount"), @"PrivacyProxyInfoRequestedTokenCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo unactivatedTokenCount](self forKey:{"unactivatedTokenCount"), @"PrivacyProxyInfoUnactivatedTokenCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo activatedTokenCount](self forKey:{"activatedTokenCount"), @"PrivacyProxyInfoActivatedTokenCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo proxyTokenFetchSuccessCount](self forKey:{"proxyTokenFetchSuccessCount"), @"PrivacyProxyInfoProxyTokenFetchSuccessCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo proxyTokenFetchFailedCount](self forKey:{"proxyTokenFetchFailedCount"), @"PrivacyProxyInfoProxyTokenFetchFailedCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo proxyTokenConsumedCount](self forKey:{"proxyTokenConsumedCount"), @"PrivacyProxyInfoProxyTokenConsumedCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo proxyTokenExpiredCount](self forKey:{"proxyTokenExpiredCount"), @"PrivacyProxyInfoProxyTokenExpiredCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo proxyAgentLowWaterMarkHitCount](self forKey:{"proxyAgentLowWaterMarkHitCount"), @"PrivacyProxyInfoProxyAgentLowWaterMarkHitCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo proxyCacheLowWaterMarkHitCount](self forKey:{"proxyCacheLowWaterMarkHitCount"), @"PrivacyProxyInfoProxyCacheLowWaterMarkHitCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo badTokenCount](self forKey:{"badTokenCount"), @"PrivacyProxyInfoBadTokensCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo missingTokenCount](self forKey:{"missingTokenCount"), @"PrivacyProxyInfoMissingTokensCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo networkProxiesRotated](self forKey:{"networkProxiesRotated"), @"PrivacyProxyInfoNetworkProxiesRotated"}];
-  [v11 encodeInt:-[PrivacyProxyInfo networkFallbackProxiesRotated](self forKey:{"networkFallbackProxiesRotated"), @"PrivacyProxyInfoNetworkFallbackProxiesRotated"}];
-  [v11 encodeInt:-[PrivacyProxyInfo proxiesRotated](self forKey:{"proxiesRotated"), @"PrivacyProxyInfoProxiesRotated"}];
-  [v11 encodeInt:-[PrivacyProxyInfo configFetchedSuccessCount](self forKey:{"configFetchedSuccessCount"), @"PrivacyProxyInfoConfigFetchSuccessCount"}];
-  [v11 encodeInt:-[PrivacyProxyInfo configFetchedFailedCount](self forKey:{"configFetchedFailedCount"), @"PrivacyProxyInfoConfigFetchFailedCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo deviceIdentityValidationCount](self forKey:{"deviceIdentityValidationCount"), @"PrivacyProxyInfoDeviceValidationCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo anisetteValidationCount](self forKey:{"anisetteValidationCount"), @"PrivacyProxyInfoAnisetteValidationCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo requestedTokenCount](self forKey:{"requestedTokenCount"), @"PrivacyProxyInfoRequestedTokenCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo unactivatedTokenCount](self forKey:{"unactivatedTokenCount"), @"PrivacyProxyInfoUnactivatedTokenCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo activatedTokenCount](self forKey:{"activatedTokenCount"), @"PrivacyProxyInfoActivatedTokenCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo proxyTokenFetchSuccessCount](self forKey:{"proxyTokenFetchSuccessCount"), @"PrivacyProxyInfoProxyTokenFetchSuccessCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo proxyTokenFetchFailedCount](self forKey:{"proxyTokenFetchFailedCount"), @"PrivacyProxyInfoProxyTokenFetchFailedCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo proxyTokenConsumedCount](self forKey:{"proxyTokenConsumedCount"), @"PrivacyProxyInfoProxyTokenConsumedCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo proxyTokenExpiredCount](self forKey:{"proxyTokenExpiredCount"), @"PrivacyProxyInfoProxyTokenExpiredCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo proxyAgentLowWaterMarkHitCount](self forKey:{"proxyAgentLowWaterMarkHitCount"), @"PrivacyProxyInfoProxyAgentLowWaterMarkHitCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo proxyCacheLowWaterMarkHitCount](self forKey:{"proxyCacheLowWaterMarkHitCount"), @"PrivacyProxyInfoProxyCacheLowWaterMarkHitCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo badTokenCount](self forKey:{"badTokenCount"), @"PrivacyProxyInfoBadTokensCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo missingTokenCount](self forKey:{"missingTokenCount"), @"PrivacyProxyInfoMissingTokensCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo networkProxiesRotated](self forKey:{"networkProxiesRotated"), @"PrivacyProxyInfoNetworkProxiesRotated"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo networkFallbackProxiesRotated](self forKey:{"networkFallbackProxiesRotated"), @"PrivacyProxyInfoNetworkFallbackProxiesRotated"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo proxiesRotated](self forKey:{"proxiesRotated"), @"PrivacyProxyInfoProxiesRotated"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo configFetchedSuccessCount](self forKey:{"configFetchedSuccessCount"), @"PrivacyProxyInfoConfigFetchSuccessCount"}];
+  [coderCopy encodeInt:-[PrivacyProxyInfo configFetchedFailedCount](self forKey:{"configFetchedFailedCount"), @"PrivacyProxyInfoConfigFetchFailedCount"}];
 }
 
 - (id)diagnostics
@@ -364,17 +364,17 @@
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PrivacyProxyInfo deviceIdentityValidationCount](self, "deviceIdentityValidationCount")}];
   [v3 setObject:v21 forKeyedSubscript:@"PrivacyProxyInfoDeviceValidationCount"];
 
-  v22 = [(PrivacyProxyInfo *)self egressProxyURL];
-  [v3 setObject:v22 forKeyedSubscript:@"PrivacyProxyInfoEgressProxyURL"];
+  egressProxyURL = [(PrivacyProxyInfo *)self egressProxyURL];
+  [v3 setObject:egressProxyURL forKeyedSubscript:@"PrivacyProxyInfoEgressProxyURL"];
 
-  v23 = [(PrivacyProxyInfo *)self ingressProxyURL];
-  [v3 setObject:v23 forKeyedSubscript:@"PrivacyProxyInfoIngressProxyURL"];
+  ingressProxyURL = [(PrivacyProxyInfo *)self ingressProxyURL];
+  [v3 setObject:ingressProxyURL forKeyedSubscript:@"PrivacyProxyInfoIngressProxyURL"];
 
-  v24 = [(PrivacyProxyInfo *)self egressFallbackProxyURL];
-  [v3 setObject:v24 forKeyedSubscript:@"PrivacyProxyInfoEgressFallbackProxyURL"];
+  egressFallbackProxyURL = [(PrivacyProxyInfo *)self egressFallbackProxyURL];
+  [v3 setObject:egressFallbackProxyURL forKeyedSubscript:@"PrivacyProxyInfoEgressFallbackProxyURL"];
 
-  v25 = [(PrivacyProxyInfo *)self ingressFallbackProxyURL];
-  [v3 setObject:v25 forKeyedSubscript:@"PrivacyProxyInfoIngressFallbackProxyURL"];
+  ingressFallbackProxyURL = [(PrivacyProxyInfo *)self ingressFallbackProxyURL];
+  [v3 setObject:ingressFallbackProxyURL forKeyedSubscript:@"PrivacyProxyInfoIngressFallbackProxyURL"];
 
   v46 = 0u;
   v47 = 0u;
@@ -396,8 +396,8 @@
         }
 
         v29 = *(*(&v44 + 1) + 8 * i);
-        v30 = [(PrivacyProxyInfo *)self tokenCounts];
-        v31 = [v30 objectForKeyedSubscript:v29];
+        tokenCounts = [(PrivacyProxyInfo *)self tokenCounts];
+        v31 = [tokenCounts objectForKeyedSubscript:v29];
 
         v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v31, "cachedTokens")}];
         v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"PrivacyProxyInfoCachedTokenCount", v29];
@@ -431,18 +431,18 @@
 {
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [(PrivacyProxyInfo *)self encodeWithCoder:v3];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-- (PrivacyProxyInfo)initWithData:(id)a3
+- (PrivacyProxyInfo)initWithData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ACD0];
-  v5 = a3;
+  dataCopy = data;
   v16 = 0;
-  v6 = [[v4 alloc] initForReadingFromData:v5 error:&v16];
+  v6 = [[v4 alloc] initForReadingFromData:dataCopy error:&v16];
 
   v7 = v16;
   v8 = v7;
@@ -467,7 +467,7 @@
     }
 
     self = v12;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -480,11 +480,11 @@
       _os_log_error_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_ERROR, "Failed to create a decoder for the proxy info %@", buf, 0xCu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 @end

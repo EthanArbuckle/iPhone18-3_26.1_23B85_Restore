@@ -1,21 +1,21 @@
 @interface FAActivityManager
-- (FAActivityManager)initWithQueueProvider:(id)a3;
+- (FAActivityManager)initWithQueueProvider:(id)provider;
 - (void)checkinXPCActivities;
-- (void)handleAccountAddition:(id)a3 completion:(id)a4;
-- (void)handleAccountDeletion:(id)a3 completion:(id)a4;
+- (void)handleAccountAddition:(id)addition completion:(id)completion;
+- (void)handleAccountDeletion:(id)deletion completion:(id)completion;
 @end
 
 @implementation FAActivityManager
 
-- (FAActivityManager)initWithQueueProvider:(id)a3
+- (FAActivityManager)initWithQueueProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = FAActivityManager;
   v5 = [(FAActivityManager *)&v15 init];
   if (v5)
   {
-    v6 = [[FAHeartbeatActivity alloc] initWithQueueProvider:v4];
+    v6 = [[FAHeartbeatActivity alloc] initWithQueueProvider:providerCopy];
     heartbeatActivity = v5->_heartbeatActivity;
     v5->_heartbeatActivity = v6;
 
@@ -47,13 +47,13 @@
   }
 
   [(FAHeartbeatActivity *)self->_heartbeatActivity checkin];
-  v4 = [(FAActivityManager *)self osUpdatedActivity];
-  [v4 checkinWithCompletionHandler:&stru_1000A6518];
+  osUpdatedActivity = [(FAActivityManager *)self osUpdatedActivity];
+  [osUpdatedActivity checkinWithCompletionHandler:&stru_1000A6518];
 }
 
-- (void)handleAccountAddition:(id)a3 completion:(id)a4
+- (void)handleAccountAddition:(id)addition completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = _FALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -67,15 +67,15 @@
   v9[1] = 3221225472;
   v9[2] = sub_10000AD14;
   v9[3] = &unk_1000A6540;
-  v10 = v5;
-  v8 = v5;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(FAHeartbeatActivity *)heartbeatActivity performHeartbeatCheckinWithCompletion:v9];
   v8[2](v8, 1);
 }
 
-- (void)handleAccountDeletion:(id)a3 completion:(id)a4
+- (void)handleAccountDeletion:(id)deletion completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = _FALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -87,10 +87,10 @@
   v7 = +[PDSRegistrarService sharedInstance];
   [v7 removeRegistrationFromPDS];
 
-  v8 = [(FAActivityManager *)self osUpdatedActivity];
-  [v8 unregister];
+  osUpdatedActivity = [(FAActivityManager *)self osUpdatedActivity];
+  [osUpdatedActivity unregister];
 
-  v5[2](v5, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
 @end

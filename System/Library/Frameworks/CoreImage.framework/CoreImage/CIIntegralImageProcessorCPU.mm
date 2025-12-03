@@ -1,13 +1,13 @@
 @interface CIIntegralImageProcessorCPU
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
 @end
 
 @implementation CIIntegralImageProcessorCPU
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
   v76 = *MEMORY[0x1E69E9840];
-  v7 = [a3 objectAtIndex:{0, a4, a5, a6}];
+  v7 = [inputs objectAtIndex:{0, arguments, output, error}];
   if ([v7 format] != 2312 && objc_msgSend(v7, "format") != 2056 && objc_msgSend(v7, "format") != 266 && objc_msgSend(v7, "format") != 264)
   {
     v63 = ci_logger_filter();
@@ -23,7 +23,7 @@ LABEL_51:
     return v24;
   }
 
-  if ([a5 format] != 2312)
+  if ([output format] != 2312)
   {
     v23 = ci_logger_filter();
     v24 = os_log_type_enabled(v23, OS_LOG_TYPE_ERROR);
@@ -32,14 +32,14 @@ LABEL_51:
       return v24;
     }
 
-    [CIIntegralImageProcessorCPU processWithInputs:a5 arguments:? output:? error:?];
+    [CIIntegralImageProcessorCPU processWithInputs:output arguments:? output:? error:?];
     goto LABEL_51;
   }
 
-  v8 = [a5 bytesPerRow];
-  [a5 region];
+  bytesPerRow = [output bytesPerRow];
+  [output region];
   v10 = v9;
-  __src = malloc_type_calloc(v8, vcvtps_u32_f32(v10), 0x100004052888210uLL);
+  __src = malloc_type_calloc(bytesPerRow, vcvtps_u32_f32(v10), 0x100004052888210uLL);
   if (!__src)
   {
     v25 = ci_logger_filter();
@@ -49,13 +49,13 @@ LABEL_51:
       return v24;
     }
 
-    [CIIntegralImageProcessorCPU processWithInputs:a5 arguments:? output:? error:?];
+    [CIIntegralImageProcessorCPU processWithInputs:output arguments:? output:? error:?];
     goto LABEL_51;
   }
 
   [v7 region];
   v12 = v11;
-  [a5 region];
+  [output region];
   if (v12 != v13)
   {
     +[CIIntegralImageProcessorCPU processWithInputs:arguments:output:error:];
@@ -63,7 +63,7 @@ LABEL_51:
 
   [v7 region];
   v15 = v14;
-  [a5 region];
+  [output region];
   if (v15 != v16)
   {
     +[CIIntegralImageProcessorCPU processWithInputs:arguments:output:error:];
@@ -74,8 +74,8 @@ LABEL_51:
   v19 = vcvtps_u32_f32(v18);
   [v7 region];
   v21 = v20;
-  v65 = a5;
-  v66 = v8;
+  outputCopy = output;
+  v66 = bytesPerRow;
   if ([v7 format] == 2312)
   {
     v22 = 16;
@@ -83,24 +83,24 @@ LABEL_51:
 
   else
   {
-    v26 = [v7 format];
+    format = [v7 format];
     v22 = 4;
-    if (v26 == 2056)
+    if (format == 2056)
     {
       v22 = 8;
     }
   }
 
   v71 = v22;
-  v27 = [v7 format];
+  format2 = [v7 format];
   if (v19)
   {
     v28 = 0;
     v68 = 0;
     v29 = v21;
     v30 = vcvtps_u32_f32(v29);
-    v69 = 2 * (v27 != 266);
-    v70 = 2 * (v27 == 266);
+    v69 = 2 * (format2 != 266);
+    v70 = 2 * (format2 == 266);
     do
     {
       if (v30)
@@ -113,8 +113,8 @@ LABEL_51:
         v35 = 1;
         do
         {
-          v36 = [v7 baseAddress];
-          v37 = [v7 bytesPerRow];
+          baseAddress = [v7 baseAddress];
+          bytesPerRow2 = [v7 bytesPerRow];
           if (v33 >= v19)
           {
             v38 = 0;
@@ -122,7 +122,7 @@ LABEL_51:
 
           else
           {
-            v38 = (v36 + v37 * v33 + v31 * v71);
+            v38 = (baseAddress + bytesPerRow2 * v33 + v31 * v71);
           }
 
           v75 = 0uLL;
@@ -218,23 +218,23 @@ LABEL_51:
     while (v68 < v19);
   }
 
-  [v65 region];
+  [outputCopy region];
   v53 = v52;
-  [v65 region];
+  [outputCopy region];
   v55 = v54;
-  if ([v65 format] != 2312)
+  if ([outputCopy format] != 2312)
   {
     +[CIIntegralImageProcessorCPU processWithInputs:arguments:output:error:];
   }
 
   v56 = v53;
   v57 = vcvtps_u32_f32(v56);
-  v58 = [v65 baseAddress];
+  baseAddress2 = [outputCopy baseAddress];
   if (v57)
   {
     v59 = v55;
     v60 = 16 * vcvtps_u32_f32(v59);
-    v61 = (v58 + v66 * (v57 - 1));
+    v61 = (baseAddress2 + v66 * (v57 - 1));
     v62 = __src;
     do
     {

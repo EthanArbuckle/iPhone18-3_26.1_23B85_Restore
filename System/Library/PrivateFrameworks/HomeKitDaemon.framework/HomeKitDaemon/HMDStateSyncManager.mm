@@ -3,34 +3,34 @@
 - (HMDHome)home;
 - (HMDResidentDeviceManagerContext)residentDeviceManagerContext;
 - (HMDResidentStatusChannel)residentStatusChannel;
-- (HMDStateSyncManager)initWithHome:(id)a3 queue:(id)a4 isResidentCapable:(BOOL)a5 dispatcher:(id)a6 notificationCenter:(id)a7 residentDeviceManagerContext:(id)a8 timerProvider:(id)a9;
-- (HMDStateSyncManager)initWithHome:(id)a3 queue:(id)a4 residentDeviceManagerContext:(id)a5;
+- (HMDStateSyncManager)initWithHome:(id)home queue:(id)queue isResidentCapable:(BOOL)capable dispatcher:(id)dispatcher notificationCenter:(id)center residentDeviceManagerContext:(id)context timerProvider:(id)provider;
+- (HMDStateSyncManager)initWithHome:(id)home queue:(id)queue residentDeviceManagerContext:(id)context;
 - (NSUUID)messageTargetUUID;
 - (id)_createBackoffTimer;
 - (id)logIdentifier;
-- (void)_configureWithResidentStatusChannel:(id)a3;
-- (void)_handleResidentStatusChannelReadyNotification:(id)a3;
-- (void)_handleStateSyncFetchMessage:(id)a3;
-- (void)_handleStateSyncPublishMessage:(id)a3;
-- (void)_handleStateSyncResponse:(id)a3 domain:(id)a4;
-- (void)_performSyncForDomains:(id)a3;
-- (void)_publishToAllUsersWithState:(id)a3 domain:(id)a4 completion:(id)a5;
-- (void)_publishToResidentsWithState:(id)a3 domain:(id)a4 completion:(id)a5;
-- (void)_removeDomainFromFetchRetryDomains:(id)a3;
-- (void)_startRetryTimerForDomains:(id)a3;
-- (void)_stopPublishingToAllUsersForDomain:(id)a3 completion:(id)a4;
-- (void)_stopPublishingToResidentsForDomain:(id)a3 completion:(id)a4;
-- (void)addDelegate:(id)a3;
-- (void)channel:(id)a3 didObserveNewDomainDataDevices:(id)a4 removedDomainDataDevices:(id)a5 updatedDomainDataDevices:(id)a6;
+- (void)_configureWithResidentStatusChannel:(id)channel;
+- (void)_handleResidentStatusChannelReadyNotification:(id)notification;
+- (void)_handleStateSyncFetchMessage:(id)message;
+- (void)_handleStateSyncPublishMessage:(id)message;
+- (void)_handleStateSyncResponse:(id)response domain:(id)domain;
+- (void)_performSyncForDomains:(id)domains;
+- (void)_publishToAllUsersWithState:(id)state domain:(id)domain completion:(id)completion;
+- (void)_publishToResidentsWithState:(id)state domain:(id)domain completion:(id)completion;
+- (void)_removeDomainFromFetchRetryDomains:(id)domains;
+- (void)_startRetryTimerForDomains:(id)domains;
+- (void)_stopPublishingToAllUsersForDomain:(id)domain completion:(id)completion;
+- (void)_stopPublishingToResidentsForDomain:(id)domain completion:(id)completion;
+- (void)addDelegate:(id)delegate;
+- (void)channel:(id)channel didObserveNewDomainDataDevices:(id)devices removedDomainDataDevices:(id)dataDevices updatedDomainDataDevices:(id)domainDataDevices;
 - (void)configure;
-- (void)configureDomain:(id)a3 scope:(int64_t)a4 syncOptions:(int64_t)a5 completion:(id)a6;
-- (void)publishChangeToken:(id)a3 domain:(id)a4 completion:(id)a5;
-- (void)publishState:(id)a3 domain:(id)a4 completion:(id)a5;
-- (void)registerObserver:(id)a3 domain:(id)a4;
-- (void)removeDelegate:(id)a3;
-- (void)stopPublishingForDomain:(id)a3 completion:(id)a4;
-- (void)timerDidFire:(id)a3;
-- (void)unregisterObserverForDomain:(id)a3;
+- (void)configureDomain:(id)domain scope:(int64_t)scope syncOptions:(int64_t)options completion:(id)completion;
+- (void)publishChangeToken:(id)token domain:(id)domain completion:(id)completion;
+- (void)publishState:(id)state domain:(id)domain completion:(id)completion;
+- (void)registerObserver:(id)observer domain:(id)domain;
+- (void)removeDelegate:(id)delegate;
+- (void)stopPublishingForDomain:(id)domain completion:(id)completion;
+- (void)timerDidFire:(id)fire;
+- (void)unregisterObserverForDomain:(id)domain;
 @end
 
 @implementation HMDStateSyncManager
@@ -59,8 +59,8 @@
 - (id)_createBackoffTimer
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(HMDStateSyncManager *)self timerProvider];
-  v4 = [v3 backoffTimerWithMinimumTimeInterval:4 maximumTimeInterval:0 exponentialFactor:30.0 options:3600.0];
+  timerProvider = [(HMDStateSyncManager *)self timerProvider];
+  v4 = [timerProvider backoffTimerWithMinimumTimeInterval:4 maximumTimeInterval:0 exponentialFactor:30.0 options:3600.0];
 
   [v4 setDelegate:self];
   [v4 setDelegateQueue:self->_queue];
@@ -68,93 +68,93 @@
   return v4;
 }
 
-- (void)_startRetryTimerForDomains:(id)a3
+- (void)_startRetryTimerForDomains:(id)domains
 {
   queue = self->_queue;
-  v5 = a3;
+  domainsCopy = domains;
   dispatch_assert_queue_V2(queue);
-  v6 = [(HMDStateSyncManager *)self fetchRetryTimer];
+  fetchRetryTimer = [(HMDStateSyncManager *)self fetchRetryTimer];
 
-  if (!v6)
+  if (!fetchRetryTimer)
   {
-    v7 = [(HMDStateSyncManager *)self _createBackoffTimer];
-    [(HMDStateSyncManager *)self setFetchRetryTimer:v7];
+    _createBackoffTimer = [(HMDStateSyncManager *)self _createBackoffTimer];
+    [(HMDStateSyncManager *)self setFetchRetryTimer:_createBackoffTimer];
   }
 
-  v8 = [(HMDStateSyncManager *)self fetchRetryDomains];
-  [v8 unionSet:v5];
+  fetchRetryDomains = [(HMDStateSyncManager *)self fetchRetryDomains];
+  [fetchRetryDomains unionSet:domainsCopy];
 
-  v9 = [(HMDStateSyncManager *)self fetchRetryTimer];
-  [v9 resume];
+  fetchRetryTimer2 = [(HMDStateSyncManager *)self fetchRetryTimer];
+  [fetchRetryTimer2 resume];
 }
 
-- (void)_removeDomainFromFetchRetryDomains:(id)a3
+- (void)_removeDomainFromFetchRetryDomains:(id)domains
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  domainsCopy = domains;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HMDStateSyncManager *)self fetchRetryDomains];
-  v6 = [v5 containsObject:v4];
+  fetchRetryDomains = [(HMDStateSyncManager *)self fetchRetryDomains];
+  v6 = [fetchRetryDomains containsObject:domainsCopy];
 
   if (v6)
   {
-    v7 = [(HMDStateSyncManager *)self fetchRetryDomains];
-    [v7 removeObject:v4];
+    fetchRetryDomains2 = [(HMDStateSyncManager *)self fetchRetryDomains];
+    [fetchRetryDomains2 removeObject:domainsCopy];
 
-    v8 = [(HMDStateSyncManager *)self fetchRetryDomains];
-    v9 = [v8 count];
+    fetchRetryDomains3 = [(HMDStateSyncManager *)self fetchRetryDomains];
+    v9 = [fetchRetryDomains3 count];
 
     if (!v9)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v13 = HMFGetLogIdentifier();
-        v14 = [(HMDStateSyncManager *)v11 fetchRetryTimer];
+        fetchRetryTimer = [(HMDStateSyncManager *)selfCopy fetchRetryTimer];
         v17 = 138543618;
         v18 = v13;
         v19 = 2112;
-        v20 = v14;
+        v20 = fetchRetryTimer;
         _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@Canceling fetchRetryTimer: %@ because no domains to retry", &v17, 0x16u);
       }
 
       objc_autoreleasePoolPop(v10);
-      v15 = [(HMDStateSyncManager *)v11 fetchRetryTimer];
-      [v15 cancel];
+      fetchRetryTimer2 = [(HMDStateSyncManager *)selfCopy fetchRetryTimer];
+      [fetchRetryTimer2 cancel];
 
-      [(HMDStateSyncManager *)v11 setFetchRetryTimer:0];
+      [(HMDStateSyncManager *)selfCopy setFetchRetryTimer:0];
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopPublishingToAllUsersForDomain:(id)a3 completion:(id)a4
+- (void)_stopPublishingToAllUsersForDomain:(id)domain completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(HMDStateSyncManager *)self lastPublishedChangeTokenByDomain];
-  [v8 setObject:0 forKeyedSubscript:v6];
+  lastPublishedChangeTokenByDomain = [(HMDStateSyncManager *)self lastPublishedChangeTokenByDomain];
+  [lastPublishedChangeTokenByDomain setObject:0 forKeyedSubscript:domainCopy];
 
-  v9 = [(HMDStateSyncManager *)self lastPublishedStateByDomain];
-  [v9 setObject:0 forKeyedSubscript:v6];
+  lastPublishedStateByDomain = [(HMDStateSyncManager *)self lastPublishedStateByDomain];
+  [lastPublishedStateByDomain setObject:0 forKeyedSubscript:domainCopy];
 
-  v10 = [(HMDStateSyncManager *)self residentStatusChannel];
-  v11 = [(HMDStateSyncManager *)self lastPublishedChangeTokenByDomain];
-  v12 = [v11 copy];
+  residentStatusChannel = [(HMDStateSyncManager *)self residentStatusChannel];
+  lastPublishedChangeTokenByDomain2 = [(HMDStateSyncManager *)self lastPublishedChangeTokenByDomain];
+  v12 = [lastPublishedChangeTokenByDomain2 copy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__HMDStateSyncManager__stopPublishingToAllUsersForDomain_completion___block_invoke;
   v15[3] = &unk_278689358;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v13 = v7;
-  v14 = v6;
-  [v10 publishDomain:1 data:v12 completion:v15];
+  v16 = domainCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = domainCopy;
+  [residentStatusChannel publishDomain:1 data:v12 completion:v15];
 }
 
 void __69__HMDStateSyncManager__stopPublishingToAllUsersForDomain_completion___block_invoke(uint64_t a1, void *a2)
@@ -187,27 +187,27 @@ void __69__HMDStateSyncManager__stopPublishingToAllUsersForDomain_completion___b
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopPublishingToResidentsForDomain:(id)a3 completion:(id)a4
+- (void)_stopPublishingToResidentsForDomain:(id)domain completion:(id)completion
 {
   queue = self->_queue;
-  v5 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_V2(queue);
-  v5[2](v5, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)_publishToAllUsersWithState:(id)a3 domain:(id)a4 completion:(id)a5
+- (void)_publishToAllUsersWithState:(id)state domain:(id)domain completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  domainCopy = domain;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [(HMDStateSyncManager *)self lastPublishedStateByDomain];
-  [v11 setObject:v8 forKeyedSubscript:v9];
+  lastPublishedStateByDomain = [(HMDStateSyncManager *)self lastPublishedStateByDomain];
+  [lastPublishedStateByDomain setObject:stateCopy forKeyedSubscript:domainCopy];
 
-  v12 = [(HMDStateSyncManager *)self _changeTokenForState:v8];
+  v12 = [(HMDStateSyncManager *)self _changeTokenForState:stateCopy];
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -217,29 +217,29 @@ void __69__HMDStateSyncManager__stopPublishingToAllUsersForDomain_completion___b
     v31 = 2112;
     v32 = v12;
     v33 = 2112;
-    v34 = v9;
+    v34 = domainCopy;
     _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@Publishing changeToken: %@ for domain: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v13);
-  v17 = [(HMDStateSyncManager *)v14 lastPublishedChangeTokenByDomain];
-  [v17 setObject:v12 forKeyedSubscript:v9];
+  lastPublishedChangeTokenByDomain = [(HMDStateSyncManager *)selfCopy lastPublishedChangeTokenByDomain];
+  [lastPublishedChangeTokenByDomain setObject:v12 forKeyedSubscript:domainCopy];
 
-  v18 = [(HMDStateSyncManager *)v14 residentStatusChannel];
-  v19 = [(HMDStateSyncManager *)v14 lastPublishedChangeTokenByDomain];
-  v20 = [v19 copy];
+  residentStatusChannel = [(HMDStateSyncManager *)selfCopy residentStatusChannel];
+  lastPublishedChangeTokenByDomain2 = [(HMDStateSyncManager *)selfCopy lastPublishedChangeTokenByDomain];
+  v20 = [lastPublishedChangeTokenByDomain2 copy];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __69__HMDStateSyncManager__publishToAllUsersWithState_domain_completion___block_invoke;
   v25[3] = &unk_27868A528;
-  v25[4] = v14;
+  v25[4] = selfCopy;
   v26 = v12;
-  v27 = v9;
-  v28 = v10;
-  v21 = v10;
-  v22 = v9;
+  v27 = domainCopy;
+  v28 = completionCopy;
+  v21 = completionCopy;
+  v22 = domainCopy;
   v23 = v12;
-  [v18 publishDomain:1 data:v20 completion:v25];
+  [residentStatusChannel publishDomain:1 data:v20 completion:v25];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -277,53 +277,53 @@ void __69__HMDStateSyncManager__publishToAllUsersWithState_domain_completion___b
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_publishToResidentsWithState:(id)a3 domain:(id)a4 completion:(id)a5
+- (void)_publishToResidentsWithState:(id)state domain:(id)domain completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  domainCopy = domain;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [(HMDStateSyncManager *)self home];
-  v12 = [v11 destinationForEnabledResidents];
-  if (v12)
+  home = [(HMDStateSyncManager *)self home];
+  destinationForEnabledResidents = [home destinationForEnabledResidents];
+  if (destinationForEnabledResidents)
   {
-    v13 = [(HMDStateSyncManager *)self lastPublishedStateByDomain];
-    [v13 setObject:v8 forKeyedSubscript:v9];
+    lastPublishedStateByDomain = [(HMDStateSyncManager *)self lastPublishedStateByDomain];
+    [lastPublishedStateByDomain setObject:stateCopy forKeyedSubscript:domainCopy];
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v30[0] = @"domain";
     v30[1] = @"data";
-    v31[0] = v9;
-    v31[1] = v8;
+    v31[0] = domainCopy;
+    v31[1] = stateCopy;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
-    [v14 addObject:v15];
+    [array addObject:v15];
 
     v28[0] = @"dataByDomains";
-    v16 = [v14 copy];
+    v16 = [array copy];
     v29[0] = v16;
-    v29[1] = v9;
+    v29[1] = domainCopy;
     v28[1] = @"domain";
     v28[2] = @"data";
-    v29[2] = v8;
+    v29[2] = stateCopy;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:3];
 
-    v18 = [[HMDRemoteMessage alloc] initWithName:@"HMDStateSyncPublishMessage" qualityOfService:9 destination:v12 payload:v17 type:3 timeout:1 secure:300.0 restriction:8];
+    v18 = [[HMDRemoteMessage alloc] initWithName:@"HMDStateSyncPublishMessage" qualityOfService:9 destination:destinationForEnabledResidents payload:v17 type:3 timeout:1 secure:300.0 restriction:8];
     dispatcher = self->_dispatcher;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __70__HMDStateSyncManager__publishToResidentsWithState_domain_completion___block_invoke;
     v25[3] = &unk_278689358;
     v25[4] = self;
-    v26 = v9;
-    v27 = v10;
+    v26 = domainCopy;
+    v27 = completionCopy;
     [(HMFMessageDispatcher *)dispatcher sendMessage:v18 completionHandler:v25];
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -331,13 +331,13 @@ void __69__HMDStateSyncManager__publishToAllUsersWithState_domain_completion___b
       *buf = 138543618;
       v33 = v23;
       v34 = 2112;
-      v35 = v9;
+      v35 = domainCopy;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@Unable to publish state to residents for domain: %@, no residents to publish to", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v20);
-    v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-    (*(v10 + 2))(v10, v14);
+    array = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
+    (*(completionCopy + 2))(completionCopy, array);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -379,41 +379,41 @@ void __70__HMDStateSyncManager__publishToResidentsWithState_domain_completion___
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStateSyncResponse:(id)a3 domain:(id)a4
+- (void)_handleStateSyncResponse:(id)response domain:(id)domain
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  domainCopy = domain;
   dispatch_assert_queue_V2(self->_queue);
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 shortDescription];
+    shortDescription = [responseCopy shortDescription];
     v20 = 138543874;
     v21 = v11;
     v22 = 2112;
-    v23 = v12;
+    v23 = shortDescription;
     v24 = 2112;
-    v25 = v7;
+    v25 = domainCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Handling state sync response: %@ for domain: %@", &v20, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDStateSyncManager *)v9 stateSyncObserversByDomain];
-  v14 = [v13 objectForKey:v7];
+  stateSyncObserversByDomain = [(HMDStateSyncManager *)selfCopy stateSyncObserversByDomain];
+  v14 = [stateSyncObserversByDomain objectForKey:domainCopy];
 
   if (v14)
   {
-    [v14 stateSyncManager:v9 didObserveUpdatedState:v6 domain:v7];
+    [v14 stateSyncManager:selfCopy didObserveUpdatedState:responseCopy domain:domainCopy];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v9;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -421,7 +421,7 @@ void __70__HMDStateSyncManager__publishToResidentsWithState_domain_completion___
       v20 = 138543618;
       v21 = v18;
       v22 = 2112;
-      v23 = v7;
+      v23 = domainCopy;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@No observer registered for domain: %@", &v20, 0x16u);
     }
 
@@ -431,20 +431,20 @@ void __70__HMDStateSyncManager__publishToResidentsWithState_domain_completion___
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performSyncForDomains:(id)a3
+- (void)_performSyncForDomains:(id)domains
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  domainsCopy = domains;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4 && [v4 count])
+  if (domainsCopy && [domainsCopy count])
   {
-    v5 = [(HMDStateSyncManager *)self home];
-    v6 = [v5 primaryResident];
+    home = [(HMDStateSyncManager *)self home];
+    primaryResident = [home primaryResident];
 
-    if ([v6 isCurrentDevice])
+    if ([primaryResident isCurrentDevice])
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -452,7 +452,7 @@ void __70__HMDStateSyncManager__publishToResidentsWithState_domain_completion___
         *buf = 138543618;
         v45 = v10;
         v46 = 2112;
-        v47 = v4;
+        v47 = domainsCopy;
         _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Not performing sync for domains: %@ since we are the primary", buf, 0x16u);
       }
 
@@ -461,34 +461,34 @@ void __70__HMDStateSyncManager__publishToResidentsWithState_domain_completion___
 
     else
     {
-      v15 = [v6 device];
-      if (v15)
+      device = [primaryResident device];
+      if (device)
       {
         v16 = objc_autoreleasePoolPush();
-        v17 = self;
+        selfCopy2 = self;
         v18 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           v19 = HMFGetLogIdentifier();
-          v20 = [v15 shortDescription];
+          shortDescription = [device shortDescription];
           *buf = 138543874;
           v45 = v19;
           v46 = 2112;
-          v47 = v4;
+          v47 = domainsCopy;
           v48 = 2112;
-          v49 = v20;
+          v49 = shortDescription;
           _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@Performing sync for domains: %@ with %@", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v16);
         v21 = [HMDRemoteDeviceMessageDestination alloc];
-        v22 = [(HMDStateSyncManager *)v17 messageTargetUUID];
-        v23 = [v6 device];
-        v24 = [(HMDRemoteDeviceMessageDestination *)v21 initWithTarget:v22 device:v23];
+        messageTargetUUID = [(HMDStateSyncManager *)selfCopy2 messageTargetUUID];
+        device2 = [primaryResident device];
+        v24 = [(HMDRemoteDeviceMessageDestination *)v21 initWithTarget:messageTargetUUID device:device2];
 
         v42 = @"domains";
-        v25 = [v4 allObjects];
-        v43 = v25;
+        allObjects = [domainsCopy allObjects];
+        v43 = allObjects;
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
 
         v27 = [[HMDRemoteMessage alloc] initWithName:@"HMDStateSyncFetchMessage" destination:v24 payload:v26 type:0 timeout:1 secure:60.0];
@@ -496,28 +496,28 @@ void __70__HMDStateSyncManager__publishToResidentsWithState_domain_completion___
         v37 = 3221225472;
         v38 = __46__HMDStateSyncManager__performSyncForDomains___block_invoke;
         v39 = &unk_278688370;
-        v40 = v17;
-        v41 = v4;
+        v40 = selfCopy2;
+        v41 = domainsCopy;
         [(HMDRemoteMessage *)v27 setResponseHandler:&v36];
-        [(HMFMessageDispatcher *)v17->_dispatcher sendMessage:v27, v36, v37, v38, v39, v40];
+        [(HMFMessageDispatcher *)selfCopy2->_dispatcher sendMessage:v27, v36, v37, v38, v39, v40];
       }
 
       else
       {
-        [(HMDStateSyncManager *)self _startRetryTimerForDomains:v4];
+        [(HMDStateSyncManager *)self _startRetryTimerForDomains:domainsCopy];
         v28 = objc_autoreleasePoolPush();
-        v29 = self;
+        selfCopy3 = self;
         v30 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
           v31 = HMFGetLogIdentifier();
-          v32 = [(HMDStateSyncManager *)v29 fetchRetryTimer];
-          v33 = [v32 fireDate];
-          [v33 timeIntervalSinceNow];
+          fetchRetryTimer = [(HMDStateSyncManager *)selfCopy3 fetchRetryTimer];
+          fireDate = [fetchRetryTimer fireDate];
+          [fireDate timeIntervalSinceNow];
           *buf = 138543874;
           v45 = v31;
           v46 = 2112;
-          v47 = v4;
+          v47 = domainsCopy;
           v48 = 2048;
           v49 = v34;
           _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_ERROR, "%{public}@Unable to perform sync for domains: %@ as the primary resident for the home has no device. Will retry in %f seconds.", buf, 0x20u);
@@ -531,7 +531,7 @@ void __70__HMDStateSyncManager__publishToResidentsWithState_domain_completion___
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy4 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -686,13 +686,13 @@ void __46__HMDStateSyncManager__performSyncForDomains___block_invoke_2(uint64_t 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_configureWithResidentStatusChannel:(id)a3
+- (void)_configureWithResidentStatusChannel:(id)channel
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  channelCopy = channel;
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -700,39 +700,39 @@ void __46__HMDStateSyncManager__performSyncForDomains___block_invoke_2(uint64_t 
     *buf = 138543618;
     v31 = v8;
     v32 = 2112;
-    v33 = v4;
+    v33 = channelCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Configuring with ResidentStatusChannel: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  objc_storeWeak(&v6->_residentStatusChannel, v4);
-  v9 = [(HMDStateSyncManager *)v6 residentStatusChannel];
-  [v9 addObserver:v6];
+  objc_storeWeak(&selfCopy->_residentStatusChannel, channelCopy);
+  residentStatusChannel = [(HMDStateSyncManager *)selfCopy residentStatusChannel];
+  [residentStatusChannel addObserver:selfCopy];
 
-  v10 = [(HMDStateSyncManager *)v6 home];
-  v11 = [HMDUserMessagePolicy userMessagePolicyWithHome:v10 userPrivilege:0 remoteAccessRequired:0];
+  home = [(HMDStateSyncManager *)selfCopy home];
+  v11 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:0 remoteAccessRequired:0];
   v12 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
-  dispatcher = v6->_dispatcher;
+  dispatcher = selfCopy->_dispatcher;
   v29[0] = v11;
   v29[1] = v12;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
-  [(HMFMessageDispatcher *)dispatcher registerForMessage:@"HMDStateSyncFetchMessage" receiver:v6 policies:v14 selector:sel__handleStateSyncFetchMessage_];
+  [(HMFMessageDispatcher *)dispatcher registerForMessage:@"HMDStateSyncFetchMessage" receiver:selfCopy policies:v14 selector:sel__handleStateSyncFetchMessage_];
 
-  if ([(HMDStateSyncManager *)v6 isResidentCapable])
+  if ([(HMDStateSyncManager *)selfCopy isResidentCapable])
   {
-    v15 = v6->_dispatcher;
+    v15 = selfCopy->_dispatcher;
     v28[0] = v11;
     v28[1] = v12;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
-    [(HMFMessageDispatcher *)v15 registerForMessage:@"HMDStateSyncPublishMessage" receiver:v6 policies:v16 selector:sel__handleStateSyncPublishMessage_];
+    [(HMFMessageDispatcher *)v15 registerForMessage:@"HMDStateSyncPublishMessage" receiver:selfCopy policies:v16 selector:sel__handleStateSyncPublishMessage_];
   }
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = [(HMDStateSyncManager *)v6 stateSyncDelegates];
-  v18 = [v17 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  stateSyncDelegates = [(HMDStateSyncManager *)selfCopy stateSyncDelegates];
+  v18 = [stateSyncDelegates countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v18)
   {
     v19 = v18;
@@ -744,14 +744,14 @@ void __46__HMDStateSyncManager__performSyncForDomains___block_invoke_2(uint64_t 
       {
         if (*v24 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(stateSyncDelegates);
         }
 
-        [*(*(&v23 + 1) + 8 * v21++) didConfigure:v6];
+        [*(*(&v23 + 1) + 8 * v21++) didConfigure:selfCopy];
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v19 = [stateSyncDelegates countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v19);
@@ -760,17 +760,17 @@ void __46__HMDStateSyncManager__performSyncForDomains___block_invoke_2(uint64_t 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HMDStateSyncManager *)self fetchRetryTimer];
+  fetchRetryTimer = [(HMDStateSyncManager *)self fetchRetryTimer];
 
-  if (v5 == v4)
+  if (fetchRetryTimer == fireCopy)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -781,18 +781,18 @@ void __46__HMDStateSyncManager__performSyncForDomains___block_invoke_2(uint64_t 
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [(HMDStateSyncManager *)v7 fetchRetryTimer];
-    [v10 suspend];
+    fetchRetryTimer2 = [(HMDStateSyncManager *)selfCopy fetchRetryTimer];
+    [fetchRetryTimer2 suspend];
 
-    v11 = [(HMDStateSyncManager *)v7 fetchRetryDomains];
-    v12 = [v11 copy];
-    [(HMDStateSyncManager *)v7 _performSyncForDomains:v12];
+    fetchRetryDomains = [(HMDStateSyncManager *)selfCopy fetchRetryDomains];
+    v12 = [fetchRetryDomains copy];
+    [(HMDStateSyncManager *)selfCopy _performSyncForDomains:v12];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleResidentStatusChannelReadyNotification:(id)a3
+- (void)_handleResidentStatusChannelReadyNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -811,27 +811,27 @@ void __69__HMDStateSyncManager__handleResidentStatusChannelReadyNotification___b
   [*(a1 + 32) _configureWithResidentStatusChannel:v3];
 }
 
-- (void)_handleStateSyncPublishMessage:(id)a3
+- (void)_handleStateSyncPublishMessage:(id)message
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v47 = self;
+  messageCopy = message;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 messagePayload];
-  v6 = [v5 hmf_arrayForKey:@"dataByDomains"];
+  messagePayload = [messageCopy messagePayload];
+  v6 = [messagePayload hmf_arrayForKey:@"dataByDomains"];
 
   if (v6)
   {
     goto LABEL_2;
   }
 
-  v30 = [v4 messagePayload];
-  v31 = [v30 hmf_stringForKey:@"domain"];
+  messagePayload2 = [messageCopy messagePayload];
+  v31 = [messagePayload2 hmf_stringForKey:@"domain"];
 
   if (v31)
   {
-    v32 = [v4 messagePayload];
-    v33 = [v32 hmf_dataForKey:@"data"];
+    messagePayload3 = [messageCopy messagePayload];
+    v33 = [messagePayload3 hmf_dataForKey:@"data"];
 
     if (v33)
     {
@@ -844,7 +844,7 @@ void __69__HMDStateSyncManager__handleResidentStatusChannelReadyNotification___b
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:1];
 
 LABEL_2:
-      v45 = v4;
+      v45 = messageCopy;
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
@@ -868,7 +868,7 @@ LABEL_2:
             v12 = [v11 hmf_stringForKey:@"domain"];
             v13 = [v11 hmf_dataForKey:@"data"];
             v14 = objc_autoreleasePoolPush();
-            v15 = v47;
+            v15 = selfCopy;
             v16 = HMFGetOSLogHandle();
             v17 = v16;
             if (v12)
@@ -901,11 +901,11 @@ LABEL_2:
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
               {
                 v21 = HMFGetLogIdentifier();
-                v22 = [v13 shortDescription];
+                shortDescription = [v13 shortDescription];
                 *buf = 138543874;
                 v53 = v21;
                 v54 = 2112;
-                v55 = v22;
+                v55 = shortDescription;
                 v56 = 2112;
                 v57 = v12;
                 _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@Handling state sync publish: %@ for domain: %@", buf, 0x20u);
@@ -913,8 +913,8 @@ LABEL_2:
 
               objc_autoreleasePoolPop(v14);
               [(HMDStateSyncManager *)v15 _removeDomainFromFetchRetryDomains:v12];
-              v23 = [(HMDStateSyncManager *)v15 stateSyncObserversByDomain];
-              v24 = [v23 objectForKey:v12];
+              stateSyncObserversByDomain = [(HMDStateSyncManager *)v15 stateSyncObserversByDomain];
+              v24 = [stateSyncObserversByDomain objectForKey:v12];
 
               if (v24)
               {
@@ -947,21 +947,21 @@ LABEL_2:
         while (v8);
       }
 
-      v4 = v45;
+      messageCopy = v45;
       goto LABEL_26;
     }
 
     v40 = objc_autoreleasePoolPush();
-    v41 = v47;
+    v41 = selfCopy;
     v42 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
       v43 = HMFGetLogIdentifier();
-      v44 = [v4 shortDescription];
+      shortDescription2 = [messageCopy shortDescription];
       *buf = 138543618;
       v53 = v43;
       v54 = 2112;
-      v55 = v44;
+      v55 = shortDescription2;
       _os_log_impl(&dword_229538000, v42, OS_LOG_TYPE_ERROR, "%{public}@Ignoring state sync publish message %@: missing data", buf, 0x16u);
     }
 
@@ -971,16 +971,16 @@ LABEL_2:
   else
   {
     v35 = objc_autoreleasePoolPush();
-    v36 = v47;
+    v36 = selfCopy;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
       v38 = HMFGetLogIdentifier();
-      v39 = [v4 shortDescription];
+      shortDescription3 = [messageCopy shortDescription];
       *buf = 138543618;
       v53 = v38;
       v54 = 2112;
-      v55 = v39;
+      v55 = shortDescription3;
       _os_log_impl(&dword_229538000, v37, OS_LOG_TYPE_ERROR, "%{public}@Ignoring state sync publish message %@: missing domain", buf, 0x16u);
     }
 
@@ -992,38 +992,38 @@ LABEL_26:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStateSyncFetchMessage:(id)a3
+- (void)_handleStateSyncFetchMessage:(id)message
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 messagePayload];
-  v6 = [v5 hmf_arrayForKey:@"domains"];
+  messagePayload = [messageCopy messagePayload];
+  v6 = [messagePayload hmf_arrayForKey:@"domains"];
 
   if (v6)
   {
-    v38 = v4;
-    v7 = [v4 remoteSourceDevice];
+    v38 = messageCopy;
+    remoteSourceDevice = [messageCopy remoteSourceDevice];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v7 shortDescription];
+      shortDescription = [remoteSourceDevice shortDescription];
       *buf = 138543874;
       v51 = v11;
       v52 = 2112;
       v53 = v6;
       v54 = 2112;
-      v55 = v12;
+      v55 = shortDescription;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Handling fetch request for domains: %@ from device: %@", buf, 0x20u);
     }
 
-    v36 = v7;
+    v36 = remoteSourceDevice;
 
     objc_autoreleasePoolPop(v8);
-    v40 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -1045,8 +1045,8 @@ LABEL_26:
           }
 
           v17 = *(*(&v41 + 1) + 8 * i);
-          v18 = [(HMDStateSyncManager *)v9 lastPublishedStateByDomain];
-          v19 = [v18 objectForKeyedSubscript:v17];
+          lastPublishedStateByDomain = [(HMDStateSyncManager *)selfCopy lastPublishedStateByDomain];
+          v19 = [lastPublishedStateByDomain objectForKeyedSubscript:v17];
 
           if (v19)
           {
@@ -1055,26 +1055,26 @@ LABEL_26:
             v48[0] = v17;
             v48[1] = v19;
             v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:2];
-            [v40 addObject:v20];
+            [array addObject:v20];
           }
 
           else
           {
             v21 = v15;
             v22 = objc_autoreleasePoolPush();
-            v23 = v9;
+            v23 = selfCopy;
             v24 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
             {
               HMFGetLogIdentifier();
-              v26 = v25 = v9;
+              v26 = v25 = selfCopy;
               *buf = 138543618;
               v51 = v26;
               v52 = 2112;
               v53 = v17;
               _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_ERROR, "%{public}@No cached state for domain: %@, skipping", buf, 0x16u);
 
-              v9 = v25;
+              selfCopy = v25;
             }
 
             objc_autoreleasePoolPop(v22);
@@ -1089,10 +1089,10 @@ LABEL_26:
     }
 
     v45 = @"dataByDomains";
-    v27 = [v40 copy];
+    v27 = [array copy];
     v46 = v27;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-    v4 = v38;
+    messageCopy = v38;
     [v38 respondWithPayload:v28];
 
     v29 = v36;
@@ -1102,22 +1102,22 @@ LABEL_26:
   else
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = self;
+    selfCopy2 = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       v33 = HMFGetLogIdentifier();
-      v34 = [v4 shortDescription];
+      shortDescription2 = [messageCopy shortDescription];
       *buf = 138543618;
       v51 = v33;
       v52 = 2112;
-      v53 = v34;
+      v53 = shortDescription2;
       _os_log_impl(&dword_229538000, v32, OS_LOG_TYPE_ERROR, "%{public}@Rejecting state sync fetch request %@: missing domains", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v30);
     v29 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    [v4 respondWithError:v29];
+    [messageCopy respondWithError:v29];
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -1125,41 +1125,41 @@ LABEL_26:
 
 - (id)logIdentifier
 {
-  v2 = [(HMDStateSyncManager *)self home];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  home = [(HMDStateSyncManager *)self home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (NSUUID)messageTargetUUID
 {
-  v2 = [(HMDStateSyncManager *)self home];
-  v3 = [v2 uuid];
+  home = [(HMDStateSyncManager *)self home];
+  uuid = [home uuid];
 
-  return v3;
+  return uuid;
 }
 
-- (void)channel:(id)a3 didObserveNewDomainDataDevices:(id)a4 removedDomainDataDevices:(id)a5 updatedDomainDataDevices:(id)a6
+- (void)channel:(id)channel didObserveNewDomainDataDevices:(id)devices removedDomainDataDevices:(id)dataDevices updatedDomainDataDevices:(id)domainDataDevices
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  channelCopy = channel;
+  devicesCopy = devices;
+  dataDevicesCopy = dataDevices;
+  domainDataDevicesCopy = domainDataDevices;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __112__HMDStateSyncManager_channel_didObserveNewDomainDataDevices_removedDomainDataDevices_updatedDomainDataDevices___block_invoke;
   block[3] = &unk_278689550;
   block[4] = self;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v23 = v10;
-  v15 = v10;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
+  v20 = devicesCopy;
+  v21 = dataDevicesCopy;
+  v22 = domainDataDevicesCopy;
+  v23 = channelCopy;
+  v15 = channelCopy;
+  v16 = domainDataDevicesCopy;
+  v17 = dataDevicesCopy;
+  v18 = devicesCopy;
   dispatch_async(queue, block);
 }
 
@@ -1326,17 +1326,17 @@ uint64_t __112__HMDStateSyncManager_channel_didObserveNewDomainDataDevices_remov
   return v7;
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__HMDStateSyncManager_removeDelegate___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1346,17 +1346,17 @@ void __38__HMDStateSyncManager_removeDelegate___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__HMDStateSyncManager_addDelegate___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1366,17 +1366,17 @@ void __35__HMDStateSyncManager_addDelegate___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)unregisterObserverForDomain:(id)a3
+- (void)unregisterObserverForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__HMDStateSyncManager_unregisterObserverForDomain___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = domainCopy;
+  v6 = domainCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1406,20 +1406,20 @@ uint64_t __51__HMDStateSyncManager_unregisterObserverForDomain___block_invoke(ui
   return result;
 }
 
-- (void)registerObserver:(id)a3 domain:(id)a4
+- (void)registerObserver:(id)observer domain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  domainCopy = domain;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__HMDStateSyncManager_registerObserver_domain___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = domainCopy;
+  v9 = domainCopy;
+  v10 = observerCopy;
   dispatch_async(queue, block);
 }
 
@@ -1476,20 +1476,20 @@ void __47__HMDStateSyncManager_registerObserver_domain___block_invoke(uint64_t a
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopPublishingForDomain:(id)a3 completion:(id)a4
+- (void)stopPublishingForDomain:(id)domain completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__HMDStateSyncManager_stopPublishingForDomain_completion___block_invoke;
   block[3] = &unk_278689F98;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = domainCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = domainCopy;
   dispatch_async(queue, block);
 }
 
@@ -1553,23 +1553,23 @@ void __58__HMDStateSyncManager_stopPublishingForDomain_completion___block_invoke
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishState:(id)a3 domain:(id)a4 completion:(id)a5
+- (void)publishState:(id)state domain:(id)domain completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  domainCopy = domain;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __54__HMDStateSyncManager_publishState_domain_completion___block_invoke;
   v15[3] = &unk_278689AB8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = stateCopy;
+  v17 = domainCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = domainCopy;
+  v14 = stateCopy;
   dispatch_async(queue, v15);
 }
 
@@ -1663,23 +1663,23 @@ void __54__HMDStateSyncManager_publishState_domain_completion___block_invoke(uin
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishChangeToken:(id)a3 domain:(id)a4 completion:(id)a5
+- (void)publishChangeToken:(id)token domain:(id)domain completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  domainCopy = domain;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__HMDStateSyncManager_publishChangeToken_domain_completion___block_invoke;
   v15[3] = &unk_278689AB8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = tokenCopy;
+  v17 = domainCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = domainCopy;
+  v14 = tokenCopy;
   dispatch_async(queue, v15);
 }
 
@@ -1816,22 +1816,22 @@ void __60__HMDStateSyncManager_publishChangeToken_domain_completion___block_invo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureDomain:(id)a3 scope:(int64_t)a4 syncOptions:(int64_t)a5 completion:(id)a6
+- (void)configureDomain:(id)domain scope:(int64_t)scope syncOptions:(int64_t)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  domainCopy = domain;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HMDStateSyncManager_configureDomain_scope_syncOptions_completion___block_invoke;
   block[3] = &unk_27867C1E0;
   block[4] = self;
-  v16 = v10;
-  v18 = a4;
-  v19 = a5;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
+  v16 = domainCopy;
+  scopeCopy = scope;
+  optionsCopy = options;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = domainCopy;
   dispatch_async(queue, block);
 }
 
@@ -1926,58 +1926,58 @@ void __68__HMDStateSyncManager_configureDomain_scope_syncOptions_completion___bl
 
 - (void)configure
 {
-  v3 = [(HMDStateSyncManager *)self notificationCenter];
-  [v3 addObserver:self selector:sel__handleResidentStatusChannelReadyNotification_ name:@"HMDResidentStatusChannelReadyNotification" object:0];
+  notificationCenter = [(HMDStateSyncManager *)self notificationCenter];
+  [notificationCenter addObserver:self selector:sel__handleResidentStatusChannelReadyNotification_ name:@"HMDResidentStatusChannelReadyNotification" object:0];
 }
 
-- (HMDStateSyncManager)initWithHome:(id)a3 queue:(id)a4 isResidentCapable:(BOOL)a5 dispatcher:(id)a6 notificationCenter:(id)a7 residentDeviceManagerContext:(id)a8 timerProvider:(id)a9
+- (HMDStateSyncManager)initWithHome:(id)home queue:(id)queue isResidentCapable:(BOOL)capable dispatcher:(id)dispatcher notificationCenter:(id)center residentDeviceManagerContext:(id)context timerProvider:(id)provider
 {
-  v15 = a3;
-  v39 = a4;
-  v38 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  homeCopy = home;
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
+  centerCopy = center;
+  contextCopy = context;
+  providerCopy = provider;
   v40.receiver = self;
   v40.super_class = HMDStateSyncManager;
   v19 = [(HMDStateSyncManager *)&v40 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeWeak(&v19->_home, v15);
-    objc_storeStrong(&v20->_queue, a4);
-    v20->_isResidentCapable = a5;
-    objc_storeStrong(&v20->_dispatcher, a6);
-    objc_storeStrong(&v20->_notificationCenter, a7);
-    objc_storeWeak(&v20->_residentDeviceManagerContext, v17);
-    objc_storeStrong(&v20->_timerProvider, a9);
-    v21 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeWeak(&v19->_home, homeCopy);
+    objc_storeStrong(&v20->_queue, queue);
+    v20->_isResidentCapable = capable;
+    objc_storeStrong(&v20->_dispatcher, dispatcher);
+    objc_storeStrong(&v20->_notificationCenter, center);
+    objc_storeWeak(&v20->_residentDeviceManagerContext, contextCopy);
+    objc_storeStrong(&v20->_timerProvider, provider);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     stateSyncDelegates = v20->_stateSyncDelegates;
-    v20->_stateSyncDelegates = v21;
+    v20->_stateSyncDelegates = weakObjectsHashTable;
 
-    v23 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     stateSyncObserversByDomain = v20->_stateSyncObserversByDomain;
-    v20->_stateSyncObserversByDomain = v23;
+    v20->_stateSyncObserversByDomain = strongToWeakObjectsMapTable;
 
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     scopeByDomain = v20->_scopeByDomain;
-    v20->_scopeByDomain = v25;
+    v20->_scopeByDomain = dictionary;
 
-    v27 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     syncOptionsByDomain = v20->_syncOptionsByDomain;
-    v20->_syncOptionsByDomain = v27;
+    v20->_syncOptionsByDomain = dictionary2;
 
-    v29 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     lastPublishedStateByDomain = v20->_lastPublishedStateByDomain;
-    v20->_lastPublishedStateByDomain = v29;
+    v20->_lastPublishedStateByDomain = dictionary3;
 
-    v31 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     lastPublishedChangeTokenByDomain = v20->_lastPublishedChangeTokenByDomain;
-    v20->_lastPublishedChangeTokenByDomain = v31;
+    v20->_lastPublishedChangeTokenByDomain = dictionary4;
 
-    v33 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
     lastSeenChangeTokensByDomain = v20->_lastSeenChangeTokensByDomain;
-    v20->_lastSeenChangeTokensByDomain = v33;
+    v20->_lastSeenChangeTokensByDomain = dictionary5;
 
     v35 = [MEMORY[0x277CBEB58] set];
     fetchRetryDomains = v20->_fetchRetryDomains;
@@ -1987,17 +1987,17 @@ void __68__HMDStateSyncManager_configureDomain_scope_syncOptions_completion___bl
   return v20;
 }
 
-- (HMDStateSyncManager)initWithHome:(id)a3 queue:(id)a4 residentDeviceManagerContext:(id)a5
+- (HMDStateSyncManager)initWithHome:(id)home queue:(id)queue residentDeviceManagerContext:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  queueCopy = queue;
+  homeCopy = home;
   v11 = +[HMDDeviceCapabilities deviceCapabilities];
-  v12 = [v11 isResidentCapable];
-  v13 = [v10 msgDispatcher];
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
+  isResidentCapable = [v11 isResidentCapable];
+  msgDispatcher = [homeCopy msgDispatcher];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v15 = objc_opt_new();
-  v16 = [(HMDStateSyncManager *)self initWithHome:v10 queue:v9 isResidentCapable:v12 dispatcher:v13 notificationCenter:v14 residentDeviceManagerContext:v8 timerProvider:v15];
+  v16 = [(HMDStateSyncManager *)self initWithHome:homeCopy queue:queueCopy isResidentCapable:isResidentCapable dispatcher:msgDispatcher notificationCenter:defaultCenter residentDeviceManagerContext:contextCopy timerProvider:v15];
 
   return v16;
 }

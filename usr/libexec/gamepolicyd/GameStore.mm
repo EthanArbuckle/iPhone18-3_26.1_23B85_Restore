@@ -1,14 +1,14 @@
 @interface GameStore
-- (void)gamingMetadataBlobDidChange:(id)a3;
+- (void)gamingMetadataBlobDidChange:(id)change;
 @end
 
 @implementation GameStore
 
-- (void)gamingMetadataBlobDidChange:(id)a3
+- (void)gamingMetadataBlobDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
-  sub_1000081E0(v3);
+  sub_1000081E0(changeCopy);
 }
 
 @end

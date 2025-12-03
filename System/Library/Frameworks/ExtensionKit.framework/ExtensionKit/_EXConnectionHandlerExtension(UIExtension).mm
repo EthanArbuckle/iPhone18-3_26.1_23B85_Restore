@@ -14,7 +14,7 @@
     [v5 setSceneClass:objc_opt_class()];
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_1F4E16B40;
   objc_msgSendSuper2(&v6, sel_prepareForSceneConnectionWithConfiguration_, v4);
 }

@@ -1,22 +1,22 @@
 @interface WDParagraph
-- (BOOL)isContinuationOf:(id)a3;
+- (BOOL)isContinuationOf:(id)of;
 - (BOOL)isEmpty;
 - (BOOL)isTextFrame;
-- (WDParagraph)initWithText:(id)a3;
-- (WDParagraph)initWithText:(id)a3 string:(id)a4;
+- (WDParagraph)initWithText:(id)text;
+- (WDParagraph)initWithText:(id)text string:(id)string;
 - (float)maxReflectionDistance;
-- (id)addAnnotation:(int)a3 atIndex:(unint64_t)a4;
+- (id)addAnnotation:(int)annotation atIndex:(unint64_t)index;
 - (id)addBookmark;
-- (id)addBookmark:(id)a3 type:(int)a4;
+- (id)addBookmark:(id)bookmark type:(int)type;
 - (id)addCharacterRun;
-- (id)addDateTime:(id)a3;
+- (id)addDateTime:(id)time;
 - (id)addEndnote;
 - (id)addFieldMarker;
-- (id)addFieldMarker:(int)a3;
+- (id)addFieldMarker:(int)marker;
 - (id)addFootnote;
 - (id)addHyperlinkFieldMarker;
-- (id)addHyperlinkFieldMarker:(int)a3;
-- (id)addMath:(id)a3;
+- (id)addHyperlinkFieldMarker:(int)marker;
+- (id)addMath:(id)math;
 - (id)addSpecialCharacter;
 - (id)addSymbol;
 - (id)description;
@@ -24,7 +24,7 @@
 - (id)runIterator;
 - (void)clearProperties;
 - (void)clearRuns;
-- (void)removeLastCharacter:(unsigned __int16)a3;
+- (void)removeLastCharacter:(unsigned __int16)character;
 @end
 
 @implementation WDParagraph
@@ -47,15 +47,15 @@
 
 - (BOOL)isTextFrame
 {
-  v2 = [(WDParagraph *)self properties];
-  if ([v2 isHorizontalAnchorOverridden] && objc_msgSend(v2, "horizontalAnchor") || objc_msgSend(v2, "isVerticalAnchorOverridden") && objc_msgSend(v2, "verticalAnchor") != 2 || objc_msgSend(v2, "isHorizontalPositionOverridden") && objc_msgSend(v2, "horizontalPosition"))
+  properties = [(WDParagraph *)self properties];
+  if ([properties isHorizontalAnchorOverridden] && objc_msgSend(properties, "horizontalAnchor") || objc_msgSend(properties, "isVerticalAnchorOverridden") && objc_msgSend(properties, "verticalAnchor") != 2 || objc_msgSend(properties, "isHorizontalPositionOverridden") && objc_msgSend(properties, "horizontalPosition"))
   {
     v3 = 1;
   }
 
-  else if ([v2 isVerticalPositionOverridden])
+  else if ([properties isVerticalPositionOverridden])
   {
-    v3 = [v2 verticalPosition] != 0;
+    v3 = [properties verticalPosition] != 0;
   }
 
   else
@@ -106,17 +106,17 @@
   return v3;
 }
 
-- (WDParagraph)initWithText:(id)a3
+- (WDParagraph)initWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v13.receiver = self;
   v13.super_class = WDParagraph;
-  v5 = [(WDBlock *)&v13 initWithText:v4];
+  v5 = [(WDBlock *)&v13 initWithText:textCopy];
   if (v5)
   {
     v6 = [WDParagraphProperties alloc];
-    v7 = [v4 document];
-    v8 = [(WDParagraphProperties *)v6 initWithDocument:v7];
+    document = [textCopy document];
+    v8 = [(WDParagraphProperties *)v6 initWithDocument:document];
     mProperties = v5->mProperties;
     v5->mProperties = v8;
 
@@ -130,16 +130,16 @@
   return v5;
 }
 
-- (WDParagraph)initWithText:(id)a3 string:(id)a4
+- (WDParagraph)initWithText:(id)text string:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WDParagraph *)self initWithText:v6];
+  textCopy = text;
+  stringCopy = string;
+  v8 = [(WDParagraph *)self initWithText:textCopy];
   v9 = v8;
   if (v8)
   {
     [(WDParagraphProperties *)v8->mProperties setBaseStyle:0];
-    v10 = [[WDCharacterRun alloc] initWithParagraph:v9 string:v7];
+    v10 = [[WDCharacterRun alloc] initWithParagraph:v9 string:stringCopy];
     [(NSMutableArray *)v9->mRuns addObject:v10];
   }
 
@@ -158,29 +158,29 @@
   self->mRuns = 0;
 }
 
-- (id)addAnnotation:(int)a3 atIndex:(unint64_t)a4
+- (id)addAnnotation:(int)annotation atIndex:(unint64_t)index
 {
-  v6 = [[WDAnnotation alloc] initWithParagraph:self type:*&a3];
-  if (a4 == -1 || [(NSMutableArray *)self->mRuns count]< a4)
+  v6 = [[WDAnnotation alloc] initWithParagraph:self type:*&annotation];
+  if (index == -1 || [(NSMutableArray *)self->mRuns count]< index)
   {
     [(NSMutableArray *)self->mRuns addObject:v6];
   }
 
   else
   {
-    [(NSMutableArray *)self->mRuns insertObject:v6 atIndex:a4];
+    [(NSMutableArray *)self->mRuns insertObject:v6 atIndex:index];
   }
 
   return v6;
 }
 
-- (id)addFieldMarker:(int)a3
+- (id)addFieldMarker:(int)marker
 {
-  v3 = *&a3;
-  v4 = [(WDParagraph *)self addFieldMarker];
-  [v4 setFieldMarkerType:v3];
+  v3 = *&marker;
+  addFieldMarker = [(WDParagraph *)self addFieldMarker];
+  [addFieldMarker setFieldMarkerType:v3];
 
-  return v4;
+  return addFieldMarker;
 }
 
 - (id)addHyperlinkFieldMarker
@@ -191,38 +191,38 @@
   return v3;
 }
 
-- (id)addHyperlinkFieldMarker:(int)a3
+- (id)addHyperlinkFieldMarker:(int)marker
 {
-  v3 = *&a3;
-  v4 = [(WDParagraph *)self addHyperlinkFieldMarker];
-  [v4 setFieldMarkerType:v3];
+  v3 = *&marker;
+  addHyperlinkFieldMarker = [(WDParagraph *)self addHyperlinkFieldMarker];
+  [addHyperlinkFieldMarker setFieldMarkerType:v3];
 
-  return v4;
+  return addHyperlinkFieldMarker;
 }
 
-- (id)addBookmark:(id)a3 type:(int)a4
+- (id)addBookmark:(id)bookmark type:(int)type
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [[WDBookmark alloc] initWithParagraph:self name:v6 type:v4];
+  v4 = *&type;
+  bookmarkCopy = bookmark;
+  v7 = [[WDBookmark alloc] initWithParagraph:self name:bookmarkCopy type:v4];
   [(NSMutableArray *)self->mRuns addObject:v7];
 
   return v7;
 }
 
-- (id)addDateTime:(id)a3
+- (id)addDateTime:(id)time
 {
-  v4 = a3;
-  v5 = [[WDDateTime alloc] initWithParagraph:self date:v4];
+  timeCopy = time;
+  v5 = [[WDDateTime alloc] initWithParagraph:self date:timeCopy];
   [(NSMutableArray *)self->mRuns addObject:v5];
 
   return v5;
 }
 
-- (id)addMath:(id)a3
+- (id)addMath:(id)math
 {
-  v4 = a3;
-  v5 = [[WDMath alloc] initWithParagraph:self xmlBlob:v4];
+  mathCopy = math;
+  v5 = [[WDMath alloc] initWithParagraph:self xmlBlob:mathCopy];
   [(NSMutableArray *)self->mRuns addObject:v5];
 
   return v5;
@@ -245,14 +245,14 @@
     if (![v7 runType])
     {
       v8 = v7;
-      v9 = [v8 properties];
-      if ([v9 isReflectionOverridden])
+      properties = [v8 properties];
+      if ([properties isReflectionOverridden])
       {
-        v10 = [v9 reflection];
-        v11 = v10;
-        if (v10)
+        reflection = [properties reflection];
+        v11 = reflection;
+        if (reflection)
         {
-          [v10 distance];
+          [reflection distance];
           if (v12 > v6)
           {
             v6 = v12;
@@ -268,9 +268,9 @@
   return v6;
 }
 
-- (void)removeLastCharacter:(unsigned __int16)a3
+- (void)removeLastCharacter:(unsigned __int16)character
 {
-  v3 = a3;
+  characterCopy = character;
   v5 = [(NSMutableArray *)self->mRuns count];
   if (v5)
   {
@@ -279,9 +279,9 @@
     if (![v11 runType])
     {
       v7 = v11;
-      [v7 removeLastCharacter:v3];
-      v8 = [v7 string];
-      v9 = [v8 length];
+      [v7 removeLastCharacter:characterCopy];
+      string = [v7 string];
+      v9 = [string length];
 
       if (v6 != 1 && v9 == 0)
       {
@@ -318,9 +318,9 @@
   do
   {
     v5 = [(NSMutableArray *)self->mRuns objectAtIndex:v3];
-    v6 = [v5 isEmpty];
+    isEmpty = [v5 isEmpty];
 
-    if ((v6 & 1) == 0)
+    if ((isEmpty & 1) == 0)
     {
       break;
     }
@@ -329,7 +329,7 @@
   }
 
   while ([(NSMutableArray *)self->mRuns count]> v4++);
-  return v6;
+  return isEmpty;
 }
 
 - (id)description
@@ -341,15 +341,15 @@
   return v2;
 }
 
-- (BOOL)isContinuationOf:(id)a3
+- (BOOL)isContinuationOf:(id)of
 {
-  v4 = a3;
-  v5 = [(WDParagraph *)self properties];
-  v6 = [v4 properties];
-  if ([v5 isHorizontalAnchorOverridden] && objc_msgSend(v6, "isHorizontalAnchorOverridden") && (v7 = objc_msgSend(v5, "horizontalAnchor"), v7 == objc_msgSend(v6, "horizontalAnchor")) && objc_msgSend(v5, "isVerticalAnchorOverridden") && objc_msgSend(v6, "isVerticalAnchorOverridden") && (v8 = objc_msgSend(v5, "verticalAnchor"), v8 == objc_msgSend(v6, "verticalAnchor")) && objc_msgSend(v5, "isHorizontalPositionOverridden") && objc_msgSend(v6, "isHorizontalPositionOverridden") && (v9 = objc_msgSend(v5, "horizontalPosition"), v9 == objc_msgSend(v6, "horizontalPosition")) && objc_msgSend(v5, "isVerticalPositionOverridden") && objc_msgSend(v6, "isVerticalPositionOverridden") && (v10 = objc_msgSend(v5, "verticalPosition"), v10 == objc_msgSend(v6, "verticalPosition")) && objc_msgSend(v5, "isWidthOverridden") && objc_msgSend(v6, "isWidthOverridden"))
+  ofCopy = of;
+  properties = [(WDParagraph *)self properties];
+  properties2 = [ofCopy properties];
+  if ([properties isHorizontalAnchorOverridden] && objc_msgSend(properties2, "isHorizontalAnchorOverridden") && (v7 = objc_msgSend(properties, "horizontalAnchor"), v7 == objc_msgSend(properties2, "horizontalAnchor")) && objc_msgSend(properties, "isVerticalAnchorOverridden") && objc_msgSend(properties2, "isVerticalAnchorOverridden") && (v8 = objc_msgSend(properties, "verticalAnchor"), v8 == objc_msgSend(properties2, "verticalAnchor")) && objc_msgSend(properties, "isHorizontalPositionOverridden") && objc_msgSend(properties2, "isHorizontalPositionOverridden") && (v9 = objc_msgSend(properties, "horizontalPosition"), v9 == objc_msgSend(properties2, "horizontalPosition")) && objc_msgSend(properties, "isVerticalPositionOverridden") && objc_msgSend(properties2, "isVerticalPositionOverridden") && (v10 = objc_msgSend(properties, "verticalPosition"), v10 == objc_msgSend(properties2, "verticalPosition")) && objc_msgSend(properties, "isWidthOverridden") && objc_msgSend(properties2, "isWidthOverridden"))
   {
-    v11 = [v5 width];
-    v12 = v11 == [v6 width];
+    width = [properties width];
+    v12 = width == [properties2 width];
   }
 
   else

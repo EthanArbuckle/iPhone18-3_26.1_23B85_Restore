@@ -1,20 +1,20 @@
 @interface DEDAttachmentHandler
 - (DEDAttachmentHandler)init;
-- (id)_createEmptyMessageFileForDE:(id)a3 extensionName:(id)a4 withSessionIdentifier:(id)a5 device:(id)a6 withRootDir:(id)a7;
-- (id)_processAttachments:(id)a3 withSessionIdentifier:(id)a4 extension:(id)a5 rootDir:(id)a6;
-- (id)_processAttachments:(id)a3 withSessionIdentifier:(id)a4 extension:(id)a5 shouldAddClassBDataProtection:(BOOL)a6 rootDir:(id)a7 annotatedGroup:(id)a8;
-- (id)collectedGroupsWithSessionIdentifier:(id)a3 matchingExtensions:(id)a4;
-- (id)createEmptyMessageFileForDE:(id)a3 extensionName:(id)a4 withSessionIdentifier:(id)a5 device:(id)a6;
+- (id)_createEmptyMessageFileForDE:(id)e extensionName:(id)name withSessionIdentifier:(id)identifier device:(id)device withRootDir:(id)dir;
+- (id)_processAttachments:(id)attachments withSessionIdentifier:(id)identifier extension:(id)extension rootDir:(id)dir;
+- (id)_processAttachments:(id)attachments withSessionIdentifier:(id)identifier extension:(id)extension shouldAddClassBDataProtection:(BOOL)protection rootDir:(id)dir annotatedGroup:(id)group;
+- (id)collectedGroupsWithSessionIdentifier:(id)identifier matchingExtensions:(id)extensions;
+- (id)createEmptyMessageFileForDE:(id)e extensionName:(id)name withSessionIdentifier:(id)identifier device:(id)device;
 - (id)dedDirectory;
-- (id)directoryForBugSessionIdentifier:(id)a3;
-- (id)directoryForBugSessionIdentifier:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)directoryForBugSessionWithIdentifier:(id)a3 extension:(id)a4 rootDirectory:(id)a5 createIfNeeded:(BOOL)a6;
-- (id)directoryForBugSessionWithIdentifier:(id)a3 rootDirectory:(id)a4 createIfNeeded:(BOOL)a5;
-- (id)extensionsWithFilesAttachedToSessionWithID:(id)a3 allExtensions:(id)a4;
-- (id)identifierForAdoptingFile:(id)a3;
-- (unint64_t)directorySizeForBugSessionIdentifier:(id)a3;
-- (void)removeDEFiles:(id)a3 withSessionIdentifier:(id)a4;
-- (void)removeDirectoryForBugSessionIdentifier:(id)a3;
+- (id)directoryForBugSessionIdentifier:(id)identifier;
+- (id)directoryForBugSessionIdentifier:(id)identifier createIfNeeded:(BOOL)needed;
+- (id)directoryForBugSessionWithIdentifier:(id)identifier extension:(id)extension rootDirectory:(id)directory createIfNeeded:(BOOL)needed;
+- (id)directoryForBugSessionWithIdentifier:(id)identifier rootDirectory:(id)directory createIfNeeded:(BOOL)needed;
+- (id)extensionsWithFilesAttachedToSessionWithID:(id)d allExtensions:(id)extensions;
+- (id)identifierForAdoptingFile:(id)file;
+- (unint64_t)directorySizeForBugSessionIdentifier:(id)identifier;
+- (void)removeDEFiles:(id)files withSessionIdentifier:(id)identifier;
+- (void)removeDirectoryForBugSessionIdentifier:(id)identifier;
 @end
 
 @implementation DEDAttachmentHandler
@@ -35,27 +35,27 @@
   return v2;
 }
 
-- (id)_processAttachments:(id)a3 withSessionIdentifier:(id)a4 extension:(id)a5 rootDir:(id)a6
+- (id)_processAttachments:(id)attachments withSessionIdentifier:(id)identifier extension:(id)extension rootDir:(id)dir
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(DEDAttachmentHandler *)self dedDirectory];
-  v13 = [(DEDAttachmentHandler *)self _processAttachments:v11 withSessionIdentifier:v10 extension:v9 shouldAddClassBDataProtection:0 rootDir:v12];
+  extensionCopy = extension;
+  identifierCopy = identifier;
+  attachmentsCopy = attachments;
+  dedDirectory = [(DEDAttachmentHandler *)self dedDirectory];
+  v13 = [(DEDAttachmentHandler *)self _processAttachments:attachmentsCopy withSessionIdentifier:identifierCopy extension:extensionCopy shouldAddClassBDataProtection:0 rootDir:dedDirectory];
 
   return v13;
 }
 
-- (id)_processAttachments:(id)a3 withSessionIdentifier:(id)a4 extension:(id)a5 shouldAddClassBDataProtection:(BOOL)a6 rootDir:(id)a7 annotatedGroup:(id)a8
+- (id)_processAttachments:(id)attachments withSessionIdentifier:(id)identifier extension:(id)extension shouldAddClassBDataProtection:(BOOL)protection rootDir:(id)dir annotatedGroup:(id)group
 {
-  v10 = a6;
+  protectionCopy = protection;
   v102 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if (!v15)
+  attachmentsCopy = attachments;
+  identifierCopy = identifier;
+  extensionCopy = extension;
+  dirCopy = dir;
+  groupCopy = group;
+  if (!identifierCopy)
   {
     v30 = [(DEDAttachmentHandler *)self log];
     if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
@@ -67,20 +67,20 @@
     goto LABEL_49;
   }
 
-  v72 = v10;
-  v76 = v16;
-  v77 = v15;
-  v75 = v17;
-  v19 = [(DEDAttachmentHandler *)self directoryForBugSessionWithIdentifier:v15 extension:v16 rootDirectory:v17 createIfNeeded:1];
-  if (v18)
+  v72 = protectionCopy;
+  v76 = extensionCopy;
+  v77 = identifierCopy;
+  v75 = dirCopy;
+  v19 = [(DEDAttachmentHandler *)self directoryForBugSessionWithIdentifier:identifierCopy extension:extensionCopy rootDirectory:dirCopy createIfNeeded:1];
+  if (groupCopy)
   {
     v20 = MEMORY[0x277D05198];
-    v21 = [v18 displayName];
-    v22 = [v18 localizedDescription];
-    v23 = [v18 iconType];
-    v24 = [v18 additionalInfo];
+    displayName = [groupCopy displayName];
+    localizedDescription = [groupCopy localizedDescription];
+    iconType = [groupCopy iconType];
+    additionalInfo = [groupCopy additionalInfo];
     v90 = 0;
-    [v20 annotateURL:v19 displayName:v21 description:v22 iconType:v23 additionalInfo:v24 error:&v90];
+    [v20 annotateURL:v19 displayName:displayName description:localizedDescription iconType:iconType additionalInfo:additionalInfo error:&v90];
     v25 = v90;
 
     v26 = +[DEDUtils sharedLog];
@@ -89,10 +89,10 @@
     {
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v28 = [v19 lastPathComponent];
-        v29 = [v18 description];
+        lastPathComponent = [v19 lastPathComponent];
+        v29 = [groupCopy description];
         *buf = 138543874;
-        v97 = v28;
+        v97 = lastPathComponent;
         v98 = 2114;
         v99 = v29;
         v100 = 2114;
@@ -104,10 +104,10 @@ LABEL_11:
 
     else if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v19 lastPathComponent];
-      v29 = [v18 description];
+      lastPathComponent = [v19 lastPathComponent];
+      v29 = [groupCopy description];
       *buf = 138543618;
-      v97 = v28;
+      v97 = lastPathComponent;
       v98 = 2114;
       v99 = v29;
       _os_log_impl(&dword_248AD7000, v27, OS_LOG_TYPE_DEFAULT, "Annotated [%{public}@] with [%{public}@]", buf, 0x16u);
@@ -116,13 +116,13 @@ LABEL_11:
   }
 
   v79 = v19;
-  v73 = v14;
-  v74 = v18;
+  v73 = attachmentsCopy;
+  v74 = groupCopy;
   v88 = 0u;
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v39 = v14;
+  v39 = attachmentsCopy;
   v40 = [v39 countByEnumeratingWithState:&v86 objects:v95 count:16];
   if (v40)
   {
@@ -155,10 +155,10 @@ LABEL_11:
           }
         }
 
-        v48 = [v44 shouldCompress];
-        v49 = [v48 BOOLValue];
+        shouldCompress = [v44 shouldCompress];
+        bOOLValue = [shouldCompress BOOLValue];
 
-        if (v49)
+        if (bOOLValue)
         {
           v50 = [(DEDAttachmentHandler *)self log];
           if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -173,17 +173,17 @@ LABEL_11:
           [v44 setShouldCompress:v50];
         }
 
-        v51 = [v44 shouldCompress];
-        v52 = [v51 BOOLValue];
+        shouldCompress2 = [v44 shouldCompress];
+        bOOLValue2 = [shouldCompress2 BOOLValue];
 
-        if (v52)
+        if (bOOLValue2)
         {
           v53 = [(DEDAttachmentHandler *)self log];
           if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
           {
-            v54 = [v44 path];
+            path = [v44 path];
             *buf = 138412290;
-            v97 = v54;
+            v97 = path;
             _os_log_impl(&dword_248AD7000, v53, OS_LOG_TYPE_INFO, "Will compress while attaching [%@]", buf, 0xCu);
           }
         }
@@ -206,10 +206,10 @@ LABEL_11:
   }
 
   v56 = [(DEDAttachmentHandler *)self log];
-  v16 = v76;
-  v15 = v77;
-  v18 = v74;
-  v17 = v75;
+  extensionCopy = v76;
+  identifierCopy = v77;
+  groupCopy = v74;
+  dirCopy = v75;
   v30 = v79;
   if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
   {
@@ -277,11 +277,11 @@ LABEL_11:
 LABEL_48:
     v30 = v79;
     v38 = v30;
-    v14 = v73;
-    v18 = v74;
-    v16 = v76;
-    v15 = v77;
-    v17 = v75;
+    attachmentsCopy = v73;
+    groupCopy = v74;
+    extensionCopy = v76;
+    identifierCopy = v77;
+    dirCopy = v75;
     goto LABEL_49;
   }
 
@@ -292,7 +292,7 @@ LABEL_48:
   }
 
   v38 = 0;
-  v14 = v73;
+  attachmentsCopy = v73;
 LABEL_49:
 
   v69 = *MEMORY[0x277D85DE8];
@@ -300,14 +300,14 @@ LABEL_49:
   return v38;
 }
 
-- (void)removeDEFiles:(id)a3 withSessionIdentifier:(id)a4
+- (void)removeDEFiles:(id)files withSessionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  filesCopy = files;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v8 = [(DEDAttachmentHandler *)self dedDirectory];
-    v9 = [(DEDAttachmentHandler *)self directoryForBugSessionWithIdentifier:v7 extension:v6 rootDirectory:v8 createIfNeeded:0];
+    dedDirectory = [(DEDAttachmentHandler *)self dedDirectory];
+    v9 = [(DEDAttachmentHandler *)self directoryForBugSessionWithIdentifier:identifierCopy extension:filesCopy rootDirectory:dedDirectory createIfNeeded:0];
 
     if (v9)
     {
@@ -334,19 +334,19 @@ LABEL_49:
   }
 }
 
-- (id)extensionsWithFilesAttachedToSessionWithID:(id)a3 allExtensions:(id)a4
+- (id)extensionsWithFilesAttachedToSessionWithID:(id)d allExtensions:(id)extensions
 {
-  v6 = a4;
-  if (a3)
+  extensionsCopy = extensions;
+  if (d)
   {
-    v7 = [(DEDAttachmentHandler *)self directoryForBugSessionIdentifier:a3];
-    v8 = [MEMORY[0x277CCAA00] defaultManager];
-    v9 = [v7 path];
-    v10 = [v8 fileExistsAtPath:v9];
+    v7 = [(DEDAttachmentHandler *)self directoryForBugSessionIdentifier:d];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v7 path];
+    v10 = [defaultManager fileExistsAtPath:path];
 
     if (v10)
     {
-      if ([v6 count])
+      if ([extensionsCopy count])
       {
         v11 = [MEMORY[0x277D051E0] lsDir:v7];
         v35[0] = MEMORY[0x277D85DD0];
@@ -354,7 +354,7 @@ LABEL_49:
         v35[2] = __81__DEDAttachmentHandler_extensionsWithFilesAttachedToSessionWithID_allExtensions___block_invoke;
         v35[3] = &unk_278F65308;
         v35[4] = self;
-        v36 = v6;
+        v36 = extensionsCopy;
         v12 = [v11 ded_mapWithBlock:v35];
 
 LABEL_13:
@@ -439,11 +439,11 @@ uint64_t __81__DEDAttachmentHandler_extensionsWithFilesAttachedToSessionWithID_a
   return v4;
 }
 
-- (id)collectedGroupsWithSessionIdentifier:(id)a3 matchingExtensions:(id)a4
+- (id)collectedGroupsWithSessionIdentifier:(id)identifier matchingExtensions:(id)extensions
 {
   v59 = *MEMORY[0x277D85DE8];
-  v46 = a4;
-  if (!a3)
+  extensionsCopy = extensions;
+  if (!identifier)
   {
     v6 = [(DEDAttachmentHandler *)self log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -454,10 +454,10 @@ uint64_t __81__DEDAttachmentHandler_extensionsWithFilesAttachedToSessionWithID_a
     goto LABEL_30;
   }
 
-  v6 = [(DEDAttachmentHandler *)self directoryForBugSessionIdentifier:a3];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8];
+  v6 = [(DEDAttachmentHandler *)self directoryForBugSessionIdentifier:identifier];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v6 path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if (!v9)
   {
@@ -467,7 +467,7 @@ LABEL_30:
   }
 
   v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:3];
-  if ([v46 count])
+  if ([extensionsCopy count])
   {
     v43 = +[DEDDevice currentDevice];
     v51 = 0u;
@@ -499,25 +499,25 @@ LABEL_30:
             _os_log_debug_impl(&dword_248AD7000, v13, OS_LOG_TYPE_DEBUG, "inspecting DE dir %@", buf, 0xCu);
           }
 
-          v14 = [v12 lastPathComponent];
-          v15 = [[DEDExtensionIdentifier alloc] initWithString:v14];
-          v16 = [(DEDExtensionIdentifier *)v15 extensionIdentifier];
+          lastPathComponent = [v12 lastPathComponent];
+          v15 = [[DEDExtensionIdentifier alloc] initWithString:lastPathComponent];
+          extensionIdentifier = [(DEDExtensionIdentifier *)v15 extensionIdentifier];
           v49[0] = MEMORY[0x277D85DD0];
           v49[1] = 3221225472;
           v49[2] = __80__DEDAttachmentHandler_collectedGroupsWithSessionIdentifier_matchingExtensions___block_invoke;
           v49[3] = &unk_278F652E0;
-          v17 = v16;
+          v17 = extensionIdentifier;
           v50 = v17;
-          v18 = [v46 ded_findWithBlock:v49];
+          v18 = [extensionsCopy ded_findWithBlock:v49];
           v19 = v18;
           if (v18)
           {
-            v48 = v14;
-            v20 = [v18 name];
-            v21 = v20;
-            if (v20)
+            v48 = lastPathComponent;
+            name = [v18 name];
+            v21 = name;
+            if (name)
             {
-              v22 = v20;
+              v22 = name;
             }
 
             else
@@ -529,11 +529,11 @@ LABEL_30:
 
             v44 = v12;
             v24 = [MEMORY[0x277D051B0] createWithName:v23 rootURL:v12];
-            v25 = [v19 identifier];
-            v26 = [DEDAttachmentGroup groupWithDEGroup:v24 identifier:v25];
+            identifier = [v19 identifier];
+            v26 = [DEDAttachmentGroup groupWithDEGroup:v24 identifier:identifier];
 
-            v27 = [v43 identifier];
-            [v26 setDeviceID:v27];
+            identifier2 = [v43 identifier];
+            [v26 setDeviceID:identifier2];
 
             v28 = [(DEDAttachmentHandler *)self log];
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -560,7 +560,7 @@ LABEL_30:
               v10 = v42;
             }
 
-            v14 = v48;
+            lastPathComponent = v48;
           }
 
           else
@@ -610,43 +610,43 @@ uint64_t __80__DEDAttachmentHandler_collectedGroupsWithSessionIdentifier_matchin
   return v4;
 }
 
-- (id)createEmptyMessageFileForDE:(id)a3 extensionName:(id)a4 withSessionIdentifier:(id)a5 device:(id)a6
+- (id)createEmptyMessageFileForDE:(id)e extensionName:(id)name withSessionIdentifier:(id)identifier device:(id)device
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(DEDAttachmentHandler *)self dedDirectory];
-  v15 = [(DEDAttachmentHandler *)self _createEmptyMessageFileForDE:v13 extensionName:v12 withSessionIdentifier:v11 device:v10 withRootDir:v14];
+  deviceCopy = device;
+  identifierCopy = identifier;
+  nameCopy = name;
+  eCopy = e;
+  dedDirectory = [(DEDAttachmentHandler *)self dedDirectory];
+  v15 = [(DEDAttachmentHandler *)self _createEmptyMessageFileForDE:eCopy extensionName:nameCopy withSessionIdentifier:identifierCopy device:deviceCopy withRootDir:dedDirectory];
 
   return v15;
 }
 
-- (id)_createEmptyMessageFileForDE:(id)a3 extensionName:(id)a4 withSessionIdentifier:(id)a5 device:(id)a6 withRootDir:(id)a7
+- (id)_createEmptyMessageFileForDE:(id)e extensionName:(id)name withSessionIdentifier:(id)identifier device:(id)device withRootDir:(id)dir
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v13)
+  eCopy = e;
+  identifierCopy = identifier;
+  deviceCopy = device;
+  dirCopy = dir;
+  if (identifierCopy)
   {
     v16 = MEMORY[0x277CCACA8];
-    v17 = [a4 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+    v17 = [name stringByReplacingOccurrencesOfString:@" " withString:@"_"];
     v18 = [v16 stringWithFormat:@"EMPTY_%@.txt", v17];
 
     v19 = MEMORY[0x277CCA968];
-    v20 = [MEMORY[0x277CBEAA8] date];
-    v21 = [v19 localizedStringFromDate:v20 dateStyle:3 timeStyle:3];
+    date = [MEMORY[0x277CBEAA8] date];
+    v21 = [v19 localizedStringFromDate:date dateStyle:3 timeStyle:3];
 
     v22 = MEMORY[0x277CCACA8];
-    v23 = [v14 publicLogDescription];
-    v24 = [v14 build];
-    v25 = [v22 stringWithFormat:@"Diagnostic Extension [%@] ran on [%@] with build [%@] on [%@] and returned no files.", v12, v23, v24, v21];
+    publicLogDescription = [deviceCopy publicLogDescription];
+    build = [deviceCopy build];
+    v25 = [v22 stringWithFormat:@"Diagnostic Extension [%@] ran on [%@] with build [%@] on [%@] and returned no files.", eCopy, publicLogDescription, build, v21];
 
-    v26 = [(DEDAttachmentHandler *)self directoryForBugSessionWithIdentifier:v13 extension:v12 rootDirectory:v15 createIfNeeded:1];
+    v26 = [(DEDAttachmentHandler *)self directoryForBugSessionWithIdentifier:identifierCopy extension:eCopy rootDirectory:dirCopy createIfNeeded:1];
     v27 = [v26 URLByAppendingPathComponent:v18];
-    v28 = [v27 path];
-    [v25 writeToFile:v28 atomically:1 encoding:4 error:0];
+    path = [v27 path];
+    [v25 writeToFile:path atomically:1 encoding:4 error:0];
   }
 
   else
@@ -663,13 +663,13 @@ uint64_t __80__DEDAttachmentHandler_collectedGroupsWithSessionIdentifier_matchin
   return v26;
 }
 
-- (id)directoryForBugSessionIdentifier:(id)a3
+- (id)directoryForBugSessionIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(DEDAttachmentHandler *)self dedDirectory];
-    v6 = [v5 URLByAppendingPathComponent:v4];
+    dedDirectory = [(DEDAttachmentHandler *)self dedDirectory];
+    v6 = [dedDirectory URLByAppendingPathComponent:identifierCopy];
   }
 
   else
@@ -686,22 +686,22 @@ uint64_t __80__DEDAttachmentHandler_collectedGroupsWithSessionIdentifier_matchin
   return v6;
 }
 
-- (id)directoryForBugSessionIdentifier:(id)a3 createIfNeeded:(BOOL)a4
+- (id)directoryForBugSessionIdentifier:(id)identifier createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(DEDAttachmentHandler *)self directoryForBugSessionIdentifier:v6];
-  if (!v4)
+  identifierCopy = identifier;
+  v7 = [(DEDAttachmentHandler *)self directoryForBugSessionIdentifier:identifierCopy];
+  if (!neededCopy)
   {
 LABEL_12:
     v16 = v7;
     goto LABEL_13;
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v7 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v7 path];
+  v10 = [defaultManager fileExistsAtPath:path];
 
   v11 = [(DEDAttachmentHandler *)self log];
   v12 = v11;
@@ -718,7 +718,7 @@ LABEL_12:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138543362;
-    v20 = v6;
+    v20 = identifierCopy;
     _os_log_impl(&dword_248AD7000, v12, OS_LOG_TYPE_DEFAULT, "Bug session directory for session: [%{public}@] does not exist. Creating now", &v19, 0xCu);
   }
 
@@ -743,27 +743,27 @@ LABEL_13:
   return v16;
 }
 
-- (void)removeDirectoryForBugSessionIdentifier:(id)a3
+- (void)removeDirectoryForBugSessionIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(DEDAttachmentHandler *)self log];
   v6 = v5;
-  if (v4)
+  if (identifierCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138543362;
-      v19 = v4;
+      v19 = identifierCopy;
       _os_log_impl(&dword_248AD7000, v6, OS_LOG_TYPE_DEFAULT, "removing bug session directory [%{public}@]", &v18, 0xCu);
     }
 
-    v6 = [(DEDAttachmentHandler *)self directoryForBugSessionIdentifier:v4];
+    v6 = [(DEDAttachmentHandler *)self directoryForBugSessionIdentifier:identifierCopy];
     if (v6)
     {
-      v7 = [MEMORY[0x277CCAA00] defaultManager];
-      v8 = [v6 path];
-      v9 = [v7 fileExistsAtPath:v8];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      path = [v6 path];
+      v9 = [defaultManager fileExistsAtPath:path];
 
       if (v9)
       {
@@ -780,10 +780,10 @@ LABEL_13:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)directorySizeForBugSessionIdentifier:(id)a3
+- (unint64_t)directorySizeForBugSessionIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v5 = [(DEDAttachmentHandler *)self log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -794,7 +794,7 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  v5 = [(DEDAttachmentHandler *)self directoryForBugSessionIdentifier:v4];
+  v5 = [(DEDAttachmentHandler *)self directoryForBugSessionIdentifier:identifierCopy];
   if (!v5)
   {
     v14 = [(DEDAttachmentHandler *)self log];
@@ -814,10 +814,10 @@ LABEL_10:
   return v6;
 }
 
-- (id)identifierForAdoptingFile:(id)a3
+- (id)identifierForAdoptingFile:(id)file
 {
-  v3 = [a3 lastPathComponent];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+  lastPathComponent = [file lastPathComponent];
+  v4 = [lastPathComponent stringByReplacingOccurrencesOfString:@"." withString:@"_"];
 
   return v4;
 }
@@ -851,20 +851,20 @@ void __36__DEDAttachmentHandler_dedDirectory__block_invoke()
   }
 }
 
-- (id)directoryForBugSessionWithIdentifier:(id)a3 rootDirectory:(id)a4 createIfNeeded:(BOOL)a5
+- (id)directoryForBugSessionWithIdentifier:(id)identifier rootDirectory:(id)directory createIfNeeded:(BOOL)needed
 {
-  v5 = a5;
+  neededCopy = needed;
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  identifierCopy = identifier;
+  directoryCopy = directory;
+  if (identifierCopy)
   {
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    v11 = [v9 URLByAppendingPathComponent:v8];
-    v12 = [v11 path];
-    v13 = [v10 fileExistsAtPath:v12];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v11 = [directoryCopy URLByAppendingPathComponent:identifierCopy];
+    path = [v11 path];
+    v13 = [defaultManager fileExistsAtPath:path];
 
-    if (v5)
+    if (neededCopy)
     {
       v14 = [(DEDAttachmentHandler *)self log];
       v15 = v14;
@@ -914,28 +914,28 @@ void __36__DEDAttachmentHandler_dedDirectory__block_invoke()
   return v11;
 }
 
-- (id)directoryForBugSessionWithIdentifier:(id)a3 extension:(id)a4 rootDirectory:(id)a5 createIfNeeded:(BOOL)a6
+- (id)directoryForBugSessionWithIdentifier:(id)identifier extension:(id)extension rootDirectory:(id)directory createIfNeeded:(BOOL)needed
 {
-  v6 = a6;
+  neededCopy = needed;
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  identifierCopy = identifier;
+  extensionCopy = extension;
+  directoryCopy = directory;
+  if (identifierCopy)
   {
-    v13 = [MEMORY[0x277CCAA00] defaultManager];
-    v14 = [v12 URLByAppendingPathComponent:v10];
-    v15 = [v14 URLByAppendingPathComponent:v11];
-    v16 = [v15 path];
-    v17 = [v13 fileExistsAtPath:v16];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v14 = [directoryCopy URLByAppendingPathComponent:identifierCopy];
+    v15 = [v14 URLByAppendingPathComponent:extensionCopy];
+    path = [v15 path];
+    v17 = [defaultManager fileExistsAtPath:path];
 
     v18 = [(DEDAttachmentHandler *)self log];
     v19 = v18;
-    if ((v17 & 1) != 0 || !v6)
+    if ((v17 & 1) != 0 || !neededCopy)
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        [DEDAttachmentHandler directoryForBugSessionWithIdentifier:v10 extension:v15 rootDirectory:v19 createIfNeeded:?];
+        [DEDAttachmentHandler directoryForBugSessionWithIdentifier:identifierCopy extension:v15 rootDirectory:v19 createIfNeeded:?];
       }
     }
 
@@ -962,10 +962,10 @@ void __36__DEDAttachmentHandler_dedDirectory__block_invoke()
 
   else
   {
-    v13 = [(DEDAttachmentHandler *)self log];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+    defaultManager = [(DEDAttachmentHandler *)self log];
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_FAULT))
     {
-      [(DEDAttachmentHandler *)v13 directoryForBugSessionWithIdentifier:v21 extension:v22 rootDirectory:v23 createIfNeeded:v24, v25, v26, v27];
+      [(DEDAttachmentHandler *)defaultManager directoryForBugSessionWithIdentifier:v21 extension:v22 rootDirectory:v23 createIfNeeded:v24, v25, v26, v27];
     }
 
     v15 = 0;

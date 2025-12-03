@@ -3,12 +3,12 @@
 - (WFParameterValuePickerTableViewCellDelegate)delegate;
 - (id)configurationState;
 - (id)defaultContentConfiguration;
-- (void)setContainedInState:(BOOL)a3;
-- (void)setParameter:(id)a3;
-- (void)setParentViewController:(id)a3;
-- (void)setState:(id)a3;
+- (void)setContainedInState:(BOOL)state;
+- (void)setParameter:(id)parameter;
+- (void)setParentViewController:(id)controller;
+- (void)setState:(id)state;
 - (void)tintColorDidChange;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation WFParameterValuePickerTableViewCell
@@ -35,18 +35,18 @@
   [(WFParameterValuePickerTableViewCell *)self setNeedsUpdateConfiguration];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"parameter"];
-  v6 = [v4 objectForKeyedSubscript:@"state"];
-  v7 = [v4 objectForKeyedSubscript:@"parentViewController"];
-  v8 = [v4 objectForKeyedSubscript:@"containedInState"];
-  v9 = [v8 BOOLValue];
+  stateCopy = state;
+  v5 = [stateCopy objectForKeyedSubscript:@"parameter"];
+  v6 = [stateCopy objectForKeyedSubscript:@"state"];
+  v7 = [stateCopy objectForKeyedSubscript:@"parentViewController"];
+  v8 = [stateCopy objectForKeyedSubscript:@"containedInState"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v4 objectForKeyedSubscript:@"delegate"];
-  v11 = [(WFParameterValuePickerTableViewCell *)self defaultContentConfiguration];
-  v12 = [v11 updatedConfigurationForState:v4];
+  v10 = [stateCopy objectForKeyedSubscript:@"delegate"];
+  defaultContentConfiguration = [(WFParameterValuePickerTableViewCell *)self defaultContentConfiguration];
+  v12 = [defaultContentConfiguration updatedConfigurationForState:stateCopy];
 
   v13 = [v5 wf_pickerLocalizedTitleForState:v6];
   [v12 setText:v13];
@@ -55,43 +55,43 @@
   [v12 setSecondaryText:v14];
 
   v15 = [v5 wf_pickerLocalizedImageForState:v6];
-  v16 = [v15 platformImage];
+  platformImage = [v15 platformImage];
   if ([v5 wf_alwaysScaleIconImage])
   {
-    [v16 size];
+    [platformImage size];
     if (v17 < 29.0)
     {
-      [v16 size];
+      [platformImage size];
       if (v18 < 29.0)
       {
-        [v16 size];
+        [platformImage size];
         v20 = 29.0 / v19;
-        [v16 size];
+        [platformImage size];
         v22 = fmin(v20, 29.0 / v21);
-        [v16 size];
+        [platformImage size];
         v24 = v23 * v22;
-        [v16 size];
+        [platformImage size];
         v36 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:{v24, v22 * v25}];
-        v37 = [v16 renderingMode];
+        renderingMode = [platformImage renderingMode];
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __69__WFParameterValuePickerTableViewCell_updateConfigurationUsingState___block_invoke;
         v38[3] = &unk_279EDBE20;
-        v39 = v16;
+        v39 = platformImage;
         v26 = [v36 imageWithActions:v38];
-        v16 = [v26 imageWithRenderingMode:v37];
+        platformImage = [v26 imageWithRenderingMode:renderingMode];
       }
     }
   }
 
   [v12 setImage:v15];
-  [v16 size];
+  [platformImage size];
   v28 = fmin(v27, 29.0);
-  [v16 size];
+  [platformImage size];
   v30 = fmax(v28, fmin(v29, 29.0));
-  v31 = [v15 displayStyle];
+  displayStyle = [v15 displayStyle];
   v32 = 15.0;
-  if (v31 == 1)
+  if (displayStyle == 1)
   {
     v32 = 2.0;
   }
@@ -99,20 +99,20 @@
   [v12 setCornerRadius:ceil(v30 / v32)];
   [v12 setForceImageScaling:{objc_msgSend(v5, "wf_alwaysScaleIconImage")}];
   [v12 setUsesInsetGroupedTableStyle:{objc_msgSend(v5, "wf_usesGroupTableViewStyle")}];
-  if (!v16 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (!platformImage && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v33 = [v5 wf_pickerLocalizedIconForState:v6];
     [v12 setIcon:v33];
   }
 
   [v12 setParentViewController:v7];
-  [v12 setContainedInState:v9];
+  [v12 setContainedInState:bOOLValue];
   [v12 setDelegate:v10];
   [(WFParameterValuePickerTableViewCell *)self layoutMargins];
-  v34 = [(WFParameterValuePickerTableViewCell *)self disablesSeparatorIconInset];
-  if (v16 || v34)
+  disablesSeparatorIconInset = [(WFParameterValuePickerTableViewCell *)self disablesSeparatorIconInset];
+  if (platformImage || disablesSeparatorIconInset)
   {
-    if (v34)
+    if (disablesSeparatorIconInset)
     {
       goto LABEL_14;
     }
@@ -120,9 +120,9 @@
     goto LABEL_13;
   }
 
-  v35 = [v12 icon];
+  icon = [v12 icon];
 
-  if (v35)
+  if (icon)
   {
 LABEL_13:
     [v12 usesInsetGroupedTableStyle];
@@ -145,13 +145,13 @@ void __69__WFParameterValuePickerTableViewCell_updateConfigurationUsingState___b
 - (id)defaultContentConfiguration
 {
   v3 = objc_alloc_init(WFParameterValuePickerTableViewCellConfiguration);
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 wf_isWidgetConfigurationExtensionBundle];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  wf_isWidgetConfigurationExtensionBundle = [mainBundle wf_isWidgetConfigurationExtensionBundle];
 
   v6 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D76918]];
   v7 = MEMORY[0x277D74300];
   v8 = 17.0;
-  if (v5)
+  if (wf_isWidgetConfigurationExtensionBundle)
   {
     [MEMORY[0x277D74300] labelFontSize];
   }
@@ -166,23 +166,23 @@ void __69__WFParameterValuePickerTableViewCell_updateConfigurationUsingState___b
   [(WFParameterValuePickerTableViewCellConfiguration *)v3 setSecondaryTextFont:v13];
 
   [(WFParameterValuePickerTableViewCellConfiguration *)v3 setContainedInState:0];
-  v14 = [(WFParameterValuePickerTableViewCell *)self parameter];
-  -[WFParameterValuePickerTableViewCellConfiguration setUsesToggleForSelection:](v3, "setUsesToggleForSelection:", [v14 wf_usesTogglesForSelection]);
+  parameter = [(WFParameterValuePickerTableViewCell *)self parameter];
+  -[WFParameterValuePickerTableViewCellConfiguration setUsesToggleForSelection:](v3, "setUsesToggleForSelection:", [parameter wf_usesTogglesForSelection]);
 
-  v15 = [MEMORY[0x277D75348] labelColor];
-  [(WFParameterValuePickerTableViewCellConfiguration *)v3 setTextColor:v15];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(WFParameterValuePickerTableViewCellConfiguration *)v3 setTextColor:labelColor];
 
-  v16 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(WFParameterValuePickerTableViewCellConfiguration *)v3 setSecondaryTextColor:v16];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(WFParameterValuePickerTableViewCellConfiguration *)v3 setSecondaryTextColor:secondaryLabelColor];
 
   return v3;
 }
 
-- (void)setParentViewController:(id)a3
+- (void)setParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_loadWeakRetained(&self->_parentViewController);
-  v6 = v4;
+  v6 = controllerCopy;
   obj = v6;
   if (v5 == v6)
   {
@@ -208,16 +208,16 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setContainedInState:(BOOL)a3
+- (void)setContainedInState:(BOOL)state
 {
-  if (self->_containedInState != a3)
+  if (self->_containedInState != state)
   {
-    v3 = a3;
-    self->_containedInState = a3;
-    v5 = [(WFParameterValuePickerTableViewCell *)self parameter];
-    v6 = [v5 wf_usesTogglesForSelection];
+    stateCopy = state;
+    self->_containedInState = state;
+    parameter = [(WFParameterValuePickerTableViewCell *)self parameter];
+    wf_usesTogglesForSelection = [parameter wf_usesTogglesForSelection];
 
-    if (v6)
+    if (wf_usesTogglesForSelection)
     {
 
       [(WFParameterValuePickerTableViewCell *)self setNeedsUpdateConfiguration];
@@ -225,7 +225,7 @@ LABEL_9:
 
     else
     {
-      if (v3)
+      if (stateCopy)
       {
         v7 = 3;
       }
@@ -240,11 +240,11 @@ LABEL_9:
   }
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v6 = self->_state;
-  v7 = v5;
+  v7 = stateCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -263,18 +263,18 @@ LABEL_9:
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    objc_storeStrong(&self->_state, a3);
+    objc_storeStrong(&self->_state, state);
     [(WFParameterValuePickerTableViewCell *)self setNeedsUpdateConfiguration];
   }
 
 LABEL_9:
 }
 
-- (void)setParameter:(id)a3
+- (void)setParameter:(id)parameter
 {
-  v5 = a3;
+  parameterCopy = parameter;
   v6 = self->_parameter;
-  v7 = v5;
+  v7 = parameterCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -293,7 +293,7 @@ LABEL_9:
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    objc_storeStrong(&self->_parameter, a3);
+    objc_storeStrong(&self->_parameter, parameter);
     [(WFParameterValuePickerTableViewCell *)self setNeedsUpdateConfiguration];
   }
 
@@ -304,23 +304,23 @@ LABEL_9:
 {
   v10.receiver = self;
   v10.super_class = WFParameterValuePickerTableViewCell;
-  v3 = [(WFParameterValuePickerTableViewCell *)&v10 configurationState];
-  v4 = [(WFParameterValuePickerTableViewCell *)self state];
-  [v3 setCustomState:v4 forKey:@"state"];
+  configurationState = [(WFParameterValuePickerTableViewCell *)&v10 configurationState];
+  state = [(WFParameterValuePickerTableViewCell *)self state];
+  [configurationState setCustomState:state forKey:@"state"];
 
-  v5 = [(WFParameterValuePickerTableViewCell *)self parameter];
-  [v3 setCustomState:v5 forKey:@"parameter"];
+  parameter = [(WFParameterValuePickerTableViewCell *)self parameter];
+  [configurationState setCustomState:parameter forKey:@"parameter"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[WFParameterValuePickerTableViewCell isContainedInState](self, "isContainedInState")}];
-  [v3 setCustomState:v6 forKey:@"containedInState"];
+  [configurationState setCustomState:v6 forKey:@"containedInState"];
 
-  v7 = [(WFParameterValuePickerTableViewCell *)self parentViewController];
-  [v3 setCustomState:v7 forKey:@"parentViewController"];
+  parentViewController = [(WFParameterValuePickerTableViewCell *)self parentViewController];
+  [configurationState setCustomState:parentViewController forKey:@"parentViewController"];
 
-  v8 = [(WFParameterValuePickerTableViewCell *)self delegate];
-  [v3 setCustomState:v8 forKey:@"delegate"];
+  delegate = [(WFParameterValuePickerTableViewCell *)self delegate];
+  [configurationState setCustomState:delegate forKey:@"delegate"];
 
-  return v3;
+  return configurationState;
 }
 
 @end

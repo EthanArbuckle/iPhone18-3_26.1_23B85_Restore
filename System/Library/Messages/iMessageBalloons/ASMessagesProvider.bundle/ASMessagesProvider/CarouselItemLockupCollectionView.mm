@@ -1,13 +1,13 @@
 @interface CarouselItemLockupCollectionView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC18ASMessagesProvider32CarouselItemLockupCollectionView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider32CarouselItemLockupCollectionView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC18ASMessagesProvider32CarouselItemLockupCollectionView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider32CarouselItemLockupCollectionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CarouselItemLockupCollectionView
 
-- (_TtC18ASMessagesProvider32CarouselItemLockupCollectionView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider32CarouselItemLockupCollectionView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider32CarouselItemLockupCollectionView_artworkViews) = _swiftEmptyArrayStorage;
   v4 = OBJC_IVAR____TtC18ASMessagesProvider32CarouselItemLockupCollectionView____lazy_storage___artworkViewPool;
@@ -28,16 +28,16 @@
   sub_3C1FEC(v4);
   sub_B170(v4, v4[3]);
   sub_75D650();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   sub_7673E0();
 
   sub_BEB8(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  v4 = [(CarouselItemLockupCollectionView *)v3 traitCollection];
+  selfCopy = self;
+  traitCollection = [(CarouselItemLockupCollectionView *)selfCopy traitCollection];
   sub_3C1FEC(v11);
   sub_B170(v11, v11[3]);
   sub_7673F0();
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (_TtC18ASMessagesProvider32CarouselItemLockupCollectionView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider32CarouselItemLockupCollectionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

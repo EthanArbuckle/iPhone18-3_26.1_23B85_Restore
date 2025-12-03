@@ -1,23 +1,23 @@
 @interface CLCompanionSyncInterestZone
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (unsigned)authMask;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAuthMask:(BOOL)a3;
-- (void)setHasClearClient:(BOOL)a3;
-- (void)setHasCorrectiveCompensationMask:(BOOL)a3;
-- (void)setHasLongitude:(BOOL)a3;
-- (void)setHasPhenolicLocation:(BOOL)a3;
-- (void)setHasProvenance:(BOOL)a3;
-- (void)setHasRadius:(BOOL)a3;
-- (void)setHasServiceMaskOperator:(BOOL)a3;
-- (void)setHasZoneType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAuthMask:(BOOL)mask;
+- (void)setHasClearClient:(BOOL)client;
+- (void)setHasCorrectiveCompensationMask:(BOOL)mask;
+- (void)setHasLongitude:(BOOL)longitude;
+- (void)setHasPhenolicLocation:(BOOL)location;
+- (void)setHasProvenance:(BOOL)provenance;
+- (void)setHasRadius:(BOOL)radius;
+- (void)setHasServiceMaskOperator:(BOOL)operator;
+- (void)setHasZoneType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CLCompanionSyncInterestZone
@@ -43,9 +43,9 @@
   }
 }
 
-- (void)setHasAuthMask:(BOOL)a3
+- (void)setHasAuthMask:(BOOL)mask
 {
-  if (a3)
+  if (mask)
   {
     v3 = 8;
   }
@@ -58,9 +58,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasCorrectiveCompensationMask:(BOOL)a3
+- (void)setHasCorrectiveCompensationMask:(BOOL)mask
 {
-  if (a3)
+  if (mask)
   {
     v3 = 16;
   }
@@ -73,9 +73,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasZoneType:(BOOL)a3
+- (void)setHasZoneType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 256;
   }
@@ -88,9 +88,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasLongitude:(BOOL)a3
+- (void)setHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 2;
   }
@@ -103,9 +103,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasRadius:(BOOL)a3
+- (void)setHasRadius:(BOOL)radius
 {
-  if (a3)
+  if (radius)
   {
     v3 = 4;
   }
@@ -118,9 +118,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasPhenolicLocation:(BOOL)a3
+- (void)setHasPhenolicLocation:(BOOL)location
 {
-  if (a3)
+  if (location)
   {
     v3 = 32;
   }
@@ -133,9 +133,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasServiceMaskOperator:(BOOL)a3
+- (void)setHasServiceMaskOperator:(BOOL)operator
 {
-  if (a3)
+  if (operator)
   {
     v3 = 128;
   }
@@ -148,9 +148,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasProvenance:(BOOL)a3
+- (void)setHasProvenance:(BOOL)provenance
 {
-  if (a3)
+  if (provenance)
   {
     v3 = 64;
   }
@@ -163,9 +163,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasClearClient:(BOOL)a3
+- (void)setHasClearClient:(BOOL)client
 {
-  if (a3)
+  if (client)
   {
     v3 = 512;
   }
@@ -325,7 +325,7 @@ LABEL_13:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (!self->_zoneIdentifier)
   {
@@ -464,14 +464,14 @@ LABEL_22:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  [a3 setZoneIdentifier:self->_zoneIdentifier];
+  [to setZoneIdentifier:self->_zoneIdentifier];
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 8) = self->_authMask;
-    *(a3 + 36) |= 8u;
+    *(to + 8) = self->_authMask;
+    *(to + 36) |= 8u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -490,8 +490,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 9) = self->_correctiveCompensationMask;
-  *(a3 + 36) |= 0x10u;
+  *(to + 9) = self->_correctiveCompensationMask;
+  *(to + 36) |= 0x10u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -505,8 +505,8 @@ LABEL_4:
   }
 
 LABEL_15:
-  *(a3 + 16) = self->_zoneType;
-  *(a3 + 36) |= 0x100u;
+  *(to + 16) = self->_zoneType;
+  *(to + 36) |= 0x100u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -520,8 +520,8 @@ LABEL_5:
   }
 
 LABEL_16:
-  *(a3 + 1) = *&self->_latitude;
-  *(a3 + 36) |= 1u;
+  *(to + 1) = *&self->_latitude;
+  *(to + 36) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -535,8 +535,8 @@ LABEL_6:
   }
 
 LABEL_17:
-  *(a3 + 2) = *&self->_longitude;
-  *(a3 + 36) |= 2u;
+  *(to + 2) = *&self->_longitude;
+  *(to + 36) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -550,8 +550,8 @@ LABEL_7:
   }
 
 LABEL_18:
-  *(a3 + 3) = *&self->_radius;
-  *(a3 + 36) |= 4u;
+  *(to + 3) = *&self->_radius;
+  *(to + 36) |= 4u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -565,8 +565,8 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(a3 + 10) = self->_phenolicLocation;
-  *(a3 + 36) |= 0x20u;
+  *(to + 10) = self->_phenolicLocation;
+  *(to + 36) |= 0x20u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -580,8 +580,8 @@ LABEL_9:
   }
 
 LABEL_20:
-  *(a3 + 12) = self->_serviceMaskOperator;
-  *(a3 + 36) |= 0x80u;
+  *(to + 12) = self->_serviceMaskOperator;
+  *(to + 36) |= 0x80u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -595,23 +595,23 @@ LABEL_10:
   }
 
 LABEL_21:
-  *(a3 + 11) = self->_provenance;
-  *(a3 + 36) |= 0x40u;
+  *(to + 11) = self->_provenance;
+  *(to + 36) |= 0x40u;
   if ((*&self->_has & 0x200) == 0)
   {
     return;
   }
 
 LABEL_11:
-  *(a3 + 68) = self->_clearClient;
-  *(a3 + 36) |= 0x200u;
+  *(to + 68) = self->_clearClient;
+  *(to + 36) |= 0x200u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[7] = [(NSString *)self->_zoneIdentifier copyWithZone:a3];
+  v5[7] = [(NSString *)self->_zoneIdentifier copyWithZone:zone];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -752,19 +752,19 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     zoneIdentifier = self->_zoneIdentifier;
-    if (!(zoneIdentifier | *(a3 + 7)) || (v5 = [(NSString *)zoneIdentifier isEqual:?]) != 0)
+    if (!(zoneIdentifier | *(equal + 7)) || (v5 = [(NSString *)zoneIdentifier isEqual:?]) != 0)
     {
       has = self->_has;
-      v8 = *(a3 + 36);
+      v8 = *(equal + 36);
       if ((has & 8) != 0)
       {
-        if ((v8 & 8) == 0 || self->_authMask != *(a3 + 8))
+        if ((v8 & 8) == 0 || self->_authMask != *(equal + 8))
         {
           goto LABEL_51;
         }
@@ -777,7 +777,7 @@ LABEL_11:
 
       if ((has & 0x10) != 0)
       {
-        if ((v8 & 0x10) == 0 || self->_correctiveCompensationMask != *(a3 + 9))
+        if ((v8 & 0x10) == 0 || self->_correctiveCompensationMask != *(equal + 9))
         {
           goto LABEL_51;
         }
@@ -790,20 +790,20 @@ LABEL_11:
 
       if ((*&self->_has & 0x100) != 0)
       {
-        if ((*(a3 + 36) & 0x100) == 0 || self->_zoneType != *(a3 + 16))
+        if ((*(equal + 36) & 0x100) == 0 || self->_zoneType != *(equal + 16))
         {
           goto LABEL_51;
         }
       }
 
-      else if ((*(a3 + 36) & 0x100) != 0)
+      else if ((*(equal + 36) & 0x100) != 0)
       {
         goto LABEL_51;
       }
 
       if (has)
       {
-        if ((v8 & 1) == 0 || self->_latitude != *(a3 + 1))
+        if ((v8 & 1) == 0 || self->_latitude != *(equal + 1))
         {
           goto LABEL_51;
         }
@@ -816,7 +816,7 @@ LABEL_11:
 
       if ((has & 2) != 0)
       {
-        if ((v8 & 2) == 0 || self->_longitude != *(a3 + 2))
+        if ((v8 & 2) == 0 || self->_longitude != *(equal + 2))
         {
           goto LABEL_51;
         }
@@ -829,7 +829,7 @@ LABEL_11:
 
       if ((has & 4) != 0)
       {
-        if ((v8 & 4) == 0 || self->_radius != *(a3 + 3))
+        if ((v8 & 4) == 0 || self->_radius != *(equal + 3))
         {
           goto LABEL_51;
         }
@@ -842,7 +842,7 @@ LABEL_11:
 
       if ((has & 0x20) != 0)
       {
-        if ((v8 & 0x20) == 0 || self->_phenolicLocation != *(a3 + 10))
+        if ((v8 & 0x20) == 0 || self->_phenolicLocation != *(equal + 10))
         {
           goto LABEL_51;
         }
@@ -855,7 +855,7 @@ LABEL_11:
 
       if ((has & 0x80) != 0)
       {
-        if ((v8 & 0x80) == 0 || self->_serviceMaskOperator != *(a3 + 12))
+        if ((v8 & 0x80) == 0 || self->_serviceMaskOperator != *(equal + 12))
         {
           goto LABEL_51;
         }
@@ -868,7 +868,7 @@ LABEL_11:
 
       if ((has & 0x40) != 0)
       {
-        if ((v8 & 0x40) == 0 || self->_provenance != *(a3 + 11))
+        if ((v8 & 0x40) == 0 || self->_provenance != *(equal + 11))
         {
           goto LABEL_51;
         }
@@ -882,7 +882,7 @@ LABEL_11:
       LOBYTE(v5) = (v8 & 0x200) == 0;
       if ((*&self->_has & 0x200) != 0)
       {
-        if ((*(a3 + 36) & 0x200) == 0)
+        if ((*(equal + 36) & 0x200) == 0)
         {
 LABEL_51:
           LOBYTE(v5) = 0;
@@ -891,13 +891,13 @@ LABEL_51:
 
         if (self->_clearClient)
         {
-          if ((*(a3 + 68) & 1) == 0)
+          if ((*(equal + 68) & 1) == 0)
           {
             goto LABEL_51;
           }
         }
 
-        else if (*(a3 + 68))
+        else if (*(equal + 68))
         {
           goto LABEL_51;
         }
@@ -1108,19 +1108,19 @@ LABEL_35:
   return v7 ^ v3 ^ v8 ^ v9 ^ v13 ^ v14 ^ v18 ^ v22 ^ v23 ^ v24 ^ v25;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(CLCompanionSyncInterestZone *)self setZoneIdentifier:?];
   }
 
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 8) != 0)
   {
-    self->_authMask = *(a3 + 8);
+    self->_authMask = *(from + 8);
     *&self->_has |= 8u;
-    v5 = *(a3 + 36);
+    v5 = *(from + 36);
     if ((v5 & 0x10) == 0)
     {
 LABEL_5:
@@ -1138,9 +1138,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_correctiveCompensationMask = *(a3 + 9);
+  self->_correctiveCompensationMask = *(from + 9);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 0x100) == 0)
   {
 LABEL_6:
@@ -1153,9 +1153,9 @@ LABEL_6:
   }
 
 LABEL_17:
-  self->_zoneType = *(a3 + 16);
+  self->_zoneType = *(from + 16);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 1) == 0)
   {
 LABEL_7:
@@ -1168,9 +1168,9 @@ LABEL_7:
   }
 
 LABEL_18:
-  self->_latitude = *(a3 + 1);
+  self->_latitude = *(from + 1);
   *&self->_has |= 1u;
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_8:
@@ -1183,9 +1183,9 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_longitude = *(a3 + 2);
+  self->_longitude = *(from + 2);
   *&self->_has |= 2u;
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_9:
@@ -1198,9 +1198,9 @@ LABEL_9:
   }
 
 LABEL_20:
-  self->_radius = *(a3 + 3);
+  self->_radius = *(from + 3);
   *&self->_has |= 4u;
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 0x20) == 0)
   {
 LABEL_10:
@@ -1213,9 +1213,9 @@ LABEL_10:
   }
 
 LABEL_21:
-  self->_phenolicLocation = *(a3 + 10);
+  self->_phenolicLocation = *(from + 10);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 0x80) == 0)
   {
 LABEL_11:
@@ -1228,9 +1228,9 @@ LABEL_11:
   }
 
 LABEL_22:
-  self->_serviceMaskOperator = *(a3 + 12);
+  self->_serviceMaskOperator = *(from + 12);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if ((v5 & 0x40) == 0)
   {
 LABEL_12:
@@ -1243,15 +1243,15 @@ LABEL_12:
   }
 
 LABEL_23:
-  self->_provenance = *(a3 + 11);
+  self->_provenance = *(from + 11);
   *&self->_has |= 0x40u;
-  if ((*(a3 + 36) & 0x200) == 0)
+  if ((*(from + 36) & 0x200) == 0)
   {
     return;
   }
 
 LABEL_13:
-  self->_clearClient = *(a3 + 68);
+  self->_clearClient = *(from + 68);
   *&self->_has |= 0x200u;
 }
 

@@ -1,17 +1,17 @@
 @interface TSDMovieRep
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4 mixingTypeContext:(id)a5;
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject mixingTypeContext:(id)context;
 - (BOOL)p_shouldUseImageTexture;
-- (CGImage)newTextureMaskImageForViewScale:(double)a3 includeFrameMask:(BOOL)a4 maskRect:(CGRect *)a5;
+- (CGImage)newTextureMaskImageForViewScale:(double)scale includeFrameMask:(BOOL)mask maskRect:(CGRect *)rect;
 - (TSDMovieInfo)movieInfo;
-- (TSDMovieRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSDMovieRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (id)movieLayout;
-- (id)textureForDescription:(id)a3;
-- (void)calculateTextureClipBounds:(CGRect *)a3 andOffset:(CGPoint *)a4 withTransform:(CGAffineTransform *)a5 andRectOnCanvas:(CGRect *)a6 textureDescription:(id)a7 isUsingImageTexture:(BOOL)a8;
+- (id)textureForDescription:(id)description;
+- (void)calculateTextureClipBounds:(CGRect *)bounds andOffset:(CGPoint *)offset withTransform:(CGAffineTransform *)transform andRectOnCanvas:(CGRect *)canvas textureDescription:(id)description isUsingImageTexture:(BOOL)texture;
 - (void)dealloc;
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8 keepingChildrenPassingTest:(id)a9;
-- (void)p_drawInContext:(CGContext *)a3 withContent:(BOOL)a4 withStroke:(BOOL)a5 withOpacity:(double)a6 withMask:(BOOL)a7 forShadowOrHitTest:(BOOL)a8;
-- (void)p_drawPosterImageInContext:(CGContext *)a3 forShadowOrHitTest:(BOOL)a4;
-- (void)setAlternatePosterImage:(CGImage *)a3;
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children keepingChildrenPassingTest:(id)test;
+- (void)p_drawInContext:(CGContext *)context withContent:(BOOL)content withStroke:(BOOL)stroke withOpacity:(double)opacity withMask:(BOOL)mask forShadowOrHitTest:(BOOL)test;
+- (void)p_drawPosterImageInContext:(CGContext *)context forShadowOrHitTest:(BOOL)test;
+- (void)setAlternatePosterImage:(CGImage *)image;
 - (void)updateFrameRep;
 - (void)updateFromLayout;
 - (void)willBeRemoved;
@@ -19,11 +19,11 @@
 
 @implementation TSDMovieRep
 
-- (TSDMovieRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSDMovieRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v10.receiver = self;
   v10.super_class = TSDMovieRep;
-  v4 = [(TSDRep *)&v10 initWithLayout:a3 canvas:a4];
+  v4 = [(TSDRep *)&v10 initWithLayout:layout canvas:canvas];
   v7 = v4;
   if (v4)
   {
@@ -79,19 +79,19 @@
   [(TSDMediaRep *)&v2 updateFrameRep];
 }
 
-- (void)setAlternatePosterImage:(CGImage *)a3
+- (void)setAlternatePosterImage:(CGImage *)image
 {
-  if (self->super.mFrameRep != a3)
+  if (self->super.mFrameRep != image)
   {
-    CGImageRetain(a3);
+    CGImageRetain(image);
     CGImageRelease(self->super.mFrameRep);
-    self->super.mFrameRep = a3;
+    self->super.mFrameRep = image;
   }
 }
 
-- (void)p_drawPosterImageInContext:(CGContext *)a3 forShadowOrHitTest:(BOOL)a4
+- (void)p_drawPosterImageInContext:(CGContext *)context forShadowOrHitTest:(BOOL)test
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v8 = objc_msgSend_mediaLayout(self, v6, v7);
   objc_msgSend_boundsForStandardKnobs(v8, v9, v10);
   v12 = v11;
@@ -113,9 +113,9 @@
     v40.size.width = v16;
     v40.size.height = v18;
     MaxY = CGRectGetMaxY(v40);
-    CGContextTranslateCTM(a3, 0.0, MinY + MaxY);
-    CGContextScaleCTM(a3, 1.0, -1.0);
-    TSDCGContextDrawImageRecordingMaxHeadroom(a3, v24, v12, v14, v16, v18);
+    CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    TSDCGContextDrawImageRecordingMaxHeadroom(context, v24, v12, v14, v16, v18);
   }
 
   else
@@ -131,21 +131,21 @@
 
       if (v36)
       {
-        objc_msgSend_drawImageInContext_rect_(v36, v37, a3, v12, v14, v16, v18);
+        objc_msgSend_drawImageInContext_rect_(v36, v37, context, v12, v14, v16, v18);
       }
     }
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)p_drawInContext:(CGContext *)a3 withContent:(BOOL)a4 withStroke:(BOOL)a5 withOpacity:(double)a6 withMask:(BOOL)a7 forShadowOrHitTest:(BOOL)a8
+- (void)p_drawInContext:(CGContext *)context withContent:(BOOL)content withStroke:(BOOL)stroke withOpacity:(double)opacity withMask:(BOOL)mask forShadowOrHitTest:(BOOL)test
 {
-  v8 = a8;
-  v9 = a7;
-  v11 = a5;
-  v12 = a4;
-  v15 = objc_msgSend_styledLayout(self, a2, a3);
+  testCopy = test;
+  maskCopy = mask;
+  strokeCopy = stroke;
+  contentCopy = content;
+  v15 = objc_msgSend_styledLayout(self, a2, context);
   isInvisible = objc_msgSend_isInvisible(v15, v16, v17);
 
   if ((isInvisible & 1) == 0)
@@ -160,11 +160,11 @@
       v26 = 0;
     }
 
-    v29 = a6 < 1.0 && v11;
-    v30 = v29 && v12;
-    if (v29 && v12 && (CGContextSaveGState(a3), CGContextSetAlpha(a3, a6), v26))
+    v29 = opacity < 1.0 && strokeCopy;
+    v30 = v29 && contentCopy;
+    if (v29 && contentCopy && (CGContextSaveGState(context), CGContextSetAlpha(context, opacity), v26))
     {
-      CGContextBeginTransparencyLayer(a3, 0);
+      CGContextBeginTransparencyLayer(context, 0);
       v31 = 1;
     }
 
@@ -173,16 +173,16 @@
       v31 = 0;
     }
 
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     v34 = objc_msgSend_mediaLayout(self, v32, v33);
     objc_msgSend_boundsForStandardKnobs(v34, v35, v36);
     v40 = v39;
     v42 = v41;
     v44 = v43;
     v46 = v45;
-    if (v12)
+    if (contentCopy)
     {
-      if (v9)
+      if (maskCopy)
       {
         v47 = objc_msgSend_frameRep(self, v37, v38);
         if (v47)
@@ -198,72 +198,72 @@
             v57 = v56;
             v59 = v58;
             v62 = objc_msgSend_frameRep(self, v60, v61);
-            objc_msgSend_applyMaskForRectWithCoverage_toContext_(v62, v63, a3, v53, v55, v57, v59);
+            objc_msgSend_applyMaskForRectWithCoverage_toContext_(v62, v63, context, v53, v55, v57, v59);
           }
         }
       }
 
-      objc_msgSend_p_drawPosterImageInContext_forShadowOrHitTest_(self, v37, a3, v8);
+      objc_msgSend_p_drawPosterImageInContext_forShadowOrHitTest_(self, v37, context, testCopy);
     }
 
-    CGContextRestoreGState(a3);
-    if (v11 && v26)
+    CGContextRestoreGState(context);
+    if (strokeCopy && v26)
     {
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       if (objc_msgSend_isFrame(v26, v64, v65))
       {
         if (objc_msgSend_shouldRenderFrameStroke(v34, v66, v67))
         {
           v70 = objc_msgSend_frameRep(self, v68, v69);
-          CGContextGetCTM(&v73, a3);
+          CGContextGetCTM(&v73, context);
           TSUTransformScale();
-          objc_msgSend_frameRect_inContext_withTotalScale_(v70, v71, a3, v40, v42, v44, v46, v72);
+          objc_msgSend_frameRect_inContext_withTotalScale_(v70, v71, context, v40, v42, v44, v46, v72);
         }
       }
 
       else
       {
-        objc_msgSend_paintRect_inContext_(v26, v66, a3, v40, v42, v44, v46);
+        objc_msgSend_paintRect_inContext_(v26, v66, context, v40, v42, v44, v46);
       }
 
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
     }
 
     if (v31)
     {
-      CGContextEndTransparencyLayer(a3);
+      CGContextEndTransparencyLayer(context);
     }
 
     if (v30)
     {
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
     }
   }
 }
 
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8 keepingChildrenPassingTest:(id)a9
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children keepingChildrenPassingTest:(id)test
 {
-  if (a6)
+  if (opacity)
   {
-    objc_msgSend_opacity(self, a2, a3, a4, a5, a6, a7, a8, 1.0);
+    objc_msgSend_opacity(self, a2, effects, content, options, opacity, only, children, 1.0);
   }
 
-  MEMORY[0x2821F9670](self, sel_p_drawInContext_withContent_withStroke_withOpacity_withMask_forShadowOrHitTest_, a3);
+  MEMORY[0x2821F9670](self, sel_p_drawInContext_withContent_withStroke_withOpacity_withMask_forShadowOrHitTest_, effects);
 }
 
-- (id)textureForDescription:(id)a3
+- (id)textureForDescription:(id)description
 {
   v6.receiver = self;
   v6.super_class = TSDMovieRep;
-  v3 = [(TSDStyledRep *)&v6 textureForDescription:a3];
+  v3 = [(TSDStyledRep *)&v6 textureForDescription:description];
   objc_msgSend_setObjectType_(v3, v4, 6);
 
   return v3;
 }
 
-- (CGImage)newTextureMaskImageForViewScale:(double)a3 includeFrameMask:(BOOL)a4 maskRect:(CGRect *)a5
+- (CGImage)newTextureMaskImageForViewScale:(double)scale includeFrameMask:(BOOL)mask maskRect:(CGRect *)rect
 {
-  if (!a4)
+  if (!mask)
   {
     return 0;
   }
@@ -301,18 +301,18 @@
   objc_msgSend_coverageRect_(v14, v35, v36, v28, v30, v32, v34);
   v43 = v41;
   v44 = v42;
-  if (a5)
+  if (rect)
   {
-    a5->origin.x = v39;
-    a5->origin.y = v40;
-    a5->size.width = v41;
-    a5->size.height = v42;
+    rect->origin.x = v39;
+    rect->origin.y = v40;
+    rect->size.width = v41;
+    rect->size.height = v42;
   }
 
   if (objc_msgSend_shouldRenderForSizeIncludingCoverage_(v14, v37, v38, v41, v42))
   {
     v47 = objc_msgSend_frameRep(self, v45, v46);
-    v49 = objc_msgSend_newFrameForMask_size_forCALayer_viewScale_(v47, v48, 1, 1, v43, v44, a3);
+    v49 = objc_msgSend_newFrameForMask_size_forCALayer_viewScale_(v47, v48, 1, 1, v43, v44, scale);
   }
 
   else
@@ -333,39 +333,39 @@ LABEL_10:
 
 - (BOOL)p_shouldUseImageTexture
 {
-  v3 = self;
+  selfCopy = self;
   v4 = objc_msgSend_layout(self, a2, v2);
   v7 = objc_msgSend_stroke(v4, v5, v6);
 
-  LOBYTE(v3) = objc_msgSend_i_shouldRenderStroke_(v3, v8, v7);
-  return v3 ^ 1;
+  LOBYTE(selfCopy) = objc_msgSend_i_shouldRenderStroke_(selfCopy, v8, v7);
+  return selfCopy ^ 1;
 }
 
-- (void)calculateTextureClipBounds:(CGRect *)a3 andOffset:(CGPoint *)a4 withTransform:(CGAffineTransform *)a5 andRectOnCanvas:(CGRect *)a6 textureDescription:(id)a7 isUsingImageTexture:(BOOL)a8
+- (void)calculateTextureClipBounds:(CGRect *)bounds andOffset:(CGPoint *)offset withTransform:(CGAffineTransform *)transform andRectOnCanvas:(CGRect *)canvas textureDescription:(id)description isUsingImageTexture:(BOOL)texture
 {
-  v13 = a7;
+  descriptionCopy = description;
   shouldUseImageTexture = objc_msgSend_p_shouldUseImageTexture(self, v14, v15);
   v17.receiver = self;
   v17.super_class = TSDMovieRep;
-  [(TSDStyledRep *)&v17 calculateTextureClipBounds:a3 andOffset:a4 withTransform:a5 andRectOnCanvas:a6 textureDescription:v13 isUsingImageTexture:shouldUseImageTexture];
+  [(TSDStyledRep *)&v17 calculateTextureClipBounds:bounds andOffset:offset withTransform:transform andRectOnCanvas:canvas textureDescription:descriptionCopy isUsingImageTexture:shouldUseImageTexture];
 }
 
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4 mixingTypeContext:(id)a5
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject mixingTypeContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v12 = objc_msgSend_movieInfo(v7, v10, v11);
-  v15 = objc_msgSend_movieInfo(v8, v13, v14);
-  v17 = objc_msgSend_mixingTypeWithObject_context_(v12, v16, v15, v9);
+  objectCopy = object;
+  incomingObjectCopy = incomingObject;
+  contextCopy = context;
+  v12 = objc_msgSend_movieInfo(objectCopy, v10, v11);
+  v15 = objc_msgSend_movieInfo(incomingObjectCopy, v13, v14);
+  v17 = objc_msgSend_mixingTypeWithObject_context_(v12, v16, v15, contextCopy);
 
   v20 = 0.0;
   if (v17 != 1)
   {
-    v21 = objc_msgSend_movieInfo(v7, v18, v19);
+    v21 = objc_msgSend_movieInfo(objectCopy, v18, v19);
     objc_msgSend_startTime(v21, v22, v23);
     v25 = v24;
-    v28 = objc_msgSend_movieInfo(v8, v26, v27);
+    v28 = objc_msgSend_movieInfo(incomingObjectCopy, v26, v27);
     objc_msgSend_startTime(v28, v29, v30);
     v32 = v31;
 
@@ -376,10 +376,10 @@ LABEL_10:
 
     else
     {
-      v35 = objc_msgSend_movieInfo(v7, v33, v34);
+      v35 = objc_msgSend_movieInfo(objectCopy, v33, v34);
       objc_msgSend_endTime(v35, v36, v37);
       v39 = v38;
-      v42 = objc_msgSend_movieInfo(v8, v40, v41);
+      v42 = objc_msgSend_movieInfo(incomingObjectCopy, v40, v41);
       objc_msgSend_startTime(v42, v43, v44);
       v46 = v45;
 
@@ -394,10 +394,10 @@ LABEL_10:
       }
     }
 
-    v48 = objc_msgSend_movieInfo(v7, v33, v34);
+    v48 = objc_msgSend_movieInfo(objectCopy, v33, v34);
     objc_msgSend_endTime(v48, v49, v50);
     v52 = v51;
-    v55 = objc_msgSend_movieInfo(v8, v53, v54);
+    v55 = objc_msgSend_movieInfo(incomingObjectCopy, v53, v54);
     objc_msgSend_endTime(v55, v56, v57);
     v59 = v58;
 
@@ -406,10 +406,10 @@ LABEL_10:
       v47 = v47 * 0.5;
     }
 
-    v62 = objc_msgSend_movieInfo(v7, v60, v61);
+    v62 = objc_msgSend_movieInfo(objectCopy, v60, v61);
     objc_msgSend_posterTime(v62, v63, v64);
     v66 = v65;
-    v69 = objc_msgSend_movieInfo(v8, v67, v68);
+    v69 = objc_msgSend_movieInfo(incomingObjectCopy, v67, v68);
     objc_msgSend_posterTime(v69, v70, v71);
     v73 = v72;
 

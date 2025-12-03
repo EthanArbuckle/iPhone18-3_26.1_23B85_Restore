@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgLukhnosPortmobileFileFileVisitResultEnum alloc];
     JavaLangEnum_initWithNSString_withInt_(v2, @"CONTINUE", 0);

@@ -1,51 +1,51 @@
 @interface WFIPConfigViewController
-- (WFIPConfigViewController)initWithConfig:(id)a3 ipType:(int64_t)a4;
-- (WFIPConfigViewController)initWithConfig:(id)a3 ipType:(int64_t)a4 appearanceProxy:(id)a5;
+- (WFIPConfigViewController)initWithConfig:(id)config ipType:(int64_t)type;
+- (WFIPConfigViewController)initWithConfig:(id)config ipType:(int64_t)type appearanceProxy:(id)proxy;
 - (WFTextFieldCell)clientIDCell;
 - (WFTextFieldCell)ipAddressCell;
 - (WFTextFieldCell)prefixCell;
 - (WFTextFieldCell)routerCell;
 - (WFTextFieldCell)subnetMaskCell;
 - (double)_configCellLeadingInset;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_setFirstResponderAfterCell:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_setFirstResponderAfterCell:(id)cell;
 - (void)_updateSaveEnabled;
 - (void)didReceiveMemoryWarning;
-- (void)save:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)save:(id)save;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation WFIPConfigViewController
 
-- (WFIPConfigViewController)initWithConfig:(id)a3 ipType:(int64_t)a4
+- (WFIPConfigViewController)initWithConfig:(id)config ipType:(int64_t)type
 {
-  v6 = a3;
+  configCopy = config;
   v7 = +[WFAppearanceProxy defaultAppearanceProxy];
-  v8 = [(WFIPConfigViewController *)self initWithConfig:v6 ipType:a4 appearanceProxy:v7];
+  v8 = [(WFIPConfigViewController *)self initWithConfig:configCopy ipType:type appearanceProxy:v7];
 
   return v8;
 }
 
-- (WFIPConfigViewController)initWithConfig:(id)a3 ipType:(int64_t)a4 appearanceProxy:(id)a5
+- (WFIPConfigViewController)initWithConfig:(id)config ipType:(int64_t)type appearanceProxy:(id)proxy
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  configCopy = config;
   v18.receiver = self;
   v18.super_class = WFIPConfigViewController;
-  v10 = -[WFIPConfigViewController initWithStyle:](&v18, sel_initWithStyle_, [a5 tableViewStyle]);
+  v10 = -[WFIPConfigViewController initWithStyle:](&v18, sel_initWithStyle_, [proxy tableViewStyle]);
   v11 = v10;
-  if (v9 && v10)
+  if (configCopy && v10)
   {
-    objc_storeStrong(&v10->_originalConfig, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_originalConfig, config);
+    v12 = [configCopy copy];
     modifiedConfig = v11->_modifiedConfig;
     v11->_modifiedConfig = v12;
 
-    if (!a4 && [(WFNetworkSettingsConfig *)v11->_modifiedConfig ipv4Config]== -1)
+    if (!type && [(WFNetworkSettingsConfig *)v11->_modifiedConfig ipv4Config]== -1)
     {
       v14 = WFLogForCategory(0);
       v15 = OSLogForWFLogLevel(3uLL);
@@ -59,7 +59,7 @@
       [(WFNetworkSettingsConfig *)v11->_modifiedConfig setIpv4Config:0];
     }
 
-    v11->_type = a4;
+    v11->_type = type;
   }
 
   else
@@ -98,27 +98,27 @@
 
 LABEL_6:
   v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:3 target:self action:sel_save_];
-  v7 = [(WFIPConfigViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v6];
+  navigationItem = [(WFIPConfigViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 
-  v8 = [(WFIPConfigViewController *)self navigationItem];
-  v9 = [v8 rightBarButtonItem];
-  [v9 setEnabled:0];
+  navigationItem2 = [(WFIPConfigViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
   v10 = *MEMORY[0x277D76F30];
-  v11 = [(WFIPConfigViewController *)self tableView];
-  [v11 setRowHeight:v10];
+  tableView = [(WFIPConfigViewController *)self tableView];
+  [tableView setRowHeight:v10];
 
-  v12 = [(WFIPConfigViewController *)self tableView];
-  [v12 setEstimatedRowHeight:44.0];
+  tableView2 = [(WFIPConfigViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:44.0];
 
-  v13 = [(WFIPConfigViewController *)self tableView];
-  [v13 setEstimatedSectionHeaderHeight:0.0];
+  tableView3 = [(WFIPConfigViewController *)self tableView];
+  [tableView3 setEstimatedSectionHeaderHeight:0.0];
 
   if ([MEMORY[0x277D75418] currentIsIPad])
   {
-    v14 = [(WFIPConfigViewController *)self tableView];
-    [v14 _setSectionContentInset:{0.0, 20.0, 0.0, 20.0}];
+    tableView4 = [(WFIPConfigViewController *)self tableView];
+    [tableView4 _setSectionContentInset:{0.0, 20.0, 0.0, 20.0}];
   }
 
   [(WFIPConfigViewController *)self _updateSaveEnabled];
@@ -133,9 +133,9 @@ LABEL_6:
 
 - (void)_updateSaveEnabled
 {
-  v3 = [(WFIPConfigViewController *)self modifiedConfig];
-  v4 = [(WFIPConfigViewController *)self originalConfig];
-  v5 = [v3 isEqual:v4];
+  modifiedConfig = [(WFIPConfigViewController *)self modifiedConfig];
+  originalConfig = [(WFIPConfigViewController *)self originalConfig];
+  v5 = [modifiedConfig isEqual:originalConfig];
 
   if (v5)
   {
@@ -145,52 +145,52 @@ LABEL_6:
 
   if (![(WFIPConfigViewController *)self type])
   {
-    v7 = [(WFIPConfigViewController *)self modifiedConfig];
-    v8 = [v7 validIPv4Configuration];
+    modifiedConfig2 = [(WFIPConfigViewController *)self modifiedConfig];
+    validIPv4Configuration = [modifiedConfig2 validIPv4Configuration];
     goto LABEL_7;
   }
 
   if ([(WFIPConfigViewController *)self type]== 1)
   {
-    v7 = [(WFIPConfigViewController *)self modifiedConfig];
-    v8 = [v7 validIPv6Configuration];
+    modifiedConfig2 = [(WFIPConfigViewController *)self modifiedConfig];
+    validIPv4Configuration = [modifiedConfig2 validIPv6Configuration];
 LABEL_7:
-    v6 = v8;
+    v6 = validIPv4Configuration;
 
     goto LABEL_9;
   }
 
   v6 = 1;
 LABEL_9:
-  v10 = [(WFIPConfigViewController *)self navigationItem];
-  v9 = [v10 rightBarButtonItem];
-  [v9 setEnabled:v6];
+  navigationItem = [(WFIPConfigViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v6];
 }
 
-- (void)save:(id)a3
+- (void)save:(id)save
 {
-  v4 = [(WFIPConfigViewController *)self saveHandler];
+  saveHandler = [(WFIPConfigViewController *)self saveHandler];
 
-  if (v4)
+  if (saveHandler)
   {
-    v5 = [(WFIPConfigViewController *)self saveHandler];
-    v6 = [(WFIPConfigViewController *)self modifiedConfig];
-    (v5)[2](v5, v6);
+    saveHandler2 = [(WFIPConfigViewController *)self saveHandler];
+    modifiedConfig = [(WFIPConfigViewController *)self modifiedConfig];
+    (saveHandler2)[2](saveHandler2, modifiedConfig);
   }
 
   [(UIViewController *)self wf_popViewControllerAnimated:1];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(WFIPConfigViewController *)self type])
   {
     if ([(WFIPConfigViewController *)self type]== 1)
     {
-      v4 = [(WFIPConfigViewController *)self modifiedConfig];
-      v5 = [v4 ipv6Config];
+      modifiedConfig = [(WFIPConfigViewController *)self modifiedConfig];
+      ipv6Config = [modifiedConfig ipv6Config];
 
-      if (v5 == 1)
+      if (ipv6Config == 1)
       {
         return 2;
       }
@@ -209,8 +209,8 @@ LABEL_9:
 
   else
   {
-    v7 = [(WFIPConfigViewController *)self modifiedConfig];
-    if ([v7 ipv4Config] == 1)
+    modifiedConfig2 = [(WFIPConfigViewController *)self modifiedConfig];
+    if ([modifiedConfig2 ipv4Config] == 1)
     {
       v6 = 1;
     }
@@ -224,12 +224,12 @@ LABEL_9:
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 != 1)
+  viewCopy = view;
+  if (section != 1)
   {
-    if (!a4)
+    if (!section)
     {
       if ([(WFIPConfigViewController *)self type])
       {
@@ -249,25 +249,25 @@ LABEL_16:
 
   if (![(WFIPConfigViewController *)self type])
   {
-    v11 = [(WFIPConfigViewController *)self modifiedConfig];
-    v12 = [v11 ipv4Config];
+    modifiedConfig = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv4Config = [modifiedConfig ipv4Config];
 
-    if (!v12)
+    if (!ipv4Config)
     {
       v10 = 1;
       goto LABEL_17;
     }
 
-    v13 = [(WFIPConfigViewController *)self modifiedConfig];
-    v14 = [v13 ipv4Config];
+    modifiedConfig2 = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv4Config2 = [modifiedConfig2 ipv4Config];
 
-    if (v14 == 2)
+    if (ipv4Config2 == 2)
     {
       goto LABEL_13;
     }
 
-    v15 = [(WFIPConfigViewController *)self modifiedConfig];
-    [v15 ipv4Config];
+    modifiedConfig3 = [(WFIPConfigViewController *)self modifiedConfig];
+    [modifiedConfig3 ipv4Config];
 
     goto LABEL_16;
   }
@@ -277,10 +277,10 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v8 = [(WFIPConfigViewController *)self modifiedConfig];
-  v9 = [v8 ipv6Config];
+  modifiedConfig4 = [(WFIPConfigViewController *)self modifiedConfig];
+  ipv6Config = [modifiedConfig4 ipv6Config];
 
-  v7 = v9 == 1;
+  v7 = ipv6Config == 1;
 LABEL_8:
   if (v7)
   {
@@ -297,36 +297,36 @@ LABEL_17:
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v5 section] == 1)
+    if ([pathCopy section] == 1)
     {
       if ([(WFIPConfigViewController *)self type])
       {
         if ([(WFIPConfigViewController *)self type]== 1)
         {
-          v6 = [(WFIPConfigViewController *)self modifiedConfig];
-          v7 = [v6 ipv6Config];
+          modifiedConfig = [(WFIPConfigViewController *)self modifiedConfig];
+          ipv6Config = [modifiedConfig ipv6Config];
 
-          if (v7 == 1)
+          if (ipv6Config == 1)
           {
-            if ([v5 row])
+            if ([pathCopy row])
             {
-              if ([v5 row] == 1)
+              if ([pathCopy row] == 1)
               {
-                v8 = [(WFIPConfigViewController *)self prefixCell];
+                prefixCell = [(WFIPConfigViewController *)self prefixCell];
 LABEL_39:
-                v9 = v8;
+                v9 = prefixCell;
                 goto LABEL_41;
               }
 
 LABEL_37:
-              if ([v5 row] == 2)
+              if ([pathCopy row] == 2)
               {
-                v8 = [(WFIPConfigViewController *)self routerCell];
+                prefixCell = [(WFIPConfigViewController *)self routerCell];
                 goto LABEL_39;
               }
 
@@ -340,30 +340,30 @@ LABEL_37:
 
       else
       {
-        v20 = [(WFIPConfigViewController *)self modifiedConfig];
-        v21 = [v20 ipv4Config];
+        modifiedConfig2 = [(WFIPConfigViewController *)self modifiedConfig];
+        ipv4Config = [modifiedConfig2 ipv4Config];
 
-        if (!v21)
+        if (!ipv4Config)
         {
-          if (![v5 row])
+          if (![pathCopy row])
           {
-            v8 = [(WFIPConfigViewController *)self clientIDCell];
+            prefixCell = [(WFIPConfigViewController *)self clientIDCell];
             goto LABEL_39;
           }
 
           goto LABEL_40;
         }
 
-        v22 = [(WFIPConfigViewController *)self modifiedConfig];
-        v23 = [v22 ipv4Config];
+        modifiedConfig3 = [(WFIPConfigViewController *)self modifiedConfig];
+        ipv4Config2 = [modifiedConfig3 ipv4Config];
 
-        if (v23 == 2)
+        if (ipv4Config2 == 2)
         {
-          if ([v5 row])
+          if ([pathCopy row])
           {
-            if ([v5 row] == 1)
+            if ([pathCopy row] == 1)
             {
-              v8 = [(WFIPConfigViewController *)self subnetMaskCell];
+              prefixCell = [(WFIPConfigViewController *)self subnetMaskCell];
               goto LABEL_39;
             }
 
@@ -371,7 +371,7 @@ LABEL_37:
           }
 
 LABEL_36:
-          v8 = [(WFIPConfigViewController *)self ipAddressCell];
+          prefixCell = [(WFIPConfigViewController *)self ipAddressCell];
           goto LABEL_39;
         }
       }
@@ -391,34 +391,34 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    if ([v5 row])
+    if ([pathCopy row])
     {
-      if ([v5 row] == 1)
+      if ([pathCopy row] == 1)
       {
         v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v11 = [v10 localizedStringForKey:@"kWFLocSettingsIPV6ConfigureManual" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-        v12 = [v9 textLabel];
-        [v12 setText:v11];
+        textLabel = [v9 textLabel];
+        [textLabel setText:v11];
 
-        v13 = [(WFIPConfigViewController *)self modifiedConfig];
-        v14 = [v13 ipv6Config];
+        modifiedConfig4 = [(WFIPConfigViewController *)self modifiedConfig];
+        ipv6Config2 = [modifiedConfig4 ipv6Config];
         goto LABEL_28;
       }
 
-      if ([v5 row] != 2)
+      if ([pathCopy row] != 2)
       {
         goto LABEL_41;
       }
 
       v37 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v38 = [v37 localizedStringForKey:@"kWFLocSettingsIPV6ConfigureLinkLocal" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v39 = [v9 textLabel];
-      [v39 setText:v38];
+      textLabel2 = [v9 textLabel];
+      [textLabel2 setText:v38];
 
-      v18 = [(WFIPConfigViewController *)self modifiedConfig];
-      v19 = [v18 ipv6Config];
+      modifiedConfig5 = [(WFIPConfigViewController *)self modifiedConfig];
+      ipv6Config3 = [modifiedConfig5 ipv6Config];
 LABEL_34:
-      v40 = v19;
+      v40 = ipv6Config3;
 
       if (v40 != 2)
       {
@@ -430,13 +430,13 @@ LABEL_34:
 
     v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v30 = [v29 localizedStringForKey:@"kWFLocSettingsIPV6ConfigureAutomatic" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v31 = [v9 textLabel];
-    [v31 setText:v30];
+    textLabel3 = [v9 textLabel];
+    [textLabel3 setText:v30];
 
-    v27 = [(WFIPConfigViewController *)self modifiedConfig];
-    v28 = [v27 ipv6Config];
+    modifiedConfig6 = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv6Config4 = [modifiedConfig6 ipv6Config];
 LABEL_24:
-    v32 = v28;
+    v32 = ipv6Config4;
 
     if (v32)
     {
@@ -446,44 +446,44 @@ LABEL_24:
     goto LABEL_35;
   }
 
-  if (![v5 row])
+  if (![pathCopy row])
   {
     v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v25 = [v24 localizedStringForKey:@"kWFLocSettingsIPV4ConfigureAutomatic" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v26 = [v9 textLabel];
-    [v26 setText:v25];
+    textLabel4 = [v9 textLabel];
+    [textLabel4 setText:v25];
 
-    v27 = [(WFIPConfigViewController *)self modifiedConfig];
-    v28 = [v27 ipv4Config];
+    modifiedConfig6 = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv6Config4 = [modifiedConfig6 ipv4Config];
     goto LABEL_24;
   }
 
-  if ([v5 row] == 1)
+  if ([pathCopy row] == 1)
   {
     v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v16 = [v15 localizedStringForKey:@"kWFLocSettingsIPV4ConfigureManual" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v17 = [v9 textLabel];
-    [v17 setText:v16];
+    textLabel5 = [v9 textLabel];
+    [textLabel5 setText:v16];
 
-    v18 = [(WFIPConfigViewController *)self modifiedConfig];
-    v19 = [v18 ipv4Config];
+    modifiedConfig5 = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv6Config3 = [modifiedConfig5 ipv4Config];
     goto LABEL_34;
   }
 
-  if ([v5 row] != 2)
+  if ([pathCopy row] != 2)
   {
     goto LABEL_41;
   }
 
   v33 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v34 = [v33 localizedStringForKey:@"kWFLocSettingsIPV4ConfigureBootP" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-  v35 = [v9 textLabel];
-  [v35 setText:v34];
+  textLabel6 = [v9 textLabel];
+  [textLabel6 setText:v34];
 
-  v13 = [(WFIPConfigViewController *)self modifiedConfig];
-  v14 = [v13 ipv4Config];
+  modifiedConfig4 = [(WFIPConfigViewController *)self modifiedConfig];
+  ipv6Config2 = [modifiedConfig4 ipv4Config];
 LABEL_28:
-  v36 = v14;
+  v36 = ipv6Config2;
 
   if (v36 == 1)
   {
@@ -492,26 +492,26 @@ LABEL_35:
   }
 
 LABEL_41:
-  v41 = [(WFIPConfigViewController *)self appearanceProxy];
-  v42 = [v41 cellTextLabelFont];
+  appearanceProxy = [(WFIPConfigViewController *)self appearanceProxy];
+  cellTextLabelFont = [appearanceProxy cellTextLabelFont];
 
-  if (v42)
+  if (cellTextLabelFont)
   {
-    v43 = [(WFIPConfigViewController *)self appearanceProxy];
-    v44 = [v43 cellTextLabelFont];
-    v45 = [v9 textLabel];
-    [v45 setFont:v44];
+    appearanceProxy2 = [(WFIPConfigViewController *)self appearanceProxy];
+    cellTextLabelFont2 = [appearanceProxy2 cellTextLabelFont];
+    textLabel7 = [v9 textLabel];
+    [textLabel7 setFont:cellTextLabelFont2];
   }
 
   return v9;
 }
 
-- (void)_setFirstResponderAfterCell:(id)a3
+- (void)_setFirstResponderAfterCell:(id)cell
 {
-  v10 = a3;
-  v4 = [(WFIPConfigViewController *)self ipAddressCell];
+  cellCopy = cell;
+  ipAddressCell = [(WFIPConfigViewController *)self ipAddressCell];
 
-  if (v4 == v10)
+  if (ipAddressCell == cellCopy)
   {
     if ([(WFIPConfigViewController *)self type])
     {
@@ -520,48 +520,48 @@ LABEL_41:
         goto LABEL_14;
       }
 
-      v8 = [(WFIPConfigViewController *)self prefixCell];
+      prefixCell = [(WFIPConfigViewController *)self prefixCell];
     }
 
     else
     {
-      v8 = [(WFIPConfigViewController *)self subnetMaskCell];
+      prefixCell = [(WFIPConfigViewController *)self subnetMaskCell];
     }
   }
 
   else
   {
-    v5 = [(WFIPConfigViewController *)self prefixCell];
-    if (v5 == v10)
+    prefixCell2 = [(WFIPConfigViewController *)self prefixCell];
+    if (prefixCell2 == cellCopy)
     {
     }
 
     else
     {
-      v6 = [(WFIPConfigViewController *)self subnetMaskCell];
+      subnetMaskCell = [(WFIPConfigViewController *)self subnetMaskCell];
 
-      if (v6 != v10)
+      if (subnetMaskCell != cellCopy)
       {
-        v7 = [(WFIPConfigViewController *)self routerCell];
+        routerCell = [(WFIPConfigViewController *)self routerCell];
 
-        if (v7 != v10)
+        if (routerCell != cellCopy)
         {
           goto LABEL_14;
         }
 
-        v8 = [(WFIPConfigViewController *)self ipAddressCell];
+        prefixCell = [(WFIPConfigViewController *)self ipAddressCell];
         goto LABEL_12;
       }
     }
 
-    v8 = [(WFIPConfigViewController *)self routerCell];
+    prefixCell = [(WFIPConfigViewController *)self routerCell];
   }
 
 LABEL_12:
-  v9 = v8;
-  if (v8)
+  v9 = prefixCell;
+  if (prefixCell)
   {
-    [v8 becomeFirstResponder];
+    [prefixCell becomeFirstResponder];
   }
 
 LABEL_14:
@@ -579,8 +579,8 @@ LABEL_14:
   v5 = [v4 loadNibNamed:@"WFTextFieldCell" owner:self options:0];
   v6 = [v5 objectAtIndex:0];
 
-  v7 = [(WFTextFieldCell *)v6 textField];
-  [v7 setTextAlignment:2];
+  textField = [(WFTextFieldCell *)v6 textField];
+  [textField setTextAlignment:2];
 
   objc_initWeak(&location, self);
   v45[0] = MEMORY[0x277D85DD0];
@@ -593,18 +593,18 @@ LABEL_14:
   {
     v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v24 = [v23 localizedStringForKey:@"kWFLocSettingsIPV4AddressCell" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v25 = [(WFTextFieldCell *)v6 label];
-    [v25 setText:v24];
+    label = [(WFTextFieldCell *)v6 label];
+    [label setText:v24];
 
-    v26 = [(WFIPConfigViewController *)self modifiedConfig];
-    v27 = [v26 ipv4AddressManual];
-    v28 = [(WFTextFieldCell *)v6 textField];
-    [v28 setText:v27];
+    modifiedConfig = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv4AddressManual = [modifiedConfig ipv4AddressManual];
+    textField2 = [(WFTextFieldCell *)v6 textField];
+    [textField2 setText:ipv4AddressManual];
 
     [(WFIPConfigViewController *)self _configCellLeadingInset];
     [(WFTextFieldCell *)v6 setLayoutMargins:0.0, v29, 0.0, 0.0];
-    v30 = [(WFTextFieldCell *)v6 textField];
-    [v30 setKeyboardType:2];
+    textField3 = [(WFTextFieldCell *)v6 textField];
+    [textField3 setKeyboardType:2];
 
     objc_initWeak(&from, self);
     v42[0] = MEMORY[0x277D85DD0];
@@ -614,8 +614,8 @@ LABEL_14:
     objc_copyWeak(&v43, &from);
     [(WFTextFieldCell *)v6 setTextChangeHandler:v42];
     v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d.%d.%d.%d", 0, 0, 0, 0];
-    v32 = [(WFTextFieldCell *)v6 textField];
-    [v32 setPlaceholder:v31];
+    textField4 = [(WFTextFieldCell *)v6 textField];
+    [textField4 setPlaceholder:v31];
 
     v22 = &v43;
 LABEL_8:
@@ -628,27 +628,27 @@ LABEL_8:
   {
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"kWFLocSettingsIPV6AddressCell" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v10 = [(WFTextFieldCell *)v6 label];
-    [v10 setText:v9];
+    label2 = [(WFTextFieldCell *)v6 label];
+    [label2 setText:v9];
 
-    v11 = [(WFIPConfigViewController *)self modifiedConfig];
-    v12 = [v11 ipv6AddressManual];
-    v13 = [(WFTextFieldCell *)v6 textField];
-    [v13 setText:v12];
+    modifiedConfig2 = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv6AddressManual = [modifiedConfig2 ipv6AddressManual];
+    textField5 = [(WFTextFieldCell *)v6 textField];
+    [textField5 setText:ipv6AddressManual];
 
     [(WFIPConfigViewController *)self _configCellLeadingInset];
     [(WFTextFieldCell *)v6 setLayoutMargins:0.0, v14, 0.0, 0.0];
-    v15 = [(WFIPConfigViewController *)self modifiedConfig];
-    v16 = [v15 ipv6Addresses];
-    v17 = [v16 count];
+    modifiedConfig3 = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv6Addresses = [modifiedConfig3 ipv6Addresses];
+    v17 = [ipv6Addresses count];
 
     if (v17)
     {
-      v18 = [(WFIPConfigViewController *)self modifiedConfig];
-      v19 = [v18 ipv6Addresses];
-      v20 = [v19 objectAtIndexedSubscript:0];
-      v21 = [(WFTextFieldCell *)v6 textField];
-      [v21 setPlaceholder:v20];
+      modifiedConfig4 = [(WFIPConfigViewController *)self modifiedConfig];
+      ipv6Addresses2 = [modifiedConfig4 ipv6Addresses];
+      v20 = [ipv6Addresses2 objectAtIndexedSubscript:0];
+      textField6 = [(WFTextFieldCell *)v6 textField];
+      [textField6 setPlaceholder:v20];
     }
 
     objc_initWeak(&from, self);
@@ -663,15 +663,15 @@ LABEL_8:
   }
 
 LABEL_9:
-  v33 = [(WFIPConfigViewController *)self appearanceProxy];
-  v34 = [v33 cellTextLabelFont];
+  appearanceProxy = [(WFIPConfigViewController *)self appearanceProxy];
+  cellTextLabelFont = [appearanceProxy cellTextLabelFont];
 
-  if (v34)
+  if (cellTextLabelFont)
   {
-    v35 = [(WFIPConfigViewController *)self appearanceProxy];
-    v36 = [v35 cellTextLabelFont];
-    v37 = [(WFTextFieldCell *)v6 textLabel];
-    [v37 setFont:v36];
+    appearanceProxy2 = [(WFIPConfigViewController *)self appearanceProxy];
+    cellTextLabelFont2 = [appearanceProxy2 cellTextLabelFont];
+    textLabel = [(WFTextFieldCell *)v6 textLabel];
+    [textLabel setFont:cellTextLabelFont2];
   }
 
   v38 = self->_ipAddressCell;
@@ -743,25 +743,25 @@ void __41__WFIPConfigViewController_ipAddressCell__block_invoke_3(uint64_t a1, v
 
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"kWFLocSettingsSubnetMaskCell" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v9 = [(WFTextFieldCell *)v6 label];
-    [v9 setText:v8];
+    label = [(WFTextFieldCell *)v6 label];
+    [label setText:v8];
 
     [(WFIPConfigViewController *)self _configCellLeadingInset];
     [(WFTextFieldCell *)v6 setLayoutMargins:0.0, v10, 0.0, 0.0];
-    v11 = [(WFTextFieldCell *)v6 textField];
-    [v11 setTextAlignment:2];
+    textField = [(WFTextFieldCell *)v6 textField];
+    [textField setTextAlignment:2];
 
-    v12 = [(WFIPConfigViewController *)self modifiedConfig];
-    v13 = [v12 ipv4SubnetMaskManual];
-    v14 = [(WFTextFieldCell *)v6 textField];
-    [v14 setText:v13];
+    modifiedConfig = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv4SubnetMaskManual = [modifiedConfig ipv4SubnetMaskManual];
+    textField2 = [(WFTextFieldCell *)v6 textField];
+    [textField2 setText:ipv4SubnetMaskManual];
 
-    v15 = [(WFTextFieldCell *)v6 textField];
-    [v15 setKeyboardType:2];
+    textField3 = [(WFTextFieldCell *)v6 textField];
+    [textField3 setKeyboardType:2];
 
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d.%d.%d.%d", 255, 255, 0, 0];
-    v17 = [(WFTextFieldCell *)v6 textField];
-    [v17 setPlaceholder:v16];
+    textField4 = [(WFTextFieldCell *)v6 textField];
+    [textField4 setPlaceholder:v16];
 
     objc_initWeak(&location, self);
     v27[0] = MEMORY[0x277D85DD0];
@@ -776,15 +776,15 @@ void __41__WFIPConfigViewController_ipAddressCell__block_invoke_3(uint64_t a1, v
     v25[3] = &unk_279EC5D70;
     objc_copyWeak(&v26, &location);
     [(WFTextFieldCell *)v6 setReturnKeyHandler:v25];
-    v18 = [(WFIPConfigViewController *)self appearanceProxy];
-    v19 = [v18 cellTextLabelFont];
+    appearanceProxy = [(WFIPConfigViewController *)self appearanceProxy];
+    cellTextLabelFont = [appearanceProxy cellTextLabelFont];
 
-    if (v19)
+    if (cellTextLabelFont)
     {
-      v20 = [(WFIPConfigViewController *)self appearanceProxy];
-      v21 = [v20 cellTextLabelFont];
-      v22 = [(WFTextFieldCell *)v6 textLabel];
-      [v22 setFont:v21];
+      appearanceProxy2 = [(WFIPConfigViewController *)self appearanceProxy];
+      cellTextLabelFont2 = [appearanceProxy2 cellTextLabelFont];
+      textLabel = [(WFTextFieldCell *)v6 textLabel];
+      [textLabel setFont:cellTextLabelFont2];
     }
 
     v23 = self->_subnetMaskCell;
@@ -837,22 +837,22 @@ void __42__WFIPConfigViewController_subnetMaskCell__block_invoke_2(uint64_t a1, 
 
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"kWFLocSettingsIPV6ConfigurePrefixLength" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v9 = [(WFTextFieldCell *)v6 label];
-    [v9 setText:v8];
+    label = [(WFTextFieldCell *)v6 label];
+    [label setText:v8];
 
     [(WFIPConfigViewController *)self _configCellLeadingInset];
     [(WFTextFieldCell *)v6 setLayoutMargins:0.0, v10, 0.0, 0.0];
-    v11 = [(WFTextFieldCell *)v6 textField];
-    [v11 setTextAlignment:2];
+    textField = [(WFTextFieldCell *)v6 textField];
+    [textField setTextAlignment:2];
 
-    v12 = [(WFIPConfigViewController *)self modifiedConfig];
-    v13 = [v12 ipv6PrefixLengthManual];
-    v14 = [(WFTextFieldCell *)v6 textField];
-    [v14 setText:v13];
+    modifiedConfig = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv6PrefixLengthManual = [modifiedConfig ipv6PrefixLengthManual];
+    textField2 = [(WFTextFieldCell *)v6 textField];
+    [textField2 setText:ipv6PrefixLengthManual];
 
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 64];
-    v16 = [(WFTextFieldCell *)v6 textField];
-    [v16 setPlaceholder:v15];
+    textField3 = [(WFTextFieldCell *)v6 textField];
+    [textField3 setPlaceholder:v15];
 
     objc_initWeak(&location, self);
     v26[0] = MEMORY[0x277D85DD0];
@@ -867,15 +867,15 @@ void __42__WFIPConfigViewController_subnetMaskCell__block_invoke_2(uint64_t a1, 
     v24[3] = &unk_279EC5D70;
     objc_copyWeak(&v25, &location);
     [(WFTextFieldCell *)v6 setReturnKeyHandler:v24];
-    v17 = [(WFIPConfigViewController *)self appearanceProxy];
-    v18 = [v17 cellTextLabelFont];
+    appearanceProxy = [(WFIPConfigViewController *)self appearanceProxy];
+    cellTextLabelFont = [appearanceProxy cellTextLabelFont];
 
-    if (v18)
+    if (cellTextLabelFont)
     {
-      v19 = [(WFIPConfigViewController *)self appearanceProxy];
-      v20 = [v19 cellTextLabelFont];
-      v21 = [(WFTextFieldCell *)v6 textLabel];
-      [v21 setFont:v20];
+      appearanceProxy2 = [(WFIPConfigViewController *)self appearanceProxy];
+      cellTextLabelFont2 = [appearanceProxy2 cellTextLabelFont];
+      textLabel = [(WFTextFieldCell *)v6 textLabel];
+      [textLabel setFont:cellTextLabelFont2];
     }
 
     v22 = self->_prefixCell;
@@ -929,8 +929,8 @@ void __38__WFIPConfigViewController_prefixCell__block_invoke_2(uint64_t a1, void
   v5 = [v4 loadNibNamed:@"WFTextFieldCell" owner:self options:0];
   v6 = [v5 objectAtIndex:0];
 
-  v7 = [(WFTextFieldCell *)v6 textField];
-  [v7 setTextAlignment:2];
+  textField = [(WFTextFieldCell *)v6 textField];
+  [textField setTextAlignment:2];
 
   [(WFIPConfigViewController *)self _configCellLeadingInset];
   [(WFTextFieldCell *)v6 setLayoutMargins:0.0, v8, 0.0, 0.0];
@@ -945,19 +945,19 @@ void __38__WFIPConfigViewController_prefixCell__block_invoke_2(uint64_t a1, void
   {
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v20 = [v19 localizedStringForKey:@"kWFLocSettingsIPV4RouterCell" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v21 = [(WFTextFieldCell *)v6 label];
-    [v21 setText:v20];
+    label = [(WFTextFieldCell *)v6 label];
+    [label setText:v20];
 
-    v22 = [(WFIPConfigViewController *)self modifiedConfig];
-    v23 = [v22 ipv4RouterAddressManual];
-    v24 = [(WFTextFieldCell *)v6 textField];
-    [v24 setText:v23];
+    modifiedConfig = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv4RouterAddressManual = [modifiedConfig ipv4RouterAddressManual];
+    textField2 = [(WFTextFieldCell *)v6 textField];
+    [textField2 setText:ipv4RouterAddressManual];
 
-    v25 = [(WFTextFieldCell *)v6 textField];
-    [v25 setKeyboardType:2];
+    textField3 = [(WFTextFieldCell *)v6 textField];
+    [textField3 setKeyboardType:2];
 
-    v26 = [(WFTextFieldCell *)v6 textField];
-    [v26 setPlaceholder:&stru_288308678];
+    textField4 = [(WFTextFieldCell *)v6 textField];
+    [textField4 setPlaceholder:&stru_288308678];
 
     objc_initWeak(&from, self);
     v18 = v36;
@@ -974,18 +974,18 @@ void __38__WFIPConfigViewController_prefixCell__block_invoke_2(uint64_t a1, void
   {
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"kWFLocSettingsIPV6RouterCell" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v11 = [(WFTextFieldCell *)v6 label];
-    [v11 setText:v10];
+    label2 = [(WFTextFieldCell *)v6 label];
+    [label2 setText:v10];
 
-    v12 = [(WFIPConfigViewController *)self modifiedConfig];
-    v13 = [v12 ipv6RouterAddressManual];
-    v14 = [(WFTextFieldCell *)v6 textField];
-    [v14 setText:v13];
+    modifiedConfig2 = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv6RouterAddressManual = [modifiedConfig2 ipv6RouterAddressManual];
+    textField5 = [(WFTextFieldCell *)v6 textField];
+    [textField5 setText:ipv6RouterAddressManual];
 
-    v15 = [(WFIPConfigViewController *)self modifiedConfig];
-    v16 = [v15 ipv6RouterAddress];
-    v17 = [(WFTextFieldCell *)v6 textField];
-    [v17 setPlaceholder:v16];
+    modifiedConfig3 = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv6RouterAddress = [modifiedConfig3 ipv6RouterAddress];
+    textField6 = [(WFTextFieldCell *)v6 textField];
+    [textField6 setPlaceholder:ipv6RouterAddress];
 
     objc_initWeak(&from, self);
     v18 = v34;
@@ -1000,15 +1000,15 @@ LABEL_6:
     objc_destroyWeak(&from);
   }
 
-  v27 = [(WFIPConfigViewController *)self appearanceProxy];
-  v28 = [v27 cellTextLabelFont];
+  appearanceProxy = [(WFIPConfigViewController *)self appearanceProxy];
+  cellTextLabelFont = [appearanceProxy cellTextLabelFont];
 
-  if (v28)
+  if (cellTextLabelFont)
   {
-    v29 = [(WFIPConfigViewController *)self appearanceProxy];
-    v30 = [v29 cellTextLabelFont];
-    v31 = [(WFTextFieldCell *)v6 textLabel];
-    [v31 setFont:v30];
+    appearanceProxy2 = [(WFIPConfigViewController *)self appearanceProxy];
+    cellTextLabelFont2 = [appearanceProxy2 cellTextLabelFont];
+    textLabel = [(WFTextFieldCell *)v6 textLabel];
+    [textLabel setFont:cellTextLabelFont2];
   }
 
   v32 = self->_routerCell;
@@ -1080,18 +1080,18 @@ void __38__WFIPConfigViewController_routerCell__block_invoke_3(uint64_t a1, void
 
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"kWFLocSettingsClientIDCell" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v9 = [(WFTextFieldCell *)v6 label];
-    [v9 setText:v8];
+    label = [(WFTextFieldCell *)v6 label];
+    [label setText:v8];
 
     [(WFIPConfigViewController *)self _configCellLeadingInset];
     [(WFTextFieldCell *)v6 setLayoutMargins:0.0, v10, 0.0, 0.0];
-    v11 = [(WFTextFieldCell *)v6 textField];
-    [v11 setTextAlignment:2];
+    textField = [(WFTextFieldCell *)v6 textField];
+    [textField setTextAlignment:2];
 
-    v12 = [(WFIPConfigViewController *)self modifiedConfig];
-    v13 = [v12 dhcpClientID];
-    v14 = [(WFTextFieldCell *)v6 textField];
-    [v14 setText:v13];
+    modifiedConfig = [(WFIPConfigViewController *)self modifiedConfig];
+    dhcpClientID = [modifiedConfig dhcpClientID];
+    textField2 = [(WFTextFieldCell *)v6 textField];
+    [textField2 setText:dhcpClientID];
 
     objc_initWeak(&location, self);
     v22 = MEMORY[0x277D85DD0];
@@ -1101,14 +1101,14 @@ void __38__WFIPConfigViewController_routerCell__block_invoke_3(uint64_t a1, void
     objc_copyWeak(&v26, &location);
     [(WFTextFieldCell *)v6 setTextChangeHandler:&v22];
     v15 = [(WFIPConfigViewController *)self appearanceProxy:v22];
-    v16 = [v15 cellTextLabelFont];
+    cellTextLabelFont = [v15 cellTextLabelFont];
 
-    if (v16)
+    if (cellTextLabelFont)
     {
-      v17 = [(WFIPConfigViewController *)self appearanceProxy];
-      v18 = [v17 cellTextLabelFont];
-      v19 = [(WFTextFieldCell *)v6 textLabel];
-      [v19 setFont:v18];
+      appearanceProxy = [(WFIPConfigViewController *)self appearanceProxy];
+      cellTextLabelFont2 = [appearanceProxy cellTextLabelFont];
+      textLabel = [(WFTextFieldCell *)v6 textLabel];
+      [textLabel setFont:cellTextLabelFont2];
     }
 
     v20 = self->_clientIDCell;
@@ -1142,9 +1142,9 @@ void __40__WFIPConfigViewController_clientIDCell__block_invoke(uint64_t a1, void
   [WeakRetained _updateSaveEnabled];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 == 1 && !-[WFIPConfigViewController type](self, "type", a3) && (-[WFIPConfigViewController modifiedConfig](self, "modifiedConfig"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 ipv4Config], v5, v6 == 2))
+  if (section == 1 && !-[WFIPConfigViewController type](self, "type", view) && (-[WFIPConfigViewController modifiedConfig](self, "modifiedConfig"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 ipv4Config], v5, v6 == 2))
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"kWFLocSettingsIPV4ConfigureManualSectionHeader" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
@@ -1158,15 +1158,15 @@ void __40__WFIPConfigViewController_clientIDCell__block_invoke(uint64_t a1, void
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v59[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  if ([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  if ([pathCopy section])
   {
-    v8 = [v6 cellForRowAtIndexPath:v7];
+    v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1183,12 +1183,12 @@ void __40__WFIPConfigViewController_clientIDCell__block_invoke(uint64_t a1, void
       goto LABEL_5;
     }
 
-    if (![v7 row])
+    if (![pathCopy row])
     {
       goto LABEL_20;
     }
 
-    if ([v7 row] == 1)
+    if ([pathCopy row] == 1)
     {
       v10 = 0;
       v11 = 0;
@@ -1197,7 +1197,7 @@ void __40__WFIPConfigViewController_clientIDCell__block_invoke(uint64_t a1, void
       goto LABEL_21;
     }
 
-    if ([v7 row] == 2)
+    if ([pathCopy row] == 2)
     {
       v12 = 0;
       v10 = 0;
@@ -1215,30 +1215,30 @@ LABEL_20:
     }
 
 LABEL_21:
-    v21 = [(WFIPConfigViewController *)self modifiedConfig];
-    v22 = [v21 ipv6Config];
+    modifiedConfig = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv6Config = [modifiedConfig ipv6Config];
 
-    if (v13 == v22)
+    if (v13 == ipv6Config)
     {
       goto LABEL_5;
     }
 
-    v23 = [(WFIPConfigViewController *)self modifiedConfig];
-    v24 = [v23 ipv6Config];
+    modifiedConfig2 = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv6Config2 = [modifiedConfig2 ipv6Config];
 
-    v25 = [(WFIPConfigViewController *)self modifiedConfig];
-    [v25 setIpv6Config:v13];
+    modifiedConfig3 = [(WFIPConfigViewController *)self modifiedConfig];
+    [modifiedConfig3 setIpv6Config:v13];
 
     if (v12)
     {
-      v26 = [(WFIPConfigViewController *)self tableView];
-      [v26 beginUpdates];
+      tableView = [(WFIPConfigViewController *)self tableView];
+      [tableView beginUpdates];
 
-      v27 = [(WFIPConfigViewController *)self tableView];
+      tableView2 = [(WFIPConfigViewController *)self tableView];
       v28 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-      [v27 insertSections:v28 withRowAnimation:0];
+      [tableView2 insertSections:v28 withRowAnimation:0];
 
-      v29 = [(WFIPConfigViewController *)self tableView];
+      tableView3 = [(WFIPConfigViewController *)self tableView];
       v30 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:1];
       v59[0] = v30;
       v31 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:1];
@@ -1246,25 +1246,25 @@ LABEL_21:
       v32 = [MEMORY[0x277CCAA70] indexPathForRow:2 inSection:1];
       v59[2] = v32;
       [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:3];
-      LODWORD(v27) = v10;
+      LODWORD(tableView2) = v10;
       v34 = v33 = v11;
-      [v29 insertRowsAtIndexPaths:v34 withRowAnimation:0];
+      [tableView3 insertRowsAtIndexPaths:v34 withRowAnimation:0];
 
       v11 = v33;
-      v10 = v27;
+      v10 = tableView2;
       v35 = 3;
 
-      v36 = [(WFIPConfigViewController *)self tableView];
-      [v36 endUpdates];
+      tableView4 = [(WFIPConfigViewController *)self tableView];
+      [tableView4 endUpdates];
 
-      v37 = [(WFIPConfigViewController *)self ipAddressCell];
-      [v37 becomeFirstResponder];
+      ipAddressCell = [(WFIPConfigViewController *)self ipAddressCell];
+      [ipAddressCell becomeFirstResponder];
     }
 
     else
     {
       v35 = 0;
-      if ((v10 | v11) != 1 || v24 != 1)
+      if ((v10 | v11) != 1 || ipv6Config2 != 1)
       {
 LABEL_28:
         if (v10)
@@ -1278,11 +1278,11 @@ LABEL_28:
         }
 
         v47 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-        v48 = [v6 cellForRowAtIndexPath:v47];
+        v48 = [viewCopy cellForRowAtIndexPath:v47];
         [v48 setAccessoryType:v46];
 
         v49 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:0];
-        v50 = [v6 cellForRowAtIndexPath:v49];
+        v50 = [viewCopy cellForRowAtIndexPath:v49];
         [v50 setAccessoryType:v35];
 
         if (v11)
@@ -1296,20 +1296,20 @@ LABEL_28:
         }
 
         v52 = [MEMORY[0x277CCAA70] indexPathForRow:2 inSection:0];
-        v53 = [v6 cellForRowAtIndexPath:v52];
+        v53 = [viewCopy cellForRowAtIndexPath:v52];
         [v53 setAccessoryType:v51];
 
         goto LABEL_5;
       }
 
-      v38 = [(WFIPConfigViewController *)self tableView];
-      [v38 beginUpdates];
+      tableView5 = [(WFIPConfigViewController *)self tableView];
+      [tableView5 beginUpdates];
 
-      v39 = [(WFIPConfigViewController *)self tableView];
+      tableView6 = [(WFIPConfigViewController *)self tableView];
       v40 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-      [v39 deleteSections:v40 withRowAnimation:0];
+      [tableView6 deleteSections:v40 withRowAnimation:0];
 
-      v41 = [(WFIPConfigViewController *)self tableView];
+      tableView7 = [(WFIPConfigViewController *)self tableView];
       v42 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:1];
       v58[0] = v42;
       v43 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:1];
@@ -1317,26 +1317,26 @@ LABEL_28:
       v44 = [MEMORY[0x277CCAA70] indexPathForRow:2 inSection:1];
       v58[2] = v44;
       v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:3];
-      [v41 deleteRowsAtIndexPaths:v45 withRowAnimation:0];
+      [tableView7 deleteRowsAtIndexPaths:v45 withRowAnimation:0];
 
-      v37 = [(WFIPConfigViewController *)self tableView];
-      [v37 endUpdates];
+      ipAddressCell = [(WFIPConfigViewController *)self tableView];
+      [ipAddressCell endUpdates];
       v35 = 0;
     }
 
     goto LABEL_28;
   }
 
-  if ([v7 row])
+  if ([pathCopy row])
   {
-    if ([v7 row] == 1)
+    if ([pathCopy row] == 1)
     {
       v14 = 2;
     }
 
     else
     {
-      v14 = [v7 row] == 2;
+      v14 = [pathCopy row] == 2;
     }
   }
 
@@ -1345,27 +1345,27 @@ LABEL_28:
     v14 = 0;
   }
 
-  v15 = [(WFIPConfigViewController *)self modifiedConfig];
-  v16 = [v15 ipv4Config];
+  modifiedConfig4 = [(WFIPConfigViewController *)self modifiedConfig];
+  ipv4Config = [modifiedConfig4 ipv4Config];
 
-  if (v14 != v16)
+  if (v14 != ipv4Config)
   {
-    v17 = [(WFIPConfigViewController *)self modifiedConfig];
-    v18 = [v17 ipv4Config];
+    modifiedConfig5 = [(WFIPConfigViewController *)self modifiedConfig];
+    ipv4Config2 = [modifiedConfig5 ipv4Config];
 
-    v19 = [(WFIPConfigViewController *)self modifiedConfig];
-    [v19 setIpv4Config:v14];
+    modifiedConfig6 = [(WFIPConfigViewController *)self modifiedConfig];
+    [modifiedConfig6 setIpv4Config:v14];
 
-    v20 = [(WFIPConfigViewController *)self tableView];
+    tableView8 = [(WFIPConfigViewController *)self tableView];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __62__WFIPConfigViewController_tableView_didSelectRowAtIndexPath___block_invoke;
     v54[3] = &unk_279EC5E08;
     v56 = v14;
-    v57 = v18;
+    v57 = ipv4Config2;
     v54[4] = self;
-    v55 = v6;
-    [v20 performBatchUpdates:v54 completion:&__block_literal_global_3];
+    v55 = viewCopy;
+    [tableView8 performBatchUpdates:v54 completion:&__block_literal_global_3];
   }
 
 LABEL_5:
@@ -1558,12 +1558,12 @@ void __62__WFIPConfigViewController_tableView_didSelectRowAtIndexPath___block_in
 
 - (double)_configCellLeadingInset
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v7 = v6;
 
   if (v4 >= v7)

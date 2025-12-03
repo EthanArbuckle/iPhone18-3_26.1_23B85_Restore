@@ -1,20 +1,20 @@
 @interface PHCollectionListKeyAssetsFetchResult
 - (BOOL)isFullyBackedByObjectIDs;
-- (PHCollectionListKeyAssetsFetchResult)fetchResultWithChangeHandlingValue:(id)a3;
-- (PHCollectionListKeyAssetsFetchResult)initWithCollectionList:(id)a3 keyAssets:(id)a4 childCollectionsFetchResult:(id)a5 keyAssetFetchByCollectionID:(id)a6 identifier:(id)a7 options:(id)a8 registerIfNeeded:(BOOL)a9;
-- (id)_fetchesByCollectionID:(id)a3 change:(id)a4;
-- (id)_keyAssetsForCollectionListWithChange:(id)a3 outCollectionsFetch:(id *)a4 outKeyAssetFetchByCollectionID:(id *)a5;
-- (id)changeHandlingValueUsingSeedOids:(id)a3 withChange:(id)a4 usingManagedObjectContext:(id)a5;
-- (id)copyWithOptions:(id)a3;
+- (PHCollectionListKeyAssetsFetchResult)fetchResultWithChangeHandlingValue:(id)value;
+- (PHCollectionListKeyAssetsFetchResult)initWithCollectionList:(id)list keyAssets:(id)assets childCollectionsFetchResult:(id)result keyAssetFetchByCollectionID:(id)d identifier:(id)identifier options:(id)options registerIfNeeded:(BOOL)needed;
+- (id)_fetchesByCollectionID:(id)d change:(id)change;
+- (id)_keyAssetsForCollectionListWithChange:(id)change outCollectionsFetch:(id *)fetch outKeyAssetFetchByCollectionID:(id *)d;
+- (id)changeHandlingValueUsingSeedOids:(id)oids withChange:(id)change usingManagedObjectContext:(id)context;
+- (id)copyWithOptions:(id)options;
 - (id)fetchedObjectIDs;
 - (id)fetchedObjectIDsSet;
-- (unint64_t)possibleChangesForChange:(id)a3 propertiesFetchResult:(id)a4;
+- (unint64_t)possibleChangesForChange:(id)change propertiesFetchResult:(id)result;
 - (void)dealloc;
 @end
 
 @implementation PHCollectionListKeyAssetsFetchResult
 
-- (PHCollectionListKeyAssetsFetchResult)fetchResultWithChangeHandlingValue:(id)a3
+- (PHCollectionListKeyAssetsFetchResult)fetchResultWithChangeHandlingValue:(id)value
 {
   v4 = [PHCollection fetchCollectionsInCollectionList:self->_collectionList options:self->_options];
   LOBYTE(v7) = 0;
@@ -23,17 +23,17 @@
   return v5;
 }
 
-- (id)_fetchesByCollectionID:(id)a3 change:(id)a4
+- (id)_fetchesByCollectionID:(id)d change:(id)change
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v28 = [MEMORY[0x1E695DF90] dictionary];
+  dCopy = d;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = [MEMORY[0x1E695DFA8] set];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v5;
+  obj = dCopy;
   v7 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v7)
   {
@@ -66,8 +66,8 @@ LABEL_3:
       if (v14)
       {
         keyAssetFetchByCollectionID = self->_keyAssetFetchByCollectionID;
-        v16 = [v14 objectID];
-        v17 = [(NSDictionary *)keyAssetFetchByCollectionID objectForKeyedSubscript:v16];
+        objectID = [v14 objectID];
+        v17 = [(NSDictionary *)keyAssetFetchByCollectionID objectForKeyedSubscript:objectID];
         v18 = v17;
         if (v17)
         {
@@ -81,15 +81,15 @@ LABEL_3:
 
         v20 = v19;
 
-        v21 = [v12 objectID];
-        [v28 setObject:v20 forKey:v21];
+        objectID2 = [v12 objectID];
+        [dictionary setObject:v20 forKey:objectID2];
 
-        v22 = [v20 firstObject];
+        firstObject = [v20 firstObject];
 
-        if (v22)
+        if (firstObject)
         {
-          v23 = [v20 firstObject];
-          [v6 addObject:v23];
+          firstObject2 = [v20 firstObject];
+          [v6 addObject:firstObject2];
         }
       }
 
@@ -114,30 +114,30 @@ LABEL_3:
     }
   }
 
-  return v28;
+  return dictionary;
 }
 
-- (id)_keyAssetsForCollectionListWithChange:(id)a3 outCollectionsFetch:(id *)a4 outKeyAssetFetchByCollectionID:(id *)a5
+- (id)_keyAssetsForCollectionListWithChange:(id)change outCollectionsFetch:(id *)fetch outKeyAssetFetchByCollectionID:(id *)d
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  changeCopy = change;
   v8 = self->_childCollectionsFetchResult;
   v9 = [(NSDictionary *)self->_keyAssetFetchByCollectionID mutableCopy];
-  v10 = [v7 changeDetailsForFetchResult:v8];
-  v37 = a5;
+  v10 = [changeCopy changeDetailsForFetchResult:v8];
+  dCopy = d;
   v34 = v10;
-  v40 = self;
+  selfCopy = self;
   if (v10)
   {
-    v11 = [v10 fetchResultAfterChanges];
+    fetchResultAfterChanges = [v10 fetchResultAfterChanges];
 
-    v12 = [(PHCollectionListKeyAssetsFetchResult *)self _fetchesByCollectionID:v11 change:v7];
+    v12 = [(PHCollectionListKeyAssetsFetchResult *)self _fetchesByCollectionID:fetchResultAfterChanges change:changeCopy];
 
     v9 = v12;
-    v8 = v11;
+    v8 = fetchResultAfterChanges;
   }
 
-  v13 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -158,34 +158,34 @@ LABEL_5:
       }
 
       v17 = *(*(&v41 + 1) + 8 * v16);
-      v18 = [v17 objectID];
-      v19 = [v9 objectForKeyedSubscript:v18];
+      objectID = [v17 objectID];
+      v19 = [v9 objectForKeyedSubscript:objectID];
 
-      v20 = [v7 changeDetailsForFetchResult:v19];
+      v20 = [changeCopy changeDetailsForFetchResult:v19];
       v21 = v20;
       if (v20)
       {
-        v22 = [v20 fetchResultAfterChanges];
+        fetchResultAfterChanges2 = [v20 fetchResultAfterChanges];
 
-        v23 = [v17 objectID];
-        [v9 setObject:v22 forKey:v23];
+        objectID2 = [v17 objectID];
+        [v9 setObject:fetchResultAfterChanges2 forKey:objectID2];
 
-        v19 = v22;
+        v19 = fetchResultAfterChanges2;
       }
 
-      v24 = [v17 objectID];
-      v25 = [v9 objectForKeyedSubscript:v24];
+      objectID3 = [v17 objectID];
+      v25 = [v9 objectForKeyedSubscript:objectID3];
 
-      v26 = [v25 firstObject];
+      firstObject = [v25 firstObject];
 
-      if (v26)
+      if (firstObject)
       {
-        v27 = [v25 firstObject];
-        [v13 addObject:v27];
+        firstObject2 = [v25 firstObject];
+        [orderedSet addObject:firstObject2];
       }
 
-      v28 = [v13 count];
-      collectionListKeyAssetLimit = v40->_collectionListKeyAssetLimit;
+      v28 = [orderedSet count];
+      collectionListKeyAssetLimit = selfCopy->_collectionListKeyAssetLimit;
 
       if (v28 >= collectionListKeyAssetLimit)
       {
@@ -205,52 +205,52 @@ LABEL_5:
     }
   }
 
-  if (a4)
+  if (fetch)
   {
     v30 = obj;
-    *a4 = obj;
+    *fetch = obj;
   }
 
-  if (v37)
+  if (dCopy)
   {
     v31 = v9;
-    *v37 = v9;
+    *dCopy = v9;
   }
 
-  v32 = [v13 array];
+  array = [orderedSet array];
 
-  return v32;
+  return array;
 }
 
 - (id)fetchedObjectIDsSet
 {
-  v2 = [(PHCollectionListKeyAssetsFetchResult *)self objectIDs];
-  v3 = [v2 set];
+  objectIDs = [(PHCollectionListKeyAssetsFetchResult *)self objectIDs];
+  v3 = [objectIDs set];
 
   return v3;
 }
 
 - (id)fetchedObjectIDs
 {
-  v2 = [(PHCollectionListKeyAssetsFetchResult *)self objectIDs];
-  v3 = [v2 array];
+  objectIDs = [(PHCollectionListKeyAssetsFetchResult *)self objectIDs];
+  array = [objectIDs array];
 
-  return v3;
+  return array;
 }
 
-- (unint64_t)possibleChangesForChange:(id)a3 propertiesFetchResult:(id)a4
+- (unint64_t)possibleChangesForChange:(id)change propertiesFetchResult:(id)result
 {
-  v5 = a3;
+  changeCopy = change;
   v6 = [(PHFetchResult *)self->_childCollectionsFetchResult copy];
   v7 = [(NSSet *)self->_relevantOIDSet mutableCopy];
-  if (([v6 possibleChangesForChange:v5] & 7) != 0)
+  if (([v6 possibleChangesForChange:changeCopy] & 7) != 0)
   {
     v8 = [PHCollection fetchCollectionsInCollectionList:self->_collectionList options:self->_options];
 
-    v9 = [v8 fetchedObjectIDsSet];
-    if (v9)
+    fetchedObjectIDsSet = [v8 fetchedObjectIDsSet];
+    if (fetchedObjectIDsSet)
     {
-      [v7 unionSet:v9];
+      [v7 unionSet:fetchedObjectIDsSet];
     }
 
     else
@@ -262,22 +262,22 @@ LABEL_5:
     v6 = v8;
   }
 
-  v11 = [v5 insertedObjectIDs];
-  if ([v11 intersectsSet:v7])
+  insertedObjectIDs = [changeCopy insertedObjectIDs];
+  if ([insertedObjectIDs intersectsSet:v7])
   {
     goto LABEL_9;
   }
 
-  v12 = [v5 updatedObjectIDs];
-  if ([v12 intersectsSet:v7])
+  updatedObjectIDs = [changeCopy updatedObjectIDs];
+  if ([updatedObjectIDs intersectsSet:v7])
   {
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v15 = [v5 deletedObjectIDs];
-  v16 = [v15 intersectsSet:v7];
+  deletedObjectIDs = [changeCopy deletedObjectIDs];
+  v16 = [deletedObjectIDs intersectsSet:v7];
 
   if ((v16 & 1) == 0)
   {
@@ -292,11 +292,11 @@ LABEL_11:
   return v13;
 }
 
-- (id)changeHandlingValueUsingSeedOids:(id)a3 withChange:(id)a4 usingManagedObjectContext:(id)a5
+- (id)changeHandlingValueUsingSeedOids:(id)oids withChange:(id)change usingManagedObjectContext:(id)context
 {
   v12 = 0;
   v13 = 0;
-  v6 = [(PHCollectionListKeyAssetsFetchResult *)self _keyAssetsForCollectionListWithChange:a4 outCollectionsFetch:&v13 outKeyAssetFetchByCollectionID:&v12];
+  v6 = [(PHCollectionListKeyAssetsFetchResult *)self _keyAssetsForCollectionListWithChange:change outCollectionsFetch:&v13 outKeyAssetFetchByCollectionID:&v12];
   v7 = v13;
   v8 = v12;
   LOBYTE(v11) = 1;
@@ -308,23 +308,23 @@ LABEL_11:
 - (BOOL)isFullyBackedByObjectIDs
 {
   v3 = [(NSArray *)self->_objects count];
-  v4 = [(PHCollectionListKeyAssetsFetchResult *)self objectIDs];
-  LOBYTE(v3) = v3 == [v4 count];
+  objectIDs = [(PHCollectionListKeyAssetsFetchResult *)self objectIDs];
+  LOBYTE(v3) = v3 == [objectIDs count];
 
   return v3;
 }
 
-- (id)copyWithOptions:(id)a3
+- (id)copyWithOptions:(id)options
 {
-  v4 = [a3 objectForKeyedSubscript:@"invalidateCache"];
+  v4 = [options objectForKeyedSubscript:@"invalidateCache"];
   if ([v4 BOOLValue])
   {
-    v5 = [(PHFetchResult *)self isRegisteredForChangeNotificationDeltas];
+    isRegisteredForChangeNotificationDeltas = [(PHFetchResult *)self isRegisteredForChangeNotificationDeltas];
     v6 = [PHCollectionListKeyAssetsFetchResult alloc];
     collectionList = self->_collectionList;
-    v8 = [(PHCollectionListKeyAssetsFetchResult *)self fetchedObjects];
-    LOBYTE(v11) = v5;
-    v9 = [(PHCollectionListKeyAssetsFetchResult *)v6 initWithCollectionList:collectionList keyAssets:v8 childCollectionsFetchResult:self->_childCollectionsFetchResult keyAssetFetchByCollectionID:self->_keyAssetFetchByCollectionID identifier:self->_changeHandlingKey options:self->_options registerIfNeeded:v11];
+    fetchedObjects = [(PHCollectionListKeyAssetsFetchResult *)self fetchedObjects];
+    LOBYTE(v11) = isRegisteredForChangeNotificationDeltas;
+    v9 = [(PHCollectionListKeyAssetsFetchResult *)v6 initWithCollectionList:collectionList keyAssets:fetchedObjects childCollectionsFetchResult:self->_childCollectionsFetchResult keyAssetFetchByCollectionID:self->_keyAssetFetchByCollectionID identifier:self->_changeHandlingKey options:self->_options registerIfNeeded:v11];
   }
 
   else
@@ -343,59 +343,59 @@ LABEL_11:
   [(PHFetchResult *)&v3 dealloc];
 }
 
-- (PHCollectionListKeyAssetsFetchResult)initWithCollectionList:(id)a3 keyAssets:(id)a4 childCollectionsFetchResult:(id)a5 keyAssetFetchByCollectionID:(id)a6 identifier:(id)a7 options:(id)a8 registerIfNeeded:(BOOL)a9
+- (PHCollectionListKeyAssetsFetchResult)initWithCollectionList:(id)list keyAssets:(id)assets childCollectionsFetchResult:(id)result keyAssetFetchByCollectionID:(id)d identifier:(id)identifier options:(id)options registerIfNeeded:(BOOL)needed
 {
   v61 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  listCopy = list;
+  assetsCopy = assets;
+  resultCopy = result;
+  dCopy = d;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v59.receiver = self;
   v59.super_class = PHCollectionListKeyAssetsFetchResult;
   v22 = [(PHFetchResult *)&v59 init];
   v23 = v22;
   if (v22)
   {
-    v52 = v18;
-    objc_storeStrong(&v22->_options, a8);
-    v24 = [(PHFetchOptions *)v23->_options fetchLimit];
+    v52 = resultCopy;
+    objc_storeStrong(&v22->_options, options);
+    fetchLimit = [(PHFetchOptions *)v23->_options fetchLimit];
     v25 = 4;
-    if (v24)
+    if (fetchLimit)
     {
-      v25 = v24;
+      v25 = fetchLimit;
     }
 
     v23->_collectionListKeyAssetLimit = v25;
-    objc_storeStrong(&v23->_collectionList, a3);
-    v51 = v21;
-    v54 = v16;
-    v26 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v21 object:v16];
+    objc_storeStrong(&v23->_collectionList, list);
+    v51 = optionsCopy;
+    v54 = listCopy;
+    v26 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:listCopy];
     photoLibrary = v23->_photoLibrary;
     v23->_photoLibrary = v26;
 
-    if (a9)
+    if (needed)
     {
       [(PHFetchResult *)v23 setRegisteredForChangeNotificationDeltas:1];
     }
 
-    objc_storeStrong(&v23->_childCollectionsFetchResult, a5);
-    v28 = v19;
-    if (!v19)
+    objc_storeStrong(&v23->_childCollectionsFetchResult, result);
+    v28 = dCopy;
+    if (!dCopy)
     {
       v28 = [(PHCollectionListKeyAssetsFetchResult *)v23 _fetchesByCollectionID:v23->_childCollectionsFetchResult change:0];
     }
 
     objc_storeStrong(&v23->_keyAssetFetchByCollectionID, v28);
-    if (!v19)
+    if (!dCopy)
     {
     }
 
-    v53 = v17;
-    if (v17)
+    v53 = assetsCopy;
+    if (assetsCopy)
     {
-      v29 = [v17 copy];
+      v29 = [assetsCopy copy];
     }
 
     else
@@ -405,9 +405,9 @@ LABEL_11:
 
     v50 = v29;
     v30 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v29];
-    v31 = [v30 array];
+    array = [v30 array];
     objects = v23->_objects;
-    v23->_objects = v31;
+    v23->_objects = array;
 
     v33 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:{-[NSArray count](v23->_objects, "count")}];
     v55 = 0u;
@@ -429,10 +429,10 @@ LABEL_11:
             objc_enumerationMutation(v34);
           }
 
-          v39 = [*(*(&v55 + 1) + 8 * i) objectID];
-          if (v39)
+          objectID = [*(*(&v55 + 1) + 8 * i) objectID];
+          if (objectID)
           {
-            [v33 addObject:v39];
+            [v33 addObject:objectID];
           }
         }
 
@@ -443,8 +443,8 @@ LABEL_11:
     }
 
     objc_storeStrong(&v23->_objectIDs, v33);
-    v40 = [(PHFetchResult *)v23->_childCollectionsFetchResult fetchedObjectIDsSet];
-    v41 = [v40 mutableCopy];
+    fetchedObjectIDsSet = [(PHFetchResult *)v23->_childCollectionsFetchResult fetchedObjectIDsSet];
+    v41 = [fetchedObjectIDsSet mutableCopy];
 
     if (v41)
     {
@@ -457,25 +457,25 @@ LABEL_11:
     }
 
     v43 = v42;
-    v18 = v52;
+    resultCopy = v52;
     v44 = MEMORY[0x1E695DFD8];
-    v45 = [(PHObject *)v23->_collectionList objectID];
-    v46 = [v44 setWithObject:v45];
+    objectID2 = [(PHObject *)v23->_collectionList objectID];
+    v46 = [v44 setWithObject:objectID2];
     [v43 unionSet:v46];
 
     objc_storeStrong(&v23->_relevantOIDSet, v43);
-    if (!v20)
+    if (!identifierCopy)
     {
-      v47 = [MEMORY[0x1E696AFB0] UUID];
-      v20 = [v47 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      identifierCopy = [uUID UUIDString];
     }
 
-    objc_storeStrong(&v23->_changeHandlingKey, v20);
+    objc_storeStrong(&v23->_changeHandlingKey, identifierCopy);
     v48 = v23;
 
-    v17 = v53;
-    v16 = v54;
-    v21 = v51;
+    assetsCopy = v53;
+    listCopy = v54;
+    optionsCopy = v51;
   }
 
   return v23;

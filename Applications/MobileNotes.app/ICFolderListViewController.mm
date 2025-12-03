@@ -1,49 +1,49 @@
 @interface ICFolderListViewController
 - (BOOL)addFolderButtonAppearsInNavigationBar;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context;
 - (BOOL)isSearchActive;
 - (BOOL)isSearchActiveWithQuery;
 - (ICFolderDataSource)folderDataSource;
-- (ICFolderListViewController)initWithViewMode:(int64_t)a3 viewControllerManager:(id)a4 overrideContainerIdentifier:(id)a5;
+- (ICFolderListViewController)initWithViewMode:(int64_t)mode viewControllerManager:(id)manager overrideContainerIdentifier:(id)identifier;
 - (ICOutlineParentCollectionViewCell)tagHeadingCell;
 - (double)availableWidthForSummaryView;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (id)managedObjectContextChangeController:(id)a3 managedObjectIDsToUpdateForUpdatedManagedObjects:(id)a4;
-- (id)noteContainerWithItemIdentifier:(id)a3;
-- (id)updateSummaryView:(id)a3 isPrimary:(BOOL)a4;
-- (void)addFolderButtonAction:(id)a3;
-- (void)addNoteButtonPressed:(id)a3 event:(id)a4;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (id)managedObjectContextChangeController:(id)controller managedObjectIDsToUpdateForUpdatedManagedObjects:(id)objects;
+- (id)noteContainerWithItemIdentifier:(id)identifier;
+- (id)updateSummaryView:(id)view isPrimary:(BOOL)primary;
+- (void)addFolderButtonAction:(id)action;
+- (void)addNoteButtonPressed:(id)pressed event:(id)event;
 - (void)addPermanentObservers;
 - (void)checkIfShouldShowOrHideAllowNotificationsView;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 - (void)confirmFocusedCellSelection;
 - (void)confirmSelection;
-- (void)dataSourceDataUpdateDidRender:(id)a3;
+- (void)dataSourceDataUpdateDidRender:(id)render;
 - (void)dealloc;
-- (void)folderWasCreated:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)folderWasCreated:(id)created;
+- (void)keyboardWillShow:(id)show;
 - (void)loadView;
-- (void)managedObjectContextChangeController:(id)a3 performUpdatesForManagedObjectIDs:(id)a4;
-- (void)noteDecryptedStatusDidChange:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)managedObjectContextChangeController:(id)controller performUpdatesForManagedObjectIDs:(id)ds;
+- (void)noteDecryptedStatusDidChange:(id)change;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)registerForTraitChanges;
-- (void)reloadListWithDataIndexedBlock:(id)a3 dataRenderedBlock:(id)a4;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneWillDeactivate:(id)a3;
-- (void)scrollToContainerWithObjectID:(id)a3;
+- (void)reloadListWithDataIndexedBlock:(id)block dataRenderedBlock:(id)renderedBlock;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneWillDeactivate:(id)deactivate;
+- (void)scrollToContainerWithObjectID:(id)d;
 - (void)scrollToRecentlyCreatedFolderIfNeeded;
-- (void)selectItemWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)summaryViewLockNowPressed:(id)a3;
+- (void)selectItemWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)summaryViewLockNowPressed:(id)pressed;
 - (void)updateAddFolderButton;
 - (void)updateAppearanceStyle;
 - (void)updateContainerSelection;
@@ -52,12 +52,12 @@
 - (void)updateSummaryView;
 - (void)updateTagHeadingCell;
 - (void)updateTagOperatorPosition;
-- (void)updateToolbarAnimated:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateToolbarAnimated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ICFolderListViewController
@@ -72,13 +72,13 @@
 
   else
   {
-    v5 = [(ICBaseViewController *)self viewControllerManager];
-    v6 = [v5 persistenceConfiguration];
-    v22 = [v6 legacyViewContext];
+    viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+    persistenceConfiguration = [viewControllerManager persistenceConfiguration];
+    legacyViewContext = [persistenceConfiguration legacyViewContext];
 
-    v7 = [(ICBaseViewController *)self viewControllerManager];
-    v8 = [v7 persistenceConfiguration];
-    v21 = [v8 modernBackgroundContext];
+    viewControllerManager2 = [(ICBaseViewController *)self viewControllerManager];
+    persistenceConfiguration2 = [viewControllerManager2 persistenceConfiguration];
+    modernBackgroundContext = [persistenceConfiguration2 modernBackgroundContext];
 
     objc_initWeak(location, self);
     v29[0] = _NSConcreteStackBlock;
@@ -100,16 +100,16 @@
     objc_copyWeak(&v26, location);
     v11 = objc_retainBlock(v25);
     v12 = [ICFolderDataSource alloc];
-    v13 = [(ICFolderListViewController *)self collectionView];
-    v14 = [(ICFolderListViewController *)self overrideContainerIdentifier];
-    v15 = [(ICBaseViewController *)self unsupportedFolderInfoButtonTapHandler];
-    v16 = [(ICFolderDataSource *)v12 initWithCollectionView:v13 presentingViewController:self legacyManagedObjectContext:v22 modernManagedObjectContext:v21 overrideContainerIdentifier:v14 unsupportedFolderInfoButtonTapHandler:v15 accountUpgradeButtonTapHandlerProvider:v9 tagSelectionDidChangeHandler:v10 allowNotificationsCloseHandler:v11];
+    collectionView = [(ICFolderListViewController *)self collectionView];
+    overrideContainerIdentifier = [(ICFolderListViewController *)self overrideContainerIdentifier];
+    unsupportedFolderInfoButtonTapHandler = [(ICBaseViewController *)self unsupportedFolderInfoButtonTapHandler];
+    v16 = [(ICFolderDataSource *)v12 initWithCollectionView:collectionView presentingViewController:self legacyManagedObjectContext:legacyViewContext modernManagedObjectContext:modernBackgroundContext overrideContainerIdentifier:overrideContainerIdentifier unsupportedFolderInfoButtonTapHandler:unsupportedFolderInfoButtonTapHandler accountUpgradeButtonTapHandlerProvider:v9 tagSelectionDidChangeHandler:v10 allowNotificationsCloseHandler:v11];
     v17 = self->_folderDataSource;
     self->_folderDataSource = v16;
 
     v18 = +[ICNoteContext sharedContext];
-    v19 = [v18 workerManagedObjectContext];
-    [(ICFolderDataSource *)self->_folderDataSource setApplySnapshotModernManagedObjectContext:v19];
+    workerManagedObjectContext = [v18 workerManagedObjectContext];
+    [(ICFolderDataSource *)self->_folderDataSource setApplySnapshotModernManagedObjectContext:workerManagedObjectContext];
 
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
@@ -132,13 +132,13 @@
 
 - (void)updateAppearanceStyle
 {
-  v3 = [(ICFolderListViewController *)self traitCollection];
-  v4 = [v3 _splitViewControllerContext];
+  traitCollection = [(ICFolderListViewController *)self traitCollection];
+  _splitViewControllerContext = [traitCollection _splitViewControllerContext];
 
-  v5 = (v4 - 3);
-  v6 = (v4 - 3) < 0xFFFFFFFFFFFFFFFELL;
-  v7 = [(ICFolderListViewController *)self folderDataSource];
-  [v7 setHasGroupInset:v6];
+  v5 = (_splitViewControllerContext - 3);
+  v6 = (_splitViewControllerContext - 3) < 0xFFFFFFFFFFFFFFFELL;
+  folderDataSource = [(ICFolderListViewController *)self folderDataSource];
+  [folderDataSource setHasGroupInset:v6];
 
   if ((+[UIDevice ic_isVision]& 1) == 0)
   {
@@ -159,8 +159,8 @@
       v9 = +[UIColor ICGroupedBackgroundColor];
     }
 
-    v10 = [(ICFolderListViewController *)self collectionView];
-    [v10 setBackgroundColor:v9];
+    collectionView = [(ICFolderListViewController *)self collectionView];
+    [collectionView setBackgroundColor:v9];
 
     if (v5 <= 0xFFFFFFFFFFFFFFFDLL)
     {
@@ -170,9 +170,9 @@
 
 - (void)updateNavigationTitle
 {
-  v4 = [(ICFolderListViewController *)self isSearchActive];
-  v5 = v4;
-  if (v4)
+  isSearchActive = [(ICFolderListViewController *)self isSearchActive];
+  v5 = isSearchActive;
+  if (isSearchActive)
   {
     [(ICBaseViewController *)self searchNavigationTitle];
   }
@@ -183,8 +183,8 @@
     [v2 localizedStringForKey:@"Folders" value:&stru_100661CF0 table:0];
   }
   v6 = ;
-  v7 = [(ICFolderListViewController *)self navigationItem];
-  [v7 setTitle:v6];
+  navigationItem = [(ICFolderListViewController *)self navigationItem];
+  [navigationItem setTitle:v6];
 
   if ((v5 & 1) == 0)
   {
@@ -202,24 +202,24 @@
     v8 = 1.1;
   }
 
-  v10 = [(ICFolderListViewController *)self navigationItem];
-  v9 = [v10 subtitleView];
-  [v9 setAlpha:v8];
+  navigationItem2 = [(ICFolderListViewController *)self navigationItem];
+  subtitleView = [navigationItem2 subtitleView];
+  [subtitleView setAlpha:v8];
 }
 
-- (ICFolderListViewController)initWithViewMode:(int64_t)a3 viewControllerManager:(id)a4 overrideContainerIdentifier:(id)a5
+- (ICFolderListViewController)initWithViewMode:(int64_t)mode viewControllerManager:(id)manager overrideContainerIdentifier:(id)identifier
 {
-  v9 = a5;
+  identifierCopy = identifier;
   v29.receiver = self;
   v29.super_class = ICFolderListViewController;
-  v10 = [(ICBaseViewController *)&v29 initWithViewMode:a3 viewControllerManager:a4 viewControllerType:2];
+  v10 = [(ICBaseViewController *)&v29 initWithViewMode:mode viewControllerManager:manager viewControllerType:2];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_overrideContainerIdentifier, a5);
-    v12 = [(ICBaseViewController *)v11 legacyViewContext];
-    v13 = [(ICBaseViewController *)v11 modernViewContext];
-    v14 = [NSSet setWithObjects:v12, v13, 0];
+    objc_storeStrong(&v10->_overrideContainerIdentifier, identifier);
+    legacyViewContext = [(ICBaseViewController *)v11 legacyViewContext];
+    modernViewContext = [(ICBaseViewController *)v11 modernViewContext];
+    v14 = [NSSet setWithObjects:legacyViewContext, modernViewContext, 0];
 
     v15 = [[ICManagedObjectContextChangeController alloc] initWithManagedObjectContexts:v14 delegate:v11];
     managedObjectContextChangeController = v11->_managedObjectContextChangeController;
@@ -230,16 +230,16 @@
     v11->_folderCreationController = v17;
 
     v19 = [ICFolderListCollectionView alloc];
-    v20 = [(ICBaseViewController *)v11 legacyViewContext];
-    v21 = [(ICBaseViewController *)v11 modernViewContext];
-    v22 = [(ICBaseViewController *)v11 viewControllerManager];
-    v23 = [(ICFolderListCollectionView *)v19 initWithPresentingViewController:v11 legacyManagedObjectContext:v20 modernManagedObjectContext:v21 viewControllerManager:v22];
+    legacyViewContext2 = [(ICBaseViewController *)v11 legacyViewContext];
+    modernViewContext2 = [(ICBaseViewController *)v11 modernViewContext];
+    viewControllerManager = [(ICBaseViewController *)v11 viewControllerManager];
+    v23 = [(ICFolderListCollectionView *)v19 initWithPresentingViewController:v11 legacyManagedObjectContext:legacyViewContext2 modernManagedObjectContext:modernViewContext2 viewControllerManager:viewControllerManager];
     collectionView = v11->_collectionView;
     v11->_collectionView = v23;
 
-    v25 = [(ICFolderListViewController *)v11 folderDataSource];
-    v26 = [v25 collectionViewDiffableDataSource];
-    [(ICCollectionView *)v11->_collectionView setDiffableDataSource:v26];
+    folderDataSource = [(ICFolderListViewController *)v11 folderDataSource];
+    collectionViewDiffableDataSource = [folderDataSource collectionViewDiffableDataSource];
+    [(ICCollectionView *)v11->_collectionView setDiffableDataSource:collectionViewDiffableDataSource];
 
     [(ICFolderListCollectionView *)v11->_collectionView setDelegate:v11];
     [(ICFolderListCollectionView *)v11->_collectionView setContentInsetAdjustmentBehavior:0];
@@ -255,19 +255,19 @@
   return v11;
 }
 
-- (void)reloadListWithDataIndexedBlock:(id)a3 dataRenderedBlock:(id)a4
+- (void)reloadListWithDataIndexedBlock:(id)block dataRenderedBlock:(id)renderedBlock
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICFolderListViewController *)self dataSource];
+  renderedBlockCopy = renderedBlock;
+  blockCopy = block;
+  dataSource = [(ICFolderListViewController *)self dataSource];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100070704;
   v10[3] = &unk_100645E80;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 reloadDataAnimated:0 dataIndexedBlock:v7 dataRenderedBlock:v10];
+  v11 = renderedBlockCopy;
+  v9 = renderedBlockCopy;
+  [dataSource reloadDataAnimated:0 dataIndexedBlock:blockCopy dataRenderedBlock:v10];
 }
 
 - (void)dealloc
@@ -276,15 +276,15 @@
   [v3 removeObserver:self];
 
   v4 = +[ICAppDelegate sharedInstance];
-  v5 = [v4 cloudContextDelegate];
+  cloudContextDelegate = [v4 cloudContextDelegate];
   v6 = ICKeyPathFromSelector();
-  [v5 ic_removeObserver:self forKeyPath:v6 context:&off_1006BA600];
+  [cloudContextDelegate ic_removeObserver:self forKeyPath:v6 context:&off_1006BA600];
 
-  v7 = [(ICBaseViewController *)self viewControllerManager];
-  [v7 ic_removeObserver:self forKeyPath:@"selectedContainerIdentifiers" context:&off_1006BA600];
+  viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+  [viewControllerManager ic_removeObserver:self forKeyPath:@"selectedContainerIdentifiers" context:&off_1006BA600];
 
-  v8 = [(ICBaseViewController *)self viewControllerManager];
-  [v8 ic_removeObserver:self forKeyPath:@"selectedContainerItemID" context:&off_1006BA600];
+  viewControllerManager2 = [(ICBaseViewController *)self viewControllerManager];
+  [viewControllerManager2 ic_removeObserver:self forKeyPath:@"selectedContainerItemID" context:&off_1006BA600];
 
   v9.receiver = self;
   v9.super_class = ICFolderListViewController;
@@ -296,8 +296,8 @@
   v4.receiver = self;
   v4.super_class = ICFolderListViewController;
   [(ICFolderListViewController *)&v4 loadView];
-  v3 = [(ICFolderListViewController *)self collectionView];
-  [(ICFolderListViewController *)self setView:v3];
+  collectionView = [(ICFolderListViewController *)self collectionView];
+  [(ICFolderListViewController *)self setView:collectionView];
 }
 
 - (void)viewDidLoad
@@ -309,27 +309,27 @@
   [(ICFolderListViewController *)self addPermanentObservers];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v19.receiver = self;
   v19.super_class = ICFolderListViewController;
-  [(ICBaseViewController *)&v19 viewWillAppear:a3];
-  v4 = [(ICFolderListViewController *)self managedObjectContextChangeController];
-  [v4 performUpdatesIfNeeded];
+  [(ICBaseViewController *)&v19 viewWillAppear:appear];
+  managedObjectContextChangeController = [(ICFolderListViewController *)self managedObjectContextChangeController];
+  [managedObjectContextChangeController performUpdatesIfNeeded];
 
-  v5 = [(ICFolderListViewController *)self transitionCoordinator];
-  if (v5)
+  transitionCoordinator = [(ICFolderListViewController *)self transitionCoordinator];
+  if (transitionCoordinator)
   {
-    v6 = [(ICFolderListViewController *)self transitionCoordinator];
-    if ([v6 isInteractive])
+    transitionCoordinator2 = [(ICFolderListViewController *)self transitionCoordinator];
+    if ([transitionCoordinator2 isInteractive])
     {
       [(ICFolderListViewController *)self updateToolbarAnimated:0];
     }
 
     else
     {
-      v7 = [(ICFolderListViewController *)self transitionCoordinator];
-      -[ICFolderListViewController updateToolbarAnimated:](self, "updateToolbarAnimated:", [v7 isCancelled] ^ 1);
+      transitionCoordinator3 = [(ICFolderListViewController *)self transitionCoordinator];
+      -[ICFolderListViewController updateToolbarAnimated:](self, "updateToolbarAnimated:", [transitionCoordinator3 isCancelled] ^ 1);
     }
   }
 
@@ -350,18 +350,18 @@
     v18[3] = &unk_100645E30;
     v18[4] = self;
     v8 = objc_retainBlock(v18);
-    v9 = [(ICFolderListViewController *)self transitionCoordinator];
-    v10 = [v9 isInteractive];
+    transitionCoordinator4 = [(ICFolderListViewController *)self transitionCoordinator];
+    isInteractive = [transitionCoordinator4 isInteractive];
 
-    if (v10)
+    if (isInteractive)
     {
-      v11 = [(ICFolderListViewController *)self transitionCoordinator];
+      transitionCoordinator5 = [(ICFolderListViewController *)self transitionCoordinator];
       v13 = _NSConcreteStackBlock;
       v14 = 3221225472;
       v15 = sub_100070C9C;
       v16 = &unk_1006461A0;
       v17 = v8;
-      [v11 notifyWhenInteractionChangesUsingBlock:&v13];
+      [transitionCoordinator5 notifyWhenInteractionChangesUsingBlock:&v13];
     }
 
     else
@@ -381,8 +381,8 @@
   v23.receiver = self;
   v23.super_class = ICFolderListViewController;
   [(ICFolderListViewController *)&v23 viewDidLayoutSubviews];
-  v3 = [(ICFolderListViewController *)self primarySummaryView];
-  [v3 availableWidth];
+  primarySummaryView = [(ICFolderListViewController *)self primarySummaryView];
+  [primarySummaryView availableWidth];
   v5 = v4;
   [(ICFolderListViewController *)self availableWidthForSummaryView];
   v7 = vabdd_f64(v5, v6);
@@ -391,15 +391,15 @@
   {
     [(ICFolderListViewController *)self availableWidthForSummaryView];
     v9 = v8;
-    v10 = [(ICFolderListViewController *)self primarySummaryView];
-    [v10 setAvailableWidth:v9];
+    primarySummaryView2 = [(ICFolderListViewController *)self primarySummaryView];
+    [primarySummaryView2 setAvailableWidth:v9];
 
-    v11 = [(ICFolderListViewController *)self primarySummaryView];
-    [v11 update];
+    primarySummaryView3 = [(ICFolderListViewController *)self primarySummaryView];
+    [primarySummaryView3 update];
   }
 
-  v12 = [(ICFolderListViewController *)self scrolledHeaderSummaryView];
-  [v12 availableWidth];
+  scrolledHeaderSummaryView = [(ICFolderListViewController *)self scrolledHeaderSummaryView];
+  [scrolledHeaderSummaryView availableWidth];
   v14 = v13;
   [(ICFolderListViewController *)self availableWidthForSummaryView];
   v16 = vabdd_f64(v14, v15);
@@ -408,19 +408,19 @@
   {
     [(ICFolderListViewController *)self availableWidthForSummaryView];
     v18 = v17;
-    v19 = [(ICFolderListViewController *)self scrolledHeaderSummaryView];
-    [v19 setAvailableWidth:v18];
+    scrolledHeaderSummaryView2 = [(ICFolderListViewController *)self scrolledHeaderSummaryView];
+    [scrolledHeaderSummaryView2 setAvailableWidth:v18];
 
-    v20 = [(ICFolderListViewController *)self scrolledHeaderSummaryView];
-    [v20 update];
+    scrolledHeaderSummaryView3 = [(ICFolderListViewController *)self scrolledHeaderSummaryView];
+    [scrolledHeaderSummaryView3 update];
   }
 
   v21 = +[UIApplication sharedApplication];
   if ([v21 isRunningTest])
   {
-    v22 = [(ICFolderListViewController *)self _appearState];
+    _appearState = [(ICFolderListViewController *)self _appearState];
 
-    if (v22 != 1)
+    if (_appearState != 1)
     {
       return;
     }
@@ -430,55 +430,55 @@
   }
 }
 
-- (void)sceneWillDeactivate:(id)a3
+- (void)sceneWillDeactivate:(id)deactivate
 {
-  v4 = [a3 object];
-  v5 = [(ICFolderListViewController *)self viewIfLoaded];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  v8 = [v4 isEqual:v7];
+  object = [deactivate object];
+  viewIfLoaded = [(ICFolderListViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
+  v8 = [object isEqual:windowScene];
 
   if (v8 && [(ICFolderListViewController *)self ic_isViewVisible])
   {
-    v9 = [(ICFolderListViewController *)self eventReporter];
-    [v9 submitFolderListViewEvent];
+    eventReporter = [(ICFolderListViewController *)self eventReporter];
+    [eventReporter submitFolderListViewEvent];
   }
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
-  v4 = [a3 object];
-  v5 = [(ICFolderListViewController *)self viewIfLoaded];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  v8 = [v4 isEqual:v7];
+  object = [activate object];
+  viewIfLoaded = [(ICFolderListViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
+  v8 = [object isEqual:windowScene];
 
   if (v8)
   {
     if ([(ICFolderListViewController *)self ic_isViewVisible])
     {
-      v9 = [(ICFolderListViewController *)self eventReporter];
-      [v9 startFolderListViewEventDurationTracking];
+      eventReporter = [(ICFolderListViewController *)self eventReporter];
+      [eventReporter startFolderListViewEventDurationTracking];
     }
 
     [(ICFolderListViewController *)self checkIfShouldShowOrHideAllowNotificationsView];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = ICFolderListViewController;
-  [(ICFolderListViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(ICFolderListViewController *)self eventReporter];
-  [v4 submitFolderListViewEvent];
+  [(ICFolderListViewController *)&v5 viewWillDisappear:disappear];
+  eventReporter = [(ICFolderListViewController *)self eventReporter];
+  [eventReporter submitFolderListViewEvent];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = ICFolderListViewController;
-  [(ICBaseViewController *)&v9 viewDidAppear:a3];
+  [(ICBaseViewController *)&v9 viewDidAppear:appear];
   if ([(ICFolderListViewController *)self canBecomeFirstResponder])
   {
     [(ICFolderListViewController *)self becomeFirstResponder];
@@ -488,36 +488,36 @@
   [v4 didFinishExtendedLaunch];
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 isRunningTest];
+  isRunningTest = [v5 isRunningTest];
 
-  if (v6)
+  if (isRunningTest)
   {
     v7 = +[ICAppDelegate sharedInstance];
     [v7 didShowFolderList];
   }
 
-  v8 = [(ICFolderListViewController *)self eventReporter];
-  [v8 startFolderListViewEventDurationTracking];
+  eventReporter = [(ICFolderListViewController *)self eventReporter];
+  [eventReporter startFolderListViewEventDurationTracking];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(ICFolderListViewController *)self isEditing]!= a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if ([(ICFolderListViewController *)self isEditing]!= editing)
   {
     v28.receiver = self;
     v28.super_class = ICFolderListViewController;
-    [(ICBaseViewController *)&v28 setEditing:v5 animated:v4];
+    [(ICBaseViewController *)&v28 setEditing:editingCopy animated:animatedCopy];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = [(ICFolderListViewController *)self collectionView];
-    v8 = [v7 indexPathsForVisibleItems];
+    collectionView = [(ICFolderListViewController *)self collectionView];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-    obj = v8;
-    v9 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    obj = indexPathsForVisibleItems;
+    v9 = [indexPathsForVisibleItems countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v9)
     {
       v10 = v9;
@@ -534,16 +534,16 @@
 
           v13 = *(*(&v24 + 1) + 8 * v12);
           objc_opt_class();
-          v14 = [(ICFolderListViewController *)self collectionView];
-          v15 = [v14 cellForItemAtIndexPath:v13];
+          collectionView2 = [(ICFolderListViewController *)self collectionView];
+          v15 = [collectionView2 cellForItemAtIndexPath:v13];
           v16 = ICDynamicCast();
 
           if (([v16 allowsEditing] & 1) == 0)
           {
-            [v16 setEditing:v5];
+            [v16 setEditing:editingCopy];
           }
 
-          if (v5)
+          if (editingCopy)
           {
             [v16 setSelected:0];
           }
@@ -560,20 +560,20 @@
       while (v10);
     }
 
-    v17 = [(ICFolderListViewController *)self dataSource];
-    v18 = [v17 collectionViewDiffableDataSource];
+    dataSource = [(ICFolderListViewController *)self dataSource];
+    collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1000713F8;
     v22[3] = &unk_100646080;
     v22[4] = self;
-    v23 = v5;
-    [v18 _performBatchApplyUsingReloadData:v22];
+    v23 = editingCopy;
+    [collectionViewDiffableDataSource _performBatchApplyUsingReloadData:v22];
 
-    v19 = [(ICFolderListViewController *)self collectionView];
-    [v19 setEditing:v5];
+    collectionView3 = [(ICFolderListViewController *)self collectionView];
+    [collectionView3 setEditing:editingCopy];
 
-    if (v5)
+    if (editingCopy)
     {
       v20 = +[NSNotificationCenter defaultCenter];
       [v20 postNotificationName:@"ICFolderListViewControllerDidStartEditingNotification" object:self];
@@ -586,19 +586,19 @@
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(ICFolderListViewController *)self dataSource];
-  v10 = [v9 collectionViewDiffableDataSource];
+  contextCopy = context;
+  pathCopy = path;
+  dataSource = [(ICFolderListViewController *)self dataSource];
+  collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
 
-  v11 = [v10 itemIdentifierForIndexPath:v8];
+  v11 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v12 = [v10 snapshot];
-  v13 = [v12 sectionIdentifierForSectionContainingItemIdentifier:v11];
+  snapshot = [collectionViewDiffableDataSource snapshot];
+  v13 = [snapshot sectionIdentifierForSectionContainingItemIdentifier:v11];
 
-  v14 = [v10 snapshotForSection:v13];
+  v14 = [collectionViewDiffableDataSource snapshotForSection:v13];
   v15 = [v14 childrenOfParent:v11];
   if (![v15 count])
   {
@@ -616,9 +616,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [(ICFolderListViewController *)self setCurrentSpringLoadedInteractionContext:v7];
-  v17 = [(ICFolderListViewController *)self currentSpringLoadedInteractionContext];
-  [v17 setTargetItem:v11];
+  [(ICFolderListViewController *)self setCurrentSpringLoadedInteractionContext:contextCopy];
+  currentSpringLoadedInteractionContext = [(ICFolderListViewController *)self currentSpringLoadedInteractionContext];
+  [currentSpringLoadedInteractionContext setTargetItem:v11];
 
   v18 = 1;
 LABEL_6:
@@ -626,32 +626,32 @@ LABEL_6:
   return v18;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v22 = a4;
-  v7 = a5;
-  v8 = [(ICFolderListViewController *)self dataSource];
-  v9 = [v8 collectionViewDiffableDataSource];
-  v10 = [v9 itemIdentifierForIndexPath:v7];
+  cellCopy = cell;
+  pathCopy = path;
+  dataSource = [(ICFolderListViewController *)self dataSource];
+  collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
+  v10 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
-    v12 = [(ICFolderListViewController *)self traitCollection];
-    v13 = [v12 _splitViewControllerContext];
+    traitCollection = [(ICFolderListViewController *)self traitCollection];
+    _splitViewControllerContext = [traitCollection _splitViewControllerContext];
 
-    if (v13 >= 1)
+    if (_splitViewControllerContext >= 1)
     {
-      v14 = [(ICBaseViewController *)self viewControllerManager];
-      v15 = [v14 selectedContainerItemID];
-      if ([v11 isEqual:v15])
+      viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+      selectedContainerItemID = [viewControllerManager selectedContainerItemID];
+      if ([v11 isEqual:selectedContainerItemID])
       {
-        v16 = [(ICFolderListViewController *)self isEditing];
+        isEditing = [(ICFolderListViewController *)self isEditing];
 
-        if ((v16 & 1) == 0)
+        if ((isEditing & 1) == 0)
         {
-          [v22 setSelected:1];
+          [cellCopy setSelected:1];
         }
       }
 
@@ -660,8 +660,8 @@ LABEL_6:
       }
     }
 
-    v19 = [(ICFolderListViewController *)self recentlyCreatedFolderObjectID];
-    v20 = [v11 isEqual:v19];
+    recentlyCreatedFolderObjectID = [(ICFolderListViewController *)self recentlyCreatedFolderObjectID];
+    v20 = [v11 isEqual:recentlyCreatedFolderObjectID];
 
     if (v20)
     {
@@ -686,9 +686,9 @@ LABEL_6:
 LABEL_15:
     objc_opt_class();
     v11 = ICDynamicCast();
-    v17 = [(ICBaseViewController *)self viewControllerManager];
-    v18 = [v17 tagSelection];
-    [v11 setTagSelection:v18];
+    viewControllerManager2 = [(ICBaseViewController *)self viewControllerManager];
+    tagSelection = [viewControllerManager2 tagSelection];
+    [v11 setTagSelection:tagSelection];
     goto LABEL_16;
   }
 
@@ -706,21 +706,21 @@ LABEL_15:
 
   objc_opt_class();
   v11 = ICDynamicCast();
-  v17 = [(ICBaseViewController *)self viewControllerManager];
-  v18 = [v17 tagSelection];
-  [v11 selectTagsWithTagSelection:v18 animated:0];
+  viewControllerManager2 = [(ICBaseViewController *)self viewControllerManager];
+  tagSelection = [viewControllerManager2 tagSelection];
+  [v11 selectTagsWithTagSelection:tagSelection animated:0];
 LABEL_16:
 
 LABEL_17:
 LABEL_18:
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ICFolderListViewController *)self dataSource];
-  v7 = [v6 collectionViewDiffableDataSource];
-  v8 = [v7 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  dataSource = [(ICFolderListViewController *)self dataSource];
+  collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
+  v8 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -737,27 +737,27 @@ LABEL_18:
   return isKindOfClass & 1;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ICFolderListViewController *)self dataSource];
-  v7 = [v6 collectionViewDiffableDataSource];
-  v8 = [v7 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  dataSource = [(ICFolderListViewController *)self dataSource];
+  collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
+  v8 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v9 = [(ICFolderListViewController *)self currentSpringLoadedInteractionContext];
-  v10 = [v9 targetItem];
-  if ([v10 isEqual:v8])
+  currentSpringLoadedInteractionContext = [(ICFolderListViewController *)self currentSpringLoadedInteractionContext];
+  targetItem = [currentSpringLoadedInteractionContext targetItem];
+  if ([targetItem isEqual:v8])
   {
-    v11 = [(ICFolderListViewController *)self currentSpringLoadedInteractionContext];
-    v12 = [v11 state];
+    currentSpringLoadedInteractionContext2 = [(ICFolderListViewController *)self currentSpringLoadedInteractionContext];
+    state = [currentSpringLoadedInteractionContext2 state];
 
-    if (v12 == 3)
+    if (state == 3)
     {
       [(ICFolderListViewController *)self setCurrentSpringLoadedInteractionContext:0];
-      v13 = [(ICFolderListViewController *)self folderDataSource];
+      folderDataSource = [(ICFolderListViewController *)self folderDataSource];
       v21 = v8;
       v14 = [NSArray arrayWithObjects:&v21 count:1];
-      [v13 expandItemsWithIdentifiers:v14 completion:0];
+      [folderDataSource expandItemsWithIdentifiers:v14 completion:0];
 
       v15 = 0;
       goto LABEL_10;
@@ -774,8 +774,8 @@ LABEL_18:
   if ([v16 ic_isModernFolderType])
   {
     v17 = +[ICNoteContext sharedContext];
-    v18 = [v17 managedObjectContext];
-    v19 = [v18 ic_existingObjectWithID:v16];
+    managedObjectContext = [v17 managedObjectContext];
+    v19 = [managedObjectContext ic_existingObjectWithID:v16];
 
     LOBYTE(v17) = [v19 isUnsupported];
     if (v17)
@@ -788,32 +788,32 @@ LABEL_10:
   return v15;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   [(ICFolderListViewController *)self becomeFirstResponder];
-  v6 = [(ICFolderListViewController *)self dataSource];
-  v7 = [v6 collectionViewDiffableDataSource];
-  v11 = [v7 itemIdentifierForIndexPath:v5];
+  dataSource = [(ICFolderListViewController *)self dataSource];
+  collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
+  v11 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   if (v11)
   {
-    v8 = [(ICBaseViewController *)self viewControllerManager];
+    viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
     v9 = [NSSet setWithObject:v11];
     v10 = +[NSSet set];
-    [v8 selectContainerWithIdentifiers:v9 excludingIdentifiers:v10 usingRootViewController:1 deferUntilDataLoaded:1 animated:1];
+    [viewControllerManager selectContainerWithIdentifiers:v9 excludingIdentifiers:v10 usingRootViewController:1 deferUntilDataLoaded:1 animated:1];
 
     [(ICFolderListViewController *)self updateTagHeadingCell];
   }
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  v6 = a4;
-  if ([v6 count] == 1)
+  pathsCopy = paths;
+  if ([pathsCopy count] == 1)
   {
-    v7 = [(ICFolderListViewController *)self collectionView];
-    v8 = [v7 contextMenuConfigurationForItemsAtIndexPaths:v6];
+    collectionView = [(ICFolderListViewController *)self collectionView];
+    v8 = [collectionView contextMenuConfigurationForItemsAtIndexPaths:pathsCopy];
   }
 
   else
@@ -824,70 +824,70 @@ LABEL_10:
   return v8;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(ICFolderListViewController *)self collectionView];
-  v10 = [v9 contextMenuPreviewForHighlightingMenuWithConfiguration:v8 indexPath:v7];
+  pathCopy = path;
+  configurationCopy = configuration;
+  collectionView = [(ICFolderListViewController *)self collectionView];
+  v10 = [collectionView contextMenuPreviewForHighlightingMenuWithConfiguration:configurationCopy indexPath:pathCopy];
 
   return v10;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(ICFolderListViewController *)self collectionView];
-  v10 = [v9 contextMenuPreviewForDismissingContextMenuWithConfiguration:v8 indexPath:v7];
+  pathCopy = path;
+  configurationCopy = configuration;
+  collectionView = [(ICFolderListViewController *)self collectionView];
+  v10 = [collectionView contextMenuPreviewForDismissingContextMenuWithConfiguration:configurationCopy indexPath:pathCopy];
 
   return v10;
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(ICFolderListViewController *)self collectionView];
-  [v9 contextMenuWillPerformPreviewActionForMenuWithConfiguration:v8 animator:v7];
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  collectionView = [(ICFolderListViewController *)self collectionView];
+  [collectionView contextMenuWillPerformPreviewActionForMenuWithConfiguration:configurationCopy animator:animatorCopy];
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ICFolderListViewController *)self collectionView];
-  v7 = [v6 canFocusItemAtIndexPath:v5];
+  pathCopy = path;
+  collectionView = [(ICFolderListViewController *)self collectionView];
+  v7 = [collectionView canFocusItemAtIndexPath:pathCopy];
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (![v9 isEditing] || objc_msgSend(v9, "hasActiveDrag"))
+  viewCopy = view;
+  pathCopy = path;
+  proposedIndexPathCopy = proposedIndexPath;
+  if (![viewCopy isEditing] || objc_msgSend(viewCopy, "hasActiveDrag"))
   {
-    v12 = v11;
+    v12 = proposedIndexPathCopy;
     goto LABEL_14;
   }
 
-  v13 = [(ICFolderListViewController *)self dataSource];
-  v14 = [v13 collectionViewDiffableDataSource];
+  dataSource = [(ICFolderListViewController *)self dataSource];
+  collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
 
-  v15 = [v14 itemIdentifierForIndexPath:v10];
-  v16 = [v14 itemIdentifierForIndexPath:v11];
+  v15 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
+  v16 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:proposedIndexPathCopy];
   objc_opt_class();
   v17 = ICDynamicCast();
   v18 = [(ICFolderListViewController *)self noteContainerWithItemIdentifier:v15];
   v19 = [(ICFolderListViewController *)self noteContainerWithItemIdentifier:v16];
   if ([v17 ic_isModernFolderType])
   {
-    v27 = v14;
+    v27 = collectionViewDiffableDataSource;
     v28 = v15;
-    v20 = [v19 noteContainerAccount];
+    noteContainerAccount = [v19 noteContainerAccount];
 
-    v19 = v20;
+    v19 = noteContainerAccount;
 LABEL_9:
     v21 = [ICMoveDecision alloc];
     v29 = v18;
@@ -897,30 +897,30 @@ LABEL_9:
 
     if ([v24 shouldMove])
     {
-      v25 = v11;
+      v25 = proposedIndexPathCopy;
     }
 
     else
     {
-      v25 = v10;
+      v25 = pathCopy;
     }
 
     v12 = v25;
 
     v18 = v23;
-    v14 = v27;
+    collectionViewDiffableDataSource = v27;
     v15 = v28;
     goto LABEL_13;
   }
 
   if (![v17 ic_isLegacyFolderType])
   {
-    v27 = v14;
+    v27 = collectionViewDiffableDataSource;
     v28 = v15;
     goto LABEL_9;
   }
 
-  v12 = v10;
+  v12 = pathCopy;
 LABEL_13:
 
 LABEL_14:
@@ -931,15 +931,15 @@ LABEL_14:
 - (void)addPermanentObservers
 {
   v3 = +[ICAppDelegate sharedInstance];
-  v4 = [v3 cloudContextDelegate];
+  cloudContextDelegate = [v3 cloudContextDelegate];
   v5 = ICKeyPathFromSelector();
-  [v4 ic_addObserver:self forKeyPath:v5 context:&off_1006BA600];
+  [cloudContextDelegate ic_addObserver:self forKeyPath:v5 context:&off_1006BA600];
 
-  v6 = [(ICBaseViewController *)self viewControllerManager];
-  [v6 ic_addObserver:self forKeyPath:@"selectedContainerItemID" context:&off_1006BA600];
+  viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+  [viewControllerManager ic_addObserver:self forKeyPath:@"selectedContainerItemID" context:&off_1006BA600];
 
-  v7 = [(ICBaseViewController *)self viewControllerManager];
-  [v7 ic_addObserver:self forKeyPath:@"selectedContainerIdentifiers" context:&off_1006BA600];
+  viewControllerManager2 = [(ICBaseViewController *)self viewControllerManager];
+  [viewControllerManager2 ic_addObserver:self forKeyPath:@"selectedContainerIdentifiers" context:&off_1006BA600];
 
   v8 = +[NSNotificationCenter defaultCenter];
   [v8 addObserver:self selector:"folderWasCreated:" name:@"ICFolderCreationControllerFolderWasCreatedNotification" object:0];
@@ -955,24 +955,24 @@ LABEL_14:
   [v14 addObserver:self selector:"noteDecryptedStatusDidChange:" name:v12 object:v13];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([(ICFolderListViewController *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/UI/Folder/ICFolderListViewController.m"]& 1) != 0)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([(ICFolderListViewController *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/iOS/UI/Folder/ICFolderListViewController.m"]& 1) != 0)
   {
-    v13 = [(ICFolderListViewController *)self ic_shouldIgnoreObserveValue:v12 ofObject:v11 forKeyPath:v10];
+    v13 = [(ICFolderListViewController *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &off_1006BA600 && (v13 & 1) == 0)
+    if (context == &off_1006BA600 && (v13 & 1) == 0)
     {
       v14 = +[ICAppDelegate sharedInstance];
-      v15 = [v14 cloudContextDelegate];
+      cloudContextDelegate = [v14 cloudContextDelegate];
 
-      if (v15 == v11)
+      if (cloudContextDelegate == objectCopy)
       {
         v17 = ICKeyPathFromSelector();
-        v18 = [v10 isEqualToString:v17];
+        v18 = [pathCopy isEqualToString:v17];
 
         if (v18)
         {
@@ -982,9 +982,9 @@ LABEL_14:
 
       else
       {
-        v16 = [(ICBaseViewController *)self viewControllerManager];
+        viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
 
-        if (v16 == v11)
+        if (viewControllerManager == objectCopy)
         {
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
@@ -1001,7 +1001,7 @@ LABEL_14:
   {
     v20.receiver = self;
     v20.super_class = ICFolderListViewController;
-    [(ICFolderListViewController *)&v20 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(ICFolderListViewController *)&v20 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -1038,9 +1038,9 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (id)noteContainerWithItemIdentifier:(id)a3
+- (id)noteContainerWithItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1048,7 +1048,7 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  v5 = v4;
+  v5 = identifierCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1057,7 +1057,7 @@ LABEL_14:
   v17 = 0;
   if ([v5 ic_isModernContainerType])
   {
-    v6 = [(ICBaseViewController *)self modernViewContext];
+    modernViewContext = [(ICBaseViewController *)self modernViewContext];
     v7 = v11;
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -1066,7 +1066,7 @@ LABEL_14:
     v11[6] = &v12;
     v11[4] = self;
     v11[5] = v5;
-    [v6 performBlockAndWait:v11];
+    [modernViewContext performBlockAndWait:v11];
 LABEL_7:
 
     goto LABEL_8;
@@ -1074,7 +1074,7 @@ LABEL_7:
 
   if ([v5 ic_isLegacyContainerType])
   {
-    v6 = [(ICBaseViewController *)self legacyViewContext];
+    modernViewContext = [(ICBaseViewController *)self legacyViewContext];
     v7 = v10;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -1083,7 +1083,7 @@ LABEL_7:
     v10[6] = &v12;
     v10[4] = self;
     v10[5] = v5;
-    [v6 performBlockAndWait:v10];
+    [modernViewContext performBlockAndWait:v10];
     goto LABEL_7;
   }
 
@@ -1112,74 +1112,74 @@ LABEL_9:
   if (-[ICFolderListViewController addFolderButtonAppearsInNavigationBar](self, "addFolderButtonAppearsInNavigationBar") && (-[ICFolderListViewController folderDataSource](self, "folderDataSource"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 countOfModernAccounts], v6, v7))
   {
     [(ICFolderListViewController *)self updateAddFolderButton];
-    v8 = [(ICBaseViewController *)self viewControllerManager];
-    v9 = [v8 hasCompactWidth];
+    viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+    hasCompactWidth = [viewControllerManager hasCompactWidth];
 
-    if (v9)
+    if (hasCompactWidth)
     {
-      v8 = [(ICFolderListViewController *)self editButtonItem];
-      v25[0] = v8;
+      viewControllerManager = [(ICFolderListViewController *)self editButtonItem];
+      v25[0] = viewControllerManager;
       v2 = +[UIBarButtonItem ic_sectionSpacer];
       v25[1] = v2;
-      v3 = [(ICFolderListViewController *)self addFolderButton];
-      v25[2] = v3;
+      addFolderButton = [(ICFolderListViewController *)self addFolderButton];
+      v25[2] = addFolderButton;
       v10 = [NSArray arrayWithObjects:v25 count:3];
     }
 
     else
     {
-      v4 = [(ICFolderListViewController *)self addFolderButton];
-      v24 = v4;
+      addFolderButton2 = [(ICFolderListViewController *)self addFolderButton];
+      v24 = addFolderButton2;
       v10 = [NSArray arrayWithObjects:&v24 count:1];
     }
 
-    v21 = [(ICFolderListViewController *)self navigationItem];
-    [v21 setRightBarButtonItems:v10];
+    navigationItem = [(ICFolderListViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItems:v10];
 
-    if (v9)
+    if (hasCompactWidth)
     {
 
-      v22 = 0;
+      editButtonItem = 0;
     }
 
     else
     {
 
-      v22 = [(ICFolderListViewController *)self editButtonItem];
+      editButtonItem = [(ICFolderListViewController *)self editButtonItem];
     }
 
-    v23 = [(ICFolderListViewController *)self navigationItem];
-    [v23 setLeftBarButtonItem:v22];
+    navigationItem2 = [(ICFolderListViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:editButtonItem];
 
-    if ((v9 & 1) == 0)
+    if ((hasCompactWidth & 1) == 0)
     {
     }
   }
 
   else
   {
-    v11 = [(ICFolderListViewController *)self editButtonItem];
-    v12 = [(ICFolderListViewController *)self navigationItem];
-    [v12 setRightBarButtonItem:v11];
+    editButtonItem2 = [(ICFolderListViewController *)self editButtonItem];
+    navigationItem3 = [(ICFolderListViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:editButtonItem2];
   }
 
   if (_UISolariumEnabled())
   {
     if ([(ICFolderListViewController *)self addFolderButtonAppearsInNavigationBar])
     {
-      v13 = [(ICFolderListViewController *)self traitCollection];
-      v14 = [v13 _hasSplitViewControllerContextSidebarColumn];
+      traitCollection = [(ICFolderListViewController *)self traitCollection];
+      _hasSplitViewControllerContextSidebarColumn = [traitCollection _hasSplitViewControllerContextSidebarColumn];
     }
 
     else
     {
-      v14 = 0;
+      _hasSplitViewControllerContextSidebarColumn = 0;
     }
 
     v15 = objc_alloc_init(UINavigationBarAppearance);
     v16 = v15;
-    v17 = v14 & 1;
-    if (v14)
+    v17 = _hasSplitViewControllerContextSidebarColumn & 1;
+    if (_hasSplitViewControllerContextSidebarColumn)
     {
       v18 = 2;
     }
@@ -1190,84 +1190,84 @@ LABEL_9:
     }
 
     [v15 _setTitleControlHidden:v17];
-    v19 = [(ICFolderListViewController *)self navigationItem];
-    [v19 setStandardAppearance:v16];
+    navigationItem4 = [(ICFolderListViewController *)self navigationItem];
+    [navigationItem4 setStandardAppearance:v16];
 
-    v20 = [(ICFolderListViewController *)self navigationItem];
-    [v20 setLargeTitleDisplayMode:v18];
+    navigationItem5 = [(ICFolderListViewController *)self navigationItem];
+    [navigationItem5 setLargeTitleDisplayMode:v18];
   }
 }
 
-- (void)updateToolbarAnimated:(BOOL)a3
+- (void)updateToolbarAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ICFolderListViewController *)self navigationController];
-  v6 = [v5 topViewController];
+  animatedCopy = animated;
+  navigationController = [(ICFolderListViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v6 == self)
+  if (topViewController == self)
   {
     v7 = (_UISolariumEnabled() & 1) == 0 && [(ICFolderListViewController *)self isSearchActive];
-    v8 = [(ICFolderListViewController *)self navigationController];
-    [v8 setToolbarHidden:v7 animated:v3];
+    navigationController2 = [(ICFolderListViewController *)self navigationController];
+    [navigationController2 setToolbarHidden:v7 animated:animatedCopy];
   }
 
   v41 = +[NSMutableArray array];
-  v9 = [(ICFolderListViewController *)self folderDataSource];
-  v10 = [v9 countOfModernAccounts];
+  folderDataSource = [(ICFolderListViewController *)self folderDataSource];
+  countOfModernAccounts = [folderDataSource countOfModernAccounts];
 
-  if (v10 && ![(ICFolderListViewController *)self addFolderButtonAppearsInNavigationBar])
+  if (countOfModernAccounts && ![(ICFolderListViewController *)self addFolderButtonAppearsInNavigationBar])
   {
     [(ICFolderListViewController *)self updateAddFolderButton];
-    v11 = [(ICFolderListViewController *)self addFolderButton];
-    [v41 addObject:v11];
+    addFolderButton = [(ICFolderListViewController *)self addFolderButton];
+    [v41 addObject:addFolderButton];
   }
 
   [(ICFolderListViewController *)self updateSummaryView];
-  v12 = [(ICBaseViewController *)self viewControllerManager];
-  v13 = [v12 hasCompactWidth];
+  viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+  hasCompactWidth = [viewControllerManager hasCompactWidth];
 
-  v14 = [(ICFolderListViewController *)self view];
-  v15 = [v14 traitCollection];
-  v16 = [v15 userInterfaceIdiom];
+  view = [(ICFolderListViewController *)self view];
+  traitCollection = [view traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   if (_UISolariumEnabled() && (+[UIDevice ic_isVision]& 1) == 0)
   {
-    if (!v16)
+    if (!userInterfaceIdiom)
     {
-      v21 = [(ICBaseViewController *)self noteSearchViewController];
-      v22 = [v21 searchController];
+      noteSearchViewController = [(ICBaseViewController *)self noteSearchViewController];
+      searchController = [noteSearchViewController searchController];
 
-      v23 = [v22 searchBar];
-      [v23 setShowsCancelButton:1];
+      searchBar = [searchController searchBar];
+      [searchBar setShowsCancelButton:1];
 
-      [v22 setAutomaticallyShowsCancelButton:1];
-      v24 = [(ICFolderListViewController *)self navigationItem];
-      v25 = [v24 searchBarPlacementBarButtonItem];
+      [searchController setAutomaticallyShowsCancelButton:1];
+      navigationItem = [(ICFolderListViewController *)self navigationItem];
+      searchBarPlacementBarButtonItem = [navigationItem searchBarPlacementBarButtonItem];
 
-      [v41 ic_addNonNilObject:v25];
+      [v41 ic_addNonNilObject:searchBarPlacementBarButtonItem];
     }
 
-    v26 = [(ICFolderListViewController *)self primarySummaryView];
-    v27 = [(ICFolderListViewController *)self navigationItem];
-    [v27 setLargeSubtitleView:v26];
+    primarySummaryView = [(ICFolderListViewController *)self primarySummaryView];
+    navigationItem2 = [(ICFolderListViewController *)self navigationItem];
+    [navigationItem2 setLargeSubtitleView:primarySummaryView];
 
-    v20 = [(ICFolderListViewController *)self scrolledHeaderSummaryView];
-    v28 = [(ICFolderListViewController *)self navigationItem];
-    [v28 setSubtitleView:v20];
+    scrolledHeaderSummaryView = [(ICFolderListViewController *)self scrolledHeaderSummaryView];
+    navigationItem3 = [(ICFolderListViewController *)self navigationItem];
+    [navigationItem3 setSubtitleView:scrolledHeaderSummaryView];
 
     goto LABEL_16;
   }
 
-  if (v13)
+  if (hasCompactWidth)
   {
     v17 = +[UIBarButtonItem flexibleSpaceItem];
     [v41 addObject:v17];
 
     v18 = [UIBarButtonItem alloc];
-    v19 = [(ICFolderListViewController *)self primarySummaryView];
-    v20 = [v18 initWithCustomView:v19];
+    primarySummaryView2 = [(ICFolderListViewController *)self primarySummaryView];
+    scrolledHeaderSummaryView = [v18 initWithCustomView:primarySummaryView2];
 
-    [v41 addObject:v20];
+    [v41 addObject:scrolledHeaderSummaryView];
 LABEL_16:
   }
 
@@ -1282,10 +1282,10 @@ LABEL_16:
     [v41 addObject:v31];
   }
 
-  v32 = [(ICBaseViewController *)self viewControllerManager];
-  v33 = [v32 hasCompactWidth];
+  viewControllerManager2 = [(ICBaseViewController *)self viewControllerManager];
+  hasCompactWidth2 = [viewControllerManager2 hasCompactWidth];
 
-  if (v33)
+  if (hasCompactWidth2)
   {
     v34 = [UIImage systemImageNamed:@"square.and.pencil"];
     v35 = [[UIBarButtonItem alloc] initWithImage:v34 style:0 target:self action:"addNoteButtonPressed:event:"];
@@ -1301,14 +1301,14 @@ LABEL_16:
   }
 
   v40 = [v41 copy];
-  [(ICFolderListViewController *)self setToolbarItems:v40 animated:v3];
+  [(ICFolderListViewController *)self setToolbarItems:v40 animated:animatedCopy];
 }
 
 - (void)updateAddFolderButton
 {
-  v3 = [(ICFolderListViewController *)self addFolderButton];
+  addFolderButton = [(ICFolderListViewController *)self addFolderButton];
 
-  if (!v3)
+  if (!addFolderButton)
   {
     v4 = [UIImage systemImageNamed:@"folder.badge.plus"];
     v5 = [[UIBarButtonItem alloc] initWithImage:v4 menu:0];
@@ -1316,108 +1316,108 @@ LABEL_16:
 
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"Create a folder" value:&stru_100661CF0 table:0];
-    v8 = [(ICFolderListViewController *)self addFolderButton];
-    [v8 setTitle:v7];
+    addFolderButton2 = [(ICFolderListViewController *)self addFolderButton];
+    [addFolderButton2 setTitle:v7];
 
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"New folder" value:&stru_100661CF0 table:0];
-    v11 = [(ICFolderListViewController *)self addFolderButton];
-    [v11 setAccessibilityLabel:v10];
+    addFolderButton3 = [(ICFolderListViewController *)self addFolderButton];
+    [addFolderButton3 setAccessibilityLabel:v10];
 
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"Double tap to add a new folder" value:&stru_100661CF0 table:0];
-    v14 = [(ICFolderListViewController *)self addFolderButton];
-    [v14 setAccessibilityHint:v13];
+    addFolderButton4 = [(ICFolderListViewController *)self addFolderButton];
+    [addFolderButton4 setAccessibilityHint:v13];
   }
 
-  v15 = [(ICFolderListViewController *)self folderDataSource];
-  v16 = [v15 countOfModernAccounts];
+  folderDataSource = [(ICFolderListViewController *)self folderDataSource];
+  countOfModernAccounts = [folderDataSource countOfModernAccounts];
 
-  v17 = [(ICFolderListViewController *)self addFolderButton];
-  v18 = v17;
-  if (v16 < 2)
+  addFolderButton5 = [(ICFolderListViewController *)self addFolderButton];
+  v18 = addFolderButton5;
+  if (countOfModernAccounts < 2)
   {
-    [v17 setTarget:self];
+    [addFolderButton5 setTarget:self];
 
-    v22 = [(ICFolderListViewController *)self addFolderButton];
-    [v22 setAction:"addFolderButtonAction:"];
+    addFolderButton6 = [(ICFolderListViewController *)self addFolderButton];
+    [addFolderButton6 setAction:"addFolderButtonAction:"];
   }
 
   else
   {
-    [v17 setTarget:0];
+    [addFolderButton5 setTarget:0];
 
-    v19 = [(ICFolderListViewController *)self addFolderButton];
-    [v19 setAction:0];
+    addFolderButton7 = [(ICFolderListViewController *)self addFolderButton];
+    [addFolderButton7 setAction:0];
 
-    v22 = [(ICFolderListViewController *)self folderCreationController];
-    v20 = [v22 menu];
-    v21 = [(ICFolderListViewController *)self addFolderButton];
-    [v21 setMenu:v20];
+    addFolderButton6 = [(ICFolderListViewController *)self folderCreationController];
+    menu = [addFolderButton6 menu];
+    addFolderButton8 = [(ICFolderListViewController *)self addFolderButton];
+    [addFolderButton8 setMenu:menu];
   }
 }
 
-- (void)addFolderButtonAction:(id)a3
+- (void)addFolderButtonAction:(id)action
 {
-  v3 = [(ICFolderListViewController *)self folderCreationController];
-  [v3 promptToAddFolderAllowingSmartFolder:1 withCompletionHandler:0];
+  folderCreationController = [(ICFolderListViewController *)self folderCreationController];
+  [folderCreationController promptToAddFolderAllowingSmartFolder:1 withCompletionHandler:0];
 }
 
 - (void)updateTagOperatorPosition
 {
   v3 = ICAccessibilityAccessibilityLargerTextSizesEnabled();
-  v4 = [(ICFolderListViewController *)self folderDataSource];
-  [v4 setShouldShowTagOperatorOnSeparateLine:v3];
+  folderDataSource = [(ICFolderListViewController *)self folderDataSource];
+  [folderDataSource setShouldShowTagOperatorOnSeparateLine:v3];
 }
 
 - (void)updateContainerSelection
 {
-  v3 = [(ICFolderListViewController *)self traitCollection];
-  v4 = [v3 _splitViewControllerContext];
+  traitCollection = [(ICFolderListViewController *)self traitCollection];
+  _splitViewControllerContext = [traitCollection _splitViewControllerContext];
 
-  if (v4 >= 1)
+  if (_splitViewControllerContext >= 1)
   {
-    v5 = [(ICBaseViewController *)self viewControllerManager];
-    v6 = [v5 searchController];
-    v7 = [v6 isActive];
+    viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+    searchController = [viewControllerManager searchController];
+    isActive = [searchController isActive];
 
-    if (v7)
+    if (isActive)
     {
-      v8 = [(ICFolderListViewController *)self collectionView];
-      [v8 ic_deselectAllItems];
+      collectionView = [(ICFolderListViewController *)self collectionView];
+      [collectionView ic_deselectAllItems];
 
-      v29 = [(ICFolderListViewController *)self collectionView];
-      [v29 deselectAllTagsAnimated:0];
+      collectionView2 = [(ICFolderListViewController *)self collectionView];
+      [collectionView2 deselectAllTagsAnimated:0];
     }
 
     else
     {
-      v9 = [(ICBaseViewController *)self viewControllerManager];
-      v10 = [v9 selectedContainerItemID];
+      viewControllerManager2 = [(ICBaseViewController *)self viewControllerManager];
+      selectedContainerItemID = [viewControllerManager2 selectedContainerItemID];
 
-      v11 = [(ICBaseViewController *)self viewControllerManager];
-      v12 = [v11 tagSelection];
+      viewControllerManager3 = [(ICBaseViewController *)self viewControllerManager];
+      tagSelection = [viewControllerManager3 tagSelection];
 
-      if (v10)
+      if (selectedContainerItemID)
       {
-        v13 = [(ICFolderListViewController *)self collectionView];
-        [v13 deselectAllTagsAnimated:0];
+        collectionView3 = [(ICFolderListViewController *)self collectionView];
+        [collectionView3 deselectAllTagsAnimated:0];
 
-        v14 = [(ICFolderListViewController *)self dataSource];
-        v15 = [v14 collectionViewDiffableDataSource];
-        v16 = [v15 indexPathForItemIdentifier:v10];
+        dataSource = [(ICFolderListViewController *)self dataSource];
+        collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
+        v16 = [collectionViewDiffableDataSource indexPathForItemIdentifier:selectedContainerItemID];
 
-        v17 = [(ICFolderListViewController *)self collectionView];
-        v18 = v17;
+        collectionView4 = [(ICFolderListViewController *)self collectionView];
+        v18 = collectionView4;
         if (v16)
         {
-          v19 = [v17 indexPathsForSelectedItems];
+          indexPathsForSelectedItems = [collectionView4 indexPathsForSelectedItems];
 
           v32 = 0u;
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v18 = v19;
+          v18 = indexPathsForSelectedItems;
           v20 = [v18 countByEnumeratingWithState:&v30 objects:v34 count:16];
           if (v20)
           {
@@ -1435,8 +1435,8 @@ LABEL_16:
                 v24 = *(*(&v30 + 1) + 8 * i);
                 if (([v24 isEqual:v16] & 1) == 0)
                 {
-                  v25 = [(ICFolderListViewController *)self collectionView];
-                  [v25 deselectItemAtIndexPath:v24 animated:0];
+                  collectionView5 = [(ICFolderListViewController *)self collectionView];
+                  [collectionView5 deselectItemAtIndexPath:v24 animated:0];
                 }
               }
 
@@ -1448,24 +1448,24 @@ LABEL_16:
 
           if (([v18 containsObject:v16] & 1) == 0)
           {
-            v26 = [(ICFolderListViewController *)self collectionView];
-            [v26 selectItemAtIndexPath:v16 animated:0 scrollPosition:0];
+            collectionView6 = [(ICFolderListViewController *)self collectionView];
+            [collectionView6 selectItemAtIndexPath:v16 animated:0 scrollPosition:0];
           }
         }
 
         else
         {
-          [v17 ic_deselectAllItems];
+          [collectionView4 ic_deselectAllItems];
         }
       }
 
-      else if ([v12 isNonEmpty])
+      else if ([tagSelection isNonEmpty])
       {
-        v27 = [(ICFolderListViewController *)self collectionView];
-        [v27 ic_deselectAllItems];
+        collectionView7 = [(ICFolderListViewController *)self collectionView];
+        [collectionView7 ic_deselectAllItems];
 
-        v28 = [(ICFolderListViewController *)self collectionView];
-        [v28 selectTagsWithTagSelection:v12 animated:0];
+        collectionView8 = [(ICFolderListViewController *)self collectionView];
+        [collectionView8 selectTagsWithTagSelection:tagSelection animated:0];
       }
     }
   }
@@ -1473,52 +1473,52 @@ LABEL_16:
 
 - (void)updateTagHeadingCell
 {
-  v5 = [(ICBaseViewController *)self viewControllerManager];
-  v3 = [v5 tagSelection];
-  v4 = [(ICFolderListViewController *)self folderDataSource];
-  [v4 setTagSelection:v3];
+  viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+  tagSelection = [viewControllerManager tagSelection];
+  folderDataSource = [(ICFolderListViewController *)self folderDataSource];
+  [folderDataSource setTagSelection:tagSelection];
 }
 
 - (void)scrollToRecentlyCreatedFolderIfNeeded
 {
-  v3 = [(ICFolderListViewController *)self recentlyCreatedFolderObjectID];
+  recentlyCreatedFolderObjectID = [(ICFolderListViewController *)self recentlyCreatedFolderObjectID];
 
-  if (v3)
+  if (recentlyCreatedFolderObjectID)
   {
-    v4 = [(ICFolderListViewController *)self recentlyCreatedFolderObjectID];
-    [(ICFolderListViewController *)self scrollToContainerWithObjectID:v4];
+    recentlyCreatedFolderObjectID2 = [(ICFolderListViewController *)self recentlyCreatedFolderObjectID];
+    [(ICFolderListViewController *)self scrollToContainerWithObjectID:recentlyCreatedFolderObjectID2];
   }
 }
 
-- (void)scrollToContainerWithObjectID:(id)a3
+- (void)scrollToContainerWithObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICFolderListViewController *)self dataSource];
-  v6 = [v5 collectionViewDiffableDataSource];
-  v8 = [v6 indexPathForItemIdentifier:v4];
+  dCopy = d;
+  dataSource = [(ICFolderListViewController *)self dataSource];
+  collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
+  v8 = [collectionViewDiffableDataSource indexPathForItemIdentifier:dCopy];
 
   if (v8)
   {
-    v7 = [(ICFolderListViewController *)self collectionView];
-    [v7 scrollToItemAtIndexPath:v8 atScrollPosition:2 animated:1];
+    collectionView = [(ICFolderListViewController *)self collectionView];
+    [collectionView scrollToItemAtIndexPath:v8 atScrollPosition:2 animated:1];
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v10 = [a3 userInfo];
-  v4 = [v10 objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [show userInfo];
+  v4 = [userInfo objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
   [v4 CGRectValue];
   v6 = v5;
 
-  v7 = [(ICFolderListViewController *)self firstResponder];
+  firstResponder = [(ICFolderListViewController *)self firstResponder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(ICFolderListViewController *)self collectionView];
-    [v9 setContentInset:{0.0, 0.0, v6, 0.0}];
+    collectionView = [(ICFolderListViewController *)self collectionView];
+    [collectionView setContentInset:{0.0, 0.0, v6, 0.0}];
   }
 }
 
@@ -1535,8 +1535,8 @@ LABEL_16:
 
   if (v4)
   {
-    v5 = [(ICFolderListViewController *)self collectionView];
-    [v5 setShouldShowAllowNotificationsView:0];
+    collectionView = [(ICFolderListViewController *)self collectionView];
+    [collectionView setShouldShowAllowNotificationsView:0];
   }
 
   else
@@ -1555,11 +1555,11 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (void)dataSourceDataUpdateDidRender:(id)a3
+- (void)dataSourceDataUpdateDidRender:(id)render
 {
   v4.receiver = self;
   v4.super_class = ICFolderListViewController;
-  [(ICBaseViewController *)&v4 dataSourceDataUpdateDidRender:a3];
+  [(ICBaseViewController *)&v4 dataSourceDataUpdateDidRender:render];
   [(ICFolderListViewController *)self updateContainerSelection];
   [(ICFolderListViewController *)self updateToolbarAnimated:0];
   [(ICFolderListViewController *)self updateNavigationBar];
@@ -1569,67 +1569,67 @@ LABEL_16:
 
 - (ICOutlineParentCollectionViewCell)tagHeadingCell
 {
-  v3 = [(ICFolderListViewController *)self dataSource];
-  v4 = [v3 collectionViewDiffableDataSource];
+  dataSource = [(ICFolderListViewController *)self dataSource];
+  collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
 
-  v5 = [v4 snapshot];
-  v6 = [v5 itemIdentifiers];
-  v7 = [v6 ic_objectPassingTest:&stru_100646D50];
+  snapshot = [collectionViewDiffableDataSource snapshot];
+  itemIdentifiers = [snapshot itemIdentifiers];
+  v7 = [itemIdentifiers ic_objectPassingTest:&stru_100646D50];
 
-  v8 = [v4 indexPathForItemIdentifier:v7];
+  v8 = [collectionViewDiffableDataSource indexPathForItemIdentifier:v7];
   objc_opt_class();
-  v9 = [(ICFolderListViewController *)self collectionView];
-  v10 = [v9 cellForItemAtIndexPath:v8];
+  collectionView = [(ICFolderListViewController *)self collectionView];
+  v10 = [collectionView cellForItemAtIndexPath:v8];
   v11 = ICDynamicCast();
 
   return v11;
 }
 
-- (void)folderWasCreated:(id)a3
+- (void)folderWasCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [createdCopy object];
 
   v6 = ICDynamicCast();
   [(ICFolderListViewController *)self setRecentlyCreatedFolderObjectID:v6];
 
-  v7 = [(ICBaseViewController *)self modernViewContext];
-  v8 = [(ICFolderListViewController *)self recentlyCreatedFolderObjectID];
-  v9 = [v7 ic_existingObjectWithID:v8];
+  modernViewContext = [(ICBaseViewController *)self modernViewContext];
+  recentlyCreatedFolderObjectID = [(ICFolderListViewController *)self recentlyCreatedFolderObjectID];
+  v9 = [modernViewContext ic_existingObjectWithID:recentlyCreatedFolderObjectID];
 
-  v10 = [v9 ancestorFolderObjectIDs];
-  v11 = [v10 mutableCopy];
+  ancestorFolderObjectIDs = [v9 ancestorFolderObjectIDs];
+  v11 = [ancestorFolderObjectIDs mutableCopy];
 
   v12 = [[ICFolderListSectionIdentifier alloc] initWithObject:v9];
   [v11 ic_addNonNilObject:v12];
 
-  v13 = [(ICFolderListViewController *)self folderDataSource];
+  folderDataSource = [(ICFolderListViewController *)self folderDataSource];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000747DC;
   v14[3] = &unk_100645E30;
   v14[4] = self;
-  [v13 expandItemsWithIdentifiers:v11 completion:v14];
+  [folderDataSource expandItemsWithIdentifiers:v11 completion:v14];
 }
 
-- (void)managedObjectContextChangeController:(id)a3 performUpdatesForManagedObjectIDs:(id)a4
+- (void)managedObjectContextChangeController:(id)controller performUpdatesForManagedObjectIDs:(id)ds
 {
-  v5 = a4;
-  if ([v5 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v6 = [(ICFolderListViewController *)self dataSource];
-    v7 = [v6 collectionViewDiffableDataSource];
-    v8 = [v7 snapshot];
-    v9 = [v8 itemIdentifiers];
-    v10 = [v9 ic_objectsOfClass:objc_opt_class()];
+    dataSource = [(ICFolderListViewController *)self dataSource];
+    collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
+    snapshot = [collectionViewDiffableDataSource snapshot];
+    itemIdentifiers = [snapshot itemIdentifiers];
+    v10 = [itemIdentifiers ic_objectsOfClass:objc_opt_class()];
     v11 = [NSSet setWithArray:v10];
 
     v12 = +[NSMutableSet set];
-    [v12 unionSet:v5];
+    [v12 unionSet:dsCopy];
     [v12 unionSet:v11];
-    v13 = [(ICFolderListViewController *)self dataSource];
-    v14 = [v13 associatedCellsForItemIdentifiers:v12];
+    dataSource2 = [(ICFolderListViewController *)self dataSource];
+    v14 = [dataSource2 associatedCellsForItemIdentifiers:v12];
 
     v15 = [v14 ic_objectsOfClass:objc_opt_class()];
     v21 = 0u;
@@ -1664,21 +1664,21 @@ LABEL_16:
   }
 }
 
-- (id)managedObjectContextChangeController:(id)a3 managedObjectIDsToUpdateForUpdatedManagedObjects:(id)a4
+- (id)managedObjectContextChangeController:(id)controller managedObjectIDsToUpdateForUpdatedManagedObjects:(id)objects
 {
-  v5 = a4;
+  objectsCopy = objects;
   v6 = +[NSMutableSet set];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v5;
+  obj = objectsCopy;
   v7 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v43;
-    v40 = self;
+    selfCopy = self;
     do
     {
       v10 = 0;
@@ -1694,17 +1694,17 @@ LABEL_16:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = v11;
-          v13 = [v12 objectID];
-          [v6 addObject:v13];
+          owner2 = v11;
+          objectID = [owner2 objectID];
+          [v6 addObject:objectID];
 
-          v14 = [v12 noteContainerAccount];
+          noteContainerAccount = [owner2 noteContainerAccount];
 
-          if (v14)
+          if (noteContainerAccount)
           {
-            v15 = [v12 noteContainerAccount];
-            v16 = [v15 objectID];
-            [v6 ic_addNonNilObject:v16];
+            noteContainerAccount2 = [owner2 noteContainerAccount];
+            objectID2 = [noteContainerAccount2 objectID];
+            [v6 ic_addNonNilObject:objectID2];
 
             goto LABEL_28;
           }
@@ -1721,16 +1721,16 @@ LABEL_16:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) != 0 && (v19 = v11) != 0)
               {
-                v12 = v19;
-                v15 = [v19 store];
-                v20 = [v12 store];
-                v21 = [v20 account];
-                v22 = [v21 defaultStore];
-                v23 = [v22 objectID];
-                [v6 ic_addNonNilObject:v23];
+                owner2 = v19;
+                noteContainerAccount2 = [v19 store];
+                store = [owner2 store];
+                account = [store account];
+                defaultStore = [account defaultStore];
+                objectID3 = [defaultStore objectID];
+                [v6 ic_addNonNilObject:objectID3];
 
-                self = v40;
-                if (!v15)
+                self = selfCopy;
+                if (!noteContainerAccount2)
                 {
                   goto LABEL_28;
                 }
@@ -1741,14 +1741,14 @@ LABEL_16:
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  v15 = 0;
-                  v12 = 0;
+                  noteContainerAccount2 = 0;
+                  owner2 = 0;
                   goto LABEL_28;
                 }
 
-                v15 = v11;
-                v12 = 0;
-                if (!v15)
+                noteContainerAccount2 = v11;
+                owner2 = 0;
+                if (!noteContainerAccount2)
                 {
 LABEL_28:
 
@@ -1756,8 +1756,8 @@ LABEL_28:
                 }
               }
 
-              v24 = [v15 objectID];
-              [v6 ic_addNonNilObject:v24];
+              objectID4 = [noteContainerAccount2 objectID];
+              [v6 ic_addNonNilObject:objectID4];
 
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1765,7 +1765,7 @@ LABEL_28:
                 goto LABEL_28;
               }
 
-              v25 = v15;
+              store3 = noteContainerAccount2;
             }
 
             else
@@ -1777,41 +1777,41 @@ LABEL_28:
               }
 
               v28 = v11;
-              v29 = [v28 owner];
-              v30 = [v29 store];
-              v31 = [v30 objectID];
-              [v6 ic_addNonNilObject:v31];
+              owner = [v28 owner];
+              store2 = [owner store];
+              objectID5 = [store2 objectID];
+              [v6 ic_addNonNilObject:objectID5];
 
-              v12 = [v28 owner];
+              owner2 = [v28 owner];
 
-              v25 = [v12 store];
-              v15 = v25;
+              store3 = [owner2 store];
+              noteContainerAccount2 = store3;
             }
 
-            v32 = [v25 account];
-            v33 = [v32 objectID];
-            [v6 ic_addNonNilObject:v33];
+            account2 = [store3 account];
+            objectID6 = [account2 objectID];
+            [v6 ic_addNonNilObject:objectID6];
 
             goto LABEL_28;
           }
 
-          v17 = [v11 changedValues];
-          v12 = [v17 allKeys];
+          changedValues = [v11 changedValues];
+          owner2 = [changedValues allKeys];
 
           v18 = ICKeyPathFromSelector();
-          if ([v12 containsObject:v18])
+          if ([owner2 containsObject:v18])
           {
 
 LABEL_23:
-            v15 = [v11 objectID];
-            [v6 ic_addNonNilObject:v15];
+            noteContainerAccount2 = [v11 objectID];
+            [v6 ic_addNonNilObject:noteContainerAccount2];
             goto LABEL_28;
           }
 
           v26 = ICKeyPathFromSelector();
-          v27 = [v12 containsObject:v26];
+          v27 = [owner2 containsObject:v26];
 
-          self = v40;
+          self = selfCopy;
           if (v27)
           {
             goto LABEL_23;
@@ -1821,10 +1821,10 @@ LABEL_23:
 LABEL_29:
 
 LABEL_30:
-        v34 = [(ICFolderListViewController *)self folderDataSource];
-        v35 = [v34 allSmartFolderObjectIDs];
-        v36 = [v35 allObjects];
-        [v6 ic_addObjectsFromNonNilArray:v36];
+        folderDataSource = [(ICFolderListViewController *)self folderDataSource];
+        allSmartFolderObjectIDs = [folderDataSource allSmartFolderObjectIDs];
+        allObjects = [allSmartFolderObjectIDs allObjects];
+        [v6 ic_addObjectsFromNonNilArray:allObjects];
 
         v10 = v10 + 1;
       }
@@ -1843,8 +1843,8 @@ LABEL_30:
 
 - (double)availableWidthForSummaryView
 {
-  v2 = [(ICFolderListViewController *)self view];
-  [v2 bounds];
+  view = [(ICFolderListViewController *)self view];
+  [view bounds];
   v4 = v3 + -150.0;
 
   return v4;
@@ -1852,25 +1852,25 @@ LABEL_30:
 
 - (void)updateSummaryView
 {
-  v3 = [(ICFolderListViewController *)self primarySummaryView];
-  v4 = [(ICFolderListViewController *)self updateSummaryView:v3 isPrimary:1];
+  primarySummaryView = [(ICFolderListViewController *)self primarySummaryView];
+  v4 = [(ICFolderListViewController *)self updateSummaryView:primarySummaryView isPrimary:1];
   [(ICFolderListViewController *)self setPrimarySummaryView:v4];
 
   if (_UISolariumEnabled())
   {
-    v6 = [(ICFolderListViewController *)self scrolledHeaderSummaryView];
-    v5 = [(ICFolderListViewController *)self updateSummaryView:v6 isPrimary:0];
+    scrolledHeaderSummaryView = [(ICFolderListViewController *)self scrolledHeaderSummaryView];
+    v5 = [(ICFolderListViewController *)self updateSummaryView:scrolledHeaderSummaryView isPrimary:0];
     [(ICFolderListViewController *)self setScrolledHeaderSummaryView:v5];
   }
 }
 
-- (id)updateSummaryView:(id)a3 isPrimary:(BOOL)a4
+- (id)updateSummaryView:(id)view isPrimary:(BOOL)primary
 {
-  v4 = a4;
-  v6 = a3;
+  primaryCopy = primary;
+  viewCopy = view;
   v7 = _UISolariumEnabled();
   v8 = 2;
-  if (!v4)
+  if (!primaryCopy)
   {
     v8 = 3;
   }
@@ -1885,8 +1885,8 @@ LABEL_30:
     v9 = 0;
   }
 
-  v10 = v6;
-  if (!v6)
+  v10 = viewCopy;
+  if (!viewCopy)
   {
     v10 = [[ICToolbarSummaryView alloc] initWithFrame:v9 type:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     [(ICToolbarSummaryView *)v10 setCountsHidden:1];
@@ -1899,9 +1899,9 @@ LABEL_30:
   [(ICFolderListViewController *)self availableWidthForSummaryView];
   [(ICToolbarSummaryView *)v10 setAvailableWidth:?];
   v11 = +[ICAppDelegate sharedInstance];
-  v12 = [v11 cloudContextDelegate];
-  v13 = [v12 syncMessage];
-  [(ICToolbarSummaryView *)v10 setSyncMessage:v13];
+  cloudContextDelegate = [v11 cloudContextDelegate];
+  syncMessage = [cloudContextDelegate syncMessage];
+  [(ICToolbarSummaryView *)v10 setSyncMessage:syncMessage];
 
   if (_UISolariumEnabled())
   {
@@ -1913,7 +1913,7 @@ LABEL_30:
   return v10;
 }
 
-- (void)summaryViewLockNowPressed:(id)a3
+- (void)summaryViewLockNowPressed:(id)pressed
 {
   v4 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1921,82 +1921,82 @@ LABEL_30:
     sub_1004D98EC(v4);
   }
 
-  v5 = [(ICBaseViewController *)self viewControllerManager];
-  [v5 lockNotesNow];
+  viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+  [viewControllerManager lockNotesNow];
 }
 
 - (BOOL)isSearchActive
 {
-  v2 = [(ICBaseViewController *)self viewControllerManager];
-  v3 = [v2 isSearchActive];
+  viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+  isSearchActive = [viewControllerManager isSearchActive];
 
-  return v3;
+  return isSearchActive;
 }
 
 - (BOOL)isSearchActiveWithQuery
 {
-  v2 = [(ICBaseViewController *)self viewControllerManager];
-  v3 = [v2 isSearchActiveWithQuery];
+  viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+  isSearchActiveWithQuery = [viewControllerManager isSearchActiveWithQuery];
 
-  return v3;
+  return isSearchActiveWithQuery;
 }
 
-- (void)noteDecryptedStatusDidChange:(id)a3
+- (void)noteDecryptedStatusDidChange:(id)change
 {
   v3 = +[ICAuthenticationState sharedState];
-  v4 = [v3 isBlockingDeauthentication];
+  isBlockingDeauthentication = [v3 isBlockingDeauthentication];
 
-  if ((v4 & 1) == 0)
+  if ((isBlockingDeauthentication & 1) == 0)
   {
     performBlockOnMainThread();
   }
 }
 
-- (void)addNoteButtonPressed:(id)a3 event:(id)a4
+- (void)addNoteButtonPressed:(id)pressed event:(id)event
 {
-  v7 = a4;
+  eventCopy = event;
   if ([(ICFolderListViewController *)self isEditing])
   {
     [(ICFolderListViewController *)self setEditing:0 animated:1];
   }
 
-  v5 = [(ICBaseViewController *)self viewControllerManager];
-  v6 = [v5 showNewNoteWithApproach:13 sender:v7 animated:1];
+  viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+  v6 = [viewControllerManager showNewNoteWithApproach:13 sender:eventCopy animated:1];
 }
 
 - (void)confirmSelection
 {
-  v6 = [(ICFolderListViewController *)self collectionView];
-  v3 = [(ICFolderListViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
-  v5 = [v4 firstObject];
-  [(ICFolderListViewController *)self collectionView:v6 didSelectItemAtIndexPath:v5];
+  collectionView = [(ICFolderListViewController *)self collectionView];
+  collectionView2 = [(ICFolderListViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView2 indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
+  [(ICFolderListViewController *)self collectionView:collectionView didSelectItemAtIndexPath:firstObject];
 }
 
 - (void)confirmFocusedCellSelection
 {
-  v3 = [(ICFolderListViewController *)self collectionView];
-  v4 = [v3 indexPathsForFocusedItems];
-  v6 = [v4 firstObject];
+  collectionView = [(ICFolderListViewController *)self collectionView];
+  indexPathsForFocusedItems = [collectionView indexPathsForFocusedItems];
+  firstObject = [indexPathsForFocusedItems firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v5 = [(ICFolderListViewController *)self collectionView];
-    [(ICFolderListViewController *)self collectionView:v5 didSelectItemAtIndexPath:v6];
+    collectionView2 = [(ICFolderListViewController *)self collectionView];
+    [(ICFolderListViewController *)self collectionView:collectionView2 didSelectItemAtIndexPath:firstObject];
   }
 }
 
 - (BOOL)canBecomeFirstResponder
 {
-  v3 = [(ICBaseViewController *)self viewControllerManager];
-  v4 = [v3 keyboardHandler];
-  v5 = [v4 isInHardwareKeyboardMode];
+  viewControllerManager = [(ICBaseViewController *)self viewControllerManager];
+  keyboardHandler = [viewControllerManager keyboardHandler];
+  isInHardwareKeyboardMode = [keyboardHandler isInHardwareKeyboardMode];
 
-  if (v5)
+  if (isInHardwareKeyboardMode)
   {
-    v6 = [(ICBaseViewController *)self viewControllerManager];
-    v7 = [v6 activeEditorController];
-    v8 = [v7 wantsToRemainFirstResponder] ^ 1;
+    viewControllerManager2 = [(ICBaseViewController *)self viewControllerManager];
+    activeEditorController = [viewControllerManager2 activeEditorController];
+    v8 = [activeEditorController wantsToRemainFirstResponder] ^ 1;
   }
 
   else
@@ -2007,27 +2007,27 @@ LABEL_30:
   return v8;
 }
 
-- (void)selectItemWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)selectItemWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v4 = a4;
-  v14 = a3;
-  v6 = [(ICFolderListViewController *)self collectionView];
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  collectionView = [(ICFolderListViewController *)self collectionView];
 
-  if (v6)
+  if (collectionView)
   {
-    v7 = [(ICFolderListViewController *)self dataSource];
-    v8 = [v7 collectionViewDiffableDataSource];
-    v9 = [v8 indexPathForItemIdentifier:v14];
+    dataSource = [(ICFolderListViewController *)self dataSource];
+    collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
+    v9 = [collectionViewDiffableDataSource indexPathForItemIdentifier:identifierCopy];
 
     if (v9)
     {
-      v10 = [(ICFolderListViewController *)self collectionView];
-      [v10 selectItemAtIndexPath:v9 animated:v4 scrollPosition:0];
+      collectionView2 = [(ICFolderListViewController *)self collectionView];
+      [collectionView2 selectItemAtIndexPath:v9 animated:animatedCopy scrollPosition:0];
 
-      v11 = [(ICFolderListViewController *)self collectionView];
-      v12 = [v11 delegate];
-      v13 = [(ICFolderListViewController *)self collectionView];
-      [v12 collectionView:v13 didSelectItemAtIndexPath:v9];
+      collectionView3 = [(ICFolderListViewController *)self collectionView];
+      delegate = [collectionView3 delegate];
+      collectionView4 = [(ICFolderListViewController *)self collectionView];
+      [delegate collectionView:collectionView4 didSelectItemAtIndexPath:v9];
     }
   }
 }

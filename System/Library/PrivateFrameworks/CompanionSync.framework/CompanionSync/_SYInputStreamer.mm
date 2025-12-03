@@ -1,34 +1,34 @@
 @interface _SYInputStreamer
-- (_SYInputStreamer)initWithCompressedFileURL:(id)a3 callbackQueue:(id)a4;
-- (void)_completeAllItemsWithError:(id)a3;
+- (_SYInputStreamer)initWithCompressedFileURL:(id)l callbackQueue:(id)queue;
+- (void)_completeAllItemsWithError:(id)error;
 - (void)_tryToReadData;
-- (void)readDataOfLength:(unint64_t)a3 completion:(id)a4;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
-- (void)whenComplete:(id)a3;
+- (void)readDataOfLength:(unint64_t)length completion:(id)completion;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
+- (void)whenComplete:(id)complete;
 @end
 
 @implementation _SYInputStreamer
 
-- (_SYInputStreamer)initWithCompressedFileURL:(id)a3 callbackQueue:(id)a4
+- (_SYInputStreamer)initWithCompressedFileURL:(id)l callbackQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  queueCopy = queue;
   v32.receiver = self;
   v32.super_class = _SYInputStreamer;
   v8 = [(_SYInputStreamer *)&v32 init];
-  if (v8 && (v9 = [[SYCompressedFileInputStream alloc] initWithCompressedFileAtURL:v6], v10 = *(v8 + 1), *(v8 + 1) = v9, v10, *(v8 + 1)))
+  if (v8 && (v9 = [[SYCompressedFileInputStream alloc] initWithCompressedFileAtURL:lCopy], v10 = *(v8 + 1), *(v8 + 1) = v9, v10, *(v8 + 1)))
   {
     v11 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v12 = [v6 lastPathComponent];
-    v13 = [v11 initWithFormat:@"_SYOutputStreamer: %@", v12];
+    lastPathComponent = [lCopy lastPathComponent];
+    v13 = [v11 initWithFormat:@"_SYOutputStreamer: %@", lastPathComponent];
 
-    v14 = [v13 UTF8String];
+    uTF8String = [v13 UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_create(v14, v15);
+    v16 = dispatch_queue_create(uTF8String, v15);
     v17 = *(v8 + 4);
     *(v8 + 4) = v16;
 
-    objc_storeStrong(v8 + 6, a4);
+    objc_storeStrong(v8 + 6, queue);
     [*(v8 + 1) setDelegate:v8];
     objc_initWeak(&location, v8);
     v18 = *(v8 + 1);
@@ -70,10 +70,10 @@
   return v25;
 }
 
-- (void)readDataOfLength:(unint64_t)a3 completion:(id)a4
+- (void)readDataOfLength:(unint64_t)length completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = [a4 copy];
+  v6 = [completion copy];
   if ([(SYCompressedFileInputStream *)self->_stream streamStatus]== 5)
   {
     if (_sync_log_facilities_pred != -1)
@@ -128,7 +128,7 @@ LABEL_13:
 
   if ([(SYCompressedFileInputStream *)self->_stream streamStatus]== 7)
   {
-    v12 = [(SYCompressedFileInputStream *)self->_stream streamError];
+    streamError = [(SYCompressedFileInputStream *)self->_stream streamError];
     if (_sync_log_facilities_pred != -1)
     {
       [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -138,7 +138,7 @@ LABEL_13:
     if (os_log_type_enabled(qword_1EDE73448, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = _SYObfuscate(v12);
+      v15 = _SYObfuscate(streamError);
       *buf = 138543362;
       v27 = v15;
       _os_log_impl(&dword_1DF835000, v14, OS_LOG_TYPE_DEFAULT, "Stream is in error state: %{public}@", buf, 0xCu);
@@ -149,15 +149,15 @@ LABEL_13:
     v19[1] = 3221225472;
     v19[2] = __48___SYInputStreamer_readDataOfLength_completion___block_invoke_173;
     v19[3] = &unk_1E86CAAB8;
-    v20 = v12;
+    v20 = streamError;
     v21 = v6;
-    v17 = v12;
+    v17 = streamError;
     dispatch_async(v16, v19);
   }
 
   else
   {
-    v17 = [[_SYInputDataItem alloc] initWithLength:a3 callback:v6];
+    v17 = [[_SYInputDataItem alloc] initWithLength:length callback:v6];
     [(NSMutableArray *)self->_items addObject:v17];
     dispatch_source_merge_data(self->_source, 1uLL);
   }
@@ -169,8 +169,8 @@ LABEL_22:
 - (void)_tryToReadData
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableArray *)self->_items firstObject];
-  if (!v3)
+  firstObject = [(NSMutableArray *)self->_items firstObject];
+  if (!firstObject)
   {
     onComplete = self->_onComplete;
     if (onComplete)
@@ -183,10 +183,10 @@ LABEL_22:
     goto LABEL_39;
   }
 
-  v4 = [(SYCompressedFileInputStream *)self->_stream streamStatus];
-  if (v4 > 5)
+  streamStatus = [(SYCompressedFileInputStream *)self->_stream streamStatus];
+  if (streamStatus > 5)
   {
-    if (v4 == 6)
+    if (streamStatus == 6)
     {
       if (_sync_log_facilities_pred != -1)
       {
@@ -201,7 +201,7 @@ LABEL_22:
       goto LABEL_29;
     }
 
-    if (v4 == 7)
+    if (streamStatus == 7)
     {
       if (_sync_log_facilities_pred != -1)
       {
@@ -213,8 +213,8 @@ LABEL_22:
         [_SYInputStreamer _tryToReadData];
       }
 
-      v7 = [(SYCompressedFileInputStream *)self->_stream streamError];
-      [(_SYInputStreamer *)self _completeAllItemsWithError:v7];
+      streamError = [(SYCompressedFileInputStream *)self->_stream streamError];
+      [(_SYInputStreamer *)self _completeAllItemsWithError:streamError];
 
       goto LABEL_39;
     }
@@ -222,9 +222,9 @@ LABEL_22:
     goto LABEL_18;
   }
 
-  if (v4 != 2)
+  if (streamStatus != 2)
   {
-    if (v4 == 5)
+    if (streamStatus == 5)
     {
       if (_sync_log_facilities_pred != -1)
       {
@@ -253,19 +253,19 @@ LABEL_18:
       stream = self->_stream;
       v10 = v8;
       *buf = 67240192;
-      v23 = [(SYCompressedFileInputStream *)stream streamStatus];
+      streamStatus2 = [(SYCompressedFileInputStream *)stream streamStatus];
       _os_log_impl(&dword_1DF835000, v10, OS_LOG_TYPE_DEFAULT, "Stream in unexpected state: %{companionsync:NSStreamStatus,public}d", buf, 8u);
     }
   }
 
-  [v3 lengthRemaining];
+  [firstObject lengthRemaining];
   MEMORY[0x1EEE9AC00]();
   v12 = &block[-1] - v11;
   v13 = [(SYCompressedFileInputStream *)self->_stream read:&block[-1] - v11 maxLength:?];
   if (v13 < 0)
   {
-    v16 = [(SYCompressedFileInputStream *)self->_stream streamError];
-    [(_SYInputStreamer *)self _completeAllItemsWithError:v16];
+    streamError2 = [(SYCompressedFileInputStream *)self->_stream streamError];
+    [(_SYInputStreamer *)self _completeAllItemsWithError:streamError2];
 
     goto LABEL_39;
   }
@@ -273,8 +273,8 @@ LABEL_18:
   v14 = v13;
   if (v13)
   {
-    v15 = [v3 data];
-    [v15 appendBytes:v12 length:v14];
+    data = [firstObject data];
+    [data appendBytes:v12 length:v14];
 
     goto LABEL_37;
   }
@@ -282,7 +282,7 @@ LABEL_18:
   if ([(SYCompressedFileInputStream *)self->_stream streamStatus]!= 5)
   {
 LABEL_37:
-    if (![v3 lengthRemaining])
+    if (![firstObject lengthRemaining])
     {
       [(NSMutableArray *)self->_items removeObjectAtIndex:0];
       callbackQueue = self->_callbackQueue;
@@ -290,7 +290,7 @@ LABEL_37:
       block[1] = 3221225472;
       block[2] = __34___SYInputStreamer__tryToReadData__block_invoke;
       block[3] = &unk_1E86C9FB0;
-      v21 = v3;
+      v21 = firstObject;
       dispatch_async(callbackQueue, block);
       dispatch_source_merge_data(self->_source, 1uLL);
     }
@@ -314,10 +314,10 @@ LABEL_39:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_completeAllItemsWithError:(id)a3
+- (void)_completeAllItemsWithError:(id)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -327,7 +327,7 @@ LABEL_39:
   if (os_log_type_enabled(qword_1EDE73448, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = _SYObfuscate(v4);
+    v7 = _SYObfuscate(errorCopy);
     *buf = 138543362;
     v27 = v7;
     _os_log_impl(&dword_1DF835000, v6, OS_LOG_TYPE_DEFAULT, "Completing all stream read items with error '%{public}@'", buf, 0xCu);
@@ -361,7 +361,7 @@ LABEL_39:
         v19[2] = __47___SYInputStreamer__completeAllItemsWithError___block_invoke;
         v19[3] = &unk_1E86C9E90;
         v19[4] = v14;
-        v20 = v4;
+        v20 = errorCopy;
         dispatch_async(callbackQueue, v19);
       }
 
@@ -382,18 +382,18 @@ LABEL_39:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)whenComplete:(id)a3
+- (void)whenComplete:(id)complete
 {
-  block = a3;
+  block = complete;
   if ([(NSMutableArray *)self->_items count])
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5 = [block copy];
-    onComplete = v4->_onComplete;
-    v4->_onComplete = v5;
+    onComplete = selfCopy->_onComplete;
+    selfCopy->_onComplete = v5;
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -402,10 +402,10 @@ LABEL_39:
   }
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  switch(a4)
+  streamCopy = stream;
+  switch(event)
   {
     case 0x10uLL:
       if (_sync_log_facilities_pred != -1)
@@ -437,7 +437,7 @@ LABEL_39:
       v7 = qword_1EDE73448;
       if (os_log_type_enabled(qword_1EDE73448, OS_LOG_TYPE_ERROR))
       {
-        [_SYInputStreamer stream:v7 handleEvent:v6];
+        [_SYInputStreamer stream:v7 handleEvent:streamCopy];
       }
 
       v8 = self->_queue;
@@ -446,7 +446,7 @@ LABEL_39:
       block[2] = __39___SYInputStreamer_stream_handleEvent___block_invoke;
       block[3] = &unk_1E86C9E90;
       block[4] = self;
-      v14 = v6;
+      v14 = streamCopy;
       dispatch_async(v8, block);
 
       break;

@@ -7,9 +7,9 @@
 - (id)_accessibilityAXAttributedLabel
 {
   v2 = [(SLAttributionViewAccessibility *)self safeValueForKey:@"pillView"];
-  v3 = [v2 _accessibilityAXAttributedLabel];
+  _accessibilityAXAttributedLabel = [v2 _accessibilityAXAttributedLabel];
 
-  return v3;
+  return _accessibilityAXAttributedLabel;
 }
 
 @end

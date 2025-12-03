@@ -2,20 +2,20 @@
 - (NSArray)sinfs;
 - (NSNumber)accountIdentifier;
 - (NSNumber)rentalKeyIdentifier;
-- (SSRentalCheckinRequest)initWithAccountIdentifier:(id)a3 rentalKeyIdentifier:(id)a4;
-- (SSRentalCheckinRequest)initWithSinfs:(id)a3;
-- (SSRentalCheckinRequest)initWithXPCEncoding:(id)a3;
+- (SSRentalCheckinRequest)initWithAccountIdentifier:(id)identifier rentalKeyIdentifier:(id)keyIdentifier;
+- (SSRentalCheckinRequest)initWithSinfs:(id)sinfs;
+- (SSRentalCheckinRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (void)dealloc;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)startWithConnectionResponseBlock:(id)a3;
+- (void)startWithCompletionBlock:(id)block;
+- (void)startWithConnectionResponseBlock:(id)block;
 @end
 
 @implementation SSRentalCheckinRequest
 
-- (SSRentalCheckinRequest)initWithAccountIdentifier:(id)a3 rentalKeyIdentifier:(id)a4
+- (SSRentalCheckinRequest)initWithAccountIdentifier:(id)identifier rentalKeyIdentifier:(id)keyIdentifier
 {
-  if (![a3 unsignedLongLongValue])
+  if (![identifier unsignedLongLongValue])
   {
 
     v8 = MEMORY[0x1E695DF30];
@@ -26,7 +26,7 @@ LABEL_7:
     return 0;
   }
 
-  if (![a4 unsignedLongLongValue])
+  if (![keyIdentifier unsignedLongLongValue])
   {
 
     v8 = MEMORY[0x1E695DF30];
@@ -40,23 +40,23 @@ LABEL_7:
   v7 = [(SSRequest *)&v12 init];
   if (v7)
   {
-    v7->_accountIdentifier = [a3 copy];
-    v7->_rentalKeyIdentifier = [a4 copy];
+    v7->_accountIdentifier = [identifier copy];
+    v7->_rentalKeyIdentifier = [keyIdentifier copy];
   }
 
   return v7;
 }
 
-- (SSRentalCheckinRequest)initWithSinfs:(id)a3
+- (SSRentalCheckinRequest)initWithSinfs:(id)sinfs
 {
-  if ([a3 count])
+  if ([sinfs count])
   {
     v7.receiver = self;
     v7.super_class = SSRentalCheckinRequest;
     v5 = [(SSRequest *)&v7 init];
     if (v5)
     {
-      v5->_sinfs = [a3 copy];
+      v5->_sinfs = [sinfs copy];
     }
   }
 
@@ -98,13 +98,13 @@ LABEL_7:
   return v2;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __51__SSRentalCheckinRequest_startWithCompletionBlock___block_invoke;
   v3[3] = &unk_1E84ADF30;
-  v3[4] = a3;
+  v3[4] = block;
   [(SSRentalCheckinRequest *)self startWithConnectionResponseBlock:v3];
 }
 
@@ -119,7 +119,7 @@ uint64_t __51__SSRentalCheckinRequest_startWithCompletionBlock___block_invoke(ui
   return result;
 }
 
-- (void)startWithConnectionResponseBlock:(id)a3
+- (void)startWithConnectionResponseBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -130,15 +130,15 @@ uint64_t __51__SSRentalCheckinRequest_startWithCompletionBlock___block_invoke(ui
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -173,7 +173,7 @@ uint64_t __51__SSRentalCheckinRequest_startWithCompletionBlock___block_invoke(ui
   v20[2] = __59__SSRentalCheckinRequest_startWithConnectionResponseBlock___block_invoke;
   v20[3] = &unk_1E84AC760;
   v20[4] = self;
-  v20[5] = a3;
+  v20[5] = block;
   [(SSRequest *)self _startWithMessageID:59 messageBlock:v20, v18];
 }
 
@@ -217,9 +217,9 @@ uint64_t __59__SSRentalCheckinRequest_startWithConnectionResponseBlock___block_i
   return v3;
 }
 
-- (SSRentalCheckinRequest)initWithXPCEncoding:(id)a3
+- (SSRentalCheckinRequest)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v7.receiver = self;
     v7.super_class = SSRentalCheckinRequest;
@@ -227,11 +227,11 @@ uint64_t __59__SSRentalCheckinRequest_startWithConnectionResponseBlock___block_i
     if (v5)
     {
       objc_opt_class();
-      v5->_accountIdentifier = SSXPCDictionaryCopyCFObjectWithClass(a3, "50");
+      v5->_accountIdentifier = SSXPCDictionaryCopyCFObjectWithClass(encoding, "50");
       objc_opt_class();
-      v5->_rentalKeyIdentifier = SSXPCDictionaryCopyCFObjectWithClass(a3, "51");
+      v5->_rentalKeyIdentifier = SSXPCDictionaryCopyCFObjectWithClass(encoding, "51");
       objc_opt_class();
-      v5->_sinfs = SSXPCDictionaryCopyCFObjectWithClass(a3, "52");
+      v5->_sinfs = SSXPCDictionaryCopyCFObjectWithClass(encoding, "52");
     }
   }
 

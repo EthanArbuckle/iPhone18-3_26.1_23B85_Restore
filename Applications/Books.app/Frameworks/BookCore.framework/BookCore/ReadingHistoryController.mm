@@ -1,13 +1,13 @@
 @interface ReadingHistoryController
 - (void)clearTodaysReadingTime;
-- (void)createFakeSession:(id)a3;
-- (void)handlePlaceholderStreakDayGoalNeedsUpdate:(id)a3;
-- (void)handleSignificantDateChange:(id)a3;
+- (void)createFakeSession:(id)session;
+- (void)handlePlaceholderStreakDayGoalNeedsUpdate:(id)update;
+- (void)handleSignificantDateChange:(id)change;
 @end
 
 @implementation ReadingHistoryController
 
-- (void)handlePlaceholderStreakDayGoalNeedsUpdate:(id)a3
+- (void)handlePlaceholderStreakDayGoalNeedsUpdate:(id)update
 {
   v4 = sub_1EDD64();
   v5 = *(v4 - 8);
@@ -42,7 +42,7 @@
   }
 }
 
-- (void)handleSignificantDateChange:(id)a3
+- (void)handleSignificantDateChange:(id)change
 {
   v3 = sub_1EDD64();
   v4 = *(v3 - 8);
@@ -55,7 +55,7 @@
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)createFakeSession:(id)a3
+- (void)createFakeSession:(id)session
 {
   v3 = sub_1EDD64();
   v4 = *(v3 - 8);

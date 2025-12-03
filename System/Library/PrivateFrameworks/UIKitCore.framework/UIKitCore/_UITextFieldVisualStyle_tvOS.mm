@@ -4,7 +4,7 @@
 - (id)_defaultTextColorForUserInterfaceStyle;
 - (id)defaultTextColor;
 - (id)defaultTextColorForKeyboardAppearance;
-- (id)editingProcessorOverridingEditingAttributes:(id)a3;
+- (id)editingProcessorOverridingEditingAttributes:(id)attributes;
 - (id)parentViewForTextContentView;
 - (id)placeholderColor;
 - (void)handleTextVibrancy;
@@ -14,40 +14,40 @@
 
 - (id)defaultTextColor
 {
-  v3 = [(_UITextFieldVisualStyle *)self styleSubject];
-  v4 = [v3 _shouldDetermineInterfaceStyleTextColor];
+  styleSubject = [(_UITextFieldVisualStyle *)self styleSubject];
+  _shouldDetermineInterfaceStyleTextColor = [styleSubject _shouldDetermineInterfaceStyleTextColor];
 
-  if ((v4 & 1) != 0 && dyld_program_sdk_at_least())
+  if ((_shouldDetermineInterfaceStyleTextColor & 1) != 0 && dyld_program_sdk_at_least())
   {
-    v5 = [(_UITextFieldVisualStyle_tvOS *)self _defaultTextColorForUserInterfaceStyle];
+    _defaultTextColorForUserInterfaceStyle = [(_UITextFieldVisualStyle_tvOS *)self _defaultTextColorForUserInterfaceStyle];
   }
 
   else
   {
-    v5 = [(_UITextFieldVisualStyle_tvOS *)self defaultTextColorForKeyboardAppearance];
+    _defaultTextColorForUserInterfaceStyle = [(_UITextFieldVisualStyle_tvOS *)self defaultTextColorForKeyboardAppearance];
   }
 
-  return v5;
+  return _defaultTextColorForUserInterfaceStyle;
 }
 
 - (id)defaultTextColorForKeyboardAppearance
 {
-  v3 = [(_UITextFieldVisualStyle *)self styleSubject];
-  v4 = [v3 _keyboardAppearance];
+  styleSubject = [(_UITextFieldVisualStyle *)self styleSubject];
+  _keyboardAppearance = [styleSubject _keyboardAppearance];
 
-  if (v4 == 1)
+  if (_keyboardAppearance == 1)
   {
-    v5 = [(_UITextFieldVisualStyle_tvOS *)self _defaultTextColorDarkKeyboard];
+    _defaultTextColorDarkKeyboard = [(_UITextFieldVisualStyle_tvOS *)self _defaultTextColorDarkKeyboard];
   }
 
-  else if (v4 == 10)
+  else if (_keyboardAppearance == 10)
   {
-    v5 = [(_UITextFieldVisualStyle_tvOS *)self _defaultTextColorForUserInterfaceStyle];
+    _defaultTextColorDarkKeyboard = [(_UITextFieldVisualStyle_tvOS *)self _defaultTextColorForUserInterfaceStyle];
   }
 
   else
   {
-    if (v4 == 9)
+    if (_keyboardAppearance == 9)
     {
       [(_UITextFieldVisualStyle_tvOS *)self _defaultTextColorBlackKeyboard];
     }
@@ -56,25 +56,25 @@
     {
       [(_UITextFieldVisualStyle_tvOS *)self _defaultTextColorLightKeyboard];
     }
-    v5 = ;
+    _defaultTextColorDarkKeyboard = ;
   }
 
-  return v5;
+  return _defaultTextColorDarkKeyboard;
 }
 
 - (id)placeholderColor
 {
-  v3 = [(_UITextFieldVisualStyle *)self styleSubject];
-  if ([v3 _isFocused])
+  styleSubject = [(_UITextFieldVisualStyle *)self styleSubject];
+  if ([styleSubject _isFocused])
   {
-    v4 = [(_UITextFieldVisualStyle *)self styleSubject];
-    v5 = [v4 _fieldEditorAttached];
+    styleSubject2 = [(_UITextFieldVisualStyle *)self styleSubject];
+    _fieldEditorAttached = [styleSubject2 _fieldEditorAttached];
 
-    if (!v5)
+    if (!_fieldEditorAttached)
     {
-      v6 = [(_UITextFieldVisualStyle_tvOS *)self _placeholderTextColorFocused];
+      _placeholderTextColorFocused = [(_UITextFieldVisualStyle_tvOS *)self _placeholderTextColorFocused];
 LABEL_15:
-      v12 = v6;
+      v12 = _placeholderTextColorFocused;
       goto LABEL_16;
     }
   }
@@ -83,21 +83,21 @@ LABEL_15:
   {
   }
 
-  v7 = [(_UITextFieldVisualStyle *)self styleSubject];
-  v8 = [v7 _keyboardAppearance];
+  styleSubject3 = [(_UITextFieldVisualStyle *)self styleSubject];
+  _keyboardAppearance = [styleSubject3 _keyboardAppearance];
 
-  v9 = [(_UITextFieldVisualStyle *)self styleSubject];
-  v10 = [v9 _userInterfaceStyle];
+  styleSubject4 = [(_UITextFieldVisualStyle *)self styleSubject];
+  _userInterfaceStyle = [styleSubject4 _userInterfaceStyle];
 
-  if (v8 == 1)
+  if (_keyboardAppearance == 1)
   {
-    v6 = [(_UITextFieldVisualStyle_tvOS *)self _placeholderTextColorDarkKeyboard];
+    _placeholderTextColorFocused = [(_UITextFieldVisualStyle_tvOS *)self _placeholderTextColorDarkKeyboard];
     goto LABEL_15;
   }
 
-  if (v8 != 10)
+  if (_keyboardAppearance != 10)
   {
-    if (v8 == 9)
+    if (_keyboardAppearance == 9)
     {
       [(_UITextFieldVisualStyle_tvOS *)self _placeholderTextColorBlackKeyboard];
     }
@@ -106,22 +106,22 @@ LABEL_15:
     {
       [(_UITextFieldVisualStyle_tvOS *)self _placeholderTextColorLightKeyboard];
     }
-    v6 = ;
+    _placeholderTextColorFocused = ;
     goto LABEL_15;
   }
 
-  if (v10 == 1000 || v10 == 2)
+  if (_userInterfaceStyle == 1000 || _userInterfaceStyle == 2)
   {
-    v11 = [(_UITextFieldVisualStyle_tvOS *)self _placeholderTextColorDarkKeyboard];
+    _placeholderTextColorDarkKeyboard = [(_UITextFieldVisualStyle_tvOS *)self _placeholderTextColorDarkKeyboard];
   }
 
   else
   {
-    v11 = [(_UITextFieldVisualStyle_tvOS *)self _placeholderTextColorLightKeyboard];
+    _placeholderTextColorDarkKeyboard = [(_UITextFieldVisualStyle_tvOS *)self _placeholderTextColorLightKeyboard];
   }
 
-  v14 = v11;
-  v12 = v11;
+  v14 = _placeholderTextColorDarkKeyboard;
+  v12 = _placeholderTextColorDarkKeyboard;
 
 LABEL_16:
 
@@ -130,55 +130,55 @@ LABEL_16:
 
 - (id)parentViewForTextContentView
 {
-  v3 = [(_UITextFieldVisualStyle *)self styleSubject];
-  v4 = [v3 _contentView];
+  styleSubject = [(_UITextFieldVisualStyle *)self styleSubject];
+  _contentView = [styleSubject _contentView];
 
-  v5 = [(_UITextFieldVisualStyle *)self styleSubject];
-  v6 = [v5 _contentBackdropView];
-  v7 = [v6 contentView];
+  styleSubject2 = [(_UITextFieldVisualStyle *)self styleSubject];
+  _contentBackdropView = [styleSubject2 _contentBackdropView];
+  contentView = [_contentBackdropView contentView];
 
-  if (v7 && [(_UITextFieldVisualStyle_tvOS *)self textShouldUseVibrancy])
+  if (contentView && [(_UITextFieldVisualStyle_tvOS *)self textShouldUseVibrancy])
   {
-    v8 = v7;
+    v8 = contentView;
 
-    v4 = v8;
+    _contentView = v8;
   }
 
-  [v4 setClipsToBounds:0];
+  [_contentView setClipsToBounds:0];
 
-  return v4;
+  return _contentView;
 }
 
 - (void)handleTextVibrancy
 {
-  v3 = [(_UITextFieldVisualStyle *)self styleSubject];
-  v4 = [v3 _fieldEditorAttached];
+  styleSubject = [(_UITextFieldVisualStyle *)self styleSubject];
+  _fieldEditorAttached = [styleSubject _fieldEditorAttached];
 
-  if ((v4 & 1) == 0)
+  if ((_fieldEditorAttached & 1) == 0)
   {
-    v5 = [(_UITextFieldVisualStyle *)self styleSubject];
-    v10 = [v5 _textCanvasView];
+    styleSubject2 = [(_UITextFieldVisualStyle *)self styleSubject];
+    _textCanvasView = [styleSubject2 _textCanvasView];
 
     if ([(_UITextFieldVisualStyle_tvOS *)self textShouldUseVibrancy])
     {
-      v6 = [(_UITextFieldVisualStyle *)self styleSubject];
-      v7 = [v6 _currentTextColor];
-      v8 = [v7 CGColor];
-      v9 = [v10 layer];
-      [v9 setContentsMultiplyColor:v8];
+      styleSubject3 = [(_UITextFieldVisualStyle *)self styleSubject];
+      _currentTextColor = [styleSubject3 _currentTextColor];
+      cGColor = [_currentTextColor CGColor];
+      layer = [_textCanvasView layer];
+      [layer setContentsMultiplyColor:cGColor];
     }
 
     else
     {
-      v6 = [v10 layer];
-      [v6 setContentsMultiplyColor:0];
+      styleSubject3 = [_textCanvasView layer];
+      [styleSubject3 setContentsMultiplyColor:0];
     }
   }
 }
 
 - (BOOL)textShouldUseVibrancy
 {
-  v3 = [(_UITextFieldVisualStyle *)self styleSubject];
+  styleSubject = [(_UITextFieldVisualStyle *)self styleSubject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -187,13 +187,13 @@ LABEL_16:
     return 0;
   }
 
-  v6 = [(_UITextFieldVisualStyle *)self styleSubject];
-  v7 = [v6 _textShouldUseVibrancy];
+  styleSubject2 = [(_UITextFieldVisualStyle *)self styleSubject];
+  _textShouldUseVibrancy = [styleSubject2 _textShouldUseVibrancy];
 
-  return v7;
+  return _textShouldUseVibrancy;
 }
 
-- (id)editingProcessorOverridingEditingAttributes:(id)a3
+- (id)editingProcessorOverridingEditingAttributes:(id)attributes
 {
   v3 = objc_opt_new();
 
@@ -202,10 +202,10 @@ LABEL_16:
 
 - (id)_defaultTextColorForUserInterfaceStyle
 {
-  v3 = [(_UITextFieldVisualStyle *)self styleSubject];
-  v4 = [v3 _userInterfaceStyle];
+  styleSubject = [(_UITextFieldVisualStyle *)self styleSubject];
+  _userInterfaceStyle = [styleSubject _userInterfaceStyle];
 
-  if (v4 == 2)
+  if (_userInterfaceStyle == 2)
   {
     [(_UITextFieldVisualStyle_tvOS *)self _defaultTextColorDarkKeyboard];
   }
@@ -221,14 +221,14 @@ LABEL_16:
 
 - (id)_defaultEditingFont
 {
-  v3 = [(_UITextFieldVisualStyle *)self styleSubject];
-  v4 = [v3 _textShouldFillFieldEditorHeight];
+  styleSubject = [(_UITextFieldVisualStyle *)self styleSubject];
+  _textShouldFillFieldEditorHeight = [styleSubject _textShouldFillFieldEditorHeight];
 
   v5 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleHeadline"];
-  if (v4)
+  if (_textShouldFillFieldEditorHeight)
   {
-    v6 = [(_UITextFieldVisualStyle *)self styleSubject];
-    [v6 _fieldEditorHeight];
+    styleSubject2 = [(_UITextFieldVisualStyle *)self styleSubject];
+    [styleSubject2 _fieldEditorHeight];
     v7 = [v5 fontWithSize:?];
 
     v5 = v7;

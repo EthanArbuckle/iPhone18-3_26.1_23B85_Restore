@@ -1,7 +1,7 @@
 @interface FMSideBarViewLegacy
 - (_TtC6FindMy19FMSideBarViewLegacy)init;
-- (_TtC6FindMy19FMSideBarViewLegacy)initWithCoder:(id)a3;
-- (_TtC6FindMy19FMSideBarViewLegacy)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy19FMSideBarViewLegacy)initWithCoder:(id)coder;
+- (_TtC6FindMy19FMSideBarViewLegacy)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMSideBarViewLegacy
@@ -19,7 +19,7 @@
   return v4;
 }
 
-- (_TtC6FindMy19FMSideBarViewLegacy)initWithCoder:(id)a3
+- (_TtC6FindMy19FMSideBarViewLegacy)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC6FindMy19FMSideBarViewLegacy_blurredBackground;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UIVisualEffectView) init];
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (_TtC6FindMy19FMSideBarViewLegacy)initWithFrame:(CGRect)a3
+- (_TtC6FindMy19FMSideBarViewLegacy)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,46 +1,46 @@
 @interface TRIFactorPackSetStorage
-- (BOOL)_forceRemoveItemAtPath:(id)a3;
-- (BOOL)_nonAtomicOverwriteWithSrc:(id)a3 dest:(id)a4;
-- (BOOL)hasFactorPackSetWithId:(id)a3 path:(id *)a4;
-- (BOOL)migrateEligibleFactorPacksToGlobalWithServerContext:(id)a3;
-- (BOOL)removeUnreferencedFactorPackSetsWithServerContext:(id)a3 removedCount:(unsigned int *)a4;
-- (BOOL)saveFactorPackSet:(id)a3;
-- (TRIFactorPackSetStorage)initWithPaths:(id)a3;
+- (BOOL)_forceRemoveItemAtPath:(id)path;
+- (BOOL)_nonAtomicOverwriteWithSrc:(id)src dest:(id)dest;
+- (BOOL)hasFactorPackSetWithId:(id)id path:(id *)path;
+- (BOOL)migrateEligibleFactorPacksToGlobalWithServerContext:(id)context;
+- (BOOL)removeUnreferencedFactorPackSetsWithServerContext:(id)context removedCount:(unsigned int *)count;
+- (BOOL)saveFactorPackSet:(id)set;
+- (TRIFactorPackSetStorage)initWithPaths:(id)paths;
 - (id)_collectFactorPackSets;
 - (id)parentDirForFactorPackSets;
-- (id)pathForFactorPackSetWithId:(id)a3;
-- (void)enumerateFactorPacksForFactorPackSet:(id)a3 usingLegacyPaths:(BOOL)a4 withBlock:(id)a5;
-- (void)enumerateOnlyProtobufFactorPacksForFactorPackSet:(id)a3 withBlock:(id)a4;
+- (id)pathForFactorPackSetWithId:(id)id;
+- (void)enumerateFactorPacksForFactorPackSet:(id)set usingLegacyPaths:(BOOL)paths withBlock:(id)block;
+- (void)enumerateOnlyProtobufFactorPacksForFactorPackSet:(id)set withBlock:(id)block;
 @end
 
 @implementation TRIFactorPackSetStorage
 
-- (TRIFactorPackSetStorage)initWithPaths:(id)a3
+- (TRIFactorPackSetStorage)initWithPaths:(id)paths
 {
-  v5 = a3;
+  pathsCopy = paths;
   v9.receiver = self;
   v9.super_class = TRIFactorPackSetStorage;
   v6 = [(TRIFactorPackSetStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paths, a3);
+    objc_storeStrong(&v6->_paths, paths);
   }
 
   return v7;
 }
 
-- (BOOL)saveFactorPackSet:(id)a3
+- (BOOL)saveFactorPackSet:(id)set
 {
   v91 = *MEMORY[0x277D85DE8];
-  v62 = a3;
-  v3 = [v62 ident];
-  v65 = [(TRIFactorPackSetStorage *)self pathForFactorPackSetWithId:v3];
+  setCopy = set;
+  ident = [setCopy ident];
+  v65 = [(TRIFactorPackSetStorage *)self pathForFactorPackSetWithId:ident];
 
   v61 = _os_feature_enabled_impl();
   v4 = [TRITempDirScopeGuard alloc];
-  v5 = [(TRIPaths *)self->_paths localTempDir];
-  v6 = [(TRITempDirScopeGuard *)v4 initWithPath:v5];
+  localTempDir = [(TRIPaths *)self->_paths localTempDir];
+  v6 = [(TRITempDirScopeGuard *)v4 initWithPath:localTempDir];
 
   v7 = v6;
   if (!v6)
@@ -49,19 +49,19 @@
   }
 
   v59 = v6;
-  v8 = [(TRITempDirScopeGuard *)v6 path];
+  path = [(TRITempDirScopeGuard *)v6 path];
   v9 = objc_alloc(MEMORY[0x277CCACA8]);
   v10 = objc_opt_new();
-  v11 = [v10 UUIDString];
-  v12 = [v9 initWithFormat:@"fp-set-%@", v11];
-  v63 = [v8 stringByAppendingPathComponent:v12];
+  uUIDString = [v10 UUIDString];
+  v12 = [v9 initWithFormat:@"fp-set-%@", uUIDString];
+  v63 = [path stringByAppendingPathComponent:v12];
 
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v13 = [v65 stringByDeletingLastPathComponent];
-  v89[0] = v13;
+  stringByDeletingLastPathComponent = [v65 stringByDeletingLastPathComponent];
+  v89[0] = stringByDeletingLastPathComponent;
   v14 = [v63 stringByAppendingPathComponent:@"factorPacks"];
   v89[1] = v14;
   v15 = [v63 stringByAppendingPathComponent:@"legacyNamespaceFactorPacks"];
@@ -97,8 +97,8 @@
   v16 = [[TRIFactorPackStorage alloc] initWithPaths:self->_paths];
   v58 = [[TRIFBFactorPackStorage alloc] initWithPaths:self->_paths];
   v20 = objc_alloc(MEMORY[0x277CBEB18]);
-  v21 = [v62 packs];
-  v22 = [v20 initWithCapacity:{objc_msgSend(v21, "count")}];
+  packs = [setCopy packs];
+  v22 = [v20 initWithCapacity:{objc_msgSend(packs, "count")}];
 
   v75[0] = MEMORY[0x277D85DD0];
   v75[1] = 3221225472;
@@ -115,15 +115,15 @@
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v23 = [v62 packs];
-  v24 = [v23 countByEnumeratingWithState:&v71 objects:v88 count:16];
+  packs2 = [setCopy packs];
+  v24 = [packs2 countByEnumeratingWithState:&v71 objects:v88 count:16];
   if (!v24)
   {
     goto LABEL_47;
   }
 
   v25 = *v72;
-  obj = v23;
+  obj = packs2;
   do
   {
     v26 = 0;
@@ -141,9 +141,9 @@
         v30 = TRILogCategory_Server();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
-          v38 = [v62 ident];
+          ident2 = [setCopy ident];
           *buf = 138543362;
-          v85 = v38;
+          v85 = ident2;
           _os_log_error_impl(&dword_26F567000, v30, OS_LOG_TYPE_ERROR, "Factor pack set %{public}@ contains factor pack with missing id.", buf, 0xCu);
         }
 
@@ -152,7 +152,7 @@ LABEL_22:
         goto LABEL_32;
       }
 
-      v29 = [v27 factorPackId];
+      factorPackId = [v27 factorPackId];
       v30 = TRIValidateFactorPackId();
 
       if (!v30)
@@ -160,22 +160,22 @@ LABEL_22:
         goto LABEL_22;
       }
 
-      v31 = [v27 selectedNamespace];
-      v32 = [v31 hasName];
+      selectedNamespace = [v27 selectedNamespace];
+      hasName = [selectedNamespace hasName];
 
-      if (v32)
+      if (hasName)
       {
-        v33 = [v27 selectedNamespace];
-        v34 = [v33 name];
+        selectedNamespace2 = [v27 selectedNamespace];
+        name = [selectedNamespace2 name];
 
         if (v61)
         {
-          [(TRIFBFactorPackStorage *)v58 pathForFactorLevelsWithFactorPackId:v30 namespaceName:v34];
+          [(TRIFBFactorPackStorage *)v58 pathForFactorLevelsWithFactorPackId:v30 namespaceName:name];
         }
 
         else
         {
-          [(TRIFactorPackStorage *)v16 pathForFactorPackWithId:v30 namespaceName:v34];
+          [(TRIFactorPackStorage *)v16 pathForFactorPackWithId:v30 namespaceName:name];
         }
         v35 = ;
         if (!v35)
@@ -183,25 +183,25 @@ LABEL_22:
           goto LABEL_31;
         }
 
-        v36 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/%@", @"factorPacks", v34];
-        v37 = (v60)[2](v60, v34, v36, v35);
+        v36 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/%@", @"factorPacks", name];
+        v37 = (v60)[2](v60, name, v36, v35);
 
         if (v37)
         {
           if (v61)
           {
-            [(TRIFBFactorPackStorage *)v58 legacyPathForFactorLevelsWithFactorPackId:v30 namespaceName:v34];
+            [(TRIFBFactorPackStorage *)v58 legacyPathForFactorLevelsWithFactorPackId:v30 namespaceName:name];
           }
 
           else
           {
-            [(TRIFactorPackStorage *)v16 legacyPathForFactorPackWithId:v30 namespaceName:v34];
+            [(TRIFactorPackStorage *)v16 legacyPathForFactorPackWithId:v30 namespaceName:name];
           }
           v39 = ;
           if (v39)
           {
-            v40 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/%@", @"legacyNamespaceFactorPacks", v34];
-            v41 = (v60)[2](v60, v34, v40, v39);
+            v40 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/%@", @"legacyNamespaceFactorPacks", name];
+            v41 = (v60)[2](v60, name, v40, v39);
 
             v35 = TRILogCategory_Server();
             v42 = os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT);
@@ -252,12 +252,12 @@ LABEL_44:
 
       else
       {
-        v34 = TRILogCategory_Server();
-        if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+        name = TRILogCategory_Server();
+        if (os_log_type_enabled(name, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
           v85 = v30;
-          _os_log_error_impl(&dword_26F567000, v34, OS_LOG_TYPE_ERROR, "Factor pack %{public}@ contains no namespace name.", buf, 0xCu);
+          _os_log_error_impl(&dword_26F567000, name, OS_LOG_TYPE_ERROR, "Factor pack %{public}@ contains no namespace name.", buf, 0xCu);
         }
       }
 
@@ -276,7 +276,7 @@ LABEL_32:
     }
 
     while (v24 != v26);
-    v23 = obj;
+    packs2 = obj;
     v45 = [obj countByEnumeratingWithState:&v71 objects:v88 count:16];
     v24 = v45;
   }
@@ -289,9 +289,9 @@ LABEL_47:
     v46 = TRILogCategory_Server();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      v47 = [v62 ident];
+      ident3 = [setCopy ident];
       *buf = 138543618;
-      v85 = v47;
+      v85 = ident3;
       v86 = 2114;
       v87 = v55;
       _os_log_impl(&dword_26F567000, v46, OS_LOG_TYPE_DEFAULT, "Wrote factor pack set %{public}@ --> %{public}@", buf, 0x16u);
@@ -306,8 +306,8 @@ LABEL_54:
     LOBYTE(v6) = 0;
   }
 
-  v48 = [MEMORY[0x277CCAA00] defaultManager];
-  [v48 triForceRemoveItemAtPath:v57 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager triForceRemoveItemAtPath:v57 error:0];
 
   v69 = 0u;
   v70 = 0u;
@@ -368,19 +368,19 @@ BOOL __45__TRIFactorPackSetStorage_saveFactorPackSet___block_invoke(id *a1, uint
   return v12;
 }
 
-- (BOOL)_nonAtomicOverwriteWithSrc:(id)a3 dest:(id)a4
+- (BOOL)_nonAtomicOverwriteWithSrc:(id)src dest:(id)dest
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 fileSystemRepresentation];
-  v9 = [v7 fileSystemRepresentation];
-  rename(v8, v9, v10);
+  srcCopy = src;
+  destCopy = dest;
+  fileSystemRepresentation = [srcCopy fileSystemRepresentation];
+  fileSystemRepresentation2 = [destCopy fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v10);
   if (v11)
   {
     v12 = [TRITempDirScopeGuard alloc];
-    v13 = [(TRIPaths *)self->_paths localTempDir];
-    v14 = [(TRITempDirScopeGuard *)v12 initWithPath:v13];
+    localTempDir = [(TRIPaths *)self->_paths localTempDir];
+    v14 = [(TRITempDirScopeGuard *)v12 initWithPath:localTempDir];
 
     if (!v14)
     {
@@ -390,14 +390,14 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v15 = [(TRITempDirScopeGuard *)v14 path];
+    path = [(TRITempDirScopeGuard *)v14 path];
     v16 = objc_opt_new();
-    v17 = [v16 UUIDString];
-    v18 = [v15 stringByAppendingPathComponent:v17];
+    uUIDString = [v16 UUIDString];
+    v18 = [path stringByAppendingPathComponent:uUIDString];
 
-    v19 = [v7 fileSystemRepresentation];
-    v20 = [v18 fileSystemRepresentation];
-    rename(v19, v20, v21);
+    fileSystemRepresentation3 = [destCopy fileSystemRepresentation];
+    fileSystemRepresentation4 = [v18 fileSystemRepresentation];
+    rename(fileSystemRepresentation3, fileSystemRepresentation4, v21);
     if (v22)
     {
       v23 = TRILogCategory_Server();
@@ -407,7 +407,7 @@ LABEL_12:
         v25 = strerror(*v24);
         v26 = *__error();
         v41 = 138544130;
-        v42 = v7;
+        v42 = destCopy;
         v43 = 2114;
         v44 = v18;
         v45 = 2080;
@@ -422,9 +422,9 @@ LABEL_16:
 
     else
     {
-      v29 = [v6 fileSystemRepresentation];
-      v30 = [v7 fileSystemRepresentation];
-      rename(v29, v30, v31);
+      fileSystemRepresentation5 = [srcCopy fileSystemRepresentation];
+      fileSystemRepresentation6 = [destCopy fileSystemRepresentation];
+      rename(fileSystemRepresentation5, fileSystemRepresentation6, v31);
       if (!v32)
       {
         [(TRIFactorPackSetStorage *)self _forceRemoveItemAtPath:v18];
@@ -432,9 +432,9 @@ LABEL_16:
         goto LABEL_11;
       }
 
-      v33 = [v18 fileSystemRepresentation];
-      v34 = [v7 fileSystemRepresentation];
-      rename(v33, v34, v35);
+      fileSystemRepresentation7 = [v18 fileSystemRepresentation];
+      fileSystemRepresentation8 = [destCopy fileSystemRepresentation];
+      rename(fileSystemRepresentation7, fileSystemRepresentation8, v35);
       v23 = TRILogCategory_Server();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -442,9 +442,9 @@ LABEL_16:
         v39 = strerror(*v38);
         v40 = *__error();
         v41 = 138544130;
-        v42 = v6;
+        v42 = srcCopy;
         v43 = 2114;
-        v44 = v7;
+        v44 = destCopy;
         v45 = 2080;
         v46 = v39;
         v47 = 1024;
@@ -467,14 +467,14 @@ LABEL_13:
   return v28;
 }
 
-- (BOOL)_forceRemoveItemAtPath:(id)a3
+- (BOOL)_forceRemoveItemAtPath:(id)path
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
   v11 = 0;
-  v6 = [v5 triForceRemoveItemAtPath:v4 error:&v11];
+  v6 = [defaultManager triForceRemoveItemAtPath:pathCopy error:&v11];
 
   v7 = v11;
   if ((v6 & 1) == 0)
@@ -495,43 +495,43 @@ LABEL_13:
 - (id)parentDirForFactorPackSets
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
-  v5 = [v4 stringByAppendingPathComponent:@"v2/factorPackSets"];
+  namespaceDescriptorsDir = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
+  v5 = [namespaceDescriptorsDir stringByAppendingPathComponent:@"v2/factorPackSets"];
 
   objc_autoreleasePoolPop(v3);
 
   return v5;
 }
 
-- (id)pathForFactorPackSetWithId:(id)a3
+- (id)pathForFactorPackSetWithId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(TRIFactorPackSetStorage *)self parentDirForFactorPackSets];
-  v7 = [v6 stringByAppendingPathComponent:v4];
+  parentDirForFactorPackSets = [(TRIFactorPackSetStorage *)self parentDirForFactorPackSets];
+  v7 = [parentDirForFactorPackSets stringByAppendingPathComponent:idCopy];
 
   objc_autoreleasePoolPop(v5);
 
   return v7;
 }
 
-- (BOOL)hasFactorPackSetWithId:(id)a3 path:(id *)a4
+- (BOOL)hasFactorPackSetWithId:(id)id path:(id *)path
 {
-  v7 = a3;
-  if (!v7)
+  idCopy = id;
+  if (!idCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIFactorPackSetStorage.m" lineNumber:284 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFactorPackSetStorage.m" lineNumber:284 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
   }
 
-  v8 = [(TRIFactorPackSetStorage *)self pathForFactorPackSetWithId:v7];
-  if (a4)
+  v8 = [(TRIFactorPackSetStorage *)self pathForFactorPackSetWithId:idCopy];
+  if (path)
   {
-    objc_storeStrong(a4, v8);
+    objc_storeStrong(path, v8);
   }
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:v8];
 
   return v10;
 }
@@ -541,27 +541,27 @@ LABEL_13:
   v4 = objc_opt_new();
   if (v4)
   {
-    v5 = [(TRIFactorPackSetStorage *)self parentDirForFactorPackSets];
+    parentDirForFactorPackSets = [(TRIFactorPackSetStorage *)self parentDirForFactorPackSets];
     v6 = objc_autoreleasePoolPush();
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5 isDirectory:1];
-    v9 = [v7 enumeratorAtURL:v8 includingPropertiesForKeys:0 options:1 errorHandler:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:parentDirForFactorPackSets isDirectory:1];
+    v9 = [defaultManager enumeratorAtURL:v8 includingPropertiesForKeys:0 options:1 errorHandler:0];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = [v9 nextObject];
-    if (v11)
+    nextObject = [v9 nextObject];
+    if (nextObject)
     {
-      v12 = v11;
+      nextObject2 = nextObject;
       while (1)
       {
-        v13 = [v12 path];
-        if (!v13)
+        path = [nextObject2 path];
+        if (!path)
         {
-          v15 = [MEMORY[0x277CCA890] currentHandler];
-          [v15 handleFailureInMethod:a2 object:self file:@"TRIFactorPackSetStorage.m" lineNumber:311 description:{@"Expression was unexpectedly nil/false: %@", @"url.path"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFactorPackSetStorage.m" lineNumber:311 description:{@"Expression was unexpectedly nil/false: %@", @"url.path"}];
         }
 
-        v14 = [v4 addString:v13];
+        v14 = [v4 addString:path];
 
         objc_autoreleasePoolPop(v10);
         if (!v14)
@@ -570,8 +570,8 @@ LABEL_13:
         }
 
         v10 = objc_autoreleasePoolPush();
-        v12 = [v9 nextObject];
-        if (!v12)
+        nextObject2 = [v9 nextObject];
+        if (!nextObject2)
         {
           goto LABEL_8;
         }
@@ -599,22 +599,22 @@ LABEL_8:
   return v16;
 }
 
-- (BOOL)removeUnreferencedFactorPackSetsWithServerContext:(id)a3 removedCount:(unsigned int *)a4
+- (BOOL)removeUnreferencedFactorPackSetsWithServerContext:(id)context removedCount:(unsigned int *)count
 {
-  v7 = a3;
-  if (!v7)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRIFactorPackSetStorage.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFactorPackSetStorage.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"serverContext"}];
   }
 
-  v8 = [(TRIFactorPackSetStorage *)self _collectFactorPackSets];
-  if (v8)
+  _collectFactorPackSets = [(TRIFactorPackSetStorage *)self _collectFactorPackSets];
+  if (_collectFactorPackSets)
   {
-    v9 = [[TRIFactorPackSetExternalReferenceStore alloc] initWithServerContext:v7];
+    v9 = [[TRIFactorPackSetExternalReferenceStore alloc] initWithServerContext:contextCopy];
     v10 = [TRITempDirScopeGuard alloc];
-    v11 = [(TRIPaths *)self->_paths localTempDir];
-    v12 = [(TRITempDirScopeGuard *)v10 initWithPath:v11];
+    localTempDir = [(TRIPaths *)self->_paths localTempDir];
+    v12 = [(TRITempDirScopeGuard *)v10 initWithPath:localTempDir];
 
     if (v12)
     {
@@ -634,10 +634,10 @@ LABEL_8:
       v18 = v9;
       v19 = v12;
       v21 = &v26;
-      v13 = [v8 enumerateStringsWithBlock:v17];
-      if (a4)
+      v13 = [_collectFactorPackSets enumerateStringsWithBlock:v17];
+      if (count)
       {
-        *a4 = *(v27 + 6);
+        *count = *(v27 + 6);
       }
 
       if (v13)
@@ -684,57 +684,57 @@ void __90__TRIFactorPackSetStorage_removeUnreferencedFactorPackSetsWithServerCon
   }
 }
 
-- (void)enumerateOnlyProtobufFactorPacksForFactorPackSet:(id)a3 withBlock:(id)a4
+- (void)enumerateOnlyProtobufFactorPacksForFactorPackSet:(id)set withBlock:(id)block
 {
-  v21 = a3;
-  v7 = a4;
+  setCopy = set;
+  blockCopy = block;
   v8 = objc_alloc(MEMORY[0x277CCACA8]);
-  v9 = [(TRIFactorPackSetStorage *)self pathForFactorPackSetWithId:v21];
+  v9 = [(TRIFactorPackSetStorage *)self pathForFactorPackSetWithId:setCopy];
   v10 = [v8 initWithFormat:@"%@/%@", v9, @"factorPacks"];
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v10 isDirectory:1];
-  v13 = [v11 enumeratorAtURL:v12 includingPropertiesForKeys:0 options:1 errorHandler:0];
+  v13 = [defaultManager enumeratorAtURL:v12 includingPropertiesForKeys:0 options:1 errorHandler:0];
 
   v14 = [[TRIFactorPackStorage alloc] initWithPaths:self->_paths];
   v15 = objc_autoreleasePoolPush();
-  v16 = [v13 nextObject];
-  if (v16)
+  nextObject = [v13 nextObject];
+  if (nextObject)
   {
-    v17 = v16;
+    nextObject2 = nextObject;
     do
     {
-      v18 = [v17 path];
-      if (!v18)
+      path = [nextObject2 path];
+      if (!path)
       {
-        v20 = [MEMORY[0x277CCA890] currentHandler];
-        [v20 handleFailureInMethod:a2 object:self file:@"TRIFactorPackSetStorage.m" lineNumber:378 description:{@"Expression was unexpectedly nil/false: %@", @"url.path"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFactorPackSetStorage.m" lineNumber:378 description:{@"Expression was unexpectedly nil/false: %@", @"url.path"}];
       }
 
-      v19 = [(TRIFactorPackStorage *)v14 loadFactorPackWithDir:v18];
+      v19 = [(TRIFactorPackStorage *)v14 loadFactorPackWithDir:path];
 
       if (v19)
       {
-        v7[2](v7, v19);
+        blockCopy[2](blockCopy, v19);
       }
 
       objc_autoreleasePoolPop(v15);
       v15 = objc_autoreleasePoolPush();
-      v17 = [v13 nextObject];
+      nextObject2 = [v13 nextObject];
     }
 
-    while (v17);
+    while (nextObject2);
   }
 
   objc_autoreleasePoolPop(v15);
 }
 
-- (void)enumerateFactorPacksForFactorPackSet:(id)a3 usingLegacyPaths:(BOOL)a4 withBlock:(id)a5
+- (void)enumerateFactorPacksForFactorPackSet:(id)set usingLegacyPaths:(BOOL)paths withBlock:(id)block
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  if (v6)
+  pathsCopy = paths;
+  setCopy = set;
+  blockCopy = block;
+  if (pathsCopy)
   {
     v11 = @"legacyNamespaceFactorPacks";
   }
@@ -745,14 +745,14 @@ void __90__TRIFactorPackSetStorage_removeUnreferencedFactorPackSetsWithServerCon
   }
 
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
-  v35 = v9;
-  v13 = [(TRIFactorPackSetStorage *)self pathForFactorPackSetWithId:v9];
+  v35 = setCopy;
+  v13 = [(TRIFactorPackSetStorage *)self pathForFactorPackSetWithId:setCopy];
   v14 = [v12 initWithFormat:@"%@/%@", v13, v11];
 
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v34 = v14;
   v16 = [MEMORY[0x277CBEBC0] fileURLWithPath:v14 isDirectory:1];
-  v17 = [v15 enumeratorAtURL:v16 includingPropertiesForKeys:0 options:1 errorHandler:0];
+  v17 = [defaultManager enumeratorAtURL:v16 includingPropertiesForKeys:0 options:1 errorHandler:0];
 
   v37 = [[TRIFactorPackStorage alloc] initWithPaths:self->_paths];
   v36 = [[TRIFBFactorPackStorage alloc] initWithPaths:self->_paths];
@@ -760,29 +760,29 @@ void __90__TRIFactorPackSetStorage_removeUnreferencedFactorPackSetsWithServerCon
   v19 = _os_feature_enabled_impl();
   v38 = 0;
   v20 = objc_autoreleasePoolPush();
-  v21 = [v17 nextObject];
-  if (v21)
+  nextObject = [v17 nextObject];
+  if (nextObject)
   {
-    v22 = v21;
-    v33 = self;
+    nextObject2 = nextObject;
+    selfCopy = self;
     v23 = v18 & v19;
     do
     {
-      v24 = [v22 path];
-      v25 = [v24 stringByAppendingPathComponent:@"factorPack.fb"];
+      path = [nextObject2 path];
+      v25 = [path stringByAppendingPathComponent:@"factorPack.fb"];
 
-      v26 = [MEMORY[0x277CCAA00] defaultManager];
-      v27 = [v26 fileExistsAtPath:v25];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      v27 = [defaultManager2 fileExistsAtPath:v25];
 
-      LODWORD(v26) = v27 & v23;
-      v28 = [v22 path];
-      v29 = v28;
-      if (v26 == 1)
+      LODWORD(defaultManager2) = v27 & v23;
+      path2 = [nextObject2 path];
+      v29 = path2;
+      if (defaultManager2 == 1)
       {
-        if (!v28)
+        if (!path2)
         {
-          v31 = [MEMORY[0x277CCA890] currentHandler];
-          [v31 handleFailureInMethod:a2 object:v33 file:@"TRIFactorPackSetStorage.m" lineNumber:427 description:{@"Expression was unexpectedly nil/false: %@", @"url.path"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"TRIFactorPackSetStorage.m" lineNumber:427 description:{@"Expression was unexpectedly nil/false: %@", @"url.path"}];
         }
 
         v30 = [(TRIFBFactorPackStorage *)v36 loadFactorLevelsWithDir:v29 bufferSize:0];
@@ -792,15 +792,15 @@ void __90__TRIFactorPackSetStorage_removeUnreferencedFactorPackSetsWithServerCon
           goto LABEL_16;
         }
 
-        v10[2](v10, 0, v30, &v38);
+        blockCopy[2](blockCopy, 0, v30, &v38);
       }
 
       else
       {
-        if (!v28)
+        if (!path2)
         {
-          v32 = [MEMORY[0x277CCA890] currentHandler];
-          [v32 handleFailureInMethod:a2 object:v33 file:@"TRIFactorPackSetStorage.m" lineNumber:435 description:{@"Expression was unexpectedly nil/false: %@", @"url.path"}];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"TRIFactorPackSetStorage.m" lineNumber:435 description:{@"Expression was unexpectedly nil/false: %@", @"url.path"}];
         }
 
         v30 = [(TRIFactorPackStorage *)v37 loadFactorPackWithDir:v29];
@@ -810,7 +810,7 @@ void __90__TRIFactorPackSetStorage_removeUnreferencedFactorPackSetsWithServerCon
           goto LABEL_16;
         }
 
-        (v10)[2](v10, v30, 0, &v38);
+        (blockCopy)[2](blockCopy, v30, 0, &v38);
       }
 
       if (v38)
@@ -823,10 +823,10 @@ LABEL_16:
 
       objc_autoreleasePoolPop(v20);
       v20 = objc_autoreleasePoolPush();
-      v22 = [v17 nextObject];
+      nextObject2 = [v17 nextObject];
     }
 
-    while (v22);
+    while (nextObject2);
   }
 
   objc_autoreleasePoolPop(v20);
@@ -995,10 +995,10 @@ uint64_t __101__TRIFactorPackSetStorage_enumerateCompatibleFactorPacksForFactorP
   return result;
 }
 
-- (BOOL)migrateEligibleFactorPacksToGlobalWithServerContext:(id)a3
+- (BOOL)migrateEligibleFactorPacksToGlobalWithServerContext:(id)context
 {
   v51 = *MEMORY[0x277D85DE8];
-  v33 = a3;
+  contextCopy = context;
   v4 = TRILogCategory_Server();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1008,8 +1008,8 @@ uint64_t __101__TRIFactorPackSetStorage_enumerateCompatibleFactorPacksForFactorP
 
   context = objc_autoreleasePoolPush();
   v5 = MEMORY[0x277D73750];
-  v6 = [(TRIPaths *)self->_paths namespaceDescriptorsDefaultDir];
-  v32 = [v5 descriptorsForDirectory:v6 filterBlock:0];
+  namespaceDescriptorsDefaultDir = [(TRIPaths *)self->_paths namespaceDescriptorsDefaultDir];
+  v32 = [v5 descriptorsForDirectory:namespaceDescriptorsDefaultDir filterBlock:0];
 
   v7 = objc_opt_new();
   v42[0] = MEMORY[0x277D85DD0];
@@ -1028,19 +1028,19 @@ uint64_t __101__TRIFactorPackSetStorage_enumerateCompatibleFactorPacksForFactorP
   }
 
   v10 = [TRIGloballyAvailableNamespaces alloc];
-  v11 = [v33 keyValueStore];
-  v12 = [(TRIGloballyAvailableNamespaces *)v10 initWithKVStore:v11];
+  keyValueStore = [contextCopy keyValueStore];
+  v12 = [(TRIGloballyAvailableNamespaces *)v10 initWithKVStore:keyValueStore];
 
-  v13 = [(TRIGloballyAvailableNamespaces *)v12 namespaces];
+  namespaces = [(TRIGloballyAvailableNamespaces *)v12 namespaces];
   v14 = TRILogCategory_Server();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v13;
+    *(&buf + 4) = namespaces;
     _os_log_impl(&dword_26F567000, v14, OS_LOG_TYPE_DEFAULT, "Found the following namespaces that are already available globally: %{public}@", &buf, 0xCu);
   }
 
-  [v8 minusSet:v13];
+  [v8 minusSet:namespaces];
   if ([v8 count])
   {
     *&buf = 0;
@@ -1063,7 +1063,7 @@ uint64_t __101__TRIFactorPackSetStorage_enumerateCompatibleFactorPacksForFactorP
     v38 = v18;
     p_buf = &buf;
     v19 = MEMORY[0x2743948D0](v36);
-    v20 = [v33 rolloutDatabase];
+    rolloutDatabase = [contextCopy rolloutDatabase];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __79__TRIFactorPackSetStorage_migrateEligibleFactorPacksToGlobalWithServerContext___block_invoke_161;
@@ -1071,7 +1071,7 @@ uint64_t __101__TRIFactorPackSetStorage_enumerateCompatibleFactorPacksForFactorP
     v34[4] = self;
     v21 = v19;
     v35 = v21;
-    v22 = [v20 enumerateRecordsOverlappingNamespaces:v8 usingTransaction:0 block:v34];
+    v22 = [rolloutDatabase enumerateRecordsOverlappingNamespaces:v8 usingTransaction:0 block:v34];
 
     if (v22)
     {

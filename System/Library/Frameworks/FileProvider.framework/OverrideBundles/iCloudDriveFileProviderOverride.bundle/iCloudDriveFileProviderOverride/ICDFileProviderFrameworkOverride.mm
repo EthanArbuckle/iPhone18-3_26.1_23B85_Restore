@@ -1,39 +1,39 @@
 @interface ICDFileProviderFrameworkOverride
-+ (BOOL)_isURLExcludedFromSync:(id)a3 syncRoot:(id)a4 error:(id *)a5;
-- (void)FPDocumentURLFromUniversalBookmarkableString:(id)a3 completionHandler:(id)a4;
-- (void)FPStateForDomainWithID:(id)a3 completionHandler:(id)a4;
-- (void)FPUniversalBookmarkableStringFromDocumentURL:(id)a3 completionHandler:(id)a4;
-- (void)FPValuesForAttributes:(id)a3 forItemAtURL:(id)a4 completionHandler:(id)a5;
++ (BOOL)_isURLExcludedFromSync:(id)sync syncRoot:(id)root error:(id *)error;
+- (void)FPDocumentURLFromUniversalBookmarkableString:(id)string completionHandler:(id)handler;
+- (void)FPStateForDomainWithID:(id)d completionHandler:(id)handler;
+- (void)FPUniversalBookmarkableStringFromDocumentURL:(id)l completionHandler:(id)handler;
+- (void)FPValuesForAttributes:(id)attributes forItemAtURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation ICDFileProviderFrameworkOverride
 
-+ (BOOL)_isURLExcludedFromSync:(id)a3 syncRoot:(id)a4 error:(id *)a5
++ (BOOL)_isURLExcludedFromSync:(id)sync syncRoot:(id)root error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 br_realpathURL];
-  v10 = [v8 br_realpathURL];
+  syncCopy = sync;
+  rootCopy = root;
+  br_realpathURL = [syncCopy br_realpathURL];
+  br_realpathURL2 = [rootCopy br_realpathURL];
 
-  if (v9 && v10)
+  if (br_realpathURL && br_realpathURL2)
   {
     while (1)
     {
-      v11 = [v10 path];
-      v12 = [v9 path];
-      v13 = [v11 isEqualToString:v12];
+      path = [br_realpathURL2 path];
+      path2 = [br_realpathURL path];
+      v13 = [path isEqualToString:path2];
 
       if (v13)
       {
-        v18 = 0;
+        uRLByDeletingLastPathComponent = 0;
         goto LABEL_17;
       }
 
       v14 = objc_autoreleasePoolPush();
-      v15 = [v9 lastPathComponent];
-      if ([v15 br_isExcludedWithMaximumDepth:1])
+      lastPathComponent = [br_realpathURL lastPathComponent];
+      if ([lastPathComponent br_isExcludedWithMaximumDepth:1])
       {
-        v18 = 0;
+        uRLByDeletingLastPathComponent = 0;
 LABEL_14:
 
         objc_autoreleasePoolPop(v14);
@@ -42,9 +42,9 @@ LABEL_14:
       }
 
       v22 = 0;
-      v16 = [v9 br_isIgnoredByFileProviderWithError:&v22];
+      v16 = [br_realpathURL br_isIgnoredByFileProviderWithError:&v22];
       v17 = v22;
-      v18 = v17;
+      uRLByDeletingLastPathComponent = v17;
       if (v16)
       {
         goto LABEL_14;
@@ -55,22 +55,22 @@ LABEL_14:
         break;
       }
 
-      v18 = [v9 URLByDeletingLastPathComponent];
+      uRLByDeletingLastPathComponent = [br_realpathURL URLByDeletingLastPathComponent];
 
       objc_autoreleasePoolPop(v14);
-      v9 = v18;
-      if (!v18)
+      br_realpathURL = uRLByDeletingLastPathComponent;
+      if (!uRLByDeletingLastPathComponent)
       {
         goto LABEL_17;
       }
     }
 
     objc_autoreleasePoolPop(v14);
-    if (a5)
+    if (error)
     {
-      v20 = v18;
+      v20 = uRLByDeletingLastPathComponent;
       v19 = 0;
-      *a5 = v18;
+      *error = uRLByDeletingLastPathComponent;
       goto LABEL_18;
     }
 
@@ -79,10 +79,10 @@ LABEL_17:
 LABEL_18:
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:2];
-    *a5 = v19 = 0;
+    *error = v19 = 0;
   }
 
   else
@@ -93,16 +93,16 @@ LABEL_18:
   return v19;
 }
 
-- (void)FPValuesForAttributes:(id)a3 forItemAtURL:(id)a4 completionHandler:(id)a5
+- (void)FPValuesForAttributes:(id)attributes forItemAtURL:(id)l completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  attributesCopy = attributes;
+  handlerCopy = handler;
   v9 = objc_autoreleasePoolPush();
-  v10 = [a4 br_realpathURL];
-  if ([v10 br_isExistWithNonMateralizingIOPolicy:1])
+  br_realpathURL = [l br_realpathURL];
+  if ([br_realpathURL br_isExistWithNonMateralizingIOPolicy:1])
   {
     v36 = 0;
-    v11 = [v10 br_getSyncRootWithError:&v36];
+    v11 = [br_realpathURL br_getSyncRootWithError:&v36];
     v12 = v36;
     if (v12)
     {
@@ -115,16 +115,16 @@ LABEL_18:
       {
         if (!v11)
         {
-          (*(v8 + 2))(v8, 0, 0);
+          (*(handlerCopy + 2))(handlerCopy, 0, 0);
           goto LABEL_30;
         }
 
         v14 = *MEMORY[0x277CBE8B8];
-        if ([v7 containsObject:*MEMORY[0x277CBE8B8]])
+        if ([attributesCopy containsObject:*MEMORY[0x277CBE8B8]])
         {
           v15 = objc_opt_new();
           v35 = 0;
-          v16 = [ICDFileProviderFrameworkOverride _isURLExcludedFromSync:v10 syncRoot:v11 error:&v35];
+          v16 = [ICDFileProviderFrameworkOverride _isURLExcludedFromSync:br_realpathURL syncRoot:v11 error:&v35];
           v17 = v35;
           v13 = v17;
           if (v16)
@@ -136,7 +136,7 @@ LABEL_18:
           {
             if (v17)
             {
-              (*(v8 + 2))(v8, 0, 0);
+              (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_28:
 
               goto LABEL_30;
@@ -146,12 +146,12 @@ LABEL_28:
           }
 
           [v15 setObject:v18 forKey:v14];
-          v31 = [v7 br_copy_if:&unk_284B1A188];
+          v31 = [attributesCopy br_copy_if:&unk_284B1A188];
 
-          v7 = v31;
+          attributesCopy = v31;
 LABEL_12:
           v19 = *MEMORY[0x277CBE990];
-          v20 = [v7 containsObject:*MEMORY[0x277CBE990]];
+          v20 = [attributesCopy containsObject:*MEMORY[0x277CBE990]];
           v21 = v20;
           if (v15 || !v20)
           {
@@ -161,29 +161,29 @@ LABEL_12:
             }
           }
 
-          else if ([v10 br_isInSyncedLocation])
+          else if ([br_realpathURL br_isInSyncedLocation])
           {
-            v22 = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
-            v23 = [v22 isNetworkReachable];
+            mEMORY[0x277CFAEA0] = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
+            isNetworkReachable = [mEMORY[0x277CFAEA0] isNetworkReachable];
 
-            if (!v23)
+            if (!isNetworkReachable)
             {
               v15 = objc_opt_new();
 LABEL_18:
-              if ([v7 count])
+              if ([attributesCopy count])
               {
                 v24 = *MEMORY[0x277CBE980];
                 v33 = v11;
-                if (v21 && ([v7 containsObject:v24] & 1) == 0)
+                if (v21 && ([attributesCopy containsObject:v24] & 1) == 0)
                 {
-                  v25 = [v7 arrayByAddingObject:v24];
+                  v25 = [attributesCopy arrayByAddingObject:v24];
 
-                  v7 = v25;
+                  attributesCopy = v25;
                 }
 
-                v26 = [MEMORY[0x277CC63A8] sharedConnection];
+                mEMORY[0x277CC63A8] = [MEMORY[0x277CC63A8] sharedConnection];
                 v34 = v13;
-                v27 = [v26 valuesForAttributes:v7 forItemAtURL:v10 error:&v34];
+                v27 = [mEMORY[0x277CC63A8] valuesForAttributes:attributesCopy forItemAtURL:br_realpathURL error:&v34];
                 v32 = v34;
 
                 [v15 addEntriesFromDictionary:v27];
@@ -195,18 +195,18 @@ LABEL_18:
                   [v15 setValue:v30 forKey:v19];
                 }
 
-                (*(v8 + 2))(v8, v15, 0);
+                (*(handlerCopy + 2))(handlerCopy, v15, 0);
 
                 v11 = v33;
                 goto LABEL_30;
               }
 
-              (*(v8 + 2))(v8, v15, 0);
+              (*(handlerCopy + 2))(handlerCopy, v15, 0);
               goto LABEL_28;
             }
           }
 
-          (*(v8 + 2))(v8, 0, 0);
+          (*(handlerCopy + 2))(handlerCopy, 0, 0);
 
 LABEL_30:
           goto LABEL_31;
@@ -220,25 +220,25 @@ LABEL_30:
     goto LABEL_12;
   }
 
-  (*(v8 + 2))(v8, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_31:
   objc_autoreleasePoolPop(v9);
 }
 
-- (void)FPStateForDomainWithID:(id)a3 completionHandler:(id)a4
+- (void)FPStateForDomainWithID:(id)d completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasPrefix:@"com.apple.CloudDocs.iCloudDriveFileProvider"] & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"com.apple.CloudDocs.iCloudDriveFileProviderManaged"))
+  dCopy = d;
+  handlerCopy = handler;
+  if ([dCopy hasPrefix:@"com.apple.CloudDocs.iCloudDriveFileProvider"] & 1) != 0 || (objc_msgSend(dCopy, "hasPrefix:", @"com.apple.CloudDocs.iCloudDriveFileProviderManaged"))
   {
-    v7 = [MEMORY[0x277CFAE38] defaultConnection];
+    defaultConnection = [MEMORY[0x277CFAE38] defaultConnection];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = sub_238353650;
     v14[3] = &unk_278A50D08;
-    v8 = v6;
+    v8 = handlerCopy;
     v15 = v8;
-    v9 = [v7 remoteObjectProxyWithErrorHandler:v14];
+    v9 = [defaultConnection remoteObjectProxyWithErrorHandler:v14];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -254,52 +254,52 @@ LABEL_31:
     v11 = brc_default_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      sub_238353954(v5, v10, v11);
+      sub_238353954(dCopy, v10, v11);
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)FPUniversalBookmarkableStringFromDocumentURL:(id)a3 completionHandler:(id)a4
+- (void)FPUniversalBookmarkableStringFromDocumentURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_238353748;
   v8[3] = &unk_278A50D58;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 br_bookmarkableStringWithEtag:0 onlyAllowItemKnowByServer:1 completion:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [l br_bookmarkableStringWithEtag:0 onlyAllowItemKnowByServer:1 completion:v8];
 }
 
-- (void)FPDocumentURLFromUniversalBookmarkableString:(id)a3 completionHandler:(id)a4
+- (void)FPDocumentURLFromUniversalBookmarkableString:(id)string completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICDFileProviderFrameworkOverride *)self bookmarkPrefix];
-  v9 = [v6 hasPrefix:v8];
+  stringCopy = string;
+  handlerCopy = handler;
+  bookmarkPrefix = [(ICDFileProviderFrameworkOverride *)self bookmarkPrefix];
+  v9 = [stringCopy hasPrefix:bookmarkPrefix];
 
   if (v9)
   {
-    v10 = [(ICDFileProviderFrameworkOverride *)self bookmarkPrefix];
-    v11 = [v6 substringFromIndex:{objc_msgSend(v10, "length")}];
+    bookmarkPrefix2 = [(ICDFileProviderFrameworkOverride *)self bookmarkPrefix];
+    v11 = [stringCopy substringFromIndex:{objc_msgSend(bookmarkPrefix2, "length")}];
 
     v12 = MEMORY[0x277CBEBC0];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = sub_238353944;
     v13[3] = &unk_278A50D80;
-    v14 = v7;
+    v14 = handlerCopy;
     [v12 br_documentURLFromBookmarkableString:v11 completion:v13];
 
-    v6 = v11;
+    stringCopy = v11;
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 

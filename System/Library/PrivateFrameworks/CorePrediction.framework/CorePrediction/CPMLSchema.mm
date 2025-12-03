@@ -1,25 +1,25 @@
 @interface CPMLSchema
-- (BOOL)hasOptions:(unint64_t)a3;
-- (BOOL)isColumnContinous:(unsigned int)a3;
-- (BOOL)isIntType:(unint64_t)a3;
-- (BOOL)isNumType:(unint64_t)a3;
-- (BOOL)isRealType:(unint64_t)a3;
-- (BOOL)isStringType:(unint64_t)a3;
-- (BOOL)isVectorType:(unint64_t)a3;
-- (BOOL)matchSubstituteValue:(unint64_t)a3 theValue:(id)a4;
-- (CPMLSchema)initWithPlist:(id)a3;
-- (id)getSubstituteValue:(unint64_t)a3;
-- (id)getUserDefinedCategoricalData:(unint64_t)a3;
-- (id)init:(id)a3;
-- (int)getColumnPosition:(id)a3;
-- (int)getSchemaType:(unint64_t)a3;
-- (int)getVectorContent:(unint64_t)a3;
-- (unint64_t)getUserDefinedCategoricalDataCount:(unint64_t)a3;
+- (BOOL)hasOptions:(unint64_t)options;
+- (BOOL)isColumnContinous:(unsigned int)continous;
+- (BOOL)isIntType:(unint64_t)type;
+- (BOOL)isNumType:(unint64_t)type;
+- (BOOL)isRealType:(unint64_t)type;
+- (BOOL)isStringType:(unint64_t)type;
+- (BOOL)isVectorType:(unint64_t)type;
+- (BOOL)matchSubstituteValue:(unint64_t)value theValue:(id)theValue;
+- (CPMLSchema)initWithPlist:(id)plist;
+- (id)getSubstituteValue:(unint64_t)value;
+- (id)getUserDefinedCategoricalData:(unint64_t)data;
+- (id)init:(id)init;
+- (int)getColumnPosition:(id)position;
+- (int)getSchemaType:(unint64_t)type;
+- (int)getVectorContent:(unint64_t)content;
+- (unint64_t)getUserDefinedCategoricalDataCount:(unint64_t)count;
 @end
 
 @implementation CPMLSchema
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   v5.receiver = self;
   v5.super_class = CPMLSchema;
@@ -32,17 +32,17 @@
   return v3;
 }
 
-- (CPMLSchema)initWithPlist:(id)a3
+- (CPMLSchema)initWithPlist:(id)plist
 {
   v85 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  plistCopy = plist;
   v83.receiver = self;
   v83.super_class = CPMLSchema;
   v5 = [(CPMLSchema *)&v83 init];
   if (v5)
   {
-    v65 = v4;
-    v6 = [v4 objectForKey:@"schema"];
+    v65 = plistCopy;
+    v6 = [plistCopy objectForKey:@"schema"];
     schema = v5->schema;
     v5->schema = v6;
 
@@ -145,8 +145,8 @@
 
         else
         {
-          v40 = [MEMORY[0x277CBEB68] null];
-          [(NSMutableArray *)v39 addObject:v40];
+          null = [MEMORY[0x277CBEB68] null];
+          [(NSMutableArray *)v39 addObject:null];
         }
 
         v41 = [v78 objectForKey:@"categoricalData"];
@@ -268,16 +268,16 @@
     schemaHeader = v5->schemaHeader;
     v5->schemaHeader = v61;
 
-    v4 = v65;
+    plistCopy = v65;
   }
 
   v63 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (BOOL)isNumType:(unint64_t)a3
+- (BOOL)isNumType:(unint64_t)type
 {
-  v3 = [(NSMutableArray *)self->schemaHDef objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->schemaHDef objectAtIndex:type];
   if ([v3 isEqualToString:@"INTEGER"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"REAL"))
   {
     v4 = 1;
@@ -291,9 +291,9 @@
   return v4;
 }
 
-- (BOOL)isIntType:(unint64_t)a3
+- (BOOL)isIntType:(unint64_t)type
 {
-  v3 = [(NSMutableArray *)self->schemaHDef objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->schemaHDef objectAtIndex:type];
   if ([v3 isEqualToString:@"INTEGER"])
   {
     v4 = 1;
@@ -307,17 +307,17 @@
   return v4;
 }
 
-- (BOOL)isRealType:(unint64_t)a3
+- (BOOL)isRealType:(unint64_t)type
 {
-  v3 = [(NSMutableArray *)self->schemaHDef objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->schemaHDef objectAtIndex:type];
   v4 = [v3 isEqualToString:@"REAL"];
 
   return v4;
 }
 
-- (BOOL)isStringType:(unint64_t)a3
+- (BOOL)isStringType:(unint64_t)type
 {
-  v3 = [(NSMutableArray *)self->schemaHDef objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->schemaHDef objectAtIndex:type];
   if ([v3 isEqualToString:@"BOOLEAN"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"INTEGER") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"REAL"))
   {
     LOBYTE(v4) = 0;
@@ -331,17 +331,17 @@
   return v4;
 }
 
-- (BOOL)isVectorType:(unint64_t)a3
+- (BOOL)isVectorType:(unint64_t)type
 {
-  v3 = [(NSMutableArray *)self->schemaHDef objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->schemaHDef objectAtIndex:type];
   v4 = [v3 isEqualToString:@"BLOB"];
 
   return v4;
 }
 
-- (BOOL)isColumnContinous:(unsigned int)a3
+- (BOOL)isColumnContinous:(unsigned int)continous
 {
-  v3 = [(NSMutableArray *)self->schemaHDef objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->schemaHDef objectAtIndex:continous];
   if ([v3 isEqualToString:@"REAL"])
   {
     v4 = 1;
@@ -355,9 +355,9 @@
   return v4;
 }
 
-- (int)getColumnPosition:(id)a3
+- (int)getColumnPosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   if ([(NSMutableArray *)self->attribute count])
   {
     v5 = 0;
@@ -365,13 +365,13 @@
     {
       v6 = [(NSMutableArray *)self->attribute objectAtIndex:v5];
       v7 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"CPMLcol%d_", v5];
-      [v7 appendString:v4];
+      [v7 appendString:positionCopy];
       if ([v7 isEqualToString:v6])
       {
         break;
       }
 
-      v8 = [v4 isEqualToString:v6];
+      v8 = [positionCopy isEqualToString:v6];
 
       if (v8)
       {
@@ -396,24 +396,24 @@ LABEL_8:
   return v5;
 }
 
-- (int)getSchemaType:(unint64_t)a3
+- (int)getSchemaType:(unint64_t)type
 {
   if ([(CPMLSchema *)self isStringType:?])
   {
     return 5;
   }
 
-  if ([(CPMLSchema *)self isIntType:a3])
+  if ([(CPMLSchema *)self isIntType:type])
   {
     return 3;
   }
 
-  if ([(CPMLSchema *)self isRealType:a3])
+  if ([(CPMLSchema *)self isRealType:type])
   {
     return 4;
   }
 
-  if ([(CPMLSchema *)self isVectorType:a3])
+  if ([(CPMLSchema *)self isVectorType:type])
   {
     return 7;
   }
@@ -422,11 +422,11 @@ LABEL_8:
   return 8;
 }
 
-- (int)getVectorContent:(unint64_t)a3
+- (int)getVectorContent:(unint64_t)content
 {
-  if ([(NSMutableArray *)self->schema count]>= a3)
+  if ([(NSMutableArray *)self->schema count]>= content)
   {
-    v6 = [(NSMutableArray *)self->schema objectAtIndex:a3];
+    v6 = [(NSMutableArray *)self->schema objectAtIndex:content];
     v7 = [v6 objectForKey:@"VectorType"];
     if ([v7 isEqualToString:@"INTEGER"])
     {
@@ -458,54 +458,54 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)hasOptions:(unint64_t)a3
+- (BOOL)hasOptions:(unint64_t)options
 {
-  v3 = [(NSMutableArray *)self->availableOptions objectAtIndexedSubscript:a3];
-  v4 = [MEMORY[0x277CBEB68] null];
-  v5 = v3 != v4;
+  v3 = [(NSMutableArray *)self->availableOptions objectAtIndexedSubscript:options];
+  null = [MEMORY[0x277CBEB68] null];
+  v5 = v3 != null;
 
   return v5;
 }
 
-- (id)getUserDefinedCategoricalData:(unint64_t)a3
+- (id)getUserDefinedCategoricalData:(unint64_t)data
 {
-  if ([(NSMutableArray *)self->_categoricalDataList count]<= a3)
+  if ([(NSMutableArray *)self->_categoricalDataList count]<= data)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_categoricalDataList objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_categoricalDataList objectAtIndex:data];
   }
 
   return v5;
 }
 
-- (unint64_t)getUserDefinedCategoricalDataCount:(unint64_t)a3
+- (unint64_t)getUserDefinedCategoricalDataCount:(unint64_t)count
 {
-  v3 = [(NSMutableArray *)self->_categoricalDataList objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->_categoricalDataList objectAtIndex:count];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (BOOL)matchSubstituteValue:(unint64_t)a3 theValue:(id)a4
+- (BOOL)matchSubstituteValue:(unint64_t)value theValue:(id)theValue
 {
   matchReplaceValue = self->_matchReplaceValue;
-  v6 = a4;
-  v7 = [(NSMutableArray *)matchReplaceValue objectAtIndex:a3];
-  LOBYTE(matchReplaceValue) = [v7 isEqualToString:v6];
+  theValueCopy = theValue;
+  v7 = [(NSMutableArray *)matchReplaceValue objectAtIndex:value];
+  LOBYTE(matchReplaceValue) = [v7 isEqualToString:theValueCopy];
 
   return matchReplaceValue;
 }
 
-- (id)getSubstituteValue:(unint64_t)a3
+- (id)getSubstituteValue:(unint64_t)value
 {
-  if ([(NSMutableArray *)self->schema count]>= a3)
+  if ([(NSMutableArray *)self->schema count]>= value)
   {
-    v6 = [(NSMutableArray *)self->_replaceMissingValue objectAtIndex:a3];
-    v7 = [(CPMLSchema *)self isStringType:a3];
+    v6 = [(NSMutableArray *)self->_replaceMissingValue objectAtIndex:value];
+    v7 = [(CPMLSchema *)self isStringType:value];
     if (v6 || !v7)
     {
       if ([v6 isEqualToString:&stru_2859288F8])

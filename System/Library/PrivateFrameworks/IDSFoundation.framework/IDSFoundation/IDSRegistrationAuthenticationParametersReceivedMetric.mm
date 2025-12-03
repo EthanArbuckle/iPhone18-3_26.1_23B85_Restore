@@ -1,20 +1,20 @@
 @interface IDSRegistrationAuthenticationParametersReceivedMetric
-- (IDSRegistrationAuthenticationParametersReceivedMetric)initWithErrorCode:(int64_t)a3 timeIntervalSinceAuthenticationParameterRequest:(double)a4;
+- (IDSRegistrationAuthenticationParametersReceivedMetric)initWithErrorCode:(int64_t)code timeIntervalSinceAuthenticationParameterRequest:(double)request;
 - (NSCopying)awdRepresentation;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSRegistrationAuthenticationParametersReceivedMetric
 
-- (IDSRegistrationAuthenticationParametersReceivedMetric)initWithErrorCode:(int64_t)a3 timeIntervalSinceAuthenticationParameterRequest:(double)a4
+- (IDSRegistrationAuthenticationParametersReceivedMetric)initWithErrorCode:(int64_t)code timeIntervalSinceAuthenticationParameterRequest:(double)request
 {
   v7.receiver = self;
   v7.super_class = IDSRegistrationAuthenticationParametersReceivedMetric;
   result = [(IDSRegistrationAuthenticationParametersReceivedMetric *)&v7 init];
   if (result)
   {
-    result->_errorCode = a3;
-    result->_timeIntervalSinceAuthenticationParameterRequest = a4;
+    result->_errorCode = code;
+    result->_timeIntervalSinceAuthenticationParameterRequest = request;
   }
 
   return result;

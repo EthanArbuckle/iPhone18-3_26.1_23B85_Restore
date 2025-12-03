@@ -1,10 +1,10 @@
 @interface UIDictationTipReplacementHandler
 - (UIDictationTipHandlerDelegate)delegate;
-- (UIDictationTipReplacementHandler)initWithDelegate:(id)a3;
+- (UIDictationTipReplacementHandler)initWithDelegate:(id)delegate;
 - (void)finalizeRecordedText;
-- (void)recordDictationTipText:(id)a3;
+- (void)recordDictationTipText:(id)text;
 - (void)resetHandler;
-- (void)startRecodingText:(id)a3;
+- (void)startRecodingText:(id)text;
 @end
 
 @implementation UIDictationTipReplacementHandler
@@ -22,16 +22,16 @@
   self->_textRecorderStatus = 0;
 }
 
-- (UIDictationTipReplacementHandler)initWithDelegate:(id)a3
+- (UIDictationTipReplacementHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = UIDictationTipReplacementHandler;
   v5 = [(UIDictationTipReplacementHandler *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(UIDictationTipReplacementHandler *)v5 setDelegate:v4];
+    [(UIDictationTipReplacementHandler *)v5 setDelegate:delegateCopy];
     v7 = [[UIDelayedAction alloc] initWithTarget:v6 action:sel_finalizeRecordedText userInfo:0 delay:1.0];
     finalizeAction = v6->_finalizeAction;
     v6->_finalizeAction = v7;
@@ -42,17 +42,17 @@
   return v6;
 }
 
-- (void)startRecodingText:(id)a3
+- (void)startRecodingText:(id)text
 {
-  v9 = a3;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained getDictationTipSignaled];
+  getDictationTipSignaled = [WeakRetained getDictationTipSignaled];
 
-  if (!v5)
+  if (!getDictationTipSignaled)
   {
     [(UIDictationTipReplacementHandler *)self resetHandler];
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v6 replaceEmojiInStringWithEmojiDictationCommand:v9];
+    v7 = [v6 replaceEmojiInStringWithEmojiDictationCommand:textCopy];
     replacementTargetText = self->_replacementTargetText;
     self->_replacementTargetText = v7;
 
@@ -60,9 +60,9 @@
   }
 }
 
-- (void)recordDictationTipText:(id)a3
+- (void)recordDictationTipText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained getDictationTipSignaled])
   {
@@ -75,7 +75,7 @@
     if (textRecorderStatus != 2)
     {
       [(UIDelayedAction *)self->_finalizeAction unschedule];
-      [(NSMutableString *)self->_replacementText appendString:v6];
+      [(NSMutableString *)self->_replacementText appendString:textCopy];
       self->_textRecorderStatus = 1;
       [(UIDelayedAction *)self->_finalizeAction touch];
     }
@@ -97,9 +97,9 @@
     v12 = _UILocalizedFormat(@"Dictation Replacement Tip Body Contextual", @"Contextual description of the Replacement tip", @"To edit your message while you dictate, say “Replace ‘%@’ with ‘%@'", v7, v8, v9, v10, v11, replacementTargetText);
   }
 
-  v13 = [(UIDictationTipReplacementHandler *)self delegate];
+  delegate = [(UIDictationTipReplacementHandler *)self delegate];
   v14 = _UILocalizedString(@"Dictation Replacement Tip Title", @"Title of the Replacement tip", @"Replace Text");
-  [v13 finalizeTextWithTipType:0 title:v14 andTipDescription:v16];
+  [delegate finalizeTextWithTipType:0 title:v14 andTipDescription:v16];
 }
 
 - (UIDictationTipHandlerDelegate)delegate

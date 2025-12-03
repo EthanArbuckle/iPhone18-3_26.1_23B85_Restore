@@ -1,90 +1,90 @@
 @interface TSUBezierPath
 + (id)bezierPath;
-+ (id)bezierPathWithCGPath:(CGPath *)a3;
-+ (id)bezierPathWithOvalInRect:(CGRect)a3;
-+ (id)bezierPathWithRect:(CGRect)a3;
-+ (id)bezierPathWithRoundedRect:(CGRect)a3 upperRightRadius:(double)a4 lowerRightRadius:(double)a5 lowerLeftRadius:(double)a6 upperLeftRadius:(double)a7 useLegacyCorners:(BOOL)a8 keepNoOpElements:(BOOL)a9;
-+ (id)bezierPathWithStart:(CGPoint)a3 end:(CGPoint)a4;
-+ (void)clipRect:(CGRect)a3;
-+ (void)fillRect:(CGRect)a3;
++ (id)bezierPathWithCGPath:(CGPath *)path;
++ (id)bezierPathWithOvalInRect:(CGRect)rect;
++ (id)bezierPathWithRect:(CGRect)rect;
++ (id)bezierPathWithRoundedRect:(CGRect)rect upperRightRadius:(double)radius lowerRightRadius:(double)rightRadius lowerLeftRadius:(double)leftRadius upperLeftRadius:(double)upperLeftRadius useLegacyCorners:(BOOL)corners keepNoOpElements:(BOOL)elements;
++ (id)bezierPathWithStart:(CGPoint)start end:(CGPoint)end;
++ (void)clipRect:(CGRect)rect;
++ (void)fillRect:(CGRect)rect;
 + (void)initialize;
-+ (void)strokeLineFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4;
-+ (void)strokeRect:(CGRect)a3;
-+ (void)subdivideBezierWithFlatness:(double)a3 startPoint:(CGPoint)a4 controlPoint1:(CGPoint)a5 controlPoint2:(CGPoint)a6 endPoint:(CGPoint)a7 addLineBlock:(id)a8;
++ (void)strokeLineFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint;
++ (void)strokeRect:(CGRect)rect;
++ (void)subdivideBezierWithFlatness:(double)flatness startPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2 endPoint:(CGPoint)endPoint addLineBlock:(id)block;
 - (BOOL)containsClosePathElement;
-- (BOOL)containsPoint:(CGPoint)a3;
+- (BOOL)containsPoint:(CGPoint)point;
 - (BOOL)isCircular;
 - (BOOL)isClockwise;
 - (BOOL)isDiamond;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRectangular;
 - (BOOL)isTriangular;
 - (CGPath)CGPath;
-- (CGPoint)_checkPointForValidity:(CGPoint)a3;
+- (CGPoint)_checkPointForValidity:(CGPoint)validity;
 - (CGPoint)currentPoint;
 - (CGRect)bounds;
 - (CGRect)controlPointBounds;
 - (TSUBezierPath)init;
-- (TSUBezierPath)initWithCString:(const char *)a3;
+- (TSUBezierPath)initWithCString:(const char *)string;
 - (const)cString;
-- (double)calculateLengthOfElement:(int64_t)a3;
+- (double)calculateLengthOfElement:(int64_t)element;
 - (double)length;
-- (double)lengthOfElement:(int64_t)a3;
-- (double)lengthToElement:(int64_t)a3;
+- (double)lengthOfElement:(int64_t)element;
+- (double)lengthToElement:(int64_t)element;
 - (id)_copyFlattenedPath;
-- (id)bezierPathByFlatteningPathWithFlatness:(double)a3;
+- (id)bezierPathByFlatteningPathWithFlatness:(double)flatness;
 - (id)bezierPathByReversingPath;
-- (id)copyWithPointsInRange:(_NSRange)a3 countingSubpaths:(unint64_t *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithPointsInRange:(_NSRange)range countingSubpaths:(unint64_t *)subpaths;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)p_bezierPathByRemovingRedundantElementAndSubregionsSmallerThanThreshold:(double)a3;
-- (int64_t)elementAtIndex:(int64_t)a3 allPoints:(CGPoint *)a4;
-- (int64_t)elementAtIndex:(int64_t)a3 associatedPoints:(CGPoint *)a4;
-- (void)_addPathSegment:(int64_t)a3 point:(CGPoint)a4;
-- (void)_appendArcSegmentWithCenter:(CGPoint)a3 radius:(double)a4 angle1:(double)a5 angle2:(double)a6;
-- (void)_appendToPath:(id)a3 skippingInitialMoveIfPossible:(BOOL)a4;
+- (id)p_bezierPathByRemovingRedundantElementAndSubregionsSmallerThanThreshold:(double)threshold;
+- (int64_t)elementAtIndex:(int64_t)index allPoints:(CGPoint *)points;
+- (int64_t)elementAtIndex:(int64_t)index associatedPoints:(CGPoint *)points;
+- (void)_addPathSegment:(int64_t)segment point:(CGPoint)point;
+- (void)_appendArcSegmentWithCenter:(CGPoint)center radius:(double)radius angle1:(double)angle1 angle2:(double)angle2;
+- (void)_appendToPath:(id)path skippingInitialMoveIfPossible:(BOOL)possible;
 - (void)_deviceClosePath;
-- (void)_deviceCurveToPoint:(CGPoint)a3 controlPoint1:(CGPoint)a4 controlPoint2:(CGPoint)a5 elementLength:(double)a6;
-- (void)_deviceMoveToPoint:(CGPoint)a3;
+- (void)_deviceCurveToPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2 elementLength:(double)length;
+- (void)_deviceMoveToPoint:(CGPoint)point;
 - (void)_doPath;
 - (void)addClip;
-- (void)appendBezierPath:(id)a3 skippingInitialMoveIfPossible:(BOOL)a4;
-- (void)appendBezierPathWithArcFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 radius:(double)a5;
-- (void)appendBezierPathWithArcWithCenter:(CGPoint)a3 radius:(double)a4 startAngle:(double)a5 endAngle:(double)a6 clockwise:(BOOL)a7;
-- (void)appendBezierPathWithArcWithEllipseBounds:(CGRect)a3 startAngle:(double)a4 swingAngle:(double)a5 angleType:(int)a6 startNewPath:(BOOL)a7;
-- (void)appendBezierPathWithArcWithEllipseBounds:(CGRect)a3 startRadialVector:(CGPoint)a4 endRadialVector:(CGPoint)a5 angleSign:(int)a6 startNewPath:(BOOL)a7;
-- (void)appendBezierPathWithOvalInRect:(CGRect)a3;
-- (void)appendBezierPathWithPoints:(CGPoint *)a3 count:(int64_t)a4;
-- (void)appendBezierPathWithRect:(CGRect)a3;
+- (void)appendBezierPath:(id)path skippingInitialMoveIfPossible:(BOOL)possible;
+- (void)appendBezierPathWithArcFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint radius:(double)radius;
+- (void)appendBezierPathWithArcWithCenter:(CGPoint)center radius:(double)radius startAngle:(double)angle endAngle:(double)endAngle clockwise:(BOOL)clockwise;
+- (void)appendBezierPathWithArcWithEllipseBounds:(CGRect)bounds startAngle:(double)angle swingAngle:(double)swingAngle angleType:(int)type startNewPath:(BOOL)path;
+- (void)appendBezierPathWithArcWithEllipseBounds:(CGRect)bounds startRadialVector:(CGPoint)vector endRadialVector:(CGPoint)radialVector angleSign:(int)sign startNewPath:(BOOL)path;
+- (void)appendBezierPathWithOvalInRect:(CGRect)rect;
+- (void)appendBezierPathWithPoints:(CGPoint *)points count:(int64_t)count;
+- (void)appendBezierPathWithRect:(CGRect)rect;
 - (void)calculateLengths;
 - (void)convertCloseElementsToLineElements;
-- (void)copyPathAttributesTo:(id)a3;
-- (void)curveToPoint:(CGPoint)a3 controlPoint1:(CGPoint)a4 controlPoint2:(CGPoint)a5;
-- (void)curveToPoint:(CGPoint)a3 controlPoint:(CGPoint)a4;
+- (void)copyPathAttributesTo:(id)to;
+- (void)curveToPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2;
+- (void)curveToPoint:(CGPoint)point controlPoint:(CGPoint)controlPoint;
 - (void)dealloc;
 - (void)fill;
-- (void)flattenIntoPath:(id)a3 flatness:(double)a4;
-- (void)getLineDash:(double *)a3 count:(int64_t *)a4 phase:(double *)a5;
-- (void)iteratePathElementsWithBlock:(id)a3;
-- (void)lineToPoint:(CGPoint)a3;
-- (void)p_appendPointsInRange:(_NSRange)a3 fromBezierPath:(id)a4 countingSubpaths:(unint64_t *)a5;
-- (void)p_subdivideBezierWithFlatness:(double)a3 startPoint:(CGPoint)a4 controlPoint1:(CGPoint)a5 controlPoint2:(CGPoint)a6 endPoint:(CGPoint)a7;
-- (void)relativeCurveToPoint:(CGPoint)a3 controlPoint1:(CGPoint)a4 controlPoint2:(CGPoint)a5;
-- (void)relativeCurveToPoint:(CGPoint)a3 controlPoint:(CGPoint)a4;
-- (void)relativeLineToPoint:(CGPoint)a3;
-- (void)relativeMoveToPoint:(CGPoint)a3;
+- (void)flattenIntoPath:(id)path flatness:(double)flatness;
+- (void)getLineDash:(double *)dash count:(int64_t *)count phase:(double *)phase;
+- (void)iteratePathElementsWithBlock:(id)block;
+- (void)lineToPoint:(CGPoint)point;
+- (void)p_appendPointsInRange:(_NSRange)range fromBezierPath:(id)path countingSubpaths:(unint64_t *)subpaths;
+- (void)p_subdivideBezierWithFlatness:(double)flatness startPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2 endPoint:(CGPoint)endPoint;
+- (void)relativeCurveToPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2;
+- (void)relativeCurveToPoint:(CGPoint)point controlPoint:(CGPoint)controlPoint;
+- (void)relativeLineToPoint:(CGPoint)point;
+- (void)relativeMoveToPoint:(CGPoint)point;
 - (void)removeAllPoints;
-- (void)setAssociatedPoints:(CGPoint *)a3 atIndex:(int64_t)a4;
-- (void)setLineDash:(const double *)a3 count:(int64_t)a4 phase:(double)a5;
+- (void)setAssociatedPoints:(CGPoint *)points atIndex:(int64_t)index;
+- (void)setLineDash:(const double *)dash count:(int64_t)count phase:(double)phase;
 - (void)stroke;
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3;
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TSUBezierPath
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     MEMORY[0x2821F9670](TSUBezierPath, sel_setVersion_);
@@ -93,70 +93,70 @@
 
 + (id)bezierPath
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)bezierPathWithStart:(CGPoint)a3 end:(CGPoint)a4
++ (id)bezierPathWithStart:(CGPoint)start end:(CGPoint)end
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v8 = [a1 bezierPath];
-  [v8 moveToPoint:{v7, v6}];
-  [v8 lineToPoint:{x, y}];
-  return v8;
+  y = end.y;
+  x = end.x;
+  v6 = start.y;
+  v7 = start.x;
+  bezierPath = [self bezierPath];
+  [bezierPath moveToPoint:{v7, v6}];
+  [bezierPath lineToPoint:{x, y}];
+  return bezierPath;
 }
 
-+ (id)bezierPathWithRect:(CGRect)a3
++ (id)bezierPathWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [a1 bezierPath];
-  [v7 appendBezierPathWithRect:{x, y, width, height}];
-  return v7;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  bezierPath = [self bezierPath];
+  [bezierPath appendBezierPathWithRect:{x, y, width, height}];
+  return bezierPath;
 }
 
-+ (id)bezierPathWithOvalInRect:(CGRect)a3
++ (id)bezierPathWithOvalInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [a1 bezierPath];
-  [v7 appendBezierPathWithOvalInRect:{x, y, width, height}];
-  return v7;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  bezierPath = [self bezierPath];
+  [bezierPath appendBezierPathWithOvalInRect:{x, y, width, height}];
+  return bezierPath;
 }
 
-+ (id)bezierPathWithCGPath:(CGPath *)a3
++ (id)bezierPathWithCGPath:(CGPath *)path
 {
-  v4 = [a1 bezierPath];
-  CGPathApply(a3, v4, sub_2770682E0);
-  if (v4[22])
+  bezierPath = [self bezierPath];
+  CGPathApply(path, bezierPath, sub_2770682E0);
+  if (bezierPath[22])
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUBezierPath bezierPathWithCGPath:]"];
     +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v5, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUBezierPath.m"], 329, 0, "expected nil value for '%{public}s'", "result->sfr_path");
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v4[22] = MEMORY[0x277CA57F0](a3);
-  return v4;
+  bezierPath[22] = MEMORY[0x277CA57F0](path);
+  return bezierPath;
 }
 
-+ (void)fillRect:(CGRect)a3
++ (void)fillRect:(CGRect)rect
 {
-  if (a3.size.width >= 0.0)
+  if (rect.size.width >= 0.0)
   {
-    height = a3.size.height;
-    if (a3.size.height >= 0.0)
+    height = rect.size.height;
+    if (rect.size.height >= 0.0)
     {
-      width = a3.size.width;
-      y = a3.origin.y;
-      x = a3.origin.x;
+      width = rect.size.width;
+      y = rect.origin.y;
+      x = rect.origin.x;
       CurrentContext = UIGraphicsGetCurrentContext();
       v8 = x;
       v9 = y;
@@ -168,16 +168,16 @@
   }
 }
 
-+ (void)strokeRect:(CGRect)a3
++ (void)strokeRect:(CGRect)rect
 {
-  if (a3.size.width >= 0.0)
+  if (rect.size.width >= 0.0)
   {
-    height = a3.size.height;
-    if (a3.size.height >= 0.0)
+    height = rect.size.height;
+    if (rect.size.height >= 0.0)
     {
-      width = a3.size.width;
-      y = a3.origin.y;
-      x = a3.origin.x;
+      width = rect.size.width;
+      y = rect.origin.y;
+      x = rect.origin.x;
       CurrentContext = UIGraphicsGetCurrentContext();
       CGContextSaveGState(CurrentContext);
       if (qword_280A63B88 == 2)
@@ -257,16 +257,16 @@
   }
 }
 
-+ (void)clipRect:(CGRect)a3
++ (void)clipRect:(CGRect)rect
 {
-  if (a3.size.width >= 0.0)
+  if (rect.size.width >= 0.0)
   {
-    height = a3.size.height;
-    if (a3.size.height >= 0.0)
+    height = rect.size.height;
+    if (rect.size.height >= 0.0)
     {
-      width = a3.size.width;
-      y = a3.origin.y;
-      x = a3.origin.x;
+      width = rect.size.width;
+      y = rect.origin.y;
+      x = rect.origin.x;
       CurrentContext = UIGraphicsGetCurrentContext();
       v8 = x;
       v9 = y;
@@ -278,12 +278,12 @@
   }
 }
 
-+ (void)strokeLineFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4
++ (void)strokeLineFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = toPoint.y;
+  x = toPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   if (qword_280A63B88 == 2)
@@ -376,30 +376,30 @@
   [(TSUBezierPath *)&v7 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v18[5] = *MEMORY[0x277D85DE8];
-  if (self == a3)
+  if (self == equal)
   {
 LABEL_16:
     LOBYTE(v5) = 1;
     return v5;
   }
 
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = TSUCheckedDynamicCast(v6, a3);
-    v8 = [(TSUBezierPath *)self elementCount];
-    if (v8 != [v7 elementCount])
+    v7 = TSUCheckedDynamicCast(v6, equal);
+    elementCount = [(TSUBezierPath *)self elementCount];
+    if (elementCount != [v7 elementCount])
     {
 LABEL_17:
       LOBYTE(v5) = 0;
       return v5;
     }
 
-    if (v8 >= 1)
+    if (elementCount >= 1)
     {
       v9 = 0;
       while (1)
@@ -439,7 +439,7 @@ LABEL_17:
 LABEL_14:
         ++v9;
         LOBYTE(v5) = 1;
-        if (v9 == v8)
+        if (v9 == elementCount)
         {
           return v5;
         }
@@ -452,28 +452,28 @@ LABEL_14:
   return v5;
 }
 
-- (void)copyPathAttributesTo:(id)a3
+- (void)copyPathAttributesTo:(id)to
 {
-  [a3 setWindingRule:{-[TSUBezierPath windingRule](self, "windingRule")}];
-  [a3 setLineCapStyle:{-[TSUBezierPath lineCapStyle](self, "lineCapStyle")}];
-  [a3 setLineJoinStyle:{-[TSUBezierPath lineJoinStyle](self, "lineJoinStyle")}];
+  [to setWindingRule:{-[TSUBezierPath windingRule](self, "windingRule")}];
+  [to setLineCapStyle:{-[TSUBezierPath lineCapStyle](self, "lineCapStyle")}];
+  [to setLineJoinStyle:{-[TSUBezierPath lineJoinStyle](self, "lineJoinStyle")}];
   [(TSUBezierPath *)self lineWidth];
-  [a3 setLineWidth:?];
+  [to setLineWidth:?];
   [(TSUBezierPath *)self miterLimit];
-  [a3 setMiterLimit:?];
+  [to setMiterLimit:?];
   [(TSUBezierPath *)self flatness];
-  [a3 setFlatness:?];
+  [to setFlatness:?];
   if (self->sfr_dashedLinePattern)
   {
     sfr_dashedLinePhase = self->sfr_dashedLinePhase;
 
-    [a3 setLineDash:sfr_dashedLinePhase count:? phase:?];
+    [to setLineDash:sfr_dashedLinePhase count:? phase:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   *(v5 + 8) = self->sfr_elementCount;
   *(v5 + 16) = self->sfr_elementMax;
@@ -500,7 +500,7 @@ LABEL_14:
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    v10 = NSZoneMalloc(a3, 24 * self->sfr_elementMax);
+    v10 = NSZoneMalloc(zone, 24 * self->sfr_elementMax);
     v6[3] = v10;
     memcpy(v10, self->sfr_head, 24 * self->sfr_elementMax);
   }
@@ -514,7 +514,7 @@ LABEL_14:
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    v12 = NSZoneMalloc(a3, 8 * self->sfr_elementMax);
+    v12 = NSZoneMalloc(zone, 8 * self->sfr_elementMax);
     v6[4] = v12;
     memcpy(v12, self->sfr_elementLength, 8 * self->sfr_elementMax);
   }
@@ -528,7 +528,7 @@ LABEL_14:
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    v14 = NSZoneMalloc(a3, 32 * self->sfr_extraSegmentMax);
+    v14 = NSZoneMalloc(zone, 32 * self->sfr_extraSegmentMax);
     v6[7] = v14;
     memcpy(v14, self->sfr_extraSegments, 32 * self->sfr_extraSegmentMax);
   }
@@ -545,29 +545,29 @@ LABEL_14:
   return v6;
 }
 
-- (void)lineToPoint:(CGPoint)a3
+- (void)lineToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(TSUBezierPath *)self isEmpty];
-  if (v6)
+  y = point.y;
+  x = point.x;
+  isEmpty = [(TSUBezierPath *)self isEmpty];
+  if (isEmpty)
   {
-    sub_2771130C0(v6, v7, v8, v9, v10, v11, v12, v13);
+    sub_2771130C0(isEmpty, v7, v8, v9, v10, v11, v12, v13);
   }
 
   [(TSUBezierPath *)self _deviceLineToPoint:x, y];
 }
 
-- (void)curveToPoint:(CGPoint)a3 controlPoint:(CGPoint)a4
+- (void)curveToPoint:(CGPoint)point controlPoint:(CGPoint)controlPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(TSUBezierPath *)self isEmpty];
-  if (v9)
+  y = controlPoint.y;
+  x = controlPoint.x;
+  v6 = point.y;
+  v7 = point.x;
+  isEmpty = [(TSUBezierPath *)self isEmpty];
+  if (isEmpty)
   {
-    sub_277113138(v9, v10, v11, v12, v13, v14, v15, v16);
+    sub_277113138(isEmpty, v10, v11, v12, v13, v14, v15, v16);
   }
 
   [(TSUBezierPath *)self currentPoint];
@@ -575,18 +575,18 @@ LABEL_14:
   [(TSUBezierPath *)self _deviceCurveToPoint:v7 controlPoint1:v6 controlPoint2:v17 * 0.333333333 + x * 0.666666667 elementLength:v18 * 0.333333333 + y * 0.666666667, v7 * 0.333333333 + x * 0.666666667, v6 * 0.333333333 + y * 0.666666667, NAN];
 }
 
-- (void)curveToPoint:(CGPoint)a3 controlPoint1:(CGPoint)a4 controlPoint2:(CGPoint)a5
+- (void)curveToPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v12 = [(TSUBezierPath *)self isEmpty];
-  if (v12)
+  y = point2.y;
+  x = point2.x;
+  v7 = point1.y;
+  v8 = point1.x;
+  v9 = point.y;
+  v10 = point.x;
+  isEmpty = [(TSUBezierPath *)self isEmpty];
+  if (isEmpty)
   {
-    sub_2771131B0(v12, v13, v14, v15, v16, v17, v18, v19);
+    sub_2771131B0(isEmpty, v13, v14, v15, v16, v17, v18, v19);
   }
 
   [(TSUBezierPath *)self _deviceCurveToPoint:v10 controlPoint1:v9 controlPoint2:v8 elementLength:v7, x, y, NAN];
@@ -610,32 +610,32 @@ LABEL_14:
   self->sfr_bpFlags = (*&sfr_bpFlags | 3);
 }
 
-- (void)relativeMoveToPoint:(CGPoint)a3
+- (void)relativeMoveToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(TSUBezierPath *)self currentPoint];
   v7 = TSUAddPoints(x, y, v6);
 
   [(TSUBezierPath *)self moveToPoint:v7];
 }
 
-- (void)relativeLineToPoint:(CGPoint)a3
+- (void)relativeLineToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(TSUBezierPath *)self currentPoint];
   v7 = TSUAddPoints(x, y, v6);
 
   [(TSUBezierPath *)self lineToPoint:v7];
 }
 
-- (void)relativeCurveToPoint:(CGPoint)a3 controlPoint:(CGPoint)a4
+- (void)relativeCurveToPoint:(CGPoint)point controlPoint:(CGPoint)controlPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = controlPoint.y;
+  x = controlPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   [(TSUBezierPath *)self currentPoint];
   v10 = v9;
   v11 = TSUAddPoints(v7, v6, v9);
@@ -645,14 +645,14 @@ LABEL_14:
   [(TSUBezierPath *)self curveToPoint:v11 controlPoint:v13, v15, v14];
 }
 
-- (void)relativeCurveToPoint:(CGPoint)a3 controlPoint1:(CGPoint)a4 controlPoint2:(CGPoint)a5
+- (void)relativeCurveToPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
+  y = point2.y;
+  x = point2.x;
+  v7 = point1.y;
+  v8 = point1.x;
+  v9 = point.y;
+  v10 = point.x;
   [(TSUBezierPath *)self currentPoint];
   v13 = v12;
   v14 = TSUAddPoints(v10, v9, v12);
@@ -664,37 +664,37 @@ LABEL_14:
   [(TSUBezierPath *)self curveToPoint:v14 controlPoint1:v16 controlPoint2:v17, v19, v21, v20];
 }
 
-- (void)setLineDash:(const double *)a3 count:(int64_t)a4 phase:(double)a5
+- (void)setLineDash:(const double *)dash count:(int64_t)count phase:(double)phase
 {
   p_sfr_dashedLinePattern = &self->sfr_dashedLinePattern;
   sfr_dashedLinePattern = self->sfr_dashedLinePattern;
-  if (a3)
+  if (dash)
   {
-    v10 = a3;
+    dashCopy = dash;
     v11 = [(TSUBezierPath *)self zone];
     if (sfr_dashedLinePattern)
     {
-      v12 = NSZoneRealloc(v11, *p_sfr_dashedLinePattern, 8 * a4);
+      v12 = NSZoneRealloc(v11, *p_sfr_dashedLinePattern, 8 * count);
     }
 
     else
     {
-      v12 = NSZoneMalloc(v11, 8 * a4);
+      v12 = NSZoneMalloc(v11, 8 * count);
     }
 
     self->sfr_dashedLinePattern = v12;
-    self->sfr_dashedLineCount = a4;
-    self->sfr_dashedLinePhase = a5;
-    if (a4 >= 1)
+    self->sfr_dashedLineCount = count;
+    self->sfr_dashedLinePhase = phase;
+    if (count >= 1)
     {
       do
       {
-        v13 = *v10++;
+        v13 = *dashCopy++;
         *v12++ = v13;
-        --a4;
+        --count;
       }
 
-      while (a4);
+      while (count);
     }
   }
 
@@ -707,19 +707,19 @@ LABEL_14:
   }
 }
 
-- (void)getLineDash:(double *)a3 count:(int64_t *)a4 phase:(double *)a5
+- (void)getLineDash:(double *)dash count:(int64_t *)count phase:(double *)phase
 {
-  if (a4)
+  if (count)
   {
-    *a4 = self->sfr_dashedLineCount;
+    *count = self->sfr_dashedLineCount;
   }
 
-  if (a5)
+  if (phase)
   {
-    *a5 = self->sfr_dashedLinePhase;
+    *phase = self->sfr_dashedLinePhase;
   }
 
-  if (a3)
+  if (dash)
   {
     sfr_dashedLinePattern = self->sfr_dashedLinePattern;
     if (sfr_dashedLinePattern)
@@ -727,16 +727,16 @@ LABEL_14:
       for (i = self->sfr_dashedLineCount; i; --i)
       {
         v7 = *sfr_dashedLinePattern++;
-        *a3++ = v7;
+        *dash++ = v7;
       }
     }
   }
 }
 
-- (CGPoint)_checkPointForValidity:(CGPoint)a3
+- (CGPoint)_checkPointForValidity:(CGPoint)validity
 {
-  y = a3.y;
-  x = a3.x;
+  y = validity.y;
+  x = validity.x;
   if (![(TSUBezierPath *)self _isValid:?])
   {
     x = 0.0;
@@ -822,27 +822,27 @@ LABEL_14:
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
-  v4 = [(TSUBezierPath *)self lineCapStyle];
-  if (v4 == 2)
+  lineCapStyle = [(TSUBezierPath *)self lineCapStyle];
+  if (lineCapStyle == 2)
   {
     v5 = kCGLineCapSquare;
   }
 
   else
   {
-    v5 = v4 == 1;
+    v5 = lineCapStyle == 1;
   }
 
   CGContextSetLineCap(CurrentContext, v5);
-  v6 = [(TSUBezierPath *)self lineJoinStyle];
-  if (v6 == 2)
+  lineJoinStyle = [(TSUBezierPath *)self lineJoinStyle];
+  if (lineJoinStyle == 2)
   {
     v7 = kCGLineJoinBevel;
   }
 
   else
   {
-    v7 = v6 == 1;
+    v7 = lineJoinStyle == 1;
   }
 
   CGContextSetLineJoin(CurrentContext, v7);
@@ -1022,30 +1022,30 @@ LABEL_14:
   CGContextBeginPath(CurrentContext);
 }
 
-- (void)p_subdivideBezierWithFlatness:(double)a3 startPoint:(CGPoint)a4 controlPoint1:(CGPoint)a5 controlPoint2:(CGPoint)a6 endPoint:(CGPoint)a7
+- (void)p_subdivideBezierWithFlatness:(double)flatness startPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2 endPoint:(CGPoint)endPoint
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2770699E4;
   v7[3] = &unk_27A701D70;
   v7[4] = self;
-  [TSUBezierPath subdivideBezierWithFlatness:v7 startPoint:a3 controlPoint1:a4.x controlPoint2:a4.y endPoint:a5.x addLineBlock:a5.y, a6.x, a6.y, *&a7.x, *&a7.y];
+  [TSUBezierPath subdivideBezierWithFlatness:v7 startPoint:flatness controlPoint1:point.x controlPoint2:point.y endPoint:point1.x addLineBlock:point1.y, point2.x, point2.y, *&endPoint.x, *&endPoint.y];
 }
 
-+ (void)subdivideBezierWithFlatness:(double)a3 startPoint:(CGPoint)a4 controlPoint1:(CGPoint)a5 controlPoint2:(CGPoint)a6 endPoint:(CGPoint)a7 addLineBlock:(id)a8
++ (void)subdivideBezierWithFlatness:(double)flatness startPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2 endPoint:(CGPoint)endPoint addLineBlock:(id)block
 {
-  v10 = a4;
-  a4.x = a7.x;
-  v8.n128_u64[0] = *&a7.y;
-  y = a5.y;
-  _Q2 = vsubq_f64(a5, v10);
-  v13 = a6.y;
-  v38 = a4;
+  pointCopy = point;
+  point.x = endPoint.x;
+  v8.n128_u64[0] = *&endPoint.y;
+  y = point1.y;
+  _Q2 = vsubq_f64(point1, pointCopy);
+  v13 = point2.y;
+  pointCopy2 = point;
   v39 = v8;
-  v14 = a7.y;
-  v15 = vsubq_f64(a6, a5);
+  v14 = endPoint.y;
+  v15 = vsubq_f64(point2, point1);
   v16 = vsubq_f64(v15, _Q2);
-  v17 = vsubq_f64(vsubq_f64(a4, a6), v15);
+  v17 = vsubq_f64(vsubq_f64(point, point2), v15);
   v18 = vzip2q_s64(v16, v17);
   v19 = vzip1q_s64(v16, v17);
   v20 = vmlaq_f64(vmulq_f64(v18, v18), v19, v19);
@@ -1054,7 +1054,7 @@ LABEL_14:
     v20.f64[0] = v20.f64[1];
   }
 
-  v21 = a3 * a3;
+  v21 = flatness * flatness;
   v22 = v20.f64[0] * 9.0 * 0.0625;
   if (v22 > v21)
   {
@@ -1091,25 +1091,25 @@ LABEL_14:
       for (i = 1; i != v33; ++i)
       {
         v42 = v30;
-        v43 = vaddq_f64(v10, v31);
+        v43 = vaddq_f64(pointCopy, v31);
         v40 = vaddq_f64(v30, v32);
         v41 = vaddq_f64(v31, v32);
-        (*(a8 + 2))(a8, a2, v43.f64[0], v43.f64[1], i / v33);
+        (*(block + 2))(block, a2, v43.f64[0], v43.f64[1], i / v33);
         v32 = v40;
         v31 = v41;
         v30 = v42;
-        v10 = v43;
+        pointCopy = v43;
       }
     }
   }
 
-  v37 = *(a8 + 2);
+  v37 = *(block + 2);
   _Q2.n128_u64[0] = 1.0;
 
-  v37(a8, v38, v39, _Q2);
+  v37(block, pointCopy2, v39, _Q2);
 }
 
-- (void)flattenIntoPath:(id)a3 flatness:(double)a4
+- (void)flattenIntoPath:(id)path flatness:(double)flatness
 {
   sfr_elementCount = self->sfr_elementCount;
   if (sfr_elementCount >= 1)
@@ -1124,13 +1124,13 @@ LABEL_14:
       {
         if (v10 == 2)
         {
-          [a3 p_subdivideBezierWithFlatness:a4 startPoint:*&sfr_head[-4] controlPoint1:*&sfr_head[-2] controlPoint2:*sfr_extraSegments endPoint:{sfr_extraSegments[1], sfr_extraSegments[2], sfr_extraSegments[3], *&sfr_head[2], *&sfr_head[4]}];
+          [path p_subdivideBezierWithFlatness:flatness startPoint:*&sfr_head[-4] controlPoint1:*&sfr_head[-2] controlPoint2:*sfr_extraSegments endPoint:{sfr_extraSegments[1], sfr_extraSegments[2], sfr_extraSegments[3], *&sfr_head[2], *&sfr_head[4]}];
           sfr_extraSegments += 4;
         }
 
         else if (v10 == 3)
         {
-          [a3 closePath];
+          [path closePath];
         }
       }
 
@@ -1138,13 +1138,13 @@ LABEL_14:
       {
         if (v10 == 1)
         {
-          [a3 lineToPoint:{*&sfr_head[2], *&sfr_head[4]}];
+          [path lineToPoint:{*&sfr_head[2], *&sfr_head[4]}];
         }
       }
 
       else
       {
-        [a3 moveToPoint:{*&sfr_head[2], *&sfr_head[4]}];
+        [path moveToPoint:{*&sfr_head[2], *&sfr_head[4]}];
       }
 
       sfr_head += 6;
@@ -1154,7 +1154,7 @@ LABEL_14:
   }
 }
 
-- (id)bezierPathByFlatteningPathWithFlatness:(double)a3
+- (id)bezierPathByFlatteningPathWithFlatness:(double)flatness
 {
   if ([(TSUBezierPath *)self isFlat])
   {
@@ -1164,7 +1164,7 @@ LABEL_14:
   else
   {
     v5 = objc_alloc_init(objc_opt_class());
-    [(TSUBezierPath *)self flattenIntoPath:v5 flatness:a3];
+    [(TSUBezierPath *)self flattenIntoPath:v5 flatness:flatness];
   }
 
   return v5;
@@ -1275,15 +1275,15 @@ LABEL_29:
   return v3;
 }
 
-- (id)p_bezierPathByRemovingRedundantElementAndSubregionsSmallerThanThreshold:(double)a3
+- (id)p_bezierPathByRemovingRedundantElementAndSubregionsSmallerThanThreshold:(double)threshold
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = +[TSUBezierPath bezierPath];
   v6 = +[TSUBezierPath bezierPath];
-  v7 = [(TSUBezierPath *)self elementCount];
-  if (v7 >= 1)
+  elementCount = [(TSUBezierPath *)self elementCount];
+  if (elementCount >= 1)
   {
-    v8 = v7;
+    v8 = elementCount;
     v9 = 0;
     v10 = 0;
     v12 = *MEMORY[0x277CBF348];
@@ -1311,12 +1311,12 @@ LABEL_29:
         if (v17 == 3)
         {
           [v6 closePath];
-          if (a3 > 0.0)
+          if (threshold > 0.0)
           {
             [v6 bounds];
             v22 = v21;
             v24 = v23;
-            if (fmaxf(v22, v24) > a3)
+            if (fmaxf(v22, v24) > threshold)
             {
               [v5 appendBezierPath:v6];
             }
@@ -1348,7 +1348,7 @@ LABEL_16:
         if (v17 == 1)
         {
           v36 = v11;
-          v18 = a3;
+          thresholdCopy = threshold;
           v19 = v37;
           v20 = v38;
           if (TSUNearlyEqualPoints(v13, v14, v37, v38))
@@ -1371,7 +1371,7 @@ LABEL_7:
             v10 = 1;
           }
 
-          a3 = v18;
+          threshold = thresholdCopy;
           v16 = v14;
           v15 = v13;
           v11 = v36;
@@ -1397,7 +1397,7 @@ LABEL_24:
     [v6 bounds];
     v30 = v29;
     v32 = v31;
-    if (fmaxf(v30, v32) > a3)
+    if (fmaxf(v30, v32) > threshold)
     {
       [v5 appendBezierPath:v6];
     }
@@ -1446,14 +1446,14 @@ LABEL_9:
   }
 }
 
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform
 {
-  if (TSUCGAffineTransformIsValid(a3))
+  if (TSUCGAffineTransformIsValid(transform))
   {
-    v5 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v5 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v5;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     v6 = *(MEMORY[0x277CBF2C0] + 16);
     *&v19.a = *MEMORY[0x277CBF2C0];
     *&v19.c = v6;
@@ -1467,7 +1467,7 @@ LABEL_9:
         v9 = &sfr_head[6 * sfr_elementCount];
         do
         {
-          *&sfr_head[2] = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, *&sfr_head[4]), *&a3->a, *&sfr_head[2]));
+          *&sfr_head[2] = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, *&sfr_head[4]), *&transform->a, *&sfr_head[2]));
           sfr_head += 6;
         }
 
@@ -1483,8 +1483,8 @@ LABEL_9:
           v12 = &sfr_extraSegments[4 * sfr_extraSegmentCount];
           do
           {
-            *sfr_extraSegments = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, sfr_extraSegments[1]), *&a3->a, *sfr_extraSegments));
-            *(sfr_extraSegments + 1) = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, sfr_extraSegments[3]), *&a3->a, sfr_extraSegments[2]));
+            *sfr_extraSegments = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, sfr_extraSegments[1]), *&transform->a, *sfr_extraSegments));
+            *(sfr_extraSegments + 1) = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, sfr_extraSegments[3]), *&transform->a, sfr_extraSegments[2]));
             sfr_extraSegments += 4;
           }
 
@@ -1495,14 +1495,14 @@ LABEL_9:
       sfr_path = self->sfr_path;
       if (sfr_path)
       {
-        self->sfr_path = CGPathCreateCopyByTransformingPathSafe(self->sfr_path, a3);
+        self->sfr_path = CGPathCreateCopyByTransformingPathSafe(self->sfr_path, transform);
         CFRelease(sfr_path);
       }
 
-      v14 = *&a3->c;
-      *&t1.a = *&a3->a;
+      v14 = *&transform->c;
+      *&t1.a = *&transform->a;
       *&t1.c = v14;
-      *&t1.tx = *&a3->tx;
+      *&t1.tx = *&transform->tx;
       IsRectilinear = TSUAffineTransformIsRectilinear(&t1.a);
       sfr_bpFlags = self->sfr_bpFlags;
       if (IsRectilinear)
@@ -1510,20 +1510,20 @@ LABEL_9:
         if ((*&sfr_bpFlags & 1) == 0)
         {
           sfr_controlPointBounds = self->sfr_controlPointBounds;
-          v17 = *&a3->c;
-          *&t1.a = *&a3->a;
+          v17 = *&transform->c;
+          *&t1.a = *&transform->a;
           *&t1.c = v17;
-          *&t1.tx = *&a3->tx;
+          *&t1.tx = *&transform->tx;
           self->sfr_controlPointBounds = CGRectApplyAffineTransform(sfr_controlPointBounds, &t1);
         }
 
         if ((*&sfr_bpFlags & 2) == 0)
         {
           sfr_bounds = self->sfr_bounds;
-          v18 = *&a3->c;
-          *&t1.a = *&a3->a;
+          v18 = *&transform->c;
+          *&t1.a = *&transform->a;
           *&t1.c = v18;
-          *&t1.tx = *&a3->tx;
+          *&t1.tx = *&transform->tx;
           self->sfr_bounds = CGRectApplyAffineTransform(sfr_bounds, &t1);
         }
       }
@@ -1558,12 +1558,12 @@ LABEL_9:
 
 - (BOOL)isTriangular
 {
-  v3 = [(TSUBezierPath *)self elementCount];
-  if (v3)
+  elementCount = [(TSUBezierPath *)self elementCount];
+  if (elementCount)
   {
-    v4 = v3;
-    v5 = v3 - 1;
-    if ([(TSUBezierPath *)self elementAtIndex:v3 - 1])
+    v4 = elementCount;
+    v5 = elementCount - 1;
+    if ([(TSUBezierPath *)self elementAtIndex:elementCount - 1])
     {
       v6 = v4;
     }
@@ -1579,9 +1579,9 @@ LABEL_9:
     v6 = 0;
   }
 
-  v7 = [(TSUBezierPath *)self isFlat];
+  isFlat = [(TSUBezierPath *)self isFlat];
   result = 0;
-  if (v7 && (v6 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if (isFlat && (v6 & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     v9 = 1;
     while ([(TSUBezierPath *)self elementAtIndex:v9]== 1)
@@ -1632,23 +1632,23 @@ LABEL_13:
 
 - (BOOL)isDiamond
 {
-  v3 = [(TSUBezierPath *)self elementCount];
-  if (!v3)
+  elementCount = [(TSUBezierPath *)self elementCount];
+  if (!elementCount)
   {
     [(TSUBezierPath *)self isFlat];
     return 0;
   }
 
-  v4 = v3;
-  v5 = v3 - 1;
-  if (![(TSUBezierPath *)self elementAtIndex:v3 - 1])
+  v4 = elementCount;
+  v5 = elementCount - 1;
+  if (![(TSUBezierPath *)self elementAtIndex:elementCount - 1])
   {
     v4 = v5;
   }
 
-  v6 = [(TSUBezierPath *)self isFlat];
+  isFlat = [(TSUBezierPath *)self isFlat];
   result = 0;
-  if (v6 && v4 == 5)
+  if (isFlat && v4 == 5)
   {
     v8 = -5;
     v9 = 4;
@@ -1709,15 +1709,15 @@ LABEL_13:
 - (BOOL)isRectangular
 {
   v30[11] = *MEMORY[0x277D85DE8];
-  LODWORD(v3) = [(TSUBezierPath *)self isFlat];
-  if (v3)
+  LODWORD(elementCount) = [(TSUBezierPath *)self isFlat];
+  if (elementCount)
   {
-    v3 = [(TSUBezierPath *)self elementCount];
-    if (v3)
+    elementCount = [(TSUBezierPath *)self elementCount];
+    if (elementCount)
     {
-      v4 = v3;
-      v5 = v3 - 1;
-      if ([(TSUBezierPath *)self elementAtIndex:v3 - 1])
+      v4 = elementCount;
+      v5 = elementCount - 1;
+      if ([(TSUBezierPath *)self elementAtIndex:elementCount - 1])
       {
         v6 = v4;
       }
@@ -1747,7 +1747,7 @@ LABEL_13:
         v10 = v9 - 1;
 LABEL_19:
         v11 = [(TSUBezierPath *)self elementAtIndex:v6 - 1];
-        LOBYTE(v3) = 0;
+        LOBYTE(elementCount) = 0;
         if (v11 == 3)
         {
           v12 = v10 + 2;
@@ -1818,8 +1818,8 @@ LABEL_19:
                 v23 = v27 > 0.01;
                 if (v25 == 5)
                 {
-                  LOBYTE(v3) = 1;
-                  return v3;
+                  LOBYTE(elementCount) = 1;
+                  return elementCount;
                 }
               }
 
@@ -1831,21 +1831,21 @@ LABEL_19:
 
       else
       {
-        v7 = [(TSUBezierPath *)self bezierPathByRemovingRedundantElements];
-        v8 = [v7 elementCount];
-        if (v8 >= [(TSUBezierPath *)self elementCount])
+        bezierPathByRemovingRedundantElements = [(TSUBezierPath *)self bezierPathByRemovingRedundantElements];
+        elementCount2 = [bezierPathByRemovingRedundantElements elementCount];
+        if (elementCount2 >= [(TSUBezierPath *)self elementCount])
         {
 LABEL_7:
-          LOBYTE(v3) = 0;
-          return v3;
+          LOBYTE(elementCount) = 0;
+          return elementCount;
         }
 
-        LOBYTE(v3) = MEMORY[0x2821F9670](v7, sel_isRectangular);
+        LOBYTE(elementCount) = MEMORY[0x2821F9670](bezierPathByRemovingRedundantElements, sel_isRectangular);
       }
     }
   }
 
-  return v3;
+  return elementCount;
 }
 
 - (BOOL)isCircular
@@ -1856,10 +1856,10 @@ LABEL_7:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TSUBezierPath *)self elementCount];
-  if (v11 >= 1)
+  elementCount = [(TSUBezierPath *)self elementCount];
+  if (elementCount >= 1)
   {
-    v12 = v11;
+    v12 = elementCount;
     v13 = 0;
     v14 = 0;
     v15 = 0;
@@ -1919,10 +1919,10 @@ LABEL_12:
 
 - (CGPoint)currentPoint
 {
-  v3 = [(TSUBezierPath *)self isEmpty];
-  if (v3)
+  isEmpty = [(TSUBezierPath *)self isEmpty];
+  if (isEmpty)
   {
-    sub_277113228(v3, v4, v5, v6, v7, v8, v9, v10);
+    sub_277113228(isEmpty, v4, v5, v6, v7, v8, v9, v10);
   }
 
   v11 = &self->sfr_head[6 * self->sfr_elementCount];
@@ -1935,10 +1935,10 @@ LABEL_12:
 
 - (CGRect)controlPointBounds
 {
-  v3 = [(TSUBezierPath *)self isEmpty];
-  if (v3)
+  isEmpty = [(TSUBezierPath *)self isEmpty];
+  if (isEmpty)
   {
-    sub_2771132A0(v3, v4, v5, v6, v7, v8, v9, v10);
+    sub_2771132A0(isEmpty, v4, v5, v6, v7, v8, v9, v10);
   }
 
   sfr_bpFlags = self->sfr_bpFlags;
@@ -2061,15 +2061,15 @@ LABEL_12:
 - (BOOL)isClockwise
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(TSUBezierPath *)self elementCount];
-  if (v3 < 1)
+  elementCount = [(TSUBezierPath *)self elementCount];
+  if (elementCount < 1)
   {
     v9 = 0.0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = elementCount;
     v5 = 0;
     v6 = 0;
     v7 = *MEMORY[0x277CBF348];
@@ -2160,16 +2160,16 @@ LABEL_12:
   return v3 > 0;
 }
 
-- (double)calculateLengthOfElement:(int64_t)a3
+- (double)calculateLengthOfElement:(int64_t)element
 {
   v11 = *MEMORY[0x277D85DE8];
   sfr_elementCount = self->sfr_elementCount;
-  if (a3 < 0 || sfr_elementCount <= a3)
+  if (element < 0 || sfr_elementCount <= element)
   {
-    sub_277113318(a3, sfr_elementCount, &self->sfr_elementCount);
+    sub_277113318(element, sfr_elementCount, &self->sfr_elementCount);
   }
 
-  if (!a3)
+  if (!element)
   {
     return 0.0;
   }
@@ -2178,7 +2178,7 @@ LABEL_12:
   v8 = TSUPointNull;
   v9 = TSUPointNull;
   v10 = TSUPointNull;
-  v4 = [(TSUBezierPath *)self elementAtIndex:a3 allPoints:&v7];
+  v4 = [(TSUBezierPath *)self elementAtIndex:element allPoints:&v7];
   if (v4 == 3)
   {
     return TSUDistance(*&v7, *(&v7 + 1), *&v8, *(&v8 + 1));
@@ -2206,11 +2206,11 @@ LABEL_12:
 - (void)calculateLengths
 {
   self->sfr_totalLength = 0.0;
-  v3 = [(TSUBezierPath *)self elementCount];
+  elementCount = [(TSUBezierPath *)self elementCount];
   self->sfr_elementLength = NSZoneRealloc([(TSUBezierPath *)self zone], self->sfr_elementLength, 8 * self->sfr_elementMax);
-  if (v3 >= 1)
+  if (elementCount >= 1)
   {
-    for (i = 0; i != v3; ++i)
+    for (i = 0; i != elementCount; ++i)
     {
       [(TSUBezierPath *)self calculateLengthOfElement:i];
       self->sfr_elementLength[i] = v5;
@@ -2231,13 +2231,13 @@ LABEL_12:
   return self->sfr_totalLength;
 }
 
-- (double)lengthOfElement:(int64_t)a3
+- (double)lengthOfElement:(int64_t)element
 {
   p_sfr_elementCount = &self->sfr_elementCount;
   sfr_elementCount = self->sfr_elementCount;
-  if (a3 < 0 || sfr_elementCount <= a3)
+  if (element < 0 || sfr_elementCount <= element)
   {
-    sub_2771133A4(a3, sfr_elementCount, p_sfr_elementCount);
+    sub_2771133A4(element, sfr_elementCount, p_sfr_elementCount);
   }
 
   if ((*(&self->sfr_bpFlags + 1) & 4) == 0)
@@ -2245,21 +2245,21 @@ LABEL_12:
     [(TSUBezierPath *)self calculateLengths];
   }
 
-  return self->sfr_elementLength[a3];
+  return self->sfr_elementLength[element];
 }
 
-- (double)lengthToElement:(int64_t)a3
+- (double)lengthToElement:(int64_t)element
 {
-  v8 = a3;
-  if (a3 < 0)
+  elementCopy = element;
+  if (element < 0)
   {
-    sub_277113430(a3, a2, a3, v3, v4, v5, v6, v7);
+    sub_277113430(element, a2, element, v3, v4, v5, v6, v7);
   }
 
-  if (self->sfr_elementCount <= a3)
+  if (self->sfr_elementCount <= element)
   {
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUBezierPath lengthToElement:]"];
-    +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v13, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUBezierPath.m"], 1826, 0, "Given index (%zd) must not be greater than or equal to max element (%zd)", v8, self->sfr_elementCount);
+    +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v13, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUBezierPath.m"], 1826, 0, "Given index (%zd) must not be greater than or equal to max element (%zd)", elementCopy, self->sfr_elementCount);
     +[TSUAssertionHandler logFullBacktrace];
 
     [(TSUBezierPath *)self length];
@@ -2272,7 +2272,7 @@ LABEL_12:
       [(TSUBezierPath *)self calculateLengths];
     }
 
-    if (v8)
+    if (elementCopy)
     {
       sfr_elementLength = self->sfr_elementLength;
       result = 0.0;
@@ -2280,10 +2280,10 @@ LABEL_12:
       {
         v12 = *sfr_elementLength++;
         result = result + v12;
-        --v8;
+        --elementCopy;
       }
 
-      while (v8);
+      while (elementCopy);
     }
 
     else
@@ -2295,16 +2295,16 @@ LABEL_12:
   return result;
 }
 
-- (int64_t)elementAtIndex:(int64_t)a3 associatedPoints:(CGPoint *)a4
+- (int64_t)elementAtIndex:(int64_t)index associatedPoints:(CGPoint *)points
 {
   sfr_elementCount = self->sfr_elementCount;
-  if (a3 < 0 || sfr_elementCount <= a3)
+  if (index < 0 || sfr_elementCount <= index)
   {
-    sub_2771134CC(a3, sfr_elementCount, &self->sfr_elementCount, a4);
+    sub_2771134CC(index, sfr_elementCount, &self->sfr_elementCount, points);
   }
 
-  v9 = &self->sfr_head[6 * a3];
-  if (a4)
+  v9 = &self->sfr_head[6 * index];
+  if (points)
   {
     if ((*v9 & 0xFLL) == 2)
     {
@@ -2312,42 +2312,42 @@ LABEL_12:
       sfr_extraSegmentCount = self->sfr_extraSegmentCount;
       if (v10 >= sfr_extraSegmentCount)
       {
-        sub_277113558(a3);
+        sub_277113558(index);
       }
 
       sfr_extraSegments = self->sfr_extraSegments;
       if (!sfr_extraSegments)
       {
-        sub_2771135E4(self, sfr_extraSegmentCount, a3, a4, v4, v5, v6, v7);
+        sub_2771135E4(self, sfr_extraSegmentCount, index, points, v4, v5, v6, v7);
       }
 
       v13 = &sfr_extraSegments[32 * v10];
-      *a4 = *v13;
-      a4[1] = v13[1];
-      a4 += 2;
+      *points = *v13;
+      points[1] = v13[1];
+      points += 2;
     }
 
-    *a4 = *&v9[2];
+    *points = *&v9[2];
   }
 
   return *v9 & 0xFLL;
 }
 
-- (int64_t)elementAtIndex:(int64_t)a3 allPoints:(CGPoint *)a4
+- (int64_t)elementAtIndex:(int64_t)index allPoints:(CGPoint *)points
 {
   sfr_elementCount = self->sfr_elementCount;
-  if (a3 < 0 || sfr_elementCount <= a3)
+  if (index < 0 || sfr_elementCount <= index)
   {
-    sub_27711365C(a3, sfr_elementCount, &self->sfr_elementCount, a4);
+    sub_27711365C(index, sfr_elementCount, &self->sfr_elementCount, points);
   }
 
-  v5 = &self->sfr_head[6 * a3];
-  if (a4)
+  v5 = &self->sfr_head[6 * index];
+  if (points)
   {
     v6 = *v5;
     if ((*v5 & 0xFLL) != 0)
     {
-      *a4 = *&v5[-4];
+      *points = *&v5[-4];
       v6 = *v5;
     }
 
@@ -2356,30 +2356,30 @@ LABEL_12:
       if ((v6 & 0xF) == 2)
       {
         v7 = (self->sfr_extraSegments + 32 * (v6 >> 4));
-        a4[1] = *v7;
-        a4[2] = v7[1];
-        a4 += 3;
+        points[1] = *v7;
+        points[2] = v7[1];
+        points += 3;
       }
 
       else
       {
-        ++a4;
+        ++points;
       }
     }
 
-    *a4 = *&v5[2];
+    *points = *&v5[2];
   }
 
   return *v5 & 0xFLL;
 }
 
-- (void)iteratePathElementsWithBlock:(id)a3
+- (void)iteratePathElementsWithBlock:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [(TSUBezierPath *)self elementCount];
-  if (v5)
+  elementCount = [(TSUBezierPath *)self elementCount];
+  if (elementCount)
   {
-    v6 = v5;
+    v6 = elementCount;
     v7 = 0;
     v8 = *MEMORY[0x277CBF348];
     v9 = *(MEMORY[0x277CBF348] + 8);
@@ -2390,22 +2390,22 @@ LABEL_12:
       {
         if (v10 == 2)
         {
-          v17 = *(a3 + 2);
+          v17 = *(block + 2);
           v11.n128_u64[0] = v24;
           v12.n128_u64[0] = v25;
           v13.n128_u64[0] = v20;
           v14.n128_u64[0] = v21;
           v15.n128_u64[0] = v22;
           v16.n128_u64[0] = v23;
-          v18 = a3;
+          blockCopy4 = block;
           v19 = 2;
           goto LABEL_13;
         }
 
         if (v10 == 3)
         {
-          v17 = *(a3 + 2);
-          v18 = a3;
+          v17 = *(block + 2);
+          blockCopy4 = block;
           v19 = 3;
           v11.n128_u64[0] = v8;
           v12.n128_u64[0] = v9;
@@ -2417,10 +2417,10 @@ LABEL_12:
       {
         if (!v10)
         {
-          v17 = *(a3 + 2);
+          v17 = *(block + 2);
           v11.n128_u64[0] = v20;
           v12.n128_u64[0] = v21;
-          v18 = a3;
+          blockCopy4 = block;
           v19 = 0;
 LABEL_11:
           v13.n128_u64[0] = v8;
@@ -2428,16 +2428,16 @@ LABEL_11:
           v15.n128_u64[0] = v8;
           v16.n128_u64[0] = v9;
 LABEL_13:
-          v17(v18, v19, v11, v12, v13, v14, v15, v16);
+          v17(blockCopy4, v19, v11, v12, v13, v14, v15, v16);
           goto LABEL_14;
         }
 
         if (v10 == 1)
         {
-          v17 = *(a3 + 2);
+          v17 = *(block + 2);
           v11.n128_u64[0] = v20;
           v12.n128_u64[0] = v21;
-          v18 = a3;
+          blockCopy4 = block;
           v19 = 1;
           goto LABEL_11;
         }
@@ -2451,25 +2451,25 @@ LABEL_14:
   }
 }
 
-- (void)setAssociatedPoints:(CGPoint *)a3 atIndex:(int64_t)a4
+- (void)setAssociatedPoints:(CGPoint *)points atIndex:(int64_t)index
 {
   sfr_elementCount = self->sfr_elementCount;
-  if (a4 < 0 || sfr_elementCount <= a4)
+  if (index < 0 || sfr_elementCount <= index)
   {
-    sub_2771136E8(a4, sfr_elementCount, &self->sfr_elementCount);
+    sub_2771136E8(index, sfr_elementCount, &self->sfr_elementCount);
   }
 
-  v6 = &self->sfr_head[6 * a4];
+  v6 = &self->sfr_head[6 * index];
   if ((*v6 & 0xFLL) == 2)
   {
     v7 = (self->sfr_extraSegments + 32 * (*v6 >> 4));
-    *v7 = *a3;
-    v8 = a3[1];
-    a3 += 2;
+    *v7 = *points;
+    v8 = points[1];
+    points += 2;
     v7[1] = v8;
   }
 
-  *&v6[2] = *a3;
+  *&v6[2] = *points;
   sfr_path = self->sfr_path;
   if (sfr_path)
   {
@@ -2480,12 +2480,12 @@ LABEL_14:
   *&self->sfr_bpFlags |= 3u;
 }
 
-- (void)_appendToPath:(id)a3 skippingInitialMoveIfPossible:(BOOL)a4
+- (void)_appendToPath:(id)path skippingInitialMoveIfPossible:(BOOL)possible
 {
   sfr_head = self->sfr_head;
   sfr_elementCount = self->sfr_elementCount;
   sfr_extraSegments = self->sfr_extraSegments;
-  v8 = a4 && [a3 elementCount] > 0;
+  v8 = possible && [path elementCount] > 0;
   if (sfr_elementCount >= 1)
   {
     v9 = &sfr_head[6 * sfr_elementCount];
@@ -2496,13 +2496,13 @@ LABEL_14:
       {
         if (v10 == 2)
         {
-          [a3 curveToPoint:*&sfr_head[2] controlPoint1:*&sfr_head[4] controlPoint2:{*sfr_extraSegments, sfr_extraSegments[1], sfr_extraSegments[2], sfr_extraSegments[3]}];
+          [path curveToPoint:*&sfr_head[2] controlPoint1:*&sfr_head[4] controlPoint2:{*sfr_extraSegments, sfr_extraSegments[1], sfr_extraSegments[2], sfr_extraSegments[3]}];
           sfr_extraSegments += 4;
         }
 
         else if (v10 == 3)
         {
-          [a3 closePath];
+          [path closePath];
         }
       }
 
@@ -2510,7 +2510,7 @@ LABEL_14:
       {
         if (v10 == 1)
         {
-          [a3 lineToPoint:{*&sfr_head[2], *&sfr_head[4]}];
+          [path lineToPoint:{*&sfr_head[2], *&sfr_head[4]}];
         }
       }
 
@@ -2518,7 +2518,7 @@ LABEL_14:
       {
         if (!v8)
         {
-          [a3 moveToPoint:{*&sfr_head[2], *&sfr_head[4]}];
+          [path moveToPoint:{*&sfr_head[2], *&sfr_head[4]}];
         }
 
         v8 = 0;
@@ -2531,27 +2531,27 @@ LABEL_14:
   }
 }
 
-- (void)appendBezierPath:(id)a3 skippingInitialMoveIfPossible:(BOOL)a4
+- (void)appendBezierPath:(id)path skippingInitialMoveIfPossible:(BOOL)possible
 {
-  v4 = a4;
+  possibleCopy = possible;
   v19 = *MEMORY[0x277D85DE8];
   v7 = objc_opt_class();
   if (v7 == objc_opt_class())
   {
 
-    MEMORY[0x2821F9670](a3, sel__appendToPath_skippingInitialMoveIfPossible_);
+    MEMORY[0x2821F9670](path, sel__appendToPath_skippingInitialMoveIfPossible_);
   }
 
   else
   {
-    v8 = v4 && [(TSUBezierPath *)self elementCount]> 0;
-    v9 = [a3 elementCount];
-    if (v9 >= 1)
+    v8 = possibleCopy && [(TSUBezierPath *)self elementCount]> 0;
+    elementCount = [path elementCount];
+    if (elementCount >= 1)
     {
-      v10 = v9;
+      v10 = elementCount;
       for (i = 0; i != v10; ++i)
       {
-        v12 = [a3 elementAtIndex:i associatedPoints:&v13];
+        v12 = [path elementAtIndex:i associatedPoints:&v13];
         if (v12 > 1)
         {
           if (v12 == 2)
@@ -2587,13 +2587,13 @@ LABEL_14:
   }
 }
 
-- (void)p_appendPointsInRange:(_NSRange)a3 fromBezierPath:(id)a4 countingSubpaths:(unint64_t *)a5
+- (void)p_appendPointsInRange:(_NSRange)range fromBezierPath:(id)path countingSubpaths:(unint64_t *)subpaths
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3.location + a3.length;
-  if (a3.location + a3.length > [a4 elementCount])
+  v10 = range.location + range.length;
+  if (range.location + range.length > [path elementCount])
   {
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUBezierPath p_appendPointsInRange:fromBezierPath:countingSubpaths:]"];
     +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v11, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUBezierPath.m"], 2042, 0, "Point append range is out of range of available points.");
@@ -2602,7 +2602,7 @@ LABEL_14:
 
   if ((*(&self->sfr_bpFlags + 1) & 4) != 0)
   {
-    v12 = (*(a4 + 201) >> 2) & 1;
+    v12 = (*(path + 201) >> 2) & 1;
   }
 
   else
@@ -2619,15 +2619,15 @@ LABEL_14:
       v26 = v25;
       v27 = v25;
       v28 = v25;
-      v14 = [a4 elementAtIndex:v13 associatedPoints:{&v26, v25}];
+      v14 = [path elementAtIndex:v13 associatedPoints:{&v26, v25}];
       if (v14 > 1)
       {
         if (v14 == 2)
         {
-          v15 = [(TSUBezierPath *)self isEmpty];
-          if (v15)
+          isEmpty = [(TSUBezierPath *)self isEmpty];
+          if (isEmpty)
           {
-            sub_277113774(v15, v16, v17, v18, v19, v20, v21, v22);
+            sub_277113774(isEmpty, v16, v17, v18, v19, v20, v21, v22);
           }
 
           if (v13 > location)
@@ -2642,7 +2642,7 @@ LABEL_14:
 
           if (v23 == 1)
           {
-            v24 = *(*(a4 + 4) + 8 * v13);
+            v24 = *(*(path + 4) + 8 * v13);
           }
 
           else
@@ -2669,7 +2669,7 @@ LABEL_14:
 
       else
       {
-        ++*a5;
+        ++*subpaths;
         [(TSUBezierPath *)self moveToPoint:v26];
       }
 
@@ -2681,10 +2681,10 @@ LABEL_14:
   }
 }
 
-- (id)copyWithPointsInRange:(_NSRange)a3 countingSubpaths:(unint64_t *)a4
+- (id)copyWithPointsInRange:(_NSRange)range countingSubpaths:(unint64_t *)subpaths
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v13 = *MEMORY[0x277D85DE8];
   v8 = objc_alloc_init(TSUBezierPath);
   v9 = v8;
@@ -2702,25 +2702,25 @@ LABEL_14:
     v10 = [(TSUBezierPath *)self elementAtIndex:location allPoints:v12];
     if (v10)
     {
-      ++*a4;
+      ++*subpaths;
       if (v10 <= 3)
       {
         [(TSUBezierPath *)v9 moveToPoint:v12[0]];
       }
     }
 
-    [(TSUBezierPath *)v9 p_appendPointsInRange:location fromBezierPath:length countingSubpaths:self, a4];
+    [(TSUBezierPath *)v9 p_appendPointsInRange:location fromBezierPath:length countingSubpaths:self, subpaths];
   }
 
   return v9;
 }
 
-- (void)appendBezierPathWithRect:(CGRect)a3
+- (void)appendBezierPathWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TSUBezierPath *)self moveToPoint:?];
   v12.origin.x = x;
   v12.origin.y = y;
@@ -2756,24 +2756,24 @@ LABEL_14:
   [(TSUBezierPath *)self closePath];
 }
 
-- (void)appendBezierPathWithPoints:(CGPoint *)a3 count:(int64_t)a4
+- (void)appendBezierPathWithPoints:(CGPoint *)points count:(int64_t)count
 {
-  if (a4 >= 1)
+  if (count >= 1)
   {
     if ([(TSUBezierPath *)self isEmpty]|| (*&self->sfr_bpFlags & 0x300) == 0x100)
     {
-      [(TSUBezierPath *)self moveToPoint:a3->x, a3->y];
+      [(TSUBezierPath *)self moveToPoint:points->x, points->y];
     }
 
     else
     {
-      [(TSUBezierPath *)self lineToPoint:a3->x, a3->y];
+      [(TSUBezierPath *)self lineToPoint:points->x, points->y];
     }
 
-    v7 = a4 - 1;
+    v7 = count - 1;
     if (v7)
     {
-      p_y = &a3[1].y;
+      p_y = &points[1].y;
       do
       {
         [(TSUBezierPath *)self lineToPoint:*(p_y - 1), *p_y];
@@ -2786,12 +2786,12 @@ LABEL_14:
   }
 }
 
-- (void)appendBezierPathWithOvalInRect:(CGRect)a3
+- (void)appendBezierPathWithOvalInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v13 = *(MEMORY[0x277CBF2C0] + 16);
   *&v16.a = *MEMORY[0x277CBF2C0];
   *&v16.c = v13;
@@ -2829,42 +2829,42 @@ LABEL_14:
   [(TSUBezierPath *)self appendBezierPath:v8];
 }
 
-- (void)_appendArcSegmentWithCenter:(CGPoint)a3 radius:(double)a4 angle1:(double)a5 angle2:(double)a6
+- (void)_appendArcSegmentWithCenter:(CGPoint)center radius:(double)radius angle1:(double)angle1 angle2:(double)angle2
 {
-  y = a3.y;
-  x = a3.x;
-  v12 = __sincos_stret((a6 - a5) * 0.5);
+  y = center.y;
+  x = center.x;
+  v12 = __sincos_stret((angle2 - angle1) * 0.5);
   v13 = (1.0 - v12.__cosval) * 4.0 / (v12.__sinval * 3.0);
-  v14 = __sincos_stret(a5);
-  v15 = v13 * a4;
-  v16 = x + a4 * v14.__cosval - v13 * a4 * v14.__sinval;
-  v17 = y + a4 * v14.__sinval + v13 * a4 * v14.__cosval;
-  v18 = __sincos_stret(a6);
+  v14 = __sincos_stret(angle1);
+  v15 = v13 * radius;
+  v16 = x + radius * v14.__cosval - v13 * radius * v14.__sinval;
+  v17 = y + radius * v14.__sinval + v13 * radius * v14.__cosval;
+  v18 = __sincos_stret(angle2);
 
-  [(TSUBezierPath *)self _deviceCurveToPoint:x + a4 * v18.__cosval controlPoint1:y + a4 * v18.__sinval controlPoint2:v16 elementLength:v17, x + a4 * v18.__cosval + v15 * v18.__sinval, y + a4 * v18.__sinval - v15 * v18.__cosval, NAN];
+  [(TSUBezierPath *)self _deviceCurveToPoint:x + radius * v18.__cosval controlPoint1:y + radius * v18.__sinval controlPoint2:v16 elementLength:v17, x + radius * v18.__cosval + v15 * v18.__sinval, y + radius * v18.__sinval - v15 * v18.__cosval, NAN];
 }
 
-- (void)appendBezierPathWithArcWithCenter:(CGPoint)a3 radius:(double)a4 startAngle:(double)a5 endAngle:(double)a6 clockwise:(BOOL)a7
+- (void)appendBezierPathWithArcWithCenter:(CGPoint)center radius:(double)radius startAngle:(double)angle endAngle:(double)endAngle clockwise:(BOOL)clockwise
 {
-  y = a3.y;
-  x = a3.x;
-  v14 = __fpclassifyd(a5);
+  y = center.y;
+  x = center.x;
+  v14 = __fpclassifyd(angle);
   if (v14 <= 2)
   {
-    sub_2771137EC(a5, v14, v15, v16, v17, v18, v19, v20, v21);
+    sub_2771137EC(angle, v14, v15, v16, v17, v18, v19, v20, v21);
   }
 
-  v22 = __fpclassifyd(a6);
+  v22 = __fpclassifyd(endAngle);
   if (v22 <= 2)
   {
-    sub_277113874(a6, v22, v23, v24, v25, v26, v27, v28, v29);
+    sub_277113874(endAngle, v22, v23, v24, v25, v26, v27, v28, v29);
   }
 
-  v30 = a5 * 3.14159265 / 180.0;
-  v31 = a6 * 3.14159265;
+  v30 = angle * 3.14159265 / 180.0;
+  v31 = endAngle * 3.14159265;
   v32 = __sincos_stret(v30);
-  v33 = x + a4 * v32.__cosval;
-  v34 = y + a4 * v32.__sinval;
+  v33 = x + radius * v32.__cosval;
+  v34 = y + radius * v32.__sinval;
   if ([(TSUBezierPath *)self isEmpty])
   {
     [(TSUBezierPath *)self _deviceMoveToPoint:v33, v34];
@@ -2876,7 +2876,7 @@ LABEL_14:
   }
 
   v35 = v31 / 180.0;
-  if (a7)
+  if (clockwise)
   {
       ;
     }
@@ -2887,7 +2887,7 @@ LABEL_14:
       do
       {
         v37 = v30 + -1.57079633;
-        [(TSUBezierPath *)self _appendArcSegmentWithCenter:x radius:y angle1:a4 angle2:v30, v30 + -1.57079633];
+        [(TSUBezierPath *)self _appendArcSegmentWithCenter:x radius:y angle1:radius angle2:v30, v30 + -1.57079633];
         v36 = v37 - v35;
         v30 = v30 + -1.57079633;
       }
@@ -2913,7 +2913,7 @@ LABEL_17:
   do
   {
     v37 = v30 + 1.57079633;
-    [(TSUBezierPath *)self _appendArcSegmentWithCenter:x radius:y angle1:a4 angle2:v30, v30 + 1.57079633];
+    [(TSUBezierPath *)self _appendArcSegmentWithCenter:x radius:y angle1:radius angle2:v30, v30 + 1.57079633];
     v36 = v35 - v37;
     v30 = v30 + 1.57079633;
   }
@@ -2923,16 +2923,16 @@ LABEL_18:
   if (v36 > 0.0)
   {
 
-    [(TSUBezierPath *)self _appendArcSegmentWithCenter:x radius:y angle1:a4 angle2:v37, v35];
+    [(TSUBezierPath *)self _appendArcSegmentWithCenter:x radius:y angle1:radius angle2:v37, v35];
   }
 }
 
-- (void)appendBezierPathWithArcFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 radius:(double)a5
+- (void)appendBezierPathWithArcFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint radius:(double)radius
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
+  y = toPoint.y;
+  x = toPoint.x;
+  v8 = point.y;
+  v9 = point.x;
   v11 = *MEMORY[0x277CBF2C0];
   v12 = *(MEMORY[0x277CBF2C0] + 8);
   v13 = *(MEMORY[0x277CBF2C0] + 16);
@@ -2948,7 +2948,7 @@ LABEL_18:
     v35 = v9 - v14;
     v28 = v8 - v15;
     v17 = 0.0;
-    a5 = 0.0;
+    radius = 0.0;
   }
 
   else
@@ -2981,24 +2981,24 @@ LABEL_18:
   if (v22 == 0.0)
   {
     v23 = 0.0;
-    v26 = v36.f64[1];
+    radiusCopy = v36.f64[1];
     v25 = v36.f64[0];
-    a5 = 0.0;
+    radius = 0.0;
   }
 
   else
   {
-    v25 = v36.f64[0] - a5 * fabs(cos(v20 * 0.5) / v22);
+    v25 = v36.f64[0] - radius * fabs(cos(v20 * 0.5) / v22);
     if (vmovn_s64(vcgtq_f64(v29, v36)).i32[1])
     {
       v19 = 1.57079633 - v20;
       v23 = -1.57079633;
-      v26 = a5;
+      radiusCopy = radius;
     }
 
     else
     {
-      v26 = -a5;
+      radiusCopy = -radius;
       v19 = v20 + -1.57079633;
       v23 = 1.57079633;
     }
@@ -3013,13 +3013,13 @@ LABEL_18:
   CGAffineTransformRotate(&v38, &v37, v17);
   v24.f64[0] = v34;
   v24.f64[1] = v33;
-  [(TSUBezierPath *)self appendBezierPathWithArcWithCenter:vmovn_s64(vmvnq_s8(vcgtq_f64(v29 radius:v36))).i8[4] & 1 startAngle:vaddq_f64(v24 endAngle:vaddq_f64(*&v38.tx clockwise:vmlaq_n_f64(vmulq_n_f64(*&v38.c, v26), *&v38.a, v25))), a5, (v17 + v23) * 180.0 / 3.14159265, (v17 + v19) * 180.0 / 3.14159265];
+  [(TSUBezierPath *)self appendBezierPathWithArcWithCenter:vmovn_s64(vmvnq_s8(vcgtq_f64(v29 radius:v36))).i8[4] & 1 startAngle:vaddq_f64(v24 endAngle:vaddq_f64(*&v38.tx clockwise:vmlaq_n_f64(vmulq_n_f64(*&v38.c, radiusCopy), *&v38.a, v25))), radius, (v17 + v23) * 180.0 / 3.14159265, (v17 + v19) * 180.0 / 3.14159265];
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ((byte_280A63BA0 & 1) == 0)
   {
     byte_280A63BA0 = 1;
@@ -3040,7 +3040,7 @@ LABEL_18:
 - (const)cString
 {
   *&v16[255] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   sfr_elementCount = self->sfr_elementCount;
   if (sfr_elementCount < 1)
   {
@@ -3092,7 +3092,7 @@ LABEL_16:
       goto LABEL_21;
     }
 
-    [v3 appendBytes:&v15 length:&v8[v11] - &v15];
+    [data appendBytes:&v15 length:&v8[v11] - &v15];
     sfr_head += 6;
     if (sfr_head >= v6)
     {
@@ -3124,25 +3124,25 @@ LABEL_21:
   +[TSUAssertionHandler logBacktraceThrottled];
 LABEL_22:
   v15 = 0;
-  [v3 appendBytes:&v15 length:1];
-  return [v3 bytes];
+  [data appendBytes:&v15 length:1];
+  return [data bytes];
 }
 
-- (TSUBezierPath)initWithCString:(const char *)a3
+- (TSUBezierPath)initWithCString:(const char *)string
 {
   v4 = [(TSUBezierPath *)self init];
   v5 = v4;
-  if (a3 && v4 && *a3)
+  if (string && v4 && *string)
   {
     v38 = 0;
     v37 = 0;
     while (1)
     {
       v6 = v38;
-      v7 = a3[v38];
+      v7 = string[v38];
       if (v7 == 32)
       {
-        v8 = &a3[v38 + 1];
+        v8 = &string[v38 + 1];
         do
         {
           ++v6;
@@ -3174,9 +3174,9 @@ LABEL_22:
           }
 
 LABEL_26:
-          sub_27706CB2C(a3, &v38, &v37);
+          sub_27706CB2C(string, &v38, &v37);
           v14 = v13;
-          sub_27706CB2C(a3, &v38, &v37);
+          sub_27706CB2C(string, &v38, &v37);
           [(TSUBezierPath *)v5 moveToPoint:v14, v15];
           goto LABEL_33;
         }
@@ -3216,13 +3216,13 @@ LABEL_28:
             }
 
 LABEL_27:
-            sub_27706CB2C(a3, &v38, &v37);
+            sub_27706CB2C(string, &v38, &v37);
             v17 = v16;
-            sub_27706CB2C(a3, &v38, &v37);
+            sub_27706CB2C(string, &v38, &v37);
             v19 = v18;
-            sub_27706CB2C(a3, &v38, &v37);
+            sub_27706CB2C(string, &v38, &v37);
             v21 = v20;
-            sub_27706CB2C(a3, &v38, &v37);
+            sub_27706CB2C(string, &v38, &v37);
             [(TSUBezierPath *)v5 curveToPoint:v21 controlPoint:v22, v17, v19];
             goto LABEL_33;
           }
@@ -3248,17 +3248,17 @@ LABEL_32:
           }
 
 LABEL_30:
-          sub_27706CB2C(a3, &v38, &v37);
+          sub_27706CB2C(string, &v38, &v37);
           v24 = v23;
-          sub_27706CB2C(a3, &v38, &v37);
+          sub_27706CB2C(string, &v38, &v37);
           v26 = v25;
-          sub_27706CB2C(a3, &v38, &v37);
+          sub_27706CB2C(string, &v38, &v37);
           v28 = v27;
-          sub_27706CB2C(a3, &v38, &v37);
+          sub_27706CB2C(string, &v38, &v37);
           v30 = v29;
-          sub_27706CB2C(a3, &v38, &v37);
+          sub_27706CB2C(string, &v38, &v37);
           v32 = v31;
-          sub_27706CB2C(a3, &v38, &v37);
+          sub_27706CB2C(string, &v38, &v37);
           [(TSUBezierPath *)v5 curveToPoint:v32 controlPoint1:v33 controlPoint2:v24, v26, v28, v30];
           goto LABEL_33;
         }
@@ -3271,9 +3271,9 @@ LABEL_30:
           }
 
 LABEL_18:
-          sub_27706CB2C(a3, &v38, &v37);
+          sub_27706CB2C(string, &v38, &v37);
           v11 = v10;
-          sub_27706CB2C(a3, &v38, &v37);
+          sub_27706CB2C(string, &v38, &v37);
           [(TSUBezierPath *)v5 lineToPoint:v11, v12];
         }
       }
@@ -3292,10 +3292,10 @@ LABEL_33:
   return v5;
 }
 
-- (void)_addPathSegment:(int64_t)a3 point:(CGPoint)a4
+- (void)_addPathSegment:(int64_t)segment point:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   sfr_elementCount = self->sfr_elementCount;
   if (sfr_elementCount == self->sfr_elementMax)
   {
@@ -3319,7 +3319,7 @@ LABEL_33:
     }
   }
 
-  *&self->sfr_head[6 * self->sfr_elementCount] = *&self->sfr_head[6 * self->sfr_elementCount] & 0xFFFFFFFFFFFFFFF0 | a3 & 0xF;
+  *&self->sfr_head[6 * self->sfr_elementCount] = *&self->sfr_head[6 * self->sfr_elementCount] & 0xFFFFFFFFFFFFFFF0 | segment & 0xF;
   *&self->sfr_head[6 * self->sfr_elementCount] &= 0xFuLL;
   v25 = self->sfr_elementCount;
   v26 = &self->sfr_head[6 * v25];
@@ -3335,7 +3335,7 @@ LABEL_33:
 
   sfr_bpFlags = self->sfr_bpFlags;
   self->sfr_bpFlags = (*&sfr_bpFlags | 3);
-  if (a3 != 2 && (*&sfr_bpFlags & 0x400) != 0)
+  if (segment != 2 && (*&sfr_bpFlags & 0x400) != 0)
   {
     [(TSUBezierPath *)self calculateLengthOfElement:self->sfr_elementCount - 1];
     self->sfr_elementLength[self->sfr_elementCount - 1] = v29;
@@ -3343,7 +3343,7 @@ LABEL_33:
   }
 }
 
-- (void)_deviceMoveToPoint:(CGPoint)a3
+- (void)_deviceMoveToPoint:(CGPoint)point
 {
   v4 = (*&self->sfr_bpFlags >> 8) & 3;
   if (v4 == 2)
@@ -3361,24 +3361,24 @@ LABEL_33:
     sfr_head = self->sfr_head;
     sfr_elementCount = self->sfr_elementCount;
 LABEL_6:
-    *&sfr_head[6 * sfr_elementCount - 4] = a3;
+    *&sfr_head[6 * sfr_elementCount - 4] = point;
     goto LABEL_7;
   }
 
-  [(TSUBezierPath *)self _addPathSegment:0 point:a3.x, a3.y];
+  [(TSUBezierPath *)self _addPathSegment:0 point:point.x, point.y];
   sfr_elementCount = self->sfr_elementCount;
 LABEL_7:
   self->sfr_bpFlags = (*&self->sfr_bpFlags & 0xFFFFFCFF | 0x200);
   self->sfr_lastSubpathIndex = sfr_elementCount - 1;
 }
 
-- (void)_deviceCurveToPoint:(CGPoint)a3 controlPoint1:(CGPoint)a4 controlPoint2:(CGPoint)a5 elementLength:(double)a6
+- (void)_deviceCurveToPoint:(CGPoint)point controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2 elementLength:(double)length
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  [(TSUBezierPath *)self _addPathSegment:2 point:a3.x, a3.y];
+  y = point2.y;
+  x = point2.x;
+  v9 = point1.y;
+  v10 = point1.x;
+  [(TSUBezierPath *)self _addPathSegment:2 point:point.x, point.y];
   sfr_extraSegmentCount = self->sfr_extraSegmentCount;
   if (sfr_extraSegmentCount == self->sfr_extraSegmentMax)
   {
@@ -3410,14 +3410,14 @@ LABEL_7:
   self->sfr_bpFlags = (*&sfr_bpFlags & 0xFFFFFCFB | 0x200);
   if ((*&sfr_bpFlags & 0x400) != 0)
   {
-    if ((*&a6 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+    if ((*&length & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
     {
       [(TSUBezierPath *)self calculateLengthOfElement:self->sfr_elementCount - 1];
-      a6 = v24;
+      length = v24;
     }
 
-    self->sfr_elementLength[self->sfr_elementCount - 1] = a6;
-    self->sfr_totalLength = a6 + self->sfr_totalLength;
+    self->sfr_elementLength[self->sfr_elementCount - 1] = length;
+    self->sfr_totalLength = length + self->sfr_totalLength;
   }
 }
 
@@ -3445,18 +3445,18 @@ LABEL_7:
 - (id)description
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  [v3 appendFormat:@"TSUBezierPath <%p>", self];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendFormat:@"TSUBezierPath <%p>", self];
   if (![(TSUBezierPath *)self isEmpty])
   {
     [(TSUBezierPath *)self bounds];
-    [v3 appendFormat:@"\n  Bounds: %@", NSStringFromCGRect(v17)];
+    [string appendFormat:@"\n  Bounds: %@", NSStringFromCGRect(v17)];
     [(TSUBezierPath *)self controlPointBounds];
-    [v3 appendFormat:@"\n  Control point bounds: %@", NSStringFromCGRect(v18)];
-    v4 = [(TSUBezierPath *)self elementCount];
-    if (v4 >= 1)
+    [string appendFormat:@"\n  Control point bounds: %@", NSStringFromCGRect(v18)];
+    elementCount = [(TSUBezierPath *)self elementCount];
+    if (elementCount >= 1)
     {
-      v5 = v4;
+      v5 = elementCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(TSUBezierPath *)self elementAtIndex:i associatedPoints:v13];
@@ -3464,12 +3464,12 @@ LABEL_7:
         {
           if (v7 == 2)
           {
-            [v3 appendFormat:@"\n    %f %f %f %f %f %f curveto", v13[0], v13[1], v14, v15];
+            [string appendFormat:@"\n    %f %f %f %f %f %f curveto", v13[0], v13[1], v14, v15];
           }
 
           else if (v7 == 3)
           {
-            [v3 appendString:@"\n    closepath"];
+            [string appendString:@"\n    closepath"];
           }
         }
 
@@ -3477,30 +3477,30 @@ LABEL_7:
         {
           if (v7 == 1)
           {
-            [v3 appendFormat:@"\n    %f %f lineto", v13[0], v9, v10, v11, v12];
+            [string appendFormat:@"\n    %f %f lineto", v13[0], v9, v10, v11, v12];
           }
         }
 
         else
         {
-          [v3 appendFormat:@"\n    %f %f moveto", v13[0], v9, v10, v11, v12];
+          [string appendFormat:@"\n    %f %f moveto", v13[0], v9, v10, v11, v12];
         }
       }
     }
   }
 
-  return v3;
+  return string;
 }
 
-- (void)appendBezierPathWithArcWithEllipseBounds:(CGRect)a3 startAngle:(double)a4 swingAngle:(double)a5 angleType:(int)a6 startNewPath:(BOOL)a7
+- (void)appendBezierPathWithArcWithEllipseBounds:(CGRect)bounds startAngle:(double)angle swingAngle:(double)swingAngle angleType:(int)type startNewPath:(BOOL)path
 {
-  v35 = a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  pathCopy = path;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v39 = *MEMORY[0x277D85DE8];
-  MidX = CGRectGetMidX(a3);
+  MidX = CGRectGetMidX(bounds);
   v40.origin.x = x;
   v40.origin.y = y;
   v40.size.width = width;
@@ -3516,49 +3516,49 @@ LABEL_7:
   v42.size.width = width;
   v42.size.height = height;
   v16 = CGRectGetHeight(v42) * 0.5;
-  if (a6 == 1)
+  if (type == 1)
   {
-    sub_27709ADF0(a4, v15, v16);
-    v18 = v19;
-    sub_27709ADF0(a4 + a5, v15, v16);
+    sub_27709ADF0(angle, v15, v16);
+    angleCopy = v19;
+    sub_27709ADF0(angle + swingAngle, v15, v16);
     v17 = v20;
   }
 
   else
   {
-    if (a6)
+    if (type)
     {
       v17 = 0.0;
     }
 
     else
     {
-      v17 = a4 + a5;
+      v17 = angle + swingAngle;
     }
 
-    if (a6)
+    if (type)
     {
-      v18 = 0.0;
+      angleCopy = 0.0;
     }
 
     else
     {
-      v18 = a4;
+      angleCopy = angle;
     }
   }
 
   v21 = +[TSUBezierPath bezierPath];
-  [v21 appendBezierPathWithArcWithCenter:v18 > v17 radius:*MEMORY[0x277CBF348] startAngle:*(MEMORY[0x277CBF348] + 8) endAngle:1.0 clockwise:{v18, v17}];
+  [v21 appendBezierPathWithArcWithCenter:angleCopy > v17 radius:*MEMORY[0x277CBF348] startAngle:*(MEMORY[0x277CBF348] + 8) endAngle:1.0 clockwise:{angleCopy, v17}];
   memset(&v37, 0, sizeof(v37));
   CGAffineTransformMakeScale(&t1, v15, v16);
   CGAffineTransformMakeTranslation(&t2, MidX, MidY);
   CGAffineTransformConcat(&v37, &t1, &t2);
   t1 = v37;
   [v21 transformUsingAffineTransform:&t1];
-  v22 = [v21 elementCount];
-  if (v22 >= 1)
+  elementCount = [v21 elementCount];
+  if (elementCount >= 1)
   {
-    v23 = v22;
+    v23 = elementCount;
     for (i = 0; v23 != i; ++i)
     {
       memset(&t1, 0, sizeof(t1));
@@ -3593,7 +3593,7 @@ LABEL_7:
             +[TSUAssertionHandler logBacktraceThrottled];
           }
 
-          if (v35)
+          if (pathCopy)
           {
             [(TSUBezierPath *)self moveToPoint:t1.a, t1.b];
           }
@@ -3622,17 +3622,17 @@ LABEL_18:
   }
 }
 
-- (void)appendBezierPathWithArcWithEllipseBounds:(CGRect)a3 startRadialVector:(CGPoint)a4 endRadialVector:(CGPoint)a5 angleSign:(int)a6 startNewPath:(BOOL)a7
+- (void)appendBezierPathWithArcWithEllipseBounds:(CGRect)bounds startRadialVector:(CGPoint)vector endRadialVector:(CGPoint)radialVector angleSign:(int)sign startNewPath:(BOOL)path
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v13 = a3.origin.y;
-  v14 = a3.origin.x;
-  MidX = CGRectGetMidX(a3);
+  y = radialVector.y;
+  x = radialVector.x;
+  v9 = vector.y;
+  v10 = vector.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v13 = bounds.origin.y;
+  v14 = bounds.origin.x;
+  MidX = CGRectGetMidX(bounds);
   v23.origin.x = v14;
   v23.origin.y = v13;
   v23.size.width = width;
@@ -3640,9 +3640,9 @@ LABEL_18:
   MidY = CGRectGetMidY(v23);
   v18 = atan2(v9 - MidY, v10 - MidX) * 180.0 / 3.14159265;
   v19 = atan2(y - MidY, x - MidX) * 180.0 / 3.14159265;
-  if (a6)
+  if (sign)
   {
-    if (a6 == 1)
+    if (sign == 1)
     {
         ;
       }
@@ -3665,20 +3665,20 @@ LABEL_18:
   MEMORY[0x2821F9670](self, sel_appendBezierPathWithArcWithEllipseBounds_startAngle_swingAngle_angleType_startNewPath_);
 }
 
-+ (id)bezierPathWithRoundedRect:(CGRect)a3 upperRightRadius:(double)a4 lowerRightRadius:(double)a5 lowerLeftRadius:(double)a6 upperLeftRadius:(double)a7 useLegacyCorners:(BOOL)a8 keepNoOpElements:(BOOL)a9
++ (id)bezierPathWithRoundedRect:(CGRect)rect upperRightRadius:(double)radius lowerRightRadius:(double)rightRadius lowerLeftRadius:(double)leftRadius upperLeftRadius:(double)upperLeftRadius useLegacyCorners:(BOOL)corners keepNoOpElements:(BOOL)elements
 {
-  v10 = a8;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  cornersCopy = corners;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v19 = +[TSUBezierPath bezierPath];
-  if (v10)
+  if (cornersCopy)
   {
-    v30 = sub_2770B5508(a4, x, y, width, height, a7, a5);
-    v32 = sub_2770B5508(a5, x, y, width, height, a6, a4);
-    v34 = sub_2770B5508(a6, x, y, width, height, a5, a7);
-    v20 = sub_2770B5508(a7, x, y, width, height, a4, a6);
+    v30 = sub_2770B5508(radius, x, y, width, height, upperLeftRadius, rightRadius);
+    v32 = sub_2770B5508(rightRadius, x, y, width, height, leftRadius, radius);
+    v34 = sub_2770B5508(leftRadius, x, y, width, height, rightRadius, upperLeftRadius);
+    v20 = sub_2770B5508(upperLeftRadius, x, y, width, height, radius, leftRadius);
     v37.origin.x = x;
     v37.origin.y = y;
     v37.size.width = width;
@@ -3689,19 +3689,19 @@ LABEL_18:
     v38.size.width = width;
     v38.size.height = height;
     [v19 moveToPoint:{v20 + MinX, CGRectGetMinY(v38)}];
-    sub_2770B5CB4(v19, 0, a9, x, y, width, height, v30);
-    sub_2770B5CB4(v19, 1, a9, x, y, width, height, v32);
-    sub_2770B5CB4(v19, 2, a9, x, y, width, height, v34);
-    sub_2770B5CB4(v19, 3, a9, x, y, width, height, v20);
+    sub_2770B5CB4(v19, 0, elements, x, y, width, height, v30);
+    sub_2770B5CB4(v19, 1, elements, x, y, width, height, v32);
+    sub_2770B5CB4(v19, 2, elements, x, y, width, height, v34);
+    sub_2770B5CB4(v19, 3, elements, x, y, width, height, v20);
   }
 
   else
   {
-    v31 = sub_2770B5508(a4, x, y, width, height, a7 * 1.528665, a5 * 1.528665);
-    v22 = a4 * 1.528665;
-    v33 = sub_2770B5508(a5, x, y, width, height, a6 * 1.528665, v22);
-    v35 = sub_2770B5508(a6, x, y, width, height, a5 * 1.528665, a7 * 1.528665);
-    v23 = sub_2770B5508(a7, x, y, width, height, v22, a6 * 1.528665);
+    v31 = sub_2770B5508(radius, x, y, width, height, upperLeftRadius * 1.528665, rightRadius * 1.528665);
+    v22 = radius * 1.528665;
+    v33 = sub_2770B5508(rightRadius, x, y, width, height, leftRadius * 1.528665, v22);
+    v35 = sub_2770B5508(leftRadius, x, y, width, height, rightRadius * 1.528665, upperLeftRadius * 1.528665);
+    v23 = sub_2770B5508(upperLeftRadius, x, y, width, height, v22, leftRadius * 1.528665);
     v39.origin.x = x;
     v39.origin.y = y;
     v39.size.width = width;
@@ -3734,10 +3734,10 @@ LABEL_18:
     v41.size.width = width;
     v41.size.height = height;
     [v19 moveToPoint:{v28 + v27, CGRectGetMinY(v41)}];
-    sub_2770B5670(v19, 0, a9, x, y, width, height, v31, v23, v33);
-    sub_2770B5670(v19, 1, a9, x, y, width, height, v33, v35, v31);
-    sub_2770B5670(v19, 2, a9, x, y, width, height, v35, v33, v23);
-    sub_2770B5670(v19, 3, a9, x, y, width, height, v23, v31, v35);
+    sub_2770B5670(v19, 0, elements, x, y, width, height, v31, v23, v33);
+    sub_2770B5670(v19, 1, elements, x, y, width, height, v33, v35, v31);
+    sub_2770B5670(v19, 2, elements, x, y, width, height, v35, v33, v23);
+    sub_2770B5670(v19, 3, elements, x, y, width, height, v23, v31, v35);
   }
 
   [v19 closePath];

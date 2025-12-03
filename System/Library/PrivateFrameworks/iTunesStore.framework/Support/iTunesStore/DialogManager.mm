@@ -1,11 +1,11 @@
 @interface DialogManager
-+ (BOOL)checkInDialog:(id)a3;
-+ (void)checkOutDialog:(id)a3;
++ (BOOL)checkInDialog:(id)dialog;
++ (void)checkOutDialog:(id)dialog;
 @end
 
 @implementation DialogManager
 
-+ (BOOL)checkInDialog:(id)a3
++ (BOOL)checkInDialog:(id)dialog
 {
   pthread_mutex_lock(&stru_1003829D8);
   v4 = qword_100383DD0;
@@ -33,7 +33,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) isEqual:a3])
+        if ([*(*(&v11 + 1) + 8 * i) isEqual:dialog])
         {
           v9 = 0;
           goto LABEL_13;
@@ -50,17 +50,17 @@
     }
   }
 
-  [qword_100383DD0 addObject:a3];
+  [qword_100383DD0 addObject:dialog];
   v9 = 1;
 LABEL_13:
   pthread_mutex_unlock(&stru_1003829D8);
   return v9;
 }
 
-+ (void)checkOutDialog:(id)a3
++ (void)checkOutDialog:(id)dialog
 {
   pthread_mutex_lock(&stru_1003829D8);
-  [qword_100383DD0 removeObject:a3];
+  [qword_100383DD0 removeObject:dialog];
 
   pthread_mutex_unlock(&stru_1003829D8);
 }

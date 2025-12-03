@@ -1,11 +1,11 @@
 @interface VNOpticalFlowGeneratorRevision2
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
 - (id).cxx_construct;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNOpticalFlowGeneratorRevision2
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __72__VNOpticalFlowGeneratorRevision2_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNOpticalFlowGeneratorRevision2 configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNOpticalFlowGeneratorRevision2 configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -41,18 +41,18 @@ void __72__VNOpticalFlowGeneratorRevision2_configurationOptionKeysForDetectorKey
   +[VNOpticalFlowGeneratorRevision2 configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allGPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allGPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"VNComputeStageMain";
@@ -69,15 +69,15 @@ void __72__VNOpticalFlowGeneratorRevision2_configurationOptionKeysForDetectorKey
   return self;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = interest.size.height;
+  width = interest.size.width;
   v51[1] = *MEMORY[0x1E69E9840];
-  v15 = a5;
-  v16 = a7;
-  v17 = a9;
-  v18 = v15;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v18 = optionsCopy;
   v19 = v18;
   if (self)
   {
@@ -87,29 +87,29 @@ void __72__VNOpticalFlowGeneratorRevision2_configurationOptionKeysForDetectorKey
 
     v22 = [v20 objectAtIndexedSubscript:1];
 
-    v23 = [(VCPMotionFlowRequest *)self->_motionFlowRequest estimateMotionBetweenFirstImage:v21 andSecondImage:v22 withUpsample:0 withGuidedImage:0 error:a8];
+    v23 = [(VCPMotionFlowRequest *)self->_motionFlowRequest estimateMotionBetweenFirstImage:v21 andSecondImage:v22 withUpsample:0 withGuidedImage:0 error:error];
 
     if (v23)
     {
       v43 = 0;
-      if ([VNValidationUtilities getOSTypeValue:&v43 forKey:@"VNOpticalFlowGeneratorProcessOption_OutputPixelFormat" inOptions:v19 error:a8])
+      if ([VNValidationUtilities getOSTypeValue:&v43 forKey:@"VNOpticalFlowGeneratorProcessOption_OutputPixelFormat" inOptions:v19 error:error])
       {
         v42 = 0;
-        if ([VNValidationUtilities getBOOLValue:&v42 forKey:@"VNOpticalFlowGeneratorProcessOption_KeepNetworkOutput" inOptions:v19 withDefaultValue:0 error:a8])
+        if ([VNValidationUtilities getBOOLValue:&v42 forKey:@"VNOpticalFlowGeneratorProcessOption_KeepNetworkOutput" inOptions:v19 withDefaultValue:0 error:error])
         {
-          v24 = [v23 pixelBuffer];
-          PixelFormatType = CVPixelBufferGetPixelFormatType(v24);
+          pixelBuffer = [v23 pixelBuffer];
+          PixelFormatType = CVPixelBufferGetPixelFormatType(pixelBuffer);
           v26 = height;
-          v27 = PixelFormatType == v43 && CVPixelBufferGetWidth(v24) == width && CVPixelBufferGetHeight(v24) == v26;
+          v27 = PixelFormatType == v43 && CVPixelBufferGetWidth(pixelBuffer) == width && CVPixelBufferGetHeight(pixelBuffer) == v26;
           if ((v42 & 1) != 0 || v27)
           {
-            v29 = CVPixelBufferRetain(v24);
+            v29 = CVPixelBufferRetain(pixelBuffer);
             goto LABEL_22;
           }
 
           v37 = v43;
           v41 = v19;
-          v28 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:a8];
+          v28 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:error];
           if (v28)
           {
             aBlock[0] = MEMORY[0x1E69E9820];
@@ -129,7 +129,7 @@ void __72__VNOpticalFlowGeneratorRevision2_configurationOptionKeysForDetectorKey
             v44[3] = &__block_descriptor_36_e41_B32__0____CVBuffer__8____CVBuffer__16__24l;
             v45 = v37;
             v40 = _Block_copy(v44);
-            v29 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v26 height:v37 pixelFormatType:a8 error:?];
+            v29 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v26 height:v37 pixelFormatType:error error:?];
             if (v29)
             {
               if ([VNComputeDeviceUtilities isCPUComputeDevice:v38])
@@ -143,7 +143,7 @@ void __72__VNOpticalFlowGeneratorRevision2_configurationOptionKeysForDetectorKey
               }
 
               v31 = _Block_copy(v30);
-              if ((v31[2](v31, v24, v29, a8) & 1) == 0)
+              if ((v31[2](v31, pixelBuffer, v29, error) & 1) == 0)
               {
                 CVPixelBufferRelease(v29);
                 v29 = 0;
@@ -156,7 +156,7 @@ void __72__VNOpticalFlowGeneratorRevision2_configurationOptionKeysForDetectorKey
             }
 
 LABEL_22:
-            v32 = [VNValidationUtilities originatingRequestSpecifierInOptions:v19 error:a8];
+            v32 = [VNValidationUtilities originatingRequestSpecifierInOptions:v19 error:error];
             if (v32)
             {
               v33 = [[VNPixelBufferObservation alloc] initWithOriginatingRequestSpecifier:v32 featureName:0 CVPixelBuffer:v29];
@@ -466,40 +466,40 @@ uint64_t __94__VNOpticalFlowGeneratorRevision2__convertPixelBuffer_width_height_
   return 1;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v44 = *MEMORY[0x1E69E9840];
-  v17 = a4;
-  v36 = a6;
-  v37 = a9;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __129__VNOpticalFlowGeneratorRevision2_createRegionOfInterestCrop_options_qosClass_warningRecorder_pixelBuffer_error_progressHandler___block_invoke;
   v42[3] = &unk_1E77B6810;
   v42[4] = self;
-  if ([VNValidationUtilities validateNonZeroImageWidth:width height:height componentNameProvidingBlock:v42 error:a8])
+  if ([VNValidationUtilities validateNonZeroImageWidth:width height:height componentNameProvidingBlock:v42 error:error])
   {
-    v18 = [(VNOpticalFlowGenerator *)self validatedImageBuffersFromOptions:v17 error:a8];
+    v18 = [(VNOpticalFlowGenerator *)self validatedImageBuffersFromOptions:optionsCopy error:error];
     v19 = v18;
     if (v18)
     {
       if ([v18 count] == 2)
       {
         v20 = [v19 objectAtIndexedSubscript:0];
-        v21 = [v20 width];
+        width = [v20 width];
         v22 = [v19 objectAtIndexedSubscript:1];
-        if (v21 == [v22 width])
+        if (width == [v22 width])
         {
           v23 = [v19 objectAtIndexedSubscript:0];
-          v24 = [v23 height];
+          height = [v23 height];
           v25 = [v19 objectAtIndexedSubscript:1];
-          LOBYTE(v24) = v24 == [v25 height];
+          LOBYTE(height) = height == [v25 height];
 
-          if (v24)
+          if (height)
           {
             v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
             v40 = 0u;
@@ -521,8 +521,8 @@ uint64_t __94__VNOpticalFlowGeneratorRevision2__convertPixelBuffer_width_height_
                   }
 
                   v29 = *(*(&v38 + 1) + 8 * i);
-                  [v17 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
-                  v30 = [v29 croppedBufferWithWidth:self->_preferredBufferSizeFormat.width height:self->_preferredBufferSizeFormat.height format:self->_preferredBufferSizeFormat.format cropRect:v17 options:a8 error:{x, y, width, height}];
+                  [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
+                  v30 = [v29 croppedBufferWithWidth:self->_preferredBufferSizeFormat.width height:self->_preferredBufferSizeFormat.height format:self->_preferredBufferSizeFormat.format cropRect:optionsCopy options:error error:{x, y, width, height}];
                   if (!v30)
                   {
                     v31 = 0;
@@ -553,7 +553,7 @@ LABEL_26:
 
             if (v31)
             {
-              [v17 setObject:v35 forKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_FromAndToPixelBuffers"];
+              [optionsCopy setObject:v35 forKeyedSubscript:@"VNOpticalFlowGeneratorProcessOption_FromAndToPixelBuffers"];
             }
 
             goto LABEL_23;
@@ -564,19 +564,19 @@ LABEL_26:
         {
         }
 
-        if (a8)
+        if (error)
         {
           v32 = [VNError errorForInvalidOperationWithLocalizedDescription:@"Optical flow cannot be performed on images with different dimensions"];
           goto LABEL_21;
         }
       }
 
-      else if (a8)
+      else if (error)
       {
         v32 = [VNError errorForInvalidOperationWithLocalizedDescription:@"Optical flow incorrect number of images to compare"];
 LABEL_21:
         LOBYTE(v31) = 0;
-        *a8 = v32;
+        *error = v32;
 LABEL_23:
 
         goto LABEL_24;
@@ -600,36 +600,36 @@ NSString *__129__VNOpticalFlowGeneratorRevision2_createRegionOfInterestCrop_opti
   return NSStringFromClass(v0);
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v38[4] = *MEMORY[0x1E69E9840];
   v36.receiver = self;
   v36.super_class = VNOpticalFlowGeneratorRevision2;
-  if (![(VNDetector *)&v36 completeInitializationForSession:a3 error:?])
+  if (![(VNDetector *)&v36 completeInitializationForSession:session error:?])
   {
     return 0;
   }
 
-  v6 = [(VNDetector *)self configurationOptions];
+  configurationOptions = [(VNDetector *)self configurationOptions];
   v35 = 0;
-  if (![VNValidationUtilities getNSUIntegerValue:&v35 forKey:@"VNOpticalFlowGeneratorOption_ComputationAccuracy" inOptions:v6 error:a4])
+  if (![VNValidationUtilities getNSUIntegerValue:&v35 forKey:@"VNOpticalFlowGeneratorOption_ComputationAccuracy" inOptions:configurationOptions error:error])
   {
     goto LABEL_15;
   }
 
   if (v35 >= 4)
   {
-    if (a4)
+    if (error)
     {
       v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-      *a4 = [VNError errorForInvalidOption:v7 named:@"VNOpticalFlowGeneratorOption_ComputationAccuracy"];
+      *error = [VNError errorForInvalidOption:v7 named:@"VNOpticalFlowGeneratorOption_ComputationAccuracy"];
     }
 
     goto LABEL_15;
   }
 
   v34 = 1;
-  if (![VNValidationUtilities getBOOLValue:&v34 forKey:@"VNOpticalFlowGeneratorInitOption_PortraitMode" inOptions:v6 error:a4])
+  if (![VNValidationUtilities getBOOLValue:&v34 forKey:@"VNOpticalFlowGeneratorInitOption_PortraitMode" inOptions:configurationOptions error:error])
   {
 LABEL_15:
     v8 = 0;
@@ -661,7 +661,7 @@ LABEL_15:
         v14 = *(v10 + 2);
       }
 
-      v11 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:a4];
+      v11 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:error];
       if (!v11)
       {
         v8 = 0;
@@ -694,32 +694,32 @@ LABEL_15:
       v23 = self->_motionFlowRequest;
       if (v23)
       {
-        [(VCPMotionFlowRequest *)v23 preferredInputSizeWithOptions:0 error:a4];
+        [(VCPMotionFlowRequest *)v23 preferredInputSizeWithOptions:0 error:error];
         v26 = v25;
         v27 = v24;
         if (v25 != *MEMORY[0x1E695F060] || v24 != *(MEMORY[0x1E695F060] + 8))
         {
-          v29 = [(VCPMotionFlowRequest *)self->_motionFlowRequest preferredPixelFormat];
+          preferredPixelFormat = [(VCPMotionFlowRequest *)self->_motionFlowRequest preferredPixelFormat];
           self->_preferredBufferSizeFormat.width = v26;
           self->_preferredBufferSizeFormat.height = v27;
-          self->_preferredBufferSizeFormat.format = v29;
+          self->_preferredBufferSizeFormat.format = preferredPixelFormat;
           v8 = 1;
           goto LABEL_36;
         }
 
-        if (a4)
+        if (error)
         {
           v28 = [VNError errorForInternalErrorWithLocalizedDescription:@"Failed to properly create motion flow estimator"];
 LABEL_33:
           v8 = 0;
-          *a4 = v28;
+          *error = v28;
 LABEL_36:
 
           goto LABEL_37;
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v28 = [VNError errorForInternalErrorWithLocalizedDescription:@"Failed to create motion flow estimator"];
         goto LABEL_33;
@@ -730,14 +730,14 @@ LABEL_36:
     }
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_15;
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v35];
   [VNError errorForInvalidOption:v11 named:@"VNOpticalFlowGeneratorOption_ComputationAccuracy"];
-  *a4 = v8 = 0;
+  *error = v8 = 0;
 LABEL_37:
 
 LABEL_16:

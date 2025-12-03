@@ -1,11 +1,11 @@
 @interface STUIStatusBarVisualProvider_Test
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3;
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation;
 - (STUIStatusBar)statusBar;
 - (STUIStatusBarVisualProvider_Test)init;
-- (id)setupInContainerView:(id)a3;
-- (id)styleAttributesForStyle:(int64_t)a3;
-- (void)setOrderedDisplayItemPlacements:(id)a3 inRegionWithIdentifier:(id)a4;
-- (void)setOverriddenStyleAttributes:(id)a3 forDisplayItemWithIdentifier:(id)a4;
+- (id)setupInContainerView:(id)view;
+- (id)styleAttributesForStyle:(int64_t)style;
+- (void)setOrderedDisplayItemPlacements:(id)placements inRegionWithIdentifier:(id)identifier;
+- (void)setOverriddenStyleAttributes:(id)attributes forDisplayItemWithIdentifier:(id)identifier;
 @end
 
 @implementation STUIStatusBarVisualProvider_Test
@@ -16,8 +16,8 @@
   v9.receiver = self;
   v9.super_class = STUIStatusBarVisualProvider_Test;
   v2 = [(STUIStatusBarVisualProvider_Test *)&v9 init];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(STUIStatusBarVisualProvider_Test *)v2 setOrderedDisplayItemPlacements:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(STUIStatusBarVisualProvider_Test *)v2 setOrderedDisplayItemPlacements:dictionary];
 
   v4 = MEMORY[0x277CBEB98];
   v10[0] = @"top-left";
@@ -33,12 +33,12 @@
   return v2;
 }
 
-- (id)setupInContainerView:(id)a3
+- (id)setupInContainerView:(id)view
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
-  v118 = [MEMORY[0x277CBEB18] array];
+  viewCopy = view;
+  array = [v3 array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v6 = [[STUIStatusBarRegion alloc] initWithIdentifier:@"top-left"];
   v7 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
   v8 = objc_alloc_init(STUIStatusBarRegionAxisStackingLayout);
@@ -53,23 +53,23 @@
   v10 = [MEMORY[0x277CBEB98] setWithObject:@"top-center"];
   [(STUIStatusBarRegion *)v6 setDependentRegionIdentifiers:v10];
 
-  v11 = [(STUIStatusBarRegion *)v6 layoutItem];
-  v12 = [v11 topAnchor];
-  v13 = [v4 topAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
-  [v5 addObject:v14];
+  layoutItem = [(STUIStatusBarRegion *)v6 layoutItem];
+  topAnchor = [layoutItem topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v14];
 
-  v15 = [v11 leftAnchor];
-  v16 = [v4 leftAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:10.0];
-  [v5 addObject:v17];
+  leftAnchor = [layoutItem leftAnchor];
+  leftAnchor2 = [viewCopy leftAnchor];
+  v17 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:10.0];
+  [array addObject:v17];
 
-  v18 = [v11 heightAnchor];
-  v19 = [v18 constraintEqualToConstant:100.0];
-  [v5 addObject:v19];
+  heightAnchor = [layoutItem heightAnchor];
+  v19 = [heightAnchor constraintEqualToConstant:100.0];
+  [array addObject:v19];
 
-  [v4 _ui_addSubLayoutItem:v11];
-  [v118 addObject:v6];
+  [viewCopy _ui_addSubLayoutItem:layoutItem];
+  [array2 addObject:v6];
 
   v20 = [[STUIStatusBarRegion alloc] initWithIdentifier:@"top-right"];
   v21 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
@@ -85,24 +85,24 @@
   v24 = [MEMORY[0x277CBEB98] setWithObject:@"top-center"];
   [(STUIStatusBarRegion *)v20 setDependentRegionIdentifiers:v24];
 
-  v25 = [(STUIStatusBarRegion *)v20 layoutItem];
-  v26 = [v25 topAnchor];
-  v27 = [v4 topAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
-  [v5 addObject:v28];
+  layoutItem2 = [(STUIStatusBarRegion *)v20 layoutItem];
+  topAnchor3 = [layoutItem2 topAnchor];
+  topAnchor4 = [viewCopy topAnchor];
+  v28 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
+  [array addObject:v28];
 
-  v29 = [v25 rightAnchor];
-  v30 = [v4 rightAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30 constant:-10.0];
-  [v5 addObject:v31];
+  rightAnchor = [layoutItem2 rightAnchor];
+  rightAnchor2 = [viewCopy rightAnchor];
+  v31 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-10.0];
+  [array addObject:v31];
 
-  v119 = v25;
-  v32 = [v25 heightAnchor];
-  v33 = [v32 constraintEqualToConstant:100.0];
-  [v5 addObject:v33];
+  v119 = layoutItem2;
+  heightAnchor2 = [layoutItem2 heightAnchor];
+  v33 = [heightAnchor2 constraintEqualToConstant:100.0];
+  [array addObject:v33];
 
-  [v4 _ui_addSubLayoutItem:v25];
-  [v118 addObject:v20];
+  [viewCopy _ui_addSubLayoutItem:layoutItem2];
+  [array2 addObject:v20];
 
   v34 = [[STUIStatusBarRegion alloc] initWithIdentifier:@"top-center"];
   v35 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
@@ -116,65 +116,65 @@
   v38 = [MEMORY[0x277CBEB98] setWithObjects:{@"top-left", @"top-right", 0}];
   [(STUIStatusBarRegion *)v34 setDependentRegionIdentifiers:v38];
 
-  v39 = [(STUIStatusBarRegion *)v34 layoutItem];
-  v40 = [v39 topAnchor];
-  v41 = [v4 topAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41];
-  [v5 addObject:v42];
+  layoutItem3 = [(STUIStatusBarRegion *)v34 layoutItem];
+  topAnchor5 = [layoutItem3 topAnchor];
+  topAnchor6 = [viewCopy topAnchor];
+  v42 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
+  [array addObject:v42];
 
-  v43 = [(STUIStatusBarRegion *)v34 layoutItem];
-  v44 = [v43 centerXAnchor];
-  v45 = [v4 centerXAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45];
-  [v5 addObject:v46];
+  layoutItem4 = [(STUIStatusBarRegion *)v34 layoutItem];
+  centerXAnchor = [layoutItem4 centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v46 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v46];
 
-  v47 = [(STUIStatusBarRegion *)v34 layoutItem];
-  v48 = [v47 leftAnchor];
-  v49 = [v11 rightAnchor];
-  v50 = [v48 constraintGreaterThanOrEqualToAnchor:v49 constant:10.0];
-  [v5 addObject:v50];
+  layoutItem5 = [(STUIStatusBarRegion *)v34 layoutItem];
+  leftAnchor3 = [layoutItem5 leftAnchor];
+  rightAnchor3 = [layoutItem rightAnchor];
+  v50 = [leftAnchor3 constraintGreaterThanOrEqualToAnchor:rightAnchor3 constant:10.0];
+  [array addObject:v50];
 
-  v51 = [(STUIStatusBarRegion *)v34 layoutItem];
-  v52 = [v51 rightAnchor];
-  v53 = [v25 leftAnchor];
-  v54 = [v52 constraintLessThanOrEqualToAnchor:v53 constant:-10.0];
-  [v5 addObject:v54];
+  layoutItem6 = [(STUIStatusBarRegion *)v34 layoutItem];
+  rightAnchor4 = [layoutItem6 rightAnchor];
+  leftAnchor4 = [layoutItem2 leftAnchor];
+  v54 = [rightAnchor4 constraintLessThanOrEqualToAnchor:leftAnchor4 constant:-10.0];
+  [array addObject:v54];
 
-  v55 = [(STUIStatusBarRegion *)v34 layoutItem];
-  v56 = [v55 heightAnchor];
-  v57 = [v56 constraintEqualToConstant:100.0];
-  [v5 addObject:v57];
+  layoutItem7 = [(STUIStatusBarRegion *)v34 layoutItem];
+  heightAnchor3 = [layoutItem7 heightAnchor];
+  v57 = [heightAnchor3 constraintEqualToConstant:100.0];
+  [array addObject:v57];
 
-  v58 = [(STUIStatusBarRegion *)v34 layoutItem];
-  v59 = [v58 leftAnchor];
-  v60 = [v11 rightAnchor];
-  v61 = [v59 constraintEqualToAnchor:v60 constant:10.0];
+  layoutItem8 = [(STUIStatusBarRegion *)v34 layoutItem];
+  leftAnchor5 = [layoutItem8 leftAnchor];
+  rightAnchor5 = [layoutItem rightAnchor];
+  v61 = [leftAnchor5 constraintEqualToAnchor:rightAnchor5 constant:10.0];
 
   LODWORD(v62) = 1132068864;
   [v61 setPriority:v62];
-  [v5 addObject:v61];
+  [array addObject:v61];
 
-  v63 = [(STUIStatusBarRegion *)v34 layoutItem];
-  v64 = [v63 rightAnchor];
-  v65 = [v25 leftAnchor];
-  v66 = [v64 constraintEqualToAnchor:v65 constant:-10.0];
+  layoutItem9 = [(STUIStatusBarRegion *)v34 layoutItem];
+  rightAnchor6 = [layoutItem9 rightAnchor];
+  leftAnchor6 = [layoutItem2 leftAnchor];
+  v66 = [rightAnchor6 constraintEqualToAnchor:leftAnchor6 constant:-10.0];
 
   LODWORD(v67) = 1132068864;
   [v66 setPriority:v67];
-  [v5 addObject:v66];
+  [array addObject:v66];
 
-  v68 = [(STUIStatusBarRegion *)v34 layoutItem];
-  v69 = [v68 widthAnchor];
-  v70 = [v69 constraintEqualToConstant:50.0];
+  layoutItem10 = [(STUIStatusBarRegion *)v34 layoutItem];
+  widthAnchor = [layoutItem10 widthAnchor];
+  v70 = [widthAnchor constraintEqualToConstant:50.0];
 
   LODWORD(v71) = 1132068864;
   [v70 setPriority:v71];
-  [v5 addObject:v70];
+  [array addObject:v70];
 
-  v72 = [(STUIStatusBarRegion *)v34 layoutItem];
-  [v4 _ui_addSubLayoutItem:v72];
+  layoutItem11 = [(STUIStatusBarRegion *)v34 layoutItem];
+  [viewCopy _ui_addSubLayoutItem:layoutItem11];
 
-  [v118 addObject:v34];
+  [array2 addObject:v34];
   v73 = [[STUIStatusBarRegion alloc] initWithIdentifier:@"bottom-left"];
   v74 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
   v75 = objc_alloc_init(STUIStatusBarRegionAxisStackingLayout);
@@ -189,29 +189,29 @@
   v77 = [MEMORY[0x277CBEB98] setWithObject:@"bottom-right"];
   [(STUIStatusBarRegion *)v73 setDependentRegionIdentifiers:v77];
 
-  v78 = [(STUIStatusBarRegion *)v73 layoutItem];
-  v79 = [v78 topAnchor];
-  v80 = [v11 bottomAnchor];
-  v81 = [v79 constraintEqualToAnchor:v80];
-  [v5 addObject:v81];
+  layoutItem12 = [(STUIStatusBarRegion *)v73 layoutItem];
+  topAnchor7 = [layoutItem12 topAnchor];
+  bottomAnchor = [layoutItem bottomAnchor];
+  v81 = [topAnchor7 constraintEqualToAnchor:bottomAnchor];
+  [array addObject:v81];
 
-  v82 = [(STUIStatusBarRegion *)v73 layoutItem];
-  v83 = [v82 leftAnchor];
-  v84 = [v4 leftAnchor];
-  v85 = [v83 constraintEqualToAnchor:v84 constant:10.0];
-  [v5 addObject:v85];
+  layoutItem13 = [(STUIStatusBarRegion *)v73 layoutItem];
+  leftAnchor7 = [layoutItem13 leftAnchor];
+  leftAnchor8 = [viewCopy leftAnchor];
+  v85 = [leftAnchor7 constraintEqualToAnchor:leftAnchor8 constant:10.0];
+  [array addObject:v85];
 
-  v86 = [(STUIStatusBarRegion *)v73 layoutItem];
-  v87 = [v86 heightAnchor];
-  v88 = [v87 constraintEqualToConstant:100.0];
-  [v5 addObject:v88];
+  layoutItem14 = [(STUIStatusBarRegion *)v73 layoutItem];
+  heightAnchor4 = [layoutItem14 heightAnchor];
+  v88 = [heightAnchor4 constraintEqualToConstant:100.0];
+  [array addObject:v88];
 
-  v89 = [(STUIStatusBarRegion *)v73 layoutItem];
-  [v4 _ui_addSubLayoutItem:v89];
+  layoutItem15 = [(STUIStatusBarRegion *)v73 layoutItem];
+  [viewCopy _ui_addSubLayoutItem:layoutItem15];
 
-  v90 = [(STUIStatusBarRegion *)v73 layoutItem];
+  layoutItem16 = [(STUIStatusBarRegion *)v73 layoutItem];
 
-  [v118 addObject:v73];
+  [array2 addObject:v73];
   v91 = [[STUIStatusBarRegion alloc] initWithIdentifier:@"bottom-right"];
   v92 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
   v93 = objc_alloc_init(STUIStatusBarRegionAxisStackingLayout);
@@ -226,74 +226,74 @@
   v95 = [MEMORY[0x277CBEB98] setWithObject:@"bottom-left"];
   [(STUIStatusBarRegion *)v91 setDependentRegionIdentifiers:v95];
 
-  v96 = [(STUIStatusBarRegion *)v91 layoutItem];
-  v97 = [v96 topAnchor];
-  v98 = [v90 topAnchor];
-  v99 = [v97 constraintEqualToAnchor:v98];
-  [v5 addObject:v99];
+  layoutItem17 = [(STUIStatusBarRegion *)v91 layoutItem];
+  topAnchor8 = [layoutItem17 topAnchor];
+  topAnchor9 = [layoutItem16 topAnchor];
+  v99 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
+  [array addObject:v99];
 
-  v100 = [(STUIStatusBarRegion *)v91 layoutItem];
-  v101 = [v100 rightAnchor];
-  v102 = [v4 rightAnchor];
-  v103 = [v101 constraintEqualToAnchor:v102 constant:-10.0];
-  [v5 addObject:v103];
+  layoutItem18 = [(STUIStatusBarRegion *)v91 layoutItem];
+  rightAnchor7 = [layoutItem18 rightAnchor];
+  rightAnchor8 = [viewCopy rightAnchor];
+  v103 = [rightAnchor7 constraintEqualToAnchor:rightAnchor8 constant:-10.0];
+  [array addObject:v103];
 
-  v104 = [(STUIStatusBarRegion *)v91 layoutItem];
-  v105 = [v104 heightAnchor];
-  v106 = [v105 constraintEqualToConstant:100.0];
-  [v5 addObject:v106];
+  layoutItem19 = [(STUIStatusBarRegion *)v91 layoutItem];
+  heightAnchor5 = [layoutItem19 heightAnchor];
+  v106 = [heightAnchor5 constraintEqualToConstant:100.0];
+  [array addObject:v106];
 
-  v107 = [(STUIStatusBarRegion *)v91 layoutItem];
-  v108 = [v107 leftAnchor];
-  v109 = [v90 rightAnchor];
-  v110 = [v108 constraintEqualToAnchor:v109 constant:10.0];
-  [v5 addObject:v110];
+  layoutItem20 = [(STUIStatusBarRegion *)v91 layoutItem];
+  leftAnchor9 = [layoutItem20 leftAnchor];
+  rightAnchor9 = [layoutItem16 rightAnchor];
+  v110 = [leftAnchor9 constraintEqualToAnchor:rightAnchor9 constant:10.0];
+  [array addObject:v110];
 
-  v111 = [(STUIStatusBarRegion *)v91 layoutItem];
-  v112 = [v111 widthAnchor];
-  v113 = [v90 widthAnchor];
-  v114 = [v112 constraintEqualToAnchor:v113];
+  layoutItem21 = [(STUIStatusBarRegion *)v91 layoutItem];
+  widthAnchor2 = [layoutItem21 widthAnchor];
+  widthAnchor3 = [layoutItem16 widthAnchor];
+  v114 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
 
   LODWORD(v115) = 1132068864;
   [v114 setPriority:v115];
-  [v5 addObject:v114];
+  [array addObject:v114];
 
-  v116 = [(STUIStatusBarRegion *)v91 layoutItem];
-  [v4 _ui_addSubLayoutItem:v116];
+  layoutItem22 = [(STUIStatusBarRegion *)v91 layoutItem];
+  [viewCopy _ui_addSubLayoutItem:layoutItem22];
 
-  [v118 addObject:v91];
-  [MEMORY[0x277CCAAD0] activateConstraints:v5];
+  [array2 addObject:v91];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 
-  return v118;
+  return array2;
 }
 
-- (void)setOrderedDisplayItemPlacements:(id)a3 inRegionWithIdentifier:(id)a4
+- (void)setOrderedDisplayItemPlacements:(id)placements inRegionWithIdentifier:(id)identifier
 {
-  [(NSMutableDictionary *)self->_orderedDisplayItemPlacements setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)self->_orderedDisplayItemPlacements setObject:placements forKeyedSubscript:identifier];
   WeakRetained = objc_loadWeakRetained(&self->_statusBar);
   [WeakRetained resetVisualProvider];
 }
 
-- (id)styleAttributesForStyle:(int64_t)a3
+- (id)styleAttributesForStyle:(int64_t)style
 {
-  v4 = [(STUIStatusBarVisualProvider_Test *)self statusBar];
-  v5 = [STUIStatusBarStyleAttributes styleAttributesForStatusBar:v4 style:a3];
+  statusBar = [(STUIStatusBarVisualProvider_Test *)self statusBar];
+  v5 = [STUIStatusBarStyleAttributes styleAttributesForStatusBar:statusBar style:style];
 
   v6 = [MEMORY[0x277D74300] boldSystemFontOfSize:16.0];
   [v5 setFont:v6];
 
   if ([v5 style] == 1)
   {
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [v5 setTextColor:v7];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v5 setTextColor:whiteColor];
 
     [MEMORY[0x277D75348] whiteColor];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] blackColor];
-    [v5 setTextColor:v8];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v5 setTextColor:blackColor];
 
     [MEMORY[0x277D75348] blackColor];
   }
@@ -303,24 +303,24 @@
   return v5;
 }
 
-- (void)setOverriddenStyleAttributes:(id)a3 forDisplayItemWithIdentifier:(id)a4
+- (void)setOverriddenStyleAttributes:(id)attributes forDisplayItemWithIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  attributesCopy = attributes;
+  identifierCopy = identifier;
   overriddenStyleAttributes = self->_overriddenStyleAttributes;
   if (!overriddenStyleAttributes)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v9 = self->_overriddenStyleAttributes;
-    self->_overriddenStyleAttributes = v8;
+    self->_overriddenStyleAttributes = dictionary;
 
     overriddenStyleAttributes = self->_overriddenStyleAttributes;
   }
 
-  [(NSMutableDictionary *)overriddenStyleAttributes setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)overriddenStyleAttributes setObject:attributesCopy forKeyedSubscript:identifierCopy];
 }
 
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation
 {
   v3 = *MEMORY[0x277D77260];
   v4 = 200.0;

@@ -8,8 +8,8 @@
 
 - (id)urlString
 {
-  v2 = [(EscrowGenericRequest *)self baseURL];
-  v3 = [v2 stringByAppendingString:@"/escrowproxy/api/get_club_cert"];
+  baseURL = [(EscrowGenericRequest *)self baseURL];
+  v3 = [baseURL stringByAppendingString:@"/escrowproxy/api/get_club_cert"];
 
   return v3;
 }
@@ -18,33 +18,33 @@
 {
   v6.receiver = self;
   v6.super_class = EscrowCertificateRequest;
-  v3 = [(EscrowGenericRequest *)&v6 bodyDictionary];
-  v4 = [(EscrowCertificateRequest *)self requestDictionary];
-  [v3 addEntriesFromDictionary:v4];
+  bodyDictionary = [(EscrowGenericRequest *)&v6 bodyDictionary];
+  requestDictionary = [(EscrowCertificateRequest *)self requestDictionary];
+  [bodyDictionary addEntriesFromDictionary:requestDictionary];
 
-  return v3;
+  return bodyDictionary;
 }
 
 - (NSDictionary)requestDictionary
 {
   v3 = [[NSMutableDictionary alloc] initWithCapacity:3];
-  v4 = [(EscrowGenericRequest *)self recordLabel];
-  [v3 setObject:v4 forKeyedSubscript:@"label"];
+  recordLabel = [(EscrowGenericRequest *)self recordLabel];
+  [v3 setObject:recordLabel forKeyedSubscript:@"label"];
 
-  v5 = [(EscrowGenericRequest *)self baseRootCertVersions];
+  baseRootCertVersions = [(EscrowGenericRequest *)self baseRootCertVersions];
 
-  if (v5)
+  if (baseRootCertVersions)
   {
-    v6 = [(EscrowGenericRequest *)self baseRootCertVersions];
-    [v3 setObject:v6 forKeyedSubscript:@"baseRootCertVersions"];
+    baseRootCertVersions2 = [(EscrowGenericRequest *)self baseRootCertVersions];
+    [v3 setObject:baseRootCertVersions2 forKeyedSubscript:@"baseRootCertVersions"];
   }
 
-  v7 = [(EscrowGenericRequest *)self trustedRootCertVersions];
+  trustedRootCertVersions = [(EscrowGenericRequest *)self trustedRootCertVersions];
 
-  if (v7)
+  if (trustedRootCertVersions)
   {
-    v8 = [(EscrowGenericRequest *)self trustedRootCertVersions];
-    [v3 setObject:v8 forKeyedSubscript:@"trustedRootCertVersions"];
+    trustedRootCertVersions2 = [(EscrowGenericRequest *)self trustedRootCertVersions];
+    [v3 setObject:trustedRootCertVersions2 forKeyedSubscript:@"trustedRootCertVersions"];
   }
 
   return v3;

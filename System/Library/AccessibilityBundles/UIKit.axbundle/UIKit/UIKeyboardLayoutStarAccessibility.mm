@@ -1,19 +1,19 @@
 @interface UIKeyboardLayoutStarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityFingerIsDown;
 - (BOOL)_accessibilityHasBiasEscapeButton;
 - (BOOL)accessibilityElementsHidden;
 - (BOOL)accessibilityPerformEscape;
-- (BOOL)canProduceString:(id)a3;
-- (UIKeyboardLayoutStarAccessibility)initWithFrame:(CGRect)a3;
+- (BOOL)canProduceString:(id)string;
+- (UIKeyboardLayoutStarAccessibility)initWithFrame:(CGRect)frame;
 - (double)_axClearReturnKeyLabel;
-- (double)_axGetSortingNumberForEmojiCell:(uint64_t)a1;
+- (double)_axGetSortingNumberForEmojiCell:(uint64_t)cell;
 - (id)_accessibilityBiasEscapeButton;
 - (id)_accessibilityGetKeyboardRowsByRowNumber;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityInternalData;
-- (id)_accessibilityKeyElementForKey:(id)a3;
-- (id)_accessibilityKeyboardKeyForString:(id)a3;
+- (id)_accessibilityKeyElementForKey:(id)key;
+- (id)_accessibilityKeyboardKeyForString:(id)string;
 - (id)_accessibilityKeys;
 - (id)_accessibilityScannerGroupElements;
 - (id)_accessibilitySortedUnstoredKeys;
@@ -22,53 +22,53 @@
 - (id)_accessibilityVisibleKeysByRow;
 - (id)_accessibiltyAvailableKeyplanes;
 - (id)_axKBModalView;
-- (id)_rowNumberOverrideForSplitEmojiKey:(uint64_t)a1;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
+- (id)_rowNumberOverrideForSplitEmojiKey:(uint64_t)key;
+- (id)accessibilityElementAtIndex:(int64_t)index;
 - (id)atvGetKeyboardRowsByNumber;
-- (id)atvGetOrderedRowsForRows:(id)a3 sortedRows:(id)a4 numRows:(int64_t)a5;
+- (id)atvGetOrderedRowsForRows:(id)rows sortedRows:(id)sortedRows numRows:(int64_t)numRows;
 - (id)automationElements;
-- (id)focusItemsInRect:(CGRect)a3;
+- (id)focusItemsInRect:(CGRect)rect;
 - (id)iOSGetKeyboardRowsByNumber;
-- (id)iOSGetOrderedRowsForRows:(id)a3 sortedRows:(id)a4 numRows:(int64_t)a5;
+- (id)iOSGetOrderedRowsForRows:(id)rows sortedRows:(id)sortedRows numRows:(int64_t)numRows;
 - (int64_t)accessibilityElementCount;
-- (int64_t)indexOfAccessibilityElement:(id)a3;
+- (int64_t)indexOfAccessibilityElement:(id)element;
 - (uint64_t)_accessibilityBiasEscapeButtonIsFirst;
-- (uint64_t)_accessibilityCreateElementForKey:(void *)a1;
+- (uint64_t)_accessibilityCreateElementForKey:(void *)key;
 - (uint64_t)_axIsWaitingForEmojiPopupAnnouncement;
 - (uint64_t)_axSetIsWaitingForEmojiPopupAnnouncement:(uint64_t)result;
-- (uint64_t)_isCapitalLetterKeyplane:(uint64_t)a1;
-- (uint64_t)_isSmallLetterKeyplane:(uint64_t)a1;
-- (void)_accessibilityChangeToKeyplane:(id)a3;
+- (uint64_t)_isCapitalLetterKeyplane:(uint64_t)keyplane;
+- (uint64_t)_isSmallLetterKeyplane:(uint64_t)keyplane;
+- (void)_accessibilityChangeToKeyplane:(id)keyplane;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityResetInternalData;
-- (void)_accessibilitySetStickyPopupKeys:(uint64_t)a1;
+- (void)_accessibilitySetStickyPopupKeys:(uint64_t)keys;
 - (void)_axHandleEmojiPopupLayoutChangeAfterAnnouncement;
 - (void)_axRegisterForAccessibilityContinuousPathSettingsNotifications;
-- (void)_transitionToContinuousPathState:(int64_t)a3 forTouchInfo:(id)a4;
-- (void)addContinuousPathPoint:(CGPoint)a3 withTimestamp:(double)a4;
-- (void)continueFromInternationalActionForTouchUp:(id)a3 withActions:(unint64_t)a4 timestamp:(double)a5 interval:(double)a6 didLongPress:(BOOL)a7 prevActions:(unint64_t)a8 executionContext:(id)a9;
+- (void)_transitionToContinuousPathState:(int64_t)state forTouchInfo:(id)info;
+- (void)addContinuousPathPoint:(CGPoint)point withTimestamp:(double)timestamp;
+- (void)continueFromInternationalActionForTouchUp:(id)up withActions:(unint64_t)actions timestamp:(double)timestamp interval:(double)interval didLongPress:(BOOL)press prevActions:(unint64_t)prevActions executionContext:(id)context;
 - (void)dealloc;
 - (void)didBeginContinuousPath;
 - (void)didMoveToWindow;
-- (void)setActiveKey:(id)a3;
-- (void)setKeyplaneName:(id)a3;
-- (void)setLabel:(id)a3 forKey:(id)a4;
-- (void)setReturnKeyEnabled:(BOOL)a3 withDisplayName:(id)a4 withType:(int)a5;
-- (void)setState:(int)a3 forKey:(id)a4;
-- (void)showPopupVariantsForKey:(id)a3;
-- (void)showPopupView:(int64_t)a3 withKey:(id)a4 popupInfo:(id)a5 force:(BOOL)a6;
-- (void)touchDown:(id)a3 executionContext:(id)a4;
-- (void)touchDragged:(id)a3 executionContext:(id)a4;
-- (void)touchUp:(id)a3 executionContext:(id)a4;
+- (void)setActiveKey:(id)key;
+- (void)setKeyplaneName:(id)name;
+- (void)setLabel:(id)label forKey:(id)key;
+- (void)setReturnKeyEnabled:(BOOL)enabled withDisplayName:(id)name withType:(int)type;
+- (void)setState:(int)state forKey:(id)key;
+- (void)showPopupVariantsForKey:(id)key;
+- (void)showPopupView:(int64_t)view withKey:(id)key popupInfo:(id)info force:(BOOL)force;
+- (void)touchDown:(id)down executionContext:(id)context;
+- (void)touchDragged:(id)dragged executionContext:(id)context;
+- (void)touchUp:(id)up executionContext:(id)context;
 @end
 
 @implementation UIKeyboardLayoutStarAccessibility
 
 - (id)_accessibilityStickyPopupKeys
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &__UIKeyboardLayoutStarAccessibility___accessibilityStickyPopupKeys);
+    v2 = objc_getAssociatedObject(self, &__UIKeyboardLayoutStarAccessibility___accessibilityStickyPopupKeys);
   }
 
   else
@@ -79,12 +79,12 @@
   return v2;
 }
 
-- (void)_accessibilitySetStickyPopupKeys:(uint64_t)a1
+- (void)_accessibilitySetStickyPopupKeys:(uint64_t)keys
 {
-  v3 = a1;
+  keysCopy = keys;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (keysCopy)
   {
     __UIAccessibilitySetAssociatedObject();
   }
@@ -92,14 +92,14 @@
   objc_storeStrong(&location, 0);
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v17 = location;
   v16 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v12 = @"UIKeyboardLayoutStar";
   [location[0] validateClass:? isKindOfClass:?];
   v7 = @"UIKeyboardLayout";
@@ -154,14 +154,14 @@
   objc_storeStrong(v17, v16);
 }
 
-- (UIKeyboardLayoutStarAccessibility)initWithFrame:(CGRect)a3
+- (UIKeyboardLayoutStarAccessibility)initWithFrame:(CGRect)frame
 {
-  v8 = a3;
+  frameCopy = frame;
   v6[1] = a2;
   v7 = 0;
   v5.receiver = self;
   v5.super_class = UIKeyboardLayoutStarAccessibility;
-  v7 = [(UIKeyboardLayoutStarAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(UIKeyboardLayoutStarAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6[0] = MEMORY[0x29EDC9748](v7);
   [(UIKeyboardLayoutStarAccessibility *)v7 _axRegisterForAccessibilityContinuousPathSettingsNotifications];
   v4 = MEMORY[0x29EDC9748](v6[0]);
@@ -170,19 +170,19 @@
   return v4;
 }
 
-- (void)addContinuousPathPoint:(CGPoint)a3 withTimestamp:(double)a4
+- (void)addContinuousPathPoint:(CGPoint)point withTimestamp:(double)timestamp
 {
   v46 = *MEMORY[0x29EDCA608];
-  point = a3;
-  v42 = self;
+  point = point;
+  selfCopy = self;
   v41 = a2;
-  v40 = a4;
+  timestampCopy = timestamp;
   v39.receiver = self;
   v39.super_class = UIKeyboardLayoutStarAccessibility;
-  [(UIKeyboardLayoutStarAccessibility *)&v39 addContinuousPathPoint:a3.x withTimestamp:a3.y, a4];
+  [(UIKeyboardLayoutStarAccessibility *)&v39 addContinuousPathPoint:point.x withTimestamp:point.y, timestamp];
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    location = [(UIKeyboardLayoutStarAccessibility *)v42 _accessibilityVisibleKeysByRow];
+    location = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityVisibleKeysByRow];
     v37 = 0;
     memset(__b, 0, sizeof(__b));
     obj = MEMORY[0x29EDC9748](location);
@@ -202,29 +202,29 @@
 
         v36 = *(__b[1] + 8 * v24);
         memset(&recta, 0, sizeof(recta));
-        v21 = [v36 firstObject];
-        [v21 frame];
+        firstObject = [v36 firstObject];
+        [firstObject frame];
         r1.origin.x = v4;
         r1.origin.y = v5;
         r1.size.width = v6;
         r1.size.height = v7;
-        v20 = [v36 lastObject];
-        [v20 frame];
+        lastObject = [v36 lastObject];
+        [lastObject frame];
         r2.origin.x = v8;
         r2.origin.y = v9;
         r2.size.width = v10;
         r2.size.height = v11;
         recta = CGRectUnion(r1, r2);
-        MEMORY[0x29EDC9740](v20);
-        MEMORY[0x29EDC9740](v21);
+        MEMORY[0x29EDC9740](lastObject);
+        MEMORY[0x29EDC9740](firstObject);
         if (CGRectContainsPoint(recta, point))
         {
           if (v37 != addContinuousPathPoint_withTimestamp__CurrentRow)
           {
             addContinuousPathPoint_withTimestamp__CurrentRow = v37;
-            v19 = [MEMORY[0x29EDBDDF8] sharedManager];
-            [v19 playHapticFeedbackForType:15];
-            MEMORY[0x29EDC9740](v19);
+            mEMORY[0x29EDBDDF8] = [MEMORY[0x29EDBDDF8] sharedManager];
+            [mEMORY[0x29EDBDDF8] playHapticFeedbackForType:15];
+            MEMORY[0x29EDC9740](mEMORY[0x29EDBDDF8]);
             v31 = 2;
             goto LABEL_23;
           }
@@ -267,9 +267,9 @@
             }
 
             addContinuousPathPoint_withTimestamp__CurrentKey = v30;
-            v12 = [MEMORY[0x29EDBDDF8] sharedManager];
-            [v12 playHapticFeedbackForType:14];
-            MEMORY[0x29EDC9740](v12);
+            mEMORY[0x29EDBDDF8]2 = [MEMORY[0x29EDBDDF8] sharedManager];
+            [mEMORY[0x29EDBDDF8]2 playHapticFeedbackForType:14];
+            MEMORY[0x29EDC9740](mEMORY[0x29EDBDDF8]2);
             v31 = 4;
           }
 
@@ -305,30 +305,30 @@ LABEL_23:
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = UIKeyboardLayoutStarAccessibility;
   [(UIKeyboardLayoutStarAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
-  v3 = [(UIKeyboardLayoutStarAccessibility *)v8 safeValueForKey:@"_gestureKeyboardIntroduction"];
+  v3 = [(UIKeyboardLayoutStarAccessibility *)selfCopy safeValueForKey:@"_gestureKeyboardIntroduction"];
   [v3 _accessibilityLoadAccessibilityInformation];
   MEMORY[0x29EDC9740](v3);
   v5 = accessibilityLocalizedString(@"keyboard.bias.escape.label");
-  v4 = [(UIKeyboardLayoutStarAccessibility *)v8 _accessibilityBiasEscapeButton];
-  [v4 setAccessibilityLabel:v5];
-  MEMORY[0x29EDC9740](v4);
+  _accessibilityBiasEscapeButton = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityBiasEscapeButton];
+  [_accessibilityBiasEscapeButton setAccessibilityLabel:v5];
+  MEMORY[0x29EDC9740](_accessibilityBiasEscapeButton);
   *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  [(UIKeyboardLayoutStarAccessibility *)v8 _axRegisterForAccessibilityContinuousPathSettingsNotifications];
+  [(UIKeyboardLayoutStarAccessibility *)selfCopy _axRegisterForAccessibilityContinuousPathSettingsNotifications];
 }
 
 - (id)_accessibilityBiasEscapeButton
 {
-  v7 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v6 = 0;
     objc_opt_class();
-    v3 = [v7 safeValueForKey:@"_biasEscapeButton"];
+    v3 = [selfCopy safeValueForKey:@"_biasEscapeButton"];
     v5 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v3);
     v4 = MEMORY[0x29EDC9748](v5);
@@ -348,24 +348,24 @@ LABEL_23:
 
 - (void)didMoveToWindow
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(UIKeyboardLayoutStarAccessibility *)self _accessibilityLoadAccessibilityInformation];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = UIKeyboardLayoutStarAccessibility;
   [(UIKeyboardLayoutStarAccessibility *)&v2 didMoveToWindow];
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
   if (AXDeviceIsPad() & 1) != 0 && (UIKeyboardSupportsSplit())
   {
-    v22 = [MEMORY[0x29EDC7B08] isSplit];
+    isSplit = [MEMORY[0x29EDC7B08] isSplit];
     UIKeyboardSetSplit();
     notification = *MEMORY[0x29EDC7EA8];
-    if (v22)
+    if (isSplit)
     {
       v2 = @"keyboard.unsplit";
     }
@@ -384,60 +384,60 @@ LABEL_23:
 
   else
   {
-    v10 = [MEMORY[0x29EDC7AF8] activeKeyboard];
-    v11 = [v10 defaultTextInputTraits];
+    activeKeyboard = [MEMORY[0x29EDC7AF8] activeKeyboard];
+    defaultTextInputTraits = [activeKeyboard defaultTextInputTraits];
     v20 = 0;
     v18 = 0;
     v12 = 0;
-    if (([v11 isDevicePasscodeEntry] & 1) == 0)
+    if (([defaultTextInputTraits isDevicePasscodeEntry] & 1) == 0)
     {
-      v21 = [MEMORY[0x29EDC7AF8] activeKeyboard];
+      activeKeyboard2 = [MEMORY[0x29EDC7AF8] activeKeyboard];
       v20 = 1;
-      v19 = [v21 defaultTextInputTraits];
+      defaultTextInputTraits2 = [activeKeyboard2 defaultTextInputTraits];
       v18 = 1;
-      v12 = [v19 keyboardType] != 127;
+      v12 = [defaultTextInputTraits2 keyboardType] != 127;
     }
 
     if (v18)
     {
-      MEMORY[0x29EDC9740](v19);
+      MEMORY[0x29EDC9740](defaultTextInputTraits2);
     }
 
     if (v20)
     {
-      MEMORY[0x29EDC9740](v21);
+      MEMORY[0x29EDC9740](activeKeyboard2);
     }
 
-    MEMORY[0x29EDC9740](v11);
-    MEMORY[0x29EDC9740](v10);
+    MEMORY[0x29EDC9740](defaultTextInputTraits);
+    MEMORY[0x29EDC9740](activeKeyboard);
     if (!v12)
     {
       goto LABEL_20;
     }
 
-    v17 = 0;
+    resignFirstResponder = 0;
     if (AXUIKeyboardIsOOP())
     {
-      v9 = [MEMORY[0x29EDC7B08] activeInstance];
-      [v9 dismissKeyboard];
-      MEMORY[0x29EDC9740](v9);
-      v17 = 1;
+      activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
+      [activeInstance dismissKeyboard];
+      MEMORY[0x29EDC9740](activeInstance);
+      resignFirstResponder = 1;
     }
 
     else
     {
-      v17 = [*MEMORY[0x29EDC8008] resignFirstResponder];
-      if ((v17 & 1) == 0)
+      resignFirstResponder = [*MEMORY[0x29EDC8008] resignFirstResponder];
+      if ((resignFirstResponder & 1) == 0)
       {
-        v8 = [*MEMORY[0x29EDC8008] _accessibilityMainWindow];
-        v16 = [v8 firstResponder];
-        *&v3 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-        v17 = [v16 resignFirstResponder];
-        objc_storeStrong(&v16, 0);
+        _accessibilityMainWindow = [*MEMORY[0x29EDC8008] _accessibilityMainWindow];
+        firstResponder = [_accessibilityMainWindow firstResponder];
+        *&v3 = MEMORY[0x29EDC9740](_accessibilityMainWindow).n128_u64[0];
+        resignFirstResponder = [firstResponder resignFirstResponder];
+        objc_storeStrong(&firstResponder, 0);
       }
     }
 
-    if (v17)
+    if (resignFirstResponder)
     {
       v6 = MEMORY[0x29EDBD7E8];
       v7 = accessibilityLocalizedString(@"keyboard.hidden");
@@ -459,29 +459,29 @@ LABEL_20:
   return v25 & 1;
 }
 
-- (uint64_t)_accessibilityCreateElementForKey:(void *)a1
+- (uint64_t)_accessibilityCreateElementForKey:(void *)key
 {
-  v18 = a1;
+  keyCopy = key;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v18)
+  if (keyCopy)
   {
-    v3 = [location name];
+    name = [location name];
     v14 = 0;
     v4 = 1;
-    if (([v3 isEqualToString:@"Emoji-Category-Control-Key"] & 1) == 0)
+    if (([name isEqualToString:@"Emoji-Category-Control-Key"] & 1) == 0)
     {
-      v15 = [location name];
+      name2 = [location name];
       v14 = 1;
-      v4 = [v15 hasPrefix:@"Emoji-InputView-"];
+      v4 = [name2 hasPrefix:@"Emoji-InputView-"];
     }
 
     if (v14)
     {
-      MEMORY[0x29EDC9740](v15);
+      MEMORY[0x29EDC9740](name2);
     }
 
-    MEMORY[0x29EDC9740](v3);
+    MEMORY[0x29EDC9740](name);
     if (v4)
     {
       v7 = 0;
@@ -492,7 +492,7 @@ LABEL_20:
       v12 = __Block_byref_object_dispose__16;
       v13 = 0;
       v6[1] = &v7;
-      v5 = MEMORY[0x29EDC9748](v18);
+      v5 = MEMORY[0x29EDC9748](keyCopy);
       v6[0] = MEMORY[0x29EDC9748](location);
       AXPerformSafeBlock();
       v19 = MEMORY[0x29EDC9748](v8[5]);
@@ -505,7 +505,7 @@ LABEL_20:
 
     else
     {
-      v19 = [objc_allocWithZone(UIAccessibilityElementKBKey) initWithAccessibilityContainer:v18 key:location];
+      v19 = [objc_allocWithZone(UIAccessibilityElementKBKey) initWithAccessibilityContainer:keyCopy key:location];
       v16 = 1;
     }
   }
@@ -568,62 +568,62 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
   return v4 & 1;
 }
 
-- (void)touchDown:(id)a3 executionContext:(id)a4
+- (void)touchDown:(id)down executionContext:(id)context
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, down);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5.receiver = v8;
+  objc_storeStrong(&v6, context);
+  v5.receiver = selfCopy;
   v5.super_class = UIKeyboardLayoutStarAccessibility;
   [(UIKeyboardLayoutStarAccessibility *)&v5 touchDown:location[0] executionContext:v6];
-  [(UIKeyboardLayoutStarAccessibility *)v8 _accessibilitySetRetainedValue:*MEMORY[0x29EDB8F00] forKey:@"IsFingerDown"];
-  [(UIKeyboardLayoutStarAccessibility *)v8 _accessibilitySetIntegerValue:-1 forKey:@"AXSpokenVariant"];
+  [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilitySetRetainedValue:*MEMORY[0x29EDB8F00] forKey:@"IsFingerDown"];
+  [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilitySetIntegerValue:-1 forKey:@"AXSpokenVariant"];
   UIAccessibilityPostNotification(0xFA2u, &unk_2A238EA10);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)touchUp:(id)a3 executionContext:(id)a4
+- (void)touchUp:(id)up executionContext:(id)context
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, up);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5.receiver = v8;
+  objc_storeStrong(&v6, context);
+  v5.receiver = selfCopy;
   v5.super_class = UIKeyboardLayoutStarAccessibility;
   [(UIKeyboardLayoutStarAccessibility *)&v5 touchUp:location[0] executionContext:v6];
-  [(UIKeyboardLayoutStarAccessibility *)v8 _accessibilitySetRetainedValue:*MEMORY[0x29EDB8EF8] forKey:@"IsFingerDown"];
-  [(UIKeyboardLayoutStarAccessibility *)v8 _accessibilitySetBoolValue:0 forKey:@"IsActivatingAXKey"];
+  [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilitySetRetainedValue:*MEMORY[0x29EDB8EF8] forKey:@"IsFingerDown"];
+  [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"IsActivatingAXKey"];
   _UIAXSetLastKeyboardUsed();
   UIAccessibilityPostNotification(0xFA2u, &unk_2A238EA38);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)touchDragged:(id)a3 executionContext:(id)a4
+- (void)touchDragged:(id)dragged executionContext:(id)context
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dragged);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, context);
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v18 = 0;
-    v6 = [(UIKeyboardLayoutStarAccessibility *)v24 safeValueForKey:@"activeKey"];
+    v6 = [(UIKeyboardLayoutStarAccessibility *)selfCopy safeValueForKey:@"activeKey"];
     v17 = __UIAccessibilitySafeClass();
     MEMORY[0x29EDC9740](v6);
     v16 = MEMORY[0x29EDC9748](v17);
     objc_storeStrong(&v17, 0);
     v19 = v16;
-    v15 = [(UIKeyboardLayoutStarAccessibility *)v24 _accessibilityIntegerValueForKey:@"AXSpokenVariant"];
-    v14.receiver = v24;
+    v15 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityIntegerValueForKey:@"AXSpokenVariant"];
+    v14.receiver = selfCopy;
     v14.super_class = UIKeyboardLayoutStarAccessibility;
     [(UIKeyboardLayoutStarAccessibility *)&v14 touchDragged:location[0] executionContext:v22];
     v13 = [v19 safeIntForKey:@"displayTypeHint"];
@@ -635,20 +635,20 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
 
     else
     {
-      [(UIKeyboardLayoutStarAccessibility *)v24 _accessibilitySetIntegerValue:v13 forKey:@"AXSpokenVariant"];
+      [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilitySetIntegerValue:v13 forKey:@"AXSpokenVariant"];
       if (v13 < [v12 count])
       {
         v11 = [v12 objectAtIndex:v13];
-        v10 = [(UIKeyboardLayoutStarAccessibility *)v24 _accessibilityCreateElementForKey:v11];
-        v9 = [v10 accessibilityLabel];
-        argument = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v9];
+        v10 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityCreateElementForKey:v11];
+        accessibilityLabel = [v10 accessibilityLabel];
+        argument = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:accessibilityLabel];
         v4 = argument;
-        v5 = [v10 accessibilityLanguage];
+        accessibilityLanguage = [v10 accessibilityLanguage];
         [v4 setAttribute:? forKey:?];
-        MEMORY[0x29EDC9740](v5);
+        MEMORY[0x29EDC9740](accessibilityLanguage);
         UIAccessibilityPostNotification(*MEMORY[0x29EDC7478], argument);
         objc_storeStrong(&argument, 0);
-        objc_storeStrong(&v9, 0);
+        objc_storeStrong(&accessibilityLabel, 0);
         objc_storeStrong(&v10, 0);
         objc_storeStrong(&v11, 0);
       }
@@ -662,7 +662,7 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
 
   else
   {
-    v21.receiver = v24;
+    v21.receiver = selfCopy;
     v21.super_class = UIKeyboardLayoutStarAccessibility;
     [(UIKeyboardLayoutStarAccessibility *)&v21 touchDragged:location[0] executionContext:v22];
     v20 = 1;
@@ -674,7 +674,7 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
 
 - (uint64_t)_axIsWaitingForEmojiPopupAnnouncement
 {
-  if (a1)
+  if (self)
   {
     v2 = __UIAccessibilityGetAssociatedBool() & 1;
   }
@@ -699,46 +699,46 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
 
 - (void)_axHandleEmojiPopupLayoutChangeAfterAnnouncement
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   if (([(UIKeyboardLayoutStarAccessibility *)self _axIsWaitingForEmojiPopupAnnouncement]& 1) != 0)
   {
-    location[0] = [(UIKeyboardLayoutStarAccessibility *)v6 _accessibilityStickyPopupKeys];
+    location[0] = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityStickyPopupKeys];
     if ([location[0] count])
     {
       notification = *MEMORY[0x29EDC7ED8];
-      v4 = [location[0] firstObject];
-      UIAccessibilityPostNotification(notification, v4);
-      MEMORY[0x29EDC9740](v4);
+      firstObject = [location[0] firstObject];
+      UIAccessibilityPostNotification(notification, firstObject);
+      MEMORY[0x29EDC9740](firstObject);
     }
 
-    [UIKeyboardLayoutStarAccessibility _axSetIsWaitingForEmojiPopupAnnouncement:v6];
-    v2 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v2 removeObserver:v6 name:*MEMORY[0x29EDC7E98] object:?];
-    MEMORY[0x29EDC9740](v2);
+    [UIKeyboardLayoutStarAccessibility _axSetIsWaitingForEmojiPopupAnnouncement:selfCopy];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter removeObserver:selfCopy name:*MEMORY[0x29EDC7E98] object:?];
+    MEMORY[0x29EDC9740](defaultCenter);
     objc_storeStrong(location, 0);
   }
 }
 
-- (void)continueFromInternationalActionForTouchUp:(id)a3 withActions:(unint64_t)a4 timestamp:(double)a5 interval:(double)a6 didLongPress:(BOOL)a7 prevActions:(unint64_t)a8 executionContext:(id)a9
+- (void)continueFromInternationalActionForTouchUp:(id)up withActions:(unint64_t)actions timestamp:(double)timestamp interval:(double)interval didLongPress:(BOOL)press prevActions:(unint64_t)prevActions executionContext:(id)context
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v41 = a4;
-  v40 = a5;
-  v39 = a6;
-  v38 = a7;
-  v37 = a8;
+  objc_storeStrong(location, up);
+  actionsCopy = actions;
+  timestampCopy = timestamp;
+  intervalCopy = interval;
+  pressCopy = press;
+  prevActionsCopy = prevActions;
   v36 = 0;
-  objc_storeStrong(&v36, a9);
-  v35.receiver = v43;
+  objc_storeStrong(&v36, context);
+  v35.receiver = selfCopy;
   v35.super_class = UIKeyboardLayoutStarAccessibility;
-  [(UIKeyboardLayoutStarAccessibility *)&v35 continueFromInternationalActionForTouchUp:location[0] withActions:v41 timestamp:v38 interval:v37 didLongPress:v36 prevActions:v40 executionContext:v39];
+  [(UIKeyboardLayoutStarAccessibility *)&v35 continueFromInternationalActionForTouchUp:location[0] withActions:actionsCopy timestamp:pressCopy interval:prevActionsCopy didLongPress:v36 prevActions:timestampCopy executionContext:intervalCopy];
   v33 = 0;
   objc_opt_class();
-  v23 = [(UIKeyboardLayoutStarAccessibility *)v43 safeValueForKey:@"activeKey"];
+  v23 = [(UIKeyboardLayoutStarAccessibility *)selfCopy safeValueForKey:@"activeKey"];
   v32 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v23);
   v31 = MEMORY[0x29EDC9748](v32);
@@ -746,7 +746,7 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
   v34 = v31;
   if (v31 && [v34 variantType] == 10)
   {
-    v30 = [(UIKeyboardLayoutStarAccessibility *)v43 _accessibilityDescendantOfType:NSClassFromString(&cfstr_Uikeyboardemoj_11.isa)];
+    v30 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityDescendantOfType:NSClassFromString(&cfstr_Uikeyboardemoj_11.isa)];
     v28 = 0;
     objc_opt_class();
     v16 = [v30 safeValueForKey:@"_collectionView"];
@@ -758,19 +758,19 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
     v29 = [v26 cellForItemAtIndexPath:?];
     MEMORY[0x29EDC9740](v15);
     *&v9 = MEMORY[0x29EDC9740](v26).n128_u64[0];
-    v25 = [v29 _accessibilityVariantKeys];
-    [(UIKeyboardLayoutStarAccessibility *)v43 _accessibilitySetStickyPopupKeys:v25];
+    _accessibilityVariantKeys = [v29 _accessibilityVariantKeys];
+    [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilitySetStickyPopupKeys:_accessibilityVariantKeys];
     if (UIAccessibilityIsVoiceOverRunning())
     {
       notification = *MEMORY[0x29EDC7EA8];
       v13 = accessibilityLocalizedString(@"emoji.variants.alert");
       UIAccessibilityPostNotification(notification, v13);
       MEMORY[0x29EDC9740](v13);
-      [UIKeyboardLayoutStarAccessibility _axSetIsWaitingForEmojiPopupAnnouncement:v43];
-      v14 = [MEMORY[0x29EDBA068] defaultCenter];
-      [v14 addObserver:v43 selector:sel__axHandleEmojiPopupLayoutChangeAfterAnnouncement name:*MEMORY[0x29EDC7E98] object:?];
-      MEMORY[0x29EDC9740](v14);
-      v24 = MEMORY[0x29EDC9748](v43);
+      [UIKeyboardLayoutStarAccessibility _axSetIsWaitingForEmojiPopupAnnouncement:selfCopy];
+      defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+      [defaultCenter addObserver:selfCopy selector:sel__axHandleEmojiPopupLayoutChangeAfterAnnouncement name:*MEMORY[0x29EDC7E98] object:?];
+      MEMORY[0x29EDC9740](defaultCenter);
+      v24 = MEMORY[0x29EDC9748](selfCopy);
       AXPerformBlockOnMainThreadAfterDelay();
       objc_storeStrong(&v24, 0);
     }
@@ -778,12 +778,12 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
     else
     {
       v10 = *MEMORY[0x29EDC7ED8];
-      v11 = [v25 firstObject];
-      UIAccessibilityPostNotification(v10, v11);
-      MEMORY[0x29EDC9740](v11);
+      firstObject = [_accessibilityVariantKeys firstObject];
+      UIAccessibilityPostNotification(v10, firstObject);
+      MEMORY[0x29EDC9740](firstObject);
     }
 
-    objc_storeStrong(&v25, 0);
+    objc_storeStrong(&_accessibilityVariantKeys, 0);
     objc_storeStrong(&v29, 0);
     objc_storeStrong(&v30, 0);
   }
@@ -793,32 +793,32 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
   objc_storeStrong(location, 0);
 }
 
-- (void)setActiveKey:(id)a3
+- (void)setActiveKey:(id)key
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6.receiver = v8;
+  objc_storeStrong(location, key);
+  v6.receiver = selfCopy;
   v6.super_class = UIKeyboardLayoutStarAccessibility;
   [(UIKeyboardLayoutStarAccessibility *)&v6 setActiveKey:location[0]];
   v4 = 0;
   v3 = 0;
   if (!location[0])
   {
-    v5 = [(UIKeyboardLayoutStarAccessibility *)v8 _accessibilityStickyPopupKeys];
+    _accessibilityStickyPopupKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityStickyPopupKeys];
     v4 = 1;
-    v3 = v5 != 0;
+    v3 = _accessibilityStickyPopupKeys != 0;
   }
 
   if (v4)
   {
-    MEMORY[0x29EDC9740](v5);
+    MEMORY[0x29EDC9740](_accessibilityStickyPopupKeys);
   }
 
   if (v3)
   {
-    [(UIKeyboardLayoutStarAccessibility *)v8 _accessibilitySetStickyPopupKeys:?];
+    [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilitySetStickyPopupKeys:?];
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   }
 
@@ -827,14 +827,14 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
 
 - (id)_accessibilityInternalData
 {
-  v4 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v3 = [v4 _accessibilityValueForKey:@"AXInternalData"];
+    v3 = [selfCopy _accessibilityValueForKey:@"AXInternalData"];
     if (!v3)
     {
       v3 = [objc_allocWithZone(MEMORY[0x29EDB8E00]) init];
-      [v4 _accessibilitySetRetainedValue:v3 forKey:{@"AXInternalData", MEMORY[0x29EDC9740](0).n128_f64[0]}];
+      [selfCopy _accessibilitySetRetainedValue:v3 forKey:{@"AXInternalData", MEMORY[0x29EDC9740](0).n128_f64[0]}];
     }
 
     v5 = MEMORY[0x29EDC9748](v3);
@@ -854,10 +854,10 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
 - (void)_accessibilityResetInternalData
 {
   v15 = *MEMORY[0x29EDCA608];
-  v13 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    location = [(UIKeyboardLayoutStarAccessibility *)v13 _accessibilityInternalData];
+    location = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityInternalData];
     memset(__b, 0, sizeof(__b));
     obj = MEMORY[0x29EDC9748](location);
     v9 = [obj countByEnumeratingWithState:__b objects:v14 count:16];
@@ -892,20 +892,20 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
     }
 
     *&v2 = MEMORY[0x29EDC9740](obj).n128_u64[0];
-    [v13 _accessibilityRemoveValueForKey:{@"AXInternalData", v2}];
-    [v13 _accessibilityRemoveValueForKey:@"AXInternalStoredKeyOrder"];
-    [v13 _accessibilityRemoveValueForKey:@"kAXStoredVisibleKeysByRow"];
+    [selfCopy _accessibilityRemoveValueForKey:{@"AXInternalData", v2}];
+    [selfCopy _accessibilityRemoveValueForKey:@"AXInternalStoredKeyOrder"];
+    [selfCopy _accessibilityRemoveValueForKey:@"kAXStoredVisibleKeysByRow"];
     objc_storeStrong(&location, 0);
   }
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(UIKeyboardLayoutStarAccessibility *)self _accessibilityResetInternalData];
-  [(UIKeyboardLayoutStarAccessibility *)v4 _axUnregisterForAccessibilityContinuousPathSettingsNotifications];
-  v2.receiver = v4;
+  [(UIKeyboardLayoutStarAccessibility *)selfCopy _axUnregisterForAccessibilityContinuousPathSettingsNotifications];
+  v2.receiver = selfCopy;
   v2.super_class = UIKeyboardLayoutStarAccessibility;
   [(UIKeyboardLayoutStarAccessibility *)&v2 dealloc];
 }
@@ -921,12 +921,12 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
   return v3 & 1;
 }
 
-- (id)_accessibilityKeyboardKeyForString:(id)a3
+- (id)_accessibilityKeyboardKeyForString:(id)string
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   v12 = 0;
   v13 = &v12;
   v14 = 838860800;
@@ -934,7 +934,7 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityCreateElementForK
   v16 = __Block_byref_object_copy__16;
   v17 = __Block_byref_object_dispose__16;
   v18 = 0;
-  v5 = v20;
+  v5 = selfCopy;
   v6 = MEMORY[0x29EDCA5F8];
   v7 = -1073741824;
   v8 = 0;
@@ -1163,17 +1163,17 @@ LABEL_53:
   objc_storeStrong(location, 0);
 }
 
-- (void)_accessibilityChangeToKeyplane:(id)a3
+- (void)_accessibilityChangeToKeyplane:(id)keyplane
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, keyplane);
   if (location[0] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [(UIKeyboardLayoutStarAccessibility *)v6 keyplaneNamed:location[0]];
-    [(UIKeyboardLayoutStarAccessibility *)v6 changeToKeyplane:v3];
-    [(UIKeyboardLayoutStarAccessibility *)v6 _accessibilityRemoveValueForKey:@"AXInternalStoredKeyOrder"];
+    v3 = [(UIKeyboardLayoutStarAccessibility *)selfCopy keyplaneNamed:location[0]];
+    [(UIKeyboardLayoutStarAccessibility *)selfCopy changeToKeyplane:v3];
+    [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityRemoveValueForKey:@"AXInternalStoredKeyOrder"];
     objc_storeStrong(&v3, 0);
     v4 = 0;
   }
@@ -1189,11 +1189,11 @@ LABEL_53:
 - (id)_accessibiltyAvailableKeyplanes
 {
   v19 = *MEMORY[0x29EDCA608];
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   v16[0] = [MEMORY[0x29EDB8DE8] array];
   memset(__b, 0, sizeof(__b));
-  v11 = [(UIKeyboardLayoutStarAccessibility *)v17 safeValueForKey:@"keyboard"];
+  v11 = [(UIKeyboardLayoutStarAccessibility *)selfCopy safeValueForKey:@"keyboard"];
   obj = [v11 safeValueForKey:@"subtrees"];
   v13 = [obj countByEnumeratingWithState:__b objects:v18 count:{16, MEMORY[0x29EDC9740](v11).n128_f64[0]}];
   if (v13)
@@ -1211,9 +1211,9 @@ LABEL_53:
 
       v15 = *(__b[1] + 8 * v9);
       v5 = v16[0];
-      v6 = [v15 name];
+      name = [v15 name];
       [v5 addObject:?];
-      *&v2 = MEMORY[0x29EDC9740](v6).n128_u64[0];
+      *&v2 = MEMORY[0x29EDC9740](name).n128_u64[0];
       ++v9;
       if (v7 + 1 >= v10)
       {
@@ -1236,20 +1236,20 @@ LABEL_53:
 
 - (id)_accessibilityKeys
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [(UIKeyboardLayoutStarAccessibility *)self _accessibilityValueForKey:@"AXInternalStoredKeyOrder"];
   if (!v7[0])
   {
-    v7[0] = [(UIKeyboardLayoutStarAccessibility *)v8 _accessibilitySortedUnstoredKeys];
-    [(UIKeyboardLayoutStarAccessibility *)v8 _accessibilitySetRetainedValue:v7[0] forKey:@"AXInternalStoredKeyOrder", MEMORY[0x29EDC9740](0).n128_f64[0]];
-    v6 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-    v5 = [v6 currentInputMode];
-    v4 = [v5 primaryLanguage];
-    [UIKeyboardLayoutStarAccessibility _accessibilitySetRetainedValue:v8 forKey:"_accessibilitySetRetainedValue:forKey:"];
-    MEMORY[0x29EDC9740](v4);
-    MEMORY[0x29EDC9740](v5);
-    MEMORY[0x29EDC9740](v6);
+    v7[0] = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilitySortedUnstoredKeys];
+    [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilitySetRetainedValue:v7[0] forKey:@"AXInternalStoredKeyOrder", MEMORY[0x29EDC9740](0).n128_f64[0]];
+    mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+    currentInputMode = [mEMORY[0x29EDC7B18] currentInputMode];
+    primaryLanguage = [currentInputMode primaryLanguage];
+    [UIKeyboardLayoutStarAccessibility _accessibilitySetRetainedValue:selfCopy forKey:"_accessibilitySetRetainedValue:forKey:"];
+    MEMORY[0x29EDC9740](primaryLanguage);
+    MEMORY[0x29EDC9740](currentInputMode);
+    MEMORY[0x29EDC9740](mEMORY[0x29EDC7B18]);
   }
 
   v3 = MEMORY[0x29EDC9748](v7[0]);
@@ -1261,15 +1261,15 @@ LABEL_53:
 - (id)_accessibilityVisibleKeysByRow
 {
   v56 = *MEMORY[0x29EDCA608];
-  v52 = self;
+  selfCopy = self;
   v51[1] = a2;
   v51[0] = [(UIKeyboardLayoutStarAccessibility *)self _accessibilityValueForKey:@"kAXStoredVisibleKeysByRow"];
   if (!v51[0])
   {
-    v50 = [(UIKeyboardLayoutStarAccessibility *)v52 _accessibilityKeys];
-    v49 = [MEMORY[0x29EDB8DE8] array];
+    _accessibilityKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityKeys];
+    array = [MEMORY[0x29EDB8DE8] array];
     memset(__b, 0, sizeof(__b));
-    obj = MEMORY[0x29EDC9748](v50);
+    obj = MEMORY[0x29EDC9748](_accessibilityKeys);
     v32 = [obj countByEnumeratingWithState:__b objects:v55 count:16];
     if (v32)
     {
@@ -1296,7 +1296,7 @@ LABEL_53:
           *(&v46 + 1) = v5;
           v44 = 0;
           memset(v42, 0, sizeof(v42));
-          v25 = MEMORY[0x29EDC9748](v49);
+          v25 = MEMORY[0x29EDC9748](array);
           v26 = [v25 countByEnumeratingWithState:v42 objects:v54 count:16];
           if (v26)
           {
@@ -1360,7 +1360,7 @@ LABEL_17:
           if ((v44 & 1) == 0)
           {
             v35 = [MEMORY[0x29EDB8DE8] arrayWithObject:{v48, v10}];
-            [v49 addObject:v35];
+            [array addObject:v35];
             objc_storeStrong(&v35, 0);
           }
         }
@@ -1380,7 +1380,7 @@ LABEL_17:
 
     MEMORY[0x29EDC9740](obj);
     memset(v33, 0, sizeof(v33));
-    v18 = MEMORY[0x29EDC9748](v49);
+    v18 = MEMORY[0x29EDC9748](array);
     v19 = [v18 countByEnumeratingWithState:v33 objects:v53 count:16];
     if (v19)
     {
@@ -1411,11 +1411,11 @@ LABEL_17:
     }
 
     *&v11 = MEMORY[0x29EDC9740](v18).n128_u64[0];
-    [v49 sortUsingComparator:{&__block_literal_global_597, v11}];
-    [(UIKeyboardLayoutStarAccessibility *)v52 _accessibilitySetRetainedValue:v49 forKey:@"kAXStoredVisibleKeysByRow"];
-    objc_storeStrong(v51, v49);
-    objc_storeStrong(&v49, 0);
-    objc_storeStrong(&v50, 0);
+    [array sortUsingComparator:{&__block_literal_global_597, v11}];
+    [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilitySetRetainedValue:array forKey:@"kAXStoredVisibleKeysByRow"];
+    objc_storeStrong(v51, array);
+    objc_storeStrong(&array, 0);
+    objc_storeStrong(&_accessibilityKeys, 0);
   }
 
   v13 = MEMORY[0x29EDC9748](v51[0]);
@@ -1483,11 +1483,11 @@ uint64_t __67__UIKeyboardLayoutStarAccessibility__accessibilityVisibleKeysByRow_
 - (id)_accessibilitySortedUnstoredKeys
 {
   v37 = *MEMORY[0x29EDCA608];
-  v34 = self;
+  selfCopy = self;
   v33[1] = a2;
   v33[0] = [(UIKeyboardLayoutStarAccessibility *)self safeValueForKey:@"keyplane"];
   v32 = 0;
-  if (([(UIKeyboardLayoutStarAccessibility *)v34 _accessibilityIsRTL]& 1) != 0)
+  if (([(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityIsRTL]& 1) != 0)
   {
     v31 = 0;
     objc_opt_class();
@@ -1518,9 +1518,9 @@ uint64_t __67__UIKeyboardLayoutStarAccessibility__accessibilityVisibleKeysByRow_
   }
 
   v15 = [MEMORY[0x29EDB8E30] orderedSetWithArray:{v32, *&v4}];
-  v14 = [v15 array];
-  v25 = [v14 mutableCopy];
-  MEMORY[0x29EDC9740](v14);
+  array = [v15 array];
+  v25 = [array mutableCopy];
+  MEMORY[0x29EDC9740](array);
   MEMORY[0x29EDC9740](v15);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x29EDC9748](v32);
@@ -1585,13 +1585,13 @@ uint64_t __67__UIKeyboardLayoutStarAccessibility__accessibilityVisibleKeysByRow_
 - (double)_axClearReturnKeyLabel
 {
   v23 = *MEMORY[0x29EDCA608];
-  v21 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     memset(__b, 0, sizeof(__b));
-    v7 = [(UIKeyboardLayoutStarAccessibility *)v21 _accessibilityInternalData];
-    obj = [v7 allValues];
-    v9 = [obj countByEnumeratingWithState:__b objects:v22 count:{16, MEMORY[0x29EDC9740](v7).n128_f64[0]}];
+    _accessibilityInternalData = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityInternalData];
+    obj = [_accessibilityInternalData allValues];
+    v9 = [obj countByEnumeratingWithState:__b objects:v22 count:{16, MEMORY[0x29EDC9740](_accessibilityInternalData).n128_f64[0]}];
     if (v9)
     {
       v4 = *__b[2];
@@ -1627,14 +1627,14 @@ uint64_t __67__UIKeyboardLayoutStarAccessibility__accessibilityVisibleKeysByRow_
           v14 = 1;
           v13 = [(UIAccessibilityElementKBKey *)v16 key];
           v12 = 1;
-          v11 = [v13 name];
+          name = [v13 name];
           v10 = 1;
-          v2 = [v11 isEqualToString:@"Return-Key"];
+          v2 = [name isEqualToString:@"Return-Key"];
         }
 
         if (v10)
         {
-          MEMORY[0x29EDC9740](v11);
+          MEMORY[0x29EDC9740](name);
         }
 
         if (v12)
@@ -1671,61 +1671,61 @@ uint64_t __67__UIKeyboardLayoutStarAccessibility__accessibilityVisibleKeysByRow_
   return result;
 }
 
-- (void)setLabel:(id)a3 forKey:(id)a4
+- (void)setLabel:(id)label forKey:(id)key
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, label);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5.receiver = v8;
+  objc_storeStrong(&v6, key);
+  v5.receiver = selfCopy;
   v5.super_class = UIKeyboardLayoutStarAccessibility;
   [(UIKeyboardLayoutStarAccessibility *)&v5 setLabel:location[0] forKey:v6];
   if ([v6 isEqualToString:*MEMORY[0x29EDC81C0]])
   {
-    [(UIKeyboardLayoutStarAccessibility *)v8 _axClearReturnKeyLabel];
+    [(UIKeyboardLayoutStarAccessibility *)selfCopy _axClearReturnKeyLabel];
   }
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setReturnKeyEnabled:(BOOL)a3 withDisplayName:(id)a4 withType:(int)a5
+- (void)setReturnKeyEnabled:(BOOL)enabled withDisplayName:(id)name withType:(int)type
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  enabledCopy = enabled;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v7 = a5;
-  v6.receiver = v11;
+  objc_storeStrong(&location, name);
+  typeCopy = type;
+  v6.receiver = selfCopy;
   v6.super_class = UIKeyboardLayoutStarAccessibility;
-  [(UIKeyboardLayoutStarAccessibility *)&v6 setReturnKeyEnabled:v9 withDisplayName:location withType:a5];
-  [(UIKeyboardLayoutStarAccessibility *)v11 _axClearReturnKeyLabel];
+  [(UIKeyboardLayoutStarAccessibility *)&v6 setReturnKeyEnabled:enabledCopy withDisplayName:location withType:type];
+  [(UIKeyboardLayoutStarAccessibility *)selfCopy _axClearReturnKeyLabel];
   objc_storeStrong(&location, 0);
 }
 
-- (uint64_t)_isCapitalLetterKeyplane:(uint64_t)a1
+- (uint64_t)_isCapitalLetterKeyplane:(uint64_t)keyplane
 {
-  v6 = a1;
+  keyplaneCopy = keyplane;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v6)
+  if (keyplaneCopy)
   {
-    v3 = [location lowercaseString];
-    if ([v3 hasSuffix:@"small_capital-letters"])
+    lowercaseString = [location lowercaseString];
+    if ([lowercaseString hasSuffix:@"small_capital-letters"])
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = [v3 hasSuffix:@"capital-letters"] & 1;
+      v7 = [lowercaseString hasSuffix:@"capital-letters"] & 1;
     }
 
     v4 = 1;
-    objc_storeStrong(&v3, 0);
+    objc_storeStrong(&lowercaseString, 0);
   }
 
   else
@@ -1738,16 +1738,16 @@ uint64_t __67__UIKeyboardLayoutStarAccessibility__accessibilityVisibleKeysByRow_
   return v7 & 1;
 }
 
-- (uint64_t)_isSmallLetterKeyplane:(uint64_t)a1
+- (uint64_t)_isSmallLetterKeyplane:(uint64_t)keyplane
 {
-  v5 = a1;
+  keyplaneCopy = keyplane;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v5)
+  if (keyplaneCopy)
   {
-    v3 = [location lowercaseString];
-    v6 = [v3 hasSuffix:@"small-letters"] & 1;
-    MEMORY[0x29EDC9740](v3);
+    lowercaseString = [location lowercaseString];
+    v6 = [lowercaseString hasSuffix:@"small-letters"] & 1;
+    MEMORY[0x29EDC9740](lowercaseString);
   }
 
   else
@@ -1759,21 +1759,21 @@ uint64_t __67__UIKeyboardLayoutStarAccessibility__accessibilityVisibleKeysByRow_
   return v6 & 1;
 }
 
-- (void)setKeyplaneName:(id)a3
+- (void)setKeyplaneName:(id)name
 {
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v53 = 0;
   v48 = 0;
   v49 = &v48;
   v50 = 0x20000000;
   v51 = 32;
   v52 = 0;
-  v3 = [(UIKeyboardLayoutStarAccessibility *)v55 _accessibilityKeys];
+  _accessibilityKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityKeys];
   v4 = v53;
-  v53 = v3;
+  v53 = _accessibilityKeys;
   *&v5 = MEMORY[0x29EDC9740](v4).n128_u64[0];
   v42[1] = MEMORY[0x29EDCA5F8];
   v43 = -1073741824;
@@ -1782,12 +1782,12 @@ uint64_t __67__UIKeyboardLayoutStarAccessibility__accessibilityVisibleKeysByRow_
   v46 = &unk_29F30CC98;
   v47 = &v48;
   [v53 enumerateObjectsUsingBlock:v5];
-  v42[0] = [(UIKeyboardLayoutStarAccessibility *)v55 safeValueForKey:@"_keyplane"];
-  v41 = [(UIKeyboardLayoutStarAccessibility *)v55 safeValueForKey:@"keyplaneName"];
-  v40.receiver = v55;
+  v42[0] = [(UIKeyboardLayoutStarAccessibility *)selfCopy safeValueForKey:@"_keyplane"];
+  v41 = [(UIKeyboardLayoutStarAccessibility *)selfCopy safeValueForKey:@"keyplaneName"];
+  v40.receiver = selfCopy;
   v40.super_class = UIKeyboardLayoutStarAccessibility;
   [(UIKeyboardLayoutStarAccessibility *)&v40 setKeyplaneName:location[0]];
-  v39 = [(UIKeyboardLayoutStarAccessibility *)v55 safeValueForKey:@"_keyplane"];
+  v39 = [(UIKeyboardLayoutStarAccessibility *)selfCopy safeValueForKey:@"_keyplane"];
   if (v42[0] == v39)
   {
     v38 = 1;
@@ -1795,9 +1795,9 @@ uint64_t __67__UIKeyboardLayoutStarAccessibility__accessibilityVisibleKeysByRow_
 
   else
   {
-    v37 = [(UIKeyboardLayoutStarAccessibility *)v55 _accessibilityKeys];
+    _accessibilityKeys2 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityKeys];
     v36 = 0;
-    if (([(UIKeyboardLayoutStarAccessibility *)v55 _isCapitalLetterKeyplane:v41]& 1) != 0 && ([(UIKeyboardLayoutStarAccessibility *)v55 _isSmallLetterKeyplane:?]& 1) != 0 || ([(UIKeyboardLayoutStarAccessibility *)v55 _isCapitalLetterKeyplane:?]& 1) != 0 && ([(UIKeyboardLayoutStarAccessibility *)v55 _isSmallLetterKeyplane:v41]& 1) != 0)
+    if (([(UIKeyboardLayoutStarAccessibility *)selfCopy _isCapitalLetterKeyplane:v41]& 1) != 0 && ([(UIKeyboardLayoutStarAccessibility *)selfCopy _isSmallLetterKeyplane:?]& 1) != 0 || ([(UIKeyboardLayoutStarAccessibility *)selfCopy _isCapitalLetterKeyplane:?]& 1) != 0 && ([(UIKeyboardLayoutStarAccessibility *)selfCopy _isSmallLetterKeyplane:v41]& 1) != 0)
     {
       v36 = 1;
     }
@@ -1813,7 +1813,7 @@ uint64_t __67__UIKeyboardLayoutStarAccessibility__accessibilityVisibleKeysByRow_
     v28 = __53__UIKeyboardLayoutStarAccessibility_setKeyplaneName___block_invoke_2;
     v29 = &unk_29F30CC98;
     v30 = &v31;
-    [v37 enumerateObjectsUsingBlock:?];
+    [_accessibilityKeys2 enumerateObjectsUsingBlock:?];
     v15 = 1;
     if (v36)
     {
@@ -1823,50 +1823,50 @@ uint64_t __67__UIKeyboardLayoutStarAccessibility__accessibilityVisibleKeysByRow_
     v24 = v15;
     if (v15)
     {
-      v14 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-      v13 = [v14 currentInputMode];
-      v12 = [v13 primaryLanguage];
-      v10 = [(UIKeyboardLayoutStarAccessibility *)v55 _accessibilityValueForKey:@"AXCurrentLanguage"];
-      v11 = [v12 isEqualToString:?];
+      mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+      currentInputMode = [mEMORY[0x29EDC7B18] currentInputMode];
+      primaryLanguage = [currentInputMode primaryLanguage];
+      v10 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityValueForKey:@"AXCurrentLanguage"];
+      v11 = [primaryLanguage isEqualToString:?];
       MEMORY[0x29EDC9740](v10);
-      MEMORY[0x29EDC9740](v12);
-      MEMORY[0x29EDC9740](v13);
-      MEMORY[0x29EDC9740](v14);
+      MEMORY[0x29EDC9740](primaryLanguage);
+      MEMORY[0x29EDC9740](currentInputMode);
+      MEMORY[0x29EDC9740](mEMORY[0x29EDC7B18]);
       if ((v11 & 1) == 0)
       {
         v24 = 1;
       }
     }
 
-    v9 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-    v8 = [v9 currentInputMode];
-    v23 = [v8 primaryLanguage];
-    MEMORY[0x29EDC9740](v8);
-    MEMORY[0x29EDC9740](v9);
-    if (!UIAccessibilityIsVoiceOverRunning() || (v36 & 1) != 0 && (([v23 hasPrefix:@"th"] & 1) != 0 || (objc_msgSend(v23, "hasPrefix:", @"hi") & 1) != 0 || (objc_msgSend(v23, "hasPrefix:", @"ko") & 1) != 0))
+    mEMORY[0x29EDC7B18]2 = [MEMORY[0x29EDC7B18] sharedInputModeController];
+    currentInputMode2 = [mEMORY[0x29EDC7B18]2 currentInputMode];
+    primaryLanguage2 = [currentInputMode2 primaryLanguage];
+    MEMORY[0x29EDC9740](currentInputMode2);
+    MEMORY[0x29EDC9740](mEMORY[0x29EDC7B18]2);
+    if (!UIAccessibilityIsVoiceOverRunning() || (v36 & 1) != 0 && (([primaryLanguage2 hasPrefix:@"th"] & 1) != 0 || (objc_msgSend(primaryLanguage2, "hasPrefix:", @"hi") & 1) != 0 || (objc_msgSend(primaryLanguage2, "hasPrefix:", @"ko") & 1) != 0))
     {
       v24 = 1;
     }
 
     if (v24)
     {
-      [(UIKeyboardLayoutStarAccessibility *)v55 _accessibilityResetInternalData];
+      [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityResetInternalData];
     }
 
     else
     {
-      v22 = [(UIKeyboardLayoutStarAccessibility *)v55 _accessibilityInternalData];
-      v7 = [(UIKeyboardLayoutStarAccessibility *)v55 _accessibilityKeys];
+      _accessibilityInternalData = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityInternalData];
+      _accessibilityKeys3 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityKeys];
       v16 = MEMORY[0x29EDCA5F8];
       v17 = -1073741824;
       v18 = 0;
       v19 = __53__UIKeyboardLayoutStarAccessibility_setKeyplaneName___block_invoke_3;
       v20 = &unk_29F30D218;
-      v21 = MEMORY[0x29EDC9748](v22);
-      [v7 enumerateObjectsUsingBlock:&v16];
-      MEMORY[0x29EDC9740](v7);
+      v21 = MEMORY[0x29EDC9748](_accessibilityInternalData);
+      [_accessibilityKeys3 enumerateObjectsUsingBlock:&v16];
+      MEMORY[0x29EDC9740](_accessibilityKeys3);
       objc_storeStrong(&v21, 0);
-      objc_storeStrong(&v22, 0);
+      objc_storeStrong(&_accessibilityInternalData, 0);
     }
 
     if (v24 & 1) != 0 && ([*MEMORY[0x29EDC8008] _accessibilitySoftwareKeyboardActive])
@@ -1883,9 +1883,9 @@ uint64_t __67__UIKeyboardLayoutStarAccessibility__accessibilityVisibleKeysByRow_
       }
     }
 
-    objc_storeStrong(&v23, 0);
+    objc_storeStrong(&primaryLanguage2, 0);
     _Block_object_dispose(&v31, 8);
-    objc_storeStrong(&v37, 0);
+    objc_storeStrong(&_accessibilityKeys2, 0);
     v38 = 0;
   }
 
@@ -1948,7 +1948,7 @@ void __53__UIKeyboardLayoutStarAccessibility_setKeyplaneName___block_invoke_3(id
 
 - (void)didBeginContinuousPath
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIKeyboardLayoutStarAccessibility;
@@ -1963,9 +1963,9 @@ void __53__UIKeyboardLayoutStarAccessibility_setKeyplaneName___block_invoke_3(id
   v9.receiver = self;
   v9.super_class = UIKeyboardLayoutStarAccessibility;
   v10[0] = [(UIKeyboardLayoutStarAccessibility *)&v9 automationElements];
-  v7 = [MEMORY[0x29EDC7B08] sharedInstance];
-  location = [v7 autocorrectPrompt];
-  *&v2 = MEMORY[0x29EDC9740](v7).n128_u64[0];
+  mEMORY[0x29EDC7B08] = [MEMORY[0x29EDC7B08] sharedInstance];
+  location = [mEMORY[0x29EDC7B08] autocorrectPrompt];
+  *&v2 = MEMORY[0x29EDC9740](mEMORY[0x29EDC7B08]).n128_u64[0];
   if (location && ([location isHiddenOrHasHiddenAncestor] & 1) == 0)
   {
     v3 = [v10[0] arrayByAddingObject:location];
@@ -1981,13 +1981,13 @@ void __53__UIKeyboardLayoutStarAccessibility_setKeyplaneName___block_invoke_3(id
   return v6;
 }
 
-- (void)showPopupVariantsForKey:(id)a3
+- (void)showPopupVariantsForKey:(id)key
 {
   v22 = *MEMORY[0x29EDCA608];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v11 = MEMORY[0x29EDCA5F8];
@@ -1996,18 +1996,18 @@ void __53__UIKeyboardLayoutStarAccessibility_setKeyplaneName___block_invoke_3(id
     v14 = __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_invoke;
     v15 = &unk_29F30C888;
     v16 = MEMORY[0x29EDC9748](location[0]);
-    v17 = MEMORY[0x29EDC9748](v20);
+    v17 = MEMORY[0x29EDC9748](selfCopy);
     v18 = MEMORY[0x29ED3E4C0](&v11);
-    v5 = [MEMORY[0x29EDC7AF8] activeKeyboard];
-    v3 = [v5 _accessibilityKeyboardIsContinuousPathAvailable];
+    activeKeyboard = [MEMORY[0x29EDC7AF8] activeKeyboard];
+    _accessibilityKeyboardIsContinuousPathAvailable = [activeKeyboard _accessibilityKeyboardIsContinuousPathAvailable];
     v4 = 0.5;
-    if ((v3 & 1) == 0)
+    if ((_accessibilityKeyboardIsContinuousPathAvailable & 1) == 0)
     {
       v4 = 0.0;
     }
 
     *&v6 = v4;
-    MEMORY[0x29EDC9740](v5);
+    MEMORY[0x29EDC9740](activeKeyboard);
     v10 = v6;
     oslog = VOTLogCommon();
     type = OS_LOG_TYPE_INFO;
@@ -2026,7 +2026,7 @@ void __53__UIKeyboardLayoutStarAccessibility_setKeyplaneName___block_invoke_3(id
 
   else
   {
-    v7.receiver = v20;
+    v7.receiver = selfCopy;
     v7.super_class = UIKeyboardLayoutStarAccessibility;
     [(UIKeyboardLayoutStarAccessibility *)&v7 showPopupVariantsForKey:location[0]];
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7460], 0);
@@ -2060,28 +2060,28 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
   }
 }
 
-- (void)showPopupView:(int64_t)a3 withKey:(id)a4 popupInfo:(id)a5 force:(BOOL)a6
+- (void)showPopupView:(int64_t)view withKey:(id)key popupInfo:(id)info force:(BOOL)force
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
-  v22 = a3;
+  viewCopy = view;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, key);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
-  v19 = a6;
-  v15 = [(UIKeyboardLayoutStarAccessibility *)v24 safeValueForKey:@"_keyplaneView"];
+  objc_storeStrong(&v20, info);
+  forceCopy = force;
+  v15 = [(UIKeyboardLayoutStarAccessibility *)selfCopy safeValueForKey:@"_keyplaneView"];
   v14 = [v15 safeDictionaryForKey:@"_activeViewIndex"];
-  v13 = [location name];
+  name = [location name];
   v16 = [v14 objectForKey:?];
   MEMORY[0x29EDC9740](v16);
-  MEMORY[0x29EDC9740](v13);
+  MEMORY[0x29EDC9740](name);
   MEMORY[0x29EDC9740](v14);
   *&v6 = MEMORY[0x29EDC9740](v15).n128_u64[0];
   v18 = v16 == 0;
-  v17.receiver = v24;
+  v17.receiver = selfCopy;
   v17.super_class = UIKeyboardLayoutStarAccessibility;
-  [(UIKeyboardLayoutStarAccessibility *)&v17 showPopupView:v22 withKey:location popupInfo:v20 force:a6, v6];
+  [(UIKeyboardLayoutStarAccessibility *)&v17 showPopupView:viewCopy withKey:location popupInfo:v20 force:force, v6];
   if (v18)
   {
     notification = *MEMORY[0x29EDC7EA8];
@@ -2099,28 +2099,28 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
   objc_storeStrong(&location, 0);
 }
 
-- (void)setState:(int)a3 forKey:(id)a4
+- (void)setState:(int)state forKey:(id)key
 {
   v33 = *MEMORY[0x29EDCA608];
-  v30 = self;
+  selfCopy = self;
   v29 = a2;
-  v28 = a3;
+  stateCopy = state;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v26.receiver = v30;
+  objc_storeStrong(&location, key);
+  v26.receiver = selfCopy;
   v26.super_class = UIKeyboardLayoutStarAccessibility;
-  [(UIKeyboardLayoutStarAccessibility *)&v26 setState:v28 forKey:location];
+  [(UIKeyboardLayoutStarAccessibility *)&v26 setState:stateCopy forKey:location];
   v25 = 0;
-  if (v28 == 16)
+  if (stateCopy == 16)
   {
     v24 = 0;
-    v23 = [location subtrees];
+    subtrees = [location subtrees];
     if ([location interactionType] == 16)
     {
-      v22 = [location flickDirection];
-      if (v22 + 1 < [v23 count])
+      flickDirection = [location flickDirection];
+      if (flickDirection + 1 < [subtrees count])
       {
-        v4 = [v23 objectAtIndex:v22 + 1];
+        v4 = [subtrees objectAtIndex:flickDirection + 1];
         v5 = v24;
         v24 = v4;
         MEMORY[0x29EDC9740](v5);
@@ -2130,9 +2130,9 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
     else
     {
       v21 = [location safeIntegerForKey:@"selectedVariantIndex"];
-      if (v21 < [v23 count])
+      if (v21 < [subtrees count])
       {
-        v6 = [v23 objectAtIndex:v21];
+        v6 = [subtrees objectAtIndex:v21];
         v7 = v24;
         v24 = v6;
         MEMORY[0x29EDC9740](v7);
@@ -2140,26 +2140,26 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
 
       if (_AXUIKit_UIKeyboardCurrentInputModeIsMultiscript())
       {
-        v12 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-        v11 = [v12 currentInputMode];
-        v20 = [v11 multilingualLanguages];
-        MEMORY[0x29EDC9740](v11);
-        MEMORY[0x29EDC9740](v12);
+        mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+        currentInputMode = [mEMORY[0x29EDC7B18] currentInputMode];
+        multilingualLanguages = [currentInputMode multilingualLanguages];
+        MEMORY[0x29EDC9740](currentInputMode);
+        MEMORY[0x29EDC9740](mEMORY[0x29EDC7B18]);
         oslog = AXLogCommon();
         type = OS_LOG_TYPE_DEBUG;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
         {
-          __os_log_helper_16_2_1_8_64(v32, v20);
+          __os_log_helper_16_2_1_8_64(v32, multilingualLanguages);
           _os_log_debug_impl(&dword_29C4D6000, oslog, type, "Multiscript multilingualLanguages %@", v32, 0xCu);
         }
 
         objc_storeStrong(&oslog, 0);
-        if (v20)
+        if (multilingualLanguages)
         {
           v10 = v21;
-          if (v10 < [v20 count])
+          if (v10 < [multilingualLanguages count])
           {
-            v8 = [v20 objectAtIndexedSubscript:v21];
+            v8 = [multilingualLanguages objectAtIndexedSubscript:v21];
             v9 = v25;
             v25 = v8;
             MEMORY[0x29EDC9740](v9);
@@ -2175,11 +2175,11 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
           }
         }
 
-        objc_storeStrong(&v20, 0);
+        objc_storeStrong(&multilingualLanguages, 0);
       }
     }
 
-    v15 = [(UIKeyboardLayoutStarAccessibility *)v30 _accessibilityCreateElementForKey:v24];
+    v15 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityCreateElementForKey:v24];
     obj = [v15 accessibilityLabel];
     argument = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:obj];
     if (v25)
@@ -2196,7 +2196,7 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
     objc_storeStrong(&argument, 0);
     objc_storeStrong(&obj, 0);
     objc_storeStrong(&v15, 0);
-    objc_storeStrong(&v23, 0);
+    objc_storeStrong(&subtrees, 0);
     objc_storeStrong(&v24, 0);
   }
 
@@ -2209,58 +2209,58 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
   objc_storeStrong(&location, 0);
 }
 
-- (void)_transitionToContinuousPathState:(int64_t)a3 forTouchInfo:(id)a4
+- (void)_transitionToContinuousPathState:(int64_t)state forTouchInfo:(id)info
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  stateCopy = state;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4.receiver = v8;
+  objc_storeStrong(&location, info);
+  v4.receiver = selfCopy;
   v4.super_class = UIKeyboardLayoutStarAccessibility;
-  [(UIKeyboardLayoutStarAccessibility *)&v4 _transitionToContinuousPathState:v6 forTouchInfo:location];
+  [(UIKeyboardLayoutStarAccessibility *)&v4 _transitionToContinuousPathState:stateCopy forTouchInfo:location];
   objc_storeStrong(&location, 0);
 }
 
-- (id)_accessibilityKeyElementForKey:(id)a3
+- (id)_accessibilityKeyElementForKey:(id)key
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityKeys];
-  v23 = [v11 indexOfObject:location[0]];
-  v15 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-  v14 = [v15 currentInputMode];
-  v13 = [v14 primaryLanguage];
-  v12 = [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityValueForKey:@"AXCurrentLanguage"];
-  v16 = [v13 isEqualToString:?] ^ 1;
+  objc_storeStrong(location, key);
+  _accessibilityKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityKeys];
+  v23 = [_accessibilityKeys indexOfObject:location[0]];
+  mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+  currentInputMode = [mEMORY[0x29EDC7B18] currentInputMode];
+  primaryLanguage = [currentInputMode primaryLanguage];
+  v12 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityValueForKey:@"AXCurrentLanguage"];
+  v16 = [primaryLanguage isEqualToString:?] ^ 1;
   MEMORY[0x29EDC9740](v12);
-  MEMORY[0x29EDC9740](v13);
-  MEMORY[0x29EDC9740](v14);
-  *&v3 = MEMORY[0x29EDC9740](v15).n128_u64[0];
+  MEMORY[0x29EDC9740](primaryLanguage);
+  MEMORY[0x29EDC9740](currentInputMode);
+  *&v3 = MEMORY[0x29EDC9740](mEMORY[0x29EDC7B18]).n128_u64[0];
   v22 = v16 & 1;
-  v17 = [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityIsRTL];
-  v21 = v17 != [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityBoolValueForKey:@"AXIsRTL"];
+  _accessibilityIsRTL = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityIsRTL];
+  v21 = _accessibilityIsRTL != [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityBoolValueForKey:@"AXIsRTL"];
   if ((v16 & 1) != 0 || v21)
   {
-    [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityResetInternalData];
-    [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilitySetBoolValue:[(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityIsRTL] forKey:@"AXIsRTL"];
+    [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityResetInternalData];
+    [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilitySetBoolValue:[(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityIsRTL] forKey:@"AXIsRTL"];
   }
 
   if (v23 == 0x7FFFFFFFFFFFFFFFLL || (v22 & 1) != 0)
   {
-    [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityRemoveValueForKey:@"AXInternalStoredKeyOrder"];
-    v10 = [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityKeys];
-    v23 = [v10 indexOfObject:location[0]];
-    MEMORY[0x29EDC9740](v10);
+    [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityRemoveValueForKey:@"AXInternalStoredKeyOrder"];
+    _accessibilityKeys2 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityKeys];
+    v23 = [_accessibilityKeys2 indexOfObject:location[0]];
+    MEMORY[0x29EDC9740](_accessibilityKeys2);
   }
 
-  v20 = [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityInternalData];
+  _accessibilityInternalData = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityInternalData];
   v19 = 0;
   if (v23 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityCreateElementForKey:?];
+    v4 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityCreateElementForKey:?];
     v5 = v19;
     v19 = v4;
     MEMORY[0x29EDC9740](v5);
@@ -2269,14 +2269,14 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
   else
   {
     v18 = [objc_allocWithZone(MEMORY[0x29EDBA070]) initWithUnsignedInteger:v23];
-    v6 = [v20 objectForKey:v18];
+    v6 = [_accessibilityInternalData objectForKey:v18];
     v7 = v19;
     v19 = v6;
     MEMORY[0x29EDC9740](v7);
     if (!v19)
     {
-      v19 = [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityCreateElementForKey:?];
-      [v20 setObject:v19 forKey:{v18, MEMORY[0x29EDC9740](0).n128_f64[0]}];
+      v19 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityCreateElementForKey:?];
+      [_accessibilityInternalData setObject:v19 forKey:{v18, MEMORY[0x29EDC9740](0).n128_f64[0]}];
     }
 
     objc_storeStrong(&v18, 0);
@@ -2284,35 +2284,35 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
 
   v9 = MEMORY[0x29EDC9748](v19);
   objc_storeStrong(&v19, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&_accessibilityInternalData, 0);
   objc_storeStrong(location, 0);
 
   return v9;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  v44 = a3;
-  v43 = self;
+  testCopy = test;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  if (([(UIKeyboardLayoutStarAccessibility *)v43 pointInside:location[0] withEvent:v44]& 1) != 0)
+  objc_storeStrong(location, event);
+  if (([(UIKeyboardLayoutStarAccessibility *)selfCopy pointInside:location[0] withEvent:testCopy]& 1) != 0)
   {
     v40 = 0;
-    v39 = [(UIKeyboardLayoutStarAccessibility *)v43 _accessibilityStickyPopupKeys];
-    if (v39)
+    _accessibilityStickyPopupKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityStickyPopupKeys];
+    if (_accessibilityStickyPopupKeys)
     {
       v32 = MEMORY[0x29EDCA5F8];
       v33 = -1073741824;
       v34 = 0;
       v35 = __69__UIKeyboardLayoutStarAccessibility__accessibilityHitTest_withEvent___block_invoke;
       v36 = &__block_descriptor_48_e44_B32__0__UIAccessibilityElementKBKey_8Q16_B24l;
-      v37 = v44;
-      v38 = [v39 indexOfObjectPassingTest:?];
+      v37 = testCopy;
+      v38 = [_accessibilityStickyPopupKeys indexOfObjectPassingTest:?];
       if (v38 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v4 = [v39 objectAtIndex:v38];
+        v4 = [_accessibilityStickyPopupKeys objectAtIndex:v38];
         v5 = v40;
         v40 = v4;
         MEMORY[0x29EDC9740](v5);
@@ -2325,8 +2325,8 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
     v19 = 0;
     if (!v40)
     {
-      v18 = [(UIKeyboardLayoutStarAccessibility *)v43 _accessibilityBiasEscapeButton];
-      v31 = v18;
+      _accessibilityBiasEscapeButton = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityBiasEscapeButton];
+      v31 = _accessibilityBiasEscapeButton;
       v30 = 1;
       v27 = 0;
       objc_opt_class();
@@ -2335,17 +2335,17 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
       objc_storeStrong(&v26, 0);
       v24 = v25;
       v23 = 1;
-      v22 = [(UIKeyboardLayoutStarAccessibility *)v43 _accessibilityBiasEscapeButton];
+      _accessibilityBiasEscapeButton2 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityBiasEscapeButton];
       v21 = 1;
-      [v25 convertPoint:v44 toView:?];
+      [v25 convertPoint:testCopy toView:?];
       v28 = v6;
       v29 = v7;
-      v19 = [v18 pointInside:0 withEvent:{v6, v7}];
+      v19 = [_accessibilityBiasEscapeButton pointInside:0 withEvent:{v6, v7}];
     }
 
     if (v21)
     {
-      MEMORY[0x29EDC9740](v22);
+      MEMORY[0x29EDC9740](_accessibilityBiasEscapeButton2);
     }
 
     if (v23)
@@ -2360,7 +2360,7 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
 
     if (v19)
     {
-      v45 = [(UIKeyboardLayoutStarAccessibility *)v43 _accessibilityBiasEscapeButton];
+      _accessibilityBiasEscapeButton3 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityBiasEscapeButton];
       v41 = 1;
     }
 
@@ -2368,13 +2368,13 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
     {
       if (!v40 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v8 = [(UIKeyboardLayoutStarAccessibility *)v43 keyHitTestContainingPoint:v44];
+        v8 = [(UIKeyboardLayoutStarAccessibility *)selfCopy keyHitTestContainingPoint:testCopy];
         v9 = v40;
         v40 = v8;
         MEMORY[0x29EDC9740](v9);
         if (!v40 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v10 = [(UIKeyboardLayoutStarAccessibility *)v43 keyHitTestClosestToPoint:v44];
+          v10 = [(UIKeyboardLayoutStarAccessibility *)selfCopy keyHitTestClosestToPoint:testCopy];
           v11 = v40;
           v40 = v10;
           MEMORY[0x29EDC9740](v11);
@@ -2387,7 +2387,7 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v12 = [(UIKeyboardLayoutStarAccessibility *)v43 _accessibilityKeyElementForKey:v40];
+          v12 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityKeyElementForKey:v40];
           v13 = v20;
           v20 = v12;
           MEMORY[0x29EDC9740](v13);
@@ -2395,36 +2395,36 @@ void __61__UIKeyboardLayoutStarAccessibility_showPopupVariantsForKey___block_inv
 
         if (([v20 isAccessibilityElement] & 1) == 0)
         {
-          v14 = [(UIKeyboardLayoutStarAccessibility *)v43 __accessibilityHitTest:location[0] withEvent:v44];
+          v14 = [(UIKeyboardLayoutStarAccessibility *)selfCopy __accessibilityHitTest:location[0] withEvent:testCopy];
           v15 = v20;
           v20 = v14;
           MEMORY[0x29EDC9740](v15);
         }
 
-        v45 = MEMORY[0x29EDC9748](v20);
+        _accessibilityBiasEscapeButton3 = MEMORY[0x29EDC9748](v20);
         v41 = 1;
         objc_storeStrong(&v20, 0);
       }
 
       else
       {
-        v45 = MEMORY[0x29EDC9748](v43);
+        _accessibilityBiasEscapeButton3 = MEMORY[0x29EDC9748](selfCopy);
         v41 = 1;
       }
     }
 
-    objc_storeStrong(&v39, 0);
+    objc_storeStrong(&_accessibilityStickyPopupKeys, 0);
     objc_storeStrong(&v40, 0);
   }
 
   else
   {
-    v45 = 0;
+    _accessibilityBiasEscapeButton3 = 0;
     v41 = 1;
   }
 
   objc_storeStrong(location, 0);
-  v16 = v45;
+  v16 = _accessibilityBiasEscapeButton3;
 
   return v16;
 }
@@ -2451,12 +2451,12 @@ BOOL __69__UIKeyboardLayoutStarAccessibility__accessibilityHitTest_withEvent___b
 
 - (id)_accessibilitySupplementaryHeaderViews
 {
-  v35 = self;
+  selfCopy = self;
   v34[1] = a2;
   v34[0] = [MEMORY[0x29EDB8DE8] array];
-  if (([(UIKeyboardLayoutStarAccessibility *)v35 safeBoolForKey:@"isHandwritingPlane"]& 1) != 0)
+  if (([(UIKeyboardLayoutStarAccessibility *)selfCopy safeBoolForKey:@"isHandwritingPlane"]& 1) != 0)
   {
-    v33 = [(UIKeyboardLayoutStarAccessibility *)v35 safeUIViewForKey:@"_keyplaneView"];
+    v33 = [(UIKeyboardLayoutStarAccessibility *)selfCopy safeUIViewForKey:@"_keyplaneView"];
     v25 = 0;
     v26 = &v25;
     v27 = 838860800;
@@ -2470,13 +2470,13 @@ BOOL __69__UIKeyboardLayoutStarAccessibility__accessibilityHitTest_withEvent___b
     v22 = __75__UIKeyboardLayoutStarAccessibility__accessibilitySupplementaryHeaderViews__block_invoke;
     v23 = &unk_29F30CC70;
     v24[1] = &v25;
-    v24[0] = MEMORY[0x29EDC9748](v35);
+    v24[0] = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     v18 = MEMORY[0x29EDC9748](v26[5]);
     objc_storeStrong(v24, 0);
     _Block_object_dispose(&v25, 8);
     objc_storeStrong(&v31, 0);
-    v32 = [v18 firstObject];
+    firstObject = [v18 firstObject];
     MEMORY[0x29EDC9740](v18);
     v7 = v34[0];
     v11 = 0;
@@ -2488,7 +2488,7 @@ BOOL __69__UIKeyboardLayoutStarAccessibility__accessibilityHitTest_withEvent___b
     v17 = 0;
     v10[1] = &v11;
     v9 = MEMORY[0x29EDC9748](v33);
-    v10[0] = MEMORY[0x29EDC9748](v32);
+    v10[0] = MEMORY[0x29EDC9748](firstObject);
     AXPerformSafeBlock();
     v8 = MEMORY[0x29EDC9748](v12[5]);
     objc_storeStrong(v10, 0);
@@ -2501,7 +2501,7 @@ BOOL __69__UIKeyboardLayoutStarAccessibility__accessibilityHitTest_withEvent___b
     v6 = [v33 _accessibilityFindSubviewDescendant:{&__block_literal_global_673, v2}];
     [v5 axSafelyAddObject:?];
     MEMORY[0x29EDC9740](v6);
-    objc_storeStrong(&v32, 0);
+    objc_storeStrong(&firstObject, 0);
     objc_storeStrong(&v33, 0);
   }
 
@@ -2546,9 +2546,9 @@ uint64_t __75__UIKeyboardLayoutStarAccessibility__accessibilitySupplementaryHead
 
 - (id)_axKBModalView
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 safeValueForKey:@"modalDisplayView"];
+    v2 = [self safeValueForKey:@"modalDisplayView"];
   }
 
   else
@@ -2561,11 +2561,11 @@ uint64_t __75__UIKeyboardLayoutStarAccessibility__accessibilitySupplementaryHead
 
 - (BOOL)_accessibilityHasBiasEscapeButton
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(UIKeyboardLayoutStarAccessibility *)a1 _accessibilityBiasEscapeButton];
-    v3 = v1 != 0;
-    MEMORY[0x29EDC9740](v1);
+    _accessibilityBiasEscapeButton = [(UIKeyboardLayoutStarAccessibility *)self _accessibilityBiasEscapeButton];
+    v3 = _accessibilityBiasEscapeButton != 0;
+    MEMORY[0x29EDC9740](_accessibilityBiasEscapeButton);
   }
 
   else
@@ -2578,30 +2578,30 @@ uint64_t __75__UIKeyboardLayoutStarAccessibility__accessibilitySupplementaryHead
 
 - (uint64_t)_accessibilityBiasEscapeButtonIsFirst
 {
-  v9 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v7 = 0;
     objc_opt_class();
-    v4 = [MEMORY[0x29EDC7B08] activeInstance];
-    v3 = [v4 safeValueForKey:@"_layout"];
+    activeInstance = [MEMORY[0x29EDC7B08] activeInstance];
+    v3 = [activeInstance safeValueForKey:@"_layout"];
     v6 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v3);
-    MEMORY[0x29EDC9740](v4);
+    MEMORY[0x29EDC9740](activeInstance);
     v5 = MEMORY[0x29EDC9748](v6);
     objc_storeStrong(&v6, 0);
     v8 = v5;
-    v2 = [v5 currentHandBias];
-    if (v2)
+    currentHandBias = [v5 currentHandBias];
+    if (currentHandBias)
     {
-      if (v2 == 1)
+      if (currentHandBias == 1)
       {
-        v10 = ([v9 _accessibilityIsRTL] ^ 1) & 1;
+        v10 = ([selfCopy _accessibilityIsRTL] ^ 1) & 1;
       }
 
-      else if (v2 == 2)
+      else if (currentHandBias == 2)
       {
-        v10 = [v9 _accessibilityIsRTL] & 1;
+        v10 = [selfCopy _accessibilityIsRTL] & 1;
       }
     }
 
@@ -2623,16 +2623,16 @@ uint64_t __75__UIKeyboardLayoutStarAccessibility__accessibilitySupplementaryHead
 
 - (int64_t)accessibilityElementCount
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
-  v5 = [(UIKeyboardLayoutStarAccessibility *)self _axKBModalView];
-  MEMORY[0x29EDC9740](v5);
-  if (v5)
+  _axKBModalView = [(UIKeyboardLayoutStarAccessibility *)self _axKBModalView];
+  MEMORY[0x29EDC9740](_axKBModalView);
+  if (_axKBModalView)
   {
     return 1;
   }
 
-  location[0] = [(UIKeyboardLayoutStarAccessibility *)v7 _accessibilityStickyPopupKeys];
+  location[0] = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityStickyPopupKeys];
   if (location[0])
   {
     v8 = [location[0] count];
@@ -2640,26 +2640,26 @@ uint64_t __75__UIKeyboardLayoutStarAccessibility__accessibilitySupplementaryHead
 
   else
   {
-    v4 = [(UIKeyboardLayoutStarAccessibility *)v7 _accessibilityKeys];
-    v3 = [v4 count];
-    v8 = v3 + [(UIKeyboardLayoutStarAccessibility *)v7 _accessibilityHasBiasEscapeButton];
-    MEMORY[0x29EDC9740](v4);
+    _accessibilityKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityKeys];
+    v3 = [_accessibilityKeys count];
+    v8 = v3 + [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityHasBiasEscapeButton];
+    MEMORY[0x29EDC9740](_accessibilityKeys);
   }
 
   objc_storeStrong(location, 0);
   return v8;
 }
 
-- (int64_t)indexOfAccessibilityElement:(id)a3
+- (int64_t)indexOfAccessibilityElement:(id)element
 {
   v28 = *MEMORY[0x29EDCA608];
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = [(UIKeyboardLayoutStarAccessibility *)v25 _axKBModalView];
-  MEMORY[0x29EDC9740](v18);
-  if (v18)
+  objc_storeStrong(location, element);
+  _axKBModalView = [(UIKeyboardLayoutStarAccessibility *)selfCopy _axKBModalView];
+  MEMORY[0x29EDC9740](_axKBModalView);
+  if (_axKBModalView)
   {
     v26 = 0;
     v23 = 1;
@@ -2667,28 +2667,28 @@ uint64_t __75__UIKeyboardLayoutStarAccessibility__accessibilitySupplementaryHead
 
   else
   {
-    v22 = [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityStickyPopupKeys];
-    if (v22)
+    _accessibilityStickyPopupKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityStickyPopupKeys];
+    if (_accessibilityStickyPopupKeys)
     {
-      v26 = [v22 indexOfObject:location[0]];
+      v26 = [_accessibilityStickyPopupKeys indexOfObject:location[0]];
       v23 = 1;
     }
 
     else
     {
       v17 = location[0];
-      v16 = [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityBiasEscapeButton];
-      MEMORY[0x29EDC9740](v16);
-      if (v17 == v16)
+      _accessibilityBiasEscapeButton = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityBiasEscapeButton];
+      MEMORY[0x29EDC9740](_accessibilityBiasEscapeButton);
+      if (v17 == _accessibilityBiasEscapeButton)
       {
-        if (([(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityBiasEscapeButtonIsFirst]& 1) != 0)
+        if (([(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityBiasEscapeButtonIsFirst]& 1) != 0)
         {
           v15 = 0;
         }
 
         else
         {
-          v15 = [(UIKeyboardLayoutStarAccessibility *)v25 accessibilityElementCount]- 1;
+          v15 = [(UIKeyboardLayoutStarAccessibility *)selfCopy accessibilityElementCount]- 1;
         }
 
         v26 = v15;
@@ -2697,9 +2697,9 @@ uint64_t __75__UIKeyboardLayoutStarAccessibility__accessibilitySupplementaryHead
 
       else
       {
-        v21 = [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityInternalData];
+        _accessibilityInternalData = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityInternalData];
         memset(__b, 0, sizeof(__b));
-        obj = MEMORY[0x29EDC9748](v21);
+        obj = MEMORY[0x29EDC9748](_accessibilityInternalData);
         v14 = [obj countByEnumeratingWithState:__b objects:v27 count:16];
         if (v14)
         {
@@ -2715,7 +2715,7 @@ uint64_t __75__UIKeyboardLayoutStarAccessibility__accessibilitySupplementaryHead
             }
 
             v20 = *(__b[1] + 8 * v11);
-            v8 = [v21 objectForKey:v20];
+            v8 = [_accessibilityInternalData objectForKey:v20];
             v7 = location[0];
             *&v3 = MEMORY[0x29EDC9740](v8).n128_u64[0];
             if (v8 == v7)
@@ -2735,14 +2735,14 @@ uint64_t __75__UIKeyboardLayoutStarAccessibility__accessibilitySupplementaryHead
             }
           }
 
-          v5 = [v20 unsignedIntegerValue];
-          v6 = 0;
-          if ([(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityHasBiasEscapeButton])
+          unsignedIntegerValue = [v20 unsignedIntegerValue];
+          _accessibilityBiasEscapeButtonIsFirst = 0;
+          if ([(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityHasBiasEscapeButton])
           {
-            v6 = [(UIKeyboardLayoutStarAccessibility *)v25 _accessibilityBiasEscapeButtonIsFirst];
+            _accessibilityBiasEscapeButtonIsFirst = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityBiasEscapeButtonIsFirst];
           }
 
-          v26 = v5 + ((v6 & 1) != 0);
+          v26 = unsignedIntegerValue + ((_accessibilityBiasEscapeButtonIsFirst & 1) != 0);
           v23 = 1;
         }
 
@@ -2759,134 +2759,134 @@ LABEL_20:
           v23 = 1;
         }
 
-        objc_storeStrong(&v21, 0);
+        objc_storeStrong(&_accessibilityInternalData, 0);
       }
     }
 
-    objc_storeStrong(&v22, 0);
+    objc_storeStrong(&_accessibilityStickyPopupKeys, 0);
   }
 
   objc_storeStrong(location, 0);
   return v26;
 }
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
-  v22 = a3;
-  v14 = [(UIKeyboardLayoutStarAccessibility *)self _axKBModalView];
-  MEMORY[0x29EDC9740](v14);
-  if (v14)
+  indexCopy = index;
+  _axKBModalView = [(UIKeyboardLayoutStarAccessibility *)self _axKBModalView];
+  MEMORY[0x29EDC9740](_axKBModalView);
+  if (_axKBModalView)
   {
-    v25 = [(UIKeyboardLayoutStarAccessibility *)v24 _axKBModalView];
+    _axKBModalView2 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _axKBModalView];
     goto LABEL_26;
   }
 
-  v21 = [(UIKeyboardLayoutStarAccessibility *)v24 _accessibilityStickyPopupKeys];
-  if (v21)
+  _accessibilityStickyPopupKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityStickyPopupKeys];
+  if (_accessibilityStickyPopupKeys)
   {
     v20 = 0;
-    if ((v22 & 0x8000000000000000) != 0 || v22 >= [v21 count])
+    if ((indexCopy & 0x8000000000000000) != 0 || indexCopy >= [_accessibilityStickyPopupKeys count])
     {
       _AXAssert();
     }
 
     else
     {
-      v3 = [v21 objectAtIndexedSubscript:v22];
+      v3 = [_accessibilityStickyPopupKeys objectAtIndexedSubscript:indexCopy];
       v4 = v20;
       v20 = v3;
       MEMORY[0x29EDC9740](v4);
     }
 
-    v25 = MEMORY[0x29EDC9748](v20);
+    _axKBModalView2 = MEMORY[0x29EDC9748](v20);
     v19 = 1;
     objc_storeStrong(&v20, 0);
     goto LABEL_25;
   }
 
-  if (![(UIKeyboardLayoutStarAccessibility *)v24 _accessibilityHasBiasEscapeButton]|| ([(UIKeyboardLayoutStarAccessibility *)v24 _accessibilityBiasEscapeButtonIsFirst]& 1) == 0)
+  if (![(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityHasBiasEscapeButton]|| ([(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityBiasEscapeButtonIsFirst]& 1) == 0)
   {
 LABEL_14:
-    v18 = [(UIKeyboardLayoutStarAccessibility *)v24 _accessibilityInternalData];
-    v17 = [objc_allocWithZone(MEMORY[0x29EDBA070]) initWithUnsignedInteger:v22];
-    v16 = [v18 objectForKey:v17];
+    _accessibilityInternalData = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityInternalData];
+    v17 = [objc_allocWithZone(MEMORY[0x29EDBA070]) initWithUnsignedInteger:indexCopy];
+    v16 = [_accessibilityInternalData objectForKey:v17];
     if (!v16)
     {
-      v15 = [(UIKeyboardLayoutStarAccessibility *)v24 _accessibilityKeys];
-      if (v22 < [v15 count])
+      _accessibilityKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityKeys];
+      if (indexCopy < [_accessibilityKeys count])
       {
-        v13 = [v15 objectAtIndex:v22];
-        v5 = [(UIKeyboardLayoutStarAccessibility *)v24 _accessibilityCreateElementForKey:v13];
+        v13 = [_accessibilityKeys objectAtIndex:indexCopy];
+        v5 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityCreateElementForKey:v13];
         v6 = v16;
         v16 = v5;
         MEMORY[0x29EDC9740](v6);
         *&v7 = MEMORY[0x29EDC9740](v13).n128_u64[0];
         if (v16)
         {
-          [v18 setObject:v16 forKey:{v17, v7}];
+          [_accessibilityInternalData setObject:v16 forKey:{v17, v7}];
         }
       }
 
-      objc_storeStrong(&v15, 0);
+      objc_storeStrong(&_accessibilityKeys, 0);
     }
 
     if (!v16)
     {
-      v12 = v22;
-      if (v12 == [(UIKeyboardLayoutStarAccessibility *)v24 accessibilityElementCount]- 1 && [(UIKeyboardLayoutStarAccessibility *)v24 _accessibilityHasBiasEscapeButton]&& ([(UIKeyboardLayoutStarAccessibility *)v24 _accessibilityBiasEscapeButtonIsFirst]& 1) == 0)
+      v12 = indexCopy;
+      if (v12 == [(UIKeyboardLayoutStarAccessibility *)selfCopy accessibilityElementCount]- 1 && [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityHasBiasEscapeButton]&& ([(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityBiasEscapeButtonIsFirst]& 1) == 0)
       {
-        v8 = [(UIKeyboardLayoutStarAccessibility *)v24 _accessibilityBiasEscapeButton];
+        _accessibilityBiasEscapeButton = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityBiasEscapeButton];
         v9 = v16;
-        v16 = v8;
+        v16 = _accessibilityBiasEscapeButton;
         MEMORY[0x29EDC9740](v9);
       }
     }
 
-    v25 = MEMORY[0x29EDC9748](v16);
+    _axKBModalView2 = MEMORY[0x29EDC9748](v16);
     v19 = 1;
     objc_storeStrong(&v16, 0);
     objc_storeStrong(&v17, 0);
-    objc_storeStrong(&v18, 0);
+    objc_storeStrong(&_accessibilityInternalData, 0);
     goto LABEL_25;
   }
 
-  if (v22)
+  if (indexCopy)
   {
-    --v22;
+    --indexCopy;
     goto LABEL_14;
   }
 
-  v25 = [(UIKeyboardLayoutStarAccessibility *)v24 _accessibilityBiasEscapeButton];
+  _axKBModalView2 = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityBiasEscapeButton];
   v19 = 1;
 LABEL_25:
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&_accessibilityStickyPopupKeys, 0);
 LABEL_26:
-  v10 = v25;
+  v10 = _axKBModalView2;
 
   return v10;
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  v18 = a3;
-  v17 = self;
+  rectCopy = rect;
+  selfCopy = self;
   v16[1] = a2;
   v15.receiver = self;
   v15.super_class = UIKeyboardLayoutStarAccessibility;
-  v16[0] = [(UIKeyboardLayoutStarAccessibility *)&v15 focusItemsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  if (([(UIKeyboardLayoutStarAccessibility *)v17 _accessibilityIsFKARunningForFocusItem]& 1) != 0)
+  v16[0] = [(UIKeyboardLayoutStarAccessibility *)&v15 focusItemsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  if (([(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
-    v6 = [(UIKeyboardLayoutStarAccessibility *)v17 _accessibilityKeys];
+    _accessibilityKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityKeys];
     v7 = MEMORY[0x29EDCA5F8];
     v8 = -1073741824;
     v9 = 0;
     v10 = __54__UIKeyboardLayoutStarAccessibility_focusItemsInRect___block_invoke;
     v11 = &unk_29F30D8B0;
-    v12 = MEMORY[0x29EDC9748](v17);
-    v13 = [v6 axMapObjectsUsingBlock:&v7];
-    *&v3 = MEMORY[0x29EDC9740](v6).n128_u64[0];
+    v12 = MEMORY[0x29EDC9748](selfCopy);
+    v13 = [_accessibilityKeys axMapObjectsUsingBlock:&v7];
+    *&v3 = MEMORY[0x29EDC9740](_accessibilityKeys).n128_u64[0];
     v19 = [MEMORY[0x29EDB8D80] axArrayWithPossiblyNilArrays:{1, v3, v13}];
     v14 = 1;
     objc_storeStrong(&v13, 0);
@@ -2916,13 +2916,13 @@ id __54__UIKeyboardLayoutStarAccessibility_focusItemsInRect___block_invoke(id *a
   return v4;
 }
 
-- (BOOL)canProduceString:(id)a3
+- (BOOL)canProduceString:(id)string
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13.receiver = v16;
+  objc_storeStrong(location, string);
+  v13.receiver = selfCopy;
   v13.super_class = UIKeyboardLayoutStarAccessibility;
   v14 = [(UIKeyboardLayoutStarAccessibility *)&v13 canProduceString:location[0]];
   if ((v14 & 1) == 0 && UIAccessibilityIsVoiceOverRunning())
@@ -2942,7 +2942,7 @@ id __54__UIKeyboardLayoutStarAccessibility_focusItemsInRect___block_invoke(id *a
         break;
       }
 
-      v5 = v16;
+      v5 = selfCopy;
       v18 = i;
       v17 = 1;
       v19 = i;
@@ -2962,12 +2962,12 @@ id __54__UIKeyboardLayoutStarAccessibility_focusItemsInRect___block_invoke(id *a
   return v4 & 1;
 }
 
-- (double)_axGetSortingNumberForEmojiCell:(uint64_t)a1
+- (double)_axGetSortingNumberForEmojiCell:(uint64_t)cell
 {
-  v9 = a1;
+  cellCopy = cell;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v9)
+  if (cellCopy)
   {
     v6 = 0.4;
     v5 = [location _accessibilityAncestorIsKindOf:objc_opt_class()];
@@ -2995,28 +2995,28 @@ id __54__UIKeyboardLayoutStarAccessibility_focusItemsInRect___block_invoke(id *a
   return v10;
 }
 
-- (id)_rowNumberOverrideForSplitEmojiKey:(uint64_t)a1
+- (id)_rowNumberOverrideForSplitEmojiKey:(uint64_t)key
 {
-  v8 = a1;
+  keyCopy = key;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v8)
+  if (keyCopy)
   {
     v5 = 0;
-    v4 = [location name];
-    if ([v4 isEqualToString:@"Space-Key"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Return-Key") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Delete-Key"))
+    name = [location name];
+    if ([name isEqualToString:@"Space-Key"] & 1) != 0 || (objc_msgSend(name, "isEqualToString:", @"Return-Key") & 1) != 0 || (objc_msgSend(name, "isEqualToString:", @"Delete-Key"))
     {
       objc_storeStrong(&v5, &unk_2A238E7F8);
     }
 
-    else if ([v4 isEqualToString:@"Emoji-International-Key"])
+    else if ([name isEqualToString:@"Emoji-International-Key"])
     {
       objc_storeStrong(&v5, &unk_2A238E810);
     }
 
     v9 = MEMORY[0x29EDC9748](v5);
     v6 = 1;
-    objc_storeStrong(&v4, 0);
+    objc_storeStrong(&name, 0);
     objc_storeStrong(&v5, 0);
   }
 
@@ -3034,22 +3034,22 @@ id __54__UIKeyboardLayoutStarAccessibility_focusItemsInRect___block_invoke(id *a
 
 - (id)_accessibilityGetKeyboardRowsByRowNumber
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 iOSGetKeyboardRowsByNumber];
+    iOSGetKeyboardRowsByNumber = [self iOSGetKeyboardRowsByNumber];
   }
 
   else
   {
-    v2 = 0;
+    iOSGetKeyboardRowsByNumber = 0;
   }
 
-  return v2;
+  return iOSGetKeyboardRowsByNumber;
 }
 
 - (id)atvGetKeyboardRowsByNumber
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   v17[0] = 0;
   v17[1] = v17;
@@ -3061,23 +3061,23 @@ id __54__UIKeyboardLayoutStarAccessibility_focusItemsInRect___block_invoke(id *a
   v14 = 0x20000000;
   v15 = 32;
   v16 = 0;
-  v12 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = [(UIKeyboardLayoutStarAccessibility *)v22 _accessibilityKeys];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  _accessibilityKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityKeys];
   v5 = MEMORY[0x29EDCA5F8];
   v6 = -1073741824;
   v7 = 0;
   v8 = __63__UIKeyboardLayoutStarAccessibility_atvGetKeyboardRowsByNumber__block_invoke;
   v9 = &unk_29F30D8D8;
-  v10 = MEMORY[0x29EDC9748](v22);
+  v10 = MEMORY[0x29EDC9748](selfCopy);
   v11[1] = v13;
   v11[2] = v17;
-  v11[0] = MEMORY[0x29EDC9748](v12);
-  [v4 enumerateObjectsUsingBlock:&v5];
-  MEMORY[0x29EDC9740](v4);
-  v3 = MEMORY[0x29EDC9748](v12);
+  v11[0] = MEMORY[0x29EDC9748](dictionary);
+  [_accessibilityKeys enumerateObjectsUsingBlock:&v5];
+  MEMORY[0x29EDC9740](_accessibilityKeys);
+  v3 = MEMORY[0x29EDC9748](dictionary);
   objc_storeStrong(v11, 0);
   objc_storeStrong(&v10, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&dictionary, 0);
   _Block_object_dispose(v13, 8);
   _Block_object_dispose(v17, 8);
 
@@ -3217,14 +3217,14 @@ void __63__UIKeyboardLayoutStarAccessibility_atvGetKeyboardRowsByNumber__block_i
 
 - (id)iOSGetKeyboardRowsByNumber
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [MEMORY[0x29EDB8E00] dictionary];
-  v3 = [(UIKeyboardLayoutStarAccessibility *)v8 _accessibilityKeys];
-  v5 = MEMORY[0x29EDC9748](v8);
+  _accessibilityKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityKeys];
+  v5 = MEMORY[0x29EDC9748](selfCopy);
   v6 = MEMORY[0x29EDC9748](v7[0]);
-  [v3 enumerateObjectsUsingBlock:?];
-  MEMORY[0x29EDC9740](v3);
+  [_accessibilityKeys enumerateObjectsUsingBlock:?];
+  MEMORY[0x29EDC9740](_accessibilityKeys);
   v4 = MEMORY[0x29EDC9748](v7[0]);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(&v5, 0);
@@ -3403,40 +3403,40 @@ LABEL_28:
 
 - (id)_accessibilityScannerGroupElements
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v8 = [(UIKeyboardLayoutStarAccessibility *)self _axKBModalView];
-  *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-  if (v8)
+  _axKBModalView = [(UIKeyboardLayoutStarAccessibility *)self _axKBModalView];
+  *&v2 = MEMORY[0x29EDC9740](_axKBModalView).n128_u64[0];
+  if (_axKBModalView)
   {
-    v12.receiver = v14;
+    v12.receiver = selfCopy;
     v12.super_class = UIKeyboardLayoutStarAccessibility;
-    v15 = [(UIKeyboardLayoutStarAccessibility *)&v12 _accessibilityScannerGroupElements];
+    _accessibilityScannerGroupElements = [(UIKeyboardLayoutStarAccessibility *)&v12 _accessibilityScannerGroupElements];
   }
 
   else
   {
-    v7 = [(UIKeyboardLayoutStarAccessibility *)v14 _accessibilityStickyPopupKeys];
-    MEMORY[0x29EDC9740](v7);
-    if (v7)
+    _accessibilityStickyPopupKeys = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityStickyPopupKeys];
+    MEMORY[0x29EDC9740](_accessibilityStickyPopupKeys);
+    if (_accessibilityStickyPopupKeys)
     {
-      v15 = [(UIKeyboardLayoutStarAccessibility *)v14 _accessibilityStickyPopupKeys];
+      _accessibilityScannerGroupElements = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityStickyPopupKeys];
     }
 
     else
     {
-      v11 = [(UIKeyboardLayoutStarAccessibility *)v14 _accessibilityGetKeyboardRowsByRowNumber];
-      v10 = [v11 count];
-      v6 = [v11 allKeys];
-      v9 = [v6 sortedArrayUsingComparator:&__block_literal_global_718];
-      *&v3 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-      v15 = [(UIKeyboardLayoutStarAccessibility *)v14 iOSGetOrderedRowsForRows:v11 sortedRows:v9 numRows:v10, v3];
+      _accessibilityGetKeyboardRowsByRowNumber = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityGetKeyboardRowsByRowNumber];
+      v10 = [_accessibilityGetKeyboardRowsByRowNumber count];
+      allKeys = [_accessibilityGetKeyboardRowsByRowNumber allKeys];
+      v9 = [allKeys sortedArrayUsingComparator:&__block_literal_global_718];
+      *&v3 = MEMORY[0x29EDC9740](allKeys).n128_u64[0];
+      _accessibilityScannerGroupElements = [(UIKeyboardLayoutStarAccessibility *)selfCopy iOSGetOrderedRowsForRows:_accessibilityGetKeyboardRowsByRowNumber sortedRows:v9 numRows:v10, v3];
       objc_storeStrong(&v9, 0);
-      objc_storeStrong(&v11, 0);
+      objc_storeStrong(&_accessibilityGetKeyboardRowsByRowNumber, 0);
     }
   }
 
-  v4 = v15;
+  v4 = _accessibilityScannerGroupElements;
 
   return v4;
 }
@@ -3472,17 +3472,17 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityScannerGroupEleme
   return v7;
 }
 
-- (id)atvGetOrderedRowsForRows:(id)a3 sortedRows:(id)a4 numRows:(int64_t)a5
+- (id)atvGetOrderedRowsForRows:(id)rows sortedRows:(id)sortedRows numRows:(int64_t)numRows
 {
   v46 = *MEMORY[0x29EDCA608];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, rows);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
-  v38[1] = a5;
-  v38[0] = [MEMORY[0x29EDB8DE8] arrayWithCapacity:a5];
+  objc_storeStrong(&v39, sortedRows);
+  v38[1] = numRows;
+  v38[0] = [MEMORY[0x29EDB8DE8] arrayWithCapacity:numRows];
   memset(__b, 0, sizeof(__b));
   v26 = MEMORY[0x29EDC9748](v39);
   v27 = [v26 countByEnumeratingWithState:__b objects:v45 count:16];
@@ -3500,7 +3500,7 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityScannerGroupEleme
       }
 
       v37 = *(__b[1] + 8 * v22);
-      v35 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
       v34 = [location[0] objectForKey:v37];
       v33 = [v34 count];
       if (v33 >= 6)
@@ -3531,14 +3531,14 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityScannerGroupEleme
           v44 = v19;
           v29 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
           *&v6 = MEMORY[0x29EDC9740](v19).n128_u64[0];
-          [v35 addObject:{v29, v6}];
+          [array addObject:{v29, v6}];
           objc_storeStrong(&v29, 0);
         }
       }
 
       else
       {
-        [v35 setArray:v34];
+        [array setArray:v34];
       }
 
       if ([v34 count] <= 1)
@@ -3546,40 +3546,40 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityScannerGroupEleme
         if ([v34 count] == 1)
         {
           v10 = v38[0];
-          v11 = [v34 firstObject];
+          firstObject = [v34 firstObject];
           [v10 addObject:?];
-          MEMORY[0x29EDC9740](v11);
+          MEMORY[0x29EDC9740](firstObject);
         }
       }
 
       else
       {
         v41[0] = @"GroupElements";
-        v42[0] = v35;
+        v42[0] = array;
         v41[1] = @"GroupTraits";
         v42[1] = &unk_2A238E840;
         v41[2] = @"GroupLabel";
         v12 = MEMORY[0x29EDBA0F8];
         v18 = UIKitAccessibilityLocalizedString();
-        v17 = [v34 firstObject];
-        v16 = [v17 accessibilityLabel];
-        v15 = [v34 lastObject];
-        v14 = [v15 accessibilityLabel];
-        v13 = [v12 stringWithFormat:v18, v16, v14];
+        firstObject2 = [v34 firstObject];
+        accessibilityLabel = [firstObject2 accessibilityLabel];
+        lastObject = [v34 lastObject];
+        accessibilityLabel2 = [lastObject accessibilityLabel];
+        v13 = [v12 stringWithFormat:v18, accessibilityLabel, accessibilityLabel2];
         v42[2] = v13;
         v28[0] = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v42 forKeys:v41 count:3];
         MEMORY[0x29EDC9740](v13);
-        MEMORY[0x29EDC9740](v14);
-        MEMORY[0x29EDC9740](v15);
-        MEMORY[0x29EDC9740](v16);
-        MEMORY[0x29EDC9740](v17);
+        MEMORY[0x29EDC9740](accessibilityLabel2);
+        MEMORY[0x29EDC9740](lastObject);
+        MEMORY[0x29EDC9740](accessibilityLabel);
+        MEMORY[0x29EDC9740](firstObject2);
         *&v7 = MEMORY[0x29EDC9740](v18).n128_u64[0];
         [v38[0] addObject:{v28[0], v7}];
         objc_storeStrong(v28, 0);
       }
 
       objc_storeStrong(&v34, 0);
-      objc_storeStrong(&v35, 0);
+      objc_storeStrong(&array, 0);
       ++v22;
       if (v20 + 1 >= v23)
       {
@@ -3602,19 +3602,19 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityScannerGroupEleme
   return v9;
 }
 
-- (id)iOSGetOrderedRowsForRows:(id)a3 sortedRows:(id)a4 numRows:(int64_t)a5
+- (id)iOSGetOrderedRowsForRows:(id)rows sortedRows:(id)sortedRows numRows:(int64_t)numRows
 {
   v59 = *MEMORY[0x29EDCA608];
-  v49 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, rows);
   v47 = 0;
-  objc_storeStrong(&v47, a4);
-  v46[1] = a5;
-  v46[0] = [MEMORY[0x29EDB8DE8] arrayWithCapacity:a5];
+  objc_storeStrong(&v47, sortedRows);
+  v46[1] = numRows;
+  v46[0] = [MEMORY[0x29EDB8DE8] arrayWithCapacity:numRows];
   v45 = 1;
-  v44 = [(UIKeyboardLayoutStarAccessibility *)v49 _accessibilityIsRTL];
+  _accessibilityIsRTL = [(UIKeyboardLayoutStarAccessibility *)selfCopy _accessibilityIsRTL];
   memset(__b, 0, sizeof(__b));
   v27 = MEMORY[0x29EDC9748](v47);
   v28 = [v27 countByEnumeratingWithState:__b objects:v58 count:16];
@@ -3632,12 +3632,12 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityScannerGroupEleme
       }
 
       v43 = *(__b[1] + 8 * v23);
-      v41 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
       v40 = [location[0] objectForKey:v43];
       v39 = [v40 count];
       if (v39 <= 8)
       {
-        [v41 setArray:v40];
+        [array setArray:v40];
       }
 
       else
@@ -3647,7 +3647,7 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityScannerGroupEleme
         v35 = 0;
         v36 = __81__UIKeyboardLayoutStarAccessibility_iOSGetOrderedRowsForRows_sortedRows_numRows___block_invoke;
         v37 = &__block_descriptor_33_e11_q24__0_8_16l;
-        v38 = v44 & 1;
+        v38 = _accessibilityIsRTL & 1;
         v5 = [v40 sortedArrayWithOptions:16 usingComparator:?];
         v6 = v40;
         v40 = v5;
@@ -3672,7 +3672,7 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityScannerGroupEleme
           v57 = v20;
           v30 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
           *&v7 = MEMORY[0x29EDC9740](v20).n128_u64[0];
-          [v41 addObject:{v30, v7}];
+          [array addObject:{v30, v7}];
           v31 += v32;
           objc_storeStrong(&v30, 0);
         }
@@ -3683,35 +3683,35 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityScannerGroupEleme
         if ([v40 count] == 1)
         {
           v11 = v46[0];
-          v12 = [v40 firstObject];
+          firstObject = [v40 firstObject];
           [v11 addObject:?];
-          MEMORY[0x29EDC9740](v12);
+          MEMORY[0x29EDC9740](firstObject);
         }
       }
 
       else
       {
         v54[0] = @"GroupElements";
-        v55[0] = v41;
+        v55[0] = array;
         v54[1] = @"GroupTraits";
         v55[1] = &unk_2A238E840;
         v54[2] = @"GroupLabel";
         v13 = MEMORY[0x29EDBA0F8];
         v19 = UIKitAccessibilityLocalizedString();
-        v18 = [v40 firstObject];
-        v17 = [v18 accessibilityLabel];
-        v16 = [v40 lastObject];
-        v15 = [v16 accessibilityLabel];
-        v14 = [v13 stringWithFormat:v19, v17, v15];
+        firstObject2 = [v40 firstObject];
+        accessibilityLabel = [firstObject2 accessibilityLabel];
+        lastObject = [v40 lastObject];
+        accessibilityLabel2 = [lastObject accessibilityLabel];
+        v14 = [v13 stringWithFormat:v19, accessibilityLabel, accessibilityLabel2];
         v55[2] = v14;
         v54[3] = @"GroupScanBehaviorTraits";
         v55[3] = &unk_2A238E858;
         v29[0] = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v55 forKeys:v54 count:4];
         MEMORY[0x29EDC9740](v14);
-        MEMORY[0x29EDC9740](v15);
-        MEMORY[0x29EDC9740](v16);
-        MEMORY[0x29EDC9740](v17);
-        MEMORY[0x29EDC9740](v18);
+        MEMORY[0x29EDC9740](accessibilityLabel2);
+        MEMORY[0x29EDC9740](lastObject);
+        MEMORY[0x29EDC9740](accessibilityLabel);
+        MEMORY[0x29EDC9740](firstObject2);
         *&v8 = MEMORY[0x29EDC9740](v19).n128_u64[0];
         [v46[0] addObject:{v29[0], v8}];
         objc_storeStrong(v29, 0);
@@ -3719,7 +3719,7 @@ uint64_t __71__UIKeyboardLayoutStarAccessibility__accessibilityScannerGroupEleme
 
       ++v45;
       objc_storeStrong(&v40, 0);
-      objc_storeStrong(&v41, 0);
+      objc_storeStrong(&array, 0);
       ++v23;
       if (v21 + 1 >= v24)
       {

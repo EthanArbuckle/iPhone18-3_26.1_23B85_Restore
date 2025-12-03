@@ -1,16 +1,16 @@
 @interface CKEncryptedData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needsDecryption;
 - (BOOL)needsEncryption;
 - (CKEncryptedData)init;
-- (CKEncryptedData)initWithCoder:(id)a3;
-- (CKEncryptedData)initWithData:(id)a3;
-- (CKEncryptedData)initWithEncryptedData:(id)a3;
-- (CKEncryptedData)initWithValue:(id)a3;
+- (CKEncryptedData)initWithCoder:(id)coder;
+- (CKEncryptedData)initWithData:(id)data;
+- (CKEncryptedData)initWithEncryptedData:(id)data;
+- (CKEncryptedData)initWithValue:(id)value;
 - (id)CKPropertiesDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKEncryptedData
@@ -43,11 +43,11 @@
   objc_exception_throw(v6);
 }
 
-- (CKEncryptedData)initWithData:(id)a3
+- (CKEncryptedData)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v25 = 0;
-  v5 = _CKCheckArgument("data", v4, 0, 0, 0, &v25);
+  v5 = _CKCheckArgument("data", dataCopy, 0, 0, 0, &v25);
   v6 = v25;
   if ((v5 & 1) == 0)
   {
@@ -66,7 +66,7 @@
   v9 = [(CKEncryptedData *)&v24 init];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v4, v7, v8);
+    v10 = objc_msgSend_copy(dataCopy, v7, v8);
     data = v9->_data;
     v9->_data = v10;
   }
@@ -74,15 +74,15 @@
   return v9;
 }
 
-- (CKEncryptedData)initWithEncryptedData:(id)a3
+- (CKEncryptedData)initWithEncryptedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = CKEncryptedData;
   v7 = [(CKEncryptedData *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(dataCopy, v5, v6);
     encryptedData = v7->_encryptedData;
     v7->_encryptedData = v8;
   }
@@ -90,11 +90,11 @@
   return v7;
 }
 
-- (CKEncryptedData)initWithValue:(id)a3
+- (CKEncryptedData)initWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v74 = 0;
-  v5 = _CKCheckArgument("value", v4, 0, 0, 1, &v74);
+  v5 = _CKCheckArgument("value", valueCopy, 0, 0, 1, &v74);
   v6 = v74;
   v7 = v6;
   if ((v5 & 1) == 0)
@@ -112,7 +112,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v4;
+      v12 = valueCopy;
       if (CFNumberIsFloatType(v12))
       {
         v13 = [CKEncryptedDouble alloc];
@@ -136,7 +136,7 @@
     if (objc_opt_isKindOfClass())
     {
       v19 = [CKEncryptedDate alloc];
-      v10 = objc_msgSend_initWithDate_(v19, v20, v4);
+      v10 = objc_msgSend_initWithDate_(v19, v20, valueCopy);
       goto LABEL_4;
     }
 
@@ -144,7 +144,7 @@
     if (objc_opt_isKindOfClass())
     {
       v21 = [CKEncryptedReference alloc];
-      v10 = objc_msgSend_initWithReference_(v21, v22, v4);
+      v10 = objc_msgSend_initWithReference_(v21, v22, valueCopy);
       goto LABEL_4;
     }
 
@@ -152,14 +152,14 @@
     if (objc_opt_isKindOfClass())
     {
       v29 = [CKEncryptedLocation alloc];
-      v10 = objc_msgSend_initWithLocation_(v29, v30, v4);
+      v10 = objc_msgSend_initWithLocation_(v29, v30, valueCopy);
       goto LABEL_4;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = objc_msgSend_initWithData_(self, v31, v4);
+      v11 = objc_msgSend_initWithData_(self, v31, valueCopy);
       goto LABEL_15;
     }
 
@@ -176,7 +176,7 @@
       objc_exception_throw(v68);
     }
 
-    v12 = v4;
+    v12 = valueCopy;
     if (!objc_msgSend_count(v12, v32, v33))
     {
       v40 = [CKEncryptedEmptyArray alloc];
@@ -245,7 +245,7 @@ LABEL_35:
   }
 
   v8 = [CKEncryptedString alloc];
-  v10 = objc_msgSend_initWithString_(v8, v9, v4);
+  v10 = objc_msgSend_initWithString_(v8, v9, valueCopy);
 LABEL_4:
   v11 = v10;
 
@@ -253,13 +253,13 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = objc_msgSend_data(v4, v5, v6);
+    v7 = objc_msgSend_data(equalCopy, v5, v6);
     v10 = objc_msgSend_data(self, v8, v9);
     isEqualToData = objc_msgSend_isEqualToData_(v7, v11, v10);
   }
@@ -299,9 +299,9 @@ LABEL_15:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_data(self, a2, a3);
+  v4 = objc_msgSend_data(self, a2, zone);
   v5 = objc_alloc(objc_opt_class());
   v8 = v5;
   if (v4)
@@ -344,9 +344,9 @@ LABEL_15:
   return v8;
 }
 
-- (CKEncryptedData)initWithCoder:(id)a3
+- (CKEncryptedData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CKEncryptedData;
   v5 = [(CKEncryptedData *)&v16 init];
@@ -354,7 +354,7 @@ LABEL_15:
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"EncryptedData");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"EncryptedData");
     data = v5->_data;
     v5->_data = v9;
 
@@ -364,7 +364,7 @@ LABEL_15:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v11 = objc_opt_class();
-        v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"ReallyEncryptedData");
+        v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"ReallyEncryptedData");
         encryptedData = v5->_encryptedData;
         v5->_encryptedData = v13;
       }
@@ -376,12 +376,12 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_data(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v13, v8, v7, @"EncryptedData");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"EncryptedData");
 
   if ((byte_1EA90C538 & 1) == 0)
   {
@@ -389,7 +389,7 @@ LABEL_15:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v11 = objc_msgSend_encryptedData(self, v9, v10);
-      objc_msgSend_encodeObject_forKey_(v13, v12, v11, @"ReallyEncryptedData");
+      objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"ReallyEncryptedData");
     }
   }
 

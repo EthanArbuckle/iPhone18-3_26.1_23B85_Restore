@@ -1,12 +1,12 @@
 @interface PNPhotosChallengeUtils
-+ (id)titleWithoutFormattingForTitle:(id)a3;
++ (id)titleWithoutFormattingForTitle:(id)title;
 @end
 
 @implementation PNPhotosChallengeUtils
 
-+ (id)titleWithoutFormattingForTitle:(id)a3
++ (id)titleWithoutFormattingForTitle:(id)title
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@" " withString:@" "];
+  v3 = [title stringByReplacingOccurrencesOfString:@" " withString:@" "];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F46CD000];
 
   return v4;

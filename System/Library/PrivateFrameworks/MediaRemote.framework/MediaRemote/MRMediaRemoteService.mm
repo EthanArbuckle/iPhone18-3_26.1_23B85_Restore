@@ -1,53 +1,53 @@
 @interface MRMediaRemoteService
 - (BOOL)deviceSupportsUISessions;
-- (CGSize)imageDimensionsForArtworkData:(id)a3;
+- (CGSize)imageDimensionsForArtworkData:(id)data;
 - (id)UIServerEndpoint;
 - (id)UIServiceRelayEndpoint;
 - (id)applicationUserIdentity;
-- (id)createTokenWithInvitationData:(id)a3 equivalentMediaIdentifier:(id)a4 version:(id)a5;
-- (id)getActiveSystemEndpointUIDForType:(int64_t)a3;
+- (id)createTokenWithInvitationData:(id)data equivalentMediaIdentifier:(id)identifier version:(id)version;
+- (id)getActiveSystemEndpointUIDForType:(int64_t)type;
 - (id)groupSessionServerEndpoint;
-- (void)beginMusicHandoffSessionWithSource:(id)a3 destination:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)closeApplicationConnection:(id)a3 error:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)createApplicationConnection:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)fetchParticipantsWithRequest:(id)a3 playerPath:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)getDeviceInfoForPlayerPath:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)joinGroupSessionWithToken:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)leaveGroupSessionWithIdentifier:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)mediaSuggestionDeviceUIDWithQueue:(id)a3 completion:(id)a4;
-- (void)presentProximityCardWithDeviceName:(id)a3 modelIdentifier:(id)a4 color:(id)a5 url:(id)a6 queue:(id)a7 completion:(id)a8;
-- (void)requestGroupSessionWithCompletion:(id)a3;
-- (void)resolvePlayerPath:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)sendApplicationConnectionMessage:(id)a3 forConnection:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)sendEvent:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)sendMusicHandoffEvent:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)setUIServiceRelayEndpoint:(id)a3;
+- (void)beginMusicHandoffSessionWithSource:(id)source destination:(id)destination queue:(id)queue completion:(id)completion;
+- (void)closeApplicationConnection:(id)connection error:(id)error queue:(id)queue completion:(id)completion;
+- (void)createApplicationConnection:(id)connection queue:(id)queue completion:(id)completion;
+- (void)fetchParticipantsWithRequest:(id)request playerPath:(id)path queue:(id)queue completion:(id)completion;
+- (void)getDeviceInfoForPlayerPath:(id)path queue:(id)queue completion:(id)completion;
+- (void)joinGroupSessionWithToken:(id)token queue:(id)queue completion:(id)completion;
+- (void)leaveGroupSessionWithIdentifier:(id)identifier queue:(id)queue completion:(id)completion;
+- (void)mediaSuggestionDeviceUIDWithQueue:(id)queue completion:(id)completion;
+- (void)presentProximityCardWithDeviceName:(id)name modelIdentifier:(id)identifier color:(id)color url:(id)url queue:(id)queue completion:(id)completion;
+- (void)requestGroupSessionWithCompletion:(id)completion;
+- (void)resolvePlayerPath:(id)path queue:(id)queue completion:(id)completion;
+- (void)sendApplicationConnectionMessage:(id)message forConnection:(id)connection queue:(id)queue completion:(id)completion;
+- (void)sendEvent:(id)event queue:(id)queue completion:(id)completion;
+- (void)sendMusicHandoffEvent:(id)event queue:(id)queue completion:(id)completion;
+- (void)setUIServiceRelayEndpoint:(id)endpoint;
 - (void)startSystemGroupSession;
 - (void)stopSystemGroupSession;
-- (void)suspendDisconnectionPauseForConfiguration:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)userIdentityForDSID:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)suspendDisconnectionPauseForConfiguration:(id)configuration queue:(id)queue completion:(id)completion;
+- (void)userIdentityForDSID:(id)d queue:(id)queue completion:(id)completion;
 @end
 
 @implementation MRMediaRemoteService
 
-- (void)getDeviceInfoForPlayerPath:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)getDeviceInfoForPlayerPath:(id)path queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  pathCopy = path;
   v11 = MRCreateXPCMessage(0x20000000000002CuLL);
-  MRAddPlayerPathToXPCMessage(v11, v10);
+  MRAddPlayerPathToXPCMessage(v11, pathCopy);
 
-  v12 = [(MRMediaRemoteService *)self connection];
+  connection = [(MRMediaRemoteService *)self connection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __68__MRMediaRemoteService_getDeviceInfoForPlayerPath_queue_completion___block_invoke;
   v15[3] = &unk_1E769C4A8;
   v16 = v11;
-  v17 = v8;
-  v13 = v8;
+  v17 = completionCopy;
+  v13 = completionCopy;
   v14 = v11;
-  xpc_connection_send_message_with_reply(v12, v14, v9, v15);
+  xpc_connection_send_message_with_reply(connection, v14, queueCopy, v15);
 }
 
 void __68__MRMediaRemoteService_getDeviceInfoForPlayerPath_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -87,13 +87,13 @@ void __68__MRMediaRemoteService_getDeviceInfoForPlayerPath_queue_completion___bl
   }
 }
 
-- (id)getActiveSystemEndpointUIDForType:(int64_t)a3
+- (id)getActiveSystemEndpointUIDForType:(int64_t)type
 {
   v5 = MRCreateXPCMessage(0x300000000000010uLL);
-  xpc_dictionary_set_int64(v5, "MRXPC_ROUTE_OPTIONS_KEY", a3);
-  v6 = [(MRMediaRemoteService *)self mrXPCConnection];
+  xpc_dictionary_set_int64(v5, "MRXPC_ROUTE_OPTIONS_KEY", type);
+  mrXPCConnection = [(MRMediaRemoteService *)self mrXPCConnection];
   v11 = 0;
-  v7 = [v6 sendSyncMessage:v5 error:&v11];
+  v7 = [mrXPCConnection sendSyncMessage:v5 error:&v11];
   v8 = v11;
 
   if (v8)
@@ -113,9 +113,9 @@ void __68__MRMediaRemoteService_getDeviceInfoForPlayerPath_queue_completion___bl
 - (id)UIServerEndpoint
 {
   v3 = MRCreateXPCMessage(0xB00000000000001uLL);
-  v4 = [(MRMediaRemoteService *)self mrXPCConnection];
+  mrXPCConnection = [(MRMediaRemoteService *)self mrXPCConnection];
   v10 = 0;
-  v5 = [v4 sendSyncMessage:v3 error:&v10];
+  v5 = [mrXPCConnection sendSyncMessage:v3 error:&v10];
   v6 = v10;
 
   if (v6)
@@ -145,9 +145,9 @@ void __68__MRMediaRemoteService_getDeviceInfoForPlayerPath_queue_completion___bl
 - (id)UIServiceRelayEndpoint
 {
   v3 = MRCreateXPCMessage(0xB00000000000002uLL);
-  v4 = [(MRMediaRemoteService *)self mrXPCConnection];
+  mrXPCConnection = [(MRMediaRemoteService *)self mrXPCConnection];
   v10 = 0;
-  v5 = [v4 sendSyncMessage:v3 error:&v10];
+  v5 = [mrXPCConnection sendSyncMessage:v3 error:&v10];
   v6 = v10;
 
   if (v6)
@@ -174,24 +174,24 @@ void __68__MRMediaRemoteService_getDeviceInfoForPlayerPath_queue_completion___bl
   return v7;
 }
 
-- (void)setUIServiceRelayEndpoint:(id)a3
+- (void)setUIServiceRelayEndpoint:(id)endpoint
 {
-  v4 = a3;
-  [(MRMediaRemoteService *)self setUiServiceEndpoint:v4];
+  endpointCopy = endpoint;
+  [(MRMediaRemoteService *)self setUiServiceEndpoint:endpointCopy];
   xdict = MRCreateXPCMessage(0xB00000000000003uLL);
-  v5 = [v4 _endpoint];
+  _endpoint = [endpointCopy _endpoint];
 
-  xpc_dictionary_set_value(xdict, "MRXPC_MEDIA_CONTROLS_XPC_ENDPOINT_KEY", v5);
-  v6 = [(MRMediaRemoteService *)self connection];
-  xpc_connection_send_message(v6, xdict);
+  xpc_dictionary_set_value(xdict, "MRXPC_MEDIA_CONTROLS_XPC_ENDPOINT_KEY", _endpoint);
+  connection = [(MRMediaRemoteService *)self connection];
+  xpc_connection_send_message(connection, xdict);
 }
 
 - (BOOL)deviceSupportsUISessions
 {
   v3 = MRCreateXPCMessage(0xB00000000000004uLL);
-  v4 = [(MRMediaRemoteService *)self mrXPCConnection];
+  mrXPCConnection = [(MRMediaRemoteService *)self mrXPCConnection];
   v9 = 0;
-  v5 = [v4 sendSyncMessage:v3 error:&v9];
+  v5 = [mrXPCConnection sendSyncMessage:v3 error:&v9];
   v6 = v9;
 
   if (v6)
@@ -208,25 +208,25 @@ void __68__MRMediaRemoteService_getDeviceInfoForPlayerPath_queue_completion___bl
   return v7;
 }
 
-- (void)createApplicationConnection:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)createApplicationConnection:(id)connection queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  connectionCopy = connection;
   v11 = MRCreateXPCMessage(0x40000000000000FuLL);
   v12 = [MRCreateApplicationConnectionMessage alloc];
-  v13 = [v10 context];
+  context = [connectionCopy context];
 
-  v14 = [(MRCreateApplicationConnectionMessage *)v12 initWithConnectionContext:v13 requestInfo:0];
+  v14 = [(MRCreateApplicationConnectionMessage *)v12 initWithConnectionContext:context requestInfo:0];
   MRAddProtobufToXPCMessage(v11, v14);
-  v15 = [(MRMediaRemoteService *)self connection];
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __69__MRMediaRemoteService_createApplicationConnection_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v18 = v8;
-  v16 = v8;
-  xpc_connection_send_message_with_reply(v15, v11, v9, handler);
+  v18 = completionCopy;
+  v16 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v11, queueCopy, handler);
 }
 
 void __69__MRMediaRemoteService_createApplicationConnection_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -253,26 +253,26 @@ void __69__MRMediaRemoteService_createApplicationConnection_queue_completion___b
   }
 }
 
-- (void)sendApplicationConnectionMessage:(id)a3 forConnection:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)sendApplicationConnectionMessage:(id)message forConnection:(id)connection queue:(id)queue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  connectionCopy = connection;
+  messageCopy = message;
   v14 = MRCreateXPCMessage(0x400000000000010uLL);
   v15 = [MRApplicationConnectionProtocolMessage alloc];
-  v16 = [v12 context];
+  context = [connectionCopy context];
 
-  v17 = [(MRApplicationConnectionProtocolMessage *)v15 initWithMessage:v13 connectionContext:v16];
+  v17 = [(MRApplicationConnectionProtocolMessage *)v15 initWithMessage:messageCopy connectionContext:context];
   MRAddProtobufToXPCMessage(v14, v17);
-  v18 = [(MRMediaRemoteService *)self connection];
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __88__MRMediaRemoteService_sendApplicationConnectionMessage_forConnection_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v21 = v10;
-  v19 = v10;
-  xpc_connection_send_message_with_reply(v18, v14, v11, handler);
+  v21 = completionCopy;
+  v19 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v14, queueCopy, handler);
 }
 
 void __88__MRMediaRemoteService_sendApplicationConnectionMessage_forConnection_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -299,26 +299,26 @@ void __88__MRMediaRemoteService_sendApplicationConnectionMessage_forConnection_q
   }
 }
 
-- (void)closeApplicationConnection:(id)a3 error:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)closeApplicationConnection:(id)connection error:(id)error queue:(id)queue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  errorCopy = error;
+  connectionCopy = connection;
   v14 = MRCreateXPCMessage(0x400000000000011uLL);
   v15 = [MRInvalidateApplicationConnectionMessage alloc];
-  v16 = [v13 context];
+  context = [connectionCopy context];
 
-  v17 = [(MRInvalidateApplicationConnectionMessage *)v15 initWithConnectionContext:v16 error:v12];
+  v17 = [(MRInvalidateApplicationConnectionMessage *)v15 initWithConnectionContext:context error:errorCopy];
   MRAddProtobufToXPCMessage(v14, v17);
-  v18 = [(MRMediaRemoteService *)self connection];
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __74__MRMediaRemoteService_closeApplicationConnection_error_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v21 = v10;
-  v19 = v10;
-  xpc_connection_send_message_with_reply(v18, v14, v11, handler);
+  v21 = completionCopy;
+  v19 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v14, queueCopy, handler);
 }
 
 void __74__MRMediaRemoteService_closeApplicationConnection_error_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -345,26 +345,26 @@ void __74__MRMediaRemoteService_closeApplicationConnection_error_queue_completio
   }
 }
 
-- (void)beginMusicHandoffSessionWithSource:(id)a3 destination:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)beginMusicHandoffSessionWithSource:(id)source destination:(id)destination queue:(id)queue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  destinationCopy = destination;
+  sourceCopy = source;
   v14 = MRCreateXPCMessage(0x20000000000003EuLL);
-  v15 = [[MRMusicHandoffSession alloc] initWithIdentifier:&stru_1F1513E38 sourcePlayerPath:v13 destinationPlayerPath:v12];
+  v15 = [[MRMusicHandoffSession alloc] initWithIdentifier:&stru_1F1513E38 sourcePlayerPath:sourceCopy destinationPlayerPath:destinationCopy];
 
-  v16 = [(MRMusicHandoffSession *)v15 protobufData];
-  MRAddDataToXPCMessage(v14, v16, "MRXPC_MUSIC_HANDOFF_SESSION_KEY");
+  protobufData = [(MRMusicHandoffSession *)v15 protobufData];
+  MRAddDataToXPCMessage(v14, protobufData, "MRXPC_MUSIC_HANDOFF_SESSION_KEY");
 
-  v17 = [(MRMediaRemoteService *)self connection];
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __88__MRMediaRemoteService_beginMusicHandoffSessionWithSource_destination_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v20 = v10;
-  v18 = v10;
-  xpc_connection_send_message_with_reply(v17, v14, v11, handler);
+  v20 = completionCopy;
+  v18 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v14, queueCopy, handler);
 }
 
 void __88__MRMediaRemoteService_beginMusicHandoffSessionWithSource_destination_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -391,23 +391,23 @@ void __88__MRMediaRemoteService_beginMusicHandoffSessionWithSource_destination_q
   }
 }
 
-- (void)sendMusicHandoffEvent:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)sendMusicHandoffEvent:(id)event queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  eventCopy = event;
   v11 = MRCreateXPCMessage(0x20000000000003FuLL);
-  v12 = [v10 protobufData];
+  protobufData = [eventCopy protobufData];
 
-  MRAddDataToXPCMessage(v11, v12, "MRXPC_MUSIC_HANDOFF_EVENT_KEY");
-  v13 = [(MRMediaRemoteService *)self connection];
+  MRAddDataToXPCMessage(v11, protobufData, "MRXPC_MUSIC_HANDOFF_EVENT_KEY");
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __63__MRMediaRemoteService_sendMusicHandoffEvent_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v16 = v8;
-  v14 = v8;
-  xpc_connection_send_message_with_reply(v13, v11, v9, handler);
+  v16 = completionCopy;
+  v14 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v11, queueCopy, handler);
 }
 
 void __63__MRMediaRemoteService_sendMusicHandoffEvent_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -434,19 +434,19 @@ void __63__MRMediaRemoteService_sendMusicHandoffEvent_queue_completion___block_i
   }
 }
 
-- (void)mediaSuggestionDeviceUIDWithQueue:(id)a3 completion:(id)a4
+- (void)mediaSuggestionDeviceUIDWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   v8 = MRCreateXPCMessage(0x200000000000040uLL);
-  v9 = [(MRMediaRemoteService *)self connection];
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __69__MRMediaRemoteService_mediaSuggestionDeviceUIDWithQueue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v12 = v6;
-  v10 = v6;
-  xpc_connection_send_message_with_reply(v9, v8, v7, handler);
+  v12 = completionCopy;
+  v10 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v8, queueCopy, handler);
 }
 
 void __69__MRMediaRemoteService_mediaSuggestionDeviceUIDWithQueue_completion___block_invoke(uint64_t a1, void *a2)
@@ -477,9 +477,9 @@ void __69__MRMediaRemoteService_mediaSuggestionDeviceUIDWithQueue_completion___b
 - (id)groupSessionServerEndpoint
 {
   v3 = MRCreateXPCMessage(0xC00000000000001uLL);
-  v4 = [(MRMediaRemoteService *)self mrXPCConnection];
+  mrXPCConnection = [(MRMediaRemoteService *)self mrXPCConnection];
   v10 = 0;
-  v5 = [v4 sendSyncMessage:v3 error:&v10];
+  v5 = [mrXPCConnection sendSyncMessage:v3 error:&v10];
   v6 = v10;
 
   if (v6)
@@ -506,23 +506,23 @@ void __69__MRMediaRemoteService_mediaSuggestionDeviceUIDWithQueue_completion___b
   return v7;
 }
 
-- (void)joinGroupSessionWithToken:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)joinGroupSessionWithToken:(id)token queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  tokenCopy = token;
   v11 = MRCreateXPCMessage(0xC00000000000002uLL);
-  v12 = [v10 data];
+  data = [tokenCopy data];
 
-  MRAddDataToXPCMessage(v11, v12, "MRXPC_GROUP_SESSION_TOKEN_KEY");
-  v13 = [(MRMediaRemoteService *)self connection];
+  MRAddDataToXPCMessage(v11, data, "MRXPC_GROUP_SESSION_TOKEN_KEY");
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __67__MRMediaRemoteService_joinGroupSessionWithToken_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v16 = v8;
-  v14 = v8;
-  xpc_connection_send_message_with_reply(v13, v11, v9, handler);
+  v16 = completionCopy;
+  v14 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v11, queueCopy, handler);
 }
 
 void __67__MRMediaRemoteService_joinGroupSessionWithToken_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -550,22 +550,22 @@ void __67__MRMediaRemoteService_joinGroupSessionWithToken_queue_completion___blo
   }
 }
 
-- (void)leaveGroupSessionWithIdentifier:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)leaveGroupSessionWithIdentifier:(id)identifier queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  identifierCopy = identifier;
   v11 = MRCreateXPCMessage(0xC00000000000003uLL);
-  MRAddStringToXPCMessage(v11, v10, "MRXPC_GROUP_SESSION_IDENTIFIER_KEY");
+  MRAddStringToXPCMessage(v11, identifierCopy, "MRXPC_GROUP_SESSION_IDENTIFIER_KEY");
 
-  v12 = [(MRMediaRemoteService *)self connection];
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __73__MRMediaRemoteService_leaveGroupSessionWithIdentifier_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v15 = v8;
-  v13 = v8;
-  xpc_connection_send_message_with_reply(v12, v11, v9, handler);
+  v15 = completionCopy;
+  v13 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v11, queueCopy, handler);
 }
 
 void __73__MRMediaRemoteService_leaveGroupSessionWithIdentifier_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -592,22 +592,22 @@ void __73__MRMediaRemoteService_leaveGroupSessionWithIdentifier_queue_completion
   }
 }
 
-- (void)userIdentityForDSID:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)userIdentityForDSID:(id)d queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  dCopy = d;
   v11 = MRCreateXPCMessage(0xC00000000000007uLL);
-  MRAddStringToXPCMessage(v11, v10, "MRXPC_DSID_KEY");
+  MRAddStringToXPCMessage(v11, dCopy, "MRXPC_DSID_KEY");
 
-  v12 = [(MRMediaRemoteService *)self connection];
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __61__MRMediaRemoteService_userIdentityForDSID_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v15 = v8;
-  v13 = v8;
-  xpc_connection_send_message_with_reply(v12, v11, v9, handler);
+  v15 = completionCopy;
+  v13 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v11, queueCopy, handler);
 }
 
 void __61__MRMediaRemoteService_userIdentityForDSID_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -652,29 +652,29 @@ LABEL_9:
   }
 }
 
-- (void)presentProximityCardWithDeviceName:(id)a3 modelIdentifier:(id)a4 color:(id)a5 url:(id)a6 queue:(id)a7 completion:(id)a8
+- (void)presentProximityCardWithDeviceName:(id)name modelIdentifier:(id)identifier color:(id)color url:(id)url queue:(id)queue completion:(id)completion
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  urlCopy = url;
+  colorCopy = color;
+  identifierCopy = identifier;
+  nameCopy = name;
   v20 = MRCreateXPCMessage(0xC00000000000008uLL);
-  MRAddStringToXPCMessage(v20, v19, "deviceName");
+  MRAddStringToXPCMessage(v20, nameCopy, "deviceName");
 
-  MRAddStringToXPCMessage(v20, v18, "modelIdentifier");
-  MRAddStringToXPCMessage(v20, v17, "color");
+  MRAddStringToXPCMessage(v20, identifierCopy, "modelIdentifier");
+  MRAddStringToXPCMessage(v20, colorCopy, "color");
 
-  MRAddStringToXPCMessage(v20, v16, "url");
-  v21 = [(MRMediaRemoteService *)self connection];
+  MRAddStringToXPCMessage(v20, urlCopy, "url");
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __102__MRMediaRemoteService_presentProximityCardWithDeviceName_modelIdentifier_color_url_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v24 = v14;
-  v22 = v14;
-  xpc_connection_send_message_with_reply(v21, v20, v15, handler);
+  v24 = completionCopy;
+  v22 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v20, queueCopy, handler);
 }
 
 void __102__MRMediaRemoteService_presentProximityCardWithDeviceName_modelIdentifier_color_url_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -699,18 +699,18 @@ void __102__MRMediaRemoteService_presentProximityCardWithDeviceName_modelIdentif
   }
 }
 
-- (void)requestGroupSessionWithCompletion:(id)a3
+- (void)requestGroupSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MRCreateXPCMessage(0xC00000000000009uLL);
-  v6 = [(MRMediaRemoteService *)self connection];
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __58__MRMediaRemoteService_requestGroupSessionWithCompletion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v9 = v4;
-  v7 = v4;
-  xpc_connection_send_message_with_reply(v6, v5, MEMORY[0x1E69E96A0], handler);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v5, MEMORY[0x1E69E96A0], handler);
 }
 
 void __58__MRMediaRemoteService_requestGroupSessionWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -740,9 +740,9 @@ void __58__MRMediaRemoteService_requestGroupSessionWithCompletion___block_invoke
 - (id)applicationUserIdentity
 {
   v3 = MRCreateXPCMessage(0xC00000000000005uLL);
-  v4 = [(MRMediaRemoteService *)self mrXPCConnection];
+  mrXPCConnection = [(MRMediaRemoteService *)self mrXPCConnection];
   v11 = 0;
-  v5 = [v4 sendSyncMessage:v3 error:&v11];
+  v5 = [mrXPCConnection sendSyncMessage:v3 error:&v11];
   v6 = v11;
 
   if (v6)
@@ -767,22 +767,22 @@ LABEL_6:
   return v7;
 }
 
-- (void)fetchParticipantsWithRequest:(id)a3 playerPath:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)fetchParticipantsWithRequest:(id)request playerPath:(id)path queue:(id)queue completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
+  pathCopy = path;
   v12 = MRCreateXPCMessage(0x20000000000003DuLL);
-  MRAddPlayerPathToXPCMessage(v12, v11);
+  MRAddPlayerPathToXPCMessage(v12, pathCopy);
 
-  v13 = [(MRMediaRemoteService *)self connection];
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __81__MRMediaRemoteService_fetchParticipantsWithRequest_playerPath_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v16 = v9;
-  v14 = v9;
-  xpc_connection_send_message_with_reply(v13, v12, v10, handler);
+  v16 = completionCopy;
+  v14 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v12, queueCopy, handler);
 }
 
 void __81__MRMediaRemoteService_fetchParticipantsWithRequest_playerPath_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -837,29 +837,29 @@ MRPlaybackQueueParticipant *__81__MRMediaRemoteService_fetchParticipantsWithRequ
   return v3;
 }
 
-- (id)createTokenWithInvitationData:(id)a3 equivalentMediaIdentifier:(id)a4 version:(id)a5
+- (id)createTokenWithInvitationData:(id)data equivalentMediaIdentifier:(id)identifier version:(id)version
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  versionCopy = version;
+  dataCopy = data;
   v11 = MRCreateXPCMessage(0xC00000000000006uLL);
-  v12 = [v10 bytes];
-  v13 = [v10 length];
+  bytes = [dataCopy bytes];
+  v13 = [dataCopy length];
 
-  xpc_dictionary_set_data(v11, "MRXPC_GROUP_SESSION_INVITATION_DATA_KEY", v12, v13);
-  if (v8)
+  xpc_dictionary_set_data(v11, "MRXPC_GROUP_SESSION_INVITATION_DATA_KEY", bytes, v13);
+  if (identifierCopy)
   {
-    xpc_dictionary_set_string(v11, "MRXPC_GROUP_SESSION_EQUIVALENT_MEDIA_ID_KEY", [v8 cStringUsingEncoding:4]);
+    xpc_dictionary_set_string(v11, "MRXPC_GROUP_SESSION_EQUIVALENT_MEDIA_ID_KEY", [identifierCopy cStringUsingEncoding:4]);
   }
 
-  if (v9)
+  if (versionCopy)
   {
-    xpc_dictionary_set_int64(v11, "MRXPC_GROUP_SESSION_VERSION_KEY", [v9 intValue]);
+    xpc_dictionary_set_int64(v11, "MRXPC_GROUP_SESSION_VERSION_KEY", [versionCopy intValue]);
   }
 
-  v14 = [(MRMediaRemoteService *)self mrXPCConnection];
+  mrXPCConnection = [(MRMediaRemoteService *)self mrXPCConnection];
   v20 = 0;
-  v15 = [v14 sendSyncMessage:v11 error:&v20];
+  v15 = [mrXPCConnection sendSyncMessage:v11 error:&v20];
   v16 = v20;
 
   if (v16)
@@ -877,22 +877,22 @@ MRPlaybackQueueParticipant *__81__MRMediaRemoteService_fetchParticipantsWithRequ
   return v17;
 }
 
-- (void)sendEvent:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)sendEvent:(id)event queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  eventCopy = event;
   v11 = MRCreateXPCMessage(0xC00000000000004uLL);
-  MRAddPropertyListToXPCMessage(v11, v10, "MRXPC_GROUP_SESSION_EVENT_KEY");
+  MRAddPropertyListToXPCMessage(v11, eventCopy, "MRXPC_GROUP_SESSION_EVENT_KEY");
 
-  v12 = [(MRMediaRemoteService *)self connection];
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __51__MRMediaRemoteService_sendEvent_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v15 = v8;
-  v13 = v8;
-  xpc_connection_send_message_with_reply(v12, v11, v9, handler);
+  v15 = completionCopy;
+  v13 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v11, queueCopy, handler);
 }
 
 void __51__MRMediaRemoteService_sendEvent_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -919,15 +919,15 @@ void __51__MRMediaRemoteService_sendEvent_queue_completion___block_invoke(uint64
   }
 }
 
-- (CGSize)imageDimensionsForArtworkData:(id)a3
+- (CGSize)imageDimensionsForArtworkData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = MRCreateXPCMessage(0x20000000000003CuLL);
-  MRAddDataToXPCMessage(v5, v4, "MRXPC_ARTWORK_DATA_KEY");
+  MRAddDataToXPCMessage(v5, dataCopy, "MRXPC_ARTWORK_DATA_KEY");
 
-  v6 = [(MRMediaRemoteService *)self mrXPCConnection];
+  mrXPCConnection = [(MRMediaRemoteService *)self mrXPCConnection];
   v13 = 0;
-  v7 = [v6 sendSyncMessage:v5 error:&v13];
+  v7 = [mrXPCConnection sendSyncMessage:v5 error:&v13];
   v8 = v13;
 
   if (v8)
@@ -950,22 +950,22 @@ void __51__MRMediaRemoteService_sendEvent_queue_completion___block_invoke(uint64
   return result;
 }
 
-- (void)resolvePlayerPath:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)resolvePlayerPath:(id)path queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  pathCopy = path;
   v11 = MRCreateXPCMessage(0x200000000000018uLL);
-  MRAddPlayerPathToXPCMessage(v11, v10);
+  MRAddPlayerPathToXPCMessage(v11, pathCopy);
 
-  v12 = [(MRMediaRemoteService *)self connection];
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __59__MRMediaRemoteService_resolvePlayerPath_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v15 = v8;
-  v13 = v8;
-  xpc_connection_send_message_with_reply(v12, v11, v9, handler);
+  v15 = completionCopy;
+  v13 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, v11, queueCopy, handler);
 }
 
 void __59__MRMediaRemoteService_resolvePlayerPath_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -995,19 +995,19 @@ void __59__MRMediaRemoteService_resolvePlayerPath_queue_completion___block_invok
   kdebug_trace();
 }
 
-- (void)suspendDisconnectionPauseForConfiguration:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)suspendDisconnectionPauseForConfiguration:(id)configuration queue:(id)queue completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 XPCMessage];
-  v11 = [(MRMediaRemoteService *)self connection];
+  completionCopy = completion;
+  queueCopy = queue;
+  xPCMessage = [configuration XPCMessage];
+  connection = [(MRMediaRemoteService *)self connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __83__MRMediaRemoteService_suspendDisconnectionPauseForConfiguration_queue_completion___block_invoke;
   handler[3] = &unk_1E769C4D0;
-  v14 = v8;
-  v12 = v8;
-  xpc_connection_send_message_with_reply(v11, v10, v9, handler);
+  v14 = completionCopy;
+  v12 = completionCopy;
+  xpc_connection_send_message_with_reply(connection, xPCMessage, queueCopy, handler);
 }
 
 void __83__MRMediaRemoteService_suspendDisconnectionPauseForConfiguration_queue_completion___block_invoke(uint64_t a1, void *a2)
@@ -1037,15 +1037,15 @@ void __83__MRMediaRemoteService_suspendDisconnectionPauseForConfiguration_queue_
 - (void)startSystemGroupSession
 {
   message = MRCreateXPCMessage(0x60000000000000BuLL);
-  v3 = [(MRMediaRemoteService *)self connection];
-  xpc_connection_send_message(v3, message);
+  connection = [(MRMediaRemoteService *)self connection];
+  xpc_connection_send_message(connection, message);
 }
 
 - (void)stopSystemGroupSession
 {
   message = MRCreateXPCMessage(0x60000000000000CuLL);
-  v3 = [(MRMediaRemoteService *)self connection];
-  xpc_connection_send_message(v3, message);
+  connection = [(MRMediaRemoteService *)self connection];
+  xpc_connection_send_message(connection, message);
 }
 
 @end

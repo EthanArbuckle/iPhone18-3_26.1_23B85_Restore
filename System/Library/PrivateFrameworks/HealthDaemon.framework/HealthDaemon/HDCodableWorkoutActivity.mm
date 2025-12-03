@@ -1,74 +1,74 @@
 @interface HDCodableWorkoutActivity
-+ (id)codableForWorkoutActivity:(id)a3;
-+ (id)codableStatisticsForActivity:(id)a3;
-+ (id)codablesForWorkoutActivities:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)codableForWorkoutActivity:(id)activity;
++ (id)codableStatisticsForActivity:(id)activity;
++ (id)codablesForWorkoutActivities:(id)activities;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addStatistics:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEndDate:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addStatistics:(id)statistics;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEndDate:(BOOL)date;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableWorkoutActivity
 
-+ (id)codableForWorkoutActivity:(id)a3
++ (id)codableForWorkoutActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = objc_alloc_init(HDCodableWorkoutActivity);
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  [(HDCodableWorkoutActivity *)v5 setUuid:v7];
+  uUID = [activityCopy UUID];
+  uUIDString = [uUID UUIDString];
+  [(HDCodableWorkoutActivity *)v5 setUuid:uUIDString];
 
-  v8 = [v4 workoutConfiguration];
-  v9 = [v8 codableRepresentationForSync];
+  workoutConfiguration = [activityCopy workoutConfiguration];
+  codableRepresentationForSync = [workoutConfiguration codableRepresentationForSync];
 
-  [(HDCodableWorkoutActivity *)v5 setConfiguration:v9];
-  v10 = [v4 startDate];
-  [v10 timeIntervalSinceReferenceDate];
+  [(HDCodableWorkoutActivity *)v5 setConfiguration:codableRepresentationForSync];
+  startDate = [activityCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   [(HDCodableWorkoutActivity *)v5 setStartDate:?];
 
-  v11 = [v4 endDate];
+  endDate = [activityCopy endDate];
 
-  if (v11)
+  if (endDate)
   {
-    v12 = [v4 endDate];
-    [v12 timeIntervalSinceReferenceDate];
+    endDate2 = [activityCopy endDate];
+    [endDate2 timeIntervalSinceReferenceDate];
     [(HDCodableWorkoutActivity *)v5 setEndDate:?];
   }
 
-  [v4 duration];
+  [activityCopy duration];
   [(HDCodableWorkoutActivity *)v5 setDuration:?];
-  v13 = [v4 metadata];
+  metadata = [activityCopy metadata];
 
-  if (v13)
+  if (metadata)
   {
-    v14 = [v4 metadata];
-    v15 = [v14 hk_codableMetadata];
-    [(HDCodableWorkoutActivity *)v5 setMetadata:v15];
+    metadata2 = [activityCopy metadata];
+    hk_codableMetadata = [metadata2 hk_codableMetadata];
+    [(HDCodableWorkoutActivity *)v5 setMetadata:hk_codableMetadata];
   }
 
-  v16 = [a1 codableStatisticsForActivity:v4];
+  v16 = [self codableStatisticsForActivity:activityCopy];
   [(HDCodableWorkoutActivity *)v5 setStatistics:v16];
 
   return v5;
 }
 
-+ (id)codablesForWorkoutActivities:(id)a3
++ (id)codablesForWorkoutActivities:(id)activities
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  activitiesCopy = activities;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(activitiesCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = activitiesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -83,7 +83,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 codableForWorkoutActivity:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self codableForWorkoutActivity:{*(*(&v14 + 1) + 8 * i), v14}];
         [v5 addObject:v11];
       }
 
@@ -98,20 +98,20 @@
   return v5;
 }
 
-+ (id)codableStatisticsForActivity:(id)a3
++ (id)codableStatisticsForActivity:(id)activity
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  activityCopy = activity;
   v4 = objc_alloc(MEMORY[0x277CBEB18]);
-  v5 = [v3 allStatistics];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  allStatistics = [activityCopy allStatistics];
+  v6 = [v4 initWithCapacity:{objc_msgSend(allStatistics, "count")}];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [v3 allStatistics];
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  allStatistics2 = [activityCopy allStatistics];
+  v8 = [allStatistics2 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -122,52 +122,52 @@
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allStatistics2);
         }
 
-        v12 = [v3 statisticsForType:*(*(&v27 + 1) + 8 * i)];
+        v12 = [activityCopy statisticsForType:*(*(&v27 + 1) + 8 * i)];
         if (v12)
         {
           v13 = objc_alloc_init(HDCodableWorkoutStatistics);
-          v14 = [v12 quantityType];
-          -[HDCodableWorkoutStatistics setQuantityType:](v13, "setQuantityType:", [v14 code]);
+          quantityType = [v12 quantityType];
+          -[HDCodableWorkoutStatistics setQuantityType:](v13, "setQuantityType:", [quantityType code]);
 
-          v15 = [v12 quantityType];
-          v16 = [v15 canonicalUnit];
+          quantityType2 = [v12 quantityType];
+          canonicalUnit = [quantityType2 canonicalUnit];
 
-          v17 = [v12 sumQuantity];
+          sumQuantity = [v12 sumQuantity];
 
-          if (v17)
+          if (sumQuantity)
           {
-            v18 = [v12 sumQuantity];
-            [v18 doubleValueForUnit:v16];
+            sumQuantity2 = [v12 sumQuantity];
+            [sumQuantity2 doubleValueForUnit:canonicalUnit];
             [(HDCodableWorkoutStatistics *)v13 setSumQuantity:?];
           }
 
-          v19 = [v12 minimumQuantity];
+          minimumQuantity = [v12 minimumQuantity];
 
-          if (v19)
+          if (minimumQuantity)
           {
-            v20 = [v12 minimumQuantity];
-            [v20 doubleValueForUnit:v16];
+            minimumQuantity2 = [v12 minimumQuantity];
+            [minimumQuantity2 doubleValueForUnit:canonicalUnit];
             [(HDCodableWorkoutStatistics *)v13 setMinQuantity:?];
           }
 
-          v21 = [v12 maximumQuantity];
+          maximumQuantity = [v12 maximumQuantity];
 
-          if (v21)
+          if (maximumQuantity)
           {
-            v22 = [v12 maximumQuantity];
-            [v22 doubleValueForUnit:v16];
+            maximumQuantity2 = [v12 maximumQuantity];
+            [maximumQuantity2 doubleValueForUnit:canonicalUnit];
             [(HDCodableWorkoutStatistics *)v13 setMaxQuantity:?];
           }
 
-          v23 = [v12 averageQuantity];
+          averageQuantity = [v12 averageQuantity];
 
-          if (v23)
+          if (averageQuantity)
           {
-            v24 = [v12 averageQuantity];
-            [v24 doubleValueForUnit:v16];
+            averageQuantity2 = [v12 averageQuantity];
+            [averageQuantity2 doubleValueForUnit:canonicalUnit];
             [(HDCodableWorkoutStatistics *)v13 setAvgQuantity:?];
           }
 
@@ -175,7 +175,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v9 = [allStatistics2 countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v9);
@@ -186,9 +186,9 @@
   return v6;
 }
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -201,9 +201,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasEndDate:(BOOL)a3
+- (void)setHasEndDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -216,22 +216,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addStatistics:(id)a3
+- (void)addStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   statistics = self->_statistics;
-  v8 = v4;
+  v8 = statisticsCopy;
   if (!statistics)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_statistics;
     self->_statistics = v6;
 
-    v4 = v8;
+    statisticsCopy = v8;
     statistics = self->_statistics;
   }
 
-  [(NSMutableArray *)statistics addObject:v4];
+  [(NSMutableArray *)statistics addObject:statisticsCopy];
 }
 
 - (id)description
@@ -240,8 +240,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableWorkoutActivity;
   v4 = [(HDCodableWorkoutActivity *)&v8 description];
-  v5 = [(HDCodableWorkoutActivity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableWorkoutActivity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -249,19 +249,19 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   configuration = self->_configuration;
   if (configuration)
   {
-    v7 = [(HDCodableWorkoutConfiguration *)configuration dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"configuration"];
+    dictionaryRepresentation = [(HDCodableWorkoutConfiguration *)configuration dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"configuration"];
   }
 
   has = self->_has;
@@ -282,8 +282,8 @@
   metadata = self->_metadata;
   if (metadata)
   {
-    v12 = [(HDCodableMetadataDictionary *)metadata dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"metadata"];
+    dictionaryRepresentation2 = [(HDCodableMetadataDictionary *)metadata dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"metadata"];
   }
 
   if (*&self->_has)
@@ -314,8 +314,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation3 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation3];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -332,10 +332,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
@@ -403,55 +403,55 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v10;
+    [toCopy setUuid:?];
+    toCopy = v10;
   }
 
   if (self->_configuration)
   {
     [v10 setConfiguration:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = *&self->_startDate;
-    *(v4 + 64) |= 4u;
+    *(toCopy + 3) = *&self->_startDate;
+    *(toCopy + 64) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_endDate;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 2) = *&self->_endDate;
+    *(toCopy + 64) |= 2u;
   }
 
   if (self->_metadata)
   {
     [v10 setMetadata:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_duration;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 1) = *&self->_duration;
+    *(toCopy + 64) |= 1u;
   }
 
   if ([(HDCodableWorkoutActivity *)self statisticsCount])
   {
     [v10 clearStatistics];
-    v6 = [(HDCodableWorkoutActivity *)self statisticsCount];
-    if (v6)
+    statisticsCount = [(HDCodableWorkoutActivity *)self statisticsCount];
+    if (statisticsCount)
     {
-      v7 = v6;
+      v7 = statisticsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HDCodableWorkoutActivity *)self statisticsAtIndex:i];
@@ -461,15 +461,15 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(HDCodableWorkoutConfiguration *)self->_configuration copyWithZone:a3];
+  v8 = [(HDCodableWorkoutConfiguration *)self->_configuration copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -487,7 +487,7 @@
     *(v5 + 64) |= 2u;
   }
 
-  v11 = [(HDCodableMetadataDictionary *)self->_metadata copyWithZone:a3];
+  v11 = [(HDCodableMetadataDictionary *)self->_metadata copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
@@ -516,7 +516,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{a3, v21}];
+        v18 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{zone, v21}];
         [v5 addStatistics:v18];
       }
 
@@ -530,16 +530,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 7))
+  if (uuid | *(equalCopy + 7))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -548,7 +548,7 @@
   }
 
   configuration = self->_configuration;
-  if (configuration | *(v4 + 4))
+  if (configuration | *(equalCopy + 4))
   {
     if (![(HDCodableWorkoutConfiguration *)configuration isEqual:?])
     {
@@ -557,35 +557,35 @@
   }
 
   has = self->_has;
-  v8 = *(v4 + 64);
+  v8 = *(equalCopy + 64);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_startDate != *(v4 + 3))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_startDate != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_endDate != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_endDate != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 5))
+  if (metadata | *(equalCopy + 5))
   {
     if (![(HDCodableMetadataDictionary *)metadata isEqual:?])
     {
@@ -595,12 +595,12 @@ LABEL_26:
     }
 
     has = self->_has;
-    v8 = *(v4 + 64);
+    v8 = *(equalCopy + 64);
   }
 
   if (has)
   {
-    if ((v8 & 1) == 0 || self->_duration != *(v4 + 1))
+    if ((v8 & 1) == 0 || self->_duration != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
@@ -612,7 +612,7 @@ LABEL_26:
   }
 
   statistics = self->_statistics;
-  if (statistics | *(v4 + 6))
+  if (statistics | *(equalCopy + 6))
   {
     v11 = [(NSMutableArray *)statistics isEqual:?];
   }
@@ -735,17 +735,17 @@ LABEL_27:
   return v4 ^ v3 ^ v7 ^ v11 ^ v15 ^ v18 ^ [(NSMutableArray *)self->_statistics hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 7))
+  fromCopy = from;
+  if (*(fromCopy + 7))
   {
     [(HDCodableWorkoutActivity *)self setUuid:?];
   }
 
   configuration = self->_configuration;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (configuration)
   {
     if (v6)
@@ -759,22 +759,22 @@ LABEL_27:
     [(HDCodableWorkoutActivity *)self setConfiguration:?];
   }
 
-  v7 = *(v4 + 64);
+  v7 = *(fromCopy + 64);
   if ((v7 & 4) != 0)
   {
-    self->_startDate = *(v4 + 3);
+    self->_startDate = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v7 = *(v4 + 64);
+    v7 = *(fromCopy + 64);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_endDate = *(v4 + 2);
+    self->_endDate = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
   metadata = self->_metadata;
-  v9 = *(v4 + 5);
+  v9 = *(fromCopy + 5);
   if (metadata)
   {
     if (v9)
@@ -788,9 +788,9 @@ LABEL_27:
     [(HDCodableWorkoutActivity *)self setMetadata:?];
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_duration = *(v4 + 1);
+    self->_duration = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -798,7 +798,7 @@ LABEL_27:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 6);
+  v10 = *(fromCopy + 6);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {

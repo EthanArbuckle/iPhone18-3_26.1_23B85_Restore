@@ -1,8 +1,8 @@
 @interface _OSInactivityPredictorRuleBasedModel
 + (id)predictor;
 - (_OSInactivityPredictorRuleBasedModel)init;
-- (id)longInactivityPredictionResultAtDate:(id)a3 withTimeSinceInactive:(double)a4 withOptions:(int64_t)a5 withError:(id *)a6;
-- (id)sleepSuppressionPredictionResultAtDate:(id)a3 withError:(id *)a4;
+- (id)longInactivityPredictionResultAtDate:(id)date withTimeSinceInactive:(double)inactive withOptions:(int64_t)options withError:(id *)error;
+- (id)sleepSuppressionPredictionResultAtDate:(id)date withError:(id *)error;
 - (void)updateTrialParameters;
 @end
 
@@ -191,9 +191,9 @@
   }
 }
 
-- (id)sleepSuppressionPredictionResultAtDate:(id)a3 withError:(id *)a4
+- (id)sleepSuppressionPredictionResultAtDate:(id)date withError:(id *)error
 {
-  v5 = a3;
+  dateCopy = date;
   if (!self->_useTimeRestriction)
   {
     maxPredictionDurationHours = self->_maxPredictionDurationHours;
@@ -211,30 +211,30 @@ LABEL_13:
   {
     timeRestrictionLateHour = self->_initialTimeRestrictionLateHour;
     timeRestrictionEarlyHour = self->_initialTimeRestrictionEarlyHour;
-    v10 = [objc_opt_class() sleepLog];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    sleepLog = [objc_opt_class() sleepLog];
+    if (os_log_type_enabled(sleepLog, OS_LOG_TYPE_DEFAULT))
     {
       requeryDelta = self->_requeryDelta;
       v25 = 134218240;
       *v26 = v9;
       *&v26[8] = 1024;
       v27 = requeryDelta;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Only waited %.2f seconds (<%d). Tighten time restrictions.", &v25, 0x12u);
+      _os_log_impl(&_mh_execute_header, sleepLog, OS_LOG_TYPE_DEFAULT, "Only waited %.2f seconds (<%d). Tighten time restrictions.", &v25, 0x12u);
     }
   }
 
-  v12 = [objc_opt_class() sleepLog];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  sleepLog2 = [objc_opt_class() sleepLog];
+  if (os_log_type_enabled(sleepLog2, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 67109376;
     *v26 = timeRestrictionLateHour;
     *&v26[4] = 1024;
     *&v26[6] = timeRestrictionEarlyHour;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Restricting entry between %d to %d", &v25, 0xEu);
+    _os_log_impl(&_mh_execute_header, sleepLog2, OS_LOG_TYPE_DEFAULT, "Restricting entry between %d to %d", &v25, 0xEu);
   }
 
-  v13 = [OSIntelligenceUtilities isInputDateInTimeRange:v5 withEarlyTimeOfDay:timeRestrictionLateHour andLateTimeOfDay:timeRestrictionEarlyHour];
-  [OSIntelligenceUtilities secondsUntilHour:timeRestrictionEarlyHour fromDate:v5];
+  v13 = [OSIntelligenceUtilities isInputDateInTimeRange:dateCopy withEarlyTimeOfDay:timeRestrictionLateHour andLateTimeOfDay:timeRestrictionEarlyHour];
+  [OSIntelligenceUtilities secondsUntilHour:timeRestrictionEarlyHour fromDate:dateCopy];
   maxPredictionDurationHours = 0.0;
   v16 = 0.0;
   if (v13)
@@ -263,12 +263,12 @@ LABEL_14:
   return v23;
 }
 
-- (id)longInactivityPredictionResultAtDate:(id)a3 withTimeSinceInactive:(double)a4 withOptions:(int64_t)a5 withError:(id *)a6
+- (id)longInactivityPredictionResultAtDate:(id)date withTimeSinceInactive:(double)inactive withOptions:(int64_t)options withError:(id *)error
 {
-  v9 = a3;
-  if (a5 == 1)
+  dateCopy = date;
+  if (options == 1)
   {
-    v10 = [(_OSInactivityPredictorRuleBasedModel *)self sleepSuppressionPredictionResultAtDate:v9 withError:a6];
+    v10 = [(_OSInactivityPredictorRuleBasedModel *)self sleepSuppressionPredictionResultAtDate:dateCopy withError:error];
     goto LABEL_13;
   }
 
@@ -280,7 +280,7 @@ LABEL_14:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 134218496;
-      v27 = a5;
+      optionsCopy = options;
       v28 = 1024;
       v29 = coreTimeRestrictionBedtimeHour;
       v30 = 1024;
@@ -288,8 +288,8 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "(%ld) Restricting entry between %d to %d", &v26, 0x18u);
     }
 
-    v14 = [OSIntelligenceUtilities isInputDateInTimeRange:v9 withEarlyTimeOfDay:coreTimeRestrictionBedtimeHour andLateTimeOfDay:coreTimeRestrictionWakeupHour];
-    [OSIntelligenceUtilities secondsUntilHour:coreTimeRestrictionWakeupHour fromDate:v9];
+    v14 = [OSIntelligenceUtilities isInputDateInTimeRange:dateCopy withEarlyTimeOfDay:coreTimeRestrictionBedtimeHour andLateTimeOfDay:coreTimeRestrictionWakeupHour];
+    [OSIntelligenceUtilities secondsUntilHour:coreTimeRestrictionWakeupHour fromDate:dateCopy];
     maxPredictionDurationHours = 0.0;
     v17 = 0.0;
     if (!v14)

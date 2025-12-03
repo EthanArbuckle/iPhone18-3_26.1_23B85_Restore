@@ -1,69 +1,69 @@
 @interface SBSceneView
-- (BOOL)_addContentLikeViewToHierarchyForTransitionIfPossible:(id)a3;
+- (BOOL)_addContentLikeViewToHierarchyForTransitionIfPossible:(id)possible;
 - (BOOL)_presenterMayBeZombified;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (BOOL)_shouldViewBeInHierarchyForTransition:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (BOOL)_shouldViewBeInHierarchyForTransition:(id)transition;
 - (CGSize)referenceSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)description;
-- (SBSceneView)initWithSceneHandle:(id)a3 referenceSize:(CGSize)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6 hostRequester:(id)a7;
+- (SBSceneView)initWithSceneHandle:(id)handle referenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation hostRequester:(id)requester;
 - (SBSceneViewDelegate)delegate;
 - (UIEdgeInsets)_contentContainerEdgeInsets;
 - (id)_addStateCaptureHandler;
-- (id)_viewForDisplayMode:(int64_t)a3;
-- (id)acquireLiveContentDisableAssertionForReason:(id)a3;
-- (int64_t)_bestDisplayModeLessThanMode:(int64_t)a3;
+- (id)_viewForDisplayMode:(int64_t)mode;
+- (id)acquireLiveContentDisableAssertionForReason:(id)reason;
+- (int64_t)_bestDisplayModeLessThanMode:(int64_t)mode;
 - (int64_t)preferredStatusBarStyle;
 - (void)_clearSnapshotViews;
-- (void)_configureBackgroundColorWithLiveSnapshotPresentationContext:(id)a3;
+- (void)_configureBackgroundColorWithLiveSnapshotPresentationContext:(id)context;
 - (void)_configureLiveHostView;
 - (void)_configureLiveSnapshotView;
 - (void)_configurePlaceholderContentView;
-- (void)_configureSceneLiveHostView:(id)a3;
-- (void)_configureViewForEffectiveDisplayMode:(int64_t)a3;
-- (void)_containerContentWrapperInterfaceOrientationChangedTo:(int64_t)a3;
+- (void)_configureSceneLiveHostView:(id)view;
+- (void)_configureViewForEffectiveDisplayMode:(int64_t)mode;
+- (void)_containerContentWrapperInterfaceOrientationChangedTo:(int64_t)to;
 - (void)_enableHostingIfPossible;
-- (void)_evaluateEffectiveDisplayModeWithAnimationFactory:(id)a3 completion:(id)a4;
+- (void)_evaluateEffectiveDisplayModeWithAnimationFactory:(id)factory completion:(id)completion;
 - (void)_hotSwapLiveSnapshotView;
 - (void)_hotSwapPlaceholderContentView;
 - (void)_invalidateContentPrefersToDisableClipping;
 - (void)_invalidateHostPresenter;
-- (void)_layoutLiveHostView:(id)a3;
-- (void)_layoutLiveSnapshotView:(id)a3;
-- (void)_modifyPresentationContext:(id)a3;
+- (void)_layoutLiveHostView:(id)view;
+- (void)_layoutLiveSnapshotView:(id)view;
+- (void)_modifyPresentationContext:(id)context;
 - (void)_placeholderVisibilityChanged;
 - (void)_recheckLiveContentDependencies;
 - (void)_refresh;
 - (void)_reloadPlaceholderContentIfNecessary;
-- (void)_setOrientation:(int64_t)a3;
-- (void)_transitionFromDisplayMode:(int64_t)a3 showingView:(id)a4 toDisplayMode:(int64_t)a5 showingView:(id)a6 withAnimationFactory:(id)a7 completion:(id)a8;
+- (void)_setOrientation:(int64_t)orientation;
+- (void)_transitionFromDisplayMode:(int64_t)mode showingView:(id)view toDisplayMode:(int64_t)displayMode showingView:(id)showingView withAnimationFactory:(id)factory completion:(id)completion;
 - (void)_updateBackgroundColor;
 - (void)_updateBackgroundViewContainment;
 - (void)_updateFlattenMode;
 - (void)_updateFullyOccluded;
 - (void)_updateLiveContentRendering;
 - (void)_updateLiveViewContainment;
-- (void)_updateReferenceSize:(CGSize)a3 andOrientation:(int64_t)a4;
+- (void)_updateReferenceSize:(CGSize)size andOrientation:(int64_t)orientation;
 - (void)_updateResizesHostedContext;
 - (void)dealloc;
 - (void)invalidate;
 - (void)layoutSubviews;
-- (void)placeholderContentViewProviderContentDidUpdate:(id)a3;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4;
-- (void)sceneHandle:(id)a3 didUpdateContentState:(int64_t)a4;
-- (void)setAsynchronousOpaque:(BOOL)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setCustomContentView:(id)a3;
-- (void)setDisplayMode:(int64_t)a3 animationFactory:(id)a4 completion:(id)a5;
-- (void)setFlattenMode:(id)a3;
-- (void)setFullyOccluded:(BOOL)a3;
-- (void)setMinificationFilter:(id)a3;
-- (void)setPlaceholderContentContext:(id)a3;
-- (void)setPlaceholderContentEnabled:(BOOL)a3;
-- (void)setPlaceholderContentProvider:(id)a3;
-- (void)setRendersAsynchronously:(BOOL)a3;
-- (void)setResizesHostedContext:(BOOL)a3;
+- (void)placeholderContentViewProviderContentDidUpdate:(id)update;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene;
+- (void)sceneHandle:(id)handle didUpdateContentState:(int64_t)state;
+- (void)setAsynchronousOpaque:(BOOL)opaque;
+- (void)setBackgroundView:(id)view;
+- (void)setCustomContentView:(id)view;
+- (void)setDisplayMode:(int64_t)mode animationFactory:(id)factory completion:(id)completion;
+- (void)setFlattenMode:(id)mode;
+- (void)setFullyOccluded:(BOOL)occluded;
+- (void)setMinificationFilter:(id)filter;
+- (void)setPlaceholderContentContext:(id)context;
+- (void)setPlaceholderContentEnabled:(BOOL)enabled;
+- (void)setPlaceholderContentProvider:(id)provider;
+- (void)setRendersAsynchronously:(BOOL)asynchronously;
+- (void)setResizesHostedContext:(BOOL)context;
 @end
 
 @implementation SBSceneView
@@ -92,18 +92,18 @@
     return 0;
   }
 
-  v3 = [(UIScenePresenter *)self->_presenter presentationContext];
+  presentationContext = [(UIScenePresenter *)self->_presenter presentationContext];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 zombifiesHostedContext];
+    zombifiesHostedContext = [presentationContext zombifiesHostedContext];
   }
 
   else
   {
-    v4 = 0;
+    zombifiesHostedContext = 0;
   }
 
-  return v4;
+  return zombifiesHostedContext;
 }
 
 - (CGSize)referenceSize
@@ -133,8 +133,8 @@
 - (void)_updateBackgroundViewContainment
 {
   effectiveDisplayMode = self->_effectiveDisplayMode;
-  v4 = [(UIScenePresentation *)self->_hostView backgroundView];
-  v5 = v4;
+  backgroundView = [(UIScenePresentation *)self->_hostView backgroundView];
+  v5 = backgroundView;
   if (effectiveDisplayMode == 4)
   {
     backgroundView = self->_backgroundView;
@@ -218,8 +218,8 @@ LABEL_8:
 {
   if ([(SBSceneView *)self _wantsBlackBackground])
   {
-    v3 = [MEMORY[0x277D75348] blackColor];
-    [(SBSceneView *)self setBackgroundColor:v3];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(SBSceneView *)self setBackgroundColor:blackColor];
   }
 
   else
@@ -232,7 +232,7 @@ LABEL_8:
 - (void)_configureLiveHostView
 {
   OUTLINED_FUNCTION_0();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_1();
   [v1 handleFailureInMethod:v0 object:? file:? lineNumber:? description:?];
 }
@@ -270,19 +270,19 @@ LABEL_8:
   [(UIView *)self->_sceneContentContainerView setFrame:v4 + v13, v12, v15, v17];
   [(SBSceneView *)self _contentContainerCornerRadius];
   v19 = v18;
-  v20 = [(UIView *)self->_sceneContentContainerView layer];
-  v21 = v20;
+  layer = [(UIView *)self->_sceneContentContainerView layer];
+  layer2 = layer;
   if (v19 <= 0.0)
   {
-    [v20 setCornerRadius:0.0];
+    [layer setCornerRadius:0.0];
   }
 
   else
   {
-    [v20 setCornerRadius:v19];
+    [layer setCornerRadius:v19];
 
-    v21 = [(UIView *)self->_sceneContentContainerView layer];
-    [v21 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer2 = [(UIView *)self->_sceneContentContainerView layer];
+    [layer2 setCornerCurve:*MEMORY[0x277CDA138]];
   }
 
   [(UIView *)self->_sceneContentContainerView bounds];
@@ -290,10 +290,10 @@ LABEL_8:
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [(UIView *)self->_customContentView superview];
+  superview = [(UIView *)self->_customContentView superview];
   sceneContentContainerView = self->_sceneContentContainerView;
 
-  if (v30 == sceneContentContainerView)
+  if (superview == sceneContentContainerView)
   {
     [(UIView *)self->_customContentView setFrame:v23, v25, v27, v29];
   }
@@ -301,43 +301,43 @@ LABEL_8:
   if ([(UIView *)self->_backgroundView isDescendantOfView:self->_sceneContentContainerView]|| ([(UIScenePresentation *)self->_hostView backgroundView], v32 = objc_claimAutoreleasedReturnValue(), backgroundView = self->_backgroundView, v32, v32 == backgroundView))
   {
     [(UIView *)self->_backgroundView setFrame:v23, v25, v27, v29];
-    v34 = [(UIView *)self->_backgroundView superview];
+    superview2 = [(UIView *)self->_backgroundView superview];
     v35 = self->_sceneContentContainerView;
 
-    if (v34 == v35)
+    if (superview2 == v35)
     {
       [(UIView *)self->_sceneContentContainerView sendSubviewToBack:self->_backgroundView];
     }
   }
 
-  v36 = [(SBScenePlaceholderContentView *)self->_placeholderContentView superview];
+  superview3 = [(SBScenePlaceholderContentView *)self->_placeholderContentView superview];
   v37 = self->_sceneContentContainerView;
 
-  if (v36 == v37)
+  if (superview3 == v37)
   {
     [(SBScenePlaceholderContentView *)self->_placeholderContentView setFrame:v23, v25, v27, v29];
   }
 
   [(SBSceneView *)self _layoutLiveSnapshotView:self->_liveSnapshotView];
   [(SBSceneView *)self _layoutLiveHostView:self->_hostView];
-  v38 = [(UIView *)self->_crossfadeView superview];
+  superview4 = [(UIView *)self->_crossfadeView superview];
 
-  if (v38 == self)
+  if (superview4 == self)
   {
     [(UIView *)self->_crossfadeView setFrame:v41, v12, v15, v17];
-    v39 = [(UIView *)self->_crossfadeView layer];
-    v40 = v39;
+    layer3 = [(UIView *)self->_crossfadeView layer];
+    layer4 = layer3;
     if (v19 <= 0.0)
     {
-      [v39 setCornerRadius:0.0];
+      [layer3 setCornerRadius:0.0];
     }
 
     else
     {
-      [v39 setCornerRadius:v19];
+      [layer3 setCornerRadius:v19];
 
-      v40 = [(UIView *)self->_crossfadeView layer];
-      [v40 setCornerCurve:*MEMORY[0x277CDA138]];
+      layer4 = [(UIView *)self->_crossfadeView layer];
+      [layer4 setCornerCurve:*MEMORY[0x277CDA138]];
     }
   }
 }
@@ -374,8 +374,8 @@ LABEL_8:
 
   sceneContentContainerView = self->_sceneContentContainerView;
   v6 = minificationFilter;
-  v7 = [(UIView *)sceneContentContainerView layer];
-  [v7 setMinificationFilter:v6];
+  layer = [(UIView *)sceneContentContainerView layer];
+  [layer setMinificationFilter:v6];
 }
 
 void __42__SBSceneView__updateLiveContentRendering__block_invoke(uint64_t a1, void *a2)
@@ -465,7 +465,7 @@ void __33__SBSceneView__updateFlattenMode__block_invoke_2(uint64_t a1, void *a2)
 - (void)_enableHostingIfPossible
 {
   OUTLINED_FUNCTION_0();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -489,11 +489,11 @@ void __33__SBSceneView__updateFlattenMode__block_invoke_2(uint64_t a1, void *a2)
     goto LABEL_8;
   }
 
-  v5 = [(SBSceneHandle *)self->_sceneHandle isContentReady];
-  v6 = v5;
-  if ((effectiveDisplayMode == 4) != v5)
+  isContentReady = [(SBSceneHandle *)self->_sceneHandle isContentReady];
+  v6 = isContentReady;
+  if ((effectiveDisplayMode == 4) != isContentReady)
   {
-    v7 = [objc_opt_class() defaultDisplayModeAnimationFactory];
+    defaultDisplayModeAnimationFactory = [objc_opt_class() defaultDisplayModeAnimationFactory];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -507,17 +507,17 @@ void __33__SBSceneView__updateFlattenMode__block_invoke_2(uint64_t a1, void *a2)
         v9 = [(SBSceneView *)self _bestDisplayModeLessThanMode:4];
       }
 
-      v11 = [WeakRetained animationFactoryForImplicitTransitionFromMode:self->_effectiveDisplayMode toMode:v9 defaultFactory:v7];
+      v11 = [WeakRetained animationFactoryForImplicitTransitionFromMode:self->_effectiveDisplayMode toMode:v9 defaultFactory:defaultDisplayModeAnimationFactory];
 
-      v7 = v11;
+      defaultDisplayModeAnimationFactory = v11;
     }
 
-    [(SBSceneView *)self _evaluateEffectiveDisplayModeWithAnimationFactory:v7 completion:0];
+    [(SBSceneView *)self _evaluateEffectiveDisplayModeWithAnimationFactory:defaultDisplayModeAnimationFactory completion:0];
 
     goto LABEL_17;
   }
 
-  v10 = !v5;
+  v10 = !isContentReady;
   if (effectiveDisplayMode != 4)
   {
     v10 = 1;
@@ -559,18 +559,18 @@ LABEL_17:
   return [(SBScenePlaceholderContentView *)v4 statusBarStyle];
 }
 
-- (SBSceneView)initWithSceneHandle:(id)a3 referenceSize:(CGSize)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6 hostRequester:(id)a7
+- (SBSceneView)initWithSceneHandle:(id)handle referenceSize:(CGSize)size contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation hostRequester:(id)requester
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = a7;
-  if (!v14)
+  height = size.height;
+  width = size.width;
+  handleCopy = handle;
+  requesterCopy = requester;
+  if (!handleCopy)
   {
     [SBSceneView initWithSceneHandle:referenceSize:contentOrientation:containerOrientation:hostRequester:];
   }
 
-  if ((a6 - 3) >= 2)
+  if ((containerOrientation - 3) >= 2)
   {
     v16 = height;
   }
@@ -580,7 +580,7 @@ LABEL_17:
     v16 = width;
   }
 
-  if ((a6 - 3) >= 2)
+  if ((containerOrientation - 3) >= 2)
   {
     v17 = width;
   }
@@ -599,8 +599,8 @@ LABEL_17:
   if (v20)
   {
     [(SBSceneView *)v20 setOpaque:0];
-    objc_storeStrong(&v21->_sceneHandle, a3);
-    v21->_orientation = a5;
+    objc_storeStrong(&v21->_sceneHandle, handle);
+    v21->_orientation = orientation;
     v21->_placeholderContentEnabled = 1;
     v21->_requestedDisplayMode = 0;
     v21->_effectiveDisplayMode = 0;
@@ -616,9 +616,9 @@ LABEL_17:
     [(SBSceneView *)v21 _invalidateContentPrefersToDisableClipping];
     [(SBSceneView *)v21 addSubview:v21->_sceneContentContainerView];
     [(SBSceneView *)v21 setBackgroundView:0];
-    if (v15)
+    if (requesterCopy)
     {
-      v25 = [v15 sceneViewPresentationPriority:v21];
+      v25 = [requesterCopy sceneViewPresentationPriority:v21];
     }
 
     else
@@ -627,7 +627,7 @@ LABEL_17:
     }
 
     v21->_hostingPriority = v25;
-    v26 = [v15 sceneViewPresentationIdentifier:v21];
+    v26 = [requesterCopy sceneViewPresentationIdentifier:v21];
     v27 = v26;
     v28 = @"SBApplicationSceneView";
     if (v26)
@@ -639,9 +639,9 @@ LABEL_17:
 
     v30 = objc_alloc(MEMORY[0x277CCACA8]);
     v31 = ++initWithSceneHandle_referenceSize_contentOrientation_containerOrientation_hostRequester____RequesterCounter;
-    if (v15)
+    if (requesterCopy)
     {
-      v32 = [v30 initWithFormat:@"%@:%p-SBApplicationSceneView:%p-%llu", v29, v15, v21, v31];
+      v32 = [v30 initWithFormat:@"%@:%p-SBApplicationSceneView:%p-%llu", v29, requesterCopy, v21, v31];
     }
 
     else
@@ -655,15 +655,15 @@ LABEL_17:
     v21->_hostingIdentifier = v33;
 
     [(SBSceneHandle *)v21->_sceneHandle addObserver:v21];
-    v35 = [v14 sceneIfExists];
-    if (v35)
+    sceneIfExists = [handleCopy sceneIfExists];
+    if (sceneIfExists)
     {
-      [(SBSceneView *)v21 sceneHandle:v14 didCreateScene:v35];
+      [(SBSceneView *)v21 sceneHandle:handleCopy didCreateScene:sceneIfExists];
     }
 
-    v36 = [(SBSceneView *)v21 _addStateCaptureHandler];
+    _addStateCaptureHandler = [(SBSceneView *)v21 _addStateCaptureHandler];
     stateCaptureInvalidatable = v21->_stateCaptureInvalidatable;
-    v21->_stateCaptureInvalidatable = v36;
+    v21->_stateCaptureInvalidatable = _addStateCaptureHandler;
   }
 
   return v21;
@@ -681,8 +681,8 @@ LABEL_17:
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBSceneHandle *)self->_sceneHandle sceneIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"sceneId"];
+  sceneIdentifier = [(SBSceneHandle *)self->_sceneHandle sceneIdentifier];
+  v5 = [v3 appendObject:sceneIdentifier withName:@"sceneId"];
 
   v6 = [v3 appendPointer:self->_sceneHandle withName:@"sceneHandle"];
   v7 = [(SBSceneView *)self displayMode]- 1;
@@ -709,15 +709,15 @@ LABEL_17:
   }
 
   v12 = [v3 appendObject:v11 withName:@"effectiveDisplayMode"];
-  v13 = [(NSCountedSet *)self->_liveContentDisableReasons allObjects];
-  [v3 appendArraySection:v13 withName:@"liveContentDisableAssertions" skipIfEmpty:1];
+  allObjects = [(NSCountedSet *)self->_liveContentDisableReasons allObjects];
+  [v3 appendArraySection:allObjects withName:@"liveContentDisableAssertions" skipIfEmpty:1];
 
   v14 = [v3 appendBool:self->_rendersAsynchronously withName:@"rendersAsynchronously"];
   v15 = [v3 appendBool:self->_fullyOccluded withName:@"fullyOccluded"];
   v16 = [v3 appendObject:self->_flattenMode withName:@"flattenMode"];
-  v17 = [(UIScenePresentation *)self->_hostView layer];
+  layer = [(UIScenePresentation *)self->_hostView layer];
   v18 = objc_opt_class();
-  v19 = v17;
+  v19 = layer;
   if (v18)
   {
     if (objc_opt_isKindOfClass())
@@ -740,19 +740,19 @@ LABEL_17:
 
   if (v21)
   {
-    v22 = [v3 activeMultilinePrefix];
+    activeMultilinePrefix = [v3 activeMultilinePrefix];
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
     v27 = __26__SBSceneView_description__block_invoke;
     v28 = &unk_27836AE50;
     v29 = v3;
     v30 = v21;
-    [v29 appendBodySectionWithName:@"window layer" multilinePrefix:v22 block:&v25];
+    [v29 appendBodySectionWithName:@"window layer" multilinePrefix:activeMultilinePrefix block:&v25];
   }
 
-  v23 = [v3 build];
+  build = [v3 build];
 
-  return v23;
+  return build;
 }
 
 void __26__SBSceneView_description__block_invoke(uint64_t a1)
@@ -767,13 +767,13 @@ void __26__SBSceneView_description__block_invoke(uint64_t a1)
   v7 = [v6 appendObject:v8 withName:@"flattenMode"];
 }
 
-- (void)setCustomContentView:(id)a3
+- (void)setCustomContentView:(id)view
 {
-  v8 = a3;
+  viewCopy = view;
   v5 = self->_customContentView;
-  if (v5 != v8)
+  if (v5 != viewCopy)
   {
-    objc_storeStrong(&self->_customContentView, a3);
+    objc_storeStrong(&self->_customContentView, view);
     customContentView = self->_customContentView;
     [(SBSceneView *)self bounds];
     [(UIView *)customContentView setFrame:?];
@@ -798,13 +798,13 @@ void __26__SBSceneView_description__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  if (backgroundView != v4)
+  if (backgroundView != viewCopy)
   {
-    obj = v4;
+    obj = viewCopy;
     [(UIView *)backgroundView removeFromSuperview];
     v6 = obj;
     if (!obj)
@@ -819,59 +819,59 @@ void __26__SBSceneView_description__block_invoke(uint64_t a1)
     objb = v6;
     objc_storeStrong(&self->_backgroundView, v6);
     backgroundView = [(SBSceneView *)self _updateBackgroundViewContainment];
-    v4 = objb;
+    viewCopy = objb;
   }
 
-  MEMORY[0x2821F96F8](backgroundView, v4);
+  MEMORY[0x2821F96F8](backgroundView, viewCopy);
 }
 
-- (void)setPlaceholderContentProvider:(id)a3
+- (void)setPlaceholderContentProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   placeholderContentProvider = self->_placeholderContentProvider;
-  if (placeholderContentProvider != v5)
+  if (placeholderContentProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     [(SBScenePlaceholderContentViewProvider *)placeholderContentProvider setDelegate:0];
-    objc_storeStrong(&self->_placeholderContentProvider, a3);
+    objc_storeStrong(&self->_placeholderContentProvider, provider);
     [(SBScenePlaceholderContentViewProvider *)self->_placeholderContentProvider setDelegate:self];
     placeholderContentProvider = [(SBSceneView *)self _reloadPlaceholderContentIfNecessary];
-    v5 = v7;
+    providerCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](placeholderContentProvider, v5);
+  MEMORY[0x2821F96F8](placeholderContentProvider, providerCopy);
 }
 
-- (void)setPlaceholderContentContext:(id)a3
+- (void)setPlaceholderContentContext:(id)context
 {
-  v5 = a3;
-  if (self->_placeholderContentContext != v5)
+  contextCopy = context;
+  if (self->_placeholderContentContext != contextCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderContentContext, a3);
+    v6 = contextCopy;
+    objc_storeStrong(&self->_placeholderContentContext, context);
     [(SBSceneView *)self _reloadPlaceholderContentIfNecessary];
-    v5 = v6;
+    contextCopy = v6;
   }
 }
 
-- (void)setPlaceholderContentEnabled:(BOOL)a3
+- (void)setPlaceholderContentEnabled:(BOOL)enabled
 {
-  if (self->_placeholderContentEnabled != a3)
+  if (self->_placeholderContentEnabled != enabled)
   {
-    self->_placeholderContentEnabled = a3;
+    self->_placeholderContentEnabled = enabled;
     [(SBSceneView *)self _reloadPlaceholderContentIfNecessary];
   }
 }
 
-- (void)setMinificationFilter:(id)a3
+- (void)setMinificationFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   minificationFilter = self->_minificationFilter;
-  if (minificationFilter != v4)
+  if (minificationFilter != filterCopy)
   {
-    v8 = v4;
-    minificationFilter = [minificationFilter isEqual:v4];
-    v4 = v8;
+    v8 = filterCopy;
+    minificationFilter = [minificationFilter isEqual:filterCopy];
+    filterCopy = v8;
     if ((minificationFilter & 1) == 0)
     {
       v6 = [v8 copy];
@@ -879,60 +879,60 @@ void __26__SBSceneView_description__block_invoke(uint64_t a1)
       self->_minificationFilter = v6;
 
       minificationFilter = [(SBSceneView *)self _updateLiveContentRendering];
-      v4 = v8;
+      filterCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](minificationFilter, v4);
+  MEMORY[0x2821F96F8](minificationFilter, filterCopy);
 }
 
-- (void)setRendersAsynchronously:(BOOL)a3
+- (void)setRendersAsynchronously:(BOOL)asynchronously
 {
-  if (self->_rendersAsynchronously != a3)
+  if (self->_rendersAsynchronously != asynchronously)
   {
-    self->_rendersAsynchronously = a3;
+    self->_rendersAsynchronously = asynchronously;
     [(SBSceneView *)self _updateLiveContentRendering];
   }
 }
 
-- (void)setAsynchronousOpaque:(BOOL)a3
+- (void)setAsynchronousOpaque:(BOOL)opaque
 {
-  if (self->_asynchronousOpaque != a3)
+  if (self->_asynchronousOpaque != opaque)
   {
-    self->_asynchronousOpaque = a3;
+    self->_asynchronousOpaque = opaque;
     [(SBSceneView *)self _updateLiveContentRendering];
   }
 }
 
-- (void)setResizesHostedContext:(BOOL)a3
+- (void)setResizesHostedContext:(BOOL)context
 {
-  if (self->_resizesHostedContext != a3)
+  if (self->_resizesHostedContext != context)
   {
-    self->_resizesHostedContext = a3;
+    self->_resizesHostedContext = context;
     [(SBSceneView *)self _updateResizesHostedContext];
   }
 }
 
-- (void)setFullyOccluded:(BOOL)a3
+- (void)setFullyOccluded:(BOOL)occluded
 {
-  if (self->_fullyOccluded != a3)
+  if (self->_fullyOccluded != occluded)
   {
-    self->_fullyOccluded = a3;
+    self->_fullyOccluded = occluded;
     [(SBSceneView *)self _updateFullyOccluded];
   }
 }
 
-- (void)setFlattenMode:(id)a3
+- (void)setFlattenMode:(id)mode
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  modeCopy = mode;
+  v7 = modeCopy;
+  if (!modeCopy)
   {
     [SBSceneView setFlattenMode:];
-    v4 = 0;
+    modeCopy = 0;
   }
 
-  if (![(NSString *)self->_flattenMode isEqualToString:v4])
+  if (![(NSString *)self->_flattenMode isEqualToString:modeCopy])
   {
     v5 = [v7 copy];
     flattenMode = self->_flattenMode;
@@ -942,39 +942,39 @@ void __26__SBSceneView_description__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDisplayMode:(int64_t)a3 animationFactory:(id)a4 completion:(id)a5
+- (void)setDisplayMode:(int64_t)mode animationFactory:(id)factory completion:(id)completion
 {
-  v9 = a4;
-  v8 = a5;
+  factoryCopy = factory;
+  completionCopy = completion;
   if (self->_invalidated)
   {
     [SBSceneView setDisplayMode:animationFactory:completion:];
   }
 
-  if (self->_requestedDisplayMode == a3)
+  if (self->_requestedDisplayMode == mode)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    self->_requestedDisplayMode = a3;
-    [(SBSceneView *)self _evaluateEffectiveDisplayModeWithAnimationFactory:v9 completion:v8];
+    self->_requestedDisplayMode = mode;
+    [(SBSceneView *)self _evaluateEffectiveDisplayModeWithAnimationFactory:factoryCopy completion:completionCopy];
   }
 }
 
-- (id)acquireLiveContentDisableAssertionForReason:(id)a3
+- (id)acquireLiveContentDisableAssertionForReason:(id)reason
 {
-  v4 = a3;
-  if (!v4)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [SBSceneView acquireLiveContentDisableAssertionForReason:];
   }
 
-  v5 = [v4 copy];
+  v5 = [reasonCopy copy];
 
   liveContentDisableReasons = self->_liveContentDisableReasons;
   if (liveContentDisableReasons)
@@ -1039,10 +1039,10 @@ void __59__SBSceneView_acquireLiveContentDisableAssertionForReason___block_invok
     customContentView = self->_customContentView;
     self->_customContentView = 0;
 
-    v7 = [(UIView *)self->_backgroundView superview];
+    superview = [(UIView *)self->_backgroundView superview];
     sceneContentContainerView = self->_sceneContentContainerView;
 
-    if (v7 == sceneContentContainerView)
+    if (superview == sceneContentContainerView)
     {
       [(UIView *)self->_backgroundView removeFromSuperview];
     }
@@ -1060,14 +1060,14 @@ void __59__SBSceneView_acquireLiveContentDisableAssertionForReason___block_invok
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (self->_hostView)
   {
     self = self->_hostView;
   }
 
-  [(SBSceneView *)self bounds:a3.width];
+  [(SBSceneView *)self bounds:fits.width];
   v4 = v3;
   v6 = v5;
   result.height = v6;
@@ -1075,10 +1075,10 @@ void __59__SBSceneView_acquireLiveContentDisableAssertionForReason___block_invok
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"zPosition"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"zPosition"])
   {
     v5 = 1;
   }
@@ -1087,7 +1087,7 @@ void __59__SBSceneView_acquireLiveContentDisableAssertionForReason___block_invok
   {
     v7.receiver = self;
     v7.super_class = SBSceneView;
-    v5 = [(SBSceneView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SBSceneView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -1109,31 +1109,31 @@ void __59__SBSceneView_acquireLiveContentDisableAssertionForReason___block_invok
   [(SBSceneView *)self _updateBackgroundColor];
 }
 
-- (void)_configureSceneLiveHostView:(id)a3
+- (void)_configureSceneLiveHostView:(id)view
 {
-  v6 = a3;
-  v4 = [v6 superview];
+  viewCopy = view;
+  superview = [viewCopy superview];
   sceneContentContainerView = self->_sceneContentContainerView;
 
-  if (v4 != sceneContentContainerView)
+  if (superview != sceneContentContainerView)
   {
-    [(UIView *)self->_sceneContentContainerView addSubview:v6];
+    [(UIView *)self->_sceneContentContainerView addSubview:viewCopy];
   }
 
-  [(SBSceneView *)self _layoutLiveHostView:v6];
+  [(SBSceneView *)self _layoutLiveHostView:viewCopy];
   [(SBSceneView *)self setNeedsLayout];
 }
 
-- (void)_layoutLiveHostView:(id)a3
+- (void)_layoutLiveHostView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 superview];
+  viewCopy = view;
+  superview = [viewCopy superview];
   sceneContentContainerView = self->_sceneContentContainerView;
 
-  if (v5 == sceneContentContainerView)
+  if (superview == sceneContentContainerView)
   {
     [(UIView *)self->_sceneContentContainerView bounds];
-    [v4 setFrame:?];
+    [viewCopy setFrame:?];
   }
 
   else
@@ -1141,21 +1141,21 @@ void __59__SBSceneView_acquireLiveContentDisableAssertionForReason___block_invok
     v7 = SBLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(SBSceneView *)v4 _layoutLiveHostView:v7];
+      [(SBSceneView *)viewCopy _layoutLiveHostView:v7];
     }
   }
 }
 
-- (void)_layoutLiveSnapshotView:(id)a3
+- (void)_layoutLiveSnapshotView:(id)view
 {
-  v6 = a3;
-  v4 = [v6 superview];
+  viewCopy = view;
+  superview = [viewCopy superview];
   sceneContentContainerView = self->_sceneContentContainerView;
 
-  if (v4 == sceneContentContainerView)
+  if (superview == sceneContentContainerView)
   {
     [(UIView *)self->_sceneContentContainerView bounds];
-    [v6 setFrame:?];
+    [viewCopy setFrame:?];
   }
 }
 
@@ -1172,17 +1172,17 @@ void __59__SBSceneView_acquireLiveContentDisableAssertionForReason___block_invok
   return result;
 }
 
-- (void)_modifyPresentationContext:(id)a3
+- (void)_modifyPresentationContext:(id)context
 {
-  v4 = a3;
-  [v4 setClippingDisabled:{-[SBSceneView _contentPrefersToDisableClipping](self, "_contentPrefersToDisableClipping")}];
+  contextCopy = context;
+  [contextCopy setClippingDisabled:{-[SBSceneView _contentPrefersToDisableClipping](self, "_contentPrefersToDisableClipping")}];
 }
 
-- (void)_updateReferenceSize:(CGSize)a3 andOrientation:(int64_t)a4
+- (void)_updateReferenceSize:(CGSize)size andOrientation:(int64_t)orientation
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width == *MEMORY[0x277CBF3A8] && a3.height == *(MEMORY[0x277CBF3A8] + 8))
+  height = size.height;
+  width = size.width;
+  if (size.width == *MEMORY[0x277CBF3A8] && size.height == *(MEMORY[0x277CBF3A8] + 8))
   {
     [SBSceneView _updateReferenceSize:andOrientation:];
   }
@@ -1197,10 +1197,10 @@ void __59__SBSceneView_acquireLiveContentDisableAssertionForReason___block_invok
   v11 = self->_referenceSize.height;
   self->_referenceSize.width = width;
   self->_referenceSize.height = height;
-  [(SBSceneView *)self _setOrientation:a4];
+  [(SBSceneView *)self _setOrientation:orientation];
   if ([(SBSceneView *)self effectiveDisplayMode]== 2)
   {
-    v12 = orientation == a4 && v10 == width;
+    v12 = orientation == orientation && v10 == width;
     if (!v12 || v11 != height)
     {
 
@@ -1209,21 +1209,21 @@ void __59__SBSceneView_acquireLiveContentDisableAssertionForReason___block_invok
   }
 }
 
-- (void)_containerContentWrapperInterfaceOrientationChangedTo:(int64_t)a3
+- (void)_containerContentWrapperInterfaceOrientationChangedTo:(int64_t)to
 {
   placeholderContentView = self->_placeholderContentView;
   if (objc_opt_respondsToSelector())
   {
     v6 = self->_placeholderContentView;
 
-    [(SBScenePlaceholderContentView *)v6 setContainerOrientation:a3];
+    [(SBScenePlaceholderContentView *)v6 setContainerOrientation:to];
   }
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
-  v5 = [a4 uiPresentationManager];
-  v6 = [v5 createPresenterWithIdentifier:self->_hostingIdentifier priority:self->_hostingPriority];
+  uiPresentationManager = [scene uiPresentationManager];
+  v6 = [uiPresentationManager createPresenterWithIdentifier:self->_hostingIdentifier priority:self->_hostingPriority];
   presenter = self->_presenter;
   self->_presenter = v6;
 
@@ -1253,10 +1253,10 @@ void __42__SBSceneView_sceneHandle_didCreateScene___block_invoke(uint64_t a1, vo
   [*(a1 + 32) _modifyPresentationContext:v3];
 }
 
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene
 {
-  v7 = a3;
-  v6 = a4;
+  handleCopy = handle;
+  sceneCopy = scene;
   if (self->_effectiveDisplayMode == 4 && [(SBSceneView *)self _presenterMayBeZombified])
   {
     [(SBSceneView *)self _recheckLiveContentDependencies];
@@ -1268,28 +1268,28 @@ void __42__SBSceneView_sceneHandle_didCreateScene___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)sceneHandle:(id)a3 didUpdateContentState:(int64_t)a4
+- (void)sceneHandle:(id)handle didUpdateContentState:(int64_t)state
 {
-  if ([(SBSceneView *)self _shouldObserveSceneHostContentState:a3])
+  if ([(SBSceneView *)self _shouldObserveSceneHostContentState:handle])
   {
 
     [(SBSceneView *)self _recheckLiveContentDependencies];
   }
 }
 
-- (void)placeholderContentViewProviderContentDidUpdate:(id)a3
+- (void)placeholderContentViewProviderContentDidUpdate:(id)update
 {
-  if (self->_placeholderContentProvider == a3)
+  if (self->_placeholderContentProvider == update)
   {
     [(SBSceneView *)self _reloadPlaceholderContentIfNecessary];
   }
 }
 
-- (void)_setOrientation:(int64_t)a3
+- (void)_setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(SBSceneView *)self setNeedsLayout];
   }
 }
@@ -1306,10 +1306,10 @@ void __42__SBSceneView_sceneHandle_didCreateScene___block_invoke(uint64_t a1, vo
   self->_hostView = 0;
 }
 
-- (void)_evaluateEffectiveDisplayModeWithAnimationFactory:(id)a3 completion:(id)a4
+- (void)_evaluateEffectiveDisplayModeWithAnimationFactory:(id)factory completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  factoryCopy = factory;
+  completionCopy = completion;
   for (i = self->_requestedDisplayMode; ; i = [(SBSceneView *)self _bestDisplayModeLessThanMode:i])
   {
     [(SBSceneView *)self _configureViewForEffectiveDisplayMode:i];
@@ -1329,9 +1329,9 @@ void __42__SBSceneView_sceneHandle_didCreateScene___block_invoke(uint64_t a1, vo
   effectiveDisplayMode = self->_effectiveDisplayMode;
   if (effectiveDisplayMode == i)
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -1349,8 +1349,8 @@ void __42__SBSceneView_sceneHandle_didCreateScene___block_invoke(uint64_t a1, vo
     v14[3] = &unk_27836AEE8;
     v14[4] = self;
     v16 = i;
-    v15 = v7;
-    [(SBSceneView *)self _transitionFromDisplayMode:effectiveDisplayMode showingView:v11 toDisplayMode:v12 showingView:v13 withAnimationFactory:v6 completion:v14];
+    v15 = completionCopy;
+    [(SBSceneView *)self _transitionFromDisplayMode:effectiveDisplayMode showingView:v11 toDisplayMode:v12 showingView:v13 withAnimationFactory:factoryCopy completion:v14];
   }
 }
 
@@ -1381,14 +1381,14 @@ uint64_t __76__SBSceneView__evaluateEffectiveDisplayModeWithAnimationFactory_com
   return result;
 }
 
-- (int64_t)_bestDisplayModeLessThanMode:(int64_t)a3
+- (int64_t)_bestDisplayModeLessThanMode:(int64_t)mode
 {
-  if ((a3 - 1) < 2 || !a3)
+  if ((mode - 1) < 2 || !mode)
   {
     return 0;
   }
 
-  if (a3 != 4)
+  if (mode != 4)
   {
     return 2;
   }
@@ -1401,19 +1401,19 @@ uint64_t __76__SBSceneView__evaluateEffectiveDisplayModeWithAnimationFactory_com
   return 2;
 }
 
-- (id)_viewForDisplayMode:(int64_t)a3
+- (id)_viewForDisplayMode:(int64_t)mode
 {
-  v4 = 0;
-  if (a3 <= 2)
+  _transitionViewForHostView = 0;
+  if (mode <= 2)
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
       v5 = 504;
     }
 
     else
     {
-      if (a3 != 2)
+      if (mode != 2)
       {
         goto LABEL_14;
       }
@@ -1424,86 +1424,86 @@ uint64_t __76__SBSceneView__evaluateEffectiveDisplayModeWithAnimationFactory_com
     goto LABEL_12;
   }
 
-  if (a3 == 3)
+  if (mode == 3)
   {
     v5 = 520;
 LABEL_12:
-    v4 = *(&self->super.super.super.isa + v5);
+    _transitionViewForHostView = *(&self->super.super.super.isa + v5);
     goto LABEL_14;
   }
 
-  if (a3 == 4)
+  if (mode == 4)
   {
     if ([(NSCountedSet *)self->_liveContentDisableReasons count]|| ![(SBSceneHandle *)self->_sceneHandle isContentReady])
     {
-      v4 = 0;
+      _transitionViewForHostView = 0;
     }
 
     else
     {
-      v4 = [(SBSceneView *)self _transitionViewForHostView];
+      _transitionViewForHostView = [(SBSceneView *)self _transitionViewForHostView];
     }
   }
 
 LABEL_14:
 
-  return v4;
+  return _transitionViewForHostView;
 }
 
-- (void)_transitionFromDisplayMode:(int64_t)a3 showingView:(id)a4 toDisplayMode:(int64_t)a5 showingView:(id)a6 withAnimationFactory:(id)a7 completion:(id)a8
+- (void)_transitionFromDisplayMode:(int64_t)mode showingView:(id)view toDisplayMode:(int64_t)displayMode showingView:(id)showingView withAnimationFactory:(id)factory completion:(id)completion
 {
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(SBSceneView *)self _viewForDisplayMode:a5];
+  viewCopy = view;
+  showingViewCopy = showingView;
+  factoryCopy = factory;
+  completionCopy = completion;
+  v19 = [(SBSceneView *)self _viewForDisplayMode:displayMode];
 
-  if (v19 != v16)
+  if (v19 != showingViewCopy)
   {
-    [SBSceneView _transitionFromDisplayMode:a5 showingView:self toDisplayMode:a2 showingView:v16 withAnimationFactory:? completion:?];
+    [SBSceneView _transitionFromDisplayMode:displayMode showingView:self toDisplayMode:a2 showingView:showingViewCopy withAnimationFactory:? completion:?];
   }
 
-  v20 = [(SBSceneView *)self window];
-  v21 = v20;
-  if (!v17)
+  window = [(SBSceneView *)self window];
+  v21 = window;
+  if (!factoryCopy)
   {
     goto LABEL_8;
   }
 
-  if (!v20 || ([v20 isHidden] & 1) != 0 || -[SBSceneView isHiddenOrHasHiddenAncestor](self, "isHiddenOrHasHiddenAncestor"))
+  if (!window || ([window isHidden] & 1) != 0 || -[SBSceneView isHiddenOrHasHiddenAncestor](self, "isHiddenOrHasHiddenAncestor"))
   {
 
-    v17 = 0;
+    factoryCopy = 0;
 LABEL_8:
-    if (v16)
+    if (showingViewCopy)
     {
-      v22 = [v16 superview];
+      superview = [showingViewCopy superview];
 
-      if (v22 != self)
+      if (superview != self)
       {
-        [(SBSceneView *)self _addContentLikeViewToHierarchyForTransitionIfPossible:v16];
+        [(SBSceneView *)self _addContentLikeViewToHierarchyForTransitionIfPossible:showingViewCopy];
       }
     }
 
-    [v16 setAlpha:1.0];
-    if (v18)
+    [showingViewCopy setAlpha:1.0];
+    if (completionCopy)
     {
-      v18[2](v18);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_13;
   }
 
-  if (a3 == 4 && a5 == 3)
+  if (mode == 4 && displayMode == 3)
   {
     goto LABEL_8;
   }
 
-  if (v15 && v16)
+  if (viewCopy && showingViewCopy)
   {
-    v23 = [SBCrossfadeView crossfadeViewWithStartView:v15 endView:v16 translucent:0];
+    v23 = [SBCrossfadeView crossfadeViewWithStartView:viewCopy endView:showingViewCopy translucent:0];
     [v23 setClipsToBounds:1];
-    [v23 setAnimationFactory:v17];
+    [v23 setAnimationFactory:factoryCopy];
     [(SBSceneView *)self insertSubview:v23 aboveSubview:self->_sceneContentContainerView];
     [(UIView *)self->_crossfadeView removeFromSuperview];
     objc_storeStrong(&self->_crossfadeView, v23);
@@ -1512,36 +1512,36 @@ LABEL_8:
     v35[2] = __112__SBSceneView__transitionFromDisplayMode_showingView_toDisplayMode_showingView_withAnimationFactory_completion___block_invoke;
     v35[3] = &unk_27836AF10;
     v36 = v23;
-    v37 = self;
-    v38 = v15;
-    v39 = v16;
-    v40 = v18;
+    selfCopy = self;
+    v38 = viewCopy;
+    v39 = showingViewCopy;
+    v40 = completionCopy;
     v24 = v23;
     [v24 crossfadeWithCompletion:v35];
   }
 
   else
   {
-    if (v15)
+    if (viewCopy)
     {
-      v25 = v15;
+      v25 = viewCopy;
     }
 
     else
     {
-      v25 = v16;
+      v25 = showingViewCopy;
     }
 
     v26 = v25;
     v27 = v26;
     if (v26)
     {
-      if (v26 == v16)
+      if (v26 == showingViewCopy)
       {
-        [(SBSceneView *)self _addContentLikeViewToHierarchyForTransitionIfPossible:v16];
+        [(SBSceneView *)self _addContentLikeViewToHierarchyForTransitionIfPossible:showingViewCopy];
       }
 
-      if (v15)
+      if (viewCopy)
       {
         v28 = 0.0;
       }
@@ -1562,13 +1562,13 @@ LABEL_8:
       v30[1] = 3221225472;
       v30[2] = __112__SBSceneView__transitionFromDisplayMode_showingView_toDisplayMode_showingView_withAnimationFactory_completion___block_invoke_3;
       v30[3] = &unk_27836AF60;
-      v31 = v18;
-      [v29 animateWithFactory:v17 actions:v32 completion:v30];
+      v31 = completionCopy;
+      [v29 animateWithFactory:factoryCopy actions:v32 completion:v30];
     }
 
-    else if (v18)
+    else if (completionCopy)
     {
-      v18[2](v18);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -1612,30 +1612,30 @@ uint64_t __112__SBSceneView__transitionFromDisplayMode_showingView_toDisplayMode
   return result;
 }
 
-- (BOOL)_shouldViewBeInHierarchyForTransition:(id)a3
+- (BOOL)_shouldViewBeInHierarchyForTransition:(id)transition
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_customContentView == v4 || self->_placeholderContentView == v4)
+  transitionCopy = transition;
+  v5 = transitionCopy;
+  if (self->_customContentView == transitionCopy || self->_placeholderContentView == transitionCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = [(SBSceneView *)self _transitionViewForHostView];
-    v7 = v6 == v5;
+    _transitionViewForHostView = [(SBSceneView *)self _transitionViewForHostView];
+    v7 = _transitionViewForHostView == v5;
   }
 
   return v7;
 }
 
-- (BOOL)_addContentLikeViewToHierarchyForTransitionIfPossible:(id)a3
+- (BOOL)_addContentLikeViewToHierarchyForTransitionIfPossible:(id)possible
 {
-  v4 = a3;
-  if (v4 && [(SBSceneView *)self _shouldViewBeInHierarchyForTransition:v4])
+  possibleCopy = possible;
+  if (possibleCopy && [(SBSceneView *)self _shouldViewBeInHierarchyForTransition:possibleCopy])
   {
-    [(UIView *)self->_sceneContentContainerView addSubview:v4];
+    [(UIView *)self->_sceneContentContainerView addSubview:possibleCopy];
     v5 = 1;
   }
 
@@ -1647,9 +1647,9 @@ uint64_t __112__SBSceneView__transitionFromDisplayMode_showingView_toDisplayMode
   return v5;
 }
 
-- (void)_configureViewForEffectiveDisplayMode:(int64_t)a3
+- (void)_configureViewForEffectiveDisplayMode:(int64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case 4:
       [(SBSceneView *)self _configureLiveHostView];
@@ -1672,20 +1672,20 @@ uint64_t __112__SBSceneView__transitionFromDisplayMode_showingView_toDisplayMode
     v5 = self->_presenter;
     if (v4)
     {
-      v6 = [(UIScenePresenter *)v5 captureSnapshotPresentationView];
+      captureSnapshotPresentationView = [(UIScenePresenter *)v5 captureSnapshotPresentationView];
     }
 
     else
     {
-      v6 = [(UIScenePresenter *)v5 newSnapshotPresentationView];
+      captureSnapshotPresentationView = [(UIScenePresenter *)v5 newSnapshotPresentationView];
     }
 
     liveSnapshotView = self->_liveSnapshotView;
-    self->_liveSnapshotView = v6;
+    self->_liveSnapshotView = captureSnapshotPresentationView;
 
     [(UISceneSnapshotPresentation *)self->_liveSnapshotView setAlpha:0.0];
-    v8 = [(UIScenePresenter *)self->_presenter presentationContext];
-    [(SBSceneView *)self _configureBackgroundColorWithLiveSnapshotPresentationContext:v8];
+    presentationContext = [(UIScenePresenter *)self->_presenter presentationContext];
+    [(SBSceneView *)self _configureBackgroundColorWithLiveSnapshotPresentationContext:presentationContext];
 
     [(SBSceneView *)self _configureSceneLiveSnapshotView:self->_liveSnapshotView];
     [(SBSceneView *)self setNeedsLayout];
@@ -1708,12 +1708,12 @@ uint64_t __112__SBSceneView__transitionFromDisplayMode_showingView_toDisplayMode
   }
 }
 
-- (void)_configureBackgroundColorWithLiveSnapshotPresentationContext:(id)a3
+- (void)_configureBackgroundColorWithLiveSnapshotPresentationContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v4 = [a3 backgroundColorWhileHosting];
-    [(SBSceneView *)self setBackgroundColor:v4];
+    backgroundColorWhileHosting = [context backgroundColorWhileHosting];
+    [(SBSceneView *)self setBackgroundColor:backgroundColorWhileHosting];
   }
 
   else

@@ -1,20 +1,20 @@
 @interface MREffectJustASlide
-- (BOOL)canMoveInDirection:(unsigned __int8)a3 withPZR:(id)a4;
-- (BOOL)getVerticesCoordinates:(MREffectJustASlide *)self withMatrix:(SEL)a2 forElement:(CGPoint *)(a3;
+- (BOOL)canMoveInDirection:(unsigned __int8)direction withPZR:(id)r;
+- (BOOL)getVerticesCoordinates:(MREffectJustASlide *)self withMatrix:(SEL)matrix forElement:(CGPoint *)(a3;
 - (BOOL)isAlphaFriendly;
 - (BOOL)isNative3D;
 - (BOOL)isOpaque;
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments;
 - (MREffectJustASlide)init;
-- (double)pzrCancel:(id)a3;
-- (double)pzrEnd:(id)a3;
-- (double)pzrStart:(id)a3;
-- (double)pzrUpdate:(id)a3;
-- (id)elementHitAtPoint:(CGPoint)a3 withInverseMatrix:(float)a4[16] localPoint:(CGPoint *)a5;
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (id)retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)beginMorphingToAspectRatio:(double)a3 withDuration:(double)a4;
-- (void)renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
+- (double)pzrCancel:(id)cancel;
+- (double)pzrEnd:(id)end;
+- (double)pzrStart:(id)start;
+- (double)pzrUpdate:(id)update;
+- (id)elementHitAtPoint:(CGPoint)point withInverseMatrix:(float)matrix[16] localPoint:(CGPoint *)localPoint;
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (id)retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)beginMorphingToAspectRatio:(double)ratio withDuration:(double)duration;
+- (void)renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
 - (void)resetPZR;
 @end
 
@@ -43,11 +43,11 @@
   }
 
   v3 = v2;
-  v4 = [v2 frame];
-  if (v4)
+  frame = [v2 frame];
+  if (frame)
   {
 
-    return [v4 isNative3D];
+    return [frame isNative3D];
   }
 
   else if ([v3 isOpaque])
@@ -72,8 +72,8 @@
   }
 
   v4 = v3;
-  v5 = [v3 frame];
-  if (!v5)
+  frame = [v3 frame];
+  if (!frame)
   {
     if ([v4 isOpaque])
     {
@@ -88,7 +88,7 @@
     return v7 & 1;
   }
 
-  return [v5 isOpaque];
+  return [frame isOpaque];
 }
 
 - (BOOL)isAlphaFriendly
@@ -99,25 +99,25 @@
     return 1;
   }
 
-  v3 = [v2 frame];
-  if (!v3)
+  frame = [v2 frame];
+  if (!frame)
   {
     return 1;
   }
 
-  return [v3 isAlphaFriendly];
+  return [frame isAlphaFriendly];
 }
 
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   v8.receiver = self;
   v8.super_class = MREffectJustASlide;
-  [(MREffect *)&v8 prerenderForTime:a4 inContext:a5 withArguments:a3];
-  BYTE1(self->mSprite) = *([a4 backColor] + 3) >= 1.0;
+  [(MREffect *)&v8 prerenderForTime:context inContext:arguments withArguments:time];
+  BYTE1(self->mSprite) = *([context backColor] + 3) >= 1.0;
   return BYTE1(self->_y0);
 }
 
-- (void)renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (void)renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   v9 = [(NSDictionary *)[(MRLayerEffect *)self->super.mEffectLayer slideProvidersForElementIDs] objectForKey:@"image0"];
   v10 = v9;
@@ -129,16 +129,16 @@
     [v10 setRotation:*(&self->_scale + 1)];
   }
 
-  v11 = [v10 retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:a3];
+  v11 = [v10 retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:time];
   if (v11)
   {
     v12 = v11;
     if ([v11 shader])
     {
       [*(&self->super._isInInteractiveMode + 1) setNeedsInSpriteCoordinates:1];
-      v13 = [(MREffectJustASlide *)self isOpaque];
-      v14 = *([a4 foreColor] + 3);
-      if (v13 && v14 >= 1.0)
+      isOpaque = [(MREffectJustASlide *)self isOpaque];
+      v14 = *([context foreColor] + 3);
+      if (isOpaque && v14 >= 1.0)
       {
         x = CGPointZero.x;
         y = CGPointZero.y;
@@ -146,12 +146,12 @@
 
       else
       {
-        [a4 blend:2];
+        [context blend:2];
         if (v14 < 1.0 || (v27 = [objc_msgSend(v12 "shader")]) == 0)
         {
           [*(&self->super._isInInteractiveMode + 1) setInnerRect:{0.0, 0.0, 1.0, 1.0}];
-          [*(&self->super._isInInteractiveMode + 1) renderImageInner:v12 inContext:a4 atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:{2.0, 2.0, 0.0}];
-          [a4 blend:0];
+          [*(&self->super._isInInteractiveMode + 1) renderImageInner:v12 inContext:context atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:{2.0, 2.0, 0.0}];
+          [context blend:0];
           goto LABEL_30;
         }
 
@@ -159,33 +159,33 @@
         [*(&self->super._isInInteractiveMode + 1) setInnerRect:?];
         x = CGPointZero.x;
         y = CGPointZero.y;
-        [*(&self->super._isInInteractiveMode + 1) renderImageOuter:v12 inContext:a4 atPosition:CGPointZero.x andSize:y zRotation:{2.0, 2.0, 0.0}];
-        [a4 blend:0];
+        [*(&self->super._isInInteractiveMode + 1) renderImageOuter:v12 inContext:context atPosition:CGPointZero.x andSize:y zRotation:{2.0, 2.0, 0.0}];
+        [context blend:0];
       }
 
-      [*(&self->super._isInInteractiveMode + 1) renderImageInner:v12 inContext:a4 atPosition:x andSize:y zRotation:{2.0, 2.0, 0.0}];
+      [*(&self->super._isInInteractiveMode + 1) renderImageInner:v12 inContext:context atPosition:x andSize:y zRotation:{2.0, 2.0, 0.0}];
 LABEL_30:
 
       [v12 releaseByUser];
       return;
     }
 
-    v19 = [v12 isOpaque];
-    v20 = [v12 hasKenBurns];
-    v21 = [a4 foreColorIsOpaqueWhite];
+    isOpaque2 = [v12 isOpaque];
+    hasKenBurns = [v12 hasKenBurns];
+    foreColorIsOpaqueWhite = [context foreColorIsOpaqueWhite];
     v22 = @"PlainTextureHigh";
-    if (v21)
+    if (foreColorIsOpaqueWhite)
     {
       v22 = @"PlainTextureHighNoColor";
     }
 
     v23 = @"PlainTextureNoColor";
-    if (!v21)
+    if (!foreColorIsOpaqueWhite)
     {
       v23 = @"PlainTexture";
     }
 
-    if (v20)
+    if (hasKenBurns)
     {
       v24 = v22;
     }
@@ -202,7 +202,7 @@ LABEL_30:
       {
         if (v25 <= 2.0)
         {
-          [a4 localAspectRatio];
+          [context localAspectRatio];
           [v12 scale];
           [v12 centerY];
           [MREffect valueForPanoramaPanningForElementID:"valueForPanoramaPanningForElementID:value:minValue:maxValue:" value:@"image0" minValue:? maxValue:?];
@@ -288,12 +288,12 @@ LABEL_30:
       v56 = v51;
       [*(&self->super._isInInteractiveMode + 1) setInnerRect:{v46 + v52 * 2.0, v48 + v54 * v40, v50 + v52 * -4.0, v51 + v53 * -4.0 * v40, v69}];
       [*(&self->super._isInInteractiveMode + 1) setOuterRect:{(v70 - v52), (v43 - (v53 * v71)), v55 + v52 * 2.0, v56 + v54 * v40}];
-      [*(&self->super._isInInteractiveMode + 1) fakeRenderInContext:a4 atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:{2.0, 2.0, 0.0}];
-      [a4 setShader:v24];
-      [*(&self->super._isInInteractiveMode + 1) renderImageInner:v12 inContext:a4];
-      [a4 unsetShader];
-      v57 = [a4 backColor];
-      v58 = v57[3];
+      [*(&self->super._isInInteractiveMode + 1) fakeRenderInContext:context atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:{2.0, 2.0, 0.0}];
+      [context setShader:v24];
+      [*(&self->super._isInInteractiveMode + 1) renderImageInner:v12 inContext:context];
+      [context unsetShader];
+      backColor = [context backColor];
+      v58 = backColor[3];
       if (v58 < 1.0)
       {
         if ([objc_msgSend(v12 "texture")])
@@ -306,13 +306,13 @@ LABEL_30:
           v65 = 3;
         }
 
-        [a4 blend:v65];
-        [a4 setShader:@"PlainTextureSoftOpaque"];
+        [context blend:v65];
+        [context setShader:@"PlainTextureSoftOpaque"];
         v66 = p_mPixelSize->width * v55;
         *&v66 = v66;
         v67 = self->super.mPixelSize.height * v56;
         *&v67 = v67;
-        [a4 setShaderUniformVec2:@"invRadii" :v66 forKey:v67];
+        [context setShaderUniformVec2:@"invRadii" :v66 forKey:v67];
         v61 = 0.0;
         v62 = 0.0;
         v63 = 0.0;
@@ -321,42 +321,42 @@ LABEL_30:
 
       else
       {
-        [a4 setShader:@"PlainTextureSoftOpaque"];
+        [context setShader:@"PlainTextureSoftOpaque"];
         v59 = p_mPixelSize->width * v55;
         *&v59 = v59;
         v60 = self->super.mPixelSize.height * v56;
         *&v60 = v60;
-        [a4 setShaderUniformVec2:@"invRadii" :v59 forKey:v60];
-        *&v61 = *v57;
-        *&v62 = v57[1];
-        *&v63 = v57[2];
-        *&v64 = v57[3];
+        [context setShaderUniformVec2:@"invRadii" :v59 forKey:v60];
+        *&v61 = *backColor;
+        *&v62 = backColor[1];
+        *&v63 = backColor[2];
+        *&v64 = backColor[3];
       }
 
-      [a4 setShaderUniformVec4:@"edgeColor" :v61 :v62 :v63 forKey:v64];
-      [*(&self->super._isInInteractiveMode + 1) renderImageMiddle:v12 inContext:a4];
-      [a4 unsetShader];
+      [context setShaderUniformVec4:@"edgeColor" :v61 :v62 :v63 forKey:v64];
+      [*(&self->super._isInInteractiveMode + 1) renderImageMiddle:v12 inContext:context];
+      [context unsetShader];
       if (v58 < 1.0)
       {
-        [a4 blend:0];
+        [context blend:0];
       }
 
       else
       {
-        [a4 composeForeColor:v57 saveTo:v72];
-        [a4 setShader:@"PlainColor"];
-        [*(&self->super._isInInteractiveMode + 1) renderImageOuter:0 inContext:a4];
-        [a4 unsetShader];
-        [a4 restoreForeColor:v72];
+        [context composeForeColor:backColor saveTo:v72];
+        [context setShader:@"PlainColor"];
+        [*(&self->super._isInInteractiveMode + 1) renderImageOuter:0 inContext:context];
+        [context unsetShader];
+        [context restoreForeColor:v72];
       }
     }
 
     else
     {
-      [a4 setShader:{v24, v46, v48}];
-      if (v19)
+      [context setShader:{v24, v46, v48}];
+      if (isOpaque2)
       {
-        [*(&self->super._isInInteractiveMode + 1) renderImage:v12 inContext:a4 atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:{2.0, 2.0, 0.0}];
+        [*(&self->super._isInInteractiveMode + 1) renderImage:v12 inContext:context atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:{2.0, 2.0, 0.0}];
       }
 
       else
@@ -371,12 +371,12 @@ LABEL_30:
           v68 = 3;
         }
 
-        [a4 blend:v68];
-        [*(&self->super._isInInteractiveMode + 1) renderImage:v12 inContext:a4 atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:{2.0, 2.0, 0.0}];
-        [a4 blend:0];
+        [context blend:v68];
+        [*(&self->super._isInInteractiveMode + 1) renderImage:v12 inContext:context atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:{2.0, 2.0, 0.0}];
+        [context blend:0];
       }
 
-      [a4 unsetShader];
+      [context unsetShader];
     }
 
     [v12 releaseByUser];
@@ -387,11 +387,11 @@ LABEL_30:
     v17 = *(&self->super._isInInteractiveMode + 1);
     v18 = CGPointZero.y;
 
-    [v17 fakeRenderInContext:a4 atPosition:CGPointZero.x andSize:v18 zRotation:{2.0, 2.0, 0.0}];
+    [v17 fakeRenderInContext:context atPosition:CGPointZero.x andSize:v18 zRotation:{2.0, 2.0, 0.0}];
   }
 }
 
-- (id)retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   v9 = [(NSDictionary *)[(MRLayerEffect *)self->super.mEffectLayer slideProvidersForElementIDs] objectForKey:@"image0"];
   v10 = v9;
@@ -403,7 +403,7 @@ LABEL_30:
     [v10 setRotation:*(&self->_scale + 1)];
   }
 
-  v11 = [v10 retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:a3];
+  v11 = [v10 retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:time];
   [v11 setUsesBackgroundColorAsBorderColor:1];
   [v11 aspectRatio];
   if (self->super._panoramaPanningOffsets)
@@ -412,7 +412,7 @@ LABEL_30:
     {
       if (v12 <= 2.0)
       {
-        [a4 localAspectRatio];
+        [context localAspectRatio];
         [v11 scale];
         [v11 centerY];
         [MREffect valueForPanoramaPanningForElementID:"valueForPanoramaPanningForElementID:value:minValue:maxValue:" value:@"image0" minValue:? maxValue:?];
@@ -429,20 +429,20 @@ LABEL_30:
     }
   }
 
-  [*(&self->super._isInInteractiveMode + 1) fakeRenderInContext:a4 atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:{2.0, 2.0, 0.0}];
+  [*(&self->super._isInInteractiveMode + 1) fakeRenderInContext:context atPosition:CGPointZero.x andSize:CGPointZero.y zRotation:{2.0, 2.0, 0.0}];
   return v11;
 }
 
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   v8 = [(NSDictionary *)[(MRLayerEffect *)self->super.mEffectLayer slideProvidersForElementIDs] objectForKey:@"image0"];
 
-  return [v8 patchworkAtTime:a4 inContext:a5 withArguments:a3];
+  return [v8 patchworkAtTime:context inContext:arguments withArguments:time];
 }
 
-- (id)elementHitAtPoint:(CGPoint)a3 withInverseMatrix:(float)a4[16] localPoint:(CGPoint *)a5
+- (id)elementHitAtPoint:(CGPoint)point withInverseMatrix:(float)matrix[16] localPoint:(CGPoint *)localPoint
 {
-  if ([*(&self->super._isInInteractiveMode + 1) hitAtPoint:a4 withInverseMatrix:a5 localPoint:{a3.x, a3.y}])
+  if ([*(&self->super._isInInteractiveMode + 1) hitAtPoint:matrix withInverseMatrix:localPoint localPoint:{point.x, point.y}])
   {
     return @"image0";
   }
@@ -453,7 +453,7 @@ LABEL_30:
   }
 }
 
-- (BOOL)getVerticesCoordinates:(MREffectJustASlide *)self withMatrix:(SEL)a2 forElement:(CGPoint *)(a3
+- (BOOL)getVerticesCoordinates:(MREffectJustASlide *)self withMatrix:(SEL)matrix forElement:(CGPoint *)(a3
 {
   v8 = [a5 isEqualToString:@"image0"];
   if (v8)
@@ -466,7 +466,7 @@ LABEL_30:
   return v8;
 }
 
-- (void)beginMorphingToAspectRatio:(double)a3 withDuration:(double)a4
+- (void)beginMorphingToAspectRatio:(double)ratio withDuration:(double)duration
 {
   if (BYTE5(self->_y0) != 1)
   {
@@ -474,9 +474,9 @@ LABEL_30:
   }
 
   [-[NSDictionary objectForKey:](-[MRLayerEffect slideProvidersForElementIDs](self->super.mEffectLayer "slideProvidersForElementIDs")];
-  v7 = *(&self->_panY + 1) / a3;
+  v7 = *(&self->_panY + 1) / ratio;
   *(&self->_panY + 1) = v7;
-  v9 = v8 / a3;
+  v9 = v8 / ratio;
   if (BYTE4(self->_y0) == 1)
   {
     v10 = fmax(v9 + v9, 2.0);
@@ -542,16 +542,16 @@ LABEL_12:
 
   if (![(MRLayer *)self->super.mEffectLayer isActivated])
   {
-    a4 = 0.0;
+    duration = 0.0;
   }
 
-  [(MRLayerEffect *)self->super.mEffectLayer animateCenterOfSlide:@"image0" to:*(&self->mForceIsOpaque + 1) withDuration:*(&self->_panX + 1) andInitialSpeed:a4, 0.0, 0.0];
-  [(MRLayerEffect *)self->super.mEffectLayer animateScaleOfSlide:@"image0" to:*(&self->_panY + 1) withDuration:a4];
-  [(MRLayerEffect *)self->super.mEffectLayer animateRotationOfSlide:@"image0" to:*(&self->_scale + 1) withDuration:a4];
+  [(MRLayerEffect *)self->super.mEffectLayer animateCenterOfSlide:@"image0" to:*(&self->mForceIsOpaque + 1) withDuration:*(&self->_panX + 1) andInitialSpeed:duration, 0.0, 0.0];
+  [(MRLayerEffect *)self->super.mEffectLayer animateScaleOfSlide:@"image0" to:*(&self->_panY + 1) withDuration:duration];
+  [(MRLayerEffect *)self->super.mEffectLayer animateRotationOfSlide:@"image0" to:*(&self->_scale + 1) withDuration:duration];
   BYTE1(self->_y0) = 0;
 }
 
-- (double)pzrStart:(id)a3
+- (double)pzrStart:(id)start
 {
   v4 = [(NSDictionary *)[(MRLayerEffect *)self->super.mEffectLayer slideProvidersForElementIDs] objectForKey:@"image0"];
   [v4 center];
@@ -565,11 +565,11 @@ LABEL_12:
   return 0.0;
 }
 
-- (double)pzrUpdate:(id)a3
+- (double)pzrUpdate:(id)update
 {
   if (BYTE5(self->_y0) == 1)
   {
-    BYTE4(self->_y0) = *(a3 + 100);
+    BYTE4(self->_y0) = *(update + 100);
   }
 
   v5 = [(NSDictionary *)[(MRLayerEffect *)self->super.mEffectLayer slideProvidersForElementIDs] objectForKey:@"image0"];
@@ -577,7 +577,7 @@ LABEL_12:
   [v5 imageAspectRatio];
   v8 = v7;
   v9 = v7 / v6;
-  v10 = *(&self->_startSlideCenter.y + 1) * *(a3 + 6);
+  v10 = *(&self->_startSlideCenter.y + 1) * *(update + 6);
   *(&self->_panY + 1) = v10;
   if (BYTE4(self->_y0) == 1)
   {
@@ -613,10 +613,10 @@ LABEL_12:
   {
     v13 = 0.5 / *(&self->_startSlideCenter.y + 1);
     v14 = __sincos_stret(*(&self->_startSlideScale + 1));
-    *(&self->_startSlideRotation + 1) = *(&self->_rotation + 1) + v13 * (v14.__sinval * (v9 / v8 * *(a3 + 3)) + *(a3 + 2) * v14.__cosval);
-    *(&self->_x0 + 1) = *(&self->_startSlideCenter.x + 1) - v13 * (v14.__cosval * -(v9 * *(a3 + 3)) + *(a3 + 2) / v8 * v14.__sinval);
+    *(&self->_startSlideRotation + 1) = *(&self->_rotation + 1) + v13 * (v14.__sinval * (v9 / v8 * *(update + 3)) + *(update + 2) * v14.__cosval);
+    *(&self->_x0 + 1) = *(&self->_startSlideCenter.x + 1) - v13 * (v14.__cosval * -(v9 * *(update + 3)) + *(update + 2) / v8 * v14.__sinval);
     v10 = *(&self->_panY + 1);
-    v15 = v10 <= v9 && *(a3 + 10) < 1.0 || *(a3 + 96) == 16;
+    v15 = v10 <= v9 && *(update + 10) < 1.0 || *(update + 96) == 16;
     BYTE2(self->_y0) = v15;
     BYTE3(self->_y0) = 1;
   }
@@ -624,7 +624,7 @@ LABEL_12:
   v16 = BYTE2(self->_y0);
   if (v16)
   {
-    v17 = *(&self->_startSlideScale + 1) + *(a3 + 7);
+    v17 = *(&self->_startSlideScale + 1) + *(update + 7);
     *(&self->_scale + 1) = v17;
     v10 = *(&self->_panY + 1);
   }
@@ -636,8 +636,8 @@ LABEL_12:
 
   v18 = 0.5 / v10;
   v19 = __sincos_stret(v17);
-  *(&self->mForceIsOpaque + 1) = *(&self->_startSlideRotation + 1) - v18 * (v19.__sinval * (v9 / v8 * *(a3 + 3)) + *(a3 + 2) * v19.__cosval);
-  *(&self->_panX + 1) = *(&self->_x0 + 1) + v18 * (v19.__cosval * -(v9 * *(a3 + 3)) + v8 * *(a3 + 2) * v19.__sinval);
+  *(&self->mForceIsOpaque + 1) = *(&self->_startSlideRotation + 1) - v18 * (v19.__sinval * (v9 / v8 * *(update + 3)) + *(update + 2) * v19.__cosval);
+  *(&self->_panX + 1) = *(&self->_x0 + 1) + v18 * (v19.__cosval * -(v9 * *(update + 3)) + v8 * *(update + 2) * v19.__sinval);
   if (v16)
   {
     goto LABEL_38;
@@ -702,18 +702,18 @@ LABEL_38:
   return 0.0;
 }
 
-- (double)pzrEnd:(id)a3
+- (double)pzrEnd:(id)end
 {
   if (BYTE5(self->_y0) == 1)
   {
-    BYTE4(self->_y0) = *(a3 + 100);
+    BYTE4(self->_y0) = *(end + 100);
   }
 
   v5 = [(NSDictionary *)[(MRLayerEffect *)self->super.mEffectLayer slideProvidersForElementIDs] objectForKey:@"image0"];
   v6 = self->super.mPixelSize.width / self->super.mPixelSize.height;
   [v5 imageAspectRatio];
   v8 = v7 / v6;
-  v9 = *(&self->_startSlideCenter.y + 1) * *(a3 + 6);
+  v9 = *(&self->_startSlideCenter.y + 1) * *(end + 6);
   *(&self->_panY + 1) = v9;
   if (BYTE4(self->_y0) != 1)
   {
@@ -759,14 +759,14 @@ LABEL_14:
   v12 = 0.0;
   v13 = 0.0;
   v14 = 0.0;
-  if (*(a3 + 98) == 1)
+  if (*(end + 98) == 1)
   {
-    v13 = *(a3 + 8) * 0.125;
-    v14 = *(a3 + 9) * 0.125;
+    v13 = *(end + 8) * 0.125;
+    v14 = *(end + 9) * 0.125;
   }
 
-  v15 = *(a3 + 2) + v13;
-  v16 = v14 + *(a3 + 3);
+  v15 = *(end + 2) + v13;
+  v16 = v14 + *(end + 3);
   *(&self->mForceIsOpaque + 1) = *(&self->_startSlideRotation + 1) - v11 * (v15 + v8 / v7 * v16 * 0.0);
   *(&self->_panX + 1) = *(&self->_x0 + 1) + v11 * (v7 * v15 * 0.0 - v8 * v16);
   v17 = *(&self->_panY + 1);
@@ -798,10 +798,10 @@ LABEL_14:
   }
 
   v24 = 0.0;
-  if (*(a3 + 98) == 1)
+  if (*(end + 98) == 1)
   {
     v24 = 0.25;
-    [(MRLayerEffect *)self->super.mEffectLayer animateCenterOfSlide:@"image0" to:*(&self->mForceIsOpaque + 1) withDuration:v23 andInitialSpeed:0.25, *(a3 + 8), *(a3 + 9)];
+    [(MRLayerEffect *)self->super.mEffectLayer animateCenterOfSlide:@"image0" to:*(&self->mForceIsOpaque + 1) withDuration:v23 andInitialSpeed:0.25, *(end + 8), *(end + 9)];
     [(MRLayerEffect *)self->super.mEffectLayer animateScaleOfSlide:@"image0" to:*(&self->_panY + 1) withDuration:0.25];
     [(MRLayerEffect *)self->super.mEffectLayer animateRotationOfSlide:@"image0" to:*(&self->_scale + 1) withDuration:0.25];
     BYTE1(self->_y0) = 0;
@@ -810,9 +810,9 @@ LABEL_14:
   return v24;
 }
 
-- (double)pzrCancel:(id)a3
+- (double)pzrCancel:(id)cancel
 {
-  if (*(a3 + 98) == 1)
+  if (*(cancel + 98) == 1)
   {
     v4 = 0.25;
     [(MRLayerEffect *)self->super.mEffectLayer animateCenterOfSlide:@"image0" to:*(&self->_rotation + 1) withDuration:*(&self->_startSlideCenter.x + 1), 0.25];
@@ -843,7 +843,7 @@ LABEL_14:
   BYTE4(self->_y0) = 0;
 }
 
-- (BOOL)canMoveInDirection:(unsigned __int8)a3 withPZR:(id)a4
+- (BOOL)canMoveInDirection:(unsigned __int8)direction withPZR:(id)r
 {
   if (BYTE4(self->_y0) != 1)
   {
@@ -866,7 +866,7 @@ LABEL_14:
     v12 = 0.0;
   }
 
-  return ((a3 & 1) == 0 || *(a4 + 8) >= 0.0 || *(&self->mForceIsOpaque + 1) < v11 + 0.5) && ((a3 & 2) == 0 || *(a4 + 8) <= 0.0 || *(&self->mForceIsOpaque + 1) > 0.5 - v11) && ((a3 & 4) == 0 || *(a4 + 9) <= 0.0 || *(&self->_panX + 1) > 0.5 - v12) && ((a3 & 8) == 0 || *(a4 + 9) >= 0.0 || *(&self->_panX + 1) < v12 + 0.5);
+  return ((direction & 1) == 0 || *(r + 8) >= 0.0 || *(&self->mForceIsOpaque + 1) < v11 + 0.5) && ((direction & 2) == 0 || *(r + 8) <= 0.0 || *(&self->mForceIsOpaque + 1) > 0.5 - v11) && ((direction & 4) == 0 || *(r + 9) <= 0.0 || *(&self->_panX + 1) > 0.5 - v12) && ((direction & 8) == 0 || *(r + 9) >= 0.0 || *(&self->_panX + 1) < v12 + 0.5);
 }
 
 @end

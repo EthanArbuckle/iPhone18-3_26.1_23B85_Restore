@@ -1,18 +1,18 @@
 @interface ASUSQLiteKeychainHelper
-+ (BOOL)storeKey:(id)a3 withIdentifier:(id)a4 error:(id *)a5;
-+ (id)fetchKeyWithIdentifier:(id)a3 error:(id *)a4;
-+ (uint64_t)_copyErrorForOSStatus:(uint64_t)a1;
++ (BOOL)storeKey:(id)key withIdentifier:(id)identifier error:(id *)error;
++ (id)fetchKeyWithIdentifier:(id)identifier error:(id *)error;
++ (uint64_t)_copyErrorForOSStatus:(uint64_t)status;
 @end
 
 @implementation ASUSQLiteKeychainHelper
 
-+ (id)fetchKeyWithIdentifier:(id)a3 error:(id *)a4
++ (id)fetchKeyWithIdentifier:(id)identifier error:(id *)error
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"com.apple.app-store-utilities.encryption", a3];
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"com.apple.app-store-utilities.encryption", identifier];
   v6 = objc_opt_self();
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 3, 0, 0);
-  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBF20], v5);
+  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBF20], identifier);
 
   v8 = *MEMORY[0x277CBED28];
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC090], *MEMORY[0x277CBED28]);
@@ -46,7 +46,7 @@
     }
 
     v14 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -58,7 +58,7 @@
     v14 = [v13 initWithBase64EncodedData:result options:0];
     CFRelease(result);
     v15 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -67,7 +67,7 @@
   if (!v14)
   {
     v16 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
 LABEL_17:
@@ -78,17 +78,17 @@ LABEL_17:
   return v14;
 }
 
-+ (BOOL)storeKey:(id)a3 withIdentifier:(id)a4 error:(id *)a5
++ (BOOL)storeKey:(id)key withIdentifier:(id)identifier error:(id *)error
 {
   v7 = MEMORY[0x277CCACA8];
-  v8 = a3;
-  v9 = [v7 stringWithFormat:@"%@.%@", @"com.apple.app-store-utilities.encryption", a4];
-  v10 = v8;
+  keyCopy = key;
+  identifier = [v7 stringWithFormat:@"%@.%@", @"com.apple.app-store-utilities.encryption", identifier];
+  v10 = keyCopy;
   v11 = objc_opt_self();
   v12 = [v10 base64EncodedDataWithOptions:0];
 
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 7, 0, 0);
-  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBF20], v9);
+  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBF20], identifier);
 
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC080], @"App Store User Data Encryption");
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC090], *MEMORY[0x277CBED28]);
@@ -101,10 +101,10 @@ LABEL_17:
   {
     v15 = [(ASUSQLiteKeychainHelper *)v11 _copyErrorForOSStatus:v14];
     v16 = v15;
-    if (a5)
+    if (error)
     {
       v17 = v15;
-      *a5 = v16;
+      *error = v16;
     }
   }
 
@@ -116,7 +116,7 @@ LABEL_17:
   return v14 == 0;
 }
 
-+ (uint64_t)_copyErrorForOSStatus:(uint64_t)a1
++ (uint64_t)_copyErrorForOSStatus:(uint64_t)status
 {
   v12[1] = *MEMORY[0x277D85DE8];
   objc_opt_self();

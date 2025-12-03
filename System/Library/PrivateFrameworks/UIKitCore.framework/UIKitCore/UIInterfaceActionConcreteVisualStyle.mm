@@ -3,9 +3,9 @@
 - (CGSize)minimumActionContentSize;
 - (UIEdgeInsets)actionSequenceEdgeInsets;
 - (UIEdgeInsets)contentMargin;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultScreen;
-- (id)newRepresentationViewForAction:(id)a3;
+- (id)newRepresentationViewForAction:(id)action;
 @end
 
 @implementation UIInterfaceActionConcreteVisualStyle
@@ -44,7 +44,7 @@ uint64_t __85__UIInterfaceActionConcreteVisualStyle_iOSSheet_newActionBackground
   return [v1 setHighlighted:v2];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
 
@@ -60,8 +60,8 @@ uint64_t __85__UIInterfaceActionConcreteVisualStyle_iOSSheet_newActionBackground
 
 - (CGSize)maximumActionGroupContentSize
 {
-  v2 = [(UIInterfaceActionConcreteVisualStyle *)self defaultScreen];
-  [v2 bounds];
+  defaultScreen = [(UIInterfaceActionConcreteVisualStyle *)self defaultScreen];
+  [defaultScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -107,17 +107,17 @@ uint64_t __85__UIInterfaceActionConcreteVisualStyle_iOSSheet_newActionBackground
   return result;
 }
 
-- (id)newRepresentationViewForAction:(id)a3
+- (id)newRepresentationViewForAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 _typeForDeterminingViewRepresentation];
+  actionCopy = action;
+  _typeForDeterminingViewRepresentation = [actionCopy _typeForDeterminingViewRepresentation];
   v6 = off_1E70EB9E8;
-  if (v5 != 100)
+  if (_typeForDeterminingViewRepresentation != 100)
   {
     v6 = off_1E70EB9F0;
   }
 
-  v7 = [objc_alloc(*v6) initWithAction:v4];
+  v7 = [objc_alloc(*v6) initWithAction:actionCopy];
 
   v8 = [(UIInterfaceActionConcreteVisualStyle *)self actionViewStateForAttachingToActionRepresentationView:v7];
   [v7 setActionViewStateContext:v8];

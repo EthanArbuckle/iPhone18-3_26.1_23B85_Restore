@@ -2,14 +2,14 @@
 + (id)_authorizationChangedBlocks;
 + (id)createReverseGeocoder;
 + (id)sharedInstance;
-+ (void)addAuthorizationChangedBlock:(id)a3;
++ (void)addAuthorizationChangedBlock:(id)block;
 + (void)removeAuthorizationChangedBlocks;
 - (APLocationManager)init;
 - (BOOL)locationEnabled;
 - (id)locationInfo;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)start;
 - (void)stop;
 - (void)updatePlacemark;
@@ -96,10 +96,10 @@
 
 + (id)_authorizationChangedBlocks
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = qword_1EDBA4160;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -209,60 +209,60 @@ LABEL_13:
   dispatch_async(locationQueue, block);
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   locationQueue = self->_locationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1BAF160BC;
   v7[3] = &unk_1E7F1D098;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = authorizationCopy;
+  selfCopy = self;
+  v6 = authorizationCopy;
   dispatch_async(locationQueue, v7);
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
+  locationsCopy = locations;
   locationQueue = self->_locationQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1BAF1639C;
   v8[3] = &unk_1E7F1D098;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = locationsCopy;
+  v7 = locationsCopy;
   dispatch_async(locationQueue, v8);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   v7 = APLogForCategory(0x1CuLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v9 = 138543618;
-    v10 = v5;
+    v10 = managerCopy;
     v11 = 2114;
-    v12 = v6;
+    v12 = errorCopy;
     _os_log_impl(&dword_1BADC1000, v7, OS_LOG_TYPE_ERROR, "%{public}@ didFailWithError %{public}@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)addAuthorizationChangedBlock:(id)a3
++ (void)addAuthorizationChangedBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    aBlock = v4;
-    v5 = a1;
-    objc_sync_enter(v5);
+    aBlock = blockCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (qword_1EDBA4160)
     {
       v9 = objc_msgSend_mutableCopy(qword_1EDBA4160, v6, v7, v8);
@@ -281,14 +281,14 @@ LABEL_13:
     v18 = qword_1EDBA4160;
     qword_1EDBA4160 = v17;
 
-    objc_sync_exit(v5);
-    v4 = aBlock;
+    objc_sync_exit(selfCopy);
+    blockCopy = aBlock;
   }
 }
 
 + (void)removeAuthorizationChangedBlocks
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v2 = qword_1EDBA4160;
   qword_1EDBA4160 = 0;

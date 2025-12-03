@@ -3,39 +3,39 @@
 - (BOOL)pairedDeviceSupportsStandaloneService;
 - (MFNanoBridgeSettingsListController)init;
 - (id)_accountNamesKeyedByAccountId;
-- (id)_alwaysLoadContentDirectly:(id)a3;
-- (id)_askBeforeDeleting:(id)a3;
-- (id)_includeMail:(id)a3;
-- (id)_linesOfPreview:(id)a3;
+- (id)_alwaysLoadContentDirectly:(id)directly;
+- (id)_askBeforeDeleting:(id)deleting;
+- (id)_includeMail:(id)mail;
+- (id)_linesOfPreview:(id)preview;
 - (id)_linesOfPreviewTitlesDictionary;
-- (id)_loadRemoteImages:(id)a3;
+- (id)_loadRemoteImages:(id)images;
 - (id)_mirroringDetailPrivacyProtection;
 - (id)_mirroringDetailStringForAlerts;
 - (id)_mirroringDetailStringForAskBeforeDeleting;
 - (id)_mirroringDetailStringForLoadRemoteImages;
 - (id)_mirroringDetailStringForNotificationSources;
 - (id)_mirroringDetailStringForOrganizeByThread;
-- (id)_organizeByThread:(id)a3;
-- (id)_showAlertsFrom:(id)a3;
-- (id)_signature:(id)a3;
+- (id)_organizeByThread:(id)thread;
+- (id)_showAlertsFrom:(id)from;
+- (id)_signature:(id)_signature;
 - (id)applicationGroupSpecifiers;
 - (id)localizedMirroringDetailFooter;
 - (id)localizedPaneTitle;
 - (id)mirroredApplicationGroupSpecifiers;
 - (id)notificationApplicationSpecifiers;
-- (void)_setAlwaysLoadContentDirectly:(id)a3 withSpecifier:(id)a4;
-- (void)_setAskBeforeDeleting:(id)a3 withSpecifier:(id)a4;
-- (void)_setLinesOfPreview:(id)a3 withSpecifier:(id)a4;
-- (void)_setLoadRemoteImages:(id)a3 withSpecifier:(id)a4;
-- (void)_setOrganizeByThread:(id)a3 withSpecifier:(id)a4;
-- (void)_setSignature:(id)a3 withSpecifier:(id)a4;
+- (void)_setAlwaysLoadContentDirectly:(id)directly withSpecifier:(id)specifier;
+- (void)_setAskBeforeDeleting:(id)deleting withSpecifier:(id)specifier;
+- (void)_setLinesOfPreview:(id)preview withSpecifier:(id)specifier;
+- (void)_setLoadRemoteImages:(id)images withSpecifier:(id)specifier;
+- (void)_setOrganizeByThread:(id)thread withSpecifier:(id)specifier;
+- (void)_setSignature:(id)signature withSpecifier:(id)specifier;
 - (void)_setUpMail;
 - (void)applicationWillEnterForegroundNotification;
-- (void)mirrorSettingsChanged:(BOOL)a3;
-- (void)saveShowAlertsForSpecifier:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)mirrorSettingsChanged:(BOOL)changed;
+- (void)saveShowAlertsForSpecifier:(id)specifier;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBecomeActive;
 @end
 
@@ -69,29 +69,29 @@
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = MFNanoBridgeSettingsListController;
-  [(MFNanoBridgeSettingsListController *)&v3 viewWillAppear:a3];
+  [(MFNanoBridgeSettingsListController *)&v3 viewWillAppear:appear];
   +[MFNanoMailBridgeSettingsNavigationDonation donateUserVisitForMailSettings];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MFNanoBridgeSettingsListController;
-  [(MFNanoBridgeSettingsListController *)&v5 viewDidAppear:a3];
+  [(MFNanoBridgeSettingsListController *)&v5 viewDidAppear:appear];
   [(MFNanoAccountsSettingsDataSource *)self->_mailAccountsDatasource refreshAccounts];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"applicationWillEnterForegroundNotification" name:UIApplicationWillEnterForegroundNotification object:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MFNanoBridgeSettingsListController;
-  [(MFNanoBridgeSettingsListController *)&v5 viewDidDisappear:a3];
+  [(MFNanoBridgeSettingsListController *)&v5 viewDidDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 }
@@ -103,7 +103,7 @@
   [(MFNanoBridgeSettingsListController *)self reloadSpecifiers];
 }
 
-- (void)saveShowAlertsForSpecifier:(id)a3
+- (void)saveShowAlertsForSpecifier:(id)specifier
 {
   [(MFNanoBridgeSettingsListController *)self writeSectionState];
 
@@ -113,22 +113,22 @@
 - (BOOL)pairedDeviceSupportsStandaloneService
 {
   v2 = +[PDRRegistry sharedInstance];
-  v3 = [v2 devices];
-  v4 = [v3 active];
-  v5 = [v4 notAltAccount];
-  v6 = [v5 final];
+  devices = [v2 devices];
+  active = [devices active];
+  notAltAccount = [active notAltAccount];
+  final = [notAltAccount final];
 
-  LOBYTE(v2) = [v6 supportsCapability:2349192809];
+  LOBYTE(v2) = [final supportsCapability:2349192809];
   return v2;
 }
 
 - (id)notificationApplicationSpecifiers
 {
   v26 = +[NSMutableArray array];
-  v3 = [(MFNanoBridgeSettingsListController *)self sectionInfo];
-  v20 = [v3 objectForKeyedSubscript:BPSNanoBulletinSubsections];
+  sectionInfo = [(MFNanoBridgeSettingsListController *)self sectionInfo];
+  v20 = [sectionInfo objectForKeyedSubscript:BPSNanoBulletinSubsections];
 
-  v21 = [(MFNanoBridgeSettingsListController *)self _accountNamesKeyedByAccountId];
+  _accountNamesKeyedByAccountId = [(MFNanoBridgeSettingsListController *)self _accountNamesKeyedByAccountId];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
@@ -204,7 +204,7 @@ LABEL_18:
 
           else
           {
-            v14 = [v21 objectForKeyedSubscript:v11];
+            v14 = [_accountNamesKeyedByAccountId objectForKeyedSubscript:v11];
             if (v14)
             {
               goto LABEL_18;
@@ -252,17 +252,17 @@ LABEL_18:
   {
     if ([(MFNanoBridgeSettingsListController *)self pairedDeviceSupportsStandaloneService])
     {
-      v10 = [(MFNanoBridgeSettingsListController *)self sectionInfo];
-      v11 = [v10 objectForKeyedSubscript:BPSNanoBulletinShowsAlerts];
+      sectionInfo = [(MFNanoBridgeSettingsListController *)self sectionInfo];
+      v11 = [sectionInfo objectForKeyedSubscript:BPSNanoBulletinShowsAlerts];
       -[NMCUICloudNotificationAccountDataSource setShowsAlerts:](self->_cloudNotificationDatasource, "setShowsAlerts:", [v11 BOOLValue]);
 
-      v12 = [(MFNanoBridgeSettingsListController *)self sectionInfo];
-      v13 = [v12 objectForKeyedSubscript:BPSNanoBulletinSubsections];
+      sectionInfo2 = [(MFNanoBridgeSettingsListController *)self sectionInfo];
+      v13 = [sectionInfo2 objectForKeyedSubscript:BPSNanoBulletinSubsections];
       [(NMCUICloudNotificationAccountDataSource *)self->_cloudNotificationDatasource setNotificationSubsections:v13];
 
-      v14 = [(MFNanoBridgeSettingsListController *)self specifierController];
-      v15 = [v14 specifiers];
-      [v3 addObjectsFromArray:v15];
+      specifierController = [(MFNanoBridgeSettingsListController *)self specifierController];
+      specifiers = [specifierController specifiers];
+      [v3 addObjectsFromArray:specifiers];
 
       v16 = [NSBundle bundleForClass:objc_opt_class()];
       v17 = [v16 localizedStringForKey:@"APP_SETTINGS_SECTION" value:&stru_34FF0 table:@"Main"];
@@ -310,9 +310,9 @@ LABEL_18:
     v33 = [NSBundle bundleForClass:objc_opt_class()];
     v34 = [v33 localizedStringForKey:@"MESSAGE_PREVIEW" value:&stru_34FF0 table:@"Main"];
     v35 = objc_opt_class();
-    v36 = [(MFNanoBridgeSettingsListController *)self _linesOfPreviewTitlesDictionary];
-    v37 = [(MFNanoBridgeSettingsListController *)self _linesOfPreviewValues];
-    v38 = _ConfigurePSSpecifier(v3, v34, self, "_setLinesOfPreview:withSpecifier:", "_linesOfPreview:", 0, 0, v35, 2, 0, v36, 0, v37);
+    _linesOfPreviewTitlesDictionary = [(MFNanoBridgeSettingsListController *)self _linesOfPreviewTitlesDictionary];
+    _linesOfPreviewValues = [(MFNanoBridgeSettingsListController *)self _linesOfPreviewValues];
+    v38 = _ConfigurePSSpecifier(v3, v34, self, "_setLinesOfPreview:withSpecifier:", "_linesOfPreview:", 0, 0, v35, 2, 0, _linesOfPreviewTitlesDictionary, 0, _linesOfPreviewValues);
 
     [v38 setIdentifier:@"MESSAGE_PREVIEW_ID"];
     v39 = +[MFNanoBridgeSettingsManager sharedInstance];
@@ -328,7 +328,7 @@ LABEL_18:
     }
 
     v43 = +[NRPairedDeviceRegistry sharedInstance];
-    v44 = [v43 getActivePairedDevice];
+    getActivePairedDevice = [v43 getActivePairedDevice];
     HasCapabilityForString = BPSDeviceHasCapabilityForString();
 
     if (HasCapabilityForString)
@@ -380,13 +380,13 @@ LABEL_18:
   return v3;
 }
 
-- (void)mirrorSettingsChanged:(BOOL)a3
+- (void)mirrorSettingsChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v5 = +[MFNanoBridgeSettingsManager sharedInstance];
   [v5 notifyMirrorSettingsFromCompanionChanged];
 
-  if (v3)
+  if (changedCopy)
   {
     v6 = 0;
   }
@@ -416,8 +416,8 @@ LABEL_18:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * v11) userInfo];
-        v13 = [v12 objectForKeyedSubscript:v10];
+        userInfo = [*(*(&v16 + 1) + 8 * v11) userInfo];
+        v13 = [userInfo objectForKeyedSubscript:v10];
 
         v14 = +[TLToneManager sharedToneManager];
         [v14 _setCurrentToneWatchAlertPolicy:v6 forAlertType:5 topic:v13];
@@ -443,8 +443,8 @@ LABEL_18:
 
   if ([(MFNanoBridgeSettingsListController *)self showAlerts])
   {
-    v5 = [(MFNanoBridgeSettingsListController *)self _mirroringDetailStringForNotificationSources];
-    v6 = [NSString stringWithFormat:v4, v5];
+    _mirroringDetailStringForNotificationSources = [(MFNanoBridgeSettingsListController *)self _mirroringDetailStringForNotificationSources];
+    v6 = [NSString stringWithFormat:v4, _mirroringDetailStringForNotificationSources];
   }
 
   else
@@ -454,23 +454,23 @@ LABEL_18:
 
   if ([(MFNanoBridgeSettingsListController *)self settingsMode])
   {
-    v7 = [(MFNanoBridgeSettingsListController *)self _mirroringDetailStringForAlerts];
-    v8 = [NSString stringWithFormat:v4, v7];
+    _mirroringDetailStringForAlerts = [(MFNanoBridgeSettingsListController *)self _mirroringDetailStringForAlerts];
+    v8 = [NSString stringWithFormat:v4, _mirroringDetailStringForAlerts];
     v9 = [NSString stringWithFormat:@"%@%@", v8, v6];
   }
 
   else
   {
-    v7 = [(MFNanoBridgeSettingsListController *)self _mirroringDetailStringForAlerts];
-    v8 = [NSString stringWithFormat:v4, v7];
-    v18 = [(MFNanoBridgeSettingsListController *)self _mirroringDetailStringForAskBeforeDeleting];
-    v17 = [NSString stringWithFormat:v4, v18];
-    v16 = [(MFNanoBridgeSettingsListController *)self _mirroringDetailStringForLoadRemoteImages];
-    v15 = [NSString stringWithFormat:v4, v16];
-    v14 = [(MFNanoBridgeSettingsListController *)self _mirroringDetailStringForOrganizeByThread];
-    v10 = [NSString stringWithFormat:v4, v14];
-    v11 = [(MFNanoBridgeSettingsListController *)self _mirroringDetailPrivacyProtection];
-    v12 = [NSString stringWithFormat:v4, v11];
+    _mirroringDetailStringForAlerts = [(MFNanoBridgeSettingsListController *)self _mirroringDetailStringForAlerts];
+    v8 = [NSString stringWithFormat:v4, _mirroringDetailStringForAlerts];
+    _mirroringDetailStringForAskBeforeDeleting = [(MFNanoBridgeSettingsListController *)self _mirroringDetailStringForAskBeforeDeleting];
+    v17 = [NSString stringWithFormat:v4, _mirroringDetailStringForAskBeforeDeleting];
+    _mirroringDetailStringForLoadRemoteImages = [(MFNanoBridgeSettingsListController *)self _mirroringDetailStringForLoadRemoteImages];
+    v15 = [NSString stringWithFormat:v4, _mirroringDetailStringForLoadRemoteImages];
+    _mirroringDetailStringForOrganizeByThread = [(MFNanoBridgeSettingsListController *)self _mirroringDetailStringForOrganizeByThread];
+    v10 = [NSString stringWithFormat:v4, _mirroringDetailStringForOrganizeByThread];
+    _mirroringDetailPrivacyProtection = [(MFNanoBridgeSettingsListController *)self _mirroringDetailPrivacyProtection];
+    v12 = [NSString stringWithFormat:v4, _mirroringDetailPrivacyProtection];
     v9 = [NSString stringWithFormat:@"%@%@%@%@%@%@", v8, v6, v17, v15, v10, v12];
   }
 
@@ -505,13 +505,13 @@ LABEL_18:
   [v18 setLocale:v2];
 
   [v18 setNumberStyle:1];
-  v15 = [(MFNanoBridgeSettingsListController *)self _linesOfPreviewValues];
-  v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v15 count]);
+  _linesOfPreviewValues = [(MFNanoBridgeSettingsListController *)self _linesOfPreviewValues];
+  v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [_linesOfPreviewValues count]);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v15;
+  obj = _linesOfPreviewValues;
   v3 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v3)
   {
@@ -549,10 +549,10 @@ LABEL_18:
 
 - (id)_mirroringDetailStringForAlerts
 {
-  v2 = [(MFNanoBridgeSettingsListController *)self showAlerts];
+  showAlerts = [(MFNanoBridgeSettingsListController *)self showAlerts];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (showAlerts)
   {
     [v3 localizedStringForKey:@"MIRRORING_DETAIL_FLAG_STYLE_SHOW_ALERTS" value:&stru_34FF0 table:@"Main"];
   }
@@ -568,10 +568,10 @@ LABEL_18:
 
 - (id)_mirroringDetailStringForNotificationSources
 {
-  v2 = [(MFNanoBridgeSettingsListController *)self sectionInfo];
-  v3 = [v2 objectForKeyedSubscript:BPSNanoBulletinSubsections];
+  sectionInfo = [(MFNanoBridgeSettingsListController *)self sectionInfo];
+  v3 = [sectionInfo objectForKeyedSubscript:BPSNanoBulletinSubsections];
 
-  v53 = [(MFNanoBridgeSettingsListController *)self _accountNamesKeyedByAccountId];
+  _accountNamesKeyedByAccountId = [(MFNanoBridgeSettingsListController *)self _accountNamesKeyedByAccountId];
   v54 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
   v75 = 0;
   v76 = &v75;
@@ -620,11 +620,11 @@ LABEL_18:
 
       v11 = *(*(&v71 + 1) + 8 * v10);
       v12 = [v11 objectForKeyedSubscript:v6];
-      v13 = [v12 BOOLValue];
+      bOOLValue = [v12 BOOLValue];
 
       v14 = [v11 objectForKeyedSubscript:v7];
       v15 = v14;
-      if (!v13)
+      if (!bOOLValue)
       {
         v9 = 0;
         goto LABEL_19;
@@ -662,7 +662,7 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      v16 = [v53 objectForKeyedSubscript:v15];
+      v16 = [_accountNamesKeyedByAccountId objectForKeyedSubscript:v15];
 
       if (v16)
       {
@@ -693,8 +693,8 @@ LABEL_26:
     v19 = [NSBundle bundleForClass:objc_opt_class()];
     v20 = [v19 localizedStringForKey:@"ALERTS_FROM_EVERYONE" value:&stru_34FF0 table:@"Main"];
 
-    v21 = [v20 lowercaseString];
-    [v18 appendString:v21];
+    lowercaseString = [v20 lowercaseString];
+    [v18 appendString:lowercaseString];
   }
 
   else
@@ -704,7 +704,7 @@ LABEL_26:
     while (v22 < [v54 count])
     {
       v24 = [v54 objectAtIndexedSubscript:v22];
-      v25 = [v53 objectForKeyedSubscript:v24];
+      v25 = [_accountNamesKeyedByAccountId objectForKeyedSubscript:v24];
       v26 = v25;
       if (v25)
       {
@@ -747,7 +747,7 @@ LABEL_26:
     v66 = &v67;
     v30 = v18;
     v63 = v30;
-    v64 = self;
+    selfCopy = self;
     v31 = objc_retainBlock(v62);
     if (v60)
     {
@@ -800,8 +800,8 @@ LABEL_26:
       v42 = [NSBundle bundleForClass:objc_opt_class()];
       v43 = [v42 localizedStringForKey:@"ALERTS_FROM_NO_ONE" value:&stru_34FF0 table:@"Main"];
 
-      v44 = [v43 lowercaseString];
-      [v30 appendString:v44];
+      lowercaseString2 = [v43 lowercaseString];
+      [v30 appendString:lowercaseString2];
     }
 
     v20 = v63;
@@ -904,10 +904,10 @@ LABEL_26:
   return v4;
 }
 
-- (id)_showAlertsFrom:(id)a3
+- (id)_showAlertsFrom:(id)from
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:BPSNanoBulletinShowsAlerts];
+  userInfo = [from userInfo];
+  v4 = [userInfo objectForKeyedSubscript:BPSNanoBulletinShowsAlerts];
   if ([v4 BOOLValue])
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -924,27 +924,27 @@ LABEL_26:
   return v6;
 }
 
-- (id)_includeMail:(id)a3
+- (id)_includeMail:(id)mail
 {
   v3 = +[MFNanoBridgeSettingsManager sharedInstance];
-  v4 = [v3 includeMailMailboxes];
+  includeMailMailboxes = [v3 includeMailMailboxes];
 
-  if ([v4 count] >= 2)
+  if ([includeMailMailboxes count] >= 2)
   {
-    v5 = [NSBundle bundleForClass:objc_opt_class()];
-    v6 = [v5 localizedStringForKey:@"NUMBER_OF_MAILBOXES_SELECTED %lu" value:&stru_34FF0 table:@"Main"];
-    v7 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [v4 count]);
+    firstObject = [NSBundle bundleForClass:objc_opt_class()];
+    v6 = [firstObject localizedStringForKey:@"NUMBER_OF_MAILBOXES_SELECTED %lu" value:&stru_34FF0 table:@"Main"];
+    displayName = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [includeMailMailboxes count]);
 LABEL_3:
 
     goto LABEL_13;
   }
 
-  if ([v4 count] == &dword_0 + 1)
+  if ([includeMailMailboxes count] == &dword_0 + 1)
   {
-    v5 = [v4 firstObject];
+    firstObject = [includeMailMailboxes firstObject];
     v8 = +[MFNanoBridgeSettingsManager sharedInstance];
-    v9 = [v8 activeAccounts];
-    if ([v9 count] < 2)
+    activeAccounts = [v8 activeAccounts];
+    if ([activeAccounts count] < 2)
     {
     }
 
@@ -955,66 +955,66 @@ LABEL_3:
 
       if (isKindOfClass)
       {
-        v6 = v5;
+        v6 = firstObject;
         [v6 invalidateCachedData];
         if ([v6 type] == &dword_4 + 3)
         {
-          v11 = [v6 accountUniqueIdentifier];
-          v12 = [MailAccount accountWithUniqueId:v11];
-          v7 = [v12 displayName];
+          accountUniqueIdentifier = [v6 accountUniqueIdentifier];
+          v12 = [MailAccount accountWithUniqueId:accountUniqueIdentifier];
+          displayName = [v12 displayName];
         }
 
         else
         {
-          v7 = [v6 displayName];
+          displayName = [v6 displayName];
         }
 
-        v5 = v6;
+        firstObject = v6;
         goto LABEL_3;
       }
     }
 
-    v13 = [v5 displayName];
+    displayName2 = [firstObject displayName];
   }
 
   else
   {
-    v5 = [NSBundle bundleForClass:objc_opt_class()];
-    v13 = [v5 localizedStringForKey:@"NO_MAILBOX_SELECTED" value:&stru_34FF0 table:@"Main"];
+    firstObject = [NSBundle bundleForClass:objc_opt_class()];
+    displayName2 = [firstObject localizedStringForKey:@"NO_MAILBOX_SELECTED" value:&stru_34FF0 table:@"Main"];
   }
 
-  v7 = v13;
+  displayName = displayName2;
 LABEL_13:
 
-  return v7;
+  return displayName;
 }
 
-- (void)_setLinesOfPreview:(id)a3 withSpecifier:(id)a4
+- (void)_setLinesOfPreview:(id)preview withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v4 = [v6 intValue];
+  previewCopy = preview;
+  intValue = [previewCopy intValue];
   v5 = +[MFNanoBridgeSettingsManager sharedInstance];
-  [v5 setLinesOfPreview:v4];
+  [v5 setLinesOfPreview:intValue];
 }
 
-- (id)_linesOfPreview:(id)a3
+- (id)_linesOfPreview:(id)preview
 {
   v3 = +[MFNanoBridgeSettingsManager sharedInstance];
   v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 linesOfPreview]);
-  v5 = [v4 stringValue];
+  stringValue = [v4 stringValue];
 
-  return v5;
+  return stringValue;
 }
 
-- (void)_setAskBeforeDeleting:(id)a3 withSpecifier:(id)a4
+- (void)_setAskBeforeDeleting:(id)deleting withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v4 = [v6 BOOLValue];
+  deletingCopy = deleting;
+  bOOLValue = [deletingCopy BOOLValue];
   v5 = +[MFNanoBridgeSettingsManager sharedInstance];
-  [v5 setAskBeforeDeleting:v4];
+  [v5 setAskBeforeDeleting:bOOLValue];
 }
 
-- (id)_askBeforeDeleting:(id)a3
+- (id)_askBeforeDeleting:(id)deleting
 {
   v3 = +[MFNanoBridgeSettingsManager sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 askBeforeDeleting]);
@@ -1022,15 +1022,15 @@ LABEL_13:
   return v4;
 }
 
-- (void)_setAlwaysLoadContentDirectly:(id)a3 withSpecifier:(id)a4
+- (void)_setAlwaysLoadContentDirectly:(id)directly withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v4 = [v6 BOOLValue];
+  directlyCopy = directly;
+  bOOLValue = [directlyCopy BOOLValue];
   v5 = +[MFNanoBridgeSettingsManager sharedInstance];
-  [v5 setAlwaysLoadContentDirectly:v4];
+  [v5 setAlwaysLoadContentDirectly:bOOLValue];
 }
 
-- (id)_alwaysLoadContentDirectly:(id)a3
+- (id)_alwaysLoadContentDirectly:(id)directly
 {
   v3 = +[MFNanoBridgeSettingsManager sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 alwaysLoadContentDirectly]);
@@ -1038,15 +1038,15 @@ LABEL_13:
   return v4;
 }
 
-- (void)_setLoadRemoteImages:(id)a3 withSpecifier:(id)a4
+- (void)_setLoadRemoteImages:(id)images withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v4 = [v6 BOOLValue];
+  imagesCopy = images;
+  bOOLValue = [imagesCopy BOOLValue];
   v5 = +[MFNanoBridgeSettingsManager sharedInstance];
-  [v5 setLoadRemoteImages:v4];
+  [v5 setLoadRemoteImages:bOOLValue];
 }
 
-- (id)_loadRemoteImages:(id)a3
+- (id)_loadRemoteImages:(id)images
 {
   v3 = +[MFNanoBridgeSettingsManager sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 loadRemoteImages]);
@@ -1054,15 +1054,15 @@ LABEL_13:
   return v4;
 }
 
-- (void)_setOrganizeByThread:(id)a3 withSpecifier:(id)a4
+- (void)_setOrganizeByThread:(id)thread withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v4 = [v6 BOOLValue];
+  threadCopy = thread;
+  bOOLValue = [threadCopy BOOLValue];
   v5 = +[MFNanoBridgeSettingsManager sharedInstance];
-  [v5 setOrganizeByThread:v4];
+  [v5 setOrganizeByThread:bOOLValue];
 }
 
-- (id)_organizeByThread:(id)a3
+- (id)_organizeByThread:(id)thread
 {
   v3 = +[MFNanoBridgeSettingsManager sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 organizeByThread]);
@@ -1070,32 +1070,32 @@ LABEL_13:
   return v4;
 }
 
-- (void)_setSignature:(id)a3 withSpecifier:(id)a4
+- (void)_setSignature:(id)signature withSpecifier:(id)specifier
 {
-  v5 = a3;
+  signatureCopy = signature;
   v4 = +[MFNanoBridgeSettingsManager sharedInstance];
-  [v4 setHtmlSignature:v5];
+  [v4 setHtmlSignature:signatureCopy];
 }
 
-- (id)_signature:(id)a3
+- (id)_signature:(id)_signature
 {
   v3 = +[MFNanoBridgeSettingsManager sharedInstance];
-  v4 = [v3 signature];
+  signature = [v3 signature];
 
-  return v4;
+  return signature;
 }
 
 - (id)_accountNamesKeyedByAccountId
 {
   v2 = +[MFNanoBridgeSettingsManager sharedInstance];
-  v3 = [v2 activeAccounts];
+  activeAccounts = [v2 activeAccounts];
 
-  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v3 count]);
+  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [activeAccounts count]);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = activeAccounts;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -1110,9 +1110,9 @@ LABEL_13:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 displayName];
-        v11 = [v9 uniqueID];
-        [v4 setObject:v10 forKeyedSubscript:v11];
+        displayName = [v9 displayName];
+        uniqueID = [v9 uniqueID];
+        [v4 setObject:displayName forKeyedSubscript:uniqueID];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1127,8 +1127,8 @@ LABEL_13:
 - (BOOL)_needsSetUp
 {
   v2 = +[MFNanoBridgeSettingsManager sharedInstance];
-  v3 = [v2 activeAccounts];
-  v4 = [v3 count] == 0;
+  activeAccounts = [v2 activeAccounts];
+  v4 = [activeAccounts count] == 0;
 
   return v4;
 }

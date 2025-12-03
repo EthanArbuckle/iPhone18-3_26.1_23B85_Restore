@@ -1,32 +1,32 @@
 @interface AEAggregationhelper
-- (AEAggregationhelper)initWithPlugins:(id)a3 forUrl:(id)a4 withOptions:(id)a5;
-- (BOOL)acknowledgeAnnotationProvider:(id)a3 willMergeAnnotationsWithAssertVersionMismatch:(id)a4 assetID:(id)a5 assetURL:(id)a6;
-- (BOOL)helperValidateBookAuthorizationWithError:(id *)a3 needsCoordination:(BOOL)a4;
-- (id)annotationProviderWithCoordination:(BOOL)a3 forAssetID:(id)a4;
+- (AEAggregationhelper)initWithPlugins:(id)plugins forUrl:(id)url withOptions:(id)options;
+- (BOOL)acknowledgeAnnotationProvider:(id)provider willMergeAnnotationsWithAssertVersionMismatch:(id)mismatch assetID:(id)d assetURL:(id)l;
+- (BOOL)helperValidateBookAuthorizationWithError:(id *)error needsCoordination:(BOOL)coordination;
+- (id)annotationProviderWithCoordination:(BOOL)coordination forAssetID:(id)d;
 - (id)helperCoverImage;
-- (id)helperMetadataForKey:(id)a3 needsCoordination:(BOOL)a4;
+- (id)helperMetadataForKey:(id)key needsCoordination:(BOOL)coordination;
 - (id)helperMinifiedController;
 - (void)dealloc;
 - (void)helperDeletePersistentCache;
-- (void)helperUpdateCachedURLTo:(id)a3;
-- (void)setMetadata:(id)a3 forKey:(id)a4;
-- (void)viewControllerFromPluginIndex:(int)a3 withCompletion:(id)a4;
+- (void)helperUpdateCachedURLTo:(id)to;
+- (void)setMetadata:(id)metadata forKey:(id)key;
+- (void)viewControllerFromPluginIndex:(int)index withCompletion:(id)completion;
 @end
 
 @implementation AEAggregationhelper
 
-- (AEAggregationhelper)initWithPlugins:(id)a3 forUrl:(id)a4 withOptions:(id)a5
+- (AEAggregationhelper)initWithPlugins:(id)plugins forUrl:(id)url withOptions:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pluginsCopy = plugins;
+  urlCopy = url;
+  optionsCopy = options;
   v12 = [(AEAggregationhelper *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_plugins, a3);
-    objc_storeStrong(&v13->_url, a4);
-    objc_storeStrong(&v13->_options, a5);
+    objc_storeStrong(&v12->_plugins, plugins);
+    objc_storeStrong(&v13->_url, url);
+    objc_storeStrong(&v13->_options, options);
   }
 
   return v13;
@@ -71,9 +71,9 @@ LABEL_3:
       }
 
       v9 = [*(*(&v12 + 1) + 8 * v8) helperForURL:self->_url withOptions:{self->_options, v12}];
-      v10 = [v9 helperCoverImage];
+      helperCoverImage = [v9 helperCoverImage];
 
-      if (v10)
+      if (helperCoverImage)
       {
         break;
       }
@@ -94,18 +94,18 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v10 = 0;
+    helperCoverImage = 0;
   }
 
   objc_autoreleasePoolPop(v3);
 
-  return v10;
+  return helperCoverImage;
 }
 
-- (id)helperMetadataForKey:(id)a3 needsCoordination:(BOOL)a4
+- (id)helperMetadataForKey:(id)key needsCoordination:(BOOL)coordination
 {
-  v4 = a4;
-  v6 = a3;
+  coordinationCopy = coordination;
+  keyCopy = key;
   v7 = objc_autoreleasePoolPush();
   v16 = 0u;
   v17 = 0u;
@@ -127,7 +127,7 @@ LABEL_3:
       }
 
       v13 = [*(*(&v16 + 1) + 8 * v12) helperForURL:self->_url withOptions:{self->_options, v16}];
-      v14 = [v13 helperMetadataForKey:v6 needsCoordination:v4];
+      v14 = [v13 helperMetadataForKey:keyCopy needsCoordination:coordinationCopy];
 
       if (v14)
       {
@@ -158,10 +158,10 @@ LABEL_9:
   return v14;
 }
 
-- (void)setMetadata:(id)a3 forKey:(id)a4
+- (void)setMetadata:(id)metadata forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  keyCopy = key;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -185,7 +185,7 @@ LABEL_9:
         v13 = [*(*(&v14 + 1) + 8 * v12) helperForURL:self->_url withOptions:{self->_options, v14}];
         if (objc_opt_respondsToSelector())
         {
-          [v13 setMetadata:v6 forKey:v7];
+          [v13 setMetadata:metadataCopy forKey:keyCopy];
         }
 
         v12 = v12 + 1;
@@ -238,9 +238,9 @@ LABEL_9:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)helperUpdateCachedURLTo:(id)a3
+- (void)helperUpdateCachedURLTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = objc_autoreleasePoolPush();
   v12 = 0u;
   v13 = 0u;
@@ -263,7 +263,7 @@ LABEL_9:
         }
 
         v11 = [*(*(&v12 + 1) + 8 * v10) helperForURL:self->_url withOptions:{self->_options, v12}];
-        [v11 helperUpdateCachedURLTo:v4];
+        [v11 helperUpdateCachedURLTo:toCopy];
 
         v10 = v10 + 1;
       }
@@ -278,10 +278,10 @@ LABEL_9:
   objc_autoreleasePoolPop(v5);
 }
 
-- (id)annotationProviderWithCoordination:(BOOL)a3 forAssetID:(id)a4
+- (id)annotationProviderWithCoordination:(BOOL)coordination forAssetID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
+  coordinationCopy = coordination;
+  dCopy = d;
   v7 = objc_autoreleasePoolPush();
   v18 = 0u;
   v19 = 0u;
@@ -306,7 +306,7 @@ LABEL_9:
         v13 = [*(*(&v18 + 1) + 8 * i) helperForURL:self->_url withOptions:self->_options];
         if (objc_opt_respondsToSelector())
         {
-          v14 = [v13 annotationProviderWithCoordination:v4 forAssetID:v6];
+          v14 = [v13 annotationProviderWithCoordination:coordinationCopy forAssetID:dCopy];
           if (v14)
           {
             v15 = v14;
@@ -340,12 +340,12 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)acknowledgeAnnotationProvider:(id)a3 willMergeAnnotationsWithAssertVersionMismatch:(id)a4 assetID:(id)a5 assetURL:(id)a6
+- (BOOL)acknowledgeAnnotationProvider:(id)provider willMergeAnnotationsWithAssertVersionMismatch:(id)mismatch assetID:(id)d assetURL:(id)l
 {
-  v23 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  providerCopy = provider;
+  mismatchCopy = mismatch;
+  dCopy = d;
+  lCopy = l;
   v13 = objc_autoreleasePoolPush();
   v24 = 0u;
   v25 = 0u;
@@ -368,7 +368,7 @@ LABEL_12:
         }
 
         v19 = [*(*(&v24 + 1) + 8 * i) helperForURL:self->_url withOptions:{self->_options, v22}];
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ([v19 acknowledgeAnnotationProvider:v23 willMergeAnnotationsWithAssertVersionMismatch:v10 assetID:v11 assetURL:v12] & 1) == 0)
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ([v19 acknowledgeAnnotationProvider:providerCopy willMergeAnnotationsWithAssertVersionMismatch:mismatchCopy assetID:dCopy assetURL:lCopy] & 1) == 0)
         {
 
           v20 = 0;
@@ -399,15 +399,15 @@ LABEL_12:
   return v20;
 }
 
-- (BOOL)helperValidateBookAuthorizationWithError:(id *)a3 needsCoordination:(BOOL)a4
+- (BOOL)helperValidateBookAuthorizationWithError:(id *)error needsCoordination:(BOOL)coordination
 {
-  v21 = a4;
-  if (!a3)
+  coordinationCopy = coordination;
+  if (!error)
   {
     return 0;
   }
 
-  v4 = a3;
+  errorCopy = error;
   v6 = objc_autoreleasePoolPush();
   v23 = 0u;
   v24 = 0u;
@@ -419,7 +419,7 @@ LABEL_12:
   {
     v9 = v8;
     v19 = v6;
-    v20 = v4;
+    v20 = errorCopy;
     v10 = 0;
     v11 = *v24;
     while (2)
@@ -435,7 +435,7 @@ LABEL_12:
         if (objc_opt_respondsToSelector())
         {
           v22 = v10;
-          v14 = [v13 helperValidateBookAuthorizationWithError:&v22 needsCoordination:v21];
+          v14 = [v13 helperValidateBookAuthorizationWithError:&v22 needsCoordination:coordinationCopy];
           v15 = v22;
 
           if (v14)
@@ -462,7 +462,7 @@ LABEL_12:
     v15 = v10;
 LABEL_15:
     v6 = v19;
-    v4 = v20;
+    errorCopy = v20;
   }
 
   else
@@ -473,41 +473,41 @@ LABEL_15:
 
   objc_autoreleasePoolPop(v6);
   v17 = v15;
-  *v4 = v15;
+  *errorCopy = v15;
 
   return v16;
 }
 
-- (void)viewControllerFromPluginIndex:(int)a3 withCompletion:(id)a4
+- (void)viewControllerFromPluginIndex:(int)index withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [(NSArray *)self->_plugins count];
-  if (v7 > a3)
+  if (v7 > index)
   {
-    v8 = [(NSArray *)self->_plugins objectAtIndex:a3];
+    v8 = [(NSArray *)self->_plugins objectAtIndex:index];
     v9 = [v8 helperForURL:self->_url withOptions:self->_options];
     options = self->_options;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_C05E0;
     v13[3] = &unk_2CC950;
-    v15 = a3;
+    indexCopy = index;
     v16 = v7;
     v13[4] = self;
-    v14 = v6;
+    v14 = completionCopy;
     [v9 helperViewControllerWithOptions:options completion:v13];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_C0740;
     v11[3] = &unk_2C8398;
-    v12 = v6;
+    v12 = completionCopy;
     dispatch_async(&_dispatch_main_q, v11);
     v8 = v12;
     goto LABEL_5;
@@ -539,9 +539,9 @@ LABEL_3:
       }
 
       v9 = [*(*(&v12 + 1) + 8 * v8) helperForURL:self->_url withOptions:{self->_options, v12}];
-      v10 = [v9 helperMinifiedController];
+      helperMinifiedController = [v9 helperMinifiedController];
 
-      if (v10)
+      if (helperMinifiedController)
       {
         break;
       }
@@ -562,12 +562,12 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v10 = 0;
+    helperMinifiedController = 0;
   }
 
   objc_autoreleasePoolPop(v3);
 
-  return v10;
+  return helperMinifiedController;
 }
 
 @end

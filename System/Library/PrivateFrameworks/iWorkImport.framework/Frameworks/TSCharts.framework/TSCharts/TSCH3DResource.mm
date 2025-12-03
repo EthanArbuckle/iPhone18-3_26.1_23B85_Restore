@@ -1,37 +1,37 @@
 @interface TSCH3DResource
-+ (TSCH3DResource)resourceWithCaching:(int)a3;
++ (TSCH3DResource)resourceWithCaching:(int)caching;
 + (id)resource;
 - (BOOL)cacheNeedsUpdate;
 - (DataBufferInfo)bufferInfo;
 - (TSCH3DDataBuffer)buffer;
-- (TSCH3DResource)initWithCaching:(int)a3;
+- (TSCH3DResource)initWithCaching:(int)caching;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)flushMemory;
-- (void)setCache:(id)a3;
-- (void)setChanged:(BOOL)a3;
-- (void)updateBufferInfoFromBuffer:(id)a3;
+- (void)setCache:(id)cache;
+- (void)setChanged:(BOOL)changed;
+- (void)updateBufferInfoFromBuffer:(id)buffer;
 @end
 
 @implementation TSCH3DResource
 
 + (id)resource
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (TSCH3DResource)resourceWithCaching:(int)a3
++ (TSCH3DResource)resourceWithCaching:(int)caching
 {
-  v3 = *&a3;
-  v4 = [a1 alloc];
+  v3 = *&caching;
+  v4 = [self alloc];
   v9 = objc_msgSend_initWithCaching_(v4, v5, v6, v7, v8, v3);
 
   return v9;
 }
 
-- (TSCH3DResource)initWithCaching:(int)a3
+- (TSCH3DResource)initWithCaching:(int)caching
 {
   v10.receiver = self;
   v10.super_class = TSCH3DResource;
@@ -39,7 +39,7 @@
   if (v5)
   {
     v5->_uniqueIdentifier = objc_msgSend_allocateResourceUniqueIdentifier(TSCH3DResourceUniqueIdentifierAllocator, v4, v6, v7, v8);
-    v5->_caching = a3;
+    v5->_caching = caching;
     v5->_update = 0;
   }
 
@@ -54,12 +54,12 @@
   [(TSCH3DResource *)&v6 dealloc];
 }
 
-- (void)setChanged:(BOOL)a3
+- (void)setChanged:(BOOL)changed
 {
-  if (self->_changed != a3)
+  if (self->_changed != changed)
   {
-    self->_changed = a3;
-    if (a3)
+    self->_changed = changed;
+    if (changed)
     {
       self->_cached = 0;
     }
@@ -78,13 +78,13 @@
   }
 }
 
-- (void)updateBufferInfoFromBuffer:(id)a3
+- (void)updateBufferInfoFromBuffer:(id)buffer
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  bufferCopy = buffer;
+  v9 = bufferCopy;
+  if (bufferCopy)
   {
-    objc_msgSend_bufferInfo(v4, v5, v6, v7, v8);
+    objc_msgSend_bufferInfo(bufferCopy, v5, v6, v7, v8);
   }
 
   else
@@ -151,9 +151,9 @@
   return caching & 1;
 }
 
-- (void)setCache:(id)a3
+- (void)setCache:(id)cache
 {
-  objc_storeStrong(&self->_cache, a3);
+  objc_storeStrong(&self->_cache, cache);
   self->_cached = 1;
   self->_dataBufferInfo.componentType = 0;
   *&self->_dataBufferInfo.components = 0u;

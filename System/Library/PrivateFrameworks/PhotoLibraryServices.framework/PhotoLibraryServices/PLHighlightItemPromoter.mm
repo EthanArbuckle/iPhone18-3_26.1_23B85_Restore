@@ -1,22 +1,22 @@
 @interface PLHighlightItemPromoter
-- (PLHighlightItemPromoter)initWithRule:(id)a3;
-- (void)processHighlightItemsInHighlightItemList:(id)a3 currentlyPromotedHighlightItems:(id)a4 withSharingConsideration:(int64_t)a5 resultBlock:(id)a6;
+- (PLHighlightItemPromoter)initWithRule:(id)rule;
+- (void)processHighlightItemsInHighlightItemList:(id)list currentlyPromotedHighlightItems:(id)items withSharingConsideration:(int64_t)consideration resultBlock:(id)block;
 @end
 
 @implementation PLHighlightItemPromoter
 
-- (void)processHighlightItemsInHighlightItemList:(id)a3 currentlyPromotedHighlightItems:(id)a4 withSharingConsideration:(int64_t)a5 resultBlock:(id)a6
+- (void)processHighlightItemsInHighlightItemList:(id)list currentlyPromotedHighlightItems:(id)items withSharingConsideration:(int64_t)consideration resultBlock:(id)block
 {
   v40 = *MEMORY[0x1E69E9840];
-  v34 = a4;
-  v33 = a6;
-  v10 = [a3 sortedChildHighlightItems];
+  itemsCopy = items;
+  blockCopy = block;
+  sortedChildHighlightItems = [list sortedChildHighlightItems];
   v11 = [MEMORY[0x1E695DFA8] set];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v12 = v10;
+  v12 = sortedChildHighlightItems;
   v13 = [v12 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v13)
   {
@@ -33,8 +33,8 @@
         }
 
         v17 = *(*(&v35 + 1) + 8 * v16);
-        v18 = [(PLHighlightItemPromoter *)self rule];
-        v19 = [v18 highlightItemHasMinimumRequirementToBePromoted:v17 withSharingConsideration:a5];
+        rule = [(PLHighlightItemPromoter *)self rule];
+        v19 = [rule highlightItemHasMinimumRequirementToBePromoted:v17 withSharingConsideration:consideration];
 
         if (v19)
         {
@@ -51,14 +51,14 @@
     while (v14);
   }
 
-  v20 = [(PLHighlightItemPromoter *)self rule];
-  v21 = [v20 maximumNumberOfHighlightItemsToPromote];
+  rule2 = [(PLHighlightItemPromoter *)self rule];
+  maximumNumberOfHighlightItemsToPromote = [rule2 maximumNumberOfHighlightItemsToPromote];
 
   v22 = [MEMORY[0x1E695DFD8] set];
-  if ([v11 count] <= v21)
+  if ([v11 count] <= maximumNumberOfHighlightItemsToPromote)
   {
-    v28 = v33;
-    v27 = v34;
+    v28 = blockCopy;
+    v27 = itemsCopy;
     if ([v11 count])
     {
       v25 = v22;
@@ -67,9 +67,9 @@
 
     else
     {
-      v29 = [(PLHighlightItemPromoter *)self rule];
+      rule3 = [(PLHighlightItemPromoter *)self rule];
       v30 = [MEMORY[0x1E695DFD8] setWithArray:v12];
-      v25 = [v29 fallbackHighlightItemFromAllHighlightItems:v30 withSharingConsideration:a5];
+      v25 = [rule3 fallbackHighlightItemFromAllHighlightItems:v30 withSharingConsideration:consideration];
 
       if (v25)
       {
@@ -82,16 +82,16 @@
 
   else
   {
-    v23 = [(PLHighlightItemPromoter *)self rule];
-    v24 = [v23 highlightItemsSortedByImportance:v11 withSharingConsideration:a5];
+    rule4 = [(PLHighlightItemPromoter *)self rule];
+    v24 = [rule4 highlightItemsSortedByImportance:v11 withSharingConsideration:consideration];
 
-    v25 = [v24 subarrayWithRange:{0, v21}];
+    v25 = [v24 subarrayWithRange:{0, maximumNumberOfHighlightItemsToPromote}];
 
     v26 = [MEMORY[0x1E695DFD8] setWithArray:v25];
 
     v22 = v26;
-    v28 = v33;
-    v27 = v34;
+    v28 = blockCopy;
+    v27 = itemsCopy;
   }
 
   v32 = [MEMORY[0x1E695DFA8] setWithSet:v27];
@@ -99,16 +99,16 @@
   (v28)[2](v28, v22, v32, [v22 count] != 0);
 }
 
-- (PLHighlightItemPromoter)initWithRule:(id)a3
+- (PLHighlightItemPromoter)initWithRule:(id)rule
 {
-  v5 = a3;
+  ruleCopy = rule;
   v9.receiver = self;
   v9.super_class = PLHighlightItemPromoter;
   v6 = [(PLHighlightItemPromoter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rule, a3);
+    objc_storeStrong(&v6->_rule, rule);
   }
 
   return v7;

@@ -1,52 +1,52 @@
 @interface KTIDSIdentity
-- (BOOL)isEqual:(id)a3;
-- (KTIDSIdentity)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (KTIDSIdentity)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTIDSIdentity
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(KTIDSIdentity *)self pushToken];
-  [v7 encodeObject:v4 forKey:@"pushToken"];
+  coderCopy = coder;
+  pushToken = [(KTIDSIdentity *)self pushToken];
+  [coderCopy encodeObject:pushToken forKey:@"pushToken"];
 
-  v5 = [(KTIDSIdentity *)self ktLoggableData];
-  [v7 encodeObject:v5 forKey:@"ktLoggableData"];
+  ktLoggableData = [(KTIDSIdentity *)self ktLoggableData];
+  [coderCopy encodeObject:ktLoggableData forKey:@"ktLoggableData"];
 
-  v6 = [(KTIDSIdentity *)self signature];
-  [v7 encodeObject:v6 forKey:@"signature"];
+  signature = [(KTIDSIdentity *)self signature];
+  [coderCopy encodeObject:signature forKey:@"signature"];
 
-  [v7 encodeBool:-[KTIDSIdentity ktCapable](self forKey:{"ktCapable"), @"ktCapable"}];
-  [v7 encodeBool:-[KTIDSIdentity supportConditionalEnforcement](self forKey:{"supportConditionalEnforcement"), @"conditionalEnforcement"}];
+  [coderCopy encodeBool:-[KTIDSIdentity ktCapable](self forKey:{"ktCapable"), @"ktCapable"}];
+  [coderCopy encodeBool:-[KTIDSIdentity supportConditionalEnforcement](self forKey:{"supportConditionalEnforcement"), @"conditionalEnforcement"}];
 }
 
-- (KTIDSIdentity)initWithCoder:(id)a3
+- (KTIDSIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pushToken"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pushToken"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ktLoggableData"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
-    self = -[KTIDSIdentity initWithPushToken:ktLoggableData:signature:ktCapable:conditionalEnforcement:](self, "initWithPushToken:ktLoggableData:signature:ktCapable:conditionalEnforcement:", v5, v6, v7, [v4 decodeBoolForKey:@"ktCapable"], objc_msgSend(v4, "decodeBoolForKey:", @"conditionalEnforcement"));
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ktLoggableData"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    self = -[KTIDSIdentity initWithPushToken:ktLoggableData:signature:ktCapable:conditionalEnforcement:](self, "initWithPushToken:ktLoggableData:signature:ktCapable:conditionalEnforcement:", v5, v6, v7, [coderCopy decodeBoolForKey:@"ktCapable"], objc_msgSend(coderCopy, "decodeBoolForKey:", @"conditionalEnforcement"));
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v15) = 1;
   }
@@ -56,25 +56,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(KTIDSIdentity *)self pushToken];
-      v7 = [(KTIDSIdentity *)v5 pushToken];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      pushToken = [(KTIDSIdentity *)self pushToken];
+      pushToken2 = [(KTIDSIdentity *)v5 pushToken];
+      v8 = [pushToken isEqual:pushToken2];
 
       if (v8)
       {
-        v9 = [(KTIDSIdentity *)self ktLoggableData];
-        v10 = [(KTIDSIdentity *)v5 ktLoggableData];
-        v11 = v10;
-        if (v9 == v10)
+        ktLoggableData = [(KTIDSIdentity *)self ktLoggableData];
+        ktLoggableData2 = [(KTIDSIdentity *)v5 ktLoggableData];
+        v11 = ktLoggableData2;
+        if (ktLoggableData == ktLoggableData2)
         {
         }
 
         else
         {
-          v12 = [(KTIDSIdentity *)self ktLoggableData];
-          v13 = [(KTIDSIdentity *)v5 ktLoggableData];
-          v14 = [v12 isEqual:v13];
+          ktLoggableData3 = [(KTIDSIdentity *)self ktLoggableData];
+          ktLoggableData4 = [(KTIDSIdentity *)v5 ktLoggableData];
+          v14 = [ktLoggableData3 isEqual:ktLoggableData4];
 
           if (!v14)
           {
@@ -82,18 +82,18 @@
           }
         }
 
-        v16 = [(KTIDSIdentity *)self signature];
-        v17 = [(KTIDSIdentity *)v5 signature];
-        v18 = v17;
-        if (v16 == v17)
+        signature = [(KTIDSIdentity *)self signature];
+        signature2 = [(KTIDSIdentity *)v5 signature];
+        v18 = signature2;
+        if (signature == signature2)
         {
         }
 
         else
         {
-          v19 = [(KTIDSIdentity *)self signature];
-          v20 = [(KTIDSIdentity *)v5 signature];
-          v21 = [v19 isEqual:v20];
+          signature3 = [(KTIDSIdentity *)self signature];
+          signature4 = [(KTIDSIdentity *)v5 signature];
+          v21 = [signature3 isEqual:signature4];
 
           if (!v21)
           {
@@ -101,11 +101,11 @@
           }
         }
 
-        v22 = [(KTIDSIdentity *)self ktCapable];
-        if (v22 == [(KTIDSIdentity *)v5 ktCapable])
+        ktCapable = [(KTIDSIdentity *)self ktCapable];
+        if (ktCapable == [(KTIDSIdentity *)v5 ktCapable])
         {
-          v24 = [(KTIDSIdentity *)self supportConditionalEnforcement];
-          v15 = v24 ^ [(KTIDSIdentity *)v5 supportConditionalEnforcement]^ 1;
+          supportConditionalEnforcement = [(KTIDSIdentity *)self supportConditionalEnforcement];
+          v15 = supportConditionalEnforcement ^ [(KTIDSIdentity *)v5 supportConditionalEnforcement]^ 1;
           goto LABEL_16;
         }
       }

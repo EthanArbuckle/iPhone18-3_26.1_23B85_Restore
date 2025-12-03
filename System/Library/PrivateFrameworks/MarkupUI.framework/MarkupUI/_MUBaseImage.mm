@@ -1,14 +1,14 @@
 @interface _MUBaseImage
-- (_MUBaseImage)initWithBaseImage:(id)a3 allowHDR:(BOOL)a4;
+- (_MUBaseImage)initWithBaseImage:(id)image allowHDR:(BOOL)r;
 - (void)dealloc;
 @end
 
 @implementation _MUBaseImage
 
-- (_MUBaseImage)initWithBaseImage:(id)a3 allowHDR:(BOOL)a4
+- (_MUBaseImage)initWithBaseImage:(id)image allowHDR:(BOOL)r
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  imageCopy = image;
   v22.receiver = self;
   v22.super_class = _MUBaseImage;
   v7 = [(_MUBaseImage *)&v22 init];
@@ -20,12 +20,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = CGImageSourceCreateWithURL(v6, 0);
+        v8 = CGImageSourceCreateWithURL(imageCopy, 0);
       }
 
       else
       {
-        v8 = CGImageSourceCreateWithData(v6, 0);
+        v8 = CGImageSourceCreateWithData(imageCopy, 0);
       }
 
       v9 = v8;
@@ -38,25 +38,25 @@
         v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
         v7->_imageOptions = CGImageSourceCopyPropertiesAtIndex(v9, 0, v11);
         v7->_imageMetadata = CGImageSourceCopyMetadataAtIndex(v9, 0, 0);
-        v12 = [MEMORY[0x277CBEB38] dictionary];
-        [v12 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277CD3618]];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277CD3618]];
         v13 = *MEMORY[0x277CD3580];
-        if (a4)
+        if (r)
         {
-          [v12 setObject:*MEMORY[0x277CD3590] forKeyedSubscript:*MEMORY[0x277CD3580]];
+          [dictionary setObject:*MEMORY[0x277CD3590] forKeyedSubscript:*MEMORY[0x277CD3580]];
           v23 = *MEMORY[0x277CD2C48];
           v24 = v10;
           v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-          [v12 setObject:v14 forKeyedSubscript:*MEMORY[0x277CD3588]];
+          [dictionary setObject:v14 forKeyedSubscript:*MEMORY[0x277CD3588]];
 
-          ImageAtIndex = CGImageSourceCreateImageAtIndex(v9, 0, v12);
+          ImageAtIndex = CGImageSourceCreateImageAtIndex(v9, 0, dictionary);
           HeadroomFromImage = GetHeadroomFromImage(ImageAtIndex);
         }
 
         else
         {
-          [v12 setObject:*MEMORY[0x277CD3598] forKeyedSubscript:*MEMORY[0x277CD3580]];
-          ImageAtIndex = CGImageSourceCreateImageAtIndex(v9, 0, v12);
+          [dictionary setObject:*MEMORY[0x277CD3598] forKeyedSubscript:*MEMORY[0x277CD3580]];
+          ImageAtIndex = CGImageSourceCreateImageAtIndex(v9, 0, dictionary);
           HeadroomFromImage = 1.0;
         }
 
@@ -66,11 +66,11 @@
         if (v7->_headroom > 1.0)
         {
           v7->_hdrImage = ImageAtIndex;
-          v20 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
 
-          [v20 setObject:*MEMORY[0x277CD3598] forKeyedSubscript:v13];
-          ImageAtIndex = CGImageSourceCreateImageAtIndex(v9, 0, v20);
-          v12 = v20;
+          [dictionary2 setObject:*MEMORY[0x277CD3598] forKeyedSubscript:v13];
+          ImageAtIndex = CGImageSourceCreateImageAtIndex(v9, 0, dictionary2);
+          dictionary = dictionary2;
         }
 
         v7->_sdrImage = ImageAtIndex;
@@ -79,18 +79,18 @@
 
     else
     {
-      v17 = [(__CFURL *)v6 CGImage];
-      CGImageRetain(v17);
-      v18 = GetHeadroomFromImage(v17);
+      cGImage = [(__CFURL *)imageCopy CGImage];
+      CGImageRetain(cGImage);
+      v18 = GetHeadroomFromImage(cGImage);
       v7->_headroom = v18;
       if (v18 <= 1.0)
       {
-        v7->_sdrImage = v17;
+        v7->_sdrImage = cGImage;
       }
 
       else
       {
-        v7->_hdrImage = v17;
+        v7->_hdrImage = cGImage;
       }
     }
   }

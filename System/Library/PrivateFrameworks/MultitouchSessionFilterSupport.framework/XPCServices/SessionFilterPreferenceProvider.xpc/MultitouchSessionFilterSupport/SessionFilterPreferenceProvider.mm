@@ -1,9 +1,9 @@
 @interface SessionFilterPreferenceProvider
 - (BOOL)touchDisabled;
 - (SessionFilterPreferenceProvider)init;
-- (void)continuousRecordingDeleteForAllServicesWithReply:(id)a3;
-- (void)continuousRecordingEnabledWithReply:(id)a3;
-- (void)siriRemoteTouchDisabledWithReply:(id)a3;
+- (void)continuousRecordingDeleteForAllServicesWithReply:(id)reply;
+- (void)continuousRecordingEnabledWithReply:(id)reply;
+- (void)siriRemoteTouchDisabledWithReply:(id)reply;
 - (void)touchDisabled;
 @end
 
@@ -34,13 +34,13 @@
 
 - (BOOL)touchDisabled
 {
-  v3 = [(SessionFilterPreferenceProvider *)self tvDefaults];
-  v4 = [v3 objectForKey:@"RemoteClickpadMode"];
+  tvDefaults = [(SessionFilterPreferenceProvider *)self tvDefaults];
+  v4 = [tvDefaults objectForKey:@"RemoteClickpadMode"];
 
   if (v4)
   {
-    v5 = [(SessionFilterPreferenceProvider *)self tvDefaults];
-    v6 = [v5 integerForKey:@"RemoteClickpadMode"];
+    tvDefaults2 = [(SessionFilterPreferenceProvider *)self tvDefaults];
+    v6 = [tvDefaults2 integerForKey:@"RemoteClickpadMode"];
 
     if (v6)
     {
@@ -49,8 +49,8 @@
         return 1;
       }
 
-      v8 = [(SessionFilterPreferenceProvider *)self logHandle];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      logHandle = [(SessionFilterPreferenceProvider *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
         [(SessionFilterPreferenceProvider *)v6 touchDisabled];
       }
@@ -60,85 +60,85 @@
   return 0;
 }
 
-- (void)siriRemoteTouchDisabledWithReply:(id)a3
+- (void)siriRemoteTouchDisabledWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(SessionFilterPreferenceProvider *)self touchDisabled];
-  v6 = [(SessionFilterPreferenceProvider *)self logHandle];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  replyCopy = reply;
+  touchDisabled = [(SessionFilterPreferenceProvider *)self touchDisabled];
+  logHandle = [(SessionFilterPreferenceProvider *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v5;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Touch disabled: %d", v7, 8u);
+    v7[1] = touchDisabled;
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Touch disabled: %d", v7, 8u);
   }
 
-  v4[2](v4, v5);
+  replyCopy[2](replyCopy, touchDisabled);
 }
 
-- (void)continuousRecordingEnabledWithReply:(id)a3
+- (void)continuousRecordingEnabledWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(SessionFilterPreferenceProvider *)self continuousRecordingDefaults];
-  v6 = [v5 objectForKey:@"ContinuousRecordingV3"];
+  replyCopy = reply;
+  continuousRecordingDefaults = [(SessionFilterPreferenceProvider *)self continuousRecordingDefaults];
+  v6 = [continuousRecordingDefaults objectForKey:@"ContinuousRecordingV3"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else if (v6)
   {
-    v8 = [(SessionFilterPreferenceProvider *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    logHandle = [(SessionFilterPreferenceProvider *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      [(SessionFilterPreferenceProvider *)v6 continuousRecordingEnabledWithReply:v8];
+      [(SessionFilterPreferenceProvider *)v6 continuousRecordingEnabledWithReply:logHandle];
     }
 
-    v7 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  v4[2](v4, v7);
+  replyCopy[2](replyCopy, bOOLValue);
 }
 
-- (void)continuousRecordingDeleteForAllServicesWithReply:(id)a3
+- (void)continuousRecordingDeleteForAllServicesWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(SessionFilterPreferenceProvider *)self continuousRecordingDefaults];
-  v6 = [v5 objectForKey:@"deleteForAllServices"];
+  replyCopy = reply;
+  continuousRecordingDefaults = [(SessionFilterPreferenceProvider *)self continuousRecordingDefaults];
+  v6 = [continuousRecordingDefaults objectForKey:@"deleteForAllServices"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
     if (v6)
     {
-      v8 = [(SessionFilterPreferenceProvider *)self logHandle];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      logHandle = [(SessionFilterPreferenceProvider *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        [(SessionFilterPreferenceProvider *)v6 continuousRecordingDeleteForAllServicesWithReply:v8];
+        [(SessionFilterPreferenceProvider *)v6 continuousRecordingDeleteForAllServicesWithReply:logHandle];
       }
     }
 
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  v4[2](v4, v7);
+  replyCopy[2](replyCopy, bOOLValue);
 }
 
 - (void)touchDisabled
 {
   v2 = 134217984;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&_mh_execute_header, a2, OS_LOG_TYPE_ERROR, "Unrecognized remote clickpad mode value %ld", &v2, 0xCu);
 }
 

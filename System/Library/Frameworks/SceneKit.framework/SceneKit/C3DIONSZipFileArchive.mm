@@ -1,24 +1,24 @@
 @interface C3DIONSZipFileArchive
-- (BOOL)writeContentsForEntryName:(id)a3 toFile:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (C3DIONSZipFileArchive)initWithData:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (C3DIONSZipFileArchive)initWithEntryNames:(id)a3 contents:(id)a4 properties:(id)a5 options:(unint64_t)a6;
-- (C3DIONSZipFileArchive)initWithEntryNames:(id)a3 dataProvider:(id)a4 options:(unint64_t)a5;
-- (C3DIONSZipFileArchive)initWithPath:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (BOOL)writeContentsForEntryName:(id)name toFile:(id)file options:(unint64_t)options error:(id *)error;
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error;
+- (C3DIONSZipFileArchive)initWithData:(id)data options:(unint64_t)options error:(id *)error;
+- (C3DIONSZipFileArchive)initWithEntryNames:(id)names contents:(id)contents properties:(id)properties options:(unint64_t)options;
+- (C3DIONSZipFileArchive)initWithEntryNames:(id)names dataProvider:(id)provider options:(unint64_t)options;
+- (C3DIONSZipFileArchive)initWithPath:(id)path options:(unint64_t)options error:(id *)error;
 - (id)archiveData;
 - (id)archiveStream;
-- (id)contentsForEntryName:(id)a3;
-- (id)propertiesForEntryName:(id)a3;
-- (id)streamForEntryName:(id)a3;
+- (id)contentsForEntryName:(id)name;
+- (id)propertiesForEntryName:(id)name;
+- (id)streamForEntryName:(id)name;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation C3DIONSZipFileArchive
 
-- (C3DIONSZipFileArchive)initWithPath:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (C3DIONSZipFileArchive)initWithPath:(id)path options:(unint64_t)options error:(id *)error
 {
-  if (!a3 || ![a3 length])
+  if (!path || ![path length])
   {
     return 0;
   }
@@ -33,24 +33,24 @@
     *(v9 + 88) = 0u;
     *(v9 + 104) = 0u;
     *(v9 + 15) = 0;
-    if ((a4 & 3) > 1)
+    if ((options & 3) > 1)
     {
-      if ((a4 & 3) == 2)
+      if ((options & 3) == 2)
       {
         v11 = MEMORY[0x277CBEA90];
-        v12 = a3;
+        pathCopy2 = path;
         v13 = 1;
         goto LABEL_9;
       }
 
-      v16 = _openFile(a3);
+      v16 = _openFile(path);
       if ((v16 & 0x8000000000000000) == 0)
       {
         v17 = v16;
-        *(v10 + 40) = [a3 copy];
+        *(v10 + 40) = [path copy];
         close(v17);
 LABEL_16:
-        if ((a4 & 4) != 0)
+        if ((options & 4) != 0)
         {
           *(v10 + 80) |= 8u;
         }
@@ -61,19 +61,19 @@ LABEL_16:
 
     else
     {
-      if ((a4 & 3) == 0)
+      if ((options & 3) == 0)
       {
         v11 = MEMORY[0x277CBEA90];
-        v12 = a3;
+        pathCopy2 = path;
         v13 = 0;
 LABEL_9:
-        v14 = [v11 dataWithContentsOfFile:v12 options:v13 error:a5];
+        v14 = [v11 dataWithContentsOfFile:pathCopy2 options:v13 error:error];
         if (!v14)
         {
           goto LABEL_18;
         }
 
-        v10 = [v10 initWithData:v14 options:a4 error:a5];
+        v10 = [v10 initWithData:v14 options:options error:error];
         if (!v10)
         {
           goto LABEL_18;
@@ -82,7 +82,7 @@ LABEL_9:
         goto LABEL_16;
       }
 
-      v15 = _openFile(a3);
+      v15 = _openFile(path);
       *(v10 + 32) = v15;
       if ((v15 & 0x8000000000000000) == 0)
       {
@@ -99,15 +99,15 @@ LABEL_18:
   return v10;
 }
 
-- (C3DIONSZipFileArchive)initWithData:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (C3DIONSZipFileArchive)initWithData:(id)data options:(unint64_t)options error:(id *)error
 {
-  v5 = a4;
+  optionsCopy = options;
   v67[5] = *MEMORY[0x277D85DE8];
   v65.receiver = self;
   v65.super_class = C3DIONSZipFileArchive;
-  v7 = [(C3DIONSZipFileArchive *)&v65 init:a3];
+  v7 = [(C3DIONSZipFileArchive *)&v65 init:data];
   v8 = v7;
-  if (!a3)
+  if (!data)
   {
     goto LABEL_75;
   }
@@ -117,12 +117,12 @@ LABEL_18:
     goto LABEL_75;
   }
 
-  v53 = v5;
-  v58 = [MEMORY[0x277CBEB18] array];
-  v57 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [a3 bytes];
-  v52 = a3;
-  v10 = [a3 length];
+  v53 = optionsCopy;
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  bytes = [data bytes];
+  dataCopy = data;
+  v10 = [data length];
   if (v10 < 0x15)
   {
     goto LABEL_75;
@@ -133,7 +133,7 @@ LABEL_18:
   v13 = 0;
   v14 = -20;
   v15 = 20;
-  v16 = v9;
+  v16 = bytes;
   do
   {
     v17 = *(v16 + v10 - 20);
@@ -145,8 +145,8 @@ LABEL_18:
         v19 = *(v16 + v10 - 12);
         if (v19 <= v10 - 56)
         {
-          v20 = v9 + v19;
-          if (*(v9 + v19) == 101075792)
+          v20 = bytes + v19;
+          if (*(bytes + v19) == 101075792)
           {
             v12 = *(v20 + 24);
             v13 = *(v20 + 48);
@@ -203,8 +203,8 @@ LABEL_18:
   v51 = v8;
   v54 = 0;
   v21 = 0;
-  v55 = v9 + 16;
-  v56 = v9 + 8;
+  v55 = bytes + 16;
+  v56 = bytes + 8;
   v22 = v13;
   do
   {
@@ -229,7 +229,7 @@ LABEL_18:
       break;
     }
 
-    v24 = v9 + v22;
+    v24 = bytes + v22;
     if (*v24 != 33639248)
     {
       break;
@@ -237,7 +237,7 @@ LABEL_18:
 
     v25 = v21;
     v62 = v12;
-    v26 = v9;
+    v26 = bytes;
     v28 = *(v24 + 20);
     v27 = *(v24 + 24);
     v29 = *(v24 + 28);
@@ -276,14 +276,14 @@ LABEL_18:
 
     if (v36 <= 4u || !v33)
     {
-      v9 = v26;
+      bytes = v26;
 LABEL_67:
       v39 = v25;
       goto LABEL_68;
     }
 
     v38 = v34 + v36;
-    v9 = v26;
+    bytes = v26;
     if (v34 >= v34 + v36)
     {
       goto LABEL_67;
@@ -298,8 +298,8 @@ LABEL_67:
         v41 = v23 + v29;
         do
         {
-          v42 = (v9 + v41);
-          v43 = *(v9 + v41 + 2);
+          v42 = (bytes + v41);
+          v43 = *(bytes + v41 + 2);
           v44 = v41 + 4;
           v41 += 4 + v43;
           if (v41 <= v44 || v41 > v38)
@@ -312,7 +312,7 @@ LABEL_67:
           {
             if (v27 == 0xFFFFFFFFLL)
             {
-              v27 = *(v9 + v44);
+              v27 = *(bytes + v44);
             }
 
             if (v28 == 0xFFFFFFFFLL)
@@ -350,8 +350,8 @@ LABEL_69:
       v66[4] = @"C3DIONSZipFileArchiveUncompressedLength";
       v67[4] = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v27];
       v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:v66 count:5];
-      [v58 addObject:v48];
-      [v57 setObject:v49 forKey:v48];
+      [array addObject:v48];
+      [dictionary setObject:v49 forKey:v48];
       v36 = v63;
       v13 = v64;
       v54 = 1;
@@ -366,9 +366,9 @@ LABEL_69:
   v8 = v51;
   if (v54)
   {
-    v51->_data = v52;
-    v51->_names = v58;
-    v51->_properties = v57;
+    v51->_data = dataCopy;
+    v51->_names = array;
+    v51->_properties = dictionary;
     if ((v53 & 4) != 0)
     {
       *&v51->_zFlags |= 8u;
@@ -387,9 +387,9 @@ LABEL_75:
   return v8;
 }
 
-- (C3DIONSZipFileArchive)initWithEntryNames:(id)a3 contents:(id)a4 properties:(id)a5 options:(unint64_t)a6
+- (C3DIONSZipFileArchive)initWithEntryNames:(id)names contents:(id)contents properties:(id)properties options:(unint64_t)options
 {
-  v10 = [a3 count];
+  v10 = [names count];
   v17.receiver = self;
   v17.super_class = C3DIONSZipFileArchive;
   v11 = [(C3DIONSZipFileArchive *)&v17 init];
@@ -398,7 +398,7 @@ LABEL_75:
     v12 = 1;
     do
     {
-      v13 = [a4 objectForKey:{objc_msgSend(a3, "objectAtIndex:", v12 - 1)}];
+      v13 = [contents objectForKey:{objc_msgSend(names, "objectAtIndex:", v12 - 1)}];
       v14 = v13 != 0;
       if (v13)
       {
@@ -414,7 +414,7 @@ LABEL_75:
     }
 
     while (!v15);
-    if (!a3)
+    if (!names)
     {
       goto LABEL_16;
     }
@@ -423,17 +423,17 @@ LABEL_75:
   else
   {
     v14 = 1;
-    if (!a3)
+    if (!names)
     {
       goto LABEL_16;
     }
   }
 
-  if (a4 && v14 && v11 && v10)
+  if (contents && v14 && v11 && v10)
   {
-    v11->_contents = [a4 copy];
-    v11->_names = [a3 copy];
-    v11->_properties = [a5 copy];
+    v11->_contents = [contents copy];
+    v11->_names = [names copy];
+    v11->_properties = [properties copy];
     *&v11->_zFlags |= 8u;
     return v11;
   }
@@ -448,9 +448,9 @@ LABEL_16:
   return v11;
 }
 
-- (C3DIONSZipFileArchive)initWithEntryNames:(id)a3 dataProvider:(id)a4 options:(unint64_t)a5
+- (C3DIONSZipFileArchive)initWithEntryNames:(id)names dataProvider:(id)provider options:(unint64_t)options
 {
-  v5 = a5;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = C3DIONSZipFileArchive;
   v8 = [(C3DIONSZipFileArchive *)&v11 init];
@@ -482,9 +482,9 @@ LABEL_16:
 
   if ((v9 & 3) != 0)
   {
-    *(v8 + 3) = a4;
-    *(v8 + 6) = [a3 copy];
-    if ((v5 & 4) != 0)
+    *(v8 + 3) = provider;
+    *(v8 + 6) = [names copy];
+    if ((optionsCopy & 4) != 0)
     {
       *(v8 + 20) |= 8u;
     }
@@ -507,12 +507,12 @@ LABEL_16:
   [(C3DIONSZipFileArchive *)&v3 dealloc];
 }
 
-- (id)contentsForEntryName:(id)a3
+- (id)contentsForEntryName:(id)name
 {
   contents = self->_contents;
   if (contents)
   {
-    v6 = [(NSDictionary *)contents objectForKey:a3];
+    v6 = [(NSDictionary *)contents objectForKey:name];
 LABEL_3:
     v7 = v6;
     goto LABEL_4;
@@ -520,7 +520,7 @@ LABEL_3:
 
   if (self->_data)
   {
-    v9 = [(NSDictionary *)self->_properties objectForKey:a3];
+    v9 = [(NSDictionary *)self->_properties objectForKey:name];
     if (v9)
     {
       v10 = v9;
@@ -530,7 +530,7 @@ LABEL_3:
       v14 = [objc_msgSend(v10 objectForKey:{@"C3DIONSZipFileArchiveCompressedLength", "unsignedIntegerValue"}];
       v15 = [objc_msgSend(v10 objectForKey:{@"C3DIONSZipFileArchiveUncompressedLength", "unsignedIntegerValue"}];
       data = self->_data;
-      v17 = [(NSData *)data bytes];
+      bytes = [(NSData *)data bytes];
       v18 = [(NSData *)data length];
       if (v18 > v11 && v11 <= 0xFFFFFFFFFFFFFFE1)
       {
@@ -540,8 +540,8 @@ LABEL_3:
           return v7;
         }
 
-        v19 = (v17 + v11);
-        if (*(v17 + v11) == 67324752 && v12 == v19[4])
+        v19 = (bytes + v11);
+        if (*(bytes + v11) == 67324752 && v12 == v19[4])
         {
           v20 = v11 + 30 + v19[13] + v19[14];
           if (v20 < v18)
@@ -556,14 +556,14 @@ LABEL_3:
             if (v12 == 8)
             {
               v26 = [MEMORY[0x277CBEB28] dataWithLength:v15];
-              v27 = [v26 mutableBytes];
+              mutableBytes = [v26 mutableBytes];
               *&v31.avail_in = 0u;
               memset(&v31.total_out, 0, 72);
-              v31.next_in = (v17 + v20);
+              v31.next_in = (bytes + v20);
               v31.avail_in = v14;
-              v31.next_out = v27;
+              v31.next_out = mutableBytes;
               *&v31.avail_out = v15;
-              if (v26 && (v28 = v27, !inflateInit2_(&v31, -15, "1.2.12", 112)) && (v29 = inflate(&v31, 4), v30 = inflateEnd(&v31), v29 == 1))
+              if (v26 && (v28 = mutableBytes, !inflateInit2_(&v31, -15, "1.2.12", 112)) && (v29 = inflate(&v31, 4), v30 = inflateEnd(&v31), v29 == 1))
               {
                 v7 = 0;
                 if (!v30 && v31.total_out == v15)
@@ -594,9 +594,9 @@ LABEL_4:
               goto LABEL_5;
             }
 
-            if (!v12 && v13 == _crcFromBytes((v17 + v20), v14))
+            if (!v12 && v13 == _crcFromBytes((bytes + v20), v14))
             {
-              v6 = [MEMORY[0x277CBEA90] dataWithBytes:v17 + v20 length:v14];
+              v6 = [MEMORY[0x277CBEA90] dataWithBytes:bytes + v20 length:v14];
               goto LABEL_3;
             }
           }
@@ -607,7 +607,7 @@ LABEL_4:
     return 0;
   }
 
-  if (![(NSArray *)self->_names containsObject:a3])
+  if (![(NSArray *)self->_names containsObject:name])
   {
     return 0;
   }
@@ -617,7 +617,7 @@ LABEL_4:
   {
     if ((*&zFlags & 2) != 0)
     {
-      [self->_provider archive:self streamForEntryName:a3];
+      [self->_provider archive:self streamForEntryName:name];
     }
 
     else if ((*&zFlags & 0x10) == 0)
@@ -636,10 +636,10 @@ LABEL_4:
     return 0;
   }
 
-  v7 = [(NSMutableDictionary *)self->_cachedContents objectForKey:a3];
+  v7 = [(NSMutableDictionary *)self->_cachedContents objectForKey:name];
   if (!v7)
   {
-    v6 = [self->_provider archive:self contentsForEntryName:a3];
+    v6 = [self->_provider archive:self contentsForEntryName:name];
     goto LABEL_3;
   }
 
@@ -653,18 +653,18 @@ LABEL_5:
       self->_cachedContents = cachedContents;
     }
 
-    [(NSMutableDictionary *)cachedContents setObject:v7 forKey:a3, v31.next_in, *&v31.avail_in, *&v31.next_out];
+    [(NSMutableDictionary *)cachedContents setObject:v7 forKey:name, v31.next_in, *&v31.avail_in, *&v31.next_out];
   }
 
   return v7;
 }
 
-- (id)streamForEntryName:(id)a3
+- (id)streamForEntryName:(id)name
 {
   contents = self->_contents;
   if (contents)
   {
-    v6 = [(NSDictionary *)contents objectForKey:a3];
+    v6 = [(NSDictionary *)contents objectForKey:name];
     if (v6)
     {
       v7 = v6;
@@ -677,7 +677,7 @@ LABEL_4:
     return 0;
   }
 
-  if (self->_data || ![(NSArray *)self->_names containsObject:a3])
+  if (self->_data || ![(NSArray *)self->_names containsObject:name])
   {
     return 0;
   }
@@ -685,10 +685,10 @@ LABEL_4:
   zFlags = self->_zFlags;
   if (*&zFlags)
   {
-    v13 = [(NSMutableDictionary *)self->_cachedContents objectForKey:a3];
+    v13 = [(NSMutableDictionary *)self->_cachedContents objectForKey:name];
     if (!v13)
     {
-      v15 = [self->_provider archive:self contentsForEntryName:a3];
+      v15 = [self->_provider archive:self contentsForEntryName:name];
       if (!v15)
       {
         return 0;
@@ -704,7 +704,7 @@ LABEL_4:
           self->_cachedContents = cachedContents;
         }
 
-        [(NSMutableDictionary *)cachedContents setObject:v13 forKey:a3];
+        [(NSMutableDictionary *)cachedContents setObject:v13 forKey:name];
       }
     }
 
@@ -733,29 +733,29 @@ LABEL_4:
 
   provider = self->_provider;
 
-  return [provider archive:self streamForEntryName:a3];
+  return [provider archive:self streamForEntryName:name];
 }
 
-- (BOOL)writeContentsForEntryName:(id)a3 toFile:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BOOL)writeContentsForEntryName:(id)name toFile:(id)file options:(unint64_t)options error:(id *)error
 {
-  v9 = [(C3DIONSZipFileArchive *)self contentsForEntryName:a3];
+  v9 = [(C3DIONSZipFileArchive *)self contentsForEntryName:name];
   if (v9)
   {
 
-    LOBYTE(v9) = [v9 writeToFile:a4 options:a5 error:a6];
+    LOBYTE(v9) = [v9 writeToFile:file options:options error:error];
   }
 
   return v9;
 }
 
-- (id)propertiesForEntryName:(id)a3
+- (id)propertiesForEntryName:(id)name
 {
   result = [(NSDictionary *)self->_properties objectForKey:?];
   if (!result)
   {
-    if ([(NSArray *)self->_names containsObject:a3])
+    if ([(NSArray *)self->_names containsObject:name])
     {
-      if ((*&self->_zFlags & 4) == 0 || (result = [self->_provider archive:self propertiesForEntryName:a3]) == 0)
+      if ((*&self->_zFlags & 4) == 0 || (result = [self->_provider archive:self propertiesForEntryName:name]) == 0)
       {
         v6 = MEMORY[0x277CBEAC0];
 
@@ -774,20 +774,20 @@ LABEL_4:
 
 - (id)archiveData
 {
-  v41 = [MEMORY[0x277CBEB28] data];
-  v42 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
+  data2 = [MEMORY[0x277CBEB28] data];
   v3 = [(NSArray *)self->_names count];
   v4 = v3;
   if (v3)
   {
     v5 = 0;
-    v39 = self;
+    selfCopy = self;
     v40 = v3;
     do
     {
-      v6 = [(NSArray *)self->_names objectAtIndex:v5, v39, v40];
-      v7 = [v6 UTF8String];
-      v8 = strlen(v7);
+      v6 = [(NSArray *)self->_names objectAtIndex:v5, selfCopy, v40];
+      uTF8String = [v6 UTF8String];
+      v8 = strlen(uTF8String);
       v9 = [(C3DIONSZipFileArchive *)self contentsForEntryName:v6];
       v10 = [v9 length];
       if (v8)
@@ -803,17 +803,17 @@ LABEL_4:
       if (!v11)
       {
         v44 = v10;
-        v12 = [v9 bytes];
+        bytes = [v9 bytes];
         v13 = [v9 length];
         v14 = crc32(0, 0, 0);
-        v45 = crc32(v14, v12, v13);
-        v15 = [v9 bytes];
+        v45 = crc32(v14, bytes, v13);
+        bytes2 = [v9 bytes];
         v16 = [v9 length];
         if (v16)
         {
           for (i = 0; i < v16; ++i)
           {
-            v18 = *(v15 + i);
+            v18 = *(bytes2 + i);
             v20 = v18 - 14 < 0xFFFFFFF9 && (v18 & 0x1E) != 26;
             if (v18 <= 0x1F)
             {
@@ -840,17 +840,17 @@ LABEL_4:
         }
 
         v43 = v22;
-        v23 = [v9 bytes];
+        bytes3 = [v9 bytes];
         v24 = [v9 length];
         v25 = 0;
-        if (v23)
+        if (bytes3)
         {
           v26 = v24;
           if (v24)
           {
             v27 = [MEMORY[0x277CBEB28] dataWithLength:v24 - 1];
             memset(&strm.avail_in, 0, 104);
-            strm.next_in = v23;
+            strm.next_in = bytes3;
             strm.avail_in = v26;
             strm.next_out = [v27 mutableBytes];
             strm.avail_out = v26 - 1;
@@ -880,32 +880,32 @@ LABEL_4:
         v31 = [v9 length];
         v32 = [MEMORY[0x277CBEB28] dataWithLength:v8 + 30];
         [v32 replaceBytesInRange:0 withBytes:{30, &localHeaderTemplate}];
-        [v32 replaceBytesInRange:30 withBytes:{v8, v7}];
-        v33 = [v32 mutableBytes];
-        *(v33 + 4) = 20;
-        *(v33 + 8) = v30;
-        *(v33 + 10) = 0;
-        *(v33 + 14) = v45;
-        *(v33 + 18) = v31;
-        *(v33 + 22) = v44;
-        *(v33 + 26) = v8;
+        [v32 replaceBytesInRange:30 withBytes:{v8, uTF8String}];
+        mutableBytes = [v32 mutableBytes];
+        *(mutableBytes + 4) = 20;
+        *(mutableBytes + 8) = v30;
+        *(mutableBytes + 10) = 0;
+        *(mutableBytes + 14) = v45;
+        *(mutableBytes + 18) = v31;
+        *(mutableBytes + 22) = v44;
+        *(mutableBytes + 26) = v8;
         v34 = [MEMORY[0x277CBEB28] dataWithLength:v8 + 46];
         [v34 replaceBytesInRange:0 withBytes:{46, &directoryHeaderTemplate}];
-        [v34 replaceBytesInRange:46 withBytes:{v8, v7}];
-        v35 = [v34 mutableBytes];
-        *(v35 + 6) = 20;
-        *(v35 + 10) = v30;
-        *(v35 + 12) = 0;
-        *(v35 + 16) = v45;
-        *(v35 + 20) = v31;
-        *(v35 + 24) = v44;
-        *(v35 + 28) = v8;
-        *(v35 + 36) = v43;
-        *(v35 + 42) = [v42 length];
-        [v42 appendData:v32];
-        [v42 appendData:v9];
-        [v41 appendData:v34];
-        self = v39;
+        [v34 replaceBytesInRange:46 withBytes:{v8, uTF8String}];
+        mutableBytes2 = [v34 mutableBytes];
+        *(mutableBytes2 + 6) = 20;
+        *(mutableBytes2 + 10) = v30;
+        *(mutableBytes2 + 12) = 0;
+        *(mutableBytes2 + 16) = v45;
+        *(mutableBytes2 + 20) = v31;
+        *(mutableBytes2 + 24) = v44;
+        *(mutableBytes2 + 28) = v8;
+        *(mutableBytes2 + 36) = v43;
+        *(mutableBytes2 + 42) = [data2 length];
+        [data2 appendData:v32];
+        [data2 appendData:v9];
+        [data appendData:v34];
+        self = selfCopy;
         v4 = v40;
       }
 
@@ -917,14 +917,14 @@ LABEL_4:
 
   v36 = [MEMORY[0x277CBEB28] dataWithLength:22];
   [v36 replaceBytesInRange:0 withBytes:{22, &endOfDirectoryTemplate}];
-  v37 = [v36 mutableBytes];
-  *(v37 + 8) = v4;
-  *(v37 + 10) = v4;
-  *(v37 + 12) = [v41 length];
-  *(v37 + 16) = [v42 length];
-  [v42 appendData:v41];
-  [v42 appendData:v36];
-  return v42;
+  mutableBytes3 = [v36 mutableBytes];
+  *(mutableBytes3 + 8) = v4;
+  *(mutableBytes3 + 10) = v4;
+  *(mutableBytes3 + 12) = [data length];
+  *(mutableBytes3 + 16) = [data2 length];
+  [data2 appendData:data];
+  [data2 appendData:v36];
+  return data2;
 }
 
 - (id)archiveStream
@@ -941,16 +941,16 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error
 {
-  v8 = [(C3DIONSZipFileArchive *)self archiveData];
-  if (v8)
+  archiveData = [(C3DIONSZipFileArchive *)self archiveData];
+  if (archiveData)
   {
 
-    LOBYTE(v8) = [v8 writeToFile:a3 options:a4 error:a5];
+    LOBYTE(archiveData) = [archiveData writeToFile:file options:options error:error];
   }
 
-  return v8;
+  return archiveData;
 }
 
 - (void)invalidate

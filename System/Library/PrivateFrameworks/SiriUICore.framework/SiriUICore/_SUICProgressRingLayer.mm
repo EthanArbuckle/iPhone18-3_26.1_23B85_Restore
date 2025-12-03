@@ -1,7 +1,7 @@
 @interface _SUICProgressRingLayer
 - (_SUICProgressRingLayer)init;
-- (void)setProgress:(double)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setSpinning:(BOOL)a3;
+- (void)setProgress:(double)progress animated:(BOOL)animated completion:(id)completion;
+- (void)setSpinning:(BOOL)spinning;
 @end
 
 @implementation _SUICProgressRingLayer
@@ -20,12 +20,12 @@
   return v3;
 }
 
-- (void)setSpinning:(BOOL)a3
+- (void)setSpinning:(BOOL)spinning
 {
-  if (self->_spinning != a3)
+  if (self->_spinning != spinning)
   {
-    self->_spinning = a3;
-    if (a3)
+    self->_spinning = spinning;
+    if (spinning)
     {
       if (setSpinning__onceToken != -1)
       {
@@ -33,8 +33,8 @@
       }
 
       v4 = setSpinning__sRotationAnimation;
-      v5 = [setSpinning__sRotationAnimation keyPath];
-      [(_SUICProgressRingLayer *)self addAnimation:v4 forKey:v5];
+      keyPath = [setSpinning__sRotationAnimation keyPath];
+      [(_SUICProgressRingLayer *)self addAnimation:v4 forKey:keyPath];
     }
 
     else
@@ -45,24 +45,24 @@
   }
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setProgress:(double)progress animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (self->_progress == a3)
+  animatedCopy = animated;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (self->_progress == progress)
   {
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 
   else
   {
-    self->_progress = a3;
+    self->_progress = progress;
     objc_initWeak(&location, self);
-    if (v5)
+    if (animatedCopy)
     {
       v10 = MEMORY[0x1E69DD250];
       v11[0] = MEMORY[0x1E69E9820];
@@ -70,14 +70,14 @@
       v11[2] = __58___SUICProgressRingLayer_setProgress_animated_completion___block_invoke;
       v11[3] = &unk_1E81E8038;
       objc_copyWeak(v12, &location);
-      v12[1] = *&a3;
+      v12[1] = *&progress;
       [v10 animateWithDuration:0 delay:v11 usingSpringWithDamping:v9 initialSpringVelocity:0.35 options:0.0 animations:400.0 completion:0.0];
       objc_destroyWeak(v12);
     }
 
     else
     {
-      [(_SUICProgressRingLayer *)self setStrokeEnd:a3];
+      [(_SUICProgressRingLayer *)self setStrokeEnd:progress];
       if (v9)
       {
         v9[2](v9, 1);

@@ -1,5 +1,5 @@
 @interface RELemmaEnumerator
-- (BOOL)enumerateLemmasInString:(id)a3 withBlock:(id)a4;
+- (BOOL)enumerateLemmasInString:(id)string withBlock:(id)block;
 - (RELemmaEnumerator)init;
 - (uint64_t)init;
 @end
@@ -73,29 +73,29 @@
   return v2;
 }
 
-- (BOOL)enumerateLemmasInString:(id)a3 withBlock:(id)a4
+- (BOOL)enumerateLemmasInString:(id)string withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  stringCopy = string;
+  blockCopy = block;
+  if (blockCopy)
   {
     tagger = self->_tagger;
     if (tagger)
     {
-      [(NLTagger *)tagger setString:v6];
-      v9 = [(NLTagger *)self->_tagger dominantLanguage];
-      v10 = v9;
-      if (v9 && ([v9 isEqualToString:@"und"] & 1) == 0)
+      [(NLTagger *)tagger setString:stringCopy];
+      dominantLanguage = [(NLTagger *)self->_tagger dominantLanguage];
+      v10 = dominantLanguage;
+      if (dominantLanguage && ([dominantLanguage isEqualToString:@"und"] & 1) == 0)
       {
         v12 = self->_tagger;
-        v13 = [v6 length];
+        v13 = [stringCopy length];
         v14 = getNLTagSchemeLemma();
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __55__RELemmaEnumerator_enumerateLemmasInString_withBlock___block_invoke;
         v16[3] = &unk_2785F9B80;
-        v17 = v6;
-        v18 = v7;
+        v17 = stringCopy;
+        v18 = blockCopy;
         [(NLTagger *)v12 enumerateTagsInRange:0 unit:v13 scheme:0 options:v14 usingBlock:14, v16];
 
         v11 = 1;

@@ -1,33 +1,33 @@
 @interface PHASEStreamNode
 - (PHASEEngine)engine;
-- (PHASEStreamNode)initWithEngine:(id)a3 actionTreeUniqueId:(UniqueObjectId)a4 nodeStringHashId:(unint64_t)a5 mixer:(id)a6 format:(id)a7 normalize:(BOOL)a8 targetLKFS:(id)a9;
+- (PHASEStreamNode)initWithEngine:(id)engine actionTreeUniqueId:(UniqueObjectId)id nodeStringHashId:(unint64_t)hashId mixer:(id)mixer format:(id)format normalize:(BOOL)normalize targetLKFS:(id)s;
 - (UniqueObjectId)actionTreeUniqueId;
 @end
 
 @implementation PHASEStreamNode
 
-- (PHASEStreamNode)initWithEngine:(id)a3 actionTreeUniqueId:(UniqueObjectId)a4 nodeStringHashId:(unint64_t)a5 mixer:(id)a6 format:(id)a7 normalize:(BOOL)a8 targetLKFS:(id)a9
+- (PHASEStreamNode)initWithEngine:(id)engine actionTreeUniqueId:(UniqueObjectId)id nodeStringHashId:(unint64_t)hashId mixer:(id)mixer format:(id)format normalize:(BOOL)normalize targetLKFS:(id)s
 {
-  v22 = a4.mStorage[1];
-  v12 = a4.mStorage[0];
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
+  v22 = id.mStorage[1];
+  v12 = id.mStorage[0];
+  engineCopy = engine;
+  mixerCopy = mixer;
+  formatCopy = format;
+  sCopy = s;
   v23.receiver = self;
   v23.super_class = PHASEStreamNode;
   v18 = [(PHASEStreamNode *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_engine, v14);
+    objc_storeWeak(&v18->_engine, engineCopy);
     v19->_actionTreeUniqueId.mStorage[0] = v12;
     v19->_actionTreeUniqueId.mStorage[1] = v22;
-    v19->_nodeUID = a5;
-    objc_storeStrong(&v19->_mixer, a6);
-    objc_storeStrong(&v19->_format, a7);
-    v19->_normalize = a8;
-    objc_storeStrong(&v19->_targetLKFS, a9);
+    v19->_nodeUID = hashId;
+    objc_storeStrong(&v19->_mixer, mixer);
+    objc_storeStrong(&v19->_format, format);
+    v19->_normalize = normalize;
+    objc_storeStrong(&v19->_targetLKFS, s);
     v20 = v19;
   }
 

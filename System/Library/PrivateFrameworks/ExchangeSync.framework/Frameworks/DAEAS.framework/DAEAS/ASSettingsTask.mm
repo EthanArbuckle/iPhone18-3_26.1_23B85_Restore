@@ -1,10 +1,10 @@
 @interface ASSettingsTask
 - (ASSettingsTask)init;
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5;
-- (BOOL)processContext:(id)a3;
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken;
+- (BOOL)processContext:(id)context;
 - (id)requestBody;
-- (int64_t)taskStatusForExchangeStatus:(int)a3;
-- (void)finishWithError:(id)a3;
+- (int64_t)taskStatusForExchangeStatus:(int)status;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation ASSettingsTask
@@ -30,16 +30,16 @@
   v3 = objc_opt_new();
   [v3 switchToCodePage:18];
   [v3 openTag:5];
-  v4 = [(ASSettingsTask *)self getters];
+  getters = [(ASSettingsTask *)self getters];
 
-  if (v4)
+  if (getters)
   {
     v103 = 0u;
     v104 = 0u;
     v101 = 0u;
     v102 = 0u;
-    v5 = [(ASSettingsTask *)self getters];
-    v6 = [v5 countByEnumeratingWithState:&v101 objects:v108 count:16];
+    getters2 = [(ASSettingsTask *)self getters];
+    v6 = [getters2 countByEnumeratingWithState:&v101 objects:v108 count:16];
     if (!v6)
     {
       goto LABEL_14;
@@ -54,11 +54,11 @@
       {
         if (*v102 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(getters2);
         }
 
-        v11 = [*(*(&v101 + 1) + 8 * i) intValue];
-        if (v11 == 3)
+        intValue = [*(*(&v101 + 1) + 8 * i) intValue];
+        if (intValue == 3)
         {
           v12 = 29;
           [v3 openTag:29];
@@ -67,7 +67,7 @@
 
         else
         {
-          if (v11)
+          if (intValue)
           {
             continue;
           }
@@ -82,7 +82,7 @@
         [v3 closeTag:v12];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v101 objects:v108 count:16];
+      v7 = [getters2 countByEnumeratingWithState:&v101 objects:v108 count:16];
       if (!v7)
       {
 LABEL_14:
@@ -92,9 +92,9 @@ LABEL_14:
     }
   }
 
-  v13 = [(ASSettingsTask *)self setters];
+  setters = [(ASSettingsTask *)self setters];
 
-  if (!v13)
+  if (!setters)
   {
     goto LABEL_81;
   }
@@ -103,11 +103,11 @@ LABEL_14:
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v14 = [(ASSettingsTask *)self setters];
-  v15 = [v14 allKeys];
+  setters2 = [(ASSettingsTask *)self setters];
+  allKeys = [setters2 allKeys];
 
-  obj = v15;
-  v16 = [v15 countByEnumeratingWithState:&v97 objects:v107 count:16];
+  obj = allKeys;
+  v16 = [allKeys countByEnumeratingWithState:&v97 objects:v107 count:16];
   if (!v16)
   {
     goto LABEL_80;
@@ -139,16 +139,16 @@ LABEL_14:
 
       v80 = v21;
       v22 = *(*(&v97 + 1) + 8 * v21);
-      v23 = [v22 intValue];
-      if (v23)
+      intValue2 = [v22 intValue];
+      if (intValue2)
       {
-        if (v23 != 2)
+        if (intValue2 != 2)
         {
           goto LABEL_78;
         }
 
-        v24 = [(ASSettingsTask *)self setters];
-        v25 = [v24 objectForKeyedSubscript:v22];
+        setters3 = [(ASSettingsTask *)self setters];
+        v25 = [setters3 objectForKeyedSubscript:v22];
 
         v26 = v25;
         if ([v25 count])
@@ -159,8 +159,8 @@ LABEL_14:
           v96 = 0u;
           v93 = 0u;
           v94 = 0u;
-          v27 = [v25 allKeys];
-          v28 = [v27 countByEnumeratingWithState:&v93 objects:v106 count:16];
+          allKeys2 = [v25 allKeys];
+          v28 = [allKeys2 countByEnumeratingWithState:&v93 objects:v106 count:16];
           if (!v28)
           {
             goto LABEL_48;
@@ -176,23 +176,23 @@ LABEL_14:
             {
               if (*v94 != v30)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(allKeys2);
               }
 
               v32 = *(*(&v93 + 1) + 8 * v31);
-              v33 = [v32 intValue];
-              if (v33 <= 2)
+              intValue3 = [v32 intValue];
+              if (intValue3 <= 2)
               {
-                if (v33)
+                if (intValue3)
                 {
-                  if (v33 == 1)
+                  if (intValue3 == 1)
                   {
                     v34 = 24;
                   }
 
                   else
                   {
-                    if (v33 != 2)
+                    if (intValue3 != 2)
                     {
                       goto LABEL_46;
                     }
@@ -209,9 +209,9 @@ LABEL_14:
                 goto LABEL_45;
               }
 
-              if (v33 <= 4)
+              if (intValue3 <= 4)
               {
-                if (v33 == 3)
+                if (intValue3 == 3)
                 {
                   v34 = 26;
                 }
@@ -224,33 +224,33 @@ LABEL_14:
                 goto LABEL_45;
               }
 
-              if (v33 == 5)
+              if (intValue3 == 5)
               {
                 v34 = 28;
                 goto LABEL_45;
               }
 
-              if (v33 == 6)
+              if (intValue3 == 6)
               {
-                v35 = [(ASTask *)self taskManager];
-                v36 = [v35 account];
-                [v36 protocol];
+                taskManager = [(ASTask *)self taskManager];
+                account = [taskManager account];
+                [account protocol];
                 v37 = v30;
-                v38 = v27;
+                v38 = allKeys2;
                 v39 = v3;
                 v40 = v26;
                 v42 = v41 = self;
-                v84 = [v42 sendUserAgentInDeviceInfo];
+                sendUserAgentInDeviceInfo = [v42 sendUserAgentInDeviceInfo];
 
                 self = v41;
                 v26 = v40;
                 v3 = v39;
-                v27 = v38;
+                allKeys2 = v38;
                 v30 = v37;
                 v29 = v82;
 
                 v20 = v81;
-                if (v84)
+                if (sendUserAgentInDeviceInfo)
                 {
                   v34 = 32;
 LABEL_45:
@@ -264,7 +264,7 @@ LABEL_46:
             }
 
             while (v29 != v31);
-            v29 = [v27 countByEnumeratingWithState:&v93 objects:v106 count:16];
+            v29 = [allKeys2 countByEnumeratingWithState:&v93 objects:v106 count:16];
             if (!v29)
             {
 LABEL_48:
@@ -282,8 +282,8 @@ LABEL_48:
 
       else
       {
-        v45 = [(ASSettingsTask *)self setters];
-        v46 = [v45 objectForKeyedSubscript:v22];
+        setters4 = [(ASSettingsTask *)self setters];
+        v46 = [setters4 objectForKeyedSubscript:v22];
 
         v26 = v46;
         if (v46)
@@ -345,10 +345,10 @@ LABEL_48:
                   v63 = v62;
                   if (v62)
                   {
-                    v64 = [v62 intValue];
-                    if (v64 <= 2)
+                    intValue4 = [v62 intValue];
+                    if (intValue4 <= 2)
                     {
-                      [v3 appendEmptyTag:(v64 + 14)];
+                      [v3 appendEmptyTag:(intValue4 + 14)];
                     }
                   }
 
@@ -414,50 +414,50 @@ LABEL_80:
 
 LABEL_81:
   [v3 closeTag:5];
-  v71 = [v3 data];
+  data = [v3 data];
 
   v72 = *MEMORY[0x277D85DE8];
 
-  return v71;
+  return data;
 }
 
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken
 {
-  *a4 = 18;
-  *a3 = 5;
-  *a5 = 6;
+  *page = 18;
+  *token = 5;
+  *statusToken = 6;
   return 1;
 }
 
-- (BOOL)processContext:(id)a3
+- (BOOL)processContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self currentlyParsingItem];
+  contextCopy = context;
+  currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
 
-  if (v5)
+  if (currentlyParsingItem)
   {
     goto LABEL_4;
   }
 
   if (!self->super._haveSwitchedCodePage)
   {
-    if (![v4 hasNumberOfTokensRemaining:2])
+    if (![contextCopy hasNumberOfTokensRemaining:2])
     {
       v10 = 0;
       goto LABEL_6;
     }
 
-    if ([v4 currentByte])
+    if ([contextCopy currentByte])
     {
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to Settings code page"];
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASSettingsTask.m", 186, objc_msgSend(v4, "curOffset")];
+      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASSettingsTask.m", 186, objc_msgSend(contextCopy, "curOffset")];
       v15 = DALoggingwithCategory();
       v16 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v15, v16))
       {
         *buf = 134217984;
-        v20 = [v4 curOffset];
+        curOffset = [contextCopy curOffset];
         _os_log_impl(&dword_24A0AC000, v15, v16, "Failure at index %lld:", buf, 0xCu);
       }
 
@@ -468,28 +468,28 @@ LABEL_81:
       }
 
       *buf = 138412290;
-      v20 = v13;
+      curOffset = v13;
     }
 
     else
     {
-      [v4 advanceOffsetByAmount:1];
-      if ([v4 currentByte] == 18)
+      [contextCopy advanceOffsetByAmount:1];
+      if ([contextCopy currentByte] == 18)
       {
-        [v4 advanceOffsetByAmount:1];
-        [v4 setCodePage:18];
+        [contextCopy advanceOffsetByAmount:1];
+        [contextCopy setCodePage:18];
         self->super._haveSwitchedCodePage = 1;
         goto LABEL_3;
       }
 
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to Settings code page"];
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASSettingsTask.m", 186, objc_msgSend(v4, "curOffset")];
+      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASSettingsTask.m", 186, objc_msgSend(contextCopy, "curOffset")];
       v18 = DALoggingwithCategory();
       v16 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v18, v16))
       {
         *buf = 134217984;
-        v20 = [v4 curOffset];
+        curOffset = [contextCopy curOffset];
         _os_log_impl(&dword_24A0AC000, v18, v16, "Failure at index %lld:", buf, 0xCu);
       }
 
@@ -498,12 +498,12 @@ LABEL_81:
       {
 LABEL_21:
 
-        [v4 setParseErrorReason:v14];
+        [contextCopy setParseErrorReason:v14];
         goto LABEL_5;
       }
 
       *buf = 138412290;
-      v20 = v13;
+      curOffset = v13;
     }
 
     _os_log_impl(&dword_24A0AC000, v17, v16, "failure reason was %@", buf, 0xCu);
@@ -515,10 +515,10 @@ LABEL_3:
   [(ASTask *)self setCurrentlyParsingItem:v6];
 
 LABEL_4:
-  v7 = [(ASTask *)self currentlyParsingItem];
-  v8 = [(ASTask *)self taskManager];
-  v9 = [v8 account];
-  [v7 parseASParseContext:v4 root:0 parent:0 callbackDict:0 streamCallbackDict:0 account:v9];
+  currentlyParsingItem2 = [(ASTask *)self currentlyParsingItem];
+  taskManager = [(ASTask *)self taskManager];
+  account = [taskManager account];
+  [currentlyParsingItem2 parseASParseContext:contextCopy root:0 parent:0 callbackDict:0 streamCallbackDict:0 account:account];
 
 LABEL_5:
   v10 = 1;
@@ -528,12 +528,12 @@ LABEL_6:
   return v10;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self taskStatusForError:v4];
-  if (v4)
+  errorCopy = error;
+  v5 = [(ASTask *)self taskStatusForError:errorCopy];
+  if (errorCopy)
   {
     v6 = DALoggingwithCategory();
     v7 = v6;
@@ -560,7 +560,7 @@ LABEL_6:
         *buf = 138412546;
         v25 = objc_opt_class();
         v26 = 2112;
-        v27 = v4;
+        v27 = errorCopy;
         v9 = v25;
         _os_log_impl(&dword_24A0AC000, v7, v8, "%@ failed: %@", buf, 0x16u);
       }
@@ -571,29 +571,29 @@ LABEL_6:
 
   else
   {
-    v11 = [(ASTask *)self currentlyParsingItem];
-    v10 = v11;
-    if (v11)
+    currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
+    v10 = currentlyParsingItem;
+    if (currentlyParsingItem)
     {
-      v12 = [v11 status];
-      v5 = -[ASSettingsTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [v12 intValue]);
+      status = [currentlyParsingItem status];
+      v5 = -[ASSettingsTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [status intValue]);
     }
   }
 
-  if (![(ASTask *)self attemptRetryWithStatus:v5 error:v4])
+  if (![(ASTask *)self attemptRetryWithStatus:v5 error:errorCopy])
   {
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __34__ASSettingsTask_finishWithError___block_invoke;
     v19 = &unk_278FC7D70;
-    v20 = self;
+    selfCopy = self;
     v23 = v5;
-    v21 = v4;
+    v21 = errorCopy;
     v22 = v10;
     [(ASTask *)self finishWithError:v21 afterDelegateCallout:&v16];
   }
 
-  [(ASTask *)self setCurrentlyParsingItem:0, v16, v17, v18, v19, v20];
+  [(ASTask *)self setCurrentlyParsingItem:0, v16, v17, v18, v19, selfCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -604,10 +604,10 @@ void __34__ASSettingsTask_finishWithError___block_invoke(void *a1)
   [WeakRetained settingsTask:a1[4] completedWithStatus:a1[7] error:a1[5] response:a1[6]];
 }
 
-- (int64_t)taskStatusForExchangeStatus:(int)a3
+- (int64_t)taskStatusForExchangeStatus:(int)status
 {
   v14 = *MEMORY[0x277D85DE8];
-  if ((a3 - 1) >= 7)
+  if ((status - 1) >= 7)
   {
     v5 = DALoggingwithCategory();
     v6 = *(MEMORY[0x277D03988] + 3);
@@ -618,7 +618,7 @@ void __34__ASSettingsTask_finishWithError___block_invoke(void *a1)
       v10 = 138412546;
       v11 = v8;
       v12 = 1024;
-      v13 = a3;
+      statusCopy = status;
       _os_log_impl(&dword_24A0AC000, v5, v6, "%@: Unknown status code (%d)", &v10, 0x12u);
     }
 
@@ -627,7 +627,7 @@ void __34__ASSettingsTask_finishWithError___block_invoke(void *a1)
 
   else
   {
-    result = qword_24A14DC50[a3 - 1];
+    result = qword_24A14DC50[status - 1];
   }
 
   v9 = *MEMORY[0x277D85DE8];

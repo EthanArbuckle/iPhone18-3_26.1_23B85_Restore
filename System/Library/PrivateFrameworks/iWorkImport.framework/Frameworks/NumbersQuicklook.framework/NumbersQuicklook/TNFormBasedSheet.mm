@@ -1,22 +1,22 @@
 @interface TNFormBasedSheet
-- (TNFormBasedSheet)initWithContext:(id)a3 importedTargetName:(id)a4;
+- (TNFormBasedSheet)initWithContext:(id)context importedTargetName:(id)name;
 - (TSKUIDStruct)tableUID;
 - (TSTTableInfo)tableInfo;
 - (void)clearTableInfoCache;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)resolveImportedTargetNameInDocumentRoot:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setTableInfo:(id)a3;
-- (void)setTableUID:(TSKUIDStruct)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)resolveImportedTargetNameInDocumentRoot:(id)root;
+- (void)saveToArchiver:(id)archiver;
+- (void)setTableInfo:(id)info;
+- (void)setTableUID:(TSKUIDStruct)d;
 @end
 
 @implementation TNFormBasedSheet
 
-- (void)setTableUID:(TSKUIDStruct)a3
+- (void)setTableUID:(TSKUIDStruct)d
 {
-  upper = a3._upper;
-  lower = a3._lower;
-  objc_msgSend_willModify(self, a2, a3._lower);
+  upper = d._upper;
+  lower = d._lower;
+  objc_msgSend_willModify(self, a2, d._lower);
   self->_tableUID._lower = lower;
   self->_tableUID._upper = upper;
   tableInfo = self->_tableInfo;
@@ -56,15 +56,15 @@
   }
 }
 
-- (void)setTableInfo:(id)a3
+- (void)setTableInfo:(id)info
 {
-  v9 = a3;
+  infoCopy = info;
   tableInfo = self->_tableInfo;
   self->_tableInfo = 0;
 
-  if (v9)
+  if (infoCopy)
   {
-    v7 = objc_msgSend_tableUID(v9, v5, v6);
+    v7 = objc_msgSend_tableUID(infoCopy, v5, v6);
     objc_msgSend_setTableUID_(self, v8, v7, v8);
   }
 }
@@ -103,11 +103,11 @@
   self->_tableInfo = 0;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812DAFE8[28]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812DAFE8[28]);
 
   if (*(v6 + 24))
   {
@@ -121,16 +121,16 @@
 
   v9.receiver = self;
   v9.super_class = TNFormBasedSheet;
-  [(TNSheet *)&v9 loadFromArchive:v7 unarchiver:v4];
+  [(TNSheet *)&v9 loadFromArchive:v7 unarchiver:unarchiverCopy];
   self->_tableUID._lower = TSKUIDStruct::loadFromMessage();
   self->_tableUID._upper = v8;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_275F2AE4C, off_2812DAFE8[28]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_275F2AE4C, off_2812DAFE8[28]);
 
   *(v6 + 16) |= 1u;
   v7 = *(v6 + 24);
@@ -148,7 +148,7 @@
 
   v12.receiver = self;
   v12.super_class = TNFormBasedSheet;
-  [(TNSheet *)&v12 saveToArchive:v7 archiver:v4];
+  [(TNSheet *)&v12 saveToArchive:v7 archiver:archiverCopy];
   p_tableUID = &self->_tableUID;
   if (p_tableUID->_lower || p_tableUID->_upper)
   {
@@ -170,24 +170,24 @@
   }
 }
 
-- (TNFormBasedSheet)initWithContext:(id)a3 importedTargetName:(id)a4
+- (TNFormBasedSheet)initWithContext:(id)context importedTargetName:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = TNFormBasedSheet;
-  v8 = [(TNSheet *)&v11 initWithContext:a3];
+  v8 = [(TNSheet *)&v11 initWithContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_importedTargetName, a4);
+    objc_storeStrong(&v8->_importedTargetName, name);
   }
 
   return v9;
 }
 
-- (void)resolveImportedTargetNameInDocumentRoot:(id)a3
+- (void)resolveImportedTargetNameInDocumentRoot:(id)root
 {
-  v21 = a3;
+  rootCopy = root;
   v6 = objc_msgSend_rangeOfString_(self->_importedTargetName, v4, @" :: ");
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -195,7 +195,7 @@
     v8 = objc_msgSend_substringToIndex_(self->_importedTargetName, v5, v6);
     v10 = objc_msgSend_substringFromIndex_(self->_importedTargetName, v9, &v7[v6]);
     objc_opt_class();
-    v12 = objc_msgSend_resolverContainerForName_caseSensitive_(v21, v11, v8, 1);
+    v12 = objc_msgSend_resolverContainerForName_caseSensitive_(rootCopy, v11, v8, 1);
     v13 = TSUDynamicCast();
 
     if (v13)

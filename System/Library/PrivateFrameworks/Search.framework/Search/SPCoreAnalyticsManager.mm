@@ -1,27 +1,27 @@
 @interface SPCoreAnalyticsManager
-+ (id)aggdLogIdentifierFromItem:(id)a3 type:(int)a4 baseType:(id *)a5;
-+ (void)computeEngagementMatrixForEngagedItem:(id)a3 topAnalyticsItemsPerSection:(id)a4;
-+ (void)logEngagementWithBundleIdentifier:(id)a3 forEvent:(unint64_t)a4;
-+ (void)logEngagementWithItem:(id)a3 atPosition:(unint64_t)a4 forEvent:(unint64_t)a5;
++ (id)aggdLogIdentifierFromItem:(id)item type:(int)type baseType:(id *)baseType;
++ (void)computeEngagementMatrixForEngagedItem:(id)item topAnalyticsItemsPerSection:(id)section;
++ (void)logEngagementWithBundleIdentifier:(id)identifier forEvent:(unint64_t)event;
++ (void)logEngagementWithItem:(id)item atPosition:(unint64_t)position forEvent:(unint64_t)event;
 @end
 
 @implementation SPCoreAnalyticsManager
 
-+ (void)logEngagementWithBundleIdentifier:(id)a3 forEvent:(unint64_t)a4
++ (void)logEngagementWithBundleIdentifier:(id)identifier forEvent:(unint64_t)event
 {
-  v5 = a3;
-  v8 = v5;
-  if (a4 == 1)
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (event == 1)
   {
     v6 = @"com.apple.searchd.eng.SEARCH_IN_APP.";
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (event == 2)
   {
     v6 = @"com.apple.searchd.eng.SHOW_MORE.";
 LABEL_5:
-    v7 = [(__CFString *)v6 stringByAppendingString:v5];
+    v7 = [(__CFString *)v6 stringByAppendingString:identifierCopy];
     goto LABEL_7;
   }
 
@@ -30,25 +30,25 @@ LABEL_7:
   AnalyticsAddValueIfNonNull(v7);
 }
 
-+ (id)aggdLogIdentifierFromItem:(id)a3 type:(int)a4 baseType:(id *)a5
++ (id)aggdLogIdentifierFromItem:(id)item type:(int)type baseType:(id *)baseType
 {
-  v7 = a3;
+  itemCopy = item;
   v8 = SPGetDisabledDomainSet();
   v9 = [v8 containsObject:@"DOMAIN_PARSEC"];
 
-  v10 = [v7 type] == 36 || objc_msgSend(v7, "type") == 37;
-  if (a4 <= 2)
+  v10 = [itemCopy type] == 36 || objc_msgSend(itemCopy, "type") == 37;
+  if (type <= 2)
   {
-    if (a4)
+    if (type)
     {
       v11 = @"com.apple.searchd.eng.orbpreview.";
       v12 = @"com.apple.searchd.eng.correction.static.";
-      if (a4 != 2)
+      if (type != 2)
       {
         v12 = 0;
       }
 
-      v13 = a4 == 1;
+      v13 = type == 1;
       goto LABEL_13;
     }
 
@@ -60,15 +60,15 @@ LABEL_7:
 
     v14 = v27;
 LABEL_16:
-    v15 = [v7 sectionBundleIdentifier];
-    v16 = [v15 isEqualToString:@"com.apple.searchd.zkw.apps"];
+    sectionBundleIdentifier = [itemCopy sectionBundleIdentifier];
+    v16 = [sectionBundleIdentifier isEqualToString:@"com.apple.searchd.zkw.apps"];
 
     if (v16)
     {
-      v17 = [(__CFString *)v14 stringByAppendingString:@"zkw.application."];
-      v18 = [v7 applicationBundleIdentifier];
-      v19 = v17;
-      v20 = v18;
+      identifier = [(__CFString *)v14 stringByAppendingString:@"zkw.application."];
+      applicationBundleIdentifier = [itemCopy applicationBundleIdentifier];
+      v19 = identifier;
+      v20 = applicationBundleIdentifier;
 LABEL_18:
       v21 = [v19 stringByAppendingString:v20];
 LABEL_26:
@@ -79,31 +79,31 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v22 = [v7 sectionBundleIdentifier];
-    if ([v22 isEqualToString:@"com.apple.application"])
+    sectionBundleIdentifier2 = [itemCopy sectionBundleIdentifier];
+    if ([sectionBundleIdentifier2 isEqualToString:@"com.apple.application"])
     {
 
 LABEL_25:
-      v17 = [(__CFString *)v14 stringByAppendingString:@"application"];
-      *a5 = v17;
+      identifier = [(__CFString *)v14 stringByAppendingString:@"application"];
+      *baseType = identifier;
       v24 = MEMORY[0x1E696AEC0];
-      v18 = [v7 applicationBundleIdentifier];
-      v25 = [v24 stringWithFormat:@".%@", v18];
-      v21 = [v17 stringByAppendingString:v25];
+      applicationBundleIdentifier = [itemCopy applicationBundleIdentifier];
+      v25 = [v24 stringWithFormat:@".%@", applicationBundleIdentifier];
+      v21 = [identifier stringByAppendingString:v25];
 
       goto LABEL_26;
     }
 
-    v23 = [v7 isLocalApplicationResult];
+    isLocalApplicationResult = [itemCopy isLocalApplicationResult];
 
-    if (v23)
+    if (isLocalApplicationResult)
     {
       goto LABEL_25;
     }
 
     v29 = *MEMORY[0x1E69D3F70];
-    v30 = [v7 sectionBundleIdentifier];
-    v31 = [v29 isEqualToString:v30];
+    sectionBundleIdentifier3 = [itemCopy sectionBundleIdentifier];
+    v31 = [v29 isEqualToString:sectionBundleIdentifier3];
 
     if (v31)
     {
@@ -112,34 +112,34 @@ LABEL_25:
     }
 
     v32 = *MEMORY[0x1E69D3F10];
-    v33 = [v7 sectionBundleIdentifier];
-    LODWORD(v32) = [v32 isEqualToString:v33];
+    sectionBundleIdentifier4 = [itemCopy sectionBundleIdentifier];
+    LODWORD(v32) = [v32 isEqualToString:sectionBundleIdentifier4];
 
     if (v32)
     {
-      v17 = [v7 identifier];
-      v21 = [(__CFString *)v14 stringByAppendingString:v17];
+      identifier = [itemCopy identifier];
+      v21 = [(__CFString *)v14 stringByAppendingString:identifier];
       goto LABEL_27;
     }
 
-    v34 = [v7 applicationBundleIdentifier];
-    if (!v34)
+    applicationBundleIdentifier2 = [itemCopy applicationBundleIdentifier];
+    if (!applicationBundleIdentifier2)
     {
-      v34 = [v7 sectionBundleIdentifier];
-      if (!v34)
+      applicationBundleIdentifier2 = [itemCopy sectionBundleIdentifier];
+      if (!applicationBundleIdentifier2)
       {
         v21 = 0;
         goto LABEL_28;
       }
     }
 
-    v17 = v34;
-    v35 = [v7 type];
-    if (v35 > 16)
+    identifier = applicationBundleIdentifier2;
+    type = [itemCopy type];
+    if (type > 16)
     {
-      if (v35 <= 31)
+      if (type <= 31)
       {
-        switch(v35)
+        switch(type)
         {
           case 17:
             v21 = @"com.apple.searchd.eng.suggestion.parsec";
@@ -155,11 +155,11 @@ LABEL_25:
         goto LABEL_83;
       }
 
-      if (v35 > 36)
+      if (type > 36)
       {
-        if (v35 != 37)
+        if (type != 37)
         {
-          if (v35 == 38)
+          if (type == 38)
           {
             v39 = @"suggestion.person";
             goto LABEL_72;
@@ -168,18 +168,18 @@ LABEL_25:
           goto LABEL_83;
         }
 
-        *a5 = [(__CFString *)v14 stringByAppendingString:@"localCoreSpotlight"];
+        *baseType = [(__CFString *)v14 stringByAppendingString:@"localCoreSpotlight"];
         v36 = @"local.people.";
       }
 
       else
       {
-        if (v35 == 32)
+        if (type == 32)
         {
 LABEL_67:
-          v38 = [v7 contactIdentifier];
+          contactIdentifier = [itemCopy contactIdentifier];
 
-          if (!v38)
+          if (!contactIdentifier)
           {
 LABEL_73:
             v21 = @"com.apple.searchd.eng.suggestion.local";
@@ -188,29 +188,29 @@ LABEL_73:
 
           v39 = @"suggestion.contact";
 LABEL_72:
-          *a5 = [(__CFString *)v14 stringByAppendingString:v39];
+          *baseType = [(__CFString *)v14 stringByAppendingString:v39];
           goto LABEL_73;
         }
 
-        if (v35 != 36)
+        if (type != 36)
         {
 LABEL_83:
           v21 = @"com.apple.searchd.eng.correction.unknown";
           goto LABEL_27;
         }
 
-        *a5 = [(__CFString *)v14 stringByAppendingString:@"localCoreSpotlight"];
+        *baseType = [(__CFString *)v14 stringByAppendingString:@"localCoreSpotlight"];
         v36 = @"local.contact.";
       }
     }
 
     else
     {
-      if (v35 > 5)
+      if (type > 5)
       {
-        if (v35 <= 7)
+        if (type <= 7)
         {
-          if (v35 == 6)
+          if (type == 6)
           {
             v21 = @"com.apple.searchd.eng.calculator";
           }
@@ -223,13 +223,13 @@ LABEL_83:
           goto LABEL_27;
         }
 
-        if (v35 == 8)
+        if (type == 8)
         {
           v21 = @"com.apple.searchd.eng.definition";
           goto LABEL_27;
         }
 
-        if (v35 == 16)
+        if (type == 16)
         {
           goto LABEL_67;
         }
@@ -237,22 +237,22 @@ LABEL_83:
         goto LABEL_83;
       }
 
-      if (v35 == 1)
+      if (type == 1)
       {
-        *a5 = [(__CFString *)v14 stringByAppendingString:@"parsec"];
+        *baseType = [(__CFString *)v14 stringByAppendingString:@"parsec"];
         v36 = @"parsec.";
       }
 
       else
       {
-        if (v35 == 2)
+        if (type == 2)
         {
           v37 = @"localCoreSpotlight";
         }
 
         else
         {
-          if (v35 != 4)
+          if (type != 4)
           {
             goto LABEL_83;
           }
@@ -260,27 +260,27 @@ LABEL_83:
           v37 = @"userActivity";
         }
 
-        *a5 = [(__CFString *)v14 stringByAppendingString:v37];
+        *baseType = [(__CFString *)v14 stringByAppendingString:v37];
         v36 = @"local.";
       }
     }
 
     v19 = [(__CFString *)v14 stringByAppendingString:v36];
-    v18 = v19;
-    v20 = v17;
+    applicationBundleIdentifier = v19;
+    v20 = identifier;
     goto LABEL_18;
   }
 
-  if (a4 <= 4)
+  if (type <= 4)
   {
     v11 = @"com.apple.searchd.eng.correction.dynamic.";
     v12 = @"com.apple.searchd.eng.topHit.";
-    if (a4 != 4)
+    if (type != 4)
     {
       v12 = 0;
     }
 
-    v13 = a4 == 3;
+    v13 = type == 3;
 LABEL_13:
     if (v13)
     {
@@ -295,9 +295,9 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if (a4 != 5)
+  if (type != 5)
   {
-    if (a4 == 6)
+    if (type == 6)
     {
       v21 = @"com.apple.searchd.eng.shortcut";
       goto LABEL_29;
@@ -308,7 +308,7 @@ LABEL_13:
   }
 
   v28 = @"com.apple.searchd.eng.distance.local";
-  if ([v7 type] != 2 && !v10 && objc_msgSend(v7, "type") != 4)
+  if ([itemCopy type] != 2 && !v10 && objc_msgSend(itemCopy, "type") != 4)
   {
     v28 = @"com.apple.searchd.eng.distance.parsec";
   }
@@ -319,35 +319,35 @@ LABEL_29:
   return v21;
 }
 
-+ (void)computeEngagementMatrixForEngagedItem:(id)a3 topAnalyticsItemsPerSection:(id)a4
++ (void)computeEngagementMatrixForEngagedItem:(id)item topAnalyticsItemsPerSection:(id)section
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v45 = [v5 sectionBundleIdentifier];
-  v7 = [v5 type];
-  v8 = [v5 type];
-  if (v7 == 36)
+  itemCopy = item;
+  sectionCopy = section;
+  sectionBundleIdentifier = [itemCopy sectionBundleIdentifier];
+  type = [itemCopy type];
+  type2 = [itemCopy type];
+  if (type == 36)
   {
     v9 = 1;
   }
 
   else
   {
-    v25 = v8;
+    v25 = type2;
     v9 = 1;
-    if ([v5 type] != 2 && v25 != 37 && objc_msgSend(v5, "type") != 4 && objc_msgSend(v5, "type") != 6 && objc_msgSend(v5, "type") != 7)
+    if ([itemCopy type] != 2 && v25 != 37 && objc_msgSend(itemCopy, "type") != 4 && objc_msgSend(itemCopy, "type") != 6 && objc_msgSend(itemCopy, "type") != 7)
     {
-      v9 = [v5 type] == 8;
+      v9 = [itemCopy type] == 8;
     }
   }
 
-  v40 = v5;
+  v40 = itemCopy;
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v6;
+  obj = sectionCopy;
   v10 = [obj countByEnumeratingWithState:&v47 objects:v56 count:16];
   v39 = v9;
   if (v10)
@@ -356,7 +356,7 @@ LABEL_29:
     v42 = 0;
     v43 = 0;
     v44 = 0;
-    v12 = 0;
+    sectionBundleIdentifier2 = 0;
     v13 = *v48;
     v14 = @"com.apple.searchd.eng.parsec.engaged.top.%d.bundle";
     if (v9)
@@ -371,16 +371,16 @@ LABEL_29:
     {
       for (i = 0; i != v11; ++i)
       {
-        v18 = v12;
+        v18 = sectionBundleIdentifier2;
         if (*v48 != v13)
         {
           objc_enumerationMutation(obj);
         }
 
         v19 = *(*(&v47 + 1) + 8 * i);
-        v12 = [v19 sectionBundleIdentifier];
+        sectionBundleIdentifier2 = [v19 sectionBundleIdentifier];
 
-        if (([v12 isEqualToString:@"com.apple.searchd.suggestions"] & 1) == 0 && (objc_msgSend(v12, "isEqualToString:", @"com.apple.searchd.zkw.apps") & 1) == 0 && (objc_msgSend(v12, "isEqualToString:", @"com.apple.spotlightui.search-through") & 1) == 0)
+        if (([sectionBundleIdentifier2 isEqualToString:@"com.apple.searchd.suggestions"] & 1) == 0 && (objc_msgSend(sectionBundleIdentifier2, "isEqualToString:", @"com.apple.searchd.zkw.apps") & 1) == 0 && (objc_msgSend(sectionBundleIdentifier2, "isEqualToString:", @"com.apple.spotlightui.search-through") & 1) == 0)
         {
           if (v15)
           {
@@ -389,7 +389,7 @@ LABEL_29:
             v44 = v20;
           }
 
-          if ([v12 isEqualToString:v45])
+          if ([sectionBundleIdentifier2 isEqualToString:sectionBundleIdentifier])
           {
             v21 = v16 <= 10;
           }
@@ -445,7 +445,7 @@ LABEL_29:
     v42 = 0;
     v43 = 0;
     v44 = 0;
-    v12 = 0;
+    sectionBundleIdentifier2 = 0;
   }
 
   if (v39)
@@ -459,8 +459,8 @@ LABEL_29:
   }
 
   v27 = [v26 objectAtIndexedSubscript:0];
-  v28 = [v44 sectionBundleIdentifier];
-  if ([v45 isEqualToString:v28])
+  sectionBundleIdentifier3 = [v44 sectionBundleIdentifier];
+  if ([sectionBundleIdentifier isEqualToString:sectionBundleIdentifier3])
   {
     v51 = MEMORY[0x1E69E9820];
     v52 = 3221225472;
@@ -493,8 +493,8 @@ LABEL_50:
     goto LABEL_51;
   }
 
-  v29 = [v27 sectionBundleIdentifier];
-  v30 = [v45 isEqualToString:v29];
+  sectionBundleIdentifier4 = [v27 sectionBundleIdentifier];
+  v30 = [sectionBundleIdentifier isEqualToString:sectionBundleIdentifier4];
 
   if (v30)
   {
@@ -506,7 +506,7 @@ LABEL_50:
     AnalyticsSendEventLazy();
   }
 
-  if ([v45 isEqualToString:v28])
+  if ([sectionBundleIdentifier isEqualToString:sectionBundleIdentifier3])
   {
     v51 = MEMORY[0x1E69E9820];
     v52 = 3221225472;
@@ -517,8 +517,8 @@ LABEL_50:
   }
 
 LABEL_51:
-  v31 = [v27 sectionBundleIdentifier];
-  if ([v45 isEqualToString:v31])
+  sectionBundleIdentifier5 = [v27 sectionBundleIdentifier];
+  if ([sectionBundleIdentifier isEqualToString:sectionBundleIdentifier5])
   {
 
     v32 = v40;
@@ -526,8 +526,8 @@ LABEL_51:
 
   else
   {
-    v33 = [v27 sectionBundleIdentifier];
-    v34 = [v33 isEqualToString:@"com.apple.spotlight.tophits"];
+    sectionBundleIdentifier6 = [v27 sectionBundleIdentifier];
+    v34 = [sectionBundleIdentifier6 isEqualToString:@"com.apple.spotlight.tophits"];
 
     v32 = v40;
     if (!v34)
@@ -536,9 +536,9 @@ LABEL_51:
     }
   }
 
-  v35 = [v27 identifier];
-  v36 = [v32 identifier];
-  v37 = [v35 isEqualToString:v36];
+  identifier = [v27 identifier];
+  identifier2 = [v32 identifier];
+  v37 = [identifier isEqualToString:identifier2];
 
   if (v37)
   {
@@ -555,14 +555,14 @@ LABEL_56:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logEngagementWithItem:(id)a3 atPosition:(unint64_t)a4 forEvent:(unint64_t)a5
++ (void)logEngagementWithItem:(id)item atPosition:(unint64_t)position forEvent:(unint64_t)event
 {
-  v8 = a3;
-  v9 = v8;
-  if (a5 == 5)
+  itemCopy = item;
+  v9 = itemCopy;
+  if (event == 5)
   {
     v25 = 0;
-    v10 = [a1 aggdLogIdentifierFromItem:v8 type:1 baseType:&v25];
+    v10 = [self aggdLogIdentifierFromItem:itemCopy type:1 baseType:&v25];
     v11 = v25;
     AnalyticsAddValueIfNonNull(v10);
 
@@ -579,10 +579,10 @@ LABEL_56:
 
   else
   {
-    if ([v8 isStaticCorrection])
+    if ([itemCopy isStaticCorrection])
     {
       v24 = 0;
-      v12 = [a1 aggdLogIdentifierFromItem:v9 type:2 baseType:&v24];
+      v12 = [self aggdLogIdentifierFromItem:v9 type:2 baseType:&v24];
       v13 = v24;
       AnalyticsAddValueIfNonNull(v12);
 
@@ -605,7 +605,7 @@ LABEL_56:
     if ([v9 isDisplayNameCorrectionsMatch])
     {
       v23 = v13;
-      v14 = [a1 aggdLogIdentifierFromItem:v9 type:3 baseType:&v23];
+      v14 = [self aggdLogIdentifierFromItem:v9 type:3 baseType:&v23];
       v15 = v23;
 
       AnalyticsAddValueIfNonNull(v14);
@@ -627,7 +627,7 @@ LABEL_56:
     }
 
     v22 = v13;
-    v16 = [a1 aggdLogIdentifierFromItem:v9 type:0 baseType:&v22];
+    v16 = [self aggdLogIdentifierFromItem:v9 type:0 baseType:&v22];
     v11 = v22;
 
     AnalyticsAddValueIfNonNull(v16);
@@ -645,21 +645,21 @@ LABEL_56:
     {
       if ([v9 isLocalShortcut])
       {
-        v17 = [a1 aggdLogIdentifierFromItem:v9 type:6 baseType:0];
+        v17 = [self aggdLogIdentifierFromItem:v9 type:6 baseType:0];
         AnalyticsAddValueIfNonNull(v17);
       }
 
       v21 = v11;
-      v18 = [a1 aggdLogIdentifierFromItem:v9 type:4 baseType:&v21];
+      v18 = [self aggdLogIdentifierFromItem:v9 type:4 baseType:&v21];
       v19 = v21;
 
       AnalyticsAddValueIfNonNull(v18);
       v11 = v19;
     }
 
-    if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+    if (position != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v20 = [a1 aggdLogIdentifierFromItem:v9 type:5 baseType:0];
+      v20 = [self aggdLogIdentifierFromItem:v9 type:5 baseType:0];
       AnalyticsAddValueIfNonNull(v20);
     }
   }

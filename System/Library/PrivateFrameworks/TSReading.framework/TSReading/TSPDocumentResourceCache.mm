@@ -1,16 +1,16 @@
 @interface TSPDocumentResourceCache
 + (id)defaultCacheURL;
 + (id)sharedCache;
-- (BOOL)beginDocumentResourceAccessForDigestString:(id)a3;
-- (BOOL)cacheDocumentResourceDigestString:(id)a3 extension:(id)a4 sourceURL:(id)a5 fileSize:(int64_t)a6 wasDownloaded:(BOOL)a7;
+- (BOOL)beginDocumentResourceAccessForDigestString:(id)string;
+- (BOOL)cacheDocumentResourceDigestString:(id)string extension:(id)extension sourceURL:(id)l fileSize:(int64_t)size wasDownloaded:(BOOL)downloaded;
 - (TSPDocumentResourceCache)init;
-- (TSPDocumentResourceCache)initWithCacheURL:(id)a3;
-- (id)URLForDocumentResourceDigestString:(id)a3;
-- (id)entryForDigestString:(id)a3;
-- (void)endDocumentResourceAccessForDigestString:(id)a3;
-- (void)enumerateEntriesFromCacheURLWithHandler:(id)a3;
+- (TSPDocumentResourceCache)initWithCacheURL:(id)l;
+- (id)URLForDocumentResourceDigestString:(id)string;
+- (id)entryForDigestString:(id)string;
+- (void)endDocumentResourceAccessForDigestString:(id)string;
+- (void)enumerateEntriesFromCacheURLWithHandler:(id)handler;
 - (void)reloadEntries;
-- (void)shrinkCacheWithMaxCacheSizeInBytes:(int64_t)a3;
+- (void)shrinkCacheWithMaxCacheSizeInBytes:(int64_t)bytes;
 @end
 
 @implementation TSPDocumentResourceCache
@@ -53,7 +53,7 @@ void __43__TSPDocumentResourceCache_defaultCacheURL__block_invoke()
   block[1] = 3221225472;
   block[2] = __39__TSPDocumentResourceCache_sharedCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCache_onceToken != -1)
   {
     dispatch_once(&sharedCache_onceToken, block);
@@ -75,21 +75,21 @@ void __39__TSPDocumentResourceCache_sharedCache__block_invoke(uint64_t a1)
 
 - (TSPDocumentResourceCache)init
 {
-  v3 = [objc_opt_class() defaultCacheURL];
-  v4 = [(TSPDocumentResourceCache *)self initWithCacheURL:v3];
+  defaultCacheURL = [objc_opt_class() defaultCacheURL];
+  v4 = [(TSPDocumentResourceCache *)self initWithCacheURL:defaultCacheURL];
 
   return v4;
 }
 
-- (TSPDocumentResourceCache)initWithCacheURL:(id)a3
+- (TSPDocumentResourceCache)initWithCacheURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = TSPDocumentResourceCache;
   v5 = [(TSPDocumentResourceCache *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     cacheURL = v5->_cacheURL;
     v5->_cacheURL = v6;
 
@@ -108,22 +108,22 @@ void __39__TSPDocumentResourceCache_sharedCache__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)entryForDigestString:(id)a3
+- (id)entryForDigestString:(id)string
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_entries objectForKeyedSubscript:v4];
+  stringCopy = string;
+  v5 = [(NSMutableDictionary *)self->_entries objectForKeyedSubscript:stringCopy];
   if (!v5)
   {
-    v5 = [[TSPDocumentResourceCacheEntry alloc] initWithDigestString:v4];
-    [(NSMutableDictionary *)self->_entries setObject:v5 forKeyedSubscript:v4];
+    v5 = [[TSPDocumentResourceCacheEntry alloc] initWithDigestString:stringCopy];
+    [(NSMutableDictionary *)self->_entries setObject:v5 forKeyedSubscript:stringCopy];
   }
 
   return v5;
 }
 
-- (id)URLForDocumentResourceDigestString:(id)a3
+- (id)URLForDocumentResourceDigestString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -136,9 +136,9 @@ void __39__TSPDocumentResourceCache_sharedCache__block_invoke(uint64_t a1)
   block[2] = __63__TSPDocumentResourceCache_URLForDocumentResourceDigestString___block_invoke;
   block[3] = &unk_279D47508;
   block[4] = self;
-  v10 = v4;
+  v10 = stringCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = stringCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -163,11 +163,11 @@ void __63__TSPDocumentResourceCache_URLForDocumentResourceDigestString___block_i
   }
 }
 
-- (BOOL)cacheDocumentResourceDigestString:(id)a3 extension:(id)a4 sourceURL:(id)a5 fileSize:(int64_t)a6 wasDownloaded:(BOOL)a7
+- (BOOL)cacheDocumentResourceDigestString:(id)string extension:(id)extension sourceURL:(id)l fileSize:(int64_t)size wasDownloaded:(BOOL)downloaded
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  stringCopy = string;
+  extensionCopy = extension;
+  lCopy = l;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -178,15 +178,15 @@ void __63__TSPDocumentResourceCache_URLForDocumentResourceDigestString___block_i
   block[2] = __105__TSPDocumentResourceCache_cacheDocumentResourceDigestString_extension_sourceURL_fileSize_wasDownloaded___block_invoke;
   block[3] = &unk_279D47530;
   block[4] = self;
-  v21 = v12;
-  v26 = a7;
-  v22 = v13;
-  v23 = v14;
+  v21 = stringCopy;
+  downloadedCopy = downloaded;
+  v22 = extensionCopy;
+  v23 = lCopy;
   v24 = &v27;
-  v25 = a6;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
+  sizeCopy = size;
+  v16 = lCopy;
+  v17 = extensionCopy;
+  v18 = stringCopy;
   dispatch_sync(accessQueue, block);
   LOBYTE(accessQueue) = *(v28 + 24);
 
@@ -330,9 +330,9 @@ LABEL_27:
   }
 }
 
-- (BOOL)beginDocumentResourceAccessForDigestString:(id)a3
+- (BOOL)beginDocumentResourceAccessForDigestString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -343,9 +343,9 @@ LABEL_27:
   block[2] = __71__TSPDocumentResourceCache_beginDocumentResourceAccessForDigestString___block_invoke;
   block[3] = &unk_279D47508;
   block[4] = self;
-  v9 = v4;
+  v9 = stringCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = stringCopy;
   dispatch_sync(accessQueue, block);
   LOBYTE(accessQueue) = *(v12 + 24);
 
@@ -379,17 +379,17 @@ void __71__TSPDocumentResourceCache_beginDocumentResourceAccessForDigestString__
   }
 }
 
-- (void)endDocumentResourceAccessForDigestString:(id)a3
+- (void)endDocumentResourceAccessForDigestString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__TSPDocumentResourceCache_endDocumentResourceAccessForDigestString___block_invoke;
   v7[3] = &unk_279D47558;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stringCopy;
+  v6 = stringCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -423,7 +423,7 @@ void __69__TSPDocumentResourceCache_endDocumentResourceAccessForDigestString___b
 LABEL_6:
 }
 
-- (void)shrinkCacheWithMaxCacheSizeInBytes:(int64_t)a3
+- (void)shrinkCacheWithMaxCacheSizeInBytes:(int64_t)bytes
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -431,7 +431,7 @@ LABEL_6:
   v4[2] = __63__TSPDocumentResourceCache_shrinkCacheWithMaxCacheSizeInBytes___block_invoke;
   v4[3] = &unk_279D475C8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = bytes;
   dispatch_async(accessQueue, v4);
 }
 
@@ -539,11 +539,11 @@ uint64_t __63__TSPDocumentResourceCache_shrinkCacheWithMaxCacheSizeInBytes___blo
   return v7;
 }
 
-- (void)enumerateEntriesFromCacheURLWithHandler:(id)a3
+- (void)enumerateEntriesFromCacheURLWithHandler:(id)handler
 {
   v54[4] = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  handlerCopy = handler;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   cacheURL = self->_cacheURL;
   v6 = *MEMORY[0x277CBE868];
   v39 = *MEMORY[0x277CBE8E8];
@@ -555,7 +555,7 @@ uint64_t __63__TSPDocumentResourceCache_shrinkCacheWithMaxCacheSizeInBytes___blo
   v54[3] = v7;
   v32 = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:4];
-  v9 = [v4 enumeratorAtURL:cacheURL includingPropertiesForKeys:v8 options:0 errorHandler:0];
+  v9 = [defaultManager enumeratorAtURL:cacheURL includingPropertiesForKeys:v8 options:0 errorHandler:0];
 
   v51 = 0u;
   v52 = 0u;
@@ -623,10 +623,10 @@ uint64_t __63__TSPDocumentResourceCache_shrinkCacheWithMaxCacheSizeInBytes___blo
             if (v26)
             {
               v27 = v36;
-              v28 = [v36 stringByDeletingPathExtension];
+              stringByDeletingPathExtension = [v36 stringByDeletingPathExtension];
               v40 = 0;
               v29 = v33;
-              v31[2](v31, v28, v15, [v33 longLongValue], v35, &v40);
+              handlerCopy[2](handlerCopy, stringByDeletingPathExtension, v15, [v33 longLongValue], v35, &v40);
               v30 = v40;
 
               v6 = v38;

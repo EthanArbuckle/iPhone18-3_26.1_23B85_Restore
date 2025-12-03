@@ -1,33 +1,33 @@
 @interface ASClientAccount
-- (ASClientAccount)initWithBackingAccountInfo:(id)a3;
-- (BOOL)reattemptInvitationLinkageForMetaData:(id)a3 inFolderWithId:(id)a4;
-- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)a3 deleted:(id)a4 foldersTag:(id)a5;
-- (id)_copySetFlagsActionForRequest:(id)a3;
+- (ASClientAccount)initWithBackingAccountInfo:(id)info;
+- (BOOL)reattemptInvitationLinkageForMetaData:(id)data inFolderWithId:(id)id;
+- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)added deleted:(id)deleted foldersTag:(id)tag;
+- (id)_copySetFlagsActionForRequest:(id)request;
 - (id)_newPolicyManager;
 - (id)mailboxes;
 - (id)onBehalfOfBundleIdentifier;
-- (id)unactionableICSRepresentationForMetaData:(id)a3 inFolderWithId:(id)a4 outSummary:(id *)a5;
-- (int)performFetchAttachmentRequest:(id)a3 consumer:(id)a4;
-- (int)performFetchMessageSearchResultRequests:(id)a3 consumer:(id)a4;
-- (int)performMoveRequests:(id)a3 consumer:(id)a4;
-- (int)performResolveRecipientsRequest:(id)a3 consumer:(id)a4;
-- (void)_addFoldersToDaemonMonitoring:(id)a3;
+- (id)unactionableICSRepresentationForMetaData:(id)data inFolderWithId:(id)id outSummary:(id *)summary;
+- (int)performFetchAttachmentRequest:(id)request consumer:(id)consumer;
+- (int)performFetchMessageSearchResultRequests:(id)requests consumer:(id)consumer;
+- (int)performMoveRequests:(id)requests consumer:(id)consumer;
+- (int)performResolveRecipientsRequest:(id)request consumer:(id)consumer;
+- (void)_addFoldersToDaemonMonitoring:(id)monitoring;
 - (void)_daemonDied;
 - (void)_folderHierarchyChanged;
 - (void)_foldersThatExternalClientsCareAboutChanged;
-- (void)_foldersUpdated:(id)a3;
-- (void)_logStatus:(id)a3;
-- (void)_removeFoldersFromDaemonMonitoring:(id)a3;
-- (void)_sync:(id)a3 withConsumer:(id)a4;
+- (void)_foldersUpdated:(id)updated;
+- (void)_logStatus:(id)status;
+- (void)_removeFoldersFromDaemonMonitoring:(id)monitoring;
+- (void)_sync:(id)_sync withConsumer:(id)consumer;
 - (void)clearFolderHierarchyCache;
 - (void)dealloc;
-- (void)performFolderChange:(id)a3;
-- (void)resolveRecipientsTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5 queriedEmailAddressToRecpient:(id)a6;
-- (void)resumeMonitoringFoldersWithIDs:(id)a3;
-- (void)sendMailTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5;
+- (void)performFolderChange:(id)change;
+- (void)resolveRecipientsTask:(id)task completedWithStatus:(int64_t)status error:(id)error queriedEmailAddressToRecpient:(id)recpient;
+- (void)resumeMonitoringFoldersWithIDs:(id)ds;
+- (void)sendMailTask:(id)task completedWithStatus:(int64_t)status error:(id)error;
 - (void)stopMonitoringAllFolders;
-- (void)stopMonitoringFoldersForUpdates:(id)a3;
-- (void)suspendMonitoringFoldersWithIDs:(id)a3;
+- (void)stopMonitoringFoldersForUpdates:(id)updates;
+- (void)suspendMonitoringFoldersWithIDs:(id)ds;
 @end
 
 @implementation ASClientAccount
@@ -39,15 +39,15 @@
   return [(ASPolicyManager *)v3 initWithAccount:self];
 }
 
-- (ASClientAccount)initWithBackingAccountInfo:(id)a3
+- (ASClientAccount)initWithBackingAccountInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = ASClientAccount;
-  v3 = [(ASAccount *)&v6 initWithBackingAccountInfo:a3];
+  v3 = [(ASAccount *)&v6 initWithBackingAccountInfo:info];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__logStatus_ name:*MEMORY[0x277D03898] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__logStatus_ name:*MEMORY[0x277D03898] object:0];
   }
 
   return v3;
@@ -55,8 +55,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
   v4.receiver = self;
@@ -66,27 +66,27 @@
 
 - (id)onBehalfOfBundleIdentifier
 {
-  v3 = [(ASClientAccount *)self sourceApplicationBundleIdentifier];
+  sourceApplicationBundleIdentifier = [(ASClientAccount *)self sourceApplicationBundleIdentifier];
 
-  if (v3)
+  if (sourceApplicationBundleIdentifier)
   {
-    v4 = [(ASClientAccount *)self sourceApplicationBundleIdentifier];
+    sourceApplicationBundleIdentifier2 = [(ASClientAccount *)self sourceApplicationBundleIdentifier];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = ASClientAccount;
-    v4 = [(ASAccount *)&v6 onBehalfOfBundleIdentifier];
+    sourceApplicationBundleIdentifier2 = [(ASAccount *)&v6 onBehalfOfBundleIdentifier];
   }
 
-  return v4;
+  return sourceApplicationBundleIdentifier2;
 }
 
 - (void)clearFolderHierarchyCache
 {
-  v2 = [(ASAccount *)self folderHierarchy];
-  [v2 clearLocalCache];
+  folderHierarchy = [(ASAccount *)self folderHierarchy];
+  [folderHierarchy clearLocalCache];
 }
 
 - (void)_folderHierarchyChanged
@@ -94,11 +94,11 @@
   [(ASClientAccount *)self clearFolderHierarchyCache];
   v3 = MEMORY[0x277CCAB88];
   v4 = *MEMORY[0x277D036F0];
-  v5 = [(ASClientAccount *)self accountID];
-  v7 = [v3 notificationWithName:v4 object:v5];
+  accountID = [(ASClientAccount *)self accountID];
+  v7 = [v3 notificationWithName:v4 object:accountID];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 performSelectorOnMainThread:sel_postNotification_ withObject:v7 waitUntilDone:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter performSelectorOnMainThread:sel_postNotification_ withObject:v7 waitUntilDone:0];
 }
 
 - (void)_foldersThatExternalClientsCareAboutChanged
@@ -106,22 +106,22 @@
   [(ASClientAccount *)self clearFolderHierarchyCache];
   v3 = MEMORY[0x277CCAB88];
   v4 = *MEMORY[0x277D036F8];
-  v5 = [(ASClientAccount *)self accountID];
-  v7 = [v3 notificationWithName:v4 object:v5];
+  accountID = [(ASClientAccount *)self accountID];
+  v7 = [v3 notificationWithName:v4 object:accountID];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 performSelectorOnMainThread:sel_postNotification_ withObject:v7 waitUntilDone:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter performSelectorOnMainThread:sel_postNotification_ withObject:v7 waitUntilDone:0];
 }
 
-- (void)resumeMonitoringFoldersWithIDs:(id)a3
+- (void)resumeMonitoringFoldersWithIDs:(id)ds
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [dsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -133,33 +133,33 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         [(NSMutableSet *)self->_folderIDsOnRemoteHold removeObject:*(*(&v12 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [dsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [MEMORY[0x277D07AF0] sharedConnection];
-  v10 = [(ASClientAccount *)self accountID];
-  [v9 resumeWatchingFoldersWithKeys:v4 forAccountID:v10];
+  mEMORY[0x277D07AF0] = [MEMORY[0x277D07AF0] sharedConnection];
+  accountID = [(ASClientAccount *)self accountID];
+  [mEMORY[0x277D07AF0] resumeWatchingFoldersWithKeys:dsCopy forAccountID:accountID];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_foldersUpdated:(id)a3
+- (void)_foldersUpdated:(id)updated
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  updatedCopy = updated;
+  if (updatedCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v4];
+    v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:updatedCopy];
   }
 
   else
@@ -174,9 +174,9 @@
   {
     daemonMonitoredFolders = self->_daemonMonitoredFolders;
     *buf = 134218498;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
-    v27 = v4;
+    v27 = updatedCopy;
     v28 = 2112;
     v29 = daemonMonitoredFolders;
     _os_log_impl(&dword_24A0AC000, v6, v7, "%p: Ping received for folder ids %@, compare to daemonMonitoredFolders %@", buf, 0x20u);
@@ -194,13 +194,13 @@
       folderIDsOnRemoteHold = self->_folderIDsOnRemoteHold;
     }
 
-    [(NSMutableSet *)folderIDsOnRemoteHold addObjectsFromArray:v4];
+    [(NSMutableSet *)folderIDsOnRemoteHold addObjectsFromArray:updatedCopy];
     v12 = DALoggingwithCategory();
     if (os_log_type_enabled(v12, v7))
     {
-      v13 = [(ASClientAccount *)self accountID];
+      accountID = [(ASClientAccount *)self accountID];
       *buf = 138412546;
-      v25 = v13;
+      selfCopy = accountID;
       v26 = 2112;
       v27 = v5;
       _os_log_impl(&dword_24A0AC000, v12, v7, "Ping received, posting note for accountID: %@ folderIDs: %@", buf, 0x16u);
@@ -208,14 +208,14 @@
 
     v14 = MEMORY[0x277CCAB88];
     v15 = *MEMORY[0x277D036E8];
-    v16 = [(ASClientAccount *)self accountID];
-    v17 = [v5 allObjects];
-    v23 = v17;
+    accountID2 = [(ASClientAccount *)self accountID];
+    allObjects = [v5 allObjects];
+    v23 = allObjects;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-    v19 = [v14 notificationWithName:v15 object:v16 userInfo:v18];
+    v19 = [v14 notificationWithName:v15 object:accountID2 userInfo:v18];
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 performSelectorOnMainThread:sel_postNotification_ withObject:v19 waitUntilDone:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter performSelectorOnMainThread:sel_postNotification_ withObject:v19 waitUntilDone:0];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -236,67 +236,67 @@
       _os_log_impl(&dword_24A0AC000, v3, v4, "Daemon died, trying to resend folder monitoring info for folders: [%@]", &v10, 0xCu);
     }
 
-    v6 = [(NSMutableSet *)self->_daemonMonitoredFolders allObjects];
+    allObjects = [(NSMutableSet *)self->_daemonMonitoredFolders allObjects];
     [(NSMutableSet *)self->_daemonMonitoredFolders removeAllObjects];
-    [(ASClientAccount *)self monitorFoldersForUpdates:v6];
+    [(ASClientAccount *)self monitorFoldersForUpdates:allObjects];
   }
 
-  v7 = [(ASAccount *)self taskManager];
-  v8 = [v7 policyManager];
+  taskManager = [(ASAccount *)self taskManager];
+  policyManager = [taskManager policyManager];
 
-  if ([v8 updatingPolicy])
+  if ([policyManager updatingPolicy])
   {
-    [v8 requestPolicyUpdate];
+    [policyManager requestPolicyUpdate];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_logStatus:(id)a3
+- (void)_logStatus:(id)status
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = DALoggingwithCategory();
   v5 = *(MEMORY[0x277D03988] + 3);
   if (os_log_type_enabled(v4, v5))
   {
-    v6 = [(ASAccount *)self stateString];
+    stateString = [(ASAccount *)self stateString];
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v6;
+    v11 = stateString;
     _os_log_impl(&dword_24A0AC000, v4, v5, "%p: %@", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addFoldersToDaemonMonitoring:(id)a3
+- (void)_addFoldersToDaemonMonitoring:(id)monitoring
 {
-  v4 = a3;
+  monitoringCopy = monitoring;
   daemonMonitoredFolders = self->_daemonMonitoredFolders;
-  v8 = v4;
+  v8 = monitoringCopy;
   if (!daemonMonitoredFolders)
   {
     v6 = objc_opt_new();
     v7 = self->_daemonMonitoredFolders;
     self->_daemonMonitoredFolders = v6;
 
-    v4 = v8;
+    monitoringCopy = v8;
     daemonMonitoredFolders = self->_daemonMonitoredFolders;
   }
 
-  [(NSMutableSet *)daemonMonitoredFolders addObjectsFromArray:v4];
+  [(NSMutableSet *)daemonMonitoredFolders addObjectsFromArray:monitoringCopy];
 }
 
-- (void)_removeFoldersFromDaemonMonitoring:(id)a3
+- (void)_removeFoldersFromDaemonMonitoring:(id)monitoring
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  monitoringCopy = monitoring;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [monitoringCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -308,14 +308,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(monitoringCopy);
         }
 
         [(NSMutableSet *)self->_daemonMonitoredFolders removeObject:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [monitoringCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -324,28 +324,28 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopMonitoringFoldersForUpdates:(id)a3
+- (void)stopMonitoringFoldersForUpdates:(id)updates
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatesCopy = updates;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v5, v6))
   {
     daemonMonitoredFolders = self->_daemonMonitoredFolders;
     v11 = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = updatesCopy;
     v15 = 2112;
     v16 = daemonMonitoredFolders;
     _os_log_impl(&dword_24A0AC000, v5, v6, "%p: Stop monitoring folders %@, compare to daemonMonitoredFolders %@", &v11, 0x20u);
   }
 
-  [(ASClientAccount *)self _removeFoldersFromDaemonMonitoring:v4];
-  v8 = [MEMORY[0x277D07AF0] sharedConnection];
-  v9 = [(ASClientAccount *)self accountID];
-  [v8 stopWatchingFoldersWithKeys:v4 forAccountID:v9];
+  [(ASClientAccount *)self _removeFoldersFromDaemonMonitoring:updatesCopy];
+  mEMORY[0x277D07AF0] = [MEMORY[0x277D07AF0] sharedConnection];
+  accountID = [(ASClientAccount *)self accountID];
+  [mEMORY[0x277D07AF0] stopWatchingFoldersWithKeys:updatesCopy forAccountID:accountID];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -359,7 +359,7 @@
   {
     daemonMonitoredFolders = self->_daemonMonitoredFolders;
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = daemonMonitoredFolders;
     _os_log_impl(&dword_24A0AC000, v3, v4, "%p: Stop monitoring all folders, which are %@", &v8, 0x16u);
@@ -367,25 +367,25 @@
 
   if ([(NSMutableSet *)self->_daemonMonitoredFolders count])
   {
-    v6 = [(NSMutableSet *)self->_daemonMonitoredFolders allObjects];
-    [(ASClientAccount *)self stopMonitoringFoldersForUpdates:v6];
+    allObjects = [(NSMutableSet *)self->_daemonMonitoredFolders allObjects];
+    [(ASClientAccount *)self stopMonitoringFoldersForUpdates:allObjects];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)reattemptInvitationLinkageForMetaData:(id)a3 inFolderWithId:(id)a4
+- (BOOL)reattemptInvitationLinkageForMetaData:(id)data inFolderWithId:(id)id
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (-[ASAccount enabledForDADataclass:](self, "enabledForDADataclass:", 4) && [v6 length])
+  dataCopy = data;
+  idCopy = id;
+  if (-[ASAccount enabledForDADataclass:](self, "enabledForDADataclass:", 4) && [dataCopy length])
   {
-    v8 = [MEMORY[0x277D07AF0] sharedConnection];
-    v14[0] = v6;
+    mEMORY[0x277D07AF0] = [MEMORY[0x277D07AF0] sharedConnection];
+    v14[0] = dataCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-    v10 = [(ASClientAccount *)self accountID];
-    v11 = [v8 processMeetingRequests:v9 deliveryIdsToClear:0 deliveryIdsToSoftClear:0 inFolderWithId:v7 forAccountWithId:v10];
+    accountID = [(ASClientAccount *)self accountID];
+    v11 = [mEMORY[0x277D07AF0] processMeetingRequests:v9 deliveryIdsToClear:0 deliveryIdsToSoftClear:0 inFolderWithId:idCopy forAccountWithId:accountID];
   }
 
   else
@@ -397,31 +397,31 @@
   return v11;
 }
 
-- (id)unactionableICSRepresentationForMetaData:(id)a3 inFolderWithId:(id)a4 outSummary:(id *)a5
+- (id)unactionableICSRepresentationForMetaData:(id)data inFolderWithId:(id)id outSummary:(id *)summary
 {
   v23 = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CCAAC8];
-  v8 = a3;
+  dataCopy = data;
   v20 = 0;
-  v9 = [v7 unarchivedObjectOfClass:objc_opt_class() fromData:v8 error:&v20];
+  v9 = [v7 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v20];
 
   v10 = v20;
   if (v9)
   {
     v11 = +[ASLocalDBHelper sharedInstance];
-    v12 = [(ASClientAccount *)self accountID];
-    v13 = [(ASAccount *)self changeTrackingID];
-    [v11 calOpenDatabaseForAccountID:v12 clientID:v13];
+    accountID = [(ASClientAccount *)self accountID];
+    changeTrackingID = [(ASAccount *)self changeTrackingID];
+    [v11 calOpenDatabaseForAccountID:accountID clientID:changeTrackingID];
 
     v14 = [v9 unactionableICSRepresentationForAccount:self];
-    if (a5)
+    if (summary)
     {
-      *a5 = [v9 subject];
+      *summary = [v9 subject];
     }
 
     v15 = +[ASLocalDBHelper sharedInstance];
-    v16 = [(ASClientAccount *)self accountID];
-    [v15 calCloseDatabaseForAccountID:v16 save:0];
+    accountID2 = [(ASClientAccount *)self accountID];
+    [v15 calCloseDatabaseForAccountID:accountID2 save:0];
   }
 
   else
@@ -443,30 +443,30 @@
   return v14;
 }
 
-- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)a3 deleted:(id)a4 foldersTag:(id)a5
+- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)added deleted:(id)deleted foldersTag:(id)tag
 {
   v8 = MEMORY[0x277D07AF0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 sharedConnection];
-  v13 = [v11 allObjects];
+  tagCopy = tag;
+  deletedCopy = deleted;
+  addedCopy = added;
+  sharedConnection = [v8 sharedConnection];
+  allObjects = [addedCopy allObjects];
 
-  v14 = [v10 allObjects];
+  allObjects2 = [deletedCopy allObjects];
 
-  v15 = [(ASClientAccount *)self accountID];
-  LOBYTE(self) = [v12 setFolderIdsThatExternalClientsCareAboutAdded:v13 deleted:v14 foldersTag:v9 forAccountID:v15];
+  accountID = [(ASClientAccount *)self accountID];
+  LOBYTE(self) = [sharedConnection setFolderIdsThatExternalClientsCareAboutAdded:allObjects deleted:allObjects2 foldersTag:tagCopy forAccountID:accountID];
 
   return self;
 }
 
-- (void)suspendMonitoringFoldersWithIDs:(id)a3
+- (void)suspendMonitoringFoldersWithIDs:(id)ds
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D07AF0] sharedConnection];
-  v6 = [(ASClientAccount *)self accountID];
-  v7 = [v5 suspendWatchingFoldersWithKeys:v4 forAccountID:v6];
+  dsCopy = ds;
+  mEMORY[0x277D07AF0] = [MEMORY[0x277D07AF0] sharedConnection];
+  accountID = [(ASClientAccount *)self accountID];
+  v7 = [mEMORY[0x277D07AF0] suspendWatchingFoldersWithKeys:dsCopy forAccountID:accountID];
 
   if ((v7 & 1) == 0)
   {
@@ -475,7 +475,7 @@
     if (os_log_type_enabled(v8, v9))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = dsCopy;
       _os_log_impl(&dword_24A0AC000, v8, v9, "Unable to suspend folders: %@", &v11, 0xCu);
     }
   }
@@ -483,34 +483,34 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sync:(id)a3 withConsumer:(id)a4
+- (void)_sync:(id)_sync withConsumer:(id)consumer
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [(ASClientAccount *)self setConsumer:a4 forTask:v6];
-  v7 = [v6 folderID];
-  v11[0] = v7;
+  _syncCopy = _sync;
+  [(ASClientAccount *)self setConsumer:consumer forTask:_syncCopy];
+  folderID = [_syncCopy folderID];
+  v11[0] = folderID;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   [(ASClientAccount *)self suspendMonitoringFoldersWithIDs:v8];
 
-  v9 = [(ASAccount *)self taskManager];
-  [v9 submitQueuedTask:v6];
+  taskManager = [(ASAccount *)self taskManager];
+  [taskManager submitQueuedTask:_syncCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMailTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5
+- (void)sendMailTask:(id)task completedWithStatus:(int64_t)status error:(id)error
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [(ASClientAccount *)self consumerForTask:v12];
+  taskCopy = task;
+  errorCopy = error;
+  v9 = [(ASClientAccount *)self consumerForTask:taskCopy];
   v10 = v9;
-  if (a4 == 118 || a4 == 2)
+  if (status == 118 || status == 2)
   {
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v12 context];
-      [v10 messageDidSendWithContext:v11 sentBytesCount:objc_msgSend(v12 receivedBytesCount:{"sentBytesCount"), objc_msgSend(v12, "receivedBytesCount")}];
+      context = [taskCopy context];
+      [v10 messageDidSendWithContext:context sentBytesCount:objc_msgSend(taskCopy receivedBytesCount:{"sentBytesCount"), objc_msgSend(taskCopy, "receivedBytesCount")}];
     }
 
     else
@@ -520,36 +520,36 @@
         goto LABEL_9;
       }
 
-      v11 = [v12 context];
-      [v10 messageDidSendWithContext:v11];
+      context = [taskCopy context];
+      [v10 messageDidSendWithContext:context];
     }
   }
 
   else
   {
-    [v9 actionFailed:a4 forTask:v12 error:v8];
+    [v9 actionFailed:status forTask:taskCopy error:errorCopy];
   }
 
 LABEL_9:
-  [(ASClientAccount *)self removeConsumerForTask:v12];
+  [(ASClientAccount *)self removeConsumerForTask:taskCopy];
 }
 
-- (int)performMoveRequests:(id)a3 consumer:(id)a4
+- (int)performMoveRequests:(id)requests consumer:(id)consumer
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v34 = a4;
+  requestsCopy = requests;
+  consumerCopy = consumer;
   v7 = objc_opt_new();
   [v7 setDataclass:1];
-  [v7 setPushedMoveRequests:v6];
+  [v7 setPushedMoveRequests:requestsCopy];
   [v7 setDelegate:self];
-  v32 = [v7 taskID];
+  taskID = [v7 taskID];
   v8 = objc_opt_new();
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v9 = v6;
+  v9 = requestsCopy;
   v10 = [v9 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v10)
   {
@@ -566,13 +566,13 @@ LABEL_9:
         }
 
         v15 = *(*(&v39 + 1) + 8 * i);
-        v16 = [v15 message];
-        if (v16)
+        message = [v15 message];
+        if (message)
         {
-          [v8 addObject:v16];
-          v17 = [v15 fromFolder];
+          [v8 addObject:message];
+          fromFolder = [v15 fromFolder];
 
-          v12 = v17;
+          v12 = fromFolder;
         }
       }
 
@@ -589,12 +589,12 @@ LABEL_9:
 
   if ([v8 count])
   {
-    v18 = [MEMORY[0x277D07AF0] sharedConnection];
-    v19 = [(ASClientAccount *)self accountID];
-    [v18 asyncProcessMeetingRequests:0 deliveryIdsToClear:v8 deliveryIdsToSoftClear:0 inFolderWithId:v12 forAccountWithId:v19];
+    mEMORY[0x277D07AF0] = [MEMORY[0x277D07AF0] sharedConnection];
+    accountID = [(ASClientAccount *)self accountID];
+    [mEMORY[0x277D07AF0] asyncProcessMeetingRequests:0 deliveryIdsToClear:v8 deliveryIdsToSoftClear:0 inFolderWithId:v12 forAccountWithId:accountID];
   }
 
-  v33 = self;
+  selfCopy = self;
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
@@ -615,10 +615,10 @@ LABEL_9:
         }
 
         v25 = *(*(&v35 + 1) + 8 * j);
-        v26 = [v25 message];
-        v27 = [v25 fromFolder];
-        v28 = [v25 toFolder];
-        [v7 addSourceID:v26 sourceFolder:v27 destinatonFolder:v28];
+        message2 = [v25 message];
+        fromFolder2 = [v25 fromFolder];
+        toFolder = [v25 toFolder];
+        [v7 addSourceID:message2 sourceFolder:fromFolder2 destinatonFolder:toFolder];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v35 objects:v43 count:16];
@@ -627,64 +627,64 @@ LABEL_9:
     while (v22);
   }
 
-  [(ASClientAccount *)v33 setConsumer:v34 forTask:v7];
-  v29 = [(ASAccount *)v33 taskManager];
-  [v29 submitQueuedTask:v7];
+  [(ASClientAccount *)selfCopy setConsumer:consumerCopy forTask:v7];
+  taskManager = [(ASAccount *)selfCopy taskManager];
+  [taskManager submitQueuedTask:v7];
 
   v30 = *MEMORY[0x277D85DE8];
-  return v32;
+  return taskID;
 }
 
-- (int)performFetchAttachmentRequest:(id)a3 consumer:(id)a4
+- (int)performFetchAttachmentRequest:(id)request consumer:(id)consumer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 attachmentName];
+  requestCopy = request;
+  consumerCopy = consumer;
+  attachmentName = [requestCopy attachmentName];
 
-  if (!v9)
+  if (!attachmentName)
   {
     [ASClientAccount performFetchAttachmentRequest:a2 consumer:self];
   }
 
-  v10 = [(ASAccount *)self protocol];
-  v11 = [v10 fetchAttachmentsWithItemOperations];
+  protocol = [(ASAccount *)self protocol];
+  fetchAttachmentsWithItemOperations = [protocol fetchAttachmentsWithItemOperations];
 
   v12 = off_278FC6E40;
-  if (!v11)
+  if (!fetchAttachmentsWithItemOperations)
   {
     v12 = off_278FC6DB8;
   }
 
   v13 = objc_alloc(*v12);
-  v14 = [v7 messageID];
-  v15 = [v7 attachmentName];
-  v16 = [v13 initForMessageServerID:v14 andAttachmentName:v15];
+  messageID = [requestCopy messageID];
+  attachmentName2 = [requestCopy attachmentName];
+  v16 = [v13 initForMessageServerID:messageID andAttachmentName:attachmentName2];
 
-  LODWORD(v14) = [v16 taskID];
+  LODWORD(messageID) = [v16 taskID];
   [v16 setDelegate:self];
-  [(ASClientAccount *)self setConsumer:v8 forTask:v16];
+  [(ASClientAccount *)self setConsumer:consumerCopy forTask:v16];
 
-  v17 = [(ASAccount *)self taskManager];
-  [v17 submitQueuedTask:v16];
+  taskManager = [(ASAccount *)self taskManager];
+  [taskManager submitQueuedTask:v16];
 
-  return v14;
+  return messageID;
 }
 
-- (int)performFetchMessageSearchResultRequests:(id)a3 consumer:(id)a4
+- (int)performFetchMessageSearchResultRequests:(id)requests consumer:(id)consumer
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v27 = a4;
+  requestsCopy = requests;
+  consumerCopy = consumer;
   v7 = objc_opt_new();
-  v26 = [v7 taskID];
-  v28 = self;
+  taskID = [v7 taskID];
+  selfCopy = self;
   [v7 setDelegate:self];
-  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(requestsCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v6;
+  obj = requestsCopy;
   v9 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v9)
   {
@@ -700,28 +700,28 @@ LABEL_9:
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v14 = [v7 mimeSupport];
-        v15 = [v13 bodyFormat];
-        if (v14 == -1)
+        mimeSupport = [v7 mimeSupport];
+        bodyFormat = [v13 bodyFormat];
+        if (mimeSupport == -1)
         {
-          [v7 setMIMESupport:v15];
+          [v7 setMIMESupport:bodyFormat];
         }
 
-        else if (v15 != -1)
+        else if (bodyFormat != -1)
         {
-          v16 = [v7 mimeSupport];
-          if (v16 != [v13 bodyFormat])
+          mimeSupport2 = [v7 mimeSupport];
+          if (mimeSupport2 != [v13 bodyFormat])
           {
-            [(ASClientAccount *)a2 performFetchMessageSearchResultRequests:v28 consumer:obj];
+            [(ASClientAccount *)a2 performFetchMessageSearchResultRequests:selfCopy consumer:obj];
           }
         }
 
         [v7 setBodyTruncationBytes:{objc_msgSend(v13, "maxSize")}];
         v17 = [ASItemOperationsFetchCommand alloc];
-        v18 = [v13 folderID];
-        v19 = [v13 serverID];
-        v20 = [v13 longID];
-        v21 = [(ASItemOperationsFetchCommand *)v17 initWithCollectionID:v18 withServerID:v19 withLongID:v20];
+        folderID = [v13 folderID];
+        serverID = [v13 serverID];
+        longID = [v13 longID];
+        v21 = [(ASItemOperationsFetchCommand *)v17 initWithCollectionID:folderID withServerID:serverID withLongID:longID];
 
         [v8 addObject:v21];
       }
@@ -733,71 +733,71 @@ LABEL_9:
   }
 
   [v7 setCommands:v8];
-  [(ASClientAccount *)v28 setConsumer:v27 forTask:v7];
-  v22 = [(ASAccount *)v28 taskManager];
-  [v22 submitQueuedTask:v7];
+  [(ASClientAccount *)selfCopy setConsumer:consumerCopy forTask:v7];
+  taskManager = [(ASAccount *)selfCopy taskManager];
+  [taskManager submitQueuedTask:v7];
 
   v23 = *MEMORY[0x277D85DE8];
-  return v26;
+  return taskID;
 }
 
-- (void)resolveRecipientsTask:(id)a3 completedWithStatus:(int64_t)a4 error:(id)a5 queriedEmailAddressToRecpient:(id)a6
+- (void)resolveRecipientsTask:(id)task completedWithStatus:(int64_t)status error:(id)error queriedEmailAddressToRecpient:(id)recpient
 {
-  v14 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(ASClientAccount *)self consumerForTask:v14];
+  taskCopy = task;
+  errorCopy = error;
+  recpientCopy = recpient;
+  v12 = [(ASClientAccount *)self consumerForTask:taskCopy];
   v13 = v12;
-  if (a4 == 2)
+  if (status == 2)
   {
-    [v12 resolvedRecipientsByEmailAddress:v11];
+    [v12 resolvedRecipientsByEmailAddress:recpientCopy];
   }
 
   else
   {
-    [v12 actionFailed:a4 forTask:v14 error:v10];
+    [v12 actionFailed:status forTask:taskCopy error:errorCopy];
   }
 }
 
-- (int)performResolveRecipientsRequest:(id)a3 consumer:(id)a4
+- (int)performResolveRecipientsRequest:(id)request consumer:(id)consumer
 {
-  v6 = a4;
-  v7 = a3;
+  consumerCopy = consumer;
+  requestCopy = request;
   v8 = [ASResolveRecipientsTask alloc];
-  v9 = [v7 emailAddresses];
+  emailAddresses = [requestCopy emailAddresses];
 
-  v10 = [(ASResolveRecipientsTask *)v8 initForCertificatesWithEmailAddresses:v9];
+  v10 = [(ASResolveRecipientsTask *)v8 initForCertificatesWithEmailAddresses:emailAddresses];
   LODWORD(v8) = [v10 taskID];
   [v10 setDelegate:self];
-  [(ASClientAccount *)self setConsumer:v6 forTask:v10];
+  [(ASClientAccount *)self setConsumer:consumerCopy forTask:v10];
 
-  v11 = [(ASAccount *)self taskManager];
-  [v11 submitQueuedTask:v10];
+  taskManager = [(ASAccount *)self taskManager];
+  [taskManager submitQueuedTask:v10];
 
   return v8;
 }
 
-- (void)performFolderChange:(id)a3
+- (void)performFolderChange:(id)change
 {
   v4 = MEMORY[0x277D07AF0];
-  v5 = a3;
-  v6 = [v4 sharedConnection];
-  v7 = [(ASClientAccount *)self accountID];
-  [v6 processFolderChange:v5 forAccountWithID:v7];
+  changeCopy = change;
+  sharedConnection = [v4 sharedConnection];
+  accountID = [(ASClientAccount *)self accountID];
+  [sharedConnection processFolderChange:changeCopy forAccountWithID:accountID];
 
   [(ASClientAccount *)self clearFolderHierarchyCache];
 }
 
-- (id)_copySetFlagsActionForRequest:(id)a3
+- (id)_copySetFlagsActionForRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 onFlags];
-  v5 = [v3 offFlags];
-  if (((v4 | v5) & 3) != 0)
+  requestCopy = request;
+  onFlags = [requestCopy onFlags];
+  offFlags = [requestCopy offFlags];
+  if (((onFlags | offFlags) & 3) != 0)
   {
     v6 = [ASEmailChangeFlagsAction alloc];
-    v7 = [v3 messageID];
-    v8 = [(ASEmailChangeFlagsAction *)v6 initWithServerID:v7 read:v4 & 1 flagged:(v4 >> 1) & 1 changedFlags:v5 | v4];
+    messageID = [requestCopy messageID];
+    v8 = [(ASEmailChangeFlagsAction *)v6 initWithServerID:messageID read:onFlags & 1 flagged:(onFlags >> 1) & 1 changedFlags:offFlags | onFlags];
   }
 
   else
@@ -812,13 +812,13 @@ LABEL_9:
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(ASAccount *)self _visibleASFolders];
+  _visibleASFolders = [(ASAccount *)self _visibleASFolders];
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = _visibleASFolders;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {

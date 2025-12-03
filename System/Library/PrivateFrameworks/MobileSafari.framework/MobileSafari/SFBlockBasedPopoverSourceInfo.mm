@@ -2,7 +2,7 @@
 - (BOOL)shouldHideArrow;
 - (BOOL)shouldPassthroughSuperview;
 - (CGRect)popoverSourceRect;
-- (SFBlockBasedPopoverSourceInfo)initWithSourceInfoProvider:(id)a3;
+- (SFBlockBasedPopoverSourceInfo)initWithSourceInfoProvider:(id)provider;
 - (UIBarButtonItem)barButtonItem;
 - (UIView)popoverSourceView;
 - (UIView)zoomTransitionSourceView;
@@ -12,15 +12,15 @@
 
 @implementation SFBlockBasedPopoverSourceInfo
 
-- (SFBlockBasedPopoverSourceInfo)initWithSourceInfoProvider:(id)a3
+- (SFBlockBasedPopoverSourceInfo)initWithSourceInfoProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = SFBlockBasedPopoverSourceInfo;
   v5 = [(SFBlockBasedPopoverSourceInfo *)&v10 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(providerCopy);
     sourceInfoProvider = v5->_sourceInfoProvider;
     v5->_sourceInfoProvider = v6;
 
@@ -35,15 +35,15 @@
   v2 = (*(self->_sourceInfoProvider + 2))();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 barButtonItem];
+    barButtonItem = [v2 barButtonItem];
   }
 
   else
   {
-    v3 = 0;
+    barButtonItem = 0;
   }
 
-  return v3;
+  return barButtonItem;
 }
 
 - (UIView)popoverSourceView
@@ -51,15 +51,15 @@
   v2 = (*(self->_sourceInfoProvider + 2))();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 popoverSourceView];
+    popoverSourceView = [v2 popoverSourceView];
   }
 
   else
   {
-    v3 = 0;
+    popoverSourceView = 0;
   }
 
-  return v3;
+  return popoverSourceView;
 }
 
 - (UIView)zoomTransitionSourceView
@@ -67,15 +67,15 @@
   v2 = (*(self->_sourceInfoProvider + 2))();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 zoomTransitionSourceView];
+    zoomTransitionSourceView = [v2 zoomTransitionSourceView];
   }
 
   else
   {
-    v3 = 0;
+    zoomTransitionSourceView = 0;
   }
 
-  return v3;
+  return zoomTransitionSourceView;
 }
 
 - (CGRect)popoverSourceRect
@@ -114,15 +114,15 @@
   v2 = (*(self->_sourceInfoProvider + 2))();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 shouldPassthroughSuperview];
+    shouldPassthroughSuperview = [v2 shouldPassthroughSuperview];
   }
 
   else
   {
-    v3 = 0;
+    shouldPassthroughSuperview = 0;
   }
 
-  return v3;
+  return shouldPassthroughSuperview;
 }
 
 - (BOOL)shouldHideArrow
@@ -130,15 +130,15 @@
   v2 = (*(self->_sourceInfoProvider + 2))();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 shouldHideArrow];
+    shouldHideArrow = [v2 shouldHideArrow];
   }
 
   else
   {
-    v3 = 0;
+    shouldHideArrow = 0;
   }
 
-  return v3;
+  return shouldHideArrow;
 }
 
 - (unint64_t)permittedArrowDirections
@@ -146,15 +146,15 @@
   v2 = (*(self->_sourceInfoProvider + 2))();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 permittedArrowDirections];
+    permittedArrowDirections = [v2 permittedArrowDirections];
   }
 
   else
   {
-    v3 = 15;
+    permittedArrowDirections = 15;
   }
 
-  return v3;
+  return permittedArrowDirections;
 }
 
 - (int64_t)provenance
@@ -162,15 +162,15 @@
   v2 = (*(self->_sourceInfoProvider + 2))();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 provenance];
+    provenance = [v2 provenance];
   }
 
   else
   {
-    v3 = 0;
+    provenance = 0;
   }
 
-  return v3;
+  return provenance;
 }
 
 @end

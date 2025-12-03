@@ -1,22 +1,22 @@
 @interface HDCloudSyncAddSharingParticipantOperation
 - (BOOL)requireExistingRelationship;
 - (CKShareParticipant)participant;
-- (HDCloudSyncAddSharingParticipantOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
+- (HDCloudSyncAddSharingParticipantOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
 - (NSArray)zoneIdentifiers;
-- (void)_foundOwnerParticipant:(uint64_t)a1;
+- (void)_foundOwnerParticipant:(uint64_t)participant;
 - (void)main;
-- (void)setParticipant:(id)a3;
-- (void)setRequireExistingRelationship:(BOOL)a3;
-- (void)setZoneIdentifiers:(id)a3;
+- (void)setParticipant:(id)participant;
+- (void)setRequireExistingRelationship:(BOOL)relationship;
+- (void)setZoneIdentifiers:(id)identifiers;
 @end
 
 @implementation HDCloudSyncAddSharingParticipantOperation
 
-- (HDCloudSyncAddSharingParticipantOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncAddSharingParticipantOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v15.receiver = self;
   v15.super_class = HDCloudSyncAddSharingParticipantOperation;
-  v4 = [(HDCloudSyncOperation *)&v15 initWithConfiguration:a3 cloudState:a4];
+  v4 = [(HDCloudSyncOperation *)&v15 initWithConfiguration:configuration cloudState:state];
   v5 = v4;
   if (v4)
   {
@@ -53,18 +53,18 @@
   return v3;
 }
 
-- (void)setParticipant:(id)a3
+- (void)setParticipant:(id)participant
 {
-  v5 = a3;
+  participantCopy = participant;
   if ([(HDCloudSyncOperation *)self status])
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDCloudSyncAddSharingParticipantOperation.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncAddSharingParticipantOperation.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
   participant = self->_participant;
-  self->_participant = v5;
+  self->_participant = participantCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -78,17 +78,17 @@
   return v3;
 }
 
-- (void)setZoneIdentifiers:(id)a3
+- (void)setZoneIdentifiers:(id)identifiers
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   if ([(HDCloudSyncOperation *)self status])
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDCloudSyncAddSharingParticipantOperation.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncAddSharingParticipantOperation.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [v5 copy];
+  v6 = [identifiersCopy copy];
 
   zoneIdentifiers = self->_zoneIdentifiers;
   self->_zoneIdentifiers = v6;
@@ -104,29 +104,29 @@
   return requireExistingRelationship;
 }
 
-- (void)setRequireExistingRelationship:(BOOL)a3
+- (void)setRequireExistingRelationship:(BOOL)relationship
 {
   if ([(HDCloudSyncOperation *)self status])
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HDCloudSyncAddSharingParticipantOperation.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncAddSharingParticipantOperation.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  self->_requireExistingRelationship = a3;
+  self->_requireExistingRelationship = relationship;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (void)main
 {
-  v2 = self;
+  selfCopy8 = self;
   v172 = *MEMORY[0x277D85DE8];
   participant = self->_participant;
   if (!participant)
   {
     v150 = [MEMORY[0x277CCA9B8] hk_errorForNilArgument:@"_participant" class:objc_opt_class() selector:a2];
-    [(HDCloudSyncOperation *)v2 finishWithSuccess:0 error:?];
+    [(HDCloudSyncOperation *)selfCopy8 finishWithSuccess:0 error:?];
     v23 = *MEMORY[0x277D85DE8];
 
     return;
@@ -138,7 +138,7 @@
     memset(v161, 0, sizeof(v161));
     v162 = 0u;
     v163 = 0u;
-    obj = v2->_zoneIdentifiers;
+    obj = selfCopy8->_zoneIdentifiers;
     v4 = [(NSArray *)obj countByEnumeratingWithState:v161 objects:v159 count:16];
     if (!v4)
     {
@@ -158,11 +158,11 @@
 
         v8 = *(*&v161[8] + 8 * i);
         v9 = [HDCloudSyncCachedZone alloc];
-        v10 = [(HDCloudSyncOperation *)v2 configuration];
-        v11 = [v10 repository];
-        v12 = [(HDCloudSyncOperation *)v2 configuration];
-        v13 = [v12 accessibilityAssertion];
-        v14 = [(HDCloudSyncCachedZone *)v9 initForZoneIdentifier:v8 repository:v11 accessibilityAssertion:v13];
+        configuration = [(HDCloudSyncOperation *)selfCopy8 configuration];
+        repository = [configuration repository];
+        configuration2 = [(HDCloudSyncOperation *)selfCopy8 configuration];
+        accessibilityAssertion = [configuration2 accessibilityAssertion];
+        v14 = [(HDCloudSyncCachedZone *)v9 initForZoneIdentifier:v8 repository:repository accessibilityAssertion:accessibilityAssertion];
 
         *buf = 0;
         v15 = [v14 zoneShareWithError:buf];
@@ -202,18 +202,18 @@
 
         if (v15)
         {
-          v19 = [v15 participants];
-          v20 = [v19 containsObject:v146];
+          participants = [v15 participants];
+          v20 = [participants containsObject:v146];
 
           if (v20)
           {
 
-            v2 = self;
+            selfCopy8 = self;
             goto LABEL_26;
           }
         }
 
-        v2 = self;
+        selfCopy8 = self;
       }
 
       v5 = [(NSArray *)obj countByEnumeratingWithState:v161 objects:v159 count:16];
@@ -221,8 +221,8 @@
       {
 LABEL_17:
 
-        v21 = [MEMORY[0x277CCA9B8] hk_error:707 format:{@"Participant not found on any zones: %@", v2->_participant}];
-        [(HDCloudSyncOperation *)v2 finishWithSuccess:0 error:v21];
+        v21 = [MEMORY[0x277CCA9B8] hk_error:707 format:{@"Participant not found on any zones: %@", selfCopy8->_participant}];
+        [(HDCloudSyncOperation *)selfCopy8 finishWithSuccess:0 error:v21];
 
         v22 = 0;
 LABEL_24:
@@ -233,17 +233,17 @@ LABEL_24:
   }
 
 LABEL_26:
-  [(HDSynchronousTaskGroup *)v2->_taskGroup beginTask];
+  [(HDSynchronousTaskGroup *)selfCopy8->_taskGroup beginTask];
   v153 = 0u;
   v154 = 0u;
   v155 = 0u;
   v156 = 0u;
-  v27 = [(HDCloudSyncOperation *)v2 configuration];
-  v28 = [v27 repository];
-  v29 = [v28 allCKContainers];
+  configuration3 = [(HDCloudSyncOperation *)selfCopy8 configuration];
+  repository2 = [configuration3 repository];
+  allCKContainers = [repository2 allCKContainers];
 
-  v131 = v29;
-  v133 = [v29 countByEnumeratingWithState:&v153 objects:v158 count:16];
+  v131 = allCKContainers;
+  v133 = [allCKContainers countByEnumeratingWithState:&v153 objects:v158 count:16];
   if (!v133)
   {
     goto LABEL_109;
@@ -263,14 +263,14 @@ LABEL_26:
 
       v134 = v31;
       v32 = *(*(&v153 + 1) + 8 * v31);
-      [(HDSynchronousTaskGroup *)v2->_taskGroup beginTask];
-      v137 = v2->_participant;
+      [(HDSynchronousTaskGroup *)selfCopy8->_taskGroup beginTask];
+      v137 = selfCopy8->_participant;
       v33 = v32;
       v135 = objc_alloc_init(MEMORY[0x277CBEB38]);
       memset(v161, 0, sizeof(v161));
       v162 = 0u;
       v163 = 0u;
-      v147 = v2->_zoneIdentifiers;
+      v147 = selfCopy8->_zoneIdentifiers;
       v34 = [(NSArray *)v147 countByEnumeratingWithState:v161 objects:v159 count:16];
       if (v34)
       {
@@ -289,20 +289,20 @@ LABEL_26:
             }
 
             v38 = *(*&v161[8] + 8 * v37);
-            v39 = [v38 containerIdentifier];
-            v40 = [v33 containerIdentifier];
-            v41 = [v39 isEqualToString:v40];
+            containerIdentifier = [v38 containerIdentifier];
+            containerIdentifier2 = [v33 containerIdentifier];
+            v41 = [containerIdentifier isEqualToString:containerIdentifier2];
 
             if (v41)
             {
               v42 = objc_alloc(*(v30 + 2856));
-              v43 = [(HDCloudSyncOperation *)v2 configuration];
-              v44 = [v43 repository];
-              v45 = [(HDCloudSyncOperation *)v2 configuration];
-              v46 = [v45 accessibilityAssertion];
-              v47 = [v42 initForZoneIdentifier:v38 repository:v44 accessibilityAssertion:v46];
+              configuration4 = [(HDCloudSyncOperation *)selfCopy8 configuration];
+              repository3 = [configuration4 repository];
+              configuration5 = [(HDCloudSyncOperation *)selfCopy8 configuration];
+              accessibilityAssertion2 = [configuration5 accessibilityAssertion];
+              v47 = [v42 initForZoneIdentifier:v38 repository:repository3 accessibilityAssertion:accessibilityAssertion2];
 
-              v2 = self;
+              selfCopy8 = self;
               if ([v47 zoneType] != 4)
               {
                 v157 = 0;
@@ -336,21 +336,21 @@ LABEL_26:
                 if (!v48)
                 {
                   v51 = objc_alloc(MEMORY[0x277CBC680]);
-                  v52 = [v38 zoneIdentifier];
-                  v48 = [v51 initWithRecordZoneID:v52];
+                  zoneIdentifier = [v38 zoneIdentifier];
+                  v48 = [v51 initWithRecordZoneID:zoneIdentifier];
                 }
 
                 v53 = v137;
                 v54 = v38;
                 v55 = v48;
-                v56 = [v55 participants];
+                participants2 = [v55 participants];
                 *v169 = MEMORY[0x277D85DD0];
                 *&v169[8] = 3221225472;
                 *&v169[16] = __90__HDCloudSyncAddSharingParticipantOperation__addParticipantIfNeeded_zoneIdentifier_share___block_invoke;
                 v170 = &unk_27861A858;
                 v57 = v53;
                 v171 = v57;
-                v58 = [v56 hk_firstObjectPassingTest:v169];
+                v58 = [participants2 hk_firstObjectPassingTest:v169];
 
                 if (v58 && (v59 = v58, v60 = [v59 acceptanceStatus], v61 = objc_msgSend(v59, "permission"), v59, v60 == 2) && v61 == 3)
                 {
@@ -359,7 +359,7 @@ LABEL_26:
                   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138543874;
-                    v2 = self;
+                    selfCopy8 = self;
                     *&buf[4] = self;
                     v165 = 2114;
                     v166 = v54;
@@ -372,20 +372,20 @@ LABEL_26:
                   else
                   {
                     v63 = 0;
-                    v2 = self;
+                    selfCopy8 = self;
                   }
                 }
 
                 else
                 {
                   v63 = [(CKShareParticipant *)v57 copy];
-                  v64 = [MEMORY[0x277CCAD78] UUID];
-                  v65 = [v64 UUIDString];
-                  [v63 setParticipantID:v65];
+                  uUID = [MEMORY[0x277CCAD78] UUID];
+                  uUIDString = [uUID UUIDString];
+                  [v63 setParticipantID:uUIDString];
 
                   [v63 setPermission:3];
                   [v55 addParticipant:v63];
-                  v2 = self;
+                  selfCopy8 = self;
                   os_unfair_lock_lock(&self->_lock);
                   [(NSMutableArray *)self->_clonedParticipants addObject:v63];
                   os_unfair_lock_unlock(&self->_lock);
@@ -398,7 +398,7 @@ LABEL_26:
                   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
                   {
                     *v169 = 138543874;
-                    *&v169[4] = v2;
+                    *&v169[4] = selfCopy8;
                     *&v169[12] = 2114;
                     *&v169[14] = v54;
                     *&v169[22] = 2114;
@@ -409,8 +409,8 @@ LABEL_26:
                   [v135 setObject:v55 forKeyedSubscript:v54];
                 }
 
-                v67 = [v55 owner];
-                [(HDCloudSyncAddSharingParticipantOperation *)v2 _foundOwnerParticipant:v67];
+                owner = [v55 owner];
+                [(HDCloudSyncAddSharingParticipantOperation *)selfCopy8 _foundOwnerParticipant:owner];
 
                 v30 = 0x27860D000;
               }
@@ -443,36 +443,36 @@ LABEL_62:
       v74 = v73;
       if (!v70 && v73)
       {
-        [(HDSynchronousTaskGroup *)v2->_taskGroup failTaskWithError:v73];
+        [(HDSynchronousTaskGroup *)selfCopy8->_taskGroup failTaskWithError:v73];
         goto LABEL_107;
       }
 
-      v75 = [v70 allValues];
-      v76 = [v75 count];
+      allValues = [v70 allValues];
+      v76 = [allValues count];
 
       if (!v76)
       {
-        [(HDSynchronousTaskGroup *)v2->_taskGroup finishTask];
+        [(HDSynchronousTaskGroup *)selfCopy8->_taskGroup finishTask];
         goto LABEL_107;
       }
 
-      v77 = [v70 allValues];
+      allValues2 = [v70 allValues];
       v78 = v33;
-      v79 = [(HDCloudSyncOperation *)v2 configuration];
-      v80 = [v79 repository];
+      configuration6 = [(HDCloudSyncOperation *)selfCopy8 configuration];
+      repository4 = [configuration6 repository];
 
-      v81 = [v80 behavior];
-      v82 = [v81 tinkerModeEnabled];
+      behavior = [repository4 behavior];
+      tinkerModeEnabled = [behavior tinkerModeEnabled];
 
-      if (v82)
+      if (tinkerModeEnabled)
       {
-        objb = v77;
-        v83 = v80;
+        objb = allValues2;
+        v83 = repository4;
         v84 = v78;
-        v85 = [(HDCloudSyncOperation *)v2 configuration];
-        v86 = [v85 cachedCloudState];
+        configuration7 = [(HDCloudSyncOperation *)selfCopy8 configuration];
+        cachedCloudState = [configuration7 cachedCloudState];
         *v169 = 0;
-        v87 = [v86 zonesByIdentifierWithError:v169];
+        v87 = [cachedCloudState zonesByIdentifierWithError:v169];
         v88 = *v169;
 
         v148 = v87;
@@ -483,21 +483,21 @@ LABEL_62:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             *v161 = 138543618;
-            *&v161[4] = v2;
+            *&v161[4] = selfCopy8;
             *&v161[12] = 2114;
             *&v161[14] = v88;
             _os_log_error_impl(&dword_228986000, v89, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get cached unified zone, %{public}@", v161, 0x16u);
           }
 
-          v90 = 0;
+          record = 0;
           v78 = v84;
-          v80 = v83;
-          v77 = objb;
+          repository4 = v83;
+          allValues2 = objb;
           goto LABEL_103;
         }
 
         v140 = v88;
-        v91 = [v87 allValues];
+        allValues3 = [v87 allValues];
         v159[0] = MEMORY[0x277D85DD0];
         v159[1] = 3221225472;
         v159[2] = __88__HDCloudSyncAddSharingParticipantOperation__updatedRegistryRecordIfNeededForContainer___block_invoke;
@@ -505,9 +505,9 @@ LABEL_62:
         v78 = v84;
         v92 = v84;
         v160 = v92;
-        v93 = [v91 hk_filter:v159];
+        v93 = [allValues3 hk_filter:v159];
 
-        v80 = v83;
+        repository4 = v83;
         v142 = v93;
         if ([v93 count] >= 2)
         {
@@ -516,15 +516,15 @@ LABEL_62:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
           {
             v120 = v94;
-            v121 = [v92 containerIdentifier];
-            v122 = [v80 profileIdentifier];
-            v123 = HDDatabaseForContainer(v92, v122);
+            containerIdentifier3 = [v92 containerIdentifier];
+            profileIdentifier = [repository4 profileIdentifier];
+            v123 = HDDatabaseForContainer(v92, profileIdentifier);
             [v123 databaseScope];
             v124 = CKDatabaseScopeString();
             *v161 = 138543874;
             *&v161[4] = self;
             *&v161[12] = 2114;
-            *&v161[14] = v121;
+            *&v161[14] = containerIdentifier3;
             *&v161[22] = 2114;
             *&v161[24] = v124;
             _os_log_fault_impl(&dword_228986000, v120, OS_LOG_TYPE_FAULT, "%{public}@ Retrieved multiple cached unified zone for container %{public}@, database %{public}@. This is unexpected.", v161, 0x20u);
@@ -534,9 +534,9 @@ LABEL_62:
           }
         }
 
-        v95 = [v93 firstObject];
-        v77 = objb;
-        if (!v95)
+        firstObject = [v93 firstObject];
+        allValues2 = objb;
+        if (!firstObject)
         {
           _HKInitializeLogging();
           v100 = *MEMORY[0x277CCC328];
@@ -547,13 +547,13 @@ LABEL_62:
             _os_log_error_impl(&dword_228986000, v100, OS_LOG_TYPE_ERROR, "%{public}@ Unified zone does not exist.", v161, 0xCu);
           }
 
-          v90 = 0;
+          record = 0;
           goto LABEL_102;
         }
 
         v96 = objc_opt_class();
         *buf = 0;
-        v97 = [v95 recordsForClass:v96 error:buf];
+        v97 = [firstObject recordsForClass:v96 error:buf];
         v98 = *buf;
         v136 = v97;
         v138 = v98;
@@ -564,22 +564,22 @@ LABEL_62:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             v125 = v99;
-            v126 = [v95 zoneIdentifier];
+            zoneIdentifier2 = [firstObject zoneIdentifier];
             *v161 = 138543874;
             *&v161[4] = self;
             *&v161[12] = 2114;
-            *&v161[14] = v126;
+            *&v161[14] = zoneIdentifier2;
             *&v161[22] = 2114;
             *&v161[24] = v138;
             _os_log_error_impl(&dword_228986000, v125, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get registry records for %{public}@, %{public}@", v161, 0x20u);
           }
 
-          v90 = 0;
+          record = 0;
 LABEL_101:
           v88 = v140;
 
 LABEL_102:
-          v2 = self;
+          selfCopy8 = self;
 LABEL_103:
 
           goto LABEL_104;
@@ -592,7 +592,7 @@ LABEL_103:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
           {
             v127 = v101;
-            [v95 zoneIdentifier];
+            [firstObject zoneIdentifier];
             v129 = v128 = v97;
             *v161 = 138543618;
             *&v161[4] = self;
@@ -604,55 +604,55 @@ LABEL_103:
           }
         }
 
-        v102 = [v97 firstObject];
-        if (v102)
+        firstObject2 = [v97 firstObject];
+        if (firstObject2)
         {
-          v103 = v102;
-          v104 = [v102 sharedProfileIdentifier];
-          if (v104)
+          v103 = firstObject2;
+          sharedProfileIdentifier = [firstObject2 sharedProfileIdentifier];
+          if (sharedProfileIdentifier)
           {
-            v105 = v104;
-            v106 = [v103 ownerProfileIdentifier];
+            v105 = sharedProfileIdentifier;
+            ownerProfileIdentifier = [v103 ownerProfileIdentifier];
 
-            if (v106)
+            if (ownerProfileIdentifier)
             {
-              v90 = 0;
+              record = 0;
               goto LABEL_99;
             }
           }
 
-          v107 = [v103 ownerProfileIdentifier];
+          ownerProfileIdentifier2 = [v103 ownerProfileIdentifier];
 
-          if (!v107)
+          if (!ownerProfileIdentifier2)
           {
-            v108 = [v80 profileIdentifier];
-            [v103 setOwnerProfileIdentifier:v108];
+            profileIdentifier2 = [repository4 profileIdentifier];
+            [v103 setOwnerProfileIdentifier:profileIdentifier2];
           }
 
-          v109 = [v103 sharedProfileIdentifier];
+          sharedProfileIdentifier2 = [v103 sharedProfileIdentifier];
 
           v30 = 0x27860D000;
-          if (!v109)
+          if (!sharedProfileIdentifier2)
           {
-            v110 = [v80 profileIdentifier];
-            v111 = [HDCloudSyncRegistryRecord sharedProfileIdentifierForOwnerProfileIdentifier:v110];
+            profileIdentifier3 = [repository4 profileIdentifier];
+            v111 = [HDCloudSyncRegistryRecord sharedProfileIdentifierForOwnerProfileIdentifier:profileIdentifier3];
             [v103 setSharedProfileIdentifier:v111];
 
             v30 = 0x27860D000;
           }
 
-          v90 = [v103 record];
+          record = [v103 record];
         }
 
         else
         {
           v112 = [HDCloudSyncRegistryRecord alloc];
-          v113 = [v95 zoneIdentifier];
-          v114 = [v113 zoneIdentifier];
-          v115 = [v80 profileIdentifier];
-          v103 = [(HDCloudSyncRegistryRecord *)v112 initInZone:v114 ownerProfileIdentifier:v115];
+          zoneIdentifier3 = [firstObject zoneIdentifier];
+          v113ZoneIdentifier = [zoneIdentifier3 zoneIdentifier];
+          profileIdentifier4 = [repository4 profileIdentifier];
+          v103 = [(HDCloudSyncRegistryRecord *)v112 initInZone:v113ZoneIdentifier ownerProfileIdentifier:profileIdentifier4];
 
-          v90 = [v103 record];
+          record = [v103 record];
 LABEL_99:
           v30 = 0x27860D000;
         }
@@ -660,32 +660,32 @@ LABEL_99:
         goto LABEL_101;
       }
 
-      v90 = 0;
+      record = 0;
 LABEL_104:
 
-      if (v90)
+      if (record)
       {
-        v116 = [v77 arrayByAddingObject:v90];
+        v116 = [allValues2 arrayByAddingObject:record];
 
-        v77 = v116;
+        allValues2 = v116;
       }
 
       v117 = [HDCloudSyncModifyRecordsOperation alloc];
-      v118 = [(HDCloudSyncOperation *)v2 configuration];
-      v119 = [(HDCloudSyncModifyRecordsOperation *)v117 initWithConfiguration:v118 container:v78 recordsToSave:v77 recordIDsToDelete:0];
+      configuration8 = [(HDCloudSyncOperation *)selfCopy8 configuration];
+      v119 = [(HDCloudSyncModifyRecordsOperation *)v117 initWithConfiguration:configuration8 container:v78 recordsToSave:allValues2 recordIDsToDelete:0];
 
       [(HDCloudSyncModifyRecordsOperation *)v119 setTreatAnyErrorAsFatal:1];
       v152[0] = MEMORY[0x277D85DD0];
       v152[1] = 3221225472;
       v152[2] = __49__HDCloudSyncAddSharingParticipantOperation_main__block_invoke;
       v152[3] = &unk_278613088;
-      v152[4] = v2;
+      v152[4] = selfCopy8;
       [(HDCloudSyncOperation *)v119 setOnError:v152];
       v151[0] = MEMORY[0x277D85DD0];
       v151[1] = 3221225472;
       v151[2] = __49__HDCloudSyncAddSharingParticipantOperation_main__block_invoke_312;
       v151[3] = &unk_278613060;
-      v151[4] = v2;
+      v151[4] = selfCopy8;
       [(HDCloudSyncOperation *)v119 setOnSuccess:v151];
       [(HDCloudSyncOperation *)v119 start];
 
@@ -700,7 +700,7 @@ LABEL_107:
   while (v133);
 LABEL_109:
 
-  [(HDSynchronousTaskGroup *)v2->_taskGroup finishTask];
+  [(HDSynchronousTaskGroup *)selfCopy8->_taskGroup finishTask];
 LABEL_110:
   v130 = *MEMORY[0x277D85DE8];
 }
@@ -955,17 +955,17 @@ uint64_t __88__HDCloudSyncAddSharingParticipantOperation__updatedRegistryRecordI
   return v7;
 }
 
-- (void)_foundOwnerParticipant:(uint64_t)a1
+- (void)_foundOwnerParticipant:(uint64_t)participant
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = a2;
   v5 = v4;
-  if (!*(a1 + 168))
+  if (!*(participant + 168))
   {
-    v6 = [v4 userIdentity];
-    v7 = [v6 userRecordID];
-    v8 = [v7 recordName];
-    v9 = [v8 isEqualToString:*MEMORY[0x277CBBF28]];
+    userIdentity = [v4 userIdentity];
+    userRecordID = [userIdentity userRecordID];
+    recordName = [userRecordID recordName];
+    v9 = [recordName isEqualToString:*MEMORY[0x277CBBF28]];
 
     _HKInitializeLogging();
     v10 = *MEMORY[0x277CCC328];
@@ -975,7 +975,7 @@ uint64_t __88__HDCloudSyncAddSharingParticipantOperation__updatedRegistryRecordI
       if (v11)
       {
         v13 = 138543618;
-        v14 = a1;
+        participantCopy2 = participant;
         v15 = 2114;
         v16 = v5;
         _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring candidate owner %{public}@ with default record name.", &v13, 0x16u);
@@ -987,13 +987,13 @@ uint64_t __88__HDCloudSyncAddSharingParticipantOperation__updatedRegistryRecordI
       if (v11)
       {
         v13 = 138543618;
-        v14 = a1;
+        participantCopy2 = participant;
         v15 = 2114;
         v16 = v5;
         _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Found owner participant: %{public}@", &v13, 0x16u);
       }
 
-      objc_storeStrong((a1 + 168), a2);
+      objc_storeStrong((participant + 168), a2);
     }
   }
 

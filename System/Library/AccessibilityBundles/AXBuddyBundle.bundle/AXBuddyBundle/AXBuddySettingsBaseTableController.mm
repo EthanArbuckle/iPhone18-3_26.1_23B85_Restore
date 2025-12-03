@@ -1,72 +1,72 @@
 @interface AXBuddySettingsBaseTableController
-- (AXBuddySettingsBaseTableController)initWithCoder:(id)a3;
-- (AXBuddySettingsBaseTableController)initWithNibName:(id)a3 bundle:(id)a4;
-- (AXBuddySettingsBaseTableController)initWithStyle:(int64_t)a3;
-- (BOOL)isItemAtIndexPathSelectable:(id)a3;
+- (AXBuddySettingsBaseTableController)initWithCoder:(id)coder;
+- (AXBuddySettingsBaseTableController)initWithNibName:(id)name bundle:(id)bundle;
+- (AXBuddySettingsBaseTableController)initWithStyle:(int64_t)style;
+- (BOOL)isItemAtIndexPathSelectable:(id)selectable;
 - (id)_baseTableControllerCommonInit;
 - (id)tableSections;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (id)viewControllerForIndexPath:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (id)viewControllerForIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_registerCellClassesIfNecessary;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AXBuddySettingsBaseTableController
 
 - (id)_baseTableControllerCommonInit
 {
-  v3 = [(AXBuddySettingsBaseTableController *)self tableView];
-  [v3 setEstimatedRowHeight:44.0];
+  tableView = [(AXBuddySettingsBaseTableController *)self tableView];
+  [tableView setEstimatedRowHeight:44.0];
 
   v4 = sub_4A24();
-  v5 = [(AXBuddySettingsBaseTableController *)self tableView];
-  [v4 edgeInsetsForTable:v5];
+  tableView2 = [(AXBuddySettingsBaseTableController *)self tableView];
+  [v4 edgeInsetsForTable:tableView2];
   v7 = v6;
 
-  v8 = [(AXBuddySettingsBaseTableController *)self tableView];
-  [v8 setScrollIndicatorInsets:{0.0, 0.0, 0.0, -v7}];
+  tableView3 = [(AXBuddySettingsBaseTableController *)self tableView];
+  [tableView3 setScrollIndicatorInsets:{0.0, 0.0, 0.0, -v7}];
 
   v9 = sub_4A24();
-  v10 = [v9 backgroundColor];
-  v11 = [(AXBuddySettingsBaseTableController *)self tableView];
-  [v11 setBackgroundColor:v10];
+  backgroundColor = [v9 backgroundColor];
+  tableView4 = [(AXBuddySettingsBaseTableController *)self tableView];
+  [tableView4 setBackgroundColor:backgroundColor];
 
   return self;
 }
 
-- (AXBuddySettingsBaseTableController)initWithNibName:(id)a3 bundle:(id)a4
+- (AXBuddySettingsBaseTableController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = AXBuddySettingsBaseTableController;
-  v4 = [(AXBuddySettingsBaseTableController *)&v7 initWithNibName:a3 bundle:a4];
-  v5 = [(AXBuddySettingsBaseTableController *)v4 _baseTableControllerCommonInit];
+  v4 = [(AXBuddySettingsBaseTableController *)&v7 initWithNibName:name bundle:bundle];
+  _baseTableControllerCommonInit = [(AXBuddySettingsBaseTableController *)v4 _baseTableControllerCommonInit];
 
-  return v5;
+  return _baseTableControllerCommonInit;
 }
 
-- (AXBuddySettingsBaseTableController)initWithCoder:(id)a3
+- (AXBuddySettingsBaseTableController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AXBuddySettingsBaseTableController;
-  v3 = [(AXBuddySettingsBaseTableController *)&v6 initWithCoder:a3];
-  v4 = [(AXBuddySettingsBaseTableController *)v3 _baseTableControllerCommonInit];
+  v3 = [(AXBuddySettingsBaseTableController *)&v6 initWithCoder:coder];
+  _baseTableControllerCommonInit = [(AXBuddySettingsBaseTableController *)v3 _baseTableControllerCommonInit];
 
-  return v4;
+  return _baseTableControllerCommonInit;
 }
 
-- (AXBuddySettingsBaseTableController)initWithStyle:(int64_t)a3
+- (AXBuddySettingsBaseTableController)initWithStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = AXBuddySettingsBaseTableController;
-  v3 = [(AXBuddySettingsBaseTableController *)&v6 initWithStyle:a3];
-  v4 = [(AXBuddySettingsBaseTableController *)v3 _baseTableControllerCommonInit];
+  v3 = [(AXBuddySettingsBaseTableController *)&v6 initWithStyle:style];
+  _baseTableControllerCommonInit = [(AXBuddySettingsBaseTableController *)v3 _baseTableControllerCommonInit];
 
-  return v4;
+  return _baseTableControllerCommonInit;
 }
 
 - (id)tableSections
@@ -77,43 +77,43 @@
   return result;
 }
 
-- (id)viewControllerForIndexPath:(id)a3
+- (id)viewControllerForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(AXBuddySettingsBaseTableController *)self tableSections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
-  v7 = [v6 subitems];
-  v8 = [v4 row];
+  pathCopy = path;
+  tableSections = [(AXBuddySettingsBaseTableController *)self tableSections];
+  v6 = [tableSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  subitems = [v6 subitems];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
+  v9 = [subitems objectAtIndexedSubscript:v8];
 
-  v10 = [v9 viewControllerInstantiator];
-  v11 = v10[2]();
+  viewControllerInstantiator = [v9 viewControllerInstantiator];
+  v11 = viewControllerInstantiator[2]();
 
   if (v11)
   {
-    v12 = [v9 name];
-    [v11 setTitle:v12];
+    name = [v9 name];
+    [v11 setTitle:name];
   }
 
   return v11;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(AXBuddySettingsBaseTableController *)self tableSections];
-  v4 = [v3 count];
+  tableSections = [(AXBuddySettingsBaseTableController *)self tableSections];
+  v4 = [tableSections count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(AXBuddySettingsBaseTableController *)self tableSections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  tableSections = [(AXBuddySettingsBaseTableController *)self tableSections];
+  v6 = [tableSections objectAtIndexedSubscript:section];
 
-  v7 = [v6 subitems];
-  v8 = [v7 count];
+  subitems = [v6 subitems];
+  v8 = [subitems count];
 
   return v8;
 }
@@ -147,8 +147,8 @@
           v17 = 0u;
           v18 = 0u;
           v19 = 0u;
-          v8 = [v7 subitems];
-          v9 = [v8 countByEnumeratingWithState:&v16 objects:v24 count:16];
+          subitems = [v7 subitems];
+          v9 = [subitems countByEnumeratingWithState:&v16 objects:v24 count:16];
           if (v9)
           {
             v10 = v9;
@@ -159,15 +159,15 @@
               {
                 if (*v17 != v11)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(subitems);
                 }
 
                 v13 = *(*(&v16 + 1) + 8 * j);
-                v14 = [(AXBuddySettingsBaseTableController *)self tableView];
-                [v13 registerCellClassWithTableView:v14];
+                tableView = [(AXBuddySettingsBaseTableController *)self tableView];
+                [v13 registerCellClassWithTableView:tableView];
               }
 
-              v10 = [v8 countByEnumeratingWithState:&v16 objects:v24 count:16];
+              v10 = [subitems countByEnumeratingWithState:&v16 objects:v24 count:16];
             }
 
             while (v10);
@@ -182,55 +182,55 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   [(AXBuddySettingsBaseTableController *)self _registerCellClassesIfNecessary];
-  v8 = [(AXBuddySettingsBaseTableController *)self tableSections];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  tableSections = [(AXBuddySettingsBaseTableController *)self tableSections];
+  v9 = [tableSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v10 = [v9 subitems];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  subitems = [v9 subitems];
+  v11 = [subitems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v12 = [v11 representativeCellForIndexPath:v6 inTableView:v7];
+  v12 = [v11 representativeCellForIndexPath:pathCopy inTableView:viewCopy];
 
   v13 = +[UIColor systemGroupedBackgroundColor];
   [v12 setBackgroundColor:v13];
 
   LIIconContinuousCornerRadiusForVariant();
   v15 = v14;
-  v16 = [v12 imageView];
-  [v16 _setContinuousCornerRadius:v15];
+  imageView = [v12 imageView];
+  [imageView _setContinuousCornerRadius:v15];
 
-  v17 = [v12 imageView];
-  [v17 setClipsToBounds:1];
+  imageView2 = [v12 imageView];
+  [imageView2 setClipsToBounds:1];
 
   return v12;
 }
 
-- (BOOL)isItemAtIndexPathSelectable:(id)a3
+- (BOOL)isItemAtIndexPathSelectable:(id)selectable
 {
-  v4 = a3;
-  v5 = [(AXBuddySettingsBaseTableController *)self tableSections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
-  v7 = [v6 subitems];
-  v8 = [v4 row];
+  selectableCopy = selectable;
+  tableSections = [(AXBuddySettingsBaseTableController *)self tableSections];
+  v6 = [tableSections objectAtIndexedSubscript:{objc_msgSend(selectableCopy, "section")}];
+  subitems = [v6 subitems];
+  v8 = [selectableCopy row];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
+  v9 = [subitems objectAtIndexedSubscript:v8];
 
   objc_opt_class();
-  LOBYTE(v5) = objc_opt_isKindOfClass();
+  LOBYTE(tableSections) = objc_opt_isKindOfClass();
 
-  return v5 & 1;
+  return tableSections & 1;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(AXBuddySettingsBaseTableController *)self isItemAtIndexPathSelectable:v5])
+  pathCopy = path;
+  if ([(AXBuddySettingsBaseTableController *)self isItemAtIndexPathSelectable:pathCopy])
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
   else
@@ -243,54 +243,54 @@
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v14 = a4;
-  v5 = [(AXBuddySettingsBaseTableController *)self tableView];
-  [v5 deselectRowAtIndexPath:v14 animated:1];
+  pathCopy = path;
+  tableView = [(AXBuddySettingsBaseTableController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
-  if (![(AXBuddySettingsBaseTableController *)self isItemAtIndexPathSelectable:v14])
+  if (![(AXBuddySettingsBaseTableController *)self isItemAtIndexPathSelectable:pathCopy])
   {
     _AXAssert();
   }
 
-  if ([(AXBuddySettingsBaseTableController *)self isItemAtIndexPathSelectable:v14])
+  if ([(AXBuddySettingsBaseTableController *)self isItemAtIndexPathSelectable:pathCopy])
   {
-    v6 = [(AXBuddySettingsBaseTableController *)self tableSections];
-    v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v14, "section")}];
-    v8 = [v7 subitems];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v14, "row")}];
+    tableSections = [(AXBuddySettingsBaseTableController *)self tableSections];
+    v7 = [tableSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+    subitems = [v7 subitems];
+    v9 = [subitems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v10 = [v9 viewControllerInstantiator];
-    v11 = v10[2]();
+    viewControllerInstantiator = [v9 viewControllerInstantiator];
+    v11 = viewControllerInstantiator[2]();
 
     if (v11)
     {
-      v12 = [v9 name];
-      [v11 setTitle:v12];
+      name = [v9 name];
+      [v11 setTitle:name];
 
-      v13 = [(AXBuddySettingsBaseTableController *)self navigationController];
-      [v13 pushViewController:v11 animated:1];
+      navigationController = [(AXBuddySettingsBaseTableController *)self navigationController];
+      [navigationController pushViewController:v11 animated:1];
     }
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(AXBuddySettingsBaseTableController *)self tableSections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
-  v7 = [v6 name];
+  tableSections = [(AXBuddySettingsBaseTableController *)self tableSections];
+  v6 = [tableSections objectAtIndexedSubscript:section];
+  name = [v6 name];
 
-  return v7;
+  return name;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(AXBuddySettingsBaseTableController *)self tableSections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
-  v7 = [v6 footerText];
+  tableSections = [(AXBuddySettingsBaseTableController *)self tableSections];
+  v6 = [tableSections objectAtIndexedSubscript:section];
+  footerText = [v6 footerText];
 
-  return v7;
+  return footerText;
 }
 
 @end

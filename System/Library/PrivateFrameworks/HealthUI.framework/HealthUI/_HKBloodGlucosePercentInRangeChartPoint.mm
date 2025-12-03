@@ -1,29 +1,29 @@
 @interface _HKBloodGlucosePercentInRangeChartPoint
-- (_HKBloodGlucosePercentInRangeChartPoint)initWithStartDate:(id)a3 endDate:(id)a4 userInfo:(id)a5;
+- (_HKBloodGlucosePercentInRangeChartPoint)initWithStartDate:(id)date endDate:(id)endDate userInfo:(id)info;
 - (id)allYValues;
 @end
 
 @implementation _HKBloodGlucosePercentInRangeChartPoint
 
-- (_HKBloodGlucosePercentInRangeChartPoint)initWithStartDate:(id)a3 endDate:(id)a4 userInfo:(id)a5
+- (_HKBloodGlucosePercentInRangeChartPoint)initWithStartDate:(id)date endDate:(id)endDate userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  infoCopy = info;
   v28.receiver = self;
   v28.super_class = _HKBloodGlucosePercentInRangeChartPoint;
   v11 = [(_HKBloodGlucosePercentInRangeChartPoint *)&v28 init];
   if (v11)
   {
-    v12 = HKUIMidDate(v8, v9);
+    v12 = HKUIMidDate(dateCopy, endDateCopy);
     midDate = v11->_midDate;
     v11->_midDate = v12;
 
-    [v10 fractionForClassification:0];
+    [infoCopy fractionForClassification:0];
     v15 = v14;
-    [v10 fractionForClassification:1];
+    [infoCopy fractionForClassification:1];
     v17 = v16;
-    [v10 fractionForClassification:2];
+    [infoCopy fractionForClassification:2];
     v19 = v18;
     v20 = [MEMORY[0x1E696AD98] numberWithDouble:v15];
     fractionBelowUpperLevel2HypoglycemiaBound = v11->_fractionBelowUpperLevel2HypoglycemiaBound;
@@ -38,7 +38,7 @@
     fractionBelowUpperEuglycemiaBound = v11->_fractionBelowUpperEuglycemiaBound;
     v11->_fractionBelowUpperEuglycemiaBound = v25;
 
-    objc_storeStrong(&v11->_userInfo, a5);
+    objc_storeStrong(&v11->_userInfo, info);
   }
 
   return v11;

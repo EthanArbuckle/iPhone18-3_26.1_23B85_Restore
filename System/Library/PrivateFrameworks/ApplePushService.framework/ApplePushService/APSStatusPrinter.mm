@@ -1,16 +1,16 @@
 @interface APSStatusPrinter
 + (id)statusPrinter;
 - (APSStatusPrinter)init;
-- (id)lineWithDescription:(id)a3;
-- (void)appendDescription:(id)a3 BOOLValue:(BOOL)a4;
-- (void)appendDescription:(id)a3 dateValue:(id)a4;
-- (void)appendDescription:(id)a3 enabledValue:(BOOL)a4;
-- (void)appendDescription:(id)a3 longLongValue:(int64_t)a4;
-- (void)appendDescription:(id)a3 stringValue:(id)a4;
-- (void)appendDescription:(id)a3 successRateWithSuccessCount:(unint64_t)a4 failureCount:(unint64_t)a5;
-- (void)appendDescription:(id)a3 timeIntervalValue:(double)a4;
-- (void)appendDescription:(id)a3 unsignedLongLongValue:(unint64_t)a4;
-- (void)appendLine:(id)a3;
+- (id)lineWithDescription:(id)description;
+- (void)appendDescription:(id)description BOOLValue:(BOOL)value;
+- (void)appendDescription:(id)description dateValue:(id)value;
+- (void)appendDescription:(id)description enabledValue:(BOOL)value;
+- (void)appendDescription:(id)description longLongValue:(int64_t)value;
+- (void)appendDescription:(id)description stringValue:(id)value;
+- (void)appendDescription:(id)description successRateWithSuccessCount:(unint64_t)count failureCount:(unint64_t)failureCount;
+- (void)appendDescription:(id)description timeIntervalValue:(double)value;
+- (void)appendDescription:(id)description unsignedLongLongValue:(unint64_t)value;
+- (void)appendLine:(id)line;
 @end
 
 @implementation APSStatusPrinter
@@ -30,9 +30,9 @@
   return v2;
 }
 
-- (id)lineWithDescription:(id)a3
+- (id)lineWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = objc_alloc_init(NSMutableString);
   if (self->_indent)
   {
@@ -46,9 +46,9 @@
     while (v6 < self->_indent);
   }
 
-  if (v4)
+  if (descriptionCopy)
   {
-    v7 = v4;
+    v7 = descriptionCopy;
   }
 
   else
@@ -73,15 +73,15 @@
   return v5;
 }
 
-- (void)appendLine:(id)a3
+- (void)appendLine:(id)line
 {
   s = self->_s;
-  if (!a3)
+  if (!line)
   {
-    a3 = &stru_10018F6A0;
+    line = &stru_10018F6A0;
   }
 
-  [(NSMutableString *)s appendString:a3];
+  [(NSMutableString *)s appendString:line];
   v5 = self->_s;
 
   [(NSMutableString *)v5 appendString:@"\n"];
@@ -94,14 +94,14 @@
   return v2;
 }
 
-- (void)appendDescription:(id)a3 stringValue:(id)a4
+- (void)appendDescription:(id)description stringValue:(id)value
 {
-  v6 = a4;
-  v7 = [(APSStatusPrinter *)self lineWithDescription:a3];
+  valueCopy = value;
+  v7 = [(APSStatusPrinter *)self lineWithDescription:description];
   v9 = v7;
-  if (v6)
+  if (valueCopy)
   {
-    v8 = v6;
+    v8 = valueCopy;
   }
 
   else
@@ -114,12 +114,12 @@
   [(APSStatusPrinter *)self appendLine:v9];
 }
 
-- (void)appendDescription:(id)a3 BOOLValue:(BOOL)a4
+- (void)appendDescription:(id)description BOOLValue:(BOOL)value
 {
-  v4 = a4;
-  v6 = [(APSStatusPrinter *)self lineWithDescription:a3];
+  valueCopy = value;
+  v6 = [(APSStatusPrinter *)self lineWithDescription:description];
   v7 = @"No";
-  if (v4)
+  if (valueCopy)
   {
     v7 = @"Yes";
   }
@@ -129,12 +129,12 @@
   [(APSStatusPrinter *)self appendLine:v8];
 }
 
-- (void)appendDescription:(id)a3 enabledValue:(BOOL)a4
+- (void)appendDescription:(id)description enabledValue:(BOOL)value
 {
-  v4 = a4;
-  v6 = [(APSStatusPrinter *)self lineWithDescription:a3];
+  valueCopy = value;
+  v6 = [(APSStatusPrinter *)self lineWithDescription:description];
   v7 = @"Disabled";
-  if (v4)
+  if (valueCopy)
   {
     v7 = @"Enabled";
   }
@@ -144,44 +144,44 @@
   [(APSStatusPrinter *)self appendLine:v8];
 }
 
-- (void)appendDescription:(id)a3 dateValue:(id)a4
+- (void)appendDescription:(id)description dateValue:(id)value
 {
-  v6 = a4;
-  v8 = [(APSStatusPrinter *)self lineWithDescription:a3];
-  v7 = [APSDatePrinter dateStringFromDate:v6];
+  valueCopy = value;
+  v8 = [(APSStatusPrinter *)self lineWithDescription:description];
+  v7 = [APSDatePrinter dateStringFromDate:valueCopy];
 
   [v8 appendFormat:@"%@", v7];
   [(APSStatusPrinter *)self appendLine:v8];
 }
 
-- (void)appendDescription:(id)a3 timeIntervalValue:(double)a4
+- (void)appendDescription:(id)description timeIntervalValue:(double)value
 {
-  v7 = [(APSStatusPrinter *)self lineWithDescription:a3];
-  v6 = [APSDatePrinter dateStringFromInterval:a4];
+  v7 = [(APSStatusPrinter *)self lineWithDescription:description];
+  v6 = [APSDatePrinter dateStringFromInterval:value];
   [v7 appendFormat:@"%@", v6];
 
   [(APSStatusPrinter *)self appendLine:v7];
 }
 
-- (void)appendDescription:(id)a3 longLongValue:(int64_t)a4
+- (void)appendDescription:(id)description longLongValue:(int64_t)value
 {
-  v6 = [(APSStatusPrinter *)self lineWithDescription:a3];
-  [v6 appendFormat:@"%lld", a4];
+  v6 = [(APSStatusPrinter *)self lineWithDescription:description];
+  [v6 appendFormat:@"%lld", value];
   [(APSStatusPrinter *)self appendLine:v6];
 }
 
-- (void)appendDescription:(id)a3 unsignedLongLongValue:(unint64_t)a4
+- (void)appendDescription:(id)description unsignedLongLongValue:(unint64_t)value
 {
-  v6 = [(APSStatusPrinter *)self lineWithDescription:a3];
-  [v6 appendFormat:@"%llu", a4];
+  v6 = [(APSStatusPrinter *)self lineWithDescription:description];
+  [v6 appendFormat:@"%llu", value];
   [(APSStatusPrinter *)self appendLine:v6];
 }
 
-- (void)appendDescription:(id)a3 successRateWithSuccessCount:(unint64_t)a4 failureCount:(unint64_t)a5
+- (void)appendDescription:(id)description successRateWithSuccessCount:(unint64_t)count failureCount:(unint64_t)failureCount
 {
-  v14 = a3;
-  v8 = a5 + a4;
-  if (__CFADD__(a5, a4))
+  descriptionCopy = description;
+  v8 = failureCount + count;
+  if (__CFADD__(failureCount, count))
   {
     v9 = @"*";
     goto LABEL_17;
@@ -189,8 +189,8 @@
 
   if (v8)
   {
-    v10 = a4 / v8 * 100.0;
-    if (a4 && v10 < 1.0)
+    v10 = count / v8 * 100.0;
+    if (count && v10 < 1.0)
     {
       if (v10 < 0.000001)
       {
@@ -201,7 +201,7 @@
       goto LABEL_14;
     }
 
-    if (a5 && v10 > 99.499999)
+    if (failureCount && v10 > 99.499999)
     {
       if (v10 > 99.999999)
       {
@@ -210,7 +210,7 @@
       }
 
 LABEL_14:
-      v13 = a4 / v8 * 100.0;
+      v13 = count / v8 * 100.0;
       v11 = @"%.06f%%";
 LABEL_15:
       v9 = [NSString stringWithFormat:v11, *&v13];
@@ -228,8 +228,8 @@ LABEL_15:
 
   v9 = [NSString stringWithFormat:@"%.0f%%", *&v10];
 LABEL_17:
-  v12 = [(APSStatusPrinter *)self lineWithDescription:v14];
-  [v12 appendFormat:@"%@ (%llu of %llu)", v9, a4, v8];
+  v12 = [(APSStatusPrinter *)self lineWithDescription:descriptionCopy];
+  [v12 appendFormat:@"%@ (%llu of %llu)", v9, count, v8];
   [(APSStatusPrinter *)self appendLine:v12];
 }
 

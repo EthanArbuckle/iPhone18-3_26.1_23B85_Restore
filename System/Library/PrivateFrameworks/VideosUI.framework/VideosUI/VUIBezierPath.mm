@@ -6,9 +6,9 @@
 
 - (CGPath)vuiCGPath
 {
-  v2 = self;
+  selfCopy = self;
 
-  return [(VUIBezierPath *)v2 CGPath];
+  return [(VUIBezierPath *)selfCopy CGPath];
 }
 
 @end

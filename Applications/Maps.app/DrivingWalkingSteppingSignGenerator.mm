@@ -1,27 +1,27 @@
 @interface DrivingWalkingSteppingSignGenerator
-- (CGSize)sizeForSignAtIndex:(int64_t)a3 fittingSize:(CGSize)a4;
+- (CGSize)sizeForSignAtIndex:(int64_t)index fittingSize:(CGSize)size;
 - (CellVendor)cellVendor;
-- (DrivingWalkingSteppingSignGenerator)initWithRoute:(id)a3 options:(int64_t)a4;
-- (double)distanceFromPageControlBaselineToBottomOfSignAtIndex:(int64_t)a3 fittingSize:(CGSize)a4;
+- (DrivingWalkingSteppingSignGenerator)initWithRoute:(id)route options:(int64_t)options;
+- (double)distanceFromPageControlBaselineToBottomOfSignAtIndex:(int64_t)index fittingSize:(CGSize)size;
 - (double)distanceFromPageControlBaselineToTopOfAuxView;
-- (id)_distanceTextForStep:(id)a3;
-- (id)_distanceTextForStep:(id)a3 distance:(double)a4;
-- (id)_signSizeAttributesForSign:(id)a3 fittingSize:(CGSize)a4;
-- (id)currentViewStateForSignAtIndex:(int64_t)a3;
-- (id)signAtIndex:(int64_t)a3;
-- (id)stepAtSignIndex:(int64_t)a3;
-- (int64_t)signIndexForStep:(id)a3;
-- (int64_t)signIndexForStepIndex:(int64_t)a3;
-- (void)_configureSign:(id)a3 forSteppingWithStep:(id)a4;
-- (void)_configureSign:(id)a3 withStep:(id)a4;
-- (void)_configureWithRoute:(id)a3;
-- (void)configureNavSignView:(id)a3 withSign:(id)a4;
-- (void)rectForSignAtIndex:(int64_t)a3 currentStepIndex:(unint64_t)a4 handler:(id)a5;
-- (void)resetDistanceForSignAtIndex:(int64_t)a3;
-- (void)setCellVendor:(id)a3;
-- (void)updateDistance:(double)a3 forStepAtIndex:(int64_t)a4;
-- (void)updateInstruction:(id)a3 forSignAtIndex:(int64_t)a4;
-- (void)updateSignForStepAtIndex:(int64_t)a3 maneuverInfo:(id)a4;
+- (id)_distanceTextForStep:(id)step;
+- (id)_distanceTextForStep:(id)step distance:(double)distance;
+- (id)_signSizeAttributesForSign:(id)sign fittingSize:(CGSize)size;
+- (id)currentViewStateForSignAtIndex:(int64_t)index;
+- (id)signAtIndex:(int64_t)index;
+- (id)stepAtSignIndex:(int64_t)index;
+- (int64_t)signIndexForStep:(id)step;
+- (int64_t)signIndexForStepIndex:(int64_t)index;
+- (void)_configureSign:(id)sign forSteppingWithStep:(id)step;
+- (void)_configureSign:(id)sign withStep:(id)step;
+- (void)_configureWithRoute:(id)route;
+- (void)configureNavSignView:(id)view withSign:(id)sign;
+- (void)rectForSignAtIndex:(int64_t)index currentStepIndex:(unint64_t)stepIndex handler:(id)handler;
+- (void)resetDistanceForSignAtIndex:(int64_t)index;
+- (void)setCellVendor:(id)vendor;
+- (void)updateDistance:(double)distance forStepAtIndex:(int64_t)index;
+- (void)updateInstruction:(id)instruction forSignAtIndex:(int64_t)index;
+- (void)updateSignForStepAtIndex:(int64_t)index maneuverInfo:(id)info;
 @end
 
 @implementation DrivingWalkingSteppingSignGenerator
@@ -33,22 +33,22 @@
   return WeakRetained;
 }
 
-- (void)rectForSignAtIndex:(int64_t)a3 currentStepIndex:(unint64_t)a4 handler:(id)a5
+- (void)rectForSignAtIndex:(int64_t)index currentStepIndex:(unint64_t)stepIndex handler:(id)handler
 {
-  v9 = a5;
-  v7 = [(DrivingWalkingSteppingSignGenerator *)self stepAtSignIndex:a3];
+  handlerCopy = handler;
+  v7 = [(DrivingWalkingSteppingSignGenerator *)self stepAtSignIndex:index];
   v8 = sub_100AF1870(v7);
-  if (v9)
+  if (handlerCopy)
   {
-    v9[2](v8);
+    handlerCopy[2](v8);
   }
 }
 
 - (double)distanceFromPageControlBaselineToTopOfAuxView
 {
-  v2 = [(DrivingWalkingSteppingSignGenerator *)self _forWalkingNavigation];
+  _forWalkingNavigation = [(DrivingWalkingSteppingSignGenerator *)self _forWalkingNavigation];
   result = 17.0;
-  if (v2)
+  if (_forWalkingNavigation)
   {
     return 13.0;
   }
@@ -56,11 +56,11 @@
   return result;
 }
 
-- (id)_signSizeAttributesForSign:(id)a3 fittingSize:(CGSize)a4
+- (id)_signSizeAttributesForSign:(id)sign fittingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  signCopy = sign;
   steppingSizingView = self->_steppingSizingView;
   if (!steppingSizingView)
   {
@@ -73,32 +73,32 @@
   }
 
   [(NavManeuverSignView *)steppingSizingView clearContent];
-  [(DrivingWalkingSteppingSignGenerator *)self configureNavSignView:self->_steppingSizingView withSign:v7];
-  v11 = [(NavManeuverSignView *)self->_steppingSizingView widthAnchor];
-  v12 = [v11 constraintEqualToConstant:width];
+  [(DrivingWalkingSteppingSignGenerator *)self configureNavSignView:self->_steppingSizingView withSign:signCopy];
+  widthAnchor = [(NavManeuverSignView *)self->_steppingSizingView widthAnchor];
+  v12 = [widthAnchor constraintEqualToConstant:width];
 
   [v12 setActive:1];
   [(NavManeuverSignView *)self->_steppingSizingView systemLayoutSizeFittingSize:width, height];
   v14 = v13;
   v16 = v15;
   [v12 setActive:0];
-  v17 = [(DrivingWalkingSteppingSignGenerator *)self _forWalkingNavigation];
-  v18 = [(NavSignView *)self->_steppingSizingView minorLabel];
-  v19 = [v18 lineCount];
+  _forWalkingNavigation = [(DrivingWalkingSteppingSignGenerator *)self _forWalkingNavigation];
+  minorLabel = [(NavSignView *)self->_steppingSizingView minorLabel];
+  lineCount = [minorLabel lineCount];
 
   v20 = 3.0;
-  if (v17)
+  if (_forWalkingNavigation)
   {
     v20 = 6.0;
   }
 
   v21 = -2.0;
-  if (v17)
+  if (_forWalkingNavigation)
   {
     v21 = 4.0;
   }
 
-  if (v19 <= 1)
+  if (lineCount <= 1)
   {
     v22 = v21;
   }
@@ -113,14 +113,14 @@
   return v23;
 }
 
-- (double)distanceFromPageControlBaselineToBottomOfSignAtIndex:(int64_t)a3 fittingSize:(CGSize)a4
+- (double)distanceFromPageControlBaselineToBottomOfSignAtIndex:(int64_t)index fittingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = [SteppingSignSizeAttributesCache sizeAttributesForSignAtIndex:"sizeAttributesForSignAtIndex:fittingSize:" fittingSize:?];
   if (v8)
   {
-    v9 = v8;
+    height = v8;
     [v8 signToPageControlDistance];
     v11 = v10;
 LABEL_3:
@@ -129,12 +129,12 @@ LABEL_3:
   }
 
   v11 = 20.0;
-  if ((a3 & 0x8000000000000000) == 0 && [(NSMutableArray *)self->_signs count]> a3)
+  if ((index & 0x8000000000000000) == 0 && [(NSMutableArray *)self->_signs count]> index)
   {
-    v13 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:a3];
-    v9 = [(DrivingWalkingSteppingSignGenerator *)self _signSizeAttributesForSign:v13 fittingSize:width, height];
-    [(SteppingSignSizeAttributesCache *)self->_sizeCache setSizeAttributes:v9 forSignAtIndex:a3 fittingSize:width, height];
-    [v9 signToPageControlDistance];
+    v13 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:index];
+    height = [(DrivingWalkingSteppingSignGenerator *)self _signSizeAttributesForSign:v13 fittingSize:width, height];
+    [(SteppingSignSizeAttributesCache *)self->_sizeCache setSizeAttributes:height forSignAtIndex:index fittingSize:width, height];
+    [height signToPageControlDistance];
     v11 = v14;
 
     goto LABEL_3;
@@ -143,10 +143,10 @@ LABEL_3:
   return v11;
 }
 
-- (CGSize)sizeForSignAtIndex:(int64_t)a3 fittingSize:(CGSize)a4
+- (CGSize)sizeForSignAtIndex:(int64_t)index fittingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = [SteppingSignSizeAttributesCache sizeAttributesForSignAtIndex:"sizeAttributesForSignAtIndex:fittingSize:" fittingSize:?];
   if (v8)
   {
@@ -156,7 +156,7 @@ LABEL_3:
     v13 = v12;
   }
 
-  else if ([(NSMutableArray *)self->_signs count]<= a3)
+  else if ([(NSMutableArray *)self->_signs count]<= index)
   {
     v11 = CGSizeZero.width;
     v13 = CGSizeZero.height;
@@ -164,10 +164,10 @@ LABEL_3:
 
   else
   {
-    v14 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:a3];
-    v15 = [(DrivingWalkingSteppingSignGenerator *)self _signSizeAttributesForSign:v14 fittingSize:width, height];
-    [(SteppingSignSizeAttributesCache *)self->_sizeCache setSizeAttributes:v15 forSignAtIndex:a3 fittingSize:width, height];
-    [v15 size];
+    v14 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:index];
+    height = [(DrivingWalkingSteppingSignGenerator *)self _signSizeAttributesForSign:v14 fittingSize:width, height];
+    [(SteppingSignSizeAttributesCache *)self->_sizeCache setSizeAttributes:height forSignAtIndex:index fittingSize:width, height];
+    [height size];
     v11 = v16;
     v13 = v17;
   }
@@ -179,7 +179,7 @@ LABEL_3:
   return result;
 }
 
-- (int64_t)signIndexForStepIndex:(int64_t)a3
+- (int64_t)signIndexForStepIndex:(int64_t)index
 {
   if (![(NSMutableArray *)self->_signs count])
   {
@@ -190,10 +190,10 @@ LABEL_3:
   while (1)
   {
     v6 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:v5];
-    v7 = [v6 stepIndexRange];
+    stepIndexRange = [v6 stepIndexRange];
     v9 = v8;
 
-    if (a3 >= v7 && a3 - v7 < v9)
+    if (index >= stepIndexRange && index - stepIndexRange < v9)
     {
       break;
     }
@@ -207,45 +207,45 @@ LABEL_3:
   return v5;
 }
 
-- (int64_t)signIndexForStep:(id)a3
+- (int64_t)signIndexForStep:(id)step
 {
-  v4 = [a3 stepIndex];
+  stepIndex = [step stepIndex];
 
-  return [(DrivingWalkingSteppingSignGenerator *)self signIndexForStepIndex:v4];
+  return [(DrivingWalkingSteppingSignGenerator *)self signIndexForStepIndex:stepIndex];
 }
 
-- (id)stepAtSignIndex:(int64_t)a3
+- (id)stepAtSignIndex:(int64_t)index
 {
-  if (a3 > 0x7FFFFFFFFFFFFFFELL || [(NSMutableArray *)self->_signs count]<= a3)
+  if (index > 0x7FFFFFFFFFFFFFFELL || [(NSMutableArray *)self->_signs count]<= index)
   {
-    v6 = 0;
+    step = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:a3];
-    v6 = [v5 step];
+    v5 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:index];
+    step = [v5 step];
   }
 
-  return v6;
+  return step;
 }
 
-- (id)signAtIndex:(int64_t)a3
+- (id)signAtIndex:(int64_t)index
 {
-  v5 = [(DrivingWalkingSteppingSignGenerator *)self cellVendor];
-  v6 = [NSIndexPath indexPathForItem:a3 inSection:0];
-  v7 = [v5 dequeueReusableCellWithReuseIdentifier:@"NavSignCellIdentifier" forIndexPath:v6];
+  cellVendor = [(DrivingWalkingSteppingSignGenerator *)self cellVendor];
+  v6 = [NSIndexPath indexPathForItem:index inSection:0];
+  v7 = [cellVendor dequeueReusableCellWithReuseIdentifier:@"NavSignCellIdentifier" forIndexPath:v6];
 
-  v8 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:a3];
-  v9 = [v7 navSignView];
-  [(DrivingWalkingSteppingSignGenerator *)self configureNavSignView:v9 withSign:v8];
+  v8 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:index];
+  navSignView = [v7 navSignView];
+  [(DrivingWalkingSteppingSignGenerator *)self configureNavSignView:navSignView withSign:v8];
 
   return v7;
 }
 
-- (id)currentViewStateForSignAtIndex:(int64_t)a3
+- (id)currentViewStateForSignAtIndex:(int64_t)index
 {
-  if (a3 <= 0x7FFFFFFFFFFFFFFELL)
+  if (index <= 0x7FFFFFFFFFFFFFFELL)
   {
     v5 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:v3];
   }
@@ -258,37 +258,37 @@ LABEL_3:
   return v5;
 }
 
-- (void)setCellVendor:(id)a3
+- (void)setCellVendor:(id)vendor
 {
-  v4 = a3;
-  objc_storeWeak(&self->_cellVendor, v4);
-  [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"NavSignCellIdentifier"];
+  vendorCopy = vendor;
+  objc_storeWeak(&self->_cellVendor, vendorCopy);
+  [vendorCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"NavSignCellIdentifier"];
 }
 
-- (void)updateInstruction:(id)a3 forSignAtIndex:(int64_t)a4
+- (void)updateInstruction:(id)instruction forSignAtIndex:(int64_t)index
 {
-  v6 = a3;
-  if (a4 <= 0x7FFFFFFFFFFFFFFELL)
+  instructionCopy = instruction;
+  if (index <= 0x7FFFFFFFFFFFFFFELL)
   {
-    v11 = v6;
-    v7 = [(NSMutableArray *)self->_signs count]> a4;
-    v6 = v11;
+    v11 = instructionCopy;
+    v7 = [(NSMutableArray *)self->_signs count]> index;
+    instructionCopy = v11;
     if (v7)
     {
-      v8 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:a4];
-      v9 = [v11 mkServerFormattedString];
-      v10 = [v8 maneuverInfo];
-      [v10 setMinorText:v9];
+      v8 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:index];
+      mkServerFormattedString = [v11 mkServerFormattedString];
+      maneuverInfo = [v8 maneuverInfo];
+      [maneuverInfo setMinorText:mkServerFormattedString];
 
-      [(SteppingSignSizeAttributesCache *)self->_sizeCache invalidateSizeAttributesForSignAtIndex:a4];
-      v6 = v11;
+      [(SteppingSignSizeAttributesCache *)self->_sizeCache invalidateSizeAttributesForSignAtIndex:index];
+      instructionCopy = v11;
     }
   }
 }
 
-- (void)updateDistance:(double)a3 forStepAtIndex:(int64_t)a4
+- (void)updateDistance:(double)distance forStepAtIndex:(int64_t)index
 {
-  v6 = [(DrivingWalkingSteppingSignGenerator *)self signIndexForStepIndex:a4];
+  v6 = [(DrivingWalkingSteppingSignGenerator *)self signIndexForStepIndex:index];
   if (v6 <= 0x7FFFFFFFFFFFFFFELL)
   {
     v7 = v6;
@@ -296,78 +296,78 @@ LABEL_3:
     {
       v11 = [(NSArray *)self->_stepsWithCorrespondingSigns objectAtIndexedSubscript:v7];
       v8 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:v7];
-      v9 = [(DrivingWalkingSteppingSignGenerator *)self _distanceTextForStep:v11 distance:a3];
-      v10 = [v8 maneuverInfo];
-      [v10 setMajorText:v9];
+      v9 = [(DrivingWalkingSteppingSignGenerator *)self _distanceTextForStep:v11 distance:distance];
+      maneuverInfo = [v8 maneuverInfo];
+      [maneuverInfo setMajorText:v9];
     }
   }
 }
 
-- (void)updateSignForStepAtIndex:(int64_t)a3 maneuverInfo:(id)a4
+- (void)updateSignForStepAtIndex:(int64_t)index maneuverInfo:(id)info
 {
-  v9 = a4;
-  v6 = [(DrivingWalkingSteppingSignGenerator *)self signIndexForStepIndex:a3];
+  infoCopy = info;
+  v6 = [(DrivingWalkingSteppingSignGenerator *)self signIndexForStepIndex:index];
   if (v6 <= 0x7FFFFFFFFFFFFFFELL)
   {
     v7 = v6;
     if (v6 < [(NSMutableArray *)self->_signs count])
     {
       v8 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:v7];
-      [v8 setManeuverInfo:v9];
+      [v8 setManeuverInfo:infoCopy];
       [(SteppingSignSizeAttributesCache *)self->_sizeCache invalidateSizeAttributesForSignAtIndex:v7];
     }
   }
 }
 
-- (void)resetDistanceForSignAtIndex:(int64_t)a3
+- (void)resetDistanceForSignAtIndex:(int64_t)index
 {
-  if (a3 <= 0x7FFFFFFFFFFFFFFELL && [(NSMutableArray *)self->_signs count]> a3)
+  if (index <= 0x7FFFFFFFFFFFFFFELL && [(NSMutableArray *)self->_signs count]> index)
   {
-    v8 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:a3];
-    v5 = [v8 step];
-    v6 = [(DrivingWalkingSteppingSignGenerator *)self _distanceTextForStep:v5];
+    v8 = [(NSMutableArray *)self->_signs objectAtIndexedSubscript:index];
+    step = [v8 step];
+    v6 = [(DrivingWalkingSteppingSignGenerator *)self _distanceTextForStep:step];
 
-    v7 = [v8 maneuverInfo];
-    [v7 setMajorText:v6];
+    maneuverInfo = [v8 maneuverInfo];
+    [maneuverInfo setMajorText:v6];
   }
 }
 
-- (id)_distanceTextForStep:(id)a3 distance:(double)a4
+- (id)_distanceTextForStep:(id)step distance:(double)distance
 {
-  v5 = a3;
-  if ([v5 isStartOrResumeStep])
+  stepCopy = step;
+  if ([stepCopy isStartOrResumeStep])
   {
-    v6 = 0;
+    mkServerFormattedString = 0;
   }
 
   else
   {
-    v7 = [v5 contentsForContext:1];
-    v8 = [v7 stringForDistance:a4];
-    v6 = [v8 mkServerFormattedString];
+    v7 = [stepCopy contentsForContext:1];
+    v8 = [v7 stringForDistance:distance];
+    mkServerFormattedString = [v8 mkServerFormattedString];
   }
 
-  return v6;
+  return mkServerFormattedString;
 }
 
-- (id)_distanceTextForStep:(id)a3
+- (id)_distanceTextForStep:(id)step
 {
-  v4 = a3;
-  [v4 distance];
-  v5 = [(DrivingWalkingSteppingSignGenerator *)self _distanceTextForStep:v4 distance:?];
+  stepCopy = step;
+  [stepCopy distance];
+  v5 = [(DrivingWalkingSteppingSignGenerator *)self _distanceTextForStep:stepCopy distance:?];
 
   return v5;
 }
 
-- (void)configureNavSignView:(id)a3 withSign:(id)a4
+- (void)configureNavSignView:(id)view withSign:(id)sign
 {
-  v9 = a3;
-  v6 = a4;
-  [v9 setFlipMajorAndMinorTextInLabels:{-[DrivingWalkingSteppingSignGenerator _showDistanceInMinorText](self, "_showDistanceInMinorText")}];
-  [v9 setShieldSize:6];
-  v7 = [v6 maneuverInfo];
+  viewCopy = view;
+  signCopy = sign;
+  [viewCopy setFlipMajorAndMinorTextInLabels:{-[DrivingWalkingSteppingSignGenerator _showDistanceInMinorText](self, "_showDistanceInMinorText")}];
+  [viewCopy setShieldSize:6];
+  maneuverInfo = [signCopy maneuverInfo];
 
-  [v9 setManeuverGuidanceInfo:v7];
+  [viewCopy setManeuverGuidanceInfo:maneuverInfo];
   if ([(DrivingWalkingSteppingSignGenerator *)self _forWalkingNavigation])
   {
     +[NavSignLayoutDelegateManager defaultLayoutDelegateForWalking];
@@ -378,35 +378,35 @@ LABEL_3:
     +[NavSignLayoutDelegateManager defaultLayoutDelegateForStepping];
   }
   v8 = ;
-  [v9 setSignLayoutDelegate:v8];
+  [viewCopy setSignLayoutDelegate:v8];
 
-  [v9 refreshSign];
-  [v9 layoutIfNeeded];
+  [viewCopy refreshSign];
+  [viewCopy layoutIfNeeded];
 }
 
-- (void)_configureSign:(id)a3 forSteppingWithStep:(id)a4
+- (void)_configureSign:(id)sign forSteppingWithStep:(id)step
 {
-  v31 = a3;
-  v5 = a4;
-  v32 = [v5 geoStep];
-  [v31 setStep:v5];
-  v28 = [v5 contentsForContext:1];
-  if ([v5 isStartOrResumeStep])
+  signCopy = sign;
+  stepCopy = step;
+  geoStep = [stepCopy geoStep];
+  [signCopy setStep:stepCopy];
+  v28 = [stepCopy contentsForContext:1];
+  if ([stepCopy isStartOrResumeStep])
   {
     v6 = 0;
   }
 
   else
   {
-    [v5 distance];
+    [stepCopy distance];
     v6 = [v28 stringForDistance:?];
   }
 
   v26 = v6;
-  v7 = [v6 _geo_serverFormattedString];
-  v30 = [NSString _navigation_stringForServerFormattedString:v7];
+  _geo_serverFormattedString = [v6 _geo_serverFormattedString];
+  v30 = [NSString _navigation_stringForServerFormattedString:_geo_serverFormattedString];
 
-  if ([v5 transportType] == 4)
+  if ([stepCopy transportType] == 4)
   {
     v8 = +[NSBundle mainBundle];
     [v8 localizedStringForKey:@"Navigation_DirectionsForUnknownTransport" value:@"localized string not found" table:0];
@@ -414,20 +414,20 @@ LABEL_3:
 
   else
   {
-    v8 = [v5 contentsForContext:1];
+    v8 = [stepCopy contentsForContext:1];
     [v8 instruction];
   }
   v9 = ;
 
-  v10 = [v9 _geo_serverFormattedString];
-  v29 = [NSString _navigation_stringForServerFormattedString:v10];
+  _geo_serverFormattedString2 = [v9 _geo_serverFormattedString];
+  v29 = [NSString _navigation_stringForServerFormattedString:_geo_serverFormattedString2];
 
-  v11 = [v5 drivingSide];
-  v12 = [[MKJunction alloc] initWithType:objc_msgSend(v32 maneuver:"junctionType") drivingSide:objc_msgSend(v32 elements:"maneuverType") count:{v11, objc_msgSend(v32, "junctionElements"), objc_msgSend(v32, "junctionElementsCount")}];
+  drivingSide = [stepCopy drivingSide];
+  v12 = [[MKJunction alloc] initWithType:objc_msgSend(geoStep maneuver:"junctionType") drivingSide:objc_msgSend(geoStep elements:"maneuverType") count:{drivingSide, objc_msgSend(geoStep, "junctionElements"), objc_msgSend(geoStep, "junctionElementsCount")}];
   v13 = [GuidanceManeuverArtwork alloc];
-  v14 = [v32 maneuverType];
-  v15 = [v5 artworkOverride];
-  v16 = [(GuidanceManeuverArtwork *)v13 initWithManeuver:v14 junction:v12 drivingSide:v11 artworkDataSource:v15];
+  maneuverType = [geoStep maneuverType];
+  artworkOverride = [stepCopy artworkOverride];
+  v16 = [(GuidanceManeuverArtwork *)v13 initWithManeuver:maneuverType junction:v12 drivingSide:drivingSide artworkDataSource:artworkOverride];
 
   v40 = 0;
   v41 = &v40;
@@ -445,7 +445,7 @@ LABEL_3:
   v33[3] = &unk_101660090;
   v33[4] = &v40;
   v33[5] = &v34;
-  [v32 shieldInfo:v33];
+  [geoStep shieldInfo:v33];
   v17 = *(v41 + 6);
   if (v17)
   {
@@ -458,18 +458,18 @@ LABEL_3:
   }
 
   v27 = v12;
-  v19 = [v30 mkServerFormattedString];
-  v20 = [v29 mkServerFormattedString];
+  mkServerFormattedString = [v30 mkServerFormattedString];
+  mkServerFormattedString2 = [v29 mkServerFormattedString];
   v21 = [NavSignManeuverGuidanceInfo alloc];
   v22 = +[NSUUID UUID];
-  if (v19)
+  if (mkServerFormattedString)
   {
-    v45 = v19;
+    v45 = mkServerFormattedString;
     v23 = [NSArray arrayWithObjects:&v45 count:1];
-    if (v20)
+    if (mkServerFormattedString2)
     {
 LABEL_12:
-      v44 = v20;
+      v44 = mkServerFormattedString2;
       v24 = [NSArray arrayWithObjects:&v44 count:1];
       goto LABEL_15;
     }
@@ -478,7 +478,7 @@ LABEL_12:
   else
   {
     v23 = 0;
-    if (v20)
+    if (mkServerFormattedString2)
     {
       goto LABEL_12;
     }
@@ -487,13 +487,13 @@ LABEL_12:
   v24 = 0;
 LABEL_15:
   v25 = [(NavSignManeuverGuidanceInfo *)v21 initWithSignID:v22 maneuverArtwork:v16 majorTextAlternatives:v23 minorTextAlternatives:v24 shieldInfo:v18];
-  [v31 setManeuverInfo:v25];
+  [signCopy setManeuverInfo:v25];
 
-  if (v20)
+  if (mkServerFormattedString2)
   {
   }
 
-  if (v19)
+  if (mkServerFormattedString)
   {
   }
 
@@ -501,48 +501,48 @@ LABEL_15:
   _Block_object_dispose(&v40, 8);
 }
 
-- (void)_configureSign:(id)a3 withStep:(id)a4
+- (void)_configureSign:(id)sign withStep:(id)step
 {
-  v6 = a3;
-  v7 = a4;
-  v36 = v6;
-  [v6 setStep:v7];
-  v38 = [(DrivingWalkingSteppingSignGenerator *)self _distanceTextForStep:v7];
-  if ([v7 transportType] == 4)
+  signCopy = sign;
+  stepCopy = step;
+  v36 = signCopy;
+  [signCopy setStep:stepCopy];
+  v38 = [(DrivingWalkingSteppingSignGenerator *)self _distanceTextForStep:stepCopy];
+  if ([stepCopy transportType] == 4)
   {
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"Navigation_DirectionsForUnknownTransport" value:@"localized string not found" table:0];
-    v10 = [v9 mkServerFormattedString];
-    v51 = v10;
+    mkServerFormattedString = [v9 mkServerFormattedString];
+    v51 = mkServerFormattedString;
     v37 = [NSArray arrayWithObjects:&v51 count:1];
 
-    v35 = 0;
+    maneuverType = 0;
   }
 
   else
   {
-    v11 = [v7 contentsForContext:1];
-    v12 = [v11 instructionWithShorterAlternatives];
+    v11 = [stepCopy contentsForContext:1];
+    instructionWithShorterAlternatives = [v11 instructionWithShorterAlternatives];
 
-    v37 = sub_100021DB0(v12, &stru_101660068);
-    v13 = [v7 geoStep];
-    v35 = [v13 maneuverType];
+    v37 = sub_100021DB0(instructionWithShorterAlternatives, &stru_101660068);
+    geoStep = [stepCopy geoStep];
+    maneuverType = [geoStep maneuverType];
   }
 
-  v14 = [v7 drivingSide];
+  drivingSide = [stepCopy drivingSide];
   v15 = [MKJunction alloc];
-  v16 = [v7 geoStep];
-  v17 = [v16 junctionType];
-  v18 = [v7 geoStep];
-  v19 = [v18 maneuverType];
-  v20 = [v7 geoStep];
-  v21 = [v20 junctionElements];
-  v22 = [v7 geoStep];
-  v23 = [v15 initWithType:v17 maneuver:v19 drivingSide:v14 elements:v21 count:{objc_msgSend(v22, "junctionElementsCount")}];
+  geoStep2 = [stepCopy geoStep];
+  junctionType = [geoStep2 junctionType];
+  geoStep3 = [stepCopy geoStep];
+  maneuverType2 = [geoStep3 maneuverType];
+  geoStep4 = [stepCopy geoStep];
+  junctionElements = [geoStep4 junctionElements];
+  geoStep5 = [stepCopy geoStep];
+  v23 = [v15 initWithType:junctionType maneuver:maneuverType2 drivingSide:drivingSide elements:junctionElements count:{objc_msgSend(geoStep5, "junctionElementsCount")}];
 
   v24 = [GuidanceManeuverArtwork alloc];
-  v25 = [v7 artworkOverride];
-  v26 = [(GuidanceManeuverArtwork *)v24 initWithManeuver:v35 junction:v23 drivingSide:v14 artworkDataSource:v25];
+  artworkOverride = [stepCopy artworkOverride];
+  v26 = [(GuidanceManeuverArtwork *)v24 initWithManeuver:maneuverType junction:v23 drivingSide:drivingSide artworkDataSource:artworkOverride];
 
   v46 = 0;
   v47 = &v46;
@@ -554,14 +554,14 @@ LABEL_15:
   v43 = sub_100FB8540;
   v44 = sub_100FB8550;
   v45 = 0;
-  v27 = [v7 geoStep];
+  geoStep6 = [stepCopy geoStep];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_100FB89EC;
   v39[3] = &unk_101660090;
   v39[4] = &v46;
   v39[5] = &v40;
-  [v27 shieldInfo:v39];
+  [geoStep6 shieldInfo:v39];
 
   v28 = *(v47 + 6);
   if (v28)
@@ -600,11 +600,11 @@ LABEL_15:
   _Block_object_dispose(&v46, 8);
 }
 
-- (void)_configureWithRoute:(id)a3
+- (void)_configureWithRoute:(id)route
 {
-  v29 = a3;
-  objc_storeStrong(&self->_route, a3);
-  v5 = [v29 steps];
+  routeCopy = route;
+  objc_storeStrong(&self->_route, route);
+  steps = [routeCopy steps];
   v6 = +[NSMutableArray array];
   v7 = +[NSMutableArray array];
   signs = self->_signs;
@@ -613,19 +613,19 @@ LABEL_15:
   stepsWithCorrespondingSigns = self->_stepsWithCorrespondingSigns;
   self->_stepsWithCorrespondingSigns = 0;
 
-  if ([v5 count])
+  if ([steps count])
   {
-    v10 = [v5 count];
+    v10 = [steps count];
     if (v10 >= 1)
     {
       v11 = 0;
       v12 = v10 + 1;
       do
       {
-        v13 = [v5 objectAtIndexedSubscript:v12 - 2];
-        v14 = [v13 geoStep];
-        v15 = v14;
-        if (v14 && ([v14 maneuverType] != 17 || (objc_msgSend(v13, "distance"), v16 >= 1.0)))
+        v13 = [steps objectAtIndexedSubscript:v12 - 2];
+        geoStep = [v13 geoStep];
+        v15 = geoStep;
+        if (geoStep && ([geoStep maneuverType] != 17 || (objc_msgSend(v13, "distance"), v16 >= 1.0)))
         {
           v17 = objc_alloc_init(NavSignViewModel);
           if ([(DrivingWalkingSteppingSignGenerator *)self _forWalkingNavigation])
@@ -656,19 +656,19 @@ LABEL_15:
       while (v12 > 1);
     }
 
-    v18 = [v6 lastObject];
-    [v18 stepIndexRange];
-    [v18 setStepIndexRange:{0, objc_msgSend(v18, "stepIndexRange") + v19}];
-    v20 = [v6 reverseObjectEnumerator];
-    v21 = [v20 allObjects];
-    v22 = [NSMutableArray arrayWithArray:v21];
+    lastObject = [v6 lastObject];
+    [lastObject stepIndexRange];
+    [lastObject setStepIndexRange:{0, objc_msgSend(lastObject, "stepIndexRange") + v19}];
+    reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    v22 = [NSMutableArray arrayWithArray:allObjects];
     v23 = self->_signs;
     self->_signs = v22;
 
-    v24 = [v7 reverseObjectEnumerator];
-    v25 = [v24 allObjects];
+    reverseObjectEnumerator2 = [v7 reverseObjectEnumerator];
+    allObjects2 = [reverseObjectEnumerator2 allObjects];
     v26 = self->_stepsWithCorrespondingSigns;
-    self->_stepsWithCorrespondingSigns = v25;
+    self->_stepsWithCorrespondingSigns = allObjects2;
   }
 
   v27 = objc_alloc_init(SteppingSignSizeAttributesCache);
@@ -676,17 +676,17 @@ LABEL_15:
   self->_sizeCache = v27;
 }
 
-- (DrivingWalkingSteppingSignGenerator)initWithRoute:(id)a3 options:(int64_t)a4
+- (DrivingWalkingSteppingSignGenerator)initWithRoute:(id)route options:(int64_t)options
 {
-  v6 = a3;
+  routeCopy = route;
   v10.receiver = self;
   v10.super_class = DrivingWalkingSteppingSignGenerator;
   v7 = [(DrivingWalkingSteppingSignGenerator *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_options = a4;
-    [(DrivingWalkingSteppingSignGenerator *)v7 _configureWithRoute:v6];
+    v7->_options = options;
+    [(DrivingWalkingSteppingSignGenerator *)v7 _configureWithRoute:routeCopy];
   }
 
   return v8;

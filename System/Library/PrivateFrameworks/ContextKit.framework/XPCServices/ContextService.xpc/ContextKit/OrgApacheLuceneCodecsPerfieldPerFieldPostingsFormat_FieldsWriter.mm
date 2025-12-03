@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsWriter
 - (void)dealloc;
-- (void)writeWithOrgApacheLuceneIndexFields:(id)a3;
+- (void)writeWithOrgApacheLuceneIndexFields:(id)fields;
 @end
 
 @implementation OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsWriter
 
-- (void)writeWithOrgApacheLuceneIndexFields:(id)a3
+- (void)writeWithOrgApacheLuceneIndexFields:(id)fields
 {
   v86 = new_JavaUtilHashMap_init();
   v85 = new_JavaUtilHashMap_init();
@@ -13,13 +13,13 @@
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
-  if (!a3)
+  if (!fields)
   {
     JreThrowNullPointerException();
   }
 
-  obj = a3;
-  v84 = [a3 countByEnumeratingWithState:&v91 objects:v96 count:16];
+  obj = fields;
+  v84 = [fields countByEnumeratingWithState:&v91 objects:v96 count:16];
   if (v84)
   {
     v82 = *v92;
@@ -55,11 +55,11 @@
           objc_exception_throw(v71);
         }
 
-        v19 = [v10 getName];
+        getName = [v10 getName];
         v20 = [(JavaUtilHashMap *)v86 getWithId:v18];
         if (v20)
         {
-          if (![(JavaUtilHashMap *)v85 containsKeyWithId:v19])
+          if (![(JavaUtilHashMap *)v85 containsKeyWithId:getName])
           {
             suffix = v20->suffix_;
             v76 = JreStrcat("$$$I", v21, v22, v23, v24, v25, v26, v27, @"no suffix for format name: ");
@@ -70,14 +70,14 @@
 
         else
         {
-          v28 = [(JavaUtilHashMap *)v85 getWithId:v19];
+          v28 = [(JavaUtilHashMap *)v85 getWithId:getName];
           if (v28)
           {
             LODWORD(v28) = [v28 intValue] + 1;
           }
 
           v29 = JavaLangInteger_valueOfWithInt_(v28);
-          [(JavaUtilHashMap *)v85 putWithId:v19 withId:v29];
+          [(JavaUtilHashMap *)v85 putWithId:getName withId:v29];
           if (!v29)
           {
             JreThrowNullPointerException();
@@ -85,7 +85,7 @@
 
           segmentSuffix = self->writeState_->segmentSuffix_;
           JavaLangInteger_toStringWithInt_([(JavaLangInteger *)v29 intValue]);
-          v38 = JreStrcat("$C$", v31, v32, v33, v34, v35, v36, v37, v19);
+          v38 = JreStrcat("$C$", v31, v32, v33, v34, v35, v36, v37, getName);
           OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_getFullSegmentSuffixWithNSString_withNSString_withNSString_(v8, segmentSuffix, v38);
           v39 = [OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsGroup alloc];
           v40 = new_JavaUtilTreeSet_init();
@@ -109,7 +109,7 @@
           JreThrowNullPointerException();
         }
 
-        if ([v9 putAttributeWithNSString:OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_PER_FIELD_FORMAT_KEY_ withNSString:v19])
+        if ([v9 putAttributeWithNSString:OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_PER_FIELD_FORMAT_KEY_ withNSString:getName])
         {
           v79 = v9[1];
           v74 = JreStrcat("$$$$$$$$", v43, v44, v45, v46, v47, v48, v49, @"found existing value for ");
@@ -137,14 +137,14 @@
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v57 = [(JavaUtilHashMap *)v86 entrySet];
-  v58 = v57;
-  if (!v57)
+  entrySet = [(JavaUtilHashMap *)v86 entrySet];
+  v58 = entrySet;
+  if (!entrySet)
   {
     JreThrowNullPointerException();
   }
 
-  v59 = [v57 countByEnumeratingWithState:&v87 objects:v95 count:16];
+  v59 = [entrySet countByEnumeratingWithState:&v87 objects:v95 count:16];
   if (v59)
   {
     v60 = *v88;
@@ -163,13 +163,13 @@
           JreThrowNullPointerException();
         }
 
-        v63 = [*(*(&v87 + 1) + 8 * j) getKey];
-        v64 = [v62 getValue];
+        getKey = [*(*(&v87 + 1) + 8 * j) getKey];
+        getValue = [v62 getValue];
         v65 = [OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsWriter__1 alloc];
-        JreStrongAssign(&v65->val$group_, v64);
+        JreStrongAssign(&v65->val$group_, getValue);
         OrgApacheLuceneIndexFilterLeafReader_FilterFields_initWithOrgApacheLuceneIndexFields_(v65, obj);
         v66 = v65;
-        if (!v63 || !v64 || (v67 = v66, v68 = [v63 fieldsConsumerWithOrgApacheLuceneIndexSegmentWriteState:v64[3]], (toClose = self->toClose_) == 0) || (-[JavaUtilList addWithId:](toClose, "addWithId:", v68), !v68))
+        if (!getKey || !getValue || (v67 = v66, v68 = [getKey fieldsConsumerWithOrgApacheLuceneIndexSegmentWriteState:getValue[3]], (toClose = self->toClose_) == 0) || (-[JavaUtilList addWithId:](toClose, "addWithId:", v68), !v68))
         {
           JreThrowNullPointerException();
         }

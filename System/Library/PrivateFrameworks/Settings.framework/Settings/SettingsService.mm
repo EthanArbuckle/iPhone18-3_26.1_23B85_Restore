@@ -1,8 +1,8 @@
 @interface SettingsService
 - (_TtP8Settings27SettingsHostServiceProvider_)serviceHost;
-- (void)filterSearchAnchorsForSidebarItem:(id)a3 suggestedAnchors:(id)a4 reply:(id)a5;
-- (void)openURL:(id)a3;
-- (void)setServiceHost:(id)a3;
+- (void)filterSearchAnchorsForSidebarItem:(id)item suggestedAnchors:(id)anchors reply:(id)reply;
+- (void)openURL:(id)l;
+- (void)setServiceHost:(id)host;
 @end
 
 @implementation SettingsService
@@ -16,18 +16,18 @@
   return v4;
 }
 
-- (void)setServiceHost:(id)a3
+- (void)setServiceHost:(id)host
 {
   swift_beginAccess();
   serviceHost = self->serviceHost;
-  self->serviceHost = a3;
+  self->serviceHost = host;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (void)filterSearchAnchorsForSidebarItem:(id)a3 suggestedAnchors:(id)a4 reply:(id)a5
+- (void)filterSearchAnchorsForSidebarItem:(id)item suggestedAnchors:(id)anchors reply:(id)reply
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(reply);
   v6 = sub_21CE6CC50();
   v8 = v7;
   v9 = sub_21CE6CD40();
@@ -37,11 +37,11 @@
   sub_21CE26B8C(v6, v8, v9, sub_21CE27B80, v10);
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
 
-  sub_21CE27234(v3);
+  sub_21CE27234(lCopy);
 }
 
 @end

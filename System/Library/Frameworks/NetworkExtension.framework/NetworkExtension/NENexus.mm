@@ -1,45 +1,45 @@
 @interface NENexus
-- (BOOL)handleRequestNexusFromClient:(id)a3;
-- (NENexus)initWithLevel:(unint64_t)a3 name:(id)a4 virtualInterfaceType:(int64_t)a5 delegate:(id)a6 channelCount:(unsigned int)a7 netifRingSize:(unsigned int)a8 kernelPipeTxRingSize:(unsigned int)a9 kernelPipeRxRingSize:(unsigned int)a10 execUUID:(id)a11;
-- (NENexus)initWithName:(id)a3 delegate:(id)a4;
+- (BOOL)handleRequestNexusFromClient:(id)client;
+- (NENexus)initWithLevel:(unint64_t)level name:(id)name virtualInterfaceType:(int64_t)type delegate:(id)delegate channelCount:(unsigned int)count netifRingSize:(unsigned int)size kernelPipeTxRingSize:(unsigned int)ringSize kernelPipeRxRingSize:(unsigned int)self0 execUUID:(id)self1;
+- (NENexus)initWithName:(id)name delegate:(id)delegate;
 - (NSString)interfaceName;
 - (void)cancel;
-- (void)closeFlowWithClientIdentifier:(id)a3;
+- (void)closeFlowWithClientIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)handleAssertFromClient:(id)a3;
-- (void)handleStartFromClient:(id)a3;
-- (void)handleUnassertFromClient:(id)a3;
-- (void)rejectFlowWithClientIdentifier:(void *)a1;
-- (void)setAvailability:(unint64_t)a3;
-- (void)setDnsServerAddresses:(id)a3;
-- (void)setLocalAddresses:(id)a3;
-- (void)setMaximumTransmissionUnit:(unint64_t)a3;
+- (void)handleAssertFromClient:(id)client;
+- (void)handleStartFromClient:(id)client;
+- (void)handleUnassertFromClient:(id)client;
+- (void)rejectFlowWithClientIdentifier:(void *)identifier;
+- (void)setAvailability:(unint64_t)availability;
+- (void)setDnsServerAddresses:(id)addresses;
+- (void)setLocalAddresses:(id)addresses;
+- (void)setMaximumTransmissionUnit:(unint64_t)unit;
 @end
 
 @implementation NENexus
 
-- (void)setMaximumTransmissionUnit:(unint64_t)a3
+- (void)setMaximumTransmissionUnit:(unint64_t)unit
 {
-  v3 = a3;
-  self->_maximumTransmissionUnit = a3;
-  v4 = [(NENexus *)self virtualInterface];
+  unitCopy = unit;
+  self->_maximumTransmissionUnit = unit;
+  virtualInterface = [(NENexus *)self virtualInterface];
 
-  NEVirtualInterfaceSetMTU(v4, v3);
+  NEVirtualInterfaceSetMTU(virtualInterface, unitCopy);
 }
 
-- (void)setDnsServerAddresses:(id)a3
+- (void)setDnsServerAddresses:(id)addresses
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_dnsServerAddresses, a3);
-  if ([v5 count])
+  addressesCopy = addresses;
+  objc_storeStrong(&self->_dnsServerAddresses, addresses);
+  if ([addressesCopy count])
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v5;
+    v7 = addressesCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -59,8 +59,8 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [v12 hostname];
-            [v6 addObject:v13];
+            hostname = [v12 hostname];
+            [v6 addObject:hostname];
           }
 
           ++v11;
@@ -79,27 +79,27 @@
     v6 = 0;
   }
 
-  v14 = [(NENexus *)self virtualInterface];
-  NEVirtualInterfaceSetDNSServers(v14, v6);
-  NEVirtualInterfaceUpdateAdHocServiceReturnChanges(v14, 0, 1);
+  virtualInterface = [(NENexus *)self virtualInterface];
+  NEVirtualInterfaceSetDNSServers(virtualInterface, v6);
+  NEVirtualInterfaceUpdateAdHocServiceReturnChanges(virtualInterface, 0, 1);
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLocalAddresses:(id)a3
+- (void)setLocalAddresses:(id)addresses
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v5];
+  addressesCopy = addresses;
+  v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:addressesCopy];
   v7 = [MEMORY[0x1E695DFD8] setWithArray:self->_localAddresses];
   [v6 minusSet:v7];
 
   v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:self->_localAddresses];
-  v9 = [MEMORY[0x1E695DFD8] setWithArray:v5];
+  v9 = [MEMORY[0x1E695DFD8] setWithArray:addressesCopy];
   [v8 minusSet:v9];
 
-  objc_storeStrong(&self->_localAddresses, a3);
-  v10 = [(NENexus *)self virtualInterface];
+  objc_storeStrong(&self->_localAddresses, addresses);
+  virtualInterface = [(NENexus *)self virtualInterface];
   if ([v8 count])
   {
     v37 = 0u;
@@ -126,8 +126,8 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v17 = [v16 hostname];
-            NEVirtualInterfaceRemoveAddress(v10, v17);
+            hostname = [v16 hostname];
+            NEVirtualInterfaceRemoveAddress(virtualInterface, hostname);
           }
 
           ++v15;
@@ -145,7 +145,7 @@
   {
     v28 = v8;
     v29 = v6;
-    v30 = v5;
+    v30 = addressesCopy;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
@@ -174,8 +174,8 @@
             v25 = @"255.255.255.255";
             if ([v24 addressFamily] == 2 || (v25 = @"FFFF:FFFF:FFFF:FFFF::", objc_msgSend(v24, "addressFamily") == 30))
             {
-              v26 = [v24 hostname];
-              NEVirtualInterfaceAddAddressInternal(v10, v26, v25, 0);
+              hostname2 = [v24 hostname];
+              NEVirtualInterfaceAddAddressInternal(virtualInterface, hostname2, v25, 0);
             }
           }
 
@@ -190,18 +190,18 @@
     }
 
     v6 = v29;
-    v5 = v30;
+    addressesCopy = v30;
     v8 = v28;
   }
 
-  NEVirtualInterfaceUpdateAdHocServiceReturnChanges(v10, 0, 1);
+  NEVirtualInterfaceUpdateAdHocServiceReturnChanges(virtualInterface, 0, 1);
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleUnassertFromClient:(id)a3
+- (void)handleUnassertFromClient:(id)client
 {
-  v22 = a3;
+  clientCopy = client;
   if (self)
   {
     Property = objc_getProperty(self, v4, 96, 1);
@@ -225,7 +225,7 @@
   }
 
   v9 = v8;
-  v10 = [v9 objectForKeyedSubscript:v22];
+  v10 = [v9 objectForKeyedSubscript:clientCopy];
 
   if (v10)
   {
@@ -243,7 +243,7 @@
       }
 
       v21 = v20;
-      [v21 setObject:v19 forKeyedSubscript:v22];
+      [v21 setObject:v19 forKeyedSubscript:clientCopy];
     }
 
     else
@@ -259,7 +259,7 @@
       }
 
       v13 = v12;
-      [v13 setObject:0 forKeyedSubscript:v22];
+      [v13 setObject:0 forKeyedSubscript:clientCopy];
 
       if ([(NENexus *)self isAsserted])
       {
@@ -278,9 +278,9 @@
   objc_sync_exit(v6);
 }
 
-- (void)handleAssertFromClient:(id)a3
+- (void)handleAssertFromClient:(id)client
 {
-  v23 = a3;
+  clientCopy = client;
   if (self)
   {
     Property = objc_getProperty(self, v4, 96, 1);
@@ -304,7 +304,7 @@
   }
 
   v9 = v8;
-  v10 = [v9 objectForKeyedSubscript:v23];
+  v10 = [v9 objectForKeyedSubscript:clientCopy];
 
   if (v10)
   {
@@ -320,7 +320,7 @@
     }
 
     v14 = v13;
-    [v14 setObject:v12 forKeyedSubscript:v23];
+    [v14 setObject:v12 forKeyedSubscript:clientCopy];
   }
 
   else
@@ -337,7 +337,7 @@
     }
 
     v18 = v17;
-    [v18 setObject:v16 forKeyedSubscript:v23];
+    [v18 setObject:v16 forKeyedSubscript:clientCopy];
 
     if (![(NENexus *)self isAsserted])
     {
@@ -355,16 +355,16 @@
   objc_sync_exit(v6);
 }
 
-- (void)handleStartFromClient:(id)a3
+- (void)handleStartFromClient:(id)client
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E6977E48] pathForClientID:v4];
+  clientCopy = client;
+  v5 = [MEMORY[0x1E6977E48] pathForClientID:clientCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 parameters];
-    if ([v7 pid])
+    parameters = [v5 parameters];
+    if ([parameters pid])
     {
       v8 = [[NENexusPathFlow alloc] initWithPath:v6];
       [v8 setState:1];
@@ -394,21 +394,21 @@
 
   else
   {
-    v7 = ne_log_obj();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    parameters = ne_log_obj();
+    if (os_log_type_enabled(parameters, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v4;
-      _os_log_error_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_ERROR, "Failed to get path for client %@", &v12, 0xCu);
+      v13 = clientCopy;
+      _os_log_error_impl(&dword_1BA83C000, parameters, OS_LOG_TYPE_ERROR, "Failed to get path for client %@", &v12, 0xCu);
     }
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAvailability:(unint64_t)a3
+- (void)setAvailability:(unint64_t)availability
 {
-  self->_availability = a3;
+  self->_availability = availability;
   [objc_getProperty(self a2];
   Property = objc_getProperty(self, v5, 128, 1);
   if (Property)
@@ -419,42 +419,42 @@
   v8 = Property;
   [v8 updateNetworkAgent:{objc_getProperty(self, v9, 128, 1)}];
 
-  v10 = [(NENexus *)self virtualInterface];
-  if (v10 && !*(v10 + 264))
+  virtualInterface = [(NENexus *)self virtualInterface];
+  if (virtualInterface && !*(virtualInterface + 264))
   {
-    v11 = *(v10 + 312);
-    if ((a3 == 3) != (v11 & 1))
+    v11 = *(virtualInterface + 312);
+    if ((availability == 3) != (v11 & 1))
     {
-      *(v10 + 312) = v11 & 0xFE | (a3 == 3);
+      *(virtualInterface + 312) = v11 & 0xFE | (availability == 3);
     }
 
-    v12 = *(v10 + 312);
-    if ((a3 == 2) == ((v12 & 2) == 0))
+    v12 = *(virtualInterface + 312);
+    if ((availability == 2) == ((v12 & 2) == 0))
     {
-      *(v10 + 312) = v12 & 0xFD | (2 * (a3 == 2));
+      *(virtualInterface + 312) = v12 & 0xFD | (2 * (availability == 2));
     }
 
-    v13 = *(v10 + 312);
-    if ((a3 == 4) == ((v13 & 4) == 0))
+    v13 = *(virtualInterface + 312);
+    if ((availability == 4) == ((v13 & 4) == 0))
     {
-      *(v10 + 312) = v13 & 0xFB | (4 * (a3 == 4));
+      *(virtualInterface + 312) = v13 & 0xFB | (4 * (availability == 4));
     }
 
-    v14 = *(v10 + 312);
-    if (a3 < 2 == ((v14 & 8) == 0))
+    v14 = *(virtualInterface + 312);
+    if (availability < 2 == ((v14 & 8) == 0))
     {
-      *(v10 + 312) = v14 & 0xF7 | (8 * (a3 < 2));
+      *(virtualInterface + 312) = v14 & 0xF7 | (8 * (availability < 2));
     }
   }
 
-  NEVirtualInterfaceUpdateAdHocServiceReturnChanges(v10, 0, 1);
+  NEVirtualInterfaceUpdateAdHocServiceReturnChanges(virtualInterface, 0, 1);
 }
 
-- (void)closeFlowWithClientIdentifier:(id)a3
+- (void)closeFlowWithClientIdentifier:(id)identifier
 {
   v77 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     if (self)
     {
@@ -466,7 +466,7 @@
       Property = 0;
     }
 
-    v7 = [Property objectForKeyedSubscript:v5];
+    v7 = [Property objectForKeyedSubscript:identifierCopy];
     v9 = v7;
     if (v7 && (v10 = objc_getProperty(v7, v8, 24, 1)) != 0)
     {
@@ -480,15 +480,15 @@
 
       else
       {
-        [0 setObject:0 forKeyedSubscript:v5];
+        [0 setObject:0 forKeyedSubscript:identifierCopy];
         v14 = 0;
       }
 
       v15 = [v14 objectForKeyedSubscript:v11];
-      v16 = [v15 unsignedIntegerValue];
-      if (v16 > 1)
+      unsignedIntegerValue = [v15 unsignedIntegerValue];
+      if (unsignedIntegerValue > 1)
       {
-        v53 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v16 - 1];
+        v53 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue - 1];
         if (self)
         {
           v54 = objc_getProperty(self, v52, 80, 1);
@@ -534,7 +534,7 @@
         v72 = v9;
         nw_queue_context_async();
 
-        v25 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
@@ -582,7 +582,7 @@
 
               if (v35 == v11)
               {
-                [v25 addObject:v33];
+                [array addObject:v33];
               }
 
               ++v32;
@@ -600,7 +600,7 @@
         v62 = 0u;
         v59 = 0u;
         v60 = 0u;
-        v37 = v25;
+        v37 = array;
         v38 = [v37 countByEnumeratingWithState:&v59 objects:v73 count:16];
         if (v38)
         {
@@ -667,14 +667,14 @@
 
         [v49 setObject:0 forKeyedSubscript:v11];
 
-        [(NENexus *)self rejectFlowWithClientIdentifier:v5];
+        [(NENexus *)self rejectFlowWithClientIdentifier:identifierCopy];
         v15 = v57;
       }
     }
 
     else
     {
-      [(NENexus *)self rejectFlowWithClientIdentifier:v5];
+      [(NENexus *)self rejectFlowWithClientIdentifier:identifierCopy];
     }
   }
 
@@ -692,11 +692,11 @@
   v55 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rejectFlowWithClientIdentifier:(void *)a1
+- (void)rejectFlowWithClientIdentifier:(void *)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
     v16 = 0;
     memset(uu, 0, sizeof(uu));
@@ -715,7 +715,7 @@
     }
 
     v6 = assign_message;
-    Property = objc_getProperty(a1, v5, 128, 1);
+    Property = objc_getProperty(identifier, v5, 128, 1);
     if (Property)
     {
       Property = objc_getProperty(Property, v8, 32, 1);
@@ -768,19 +768,19 @@ uint64_t __41__NENexus_closeFlowWithClientIdentifier___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)handleRequestNexusFromClient:(id)a3
+- (BOOL)handleRequestNexusFromClient:(id)client
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E6977E48] pathForClientID:v4];
+  clientCopy = client;
+  v5 = [MEMORY[0x1E6977E48] pathForClientID:clientCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 parameters];
+    parameters = [v5 parameters];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v25 = 0x2020000000;
-    v26 = [v7 pid];
+    v26 = [parameters pid];
     v8 = *(*(&buf + 1) + 24);
     v9 = v8 != 0;
     if (!v8)
@@ -819,10 +819,10 @@ LABEL_6:
         v17[3] = &unk_1E7F097F8;
         v14 = v10;
         v18 = v14;
-        v19 = self;
+        selfCopy = self;
         p_buf = &buf;
-        v20 = v4;
-        v21 = v7;
+        v20 = clientCopy;
+        v21 = parameters;
         [WeakRetained acceptNewFlow:v14 fromNexus:self completionHandler:v17];
 
 LABEL_14:
@@ -844,12 +844,12 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  v7 = ne_log_obj();
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  parameters = ne_log_obj();
+  if (os_log_type_enabled(parameters, OS_LOG_TYPE_ERROR))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
-    _os_log_error_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_ERROR, "Failed to get path for client %@", &buf, 0xCu);
+    *(&buf + 4) = clientCopy;
+    _os_log_error_impl(&dword_1BA83C000, parameters, OS_LOG_TYPE_ERROR, "Failed to get path for client %@", &buf, 0xCu);
   }
 
   v9 = 0;
@@ -1275,17 +1275,17 @@ LABEL_9:
 
 - (NSString)interfaceName
 {
-  v3 = [(NENexus *)self virtualInterface];
-  if (v3)
+  virtualInterface = [(NENexus *)self virtualInterface];
+  if (virtualInterface)
   {
-    v3 = [(NENexus *)self virtualInterface];
-    if (v3)
+    virtualInterface = [(NENexus *)self virtualInterface];
+    if (virtualInterface)
     {
-      v3 = CFStringCreateWithCString(*MEMORY[0x1E695E480], &v3[8].info + 1, 0x600u);
+      virtualInterface = CFStringCreateWithCString(*MEMORY[0x1E695E480], &virtualInterface[8].info + 1, 0x600u);
     }
   }
 
-  return v3;
+  return virtualInterface;
 }
 
 - (void)dealloc
@@ -1321,7 +1321,7 @@ LABEL_9:
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   v39 = *MEMORY[0x1E69E9840];
   v34 = 0u;
   v35 = 0u;
@@ -1332,8 +1332,8 @@ LABEL_9:
     self = objc_getProperty(self, a2, 88, 1);
   }
 
-  v3 = self;
-  v4 = [(NENexus *)v3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  selfCopy2 = self;
+  v4 = [(NENexus *)selfCopy2 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1344,26 +1344,26 @@ LABEL_9:
       {
         if (*v35 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy2);
         }
 
-        [(NENexus *)v2 closeFlowWithClientIdentifier:*(*(&v34 + 1) + 8 * i)];
+        [(NENexus *)selfCopy closeFlowWithClientIdentifier:*(*(&v34 + 1) + 8 * i)];
       }
 
-      v5 = [(NENexus *)v3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v5 = [(NENexus *)selfCopy2 countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v5);
   }
 
-  if (!v2)
+  if (!selfCopy)
   {
     v29 = 0;
     v27 = 0;
     goto LABEL_23;
   }
 
-  v9 = objc_getProperty(v2, v8, 112, 1);
+  v9 = objc_getProperty(selfCopy, v8, 112, 1);
   v11 = v9;
   if (!v9)
   {
@@ -1374,8 +1374,8 @@ LABEL_9:
 
   if (Property)
   {
-    v14 = objc_getProperty(v2, v13, 112, 1);
-    v16 = objc_getProperty(v2, v15, 112, 1);
+    v14 = objc_getProperty(selfCopy, v13, 112, 1);
+    v16 = objc_getProperty(selfCopy, v15, 112, 1);
     v18 = v16;
     if (v16)
     {
@@ -1391,7 +1391,7 @@ LABEL_9:
     v21 = v19;
     nw_queue_context_async_if_needed();
 
-    v23 = objc_getProperty(v2, v22, 112, 1);
+    v23 = objc_getProperty(selfCopy, v22, 112, 1);
     if (v23)
     {
       v25 = v23;
@@ -1401,13 +1401,13 @@ LABEL_9:
 LABEL_18:
   }
 
-  if (objc_getProperty(v2, v13, 64, 1))
+  if (objc_getProperty(selfCopy, v13, 64, 1))
   {
-    objc_getProperty(v2, v26, 64, 1);
+    objc_getProperty(selfCopy, v26, 64, 1);
     nw_nexus_close();
   }
 
-  v27 = objc_getProperty(v2, v26, 128, 1);
+  v27 = objc_getProperty(selfCopy, v26, 128, 1);
   v29 = v27;
   if (v27)
   {
@@ -1417,10 +1417,10 @@ LABEL_18:
 LABEL_23:
   [v27 unregisterNetworkAgent];
 
-  v30 = [(NENexus *)v2 virtualInterface];
-  if (!v30 || *(v30 + 256) != 2)
+  virtualInterface = [(NENexus *)selfCopy virtualInterface];
+  if (!virtualInterface || *(virtualInterface + 256) != 2)
   {
-    NEVirtualInterfaceInvalidate([(NENexus *)v2 virtualInterface]);
+    NEVirtualInterfaceInvalidate([(NENexus *)selfCopy virtualInterface]);
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -1446,7 +1446,7 @@ void __17__NENexus_cancel__block_invoke(void *a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (NENexus)initWithName:(id)a3 delegate:(id)a4
+- (NENexus)initWithName:(id)name delegate:(id)delegate
 {
   v6 = ne_log_obj();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1462,13 +1462,13 @@ void __17__NENexus_cancel__block_invoke(void *a1)
   return 0;
 }
 
-- (NENexus)initWithLevel:(unint64_t)a3 name:(id)a4 virtualInterfaceType:(int64_t)a5 delegate:(id)a6 channelCount:(unsigned int)a7 netifRingSize:(unsigned int)a8 kernelPipeTxRingSize:(unsigned int)a9 kernelPipeRxRingSize:(unsigned int)a10 execUUID:(id)a11
+- (NENexus)initWithLevel:(unint64_t)level name:(id)name virtualInterfaceType:(int64_t)type delegate:(id)delegate channelCount:(unsigned int)count netifRingSize:(unsigned int)size kernelPipeTxRingSize:(unsigned int)ringSize kernelPipeRxRingSize:(unsigned int)self0 execUUID:(id)self1
 {
   v89 = *MEMORY[0x1E69E9840];
-  v18 = a4;
-  v19 = a6;
-  v20 = a11;
-  if (!v18)
+  nameCopy = name;
+  delegateCopy = delegate;
+  dCopy = d;
+  if (!nameCopy)
   {
     v73 = ne_log_obj();
     if (!os_log_type_enabled(v73, OS_LOG_TYPE_FAULT))
@@ -1482,7 +1482,7 @@ void __17__NENexus_cancel__block_invoke(void *a1)
     goto LABEL_78;
   }
 
-  if (!v19)
+  if (!delegateCopy)
   {
     v73 = ne_log_obj();
     if (!os_log_type_enabled(v73, OS_LOG_TYPE_FAULT))
@@ -1516,20 +1516,20 @@ LABEL_78:
   }
 
   self = v21;
-  if (a3 == 2)
+  if (level == 2)
   {
     v22 = 2;
   }
 
   else
   {
-    if (a3 != 4)
+    if (level != 4)
     {
       v73 = ne_log_obj();
       if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
       {
         *uu = 67109120;
-        *&uu[4] = a3;
+        *&uu[4] = level;
         _os_log_error_impl(&dword_1BA83C000, v73, OS_LOG_TYPE_ERROR, "Nexus level %u is invalid", uu, 8u);
       }
 
@@ -1539,10 +1539,10 @@ LABEL_78:
     v22 = 4;
   }
 
-  v21->_level = a3;
+  v21->_level = level;
   v21->_availability = 0;
-  objc_storeStrong(&v21->_name, a4);
-  objc_storeWeak(&self->_delegate, v19);
+  objc_storeStrong(&v21->_name, name);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v23 = malloc_type_calloc(1uLL, 0x40uLL, 0x10A0040C9AB51B7uLL);
   if (!v23)
   {
@@ -1567,7 +1567,7 @@ LABEL_47:
   }
 
   v24 = v23;
-  v85 = v20;
+  v85 = dCopy;
   if (setupFlowManager_onceToken != -1)
   {
     dispatch_once(&setupFlowManager_onceToken, &__block_literal_global_18138);
@@ -1581,7 +1581,7 @@ LABEL_47:
   if (!objc_getProperty(self, v27, 112, 1))
   {
     v75 = ne_log_obj();
-    v20 = v85;
+    dCopy = v85;
     if (os_log_type_enabled(v75, OS_LOG_TYPE_FAULT))
     {
       *uu = 0;
@@ -1605,7 +1605,7 @@ LABEL_47:
   if (!objc_getProperty(self, v33, 120, 1))
   {
     v78 = ne_log_obj();
-    v20 = v85;
+    dCopy = v85;
     if (os_log_type_enabled(v78, OS_LOG_TYPE_FAULT))
     {
       *uu = 0;
@@ -1623,9 +1623,9 @@ LABEL_47:
     goto LABEL_64;
   }
 
-  if (a3 == 4 || !a7)
+  if (level == 4 || !count)
   {
-    [v18 UTF8String];
+    [nameCopy UTF8String];
     v34 = nw_nexus_create();
     userNexus = self->_userNexus;
     self->_userNexus = v34;
@@ -1642,8 +1642,8 @@ LABEL_47:
 
 LABEL_60:
 
-      v72 = 0;
-      v20 = v85;
+      selfCopy = 0;
+      dCopy = v85;
       goto LABEL_50;
     }
   }
@@ -1696,10 +1696,10 @@ LABEL_73:
   }
 
   [(NENexusAgent *)v51 setActive:0];
-  v52 = [MEMORY[0x1E696AFB0] UUID];
-  [(NENexusAgent *)self->_agent setAgentUUID:v52];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(NENexusAgent *)self->_agent setAgentUUID:uUID];
 
-  [(NENexusAgent *)self->_agent setAgentDescription:v18];
+  [(NENexusAgent *)self->_agent setAgentDescription:nameCopy];
   v53 = self->_agent;
   if (v53 && (v53->_frameType = v22, (v54 = self->_agent) != 0))
   {
@@ -1712,7 +1712,7 @@ LABEL_73:
     v55 = 0;
   }
 
-  [(NENexusAgent *)v55 setNexusProvider:a3 == 4];
+  [(NENexusAgent *)v55 setNexusProvider:level == 4];
   v57 = [objc_alloc(MEMORY[0x1E6977E38]) initWithNetworkAgentClass:objc_opt_class()];
   v58 = self->_agent;
   if (v58)
@@ -1721,7 +1721,7 @@ LABEL_73:
   }
 
   v60 = self->_agent;
-  v20 = v85;
+  dCopy = v85;
   if (!v60 || !objc_getProperty(v60, v59, 32, 1))
   {
     v73 = ne_log_obj();
@@ -1741,7 +1741,7 @@ LABEL_66:
 LABEL_48:
 
 LABEL_49:
-    v72 = 0;
+    selfCopy = 0;
     goto LABEL_50;
   }
 
@@ -1778,12 +1778,12 @@ LABEL_49:
   }
 
   v64 = *MEMORY[0x1E695E480];
-  NexusExtendedWithOptions = NEVirtualInterfaceCreateNexusExtendedWithOptions(*MEMORY[0x1E695E480], a5, 0, 0, 1, 0, a7, 0, a8, a9, a10, uu, 0);
+  NexusExtendedWithOptions = NEVirtualInterfaceCreateNexusExtendedWithOptions(*MEMORY[0x1E695E480], type, 0, 0, 1, 0, count, 0, size, ringSize, rxRingSize, uu, 0);
   self->_virtualInterface = NexusExtendedWithOptions;
   if (!NexusExtendedWithOptions)
   {
     v73 = ne_log_obj();
-    v20 = v85;
+    dCopy = v85;
     if (!os_log_type_enabled(v73, OS_LOG_TYPE_FAULT))
     {
       goto LABEL_48;
@@ -1796,7 +1796,7 @@ LABEL_49:
 
   virtualInterface = NexusExtendedWithOptions;
   v68 = self->_agent;
-  v20 = v85;
+  dCopy = v85;
   if (v68)
   {
     v69 = objc_getProperty(v68, v66, 32, 1);
@@ -1832,11 +1832,11 @@ LABEL_71:
     goto LABEL_65;
   }
 
-  v72 = self;
+  selfCopy = self;
 LABEL_50:
 
   v76 = *MEMORY[0x1E69E9840];
-  return v72;
+  return selfCopy;
 }
 
 void __27__NENexus_setupFlowManager__block_invoke()

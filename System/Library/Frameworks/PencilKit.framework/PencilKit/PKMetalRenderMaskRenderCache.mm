@@ -1,19 +1,19 @@
 @interface PKMetalRenderMaskRenderCache
-- (PKMetalRenderMaskRenderCache)initWithInk:(id)a3 strokeDataUUID:(id)a4;
+- (PKMetalRenderMaskRenderCache)initWithInk:(id)ink strokeDataUUID:(id)d;
 @end
 
 @implementation PKMetalRenderMaskRenderCache
 
-- (PKMetalRenderMaskRenderCache)initWithInk:(id)a3 strokeDataUUID:(id)a4
+- (PKMetalRenderMaskRenderCache)initWithInk:(id)ink strokeDataUUID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = PKMetalRenderMaskRenderCache;
-  v8 = [(PKMetalStrokeRenderCache *)&v11 initWithInk:a3 renderZoomFactor:1];
+  v8 = [(PKMetalStrokeRenderCache *)&v11 initWithInk:ink renderZoomFactor:1];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_strokeDataUUID, a4);
+    objc_storeStrong(&v8->_strokeDataUUID, d);
   }
 
   return v9;

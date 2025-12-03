@@ -1,29 +1,29 @@
 @interface HMDSettingRootGroupModel
 + (id)hmbProperties;
-- (HMDSettingRootGroupModel)initWithModelID:(id)a3 parentModelID:(id)a4;
-- (id)copyWithNewParentModelID:(id)a3;
+- (HMDSettingRootGroupModel)initWithModelID:(id)d parentModelID:(id)iD;
+- (id)copyWithNewParentModelID:(id)d;
 @end
 
 @implementation HMDSettingRootGroupModel
 
-- (id)copyWithNewParentModelID:(id)a3
+- (id)copyWithNewParentModelID:(id)d
 {
   [MEMORY[0x277CBEAD8] raise:@"ProtocolMethodNotImplemented" format:@"Root group should never change it's parent model ID"];
 
   return self;
 }
 
-- (HMDSettingRootGroupModel)initWithModelID:(id)a3 parentModelID:(id)a4
+- (HMDSettingRootGroupModel)initWithModelID:(id)d parentModelID:(id)iD
 {
   v8.receiver = self;
   v8.super_class = HMDSettingRootGroupModel;
-  v4 = [(HMBModel *)&v8 initWithModelID:a3 parentModelID:a4];
+  v4 = [(HMBModel *)&v8 initWithModelID:d parentModelID:iD];
   v5 = v4;
   if (v4)
   {
     [(HMDSettingRootGroupModel *)v4 setName:@"root"];
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    [(HMDSettingRootGroupModel *)v5 setConflictResolutionToken:v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(HMDSettingRootGroupModel *)v5 setConflictResolutionToken:uUID];
   }
 
   return v5;

@@ -1,21 +1,21 @@
 @interface SBDashBoardBiometricUnlockController
-- (BOOL)biometricUnlockBehavior:(id)a3 requestsFeedback:(id)a4;
-- (BOOL)biometricUnlockBehavior:(id)a3 requestsUnlock:(id)a4 withFeedback:(id)a5;
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)biometricUnlockBehavior:(id)behavior requestsFeedback:(id)feedback;
+- (BOOL)biometricUnlockBehavior:(id)behavior requestsUnlock:(id)unlock withFeedback:(id)feedback;
+- (BOOL)handleEvent:(id)event;
 - (NSString)coverSheetIdentifier;
 - (SBBiometricUnlockBehaviorDelegate)biometricUnlockBehaviorDelegate;
-- (SBDashBoardBiometricUnlockController)initWithCoverSheetViewController:(id)a3;
+- (SBDashBoardBiometricUnlockController)initWithCoverSheetViewController:(id)controller;
 - (id)_mesaUnlockBehavior;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)biometricUnlockBehaviorConfigurationDidChange:(id)a3;
+- (void)biometricUnlockBehaviorConfigurationDidChange:(id)change;
 - (void)dealloc;
 - (void)noteLockButtonDown;
 - (void)noteMenuButtonDown;
 - (void)noteMenuButtonUp;
-- (void)setAuthenticated:(BOOL)a3;
-- (void)startRestToOpenCoachingWithCompletion:(id)a3;
+- (void)setAuthenticated:(BOOL)authenticated;
+- (void)startRestToOpenCoachingWithCompletion:(id)completion;
 @end
 
 @implementation SBDashBoardBiometricUnlockController
@@ -43,22 +43,22 @@
   return v3;
 }
 
-- (SBDashBoardBiometricUnlockController)initWithCoverSheetViewController:(id)a3
+- (SBDashBoardBiometricUnlockController)initWithCoverSheetViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = SBDashBoardBiometricUnlockController;
   v6 = [(SBDashBoardBiometricUnlockController *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coverSheetViewController, a3);
+    objc_storeStrong(&v6->_coverSheetViewController, controller);
     [(CSCoverSheetViewController *)v7->_coverSheetViewController registerExternalEventHandler:v7];
     v8 = [SBDashBoardMesaUnlockBehaviorConfiguration alloc];
     v9 = +[SBLiftToWakeController sharedController];
-    v10 = [MEMORY[0x277D67C98] sharedInstance];
-    v11 = [MEMORY[0x277D02C20] rootSettings];
-    v12 = [(SBDashBoardMesaUnlockBehaviorConfiguration *)v8 initWithLiftToWakeController:v9 biometricResource:v10 lockScreenPrototypeSettings:v11];
+    mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+    rootSettings = [MEMORY[0x277D02C20] rootSettings];
+    v12 = [(SBDashBoardMesaUnlockBehaviorConfiguration *)v8 initWithLiftToWakeController:v9 biometricResource:mEMORY[0x277D67C98] lockScreenPrototypeSettings:rootSettings];
     biometricUnlockBehaviorConfiguration = v7->_biometricUnlockBehaviorConfiguration;
     v7->_biometricUnlockBehaviorConfiguration = v12;
 
@@ -79,84 +79,84 @@
 
 - (void)noteMenuButtonDown
 {
-  v2 = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
-  [v2 menuButtonDown];
+  _mesaUnlockBehavior = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
+  [_mesaUnlockBehavior menuButtonDown];
 }
 
 - (void)noteMenuButtonUp
 {
-  v2 = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
-  [v2 menuButtonUp];
+  _mesaUnlockBehavior = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
+  [_mesaUnlockBehavior menuButtonUp];
 }
 
-- (void)setAuthenticated:(BOOL)a3
+- (void)setAuthenticated:(BOOL)authenticated
 {
-  v3 = a3;
-  v4 = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
-  [v4 setAuthenticated:v3];
+  authenticatedCopy = authenticated;
+  _mesaUnlockBehavior = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
+  [_mesaUnlockBehavior setAuthenticated:authenticatedCopy];
 }
 
 - (void)noteLockButtonDown
 {
-  v2 = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
-  [v2 lockButtonDown];
+  _mesaUnlockBehavior = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
+  [_mesaUnlockBehavior lockButtonDown];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBDashBoardBiometricUnlockController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBDashBoardBiometricUnlockController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBDashBoardBiometricUnlockController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBDashBoardBiometricUnlockController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBDashBoardBiometricUnlockController *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_biometricUnlockBehavior withName:@"biometricUnlockBehavior"];
-  v6 = [v4 appendObject:self->_biometricUnlockBehaviorConfiguration withName:@"biometricUnlockBehaviorConfiguration"];
+  succinctDescriptionBuilder = [(SBDashBoardBiometricUnlockController *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_biometricUnlockBehavior withName:@"biometricUnlockBehavior"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_biometricUnlockBehaviorConfiguration withName:@"biometricUnlockBehaviorConfiguration"];
   WeakRetained = objc_loadWeakRetained(&self->_biometricUnlockBehaviorDelegate);
-  v8 = [v4 appendObject:WeakRetained withName:@"biometricUnlockBehaviorDelegate"];
+  v8 = [succinctDescriptionBuilder appendObject:WeakRetained withName:@"biometricUnlockBehaviorDelegate"];
 
-  v9 = [v4 appendObject:self->_coverSheetViewController withName:@"coverSheetViewController"];
+  v9 = [succinctDescriptionBuilder appendObject:self->_coverSheetViewController withName:@"coverSheetViewController"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (BOOL)biometricUnlockBehavior:(id)a3 requestsFeedback:(id)a4
+- (BOOL)biometricUnlockBehavior:(id)behavior requestsFeedback:(id)feedback
 {
-  v5 = a4;
-  v6 = [(SBDashBoardBiometricUnlockController *)self biometricUnlockBehaviorDelegate];
-  v7 = [v6 biometricUnlockBehavior:self requestsFeedback:v5];
+  feedbackCopy = feedback;
+  biometricUnlockBehaviorDelegate = [(SBDashBoardBiometricUnlockController *)self biometricUnlockBehaviorDelegate];
+  v7 = [biometricUnlockBehaviorDelegate biometricUnlockBehavior:self requestsFeedback:feedbackCopy];
 
   if (v7)
   {
-    if ([v5 hintFailureText])
+    if ([feedbackCopy hintFailureText])
     {
       [(CSCoverSheetViewController *)self->_coverSheetViewController updateCallToActionForMesaMatchFailure];
     }
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"SBBiometricEventTimestampNotificationTryAgain" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBBiometricEventTimestampNotificationTryAgain" object:0];
   }
 
   return v7;
 }
 
-- (BOOL)biometricUnlockBehavior:(id)a3 requestsUnlock:(id)a4 withFeedback:(id)a5
+- (BOOL)biometricUnlockBehavior:(id)behavior requestsUnlock:(id)unlock withFeedback:(id)feedback
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SBDashBoardBiometricUnlockController *)self biometricUnlockBehaviorDelegate];
-  LOBYTE(self) = [v9 biometricUnlockBehavior:self requestsUnlock:v8 withFeedback:v7];
+  feedbackCopy = feedback;
+  unlockCopy = unlock;
+  biometricUnlockBehaviorDelegate = [(SBDashBoardBiometricUnlockController *)self biometricUnlockBehaviorDelegate];
+  LOBYTE(self) = [biometricUnlockBehaviorDelegate biometricUnlockBehavior:self requestsUnlock:unlockCopy withFeedback:feedbackCopy];
 
   return self;
 }
@@ -168,22 +168,22 @@
   return NSStringFromClass(v2);
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = [a3 type];
-  switch(v4)
+  type = [event type];
+  switch(type)
   {
     case 21:
-      v5 = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
-      [v5 significantUserInteractionDidOccur];
+      _mesaUnlockBehavior = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
+      [_mesaUnlockBehavior significantUserInteractionDidOccur];
       goto LABEL_7;
     case 25:
-      v5 = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
-      [v5 screenOff];
+      _mesaUnlockBehavior = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
+      [_mesaUnlockBehavior screenOff];
       goto LABEL_7;
     case 24:
-      v5 = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
-      [v5 screenOn];
+      _mesaUnlockBehavior = [(SBDashBoardBiometricUnlockController *)self _mesaUnlockBehavior];
+      [_mesaUnlockBehavior screenOn];
 LABEL_7:
 
       break;
@@ -192,31 +192,31 @@ LABEL_7:
   return 0;
 }
 
-- (void)biometricUnlockBehaviorConfigurationDidChange:(id)a3
+- (void)biometricUnlockBehaviorConfigurationDidChange:(id)change
 {
   biometricUnlockBehavior = self->_biometricUnlockBehavior;
-  v5 = a3;
+  changeCopy = change;
   [(SBBiometricUnlockBehavior *)biometricUnlockBehavior setBiometricUnlockBehaviorDelegate:0];
-  v6 = [v5 newBehaviorForCurrentConfiguration];
+  newBehaviorForCurrentConfiguration = [changeCopy newBehaviorForCurrentConfiguration];
 
   v7 = self->_biometricUnlockBehavior;
-  self->_biometricUnlockBehavior = v6;
+  self->_biometricUnlockBehavior = newBehaviorForCurrentConfiguration;
 
   v8 = self->_biometricUnlockBehavior;
 
   [(SBBiometricUnlockBehavior *)v8 setBiometricUnlockBehaviorDelegate:self];
 }
 
-- (void)startRestToOpenCoachingWithCompletion:(id)a3
+- (void)startRestToOpenCoachingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   coverSheetViewController = self->_coverSheetViewController;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__SBDashBoardBiometricUnlockController_startRestToOpenCoachingWithCompletion___block_invoke;
   v7[3] = &unk_2783A9C70;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CSCoverSheetViewController *)coverSheetViewController startRestToOpenCoachingWithCompletion:v7];
 }
 

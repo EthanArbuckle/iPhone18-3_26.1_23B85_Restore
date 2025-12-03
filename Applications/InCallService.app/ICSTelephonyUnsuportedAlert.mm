@@ -7,13 +7,13 @@
 
 - (void)alternateResponse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C98D8();
 }
 
 - (void)show
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C9AD4();
 }
 

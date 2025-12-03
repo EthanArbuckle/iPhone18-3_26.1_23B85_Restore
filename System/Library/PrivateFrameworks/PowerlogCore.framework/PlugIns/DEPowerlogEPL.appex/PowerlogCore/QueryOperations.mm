@@ -1,6 +1,6 @@
 @interface QueryOperations
 - (QueryOperations)init;
-- (QueryOperations)initWithCompletion:(id)a3;
+- (QueryOperations)initWithCompletion:(id)completion;
 - (void)main;
 @end
 
@@ -23,15 +23,15 @@
   return v3;
 }
 
-- (QueryOperations)initWithCompletion:(id)a3
+- (QueryOperations)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9.receiver = self;
   v9.super_class = QueryOperations;
   v5 = [(QueryOperations *)&v9 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(completionCopy);
     completion = v5->_completion;
     v5->_completion = v6;
 
@@ -43,9 +43,9 @@
 
 - (void)main
 {
-  v3 = [(QueryOperations *)self functionName];
+  functionName = [(QueryOperations *)self functionName];
 
-  if (!v3)
+  if (!functionName)
   {
     return;
   }
@@ -56,12 +56,12 @@
   v39 = sub_100001340;
   v40 = sub_100001350;
   v41 = 0;
-  v4 = [(QueryOperations *)self manualFileName];
+  manualFileName = [(QueryOperations *)self manualFileName];
 
-  if (v4)
+  if (manualFileName)
   {
-    v5 = [(QueryOperations *)self manualFileName];
-    v6 = [NSString stringWithFormat:@"%@.plist", v5];
+    manualFileName2 = [(QueryOperations *)self manualFileName];
+    v6 = [NSString stringWithFormat:@"%@.plist", manualFileName2];
 
     v7 = [NSDictionary dictionaryWithContentsOfFile:v6];
     v8 = v37[5];
@@ -75,34 +75,34 @@
   }
 
   v29 = +[NSMutableDictionary dictionary];
-  v10 = [(QueryOperations *)self functionName];
-  v11 = [v10 isEqualToString:@"PLBatteryUIQueryFunctionKey"];
+  functionName2 = [(QueryOperations *)self functionName];
+  v11 = [functionName2 isEqualToString:@"PLBatteryUIQueryFunctionKey"];
 
   if (v11)
   {
-    v12 = [NSNumber numberWithUnsignedInt:[(QueryOperations *)self queryType]];
-    [v29 setObject:v12 forKey:@"PLBatteryUIQueryTypeKey"];
+    graphArray2 = [NSNumber numberWithUnsignedInt:[(QueryOperations *)self queryType]];
+    [v29 setObject:graphArray2 forKey:@"PLBatteryUIQueryTypeKey"];
   }
 
   else
   {
-    v13 = [(QueryOperations *)self functionName];
-    v14 = [v13 isEqualToString:@"PLBatteryUIModelsQueryFunctionKey"];
+    functionName3 = [(QueryOperations *)self functionName];
+    v14 = [functionName3 isEqualToString:@"PLBatteryUIModelsQueryFunctionKey"];
 
     if (!v14)
     {
       goto LABEL_12;
     }
 
-    v15 = [(QueryOperations *)self graphArray];
+    graphArray = [(QueryOperations *)self graphArray];
 
-    if (!v15)
+    if (!graphArray)
     {
       goto LABEL_12;
     }
 
-    v12 = [(QueryOperations *)self graphArray];
-    [v29 setObject:v12 forKey:@"ModelGraphName"];
+    graphArray2 = [(QueryOperations *)self graphArray];
+    [v29 setObject:graphArray2 forKey:@"ModelGraphName"];
   }
 
 LABEL_12:
@@ -139,8 +139,8 @@ LABEL_20:
     }
   }
 
-  v22 = [(QueryOperations *)self functionName];
-  v23 = [v22 isEqualToString:@"PLBatteryUIQueryFunctionKey"];
+  functionName4 = [(QueryOperations *)self functionName];
+  v23 = [functionName4 isEqualToString:@"PLBatteryUIQueryFunctionKey"];
 
   if (!v23)
   {

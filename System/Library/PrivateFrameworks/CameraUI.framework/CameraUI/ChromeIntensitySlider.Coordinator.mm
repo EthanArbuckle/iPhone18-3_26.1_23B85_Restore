@@ -1,18 +1,18 @@
 @interface ChromeIntensitySlider.Coordinator
-- (void)intensityValueChanged:(id)a3;
+- (void)intensityValueChanged:(id)changed;
 @end
 
 @implementation ChromeIntensitySlider.Coordinator
 
-- (void)intensityValueChanged:(id)a3
+- (void)intensityValueChanged:(id)changed
 {
   v3 = self->parent[8];
-  v4 = a3;
+  changedCopy = changed;
   sub_1A3A2EA60();
   v5 = sub_1A3A2EA60();
   v6 = sub_1A39A12B8(v5, v3);
 
-  [v4 value];
+  [changedCopy value];
   v8 = v7;
   v9 = v6[153];
   v10 = v6[154];

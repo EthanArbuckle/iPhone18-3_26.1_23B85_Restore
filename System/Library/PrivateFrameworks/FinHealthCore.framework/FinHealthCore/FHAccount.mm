@@ -1,81 +1,81 @@
 @interface FHAccount
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation FHAccount
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v27 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(FHAccount *)self accountID];
-    v7 = [(FHAccount *)v5 accountID];
-    if (FHEqualStrings(v6, v7) && (v8 = [(FHAccount *)self sourceType], v8 == [(FHAccount *)v5 sourceType]) && (v9 = [(FHAccount *)self accountCategory], v9 == [(FHAccount *)v5 accountCategory]) && (v10 = [(FHAccount *)self accountType], v10 == [(FHAccount *)v5 accountType]))
+    accountID = [(FHAccount *)self accountID];
+    accountID2 = [(FHAccount *)v5 accountID];
+    if (FHEqualStrings(accountID, accountID2) && (v8 = [(FHAccount *)self sourceType], v8 == [(FHAccount *)v5 sourceType]) && (v9 = [(FHAccount *)self accountCategory], v9 == [(FHAccount *)v5 accountCategory]) && (v10 = [(FHAccount *)self accountType], v10 == [(FHAccount *)v5 accountType]))
     {
-      v11 = [(FHAccount *)self accountDescription];
-      v12 = [(FHAccount *)v5 accountDescription];
-      if (FHEqualStrings(v11, v12) && (v13 = [(FHAccount *)self accountStatus], v13 == [(FHAccount *)v5 accountStatus]))
+      accountDescription = [(FHAccount *)self accountDescription];
+      accountDescription2 = [(FHAccount *)v5 accountDescription];
+      if (FHEqualStrings(accountDescription, accountDescription2) && (v13 = [(FHAccount *)self accountStatus], v13 == [(FHAccount *)v5 accountStatus]))
       {
-        v14 = [(FHAccount *)self currency];
-        v15 = [(FHAccount *)v5 currency];
-        if (FHEqualStrings(v14, v15))
+        currency = [(FHAccount *)self currency];
+        currency2 = [(FHAccount *)v5 currency];
+        if (FHEqualStrings(currency, currency2))
         {
-          v16 = [(FHAccount *)self creditLimit];
-          v17 = [(FHAccount *)v5 creditLimit];
-          if (FHEqualObjects(v16, v17))
+          creditLimit = [(FHAccount *)self creditLimit];
+          creditLimit2 = [(FHAccount *)v5 creditLimit];
+          if (FHEqualObjects(creditLimit, creditLimit2))
           {
-            v45 = v16;
-            v18 = [(FHAccount *)self nextPaymentDate];
+            v45 = creditLimit;
+            nextPaymentDate = [(FHAccount *)self nextPaymentDate];
             [(FHAccount *)v5 nextPaymentDate];
-            v44 = v46 = v18;
-            if (FHEqualObjects(v18, v44))
+            v44 = v46 = nextPaymentDate;
+            if (FHEqualObjects(nextPaymentDate, v44))
             {
-              v19 = [(FHAccount *)self minimumPaymentAmount];
-              v42 = [(FHAccount *)v5 minimumPaymentAmount];
-              v43 = v19;
-              if (FHEqualObjects(v19, v42))
+              minimumPaymentAmount = [(FHAccount *)self minimumPaymentAmount];
+              minimumPaymentAmount2 = [(FHAccount *)v5 minimumPaymentAmount];
+              v43 = minimumPaymentAmount;
+              if (FHEqualObjects(minimumPaymentAmount, minimumPaymentAmount2))
               {
-                v20 = [(FHAccount *)self overduePaymentAmount];
-                v40 = [(FHAccount *)v5 overduePaymentAmount];
-                v41 = v20;
-                if (FHEqualObjects(v20, v40))
+                overduePaymentAmount = [(FHAccount *)self overduePaymentAmount];
+                overduePaymentAmount2 = [(FHAccount *)v5 overduePaymentAmount];
+                v41 = overduePaymentAmount;
+                if (FHEqualObjects(overduePaymentAmount, overduePaymentAmount2))
                 {
-                  v21 = [(FHAccount *)self accountBalance];
+                  accountBalance = [(FHAccount *)self accountBalance];
                   [(FHAccount *)v5 accountBalance];
-                  v39 = v38 = v21;
-                  if (FHEqualObjects(v21, v39))
+                  v39 = v38 = accountBalance;
+                  if (FHEqualObjects(accountBalance, v39))
                   {
-                    v22 = [(FHAccount *)self institutionName];
-                    v36 = [(FHAccount *)v5 institutionName];
-                    v37 = v22;
-                    if (FHEqualStrings(v22, v36))
+                    institutionName = [(FHAccount *)self institutionName];
+                    institutionName2 = [(FHAccount *)v5 institutionName];
+                    v37 = institutionName;
+                    if (FHEqualStrings(institutionName, institutionName2))
                     {
-                      v23 = [(FHAccount *)self institutionID];
-                      v34 = [(FHAccount *)v5 institutionID];
-                      v35 = v23;
-                      if (FHEqualStrings(v23, v34))
+                      institutionID = [(FHAccount *)self institutionID];
+                      institutionID2 = [(FHAccount *)v5 institutionID];
+                      v35 = institutionID;
+                      if (FHEqualStrings(institutionID, institutionID2))
                       {
-                        v24 = [(FHAccount *)self uniqueAccountID];
-                        v32 = [(FHAccount *)v5 uniqueAccountID];
-                        v33 = v24;
-                        if (FHEqualStrings(v24, v32))
+                        uniqueAccountID = [(FHAccount *)self uniqueAccountID];
+                        uniqueAccountID2 = [(FHAccount *)v5 uniqueAccountID];
+                        v33 = uniqueAccountID;
+                        if (FHEqualStrings(uniqueAccountID, uniqueAccountID2))
                         {
-                          v25 = [(FHAccount *)self externalAccountID];
-                          v30 = [(FHAccount *)v5 externalAccountID];
-                          v31 = v25;
-                          if (FHEqualStrings(v25, v30))
+                          externalAccountID = [(FHAccount *)self externalAccountID];
+                          externalAccountID2 = [(FHAccount *)v5 externalAccountID];
+                          v31 = externalAccountID;
+                          if (FHEqualStrings(externalAccountID, externalAccountID2))
                           {
-                            v29 = [(FHAccount *)self fpanSuffix];
-                            v26 = [(FHAccount *)v5 fpanSuffix];
-                            v27 = FHEqualStrings(v29, v26);
+                            fpanSuffix = [(FHAccount *)self fpanSuffix];
+                            fpanSuffix2 = [(FHAccount *)v5 fpanSuffix];
+                            v27 = FHEqualStrings(fpanSuffix, fpanSuffix2);
                           }
 
                           else
@@ -113,20 +113,20 @@
                   v27 = 0;
                 }
 
-                v16 = v45;
+                creditLimit = v45;
               }
 
               else
               {
                 v27 = 0;
-                v16 = v45;
+                creditLimit = v45;
               }
             }
 
             else
             {
               v27 = 0;
-              v16 = v45;
+              creditLimit = v45;
             }
           }
 

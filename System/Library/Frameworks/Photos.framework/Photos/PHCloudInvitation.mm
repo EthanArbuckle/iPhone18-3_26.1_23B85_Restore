@@ -1,10 +1,10 @@
 @interface PHCloudInvitation
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
 - (NSArray)inviteeEmails;
 - (NSArray)inviteePhones;
 - (NSString)invitationStateDescription;
-- (PHCloudInvitation)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
-- (id)inviteeDisplayNameIncludingEmail:(BOOL)a3;
+- (PHCloudInvitation)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
+- (id)inviteeDisplayNameIncludingEmail:(BOOL)email;
 - (id)personInfoManager;
 @end
 
@@ -12,22 +12,22 @@
 
 - (NSString)invitationStateDescription
 {
-  v3 = [(PHCloudInvitation *)self invitationState];
+  invitationState = [(PHCloudInvitation *)self invitationState];
   v4 = 0;
-  if (v3 <= 1)
+  if (invitationState <= 1)
   {
-    if (!v3)
+    if (!invitationState)
     {
       goto LABEL_8;
     }
 
-    if (v3 == 1)
+    if (invitationState == 1)
     {
       [(PHCloudInvitation *)self invitationStateLocal];
     }
   }
 
-  else if (v3 == 2)
+  else if (invitationState == 2)
   {
     goto LABEL_8;
   }
@@ -40,66 +40,66 @@ LABEL_8:
 
 - (NSArray)inviteePhones
 {
-  v3 = [(PHCloudInvitation *)self personInfoManager];
-  v4 = [(PHCloudInvitation *)self cloudGUID];
-  v5 = [v3 phonesForInvitationRecordGUID:v4];
+  personInfoManager = [(PHCloudInvitation *)self personInfoManager];
+  cloudGUID = [(PHCloudInvitation *)self cloudGUID];
+  v5 = [personInfoManager phonesForInvitationRecordGUID:cloudGUID];
 
   return v5;
 }
 
 - (NSArray)inviteeEmails
 {
-  v3 = [(PHCloudInvitation *)self personInfoManager];
-  v4 = [(PHCloudInvitation *)self cloudGUID];
-  v5 = [v3 emailsForInvitationRecordGUID:v4];
+  personInfoManager = [(PHCloudInvitation *)self personInfoManager];
+  cloudGUID = [(PHCloudInvitation *)self cloudGUID];
+  v5 = [personInfoManager emailsForInvitationRecordGUID:cloudGUID];
 
   return v5;
 }
 
 - (id)personInfoManager
 {
-  v2 = [(PHObject *)self photoLibrary];
-  v3 = [v2 photoLibraryBundle];
-  v4 = [v3 personInfoManager];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  photoLibraryBundle = [photoLibrary photoLibraryBundle];
+  personInfoManager = [photoLibraryBundle personInfoManager];
 
-  return v4;
+  return personInfoManager;
 }
 
-- (id)inviteeDisplayNameIncludingEmail:(BOOL)a3
+- (id)inviteeDisplayNameIncludingEmail:(BOOL)email
 {
-  v3 = a3;
+  emailCopy = email;
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [(PHCloudInvitation *)self inviteeFirstName];
-  v6 = [(PHCloudInvitation *)self inviteeLastName];
-  v7 = [(PHCloudInvitation *)self inviteeFullName];
-  v8 = [(PHCloudInvitation *)self inviteeEmails];
-  v9 = [v8 firstObject];
+  inviteeFirstName = [(PHCloudInvitation *)self inviteeFirstName];
+  inviteeLastName = [(PHCloudInvitation *)self inviteeLastName];
+  inviteeFullName = [(PHCloudInvitation *)self inviteeFullName];
+  inviteeEmails = [(PHCloudInvitation *)self inviteeEmails];
+  firstObject = [inviteeEmails firstObject];
 
-  v10 = [(PHCloudInvitation *)self inviteePhones];
-  if ([v7 length])
+  inviteePhones = [(PHCloudInvitation *)self inviteePhones];
+  if ([inviteeFullName length])
   {
-    v11 = v7;
+    v11 = inviteeFullName;
     goto LABEL_3;
   }
 
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  if ([inviteeFirstName length] && objc_msgSend(inviteeLastName, "length"))
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v5, v6];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", inviteeFirstName, inviteeLastName];
     goto LABEL_3;
   }
 
-  if ([v5 length])
+  if ([inviteeFirstName length])
   {
-    v11 = v5;
+    v11 = inviteeFirstName;
     goto LABEL_3;
   }
 
-  if ([v6 length])
+  if ([inviteeLastName length])
   {
-    v11 = v6;
+    v11 = inviteeLastName;
 LABEL_3:
     v12 = v11;
-    if (!v3)
+    if (!emailCopy)
     {
       goto LABEL_6;
     }
@@ -107,22 +107,22 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if ([v9 length])
+  if ([firstObject length])
   {
-    v12 = v9;
+    v12 = firstObject;
     goto LABEL_6;
   }
 
-  if (v10 && [v10 count])
+  if (inviteePhones && [inviteePhones count])
   {
-    v21 = v3;
-    v22 = v10;
-    v23 = v6;
+    v21 = emailCopy;
+    v22 = inviteePhones;
+    v23 = inviteeLastName;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v15 = v10;
+    v15 = inviteePhones;
     v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v16)
     {
@@ -162,8 +162,8 @@ LABEL_3:
       v12 = 0;
     }
 
-    v10 = v22;
-    v6 = v23;
+    inviteePhones = v22;
+    inviteeLastName = v23;
     if (!v21)
     {
 LABEL_6:
@@ -176,9 +176,9 @@ LABEL_6:
     }
 
 LABEL_4:
-    if ([v9 length])
+    if ([firstObject length])
     {
-      v13 = [(__CFString *)v12 stringByAppendingFormat:@" (%@)", v9];
+      v13 = [(__CFString *)v12 stringByAppendingFormat:@" (%@)", firstObject];
 
       v12 = v13;
     }
@@ -186,7 +186,7 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  if (v3)
+  if (emailCopy)
   {
     v12 = 0;
     goto LABEL_4;
@@ -199,58 +199,58 @@ LABEL_8:
   return v12;
 }
 
-- (PHCloudInvitation)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHCloudInvitation)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 objectForKeyedSubscript:@"uuid"];
+  dictionaryCopy = dictionary;
+  libraryCopy = library;
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
 
   if (!v10)
   {
-    v11 = PHFetchDictionaryAccessingMutableCopy(v8);
+    v11 = PHFetchDictionaryAccessingMutableCopy(dictionaryCopy);
     v12 = [v11 objectForKeyedSubscript:@"cloudGUID"];
     [v11 setObject:v12 forKeyedSubscript:@"uuid"];
 
-    v8 = v11;
+    dictionaryCopy = v11;
   }
 
   v30.receiver = self;
   v30.super_class = PHCloudInvitation;
-  v13 = [(PHObject *)&v30 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:v9];
+  v13 = [(PHObject *)&v30 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:libraryCopy];
   if (v13)
   {
-    v14 = [v8 objectForKeyedSubscript:@"isMine"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isMine"];
     v13->_isMine = [v14 BOOLValue];
 
-    v15 = [v8 objectForKeyedSubscript:@"invitationState"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"invitationState"];
     v13->_invitationState = [v15 intValue];
 
-    v16 = [v8 objectForKeyedSubscript:@"invitationStateLocal"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"invitationStateLocal"];
     v13->_invitationStateLocal = [v16 intValue];
 
-    v17 = [v8 objectForKeyedSubscript:@"inviteeFirstName"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"inviteeFirstName"];
     inviteeFirstName = v13->_inviteeFirstName;
     v13->_inviteeFirstName = v17;
 
-    v19 = [v8 objectForKeyedSubscript:@"inviteeLastName"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"inviteeLastName"];
     inviteeLastName = v13->_inviteeLastName;
     v13->_inviteeLastName = v19;
 
-    v21 = [v8 objectForKeyedSubscript:@"inviteeFullName"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"inviteeFullName"];
     inviteeFullName = v13->_inviteeFullName;
     v13->_inviteeFullName = v21;
 
-    v23 = [v8 objectForKeyedSubscript:@"inviteeSubscriptionDate"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"inviteeSubscriptionDate"];
     inviteeSubscriptionDate = v13->_inviteeSubscriptionDate;
     v13->_inviteeSubscriptionDate = v23;
 
-    v13->_inviteeEmailKey = [v8 objectForKeyedSubscript:@"inviteeEmailKey"];
-    v13->_inviteeHashedPersonID = [v8 objectForKeyedSubscript:@"inviteeHashedPersonID"];
-    v25 = [v8 objectForKeyedSubscript:@"albumGUID"];
+    v13->_inviteeEmailKey = [dictionaryCopy objectForKeyedSubscript:@"inviteeEmailKey"];
+    v13->_inviteeHashedPersonID = [dictionaryCopy objectForKeyedSubscript:@"inviteeHashedPersonID"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"albumGUID"];
     albumGUID = v13->_albumGUID;
     v13->_albumGUID = v25;
 
-    v27 = [v8 objectForKeyedSubscript:@"cloudGUID"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"cloudGUID"];
     cloudGUID = v13->_cloudGUID;
     v13->_cloudGUID = v27;
   }
@@ -258,13 +258,13 @@ LABEL_8:
   return v13;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__PHCloudInvitation_propertiesToFetchWithHint___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (propertiesToFetchWithHint__onceToken_23447 != -1)
   {
     dispatch_once(&propertiesToFetchWithHint__onceToken_23447, block);

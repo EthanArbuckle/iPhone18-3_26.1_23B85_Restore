@@ -1,18 +1,18 @@
 @interface JavaIoBufferedOutputStream
-- (JavaIoBufferedOutputStream)initWithJavaIoOutputStream:(id)a3;
+- (JavaIoBufferedOutputStream)initWithJavaIoOutputStream:(id)stream;
 - (uint64_t)checkNotClosed;
 - (void)close;
 - (void)dealloc;
 - (void)flush;
 - (void)flushInternal;
-- (void)writeWithInt:(int)a3;
+- (void)writeWithInt:(int)int;
 @end
 
 @implementation JavaIoBufferedOutputStream
 
-- (JavaIoBufferedOutputStream)initWithJavaIoOutputStream:(id)a3
+- (JavaIoBufferedOutputStream)initWithJavaIoOutputStream:(id)stream
 {
-  JavaIoFilterOutputStream_initWithJavaIoOutputStream_(self, a3);
+  JavaIoFilterOutputStream_initWithJavaIoOutputStream_(self, stream);
   JreStrongAssignAndConsume(&self->buf_, [IOSByteArray newArrayWithLength:0x2000]);
   return self;
 }
@@ -76,9 +76,9 @@
   objc_sync_exit(self);
 }
 
-- (void)writeWithInt:(int)a3
+- (void)writeWithInt:(int)int
 {
-  v3 = a3;
+  intCopy = int;
   objc_sync_enter(self);
   [JavaIoBufferedOutputStream checkNotClosed]_0(self);
   buf = self->buf_;
@@ -112,7 +112,7 @@ LABEL_5:
     IOSArray_throwOutOfBoundsWithMsg(size, count);
   }
 
-  *(&buf->super.size_ + count + 4) = v3;
+  *(&buf->super.size_ + count + 4) = intCopy;
 
   objc_sync_exit(self);
 }

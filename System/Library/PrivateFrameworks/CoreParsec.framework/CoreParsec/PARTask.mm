@@ -7,8 +7,8 @@
 
 - (void)resume
 {
-  v3 = [(PARTask *)self session];
-  [v3 loadTask:self];
+  session = [(PARTask *)self session];
+  [session loadTask:self];
 }
 
 - (PARSession)session

@@ -1,56 +1,56 @@
 @interface ATXOnboardingStackWidgetCache
-- (ATXOnboardingStackWidgetCache)initWithAppLaunchDictionary:(id)a3;
-- (ATXOnboardingStackWidgetCache)initWithAppLaunchDictionary:(id)a3 cacheUpdateDate:(id)a4 hasiCloudFamily:(id)a5;
-- (ATXOnboardingStackWidgetCache)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXOnboardingStackWidgetCache)initWithAppLaunchDictionary:(id)dictionary;
+- (ATXOnboardingStackWidgetCache)initWithAppLaunchDictionary:(id)dictionary cacheUpdateDate:(id)date hasiCloudFamily:(id)family;
+- (ATXOnboardingStackWidgetCache)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXOnboardingStackWidgetCache
 
-- (ATXOnboardingStackWidgetCache)initWithAppLaunchDictionary:(id)a3
+- (ATXOnboardingStackWidgetCache)initWithAppLaunchDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
-  v6 = [(ATXOnboardingStackWidgetCache *)self initWithAppLaunchDictionary:v4 cacheUpdateDate:v5 hasiCloudFamily:0];
+  v6 = [(ATXOnboardingStackWidgetCache *)self initWithAppLaunchDictionary:dictionaryCopy cacheUpdateDate:v5 hasiCloudFamily:0];
 
   return v6;
 }
 
-- (ATXOnboardingStackWidgetCache)initWithAppLaunchDictionary:(id)a3 cacheUpdateDate:(id)a4 hasiCloudFamily:(id)a5
+- (ATXOnboardingStackWidgetCache)initWithAppLaunchDictionary:(id)dictionary cacheUpdateDate:(id)date hasiCloudFamily:(id)family
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  dateCopy = date;
+  familyCopy = family;
   v15.receiver = self;
   v15.super_class = ATXOnboardingStackWidgetCache;
   v11 = [(ATXOnboardingStackWidgetCache *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dictionaryCopy copy];
     descriptorToAppLaunchData = v11->_descriptorToAppLaunchData;
     v11->_descriptorToAppLaunchData = v12;
 
-    objc_storeStrong(&v11->_cacheUpdateDate, a4);
-    objc_storeStrong(&v11->_hasiCloudFamily, a5);
+    objc_storeStrong(&v11->_cacheUpdateDate, date);
+    objc_storeStrong(&v11->_hasiCloudFamily, family);
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   descriptorToAppLaunchData = self->_descriptorToAppLaunchData;
-  v5 = a3;
-  [v5 encodeObject:descriptorToAppLaunchData forKey:@"descriptorToAppLaunchData"];
-  [v5 encodeObject:self->_cacheUpdateDate forKey:@"cacheUpdateDate"];
-  [v5 encodeObject:self->_hasiCloudFamily forKey:@"hasiCloudFamily"];
+  coderCopy = coder;
+  [coderCopy encodeObject:descriptorToAppLaunchData forKey:@"descriptorToAppLaunchData"];
+  [coderCopy encodeObject:self->_cacheUpdateDate forKey:@"cacheUpdateDate"];
+  [coderCopy encodeObject:self->_hasiCloudFamily forKey:@"hasiCloudFamily"];
 }
 
-- (ATXOnboardingStackWidgetCache)initWithCoder:(id)a3
+- (ATXOnboardingStackWidgetCache)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x1E695DFD8]);
   v7 = objc_opt_class();
@@ -58,21 +58,21 @@
   v9 = objc_opt_class();
   v10 = [v6 initWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v5);
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"descriptorToAppLaunchData"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"descriptorToAppLaunchData"];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cacheUpdateDate"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hasiCloudFamily"];
-  v14 = 0;
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cacheUpdateDate"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hasiCloudFamily"];
+  selfCopy = 0;
   if (v11 && v12)
   {
     self = [(ATXOnboardingStackWidgetCache *)self initWithAppLaunchDictionary:v11 cacheUpdateDate:v12 hasiCloudFamily:v13];
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   descriptorToAppLaunchData = self->_descriptorToAppLaunchData;
@@ -82,10 +82,10 @@
   return [v4 initWithAppLaunchDictionary:descriptorToAppLaunchData cacheUpdateDate:cacheUpdateDate hasiCloudFamily:hasiCloudFamily];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -95,14 +95,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ATXOnboardingStackWidgetCache *)v5 cacheUpdateDate];
-      v7 = [v6 isEqualToDate:self->_cacheUpdateDate];
+      v5 = equalCopy;
+      cacheUpdateDate = [(ATXOnboardingStackWidgetCache *)v5 cacheUpdateDate];
+      v7 = [cacheUpdateDate isEqualToDate:self->_cacheUpdateDate];
 
       if (v7)
       {
-        v8 = [(ATXOnboardingStackWidgetCache *)v5 descriptorToAppLaunchData];
-        v9 = [v8 isEqual:self->_descriptorToAppLaunchData];
+        descriptorToAppLaunchData = [(ATXOnboardingStackWidgetCache *)v5 descriptorToAppLaunchData];
+        v9 = [descriptorToAppLaunchData isEqual:self->_descriptorToAppLaunchData];
       }
 
       else

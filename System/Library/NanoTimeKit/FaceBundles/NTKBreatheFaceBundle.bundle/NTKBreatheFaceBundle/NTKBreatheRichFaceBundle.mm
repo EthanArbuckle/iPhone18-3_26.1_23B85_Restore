@@ -10,8 +10,8 @@
   {
     v6.receiver = self;
     v6.super_class = NTKBreatheRichFaceBundle;
-    v3 = [(NTKBreatheFaceBundle *)&v6 galleryTitle];
-    v4 = [NSString stringWithFormat:@"%@ (Legacy)", v3];
+    galleryTitle = [(NTKBreatheFaceBundle *)&v6 galleryTitle];
+    v4 = [NSString stringWithFormat:@"%@ (Legacy)", galleryTitle];
   }
 
   else

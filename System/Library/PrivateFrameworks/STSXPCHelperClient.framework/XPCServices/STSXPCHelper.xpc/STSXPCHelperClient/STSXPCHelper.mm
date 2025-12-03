@@ -1,34 +1,34 @@
 @interface STSXPCHelper
 - (id)startHandoff;
-- (void)altCarrierConnectedWithStatus:(unint64_t)a3;
-- (void)altCarrierDisconnectedWithStatus:(unint64_t)a3;
-- (void)altCarrierReceived:(id)a3 status:(id)a4;
-- (void)connectNotificationListenerEndpoint:(id)a3 callback:(id)a4;
-- (void)generateHandoverRequestWithCallback:(id)a3;
-- (void)generateQRCodeHandoverRequestWithCallback:(id)a3;
-- (void)invalidateWithCompletion:(id)a3;
-- (void)iso18013ReaderSendSessionData:(id)a3 status:(id)a4 callback:(id)a5;
-- (void)iso18013ReaderSendSessionEstablishment:(id)a3 callback:(id)a4;
-- (void)processAlternativeCarrierRequest:(id)a3 callback:(id)a4;
-- (void)processHandoverRequest:(id)a3 callback:(id)a4;
-- (void)processHandoverResponse:(id)a3 callback:(id)a4;
-- (void)processQRCodeHandoverRequestMessage:(id)a3 callback:(id)a4;
-- (void)processUnifiedAccessStepupExchangeCommand:(id)a3 forAcwg:(BOOL)a4 callback:(id)a5;
-- (void)receivedCredentialSelection:(id)a3 callback:(id)a4;
-- (void)setRequestHandoverConfirmation:(BOOL)a3;
-- (void)startConnectionHandoverWithConfiguration:(unint64_t)a3 type:(unint64_t)a4 credentialType:(unsigned __int8)a5 callback:(id)a6;
-- (void)testBluetoothHandoverSessionType:(unint64_t)a3 uuid:(id)a4 peripheralAddress:(id)a5 callback:(id)a6;
-- (void)testWifiHandoverSessionWithServiceName:(id)a3 publisherRole:(BOOL)a4 datapathPMK:(id)a5 datapathPMKID:(id)a6 callback:(id)a7;
-- (void)transferSEProxyWithXPCEndpoint:(id)a3;
+- (void)altCarrierConnectedWithStatus:(unint64_t)status;
+- (void)altCarrierDisconnectedWithStatus:(unint64_t)status;
+- (void)altCarrierReceived:(id)received status:(id)status;
+- (void)connectNotificationListenerEndpoint:(id)endpoint callback:(id)callback;
+- (void)generateHandoverRequestWithCallback:(id)callback;
+- (void)generateQRCodeHandoverRequestWithCallback:(id)callback;
+- (void)invalidateWithCompletion:(id)completion;
+- (void)iso18013ReaderSendSessionData:(id)data status:(id)status callback:(id)callback;
+- (void)iso18013ReaderSendSessionEstablishment:(id)establishment callback:(id)callback;
+- (void)processAlternativeCarrierRequest:(id)request callback:(id)callback;
+- (void)processHandoverRequest:(id)request callback:(id)callback;
+- (void)processHandoverResponse:(id)response callback:(id)callback;
+- (void)processQRCodeHandoverRequestMessage:(id)message callback:(id)callback;
+- (void)processUnifiedAccessStepupExchangeCommand:(id)command forAcwg:(BOOL)acwg callback:(id)callback;
+- (void)receivedCredentialSelection:(id)selection callback:(id)callback;
+- (void)setRequestHandoverConfirmation:(BOOL)confirmation;
+- (void)startConnectionHandoverWithConfiguration:(unint64_t)configuration type:(unint64_t)type credentialType:(unsigned __int8)credentialType callback:(id)callback;
+- (void)testBluetoothHandoverSessionType:(unint64_t)type uuid:(id)uuid peripheralAddress:(id)address callback:(id)callback;
+- (void)testWifiHandoverSessionWithServiceName:(id)name publisherRole:(BOOL)role datapathPMK:(id)k datapathPMKID:(id)d callback:(id)callback;
+- (void)transferSEProxyWithXPCEndpoint:(id)endpoint;
 - (void)xpcInvalidated;
 @end
 
 @implementation STSXPCHelper
 
-- (void)startConnectionHandoverWithConfiguration:(unint64_t)a3 type:(unint64_t)a4 credentialType:(unsigned __int8)a5 callback:(id)a6
+- (void)startConnectionHandoverWithConfiguration:(unint64_t)configuration type:(unint64_t)type credentialType:(unsigned __int8)credentialType callback:(id)callback
 {
-  v10 = a6;
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper startConnectionHandoverWithConfiguration:type:credentialType:callback:]", 129, self, @"config=0x%lx, type=0x%lx", v11, v12, a3);
+  callbackCopy = callback;
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper startConnectionHandoverWithConfiguration:type:credentialType:callback:]", 129, self, @"config=0x%lx, type=0x%lx", v11, v12, configuration);
   v13 = os_transaction_create();
   sub_100027558(self, v13);
 
@@ -44,11 +44,11 @@
       goto LABEL_75;
     }
 
-    self->_type = a4;
-    self->_credentialType = a5;
+    self->_type = type;
+    self->_credentialType = credentialType;
   }
 
-  v16 = sub_100036CE8([STSConnectionHandoverHandler alloc], a3, self);
+  v16 = sub_100036CE8([STSConnectionHandoverHandler alloc], configuration, self);
   if (self)
   {
     objc_storeStrong(&self->_connectionHandoverHandler, v16);
@@ -60,13 +60,13 @@
     objc_storeStrong(&self->_receiveBuffer, v17);
   }
 
-  v18 = sub_100002C74([STSISO18013Handler alloc], self, a4 == 1);
+  v18 = sub_100002C74([STSISO18013Handler alloc], self, type == 1);
   v19 = v18;
   if (self)
   {
     objc_storeStrong(&self->_iso18013Handler, v18);
 
-    sub_100002D44(&self->_iso18013Handler->super.isa, (a3 >> 5) & 1);
+    sub_100002D44(&self->_iso18013Handler->super.isa, (configuration >> 5) & 1);
     connectionHandoverHandler = self->_connectionHandoverHandler;
   }
 
@@ -77,7 +77,7 @@
   }
 
   sub_100037C14(connectionHandoverHandler);
-  if (!a4)
+  if (!type)
   {
     if (self)
     {
@@ -107,20 +107,20 @@
     goto LABEL_74;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
     v15 = 0;
     goto LABEL_75;
   }
 
-  v21 = a3 & 6;
-  if (!self || (a3 & 7) == 0)
+  v21 = configuration & 6;
+  if (!self || (configuration & 7) == 0)
   {
     v15 = 0;
     goto LABEL_65;
   }
 
-  if ((a3 & 6) != 0)
+  if ((configuration & 6) != 0)
   {
     v22 = self->_connectionHandoverHandler;
     if (v22 && v22->_bluetoothState)
@@ -159,7 +159,7 @@ LABEL_20:
 
     v28 = 0;
 LABEL_32:
-    if ((a3 & 1) == 0)
+    if ((configuration & 1) == 0)
     {
       v33 = self->_connectionHandoverHandler;
       if (v33 && v33->_bluetoothState)
@@ -184,7 +184,7 @@ LABEL_32:
 
   v28 = 0;
   v15 = 0;
-  if ((a3 & 1) == 0)
+  if ((configuration & 1) == 0)
   {
     goto LABEL_64;
   }
@@ -228,7 +228,7 @@ LABEL_40:
 
 LABEL_43:
   v40 = self->_connectionHandoverHandler;
-  if ((a3 & 6) != 0)
+  if ((configuration & 6) != 0)
   {
     v41 = v40;
     if (v41 && v41->_bluetoothState)
@@ -277,7 +277,7 @@ LABEL_64:
 LABEL_65:
   objc_opt_self();
   v47 = +[NSDate now];
-  if ((a3 & 0x40) != 0)
+  if ((configuration & 0x40) != 0)
   {
     v48 = 2;
   }
@@ -329,13 +329,13 @@ LABEL_74:
   }
 
 LABEL_75:
-  v10[2](v10, v15);
+  callbackCopy[2](callbackCopy, v15);
 }
 
-- (void)processUnifiedAccessStepupExchangeCommand:(id)a3 forAcwg:(BOOL)a4 callback:(id)a5
+- (void)processUnifiedAccessStepupExchangeCommand:(id)command forAcwg:(BOOL)acwg callback:(id)callback
 {
-  v8 = a3;
-  v9 = a5;
+  commandCopy = command;
+  callbackCopy = callback;
   if (!self)
   {
     v10 = 0;
@@ -350,7 +350,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!acwg)
   {
 LABEL_8:
     v16 = NSLocalizedDescriptionKey;
@@ -358,7 +358,7 @@ LABEL_8:
     v13 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v12 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:2 userInfo:v13];
 
-    v9[2](v9, 0, v12);
+    callbackCopy[2](callbackCopy, 0, v12);
     goto LABEL_9;
   }
 
@@ -367,19 +367,19 @@ LABEL_8:
   v14[1] = 3221225472;
   v14[2] = sub_100027E80;
   v14[3] = &unk_100059440;
-  v15 = v9;
-  sub_100004344(iso18013Handler, v8, v14);
+  v15 = callbackCopy;
+  sub_100004344(iso18013Handler, commandCopy, v14);
   v12 = v15;
 LABEL_9:
 }
 
-- (void)transferSEProxyWithXPCEndpoint:(id)a3
+- (void)transferSEProxyWithXPCEndpoint:(id)endpoint
 {
-  v5 = a3;
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper transferSEProxyWithXPCEndpoint:]", 260, self, @"Receiving XPC Endpoint: %@", v6, v7, v5);
+  endpointCopy = endpoint;
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper transferSEProxyWithXPCEndpoint:]", 260, self, @"Receiving XPC Endpoint: %@", v6, v7, endpointCopy);
   if (self)
   {
-    objc_storeStrong(&self->_seProxyConnection, a3);
+    objc_storeStrong(&self->_seProxyConnection, endpoint);
 
     v8 = self->_seProxyConnection;
     notificationClient = self->_notificationClient;
@@ -397,10 +397,10 @@ LABEL_9:
   }
 }
 
-- (void)connectNotificationListenerEndpoint:(id)a3 callback:(id)a4
+- (void)connectNotificationListenerEndpoint:(id)endpoint callback:(id)callback
 {
-  v18 = a3;
-  v6 = a4;
+  endpointCopy = endpoint;
+  callbackCopy = callback;
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper connectNotificationListenerEndpoint:callback:]", 275, self, &stru_100059C08, v7, v8, v16);
   if (self)
   {
@@ -409,10 +409,10 @@ LABEL_9:
     {
       v10 = notificationClient->_listenerEndpoint;
 
-      if (v10 == v18)
+      if (v10 == endpointCopy)
       {
         sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[STSXPCHelper connectNotificationListenerEndpoint:callback:]", 278, self, @"Listener connection exists", v11, v12, v17);
-        v6[2](v6, 0);
+        callbackCopy[2](callbackCopy, 0);
         goto LABEL_9;
       }
 
@@ -423,20 +423,20 @@ LABEL_9:
   v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v14 = dispatch_queue_create("com.apple.STSXPCHelper.clientNotification", v13);
 
-  v15 = sub_10000B228([STSXPClientNotification alloc], v18, self, v14);
+  v15 = sub_10000B228([STSXPClientNotification alloc], endpointCopy, self, v14);
   if (self)
   {
     objc_storeStrong(&self->_notificationClient, v15);
   }
 
-  v6[2](v6, 0);
+  callbackCopy[2](callbackCopy, 0);
 LABEL_9:
 }
 
-- (void)processAlternativeCarrierRequest:(id)a3 callback:(id)a4
+- (void)processAlternativeCarrierRequest:(id)request callback:(id)callback
 {
-  v6 = a4;
-  v7 = a3;
+  callbackCopy = callback;
+  requestCopy = request;
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper processAlternativeCarrierRequest:callback:]", 302, self, &stru_100059C08, v8, v9, v14);
   if (self)
   {
@@ -450,16 +450,16 @@ LABEL_9:
 
   v15 = 0;
   v11 = connectionHandoverHandler;
-  v12 = sub_100036D6C(v11, v7, &v15);
+  v12 = sub_100036D6C(v11, requestCopy, &v15);
 
   v13 = v15;
-  v6[2](v6, v12, v13);
+  callbackCopy[2](callbackCopy, v12, v13);
 }
 
-- (void)processHandoverRequest:(id)a3 callback:(id)a4
+- (void)processHandoverRequest:(id)request callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  callbackCopy = callback;
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper processHandoverRequest:callback:]", 317, self, &stru_100059C08, v8, v9, v77);
   v10 = +[NSDate now];
   v95 = @"handoverStartEventTime";
@@ -476,7 +476,7 @@ LABEL_9:
     v26 = [NSDictionary dictionaryWithObjects:buf forKeys:&v97 count:1];
     v27 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:2 userInfo:v26];
 
-    (*(v7 + 2))(v7, 0, 0, v27);
+    (*(callbackCopy + 2))(callbackCopy, 0, 0, v27);
     v93[0] = @"handoverEndEventTime";
     v93[1] = @"errorCode";
     v94[0] = v10;
@@ -503,8 +503,8 @@ LABEL_9:
   v86 = 0;
   v87 = 0;
   v16 = connectionHandoverHandler;
-  v82 = v6;
-  v17 = sub_100036E54(v16, v6, &v87, &v86);
+  v82 = requestCopy;
+  v17 = sub_100036E54(v16, requestCopy, &v87, &v86);
   v18 = v87;
   v19 = v86;
   if (self)
@@ -527,11 +527,11 @@ LABEL_9:
       selectedAC = 0;
     }
 
-    v23 = [(STSCHAlternativeCarrier *)selectedAC type];
+    type = [(STSCHAlternativeCarrier *)selectedAC type];
     *buf = 134218240;
     *&buf[4] = type;
     v91 = 2048;
-    v92 = v23;
+    v92 = type;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v20, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "ISO18013_AltCarrierProcessing", "deviceType=%lu, selectedAC=%lu", buf, 0x16u);
   }
 
@@ -581,16 +581,16 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v31 = [v30 domain];
-  if (([v31 isEqualToString:@"STSXPCHelperErrorDomain"] & 1) == 0)
+  domain = [v30 domain];
+  if (([domain isEqualToString:@"STSXPCHelperErrorDomain"] & 1) == 0)
   {
 
     goto LABEL_26;
   }
 
-  v32 = [v19 code];
+  code = [v19 code];
 
-  if (v32 != 12)
+  if (code != 12)
   {
 LABEL_26:
 
@@ -600,11 +600,11 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v33 = [v19 userInfo];
-  v34 = [v33 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [v19 userInfo];
+  v34 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  v35 = [v34 domain];
-  v36 = [v35 isEqualToString:@"BluetoothDomain"];
+  domain2 = [v34 domain];
+  v36 = [domain2 isEqualToString:@"BluetoothDomain"];
 
   if (v36)
   {
@@ -621,9 +621,9 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v74 = [v37 code];
+  code2 = [v37 code];
   v39 = 3;
-  if (v74)
+  if (code2)
   {
     v39 = 1;
   }
@@ -631,28 +631,28 @@ LABEL_27:
 LABEL_28:
   v83 = v39;
   v40 = v19;
-  v41 = [v40 domain];
-  if (([v41 isEqualToString:@"WifiDomain"] & 1) == 0)
+  domain3 = [v40 domain];
+  if (([domain3 isEqualToString:@"WifiDomain"] & 1) == 0)
   {
 
     goto LABEL_33;
   }
 
   v79 = v37;
-  v42 = [v40 code];
+  code3 = [v40 code];
 
-  if (v42 != 12)
+  if (code3 != 12)
   {
     v47 = v19;
     v37 = v79;
     goto LABEL_34;
   }
 
-  v43 = [v40 userInfo];
-  v44 = [v43 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo2 = [v40 userInfo];
+  v44 = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  v45 = [v44 domain];
-  v46 = [v45 isEqualToString:@"WifiDomain"];
+  domain4 = [v44 domain];
+  v46 = [domain4 isEqualToString:@"WifiDomain"];
 
   if (v46)
   {
@@ -667,9 +667,9 @@ LABEL_28:
   v37 = v79;
   if (v47)
   {
-    v75 = [v47 code];
+    code4 = [v47 code];
     v76 = v83;
-    if (v75 == 3)
+    if (code4 == 3)
     {
       v76 = 2;
     }
@@ -704,8 +704,8 @@ LABEL_37:
     v54 = self->_selectedAC;
 LABEL_38:
     v55 = v54;
-    v56 = [(STSCHAlternativeCarrier *)v55 type];
-    sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[STSXPCHelper processHandoverRequest:callback:]", 377, self, @"selectedAc=%lu, error=%@", v57, v58, v56);
+    type2 = [(STSCHAlternativeCarrier *)v55 type];
+    sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[STSXPCHelper processHandoverRequest:callback:]", 377, self, @"selectedAc=%lu, error=%@", v57, v58, type2);
 
     goto LABEL_39;
   }
@@ -721,7 +721,7 @@ LABEL_40:
 
   v59 = 0;
 LABEL_41:
-  (*(v7 + 2))(v7, v18, v59 != 0, v19);
+  (*(callbackCopy + 2))(callbackCopy, v18, v59 != 0, v19);
   if (!self)
   {
     v70 = 0;
@@ -789,14 +789,14 @@ LABEL_48:
   sub_10000B784(notificationClient, v83);
 
   v10 = v81;
-  v6 = v82;
+  requestCopy = v82;
   v28 = v84;
 LABEL_51:
 }
 
-- (void)generateHandoverRequestWithCallback:(id)a3
+- (void)generateHandoverRequestWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper generateHandoverRequestWithCallback:]", 395, self, &stru_100059C08, v5, v6, v35);
   if (!self || self->_type != 1)
   {
@@ -805,7 +805,7 @@ LABEL_51:
     v11 = [NSDictionary dictionaryWithObjects:buf forKeys:&v38 count:1];
     v12 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:2 userInfo:v11];
 
-    v4[2](v4, 0, v12);
+    callbackCopy[2](callbackCopy, 0, v12);
     goto LABEL_16;
   }
 
@@ -877,13 +877,13 @@ LABEL_9:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v34, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "ISO18013_GenerateNFCHandoverRequest", "Request size=%lu", buf, 0xCu);
   }
 
-  (v4)[2](v4, v26, v12);
+  (callbackCopy)[2](callbackCopy, v26, v12);
 LABEL_16:
 }
 
-- (void)generateQRCodeHandoverRequestWithCallback:(id)a3
+- (void)generateQRCodeHandoverRequestWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper generateQRCodeHandoverRequestWithCallback:]", 457, self, &stru_100059C08, v5, v6, v47);
   if (!self)
   {
@@ -965,7 +965,7 @@ LABEL_5:
         if (v35)
         {
           v36 = v35;
-          v49 = self;
+          selfCopy = self;
           v48 = v17;
           v8 = 0;
           v37 = 0;
@@ -996,9 +996,9 @@ LABEL_5:
                   goto LABEL_33;
                 }
 
-                v42 = sub_10002967C(v49, v40, 0);
+                v42 = sub_10002967C(selfCopy, v40, 0);
 
-                v43 = v49->_btSession;
+                v43 = selfCopy->_btSession;
                 v8 = v43;
                 if (v43)
                 {
@@ -1029,7 +1029,7 @@ LABEL_33:
               v17 = v48;
               if (!v8 && v37)
               {
-                sub_100029B10(&v49->super.isa, v37);
+                sub_100029B10(&selfCopy->super.isa, v37);
                 goto LABEL_44;
               }
 
@@ -1050,7 +1050,7 @@ LABEL_45:
       }
     }
 
-    v4[2](v4, v17, v8);
+    callbackCopy[2](callbackCopy, v17, v8);
 
     goto LABEL_42;
   }
@@ -1066,19 +1066,19 @@ LABEL_45:
   v7 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
   v8 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:2 userInfo:v7];
 
-  v4[2](v4, 0, v8);
+  callbackCopy[2](callbackCopy, 0, v8);
 LABEL_42:
 }
 
-- (void)processHandoverResponse:(id)a3 callback:(id)a4
+- (void)processHandoverResponse:(id)response callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  callbackCopy = callback;
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper processHandoverResponse:callback:]", 494, self, &stru_100059C08, v8, v9, v77);
   if (self && self->_type == 1)
   {
     v10 = objc_opt_new();
-    v11 = [v6 length];
+    v11 = [responseCopy length];
     v12 = [NSNumber numberWithInteger:v11];
     [v10 setObject:v12 forKeyedSubscript:@"handoverResponseSize"];
 
@@ -1096,16 +1096,16 @@ LABEL_42:
     connectionHandoverHandler = self->_connectionHandoverHandler;
     v86 = 0;
     v16 = connectionHandoverHandler;
-    v17 = sub_100039EBC(v16, v6, &v86);
-    v18 = v86;
+    v17 = sub_100039EBC(v16, responseCopy, &v86);
+    ecCurveIdentifier2 = v86;
 
-    if (v18)
+    if (ecCurveIdentifier2)
     {
       v19 = +[NSDate now];
       v20 = objc_opt_new();
       [v20 setObject:v19 forKeyedSubscript:@"handoverEndEventTime"];
       [v20 setObject:v19 forKeyedSubscript:@"transactionEndEventTime"];
-      v21 = [NSNumber numberWithInteger:[(STSISO18013Handler *)v18 code]];
+      v21 = [NSNumber numberWithInteger:[(STSISO18013Handler *)ecCurveIdentifier2 code]];
       [v20 setObject:v21 forKeyedSubscript:@"errorCode"];
 
       v22 = +[STSReaderAnalyticsLogger sharedCALogger];
@@ -1116,12 +1116,12 @@ LABEL_42:
       if (os_signpost_enabled(v23))
       {
         *buf = 138412290;
-        *&buf[4] = v18;
+        *&buf[4] = ecCurveIdentifier2;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v23, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "ISO18013_ProcessHandoverSelectResponse", "Failed, Error=%@", buf, 0xCu);
       }
 
-      v7[2](v7, v18);
-      sub_10002A5B4(self, v18);
+      callbackCopy[2](callbackCopy, ecCurveIdentifier2);
+      sub_10002A5B4(self, ecCurveIdentifier2);
 LABEL_47:
 
       goto LABEL_48;
@@ -1145,23 +1145,23 @@ LABEL_47:
       v30 = v30->_ephemeralReaderKey;
     }
 
-    v31 = v30;
-    v32 = [v29 initWithData:v31];
+    ecCurveIdentifier = v30;
+    v32 = [v29 initWithData:ecCurveIdentifier];
 
-    v33 = [v32 type];
+    type = [v32 type];
     v82 = v28;
     v84 = v32;
-    if (v33 != [v28 type])
+    if (type != [v28 type])
     {
       goto LABEL_25;
     }
 
-    v36 = [v32 type];
-    if (v36 == 2)
+    type2 = [v32 type];
+    if (type2 == 2)
     {
-      v31 = [v28 ecCurveIdentifier];
-      v18 = [v32 ecCurveIdentifier];
-      if (([(STSConnectionHandoverHandler *)v31 isEqualToNumber:v18]& 1) == 0)
+      ecCurveIdentifier = [v28 ecCurveIdentifier];
+      ecCurveIdentifier2 = [v32 ecCurveIdentifier];
+      if (([(STSConnectionHandoverHandler *)ecCurveIdentifier isEqualToNumber:ecCurveIdentifier2]& 1) == 0)
       {
 
         goto LABEL_25;
@@ -1210,7 +1210,7 @@ LABEL_27:
       v51 = handoverRequestMessage;
       v52 = self->_connectionHandoverHandler;
       v53 = v52;
-      v81 = v6;
+      v81 = responseCopy;
       if (v52)
       {
         handoverSelectMessage = v52->_handoverSelectMessage;
@@ -1259,16 +1259,16 @@ LABEL_27:
 
       if ([v83 type] == 1)
       {
-        v18 = sub_10002A820(self, v83, 0);
-        v6 = v81;
+        ecCurveIdentifier2 = sub_10002A820(self, v83, 0);
+        responseCopy = v81;
       }
 
       else
       {
-        v6 = v81;
+        responseCopy = v81;
         if ([v83 type] == 2)
         {
-          v18 = sub_10002967C(self, v83, 1);
+          ecCurveIdentifier2 = sub_10002967C(self, v83, 1);
         }
 
         else
@@ -1277,7 +1277,7 @@ LABEL_27:
           v88 = NSLocalizedDescriptionKey;
           *buf = off_100069AA8;
           v70 = [NSDictionary dictionaryWithObjects:buf forKeys:&v88 count:1];
-          v18 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:13 userInfo:v70];
+          ecCurveIdentifier2 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:13 userInfo:v70];
         }
       }
 
@@ -1286,12 +1286,12 @@ LABEL_27:
       v72 = +[STSReaderAnalyticsLogger sharedCALogger];
       [v72 postReaderTransactionEvent:v10 prepOnly:1];
 
-      if (v18)
+      if (ecCurveIdentifier2)
       {
         v80 = +[NSDate now];
         v73 = objc_opt_new();
         [v73 setObject:v80 forKeyedSubscript:@"transactionEndEventTime"];
-        v74 = [NSNumber numberWithInteger:[(STSISO18013Handler *)v18 code]];
+        v74 = [NSNumber numberWithInteger:[(STSISO18013Handler *)ecCurveIdentifier2 code]];
         [v73 setObject:v74 forKeyedSubscript:@"errorCode"];
 
         v75 = +[STSReaderAnalyticsLogger sharedCALogger];
@@ -1305,21 +1305,21 @@ LABEL_27:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v76, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "ISO18013_ProcessHandoverSelectResponse", &unk_10005485E, buf, 2u);
       }
 
-      v7[2](v7, v18);
-      sub_10002A5B4(self, v18);
+      callbackCopy[2](callbackCopy, ecCurveIdentifier2);
+      sub_10002A5B4(self, ecCurveIdentifier2);
 
       v19 = v82;
       v17 = v83;
       goto LABEL_47;
     }
 
-    v37 = [v28 okpCurveIdentifier];
+    okpCurveIdentifier = [v28 okpCurveIdentifier];
     v38 = v32;
-    v39 = v37;
-    v40 = [v38 okpCurveIdentifier];
-    v41 = [v39 isEqualToNumber:v40];
+    v39 = okpCurveIdentifier;
+    okpCurveIdentifier2 = [v38 okpCurveIdentifier];
+    v41 = [v39 isEqualToNumber:okpCurveIdentifier2];
 
-    if (v36 == 2)
+    if (type2 == 2)
     {
     }
 
@@ -1333,10 +1333,10 @@ LABEL_25:
     sub_10002483C(OS_LOG_TYPE_INFO, 0, "[STSXPCHelper processHandoverResponse:callback:]", 537, self, @"Device CurveIdentifier does not match Reader curve identifier. Create new Reader Key ", v34, v35, v78);
     v42 = self->_iso18013Handler;
     v85 = 0;
-    v18 = v42;
-    v31 = sub_100005F08(v18, v28, &v85);
+    ecCurveIdentifier2 = v42;
+    ecCurveIdentifier = sub_100005F08(ecCurveIdentifier2, v28, &v85);
     v79 = v85;
-    sub_100014B64(self->_connectionHandoverHandler, v31);
+    sub_100014B64(self->_connectionHandoverHandler, ecCurveIdentifier);
     goto LABEL_26;
   }
 
@@ -1345,20 +1345,20 @@ LABEL_25:
   v24 = [NSDictionary dictionaryWithObjects:buf forKeys:&v88 count:1];
   v10 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:2 userInfo:v24];
 
-  v7[2](v7, v10);
+  callbackCopy[2](callbackCopy, v10);
 LABEL_48:
 }
 
-- (void)processQRCodeHandoverRequestMessage:(id)a3 callback:(id)a4
+- (void)processQRCodeHandoverRequestMessage:(id)message callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  callbackCopy = callback;
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper processQRCodeHandoverRequestMessage:callback:]", 593, self, &stru_100059C08, v8, v9, v116);
   if (self && self->_type == 1)
   {
     v10 = objc_opt_new();
     v11 = +[NSDate now];
-    v12 = [(STSISO18013Handler *)v6 length];
+    v12 = [(STSISO18013Handler *)messageCopy length];
     v128 = v11;
     [v10 setObject:v11 forKeyedSubscript:@"handoverStartEventTime"];
     v13 = [NSNumber numberWithInteger:v12];
@@ -1379,7 +1379,7 @@ LABEL_48:
     v130 = 0;
     v131 = 0;
     v17 = connectionHandoverHandler;
-    v18 = sub_100038340(v17, v6, &v131, &v130);
+    v18 = sub_100038340(v17, messageCopy, &v131, &v130);
     v19 = v131;
     v20 = v130;
 
@@ -1405,7 +1405,7 @@ LABEL_48:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v25, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "ISO18013_ProcessQrCodeHandoverRequest", "Failed, Error=%@", buf, 0xCu);
       }
 
-      v7[2](v7, v20);
+      callbackCopy[2](callbackCopy, v20);
       sub_10002A5B4(self, v20);
 LABEL_67:
 
@@ -1413,7 +1413,7 @@ LABEL_67:
     }
 
     v127 = v19;
-    v27 = &AnalyticsSendEventLazy_ptr;
+    ecCurveIdentifier = &AnalyticsSendEventLazy_ptr;
     v28 = [COSEKey alloc];
     v29 = self->_connectionHandoverHandler;
     if (v29)
@@ -1426,7 +1426,7 @@ LABEL_67:
 
     v32 = [COSEKey alloc];
     v33 = self->_connectionHandoverHandler;
-    v123 = v6;
+    v123 = messageCopy;
     if (v33)
     {
       v33 = v33->_ephemeralReaderKey;
@@ -1435,19 +1435,19 @@ LABEL_67:
     v34 = v33;
     v35 = [v32 initWithData:v34];
 
-    v36 = [v35 type];
+    type = [v35 type];
     v124 = v31;
-    if (v36 != [v31 type])
+    if (type != [v31 type])
     {
       goto LABEL_25;
     }
 
-    v39 = [v35 type];
-    if (v39 == 2)
+    type2 = [v35 type];
+    if (type2 == 2)
     {
-      v27 = [v31 ecCurveIdentifier];
-      v6 = [v35 ecCurveIdentifier];
-      if (([v27 isEqualToNumber:v6] & 1) == 0)
+      ecCurveIdentifier = [v31 ecCurveIdentifier];
+      messageCopy = [v35 ecCurveIdentifier];
+      if (([ecCurveIdentifier isEqualToNumber:messageCopy] & 1) == 0)
       {
 
         goto LABEL_25;
@@ -1536,10 +1536,10 @@ LABEL_27:
         v67 = sub_10002A734(self);
         sub_10000C5E0(v64, v67, v126);
 
-        v68 = [(STSCHAlternativeCarrier *)self->_selectedAC type];
+        type3 = [(STSCHAlternativeCarrier *)self->_selectedAC type];
         selectedAC = self->_selectedAC;
-        v122 = v7;
-        if (v68 == 1)
+        v122 = callbackCopy;
+        if (type3 == 1)
         {
           v70 = selectedAC;
           v20 = sub_10002A820(self, v70, 0);
@@ -1573,8 +1573,8 @@ LABEL_62:
 
           v121 = v104;
           [v103 setObject:v104 forKeyedSubscript:@"handoverEndEventTime"];
-          v107 = [p_info + 81 sharedCALogger];
-          [v107 postReaderTransactionEvent:v103 prepOnly:1];
+          sharedCALogger = [p_info + 81 sharedCALogger];
+          [sharedCALogger postReaderTransactionEvent:v103 prepOnly:1];
 
           v21 = v124;
           if (v20)
@@ -1588,8 +1588,8 @@ LABEL_62:
 
             v112 = v108 + 81;
             v22 = v125;
-            v113 = [v112 sharedCALogger];
-            [v113 postReaderTransactionEvent:v110 prepOnly:0];
+            sharedCALogger2 = [v112 sharedCALogger];
+            [sharedCALogger2 postReaderTransactionEvent:v110 prepOnly:0];
 
             v21 = v124;
           }
@@ -1601,22 +1601,22 @@ LABEL_62:
             _os_signpost_emit_with_name_impl(&_mh_execute_header, v114, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "ISO18013_ProcessQrCodeHandoverRequest", &unk_10005485E, buf, 2u);
           }
 
-          v7 = v122;
+          callbackCopy = v122;
           v122[2](v122, v20);
           sub_10002A5B4(self, v20);
 
-          v6 = v123;
+          messageCopy = v123;
           v19 = v127;
           goto LABEL_67;
         }
 
         v70 = self->_selectedAC;
         sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper _startQRCodeBleSession:]", 1205, self, @"selectedAc = %@ ", v76, v77, v70);
-        v78 = [(STSCHAlternativeCarrier *)v70 leRole];
+        leRole = [(STSCHAlternativeCarrier *)v70 leRole];
         v79 = 0;
-        if (v78 <= 1)
+        if (leRole <= 1)
         {
-          if (!v78)
+          if (!leRole)
           {
 LABEL_49:
             v80 = @"ReaderCentral";
@@ -1625,7 +1625,7 @@ LABEL_49:
           }
 
           v80 = 0;
-          if (v78 != 1)
+          if (leRole != 1)
           {
 LABEL_50:
             v82 = sub_10000E574([STSBluetoothSession alloc], self, v79, self, 0);
@@ -1663,8 +1663,8 @@ LABEL_50:
               v138[1] = NSUnderlyingErrorKey;
               *buf = @"Reader Ident calculation error";
               *&buf[8] = v90;
-              v91 = [NSDictionary dictionaryWithObjects:buf forKeys:v138 count:2];
-              v20 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:6 userInfo:v91];
+              humanReadableAdvertiseUUID = [NSDictionary dictionaryWithObjects:buf forKeys:v138 count:2];
+              v20 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:6 userInfo:humanReadableAdvertiseUUID];
               v92 = v90;
               p_info = (&OBJC_METACLASS___ISOKey + 32);
               v72 = &AnalyticsSendEventLazy_ptr;
@@ -1676,29 +1676,29 @@ LABEL_50:
               v94 = sub_100024AE0();
               if (os_signpost_enabled(v94))
               {
-                v95 = [(STSCHAlternativeCarrier *)v70 advertiseUUID];
-                v96 = [(STSCHAlternativeCarrier *)v70 leAddr];
+                advertiseUUID = [(STSCHAlternativeCarrier *)v70 advertiseUUID];
+                leAddr = [(STSCHAlternativeCarrier *)v70 leAddr];
                 *buf = 138413058;
                 *&buf[4] = v80;
                 *&buf[12] = 1024;
                 *&buf[14] = v85 >> 3;
                 v134 = 2112;
-                v135 = v95;
+                v135 = advertiseUUID;
                 v136 = 2112;
-                v137 = v96;
+                v137 = leAddr;
                 _os_signpost_emit_with_name_impl(&_mh_execute_header, v94, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "StartBleSession", "%@,l2Cap=%d,selected advertiseUUID=%@,selected leAddr=%@", buf, 0x26u);
               }
 
-              v97 = [(STSCHAlternativeCarrier *)v70 advertiseUUID];
-              v118 = [(STSCHAlternativeCarrier *)v70 leAddr];
+              advertiseUUID2 = [(STSCHAlternativeCarrier *)v70 advertiseUUID];
+              leAddr2 = [(STSCHAlternativeCarrier *)v70 leAddr];
               sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[STSXPCHelper _startQRCodeBleSession:]", 1238, self, @"Starting %@,l2Cap=%d,selected advertiseUUID=%@,selected leAddr=%@", v98, v99, v80);
 
               v100 = self->_btSession;
-              v91 = [(STSCHAlternativeCarrier *)v70 humanReadableAdvertiseUUID];
-              v101 = [(STSCHAlternativeCarrier *)v70 humanReadableLEAddress];
+              humanReadableAdvertiseUUID = [(STSCHAlternativeCarrier *)v70 humanReadableAdvertiseUUID];
+              humanReadableLEAddress = [(STSCHAlternativeCarrier *)v70 humanReadableLEAddress];
               v102 = v85 != 0;
               v93 = v119;
-              v20 = sub_10000E6A4(v100, v91, v101, v102, v119);
+              v20 = sub_10000E6A4(v100, humanReadableAdvertiseUUID, humanReadableLEAddress, v102, v119);
 
               p_info = &OBJC_METACLASS___ISOKey.info;
               v72 = &AnalyticsSendEventLazy_ptr;
@@ -1712,7 +1712,7 @@ LABEL_50:
 
         else
         {
-          if (v78 == 4)
+          if (leRole == 4)
           {
             v138[0] = NSLocalizedDescriptionKey;
             *buf = off_100069A50;
@@ -1726,10 +1726,10 @@ LABEL_60:
             goto LABEL_61;
           }
 
-          if (v78 != 3)
+          if (leRole != 3)
           {
             v80 = 0;
-            if (v78 != 2)
+            if (leRole != 2)
             {
               goto LABEL_50;
             }
@@ -1751,11 +1751,11 @@ LABEL_23:
       goto LABEL_27;
     }
 
-    v40 = [v31 okpCurveIdentifier];
-    v41 = [v35 okpCurveIdentifier];
-    v42 = [v40 isEqualToNumber:v41];
+    okpCurveIdentifier = [v31 okpCurveIdentifier];
+    okpCurveIdentifier2 = [v35 okpCurveIdentifier];
+    v42 = [okpCurveIdentifier isEqualToNumber:okpCurveIdentifier2];
 
-    if (v39 == 2)
+    if (type2 == 2)
     {
     }
 
@@ -1769,10 +1769,10 @@ LABEL_25:
     sub_10002483C(OS_LOG_TYPE_INFO, 0, "[STSXPCHelper processQRCodeHandoverRequestMessage:callback:]", 641, self, @"Device CurveIdentifier does not match Reader ecCurveIdentifier. Create new Reader Key ", v37, v38, v117);
     v43 = self->_iso18013Handler;
     v129 = 0;
-    v6 = v43;
-    v27 = sub_100005F08(v6, v31, &v129);
+    messageCopy = v43;
+    ecCurveIdentifier = sub_100005F08(messageCopy, v31, &v129);
     v120 = v129;
-    sub_100014B64(self->_connectionHandoverHandler, v27);
+    sub_100014B64(self->_connectionHandoverHandler, ecCurveIdentifier);
     goto LABEL_26;
   }
 
@@ -1781,23 +1781,23 @@ LABEL_25:
   v26 = [NSDictionary dictionaryWithObjects:buf forKeys:v138 count:1];
   v10 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:2 userInfo:v26];
 
-  v7[2](v7, v10);
+  callbackCopy[2](callbackCopy, v10);
 LABEL_68:
 }
 
-- (void)invalidateWithCompletion:(id)a3
+- (void)invalidateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8 = +[NSXPCConnection currentConnection];
-  v5 = [v8 processIdentifier];
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper invalidateWithCompletion:]", 699, self, @"PID=%d", v6, v7, v5);
+  processIdentifier = [v8 processIdentifier];
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper invalidateWithCompletion:]", 699, self, @"PID=%d", v6, v7, processIdentifier);
   [STSXPCHelper xpcInvalidated]_0(self);
-  v4[2](v4);
+  completionCopy[2](completionCopy);
 }
 
 - (void)xpcInvalidated
 {
-  if (a1)
+  if (self)
   {
     v12 = 0;
     v13 = &v12;
@@ -1807,16 +1807,16 @@ LABEL_68:
     v7[1] = 3221225472;
     v8 = sub_10002DDD8;
     v9 = &unk_100058AF8;
-    v10 = a1;
+    selfCopy = self;
     v11 = &v12;
     v2 = v7;
-    os_unfair_lock_lock(a1 + 4);
+    os_unfair_lock_lock(self + 4);
     v8(v2);
-    os_unfair_lock_unlock(a1 + 4);
+    os_unfair_lock_unlock(self + 4);
 
     if (*(v13 + 24) == 1)
     {
-      sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper _invalidate]", 1053, a1, @"Previously invalidated", v3, v4, v5);
+      sub_10002483C(OS_LOG_TYPE_DEFAULT, 1, "[STSXPCHelper _invalidate]", 1053, self, @"Previously invalidated", v3, v4, v5);
     }
 
     else
@@ -1825,23 +1825,23 @@ LABEL_68:
       block[1] = 3221225472;
       block[2] = sub_10002DE08;
       block[3] = &unk_100058A08;
-      block[4] = a1;
-      sub_10002C7B4(a1, block, QOS_CLASS_USER_INITIATED);
+      block[4] = self;
+      sub_10002C7B4(self, block, QOS_CLASS_USER_INITIATED);
     }
 
     _Block_object_dispose(&v12, 8);
   }
 }
 
-- (void)testWifiHandoverSessionWithServiceName:(id)a3 publisherRole:(BOOL)a4 datapathPMK:(id)a5 datapathPMKID:(id)a6 callback:(id)a7
+- (void)testWifiHandoverSessionWithServiceName:(id)name publisherRole:(BOOL)role datapathPMK:(id)k datapathPMKID:(id)d callback:(id)callback
 {
-  v35 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = a3;
-  if ([v35 length])
+  kCopy = k;
+  dCopy = d;
+  callbackCopy = callback;
+  nameCopy = name;
+  if ([kCopy length])
   {
-    v15 = [[STSCHWiFiAwareSecurityInfo alloc] initWithPMK:v35 pmkID:v12];
+    v15 = [[STSCHWiFiAwareSecurityInfo alloc] initWithPMK:kCopy pmkID:dCopy];
   }
 
   else
@@ -1851,7 +1851,7 @@ LABEL_68:
 
   v16 = objc_alloc_init(STSWifiAwareConfigurationParams);
   sub_100002540(v16, v15);
-  v17 = sub_1000025D4(STSWifiAwareConfiguration, v14, a4, v16);
+  v17 = sub_1000025D4(STSWifiAwareConfiguration, nameCopy, role, v16);
 
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[STSXPCHelper testWifiHandoverSessionWithServiceName:publisherRole:datapathPMK:datapathPMKID:callback:]", 720, self, @"config=%@", v18, v19, v17);
   v20 = os_transaction_create();
@@ -1886,31 +1886,31 @@ LABEL_68:
   }
 
   v34 = sub_1000213BC(wifiSession, v25, v26, v27, v28, v29, v30, v31);
-  v13[2](v13, 0);
+  callbackCopy[2](callbackCopy, 0);
 }
 
-- (void)testBluetoothHandoverSessionType:(unint64_t)a3 uuid:(id)a4 peripheralAddress:(id)a5 callback:(id)a6
+- (void)testBluetoothHandoverSessionType:(unint64_t)type uuid:(id)uuid peripheralAddress:(id)address callback:(id)callback
 {
-  v26 = a6;
-  v10 = a5;
-  v11 = a4;
-  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[STSXPCHelper testBluetoothHandoverSessionType:uuid:peripheralAddress:callback:]", 735, self, @"type=%lu,uuid=%@,peripheralAddress=%@", v12, v13, a3);
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  callbackCopy = callback;
+  addressCopy = address;
+  uuidCopy = uuid;
+  sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[STSXPCHelper testBluetoothHandoverSessionType:uuid:peripheralAddress:callback:]", 735, self, @"type=%lu,uuid=%@,peripheralAddress=%@", v12, v13, type);
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     v14 = +[(ISO18013_3_Peripheral *)ReaderPeripheral];
-    v15 = [v14 STS_reverseBytes];
-    sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[STSXPCHelper testBluetoothHandoverSessionType:uuid:peripheralAddress:callback:]", 738, self, @"PublicAddress=%@", v16, v17, v15);
+    sTS_reverseBytes = [v14 STS_reverseBytes];
+    sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[STSXPCHelper testBluetoothHandoverSessionType:uuid:peripheralAddress:callback:]", 738, self, @"PublicAddress=%@", v16, v17, sTS_reverseBytes);
   }
 
-  if (a3 - 1 >= 3)
+  if (type - 1 >= 3)
   {
-    a3 = 0;
+    type = 0;
   }
 
   v18 = os_transaction_create();
   sub_100027558(self, v18);
 
-  v19 = sub_10000E574([STSBluetoothSession alloc], self, a3, self, 0);
+  v19 = sub_10000E574([STSBluetoothSession alloc], self, type, self, 0);
   if (self)
   {
     objc_storeStrong(&self->_btSession, v19);
@@ -1927,7 +1927,7 @@ LABEL_68:
     btSession = 0;
   }
 
-  v22 = sub_10000E6A4(btSession, v11, v10, 0, v20);
+  v22 = sub_10000E6A4(btSession, uuidCopy, addressCopy, 0, v20);
 
   if (!v22 && self)
   {
@@ -1945,65 +1945,65 @@ LABEL_68:
     }
   }
 
-  v26[2](v26, v22);
+  callbackCopy[2](callbackCopy, v22);
 }
 
-- (void)altCarrierReceived:(id)a3 status:(id)a4
+- (void)altCarrierReceived:(id)received status:(id)status
 {
-  v6 = a3;
+  receivedCopy = received;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002BFD0;
   block[3] = &unk_100059168;
   block[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  statusCopy = status;
+  v11 = receivedCopy;
+  v7 = receivedCopy;
+  v8 = statusCopy;
   sub_10002C7B4(self, block, QOS_CLASS_USER_INTERACTIVE);
 }
 
-- (void)altCarrierConnectedWithStatus:(unint64_t)a3
+- (void)altCarrierConnectedWithStatus:(unint64_t)status
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10002C88C;
   v3[3] = &unk_100058DE0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = status;
   sub_10002C7B4(self, v3, QOS_CLASS_USER_INTERACTIVE);
 }
 
-- (void)altCarrierDisconnectedWithStatus:(unint64_t)a3
+- (void)altCarrierDisconnectedWithStatus:(unint64_t)status
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10002CDEC;
   v3[3] = &unk_100058DE0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = status;
   sub_10002C7B4(self, v3, QOS_CLASS_USER_INTERACTIVE);
 }
 
-- (void)receivedCredentialSelection:(id)a3 callback:(id)a4
+- (void)receivedCredentialSelection:(id)selection callback:(id)callback
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002CFD4;
   block[3] = &unk_100059190;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  sub_10002C7B4(v8, block, QOS_CLASS_USER_INTERACTIVE);
+  selfCopy = self;
+  selectionCopy = selection;
+  callbackCopy = callback;
+  v5 = callbackCopy;
+  v6 = selectionCopy;
+  sub_10002C7B4(selfCopy, block, QOS_CLASS_USER_INTERACTIVE);
 }
 
-- (void)iso18013ReaderSendSessionEstablishment:(id)a3 callback:(id)a4
+- (void)iso18013ReaderSendSessionEstablishment:(id)establishment callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  establishmentCopy = establishment;
+  callbackCopy = callback;
+  v8 = [establishmentCopy length];
   v9 = objc_opt_new();
   v10 = [NSNumber numberWithInteger:v8];
   [v9 setObject:v10 forKeyedSubscript:@"requestSize"];
@@ -2036,34 +2036,34 @@ LABEL_68:
   block[2] = sub_10002D58C;
   block[3] = &unk_100059190;
   block[4] = self;
-  v17 = v6;
-  v18 = v7;
-  v14 = v7;
-  v15 = v6;
+  v17 = establishmentCopy;
+  v18 = callbackCopy;
+  v14 = callbackCopy;
+  v15 = establishmentCopy;
   sub_10002C7B4(self, block, QOS_CLASS_USER_INTERACTIVE);
 }
 
-- (void)iso18013ReaderSendSessionData:(id)a3 status:(id)a4 callback:(id)a5
+- (void)iso18013ReaderSendSessionData:(id)data status:(id)status callback:(id)callback
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10002D9BC;
   v10[3] = &unk_1000594E0;
-  v11 = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v7 = v14;
-  v8 = v13;
-  v9 = v12;
-  sub_10002C7B4(v11, v10, QOS_CLASS_USER_INTERACTIVE);
+  selfCopy = self;
+  dataCopy = data;
+  statusCopy = status;
+  callbackCopy = callback;
+  v7 = callbackCopy;
+  v8 = statusCopy;
+  v9 = dataCopy;
+  sub_10002C7B4(selfCopy, v10, QOS_CLASS_USER_INTERACTIVE);
 }
 
-- (void)setRequestHandoverConfirmation:(BOOL)a3
+- (void)setRequestHandoverConfirmation:(BOOL)confirmation
 {
   if (self)
   {
-    self->_handoverConfirmation = a3;
+    self->_handoverConfirmation = confirmation;
   }
 }
 

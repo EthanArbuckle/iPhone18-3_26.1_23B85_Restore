@@ -3,17 +3,17 @@
 + (int64_t)invalidateCachedAccountInfo;
 + (int64_t)validAccountInfoValidationCounterValue;
 + (void)initialize;
-+ (void)setValidAccountInfoValidationCounterValue:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (void)setValidAccountInfoValidationCounterValue:(int64_t)value;
+- (BOOL)isEqual:(id)equal;
 - (CKAccountInfo)init;
-- (CKAccountInfo)initWithCoder:(id)a3;
-- (CKAccountInfo)initWithValidationCounter:(unint64_t)a3 accountStatus:(int64_t)a4 accountPartition:(int64_t)a5 hasValidCredentials:(BOOL)a6 bypassPCSEncryption:(BOOL)a7 deviceToDeviceEncryptionAvailability:(int64_t)a8 walrusStatus:(int64_t)a9 needsToVerifyTerms:(BOOL)a10 accountAccessAuthorization:(int64_t)a11 identifier:(id)a12;
+- (CKAccountInfo)initWithCoder:(id)coder;
+- (CKAccountInfo)initWithValidationCounter:(unint64_t)counter accountStatus:(int64_t)status accountPartition:(int64_t)partition hasValidCredentials:(BOOL)credentials bypassPCSEncryption:(BOOL)encryption deviceToDeviceEncryptionAvailability:(int64_t)availability walrusStatus:(int64_t)walrusStatus needsToVerifyTerms:(BOOL)self0 accountAccessAuthorization:(int64_t)self1 identifier:(id)self2;
 - (id)CKPropertiesDescription;
-- (id)copyWithFakeDeviceToDeviceEncryptionAvailability:(int64_t)a3;
+- (id)copyWithFakeDeviceToDeviceEncryptionAvailability:(int64_t)availability;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAsCachedAccountInfoForSetupInfoHash:(id)a3;
-- (void)setSupportsDeviceToDeviceEncryption:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAsCachedAccountInfoForSetupInfoHash:(id)hash;
+- (void)setSupportsDeviceToDeviceEncryption:(BOOL)encryption;
 @end
 
 @implementation CKAccountInfo
@@ -167,7 +167,7 @@
   sub_1886CEE50(v3, v2, 0, 0, 0);
 }
 
-+ (void)setValidAccountInfoValidationCounterValue:(int64_t)a3
++ (void)setValidAccountInfoValidationCounterValue:(int64_t)value
 {
   v4 = geteuid();
   if (v4)
@@ -178,7 +178,7 @@
       v6[1] = 3221225472;
       v6[2] = sub_1885322B8;
       v6[3] = &unk_1E70BC3A8;
-      v6[4] = a3;
+      v6[4] = value;
       objc_msgSend_performAtomicDefaultsOperation_(CKUserDefaults, v5, v6);
     }
   }
@@ -238,10 +238,10 @@
   return v12;
 }
 
-- (void)setAsCachedAccountInfoForSetupInfoHash:(id)a3
+- (void)setAsCachedAccountInfoForSetupInfoHash:(id)hash
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  hashCopy = hash;
   if (byte_1EA90C538 == 1)
   {
     v5 = objc_opt_class();
@@ -260,7 +260,7 @@
       if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v34 = v10;
+        selfCopy = v10;
         _os_log_error_impl(&dword_1883EA000, v11, OS_LOG_TYPE_ERROR, "Failed to archive account info cache: %@", buf, 0xCu);
       }
     }
@@ -275,7 +275,7 @@
         v17 = objc_opt_new();
       }
 
-      objc_msgSend_setObject_forKey_(v17, v16, v7, v4);
+      objc_msgSend_setObject_forKey_(v17, v16, v7, hashCopy);
       v18 = v17;
       objc_opt_self();
       v19 = objc_opt_class();
@@ -302,7 +302,7 @@
       if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v34 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1883EA000, v29, OS_LOG_TYPE_INFO, "Set cached account info: %@", buf, 0xCu);
       }
     }
@@ -313,31 +313,31 @@
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (CKAccountInfo)initWithValidationCounter:(unint64_t)a3 accountStatus:(int64_t)a4 accountPartition:(int64_t)a5 hasValidCredentials:(BOOL)a6 bypassPCSEncryption:(BOOL)a7 deviceToDeviceEncryptionAvailability:(int64_t)a8 walrusStatus:(int64_t)a9 needsToVerifyTerms:(BOOL)a10 accountAccessAuthorization:(int64_t)a11 identifier:(id)a12
+- (CKAccountInfo)initWithValidationCounter:(unint64_t)counter accountStatus:(int64_t)status accountPartition:(int64_t)partition hasValidCredentials:(BOOL)credentials bypassPCSEncryption:(BOOL)encryption deviceToDeviceEncryptionAvailability:(int64_t)availability walrusStatus:(int64_t)walrusStatus needsToVerifyTerms:(BOOL)self0 accountAccessAuthorization:(int64_t)self1 identifier:(id)self2
 {
-  v19 = a12;
+  identifierCopy = identifier;
   v23.receiver = self;
   v23.super_class = CKAccountInfo;
   v20 = [(CKAccountInfo *)&v23 init];
   v21 = v20;
   if (v20)
   {
-    v20->_hasValidCredentials = a6;
-    v20->_accountPartition = a5;
-    v20->_deviceToDeviceEncryptionAvailability = a8;
-    v20->_bypassPCSEncryption = a7;
-    v20->_needsToVerifyTerms = a10;
-    v20->_walrusStatus = a9;
-    v20->_accountAccessAuthorization = a11;
-    v20->_validationCounter = a3;
-    v20->_accountStatus = a4;
-    objc_storeStrong(&v20->_identifier, a12);
+    v20->_hasValidCredentials = credentials;
+    v20->_accountPartition = partition;
+    v20->_deviceToDeviceEncryptionAvailability = availability;
+    v20->_bypassPCSEncryption = encryption;
+    v20->_needsToVerifyTerms = terms;
+    v20->_walrusStatus = walrusStatus;
+    v20->_accountAccessAuthorization = authorization;
+    v20->_validationCounter = counter;
+    v20->_accountStatus = status;
+    objc_storeStrong(&v20->_identifier, identifier);
   }
 
   return v21;
 }
 
-- (id)copyWithFakeDeviceToDeviceEncryptionAvailability:(int64_t)a3
+- (id)copyWithFakeDeviceToDeviceEncryptionAvailability:(int64_t)availability
 {
   v7 = objc_alloc(objc_opt_class());
   if (self)
@@ -366,35 +366,35 @@
   }
 
   v25 = objc_msgSend_identifier(self, v21, v22);
-  hasValidCredentials_bypassPCSEncryption_deviceToDeviceEncryptionAvailability_walrusStatus_needsToVerifyTerms_accountAccessAuthorization_identifier = objc_msgSend_initWithValidationCounter_accountStatus_accountPartition_hasValidCredentials_bypassPCSEncryption_deviceToDeviceEncryptionAvailability_walrusStatus_needsToVerifyTerms_accountAccessAuthorization_identifier_(v7, v26, validationCounter, v9, v12, hasValidCredentials, 0, a3, v18, v23, accountAccessAuthorization, v25);
+  hasValidCredentials_bypassPCSEncryption_deviceToDeviceEncryptionAvailability_walrusStatus_needsToVerifyTerms_accountAccessAuthorization_identifier = objc_msgSend_initWithValidationCounter_accountStatus_accountPartition_hasValidCredentials_bypassPCSEncryption_deviceToDeviceEncryptionAvailability_walrusStatus_needsToVerifyTerms_accountAccessAuthorization_identifier_(v7, v26, validationCounter, v9, v12, hasValidCredentials, 0, availability, v18, v23, accountAccessAuthorization, v25);
 
   return hasValidCredentials_bypassPCSEncryption_deviceToDeviceEncryptionAvailability_walrusStatus_needsToVerifyTerms_accountAccessAuthorization_identifier;
 }
 
-- (CKAccountInfo)initWithCoder:(id)a3
+- (CKAccountInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CKAccountInfo;
   v6 = [(CKAccountInfo *)&v20 init];
   if (v6)
   {
-    v6->_accountStatus = objc_msgSend_decodeIntegerForKey_(v4, v5, @"AccountStatus");
-    v6->_accountPartition = objc_msgSend_decodeIntegerForKey_(v4, v7, @"AccountPartition");
-    v6->_bypassPCSEncryption = objc_msgSend_decodeBoolForKey_(v4, v8, @"BypassPCSEncryption");
-    v6->_deviceToDeviceEncryptionAvailability = objc_msgSend_decodeIntegerForKey_(v4, v9, @"DeviceToDeviceEncryptionAvailability");
-    v6->_hasValidCredentials = objc_msgSend_decodeBoolForKey_(v4, v10, @"HasValidCredentials");
-    v6->_validationCounter = objc_msgSend_decodeIntegerForKey_(v4, v11, @"AccountInfoValidationCounter");
-    v6->_walrusStatus = objc_msgSend_decodeIntegerForKey_(v4, v12, @"WalrusStatus");
-    v6->_accountAccessAuthorization = objc_msgSend_decodeIntegerForKey_(v4, v13, @"AccountAccessAuthorization");
+    v6->_accountStatus = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"AccountStatus");
+    v6->_accountPartition = objc_msgSend_decodeIntegerForKey_(coderCopy, v7, @"AccountPartition");
+    v6->_bypassPCSEncryption = objc_msgSend_decodeBoolForKey_(coderCopy, v8, @"BypassPCSEncryption");
+    v6->_deviceToDeviceEncryptionAvailability = objc_msgSend_decodeIntegerForKey_(coderCopy, v9, @"DeviceToDeviceEncryptionAvailability");
+    v6->_hasValidCredentials = objc_msgSend_decodeBoolForKey_(coderCopy, v10, @"HasValidCredentials");
+    v6->_validationCounter = objc_msgSend_decodeIntegerForKey_(coderCopy, v11, @"AccountInfoValidationCounter");
+    v6->_walrusStatus = objc_msgSend_decodeIntegerForKey_(coderCopy, v12, @"WalrusStatus");
+    v6->_accountAccessAuthorization = objc_msgSend_decodeIntegerForKey_(coderCopy, v13, @"AccountAccessAuthorization");
     if (!v6->_accountPartition)
     {
       v6->_accountPartition = 1;
     }
 
-    v6->_needsToVerifyTerms = objc_msgSend_decodeBoolForKey_(v4, v14, @"NeedsToVerifyTerms");
+    v6->_needsToVerifyTerms = objc_msgSend_decodeBoolForKey_(coderCopy, v14, @"NeedsToVerifyTerms");
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"Identifier");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"Identifier");
     identifier = v6->_identifier;
     v6->_identifier = v17;
   }
@@ -402,37 +402,37 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v50 = a3;
+  coderCopy = coder;
   v6 = objc_msgSend_accountStatus(self, v4, v5);
-  objc_msgSend_encodeInteger_forKey_(v50, v7, v6, @"AccountStatus");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v7, v6, @"AccountStatus");
   v10 = objc_msgSend_accountPartition(self, v8, v9);
-  objc_msgSend_encodeInteger_forKey_(v50, v11, v10, @"AccountPartition");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v11, v10, @"AccountPartition");
   v14 = objc_msgSend_bypassPCSEncryption(self, v12, v13);
-  objc_msgSend_encodeBool_forKey_(v50, v15, v14, @"BypassPCSEncryption");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v15, v14, @"BypassPCSEncryption");
   v18 = objc_msgSend_deviceToDeviceEncryptionAvailability(self, v16, v17);
-  objc_msgSend_encodeInteger_forKey_(v50, v19, v18, @"DeviceToDeviceEncryptionAvailability");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v19, v18, @"DeviceToDeviceEncryptionAvailability");
   hasValidCredentials = objc_msgSend_hasValidCredentials(self, v20, v21);
-  objc_msgSend_encodeBool_forKey_(v50, v23, hasValidCredentials, @"HasValidCredentials");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v23, hasValidCredentials, @"HasValidCredentials");
   if (self)
   {
-    objc_msgSend_encodeInteger_forKey_(v50, v24, self->_validationCounter, @"AccountInfoValidationCounter");
+    objc_msgSend_encodeInteger_forKey_(coderCopy, v24, self->_validationCounter, @"AccountInfoValidationCounter");
     v27 = objc_msgSend_walrusStatus(self, v25, v26);
-    objc_msgSend_encodeInteger_forKey_(v50, v28, v27, @"WalrusStatus");
+    objc_msgSend_encodeInteger_forKey_(coderCopy, v28, v27, @"WalrusStatus");
     v31 = objc_msgSend_needsToVerifyTerms(self, v29, v30);
-    objc_msgSend_encodeBool_forKey_(v50, v32, v31, @"NeedsToVerifyTerms");
-    objc_msgSend_encodeInteger_forKey_(v50, v33, self->_accountAccessAuthorization, @"AccountAccessAuthorization");
+    objc_msgSend_encodeBool_forKey_(coderCopy, v32, v31, @"NeedsToVerifyTerms");
+    objc_msgSend_encodeInteger_forKey_(coderCopy, v33, self->_accountAccessAuthorization, @"AccountAccessAuthorization");
   }
 
   else
   {
-    objc_msgSend_encodeInteger_forKey_(v50, v24, 0, @"AccountInfoValidationCounter");
+    objc_msgSend_encodeInteger_forKey_(coderCopy, v24, 0, @"AccountInfoValidationCounter");
     v43 = objc_msgSend_walrusStatus(0, v41, v42);
-    objc_msgSend_encodeInteger_forKey_(v50, v44, v43, @"WalrusStatus");
+    objc_msgSend_encodeInteger_forKey_(coderCopy, v44, v43, @"WalrusStatus");
     v47 = objc_msgSend_needsToVerifyTerms(0, v45, v46);
-    objc_msgSend_encodeBool_forKey_(v50, v48, v47, @"NeedsToVerifyTerms");
-    objc_msgSend_encodeInteger_forKey_(v50, v49, 0, @"AccountAccessAuthorization");
+    objc_msgSend_encodeBool_forKey_(coderCopy, v48, v47, @"NeedsToVerifyTerms");
+    objc_msgSend_encodeInteger_forKey_(coderCopy, v49, 0, @"AccountAccessAuthorization");
   }
 
   v36 = objc_msgSend_identifier(self, v34, v35);
@@ -440,14 +440,14 @@
   if (v36)
   {
     v39 = objc_msgSend_identifier(self, v37, v38);
-    objc_msgSend_encodeObject_forKey_(v50, v40, v39, @"Identifier");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v40, v39, @"Identifier");
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -457,7 +457,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       v9 = objc_msgSend_accountStatus(self, v7, v8);
       if (v9 != objc_msgSend_accountStatus(v6, v10, v11))
       {
@@ -638,14 +638,14 @@ LABEL_22:
 
 + (CKAccountInfo)new
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___CKAccountInfo;
   return objc_msgSendSuper2(&v3, "new");
 }
 
-- (void)setSupportsDeviceToDeviceEncryption:(BOOL)a3
+- (void)setSupportsDeviceToDeviceEncryption:(BOOL)encryption
 {
-  if (a3)
+  if (encryption)
   {
     objc_msgSend_setDeviceToDeviceEncryptionAvailability_(self, a2, 3);
   }

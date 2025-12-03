@@ -3,26 +3,26 @@
 - (BOOL)prefersHomeIndicatorAutoHidden;
 - (BOOL)prefersStatusBarHidden;
 - (VUIPlaybackContainerViewControllerDelegate)delegate;
-- (_TtC8VideosUI31PlaybackContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8VideosUI31PlaybackContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)unembedMultiPlayerViewController;
 - (void)backgroundPlaybackWillBegin;
-- (void)embedCatchUpToLiveViewController:(id)a3;
-- (void)embedCatchUpToLiveViewController:(id)a3 reusingFullscreenPlaybackWithPlayer:(id)a4;
-- (void)embedMultiPlayerViewController:(id)a3;
+- (void)embedCatchUpToLiveViewController:(id)controller;
+- (void)embedCatchUpToLiveViewController:(id)controller reusingFullscreenPlaybackWithPlayer:(id)player;
+- (void)embedMultiPlayerViewController:(id)controller;
 - (void)enterPictureInPicture;
-- (void)exitPictureInPictureWithCompletion:(id)a3;
-- (void)hidePictureInPictureWithCompletion:(id)a3;
-- (void)loadPostPlayForMediaItem:(id)a3;
-- (void)mediaInfoDidChangeTo:(id)a3 canPlay:(BOOL)a4 wasAutoPlayed:(BOOL)a5;
+- (void)exitPictureInPictureWithCompletion:(id)completion;
+- (void)hidePictureInPictureWithCompletion:(id)completion;
+- (void)loadPostPlayForMediaItem:(id)item;
+- (void)mediaInfoDidChangeTo:(id)to canPlay:(BOOL)play wasAutoPlayed:(BOOL)played;
 - (void)playbackUpNextControllerReadyToBeDisplayed;
-- (void)presentPlayerViewController:(AVPlayerViewController *)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentPlayerViewController:(AVPlayerViewController *)controller animated:(BOOL)animated completion:(id)completion;
 - (void)removePostPlayViewController;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)unembedCatchUpToLiveViewController;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PlaybackContainerViewController
@@ -34,9 +34,9 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  OUTLINED_FUNCTION_53_4(self, a2, a3);
+  OUTLINED_FUNCTION_53_4(self, a2, delegate);
   swift_unknownObjectRetain();
   v4 = v3;
   OUTLINED_FUNCTION_37_3();
@@ -45,7 +45,7 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E39AC400(&selRef_prefersStatusBarHidden);
 
   return v3 & 1;
@@ -53,7 +53,7 @@
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E39AC400(&selRef_prefersHomeIndicatorAutoHidden);
 
   return v3 & 1;
@@ -61,139 +61,139 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E39AD420();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E39AD6C4(a3);
+  sub_1E39AD6C4(disappear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  OUTLINED_FUNCTION_53_4(self, a2, a4);
+  OUTLINED_FUNCTION_53_4(self, a2, coordinator);
   swift_unknownObjectRetain();
   v6 = v4;
   OUTLINED_FUNCTION_37_3();
   v7 = OUTLINED_FUNCTION_6_12();
-  sub_1E39AD7A8(a4, v7, v8);
+  sub_1E39AD7A8(coordinator, v7, v8);
   swift_unknownObjectRelease();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E39ADAB4();
 }
 
-- (void)embedCatchUpToLiveViewController:(id)a3
+- (void)embedCatchUpToLiveViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
   sub_1E39ADC60();
 }
 
-- (void)embedCatchUpToLiveViewController:(id)a3 reusingFullscreenPlaybackWithPlayer:(id)a4
+- (void)embedCatchUpToLiveViewController:(id)controller reusingFullscreenPlaybackWithPlayer:(id)player
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1E39ADD10(v6, a4);
+  controllerCopy = controller;
+  playerCopy = player;
+  selfCopy = self;
+  sub_1E39ADD10(controllerCopy, player);
 }
 
 - (void)unembedCatchUpToLiveViewController
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E39AE220();
 }
 
-- (void)presentPlayerViewController:(AVPlayerViewController *)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentPlayerViewController:(AVPlayerViewController *)controller animated:(BOOL)animated completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   OUTLINED_FUNCTION_10_9();
   v9 = swift_allocObject();
-  *(v9 + 16) = a3;
-  *(v9 + 24) = a4;
+  *(v9 + 16) = controller;
+  *(v9 + 24) = animated;
   *(v9 + 32) = v8;
   *(v9 + 40) = self;
-  v10 = a3;
-  v11 = self;
+  controllerCopy = controller;
+  selfCopy = self;
 
   sub_1E38364EC(&unk_1E42AF848, v9);
 }
 
-- (_TtC8VideosUI31PlaybackContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI31PlaybackContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E39AF22C();
 }
 
-- (void)embedMultiPlayerViewController:(id)a3
+- (void)embedMultiPlayerViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
-  sub_1E39AF8EC(v4);
+  sub_1E39AF8EC(controllerCopy);
 }
 
 - (id)unembedMultiPlayerViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E39AFACC();
 
   return v3;
 }
 
-- (void)loadPostPlayForMediaItem:(id)a3
+- (void)loadPostPlayForMediaItem:(id)item
 {
-  OUTLINED_FUNCTION_53_4(self, a2, a3);
+  OUTLINED_FUNCTION_53_4(self, a2, item);
   swift_unknownObjectRetain();
   v5 = v3;
   OUTLINED_FUNCTION_37_3();
-  sub_1E39AFBB8(a3);
+  sub_1E39AFBB8(item);
   swift_unknownObjectRelease();
 }
 
 - (void)removePostPlayViewController
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E39B1478();
 }
 
 - (void)enterPictureInPicture
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E39B1574();
 }
 
-- (void)exitPictureInPictureWithCompletion:(id)a3
+- (void)exitPictureInPictureWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_1E38364EC(&unk_1E42AF838, v5);
 }
 
-- (void)hidePictureInPictureWithCompletion:(id)a3
+- (void)hidePictureInPictureWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -209,35 +209,35 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1E39B21CC(v7, v6);
   sub_1E37FAED8(v7, v6);
 }
 
 - (void)playbackUpNextControllerReadyToBeDisplayed
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E39B31FC();
 }
 
 - (void)backgroundPlaybackWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E39B33B8();
 }
 
-- (void)mediaInfoDidChangeTo:(id)a3 canPlay:(BOOL)a4 wasAutoPlayed:(BOOL)a5
+- (void)mediaInfoDidChangeTo:(id)to canPlay:(BOOL)play wasAutoPlayed:(BOOL)played
 {
-  v8 = a3;
-  v9 = self;
-  sub_1E39B3480(v9, a4, a5);
+  toCopy = to;
+  selfCopy = self;
+  sub_1E39B3480(selfCopy, play, played);
 }
 
 - (BOOL)overridesOrientationLock
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E39B35B0();
 
   return v3;

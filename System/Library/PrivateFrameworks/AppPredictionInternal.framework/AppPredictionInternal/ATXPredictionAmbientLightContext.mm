@@ -1,8 +1,8 @@
 @interface ATXPredictionAmbientLightContext
-- (ATXPredictionAmbientLightContext)initWithAmbientLightType:(int)a3;
-- (ATXPredictionAmbientLightContext)initWithProto:(id)a3;
-- (ATXPredictionAmbientLightContext)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXPredictionAmbientLightContext)initWithAmbientLightType:(int)type;
+- (ATXPredictionAmbientLightContext)initWithProto:(id)proto;
+- (ATXPredictionAmbientLightContext)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)encodeAsProto;
 - (id)jsonDict;
@@ -11,14 +11,14 @@
 
 @implementation ATXPredictionAmbientLightContext
 
-- (ATXPredictionAmbientLightContext)initWithAmbientLightType:(int)a3
+- (ATXPredictionAmbientLightContext)initWithAmbientLightType:(int)type
 {
   v5.receiver = self;
   v5.super_class = ATXPredictionAmbientLightContext;
   result = [(ATXPredictionAmbientLightContext *)&v5 init];
   if (result)
   {
-    result->_ambientLightType = a3;
+    result->_ambientLightType = type;
   }
 
   return result;
@@ -26,8 +26,8 @@
 
 - (id)description
 {
-  v2 = [(ATXPredictionAmbientLightContext *)self jsonDict];
-  v3 = [v2 description];
+  jsonDict = [(ATXPredictionAmbientLightContext *)self jsonDict];
+  v3 = [jsonDict description];
 
   return v3;
 }
@@ -55,40 +55,40 @@
   return v4;
 }
 
-- (ATXPredictionAmbientLightContext)initWithProtoData:(id)a3
+- (ATXPredictionAmbientLightContext)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBPredictionAmbientLightContext alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBPredictionAmbientLightContext alloc] initWithData:dataCopy];
 
     self = [(ATXPredictionAmbientLightContext *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXPredictionAmbientLightContext *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXPredictionAmbientLightContext *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXPredictionAmbientLightContext)initWithProto:(id)a3
+- (ATXPredictionAmbientLightContext)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -104,11 +104,11 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self = -[ATXPredictionAmbientLightContext initWithAmbientLightType:](self, "initWithAmbientLightType:", [v4 ambientLightType]);
-  v5 = self;
+  self = -[ATXPredictionAmbientLightContext initWithAmbientLightType:](self, "initWithAmbientLightType:", [protoCopy ambientLightType]);
+  selfCopy = self;
 LABEL_8:
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)proto
@@ -119,18 +119,18 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPredictionAmbientLightContext *)self isEqualToATXPredictionAmbientLightContext:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPredictionAmbientLightContext *)self isEqualToATXPredictionAmbientLightContext:v5];
   }
 
   return v6;

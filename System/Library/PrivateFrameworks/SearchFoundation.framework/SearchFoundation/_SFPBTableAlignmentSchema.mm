@@ -1,26 +1,26 @@
 @interface _SFPBTableAlignmentSchema
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBTableAlignmentSchema)initWithDictionary:(id)a3;
-- (_SFPBTableAlignmentSchema)initWithFacade:(id)a3;
-- (_SFPBTableAlignmentSchema)initWithJSON:(id)a3;
+- (_SFPBTableAlignmentSchema)initWithDictionary:(id)dictionary;
+- (_SFPBTableAlignmentSchema)initWithFacade:(id)facade;
+- (_SFPBTableAlignmentSchema)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)addTableColumnAlignment:(id)a3;
-- (void)setTableColumnAlignment:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTableColumnAlignment:(id)alignment;
+- (void)setTableColumnAlignment:(id)alignment;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBTableAlignmentSchema
 
-- (_SFPBTableAlignmentSchema)initWithFacade:(id)a3
+- (_SFPBTableAlignmentSchema)initWithFacade:(id)facade
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBTableAlignmentSchema *)self init];
   if (v5)
   {
-    v6 = [v4 tableColumnAlignment];
-    if (v6)
+    tableColumnAlignment = [facadeCopy tableColumnAlignment];
+    if (tableColumnAlignment)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -34,8 +34,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [v4 tableColumnAlignment];
-    v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    tableColumnAlignment2 = [facadeCopy tableColumnAlignment];
+    v9 = [tableColumnAlignment2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -46,7 +46,7 @@
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(tableColumnAlignment2);
           }
 
           v13 = [[_SFPBTableColumnAlignment alloc] initWithFacade:*(*(&v21 + 1) + 8 * i)];
@@ -56,20 +56,20 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v10 = [tableColumnAlignment2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBTableAlignmentSchema *)v5 setTableColumnAlignments:v7];
-    v14 = [v4 metadata];
+    metadata = [facadeCopy metadata];
 
-    if (v14)
+    if (metadata)
     {
       v15 = [_SFPBStringDictionary alloc];
-      v16 = [v4 metadata];
-      v17 = [(_SFPBStringDictionary *)v15 initWithNSDictionary:v16];
+      metadata2 = [facadeCopy metadata];
+      v17 = [(_SFPBStringDictionary *)v15 initWithNSDictionary:metadata2];
       [(_SFPBTableAlignmentSchema *)v5 setMetadata:v17];
     }
 
@@ -80,16 +80,16 @@
   return v5;
 }
 
-- (_SFPBTableAlignmentSchema)initWithDictionary:(id)a3
+- (_SFPBTableAlignmentSchema)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = _SFPBTableAlignmentSchema;
   v5 = [(_SFPBTableAlignmentSchema *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tableColumnAlignment"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tableColumnAlignment"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,7 +133,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"metadata", v20}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"metadata", v20}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -148,30 +148,30 @@
   return v5;
 }
 
-- (_SFPBTableAlignmentSchema)initWithJSON:(id)a3
+- (_SFPBTableAlignmentSchema)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBTableAlignmentSchema *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBTableAlignmentSchema *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBTableAlignmentSchema *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -185,26 +185,26 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_metadata)
   {
-    v4 = [(_SFPBTableAlignmentSchema *)self metadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    metadata = [(_SFPBTableAlignmentSchema *)self metadata];
+    dictionaryRepresentation = [metadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"metadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"metadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"metadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"metadata"];
     }
   }
 
   if ([(NSArray *)self->_tableColumnAlignments count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -224,16 +224,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -243,36 +243,36 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"tableColumnAlignment"];
+    [dictionary setObject:array forKeyedSubscript:@"tableColumnAlignment"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBTableAlignmentSchema *)self tableColumnAlignments];
-  v6 = [v4 tableColumnAlignments];
-  if ((v5 != 0) == (v6 == 0))
+  tableColumnAlignments = [(_SFPBTableAlignmentSchema *)self tableColumnAlignments];
+  tableColumnAlignments2 = [equalCopy tableColumnAlignments];
+  if ((tableColumnAlignments != 0) == (tableColumnAlignments2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBTableAlignmentSchema *)self tableColumnAlignments];
-  if (v7)
+  tableColumnAlignments3 = [(_SFPBTableAlignmentSchema *)self tableColumnAlignments];
+  if (tableColumnAlignments3)
   {
-    v8 = v7;
-    v9 = [(_SFPBTableAlignmentSchema *)self tableColumnAlignments];
-    v10 = [v4 tableColumnAlignments];
-    v11 = [v9 isEqual:v10];
+    v8 = tableColumnAlignments3;
+    tableColumnAlignments4 = [(_SFPBTableAlignmentSchema *)self tableColumnAlignments];
+    tableColumnAlignments5 = [equalCopy tableColumnAlignments];
+    v11 = [tableColumnAlignments4 isEqual:tableColumnAlignments5];
 
     if (!v11)
     {
@@ -284,12 +284,12 @@
   {
   }
 
-  v5 = [(_SFPBTableAlignmentSchema *)self metadata];
-  v6 = [v4 metadata];
-  if ((v5 != 0) != (v6 == 0))
+  tableColumnAlignments = [(_SFPBTableAlignmentSchema *)self metadata];
+  tableColumnAlignments2 = [equalCopy metadata];
+  if ((tableColumnAlignments != 0) != (tableColumnAlignments2 == 0))
   {
-    v12 = [(_SFPBTableAlignmentSchema *)self metadata];
-    if (!v12)
+    metadata = [(_SFPBTableAlignmentSchema *)self metadata];
+    if (!metadata)
     {
 
 LABEL_15:
@@ -297,10 +297,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBTableAlignmentSchema *)self metadata];
-    v15 = [v4 metadata];
-    v16 = [v14 isEqual:v15];
+    v13 = metadata;
+    metadata2 = [(_SFPBTableAlignmentSchema *)self metadata];
+    metadata3 = [equalCopy metadata];
+    v16 = [metadata2 isEqual:metadata3];
 
     if (v16)
     {
@@ -320,16 +320,16 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBTableAlignmentSchema *)self tableColumnAlignments];
+  toCopy = to;
+  tableColumnAlignments = [(_SFPBTableAlignmentSchema *)self tableColumnAlignments];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [tableColumnAlignments countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -341,7 +341,7 @@ LABEL_13:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tableColumnAlignments);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
@@ -350,14 +350,14 @@ LABEL_13:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [tableColumnAlignments countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(_SFPBTableAlignmentSchema *)self metadata];
-  if (v11)
+  metadata = [(_SFPBTableAlignmentSchema *)self metadata];
+  if (metadata)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -365,27 +365,27 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addTableColumnAlignment:(id)a3
+- (void)addTableColumnAlignment:(id)alignment
 {
-  v4 = a3;
+  alignmentCopy = alignment;
   tableColumnAlignments = self->_tableColumnAlignments;
-  v8 = v4;
+  v8 = alignmentCopy;
   if (!tableColumnAlignments)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tableColumnAlignments;
-    self->_tableColumnAlignments = v6;
+    self->_tableColumnAlignments = array;
 
-    v4 = v8;
+    alignmentCopy = v8;
     tableColumnAlignments = self->_tableColumnAlignments;
   }
 
-  [(NSArray *)tableColumnAlignments addObject:v4];
+  [(NSArray *)tableColumnAlignments addObject:alignmentCopy];
 }
 
-- (void)setTableColumnAlignment:(id)a3
+- (void)setTableColumnAlignment:(id)alignment
 {
-  v4 = [a3 copy];
+  v4 = [alignment copy];
   tableColumnAlignments = self->_tableColumnAlignments;
   self->_tableColumnAlignments = v4;
 

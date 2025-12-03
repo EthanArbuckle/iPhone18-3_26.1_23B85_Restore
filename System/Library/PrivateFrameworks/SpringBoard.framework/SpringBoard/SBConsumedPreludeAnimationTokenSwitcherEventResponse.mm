@@ -1,34 +1,34 @@
 @interface SBConsumedPreludeAnimationTokenSwitcherEventResponse
-- (SBConsumedPreludeAnimationTokenSwitcherEventResponse)initWithPreludeToken:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBConsumedPreludeAnimationTokenSwitcherEventResponse)initWithPreludeToken:(id)token;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBConsumedPreludeAnimationTokenSwitcherEventResponse
 
-- (SBConsumedPreludeAnimationTokenSwitcherEventResponse)initWithPreludeToken:(id)a3
+- (SBConsumedPreludeAnimationTokenSwitcherEventResponse)initWithPreludeToken:(id)token
 {
-  v6 = a3;
+  tokenCopy = token;
   v9.receiver = self;
   v9.super_class = SBConsumedPreludeAnimationTokenSwitcherEventResponse;
   v7 = [(SBChainableModifierEventResponse *)&v9 init];
   if (v7)
   {
-    if (!v6)
+    if (!tokenCopy)
     {
       [(SBConsumedPreludeAnimationTokenSwitcherEventResponse *)a2 initWithPreludeToken:v7];
     }
 
-    objc_storeStrong(&v7->_preludeToken, a3);
+    objc_storeStrong(&v7->_preludeToken, token);
   }
 
   return v7;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = SBConsumedPreludeAnimationTokenSwitcherEventResponse;
-  v4 = [(SBChainableModifierEventResponse *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifierEventResponse *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendObject:self->_preludeToken withName:@"preludeToken"];
 
   return v4;

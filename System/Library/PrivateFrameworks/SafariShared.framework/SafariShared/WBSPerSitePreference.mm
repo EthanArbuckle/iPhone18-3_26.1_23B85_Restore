@@ -1,28 +1,28 @@
 @interface WBSPerSitePreference
-+ (id)localizedStringForBinaryPreferenceValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (WBSPerSitePreference)initWithIdentifier:(id)a3;
++ (id)localizedStringForBinaryPreferenceValue:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (WBSPerSitePreference)initWithIdentifier:(id)identifier;
 @end
 
 @implementation WBSPerSitePreference
 
-+ (id)localizedStringForBinaryPreferenceValue:(id)a3
++ (id)localizedStringForBinaryPreferenceValue:(id)value
 {
-  [a3 BOOLValue];
+  [value BOOLValue];
   v3 = _WBSLocalizedString();
 
   return v3;
 }
 
-- (WBSPerSitePreference)initWithIdentifier:(id)a3
+- (WBSPerSitePreference)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = WBSPerSitePreference;
   v5 = [(WBSPerSitePreference *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -32,10 +32,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -46,8 +46,8 @@
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = [(WBSPerSitePreference *)v4 identifier];
-      v7 = [(NSString *)identifier isEqualToString:v6];
+      identifier = [(WBSPerSitePreference *)equalCopy identifier];
+      v7 = [(NSString *)identifier isEqualToString:identifier];
     }
 
     else

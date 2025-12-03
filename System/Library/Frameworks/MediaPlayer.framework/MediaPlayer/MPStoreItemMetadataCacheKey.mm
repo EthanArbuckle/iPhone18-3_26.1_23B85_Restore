@@ -1,11 +1,11 @@
 @interface MPStoreItemMetadataCacheKey
-+ (void)_fastGetCacheKeyWithRequest:(id)a3 completionHandler:(id)a4;
-+ (void)_slowGetCacheKeyWithRequest:(id)a3 completionHandler:(id)a4;
-+ (void)getCacheKeyWithRequest:(id)a3 completionHandler:(id)a4;
++ (void)_fastGetCacheKeyWithRequest:(id)request completionHandler:(id)handler;
++ (void)_slowGetCacheKeyWithRequest:(id)request completionHandler:(id)handler;
++ (void)getCacheKeyWithRequest:(id)request completionHandler:(id)handler;
 - (BOOL)_isGoodCacheKey;
-- (BOOL)isEqual:(id)a3;
-- (MPStoreItemMetadataCacheKey)initWithRequest:(id)a3 response:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPStoreItemMetadataCacheKey)initWithRequest:(id)request response:(id)response;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -23,22 +23,22 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_17;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_personalized != v4->_personalized)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_personalized != equalCopy->_personalized)
   {
     goto LABEL_16;
   }
 
   accountIdentifier = self->_accountIdentifier;
-  v6 = v4->_accountIdentifier;
+  v6 = equalCopy->_accountIdentifier;
   if (accountIdentifier != v6)
   {
     v7 = 0;
@@ -54,7 +54,7 @@
   }
 
   enqueuerAccountIdentifier = self->_enqueuerAccountIdentifier;
-  v9 = v4->_enqueuerAccountIdentifier;
+  v9 = equalCopy->_enqueuerAccountIdentifier;
   if (enqueuerAccountIdentifier != v9)
   {
     v7 = 0;
@@ -72,7 +72,7 @@ LABEL_16:
   }
 
   storefrontIdentifier = self->_storefrontIdentifier;
-  v11 = v4->_storefrontIdentifier;
+  v11 = equalCopy->_storefrontIdentifier;
   if (storefrontIdentifier == v11)
   {
 LABEL_17:
@@ -110,21 +110,21 @@ LABEL_18:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSNumber *)self->_accountIdentifier copyWithZone:a3];
+    v6 = [(NSNumber *)self->_accountIdentifier copyWithZone:zone];
     v7 = *(v5 + 16);
     *(v5 + 16) = v6;
 
-    v8 = [(NSNumber *)self->_enqueuerAccountIdentifier copyWithZone:a3];
+    v8 = [(NSNumber *)self->_enqueuerAccountIdentifier copyWithZone:zone];
     v9 = *(v5 + 24);
     *(v5 + 24) = v8;
 
     *(v5 + 8) = self->_personalized;
-    v10 = [(NSString *)self->_storefrontIdentifier copyWithZone:a3];
+    v10 = [(NSString *)self->_storefrontIdentifier copyWithZone:zone];
     v11 = *(v5 + 32);
     *(v5 + 32) = v10;
   }
@@ -132,33 +132,33 @@ LABEL_18:
   return v5;
 }
 
-- (MPStoreItemMetadataCacheKey)initWithRequest:(id)a3 response:(id)a4
+- (MPStoreItemMetadataCacheKey)initWithRequest:(id)request response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  responseCopy = response;
   v18.receiver = self;
   v18.super_class = MPStoreItemMetadataCacheKey;
   v8 = [(MPStoreItemMetadataCacheKey *)&v18 init];
   if (v8)
   {
-    v9 = [v7 storefrontIdentifier];
-    v10 = v9;
-    if (v9)
+    storefrontIdentifier = [responseCopy storefrontIdentifier];
+    v10 = storefrontIdentifier;
+    if (storefrontIdentifier)
     {
-      v11 = MPStoreItemMetadataCacheableStorefrontForStorefront(v9);
+      v11 = MPStoreItemMetadataCacheableStorefrontForStorefront(storefrontIdentifier);
       storefrontIdentifier = v8->_storefrontIdentifier;
       v8->_storefrontIdentifier = v11;
     }
 
-    if ([v6 isPersonalized])
+    if ([requestCopy isPersonalized])
     {
-      v13 = [v7 accountIdentifier];
+      accountIdentifier = [responseCopy accountIdentifier];
       accountIdentifier = v8->_accountIdentifier;
-      v8->_accountIdentifier = v13;
+      v8->_accountIdentifier = accountIdentifier;
 
-      v15 = [v7 enqueuerAccountIdentifier];
+      enqueuerAccountIdentifier = [responseCopy enqueuerAccountIdentifier];
       enqueuerAccountIdentifier = v8->_enqueuerAccountIdentifier;
-      v8->_enqueuerAccountIdentifier = v15;
+      v8->_enqueuerAccountIdentifier = enqueuerAccountIdentifier;
 
       v8->_personalized = 1;
     }
@@ -167,17 +167,17 @@ LABEL_18:
   return v8;
 }
 
-+ (void)_slowGetCacheKeyWithRequest:(id)a3 completionHandler:(id)a4
++ (void)_slowGetCacheKeyWithRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v7 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:@"https:///"];
   v8 = objc_alloc(MEMORY[0x1E69E4618]);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __77__MPStoreItemMetadataCacheKey__slowGetCacheKeyWithRequest_completionHandler___block_invoke;
   v17[3] = &unk_1E767D580;
-  v9 = v5;
+  v9 = requestCopy;
   v18 = v9;
   v10 = [v8 initWithBlock:v17];
   v11 = [objc_alloc(MEMORY[0x1E69E4620]) initWithURL:v7 requestContext:v10];
@@ -188,8 +188,8 @@ LABEL_18:
   v14[2] = __77__MPStoreItemMetadataCacheKey__slowGetCacheKeyWithRequest_completionHandler___block_invoke_2;
   v14[3] = &unk_1E767D558;
   v15 = v9;
-  v16 = v6;
-  v12 = v6;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v9;
   [v11 buildURLRequestWithCompletionHandler:v14];
 }
@@ -254,10 +254,10 @@ void __77__MPStoreItemMetadataCacheKey__slowGetCacheKeyWithRequest_completionHan
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)_fastGetCacheKeyWithRequest:(id)a3 completionHandler:(id)a4
++ (void)_fastGetCacheKeyWithRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v7 = dispatch_group_create();
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v9 = dispatch_queue_create("com.apple.MediaPlayer.MPStoreItemMetadataCacheKey", v8);
@@ -274,11 +274,11 @@ void __77__MPStoreItemMetadataCacheKey__slowGetCacheKeyWithRequest_completionHan
   v22[3] = __Block_byref_object_copy__41387;
   v22[4] = __Block_byref_object_dispose__41388;
   v23 = 0;
-  v10 = [v5 userIdentityStore];
-  if (v10)
+  userIdentityStore = [requestCopy userIdentityStore];
+  if (userIdentityStore)
   {
-    v11 = [v5 userIdentity];
-    if (v11)
+    userIdentity = [requestCopy userIdentity];
+    if (userIdentity)
     {
       dispatch_group_enter(v7);
       v21[0] = MEMORY[0x1E69E9820];
@@ -287,11 +287,11 @@ void __77__MPStoreItemMetadataCacheKey__slowGetCacheKeyWithRequest_completionHan
       v21[3] = &unk_1E767D508;
       v21[4] = v7;
       v21[5] = v22;
-      [v10 getPropertiesForUserIdentity:v11 completionHandler:v21];
+      [userIdentityStore getPropertiesForUserIdentity:userIdentity completionHandler:v21];
     }
 
-    v12 = [v5 delegatedUserIdentity];
-    if (v12)
+    delegatedUserIdentity = [requestCopy delegatedUserIdentity];
+    if (delegatedUserIdentity)
     {
       dispatch_group_enter(v7);
       v20[0] = MEMORY[0x1E69E9820];
@@ -300,7 +300,7 @@ void __77__MPStoreItemMetadataCacheKey__slowGetCacheKeyWithRequest_completionHan
       v20[3] = &unk_1E767D508;
       v20[4] = v7;
       v20[5] = v24;
-      [v10 getPropertiesForUserIdentity:v12 completionHandler:v20];
+      [userIdentityStore getPropertiesForUserIdentity:delegatedUserIdentity completionHandler:v20];
     }
   }
 
@@ -310,10 +310,10 @@ void __77__MPStoreItemMetadataCacheKey__slowGetCacheKeyWithRequest_completionHan
   v15[3] = &unk_1E767D530;
   v18 = v22;
   v19 = v24;
-  v16 = v5;
-  v17 = v6;
-  v13 = v6;
-  v14 = v5;
+  v16 = requestCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = requestCopy;
   dispatch_group_notify(v7, v9, v15);
 
   _Block_object_dispose(v22, 8);
@@ -379,20 +379,20 @@ LABEL_7:
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)getCacheKeyWithRequest:(id)a3 completionHandler:(id)a4
++ (void)getCacheKeyWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__MPStoreItemMetadataCacheKey_getCacheKeyWithRequest_completionHandler___block_invoke;
   v10[3] = &unk_1E767D4E0;
-  v12 = v7;
-  v13 = a1;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
-  [a1 _fastGetCacheKeyWithRequest:v8 completionHandler:v10];
+  v12 = handlerCopy;
+  selfCopy = self;
+  v11 = requestCopy;
+  v8 = requestCopy;
+  v9 = handlerCopy;
+  [self _fastGetCacheKeyWithRequest:v8 completionHandler:v10];
 }
 
 void __72__MPStoreItemMetadataCacheKey_getCacheKeyWithRequest_completionHandler___block_invoke(uint64_t a1, void *a2)

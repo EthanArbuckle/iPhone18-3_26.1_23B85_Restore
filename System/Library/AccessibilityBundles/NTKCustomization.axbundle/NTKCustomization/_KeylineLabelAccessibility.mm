@@ -1,5 +1,5 @@
 @interface _KeylineLabelAccessibility
-- (_KeylineLabelAccessibility)initWithFrame:(CGRect)a3;
+- (_KeylineLabelAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
@@ -15,11 +15,11 @@
   [(_KeylineLabelAccessibility *)&v4 _accessibilityLoadAccessibilityInformation];
 }
 
-- (_KeylineLabelAccessibility)initWithFrame:(CGRect)a3
+- (_KeylineLabelAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _KeylineLabelAccessibility;
-  v3 = [(_KeylineLabelAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_KeylineLabelAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_KeylineLabelAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
   return v3;
 }

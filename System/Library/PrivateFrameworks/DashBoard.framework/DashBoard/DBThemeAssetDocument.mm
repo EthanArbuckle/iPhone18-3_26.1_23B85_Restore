@@ -1,6 +1,6 @@
 @interface DBThemeAssetDocument
 - (DBThemeAssetDocument)init;
-- (DBThemeAssetDocument)initWithDocumentURL:(id)a3;
+- (DBThemeAssetDocument)initWithDocumentURL:(id)l;
 - (NSDictionary)documentInfo;
 - (NSURL)documentURL;
 @end
@@ -23,7 +23,7 @@
   return v2;
 }
 
-- (DBThemeAssetDocument)initWithDocumentURL:(id)a3
+- (DBThemeAssetDocument)initWithDocumentURL:(id)l
 {
   v3 = sub_248381170();
   MEMORY[0x28223BE20](v3 - 8);

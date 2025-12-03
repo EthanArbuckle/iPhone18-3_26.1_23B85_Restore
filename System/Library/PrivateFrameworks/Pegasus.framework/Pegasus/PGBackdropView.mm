@@ -1,23 +1,23 @@
 @interface PGBackdropView
 - (NSString)groupName;
-- (PGBackdropView)initWithFrame:(CGRect)a3;
+- (PGBackdropView)initWithFrame:(CGRect)frame;
 - (double)backdropScale;
 - (double)gaussianBlurRadius;
 - (void)_updateFilters;
 - (void)dealloc;
-- (void)setBackdropScale:(double)a3;
-- (void)setGaussianBlurRadius:(double)a3;
-- (void)setGroupName:(id)a3;
+- (void)setBackdropScale:(double)scale;
+- (void)setGaussianBlurRadius:(double)radius;
+- (void)setGroupName:(id)name;
 @end
 
 @implementation PGBackdropView
 
-- (PGBackdropView)initWithFrame:(CGRect)a3
+- (PGBackdropView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = PGLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -26,11 +26,11 @@
 
   v17.receiver = self;
   v17.super_class = PGBackdropView;
-  v9 = [(PGBackdropView *)&v17 initWithFrame:x, y, width, height];
-  v10 = v9;
-  if (v9)
+  height = [(PGBackdropView *)&v17 initWithFrame:x, y, width, height];
+  v10 = height;
+  if (height)
   {
-    [(__PGView *)v9 setAnimatedLayerProperties:&unk_1F3959198];
+    [(__PGView *)height setAnimatedLayerProperties:&unk_1F3959198];
     v11 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
     [v11 setName:@"gaussianBlur"];
     [v11 setValue:&unk_1F3959170 forKey:@"inputRadius"];
@@ -41,8 +41,8 @@
     v10->_gaussianBlurFilter = v11;
     v14 = v11;
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v10 selector:sel__updateFilters name:*MEMORY[0x1E69DD920] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__updateFilters name:*MEMORY[0x1E69DD920] object:0];
 
     [(PGBackdropView *)v10 _updateFilters];
   }
@@ -58,8 +58,8 @@
     [PGPictureInPictureApplication initWithProcessIdentifier:?];
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = PGBackdropView;
@@ -90,55 +90,55 @@
   v8 = [v7 numberWithDouble:?];
   [(CAFilter *)gaussianBlurFilter setValue:v8 forKey:@"inputRadius"];
 
-  v9 = [(PGBackdropView *)self layer];
-  [v9 setFilters:v10];
+  layer = [(PGBackdropView *)self layer];
+  [layer setFilters:v10];
 }
 
 - (NSString)groupName
 {
-  v2 = [(PGBackdropView *)self layer];
-  v3 = [v2 groupName];
+  layer = [(PGBackdropView *)self layer];
+  groupName = [layer groupName];
 
-  return v3;
+  return groupName;
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v4 = a3;
-  v5 = [(PGBackdropView *)self layer];
-  [v5 setGroupName:v4];
+  nameCopy = name;
+  layer = [(PGBackdropView *)self layer];
+  [layer setGroupName:nameCopy];
 }
 
 - (double)gaussianBlurRadius
 {
-  v2 = [(PGBackdropView *)self layer];
-  v3 = [v2 valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
+  layer = [(PGBackdropView *)self layer];
+  v3 = [layer valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setGaussianBlurRadius:(double)a3
+- (void)setGaussianBlurRadius:(double)radius
 {
-  v5 = [(PGBackdropView *)self layer];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+  layer = [(PGBackdropView *)self layer];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
+  [layer setValue:v4 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 }
 
 - (double)backdropScale
 {
-  v2 = [(PGBackdropView *)self layer];
-  [v2 scale];
+  layer = [(PGBackdropView *)self layer];
+  [layer scale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBackdropScale:(double)a3
+- (void)setBackdropScale:(double)scale
 {
-  v4 = [(PGBackdropView *)self layer];
-  [v4 setScale:a3];
+  layer = [(PGBackdropView *)self layer];
+  [layer setScale:scale];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface PIParallaxAsset
-- (BOOL)clearSegmentationResourceCacheWithError:(id *)a3;
+- (BOOL)clearSegmentationResourceCacheWithError:(id *)error;
 - (CGRect)acceptableCropRect;
 - (CGRect)gazeAreaRect;
 - (CGRect)preferredCropRect;
-- (PIParallaxAsset)initWithFileURL:(id)a3;
-- (int)loadFocalLengthIn35mm:(id)a3;
-- (int)loadMotionScore:(id)a3;
-- (int)loadParallaxResource:(int64_t)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)loadPetsRegionsWithOptions:(id)a3 resultHandler:(id)a4;
-- (void)cancelMotionScoreRequest:(int)a3;
-- (void)cancelPetsRegionsRequest:(int)a3;
-- (void)updateSegmentationResource:(id)a3;
+- (PIParallaxAsset)initWithFileURL:(id)l;
+- (int)loadFocalLengthIn35mm:(id)in35mm;
+- (int)loadMotionScore:(id)score;
+- (int)loadParallaxResource:(int64_t)resource options:(id)options resultHandler:(id)handler;
+- (int)loadPetsRegionsWithOptions:(id)options resultHandler:(id)handler;
+- (void)cancelMotionScoreRequest:(int)request;
+- (void)cancelPetsRegionsRequest:(int)request;
+- (void)updateSegmentationResource:(id)resource;
 @end
 
 @implementation PIParallaxAsset
@@ -54,9 +54,9 @@
   return result;
 }
 
-- (int)loadFocalLengthIn35mm:(id)a3
+- (int)loadFocalLengthIn35mm:(id)in35mm
 {
-  v4 = a3;
+  in35mmCopy = in35mm;
   v5 = CGImageSourceCreateWithURL(self->_fileURL, 0);
   if (v5)
   {
@@ -66,13 +66,13 @@
     v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696DA08]];
     if (v9)
     {
-      v4[2](v4, v9, 0);
+      in35mmCopy[2](in35mmCopy, v9, 0);
     }
 
     else
     {
       v10 = [MEMORY[0x1E69B3A48] failureError:@"Image missing kCGImagePropertyExifFocalLenIn35mmFilm" object:self->_fileURL];
-      (v4)[2](v4, 0, v10);
+      (in35mmCopy)[2](in35mmCopy, 0, v10);
     }
 
     CFRelease(v6);
@@ -81,36 +81,36 @@
   else
   {
     v7 = [MEMORY[0x1E69B3A48] failureError:@"Failed to read image file" object:self->_fileURL];
-    (v4)[2](v4, 0, v7);
+    (in35mmCopy)[2](in35mmCopy, 0, v7);
   }
 
   return 0;
 }
 
-- (void)cancelMotionScoreRequest:(int)a3
+- (void)cancelMotionScoreRequest:(int)request
 {
-  v3 = *&a3;
-  v4 = [getVCPMediaAnalysisServiceClass_20099() sharedAnalysisService];
-  [v4 cancelRequest:v3];
+  v3 = *&request;
+  sharedAnalysisService = [getVCPMediaAnalysisServiceClass_20099() sharedAnalysisService];
+  [sharedAnalysisService cancelRequest:v3];
 }
 
-- (int)loadMotionScore:(id)a3
+- (int)loadMotionScore:(id)score
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  scoreCopy = score;
+  v5 = scoreCopy;
   v6.n128_u32[0] = LODWORD(self->_motionScore);
   if (v6.n128_f32[0] >= 0.0)
   {
-    (*(v4 + 2))(v4, 0, v6);
+    (*(scoreCopy + 2))(scoreCopy, 0, v6);
 LABEL_6:
     v15 = 0;
     goto LABEL_7;
   }
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [(NSURL *)self->_videoComplementURL path];
-  v9 = [v7 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [(NSURL *)self->_videoComplementURL path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if ((v9 & 1) == 0)
   {
@@ -119,10 +119,10 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v11 = [getVCPMediaAnalysisServiceClass_20099() sharedAnalysisService];
-  v12 = [(PIParallaxAsset *)self fileURL];
+  sharedAnalysisService = [getVCPMediaAnalysisServiceClass_20099() sharedAnalysisService];
+  fileURL = [(PIParallaxAsset *)self fileURL];
   videoComplementURL = self->_videoComplementURL;
-  v19[0] = v12;
+  v19[0] = fileURL;
   v19[1] = videoComplementURL;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v17[0] = MEMORY[0x1E69E9820];
@@ -131,7 +131,7 @@ LABEL_6:
   v17[3] = &unk_1E82ABA78;
   v17[4] = self;
   v18 = v5;
-  v15 = [v11 requestAnalysisTypes:0x40000 forAssetWithResourceURLs:v14 withOptions:MEMORY[0x1E695E0F8] progressHandler:0 andCompletionHandler:v17];
+  v15 = [sharedAnalysisService requestAnalysisTypes:0x40000 forAssetWithResourceURLs:v14 withOptions:MEMORY[0x1E695E0F8] progressHandler:0 andCompletionHandler:v17];
 
 LABEL_7:
   return v15;
@@ -273,31 +273,31 @@ LABEL_22:
 LABEL_11:
 }
 
-- (void)cancelPetsRegionsRequest:(int)a3
+- (void)cancelPetsRegionsRequest:(int)request
 {
-  v3 = *&a3;
-  v4 = [getVCPMediaAnalysisServiceClass_20099() sharedAnalysisService];
-  [v4 cancelRequest:v3];
+  v3 = *&request;
+  sharedAnalysisService = [getVCPMediaAnalysisServiceClass_20099() sharedAnalysisService];
+  [sharedAnalysisService cancelRequest:v3];
 }
 
-- (int)loadPetsRegionsWithOptions:(id)a3 resultHandler:(id)a4
+- (int)loadPetsRegionsWithOptions:(id)options resultHandler:(id)handler
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [getVCPMediaAnalysisServiceClass_20099() sharedAnalysisService];
-  v7 = [(PIParallaxAsset *)self fileURL];
-  v14[0] = v7;
+  handlerCopy = handler;
+  sharedAnalysisService = [getVCPMediaAnalysisServiceClass_20099() sharedAnalysisService];
+  fileURL = [(PIParallaxAsset *)self fileURL];
+  v14[0] = fileURL;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__PIParallaxAsset_loadPetsRegionsWithOptions_resultHandler___block_invoke_3;
   v11[3] = &unk_1E82ABA50;
   v12 = &__block_literal_global_20144;
-  v13 = v5;
-  v9 = v5;
-  LODWORD(v5) = [v6 requestAnalysisTypes:0x20000 forAssetWithResourceURLs:v8 withOptions:MEMORY[0x1E695E0F8] progressHandler:0 andCompletionHandler:v11];
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  LODWORD(handlerCopy) = [sharedAnalysisService requestAnalysisTypes:0x20000 forAssetWithResourceURLs:v8 withOptions:MEMORY[0x1E695E0F8] progressHandler:0 andCompletionHandler:v11];
 
-  return v5;
+  return handlerCopy;
 }
 
 void __60__PIParallaxAsset_loadPetsRegionsWithOptions_resultHandler___block_invoke_3(uint64_t a1, void *a2, void *a3)
@@ -454,43 +454,43 @@ LABEL_12:
   v11 = v10;
 }
 
-- (BOOL)clearSegmentationResourceCacheWithError:(id *)a3
+- (BOOL)clearSegmentationResourceCacheWithError:(id *)error
 {
-  v5 = [(PIParallaxAsset *)self cacheURL];
+  cacheURL = [(PIParallaxAsset *)self cacheURL];
 
-  if (!v5)
+  if (!cacheURL)
   {
     return 1;
   }
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [(PIParallaxAsset *)self cacheURL];
-  v8 = [v6 removeItemAtURL:v7 error:a3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  cacheURL2 = [(PIParallaxAsset *)self cacheURL];
+  v8 = [defaultManager removeItemAtURL:cacheURL2 error:error];
 
   return v8;
 }
 
-- (void)updateSegmentationResource:(id)a3
+- (void)updateSegmentationResource:(id)resource
 {
-  v6 = a3;
-  v4 = [(PIParallaxAsset *)self cacheURL];
+  resourceCopy = resource;
+  cacheURL = [(PIParallaxAsset *)self cacheURL];
 
-  if (v4)
+  if (cacheURL)
   {
-    v5 = [(PIParallaxAsset *)self cacheURL];
-    v6[2](v6, v5);
+    cacheURL2 = [(PIParallaxAsset *)self cacheURL];
+    resourceCopy[2](resourceCopy, cacheURL2);
   }
 }
 
-- (int)loadParallaxResource:(int64_t)a3 options:(id)a4 resultHandler:(id)a5
+- (int)loadParallaxResource:(int64_t)resource options:(id)options resultHandler:(id)handler
 {
   v67[3] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (-[PIParallaxAsset isInCloud](self, "isInCloud") && ([v8 networkAccessAllowed] & 1) == 0)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (-[PIParallaxAsset isInCloud](self, "isInCloud") && ([optionsCopy networkAccessAllowed] & 1) == 0)
   {
     v25 = [MEMORY[0x1E69B3A48] failureError:@"Asset is not local" object:0];
-    v9[2](v9, 0, v25);
+    handlerCopy[2](handlerCopy, 0, v25);
 
     v26 = 0;
 LABEL_33:
@@ -502,7 +502,7 @@ LABEL_33:
   if (!v10)
   {
     v24 = [MEMORY[0x1E69B3A48] failureError:@"Failed to read image file" object:self->_fileURL];
-    v9[2](v9, 0, v24);
+    handlerCopy[2](handlerCopy, 0, v24);
 
 LABEL_32:
     v26 = 1;
@@ -510,14 +510,14 @@ LABEL_32:
   }
 
   v11 = v10;
-  if (a3 > 6)
+  if (resource > 6)
   {
 LABEL_31:
     CFRelease(v11);
     goto LABEL_32;
   }
 
-  if (((1 << a3) & 0x55) != 0)
+  if (((1 << resource) & 0x55) != 0)
   {
     v12 = CGImageSourceCopyPropertiesAtIndex(v10, 0, 0);
     if (v12)
@@ -525,7 +525,7 @@ LABEL_31:
       v13 = v12;
       v14 = objc_alloc_init(MEMORY[0x1E69C0740]);
       v15 = v14;
-      if (a3 == 6)
+      if (resource == 6)
       {
         v16 = 6;
       }
@@ -538,9 +538,9 @@ LABEL_31:
       [v14 setType:v16];
       [v15 setProxyImage:0];
       [v15 setImageFileURL:self->_fileURL];
-      v17 = [MEMORY[0x1E696AC08] defaultManager];
-      v18 = [(NSURL *)self->_videoComplementURL path];
-      v19 = [v17 fileExistsAtPath:v18];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [(NSURL *)self->_videoComplementURL path];
+      v19 = [defaultManager fileExistsAtPath:path];
 
       if (v19)
       {
@@ -559,17 +559,17 @@ LABEL_31:
       v61 = 0;
       if ([(NSURL *)fileURL getResourceValue:&v61 forKey:*MEMORY[0x1E695DAA0] error:0])
       {
-        v23 = [v61 identifier];
-        [v15 setFileType:v23];
+        identifier = [v61 identifier];
+        [v15 setFileType:identifier];
       }
 
-      (v9)[2](v9, v15, 0);
+      (handlerCopy)[2](handlerCopy, v15, 0);
     }
 
     else
     {
       v44 = [MEMORY[0x1E69B3A48] failureError:@"Failed to load image properties" object:self->_fileURL];
-      v9[2](v9, 0, v44);
+      handlerCopy[2](handlerCopy, 0, v44);
 
       v13 = 0;
     }
@@ -579,7 +579,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (((1 << a3) & 0xA) != 0)
+  if (((1 << resource) & 0xA) != 0)
   {
     v27 = *MEMORY[0x1E696E100];
     v66[0] = *MEMORY[0x1E696DFE8];
@@ -594,27 +594,27 @@ LABEL_30:
     {
       ImageAtIndex = ThumbnailAtIndex;
       v30 = +[PIGlobalSettings globalSettings];
-      v31 = [v30 segmentationDebugRoundTripProxyImage];
+      segmentationDebugRoundTripProxyImage = [v30 segmentationDebugRoundTripProxyImage];
 
-      if (v31)
+      if (segmentationDebugRoundTripProxyImage)
       {
         v32 = MEMORY[0x1E695DFF8];
         v33 = NSTemporaryDirectory();
         v34 = [v32 fileURLWithPath:v33];
         v35 = [v34 URLByAppendingPathComponent:@"proxy.jpg"];
 
-        v36 = [MEMORY[0x1E696AC08] defaultManager];
-        v37 = [v35 absoluteString];
-        v38 = [v36 fileExistsAtPath:v37];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        absoluteString = [v35 absoluteString];
+        v38 = [defaultManager2 fileExistsAtPath:absoluteString];
 
         if (v38)
         {
-          v39 = [MEMORY[0x1E696AC08] defaultManager];
-          [v39 removeItemAtURL:v35 error:0];
+          defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager3 removeItemAtURL:v35 error:0];
         }
 
-        v40 = [*MEMORY[0x1E6982E58] identifier];
-        v41 = CGImageDestinationCreateWithURL(v35, v40, 1uLL, 0);
+        identifier2 = [*MEMORY[0x1E6982E58] identifier];
+        v41 = CGImageDestinationCreateWithURL(v35, identifier2, 1uLL, 0);
 
         CGImageDestinationAddImage(v41, ImageAtIndex, 0);
         CGImageDestinationFinalize(v41);
@@ -628,14 +628,14 @@ LABEL_30:
       v43 = objc_alloc_init(MEMORY[0x1E69C0740]);
       [v43 setType:3];
       [v43 setProxyImage:ImageAtIndex];
-      (v9)[2](v9, v43, 0);
+      (handlerCopy)[2](handlerCopy, v43, 0);
       CFRelease(ImageAtIndex);
     }
 
     else
     {
       v43 = [MEMORY[0x1E69B3A48] failureError:@"Failed to load thumbnail image" object:self->_fileURL];
-      v9[2](v9, 0, v43);
+      handlerCopy[2](handlerCopy, 0, v43);
     }
 
     goto LABEL_30;
@@ -661,8 +661,8 @@ LABEL_30:
       v54 = dispatch_get_specific(*v48);
       v55 = MEMORY[0x1E696AF00];
       v56 = v54;
-      v57 = [v55 callStackSymbols];
-      v58 = [v57 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v55 callStackSymbols];
+      v58 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v63 = v54;
       v64 = 2114;
@@ -673,8 +673,8 @@ LABEL_30:
 
   else if (v51)
   {
-    v52 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v53 = [v52 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v53 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     v63 = v53;
     _os_log_error_impl(&dword_1C7694000, v50, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -684,11 +684,11 @@ LABEL_30:
   return [(PIParallaxAsset *)v59 localIdentifier];
 }
 
-- (PIParallaxAsset)initWithFileURL:(id)a3
+- (PIParallaxAsset)initWithFileURL:(id)l
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     v21 = NUAssertLogger_20125();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -710,8 +710,8 @@ LABEL_30:
         v29 = dispatch_get_specific(*v23);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v29;
         v37 = 2114;
@@ -722,8 +722,8 @@ LABEL_30:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v28;
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -732,7 +732,7 @@ LABEL_30:
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = lCopy;
   v34.receiver = self;
   v34.super_class = PIParallaxAsset;
   v6 = [(PIParallaxAsset *)&v34 init];
@@ -755,13 +755,13 @@ LABEL_30:
   *(v6 + 12) = 0;
 
   *(v6 + 26) = -1082130432;
-  v13 = [v5 lastPathComponent];
-  v14 = [v13 stringByDeletingPathExtension];
-  v15 = [v14 stringByAppendingPathExtension:@"MOV"];
+  lastPathComponent = [v5 lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v15 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"MOV"];
 
-  v16 = [v6 fileURL];
-  v17 = [v16 URLByDeletingLastPathComponent];
-  v18 = [v17 URLByAppendingPathComponent:v15];
+  fileURL = [v6 fileURL];
+  uRLByDeletingLastPathComponent = [fileURL URLByDeletingLastPathComponent];
+  v18 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v15];
 
   v19 = *(v6 + 2);
   *(v6 + 2) = v18;

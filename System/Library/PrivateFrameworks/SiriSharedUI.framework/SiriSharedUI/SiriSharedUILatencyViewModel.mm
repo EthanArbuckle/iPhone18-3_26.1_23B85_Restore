@@ -1,45 +1,45 @@
 @interface SiriSharedUILatencyViewModel
 - (BOOL)_hasContent;
-- (BOOL)isEqualToViewModel:(id)a3;
+- (BOOL)isEqualToViewModel:(id)model;
 - (BOOL)shouldDisplay;
-- (BOOL)viewShouldUpdateFromOldModel:(id)a3;
-- (SiriSharedUILatencyViewModel)initWithUserUtterance:(id)a3 shouldSuppress:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)viewShouldUpdateFromOldModel:(id)model;
+- (SiriSharedUILatencyViewModel)initWithUserUtterance:(id)utterance shouldSuppress:(BOOL)suppress;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SiriSharedUILatencyViewModel
 
-- (SiriSharedUILatencyViewModel)initWithUserUtterance:(id)a3 shouldSuppress:(BOOL)a4
+- (SiriSharedUILatencyViewModel)initWithUserUtterance:(id)utterance shouldSuppress:(BOOL)suppress
 {
-  v7 = a3;
+  utteranceCopy = utterance;
   v11.receiver = self;
   v11.super_class = SiriSharedUILatencyViewModel;
   v8 = [(SiriSharedUILatencyViewModel *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_userUtterance, a3);
-    v9->_shouldSuppress = a4;
+    objc_storeStrong(&v8->_userUtterance, utterance);
+    v9->_shouldSuppress = suppress;
   }
 
   return v9;
 }
 
-- (BOOL)isEqualToViewModel:(id)a3
+- (BOOL)isEqualToViewModel:(id)model
 {
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
-    v5 = [(SiriSharedUILatencyViewModel *)self userUtterance];
+    userUtterance = [(SiriSharedUILatencyViewModel *)self userUtterance];
 
-    if (v5)
+    if (userUtterance)
     {
-      v6 = [(SiriSharedUILatencyViewModel *)self userUtterance];
-      v7 = [v4 userUtterance];
-      if ([v6 isEqualToString:v7])
+      userUtterance2 = [(SiriSharedUILatencyViewModel *)self userUtterance];
+      userUtterance3 = [modelCopy userUtterance];
+      if ([userUtterance2 isEqualToString:userUtterance3])
       {
-        v8 = [(SiriSharedUILatencyViewModel *)self shouldSuppress];
-        v9 = v8 ^ [v4 shouldSuppress] ^ 1;
+        shouldSuppress = [(SiriSharedUILatencyViewModel *)self shouldSuppress];
+        v9 = shouldSuppress ^ [modelCopy shouldSuppress] ^ 1;
       }
 
       else
@@ -50,16 +50,16 @@
 
     else
     {
-      v6 = [v4 userUtterance];
-      if (v6)
+      userUtterance2 = [modelCopy userUtterance];
+      if (userUtterance2)
       {
         LOBYTE(v9) = 0;
       }
 
       else
       {
-        v11 = [(SiriSharedUILatencyViewModel *)self shouldSuppress];
-        v9 = v11 ^ [v4 shouldSuppress] ^ 1;
+        shouldSuppress2 = [(SiriSharedUILatencyViewModel *)self shouldSuppress];
+        v9 = shouldSuppress2 ^ [modelCopy shouldSuppress] ^ 1;
       }
     }
   }
@@ -72,21 +72,21 @@
   return v9;
 }
 
-- (BOOL)viewShouldUpdateFromOldModel:(id)a3
+- (BOOL)viewShouldUpdateFromOldModel:(id)model
 {
-  v4 = a3;
-  if ([(SiriSharedUILatencyViewModel *)self isEqualToViewModel:v4])
+  modelCopy = model;
+  if ([(SiriSharedUILatencyViewModel *)self isEqualToViewModel:modelCopy])
   {
     LOBYTE(self) = 0;
   }
 
-  else if (v4 && ([v4 shouldDisplay] & 1) != 0)
+  else if (modelCopy && ([modelCopy shouldDisplay] & 1) != 0)
   {
     if ([(SiriSharedUILatencyViewModel *)self shouldDisplay])
     {
-      v5 = [(SiriSharedUILatencyViewModel *)self userUtterance];
-      v6 = [v4 userUtterance];
-      LODWORD(self) = [v5 isEqualToString:v6] ^ 1;
+      userUtterance = [(SiriSharedUILatencyViewModel *)self userUtterance];
+      userUtterance2 = [modelCopy userUtterance];
+      LODWORD(self) = [userUtterance isEqualToString:userUtterance2] ^ 1;
     }
 
     else
@@ -113,7 +113,7 @@
   return [(SiriSharedUILatencyViewModel *)self _hasContent];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SiriSharedUILatencyViewModel alloc];
   userUtterance = self->_userUtterance;
@@ -124,11 +124,11 @@
 
 - (BOOL)_hasContent
 {
-  v3 = [(SiriSharedUILatencyViewModel *)self userUtterance];
-  if (v3)
+  userUtterance = [(SiriSharedUILatencyViewModel *)self userUtterance];
+  if (userUtterance)
   {
-    v4 = [(SiriSharedUILatencyViewModel *)self userUtterance];
-    v5 = [v4 length] != 0;
+    userUtterance2 = [(SiriSharedUILatencyViewModel *)self userUtterance];
+    v5 = [userUtterance2 length] != 0;
   }
 
   else

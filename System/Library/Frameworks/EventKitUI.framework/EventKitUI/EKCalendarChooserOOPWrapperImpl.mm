@@ -12,9 +12,9 @@
 - (CGSize)preferredContentSize;
 - (EKCalendar)selectedCalendar;
 - (EKCalendarChooserDelegate)delegate;
-- (EKCalendarChooserOOPWrapperImpl)initWithSelectionStyle:(int64_t)a3 displayStyle:(int64_t)a4 entityType:(unint64_t)a5 eventStore:(id)a6;
-- (EKCalendarChooserOOPWrapperImpl)initWithSelectionStyle:(int64_t)a3 displayStyle:(int64_t)a4 entityType:(unint64_t)a5 forEvent:(id)a6 eventStore:(id)a7 limitedToSource:(id)a8 showIdentityChooser:(BOOL)a9 showDelegateSetupCell:(BOOL)a10 showAccountStatus:(BOOL)a11;
-- (EKCalendarChooserOOPWrapperImpl)initWithSelectionStyle:(int64_t)a3 displayStyle:(int64_t)a4 eventStore:(id)a5;
+- (EKCalendarChooserOOPWrapperImpl)initWithSelectionStyle:(int64_t)style displayStyle:(int64_t)displayStyle entityType:(unint64_t)type eventStore:(id)store;
+- (EKCalendarChooserOOPWrapperImpl)initWithSelectionStyle:(int64_t)style displayStyle:(int64_t)displayStyle entityType:(unint64_t)type forEvent:(id)event eventStore:(id)store limitedToSource:(id)source showIdentityChooser:(BOOL)chooser showDelegateSetupCell:(BOOL)self0 showAccountStatus:(BOOL)self1;
+- (EKCalendarChooserOOPWrapperImpl)initWithSelectionStyle:(int64_t)style displayStyle:(int64_t)displayStyle eventStore:(id)store;
 - (EKEventStore)eventStore;
 - (EKUIViewControllerNavigationDelegate)navigationDelegate;
 - (NSSet)selectedCalendars;
@@ -27,85 +27,85 @@
 - (int64_t)displayStyle;
 - (int64_t)selectionStyle;
 - (unint64_t)entityType;
-- (void)_commonAddCalendarButtonPressed:(id)a3;
+- (void)_commonAddCalendarButtonPressed:(id)pressed;
 - (void)_layoutNavToolbarControls;
-- (void)_selectAllCalendarsAndNotify:(BOOL)a3;
-- (void)calendarEditor:(id)a3 didCompleteWithAction:(int)a4;
-- (void)cancel:(id)a3;
-- (void)done:(id)a3;
+- (void)_selectAllCalendarsAndNotify:(BOOL)notify;
+- (void)calendarEditor:(id)editor didCompleteWithAction:(int)action;
+- (void)cancel:(id)cancel;
+- (void)done:(id)done;
 - (void)presentAddCalendarView;
-- (void)setAllSelected:(BOOL)a3;
-- (void)setAllowsPullToRefresh:(BOOL)a3;
-- (void)setChooserMode:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDisableCalendarsUnselectedByFocus:(BOOL)a3;
-- (void)setExplanatoryTextMode:(int)a3;
-- (void)setOnlyShowUnmanagedAccounts:(BOOL)a3;
-- (void)setSelectedCalendar:(id)a3;
-- (void)setSelectedCalendars:(id)a3;
-- (void)setShowAccountStatus:(BOOL)a3;
-- (void)setShowDetailAccessories:(BOOL)a3;
-- (void)setShowsDeclinedEventsSetting:(BOOL)a3;
-- (void)setToolbarItems:(id)a3;
-- (void)setToolbarItems:(id)a3 animated:(BOOL)a4;
+- (void)setAllSelected:(BOOL)selected;
+- (void)setAllowsPullToRefresh:(BOOL)refresh;
+- (void)setChooserMode:(int64_t)mode;
+- (void)setDelegate:(id)delegate;
+- (void)setDisableCalendarsUnselectedByFocus:(BOOL)focus;
+- (void)setExplanatoryTextMode:(int)mode;
+- (void)setOnlyShowUnmanagedAccounts:(BOOL)accounts;
+- (void)setSelectedCalendar:(id)calendar;
+- (void)setSelectedCalendars:(id)calendars;
+- (void)setShowAccountStatus:(BOOL)status;
+- (void)setShowDetailAccessories:(BOOL)accessories;
+- (void)setShowsDeclinedEventsSetting:(BOOL)setting;
+- (void)setToolbarItems:(id)items;
+- (void)setToolbarItems:(id)items animated:(BOOL)animated;
 - (void)showAllButtonPressed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EKCalendarChooserOOPWrapperImpl
 
-- (EKCalendarChooserOOPWrapperImpl)initWithSelectionStyle:(int64_t)a3 displayStyle:(int64_t)a4 entityType:(unint64_t)a5 forEvent:(id)a6 eventStore:(id)a7 limitedToSource:(id)a8 showIdentityChooser:(BOOL)a9 showDelegateSetupCell:(BOOL)a10 showAccountStatus:(BOOL)a11
+- (EKCalendarChooserOOPWrapperImpl)initWithSelectionStyle:(int64_t)style displayStyle:(int64_t)displayStyle entityType:(unint64_t)type forEvent:(id)event eventStore:(id)store limitedToSource:(id)source showIdentityChooser:(BOOL)chooser showDelegateSetupCell:(BOOL)self0 showAccountStatus:(BOOL)self1
 {
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  eventCopy = event;
+  storeCopy = store;
+  sourceCopy = source;
   v31.receiver = self;
   v31.super_class = EKCalendarChooserOOPWrapperImpl;
   v21 = [(EKCalendarChooserOOPWrapperImpl *)&v31 init];
   if (v21)
   {
-    v22 = [[_TtC10EventKitUI24EKCalendarChooserOOPImpl alloc] initWithEventStore:v19];
+    v22 = [[_TtC10EventKitUI24EKCalendarChooserOOPImpl alloc] initWithEventStore:storeCopy];
     [(EKCalendarChooserOOPWrapperImpl *)v21 setVc:v22];
 
     v23 = [(EKCalendarChooserOOPWrapperImpl *)v21 vc];
-    [v23 setSelectionStyle:a3];
+    [v23 setSelectionStyle:style];
 
     v24 = [(EKCalendarChooserOOPWrapperImpl *)v21 vc];
-    [v24 setDisplayStyle:a4];
+    [v24 setDisplayStyle:displayStyle];
 
     v25 = [(EKCalendarChooserOOPWrapperImpl *)v21 vc];
-    [v25 setEntityType:a5];
+    [v25 setEntityType:type];
 
-    objc_storeStrong(&v21->_event, a6);
+    objc_storeStrong(&v21->_event, event);
     v26 = [(EKCalendarChooserOOPWrapperImpl *)v21 vc];
-    [v26 setLimitedToSource:v20];
+    [v26 setLimitedToSource:sourceCopy];
 
     v27 = [(EKCalendarChooserOOPWrapperImpl *)v21 vc];
-    [v27 setShowIdentityChooser:a9];
+    [v27 setShowIdentityChooser:chooser];
 
     v28 = [(EKCalendarChooserOOPWrapperImpl *)v21 vc];
-    [v28 setShowDelegateSetupCell:a10];
+    [v28 setShowDelegateSetupCell:cell];
 
     v29 = [(EKCalendarChooserOOPWrapperImpl *)v21 vc];
-    [v29 setShowAccountStatus:a11];
+    [v29 setShowAccountStatus:status];
   }
 
   return v21;
 }
 
-- (EKCalendarChooserOOPWrapperImpl)initWithSelectionStyle:(int64_t)a3 displayStyle:(int64_t)a4 entityType:(unint64_t)a5 eventStore:(id)a6
+- (EKCalendarChooserOOPWrapperImpl)initWithSelectionStyle:(int64_t)style displayStyle:(int64_t)displayStyle entityType:(unint64_t)type eventStore:(id)store
 {
   BYTE2(v7) = 0;
   LOWORD(v7) = 0;
-  return [EKCalendarChooserOOPWrapperImpl initWithSelectionStyle:"initWithSelectionStyle:displayStyle:entityType:forEvent:eventStore:limitedToSource:showIdentityChooser:showDelegateSetupCell:showAccountStatus:" displayStyle:a3 entityType:a4 forEvent:a5 eventStore:0 limitedToSource:a6 showIdentityChooser:0 showDelegateSetupCell:v7 showAccountStatus:?];
+  return [EKCalendarChooserOOPWrapperImpl initWithSelectionStyle:"initWithSelectionStyle:displayStyle:entityType:forEvent:eventStore:limitedToSource:showIdentityChooser:showDelegateSetupCell:showAccountStatus:" displayStyle:style entityType:displayStyle forEvent:type eventStore:0 limitedToSource:store showIdentityChooser:0 showDelegateSetupCell:v7 showAccountStatus:?];
 }
 
-- (EKCalendarChooserOOPWrapperImpl)initWithSelectionStyle:(int64_t)a3 displayStyle:(int64_t)a4 eventStore:(id)a5
+- (EKCalendarChooserOOPWrapperImpl)initWithSelectionStyle:(int64_t)style displayStyle:(int64_t)displayStyle eventStore:(id)store
 {
   BYTE2(v6) = 0;
   LOWORD(v6) = 0;
-  return [EKCalendarChooserOOPWrapperImpl initWithSelectionStyle:"initWithSelectionStyle:displayStyle:entityType:forEvent:eventStore:limitedToSource:showIdentityChooser:showDelegateSetupCell:showAccountStatus:" displayStyle:a3 entityType:a4 forEvent:0 eventStore:0 limitedToSource:a5 showIdentityChooser:0 showDelegateSetupCell:v6 showAccountStatus:?];
+  return [EKCalendarChooserOOPWrapperImpl initWithSelectionStyle:"initWithSelectionStyle:displayStyle:entityType:forEvent:eventStore:limitedToSource:showIdentityChooser:showDelegateSetupCell:showAccountStatus:" displayStyle:style entityType:displayStyle forEvent:0 eventStore:0 limitedToSource:store showIdentityChooser:0 showDelegateSetupCell:v6 showAccountStatus:?];
 }
 
 - (void)viewDidLoad
@@ -118,62 +118,62 @@
   v38 = [v3 localizedStringForKey:@"Calendars" value:&stru_1F4EF6790 table:0];
 
   [(EKCalendarChooserOOPWrapperImpl *)self setTitle:v38];
-  v4 = [(EKCalendarChooserOOPWrapperImpl *)self parentViewController];
-  [v4 setTitle:v38];
+  parentViewController = [(EKCalendarChooserOOPWrapperImpl *)self parentViewController];
+  [parentViewController setTitle:v38];
 
   v5 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
   [(EKCalendarChooserOOPWrapperImpl *)self addChildViewController:v5];
 
-  v6 = [(EKCalendarChooserOOPWrapperImpl *)self view];
+  view = [(EKCalendarChooserOOPWrapperImpl *)self view];
   v7 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v8 = [v7 view];
-  [v6 addSubview:v8];
+  view2 = [v7 view];
+  [view addSubview:view2];
 
   v9 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
   [v9 didMoveToParentViewController:self];
 
   v10 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v11 = [v10 view];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [v10 view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v26 = MEMORY[0x1E696ACD8];
   v37 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v36 = [v37 view];
-  v34 = [v36 leadingAnchor];
-  v35 = [(EKCalendarChooserOOPWrapperImpl *)self view];
-  v33 = [v35 leadingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  view4 = [v37 view];
+  leadingAnchor = [view4 leadingAnchor];
+  view5 = [(EKCalendarChooserOOPWrapperImpl *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v40[0] = v32;
   v31 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v30 = [v31 view];
-  v28 = [v30 topAnchor];
-  v29 = [(EKCalendarChooserOOPWrapperImpl *)self view];
-  v27 = [v29 topAnchor];
-  v25 = [v28 constraintEqualToAnchor:v27];
+  view6 = [v31 view];
+  topAnchor = [view6 topAnchor];
+  view7 = [(EKCalendarChooserOOPWrapperImpl *)self view];
+  topAnchor2 = [view7 topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v40[1] = v25;
   v24 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v23 = [v24 view];
-  v22 = [v23 trailingAnchor];
-  v12 = [(EKCalendarChooserOOPWrapperImpl *)self view];
-  v13 = [v12 trailingAnchor];
-  v14 = [v22 constraintEqualToAnchor:v13];
+  view8 = [v24 view];
+  trailingAnchor = [view8 trailingAnchor];
+  view9 = [(EKCalendarChooserOOPWrapperImpl *)self view];
+  trailingAnchor2 = [view9 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v40[2] = v14;
   v15 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v16 = [v15 view];
-  v17 = [v16 bottomAnchor];
-  v18 = [(EKCalendarChooserOOPWrapperImpl *)self view];
-  v19 = [v18 bottomAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  view10 = [v15 view];
+  bottomAnchor = [view10 bottomAnchor];
+  view11 = [(EKCalendarChooserOOPWrapperImpl *)self view];
+  bottomAnchor2 = [view11 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v40[3] = v20;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:4];
   [v26 activateConstraints:v21];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = EKCalendarChooserOOPWrapperImpl;
-  [(EKCalendarChooserOOPWrapperImpl *)&v4 viewWillAppear:a3];
+  [(EKCalendarChooserOOPWrapperImpl *)&v4 viewWillAppear:appear];
   [(EKCalendarChooserOOPWrapperImpl *)self _layoutNavToolbarControls];
 }
 
@@ -193,12 +193,12 @@
 
 - (BOOL)hasInProcessNavBar
 {
-  v2 = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
-  v3 = [v2 navigationController];
+  _ekCalendarChooser = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
+  navigationController = [_ekCalendarChooser navigationController];
 
-  if (v3)
+  if (navigationController)
   {
-    v4 = [v3 isNavigationBarHidden] ^ 1;
+    v4 = [navigationController isNavigationBarHidden] ^ 1;
   }
 
   else
@@ -213,15 +213,15 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v4 = [v3 limitedToSource];
-  if (v4)
+  limitedToSource = [v3 limitedToSource];
+  if (limitedToSource)
   {
-    v5 = v4;
+    v5 = limitedToSource;
     v6 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-    v7 = [v6 limitedToSource];
-    v8 = [v7 isWritable];
+    limitedToSource2 = [v6 limitedToSource];
+    isWritable = [limitedToSource2 isWritable];
 
-    if (!v8)
+    if (!isWritable)
     {
       LOBYTE(v9) = 0;
       return v9;
@@ -236,10 +236,10 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [(EKCalendarChooserOOPWrapperImpl *)self eventStore];
-  v11 = [v10 sources];
+  eventStore = [(EKCalendarChooserOOPWrapperImpl *)self eventStore];
+  sources = [eventStore sources];
 
-  v9 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v9 = [sources countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v12 = *v17;
@@ -249,7 +249,7 @@
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(sources);
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
@@ -260,7 +260,7 @@
         }
       }
 
-      v9 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [sources countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         continue;
@@ -286,9 +286,9 @@ LABEL_16:
 
   if ([(EKCalendarChooserOOPWrapperImpl *)self showsDoneButton])
   {
-    v4 = [(EKCalendarChooserOOPWrapperImpl *)self showsCancelButton];
+    showsCancelButton = [(EKCalendarChooserOOPWrapperImpl *)self showsCancelButton];
     v5 = objc_alloc(MEMORY[0x1E69DC708]);
-    if (v4)
+    if (showsCancelButton)
     {
       v6 = 0;
     }
@@ -304,18 +304,18 @@ LABEL_16:
 
   if ([v12 count])
   {
-    v8 = [v12 firstObject];
-    v9 = [(EKCalendarChooserOOPWrapperImpl *)self navigationItem];
-    [v9 setLeftBarButtonItem:v8];
+    firstObject = [v12 firstObject];
+    navigationItem = [(EKCalendarChooserOOPWrapperImpl *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:firstObject];
 
     [v12 removeObjectAtIndex:0];
   }
 
   if ([v12 count])
   {
-    v10 = [v12 lastObject];
-    v11 = [(EKCalendarChooserOOPWrapperImpl *)self navigationItem];
-    [v11 setRightBarButtonItem:v10];
+    lastObject = [v12 lastObject];
+    navigationItem2 = [(EKCalendarChooserOOPWrapperImpl *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:lastObject];
 
     [v12 removeLastObject];
   }
@@ -337,12 +337,12 @@ LABEL_16:
   return v3;
 }
 
-- (void)setAllSelected:(BOOL)a3
+- (void)setAllSelected:(BOOL)selected
 {
-  v3 = a3;
-  self->_allSelected = a3;
+  selectedCopy = selected;
+  self->_allSelected = selected;
   v5 = objc_opt_class();
-  if (v3)
+  if (selectedCopy)
   {
     [v5 hideAllString];
   }
@@ -352,42 +352,42 @@ LABEL_16:
     [v5 showAllString];
   }
   v7 = ;
-  v6 = [(EKCalendarChooserOOPWrapperImpl *)self showAllButton];
-  [v6 setTitle:v7];
+  showAllButton = [(EKCalendarChooserOOPWrapperImpl *)self showAllButton];
+  [showAllButton setTitle:v7];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
-  if (v4)
+  delegate = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
+    v5 = delegate;
+    delegate2 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v9 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
-      v8 = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
-      [v9 calendarChooserDidCancel:v8];
+      delegate3 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
+      _ekCalendarChooser = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
+      [delegate3 calendarChooserDidCancel:_ekCalendarChooser];
     }
   }
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
-  v4 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
-  if (v4)
+  delegate = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
+    v5 = delegate;
+    delegate2 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v9 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
-      v8 = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
-      [v9 calendarChooserDidFinish:v8];
+      delegate3 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
+      _ekCalendarChooser = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
+      [delegate3 calendarChooserDidFinish:_ekCalendarChooser];
     }
   }
 }
@@ -395,11 +395,11 @@ LABEL_16:
 - (void)presentAddCalendarView
 {
   v3 = [EKCalendarEditor alloc];
-  v4 = [(EKCalendarChooserOOPWrapperImpl *)self eventStore];
-  v5 = [(EKCalendarChooserOOPWrapperImpl *)self entityType];
+  eventStore = [(EKCalendarChooserOOPWrapperImpl *)self eventStore];
+  entityType = [(EKCalendarChooserOOPWrapperImpl *)self entityType];
   v6 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v7 = [v6 limitedToSource];
-  v8 = [(EKCalendarEditor *)v3 initWithCalendar:0 eventStore:v4 entityType:v5 limitedToSource:v7];
+  limitedToSource = [v6 limitedToSource];
+  v8 = [(EKCalendarEditor *)v3 initWithCalendar:0 eventStore:eventStore entityType:entityType limitedToSource:limitedToSource];
 
   [(EKAbstractCalendarEditor *)v8 setDelegate:self];
   presentedEditor = self->_presentedEditor;
@@ -408,14 +408,14 @@ LABEL_16:
   [(EKCalendarChooserOOPWrapperImpl *)self _commonAddCalendarButtonPressed:0];
 }
 
-- (void)_commonAddCalendarButtonPressed:(id)a3
+- (void)_commonAddCalendarButtonPressed:(id)pressed
 {
   v9 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:self->_presentedEditor];
-  v4 = [(EKCalendarChooserOOPWrapperImpl *)self view];
-  if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v4))
+  view = [(EKCalendarChooserOOPWrapperImpl *)self view];
+  if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view))
   {
-    v5 = [(EKCalendarChooserOOPWrapperImpl *)self view];
-    IsRegular = EKUICurrentHeightSizeClassIsRegular(v5);
+    view2 = [(EKCalendarChooserOOPWrapperImpl *)self view];
+    IsRegular = EKUICurrentHeightSizeClassIsRegular(view2);
 
     if (!IsRegular)
     {
@@ -423,88 +423,88 @@ LABEL_16:
     }
 
     [v9 setModalPresentationStyle:6];
-    v4 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-    v7 = [v9 view];
-    [v7 setBackgroundColor:v4];
+    view = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    view3 = [v9 view];
+    [view3 setBackgroundColor:view];
   }
 
 LABEL_5:
-  v8 = [(EKCalendarChooserOOPWrapperImpl *)self navigationController];
-  [v8 presentViewController:v9 animated:1 completion:0];
+  navigationController = [(EKCalendarChooserOOPWrapperImpl *)self navigationController];
+  [navigationController presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)calendarEditor:(id)a3 didCompleteWithAction:(int)a4
+- (void)calendarEditor:(id)editor didCompleteWithAction:(int)action
 {
   presentedEditor = self->_presentedEditor;
-  if (presentedEditor == a3)
+  if (presentedEditor == editor)
   {
     self->_presentedEditor = 0;
 
-    v7 = [(EKCalendarChooserOOPWrapperImpl *)self navigationController];
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    navigationController = [(EKCalendarChooserOOPWrapperImpl *)self navigationController];
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
 - (EKEventStore)eventStore
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 eventStore];
+  eventStore = [v2 eventStore];
 
-  return v3;
+  return eventStore;
 }
 
 - (int64_t)displayStyle
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 displayStyle];
+  displayStyle = [v2 displayStyle];
 
-  return v3;
+  return displayStyle;
 }
 
 - (unint64_t)entityType
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 entityType];
+  entityType = [v2 entityType];
 
-  return v3;
+  return entityType;
 }
 
 - (int64_t)selectionStyle
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 selectionStyle];
+  selectionStyle = [v2 selectionStyle];
 
-  return v3;
+  return selectionStyle;
 }
 
 - (EKCalendarChooserDelegate)delegate
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  [v5 setDelegate:v4];
+  [v5 setDelegate:delegateCopy];
 }
 
 - (NSSet)selectedCalendars
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 selectedCalendars];
+  selectedCalendars = [v2 selectedCalendars];
 
-  return v3;
+  return selectedCalendars;
 }
 
-- (void)setSelectedCalendars:(id)a3
+- (void)setSelectedCalendars:(id)calendars
 {
-  v4 = a3;
+  calendarsCopy = calendars;
   v5 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  [v5 setSelectedCalendars:v4];
+  [v5 setSelectedCalendars:calendarsCopy];
 }
 
 - (void)showAllButtonPressed
@@ -514,18 +514,18 @@ LABEL_5:
   [(EKCalendarChooserOOPWrapperImpl *)self _selectAllCalendarsAndNotify:1];
 }
 
-- (void)_selectAllCalendarsAndNotify:(BOOL)a3
+- (void)_selectAllCalendarsAndNotify:(BOOL)notify
 {
-  if (a3)
+  if (notify)
   {
-    v4 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
+    delegate = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
-      v7 = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
-      [v6 calendarChooserSelectionDidChange:v7];
+      delegate2 = [(EKCalendarChooserOOPWrapperImpl *)self delegate];
+      _ekCalendarChooser = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
+      [delegate2 calendarChooserSelectionDidChange:_ekCalendarChooser];
     }
   }
 
@@ -536,103 +536,103 @@ LABEL_5:
 - (BOOL)showDetailAccessories
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 showDetailAccessories];
+  showDetailAccessories = [v2 showDetailAccessories];
 
-  return v3;
+  return showDetailAccessories;
 }
 
-- (void)setShowDetailAccessories:(BOOL)a3
+- (void)setShowDetailAccessories:(BOOL)accessories
 {
-  v3 = a3;
+  accessoriesCopy = accessories;
   v4 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  [v4 setShowDetailAccessories:v3];
+  [v4 setShowDetailAccessories:accessoriesCopy];
 }
 
 - (int64_t)chooserMode
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 chooserMode];
+  chooserMode = [v2 chooserMode];
 
-  return v3;
+  return chooserMode;
 }
 
-- (void)setChooserMode:(int64_t)a3
+- (void)setChooserMode:(int64_t)mode
 {
   v4 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  [v4 setChooserMode:a3];
+  [v4 setChooserMode:mode];
 }
 
 - (BOOL)disableCalendarsUnselectedByFocus
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 disableCalendarsUnselectedByFocus];
+  disableCalendarsUnselectedByFocus = [v2 disableCalendarsUnselectedByFocus];
 
-  return v3;
+  return disableCalendarsUnselectedByFocus;
 }
 
-- (void)setDisableCalendarsUnselectedByFocus:(BOOL)a3
+- (void)setDisableCalendarsUnselectedByFocus:(BOOL)focus
 {
-  v3 = a3;
+  focusCopy = focus;
   v4 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  [v4 setDisableCalendarsUnselectedByFocus:v3];
+  [v4 setDisableCalendarsUnselectedByFocus:focusCopy];
 }
 
 - (BOOL)allowsPullToRefresh
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 allowsPullToRefresh];
+  allowsPullToRefresh = [v2 allowsPullToRefresh];
 
-  return v3;
+  return allowsPullToRefresh;
 }
 
-- (void)setAllowsPullToRefresh:(BOOL)a3
+- (void)setAllowsPullToRefresh:(BOOL)refresh
 {
-  v3 = a3;
+  refreshCopy = refresh;
   v4 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  [v4 setAllowsPullToRefresh:v3];
+  [v4 setAllowsPullToRefresh:refreshCopy];
 }
 
 - (EKCalendar)selectedCalendar
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 selectedCalendar];
+  selectedCalendar = [v2 selectedCalendar];
 
-  return v3;
+  return selectedCalendar;
 }
 
-- (void)setSelectedCalendar:(id)a3
+- (void)setSelectedCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   v5 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  [v5 setSelectedCalendar:v4];
+  [v5 setSelectedCalendar:calendarCopy];
 }
 
 - (BOOL)showsDeclinedEventsSetting
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 showsDeclinedEventsSetting];
+  showsDeclinedEventsSetting = [v2 showsDeclinedEventsSetting];
 
-  return v3;
+  return showsDeclinedEventsSetting;
 }
 
-- (void)setShowsDeclinedEventsSetting:(BOOL)a3
+- (void)setShowsDeclinedEventsSetting:(BOOL)setting
 {
-  v3 = a3;
+  settingCopy = setting;
   v4 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  [v4 setShowsDeclinedEventsSetting:v3];
+  [v4 setShowsDeclinedEventsSetting:settingCopy];
 }
 
 - (int)explanatoryTextMode
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 explanatoryTextMode];
+  explanatoryTextMode = [v2 explanatoryTextMode];
 
-  return v3;
+  return explanatoryTextMode;
 }
 
-- (void)setExplanatoryTextMode:(int)a3
+- (void)setExplanatoryTextMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v4 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
   [v4 setExplanatoryTextMode:v3];
 }
@@ -640,31 +640,31 @@ LABEL_5:
 - (BOOL)showAccountStatus
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 showAccountStatus];
+  showAccountStatus = [v2 showAccountStatus];
 
-  return v3;
+  return showAccountStatus;
 }
 
-- (void)setShowAccountStatus:(BOOL)a3
+- (void)setShowAccountStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v4 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  [v4 setShowAccountStatus:v3];
+  [v4 setShowAccountStatus:statusCopy];
 }
 
 - (BOOL)onlyShowUnmanagedAccounts
 {
   v2 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  v3 = [v2 onlyShowUnmanagedAccounts];
+  onlyShowUnmanagedAccounts = [v2 onlyShowUnmanagedAccounts];
 
-  return v3;
+  return onlyShowUnmanagedAccounts;
 }
 
-- (void)setOnlyShowUnmanagedAccounts:(BOOL)a3
+- (void)setOnlyShowUnmanagedAccounts:(BOOL)accounts
 {
-  v3 = a3;
+  accountsCopy = accounts;
   v4 = [(EKCalendarChooserOOPWrapperImpl *)self vc];
-  [v4 setOnlyShowUnmanagedAccounts:v3];
+  [v4 setOnlyShowUnmanagedAccounts:accountsCopy];
 }
 
 - (id)centeredCalendar
@@ -674,43 +674,43 @@ LABEL_5:
   return v2;
 }
 
-- (void)setToolbarItems:(id)a3
+- (void)setToolbarItems:(id)items
 {
-  v4 = a3;
-  v5 = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
-  [v5 setToolbarItems:v4];
+  itemsCopy = items;
+  _ekCalendarChooser = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
+  [_ekCalendarChooser setToolbarItems:itemsCopy];
 }
 
 - (id)toolbarItems
 {
-  v2 = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
-  v3 = [v2 toolbarItems];
+  _ekCalendarChooser = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
+  toolbarItems = [_ekCalendarChooser toolbarItems];
 
-  return v3;
+  return toolbarItems;
 }
 
-- (void)setToolbarItems:(id)a3 animated:(BOOL)a4
+- (void)setToolbarItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
-  [v7 setToolbarItems:v6 animated:v4];
+  animatedCopy = animated;
+  itemsCopy = items;
+  _ekCalendarChooser = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
+  [_ekCalendarChooser setToolbarItems:itemsCopy animated:animatedCopy];
 }
 
 - (id)navigationItem
 {
-  v2 = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
-  v3 = [v2 navigationItem];
+  _ekCalendarChooser = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
+  navigationItem = [_ekCalendarChooser navigationItem];
 
-  return v3;
+  return navigationItem;
 }
 
 - (id)navigationController
 {
-  v2 = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
-  v3 = [v2 navigationController];
+  _ekCalendarChooser = [(EKCalendarChooserOOPWrapperImpl *)self _ekCalendarChooser];
+  navigationController = [_ekCalendarChooser navigationController];
 
-  return v3;
+  return navigationController;
 }
 
 - (EKUIViewControllerNavigationDelegate)navigationDelegate
@@ -719,15 +719,15 @@ LABEL_5:
 
   if (WeakRetained)
   {
-    v4 = objc_loadWeakRetained(&self->_navigationDelegate);
+    navigationController = objc_loadWeakRetained(&self->_navigationDelegate);
   }
 
   else
   {
-    v4 = [(EKCalendarChooserOOPWrapperImpl *)self navigationController];
+    navigationController = [(EKCalendarChooserOOPWrapperImpl *)self navigationController];
   }
 
-  return v4;
+  return navigationController;
 }
 
 @end

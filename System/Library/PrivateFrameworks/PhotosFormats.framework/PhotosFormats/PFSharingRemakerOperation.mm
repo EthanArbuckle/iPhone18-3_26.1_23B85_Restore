@@ -1,5 +1,5 @@
 @interface PFSharingRemakerOperation
-+ (id)remakerOperationWithInputType:(int64_t)a3 videoURL:(id)a4 imageURL:(id)a5 adjustmentData:(id)a6;
++ (id)remakerOperationWithInputType:(int64_t)type videoURL:(id)l imageURL:(id)rL adjustmentData:(id)data;
 - (PFSharingRemakerOperation)init;
 @end
 
@@ -12,30 +12,30 @@
   v2 = [(PFSharingRemakerOperation *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
-    [(PFSharingRemakerOperation *)v2 _setUUID:v4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [(PFSharingRemakerOperation *)v2 _setUUID:uUIDString];
   }
 
   return v2;
 }
 
-+ (id)remakerOperationWithInputType:(int64_t)a3 videoURL:(id)a4 imageURL:(id)a5 adjustmentData:(id)a6
++ (id)remakerOperationWithInputType:(int64_t)type videoURL:(id)l imageURL:(id)rL adjustmentData:(id)data
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  dataCopy = data;
   v12 = objc_alloc_init(PFSharingRemakerOperation);
-  [(PFSharingRemakerOperation *)v12 _setInputType:a3];
-  if ((a3 - 1) <= 2)
+  [(PFSharingRemakerOperation *)v12 _setInputType:type];
+  if ((type - 1) <= 2)
   {
-    v13 = [[PFVideoSharingOperation alloc] initWithVideoURL:v9 adjustmentData:v11];
+    v13 = [[PFVideoSharingOperation alloc] initWithVideoURL:lCopy adjustmentData:dataCopy];
     [(PFSharingRemakerOperation *)v12 _setVideoOperation:v13];
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    v14 = [[PFPhotoSharingOperation alloc] initWithImageURL:v10 adjustmentData:v11];
+    v14 = [[PFPhotoSharingOperation alloc] initWithImageURL:rLCopy adjustmentData:dataCopy];
     [(PFSharingRemakerOperation *)v12 _setImageOperation:v14];
   }
 

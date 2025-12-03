@@ -1,16 +1,16 @@
 @interface UIKeyboardSliceSet
-+ (UIKeyboardSliceSet)sliceSetWithDictionaryRepresenation:(id)a3;
++ (UIKeyboardSliceSet)sliceSetWithDictionaryRepresenation:(id)represenation;
 - (CGRect)endRect;
 - (CGRect)startRect;
-- (UIKeyboardSliceSet)initWithSliceID:(id)a3;
+- (UIKeyboardSliceSet)initWithSliceID:(id)d;
 - (id)description;
 @end
 
 @implementation UIKeyboardSliceSet
 
-- (UIKeyboardSliceSet)initWithSliceID:(id)a3
+- (UIKeyboardSliceSet)initWithSliceID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = UIKeyboardSliceSet;
   v6 = [(UIKeyboardSliceSet *)&v19 init];
@@ -20,23 +20,23 @@
     slices = v6->_slices;
     v6->_slices = v7;
 
-    objc_storeStrong(&v6->_ssid, a3);
+    objc_storeStrong(&v6->_ssid, d);
     v6->_mergePoint = 0.5;
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     controlKeys = v6->_controlKeys;
     v6->_controlKeys = v9;
 
     v11 = v6->_controlKeys;
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMutableDictionary *)v11 setObject:v12 forKey:@"MoreIntlNames"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMutableDictionary *)v11 setObject:dictionary forKey:@"MoreIntlNames"];
 
     v13 = v6->_controlKeys;
-    v14 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMutableDictionary *)v13 setObject:v14 forKey:@"MoreIntlStarts"];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMutableDictionary *)v13 setObject:dictionary2 forKey:@"MoreIntlStarts"];
 
     v15 = v6->_controlKeys;
-    v16 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMutableDictionary *)v15 setObject:v16 forKey:@"MoreIntlEnds"];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMutableDictionary *)v15 setObject:dictionary3 forKey:@"MoreIntlEnds"];
 
     v17 = v6;
   }
@@ -44,29 +44,29 @@
   return v6;
 }
 
-+ (UIKeyboardSliceSet)sliceSetWithDictionaryRepresenation:(id)a3
++ (UIKeyboardSliceSet)sliceSetWithDictionaryRepresenation:(id)represenation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 valueForKey:@"SSID"];
+  represenationCopy = represenation;
+  v4 = [represenationCopy valueForKey:@"SSID"];
   if (v4)
   {
     v5 = [[UIKeyboardSliceSet alloc] initWithSliceID:v4];
     if (v5)
     {
-      v6 = [v3 valueForKey:@"Start"];
+      v6 = [represenationCopy valueForKey:@"Start"];
       v38 = CGRectFromString(v6);
       [(UIKeyboardSliceSet *)v5 setStartRect:v38.origin.x, v38.origin.y, v38.size.width, v38.size.height];
 
-      v7 = [v3 valueForKey:@"End"];
+      v7 = [represenationCopy valueForKey:@"End"];
       v39 = CGRectFromString(v7);
       [(UIKeyboardSliceSet *)v5 setEndRect:v39.origin.x, v39.origin.y, v39.size.width, v39.size.height];
 
-      v8 = [v3 valueForKey:@"LeftWidth"];
+      v8 = [represenationCopy valueForKey:@"LeftWidth"];
       [v8 floatValue];
       [(UIKeyboardSliceSet *)v5 setLeftWidth:v9];
 
-      v10 = [v3 valueForKey:@"RightWidth"];
+      v10 = [represenationCopy valueForKey:@"RightWidth"];
       [v10 floatValue];
       [(UIKeyboardSliceSet *)v5 setRightWidth:v11];
 
@@ -74,8 +74,8 @@
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v30 = v3;
-      v12 = [v3 valueForKey:@"Slices"];
+      v30 = represenationCopy;
+      v12 = [represenationCopy valueForKey:@"Slices"];
       v13 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v13)
       {
@@ -115,7 +115,7 @@
         while (v14);
       }
 
-      v3 = v30;
+      represenationCopy = v30;
     }
   }
 

@@ -2,9 +2,9 @@
 + (id)instance;
 - (PolicyManager)init;
 - (void)activateHIDPolicy;
-- (void)activeHIDDeviceCountDidChange:(id)a3;
+- (void)activeHIDDeviceCountDidChange:(id)change;
 - (void)deactivateHIDPolicy;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation PolicyManager
@@ -37,28 +37,28 @@
   return v2;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a5;
-  if ([a3 isEqualToString:@"activeHIDDeviceCount"])
+  changeCopy = change;
+  if ([path isEqualToString:@"activeHIDDeviceCount"])
   {
-    [(PolicyManager *)self activeHIDDeviceCountDidChange:v8];
+    [(PolicyManager *)self activeHIDDeviceCountDidChange:changeCopy];
   }
 }
 
-- (void)activeHIDDeviceCountDidChange:(id)a3
+- (void)activeHIDDeviceCountDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:NSKeyValueChangeOldKey];
-  v6 = [v5 unsignedIntegerValue];
+  changeCopy = change;
+  v5 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeOldKey];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [v4 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+  v7 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
 
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v7 unsignedIntegerValue];
   v9 = qword_1000DDBC8;
   if (!os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
-    if (v6)
+    if (unsignedIntegerValue)
     {
       goto LABEL_3;
     }
@@ -68,14 +68,14 @@ LABEL_6:
     return;
   }
 
-  sub_100072C14(v6, v8, v9);
-  if (!v6)
+  sub_100072C14(unsignedIntegerValue, unsignedIntegerValue2, v9);
+  if (!unsignedIntegerValue)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v8)
+  if (!unsignedIntegerValue2)
   {
     [(PolicyManager *)self deactivateHIDPolicy];
   }

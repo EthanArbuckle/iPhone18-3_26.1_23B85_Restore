@@ -1,15 +1,15 @@
 @interface UserProfilePersonalizationLinkCell
 + (id)reuseIdentifier;
 - (NSString)title;
-- (UserProfilePersonalizationLinkCell)initWithFrame:(CGRect)a3;
-- (id)_convertIconToImageWithBackground:(id)a3;
+- (UserProfilePersonalizationLinkCell)initWithFrame:(CGRect)frame;
+- (id)_convertIconToImageWithBackground:(id)background;
 - (void)_updateConfiguration;
 - (void)_updateFromUserProfileLinkModel;
-- (void)setIcon:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUserProfileLink:(id)a3;
-- (void)updateTitle:(id)a3 subtitle:(id)a4 icon:(id)a5;
+- (void)setIcon:(id)icon;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setUserProfileLink:(id)link;
+- (void)updateTitle:(id)title subtitle:(id)subtitle icon:(id)icon;
 @end
 
 @implementation UserProfilePersonalizationLinkCell
@@ -23,53 +23,53 @@
 
 - (void)_updateFromUserProfileLinkModel
 {
-  v3 = [(UserProfileLink *)self->_userProfileLink title];
-  v4 = [(UserProfileLink *)self->_userProfileLink subtitle];
-  v5 = [(UserProfileLink *)self->_userProfileLink icon];
-  [(UserProfilePersonalizationLinkCell *)self updateTitle:v3 subtitle:v4 icon:v5];
+  title = [(UserProfileLink *)self->_userProfileLink title];
+  subtitle = [(UserProfileLink *)self->_userProfileLink subtitle];
+  icon = [(UserProfileLink *)self->_userProfileLink icon];
+  [(UserProfilePersonalizationLinkCell *)self updateTitle:title subtitle:subtitle icon:icon];
 
   [(UserProfilePersonalizationLinkCell *)self _updateConfiguration];
 }
 
-- (void)updateTitle:(id)a3 subtitle:(id)a4 icon:(id)a5
+- (void)updateTitle:(id)title subtitle:(id)subtitle icon:(id)icon
 {
-  v8 = a5;
-  v9 = a4;
-  [(UserProfilePersonalizationLinkCell *)self setTitle:a3];
-  [(UserProfilePersonalizationLinkCell *)self setSubtitle:v9];
+  iconCopy = icon;
+  subtitleCopy = subtitle;
+  [(UserProfilePersonalizationLinkCell *)self setTitle:title];
+  [(UserProfilePersonalizationLinkCell *)self setSubtitle:subtitleCopy];
 
-  [(UserProfilePersonalizationLinkCell *)self setIcon:v8];
+  [(UserProfilePersonalizationLinkCell *)self setIcon:iconCopy];
 
   [(UserProfilePersonalizationLinkCell *)self _updateConfiguration];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v5 = a3;
-  if (self->_icon != v5)
+  iconCopy = icon;
+  if (self->_icon != iconCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_icon, a3);
+    v7 = iconCopy;
+    objc_storeStrong(&self->_icon, icon);
     v6 = [(UserProfilePersonalizationLinkCell *)self _convertIconToImageWithBackground:v7];
     [(UIListContentConfiguration *)self->_contentConfig setImage:v6];
 
-    v5 = v7;
+    iconCopy = v7;
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = a3;
+  subtitleCopy = subtitle;
   if (![(NSString *)self->_subtitle isEqualToString:?])
   {
-    objc_storeStrong(&self->_subtitle, a3);
-    [(UIListContentConfiguration *)self->_contentConfig setSecondaryText:v5];
+    objc_storeStrong(&self->_subtitle, subtitle);
+    [(UIListContentConfiguration *)self->_contentConfig setSecondaryText:subtitleCopy];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  obj = a3;
+  obj = title;
   WeakRetained = objc_loadWeakRetained(&self->_title);
   v5 = [WeakRetained isEqualToString:obj];
 
@@ -80,27 +80,27 @@
   }
 }
 
-- (void)setUserProfileLink:(id)a3
+- (void)setUserProfileLink:(id)link
 {
-  v5 = a3;
-  if (self->_userProfileLink != v5)
+  linkCopy = link;
+  if (self->_userProfileLink != linkCopy)
   {
-    objc_storeStrong(&self->_userProfileLink, a3);
+    objc_storeStrong(&self->_userProfileLink, link);
   }
 
   [(UserProfilePersonalizationLinkCell *)self _updateFromUserProfileLinkModel];
 }
 
-- (id)_convertIconToImageWithBackground:(id)a3
+- (id)_convertIconToImageWithBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   v5 = objc_alloc_init(ImageIconWithBackgroundConfiguration);
   [(ImageIconWithBackgroundConfiguration *)v5 setBackgroundColor:self->_glyphBackgroundColor];
-  v6 = [(UserProfilePersonalizationLinkCell *)self glyphTintColor];
-  [(ImageIconWithBackgroundConfiguration *)v5 setTintColor:v6];
+  glyphTintColor = [(UserProfilePersonalizationLinkCell *)self glyphTintColor];
+  [(ImageIconWithBackgroundConfiguration *)v5 setTintColor:glyphTintColor];
 
   [(ImageIconWithBackgroundConfiguration *)v5 setIconSize:30.0, 30.0];
-  v7 = [v4 _maps_imageIconWithBackgroundConfiguration:v5];
+  v7 = [backgroundCopy _maps_imageIconWithBackgroundConfiguration:v5];
 
   return v7;
 }
@@ -109,11 +109,11 @@
 {
   [(UIListContentConfiguration *)self->_contentConfig setPrefersSideBySideTextAndSecondaryText:1];
   v3 = +[UIColor systemWhiteColor];
-  v4 = [(UIListContentConfiguration *)self->_contentConfig imageProperties];
-  [v4 setTintColor:v3];
+  imageProperties = [(UIListContentConfiguration *)self->_contentConfig imageProperties];
+  [imageProperties setTintColor:v3];
 
-  v5 = [(UIListContentConfiguration *)self->_contentConfig imageProperties];
-  [v5 setCornerRadius:15.0];
+  imageProperties2 = [(UIListContentConfiguration *)self->_contentConfig imageProperties];
+  [imageProperties2 setCornerRadius:15.0];
 
   [(UIListContentConfiguration *)self->_contentConfig setImageToTextPadding:10.0];
   [(UIListContentConfiguration *)self->_contentConfig setDirectionalLayoutMargins:11.0, 16.0, 11.0, 16.0];
@@ -127,11 +127,11 @@
   }
 }
 
-- (UserProfilePersonalizationLinkCell)initWithFrame:(CGRect)a3
+- (UserProfilePersonalizationLinkCell)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = UserProfilePersonalizationLinkCell;
-  v3 = [(UserProfilePersonalizationLinkCell *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UserProfilePersonalizationLinkCell *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();

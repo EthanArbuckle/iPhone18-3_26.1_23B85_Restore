@@ -1,18 +1,18 @@
 @interface PXMessagesStackPlaybackControlView
 - (BOOL)_shouldPauseOnTap;
 - (BOOL)_wantsButton;
-- (BOOL)handleTapAtPoint:(CGPoint)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)handleTapAtPoint:(CGPoint)point;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)clippingRect;
-- (PXMessagesStackPlaybackControlView)initWithFrame:(CGRect)a3;
-- (void)_handleButton:(id)a3;
+- (PXMessagesStackPlaybackControlView)initWithFrame:(CGRect)frame;
+- (void)_handleButton:(id)button;
 - (void)_updateButtonVisibility;
 - (void)becomeReusable;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setUserData:(id)a3;
-- (void)setVideoController:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setUserData:(id)data;
+- (void)setVideoController:(id)controller;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation PXMessagesStackPlaybackControlView
@@ -30,16 +30,16 @@
   return result;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
+  changeCopy = change;
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (ViewModelObservationContext_203695 == a5)
+  observableCopy = observable;
+  if (ViewModelObservationContext_203695 == context)
   {
-    if ((v6 & 4) == 0)
+    if ((changeCopy & 4) == 0)
     {
-      if ((v6 & 3) == 0)
+      if ((changeCopy & 3) == 0)
       {
         goto LABEL_14;
       }
@@ -47,9 +47,9 @@
       goto LABEL_13;
     }
 
-    v10 = [(PXMessagesStackPlaybackControlView *)self viewModel];
-    v17 = [v10 videoController];
-    [(PXMessagesStackPlaybackControlView *)self setVideoController:v17];
+    viewModel = [(PXMessagesStackPlaybackControlView *)self viewModel];
+    videoController = [viewModel videoController];
+    [(PXMessagesStackPlaybackControlView *)self setVideoController:videoController];
 
 LABEL_12:
 LABEL_13:
@@ -57,35 +57,35 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (VideoControllerObservationContext != a5)
+  if (VideoControllerObservationContext != context)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXMessagesStackPlaybackControlView.m" lineNumber:249 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMessagesStackPlaybackControlView.m" lineNumber:249 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 0x206) != 0)
+  if ((changeCopy & 0x206) != 0)
   {
-    v10 = PLUIGetLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    viewModel = PLUIGetLog();
+    if (os_log_type_enabled(viewModel, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(PXMessagesStackPlaybackControlView *)self videoController];
-      v12 = [v11 actualPlayState];
-      v13 = [(PXMessagesStackPlaybackControlView *)self videoController];
-      v14 = [v13 isAtEnd];
+      videoController2 = [(PXMessagesStackPlaybackControlView *)self videoController];
+      actualPlayState = [videoController2 actualPlayState];
+      videoController3 = [(PXMessagesStackPlaybackControlView *)self videoController];
+      isAtEnd = [videoController3 isAtEnd];
       v15 = @"NO";
-      if (v14)
+      if (isAtEnd)
       {
         v15 = @"YES";
       }
 
       v16 = v15;
       v19 = 134218242;
-      v20 = v12;
+      v20 = actualPlayState;
       v21 = 2112;
       v22 = v16;
-      _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "[Stack Playback] Updated play state: %ld isAtEnd: %@", &v19, 0x16u);
+      _os_log_impl(&dword_1A3C1C000, viewModel, OS_LOG_TYPE_DEFAULT, "[Stack Playback] Updated play state: %ld isAtEnd: %@", &v19, 0x16u);
     }
 
     goto LABEL_12;
@@ -99,32 +99,32 @@ LABEL_14:
   [(PXMessagesStackPlaybackControlView *)self setViewModel:0];
   [(PXMessagesStackPlaybackControlView *)self setVideoController:0];
   self->_itemIndex = 0x7FFFFFFFFFFFFFFFLL;
-  v3 = [(_PXMessagesStackPlayButton *)self->_button layer];
-  [v3 removeAllAnimations];
+  layer = [(_PXMessagesStackPlayButton *)self->_button layer];
+  [layer removeAllAnimations];
 
   button = self->_button;
 
   [(_PXMessagesStackPlayButton *)button setHidden:1];
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  if (self->_userData != a3)
+  if (self->_userData != data)
   {
-    v4 = a3;
-    v5 = [v4 copy];
+    dataCopy = data;
+    v5 = [dataCopy copy];
     userData = self->_userData;
     self->_userData = v5;
 
-    v7 = [v4 viewModel];
-    [(PXMessagesStackPlaybackControlView *)self setViewModel:v7];
+    viewModel = [dataCopy viewModel];
+    [(PXMessagesStackPlaybackControlView *)self setViewModel:viewModel];
 
-    v8 = [v4 viewModel];
-    v9 = [v8 videoController];
-    [(PXMessagesStackPlaybackControlView *)self setVideoController:v9];
+    viewModel2 = [dataCopy viewModel];
+    videoController = [viewModel2 videoController];
+    [(PXMessagesStackPlaybackControlView *)self setVideoController:videoController];
 
-    v10 = [v4 itemIndex];
-    self->_itemIndex = v10;
+    itemIndex = [dataCopy itemIndex];
+    self->_itemIndex = itemIndex;
 
     [(PXMessagesStackPlaybackControlView *)self _updateButtonVisibility];
   }
@@ -139,18 +139,18 @@ LABEL_14:
   PXRectGetCenter();
 }
 
-- (void)_handleButton:(id)a3
+- (void)_handleButton:(id)button
 {
-  v4 = [(PXMessagesStackPlaybackControlView *)self viewModel];
-  v5 = [v4 currentItem];
+  viewModel = [(PXMessagesStackPlaybackControlView *)self viewModel];
+  currentItem = [viewModel currentItem];
   itemIndex = self->_itemIndex;
 
-  if (v5 == itemIndex)
+  if (currentItem == itemIndex)
   {
-    v7 = [(PXMessagesStackPlaybackControlView *)self videoController];
-    v8 = [v7 isAtEnd];
+    videoController = [(PXMessagesStackPlaybackControlView *)self videoController];
+    isAtEnd = [videoController isAtEnd];
 
-    if ((v8 & 1) != 0 || (-[PXMessagesStackPlaybackControlView videoController](self, "videoController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 desiredPlayState], v9, v10 != 1))
+    if ((isAtEnd & 1) != 0 || (-[PXMessagesStackPlaybackControlView videoController](self, "videoController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 desiredPlayState], v9, v10 != 1))
     {
       v11 = PLUIGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -160,13 +160,13 @@ LABEL_14:
       }
     }
 
-    v12 = [(PXMessagesStackPlaybackControlView *)self videoController];
+    videoController2 = [(PXMessagesStackPlaybackControlView *)self videoController];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __52__PXMessagesStackPlaybackControlView__handleButton___block_invoke;
     v13[3] = &__block_descriptor_33_e61_v16__0___PXGMutableDisplayAssetVideoPresentationController__8l;
-    v14 = v8;
-    [v12 performChanges:v13];
+    v14 = isAtEnd;
+    [videoController2 performChanges:v13];
   }
 }
 
@@ -185,20 +185,20 @@ void __52__PXMessagesStackPlaybackControlView__handleButton___block_invoke(uint6
 
 - (void)_updateButtonVisibility
 {
-  v3 = [(PXMessagesStackPlaybackControlView *)self _wantsButton];
-  [(PXMessagesStackPlaybackControlView *)self setUserInteractionEnabled:v3];
-  v4 = [(_PXMessagesStackPlayButton *)self->_button isHidden];
-  if (v3)
+  _wantsButton = [(PXMessagesStackPlaybackControlView *)self _wantsButton];
+  [(PXMessagesStackPlaybackControlView *)self setUserInteractionEnabled:_wantsButton];
+  isHidden = [(_PXMessagesStackPlayButton *)self->_button isHidden];
+  if (_wantsButton)
   {
-    if (v4)
+    if (isHidden)
     {
       [(_PXMessagesStackPlayButton *)self->_button setHidden:0];
-      v5 = [(PXMessagesStackPlaybackControlView *)self viewModel];
-      v6 = [v5 currentItem];
+      viewModel = [(PXMessagesStackPlaybackControlView *)self viewModel];
+      currentItem = [viewModel currentItem];
       itemIndex = self->_itemIndex;
 
       button = self->_button;
-      if (v6 == itemIndex)
+      if (currentItem == itemIndex)
       {
         [(_PXMessagesStackPlayButton *)button setAlpha:0.0];
         v11[0] = MEMORY[0x1E69E9820];
@@ -217,10 +217,10 @@ void __52__PXMessagesStackPlaybackControlView__handleButton___block_invoke(uint6
     }
   }
 
-  else if ((v4 & 1) == 0)
+  else if ((isHidden & 1) == 0)
   {
-    v9 = [(_PXMessagesStackPlayButton *)self->_button layer];
-    [v9 removeAllAnimations];
+    layer = [(_PXMessagesStackPlayButton *)self->_button layer];
+    [layer removeAllAnimations];
 
     v10 = self->_button;
 
@@ -230,36 +230,36 @@ void __52__PXMessagesStackPlaybackControlView__handleButton___block_invoke(uint6
 
 - (BOOL)_wantsButton
 {
-  v3 = [(PXMessagesStackPlaybackControlView *)self videoController];
-  if ([v3 desiredPlayState] == 1)
+  videoController = [(PXMessagesStackPlaybackControlView *)self videoController];
+  if ([videoController desiredPlayState] == 1)
   {
-    v4 = [v3 isAtEnd];
+    isAtEnd = [videoController isAtEnd];
   }
 
   else
   {
-    v4 = 1;
+    isAtEnd = 1;
   }
 
-  v5 = [(PXMessagesStackPlaybackControlView *)self viewModel];
-  v6 = [v5 currentItem];
+  viewModel = [(PXMessagesStackPlaybackControlView *)self viewModel];
+  currentItem = [viewModel currentItem];
   itemIndex = self->_itemIndex;
-  v8 = v6 - itemIndex;
-  if (v6 - itemIndex < 0)
+  v8 = currentItem - itemIndex;
+  if (currentItem - itemIndex < 0)
   {
-    v8 = itemIndex - v6;
+    v8 = itemIndex - currentItem;
   }
 
-  if (!v4)
+  if (!isAtEnd)
   {
     goto LABEL_11;
   }
 
-  if (v6 != itemIndex)
+  if (currentItem != itemIndex)
   {
     if (v8 <= 1)
     {
-      v9 = [v5 isSettled] ^ 1;
+      v9 = [viewModel isSettled] ^ 1;
       goto LABEL_12;
     }
 
@@ -274,49 +274,49 @@ LABEL_12:
   return v9;
 }
 
-- (void)setVideoController:(id)a3
+- (void)setVideoController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   videoController = self->_videoController;
-  if (videoController != v5)
+  if (videoController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXGDisplayAssetVideoPresentationController *)videoController unregisterChangeObserver:self context:VideoControllerObservationContext];
-    objc_storeStrong(&self->_videoController, a3);
+    objc_storeStrong(&self->_videoController, controller);
     [(PXGDisplayAssetVideoPresentationController *)self->_videoController registerChangeObserver:self context:VideoControllerObservationContext];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   viewModel = self->_viewModel;
-  if (viewModel != v5)
+  if (viewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PXMessagesStackPlaybackControlViewModel *)viewModel unregisterChangeObserver:self context:ViewModelObservationContext_203695];
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(PXMessagesStackPlaybackControlViewModel *)self->_viewModel registerChangeObserver:self context:ViewModelObservationContext_203695];
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
-- (BOOL)handleTapAtPoint:(CGPoint)a3
+- (BOOL)handleTapAtPoint:(CGPoint)point
 {
-  v4 = [(PXMessagesStackPlaybackControlView *)self hitTest:0 withEvent:a3.x, a3.y];
+  v4 = [(PXMessagesStackPlaybackControlView *)self hitTest:0 withEvent:point.x, point.y];
   button = self->_button;
 
   if (v4 == button)
   {
     [(PXMessagesStackPlaybackControlView *)self _handleButton:self->_button];
 LABEL_7:
-    LOBYTE(v6) = 1;
-    return v6;
+    LOBYTE(_shouldPauseOnTap) = 1;
+    return _shouldPauseOnTap;
   }
 
-  v6 = [(PXMessagesStackPlaybackControlView *)self _shouldPauseOnTap];
-  if (v6)
+  _shouldPauseOnTap = [(PXMessagesStackPlaybackControlView *)self _shouldPauseOnTap];
+  if (_shouldPauseOnTap)
   {
     v7 = PLUIGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -325,23 +325,23 @@ LABEL_7:
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "[Stack Playback] Attempting to pause video playback due to tap on playing item", v10, 2u);
     }
 
-    v8 = [(PXMessagesStackPlaybackControlView *)self videoController];
-    [v8 performChanges:&__block_literal_global_203715];
+    videoController = [(PXMessagesStackPlaybackControlView *)self videoController];
+    [videoController performChanges:&__block_literal_global_203715];
 
     goto LABEL_7;
   }
 
-  return v6;
+  return _shouldPauseOnTap;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = PXMessagesStackPlaybackControlView;
-  if ([(PXMessagesStackPlaybackControlView *)&v10 pointInside:v7 withEvent:x, y])
+  if ([(PXMessagesStackPlaybackControlView *)&v10 pointInside:eventCopy withEvent:x, y])
   {
     if ([(PXMessagesStackPlaybackControlView *)self _shouldPauseOnTap])
     {
@@ -351,7 +351,7 @@ LABEL_7:
     else
     {
       [(_PXMessagesStackPlayButton *)self->_button convertPoint:self fromView:x, y];
-      v8 = [(_PXMessagesStackPlayButton *)self->_button pointInside:v7 withEvent:?];
+      v8 = [(_PXMessagesStackPlayButton *)self->_button pointInside:eventCopy withEvent:?];
     }
   }
 
@@ -370,17 +370,17 @@ LABEL_7:
     return 0;
   }
 
-  v4 = [(PXMessagesStackPlaybackControlView *)self videoController];
-  v3 = [v4 desiredPlayState] == 1;
+  videoController = [(PXMessagesStackPlaybackControlView *)self videoController];
+  v3 = [videoController desiredPlayState] == 1;
 
   return v3;
 }
 
-- (PXMessagesStackPlaybackControlView)initWithFrame:(CGRect)a3
+- (PXMessagesStackPlaybackControlView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PXMessagesStackPlaybackControlView;
-  v3 = [(PXMessagesStackPlaybackControlView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXMessagesStackPlaybackControlView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [_PXMessagesStackPlayButton alloc];

@@ -21,14 +21,14 @@
 - (MPVoicemailAccountManagerProtocol)accountManager
 {
   v2 = qword_100099380;
-  v3 = self;
-  v4 = v3;
+  selfCopy = self;
+  v4 = selfCopy;
   if (v2 != -1)
   {
-    v3 = swift_once();
+    selfCopy = swift_once();
   }
 
-  __chkstk_darwin(v3);
+  __chkstk_darwin(selfCopy);
   sub_100017538(&qword_1000995E8);
   sub_100060A7C();
 
@@ -38,14 +38,14 @@
 - (MPVoicemailManagerProtocol)voicemailManager
 {
   v2 = qword_100099380;
-  v3 = self;
-  v4 = v3;
+  selfCopy = self;
+  v4 = selfCopy;
   if (v2 != -1)
   {
-    v3 = swift_once();
+    selfCopy = swift_once();
   }
 
-  __chkstk_darwin(v3);
+  __chkstk_darwin(selfCopy);
   sub_100017538(&qword_1000995D8);
   sub_100060A7C();
 

@@ -1,31 +1,31 @@
 @interface CBStackPowerSourceMonitorBTStack
-- (BOOL)_setPowerSourceGroupID:(id *)a3;
-- (BOOL)powerSourceOverrideWithMock:(id)a3 error:(id *)a4;
+- (BOOL)_setPowerSourceGroupID:(id *)d;
+- (BOOL)powerSourceOverrideWithMock:(id)mock error:(id *)error;
 - (CBStackPowerSourceMonitorBTStack)init;
-- (id)_classicDeviceUUID:(void *)a3;
-- (id)_findPowerSourceWithIdentifiers:(id)a3 and:(id)a4;
-- (id)_identifierForAccessoryID:(id)a3;
-- (id)_identifierForClassicDevice:(void *)a3;
+- (id)_classicDeviceUUID:(void *)d;
+- (id)_findPowerSourceWithIdentifiers:(id)identifiers and:(id)and;
+- (id)_identifierForAccessoryID:(id)d;
+- (id)_identifierForClassicDevice:(void *)device;
 - (void)_activate;
-- (void)_handlePowerSourceFound:(id)a3;
-- (void)_handlePowerSourceFoundWithDetails:(id)a3;
-- (void)_handlePowerSourceLost:(id)a3;
-- (void)_handlePowerSourceUpdateWithDetails:(id)a3 details:(id)a4;
-- (void)_handleStackDeviceInfoChanged:(void *)a3 changeType:(int)a4;
-- (void)_handleStackDisconnectClassic:(void *)a3;
-- (void)_handleStackDisconnectLowEnergy:(id)a3;
-- (void)_handleStackLEPairingComplete:(id)a3;
-- (void)_handleStackPairingComplete:(void *)a3;
-- (void)_handleStackSourceUpdate:(id)a3;
-- (void)_handleStackUSBStateChanged:(void *)a3;
+- (void)_handlePowerSourceFound:(id)found;
+- (void)_handlePowerSourceFoundWithDetails:(id)details;
+- (void)_handlePowerSourceLost:(id)lost;
+- (void)_handlePowerSourceUpdateWithDetails:(id)details details:(id)a4;
+- (void)_handleStackDeviceInfoChanged:(void *)changed changeType:(int)type;
+- (void)_handleStackDisconnectClassic:(void *)classic;
+- (void)_handleStackDisconnectLowEnergy:(id)energy;
+- (void)_handleStackLEPairingComplete:(id)complete;
+- (void)_handleStackPairingComplete:(void *)complete;
+- (void)_handleStackSourceUpdate:(id)update;
+- (void)_handleStackUSBStateChanged:(void *)changed;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_notifyPowerSourceFound:(id)a3;
-- (void)_notifyPowerSourceLost:(id)a3;
-- (void)_publishIOKitPowerSource:(id)a3;
-- (void)_removeFromClassicMap:(id)a3;
-- (void)_removePowerSourceFlags:(id)a3;
-- (void)_reportMetricIfNeeded:(id)a3;
+- (void)_notifyPowerSourceFound:(id)found;
+- (void)_notifyPowerSourceLost:(id)lost;
+- (void)_publishIOKitPowerSource:(id)source;
+- (void)_removeFromClassicMap:(id)map;
+- (void)_removePowerSourceFlags:(id)flags;
+- (void)_reportMetricIfNeeded:(id)needed;
 - (void)_updatePowerSources;
 - (void)activate;
 @end
@@ -194,8 +194,8 @@ LABEL_38:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v25 = [(NSMutableDictionary *)self->_powerSources allKeys];
-  v26 = [v25 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  allKeys = [(NSMutableDictionary *)self->_powerSources allKeys];
+  v26 = [allKeys countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v26)
   {
     v27 = *v36;
@@ -205,7 +205,7 @@ LABEL_38:
       {
         if (*v36 != v27)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(allKeys);
         }
 
         v29 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:*(*(&v35 + 1) + 8 * i)];
@@ -220,7 +220,7 @@ LABEL_38:
         }
       }
 
-      v26 = [v25 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v26 = [allKeys countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v26);
@@ -434,9 +434,9 @@ LABEL_38:
   }
 }
 
-- (void)_handlePowerSourceFoundWithDetails:(id)a3
+- (void)_handlePowerSourceFoundWithDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   if (!self->_powerSources)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
@@ -444,7 +444,7 @@ LABEL_38:
     self->_powerSources = v5;
   }
 
-  v7 = [[CBPowerSource alloc] initWithPowerSourceDetails:v4 internalFlags:6];
+  v7 = [[CBPowerSource alloc] initWithPowerSourceDetails:detailsCopy internalFlags:6];
   v8 = sub_100058928();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -453,32 +453,32 @@ LABEL_38:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Power source found %@", &v10, 0xCu);
   }
 
-  v9 = [v7 groupID];
-  if (v9 || ([v7 accessoryID], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  groupID = [v7 groupID];
+  if (groupID || ([v7 accessoryID], (groupID = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    [(NSMutableDictionary *)self->_powerSources setObject:v7 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_powerSources setObject:v7 forKeyedSubscript:groupID];
     [(CBStackPowerSourceMonitorBTStack *)self _handlePowerSourceFound:v7];
   }
 
   else
   {
-    sub_100809EB0(v7, v4);
-    v9 = 0;
+    sub_100809EB0(v7, detailsCopy);
+    groupID = 0;
   }
 }
 
-- (void)_handlePowerSourceUpdateWithDetails:(id)a3 details:(id)a4
+- (void)_handlePowerSourceUpdateWithDetails:(id)details details:(id)a4
 {
-  v6 = a3;
+  detailsCopy = details;
   v7 = a4;
-  if (([v6 internalFlags] & 8) != 0)
+  if (([detailsCopy internalFlags] & 8) != 0)
   {
-    [v6 setPresent:1];
+    [detailsCopy setPresent:1];
     v9 = sub_100058928();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v6;
+      v11 = detailsCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "# Skipping IOKit update %@", &v10, 0xCu);
     }
   }
@@ -486,37 +486,37 @@ LABEL_38:
   else
   {
     v8 = [[CBPowerSource alloc] initWithPowerSourceDetails:v7 internalFlags:2];
-    [v6 updateWithCBPowerSource:v8];
-    [(CBStackPowerSourceMonitorBTStack *)self _handlePowerSourceFound:v6];
+    [detailsCopy updateWithCBPowerSource:v8];
+    [(CBStackPowerSourceMonitorBTStack *)self _handlePowerSourceFound:detailsCopy];
   }
 }
 
-- (void)_handlePowerSourceFound:(id)a3
+- (void)_handlePowerSourceFound:(id)found
 {
-  v4 = a3;
-  v5 = [v4 groupID];
-  v6 = v5;
-  if (v5)
+  foundCopy = found;
+  groupID = [foundCopy groupID];
+  v6 = groupID;
+  if (groupID)
   {
-    v7 = v5;
+    accessoryID = groupID;
   }
 
   else
   {
-    v7 = [v4 accessoryID];
+    accessoryID = [foundCopy accessoryID];
   }
 
-  v8 = v7;
+  v8 = accessoryID;
 
-  v9 = v4;
-  if ([v4 isAggregateComponent])
+  v9 = foundCopy;
+  if ([foundCopy isAggregateComponent])
   {
     v9 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:v8];
   }
 
   v10 = [NSUUID alloc];
-  v11 = [v9 accessoryID];
-  v12 = [v10 initWithUUIDString:v11];
+  accessoryID2 = [v9 accessoryID];
+  v12 = [v10 initWithUUIDString:accessoryID2];
 
   if (v12)
   {
@@ -553,41 +553,41 @@ LABEL_38:
   }
 }
 
-- (void)_handlePowerSourceLost:(id)a3
+- (void)_handlePowerSourceLost:(id)lost
 {
-  v4 = a3;
-  v5 = [v4 groupID];
-  if (v5 || ([v4 accessoryID], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  lostCopy = lost;
+  groupID = [lostCopy groupID];
+  if (groupID || ([lostCopy accessoryID], (groupID = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = sub_100058928();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = lostCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Power source lost %@", &v10, 0xCu);
     }
 
-    if ([v4 isAggregateComponent])
+    if ([lostCopy isAggregateComponent])
     {
-      v7 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:v5];
+      v7 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:groupID];
       v8 = v7;
-      v9 = v4;
+      v9 = lostCopy;
       if (v7)
       {
         v9 = v7;
 
-        [v9 invalidateComponentWithPartID:{objc_msgSend(v4, "partID")}];
+        [v9 invalidateComponentWithPartID:{objc_msgSend(lostCopy, "partID")}];
       }
     }
 
     else
     {
-      [v4 removeBatteryInfo];
-      [v4 invalidate];
+      [lostCopy removeBatteryInfo];
+      [lostCopy invalidate];
 
-      v9 = v4;
-      v4 = 0;
-      [(NSMutableDictionary *)self->_powerSources setObject:0 forKeyedSubscript:v5];
+      v9 = lostCopy;
+      lostCopy = 0;
+      [(NSMutableDictionary *)self->_powerSources setObject:0 forKeyedSubscript:groupID];
     }
 
     [(CBStackPowerSourceMonitorBTStack *)self _notifyPowerSourceLost:v9];
@@ -595,26 +595,26 @@ LABEL_38:
 
   else
   {
-    v9 = v4;
+    v9 = lostCopy;
   }
 }
 
-- (void)_handleStackDeviceInfoChanged:(void *)a3 changeType:(int)a4
+- (void)_handleStackDeviceInfoChanged:(void *)changed changeType:(int)type
 {
   v7 = [(CBStackPowerSourceMonitorBTStack *)self _identifierForClassicDevice:?];
   if (v7)
   {
     *__p = 0u;
     v24 = 0u;
-    sub_1000DEB5C(a3, __p);
-    if ((a4 - 28) >= 3)
+    sub_1000DEB5C(changed, __p);
+    if ((type - 28) >= 3)
     {
       v8 = 5;
     }
 
     else
     {
-      v8 = a4 - 26;
+      v8 = type - 26;
     }
 
     if (v8 > 3)
@@ -653,7 +653,7 @@ LABEL_38:
     if (v10 & ~(v10 >> 31) | (v11 << 8))
     {
       v22 = 0;
-      v12 = [[CBPowerSource alloc] initWithBTStackDevice:a3 identifier:v7 error:&v22];
+      v12 = [[CBPowerSource alloc] initWithBTStackDevice:changed identifier:v7 error:&v22];
       v13 = v22;
       if (v12)
       {
@@ -708,7 +708,7 @@ LABEL_22:
     v17 = sub_100058928();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1000E5A58(a3, __p);
+      sub_1000E5A58(changed, __p);
       v18 = (SBYTE7(v24) & 0x80u) == 0 ? __p : __p[0];
       *buf = 136315138;
       v26 = v18;
@@ -721,7 +721,7 @@ LABEL_22:
   }
 }
 
-- (void)_handleStackDisconnectClassic:(void *)a3
+- (void)_handleStackDisconnectClassic:(void *)classic
 {
   v5 = [(CBStackPowerSourceMonitorBTStack *)self _identifierForClassicDevice:?];
   if (v5)
@@ -738,13 +738,13 @@ LABEL_22:
       goto LABEL_7;
     }
 
-    v8 = [v7 productID];
-    if (v8 - 8194 <= 0x2D && ((1 << (v8 - 2)) & 0x207C7BB7FF9BLL) != 0)
+    productID = [v7 productID];
+    if (productID - 8194 <= 0x2D && ((1 << (productID - 2)) & 0x207C7BB7FF9BLL) != 0)
     {
       goto LABEL_13;
     }
 
-    if (!v8)
+    if (!productID)
     {
       v14 = sub_100058928();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -756,11 +756,11 @@ LABEL_22:
     else
     {
 LABEL_7:
-      v9 = [v7 transportType];
-      if (v9 != @"USB")
+      transportType = [v7 transportType];
+      if (transportType != @"USB")
       {
-        v10 = v9;
-        if (!v9 || (v11 = [(__CFString *)v9 isEqual:@"USB"], v10, v10, (v11 & 1) == 0))
+        v10 = transportType;
+        if (!transportType || (v11 = [(__CFString *)transportType isEqual:@"USB"], v10, v10, (v11 & 1) == 0))
         {
           [v7 setChangeFlags:16];
           v12 = sub_100058928();
@@ -782,7 +782,7 @@ LABEL_7:
     v7 = sub_100058928();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1000E5A58(a3, __p);
+      sub_1000E5A58(classic, __p);
       v13 = v16 >= 0 ? __p : *__p;
       *buf = 136315138;
       v18 = v13;
@@ -797,11 +797,11 @@ LABEL_7:
 LABEL_13:
 }
 
-- (void)_handleStackDisconnectLowEnergy:(id)a3
+- (void)_handleStackDisconnectLowEnergy:(id)energy
 {
-  v4 = a3;
-  v5 = [v4 UUIDString];
-  v6 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:v5];
+  energyCopy = energy;
+  uUIDString = [energyCopy UUIDString];
+  v6 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:uUIDString];
   v7 = v6;
   if (v6)
   {
@@ -810,13 +810,13 @@ LABEL_13:
       goto LABEL_6;
     }
 
-    v8 = [v7 productID];
-    if (v8 - 8194 <= 0x2D && ((1 << (v8 - 2)) & 0x207C7BB7FF9BLL) != 0)
+    productID = [v7 productID];
+    if (productID - 8194 <= 0x2D && ((1 << (productID - 2)) & 0x207C7BB7FF9BLL) != 0)
     {
       goto LABEL_9;
     }
 
-    if (!v8)
+    if (!productID)
     {
       v10 = sub_100058928();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -844,11 +844,11 @@ LABEL_6:
 LABEL_9:
 }
 
-- (void)_handleStackPairingComplete:(void *)a3
+- (void)_handleStackPairingComplete:(void *)complete
 {
-  if (!sub_100539FE8(a3))
+  if (!sub_100539FE8(complete))
   {
-    v5 = [(CBStackPowerSourceMonitorBTStack *)self _identifierForClassicDevice:a3];
+    v5 = [(CBStackPowerSourceMonitorBTStack *)self _identifierForClassicDevice:complete];
     if (v5)
     {
       reportMetrics = self->_reportMetrics;
@@ -886,18 +886,18 @@ LABEL_9:
       v9 = sub_100058928();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        sub_1000E5A58(a3, &v11);
+        sub_1000E5A58(complete, &v11);
         sub_10080A190();
       }
     }
   }
 }
 
-- (void)_handleStackLEPairingComplete:(id)a3
+- (void)_handleStackLEPairingComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [v4 UUIDString];
-  if (v5)
+  completeCopy = complete;
+  uUIDString = [completeCopy UUIDString];
+  if (uUIDString)
   {
     reportMetrics = self->_reportMetrics;
     if (!reportMetrics)
@@ -909,12 +909,12 @@ LABEL_9:
       reportMetrics = self->_reportMetrics;
     }
 
-    if (([(NSMutableSet *)reportMetrics containsObject:v5]& 1) == 0)
+    if (([(NSMutableSet *)reportMetrics containsObject:uUIDString]& 1) == 0)
     {
-      [(NSMutableSet *)self->_reportMetrics addObject:v5];
+      [(NSMutableSet *)self->_reportMetrics addObject:uUIDString];
     }
 
-    v9 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:v5];
+    v9 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:uUIDString];
     if (v9)
     {
       v10 = sub_100058928();
@@ -930,9 +930,9 @@ LABEL_9:
   }
 }
 
-- (void)_handleStackSourceUpdate:(id)a3
+- (void)_handleStackSourceUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -945,9 +945,9 @@ LABEL_9:
   v36[3] = &unk_100AE1120;
   v36[4] = &v37;
   v5 = objc_retainBlock(v36);
-  v6 = [v4 accessoryID];
-  v7 = [v4 groupID];
-  if (!v6)
+  accessoryID = [updateCopy accessoryID];
+  groupID = [updateCopy groupID];
+  if (!accessoryID)
   {
     v26 = CBErrorF();
     v10 = v38[5];
@@ -962,15 +962,15 @@ LABEL_9:
     self->_powerSources = v8;
   }
 
-  v10 = v4;
-  if (v7)
+  v10 = updateCopy;
+  if (groupID)
   {
-    v11 = v7;
+    v11 = groupID;
   }
 
   else
   {
-    v11 = v6;
+    v11 = accessoryID;
   }
 
   v30 = v11;
@@ -999,36 +999,36 @@ LABEL_9:
       v32 = 0u;
       v33 = 0u;
       v28 = v5;
-      v29 = v4;
-      v14 = [v13 components];
-      v15 = [v14 allValues];
+      v29 = updateCopy;
+      components = [v13 components];
+      allValues = [components allValues];
 
-      v16 = [v15 countByEnumeratingWithState:&v32 objects:v48 count:16];
+      v16 = [allValues countByEnumeratingWithState:&v32 objects:v48 count:16];
       if (v16)
       {
         v17 = *v33;
-        v27 = v7;
+        v27 = groupID;
         while (2)
         {
           for (i = 0; i != v16; i = i + 1)
           {
             if (*v33 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allValues);
             }
 
             v19 = *(*(&v32 + 1) + 8 * i);
-            v20 = [v19 partID];
-            if (v20 == [v10 partID])
+            partID = [v19 partID];
+            if (partID == [v10 partID])
             {
-              v7 = v27;
+              groupID = v27;
               [v10 setSourceID:{objc_msgSend(v19, "sourceID")}];
               goto LABEL_26;
             }
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v32 objects:v48 count:16];
-          v7 = v27;
+          v16 = [allValues countByEnumeratingWithState:&v32 objects:v48 count:16];
+          groupID = v27;
           if (v16)
           {
             continue;
@@ -1041,7 +1041,7 @@ LABEL_9:
 LABEL_26:
 
       v5 = v28;
-      v4 = v29;
+      updateCopy = v29;
     }
 
     v22 = [v13 updateWithCBPowerSource:v10];
@@ -1055,7 +1055,7 @@ LABEL_26:
     {
       [v10 setChangeFlags:{objc_msgSend(v10, "changeFlags") | 8}];
       [v10 setInternalFlags:{objc_msgSend(v10, "internalFlags") | 4}];
-      [(NSMutableDictionary *)self->_powerSources setObject:v10 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_powerSources setObject:v10 forKeyedSubscript:accessoryID];
 LABEL_30:
       [(CBStackPowerSourceMonitorBTStack *)self _handlePowerSourceFound:v10];
       goto LABEL_32;
@@ -1095,12 +1095,12 @@ LABEL_32:
     v31[1] = 3221225472;
     v31[2] = sub_10012A9BC;
     v31[3] = &unk_100AE1148;
-    v31[4] = v6;
+    v31[4] = accessoryID;
     v31[5] = &buf;
     [(NSMutableDictionary *)classicMap enumerateKeysAndObjectsUsingBlock:v31];
     if (*(*(&buf + 1) + 40))
     {
-      [(NSMutableDictionary *)self->_classicMap setObject:v6 forKeyedSubscript:?];
+      [(NSMutableDictionary *)self->_classicMap setObject:accessoryID forKeyedSubscript:?];
     }
 
     _Block_object_dispose(&buf, 8);
@@ -1114,16 +1114,16 @@ LABEL_37:
   _Block_object_dispose(&v37, 8);
 }
 
-- (void)_handleStackUSBStateChanged:(void *)a3
+- (void)_handleStackUSBStateChanged:(void *)changed
 {
   v5 = sub_100058928();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1000E5A58(a3, __p);
+    sub_1000E5A58(changed, __p);
     v6 = v25;
     v7 = *__p;
-    v8 = *(a3 + 1360);
-    v9 = sub_10053FCFC(a3);
+    v8 = *(changed + 1360);
+    v9 = sub_10053FCFC(changed);
     v10 = v9;
     v11 = __p;
     if (v6 < 0)
@@ -1154,11 +1154,11 @@ LABEL_37:
     }
   }
 
-  v13 = [(CBStackPowerSourceMonitorBTStack *)self _identifierForClassicDevice:a3];
+  v13 = [(CBStackPowerSourceMonitorBTStack *)self _identifierForClassicDevice:changed];
   if (v13)
   {
     v23 = 0;
-    v14 = [[CBPowerSource alloc] initWithBTStackDevice:a3 identifier:v13 error:&v23];
+    v14 = [[CBPowerSource alloc] initWithBTStackDevice:changed identifier:v13 error:&v23];
     v15 = v23;
     if (v14)
     {
@@ -1212,7 +1212,7 @@ LABEL_18:
   v15 = sub_100058928();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1000E5A58(a3, buf);
+    sub_1000E5A58(changed, buf);
     v19 = v29 >= 0 ? buf : *buf;
     *__p = 136315138;
     *&__p[4] = v19;
@@ -1226,11 +1226,11 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)_publishIOKitPowerSource:(id)a3
+- (void)_publishIOKitPowerSource:(id)source
 {
-  v4 = a3;
-  v5 = [v4 accessoryID];
-  if (!v5)
+  sourceCopy = source;
+  accessoryID = [sourceCopy accessoryID];
+  if (!accessoryID)
   {
     sub_10080A388();
     goto LABEL_18;
@@ -1248,30 +1248,30 @@ LABEL_19:
   v15[3] = &unk_100AE1120;
   v15[4] = &v16;
   v6 = objc_retainBlock(v15);
-  v7 = [v4 groupID];
-  v8 = v7;
-  if (v7)
+  groupID = [sourceCopy groupID];
+  v8 = groupID;
+  if (groupID)
   {
-    v9 = v7;
+    v9 = groupID;
   }
 
   else
   {
-    v9 = v5;
+    v9 = accessoryID;
   }
 
   v10 = v9;
   v11 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:v10];
   if (!v11)
   {
-    v11 = v4;
+    v11 = sourceCopy;
     [(NSMutableDictionary *)self->_powerSources setObject:v11 forKeyedSubscript:v10];
   }
 
   if ([v11 isAppleDevice])
   {
-    v12 = [v11 productID];
-    if (v12 - 8201 < 0x18 || v12 - 8194 <= 0x2D && ((1 << (v12 - 2)) & 0x20FC0000001BLL) != 0)
+    productID = [v11 productID];
+    if (productID - 8201 < 0x18 || productID - 8194 <= 0x2D && ((1 << (productID - 2)) & 0x20FC0000001BLL) != 0)
     {
       v13 = sub_100058928();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1284,7 +1284,7 @@ LABEL_19:
       goto LABEL_16;
     }
 
-    if (!v12)
+    if (!productID)
     {
       v13 = sub_100058928();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1310,30 +1310,30 @@ LABEL_16:
 LABEL_18:
 }
 
-- (void)_notifyPowerSourceFound:(id)a3
+- (void)_notifyPowerSourceFound:(id)found
 {
-  v4 = a3;
-  v5 = v4;
-  if ([v4 isAggregateComponent])
+  foundCopy = found;
+  v5 = foundCopy;
+  if ([foundCopy isAggregateComponent])
   {
-    v6 = [v4 groupID];
-    if (!v6)
+    groupID = [foundCopy groupID];
+    if (!groupID)
     {
-      v6 = [v4 accessoryID];
-      if (!v6)
+      groupID = [foundCopy accessoryID];
+      if (!groupID)
       {
         sub_10080A50C();
-        v5 = v4;
+        v5 = foundCopy;
         goto LABEL_19;
       }
     }
 
-    v5 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:v6];
+    v5 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:groupID];
   }
 
   v7 = [NSUUID alloc];
-  v8 = [v4 accessoryID];
-  v9 = [v7 initWithUUIDString:v8];
+  accessoryID = [foundCopy accessoryID];
+  v9 = [v7 initWithUUIDString:accessoryID];
 
   if (v9)
   {
@@ -1343,7 +1343,7 @@ LABEL_18:
       v19 = 3221225472;
       v20 = sub_10012B50C;
       v21 = &unk_100AE0B60;
-      v22 = self;
+      selfCopy = self;
       v5 = v5;
       v23 = v5;
       v10 = objc_retainBlock(&v18);
@@ -1360,7 +1360,7 @@ LABEL_18:
         v12 = objc_alloc_init(CBDevice);
         [v12 updateWithCBPowerSource:v5];
         logPrivateData = self->_logPrivateData;
-        v14 = [v12 internalFlags];
+        internalFlags = [v12 internalFlags];
         if (logPrivateData)
         {
           v15 = 0x20000;
@@ -1371,7 +1371,7 @@ LABEL_18:
           v15 = 0;
         }
 
-        [v12 setInternalFlags:v15 | v14];
+        [v12 setInternalFlags:v15 | internalFlags];
         v16 = objc_retainBlock(self->_deviceFoundHandler);
         v17 = v16;
         if (v16)
@@ -1398,21 +1398,21 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)_notifyPowerSourceLost:(id)a3
+- (void)_notifyPowerSourceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   v5 = sub_100058928();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = lostCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Notify power source lost: %@", &v12, 0xCu);
   }
 
   v6 = objc_alloc_init(CBDevice);
-  [v6 updateWithCBPowerSource:v4];
+  [v6 updateWithCBPowerSource:lostCopy];
   logPrivateData = self->_logPrivateData;
-  v8 = [v6 internalFlags];
+  internalFlags = [v6 internalFlags];
   if (logPrivateData)
   {
     v9 = 0x20000;
@@ -1423,7 +1423,7 @@ LABEL_19:
     v9 = 0;
   }
 
-  [v6 setInternalFlags:v9 | v8];
+  [v6 setInternalFlags:v9 | internalFlags];
   v10 = objc_retainBlock(self->_deviceLostHandler);
   v11 = v10;
   if (v10)
@@ -1432,17 +1432,17 @@ LABEL_19:
   }
 }
 
-- (BOOL)powerSourceOverrideWithMock:(id)a3 error:(id *)a4
+- (BOOL)powerSourceOverrideWithMock:(id)mock error:(id *)error
 {
-  v5 = a3;
-  v39 = self;
-  v40 = v5;
+  mockCopy = mock;
+  selfCopy = self;
+  v40 = mockCopy;
   if (!self->_powerSources)
   {
-    if (a4)
+    if (error)
     {
       CBErrorF();
-      *a4 = v26 = 0;
+      *error = v26 = 0;
     }
 
     else
@@ -1453,13 +1453,13 @@ LABEL_19:
     goto LABEL_53;
   }
 
-  v6 = [v5 accessoryID];
-  if (!v6)
+  accessoryID = [mockCopy accessoryID];
+  if (!accessoryID)
   {
-    if (a4)
+    if (error)
     {
       CBErrorF();
-      *a4 = v26 = 0;
+      *error = v26 = 0;
     }
 
     else
@@ -1470,15 +1470,15 @@ LABEL_19:
     goto LABEL_52;
   }
 
-  v7 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:accessoryID];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 groupID];
-    [v40 setGroupID:v9];
+    groupID = [v7 groupID];
+    [v40 setGroupID:groupID];
 
-    v10 = [v8 accessoryID];
-    [v40 setAccessoryID:v10];
+    accessoryID2 = [v8 accessoryID];
+    [v40 setAccessoryID:accessoryID2];
 
     goto LABEL_33;
   }
@@ -1487,14 +1487,14 @@ LABEL_19:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v11 = [(NSMutableDictionary *)self->_powerSources allValues];
-  v12 = [v11 countByEnumeratingWithState:&v41 objects:v47 count:16];
+  allValues = [(NSMutableDictionary *)self->_powerSources allValues];
+  v12 = [allValues countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (!v12)
   {
 LABEL_24:
 
 LABEL_25:
-    if (a4)
+    if (error)
     {
       v25 = CBErrorF();
       v8 = 0;
@@ -1512,17 +1512,17 @@ LABEL_7:
   {
     if (*v42 != v13)
     {
-      objc_enumerationMutation(v11);
+      objc_enumerationMutation(allValues);
     }
 
     v8 = *(*(&v41 + 1) + 8 * v14);
-    v15 = [v8 accessoryID];
-    if (v15)
+    accessoryID3 = [v8 accessoryID];
+    if (accessoryID3)
     {
-      v16 = [v8 accessoryID];
-      v17 = v6;
+      accessoryID4 = [v8 accessoryID];
+      v17 = accessoryID;
       v18 = v17;
-      if (v16 == v17)
+      if (accessoryID4 == v17)
       {
 
 LABEL_29:
@@ -1530,9 +1530,9 @@ LABEL_29:
         goto LABEL_32;
       }
 
-      if (v16)
+      if (accessoryID4)
       {
-        v19 = [v16 isEqual:v17];
+        v19 = [accessoryID4 isEqual:v17];
 
         if (v19)
         {
@@ -1545,23 +1545,23 @@ LABEL_29:
       }
     }
 
-    v20 = [v8 groupID];
-    if (!v20)
+    groupID2 = [v8 groupID];
+    if (!groupID2)
     {
       goto LABEL_22;
     }
 
-    v21 = [v8 groupID];
-    v22 = v6;
+    groupID3 = [v8 groupID];
+    v22 = accessoryID;
     v23 = v22;
-    if (v21 == v22)
+    if (groupID3 == v22)
     {
       break;
     }
 
-    if (v21)
+    if (groupID3)
     {
-      v24 = [v21 isEqual:v22];
+      v24 = [groupID3 isEqual:v22];
 
       if (v24)
       {
@@ -1576,7 +1576,7 @@ LABEL_29:
 LABEL_22:
     if (v12 == ++v14)
     {
-      v12 = [v11 countByEnumeratingWithState:&v41 objects:v47 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v41 objects:v47 count:16];
       if (v12)
       {
         goto LABEL_7;
@@ -1588,11 +1588,11 @@ LABEL_22:
 
 LABEL_31:
   v28 = v8;
-  v29 = [v28 groupID];
-  [v40 setGroupID:v29];
+  groupID4 = [v28 groupID];
+  [v40 setGroupID:groupID4];
 
-  v30 = [v28 accessoryID];
-  [v40 setAccessoryID:v30];
+  accessoryID5 = [v28 accessoryID];
+  [v40 setAccessoryID:accessoryID5];
 
 LABEL_32:
   if (!v8)
@@ -1614,13 +1614,13 @@ LABEL_33:
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Power source info overridden with mock %@", buf, 0xCu);
     }
 
-    [(CBStackPowerSourceMonitorBTStack *)v39 _handlePowerSourceFound:v8];
+    [(CBStackPowerSourceMonitorBTStack *)selfCopy _handlePowerSourceFound:v8];
 LABEL_50:
     v26 = 1;
     goto LABEL_51;
   }
 
-  v31 = [[NSUUID alloc] initWithUUIDString:v6];
+  v31 = [[NSUUID alloc] initWithUUIDString:accessoryID];
   if (v31)
   {
     if (qword_100B508D0 != -1)
@@ -1636,7 +1636,7 @@ LABEL_50:
         sub_100809D38();
       }
 
-      v33 = [[CBPowerSource alloc] initWithBTStackDevice:sub_1000504C8(off_100B508E8 identifier:v32 error:{1), v6, 0}];
+      v33 = [[CBPowerSource alloc] initWithBTStackDevice:sub_1000504C8(off_100B508E8 identifier:v32 error:{1), accessoryID, 0}];
       if (v33)
       {
         [v33 setPartID:{objc_msgSend(v8, "partID")}];
@@ -1651,7 +1651,7 @@ LABEL_50:
 
         if (v34)
         {
-          [(CBStackPowerSourceMonitorBTStack *)v39 _handlePowerSourceFound:v8];
+          [(CBStackPowerSourceMonitorBTStack *)selfCopy _handlePowerSourceFound:v8];
         }
       }
     }
@@ -1659,7 +1659,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_55:
     v26 = 0;
@@ -1669,7 +1669,7 @@ LABEL_55:
   v25 = CBErrorF();
 LABEL_27:
   v26 = 0;
-  *a4 = v25;
+  *error = v25;
 LABEL_51:
 
 LABEL_52:
@@ -1678,15 +1678,15 @@ LABEL_53:
   return v26;
 }
 
-- (void)_reportMetricIfNeeded:(id)a3
+- (void)_reportMetricIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (-[NSMutableSet count](v5->_reportMetrics, "count") && ([v4 isAppleDevice] & 1) == 0)
+  neededCopy = needed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (-[NSMutableSet count](selfCopy->_reportMetrics, "count") && ([neededCopy isAppleDevice] & 1) == 0)
   {
-    v6 = [v4 accessoryID];
-    if (!v6 || ![(NSMutableSet *)v5->_reportMetrics containsObject:v6])
+    accessoryID = [neededCopy accessoryID];
+    if (!accessoryID || ![(NSMutableSet *)selfCopy->_reportMetrics containsObject:accessoryID])
     {
       goto LABEL_32;
     }
@@ -1695,13 +1695,13 @@ LABEL_53:
     v31[1] = 3221225472;
     v31[2] = sub_10012C0F4;
     v31[3] = &unk_100AE0B60;
-    v31[4] = v5;
-    v31[5] = v6;
+    v31[4] = selfCopy;
+    v31[5] = accessoryID;
     v7 = objc_retainBlock(v31);
-    if ([v4 partID] == 1)
+    if ([neededCopy partID] == 1)
     {
-      v8 = [v4 components];
-      v9 = [v8 count];
+      components = [neededCopy components];
+      v9 = [components count];
     }
 
     else
@@ -1709,10 +1709,10 @@ LABEL_53:
       v9 = 1;
     }
 
-    v10 = [v4 appearanceValue];
-    if (v10)
+    appearanceValue = [neededCopy appearanceValue];
+    if (appearanceValue)
     {
-      v11 = v10;
+      v11 = appearanceValue;
     }
 
     else
@@ -1730,10 +1730,10 @@ LABEL_53:
       v12 = 0;
     }
 
-    v13 = [v4 deviceType];
-    if (v13)
+    deviceType = [neededCopy deviceType];
+    if (deviceType)
     {
-      v14 = v13 << 40;
+      v14 = deviceType << 40;
     }
 
     else
@@ -1741,20 +1741,20 @@ LABEL_53:
       v14 = 0;
     }
 
-    v15 = [v4 transportType];
-    v16 = v15;
-    if (v15)
+    transportType = [neededCopy transportType];
+    v16 = transportType;
+    if (transportType)
     {
-      v17 = v15;
+      v17 = transportType;
       if (v16 == @"Bluetooth" || (v18 = v17, v19 = [(__CFString *)v17 isEqual:@"Bluetooth"], v18, (v19 & 1) != 0))
       {
         v20 = &_mh_execute_header;
 LABEL_30:
 
 LABEL_31:
-        v27 = [v4 vendorID];
+        vendorID = [neededCopy vendorID];
         v28 = sub_10000F034();
-        (*(*v28 + 808))(v28, v14 | v12 | v11, v20 | (v27 << 48));
+        (*(*v28 + 808))(v28, v14 | v12 | v11, v20 | (vendorID << 48));
         (v7[2])(v7);
 
 LABEL_32:
@@ -1766,42 +1766,42 @@ LABEL_32:
       if (v16 == @"Bluetooth LE" || (v29 = [(__CFString *)v21 isEqual:@"Bluetooth LE"], v22, v29))
       {
 
-        v23 = [v4 productID];
-        if (!v23)
+        productID = [neededCopy productID];
+        if (!productID)
         {
-          if ([v4 partID] == 1)
+          if ([neededCopy partID] == 1)
           {
             memset(v30, 0, sizeof(v30));
-            v24 = [v4 components];
-            v25 = [v24 allValues];
+            components2 = [neededCopy components];
+            allValues = [components2 allValues];
 
-            if ([v25 countByEnumeratingWithState:v30 objects:v32 count:16])
+            if ([allValues countByEnumeratingWithState:v30 objects:v32 count:16])
             {
-              v26 = [**(&v30[0] + 1) productID];
-              if (v26)
+              productID2 = [**(&v30[0] + 1) productID];
+              if (productID2)
               {
-                v23 = v26;
+                productID = productID2;
               }
 
               else
               {
-                v23 = 0;
+                productID = 0;
               }
             }
 
             else
             {
-              v23 = 0;
+              productID = 0;
             }
           }
 
           else
           {
-            v23 = 0;
+            productID = 0;
           }
         }
 
-        v20 = v23 | 0x200000000;
+        v20 = productID | 0x200000000;
         goto LABEL_31;
       }
     }
@@ -1811,19 +1811,19 @@ LABEL_32:
   }
 
 LABEL_33:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)_classicDeviceUUID:(void *)a3
+- (id)_classicDeviceUUID:(void *)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = *(a3 + 128);
-    v5 = *(a3 + 129);
-    v6 = *(a3 + 130);
-    v7 = *(a3 + 131);
-    v8 = *(a3 + 132);
-    v9 = *(a3 + 133);
+    v4 = *(d + 128);
+    v5 = *(d + 129);
+    v6 = *(d + 130);
+    v7 = *(d + 131);
+    v8 = *(d + 132);
+    v9 = *(d + 133);
     v24[0] = 0;
     v24[1] = 0;
     if (qword_100B508D0 != -1)
@@ -1836,11 +1836,11 @@ LABEL_33:
     v11 = sub_100058928();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1000C23E0(a3, __p);
+      sub_1000C23E0(d, __p);
       v12 = v19;
       v13 = __p[0];
-      v14 = [v10 UUIDString];
-      v15 = v14;
+      uUIDString = [v10 UUIDString];
+      v15 = uUIDString;
       v16 = __p;
       if (v12 < 0)
       {
@@ -1850,7 +1850,7 @@ LABEL_33:
       *buf = 136315394;
       v21 = v16;
       v22 = 2112;
-      v23 = v14;
+      v23 = uUIDString;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Found identifier for classic device '%s': %@", buf, 0x16u);
 
       if (v19 < 0)
@@ -1868,19 +1868,19 @@ LABEL_33:
   return v10;
 }
 
-- (id)_findPowerSourceWithIdentifiers:(id)a3 and:(id)a4
+- (id)_findPowerSourceWithIdentifiers:(id)identifiers and:(id)and
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identifiersCopy = identifiers;
+  andCopy = and;
+  v8 = andCopy;
+  if (identifiersCopy)
   {
-    if (v7)
+    if (andCopy)
     {
-      v9 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:v7];
+      v9 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:andCopy];
       if (v9)
       {
-        v10 = v6;
+        v10 = identifiersCopy;
         v11 = v8;
         if (v10 != v11)
         {
@@ -1899,11 +1899,11 @@ LABEL_33:
       }
     }
 
-    v9 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:v6];
+    v9 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:identifiersCopy];
     if (v9 && v8)
     {
       [(NSMutableDictionary *)self->_powerSources setObject:v9 forKeyedSubscript:v8];
-      v10 = v6;
+      v10 = identifiersCopy;
       v14 = v8;
       if (v10 == v14)
       {
@@ -1933,9 +1933,9 @@ LABEL_13:
   return v9;
 }
 
-- (id)_identifierForAccessoryID:(id)a3
+- (id)_identifierForAccessoryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (!self->_classicMap)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
@@ -1943,9 +1943,9 @@ LABEL_13:
     self->_classicMap = v5;
   }
 
-  v7 = v4;
-  v8 = [v7 normalized];
-  v9 = [(NSMutableDictionary *)self->_classicMap objectForKeyedSubscript:v8];
+  v7 = dCopy;
+  normalized = [v7 normalized];
+  v9 = [(NSMutableDictionary *)self->_classicMap objectForKeyedSubscript:normalized];
   if (!v9)
   {
     if (qword_100B508F0 != -1)
@@ -2005,9 +2005,9 @@ LABEL_7:
           v9 = 0;
           for (i = 1; v13 && (i & 1) != 0; i = 0)
           {
-            v15 = [v13 UUIDString];
+            uUIDString = [v13 UUIDString];
 
-            [(NSMutableDictionary *)self->_classicMap setObject:v15 forKeyedSubscript:v8];
+            [(NSMutableDictionary *)self->_classicMap setObject:uUIDString forKeyedSubscript:normalized];
             v16 = sub_100058928();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
@@ -2015,7 +2015,7 @@ LABEL_7:
               _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Updated Classic Map", __p, 2u);
             }
 
-            v9 = v15;
+            v9 = uUIDString;
             [(NSMutableDictionary *)self->_classicMap enumerateKeysAndObjectsUsingBlock:&stru_100AE1188];
           }
 
@@ -2043,7 +2043,7 @@ LABEL_27:
   return v9;
 }
 
-- (id)_identifierForClassicDevice:(void *)a3
+- (id)_identifierForClassicDevice:(void *)device
 {
   if (!self->_classicMap)
   {
@@ -2052,13 +2052,13 @@ LABEL_27:
     self->_classicMap = v5;
   }
 
-  v7 = sub_10053FCFC(a3);
-  v8 = [v7 normalized];
+  v7 = sub_10053FCFC(device);
+  normalized = [v7 normalized];
 
-  if (!v8 || ([(NSMutableDictionary *)self->_classicMap objectForKeyedSubscript:v8], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!normalized || ([(NSMutableDictionary *)self->_classicMap objectForKeyedSubscript:normalized], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v33 = *(a3 + 32);
-    v34 = *(a3 + 66);
+    v33 = *(device + 32);
+    v34 = *(device + 66);
     v31[0] = 0;
     v31[1] = 0;
     v32 = 0;
@@ -2075,23 +2075,23 @@ LABEL_27:
     }
 
     v12 = [v10 initWithUTF8String:v11];
-    v13 = [v12 normalized];
+    normalized2 = [v12 normalized];
 
-    if (v13)
+    if (normalized2)
     {
-      v9 = [(NSMutableDictionary *)self->_classicMap objectForKeyedSubscript:v13];
+      v9 = [(NSMutableDictionary *)self->_classicMap objectForKeyedSubscript:normalized2];
       if (v9)
       {
         goto LABEL_31;
       }
 
-      v14 = [(CBStackPowerSourceMonitorBTStack *)self _classicDeviceUUID:a3];
+      v14 = [(CBStackPowerSourceMonitorBTStack *)self _classicDeviceUUID:device];
       v15 = v14;
       if (v14)
       {
-        v16 = [v14 UUIDString];
+        uUIDString = [v14 UUIDString];
 
-        if (v16)
+        if (uUIDString)
         {
           __p = 0;
           p_p = &__p;
@@ -2104,21 +2104,21 @@ LABEL_27:
           v24[1] = 3221225472;
           v24[2] = sub_10012CD6C;
           v24[3] = &unk_100AE11B0;
-          v24[5] = v13;
+          v24[5] = normalized2;
           v24[6] = &__p;
-          v24[4] = v8;
+          v24[4] = normalized;
           [(NSMutableDictionary *)v17 enumerateKeysAndObjectsUsingBlock:v24];
-          if (p_p[5] || (v8 ? (v18 = v8) : (v18 = v13), objc_storeStrong(p_p + 5, v18), p_p[5]))
+          if (p_p[5] || (normalized ? (v18 = normalized) : (v18 = normalized2), objc_storeStrong(p_p + 5, v18), p_p[5]))
           {
-            [(NSMutableDictionary *)self->_classicMap setObject:v16 forKeyedSubscript:?];
+            [(NSMutableDictionary *)self->_classicMap setObject:uUIDString forKeyedSubscript:?];
             v19 = [(NSMutableDictionary *)self->_powerSources objectForKeyedSubscript:p_p[5]];
             if (v19)
             {
-              [(NSMutableDictionary *)self->_powerSources setObject:v19 forKeyedSubscript:v16];
+              [(NSMutableDictionary *)self->_powerSources setObject:v19 forKeyedSubscript:uUIDString];
               [(NSMutableDictionary *)self->_powerSources setObject:0 forKeyedSubscript:p_p[5]];
             }
 
-            v9 = v16;
+            v9 = uUIDString;
           }
 
           else
@@ -2136,10 +2136,10 @@ LABEL_27:
       {
       }
 
-      v16 = sub_100058928();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      uUIDString = sub_100058928();
+      if (os_log_type_enabled(uUIDString, OS_LOG_TYPE_DEFAULT))
       {
-        sub_1000E5A58(a3, &__p);
+        sub_1000E5A58(device, &__p);
         if (v27 >= 0)
         {
           v20 = &__p;
@@ -2159,10 +2159,10 @@ LABEL_27:
 
     else
     {
-      v16 = sub_100058928();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      uUIDString = sub_100058928();
+      if (os_log_type_enabled(uUIDString, OS_LOG_TYPE_DEFAULT))
       {
-        sub_1000E5A58(a3, &__p);
+        sub_1000E5A58(device, &__p);
         if (v27 >= 0)
         {
           v23 = &__p;
@@ -2177,7 +2177,7 @@ LABEL_27:
         v36 = v23;
         v21 = "### No address found for classic device: %s";
 LABEL_27:
-        _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, v21, buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, uUIDString, OS_LOG_TYPE_DEFAULT, v21, buf, 0xCu);
         if (SHIBYTE(v27) < 0)
         {
           operator delete(__p);
@@ -2198,33 +2198,33 @@ LABEL_31:
   return v9;
 }
 
-- (void)_removeFromClassicMap:(id)a3
+- (void)_removeFromClassicMap:(id)map
 {
-  v4 = a3;
-  v5 = v4;
+  mapCopy = map;
+  v5 = mapCopy;
   if (self->_classicMap)
   {
-    v6 = [v4 accessoryID];
-    sub_10080A650(v6, self, &v7);
+    accessoryID = [mapCopy accessoryID];
+    sub_10080A650(accessoryID, self, &v7);
   }
 }
 
-- (void)_removePowerSourceFlags:(id)a3
+- (void)_removePowerSourceFlags:(id)flags
 {
-  v4 = a3;
-  v5 = [v4 accessoryID];
-  if (v5)
+  flagsCopy = flags;
+  accessoryID = [flagsCopy accessoryID];
+  if (accessoryID)
   {
-    v6 = [v4 groupID];
-    v7 = v6;
-    if (v6)
+    groupID = [flagsCopy groupID];
+    v7 = groupID;
+    if (groupID)
     {
-      v8 = v6;
+      v8 = groupID;
     }
 
     else
     {
-      v8 = v5;
+      v8 = accessoryID;
     }
 
     v9 = v8;
@@ -2242,9 +2242,9 @@ LABEL_31:
   }
 }
 
-- (BOOL)_setPowerSourceGroupID:(id *)a3
+- (BOOL)_setPowerSourceGroupID:(id *)d
 {
-  v4 = *a3;
+  v4 = *d;
   if ([v4 partID] == 1 || (objc_msgSend(v4, "isAggregateComponent")) && (objc_msgSend(v4, "groupID"), v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v25 = 0;
@@ -2268,8 +2268,8 @@ LABEL_31:
       if (v8 <= 0x2D && ((1 << v8) & 0x207C7BB7FF9BLL) != 0)
       {
         v9 = [NSUUID alloc];
-        v10 = [v7 accessoryID];
-        v11 = [v9 initWithUUIDString:v10];
+        accessoryID = [v7 accessoryID];
+        v11 = [v9 initWithUUIDString:accessoryID];
 
         if (v11)
         {
@@ -2279,17 +2279,17 @@ LABEL_31:
           }
 
           v12 = sub_100790774(off_100B508C8, v11);
-          v13 = [v12 UUIDString];
+          uUIDString = [v12 UUIDString];
           v14 = v26[5];
-          v26[5] = v13;
+          v26[5] = uUIDString;
         }
       }
 
       else
       {
-        v18 = [v7 accessoryID];
+        accessoryID2 = [v7 accessoryID];
         v11 = v26[5];
-        v26[5] = v18;
+        v26[5] = accessoryID2;
       }
     }
 

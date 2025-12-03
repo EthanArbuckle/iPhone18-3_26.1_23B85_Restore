@@ -6,14 +6,14 @@
 
 - (__CFString)mf_commaSeparatedString
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 firstIndex];
-    v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"%lu", v2];
-    v4 = [a1 indexGreaterThanIndex:v2];
+    firstIndex = [self firstIndex];
+    v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"%lu", firstIndex];
+    v4 = [self indexGreaterThanIndex:firstIndex];
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v4; i != 0x7FFFFFFFFFFFFFFFLL; i = [a1 indexGreaterThanIndex:i])
+      for (i = v4; i != 0x7FFFFFFFFFFFFFFFLL; i = [self indexGreaterThanIndex:i])
       {
         [(__CFString *)v3 appendFormat:@", %lu", i];
       }

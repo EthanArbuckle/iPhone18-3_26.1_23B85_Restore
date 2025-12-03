@@ -1,59 +1,59 @@
 @interface CNUIUserActionWorkspaceURLOpener
-+ (id)openConfigurationWithEndpoint:(id)a3 isSensitive:(BOOL)a4;
-+ (id)urlCouldNotBeOpenedErrorWithURL:(id)a3;
++ (id)openConfigurationWithEndpoint:(id)endpoint isSensitive:(BOOL)sensitive;
++ (id)urlCouldNotBeOpenedErrorWithURL:(id)l;
 - (CNUIUserActionWorkspaceURLOpener)init;
-- (CNUIUserActionWorkspaceURLOpener)initWithWorkspace:(id)a3;
-- (id)openURL:(id)a3 isSensitive:(BOOL)a4 connectionEndpoint:(id)a5 bundleIdentifier:(id)a6 withScheduler:(id)a7;
+- (CNUIUserActionWorkspaceURLOpener)initWithWorkspace:(id)workspace;
+- (id)openURL:(id)l isSensitive:(BOOL)sensitive connectionEndpoint:(id)endpoint bundleIdentifier:(id)identifier withScheduler:(id)scheduler;
 @end
 
 @implementation CNUIUserActionWorkspaceURLOpener
 
 - (CNUIUserActionWorkspaceURLOpener)init
 {
-  v3 = [NSClassFromString(&cfstr_Lsapplicationw.isa) defaultWorkspace];
-  v4 = [(CNUIUserActionWorkspaceURLOpener *)self initWithWorkspace:v3];
+  defaultWorkspace = [NSClassFromString(&cfstr_Lsapplicationw.isa) defaultWorkspace];
+  v4 = [(CNUIUserActionWorkspaceURLOpener *)self initWithWorkspace:defaultWorkspace];
 
   return v4;
 }
 
-- (CNUIUserActionWorkspaceURLOpener)initWithWorkspace:(id)a3
+- (CNUIUserActionWorkspaceURLOpener)initWithWorkspace:(id)workspace
 {
-  v5 = a3;
+  workspaceCopy = workspace;
   v10.receiver = self;
   v10.super_class = CNUIUserActionWorkspaceURLOpener;
   v6 = [(CNUIUserActionWorkspaceURLOpener *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workspace, a3);
+    objc_storeStrong(&v6->_workspace, workspace);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)openURL:(id)a3 isSensitive:(BOOL)a4 connectionEndpoint:(id)a5 bundleIdentifier:(id)a6 withScheduler:(id)a7
+- (id)openURL:(id)l isSensitive:(BOOL)sensitive connectionEndpoint:(id)endpoint bundleIdentifier:(id)identifier withScheduler:(id)scheduler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  endpointCopy = endpoint;
+  identifierCopy = identifier;
+  schedulerCopy = scheduler;
   v16 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  if (v12)
+  if (lCopy)
   {
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __106__CNUIUserActionWorkspaceURLOpener_openURL_isSensitive_connectionEndpoint_bundleIdentifier_withScheduler___block_invoke;
     v24 = &unk_1E76E9B88;
-    v25 = v14;
-    v26 = self;
-    v27 = v12;
+    v25 = identifierCopy;
+    selfCopy = self;
+    v27 = lCopy;
     v17 = v16;
     v28 = v17;
-    v29 = v13;
-    v30 = a4;
-    [v15 performBlock:&v21];
-    v18 = [v17 future];
+    v29 = endpointCopy;
+    sensitiveCopy = sensitive;
+    [schedulerCopy performBlock:&v21];
+    future = [v17 future];
   }
 
   else
@@ -61,10 +61,10 @@
     v19 = [objc_opt_class() urlCouldNotBeOpenedErrorWithURL:0];
     [v16 finishWithError:v19];
 
-    v18 = [v16 future];
+    future = [v16 future];
   }
 
-  return v18;
+  return future;
 }
 
 void __106__CNUIUserActionWorkspaceURLOpener_openURL_isSensitive_connectionEndpoint_bundleIdentifier_withScheduler___block_invoke(uint64_t a1)
@@ -113,37 +113,37 @@ uint64_t __106__CNUIUserActionWorkspaceURLOpener_openURL_isSensitive_connectionE
   }
 }
 
-+ (id)urlCouldNotBeOpenedErrorWithURL:(id)a3
++ (id)urlCouldNotBeOpenedErrorWithURL:(id)l
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (l)
   {
-    v3 = [a3 absoluteString];
+    absoluteString = [l absoluteString];
   }
 
   else
   {
-    v3 = @"(nil)";
+    absoluteString = @"(nil)";
   }
 
   v4 = MEMORY[0x1E696ABC0];
   v8 = @"url";
-  v9[0] = v3;
+  v9[0] = absoluteString;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [v4 errorWithDomain:@"CNContactsUIErrorDomain" code:201 userInfo:v5];
 
   return v6;
 }
 
-+ (id)openConfigurationWithEndpoint:(id)a3 isSensitive:(BOOL)a4
++ (id)openConfigurationWithEndpoint:(id)endpoint isSensitive:(BOOL)sensitive
 {
-  v4 = a4;
+  sensitiveCopy = sensitive;
   v5 = MEMORY[0x1E69636B8];
-  v6 = a3;
+  endpointCopy = endpoint;
   v7 = objc_alloc_init(v5);
-  [v7 setTargetConnectionEndpoint:v6];
+  [v7 setTargetConnectionEndpoint:endpointCopy];
 
-  [v7 setSensitive:v4];
+  [v7 setSensitive:sensitiveCopy];
 
   return v7;
 }

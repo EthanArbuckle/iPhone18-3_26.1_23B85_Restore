@@ -1,28 +1,28 @@
 @interface HKElectrocardiogramAxisOptions
-- (HKElectrocardiogramAxisOptions)initWithAxisLabelFont:(id)a3 axisLabelTextColor:(id)a4 scaleMetricsAutomatically:(BOOL)a5 lineColor:(id)a6 lineWidth:(double)a7 axisLineToLabelSpacing:(double)a8 topBaselineMargin:(double)a9 bottomBaselineMargin:(double)a10;
+- (HKElectrocardiogramAxisOptions)initWithAxisLabelFont:(id)font axisLabelTextColor:(id)color scaleMetricsAutomatically:(BOOL)automatically lineColor:(id)lineColor lineWidth:(double)width axisLineToLabelSpacing:(double)spacing topBaselineMargin:(double)margin bottomBaselineMargin:(double)self0;
 @end
 
 @implementation HKElectrocardiogramAxisOptions
 
-- (HKElectrocardiogramAxisOptions)initWithAxisLabelFont:(id)a3 axisLabelTextColor:(id)a4 scaleMetricsAutomatically:(BOOL)a5 lineColor:(id)a6 lineWidth:(double)a7 axisLineToLabelSpacing:(double)a8 topBaselineMargin:(double)a9 bottomBaselineMargin:(double)a10
+- (HKElectrocardiogramAxisOptions)initWithAxisLabelFont:(id)font axisLabelTextColor:(id)color scaleMetricsAutomatically:(BOOL)automatically lineColor:(id)lineColor lineWidth:(double)width axisLineToLabelSpacing:(double)spacing topBaselineMargin:(double)margin bottomBaselineMargin:(double)self0
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a6;
+  fontCopy = font;
+  colorCopy = color;
+  lineColorCopy = lineColor;
   v25.receiver = self;
   v25.super_class = HKElectrocardiogramAxisOptions;
   v22 = [(HKElectrocardiogramAxisOptions *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_axisLabelFont, a3);
-    objc_storeStrong(&v23->_axisLabelTextColor, a4);
-    v23->_scaleMetricsAutomatically = a5;
-    objc_storeStrong(&v23->_lineColor, a6);
-    v23->_lineWidth = a7;
-    v23->_axisLineToLabelSpacing = a8;
-    v23->_topBaselineMargin = a9;
-    v23->_bottomBaselineMargin = a10;
+    objc_storeStrong(&v22->_axisLabelFont, font);
+    objc_storeStrong(&v23->_axisLabelTextColor, color);
+    v23->_scaleMetricsAutomatically = automatically;
+    objc_storeStrong(&v23->_lineColor, lineColor);
+    v23->_lineWidth = width;
+    v23->_axisLineToLabelSpacing = spacing;
+    v23->_topBaselineMargin = margin;
+    v23->_bottomBaselineMargin = baselineMargin;
   }
 
   return v23;

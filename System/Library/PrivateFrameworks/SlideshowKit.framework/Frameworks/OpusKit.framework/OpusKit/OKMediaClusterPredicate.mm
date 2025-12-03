@@ -1,8 +1,8 @@
 @interface OKMediaClusterPredicate
-+ (id)nameForCategory:(unint64_t)a3;
++ (id)nameForCategory:(unint64_t)category;
 - (OKMediaClusterPredicate)init;
-- (float)efficiencyForItems:(id)a3;
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4;
+- (float)efficiencyForItems:(id)items;
+- (id)evaluateItems:(id)items progressBlock:(id)block;
 - (id)title;
 - (void)dealloc;
 @end
@@ -37,12 +37,12 @@
   [(OKMediaClusterPredicate *)&v4 dealloc];
 }
 
-+ (id)nameForCategory:(unint64_t)a3
++ (id)nameForCategory:(unint64_t)category
 {
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  if (a3 <= 2)
+  if (category <= 2)
   {
-    switch(a3)
+    switch(category)
     {
       case 0uLL:
         v5 = @"Date";
@@ -60,15 +60,15 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  if (a3 > 4)
+  if (category > 4)
   {
-    if (a3 == 5)
+    if (category == 5)
     {
       v5 = @"Social";
       goto LABEL_17;
     }
 
-    if (a3 == 6)
+    if (category == 6)
     {
       v5 = @"Events";
       goto LABEL_17;
@@ -77,7 +77,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a3 == 3)
+  if (category == 3)
   {
     v5 = @"Media Properties";
   }
@@ -107,7 +107,7 @@ LABEL_17:
   return [v6 localizedStringForKey:@"Unknown" value:@"Unknown" table:@"Localizable"];
 }
 
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4
+- (id)evaluateItems:(id)items progressBlock:(id)block
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -120,7 +120,7 @@ LABEL_17:
   return 0;
 }
 
-- (float)efficiencyForItems:(id)a3
+- (float)efficiencyForItems:(id)items
 {
   if (*MEMORY[0x277D62808] >= 4)
   {

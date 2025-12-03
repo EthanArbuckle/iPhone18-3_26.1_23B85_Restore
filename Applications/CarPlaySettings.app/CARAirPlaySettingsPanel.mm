@@ -3,7 +3,7 @@
 - (id)cellSpecifier;
 - (id)specifierSections;
 - (void)_updateDetailForLoggingSpecifer;
-- (void)setAirPlayLoggingEnabled:(BOOL)a3;
+- (void)setAirPlayLoggingEnabled:(BOOL)enabled;
 @end
 
 @implementation CARAirPlaySettingsPanel
@@ -16,11 +16,11 @@
   v5 = sub_10001C80C(@"VIDEO_VERSION");
   v6 = [(CARSettingsCellSpecifier *)v4 initWithTitle:v5 image:0 icon:0 accessoryType:0 actionBlock:0];
 
-  v7 = [(CARSettingsPanel *)self panelController];
-  v8 = [v7 carSession];
-  v9 = [v8 sourceVersion];
+  panelController = [(CARSettingsPanel *)self panelController];
+  carSession = [panelController carSession];
+  sourceVersion = [carSession sourceVersion];
 
-  [(CARSettingsCellSpecifier *)v6 setDetail:v9];
+  [(CARSettingsCellSpecifier *)v6 setDetail:sourceVersion];
   v10 = [CARSettingsCellSpecifier alloc];
   v11 = sub_10001C80C(@"VIDEO_LOGGING");
   v30[0] = _NSConcreteStackBlock;
@@ -102,20 +102,20 @@
 
 - (BOOL)isAirPlayLoggingEnabled
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 vehicleVideoSettings];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicleVideoSettings = [panelController vehicleVideoSettings];
 
-  LOBYTE(v2) = [v3 diagnosticsEnabled];
-  return v2;
+  LOBYTE(panelController) = [vehicleVideoSettings diagnosticsEnabled];
+  return panelController;
 }
 
-- (void)setAirPlayLoggingEnabled:(BOOL)a3
+- (void)setAirPlayLoggingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(CARSettingsPanel *)self panelController];
-  v6 = [v5 vehicleVideoSettings];
+  enabledCopy = enabled;
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicleVideoSettings = [panelController vehicleVideoSettings];
 
-  [v6 setDiagnosticsEnabled:v3];
+  [vehicleVideoSettings setDiagnosticsEnabled:enabledCopy];
   [(CARAirPlaySettingsPanel *)self _updateDetailForLoggingSpecifer];
 }
 
@@ -132,8 +132,8 @@
   }
 
   v5 = sub_10001C80C(v3);
-  v4 = [(CARAirPlaySettingsPanel *)self loggingSpecifier];
-  [v4 setDetail:v5];
+  loggingSpecifier = [(CARAirPlaySettingsPanel *)self loggingSpecifier];
+  [loggingSpecifier setDetail:v5];
 }
 
 @end

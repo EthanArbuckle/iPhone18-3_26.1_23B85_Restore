@@ -6,19 +6,19 @@
 
 - (id)_axReconstitutedRepresentationForDictionaryKeyReplacement
 {
-  v2 = [a1 length];
-  if (v2 > [@"_AXSNSNumber" length] && (objc_msgSend(a1, "substringToIndex:", objc_msgSend(@"_AXSNSNumber", "length")), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "isEqualToString:", @"_AXSNSNumber"), v3, v4))
+  v2 = [self length];
+  if (v2 > [@"_AXSNSNumber" length] && (objc_msgSend(self, "substringToIndex:", objc_msgSend(@"_AXSNSNumber", "length")), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "isEqualToString:", @"_AXSNSNumber"), v3, v4))
   {
-    v5 = [a1 substringFromIndex:{objc_msgSend(@"_AXSNSNumber", "length")}];
-    v6 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v5, "longLongValue")}];
+    v5 = [self substringFromIndex:{objc_msgSend(@"_AXSNSNumber", "length")}];
+    selfCopy = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v5, "longLongValue")}];
   }
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

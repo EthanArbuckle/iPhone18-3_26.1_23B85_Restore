@@ -1,9 +1,9 @@
 @interface LNSpotlightCascadeLedger
-+ (id)_loadLedgerFileInDirectory:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
++ (id)_loadLedgerFileInDirectory:(id)directory bundleIdentifier:(id)identifier error:(id *)error;
 - (BOOL)_isDeleted;
-- (BOOL)deleteLedger:(id *)a3;
-- (BOOL)resetLedger:(id *)a3;
-- (LNSpotlightCascadeLedger)initWithDirectory:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
+- (BOOL)deleteLedger:(id *)ledger;
+- (BOOL)resetLedger:(id *)ledger;
+- (LNSpotlightCascadeLedger)initWithDirectory:(id)directory bundleIdentifier:(id)identifier error:(id *)error;
 - (id)description;
 - (unint64_t)version;
 - (unsigned)_options;
@@ -11,9 +11,9 @@
 
 @implementation LNSpotlightCascadeLedger
 
-- (BOOL)deleteLedger:(id *)a3
+- (BOOL)deleteLedger:(id *)ledger
 {
-  v4 = [(BMFileBackedDictionary *)self->_dictionary clear:a3];
+  v4 = [(BMFileBackedDictionary *)self->_dictionary clear:ledger];
   if (v4)
   {
     self->_deleted = 1;
@@ -42,12 +42,12 @@
   return deleted;
 }
 
-- (BOOL)resetLedger:(id *)a3
+- (BOOL)resetLedger:(id *)ledger
 {
   v5 = [(BMFileBackedDictionary *)self->_dictionary clear:?];
   if (v5)
   {
-    v6 = [objc_opt_class() _loadLedgerFileInDirectory:self->_directory bundleIdentifier:self->_bundleIdentifier error:a3];
+    v6 = [objc_opt_class() _loadLedgerFileInDirectory:self->_directory bundleIdentifier:self->_bundleIdentifier error:ledger];
     dictionary = self->_dictionary;
     self->_dictionary = v6;
 
@@ -60,17 +60,17 @@
 - (unint64_t)version
 {
   v2 = [(BMFileBackedDictionary *)self->_dictionary objectForKey:@"Version"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (unsigned)_options
 {
   v2 = [(BMFileBackedDictionary *)self->_dictionary objectForKey:@"Options"];
-  v3 = [v2 unsignedShortValue];
+  unsignedShortValue = [v2 unsignedShortValue];
 
-  return v3;
+  return unsignedShortValue;
 }
 
 - (id)description
@@ -85,16 +85,16 @@
   return v6;
 }
 
-- (LNSpotlightCascadeLedger)initWithDirectory:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (LNSpotlightCascadeLedger)initWithDirectory:(id)directory bundleIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  directoryCopy = directory;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = LNSpotlightCascadeLedger;
   v11 = [(LNSpotlightCascadeLedger *)&v16 init];
   if (v11)
   {
-    v12 = [objc_opt_class() _loadLedgerFileInDirectory:v9 bundleIdentifier:v10 error:a5];
+    v12 = [objc_opt_class() _loadLedgerFileInDirectory:directoryCopy bundleIdentifier:identifierCopy error:error];
     dictionary = v11->_dictionary;
     v11->_dictionary = v12;
 
@@ -104,8 +104,8 @@
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v11->_directory, a3);
-    objc_storeStrong(&v11->_bundleIdentifier, a4);
+    objc_storeStrong(&v11->_directory, directory);
+    objc_storeStrong(&v11->_bundleIdentifier, identifier);
   }
 
   v14 = v11;
@@ -114,18 +114,18 @@ LABEL_6:
   return v14;
 }
 
-+ (id)_loadLedgerFileInDirectory:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
++ (id)_loadLedgerFileInDirectory:(id)directory bundleIdentifier:(id)identifier error:(id *)error
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  directoryCopy = directory;
   v9 = +[LNAvailabilityChecker currentBuildVersion];
   v29[0] = @"Build";
   v29[1] = @"Options";
   v30[0] = v9;
   v30[1] = &unk_1F0BD7198;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
-  v11 = [objc_alloc(MEMORY[0x1E698E9B0]) initWithFilename:v7 protectionClass:4 directory:v8 readOnly:0 create:1 initialDictionary:v10 error:a5];
+  v11 = [objc_alloc(MEMORY[0x1E698E9B0]) initWithFilename:identifierCopy protectionClass:4 directory:directoryCopy readOnly:0 create:1 initialDictionary:v10 error:error];
 
   if (!v11)
   {
@@ -140,7 +140,7 @@ LABEL_6:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v24 = v7;
+      v24 = identifierCopy;
       v25 = 2112;
       v26 = v12;
       v27 = 2112;
@@ -158,7 +158,7 @@ LABEL_6:
     v21[2] = @"Full";
     v21[3] = @"Incremental";
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:4];
-    v16 = [v11 writeUpdatedObjects:v14 forKeys:v15 error:a5];
+    v16 = [v11 writeUpdatedObjects:v14 forKeys:v15 error:error];
 
     if (!v16)
     {
@@ -170,7 +170,7 @@ LABEL_6:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v24 = v7;
+      v24 = identifierCopy;
       v25 = 2112;
       v26 = v9;
       v27 = 2112;

@@ -1,5 +1,5 @@
 @interface _UIEmptyEffect
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -12,10 +12,10 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }

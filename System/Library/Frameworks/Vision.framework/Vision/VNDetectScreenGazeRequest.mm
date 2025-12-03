@@ -1,16 +1,16 @@
 @interface VNDetectScreenGazeRequest
 + (id)publicRevisionsSet;
-+ (unint64_t)applicableRevisionForDependentRequestOfClass:(Class)a3 beingPerformedByRevision:(unint64_t)a4;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
-- (VNDetectScreenGazeRequest)initWithCompletionHandler:(id)a3;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
++ (unint64_t)applicableRevisionForDependentRequestOfClass:(Class)class beingPerformedByRevision:(unint64_t)revision;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
+- (VNDetectScreenGazeRequest)initWithCompletionHandler:(id)handler;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 - (int64_t)temporalSmoothingFrameCount;
 - (unint64_t)screenSize;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)setScreenSize:(unint64_t)a3;
-- (void)setTemporalSmoothingFrameCount:(int64_t)a3;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)setScreenSize:(unint64_t)size;
+- (void)setTemporalSmoothingFrameCount:(int64_t)count;
 @end
 
 @implementation VNDetectScreenGazeRequest
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __47__VNDetectScreenGazeRequest_publicRevisionsSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNDetectScreenGazeRequest publicRevisionsSet]::onceToken != -1)
   {
     dispatch_once(&+[VNDetectScreenGazeRequest publicRevisionsSet]::onceToken, block);
@@ -50,9 +50,9 @@ void __47__VNDetectScreenGazeRequest_publicRevisionsSet__block_invoke(uint64_t a
   }
 }
 
-+ (unint64_t)applicableRevisionForDependentRequestOfClass:(Class)a3 beingPerformedByRevision:(unint64_t)a4
++ (unint64_t)applicableRevisionForDependentRequestOfClass:(Class)class beingPerformedByRevision:(unint64_t)revision
 {
-  if (a4 == 2 && ([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  if (revision == 2 && ([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
     return 3737841670;
   }
@@ -63,43 +63,43 @@ void __47__VNDetectScreenGazeRequest_publicRevisionsSet__block_invoke(uint64_t a
   }
 }
 
-- (void)setScreenSize:(unint64_t)a3
+- (void)setScreenSize:(unint64_t)size
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setScreenSize:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setScreenSize:size];
 }
 
 - (unint64_t)screenSize
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 screenSize];
+  configuration = [(VNRequest *)self configuration];
+  screenSize = [configuration screenSize];
 
-  return v3;
+  return screenSize;
 }
 
-- (void)setTemporalSmoothingFrameCount:(int64_t)a3
+- (void)setTemporalSmoothingFrameCount:(int64_t)count
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setTemporalSmoothingFrameCount:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setTemporalSmoothingFrameCount:count];
 }
 
 - (int64_t)temporalSmoothingFrameCount
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 temporalSmoothingFrameCount];
+  configuration = [(VNRequest *)self configuration];
+  temporalSmoothingFrameCount = [configuration temporalSmoothingFrameCount];
 
-  return v3;
+  return temporalSmoothingFrameCount;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNDetectScreenGazeRequest *)self temporalSmoothingFrameCount];
-  if (v5 == [v4 temporalSmoothingFrameCount])
+  configurationCopy = configuration;
+  temporalSmoothingFrameCount = [(VNDetectScreenGazeRequest *)self temporalSmoothingFrameCount];
+  if (temporalSmoothingFrameCount == [configurationCopy temporalSmoothingFrameCount])
   {
     v8.receiver = self;
     v8.super_class = VNDetectScreenGazeRequest;
-    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -110,19 +110,19 @@ void __47__VNDetectScreenGazeRequest_publicRevisionsSet__block_invoke(uint64_t a
   return v6;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v114 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v83 = v8;
+  contextCopy = context;
+  v83 = contextCopy;
   if (!self->_state)
   {
-    v9 = a5;
+    errorCopy = error;
     v10 = [VNScreenGazeState alloc];
-    v11 = [(VNDetectScreenGazeRequest *)self temporalSmoothingFrameCount];
+    temporalSmoothingFrameCount = [(VNDetectScreenGazeRequest *)self temporalSmoothingFrameCount];
     if (v10)
     {
-      v12 = v11;
+      v12 = temporalSmoothingFrameCount;
       v113.receiver = v10;
       v113.super_class = VNScreenGazeState;
       v13 = [(VNRequest *)&v113 init];
@@ -139,12 +139,12 @@ void __47__VNDetectScreenGazeRequest_publicRevisionsSet__block_invoke(uint64_t a
     state = self->_state;
     self->_state = v10;
 
-    v8 = v83;
-    a5 = v9;
+    contextCopy = v83;
+    error = errorCopy;
   }
 
-  v91 = a5;
-  v17 = [v8 imageBufferAndReturnError:a5];
+  errorCopy2 = error;
+  v17 = [contextCopy imageBufferAndReturnError:error];
   v18 = v17;
   v81 = v17;
   if (!v17)
@@ -153,13 +153,13 @@ void __47__VNDetectScreenGazeRequest_publicRevisionsSet__block_invoke(uint64_t a
     goto LABEL_91;
   }
 
-  v85 = [v17 width];
-  v84 = [v18 height];
+  width = [v17 width];
+  height = [v18 height];
   v90 = v83;
   *&v102 = 0;
-  v19 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v102 clippedToRegionOfInterest:1 error:v91];
+  v19 = [(VNImageBasedRequest *)self getOptionalValidatedInputFaceObservations:&v102 clippedToRegionOfInterest:1 error:errorCopy2];
   v20 = v102;
-  v21 = v20;
+  results = v20;
   if (v19)
   {
     v22 = v20;
@@ -184,8 +184,8 @@ void __47__VNDetectScreenGazeRequest_publicRevisionsSet__block_invoke(uint64_t a
             }
 
             v28 = *(*(&v109 + 1) + 8 * i);
-            v29 = [v28 landmarks];
-            if (!v29 || [v28 requestRevision] < 2)
+            landmarks = [v28 landmarks];
+            if (!landmarks || [v28 requestRevision] < 2)
             {
 
               goto LABEL_22;
@@ -202,43 +202,43 @@ void __47__VNDetectScreenGazeRequest_publicRevisionsSet__block_invoke(uint64_t a
         }
       }
 
-      v21 = v24;
-      v79 = v21;
+      results = v24;
+      v79 = results;
       goto LABEL_33;
     }
   }
 
 LABEL_22:
-  v30 = [v90 requestPerformerAndReturnError:v91];
+  v30 = [v90 requestPerformerAndReturnError:errorCopy2];
   if (!v30)
   {
     goto LABEL_31;
   }
 
-  if (!v21)
+  if (!results)
   {
     v31 = objc_alloc_init(VNDetectFaceRectanglesRequest);
     [(VNDetectFaceRectanglesRequest *)v31 applyConfigurationOfRequest:self];
     v113.receiver = v31;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v113 count:1];
-    v33 = [v30 performDependentRequests:v32 onBehalfOfRequest:self inContext:v90 error:v91];
+    v33 = [v30 performDependentRequests:v32 onBehalfOfRequest:self inContext:v90 error:errorCopy2];
 
     if ((v33 & 1) == 0)
     {
 
-      v21 = 0;
+      results = 0;
       goto LABEL_31;
     }
 
-    v21 = [(VNRequest *)v31 results];
+    results = [(VNRequest *)v31 results];
   }
 
-  if (a3 != 2)
+  if (revision != 2)
   {
-    if (v91)
+    if (errorCopy2)
     {
-      [VNError errorForUnsupportedRevision:a3 ofRequest:self];
-      *v91 = v79 = 0;
+      [VNError errorForUnsupportedRevision:revision ofRequest:self];
+      *errorCopy2 = v79 = 0;
       goto LABEL_32;
     }
 
@@ -247,8 +247,8 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v21 = v21;
-  v79 = v21;
+  results = results;
+  v79 = results;
 LABEL_32:
 
 LABEL_33:
@@ -256,7 +256,7 @@ LABEL_33:
   {
     [v90 session];
     v78 = v96 = 0;
-    v34 = [VNRequest applicableDetectorAndOptions:"applicableDetectorAndOptions:forRevision:loadedInSession:error:" forRevision:&v96 loadedInSession:a3 error:?];
+    v34 = [VNRequest applicableDetectorAndOptions:"applicableDetectorAndOptions:forRevision:loadedInSession:error:" forRevision:&v96 loadedInSession:revision error:?];
     v35 = v96;
     v89 = v34;
     if (v34)
@@ -347,7 +347,7 @@ LABEL_33:
                     v116 = CGRectIntersection(v115, v117);
                     if (v116.size.width * v116.size.height / (v53 * v55) >= 0.7)
                     {
-                      [(VNScreenGazeFaceObjectState *)v47 _replaceFaceObservation:v42 imageWidth:v85 imageHeight:v84 frameIndex:v41->_currentFrame];
+                      [(VNScreenGazeFaceObjectState *)v47 _replaceFaceObservation:v42 imageWidth:width imageHeight:height frameIndex:v41->_currentFrame];
                       v61 = v47;
 
                       goto LABEL_60;
@@ -373,9 +373,9 @@ LABEL_33:
                 v61 = objc_msgSendSuper2(&v101, v80);
                 if (v61)
                 {
-                  v63 = [v62 uuid];
+                  uuid = [v62 uuid];
                   uuid = v61->_uuid;
-                  v61->_uuid = v63;
+                  v61->_uuid = uuid;
 
                   operator new();
                 }
@@ -396,9 +396,9 @@ LABEL_60:
             [v35 setObject:v65 forKeyedSubscript:@"VNDetectorProcessOption_InputFaceObservations"];
 
             [v35 setObject:v61 forKeyedSubscript:@"VNScreenGazeDetectorProcessOption_FaceObjectState"];
-            v66 = [v90 qosClass];
+            qosClass = [v90 qosClass];
             [(VNImageBasedRequest *)self regionOfInterest];
-            v67 = [v89 processUsingQualityOfServiceClass:v66 options:v35 regionOfInterest:self warningRecorder:v91 error:0 progressHandler:?];
+            v67 = [v89 processUsingQualityOfServiceClass:qosClass options:v35 regionOfInterest:self warningRecorder:errorCopy2 error:0 progressHandler:?];
             if (!v67)
             {
 
@@ -504,9 +504,9 @@ LABEL_91:
   return v23;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 2)
+  if (revision == 2)
   {
     if (+[VNScreenGazeDetectorRevision2 supportsExecution])
     {
@@ -515,19 +515,19 @@ LABEL_91:
       goto LABEL_10;
     }
 
-    if (a4)
+    if (error)
     {
       v7 = [VNError errorWithCode:22 message:@"Requires newer ANE device"];
       goto LABEL_8;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v7 = [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
 LABEL_8:
     v5 = 0;
-    *a4 = v7;
+    *error = v7;
     goto LABEL_10;
   }
 
@@ -537,40 +537,40 @@ LABEL_10:
   return v5;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v6.receiver = self;
     v6.super_class = VNDetectScreenGazeRequest;
-    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = requestCopy;
       [(VNDetectScreenGazeRequest *)self setTemporalSmoothingFrameCount:[(VNDetectScreenGazeRequest *)v5 temporalSmoothingFrameCount]];
     }
   }
 }
 
-- (VNDetectScreenGazeRequest)initWithCompletionHandler:(id)a3
+- (VNDetectScreenGazeRequest)initWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   CMTimeMake(&v8, 0, 1);
   v7.receiver = self;
   v7.super_class = VNDetectScreenGazeRequest;
-  v5 = [(VNStatefulRequest *)&v7 initWithFrameAnalysisSpacing:&v8 completionHandler:v4];
+  v5 = [(VNStatefulRequest *)&v7 initWithFrameAnalysisSpacing:&v8 completionHandler:handlerCopy];
 
   return v5;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v9.receiver = self;
   v9.super_class = VNDetectScreenGazeRequest;
-  v6 = [(VNRequest *)&v9 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
-  if (a3 == 2)
+  v6 = [(VNRequest *)&v9 newDefaultDetectorOptionsForRequestRevision:revision session:session];
+  if (revision == 2)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNDetectScreenGazeRequest screenSize](self, "screenSize")}];
     [v6 setObject:v7 forKeyedSubscript:@"VNScreenGazeDetectorInitOption_ScreenSize"];

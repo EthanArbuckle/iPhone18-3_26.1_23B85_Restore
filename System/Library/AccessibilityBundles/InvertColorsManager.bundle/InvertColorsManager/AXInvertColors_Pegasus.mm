@@ -1,23 +1,23 @@
 @interface AXInvertColors_Pegasus
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_Pegasus
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"__PGView"];
-  [v3 validateClass:@"PGPictureInPictureViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"__PGView"];
+  [validationsCopy validateClass:@"PGPictureInPictureViewController" isKindOfClass:@"UIViewController"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"__PGViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PGHostedWindowInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PGPictureInPictureViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"__PGViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PGHostedWindowInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PGPictureInPictureViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

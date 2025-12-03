@@ -1,50 +1,50 @@
 @interface RTXPCActivityManager
-+ (id)criteriaDictionaryWithCriteria:(id)a3;
-+ (id)lastAttemptDateKeyForIdentifier:(id)a3;
-+ (id)lastCompleteDateKeyForIdentifier:(id)a3;
-+ (id)xpcActivityCopyCriteriaActivity:(id)a3;
-- (RTXPCActivityManager)initWithDefaultsManager:(id)a3 diagnostics:(id)a4 identifier:(id)a5;
-- (RTXPCActivityManager)initWithDefaultsManager:(id)a3 diagnostics:(id)a4 timerManager:(id)a5 identifier:(id)a6;
-- (id)_lastAttemptDateForIdentifier:(id)a3;
-- (id)_lastCompleteDateForIdentifier:(id)a3;
-- (id)_registerRegistrant:(id)a3;
++ (id)criteriaDictionaryWithCriteria:(id)criteria;
++ (id)lastAttemptDateKeyForIdentifier:(id)identifier;
++ (id)lastCompleteDateKeyForIdentifier:(id)identifier;
++ (id)xpcActivityCopyCriteriaActivity:(id)activity;
+- (RTXPCActivityManager)initWithDefaultsManager:(id)manager diagnostics:(id)diagnostics identifier:(id)identifier;
+- (RTXPCActivityManager)initWithDefaultsManager:(id)manager diagnostics:(id)diagnostics timerManager:(id)timerManager identifier:(id)identifier;
+- (id)_lastAttemptDateForIdentifier:(id)identifier;
+- (id)_lastCompleteDateForIdentifier:(id)identifier;
+- (id)_registerRegistrant:(id)registrant;
 - (void)_onDeferCheckTimer;
-- (void)_registerActivityWithIdentifier:(id)a3 criteria:(id)a4 handler:(id)a5 deferHandler:(id)a6;
-- (void)_runRegistrantWithIdentifier:(id)a3 activity:(id)a4 handler:(id)a5;
+- (void)_registerActivityWithIdentifier:(id)identifier criteria:(id)criteria handler:(id)handler deferHandler:(id)deferHandler;
+- (void)_runRegistrantWithIdentifier:(id)identifier activity:(id)activity handler:(id)handler;
 - (void)_scheduleNextTask;
-- (void)_shutdownWithHandler:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
 - (void)_startDeferCheckTimer;
 - (void)_stopDeferCheckTimer;
-- (void)_unregisterActivityWithIdentifier:(id)a3 handler:(id)a4;
-- (void)_updateLastAttemptDateForIdentifier:(id)a3;
-- (void)_updateLastCompleteDateForIdentifier:(id)a3;
-- (void)deleteDefaultsForIdentifier:(id)a3;
-- (void)registerActivityWithIdentifier:(id)a3 criteria:(id)a4 handler:(id)a5 deferHandler:(id)a6;
-- (void)runRegistrantWithIdentifier:(id)a3 activity:(id)a4 handler:(id)a5;
-- (void)unregisterActivityWithIdentifier:(id)a3 handler:(id)a4;
+- (void)_unregisterActivityWithIdentifier:(id)identifier handler:(id)handler;
+- (void)_updateLastAttemptDateForIdentifier:(id)identifier;
+- (void)_updateLastCompleteDateForIdentifier:(id)identifier;
+- (void)deleteDefaultsForIdentifier:(id)identifier;
+- (void)registerActivityWithIdentifier:(id)identifier criteria:(id)criteria handler:(id)handler deferHandler:(id)deferHandler;
+- (void)runRegistrantWithIdentifier:(id)identifier activity:(id)activity handler:(id)handler;
+- (void)unregisterActivityWithIdentifier:(id)identifier handler:(id)handler;
 @end
 
 @implementation RTXPCActivityManager
 
-- (RTXPCActivityManager)initWithDefaultsManager:(id)a3 diagnostics:(id)a4 identifier:(id)a5
+- (RTXPCActivityManager)initWithDefaultsManager:(id)manager diagnostics:(id)diagnostics identifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  diagnosticsCopy = diagnostics;
+  managerCopy = manager;
   v11 = objc_opt_new();
-  v12 = [(RTXPCActivityManager *)self initWithDefaultsManager:v10 diagnostics:v9 timerManager:v11 identifier:v8];
+  v12 = [(RTXPCActivityManager *)self initWithDefaultsManager:managerCopy diagnostics:diagnosticsCopy timerManager:v11 identifier:identifierCopy];
 
   return v12;
 }
 
-- (RTXPCActivityManager)initWithDefaultsManager:(id)a3 diagnostics:(id)a4 timerManager:(id)a5 identifier:(id)a6
+- (RTXPCActivityManager)initWithDefaultsManager:(id)manager diagnostics:(id)diagnostics timerManager:(id)timerManager identifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11)
+  managerCopy = manager;
+  diagnosticsCopy = diagnostics;
+  timerManagerCopy = timerManager;
+  identifierCopy = identifier;
+  v15 = identifierCopy;
+  if (!managerCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -59,7 +59,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v12)
+  if (!diagnosticsCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -72,7 +72,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v13)
+  if (!timerManagerCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v14)
+  if (!identifierCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -97,7 +97,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -107,9 +107,9 @@ LABEL_17:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_defaultsManager, a3);
-    objc_storeStrong(&v17->_diagnostics, a4);
-    objc_storeStrong(&v17->_timerManager, a5);
+    objc_storeStrong(&v16->_defaultsManager, manager);
+    objc_storeStrong(&v17->_diagnostics, diagnostics);
+    objc_storeStrong(&v17->_timerManager, timerManager);
     v18 = objc_opt_new();
     registrants = v17->_registrants;
     v17->_registrants = v18;
@@ -118,21 +118,21 @@ LABEL_17:
     pendingTasks = v17->_pendingTasks;
     v17->_pendingTasks = v20;
 
-    objc_storeStrong(&v17->_identifier, a6);
+    objc_storeStrong(&v17->_identifier, identifier);
     [(RTService *)v17 setup];
   }
 
   self = v17;
-  v22 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v22;
+  return selfCopy;
 }
 
-+ (id)lastAttemptDateKeyForIdentifier:(id)a3
++ (id)lastAttemptDateKeyForIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (identifier)
   {
     v3 = [@"XPCActivityLastAttemptDate" stringByAppendingPathExtension:?];
   }
@@ -155,10 +155,10 @@ LABEL_18:
   return v3;
 }
 
-+ (id)lastCompleteDateKeyForIdentifier:(id)a3
++ (id)lastCompleteDateKeyForIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (identifier)
   {
     v3 = [@"XPCActivityLastCompleteDate" stringByAppendingPathExtension:?];
   }
@@ -181,126 +181,126 @@ LABEL_18:
   return v3;
 }
 
-- (void)deleteDefaultsForIdentifier:(id)a3
+- (void)deleteDefaultsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(RTXPCActivityManager *)self defaultsManager];
-    v6 = [RTXPCActivityManager lastAttemptDateKeyForIdentifier:v4];
-    [v5 setObject:0 forKey:v6];
+    defaultsManager = [(RTXPCActivityManager *)self defaultsManager];
+    v6 = [RTXPCActivityManager lastAttemptDateKeyForIdentifier:identifierCopy];
+    [defaultsManager setObject:0 forKey:v6];
 
-    v7 = [(RTXPCActivityManager *)self defaultsManager];
-    v8 = [RTXPCActivityManager lastCompleteDateKeyForIdentifier:v4];
-    [v7 setObject:0 forKey:v8];
+    defaultsManager2 = [(RTXPCActivityManager *)self defaultsManager];
+    v8 = [RTXPCActivityManager lastCompleteDateKeyForIdentifier:identifierCopy];
+    [defaultsManager2 setObject:0 forKey:v8];
   }
 
   else
   {
-    v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    defaultsManager2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(defaultsManager2, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_error_impl(&dword_2304B3000, v7, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier", v9, 2u);
+      _os_log_error_impl(&dword_2304B3000, defaultsManager2, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier", v9, 2u);
     }
   }
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   [(RTTimer *)self->_timer invalidate];
   timer = self->_timer;
   self->_timer = 0;
 
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v5 = handlerCopy;
   }
 }
 
-- (id)_lastAttemptDateForIdentifier:(id)a3
+- (id)_lastAttemptDateForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() lastAttemptDateKeyForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [objc_opt_class() lastAttemptDateKeyForIdentifier:identifierCopy];
 
-  v6 = [(RTXPCActivityManager *)self defaultsManager];
-  v7 = [v6 objectForKey:v5];
+  defaultsManager = [(RTXPCActivityManager *)self defaultsManager];
+  v7 = [defaultsManager objectForKey:v5];
 
   return v7;
 }
 
-- (void)_updateLastAttemptDateForIdentifier:(id)a3
+- (void)_updateLastAttemptDateForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v7 = [objc_opt_class() lastAttemptDateKeyForIdentifier:v4];
+  identifierCopy = identifier;
+  v7 = [objc_opt_class() lastAttemptDateKeyForIdentifier:identifierCopy];
 
-  v5 = [(RTXPCActivityManager *)self defaultsManager];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v5 setObject:v6 forKey:v7];
+  defaultsManager = [(RTXPCActivityManager *)self defaultsManager];
+  date = [MEMORY[0x277CBEAA8] date];
+  [defaultsManager setObject:date forKey:v7];
 }
 
-- (id)_lastCompleteDateForIdentifier:(id)a3
+- (id)_lastCompleteDateForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() lastCompleteDateKeyForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [objc_opt_class() lastCompleteDateKeyForIdentifier:identifierCopy];
 
-  v6 = [(RTXPCActivityManager *)self defaultsManager];
-  v7 = [v6 objectForKey:v5];
+  defaultsManager = [(RTXPCActivityManager *)self defaultsManager];
+  v7 = [defaultsManager objectForKey:v5];
 
   return v7;
 }
 
-- (void)_updateLastCompleteDateForIdentifier:(id)a3
+- (void)_updateLastCompleteDateForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v7 = [objc_opt_class() lastCompleteDateKeyForIdentifier:v4];
+  identifierCopy = identifier;
+  v7 = [objc_opt_class() lastCompleteDateKeyForIdentifier:identifierCopy];
 
-  v5 = [(RTXPCActivityManager *)self defaultsManager];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v5 setObject:v6 forKey:v7];
+  defaultsManager = [(RTXPCActivityManager *)self defaultsManager];
+  date = [MEMORY[0x277CBEAA8] date];
+  [defaultsManager setObject:date forKey:v7];
 }
 
-+ (id)criteriaDictionaryWithCriteria:(id)a3
++ (id)criteriaDictionaryWithCriteria:(id)criteria
 {
-  v3 = a3;
-  if (v3)
+  criteriaCopy = criteria;
+  if (criteriaCopy)
   {
     v4 = xpc_dictionary_create(0, 0, 0);
-    [v3 interval];
+    [criteriaCopy interval];
     v6 = v5;
     if (v5 > 0.0)
     {
       v7 = *MEMORY[0x277D86288];
-      [v3 interval];
+      [criteriaCopy interval];
       xpc_dictionary_set_int64(v4, v7, v8);
     }
 
     xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86360], v6 > 0.0);
     v9 = *MEMORY[0x277D86250];
-    [v3 delay];
+    [criteriaCopy delay];
     xpc_dictionary_set_int64(v4, v9, v10);
     v11 = *MEMORY[0x277D86270];
-    [v3 gracePeriod];
+    [criteriaCopy gracePeriod];
     xpc_dictionary_set_int64(v4, v11, v12);
     v13 = *MEMORY[0x277D86340];
-    v14 = [objc_opt_class() convertPriority:{objc_msgSend(v3, "priority")}];
+    v14 = [objc_opt_class() convertPriority:{objc_msgSend(criteriaCopy, "priority")}];
     xpc_dictionary_set_string(v4, v13, v14);
-    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86230], [v3 allowBattery]);
-    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86398], [v3 requireNetworkConnectivity]);
-    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86390], [v3 requireInexpensiveNetworkConnectivity]);
-    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86330], [v3 powerNap]);
-    xpc_dictionary_set_int64(v4, *MEMORY[0x277D86320], [v3 networkTransferUploadSize]);
-    xpc_dictionary_set_int64(v4, *MEMORY[0x277D862E8], [v3 networkTransferDownloadSize]);
-    v15 = [v3 requireBatteryLevel];
+    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86230], [criteriaCopy allowBattery]);
+    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86398], [criteriaCopy requireNetworkConnectivity]);
+    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86390], [criteriaCopy requireInexpensiveNetworkConnectivity]);
+    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86330], [criteriaCopy powerNap]);
+    xpc_dictionary_set_int64(v4, *MEMORY[0x277D86320], [criteriaCopy networkTransferUploadSize]);
+    xpc_dictionary_set_int64(v4, *MEMORY[0x277D862E8], [criteriaCopy networkTransferDownloadSize]);
+    requireBatteryLevel = [criteriaCopy requireBatteryLevel];
 
-    if (v15)
+    if (requireBatteryLevel)
     {
       v16 = *MEMORY[0x277D86388];
-      v17 = [v3 requireBatteryLevel];
-      xpc_dictionary_set_int64(v4, v16, [v17 integerValue]);
+      requireBatteryLevel2 = [criteriaCopy requireBatteryLevel];
+      xpc_dictionary_set_int64(v4, v16, [requireBatteryLevel2 integerValue]);
 
       v18 = xpc_dictionary_create(0, 0, 0);
       v27 = 0;
@@ -329,22 +329,22 @@ LABEL_18:
       }
 
       v20 = [*v19 cStringUsingEncoding:4];
-      v21 = [v3 requireBatteryLevel];
-      xpc_dictionary_set_int64(v18, v20, [v21 integerValue]);
+      requireBatteryLevel3 = [criteriaCopy requireBatteryLevel];
+      xpc_dictionary_set_int64(v18, v20, [requireBatteryLevel3 integerValue]);
 
       xpc_dictionary_set_value(v4, *MEMORY[0x277D86260], v18);
     }
 
-    [v3 expectedDuration];
+    [criteriaCopy expectedDuration];
     v22 = *MEMORY[0x277D86268];
-    [v3 expectedDuration];
+    [criteriaCopy expectedDuration];
     xpc_dictionary_set_int64(v4, v22, v23);
-    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D863B8], [v3 userRequestedBackgroundTask]);
-    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86248], [v3 cpuIntensive]);
-    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86328], [v3 postInstall]);
-    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86368], [v3 requiresBuddyComplete]);
-    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86378], [v3 requiresClassB]);
-    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86370], [v3 requiresClassA]);
+    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D863B8], [criteriaCopy userRequestedBackgroundTask]);
+    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86248], [criteriaCopy cpuIntensive]);
+    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86328], [criteriaCopy postInstall]);
+    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86368], [criteriaCopy requiresBuddyComplete]);
+    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86378], [criteriaCopy requiresClassB]);
+    xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86370], [criteriaCopy requiresClassA]);
   }
 
   else
@@ -355,51 +355,51 @@ LABEL_18:
   return v4;
 }
 
-- (void)_registerActivityWithIdentifier:(id)a3 criteria:(id)a4 handler:(id)a5 deferHandler:(id)a6
+- (void)_registerActivityWithIdentifier:(id)identifier criteria:(id)criteria handler:(id)handler deferHandler:(id)deferHandler
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v12)
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
+  handlerCopy = handler;
+  deferHandlerCopy = deferHandler;
+  if (handlerCopy)
   {
-    if (v10)
+    if (identifierCopy)
     {
-      if (v11)
+      if (criteriaCopy)
       {
-        v14 = [[RTXPCActivityRegistrant alloc] initWithIdentifier:v10 criteria:v11 handler:v12 deferHandler:v13];
+        v14 = [[RTXPCActivityRegistrant alloc] initWithIdentifier:identifierCopy criteria:criteriaCopy handler:handlerCopy deferHandler:deferHandlerCopy];
         if (v14)
         {
           v15 = v14;
-          v16 = [(RTXPCActivityManager *)self registrants];
-          v17 = [v15 identifier];
-          [v16 setObject:v15 forKey:v17];
+          registrants = [(RTXPCActivityManager *)self registrants];
+          identifier = [v15 identifier];
+          [registrants setObject:v15 forKey:identifier];
 
-          v18 = [v15 identifier];
-          v19 = [(RTXPCActivityManager *)self _lastAttemptDateForIdentifier:v18];
+          identifier2 = [v15 identifier];
+          v19 = [(RTXPCActivityManager *)self _lastAttemptDateForIdentifier:identifier2];
 
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v20 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
             {
-              v34 = [(RTXPCActivityManager *)self identifier];
-              v33 = [v19 stringFromDate];
-              v21 = [MEMORY[0x277CBEAA8] date];
-              v22 = v19;
+              identifier3 = [(RTXPCActivityManager *)self identifier];
+              stringFromDate = [v19 stringFromDate];
+              date = [MEMORY[0x277CBEAA8] date];
+              distantPast = v19;
               if (!v19)
               {
-                v22 = [MEMORY[0x277CBEAA8] distantPast];
+                distantPast = [MEMORY[0x277CBEAA8] distantPast];
               }
 
-              [v21 timeIntervalSinceDate:v22];
+              [date timeIntervalSinceDate:distantPast];
               *buf = 138413058;
-              v36 = v34;
+              v36 = identifier3;
               v37 = 2112;
               v38 = v15;
               v39 = 2112;
-              v40 = v33;
+              v40 = stringFromDate;
               v41 = 2048;
               v42 = v23;
               _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_INFO, "manager, %@, register activity, registrant, %@, lastAttemptDate, %@, intervalSinceLastAttempt, %.2f", buf, 0x2Au);
@@ -420,7 +420,7 @@ LABEL_18:
           v44 = @"requires a valid registrant.";
           v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
           v32 = [v30 errorWithDomain:v31 code:7 userInfo:v19];
-          v12[2](v12, 0, v32);
+          handlerCopy[2](handlerCopy, 0, v32);
 
           v15 = 0;
         }
@@ -450,23 +450,23 @@ LABEL_18:
 
     v15 = [v27 dictionaryWithObjects:v28 forKeys:v29 count:1];
     v19 = [v25 errorWithDomain:v26 code:7 userInfo:v15];
-    v12[2](v12, 0, v19);
+    handlerCopy[2](handlerCopy, 0, v19);
 LABEL_17:
   }
 }
 
-- (void)_runRegistrantWithIdentifier:(id)a3 activity:(id)a4 handler:(id)a5
+- (void)_runRegistrantWithIdentifier:(id)identifier activity:(id)activity handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [[RTXPCActivityTask alloc] initWithIdentifier:v8 activity:v10 handler:v9];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  activityCopy = activity;
+  v11 = [[RTXPCActivityTask alloc] initWithIdentifier:identifierCopy activity:activityCopy handler:handlerCopy];
 
   if (v11)
   {
-    v12 = [(RTXPCActivityManager *)self pendingTasks];
-    [v12 addObject:v11];
+    pendingTasks = [(RTXPCActivityManager *)self pendingTasks];
+    [pendingTasks addObject:v11];
 
     [(RTXPCActivityManager *)self _startDeferCheckTimer];
     [(RTXPCActivityManager *)self _scheduleNextTask];
@@ -477,49 +477,49 @@ LABEL_17:
     v13 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(RTXPCActivityManager *)self identifier];
+      identifier = [(RTXPCActivityManager *)self identifier];
       v15 = 138412546;
-      v16 = v14;
+      v16 = identifier;
       v17 = 2112;
-      v18 = v8;
+      v18 = identifierCopy;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "manager, %@, unable to create task for identifier, %@", &v15, 0x16u);
     }
   }
 }
 
-- (void)runRegistrantWithIdentifier:(id)a3 activity:(id)a4 handler:(id)a5
+- (void)runRegistrantWithIdentifier:(id)identifier activity:(id)activity handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  identifierCopy = identifier;
+  activityCopy = activity;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__RTXPCActivityManager_runRegistrantWithIdentifier_activity_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = identifierCopy;
+  v17 = activityCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = activityCopy;
+  v14 = identifierCopy;
+  dispatch_async(queue, v15);
 }
 
 - (void)_startDeferCheckTimer
 {
   if (!self->_timer)
   {
-    v3 = [(RTXPCActivityManager *)self runningTask];
-    if (v3)
+    runningTask = [(RTXPCActivityManager *)self runningTask];
+    if (runningTask)
     {
     }
 
     else
     {
-      v4 = [(RTXPCActivityManager *)self pendingTasks];
-      v5 = [v4 count];
+      pendingTasks = [(RTXPCActivityManager *)self pendingTasks];
+      v5 = [pendingTasks count];
 
       if (!v5)
       {
@@ -528,13 +528,13 @@ LABEL_17:
     }
 
     timerManager = self->_timerManager;
-    v7 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __45__RTXPCActivityManager__startDeferCheckTimer__block_invoke;
     v10[3] = &unk_2788C4EA0;
     v10[4] = self;
-    v8 = [(RTTimerManager *)timerManager timerWithIdentifier:@"deferTimer" queue:v7 handler:v10];
+    v8 = [(RTTimerManager *)timerManager timerWithIdentifier:@"deferTimer" queue:queue handler:v10];
     timer = self->_timer;
     self->_timer = v8;
 
@@ -550,8 +550,8 @@ LABEL_17:
     timer = [(RTXPCActivityManager *)self runningTask];
     if (!timer)
     {
-      v4 = [(RTXPCActivityManager *)self pendingTasks];
-      v5 = [v4 count];
+      pendingTasks = [(RTXPCActivityManager *)self pendingTasks];
+      v5 = [pendingTasks count];
 
       if (v5)
       {
@@ -567,31 +567,31 @@ LABEL_17:
 
 - (void)_onDeferCheckTimer
 {
-  v3 = self;
+  selfCopy3 = self;
   v63 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v40 = [(RTXPCActivityManager *)v3 identifier];
+      identifier = [(RTXPCActivityManager *)selfCopy3 identifier];
       v41 = NSStringFromSelector(a2);
-      v42 = [(RTXPCActivityManager *)v3 runningTask];
-      v43 = [v42 identifier];
-      v44 = [(RTXPCActivityManager *)self pendingTasks];
-      v45 = [v44 valueForKeyPath:@"identifier"];
+      runningTask = [(RTXPCActivityManager *)selfCopy3 runningTask];
+      identifier2 = [runningTask identifier];
+      pendingTasks = [(RTXPCActivityManager *)self pendingTasks];
+      v45 = [pendingTasks valueForKeyPath:@"identifier"];
       v46 = [v45 componentsJoinedByString:{@", "}];
       *buf = 138413058;
-      v56 = v40;
+      v56 = identifier;
       v57 = 2112;
       v58 = v41;
       v59 = 2112;
-      v60 = v43;
+      v60 = identifier2;
       v61 = 2112;
       v62 = v46;
       _os_log_debug_impl(&dword_2304B3000, v4, OS_LOG_TYPE_DEBUG, "manager, %@, %@, running task, %@, pending tasks, %@", buf, 0x2Au);
 
-      v3 = self;
+      selfCopy3 = self;
     }
   }
 
@@ -599,7 +599,7 @@ LABEL_17:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v5 = [(NSMutableArray *)v3->_pendingTasks copy];
+  v5 = [(NSMutableArray *)selfCopy3->_pendingTasks copy];
   v6 = [v5 countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v6)
   {
@@ -617,8 +617,8 @@ LABEL_17:
         }
 
         v11 = *(*(&v50 + 1) + 8 * i);
-        v12 = [v11 activity];
-        v13 = [RTXPCActivityManager xpcActivityShouldDeferActivity:v12];
+        activity = [v11 activity];
+        v13 = [RTXPCActivityManager xpcActivityShouldDeferActivity:activity];
 
         if (v13)
         {
@@ -627,25 +627,25 @@ LABEL_17:
             v14 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
             if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
             {
-              v15 = [(RTXPCActivityManager *)self identifier];
-              v16 = [v11 identifier];
+              identifier3 = [(RTXPCActivityManager *)self identifier];
+              identifier4 = [v11 identifier];
               *buf = v48;
-              v56 = v15;
+              v56 = identifier3;
               v57 = 2112;
-              v58 = v16;
+              v58 = identifier4;
               _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "manager, %@, pending xpc activity should defer, identifier, %@", buf, 0x16u);
             }
           }
 
-          v17 = [v11 handler];
+          handler = [v11 handler];
 
-          if (v17)
+          if (handler)
           {
-            v18 = [v11 handler];
-            v18[2](v18, 3, 0);
+            handler2 = [v11 handler];
+            handler2[2](handler2, 3, 0);
           }
 
-          v3 = self;
+          selfCopy3 = self;
           [(NSMutableArray *)self->_pendingTasks removeObject:v11];
         }
       }
@@ -656,13 +656,13 @@ LABEL_17:
     while (v8);
   }
 
-  v19 = [(RTXPCActivityManager *)v3 runningTask];
+  runningTask2 = [(RTXPCActivityManager *)selfCopy3 runningTask];
 
-  if (v19)
+  if (runningTask2)
   {
-    v20 = [(RTXPCActivityManager *)v3 runningTask];
-    v21 = [v20 activity];
-    v22 = [RTXPCActivityManager xpcActivityShouldDeferActivity:v21];
+    runningTask3 = [(RTXPCActivityManager *)selfCopy3 runningTask];
+    activity2 = [runningTask3 activity];
+    v22 = [RTXPCActivityManager xpcActivityShouldDeferActivity:activity2];
 
     if (v22)
     {
@@ -671,21 +671,21 @@ LABEL_17:
         v23 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
-          v24 = [(RTXPCActivityManager *)v3 identifier];
-          v25 = [(RTXPCActivityManager *)v3 runningTask];
-          v26 = [v25 identifier];
+          identifier5 = [(RTXPCActivityManager *)selfCopy3 identifier];
+          runningTask4 = [(RTXPCActivityManager *)selfCopy3 runningTask];
+          identifier6 = [runningTask4 identifier];
           *buf = 138412546;
-          v56 = v24;
+          v56 = identifier5;
           v57 = 2112;
-          v58 = v26;
+          v58 = identifier6;
           _os_log_impl(&dword_2304B3000, v23, OS_LOG_TYPE_INFO, "manager, %@, running xpc activity should defer, identifier, %@", buf, 0x16u);
         }
       }
 
-      v27 = [(RTXPCActivityManager *)v3 registrants];
-      v28 = [(RTXPCActivityManager *)v3 runningTask];
-      v29 = [v28 identifier];
-      v30 = [v27 objectForKeyedSubscript:v29];
+      registrants = [(RTXPCActivityManager *)selfCopy3 registrants];
+      runningTask5 = [(RTXPCActivityManager *)selfCopy3 runningTask];
+      identifier7 = [runningTask5 identifier];
+      v30 = [registrants objectForKeyedSubscript:identifier7];
 
       if (v30 && ([v30 deferHandler], v31 = objc_claimAutoreleasedReturnValue(), v31, v31))
       {
@@ -696,9 +696,9 @@ LABEL_17:
             v32 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
             {
-              v47 = [v30 identifier];
+              identifier8 = [v30 identifier];
               *buf = 138412290;
-              v56 = v47;
+              v56 = identifier8;
               _os_log_debug_impl(&dword_2304B3000, v32, OS_LOG_TYPE_DEBUG, "Defer handler already invoked for,%@", buf, 0xCu);
             }
           }
@@ -711,15 +711,15 @@ LABEL_17:
             v37 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
             if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
             {
-              v38 = [v30 identifier];
+              identifier9 = [v30 identifier];
               *buf = 138412290;
-              v56 = v38;
+              v56 = identifier9;
               _os_log_impl(&dword_2304B3000, v37, OS_LOG_TYPE_INFO, "Invoking defer handler for,%@", buf, 0xCu);
             }
           }
 
-          v39 = [v30 deferHandler];
-          v39[2](v39, 0);
+          deferHandler = [v30 deferHandler];
+          deferHandler[2](deferHandler, 0);
 
           [v30 setDidInvokeDeferHandler:1];
         }
@@ -727,56 +727,56 @@ LABEL_17:
 
       else
       {
-        v33 = [(RTXPCActivityManager *)v3 runningTask];
-        v34 = [v33 handler];
+        runningTask6 = [(RTXPCActivityManager *)selfCopy3 runningTask];
+        handler3 = [runningTask6 handler];
 
-        if (v34)
+        if (handler3)
         {
-          v35 = [(RTXPCActivityManager *)v3 runningTask];
-          v36 = [v35 handler];
-          v36[2](v36, 5, 0);
+          runningTask7 = [(RTXPCActivityManager *)selfCopy3 runningTask];
+          handler4 = [runningTask7 handler];
+          handler4[2](handler4, 5, 0);
         }
 
-        [(RTXPCActivityManager *)v3 setRunningTask:0];
+        [(RTXPCActivityManager *)selfCopy3 setRunningTask:0];
       }
     }
   }
 
-  [(RTXPCActivityManager *)v3 _stopDeferCheckTimer];
+  [(RTXPCActivityManager *)selfCopy3 _stopDeferCheckTimer];
 }
 
 - (void)_scheduleNextTask
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = [(RTXPCActivityManager *)self runningTask];
+  runningTask = [(RTXPCActivityManager *)self runningTask];
 
-  if (!v4)
+  if (!runningTask)
   {
-    v10 = [(RTXPCActivityManager *)self pendingTasks];
-    v5 = [v10 firstObject];
+    pendingTasks = [(RTXPCActivityManager *)self pendingTasks];
+    firstObject = [pendingTasks firstObject];
 
-    if (v5)
+    if (firstObject)
     {
-      v11 = [(RTXPCActivityManager *)self pendingTasks];
-      [v11 removeObjectAtIndex:0];
+      pendingTasks2 = [(RTXPCActivityManager *)self pendingTasks];
+      [pendingTasks2 removeObjectAtIndex:0];
 
-      v12 = [(RTXPCActivityManager *)self registrants];
-      v13 = [v5 identifier];
-      v14 = [v12 objectForKey:v13];
+      registrants = [(RTXPCActivityManager *)self registrants];
+      identifier = [firstObject identifier];
+      v14 = [registrants objectForKey:identifier];
 
       if (v14)
       {
-        v15 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         objc_initWeak(&location, self);
         aBlock[0] = MEMORY[0x277D85DD0];
         aBlock[1] = 3221225472;
         aBlock[2] = __41__RTXPCActivityManager__scheduleNextTask__block_invoke;
         aBlock[3] = &unk_2788CA620;
         objc_copyWeak(&v57, &location);
-        v50 = v15;
+        v50 = date;
         v53 = v50;
-        v54 = self;
-        v16 = v5;
+        selfCopy = self;
+        v16 = firstObject;
         v55 = v16;
         v17 = v14;
         v56 = v17;
@@ -787,27 +787,27 @@ LABEL_17:
           v18 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
-            v19 = [(RTXPCActivityManager *)self identifier];
-            v20 = [v17 identifier];
+            identifier2 = [(RTXPCActivityManager *)self identifier];
+            identifier3 = [v17 identifier];
             *buf = 138412546;
-            v62 = v19;
+            v62 = identifier2;
             v63 = 2112;
-            v64 = v20;
+            v64 = identifier3;
             _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_INFO, "manager, %@, run started, identifier, %@", buf, 0x16u);
           }
         }
 
         diagnostics = self->_diagnostics;
         v22 = MEMORY[0x277CCACA8];
-        v23 = [v16 identifier];
-        v24 = [v22 stringWithFormat:@"Before identifier, %@", v23];
+        identifier4 = [v16 identifier];
+        v24 = [v22 stringWithFormat:@"Before identifier, %@", identifier4];
         [(RTDiagnostics *)diagnostics logDiagnosticStateWithReason:v24];
 
-        v25 = [v17 identifier];
-        v26 = [(RTXPCActivityManager *)self _lastAttemptDateForIdentifier:v25];
+        identifier5 = [v17 identifier];
+        v26 = [(RTXPCActivityManager *)self _lastAttemptDateForIdentifier:identifier5];
 
-        v27 = [v17 identifier];
-        v28 = [(RTXPCActivityManager *)self _lastCompleteDateForIdentifier:v27];
+        identifier6 = [v17 identifier];
+        v28 = [(RTXPCActivityManager *)self _lastCompleteDateForIdentifier:identifier6];
 
         if (v28)
         {
@@ -828,13 +828,13 @@ LABEL_17:
           v30 = 0;
         }
 
-        v37 = [MEMORY[0x277CBEAA8] date];
-        [v37 timeIntervalSinceDate:v26];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        [date2 timeIntervalSinceDate:v26];
         v39 = v38;
 
         v40 = objc_opt_new();
-        v41 = [v17 identifier];
-        [v40 setObject:v41 forKeyedSubscript:@"identifier"];
+        identifier7 = [v17 identifier];
+        [v40 setObject:identifier7 forKeyedSubscript:@"identifier"];
 
         [v40 setObject:&unk_28459DE30 forKeyedSubscript:@"state"];
         v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v30];
@@ -849,11 +849,11 @@ LABEL_17:
         v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v45];
         AnalyticsSendEvent();
 
-        v47 = [v17 identifier];
-        [(RTXPCActivityManager *)self _updateLastAttemptDateForIdentifier:v47];
+        identifier8 = [v17 identifier];
+        [(RTXPCActivityManager *)self _updateLastAttemptDateForIdentifier:identifier8];
 
-        v48 = [v17 handler];
-        (v48)[2](v48, v49, 0);
+        handler = [v17 handler];
+        (handler)[2](handler, v49, 0);
 
         objc_destroyWeak(&v57);
         objc_destroyWeak(&location);
@@ -861,17 +861,17 @@ LABEL_17:
 
       else
       {
-        v33 = [v5 handler];
+        handler2 = [firstObject handler];
 
-        if (v33)
+        if (handler2)
         {
-          v51 = [v5 handler];
+          handler3 = [firstObject handler];
           v34 = MEMORY[0x277CCA9B8];
           v59 = *MEMORY[0x277CCA450];
           v60 = @"no registrant with identifier";
           v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
           v36 = [v34 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v35];
-          (v51)[2](v51, 5, v36);
+          (handler3)[2](handler3, 5, v36);
         }
 
         else
@@ -885,17 +885,17 @@ LABEL_17:
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
-        v5 = 0;
+        firstObject = 0;
         goto LABEL_25;
       }
 
       v14 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v31 = [(RTXPCActivityManager *)self identifier];
+        identifier9 = [(RTXPCActivityManager *)self identifier];
         v32 = NSStringFromSelector(a2);
         *buf = 138412546;
-        v62 = v31;
+        v62 = identifier9;
         v63 = 2112;
         v64 = v32;
         _os_log_debug_impl(&dword_2304B3000, v14, OS_LOG_TYPE_DEBUG, "manager, %@, %@, no more tasks to run", buf, 0x16u);
@@ -910,20 +910,20 @@ LABEL_17:
     return;
   }
 
-  v5 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  firstObject = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
+  if (os_log_type_enabled(firstObject, OS_LOG_TYPE_INFO))
   {
-    v6 = [(RTXPCActivityManager *)self identifier];
+    identifier10 = [(RTXPCActivityManager *)self identifier];
     v7 = NSStringFromSelector(a2);
-    v8 = [(RTXPCActivityManager *)self runningTask];
-    v9 = [v8 identifier];
+    runningTask2 = [(RTXPCActivityManager *)self runningTask];
+    identifier11 = [runningTask2 identifier];
     *buf = 138412802;
-    v62 = v6;
+    v62 = identifier10;
     v63 = 2112;
     v64 = v7;
     v65 = 2112;
-    v66 = v9;
-    _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "manager, %@, %@, defer next task until the current task is finished, %@", buf, 0x20u);
+    v66 = identifier11;
+    _os_log_impl(&dword_2304B3000, firstObject, OS_LOG_TYPE_INFO, "manager, %@, %@, defer next task until the current task is finished, %@", buf, 0x20u);
   }
 
 LABEL_25:
@@ -1066,32 +1066,32 @@ void __41__RTXPCActivityManager__scheduleNextTask__block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)_registerRegistrant:(id)a3
+- (id)_registerRegistrant:(id)registrant
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  registrantCopy = registrant;
+  if (registrantCopy)
   {
     v5 = objc_opt_class();
-    v6 = [v4 criteria];
-    v7 = [v5 criteriaDictionaryWithCriteria:v6];
+    criteria = [registrantCopy criteria];
+    v7 = [v5 criteriaDictionaryWithCriteria:criteria];
 
     if (v7)
     {
       objc_initWeak(&location, self);
-      v8 = [v4 identifier];
-      v9 = v8;
-      v10 = [v8 UTF8String];
+      identifier = [registrantCopy identifier];
+      v9 = identifier;
+      uTF8String = [identifier UTF8String];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __44__RTXPCActivityManager__registerRegistrant___block_invoke;
       v17[3] = &unk_2788CA670;
       v11 = v7;
       v18 = v11;
-      v19 = self;
-      v20 = v4;
+      selfCopy = self;
+      v20 = registrantCopy;
       objc_copyWeak(&v21, &location);
-      [RTXPCActivityManager xpcActivityRegisterIdentifier:v10 criteria:*MEMORY[0x277D86238] handler:v17];
+      [RTXPCActivityManager xpcActivityRegisterIdentifier:uTF8String criteria:*MEMORY[0x277D86238] handler:v17];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
@@ -1258,55 +1258,55 @@ void __44__RTXPCActivityManager__registerRegistrant___block_invoke_248(uint64_t 
   }
 }
 
-- (void)registerActivityWithIdentifier:(id)a3 criteria:(id)a4 handler:(id)a5 deferHandler:(id)a6
+- (void)registerActivityWithIdentifier:(id)identifier criteria:(id)criteria handler:(id)handler deferHandler:(id)deferHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(RTNotifier *)self queue];
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
+  handlerCopy = handler;
+  deferHandlerCopy = deferHandler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__RTXPCActivityManager_registerActivityWithIdentifier_criteria_handler_deferHandler___block_invoke;
   block[3] = &unk_2788CA698;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = identifierCopy;
+  v21 = criteriaCopy;
+  v22 = handlerCopy;
+  v23 = deferHandlerCopy;
+  v15 = deferHandlerCopy;
+  v16 = handlerCopy;
+  v17 = criteriaCopy;
+  v18 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_unregisterActivityWithIdentifier:(id)a3 handler:(id)a4
+- (void)_unregisterActivityWithIdentifier:(id)identifier handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (!identifierCopy)
   {
     goto LABEL_14;
   }
 
-  v8 = [(RTXPCActivityManager *)self registrants];
-  v9 = [v8 objectForKey:v6];
+  registrants = [(RTXPCActivityManager *)self registrants];
+  v9 = [registrants objectForKey:identifierCopy];
 
   if (v9)
   {
-    v10 = [(RTXPCActivityManager *)self registrants];
-    [v10 removeObjectForKey:v6];
+    registrants2 = [(RTXPCActivityManager *)self registrants];
+    [registrants2 removeObjectForKey:identifierCopy];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v11 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [(RTXPCActivityManager *)self identifier];
+        identifier = [(RTXPCActivityManager *)self identifier];
         v14 = 138412546;
-        v15 = v12;
+        v15 = identifier;
         v16 = 2112;
         v17 = v9;
         v13 = "manager, %@, unregister activity, registrant, %@";
@@ -1325,11 +1325,11 @@ LABEL_9:
     v11 = _rt_log_facility_get_os_log(RTLogFacilityXPCActivity);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [(RTXPCActivityManager *)self identifier];
+      identifier = [(RTXPCActivityManager *)self identifier];
       v14 = 138412546;
-      v15 = v12;
+      v15 = identifier;
       v16 = 2112;
-      v17 = v6;
+      v17 = identifierCopy;
       v13 = "manager, %@, unregister activity, identifier, %@. no existing registrant";
       goto LABEL_9;
     }
@@ -1337,35 +1337,35 @@ LABEL_9:
 LABEL_10:
   }
 
-  +[RTXPCActivityManager xpcActivityUnregisterIdentifier:](RTXPCActivityManager, "xpcActivityUnregisterIdentifier:", [v6 UTF8String]);
-  if (v7)
+  +[RTXPCActivityManager xpcActivityUnregisterIdentifier:](RTXPCActivityManager, "xpcActivityUnregisterIdentifier:", [identifierCopy UTF8String]);
+  if (handlerCopy)
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_14:
 }
 
-- (void)unregisterActivityWithIdentifier:(id)a3 handler:(id)a4
+- (void)unregisterActivityWithIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__RTXPCActivityManager_unregisterActivityWithIdentifier_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
-+ (id)xpcActivityCopyCriteriaActivity:(id)a3
++ (id)xpcActivityCopyCriteriaActivity:(id)activity
 {
-  v3 = xpc_activity_copy_criteria(a3);
+  v3 = xpc_activity_copy_criteria(activity);
 
   return v3;
 }

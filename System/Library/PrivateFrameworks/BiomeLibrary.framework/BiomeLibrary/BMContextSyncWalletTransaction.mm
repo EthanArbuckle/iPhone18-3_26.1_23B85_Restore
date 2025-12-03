@@ -1,15 +1,15 @@
 @interface BMContextSyncWalletTransaction
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMContextSyncWalletTransaction)initWithID:(id)a3 deviceUUID:(id)a4 passUniqueID:(id)a5 passLocalizedDescription:(id)a6 transactionType:(int)a7 transactionID:(id)a8 merchantType:(int)a9 poiCategory:(id)a10;
-- (BMContextSyncWalletTransaction)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMContextSyncWalletTransaction)initWithID:(id)d deviceUUID:(id)iD passUniqueID:(id)uniqueID passLocalizedDescription:(id)description transactionType:(int)type transactionID:(id)transactionID merchantType:(int)merchantType poiCategory:(id)self0;
+- (BMContextSyncWalletTransaction)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMContextSyncWalletTransaction
@@ -40,13 +40,13 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(BMContextSyncWalletTransaction *)self ID];
     v7 = [v5 ID];
     v8 = v7;
@@ -66,18 +66,18 @@
       }
     }
 
-    v13 = [(BMContextSyncWalletTransaction *)self deviceUUID];
-    v14 = [v5 deviceUUID];
-    v15 = v14;
-    if (v13 == v14)
+    deviceUUID = [(BMContextSyncWalletTransaction *)self deviceUUID];
+    deviceUUID2 = [v5 deviceUUID];
+    v15 = deviceUUID2;
+    if (deviceUUID == deviceUUID2)
     {
     }
 
     else
     {
-      v16 = [(BMContextSyncWalletTransaction *)self deviceUUID];
-      v17 = [v5 deviceUUID];
-      v18 = [v16 isEqual:v17];
+      deviceUUID3 = [(BMContextSyncWalletTransaction *)self deviceUUID];
+      deviceUUID4 = [v5 deviceUUID];
+      v18 = [deviceUUID3 isEqual:deviceUUID4];
 
       if (!v18)
       {
@@ -85,18 +85,18 @@
       }
     }
 
-    v19 = [(BMContextSyncWalletTransaction *)self passUniqueID];
-    v20 = [v5 passUniqueID];
-    v21 = v20;
-    if (v19 == v20)
+    passUniqueID = [(BMContextSyncWalletTransaction *)self passUniqueID];
+    passUniqueID2 = [v5 passUniqueID];
+    v21 = passUniqueID2;
+    if (passUniqueID == passUniqueID2)
     {
     }
 
     else
     {
-      v22 = [(BMContextSyncWalletTransaction *)self passUniqueID];
-      v23 = [v5 passUniqueID];
-      v24 = [v22 isEqual:v23];
+      passUniqueID3 = [(BMContextSyncWalletTransaction *)self passUniqueID];
+      passUniqueID4 = [v5 passUniqueID];
+      v24 = [passUniqueID3 isEqual:passUniqueID4];
 
       if (!v24)
       {
@@ -104,18 +104,18 @@
       }
     }
 
-    v25 = [(BMContextSyncWalletTransaction *)self passLocalizedDescription];
-    v26 = [v5 passLocalizedDescription];
-    v27 = v26;
-    if (v25 == v26)
+    passLocalizedDescription = [(BMContextSyncWalletTransaction *)self passLocalizedDescription];
+    passLocalizedDescription2 = [v5 passLocalizedDescription];
+    v27 = passLocalizedDescription2;
+    if (passLocalizedDescription == passLocalizedDescription2)
     {
     }
 
     else
     {
-      v28 = [(BMContextSyncWalletTransaction *)self passLocalizedDescription];
-      v29 = [v5 passLocalizedDescription];
-      v30 = [v28 isEqual:v29];
+      passLocalizedDescription3 = [(BMContextSyncWalletTransaction *)self passLocalizedDescription];
+      passLocalizedDescription4 = [v5 passLocalizedDescription];
+      v30 = [passLocalizedDescription3 isEqual:passLocalizedDescription4];
 
       if (!v30)
       {
@@ -123,21 +123,21 @@
       }
     }
 
-    v31 = [(BMContextSyncWalletTransaction *)self transactionType];
-    if (v31 == [v5 transactionType])
+    transactionType = [(BMContextSyncWalletTransaction *)self transactionType];
+    if (transactionType == [v5 transactionType])
     {
-      v32 = [(BMContextSyncWalletTransaction *)self transactionID];
-      v33 = [v5 transactionID];
-      v34 = v33;
-      if (v32 == v33)
+      transactionID = [(BMContextSyncWalletTransaction *)self transactionID];
+      transactionID2 = [v5 transactionID];
+      v34 = transactionID2;
+      if (transactionID == transactionID2)
       {
       }
 
       else
       {
-        v35 = [(BMContextSyncWalletTransaction *)self transactionID];
-        v36 = [v5 transactionID];
-        v37 = [v35 isEqual:v36];
+        transactionID3 = [(BMContextSyncWalletTransaction *)self transactionID];
+        transactionID4 = [v5 transactionID];
+        v37 = [transactionID3 isEqual:transactionID4];
 
         if (!v37)
         {
@@ -145,21 +145,21 @@
         }
       }
 
-      v38 = [(BMContextSyncWalletTransaction *)self merchantType];
-      if (v38 == [v5 merchantType])
+      merchantType = [(BMContextSyncWalletTransaction *)self merchantType];
+      if (merchantType == [v5 merchantType])
       {
-        v39 = [(BMContextSyncWalletTransaction *)self poiCategory];
-        v40 = [v5 poiCategory];
-        if (v39 == v40)
+        poiCategory = [(BMContextSyncWalletTransaction *)self poiCategory];
+        poiCategory2 = [v5 poiCategory];
+        if (poiCategory == poiCategory2)
         {
           v12 = 1;
         }
 
         else
         {
-          v41 = [(BMContextSyncWalletTransaction *)self poiCategory];
-          v42 = [v5 poiCategory];
-          v12 = [v41 isEqual:v42];
+          poiCategory3 = [(BMContextSyncWalletTransaction *)self poiCategory];
+          poiCategory4 = [v5 poiCategory];
+          v12 = [poiCategory3 isEqual:poiCategory4];
         }
 
         goto LABEL_28;
@@ -183,86 +183,86 @@ LABEL_29:
 {
   v30[8] = *MEMORY[0x1E69E9840];
   v3 = [(BMContextSyncWalletTransaction *)self ID];
-  v4 = [(BMContextSyncWalletTransaction *)self deviceUUID];
-  v5 = [(BMContextSyncWalletTransaction *)self passUniqueID];
-  v6 = [(BMContextSyncWalletTransaction *)self passLocalizedDescription];
+  deviceUUID = [(BMContextSyncWalletTransaction *)self deviceUUID];
+  passUniqueID = [(BMContextSyncWalletTransaction *)self passUniqueID];
+  passLocalizedDescription = [(BMContextSyncWalletTransaction *)self passLocalizedDescription];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMContextSyncWalletTransaction transactionType](self, "transactionType")}];
-  v8 = [(BMContextSyncWalletTransaction *)self transactionID];
+  transactionID = [(BMContextSyncWalletTransaction *)self transactionID];
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMContextSyncWalletTransaction merchantType](self, "merchantType")}];
-  v10 = [(BMContextSyncWalletTransaction *)self poiCategory];
+  poiCategory = [(BMContextSyncWalletTransaction *)self poiCategory];
   v29[0] = @"ID";
-  v11 = v3;
+  null = v3;
   if (!v3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v11;
-  v30[0] = v11;
+  v24 = null;
+  v30[0] = null;
   v29[1] = @"deviceUUID";
-  v12 = v4;
-  if (!v4)
+  null2 = deviceUUID;
+  if (!deviceUUID)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v28 = v3;
-  v23 = v12;
-  v30[1] = v12;
+  v23 = null2;
+  v30[1] = null2;
   v29[2] = @"passUniqueID";
-  v13 = v5;
-  if (!v5)
+  null3 = passUniqueID;
+  if (!passUniqueID)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v4;
-  v22 = v13;
-  v30[2] = v13;
+  v27 = deviceUUID;
+  v22 = null3;
+  v30[2] = null3;
   v29[3] = @"passLocalizedDescription";
-  v14 = v6;
-  if (!v6)
+  null4 = passLocalizedDescription;
+  if (!passLocalizedDescription)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v5;
-  v30[3] = v14;
+  v26 = passUniqueID;
+  v30[3] = null4;
   v29[4] = @"transactionType";
-  v15 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v6;
-  v30[4] = v15;
+  v25 = passLocalizedDescription;
+  v30[4] = null5;
   v29[5] = @"transactionID";
-  v16 = v8;
-  if (!v8)
+  null6 = transactionID;
+  if (!transactionID)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[5] = v16;
+  v30[5] = null6;
   v29[6] = @"merchantType";
-  v17 = v9;
+  null7 = v9;
   if (!v9)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[6] = v17;
+  v30[6] = null7;
   v29[7] = @"poiCategory";
-  v18 = v10;
-  if (!v10)
+  null8 = poiCategory;
+  if (!poiCategory)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30[7] = v18;
+  v30[7] = null8;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:8];
-  if (v10)
+  if (poiCategory)
   {
     if (v9)
     {
@@ -271,7 +271,7 @@ LABEL_29:
 
 LABEL_32:
 
-    if (v8)
+    if (transactionID)
     {
       goto LABEL_20;
     }
@@ -285,7 +285,7 @@ LABEL_32:
   }
 
 LABEL_19:
-  if (v8)
+  if (transactionID)
   {
     goto LABEL_20;
   }
@@ -328,28 +328,28 @@ LABEL_28:
   return v19;
 }
 
-- (BMContextSyncWalletTransaction)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMContextSyncWalletTransaction)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v89[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"ID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"ID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"deviceUUID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"deviceUUID"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v26 = 0;
           goto LABEL_66;
         }
 
-        v62 = a4;
+        errorCopy = error;
         v28 = objc_alloc(MEMORY[0x1E696ABC0]);
         v29 = *MEMORY[0x1E698F240];
         v86 = *MEMORY[0x1E696A578];
@@ -360,8 +360,8 @@ LABEL_4:
         v11 = v30;
         v32 = [v28 initWithDomain:v31 code:2 userInfo:v30];
         v26 = 0;
-        a4 = 0;
-        *v62 = v32;
+        error = 0;
+        *errorCopy = v32;
         goto LABEL_65;
       }
 
@@ -373,7 +373,7 @@ LABEL_4:
       v73 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"passUniqueID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"passUniqueID"];
     v72 = v7;
     v68 = v10;
     if (v10 && (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -381,7 +381,7 @@ LABEL_4:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           v26 = v73;
@@ -389,7 +389,7 @@ LABEL_4:
         }
 
         v71 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v63 = a4;
+        errorCopy2 = error;
         v34 = *MEMORY[0x1E698F240];
         v84 = *MEMORY[0x1E696A578];
         v35 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"passUniqueID"];
@@ -397,8 +397,8 @@ LABEL_4:
         v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
         v37 = [v71 initWithDomain:v34 code:2 userInfo:v36];
         v15 = 0;
-        a4 = 0;
-        *v63 = v37;
+        error = 0;
+        *errorCopy2 = v37;
         v26 = v73;
 LABEL_64:
 
@@ -410,7 +410,7 @@ LABEL_65:
 
       v12 = v8;
       v13 = v9;
-      v14 = self;
+      selfCopy2 = self;
       v15 = v11;
     }
 
@@ -418,11 +418,11 @@ LABEL_65:
     {
       v12 = v8;
       v13 = v9;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"passLocalizedDescription"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"passLocalizedDescription"];
     v70 = v15;
     v65 = v16;
     if (v16 && (v17 = v16, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -430,11 +430,11 @@ LABEL_65:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v35 = 0;
           v36 = v65;
-          self = v14;
+          self = selfCopy2;
           v9 = v13;
           v8 = v12;
           v7 = v72;
@@ -442,7 +442,7 @@ LABEL_65:
           goto LABEL_64;
         }
 
-        v38 = a4;
+        errorCopy3 = error;
         v39 = objc_alloc(MEMORY[0x1E696ABC0]);
         v40 = *MEMORY[0x1E698F240];
         v82 = *MEMORY[0x1E696A578];
@@ -451,9 +451,9 @@ LABEL_65:
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
         v41 = [v39 initWithDomain:v40 code:2 userInfo:v18];
         v35 = 0;
-        a4 = 0;
-        *v38 = v41;
-        self = v14;
+        error = 0;
+        *errorCopy3 = v41;
+        self = selfCopy2;
         v9 = v13;
         v8 = v12;
         v7 = v72;
@@ -469,9 +469,9 @@ LABEL_65:
       v67 = 0;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"transactionType"];
-    self = v14;
-    v61 = a4;
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"transactionType"];
+    self = selfCopy2;
+    errorCopy4 = error;
     if (v18)
     {
       objc_opt_class();
@@ -486,7 +486,7 @@ LABEL_65:
           v7 = v72;
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v69 = 0;
               v26 = v73;
@@ -502,8 +502,8 @@ LABEL_65:
             v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
             v54 = [v52 initWithDomain:v53 code:2 userInfo:v19];
             v69 = 0;
-            a4 = 0;
-            *v61 = v54;
+            error = 0;
+            *errorCopy4 = v54;
 LABEL_62:
             v35 = v67;
 
@@ -517,14 +517,14 @@ LABEL_63:
 
           v69 = [MEMORY[0x1E696AD98] numberWithInt:BMContextSyncWalletTransactionTypeFromString(v18)];
 LABEL_25:
-          v19 = [v6 objectForKeyedSubscript:@"transactionID"];
+          v19 = [dictionaryCopy objectForKeyedSubscript:@"transactionID"];
           v64 = v8;
           if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!a4)
+              if (!error)
               {
                 v66 = 0;
                 goto LABEL_61;
@@ -538,8 +538,8 @@ LABEL_25:
               v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
               v44 = [v42 initWithDomain:v43 code:2 userInfo:v20];
               v66 = 0;
-              a4 = 0;
-              *v61 = v44;
+              error = 0;
+              *errorCopy4 = v44;
 LABEL_60:
 
 LABEL_61:
@@ -555,10 +555,10 @@ LABEL_61:
             v66 = 0;
           }
 
-          v20 = [v6 objectForKeyedSubscript:@"merchantType"];
+          v20 = [dictionaryCopy objectForKeyedSubscript:@"merchantType"];
           if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
-            v21 = self;
+            errorCopy5 = self;
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -570,10 +570,10 @@ LABEL_61:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!a4)
+                if (!error)
                 {
                   v22 = 0;
-                  a4 = 0;
+                  error = 0;
                   goto LABEL_59;
                 }
 
@@ -585,8 +585,8 @@ LABEL_61:
                 v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
                 v56 = [v60 initWithDomain:v55 code:2 userInfo:v45];
                 v22 = 0;
-                a4 = 0;
-                *v61 = v56;
+                error = 0;
+                *errorCopy4 = v56;
                 goto LABEL_58;
               }
 
@@ -598,17 +598,17 @@ LABEL_61:
 
           else
           {
-            v21 = self;
+            errorCopy5 = self;
             v22 = 0;
           }
 
-          v45 = [v6 objectForKeyedSubscript:@"poiCategory"];
+          v45 = [dictionaryCopy objectForKeyedSubscript:@"poiCategory"];
           if (v45 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (a4)
+              if (error)
               {
                 v59 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v58 = *MEMORY[0x1E698F240];
@@ -616,11 +616,11 @@ LABEL_61:
                 v50 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"poiCategory"];
                 v75 = v50;
                 v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
-                *v61 = [v59 initWithDomain:v58 code:2 userInfo:v51];
+                *errorCopy4 = [v59 initWithDomain:v58 code:2 userInfo:v51];
               }
 
               v46 = 0;
-              a4 = 0;
+              error = 0;
               goto LABEL_58;
             }
 
@@ -632,14 +632,14 @@ LABEL_61:
             v46 = 0;
           }
 
-          v47 = [v69 intValue];
+          intValue = [v69 intValue];
           LODWORD(v57) = [v22 intValue];
-          a4 = [(BMContextSyncWalletTransaction *)v21 initWithID:v64 deviceUUID:v73 passUniqueID:v70 passLocalizedDescription:v67 transactionType:v47 transactionID:v66 merchantType:v57 poiCategory:v46];
-          v21 = a4;
+          error = [(BMContextSyncWalletTransaction *)errorCopy5 initWithID:v64 deviceUUID:v73 passUniqueID:v70 passLocalizedDescription:v67 transactionType:intValue transactionID:v66 merchantType:v57 poiCategory:v46];
+          errorCopy5 = error;
 LABEL_58:
 
 LABEL_59:
-          self = v21;
+          self = errorCopy5;
           v7 = v72;
           goto LABEL_60;
         }
@@ -670,13 +670,13 @@ LABEL_24:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     goto LABEL_67;
   }
 
-  v23 = a4;
+  errorCopy6 = error;
   v24 = objc_alloc(MEMORY[0x1E696ABC0]);
   v25 = *MEMORY[0x1E698F240];
   v88 = *MEMORY[0x1E696A578];
@@ -685,27 +685,27 @@ LABEL_24:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:&v88 count:1];
   v27 = [v24 initWithDomain:v25 code:2 userInfo:v9];
   v8 = 0;
-  a4 = 0;
-  *v23 = v27;
+  error = 0;
+  *errorCopy6 = v27;
 LABEL_66:
 
 LABEL_67:
   v48 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMContextSyncWalletTransaction *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (self->_ID)
   {
     PBDataWriterWriteStringField();
@@ -741,9 +741,9 @@ LABEL_67:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMContextSyncWalletTransaction;
   v5 = [(BMEventBase *)&v35 init];
@@ -752,12 +752,12 @@ LABEL_67:
     goto LABEL_68;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -768,18 +768,18 @@ LABEL_67:
       while (1)
       {
         v36 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v36 & 0x7F) << v7;
@@ -796,9 +796,9 @@ LABEL_67:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -827,18 +827,18 @@ LABEL_54:
             while (1)
             {
               v36 = 0;
-              v21 = [v4 position] + 1;
-              if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+              v21 = [fromCopy position] + 1;
+              if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
               {
-                v23 = [v4 data];
-                [v23 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (v36 & 0x7F) << v18;
@@ -855,7 +855,7 @@ LABEL_54:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v20 > 7)
+            if (([fromCopy hasError] & 1) != 0 || v20 > 7)
             {
 LABEL_62:
               LODWORD(v20) = 0;
@@ -879,18 +879,18 @@ LABEL_62:
             while (1)
             {
               v36 = 0;
-              v27 = [v4 position] + 1;
-              if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+              v27 = [fromCopy position] + 1;
+              if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
               {
-                v29 = [v4 data];
-                [v29 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (v36 & 0x7F) << v25;
@@ -907,7 +907,7 @@ LABEL_62:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v20 > 6)
+            if (([fromCopy hasError] & 1) != 0 || v20 > 6)
             {
 LABEL_58:
               LODWORD(v20) = 0;
@@ -970,13 +970,13 @@ LABEL_64:
       *(&v5->super.super.isa + v17) = v16;
 
 LABEL_65:
-      v32 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v32 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_67:
     v33 = 0;
@@ -995,40 +995,40 @@ LABEL_68:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [(BMContextSyncWalletTransaction *)self ID];
-  v5 = [(BMContextSyncWalletTransaction *)self deviceUUID];
-  v6 = [(BMContextSyncWalletTransaction *)self passUniqueID];
-  v7 = [(BMContextSyncWalletTransaction *)self passLocalizedDescription];
+  deviceUUID = [(BMContextSyncWalletTransaction *)self deviceUUID];
+  passUniqueID = [(BMContextSyncWalletTransaction *)self passUniqueID];
+  passLocalizedDescription = [(BMContextSyncWalletTransaction *)self passLocalizedDescription];
   v8 = BMContextSyncWalletTransactionTypeAsString([(BMContextSyncWalletTransaction *)self transactionType]);
-  v9 = [(BMContextSyncWalletTransaction *)self transactionID];
+  transactionID = [(BMContextSyncWalletTransaction *)self transactionID];
   v10 = BMContextSyncWalletTransactionMerchantTypeAsString([(BMContextSyncWalletTransaction *)self merchantType]);
-  v11 = [(BMContextSyncWalletTransaction *)self poiCategory];
-  v12 = [v3 initWithFormat:@"BMContextSyncWalletTransaction with ID: %@, deviceUUID: %@, passUniqueID: %@, passLocalizedDescription: %@, transactionType: %@, transactionID: %@, merchantType: %@, poiCategory: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  poiCategory = [(BMContextSyncWalletTransaction *)self poiCategory];
+  v12 = [v3 initWithFormat:@"BMContextSyncWalletTransaction with ID: %@, deviceUUID: %@, passUniqueID: %@, passLocalizedDescription: %@, transactionType: %@, transactionID: %@, merchantType: %@, poiCategory: %@", v4, deviceUUID, passUniqueID, passLocalizedDescription, v8, transactionID, v10, poiCategory];
 
   return v12;
 }
 
-- (BMContextSyncWalletTransaction)initWithID:(id)a3 deviceUUID:(id)a4 passUniqueID:(id)a5 passLocalizedDescription:(id)a6 transactionType:(int)a7 transactionID:(id)a8 merchantType:(int)a9 poiCategory:(id)a10
+- (BMContextSyncWalletTransaction)initWithID:(id)d deviceUUID:(id)iD passUniqueID:(id)uniqueID passLocalizedDescription:(id)description transactionType:(int)type transactionID:(id)transactionID merchantType:(int)merchantType poiCategory:(id)self0
 {
-  v16 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v17 = a8;
-  v18 = a10;
+  dCopy = d;
+  iDCopy = iD;
+  uniqueIDCopy = uniqueID;
+  descriptionCopy = description;
+  transactionIDCopy = transactionID;
+  categoryCopy = category;
   v25.receiver = self;
   v25.super_class = BMContextSyncWalletTransaction;
   v19 = [(BMEventBase *)&v25 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v19->_ID, a3);
-    objc_storeStrong(&v19->_deviceUUID, a4);
-    objc_storeStrong(&v19->_passUniqueID, a5);
-    objc_storeStrong(&v19->_passLocalizedDescription, a6);
-    v19->_transactionType = a7;
-    objc_storeStrong(&v19->_transactionID, a8);
-    v19->_merchantType = a9;
-    objc_storeStrong(&v19->_poiCategory, a10);
+    objc_storeStrong(&v19->_ID, d);
+    objc_storeStrong(&v19->_deviceUUID, iD);
+    objc_storeStrong(&v19->_passUniqueID, uniqueID);
+    objc_storeStrong(&v19->_passLocalizedDescription, description);
+    v19->_transactionType = type;
+    objc_storeStrong(&v19->_transactionID, transactionID);
+    v19->_merchantType = merchantType;
+    objc_storeStrong(&v19->_poiCategory, category);
   }
 
   return v19;
@@ -1060,9 +1060,9 @@ LABEL_68:
   return v10;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1070,8 +1070,8 @@ LABEL_68:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMContextSyncWalletTransaction alloc] initByReadFrom:v7];
     v4 = v8;

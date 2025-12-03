@@ -1,35 +1,35 @@
 @interface VIThirdPartyObject
-- (BOOL)isEqual:(id)a3;
-- (VIThirdPartyObject)initWithObjectIdentifier:(id)a3 imageURL:(id)a4 thumbnailURL:(id)a5 metadata:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (VIThirdPartyObject)initWithObjectIdentifier:(id)identifier imageURL:(id)l thumbnailURL:(id)rL metadata:(id)metadata;
 - (unint64_t)hash;
 @end
 
 @implementation VIThirdPartyObject
 
-- (VIThirdPartyObject)initWithObjectIdentifier:(id)a3 imageURL:(id)a4 thumbnailURL:(id)a5 metadata:(id)a6
+- (VIThirdPartyObject)initWithObjectIdentifier:(id)identifier imageURL:(id)l thumbnailURL:(id)rL metadata:(id)metadata
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  lCopy = l;
+  rLCopy = rL;
+  metadataCopy = metadata;
   v24.receiver = self;
   v24.super_class = VIThirdPartyObject;
   v14 = [(VIThirdPartyObject *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     objectIdentifier = v14->_objectIdentifier;
     v14->_objectIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [lCopy copy];
     imageURL = v14->_imageURL;
     v14->_imageURL = v17;
 
-    v19 = [v12 copy];
+    v19 = [rLCopy copy];
     thumbnailURL = v14->_thumbnailURL;
     v14->_thumbnailURL = v19;
 
-    v21 = [v13 copy];
+    v21 = [metadataCopy copy];
     metadata = v14->_metadata;
     v14->_metadata = v21;
   }
@@ -37,10 +37,10 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     IsEqual = 1;
   }
@@ -50,7 +50,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -60,20 +60,20 @@
 
     v6 = v5;
     objectIdentifier = self->_objectIdentifier;
-    v8 = [(VIThirdPartyObject *)v6 objectIdentifier];
-    if (VIObjectIsEqual(objectIdentifier, v8))
+    objectIdentifier = [(VIThirdPartyObject *)v6 objectIdentifier];
+    if (VIObjectIsEqual(objectIdentifier, objectIdentifier))
     {
       imageURL = self->_imageURL;
-      v10 = [(VIThirdPartyObject *)v6 imageURL];
-      if (VIObjectIsEqual(imageURL, v10))
+      imageURL = [(VIThirdPartyObject *)v6 imageURL];
+      if (VIObjectIsEqual(imageURL, imageURL))
       {
         thumbnailURL = self->_thumbnailURL;
-        v12 = [(VIThirdPartyObject *)v6 thumbnailURL];
-        if (VIObjectIsEqual(thumbnailURL, v12))
+        thumbnailURL = [(VIThirdPartyObject *)v6 thumbnailURL];
+        if (VIObjectIsEqual(thumbnailURL, thumbnailURL))
         {
           metadata = self->_metadata;
-          v14 = [(VIThirdPartyObject *)v6 metadata];
-          IsEqual = VIObjectIsEqual(metadata, v14);
+          metadata = [(VIThirdPartyObject *)v6 metadata];
+          IsEqual = VIObjectIsEqual(metadata, metadata);
         }
 
         else

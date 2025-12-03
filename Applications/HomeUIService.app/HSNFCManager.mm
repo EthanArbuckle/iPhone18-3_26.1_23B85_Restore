@@ -1,25 +1,25 @@
 @interface HSNFCManager
-- (BOOL)readerSupportedWithError:(id *)a3;
-- (HSNFCManager)initWithDelegate:(id)a3;
+- (BOOL)readerSupportedWithError:(id *)error;
+- (HSNFCManager)initWithDelegate:(id)delegate;
 - (HSNFCManagerDelegate)delegate;
 - (id)start;
-- (void)readerSession:(id)a3 didDetectTags:(id)a4;
-- (void)readerSessionDidEndUnexpectedly:(id)a3;
+- (void)readerSession:(id)session didDetectTags:(id)tags;
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly;
 - (void)stop;
 @end
 
 @implementation HSNFCManager
 
-- (HSNFCManager)initWithDelegate:(id)a3
+- (HSNFCManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = HSNFCManager;
   v5 = [(HSNFCManager *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
     v8 = dispatch_queue_create("com.apple.Home.HomeUIService.NFCSessionQueue", v7);
     sessionQueue = v6->_sessionQueue;
@@ -46,14 +46,14 @@
     goto LABEL_13;
   }
 
-  v5 = [(HSNFCManager *)self nearFieldReaderSession];
-  if (v5)
+  nearFieldReaderSession = [(HSNFCManager *)self nearFieldReaderSession];
+  if (nearFieldReaderSession)
   {
-    v6 = v5;
-    v7 = [(HSNFCManager *)self nearFieldReaderSession];
-    v8 = [v7 state];
+    v6 = nearFieldReaderSession;
+    nearFieldReaderSession2 = [(HSNFCManager *)self nearFieldReaderSession];
+    state = [nearFieldReaderSession2 state];
 
-    if (v8 != 2)
+    if (state != 2)
     {
       v18 = HFLogForCategory();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -144,39 +144,39 @@ LABEL_14:
       *(v16 + 5) = 0;
     }
 
-    v10 = [(HSNFCManager *)self sessionQueue];
+    sessionQueue = [(HSNFCManager *)self sessionQueue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10004D808;
     v11[3] = &unk_1000C78C0;
     v11[4] = self;
     v11[5] = buf;
-    dispatch_async(v10, v11);
+    dispatch_async(sessionQueue, v11);
 
     _Block_object_dispose(buf, 8);
     _Block_object_dispose(&v21, 8);
   }
 }
 
-- (BOOL)readerSupportedWithError:(id *)a3
+- (BOOL)readerSupportedWithError:(id *)error
 {
   v4 = +[NFHardwareManager sharedHardwareManager];
-  LOBYTE(a3) = [v4 areFeaturesSupported:1 outError:a3];
+  LOBYTE(error) = [v4 areFeaturesSupported:1 outError:error];
 
-  return a3;
+  return error;
 }
 
-- (void)readerSession:(id)a3 didDetectTags:(id)a4
+- (void)readerSession:(id)session didDetectTags:(id)tags
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  tagsCopy = tags;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v60 = v6;
+    v60 = sessionCopy;
     v61 = 2112;
-    v62 = v7;
+    v62 = tagsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "NFC: readerSession:%@ didDetectTags:%@", buf, 0x16u);
   }
 
@@ -185,7 +185,7 @@ LABEL_14:
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v7;
+  obj = tagsCopy;
   v9 = [obj countByEnumeratingWithState:&v53 objects:v65 count:16];
   if (v9)
   {
@@ -194,7 +194,7 @@ LABEL_14:
     *&v10 = 138412546;
     v37 = v10;
     v38 = *v54;
-    v39 = v6;
+    v39 = sessionCopy;
     do
     {
       v13 = 0;
@@ -208,11 +208,11 @@ LABEL_14:
 
         v14 = *(*(&v53 + 1) + 8 * v13);
         v52 = 0;
-        v15 = [v6 connectTag:v14 error:{&v52, v37}];
+        v15 = [sessionCopy connectTag:v14 error:{&v52, v37}];
         v16 = v52;
         if (v15)
         {
-          [v6 checkNdefSupportsRead:&v57 + 1 andWrite:&v57];
+          [sessionCopy checkNdefSupportsRead:&v57 + 1 andWrite:&v57];
           v17 = HFLogForCategory();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
@@ -246,7 +246,7 @@ LABEL_14:
           }
 
           v51 = 0;
-          v20 = [v6 ndefReadWithError:&v51];
+          v20 = [sessionCopy ndefReadWithError:&v51];
           v44 = v51;
           v45 = v20;
           if (!v20)
@@ -270,8 +270,8 @@ LABEL_14:
           v50 = 0u;
           v47 = 0u;
           v48 = 0u;
-          v22 = [v20 records];
-          v23 = [v22 countByEnumeratingWithState:&v47 objects:v58 count:16];
+          records = [v20 records];
+          v23 = [records countByEnumeratingWithState:&v47 objects:v58 count:16];
           if (v23)
           {
             v24 = v23;
@@ -282,20 +282,20 @@ LABEL_14:
               {
                 if (*v48 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(records);
                 }
 
-                v27 = [*(*(&v47 + 1) + 8 * i) decode];
+                decode = [*(*(&v47 + 1) + 8 * i) decode];
                 v28 = HFLogForCategory();
                 if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  v60 = v27;
+                  v60 = decode;
                   _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "NFC: read token: %@", buf, 0xCu);
                 }
 
-                v29 = [(HSNFCManager *)self delegate];
-                v30 = [v29 nfcManager:self shouldReturnPayloadString:v27];
+                delegate = [(HSNFCManager *)self delegate];
+                v30 = [delegate nfcManager:self shouldReturnPayloadString:decode];
 
                 if (v30)
                 {
@@ -303,23 +303,23 @@ LABEL_14:
                   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138412290;
-                    v60 = v27;
+                    v60 = decode;
                     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "NFC: Successfully read setup payload string %@", buf, 0xCu);
                   }
 
-                  v32 = [(HSNFCManager *)self delegate];
-                  [v32 nfcManager:self didRecognizePayloadString:v27];
+                  delegate2 = [(HSNFCManager *)self delegate];
+                  [delegate2 nfcManager:self didRecognizePayloadString:decode];
                 }
               }
 
-              v24 = [v22 countByEnumeratingWithState:&v47 objects:v58 count:16];
+              v24 = [records countByEnumeratingWithState:&v47 objects:v58 count:16];
             }
 
             while (v24);
           }
 
           v46 = 0;
-          v6 = v39;
+          sessionCopy = v39;
           v33 = [v39 disconnectTagWithError:&v46];
           v34 = v46;
           v11 = v40;
@@ -364,9 +364,9 @@ LABEL_14:
   }
 }
 
-- (void)readerSessionDidEndUnexpectedly:(id)a3
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly
 {
-  v3 = a3;
+  unexpectedlyCopy = unexpectedly;
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {

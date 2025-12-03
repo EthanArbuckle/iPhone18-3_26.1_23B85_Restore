@@ -1,5 +1,5 @@
 @interface MCWebClipPayload
-- (MCWebClipPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCWebClipPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
 - (id)subtitle1Description;
@@ -9,23 +9,23 @@
 
 @implementation MCWebClipPayload
 
-- (MCWebClipPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCWebClipPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v101 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v96.receiver = self;
   v96.super_class = MCWebClipPayload;
-  v10 = [(MCPayload *)&v96 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v96 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_20;
   }
 
-  if ([v9 isStub])
+  if ([profileCopy isStub])
   {
     v86 = 0;
-    v11 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"URL" isRequired:0 outError:&v86];
+    v11 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"URL" isRequired:0 outError:&v86];
     v12 = v86;
     if (!v12)
     {
@@ -37,7 +37,7 @@
       }
 
       v85 = 0;
-      v15 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"Label" isRequired:0 outError:&v85];
+      v15 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"Label" isRequired:0 outError:&v85];
       v16 = v85;
       label = v10->_label;
       v10->_label = v15;
@@ -45,7 +45,7 @@
       if (!v16)
       {
         v84 = 0;
-        v18 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"FullScreen" isRequired:0 outError:&v84];
+        v18 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"FullScreen" isRequired:0 outError:&v84];
         v16 = v84;
         fullScreenNum = v10->_fullScreenNum;
         v10->_fullScreenNum = v18;
@@ -54,7 +54,7 @@
         {
           v10->_fullScreen = [(NSNumber *)v10->_fullScreenNum BOOLValue];
           v83 = 0;
-          v20 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"SavedIdentifier" isRequired:0 outError:&v83];
+          v20 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"SavedIdentifier" isRequired:0 outError:&v83];
           v16 = v83;
           savedIdentifier = v10->_savedIdentifier;
           v10->_savedIdentifier = v20;
@@ -62,7 +62,7 @@
           if (!v16)
           {
             v82 = 0;
-            v22 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IsRemovable" isRequired:0 outError:&v82];
+            v22 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IsRemovable" isRequired:0 outError:&v82];
             v16 = v82;
             isRemovableNum = v10->_isRemovableNum;
             v10->_isRemovableNum = v22;
@@ -73,7 +73,7 @@
               v25 = !v24 || [(NSNumber *)v24 BOOLValue];
               v10->_isRemovable = v25;
               v81 = 0;
-              v70 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IgnoreManifestScope" isRequired:0 outError:&v81];
+              v70 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IgnoreManifestScope" isRequired:0 outError:&v81];
               v16 = v81;
               ignoreManifestScopeNum = v10->_ignoreManifestScopeNum;
               v10->_ignoreManifestScopeNum = v70;
@@ -82,7 +82,7 @@
               {
                 v10->_ignoreManifestScope = [(NSNumber *)v10->_ignoreManifestScopeNum BOOLValue];
                 v80 = 0;
-                v72 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ContentMode" isRequired:0 outError:&v80];
+                v72 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ContentMode" isRequired:0 outError:&v80];
                 v16 = v80;
                 contentMode = v10->_contentMode;
                 v10->_contentMode = v72;
@@ -90,7 +90,7 @@
                 if (!v16)
                 {
                   v79 = 0;
-                  v74 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"TargetApplicationBundleIdentifier" isRequired:0 outError:&v79];
+                  v74 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"TargetApplicationBundleIdentifier" isRequired:0 outError:&v79];
                   v16 = v79;
                   targetApplicationBundleIdentifier = v10->_targetApplicationBundleIdentifier;
                   v10->_targetApplicationBundleIdentifier = v74;
@@ -113,7 +113,7 @@
   }
 
   v95 = 0;
-  v11 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"URL" isRequired:1 outError:&v95];
+  v11 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"URL" isRequired:1 outError:&v95];
   v12 = v95;
   if (!v12)
   {
@@ -122,7 +122,7 @@
     v10->_URL = v36;
 
     v94 = 0;
-    v38 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"Label" isRequired:1 outError:&v94];
+    v38 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"Label" isRequired:1 outError:&v94];
     v16 = v94;
     v39 = v10->_label;
     v10->_label = v38;
@@ -133,7 +133,7 @@
     }
 
     v93 = 0;
-    v40 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"Icon" isRequired:0 outError:&v93];
+    v40 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"Icon" isRequired:0 outError:&v93];
     v41 = v93;
     if (v41)
     {
@@ -182,7 +182,7 @@ LABEL_24:
 
 LABEL_30:
     v92 = 0;
-    v45 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IsRemovable" isRequired:0 outError:&v92];
+    v45 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IsRemovable" isRequired:0 outError:&v92];
     v16 = v92;
     v46 = v10->_isRemovableNum;
     v10->_isRemovableNum = v45;
@@ -193,7 +193,7 @@ LABEL_30:
       v48 = !v47 || [(NSNumber *)v47 BOOLValue];
       v10->_isRemovable = v48;
       v91 = 0;
-      v60 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"Precomposed" isRequired:0 outError:&v91];
+      v60 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"Precomposed" isRequired:0 outError:&v91];
       v16 = v91;
       precomposedNum = v10->_precomposedNum;
       v10->_precomposedNum = v60;
@@ -202,7 +202,7 @@ LABEL_30:
       {
         v10->_precomposed = [(NSNumber *)v10->_precomposedNum BOOLValue];
         v90 = 0;
-        v62 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"FullScreen" isRequired:0 outError:&v90];
+        v62 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"FullScreen" isRequired:0 outError:&v90];
         v16 = v90;
         v63 = v10->_fullScreenNum;
         v10->_fullScreenNum = v62;
@@ -211,7 +211,7 @@ LABEL_30:
         {
           v10->_fullScreen = [(NSNumber *)v10->_fullScreenNum BOOLValue];
           v89 = 0;
-          v64 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IgnoreManifestScope" isRequired:0 outError:&v89];
+          v64 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"IgnoreManifestScope" isRequired:0 outError:&v89];
           v16 = v89;
           v65 = v10->_ignoreManifestScopeNum;
           v10->_ignoreManifestScopeNum = v64;
@@ -220,7 +220,7 @@ LABEL_30:
           {
             v10->_ignoreManifestScope = [(NSNumber *)v10->_ignoreManifestScopeNum BOOLValue];
             v88 = 0;
-            v66 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ContentMode" isRequired:0 outError:&v88];
+            v66 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ContentMode" isRequired:0 outError:&v88];
             v16 = v88;
             v67 = v10->_contentMode;
             v10->_contentMode = v66;
@@ -228,7 +228,7 @@ LABEL_30:
             if (!v16)
             {
               v87 = 0;
-              v68 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"TargetApplicationBundleIdentifier" isRequired:0 outError:&v87];
+              v68 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"TargetApplicationBundleIdentifier" isRequired:0 outError:&v87];
               v16 = v87;
               v69 = v10->_targetApplicationBundleIdentifier;
               v10->_targetApplicationBundleIdentifier = v68;
@@ -237,17 +237,17 @@ LABEL_30:
               {
 
 LABEL_47:
-                if ([v8 count])
+                if ([dictionaryCopy count])
                 {
                   v76 = _MCLogObjects;
                   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
                   {
                     v77 = v76;
-                    v78 = [(MCPayload *)v10 friendlyName];
+                    friendlyName = [(MCPayload *)v10 friendlyName];
                     *buf = 138543618;
-                    v98 = v78;
+                    v98 = friendlyName;
                     v99 = 2114;
-                    v100 = v8;
+                    v100 = dictionaryCopy;
                     _os_log_impl(&dword_1A795B000, v77, OS_LOG_TYPE_INFO, "Payload “%{public}@” has fields that we are ignoring. They are: %{public}@", buf, 0x16u);
                   }
                 }
@@ -270,10 +270,10 @@ LABEL_14:
 LABEL_15:
   v26 = [(MCPayload *)v10 malformedPayloadErrorWithError:v16];
   v27 = v26;
-  if (a5)
+  if (error)
   {
     v28 = v26;
-    *a5 = v27;
+    *error = v27;
   }
 
   v29 = _MCLogObjects;
@@ -282,11 +282,11 @@ LABEL_15:
     v30 = v29;
     v31 = objc_opt_class();
     v32 = v31;
-    v33 = [v27 MCVerboseDescription];
+    mCVerboseDescription = [v27 MCVerboseDescription];
     *buf = 138543618;
     v98 = v31;
     v99 = 2114;
-    v100 = v33;
+    v100 = mCVerboseDescription;
     _os_log_impl(&dword_1A795B000, v30, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
   }
 
@@ -301,43 +301,43 @@ LABEL_20:
 {
   v13.receiver = self;
   v13.super_class = MCWebClipPayload;
-  v3 = [(MCPayload *)&v13 stubDictionary];
+  stubDictionary = [(MCPayload *)&v13 stubDictionary];
   URL = self->_URL;
   if (URL)
   {
-    v5 = [(NSURL *)URL absoluteString];
-    [v3 MCSetObjectIfNotNil:v5 forKey:@"URL"];
+    absoluteString = [(NSURL *)URL absoluteString];
+    [stubDictionary MCSetObjectIfNotNil:absoluteString forKey:@"URL"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_fullScreen];
-  [v3 MCSetObjectIfNotNil:v6 forKey:@"FullScreen"];
+  [stubDictionary MCSetObjectIfNotNil:v6 forKey:@"FullScreen"];
 
-  [v3 MCSetObjectIfNotNil:self->_label forKey:@"Label"];
+  [stubDictionary MCSetObjectIfNotNil:self->_label forKey:@"Label"];
   savedIdentifier = self->_savedIdentifier;
   if (savedIdentifier)
   {
-    [v3 setObject:savedIdentifier forKeyedSubscript:@"SavedIdentifier"];
+    [stubDictionary setObject:savedIdentifier forKeyedSubscript:@"SavedIdentifier"];
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCWebClipPayload isRemovable](self, "isRemovable")}];
-  [v3 setObject:v8 forKeyedSubscript:@"IsRemovable"];
+  [stubDictionary setObject:v8 forKeyedSubscript:@"IsRemovable"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCWebClipPayload ignoreManifestScope](self, "ignoreManifestScope")}];
-  [v3 setObject:v9 forKeyedSubscript:@"IgnoreManifestScope"];
+  [stubDictionary setObject:v9 forKeyedSubscript:@"IgnoreManifestScope"];
 
   contentMode = self->_contentMode;
   if (contentMode)
   {
-    [v3 setObject:contentMode forKeyedSubscript:@"ContentMode"];
+    [stubDictionary setObject:contentMode forKeyedSubscript:@"ContentMode"];
   }
 
   targetApplicationBundleIdentifier = self->_targetApplicationBundleIdentifier;
   if (targetApplicationBundleIdentifier)
   {
-    [v3 setObject:targetApplicationBundleIdentifier forKeyedSubscript:@"TargetApplicationBundleIdentifier"];
+    [stubDictionary setObject:targetApplicationBundleIdentifier forKeyedSubscript:@"TargetApplicationBundleIdentifier"];
   }
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
@@ -345,13 +345,13 @@ LABEL_20:
   v3 = MEMORY[0x1E696AD60];
   v15.receiver = self;
   v15.super_class = MCWebClipPayload;
-  v4 = [(MCPayload *)&v15 verboseDescription];
-  v5 = [v3 stringWithString:v4];
+  verboseDescription = [(MCPayload *)&v15 verboseDescription];
+  v5 = [v3 stringWithString:verboseDescription];
 
-  v6 = [(MCPayload *)self profile];
-  v7 = [v6 isStub];
+  profile = [(MCPayload *)self profile];
+  isStub = [profile isStub];
 
-  if ((v7 & 1) == 0)
+  if ((isStub & 1) == 0)
   {
     if (self->_URL)
     {
@@ -390,12 +390,12 @@ LABEL_20:
       [v5 appendFormat:@"Target App: %@\n", self->_targetApplicationBundleIdentifier];
     }
 
-    v12 = [(MCWebClipPayload *)self savedIdentifier];
+    savedIdentifier = [(MCWebClipPayload *)self savedIdentifier];
 
-    if (v12)
+    if (savedIdentifier)
     {
-      v13 = [(MCWebClipPayload *)self savedIdentifier];
-      [v5 appendFormat:@"Identifier  : %@\n", v13];
+      savedIdentifier2 = [(MCWebClipPayload *)self savedIdentifier];
+      [v5 appendFormat:@"Identifier  : %@\n", savedIdentifier2];
     }
   }
 
@@ -405,11 +405,11 @@ LABEL_20:
 - (id)subtitle1Description
 {
   v2 = [(MCWebClipPayload *)self URL];
-  v3 = [v2 absoluteString];
+  absoluteString = [v2 absoluteString];
 
-  if (v3)
+  if (absoluteString)
   {
-    v4 = v3;
+    v4 = absoluteString;
   }
 
   else
@@ -424,11 +424,11 @@ LABEL_20:
 
 - (id)subtitle2Description
 {
-  v2 = [(MCWebClipPayload *)self label];
-  v3 = v2;
-  if (v2)
+  label = [(MCWebClipPayload *)self label];
+  v3 = label;
+  if (label)
   {
-    v4 = v2;
+    v4 = label;
   }
 
   else
@@ -458,9 +458,9 @@ LABEL_20:
   if (self->_URL)
   {
     v8 = [MCKeyValue alloc];
-    v9 = [(NSURL *)self->_URL absoluteString];
+    absoluteString = [(NSURL *)self->_URL absoluteString];
     v10 = MCLocalizedString(@"URL");
-    v11 = [(MCKeyValue *)v8 initWithLocalizedString:v9 localizedKey:v10];
+    v11 = [(MCKeyValue *)v8 initWithLocalizedString:absoluteString localizedKey:v10];
 
     [v3 addObject:v11];
   }

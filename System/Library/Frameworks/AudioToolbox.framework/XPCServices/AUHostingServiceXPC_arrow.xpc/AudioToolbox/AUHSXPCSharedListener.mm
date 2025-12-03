@@ -1,49 +1,49 @@
 @interface AUHSXPCSharedListener
-+ (id)connectToService:(id)a3 instanceIdentifier:(id)a4 listener:(id)a5 error:(id *)a6;
-+ (id)connectionForListenerNamed:(id)a3 fromServiceNamed:(id)a4 instanceIdentifier:(id)a5;
++ (id)connectToService:(id)service instanceIdentifier:(id)identifier listener:(id)listener error:(id *)error;
++ (id)connectionForListenerNamed:(id)named fromServiceNamed:(id)serviceNamed instanceIdentifier:(id)identifier;
 + (id)endpointCache;
-+ (id)endpointForReply:(id)a3 withListenerName:(id)a4 replyErrorCode:(int64_t *)a5;
-+ (id)listenerEndpointForService:(id)a3 listener:(id)a4 error:(id *)a5;
++ (id)endpointForReply:(id)reply withListenerName:(id)name replyErrorCode:(int64_t *)code;
++ (id)listenerEndpointForService:(id)service listener:(id)listener error:(id *)error;
 + (id)sharedServiceListener;
-+ (void)_endpointForListenerNamed:(id)a3 fromServiceNamed:(id)a4 instanceIdentifier:(id)a5 queue:(id)a6 async:(BOOL)a7 completion:(id)a8;
-+ (void)cacheFutureEndpointsForServiceNamed:(id)a3;
-+ (void)connectToService:(id)a3 instanceIdentifier:(id)a4 listener:(id)a5 queue:(id)a6 completion:(id)a7;
-+ (void)endpointForListenerNamed:(id)a3 fromServiceNamed:(id)a4 instanceIdentifier:(id)a5 queue:(id)a6 async:(BOOL)a7 completion:(id)a8;
-+ (void)getSDKVersionOfServiceNamed:(id)a3 reply:(id)a4;
-+ (void)listenerEndpointForService:(id)a3 instanceIdentifier:(id)a4 listener:(id)a5 queue:(id)a6 completion:(id)a7;
-+ (void)service:(id)a3 builtForPlatform:(unsigned int)a4 againstMinimumSDK:(unsigned int)a5 reply:(id)a6;
-+ (void)setEndpointCache:(id)a3;
-+ (void)warmUpClassNamed:(id)a3 inServiceNamed:(id)a4;
-- (BOOL)shouldAcceptNewConnection:(id)a3 forListenerNamed:(id)a4;
-- (id)listenerEndpointWithName:(id)a3;
-- (void)addDelegate:(id)a3;
-- (void)addListener:(id)a3 withName:(id)a4;
++ (void)_endpointForListenerNamed:(id)named fromServiceNamed:(id)serviceNamed instanceIdentifier:(id)identifier queue:(id)queue async:(BOOL)async completion:(id)completion;
++ (void)cacheFutureEndpointsForServiceNamed:(id)named;
++ (void)connectToService:(id)service instanceIdentifier:(id)identifier listener:(id)listener queue:(id)queue completion:(id)completion;
++ (void)endpointForListenerNamed:(id)named fromServiceNamed:(id)serviceNamed instanceIdentifier:(id)identifier queue:(id)queue async:(BOOL)async completion:(id)completion;
++ (void)getSDKVersionOfServiceNamed:(id)named reply:(id)reply;
++ (void)listenerEndpointForService:(id)service instanceIdentifier:(id)identifier listener:(id)listener queue:(id)queue completion:(id)completion;
++ (void)service:(id)service builtForPlatform:(unsigned int)platform againstMinimumSDK:(unsigned int)k reply:(id)reply;
++ (void)setEndpointCache:(id)cache;
++ (void)warmUpClassNamed:(id)named inServiceNamed:(id)serviceNamed;
+- (BOOL)shouldAcceptNewConnection:(id)connection forListenerNamed:(id)named;
+- (id)listenerEndpointWithName:(id)name;
+- (void)addDelegate:(id)delegate;
+- (void)addListener:(id)listener withName:(id)name;
 - (void)dealloc;
-- (void)didAcceptNewConnection:(id)a3;
-- (void)resumeAdditionalService:(id)a3;
-- (void)resumeSubService:(id)a3;
+- (void)didAcceptNewConnection:(id)connection;
+- (void)resumeAdditionalService:(id)service;
+- (void)resumeSubService:(id)service;
 @end
 
 @implementation AUHSXPCSharedListener
 
-- (void)resumeSubService:(id)a3
+- (void)resumeSubService:(id)service
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [service UTF8String];
 
-  _xpc_handle_subservice(v3, sub_10000155C);
+  _xpc_handle_subservice(uTF8String, sub_10000155C);
 }
 
-- (void)resumeAdditionalService:(id)a3
+- (void)resumeAdditionalService:(id)service
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [service UTF8String];
 
-  _xpc_handle_service(v3, sub_10000155C, 0);
+  _xpc_handle_service(uTF8String, sub_10000155C, 0);
 }
 
-- (BOOL)shouldAcceptNewConnection:(id)a3 forListenerNamed:(id)a4
+- (BOOL)shouldAcceptNewConnection:(id)connection forListenerNamed:(id)named
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  namedCopy = named;
   os_unfair_lock_assert_owner(&self->lock);
   v18 = 0u;
   v19 = 0u;
@@ -65,9 +65,9 @@
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ([v13 shouldAcceptNewConnection:v6] & 1) == 0)
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ([v13 shouldAcceptNewConnection:connectionCopy] & 1) == 0)
         {
-          NSLog(@"delegate %@ of %@ rejected connection for listener %@", v13, self, v7);
+          NSLog(@"delegate %@ of %@ rejected connection for listener %@", v13, self, namedCopy);
           v14 = 0;
           goto LABEL_12;
         }
@@ -89,9 +89,9 @@ LABEL_12:
   return v14;
 }
 
-- (void)didAcceptNewConnection:(id)a3
+- (void)didAcceptNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_assert_owner(&self->lock);
   v13 = 0u;
   v14 = 0u;
@@ -116,7 +116,7 @@ LABEL_12:
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 didAcceptNewConnection:{v4, v11}];
+          [v10 didAcceptNewConnection:{connectionCopy, v11}];
         }
 
         v9 = v9 + 1;
@@ -130,7 +130,7 @@ LABEL_12:
   }
 }
 
-- (id)listenerEndpointWithName:(id)a3
+- (id)listenerEndpointWithName:(id)name
 {
   v10 = 0;
   v11 = &v10;
@@ -142,11 +142,11 @@ LABEL_12:
   v6[1] = 3221225472;
   v6[2] = sub_100001E44;
   v6[3] = &unk_1000105B0;
-  v7 = self;
-  v3 = a3;
-  v8 = v3;
+  selfCopy = self;
+  nameCopy = name;
+  v8 = nameCopy;
   v9 = &v10;
-  sub_100001438(&v7->lock, v6);
+  sub_100001438(&selfCopy->lock, v6);
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -154,31 +154,31 @@ LABEL_12:
   return v4;
 }
 
-- (void)addListener:(id)a3 withName:(id)a4
+- (void)addListener:(id)listener withName:(id)name
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100001F8C;
   v7[3] = &unk_100010588;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  sub_100001438(&v8->lock, v7);
+  selfCopy = self;
+  listenerCopy = listener;
+  nameCopy = name;
+  v5 = nameCopy;
+  v6 = listenerCopy;
+  sub_100001438(&selfCopy->lock, v7);
   [v6 resume];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100002074;
   v4[3] = &unk_100010560;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  sub_100001438(&v5->lock, v4);
+  selfCopy = self;
+  delegateCopy = delegate;
+  v3 = delegateCopy;
+  sub_100001438(&selfCopy->lock, v4);
 }
 
 - (void)dealloc
@@ -194,43 +194,43 @@ LABEL_12:
   [(AUHSXPCSharedListener *)&v3 dealloc];
 }
 
-+ (void)service:(id)a3 builtForPlatform:(unsigned int)a4 againstMinimumSDK:(unsigned int)a5 reply:(id)a6
++ (void)service:(id)service builtForPlatform:(unsigned int)platform againstMinimumSDK:(unsigned int)k reply:(id)reply
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000223C;
   v11[3] = &unk_100010A30;
-  v12 = a6;
-  v13 = a4;
-  v14 = a5;
-  v10 = v12;
-  [a1 connectToService:a3 listener:&stru_100010DE8 queue:0 completion:v11];
+  replyCopy = reply;
+  platformCopy = platform;
+  kCopy = k;
+  v10 = replyCopy;
+  [self connectToService:service listener:&stru_100010DE8 queue:0 completion:v11];
 }
 
-+ (void)getSDKVersionOfServiceNamed:(id)a3 reply:(id)a4
++ (void)getSDKVersionOfServiceNamed:(id)named reply:(id)reply
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002540;
   v7[3] = &unk_1000109E0;
-  v8 = a4;
-  v6 = v8;
-  [a1 connectToService:a3 listener:&stru_100010DE8 queue:0 completion:v7];
+  replyCopy = reply;
+  v6 = replyCopy;
+  [self connectToService:named listener:&stru_100010DE8 queue:0 completion:v7];
 }
 
-+ (void)warmUpClassNamed:(id)a3 inServiceNamed:(id)a4
++ (void)warmUpClassNamed:(id)named inServiceNamed:(id)serviceNamed
 {
-  v6 = a3;
+  namedCopy = named;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100002818;
   v9[3] = &unk_100010968;
-  v11 = a4;
-  v12 = a1;
-  v10 = v6;
-  v7 = v11;
-  v8 = v6;
-  [a1 connectToService:v7 listener:&stru_100010DE8 queue:0 completion:v9];
+  serviceNamedCopy = serviceNamed;
+  selfCopy = self;
+  v10 = namedCopy;
+  v7 = serviceNamedCopy;
+  v8 = namedCopy;
+  [self connectToService:v7 listener:&stru_100010DE8 queue:0 completion:v9];
 }
 
 + (id)sharedServiceListener
@@ -245,10 +245,10 @@ LABEL_12:
   return v3;
 }
 
-+ (id)listenerEndpointForService:(id)a3 listener:(id)a4 error:(id *)a5
++ (id)listenerEndpointForService:(id)service listener:(id)listener error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  serviceCopy = service;
+  listenerCopy = listener;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -260,13 +260,13 @@ LABEL_12:
   v15[1] = 3221225472;
   v15[2] = sub_100002C9C;
   v15[3] = &unk_1000108B0;
-  v19 = a5;
-  v11 = v8;
+  errorCopy = error;
+  v11 = serviceCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = listenerCopy;
   v17 = v12;
   v18 = &v20;
-  [a1 endpointForListenerNamed:v12 fromServiceNamed:v11 instanceIdentifier:0 queue:v10 async:0 completion:v15];
+  [self endpointForListenerNamed:v12 fromServiceNamed:v11 instanceIdentifier:0 queue:v10 async:0 completion:v15];
   v13 = v21[5];
 
   _Block_object_dispose(&v20, 8);
@@ -274,26 +274,26 @@ LABEL_12:
   return v13;
 }
 
-+ (void)connectToService:(id)a3 instanceIdentifier:(id)a4 listener:(id)a5 queue:(id)a6 completion:(id)a7
++ (void)connectToService:(id)service instanceIdentifier:(id)identifier listener:(id)listener queue:(id)queue completion:(id)completion
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100002E74;
   v15[3] = &unk_100010860;
-  v16 = a3;
-  v17 = a5;
-  v18 = a7;
-  v12 = v18;
-  v13 = v17;
-  v14 = v16;
-  [a1 listenerEndpointForService:v14 instanceIdentifier:a4 listener:v13 queue:a6 completion:v15];
+  serviceCopy = service;
+  listenerCopy = listener;
+  completionCopy = completion;
+  v12 = completionCopy;
+  v13 = listenerCopy;
+  v14 = serviceCopy;
+  [self listenerEndpointForService:v14 instanceIdentifier:identifier listener:v13 queue:queue completion:v15];
 }
 
-+ (id)connectToService:(id)a3 instanceIdentifier:(id)a4 listener:(id)a5 error:(id *)a6
++ (id)connectToService:(id)service instanceIdentifier:(id)identifier listener:(id)listener error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  serviceCopy = service;
+  identifierCopy = identifier;
+  listenerCopy = listener;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -305,13 +305,13 @@ LABEL_12:
   v18[1] = 3221225472;
   v18[2] = sub_1000030E0;
   v18[3] = &unk_1000108B0;
-  v22 = a6;
-  v14 = v10;
+  errorCopy = error;
+  v14 = serviceCopy;
   v19 = v14;
-  v15 = v12;
+  v15 = listenerCopy;
   v20 = v15;
   v21 = &v23;
-  [a1 endpointForListenerNamed:v15 fromServiceNamed:v14 instanceIdentifier:v11 queue:v13 async:0 completion:v18];
+  [self endpointForListenerNamed:v15 fromServiceNamed:v14 instanceIdentifier:identifierCopy queue:v13 async:0 completion:v18];
   v16 = v24[5];
 
   _Block_object_dispose(&v23, 8);
@@ -319,41 +319,41 @@ LABEL_12:
   return v16;
 }
 
-+ (void)listenerEndpointForService:(id)a3 instanceIdentifier:(id)a4 listener:(id)a5 queue:(id)a6 completion:(id)a7
++ (void)listenerEndpointForService:(id)service instanceIdentifier:(id)identifier listener:(id)listener queue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v15)
+  serviceCopy = service;
+  identifierCopy = identifier;
+  listenerCopy = listener;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v15 = dispatch_get_global_queue(0, 0);
+    queueCopy = dispatch_get_global_queue(0, 0);
   }
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10000332C;
   v22[3] = &unk_100010888;
-  v23 = v14;
-  v24 = v12;
-  v25 = v13;
-  v26 = v15;
-  v27 = v16;
-  v28 = a1;
-  v17 = v16;
-  v18 = v15;
-  v19 = v13;
-  v20 = v12;
-  v21 = v14;
+  v23 = listenerCopy;
+  v24 = serviceCopy;
+  v25 = identifierCopy;
+  v26 = queueCopy;
+  v27 = completionCopy;
+  selfCopy = self;
+  v17 = completionCopy;
+  v18 = queueCopy;
+  v19 = identifierCopy;
+  v20 = serviceCopy;
+  v21 = listenerCopy;
   dispatch_async(v18, v22);
 }
 
-+ (id)connectionForListenerNamed:(id)a3 fromServiceNamed:(id)a4 instanceIdentifier:(id)a5
++ (id)connectionForListenerNamed:(id)named fromServiceNamed:(id)serviceNamed instanceIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  namedCopy = named;
+  serviceNamedCopy = serviceNamed;
+  identifierCopy = identifier;
   v11 = dispatch_get_global_queue(0, 0);
   v12 = dispatch_semaphore_create(0);
   v33 = 0;
@@ -366,12 +366,12 @@ LABEL_12:
   v23 = 3221225472;
   v24 = sub_10000371C;
   v25 = &unk_100010838;
-  v32 = a1;
-  v13 = v8;
+  selfCopy = self;
+  v13 = namedCopy;
   v26 = v13;
-  v14 = v9;
+  v14 = serviceNamedCopy;
   v27 = v14;
-  v15 = v10;
+  v15 = identifierCopy;
   v28 = v15;
   v16 = v11;
   v29 = v16;
@@ -383,7 +383,7 @@ LABEL_12:
   if (dispatch_semaphore_wait(v17, v18))
   {
     NSLog(@"%s timed out awaiting endpoint for %@ in %@. Did the service fail to bootstrap itself? Is the system absurdly loaded?", "+[AUHSXPCSharedListener connectionForListenerNamed:fromServiceNamed:instanceIdentifier:]", v13, v14, block, v23, v24, v25, v26, v27, v28, v29);
-    [NSException raise:NSInternalInconsistencyException format:@"%@ unable to create endpoint for listener named %@", a1, v13];
+    [NSException raise:NSInternalInconsistencyException format:@"%@ unable to create endpoint for listener named %@", self, v13];
   }
 
   v19 = [NSXPCConnection alloc];
@@ -394,14 +394,14 @@ LABEL_12:
   return v20;
 }
 
-+ (void)endpointForListenerNamed:(id)a3 fromServiceNamed:(id)a4 instanceIdentifier:(id)a5 queue:(id)a6 async:(BOOL)a7 completion:(id)a8
++ (void)endpointForListenerNamed:(id)named fromServiceNamed:(id)serviceNamed instanceIdentifier:(id)identifier queue:(id)queue async:(BOOL)async completion:(id)completion
 {
-  v25 = a7;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  asyncCopy = async;
+  namedCopy = named;
+  serviceNamedCopy = serviceNamed;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  completionCopy = completion;
   v18 = os_log_create("com.apple.ViewBridge.AUHSXPCSharedListener", "AUHSXPCSharedListener");
   v19 = os_signpost_id_generate(v18);
 
@@ -410,7 +410,7 @@ LABEL_12:
   v26[2] = sub_100003C20;
   v26[3] = &unk_1000107E8;
   v28 = v19;
-  v20 = v17;
+  v20 = completionCopy;
   v27 = v20;
   v21 = objc_retainBlock(v26);
   v22 = os_log_create("com.apple.ViewBridge.AUHSXPCSharedListener", "AUHSXPCSharedListener");
@@ -421,29 +421,29 @@ LABEL_12:
     if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
     {
       *buf = 138412802;
-      v30 = v14;
+      v30 = serviceNamedCopy;
       v31 = 2112;
-      v32 = v13;
+      v32 = namedCopy;
       v33 = 2112;
-      v34 = v15;
+      v34 = identifierCopy;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v24, OS_SIGNPOST_INTERVAL_BEGIN, v19, "endpoint-lookup", "%@ %@ %@", buf, 0x20u);
     }
   }
 
-  [a1 _endpointForListenerNamed:v13 fromServiceNamed:v14 instanceIdentifier:v15 queue:v16 async:v25 completion:v21];
+  [self _endpointForListenerNamed:namedCopy fromServiceNamed:serviceNamedCopy instanceIdentifier:identifierCopy queue:queueCopy async:asyncCopy completion:v21];
 }
 
-+ (void)_endpointForListenerNamed:(id)a3 fromServiceNamed:(id)a4 instanceIdentifier:(id)a5 queue:(id)a6 async:(BOOL)a7 completion:(id)a8
++ (void)_endpointForListenerNamed:(id)named fromServiceNamed:(id)serviceNamed instanceIdentifier:(id)identifier queue:(id)queue async:(BOOL)async completion:(id)completion
 {
-  v45 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  targetq = a6;
-  v49 = a8;
-  v15 = v12;
-  v16 = v13;
-  v17 = v14;
+  asyncCopy = async;
+  namedCopy = named;
+  serviceNamedCopy = serviceNamed;
+  identifierCopy = identifier;
+  targetq = queue;
+  completionCopy = completion;
+  v15 = namedCopy;
+  v16 = serviceNamedCopy;
+  v17 = identifierCopy;
   v66 = 0;
   v67 = &v66;
   v68 = 0x3032000000;
@@ -465,11 +465,11 @@ LABEL_12:
   {
     v47 = objc_opt_new();
     v20 = v16;
-    v21 = [v16 UTF8String];
+    uTF8String = [v16 UTF8String];
     v22 = geteuid();
     if (v22 != 92 && v22 != 203)
     {
-      v29 = xpc_connection_create(v21, targetq);
+      v29 = xpc_connection_create(uTF8String, targetq);
       v30 = *(v47 + 24);
       *(v47 + 24) = v29;
 
@@ -483,12 +483,12 @@ LABEL_12:
     {
       if (objc_opt_respondsToSelector())
       {
-        v25 = [v24 BOOLValue];
+        bOOLValue = [v24 BOOLValue];
 
-        if (v25)
+        if (bOOLValue)
         {
-          NSLog(@"%@ working around rdar://problem/35553241", a1);
-          mach_service = xpc_connection_create_mach_service(v21, targetq, 0);
+          NSLog(@"%@ working around rdar://problem/35553241", self);
+          mach_service = xpc_connection_create_mach_service(uTF8String, targetq, 0);
           v27 = *(v47 + 24);
           *(v47 + 24) = mach_service;
 
@@ -531,15 +531,15 @@ LABEL_10:
           v50[2] = sub_100004624;
           v50[3] = &unk_1000107C0;
           v51 = v38;
-          v56 = a1;
+          selfCopy = self;
           v52 = v39;
           v53 = v40;
           v54 = v17;
-          v55 = v49;
+          v55 = completionCopy;
           v41 = objc_retainBlock(v50);
           v42 = *(v47 + 24);
           v43 = *(v47 + 40);
-          if (v45)
+          if (asyncCopy)
           {
             xpc_connection_send_message_with_reply(v42, v43, targetq, v41);
           }
@@ -554,20 +554,20 @@ LABEL_10:
         }
 
 LABEL_18:
-        NSLog(@"%@ should but cannot work around rdar://problem/35553241", a1);
-        if (v45)
+        NSLog(@"%@ should but cannot work around rdar://problem/35553241", self);
+        if (asyncCopy)
         {
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_10000452C;
           block[3] = &unk_1000106E0;
-          v62 = v49;
+          v62 = completionCopy;
           dispatch_async(targetq, block);
         }
 
         else
         {
-          (*(v49 + 2))(v49, 0, 0);
+          (*(completionCopy + 2))(completionCopy, 0, 0);
         }
 
 LABEL_21:
@@ -581,13 +581,13 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  (*(v49 + 2))(v49, v19, 0);
+  (*(completionCopy + 2))(completionCopy, v19, 0);
 LABEL_22:
 }
 
-+ (void)setEndpointCache:(id)a3
++ (void)setEndpointCache:(id)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
@@ -605,7 +605,7 @@ LABEL_22:
   v5[2] = sub_100004E38;
   v5[3] = &unk_1000106B8;
   v7 = v9;
-  v4 = v3;
+  v4 = cacheCopy;
   v6 = v4;
   sub_100004498(v5);
 
@@ -632,36 +632,36 @@ LABEL_22:
   return v2;
 }
 
-+ (void)cacheFutureEndpointsForServiceNamed:(id)a3
++ (void)cacheFutureEndpointsForServiceNamed:(id)named
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000051AC;
   v4[3] = &unk_1000105D8;
-  v5 = [a3 copy];
+  v5 = [named copy];
   v3 = v5;
   sub_1000049FC(v4);
 }
 
-+ (id)endpointForReply:(id)a3 withListenerName:(id)a4 replyErrorCode:(int64_t *)a5
++ (id)endpointForReply:(id)reply withListenerName:(id)name replyErrorCode:(int64_t *)code
 {
-  v7 = a3;
-  v8 = a4;
-  type = xpc_get_type(v7);
+  replyCopy = reply;
+  nameCopy = name;
+  type = xpc_get_type(replyCopy);
   if (type == &_xpc_type_error)
   {
-    string_ptr = xpc_string_get_string_ptr(v8);
-    string = xpc_dictionary_get_string(v7, _xpc_error_key_description);
+    string_ptr = xpc_string_get_string_ptr(nameCopy);
+    string = xpc_dictionary_get_string(replyCopy, _xpc_error_key_description);
     NSLog(@"%s: an error occurred while attempting to obtain endpoint for listener '%s': %s", "+[AUHSXPCSharedListener endpointForReply:withListenerName:replyErrorCode:]", string_ptr, string);
   }
 
   else if (type == &_xpc_type_dictionary)
   {
-    int64 = xpc_dictionary_get_int64(v7, "error-code");
-    *a5 = int64;
+    int64 = xpc_dictionary_get_int64(replyCopy, "error-code");
+    *code = int64;
     if (!int64)
     {
-      v15 = xpc_dictionary_get_value(v7, "listener-endpoint");
+      v15 = xpc_dictionary_get_value(replyCopy, "listener-endpoint");
       if (v15)
       {
         v13 = objc_opt_new();
@@ -672,7 +672,7 @@ LABEL_22:
       {
         NSLog(@"%s: raw endpoint absent; faking error", "+[AUHSXPCSharedListener endpointForReply:withListenerName:replyErrorCode:]");
         v13 = 0;
-        *a5 = 3;
+        *code = 3;
       }
 
       goto LABEL_7;

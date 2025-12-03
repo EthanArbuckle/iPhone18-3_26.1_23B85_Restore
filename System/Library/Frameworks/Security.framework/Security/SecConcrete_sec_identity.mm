@@ -1,8 +1,8 @@
 @interface SecConcrete_sec_identity
-- (SecConcrete_sec_identity)initWithCertificates:(__CFArray *)a3 signBlock:(id)a4 decryptBlock:(id)a5 queue:(id)a6;
-- (SecConcrete_sec_identity)initWithIdentity:(__SecIdentity *)a3;
-- (SecConcrete_sec_identity)initWithIdentityAndCertificates:(__SecIdentity *)a3 certificates:(__CFArray *)a4;
-- (SecConcrete_sec_identity)initWithSPAKE2PLUSV1Context:(id)a3 clientIdentity:(id)a4 serverIdentity:(id)a5 clientPasswordVerifier:(id)a6 serverPasswordVerifier:(id)a7 registrationRecord:(id)a8;
+- (SecConcrete_sec_identity)initWithCertificates:(__CFArray *)certificates signBlock:(id)block decryptBlock:(id)decryptBlock queue:(id)queue;
+- (SecConcrete_sec_identity)initWithIdentity:(__SecIdentity *)identity;
+- (SecConcrete_sec_identity)initWithIdentityAndCertificates:(__SecIdentity *)certificates certificates:(__CFArray *)a4;
+- (SecConcrete_sec_identity)initWithSPAKE2PLUSV1Context:(id)context clientIdentity:(id)identity serverIdentity:(id)serverIdentity clientPasswordVerifier:(id)verifier serverPasswordVerifier:(id)passwordVerifier registrationRecord:(id)record;
 - (void)dealloc;
 @end
 
@@ -29,124 +29,124 @@
   [(SecConcrete_sec_identity *)&v5 dealloc];
 }
 
-- (SecConcrete_sec_identity)initWithSPAKE2PLUSV1Context:(id)a3 clientIdentity:(id)a4 serverIdentity:(id)a5 clientPasswordVerifier:(id)a6 serverPasswordVerifier:(id)a7 registrationRecord:(id)a8
+- (SecConcrete_sec_identity)initWithSPAKE2PLUSV1Context:(id)context clientIdentity:(id)identity serverIdentity:(id)serverIdentity clientPasswordVerifier:(id)verifier serverPasswordVerifier:(id)passwordVerifier registrationRecord:(id)record
 {
-  v15 = a3;
-  v23 = a4;
-  v22 = a5;
-  v21 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (v15 && (v24.receiver = self, v24.super_class = SecConcrete_sec_identity, v18 = [(SecConcrete_sec_identity *)&v24 init], (self = v18) != 0))
+  contextCopy = context;
+  identityCopy = identity;
+  serverIdentityCopy = serverIdentity;
+  verifierCopy = verifier;
+  passwordVerifierCopy = passwordVerifier;
+  recordCopy = record;
+  if (contextCopy && (v24.receiver = self, v24.super_class = SecConcrete_sec_identity, v18 = [(SecConcrete_sec_identity *)&v24 init], (self = v18) != 0))
   {
-    objc_storeStrong(&v18->spake2_context, a3);
-    objc_storeStrong(&self->client_identity, a4);
-    objc_storeStrong(&self->server_identity, a5);
-    objc_storeStrong(&self->client_password_verifier, a6);
-    objc_storeStrong(&self->server_password_verifier, a7);
-    objc_storeStrong(&self->registration_record, a8);
+    objc_storeStrong(&v18->spake2_context, context);
+    objc_storeStrong(&self->client_identity, identity);
+    objc_storeStrong(&self->server_identity, serverIdentity);
+    objc_storeStrong(&self->client_password_verifier, verifier);
+    objc_storeStrong(&self->server_password_verifier, passwordVerifier);
+    objc_storeStrong(&self->registration_record, record);
     self->type = 2;
     self = self;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (SecConcrete_sec_identity)initWithCertificates:(__CFArray *)a3 signBlock:(id)a4 decryptBlock:(id)a5 queue:(id)a6
+- (SecConcrete_sec_identity)initWithCertificates:(__CFArray *)certificates signBlock:(id)block decryptBlock:(id)decryptBlock queue:(id)queue
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = 0;
-  if (a3 && v10 && v11)
+  blockCopy = block;
+  decryptBlockCopy = decryptBlock;
+  queueCopy = queue;
+  selfCopy = 0;
+  if (certificates && blockCopy && decryptBlockCopy)
   {
     v19.receiver = self;
     v19.super_class = SecConcrete_sec_identity;
     self = [(SecConcrete_sec_identity *)&v19 init];
     if (self)
     {
-      CFRetain(a3);
-      self->certs = a3;
-      v14 = _Block_copy(v10);
+      CFRetain(certificates);
+      self->certs = certificates;
+      v14 = _Block_copy(blockCopy);
       sign_block = self->sign_block;
       self->sign_block = v14;
 
-      v16 = _Block_copy(v11);
+      v16 = _Block_copy(decryptBlockCopy);
       decrypt_block = self->decrypt_block;
       self->decrypt_block = v16;
 
-      objc_storeStrong(&self->operation_queue, a6);
+      objc_storeStrong(&self->operation_queue, queue);
       self->type = 1;
       self = self;
-      v13 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (SecConcrete_sec_identity)initWithIdentityAndCertificates:(__SecIdentity *)a3 certificates:(__CFArray *)a4
+- (SecConcrete_sec_identity)initWithIdentityAndCertificates:(__SecIdentity *)certificates certificates:(__CFArray *)a4
 {
-  if (a3 && (v9.receiver = self, v9.super_class = SecConcrete_sec_identity, (self = [(SecConcrete_sec_identity *)&v9 init]) != 0))
+  if (certificates && (v9.receiver = self, v9.super_class = SecConcrete_sec_identity, (self = [(SecConcrete_sec_identity *)&v9 init]) != 0))
   {
-    v6 = self;
-    CFRetain(a3);
-    v6->identity = a3;
+    selfCopy = self;
+    CFRetain(certificates);
+    selfCopy->identity = certificates;
     if (a4)
     {
       CFRetain(a4);
     }
 
-    v6->certs = a4;
-    v6->type = 1;
-    self = v6;
-    v7 = self;
+    selfCopy->certs = a4;
+    selfCopy->type = 1;
+    self = selfCopy;
+    selfCopy2 = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy2 = 0;
   }
 
-  return v7;
+  return selfCopy2;
 }
 
-- (SecConcrete_sec_identity)initWithIdentity:(__SecIdentity *)a3
+- (SecConcrete_sec_identity)initWithIdentity:(__SecIdentity *)identity
 {
-  v3 = a3;
-  if (a3)
+  selfCopy2 = identity;
+  if (identity)
   {
     v6.receiver = self;
     v6.super_class = SecConcrete_sec_identity;
     self = [(SecConcrete_sec_identity *)&v6 init];
     if (self)
     {
-      v4 = self;
-      CFRetain(v3);
-      v4->identity = v3;
-      v4->type = 1;
-      self = v4;
-      v3 = self;
+      selfCopy = self;
+      CFRetain(selfCopy2);
+      selfCopy->identity = selfCopy2;
+      selfCopy->type = 1;
+      self = selfCopy;
+      selfCopy2 = self;
     }
 
     else
     {
-      v3 = 0;
+      selfCopy2 = 0;
     }
   }
 
-  return v3;
+  return selfCopy2;
 }
 
 @end

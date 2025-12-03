@@ -13,9 +13,9 @@
   }
 
   v5 = objc_autoreleasePoolPush();
-  v6 = [timeSinceMidnight__calendar components:28 fromDate:a1];
+  v6 = [timeSinceMidnight__calendar components:28 fromDate:self];
   v7 = [timeSinceMidnight__calendar dateFromComponents:v6];
-  [a1 timeIntervalSinceDate:v7];
+  [self timeIntervalSinceDate:v7];
   v9 = v8;
   if (a3)
   {
@@ -36,10 +36,10 @@
 
 - (uint64_t)floorDateWithTotalSlotsInDay:()_DKAdditions
 {
-  [a1 timeSinceMidnight:0];
+  [self timeSinceMidnight:0];
   v6 = ((v5 / 86400.0 * a3) * (86400 / a3)) - v5;
 
-  return [a1 dateByAddingTimeInterval:v6];
+  return [self dateByAddingTimeInterval:v6];
 }
 
 @end

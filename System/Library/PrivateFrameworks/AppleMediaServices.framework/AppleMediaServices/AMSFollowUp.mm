@@ -1,31 +1,31 @@
 @interface AMSFollowUp
 - (AMSFollowUp)init;
-- (BOOL)_dateIsInThePast:(id)a3;
-- (BOOL)_itemIsExpired:(id)a3;
-- (BOOL)_updateGroupedHardwareFollowUpItemWithItems:(id)a3 DSID:(id)a4 config:(id)a5 error:(id *)a6;
-- (id)_clearGroupedFollowUpWithBackingIdentifier:(id)a3 config:(id)a4;
-- (id)_clearNonGroupedFollowUpWithBackingIdentifier:(id)a3;
-- (id)_dropExpiredItems:(id)a3;
-- (id)_dsidFromBackingIdentifier:(id)a3;
-- (id)_getHardwareFollowUpGroupingEnabledWithBag:(id)a3;
-- (id)_getHardwareFollowUpSheetURLWithBag:(id)a3;
+- (BOOL)_dateIsInThePast:(id)past;
+- (BOOL)_itemIsExpired:(id)expired;
+- (BOOL)_updateGroupedHardwareFollowUpItemWithItems:(id)items DSID:(id)d config:(id)config error:(id *)error;
+- (id)_clearGroupedFollowUpWithBackingIdentifier:(id)identifier config:(id)config;
+- (id)_clearNonGroupedFollowUpWithBackingIdentifier:(id)identifier;
+- (id)_dropExpiredItems:(id)items;
+- (id)_dsidFromBackingIdentifier:(id)identifier;
+- (id)_getHardwareFollowUpGroupingEnabledWithBag:(id)bag;
+- (id)_getHardwareFollowUpSheetURLWithBag:(id)bag;
 - (id)_getHardwareOffersFeatureConfigFromBag;
 - (id)_getHardwareOffersSheetURL;
-- (id)_groupedHardwareFollowUpItemBackingIdentifierForDSID:(id)a3;
-- (id)_isGroupedHardwareOfferWithBackingIdentifier:(id)a3;
-- (id)_loadGroupedHardwareOfferFollowUpItemsForDSID:(id)a3;
-- (id)_makeGroupedHardwareFollowUpItemFromItems:(id)a3 DSID:(id)a4 config:(id)a5;
-- (id)_pendingFollowUpWithBackingIdentifier:(id)a3 error:(id *)a4;
-- (id)_postGroupedFollowUpItem:(id)a3 config:(id)a4;
-- (id)_postNonGroupedFollowUpItem:(id)a3;
-- (id)clearFollowUpItem:(id)a3;
-- (id)clearFollowUpWithBackingIdentifier:(id)a3;
-- (id)clearFollowUpWithIdentifier:(id)a3 account:(id)a4;
+- (id)_groupedHardwareFollowUpItemBackingIdentifierForDSID:(id)d;
+- (id)_isGroupedHardwareOfferWithBackingIdentifier:(id)identifier;
+- (id)_loadGroupedHardwareOfferFollowUpItemsForDSID:(id)d;
+- (id)_makeGroupedHardwareFollowUpItemFromItems:(id)items DSID:(id)d config:(id)config;
+- (id)_pendingFollowUpWithBackingIdentifier:(id)identifier error:(id *)error;
+- (id)_postGroupedFollowUpItem:(id)item config:(id)config;
+- (id)_postNonGroupedFollowUpItem:(id)item;
+- (id)clearFollowUpItem:(id)item;
+- (id)clearFollowUpWithBackingIdentifier:(id)identifier;
+- (id)clearFollowUpWithIdentifier:(id)identifier account:(id)account;
 - (id)migrateHardwareFollowUpsIfNeeded;
-- (id)pendingFollowUpWithIdentifier:(id)a3 account:(id)a4;
+- (id)pendingFollowUpWithIdentifier:(id)identifier account:(id)account;
 - (id)pendingFollowUps;
-- (id)pendingFollowUpsForAccount:(id)a3;
-- (id)postFollowUpItem:(id)a3;
+- (id)pendingFollowUpsForAccount:(id)account;
+- (id)postFollowUpItem:(id)item;
 - (void)_clearGroupedHardwareFollowUps;
 @end
 
@@ -68,43 +68,43 @@
   return v2;
 }
 
-- (id)clearFollowUpItem:(id)a3
+- (id)clearFollowUpItem:(id)item
 {
-  v4 = [a3 backingIdentifier];
-  v5 = [(AMSFollowUp *)self clearFollowUpWithBackingIdentifier:v4];
+  backingIdentifier = [item backingIdentifier];
+  v5 = [(AMSFollowUp *)self clearFollowUpWithBackingIdentifier:backingIdentifier];
 
   return v5;
 }
 
-- (id)clearFollowUpWithBackingIdentifier:(id)a3
+- (id)clearFollowUpWithBackingIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[AMSLogConfig sharedFollowUpConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
     v15 = objc_opt_class();
     v16 = 2114;
-    v17 = v4;
+    v17 = identifierCopy;
     v7 = v15;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_INFO, "%{public}@: Clearing follow up with backing identifier: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Clearing follow up with backing identifier: %{public}@", buf, 0x16u);
   }
 
-  v8 = [(AMSFollowUp *)self _isGroupedHardwareOfferWithBackingIdentifier:v4];
+  v8 = [(AMSFollowUp *)self _isGroupedHardwareOfferWithBackingIdentifier:identifierCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__AMSFollowUp_clearFollowUpWithBackingIdentifier___block_invoke;
   v12[3] = &unk_1E73B8180;
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
   v10 = [v8 thenWithBinaryPromiseBlock:v12];
 
   return v10;
@@ -149,33 +149,33 @@ id __50__AMSFollowUp_clearFollowUpWithBackingIdentifier___block_invoke(uint64_t 
   return v8;
 }
 
-- (id)clearFollowUpWithIdentifier:(id)a3 account:(id)a4
+- (id)clearFollowUpWithIdentifier:(id)identifier account:(id)account
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  accountCopy = account;
   v8 = +[AMSLogConfig sharedFollowUpConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v10 = objc_opt_class();
     v11 = v10;
-    v12 = AMSHashIfNeeded(v7);
+    v12 = AMSHashIfNeeded(accountCopy);
     v16 = 138543874;
     v17 = v10;
     v18 = 2114;
     v19 = v12;
     v20 = 2114;
-    v21 = v6;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_INFO, "%{public}@: Clearing follow up (account: %{public}@, identifier: %{public}@)", &v16, 0x20u);
+    v21 = identifierCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Clearing follow up (account: %{public}@, identifier: %{public}@)", &v16, 0x20u);
   }
 
-  v13 = [AMSFollowUpItem backingIdentifierForIdentifier:v6 account:v7];
+  v13 = [AMSFollowUpItem backingIdentifierForIdentifier:identifierCopy account:accountCopy];
   v14 = [(AMSFollowUp *)self clearFollowUpWithBackingIdentifier:v13];
 
   return v14;
@@ -183,13 +183,13 @@ id __50__AMSFollowUp_clearFollowUpWithBackingIdentifier___block_invoke(uint64_t 
 
 - (id)migrateHardwareFollowUpsIfNeeded
 {
-  v3 = [(AMSFollowUp *)self _getHardwareOffersFeatureConfigFromBag];
+  _getHardwareOffersFeatureConfigFromBag = [(AMSFollowUp *)self _getHardwareOffersFeatureConfigFromBag];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__AMSFollowUp_migrateHardwareFollowUpsIfNeeded__block_invoke;
   v6[3] = &unk_1E73B81E8;
   v6[4] = self;
-  v4 = [v3 thenWithBinaryPromiseBlock:v6];
+  v4 = [_getHardwareOffersFeatureConfigFromBag thenWithBinaryPromiseBlock:v6];
 
   return v4;
 }
@@ -443,16 +443,16 @@ uint64_t __47__AMSFollowUp_migrateHardwareFollowUpsIfNeeded__block_invoke_19(uin
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
     v15 = objc_opt_class();
     v6 = v15;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_INFO, "%{public}@: Fetching all pending follow ups", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Fetching all pending follow ups", buf, 0xCu);
   }
 
-  v7 = [(AMSFollowUp *)self followUpQueue];
+  followUpQueue = [(AMSFollowUp *)self followUpQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __31__AMSFollowUp_pendingFollowUps__block_invoke;
@@ -460,7 +460,7 @@ uint64_t __47__AMSFollowUp_migrateHardwareFollowUpsIfNeeded__block_invoke_19(uin
   v12[4] = self;
   v8 = v3;
   v13 = v8;
-  dispatch_async(v7, v12);
+  dispatch_async(followUpQueue, v12);
 
   v9 = v13;
   v10 = v8;
@@ -571,38 +571,38 @@ void __31__AMSFollowUp_pendingFollowUps__block_invoke(uint64_t a1)
   }
 }
 
-- (id)pendingFollowUpsForAccount:(id)a3
+- (id)pendingFollowUpsForAccount:(id)account
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v5 = +[AMSLogConfig sharedFollowUpConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = AMSHashIfNeeded(v4);
+    v9 = AMSHashIfNeeded(accountCopy);
     *buf = 138543618;
     v18 = v7;
     v19 = 2114;
     v20 = v9;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_INFO, "%{public}@: Fetching pending follow up for account %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Fetching pending follow up for account %{public}@", buf, 0x16u);
   }
 
-  v10 = [(AMSFollowUp *)self pendingFollowUps];
+  pendingFollowUps = [(AMSFollowUp *)self pendingFollowUps];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __42__AMSFollowUp_pendingFollowUpsForAccount___block_invoke;
   v14[3] = &unk_1E73B8238;
-  v15 = v4;
-  v16 = self;
-  v11 = v4;
-  v12 = [v10 thenWithBlock:v14];
+  v15 = accountCopy;
+  selfCopy = self;
+  v11 = accountCopy;
+  v12 = [pendingFollowUps thenWithBlock:v14];
 
   return v12;
 }
@@ -676,11 +676,11 @@ uint64_t __42__AMSFollowUp_pendingFollowUpsForAccount___block_invoke_2(uint64_t 
   return v8;
 }
 
-- (id)pendingFollowUpWithIdentifier:(id)a3 account:(id)a4
+- (id)pendingFollowUpWithIdentifier:(id)identifier account:(id)account
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  accountCopy = account;
   v8 = objc_alloc_init(AMSMutablePromise);
   v9 = +[AMSLogConfig sharedFollowUpConfig];
   if (!v9)
@@ -688,34 +688,34 @@ uint64_t __42__AMSFollowUp_pendingFollowUpsForAccount___block_invoke_2(uint64_t 
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v11 = objc_opt_class();
     v12 = v11;
-    v13 = AMSHashIfNeeded(v7);
+    v13 = AMSHashIfNeeded(accountCopy);
     *buf = 138543874;
     v27 = v11;
     v28 = 2114;
     v29 = v13;
     v30 = 2114;
-    v31 = v6;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_INFO, "%{public}@: Fetching pending follow up (account: %{public}@, identifier: %{public}@)", buf, 0x20u);
+    v31 = identifierCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Fetching pending follow up (account: %{public}@, identifier: %{public}@)", buf, 0x20u);
   }
 
-  v14 = [(AMSFollowUp *)self followUpQueue];
+  followUpQueue = [(AMSFollowUp *)self followUpQueue];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __53__AMSFollowUp_pendingFollowUpWithIdentifier_account___block_invoke;
   v21[3] = &unk_1E73B72B8;
-  v22 = v6;
-  v23 = v7;
-  v24 = self;
+  v22 = identifierCopy;
+  v23 = accountCopy;
+  selfCopy = self;
   v15 = v8;
   v25 = v15;
-  v16 = v7;
-  v17 = v6;
-  dispatch_async(v14, v21);
+  v16 = accountCopy;
+  v17 = identifierCopy;
+  dispatch_async(followUpQueue, v21);
 
   v18 = v25;
   v19 = v15;
@@ -824,46 +824,46 @@ void __53__AMSFollowUp_pendingFollowUpWithIdentifier_account___block_invoke(uint
   }
 }
 
-- (id)postFollowUpItem:(id)a3
+- (id)postFollowUpItem:(id)item
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v5 = +[AMSLogConfig sharedFollowUpConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [v4 identifier];
+    identifier = [itemCopy identifier];
     *buf = 138543618;
     v16 = v7;
     v17 = 2114;
-    v18 = v9;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_INFO, "%{public}@: Posting follow up item with identifier %{public}@", buf, 0x16u);
+    v18 = identifier;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Posting follow up item with identifier %{public}@", buf, 0x16u);
   }
 
-  if ([v4 isHardwareOffer])
+  if ([itemCopy isHardwareOffer])
   {
-    v10 = [(AMSFollowUp *)self _getHardwareOffersFeatureConfigFromBag];
+    _getHardwareOffersFeatureConfigFromBag = [(AMSFollowUp *)self _getHardwareOffersFeatureConfigFromBag];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __32__AMSFollowUp_postFollowUpItem___block_invoke;
     v13[3] = &unk_1E73B8260;
     v13[4] = self;
-    v14 = v4;
-    v11 = [v10 thenWithBlock:v13];
+    v14 = itemCopy;
+    v11 = [_getHardwareOffersFeatureConfigFromBag thenWithBlock:v13];
   }
 
   else
   {
     v11 = objc_alloc_init(AMSMutablePromise);
-    v10 = [(AMSFollowUp *)self _postNonGroupedFollowUpItem:v4];
-    [(AMSMutablePromise *)v11 finishWithPromise:v10];
+    _getHardwareOffersFeatureConfigFromBag = [(AMSFollowUp *)self _postNonGroupedFollowUpItem:itemCopy];
+    [(AMSMutablePromise *)v11 finishWithPromise:_getHardwareOffersFeatureConfigFromBag];
   }
 
   return v11;
@@ -910,24 +910,24 @@ AMSMutablePromise *__32__AMSFollowUp_postFollowUpItem___block_invoke(uint64_t a1
   return v4;
 }
 
-- (id)_clearGroupedFollowUpWithBackingIdentifier:(id)a3 config:(id)a4
+- (id)_clearGroupedFollowUpWithBackingIdentifier:(id)identifier config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  configCopy = config;
   v8 = objc_alloc_init(AMSMutableBinaryPromise);
-  v9 = [(AMSFollowUp *)self followUpQueue];
+  followUpQueue = [(AMSFollowUp *)self followUpQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __65__AMSFollowUp__clearGroupedFollowUpWithBackingIdentifier_config___block_invoke;
   v16[3] = &unk_1E73B72B8;
   v16[4] = self;
-  v17 = v6;
-  v18 = v7;
+  v17 = identifierCopy;
+  v18 = configCopy;
   v10 = v8;
   v19 = v10;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v9, v16);
+  v11 = configCopy;
+  v12 = identifierCopy;
+  dispatch_async(followUpQueue, v16);
 
   v13 = v19;
   v14 = v10;
@@ -961,21 +961,21 @@ void __65__AMSFollowUp__clearGroupedFollowUpWithBackingIdentifier_config___block
   }
 }
 
-- (id)_clearNonGroupedFollowUpWithBackingIdentifier:(id)a3
+- (id)_clearNonGroupedFollowUpWithBackingIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(AMSMutableBinaryPromise);
-  v6 = [(AMSFollowUp *)self followUpQueue];
+  followUpQueue = [(AMSFollowUp *)self followUpQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__AMSFollowUp__clearNonGroupedFollowUpWithBackingIdentifier___block_invoke;
   block[3] = &unk_1E73B71B0;
   block[4] = self;
-  v13 = v4;
+  v13 = identifierCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = identifierCopy;
+  dispatch_async(followUpQueue, block);
 
   v9 = v14;
   v10 = v7;
@@ -1055,22 +1055,22 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)_pendingFollowUpWithBackingIdentifier:(id)a3 error:(id *)a4
+- (id)_pendingFollowUpWithBackingIdentifier:(id)identifier error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(AMSFollowUp *)self followUpController];
+  identifierCopy = identifier;
+  followUpController = [(AMSFollowUp *)self followUpController];
   v28 = 0;
-  v8 = [v7 pendingFollowUpItems:&v28];
+  v8 = [followUpController pendingFollowUpItems:&v28];
   v9 = v28;
 
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v10 = v9;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -1081,8 +1081,8 @@ LABEL_14:
         v18 = +[AMSLogConfig sharedConfig];
       }
 
-      v19 = [v18 OSLogObject];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v18 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v20 = objc_opt_class();
         v21 = v20;
@@ -1090,10 +1090,10 @@ LABEL_14:
         *buf = 138543874;
         v31 = v20;
         v32 = 2112;
-        v33 = v6;
+        v33 = identifierCopy;
         v34 = 2114;
         v35 = v22;
-        _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch pending follow ups with identifier: %@ error: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch pending follow ups with identifier: %@ error: %{public}@", buf, 0x20u);
       }
 
       v11 = 0;
@@ -1121,8 +1121,8 @@ LABEL_14:
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          v16 = [v15 uniqueIdentifier];
-          v17 = [v6 isEqualToString:v16];
+          uniqueIdentifier = [v15 uniqueIdentifier];
+          v17 = [identifierCopy isEqualToString:uniqueIdentifier];
 
           if (v17)
           {
@@ -1147,24 +1147,24 @@ LABEL_19:
   return v11;
 }
 
-- (id)_postGroupedFollowUpItem:(id)a3 config:(id)a4
+- (id)_postGroupedFollowUpItem:(id)item config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  configCopy = config;
   v8 = objc_alloc_init(AMSMutablePromise);
-  v9 = [(AMSFollowUp *)self followUpQueue];
+  followUpQueue = [(AMSFollowUp *)self followUpQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __47__AMSFollowUp__postGroupedFollowUpItem_config___block_invoke;
   v16[3] = &unk_1E73B72B8;
   v16[4] = self;
-  v17 = v6;
-  v18 = v7;
+  v17 = itemCopy;
+  v18 = configCopy;
   v10 = v8;
   v19 = v10;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v9, v16);
+  v11 = configCopy;
+  v12 = itemCopy;
+  dispatch_async(followUpQueue, v16);
 
   v13 = v19;
   v14 = v10;
@@ -1248,21 +1248,21 @@ void __47__AMSFollowUp__postGroupedFollowUpItem_config___block_invoke(uint64_t a
   }
 }
 
-- (id)_postNonGroupedFollowUpItem:(id)a3
+- (id)_postNonGroupedFollowUpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [(AMSFollowUp *)self followUpQueue];
+  followUpQueue = [(AMSFollowUp *)self followUpQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__AMSFollowUp__postNonGroupedFollowUpItem___block_invoke;
   block[3] = &unk_1E73B71B0;
   block[4] = self;
-  v13 = v4;
+  v13 = itemCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = itemCopy;
+  dispatch_async(followUpQueue, block);
 
   v9 = v14;
   v10 = v7;
@@ -1383,21 +1383,21 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)_isGroupedHardwareOfferWithBackingIdentifier:(id)a3
+- (id)_isGroupedHardwareOfferWithBackingIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [(AMSFollowUp *)self followUpQueue];
+  followUpQueue = [(AMSFollowUp *)self followUpQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__AMSFollowUp__isGroupedHardwareOfferWithBackingIdentifier___block_invoke;
   block[3] = &unk_1E73B71B0;
   block[4] = self;
-  v13 = v4;
+  v13 = identifierCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = identifierCopy;
+  dispatch_async(followUpQueue, block);
 
   v9 = v14;
   v10 = v7;
@@ -1447,13 +1447,13 @@ void __60__AMSFollowUp__isGroupedHardwareOfferWithBackingIdentifier___block_invo
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
       v16 = objc_opt_class();
       v11 = v16;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_INFO, "%{public}@: Hardware offer grouping disabled with OS feature flag", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Hardware offer grouping disabled with OS feature flag", buf, 0xCu);
     }
 
     v3 = [[AMSHardwareOffersConfig alloc] initWithIsGroupingEnabled:0 sheetURL:&stru_1F071BA78];
@@ -1504,16 +1504,16 @@ id __53__AMSFollowUp__getHardwareOffersFeatureConfigFromBag__block_invoke(uint64
   return v12;
 }
 
-- (id)_getHardwareFollowUpGroupingEnabledWithBag:(id)a3
+- (id)_getHardwareFollowUpGroupingEnabledWithBag:(id)bag
 {
-  v4 = [a3 BOOLForKey:@"follow-up-hardware-follow-up-grouping-enabled"];
-  v5 = [v4 valuePromise];
+  v4 = [bag BOOLForKey:@"follow-up-hardware-follow-up-grouping-enabled"];
+  valuePromise = [v4 valuePromise];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__AMSFollowUp__getHardwareFollowUpGroupingEnabledWithBag___block_invoke;
   v10[3] = &unk_1E73B3F70;
   v10[4] = self;
-  v6 = [v5 thenWithBlock:v10];
+  v6 = [valuePromise thenWithBlock:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__AMSFollowUp__getHardwareFollowUpGroupingEnabledWithBag___block_invoke_84;
@@ -1592,16 +1592,16 @@ id __58__AMSFollowUp__getHardwareFollowUpGroupingEnabledWithBag___block_invoke_8
   return v4;
 }
 
-- (id)_getHardwareFollowUpSheetURLWithBag:(id)a3
+- (id)_getHardwareFollowUpSheetURLWithBag:(id)bag
 {
-  v4 = [a3 stringForKey:@"follow-up-hardware-follow-up-sheet-url"];
-  v5 = [v4 valuePromise];
+  v4 = [bag stringForKey:@"follow-up-hardware-follow-up-sheet-url"];
+  valuePromise = [v4 valuePromise];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__AMSFollowUp__getHardwareFollowUpSheetURLWithBag___block_invoke;
   v8[3] = &unk_1E73B8288;
   v8[4] = self;
-  v6 = [v5 catchWithBlock:v8];
+  v6 = [valuePromise catchWithBlock:v8];
 
   return v6;
 }
@@ -1636,10 +1636,10 @@ id __51__AMSFollowUp__getHardwareFollowUpSheetURLWithBag___block_invoke(uint64_t
   return v6;
 }
 
-- (id)_loadGroupedHardwareOfferFollowUpItemsForDSID:(id)a3
+- (id)_loadGroupedHardwareOfferFollowUpItemsForDSID:(id)d
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = [(AMSFollowUp *)self _groupedHardwareFollowUpItemBackingIdentifierForDSID:a3];
+  v4 = [(AMSFollowUp *)self _groupedHardwareFollowUpItemBackingIdentifierForDSID:d];
   v26 = 0;
   v5 = [(AMSFollowUp *)self _pendingFollowUpWithBackingIdentifier:v4 error:&v26];
   v6 = v26;
@@ -1652,8 +1652,8 @@ id __51__AMSFollowUp__getHardwareFollowUpSheetURLWithBag___block_invoke(uint64_t
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       *buf = 138543618;
@@ -1661,14 +1661,14 @@ id __51__AMSFollowUp__getHardwareFollowUpSheetURLWithBag___block_invoke(uint64_t
       v29 = 2112;
       v30 = v7;
       v11 = v10;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Failed to load active hardware offers. Assuming no existing offers were present. Error: %@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to load active hardware offers. Assuming no existing offers were present. Error: %@", buf, 0x16u);
     }
   }
 
   else
   {
-    v12 = [v5 userInfo];
-    v8 = [v12 objectForKeyedSubscript:@"AMSFollowUpGroupedFollowUpItemsKey"];
+    userInfo = [v5 userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"AMSFollowUpGroupedFollowUpItemsKey"];
 
     if (v8)
     {
@@ -1676,23 +1676,23 @@ id __51__AMSFollowUp__getHardwareFollowUpSheetURLWithBag___block_invoke(uint64_t
       v14 = objc_opt_class();
       v15 = objc_opt_class();
       v16 = objc_opt_class();
-      v9 = [v13 setWithObjects:{v14, v15, v16, objc_opt_class(), 0}];
+      oSLogObject = [v13 setWithObjects:{v14, v15, v16, objc_opt_class(), 0}];
       v25 = 0;
-      v17 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v9 fromData:v8 error:&v25];
+      v17 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:oSLogObject fromData:v8 error:&v25];
       v7 = v25;
       if (v17)
       {
         goto LABEL_20;
       }
 
-      v18 = +[AMSLogConfig sharedFollowUpConfig];
-      if (!v18)
+      v9OSLogObject = +[AMSLogConfig sharedFollowUpConfig];
+      if (!v9OSLogObject)
       {
-        v18 = +[AMSLogConfig sharedConfig];
+        v9OSLogObject = +[AMSLogConfig sharedConfig];
       }
 
-      v19 = [v18 OSLogObject];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v9OSLogObject OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v20 = objc_opt_class();
         *buf = 138543618;
@@ -1700,20 +1700,20 @@ id __51__AMSFollowUp__getHardwareFollowUpSheetURLWithBag___block_invoke(uint64_t
         v29 = 2112;
         v30 = v7;
         v21 = v20;
-        _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_ERROR, "%{public}@: Failed to decode active hardware offers. Assuming no existing offers were present. Error: %@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Failed to decode active hardware offers. Assuming no existing offers were present. Error: %@", buf, 0x16u);
       }
     }
 
     else
     {
-      v9 = +[AMSLogConfig sharedFollowUpConfig];
-      if (!v9)
+      oSLogObject = +[AMSLogConfig sharedFollowUpConfig];
+      if (!oSLogObject)
       {
-        v9 = +[AMSLogConfig sharedConfig];
+        oSLogObject = +[AMSLogConfig sharedConfig];
       }
 
-      v18 = [v9 OSLogObject];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      v9OSLogObject = [oSLogObject OSLogObject];
+      if (os_log_type_enabled(v9OSLogObject, OS_LOG_TYPE_ERROR))
       {
         v22 = objc_opt_class();
         *buf = 138543618;
@@ -1721,7 +1721,7 @@ id __51__AMSFollowUp__getHardwareFollowUpSheetURLWithBag___block_invoke(uint64_t
         v29 = 2112;
         v30 = @"AMSFollowUpGroupedFollowUpItemsKey";
         v23 = v22;
-        _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: Failed to load active hardware offers. userInfo is missing %@ key. Assuming no existing offers were present.", buf, 0x16u);
+        _os_log_impl(&dword_192869000, v9OSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to load active hardware offers. userInfo is missing %@ key. Assuming no existing offers were present.", buf, 0x16u);
       }
 
       v7 = 0;
@@ -1734,37 +1734,37 @@ LABEL_20:
   return v17;
 }
 
-- (BOOL)_updateGroupedHardwareFollowUpItemWithItems:(id)a3 DSID:(id)a4 config:(id)a5 error:(id *)a6
+- (BOOL)_updateGroupedHardwareFollowUpItemWithItems:(id)items DSID:(id)d config:(id)config error:(id *)error
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AMSFollowUp *)self _dropExpiredItems:a3];
-  v40 = v10;
+  dCopy = d;
+  configCopy = config;
+  v11 = [(AMSFollowUp *)self _dropExpiredItems:items];
+  v40 = configCopy;
   if ([v11 count])
   {
-    v12 = [(AMSFollowUp *)self _makeGroupedHardwareFollowUpItemFromItems:v11 DSID:v9 config:v10];
+    v12 = [(AMSFollowUp *)self _makeGroupedHardwareFollowUpItemFromItems:v11 DSID:dCopy config:configCopy];
     v13 = +[AMSLogConfig sharedFollowUpConfig];
     if (!v13)
     {
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
       v44 = objc_opt_class();
       v15 = v44;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_INFO, "%{public}@: Posting/updating grouped hardware offer follow up item", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Posting/updating grouped hardware offer follow up item", buf, 0xCu);
     }
 
-    v16 = [(AMSFollowUp *)self followUpController];
+    followUpController = [(AMSFollowUp *)self followUpController];
     v41 = 0;
-    v17 = [v16 postFollowUpItem:v12 error:&v41];
+    v17 = [followUpController postFollowUpItem:v12 error:&v41];
     v18 = v41;
 
-    v19 = [v12 uniqueIdentifier];
+    uniqueIdentifier = [v12 uniqueIdentifier];
 
     v20 = @"post";
     if (v17)
@@ -1776,8 +1776,8 @@ LABEL_7:
         v21 = +[AMSLogConfig sharedConfig];
       }
 
-      v22 = [v21 OSLogObject];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
+      oSLogObject2 = [v21 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
       {
         v23 = objc_opt_class();
         *buf = 138543874;
@@ -1785,9 +1785,9 @@ LABEL_7:
         v45 = 2114;
         v46 = v20;
         v47 = 2114;
-        v48 = v19;
+        v48 = uniqueIdentifier;
         v24 = v23;
-        _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_INFO, "%{public}@: Successfully  %{public}@ed grouped hardware offer follow up with identifier %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: Successfully  %{public}@ed grouped hardware offer follow up with identifier %{public}@", buf, 0x20u);
       }
 
       v25 = 1;
@@ -1803,21 +1803,21 @@ LABEL_7:
       v26 = +[AMSLogConfig sharedConfig];
     }
 
-    v27 = [v26 OSLogObject];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
+    oSLogObject3 = [v26 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
       v44 = objc_opt_class();
       v28 = v44;
-      _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_INFO, "%{public}@: No hardware offer follow ups remaining. Clearing grouped hardware offer follow up item.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_INFO, "%{public}@: No hardware offer follow ups remaining. Clearing grouped hardware offer follow up item.", buf, 0xCu);
     }
 
-    v19 = [(AMSFollowUp *)self _groupedHardwareFollowUpItemBackingIdentifierForDSID:v9];
-    v29 = [(AMSFollowUp *)self followUpController];
-    v51[0] = v19;
+    uniqueIdentifier = [(AMSFollowUp *)self _groupedHardwareFollowUpItemBackingIdentifierForDSID:dCopy];
+    followUpController2 = [(AMSFollowUp *)self followUpController];
+    v51[0] = uniqueIdentifier;
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:1];
     v42 = 0;
-    v31 = [v29 clearPendingFollowUpItemsWithUniqueIdentifiers:v30 error:&v42];
+    v31 = [followUpController2 clearPendingFollowUpItemsWithUniqueIdentifiers:v30 error:&v42];
     v18 = v42;
 
     v20 = @"clear";
@@ -1838,8 +1838,8 @@ LABEL_7:
     v32 = +[AMSLogConfig sharedConfig];
   }
 
-  v33 = [v32 OSLogObject];
-  if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
+  oSLogObject4 = [v32 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_INFO))
   {
     v34 = objc_opt_class();
     *buf = 138544130;
@@ -1847,11 +1847,11 @@ LABEL_7:
     v45 = 2114;
     v46 = v20;
     v47 = 2114;
-    v48 = v19;
+    v48 = uniqueIdentifier;
     v49 = 2114;
     v50 = v18;
     v35 = v34;
-    _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_INFO, "%{public}@: Failed to %{public}@ grouped hardware offer follow up with identifier: %{public}@. Reason: %{public}@", buf, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_INFO, "%{public}@: Failed to %{public}@ grouped hardware offer follow up with identifier: %{public}@. Reason: %{public}@", buf, 0x2Au);
   }
 
   if (v39)
@@ -1871,75 +1871,75 @@ LABEL_26:
   return v25;
 }
 
-- (id)_dropExpiredItems:(id)a3
+- (id)_dropExpiredItems:(id)items
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v23 = v4;
-  v6 = [v4 allValues];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  v23 = itemsCopy;
+  allValues = [itemsCopy allValues];
+  v7 = [allValues countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v26;
     v10 = 0x1E73B0000uLL;
-    v24 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v8; ++i)
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
         if ([(AMSFollowUp *)self _itemIsExpired:v12])
         {
-          v13 = [*(v10 + 3552) sharedFollowUpConfig];
-          if (!v13)
+          sharedFollowUpConfig = [*(v10 + 3552) sharedFollowUpConfig];
+          if (!sharedFollowUpConfig)
           {
-            v13 = [*(v10 + 3552) sharedConfig];
+            sharedFollowUpConfig = [*(v10 + 3552) sharedConfig];
           }
 
-          v14 = [v13 OSLogObject];
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+          oSLogObject = [sharedFollowUpConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
           {
             v15 = v8;
-            v16 = v6;
+            v16 = allValues;
             v17 = v5;
             v18 = objc_opt_class();
             v19 = v9;
             v20 = v18;
-            v21 = [v12 backingIdentifier];
+            backingIdentifier = [v12 backingIdentifier];
             *buf = 138543618;
             v30 = v18;
             v5 = v17;
-            v6 = v16;
+            allValues = v16;
             v8 = v15;
             v31 = 2114;
-            v32 = v21;
-            _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_INFO, "%{public}@: Dropping expired hardware follow up from internal tracking list. Backing identifier: %{public}@", buf, 0x16u);
+            v32 = backingIdentifier;
+            _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Dropping expired hardware follow up from internal tracking list. Backing identifier: %{public}@", buf, 0x16u);
 
             v9 = v19;
-            self = v24;
+            self = selfCopy;
             v10 = 0x1E73B0000;
           }
         }
 
         else
         {
-          v13 = [v12 backingIdentifier];
-          [v5 setObject:v12 forKey:v13];
+          sharedFollowUpConfig = [v12 backingIdentifier];
+          [v5 setObject:v12 forKey:sharedFollowUpConfig];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v8);
@@ -1948,15 +1948,15 @@ LABEL_26:
   return v5;
 }
 
-- (BOOL)_itemIsExpired:(id)a3
+- (BOOL)_itemIsExpired:(id)expired
 {
-  v4 = a3;
-  v5 = [v4 expiration];
+  expiredCopy = expired;
+  expiration = [expiredCopy expiration];
 
-  if (v5)
+  if (expiration)
   {
-    v6 = [v4 expiration];
-    v7 = [(AMSFollowUp *)self _dateIsInThePast:v6];
+    expiration2 = [expiredCopy expiration];
+    v7 = [(AMSFollowUp *)self _dateIsInThePast:expiration2];
   }
 
   else
@@ -1967,22 +1967,22 @@ LABEL_26:
   return v7;
 }
 
-- (BOOL)_dateIsInThePast:(id)a3
+- (BOOL)_dateIsInThePast:(id)past
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
-  LOBYTE(self) = [(AMSFollowUp *)self _date:v6 isLaterThanDate:v5];
+  pastCopy = past;
+  date = [v4 date];
+  LOBYTE(self) = [(AMSFollowUp *)self _date:date isLaterThanDate:pastCopy];
 
   return self;
 }
 
-- (id)_makeGroupedHardwareFollowUpItemFromItems:(id)a3 DSID:(id)a4 config:(id)a5
+- (id)_makeGroupedHardwareFollowUpItemFromItems:(id)items DSID:(id)d config:(id)config
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v38 = a4;
-  v9 = a5;
+  itemsCopy = items;
+  dCopy = d;
+  configCopy = config;
   v40 = 0;
   v41 = &v40;
   v42 = 0x2050000000;
@@ -2013,7 +2013,7 @@ LABEL_26:
 
   v17 = v16;
 
-  v18 = [AMSHardwareOfferItem latestExpirationDateFromItems:v8];
+  v18 = [AMSHardwareOfferItem latestExpirationDateFromItems:itemsCopy];
   [v12 setExpirationDate:v18];
 
   [v12 setExtensionIdentifier:@"com.apple.AppleMediaServices.FollowUpExtension"];
@@ -2024,11 +2024,11 @@ LABEL_26:
   [v12 setInformativeText:0];
   [v12 setTitle:v17];
 
-  v20 = [(AMSFollowUp *)self _groupedHardwareFollowUpItemBackingIdentifierForDSID:v38];
+  v20 = [(AMSFollowUp *)self _groupedHardwareFollowUpItemBackingIdentifierForDSID:dCopy];
   [v12 setUniqueIdentifier:v20];
 
-  LOBYTE(v20) = [AMSHardwareOfferItem shouldBadgeAppWithItems:v8];
-  v21 = [AMSHardwareOfferItem shouldBadgeRowWithItems:v8];
+  LOBYTE(v20) = [AMSHardwareOfferItem shouldBadgeAppWithItems:itemsCopy];
+  v21 = [AMSHardwareOfferItem shouldBadgeRowWithItems:itemsCopy];
   if ((v20 & 1) == 0)
   {
     if (v21)
@@ -2045,7 +2045,7 @@ LABEL_26:
   }
 
   v39 = 0;
-  v23 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v39];
+  v23 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:itemsCopy requiringSecureCoding:1 error:&v39];
   v24 = v39;
   if (!v23)
   {
@@ -2055,8 +2055,8 @@ LABEL_26:
       v25 = +[AMSLogConfig sharedConfig];
     }
 
-    v26 = [v25 OSLogObject];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v25 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v27 = objc_opt_class();
       *buf = 138543618;
@@ -2064,7 +2064,7 @@ LABEL_26:
       *&buf[12] = 2112;
       *&buf[14] = v24;
       v28 = v27;
-      _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_ERROR, "%{public}@: Failed to save grouped hardware offer follow up items: %@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to save grouped hardware offer follow up items: %@", buf, 0x16u);
     }
   }
 
@@ -2076,8 +2076,8 @@ LABEL_26:
   [v12 setDisplayStyle:{objc_msgSend(v12, "displayStyle") | 2}];
   v30 = MEMORY[0x1E6997AC0];
   v31 = MEMORY[0x1E695DFF8];
-  v32 = [v9 sheetURL];
-  v33 = [v31 URLWithString:v32];
+  sheetURL = [configCopy sheetURL];
+  v33 = [v31 URLWithString:sheetURL];
   v34 = [v30 actionWithLabel:&stru_1F071BA78 url:v33];
 
   v45 = 0x1F072AF98;
@@ -2096,24 +2096,24 @@ LABEL_26:
 {
   v2 = [AMSBag bagForProfile:@"AppStore" profileVersion:@"1"];
   v3 = [v2 stringForKey:@"follow-up-hardware-follow-up-sheet-url"];
-  v4 = [v3 valuePromise];
+  valuePromise = [v3 valuePromise];
 
-  return v4;
+  return valuePromise;
 }
 
-- (id)_dsidFromBackingIdentifier:(id)a3
+- (id)_dsidFromBackingIdentifier:(id)identifier
 {
-  v3 = [AMSFollowUpItem componentsFromBackingIdentifier:a3];
+  v3 = [AMSFollowUpItem componentsFromBackingIdentifier:identifier];
   v4 = [v3 objectForKeyedSubscript:0x1F071B5D8];
 
   return v4;
 }
 
-- (id)_groupedHardwareFollowUpItemBackingIdentifierForDSID:(id)a3
+- (id)_groupedHardwareFollowUpItemBackingIdentifierForDSID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = [AMSFollowUpItem backingIdentifierForIdentifier:@"AMSFollowUpGroupedHardwareOfferFollowUpIdentifier" DSID:a3];
+    v4 = [AMSFollowUpItem backingIdentifierForIdentifier:@"AMSFollowUpGroupedHardwareOfferFollowUpIdentifier" DSID:d];
   }
 
   else
@@ -2127,9 +2127,9 @@ LABEL_26:
 - (void)_clearGroupedHardwareFollowUps
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSFollowUp *)self followUpController];
+  followUpController = [(AMSFollowUp *)self followUpController];
   v25 = 0;
-  v4 = [v3 pendingFollowUpItems:&v25];
+  v4 = [followUpController pendingFollowUpItems:&v25];
   v5 = v25;
 
   if (!v5)
@@ -2137,43 +2137,43 @@ LABEL_26:
     v6 = [v4 ams_filterUsingTest:&__block_literal_global_114];
     if (![v6 count])
     {
-      v7 = +[AMSLogConfig sharedFollowUpConfig];
-      if (!v7)
+      oSLogObject2 = +[AMSLogConfig sharedFollowUpConfig];
+      if (!oSLogObject2)
       {
-        v7 = +[AMSLogConfig sharedConfig];
+        oSLogObject2 = +[AMSLogConfig sharedConfig];
       }
 
-      v13 = [v7 OSLogObject];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+      oSLogObject = [oSLogObject2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
       {
         v21 = objc_opt_class();
         *buf = 138543362;
         v27 = v21;
         v22 = v21;
-        _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_INFO, "%{public}@: No grouped hardware follow ups to clear", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: No grouped hardware follow ups to clear", buf, 0xCu);
       }
 
       v5 = 0;
       goto LABEL_23;
     }
 
-    v7 = [v6 ams_mapWithTransform:&__block_literal_global_117];
-    v10 = [(AMSFollowUp *)self followUpController];
+    oSLogObject2 = [v6 ams_mapWithTransform:&__block_literal_global_117];
+    followUpController2 = [(AMSFollowUp *)self followUpController];
     v24 = 0;
-    v11 = [v10 clearPendingFollowUpItemsWithUniqueIdentifiers:v7 error:&v24];
+    v11 = [followUpController2 clearPendingFollowUpItemsWithUniqueIdentifiers:oSLogObject2 error:&v24];
     v5 = v24;
 
     v12 = +[AMSLogConfig sharedFollowUpConfig];
-    v13 = v12;
+    oSLogObject = v12;
     if (v11)
     {
       if (!v12)
       {
-        v13 = +[AMSLogConfig sharedConfig];
+        oSLogObject = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+      v13OSLogObject = [oSLogObject OSLogObject];
+      if (!os_log_type_enabled(v13OSLogObject, OS_LOG_TYPE_INFO))
       {
         goto LABEL_22;
       }
@@ -2183,7 +2183,7 @@ LABEL_26:
       v27 = v15;
       v16 = v15;
       v17 = "%{public}@: Cleared grouped hardware follow ups";
-      v18 = v14;
+      v18 = v13OSLogObject;
       v19 = OS_LOG_TYPE_INFO;
       v20 = 12;
     }
@@ -2192,11 +2192,11 @@ LABEL_26:
     {
       if (!v12)
       {
-        v13 = +[AMSLogConfig sharedConfig];
+        oSLogObject = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      v13OSLogObject = [oSLogObject OSLogObject];
+      if (!os_log_type_enabled(v13OSLogObject, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_22;
       }
@@ -2208,7 +2208,7 @@ LABEL_26:
       v29 = v5;
       v16 = v23;
       v17 = "%{public}@: Failed to clear grouped hardware follow ups. Error: %@";
-      v18 = v14;
+      v18 = v13OSLogObject;
       v19 = OS_LOG_TYPE_ERROR;
       v20 = 22;
     }
@@ -2227,8 +2227,8 @@ LABEL_23:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v8 = objc_opt_class();
     *buf = 138543618;
@@ -2236,7 +2236,7 @@ LABEL_23:
     v28 = 2112;
     v29 = v5;
     v9 = v8;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@: Failed to run hardware follow up migration. Loading pending follow up items failed with error: %@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Failed to run hardware follow up migration. Loading pending follow up items failed with error: %@", buf, 0x16u);
   }
 
 LABEL_24:

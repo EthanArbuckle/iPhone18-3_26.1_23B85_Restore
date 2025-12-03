@@ -1,23 +1,23 @@
 @interface HDMedicalIDDataMigrator
-+ (BOOL)migrateMedicalIDDataIfNeeded:(id)a3;
++ (BOOL)migrateMedicalIDDataIfNeeded:(id)needed;
 @end
 
 @implementation HDMedicalIDDataMigrator
 
-+ (BOOL)migrateMedicalIDDataIfNeeded:(id)a3
++ (BOOL)migrateMedicalIDDataIfNeeded:(id)needed
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 schemaVersion] <= 3)
+  neededCopy = needed;
+  v4 = neededCopy;
+  if (neededCopy && [neededCopy schemaVersion] <= 3)
   {
-    v5 = [v4 schemaVersion];
+    schemaVersion = [v4 schemaVersion];
     v6 = 1;
-    if (v5 > 1)
+    if (schemaVersion > 1)
     {
-      if (v5 != 2)
+      if (schemaVersion != 2)
       {
-        if (v5 != 3)
+        if (schemaVersion != 3)
         {
           goto LABEL_42;
         }
@@ -28,9 +28,9 @@
 
     else
     {
-      if (v5)
+      if (schemaVersion)
       {
-        if (v5 != 1)
+        if (schemaVersion != 1)
         {
           goto LABEL_42;
         }
@@ -45,8 +45,8 @@
 
       v8 = v4;
       objc_opt_self();
-      v9 = [v8 emergencyContacts];
-      if ([v9 count])
+      emergencyContacts = [v8 emergencyContacts];
+      if ([emergencyContacts count])
       {
         error = 0;
         v10 = ABAddressBookCreateWithOptions(0, &error);
@@ -75,8 +75,8 @@ LABEL_41:
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v9 = v9;
-        v12 = [v9 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        emergencyContacts = emergencyContacts;
+        v12 = [emergencyContacts countByEnumeratingWithState:&v29 objects:v38 count:16];
         if (v12)
         {
           v13 = v12;
@@ -87,13 +87,13 @@ LABEL_41:
             {
               if (*v30 != v14)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(emergencyContacts);
               }
 
               [*(*(&v29 + 1) + 8 * i) _migrateToSchemaVersion:2 withAddressBook:{v11, v29}];
             }
 
-            v13 = [v9 countByEnumeratingWithState:&v29 objects:v38 count:16];
+            v13 = [emergencyContacts countByEnumeratingWithState:&v29 objects:v38 count:16];
           }
 
           while (v13);
@@ -105,19 +105,19 @@ LABEL_41:
 
     v8 = v4;
     objc_opt_self();
-    v9 = [v8 emergencyContacts];
-    if (![v9 count])
+    emergencyContacts = [v8 emergencyContacts];
+    if (![emergencyContacts count])
     {
 LABEL_33:
 
 LABEL_34:
       v22 = v4;
       objc_opt_self();
-      v23 = [v22 birthdate];
-      if (v23)
+      birthdate = [v22 birthdate];
+      if (birthdate)
       {
-        v24 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-        v25 = [v24 hk_dateOfBirthDateComponentsWithDate:v23];
+        hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+        v25 = [hk_gregorianCalendar hk_dateOfBirthDateComponentsWithDate:birthdate];
 
         [v22 setGregorianBirthday:v25];
       }
@@ -135,8 +135,8 @@ LABEL_34:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v9 = v9;
-      v18 = [v9 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      emergencyContacts = emergencyContacts;
+      v18 = [emergencyContacts countByEnumeratingWithState:&v29 objects:v38 count:16];
       if (v18)
       {
         v19 = v18;
@@ -147,13 +147,13 @@ LABEL_34:
           {
             if (*v30 != v20)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(emergencyContacts);
             }
 
             [*(*(&v29 + 1) + 8 * j) _migrateToSchemaVersion:3 withAddressBook:v17];
           }
 
-          v19 = [v9 countByEnumeratingWithState:&v29 objects:v38 count:16];
+          v19 = [emergencyContacts countByEnumeratingWithState:&v29 objects:v38 count:16];
         }
 
         while (v19);

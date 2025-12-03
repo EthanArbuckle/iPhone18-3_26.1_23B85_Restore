@@ -1,10 +1,10 @@
 @interface MUPlaceCallToActionAppearance
-+ (id)userRecommendedAppearanceForNumberOfPhotosAdded:(unint64_t)a3;
-+ (id)userRecommendedAppearanceForRatingState:(int64_t)a3;
-+ (id)userRecommendedAppearanceForRatingState:(int64_t)a3 numberOfPhotosAdded:(unint64_t)a4;
++ (id)userRecommendedAppearanceForNumberOfPhotosAdded:(unint64_t)added;
++ (id)userRecommendedAppearanceForRatingState:(int64_t)state;
++ (id)userRecommendedAppearanceForRatingState:(int64_t)state numberOfPhotosAdded:(unint64_t)added;
 + (id)userRecommendedLoadingAppearance;
-- (BOOL)isEqual:(id)a3;
-- (MUPlaceCallToActionAppearance)initWithType:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (MUPlaceCallToActionAppearance)initWithType:(int64_t)type;
 - (unint64_t)hash;
 @end
 
@@ -12,15 +12,15 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MUPlaceCallToActionAppearance *)self type];
-  v4 = [(MUPlaceCallToActionAppearance *)self numberOfPhotosAdded]^ v3;
+  type = [(MUPlaceCallToActionAppearance *)self type];
+  v4 = [(MUPlaceCallToActionAppearance *)self numberOfPhotosAdded]^ type;
   return v4 ^ [(MKUGCCallToActionViewAppearance *)self ratingState];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -31,14 +31,14 @@
     if (objc_opt_isKindOfClass())
     {
       type = self->_type;
-      v6 = v4;
-      v7 = [(MUPlaceCallToActionAppearance *)v6 type];
-      v8 = [(MKUGCCallToActionViewAppearance *)self ratingState];
-      v9 = [(MKUGCCallToActionViewAppearance *)v6 ratingState];
-      v10 = [(MUPlaceCallToActionAppearance *)self numberOfPhotosAdded];
-      v11 = [(MUPlaceCallToActionAppearance *)v6 numberOfPhotosAdded];
+      v6 = equalCopy;
+      type = [(MUPlaceCallToActionAppearance *)v6 type];
+      ratingState = [(MKUGCCallToActionViewAppearance *)self ratingState];
+      ratingState2 = [(MKUGCCallToActionViewAppearance *)v6 ratingState];
+      numberOfPhotosAdded = [(MUPlaceCallToActionAppearance *)self numberOfPhotosAdded];
+      numberOfPhotosAdded2 = [(MUPlaceCallToActionAppearance *)v6 numberOfPhotosAdded];
 
-      v14 = type == v7 && v8 == v9 && v10 == v11;
+      v14 = type == type && ratingState == ratingState2 && numberOfPhotosAdded == numberOfPhotosAdded2;
     }
 
     else
@@ -50,14 +50,14 @@
   return v14;
 }
 
-- (MUPlaceCallToActionAppearance)initWithType:(int64_t)a3
+- (MUPlaceCallToActionAppearance)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = MUPlaceCallToActionAppearance;
   result = [(MUPlaceCallToActionAppearance *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -70,27 +70,27 @@
   return v2;
 }
 
-+ (id)userRecommendedAppearanceForRatingState:(int64_t)a3
++ (id)userRecommendedAppearanceForRatingState:(int64_t)state
 {
   v4 = [[MUPlaceCallToActionAppearance alloc] initWithType:4];
-  [(MKUGCCallToActionViewAppearance *)v4 setRatingState:a3];
+  [(MKUGCCallToActionViewAppearance *)v4 setRatingState:state];
 
   return v4;
 }
 
-+ (id)userRecommendedAppearanceForNumberOfPhotosAdded:(unint64_t)a3
++ (id)userRecommendedAppearanceForNumberOfPhotosAdded:(unint64_t)added
 {
   v4 = [[MUPlaceCallToActionAppearance alloc] initWithType:4];
-  [(MUPlaceCallToActionAppearance *)v4 setNumberOfPhotosAdded:a3];
+  [(MUPlaceCallToActionAppearance *)v4 setNumberOfPhotosAdded:added];
 
   return v4;
 }
 
-+ (id)userRecommendedAppearanceForRatingState:(int64_t)a3 numberOfPhotosAdded:(unint64_t)a4
++ (id)userRecommendedAppearanceForRatingState:(int64_t)state numberOfPhotosAdded:(unint64_t)added
 {
   v6 = [[MUPlaceCallToActionAppearance alloc] initWithType:4];
-  [(MKUGCCallToActionViewAppearance *)v6 setRatingState:a3];
-  [(MUPlaceCallToActionAppearance *)v6 setNumberOfPhotosAdded:a4];
+  [(MKUGCCallToActionViewAppearance *)v6 setRatingState:state];
+  [(MUPlaceCallToActionAppearance *)v6 setNumberOfPhotosAdded:added];
 
   return v6;
 }

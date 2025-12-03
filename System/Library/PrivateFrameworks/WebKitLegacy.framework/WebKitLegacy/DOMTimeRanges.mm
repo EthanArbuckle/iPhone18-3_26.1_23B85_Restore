@@ -1,6 +1,6 @@
 @interface DOMTimeRanges
-- (double)end:(unsigned int)a3;
-- (double)start:(unsigned int)a3;
+- (double)end:(unsigned int)end;
+- (double)start:(unsigned int)start;
 - (unsigned)length;
 - (void)dealloc;
 @end
@@ -53,7 +53,7 @@
   return self;
 }
 
-- (double)start:(unsigned int)a3
+- (double)start:(unsigned int)start
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v10);
   v4 = WebCore::TimeRanges::start(self->super._internal);
@@ -73,7 +73,7 @@
   return v7;
 }
 
-- (double)end:(unsigned int)a3
+- (double)end:(unsigned int)end
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v10);
   v4 = WebCore::TimeRanges::end(self->super._internal);

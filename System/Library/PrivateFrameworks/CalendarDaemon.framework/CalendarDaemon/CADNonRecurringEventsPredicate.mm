@@ -1,20 +1,20 @@
 @interface CADNonRecurringEventsPredicate
-- (CADNonRecurringEventsPredicate)initWithStartDate:(id)a3 endDate:(id)a4 calendarIDs:(id)a5;
+- (CADNonRecurringEventsPredicate)initWithStartDate:(id)date endDate:(id)endDate calendarIDs:(id)ds;
 - (id)defaultPropertiesToLoad;
 - (id)relatedObjectPropertiesToLoad;
 @end
 
 @implementation CADNonRecurringEventsPredicate
 
-- (CADNonRecurringEventsPredicate)initWithStartDate:(id)a3 endDate:(id)a4 calendarIDs:(id)a5
+- (CADNonRecurringEventsPredicate)initWithStartDate:(id)date endDate:(id)endDate calendarIDs:(id)ds
 {
   v20[4] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CADPropertyFilter alloc] initWithProperty:5 comparison:5 dateValue:v10];
+  dsCopy = ds;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v11 = [[CADPropertyFilter alloc] initWithProperty:5 comparison:5 dateValue:dateCopy];
 
-  v12 = [[CADPropertyFilter alloc] initWithProperty:6 comparison:2 dateValue:v9];
+  v12 = [[CADPropertyFilter alloc] initWithProperty:6 comparison:2 dateValue:endDateCopy];
   v13 = [[CADPropertyFilter alloc] initWithProperty:10 comparison:0 integerValue:0];
   v14 = [[CADPropertyFilter alloc] initWithProperty:11 comparison:0 integerValue:0];
   v20[0] = v11;
@@ -24,7 +24,7 @@
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:4];
   v19.receiver = self;
   v19.super_class = CADNonRecurringEventsPredicate;
-  v16 = [(CADPropertySearchPredicate *)&v19 initWithEntityType:2 filters:v15 calendars:v8];
+  v16 = [(CADPropertySearchPredicate *)&v19 initWithEntityType:2 filters:v15 calendars:dsCopy];
 
   v17 = *MEMORY[0x277D85DE8];
   return v16;
@@ -35,13 +35,13 @@
   v9[3] = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = CADNonRecurringEventsPredicate;
-  v2 = [(CADPropertySearchPredicate *)&v8 defaultPropertiesToLoad];
+  defaultPropertiesToLoad = [(CADPropertySearchPredicate *)&v8 defaultPropertiesToLoad];
   v3 = *MEMORY[0x277CF7268];
   v9[0] = *MEMORY[0x277CF71F8];
   v9[1] = v3;
   v9[2] = *MEMORY[0x277CF7368];
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:3];
-  v5 = [v2 arrayByAddingObjectsFromArray:v4];
+  v5 = [defaultPropertiesToLoad arrayByAddingObjectsFromArray:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 

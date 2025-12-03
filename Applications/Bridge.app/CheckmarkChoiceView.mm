@@ -1,13 +1,13 @@
 @interface CheckmarkChoiceView
-- (CheckmarkChoiceView)initWithTitle:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (CheckmarkChoiceView)initWithTitle:(id)title;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CheckmarkChoiceView
 
-- (CheckmarkChoiceView)initWithTitle:(id)a3
+- (CheckmarkChoiceView)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v24.receiver = self;
   v24.super_class = CheckmarkChoiceView;
   v5 = [(CheckmarkChoiceView *)&v24 init];
@@ -17,7 +17,7 @@
     label = v5->_label;
     v5->_label = v6;
 
-    [(UILabel *)v5->_label setText:v4];
+    [(UILabel *)v5->_label setText:titleCopy];
     [(UILabel *)v5->_label setNumberOfLines:0];
     v8 = BPSTextColor();
     [(UILabel *)v5->_label setTextColor:v8];
@@ -27,30 +27,30 @@
     v5->_checkmark = v9;
 
     [(UIImageView *)v5->_checkmark setContentMode:2];
-    v11 = [(UIImageView *)v5->_checkmark layer];
-    [v11 setCornerRadius:14.0];
+    layer = [(UIImageView *)v5->_checkmark layer];
+    [layer setCornerRadius:14.0];
 
-    v12 = [(UIImageView *)v5->_checkmark layer];
-    [v12 setMasksToBounds:1];
+    layer2 = [(UIImageView *)v5->_checkmark layer];
+    [layer2 setMasksToBounds:1];
 
     v13 = +[UIColor clearColor];
     [(UIImageView *)v5->_checkmark setBackgroundColor:v13];
 
-    v14 = [(UIImageView *)v5->_checkmark layer];
-    [v14 setBorderWidth:1.0];
+    layer3 = [(UIImageView *)v5->_checkmark layer];
+    [layer3 setBorderWidth:1.0];
 
     v15 = +[UIColor systemGrayColor];
-    v16 = [v15 CGColor];
-    v17 = [(UIImageView *)v5->_checkmark layer];
-    [v17 setBorderColor:v16];
+    cGColor = [v15 CGColor];
+    layer4 = [(UIImageView *)v5->_checkmark layer];
+    [layer4 setBorderColor:cGColor];
 
-    v18 = [(UIImageView *)v5->_checkmark heightAnchor];
-    v19 = [v18 constraintEqualToConstant:28.0];
+    heightAnchor = [(UIImageView *)v5->_checkmark heightAnchor];
+    v19 = [heightAnchor constraintEqualToConstant:28.0];
     [v19 setActive:1];
 
-    v20 = [(UIImageView *)v5->_checkmark widthAnchor];
-    v21 = [(UIImageView *)v5->_checkmark heightAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    widthAnchor = [(UIImageView *)v5->_checkmark widthAnchor];
+    heightAnchor2 = [(UIImageView *)v5->_checkmark heightAnchor];
+    v22 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
     [v22 setActive:1];
 
     [(CheckmarkChoiceView *)v5 setAxis:1];
@@ -63,14 +63,14 @@
   return v5;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(UIImageView *)self->_checkmark layer];
-  v6 = v5;
-  if (v3)
+  selectedCopy = selected;
+  layer = [(UIImageView *)self->_checkmark layer];
+  v6 = layer;
+  if (selectedCopy)
   {
-    [v5 setBorderWidth:0.0];
+    [layer setBorderWidth:0.0];
 
     v7 = [UIImage systemImageNamed:@"checkmark.circle.fill"];
     [(UIImageView *)self->_checkmark setImage:v7];
@@ -78,7 +78,7 @@
 
   else
   {
-    [v5 setBorderWidth:1.0];
+    [layer setBorderWidth:1.0];
 
     [(UIImageView *)self->_checkmark setImage:0];
   }

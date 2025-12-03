@@ -1,29 +1,29 @@
 @interface VUIMediaShareControlButton
 + (id)perfectlyCenteredShareImage;
-+ (id)shareControlItemForMediaItem:(id)a3 inPlayerViewController:(id)a4;
++ (id)shareControlItemForMediaItem:(id)item inPlayerViewController:(id)controller;
 @end
 
 @implementation VUIMediaShareControlButton
 
-+ (id)shareControlItemForMediaItem:(id)a3 inPlayerViewController:(id)a4
++ (id)shareControlItemForMediaItem:(id)item inPlayerViewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  controllerCopy = controller;
   v7 = +[VUILocalizationManager sharedInstance];
   v8 = [v7 localizedStringForKey:@"MEDIA_SHARE_BUTTON_TITLE"];
 
   v9 = +[VUIMediaShareControlButton perfectlyCenteredShareImage];
   v10 = [objc_alloc(MEMORY[0x1E69585D0]) initWithTitle:v8 type:0];
   [v10 setImage:v9];
-  v11 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
+  v11 = [itemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyShowMediaShareMetadata"];
   v12 = v11;
   if (v11)
   {
     v28 = v9;
     v30 = v11;
     v31 = v8;
-    v32 = v6;
-    if ([v6 vuiIsRTL])
+    v32 = controllerCopy;
+    if ([controllerCopy vuiIsRTL])
     {
       v13 = @"chevron.left";
     }
@@ -35,14 +35,14 @@
 
     v14 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v13];
     v15 = objc_opt_new();
-    v16 = [v5 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
+    v16 = [itemCopy mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyMediaShareMetadata"];
     v17 = [v16 vui_stringForKey:@"menuTitle"];
     v18 = MEMORY[0x1E69DC628];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __82__VUIMediaShareControlButton_shareControlItemForMediaItem_inPlayerViewController___block_invoke;
     v38[3] = &unk_1E872F7A8;
-    v19 = v5;
+    v19 = itemCopy;
     v39 = v19;
     v27 = v16;
     v40 = v27;
@@ -69,7 +69,7 @@
     [v10 setMenu:v25];
 
     v8 = v31;
-    v6 = v32;
+    controllerCopy = v32;
     v12 = v30;
   }
 
@@ -79,7 +79,7 @@
     v33[1] = 3221225472;
     v33[2] = __82__VUIMediaShareControlButton_shareControlItemForMediaItem_inPlayerViewController___block_invoke_3;
     v33[3] = &unk_1E872D768;
-    v34 = v5;
+    v34 = itemCopy;
     [v10 setAction:v33];
     v14 = v34;
   }

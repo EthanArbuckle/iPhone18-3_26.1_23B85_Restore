@@ -1,6 +1,6 @@
 @interface MCAppLayerVPNPayload
 + (id)typeStrings;
-- (MCAppLayerVPNPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCAppLayerVPNPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
 - (id)verboseDescription;
@@ -18,14 +18,14 @@
   return v2;
 }
 
-- (MCAppLayerVPNPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCAppLayerVPNPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v53.receiver = self;
   v53.super_class = MCAppLayerVPNPayload;
-  v10 = [(MCVPNPayloadBase *)&v53 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCVPNPayloadBase *)&v53 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   v11 = v10;
   if (!v10)
   {
@@ -34,7 +34,7 @@
 
   v10->_restrictDomains = 0;
   v52 = 0;
-  v12 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"SafariDomains" isRequired:0 allowZeroLengthString:objc_msgSend(v9 outError:{"isStub"), &v52}];
+  v12 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"SafariDomains" isRequired:0 allowZeroLengthString:objc_msgSend(profileCopy outError:{"isStub"), &v52}];
   v13 = v52;
   SafariDomains = v11->_SafariDomains;
   v11->_SafariDomains = v12;
@@ -45,7 +45,7 @@
   }
 
   v51 = 0;
-  v15 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"SMBDomains" isRequired:0 allowZeroLengthString:objc_msgSend(v9 outError:{"isStub"), &v51}];
+  v15 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"SMBDomains" isRequired:0 allowZeroLengthString:objc_msgSend(profileCopy outError:{"isStub"), &v51}];
   v13 = v51;
   SMBDomains = v11->_SMBDomains;
   v11->_SMBDomains = v15;
@@ -56,7 +56,7 @@
   }
 
   v50 = 0;
-  v17 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"MailDomains" isRequired:0 allowZeroLengthString:objc_msgSend(v9 outError:{"isStub"), &v50}];
+  v17 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"MailDomains" isRequired:0 allowZeroLengthString:objc_msgSend(profileCopy outError:{"isStub"), &v50}];
   v13 = v50;
   mailDomains = v11->_mailDomains;
   v11->_mailDomains = v17;
@@ -67,7 +67,7 @@
   }
 
   v49 = 0;
-  v19 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"CalendarDomains" isRequired:0 allowZeroLengthString:objc_msgSend(v9 outError:{"isStub"), &v49}];
+  v19 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"CalendarDomains" isRequired:0 allowZeroLengthString:objc_msgSend(profileCopy outError:{"isStub"), &v49}];
   v13 = v49;
   calendarDomains = v11->_calendarDomains;
   v11->_calendarDomains = v19;
@@ -78,7 +78,7 @@
   }
 
   v48 = 0;
-  v21 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"ContactsDomains" isRequired:0 allowZeroLengthString:objc_msgSend(v9 outError:{"isStub"), &v48}];
+  v21 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"ContactsDomains" isRequired:0 allowZeroLengthString:objc_msgSend(profileCopy outError:{"isStub"), &v48}];
   v13 = v48;
   contactsDomains = v11->_contactsDomains;
   v11->_contactsDomains = v21;
@@ -89,7 +89,7 @@
   }
 
   v47 = 0;
-  v23 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"ExcludedDomains" isRequired:0 allowZeroLengthString:objc_msgSend(v9 outError:{"isStub"), &v47}];
+  v23 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"ExcludedDomains" isRequired:0 allowZeroLengthString:objc_msgSend(profileCopy outError:{"isStub"), &v47}];
   v13 = v47;
   excludedDomains = v11->_excludedDomains;
   v11->_excludedDomains = v23;
@@ -100,7 +100,7 @@
   }
 
   v46 = 0;
-  v25 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"AssociatedDomains" isRequired:0 allowZeroLengthString:objc_msgSend(v9 outError:{"isStub"), &v46}];
+  v25 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"AssociatedDomains" isRequired:0 allowZeroLengthString:objc_msgSend(profileCopy outError:{"isStub"), &v46}];
   v13 = v46;
   associatedDomains = v11->_associatedDomains;
   v11->_associatedDomains = v25;
@@ -110,10 +110,10 @@
     goto LABEL_16;
   }
 
-  if ([v9 isStub])
+  if ([profileCopy isStub])
   {
-    v27 = [(MCVPNPayloadBase *)v11 vpnType];
-    v28 = [v27 isEqualToString:@"AlwaysOn"];
+    vpnType = [(MCVPNPayloadBase *)v11 vpnType];
+    v28 = [vpnType isEqualToString:@"AlwaysOn"];
 
     if (v28)
     {
@@ -122,14 +122,14 @@
     }
 
     v44 = 0;
-    v29 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"VPNUUID" isRequired:0 outError:&v44];
+    v29 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"VPNUUID" isRequired:0 outError:&v44];
     v30 = v44;
   }
 
   else
   {
     v45 = 0;
-    v29 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"VPNUUID" isRequired:1 outError:&v45];
+    v29 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"VPNUUID" isRequired:1 outError:&v45];
     v30 = v45;
   }
 
@@ -141,13 +141,13 @@ LABEL_15:
   if (v13)
   {
 LABEL_16:
-    v32 = [v13 MCCopyAsPrimaryError];
-    v33 = [(MCPayload *)v11 malformedPayloadErrorWithError:v32];
+    mCCopyAsPrimaryError = [v13 MCCopyAsPrimaryError];
+    v33 = [(MCPayload *)v11 malformedPayloadErrorWithError:mCCopyAsPrimaryError];
 
-    if (a5)
+    if (error)
     {
       v34 = v33;
-      *a5 = v33;
+      *error = v33;
     }
 
     v35 = _MCLogObjects;
@@ -155,28 +155,28 @@ LABEL_16:
     {
       v36 = v35;
       v37 = objc_opt_class();
-      v38 = [v33 MCVerboseDescription];
+      mCVerboseDescription = [v33 MCVerboseDescription];
       *buf = 138543618;
       v55 = v37;
       v56 = 2114;
-      v57 = v38;
+      v57 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v36, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
     v11 = 0;
   }
 
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v39 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v40 = v39;
-      v41 = [(MCPayload *)v11 friendlyName];
+      friendlyName = [(MCPayload *)v11 friendlyName];
       *buf = 138543618;
-      v55 = v41;
+      v55 = friendlyName;
       v56 = 2114;
-      v57 = v8;
+      v57 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v40, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -190,12 +190,12 @@ LABEL_25:
 {
   v14.receiver = self;
   v14.super_class = MCAppLayerVPNPayload;
-  v3 = [(MCVPNPayloadBase *)&v14 stubDictionary];
-  v4 = v3;
+  stubDictionary = [(MCVPNPayloadBase *)&v14 stubDictionary];
+  v4 = stubDictionary;
   VPNUUID = self->_VPNUUID;
   if (VPNUUID)
   {
-    [v3 setObject:VPNUUID forKey:@"VPNUUID"];
+    [stubDictionary setObject:VPNUUID forKey:@"VPNUUID"];
   }
 
   SafariDomains = self->_SafariDomains;
@@ -248,32 +248,32 @@ LABEL_25:
   v3 = MEMORY[0x1E696AD60];
   v15.receiver = self;
   v15.super_class = MCAppLayerVPNPayload;
-  v4 = [(MCVPNPayloadBase *)&v15 verboseDescription];
-  v5 = [v3 stringWithFormat:@"%@\n", v4];
+  verboseDescription = [(MCVPNPayloadBase *)&v15 verboseDescription];
+  v5 = [v3 stringWithFormat:@"%@\n", verboseDescription];
 
-  v6 = [(MCAppLayerVPNPayload *)self VPNUUID];
-  [v5 appendFormat:@"VPNUUID     : %@\n", v6];
+  vPNUUID = [(MCAppLayerVPNPayload *)self VPNUUID];
+  [v5 appendFormat:@"VPNUUID     : %@\n", vPNUUID];
 
-  v7 = [(MCAppLayerVPNPayload *)self SafariDomains];
-  [v5 appendFormat:@"Safari Domains: %@\n", v7];
+  safariDomains = [(MCAppLayerVPNPayload *)self SafariDomains];
+  [v5 appendFormat:@"Safari Domains: %@\n", safariDomains];
 
-  v8 = [(MCAppLayerVPNPayload *)self SMBDomains];
-  [v5 appendFormat:@"SMB Domains: %@\n", v8];
+  sMBDomains = [(MCAppLayerVPNPayload *)self SMBDomains];
+  [v5 appendFormat:@"SMB Domains: %@\n", sMBDomains];
 
-  v9 = [(MCAppLayerVPNPayload *)self mailDomains];
-  [v5 appendFormat:@"Mail Domains: %@\n", v9];
+  mailDomains = [(MCAppLayerVPNPayload *)self mailDomains];
+  [v5 appendFormat:@"Mail Domains: %@\n", mailDomains];
 
-  v10 = [(MCAppLayerVPNPayload *)self calendarDomains];
-  [v5 appendFormat:@"Calendar Domains: %@\n", v10];
+  calendarDomains = [(MCAppLayerVPNPayload *)self calendarDomains];
+  [v5 appendFormat:@"Calendar Domains: %@\n", calendarDomains];
 
-  v11 = [(MCAppLayerVPNPayload *)self contactsDomains];
-  [v5 appendFormat:@"Contacts Domains: %@\n", v11];
+  contactsDomains = [(MCAppLayerVPNPayload *)self contactsDomains];
+  [v5 appendFormat:@"Contacts Domains: %@\n", contactsDomains];
 
-  v12 = [(MCAppLayerVPNPayload *)self excludedDomains];
-  [v5 appendFormat:@"Excluded Domains: %@\n", v12];
+  excludedDomains = [(MCAppLayerVPNPayload *)self excludedDomains];
+  [v5 appendFormat:@"Excluded Domains: %@\n", excludedDomains];
 
-  v13 = [(MCAppLayerVPNPayload *)self associatedDomains];
-  [v5 appendFormat:@"Associated Domains: %@\n", v13];
+  associatedDomains = [(MCAppLayerVPNPayload *)self associatedDomains];
+  [v5 appendFormat:@"Associated Domains: %@\n", associatedDomains];
 
   return v5;
 }
@@ -282,38 +282,38 @@ LABEL_25:
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(MCVPNPayloadBase *)self serviceName];
+  serviceName = [(MCVPNPayloadBase *)self serviceName];
 
-  if (v5)
+  if (serviceName)
   {
     v6 = [MCKeyValue alloc];
-    v7 = [(MCVPNPayloadBase *)self serviceName];
+    serviceName2 = [(MCVPNPayloadBase *)self serviceName];
     v8 = MCLocalizedString(@"KEY_VPN_NAME");
-    v9 = [(MCKeyValue *)v6 initWithLocalizedString:v7 localizedKey:v8];
+    v9 = [(MCKeyValue *)v6 initWithLocalizedString:serviceName2 localizedKey:v8];
 
     [v4 addObject:v9];
   }
 
-  v10 = [(MCVPNPayloadBase *)self vpnType];
+  vpnType = [(MCVPNPayloadBase *)self vpnType];
 
-  if (v10)
+  if (vpnType)
   {
     v11 = [MCKeyValue alloc];
-    v12 = [(MCVPNPayloadBase *)self vpnType];
+    vpnType2 = [(MCVPNPayloadBase *)self vpnType];
     v13 = MCLocalizedString(@"KEY_VPN_TYPE");
-    v14 = [(MCKeyValue *)v11 initWithLocalizedString:v12 localizedKey:v13];
+    v14 = [(MCKeyValue *)v11 initWithLocalizedString:vpnType2 localizedKey:v13];
 
     [v4 addObject:v14];
   }
 
-  v15 = [(MCAppLayerVPNPayload *)self VPNUUID];
+  vPNUUID = [(MCAppLayerVPNPayload *)self VPNUUID];
 
-  if (v15)
+  if (vPNUUID)
   {
     v16 = [MCKeyValue alloc];
-    v17 = [(MCAppLayerVPNPayload *)self VPNUUID];
+    vPNUUID2 = [(MCAppLayerVPNPayload *)self VPNUUID];
     v18 = MCLocalizedString(@"APP_LAYER_VPN_VPNUUID");
-    v19 = [(MCKeyValue *)v16 initWithLocalizedString:v17 localizedKey:v18];
+    v19 = [(MCKeyValue *)v16 initWithLocalizedString:vPNUUID2 localizedKey:v18];
 
     [v4 addObject:v19];
   }
@@ -324,94 +324,94 @@ LABEL_25:
     [v3 addObject:v20];
   }
 
-  v21 = [(MCAppLayerVPNPayload *)self SafariDomains];
-  v22 = [v21 count];
+  safariDomains = [(MCAppLayerVPNPayload *)self SafariDomains];
+  v22 = [safariDomains count];
 
   if (v22)
   {
-    v23 = [(MCAppLayerVPNPayload *)self SafariDomains];
+    safariDomains2 = [(MCAppLayerVPNPayload *)self SafariDomains];
     v24 = MCLocalizedString(@"APP_LAYER_VPN_SAFARI_DOMAINS");
-    v25 = [MCKeyValueSection sectionWithLocalizedArray:v23 title:v24 footer:0];
+    v25 = [MCKeyValueSection sectionWithLocalizedArray:safariDomains2 title:v24 footer:0];
 
     [v3 addObject:v25];
   }
 
-  v26 = [(MCAppLayerVPNPayload *)self SMBDomains];
-  v27 = [v26 count];
+  sMBDomains = [(MCAppLayerVPNPayload *)self SMBDomains];
+  v27 = [sMBDomains count];
 
   if (v27)
   {
-    v28 = [(MCAppLayerVPNPayload *)self SMBDomains];
+    sMBDomains2 = [(MCAppLayerVPNPayload *)self SMBDomains];
     v29 = MCLocalizedString(@"APP_LAYER_VPN_SMB_DOMAINS");
-    v30 = [MCKeyValueSection sectionWithLocalizedArray:v28 title:v29 footer:0];
+    v30 = [MCKeyValueSection sectionWithLocalizedArray:sMBDomains2 title:v29 footer:0];
 
     [v3 addObject:v30];
   }
 
-  v31 = [(MCAppLayerVPNPayload *)self mailDomains];
-  v32 = [v31 count];
+  mailDomains = [(MCAppLayerVPNPayload *)self mailDomains];
+  v32 = [mailDomains count];
 
   if (v32)
   {
-    v33 = [(MCAppLayerVPNPayload *)self mailDomains];
+    mailDomains2 = [(MCAppLayerVPNPayload *)self mailDomains];
     v34 = MCLocalizedString(@"APP_LAYER_VPN_MAIL_DOMAINS");
-    v35 = [MCKeyValueSection sectionWithLocalizedArray:v33 title:v34 footer:0];
+    v35 = [MCKeyValueSection sectionWithLocalizedArray:mailDomains2 title:v34 footer:0];
 
     [v3 addObject:v35];
   }
 
-  v36 = [(MCAppLayerVPNPayload *)self calendarDomains];
-  v37 = [v36 count];
+  calendarDomains = [(MCAppLayerVPNPayload *)self calendarDomains];
+  v37 = [calendarDomains count];
 
   if (v37)
   {
-    v38 = [(MCAppLayerVPNPayload *)self calendarDomains];
+    calendarDomains2 = [(MCAppLayerVPNPayload *)self calendarDomains];
     v39 = MCLocalizedString(@"APP_LAYER_VPN_CALENDAR_DOMAINS");
-    v40 = [MCKeyValueSection sectionWithLocalizedArray:v38 title:v39 footer:0];
+    v40 = [MCKeyValueSection sectionWithLocalizedArray:calendarDomains2 title:v39 footer:0];
 
     [v3 addObject:v40];
   }
 
-  v41 = [(MCAppLayerVPNPayload *)self contactsDomains];
-  v42 = [v41 count];
+  contactsDomains = [(MCAppLayerVPNPayload *)self contactsDomains];
+  v42 = [contactsDomains count];
 
   if (v42)
   {
-    v43 = [(MCAppLayerVPNPayload *)self contactsDomains];
+    contactsDomains2 = [(MCAppLayerVPNPayload *)self contactsDomains];
     v44 = MCLocalizedString(@"APP_LAYER_VPN_CONTACTS_DOMAINS");
-    v45 = [MCKeyValueSection sectionWithLocalizedArray:v43 title:v44 footer:0];
+    v45 = [MCKeyValueSection sectionWithLocalizedArray:contactsDomains2 title:v44 footer:0];
 
     [v3 addObject:v45];
   }
 
-  v46 = [(MCAppLayerVPNPayload *)self associatedDomains];
-  v47 = [v46 count];
+  associatedDomains = [(MCAppLayerVPNPayload *)self associatedDomains];
+  v47 = [associatedDomains count];
 
   if (v47)
   {
-    v48 = [(MCAppLayerVPNPayload *)self associatedDomains];
+    associatedDomains2 = [(MCAppLayerVPNPayload *)self associatedDomains];
     v49 = MCLocalizedString(@"APP_LAYER_VPN_ASSOCIATED_DOMAINS");
-    v50 = [MCKeyValueSection sectionWithLocalizedArray:v48 title:v49 footer:0];
+    v50 = [MCKeyValueSection sectionWithLocalizedArray:associatedDomains2 title:v49 footer:0];
 
     [v3 addObject:v50];
   }
 
-  v51 = [(MCAppLayerVPNPayload *)self excludedDomains];
-  v52 = [v51 count];
+  excludedDomains = [(MCAppLayerVPNPayload *)self excludedDomains];
+  v52 = [excludedDomains count];
 
   if (v52)
   {
-    v53 = [(MCAppLayerVPNPayload *)self excludedDomains];
+    excludedDomains2 = [(MCAppLayerVPNPayload *)self excludedDomains];
     v54 = MCLocalizedString(@"APP_LAYER_VPN_EXCLUDED_DOMAINS");
-    v55 = [MCKeyValueSection sectionWithLocalizedArray:v53 title:v54 footer:0];
+    v55 = [MCKeyValueSection sectionWithLocalizedArray:excludedDomains2 title:v54 footer:0];
 
     [v3 addObject:v55];
   }
 
   v58.receiver = self;
   v58.super_class = MCAppLayerVPNPayload;
-  v56 = [(MCVPNPayloadBase *)&v58 payloadDescriptionKeyValueSections];
-  [v3 addObjectsFromArray:v56];
+  payloadDescriptionKeyValueSections = [(MCVPNPayloadBase *)&v58 payloadDescriptionKeyValueSections];
+  [v3 addObjectsFromArray:payloadDescriptionKeyValueSections];
 
   if (![v3 count])
   {

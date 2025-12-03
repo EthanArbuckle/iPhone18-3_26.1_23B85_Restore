@@ -1,7 +1,7 @@
 @interface _DKSyncType
-- (BOOL)isEqualToSyncType:(uint64_t)a1;
+- (BOOL)isEqualToSyncType:(uint64_t)type;
 - (_BYTE)initWithIsSingleDevice:(_BYTE *)result;
-- (_DKSyncType)initWithCoder:(id)a3;
+- (_DKSyncType)initWithCoder:(id)coder;
 - (double)periodicSyncInterval;
 - (id)description;
 - (uint64_t)didActivatePeer;
@@ -23,9 +23,9 @@
 - (uint64_t)setUrgency:(uint64_t)result;
 - (uint64_t)urgency;
 - (uint64_t)xpcActivity;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeType:(uint64_t)a1;
-- (void)setXpcActivity:(uint64_t)a1;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeType:(uint64_t)type;
+- (void)setXpcActivity:(uint64_t)activity;
 @end
 
 @implementation _DKSyncType
@@ -149,61 +149,61 @@
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isSingleDevice = self->_isSingleDevice;
-  v5 = a3;
-  [v5 encodeBool:isSingleDevice forKey:@"IsSingleDevice"];
-  [v5 encodeBool:self->_forceSync forKey:@"ForceSync"];
-  [v5 encodeBool:self->_isInitialSync forKey:@"IsInitialSync"];
-  [v5 encodeBool:self->_isPeriodicSync forKey:@"IsPeriodicSync"];
-  [v5 encodeBool:self->_isTriggeredSync forKey:@"IsTriggeredSync"];
-  [v5 encodeInt:LODWORD(self->_urgency) forKey:@"Urgency"];
-  [v5 encodeBool:self->_didActivatePeer forKey:@"DidActivatePeer"];
-  [v5 encodeBool:self->_didReceivePush forKey:@"DidReceivePush"];
-  [v5 encodeBool:self->_didAddSyncedEvents forKey:@"DidAddSyncedEvents"];
-  [v5 encodeBool:self->_didDeleteSyncedEvents forKey:@"DidDeleteSyncedEvents"];
-  [v5 encodeDouble:@"PeriodicSyncInterval" forKey:self->_periodicSyncInterval];
+  coderCopy = coder;
+  [coderCopy encodeBool:isSingleDevice forKey:@"IsSingleDevice"];
+  [coderCopy encodeBool:self->_forceSync forKey:@"ForceSync"];
+  [coderCopy encodeBool:self->_isInitialSync forKey:@"IsInitialSync"];
+  [coderCopy encodeBool:self->_isPeriodicSync forKey:@"IsPeriodicSync"];
+  [coderCopy encodeBool:self->_isTriggeredSync forKey:@"IsTriggeredSync"];
+  [coderCopy encodeInt:LODWORD(self->_urgency) forKey:@"Urgency"];
+  [coderCopy encodeBool:self->_didActivatePeer forKey:@"DidActivatePeer"];
+  [coderCopy encodeBool:self->_didReceivePush forKey:@"DidReceivePush"];
+  [coderCopy encodeBool:self->_didAddSyncedEvents forKey:@"DidAddSyncedEvents"];
+  [coderCopy encodeBool:self->_didDeleteSyncedEvents forKey:@"DidDeleteSyncedEvents"];
+  [coderCopy encodeDouble:@"PeriodicSyncInterval" forKey:self->_periodicSyncInterval];
 }
 
-- (_DKSyncType)initWithCoder:(id)a3
+- (_DKSyncType)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"IsSingleDevice"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"IsSingleDevice"];
   v6 = [_DKSyncType alloc];
   if (v6 && (v11.receiver = v6, v11.super_class = _DKSyncType, (v7 = [(_DKSyncType *)&v11 init]) != 0))
   {
     v8 = v7;
     v7->_isSingleDevice = v5;
-    v7->_forceSync = [v4 decodeBoolForKey:@"ForceSync"];
-    v8->_isInitialSync = [v4 decodeBoolForKey:@"IsInitialSync"];
-    v8->_isPeriodicSync = [v4 decodeBoolForKey:@"IsPeriodicSync"];
-    v8->_isTriggeredSync = [v4 decodeBoolForKey:@"IsTriggeredSync"];
-    v8->_urgency = [v4 decodeIntForKey:@"Urgency"];
-    v8->_didActivatePeer = [v4 decodeBoolForKey:@"DidActivatePeer"];
-    v8->_didReceivePush = [v4 decodeBoolForKey:@"DidReceivePush"];
-    v8->_didAddSyncedEvents = [v4 decodeBoolForKey:@"DidAddSyncedEvents"];
-    v8->_didDeleteSyncedEvents = [v4 decodeBoolForKey:@"DidDeleteSyncedEvents"];
-    [v4 decodeDoubleForKey:@"PeriodicSyncInterval"];
+    v7->_forceSync = [coderCopy decodeBoolForKey:@"ForceSync"];
+    v8->_isInitialSync = [coderCopy decodeBoolForKey:@"IsInitialSync"];
+    v8->_isPeriodicSync = [coderCopy decodeBoolForKey:@"IsPeriodicSync"];
+    v8->_isTriggeredSync = [coderCopy decodeBoolForKey:@"IsTriggeredSync"];
+    v8->_urgency = [coderCopy decodeIntForKey:@"Urgency"];
+    v8->_didActivatePeer = [coderCopy decodeBoolForKey:@"DidActivatePeer"];
+    v8->_didReceivePush = [coderCopy decodeBoolForKey:@"DidReceivePush"];
+    v8->_didAddSyncedEvents = [coderCopy decodeBoolForKey:@"DidAddSyncedEvents"];
+    v8->_didDeleteSyncedEvents = [coderCopy decodeBoolForKey:@"DidDeleteSyncedEvents"];
+    [coderCopy decodeDoubleForKey:@"PeriodicSyncInterval"];
     v8->_periodicSyncInterval = v9;
   }
 
   else
   {
-    [(_DKSyncType *)&v11 initWithCoder:v4];
+    [(_DKSyncType *)&v11 initWithCoder:coderCopy];
     v8 = 0;
   }
 
   return v8;
 }
 
-- (BOOL)isEqualToSyncType:(uint64_t)a1
+- (BOOL)isEqualToSyncType:(uint64_t)type
 {
   v3 = a2;
   v4 = 0;
-  if (a1 && v3)
+  if (type && v3)
   {
-    v4 = *(a1 + 8) == *(v3 + 8) && *(a1 + 9) == *(v3 + 9) && *(a1 + 10) == *(v3 + 10) && *(a1 + 11) == *(v3 + 11) && *(a1 + 12) == *(v3 + 12) && *(a1 + 24) == v3[3] && *(a1 + 13) == *(v3 + 13) && *(a1 + 14) == *(v3 + 14) && *(a1 + 15) == *(v3 + 15) && *(a1 + 16) == *(v3 + 16) && *(a1 + 32) == *(v3 + 4);
+    v4 = *(type + 8) == *(v3 + 8) && *(type + 9) == *(v3 + 9) && *(type + 10) == *(v3 + 10) && *(type + 11) == *(v3 + 11) && *(type + 12) == *(v3 + 12) && *(type + 24) == v3[3] && *(type + 13) == *(v3 + 13) && *(type + 14) == *(v3 + 14) && *(type + 15) == *(v3 + 15) && *(type + 16) == *(v3 + 16) && *(type + 32) == *(v3 + 4);
   }
 
   return v4;
@@ -225,41 +225,41 @@
   return result;
 }
 
-- (void)mergeType:(uint64_t)a1
+- (void)mergeType:(uint64_t)type
 {
   v3 = a2;
-  if (!a1)
+  if (!type)
   {
     goto LABEL_45;
   }
 
-  if (*(a1 + 9))
+  if (*(type + 9))
   {
-    *(a1 + 9) = 1;
+    *(type + 9) = 1;
 LABEL_6:
-    *(a1 + 10) = 0;
+    *(type + 10) = 0;
 LABEL_7:
-    *(a1 + 12) = 0;
+    *(type + 12) = 0;
     goto LABEL_8;
   }
 
   if (!v3)
   {
-    v7 = (a1 + 10);
-    v23 = *(a1 + 10);
-    *(a1 + 9) = 0;
+    v7 = (type + 10);
+    v23 = *(type + 10);
+    *(type + 9) = 0;
     if (v23)
     {
 LABEL_24:
       *v7 = 1;
 LABEL_49:
-      *(a1 + 11) = 0;
+      *(type + 11) = 0;
       goto LABEL_8;
     }
 
-    v18 = (a1 + 11);
-    v24 = *(a1 + 11);
-    *(a1 + 10) = 0;
+    v18 = (type + 11);
+    v24 = *(type + 11);
+    *(type + 10) = 0;
     if (v24)
     {
 LABEL_51:
@@ -267,21 +267,21 @@ LABEL_51:
       goto LABEL_7;
     }
 
-    *(a1 + 11) = 0;
-    v22 = (a1 + 12);
-    v20 = (a1 + 12);
+    *(type + 11) = 0;
+    v22 = (type + 12);
+    v20 = (type + 12);
     goto LABEL_56;
   }
 
   v4 = v3[9];
-  *(a1 + 9) = v4;
+  *(type + 9) = v4;
   if (v4)
   {
     goto LABEL_6;
   }
 
-  v7 = (a1 + 10);
-  if (*(a1 + 10))
+  v7 = (type + 10);
+  if (*(type + 10))
   {
     goto LABEL_24;
   }
@@ -293,8 +293,8 @@ LABEL_51:
     goto LABEL_49;
   }
 
-  v18 = (a1 + 11);
-  if (*(a1 + 11))
+  v18 = (type + 11);
+  if (*(type + 11))
   {
     goto LABEL_51;
   }
@@ -306,8 +306,8 @@ LABEL_51:
     goto LABEL_7;
   }
 
-  v20 = (a1 + 12);
-  if ((*(a1 + 12) & 1) == 0)
+  v20 = (type + 12);
+  if ((*(type + 12) & 1) == 0)
   {
     v22 = v3 + 12;
 LABEL_56:
@@ -323,31 +323,31 @@ LABEL_8:
   {
     if (v3[11] == 1)
     {
-      *(a1 + 32) = *(v3 + 4);
+      *(type + 32) = *(v3 + 4);
     }
 
     v5 = *(v3 + 3);
-    if (v5 > *(a1 + 24))
+    if (v5 > *(type + 24))
     {
-      *(a1 + 24) = v5;
+      *(type + 24) = v5;
     }
   }
 
-  if (*(a1 + 12) != 1)
+  if (*(type + 12) != 1)
   {
-    *(a1 + 13) = 0;
+    *(type + 13) = 0;
     goto LABEL_36;
   }
 
-  if (*(a1 + 13))
+  if (*(type + 13))
   {
-    *(a1 + 13) = 1;
-    v6 = *(a1 + 14);
-    if (!v3 || (*(a1 + 14) & 1) != 0)
+    *(type + 13) = 1;
+    v6 = *(type + 14);
+    if (!v3 || (*(type + 14) & 1) != 0)
     {
 LABEL_26:
-      *(a1 + 14) = v6 & 1;
-      if (*(a1 + 15))
+      *(type + 14) = v6 & 1;
+      if (*(type + 15))
       {
         goto LABEL_27;
       }
@@ -367,34 +367,34 @@ LABEL_25:
 
   if (!v3)
   {
-    *(a1 + 13) = 0;
-    if (*(a1 + 15) == 1)
+    *(type + 13) = 0;
+    if (*(type + 15) == 1)
     {
-      *(a1 + 15) = 1;
+      *(type + 15) = 1;
 LABEL_66:
-      v11 = (a1 + 16);
-      v8 = (a1 + 16);
+      v11 = (type + 16);
+      v8 = (type + 16);
       goto LABEL_34;
     }
 
 LABEL_65:
-    *(a1 + 15) = 0;
+    *(type + 15) = 0;
     goto LABEL_66;
   }
 
-  *(a1 + 13) = v3[13];
-  if ((*(a1 + 14) & 1) == 0)
+  *(type + 13) = v3[13];
+  if ((*(type + 14) & 1) == 0)
   {
     goto LABEL_25;
   }
 
-  *(a1 + 14) = 1;
-  if (*(a1 + 15))
+  *(type + 14) = 1;
+  if (*(type + 15))
   {
 LABEL_27:
-    v8 = (a1 + 16);
-    v9 = *(a1 + 16);
-    *(a1 + 15) = 1;
+    v8 = (type + 16);
+    v9 = *(type + 16);
+    *(type + 15) = 1;
     if (!v3 || (v9 & 1) != 0)
     {
       goto LABEL_35;
@@ -404,9 +404,9 @@ LABEL_27:
   }
 
 LABEL_31:
-  v8 = (a1 + 16);
-  v10 = *(a1 + 16);
-  *(a1 + 15) = v3[15];
+  v8 = (type + 16);
+  v10 = *(type + 16);
+  *(type + 15) = v3[15];
   if ((v10 & 1) == 0)
   {
 LABEL_33:
@@ -421,23 +421,23 @@ LABEL_35:
   *v8 = v9 & 1;
 LABEL_36:
   v25 = v3;
-  if (*(a1 + 8) == 1)
+  if (*(type + 8) == 1)
   {
     if (v3)
     {
-      *(a1 + 8) = v3[8];
+      *(type + 8) = v3[8];
 LABEL_40:
       v12 = *(v3 + 5);
       goto LABEL_41;
     }
 
     v12 = 0;
-    *(a1 + 8) = 0;
+    *(type + 8) = 0;
   }
 
   else
   {
-    *(a1 + 8) = 0;
+    *(type + 8) = 0;
     if (v3)
     {
       goto LABEL_40;
@@ -449,8 +449,8 @@ LABEL_40:
 LABEL_41:
   v13 = v12;
   v14 = v13;
-  v16 = *(a1 + 40);
-  v15 = (a1 + 40);
+  v16 = *(type + 40);
+  v15 = (type + 40);
   if (!v16 && v13)
   {
     objc_storeStrong(v15, v12);
@@ -462,9 +462,9 @@ LABEL_45:
 
 - (uint64_t)forceSync
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_61(*(a1 + 9));
+    return OUTLINED_FUNCTION_61(*(self + 9));
   }
 
   else
@@ -475,9 +475,9 @@ LABEL_45:
 
 - (uint64_t)isInitialSync
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_61(*(a1 + 10));
+    return OUTLINED_FUNCTION_61(*(self + 10));
   }
 
   else
@@ -488,9 +488,9 @@ LABEL_45:
 
 - (uint64_t)isPeriodicSync
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_61(*(a1 + 11));
+    return OUTLINED_FUNCTION_61(*(self + 11));
   }
 
   else
@@ -501,9 +501,9 @@ LABEL_45:
 
 - (uint64_t)isTriggeredSync
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_61(*(a1 + 12));
+    return OUTLINED_FUNCTION_61(*(self + 12));
   }
 
   else
@@ -514,9 +514,9 @@ LABEL_45:
 
 - (double)periodicSyncInterval
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 32);
+    return *(self + 32);
   }
 
   else
@@ -537,9 +537,9 @@ LABEL_45:
 
 - (uint64_t)didActivatePeer
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_61(*(a1 + 13));
+    return OUTLINED_FUNCTION_61(*(self + 13));
   }
 
   else
@@ -550,9 +550,9 @@ LABEL_45:
 
 - (uint64_t)didReceivePush
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_61(*(a1 + 14));
+    return OUTLINED_FUNCTION_61(*(self + 14));
   }
 
   else
@@ -563,9 +563,9 @@ LABEL_45:
 
 - (uint64_t)didAddSyncedEvents
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_61(*(a1 + 15));
+    return OUTLINED_FUNCTION_61(*(self + 15));
   }
 
   else
@@ -576,9 +576,9 @@ LABEL_45:
 
 - (uint64_t)didDeleteSyncedEvents
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_61(*(a1 + 16));
+    return OUTLINED_FUNCTION_61(*(self + 16));
   }
 
   else
@@ -589,9 +589,9 @@ LABEL_45:
 
 - (uint64_t)isSingleDevice
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_61(*(a1 + 8));
+    return OUTLINED_FUNCTION_61(*(self + 8));
   }
 
   else
@@ -690,11 +690,11 @@ LABEL_45:
   return result;
 }
 
-- (void)setXpcActivity:(uint64_t)a1
+- (void)setXpcActivity:(uint64_t)activity
 {
-  if (a1)
+  if (activity)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((activity + 40), a2);
   }
 }
 

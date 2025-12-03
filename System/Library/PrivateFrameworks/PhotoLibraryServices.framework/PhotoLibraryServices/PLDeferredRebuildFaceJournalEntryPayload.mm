@@ -1,16 +1,16 @@
 @interface PLDeferredRebuildFaceJournalEntryPayload
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4;
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name;
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
-- (id)insertDeferredRebuildFaceFromDataInManagedObjectContext:(id)a3;
+- (id)insertDeferredRebuildFaceFromDataInManagedObjectContext:(id)context;
 @end
 
 @implementation PLDeferredRebuildFaceJournalEntryPayload
 
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name
 {
-  v4 = [a3 objectForKeyedSubscript:{@"uuid", a4}];
+  v4 = [dictionary objectForKeyedSubscript:{@"uuid", name}];
   v5 = v4 != 0;
 
   return v5;
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __80__PLDeferredRebuildFaceJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_96600 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_96600, block);
@@ -46,7 +46,7 @@ void __80__PLDeferredRebuildFaceJournalEntryPayload_persistedPropertyNamesForEnt
   block[1] = 3221225472;
   block[2] = __59__PLDeferredRebuildFaceJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_96602 != -1)
   {
     dispatch_once(&modelProperties_onceToken_96602, block);
@@ -125,12 +125,12 @@ uint64_t __59__PLDeferredRebuildFaceJournalEntryPayload_modelProperties__block_i
   return v11;
 }
 
-- (id)insertDeferredRebuildFaceFromDataInManagedObjectContext:(id)a3
+- (id)insertDeferredRebuildFaceFromDataInManagedObjectContext:(id)context
 {
-  v4 = [(PLManagedObject *)PLDeferredRebuildFace insertInManagedObjectContext:a3];
-  v5 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  v6 = [v5 payloadIDString];
-  [v4 setUuid:v6];
+  v4 = [(PLManagedObject *)PLDeferredRebuildFace insertInManagedObjectContext:context];
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  payloadIDString = [payloadID payloadIDString];
+  [v4 setUuid:payloadIDString];
 
   [(PLManagedObjectJournalEntryPayload *)self applyPayloadToManagedObject:v4 payloadAttributesToUpdate:0];
 

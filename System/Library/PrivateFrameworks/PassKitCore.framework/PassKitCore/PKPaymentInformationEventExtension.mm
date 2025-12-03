@@ -1,10 +1,10 @@
 @interface PKPaymentInformationEventExtension
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 @end
 
 @implementation PKPaymentInformationEventExtension
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
   v3 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

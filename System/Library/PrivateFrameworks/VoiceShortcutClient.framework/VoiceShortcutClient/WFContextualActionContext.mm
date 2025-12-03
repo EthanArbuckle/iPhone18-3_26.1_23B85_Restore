@@ -1,40 +1,40 @@
 @interface WFContextualActionContext
-- (WFContextualActionContext)initWithCoder:(id)a3;
-- (WFContextualActionContext)initWithSurface:(unint64_t)a3 staccatoInteractionType:(id)a4 preciseTimestamp:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (WFContextualActionContext)initWithCoder:(id)coder;
+- (WFContextualActionContext)initWithSurface:(unint64_t)surface staccatoInteractionType:(id)type preciseTimestamp:(id)timestamp;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFContextualActionContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   files = self->_files;
-  v5 = a3;
-  [v5 encodeObject:files forKey:@"files"];
-  [v5 encodeInteger:self->_surface forKey:@"surface"];
-  [v5 encodeBool:self->_allowsExpensiveFetch forKey:@"allowsExpensiveFetch"];
-  [v5 encodeObject:self->_historicalActionIdentifiers forKey:@"historicalActionIdentifiers"];
-  [v5 encodeObject:self->_preciseTimestamp forKey:@"preciseTimestamp"];
-  [v5 encodeObject:self->_staccatoInteractionType forKey:@"staccatoInteractionType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:files forKey:@"files"];
+  [coderCopy encodeInteger:self->_surface forKey:@"surface"];
+  [coderCopy encodeBool:self->_allowsExpensiveFetch forKey:@"allowsExpensiveFetch"];
+  [coderCopy encodeObject:self->_historicalActionIdentifiers forKey:@"historicalActionIdentifiers"];
+  [coderCopy encodeObject:self->_preciseTimestamp forKey:@"preciseTimestamp"];
+  [coderCopy encodeObject:self->_staccatoInteractionType forKey:@"staccatoInteractionType"];
 }
 
-- (WFContextualActionContext)initWithCoder:(id)a3
+- (WFContextualActionContext)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"files"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"files"];
 
-  v9 = [v5 decodeIntegerForKey:@"surface"];
-  v10 = [v5 decodeBoolForKey:@"allowsExpensiveFetch"];
+  v9 = [coderCopy decodeIntegerForKey:@"surface"];
+  v10 = [coderCopy decodeBoolForKey:@"allowsExpensiveFetch"];
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v5 decodeObjectOfClasses:v13 forKey:@"historicalActionIdentifiers"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"historicalActionIdentifiers"];
 
-  v15 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"staccatoInteractionType"];
-  v16 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"preciseTimestamp"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"staccatoInteractionType"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preciseTimestamp"];
 
   v17 = [(WFContextualActionContext *)self initWithSurface:v9 staccatoInteractionType:v15 preciseTimestamp:v16];
   v18 = v17;
@@ -49,20 +49,20 @@
   return v18;
 }
 
-- (WFContextualActionContext)initWithSurface:(unint64_t)a3 staccatoInteractionType:(id)a4 preciseTimestamp:(id)a5
+- (WFContextualActionContext)initWithSurface:(unint64_t)surface staccatoInteractionType:(id)type preciseTimestamp:(id)timestamp
 {
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  timestampCopy = timestamp;
   v15.receiver = self;
   v15.super_class = WFContextualActionContext;
   v11 = [(WFContextualActionContext *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    v11->_surface = a3;
+    v11->_surface = surface;
     v11->_allowsExpensiveFetch = 0;
-    objc_storeStrong(&v11->_preciseTimestamp, a5);
-    objc_storeStrong(&v12->_staccatoInteractionType, a4);
+    objc_storeStrong(&v11->_preciseTimestamp, timestamp);
+    objc_storeStrong(&v12->_staccatoInteractionType, type);
     v13 = v12;
   }
 

@@ -1,37 +1,37 @@
 @interface PPM2LocationsScored
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasError:(BOOL)a3;
-- (void)setHasExclusionSpec:(BOOL)a3;
-- (void)setHasLimitHit:(BOOL)a3;
-- (void)setHasTimeLimited:(BOOL)a3;
-- (void)setHasTimeSpec:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasError:(BOOL)error;
+- (void)setHasExclusionSpec:(BOOL)spec;
+- (void)setHasLimitHit:(BOOL)hit;
+- (void)setHasTimeLimited:(BOOL)limited;
+- (void)setHasTimeSpec:(BOOL)spec;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPM2LocationsScored
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PPM2LocationsScored *)self setBundleId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_resultSizeLog10 = *(v4 + 6);
+    self->_resultSizeLog10 = *(fromCopy + 6);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 8) == 0)
     {
 LABEL_5:
@@ -44,14 +44,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 36) & 8) == 0)
+  else if ((*(fromCopy + 36) & 8) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_limitHit = *(v4 + 30);
+  self->_limitHit = *(fromCopy + 30);
   *&self->_has |= 8u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x20) == 0)
   {
 LABEL_6:
@@ -64,9 +64,9 @@ LABEL_6:
   }
 
 LABEL_17:
-  self->_timeSpec = *(v4 + 32);
+  self->_timeSpec = *(fromCopy + 32);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) == 0)
   {
 LABEL_7:
@@ -79,9 +79,9 @@ LABEL_7:
   }
 
 LABEL_18:
-  self->_timeLimited = *(v4 + 31);
+  self->_timeLimited = *(fromCopy + 31);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -94,20 +94,20 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_exclusionSpec = *(v4 + 29);
+  self->_exclusionSpec = *(fromCopy + 29);
   *&self->_has |= 4u;
-  if ((*(v4 + 36) & 2) != 0)
+  if ((*(fromCopy + 36) & 2) != 0)
   {
 LABEL_9:
-    self->_error = *(v4 + 28);
+    self->_error = *(fromCopy + 28);
     *&self->_has |= 2u;
   }
 
 LABEL_10:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PPM2LocationsScored *)self setActiveTreatments:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -194,16 +194,16 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ [(NSString *)self->_activeTreatments hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_51;
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 2))
+  if (bundleId | *(equalCopy + 2))
   {
     if (![(NSString *)bundleId isEqual:?])
     {
@@ -211,131 +211,131 @@ LABEL_7:
     }
   }
 
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_resultSizeLog10 != *(v4 + 6))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_resultSizeLog10 != *(equalCopy + 6))
     {
       goto LABEL_51;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_51;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0)
+    if ((*(equalCopy + 36) & 8) == 0)
     {
       goto LABEL_51;
     }
 
-    v9 = *(v4 + 30);
+    v9 = *(equalCopy + 30);
     if (self->_limitHit)
     {
-      if ((*(v4 + 30) & 1) == 0)
+      if ((*(equalCopy + 30) & 1) == 0)
       {
         goto LABEL_51;
       }
     }
 
-    else if (*(v4 + 30))
+    else if (*(equalCopy + 30))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
     goto LABEL_51;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 36) & 0x20) == 0)
+    if ((*(equalCopy + 36) & 0x20) == 0)
     {
       goto LABEL_51;
     }
 
-    v10 = *(v4 + 32);
+    v10 = *(equalCopy + 32);
     if (self->_timeSpec)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_51;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 36) & 0x20) != 0)
+  else if ((*(equalCopy + 36) & 0x20) != 0)
   {
     goto LABEL_51;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0)
+    if ((*(equalCopy + 36) & 0x10) == 0)
     {
       goto LABEL_51;
     }
 
-    v11 = *(v4 + 31);
+    v11 = *(equalCopy + 31);
     if (self->_timeLimited)
     {
-      if ((*(v4 + 31) & 1) == 0)
+      if ((*(equalCopy + 31) & 1) == 0)
       {
         goto LABEL_51;
       }
     }
 
-    else if (*(v4 + 31))
+    else if (*(equalCopy + 31))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
     goto LABEL_51;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0)
+    if ((*(equalCopy + 36) & 4) == 0)
     {
       goto LABEL_51;
     }
 
-    v12 = *(v4 + 29);
+    v12 = *(equalCopy + 29);
     if (self->_exclusionSpec)
     {
-      if ((*(v4 + 29) & 1) == 0)
+      if ((*(equalCopy + 29) & 1) == 0)
       {
         goto LABEL_51;
       }
     }
 
-    else if (*(v4 + 29))
+    else if (*(equalCopy + 29))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_51;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_19;
     }
@@ -345,28 +345,28 @@ LABEL_51:
     goto LABEL_52;
   }
 
-  if ((*(v4 + 36) & 2) == 0)
+  if ((*(equalCopy + 36) & 2) == 0)
   {
     goto LABEL_51;
   }
 
-  v13 = *(v4 + 28);
+  v13 = *(equalCopy + 28);
   if (self->_error)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_51;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_51;
   }
 
 LABEL_19:
   activeTreatments = self->_activeTreatments;
-  if (activeTreatments | *(v4 + 1))
+  if (activeTreatments | *(equalCopy + 1))
   {
     v8 = [(NSString *)activeTreatments isEqual:?];
   }
@@ -381,10 +381,10 @@ LABEL_52:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleId copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -466,28 +466,28 @@ LABEL_7:
   }
 
 LABEL_8:
-  v9 = [(NSString *)self->_activeTreatments copyWithZone:a3];
+  v9 = [(NSString *)self->_activeTreatments copyWithZone:zone];
   v10 = *(v5 + 8);
   *(v5 + 8) = v9;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_bundleId)
   {
-    [v4 setBundleId:?];
-    v4 = v6;
+    [toCopy setBundleId:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 6) = self->_resultSizeLog10;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 6) = self->_resultSizeLog10;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -506,8 +506,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 30) = self->_limitHit;
-  *(v4 + 36) |= 8u;
+  *(toCopy + 30) = self->_limitHit;
+  *(toCopy + 36) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -521,8 +521,8 @@ LABEL_6:
   }
 
 LABEL_17:
-  *(v4 + 32) = self->_timeSpec;
-  *(v4 + 36) |= 0x20u;
+  *(toCopy + 32) = self->_timeSpec;
+  *(toCopy + 36) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -536,8 +536,8 @@ LABEL_7:
   }
 
 LABEL_18:
-  *(v4 + 31) = self->_timeLimited;
-  *(v4 + 36) |= 0x10u;
+  *(toCopy + 31) = self->_timeLimited;
+  *(toCopy + 36) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -551,31 +551,31 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(v4 + 29) = self->_exclusionSpec;
-  *(v4 + 36) |= 4u;
+  *(toCopy + 29) = self->_exclusionSpec;
+  *(toCopy + 36) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_9:
-    *(v4 + 28) = self->_error;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 28) = self->_error;
+    *(toCopy + 36) |= 2u;
   }
 
 LABEL_10:
   if (self->_activeTreatments)
   {
     [v6 setActiveTreatments:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_bundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -583,7 +583,7 @@ LABEL_10:
   {
     resultSizeLog10 = self->_resultSizeLog10;
     PBDataWriterWriteUint32Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -604,7 +604,7 @@ LABEL_5:
 
   limitHit = self->_limitHit;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -620,7 +620,7 @@ LABEL_6:
 LABEL_17:
   timeSpec = self->_timeSpec;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -636,7 +636,7 @@ LABEL_7:
 LABEL_18:
   timeLimited = self->_timeLimited;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -652,31 +652,31 @@ LABEL_8:
 LABEL_19:
   exclusionSpec = self->_exclusionSpec;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_9:
     error = self->_error;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_10:
   if (self->_activeTreatments)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
   has = self->_has;
@@ -777,15 +777,15 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = PPM2LocationsScored;
   v4 = [(PPM2LocationsScored *)&v8 description];
-  v5 = [(PPM2LocationsScored *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPM2LocationsScored *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 2;
   }
@@ -798,9 +798,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasExclusionSpec:(BOOL)a3
+- (void)setHasExclusionSpec:(BOOL)spec
 {
-  if (a3)
+  if (spec)
   {
     v3 = 4;
   }
@@ -813,9 +813,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTimeLimited:(BOOL)a3
+- (void)setHasTimeLimited:(BOOL)limited
 {
-  if (a3)
+  if (limited)
   {
     v3 = 16;
   }
@@ -828,9 +828,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTimeSpec:(BOOL)a3
+- (void)setHasTimeSpec:(BOOL)spec
 {
-  if (a3)
+  if (spec)
   {
     v3 = 32;
   }
@@ -843,9 +843,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasLimitHit:(BOOL)a3
+- (void)setHasLimitHit:(BOOL)hit
 {
-  if (a3)
+  if (hit)
   {
     v3 = 8;
   }

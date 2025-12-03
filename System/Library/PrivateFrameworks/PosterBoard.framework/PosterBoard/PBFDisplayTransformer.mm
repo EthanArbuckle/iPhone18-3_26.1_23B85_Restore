@@ -1,6 +1,6 @@
 @interface PBFDisplayTransformer
 - (PBFDisplayTransformer)init;
-- (id)transformDisplayConfiguration:(id)a3;
+- (id)transformDisplayConfiguration:(id)configuration;
 @end
 
 @implementation PBFDisplayTransformer
@@ -14,13 +14,13 @@
   return [(PBFDisplayTransformer *)&v5 init];
 }
 
-- (id)transformDisplayConfiguration:(id)a3
+- (id)transformDisplayConfiguration:(id)configuration
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CD92C10);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_21B6D81D0;
-  *(inited + 32) = a3;
-  v5 = a3;
+  *(inited + 32) = configuration;
+  configurationCopy = configuration;
   sub_21B6463D8(inited);
   swift_setDeallocating();
   swift_arrayDestroy();

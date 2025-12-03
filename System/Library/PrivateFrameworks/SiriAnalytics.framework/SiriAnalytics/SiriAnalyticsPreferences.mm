@@ -1,16 +1,16 @@
 @interface SiriAnalyticsPreferences
-- (SiriAnalyticsPreferences)initWithPreferencesDomain:(__CFString *)a3;
-- (id)pluginStateForBundleIdentifier:(id)a3;
+- (SiriAnalyticsPreferences)initWithPreferencesDomain:(__CFString *)domain;
+- (id)pluginStateForBundleIdentifier:(id)identifier;
 - (id)pluginsState;
-- (void)setKillSwitchEnabled:(BOOL)a3;
-- (void)setPluginState:(id)a3 forBundleIdentifier:(id)a4;
+- (void)setKillSwitchEnabled:(BOOL)enabled;
+- (void)setPluginState:(id)state forBundleIdentifier:(id)identifier;
 @end
 
 @implementation SiriAnalyticsPreferences
 
-- (void)setKillSwitchEnabled:(BOOL)a3
+- (void)setKillSwitchEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:1];
   }
@@ -44,33 +44,33 @@
   return v4;
 }
 
-- (void)setPluginState:(id)a3 forBundleIdentifier:(id)a4
+- (void)setPluginState:(id)state forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SiriAnalyticsPreferences *)self pluginsState];
-  [v8 setObject:v7 forKey:v6];
+  identifierCopy = identifier;
+  stateCopy = state;
+  pluginsState = [(SiriAnalyticsPreferences *)self pluginsState];
+  [pluginsState setObject:stateCopy forKey:identifierCopy];
 
-  [(SiriAnalyticsPreferences *)self setPluginsState:v8];
+  [(SiriAnalyticsPreferences *)self setPluginsState:pluginsState];
 }
 
-- (id)pluginStateForBundleIdentifier:(id)a3
+- (id)pluginStateForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SiriAnalyticsPreferences *)self pluginsState];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  pluginsState = [(SiriAnalyticsPreferences *)self pluginsState];
+  v6 = [pluginsState objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (SiriAnalyticsPreferences)initWithPreferencesDomain:(__CFString *)a3
+- (SiriAnalyticsPreferences)initWithPreferencesDomain:(__CFString *)domain
 {
   v6.receiver = self;
   v6.super_class = SiriAnalyticsPreferences;
   v4 = [(SiriAnalyticsPreferences *)&v6 init];
   if (v4)
   {
-    v4->_domain = CFStringCreateCopy(*MEMORY[0x1E695E480], a3);
+    v4->_domain = CFStringCreateCopy(*MEMORY[0x1E695E480], domain);
   }
 
   return v4;

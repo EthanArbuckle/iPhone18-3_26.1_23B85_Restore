@@ -1,16 +1,16 @@
 @interface CSSPUActivityPhone
-- (CSSPUActivityPhone)initWithTimestamp:(unint64_t)a3 armTimeImuConfidences:(id)a4 armTimeActivityHints:(unsigned __int8)a5 windowAfterArmImuConfidences:(id)a6 triggerTimeLastHighImuDrivingConfidenceTimestamp:(unint64_t)a7 sessionSwivelAngleDegHistogram:(id)a8 sessionTiltAngleDegHistogram:(id)a9 sessionImuHintPercentage:(float)a10 sessionBtHintPercentage:(float)a11 sessionGpsHintPercentage:(float)a12 sessionWifiHintPercentage:(float)a13;
+- (CSSPUActivityPhone)initWithTimestamp:(unint64_t)timestamp armTimeImuConfidences:(id)confidences armTimeActivityHints:(unsigned __int8)hints windowAfterArmImuConfidences:(id)imuConfidences triggerTimeLastHighImuDrivingConfidenceTimestamp:(unint64_t)confidenceTimestamp sessionSwivelAngleDegHistogram:(id)histogram sessionTiltAngleDegHistogram:(id)degHistogram sessionImuHintPercentage:(float)self0 sessionBtHintPercentage:(float)self1 sessionGpsHintPercentage:(float)self2 sessionWifiHintPercentage:(float)self3;
 - (id).cxx_construct;
 @end
 
 @implementation CSSPUActivityPhone
 
-- (CSSPUActivityPhone)initWithTimestamp:(unint64_t)a3 armTimeImuConfidences:(id)a4 armTimeActivityHints:(unsigned __int8)a5 windowAfterArmImuConfidences:(id)a6 triggerTimeLastHighImuDrivingConfidenceTimestamp:(unint64_t)a7 sessionSwivelAngleDegHistogram:(id)a8 sessionTiltAngleDegHistogram:(id)a9 sessionImuHintPercentage:(float)a10 sessionBtHintPercentage:(float)a11 sessionGpsHintPercentage:(float)a12 sessionWifiHintPercentage:(float)a13
+- (CSSPUActivityPhone)initWithTimestamp:(unint64_t)timestamp armTimeImuConfidences:(id)confidences armTimeActivityHints:(unsigned __int8)hints windowAfterArmImuConfidences:(id)imuConfidences triggerTimeLastHighImuDrivingConfidenceTimestamp:(unint64_t)confidenceTimestamp sessionSwivelAngleDegHistogram:(id)histogram sessionTiltAngleDegHistogram:(id)degHistogram sessionImuHintPercentage:(float)self0 sessionBtHintPercentage:(float)self1 sessionGpsHintPercentage:(float)self2 sessionWifiHintPercentage:(float)self3
 {
-  v23 = a4;
-  v24 = a6;
-  v25 = a8;
-  v26 = a9;
+  confidencesCopy = confidences;
+  imuConfidencesCopy = imuConfidences;
+  histogramCopy = histogram;
+  degHistogramCopy = degHistogram;
   v40.receiver = self;
   v40.super_class = CSSPUActivityPhone;
   v27 = [(CSSPUActivityPhone *)&v40 init];
@@ -18,10 +18,10 @@
   if (v27)
   {
     v29 = 0;
-    v27->_c_struct.timestamp = a3;
+    v27->_c_struct.timestamp = timestamp;
     do
     {
-      v30 = [v23 objectAtIndexedSubscript:v29];
+      v30 = [confidencesCopy objectAtIndexedSubscript:v29];
       [v30 floatValue];
       v28->_c_struct._armTime_ImuConfidences[v29] = v31;
 
@@ -30,10 +30,10 @@
 
     while (v29 != 3);
     v32 = 0;
-    v28->_c_struct._armTime_ActivityHints = a5;
+    v28->_c_struct._armTime_ActivityHints = hints;
     do
     {
-      v33 = [v24 objectAtIndexedSubscript:v32];
+      v33 = [imuConfidencesCopy objectAtIndexedSubscript:v32];
       [v33 floatValue];
       v28->_c_struct._windowAfterArm_ImuConfidences[v32] = v34;
 
@@ -42,10 +42,10 @@
 
     while (v32 != 3);
     v35 = 0;
-    v28->_c_struct._triggerTime_LastHighImuDrivingConfidenceTimestamp = a7;
+    v28->_c_struct._triggerTime_LastHighImuDrivingConfidenceTimestamp = confidenceTimestamp;
     do
     {
-      v36 = [v25 objectAtIndexedSubscript:v35];
+      v36 = [histogramCopy objectAtIndexedSubscript:v35];
       v28->_c_struct._session_SwivelAngleDegHistogram[v35] = [v36 intValue];
 
       ++v35;
@@ -54,14 +54,14 @@
     while (v35 != 5);
     for (i = 0; i != 5; ++i)
     {
-      v38 = [v26 objectAtIndexedSubscript:i];
+      v38 = [degHistogramCopy objectAtIndexedSubscript:i];
       v28->_c_struct._session_TiltAngleDegHistogram[i] = [v38 intValue];
     }
 
-    v28->_c_struct._session_ImuHintPercentage = a10;
-    v28->_c_struct._session_BtHintPercentage = a11;
-    v28->_c_struct._session_GpsHintPercentage = a12;
-    v28->_c_struct._session_WifiHintPercentage = a13;
+    v28->_c_struct._session_ImuHintPercentage = percentage;
+    v28->_c_struct._session_BtHintPercentage = hintPercentage;
+    v28->_c_struct._session_GpsHintPercentage = gpsHintPercentage;
+    v28->_c_struct._session_WifiHintPercentage = wifiHintPercentage;
   }
 
   return v28;

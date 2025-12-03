@@ -13,21 +13,21 @@
 + (SKTransition)pushWithDirection:(SKTransitionDirection)direction duration:(NSTimeInterval)sec;
 + (SKTransition)revealWithDirection:(SKTransitionDirection)direction duration:(NSTimeInterval)sec;
 + (SKTransition)transitionWithCIFilter:(CIFilter *)filter duration:(NSTimeInterval)sec;
-+ (id)moveInDownWithDuration:(double)a3;
-+ (id)moveInLeftWithDuration:(double)a3;
-+ (id)moveInRightWithDuration:(double)a3;
-+ (id)moveInUpWithDuration:(double)a3;
-+ (id)pushDownWithDuration:(double)a3;
-+ (id)pushLeftWithDuration:(double)a3;
-+ (id)pushRightWithDuration:(double)a3;
-+ (id)pushUpWithDuration:(double)a3;
-+ (id)revealDownWithDuration:(double)a3;
-+ (id)revealLeftWithDuration:(double)a3;
-+ (id)revealRightWithDuration:(double)a3;
-+ (id)revealUpWithDuration:(double)a3;
++ (id)moveInDownWithDuration:(double)duration;
++ (id)moveInLeftWithDuration:(double)duration;
++ (id)moveInRightWithDuration:(double)duration;
++ (id)moveInUpWithDuration:(double)duration;
++ (id)pushDownWithDuration:(double)duration;
++ (id)pushLeftWithDuration:(double)duration;
++ (id)pushRightWithDuration:(double)duration;
++ (id)pushUpWithDuration:(double)duration;
++ (id)revealDownWithDuration:(double)duration;
++ (id)revealLeftWithDuration:(double)duration;
++ (id)revealRightWithDuration:(double)duration;
++ (id)revealUpWithDuration:(double)duration;
 - (SKTransition)init;
 - (double)_duration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -52,12 +52,12 @@
   {
     if (direction == SKTransitionDirectionRight)
     {
-      v5 = [a1 revealRightWithDuration:sec];
+      v5 = [self revealRightWithDuration:sec];
     }
 
     else if (direction == SKTransitionDirectionLeft)
     {
-      v5 = [a1 revealLeftWithDuration:sec];
+      v5 = [self revealLeftWithDuration:sec];
     }
   }
 
@@ -65,13 +65,13 @@
   {
     if (direction == SKTransitionDirectionDown)
     {
-      v5 = [a1 revealDownWithDuration:sec];
+      v5 = [self revealDownWithDuration:sec];
     }
   }
 
   else
   {
-    v5 = [a1 revealUpWithDuration:sec];
+    v5 = [self revealUpWithDuration:sec];
   }
 
   return v5;
@@ -84,12 +84,12 @@
   {
     if (direction == SKTransitionDirectionRight)
     {
-      v5 = [a1 moveInRightWithDuration:sec];
+      v5 = [self moveInRightWithDuration:sec];
     }
 
     else if (direction == SKTransitionDirectionLeft)
     {
-      v5 = [a1 moveInLeftWithDuration:sec];
+      v5 = [self moveInLeftWithDuration:sec];
     }
   }
 
@@ -97,13 +97,13 @@
   {
     if (direction == SKTransitionDirectionDown)
     {
-      v5 = [a1 moveInDownWithDuration:sec];
+      v5 = [self moveInDownWithDuration:sec];
     }
   }
 
   else
   {
-    v5 = [a1 moveInUpWithDuration:sec];
+    v5 = [self moveInUpWithDuration:sec];
   }
 
   return v5;
@@ -116,12 +116,12 @@
   {
     if (direction == SKTransitionDirectionRight)
     {
-      v5 = [a1 pushRightWithDuration:sec];
+      v5 = [self pushRightWithDuration:sec];
     }
 
     else if (direction == SKTransitionDirectionLeft)
     {
-      v5 = [a1 pushLeftWithDuration:sec];
+      v5 = [self pushLeftWithDuration:sec];
     }
   }
 
@@ -129,13 +129,13 @@
   {
     if (direction == SKTransitionDirectionDown)
     {
-      v5 = [a1 pushDownWithDuration:sec];
+      v5 = [self pushDownWithDuration:sec];
     }
   }
 
   else
   {
-    v5 = [a1 pushUpWithDuration:sec];
+    v5 = [self pushUpWithDuration:sec];
   }
 
   return v5;
@@ -202,134 +202,134 @@
   return v4;
 }
 
-+ (id)revealUpWithDuration:(double)a3
++ (id)revealUpWithDuration:(double)duration
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = v4->_skcTransitionNode;
   *(skcTransitionNode + 140) = 4;
-  v6 = a3;
-  skcTransitionNode[145] = v6;
+  durationCopy = duration;
+  skcTransitionNode[145] = durationCopy;
 
   return v4;
 }
 
-+ (id)revealDownWithDuration:(double)a3
++ (id)revealDownWithDuration:(double)duration
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = v4->_skcTransitionNode;
   *(skcTransitionNode + 140) = 5;
-  v6 = a3;
-  skcTransitionNode[145] = v6;
+  durationCopy = duration;
+  skcTransitionNode[145] = durationCopy;
 
   return v4;
 }
 
-+ (id)revealLeftWithDuration:(double)a3
++ (id)revealLeftWithDuration:(double)duration
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = v4->_skcTransitionNode;
   *(skcTransitionNode + 140) = 7;
-  v6 = a3;
-  skcTransitionNode[145] = v6;
+  durationCopy = duration;
+  skcTransitionNode[145] = durationCopy;
 
   return v4;
 }
 
-+ (id)revealRightWithDuration:(double)a3
++ (id)revealRightWithDuration:(double)duration
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = v4->_skcTransitionNode;
   *(skcTransitionNode + 140) = 6;
-  v6 = a3;
-  skcTransitionNode[145] = v6;
+  durationCopy = duration;
+  skcTransitionNode[145] = durationCopy;
 
   return v4;
 }
 
-+ (id)moveInUpWithDuration:(double)a3
++ (id)moveInUpWithDuration:(double)duration
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = v4->_skcTransitionNode;
   *(skcTransitionNode + 140) = 8;
-  v6 = a3;
-  skcTransitionNode[145] = v6;
+  durationCopy = duration;
+  skcTransitionNode[145] = durationCopy;
 
   return v4;
 }
 
-+ (id)moveInDownWithDuration:(double)a3
++ (id)moveInDownWithDuration:(double)duration
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = v4->_skcTransitionNode;
   *(skcTransitionNode + 140) = 9;
-  v6 = a3;
-  skcTransitionNode[145] = v6;
+  durationCopy = duration;
+  skcTransitionNode[145] = durationCopy;
 
   return v4;
 }
 
-+ (id)moveInLeftWithDuration:(double)a3
++ (id)moveInLeftWithDuration:(double)duration
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = v4->_skcTransitionNode;
   *(skcTransitionNode + 140) = 11;
-  v6 = a3;
-  skcTransitionNode[145] = v6;
+  durationCopy = duration;
+  skcTransitionNode[145] = durationCopy;
 
   return v4;
 }
 
-+ (id)moveInRightWithDuration:(double)a3
++ (id)moveInRightWithDuration:(double)duration
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = v4->_skcTransitionNode;
   *(skcTransitionNode + 140) = 10;
-  v6 = a3;
-  skcTransitionNode[145] = v6;
+  durationCopy = duration;
+  skcTransitionNode[145] = durationCopy;
 
   return v4;
 }
 
-+ (id)pushUpWithDuration:(double)a3
++ (id)pushUpWithDuration:(double)duration
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = v4->_skcTransitionNode;
   *(skcTransitionNode + 140) = 12;
-  v6 = a3;
-  skcTransitionNode[145] = v6;
+  durationCopy = duration;
+  skcTransitionNode[145] = durationCopy;
 
   return v4;
 }
 
-+ (id)pushDownWithDuration:(double)a3
++ (id)pushDownWithDuration:(double)duration
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = v4->_skcTransitionNode;
   *(skcTransitionNode + 140) = 13;
-  v6 = a3;
-  skcTransitionNode[145] = v6;
+  durationCopy = duration;
+  skcTransitionNode[145] = durationCopy;
 
   return v4;
 }
 
-+ (id)pushLeftWithDuration:(double)a3
++ (id)pushLeftWithDuration:(double)duration
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = v4->_skcTransitionNode;
   *(skcTransitionNode + 140) = 15;
-  v6 = a3;
-  skcTransitionNode[145] = v6;
+  durationCopy = duration;
+  skcTransitionNode[145] = durationCopy;
 
   return v4;
 }
 
-+ (id)pushRightWithDuration:(double)a3
++ (id)pushRightWithDuration:(double)duration
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = v4->_skcTransitionNode;
   *(skcTransitionNode + 140) = 14;
-  v6 = a3;
-  skcTransitionNode[145] = v6;
+  durationCopy = duration;
+  skcTransitionNode[145] = durationCopy;
 
   return v4;
 }
@@ -405,7 +405,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SKTransition);
   skcTransitionNode = self->_skcTransitionNode;

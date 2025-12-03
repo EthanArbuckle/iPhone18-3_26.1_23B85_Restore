@@ -1,14 +1,14 @@
 @interface PHDeclineCallServiceFactory
-- (id)makeWithCallCenter:(id)a3;
+- (id)makeWithCallCenter:(id)center;
 @end
 
 @implementation PHDeclineCallServiceFactory
 
-- (id)makeWithCallCenter:(id)a3
+- (id)makeWithCallCenter:(id)center
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100201E38(v4);
+  centerCopy = center;
+  selfCopy = self;
+  v6 = sub_100201E38(centerCopy);
 
   return v6;
 }

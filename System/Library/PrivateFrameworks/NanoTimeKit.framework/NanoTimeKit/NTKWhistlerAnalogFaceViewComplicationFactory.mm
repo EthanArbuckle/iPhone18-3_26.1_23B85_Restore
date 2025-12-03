@@ -1,124 +1,124 @@
 @interface NTKWhistlerAnalogFaceViewComplicationFactory
-- (BOOL)_convertCircularSlot:(id)a3 toPosition:(int64_t *)a4;
-- (BOOL)_convertCornerSlot:(id)a3 toPosition:(int64_t *)a4;
-- (BOOL)_isCenterComplicationForSlot:(id)a3;
-- (BOOL)_isCornerComplicationForSlot:(id)a3;
-- (CGPoint)circularComplicationCenterForSlot:(id)a3 inFaceBounds:(CGRect)a4;
-- (CGRect)keylineFrameForCornerComplicationSlot:(id)a3 selected:(BOOL)a4;
+- (BOOL)_convertCircularSlot:(id)slot toPosition:(int64_t *)position;
+- (BOOL)_convertCornerSlot:(id)slot toPosition:(int64_t *)position;
+- (BOOL)_isCenterComplicationForSlot:(id)slot;
+- (BOOL)_isCornerComplicationForSlot:(id)slot;
+- (CGPoint)circularComplicationCenterForSlot:(id)slot inFaceBounds:(CGRect)bounds;
+- (CGRect)keylineFrameForCornerComplicationSlot:(id)slot selected:(BOOL)selected;
 - (NTKFaceView)faceView;
-- (NTKWhistlerAnalogFaceViewComplicationFactory)initWithFaceView:(id)a3 dialDiameter:(double)a4 device:(id)a5;
-- (double)_edgeGapForState:(int64_t)a3;
-- (double)_keylinePaddingForState:(int64_t)a3;
-- (double)_lisaGapForState:(int64_t)a3;
-- (id)_cornerKeylineViewForSlot:(id)a3;
-- (id)initForDevice:(id)a3;
-- (id)keylineViewForComplicationSlot:(id)a3;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6;
-- (int64_t)complicationPickerStyleForSlot:(id)a3;
-- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 faceView:(id)a5;
+- (NTKWhistlerAnalogFaceViewComplicationFactory)initWithFaceView:(id)view dialDiameter:(double)diameter device:(id)device;
+- (double)_edgeGapForState:(int64_t)state;
+- (double)_keylinePaddingForState:(int64_t)state;
+- (double)_lisaGapForState:(int64_t)state;
+- (id)_cornerKeylineViewForSlot:(id)slot;
+- (id)initForDevice:(id)device;
+- (id)keylineViewForComplicationSlot:(id)slot;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view;
+- (int64_t)complicationPickerStyleForSlot:(id)slot;
+- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot;
+- (void)configureComplicationView:(id)view forSlot:(id)slot;
+- (void)configureComplicationView:(id)view forSlot:(id)slot faceView:(id)faceView;
 - (void)loadLayoutRules;
-- (void)loadLayoutRulesForFaceView:(id)a3;
-- (void)loadLayoutRulesForFaceView:(id)a3 dialDiameter:(double)a4;
-- (void)setAlpha:(double)a3 faceView:(id)a4;
+- (void)loadLayoutRulesForFaceView:(id)view;
+- (void)loadLayoutRulesForFaceView:(id)view dialDiameter:(double)diameter;
+- (void)setAlpha:(double)alpha faceView:(id)view;
 @end
 
 @implementation NTKWhistlerAnalogFaceViewComplicationFactory
 
-- (NTKWhistlerAnalogFaceViewComplicationFactory)initWithFaceView:(id)a3 dialDiameter:(double)a4 device:(id)a5
+- (NTKWhistlerAnalogFaceViewComplicationFactory)initWithFaceView:(id)view dialDiameter:(double)diameter device:(id)device
 {
-  v8 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = NTKWhistlerAnalogFaceViewComplicationFactory;
-  v9 = [(NTKFaceViewComplicationFactory *)&v13 initForDevice:a5];
+  v9 = [(NTKFaceViewComplicationFactory *)&v13 initForDevice:device];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(v9 + 10, v8);
-    v10->_dialDiameter = a4;
-    v11 = [MEMORY[0x277D75348] whiteColor];
-    [(NTKFaceViewComplicationFactory *)v10 setForegroundColor:v11];
+    objc_storeWeak(v9 + 10, viewCopy);
+    v10->_dialDiameter = diameter;
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(NTKFaceViewComplicationFactory *)v10 setForegroundColor:whiteColor];
   }
 
   return v10;
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = NTKWhistlerAnalogFaceViewComplicationFactory;
-  v3 = [(NTKFaceViewComplicationFactory *)&v6 initForDevice:a3];
+  v3 = [(NTKFaceViewComplicationFactory *)&v6 initForDevice:device];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    [v3 setForegroundColor:v4];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v3 setForegroundColor:whiteColor];
   }
 
   return v3;
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self faceView];
-  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self configureComplicationView:v7 forSlot:v6 faceView:v8];
+  slotCopy = slot;
+  viewCopy = view;
+  faceView = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self faceView];
+  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self configureComplicationView:viewCopy forSlot:slotCopy faceView:faceView];
 }
 
-- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4
+- (int64_t)legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot
 {
-  v6 = a4;
-  v7 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self faceView];
-  v8 = [(NTKFaceViewComplicationFactory *)self legacyLayoutOverrideforComplicationType:a3 slot:v6 faceView:v7];
+  slotCopy = slot;
+  faceView = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self faceView];
+  v8 = [(NTKFaceViewComplicationFactory *)self legacyLayoutOverrideforComplicationType:type slot:slotCopy faceView:faceView];
 
   return v8;
 }
 
 - (void)loadLayoutRules
 {
-  v3 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self faceView];
+  faceView = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self faceView];
   [(NTKWhistlerAnalogFaceViewComplicationFactory *)self dialDiameter];
-  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self loadLayoutRulesForFaceView:v3 dialDiameter:?];
+  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self loadLayoutRulesForFaceView:faceView dialDiameter:?];
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self faceView];
-  v11 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self newLegacyViewForComplication:v9 family:a4 slot:v8 faceView:v10];
+  slotCopy = slot;
+  complicationCopy = complication;
+  faceView = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self faceView];
+  v11 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self newLegacyViewForComplication:complicationCopy family:family slot:slotCopy faceView:faceView];
 
   return v11;
 }
 
-- (CGPoint)circularComplicationCenterForSlot:(id)a3 inFaceBounds:(CGRect)a4
+- (CGPoint)circularComplicationCenterForSlot:(id)slot inFaceBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v7 = a3;
-  v8 = [(NTKFaceViewComplicationFactory *)self device];
-  v9 = ___LayoutConstants_block_invoke_6(v8, v8);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  slotCopy = slot;
+  device = [(NTKFaceViewComplicationFactory *)self device];
+  v9 = ___LayoutConstants_block_invoke_6(device, device);
 
   v10 = width * 0.5;
   v11 = height * 0.5;
-  if ([v7 isEqualToString:@"slot1"])
+  if ([slotCopy isEqualToString:@"slot1"])
   {
     v10 = v10 - v9;
   }
 
-  else if ([v7 isEqualToString:@"slot2"])
+  else if ([slotCopy isEqualToString:@"slot2"])
   {
     v10 = v10 + v9;
   }
 
-  else if ([v7 isEqualToString:@"slot3"])
+  else if ([slotCopy isEqualToString:@"slot3"])
   {
     v11 = v11 + v9;
   }
 
-  else if ([v7 isEqualToString:@"bezel"])
+  else if ([slotCopy isEqualToString:@"bezel"])
   {
     v11 = v11 - v9;
   }
@@ -130,26 +130,26 @@
   return result;
 }
 
-- (id)keylineViewForComplicationSlot:(id)a3
+- (id)keylineViewForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _isCornerComplicationForSlot:v4])
+  slotCopy = slot;
+  if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _isCornerComplicationForSlot:slotCopy])
   {
-    v5 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self _cornerKeylineViewForSlot:v4];
+    v5 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self _cornerKeylineViewForSlot:slotCopy];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"bezel"])
+  if ([slotCopy isEqualToString:@"bezel"])
   {
     v6 = NTKRichComplicationBezelView;
 LABEL_7:
-    v7 = [(NTKFaceViewComplicationFactory *)self device];
-    v5 = [(__objc2_class *)v6 keylineViewForDevice:v7];
+    device = [(NTKFaceViewComplicationFactory *)self device];
+    v5 = [(__objc2_class *)v6 keylineViewForDevice:device];
 
     goto LABEL_9;
   }
 
-  if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _isCenterComplicationForSlot:v4])
+  if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _isCenterComplicationForSlot:slotCopy])
   {
     v6 = NTKRichComplicationCircularBaseView;
     goto LABEL_7;
@@ -161,15 +161,15 @@ LABEL_9:
   return v5;
 }
 
-- (int64_t)complicationPickerStyleForSlot:(id)a3
+- (int64_t)complicationPickerStyleForSlot:(id)slot
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"bezel"] & 1) != 0 || -[NTKWhistlerAnalogFaceViewComplicationFactory _isCornerComplicationForSlot:](self, "_isCornerComplicationForSlot:", v4))
+  slotCopy = slot;
+  if (([slotCopy isEqualToString:@"bezel"] & 1) != 0 || -[NTKWhistlerAnalogFaceViewComplicationFactory _isCornerComplicationForSlot:](self, "_isCornerComplicationForSlot:", slotCopy))
   {
     v5 = 3;
   }
 
-  else if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _isCenterComplicationForSlot:v4])
+  else if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _isCenterComplicationForSlot:slotCopy])
   {
     v5 = 3;
   }
@@ -182,22 +182,22 @@ LABEL_9:
   return v5;
 }
 
-- (void)loadLayoutRulesForFaceView:(id)a3
+- (void)loadLayoutRulesForFaceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(NTKWhistlerAnalogFaceViewComplicationFactory *)self dialDiameter];
-  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self loadLayoutRulesForFaceView:v4 dialDiameter:?];
+  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self loadLayoutRulesForFaceView:viewCopy dialDiameter:?];
 }
 
-- (void)loadLayoutRulesForFaceView:(id)a3 dialDiameter:(double)a4
+- (void)loadLayoutRulesForFaceView:(id)view dialDiameter:(double)diameter
 {
-  v6 = a3;
-  [v6 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(NTKFaceViewComplicationFactory *)self device];
+  device = [(NTKFaceViewComplicationFactory *)self device];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __88__NTKWhistlerAnalogFaceViewComplicationFactory_loadLayoutRulesForFaceView_dialDiameter___block_invoke;
@@ -206,12 +206,12 @@ LABEL_9:
   v23 = v10;
   v24 = v12;
   v25 = v14;
-  v19 = v6;
-  v20 = v15;
-  v21 = self;
-  v26 = a4;
-  v16 = v15;
-  v17 = v6;
+  v19 = viewCopy;
+  v20 = device;
+  selfCopy = self;
+  diameterCopy = diameter;
+  v16 = device;
+  v17 = viewCopy;
   NTKEnumerateComplicationStates(v18);
 }
 
@@ -269,21 +269,21 @@ void __88__NTKWhistlerAnalogFaceViewComplicationFactory_loadLayoutRulesForFaceVi
   [v33 setDefaultLayoutRule:v34 forState:a2];
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _isCenterComplicationForSlot:v11])
+  complicationCopy = complication;
+  slotCopy = slot;
+  viewCopy = view;
+  if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _isCenterComplicationForSlot:slotCopy])
   {
     v13 = NTKRichComplicationCircularBaseView;
   }
 
-  else if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _isCornerComplicationForSlot:v11])
+  else if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _isCornerComplicationForSlot:slotCopy])
   {
-    if (a4 == 4)
+    if (family == 4)
     {
-      v14 = +[NTKCircularComplicationView viewForComplicationType:](NTKCircularComplicationView, "viewForComplicationType:", [v10 complicationType]);
+      v14 = +[NTKCircularComplicationView viewForComplicationType:](NTKCircularComplicationView, "viewForComplicationType:", [complicationCopy complicationType]);
       goto LABEL_4;
     }
 
@@ -292,7 +292,7 @@ void __88__NTKWhistlerAnalogFaceViewComplicationFactory_loadLayoutRulesForFaceVi
 
   else
   {
-    if (![v11 isEqualToString:@"bezel"])
+    if (![slotCopy isEqualToString:@"bezel"])
     {
       v15 = 0;
       goto LABEL_5;
@@ -301,24 +301,24 @@ void __88__NTKWhistlerAnalogFaceViewComplicationFactory_loadLayoutRulesForFaceVi
     v13 = NTKRichComplicationBezelView;
   }
 
-  v14 = -[__objc2_class viewWithLegacyComplicationType:](v13, "viewWithLegacyComplicationType:", [v10 complicationType]);
+  v14 = -[__objc2_class viewWithLegacyComplicationType:](v13, "viewWithLegacyComplicationType:", [complicationCopy complicationType]);
 LABEL_4:
   v15 = v14;
 LABEL_5:
-  [v12 _configureComplicationView:v15 forSlot:v11];
+  [viewCopy _configureComplicationView:v15 forSlot:slotCopy];
 
   return v15;
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 faceView:(id)a5
+- (void)configureComplicationView:(id)view forSlot:(id)slot faceView:(id)faceView
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 conformsToProtocol:&unk_28A8170A0])
+  viewCopy = view;
+  slotCopy = slot;
+  if ([viewCopy conformsToProtocol:&unk_28A8170A0])
   {
-    v9 = v7;
+    v9 = viewCopy;
     v28 = 0;
-    if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _convertCornerSlot:v8 toPosition:&v28])
+    if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _convertCornerSlot:slotCopy toPosition:&v28])
     {
       [v9 setCornerComplicationPosition:v28];
     }
@@ -332,9 +332,9 @@ LABEL_5:
       goto LABEL_8;
     }
 
-    v9 = v7;
+    v9 = viewCopy;
     v28 = 0;
-    if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _convertCircularSlot:v8 toPosition:&v28])
+    if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _convertCircularSlot:slotCopy toPosition:&v28])
     {
       [v9 setPosition:v28];
     }
@@ -347,16 +347,16 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [MEMORY[0x277CBEAF8] currentLocale];
-    v11 = [v10 objectForKey:*MEMORY[0x277CBE6C8]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v11 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
     v12 = [v11 isEqualToString:@"ar"];
 
-    v13 = v7;
+    v13 = viewCopy;
     [(NTKWhistlerAnalogFaceViewComplicationFactory *)self dialDiameter];
     v15 = v14 * 0.5;
     [v13 setTextLayoutStyle:1];
     [v13 setInterior:0];
-    v16 = [(NTKFaceViewComplicationFactory *)self device];
+    device = [(NTKFaceViewComplicationFactory *)self device];
     if (v12)
     {
       v17 = NTKWhistlerBezelCircularViewDefaultTrackingArabic();
@@ -371,92 +371,92 @@ LABEL_8:
 
     [v13 setCurveCenter:{v15, v15}];
     [v13 setCurveRadius:0.0];
-    v18 = [(NTKFaceViewComplicationFactory *)self device];
+    device2 = [(NTKFaceViewComplicationFactory *)self device];
     [v13 setCurveCenterAngle:NTKWhistlerBezelCircularViewDefaultCenterAngle()];
 
-    v19 = [(NTKFaceViewComplicationFactory *)self device];
+    device3 = [(NTKFaceViewComplicationFactory *)self device];
     [v13 setMaxAngularWidth:NTKWhistlerBezelCircularViewDefaultMaxAngularWidth()];
 
-    v20 = [(NTKFaceViewComplicationFactory *)self device];
+    device4 = [(NTKFaceViewComplicationFactory *)self device];
     NTKWhistlerBezelCircularViewDefaultMaxAngularWidth();
 
-    v21 = [(NTKFaceViewComplicationFactory *)self device];
-    [v13 setFontSize:NTKWhistlerBezelCircularViewFontSize(v21)];
+    device5 = [(NTKFaceViewComplicationFactory *)self device];
+    [v13 setFontSize:NTKWhistlerBezelCircularViewFontSize(device5)];
 
-    v22 = [MEMORY[0x277D75348] whiteColor];
-    [v13 setTextColor:v22];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v13 setTextColor:whiteColor];
 
     [v13 setImagePlacement:0];
     [v13 curveCenter];
     v24 = v23;
     [v13 curveCenter];
     v26 = v25;
-    v27 = [(NTKFaceViewComplicationFactory *)self device];
-    [v13 setCircularCenterPoint:{v24, v26 - NTKWhistlerSubdialComplicationDistanceFromCenter(v27)}];
+    device6 = [(NTKFaceViewComplicationFactory *)self device];
+    [v13 setCircularCenterPoint:{v24, v26 - NTKWhistlerSubdialComplicationDistanceFromCenter(device6)}];
 
     [v13 setContentHeight:v15];
     [v13 setContentVerticalAlignment:1];
   }
 }
 
-- (BOOL)_isCenterComplicationForSlot:(id)a3
+- (BOOL)_isCenterComplicationForSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqual:@"slot1"] & 1) != 0 || (objc_msgSend(v3, "isEqual:", @"slot2"))
+  slotCopy = slot;
+  if ([slotCopy isEqual:@"slot1"] & 1) != 0 || (objc_msgSend(slotCopy, "isEqual:", @"slot2"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqual:@"slot3"];
+    v4 = [slotCopy isEqual:@"slot3"];
   }
 
   return v4;
 }
 
-- (BOOL)_isCornerComplicationForSlot:(id)a3
+- (BOOL)_isCornerComplicationForSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqual:@"top-left"] & 1) != 0 || (objc_msgSend(v3, "isEqual:", @"top-right") & 1) != 0 || (objc_msgSend(v3, "isEqual:", @"bottom-left"))
+  slotCopy = slot;
+  if ([slotCopy isEqual:@"top-left"] & 1) != 0 || (objc_msgSend(slotCopy, "isEqual:", @"top-right") & 1) != 0 || (objc_msgSend(slotCopy, "isEqual:", @"bottom-left"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqual:@"bottom-right"];
+    v4 = [slotCopy isEqual:@"bottom-right"];
   }
 
   return v4;
 }
 
-- (id)_cornerKeylineViewForSlot:(id)a3
+- (id)_cornerKeylineViewForSlot:(id)slot
 {
   v8 = 0;
   v4 = 0;
-  if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _convertCornerSlot:a3 toPosition:&v8])
+  if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _convertCornerSlot:slot toPosition:&v8])
   {
     v5 = v8;
-    v6 = [(NTKFaceViewComplicationFactory *)self device];
-    v4 = [NTKRichComplicationCornerUtilities keylineViewForPosition:v5 forDevice:v6 narrowTopSlots:[(NTKWhistlerAnalogFaceViewComplicationFactory *)self usesNarrowTopSlots]];
+    device = [(NTKFaceViewComplicationFactory *)self device];
+    v4 = [NTKRichComplicationCornerUtilities keylineViewForPosition:v5 forDevice:device narrowTopSlots:[(NTKWhistlerAnalogFaceViewComplicationFactory *)self usesNarrowTopSlots]];
   }
 
   return v4;
 }
 
-- (CGRect)keylineFrameForCornerComplicationSlot:(id)a3 selected:(BOOL)a4
+- (CGRect)keylineFrameForCornerComplicationSlot:(id)slot selected:(BOOL)selected
 {
-  v4 = a4;
-  v6 = a3;
+  selectedCopy = selected;
+  slotCopy = slot;
   v63 = 0;
-  if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _convertCornerSlot:v6 toPosition:&v63])
+  if ([(NTKWhistlerAnalogFaceViewComplicationFactory *)self _convertCornerSlot:slotCopy toPosition:&v63])
   {
-    v7 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self faceView];
-    v8 = v7;
-    if (v7)
+    faceView = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self faceView];
+    v8 = faceView;
+    if (faceView)
     {
-      if (v4)
+      if (selectedCopy)
       {
         v9 = 3;
       }
@@ -467,13 +467,13 @@ LABEL_8:
       }
 
       v10 = v63;
-      [v7 bounds];
+      [faceView bounds];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      v19 = [(NTKFaceViewComplicationFactory *)self device];
-      v20 = [NTKRichComplicationCornerUtilities layoutRuleForState:v9 position:v10 faceBounds:v19 forDevice:[(NTKWhistlerAnalogFaceViewComplicationFactory *)self usesNarrowTopSlots] narrowTopSlots:v12, v14, v16, v18];
+      device = [(NTKFaceViewComplicationFactory *)self device];
+      v20 = [NTKRichComplicationCornerUtilities layoutRuleForState:v9 position:v10 faceBounds:device forDevice:[(NTKWhistlerAnalogFaceViewComplicationFactory *)self usesNarrowTopSlots] narrowTopSlots:v12, v14, v16, v18];
 
       [v20 referenceFrame];
       v22 = v21;
@@ -485,18 +485,18 @@ LABEL_8:
       v34 = v24 - v33;
       v35 = v26 - (-v30 - v31);
       v36 = v28 - (-v29 - v33);
-      v37 = [v8 _complicationContainerViewForSlot:v6];
+      v37 = [v8 _complicationContainerViewForSlot:slotCopy];
       [v8 convertRect:v37 fromCoordinateSpace:{v32, v34, v35, v36}];
       v39 = v38;
       v41 = v40;
       v43 = v42;
       v45 = v44;
 
-      v46 = [MEMORY[0x277CBBAE8] currentDevice];
-      [v46 screenBounds];
+      currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+      [currentDevice screenBounds];
       v48 = v47;
 
-      [v8 faceViewFrameForEditMode:1 option:0 slot:v6];
+      [v8 faceViewFrameForEditMode:1 option:0 slot:slotCopy];
       v50 = v49;
       v52 = v51;
       CGAffineTransformMakeScale(&v62, v53 / v48, v53 / v48);
@@ -540,27 +540,27 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)_convertCornerSlot:(id)a3 toPosition:(int64_t *)a4
+- (BOOL)_convertCornerSlot:(id)slot toPosition:(int64_t *)position
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"top-left"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"top-left"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"top-right"])
+  else if ([slotCopy isEqualToString:@"top-right"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"bottom-left"])
+  else if ([slotCopy isEqualToString:@"bottom-left"])
   {
     v6 = 2;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"bottom-right"])
+    if (![slotCopy isEqualToString:@"bottom-right"])
     {
       v7 = 0;
       goto LABEL_10;
@@ -569,29 +569,29 @@ LABEL_8:
     v6 = 3;
   }
 
-  *a4 = v6;
+  *position = v6;
   v7 = 1;
 LABEL_10:
 
   return v7;
 }
 
-- (BOOL)_convertCircularSlot:(id)a3 toPosition:(int64_t *)a4
+- (BOOL)_convertCircularSlot:(id)slot toPosition:(int64_t *)position
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"slot1"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"slot1"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"slot2"])
+  else if ([slotCopy isEqualToString:@"slot2"])
   {
     v6 = 1;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"slot3"])
+    if (![slotCopy isEqualToString:@"slot3"])
     {
       v7 = 0;
       goto LABEL_8;
@@ -600,26 +600,26 @@ LABEL_10:
     v6 = 2;
   }
 
-  *a4 = v6;
+  *position = v6;
   v7 = 1;
 LABEL_8:
 
   return v7;
 }
 
-- (void)setAlpha:(double)a3 faceView:(id)a4
+- (void)setAlpha:(double)alpha faceView:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   [(NTKFaceViewComplicationFactory *)self alpha];
-  if (v7 != a3)
+  if (v7 != alpha)
   {
-    [(NTKFaceViewComplicationFactory *)self setAlpha:a3];
+    [(NTKFaceViewComplicationFactory *)self setAlpha:alpha];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __66__NTKWhistlerAnalogFaceViewComplicationFactory_setAlpha_faceView___block_invoke;
     v8[3] = &unk_27877F148;
     v8[4] = self;
-    v9 = v6;
+    v9 = viewCopy;
     [v9 enumerateComplicationDisplayWrappersWithBlock:v8];
   }
 }
@@ -632,40 +632,40 @@ void __66__NTKWhistlerAnalogFaceViewComplicationFactory_setAlpha_faceView___bloc
   [v5 configureComplicationView:v7 forSlot:v6 faceView:*(a1 + 40)];
 }
 
-- (double)_keylinePaddingForState:(int64_t)a3
+- (double)_keylinePaddingForState:(int64_t)state
 {
   v3 = 0.0;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v5 = NTKKeylineWidth();
-    v6 = [(NTKFaceViewComplicationFactory *)self device];
-    v3 = v5 + NTKColorFaceViewDeselectedKeylineInnerPadding(v6);
+    device = [(NTKFaceViewComplicationFactory *)self device];
+    v3 = v5 + NTKColorFaceViewDeselectedKeylineInnerPadding(device);
   }
 
   return v3;
 }
 
-- (double)_edgeGapForState:(int64_t)a3
+- (double)_edgeGapForState:(int64_t)state
 {
-  if ((a3 - 2) >= 2)
+  if ((state - 2) >= 2)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      v3 = [(NTKFaceViewComplicationFactory *)self device];
-      v4 = NTKColorFaceViewEdgeGapEditing(v3);
+      device = [(NTKFaceViewComplicationFactory *)self device];
+      v4 = NTKColorFaceViewEdgeGapEditing(device);
     }
 
     else
     {
-      v3 = [(NTKFaceViewComplicationFactory *)self device];
-      v4 = NTKColorFaceViewEdgeGapNormal(v3);
+      device = [(NTKFaceViewComplicationFactory *)self device];
+      v4 = NTKColorFaceViewEdgeGapNormal(device);
     }
   }
 
   else
   {
-    v3 = [(NTKFaceViewComplicationFactory *)self device];
-    v4 = NTKColorFaceViewEdgeGapDeselected(v3);
+    device = [(NTKFaceViewComplicationFactory *)self device];
+    v4 = NTKColorFaceViewEdgeGapDeselected(device);
   }
 
   v5 = v4;
@@ -673,15 +673,15 @@ void __66__NTKWhistlerAnalogFaceViewComplicationFactory_setAlpha_faceView___bloc
   return v5;
 }
 
-- (double)_lisaGapForState:(int64_t)a3
+- (double)_lisaGapForState:(int64_t)state
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     return 0.0;
   }
 
-  v3 = [(NTKFaceViewComplicationFactory *)self device];
-  v4 = NTKColorFaceViewLisaKeylineGap(v3);
+  device = [(NTKFaceViewComplicationFactory *)self device];
+  v4 = NTKColorFaceViewLisaKeylineGap(device);
 
   return v4;
 }

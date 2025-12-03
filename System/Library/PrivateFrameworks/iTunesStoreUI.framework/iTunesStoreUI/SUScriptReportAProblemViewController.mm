@@ -1,16 +1,16 @@
 @interface SUScriptReportAProblemViewController
-+ (id)webScriptNameForKeyName:(id)a3;
++ (id)webScriptNameForKeyName:(id)name;
 + (void)initialize;
 - (NSNumber)adamID;
-- (SUScriptReportAProblemViewController)initWithAdamID:(id)a3 clientInterface:(id)a4;
+- (SUScriptReportAProblemViewController)initWithAdamID:(id)d clientInterface:(id)interface;
 - (id)newNativeViewController;
 - (id)scriptAttributeKeys;
-- (void)setAdamID:(id)a3;
+- (void)setAdamID:(id)d;
 @end
 
 @implementation SUScriptReportAProblemViewController
 
-- (SUScriptReportAProblemViewController)initWithAdamID:(id)a3 clientInterface:(id)a4
+- (SUScriptReportAProblemViewController)initWithAdamID:(id)d clientInterface:(id)interface
 {
   v28 = *MEMORY[0x1E69E9840];
   v25.receiver = self;
@@ -24,37 +24,37 @@
     v23 = 0x2020000000;
     v24 = 0;
     v17 = MEMORY[0x1E69E9820];
-    v18 = a3;
-    v19 = a4;
+    dCopy = d;
+    interfaceCopy = interface;
     v20 = v6;
     WebThreadRunOnMainThread();
     if ((v22[3] & 1) == 0)
     {
-      v8 = [MEMORY[0x1E69D4938] sharedConfig];
-      v9 = [v8 shouldLog];
-      v10 = [v8 shouldLogToDisk];
-      v11 = [v8 OSLogObject];
-      if (v10)
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      shouldLogToDisk = [mEMORY[0x1E69D4938] shouldLogToDisk];
+      oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+      if (shouldLogToDisk)
       {
-        v9 |= 2u;
+        shouldLog |= 2u;
       }
 
-      if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
-        v9 &= 2u;
+        shouldLog &= 2u;
       }
 
-      if (v9)
+      if (shouldLog)
       {
-        v12 = [(SUScriptReportAProblemViewController *)v7 _className];
+        _className = [(SUScriptReportAProblemViewController *)v7 _className];
         v26 = 138412290;
-        v27 = v12;
+        v27 = _className;
         LODWORD(v16) = 12;
         v13 = _os_log_send_and_compose_impl();
         if (v13)
         {
           v14 = v13;
-          [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v26, v16, v17, 3221225472, __71__SUScriptReportAProblemViewController_initWithAdamID_clientInterface___block_invoke, &unk_1E8165CC8, v18, v19, v20, &v21}];
+          [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v26, v16, v17, 3221225472, __71__SUScriptReportAProblemViewController_initWithAdamID_clientInterface___block_invoke, &unk_1E8165CC8, dCopy, interfaceCopy, v20, &v21}];
           free(v14);
           SSFileLog();
         }
@@ -114,7 +114,7 @@ uint64_t __46__SUScriptReportAProblemViewController_adamID__block_invoke(uint64_
   return result;
 }
 
-- (void)setAdamID:(id)a3
+- (void)setAdamID:(id)d
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"adamID"];
@@ -122,14 +122,14 @@ uint64_t __46__SUScriptReportAProblemViewController_adamID__block_invoke(uint64_
   [v3 throwException:v4];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_49 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptReportAProblemViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
@@ -139,14 +139,14 @@ uint64_t __46__SUScriptReportAProblemViewController_adamID__block_invoke(uint64_
 {
   v4.receiver = self;
   v4.super_class = SUScriptReportAProblemViewController;
-  v2 = [(SUScriptViewController *)&v4 scriptAttributeKeys];
-  [v2 addObjectsFromArray:{objc_msgSend(__KeyMapping_49, "allKeys")}];
-  return v2;
+  scriptAttributeKeys = [(SUScriptViewController *)&v4 scriptAttributeKeys];
+  [scriptAttributeKeys addObjectsFromArray:{objc_msgSend(__KeyMapping_49, "allKeys")}];
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping_49 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"adamID", 0}];
   }

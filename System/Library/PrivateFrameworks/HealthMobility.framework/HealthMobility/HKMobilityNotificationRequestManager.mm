@@ -1,25 +1,25 @@
 @interface HKMobilityNotificationRequestManager
-+ (void)postWalkingSteadinessNotificationWithHealthStore:(id)a3 category:(id)a4 completion:(id)a5;
++ (void)postWalkingSteadinessNotificationWithHealthStore:(id)store category:(id)category completion:(id)completion;
 @end
 
 @implementation HKMobilityNotificationRequestManager
 
-+ (void)postWalkingSteadinessNotificationWithHealthStore:(id)a3 category:(id)a4 completion:(id)a5
++ (void)postWalkingSteadinessNotificationWithHealthStore:(id)store category:(id)category completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  storeCopy = store;
   v8 = MEMORY[0x277CCD460];
-  v9 = a5;
-  v10 = a4;
+  completionCopy = completion;
+  categoryCopy = category;
   v11 = [v8 alloc];
-  v12 = [v11 initWithFeatureIdentifier:*MEMORY[0x277CCC110] healthStore:v7 countryCodeSource:0];
+  v12 = [v11 initWithFeatureIdentifier:*MEMORY[0x277CCC110] healthStore:storeCopy countryCodeSource:0];
   v23 = 0;
   v13 = [v12 featureStatusWithError:&v23];
   v14 = v23;
   if (v13)
   {
     v15 = [v13 objectForKeyedSubscript:@"WalkingSteadinessShouldNotShowPregnancyContent"];
-    v16 = [v15 areAllRequirementsSatisfied];
+    areAllRequirementsSatisfied = [v15 areAllRequirementsSatisfied];
   }
 
   else
@@ -37,13 +37,13 @@
       _os_log_impl(&dword_251952000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Unable to get featureStatus. error: %{public}@", buf, 0x16u);
     }
 
-    v16 = 1;
+    areAllRequirementsSatisfied = 1;
   }
 
-  v20 = [MEMORY[0x277CE1FC0] hkmobility_requestForCategory:v10 shouldHidePregnancyContent:v16];
+  v20 = [MEMORY[0x277CE1FC0] hkmobility_requestForCategory:categoryCopy shouldHidePregnancyContent:areAllRequirementsSatisfied];
 
-  v21 = [objc_alloc(MEMORY[0x277CCD6D8]) initWithHealthStore:v7];
-  [v21 postNotificationWithRequest:v20 completion:v9];
+  v21 = [objc_alloc(MEMORY[0x277CCD6D8]) initWithHealthStore:storeCopy];
+  [v21 postNotificationWithRequest:v20 completion:completionCopy];
 
   v22 = *MEMORY[0x277D85DE8];
 }

@@ -8,21 +8,21 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B823318();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B823454();
 }
 
 - (void)contentSizeCategoryChanged
 {
-  v3 = self;
-  v2 = [(ChevronButton *)v3 traitCollection];
-  sub_20B8236EC(v2);
+  selfCopy = self;
+  traitCollection = [(ChevronButton *)selfCopy traitCollection];
+  sub_20B8236EC(traitCollection);
 }
 
 @end

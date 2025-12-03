@@ -2,14 +2,14 @@
 + (id)louderSinStimulus;
 + (id)musicStimulus;
 + (id)sinStimulus;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPlaying;
-- (PAStimulus)initWithFile:(id)a3;
-- (void)audioSessionWasInterrupted:(id)a3;
-- (void)calculateFFTForBuffer:(id)a3;
+- (PAStimulus)initWithFile:(id)file;
+- (void)audioSessionWasInterrupted:(id)interrupted;
+- (void)calculateFFTForBuffer:(id)buffer;
 - (void)play;
-- (void)rampVolumeUp:(BOOL)a3;
-- (void)registerListener:(id)a3 forBucketCount:(unint64_t)a4;
+- (void)rampVolumeUp:(BOOL)up;
+- (void)registerListener:(id)listener forBucketCount:(unint64_t)count;
 - (void)stop;
 - (void)unregisterListener;
 @end
@@ -94,37 +94,37 @@ void __27__PAStimulus_musicStimulus__block_invoke()
   [musicStimulus_MUSIC setRampStep:0.3];
 }
 
-- (PAStimulus)initWithFile:(id)a3
+- (PAStimulus)initWithFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v11.receiver = self;
   v11.super_class = PAStimulus;
   v5 = [(PAStimulus *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(PAStimulus *)v5 setFilePath:v4];
+    [(PAStimulus *)v5 setFilePath:fileCopy];
     v7 = objc_alloc_init(MEMORY[0x277CE6950]);
     timer = v6->_timer;
     v6->_timer = v7;
 
     *&v6->_levelMultiplier = xmmword_25E45C5B0;
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v6 selector:sel_audioSessionWasInterrupted_ name:*MEMORY[0x277CB8068] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_audioSessionWasInterrupted_ name:*MEMORY[0x277CB8068] object:0];
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 filePath];
-    v6 = [(PAStimulus *)self filePath];
-    v7 = [v5 isEqual:v6];
+    filePath = [equalCopy filePath];
+    filePath2 = [(PAStimulus *)self filePath];
+    v7 = [filePath isEqual:filePath2];
   }
 
   else
@@ -135,24 +135,24 @@ void __27__PAStimulus_musicStimulus__block_invoke()
   return v7;
 }
 
-- (void)audioSessionWasInterrupted:(id)a3
+- (void)audioSessionWasInterrupted:(id)interrupted
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 valueForKey:*MEMORY[0x277CB8080]];
-  v6 = [v5 intValue];
+  userInfo = [interrupted userInfo];
+  v5 = [userInfo valueForKey:*MEMORY[0x277CB8080]];
+  intValue = [v5 intValue];
 
-  if (v6 == 1)
+  if (intValue == 1)
   {
 
     [(PAStimulus *)self stop];
   }
 }
 
-- (void)calculateFFTForBuffer:(id)a3
+- (void)calculateFFTForBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   [(PAStimulus *)self levelMultiplier];
-  v5 = [v4 magnitudesWithLevelMultiplier:self->_bucketCount count:?];
+  v5 = [bufferCopy magnitudesWithLevelMultiplier:self->_bucketCount count:?];
 
   v7 = [v5 mutableCopy];
   if ([v7 count] >= 3)
@@ -173,15 +173,15 @@ void __27__PAStimulus_musicStimulus__block_invoke()
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_25E445000, a2, OS_LOG_TYPE_ERROR, "Error starting PAStimulus: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)isPlaying
 {
-  v3 = [(PAStimulus *)self audioPlayerNode];
-  if ([v3 isPlaying])
+  audioPlayerNode = [(PAStimulus *)self audioPlayerNode];
+  if ([audioPlayerNode isPlaying])
   {
     v4 = !self->_ramping;
   }
@@ -194,7 +194,7 @@ void __27__PAStimulus_musicStimulus__block_invoke()
   return v4;
 }
 
-- (void)rampVolumeUp:(BOOL)a3
+- (void)rampVolumeUp:(BOOL)up
 {
   timer = self->_timer;
   rampStep = self->_rampStep;
@@ -202,13 +202,13 @@ void __27__PAStimulus_musicStimulus__block_invoke()
   v5[0] = MEMORY[0x277D85DD0];
   v5[2] = __27__PAStimulus_rampVolumeUp___block_invoke;
   v5[3] = &unk_279A1CFF0;
-  if (!a3)
+  if (!up)
   {
     rampStep = rampStep * 0.5;
   }
 
   v5[4] = self;
-  v6 = a3;
+  upCopy = up;
   [(AXDispatchTimer *)timer afterDelay:v5 processBlock:rampStep];
 }
 
@@ -268,30 +268,30 @@ void __27__PAStimulus_rampVolumeUp___block_invoke(uint64_t a1)
   [(PAStimulus *)self rampVolumeUp:0];
 }
 
-- (void)registerListener:(id)a3 forBucketCount:(unint64_t)a4
+- (void)registerListener:(id)listener forBucketCount:(unint64_t)count
 {
-  v6 = a3;
-  v7 = [v6 copy];
+  listenerCopy = listener;
+  v7 = [listenerCopy copy];
   stimulusMagnitudesCallback = self->_stimulusMagnitudesCallback;
   self->_stimulusMagnitudesCallback = v7;
 
-  self->_bucketCount = a4 + 2;
+  self->_bucketCount = count + 2;
   objc_initWeak(&location, self);
-  v9 = [(PAStimulus *)self engine];
-  v10 = [v9 mainMixerNode];
-  [v10 removeTapOnBus:0];
+  engine = [(PAStimulus *)self engine];
+  mainMixerNode = [engine mainMixerNode];
+  [mainMixerNode removeTapOnBus:0];
 
-  v11 = [(PAStimulus *)self engine];
-  v12 = [v11 mainMixerNode];
-  v13 = [(PAStimulus *)self engine];
-  v14 = [v13 mainMixerNode];
-  v15 = [v14 outputFormatForBus:0];
+  engine2 = [(PAStimulus *)self engine];
+  mainMixerNode2 = [engine2 mainMixerNode];
+  engine3 = [(PAStimulus *)self engine];
+  mainMixerNode3 = [engine3 mainMixerNode];
+  v15 = [mainMixerNode3 outputFormatForBus:0];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __46__PAStimulus_registerListener_forBucketCount___block_invoke;
   v16[3] = &unk_279A1D018;
   objc_copyWeak(&v17, &location);
-  [v12 installTapOnBus:0 bufferSize:1024 format:v15 block:v16];
+  [mainMixerNode2 installTapOnBus:0 bufferSize:1024 format:v15 block:v16];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -306,9 +306,9 @@ void __46__PAStimulus_registerListener_forBucketCount___block_invoke(uint64_t a1
 
 - (void)unregisterListener
 {
-  v3 = [(PAStimulus *)self engine];
-  v2 = [v3 mainMixerNode];
-  [v2 removeTapOnBus:0];
+  engine = [(PAStimulus *)self engine];
+  mainMixerNode = [engine mainMixerNode];
+  [mainMixerNode removeTapOnBus:0];
 }
 
 @end

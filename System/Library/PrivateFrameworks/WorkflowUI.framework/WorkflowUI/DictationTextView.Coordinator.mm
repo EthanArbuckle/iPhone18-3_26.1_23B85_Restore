@@ -1,40 +1,40 @@
 @interface DictationTextView.Coordinator
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation DictationTextView.Coordinator
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_274924BC0(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_274924BC0(changeCopy);
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_274924F0C(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_274924F0C(editingCopy);
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_274925018();
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
   v7 = _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   v9 = v8;
-  v10 = a3;
-  v11 = self;
-  LOBYTE(v7) = sub_2749250E0(v10, v12, v13, v7, v9);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(v7) = sub_2749250E0(viewCopy, v12, v13, v7, v9);
 
   return v7 & 1;
 }

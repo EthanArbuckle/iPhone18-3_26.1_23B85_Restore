@@ -1,16 +1,16 @@
 @interface SDNetworkEjecter
-- (SDNetworkEjecter)initWithNode:(__SFNode *)a3;
+- (SDNetworkEjecter)initWithNode:(__SFNode *)node;
 - (SDNetworkEjecterDelegate)delegate;
 - (int)start;
 - (void)dealloc;
 - (void)eject;
-- (void)notifyClientAboutEject:(int)a3;
+- (void)notifyClientAboutEject:(int)eject;
 - (void)stop;
 @end
 
 @implementation SDNetworkEjecter
 
-- (SDNetworkEjecter)initWithNode:(__SFNode *)a3
+- (SDNetworkEjecter)initWithNode:(__SFNode *)node
 {
   v9.receiver = self;
   v9.super_class = SDNetworkEjecter;
@@ -25,7 +25,7 @@
     v5->_protocol = 0;
 
     *&v5->_mountedCount = 0;
-    v5->_node = CFRetain(a3);
+    v5->_node = CFRetain(node);
   }
 
   return v5;
@@ -39,9 +39,9 @@
   [(SDNetworkEjecter *)&v3 dealloc];
 }
 
-- (void)notifyClientAboutEject:(int)a3
+- (void)notifyClientAboutEject:(int)eject
 {
-  if (!a3)
+  if (!eject)
   {
     mountedCount = self->_mountedCount;
     if (mountedCount)
@@ -66,9 +66,9 @@
   [v13 setObject:self->_node forKeyedSubscript:kSFOperationNodeKey];
   [v13 setObject:self->_flags forKeyedSubscript:kSFOperationFlagsKey];
   [v13 setObject:self->_protocol forKeyedSubscript:kSFOperationProtocolKey];
-  if (a3)
+  if (eject)
   {
-    v10 = [NSError errorWithDomain:@"SFNodeError" code:a3 userInfo:0];
+    v10 = [NSError errorWithDomain:@"SFNodeError" code:eject userInfo:0];
     [v13 setObject:v10 forKeyedSubscript:kSFOperationErrorKey];
 
     v11 = 10;
@@ -88,7 +88,7 @@
   node = self->_node;
   if (SFNodeIsMounted())
   {
-    v4 = [(NSNumber *)self->_flags longValue];
+    longValue = [(NSNumber *)self->_flags longValue];
     v5 = self->_node;
     IsSharePoint = SFNodeIsSharePoint();
     v7 = self->_node;
@@ -100,7 +100,7 @@
       {
         v15 = v8;
         v10 = [NSArray arrayWithObjects:&v15 count:1];
-        [(SDNetworkEjecter *)self ejectMountPoints:v10 useAssistant:(v4 >> 1) & 1];
+        [(SDNetworkEjecter *)self ejectMountPoints:v10 useAssistant:(longValue >> 1) & 1];
       }
 
       else
@@ -124,7 +124,7 @@
         [v11 mountPointsForServer:v13];
       }
       v14 = ;
-      [(SDNetworkEjecter *)self ejectMountPoints:v14 useAssistant:(v4 >> 1) & 1];
+      [(SDNetworkEjecter *)self ejectMountPoints:v14 useAssistant:(longValue >> 1) & 1];
     }
   }
 

@@ -1,18 +1,18 @@
 @interface UIKBUndoControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation UIKBUndoControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UIKBUndoControl";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
   [location[0] validateClass:v3 hasInstanceMethod:@"type" withFullSignature:{"q", 0}];

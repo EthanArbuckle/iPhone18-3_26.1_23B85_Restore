@@ -2,32 +2,32 @@
 - (id)hostObjectProxy;
 - (void)constructContentViewController;
 - (void)dismissWithGameController;
-- (void)finishWithTurnBasedMatch:(id)a3;
-- (void)messageFromClient:(id)a3;
-- (void)quitTurnBasedMatch:(id)a3;
+- (void)finishWithTurnBasedMatch:(id)match;
+- (void)messageFromClient:(id)client;
+- (void)quitTurnBasedMatch:(id)match;
 - (void)refreshMatches;
-- (void)setInitialState:(id)a3 withReply:(id)a4;
-- (void)turnBasedViewController:(id)a3 didFailWithError:(id)a4;
-- (void)turnBasedViewController:(id)a3 didFindMatch:(id)a4;
-- (void)turnBasedViewController:(id)a3 playerQuitForMatch:(id)a4;
+- (void)setInitialState:(id)state withReply:(id)reply;
+- (void)turnBasedViewController:(id)controller didFailWithError:(id)error;
+- (void)turnBasedViewController:(id)controller didFindMatch:(id)match;
+- (void)turnBasedViewController:(id)controller playerQuitForMatch:(id)match;
 @end
 
 @implementation GKTurnBasedMatchmakerExtensionViewController
 
-- (void)setInitialState:(id)a3 withReply:(id)a4
+- (void)setInitialState:(id)state withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:GKExtensionItemMatchesShowPlayForMatch];
+  stateCopy = state;
+  replyCopy = reply;
+  v8 = [stateCopy objectForKeyedSubscript:GKExtensionItemMatchesShowPlayForMatch];
   -[GKTurnBasedMatchmakerExtensionViewController setShowPlay:](self, "setShowPlay:", [v8 BOOLValue]);
 
-  v9 = [v6 objectForKeyedSubscript:GKExtensionItemMatchesShowQuitForMatch];
+  v9 = [stateCopy objectForKeyedSubscript:GKExtensionItemMatchesShowQuitForMatch];
   -[GKTurnBasedMatchmakerExtensionViewController setShowQuit:](self, "setShowQuit:", [v9 BOOLValue]);
 
-  v10 = [v6 objectForKeyedSubscript:GKExtensionItemMatchesShowExistingMatches];
+  v10 = [stateCopy objectForKeyedSubscript:GKExtensionItemMatchesShowExistingMatches];
   -[GKTurnBasedMatchmakerExtensionViewController setShowExistingMatches:](self, "setShowExistingMatches:", [v10 BOOLValue]);
 
-  v11 = [v6 objectForKeyedSubscript:GKExtensionItemMatchesMatchRequestInternal];
+  v11 = [stateCopy objectForKeyedSubscript:GKExtensionItemMatchesMatchRequestInternal];
   if (v11)
   {
     v12 = [[GKMatchRequest alloc] initWithInternalRepresentation:v11];
@@ -36,40 +36,40 @@
 
   v13.receiver = self;
   v13.super_class = GKTurnBasedMatchmakerExtensionViewController;
-  [(GKTurnBasedMatchmakerExtensionViewController *)&v13 setInitialState:v6 withReply:v7];
+  [(GKTurnBasedMatchmakerExtensionViewController *)&v13 setInitialState:stateCopy withReply:replyCopy];
 }
 
 - (void)constructContentViewController
 {
-  v3 = [(GKTurnBasedMatchmakerExtensionViewController *)self matchRequest];
+  matchRequest = [(GKTurnBasedMatchmakerExtensionViewController *)self matchRequest];
 
-  if (v3)
+  if (matchRequest)
   {
     [(GKTurnBasedMatchmakerExtensionViewController *)self setAdjustTopConstraint:0];
     [(GKTurnBasedMatchmakerExtensionViewController *)self setAlwaysShowDoneButton:0];
     v4 = [GKTurnBasedMatchesViewController alloc];
-    v5 = [(GKTurnBasedMatchmakerExtensionViewController *)self matchRequest];
-    v6 = [v4 initWithMatchRequest:v5];
+    matchRequest2 = [(GKTurnBasedMatchmakerExtensionViewController *)self matchRequest];
+    v6 = [v4 initWithMatchRequest:matchRequest2];
     [(GKTurnBasedMatchmakerExtensionViewController *)self setContentViewController:v6];
 
     v7 = +[GKGame currentGame];
-    v8 = [(GKTurnBasedMatchmakerExtensionViewController *)self turnBasedViewController];
-    [v8 setGame:v7];
+    turnBasedViewController = [(GKTurnBasedMatchmakerExtensionViewController *)self turnBasedViewController];
+    [turnBasedViewController setGame:v7];
 
-    v9 = [(GKTurnBasedMatchmakerExtensionViewController *)self turnBasedViewController];
-    [v9 setDelegate:self];
+    turnBasedViewController2 = [(GKTurnBasedMatchmakerExtensionViewController *)self turnBasedViewController];
+    [turnBasedViewController2 setDelegate:self];
 
     showExistingMatches = self->_showExistingMatches;
-    v11 = [(GKTurnBasedMatchmakerExtensionViewController *)self turnBasedViewController];
-    [v11 setShowExistingMatches:showExistingMatches];
+    turnBasedViewController3 = [(GKTurnBasedMatchmakerExtensionViewController *)self turnBasedViewController];
+    [turnBasedViewController3 setShowExistingMatches:showExistingMatches];
 
     showPlay = self->_showPlay;
-    v13 = [(GKTurnBasedMatchmakerExtensionViewController *)self turnBasedViewController];
-    [v13 setShowPlay:showPlay];
+    turnBasedViewController4 = [(GKTurnBasedMatchmakerExtensionViewController *)self turnBasedViewController];
+    [turnBasedViewController4 setShowPlay:showPlay];
 
     showQuit = self->_showQuit;
-    v15 = [(GKTurnBasedMatchmakerExtensionViewController *)self turnBasedViewController];
-    [v15 setShowQuit:showQuit];
+    turnBasedViewController5 = [(GKTurnBasedMatchmakerExtensionViewController *)self turnBasedViewController];
+    [turnBasedViewController5 setShowQuit:showQuit];
 
     v16.receiver = self;
     v16.super_class = GKTurnBasedMatchmakerExtensionViewController;
@@ -77,12 +77,12 @@
   }
 }
 
-- (void)messageFromClient:(id)a3
+- (void)messageFromClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = GKExtensionProtocolSecureCodedClasses();
   v16 = 0;
-  v6 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v5 fromData:v4 error:&v16];
+  v6 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v5 fromData:clientCopy error:&v16];
   v7 = v16;
 
   if (v7)
@@ -100,19 +100,19 @@
   }
 
   v10 = [v6 objectForKeyedSubscript:GKExtensionMessageCommandKey];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
   v12 = [v6 objectForKeyedSubscript:GKExtensionMessageParamKey];
   v13 = v12;
-  if (v11 <= 27)
+  if (integerValue <= 27)
   {
-    if (v11 == 16)
+    if (integerValue == 16)
     {
       -[GKTurnBasedMatchmakerExtensionViewController setShowPlay:](self, "setShowPlay:", [v12 BOOLValue]);
       goto LABEL_18;
     }
 
-    if (v11 == 17)
+    if (integerValue == 17)
     {
       -[GKTurnBasedMatchmakerExtensionViewController setShowQuit:](self, "setShowQuit:", [v12 BOOLValue]);
       goto LABEL_18;
@@ -121,23 +121,23 @@
 LABEL_17:
     v15.receiver = self;
     v15.super_class = GKTurnBasedMatchmakerExtensionViewController;
-    [(GKTurnBasedMatchmakerExtensionViewController *)&v15 messageFromClient:v4];
+    [(GKTurnBasedMatchmakerExtensionViewController *)&v15 messageFromClient:clientCopy];
     goto LABEL_18;
   }
 
-  if (v11 == 43)
+  if (integerValue == 43)
   {
     [(GKTurnBasedMatchmakerExtensionViewController *)self refreshMatches];
     goto LABEL_18;
   }
 
-  if (v11 == 42)
+  if (integerValue == 42)
   {
     -[GKTurnBasedMatchmakerExtensionViewController setShowExistingMatches:](self, "setShowExistingMatches:", [v12 BOOLValue]);
     goto LABEL_18;
   }
 
-  if (v11 != 28)
+  if (integerValue != 28)
   {
     goto LABEL_17;
   }
@@ -150,37 +150,37 @@ LABEL_18:
 
 - (void)refreshMatches
 {
-  v2 = [(GKTurnBasedMatchmakerExtensionViewController *)self turnBasedViewController];
-  [v2 setNeedsReload];
+  turnBasedViewController = [(GKTurnBasedMatchmakerExtensionViewController *)self turnBasedViewController];
+  [turnBasedViewController setNeedsReload];
 }
 
 - (id)hostObjectProxy
 {
-  v2 = [(GKTurnBasedMatchmakerExtensionViewController *)self extensionContext];
-  v3 = [v2 _auxiliaryConnection];
-  v4 = [v3 remoteObjectProxyWithErrorHandler:&stru_100004190];
+  extensionContext = [(GKTurnBasedMatchmakerExtensionViewController *)self extensionContext];
+  _auxiliaryConnection = [extensionContext _auxiliaryConnection];
+  v4 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&stru_100004190];
 
   return v4;
 }
 
-- (void)finishWithTurnBasedMatch:(id)a3
+- (void)finishWithTurnBasedMatch:(id)match
 {
   v7[0] = &off_1000041F8;
   v6[0] = GKExtensionMessageCommandKey;
   v6[1] = GKExtensionMessageParamKey;
-  v4 = [a3 internal];
-  v7[1] = v4;
+  internal = [match internal];
+  v7[1] = internal;
   v5 = [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKTurnBasedMatchmakerExtensionViewController *)self sendMessageToClient:v5];
 }
 
-- (void)quitTurnBasedMatch:(id)a3
+- (void)quitTurnBasedMatch:(id)match
 {
   v7[0] = &off_100004210;
   v6[0] = GKExtensionMessageCommandKey;
   v6[1] = GKExtensionMessageParamKey;
-  v4 = [a3 internal];
-  v7[1] = v4;
+  internal = [match internal];
+  v7[1] = internal;
   v5 = [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKTurnBasedMatchmakerExtensionViewController *)self sendMessageToClient:v5];
 }
@@ -202,36 +202,36 @@ LABEL_18:
   [(GKTurnBasedMatchmakerExtensionViewController *)self extensionIsCanceling];
 }
 
-- (void)turnBasedViewController:(id)a3 didFailWithError:(id)a4
+- (void)turnBasedViewController:(id)controller didFailWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v5 = [NSMutableDictionary dictionaryWithObjectsAndKeys:&off_100004228, GKExtensionMessageCommandKey, 0];
-  if (v6)
+  if (errorCopy)
   {
-    [v5 setObject:v6 forKeyedSubscript:GKExtensionMessageParamKey];
+    [v5 setObject:errorCopy forKeyedSubscript:GKExtensionMessageParamKey];
   }
 
   [(GKTurnBasedMatchmakerExtensionViewController *)self sendMessageToClient:v5];
 }
 
-- (void)turnBasedViewController:(id)a3 didFindMatch:(id)a4
+- (void)turnBasedViewController:(id)controller didFindMatch:(id)match
 {
   v8[0] = &off_1000041F8;
   v7[0] = GKExtensionMessageCommandKey;
   v7[1] = GKExtensionMessageParamKey;
-  v5 = [a4 internal];
-  v8[1] = v5;
+  internal = [match internal];
+  v8[1] = internal;
   v6 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
   [(GKTurnBasedMatchmakerExtensionViewController *)self sendMessageToClient:v6];
 }
 
-- (void)turnBasedViewController:(id)a3 playerQuitForMatch:(id)a4
+- (void)turnBasedViewController:(id)controller playerQuitForMatch:(id)match
 {
   v8[0] = &off_100004210;
   v7[0] = GKExtensionMessageCommandKey;
   v7[1] = GKExtensionMessageParamKey;
-  v5 = [a4 internal];
-  v8[1] = v5;
+  internal = [match internal];
+  v8[1] = internal;
   v6 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
   [(GKTurnBasedMatchmakerExtensionViewController *)self sendMessageToClient:v6];
 }

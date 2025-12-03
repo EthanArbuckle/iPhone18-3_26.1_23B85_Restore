@@ -1,7 +1,7 @@
 @interface WFLimitedNetworkIssue
 + (id)limitedNetwork;
 + (id)limitedNetwork_CH;
-- (id)_RecommendationForChinaDevice:(BOOL)a3;
+- (id)_RecommendationForChinaDevice:(BOOL)device;
 @end
 
 @implementation WFLimitedNetworkIssue
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (id)_RecommendationForChinaDevice:(BOOL)a3
+- (id)_RecommendationForChinaDevice:(BOOL)device
 {
   v3 = @"kWFLocLimitNetworkRecommendation";
-  if (a3)
+  if (device)
   {
     v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_CH", @"kWFLocLimitNetworkRecommendation"];
   }

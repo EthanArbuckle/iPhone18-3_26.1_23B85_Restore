@@ -5,25 +5,25 @@
 - (NSString)combinedPlayActivityFeatureName;
 - (UIColor)viewBackgroundColor;
 - (UIViewController)playActivityFeatureNameSourceViewController;
-- (id)playActivityFeatureNamesWithSourceChildViewController:(id)a3;
-- (void)_music_setParentTraitEnvironmentOverride:(id)a3;
-- (void)indexKeyCommandHandler:(id)a3;
-- (void)setPlayActivityFeatureNameSourceViewController:(id)a3;
-- (void)setPlayActivityForwardedRecommendationData:(id)a3;
-- (void)setViewBackgroundColor:(id)a3;
+- (id)playActivityFeatureNamesWithSourceChildViewController:(id)controller;
+- (void)_music_setParentTraitEnvironmentOverride:(id)override;
+- (void)indexKeyCommandHandler:(id)handler;
+- (void)setPlayActivityFeatureNameSourceViewController:(id)controller;
+- (void)setPlayActivityForwardedRecommendationData:(id)data;
+- (void)setViewBackgroundColor:(id)color;
 @end
 
 @implementation UIViewController
 
-- (void)_music_setParentTraitEnvironmentOverride:(id)a3
+- (void)_music_setParentTraitEnvironmentOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   if (_music_setParentTraitEnvironmentOverride__onceToken != -1)
   {
     [UIViewController(MusicParentTraitEnvironmentOverride) _music_setParentTraitEnvironmentOverride:];
   }
 
-  objc_initWeak(&location, v4);
+  objc_initWeak(&location, overrideCopy);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __98__UIViewController_MusicParentTraitEnvironmentOverride___music_setParentTraitEnvironmentOverride___block_invoke_3;
@@ -76,44 +76,44 @@ id __98__UIViewController_MusicParentTraitEnvironmentOverride___music_setParentT
 
 - (UIColor)viewBackgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_B9644();
 
   return v3;
 }
 
-- (void)setViewBackgroundColor:(id)a3
+- (void)setViewBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  sub_B9978(v4);
+  colorCopy = color;
+  selfCopy = self;
+  sub_B9978(colorCopy);
 }
 
-- (void)indexKeyCommandHandler:(id)a3
+- (void)indexKeyCommandHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  sub_381000(v4);
+  handlerCopy = handler;
+  selfCopy = self;
+  sub_381000(handlerCopy);
 }
 
 - (UIViewController)playActivityFeatureNameSourceViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIViewController.playActivityFeatureNameSourceViewController.getter();
 
   return v3;
 }
 
-- (void)setPlayActivityFeatureNameSourceViewController:(id)a3
+- (void)setPlayActivityFeatureNameSourceViewController:(id)controller
 {
-  v6 = a3;
-  v5 = self;
-  sub_61C994(a3, &qword_E0CDA8, &qword_E11248);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_61C994(controller, &qword_E0CDA8, &qword_E11248);
 }
 
 - (NSData)playActivityForwardedRecommendationData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIViewController.playActivityForwardedRecommendationData.getter();
   v5 = v4;
 
@@ -132,20 +132,20 @@ id __98__UIViewController_MusicParentTraitEnvironmentOverride___music_setParentT
   return v6;
 }
 
-- (void)setPlayActivityForwardedRecommendationData:(id)a3
+- (void)setPlayActivityForwardedRecommendationData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = sub_AB3260();
+    selfCopy = self;
+    v6 = dataCopy;
+    dataCopy = sub_AB3260();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -162,23 +162,23 @@ id __98__UIViewController_MusicParentTraitEnvironmentOverride___music_setParentT
 
   else
   {
-    sub_90090(v3, v8);
+    sub_90090(dataCopy, v8);
     isa = sub_AB3250().super.isa;
-    sub_466A4(v3, v8);
+    sub_466A4(dataCopy, v8);
   }
 
   objc_setAssociatedObject(self, v10, isa, &dword_0 + 3);
 
-  sub_466A4(v3, v8);
+  sub_466A4(dataCopy, v8);
 }
 
-- (id)playActivityFeatureNamesWithSourceChildViewController:(id)a3
+- (id)playActivityFeatureNamesWithSourceChildViewController:(id)controller
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_E10EF0);
   v4 = swift_allocObject();
   *(v4 + 16) = xmmword_AF4EC0;
-  v5 = self;
-  v6 = [(UIViewController *)v5 playActivityFeatureName];
+  selfCopy = self;
+  playActivityFeatureName = [(UIViewController *)selfCopy playActivityFeatureName];
   v7 = sub_AB92A0();
   v9 = v8;
 
@@ -192,7 +192,7 @@ id __98__UIViewController_MusicParentTraitEnvironmentOverride___music_setParentT
 
 - (NSArray)completePlayActivityFeatureNames
 {
-  v2 = self;
+  selfCopy = self;
   UIViewController.completePlayActivityFeatureNames.getter();
 
   v3.super.isa = sub_AB9740().super.isa;
@@ -202,8 +202,8 @@ id __98__UIViewController_MusicParentTraitEnvironmentOverride___music_setParentT
 
 - (NSString)combinedPlayActivityFeatureName
 {
-  v2 = self;
-  v3 = [(UIViewController *)v2 completePlayActivityFeatureNames];
+  selfCopy = self;
+  completePlayActivityFeatureNames = [(UIViewController *)selfCopy completePlayActivityFeatureNames];
   sub_AB9760();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_E103E0);
@@ -218,9 +218,9 @@ id __98__UIViewController_MusicParentTraitEnvironmentOverride___music_setParentT
 
 - (BOOL)canPresentViewControllers
 {
-  v2 = [(UIViewController *)self popoverPresentationController];
-  v3 = v2;
-  if (v2)
+  popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+  v3 = popoverPresentationController;
+  if (popoverPresentationController)
   {
   }
 

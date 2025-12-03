@@ -30,17 +30,17 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "PHAudioCallVoiceLoopViewController,stop voice loop button pressed", v9, 2u);
   }
 
-  v4 = [(PHAudioCallVoiceLoopViewController *)self delegate];
-  if (v4)
+  delegate = [(PHAudioCallVoiceLoopViewController *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(PHAudioCallVoiceLoopViewController *)self delegate];
+    v5 = delegate;
+    delegate2 = [(PHAudioCallVoiceLoopViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PHAudioCallVoiceLoopViewController *)self delegate];
-      [v8 audioCallVoiceLoopViewControllerRequestedButtonPresentation];
+      delegate3 = [(PHAudioCallVoiceLoopViewController *)self delegate];
+      [delegate3 audioCallVoiceLoopViewControllerRequestedButtonPresentation];
     }
   }
 }

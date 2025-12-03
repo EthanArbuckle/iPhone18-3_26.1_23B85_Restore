@@ -1,7 +1,7 @@
 @interface GTCaptureRequestBatch
 - (GTCaptureRequestBatch)init;
-- (GTCaptureRequestBatch)initWithCoder:(id)a3;
-- (GTCaptureRequestBatch)initWithRequestID:(unint64_t)a3;
+- (GTCaptureRequestBatch)initWithCoder:(id)coder;
+- (GTCaptureRequestBatch)initWithRequestID:(unint64_t)d;
 @end
 
 @implementation GTCaptureRequestBatch
@@ -21,28 +21,28 @@
   return v3;
 }
 
-- (GTCaptureRequestBatch)initWithRequestID:(unint64_t)a3
+- (GTCaptureRequestBatch)initWithRequestID:(unint64_t)d
 {
   v5.receiver = self;
   v5.super_class = GTCaptureRequestBatch;
   result = [(GTCaptureRequestBatch *)&v5 init];
   if (result)
   {
-    result->_requestID = a3;
+    result->_requestID = d;
   }
 
   return result;
 }
 
-- (GTCaptureRequestBatch)initWithCoder:(id)a3
+- (GTCaptureRequestBatch)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = GTCaptureRequestBatch;
   v5 = [(GTCaptureRequestBatch *)&v8 init];
   if (v5)
   {
-    v5->_requestID = [v4 decodeInt64ForKey:@"requestID"];
+    v5->_requestID = [coderCopy decodeInt64ForKey:@"requestID"];
     v6 = v5;
   }
 

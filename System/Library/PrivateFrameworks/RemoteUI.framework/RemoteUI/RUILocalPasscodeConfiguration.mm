@@ -1,17 +1,17 @@
 @interface RUILocalPasscodeConfiguration
 + (id)alphanumeric;
-- (RUILocalPasscodeConfiguration)initWithNumberOfDigits:(unint64_t)a3 isAphanumeric:(BOOL)a4;
+- (RUILocalPasscodeConfiguration)initWithNumberOfDigits:(unint64_t)digits isAphanumeric:(BOOL)aphanumeric;
 @end
 
 @implementation RUILocalPasscodeConfiguration
 
-- (RUILocalPasscodeConfiguration)initWithNumberOfDigits:(unint64_t)a3 isAphanumeric:(BOOL)a4
+- (RUILocalPasscodeConfiguration)initWithNumberOfDigits:(unint64_t)digits isAphanumeric:(BOOL)aphanumeric
 {
   v7.receiver = self;
   v7.super_class = RUILocalPasscodeConfiguration;
   result = [(RUILocalPasscodeConfiguration *)&v7 init];
-  result->_isAphanumeric = a4;
-  result->_numberOfDigits = a3;
+  result->_isAphanumeric = aphanumeric;
+  result->_numberOfDigits = digits;
   return result;
 }
 

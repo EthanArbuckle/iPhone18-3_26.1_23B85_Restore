@@ -1,27 +1,27 @@
 @interface AKArrowAnnotationRenderer
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5;
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4;
-+ (CGPath)_newLinePathForArrow:(id)a3 withHeads:(BOOL)a4 fromBezierParameter:(double)a5 toBezierParameter:(double)a6 optionalPageController:(id)a7 optionalContext:(CGContext *)a8;
-+ (CGPoint)_cubicBezierPointForParameter:(double)a3 start:(CGPoint)a4 controlPt1:(CGPoint)a5 controlPt2:(CGPoint)a6 end:(CGPoint)a7;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGRect)_concreteTextBoundsOfAnnotation:(id)a3 withOptionalAnnotationRect:(CGRect)a4 optionalText:(id)a5;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (unint64_t)_drawableArrowHeads:(id)a3;
-+ (void)_arrowHeadLineIntersection:(id)a3 outStartIntersection:(CGPoint *)a4 outBezierStartParameter:(double *)a5 outEndIntersection:(CGPoint *)a6 outBezierEndParameter:(double *)a7;
-+ (void)_arrowHeadPathsForArrow:(id)a3 inOutStartArrowHead:(CGPath *)a4 outBezierStartParameter:(double *)a5 inOutEndArrowHead:(CGPath *)a6 outBezierEndParameter:(double *)a7;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
-+ (void)_controlPointsForArrow:(id)a3 outControlPoint1:(CGPoint *)a4 outControlPoint2:(CGPoint *)a5;
-+ (void)_drawPathForArrow:(id)a3 inContext:(CGContext *)a4 options:(id)a5 inPath:(CGPath *)a6 pageControllerForPixelAlignmentOrNil:(id)a7 minimumGrabbableBorderThickness:(double)a8;
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness;
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation;
++ (CGPath)_newLinePathForArrow:(id)arrow withHeads:(BOOL)heads fromBezierParameter:(double)parameter toBezierParameter:(double)bezierParameter optionalPageController:(id)controller optionalContext:(CGContext *)context;
++ (CGPoint)_cubicBezierPointForParameter:(double)parameter start:(CGPoint)start controlPt1:(CGPoint)pt1 controlPt2:(CGPoint)pt2 end:(CGPoint)end;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGRect)_concreteTextBoundsOfAnnotation:(id)annotation withOptionalAnnotationRect:(CGRect)rect optionalText:(id)text;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (unint64_t)_drawableArrowHeads:(id)heads;
++ (void)_arrowHeadLineIntersection:(id)intersection outStartIntersection:(CGPoint *)startIntersection outBezierStartParameter:(double *)parameter outEndIntersection:(CGPoint *)endIntersection outBezierEndParameter:(double *)endParameter;
++ (void)_arrowHeadPathsForArrow:(id)arrow inOutStartArrowHead:(CGPath *)head outBezierStartParameter:(double *)parameter inOutEndArrowHead:(CGPath *)arrowHead outBezierEndParameter:(double *)endParameter;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
++ (void)_controlPointsForArrow:(id)arrow outControlPoint1:(CGPoint *)point1 outControlPoint2:(CGPoint *)point2;
++ (void)_drawPathForArrow:(id)arrow inContext:(CGContext *)context options:(id)options inPath:(CGPath *)path pageControllerForPixelAlignmentOrNil:(id)nil minimumGrabbableBorderThickness:(double)thickness;
 @end
 
 @implementation AKArrowAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   Mutable = CGPathCreateMutable();
   v6 = +[AKAnnotationRendererOptions defaultOptions];
-  [a1 _drawPathForArrow:v4 inContext:0 options:v6 inPath:Mutable pageControllerForPixelAlignmentOrNil:0 minimumGrabbableBorderThickness:1.0];
+  [self _drawPathForArrow:annotationCopy inContext:0 options:v6 inPath:Mutable pageControllerForPixelAlignmentOrNil:0 minimumGrabbableBorderThickness:1.0];
 
   BoundingBox = CGPathGetBoundingBox(Mutable);
   x = BoundingBox.origin.x;
@@ -29,7 +29,7 @@
   width = BoundingBox.size.width;
   height = BoundingBox.size.height;
   CGPathRelease(Mutable);
-  [v4 strokeWidth];
+  [annotationCopy strokeWidth];
   v12 = -v11;
   v42.origin.x = x;
   v42.origin.y = y;
@@ -40,24 +40,24 @@
   v14 = v43.origin.y;
   v15 = v43.size.width;
   v16 = v43.size.height;
-  if ([v4 hasShadow])
+  if ([annotationCopy hasShadow])
   {
-    [AKAnnotationRendererUtilities outsetRectForShadow:v4 onAnnotation:v13, v14, v15, v16];
+    [AKAnnotationRendererUtilities outsetRectForShadow:annotationCopy onAnnotation:v13, v14, v15, v16];
     v13 = v17;
     v14 = v18;
     v15 = v19;
     v16 = v20;
   }
 
-  v21 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:v4];
-  if ([v21 length] || (objc_msgSend(v4, "fillColor"), v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
+  v21 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:annotationCopy];
+  if ([v21 length] || (objc_msgSend(annotationCopy, "fillColor"), v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
   {
-    [a1 _concreteTextBoundsOfAnnotation:v4 withOptionalAnnotationRect:0 optionalText:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+    [self _concreteTextBoundsOfAnnotation:annotationCopy withOptionalAnnotationRect:0 optionalText:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    if (+[AKGeometryHelper exifOrientationHasReversedAxes:](AKGeometryHelper, "exifOrientationHasReversedAxes:", [v4 originalExifOrientation]))
+    if (+[AKGeometryHelper exifOrientationHasReversedAxes:](AKGeometryHelper, "exifOrientationHasReversedAxes:", [annotationCopy originalExifOrientation]))
     {
       v31 = -1.0;
       v32 = -5.0;
@@ -106,7 +106,7 @@
   return result;
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -115,24 +115,24 @@
   return result;
 }
 
-+ (CGRect)_concreteTextBoundsOfAnnotation:(id)a3 withOptionalAnnotationRect:(CGRect)a4 optionalText:(id)a5
++ (CGRect)_concreteTextBoundsOfAnnotation:(id)annotation withOptionalAnnotationRect:(CGRect)rect optionalText:(id)text
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  annotationCopy = annotation;
+  textCopy = text;
+  v9 = textCopy;
+  if (textCopy)
   {
-    v10 = v8;
+    v10 = textCopy;
   }
 
   else
   {
-    v10 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:v7];
+    v10 = [AKTextAnnotationAttributeHelper actualOrPlaceholderTextOfAnnotation:annotationCopy];
     if (!v10)
     {
 LABEL_8:
-      v17 = [v7 typingAttributes];
-      v18 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithString:@"fg" attributes:v17];
+      typingAttributes = [annotationCopy typingAttributes];
+      v18 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithString:@"fg" attributes:typingAttributes];
 
       v14 = v18;
       v10 = v14;
@@ -145,25 +145,25 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v11 = [v10 string];
-  v12 = [v11 stringByTrimmingTrailingWhitespaceFromEachLine];
+  string = [v10 string];
+  stringByTrimmingTrailingWhitespaceFromEachLine = [string stringByTrimmingTrailingWhitespaceFromEachLine];
 
-  v13 = [v7 typingAttributes];
-  v14 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithString:v12 attributes:v13];
+  typingAttributes2 = [annotationCopy typingAttributes];
+  v14 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithString:stringByTrimmingTrailingWhitespaceFromEachLine attributes:typingAttributes2];
 
   if (![v14 length])
   {
-    v15 = [v7 typingAttributes];
-    v16 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithString:@"fg" attributes:v15];
+    typingAttributes3 = [annotationCopy typingAttributes];
+    v16 = [AKTextAnnotationAttributeHelper newTextStorageOriginalFontSavvyWithString:@"fg" attributes:typingAttributes3];
 
     v14 = v16;
   }
 
 LABEL_9:
-  [v7 originalModelBaseScaleFactor];
+  [annotationCopy originalModelBaseScaleFactor];
   v19 = [AKTextAnnotationAttributeHelper newTextStorage:v10 byApplyingScaleFactor:?];
 
-  [v7 originalModelBaseScaleFactor];
+  [annotationCopy originalModelBaseScaleFactor];
   v20 = [AKTextAnnotationAttributeHelper newTextStorage:v14 byApplyingScaleFactor:?];
 
   [AKTextAnnotationRenderHelper unconstrainedSizeForText:v19];
@@ -172,7 +172,7 @@ LABEL_9:
   v24 = v23;
   v26 = v25;
   v115 = v22 - v23;
-  [v7 strokeWidth];
+  [annotationCopy strokeWidth];
   v28 = v27 * -1.5 * 0.5;
   v118 = v28 + -1.0;
   v119 = v28 + -5.0;
@@ -187,10 +187,10 @@ LABEL_9:
     v30 = v26 + (v28 + -1.0) * -2.0;
   }
 
-  v31 = [v7 originalExifOrientation];
-  v32 = [AKGeometryHelper inverseExifOrientation:v31];
-  v33 = [AKGeometryHelper exifOrientationHasReversedAxes:v31];
-  [v7 startPoint];
+  originalExifOrientation = [annotationCopy originalExifOrientation];
+  v32 = [AKGeometryHelper inverseExifOrientation:originalExifOrientation];
+  v33 = [AKGeometryHelper exifOrientationHasReversedAxes:originalExifOrientation];
+  [annotationCopy startPoint];
   v36 = v34;
   v37 = v35;
   if (v33)
@@ -217,7 +217,7 @@ LABEL_9:
   v114 = v34 - v39 * 0.5;
   v116 = v39;
   v117 = v38;
-  [AKGeometryHelper adjustRect:"adjustRect:forExifOrientation:aboutCenter:" forExifOrientation:v31 aboutCenter:?];
+  [AKGeometryHelper adjustRect:"adjustRect:forExifOrientation:aboutCenter:" forExifOrientation:originalExifOrientation aboutCenter:?];
   v41 = v40;
   v43 = v42;
   v45 = v44;
@@ -226,12 +226,12 @@ LABEL_9:
   v122 = 0.0;
   v120[0] = 0;
   v120[1] = 0;
-  [a1 _controlPointsForArrow:v7 outControlPoint1:&v121 outControlPoint2:v120];
+  [self _controlPointsForArrow:annotationCopy outControlPoint1:&v121 outControlPoint2:v120];
   v107 = v36;
   [AKGeometryHelper normalizeVectorPoint:v36 - v121, v37 - v122];
   v111 = v49;
   v112 = v48;
-  [AKGeometryHelper adjustPoint:"adjustPoint:forExifOrientation:aboutCenter:" forExifOrientation:v31 aboutCenter:?];
+  [AKGeometryHelper adjustPoint:"adjustPoint:forExifOrientation:aboutCenter:" forExifOrientation:originalExifOrientation aboutCenter:?];
   [AKGeometryHelper angleOfVector:?];
   if (v50 > 3.14159265)
   {
@@ -332,13 +332,13 @@ LABEL_9:
     v66 = 0.0;
   }
 
-  v67 = [v19 attribute:*MEMORY[0x277D74118] atIndex:0 effectiveRange:0];
-  if (!v67)
+  defaultParagraphStyle = [v19 attribute:*MEMORY[0x277D74118] atIndex:0 effectiveRange:0];
+  if (!defaultParagraphStyle)
   {
-    v67 = [MEMORY[0x277D74248] defaultParagraphStyle];
+    defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
   }
 
-  v68 = [v67 alignment];
+  alignment = [defaultParagraphStyle alignment];
   if (v63 <= 0.0)
   {
     v69 = v63;
@@ -366,14 +366,14 @@ LABEL_9:
   v75 = fmax(v63, 0.0);
   v76 = v109 + v75 * v57;
   v77 = v108 + v75 * v58;
-  if (!v68)
+  if (!alignment)
   {
     v74 = 0.0;
     v71 = v76;
     v72 = v77;
   }
 
-  if (v68 == 2)
+  if (alignment == 2)
   {
     v74 = v115 * v65;
     v78 = v106 + v69 * v57;
@@ -384,7 +384,7 @@ LABEL_9:
     v78 = v71;
   }
 
-  if (v68 == 2)
+  if (alignment == 2)
   {
     v79 = v70;
   }
@@ -411,7 +411,7 @@ LABEL_9:
   v130.origin.y = v88;
   v130.size.width = v116;
   v130.size.height = v117;
-  [AKGeometryHelper adjustRect:v31 forExifOrientation:v87 aboutCenter:v88, v116, v117, MidX, CGRectGetMidY(v130)];
+  [AKGeometryHelper adjustRect:originalExifOrientation forExifOrientation:v87 aboutCenter:v88, v116, v117, MidX, CGRectGetMidY(v130)];
   [AKGeometryHelper adjustRect:v32 forExifOrientation:v90 - v110 aboutCenter:?];
   v95 = v119;
   if (v33)
@@ -446,58 +446,58 @@ LABEL_9:
   return result;
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
-  v39 = a3;
-  v10 = a5;
-  v11 = a6;
-  [v10 allowHDR];
-  CGContextSaveGState(a4);
-  [a1 _transformContextToModelCoordinates:a4 forAnnotation:v39 forDisplay:objc_msgSend(v10 pageControllerOrNil:{"forDisplay"), v11}];
-  v12 = [v39 hasShadow];
-  if (v12)
+  annotationCopy = annotation;
+  optionsCopy = options;
+  nilCopy = nil;
+  [optionsCopy allowHDR];
+  CGContextSaveGState(context);
+  [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:objc_msgSend(optionsCopy pageControllerOrNil:{"forDisplay"), nilCopy}];
+  hasShadow = [annotationCopy hasShadow];
+  if (hasShadow)
   {
-    [AKAnnotationRendererUtilities beginShadowInContext:a4 forAnnotation:v39];
+    [AKAnnotationRendererUtilities beginShadowInContext:context forAnnotation:annotationCopy];
   }
 
-  CGContextSaveGState(a4);
-  v13 = [v39 strokeColor];
+  CGContextSaveGState(context);
+  strokeColor = [annotationCopy strokeColor];
 
-  if (v13)
+  if (strokeColor)
   {
-    v14 = [v39 strokeColorForOptions:v10];
-    CGContextSetStrokeColorWithColor(a4, [v14 CGColor]);
+    v14 = [annotationCopy strokeColorForOptions:optionsCopy];
+    CGContextSetStrokeColorWithColor(context, [v14 CGColor]);
 
-    v15 = [v39 strokeColorForOptions:v10];
-    CGContextSetFillColorWithColor(a4, [v15 CGColor]);
+    v15 = [annotationCopy strokeColorForOptions:optionsCopy];
+    CGContextSetFillColorWithColor(context, [v15 CGColor]);
 
-    [v39 strokeWidth];
-    [AKAnnotationRendererUtilities setStandardLineStateInContext:a4 forLineWidth:?];
-    if ([v39 isDashed])
+    [annotationCopy strokeWidth];
+    [AKAnnotationRendererUtilities setStandardLineStateInContext:context forLineWidth:?];
+    if ([annotationCopy isDashed])
     {
-      [v39 strokeWidth];
-      [AKAnnotationRendererUtilities setStandardLineDashInContext:a4 forLineWidth:?];
+      [annotationCopy strokeWidth];
+      [AKAnnotationRendererUtilities setStandardLineDashInContext:context forLineWidth:?];
     }
 
-    [a1 _drawPathForArrow:v39 inContext:a4 options:v10 inPath:0 pageControllerForPixelAlignmentOrNil:v11 minimumGrabbableBorderThickness:1.0];
+    [self _drawPathForArrow:annotationCopy inContext:context options:optionsCopy inPath:0 pageControllerForPixelAlignmentOrNil:nilCopy minimumGrabbableBorderThickness:1.0];
   }
 
-  CGContextRestoreGState(a4);
-  v16 = [v39 fillColor];
-  if (v16)
+  CGContextRestoreGState(context);
+  fillColor = [annotationCopy fillColor];
+  if (fillColor)
   {
-    v17 = v16;
-    v18 = [v39 fillColor];
-    Alpha = CGColorGetAlpha([v18 CGColor]);
+    v17 = fillColor;
+    fillColor2 = [annotationCopy fillColor];
+    Alpha = CGColorGetAlpha([fillColor2 CGColor]);
 
     if (Alpha != 0.0)
     {
-      [a1 _concreteTextBoundsOfAnnotation:v39 withOptionalAnnotationRect:0 optionalText:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+      [self _concreteTextBoundsOfAnnotation:annotationCopy withOptionalAnnotationRect:0 optionalText:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
       v21 = v20;
       v23 = v22;
       v25 = v24;
       v27 = v26;
-      if (+[AKGeometryHelper exifOrientationHasReversedAxes:](AKGeometryHelper, "exifOrientationHasReversedAxes:", [v39 originalExifOrientation]))
+      if (+[AKGeometryHelper exifOrientationHasReversedAxes:](AKGeometryHelper, "exifOrientationHasReversedAxes:", [annotationCopy originalExifOrientation]))
       {
         v28 = -1.0;
         v29 = -5.0;
@@ -515,74 +515,74 @@ LABEL_9:
       v41.size.height = v27;
       v42 = CGRectInset(v41, v28, v29);
       v43 = CGRectInset(v42, 1.0, 1.0);
-      [AKGeometryHelper renderingStrokeAlignedRectForRect:v11 withStrokeWidth:a4 alignToScreenUsingPageController:v39 orAlignToContext:v43.origin.x usingAnnotation:v43.origin.y, v43.size.width, v43.size.height, 0.0];
+      [AKGeometryHelper renderingStrokeAlignedRectForRect:nilCopy withStrokeWidth:context alignToScreenUsingPageController:annotationCopy orAlignToContext:v43.origin.x usingAnnotation:v43.origin.y, v43.size.width, v43.size.height, 0.0];
       v31 = v30;
       v33 = v32;
       v35 = v34;
       v37 = v36;
-      v38 = [v39 fillColorForOptions:v10];
-      CGContextSetFillColorWithColor(a4, [v38 CGColor]);
+      v38 = [annotationCopy fillColorForOptions:optionsCopy];
+      CGContextSetFillColorWithColor(context, [v38 CGColor]);
 
       v44.origin.x = v31;
       v44.origin.y = v33;
       v44.size.width = v35;
       v44.size.height = v37;
-      CGContextFillRect(a4, v44);
+      CGContextFillRect(context, v44);
     }
   }
 
-  [AKTextAnnotationRenderHelper renderAnnotationText:v39 intoContext:a4 options:v10 pageControllerOrNil:v11];
-  if (v12)
+  [AKTextAnnotationRenderHelper renderAnnotationText:annotationCopy intoContext:context options:optionsCopy pageControllerOrNil:nilCopy];
+  if (hasShadow)
   {
-    [AKAnnotationRendererUtilities endShadowInContext:a4];
+    [AKAnnotationRendererUtilities endShadowInContext:context];
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  y = border.y;
+  x = border.x;
+  annotationCopy = annotation;
   Mutable = CGPathCreateMutable();
   v11 = +[AKAnnotationRendererOptions defaultOptions];
-  [a1 _drawPathForArrow:v9 inContext:0 options:v11 inPath:Mutable pageControllerForPixelAlignmentOrNil:0 minimumGrabbableBorderThickness:a5];
+  [self _drawPathForArrow:annotationCopy inContext:0 options:v11 inPath:Mutable pageControllerForPixelAlignmentOrNil:0 minimumGrabbableBorderThickness:thickness];
 
   v13.x = x;
   v13.y = y;
-  LOBYTE(a1) = CGPathContainsPoint(Mutable, 0, v13, 0);
+  LOBYTE(self) = CGPathContainsPoint(Mutable, 0, v13, 0);
   CGPathRelease(Mutable);
-  return a1;
+  return self;
 }
 
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation
 {
-  y = a3.y;
-  x = a3.x;
-  [a1 _concreteTextBoundsOfAnnotation:a4 withOptionalAnnotationRect:0 optionalText:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  y = inside.y;
+  x = inside.x;
+  [self _concreteTextBoundsOfAnnotation:annotation withOptionalAnnotationRect:0 optionalText:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   v10 = x;
   v11 = y;
 
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-+ (void)_drawPathForArrow:(id)a3 inContext:(CGContext *)a4 options:(id)a5 inPath:(CGPath *)a6 pageControllerForPixelAlignmentOrNil:(id)a7 minimumGrabbableBorderThickness:(double)a8
++ (void)_drawPathForArrow:(id)arrow inContext:(CGContext *)context options:(id)options inPath:(CGPath *)path pageControllerForPixelAlignmentOrNil:(id)nil minimumGrabbableBorderThickness:(double)thickness
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  [v15 allowHDR];
-  [v14 strokeWidth];
+  arrowCopy = arrow;
+  optionsCopy = options;
+  nilCopy = nil;
+  [optionsCopy allowHDR];
+  [arrowCopy strokeWidth];
   v18 = v17;
   v45 = 1.0;
   v46 = 0.0;
   Mutable = CGPathCreateMutable();
   v20 = CGPathCreateMutable();
-  [a1 _arrowHeadPathsForArrow:v14 inOutStartArrowHead:Mutable outBezierStartParameter:&v46 inOutEndArrowHead:v20 outBezierEndParameter:&v45];
-  if (!a4)
+  [self _arrowHeadPathsForArrow:arrowCopy inOutStartArrowHead:Mutable outBezierStartParameter:&v46 inOutEndArrowHead:v20 outBezierEndParameter:&v45];
+  if (!context)
   {
-    if (!a6 || (CGPathAddPath(a6, 0, Mutable), CGPathAddPath(a6, 0, v20), (v30 = [a1 _newLinePathForArrow:v14 withHeads:1 fromBezierParameter:v16 toBezierParameter:0 optionalPageController:v46 optionalContext:v45]) == 0))
+    if (!path || (CGPathAddPath(path, 0, Mutable), CGPathAddPath(path, 0, v20), (v30 = [self _newLinePathForArrow:arrowCopy withHeads:1 fromBezierParameter:nilCopy toBezierParameter:0 optionalPageController:v46 optionalContext:v45]) == 0))
     {
 LABEL_20:
       if (!Mutable)
@@ -594,21 +594,21 @@ LABEL_20:
     }
 
     v31 = v30;
-    if (v18 >= a8)
+    if (v18 >= thickness)
     {
-      v32 = v18;
+      thicknessCopy = v18;
     }
 
     else
     {
-      v32 = a8;
+      thicknessCopy = thickness;
     }
 
-    v33 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v30 withStrokeWidth:v32];
+    v33 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v30 withStrokeWidth:thicknessCopy];
     if (v33)
     {
       v34 = v33;
-      CGPathAddPath(a6, 0, v33);
+      CGPathAddPath(path, 0, v33);
       CFRelease(v34);
     }
 
@@ -618,48 +618,48 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (![v14 brushStyle])
+  if (![arrowCopy brushStyle])
   {
-    CGContextBeginPath(a4);
-    CGContextAddPath(a4, Mutable);
-    CGContextAddPath(a4, v20);
-    CGContextFillPath(a4);
-    CGContextStrokePath(a4);
+    CGContextBeginPath(context);
+    CGContextAddPath(context, Mutable);
+    CGContextAddPath(context, v20);
+    CGContextFillPath(context);
+    CGContextStrokePath(context);
   }
 
-  if (![v14 brushStyle])
+  if (![arrowCopy brushStyle])
   {
-    v36 = [a1 _newLinePathForArrow:v14 withHeads:1 fromBezierParameter:v16 toBezierParameter:a4 optionalPageController:v46 optionalContext:v45];
+    v36 = [self _newLinePathForArrow:arrowCopy withHeads:1 fromBezierParameter:nilCopy toBezierParameter:context optionalPageController:v46 optionalContext:v45];
     if (!v36)
     {
       goto LABEL_20;
     }
 
     v37 = v36;
-    CGContextBeginPath(a4);
-    CGContextAddPath(a4, v37);
-    CGContextStrokePath(a4);
+    CGContextBeginPath(context);
+    CGContextAddPath(context, v37);
+    CGContextStrokePath(context);
     v35 = v37;
     goto LABEL_19;
   }
 
-  v21 = [a1 _newLinePathForArrow:v14 withHeads:0 fromBezierParameter:0 toBezierParameter:0 optionalPageController:v46 optionalContext:v45];
+  v21 = [self _newLinePathForArrow:arrowCopy withHeads:0 fromBezierParameter:0 toBezierParameter:0 optionalPageController:v46 optionalContext:v45];
   if (!v21)
   {
     goto LABEL_20;
   }
 
   v22 = v21;
-  v23 = [v14 brushStyle];
-  v24 = [v14 strokeColorForOptions:v15];
-  [v14 strokeWidth];
-  v25 = [AKTSDBrushStroke strokeWithType:v23 color:v24 width:?];
+  brushStyle = [arrowCopy brushStyle];
+  v24 = [arrowCopy strokeColorForOptions:optionsCopy];
+  [arrowCopy strokeWidth];
+  v25 = [AKTSDBrushStroke strokeWithType:brushStyle color:v24 width:?];
 
   v26 = [AKTSDBezierPath bezierPathWithCGPath:v22];
   v27 = objc_alloc_init(AKTSDShape);
   [(AKTSDShape *)v27 setStroke:v25];
   [(AKTSDShape *)v27 setPath:v26];
-  if ([v14 arrowHeadStyle] == 1)
+  if ([arrowCopy arrowHeadStyle] == 1)
   {
     if (!CGPathIsEmpty(Mutable))
     {
@@ -674,7 +674,7 @@ LABEL_19:
     }
   }
 
-  else if ([v14 arrowHeadStyle] == 2)
+  else if ([arrowCopy arrowHeadStyle] == 2)
   {
     if (!CGPathIsEmpty(v20))
     {
@@ -689,7 +689,7 @@ LABEL_19:
     }
   }
 
-  else if ([v14 arrowHeadStyle] == 3)
+  else if ([arrowCopy arrowHeadStyle] == 3)
   {
     v42 = v25;
     if (CGPathIsEmpty(v20))
@@ -717,7 +717,7 @@ LABEL_19:
     v25 = v42;
   }
 
-  [(AKTSDShape *)v27 drawInContext:a4, v42];
+  [(AKTSDShape *)v27 drawInContext:context, v42];
   CGPathRelease(v22);
 
   if (Mutable)
@@ -733,24 +733,24 @@ LABEL_22:
   }
 }
 
-+ (unint64_t)_drawableArrowHeads:(id)a3
++ (unint64_t)_drawableArrowHeads:(id)heads
 {
-  v3 = a3;
-  [v3 strokeWidth];
+  headsCopy = heads;
+  [headsCopy strokeWidth];
   v5 = v4 * 5.0;
-  v6 = ~[v3 arrowHeadStyle] & 3;
-  v7 = [v3 arrowHeadStyle];
+  v6 = ~[headsCopy arrowHeadStyle] & 3;
+  arrowHeadStyle = [headsCopy arrowHeadStyle];
   if (v6)
   {
-    if (v7)
+    if (arrowHeadStyle)
     {
-      [v3 startPoint];
+      [headsCopy startPoint];
       v24 = v23;
-      [v3 endPoint];
+      [headsCopy endPoint];
       v26 = v24 - v25;
-      [v3 startPoint];
+      [headsCopy startPoint];
       v28 = v27;
-      [v3 endPoint];
+      [headsCopy endPoint];
       v8 = hypot(v26, v28 - v29) > v5;
     }
 
@@ -759,15 +759,15 @@ LABEL_22:
       v8 = 0;
     }
 
-    if (([v3 arrowHeadStyle] & 2) != 0)
+    if (([headsCopy arrowHeadStyle] & 2) != 0)
     {
-      [v3 startPoint];
+      [headsCopy startPoint];
       v31 = v30;
-      [v3 endPoint];
+      [headsCopy endPoint];
       v19 = v31 - v32;
-      [v3 startPoint];
+      [headsCopy startPoint];
       v21 = v33;
-      [v3 endPoint];
+      [headsCopy endPoint];
 LABEL_12:
       if (hypot(v19, v21 - v22) > v5)
       {
@@ -778,15 +778,15 @@ LABEL_12:
 
   else
   {
-    if (v7)
+    if (arrowHeadStyle)
     {
-      [v3 startPoint];
+      [headsCopy startPoint];
       v10 = v9;
-      [v3 midPoint];
+      [headsCopy midPoint];
       v12 = v10 - v11;
-      [v3 startPoint];
+      [headsCopy startPoint];
       v14 = v13;
-      [v3 midPoint];
+      [headsCopy midPoint];
       v8 = hypot(v12, v14 - v15) > v5;
     }
 
@@ -795,15 +795,15 @@ LABEL_12:
       v8 = 0;
     }
 
-    if (([v3 arrowHeadStyle] & 2) != 0)
+    if (([headsCopy arrowHeadStyle] & 2) != 0)
     {
-      [v3 endPoint];
+      [headsCopy endPoint];
       v17 = v16;
-      [v3 midPoint];
+      [headsCopy midPoint];
       v19 = v17 - v18;
-      [v3 endPoint];
+      [headsCopy endPoint];
       v21 = v20;
-      [v3 midPoint];
+      [headsCopy midPoint];
       goto LABEL_12;
     }
   }
@@ -811,15 +811,15 @@ LABEL_12:
   return v8;
 }
 
-+ (void)_arrowHeadPathsForArrow:(id)a3 inOutStartArrowHead:(CGPath *)a4 outBezierStartParameter:(double *)a5 inOutEndArrowHead:(CGPath *)a6 outBezierEndParameter:(double *)a7
++ (void)_arrowHeadPathsForArrow:(id)arrow inOutStartArrowHead:(CGPath *)head outBezierStartParameter:(double *)parameter inOutEndArrowHead:(CGPath *)arrowHead outBezierEndParameter:(double *)endParameter
 {
-  v12 = a3;
-  [v12 strokeWidth];
+  arrowCopy = arrow;
+  [arrowCopy strokeWidth];
   v14 = v13;
-  [v12 endPoint];
+  [arrowCopy endPoint];
   v16 = v15;
   v18 = v17;
-  [v12 startPoint];
+  [arrowCopy startPoint];
   if (v19 != v16 || v20 != v18)
   {
     v22 = v19;
@@ -827,10 +827,10 @@ LABEL_12:
     v42 = v14;
     v43 = vdupq_n_s64(0x43E0000000000000uLL);
     v44 = v43;
-    [a1 _arrowHeadLineIntersection:v12 outStartIntersection:&v44 outBezierStartParameter:a5 outEndIntersection:&v43 outBezierEndParameter:a7];
-    v24 = [a1 _drawableArrowHeads:v12];
+    [self _arrowHeadLineIntersection:arrowCopy outStartIntersection:&v44 outBezierStartParameter:parameter outEndIntersection:&v43 outBezierEndParameter:endParameter];
+    v24 = [self _drawableArrowHeads:arrowCopy];
     v25 = v24;
-    if (a4)
+    if (head)
     {
       if (v24)
       {
@@ -844,15 +844,15 @@ LABEL_12:
           v31 = v42 * v29 * 2.5 / v30;
           v32 = v26 - v31;
           v33 = v42 * v28 * 2.5 / v30;
-          CGPathMoveToPoint(a4, 0, v32, v27 + v33);
-          CGPathAddLineToPoint(a4, 0, v22, v23);
-          CGPathAddLineToPoint(a4, 0, v31 + *v44.i64, *&v44.i64[1] - v33);
-          CGPathCloseSubpath(a4);
+          CGPathMoveToPoint(head, 0, v32, v27 + v33);
+          CGPathAddLineToPoint(head, 0, v22, v23);
+          CGPathAddLineToPoint(head, 0, v31 + *v44.i64, *&v44.i64[1] - v33);
+          CGPathCloseSubpath(head);
         }
       }
     }
 
-    if (a6)
+    if (arrowHead)
     {
       if ((v25 & 2) != 0)
       {
@@ -866,26 +866,26 @@ LABEL_12:
           v39 = v42 * v37 * 2.5 / v38;
           v40 = v34 - v39;
           v41 = v42 * v36 * 2.5 / v38;
-          CGPathMoveToPoint(a6, 0, v40, v35 + v41);
-          CGPathAddLineToPoint(a6, 0, v16, v18);
-          CGPathAddLineToPoint(a6, 0, v39 + *v43.i64, *&v43.i64[1] - v41);
-          CGPathCloseSubpath(a6);
+          CGPathMoveToPoint(arrowHead, 0, v40, v35 + v41);
+          CGPathAddLineToPoint(arrowHead, 0, v16, v18);
+          CGPathAddLineToPoint(arrowHead, 0, v39 + *v43.i64, *&v43.i64[1] - v41);
+          CGPathCloseSubpath(arrowHead);
         }
       }
     }
   }
 }
 
-+ (void)_controlPointsForArrow:(id)a3 outControlPoint1:(CGPoint *)a4 outControlPoint2:(CGPoint *)a5
++ (void)_controlPointsForArrow:(id)arrow outControlPoint1:(CGPoint *)point1 outControlPoint2:(CGPoint *)point2
 {
-  v7 = a3;
-  [v7 endPoint];
+  arrowCopy = arrow;
+  [arrowCopy endPoint];
   v9 = v8;
   v11 = v10;
-  [v7 startPoint];
+  [arrowCopy startPoint];
   v13 = v12;
   v15 = v14;
-  [v7 midPoint];
+  [arrowCopy midPoint];
   v17 = v16;
   v19 = v18;
 
@@ -912,27 +912,27 @@ LABEL_12:
   v31 = v24 + v28 * v30;
   v32 = v25 + v28 * v29;
   v33 = v34 * 0.166666667;
-  if (a4)
+  if (point1)
   {
-    a4->x = v31 - v33 * v21;
-    a4->y = v32 - v33 * v23;
+    point1->x = v31 - v33 * v21;
+    point1->y = v32 - v33 * v23;
   }
 
-  if (a5)
+  if (point2)
   {
-    a5->x = v31 + v33 * v21;
-    a5->y = v32 + v33 * v23;
+    point2->x = v31 + v33 * v21;
+    point2->y = v32 + v33 * v23;
   }
 }
 
-+ (CGPoint)_cubicBezierPointForParameter:(double)a3 start:(CGPoint)a4 controlPt1:(CGPoint)a5 controlPt2:(CGPoint)a6 end:(CGPoint)a7
++ (CGPoint)_cubicBezierPointForParameter:(double)parameter start:(CGPoint)start controlPt1:(CGPoint)pt1 controlPt2:(CGPoint)pt2 end:(CGPoint)end
 {
-  y = a6.y;
-  v8 = a5.y;
-  v9 = a4.y;
-  [a1 _oneDimensionalCubicBezierValueForParameter:a3 start:a4.x controlPt1:a5.x controlPt2:a6.x end:a7.x];
+  y = pt2.y;
+  v8 = pt1.y;
+  v9 = start.y;
+  [self _oneDimensionalCubicBezierValueForParameter:parameter start:start.x controlPt1:pt1.x controlPt2:pt2.x end:end.x];
   v13 = v12;
-  [a1 _oneDimensionalCubicBezierValueForParameter:a3 start:v9 controlPt1:v8 controlPt2:y end:a7.y];
+  [self _oneDimensionalCubicBezierValueForParameter:parameter start:v9 controlPt1:v8 controlPt2:y end:end.y];
   v15 = v14;
   v16 = v13;
   result.y = v15;
@@ -940,43 +940,43 @@ LABEL_12:
   return result;
 }
 
-+ (void)_arrowHeadLineIntersection:(id)a3 outStartIntersection:(CGPoint *)a4 outBezierStartParameter:(double *)a5 outEndIntersection:(CGPoint *)a6 outBezierEndParameter:(double *)a7
++ (void)_arrowHeadLineIntersection:(id)intersection outStartIntersection:(CGPoint *)startIntersection outBezierStartParameter:(double *)parameter outEndIntersection:(CGPoint *)endIntersection outBezierEndParameter:(double *)endParameter
 {
-  v12 = a3;
-  v13 = [a1 _drawableArrowHeads:v12];
-  [v12 startPoint];
+  intersectionCopy = intersection;
+  v13 = [self _drawableArrowHeads:intersectionCopy];
+  [intersectionCopy startPoint];
   v15 = v14;
   v17 = v16;
-  [v12 endPoint];
+  [intersectionCopy endPoint];
   v19 = v18;
   v21 = v20;
-  [v12 strokeWidth];
-  [v12 brushStyle];
+  [intersectionCopy strokeWidth];
+  [intersectionCopy brushStyle];
   v32 = 0.0;
   v33 = 0.0;
   v30 = 0.0;
   v31 = 0.0;
-  [a1 _controlPointsForArrow:v12 outControlPoint1:&v32 outControlPoint2:&v30];
+  [self _controlPointsForArrow:intersectionCopy outControlPoint1:&v32 outControlPoint2:&v30];
   if ((v13 & 2) != 0)
   {
-    [v12 endPoint];
+    [intersectionCopy endPoint];
     v22 = 1.0;
     while (v22 > 0.0)
     {
       v22 = v22 + -0.025;
-      [a1 _cubicBezierPointForParameter:v22 start:v15 controlPt1:v17 controlPt2:v32 end:{v33, v30, v31, v19, v21}];
+      [self _cubicBezierPointForParameter:v22 start:v15 controlPt1:v17 controlPt2:v32 end:{v33, v30, v31, v19, v21}];
       [AKGeometryHelper intersectLineSegmentStartingAt:"intersectLineSegmentStartingAt:ending:withCircleWithCenter:andRadius:farthestResult:" ending:0 withCircleWithCenter:? andRadius:? farthestResult:?];
       if (v23 != 9.22337204e18 && v24 != 9.22337204e18)
       {
-        if (a6)
+        if (endIntersection)
         {
-          a6->x = v23;
-          a6->y = v24;
+          endIntersection->x = v23;
+          endIntersection->y = v24;
         }
 
-        if (a7)
+        if (endParameter)
         {
-          *a7 = v22 + 0.025;
+          *endParameter = v22 + 0.025;
         }
 
         break;
@@ -986,24 +986,24 @@ LABEL_12:
 
   if (v13)
   {
-    [v12 startPoint];
+    [intersectionCopy startPoint];
     v26 = 0.0;
     while (v26 < 1.0)
     {
       v26 = v26 + 0.025;
-      [a1 _cubicBezierPointForParameter:v26 start:v15 controlPt1:v17 controlPt2:v32 end:{v33, v30, v31, v19, v21}];
+      [self _cubicBezierPointForParameter:v26 start:v15 controlPt1:v17 controlPt2:v32 end:{v33, v30, v31, v19, v21}];
       [AKGeometryHelper intersectLineSegmentStartingAt:"intersectLineSegmentStartingAt:ending:withCircleWithCenter:andRadius:farthestResult:" ending:0 withCircleWithCenter:? andRadius:? farthestResult:?];
       if (v27 != 9.22337204e18 && v28 != 9.22337204e18)
       {
-        if (a4)
+        if (startIntersection)
         {
-          a4->x = v27;
-          a4->y = v28;
+          startIntersection->x = v27;
+          startIntersection->y = v28;
         }
 
-        if (a5)
+        if (parameter)
         {
-          *a5 = v26 + -0.025;
+          *parameter = v26 + -0.025;
         }
 
         break;
@@ -1012,26 +1012,26 @@ LABEL_12:
   }
 }
 
-+ (CGPath)_newLinePathForArrow:(id)a3 withHeads:(BOOL)a4 fromBezierParameter:(double)a5 toBezierParameter:(double)a6 optionalPageController:(id)a7 optionalContext:(CGContext *)a8
++ (CGPath)_newLinePathForArrow:(id)arrow withHeads:(BOOL)heads fromBezierParameter:(double)parameter toBezierParameter:(double)bezierParameter optionalPageController:(id)controller optionalContext:(CGContext *)context
 {
-  v12 = a4;
-  v14 = a3;
-  v15 = a7;
+  headsCopy = heads;
+  arrowCopy = arrow;
+  controllerCopy = controller;
   v70 = 0.0;
   v71 = 0.0;
   v68 = 0.0;
   v69 = 0.0;
-  [v14 endPoint];
+  [arrowCopy endPoint];
   v17 = v16;
   v19 = v18;
-  [v14 startPoint];
+  [arrowCopy startPoint];
   MinX = v21;
   MinY = v20;
   if (v21 != v17 || v20 != v19)
   {
-    [a1 _controlPointsForArrow:v14 outControlPoint1:&v70 outControlPoint2:&v68];
-    v25 = !v12 || ([a1 _drawableArrowHeads:v14] & 3) == 0;
-    if (v15 | a8)
+    [self _controlPointsForArrow:arrowCopy outControlPoint1:&v70 outControlPoint2:&v68];
+    v25 = !headsCopy || ([self _drawableArrowHeads:arrowCopy] & 3) == 0;
+    if (controllerCopy | context)
     {
       if (vabdd_f64(MinX, v17) >= 0.0005 || vabdd_f64(v17, v70) >= 0.0005 || vabdd_f64(v70, v68) >= 0.0005)
       {
@@ -1046,8 +1046,8 @@ LABEL_12:
           y = v78.origin.y;
           width = v78.size.width;
           height = v78.size.height;
-          [v14 strokeWidth];
-          [AKGeometryHelper renderingStrokeAlignedRectForRect:v15 withStrokeWidth:a8 alignToScreenUsingPageController:v14 orAlignToContext:x usingAnnotation:y, width, height, v48];
+          [arrowCopy strokeWidth];
+          [AKGeometryHelper renderingStrokeAlignedRectForRect:controllerCopy withStrokeWidth:context alignToScreenUsingPageController:arrowCopy orAlignToContext:x usingAnnotation:y, width, height, v48];
           v53 = v49;
           v54 = v50;
           v55 = v51;
@@ -1096,29 +1096,29 @@ LABEL_12:
           }
 
 LABEL_27:
-          [a1 _cubicBezierPointForParameter:a5 start:MinX controlPt1:MinY controlPt2:v70 end:{v71, v68, v69, *&v17, *&v19}];
+          [self _cubicBezierPointForParameter:parameter start:MinX controlPt1:MinY controlPt2:v70 end:{v71, v68, v69, *&v17, *&v19}];
           v59 = v58;
           v61 = v60;
           Mutable = CGPathCreateMutable();
           CGPathMoveToPoint(Mutable, 0, v59, v61);
-          v62 = a6 + 0.025;
-          if (v62 < a5)
+          v62 = bezierParameter + 0.025;
+          if (v62 < parameter)
           {
             goto LABEL_30;
           }
 
-          while (a5 < 1.0)
+          while (parameter < 1.0)
           {
-            [a1 _cubicBezierPointForParameter:a5 start:MinX controlPt1:MinY controlPt2:v70 end:{v71, v68, v69, *&v17, *&v19}];
+            [self _cubicBezierPointForParameter:parameter start:MinX controlPt1:MinY controlPt2:v70 end:{v71, v68, v69, *&v17, *&v19}];
             CGPathAddLineToPoint(Mutable, 0, v63, v64);
-            a5 = a5 + 0.025;
-            if (a5 > v62)
+            parameter = parameter + 0.025;
+            if (parameter > v62)
             {
               goto LABEL_30;
             }
           }
 
-          [a1 _cubicBezierPointForParameter:0.99 start:MinX controlPt1:MinY controlPt2:v70 end:{v71, v68, v69, *&v17, *&v19}];
+          [self _cubicBezierPointForParameter:0.99 start:MinX controlPt1:MinY controlPt2:v70 end:{v71, v68, v69, *&v17, *&v19}];
           v27 = Mutable;
           goto LABEL_8;
         }
@@ -1135,8 +1135,8 @@ LABEL_27:
         v31 = v73.origin.y;
         v32 = v73.size.width;
         v33 = v73.size.height;
-        [v14 strokeWidth];
-        [AKGeometryHelper renderingStrokeAlignedRectForRect:v15 withStrokeWidth:a8 alignToScreenUsingPageController:v14 orAlignToContext:v30 usingAnnotation:v31, v32, v33, v34];
+        [arrowCopy strokeWidth];
+        [AKGeometryHelper renderingStrokeAlignedRectForRect:controllerCopy withStrokeWidth:context alignToScreenUsingPageController:arrowCopy orAlignToContext:v30 usingAnnotation:v31, v32, v33, v34];
         v35 = v74.origin.x;
         v36 = v74.origin.y;
         v37 = v74.size.height;

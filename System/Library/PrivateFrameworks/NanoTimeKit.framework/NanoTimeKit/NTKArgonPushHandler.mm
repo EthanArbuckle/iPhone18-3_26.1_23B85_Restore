@@ -1,21 +1,21 @@
 @interface NTKArgonPushHandler
-- (NTKArgonPushHandler)initWithCloudKitDatabase:(id)a3;
-- (void)handleNotificationUserInfo:(id)a3 completion:(id)a4;
-- (void)registerToken:(id)a3 completion:(id)a4;
+- (NTKArgonPushHandler)initWithCloudKitDatabase:(id)database;
+- (void)handleNotificationUserInfo:(id)info completion:(id)completion;
+- (void)registerToken:(id)token completion:(id)completion;
 @end
 
 @implementation NTKArgonPushHandler
 
-- (NTKArgonPushHandler)initWithCloudKitDatabase:(id)a3
+- (NTKArgonPushHandler)initWithCloudKitDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v12.receiver = self;
   v12.super_class = NTKArgonPushHandler;
   v6 = [(NTKArgonPushHandler *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.nanotimekit.facesupport.push", v8);
     callbackQueue = v7->_callbackQueue;
@@ -25,15 +25,15 @@
   return v7;
 }
 
-- (void)registerToken:(id)a3 completion:(id)a4
+- (void)registerToken:(id)token completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  if (v6)
+  completionCopy = completion;
+  v7 = [token copy];
+  if (completionCopy)
   {
-    v8 = [(NTKArgonPushHandler *)self callbackQueue];
-    v9 = [(NTKArgonPushHandler *)self database];
-    if (v9)
+    callbackQueue = [(NTKArgonPushHandler *)self callbackQueue];
+    database = [(NTKArgonPushHandler *)self database];
+    if (database)
     {
       if (v7)
       {
@@ -46,9 +46,9 @@
         v13[2] = __48__NTKArgonPushHandler_registerToken_completion___block_invoke_3;
         v13[3] = &unk_278782798;
         v13[4] = self;
-        v16 = v6;
+        v16 = completionCopy;
         v14 = v7;
-        v15 = v9;
+        v15 = database;
         [v15 performQuery:v12 inZoneWithID:0 completionHandler:v13];
       }
 
@@ -58,8 +58,8 @@
         v17[1] = 3221225472;
         v17[2] = __48__NTKArgonPushHandler_registerToken_completion___block_invoke_2;
         v17[3] = &unk_27877E960;
-        v18 = v6;
-        dispatch_async(v8, v17);
+        v18 = completionCopy;
+        dispatch_async(callbackQueue, v17);
         v12 = v18;
       }
     }
@@ -70,8 +70,8 @@
       block[1] = 3221225472;
       block[2] = __48__NTKArgonPushHandler_registerToken_completion___block_invoke;
       block[3] = &unk_27877E960;
-      v20 = v6;
-      dispatch_async(v8, block);
+      v20 = completionCopy;
+      dispatch_async(callbackQueue, block);
       v12 = v20;
     }
   }
@@ -163,16 +163,16 @@ void __48__NTKArgonPushHandler_registerToken_completion___block_invoke_5(uint64_
   dispatch_async(v5, v7);
 }
 
-- (void)handleNotificationUserInfo:(id)a3 completion:(id)a4
+- (void)handleNotificationUserInfo:(id)info completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  v8 = [(NTKArgonPushHandler *)self callbackQueue];
+  completionCopy = completion;
+  v7 = [info copy];
+  callbackQueue = [(NTKArgonPushHandler *)self callbackQueue];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__NTKArgonPushHandler_handleNotificationUserInfo_completion___block_invoke;
   aBlock[3] = &unk_27877E960;
-  v9 = v6;
+  v9 = completionCopy;
   v21 = v9;
   v10 = _Block_copy(aBlock);
   v11 = [v7 objectForKey:@"kd"];
@@ -194,12 +194,12 @@ void __48__NTKArgonPushHandler_registerToken_completion___block_invoke_5(uint64_
       v18 = v15;
       v19 = v9;
       v16 = v15;
-      dispatch_async(v8, block);
+      dispatch_async(callbackQueue, block);
     }
 
     else
     {
-      dispatch_async(v8, v10);
+      dispatch_async(callbackQueue, v10);
     }
 
     v11 = v12;
@@ -207,7 +207,7 @@ void __48__NTKArgonPushHandler_registerToken_completion___block_invoke_5(uint64_
 
   else
   {
-    dispatch_async(v8, v10);
+    dispatch_async(callbackQueue, v10);
   }
 }
 

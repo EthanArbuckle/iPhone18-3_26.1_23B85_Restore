@@ -20,8 +20,8 @@
   v15 = 0;
   if (v4)
   {
-    v5 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-    v6 = [v4 stringByTrimmingCharactersInSet:v5];
+    alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+    v6 = [v4 stringByTrimmingCharactersInSet:alphanumericCharacterSet];
 
     if ([v6 isEqualToString:&stru_286AD7A30])
     {
@@ -36,8 +36,8 @@
       }
 
       v9 = v7;
-      a1 = [a1 init];
-      if (a1)
+      self = [self init];
+      if (self)
       {
         if ([v9 length] >= 2)
         {
@@ -48,7 +48,7 @@
             __str[0] = [v9 characterAtIndex:v11 - 1];
             __str[1] = [v9 characterAtIndex:v11];
             HIBYTE(v15) = strtol(__str, 0, 16);
-            [a1 appendBytes:&v15 + 1 length:1];
+            [self appendBytes:&v15 + 1 length:1];
             ++v10;
             v11 += 2;
           }
@@ -56,30 +56,30 @@
           while (v10 < [v9 length] / 2);
         }
 
-        v8 = a1;
+        selfCopy = self;
       }
 
       else
       {
-        v8 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
       v9 = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
     v9 = 0;
     v6 = 0;
   }
 
-  v12 = v8;
+  v12 = selfCopy;
 
   return v12;
 }

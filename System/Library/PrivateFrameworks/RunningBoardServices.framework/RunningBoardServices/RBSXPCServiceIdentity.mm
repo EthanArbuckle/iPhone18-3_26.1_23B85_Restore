@@ -1,10 +1,10 @@
 @interface RBSXPCServiceIdentity
-+ (RBSXPCServiceIdentity)identityWithDefinition:(id)a3 sessionID:(id)a4 host:(id)a5 UUID:(id)a6 persona:(id)a7 validationToken:(id)a8;
-- (BOOL)isEqual:(id)a3;
++ (RBSXPCServiceIdentity)identityWithDefinition:(id)definition sessionID:(id)d host:(id)host UUID:(id)iD persona:(id)persona validationToken:(id)token;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSXPCServiceIdentity)initWithRBSXPCCoder:(id)a3;
+- (RBSXPCServiceIdentity)initWithRBSXPCCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSXPCServiceIdentity
@@ -19,36 +19,36 @@
   return v6 ^ v7 ^ [(NSData *)self->_validationToken hash];
 }
 
-+ (RBSXPCServiceIdentity)identityWithDefinition:(id)a3 sessionID:(id)a4 host:(id)a5 UUID:(id)a6 persona:(id)a7 validationToken:(id)a8
++ (RBSXPCServiceIdentity)identityWithDefinition:(id)definition sessionID:(id)d host:(id)host UUID:(id)iD persona:(id)persona validationToken:(id)token
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = a7;
-  v19 = a4;
-  v20 = objc_alloc_init(a1);
+  definitionCopy = definition;
+  hostCopy = host;
+  iDCopy = iD;
+  tokenCopy = token;
+  personaCopy = persona;
+  dCopy = d;
+  v20 = objc_alloc_init(self);
   v21 = v20[1];
-  v20[1] = v14;
-  v22 = v14;
+  v20[1] = definitionCopy;
+  v22 = definitionCopy;
 
-  v23 = [v19 copy];
+  v23 = [dCopy copy];
   v24 = v20[2];
   v20[2] = v23;
 
   v25 = v20[3];
-  v20[3] = v15;
-  v26 = v15;
+  v20[3] = hostCopy;
+  v26 = hostCopy;
 
   v27 = v20[4];
-  v20[4] = v16;
-  v28 = v16;
+  v20[4] = iDCopy;
+  v28 = iDCopy;
 
-  v29 = [v18 copy];
+  v29 = [personaCopy copy];
   v30 = v20[5];
   v20[5] = v29;
 
-  v31 = [v17 copy];
+  v31 = [tokenCopy copy];
   v32 = v20[6];
   v20[6] = v31;
 
@@ -91,26 +91,26 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   definition = self->_definition;
-  v6 = [v4 definition];
-  v7 = v6;
-  if (definition == v6 || (definition ? (v8 = v6 == 0) : (v8 = 1), !v8 && [(RBSXPCServiceDefinition *)definition isEqual:v6]))
+  definition = [equalCopy definition];
+  v7 = definition;
+  if (definition == definition || (definition ? (v8 = definition == 0) : (v8 = 1), !v8 && [(RBSXPCServiceDefinition *)definition isEqual:definition]))
   {
     sessionID = self->_sessionID;
-    v10 = [v4 sessionID];
-    v11 = v10;
-    if (sessionID != v10)
+    sessionID = [equalCopy sessionID];
+    v11 = sessionID;
+    if (sessionID != sessionID)
     {
       v12 = 0;
-      if (!sessionID || !v10)
+      if (!sessionID || !sessionID)
       {
         goto LABEL_37;
       }
 
-      if (![(NSString *)sessionID isEqual:v10])
+      if (![(NSString *)sessionID isEqual:sessionID])
       {
         v12 = 0;
 LABEL_37:
@@ -120,17 +120,17 @@ LABEL_37:
     }
 
     host = self->_host;
-    v14 = [v4 host];
-    v15 = v14;
-    if (host != v14)
+    host = [equalCopy host];
+    v15 = host;
+    if (host != host)
     {
       v12 = 0;
-      if (!host || !v14)
+      if (!host || !host)
       {
         goto LABEL_36;
       }
 
-      if (![(RBSProcessInstance *)host isEqual:v14])
+      if (![(RBSProcessInstance *)host isEqual:host])
       {
         v12 = 0;
 LABEL_36:
@@ -140,17 +140,17 @@ LABEL_36:
     }
 
     uuid = self->_uuid;
-    v17 = [v4 uuid];
-    v18 = v17;
-    if (uuid != v17)
+    uuid = [equalCopy uuid];
+    v18 = uuid;
+    if (uuid != uuid)
     {
       v12 = 0;
-      if (!uuid || !v17)
+      if (!uuid || !uuid)
       {
         goto LABEL_35;
       }
 
-      if (![(NSUUID *)uuid isEqual:v17])
+      if (![(NSUUID *)uuid isEqual:uuid])
       {
         v12 = 0;
 LABEL_35:
@@ -160,23 +160,23 @@ LABEL_35:
     }
 
     personaString = self->_personaString;
-    v20 = [v4 personaString];
-    v21 = v20;
-    if (personaString == v20)
+    personaString = [equalCopy personaString];
+    v21 = personaString;
+    if (personaString == personaString)
     {
       goto LABEL_23;
     }
 
     v12 = 0;
-    if (personaString && v20)
+    if (personaString && personaString)
     {
-      if ([(NSString *)personaString isEqual:v20])
+      if ([(NSString *)personaString isEqual:personaString])
       {
 LABEL_23:
         validationToken = self->_validationToken;
-        v23 = [v4 validationToken];
-        v24 = v23;
-        if (validationToken == v23)
+        validationToken = [equalCopy validationToken];
+        v24 = validationToken;
+        if (validationToken == validationToken)
         {
           v12 = 1;
         }
@@ -184,9 +184,9 @@ LABEL_23:
         else
         {
           v12 = 0;
-          if (validationToken && v23)
+          if (validationToken && validationToken)
           {
-            v12 = [(NSData *)validationToken isEqual:v23];
+            v12 = [(NSData *)validationToken isEqual:validationToken];
           }
         }
 
@@ -207,45 +207,45 @@ LABEL_38:
   return v12;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   definition = self->_definition;
-  v5 = a3;
-  [v5 encodeObject:definition forKey:@"_definition"];
-  [v5 encodeObject:self->_sessionID forKey:@"_sessionID"];
-  [v5 encodeObject:self->_host forKey:@"_host"];
-  [v5 encodeObject:self->_uuid forKey:@"_uuid"];
-  [v5 encodeObject:self->_personaString forKey:@"_personaString"];
-  [v5 encodeObject:self->_validationToken forKey:@"_validationToken"];
+  coderCopy = coder;
+  [coderCopy encodeObject:definition forKey:@"_definition"];
+  [coderCopy encodeObject:self->_sessionID forKey:@"_sessionID"];
+  [coderCopy encodeObject:self->_host forKey:@"_host"];
+  [coderCopy encodeObject:self->_uuid forKey:@"_uuid"];
+  [coderCopy encodeObject:self->_personaString forKey:@"_personaString"];
+  [coderCopy encodeObject:self->_validationToken forKey:@"_validationToken"];
 }
 
-- (RBSXPCServiceIdentity)initWithRBSXPCCoder:(id)a3
+- (RBSXPCServiceIdentity)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RBSXPCServiceIdentity *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_definition"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_definition"];
     definition = v5->_definition;
     v5->_definition = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sessionID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sessionID"];
     sessionID = v5->_sessionID;
     v5->_sessionID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_host"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_host"];
     host = v5->_host;
     v5->_host = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_uuid"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_personaString"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_personaString"];
     personaString = v5->_personaString;
     v5->_personaString = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_validationToken"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_validationToken"];
     validationToken = v5->_validationToken;
     v5->_validationToken = v16;
   }

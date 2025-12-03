@@ -1,12 +1,12 @@
 @interface UARPTLVPersonalizationFTABSubfileTrusted
 + (id)metaDataTableEntry;
-+ (id)tlvFromPropertyListValue:(id)a3;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvFromPropertyListValue:(id)value;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVPersonalizationFTABSubfileTrusted)init;
 - (id)description;
 - (id)generateTLV;
 - (id)tlvValue;
-- (void)setTrusted:(unsigned __int16)a3;
+- (void)setTrusted:(unsigned __int16)trusted;
 @end
 
 @implementation UARPTLVPersonalizationFTABSubfileTrusted
@@ -18,11 +18,11 @@
   return [(UARPMetaDataTLV16 *)&v3 init];
 }
 
-- (void)setTrusted:(unsigned __int16)a3
+- (void)setTrusted:(unsigned __int16)trusted
 {
   obj = self;
   objc_sync_enter(obj);
-  *(&obj->super.super._tlvLength + 2) = a3;
+  *(&obj->super.super._tlvLength + 2) = trusted;
   objc_sync_exit(obj);
 }
 
@@ -72,17 +72,17 @@
   return v3;
 }
 
-+ (id)tlvFromPropertyListValue:(id)a3
++ (id)tlvFromPropertyListValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
     v5 = objc_opt_new();
-    v6 = [v4 unsignedShortValue];
+    unsignedShortValue = [v4 unsignedShortValue];
 
-    [v5 setTrusted:v6];
+    [v5 setTrusted:unsignedShortValue];
   }
 
   else
@@ -93,12 +93,12 @@
   return v5;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
-  if (a3 == 2)
+  if (length == 2)
   {
     v5 = objc_opt_new();
-    [v5 setTrusted:uarpHtons(*a4)];
+    [v5 setTrusted:uarpHtons(*value)];
   }
 
   else

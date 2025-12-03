@@ -1,24 +1,24 @@
 @interface AKLineStylePicker
-- (AKLineStylePicker)initWithFrame:(CGRect)a3 lineType:(unint64_t)a4 controller:(id)a5;
-- (id)_buttonImagesForType:(unint64_t)a3;
-- (int64_t)_shapeTagForType:(unint64_t)a3;
-- (void)_styleButtonPressed:(id)a3;
-- (void)revalidateItems:(id)a3;
+- (AKLineStylePicker)initWithFrame:(CGRect)frame lineType:(unint64_t)type controller:(id)controller;
+- (id)_buttonImagesForType:(unint64_t)type;
+- (int64_t)_shapeTagForType:(unint64_t)type;
+- (void)_styleButtonPressed:(id)pressed;
+- (void)revalidateItems:(id)items;
 @end
 
 @implementation AKLineStylePicker
 
-- (AKLineStylePicker)initWithFrame:(CGRect)a3 lineType:(unint64_t)a4 controller:(id)a5
+- (AKLineStylePicker)initWithFrame:(CGRect)frame lineType:(unint64_t)type controller:(id)controller
 {
   v26.receiver = self;
   v26.super_class = AKLineStylePicker;
-  v6 = [(AKModernToolbarPicker *)&v26 initWithFrame:a5 controller:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v6 = [(AKModernToolbarPicker *)&v26 initWithFrame:controller controller:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v6;
   if (v6)
   {
-    v6->_lineType = a4;
-    v6->_lineStyle = [(AKLineStylePicker *)v6 _shapeTagForType:a4];
-    v8 = [(AKLineStylePicker *)v7 _buttonImagesForType:a4];
+    v6->_lineType = type;
+    v6->_lineStyle = [(AKLineStylePicker *)v6 _shapeTagForType:type];
+    v8 = [(AKLineStylePicker *)v7 _buttonImagesForType:type];
     if ([v8 count])
     {
       v9 = 0;
@@ -30,29 +30,29 @@
       {
         v14 = [v8 objectAtIndexedSubscript:v9];
         v15 = [&unk_2851BA9F8 objectAtIndexedSubscript:v9];
-        v16 = [v15 integerValue];
+        integerValue = [v15 integerValue];
 
         v17 = [[AKToggleButton alloc] initWithFrame:v14 templateImage:1 autoUpdatesColor:v10, v11, v12, v13];
-        v18 = [(AKToggleButton *)v17 layer];
-        [v18 setCornerRadius:10.0];
+        layer = [(AKToggleButton *)v17 layer];
+        [layer setCornerRadius:10.0];
 
-        v19 = [MEMORY[0x277D75348] systemFillColor];
-        [(AKToggleButton *)v17 setTintColor:v19];
+        systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+        [(AKToggleButton *)v17 setTintColor:systemFillColor];
 
         [(AKToggleButton *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v20 = [(AKToggleButton *)v17 widthAnchor];
-        v21 = [v20 constraintEqualToConstant:36.0];
+        widthAnchor = [(AKToggleButton *)v17 widthAnchor];
+        v21 = [widthAnchor constraintEqualToConstant:36.0];
         [v21 setActive:1];
 
-        v22 = [(AKToggleButton *)v17 heightAnchor];
-        v23 = [v22 constraintEqualToConstant:36.0];
+        heightAnchor = [(AKToggleButton *)v17 heightAnchor];
+        v23 = [heightAnchor constraintEqualToConstant:36.0];
         [v23 setActive:1];
 
         [(AKToggleButton *)v17 addTarget:v7 action:sel__styleButtonPressed_ forControlEvents:64];
         [(AKToggleButton *)v17 setImage:v14 forState:0];
-        [(AKToggleButton *)v17 setTag:v16];
-        v24 = [(AKModernToolbarPicker *)v7 stackview];
-        [v24 addArrangedSubview:v17];
+        [(AKToggleButton *)v17 setTag:integerValue];
+        stackview = [(AKModernToolbarPicker *)v7 stackview];
+        [stackview addArrangedSubview:v17];
 
         ++v9;
       }
@@ -64,34 +64,34 @@
   return v7;
 }
 
-- (void)_styleButtonPressed:(id)a3
+- (void)_styleButtonPressed:(id)pressed
 {
-  [a3 tag];
+  [pressed tag];
 
   MEMORY[0x2821F9670](self, sel_setCurrentTag_);
 }
 
-- (int64_t)_shapeTagForType:(unint64_t)a3
+- (int64_t)_shapeTagForType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_23F4D8F18[a3];
+    return qword_23F4D8F18[type];
   }
 }
 
-- (id)_buttonImagesForType:(unint64_t)a3
+- (id)_buttonImagesForType:(unint64_t)type
 {
   v25[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D75C80];
-  v5 = [(AKLineStylePicker *)self traitCollection];
-  v6 = [v4 traitCollectionWithUserInterfaceStyle:{objc_msgSend(v5, "userInterfaceStyle")}];
+  traitCollection = [(AKLineStylePicker *)self traitCollection];
+  v6 = [v4 traitCollectionWithUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-  switch(a3)
+  switch(type)
   {
     case 2uLL:
       v14 = MEMORY[0x277D755B8];
@@ -139,34 +139,34 @@ LABEL_9:
   return v21;
 }
 
-- (void)revalidateItems:(id)a3
+- (void)revalidateItems:(id)items
 {
-  v16 = [(AKModernToolbarPicker *)self controller];
+  controller = [(AKModernToolbarPicker *)self controller];
   v4 = [MEMORY[0x277D75220] buttonWithType:0];
   [v4 setTag:self->_lineStyle];
-  [v16 validateSender:v4];
-  v5 = [v4 isSelected];
-  v6 = [(AKModernToolbarPicker *)self stackview];
-  v7 = [v6 subviews];
-  v8 = [v7 count];
+  [controller validateSender:v4];
+  isSelected = [v4 isSelected];
+  stackview = [(AKModernToolbarPicker *)self stackview];
+  subviews = [stackview subviews];
+  v8 = [subviews count];
 
   if (v8)
   {
     v9 = 0;
     do
     {
-      v10 = [(AKModernToolbarPicker *)self stackview];
-      v11 = [v10 subviews];
-      v12 = [v11 objectAtIndexedSubscript:v9];
+      stackview2 = [(AKModernToolbarPicker *)self stackview];
+      subviews2 = [stackview2 subviews];
+      v12 = [subviews2 objectAtIndexedSubscript:v9];
 
       [v12 setSelected:0];
-      [v16 validateSender:v12];
-      [v12 setSelected:{objc_msgSend(v12, "isSelected") & v5}];
+      [controller validateSender:v12];
+      [v12 setSelected:{objc_msgSend(v12, "isSelected") & isSelected}];
 
       ++v9;
-      v13 = [(AKModernToolbarPicker *)self stackview];
-      v14 = [v13 subviews];
-      v15 = [v14 count];
+      stackview3 = [(AKModernToolbarPicker *)self stackview];
+      subviews3 = [stackview3 subviews];
+      v15 = [subviews3 count];
     }
 
     while (v9 < v15);

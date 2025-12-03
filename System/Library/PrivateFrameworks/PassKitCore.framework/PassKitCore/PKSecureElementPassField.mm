@@ -1,27 +1,27 @@
 @interface PKSecureElementPassField
-- (PKSecureElementPassField)initWithPassField:(id)a3;
-- (PKSecureElementPassField)initWithPaymentPassFieldDictionary:(id)a3;
+- (PKSecureElementPassField)initWithPassField:(id)field;
+- (PKSecureElementPassField)initWithPaymentPassFieldDictionary:(id)dictionary;
 @end
 
 @implementation PKSecureElementPassField
 
-- (PKSecureElementPassField)initWithPaymentPassFieldDictionary:(id)a3
+- (PKSecureElementPassField)initWithPaymentPassFieldDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PKSecureElementPassField *)self init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"key"];
+    v6 = [dictionaryCopy PKStringForKey:@"key"];
     key = v5->_key;
     v5->_key = v6;
 
-    v8 = [v4 PKSetContaining:objc_opt_class() forKey:@"combinedForeignReferenceIdentifiers"];
+    v8 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"combinedForeignReferenceIdentifiers"];
     foreignReferenceIdentifiers = v5->_foreignReferenceIdentifiers;
     v5->_foreignReferenceIdentifiers = v8;
 
     if (!v5->_foreignReferenceIdentifiers)
     {
-      v10 = [v4 PKStringForKey:@"foreignReferenceIdentifier"];
+      v10 = [dictionaryCopy PKStringForKey:@"foreignReferenceIdentifier"];
       if (v10)
       {
         v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v10, 0}];
@@ -30,7 +30,7 @@
       }
     }
 
-    v13 = [v4 PKStringForKey:@"unitType"];
+    v13 = [dictionaryCopy PKStringForKey:@"unitType"];
     v18 = v13;
     if (v13)
     {
@@ -41,25 +41,25 @@
   return v5;
 }
 
-- (PKSecureElementPassField)initWithPassField:(id)a3
+- (PKSecureElementPassField)initWithPassField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v13.receiver = self;
   v13.super_class = PKSecureElementPassField;
   v5 = [(PKSecureElementPassField *)&v13 init];
   if (v5)
   {
-    v6 = [v4 key];
+    v6 = [fieldCopy key];
     v7 = [v6 copy];
     key = v5->_key;
     v5->_key = v7;
 
-    v9 = [v4 foreignReferenceIdentifiers];
-    v10 = [v9 copy];
+    foreignReferenceIdentifiers = [fieldCopy foreignReferenceIdentifiers];
+    v10 = [foreignReferenceIdentifiers copy];
     foreignReferenceIdentifiers = v5->_foreignReferenceIdentifiers;
     v5->_foreignReferenceIdentifiers = v10;
 
-    v5->_unitType = [v4 unitType];
+    v5->_unitType = [fieldCopy unitType];
   }
 
   return v5;

@@ -1,37 +1,37 @@
 @interface _HKAppURLSpecification
-+ (BOOL)isAtrialFibrillationEventURL:(id)a3;
-+ (BOOL)isClinicalLoginRedirectURL:(id)a3;
-+ (BOOL)isClinicalOnboardingURL:(id)a3;
-+ (BOOL)parseClinicalLoginRedirectURL:(id)a3 resultHandler:(id)a4 errorHandler:(id)a5;
-+ (BOOL)parseClinicalOnboardingURL:(id)a3 resultHandler:(id)a4 errorHandler:(id)a5;
++ (BOOL)isAtrialFibrillationEventURL:(id)l;
++ (BOOL)isClinicalLoginRedirectURL:(id)l;
++ (BOOL)isClinicalOnboardingURL:(id)l;
++ (BOOL)parseClinicalLoginRedirectURL:(id)l resultHandler:(id)handler errorHandler:(id)errorHandler;
++ (BOOL)parseClinicalOnboardingURL:(id)l resultHandler:(id)handler errorHandler:(id)errorHandler;
 @end
 
 @implementation _HKAppURLSpecification
 
-+ (BOOL)isClinicalOnboardingURL:(id)a3
++ (BOOL)isClinicalOnboardingURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v4 setHost:@"provider-universal.health.apple.com"];
   [v4 setPath:@"/o"];
   [v4 setScheme:@"https"];
   v5 = [v4 URL];
 
-  v6 = [v3 scheme];
-  v7 = [v5 scheme];
-  if (v6 != v7)
+  scheme = [lCopy scheme];
+  scheme2 = [v5 scheme];
+  if (scheme != scheme2)
   {
-    v8 = [v5 scheme];
-    if (!v8)
+    scheme3 = [v5 scheme];
+    if (!scheme3)
     {
       v19 = 0;
       goto LABEL_15;
     }
 
-    v9 = v8;
-    v10 = [v3 scheme];
-    v11 = [v5 scheme];
-    if (![v10 isEqual:v11])
+    v9 = scheme3;
+    scheme4 = [lCopy scheme];
+    scheme5 = [v5 scheme];
+    if (![scheme4 isEqual:scheme5])
     {
       v19 = 0;
 LABEL_14:
@@ -39,36 +39,36 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v26 = v11;
-    v27 = v10;
+    v26 = scheme5;
+    v27 = scheme4;
     v28 = v9;
   }
 
-  v12 = [v3 host];
-  v13 = [v12 lowercaseString];
-  v14 = [v5 host];
-  v15 = [v14 lowercaseString];
-  if (v13 == v15)
+  host = [lCopy host];
+  lowercaseString = [host lowercaseString];
+  host2 = [v5 host];
+  lowercaseString2 = [host2 lowercaseString];
+  if (lowercaseString == lowercaseString2)
   {
     v19 = 1;
   }
 
   else
   {
-    v25 = [v5 host];
-    v16 = [v25 lowercaseString];
-    if (v16)
+    host3 = [v5 host];
+    lowercaseString3 = [host3 lowercaseString];
+    if (lowercaseString3)
     {
-      v22 = [v3 host];
-      v21 = [v22 lowercaseString];
+      host4 = [lCopy host];
+      lowercaseString4 = [host4 lowercaseString];
       [v5 host];
-      v17 = v24 = v12;
+      v17 = v24 = host;
       [v17 lowercaseString];
-      v18 = v23 = v13;
-      v19 = [v21 isEqual:v18];
+      v18 = v23 = lowercaseString;
+      v19 = [lowercaseString4 isEqual:v18];
 
-      v13 = v23;
-      v12 = v24;
+      lowercaseString = v23;
+      host = v24;
     }
 
     else
@@ -77,10 +77,10 @@ LABEL_14:
     }
   }
 
-  v10 = v27;
+  scheme4 = v27;
   v9 = v28;
-  v11 = v26;
-  if (v6 != v7)
+  scheme5 = v26;
+  if (scheme != scheme2)
   {
     goto LABEL_14;
   }
@@ -90,58 +90,58 @@ LABEL_15:
   return v19;
 }
 
-+ (BOOL)parseClinicalOnboardingURL:(id)a3 resultHandler:(id)a4 errorHandler:(id)a5
++ (BOOL)parseClinicalOnboardingURL:(id)l resultHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([a1 isClinicalOnboardingURL:v8])
+  lCopy = l;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
+  if ([self isClinicalOnboardingURL:lCopy])
   {
-    v11 = [v8 hk_valueForFirstInstanceOfParameterNamed:@"g"];
-    v12 = [v8 hk_valueForFirstInstanceOfParameterNamed:@"b"];
-    v13 = [v8 hk_valueForFirstInstanceOfParameterNamed:@"src"];
+    v11 = [lCopy hk_valueForFirstInstanceOfParameterNamed:@"g"];
+    v12 = [lCopy hk_valueForFirstInstanceOfParameterNamed:@"b"];
+    v13 = [lCopy hk_valueForFirstInstanceOfParameterNamed:@"src"];
     if (v11 && v12)
     {
-      v14 = [v8 hk_valueForFirstInstanceOfParameterNamed:@"f"];
-      v15 = v9[2](v9, v11, v12, v13, [v14 isEqualToString:@"clinical-sharing"]);
+      v14 = [lCopy hk_valueForFirstInstanceOfParameterNamed:@"f"];
+      v15 = handlerCopy[2](handlerCopy, v11, v12, v13, [v14 isEqualToString:@"clinical-sharing"]);
     }
 
     else
     {
       v17 = MEMORY[0x1E696ABC0];
-      v14 = HKSensitiveLogItem(v8);
+      v14 = HKSensitiveLogItem(lCopy);
       v18 = [v17 hk_error:3 format:{@"Failed to parse onboarding URL: %@", v14}];
-      v15 = v10[2](v10, v18);
+      v15 = errorHandlerCopy[2](errorHandlerCopy, v18);
     }
   }
 
   else
   {
     v16 = MEMORY[0x1E696ABC0];
-    v11 = HKSensitiveLogItem(v8);
+    v11 = HKSensitiveLogItem(lCopy);
     v12 = [v16 hk_error:3 format:{@"Invalid onboarding URL: %@", v11}];
-    v15 = v10[2](v10, v12);
+    v15 = errorHandlerCopy[2](errorHandlerCopy, v12);
   }
 
   return v15;
 }
 
-+ (BOOL)isClinicalLoginRedirectURL:(id)a3
++ (BOOL)isClinicalLoginRedirectURL:(id)l
 {
   v92 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v53 = [MEMORY[0x1E695DFD8] setWithObjects:{@"code", @"state", 0}];
   [MEMORY[0x1E695DFD8] setWithObject:@"error"];
-  v51 = v50 = v6;
-  v7 = [MEMORY[0x1E696AF20] componentsWithURL:v6 resolvingAgainstBaseURL:1];
+  v51 = v50 = lCopy;
+  v7 = [MEMORY[0x1E696AF20] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
   v52 = v7;
-  v9 = [v7 queryItems];
-  v10 = [v9 countByEnumeratingWithState:&v85 objects:v91 count:16];
+  queryItems = [v7 queryItems];
+  v10 = [queryItems countByEnumeratingWithState:&v85 objects:v91 count:16];
   if (v10)
   {
     v11 = v10;
@@ -152,14 +152,14 @@ LABEL_15:
       {
         if (*v86 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(queryItems);
         }
 
-        v13 = [*(*(&v85 + 1) + 8 * i) name];
-        [v8 addObject:v13];
+        name = [*(*(&v85 + 1) + 8 * i) name];
+        [v8 addObject:name];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v85 objects:v91 count:16];
+      v11 = [queryItems countByEnumeratingWithState:&v85 objects:v91 count:16];
     }
 
     while (v11);
@@ -171,8 +171,8 @@ LABEL_15:
     goto LABEL_61;
   }
 
-  v14 = [v52 path];
-  v15 = [v14 length];
+  path = [v52 path];
+  v15 = [path length];
 
   if (!v15)
   {
@@ -218,59 +218,59 @@ LABEL_15:
     for (j = 0; j != v77; ++j)
     {
       v80 = v5;
-      v24 = i;
+      port4 = i;
       if (*v82 != v76)
       {
         objc_enumerationMutation(obj);
       }
 
       v25 = *(*(&v81 + 1) + 8 * j);
-      v26 = [v22 scheme];
-      v27 = [v25 scheme];
-      if (v26 != v27)
+      scheme = [v22 scheme];
+      scheme2 = [v25 scheme];
+      if (scheme != scheme2)
       {
-        v4 = [v25 scheme];
-        if (!v4)
+        scheme3 = [v25 scheme];
+        if (!scheme3)
         {
-          i = v24;
+          i = port4;
           goto LABEL_33;
         }
 
-        v28 = [v22 scheme];
-        v29 = [v25 scheme];
-        v75 = v28;
-        v30 = v28;
-        v21 = v29;
-        if (![v30 isEqual:v29])
+        scheme4 = [v22 scheme];
+        scheme5 = [v25 scheme];
+        v75 = scheme4;
+        v30 = scheme4;
+        v21 = scheme5;
+        if (![v30 isEqual:scheme5])
         {
-          i = v24;
+          i = port4;
           goto LABEL_32;
         }
       }
 
-      v78 = v4;
-      v31 = [v22 port];
-      v32 = [v25 port];
-      v33 = v32;
-      v79 = v31;
-      if (v31 != v32)
+      v78 = scheme3;
+      port = [v22 port];
+      port2 = [v25 port];
+      v33 = port2;
+      v79 = port;
+      if (port != port2)
       {
-        v71 = [v25 port];
-        if (v71)
+        port3 = [v25 port];
+        if (port3)
         {
-          v24 = [v22 port];
-          v34 = [v25 port];
-          v80 = v34;
-          if ([v24 isEqual:v34])
+          port4 = [v22 port];
+          port5 = [v25 port];
+          v80 = port5;
+          if ([port4 isEqual:port5])
           {
             v70 = v33;
             v35 = v21;
             goto LABEL_26;
           }
 
-          v4 = v78;
-          i = v24;
-          if (v26 == v27)
+          scheme3 = v78;
+          i = port4;
+          if (scheme == scheme2)
           {
 LABEL_33:
 
@@ -282,10 +282,10 @@ LABEL_33:
         else
         {
 
-          v71 = 0;
-          v4 = v78;
-          i = v24;
-          if (v26 == v27)
+          port3 = 0;
+          scheme3 = v78;
+          i = port4;
+          if (scheme == scheme2)
           {
             goto LABEL_33;
           }
@@ -296,40 +296,40 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      v70 = v32;
+      v70 = port2;
       v35 = v21;
 LABEL_26:
-      v36 = [v22 host];
-      v37 = [v36 lowercaseString];
-      v68 = [v25 host];
-      v73 = [v68 lowercaseString];
-      v74 = v37;
-      if (v37 == v73)
+      host = [v22 host];
+      lowercaseString = [host lowercaseString];
+      host2 = [v25 host];
+      lowercaseString2 = [host2 lowercaseString];
+      v74 = lowercaseString;
+      if (lowercaseString == lowercaseString2)
       {
-        v66 = v36;
+        v66 = host;
         v72 = v35;
         goto LABEL_35;
       }
 
-      v65 = [v25 host];
-      v64 = [v65 lowercaseString];
+      host3 = [v25 host];
+      lowercaseString3 = [host3 lowercaseString];
       v21 = v35;
-      if (v64)
+      if (lowercaseString3)
       {
-        v66 = v36;
-        v61 = [v22 host];
-        v38 = [v61 lowercaseString];
-        v59 = [v25 host];
-        [v59 lowercaseString];
-        v58 = v60 = v38;
+        v66 = host;
+        host4 = [v22 host];
+        lowercaseString4 = [host4 lowercaseString];
+        host5 = [v25 host];
+        [host5 lowercaseString];
+        v58 = v60 = lowercaseString4;
         v39 = v70;
-        if (![v38 isEqual:?])
+        if (![lowercaseString4 isEqual:?])
         {
           v69 = 0;
-          i = v24;
+          i = port4;
           v5 = v80;
           v22 = v57;
-          v36 = v66;
+          host = v66;
 LABEL_46:
 
           goto LABEL_47;
@@ -338,34 +338,34 @@ LABEL_46:
         v72 = v21;
         v22 = v57;
 LABEL_35:
-        v63 = [v22 path];
-        v40 = [v63 lowercaseString];
-        v41 = [v25 path];
-        v42 = [v41 lowercaseString];
-        v62 = v40;
-        if (v40 == v42)
+        path2 = [v22 path];
+        lowercaseString5 = [path2 lowercaseString];
+        path3 = [v25 path];
+        lowercaseString6 = [path3 lowercaseString];
+        v62 = lowercaseString5;
+        if (lowercaseString5 == lowercaseString6)
         {
           v69 = 1;
-          i = v24;
+          i = port4;
           v5 = v80;
           v39 = v70;
         }
 
         else
         {
-          v56 = [v25 path];
-          v43 = [v56 lowercaseString];
-          if (v43)
+          path4 = [v25 path];
+          lowercaseString7 = [path4 lowercaseString];
+          if (lowercaseString7)
           {
-            v55 = v43;
-            v54 = [v22 path];
-            v44 = [v54 lowercaseString];
-            v45 = [v25 path];
-            v46 = [v45 lowercaseString];
-            v69 = [v44 isEqual:v46];
+            v55 = lowercaseString7;
+            path5 = [v22 path];
+            lowercaseString8 = [path5 lowercaseString];
+            path6 = [v25 path];
+            lowercaseString9 = [path6 lowercaseString];
+            v69 = [lowercaseString8 isEqual:lowercaseString9];
 
             v22 = v57;
-            v43 = v55;
+            lowercaseString7 = v55;
           }
 
           else
@@ -373,15 +373,15 @@ LABEL_35:
             v69 = 0;
           }
 
-          i = v24;
+          i = port4;
           v39 = v70;
 
           v5 = v80;
         }
 
         v21 = v72;
-        v36 = v66;
-        if (v74 == v73)
+        host = v66;
+        if (v74 == lowercaseString2)
         {
           goto LABEL_48;
         }
@@ -390,8 +390,8 @@ LABEL_35:
       }
 
       v69 = 0;
-      v64 = 0;
-      i = v24;
+      lowercaseString3 = 0;
+      i = port4;
       v5 = v80;
       v39 = v70;
 LABEL_47:
@@ -401,16 +401,16 @@ LABEL_48:
       {
       }
 
-      if (v26 == v27)
+      if (scheme == scheme2)
       {
 
-        v4 = v78;
+        scheme3 = v78;
       }
 
       else
       {
 
-        v4 = v78;
+        scheme3 = v78;
       }
 
       if (v69)
@@ -437,15 +437,15 @@ LABEL_61:
   return v47;
 }
 
-+ (BOOL)parseClinicalLoginRedirectURL:(id)a3 resultHandler:(id)a4 errorHandler:(id)a5
++ (BOOL)parseClinicalLoginRedirectURL:(id)l resultHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([a1 isClinicalLoginRedirectURL:v8])
+  lCopy = l;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
+  if ([self isClinicalLoginRedirectURL:lCopy])
   {
-    v11 = [v8 hk_valueForFirstInstanceOfParameterNamed:@"code"];
-    v12 = [v8 hk_valueForFirstInstanceOfParameterNamed:@"state"];
+    v11 = [lCopy hk_valueForFirstInstanceOfParameterNamed:@"code"];
+    v12 = [lCopy hk_valueForFirstInstanceOfParameterNamed:@"state"];
     if (v12)
     {
       v13 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v12];
@@ -454,7 +454,7 @@ LABEL_61:
       {
         if (v13)
         {
-          v15 = v9[2](v9, v11, v13);
+          v15 = handlerCopy[2](handlerCopy, v11, v13);
 LABEL_9:
           v17 = v15;
 LABEL_12:
@@ -463,7 +463,7 @@ LABEL_12:
         }
 
         v14 = LABEL_8:;
-        v15 = v10[2](v10, v14, 0);
+        v15 = errorHandlerCopy[2](errorHandlerCopy, v14, 0);
         goto LABEL_9;
       }
     }
@@ -478,28 +478,28 @@ LABEL_12:
       v14 = 0;
     }
 
-    v18 = [v8 hk_valueForFirstInstanceOfParameterNamed:@"error"];
+    v18 = [lCopy hk_valueForFirstInstanceOfParameterNamed:@"error"];
     v19 = [MEMORY[0x1E696ABC0] hk_OAuth2_errorFromErrorValue:v18];
-    v17 = (v10)[2](v10, v19, v14);
+    v17 = (errorHandlerCopy)[2](errorHandlerCopy, v19, v14);
 
     goto LABEL_12;
   }
 
   v16 = MEMORY[0x1E696ABC0];
-  v11 = HKSensitiveLogItem(v8);
+  v11 = HKSensitiveLogItem(lCopy);
   v12 = [v16 hk_error:3 format:{@"Invalid redirect URL: %@", v11}];
-  v17 = v10[2](v10, v12, 0);
+  v17 = errorHandlerCopy[2](errorHandlerCopy, v12, 0);
 LABEL_13:
 
   return v17;
 }
 
-+ (BOOL)isAtrialFibrillationEventURL:(id)a3
++ (BOOL)isAtrialFibrillationEventURL:(id)l
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = a3;
-  v5 = [v3 _hk_urlForAtrialFibrillationEventType];
-  v6 = [v4 isEqual:v5];
+  lCopy = l;
+  _hk_urlForAtrialFibrillationEventType = [v3 _hk_urlForAtrialFibrillationEventType];
+  v6 = [lCopy isEqual:_hk_urlForAtrialFibrillationEventType];
 
   return v6;
 }

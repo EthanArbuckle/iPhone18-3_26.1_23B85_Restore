@@ -1,14 +1,14 @@
 @interface SiriCoreConnectionMetrics
 - (id)getConnectionMetricsDescription;
-- (void)_setConnectionMetricsFromNSPControlConnection:(id)a3 withCompletion:(id)a4;
-- (void)_setConnectionMetricsTCPInfo:(id)a3;
-- (void)setConnectionMetricsForIDS:(double)a3 messageDelay:(double)a4 openErrorCode:(unint64_t)a5;
-- (void)setConnectionMetricsFromNWConnectionForDirect:(id)a3 isMPTCP:(BOOL)a4 attemptedEndpoints:(id)a5 withCompletion:(id)a6;
-- (void)setConnectionMetricsFromNWConnectionForPOP:(id)a3 withCompletion:(id)a4;
-- (void)setConnectionMetricsFromStream:(id)a3 isPop:(BOOL)a4 withCompletion:(id)a5;
-- (void)setConnectionMetricsFromStreamForDirect:(id)a3 withCompletion:(id)a4;
-- (void)setConnectionMetricsFromStreamForPOP:(id)a3 withCompletion:(id)a4;
-- (void)setTCPInfoMetricsByInterfaceName:(id)a3;
+- (void)_setConnectionMetricsFromNSPControlConnection:(id)connection withCompletion:(id)completion;
+- (void)_setConnectionMetricsTCPInfo:(id)info;
+- (void)setConnectionMetricsForIDS:(double)s messageDelay:(double)delay openErrorCode:(unint64_t)code;
+- (void)setConnectionMetricsFromNWConnectionForDirect:(id)direct isMPTCP:(BOOL)p attemptedEndpoints:(id)endpoints withCompletion:(id)completion;
+- (void)setConnectionMetricsFromNWConnectionForPOP:(id)p withCompletion:(id)completion;
+- (void)setConnectionMetricsFromStream:(id)stream isPop:(BOOL)pop withCompletion:(id)completion;
+- (void)setConnectionMetricsFromStreamForDirect:(id)direct withCompletion:(id)completion;
+- (void)setConnectionMetricsFromStreamForPOP:(id)p withCompletion:(id)completion;
+- (void)setTCPInfoMetricsByInterfaceName:(id)name;
 @end
 
 @implementation SiriCoreConnectionMetrics
@@ -16,43 +16,43 @@
 - (id)getConnectionMetricsDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SiriCoreConnectionMetrics *)self connectionMethod];
-  v5 = [(SiriCoreConnectionMetrics *)self connectionEdgeID];
-  v6 = [(SiriCoreConnectionMetrics *)self tcpInfoMetricsByInterfaceName];
-  v7 = [v3 stringWithFormat:@"ConnectionMethod: %@ on Edge: %@ TCP_INFO: %@", v4, v5, v6];
+  connectionMethod = [(SiriCoreConnectionMetrics *)self connectionMethod];
+  connectionEdgeID = [(SiriCoreConnectionMetrics *)self connectionEdgeID];
+  tcpInfoMetricsByInterfaceName = [(SiriCoreConnectionMetrics *)self tcpInfoMetricsByInterfaceName];
+  v7 = [v3 stringWithFormat:@"ConnectionMethod: %@ on Edge: %@ TCP_INFO: %@", connectionMethod, connectionEdgeID, tcpInfoMetricsByInterfaceName];
 
   return v7;
 }
 
-- (void)setConnectionMetricsForIDS:(double)a3 messageDelay:(double)a4 openErrorCode:(unint64_t)a5
+- (void)setConnectionMetricsForIDS:(double)s messageDelay:(double)delay openErrorCode:(unint64_t)code
 {
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:delay];
   [(SiriCoreConnectionMetrics *)self setIdsLastMessageDelay:v8];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithDouble:s];
   [(SiriCoreConnectionMetrics *)self setIdsLastSocketDelay:v9];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:code];
   [(SiriCoreConnectionMetrics *)self setIdsLastSocketOpenError:v10];
 }
 
-- (void)setConnectionMetricsFromNWConnectionForPOP:(id)a3 withCompletion:(id)a4
+- (void)setConnectionMetricsFromNWConnectionForPOP:(id)p withCompletion:(id)completion
 {
   v6 = MEMORY[0x277D2CA50];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initFromNWConnection:v8];
+  completionCopy = completion;
+  pCopy = p;
+  v9 = [[v6 alloc] initFromNWConnection:pCopy];
 
-  [(SiriCoreConnectionMetrics *)self _setConnectionMetricsFromNSPControlConnection:v9 withCompletion:v7];
+  [(SiriCoreConnectionMetrics *)self _setConnectionMetricsFromNSPControlConnection:v9 withCompletion:completionCopy];
 }
 
-- (void)setConnectionMetricsFromNWConnectionForDirect:(id)a3 isMPTCP:(BOOL)a4 attemptedEndpoints:(id)a5 withCompletion:(id)a6
+- (void)setConnectionMetricsFromNWConnectionForDirect:(id)direct isMPTCP:(BOOL)p attemptedEndpoints:(id)endpoints withCompletion:(id)completion
 {
-  v8 = a4;
+  pCopy = p;
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  directCopy = direct;
+  endpointsCopy = endpoints;
+  completionCopy = completion;
   v13 = nw_connection_copy_tcp_info();
   v14 = v13;
   if (v13 && MEMORY[0x26D5E61D0](v13) == MEMORY[0x277D86468] && xpc_dictionary_get_count(v14))
@@ -68,13 +68,13 @@
     [(SiriCoreConnectionMetrics *)self _setConnectionMetricsTCPInfo:v16];
   }
 
-  if (!v8)
+  if (!pCopy)
   {
     [(SiriCoreConnectionMetrics *)self setSubflowCount:0];
     [(SiriCoreConnectionMetrics *)self setConnectedSubflowCount:0];
     [(SiriCoreConnectionMetrics *)self setPrimarySubflowInterfaceName:0];
     [(SiriCoreConnectionMetrics *)self setSubflowSwitchCounts:0];
-    if (!v10)
+    if (!directCopy)
     {
       goto LABEL_46;
     }
@@ -100,10 +100,10 @@ LABEL_14:
 
     else
     {
-      if ([v11 count])
+      if ([endpointsCopy count])
       {
         v45 = v14;
-        v29 = [v11 count];
+        v29 = [endpointsCopy count];
         v30 = objc_alloc_init(MEMORY[0x277CCAB68]);
         if (v29)
         {
@@ -114,7 +114,7 @@ LABEL_14:
               [v30 appendString:{@", "}];
             }
 
-            v32 = [v11 objectAtIndexedSubscript:i];
+            v32 = [endpointsCopy objectAtIndexedSubscript:i];
             [v30 appendString:v32];
           }
         }
@@ -152,7 +152,7 @@ LABEL_45:
         [(SiriCoreConnectionMetrics *)self setConnectionStartTimeToTLSHandshakeTimeMsec:v39];
 
         v40 = MEMORY[0x26D5E5AF0]();
-        v41 = nw_connection_copy_protocol_metadata(v10, v40);
+        v41 = nw_connection_copy_protocol_metadata(directCopy, v40);
 
         negotiated_tls_protocol_version = sec_protocol_metadata_get_negotiated_tls_protocol_version(v41);
         if (negotiated_tls_protocol_version > 769)
@@ -230,15 +230,15 @@ LABEL_44:
     [(SiriCoreConnectionMetrics *)self setSubflowSwitchCounts:v25];
   }
 
-  if (v10)
+  if (directCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_46:
-  if (v12)
+  if (completionCopy)
   {
-    v12[2](v12);
+    completionCopy[2](completionCopy);
   }
 
   v44 = *MEMORY[0x277D85DE8];
@@ -272,28 +272,28 @@ uint64_t __117__SiriCoreConnectionMetrics_setConnectionMetricsFromNWConnectionFo
   return 1;
 }
 
-- (void)_setConnectionMetricsFromNSPControlConnection:(id)a3 withCompletion:(id)a4
+- (void)_setConnectionMetricsFromNSPControlConnection:(id)connection withCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  connectionCopy = connection;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (connectionCopy)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __90__SiriCoreConnectionMetrics__setConnectionMetricsFromNSPControlConnection_withCompletion___block_invoke;
     v11[3] = &unk_279BD59F0;
     v11[4] = self;
-    v12 = v7;
-    [v6 fetchConnectionInfoWithCompletionHandler:v11];
+    v12 = completionCopy;
+    [connectionCopy fetchConnectionInfoWithCompletionHandler:v11];
   }
 
   else
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
 
     v9 = *MEMORY[0x277CEF0E0];
@@ -442,10 +442,10 @@ void __90__SiriCoreConnectionMetrics__setConnectionMetricsFromNSPControlConnecti
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setConnectionMetricsTCPInfo:(id)a3
+- (void)_setConnectionMetricsTCPInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 count];
+  infoCopy = info;
+  v5 = [infoCopy count];
   if (v5)
   {
     v6 = v5;
@@ -459,7 +459,7 @@ void __90__SiriCoreConnectionMetrics__setConnectionMetricsFromNSPControlConnecti
     v16 = v8;
     v9 = v8;
     v10 = v7;
-    [v4 enumerateKeysAndObjectsUsingBlock:&v11];
+    [infoCopy enumerateKeysAndObjectsUsingBlock:&v11];
     [(SiriCoreConnectionMetrics *)self setTCPInfoMetricsByInterfaceName:v10, v11, v12, v13, v14];
     [(SiriCoreConnectionMetrics *)self setFlowNetworkInterfaceType:v9];
   }
@@ -480,31 +480,31 @@ void __58__SiriCoreConnectionMetrics__setConnectionMetricsTCPInfo___block_invoke
   [*(a1 + 40) setObject:v8 forKey:v7];
 }
 
-- (void)setTCPInfoMetricsByInterfaceName:(id)a3
+- (void)setTCPInfoMetricsByInterfaceName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   tcpInfoMetricsByInterfaceName = self->_tcpInfoMetricsByInterfaceName;
   self->_tcpInfoMetricsByInterfaceName = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setConnectionMetricsFromStreamForPOP:(id)a3 withCompletion:(id)a4
+- (void)setConnectionMetricsFromStreamForPOP:(id)p withCompletion:(id)completion
 {
   v6 = MEMORY[0x277D2CA50];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initFromStream:v8];
+  completionCopy = completion;
+  pCopy = p;
+  v9 = [[v6 alloc] initFromStream:pCopy];
 
-  [(SiriCoreConnectionMetrics *)self _setConnectionMetricsFromNSPControlConnection:v9 withCompletion:v7];
+  [(SiriCoreConnectionMetrics *)self _setConnectionMetricsFromNSPControlConnection:v9 withCompletion:completionCopy];
 }
 
-- (void)setConnectionMetricsFromStreamForDirect:(id)a3 withCompletion:(id)a4
+- (void)setConnectionMetricsFromStreamForDirect:(id)direct withCompletion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 propertyForKey:*MEMORY[0x277CBACB8]];
+  directCopy = direct;
+  completionCopy = completion;
+  v8 = [directCopy propertyForKey:*MEMORY[0x277CBACB8]];
   v9 = [v8 count];
   if (v9)
   {
@@ -529,21 +529,21 @@ void __58__SiriCoreConnectionMetrics__setConnectionMetricsTCPInfo___block_invoke
     [(SiriCoreConnectionMetrics *)self setTCPInfoMetricsByInterfaceName:0];
   }
 
-  v15 = [v6 propertyForKey:*MEMORY[0x277CBADC8]];
-  v16 = [v15 BOOLValue];
+  v15 = [directCopy propertyForKey:*MEMORY[0x277CBADC8]];
+  bOOLValue = [v15 BOOLValue];
 
-  if (v16)
+  if (bOOLValue)
   {
-    v17 = [v6 propertyForKey:*MEMORY[0x277CBAE30]];
+    v17 = [directCopy propertyForKey:*MEMORY[0x277CBAE30]];
     [(SiriCoreConnectionMetrics *)self setSubflowCount:v17];
 
-    v18 = [v6 propertyForKey:*MEMORY[0x277CBAE20]];
+    v18 = [directCopy propertyForKey:*MEMORY[0x277CBAE20]];
     [(SiriCoreConnectionMetrics *)self setConnectedSubflowCount:v18];
 
-    v19 = [v6 propertyForKey:*MEMORY[0x277CBAE28]];
+    v19 = [directCopy propertyForKey:*MEMORY[0x277CBAE28]];
     [(SiriCoreConnectionMetrics *)self setPrimarySubflowInterfaceName:v19];
 
-    v20 = [v6 propertyForKey:*MEMORY[0x277CBAE38]];
+    v20 = [directCopy propertyForKey:*MEMORY[0x277CBAE38]];
     [(SiriCoreConnectionMetrics *)self setSubflowSwitchCounts:v20];
   }
 
@@ -555,7 +555,7 @@ void __58__SiriCoreConnectionMetrics__setConnectionMetricsTCPInfo___block_invoke
     [(SiriCoreConnectionMetrics *)self setSubflowSwitchCounts:0];
   }
 
-  v21 = [v6 propertyForKey:@"__kCFStreamPropertyPeerAddress"];
+  v21 = [directCopy propertyForKey:@"__kCFStreamPropertyPeerAddress"];
   v22 = v21;
   if (v21)
   {
@@ -567,7 +567,7 @@ void __58__SiriCoreConnectionMetrics__setConnectionMetricsTCPInfo___block_invoke
         [(SiriCoreConnectionMetrics *)self setConnectionEdgeID:v25];
       }
 
-      if (v7)
+      if (completionCopy)
       {
         goto LABEL_12;
       }
@@ -584,10 +584,10 @@ void __58__SiriCoreConnectionMetrics__setConnectionMetricsTCPInfo___block_invoke
   }
 
   [(SiriCoreConnectionMetrics *)self setConnectionEdgeID:v23];
-  if (v7)
+  if (completionCopy)
   {
 LABEL_12:
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_13:
@@ -605,16 +605,16 @@ void __84__SiriCoreConnectionMetrics_setConnectionMetricsFromStreamForDirect_wit
   [*(a1 + 40) setObject:v8 forKey:v7];
 }
 
-- (void)setConnectionMetricsFromStream:(id)a3 isPop:(BOOL)a4 withCompletion:(id)a5
+- (void)setConnectionMetricsFromStream:(id)stream isPop:(BOOL)pop withCompletion:(id)completion
 {
-  if (a4)
+  if (pop)
   {
-    [(SiriCoreConnectionMetrics *)self setConnectionMetricsFromStreamForPOP:a3 withCompletion:a5];
+    [(SiriCoreConnectionMetrics *)self setConnectionMetricsFromStreamForPOP:stream withCompletion:completion];
   }
 
   else
   {
-    [(SiriCoreConnectionMetrics *)self setConnectionMetricsFromStreamForDirect:a3 withCompletion:a5];
+    [(SiriCoreConnectionMetrics *)self setConnectionMetricsFromStreamForDirect:stream withCompletion:completion];
   }
 }
 

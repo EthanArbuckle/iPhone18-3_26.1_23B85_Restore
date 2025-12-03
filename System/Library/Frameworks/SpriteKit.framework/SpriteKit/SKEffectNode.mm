@@ -1,15 +1,15 @@
 @interface SKEffectNode
 + (id)debugHierarchyPropertyDescriptions;
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
-- (BOOL)isEqualToNode:(id)a3;
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
+- (BOOL)isEqualToNode:(id)node;
 - (NSString)description;
 - (SKAttributeValue)valueForAttributeNamed:(NSString *)key;
 - (SKEffectNode)init;
-- (SKEffectNode)initWithCoder:(id)a3;
+- (SKEffectNode)initWithCoder:(id)coder;
 - (void)_didMakeBackingNode;
-- (void)_flippedChangedFrom:(BOOL)a3 to:(BOOL)a4;
-- (void)_scaleFactorChangedFrom:(float)a3 to:(float)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_flippedChangedFrom:(BOOL)from to:(BOOL)to;
+- (void)_scaleFactorChangedFrom:(float)from to:(float)to;
+- (void)encodeWithCoder:(id)coder;
 - (void)setFilter:(CIFilter *)filter;
 - (void)setShader:(SKShader *)shader;
 - (void)setValue:(SKAttributeValue *)value forAttributeNamed:(NSString *)key;
@@ -31,55 +31,55 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SKEffectNode;
-  [(SKNode *)&v11 encodeWithCoder:v4];
-  v5 = [(SKEffectNode *)self filter];
-  [v4 encodeObject:v5 forKey:@"_filter"];
+  [(SKNode *)&v11 encodeWithCoder:coderCopy];
+  filter = [(SKEffectNode *)self filter];
+  [coderCopy encodeObject:filter forKey:@"_filter"];
 
-  v6 = [(SKEffectNode *)self shader];
-  [v4 encodeObject:v6 forKey:@"_shader"];
+  shader = [(SKEffectNode *)self shader];
+  [coderCopy encodeObject:shader forKey:@"_shader"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[SKEffectNode shouldRasterize](self, "shouldRasterize")}];
-  [v4 encodeObject:v7 forKey:@"_shouldRasterize"];
+  [coderCopy encodeObject:v7 forKey:@"_shouldRasterize"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[SKEffectNode shouldEnableEffects](self, "shouldEnableEffects")}];
-  [v4 encodeObject:v8 forKey:@"_shouldEnableEffects"];
+  [coderCopy encodeObject:v8 forKey:@"_shouldEnableEffects"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[SKEffectNode shouldCenterFilter](self, "shouldCenterFilter")}];
-  [v4 encodeObject:v9 forKey:@"_shouldCenterFilter"];
+  [coderCopy encodeObject:v9 forKey:@"_shouldCenterFilter"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithLong:{-[SKEffectNode blendMode](self, "blendMode")}];
-  [v4 encodeObject:v10 forKey:@"_blendMode"];
+  [coderCopy encodeObject:v10 forKey:@"_blendMode"];
 }
 
-- (SKEffectNode)initWithCoder:(id)a3
+- (SKEffectNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SKEffectNode;
-  v5 = [(SKNode *)&v13 initWithCoder:v4];
+  v5 = [(SKNode *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_blendMode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_blendMode"];
     -[SKEffectNode setBlendMode:](v5, "setBlendMode:", [v6 intValue]);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_filter"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_filter"];
     [(SKEffectNode *)v5 setFilter:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_shouldCenterFilter"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_shouldCenterFilter"];
     -[SKEffectNode setShouldCenterFilter:](v5, "setShouldCenterFilter:", [v8 BOOLValue]);
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_shouldEnableEffects"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_shouldEnableEffects"];
     -[SKEffectNode setShouldEnableEffects:](v5, "setShouldEnableEffects:", [v9 BOOLValue]);
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_shouldRasterize"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_shouldRasterize"];
     -[SKEffectNode setShouldRasterize:](v5, "setShouldRasterize:", [v10 BOOLValue]);
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_shader"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_shader"];
     [(SKEffectNode *)v5 setShader:v11];
   }
 
@@ -97,7 +97,7 @@
 - (NSString)description
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(SKNode *)self name];
+  name = [(SKNode *)self name];
   if ([(SKEffectNode *)self shouldEnableEffects])
   {
     v6 = @"YES";
@@ -108,35 +108,35 @@
     v6 = @"NO";
   }
 
-  v7 = [(SKEffectNode *)self filter];
-  if (v7)
+  filter = [(SKEffectNode *)self filter];
+  if (filter)
   {
-    v2 = [(SKEffectNode *)self filter];
-    v8 = [v2 name];
+    filter2 = [(SKEffectNode *)self filter];
+    name2 = [filter2 name];
   }
 
   else
   {
-    v8 = @"nil";
+    name2 = @"nil";
   }
 
   [(SKNode *)self position];
   v9 = NSStringFromCGPoint(v14);
   [(SKNode *)self calculateAccumulatedFrame];
   v10 = NSStringFromCGRect(v15);
-  v11 = [v4 stringWithFormat:@"<SKEffectNode> name:'%@' shouldEnableEffects:'%@' filter:'%@' position:%@ accumulatedFrame:%@", v5, v6, v8, v9, v10];
+  v11 = [v4 stringWithFormat:@"<SKEffectNode> name:'%@' shouldEnableEffects:'%@' filter:'%@' position:%@ accumulatedFrame:%@", name, v6, name2, v9, v10];
 
-  if (v7)
+  if (filter)
   {
   }
 
   return v11;
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  if (self == v4)
+  nodeCopy = node;
+  if (self == nodeCopy)
   {
     LOBYTE(v7) = 1;
   }
@@ -146,17 +146,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = nodeCopy;
       v14.receiver = self;
       v14.super_class = SKEffectNode;
       if ([(SKNode *)&v14 isEqualToNode:v5]&& (v6 = [(SKEffectNode *)self shouldEnableEffects], v6 == [(SKEffectNode *)v5 shouldEnableEffects]))
       {
-        v8 = [(SKEffectNode *)self filter];
-        v9 = [(SKEffectNode *)v5 filter];
-        if (v8 == v9 && (v10 = [(SKEffectNode *)self shouldCenterFilter], v10 == [(SKEffectNode *)v5 shouldCenterFilter]) && (v11 = [(SKEffectNode *)self blendMode], v11 == [(SKEffectNode *)v5 blendMode]))
+        filter = [(SKEffectNode *)self filter];
+        filter2 = [(SKEffectNode *)v5 filter];
+        if (filter == filter2 && (v10 = [(SKEffectNode *)self shouldCenterFilter], v10 == [(SKEffectNode *)v5 shouldCenterFilter]) && (v11 = [(SKEffectNode *)self blendMode], v11 == [(SKEffectNode *)v5 blendMode]))
         {
-          v12 = [(SKEffectNode *)self shouldRasterize];
-          v7 = v12 ^ [(SKEffectNode *)v5 shouldRasterize]^ 1;
+          shouldRasterize = [(SKEffectNode *)self shouldRasterize];
+          v7 = shouldRasterize ^ [(SKEffectNode *)v5 shouldRasterize]^ 1;
         }
 
         else
@@ -187,18 +187,18 @@
   SKCNode::setDirty(self->_skcEffectNode);
 }
 
-- (void)_scaleFactorChangedFrom:(float)a3 to:(float)a4
+- (void)_scaleFactorChangedFrom:(float)from to:(float)to
 {
   v4.receiver = self;
   v4.super_class = SKEffectNode;
   [SKNode _scaleFactorChangedFrom:sel__scaleFactorChangedFrom_to_ to:?];
 }
 
-- (void)_flippedChangedFrom:(BOOL)a3 to:(BOOL)a4
+- (void)_flippedChangedFrom:(BOOL)from to:(BOOL)to
 {
   v4.receiver = self;
   v4.super_class = SKEffectNode;
-  [(SKNode *)&v4 _flippedChangedFrom:a3 to:a4];
+  [(SKNode *)&v4 _flippedChangedFrom:from to:to];
 }
 
 - (void)setShader:(SKShader *)shader
@@ -275,12 +275,12 @@
   return v11;
 }
 
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  nameCopy = name;
+  objectCopy = object;
+  v10 = nameCopy;
   if (![v10 length])
   {
     goto LABEL_12;
@@ -291,18 +291,18 @@
   {
     if ([v10 length] < 2)
     {
-      v15 = [v10 uppercaseString];
+      uppercaseString = [v10 uppercaseString];
     }
 
     else
     {
       v12 = [v10 substringToIndex:1];
-      v13 = [v12 uppercaseString];
+      uppercaseString2 = [v12 uppercaseString];
       v14 = [v10 substringFromIndex:1];
-      v15 = [v13 stringByAppendingString:v14];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v14];
     }
 
-    v16 = [@"is" stringByAppendingString:v15];
+    v16 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v16);
     if (objc_opt_respondsToSelector())
     {
@@ -320,9 +320,9 @@
     }
 
 LABEL_12:
-    if (a6)
+    if (error)
     {
-      v17 = v9;
+      v17 = objectCopy;
       v18 = v10;
       if (v17)
       {
@@ -355,10 +355,10 @@ LABEL_12:
       v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v22];
 
       v24 = v23;
-      *a6 = v23;
+      *error = v23;
 
       v11 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -376,10 +376,10 @@ LABEL_12:
   }
 
 LABEL_4:
-  a6 = [v9 valueForKey:v11];
+  error = [objectCopy valueForKey:v11];
 LABEL_21:
 
-  return a6;
+  return error;
 }
 
 @end

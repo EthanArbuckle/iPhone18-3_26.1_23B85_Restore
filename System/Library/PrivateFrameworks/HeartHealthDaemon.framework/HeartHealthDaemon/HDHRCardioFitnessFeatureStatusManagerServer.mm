@@ -1,40 +1,40 @@
 @interface HDHRCardioFitnessFeatureStatusManagerServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
-- (HDHRCardioFitnessFeatureStatusManagerServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 featureAvailabilityProvider:(id)a7 featureStatusProvider:(id)a8 featureSettingsManager:(id)a9;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
+- (HDHRCardioFitnessFeatureStatusManagerServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate featureAvailabilityProvider:(id)provider featureStatusProvider:(id)statusProvider featureSettingsManager:(id)manager;
 - (id)_clientRemoteObjectProxy;
-- (id)_determineNotificationStatusWithFeatureStatus:(id)a3;
-- (id)_determineOnboardingStatusWithFeatureStatus:(id)a3;
-- (id)_getNotificationStatusWithError:(id *)a3;
-- (id)_getOnboardingStatusWithError:(id *)a3;
-- (void)_stopObservingChangesAndExpectToBeObserving:(BOOL)a3;
+- (id)_determineNotificationStatusWithFeatureStatus:(id)status;
+- (id)_determineOnboardingStatusWithFeatureStatus:(id)status;
+- (id)_getNotificationStatusWithError:(id *)error;
+- (id)_getOnboardingStatusWithError:(id *)error;
+- (void)_stopObservingChangesAndExpectToBeObserving:(BOOL)observing;
 - (void)dealloc;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
-- (void)remote_notificationStatusWithCompletion:(id)a3;
-- (void)remote_onboardingStatusWithCompletion:(id)a3;
-- (void)remote_resetOnboardingWithCompletion:(id)a3;
-- (void)remote_startObservingChangesWithCompletion:(id)a3;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
+- (void)remote_notificationStatusWithCompletion:(id)completion;
+- (void)remote_onboardingStatusWithCompletion:(id)completion;
+- (void)remote_resetOnboardingWithCompletion:(id)completion;
+- (void)remote_startObservingChangesWithCompletion:(id)completion;
 @end
 
 @implementation HDHRCardioFitnessFeatureStatusManagerServer
 
-- (HDHRCardioFitnessFeatureStatusManagerServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 featureAvailabilityProvider:(id)a7 featureStatusProvider:(id)a8 featureSettingsManager:(id)a9
+- (HDHRCardioFitnessFeatureStatusManagerServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate featureAvailabilityProvider:(id)provider featureStatusProvider:(id)statusProvider featureSettingsManager:(id)manager
 {
-  v23 = a7;
-  v16 = a8;
-  v17 = a9;
+  providerCopy = provider;
+  statusProviderCopy = statusProvider;
+  managerCopy = manager;
   v24.receiver = self;
   v24.super_class = HDHRCardioFitnessFeatureStatusManagerServer;
-  v18 = [(HDStandardTaskServer *)&v24 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  v18 = [(HDStandardTaskServer *)&v24 initWithUUID:d configuration:configuration client:client delegate:delegate];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_featureAvailabilityProvider, a7);
+    objc_storeStrong(&v18->_featureAvailabilityProvider, provider);
     v20 = HKCreateSerialDispatchQueue();
     queue = v19->_queue;
     v19->_queue = v20;
 
-    objc_storeStrong(&v19->_featureStatusProvider, a8);
-    objc_storeStrong(&v19->_featureSettingsManager, a9);
+    objc_storeStrong(&v19->_featureStatusProvider, statusProvider);
+    objc_storeStrong(&v19->_featureSettingsManager, manager);
     v19->_observing = 0;
     v19->_lock._os_unfair_lock_opaque = 0;
   }
@@ -50,16 +50,16 @@
   [(HDHRCardioFitnessFeatureStatusManagerServer *)&v3 dealloc];
 }
 
-- (void)remote_onboardingStatusWithCompletion:(id)a3
+- (void)remote_onboardingStatusWithCompletion:(id)completion
 {
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDHRCardioFitnessFeatureStatusManagerServer *)self _getOnboardingStatusWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
-- (id)_getOnboardingStatusWithError:(id *)a3
+- (id)_getOnboardingStatusWithError:(id *)error
 {
   featureStatusProvider = self->_featureStatusProvider;
   v13 = 0;
@@ -81,11 +81,11 @@
       [HDHRCardioFitnessFeatureStatusManagerServer _getOnboardingStatusWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v7;
       v8 = 0;
-      *a3 = v7;
+      *error = v7;
       goto LABEL_13;
     }
 
@@ -106,11 +106,11 @@ LABEL_13:
   return v8;
 }
 
-- (id)_determineOnboardingStatusWithFeatureStatus:(id)a3
+- (id)_determineOnboardingStatusWithFeatureStatus:(id)status
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D12E68]];
+  statusCopy = status;
+  v5 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277D12E68]];
   if ([v5 areAllRequirementsSatisfied])
   {
     _HKInitializeLogging();
@@ -118,17 +118,17 @@ LABEL_13:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v36 = 138543362;
-      v37 = self;
+      selfCopy9 = self;
       _os_log_impl(&dword_229486000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Classification context satisfied, reporting back clean onboarding status", &v36, 0xCu);
     }
 
     v7 = objc_alloc(MEMORY[0x277D12FC0]);
-    v8 = [v4 onboardingRecord];
-    v9 = [v8 earliestDateOfAnyOnboardingCompletion];
+    onboardingRecord = [statusCopy onboardingRecord];
+    earliestDateOfAnyOnboardingCompletion = [onboardingRecord earliestDateOfAnyOnboardingCompletion];
     v10 = v7;
     v11 = 1;
     v12 = 0;
-    v13 = v9;
+    v13 = earliestDateOfAnyOnboardingCompletion;
     v14 = 0;
     v15 = 1;
     v16 = 1;
@@ -145,25 +145,25 @@ LABEL_13:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v36 = 138543362;
-        v37 = self;
+        selfCopy9 = self;
         _os_log_impl(&dword_229486000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has valid onboarding but their age is either present or gated", &v36, 0xCu);
       }
 
       v20 = objc_alloc(MEMORY[0x277D12FC0]);
-      v8 = [v4 onboardingRecord];
-      v9 = [v8 earliestDateOfAnyOnboardingCompletion];
+      onboardingRecord = [statusCopy onboardingRecord];
+      earliestDateOfAnyOnboardingCompletion = [onboardingRecord earliestDateOfAnyOnboardingCompletion];
       v10 = v20;
       v11 = 1;
       v12 = 0;
-      v13 = v9;
+      v13 = earliestDateOfAnyOnboardingCompletion;
       v14 = 0;
       v15 = 1;
     }
 
     else
     {
-      v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCBE38]];
-      if ([v8 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF70]])
+      onboardingRecord = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBE38]];
+      if ([onboardingRecord isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF70]])
       {
         v21 = 0;
       }
@@ -175,79 +175,79 @@ LABEL_13:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           v36 = 138543362;
-          v37 = self;
+          selfCopy9 = self;
           _os_log_impl(&dword_229486000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] User is age gated, marking unavailability reason", &v36, 0xCu);
         }
 
         v21 = 1;
       }
 
-      if (([v8 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBEF8]] & 1) == 0)
+      if (([onboardingRecord isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBEF8]] & 1) == 0)
       {
         _HKInitializeLogging();
         v23 = HKLogHeartRateCategory();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           v36 = 138543362;
-          v37 = self;
+          selfCopy9 = self;
           _os_log_impl(&dword_229486000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] User is age gated, marking unavailability reason", &v36, 0xCu);
         }
 
         v21 |= 2uLL;
       }
 
-      if (([v8 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF50]] & 1) == 0)
+      if (([onboardingRecord isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF50]] & 1) == 0)
       {
         _HKInitializeLogging();
         v24 = HKLogHeartRateCategory();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           v36 = 138543362;
-          v37 = self;
+          selfCopy9 = self;
           _os_log_impl(&dword_229486000, v24, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has heart rate disabled, marking onboarding unavailability reason", &v36, 0xCu);
         }
 
         v21 |= 4uLL;
       }
 
-      if (([v8 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF48]] & 1) == 0)
+      if (([onboardingRecord isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF48]] & 1) == 0)
       {
         _HKInitializeLogging();
         v25 = HKLogHeartRateCategory();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           v36 = 138543362;
-          v37 = self;
+          selfCopy9 = self;
           _os_log_impl(&dword_229486000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has health app hidden, marking onboarding unavailability reason", &v36, 0xCu);
         }
 
         v21 |= 8uLL;
       }
 
-      if (([v8 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFE0]] & 1) == 0)
+      if (([onboardingRecord isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFE0]] & 1) == 0)
       {
         _HKInitializeLogging();
         v26 = HKLogHeartRateCategory();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           v36 = 138543362;
-          v37 = self;
+          selfCopy9 = self;
           _os_log_impl(&dword_229486000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has heart rate app uninstalled, marking onboarding unavailability reason", &v36, 0xCu);
         }
 
         v21 |= 0x10uLL;
       }
 
-      v27 = [v8 areAllRequirementsSatisfied];
+      areAllRequirementsSatisfied = [onboardingRecord areAllRequirementsSatisfied];
       _HKInitializeLogging();
       v28 = HKLogHeartRateCategory();
       v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
-      if (v27)
+      if (areAllRequirementsSatisfied)
       {
         if (v29)
         {
           v36 = 138543362;
-          v37 = self;
+          selfCopy9 = self;
           _os_log_impl(&dword_229486000, v28, OS_LOG_TYPE_DEFAULT, "[%{public}@] User not onboarded but no reason why they couldn't onboard", &v36, 0xCu);
         }
 
@@ -259,22 +259,22 @@ LABEL_13:
         if (v29)
         {
           v36 = 138543362;
-          v37 = self;
+          selfCopy9 = self;
           _os_log_impl(&dword_229486000, v28, OS_LOG_TYPE_DEFAULT, "[%{public}@] User not onboarded but onboarding unavailable", &v36, 0xCu);
         }
 
         v30 = 0;
       }
 
-      v9 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCBE50]];
+      earliestDateOfAnyOnboardingCompletion = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBE50]];
       v31 = objc_alloc(MEMORY[0x277D12FC0]);
-      v32 = [v9 areAllRequirementsSatisfied];
-      v15 = [v9 isRequirementSatisfiedWithIdentifier:*v18];
+      areAllRequirementsSatisfied2 = [earliestDateOfAnyOnboardingCompletion areAllRequirementsSatisfied];
+      v15 = [earliestDateOfAnyOnboardingCompletion isRequirementSatisfiedWithIdentifier:*v18];
       v10 = v31;
       v11 = v30;
       v12 = v21;
       v13 = 0;
-      v14 = v32;
+      v14 = areAllRequirementsSatisfied2;
     }
 
     v16 = 0;
@@ -287,16 +287,16 @@ LABEL_13:
   return v33;
 }
 
-- (void)remote_notificationStatusWithCompletion:(id)a3
+- (void)remote_notificationStatusWithCompletion:(id)completion
 {
   v7 = 0;
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(HDHRCardioFitnessFeatureStatusManagerServer *)self _getNotificationStatusWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  completionCopy[2](completionCopy, v5, v6);
 }
 
-- (id)_getNotificationStatusWithError:(id *)a3
+- (id)_getNotificationStatusWithError:(id *)error
 {
   featureStatusProvider = self->_featureStatusProvider;
   v13 = 0;
@@ -318,11 +318,11 @@ LABEL_13:
       [HDHRCardioFitnessFeatureStatusManagerServer _getOnboardingStatusWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v7;
       v8 = 0;
-      *a3 = v7;
+      *error = v7;
       goto LABEL_13;
     }
 
@@ -343,13 +343,13 @@ LABEL_13:
   return v8;
 }
 
-- (id)_determineNotificationStatusWithFeatureStatus:(id)a3
+- (id)_determineNotificationStatusWithFeatureStatus:(id)status
 {
   v33 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D12E78];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D12E70]];
+  statusCopy = status;
+  v6 = [statusCopy objectForKeyedSubscript:v4];
+  v7 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277D12E70]];
 
   v8 = [v7 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFE8]];
   if ([v6 areAllRequirementsSatisfied])
@@ -359,7 +359,7 @@ LABEL_13:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_229486000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifications enabled, sending back enabled notification status", buf, 0xCu);
     }
 
@@ -370,10 +370,10 @@ LABEL_9:
     goto LABEL_49;
   }
 
-  v12 = [v6 unsatisfiedRequirementIdentifiers];
+  unsatisfiedRequirementIdentifiers = [v6 unsatisfiedRequirementIdentifiers];
   v30 = *MEMORY[0x277CCBF38];
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
-  v14 = [v12 isEqualToArray:v13];
+  v14 = [unsatisfiedRequirementIdentifiers isEqualToArray:v13];
 
   if (v14)
   {
@@ -382,7 +382,7 @@ LABEL_9:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_229486000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifications disabled but otherwise clear, sending back disabled notification status", buf, 0xCu);
     }
 
@@ -403,7 +403,7 @@ LABEL_9:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_229486000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] User is age gated, marking unavailability reason", buf, 0xCu);
     }
 
@@ -417,7 +417,7 @@ LABEL_9:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_229486000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Age is not present, marking unavailability reason", buf, 0xCu);
     }
 
@@ -431,7 +431,7 @@ LABEL_9:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_229486000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] Active paired device not supported, marking unavailability reason", buf, 0xCu);
     }
 
@@ -445,7 +445,7 @@ LABEL_9:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_229486000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has heart rate disabled, marking unavailability reason", buf, 0xCu);
     }
 
@@ -459,7 +459,7 @@ LABEL_9:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_229486000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has health app hidden, marking notification unavailability reason", buf, 0xCu);
     }
 
@@ -473,7 +473,7 @@ LABEL_9:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_229486000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has heart rate app uninstalled, marking notification unavailability reason", buf, 0xCu);
     }
 
@@ -487,7 +487,7 @@ LABEL_9:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_229486000, v24, OS_LOG_TYPE_DEFAULT, "[%{public}@] User needs to confirm medication details, marking notification unavailability reason", buf, 0xCu);
     }
 
@@ -501,7 +501,7 @@ LABEL_9:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_229486000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}@] Cardio Fitness not allowed for region in on either local or remote device, marking notification unavailability reason", buf, 0xCu);
     }
 
@@ -515,7 +515,7 @@ LABEL_9:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_229486000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has not onboarded, marking notification unavailability reason", buf, 0xCu);
     }
 
@@ -581,10 +581,10 @@ void __93__HDHRCardioFitnessFeatureStatusManagerServer_remote_setNotificationsEn
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)remote_resetOnboardingWithCompletion:(id)a3
+- (void)remote_resetOnboardingWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -601,8 +601,8 @@ void __93__HDHRCardioFitnessFeatureStatusManagerServer_remote_setNotificationsEn
   v10[2] = __84__HDHRCardioFitnessFeatureStatusManagerServer_remote_resetOnboardingWithCompletion___block_invoke;
   v10[3] = &unk_27865FD68;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = completionCopy;
+  v8 = completionCopy;
   [(HKFeatureAvailabilityProviding *)featureAvailabilityProvider resetOnboardingWithCompletion:v10];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -636,10 +636,10 @@ void __84__HDHRCardioFitnessFeatureStatusManagerServer_remote_resetOnboardingWit
   }
 }
 
-- (void)remote_startObservingChangesWithCompletion:(id)a3
+- (void)remote_startObservingChangesWithCompletion:(id)completion
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   if (self->_observing)
   {
@@ -661,21 +661,21 @@ void __84__HDHRCardioFitnessFeatureStatusManagerServer_remote_resetOnboardingWit
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_229486000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting observation of changes", &v8, 0xCu);
     }
 
     [(HKFeatureStatusProviding *)self->_featureStatusProvider registerObserver:self queue:self->_queue];
     os_unfair_lock_unlock(&self->_lock);
-    v4[2](v4, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopObservingChangesAndExpectToBeObserving:(BOOL)a3
+- (void)_stopObservingChangesAndExpectToBeObserving:(BOOL)observing
 {
-  v3 = a3;
+  observingCopy = observing;
   os_unfair_lock_lock(&self->_lock);
   if (self->_observing)
   {
@@ -696,7 +696,7 @@ void __84__HDHRCardioFitnessFeatureStatusManagerServer_remote_resetOnboardingWit
     [(HKFeatureStatusProviding *)self->_featureStatusProvider unregisterObserver:self];
   }
 
-  else if (v3)
+  else if (observingCopy)
   {
     _HKInitializeLogging();
     v8 = HKLogHeartRateCategory();
@@ -709,59 +709,59 @@ void __84__HDHRCardioFitnessFeatureStatusManagerServer_remote_resetOnboardingWit
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
-  v5 = a4;
-  v9 = [(HDHRCardioFitnessFeatureStatusManagerServer *)self _determineOnboardingStatusWithFeatureStatus:v5];
-  v6 = [(HDHRCardioFitnessFeatureStatusManagerServer *)self _clientRemoteObjectProxy];
-  [v6 client_didUpdateOnboardingStatus:v9];
+  statusCopy = status;
+  v9 = [(HDHRCardioFitnessFeatureStatusManagerServer *)self _determineOnboardingStatusWithFeatureStatus:statusCopy];
+  _clientRemoteObjectProxy = [(HDHRCardioFitnessFeatureStatusManagerServer *)self _clientRemoteObjectProxy];
+  [_clientRemoteObjectProxy client_didUpdateOnboardingStatus:v9];
 
-  v7 = [(HDHRCardioFitnessFeatureStatusManagerServer *)self _determineNotificationStatusWithFeatureStatus:v5];
+  v7 = [(HDHRCardioFitnessFeatureStatusManagerServer *)self _determineNotificationStatusWithFeatureStatus:statusCopy];
 
-  v8 = [(HDHRCardioFitnessFeatureStatusManagerServer *)self _clientRemoteObjectProxy];
-  [v8 client_didUpdateNotificationStatus:v7];
+  _clientRemoteObjectProxy2 = [(HDHRCardioFitnessFeatureStatusManagerServer *)self _clientRemoteObjectProxy];
+  [_clientRemoteObjectProxy2 client_didUpdateNotificationStatus:v7];
 }
 
 - (id)_clientRemoteObjectProxy
 {
-  v2 = [(HDStandardTaskServer *)self client];
-  v3 = [v2 connection];
-  v4 = [v3 remoteObjectProxy];
+  client = [(HDStandardTaskServer *)self client];
+  connection = [client connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v4;
+  return remoteObjectProxy;
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
   v16 = *MEMORY[0x277CCC000];
-  v17 = [v15 featureAvailabilityProvidingForFeatureIdentifier:*MEMORY[0x277CCC000]];
+  v17 = [profile featureAvailabilityProvidingForFeatureIdentifier:*MEMORY[0x277CCC000]];
 
   if (v17)
   {
     v18 = objc_alloc(MEMORY[0x277CCD460]);
-    v19 = [v13 profile];
-    v20 = [v18 initWithFeatureAvailabilityProviding:v17 healthDataSource:v19 countryCodeSource:1];
+    profile2 = [clientCopy profile];
+    v20 = [v18 initWithFeatureAvailabilityProviding:v17 healthDataSource:profile2 countryCodeSource:1];
 
     v21 = [HDHRCardioFitnessFeatureStatusManagerServer alloc];
-    v22 = [v13 profile];
-    v23 = [v22 featureSettingsManager];
-    v24 = [(HDHRCardioFitnessFeatureStatusManagerServer *)v21 initWithUUID:v11 configuration:v12 client:v13 delegate:v14 featureAvailabilityProvider:v17 featureStatusProvider:v20 featureSettingsManager:v23];
+    profile3 = [clientCopy profile];
+    featureSettingsManager = [profile3 featureSettingsManager];
+    v24 = [(HDHRCardioFitnessFeatureStatusManagerServer *)v21 initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy featureAvailabilityProvider:v17 featureStatusProvider:v20 featureSettingsManager:featureSettingsManager];
 
     goto LABEL_9;
   }
 
-  v22 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"No profile extension providing feature availability for %@", v16}];
-  if (!v22)
+  profile3 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"No profile extension providing feature availability for %@", v16}];
+  if (!profile3)
   {
     goto LABEL_7;
   }
 
-  if (!a7)
+  if (!error)
   {
     _HKLogDroppedError();
 LABEL_7:
@@ -769,11 +769,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v25 = v22;
+  v25 = profile3;
   v24 = 0;
-  *a7 = v22;
+  *error = profile3;
 LABEL_8:
-  v20 = v22;
+  v20 = profile3;
 LABEL_9:
 
   return v24;

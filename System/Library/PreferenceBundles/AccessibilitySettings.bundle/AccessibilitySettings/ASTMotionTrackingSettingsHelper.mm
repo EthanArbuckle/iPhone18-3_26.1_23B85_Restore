@@ -1,40 +1,40 @@
 @interface ASTMotionTrackingSettingsHelper
-- (ASTMotionTrackingSettingsHelper)initWithEyeTracker:(id)a3;
+- (ASTMotionTrackingSettingsHelper)initWithEyeTracker:(id)tracker;
 - (NSArray)autoHideTimeoutAndSliderContiguousSpecs;
 - (PSSpecifier)autoHideOpacityGroupSpecifier;
 - (PSSpecifier)autoHideOpacitySliderSpecifier;
 - (PSSpecifier)autoHideTimeoutGroupSpecifier;
 - (PSSpecifier)autoHideTimeoutStepperSpecifier;
-- (double)maximumValueForSpecifier:(id)a3;
-- (double)minimumValueForSpecifier:(id)a3;
-- (double)stepValueForSpecifier:(id)a3;
-- (double)valueForSpecifier:(id)a3;
-- (id)assistiveTouchBubbleModeEnabled:(id)a3;
-- (id)assistiveTouchEyeTrackingAutoHideEnabled:(id)a3;
-- (id)assistiveTouchMotionTrackerShouldOffsetBufferPoints:(id)a3;
-- (id)assistiveTouchMotionTrackerSmoothingBufferSize:(id)a3;
+- (double)maximumValueForSpecifier:(id)specifier;
+- (double)minimumValueForSpecifier:(id)specifier;
+- (double)stepValueForSpecifier:(id)specifier;
+- (double)valueForSpecifier:(id)specifier;
+- (id)assistiveTouchBubbleModeEnabled:(id)enabled;
+- (id)assistiveTouchEyeTrackingAutoHideEnabled:(id)enabled;
+- (id)assistiveTouchMotionTrackerShouldOffsetBufferPoints:(id)points;
+- (id)assistiveTouchMotionTrackerSmoothingBufferSize:(id)size;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
-- (id)unitsStringForSpecifier:(id)a3;
-- (void)setAssistiveTouchBubbleModeEnabled:(id)a3 specifier:(id)a4;
-- (void)setAssistiveTouchEyeTrackingAutoHideEnabled:(id)a3 specifier:(id)a4;
-- (void)setAssistiveTouchMotionTrackerShouldOffsetBufferPoints:(id)a3 specifier:(id)a4;
-- (void)setAssistiveTouchMotionTrackerSmoothingBufferSize:(id)a3 specifier:(id)a4;
-- (void)specifier:(id)a3 setValue:(double)a4;
+- (id)stringValueForSpecifier:(id)specifier;
+- (id)unitsStringForSpecifier:(id)specifier;
+- (void)setAssistiveTouchBubbleModeEnabled:(id)enabled specifier:(id)specifier;
+- (void)setAssistiveTouchEyeTrackingAutoHideEnabled:(id)enabled specifier:(id)specifier;
+- (void)setAssistiveTouchMotionTrackerShouldOffsetBufferPoints:(id)points specifier:(id)specifier;
+- (void)setAssistiveTouchMotionTrackerSmoothingBufferSize:(id)size specifier:(id)specifier;
+- (void)specifier:(id)specifier setValue:(double)value;
 @end
 
 @implementation ASTMotionTrackingSettingsHelper
 
-- (ASTMotionTrackingSettingsHelper)initWithEyeTracker:(id)a3
+- (ASTMotionTrackingSettingsHelper)initWithEyeTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   v9.receiver = self;
   v9.super_class = ASTMotionTrackingSettingsHelper;
   v6 = [(ASTMotionTrackingSettingsHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eyeTracker, a3);
+    objc_storeStrong(&v6->_eyeTracker, tracker);
   }
 
   return v7;
@@ -44,9 +44,9 @@
 {
   v3 = +[NSMutableArray array];
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchMotionTrackerConfigurable];
+  assistiveTouchMotionTrackerConfigurable = [v4 assistiveTouchMotionTrackerConfigurable];
 
-  if (v5)
+  if (assistiveTouchMotionTrackerConfigurable)
   {
     v31 = [PSSpecifier ax_stepperSpecifierWithDelegate:self];
     [v31 setIdentifier:@"MTSmoothingBufferSize"];
@@ -84,8 +84,8 @@
     [v3 addObject:v14];
     v16 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:-1 edit:0];
     [v16 setProperty:objc_opt_class() forKey:PSCellClassKey];
-    v17 = [(ASTMotionTrackingSettingsHelper *)self eyeTracker];
-    [v16 setProperty:v17 forKey:@"ASTEyeTrackerKey"];
+    eyeTracker = [(ASTMotionTrackingSettingsHelper *)self eyeTracker];
+    [v16 setProperty:eyeTracker forKey:@"ASTEyeTrackerKey"];
 
     [v3 addObject:v16];
   }
@@ -111,17 +111,17 @@
 
   if (v23)
   {
-    v26 = [(ASTMotionTrackingSettingsHelper *)self autoHideTimeoutGroupSpecifier];
-    [v3 addObject:v26];
+    autoHideTimeoutGroupSpecifier = [(ASTMotionTrackingSettingsHelper *)self autoHideTimeoutGroupSpecifier];
+    [v3 addObject:autoHideTimeoutGroupSpecifier];
 
-    v27 = [(ASTMotionTrackingSettingsHelper *)self autoHideTimeoutStepperSpecifier];
-    [v3 addObject:v27];
+    autoHideTimeoutStepperSpecifier = [(ASTMotionTrackingSettingsHelper *)self autoHideTimeoutStepperSpecifier];
+    [v3 addObject:autoHideTimeoutStepperSpecifier];
 
-    v28 = [(ASTMotionTrackingSettingsHelper *)self autoHideOpacityGroupSpecifier];
-    [v3 addObject:v28];
+    autoHideOpacityGroupSpecifier = [(ASTMotionTrackingSettingsHelper *)self autoHideOpacityGroupSpecifier];
+    [v3 addObject:autoHideOpacityGroupSpecifier];
 
-    v29 = [(ASTMotionTrackingSettingsHelper *)self autoHideOpacitySliderSpecifier];
-    [v3 addObject:v29];
+    autoHideOpacitySliderSpecifier = [(ASTMotionTrackingSettingsHelper *)self autoHideOpacitySliderSpecifier];
+    [v3 addObject:autoHideOpacitySliderSpecifier];
   }
 
   return v3;
@@ -199,20 +199,20 @@
 
 - (NSArray)autoHideTimeoutAndSliderContiguousSpecs
 {
-  v3 = [(ASTMotionTrackingSettingsHelper *)self autoHideTimeoutGroupSpecifier];
-  v9[0] = v3;
-  v4 = [(ASTMotionTrackingSettingsHelper *)self autoHideTimeoutStepperSpecifier];
-  v9[1] = v4;
-  v5 = [(ASTMotionTrackingSettingsHelper *)self autoHideOpacityGroupSpecifier];
-  v9[2] = v5;
-  v6 = [(ASTMotionTrackingSettingsHelper *)self autoHideOpacitySliderSpecifier];
-  v9[3] = v6;
+  autoHideTimeoutGroupSpecifier = [(ASTMotionTrackingSettingsHelper *)self autoHideTimeoutGroupSpecifier];
+  v9[0] = autoHideTimeoutGroupSpecifier;
+  autoHideTimeoutStepperSpecifier = [(ASTMotionTrackingSettingsHelper *)self autoHideTimeoutStepperSpecifier];
+  v9[1] = autoHideTimeoutStepperSpecifier;
+  autoHideOpacityGroupSpecifier = [(ASTMotionTrackingSettingsHelper *)self autoHideOpacityGroupSpecifier];
+  v9[2] = autoHideOpacityGroupSpecifier;
+  autoHideOpacitySliderSpecifier = [(ASTMotionTrackingSettingsHelper *)self autoHideOpacitySliderSpecifier];
+  v9[3] = autoHideOpacitySliderSpecifier;
   v7 = [NSArray arrayWithObjects:v9 count:4];
 
   return v7;
 }
 
-- (id)assistiveTouchMotionTrackerSmoothingBufferSize:(id)a3
+- (id)assistiveTouchMotionTrackerSmoothingBufferSize:(id)size
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 assistiveTouchMotionTrackerSmoothingBufferSize]);
@@ -220,14 +220,14 @@
   return v4;
 }
 
-- (void)setAssistiveTouchMotionTrackerSmoothingBufferSize:(id)a3 specifier:(id)a4
+- (void)setAssistiveTouchMotionTrackerSmoothingBufferSize:(id)size specifier:(id)specifier
 {
-  v4 = [a3 unsignedIntegerValue];
+  unsignedIntegerValue = [size unsignedIntegerValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchMotionTrackerSmoothingBufferSize:v4];
+  [v5 setAssistiveTouchMotionTrackerSmoothingBufferSize:unsignedIntegerValue];
 }
 
-- (id)assistiveTouchMotionTrackerShouldOffsetBufferPoints:(id)a3
+- (id)assistiveTouchMotionTrackerShouldOffsetBufferPoints:(id)points
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMotionTrackerShouldOffsetBufferPoints]);
@@ -235,14 +235,14 @@
   return v4;
 }
 
-- (void)setAssistiveTouchMotionTrackerShouldOffsetBufferPoints:(id)a3 specifier:(id)a4
+- (void)setAssistiveTouchMotionTrackerShouldOffsetBufferPoints:(id)points specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [points BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchMotionTrackerShouldOffsetBufferPoints:v4];
+  [v5 setAssistiveTouchMotionTrackerShouldOffsetBufferPoints:bOOLValue];
 }
 
-- (id)assistiveTouchBubbleModeEnabled:(id)a3
+- (id)assistiveTouchBubbleModeEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchBubbleModeEnabled]);
@@ -250,14 +250,14 @@
   return v4;
 }
 
-- (void)setAssistiveTouchBubbleModeEnabled:(id)a3 specifier:(id)a4
+- (void)setAssistiveTouchBubbleModeEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchBubbleModeEnabled:v4];
+  [v5 setAssistiveTouchBubbleModeEnabled:bOOLValue];
 }
 
-- (id)assistiveTouchEyeTrackingAutoHideEnabled:(id)a3
+- (id)assistiveTouchEyeTrackingAutoHideEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchEyeTrackingAutoHideEnabled]);
@@ -265,17 +265,17 @@
   return v4;
 }
 
-- (void)setAssistiveTouchEyeTrackingAutoHideEnabled:(id)a3 specifier:(id)a4
+- (void)setAssistiveTouchEyeTrackingAutoHideEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchEyeTrackingAutoHideEnabled:v4];
+  [v5 setAssistiveTouchEyeTrackingAutoHideEnabled:bOOLValue];
 }
 
-- (double)maximumValueForSpecifier:(id)a3
+- (double)maximumValueForSpecifier:(id)specifier
 {
-  v3 = [a3 identifier];
-  if ([v3 isEqualToString:@"EyeTrackingAutoHideTimeout"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"EyeTrackingAutoHideTimeout"])
   {
     v4 = kAXSAssistiveTouchEyeTrackingAutoHideTimeoutMax;
   }
@@ -288,10 +288,10 @@
   return v4;
 }
 
-- (double)minimumValueForSpecifier:(id)a3
+- (double)minimumValueForSpecifier:(id)specifier
 {
-  v3 = [a3 identifier];
-  if ([v3 isEqualToString:@"EyeTrackingAutoHideTimeout"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"EyeTrackingAutoHideTimeout"])
   {
     v4 = kAXSAssistiveTouchEyeTrackingAutoHideTimeoutMin;
   }
@@ -304,13 +304,13 @@
   return v4;
 }
 
-- (double)stepValueForSpecifier:(id)a3
+- (double)stepValueForSpecifier:(id)specifier
 {
-  v3 = [a3 identifier];
+  identifier = [specifier identifier];
   v4 = 1.0;
-  if (([v3 isEqualToString:@"MTSmoothingBufferSize"] & 1) == 0)
+  if (([identifier isEqualToString:@"MTSmoothingBufferSize"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"MTSmoothingMaxDelta"])
+    if ([identifier isEqualToString:@"MTSmoothingMaxDelta"])
     {
 LABEL_3:
       v4 = 5.0;
@@ -318,17 +318,17 @@ LABEL_3:
     }
 
     v4 = 0.25;
-    if (([v3 isEqualToString:@"MTXNormalizationOrder"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"MTYNormalizationOrder") & 1) == 0)
+    if (([identifier isEqualToString:@"MTXNormalizationOrder"] & 1) == 0 && (objc_msgSend(identifier, "isEqualToString:", @"MTYNormalizationOrder") & 1) == 0)
     {
-      if ([v3 isEqualToString:@"MTXNormalizationOffset"])
+      if ([identifier isEqualToString:@"MTXNormalizationOffset"])
       {
         goto LABEL_3;
       }
 
       v4 = 5.0;
-      if (([v3 isEqualToString:@"MTYNormalizationOffset"] & 1) == 0)
+      if (([identifier isEqualToString:@"MTYNormalizationOffset"] & 1) == 0)
       {
-        if ([v3 isEqualToString:@"EyeTrackingAutoHideTimeout"])
+        if ([identifier isEqualToString:@"EyeTrackingAutoHideTimeout"])
         {
           v4 = kAXSAssistiveTouchEyeTrackingAutoHideTimeoutStepInterval;
         }
@@ -346,44 +346,44 @@ LABEL_6:
   return v4;
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(ASTMotionTrackingSettingsHelper *)self valueForSpecifier:a3];
+  [(ASTMotionTrackingSettingsHelper *)self valueForSpecifier:specifier];
   v3 = [NSNumber numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 
   return v4;
 }
 
-- (id)unitsStringForSpecifier:(id)a3
+- (id)unitsStringForSpecifier:(id)specifier
 {
-  v3 = [a3 identifier];
-  if ([v3 isEqualToString:@"MTSmoothingBufferSize"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"MTSmoothingBufferSize"])
   {
     v4 = @"Smoothing Buffer Size";
   }
 
-  else if ([v3 isEqualToString:@"MTSmoothingMaxDelta"])
+  else if ([identifier isEqualToString:@"MTSmoothingMaxDelta"])
   {
     v4 = @"Smoothing Max Delta";
   }
 
-  else if ([v3 isEqualToString:@"MTXNormalizationOrder"])
+  else if ([identifier isEqualToString:@"MTXNormalizationOrder"])
   {
     v4 = @"X Normalization Order";
   }
 
-  else if ([v3 isEqualToString:@"MTYNormalizationOrder"])
+  else if ([identifier isEqualToString:@"MTYNormalizationOrder"])
   {
     v4 = @"Y Normalization Order";
   }
 
-  else if ([v3 isEqualToString:@"MTXNormalizationOffset"])
+  else if ([identifier isEqualToString:@"MTXNormalizationOffset"])
   {
     v4 = @"X Normalization Offset";
   }
 
-  else if ([v3 isEqualToString:@"MTYNormalizationOffset"])
+  else if ([identifier isEqualToString:@"MTYNormalizationOffset"])
   {
     v4 = @"Y Normalization Offset";
   }
@@ -396,110 +396,110 @@ LABEL_6:
   return v4;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
-  v6 = [a3 identifier];
-  if ([v6 isEqualToString:@"MTSmoothingBufferSize"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"MTSmoothingBufferSize"])
   {
     v5 = +[AXSettings sharedInstance];
-    [v5 setAssistiveTouchMotionTrackerSmoothingBufferSize:a4];
+    [v5 setAssistiveTouchMotionTrackerSmoothingBufferSize:value];
   }
 
-  else if ([v6 isEqualToString:@"MTSmoothingMaxDelta"])
+  else if ([identifier isEqualToString:@"MTSmoothingMaxDelta"])
   {
     v5 = +[AXSettings sharedInstance];
-    [v5 setAssistiveTouchMotionTrackerSmoothingMaxDelta:a4];
+    [v5 setAssistiveTouchMotionTrackerSmoothingMaxDelta:value];
   }
 
-  else if ([v6 isEqualToString:@"MTXNormalizationOrder"])
+  else if ([identifier isEqualToString:@"MTXNormalizationOrder"])
   {
     v5 = +[AXSettings sharedInstance];
-    [v5 setAssistiveTouchMotionTrackerXNormalizationOrder:a4];
+    [v5 setAssistiveTouchMotionTrackerXNormalizationOrder:value];
   }
 
-  else if ([v6 isEqualToString:@"MTYNormalizationOrder"])
+  else if ([identifier isEqualToString:@"MTYNormalizationOrder"])
   {
     v5 = +[AXSettings sharedInstance];
-    [v5 setAssistiveTouchMotionTrackerYNormalizationOrder:a4];
+    [v5 setAssistiveTouchMotionTrackerYNormalizationOrder:value];
   }
 
-  else if ([v6 isEqualToString:@"MTXNormalizationOffset"])
+  else if ([identifier isEqualToString:@"MTXNormalizationOffset"])
   {
     v5 = +[AXSettings sharedInstance];
-    [v5 setAssistiveTouchMotionTrackerXNormalizationOffset:a4];
+    [v5 setAssistiveTouchMotionTrackerXNormalizationOffset:value];
   }
 
-  else if ([v6 isEqualToString:@"MTYNormalizationOffset"])
+  else if ([identifier isEqualToString:@"MTYNormalizationOffset"])
   {
     v5 = +[AXSettings sharedInstance];
-    [v5 setAssistiveTouchMotionTrackerYNormalizationOffset:a4];
+    [v5 setAssistiveTouchMotionTrackerYNormalizationOffset:value];
   }
 
   else
   {
-    if (![v6 isEqualToString:@"EyeTrackingAutoHideTimeout"])
+    if (![identifier isEqualToString:@"EyeTrackingAutoHideTimeout"])
     {
       goto LABEL_16;
     }
 
     v5 = +[AXSettings sharedInstance];
-    [v5 setAssistiveTouchEyeTrackingAutoHideTimeout:a4];
+    [v5 setAssistiveTouchEyeTrackingAutoHideTimeout:value];
   }
 
 LABEL_16:
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
-  v3 = [a3 identifier];
-  if ([v3 isEqualToString:@"MTSmoothingBufferSize"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"MTSmoothingBufferSize"])
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 assistiveTouchMotionTrackerSmoothingBufferSize];
+    assistiveTouchMotionTrackerSmoothingBufferSize = [v4 assistiveTouchMotionTrackerSmoothingBufferSize];
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"MTSmoothingMaxDelta"])
+  if ([identifier isEqualToString:@"MTSmoothingMaxDelta"])
   {
     v4 = +[AXSettings sharedInstance];
     [v4 assistiveTouchMotionTrackerSmoothingMaxDelta];
 LABEL_15:
-    v5 = v6;
+    assistiveTouchMotionTrackerSmoothingBufferSize = v6;
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"MTXNormalizationOrder"])
+  if ([identifier isEqualToString:@"MTXNormalizationOrder"])
   {
     v4 = +[AXSettings sharedInstance];
     [v4 assistiveTouchMotionTrackerXNormalizationOrder];
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"MTYNormalizationOrder"])
+  if ([identifier isEqualToString:@"MTYNormalizationOrder"])
   {
     v4 = +[AXSettings sharedInstance];
     [v4 assistiveTouchMotionTrackerYNormalizationOrder];
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"MTXNormalizationOffset"])
+  if ([identifier isEqualToString:@"MTXNormalizationOffset"])
   {
     v4 = +[AXSettings sharedInstance];
     [v4 assistiveTouchMotionTrackerXNormalizationOffset];
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"MTYNormalizationOffset"])
+  if ([identifier isEqualToString:@"MTYNormalizationOffset"])
   {
     v4 = +[AXSettings sharedInstance];
     [v4 assistiveTouchMotionTrackerYNormalizationOffset];
     goto LABEL_15;
   }
 
-  v5 = 0.0;
-  if ([v3 isEqualToString:@"EyeTrackingAutoHideTimeout"])
+  assistiveTouchMotionTrackerSmoothingBufferSize = 0.0;
+  if ([identifier isEqualToString:@"EyeTrackingAutoHideTimeout"])
   {
     v4 = +[AXSettings sharedInstance];
     [v4 assistiveTouchEyeTrackingAutoHideTimeout];
@@ -508,7 +508,7 @@ LABEL_15:
 
 LABEL_17:
 
-  return v5;
+  return assistiveTouchMotionTrackerSmoothingBufferSize;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface VCDatagramChannelIDSEmulated
-- (BOOL)writeToEmulatedNetworkWithDatagram:(const void *)a3 datagramSize:(unsigned int)a4 datagramInfo:(id)a5 options:(id *)a6;
-- (VCDatagramChannelIDSEmulated)initWithIDSDatagramChannel:(id)a3 mode:(int64_t)a4;
+- (BOOL)writeToEmulatedNetworkWithDatagram:(const void *)datagram datagramSize:(unsigned int)size datagramInfo:(id)info options:(id *)options;
+- (VCDatagramChannelIDSEmulated)initWithIDSDatagramChannel:(id)channel mode:(int64_t)mode;
 - (int)start;
 - (void)dealloc;
 - (void)invalidate;
 - (void)setupEmulatedNetwork;
-- (void)writeDatagram:(const void *)a3 datagramSize:(unsigned int)a4 datagramInfo:(id)a5 options:(id *)a6 completionHandler:(id)a7;
-- (void)writeDatagrams:(const void *)a3 datagramsSize:(unsigned int *)a4 datagramsInfo:(id *)a5 datagramsCount:(int)a6 options:(id *)a7 completionHandler:(id)a8;
+- (void)writeDatagram:(const void *)datagram datagramSize:(unsigned int)size datagramInfo:(id)info options:(id *)options completionHandler:(id)handler;
+- (void)writeDatagrams:(const void *)datagrams datagramsSize:(unsigned int *)size datagramsInfo:(id *)info datagramsCount:(int)count options:(id *)options completionHandler:(id)handler;
 @end
 
 @implementation VCDatagramChannelIDSEmulated
 
-- (VCDatagramChannelIDSEmulated)initWithIDSDatagramChannel:(id)a3 mode:(int64_t)a4
+- (VCDatagramChannelIDSEmulated)initWithIDSDatagramChannel:(id)channel mode:(int64_t)mode
 {
   v20 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -20,9 +20,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_mode = a4;
-    v6->_idsChannel = a3;
-    v7->super._token = VCDatagramChannelIDS_Token(a3);
+    v6->_mode = mode;
+    v6->_idsChannel = channel;
+    v7->super._token = VCDatagramChannelIDS_Token(channel);
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v8 = VRTraceErrorLogLevelToCSTR();
@@ -63,7 +63,7 @@
       v12 = 1024;
       v13 = 37;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2048;
       v17 = idsChannel;
       v18 = 2048;
@@ -80,7 +80,7 @@
   [(VCDatagramChannelIDS *)&v7 dealloc];
 }
 
-- (void)writeDatagram:(const void *)a3 datagramSize:(unsigned int)a4 datagramInfo:(id)a5 options:(id *)a6 completionHandler:(id)a7
+- (void)writeDatagram:(const void *)datagram datagramSize:(unsigned int)size datagramInfo:(id)info options:(id *)options completionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
   if (self->_isStarted)
@@ -113,7 +113,7 @@
     else
     {
 
-      [(VCDatagramChannelIDSEmulated *)self writeToEmulatedNetworkWithDatagram:a3 datagramSize:*&a4 datagramInfo:*&a5.var0 options:*&a5.var4, a6, a7];
+      [(VCDatagramChannelIDSEmulated *)self writeToEmulatedNetworkWithDatagram:datagram datagramSize:*&size datagramInfo:*&info.var0 options:*&info.var4, options, handler];
     }
   }
 
@@ -134,16 +134,16 @@
   }
 }
 
-- (BOOL)writeToEmulatedNetworkWithDatagram:(const void *)a3 datagramSize:(unsigned int)a4 datagramInfo:(id)a5 options:(id *)a6
+- (BOOL)writeToEmulatedNetworkWithDatagram:(const void *)datagram datagramSize:(unsigned int)size datagramInfo:(id)info options:(id *)options
 {
-  v6 = *&a4;
+  v6 = *&size;
   v23 = *MEMORY[0x1E69E9840];
-  if (a4 < 0x5DD)
+  if (size < 0x5DD)
   {
-    v9 = *&a5.var4;
-    v10 = *&a5.var0;
+    v9 = *&info.var4;
+    v10 = *&info.var0;
     ++self->_packetCount;
-    v12 = [[VCEmulatedPacket alloc] initWithPacketID:self->_packetCount datagram:a3 datagramSize:*&a4];
+    v12 = [[VCEmulatedPacket alloc] initWithPacketID:self->_packetCount datagram:datagram datagramSize:*&size];
     if (v12)
     {
       v13 = v12;
@@ -152,19 +152,19 @@
       *__dst = v6;
       *&__dst[4] = v10;
       *&__dst[12] = v9;
-      if (a6)
+      if (options)
       {
-        v14 = *&a6->var11;
-        *&__dst[80] = *&a6->var9;
+        v14 = *&options->var11;
+        *&__dst[80] = *&options->var9;
         *&__dst[96] = v14;
-        *&__dst[112] = *a6->var13;
-        *&__dst[128] = *&a6->var14;
-        v15 = *&a6->var2;
-        *&__dst[16] = *&a6->var0;
+        *&__dst[112] = *options->var13;
+        *&__dst[128] = *&options->var14;
+        v15 = *&options->var2;
+        *&__dst[16] = *&options->var0;
         *&__dst[32] = v15;
-        v16 = *&a6->var8.var0;
+        v16 = *&options->var8.var0;
         v17 = 1;
-        *&__dst[48] = *&a6->var5[6];
+        *&__dst[48] = *&options->var5[6];
         *&__dst[64] = v16;
       }
 
@@ -238,7 +238,7 @@ LABEL_11:
   return v7;
 }
 
-- (void)writeDatagrams:(const void *)a3 datagramsSize:(unsigned int *)a4 datagramsInfo:(id *)a5 datagramsCount:(int)a6 options:(id *)a7 completionHandler:(id)a8
+- (void)writeDatagrams:(const void *)datagrams datagramsSize:(unsigned int *)size datagramsInfo:(id *)info datagramsCount:(int)count options:(id *)options completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
   if (self->_isStarted)
@@ -269,27 +269,27 @@ LABEL_11:
       }
     }
 
-    else if (a6 >= 1)
+    else if (count >= 1)
     {
-      v14 = a6;
-      p_var4 = &a5->var4;
+      countCopy = count;
+      p_var4 = &info->var4;
       do
       {
-        v17 = *a3++;
+        v17 = *datagrams++;
         v16 = v17;
-        LODWORD(v17) = *a4++;
+        LODWORD(v17) = *size++;
         v18 = v17;
-        v20 = *a7++;
+        v20 = *options++;
         v19 = v20;
         v21 = *(p_var4 - 1);
         LODWORD(v20) = *p_var4;
         p_var4 += 10;
         v9 = v9 & 0xFFFFFFFFFFFF0000 | v20;
-        [(VCDatagramChannelIDSEmulated *)self writeToEmulatedNetworkWithDatagram:v16 datagramSize:v18 datagramInfo:v21 options:v9, v19, a8];
-        --v14;
+        [(VCDatagramChannelIDSEmulated *)self writeToEmulatedNetworkWithDatagram:v16 datagramSize:v18 datagramInfo:v21 options:v9, v19, handler];
+        --countCopy;
       }
 
-      while (v14);
+      while (countCopy);
     }
   }
 

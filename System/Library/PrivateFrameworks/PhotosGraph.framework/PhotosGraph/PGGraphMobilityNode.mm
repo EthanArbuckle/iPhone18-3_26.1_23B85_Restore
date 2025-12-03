@@ -1,8 +1,8 @@
 @interface PGGraphMobilityNode
 + (id)filter;
-+ (unint64_t)mobilityTypeForMobilityLabel:(id)a3;
++ (unint64_t)mobilityTypeForMobilityLabel:(id)label;
 - (MANodeFilter)uniquelyIdentifyingFilter;
-- (PGGraphMobilityNode)initWithLabel:(id)a3;
+- (PGGraphMobilityNode)initWithLabel:(id)label;
 - (unint64_t)mobilityType;
 @end
 
@@ -10,8 +10,8 @@
 
 - (unint64_t)mobilityType
 {
-  v2 = [(PGGraphMobilityNode *)self label];
-  v3 = [objc_opt_class() mobilityTypeForMobilityLabel:v2];
+  label = [(PGGraphMobilityNode *)self label];
+  v3 = [objc_opt_class() mobilityTypeForMobilityLabel:label];
 
   return v3;
 }
@@ -23,15 +23,15 @@
   return v2;
 }
 
-- (PGGraphMobilityNode)initWithLabel:(id)a3
+- (PGGraphMobilityNode)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v9.receiver = self;
   v9.super_class = PGGraphMobilityNode;
   v5 = [(PGGraphNode *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelCopy copy];
     label = v5->_label;
     v5->_label = v6;
   }
@@ -39,25 +39,25 @@
   return v5;
 }
 
-+ (unint64_t)mobilityTypeForMobilityLabel:(id)a3
++ (unint64_t)mobilityTypeForMobilityLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D274E0]])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:*MEMORY[0x277D274E0]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D274D0]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277D274D0]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D274D8]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277D274D8]])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D274E8]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277D274E8]])
   {
     v4 = 4;
   }

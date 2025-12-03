@@ -1,38 +1,38 @@
 @interface SASFinishSpeech
-- (void)ad_setAFEndpointMode:(int64_t)a3;
-- (void)ad_setCSEndpointerMetrics:(id)a3;
+- (void)ad_setAFEndpointMode:(int64_t)mode;
+- (void)ad_setCSEndpointerMetrics:(id)metrics;
 @end
 
 @implementation SASFinishSpeech
 
-- (void)ad_setCSEndpointerMetrics:(id)a3
+- (void)ad_setCSEndpointerMetrics:(id)metrics
 {
-  if (a3)
+  if (metrics)
   {
-    v4 = a3;
-    v5 = [v4 featuresAtEndpoint];
-    [(SASFinishSpeech *)self setFeaturesAtEndpoint:v5];
+    metricsCopy = metrics;
+    featuresAtEndpoint = [metricsCopy featuresAtEndpoint];
+    [(SASFinishSpeech *)self setFeaturesAtEndpoint:featuresAtEndpoint];
 
-    v6 = [v4 asrFeatureLatencyDistribution];
-    [(SASFinishSpeech *)self setServerFeatureLatencyDistribution:v6];
+    asrFeatureLatencyDistribution = [metricsCopy asrFeatureLatencyDistribution];
+    [(SASFinishSpeech *)self setServerFeatureLatencyDistribution:asrFeatureLatencyDistribution];
 
-    [v4 totalAudioRecorded];
+    [metricsCopy totalAudioRecorded];
     v8 = v7;
 
     [(SASFinishSpeech *)self setTotalAudioRecorded:v8];
   }
 }
 
-- (void)ad_setAFEndpointMode:(int64_t)a3
+- (void)ad_setAFEndpointMode:(int64_t)mode
 {
-  if ((a3 - 1) > 3)
+  if ((mode - 1) > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = **(&off_10051D970 + a3 - 1);
+    v4 = **(&off_10051D970 + mode - 1);
   }
 
   v5 = v4;

@@ -1,31 +1,31 @@
 @interface TSDFreehandDrawingLayout
-- (BOOL)descendentWrappablesContainsWrappable:(id)a3;
+- (BOOL)descendentWrappablesContainsWrappable:(id)wrappable;
 - (BOOL)shouldSnapWhileResizing;
 - (BOOL)shouldSpacerShapeProvideSpace;
 - (CGRect)computeBoundsForStandardKnobs;
 - (CGRect)frameForMovieExport;
 - (CGSize)minimumSize;
 - (TSDFreehandDrawingInfo)freehandInfo;
-- (TSDFreehandDrawingLayout)initWithInfo:(id)a3;
+- (TSDFreehandDrawingLayout)initWithInfo:(id)info;
 - (double)opacity;
-- (id)additionalDependenciesForChildLayout:(id)a3;
+- (id)additionalDependenciesForChildLayout:(id)layout;
 - (id)childInfosForChildLayouts;
 - (id)childrenForPencilAnnotations;
 - (id)computeLayoutGeometry;
 - (id)descendentWrappables;
 - (id)layoutGeometryFromInfo;
 - (id)p_sizeEnforcingChild;
-- (void)processChangedProperty:(int)a3;
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5;
+- (void)processChangedProperty:(int)property;
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document;
 @end
 
 @implementation TSDFreehandDrawingLayout
 
-- (TSDFreehandDrawingLayout)initWithInfo:(id)a3
+- (TSDFreehandDrawingLayout)initWithInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = TSDFreehandDrawingLayout;
-  result = [(TSDGroupLayout *)&v4 initWithInfo:a3];
+  result = [(TSDGroupLayout *)&v4 initWithInfo:info];
   if (result)
   {
     result->_scaleForInlineClampingChildLayouts = 1.0;
@@ -43,10 +43,10 @@
   return v6;
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
-  v3 = *&a3;
-  if (a3 == 514 && objc_msgSend_shouldSpacerShapeProvideSpace(self, a2, *&a3))
+  v3 = *&property;
+  if (property == 514 && objc_msgSend_shouldSpacerShapeProvideSpace(self, a2, *&property))
   {
     v7 = objc_msgSend_p_sizeEnforcingChild(self, v5, v6);
     objc_msgSend_invalidate(v7, v8, v9);
@@ -132,24 +132,24 @@
 
   v16.receiver = self;
   v16.super_class = TSDFreehandDrawingLayout;
-  v12 = [(TSDGroupLayout *)&v16 childInfosForChildLayouts];
-  v14 = objc_msgSend_arrayByAddingObjectsFromArray_(v11, v13, v12);
+  childInfosForChildLayouts = [(TSDGroupLayout *)&v16 childInfosForChildLayouts];
+  v14 = objc_msgSend_arrayByAddingObjectsFromArray_(v11, v13, childInfosForChildLayouts);
 
   return v14;
 }
 
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document
 {
-  v5 = a5;
-  v8 = a3;
+  documentCopy = document;
+  infoCopy = info;
   v27.receiver = self;
   v27.super_class = TSDFreehandDrawingLayout;
-  v9 = *&a4->c;
-  *&v26.a = *&a4->a;
+  v9 = *&transform->c;
+  *&v26.a = *&transform->a;
   *&v26.c = v9;
-  *&v26.tx = *&a4->tx;
-  [(TSDGroupLayout *)&v27 transferLayoutGeometryToInfo:v8 withAdditionalTransform:&v26 assertIfInDocument:v5];
-  v10 = v8;
+  *&v26.tx = *&transform->tx;
+  [(TSDGroupLayout *)&v27 transferLayoutGeometryToInfo:infoCopy withAdditionalTransform:&v26 assertIfInDocument:documentCopy];
+  v10 = infoCopy;
   v13 = objc_msgSend_p_sizeEnforcingChild(self, v11, v12);
   memset(&v26, 0, sizeof(v26));
   objc_msgSend_boundsForStandardKnobs(self, v14, v15);
@@ -159,7 +159,7 @@
   v23 = objc_msgSend_freehandDrawingSpacerShape(v10, v21, v22);
 
   v25 = v26;
-  objc_msgSend_transferLayoutGeometryToInfo_withAdditionalTransform_assertIfInDocument_(v13, v24, v23, &v25, v5);
+  objc_msgSend_transferLayoutGeometryToInfo_withAdditionalTransform_assertIfInDocument_(v13, v24, v23, &v25, documentCopy);
 }
 
 - (id)computeLayoutGeometry
@@ -236,7 +236,7 @@
         objc_msgSend_validateLayoutsWithDependencies_(v35, v36, v22);
       }
 
-      v138 = self;
+      selfCopy = self;
       v37 = objc_msgSend_strongToStrongObjectsMapTable(MEMORY[0x277CCAB00], v20, v21);
       v152 = 0u;
       v153 = 0u;
@@ -274,7 +274,7 @@
         while (v42);
       }
 
-      v54 = self;
+      selfCopy2 = self;
       objc_msgSend_computeBoundsForStandardKnobs(self, v55, v56);
       v58 = v57;
       v60 = v59;
@@ -400,11 +400,11 @@
           while (v104);
         }
 
-        v54 = v138;
+        selfCopy2 = selfCopy;
         v73 = v136;
       }
 
-      v123 = objc_msgSend_i_computeBaseLayoutGeometry(v54, v82, v83);
+      v123 = objc_msgSend_i_computeBaseLayoutGeometry(selfCopy2, v82, v83);
 
       v5 = v37;
       v9 = v137;
@@ -416,21 +416,21 @@
   return v5;
 }
 
-- (id)additionalDependenciesForChildLayout:(id)a3
+- (id)additionalDependenciesForChildLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v7 = objc_msgSend_p_sizeEnforcingChild(self, v5, v6);
   v10 = v7;
-  if (v7 == v4 || !v7)
+  if (v7 == layoutCopy || !v7)
   {
     v23.receiver = self;
     v23.super_class = TSDFreehandDrawingLayout;
-    v21 = [(TSDGroupLayout *)&v23 additionalDependenciesForChildLayout:v4];
+    v21 = [(TSDGroupLayout *)&v23 additionalDependenciesForChildLayout:layoutCopy];
   }
 
   else
   {
-    if (objc_msgSend_isBeingManipulated(v4, v8, v9) & 1) != 0 || (objc_msgSend_freehandInfo(self, v11, v12), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend_info(v4, v14, v15), v16 = objc_claimAutoreleasedReturnValue(), isNonGroupedChild = objc_msgSend_isNonGroupedChild_(v13, v17, v16), v16, v13, (isNonGroupedChild))
+    if (objc_msgSend_isBeingManipulated(layoutCopy, v8, v9) & 1) != 0 || (objc_msgSend_freehandInfo(self, v11, v12), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend_info(layoutCopy, v14, v15), v16 = objc_claimAutoreleasedReturnValue(), isNonGroupedChild = objc_msgSend_isNonGroupedChild_(v13, v17, v16), v16, v13, (isNonGroupedChild))
     {
       v20 = MEMORY[0x277CBEBF8];
       goto LABEL_8;
@@ -474,21 +474,21 @@ LABEL_8:
     {
       v28.receiver = self;
       v28.super_class = TSDFreehandDrawingLayout;
-      v18 = [(TSDGroupLayout *)&v28 descendentWrappables];
-      v21 = objc_msgSend_mutableCopy(v18, v19, v20);
+      descendentWrappables = [(TSDGroupLayout *)&v28 descendentWrappables];
+      descendentWrappables2 = objc_msgSend_mutableCopy(descendentWrappables, v19, v20);
 
-      objc_msgSend_removeObject_(v21, v22, v6);
+      objc_msgSend_removeObject_(descendentWrappables2, v22, v6);
     }
 
     else
     {
       v23 = objc_msgSend_i_captionAndTitleLayouts(self, v16, v17);
-      v21 = v23;
+      descendentWrappables2 = v23;
       if (v6)
       {
         v25 = objc_msgSend_arrayByAddingObject_(v23, v24, v6);
 
-        v21 = v25;
+        descendentWrappables2 = v25;
       }
     }
   }
@@ -497,15 +497,15 @@ LABEL_8:
   {
     v27.receiver = self;
     v27.super_class = TSDFreehandDrawingLayout;
-    v21 = [(TSDGroupLayout *)&v27 descendentWrappables];
+    descendentWrappables2 = [(TSDGroupLayout *)&v27 descendentWrappables];
   }
 
-  return v21;
+  return descendentWrappables2;
 }
 
-- (BOOL)descendentWrappablesContainsWrappable:(id)a3
+- (BOOL)descendentWrappablesContainsWrappable:(id)wrappable
 {
-  v4 = a3;
+  wrappableCopy = wrappable;
   if (objc_msgSend_shouldSpacerShapeProvideSpace(self, v5, v6))
   {
     v9 = objc_msgSend_p_sizeEnforcingChild(self, v7, v8);
@@ -515,12 +515,12 @@ LABEL_8:
     v16 = objc_msgSend_exteriorTextWrap(v13, v14, v15);
     v19 = objc_msgSend_fitType(v16, v17, v18);
 
-    v20 = v10 == v4 && v19 != 1;
-    if (v19 == 1 && v10 != v4)
+    v20 = v10 == wrappableCopy && v19 != 1;
+    if (v19 == 1 && v10 != wrappableCopy)
     {
       v23.receiver = self;
       v23.super_class = TSDFreehandDrawingLayout;
-      v20 = [(TSDGroupLayout *)&v23 descendentWrappablesContainsWrappable:v4];
+      v20 = [(TSDGroupLayout *)&v23 descendentWrappablesContainsWrappable:wrappableCopy];
     }
   }
 
@@ -528,7 +528,7 @@ LABEL_8:
   {
     v22.receiver = self;
     v22.super_class = TSDFreehandDrawingLayout;
-    v20 = [(TSDGroupLayout *)&v22 descendentWrappablesContainsWrappable:v4];
+    v20 = [(TSDGroupLayout *)&v22 descendentWrappablesContainsWrappable:wrappableCopy];
   }
 
   return v20;
@@ -575,11 +575,11 @@ LABEL_8:
 {
   v17.receiver = self;
   v17.super_class = TSDFreehandDrawingLayout;
-  v3 = [(TSDGroupLayout *)&v17 layoutGeometryFromInfo];
-  v6 = v3;
+  layoutGeometryFromInfo = [(TSDGroupLayout *)&v17 layoutGeometryFromInfo];
+  v6 = layoutGeometryFromInfo;
   if (self->_scaleForInlineClampingChildLayouts != 1.0)
   {
-    objc_msgSend_size(v3, v4, v5);
+    objc_msgSend_size(layoutGeometryFromInfo, v4, v5);
     TSUMultiplySizeScalar();
     v8 = v7;
     v10 = v9;

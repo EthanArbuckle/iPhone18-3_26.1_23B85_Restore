@@ -8,43 +8,43 @@
 
 - (id)_sf_punchoutURL
 {
-  v1 = [a1 inlineCard];
-  v2 = [v1 cardSections];
-  v3 = [v2 firstObject];
+  inlineCard = [self inlineCard];
+  cardSections = [inlineCard cardSections];
+  firstObject = [cardSections firstObject];
 
-  v4 = [v3 command];
-  if (v4)
+  command = [firstObject command];
+  if (command)
   {
-    v5 = [v3 command];
+    command2 = [firstObject command];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v3 command];
-      v8 = [v7 punchout];
-      v4 = [v8 preferredOpenableURL];
+      command3 = [firstObject command];
+      punchout = [command3 punchout];
+      command = [punchout preferredOpenableURL];
     }
 
     else
     {
-      v4 = 0;
+      command = 0;
     }
   }
 
-  return v4;
+  return command;
 }
 
 - (uint64_t)_sf_isMediaResult
 {
-  v1 = [a1 inlineCard];
-  v2 = [v1 cardSections];
-  v3 = [v2 firstObject];
+  inlineCard = [self inlineCard];
+  cardSections = [inlineCard cardSections];
+  firstObject = [cardSections firstObject];
 
-  v4 = [v3 command];
-  if (v4)
+  command = [firstObject command];
+  if (command)
   {
-    v5 = [v3 command];
+    command2 = [firstObject command];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -59,10 +59,10 @@
 
 - (uint64_t)_sf_canOpenInBrowser
 {
-  v1 = [a1 _sf_punchoutURL];
-  v2 = [v1 safari_isHTTPFamilyURL];
+  _sf_punchoutURL = [self _sf_punchoutURL];
+  safari_isHTTPFamilyURL = [_sf_punchoutURL safari_isHTTPFamilyURL];
 
-  return v2;
+  return safari_isHTTPFamilyURL;
 }
 
 @end

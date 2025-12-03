@@ -1,8 +1,8 @@
 @interface AVCaptureSystemPressureState
 - (AVCaptureSystemPressureLevel)level;
 - (AVCaptureSystemPressureState)init;
-- (AVCaptureSystemPressureState)initWithFigLevel:(int)a3 factors:(unint64_t)a4 recommendedFrameRateRangeForPortrait:(id)a5 recommendedFrameRateRangeForPhotoMode:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (AVCaptureSystemPressureState)initWithFigLevel:(int)level factors:(unint64_t)factors recommendedFrameRateRangeForPortrait:(id)portrait recommendedFrameRateRangeForPhotoMode:(id)mode;
+- (BOOL)isEqual:(id)equal;
 - (id)debugDescription;
 - (id)description;
 - (id)spiDebugDescription;
@@ -56,15 +56,15 @@
   return 0;
 }
 
-- (AVCaptureSystemPressureState)initWithFigLevel:(int)a3 factors:(unint64_t)a4 recommendedFrameRateRangeForPortrait:(id)a5 recommendedFrameRateRangeForPhotoMode:(id)a6
+- (AVCaptureSystemPressureState)initWithFigLevel:(int)level factors:(unint64_t)factors recommendedFrameRateRangeForPortrait:(id)portrait recommendedFrameRateRangeForPhotoMode:(id)mode
 {
-  v9 = *&a3;
+  v9 = *&level;
   v13.receiver = self;
   v13.super_class = AVCaptureSystemPressureState;
   v10 = [(AVCaptureSystemPressureState *)&v13 init];
   if (v10)
   {
-    v11 = [[AVCaptureSystemPressureStateInternal alloc] initWithFigLevel:v9 factors:a4 recommendedFrameRateRangeForPortrait:a5 recommendedFrameRateRangeForPhotoMode:a6];
+    v11 = [[AVCaptureSystemPressureStateInternal alloc] initWithFigLevel:v9 factors:factors recommendedFrameRateRangeForPortrait:portrait recommendedFrameRateRangeForPhotoMode:mode];
     v10->_internal = v11;
     if (!v11)
     {
@@ -110,28 +110,28 @@
 
   if ([(AVCaptureSystemPressureState *)self factors])
   {
-    v4 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     if (([(AVCaptureSystemPressureState *)self factors]& 1) != 0)
     {
-      [v4 appendString:{@"System Temp, "}];
+      [string appendString:{@"System Temp, "}];
     }
 
     if (([(AVCaptureSystemPressureState *)self factors]& 4) != 0)
     {
-      [v4 appendString:{@"Depth Module Temp, "}];
+      [string appendString:{@"Depth Module Temp, "}];
     }
 
     if (([(AVCaptureSystemPressureState *)self factors]& 2) != 0)
     {
-      [v4 appendString:{@"Peak Power, "}];
+      [string appendString:{@"Peak Power, "}];
     }
 
     if (([(AVCaptureSystemPressureState *)self factors]& 8) != 0)
     {
-      [v4 appendString:{@"Camera Temp, "}];
+      [string appendString:{@"Camera Temp, "}];
     }
 
-    v5 = [v4 substringToIndex:{objc_msgSend(v4, "length") - 2}];
+    v5 = [string substringToIndex:{objc_msgSend(string, "length") - 2}];
   }
 
   else
@@ -149,26 +149,26 @@
   return [v3 stringWithFormat:@"<%@: %p %@>", NSStringFromClass(v4), self, -[AVCaptureSystemPressureState debugDescription](self, "debugDescription")];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [a3 isMemberOfClass:objc_opt_class()];
+    v5 = [equal isMemberOfClass:objc_opt_class()];
     if (v5)
     {
-      v5 = [objc_msgSend(a3 "level")];
+      v5 = [objc_msgSend(equal "level")];
       if (v5)
       {
-        v6 = [a3 factors];
-        if (v6 == [(AVCaptureSystemPressureState *)self factors])
+        factors = [equal factors];
+        if (factors == [(AVCaptureSystemPressureState *)self factors])
         {
-          v7 = [a3 recommendedFrameRateRangeForPortrait];
-          if (v7 == -[AVCaptureSystemPressureState recommendedFrameRateRangeForPortrait](self, "recommendedFrameRateRangeForPortrait") || (v5 = [objc_msgSend(a3 "recommendedFrameRateRangeForPortrait")]) != 0)
+          recommendedFrameRateRangeForPortrait = [equal recommendedFrameRateRangeForPortrait];
+          if (recommendedFrameRateRangeForPortrait == -[AVCaptureSystemPressureState recommendedFrameRateRangeForPortrait](self, "recommendedFrameRateRangeForPortrait") || (v5 = [objc_msgSend(equal "recommendedFrameRateRangeForPortrait")]) != 0)
           {
             LOBYTE(v5) = 1;
           }

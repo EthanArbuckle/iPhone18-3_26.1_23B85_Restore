@@ -1,16 +1,16 @@
 @interface _M4FXTemporalDenoisingScalingEffect
 - (CGPoint)jitterOffset;
 - (CGPoint)motionVectorScale;
-- (_M4FXTemporalDenoisingScalingEffect)initWithDevice:(id)a3 compiler:(id)a4 descriptor:(id)a5 history:(id)a6;
-- (__n128)setViewToClipMatrix:(__n128)a3;
-- (__n128)setWorldToViewMatrix:(__n128)a3;
+- (_M4FXTemporalDenoisingScalingEffect)initWithDevice:(id)device compiler:(id)compiler descriptor:(id)descriptor history:(id)history;
+- (__n128)setViewToClipMatrix:(__n128)matrix;
+- (__n128)setWorldToViewMatrix:(__n128)matrix;
 - (__n128)viewToClipMatrix;
 - (__n128)worldToViewMatrix;
 - (float)jitterOffsetX;
 - (float)motionVectorScaleX;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3;
+- (void)encodeToCommandBuffer:(id)buffer;
 @end
 
 @implementation _M4FXTemporalDenoisingScalingEffect
@@ -47,16 +47,16 @@
   return result;
 }
 
-- (_M4FXTemporalDenoisingScalingEffect)initWithDevice:(id)a3 compiler:(id)a4 descriptor:(id)a5 history:(id)a6
+- (_M4FXTemporalDenoisingScalingEffect)initWithDevice:(id)device compiler:(id)compiler descriptor:(id)descriptor history:(id)history
 {
-  a3;
-  a4;
-  v11 = a5;
-  a6;
+  device;
+  compiler;
+  descriptorCopy = descriptor;
+  history;
   v14.receiver = self;
   v14.super_class = _M4FXTemporalDenoisingScalingEffect;
   v12 = [(_MTL4FXEffect *)&v14 init];
-  objc_storeStrong(&v12->_device, a3);
+  objc_storeStrong(&v12->_device, device);
   operator new();
 }
 
@@ -87,9 +87,9 @@
   [(_M4FXTemporalDenoisingScalingEffect *)&v4 dealloc];
 }
 
-- (void)encodeToCommandBuffer:(id)a3
+- (void)encodeToCommandBuffer:(id)buffer
 {
-  v32 = a3;
+  bufferCopy = buffer;
   [(_MTL4FXEffect *)self _beginEncodeWithCommandBuffer:?];
   if (MTLReportFailureTypeEnabled())
   {
@@ -141,9 +141,9 @@
   v18 = self->_inputContentHeight;
   *(self->_filter + 136) = *(self->_filter + 136) == 0;
   *(self->_denoiseFilter + 299) = *(self->_denoiseFilter + 299) == 0;
-  [v32 useResidencySet:self->device4->var2];
+  [bufferCopy useResidencySet:self->device4->var2];
   device4 = self->device4;
-  MFXComputeEncoder4::beginEncoding(device4->var4, v32, device4->var3);
+  MFXComputeEncoder4::beginEncoding(device4->var4, bufferCopy, device4->var3);
   var4 = device4->var4;
   if (MTLTraceEnabled())
   {
@@ -175,17 +175,17 @@
 
 - (__n128)worldToViewMatrix
 {
-  result = *(a1 + 752);
-  v2 = *(a1 + 768);
-  v3 = *(a1 + 784);
-  v4 = *(a1 + 800);
+  result = *(self + 752);
+  v2 = *(self + 768);
+  v3 = *(self + 784);
+  v4 = *(self + 800);
   return result;
 }
 
-- (__n128)setWorldToViewMatrix:(__n128)a3
+- (__n128)setWorldToViewMatrix:(__n128)matrix
 {
   result[47] = a2;
-  result[48] = a3;
+  result[48] = matrix;
   result[49] = a4;
   result[50] = a5;
   return result;
@@ -193,17 +193,17 @@
 
 - (__n128)viewToClipMatrix
 {
-  result = *(a1 + 816);
-  v2 = *(a1 + 832);
-  v3 = *(a1 + 848);
-  v4 = *(a1 + 864);
+  result = *(self + 816);
+  v2 = *(self + 832);
+  v3 = *(self + 848);
+  v4 = *(self + 864);
   return result;
 }
 
-- (__n128)setViewToClipMatrix:(__n128)a3
+- (__n128)setViewToClipMatrix:(__n128)matrix
 {
   result[51] = a2;
-  result[52] = a3;
+  result[52] = matrix;
   result[53] = a4;
   result[54] = a5;
   return result;

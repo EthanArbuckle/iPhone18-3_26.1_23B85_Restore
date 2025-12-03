@@ -1,16 +1,16 @@
 @interface MFConversationCurrentVisibleMessageStrategy
 - (ConversationViewControllerBase)viewController;
-- (MFConversationCurrentVisibleMessageStrategy)initWithConversationViewController:(id)a3;
+- (MFConversationCurrentVisibleMessageStrategy)initWithConversationViewController:(id)controller;
 - (MessageContentRepresentationRequest)currentVisibleMessageContentRequest;
-- (id)persistentIDForEMMessageObjectID:(id)a3;
+- (id)persistentIDForEMMessageObjectID:(id)d;
 @end
 
 @implementation MFConversationCurrentVisibleMessageStrategy
 
-- (MFConversationCurrentVisibleMessageStrategy)initWithConversationViewController:(id)a3
+- (MFConversationCurrentVisibleMessageStrategy)initWithConversationViewController:(id)controller
 {
-  v5 = a3;
-  if (!v5)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"MFConversationCurrentVisibleMessageStrategy.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
@@ -22,17 +22,17 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_viewController, v5);
+    objc_storeWeak(&v6->_viewController, controllerCopy);
   }
 
   return v7;
 }
 
-- (id)persistentIDForEMMessageObjectID:(id)a3
+- (id)persistentIDForEMMessageObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(MFConversationCurrentVisibleMessageStrategy *)self viewController];
-  v6 = [v5 _persistentIDForEMMessageObjectID:v4];
+  dCopy = d;
+  viewController = [(MFConversationCurrentVisibleMessageStrategy *)self viewController];
+  v6 = [viewController _persistentIDForEMMessageObjectID:dCopy];
 
   return v6;
 }
@@ -40,20 +40,20 @@
 - (MessageContentRepresentationRequest)currentVisibleMessageContentRequest
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v3 = [WeakRetained collectionView];
-  [v3 mf_visibleBounds];
+  collectionView = [WeakRetained collectionView];
+  [collectionView mf_visibleBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [WeakRetained conversationSortOrder];
-  v13 = [v3 visibleCells];
+  conversationSortOrder = [WeakRetained conversationSortOrder];
+  visibleCells = [collectionView visibleCells];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1001BA634;
   v26[3] = &unk_100653B10;
-  v27 = v12 != 1;
-  v14 = [v13 sortedArrayUsingComparator:v26];
+  v27 = conversationSortOrder != 1;
+  v14 = [visibleCells sortedArrayUsingComparator:v26];
 
   v20 = 0;
   v21 = &v20;
@@ -79,19 +79,19 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v21[5] viewModel];
-    v16 = [v15 messageContentRequest];
+    viewModel = [v21[5] viewModel];
+    messageContentRequest = [viewModel messageContentRequest];
   }
 
   else
   {
-    v16 = 0;
+    messageContentRequest = 0;
   }
 
   _Block_object_dispose(v19, 8);
   _Block_object_dispose(&v20, 8);
 
-  return v16;
+  return messageContentRequest;
 }
 
 - (ConversationViewControllerBase)viewController

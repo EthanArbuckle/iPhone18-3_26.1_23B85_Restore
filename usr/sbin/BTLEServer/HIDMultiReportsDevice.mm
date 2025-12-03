@@ -1,19 +1,19 @@
 @interface HIDMultiReportsDevice
-- (void)handleInputReportData:(id)a3 reportID:(unsigned __int8)a4 timestamp:(unint64_t)a5;
+- (void)handleInputReportData:(id)data reportID:(unsigned __int8)d timestamp:(unint64_t)timestamp;
 @end
 
 @implementation HIDMultiReportsDevice
 
-- (void)handleInputReportData:(id)a3 reportID:(unsigned __int8)a4 timestamp:(unint64_t)a5
+- (void)handleInputReportData:(id)data reportID:(unsigned __int8)d timestamp:(unint64_t)timestamp
 {
-  v8 = a3;
-  v9 = [v8 length];
+  dataCopy = data;
+  v9 = [dataCopy length];
   v10 = &v11 - ((v9 + 16) & 0xFFFFFFFFFFFFFFF0);
   bzero(v10, v9 + 1);
-  *v10 = a4;
-  [v8 getBytes:v10 + 1 length:v9];
+  *v10 = d;
+  [dataCopy getBytes:v10 + 1 length:v9];
 
-  IOHIDUserDeviceHandleReportWithTimeStamp([(HIDGenericDevice *)self device], a5, v10, v9 + 1);
+  IOHIDUserDeviceHandleReportWithTimeStamp([(HIDGenericDevice *)self device], timestamp, v10, v9 + 1);
 }
 
 @end

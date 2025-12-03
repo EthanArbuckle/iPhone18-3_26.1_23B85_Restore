@@ -30,18 +30,18 @@
 {
   v5[0] = 0;
   v5[1] = 0;
-  v2 = [a1 objCType];
+  objCType = [self objCType];
   v3 = kCCUILayoutPointObjCType;
   v6 = 0;
   sizep = 0;
-  NSGetSizeAndAlignment(v2, &sizep, 0);
+  NSGetSizeAndAlignment(objCType, &sizep, 0);
   NSGetSizeAndAlignment(v3, &v6, 0);
-  if (sizep != v6 || strncmp(v2, v3, sizep))
+  if (sizep != v6 || strncmp(objCType, v3, sizep))
   {
     return 0;
   }
 
-  [a1 getValue:v5];
+  [self getValue:v5];
   return v5[0];
 }
 
@@ -49,18 +49,18 @@
 {
   v5[0] = 0;
   v5[1] = 0;
-  v2 = [a1 objCType];
+  objCType = [self objCType];
   v3 = kCCUILayoutSizeObjCType;
   v6 = 0;
   sizep = 0;
-  NSGetSizeAndAlignment(v2, &sizep, 0);
+  NSGetSizeAndAlignment(objCType, &sizep, 0);
   NSGetSizeAndAlignment(v3, &v6, 0);
-  if (sizep != v6 || strncmp(v2, v3, sizep))
+  if (sizep != v6 || strncmp(objCType, v3, sizep))
   {
     return 0;
   }
 
-  [a1 getValue:v5];
+  [self getValue:v5];
   return v5[0];
 }
 
@@ -68,18 +68,18 @@
 {
   *a2 = 0u;
   a2[1] = 0u;
-  v4 = [a1 objCType];
+  objCType = [self objCType];
   v5 = kCCUILayoutRectObjCType;
   v7 = 0;
   sizep = 0;
-  NSGetSizeAndAlignment(v4, &sizep, 0);
+  NSGetSizeAndAlignment(objCType, &sizep, 0);
   result = NSGetSizeAndAlignment(v5, &v7, 0);
   if (sizep == v7)
   {
-    result = strncmp(v4, v5, sizep);
+    result = strncmp(objCType, v5, sizep);
     if (!result)
     {
-      return [a1 getValue:a2];
+      return [self getValue:a2];
     }
   }
 

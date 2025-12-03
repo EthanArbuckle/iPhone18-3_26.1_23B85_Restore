@@ -1,9 +1,9 @@
 @interface SBHomeScreenDefaults
 - (BOOL)automaticallyAddsNewApplicationsExists;
 - (id)iconTintColor;
-- (id)observeIconTintColorOnQueue:(id)a3 withBlock:(id)a4;
+- (id)observeIconTintColorOnQueue:(id)queue withBlock:(id)block;
 - (void)_bindAndRegisterDefaults;
-- (void)setIconTintColor:(id)a3;
+- (void)setIconTintColor:(id)color;
 @end
 
 @implementation SBHomeScreenDefaults
@@ -141,16 +141,16 @@
 
 - (BOOL)automaticallyAddsNewApplicationsExists
 {
-  v2 = [(BSAbstractDefaultDomain *)self _store];
-  v3 = [v2 bs_defaultExists:@"SBHomeAutomaticallyAddsNewApplications"];
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  v3 = [_store bs_defaultExists:@"SBHomeAutomaticallyAddsNewApplications"];
 
   return v3;
 }
 
 - (id)iconTintColor
 {
-  v2 = [(BSAbstractDefaultDomain *)self _store];
-  v3 = [v2 dataForKey:@"SBHomeIconTintColor"];
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  v3 = [_store dataForKey:@"SBHomeIconTintColor"];
 
   if (v3)
   {
@@ -167,28 +167,28 @@
   return v6;
 }
 
-- (void)setIconTintColor:(id)a3
+- (void)setIconTintColor:(id)color
 {
-  if (a3)
+  if (color)
   {
-    v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
-    v4 = [(BSAbstractDefaultDomain *)self _store];
-    [v4 setObject:v5 forKey:@"SBHomeIconTintColor"];
+    _store2 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:color requiringSecureCoding:1 error:0];
+    _store = [(BSAbstractDefaultDomain *)self _store];
+    [_store setObject:_store2 forKey:@"SBHomeIconTintColor"];
   }
 
   else
   {
-    v5 = [(BSAbstractDefaultDomain *)self _store];
-    [v5 removeObjectForKey:@"SBHomeIconTintColor"];
+    _store2 = [(BSAbstractDefaultDomain *)self _store];
+    [_store2 removeObjectForKey:@"SBHomeIconTintColor"];
   }
 }
 
-- (id)observeIconTintColorOnQueue:(id)a3 withBlock:(id)a4
+- (id)observeIconTintColorOnQueue:(id)queue withBlock:(id)block
 {
   v15[3] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  queueCopy = queue;
   v9 = [v6 stringWithUTF8String:"iconTintColorData"];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"iconUserInterfaceStyleLuminance", v9}];
   v15[1] = v10;
@@ -196,7 +196,7 @@
   v15[2] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:3];
 
-  v13 = [(BSAbstractDefaultDomain *)self observeDefaults:v12 onQueue:v8 withBlock:v7];
+  v13 = [(BSAbstractDefaultDomain *)self observeDefaults:v12 onQueue:queueCopy withBlock:blockCopy];
 
   return v13;
 }

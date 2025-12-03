@@ -1,36 +1,36 @@
 @interface MPCRadioArtworkDataSource
 + (id)sharedRadioArtworkDataSource;
-- (BOOL)areRepresentationsAvailableForCatalog:(id)a3;
-- (BOOL)isRepresentation:(id)a3 bestRepresentationForArtworkCatalog:(id)a4;
+- (BOOL)areRepresentationsAvailableForCatalog:(id)catalog;
+- (BOOL)isRepresentation:(id)representation bestRepresentationForArtworkCatalog:(id)catalog;
 - (MPCRadioArtworkDataSource)init;
-- (id)existingRepresentationForArtworkCatalog:(id)a3;
-- (id)requestForCatalog:(id)a3 size:(CGSize)a4;
-- (void)_cacheArtworkRepresentation:(id)a3 forKey:(id)a4;
+- (id)existingRepresentationForArtworkCatalog:(id)catalog;
+- (id)requestForCatalog:(id)catalog size:(CGSize)size;
+- (void)_cacheArtworkRepresentation:(id)representation forKey:(id)key;
 - (void)_clearCache;
-- (void)_handleDidEnterBackgroundNotification:(id)a3;
-- (void)_handleWillEnterForegroundNotification:(id)a3;
-- (void)_setCacheSize:(unint64_t)a3 preserveExisting:(BOOL)a4;
+- (void)_handleDidEnterBackgroundNotification:(id)notification;
+- (void)_handleWillEnterForegroundNotification:(id)notification;
+- (void)_setCacheSize:(unint64_t)size preserveExisting:(BOOL)existing;
 - (void)dealloc;
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4;
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler;
 @end
 
 @implementation MPCRadioArtworkDataSource
 
-- (void)_setCacheSize:(unint64_t)a3 preserveExisting:(BOOL)a4
+- (void)_setCacheSize:(unint64_t)size preserveExisting:(BOOL)existing
 {
-  if (self->_cacheSize != a3)
+  if (self->_cacheSize != size)
   {
     v9 = v4;
     v10 = v5;
-    self->_cacheSize = a3;
+    self->_cacheSize = size;
     cachedArtworkRepresentationsAccessQueue = self->_cachedArtworkRepresentationsAccessQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__MPCRadioArtworkDataSource__setCacheSize_preserveExisting___block_invoke;
     block[3] = &unk_1E8235A38;
-    v8 = a4;
+    existingCopy = existing;
     block[4] = self;
-    block[5] = a3;
+    block[5] = size;
     dispatch_sync(cachedArtworkRepresentationsAccessQueue, block);
   }
 }
@@ -129,20 +129,20 @@ LABEL_19:
   dispatch_sync(cachedArtworkRepresentationsAccessQueue, block);
 }
 
-- (void)_cacheArtworkRepresentation:(id)a3 forKey:(id)a4
+- (void)_cacheArtworkRepresentation:(id)representation forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  keyCopy = key;
   cachedArtworkRepresentationsAccessQueue = self->_cachedArtworkRepresentationsAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__MPCRadioArtworkDataSource__cacheArtworkRepresentation_forKey___block_invoke;
   block[3] = &unk_1E82391C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = representationCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = representationCopy;
   dispatch_async(cachedArtworkRepresentationsAccessQueue, block);
 }
 
@@ -165,7 +165,7 @@ uint64_t __64__MPCRadioArtworkDataSource__cacheArtworkRepresentation_forKey___bl
   return [v2 setObject:v6 forKey:v7];
 }
 
-- (void)_handleWillEnterForegroundNotification:(id)a3
+- (void)_handleWillEnterForegroundNotification:(id)notification
 {
   if (self->_resumeToForegroundCacheSize >= 1)
   {
@@ -173,12 +173,12 @@ uint64_t __64__MPCRadioArtworkDataSource__cacheArtworkRepresentation_forKey___bl
   }
 }
 
-- (void)_handleDidEnterBackgroundNotification:(id)a3
+- (void)_handleDidEnterBackgroundNotification:(id)notification
 {
   v4 = MPUIApplication();
-  v5 = [v4 isSuspendedUnderLock];
+  isSuspendedUnderLock = [v4 isSuspendedUnderLock];
 
-  if ((v5 & 1) == 0)
+  if ((isSuspendedUnderLock & 1) == 0)
   {
     self->_resumeToForegroundCacheSize = self->_cacheSize;
     backgroundCacheSize = self->_backgroundCacheSize;
@@ -187,36 +187,36 @@ uint64_t __64__MPCRadioArtworkDataSource__cacheArtworkRepresentation_forKey___bl
   }
 }
 
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 token];
-  [v6 scaledFittingSize];
-  v9 = [v8 bestArtworkForPixelSize:?];
-  [v6 destinationScale];
+  catalogCopy = catalog;
+  handlerCopy = handler;
+  token = [catalogCopy token];
+  [catalogCopy scaledFittingSize];
+  v9 = [token bestArtworkForPixelSize:?];
+  [catalogCopy destinationScale];
   v11 = v10;
   if (v10 < 0.00000011920929)
   {
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v12 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v11 = v13;
   }
 
-  v14 = [MEMORY[0x1E69C6B60] sharedCache];
+  mEMORY[0x1E69C6B60] = [MEMORY[0x1E69C6B60] sharedCache];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __83__MPCRadioArtworkDataSource_loadRepresentationForArtworkCatalog_completionHandler___block_invoke;
   v18[3] = &unk_1E82359E8;
   v23 = v11;
   v19 = v9;
-  v20 = self;
-  v21 = v6;
-  v22 = v7;
-  v15 = v7;
-  v16 = v6;
+  selfCopy = self;
+  v21 = catalogCopy;
+  v22 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = catalogCopy;
   v17 = v9;
-  [v14 loadImageForRadioArtwork:v17 withCompletionHandler:v18];
+  [mEMORY[0x1E69C6B60] loadImageForRadioArtwork:v17 withCompletionHandler:v18];
 }
 
 void __83__MPCRadioArtworkDataSource_loadRepresentationForArtworkCatalog_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -294,15 +294,15 @@ LABEL_15:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (id)requestForCatalog:(id)a3 size:(CGSize)a4
+- (id)requestForCatalog:(id)catalog size:(CGSize)size
 {
-  v4 = a3;
-  v5 = [v4 token];
-  [v4 scaledFittingSize];
+  catalogCopy = catalog;
+  token = [catalogCopy token];
+  [catalogCopy scaledFittingSize];
   v7 = v6;
   v9 = v8;
 
-  v10 = [v5 bestArtworkForPixelSize:{v7, v9}];
+  v10 = [token bestArtworkForPixelSize:{v7, v9}];
   v11 = MEMORY[0x1E696AF68];
   v12 = [v10 URL];
   v13 = [v11 requestWithURL:v12];
@@ -310,20 +310,20 @@ LABEL_15:
   return v13;
 }
 
-- (id)existingRepresentationForArtworkCatalog:(id)a3
+- (id)existingRepresentationForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
+  catalogCopy = catalog;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
   v45 = __Block_byref_object_copy__17334;
   v46 = __Block_byref_object_dispose__17335;
   v47 = 0;
-  v5 = [v4 token];
-  [v4 scaledFittingSize];
+  token = [catalogCopy token];
+  [catalogCopy scaledFittingSize];
   v7 = v6;
   v9 = v8;
-  v10 = [v5 bestArtworkForPixelSize:?];
+  v10 = [token bestArtworkForPixelSize:?];
   v11 = [v10 URL];
   cachedArtworkRepresentationsAccessQueue = self->_cachedArtworkRepresentationsAccessQueue;
   v31 = MEMORY[0x1E69E9820];
@@ -331,10 +331,10 @@ LABEL_15:
   v33 = __69__MPCRadioArtworkDataSource_existingRepresentationForArtworkCatalog___block_invoke;
   v34 = &unk_1E8238370;
   v39 = &v42;
-  v35 = self;
+  selfCopy = self;
   v13 = v11;
   v36 = v13;
-  v14 = v5;
+  v14 = token;
   v37 = v14;
   v15 = v10;
   v38 = v15;
@@ -344,24 +344,24 @@ LABEL_15:
   v16 = v43[5];
   if (!v16)
   {
-    v17 = [MEMORY[0x1E69C6B60] sharedCache];
-    v18 = [v17 cachedImageDataForRadioArtwork:v15 MIMEType:0];
+    mEMORY[0x1E69C6B60] = [MEMORY[0x1E69C6B60] sharedCache];
+    v18 = [mEMORY[0x1E69C6B60] cachedImageDataForRadioArtwork:v15 MIMEType:0];
     if (v18)
     {
-      [v4 destinationScale];
+      [catalogCopy destinationScale];
       v20 = v19;
       if (v19 < 0.00000011920929)
       {
-        v21 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v21 scale];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen scale];
         v20 = v22;
       }
 
       v23 = [MEMORY[0x1E69DCAB8] imageWithData:v18 scale:v20];
       v24 = MEMORY[0x1E69704B0];
-      v25 = [v4 visualIdenticalityIdentifier];
+      visualIdenticalityIdentifier = [catalogCopy visualIdenticalityIdentifier];
       [v15 pixelSize];
-      v26 = [v24 representationForVisualIdentity:v25 withSize:v23 image:?];
+      v26 = [v24 representationForVisualIdentity:visualIdenticalityIdentifier withSize:v23 image:?];
       v27 = v43[5];
       v43[5] = v26;
 
@@ -424,45 +424,45 @@ void __69__MPCRadioArtworkDataSource_existingRepresentationForArtworkCatalog___b
   }
 }
 
-- (BOOL)isRepresentation:(id)a3 bestRepresentationForArtworkCatalog:(id)a4
+- (BOOL)isRepresentation:(id)representation bestRepresentationForArtworkCatalog:(id)catalog
 {
-  v4 = a3;
-  if (a3)
+  representationCopy = representation;
+  if (representation)
   {
-    v5 = a4;
-    v6 = v4;
-    v7 = [v5 token];
-    [v5 scaledFittingSize];
+    catalogCopy = catalog;
+    v6 = representationCopy;
+    token = [catalogCopy token];
+    [catalogCopy scaledFittingSize];
     v9 = v8;
     v11 = v10;
 
-    v12 = [v7 bestArtworkForPixelSize:{v9, v11}];
+    v12 = [token bestArtworkForPixelSize:{v9, v11}];
     [v6 representationSize];
     v14 = v13;
     v16 = v15;
 
     [v12 pixelSize];
-    LOBYTE(v4) = v16 == v18 && v14 == v17;
+    LOBYTE(representationCopy) = v16 == v18 && v14 == v17;
   }
 
-  return v4;
+  return representationCopy;
 }
 
-- (BOOL)areRepresentationsAvailableForCatalog:(id)a3
+- (BOOL)areRepresentationsAvailableForCatalog:(id)catalog
 {
-  v3 = [a3 token];
-  v4 = [v3 artworks];
-  v5 = [v4 count] != 0;
+  token = [catalog token];
+  artworks = [token artworks];
+  v5 = [artworks count] != 0;
 
   return v5;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
 
   v4.receiver = self;
   v4.super_class = MPCRadioArtworkDataSource;
@@ -483,10 +483,10 @@ void __69__MPCRadioArtworkDataSource_existingRepresentationForArtworkCatalog___b
 
     v2->_backgroundCacheSize = 1;
     v2->_cacheSize = 50;
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v2 selector:sel__handleDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
-    [v6 addObserver:v2 selector:sel__handleDidReceiveMemoryWarningNotification_ name:*MEMORY[0x1E69DDAD8] object:0];
-    [v6 addObserver:v2 selector:sel__handleWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleDidReceiveMemoryWarningNotification_ name:*MEMORY[0x1E69DDAD8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
   }
 
   return v2;

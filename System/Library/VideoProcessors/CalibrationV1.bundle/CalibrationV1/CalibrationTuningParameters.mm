@@ -1,9 +1,9 @@
 @interface CalibrationTuningParameters
 - (CalibrationTuningParameters)init;
-- (CalibrationTuningParameters)initWithTuningDictionary:(id)a3 cameraInfoByPortType:(id)a4;
-- (int)readAdaptiveCorrectionConfig:(id)a3 isUpdating:(BOOL)a4;
-- (int)readCalibrationConfig:(id)a3 isUpdating:(BOOL)a4;
-- (int)updateTuningParametersWith:(id)a3;
+- (CalibrationTuningParameters)initWithTuningDictionary:(id)dictionary cameraInfoByPortType:(id)type;
+- (int)readAdaptiveCorrectionConfig:(id)config isUpdating:(BOOL)updating;
+- (int)readCalibrationConfig:(id)config isUpdating:(BOOL)updating;
+- (int)updateTuningParametersWith:(id)with;
 - (void)setDefaultAdaptiveCorrectionParameters;
 @end
 
@@ -66,9 +66,9 @@
   return v8;
 }
 
-- (CalibrationTuningParameters)initWithTuningDictionary:(id)a3 cameraInfoByPortType:(id)a4
+- (CalibrationTuningParameters)initWithTuningDictionary:(id)dictionary cameraInfoByPortType:(id)type
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = CalibrationTuningParameters;
   v10 = [(CalibrationTuningParameters *)&v27 init];
@@ -77,7 +77,7 @@
     goto LABEL_7;
   }
 
-  v11 = objc_msgSend_objectForKeyedSubscript_(v5, v6, @"Calibration", v7, v8, v9);
+  v11 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v6, @"Calibration", v7, v8, v9);
   isUpdating = objc_msgSend_readCalibrationConfig_isUpdating_(v10, v12, v11, 0, v13, v14);
 
   if (isUpdating)
@@ -88,7 +88,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v20 = objc_msgSend_objectForKeyedSubscript_(v5, v16, @"ADC", v17, v18, v19);
+  v20 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v16, @"ADC", v17, v18, v19);
   v24 = objc_msgSend_readAdaptiveCorrectionConfig_isUpdating_(v10, v21, v20, 0, v22, v23);
 
   if (v24)
@@ -103,10 +103,10 @@ LABEL_8:
   return v25;
 }
 
-- (int)updateTuningParametersWith:(id)a3
+- (int)updateTuningParametersWith:(id)with
 {
-  v4 = a3;
-  v9 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"Calibration", v6, v7, v8);
+  withCopy = with;
+  v9 = objc_msgSend_objectForKeyedSubscript_(withCopy, v5, @"Calibration", v6, v7, v8);
   isUpdating = objc_msgSend_readCalibrationConfig_isUpdating_(self, v10, v9, 1, v11, v12);
 
   if (isUpdating)
@@ -116,7 +116,7 @@ LABEL_8:
 
   else
   {
-    v18 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"ADC", v15, v16, v17);
+    v18 = objc_msgSend_objectForKeyedSubscript_(withCopy, v14, @"ADC", v15, v16, v17);
     isUpdating = objc_msgSend_readAdaptiveCorrectionConfig_isUpdating_(self, v19, v18, 1, v20, v21);
 
     if (isUpdating)
@@ -128,21 +128,21 @@ LABEL_8:
   return isUpdating;
 }
 
-- (int)readCalibrationConfig:(id)a3 isUpdating:(BOOL)a4
+- (int)readCalibrationConfig:(id)config isUpdating:(BOOL)updating
 {
-  v4 = a4;
-  v6 = a3;
-  v13 = v6;
-  if (!v6)
+  updatingCopy = updating;
+  configCopy = config;
+  v13 = configCopy;
+  if (!configCopy)
   {
     LODWORD(v14) = -12780;
     goto LABEL_4;
   }
 
-  v14 = sub_2956F6FCC(v6, @"defaultFocalLengthTeleMicrometers", v7, v8, v9, v10, v11, v12, v41, v46, 0);
+  v14 = sub_2956F6FCC(configCopy, @"defaultFocalLengthTeleMicrometers", v7, v8, v9, v10, v11, v12, v41, v46, 0);
   if (v14)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -165,7 +165,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -175,7 +175,7 @@ LABEL_13:
   v14 = sub_2956F6FCC(v14, @"defaultFocalLengthTeleMaxDeviationMicrometers", v23, v24, v25, v26, v27, v28, v43, v48, 0);
   if (v14)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -193,7 +193,7 @@ LABEL_13:
     v14 = sub_2956F6FCC(v14, @"defaultFocalLengthWideMaxDeviationMicrometers", v29, v30, v31, v32, v33, v34, v44, v49, 0);
     if (v14)
     {
-      if (!v4)
+      if (!updatingCopy)
       {
         goto LABEL_4;
       }
@@ -207,7 +207,7 @@ LABEL_17:
   LODWORD(v14) = sub_2956F6FCC(v14, @"keypointsDetectionThreshold", v35, v36, v37, v38, v39, v40, v45, v50, 0);
   if (v14)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -220,7 +220,7 @@ LABEL_17:
 
   LODWORD(v14) = 0;
 LABEL_4:
-  if (v4)
+  if (updatingCopy)
   {
     v21 = 0;
   }
@@ -233,11 +233,11 @@ LABEL_4:
   return v21;
 }
 
-- (int)readAdaptiveCorrectionConfig:(id)a3 isUpdating:(BOOL)a4
+- (int)readAdaptiveCorrectionConfig:(id)config isUpdating:(BOOL)updating
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  updatingCopy = updating;
+  configCopy = config;
+  if (!configCopy)
   {
     v13 = -12780;
     goto LABEL_4;
@@ -247,7 +247,7 @@ LABEL_4:
   v13 = sub_295703D68(v7, v8, v9, v10, v11, v12);
   if (v13)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -271,7 +271,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -282,7 +282,7 @@ LABEL_13:
   v13 = sub_295703D68(v28, v29, v30, v31, v32, v33);
   if (v13)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -306,7 +306,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -317,7 +317,7 @@ LABEL_17:
   v13 = sub_295703D68(v40, v41, v42, v43, v44, v45);
   if (v13)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -341,7 +341,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -352,7 +352,7 @@ LABEL_21:
   v13 = sub_295703D68(v52, v53, v54, v55, v56, v57);
   if (v13)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -376,7 +376,7 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -387,7 +387,7 @@ LABEL_25:
   v13 = sub_295703D68(v64, v65, v66, v67, v68, v69);
   if (v13)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -411,7 +411,7 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -422,7 +422,7 @@ LABEL_29:
   v13 = sub_295703D68(v76, v77, v78, v79, v80, v81);
   if (v13)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -446,7 +446,7 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -457,7 +457,7 @@ LABEL_33:
   v13 = sub_295703D68(v88, v89, v90, v91, v92, v93);
   if (v13)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -481,7 +481,7 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -492,7 +492,7 @@ LABEL_37:
   v13 = sub_295703DC0(v100, v101, v102, v103, v104, v105);
   if (v13)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -516,7 +516,7 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -533,7 +533,7 @@ LABEL_41:
   v13 = sub_2957038C4(v118, v119, v120, v121, v122, v123);
   if (v13)
   {
-    if (!v4)
+    if (!updatingCopy)
     {
       goto LABEL_4;
     }
@@ -552,7 +552,7 @@ LABEL_41:
     v13 = sub_2957038C4(v184, v185, v186, v187, v188, v189);
     if (v13)
     {
-      if (!v4)
+      if (!updatingCopy)
       {
         goto LABEL_4;
       }
@@ -577,7 +577,7 @@ LABEL_47:
 
   v13 = 0;
 LABEL_4:
-  if (v4)
+  if (updatingCopy)
   {
     v14 = 0;
   }

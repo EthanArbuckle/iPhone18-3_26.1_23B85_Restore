@@ -1,45 +1,45 @@
 @interface calibrationInput
-- (calibrationInput)initWithQuery_embedding:(id)a3 document_embedding:(id)a4;
-- (id)featureValueForName:(id)a3;
+- (calibrationInput)initWithQuery_embedding:(id)query_embedding document_embedding:(id)document_embedding;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation calibrationInput
 
-- (calibrationInput)initWithQuery_embedding:(id)a3 document_embedding:(id)a4
+- (calibrationInput)initWithQuery_embedding:(id)query_embedding document_embedding:(id)document_embedding
 {
-  v7 = a3;
-  v8 = a4;
+  query_embeddingCopy = query_embedding;
+  document_embeddingCopy = document_embedding;
   v12.receiver = self;
   v12.super_class = calibrationInput;
   v9 = [(calibrationInput *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_query_embedding, a3);
-    objc_storeStrong(&v10->_document_embedding, a4);
+    objc_storeStrong(&v9->_query_embedding, query_embedding);
+    objc_storeStrong(&v10->_document_embedding, document_embedding);
   }
 
   return v10;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"query_embedding"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"query_embedding"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(calibrationInput *)self query_embedding];
+    query_embedding = [(calibrationInput *)self query_embedding];
 LABEL_5:
-    v7 = v6;
-    v8 = [v5 featureValueWithMultiArray:v6];
+    v7 = query_embedding;
+    v8 = [v5 featureValueWithMultiArray:query_embedding];
 
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"document_embedding"])
+  if ([nameCopy isEqualToString:@"document_embedding"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(calibrationInput *)self document_embedding];
+    query_embedding = [(calibrationInput *)self document_embedding];
     goto LABEL_5;
   }
 

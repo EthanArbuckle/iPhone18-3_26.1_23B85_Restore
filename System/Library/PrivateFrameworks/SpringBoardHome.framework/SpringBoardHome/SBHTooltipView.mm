@@ -1,20 +1,20 @@
 @interface SBHTooltipView
 + (SBHTooltipViewParameters)defaultTooltipViewParameters;
-- (CGSize)_contentSizeThatFitsAvailableSize:(CGSize)a3;
+- (CGSize)_contentSizeThatFitsAvailableSize:(CGSize)size;
 - (CGSize)intrinsicContentSize;
-- (SBHTooltipView)initWithText:(id)a3;
-- (SBHTooltipView)initWithText:(id)a3 tooltipViewParameters:(SBHTooltipViewParameters *)a4;
+- (SBHTooltipView)initWithText:(id)text;
+- (SBHTooltipView)initWithText:(id)text tooltipViewParameters:(SBHTooltipViewParameters *)parameters;
 - (SBHTooltipViewParameters)tooltipViewParameters;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
-- (void)setTooltipViewParameters:(SBHTooltipViewParameters *)a3;
+- (void)setText:(id)text;
+- (void)setTooltipViewParameters:(SBHTooltipViewParameters *)parameters;
 @end
 
 @implementation SBHTooltipView
 
-- (SBHTooltipView)initWithText:(id)a3
+- (SBHTooltipView)initWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = objc_opt_class();
   if (!v5)
   {
@@ -37,34 +37,34 @@ LABEL_5:
   }
 
 LABEL_3:
-  self = [(SBHTooltipView *)self initWithText:v4 tooltipViewParameters:v7];
+  self = [(SBHTooltipView *)self initWithText:textCopy tooltipViewParameters:v7];
 LABEL_6:
 
   return self;
 }
 
-- (SBHTooltipView)initWithText:(id)a3 tooltipViewParameters:(SBHTooltipViewParameters *)a4
+- (SBHTooltipView)initWithText:(id)text tooltipViewParameters:(SBHTooltipViewParameters *)parameters
 {
   v62[3] = *MEMORY[0x1E69E9840];
-  v57 = a3;
+  textCopy = text;
   v58.receiver = self;
   v58.super_class = SBHTooltipView;
   v5 = [(SBHTooltipView *)&v58 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v5)
   {
-    v6 = [v57 copy];
+    v6 = [textCopy copy];
     text = v5->_text;
     v5->_text = v6;
 
-    *&v5->_tooltipViewParameters.maxWidth = *&a4->maxWidth;
-    v9 = *&a4->textInsets.top;
-    v8 = *&a4->textInsets.bottom;
-    v10 = *&a4->maxLines;
-    v5->_tooltipViewParameters.continuousCornerRadius = a4->continuousCornerRadius;
+    *&v5->_tooltipViewParameters.maxWidth = *&parameters->maxWidth;
+    v9 = *&parameters->textInsets.top;
+    v8 = *&parameters->textInsets.bottom;
+    v10 = *&parameters->maxLines;
+    v5->_tooltipViewParameters.continuousCornerRadius = parameters->continuousCornerRadius;
     *&v5->_tooltipViewParameters.textInsets.top = v9;
     *&v5->_tooltipViewParameters.textInsets.bottom = v8;
     *&v5->_tooltipViewParameters.maxLines = v10;
-    objc_storeStrong(&v5->_tooltipViewParameters.textFontStyle, a4->textFontStyle);
+    objc_storeStrong(&v5->_tooltipViewParameters.textFontStyle, parameters->textFontStyle);
     v11 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:0];
     v61[0] = v11;
     v62[0] = @"folderLight";
@@ -78,35 +78,35 @@ LABEL_6:
 
     v14 = MEMORY[0x1E69AE158];
     v15 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v16 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-    v17 = [v14 materialViewWithRecipeNamesByTraitCollection:v45 inBundle:v15 options:0 initialWeighting:0 scaleAdjustment:v16 compatibleWithTraitCollection:1.0];
+    currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+    v17 = [v14 materialViewWithRecipeNamesByTraitCollection:v45 inBundle:v15 options:0 initialWeighting:0 scaleAdjustment:currentTraitCollection compatibleWithTraitCollection:1.0];
     backgroundView = v5->_backgroundView;
     v5->_backgroundView = v17;
 
     v19 = v5->_backgroundView;
-    v20 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v19 setBackgroundColor:v20];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v19 setBackgroundColor:clearColor];
 
     [(UIView *)v5->_backgroundView _setContinuousCornerRadius:v5->_tooltipViewParameters.continuousCornerRadius];
     [(UIView *)v5->_backgroundView setAlpha:1.0];
     [(SBHTooltipView *)v5 addSubview:v5->_backgroundView];
     [(UIView *)v5->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
     v43 = MEMORY[0x1E696ACD8];
-    v54 = [(UIView *)v5->_backgroundView topAnchor];
-    v52 = [(SBHTooltipView *)v5 topAnchor];
-    v50 = [v54 constraintEqualToAnchor:v52];
+    topAnchor = [(UIView *)v5->_backgroundView topAnchor];
+    topAnchor2 = [(SBHTooltipView *)v5 topAnchor];
+    v50 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v60[0] = v50;
-    v48 = [(UIView *)v5->_backgroundView bottomAnchor];
-    v46 = [(SBHTooltipView *)v5 bottomAnchor];
-    v21 = [v48 constraintEqualToAnchor:v46];
+    bottomAnchor = [(UIView *)v5->_backgroundView bottomAnchor];
+    bottomAnchor2 = [(SBHTooltipView *)v5 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v60[1] = v21;
-    v22 = [(UIView *)v5->_backgroundView leadingAnchor];
-    v23 = [(SBHTooltipView *)v5 leadingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    leadingAnchor = [(UIView *)v5->_backgroundView leadingAnchor];
+    leadingAnchor2 = [(SBHTooltipView *)v5 leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v60[2] = v24;
-    v25 = [(UIView *)v5->_backgroundView trailingAnchor];
-    v26 = [(SBHTooltipView *)v5 trailingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    trailingAnchor = [(UIView *)v5->_backgroundView trailingAnchor];
+    trailingAnchor2 = [(SBHTooltipView *)v5 trailingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v60[3] = v27;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:4];
     [v43 activateConstraints:v28];
@@ -115,7 +115,7 @@ LABEL_6:
     label = v5->_label;
     v5->_label = v29;
 
-    [(UILabel *)v5->_label setText:v57];
+    [(UILabel *)v5->_label setText:textCopy];
     [(UILabel *)v5->_label setNumberOfLines:v5->_tooltipViewParameters.maxLines];
     [(UILabel *)v5->_label setAdjustsFontSizeToFitWidth:0];
     if (v5->_tooltipViewParameters.shouldTruncateText)
@@ -138,21 +138,21 @@ LABEL_6:
     [(UIView *)v5->_backgroundView addSubview:v5->_label];
     [(UILabel *)v5->_label setTranslatesAutoresizingMaskIntoConstraints:0];
     v44 = MEMORY[0x1E696ACD8];
-    v55 = [(UILabel *)v5->_label topAnchor];
-    v53 = [(UIView *)v5->_backgroundView topAnchor];
-    v51 = [v55 constraintEqualToAnchor:v53 constant:v5->_tooltipViewParameters.textInsets.top];
+    topAnchor3 = [(UILabel *)v5->_label topAnchor];
+    topAnchor4 = [(UIView *)v5->_backgroundView topAnchor];
+    v51 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:v5->_tooltipViewParameters.textInsets.top];
     v59[0] = v51;
-    v49 = [(UILabel *)v5->_label bottomAnchor];
-    v47 = [(UIView *)v5->_backgroundView bottomAnchor];
-    v34 = [v49 constraintEqualToAnchor:v47 constant:-v5->_tooltipViewParameters.textInsets.bottom];
+    bottomAnchor3 = [(UILabel *)v5->_label bottomAnchor];
+    bottomAnchor4 = [(UIView *)v5->_backgroundView bottomAnchor];
+    v34 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-v5->_tooltipViewParameters.textInsets.bottom];
     v59[1] = v34;
-    v35 = [(UILabel *)v5->_label leadingAnchor];
-    v36 = [(UIView *)v5->_backgroundView leadingAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36 constant:v5->_tooltipViewParameters.textInsets.left];
+    leadingAnchor3 = [(UILabel *)v5->_label leadingAnchor];
+    leadingAnchor4 = [(UIView *)v5->_backgroundView leadingAnchor];
+    v37 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v5->_tooltipViewParameters.textInsets.left];
     v59[2] = v37;
-    v38 = [(UILabel *)v5->_label trailingAnchor];
-    v39 = [(UIView *)v5->_backgroundView trailingAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39 constant:-v5->_tooltipViewParameters.textInsets.right];
+    trailingAnchor3 = [(UILabel *)v5->_label trailingAnchor];
+    trailingAnchor4 = [(UIView *)v5->_backgroundView trailingAnchor];
+    v40 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v5->_tooltipViewParameters.textInsets.right];
     v59[3] = v40;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:4];
     [v44 activateConstraints:v41];
@@ -179,27 +179,27 @@ LABEL_6:
   if (v9 >= 0.0)
   {
     [(SBHTooltipView *)self tooltipViewParameters];
-    v6 = [(SBHTooltipView *)self backgroundView];
-    [v6 _setContinuousCornerRadius:v7];
+    backgroundView = [(SBHTooltipView *)self backgroundView];
+    [backgroundView _setContinuousCornerRadius:v7];
 
-    v5 = v8;
+    backgroundView2 = v8;
   }
 
   else
   {
     [(SBHTooltipView *)self bounds];
     v4 = v3 * 0.5;
-    v5 = [(SBHTooltipView *)self backgroundView];
-    [v5 _setContinuousCornerRadius:v4];
+    backgroundView2 = [(SBHTooltipView *)self backgroundView];
+    [backgroundView2 _setContinuousCornerRadius:v4];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  if (![(NSString *)self->_text isEqualToString:v4])
+  textCopy = text;
+  if (![(NSString *)self->_text isEqualToString:textCopy])
   {
-    v5 = [v4 copy];
+    v5 = [textCopy copy];
     text = self->_text;
     self->_text = v5;
 
@@ -222,7 +222,7 @@ uint64_t __26__SBHTooltipView_setText___block_invoke(uint64_t a1)
   return [v2 setNeedsLayout];
 }
 
-- (void)setTooltipViewParameters:(SBHTooltipViewParameters *)a3
+- (void)setTooltipViewParameters:(SBHTooltipViewParameters *)parameters
 {
   p_tooltipViewParameters = &self->_tooltipViewParameters;
   v6 = *&self->_tooltipViewParameters.textInsets.bottom;
@@ -234,26 +234,26 @@ uint64_t __26__SBHTooltipView_setText___block_invoke(uint64_t a1)
   v25[1] = v7;
   p_textFontStyle = &self->_tooltipViewParameters.textFontStyle;
   v27 = self->_tooltipViewParameters.textFontStyle;
-  v9 = *&a3->textInsets.bottom;
-  v21 = *&a3->textInsets.top;
+  v9 = *&parameters->textInsets.bottom;
+  v21 = *&parameters->textInsets.top;
   v22 = v9;
-  textFontStyle = a3->textFontStyle;
-  v23 = a3->continuousCornerRadius;
-  v11 = *&a3->maxLines;
-  v19 = *&a3->maxWidth;
+  textFontStyle = parameters->textFontStyle;
+  v23 = parameters->continuousCornerRadius;
+  v11 = *&parameters->maxLines;
+  v19 = *&parameters->maxWidth;
   v20 = v11;
   v24 = textFontStyle;
   if ((SBHTooltipViewParametersEqualToTooltipViewParameters(v25, &v19) & 1) == 0)
   {
-    *&p_tooltipViewParameters->maxWidth = *&a3->maxWidth;
-    v12 = *&a3->maxLines;
-    v13 = *&a3->textInsets.top;
-    v14 = *&a3->textInsets.bottom;
-    p_tooltipViewParameters->continuousCornerRadius = a3->continuousCornerRadius;
+    *&p_tooltipViewParameters->maxWidth = *&parameters->maxWidth;
+    v12 = *&parameters->maxLines;
+    v13 = *&parameters->textInsets.top;
+    v14 = *&parameters->textInsets.bottom;
+    p_tooltipViewParameters->continuousCornerRadius = parameters->continuousCornerRadius;
     *&p_tooltipViewParameters->textInsets.top = v13;
     *&p_tooltipViewParameters->textInsets.bottom = v14;
     *&p_tooltipViewParameters->maxLines = v12;
-    objc_storeStrong(p_textFontStyle, a3->textFontStyle);
+    objc_storeStrong(p_textFontStyle, parameters->textFontStyle);
     [(UILabel *)self->_label setNumberOfLines:p_tooltipViewParameters->maxLines, v19, v20, v21, v22, *&v23];
     [(UILabel *)self->_label setAdjustsFontSizeToFitWidth:0];
     if (p_tooltipViewParameters->shouldTruncateText)
@@ -276,7 +276,7 @@ uint64_t __26__SBHTooltipView_setText___block_invoke(uint64_t a1)
     [(SBHTooltipView *)self setNeedsLayout];
   }
 
-  v18 = a3->textFontStyle;
+  v18 = parameters->textFontStyle;
 }
 
 + (SBHTooltipViewParameters)defaultTooltipViewParameters
@@ -294,12 +294,12 @@ uint64_t __26__SBHTooltipView_setText___block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGSize)_contentSizeThatFitsAvailableSize:(CGSize)a3
+- (CGSize)_contentSizeThatFitsAvailableSize:(CGSize)size
 {
-  width = a3.width;
-  height = a3.height;
-  v4 = [(SBHTooltipView *)self text];
-  v5 = [v4 length];
+  width = size.width;
+  height = size.height;
+  text = [(SBHTooltipView *)self text];
+  v5 = [text length];
 
   if (v5)
   {

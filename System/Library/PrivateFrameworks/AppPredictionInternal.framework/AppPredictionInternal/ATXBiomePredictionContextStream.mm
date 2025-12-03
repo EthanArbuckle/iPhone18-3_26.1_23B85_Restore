@@ -1,33 +1,33 @@
 @interface ATXBiomePredictionContextStream
-- (ATXBiomePredictionContextStream)initWithStoreConfig:(id)a3;
-- (BOOL)_shouldMatchContext:(id)a3 queryEvent:(id)a4 tolerance:(double)a5;
-- (id)publisherFromStartTime:(double)a3;
-- (void)enumerateNearestContextForEvents:(id)a3 tolerance:(double)a4 block:(id)a5;
-- (void)sendEvent:(id)a3;
+- (ATXBiomePredictionContextStream)initWithStoreConfig:(id)config;
+- (BOOL)_shouldMatchContext:(id)context queryEvent:(id)event tolerance:(double)tolerance;
+- (id)publisherFromStartTime:(double)time;
+- (void)enumerateNearestContextForEvents:(id)events tolerance:(double)tolerance block:(id)block;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation ATXBiomePredictionContextStream
 
-- (ATXBiomePredictionContextStream)initWithStoreConfig:(id)a3
+- (ATXBiomePredictionContextStream)initWithStoreConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v11.receiver = self;
   v11.super_class = ATXBiomePredictionContextStream;
   v5 = [(ATXBiomePredictionContextStream *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (configCopy)
     {
-      v6 = v4;
+      atx_storeConfig = configCopy;
     }
 
     else
     {
-      v6 = [MEMORY[0x277CF17F8] atx_storeConfig];
+      atx_storeConfig = [MEMORY[0x277CF17F8] atx_storeConfig];
     }
 
-    v7 = v6;
-    v8 = [objc_alloc(MEMORY[0x277CF1B30]) initWithPrivateStreamIdentifier:@"predictionContext" storeConfig:v6 eventDataClass:objc_opt_class()];
+    v7 = atx_storeConfig;
+    v8 = [objc_alloc(MEMORY[0x277CF1B30]) initWithPrivateStreamIdentifier:@"predictionContext" storeConfig:atx_storeConfig eventDataClass:objc_opt_class()];
     inner = v5->_inner;
     v5->_inner = v8;
   }
@@ -35,41 +35,41 @@
   return v5;
 }
 
-- (id)publisherFromStartTime:(double)a3
+- (id)publisherFromStartTime:(double)time
 {
-  v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a3];
+  v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:time];
   v5 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v4 endDate:0 maxEvents:0 lastN:0 reversed:0];
   v6 = [(ATXBiomePredictionContextStream *)self _publisherWithOptions:v5];
 
   return v6;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(ATXBiomePredictionContextStream *)self source];
-  [v5 sendEvent:v4];
+  eventCopy = event;
+  source = [(ATXBiomePredictionContextStream *)self source];
+  [source sendEvent:eventCopy];
 }
 
-- (BOOL)_shouldMatchContext:(id)a3 queryEvent:(id)a4 tolerance:(double)a5
+- (BOOL)_shouldMatchContext:(id)context queryEvent:(id)event tolerance:(double)tolerance
 {
-  v7 = a4;
-  v8 = [a3 timeContext];
-  v9 = [v8 date];
+  eventCopy = event;
+  timeContext = [context timeContext];
+  date = [timeContext date];
 
-  v10 = [v7 eventTime];
+  eventTime = [eventCopy eventTime];
 
-  [v10 timeIntervalSinceDate:v9];
-  v12 = v11 <= a5 && v11 >= 0.0;
+  [eventTime timeIntervalSinceDate:date];
+  v12 = v11 <= tolerance && v11 >= 0.0;
 
   return v12;
 }
 
-- (void)enumerateNearestContextForEvents:(id)a3 tolerance:(double)a4 block:(id)a5
+- (void)enumerateNearestContextForEvents:(id)events tolerance:(double)tolerance block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  eventsCopy = events;
+  blockCopy = block;
+  if ([eventsCopy count])
   {
     v10 = __atxlog_handle_default();
     v11 = os_signpost_id_generate(v10);
@@ -85,13 +85,13 @@
 
     spid = v11;
 
-    v15 = [v8 firstObject];
-    v16 = [v15 eventTime];
-    v17 = [v16 dateByAddingTimeInterval:-a4];
+    firstObject = [eventsCopy firstObject];
+    eventTime = [firstObject eventTime];
+    v17 = [eventTime dateByAddingTimeInterval:-tolerance];
 
-    v18 = [v8 lastObject];
-    v19 = [v18 eventTime];
-    v20 = [v19 dateByAddingTimeInterval:a4];
+    lastObject = [eventsCopy lastObject];
+    eventTime2 = [lastObject eventTime];
+    v20 = [eventTime2 dateByAddingTimeInterval:tolerance];
 
     v21 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v17 endDate:v20 maxEvents:0 lastN:0 reversed:0];
     v22 = [(ATXBiomePredictionContextStream *)self _publisherWithOptions:v21];
@@ -111,10 +111,10 @@
     v35[3] = &unk_27859F2A8;
     v39 = v48;
     v40 = buf;
-    v36 = v8;
-    v37 = self;
-    v41 = a4;
-    v38 = v9;
+    v36 = eventsCopy;
+    selfCopy = self;
+    toleranceCopy = tolerance;
+    v38 = blockCopy;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __84__ATXBiomePredictionContextStream_enumerateNearestContextForEvents_tolerance_block___block_invoke_27;
@@ -122,8 +122,8 @@
     v32 = v48;
     v33 = buf;
     v29 = v36;
-    v30 = self;
-    v34 = a4;
+    selfCopy2 = self;
+    toleranceCopy2 = tolerance;
     v31 = v38;
     v23 = [v22 sinkWithCompletion:v35 receiveInput:v28];
     v24 = __atxlog_handle_default();

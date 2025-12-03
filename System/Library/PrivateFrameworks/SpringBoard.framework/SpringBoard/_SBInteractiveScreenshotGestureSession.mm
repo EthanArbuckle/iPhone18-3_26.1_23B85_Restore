@@ -1,18 +1,18 @@
 @interface _SBInteractiveScreenshotGestureSession
-- (_SBInteractiveScreenshotGestureSession)initWithSessionID:(id)a3;
+- (_SBInteractiveScreenshotGestureSession)initWithSessionID:(id)d;
 @end
 
 @implementation _SBInteractiveScreenshotGestureSession
 
-- (_SBInteractiveScreenshotGestureSession)initWithSessionID:(id)a3
+- (_SBInteractiveScreenshotGestureSession)initWithSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = _SBInteractiveScreenshotGestureSession;
   v5 = [(_SBInteractiveScreenshotGestureSession *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     sessionID = v5->_sessionID;
     v5->_sessionID = v6;
   }

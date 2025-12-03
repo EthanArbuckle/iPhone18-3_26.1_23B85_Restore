@@ -1,20 +1,20 @@
 @interface _LTDANEConfigurationModel
-- (_LTDANEConfigurationModel)initWithDictionary:(id)a3;
-- (int64_t)capabilityForSubType:(id)a3;
+- (_LTDANEConfigurationModel)initWithDictionary:(id)dictionary;
+- (int64_t)capabilityForSubType:(id)type;
 @end
 
 @implementation _LTDANEConfigurationModel
 
-- (_LTDANEConfigurationModel)initWithDictionary:(id)a3
+- (_LTDANEConfigurationModel)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = _LTDANEConfigurationModel;
   v6 = [(_LTDANEConfigurationModel *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_root, a3);
+    objc_storeStrong(&v6->_root, dictionary);
     v8 = [(NSDictionary *)v7->_root objectForKeyedSubscript:@"FamilyCapability"];
     v9 = objc_opt_class();
     v10 = objc_opt_class();
@@ -34,14 +34,14 @@
   return v7;
 }
 
-- (int64_t)capabilityForSubType:(id)a3
+- (int64_t)capabilityForSubType:(id)type
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_capabilities objectForKeyedSubscript:v4];
+  typeCopy = type;
+  v5 = [(NSDictionary *)self->_capabilities objectForKeyedSubscript:typeCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(NSDictionary *)self->_capabilities objectForKeyedSubscript:v4];
+    v6 = [(NSDictionary *)self->_capabilities objectForKeyedSubscript:typeCopy];
   }
 
   else
@@ -50,9 +50,9 @@
   }
 
   v7 = v6;
-  v8 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
 @end

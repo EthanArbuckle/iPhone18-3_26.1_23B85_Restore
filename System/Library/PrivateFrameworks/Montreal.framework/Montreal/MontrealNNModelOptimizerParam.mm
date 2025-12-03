@@ -1,15 +1,15 @@
 @interface MontrealNNModelOptimizerParam
-- (MontrealNNModelOptimizerParam)initWithDictionary:(id)a3;
-- (MontrealNNModelOptimizerParam)initWithOptimizerType:(unint64_t)a3 learningRate:(float)a4 momentum:(float)a5 gradientClipMin:(id)a6 gradientClipMax:(id)a7;
-- (void)description:(id)a3 indent:(id)a4;
+- (MontrealNNModelOptimizerParam)initWithDictionary:(id)dictionary;
+- (MontrealNNModelOptimizerParam)initWithOptimizerType:(unint64_t)type learningRate:(float)rate momentum:(float)momentum gradientClipMin:(id)min gradientClipMax:(id)max;
+- (void)description:(id)description indent:(id)indent;
 @end
 
 @implementation MontrealNNModelOptimizerParam
 
-- (MontrealNNModelOptimizerParam)initWithDictionary:(id)a3
+- (MontrealNNModelOptimizerParam)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v7 = objc_msgSend_exMRL_stringForKey_(v4, v5, off_1EB013718, v6);
+  dictionaryCopy = dictionary;
+  v7 = objc_msgSend_exMRL_stringForKey_(dictionaryCopy, v5, off_1EB013718, v6);
   v10 = v7;
   if (!v7)
   {
@@ -25,13 +25,13 @@
     }
 
 LABEL_13:
-    v32 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
   v13 = 1;
 LABEL_6:
-  v14 = objc_msgSend_exMRL_numberForKey_(v4, v11, off_1EB013730, v12);
+  v14 = objc_msgSend_exMRL_numberForKey_(dictionaryCopy, v11, off_1EB013730, v12);
   v18 = v14;
   v19 = 0;
   v20 = 0;
@@ -41,7 +41,7 @@ LABEL_6:
     v20 = v21;
   }
 
-  v22 = objc_msgSend_exMRL_numberForKey_(v4, v15, off_1EB013738, v17);
+  v22 = objc_msgSend_exMRL_numberForKey_(dictionaryCopy, v15, off_1EB013738, v17);
   v26 = v22;
   if (v22)
   {
@@ -61,16 +61,16 @@ LABEL_6:
 
   self = v28;
 
-  v32 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v32;
+  return selfCopy;
 }
 
-- (MontrealNNModelOptimizerParam)initWithOptimizerType:(unint64_t)a3 learningRate:(float)a4 momentum:(float)a5 gradientClipMin:(id)a6 gradientClipMax:(id)a7
+- (MontrealNNModelOptimizerParam)initWithOptimizerType:(unint64_t)type learningRate:(float)rate momentum:(float)momentum gradientClipMin:(id)min gradientClipMax:(id)max
 {
-  v13 = a6;
-  v14 = a7;
+  minCopy = min;
+  maxCopy = max;
   v19.receiver = self;
   v19.super_class = MontrealNNModelOptimizerParam;
   v15 = [(MontrealNNModelOptimizerParam *)&v19 init];
@@ -80,18 +80,18 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  v15->_optimizerType = a3;
-  v15->_learningRate = a4;
-  if (a4 == 0.0)
+  v15->_optimizerType = type;
+  v15->_learningRate = rate;
+  if (rate == 0.0)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v17 = 973279855;
     }
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_8;
       }
@@ -103,31 +103,31 @@ LABEL_14:
   }
 
 LABEL_8:
-  if (v13 && v14)
+  if (minCopy && maxCopy)
   {
-    objc_storeStrong(&v15->_gradientClipMin, a6);
-    objc_storeStrong(&v16->_gradientClipMax, a7);
+    objc_storeStrong(&v15->_gradientClipMin, min);
+    objc_storeStrong(&v16->_gradientClipMax, max);
   }
 
-  v16->_momentum = a5;
+  v16->_momentum = momentum;
 LABEL_12:
 
   return v16;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
+  indentCopy = indent;
+  descriptionCopy = description;
   v11 = objc_msgSend_optimizerType(self, v8, v9, v10);
-  objc_msgSend_appendFormat_(v7, v12, @"\r %@ Algorithm = %tu (Adam: %tu, SGD: %tu)", v13, v6, v11, 1, 2);
+  objc_msgSend_appendFormat_(descriptionCopy, v12, @"\r %@ Algorithm = %tu (Adam: %tu, SGD: %tu)", v13, indentCopy, v11, 1, 2);
   objc_msgSend_learningRate(self, v14, v15, v16);
-  objc_msgSend_appendFormat_(v7, v18, @"\r %@ Learning Rate = %lf", v19, v6, v17);
+  objc_msgSend_appendFormat_(descriptionCopy, v18, @"\r %@ Learning Rate = %lf", v19, indentCopy, v17);
   objc_msgSend_momentum(self, v20, v21, v22);
-  objc_msgSend_appendFormat_(v7, v24, @"\r %@ Use Momentum = %lf", v25, v6, v23);
+  objc_msgSend_appendFormat_(descriptionCopy, v24, @"\r %@ Use Momentum = %lf", v25, indentCopy, v23);
   v35 = objc_msgSend_gradientClipMin(self, v26, v27, v28);
   v32 = objc_msgSend_gradientClipMax(self, v29, v30, v31);
-  objc_msgSend_appendFormat_(v7, v33, @"\r %@ Gradient Clip Min = %@, Max = %@", v34, v6, v35, v32);
+  objc_msgSend_appendFormat_(descriptionCopy, v33, @"\r %@ Gradient Clip Min = %@, Max = %@", v34, indentCopy, v35, v32);
 }
 
 @end

@@ -1,75 +1,75 @@
 @interface TSWReviewChoiceDescription
-+ (id)createChoiceDescriptionForQuestionType:(id)a3 withContext:(id)a4;
-- (TSWReviewChoiceDescription)initWithContext:(id)a3;
++ (id)createChoiceDescriptionForQuestionType:(id)type withContext:(id)context;
+- (TSWReviewChoiceDescription)initWithContext:(id)context;
 - (void)dealloc;
-- (void)setChoiceAlternateText:(id)a3;
-- (void)setChoiceContent:(id)a3;
-- (void)setChoiceContentType:(id)a3;
-- (void)setChoiceFeedback:(id)a3;
-- (void)setChoiceTargetAlternateText:(id)a3;
-- (void)setChoiceTargetRegion:(id)a3;
+- (void)setChoiceAlternateText:(id)text;
+- (void)setChoiceContent:(id)content;
+- (void)setChoiceContentType:(id)type;
+- (void)setChoiceFeedback:(id)feedback;
+- (void)setChoiceTargetAlternateText:(id)text;
+- (void)setChoiceTargetRegion:(id)region;
 @end
 
 @implementation TSWReviewChoiceDescription
 
-- (void)setChoiceAlternateText:(id)a3
+- (void)setChoiceAlternateText:(id)text
 {
   [(TSWReviewChoiceDescription *)self willModify];
-  v5 = a3;
+  textCopy = text;
 
-  self->mAlternateText = a3;
+  self->mAlternateText = text;
 }
 
-- (void)setChoiceTargetAlternateText:(id)a3
+- (void)setChoiceTargetAlternateText:(id)text
 {
   [(TSWReviewChoiceDescription *)self willModify];
-  v5 = a3;
+  textCopy = text;
 
-  self->mTargetAlternateText = a3;
+  self->mTargetAlternateText = text;
 }
 
-- (void)setChoiceFeedback:(id)a3
+- (void)setChoiceFeedback:(id)feedback
 {
   [(TSWReviewChoiceDescription *)self willModify];
-  v5 = a3;
+  feedbackCopy = feedback;
 
-  self->mFeedback = a3;
+  self->mFeedback = feedback;
 }
 
-- (void)setChoiceContent:(id)a3
+- (void)setChoiceContent:(id)content
 {
   [(TSWReviewChoiceDescription *)self willModify];
-  v5 = a3;
+  contentCopy = content;
 
-  self->mContent = a3;
+  self->mContent = content;
 }
 
-- (void)setChoiceContentType:(id)a3
+- (void)setChoiceContentType:(id)type
 {
   [(TSWReviewChoiceDescription *)self willModify];
-  v5 = a3;
+  typeCopy = type;
 
-  self->mContentType = a3;
+  self->mContentType = type;
 }
 
-- (void)setChoiceTargetRegion:(id)a3
+- (void)setChoiceTargetRegion:(id)region
 {
   [(TSWReviewChoiceDescription *)self willModify];
-  v5 = a3;
+  regionCopy = region;
 
-  self->mTargetRegion = a3;
+  self->mTargetRegion = region;
 }
 
-- (TSWReviewChoiceDescription)initWithContext:(id)a3
+- (TSWReviewChoiceDescription)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TSWReviewChoiceDescription;
-  return [(TSWReviewChoiceDescription *)&v4 initWithContext:a3];
+  return [(TSWReviewChoiceDescription *)&v4 initWithContext:context];
 }
 
-+ (id)createChoiceDescriptionForQuestionType:(id)a3 withContext:(id)a4
++ (id)createChoiceDescriptionForQuestionType:(id)type withContext:(id)context
 {
-  if (([a3 isEqualToString:TSWReviewQuestionDescriptionTypeMultiChoiceValue] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", TSWReviewQuestionDescriptionTypeMultiChoiceImageValue) & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", TSWReviewQuestionDescriptionTypeAssociativeTokenValue) & 1) == 0 && !objc_msgSend(a3, "isEqualToString:", TSWReviewQuestionDescriptionTypeAssociativeImageValue) || (result = -[TSWReviewChoiceDescription initWithContext:]([TSWReviewChoiceDescription alloc], "initWithContext:", a4)) == 0)
+  if (([type isEqualToString:TSWReviewQuestionDescriptionTypeMultiChoiceValue] & 1) == 0 && (objc_msgSend(type, "isEqualToString:", TSWReviewQuestionDescriptionTypeMultiChoiceImageValue) & 1) == 0 && (objc_msgSend(type, "isEqualToString:", TSWReviewQuestionDescriptionTypeAssociativeTokenValue) & 1) == 0 && !objc_msgSend(type, "isEqualToString:", TSWReviewQuestionDescriptionTypeAssociativeImageValue) || (result = -[TSWReviewChoiceDescription initWithContext:]([TSWReviewChoiceDescription alloc], "initWithContext:", context)) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     return 0;

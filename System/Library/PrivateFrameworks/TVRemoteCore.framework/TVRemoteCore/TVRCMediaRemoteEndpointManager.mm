@@ -1,8 +1,8 @@
 @interface TVRCMediaRemoteEndpointManager
 + (id)sharedInstance;
 - (TVRCMediaRemoteEndpointManager)init;
-- (void)fetchActiveEndpointWithCompletion:(id)a3;
-- (void)updateActiveEndpoint:(id)a3 withCompletion:(id)a4;
+- (void)fetchActiveEndpointWithCompletion:(id)completion;
+- (void)updateActiveEndpoint:(id)endpoint withCompletion:(id)completion;
 @end
 
 @implementation TVRCMediaRemoteEndpointManager
@@ -41,14 +41,14 @@ uint64_t __48__TVRCMediaRemoteEndpointManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)updateActiveEndpoint:(id)a3 withCompletion:(id)a4
+- (void)updateActiveEndpoint:(id)endpoint withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TVRCMediaRemoteEndpointManager *)self mediaRemoteQueue];
-  v11 = v7;
-  v9 = v6;
-  v10 = v7;
+  endpointCopy = endpoint;
+  completionCopy = completion;
+  mediaRemoteQueue = [(TVRCMediaRemoteEndpointManager *)self mediaRemoteQueue];
+  v11 = completionCopy;
+  v9 = endpointCopy;
+  v10 = completionCopy;
   MRMediaRemoteGetNowPlayingApplicationPlaybackState();
 }
 
@@ -155,9 +155,9 @@ void __70__TVRCMediaRemoteEndpointManager_updateActiveEndpoint_withCompletion___
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchActiveEndpointWithCompletion:(id)a3
+- (void)fetchActiveEndpointWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _TVRCMediaRemoteLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -165,9 +165,9 @@ void __70__TVRCMediaRemoteEndpointManager_updateActiveEndpoint_withCompletion___
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "Fetching active endpoint from MediaRemote", buf, 2u);
   }
 
-  v6 = [(TVRCMediaRemoteEndpointManager *)self mediaRemoteQueue];
-  v8 = v4;
-  v7 = v4;
+  mediaRemoteQueue = [(TVRCMediaRemoteEndpointManager *)self mediaRemoteQueue];
+  v8 = completionCopy;
+  v7 = completionCopy;
   MRAVEndpointGetActiveSystemEndpointUID();
 }
 

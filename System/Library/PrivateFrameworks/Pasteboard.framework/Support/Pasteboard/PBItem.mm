@@ -1,69 +1,69 @@
 @interface PBItem
-- (id)persistentBookmarkFileNameForType:(id)a3;
-- (id)persistentFileNameForType:(id)a3;
-- (void)_saveRepresentationsToBaseURL:(id)a3 types:(id)a4 fileProtectionType:(id)a5 allowedToCopyOnPaste:(BOOL)a6 completionBlock:(id)a7;
-- (void)setStorageBaseURL:(id)a3;
+- (id)persistentBookmarkFileNameForType:(id)type;
+- (id)persistentFileNameForType:(id)type;
+- (void)_saveRepresentationsToBaseURL:(id)l types:(id)types fileProtectionType:(id)type allowedToCopyOnPaste:(BOOL)paste completionBlock:(id)block;
+- (void)setStorageBaseURL:(id)l;
 @end
 
 @implementation PBItem
 
-- (id)persistentBookmarkFileNameForType:(id)a3
+- (id)persistentBookmarkFileNameForType:(id)type
 {
-  v4 = a3;
-  v5 = [(PBItem *)self UUID];
-  v6 = sub_100014A3C(v5, v4);
+  typeCopy = type;
+  uUID = [(PBItem *)self UUID];
+  v6 = sub_100014A3C(uUID, typeCopy);
 
   v7 = [v6 stringByAppendingString:@".bookmark"];
 
   return v7;
 }
 
-- (id)persistentFileNameForType:(id)a3
+- (id)persistentFileNameForType:(id)type
 {
-  v4 = a3;
-  v5 = [(PBItem *)self UUID];
-  v6 = sub_100014A3C(v5, v4);
+  typeCopy = type;
+  uUID = [(PBItem *)self UUID];
+  v6 = sub_100014A3C(uUID, typeCopy);
 
   return v6;
 }
 
-- (void)setStorageBaseURL:(id)a3
+- (void)setStorageBaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = PBItemQueue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100014BF4;
   v7[3] = &unk_100031388;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   dispatch_sync(v5, v7);
 }
 
-- (void)_saveRepresentationsToBaseURL:(id)a3 types:(id)a4 fileProtectionType:(id)a5 allowedToCopyOnPaste:(BOOL)a6 completionBlock:(id)a7
+- (void)_saveRepresentationsToBaseURL:(id)l types:(id)types fileProtectionType:(id)type allowedToCopyOnPaste:(BOOL)paste completionBlock:(id)block
 {
-  v13 = a3;
-  v14 = a4;
-  v41 = a5;
-  v42 = a7;
-  if ([v14 count])
+  lCopy = l;
+  typesCopy = types;
+  typeCopy = type;
+  blockCopy = block;
+  if ([typesCopy count])
   {
-    v38 = a6;
-    v15 = [v14 firstObject];
-    v39 = self;
-    v16 = [(PBItem *)self UUID];
-    v17 = sub_100014E64(v16, v13, v15);
+    pasteCopy = paste;
+    firstObject = [typesCopy firstObject];
+    selfCopy = self;
+    uUID = [(PBItem *)self UUID];
+    v17 = sub_100014E64(uUID, lCopy, firstObject);
 
     v18 = [v17 URLByAppendingPathExtension:@"bookmark"];
-    v19 = [v17 isFileURL];
-    v37 = v13;
+    isFileURL = [v17 isFileURL];
+    v37 = lCopy;
     v40 = v18;
-    if (v19)
+    if (isFileURL)
     {
-      v16 = +[NSFileManager defaultManager];
-      v7 = [v17 path];
-      if ([v16 fileExistsAtPath:v7])
+      uUID = +[NSFileManager defaultManager];
+      path = [v17 path];
+      if ([uUID fileExistsAtPath:path])
       {
 
 LABEL_14:
@@ -75,18 +75,18 @@ LABEL_14:
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "Skipping save for already existing item representation: %@", buf, 0xCu);
         }
 
-        v24 = [v14 subarrayWithRange:{1, objc_msgSend(v14, "count") - 1}];
+        v24 = [typesCopy subarrayWithRange:{1, objc_msgSend(typesCopy, "count") - 1}];
         v71 = _NSConcreteStackBlock;
         v72 = 3221225472;
         v73 = sub_100015FB4;
         v74 = &unk_100031B08;
-        v75 = v39;
-        v13 = v37;
+        v75 = selfCopy;
+        lCopy = v37;
         v76 = v37;
         v77 = v24;
-        v78 = v41;
-        v80 = v38;
-        v79 = v42;
+        v78 = typeCopy;
+        v80 = pasteCopy;
+        v79 = blockCopy;
         v25 = v24;
         PBDispatchAsyncCallback();
 
@@ -107,10 +107,10 @@ LABEL_14:
     }
 
     v20 = +[NSFileManager defaultManager];
-    v21 = [v40 path];
-    v22 = [v20 fileExistsAtPath:v21];
+    path2 = [v40 path];
+    v22 = [v20 fileExistsAtPath:path2];
 
-    if (v19)
+    if (isFileURL)
     {
 
       v17 = v36;
@@ -134,17 +134,17 @@ LABEL_18:
     v64[1] = 3221225472;
     v64[2] = sub_100015FCC;
     v64[3] = &unk_100031B08;
-    v65 = v14;
-    v66 = v39;
-    v13 = v37;
+    v65 = typesCopy;
+    v66 = selfCopy;
+    lCopy = v37;
     v67 = v37;
-    v27 = v41;
+    v27 = typeCopy;
     v68 = v27;
-    v70 = v38;
-    v28 = v42;
+    v70 = pasteCopy;
+    v28 = blockCopy;
     v69 = v28;
     v29 = objc_retainBlock(v64);
-    v30 = [(PBItem *)v39 representationConformingToType:v15];
+    v30 = [(PBItem *)selfCopy representationConformingToType:firstObject];
     if ([v30 preferredRepresentation])
     {
       if ([v30 preferredRepresentation] == 2)
@@ -153,13 +153,13 @@ LABEL_18:
         v49[1] = 3221225472;
         v49[2] = sub_100016354;
         v49[3] = &unk_100031B58;
-        v56 = v38;
+        v56 = pasteCopy;
         v31 = &v50;
         v26 = v40;
         v50 = v40;
         v51 = v17;
-        v52 = v39;
-        v53 = v15;
+        v52 = selfCopy;
+        v53 = firstObject;
         v54 = v29;
         v55 = v28;
         v32 = [v30 loadOpenInPlaceWithCompletion:v49];
@@ -177,8 +177,8 @@ LABEL_25:
       v44[3] = &unk_100031B80;
       v31 = v45;
       v45[0] = v17;
-      v45[1] = v39;
-      v46 = v15;
+      v45[1] = selfCopy;
+      v46 = firstObject;
       v47 = v28;
       v48 = v29;
       v35 = [v30 loadFileCopyWithCompletion:v44];
@@ -195,8 +195,8 @@ LABEL_25:
       v31 = &v58;
       v58 = v17;
       v59 = v27;
-      v60 = v39;
-      v61 = v15;
+      v60 = selfCopy;
+      v61 = firstObject;
       v62 = v28;
       v63 = v29;
       v33 = [v30 loadDataWithCompletion:v57];
@@ -208,11 +208,11 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  if (v42)
+  if (blockCopy)
   {
-    v43 = v42;
+    v43 = blockCopy;
     PBDispatchAsyncCallback();
-    v15 = v43;
+    firstObject = v43;
 LABEL_26:
   }
 }

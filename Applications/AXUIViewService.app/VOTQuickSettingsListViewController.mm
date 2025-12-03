@@ -2,20 +2,20 @@
 - (BOOL)_isFiltering;
 - (BOOL)_isSearchBarEmpty;
 - (NSArray)allSpecifiers;
-- (VOTQuickSettingsListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_specifierForItem:(id)a3;
-- (id)specifierValue:(id)a3;
+- (VOTQuickSettingsListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_specifierForItem:(id)item;
+- (id)specifierValue:(id)value;
 - (id)specifiers;
-- (void)_filterContentForSearchText:(id)a3;
+- (void)_filterContentForSearchText:(id)text;
 - (void)dealloc;
-- (void)setSpecifierValue:(id)a3 specifier:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)setSpecifierValue:(id)value specifier:(id)specifier;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation VOTQuickSettingsListViewController
 
-- (VOTQuickSettingsListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VOTQuickSettingsListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v16.receiver = self;
   v16.super_class = VOTQuickSettingsListViewController;
@@ -27,23 +27,23 @@
     v6 = [[UISearchController alloc] initWithSearchResultsController:0];
     [(VOTQuickSettingsListViewController *)v5 setSearchController:v6];
 
-    v7 = [(VOTQuickSettingsListViewController *)v5 searchController];
-    [v7 setSearchResultsUpdater:v5];
+    searchController = [(VOTQuickSettingsListViewController *)v5 searchController];
+    [searchController setSearchResultsUpdater:v5];
 
-    v8 = [(VOTQuickSettingsListViewController *)v5 searchController];
-    [v8 setObscuresBackgroundDuringPresentation:0];
+    searchController2 = [(VOTQuickSettingsListViewController *)v5 searchController];
+    [searchController2 setObscuresBackgroundDuringPresentation:0];
 
-    v9 = [(VOTQuickSettingsListViewController *)v5 searchController];
-    [v9 setHidesNavigationBarDuringPresentation:0];
+    searchController3 = [(VOTQuickSettingsListViewController *)v5 searchController];
+    [searchController3 setHidesNavigationBarDuringPresentation:0];
 
     v10 = sub_10000CCD4(@"VoiceOverQuickSettings.filter.placeholder");
-    v11 = [(VOTQuickSettingsListViewController *)v5 searchController];
-    v12 = [v11 searchBar];
-    [v12 setPlaceholder:v10];
+    searchController4 = [(VOTQuickSettingsListViewController *)v5 searchController];
+    searchBar = [searchController4 searchBar];
+    [searchBar setPlaceholder:v10];
 
-    v13 = [(VOTQuickSettingsListViewController *)v5 searchController];
-    v14 = [(VOTQuickSettingsListViewController *)v5 navigationItem];
-    [v14 setSearchController:v13];
+    searchController5 = [(VOTQuickSettingsListViewController *)v5 searchController];
+    navigationItem = [(VOTQuickSettingsListViewController *)v5 navigationItem];
+    [navigationItem setSearchController:searchController5];
 
     [(VOTQuickSettingsListViewController *)v5 setDefinesPresentationContext:1];
   }
@@ -54,8 +54,8 @@
 - (void)dealloc
 {
   v3 = +[NSNotificationCenter defaultCenter];
-  v4 = [(VOTQuickSettingsListViewController *)self settingsItemUpdateObserverToken];
-  [v3 removeObserver:v4];
+  settingsItemUpdateObserverToken = [(VOTQuickSettingsListViewController *)self settingsItemUpdateObserverToken];
+  [v3 removeObserver:settingsItemUpdateObserverToken];
 
   v5.receiver = self;
   v5.super_class = VOTQuickSettingsListViewController;
@@ -107,9 +107,9 @@
   v3 = OBJC_IVAR___PSListController__specifiers;
   if (!*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers])
   {
-    v4 = [(VOTQuickSettingsListViewController *)self filteredSpecifiers];
+    filteredSpecifiers = [(VOTQuickSettingsListViewController *)self filteredSpecifiers];
 
-    if (v4)
+    if (filteredSpecifiers)
     {
       [(VOTQuickSettingsListViewController *)self filteredSpecifiers];
     }
@@ -128,11 +128,11 @@
   return v7;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v5 = [a3 searchBar];
-  v4 = [v5 text];
-  [(VOTQuickSettingsListViewController *)self _filterContentForSearchText:v4];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
+  [(VOTQuickSettingsListViewController *)self _filterContentForSearchText:text];
 }
 
 - (NSArray)allSpecifiers
@@ -146,10 +146,10 @@
     v32 = 0u;
     v33 = 0u;
     v4 = +[VOSSettingsHelper sharedInstance];
-    v5 = [v4 userSettingsItems];
+    userSettingsItems = [v4 userSettingsItems];
 
-    obj = v5;
-    v6 = [v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    obj = userSettingsItems;
+    v6 = [userSettingsItems countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (!v6)
     {
       goto LABEL_18;
@@ -168,9 +168,9 @@
 
         v10 = *(*(&v30 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"Included"];
-        v12 = [v11 BOOLValue];
+        bOOLValue = [v11 BOOLValue];
 
-        if (v12)
+        if (bOOLValue)
         {
           v13 = [v10 objectForKeyedSubscript:@"Item"];
           v14 = +[VOSSettingsItem ScreenRecognition];
@@ -181,8 +181,8 @@
             goto LABEL_11;
           }
 
-          v16 = [(VOTQuickSettingsListViewController *)self data];
-          v17 = [v16 frontmostAppIdentifier];
+          data = [(VOTQuickSettingsListViewController *)self data];
+          frontmostAppIdentifier = [data frontmostAppIdentifier];
           v18 = VOSProcessAllowsScreenRecognition();
 
           if (v18)
@@ -197,14 +197,14 @@ LABEL_11:
             }
 
             v21 = +[AXSettings sharedInstance];
-            v22 = [v21 voiceOverActivities];
-            v23 = [v22 count];
+            voiceOverActivities = [v21 voiceOverActivities];
+            v23 = [voiceOverActivities count];
 
             if (v23)
             {
 LABEL_14:
-              v24 = [(VOTQuickSettingsListViewController *)self data];
-              [v13 setSettingsData:v24];
+              data2 = [(VOTQuickSettingsListViewController *)self data];
+              [v13 setSettingsData:data2];
 
               v25 = [(VOTQuickSettingsListViewController *)self _specifierForItem:v13];
               [(NSArray *)v28 addObject:v25];
@@ -234,18 +234,18 @@ LABEL_18:
 
 - (BOOL)_isSearchBarEmpty
 {
-  v2 = [(VOTQuickSettingsListViewController *)self searchController];
-  v3 = [v2 searchBar];
-  v4 = [v3 text];
-  v5 = [v4 length] == 0;
+  searchController = [(VOTQuickSettingsListViewController *)self searchController];
+  searchBar = [searchController searchBar];
+  text = [searchBar text];
+  v5 = [text length] == 0;
 
   return v5;
 }
 
 - (BOOL)_isFiltering
 {
-  v3 = [(VOTQuickSettingsListViewController *)self searchController];
-  if ([v3 isActive])
+  searchController = [(VOTQuickSettingsListViewController *)self searchController];
+  if ([searchController isActive])
   {
     v4 = ![(VOTQuickSettingsListViewController *)self _isSearchBarEmpty];
   }
@@ -258,11 +258,11 @@ LABEL_18:
   return v4;
 }
 
-- (void)_filterContentForSearchText:(id)a3
+- (void)_filterContentForSearchText:(id)text
 {
-  v16 = a3;
-  v4 = [(VOTQuickSettingsListViewController *)self speakFilteredItemSummaryTimer];
-  [v4 invalidate];
+  textCopy = text;
+  speakFilteredItemSummaryTimer = [(VOTQuickSettingsListViewController *)self speakFilteredItemSummaryTimer];
+  [speakFilteredItemSummaryTimer invalidate];
 
   if ([(VOTQuickSettingsListViewController *)self _isFiltering])
   {
@@ -289,7 +289,7 @@ LABEL_18:
           v9 = [v8 propertyForKey:@"VOSSettingsItem"];
           v10 = +[VOSSettingsHelper sharedInstance];
           v11 = [v10 nameForItem:v9];
-          v12 = [v11 containsString:v16];
+          v12 = [v11 containsString:textCopy];
 
           if (v12)
           {
@@ -325,11 +325,11 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (id)_specifierForItem:(id)a3
+- (id)_specifierForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 itemType];
-  if (v5 == 2 || v5 == 1)
+  itemCopy = item;
+  itemType = [itemCopy itemType];
+  if (itemType == 2 || itemType == 1)
   {
     v6 = objc_opt_class();
     v7 = objc_opt_class();
@@ -337,7 +337,7 @@ LABEL_18:
 
   else
   {
-    if (!v5)
+    if (!itemType)
     {
       v6 = objc_opt_class();
       v7 = 0;
@@ -359,18 +359,18 @@ LABEL_18:
   v8 = 2;
 LABEL_10:
   v10 = +[VOSSettingsHelper sharedInstance];
-  v11 = [v10 nameForItem:v4];
+  v11 = [v10 nameForItem:itemCopy];
   v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:"setSpecifierValue:specifier:" get:"specifierValue:" detail:v7 cell:v8 edit:0];
 
-  [v12 setProperty:v4 forKey:@"VOSSettingsItem"];
+  [v12 setProperty:itemCopy forKey:@"VOSSettingsItem"];
   [v12 setProperty:v6 forKey:PSCellClassKey];
 
   return v12;
 }
 
-- (id)specifierValue:(id)a3
+- (id)specifierValue:(id)value
 {
-  v3 = [a3 propertyForKey:@"VOSSettingsItem"];
+  v3 = [value propertyForKey:@"VOSSettingsItem"];
   v4 = +[VOSSettingsHelper sharedInstance];
   v5 = [v4 valueForSettingsItem:v3];
 
@@ -380,12 +380,12 @@ LABEL_10:
   return v7;
 }
 
-- (void)setSpecifierValue:(id)a3 specifier:(id)a4
+- (void)setSpecifierValue:(id)value specifier:(id)specifier
 {
-  v5 = a3;
-  v7 = [a4 propertyForKey:@"VOSSettingsItem"];
+  valueCopy = value;
+  v7 = [specifier propertyForKey:@"VOSSettingsItem"];
   v6 = +[VOSSettingsHelper sharedInstance];
-  [v6 setValue:v5 forSettingsItem:v7];
+  [v6 setValue:valueCopy forSettingsItem:v7];
 }
 
 @end

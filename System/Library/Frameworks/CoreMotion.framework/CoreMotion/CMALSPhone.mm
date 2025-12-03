@@ -1,15 +1,15 @@
 @interface CMALSPhone
-- (CMALSPhone)initWithCoder:(id)a3;
-- (CMALSPhone)initWithTimestamp:(double)a3 illumination:(float)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMALSPhone)initWithCoder:(id)coder;
+- (CMALSPhone)initWithTimestamp:(double)timestamp illumination:(float)illumination;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMALSPhone
 
-- (CMALSPhone)initWithTimestamp:(double)a3 illumination:(float)a4
+- (CMALSPhone)initWithTimestamp:(double)timestamp illumination:(float)illumination
 {
   v15.receiver = self;
   v15.super_class = CMALSPhone;
@@ -17,16 +17,16 @@
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E696AD98]);
-    v6->fTimestamp = objc_msgSend_initWithDouble_(v7, v8, v9, a3);
+    v6->fTimestamp = objc_msgSend_initWithDouble_(v7, v8, v9, timestamp);
     v10 = objc_alloc(MEMORY[0x1E696AD98]);
-    *&v11 = a4;
+    *&v11 = illumination;
     v6->fIllumination = objc_msgSend_initWithFloat_(v10, v12, v13, v11);
   }
 
   return v6;
 }
 
-- (CMALSPhone)initWithCoder:(id)a3
+- (CMALSPhone)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CMALSPhone;
@@ -34,26 +34,26 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->fTimestamp = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMALSPhoneTimestamp");
+    v4->fTimestamp = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMALSPhoneTimestamp");
     v7 = objc_opt_class();
-    v4->fIllumination = objc_msgSend_decodeObjectOfClass_forKey_(a3, v8, v7, @"kCMALSPhoneIllumination");
+    v4->fIllumination = objc_msgSend_decodeObjectOfClass_forKey_(coder, v8, v7, @"kCMALSPhoneIllumination");
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->fTimestamp, @"kCMALSPhoneTimestamp");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->fTimestamp, @"kCMALSPhoneTimestamp");
   fIllumination = self->fIllumination;
 
-  objc_msgSend_encodeObject_forKey_(a3, v5, fIllumination, @"kCMALSPhoneIllumination");
+  objc_msgSend_encodeObject_forKey_(coder, v5, fIllumination, @"kCMALSPhoneIllumination");
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v12 = objc_msgSend_init(v7, v8, v9);
   if (v12)
   {

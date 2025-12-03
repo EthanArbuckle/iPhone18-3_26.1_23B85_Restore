@@ -1,11 +1,11 @@
 @interface CRSubtitleSettings
 + (id)defaultSettings;
-- (CRSubtitleSettings)initWithCoder:(id)a3;
-- (CRSubtitleSettings)initWithDictionaryRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CRSubtitleSettings)initWithCoder:(id)coder;
+- (CRSubtitleSettings)initWithDictionaryRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRSubtitleSettings
@@ -35,62 +35,62 @@
   return v2;
 }
 
-- (CRSubtitleSettings)initWithCoder:(id)a3
+- (CRSubtitleSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CRSubtitleSettings;
   v5 = [(CRSubtitleSettings *)&v7 init];
   if (v5)
   {
-    v5->_closedCaptionsEnabled = [v4 decodeBoolForKey:@"property_key_ClosedCaptionsAndSDH_Enabled"];
-    v5->_fontName = [v4 decodeIntForKey:@"property_key_FontName"];
-    v5->_allowFontNameOverride = [v4 decodeBoolForKey:@"property_key_FontNameOverride"];
-    v5->_fontSize = [v4 decodeIntForKey:@"property_key_FontSize"];
-    v5->_allowFontSizeOverride = [v4 decodeBoolForKey:@"property_key_FontSizeOverride"];
-    v5->_fontColor = [v4 decodeIntForKey:@"property_key_FontColor"];
-    v5->_allowFontColorOverride = [v4 decodeBoolForKey:@"property_key_FontColorOverride"];
-    v5->_backgroundColor = [v4 decodeIntForKey:@"property_key_BackgroundColor"];
-    v5->_allowBackgroundColorOverride = [v4 decodeBoolForKey:@"property_key_BackgroundColorOverride"];
-    v5->_backgroundOpacity = [v4 decodeIntForKey:@"property_key_BackgroundOpacity"];
-    v5->_allowBackgroundOpacityOverride = [v4 decodeBoolForKey:@"property_key_BackgroundOpacityOverride"];
-    v5->_textOpacity = [v4 decodeIntForKey:@"property_key_TextOpacity"];
-    v5->_allowTextOpacityOverride = [v4 decodeBoolForKey:@"property_key_TextOpacityOverride"];
-    v5->_textEdgeStyle = [v4 decodeIntForKey:@"property_key_TextEdgeStyle"];
-    v5->_allowTextEdgeStyleOverride = [v4 decodeBoolForKey:@"property_key_TextEdgeStyleOverride"];
-    v5->_textHighlightColor = [v4 decodeIntForKey:@"property_key_TextHighlightColor"];
-    v5->_textHighlightOpacity = [v4 decodeIntForKey:@"property_key_TextHighlightOpacity"];
-    v5->_allowTextHighlightOverride = [v4 decodeBoolForKey:@"property_key_TextHighlightOverride"];
+    v5->_closedCaptionsEnabled = [coderCopy decodeBoolForKey:@"property_key_ClosedCaptionsAndSDH_Enabled"];
+    v5->_fontName = [coderCopy decodeIntForKey:@"property_key_FontName"];
+    v5->_allowFontNameOverride = [coderCopy decodeBoolForKey:@"property_key_FontNameOverride"];
+    v5->_fontSize = [coderCopy decodeIntForKey:@"property_key_FontSize"];
+    v5->_allowFontSizeOverride = [coderCopy decodeBoolForKey:@"property_key_FontSizeOverride"];
+    v5->_fontColor = [coderCopy decodeIntForKey:@"property_key_FontColor"];
+    v5->_allowFontColorOverride = [coderCopy decodeBoolForKey:@"property_key_FontColorOverride"];
+    v5->_backgroundColor = [coderCopy decodeIntForKey:@"property_key_BackgroundColor"];
+    v5->_allowBackgroundColorOverride = [coderCopy decodeBoolForKey:@"property_key_BackgroundColorOverride"];
+    v5->_backgroundOpacity = [coderCopy decodeIntForKey:@"property_key_BackgroundOpacity"];
+    v5->_allowBackgroundOpacityOverride = [coderCopy decodeBoolForKey:@"property_key_BackgroundOpacityOverride"];
+    v5->_textOpacity = [coderCopy decodeIntForKey:@"property_key_TextOpacity"];
+    v5->_allowTextOpacityOverride = [coderCopy decodeBoolForKey:@"property_key_TextOpacityOverride"];
+    v5->_textEdgeStyle = [coderCopy decodeIntForKey:@"property_key_TextEdgeStyle"];
+    v5->_allowTextEdgeStyleOverride = [coderCopy decodeBoolForKey:@"property_key_TextEdgeStyleOverride"];
+    v5->_textHighlightColor = [coderCopy decodeIntForKey:@"property_key_TextHighlightColor"];
+    v5->_textHighlightOpacity = [coderCopy decodeIntForKey:@"property_key_TextHighlightOpacity"];
+    v5->_allowTextHighlightOverride = [coderCopy decodeBoolForKey:@"property_key_TextHighlightOverride"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   closedCaptionsEnabled = self->_closedCaptionsEnabled;
-  v5 = a3;
-  [v5 encodeBool:closedCaptionsEnabled forKey:@"property_key_ClosedCaptionsAndSDH_Enabled"];
-  [v5 encodeInt:self->_fontName forKey:@"property_key_FontName"];
-  [v5 encodeBool:self->_allowFontNameOverride forKey:@"property_key_FontNameOverride"];
-  [v5 encodeInt:self->_fontSize forKey:@"property_key_FontSize"];
-  [v5 encodeBool:self->_allowFontSizeOverride forKey:@"property_key_FontSizeOverride"];
-  [v5 encodeInt:self->_fontColor forKey:@"property_key_FontColor"];
-  [v5 encodeBool:self->_allowFontColorOverride forKey:@"property_key_FontColorOverride"];
-  [v5 encodeInt:self->_backgroundColor forKey:@"property_key_BackgroundColor"];
-  [v5 encodeBool:self->_allowBackgroundColorOverride forKey:@"property_key_BackgroundColorOverride"];
-  [v5 encodeInt:self->_backgroundOpacity forKey:@"property_key_BackgroundOpacity"];
-  [v5 encodeBool:self->_allowBackgroundOpacityOverride forKey:@"property_key_BackgroundOpacityOverride"];
-  [v5 encodeInt:self->_textOpacity forKey:@"property_key_TextOpacity"];
-  [v5 encodeBool:self->_allowTextOpacityOverride forKey:@"property_key_TextOpacityOverride"];
-  [v5 encodeInt:self->_textEdgeStyle forKey:@"property_key_TextEdgeStyle"];
-  [v5 encodeBool:self->_allowTextEdgeStyleOverride forKey:@"property_key_TextEdgeStyleOverride"];
-  [v5 encodeInt:self->_textHighlightColor forKey:@"property_key_TextHighlightColor"];
-  [v5 encodeInt:self->_textHighlightOpacity forKey:@"property_key_TextHighlightOpacity"];
-  [v5 encodeBool:self->_allowTextHighlightOverride forKey:@"property_key_TextHighlightOverride"];
+  coderCopy = coder;
+  [coderCopy encodeBool:closedCaptionsEnabled forKey:@"property_key_ClosedCaptionsAndSDH_Enabled"];
+  [coderCopy encodeInt:self->_fontName forKey:@"property_key_FontName"];
+  [coderCopy encodeBool:self->_allowFontNameOverride forKey:@"property_key_FontNameOverride"];
+  [coderCopy encodeInt:self->_fontSize forKey:@"property_key_FontSize"];
+  [coderCopy encodeBool:self->_allowFontSizeOverride forKey:@"property_key_FontSizeOverride"];
+  [coderCopy encodeInt:self->_fontColor forKey:@"property_key_FontColor"];
+  [coderCopy encodeBool:self->_allowFontColorOverride forKey:@"property_key_FontColorOverride"];
+  [coderCopy encodeInt:self->_backgroundColor forKey:@"property_key_BackgroundColor"];
+  [coderCopy encodeBool:self->_allowBackgroundColorOverride forKey:@"property_key_BackgroundColorOverride"];
+  [coderCopy encodeInt:self->_backgroundOpacity forKey:@"property_key_BackgroundOpacity"];
+  [coderCopy encodeBool:self->_allowBackgroundOpacityOverride forKey:@"property_key_BackgroundOpacityOverride"];
+  [coderCopy encodeInt:self->_textOpacity forKey:@"property_key_TextOpacity"];
+  [coderCopy encodeBool:self->_allowTextOpacityOverride forKey:@"property_key_TextOpacityOverride"];
+  [coderCopy encodeInt:self->_textEdgeStyle forKey:@"property_key_TextEdgeStyle"];
+  [coderCopy encodeBool:self->_allowTextEdgeStyleOverride forKey:@"property_key_TextEdgeStyleOverride"];
+  [coderCopy encodeInt:self->_textHighlightColor forKey:@"property_key_TextHighlightColor"];
+  [coderCopy encodeInt:self->_textHighlightOpacity forKey:@"property_key_TextHighlightOpacity"];
+  [coderCopy encodeBool:self->_allowTextHighlightOverride forKey:@"property_key_TextHighlightOverride"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[CRSubtitleSettings allocWithZone:?]];
   *(result + 8) = self->_closedCaptionsEnabled;
@@ -114,9 +114,9 @@
   return result;
 }
 
-- (CRSubtitleSettings)initWithDictionaryRepresentation:(id)a3
+- (CRSubtitleSettings)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v14.receiver = self;
   v14.super_class = CRSubtitleSettings;
   v5 = [(CRSubtitleSettings *)&v14 init];
@@ -126,7 +126,7 @@
     v12[1] = 3221225472;
     v12[2] = __55__CRSubtitleSettings_initWithDictionaryRepresentation___block_invoke;
     v12[3] = &unk_1E82FC890;
-    v6 = v4;
+    v6 = representationCopy;
     v13 = v6;
     v7 = MEMORY[0x1CCA72270](v12);
     v10[0] = MEMORY[0x1E69E9820];
@@ -286,8 +286,8 @@ uint64_t __55__CRSubtitleSettings_initWithDictionaryRepresentation___block_invok
 
 - (id)description
 {
-  v2 = [(CRSubtitleSettings *)self dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(CRSubtitleSettings *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }

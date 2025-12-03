@@ -27,15 +27,15 @@
   if (v3)
   {
     v4 = *v3;
-    v5 = [a1 length];
+    v5 = [self length];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __58__NSAttributedString_ImageExtraction__containedImageFiles__block_invoke;
     v11[3] = &unk_2783486D8;
-    v11[4] = a1;
+    v11[4] = self;
     v6 = v2;
     v12 = v6;
-    [a1 enumerateAttribute:v4 inRange:0 options:v5 usingBlock:{0, v11}];
+    [self enumerateAttribute:v4 inRange:0 options:v5 usingBlock:{0, v11}];
 
     v7 = v12;
     v8 = v6;
@@ -43,9 +43,9 @@
 
   else
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSAttributedStringKey getNSAttachmentAttributeName(void)"];
-    [v9 handleFailureInFunction:v10 file:@"WFWebArchive+ImageExtraction.m" lineNumber:16 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"WFWebArchive+ImageExtraction.m" lineNumber:16 description:{@"%s", dlerror()}];
 
     __break(1u);
   }

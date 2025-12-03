@@ -1,33 +1,33 @@
 @interface ASCLockupPresenter
 + (__CFString)iconPlaceholderDecoration;
 + (id)log;
-- (ASCLockupPresenter)initWithView:(id)a3 customContentProvider:(id)a4 offerPresenter:(id)a5 metricsPresenter:(id)a6;
-- (ASCLockupPresenter)initWithView:(id)a3 customContentProvider:(id)a4 offerPresenter:(id)a5 metricsPresenter:(id)a6 context:(id)a7;
-- (ASCLockupPresenter)initWithView:(id)a3 metricsPresenter:(id)a4;
-- (ASCLockupPresenter)initWithView:(id)a3 offerPresenter:(id)a4 metricsPresenter:(id)a5;
+- (ASCLockupPresenter)initWithView:(id)view customContentProvider:(id)provider offerPresenter:(id)presenter metricsPresenter:(id)metricsPresenter;
+- (ASCLockupPresenter)initWithView:(id)view customContentProvider:(id)provider offerPresenter:(id)presenter metricsPresenter:(id)metricsPresenter context:(id)context;
+- (ASCLockupPresenter)initWithView:(id)view metricsPresenter:(id)presenter;
+- (ASCLockupPresenter)initWithView:(id)view offerPresenter:(id)presenter metricsPresenter:(id)metricsPresenter;
 - (ASCLockupPresenterObserver)observer;
 - (ASCLockupPresenterView)view;
 - (BOOL)prefersRightToLeftViewLayout;
 - (id)description;
 - (void)beginViewRender;
-- (void)daemonDidRebootstrap:(id)a3;
+- (void)daemonDidRebootstrap:(id)rebootstrap;
 - (void)dealloc;
 - (void)endViewRender;
-- (void)iconArtwork:(id)a3 didFailFetchWithError:(id)a4;
-- (void)iconArtwork:(id)a3 didFetchImage:(id)a4;
-- (void)performFollowUpWork:(id)a3;
+- (void)iconArtwork:(id)artwork didFailFetchWithError:(id)error;
+- (void)iconArtwork:(id)artwork didFetchImage:(id)image;
+- (void)performFollowUpWork:(id)work;
 - (void)performIconFetch;
 - (void)performLockupFetch;
 - (void)reloadDefaultContent;
-- (void)request:(id)a3 didCompleteWithLockup:(id)a4;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)requestWillFetchLockup:(id)a3;
-- (void)retryGroup:(id)a3;
-- (void)retryRequestIfNeeded:(id)a3;
-- (void)setGroup:(id)a3;
-- (void)setLockup:(id)a3;
-- (void)setRequest:(id)a3;
-- (void)setShowsPlaceholderContent:(BOOL)a3;
+- (void)request:(id)request didCompleteWithLockup:(id)lockup;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)requestWillFetchLockup:(id)lockup;
+- (void)retryGroup:(id)group;
+- (void)retryRequestIfNeeded:(id)needed;
+- (void)setGroup:(id)group;
+- (void)setLockup:(id)lockup;
+- (void)setRequest:(id)request;
+- (void)setShowsPlaceholderContent:(BOOL)content;
 - (void)showLoadingState;
 @end
 
@@ -60,71 +60,71 @@ uint64_t __25__ASCLockupPresenter_log__block_invoke()
   return @"roundedRect";
 }
 
-- (ASCLockupPresenter)initWithView:(id)a3 customContentProvider:(id)a4 offerPresenter:(id)a5 metricsPresenter:(id)a6 context:(id)a7
+- (ASCLockupPresenter)initWithView:(id)view customContentProvider:(id)provider offerPresenter:(id)presenter metricsPresenter:(id)metricsPresenter context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  viewCopy = view;
+  providerCopy = provider;
+  presenterCopy = presenter;
+  metricsPresenterCopy = metricsPresenter;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = ASCLockupPresenter;
   v17 = [(ASCLockupPresenter *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_view, v12);
-    objc_storeStrong(&v18->_context, a7);
-    objc_storeStrong(&v18->_offerPresenter, a5);
-    objc_storeStrong(&v18->_metricsPresenter, a6);
-    objc_storeStrong(&v18->_customContentProvider, a4);
+    objc_storeWeak(&v17->_view, viewCopy);
+    objc_storeStrong(&v18->_context, context);
+    objc_storeStrong(&v18->_offerPresenter, presenter);
+    objc_storeStrong(&v18->_metricsPresenter, metricsPresenter);
+    objc_storeStrong(&v18->_customContentProvider, provider);
     v18->_showsPlaceholderContent = 1;
     [(ASCLockupPresenter *)v18 showLoadingState];
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v20 = +[ASCRebootstrapNotifier sharedNotifier];
-    [v19 addObserver:v18 selector:sel_daemonDidRebootstrap_ name:0x2827A4C98 object:v20];
+    [defaultCenter addObserver:v18 selector:sel_daemonDidRebootstrap_ name:0x2827A4C98 object:v20];
   }
 
   return v18;
 }
 
-- (ASCLockupPresenter)initWithView:(id)a3 customContentProvider:(id)a4 offerPresenter:(id)a5 metricsPresenter:(id)a6
+- (ASCLockupPresenter)initWithView:(id)view customContentProvider:(id)provider offerPresenter:(id)presenter metricsPresenter:(id)metricsPresenter
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  metricsPresenterCopy = metricsPresenter;
+  presenterCopy = presenter;
+  providerCopy = provider;
+  viewCopy = view;
   v14 = +[ASCPresenterContext sharedContext];
-  v15 = [(ASCLockupPresenter *)self initWithView:v13 customContentProvider:v12 offerPresenter:v11 metricsPresenter:v10 context:v14];
+  v15 = [(ASCLockupPresenter *)self initWithView:viewCopy customContentProvider:providerCopy offerPresenter:presenterCopy metricsPresenter:metricsPresenterCopy context:v14];
 
   return v15;
 }
 
-- (ASCLockupPresenter)initWithView:(id)a3 offerPresenter:(id)a4 metricsPresenter:(id)a5
+- (ASCLockupPresenter)initWithView:(id)view offerPresenter:(id)presenter metricsPresenter:(id)metricsPresenter
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  metricsPresenterCopy = metricsPresenter;
+  presenterCopy = presenter;
+  viewCopy = view;
   v11 = +[ASCPresenterContext sharedContext];
-  v12 = [(ASCLockupPresenter *)self initWithView:v10 customContentProvider:0 offerPresenter:v9 metricsPresenter:v8 context:v11];
+  v12 = [(ASCLockupPresenter *)self initWithView:viewCopy customContentProvider:0 offerPresenter:presenterCopy metricsPresenter:metricsPresenterCopy context:v11];
 
   return v12;
 }
 
-- (ASCLockupPresenter)initWithView:(id)a3 metricsPresenter:(id)a4
+- (ASCLockupPresenter)initWithView:(id)view metricsPresenter:(id)presenter
 {
-  v6 = a4;
-  v7 = a3;
+  presenterCopy = presenter;
+  viewCopy = view;
   v8 = +[ASCPresenterContext sharedContext];
-  v9 = [(ASCLockupPresenter *)self initWithView:v7 customContentProvider:0 offerPresenter:0 metricsPresenter:v6 context:v8];
+  v9 = [(ASCLockupPresenter *)self initWithView:viewCopy customContentProvider:0 offerPresenter:0 metricsPresenter:presenterCopy context:v8];
 
   return v9;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ASCLockupPresenter;
@@ -133,65 +133,65 @@ uint64_t __25__ASCLockupPresenter_log__block_invoke()
 
 - (BOOL)prefersRightToLeftViewLayout
 {
-  v2 = [MEMORY[0x277CBEAF8] asc_storefrontLocale];
-  v3 = [v2 asc_prefersRightToLeftLayout];
+  asc_storefrontLocale = [MEMORY[0x277CBEAF8] asc_storefrontLocale];
+  asc_prefersRightToLeftLayout = [asc_storefrontLocale asc_prefersRightToLeftLayout];
 
-  return v3;
+  return asc_prefersRightToLeftLayout;
 }
 
-- (void)setLockup:(id)a3
+- (void)setLockup:(id)lockup
 {
-  v4 = a3;
+  lockupCopy = lockup;
   lockup = self->_lockup;
-  v26 = v4;
-  if (!v4 || !lockup)
+  v26 = lockupCopy;
+  if (!lockupCopy || !lockup)
   {
-    if (lockup == v4)
+    if (lockup == lockupCopy)
     {
       goto LABEL_10;
     }
 
 LABEL_6:
-    v7 = [(ASCLockup *)v4 copy];
+    v7 = [(ASCLockup *)lockupCopy copy];
     v8 = self->_lockup;
     self->_lockup = v7;
 
     if (v26)
     {
-      v9 = [(ASCLockupPresenter *)self view];
-      [v9 setLoading:0];
+      view = [(ASCLockupPresenter *)self view];
+      [view setLoading:0];
 
-      v10 = [(ASCLockup *)v26 offer];
-      v11 = [(ASCLockupPresenter *)self offerPresenter];
-      [v11 setOffer:v10];
+      offer = [(ASCLockup *)v26 offer];
+      offerPresenter = [(ASCLockupPresenter *)self offerPresenter];
+      [offerPresenter setOffer:offer];
 
-      v12 = [(ASCLockupPresenter *)self metricsPresenter];
-      [v12 setModel:v26];
+      metricsPresenter = [(ASCLockupPresenter *)self metricsPresenter];
+      [metricsPresenter setModel:v26];
 
       [(ASCLockupPresenter *)self performIconFetch];
-      v13 = [(ASCLockupPresenter *)self view];
-      v14 = [(ASCLockup *)v26 heading];
-      [v13 setHeading:v14];
+      view2 = [(ASCLockupPresenter *)self view];
+      heading = [(ASCLockup *)v26 heading];
+      [view2 setHeading:heading];
 
-      v15 = [(ASCLockupPresenter *)self view];
-      v16 = [(ASCLockup *)v26 title];
-      [v15 setTitle:v16];
+      view3 = [(ASCLockupPresenter *)self view];
+      title = [(ASCLockup *)v26 title];
+      [view3 setTitle:title];
 
-      v17 = [(ASCLockupPresenter *)self view];
-      v18 = [(ASCLockup *)v26 subtitle];
-      [v17 setSubtitle:v18];
+      view4 = [(ASCLockupPresenter *)self view];
+      subtitle = [(ASCLockup *)v26 subtitle];
+      [view4 setSubtitle:subtitle];
 
-      v19 = [(ASCLockupPresenter *)self view];
-      [v19 setPrefersRightToLeftLayout:{-[ASCLockupPresenter prefersRightToLeftViewLayout](self, "prefersRightToLeftViewLayout")}];
+      view5 = [(ASCLockupPresenter *)self view];
+      [view5 setPrefersRightToLeftLayout:{-[ASCLockupPresenter prefersRightToLeftViewLayout](self, "prefersRightToLeftViewLayout")}];
 
-      v20 = [(ASCLockupPresenter *)self view];
-      v21 = [(ASCLockup *)v26 displayContext];
-      [v20 setDisplayContext:v21];
+      view6 = [(ASCLockupPresenter *)self view];
+      displayContext = [(ASCLockup *)v26 displayContext];
+      [view6 setDisplayContext:displayContext];
 
-      v22 = [(ASCLockupPresenter *)self view];
-      v23 = [(ASCLockupPresenter *)self customContentProvider];
-      v24 = [v23 badgeView];
-      [v22 setBadge:v24];
+      view7 = [(ASCLockupPresenter *)self view];
+      customContentProvider = [(ASCLockupPresenter *)self customContentProvider];
+      badgeView = [customContentProvider badgeView];
+      [view7 setBadge:badgeView];
     }
 
     else
@@ -199,14 +199,14 @@ LABEL_6:
       [(ASCLockupPresenter *)self reloadDefaultContent];
     }
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 postNotificationName:@"ASCLockupPresenterDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ASCLockupPresenterDidChangeNotification" object:self];
 
     goto LABEL_10;
   }
 
-  v6 = [(ASCLockup *)lockup isEqual:v4];
-  v4 = v26;
+  v6 = [(ASCLockup *)lockup isEqual:lockupCopy];
+  lockupCopy = v26;
   if (!v6)
   {
     goto LABEL_6;
@@ -217,14 +217,14 @@ LABEL_10:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setGroup:(id)a3
+- (void)setGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   v6 = self->_group;
   v7 = v6;
-  if (v5 && v6)
+  if (groupCopy && v6)
   {
-    v8 = [(ASCLockupViewGroup *)v6 isEqual:v5];
+    v8 = [(ASCLockupViewGroup *)v6 isEqual:groupCopy];
 
     if (v8)
     {
@@ -235,7 +235,7 @@ LABEL_10:
   else
   {
 
-    if (v7 == v5)
+    if (v7 == groupCopy)
     {
       goto LABEL_13;
     }
@@ -243,19 +243,19 @@ LABEL_10:
 
   if (self->_group)
   {
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 removeObserver:self name:@"ASCLockupPresenterRetryGroupNotification" object:self->_group];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"ASCLockupPresenterRetryGroupNotification" object:self->_group];
   }
 
-  objc_storeStrong(&self->_group, a3);
-  if (v5)
+  objc_storeStrong(&self->_group, group);
+  if (groupCopy)
   {
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:self selector:sel_retryGroup_ name:@"ASCLockupPresenterRetryGroupNotification" object:v5];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_retryGroup_ name:@"ASCLockupPresenterRetryGroupNotification" object:groupCopy];
 
-    v11 = [(ASCLockupPresenter *)self request];
+    request = [(ASCLockupPresenter *)self request];
 
-    if (v11)
+    if (request)
     {
       v12 = +[ASCLockupPresenter log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -268,14 +268,14 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   request = self->_request;
-  v9 = v4;
-  if (!v4 || !request)
+  v9 = requestCopy;
+  if (!requestCopy || !request)
   {
-    if (request == v4)
+    if (request == requestCopy)
     {
       goto LABEL_7;
     }
@@ -283,12 +283,12 @@ LABEL_13:
     goto LABEL_6;
   }
 
-  v6 = [(ASCLockupRequest *)request isEqual:v4];
-  v4 = v9;
+  v6 = [(ASCLockupRequest *)request isEqual:requestCopy];
+  requestCopy = v9;
   if (!v6)
   {
 LABEL_6:
-    v7 = [(ASCLockupRequest *)v4 copy];
+    v7 = [(ASCLockupRequest *)requestCopy copy];
     v8 = self->_request;
     self->_request = v7;
 
@@ -300,11 +300,11 @@ LABEL_7:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setShowsPlaceholderContent:(BOOL)a3
+- (void)setShowsPlaceholderContent:(BOOL)content
 {
-  if (self->_showsPlaceholderContent != a3)
+  if (self->_showsPlaceholderContent != content)
   {
-    self->_showsPlaceholderContent = a3;
+    self->_showsPlaceholderContent = content;
     [(ASCLockupPresenter *)self reloadDefaultContent];
   }
 }
@@ -313,74 +313,74 @@ LABEL_7:
 {
   if ([(ASCLockupPresenter *)self showsPlaceholderContent])
   {
-    v3 = [(ASCLockupPresenter *)self view];
+    view = [(ASCLockupPresenter *)self view];
     v4 = +[ASCLockupPresenter iconPlaceholderDecoration];
-    [v3 setIconImage:0 withDecoration:v4];
+    [view setIconImage:0 withDecoration:v4];
 
-    v5 = [(ASCLockupPresenter *)self view];
-    [v5 setHeading:0];
+    view2 = [(ASCLockupPresenter *)self view];
+    [view2 setHeading:0];
 
-    v6 = [(ASCLockupPresenter *)self view];
-    [v6 setTitle:0];
+    view3 = [(ASCLockupPresenter *)self view];
+    [view3 setTitle:0];
 
-    v7 = [(ASCLockupPresenter *)self view];
-    [v7 setSubtitle:0];
+    view4 = [(ASCLockupPresenter *)self view];
+    [view4 setSubtitle:0];
 
-    v8 = [(ASCLockupPresenter *)self view];
-    [v8 setPrefersRightToLeftLayout:{-[ASCLockupPresenter prefersRightToLeftViewLayout](self, "prefersRightToLeftViewLayout")}];
+    view5 = [(ASCLockupPresenter *)self view];
+    [view5 setPrefersRightToLeftLayout:{-[ASCLockupPresenter prefersRightToLeftViewLayout](self, "prefersRightToLeftViewLayout")}];
 
-    v9 = [(ASCLockupPresenter *)self view];
-    [v9 setBadge:0];
+    view6 = [(ASCLockupPresenter *)self view];
+    [view6 setBadge:0];
 
-    v10 = [(ASCLockupPresenter *)self view];
-    [v10 setLoading:1];
+    view7 = [(ASCLockupPresenter *)self view];
+    [view7 setLoading:1];
 
-    v20 = +[ASCOfferMetadata placeholderMetadata];
-    v11 = [[ASCLocalOffer alloc] initWithMetadata:v20 action:0];
-    v12 = [(ASCLockupPresenter *)self offerPresenter];
-    [v12 setOffer:v11];
+    view13 = +[ASCOfferMetadata placeholderMetadata];
+    v11 = [[ASCLocalOffer alloc] initWithMetadata:view13 action:0];
+    offerPresenter = [(ASCLockupPresenter *)self offerPresenter];
+    [offerPresenter setOffer:v11];
   }
 
   else
   {
-    v13 = [(ASCLockupPresenter *)self offerPresenter];
-    [v13 setOffer:0];
+    offerPresenter2 = [(ASCLockupPresenter *)self offerPresenter];
+    [offerPresenter2 setOffer:0];
 
-    v14 = [(ASCLockupPresenter *)self metricsPresenter];
-    [v14 setModel:0];
+    metricsPresenter = [(ASCLockupPresenter *)self metricsPresenter];
+    [metricsPresenter setModel:0];
 
-    v15 = [(ASCLockupPresenter *)self view];
-    [v15 setIconImage:0 withDecoration:@"none"];
+    view8 = [(ASCLockupPresenter *)self view];
+    [view8 setIconImage:0 withDecoration:@"none"];
 
-    v16 = [(ASCLockupPresenter *)self view];
-    [v16 setHeading:0];
+    view9 = [(ASCLockupPresenter *)self view];
+    [view9 setHeading:0];
 
-    v17 = [(ASCLockupPresenter *)self view];
-    [v17 setTitle:0];
+    view10 = [(ASCLockupPresenter *)self view];
+    [view10 setTitle:0];
 
-    v18 = [(ASCLockupPresenter *)self view];
-    [v18 setSubtitle:0];
+    view11 = [(ASCLockupPresenter *)self view];
+    [view11 setSubtitle:0];
 
-    v19 = [(ASCLockupPresenter *)self view];
-    [v19 setBadge:0];
+    view12 = [(ASCLockupPresenter *)self view];
+    [view12 setBadge:0];
 
-    v20 = [(ASCLockupPresenter *)self view];
-    [v20 setLoading:0];
+    view13 = [(ASCLockupPresenter *)self view];
+    [view13 setLoading:0];
   }
 }
 
 - (void)reloadDefaultContent
 {
-  v3 = [(ASCLockupPresenter *)self request];
-  if (v3 || ([(ASCLockupPresenter *)self lockup], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  request = [(ASCLockupPresenter *)self request];
+  if (request || ([(ASCLockupPresenter *)self lockup], (request = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v4 = [(ASCLockupPresenter *)self pendingRequestedLockup];
+    pendingRequestedLockup = [(ASCLockupPresenter *)self pendingRequestedLockup];
 
-    if (!v4)
+    if (!pendingRequestedLockup)
     {
 
       [(ASCLockupPresenter *)self showLoadingState];
@@ -388,31 +388,31 @@ LABEL_7:
   }
 }
 
-- (void)retryRequestIfNeeded:(id)a3
+- (void)retryRequestIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(ASCLockupPresenter *)self request];
-  if (!v5)
+  neededCopy = needed;
+  request = [(ASCLockupPresenter *)self request];
+  if (!request)
   {
     goto LABEL_7;
   }
 
-  v6 = v5;
-  v7 = [(ASCLockupPresenter *)self pendingRequestedLockup];
-  if (!v7)
+  v6 = request;
+  pendingRequestedLockup = [(ASCLockupPresenter *)self pendingRequestedLockup];
+  if (!pendingRequestedLockup)
   {
 
     goto LABEL_7;
   }
 
-  v8 = v7;
-  v9 = [(ASCLockupPresenter *)self pendingRequestedLockup];
-  v10 = [v9 asc_isCanceledOrPending];
+  v8 = pendingRequestedLockup;
+  pendingRequestedLockup2 = [(ASCLockupPresenter *)self pendingRequestedLockup];
+  asc_isCanceledOrPending = [pendingRequestedLockup2 asc_isCanceledOrPending];
 
-  if (v10)
+  if (asc_isCanceledOrPending)
   {
 LABEL_7:
-    v4[2](v4, 0);
+    neededCopy[2](neededCopy, 0);
     goto LABEL_8;
   }
 
@@ -422,29 +422,29 @@ LABEL_7:
   v19[3] = &unk_2781CC0E8;
   v19[4] = self;
   v11 = MEMORY[0x216070C30](v19);
-  v12 = [(ASCLockupPresenter *)self group];
+  group = [(ASCLockupPresenter *)self group];
 
-  if (v12)
+  if (group)
   {
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    v14 = [(ASCLockupPresenter *)self group];
-    [v13 postNotificationName:@"ASCLockupPresenterRetryGroupNotification" object:v14];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    group2 = [(ASCLockupPresenter *)self group];
+    [defaultCenter postNotificationName:@"ASCLockupPresenterRetryGroupNotification" object:group2];
 
     v11[2](v11);
-    v4[2](v4, 1);
+    neededCopy[2](neededCopy, 1);
   }
 
   else
   {
-    v15 = [(ASCLockupPresenter *)self pendingRequestedLockup];
+    pendingRequestedLockup3 = [(ASCLockupPresenter *)self pendingRequestedLockup];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __43__ASCLockupPresenter_retryRequestIfNeeded___block_invoke_2;
     v16[3] = &unk_2781CC340;
     v16[4] = self;
     v17 = v11;
-    v18 = v4;
-    [v15 resultWithCompletion:v16];
+    v18 = neededCopy;
+    [pendingRequestedLockup3 resultWithCompletion:v16];
   }
 
 LABEL_8:
@@ -490,51 +490,51 @@ uint64_t __43__ASCLockupPresenter_retryRequestIfNeeded___block_invoke_2(uint64_t
 - (void)performLockupFetch
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [(ASCLockupPresenter *)self pendingRequestedLockup];
-  if (v4)
+  pendingRequestedLockup = [(ASCLockupPresenter *)self pendingRequestedLockup];
+  if (pendingRequestedLockup)
   {
     v5 = +[ASCLockupPresenter log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v23 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_21571A000, v5, OS_LOG_TYPE_INFO, "%{public}@: Canceling previous request", buf, 0xCu);
     }
 
-    [v4 cancel];
+    [pendingRequestedLockup cancel];
     [(ASCLockupPresenter *)self setPendingRequestedLockup:0];
   }
 
-  v6 = [(ASCLockupPresenter *)self request];
-  if (!v6)
+  request = [(ASCLockupPresenter *)self request];
+  if (!request)
   {
-    v11 = [(ASCLockupPresenter *)self view];
-    [v11 setLoading:0];
+    view = [(ASCLockupPresenter *)self view];
+    [view setLoading:0];
 
     [(ASCLockupPresenter *)self reloadDefaultContent];
     goto LABEL_15;
   }
 
-  [(ASCLockupPresenter *)self requestWillFetchLockup:v6];
-  v7 = [(ASCLockupPresenter *)self group];
-  if (v7)
+  [(ASCLockupPresenter *)self requestWillFetchLockup:request];
+  group = [(ASCLockupPresenter *)self group];
+  if (group)
   {
-    v2 = [v6 context];
-    if ((ASCLockupContextIsContingentPricingContext(v2, v8) & 1) == 0)
+    context = [request context];
+    if ((ASCLockupContextIsContingentPricingContext(context, v8) & 1) == 0)
     {
-      v9 = [(ASCLockupPresenter *)self group];
-      v10 = [v9 lockupWithRequest:v6];
+      group2 = [(ASCLockupPresenter *)self group];
+      v10 = [group2 lockupWithRequest:request];
 
 LABEL_11:
       goto LABEL_12;
     }
   }
 
-  v12 = [(ASCLockupPresenter *)self context];
-  v13 = [v12 lockupFetcher];
-  v10 = [v13 lockupWithRequest:v6];
+  context2 = [(ASCLockupPresenter *)self context];
+  lockupFetcher = [context2 lockupFetcher];
+  v10 = [lockupFetcher lockupWithRequest:request];
 
-  if (v7)
+  if (group)
   {
     goto LABEL_11;
   }
@@ -546,7 +546,7 @@ LABEL_12:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v23 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_21571A000, v14, OS_LOG_TYPE_INFO, "%{public}@: Started new request", buf, 0xCu);
   }
 
@@ -556,7 +556,7 @@ LABEL_12:
   v19[2] = __40__ASCLockupPresenter_performLockupFetch__block_invoke;
   v19[3] = &unk_2781CC368;
   objc_copyWeak(&v21, buf);
-  v15 = v6;
+  v15 = request;
   v20 = v15;
   [v10 addSuccessBlock:v19];
   v16[0] = MEMORY[0x277D85DD0];
@@ -590,15 +590,15 @@ void __40__ASCLockupPresenter_performLockupFetch__block_invoke_2(uint64_t a1, vo
 
 - (void)performIconFetch
 {
-  v3 = [(ASCLockupPresenter *)self lockup];
-  v4 = [v3 icon];
+  lockup = [(ASCLockupPresenter *)self lockup];
+  icon = [lockup icon];
 
-  if (v4)
+  if (icon)
   {
-    v5 = [v4 decoration];
-    v6 = [v5 isEqualToString:@"none"];
+    decoration = [icon decoration];
+    v6 = [decoration isEqualToString:@"none"];
 
-    v7 = [(ASCLockupPresenter *)self view];
+    view = [(ASCLockupPresenter *)self view];
     if (v6)
     {
       +[ASCLockupPresenter iconPlaceholderDecoration];
@@ -606,27 +606,27 @@ void __40__ASCLockupPresenter_performLockupFetch__block_invoke_2(uint64_t a1, vo
 
     else
     {
-      [v4 decoration];
+      [icon decoration];
     }
     v9 = ;
-    [v7 setIconImage:0 withDecoration:v9];
+    [view setIconImage:0 withDecoration:v9];
 
-    v10 = [(ASCLockupPresenter *)self pendingViewRender];
+    pendingViewRender = [(ASCLockupPresenter *)self pendingViewRender];
 
-    if (v10)
+    if (pendingViewRender)
     {
-      v11 = [(ASCLockupPresenter *)self pendingViewRender];
-      +[ASCViewRender resourceRequestDidBeginWithTag:](ASCViewRender, "resourceRequestDidBeginWithTag:", [v11 primaryTag]);
+      pendingViewRender2 = [(ASCLockupPresenter *)self pendingViewRender];
+      +[ASCViewRender resourceRequestDidBeginWithTag:](ASCViewRender, "resourceRequestDidBeginWithTag:", [pendingViewRender2 primaryTag]);
     }
 
-    v12 = [(ASCLockupPresenter *)self view];
-    [v12 preferredIconSize];
+    view2 = [(ASCLockupPresenter *)self view];
+    [view2 preferredIconSize];
     v14 = v13;
     v16 = v15;
 
-    v17 = [(ASCLockupPresenter *)self context];
-    v18 = [v17 artworkFetcher];
-    v19 = [v18 imageForContentsOfArtwork:v4 withSize:{v14, v16}];
+    context = [(ASCLockupPresenter *)self context];
+    artworkFetcher = [context artworkFetcher];
+    v19 = [artworkFetcher imageForContentsOfArtwork:icon withSize:{v14, v16}];
 
     objc_initWeak(&location, self);
     v24[0] = MEMORY[0x277D85DD0];
@@ -634,7 +634,7 @@ void __40__ASCLockupPresenter_performLockupFetch__block_invoke_2(uint64_t a1, vo
     v24[2] = __38__ASCLockupPresenter_performIconFetch__block_invoke;
     v24[3] = &unk_2781CC3B8;
     objc_copyWeak(&v26, &location);
-    v20 = v4;
+    v20 = icon;
     v25 = v20;
     [v19 addSuccessBlock:v24];
     v21[0] = MEMORY[0x277D85DD0];
@@ -652,8 +652,8 @@ void __40__ASCLockupPresenter_performLockupFetch__block_invoke_2(uint64_t a1, vo
 
   else
   {
-    v8 = [(ASCLockupPresenter *)self view];
-    [v8 setIconImage:0 withDecoration:@"none"];
+    view3 = [(ASCLockupPresenter *)self view];
+    [view3 setIconImage:0 withDecoration:@"none"];
 
     [(ASCLockupPresenter *)self endViewRender];
   }
@@ -673,10 +673,10 @@ void __38__ASCLockupPresenter_performIconFetch__block_invoke_2(uint64_t a1, void
   [WeakRetained iconArtwork:*(a1 + 32) didFailFetchWithError:v3];
 }
 
-- (void)performFollowUpWork:(id)a3
+- (void)performFollowUpWork:(id)work
 {
   v3 = MEMORY[0x277CCACC8];
-  block = a3;
+  block = work;
   if ([v3 isMainThread])
   {
     block[2]();
@@ -688,37 +688,37 @@ void __38__ASCLockupPresenter_performIconFetch__block_invoke_2(uint64_t a1, void
   }
 }
 
-- (void)requestWillFetchLockup:(id)a3
+- (void)requestWillFetchLockup:(id)lockup
 {
   [(ASCLockupPresenter *)self beginViewRender];
-  v4 = [(ASCLockupPresenter *)self lockup];
+  lockup = [(ASCLockupPresenter *)self lockup];
 
-  if (!v4)
+  if (!lockup)
   {
-    v5 = [(ASCLockupPresenter *)self view];
+    view = [(ASCLockupPresenter *)self view];
     v7 = ASCLocalizedString(@"LOADING", v6);
-    [v5 setTitle:v7];
+    [view setTitle:v7];
 
     [(ASCLockupPresenter *)self showLoadingState];
   }
 
-  v8 = [(ASCLockupPresenter *)self observer];
-  [v8 lockupPresenterDidBeginRequest];
+  observer = [(ASCLockupPresenter *)self observer];
+  [observer lockupPresenterDidBeginRequest];
 }
 
-- (void)request:(id)a3 didCompleteWithLockup:(id)a4
+- (void)request:(id)request didCompleteWithLockup:(id)lockup
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  lockupCopy = lockup;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__ASCLockupPresenter_request_didCompleteWithLockup___block_invoke;
   v10[3] = &unk_2781CB9D8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestCopy;
+  v12 = lockupCopy;
+  v8 = lockupCopy;
+  v9 = requestCopy;
   [(ASCLockupPresenter *)self performFollowUpWork:v10];
 }
 
@@ -794,16 +794,16 @@ LABEL_10:
 LABEL_15:
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 domain];
-  if ([v8 isEqualToString:*MEMORY[0x277CCA050]])
+  requestCopy = request;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]])
   {
-    v9 = [v7 code];
+    code = [errorCopy code];
 
-    if (v9 == 3072)
+    if (code == 3072)
     {
       goto LABEL_6;
     }
@@ -818,8 +818,8 @@ LABEL_15:
   v10[2] = __47__ASCLockupPresenter_request_didFailWithError___block_invoke;
   v10[3] = &unk_2781CB9D8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
+  v11 = requestCopy;
+  v12 = errorCopy;
   [(ASCLockupPresenter *)self performFollowUpWork:v10];
 
 LABEL_6:
@@ -912,19 +912,19 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)iconArtwork:(id)a3 didFetchImage:(id)a4
+- (void)iconArtwork:(id)artwork didFetchImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  artworkCopy = artwork;
+  imageCopy = image;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __48__ASCLockupPresenter_iconArtwork_didFetchImage___block_invoke;
   v10[3] = &unk_2781CB9D8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = artworkCopy;
+  v12 = imageCopy;
+  v8 = imageCopy;
+  v9 = artworkCopy;
   [(ASCLockupPresenter *)self performFollowUpWork:v10];
 }
 
@@ -988,16 +988,16 @@ void __48__ASCLockupPresenter_iconArtwork_didFetchImage___block_invoke(uint64_t 
   }
 }
 
-- (void)iconArtwork:(id)a3 didFailFetchWithError:(id)a4
+- (void)iconArtwork:(id)artwork didFailFetchWithError:(id)error
 {
-  v5 = a3;
+  artworkCopy = artwork;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__ASCLockupPresenter_iconArtwork_didFailFetchWithError___block_invoke;
   v7[3] = &unk_2781CC1F8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = artworkCopy;
+  v6 = artworkCopy;
   [(ASCLockupPresenter *)self performFollowUpWork:v7];
 }
 
@@ -1050,21 +1050,21 @@ void __56__ASCLockupPresenter_iconArtwork_didFailFetchWithError___block_invoke(u
 
 - (void)beginViewRender
 {
-  v3 = [(ASCLockupPresenter *)self request];
+  request = [(ASCLockupPresenter *)self request];
 
-  if (v3)
+  if (request)
   {
-    v4 = [(ASCLockupPresenter *)self context];
-    v5 = [v4 lockupFetcher];
-    v6 = [(ASCLockupPresenter *)self request];
-    v7 = [v5 loadedLockupWithRequest:v6];
+    context = [(ASCLockupPresenter *)self context];
+    lockupFetcher = [context lockupFetcher];
+    request2 = [(ASCLockupPresenter *)self request];
+    v7 = [lockupFetcher loadedLockupWithRequest:request2];
     if (v7)
     {
       v8 = v7;
-      v9 = [(ASCLockupPresenter *)self group];
-      v10 = [v9 prefetchSpansIfLoaded];
+      group = [(ASCLockupPresenter *)self group];
+      prefetchSpansIfLoaded = [group prefetchSpansIfLoaded];
 
-      if (!v10)
+      if (!prefetchSpansIfLoaded)
       {
         return;
       }
@@ -1077,42 +1077,42 @@ void __56__ASCLockupPresenter_iconArtwork_didFailFetchWithError___block_invoke(u
     v11 = objc_alloc_init(ASCSignpostSpan);
     [(ASCLockupPresenter *)self setPendingViewRender:v11];
 
-    v12 = [(ASCLockupPresenter *)self pendingViewRender];
-    v13 = [(ASCLockupPresenter *)self request];
-    v14 = [v13 id];
-    [v12 addSupplementaryTag:ASCSignpostTagFromID(v14)];
+    pendingViewRender = [(ASCLockupPresenter *)self pendingViewRender];
+    request3 = [(ASCLockupPresenter *)self request];
+    v14 = [request3 id];
+    [pendingViewRender addSupplementaryTag:ASCSignpostTagFromID(v14)];
 
-    v15 = [(ASCLockupPresenter *)self pendingViewRender];
-    [v15 beginEmitting];
+    pendingViewRender2 = [(ASCLockupPresenter *)self pendingViewRender];
+    [pendingViewRender2 beginEmitting];
 
-    v16 = [(ASCLockupPresenter *)self pendingViewRender];
-    +[ASCViewRender pageRequestedWithTag:](ASCViewRender, "pageRequestedWithTag:", [v16 primaryTag]);
+    pendingViewRender3 = [(ASCLockupPresenter *)self pendingViewRender];
+    +[ASCViewRender pageRequestedWithTag:](ASCViewRender, "pageRequestedWithTag:", [pendingViewRender3 primaryTag]);
   }
 }
 
 - (void)endViewRender
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(ASCLockupPresenter *)self pendingViewRender];
+  pendingViewRender = [(ASCLockupPresenter *)self pendingViewRender];
 
-  if (v3)
+  if (pendingViewRender)
   {
-    v4 = [(ASCLockupPresenter *)self pendingViewRender];
-    +[ASCViewRender pageUserReadyWithTag:](ASCViewRender, "pageUserReadyWithTag:", [v4 primaryTag]);
+    pendingViewRender2 = [(ASCLockupPresenter *)self pendingViewRender];
+    +[ASCViewRender pageUserReadyWithTag:](ASCViewRender, "pageUserReadyWithTag:", [pendingViewRender2 primaryTag]);
 
-    v5 = [(ASCLockupPresenter *)self pendingViewRender];
-    [v5 endEmitting];
+    pendingViewRender3 = [(ASCLockupPresenter *)self pendingViewRender];
+    [pendingViewRender3 endEmitting];
 
-    v6 = [(ASCLockupPresenter *)self lockup];
-    v7 = [v6 signpostTags];
+    lockup = [(ASCLockupPresenter *)self lockup];
+    signpostTags = [lockup signpostTags];
 
-    if (v7)
+    if (signpostTags)
     {
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v8 = v7;
+      v8 = signpostTags;
       v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v9)
       {
@@ -1129,8 +1129,8 @@ void __56__ASCLockupPresenter_iconArtwork_didFailFetchWithError___block_invoke(u
             }
 
             v13 = *(*(&v26 + 1) + 8 * v12);
-            v14 = [(ASCLockupPresenter *)self pendingViewRender];
-            [v14 addSupplementaryTag:{objc_msgSend(v13, "unsignedLongLongValue")}];
+            pendingViewRender4 = [(ASCLockupPresenter *)self pendingViewRender];
+            [pendingViewRender4 addSupplementaryTag:{objc_msgSend(v13, "unsignedLongLongValue")}];
 
             ++v12;
           }
@@ -1144,40 +1144,40 @@ void __56__ASCLockupPresenter_iconArtwork_didFailFetchWithError___block_invoke(u
     }
 
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v16 = [(ASCLockupPresenter *)self pendingViewRender];
-    [v15 addObject:v16];
+    pendingViewRender5 = [(ASCLockupPresenter *)self pendingViewRender];
+    [v15 addObject:pendingViewRender5];
 
-    v17 = [(ASCLockupPresenter *)self group];
-    v18 = [v17 prefetchSpansIfLoaded];
+    group = [(ASCLockupPresenter *)self group];
+    prefetchSpansIfLoaded = [group prefetchSpansIfLoaded];
 
-    if (v18)
+    if (prefetchSpansIfLoaded)
     {
-      v19 = [(ASCLockupPresenter *)self group];
-      v20 = [v19 prefetchSpansIfLoaded];
-      [v15 addObjectsFromArray:v20];
+      group2 = [(ASCLockupPresenter *)self group];
+      prefetchSpansIfLoaded2 = [group2 prefetchSpansIfLoaded];
+      [v15 addObjectsFromArray:prefetchSpansIfLoaded2];
     }
 
-    v21 = [(ASCLockupPresenter *)self viewRenderSpanProvider];
-    v22 = v21;
-    if (v21)
+    viewRenderSpanProvider = [(ASCLockupPresenter *)self viewRenderSpanProvider];
+    v22 = viewRenderSpanProvider;
+    if (viewRenderSpanProvider)
     {
-      v23 = (*(v21 + 16))(v21);
+      v23 = (*(viewRenderSpanProvider + 16))(viewRenderSpanProvider);
       [v15 addObjectsFromArray:v23];
     }
 
     v24 = [[ASCSignpostPredicate alloc] initWithSpans:v15];
-    v25 = [(ASCLockupPresenter *)self metricsPresenter];
-    [v25 viewDidEndRenderWithPredicate:v24];
+    metricsPresenter = [(ASCLockupPresenter *)self metricsPresenter];
+    [metricsPresenter viewDidEndRenderWithPredicate:v24];
 
     [(ASCLockupPresenter *)self setPendingViewRender:0];
   }
 }
 
-- (void)daemonDidRebootstrap:(id)a3
+- (void)daemonDidRebootstrap:(id)rebootstrap
 {
-  v4 = [(ASCLockupPresenter *)self request];
+  request = [(ASCLockupPresenter *)self request];
 
-  if (v4)
+  if (request)
   {
     [(ASCLockupPresenter *)self setLockup:0];
 
@@ -1185,28 +1185,28 @@ void __56__ASCLockupPresenter_iconArtwork_didFailFetchWithError___block_invoke(u
   }
 }
 
-- (void)retryGroup:(id)a3
+- (void)retryGroup:(id)group
 {
-  v4 = [(ASCLockupPresenter *)self request];
-  if (v4)
+  request = [(ASCLockupPresenter *)self request];
+  if (request)
   {
-    v10 = v4;
-    v5 = [(ASCLockupPresenter *)self pendingRequestedLockup];
-    if (v5)
+    v10 = request;
+    pendingRequestedLockup = [(ASCLockupPresenter *)self pendingRequestedLockup];
+    if (pendingRequestedLockup)
     {
-      v6 = v5;
-      v7 = [(ASCLockupPresenter *)self pendingRequestedLockup];
-      v8 = [v7 asc_isCanceledOrPending];
+      v6 = pendingRequestedLockup;
+      pendingRequestedLockup2 = [(ASCLockupPresenter *)self pendingRequestedLockup];
+      asc_isCanceledOrPending = [pendingRequestedLockup2 asc_isCanceledOrPending];
 
-      if ((v8 & 1) == 0)
+      if ((asc_isCanceledOrPending & 1) == 0)
       {
-        v9 = [(ASCLockupPresenter *)self pendingRequestedLockup];
+        pendingRequestedLockup3 = [(ASCLockupPresenter *)self pendingRequestedLockup];
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __33__ASCLockupPresenter_retryGroup___block_invoke;
         v11[3] = &unk_2781CC3E0;
         v11[4] = self;
-        [v9 resultWithCompletion:v11];
+        [pendingRequestedLockup3 resultWithCompletion:v11];
       }
     }
 
@@ -1240,20 +1240,20 @@ uint64_t __33__ASCLockupPresenter_retryGroup___block_invoke(uint64_t result, uin
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupPresenter *)self group];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"group"];
+  group = [(ASCLockupPresenter *)self group];
+  [(ASCDescriber *)v3 addObject:group withName:@"group"];
 
-  v5 = [(ASCLockupPresenter *)self lockup];
-  v6 = [v5 id];
+  lockup = [(ASCLockupPresenter *)self lockup];
+  v6 = [lockup id];
   [(ASCDescriber *)v3 addObject:v6 withName:@"lockup.id"];
 
-  v7 = [(ASCLockupPresenter *)self request];
-  v8 = [v7 id];
+  request = [(ASCLockupPresenter *)self request];
+  v8 = [request id];
   [(ASCDescriber *)v3 addObject:v8 withName:@"request.id"];
 
-  v9 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v9;
+  return finalizeDescription;
 }
 
 - (ASCLockupPresenterObserver)observer

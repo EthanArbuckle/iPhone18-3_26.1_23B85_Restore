@@ -1,9 +1,9 @@
 @interface SidecarCoreProxy
 + (SidecarCoreProxy)defaultProxy;
-- (void)relaySession:(id)a3 openedByDevice:(id)a4 dataLink:(int64_t)a5 service:(id)a6;
-- (void)relaySession:(int64_t)a3 closedWithError:(id)a4;
-- (void)relaySession:(int64_t)a3 receivedOPACKData:(id)a4 dataLink:(int64_t)a5;
-- (void)relaySession:(int64_t)a3 stream:(id)a4 status:(unint64_t)a5;
+- (void)relaySession:(id)session openedByDevice:(id)device dataLink:(int64_t)link service:(id)service;
+- (void)relaySession:(int64_t)session closedWithError:(id)error;
+- (void)relaySession:(int64_t)session receivedOPACKData:(id)data dataLink:(int64_t)link;
+- (void)relaySession:(int64_t)session stream:(id)stream status:(unint64_t)status;
 - (void)relayTerminateService;
 @end
 
@@ -17,23 +17,23 @@
   [(SidecarSessionDelegate *)delegate sidecarServiceTerminate];
 }
 
-- (void)relaySession:(int64_t)a3 stream:(id)a4 status:(unint64_t)a5
+- (void)relaySession:(int64_t)session stream:(id)stream status:(unint64_t)status
 {
   v7 = self->_delegate != 0;
-  v8 = a4;
-  v12 = SidecarSessionWithHandle(a3, v7);
-  v9 = v8;
+  streamCopy = stream;
+  v12 = SidecarSessionWithHandle(session, v7);
+  v9 = streamCopy;
   v10 = SidecarSessionGetStreams(v12, 0);
   v11 = [v10 objectForKeyedSubscript:v9];
 
-  [v11 setStatus:a5];
+  [v11 setStatus:status];
 }
 
-- (void)relaySession:(int64_t)a3 receivedOPACKData:(id)a4 dataLink:(int64_t)a5
+- (void)relaySession:(int64_t)session receivedOPACKData:(id)data dataLink:(int64_t)link
 {
   v28 = *MEMORY[0x277D85DE8];
   v21 = 0;
-  v8 = SidecarOPACKDecode(a4, &v21);
+  v8 = SidecarOPACKDecode(data, &v21);
   v9 = v21;
   if (v9)
   {
@@ -41,52 +41,52 @@
     v11 = v10;
     if (v10 && os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v9 domain];
-      v13 = [v9 code];
-      v14 = [v9 localizedDescription];
+      domain = [v9 domain];
+      code = [v9 code];
+      localizedDescription = [v9 localizedDescription];
       *buf = 138543875;
-      v23 = v12;
+      sessionCopy = domain;
       v24 = 2048;
-      v25 = v13;
+      v25 = code;
       v26 = 2113;
-      v27 = v14;
+      v27 = localizedDescription;
       _os_log_impl(&dword_26604C000, v11, OS_LOG_TYPE_ERROR, "proxy: %{public}@ (%ld) %{private}@", buf, 0x20u);
     }
   }
 
   else
   {
-    v15 = SidecarSessionWithHandle(a3, self->_delegate != 0);
+    v15 = SidecarSessionWithHandle(session, self->_delegate != 0);
     v11 = v15;
     if (v15)
     {
-      v15[6].isa = a5;
+      v15[6].isa = link;
       v16 = 3;
-      if (a5 == 4)
+      if (link == 4)
       {
         v16 = 1;
       }
 
       v17 = 2;
-      if ((a5 & 0xFFFFFFFE) != 8)
+      if ((link & 0xFFFFFFFE) != 8)
       {
         v17 = v16;
       }
 
       v15[4].isa = v17;
-      v18 = [v15 delegate];
-      [v18 sidecarSession:v11 receivedMessage:v8];
+      delegate = [v15 delegate];
+      [delegate sidecarSession:v11 receivedMessage:v8];
     }
 
     else
     {
       v19 = SidecarCoreLogSubsystem(OS_LOG_TYPE_ERROR);
-      v18 = v19;
+      delegate = v19;
       if (v19 && os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v23 = a3;
-        _os_log_impl(&dword_26604C000, v18, OS_LOG_TYPE_ERROR, "unknown session %lX received OPACK", buf, 0xCu);
+        sessionCopy = session;
+        _os_log_impl(&dword_26604C000, delegate, OS_LOG_TYPE_ERROR, "unknown session %lX received OPACK", buf, 0xCu);
       }
     }
   }
@@ -94,15 +94,15 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relaySession:(id)a3 openedByDevice:(id)a4 dataLink:(int64_t)a5 service:(id)a6
+- (void)relaySession:(id)session openedByDevice:(id)device dataLink:(int64_t)link service:(id)service
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  sessionCopy = session;
+  deviceCopy = device;
+  serviceCopy = service;
   *buf = 0;
   *&buf[8] = 0;
-  [v10 getUUIDBytes:buf];
+  [sessionCopy getUUIDBytes:buf];
   v13 = bswap32(*buf);
   v14 = SidecarSessionGetFromRemoteMapTable(v13);
 
@@ -121,7 +121,7 @@
   else
   {
     v28 = 0;
-    v17 = [[SidecarSession alloc] initWithRemote:v10 device:v11 dataLink:a5 service:v12 error:&v28];
+    v17 = [[SidecarSession alloc] initWithRemote:sessionCopy device:deviceCopy dataLink:link service:serviceCopy error:&v28];
     v18 = v28;
     v16 = v18;
     if (v17)
@@ -133,11 +133,11 @@
         *buf = 134218754;
         *&buf[4] = v13;
         *&buf[12] = 2114;
-        *&buf[14] = v11;
+        *&buf[14] = deviceCopy;
         v30 = 2114;
-        v31 = v12;
+        v31 = serviceCopy;
         v32 = 2048;
-        v33 = a5;
+        linkCopy = link;
         _os_log_impl(&dword_26604C000, v20, OS_LOG_TYPE_INFO, "session %lX opened by device %{public}@ (%{public}@) [%ld]", buf, 0x2Au);
       }
 
@@ -153,15 +153,15 @@
         v24 = v23;
         if (v23 && os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
-          v25 = [v21 domain];
-          v26 = [v21 code];
-          v27 = [v21 localizedDescription];
+          domain = [v21 domain];
+          code = [v21 code];
+          localizedDescription = [v21 localizedDescription];
           *buf = 138543875;
-          *&buf[4] = v25;
+          *&buf[4] = domain;
           *&buf[12] = 2048;
-          *&buf[14] = v26;
+          *&buf[14] = code;
           v30 = 2113;
-          v31 = v27;
+          v31 = localizedDescription;
           _os_log_impl(&dword_26604C000, v24, OS_LOG_TYPE_ERROR, "%{public}@ (%ld) %{private}@", buf, 0x20u);
         }
       }
@@ -171,11 +171,11 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relaySession:(int64_t)a3 closedWithError:(id)a4
+- (void)relaySession:(int64_t)session closedWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v7 = self->_delegate;
-  v8 = SidecarSessionWithHandle(a3, v7 != 0);
+  v8 = SidecarSessionWithHandle(session, v7 != 0);
   v9 = v8;
   if (v7)
   {
@@ -189,16 +189,16 @@
 
   if (!v10)
   {
-    [(SidecarSessionDelegate *)self->_delegate sidecarSession:v8 closedWithError:v6];
+    [(SidecarSessionDelegate *)self->_delegate sidecarSession:v8 closedWithError:errorCopy];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __SidecarSessionRemoveFromRemoteMapTable_block_invoke;
     v11[3] = &__block_descriptor_40_e25_v16__0__SidecarMapTable_8l;
-    v11[4] = a3;
+    v11[4] = session;
     SidecarSessionWithMapTable(SidecarMapTableCreateStrong, &__SidecarSessionRemoteMapTable, v11);
   }
 
-  [v9 _closeWithError:v6];
+  [v9 _closeWithError:errorCopy];
 }
 
 + (SidecarCoreProxy)defaultProxy

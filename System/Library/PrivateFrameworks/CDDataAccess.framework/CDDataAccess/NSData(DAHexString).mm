@@ -9,8 +9,8 @@
 
 - (id)da_hexString
 {
-  v2 = [a1 bytes];
-  v3 = [a1 length];
+  bytes = [self bytes];
+  v3 = [self length];
   v4 = malloc_type_malloc(((9 * v3) >> 2) & 0x1FFFFFFFFFFFFFFFLL, 0xFAE19D0EuLL);
   if (v3 < 5)
   {
@@ -25,7 +25,7 @@
   }
 
   v5 = 0;
-  v6 = v2;
+  v6 = bytes;
   v7 = v4;
   do
   {
@@ -71,7 +71,7 @@
   if (v3)
   {
 LABEL_15:
-    v12 = (v2 + v5);
+    v12 = (bytes + v5);
     do
     {
       if (*v12 <= 0x9Fu)
@@ -116,8 +116,8 @@ LABEL_24:
 
 - (id)da_lowercaseHexStringWithoutSpaces
 {
-  v1 = [a1 da_hexString];
-  v2 = [v1 mutableCopy];
+  da_hexString = [self da_hexString];
+  v2 = [da_hexString mutableCopy];
 
   [v2 replaceOccurrencesOfString:@" " withString:&stru_2854B2770 options:0 range:{0, objc_msgSend(v2, "length")}];
 
@@ -126,9 +126,9 @@ LABEL_24:
 
 - (id)da_uppercaseHexStringWithoutSpaces
 {
-  v1 = [a1 da_hexString];
-  v2 = [v1 uppercaseString];
-  v3 = [v2 mutableCopy];
+  da_hexString = [self da_hexString];
+  uppercaseString = [da_hexString uppercaseString];
+  v3 = [uppercaseString mutableCopy];
 
   [v3 replaceOccurrencesOfString:@" " withString:&stru_2854B2770 options:0 range:{0, objc_msgSend(v3, "length")}];
 

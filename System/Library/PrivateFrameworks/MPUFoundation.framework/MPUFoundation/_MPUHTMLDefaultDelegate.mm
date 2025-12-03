@@ -1,24 +1,24 @@
 @interface _MPUHTMLDefaultDelegate
-- (id)parser:(id)a3 attributesForTagName:(id)a4 tagAttributes:(id)a5 currentState:(id)a6;
-- (id)parser:(id)a3 prependStringForTagName:(id)a4;
+- (id)parser:(id)parser attributesForTagName:(id)name tagAttributes:(id)attributes currentState:(id)state;
+- (id)parser:(id)parser prependStringForTagName:(id)name;
 @end
 
 @implementation _MPUHTMLDefaultDelegate
 
-- (id)parser:(id)a3 attributesForTagName:(id)a4 tagAttributes:(id)a5 currentState:(id)a6
+- (id)parser:(id)parser attributesForTagName:(id)name tagAttributes:(id)attributes currentState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a6 attributes];
+  nameCopy = name;
+  attributesCopy = attributes;
+  attributes = [state attributes];
   v11 = *MEMORY[0x277D740A8];
-  v12 = [v10 objectForKey:*MEMORY[0x277D740A8]];
+  v12 = [attributes objectForKey:*MEMORY[0x277D740A8]];
 
   v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v14 = [v12 fontDescriptor];
-  if (([v8 isEqualToString:@"b"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"strong"))
+  fontDescriptor = [v12 fontDescriptor];
+  if (([nameCopy isEqualToString:@"b"] & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"strong"))
   {
     [v12 pointSize];
-    v16 = v14;
+    v16 = fontDescriptor;
     v17 = 2;
 LABEL_4:
     v18 = _MPUHTMLDefaultDelegateFontByAddingTraits(v16, v17, v15);
@@ -27,22 +27,22 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (([v8 isEqualToString:@"i"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"em"))
+  if (([nameCopy isEqualToString:@"i"] & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"em"))
   {
     [v12 pointSize];
-    v16 = v14;
+    v16 = fontDescriptor;
     v17 = 1;
     goto LABEL_4;
   }
 
-  if ([v8 isEqualToString:@"u"])
+  if ([nameCopy isEqualToString:@"u"])
   {
     [v13 setObject:&unk_2868EA288 forKey:*MEMORY[0x277D741F0]];
   }
 
-  else if ([v8 isEqualToString:@"a"])
+  else if ([nameCopy isEqualToString:@"a"])
   {
-    v21 = [v9 objectForKey:@"href"];
+    v21 = [attributesCopy objectForKey:@"href"];
     v22 = [MEMORY[0x277CBEBC0] URLWithString:v21];
     if (v22)
     {
@@ -64,9 +64,9 @@ LABEL_5:
   return v19;
 }
 
-- (id)parser:(id)a3 prependStringForTagName:(id)a4
+- (id)parser:(id)parser prependStringForTagName:(id)name
 {
-  if ([a4 isEqualToString:@"br"])
+  if ([name isEqualToString:@"br"])
   {
     return @"\n";
   }

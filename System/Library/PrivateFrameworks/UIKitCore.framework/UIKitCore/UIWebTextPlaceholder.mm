@@ -1,15 +1,15 @@
 @interface UIWebTextPlaceholder
-+ (UIWebTextPlaceholder)placeholderWithWebDocumentView:(id)a3;
++ (UIWebTextPlaceholder)placeholderWithWebDocumentView:(id)view;
 - (id)rects;
 - (void)dealloc;
 @end
 
 @implementation UIWebTextPlaceholder
 
-+ (UIWebTextPlaceholder)placeholderWithWebDocumentView:(id)a3
++ (UIWebTextPlaceholder)placeholderWithWebDocumentView:(id)view
 {
-  v4 = objc_alloc_init(a1);
-  v4[7] = a3;
+  v4 = objc_alloc_init(self);
+  v4[7] = view;
 
   return v4;
 }

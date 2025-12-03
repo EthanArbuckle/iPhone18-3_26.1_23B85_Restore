@@ -1,8 +1,8 @@
 @interface TMTimeZone
-+ (TMTimeZone)timeZoneWithOlsonName:(id)a3 fromSource:(id)a4;
-- (BOOL)hasSameOlsonNameAs:(id)a3;
-- (TMTimeZone)initWithDictionary:(id)a3;
-- (TMTimeZone)initWithOlsonName:(id)a3 fromSource:(id)a4;
++ (TMTimeZone)timeZoneWithOlsonName:(id)name fromSource:(id)source;
+- (BOOL)hasSameOlsonNameAs:(id)as;
+- (TMTimeZone)initWithDictionary:(id)dictionary;
+- (TMTimeZone)initWithOlsonName:(id)name fromSource:(id)source;
 - (void)dealloc;
 @end
 
@@ -15,44 +15,44 @@
   [(TMTimeZone *)&v3 dealloc];
 }
 
-- (TMTimeZone)initWithDictionary:(id)a3
+- (TMTimeZone)initWithDictionary:(id)dictionary
 {
   v4 = [(TMTimeZone *)self init];
   if (v4)
   {
-    -[TMTimeZone setSource:](v4, "setSource:", [a3 objectForKeyedSubscript:@"TMSource"]);
-    -[TMTimeZone setOlsonName:](v4, "setOlsonName:", [a3 objectForKeyedSubscript:@"TMTimeZone"]);
+    -[TMTimeZone setSource:](v4, "setSource:", [dictionary objectForKeyedSubscript:@"TMSource"]);
+    -[TMTimeZone setOlsonName:](v4, "setOlsonName:", [dictionary objectForKeyedSubscript:@"TMTimeZone"]);
   }
 
   return v4;
 }
 
-- (TMTimeZone)initWithOlsonName:(id)a3 fromSource:(id)a4
+- (TMTimeZone)initWithOlsonName:(id)name fromSource:(id)source
 {
   v6 = [(TMTimeZone *)self init];
   v7 = v6;
   if (v6)
   {
-    [(TMTimeZone *)v6 setSource:a4];
-    [(TMTimeZone *)v7 setOlsonName:a3];
+    [(TMTimeZone *)v6 setSource:source];
+    [(TMTimeZone *)v7 setOlsonName:name];
   }
 
   return v7;
 }
 
-+ (TMTimeZone)timeZoneWithOlsonName:(id)a3 fromSource:(id)a4
++ (TMTimeZone)timeZoneWithOlsonName:(id)name fromSource:(id)source
 {
-  v4 = [[TMTimeZone alloc] initWithOlsonName:a3 fromSource:a4];
+  v4 = [[TMTimeZone alloc] initWithOlsonName:name fromSource:source];
 
   return v4;
 }
 
-- (BOOL)hasSameOlsonNameAs:(id)a3
+- (BOOL)hasSameOlsonNameAs:(id)as
 {
-  v4 = [(TMTimeZone *)self olsonName];
-  v5 = [a3 olsonName];
+  olsonName = [(TMTimeZone *)self olsonName];
+  olsonName2 = [as olsonName];
 
-  return [(NSString *)v4 isEqualToString:v5];
+  return [(NSString *)olsonName isEqualToString:olsonName2];
 }
 
 @end

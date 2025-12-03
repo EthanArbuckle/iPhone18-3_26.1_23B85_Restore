@@ -1,54 +1,54 @@
 @interface SSSoftwareDownload
-- (BOOL)addAsset:(id)a3 forType:(id)a4;
+- (BOOL)addAsset:(id)asset forType:(id)type;
 - (BOOL)isBackgroundNetworkingUserInitiated;
-- (BOOL)isEligibleForRestore:(id *)a3;
-- (BOOL)removeAsset:(id)a3;
-- (SSSoftwareDownload)initWithJob:(id)a3;
-- (SSSoftwareDownload)initWithPersistentIdentifier:(int64_t)a3;
+- (BOOL)isEligibleForRestore:(id *)restore;
+- (BOOL)removeAsset:(id)asset;
+- (SSSoftwareDownload)initWithJob:(id)job;
+- (SSSoftwareDownload)initWithPersistentIdentifier:(int64_t)identifier;
 - (double)estimatedSecondsRemaining;
-- (id)assetsForType:(id)a3;
+- (id)assetsForType:(id)type;
 - (id)backgroundNetworkingJobGroupName;
 - (id)downloadPhaseIdentifier;
 - (id)downloadPolicy;
 - (id)metadata;
 - (id)networkConstraints;
 - (id)status;
-- (id)valueForProperty:(id)a3;
+- (id)valueForProperty:(id)property;
 - (int64_t)bytesDownloaded;
 - (int64_t)bytesTotal;
 - (int64_t)downloadSizeLimit;
 - (void)pause;
-- (void)prioritizeAboveDownload:(id)a3 completionBlock:(id)a4;
+- (void)prioritizeAboveDownload:(id)download completionBlock:(id)block;
 - (void)restart;
 - (void)resume;
-- (void)setBackgroundNetworkingJobGroupName:(id)a3;
-- (void)setBackgroundNetworkingUserInitiated:(BOOL)a3;
-- (void)setDownloadHandler:(id)a3 completionBlock:(id)a4;
-- (void)setDownloadPolicy:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setNetworkConstraints:(id)a3;
-- (void)setStatus:(id)a3;
-- (void)setValuesWithStoreDownloadMetadata:(id)a3;
+- (void)setBackgroundNetworkingJobGroupName:(id)name;
+- (void)setBackgroundNetworkingUserInitiated:(BOOL)initiated;
+- (void)setDownloadHandler:(id)handler completionBlock:(id)block;
+- (void)setDownloadPolicy:(id)policy;
+- (void)setMetadata:(id)metadata;
+- (void)setNetworkConstraints:(id)constraints;
+- (void)setStatus:(id)status;
+- (void)setValuesWithStoreDownloadMetadata:(id)metadata;
 @end
 
 @implementation SSSoftwareDownload
 
-- (SSSoftwareDownload)initWithJob:(id)a3
+- (SSSoftwareDownload)initWithJob:(id)job
 {
-  v5 = a3;
+  jobCopy = job;
   v9.receiver = self;
   v9.super_class = SSSoftwareDownload;
-  v6 = -[SSEntity _initWithPersistentIdentifier:](&v9, sel__initWithPersistentIdentifier_, [v5 persistentID]);
+  v6 = -[SSEntity _initWithPersistentIdentifier:](&v9, sel__initWithPersistentIdentifier_, [jobCopy persistentID]);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 12, a3);
+    objc_storeStrong(v6 + 12, job);
   }
 
   return v7;
 }
 
-- (SSSoftwareDownload)initWithPersistentIdentifier:(int64_t)a3
+- (SSSoftwareDownload)initWithPersistentIdentifier:(int64_t)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = +[SSLogConfig sharedDaemonConfig];
@@ -57,19 +57,19 @@
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v7 &= 2u;
   }
@@ -86,9 +86,9 @@
 
   if (v9)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v18, v17}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v18, v17}];
     free(v9);
-    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, v8);
+    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, oSLogObject);
 LABEL_11:
   }
 
@@ -97,15 +97,15 @@ LABEL_11:
 
 - (id)downloadPhaseIdentifier
 {
-  v2 = [(ASDJob *)self->_job phase];
-  if (v2 > 8)
+  phase = [(ASDJob *)self->_job phase];
+  if (phase > 8)
   {
     v3 = SSDownloadPhaseWaiting;
   }
 
   else
   {
-    v3 = off_1E84B3E88[v2];
+    v3 = off_1E84B3E88[phase];
   }
 
   v4 = *v3;
@@ -113,32 +113,32 @@ LABEL_11:
   return v4;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"7"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"7"])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[ASDJob storeItemID](self->_job, "storeItemID")}];
+    bundleID = [MEMORY[0x1E696AD98] numberWithLongLong:{-[ASDJob storeItemID](self->_job, "storeItemID")}];
 LABEL_9:
-    v6 = v5;
+    v6 = bundleID;
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"V"])
+  if ([propertyCopy isEqualToString:@"V"])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[ASDJob type](self->_job, "type") == 3}];
+    bundleID = [MEMORY[0x1E696AD98] numberWithInt:{-[ASDJob type](self->_job, "type") == 3}];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"c"])
+  if ([propertyCopy isEqualToString:@"c"])
   {
-    v5 = [(ASDJob *)self->_job bundleID];
+    bundleID = [(ASDJob *)self->_job bundleID];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"1"])
+  if ([propertyCopy isEqualToString:@"1"])
   {
-    v5 = @"software";
+    bundleID = @"software";
     goto LABEL_9;
   }
 
@@ -157,19 +157,19 @@ LABEL_10:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -186,9 +186,9 @@ LABEL_10:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
@@ -204,19 +204,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -233,16 +233,16 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
   return 0;
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedDaemonConfig];
@@ -251,19 +251,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -280,14 +280,14 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setNetworkConstraints:(id)a3
+- (void)setNetworkConstraints:(id)constraints
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedDaemonConfig];
@@ -296,19 +296,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -325,14 +325,14 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setStatus:(id)a3
+- (void)setStatus:(id)status
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedDaemonConfig];
@@ -341,19 +341,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -370,9 +370,9 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }
@@ -386,19 +386,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -415,16 +415,16 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
   return 0;
 }
 
-- (id)assetsForType:(id)a3
+- (id)assetsForType:(id)type
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedDaemonConfig];
@@ -433,19 +433,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -462,37 +462,37 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 
   return 0;
 }
 
-- (BOOL)addAsset:(id)a3 forType:(id)a4
+- (BOOL)addAsset:(id)asset forType:(id)type
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [SSLogConfig sharedDaemonConfig:a3];
+  v5 = [SSLogConfig sharedDaemonConfig:asset];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v7 &= 2u;
   }
@@ -509,9 +509,9 @@ LABEL_11:
 
   if (v9)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v18, v17}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v18, v17}];
     free(v9);
-    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, v8);
+    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, oSLogObject);
 LABEL_11:
   }
 
@@ -527,19 +527,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -556,9 +556,9 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
@@ -574,19 +574,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -603,9 +603,9 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
@@ -621,19 +621,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -650,9 +650,9 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
@@ -668,19 +668,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -697,9 +697,9 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
@@ -715,19 +715,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -744,9 +744,9 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
@@ -762,19 +762,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -791,9 +791,9 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
@@ -809,19 +809,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -838,16 +838,16 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
   return 0;
 }
 
-- (BOOL)isEligibleForRestore:(id *)a3
+- (BOOL)isEligibleForRestore:(id *)restore
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedDaemonConfig];
@@ -856,19 +856,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -885,9 +885,9 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 
@@ -903,19 +903,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -932,35 +932,35 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v15, v14}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v15, v14}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)prioritizeAboveDownload:(id)a3 completionBlock:(id)a4
+- (void)prioritizeAboveDownload:(id)download completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [SSLogConfig sharedDaemonConfig:a3];
+  v5 = [SSLogConfig sharedDaemonConfig:download];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v7 &= 2u;
   }
@@ -977,14 +977,14 @@ LABEL_11:
 
   if (v9)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v17, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v17, v16}];
     free(v9);
-    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, v8);
+    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, oSLogObject);
 LABEL_11:
   }
 }
 
-- (BOOL)removeAsset:(id)a3
+- (BOOL)removeAsset:(id)asset
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedDaemonConfig];
@@ -993,19 +993,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -1022,9 +1022,9 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 
@@ -1040,19 +1040,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -1069,9 +1069,9 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v15, v14}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v15, v14}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 }
@@ -1085,19 +1085,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -1114,14 +1114,14 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v15, v14}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v15, v14}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setBackgroundNetworkingJobGroupName:(id)a3
+- (void)setBackgroundNetworkingJobGroupName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedDaemonConfig];
@@ -1130,19 +1130,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -1159,14 +1159,14 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setBackgroundNetworkingUserInitiated:(BOOL)a3
+- (void)setBackgroundNetworkingUserInitiated:(BOOL)initiated
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedDaemonConfig];
@@ -1175,19 +1175,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -1204,35 +1204,35 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setDownloadHandler:(id)a3 completionBlock:(id)a4
+- (void)setDownloadHandler:(id)handler completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [SSLogConfig sharedDaemonConfig:a3];
+  v5 = [SSLogConfig sharedDaemonConfig:handler];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v7 &= 2u;
   }
@@ -1249,14 +1249,14 @@ LABEL_11:
 
   if (v9)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v17, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v17, v16}];
     free(v9);
-    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, v8);
+    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setDownloadPolicy:(id)a3
+- (void)setDownloadPolicy:(id)policy
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedDaemonConfig];
@@ -1265,19 +1265,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -1294,14 +1294,14 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setValuesWithStoreDownloadMetadata:(id)a3
+- (void)setValuesWithStoreDownloadMetadata:(id)metadata
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedDaemonConfig];
@@ -1310,19 +1310,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -1339,9 +1339,9 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }

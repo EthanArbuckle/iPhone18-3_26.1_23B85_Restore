@@ -1,51 +1,51 @@
 @interface _WBSParsecArraySchema
-- (BOOL)_validateChild:(id)a3 ofParent:(id)a4 withParentAssociatedError:(id)a5 errorHandler:(id)a6;
-- (_WBSParsecArraySchema)initWithElementSchema:(id)a3 associatedError:(id)a4 isOptional:(BOOL)a5;
+- (BOOL)_validateChild:(id)child ofParent:(id)parent withParentAssociatedError:(id)error errorHandler:(id)handler;
+- (_WBSParsecArraySchema)initWithElementSchema:(id)schema associatedError:(id)error isOptional:(BOOL)optional;
 @end
 
 @implementation _WBSParsecArraySchema
 
-- (_WBSParsecArraySchema)initWithElementSchema:(id)a3 associatedError:(id)a4 isOptional:(BOOL)a5
+- (_WBSParsecArraySchema)initWithElementSchema:(id)schema associatedError:(id)error isOptional:(BOOL)optional
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  optionalCopy = optional;
+  schemaCopy = schema;
+  errorCopy = error;
   v11 = objc_opt_class();
   v15.receiver = self;
   v15.super_class = _WBSParsecArraySchema;
-  v12 = [(WBSParsecSchema *)&v15 _initWithExpectedClass:v11 associatedError:v10 isOptional:v5];
+  v12 = [(WBSParsecSchema *)&v15 _initWithExpectedClass:v11 associatedError:errorCopy isOptional:optionalCopy];
 
   if (v12)
   {
-    objc_storeStrong(&v12->_elementSchema, a3);
+    objc_storeStrong(&v12->_elementSchema, schema);
     v13 = v12;
   }
 
   return v12;
 }
 
-- (BOOL)_validateChild:(id)a3 ofParent:(id)a4 withParentAssociatedError:(id)a5 errorHandler:(id)a6
+- (BOOL)_validateChild:(id)child ofParent:(id)parent withParentAssociatedError:(id)error errorHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  childCopy = child;
+  parentCopy = parent;
+  errorCopy = error;
+  handlerCopy = handler;
   v32.receiver = self;
   v32.super_class = _WBSParsecArraySchema;
-  if ([(WBSParsecSchema *)&v32 _validateChild:v10 ofParent:v11 withParentAssociatedError:v12 errorHandler:v13])
+  if ([(WBSParsecSchema *)&v32 _validateChild:childCopy ofParent:parentCopy withParentAssociatedError:errorCopy errorHandler:handlerCopy])
   {
-    v14 = [(WBSParsecSchema *)self associatedError];
-    v25 = v14;
-    v26 = v12;
-    if (v14)
+    associatedError = [(WBSParsecSchema *)self associatedError];
+    v25 = associatedError;
+    v26 = errorCopy;
+    if (associatedError)
     {
-      v15 = v14;
+      v15 = associatedError;
     }
 
     else
     {
-      v15 = v12;
+      v15 = errorCopy;
     }
 
     v16 = v15;
@@ -53,8 +53,8 @@
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v27 = v10;
-    v17 = v10;
+    v27 = childCopy;
+    v17 = childCopy;
     v18 = [v17 countByEnumeratingWithState:&v28 objects:v37 count:16];
     if (v18)
     {
@@ -70,7 +70,7 @@
             objc_enumerationMutation(v17);
           }
 
-          if (![(WBSParsecSchema *)self->_elementSchema _validateChild:*(*(&v28 + 1) + 8 * i) ofParent:v17 withParentAssociatedError:v16 errorHandler:v13])
+          if (![(WBSParsecSchema *)self->_elementSchema _validateChild:*(*(&v28 + 1) + 8 * i) ofParent:v17 withParentAssociatedError:v16 errorHandler:handlerCopy])
           {
             v23 = WBS_LOG_CHANNEL_PREFIXSafariSuggestions();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -78,7 +78,7 @@
               *buf = 134349312;
               v34 = v17;
               v35 = 2050;
-              v36 = v11;
+              v36 = parentCopy;
               _os_log_error_impl(&dword_1BB6F3000, v23, OS_LOG_TYPE_ERROR, "Array element schema validation failed on child %{public}p of parent %{public}p", buf, 0x16u);
             }
 
@@ -97,8 +97,8 @@
       v21 = 1;
     }
 
-    v12 = v26;
-    v10 = v27;
+    errorCopy = v26;
+    childCopy = v27;
   }
 
   else

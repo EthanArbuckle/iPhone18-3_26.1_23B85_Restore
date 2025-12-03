@@ -1,5 +1,5 @@
 @interface DynamicBrickItemCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (void)prepareForReuse;
 @end
 
@@ -13,27 +13,27 @@
   v6 = type metadata accessor for DynamicBrickItemCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(DynamicBrickItemCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI20DynamicBrickItemCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
-  [*(&v7->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI20DynamicBrickItemCell_titleLabel) setAttributedText_];
-  [*(&v7->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI20DynamicBrickItemCell_subtitleLabel) setAttributedText_];
+  [*(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI20DynamicBrickItemCell_titleLabel) setAttributedText_];
+  [*(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI20DynamicBrickItemCell_subtitleLabel) setAttributedText_];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  v10 = [(DynamicBrickItemCell *)v9 contentView];
-  *&v11 = a4;
-  *&v12 = a5;
-  [v10 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  contentView = [(DynamicBrickItemCell *)selfCopy contentView];
+  *&v11 = priority;
+  *&v12 = fittingPriority;
+  [contentView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
   v14 = v13;
   v16 = v15;
 

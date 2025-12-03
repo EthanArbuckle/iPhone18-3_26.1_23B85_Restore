@@ -1,29 +1,29 @@
 @interface SKUICollectionView
 - (CGRect)bounds;
-- (SKUICollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (SKUICollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (id)collectionViewLayout;
 - (void)_updateIndexBarControlFrame;
 - (void)_updateShowsScrollIndicators;
 - (void)layoutSubviews;
-- (void)setCollectionViewLayout:(id)a3 animated:(BOOL)a4;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)setIndexBarControl:(id)a3;
-- (void)setRefreshControl:(id)a3;
-- (void)setShowsHorizontalScrollIndicator:(BOOL)a3;
-- (void)setShowsVerticalScrollIndicator:(BOOL)a3;
+- (void)setCollectionViewLayout:(id)layout animated:(BOOL)animated;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)setDelegate:(id)delegate;
+- (void)setIndexBarControl:(id)control;
+- (void)setRefreshControl:(id)control;
+- (void)setShowsHorizontalScrollIndicator:(BOOL)indicator;
+- (void)setShowsVerticalScrollIndicator:(BOOL)indicator;
 @end
 
 @implementation SKUICollectionView
 
-- (SKUICollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (SKUICollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUICollectionView initWithFrame:collectionViewLayout:];
@@ -31,11 +31,11 @@
 
   v13.receiver = self;
   v13.super_class = SKUICollectionView;
-  v10 = [(SKUICollectionView *)&v13 initWithFrame:v9 collectionViewLayout:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(SKUICollectionView *)&v13 initWithFrame:layoutCopy collectionViewLayout:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    v10->_externalShowsHorizontalScrollIndicator = [(SKUICollectionView *)v10 showsHorizontalScrollIndicator];
+    height->_externalShowsHorizontalScrollIndicator = [(SKUICollectionView *)height showsHorizontalScrollIndicator];
     v11->_externalShowsVerticalScrollIndicator = [(SKUICollectionView *)v11 showsVerticalScrollIndicator];
     [(SKUICollectionView *)v11 setPrefetchingEnabled:0];
     [(SKUICollectionView *)v11 _setContentInsetAdjustmentBehavior:101];
@@ -49,37 +49,37 @@
   pendingCollectionViewLayout = self->_pendingCollectionViewLayout;
   if (pendingCollectionViewLayout)
   {
-    v3 = pendingCollectionViewLayout;
+    collectionViewLayout = pendingCollectionViewLayout;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SKUICollectionView;
-    v3 = [(SKUICollectionView *)&v5 collectionViewLayout];
+    collectionViewLayout = [(SKUICollectionView *)&v5 collectionViewLayout];
   }
 
-  return v3;
+  return collectionViewLayout;
 }
 
-- (void)setCollectionViewLayout:(id)a3 animated:(BOOL)a4
+- (void)setCollectionViewLayout:(id)layout animated:(BOOL)animated
 {
-  v4 = a4;
-  objc_storeStrong(&self->_pendingCollectionViewLayout, a3);
-  v7 = a3;
+  animatedCopy = animated;
+  objc_storeStrong(&self->_pendingCollectionViewLayout, layout);
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SKUICollectionView;
-  [(SKUICollectionView *)&v9 setCollectionViewLayout:v7 animated:v4];
+  [(SKUICollectionView *)&v9 setCollectionViewLayout:layoutCopy animated:animatedCopy];
   pendingCollectionViewLayout = self->_pendingCollectionViewLayout;
   self->_pendingCollectionViewLayout = 0;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = SKUICollectionView;
-  v4 = a3;
-  [(SKUICollectionView *)&v6 setDelegate:v4];
+  delegateCopy = delegate;
+  [(SKUICollectionView *)&v6 setDelegate:delegateCopy];
   v5 = objc_opt_respondsToSelector();
 
   self->_delegateWantsWillLayoutSubviews = v5 & 1;
@@ -106,8 +106,8 @@
 {
   if (self->_delegateWantsWillLayoutSubviews)
   {
-    v3 = [(SKUICollectionView *)self delegate];
-    [v3 skuiCollectionViewWillLayoutSubviews:self];
+    delegate = [(SKUICollectionView *)self delegate];
+    [delegate skuiCollectionViewWillLayoutSubviews:self];
   }
 
   if (self->_refreshControl)
@@ -121,45 +121,45 @@
   [(SKUICollectionView *)self _updateIndexBarControlFrame];
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = SKUICollectionView;
-  [(SKUICollectionView *)&v5 setContentOffset:a4 animated:a3.x, a3.y];
+  [(SKUICollectionView *)&v5 setContentOffset:animated animated:offset.x, offset.y];
   [(SKUICollectionView *)self _updateIndexBarControlFrame];
 }
 
-- (void)setShowsHorizontalScrollIndicator:(BOOL)a3
+- (void)setShowsHorizontalScrollIndicator:(BOOL)indicator
 {
-  if (self->_externalShowsHorizontalScrollIndicator != a3)
+  if (self->_externalShowsHorizontalScrollIndicator != indicator)
   {
-    self->_externalShowsHorizontalScrollIndicator = a3;
+    self->_externalShowsHorizontalScrollIndicator = indicator;
     [(SKUICollectionView *)self _updateShowsScrollIndicators];
   }
 }
 
-- (void)setShowsVerticalScrollIndicator:(BOOL)a3
+- (void)setShowsVerticalScrollIndicator:(BOOL)indicator
 {
-  if (self->_externalShowsVerticalScrollIndicator != a3)
+  if (self->_externalShowsVerticalScrollIndicator != indicator)
   {
-    self->_externalShowsVerticalScrollIndicator = a3;
+    self->_externalShowsVerticalScrollIndicator = indicator;
     [(SKUICollectionView *)self _updateShowsScrollIndicators];
   }
 }
 
-- (void)setIndexBarControl:(id)a3
+- (void)setIndexBarControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   indexBarControl = self->_indexBarControl;
-  v7 = v5;
-  if (indexBarControl != v5)
+  v7 = controlCopy;
+  if (indexBarControl != controlCopy)
   {
     if ([(SKUIIndexBarControl *)indexBarControl isDescendantOfView:self])
     {
       [(SKUIIndexBarControl *)self->_indexBarControl removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_indexBarControl, a3);
+    objc_storeStrong(&self->_indexBarControl, control);
     [(SKUICollectionView *)self _updateShowsScrollIndicators];
     [(SKUICollectionView *)self setNeedsLayout];
     indexBarControl = self->_indexBarControl;
@@ -172,31 +172,31 @@
   }
 }
 
-- (void)setRefreshControl:(id)a3
+- (void)setRefreshControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   refreshControl = self->_refreshControl;
-  if (refreshControl != v5)
+  if (refreshControl != controlCopy)
   {
-    v7 = v5;
+    v7 = controlCopy;
     if (refreshControl)
     {
       [(UIRefreshControl *)refreshControl removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_refreshControl, a3);
+    objc_storeStrong(&self->_refreshControl, control);
     refreshControl = [(SKUICollectionView *)self _addContentSubview:self->_refreshControl atBack:1];
-    v5 = v7;
+    controlCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](refreshControl, v5);
+  MEMORY[0x2821F96F8](refreshControl, controlCopy);
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
   v3.receiver = self;
   v3.super_class = SKUICollectionView;
-  [(SKUICollectionView *)&v3 setContentInset:a3.top, a3.left, a3.bottom, a3.right];
+  [(SKUICollectionView *)&v3 setContentInset:inset.top, inset.left, inset.bottom, inset.right];
 }
 
 - (void)_updateIndexBarControlFrame

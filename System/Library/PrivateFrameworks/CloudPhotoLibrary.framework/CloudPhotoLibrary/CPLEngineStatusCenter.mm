@@ -1,25 +1,25 @@
 @interface CPLEngineStatusCenter
-- (BOOL)acknowledgeChangedStatuses:(id)a3 error:(id *)a4;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
-- (BOOL)discardNotificationForRecordWithScopedIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)acknowledgeChangedStatuses:(id)statuses error:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
+- (BOOL)discardNotificationForRecordWithScopedIdentifier:(id)identifier error:(id *)error;
 - (BOOL)hasStatusChanges;
-- (BOOL)notifyStatusForRecordWithScopedIdentifierHasChanged:(id)a3 recordClass:(Class)a4 persist:(BOOL)a5 error:(id *)a6;
-- (CPLEngineStatusCenter)initWithEngineStore:(id)a3 name:(id)a4;
-- (id)_allScopedIdentifierInCollection:(id)a3 withScopeIdentifier:(id)a4;
-- (id)_statusFromCachesWithRecordScopedIdentifier:(id)a3;
+- (BOOL)notifyStatusForRecordWithScopedIdentifierHasChanged:(id)changed recordClass:(Class)class persist:(BOOL)persist error:(id *)error;
+- (CPLEngineStatusCenter)initWithEngineStore:(id)store name:(id)name;
+- (id)_allScopedIdentifierInCollection:(id)collection withScopeIdentifier:(id)identifier;
+- (id)_statusFromCachesWithRecordScopedIdentifier:(id)identifier;
 - (id)allStatusChanges;
-- (id)recordForStatusWithScopedIdentifier:(id)a3;
-- (id)recordViewForStatusWithScopedIdentifier:(id)a3;
+- (id)recordForStatusWithScopedIdentifier:(id)identifier;
+- (id)recordViewForStatusWithScopedIdentifier:(id)identifier;
 - (id)status;
 - (id)statusChanges;
-- (id)statusesForRecordsWithIdentifiers:(id)a3;
-- (id)statusesForRecordsWithScopedIdentifiers:(id)a3;
-- (void)_fillStatus:(id)a3;
-- (void)_fillStatus:(id)a3 withClientCacheRecordView:(id)a4 cloudCacheRecord:(id)a5 isConfirmed:(BOOL)a6 isStaged:(BOOL)a7 isInIDMapping:(BOOL)a8;
-- (void)_removeScopedIdentifiersFromSet:(id)a3 withScopeIdentifier:(id)a4;
-- (void)_removeStatusesInDictionary:(id)a3 withScopeIdentifier:(id)a4;
+- (id)statusesForRecordsWithIdentifiers:(id)identifiers;
+- (id)statusesForRecordsWithScopedIdentifiers:(id)identifiers;
+- (void)_fillStatus:(id)status;
+- (void)_fillStatus:(id)status withClientCacheRecordView:(id)view cloudCacheRecord:(id)record isConfirmed:(BOOL)confirmed isStaged:(BOOL)staged isInIDMapping:(BOOL)mapping;
+- (void)_removeScopedIdentifiersFromSet:(id)set withScopeIdentifier:(id)identifier;
+- (void)_removeStatusesInDictionary:(id)dictionary withScopeIdentifier:(id)identifier;
 - (void)resetAllTransientStatuses;
-- (void)resetTransientStatusesWithScopeIdentifier:(id)a3;
+- (void)resetTransientStatusesWithScopeIdentifier:(id)identifier;
 - (void)writeTransactionDidFail;
 - (void)writeTransactionDidSucceed;
 @end
@@ -43,14 +43,14 @@
   }
 
   transientStatuses = self->_transientStatuses;
-  v5 = [(NSMutableSet *)self->_persistedScopedIdentifiers allObjects];
-  [(NSMutableDictionary *)transientStatuses removeObjectsForKeys:v5];
+  allObjects = [(NSMutableSet *)self->_persistedScopedIdentifiers allObjects];
+  [(NSMutableDictionary *)transientStatuses removeObjectsForKeys:allObjects];
 
   [(NSMutableSet *)self->_persistedScopedIdentifiers removeAllObjects];
   [(NSMutableDictionary *)self->_transientStatuses addEntriesFromDictionary:self->_pendingTransientStatuses];
   v6 = self->_transientStatuses;
-  v7 = [(NSMutableSet *)self->_pendingDeletedTransientStatuses allObjects];
-  [(NSMutableDictionary *)v6 removeObjectsForKeys:v7];
+  allObjects2 = [(NSMutableSet *)self->_pendingDeletedTransientStatuses allObjects];
+  [(NSMutableDictionary *)v6 removeObjectsForKeys:allObjects2];
 
   [(NSMutableDictionary *)self->_pendingTransientStatuses removeAllObjects];
   [(NSMutableSet *)self->_pendingDeletedTransientStatuses removeAllObjects];
@@ -78,8 +78,8 @@
     }
 
     v24 = v3;
-    v11 = [(NSMutableDictionary *)self->_transientStatuses allValues];
-    v12 = [v11 sortedArrayUsingComparator:&__block_literal_global_20556];
+    allValues = [(NSMutableDictionary *)self->_transientStatuses allValues];
+    v12 = [allValues sortedArrayUsingComparator:&__block_literal_global_20556];
 
     v27 = 0u;
     v28 = 0u;
@@ -101,9 +101,9 @@ LABEL_12:
         }
 
         v18 = self->_transientStatuses;
-        v19 = [*(*(&v25 + 1) + 8 * v17) record];
-        v20 = [v19 scopedIdentifier];
-        [(NSMutableDictionary *)v18 removeObjectForKey:v20];
+        record = [*(*(&v25 + 1) + 8 * v17) record];
+        scopedIdentifier = [record scopedIdentifier];
+        [(NSMutableDictionary *)v18 removeObjectForKey:scopedIdentifier];
 
         if (!--v9)
         {
@@ -128,9 +128,9 @@ LABEL_12:
 
   if (v3)
   {
-    v21 = [(CPLEngineStorage *)self engineStore];
-    v22 = [v21 engineLibrary];
-    [v22 notifyAttachedObjectsHasStatusChanges];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    engineLibrary = [engineStore engineLibrary];
+    [engineLibrary notifyAttachedObjectsHasStatusChanges];
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -183,8 +183,8 @@ LABEL_12:
     _Block_object_dispose(v29, 8);
   }
 
-  v9 = [(CPLEngineStorage *)self platformObject];
-  v10 = [v9 statusChangesMaximumCount:10000];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v10 = [platformObject statusChangesMaximumCount:10000];
 
   v23 = 0u;
   v24 = 0u;
@@ -205,16 +205,16 @@ LABEL_12:
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 record];
-        v17 = [v16 scopedIdentifier];
+        record = [v15 record];
+        scopedIdentifier = [record scopedIdentifier];
 
-        v18 = [v3 objectForKeyedSubscript:v17];
-        LODWORD(v16) = v18 == 0;
+        v18 = [v3 objectForKeyedSubscript:scopedIdentifier];
+        LODWORD(record) = v18 == 0;
 
-        if (v16)
+        if (record)
         {
           [(CPLEngineStatusCenter *)self _fillStatus:v15];
-          [v3 setObject:v15 forKeyedSubscript:v17];
+          [v3 setObject:v15 forKeyedSubscript:scopedIdentifier];
         }
       }
 
@@ -255,8 +255,8 @@ void __41__CPLEngineStatusCenter_allStatusChanges__block_invoke(uint64_t a1, uin
     v3 = objc_alloc(MEMORY[0x1E696AD60]);
     v24.receiver = self;
     v24.super_class = CPLEngineStatusCenter;
-    v4 = [(CPLEngineStorage *)&v24 status];
-    v5 = [v3 initWithFormat:@"%@\n%lu transient:", v4, -[NSMutableDictionary count](self->_transientStatuses, "count")];
+    status = [(CPLEngineStorage *)&v24 status];
+    status2 = [v3 initWithFormat:@"%@\n%lu transient:", status, -[NSMutableDictionary count](self->_transientStatuses, "count")];
 
     v6 = objc_alloc_init(MEMORY[0x1E696AB50]);
     transientStatuses = self->_transientStatuses;
@@ -271,8 +271,8 @@ void __41__CPLEngineStatusCenter_allStatusChanges__block_invoke(uint64_t a1, uin
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [v8 allObjects];
-    v10 = [v9 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [v8 allObjects];
+    v10 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
     v11 = [v10 countByEnumeratingWithState:&v18 objects:v25 count:16];
     if (v11)
@@ -288,7 +288,7 @@ void __41__CPLEngineStatusCenter_allStatusChanges__block_invoke(uint64_t a1, uin
             objc_enumerationMutation(v10);
           }
 
-          [v5 appendFormat:@"\n\t%@: %lu", *(*(&v18 + 1) + 8 * i), objc_msgSend(v8, "countForObject:", *(*(&v18 + 1) + 8 * i))];
+          [status2 appendFormat:@"\n\t%@: %lu", *(*(&v18 + 1) + 8 * i), objc_msgSend(v8, "countForObject:", *(*(&v18 + 1) + 8 * i))];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v18 objects:v25 count:16];
@@ -302,12 +302,12 @@ void __41__CPLEngineStatusCenter_allStatusChanges__block_invoke(uint64_t a1, uin
   {
     v17.receiver = self;
     v17.super_class = CPLEngineStatusCenter;
-    v5 = [(CPLEngineStorage *)&v17 status];
+    status2 = [(CPLEngineStorage *)&v17 status];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return status2;
 }
 
 void __31__CPLEngineStatusCenter_status__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -320,59 +320,59 @@ void __31__CPLEngineStatusCenter_status__block_invoke(uint64_t a1, uint64_t a2, 
   [v6 addObject:v7];
 }
 
-- (id)recordViewForStatusWithScopedIdentifier:(id)a3
+- (id)recordViewForStatusWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 transactionClientCacheView];
-  v7 = [v6 recordViewWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  transactionClientCacheView = [engineStore transactionClientCacheView];
+  v7 = [transactionClientCacheView recordViewWithScopedIdentifier:identifierCopy];
 
   if (v7)
   {
-    v8 = v7;
+    asRecordView = v7;
   }
 
   else
   {
-    v9 = [v5 quarantinedRecords];
-    v10 = [v9 classForQuarantinedRecordWithScopedIdentifier:v4];
+    quarantinedRecords = [engineStore quarantinedRecords];
+    v10 = [quarantinedRecords classForQuarantinedRecordWithScopedIdentifier:identifierCopy];
 
     if (!v10)
     {
       v10 = objc_opt_class();
     }
 
-    v11 = [v10 newRecordWithScopedIdentifier:v4];
-    v8 = [v11 asRecordView];
+    v11 = [v10 newRecordWithScopedIdentifier:identifierCopy];
+    asRecordView = [v11 asRecordView];
   }
 
-  return v8;
+  return asRecordView;
 }
 
-- (id)recordForStatusWithScopedIdentifier:(id)a3
+- (id)recordForStatusWithScopedIdentifier:(id)identifier
 {
-  v3 = [(CPLEngineStatusCenter *)self recordViewForStatusWithScopedIdentifier:a3];
-  v4 = [v3 synthesizedRecord];
+  v3 = [(CPLEngineStatusCenter *)self recordViewForStatusWithScopedIdentifier:identifier];
+  synthesizedRecord = [v3 synthesizedRecord];
 
-  return v4;
+  return synthesizedRecord;
 }
 
-- (id)_statusFromCachesWithRecordScopedIdentifier:(id)a3
+- (id)_statusFromCachesWithRecordScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 transactionClientCacheView];
-  v7 = [v6 recordViewWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  transactionClientCacheView = [engineStore transactionClientCacheView];
+  v7 = [transactionClientCacheView recordViewWithScopedIdentifier:identifierCopy];
 
   v19 = 0;
   v18 = 0;
-  v8 = [v5 idMapping];
-  v9 = [v8 cloudScopedIdentifierForLocalScopedIdentifier:v4 isFinal:&v19 + 1];
-  v10 = v9;
+  idMapping = [engineStore idMapping];
+  v9 = [idMapping cloudScopedIdentifierForLocalScopedIdentifier:identifierCopy isFinal:&v19 + 1];
+  cloudCache = v9;
   if (!v9)
   {
-    v10 = [v4 copy];
-    v13 = [v8 localScopedIdentifierForCloudScopedIdentifier:v10 isFinal:&v19 + 1];
+    cloudCache = [identifierCopy copy];
+    v13 = [idMapping localScopedIdentifierForCloudScopedIdentifier:cloudCache isFinal:&v19 + 1];
 
     if (v13)
     {
@@ -381,7 +381,7 @@ void __31__CPLEngineStatusCenter_status__block_invoke(uint64_t a1, uint64_t a2, 
       goto LABEL_5;
     }
 
-    if (!v10)
+    if (!cloudCache)
     {
       v11 = 0;
       v12 = 0;
@@ -389,48 +389,48 @@ void __31__CPLEngineStatusCenter_status__block_invoke(uint64_t a1, uint64_t a2, 
     }
   }
 
-  v11 = v10;
-  v10 = [v5 cloudCache];
-  v12 = [v10 recordWithScopedIdentifier:v11 isConfirmed:&v19 isStaged:&v18];
+  v11 = cloudCache;
+  cloudCache = [engineStore cloudCache];
+  v12 = [cloudCache recordWithScopedIdentifier:v11 isConfirmed:&v19 isStaged:&v18];
 LABEL_5:
 
 LABEL_6:
-  v14 = [v7 recordClass];
-  if (!v14)
+  recordClass = [v7 recordClass];
+  if (!recordClass)
   {
-    v14 = objc_opt_class();
-    if (!v14)
+    recordClass = objc_opt_class();
+    if (!recordClass)
     {
-      v14 = objc_opt_class();
+      recordClass = objc_opt_class();
     }
   }
 
-  v15 = [v14 newRecordWithScopedIdentifier:v4];
+  v15 = [recordClass newRecordWithScopedIdentifier:identifierCopy];
   v16 = [[CPLRecordStatus alloc] initWithRecord:v15 generation:0];
   [(CPLEngineStatusCenter *)self _fillStatus:v16 withClientCacheRecordView:v7 cloudCacheRecord:v12 isConfirmed:v19 isStaged:v18 isInIDMapping:v9 != 0];
 
   return v16;
 }
 
-- (void)_fillStatus:(id)a3
+- (void)_fillStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v4 record];
-  v7 = [v6 scopedIdentifier];
+  statusCopy = status;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  record = [statusCopy record];
+  scopedIdentifier = [record scopedIdentifier];
 
-  v8 = [v5 transactionClientCacheView];
-  v9 = [v8 recordViewWithScopedIdentifier:v7];
+  transactionClientCacheView = [engineStore transactionClientCacheView];
+  v9 = [transactionClientCacheView recordViewWithScopedIdentifier:scopedIdentifier];
 
   v17 = 0;
   v16 = 0;
-  v10 = [v5 idMapping];
-  v11 = [v10 cloudScopedIdentifierForLocalScopedIdentifier:v7 isFinal:&v17 + 1];
+  idMapping = [engineStore idMapping];
+  v11 = [idMapping cloudScopedIdentifierForLocalScopedIdentifier:scopedIdentifier isFinal:&v17 + 1];
 
   if (v11)
   {
-    v12 = [v5 cloudCache];
-    v13 = [v12 recordWithScopedIdentifier:v11 isConfirmed:&v17 isStaged:&v16];
+    cloudCache = [engineStore cloudCache];
+    v13 = [cloudCache recordWithScopedIdentifier:v11 isConfirmed:&v17 isStaged:&v16];
 
     v14 = v16;
     v15 = v17;
@@ -443,36 +443,36 @@ LABEL_6:
     v13 = 0;
   }
 
-  [(CPLEngineStatusCenter *)self _fillStatus:v4 withClientCacheRecordView:v9 cloudCacheRecord:v13 isConfirmed:v15 & 1 isStaged:v14 & 1 isInIDMapping:v11 != 0];
+  [(CPLEngineStatusCenter *)self _fillStatus:statusCopy withClientCacheRecordView:v9 cloudCacheRecord:v13 isConfirmed:v15 & 1 isStaged:v14 & 1 isInIDMapping:v11 != 0];
 }
 
-- (void)_fillStatus:(id)a3 withClientCacheRecordView:(id)a4 cloudCacheRecord:(id)a5 isConfirmed:(BOOL)a6 isStaged:(BOOL)a7 isInIDMapping:(BOOL)a8
+- (void)_fillStatus:(id)status withClientCacheRecordView:(id)view cloudCacheRecord:(id)record isConfirmed:(BOOL)confirmed isStaged:(BOOL)staged isInIDMapping:(BOOL)mapping
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v14 = a3;
-  v15 = a5;
-  v16 = [(CPLEngineStorage *)self engineStore];
-  v17 = [v16 pushRepository];
-  v18 = [v14 record];
-  v19 = [v18 scopedIdentifier];
+  mappingCopy = mapping;
+  stagedCopy = staged;
+  confirmedCopy = confirmed;
+  statusCopy = status;
+  recordCopy = record;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  pushRepository = [engineStore pushRepository];
+  record = [statusCopy record];
+  scopedIdentifier = [record scopedIdentifier];
 
   v32 = MEMORY[0x1E69E9820];
   v33 = 3221225472;
   v34 = __115__CPLEngineStatusCenter__fillStatus_withClientCacheRecordView_cloudCacheRecord_isConfirmed_isStaged_isInIDMapping___block_invoke;
   v35 = &unk_1E861B1C8;
-  v36 = v17;
-  v20 = v19;
+  v36 = pushRepository;
+  v20 = scopedIdentifier;
   v37 = v20;
-  v21 = v14;
+  v21 = statusCopy;
   v38 = v21;
-  v22 = v17;
+  v22 = pushRepository;
   v23 = MEMORY[0x1E128EBA0](&v32);
   v24 = v23;
-  if (!a4)
+  if (!view)
   {
-    if (v15)
+    if (recordCopy)
     {
       (*(v23 + 16))(v23);
       if ([v21 isWaitingForUpdate] & 1) != 0 || (objc_msgSend(v21, "isUpdating"))
@@ -480,13 +480,13 @@ LABEL_6:
         goto LABEL_16;
       }
 
-      if (v9)
+      if (stagedCopy)
       {
         goto LABEL_3;
       }
     }
 
-    else if (!v8)
+    else if (!mappingCopy)
     {
       [v21 setUnknown:1];
       goto LABEL_16;
@@ -497,7 +497,7 @@ LABEL_6:
   }
 
   (*(v23 + 16))(v23);
-  if (v15)
+  if (recordCopy)
   {
 LABEL_3:
     [v21 setUploaded:1];
@@ -519,20 +519,20 @@ LABEL_3:
 LABEL_16:
   if (([v21 isResetting] & 1) == 0 && (objc_msgSend(v21, "isUnknown") & 1) == 0)
   {
-    v25 = [v16 sharingScopeIdentifier];
-    v26 = v25;
-    if (v15 && v25)
+    sharingScopeIdentifier = [engineStore sharingScopeIdentifier];
+    v26 = sharingScopeIdentifier;
+    if (recordCopy && sharingScopeIdentifier)
     {
-      if ([v15 supportsSharingScopedIdentifier] && objc_msgSend(v15, "isSharedInScopeWithIdentifier:", v26))
+      if ([recordCopy supportsSharingScopedIdentifier] && objc_msgSend(recordCopy, "isSharedInScopeWithIdentifier:", v26))
       {
         [v21 setShared:1];
       }
 
-      else if ([v15 supportsSharing])
+      else if ([recordCopy supportsSharing])
       {
-        v27 = [v16 cloudCache];
-        v28 = [v15 scopedIdentifier];
-        v31 = [v27 targetForRecordWithCloudScopedIdentifier:v28];
+        cloudCache = [engineStore cloudCache];
+        scopedIdentifier2 = [recordCopy scopedIdentifier];
+        v31 = [cloudCache targetForRecordWithCloudScopedIdentifier:scopedIdentifier2];
 
         if (([v31 targetState] & 0xFFFFFFFFFFFFFFFELL) == 2)
         {
@@ -542,15 +542,15 @@ LABEL_16:
     }
   }
 
-  v29 = [v16 quarantinedRecords];
-  v30 = [v29 isRecordWithScopedIdentifierQuarantined:v20];
+  quarantinedRecords = [engineStore quarantinedRecords];
+  v30 = [quarantinedRecords isRecordWithScopedIdentifierQuarantined:v20];
 
   if (v30)
   {
     [v21 setQuarantined:1];
   }
 
-  if (v15 && v10 && ([v21 isWaitingForUpdate] & 1) == 0)
+  if (recordCopy && confirmedCopy && ([v21 isWaitingForUpdate] & 1) == 0)
   {
     [v21 setConfirmed:1];
   }
@@ -596,27 +596,27 @@ uint64_t __51__CPLEngineStatusCenter_writeTransactionDidSucceed__block_invoke(ui
   self->_transactionStartDate = 0;
 }
 
-- (BOOL)discardNotificationForRecordWithScopedIdentifier:(id)a3 error:(id *)a4
+- (BOOL)discardNotificationForRecordWithScopedIdentifier:(id)identifier error:(id *)error
 {
   persistedScopedIdentifiers = self->_persistedScopedIdentifiers;
-  v7 = a3;
-  [(NSMutableSet *)persistedScopedIdentifiers removeObject:v7];
-  [(NSMutableDictionary *)self->_pendingTransientStatuses removeObjectForKey:v7];
-  [(NSMutableSet *)self->_pendingDeletedTransientStatuses addObject:v7];
-  v8 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v8 discardNotificationForRecordWithScopedIdentifier:v7 error:a4];
+  identifierCopy = identifier;
+  [(NSMutableSet *)persistedScopedIdentifiers removeObject:identifierCopy];
+  [(NSMutableDictionary *)self->_pendingTransientStatuses removeObjectForKey:identifierCopy];
+  [(NSMutableSet *)self->_pendingDeletedTransientStatuses addObject:identifierCopy];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject discardNotificationForRecordWithScopedIdentifier:identifierCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)acknowledgeChangedStatuses:(id)a3 error:(id *)a4
+- (BOOL)acknowledgeChangedStatuses:(id)statuses error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = a3;
+  obj = statuses;
   v5 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v5)
   {
@@ -632,18 +632,18 @@ uint64_t __51__CPLEngineStatusCenter_writeTransactionDidSucceed__block_invoke(ui
         }
 
         v9 = *(*(&v26 + 1) + 8 * i);
-        v10 = [v9 record];
-        v11 = [v10 scopedIdentifier];
+        record = [v9 record];
+        scopedIdentifier = [record scopedIdentifier];
 
-        v12 = [(NSMutableDictionary *)self->_transientStatuses objectForKeyedSubscript:v11];
-        v13 = [(NSMutableDictionary *)self->_pendingTransientStatuses objectForKeyedSubscript:v11];
+        v12 = [(NSMutableDictionary *)self->_transientStatuses objectForKeyedSubscript:scopedIdentifier];
+        v13 = [(NSMutableDictionary *)self->_pendingTransientStatuses objectForKeyedSubscript:scopedIdentifier];
         v14 = v13;
         if (v13)
         {
-          v15 = [v13 generation];
-          if (v15 <= [v9 generation])
+          generation = [v13 generation];
+          if (generation <= [v9 generation])
           {
-            [(NSMutableDictionary *)self->_pendingTransientStatuses removeObjectForKey:v11];
+            [(NSMutableDictionary *)self->_pendingTransientStatuses removeObjectForKey:scopedIdentifier];
 
             v14 = 0;
           }
@@ -651,17 +651,17 @@ uint64_t __51__CPLEngineStatusCenter_writeTransactionDidSucceed__block_invoke(ui
 
         if (v12)
         {
-          v16 = [v12 generation];
-          v17 = [v9 generation];
-          if (!v14 && v16 <= v17)
+          generation2 = [v12 generation];
+          generation3 = [v9 generation];
+          if (!v14 && generation2 <= generation3)
           {
-            [(NSMutableSet *)self->_pendingDeletedTransientStatuses addObject:v11];
+            [(NSMutableSet *)self->_pendingDeletedTransientStatuses addObject:scopedIdentifier];
           }
         }
 
         v25 = 0;
-        v18 = [(CPLEngineStorage *)self platformObject];
-        v19 = [v18 acknowledgeChangedStatus:v9 hasBeenDeleted:&v25 error:a4];
+        platformObject = [(CPLEngineStorage *)self platformObject];
+        v19 = [platformObject acknowledgeChangedStatus:v9 hasBeenDeleted:&v25 error:error];
 
         if (!v19)
         {
@@ -672,7 +672,7 @@ uint64_t __51__CPLEngineStatusCenter_writeTransactionDidSucceed__block_invoke(ui
 
         if (v25 == 1)
         {
-          [(NSMutableSet *)self->_persistedScopedIdentifiers removeObject:v11];
+          [(NSMutableSet *)self->_persistedScopedIdentifiers removeObject:scopedIdentifier];
         }
       }
 
@@ -693,25 +693,25 @@ LABEL_20:
   return v20;
 }
 
-- (id)statusesForRecordsWithIdentifiers:(id)a3
+- (id)statusesForRecordsWithIdentifiers:(id)identifiers
 {
-  v4 = [CPLScopedIdentifier scopedIdentifiersFromArrayOfUnknownIdentifiers:a3];
+  v4 = [CPLScopedIdentifier scopedIdentifiersFromArrayOfUnknownIdentifiers:identifiers];
   v5 = [(CPLEngineStatusCenter *)self statusesForRecordsWithScopedIdentifiers:v4];
   v6 = [CPLScopedIdentifier unscopedIdentifiersFromDictionaryOfScopedIdentifiers:v5];
 
   return v6;
 }
 
-- (id)statusesForRecordsWithScopedIdentifiers:(id)a3
+- (id)statusesForRecordsWithScopedIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  identifiersCopy = identifiers;
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -731,17 +731,17 @@ LABEL_20:
         v12 = [(NSMutableDictionary *)self->_pendingTransientStatuses objectForKeyedSubscript:v11, v19];
         if (v12 || ([(NSMutableDictionary *)self->_transientStatuses objectForKeyedSubscript:v11], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v13 = v12;
-          v14 = [v12 status];
+          platformObject = v12;
+          status = [v12 status];
         }
 
         else
         {
-          v13 = [(CPLEngineStorage *)self platformObject];
-          v14 = [v13 statusForRecordWithScopedIdentifier:v11];
+          platformObject = [(CPLEngineStorage *)self platformObject];
+          status = [platformObject statusForRecordWithScopedIdentifier:v11];
         }
 
-        v15 = v14;
+        v15 = status;
 
         if (v15)
         {
@@ -781,44 +781,44 @@ LABEL_20:
   [(NSMutableDictionary *)transientStatuses removeAllObjects];
 }
 
-- (void)resetTransientStatusesWithScopeIdentifier:(id)a3
+- (void)resetTransientStatusesWithScopeIdentifier:(id)identifier
 {
   transientStatuses = self->_transientStatuses;
-  v5 = a3;
-  [(CPLEngineStatusCenter *)self _removeStatusesInDictionary:transientStatuses withScopeIdentifier:v5];
-  [(CPLEngineStatusCenter *)self _removeStatusesInDictionary:self->_pendingTransientStatuses withScopeIdentifier:v5];
-  [(CPLEngineStatusCenter *)self _removeScopedIdentifiersFromSet:self->_persistedScopedIdentifiers withScopeIdentifier:v5];
-  [(CPLEngineStatusCenter *)self _removeScopedIdentifiersFromSet:self->_pendingDeletedTransientStatuses withScopeIdentifier:v5];
+  identifierCopy = identifier;
+  [(CPLEngineStatusCenter *)self _removeStatusesInDictionary:transientStatuses withScopeIdentifier:identifierCopy];
+  [(CPLEngineStatusCenter *)self _removeStatusesInDictionary:self->_pendingTransientStatuses withScopeIdentifier:identifierCopy];
+  [(CPLEngineStatusCenter *)self _removeScopedIdentifiersFromSet:self->_persistedScopedIdentifiers withScopeIdentifier:identifierCopy];
+  [(CPLEngineStatusCenter *)self _removeScopedIdentifiersFromSet:self->_pendingDeletedTransientStatuses withScopeIdentifier:identifierCopy];
 }
 
-- (void)_removeScopedIdentifiersFromSet:(id)a3 withScopeIdentifier:(id)a4
+- (void)_removeScopedIdentifiersFromSet:(id)set withScopeIdentifier:(id)identifier
 {
-  v6 = a3;
+  setCopy = set;
   v5 = [CPLEngineStatusCenter _allScopedIdentifierInCollection:"_allScopedIdentifierInCollection:withScopeIdentifier:" withScopeIdentifier:?];
   if (v5)
   {
-    [v6 minusSet:v5];
+    [setCopy minusSet:v5];
   }
 }
 
-- (void)_removeStatusesInDictionary:(id)a3 withScopeIdentifier:(id)a4
+- (void)_removeStatusesInDictionary:(id)dictionary withScopeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v8 = [(CPLEngineStatusCenter *)self _allScopedIdentifierInCollection:v6 withScopeIdentifier:a4];
-  v7 = [v8 allObjects];
-  [v6 removeObjectsForKeys:v7];
+  dictionaryCopy = dictionary;
+  v8 = [(CPLEngineStatusCenter *)self _allScopedIdentifierInCollection:dictionaryCopy withScopeIdentifier:identifier];
+  allObjects = [v8 allObjects];
+  [dictionaryCopy removeObjectsForKeys:allObjects];
 }
 
-- (id)_allScopedIdentifierInCollection:(id)a3 withScopeIdentifier:(id)a4
+- (id)_allScopedIdentifierInCollection:(id)collection withScopeIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  collectionCopy = collection;
+  identifierCopy = identifier;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [collectionCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -830,12 +830,12 @@ LABEL_20:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(collectionCopy);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 scopeIdentifier];
-        v14 = [v13 isEqualToString:v6];
+        scopeIdentifier = [v12 scopeIdentifier];
+        v14 = [scopeIdentifier isEqualToString:identifierCopy];
 
         if (v14)
         {
@@ -848,7 +848,7 @@ LABEL_20:
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [collectionCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -921,8 +921,8 @@ LABEL_20:
     _Block_object_dispose(v28, 8);
   }
 
-  v13 = [(CPLEngineStorage *)self platformObject];
-  v14 = [v13 statusChangesMaximumCount:1000];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v14 = [platformObject statusChangesMaximumCount:1000];
 
   v22 = 0u;
   v23 = 0u;
@@ -977,13 +977,13 @@ void __38__CPLEngineStatusCenter_statusChanges__block_invoke(uint64_t a1, uint64
   }
 }
 
-- (BOOL)notifyStatusForRecordWithScopedIdentifierHasChanged:(id)a3 recordClass:(Class)a4 persist:(BOOL)a5 error:(id *)a6
+- (BOOL)notifyStatusForRecordWithScopedIdentifierHasChanged:(id)changed recordClass:(Class)class persist:(BOOL)persist error:(id *)error
 {
-  v10 = a3;
+  changedCopy = changed;
   if (!self->_transactionStartDate)
   {
-    v11 = [(CPLEngineStorage *)self platformObject];
-    v12 = [v11 getNewGeneration:&self->_currentGeneration error:a6];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v12 = [platformObject getNewGeneration:&self->_currentGeneration error:error];
 
     if (!v12)
     {
@@ -991,49 +991,49 @@ void __38__CPLEngineStatusCenter_statusChanges__block_invoke(uint64_t a1, uint64
       goto LABEL_17;
     }
 
-    v13 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     transactionStartDate = self->_transactionStartDate;
-    self->_transactionStartDate = v13;
+    self->_transactionStartDate = date;
   }
 
-  if (([(NSMutableSet *)self->_persistedScopedIdentifiers containsObject:v10]& 1) == 0)
+  if (([(NSMutableSet *)self->_persistedScopedIdentifiers containsObject:changedCopy]& 1) == 0)
   {
-    v15 = [(NSMutableDictionary *)self->_pendingTransientStatuses objectForKeyedSubscript:v10];
+    v15 = [(NSMutableDictionary *)self->_pendingTransientStatuses objectForKeyedSubscript:changedCopy];
     v16 = v15;
-    if (a5)
+    if (persist)
     {
       if (v15)
       {
-        v17 = [(_CPLTransientStatus *)v15 status];
-        [(NSMutableDictionary *)self->_pendingTransientStatuses removeObjectForKey:v10];
+        status = [(_CPLTransientStatus *)v15 status];
+        [(NSMutableDictionary *)self->_pendingTransientStatuses removeObjectForKey:changedCopy];
       }
 
       else
       {
-        v19 = [(objc_class *)a4 newRecordWithScopedIdentifier:v10];
-        v17 = [[CPLRecordStatus alloc] initWithRecord:v19 generation:self->_currentGeneration];
+        v19 = [(objc_class *)class newRecordWithScopedIdentifier:changedCopy];
+        status = [[CPLRecordStatus alloc] initWithRecord:v19 generation:self->_currentGeneration];
       }
 
-      v20 = [(NSMutableDictionary *)self->_transientStatuses objectForKeyedSubscript:v10];
+      v20 = [(NSMutableDictionary *)self->_transientStatuses objectForKeyedSubscript:changedCopy];
 
       if (v20)
       {
-        [(NSMutableSet *)self->_pendingDeletedTransientStatuses addObject:v10];
+        [(NSMutableSet *)self->_pendingDeletedTransientStatuses addObject:changedCopy];
       }
 
-      [(NSMutableSet *)self->_persistedScopedIdentifiers addObject:v10];
-      v21 = [(CPLEngineStorage *)self platformObject];
-      v18 = [v21 addStatus:v17 error:a6];
+      [(NSMutableSet *)self->_persistedScopedIdentifiers addObject:changedCopy];
+      platformObject2 = [(CPLEngineStorage *)self platformObject];
+      v18 = [platformObject2 addStatus:status error:error];
 
       goto LABEL_16;
     }
 
     if (!v16)
     {
-      [(NSMutableSet *)self->_pendingDeletedTransientStatuses removeObject:v10];
-      v17 = [(objc_class *)a4 newRecordWithScopedIdentifier:v10];
-      v16 = [[_CPLTransientStatus alloc] initWithRecord:v17 generation:self->_currentGeneration date:self->_transactionStartDate];
-      [(NSMutableDictionary *)self->_pendingTransientStatuses setObject:v16 forKeyedSubscript:v10];
+      [(NSMutableSet *)self->_pendingDeletedTransientStatuses removeObject:changedCopy];
+      status = [(objc_class *)class newRecordWithScopedIdentifier:changedCopy];
+      v16 = [[_CPLTransientStatus alloc] initWithRecord:status generation:self->_currentGeneration date:self->_transactionStartDate];
+      [(NSMutableDictionary *)self->_pendingTransientStatuses setObject:v16 forKeyedSubscript:changedCopy];
       v18 = 1;
 LABEL_16:
 
@@ -1054,13 +1054,13 @@ LABEL_17:
     return 1;
   }
 
-  v4 = [(CPLEngineStorage *)self platformObject];
-  v5 = [v4 hasStatusChanges];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  hasStatusChanges = [platformObject hasStatusChanges];
 
-  return v5;
+  return hasStatusChanges;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
   [(NSMutableSet *)self->_persistedScopedIdentifiers removeAllObjects];
   [(NSMutableDictionary *)self->_pendingTransientStatuses removeAllObjects];
@@ -1069,17 +1069,17 @@ LABEL_17:
   transactionStartDate = self->_transactionStartDate;
   self->_transactionStartDate = 0;
 
-  v12 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a6) = [v12 deleteRecordsForScopeIndex:a3 maxCount:a4 deletedCount:a5 error:a6];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject deleteRecordsForScopeIndex:index maxCount:count deletedCount:deletedCount error:error];
 
-  return a6;
+  return error;
 }
 
-- (CPLEngineStatusCenter)initWithEngineStore:(id)a3 name:(id)a4
+- (CPLEngineStatusCenter)initWithEngineStore:(id)store name:(id)name
 {
   v14.receiver = self;
   v14.super_class = CPLEngineStatusCenter;
-  v4 = [(CPLEngineStorage *)&v14 initWithEngineStore:a3 name:a4];
+  v4 = [(CPLEngineStorage *)&v14 initWithEngineStore:store name:name];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);

@@ -16,8 +16,8 @@
 - (void)SUCoreBorder_queryMetaDataWithError:()SUCoreBorderMAAssetQuery
 {
   v4 = a3;
-  v5 = [MEMORY[0x277D644A0] sharedSimulator];
-  v6 = [v5 begin:@"ma" atFunction:@"queryMetaDataWithError"];
+  mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
+  v6 = [mEMORY[0x277D644A0] begin:@"ma" atFunction:@"queryMetaDataWithError"];
 
   if (v6)
   {
@@ -31,33 +31,33 @@
     v7[2] = __78__MAAssetQuery_SUCoreBorderMAAssetQuery__SUCoreBorder_queryMetaDataWithError___block_invoke;
     v7[3] = &unk_27892C948;
     v8 = v4;
-    [a1 queryMetaDataWithError:v7];
+    [self queryMetaDataWithError:v7];
   }
 }
 
 - (id)SUCoreBorder_results
 {
-  v2 = [MEMORY[0x277D644A0] sharedSimulator];
-  v3 = [v2 begin:@"ma" atFunction:@"results"];
+  mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
+  v3 = [mEMORY[0x277D644A0] begin:@"ma" atFunction:@"results"];
 
   if (v3)
   {
-    v4 = [a1 _SUCoreBorder_results:v3];
+    v4 = [self _SUCoreBorder_results:v3];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D644A0] sharedSimulator];
-    v6 = [v5 end:@"ma" atFunction:@"results"];
+    mEMORY[0x277D644A0]2 = [MEMORY[0x277D644A0] sharedSimulator];
+    v6 = [mEMORY[0x277D644A0]2 end:@"ma" atFunction:@"results"];
 
     if (v6)
     {
-      [a1 _SUCoreBorder_results:v6];
+      [self _SUCoreBorder_results:v6];
     }
 
     else
     {
-      [a1 results];
+      [self results];
     }
     v4 = ;
   }
@@ -69,8 +69,8 @@
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v5 simAction];
-  if (v7 == 3)
+  simAction = [v5 simAction];
+  if (simAction == 3)
   {
     v9 = 0;
     v10 = 0;
@@ -78,26 +78,26 @@
 
   else
   {
-    if (v7 == 1)
+    if (simAction == 1)
     {
-      v8 = [MEMORY[0x277D644A0] sharedSimulator];
+      mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
       v9 = 3;
-      v10 = [v8 generateError:@"_SUCoreBorder_MAQueryResultAtBegin" ofDomain:@"com.apple.MobileAssetError.Query" withCode:3];
+      v10 = [mEMORY[0x277D644A0] generateError:@"_SUCoreBorder_MAQueryResultAtBegin" ofDomain:@"com.apple.MobileAssetError.Query" withCode:3];
     }
 
     else
     {
-      v8 = [MEMORY[0x277D64428] sharedDiag];
+      mEMORY[0x277D644A0] = [MEMORY[0x277D64428] sharedDiag];
       v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v5];
-      [v8 trackAnomaly:@"_SUCoreBorder_MAQueryResultAtBegin" forReason:v11 withResult:8113 withError:0];
+      [mEMORY[0x277D644A0] trackAnomaly:@"_SUCoreBorder_MAQueryResultAtBegin" forReason:v11 withResult:8113 withError:0];
 
       v10 = 0;
       v9 = 12;
     }
   }
 
-  v12 = [MEMORY[0x277D643F8] sharedCore];
-  v13 = [v12 completionQueue];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  completionQueue = [mEMORY[0x277D643F8] completionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __92__MAAssetQuery_SUCoreBorderMAAssetQuery___SUCoreBorder_MAQueryResultAtBegin_withCompletion___block_invoke;
@@ -107,7 +107,7 @@
   v17 = v10;
   v14 = v10;
   v15 = v6;
-  dispatch_async(v13, block);
+  dispatch_async(completionQueue, block);
 }
 
 + (void)_SUCoreBorder_MAQueryResultAtEnd:()SUCoreBorderMAAssetQuery withResult:withError:withCompletion:
@@ -115,29 +115,29 @@
   v15 = a3;
   v9 = a5;
   v10 = a6;
-  v11 = [v15 simAction];
-  if (v11 == 3)
+  simAction = [v15 simAction];
+  if (simAction == 3)
   {
     a4 = 0;
     v13 = 0;
-    v12 = v9;
+    mEMORY[0x277D644A0] = v9;
   }
 
   else
   {
-    if (v11 == 1)
+    if (simAction == 1)
     {
-      v12 = [MEMORY[0x277D644A0] sharedSimulator];
+      mEMORY[0x277D644A0] = [MEMORY[0x277D644A0] sharedSimulator];
       a4 = 3;
-      v13 = [v12 generateError:@"_SUCoreBorder_MAQueryResultAtEnd" ofDomain:@"com.apple.MobileAssetError.Query" withCode:3];
+      v13 = [mEMORY[0x277D644A0] generateError:@"_SUCoreBorder_MAQueryResultAtEnd" ofDomain:@"com.apple.MobileAssetError.Query" withCode:3];
       v14 = v9;
     }
 
     else
     {
-      v12 = [MEMORY[0x277D64428] sharedDiag];
+      mEMORY[0x277D644A0] = [MEMORY[0x277D64428] sharedDiag];
       v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v15];
-      [v12 trackAnomaly:@"_SUCoreBorder_MAQueryResultAtEnd" forReason:v14 withResult:8113 withError:0];
+      [mEMORY[0x277D644A0] trackAnomaly:@"_SUCoreBorder_MAQueryResultAtEnd" forReason:v14 withResult:8113 withError:0];
       v13 = v9;
     }
   }
@@ -148,18 +148,18 @@
 - (id)_SUCoreBorder_results:()SUCoreBorderMAAssetQuery
 {
   v4 = a3;
-  v5 = [v4 simAction];
-  if (v5 != 1)
+  simAction = [v4 simAction];
+  if (simAction != 1)
   {
-    if (v5 == 3)
+    if (simAction == 3)
     {
-      v6 = [a1 _getQueryResultsForEvent:v4];
+      v6 = [self _getQueryResultsForEvent:v4];
       goto LABEL_6;
     }
 
-    v7 = [MEMORY[0x277D64428] sharedDiag];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
     v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"unsupported simulated event action, event: %@", v4];
-    [v7 trackAnomaly:@"_SUCoreBorder_results" forReason:v8 withResult:8113 withError:0];
+    [mEMORY[0x277D64428] trackAnomaly:@"_SUCoreBorder_results" forReason:v8 withResult:8113 withError:0];
   }
 
   v6 = 0;
@@ -171,24 +171,24 @@ LABEL_6:
 - (id)_getQueryResultsForEvent:()SUCoreBorderMAAssetQuery
 {
   v4 = a3;
-  v5 = [v4 assetBuildVersions];
-  v6 = [v5 count];
-  v7 = [v4 assetProductVersions];
-  v8 = [v7 count];
+  assetBuildVersions = [v4 assetBuildVersions];
+  v6 = [assetBuildVersions count];
+  assetProductVersions = [v4 assetProductVersions];
+  v8 = [assetProductVersions count];
 
   if (v6 != v8)
   {
-    v9 = [MEMORY[0x277D64428] sharedDiag];
-    [v9 trackAnomaly:@"_getQueryResultsForEvent" forReason:@"asset BuildVersions/ProductVersions must have the same count (please file a radar; the event should not have been created)" withResult:8113 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"_getQueryResultsForEvent" forReason:@"asset BuildVersions/ProductVersions must have the same count (please file a radar; the event should not have been created)" withResult:8113 withError:0];
     v15 = 0;
     goto LABEL_44;
   }
 
-  v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [a1 _getQueryParamsForKey:@"SUDocumentationID"];
-  v11 = [a1 _getQueryParamsForKey:@"PrerequisiteBuild"];
-  v12 = [a1 _getQueryParamsForKey:@"PrerequisiteOSVersion"];
-  v60 = [a1 _getQueryParamsForKey:@"ReleaseType"];
+  mEMORY[0x277D64428] = objc_alloc_init(MEMORY[0x277CBEB18]);
+  v10 = [self _getQueryParamsForKey:@"SUDocumentationID"];
+  v11 = [self _getQueryParamsForKey:@"PrerequisiteBuild"];
+  v12 = [self _getQueryParamsForKey:@"PrerequisiteOSVersion"];
+  v60 = [self _getQueryParamsForKey:@"ReleaseType"];
   v13 = [v11 count];
   v59 = v10;
   if (v13 == [v12 count])
@@ -206,8 +206,8 @@ LABEL_6:
       v63 = 0;
     }
 
-    v19 = [a1 assetType];
-    isUpdateBrainAssetType = _isUpdateBrainAssetType(v19);
+    assetType = [self assetType];
+    isUpdateBrainAssetType = _isUpdateBrainAssetType(assetType);
 
     v11 = v14;
     if ([v14 count] == 1)
@@ -241,26 +241,26 @@ LABEL_23:
           v65 = 0;
         }
 
-        v25 = [v4 assetBuildVersions];
-        v26 = [v25 count];
+        assetBuildVersions2 = [v4 assetBuildVersions];
+        v26 = [assetBuildVersions2 count];
 
         if (v26)
         {
           v27 = 0;
           v18 = 0;
-          v68 = v9;
+          v68 = mEMORY[0x277D64428];
           do
           {
             if (v64)
             {
-              v28 = [a1 assetType];
-              v29 = [v4 assetBuildVersions];
-              v30 = [v29 objectAtIndexedSubscript:v27];
-              v31 = [v4 assetProductVersions];
-              v32 = [v31 objectAtIndexedSubscript:v27];
-              v33 = _getNewSoftwareUpdateMAAssetAttributesDictionary(v28, v30, v32, v65, 0, 0, 0);
+              assetType2 = [self assetType];
+              assetBuildVersions3 = [v4 assetBuildVersions];
+              v30 = [assetBuildVersions3 objectAtIndexedSubscript:v27];
+              assetProductVersions2 = [v4 assetProductVersions];
+              v32 = [assetProductVersions2 objectAtIndexedSubscript:v27];
+              v33 = _getNewSoftwareUpdateMAAssetAttributesDictionary(assetType2, v30, v32, v65, 0, 0, 0);
 
-              v9 = v68;
+              mEMORY[0x277D64428] = v68;
               v34 = [objc_alloc(MEMORY[0x277D289C0]) initWithAttributes:v33];
               [v68 addObject:v34];
 
@@ -269,14 +269,14 @@ LABEL_23:
 
             if (HIDWORD(v64))
             {
-              v35 = [a1 assetType];
-              v36 = [v4 assetBuildVersions];
-              v37 = [v36 objectAtIndexedSubscript:v27];
-              v38 = [v4 assetProductVersions];
-              v39 = [v38 objectAtIndexedSubscript:v27];
-              v40 = _getNewSoftwareUpdateMAAssetAttributesDictionary(v35, v37, v39, v65, v61, v62, 0);
+              assetType3 = [self assetType];
+              assetBuildVersions4 = [v4 assetBuildVersions];
+              v37 = [assetBuildVersions4 objectAtIndexedSubscript:v27];
+              assetProductVersions3 = [v4 assetProductVersions];
+              v39 = [assetProductVersions3 objectAtIndexedSubscript:v27];
+              v40 = _getNewSoftwareUpdateMAAssetAttributesDictionary(assetType3, v37, v39, v65, v61, v62, 0);
 
-              v9 = v68;
+              mEMORY[0x277D64428] = v68;
               v41 = [objc_alloc(MEMORY[0x277D289C0]) initWithAttributes:v40];
               [v68 addObject:v41];
 
@@ -285,14 +285,14 @@ LABEL_23:
 
             if (v67)
             {
-              v42 = [a1 assetType];
-              v43 = [v4 assetBuildVersions];
-              v44 = [v43 objectAtIndexedSubscript:v27];
-              v45 = [v4 assetProductVersions];
-              v46 = [v45 objectAtIndexedSubscript:v27];
-              v47 = _getNewDocumentationMAAssetAttributesDictionary(v42, v44, v46, v63, 0);
+              assetType4 = [self assetType];
+              assetBuildVersions5 = [v4 assetBuildVersions];
+              v44 = [assetBuildVersions5 objectAtIndexedSubscript:v27];
+              assetProductVersions4 = [v4 assetProductVersions];
+              v46 = [assetProductVersions4 objectAtIndexedSubscript:v27];
+              v47 = _getNewDocumentationMAAssetAttributesDictionary(assetType4, v44, v46, v63, 0);
 
-              v9 = v68;
+              mEMORY[0x277D64428] = v68;
               v48 = [objc_alloc(MEMORY[0x277D289C0]) initWithAttributes:v47];
               [v68 addObject:v48];
 
@@ -301,20 +301,20 @@ LABEL_23:
 
             if (isUpdateBrainAssetType)
             {
-              v49 = [a1 assetType];
-              v50 = [v4 assetBuildVersions];
-              v51 = [v50 objectAtIndexedSubscript:v27];
-              v52 = _getNewUpdateBrainMAAssetAttributesDictionary(v49, v51, 0);
+              assetType5 = [self assetType];
+              assetBuildVersions6 = [v4 assetBuildVersions];
+              v51 = [assetBuildVersions6 objectAtIndexedSubscript:v27];
+              v52 = _getNewUpdateBrainMAAssetAttributesDictionary(assetType5, v51, 0);
 
               v53 = [objc_alloc(MEMORY[0x277D289C0]) initWithAttributes:v52];
-              [v9 addObject:v53];
+              [mEMORY[0x277D64428] addObject:v53];
 
               v18 = v52;
             }
 
             ++v27;
-            v54 = [v4 assetBuildVersions];
-            v55 = [v54 count];
+            assetBuildVersions7 = [v4 assetBuildVersions];
+            v55 = [assetBuildVersions7 count];
           }
 
           while (v27 < v55);
@@ -325,7 +325,7 @@ LABEL_23:
           v18 = 0;
         }
 
-        v15 = v9;
+        v15 = mEMORY[0x277D64428];
 
         v11 = v57;
         goto LABEL_41;
@@ -338,9 +338,9 @@ LABEL_23:
       {
         if (!((v67 != 0) | isUpdateBrainAssetType & 1))
         {
-          v17 = [MEMORY[0x277D64428] sharedDiag];
+          mEMORY[0x277D64428]2 = [MEMORY[0x277D64428] sharedDiag];
           v62 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No indication as to which simulated assets should be created"];
-          [v17 trackAnomaly:@"_getQueryResultsForEvent" forReason:? withResult:? withError:?];
+          [mEMORY[0x277D64428]2 trackAnomaly:@"_getQueryResultsForEvent" forReason:? withResult:? withError:?];
           v18 = 0;
           v15 = 0;
           goto LABEL_42;
@@ -363,23 +363,23 @@ LABEL_23:
       }
     }
 
-    v24 = [MEMORY[0x277D64428] sharedDiag];
-    [v24 trackAnomaly:@"_getQueryResultsForEvent" forReason:@"prerequisite build/product version array contains invalid values" withResult:8113 withError:0];
+    mEMORY[0x277D64428]3 = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428]3 trackAnomaly:@"_getQueryResultsForEvent" forReason:@"prerequisite build/product version array contains invalid values" withResult:8113 withError:0];
 
     v18 = 0;
     v15 = 0;
 LABEL_41:
-    v17 = v61;
+    mEMORY[0x277D64428]2 = v61;
 LABEL_42:
 
     v12 = v58;
-    v16 = v63;
+    mEMORY[0x277D64428]4 = v63;
     goto LABEL_43;
   }
 
-  v16 = [MEMORY[0x277D64428] sharedDiag];
-  v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"prerequisite Build/ProductVersion counts do not match (found build:%lu and product:%lu)", objc_msgSend(v11, "count"), objc_msgSend(v12, "count")];
-  [v16 trackAnomaly:@"_getQueryResultsForEvent" forReason:v17 withResult:8113 withError:0];
+  mEMORY[0x277D64428]4 = [MEMORY[0x277D64428] sharedDiag];
+  mEMORY[0x277D64428]2 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"prerequisite Build/ProductVersion counts do not match (found build:%lu and product:%lu)", objc_msgSend(v11, "count"), objc_msgSend(v12, "count")];
+  [mEMORY[0x277D64428]4 trackAnomaly:@"_getQueryResultsForEvent" forReason:mEMORY[0x277D64428]2 withResult:8113 withError:0];
   v18 = 0;
   v15 = 0;
 LABEL_43:
@@ -397,8 +397,8 @@ LABEL_44:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a1 queryParams];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  queryParams = [self queryParams];
+  v6 = [queryParams countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -408,7 +408,7 @@ LABEL_44:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(queryParams);
         }
 
         if (v4)
@@ -425,7 +425,7 @@ LABEL_44:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [queryParams countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;

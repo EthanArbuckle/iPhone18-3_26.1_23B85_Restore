@@ -1,18 +1,18 @@
 @interface NEIKEv2SecurityContextChaCha20Poly1305
-- (_DWORD)initWithEncryptionProtocol:(void *)a3 outgoingEncryptionKey:(void *)a4 incomingEncryptionKey:;
-- (id)decryptPayloadData:(id)a3 authenticatedHeaders:(id)a4;
+- (_DWORD)initWithEncryptionProtocol:(void *)protocol outgoingEncryptionKey:(void *)key incomingEncryptionKey:;
+- (id)decryptPayloadData:(id)data authenticatedHeaders:(id)headers;
 - (void)dealloc;
 @end
 
 @implementation NEIKEv2SecurityContextChaCha20Poly1305
 
-- (id)decryptPayloadData:(id)a3 authenticatedHeaders:(id)a4
+- (id)decryptPayloadData:(id)data authenticatedHeaders:(id)headers
 {
   *&v35[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  dataCopy = data;
+  headersCopy = headers;
+  v8 = headersCopy;
+  if (!dataCopy)
   {
     v20 = ne_log_obj();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -33,7 +33,7 @@ LABEL_23:
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!headersCopy)
   {
     v20 = ne_log_obj();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -47,7 +47,7 @@ LABEL_23:
     goto LABEL_22;
   }
 
-  v9 = [v6 length];
+  v9 = [dataCopy length];
   v10 = v9;
   if (self && self->super._minimumEncryptedPayloadSize > v9)
   {
@@ -85,7 +85,7 @@ LABEL_35:
 
   *v35 = 0;
   __s = *self->incomingEncryptionSalt;
-  [v6 getBytes:v35 length:8];
+  [dataCopy getBytes:v35 length:8];
   v12 = ccchacha20poly1305_setnonce();
   memset_s(&__s, 0xCuLL, 0, 0xCuLL);
   if (v12)
@@ -124,7 +124,7 @@ LABEL_33:
   }
 
   v14 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v10 - 24];
-  [v6 bytes];
+  [dataCopy bytes];
   [v14 mutableBytes];
   v15 = ccchacha20poly1305_decrypt();
   if (v15)
@@ -181,14 +181,14 @@ LABEL_12:
   [(NEIKEv2SecurityContextChaCha20Poly1305 *)&v3 dealloc];
 }
 
-- (_DWORD)initWithEncryptionProtocol:(void *)a3 outgoingEncryptionKey:(void *)a4 incomingEncryptionKey:
+- (_DWORD)initWithEncryptionProtocol:(void *)protocol outgoingEncryptionKey:(void *)key incomingEncryptionKey:
 {
   v20 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!a1)
+  protocolCopy = protocol;
+  keyCopy = key;
+  v10 = keyCopy;
+  if (!self)
   {
     goto LABEL_24;
   }
@@ -212,7 +212,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v8)
+  if (!protocolCopy)
   {
     v12 = ne_log_obj();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -226,7 +226,7 @@ LABEL_22:
     goto LABEL_16;
   }
 
-  if (!v9)
+  if (!keyCopy)
   {
     v12 = ne_log_obj();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -245,17 +245,17 @@ LABEL_22:
     goto LABEL_24;
   }
 
-  a1 = [(NEIKEv2SecurityContext *)a1 initWithMinimumEncryptedPayloadSize:?];
-  if (!a1)
+  self = [(NEIKEv2SecurityContext *)self initWithMinimumEncryptedPayloadSize:?];
+  if (!self)
   {
     goto LABEL_24;
   }
 
-  [v8 getBytes:a1 + 132 range:{objc_msgSend(v8, "length") - 4, 4}];
+  [protocolCopy getBytes:self + 132 range:{objc_msgSend(protocolCopy, "length") - 4, 4}];
   objc_opt_self();
-  arc4random_buf(a1 + 134, 8uLL);
+  arc4random_buf(self + 134, 8uLL);
   ccchacha20poly1305_info();
-  [v8 bytes];
+  [protocolCopy bytes];
   if (ccchacha20poly1305_init())
   {
     v12 = ne_log_obj();
@@ -272,11 +272,11 @@ LABEL_21:
 LABEL_23:
 
 LABEL_24:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_25;
   }
 
-  [v10 getBytes:a1 + 133 range:{objc_msgSend(v10, "length") - 4, 4}];
+  [v10 getBytes:self + 133 range:{objc_msgSend(v10, "length") - 4, 4}];
   ccchacha20poly1305_info();
   [v10 bytes];
   if (ccchacha20poly1305_init())
@@ -292,12 +292,12 @@ LABEL_24:
     goto LABEL_23;
   }
 
-  a1 = a1;
-  v11 = a1;
+  self = self;
+  selfCopy = self;
 LABEL_25:
 
   v16 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 @end

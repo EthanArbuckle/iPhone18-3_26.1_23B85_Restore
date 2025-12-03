@@ -5,15 +5,15 @@
 - (NSString)fullName;
 - (id)ensureMemoryObject;
 - (unint64_t)wiredSize;
-- (void)setExtendedInfo:(id)a3;
-- (void)setVerbose:(BOOL)a3;
+- (void)setExtendedInfo:(id)info;
+- (void)setVerbose:(BOOL)verbose;
 @end
 
 @implementation FPMemoryRegion
 
-- (void)setVerbose:(BOOL)a3
+- (void)setVerbose:(BOOL)verbose
 {
-  if (a3)
+  if (verbose)
   {
     v3 = 16;
   }
@@ -66,7 +66,7 @@
 - (NSString)description
 {
   offset = self->_offset;
-  v4 = [(FPMemoryRegion *)self fullName];
+  fullName = [(FPMemoryRegion *)self fullName];
   if (offset)
   {
     v5 = self->_offset;
@@ -82,7 +82,7 @@
     }
 
     v8 = [NSNumber numberWithUnsignedLongLong:?];
-    [NSString stringWithFormat:@"%@ Offset %#llx [%#llx - %#llx](%@)", v4, v5, start, v7, v8];
+    [NSString stringWithFormat:@"%@ Offset %#llx [%#llx - %#llx](%@)", fullName, v5, start, v7, v8];
   }
 
   else
@@ -99,7 +99,7 @@
     }
 
     v8 = [NSNumber numberWithUnsignedLongLong:?];
-    [NSString stringWithFormat:@"%@ [%#llx - %#llx](%@)", v4, v9, v10, v8, v13];
+    [NSString stringWithFormat:@"%@ [%#llx - %#llx](%@)", fullName, v9, v10, v8, v13];
   }
   v11 = ;
 
@@ -143,16 +143,16 @@
   return v3;
 }
 
-- (void)setExtendedInfo:(id)a3
+- (void)setExtendedInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   os_unfair_lock_lock(&unk_1000344F8);
   if (qword_100034510[0] != -1)
   {
     dispatch_once(qword_100034510, &stru_1000290E8);
   }
 
-  [qword_100034508 setObject:v4 forKey:self];
+  [qword_100034508 setObject:infoCopy forKey:self];
 
   os_unfair_lock_unlock(&unk_1000344F8);
 }

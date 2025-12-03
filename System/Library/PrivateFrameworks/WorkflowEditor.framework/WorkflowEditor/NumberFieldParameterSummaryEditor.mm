@@ -1,98 +1,98 @@
 @interface NumberFieldParameterSummaryEditor
-- (BOOL)textEntryShouldChangeText:(id)a3;
+- (BOOL)textEntryShouldChangeText:(id)text;
 - (WFVariableProvider)variableProvider;
-- (id)stateByReplacingVariableFromCurrentState:(id)a3 withVariable:(id)a4;
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4;
-- (void)cancelEditingWithCompletionHandler:(id)a3;
-- (void)setVariableProvider:(id)a3;
-- (void)stageState:(id)a3;
+- (id)stateByReplacingVariableFromCurrentState:(id)state withVariable:(id)variable;
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor;
+- (void)cancelEditingWithCompletionHandler:(id)handler;
+- (void)setVariableProvider:(id)provider;
+- (void)stageState:(id)state;
 - (void)textEntryDidFinish;
-- (void)textEntryTextDidChange:(id)a3;
-- (void)textEntryWillBegin:(id)a3 allowMultipleLines:(BOOL *)a4;
+- (void)textEntryTextDidChange:(id)change;
+- (void)textEntryWillBegin:(id)begin allowMultipleLines:(BOOL *)lines;
 @end
 
 @implementation NumberFieldParameterSummaryEditor
 
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  identifierCopy = identifier;
+  anchorCopy = anchor;
+  selfCopy = self;
   sub_27448A194();
 }
 
-- (void)cancelEditingWithCompletionHandler:(id)a3
+- (void)cancelEditingWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_2745EA34C(&unk_27464F620, v5);
 }
 
 - (WFVariableProvider)variableProvider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_27448A728();
 
   return v3;
 }
 
-- (void)setVariableProvider:(id)a3
+- (void)setVariableProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_27448A7D0(a3);
+  selfCopy = self;
+  sub_27448A7D0(provider);
 }
 
-- (id)stateByReplacingVariableFromCurrentState:(id)a3 withVariable:(id)a4
+- (id)stateByReplacingVariableFromCurrentState:(id)state withVariable:(id)variable
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_27448A92C(v8, a4);
+  stateCopy = state;
+  variableCopy = variable;
+  selfCopy = self;
+  v9 = sub_27448A92C(selfCopy, variable);
 
   return v9;
 }
 
-- (void)textEntryWillBegin:(id)a3 allowMultipleLines:(BOOL *)a4
+- (void)textEntryWillBegin:(id)begin allowMultipleLines:(BOOL *)lines
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_27448A9E8(a3, a4);
+  selfCopy = self;
+  sub_27448A9E8(begin, lines);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)textEntryShouldChangeText:(id)a3
+- (BOOL)textEntryShouldChangeText:(id)text
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_27448AEFC(v3);
+  textCopy = text;
+  textCopy2 = text;
+  selfCopy = self;
+  LOBYTE(textCopy) = sub_27448AEFC(textCopy);
 
-  return v3 & 1;
+  return textCopy & 1;
 }
 
-- (void)textEntryTextDidChange:(id)a3
+- (void)textEntryTextDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_27448B024(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_27448B024(change);
 }
 
 - (void)textEntryDidFinish
 {
-  v2 = self;
+  selfCopy = self;
   sub_27448B320();
 }
 
-- (void)stageState:(id)a3
+- (void)stageState:(id)state
 {
-  v5 = a3;
-  v6 = self;
-  sub_27448B418(a3);
+  stateCopy = state;
+  selfCopy = self;
+  sub_27448B418(state);
 }
 
 @end

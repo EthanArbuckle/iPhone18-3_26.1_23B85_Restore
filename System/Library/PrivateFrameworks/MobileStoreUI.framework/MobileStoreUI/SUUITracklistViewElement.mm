@@ -2,15 +2,15 @@
 - (NSArray)sections;
 - (NSArray)tracks;
 - (SUUIHeaderViewElement)header;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)enumerateTracksUsingBlock:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)enumerateTracksUsingBlock:(id)block;
 @end
 
 @implementation SUUITracklistViewElement
 
-- (void)enumerateTracksUsingBlock:(id)a3
+- (void)enumerateTracksUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -19,7 +19,7 @@
   v6[1] = 3221225472;
   v6[2] = __54__SUUITracklistViewElement_enumerateTracksUsingBlock___block_invoke;
   v6[3] = &unk_2798F91A8;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   v8 = v9;
   [(SUUIViewElement *)self enumerateChildrenUsingBlock:v6];
@@ -48,13 +48,13 @@ void __54__SUUITracklistViewElement_enumerateTracksUsingBlock___block_invoke(uin
   v9 = __Block_byref_object_copy__58;
   v10 = __Block_byref_object_dispose__58;
   v11 = 0;
-  v2 = [(SUUITracklistViewElement *)self children];
+  children = [(SUUITracklistViewElement *)self children];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __34__SUUITracklistViewElement_header__block_invoke;
   v5[3] = &unk_2798FB628;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [children enumerateObjectsUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -81,13 +81,13 @@ void __34__SUUITracklistViewElement_header__block_invoke(uint64_t a1, void *a2, 
     v5 = self->_sections;
     self->_sections = v4;
 
-    v6 = [(SUUITracklistViewElement *)self children];
+    children = [(SUUITracklistViewElement *)self children];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __36__SUUITracklistViewElement_sections__block_invoke;
     v9[3] = &unk_2798FB650;
     v9[4] = self;
-    [v6 enumerateObjectsUsingBlock:v9];
+    [children enumerateObjectsUsingBlock:v9];
 
     sections = self->_sections;
   }
@@ -119,13 +119,13 @@ void __36__SUUITracklistViewElement_sections__block_invoke(uint64_t a1, void *a2
     v5 = self->_tracks;
     self->_tracks = v4;
 
-    v6 = [(SUUITracklistViewElement *)self children];
+    children = [(SUUITracklistViewElement *)self children];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __34__SUUITracklistViewElement_tracks__block_invoke;
     v9[3] = &unk_2798FB650;
     v9[4] = self;
-    [v6 enumerateObjectsUsingBlock:v9];
+    [children enumerateObjectsUsingBlock:v9];
 
     tracks = self->_tracks;
   }
@@ -148,14 +148,14 @@ void __34__SUUITracklistViewElement_tracks__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
   v9.receiver = self;
   v9.super_class = SUUITracklistViewElement;
-  v4 = a3;
-  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:v4];
+  elementCopy = element;
+  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:elementCopy];
 
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
     sections = self->_sections;
     self->_sections = 0;

@@ -1,19 +1,19 @@
 @interface VGHumanBBox
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)bbox;
-- (VGHumanBBox)initWithBBox:(CGRect)a3 confidence:(double)a4;
-- (VGHumanBBox)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (VGHumanBBox)initWithBBox:(CGRect)box confidence:(double)confidence;
+- (VGHumanBBox)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VGHumanBBox
 
-- (VGHumanBBox)initWithBBox:(CGRect)a3 confidence:(double)a4
+- (VGHumanBBox)initWithBBox:(CGRect)box confidence:(double)confidence
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v10.receiver = self;
   v10.super_class = VGHumanBBox;
   result = [(VGHumanBBox *)&v10 init];
@@ -22,52 +22,52 @@
     result->_bbox.origin.y = y;
     result->_bbox.size.width = width;
     result->_bbox.size.height = height;
-    result->_confidence = a4;
+    result->_confidence = confidence;
     result->_bbox.origin.x = x;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   [(VGHumanBBox *)self bbox];
-  [v7 encodeDouble:@"bboxOriginX" forKey:?];
+  [coderCopy encodeDouble:@"bboxOriginX" forKey:?];
   [(VGHumanBBox *)self bbox];
-  [v7 encodeDouble:@"bboxOriginY" forKey:v4];
+  [coderCopy encodeDouble:@"bboxOriginY" forKey:v4];
   [(VGHumanBBox *)self bbox];
-  [v7 encodeDouble:@"bboxSizeH" forKey:v5];
+  [coderCopy encodeDouble:@"bboxSizeH" forKey:v5];
   [(VGHumanBBox *)self bbox];
-  [v7 encodeDouble:@"bboxSizeW" forKey:v6];
+  [coderCopy encodeDouble:@"bboxSizeW" forKey:v6];
   [(VGHumanBBox *)self confidence];
-  [v7 encodeDouble:@"confidence" forKey:?];
+  [coderCopy encodeDouble:@"confidence" forKey:?];
 }
 
-- (VGHumanBBox)initWithCoder:(id)a3
+- (VGHumanBBox)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"bboxOriginX"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"bboxOriginX"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"bboxOriginY"];
+  [coderCopy decodeDoubleForKey:@"bboxOriginY"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"bboxSizeH"];
+  [coderCopy decodeDoubleForKey:@"bboxSizeH"];
   v10 = v9;
-  [v4 decodeDoubleForKey:@"bboxSizeW"];
+  [coderCopy decodeDoubleForKey:@"bboxSizeW"];
   v12 = v11;
-  [v4 decodeDoubleForKey:@"confidence"];
+  [coderCopy decodeDoubleForKey:@"confidence"];
   v14 = v13;
 
   return [(VGHumanBBox *)self initWithBBox:v6 confidence:v8, v12, v10, v14];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [v5 bbox];
     v14.origin.x = v6;
     v14.origin.y = v7;

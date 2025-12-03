@@ -1,19 +1,19 @@
 @interface EAPostAlert
-+ (id)CopyLocalizedString:(id)a3;
-+ (void)EANotificationPostAccessoryNotification:(__CFString *)a3 forMsg:(__CFString *)a4 forDefaultButton:(__CFString *)a5 withAlternateButton:(__CFString *)a6 forNotification:(__CFUserNotification *)a7 withCallback:(void *)a8 andTimeout:(double)a9;
-+ (void)EATearDownAccessoryNotification:(__CFUserNotification *)a3;
++ (id)CopyLocalizedString:(id)string;
++ (void)EANotificationPostAccessoryNotification:(__CFString *)notification forMsg:(__CFString *)msg forDefaultButton:(__CFString *)button withAlternateButton:(__CFString *)alternateButton forNotification:(__CFUserNotification *)forNotification withCallback:(void *)callback andTimeout:(double)timeout;
++ (void)EATearDownAccessoryNotification:(__CFUserNotification *)notification;
 @end
 
 @implementation EAPostAlert
 
-+ (void)EANotificationPostAccessoryNotification:(__CFString *)a3 forMsg:(__CFString *)a4 forDefaultButton:(__CFString *)a5 withAlternateButton:(__CFString *)a6 forNotification:(__CFUserNotification *)a7 withCallback:(void *)a8 andTimeout:(double)a9
++ (void)EANotificationPostAccessoryNotification:(__CFString *)notification forMsg:(__CFString *)msg forDefaultButton:(__CFString *)button withAlternateButton:(__CFString *)alternateButton forNotification:(__CFUserNotification *)forNotification withCallback:(void *)callback andTimeout:(double)timeout
 {
   v17 = objc_autoreleasePoolPush();
   error = 0;
-  if (a3)
+  if (notification)
   {
-    v18 = [a1 CopyLocalizedString:a3];
-    if (a4)
+    v18 = [self CopyLocalizedString:notification];
+    if (msg)
     {
       goto LABEL_3;
     }
@@ -22,18 +22,18 @@
   else
   {
     v18 = &stru_284B0F7E0;
-    if (a4)
+    if (msg)
     {
 LABEL_3:
-      v19 = [a1 CopyLocalizedString:a4];
-      if (a5)
+      v19 = [self CopyLocalizedString:msg];
+      if (button)
       {
         goto LABEL_4;
       }
 
 LABEL_8:
       v20 = &stru_284B0F7E0;
-      if (a6)
+      if (alternateButton)
       {
         goto LABEL_5;
       }
@@ -43,17 +43,17 @@ LABEL_8:
   }
 
   v19 = &stru_284B0F7E0;
-  if (!a5)
+  if (!button)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  v20 = [a1 CopyLocalizedString:a5];
-  if (a6)
+  v20 = [self CopyLocalizedString:button];
+  if (alternateButton)
   {
 LABEL_5:
-    v21 = [a1 CopyLocalizedString:a6];
+    v21 = [self CopyLocalizedString:alternateButton];
     v22 = objc_alloc(MEMORY[0x277CBEAC0]);
     v23 = [v22 initWithObjectsAndKeys:{v18, *MEMORY[0x277CBF188], v19, *MEMORY[0x277CBF198], v20, *MEMORY[0x277CBF1E8], v21, *MEMORY[0x277CBF1C0], *MEMORY[0x277CBED28], *MEMORY[0x277CBF1B0], *MEMORY[0x277CBED28], @"DismissOnLock", 0}];
 
@@ -65,15 +65,15 @@ LABEL_9:
   v23 = [v24 initWithObjectsAndKeys:{v18, *MEMORY[0x277CBF188], v19, *MEMORY[0x277CBF198], v20, *MEMORY[0x277CBF1E8], *MEMORY[0x277CBED28], *MEMORY[0x277CBF1B0], *MEMORY[0x277CBED28], @"DismissOnLock", 0}];
 LABEL_10:
 
-  [EAPostAlert EATearDownAccessoryNotification:a7];
-  if (a7)
+  [EAPostAlert EATearDownAccessoryNotification:forNotification];
+  if (forNotification)
   {
     v25 = *MEMORY[0x277CBECE8];
-    v26 = CFUserNotificationCreate(*MEMORY[0x277CBECE8], a9, 3uLL, &error, v23);
-    *a7 = v26;
+    v26 = CFUserNotificationCreate(*MEMORY[0x277CBECE8], timeout, 3uLL, &error, v23);
+    *forNotification = v26;
     if (v26)
     {
-      RunLoopSource = CFUserNotificationCreateRunLoopSource(v25, v26, a8, 0);
+      RunLoopSource = CFUserNotificationCreateRunLoopSource(v25, v26, callback, 0);
       if (RunLoopSource)
       {
         v28 = RunLoopSource;
@@ -84,8 +84,8 @@ LABEL_10:
 
       else
       {
-        CFRelease(*a7);
-        *a7 = 0;
+        CFRelease(*forNotification);
+        *forNotification = 0;
       }
     }
 
@@ -98,20 +98,20 @@ LABEL_10:
   objc_autoreleasePoolPop(v17);
 }
 
-+ (void)EATearDownAccessoryNotification:(__CFUserNotification *)a3
++ (void)EATearDownAccessoryNotification:(__CFUserNotification *)notification
 {
-  if (a3)
+  if (notification)
   {
-    if (*a3)
+    if (*notification)
     {
-      CFUserNotificationCancel(*a3);
-      CFRelease(*a3);
-      *a3 = 0;
+      CFUserNotificationCancel(*notification);
+      CFRelease(*notification);
+      *notification = 0;
     }
   }
 }
 
-+ (id)CopyLocalizedString:(id)a3
++ (id)CopyLocalizedString:(id)string
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ExternalAccessory"];
@@ -122,11 +122,11 @@ LABEL_10:
 
   v5 = v4;
   v6 = objc_autoreleasePoolPush();
-  v7 = [v5 localizations];
-  if (a3)
+  localizations = [v5 localizations];
+  if (string)
   {
-    v8 = v7;
-    if (v7)
+    v8 = localizations;
+    if (localizations)
     {
       v9 = CFPreferencesCopyValue(@"AppleLanguages", *MEMORY[0x277CBF008], @"mobile", *MEMORY[0x277CBF010]);
       objc_opt_class();
@@ -154,7 +154,7 @@ LABEL_10:
                   objc_enumerationMutation(v10);
                 }
 
-                v15 = [v5 localizedStringForKey:a3 value:0 table:@"Localization" localization:*(*(&v19 + 1) + 8 * v14)];
+                v15 = [v5 localizedStringForKey:string value:0 table:@"Localization" localization:*(*(&v19 + 1) + 8 * v14)];
                 if (v15)
                 {
                   v16 = v15;
@@ -181,7 +181,7 @@ LABEL_10:
   }
 
   objc_autoreleasePoolPop(v6);
-  v16 = [v5 localizedStringForKey:a3 value:&stru_284B0F7E0 table:@"Localization"];
+  v16 = [v5 localizedStringForKey:string value:&stru_284B0F7E0 table:@"Localization"];
   if (!v16)
   {
 LABEL_15:

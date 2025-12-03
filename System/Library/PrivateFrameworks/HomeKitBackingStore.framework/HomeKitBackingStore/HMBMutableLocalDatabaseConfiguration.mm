@@ -1,14 +1,14 @@
 @interface HMBMutableLocalDatabaseConfiguration
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMBMutableLocalDatabaseConfiguration
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[HMBLocalDatabaseConfiguration allocWithZone:?]];
-  v5 = [(HMBLocalDatabaseConfiguration *)self modelContainer];
-  [(HMBLocalDatabaseConfiguration *)v4 setModelContainer:v5];
+  modelContainer = [(HMBLocalDatabaseConfiguration *)self modelContainer];
+  [(HMBLocalDatabaseConfiguration *)v4 setModelContainer:modelContainer];
 
   return v4;
 }

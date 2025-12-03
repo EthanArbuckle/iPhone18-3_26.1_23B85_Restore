@@ -1,23 +1,23 @@
 @interface SBSAMaintainedPreferencesMutator
 - (SBSAIndicatorAppearanceStateContext)indicatorAppearanceStateContext;
 - (SBSAMaintainedPreferences)maintainedPreferences;
-- (SBSAMaintainedPreferencesMutator)initWithMaintainedPreferences:(id)a3;
+- (SBSAMaintainedPreferencesMutator)initWithMaintainedPreferences:(id)preferences;
 - (id)description;
-- (void)setIndicatorAppearanceStateContext:(id)a3;
+- (void)setIndicatorAppearanceStateContext:(id)context;
 @end
 
 @implementation SBSAMaintainedPreferencesMutator
 
-- (SBSAMaintainedPreferencesMutator)initWithMaintainedPreferences:(id)a3
+- (SBSAMaintainedPreferencesMutator)initWithMaintainedPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v8.receiver = self;
   v8.super_class = SBSAMaintainedPreferencesMutator;
   v5 = [(SBSAMaintainedPreferencesMutator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_maintainedPreferences, v4);
+    objc_storeWeak(&v5->_maintainedPreferences, preferencesCopy);
   }
 
   return v6;
@@ -26,16 +26,16 @@
 - (SBSAIndicatorAppearanceStateContext)indicatorAppearanceStateContext
 {
   WeakRetained = objc_loadWeakRetained(&self->_maintainedPreferences);
-  v3 = [WeakRetained indicatorAppearanceStateContext];
+  indicatorAppearanceStateContext = [WeakRetained indicatorAppearanceStateContext];
 
-  return v3;
+  return indicatorAppearanceStateContext;
 }
 
-- (void)setIndicatorAppearanceStateContext:(id)a3
+- (void)setIndicatorAppearanceStateContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_maintainedPreferences);
-  [WeakRetained _setIndicatorAppearanceStateContext:v4];
+  [WeakRetained _setIndicatorAppearanceStateContext:contextCopy];
 }
 
 - (id)description
@@ -43,9 +43,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_maintainedPreferences);
-  v6 = [v3 stringWithFormat:@"<%@: %p maintainedPreferences: %@>", v4, self, WeakRetained];;
+  weakRetained = [v3 stringWithFormat:@"<%@: %p maintainedPreferences: %@>", v4, self, WeakRetained];;
 
-  return v6;
+  return weakRetained;
 }
 
 - (SBSAMaintainedPreferences)maintainedPreferences

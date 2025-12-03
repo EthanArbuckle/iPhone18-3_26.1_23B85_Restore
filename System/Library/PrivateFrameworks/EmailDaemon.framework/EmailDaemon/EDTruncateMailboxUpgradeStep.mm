@@ -1,8 +1,8 @@
 @interface EDTruncateMailboxUpgradeStep
 + (OS_os_log)log;
-+ (int)runWithConnection:(id)a3;
-+ (int64_t)countOver10kWithConnection:(id)a3;
-+ (void)presentNeedlessAlertIfNecessaryWithPersistence:(id)a3;
++ (int)runWithConnection:(id)connection;
++ (int64_t)countOver10kWithConnection:(id)connection;
++ (void)presentNeedlessAlertIfNecessaryWithPersistence:(id)persistence;
 @end
 
 @implementation EDTruncateMailboxUpgradeStep
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __35__EDTruncateMailboxUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_105 != -1)
   {
     dispatch_once(&log_onceToken_105, block);
@@ -32,10 +32,10 @@ void __35__EDTruncateMailboxUpgradeStep_log__block_invoke(uint64_t a1)
   log_log_105 = v1;
 }
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v4 = a3;
-  if ((_os_feature_enabled_impl() & 1) != 0 || (v5 = [a1 countOver10kWithConnection:v4], v5 < 1))
+  connectionCopy = connection;
+  if ((_os_feature_enabled_impl() & 1) != 0 || (v5 = [self countOver10kWithConnection:connectionCopy], v5 < 1))
   {
     v8 = 0;
   }
@@ -48,8 +48,8 @@ void __35__EDTruncateMailboxUpgradeStep_log__block_invoke(uint64_t a1)
       [EDTruncateMailboxUpgradeStep runWithConnection:v6];
     }
 
-    v7 = [MEMORY[0x1E695E000] em_userDefaults];
-    [v7 setInteger:v5 forKey:@"_TruncateMailboxUpgradeStepOver10kCount"];
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+    [em_userDefaults setInteger:v5 forKey:@"_TruncateMailboxUpgradeStepOver10kCount"];
 
     v8 = 1;
   }
@@ -57,16 +57,16 @@ void __35__EDTruncateMailboxUpgradeStep_log__block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (int64_t)countOver10kWithConnection:(id)a3
++ (int64_t)countOver10kWithConnection:(id)connection
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  connectionCopy = connection;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v5 = [v3 preparedStatementForQueryString:{@"SELECT url, count() FROM messages m JOIN mailboxes mb ON (m.mailbox = mb.rowid) GROUP BY url"}];;
+  v5 = [connectionCopy preparedStatementForQueryString:{@"SELECT url, count() FROM messages m JOIN mailboxes mb ON (m.mailbox = mb.rowid) GROUP BY url"}];;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __59__EDTruncateMailboxUpgradeStep_countOver10kWithConnection___block_invoke;
@@ -99,8 +99,8 @@ void __35__EDTruncateMailboxUpgradeStep_log__block_invoke(uint64_t a1)
     v12 = +[EDTruncateMailboxUpgradeStep log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v8 ef_publicDescription];
-      [(EDTruncateMailboxUpgradeStep *)v13 countOver10kWithConnection:buf, v12];
+      ef_publicDescription = [v8 ef_publicDescription];
+      [(EDTruncateMailboxUpgradeStep *)ef_publicDescription countOver10kWithConnection:buf, v12];
     }
 
     v11 = 0;
@@ -131,17 +131,17 @@ void __59__EDTruncateMailboxUpgradeStep_countOver10kWithConnection___block_invok
   }
 }
 
-+ (void)presentNeedlessAlertIfNecessaryWithPersistence:(id)a3
++ (void)presentNeedlessAlertIfNecessaryWithPersistence:(id)persistence
 {
-  v4 = a3;
+  persistenceCopy = persistence;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __79__EDTruncateMailboxUpgradeStep_presentNeedlessAlertIfNecessaryWithPersistence___block_invoke;
     v5[3] = &unk_1E8250A90;
-    v6 = v4;
-    v7 = a1;
+    v6 = persistenceCopy;
+    selfCopy = self;
     if (presentNeedlessAlertIfNecessaryWithPersistence__onceToken != -1)
     {
       dispatch_once(&presentNeedlessAlertIfNecessaryWithPersistence__onceToken, v5);

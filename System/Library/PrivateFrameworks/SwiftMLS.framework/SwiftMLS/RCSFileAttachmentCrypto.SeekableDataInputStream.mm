@@ -1,18 +1,18 @@
 @interface RCSFileAttachmentCrypto.SeekableDataInputStream
 - (BOOL)hasBytesAvailable;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (_TtCO8SwiftMLS23RCSFileAttachmentCrypto23SeekableDataInputStream)initWithData:(id)a3;
-- (_TtCO8SwiftMLS23RCSFileAttachmentCrypto23SeekableDataInputStream)initWithURL:(id)a3;
-- (id)propertyForKey:(id)a3;
-- (int64_t)read:(char *)a3 maxLength:(int64_t)a4;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (_TtCO8SwiftMLS23RCSFileAttachmentCrypto23SeekableDataInputStream)initWithData:(id)data;
+- (_TtCO8SwiftMLS23RCSFileAttachmentCrypto23SeekableDataInputStream)initWithURL:(id)l;
+- (id)propertyForKey:(id)key;
+- (int64_t)read:(char *)read maxLength:(int64_t)length;
 @end
 
 @implementation RCSFileAttachmentCrypto.SeekableDataInputStream
 
-- (int64_t)read:(char *)a3 maxLength:(int64_t)a4
+- (int64_t)read:(char *)read maxLength:(int64_t)length
 {
-  v6 = self;
-  sub_26BFA5434(a3, a4);
+  selfCopy = self;
+  sub_26BFA5434(read, length);
   v8 = v7;
 
   return v8;
@@ -49,12 +49,12 @@
   return *(&self->super.super.super.isa + OBJC_IVAR____TtCO8SwiftMLS23RCSFileAttachmentCrypto23SeekableDataInputStream_pos) < v6;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
-  if (a3)
+  if (property)
   {
-    v6 = a4;
-    v7 = self;
+    keyCopy = key;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_26C00AB0C();
     swift_unknownObjectRelease();
@@ -63,8 +63,8 @@
   else
   {
     memset(v12, 0, sizeof(v12));
-    v8 = a4;
-    v9 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
   }
 
   v10 = sub_26BFA55E0(v12);
@@ -73,10 +73,10 @@
   return v10 & 1;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
+  keyCopy = key;
+  selfCopy = self;
   sub_26BFA57B8(v14);
 
   v6 = v15;
@@ -101,9 +101,9 @@
   return v12;
 }
 
-- (_TtCO8SwiftMLS23RCSFileAttachmentCrypto23SeekableDataInputStream)initWithData:(id)a3
+- (_TtCO8SwiftMLS23RCSFileAttachmentCrypto23SeekableDataInputStream)initWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   sub_26C00910C();
 
   result = _swift_stdlib_reportUnimplementedInitializer();
@@ -111,7 +111,7 @@
   return result;
 }
 
-- (_TtCO8SwiftMLS23RCSFileAttachmentCrypto23SeekableDataInputStream)initWithURL:(id)a3
+- (_TtCO8SwiftMLS23RCSFileAttachmentCrypto23SeekableDataInputStream)initWithURL:(id)l
 {
   v3 = sub_26C008FDC();
   v4 = *(*(v3 - 8) + 64);

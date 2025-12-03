@@ -13,9 +13,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(_UILongPressClickInteractionDriver *)v2 primaryGestureRecognizer];
-    [v4 setMinimumDurationRequired:0.0];
-    [v4 _setKeepTouchesOnContinuation:1];
+    primaryGestureRecognizer = [(_UILongPressClickInteractionDriver *)v2 primaryGestureRecognizer];
+    [primaryGestureRecognizer setMinimumDurationRequired:0.0];
+    [primaryGestureRecognizer _setKeepTouchesOnContinuation:1];
     -[_UILongPressClickInteractionDriver setCancelsTouchesInView:](v3, "setCancelsTouchesInView:", [objc_opt_class() prefersCancelsTouchesInView]);
   }
 

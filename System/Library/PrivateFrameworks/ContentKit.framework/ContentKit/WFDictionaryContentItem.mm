@@ -1,18 +1,18 @@
 @interface WFDictionaryContentItem
 + (id)contentCategories;
-+ (id)itemsWithJSONFileRepresentation:(id)a3 attributionSet:(id)a4;
-+ (id)itemsWithPlistFileRepresentation:(id)a3 attributionSet:(id)a4;
-+ (id)itemsWithPropertyListObject:(id)a3 preferredDictionaryType:(id)a4 topLevelName:(id)a5 attributionSet:(id)a6;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)itemsWithJSONFileRepresentation:(id)representation attributionSet:(id)set;
++ (id)itemsWithPlistFileRepresentation:(id)representation attributionSet:(id)set;
++ (id)itemsWithPropertyListObject:(id)object preferredDictionaryType:(id)type topLevelName:(id)name attributionSet:(id)set;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 - (NSDictionary)dictionary;
 - (WFFileType)preferredFileType;
 - (id)allowedClassesForDecodingInternalRepresentations;
-- (id)generateFileRepresentationForType:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateFileRepresentationForType:(id)type options:(id)options error:(id *)error;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFDictionaryContentItem
@@ -33,58 +33,58 @@
   return v2;
 }
 
-- (id)generateFileRepresentationForType:(id)a3 options:(id)a4 error:(id *)a5
+- (id)generateFileRepresentationForType:(id)type options:(id)options error:(id *)error
 {
-  v7 = a3;
+  typeCopy = type;
   v8 = [MEMORY[0x277D79F68] typeFromMIMEType:@"application/x-www-form-urlencoded"];
-  v9 = [v7 conformsToType:v8];
+  v9 = [typeCopy conformsToType:v8];
 
   if (v9)
   {
-    v10 = [(WFDictionaryContentItem *)self dictionary];
-    v11 = [v10 allKeys];
+    dictionary = [(WFDictionaryContentItem *)self dictionary];
+    allKeys = [dictionary allKeys];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __75__WFDictionaryContentItem_generateFileRepresentationForType_options_error___block_invoke;
     v26[3] = &unk_278345118;
-    v27 = v10;
-    v12 = v10;
-    v13 = [v11 if_map:v26];
+    v27 = dictionary;
+    v12 = dictionary;
+    v13 = [allKeys if_map:v26];
 
     v14 = WFHTTPBodyFromQueryItems(v13);
-    v15 = [(WFContentItem *)self name];
-    v16 = [WFFileRepresentation fileWithData:v14 ofType:v7 proposedFilename:v15];
+    name = [(WFContentItem *)self name];
+    v16 = [WFFileRepresentation fileWithData:v14 ofType:typeCopy proposedFilename:name];
 
 LABEL_11:
     goto LABEL_12;
   }
 
   v17 = [MEMORY[0x277D79F68] typeFromMIMEType:@"application/json"];
-  v18 = [v7 conformsToType:v17];
+  v18 = [typeCopy conformsToType:v17];
 
   if (v18)
   {
     v19 = MEMORY[0x277CCAAA0];
-    v20 = [(WFDictionaryContentItem *)self dictionary];
-    v21 = WFJavaScriptRepresentationFromPropertyList(v20, 0);
+    dictionary2 = [(WFDictionaryContentItem *)self dictionary];
+    v21 = WFJavaScriptRepresentationFromPropertyList(dictionary2, 0);
     v22 = WFJSONSerializable(v21);
-    v12 = [v19 dataWithJSONObject:v22 options:0 error:a5];
+    v12 = [v19 dataWithJSONObject:v22 options:0 error:error];
 
     goto LABEL_8;
   }
 
-  if (([v7 conformsToString:@"com.apple.property-list"] & 1) != 0 || objc_msgSend(v7, "conformsToString:", @"com.apple.plist"))
+  if (([typeCopy conformsToString:@"com.apple.property-list"] & 1) != 0 || objc_msgSend(typeCopy, "conformsToString:", @"com.apple.plist"))
   {
     v23 = MEMORY[0x277CCAC58];
-    v20 = [(WFDictionaryContentItem *)self dictionary];
-    v21 = WFPlistSerializable(v20);
-    v12 = [v23 dataWithPropertyList:v21 format:100 options:0 error:a5];
+    dictionary2 = [(WFDictionaryContentItem *)self dictionary];
+    v21 = WFPlistSerializable(dictionary2);
+    v12 = [v23 dataWithPropertyList:v21 format:100 options:0 error:error];
 LABEL_8:
 
     if (v12)
     {
-      v24 = [(WFContentItem *)self name];
-      v16 = [WFFileRepresentation fileWithData:v12 ofType:v7 proposedFilename:v24];
+      name2 = [(WFContentItem *)self name];
+      v16 = [WFFileRepresentation fileWithData:v12 ofType:typeCopy proposedFilename:name2];
     }
 
     else
@@ -112,13 +112,13 @@ id __75__WFDictionaryContentItem_generateFileRepresentationForType_options_error
   return v6;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v9 = [(WFContentItem *)self internalRepresentationType];
+    internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
     v10 = [MEMORY[0x277D79F68] typeFromMIMEType:@"application/x-www-form-urlencoded"];
-    v11 = [v9 conformsToType:v10];
+    v11 = [internalRepresentationType conformsToType:v10];
 
     if (v11)
     {
@@ -126,8 +126,8 @@ id __75__WFDictionaryContentItem_generateFileRepresentationForType_options_error
       v13 = [(WFContentItem *)self fileRepresentationForType:v12];
 
       v14 = objc_alloc(MEMORY[0x277CCACA8]);
-      v15 = [v13 data];
-      v16 = [v14 initWithData:v15 encoding:4];
+      data = [v13 data];
+      v16 = [v14 initWithData:data encoding:4];
 
       v17 = [MEMORY[0x277CBEBC0] dc_queryItemsFromQueryString:v16];
       v18 = [[WFOrderedDictionary alloc] initWithQueryItems:v17];
@@ -138,7 +138,7 @@ LABEL_26:
     }
 
     v23 = [MEMORY[0x277D79F68] typeFromMIMEType:@"application/json"];
-    v24 = [v9 conformsToType:v23];
+    v24 = [internalRepresentationType conformsToType:v23];
 
     if (v24)
     {
@@ -146,8 +146,8 @@ LABEL_26:
       v13 = [(WFContentItem *)self fileRepresentationForType:v25];
 
       v26 = MEMORY[0x277CCAAA0];
-      v27 = [v13 data];
-      v28 = [v26 JSONObjectWithData:v27 options:0 error:a5];
+      data2 = [v13 data];
+      v28 = [v26 JSONObjectWithData:data2 options:0 error:error];
       v16 = WFPropertyListRepresentationFromJSON(v28);
 
       if (v16)
@@ -162,7 +162,7 @@ LABEL_27:
 
     else
     {
-      if (([v9 conformsToString:@"com.apple.property-list"] & 1) == 0 && !objc_msgSend(v9, "conformsToString:", @"com.apple.plist"))
+      if (([internalRepresentationType conformsToString:@"com.apple.property-list"] & 1) == 0 && !objc_msgSend(internalRepresentationType, "conformsToString:", @"com.apple.plist"))
       {
         v8 = 0;
         goto LABEL_29;
@@ -183,8 +183,8 @@ LABEL_27:
       }
 
       v39 = MEMORY[0x277CCAC58];
-      v40 = [v13 data];
-      v16 = [v39 propertyListWithData:v40 options:0 format:0 error:a5];
+      data3 = [v13 data];
+      v16 = [v39 propertyListWithData:data3 options:0 format:0 error:error];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -197,24 +197,24 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if (objc_opt_class() != a3)
+  if (objc_opt_class() != class)
   {
     v8 = 0;
     goto LABEL_30;
   }
 
-  v9 = [(WFDictionaryContentItem *)self preferredFileType];
-  if (([v9 conformsToString:@"com.apple.property-list"] & 1) != 0 || objc_msgSend(v9, "conformsToString:", @"com.apple.plist"))
+  internalRepresentationType = [(WFDictionaryContentItem *)self preferredFileType];
+  if (([internalRepresentationType conformsToString:@"com.apple.property-list"] & 1) != 0 || objc_msgSend(internalRepresentationType, "conformsToString:", @"com.apple.plist"))
   {
-    v19 = [(WFDictionaryContentItem *)self dictionary];
-    v13 = WFPlistSerializable(v19);
+    dictionary = [(WFDictionaryContentItem *)self dictionary];
+    v13 = WFPlistSerializable(dictionary);
 
     if (v13)
     {
       v20 = MEMORY[0x277CCAC58];
-      v21 = [(WFDictionaryContentItem *)self dictionary];
-      v22 = WFPlistSerializable(v21);
-      v16 = [v20 dataWithPropertyList:v22 format:100 options:0 error:a5];
+      dictionary2 = [(WFDictionaryContentItem *)self dictionary];
+      v22 = WFPlistSerializable(dictionary2);
+      v16 = [v20 dataWithPropertyList:v22 format:100 options:0 error:error];
 
       if (!v16)
       {
@@ -227,13 +227,13 @@ LABEL_27:
 
   else
   {
-    v32 = [(WFDictionaryContentItem *)self dictionary];
-    v33 = WFJavaScriptRepresentationFromPropertyList(v32, 0);
+    dictionary3 = [(WFDictionaryContentItem *)self dictionary];
+    v33 = WFJavaScriptRepresentationFromPropertyList(dictionary3, 0);
     v13 = WFJSONSerializable(v33);
 
     if (v13)
     {
-      v34 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v13 options:0 error:a5];
+      v34 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v13 options:0 error:error];
       if (!v34)
       {
 LABEL_24:
@@ -275,22 +275,22 @@ LABEL_30:
 
 - (WFFileType)preferredFileType
 {
-  v3 = [(WFDictionaryContentItem *)self dictionary];
-  v4 = [v3 wf_preferredFileType];
-  v5 = v4;
-  if (v4)
+  dictionary = [(WFDictionaryContentItem *)self dictionary];
+  wf_preferredFileType = [dictionary wf_preferredFileType];
+  v5 = wf_preferredFileType;
+  if (wf_preferredFileType)
   {
-    v6 = v4;
+    preferredFileType = wf_preferredFileType;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = WFDictionaryContentItem;
-    v6 = [(WFContentItem *)&v9 preferredFileType];
+    preferredFileType = [(WFContentItem *)&v9 preferredFileType];
   }
 
-  v7 = v6;
+  v7 = preferredFileType;
 
   return v7;
 }
@@ -299,26 +299,26 @@ LABEL_30:
 {
   v3 = [WFObjectType typeWithClass:objc_opt_class()];
   v4 = [(WFContentItem *)self getRepresentationsForType:v3 error:0];
-  v5 = [v4 firstObject];
-  v6 = [v5 object];
+  firstObject = [v4 firstObject];
+  object = [firstObject object];
 
-  return v6;
+  return object;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Dictionaries", @"Dictionaries");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Dictionary", @"Dictionary");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -354,16 +354,16 @@ LABEL_30:
   return v8;
 }
 
-+ (id)itemsWithPropertyListObject:(id)a3 preferredDictionaryType:(id)a4 topLevelName:(id)a5 attributionSet:(id)a6
++ (id)itemsWithPropertyListObject:(id)object preferredDictionaryType:(id)type topLevelName:(id)name attributionSet:(id)set
 {
-  if (a3)
+  if (object)
   {
-    v9 = a6;
-    v10 = a5;
-    v11 = a4;
-    v12 = a3;
+    setCopy = set;
+    nameCopy = name;
+    typeCopy = type;
+    objectCopy = object;
     v13 = objc_opt_new();
-    WFAddDictionaryObjectToItemArray(v12, v13, v11, v10, v9);
+    WFAddDictionaryObjectToItemArray(objectCopy, v13, typeCopy, nameCopy, setCopy);
   }
 
   else
@@ -374,48 +374,48 @@ LABEL_30:
   return v13;
 }
 
-+ (id)itemsWithPlistFileRepresentation:(id)a3 attributionSet:(id)a4
++ (id)itemsWithPlistFileRepresentation:(id)representation attributionSet:(id)set
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 inputStream];
-  [v8 open];
-  v9 = [MEMORY[0x277CCAC58] propertyListWithStream:v8 options:0 format:0 error:0];
-  [v8 close];
+  setCopy = set;
+  representationCopy = representation;
+  inputStream = [representationCopy inputStream];
+  [inputStream open];
+  v9 = [MEMORY[0x277CCAC58] propertyListWithStream:inputStream options:0 format:0 error:0];
+  [inputStream close];
   v10 = [MEMORY[0x277D79F68] typeWithString:@"com.apple.property-list"];
-  v11 = [v7 wfName];
+  wfName = [representationCopy wfName];
 
-  v12 = [a1 itemsWithPropertyListObject:v9 preferredDictionaryType:v10 topLevelName:v11 attributionSet:v6];
+  v12 = [self itemsWithPropertyListObject:v9 preferredDictionaryType:v10 topLevelName:wfName attributionSet:setCopy];
 
   return v12;
 }
 
-+ (id)itemsWithJSONFileRepresentation:(id)a3 attributionSet:(id)a4
++ (id)itemsWithJSONFileRepresentation:(id)representation attributionSet:(id)set
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 inputStream];
-  [v8 open];
-  v9 = [MEMORY[0x277CCAAA0] JSONObjectWithStream:v8 options:4 error:0];
-  [v8 close];
+  setCopy = set;
+  representationCopy = representation;
+  inputStream = [representationCopy inputStream];
+  [inputStream open];
+  v9 = [MEMORY[0x277CCAAA0] JSONObjectWithStream:inputStream options:4 error:0];
+  [inputStream close];
   if (v9)
   {
     v10 = [MEMORY[0x277D79F68] typeFromMIMEType:@"application/json"];
-    v11 = [v7 wfName];
+    wfName = [representationCopy wfName];
 
-    v12 = [a1 itemsWithPropertyListObject:v9 preferredDictionaryType:v10 topLevelName:v11 attributionSet:v6];
+    v12 = [self itemsWithPropertyListObject:v9 preferredDictionaryType:v10 topLevelName:wfName attributionSet:setCopy];
   }
 
   else
   {
-    v13 = [v7 fileURL];
+    fileURL = [representationCopy fileURL];
     v14 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1E20]];
-    v15 = [v7 wfName];
+    wfName2 = [representationCopy wfName];
 
-    v16 = [WFFileRepresentation fileWithURL:v13 options:5 ofType:v14 proposedFilename:v15];
+    v16 = [WFFileRepresentation fileWithURL:fileURL options:5 ofType:v14 proposedFilename:wfName2];
 
-    v17 = [WFContentItem itemWithFile:v16 attributionSet:v6];
+    v17 = [WFContentItem itemWithFile:v16 attributionSet:setCopy];
 
     v19[0] = v17;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];

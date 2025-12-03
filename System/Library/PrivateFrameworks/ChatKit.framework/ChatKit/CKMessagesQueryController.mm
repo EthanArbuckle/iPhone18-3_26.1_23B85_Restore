@@ -1,9 +1,9 @@
 @interface CKMessagesQueryController
 - (id)fetchAttributes;
 - (id)filterQueries;
-- (id)queryAttributesForText:(id)a3;
-- (unint64_t)maxResultsForMode:(unint64_t)a3;
-- (void)searchWithText:(id)a3;
+- (id)queryAttributesForText:(id)text;
+- (unint64_t)maxResultsForMode:(unint64_t)mode;
+- (void)searchWithText:(id)text;
 @end
 
 @implementation CKMessagesQueryController
@@ -11,11 +11,11 @@
 - (id)fetchAttributes
 {
   v15[10] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isSearchImprovementsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSearchImprovementsEnabled = [mEMORY[0x1E69A8070] isSearchImprovementsEnabled];
 
   v4 = *MEMORY[0x1E6964B58];
-  if (v3)
+  if (isSearchImprovementsEnabled)
   {
     v15[0] = *MEMORY[0x1E6964BB0];
     v15[1] = v4;
@@ -52,7 +52,7 @@
   return v12;
 }
 
-- (id)queryAttributesForText:(id)a3
+- (id)queryAttributesForText:(id)text
 {
   v6[2] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E6964B58];
@@ -66,11 +66,11 @@
 - (id)filterQueries
 {
   v12[4] = *MEMORY[0x1E69E9840];
-  v2 = [(CKQueryController *)self useSemanticQuery];
+  useSemanticQuery = [(CKQueryController *)self useSemanticQuery];
   v3 = *MEMORY[0x1E69645D0];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ != %@", *MEMORY[0x1E69645D0], @"tpbck"];
   v5 = v4;
-  if (v2)
+  if (useSemanticQuery)
   {
     v12[0] = v4;
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ != %@", *MEMORY[0x1E6963F88], @"attachmentDomain"];
@@ -91,9 +91,9 @@
   return v9;
 }
 
-- (void)searchWithText:(id)a3
+- (void)searchWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if ([(CKQueryController *)self mode]== 1)
   {
     [(CKMessageTypeQueryController *)self searchEnded];
@@ -103,11 +103,11 @@
   {
     v5.receiver = self;
     v5.super_class = CKMessagesQueryController;
-    [(CKMessageTypeQueryController *)&v5 searchWithText:v4];
+    [(CKMessageTypeQueryController *)&v5 searchWithText:textCopy];
   }
 }
 
-- (unint64_t)maxResultsForMode:(unint64_t)a3
+- (unint64_t)maxResultsForMode:(unint64_t)mode
 {
   if ([(CKQueryController *)self mode]< 2)
   {
@@ -116,7 +116,7 @@
 
   v6.receiver = self;
   v6.super_class = CKMessagesQueryController;
-  return [(CKMessageTypeQueryController *)&v6 maxResultsForMode:a3];
+  return [(CKMessageTypeQueryController *)&v6 maxResultsForMode:mode];
 }
 
 @end

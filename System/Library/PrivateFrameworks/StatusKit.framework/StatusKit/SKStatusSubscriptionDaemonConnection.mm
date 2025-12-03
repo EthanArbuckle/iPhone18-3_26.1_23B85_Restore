@@ -4,46 +4,46 @@
 + (id)logger;
 - (NSXPCConnection)xpcConnection;
 - (SKStatusSubscriptionConnectionDelegateProtocol)connectionDelegate;
-- (SKStatusSubscriptionDaemonConnection)initWithSubscriptionDaemonDelegate:(id)a3 connectionDelegate:(id)a4;
+- (SKStatusSubscriptionDaemonConnection)initWithSubscriptionDaemonDelegate:(id)delegate connectionDelegate:(id)connectionDelegate;
 - (SKStatusSubscriptionDaemonDelegateProtocol)subscriptionDaemonDelegate;
-- (id)asynchronousRemoteDaemonWithErrorHandler:(id)a3;
-- (id)synchronousRemoteDaemonWithErrorHandler:(id)a3;
+- (id)asynchronousRemoteDaemonWithErrorHandler:(id)handler;
+- (id)synchronousRemoteDaemonWithErrorHandler:(id)handler;
 - (void)_resetConnectionHandlers;
 - (void)invalidate;
-- (void)setXPCConnection:(id)a3;
+- (void)setXPCConnection:(id)connection;
 @end
 
 @implementation SKStatusSubscriptionDaemonConnection
 
-- (SKStatusSubscriptionDaemonConnection)initWithSubscriptionDaemonDelegate:(id)a3 connectionDelegate:(id)a4
+- (SKStatusSubscriptionDaemonConnection)initWithSubscriptionDaemonDelegate:(id)delegate connectionDelegate:(id)connectionDelegate
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  connectionDelegateCopy = connectionDelegate;
   v11.receiver = self;
   v11.super_class = SKStatusSubscriptionDaemonConnection;
   v8 = [(SKStatusSubscriptionDaemonConnection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_subscriptionDaemonDelegate, v6);
-    objc_storeWeak(&v9->_connectionDelegate, v7);
+    objc_storeWeak(&v8->_subscriptionDaemonDelegate, delegateCopy);
+    objc_storeWeak(&v9->_connectionDelegate, connectionDelegateCopy);
     v9->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v9;
 }
 
-- (id)asynchronousRemoteDaemonWithErrorHandler:(id)a3
+- (id)asynchronousRemoteDaemonWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKStatusSubscriptionDaemonConnection *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(SKStatusSubscriptionDaemonConnection *)self xpcConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__SKStatusSubscriptionDaemonConnection_asynchronousRemoteDaemonWithErrorHandler___block_invoke;
   v9[3] = &unk_279D128F8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -60,17 +60,17 @@ void __81__SKStatusSubscriptionDaemonConnection_asynchronousRemoteDaemonWithErro
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)synchronousRemoteDaemonWithErrorHandler:(id)a3
+- (id)synchronousRemoteDaemonWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKStatusSubscriptionDaemonConnection *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(SKStatusSubscriptionDaemonConnection *)self xpcConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __80__SKStatusSubscriptionDaemonConnection_synchronousRemoteDaemonWithErrorHandler___block_invoke;
   v9[3] = &unk_279D128F8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -127,51 +127,51 @@ uint64_t __46__SKStatusSubscriptionDaemonConnection_logger__block_invoke()
 
 - (NSXPCConnection)xpcConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  os_unfair_lock_lock(&v2->_lock);
-  xpcConnection = v2->_xpcConnection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  os_unfair_lock_lock(&selfCopy->_lock);
+  xpcConnection = selfCopy->_xpcConnection;
   if (!xpcConnection)
   {
-    v4 = [(SKStatusSubscriptionDaemonConnection *)v2 _xpcConnectionOptions];
-    v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.StatusKit.subscribe" options:v4];
-    v6 = v2->_xpcConnection;
-    v2->_xpcConnection = v5;
+    _xpcConnectionOptions = [(SKStatusSubscriptionDaemonConnection *)selfCopy _xpcConnectionOptions];
+    v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.StatusKit.subscribe" options:_xpcConnectionOptions];
+    v6 = selfCopy->_xpcConnection;
+    selfCopy->_xpcConnection = v5;
 
     v7 = +[SKStatusSubscriptionDaemonConnection daemonXPCInterface];
-    [(NSXPCConnection *)v2->_xpcConnection setRemoteObjectInterface:v7];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setRemoteObjectInterface:v7];
 
     v8 = +[SKStatusSubscriptionDaemonConnection daemonDelegateXPCInterface];
-    [(NSXPCConnection *)v2->_xpcConnection setExportedInterface:v8];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setExportedInterface:v8];
 
     v9 = [SKWeakObjectProxy alloc];
-    WeakRetained = objc_loadWeakRetained(&v2->_subscriptionDaemonDelegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_subscriptionDaemonDelegate);
     v11 = [(SKWeakObjectProxy *)v9 initWithForwardingTarget:WeakRetained];
-    [(NSXPCConnection *)v2->_xpcConnection setExportedObject:v11];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setExportedObject:v11];
 
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, selfCopy);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __53__SKStatusSubscriptionDaemonConnection_xpcConnection__block_invoke;
     v16[3] = &unk_279D12CD8;
     objc_copyWeak(&v17, &location);
-    [(NSXPCConnection *)v2->_xpcConnection setInvalidationHandler:v16];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setInvalidationHandler:v16];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __53__SKStatusSubscriptionDaemonConnection_xpcConnection__block_invoke_7;
     v14[3] = &unk_279D12CD8;
     objc_copyWeak(&v15, &location);
-    [(NSXPCConnection *)v2->_xpcConnection setInterruptionHandler:v14];
-    [(NSXPCConnection *)v2->_xpcConnection resume];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setInterruptionHandler:v14];
+    [(NSXPCConnection *)selfCopy->_xpcConnection resume];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
-    xpcConnection = v2->_xpcConnection;
+    xpcConnection = selfCopy->_xpcConnection;
   }
 
   v12 = xpcConnection;
-  os_unfair_lock_unlock(&v2->_lock);
-  objc_sync_exit(v2);
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
@@ -226,14 +226,14 @@ void __53__SKStatusSubscriptionDaemonConnection_xpcConnection__block_invoke_7(ui
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setXPCConnection:(id)a3
+- (void)setXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   obj = self;
   objc_sync_enter(obj);
   os_unfair_lock_lock(&obj->_lock);
   xpcConnection = obj->_xpcConnection;
-  obj->_xpcConnection = v4;
+  obj->_xpcConnection = connectionCopy;
 
   os_unfair_lock_unlock(&obj->_lock);
   objc_sync_exit(obj);

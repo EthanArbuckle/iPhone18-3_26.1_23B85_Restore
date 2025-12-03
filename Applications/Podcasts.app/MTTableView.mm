@@ -2,20 +2,20 @@
 - (BOOL)allowsFooterViewsToFloat;
 - (UIEdgeInsets)insetsFromRefreshControl;
 - (id)preferredFocusEnvironments;
-- (void)decodeRestorableStateWithCoder:(id)a3;
+- (void)decodeRestorableStateWithCoder:(id)coder;
 - (void)disablePullToRefresh;
 - (void)enablePullToRefresh;
-- (void)encodeRestorableStateWithCoder:(id)a3;
+- (void)encodeRestorableStateWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setBottomFillColor:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setDisableRefreshControlWhileEditing:(BOOL)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setOverlayView:(id)a3;
-- (void)setRefreshControl:(id)a3;
-- (void)setTableFooterView:(id)a3;
+- (void)setBottomFillColor:(id)color;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentSize:(CGSize)size;
+- (void)setDisableRefreshControlWhileEditing:(BOOL)editing;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setOverlayView:(id)view;
+- (void)setRefreshControl:(id)control;
+- (void)setTableFooterView:(id)view;
 - (void)updateRefreshControlEnabledState;
 @end
 
@@ -36,8 +36,8 @@
     width = v38.size.width;
     height = v38.size.height;
     MaxY = CGRectGetMaxY(v38);
-    v9 = [(MTTableView *)self tableHeaderView];
-    [v9 frame];
+    tableHeaderView = [(MTTableView *)self tableHeaderView];
+    [tableHeaderView frame];
     v10 = CGRectGetMaxY(v39);
 
     v40.origin.x = x;
@@ -60,13 +60,13 @@
     v41.size.width = width;
     v41.size.height = height;
     [(UIView *)self->_bottomFillView setFrame:x, v12, width, (MaxY - CGRectGetMinY(v41)) * 1.5];
-    v13 = [(MTTableView *)self backgroundView];
+    backgroundView = [(MTTableView *)self backgroundView];
 
     bottomFillView = self->_bottomFillView;
-    if (v13)
+    if (backgroundView)
     {
-      v15 = [(MTTableView *)self backgroundView];
-      [(MTTableView *)self insertSubview:bottomFillView aboveSubview:v15];
+      backgroundView2 = [(MTTableView *)self backgroundView];
+      [(MTTableView *)self insertSubview:bottomFillView aboveSubview:backgroundView2];
     }
 
     else
@@ -100,17 +100,17 @@
     [(UIView *)overlayView setFrame:0.0, v26, v27, CGRectGetHeight(v43)];
   }
 
-  v28 = [(MTTableView *)self refreshControl];
-  if ([v28 isRefreshing])
+  refreshControl = [(MTTableView *)self refreshControl];
+  if ([refreshControl isRefreshing])
   {
-    v29 = [(MTTableView *)self adjustContentOffsetForRefreshControlAsNeeded];
+    adjustContentOffsetForRefreshControlAsNeeded = [(MTTableView *)self adjustContentOffsetForRefreshControlAsNeeded];
 
-    if (v29)
+    if (adjustContentOffsetForRefreshControlAsNeeded)
     {
       [(MTTableView *)self contentOffset];
       v31 = v30;
-      v32 = [(MTTableView *)self refreshControl];
-      [v32 frame];
+      refreshControl2 = [(MTTableView *)self refreshControl];
+      [refreshControl2 frame];
       v33 = v31 - CGRectGetHeight(v44);
       [(MTTableView *)self contentInset];
       v35 = -v34;
@@ -128,34 +128,34 @@
   }
 }
 
-- (void)setTableFooterView:(id)a3
+- (void)setTableFooterView:(id)view
 {
-  v4 = a3;
-  v5 = [(MTTableView *)self tableFooterView];
+  viewCopy = view;
+  tableFooterView = [(MTTableView *)self tableFooterView];
 
-  if (v5 != v4)
+  if (tableFooterView != viewCopy)
   {
     v6.receiver = self;
     v6.super_class = MTTableView;
-    [(MTTableView *)&v6 setTableFooterView:v4];
+    [(MTTableView *)&v6 setTableFooterView:viewCopy];
   }
 }
 
-- (void)setOverlayView:(id)a3
+- (void)setOverlayView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_overlayView removeFromSuperview];
   overlayView = self->_overlayView;
-  self->_overlayView = v4;
-  v6 = v4;
+  self->_overlayView = viewCopy;
+  v6 = viewCopy;
 
   [(MTTableView *)self addSubview:v6];
 }
 
-- (void)setBottomFillColor:(id)a3
+- (void)setBottomFillColor:(id)color
 {
-  v9 = a3;
-  objc_storeStrong(&self->_bottomFillColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_bottomFillColor, color);
   [(UIView *)self->_bottomFillView removeFromSuperview];
   bottomFillView = self->_bottomFillView;
   if (!bottomFillView)
@@ -169,23 +169,23 @@
     bottomFillView = self->_bottomFillView;
   }
 
-  [(UIView *)bottomFillView setBackgroundColor:v9];
+  [(UIView *)bottomFillView setBackgroundColor:colorCopy];
   [(MTTableView *)self addSubview:self->_bottomFillView];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = MTTableView;
-  [(MTTableView *)&v5 setEditing:a3 animated:a4];
+  [(MTTableView *)&v5 setEditing:editing animated:animated];
   [(MTTableView *)self updateRefreshControlEnabledState];
 }
 
-- (void)setDisableRefreshControlWhileEditing:(BOOL)a3
+- (void)setDisableRefreshControlWhileEditing:(BOOL)editing
 {
-  if (self->_disableRefreshControlWhileEditing != a3)
+  if (self->_disableRefreshControlWhileEditing != editing)
   {
-    self->_disableRefreshControlWhileEditing = a3;
+    self->_disableRefreshControlWhileEditing = editing;
     [(MTTableView *)self updateRefreshControlEnabledState];
   }
 }
@@ -203,9 +203,9 @@
     refreshControl = self->_refreshControl;
     if (refreshControl)
     {
-      v4 = [(UIRefreshControl *)refreshControl superview];
+      superview = [(UIRefreshControl *)refreshControl superview];
 
-      if (!v4)
+      if (!superview)
       {
 
         [(MTTableView *)self enablePullToRefresh];
@@ -228,9 +228,9 @@
     refreshControl = self->_refreshControl;
     if (refreshControl)
     {
-      v4 = [(UIRefreshControl *)refreshControl superview];
+      superview = [(UIRefreshControl *)refreshControl superview];
 
-      if (v4)
+      if (superview)
       {
         v5 = self->_refreshControl;
         v6.receiver = self;
@@ -241,26 +241,26 @@
   }
 }
 
-- (void)setRefreshControl:(id)a3
+- (void)setRefreshControl:(id)control
 {
-  objc_storeStrong(&self->_refreshControl, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_refreshControl, control);
+  controlCopy = control;
   v6.receiver = self;
   v6.super_class = MTTableView;
-  [(MTTableView *)&v6 setRefreshControl:v5];
+  [(MTTableView *)&v6 setRefreshControl:controlCopy];
 
   [(MTTableView *)self updateRefreshControlEnabledState];
 }
 
 - (UIEdgeInsets)insetsFromRefreshControl
 {
-  v3 = [(MTTableView *)self refreshControl];
+  refreshControl = [(MTTableView *)self refreshControl];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTTableView *)self refreshControl];
-    [v5 _appliedInsets];
+    refreshControl2 = [(MTTableView *)self refreshControl];
+    [refreshControl2 _appliedInsets];
     top = v6;
     left = v8;
     bottom = v10;
@@ -286,63 +286,63 @@
   return result;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
   v3.receiver = self;
   v3.super_class = MTTableView;
-  [(MTTableView *)&v3 setContentOffset:a3.x, a3.y];
+  [(MTTableView *)&v3 setContentOffset:offset.x, offset.y];
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
   v3.receiver = self;
   v3.super_class = MTTableView;
-  [(MTTableView *)&v3 setContentInset:a3.top, a3.left, a3.bottom, a3.right];
+  [(MTTableView *)&v3 setContentInset:inset.top, inset.left, inset.bottom, inset.right];
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
   v3.receiver = self;
   v3.super_class = MTTableView;
-  [(MTTableView *)&v3 setContentSize:a3.width, a3.height];
+  [(MTTableView *)&v3 setContentSize:size.width, size.height];
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = MTTableView;
-  [(MTTableView *)&v3 encodeRestorableStateWithCoder:a3];
+  [(MTTableView *)&v3 encodeRestorableStateWithCoder:coder];
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = MTTableView;
-  [(MTTableView *)&v3 decodeRestorableStateWithCoder:a3];
+  [(MTTableView *)&v3 decodeRestorableStateWithCoder:coder];
 }
 
 - (id)preferredFocusEnvironments
 {
   v12.receiver = self;
   v12.super_class = MTTableView;
-  v3 = [(MTTableView *)&v12 preferredFocusEnvironments];
-  v4 = v3;
+  preferredFocusEnvironments = [(MTTableView *)&v12 preferredFocusEnvironments];
+  v4 = preferredFocusEnvironments;
   v5 = &__NSArray0__struct;
-  if (v3)
+  if (preferredFocusEnvironments)
   {
-    v5 = v3;
+    v5 = preferredFocusEnvironments;
   }
 
   v6 = v5;
 
-  v7 = [(MTTableView *)self tableHeaderView];
-  v8 = [v7 canBecomeFocused];
+  tableHeaderView = [(MTTableView *)self tableHeaderView];
+  canBecomeFocused = [tableHeaderView canBecomeFocused];
 
-  if (v8)
+  if (canBecomeFocused)
   {
     v9 = [v6 mutableCopy];
-    v10 = [(MTTableView *)self tableHeaderView];
-    [v9 insertObject:v10 atIndex:0];
+    tableHeaderView2 = [(MTTableView *)self tableHeaderView];
+    [v9 insertObject:tableHeaderView2 atIndex:0];
 
     v6 = v9;
   }

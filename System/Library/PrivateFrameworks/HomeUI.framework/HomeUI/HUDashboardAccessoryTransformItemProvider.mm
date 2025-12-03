@@ -1,38 +1,38 @@
 @interface HUDashboardAccessoryTransformItemProvider
-- (BOOL)wantsRoomTransformForItem:(id)a3;
+- (BOOL)wantsRoomTransformForItem:(id)item;
 - (HMHome)home;
-- (HUDashboardAccessoryTransformItemProvider)initWithSourceProvider:(id)a3 inHome:(id)a4;
-- (id)_roomTransformedItemsForItem:(id)a3;
-- (id)allTransformedItemsForItem:(id)a3;
+- (HUDashboardAccessoryTransformItemProvider)initWithSourceProvider:(id)provider inHome:(id)home;
+- (id)_roomTransformedItemsForItem:(id)item;
+- (id)allTransformedItemsForItem:(id)item;
 - (id)invalidationReasons;
 - (id)reloadItems;
-- (id)roomTransformedItemsForItem:(id)a3;
-- (id)transformSourceResults:(id)a3;
-- (void)clearTransformedItemsForItem:(id)a3;
+- (id)roomTransformedItemsForItem:(id)item;
+- (id)transformSourceResults:(id)results;
+- (void)clearTransformedItemsForItem:(id)item;
 @end
 
 @implementation HUDashboardAccessoryTransformItemProvider
 
-- (HUDashboardAccessoryTransformItemProvider)initWithSourceProvider:(id)a3 inHome:(id)a4
+- (HUDashboardAccessoryTransformItemProvider)initWithSourceProvider:(id)provider inHome:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  homeCopy = home;
   v16.receiver = self;
   v16.super_class = HUDashboardAccessoryTransformItemProvider;
   v9 = [(HFItemProvider *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceItemProvider, a3);
+    objc_storeStrong(&v9->_sourceItemProvider, provider);
     v11 = [MEMORY[0x277CBEB58] set];
     allItems = v10->_allItems;
     v10->_allItems = v11;
 
-    v13 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     roomTransformedItems = v10->_roomTransformedItems;
-    v10->_roomTransformedItems = v13;
+    v10->_roomTransformedItems = strongToStrongObjectsMapTable;
 
-    objc_storeWeak(&v10->_home, v8);
+    objc_storeWeak(&v10->_home, homeCopy);
     v10->_splitAccessoryGroupsByRoom = 1;
   }
 
@@ -42,14 +42,14 @@
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HUDashboardAccessoryTransformItemProvider *)self sourceItemProvider];
-  v4 = [v3 reloadItems];
+  sourceItemProvider = [(HUDashboardAccessoryTransformItemProvider *)self sourceItemProvider];
+  reloadItems = [sourceItemProvider reloadItems];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HUDashboardAccessoryTransformItemProvider_reloadItems__block_invoke;
   v7[3] = &unk_277DB7FA8;
   objc_copyWeak(&v8, &location);
-  v5 = [v4 flatMap:v7];
+  v5 = [reloadItems flatMap:v7];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&location);
@@ -87,12 +87,12 @@ id __56__HUDashboardAccessoryTransformItemProvider_reloadItems__block_invoke(uin
   v12[2] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = HUDashboardAccessoryTransformItemProvider;
-  v3 = [(HFItemProvider *)&v11 invalidationReasons];
-  v4 = [v3 mutableCopy];
+  invalidationReasons = [(HFItemProvider *)&v11 invalidationReasons];
+  v4 = [invalidationReasons mutableCopy];
 
-  v5 = [(HUDashboardAccessoryTransformItemProvider *)self sourceItemProvider];
-  v6 = [v5 invalidationReasons];
-  [v4 unionSet:v6];
+  sourceItemProvider = [(HUDashboardAccessoryTransformItemProvider *)self sourceItemProvider];
+  invalidationReasons2 = [sourceItemProvider invalidationReasons];
+  [v4 unionSet:invalidationReasons2];
 
   if ([(HUDashboardAccessoryTransformItemProvider *)self splitAccessoryGroupsByRoom])
   {
@@ -108,10 +108,10 @@ id __56__HUDashboardAccessoryTransformItemProvider_reloadItems__block_invoke(uin
   return v9;
 }
 
-- (id)transformSourceResults:(id)a3
+- (id)transformSourceResults:(id)results
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   if ([(HUDashboardAccessoryTransformItemProvider *)self needsTransform])
   {
     v5 = [MEMORY[0x277CBEB58] set];
@@ -127,9 +127,9 @@ id __56__HUDashboardAccessoryTransformItemProvider_reloadItems__block_invoke(uin
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v30 = v4;
-    v8 = [v4 addedItems];
-    v9 = [v8 countByEnumeratingWithState:&v35 objects:v42 count:16];
+    v30 = resultsCopy;
+    addedItems = [resultsCopy addedItems];
+    v9 = [addedItems countByEnumeratingWithState:&v35 objects:v42 count:16];
     if (v9)
     {
       v10 = v9;
@@ -140,7 +140,7 @@ id __56__HUDashboardAccessoryTransformItemProvider_reloadItems__block_invoke(uin
         {
           if (*v36 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(addedItems);
           }
 
           v13 = *(*(&v35 + 1) + 8 * i);
@@ -156,7 +156,7 @@ id __56__HUDashboardAccessoryTransformItemProvider_reloadItems__block_invoke(uin
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v35 objects:v42 count:16];
+        v10 = [addedItems countByEnumeratingWithState:&v35 objects:v42 count:16];
       }
 
       while (v10);
@@ -166,8 +166,8 @@ id __56__HUDashboardAccessoryTransformItemProvider_reloadItems__block_invoke(uin
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v15 = [v30 existingItems];
-    v16 = [v15 countByEnumeratingWithState:&v31 objects:v41 count:16];
+    existingItems = [v30 existingItems];
+    v16 = [existingItems countByEnumeratingWithState:&v31 objects:v41 count:16];
     if (v16)
     {
       v17 = v16;
@@ -178,7 +178,7 @@ id __56__HUDashboardAccessoryTransformItemProvider_reloadItems__block_invoke(uin
         {
           if (*v32 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(existingItems);
           }
 
           v20 = *(*(&v31 + 1) + 8 * j);
@@ -194,28 +194,28 @@ id __56__HUDashboardAccessoryTransformItemProvider_reloadItems__block_invoke(uin
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v31 objects:v41 count:16];
+        v17 = [existingItems countByEnumeratingWithState:&v31 objects:v41 count:16];
       }
 
       while (v17);
     }
 
-    v22 = [(HUDashboardAccessoryTransformItemProvider *)self allItems];
-    v23 = [v6 na_setByRemovingObjectsFromSet:v22];
+    allItems = [(HUDashboardAccessoryTransformItemProvider *)self allItems];
+    v23 = [v6 na_setByRemovingObjectsFromSet:allItems];
 
-    v24 = [(HUDashboardAccessoryTransformItemProvider *)self allItems];
-    v25 = [v6 na_setByIntersectingWithSet:v24];
+    allItems2 = [(HUDashboardAccessoryTransformItemProvider *)self allItems];
+    v25 = [v6 na_setByIntersectingWithSet:allItems2];
 
-    v26 = [(HUDashboardAccessoryTransformItemProvider *)self allItems];
-    v27 = [v26 na_setByRemovingObjectsFromSet:v6];
+    allItems3 = [(HUDashboardAccessoryTransformItemProvider *)self allItems];
+    v27 = [allItems3 na_setByRemovingObjectsFromSet:v6];
 
     v28 = [objc_alloc(MEMORY[0x277D14768]) initWithAddedItems:v23 removedItems:v27 existingItems:v25];
-    v4 = v30;
+    resultsCopy = v30;
   }
 
   else
   {
-    v28 = v4;
+    v28 = resultsCopy;
   }
 
   return v28;
@@ -236,39 +236,39 @@ void __68__HUDashboardAccessoryTransformItemProvider_transformSourceResults___bl
   [v10 unionSet:v11];
 }
 
-- (id)roomTransformedItemsForItem:(id)a3
+- (id)roomTransformedItemsForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUDashboardAccessoryTransformItemProvider *)self roomTransformedItems];
-  v6 = [v5 objectForKey:v4];
+  itemCopy = item;
+  roomTransformedItems = [(HUDashboardAccessoryTransformItemProvider *)self roomTransformedItems];
+  v6 = [roomTransformedItems objectForKey:itemCopy];
 
-  v7 = [(HUDashboardAccessoryTransformItemProvider *)self _roomTransformedItemsForItem:v4];
+  v7 = [(HUDashboardAccessoryTransformItemProvider *)self _roomTransformedItemsForItem:itemCopy];
 
   v8 = [MEMORY[0x277D14AE8] diffFromSet:v6 toSet:v7];
-  v9 = [v8 additions];
-  v10 = [v8 deletions];
-  v11 = [v8 toSet];
-  v12 = [v6 na_setByIntersectingWithSet:v11];
+  additions = [v8 additions];
+  deletions = [v8 deletions];
+  toSet = [v8 toSet];
+  v12 = [v6 na_setByIntersectingWithSet:toSet];
 
-  v13 = [objc_alloc(MEMORY[0x277D14768]) initWithAddedItems:v9 removedItems:v10 existingItems:v12];
+  v13 = [objc_alloc(MEMORY[0x277D14768]) initWithAddedItems:additions removedItems:deletions existingItems:v12];
 
   return v13;
 }
 
-- (id)_roomTransformedItemsForItem:(id)a3
+- (id)_roomTransformedItemsForItem:(id)item
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accessoryRepresentableObject];
+  itemCopy = item;
+  accessoryRepresentableObject = [itemCopy accessoryRepresentableObject];
   v6 = [MEMORY[0x277CBEB58] set];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(HUDashboardAccessoryTransformItemProvider *)self home];
-  v8 = [v7 hf_allRooms];
+  home = [(HUDashboardAccessoryTransformItemProvider *)self home];
+  hf_allRooms = [home hf_allRooms];
 
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v9 = [hf_allRooms countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -279,18 +279,18 @@ void __68__HUDashboardAccessoryTransformItemProvider_transformSourceResults___bl
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(hf_allRooms);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ([v5 hf_isInRoom:v13])
+        if ([accessoryRepresentableObject hf_isInRoom:v13])
         {
-          v14 = [[HUSplitRoomTransformedItem alloc] initWithSourceItem:v4 room:v13];
+          v14 = [[HUSplitRoomTransformedItem alloc] initWithSourceItem:itemCopy room:v13];
           [v6 addObject:v14];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [hf_allRooms countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -301,37 +301,37 @@ void __68__HUDashboardAccessoryTransformItemProvider_transformSourceResults___bl
   return v15;
 }
 
-- (id)allTransformedItemsForItem:(id)a3
+- (id)allTransformedItemsForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUDashboardAccessoryTransformItemProvider *)self roomTransformedItems];
-  v6 = [v5 objectForKey:v4];
+  itemCopy = item;
+  roomTransformedItems = [(HUDashboardAccessoryTransformItemProvider *)self roomTransformedItems];
+  v6 = [roomTransformedItems objectForKey:itemCopy];
 
   return v6;
 }
 
-- (void)clearTransformedItemsForItem:(id)a3
+- (void)clearTransformedItemsForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUDashboardAccessoryTransformItemProvider *)self roomTransformedItems];
-  [v5 removeObjectForKey:v4];
+  itemCopy = item;
+  roomTransformedItems = [(HUDashboardAccessoryTransformItemProvider *)self roomTransformedItems];
+  [roomTransformedItems removeObjectForKey:itemCopy];
 }
 
-- (BOOL)wantsRoomTransformForItem:(id)a3
+- (BOOL)wantsRoomTransformForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(HUDashboardAccessoryTransformItemProvider *)self splitAccessoryGroupsByRoom])
   {
-    v5 = [v4 accessoryRepresentableObject];
-    v6 = [v5 hf_canSpanMultipleRooms];
+    accessoryRepresentableObject = [itemCopy accessoryRepresentableObject];
+    hf_canSpanMultipleRooms = [accessoryRepresentableObject hf_canSpanMultipleRooms];
   }
 
   else
   {
-    v6 = 0;
+    hf_canSpanMultipleRooms = 0;
   }
 
-  return v6;
+  return hf_canSpanMultipleRooms;
 }
 
 - (HMHome)home

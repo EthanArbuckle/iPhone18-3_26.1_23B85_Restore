@@ -1,23 +1,23 @@
 @interface MDMDaemonXPCInvalidationManager
-- (MDMDaemonXPCInvalidationManager)initWithXPCConnection:(id)a3;
+- (MDMDaemonXPCInvalidationManager)initWithXPCConnection:(id)connection;
 - (NSXPCConnection)xpcConnection;
 - (void)_executeInvalidationHandlers;
-- (void)registerInvalidationHandlerForTask:(id)a3 handler:(id)a4;
-- (void)unregisterInvalidationHandlerForTask:(id)a3;
+- (void)registerInvalidationHandlerForTask:(id)task handler:(id)handler;
+- (void)unregisterInvalidationHandlerForTask:(id)task;
 @end
 
 @implementation MDMDaemonXPCInvalidationManager
 
-- (MDMDaemonXPCInvalidationManager)initWithXPCConnection:(id)a3
+- (MDMDaemonXPCInvalidationManager)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v16.receiver = self;
   v16.super_class = MDMDaemonXPCInvalidationManager;
   v5 = [(MDMDaemonXPCInvalidationManager *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_xpcConnection, v4);
+    objc_storeWeak(&v5->_xpcConnection, connectionCopy);
     v7 = objc_opt_new();
     invalidationHandlers = v6->_invalidationHandlers;
     v6->_invalidationHandlers = v7;
@@ -51,21 +51,21 @@ uint64_t __57__MDMDaemonXPCInvalidationManager_initWithXPCConnection___block_inv
   return [*(a1 + 32) _executeInvalidationHandlers];
 }
 
-- (void)registerInvalidationHandlerForTask:(id)a3 handler:(id)a4
+- (void)registerInvalidationHandlerForTask:(id)task handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MDMDaemonXPCInvalidationManager *)self queue];
+  taskCopy = task;
+  handlerCopy = handler;
+  queue = [(MDMDaemonXPCInvalidationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__MDMDaemonXPCInvalidationManager_registerInvalidationHandlerForTask_handler___block_invoke;
   block[3] = &unk_27982BAA0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async_and_wait(v8, block);
+  v12 = taskCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = taskCopy;
+  dispatch_async_and_wait(queue, block);
 }
 
 void __78__MDMDaemonXPCInvalidationManager_registerInvalidationHandlerForTask_handler___block_invoke(uint64_t a1)
@@ -81,18 +81,18 @@ void __78__MDMDaemonXPCInvalidationManager_registerInvalidationHandlerForTask_ha
   }
 }
 
-- (void)unregisterInvalidationHandlerForTask:(id)a3
+- (void)unregisterInvalidationHandlerForTask:(id)task
 {
-  v4 = a3;
-  v5 = [(MDMDaemonXPCInvalidationManager *)self queue];
+  taskCopy = task;
+  queue = [(MDMDaemonXPCInvalidationManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__MDMDaemonXPCInvalidationManager_unregisterInvalidationHandlerForTask___block_invoke;
   v7[3] = &unk_27982BAC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = taskCopy;
+  v6 = taskCopy;
+  dispatch_async(queue, v7);
 }
 
 void __72__MDMDaemonXPCInvalidationManager_unregisterInvalidationHandlerForTask___block_invoke(uint64_t a1)
@@ -103,13 +103,13 @@ void __72__MDMDaemonXPCInvalidationManager_unregisterInvalidationHandlerForTask_
 
 - (void)_executeInvalidationHandlers
 {
-  v3 = [(MDMDaemonXPCInvalidationManager *)self queue];
+  queue = [(MDMDaemonXPCInvalidationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__MDMDaemonXPCInvalidationManager__executeInvalidationHandlers__block_invoke;
   block[3] = &unk_27982BA78;
   block[4] = self;
-  dispatch_async_and_wait(v3, block);
+  dispatch_async_and_wait(queue, block);
 }
 
 void __63__MDMDaemonXPCInvalidationManager__executeInvalidationHandlers__block_invoke(uint64_t a1)

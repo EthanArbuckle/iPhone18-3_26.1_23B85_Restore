@@ -1,61 +1,61 @@
 @interface PaymentHandler
-- (id)setActiveCredential:(id)a3;
-- (id)startNFSessionWithCompletion:(id)a3;
-- (id)startTransactionWithAuthorization:(id)a3 options:(unint64_t)a4;
+- (id)setActiveCredential:(id)credential;
+- (id)startNFSessionWithCompletion:(id)completion;
+- (id)startTransactionWithAuthorization:(id)authorization options:(unint64_t)options;
 - (id)stopTransaction;
-- (void)loyaltyAndPaymentSession:(id)a3 didEndTransaction:(id)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didEnterFieldWithNotification:(id)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didExpireTransactionForApplet:(id)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didPerformValueAddedServiceTransactions:(id)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didStartTransaction:(id)a4;
-- (void)loyaltyAndPaymentSessionDidReceiveActivityTimeout:(id)a3 result:(id)a4;
-- (void)loyaltyAndPaymentSessionHasPendingServerRequest:(id)a3;
+- (void)loyaltyAndPaymentSession:(id)session didEndTransaction:(id)transaction;
+- (void)loyaltyAndPaymentSession:(id)session didEnterFieldWithNotification:(id)notification;
+- (void)loyaltyAndPaymentSession:(id)session didExpireTransactionForApplet:(id)applet;
+- (void)loyaltyAndPaymentSession:(id)session didPerformValueAddedServiceTransactions:(id)transactions;
+- (void)loyaltyAndPaymentSession:(id)session didStartTransaction:(id)transaction;
+- (void)loyaltyAndPaymentSessionDidReceiveActivityTimeout:(id)timeout result:(id)result;
+- (void)loyaltyAndPaymentSessionHasPendingServerRequest:(id)request;
 @end
 
 @implementation PaymentHandler
 
-- (id)startNFSessionWithCompletion:(id)a3
+- (id)startNFSessionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(STSHandler *)self nfHardwareManager];
+  completionCopy = completion;
+  nfHardwareManager = [(STSHandler *)self nfHardwareManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2653878F0;
   v9[3] = &unk_279B93F68;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 startLoyaltyAndContactlessPaymentSession:v9];
+  v10 = completionCopy;
+  v6 = completionCopy;
+  v7 = [nfHardwareManager startLoyaltyAndContactlessPaymentSession:v9];
 
   return v7;
 }
 
-- (id)setActiveCredential:(id)a3
+- (id)setActiveCredential:(id)credential
 {
   v54[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  credentialCopy = credential;
   v48.receiver = self;
   v48.super_class = PaymentHandler;
-  v6 = [(STSHandler *)&v48 setActiveCredential:v5];
-  if (!v5)
+  v6 = [(STSHandler *)&v48 setActiveCredential:credentialCopy];
+  if (!credentialCopy)
   {
     goto LABEL_13;
   }
 
-  v7 = [v5 identifier];
+  identifier = [credentialCopy identifier];
 
-  if (!v7)
+  if (!identifier)
   {
     goto LABEL_13;
   }
 
-  v8 = [v5 identifier];
-  if ([v8 hasPrefix:0x2876E4FF0])
+  identifier2 = [credentialCopy identifier];
+  if ([identifier2 hasPrefix:0x2876E4FF0])
   {
 
 LABEL_6:
-    v11 = [v5 identifier];
-    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[PaymentHandler setActiveCredential:]", 60, self, @"AID is not supported by payment handler - %@", v12, v13, v11);
+    identifier3 = [credentialCopy identifier];
+    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[PaymentHandler setActiveCredential:]", 60, self, @"AID is not supported by payment handler - %@", v12, v13, identifier3);
 
     v14 = MEMORY[0x277CCA9B8];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -76,8 +76,8 @@ LABEL_6:
     goto LABEL_17;
   }
 
-  v9 = [v5 identifier];
-  v10 = [v9 hasPrefix:0x2876E5010];
+  identifier4 = [credentialCopy identifier];
+  v10 = [identifier4 hasPrefix:0x2876E5010];
 
   if (v10)
   {
@@ -86,14 +86,14 @@ LABEL_6:
 
   v21 = 64;
   nfSession = self->_nfSession;
-  v23 = [v5 identifier];
-  v15 = [(NFLoyaltyAndPaymentSession *)nfSession appletWithIdentifier:v23];
+  identifier5 = [credentialCopy identifier];
+  v15 = [(NFLoyaltyAndPaymentSession *)nfSession appletWithIdentifier:identifier5];
 
   if (!v15)
   {
 LABEL_13:
-    v38 = [v5 identifier];
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler setActiveCredential:]", 74, self, @"applet not found for identifier = %@", v39, v40, v38);
+    identifier6 = [credentialCopy identifier];
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler setActiveCredential:]", 74, self, @"applet not found for identifier = %@", v39, v40, identifier6);
 
     v41 = MEMORY[0x277CCA9B8];
     v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -172,13 +172,13 @@ LABEL_17:
   return v20;
 }
 
-- (id)startTransactionWithAuthorization:(id)a3 options:(unint64_t)a4
+- (id)startTransactionWithAuthorization:(id)authorization options:(unint64_t)options
 {
   v52[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  authorizationCopy = authorization;
   v46.receiver = self;
   v46.super_class = PaymentHandler;
-  v10 = [(STSTransactionHandler *)&v46 startTransactionWithAuthorization:v7 options:a4];
+  v10 = [(STSTransactionHandler *)&v46 startTransactionWithAuthorization:authorizationCopy options:options];
   if (!self->_nfSession)
   {
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[PaymentHandler startTransactionWithAuthorization:options:]", 85, self, @"NF session does not exist!", v8, v9, v42);
@@ -201,12 +201,12 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  if (a4)
+  if (options)
   {
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler startTransactionWithAuthorization:options:]", 91, self, @"deferred auth: %@", v8, v9, v7);
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler startTransactionWithAuthorization:options:]", 91, self, @"deferred auth: %@", v8, v9, authorizationCopy);
     nfSession = self->_nfSession;
     v45 = v10;
-    v33 = [(NFLoyaltyAndPaymentSession *)nfSession startDeferredCardEmulation:1 authorization:v7 error:&v45];
+    v33 = [(NFLoyaltyAndPaymentSession *)nfSession startDeferredCardEmulation:1 authorization:authorizationCopy error:&v45];
     v13 = v45;
 
     if ((v33 & 1) == 0)
@@ -244,10 +244,10 @@ LABEL_17:
 
   else
   {
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler startTransactionWithAuthorization:options:]", 100, self, @"auth: %@", v8, v9, v7);
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler startTransactionWithAuthorization:options:]", 100, self, @"auth: %@", v8, v9, authorizationCopy);
     v11 = self->_nfSession;
     v44 = v10;
-    v12 = [(NFLoyaltyAndPaymentSession *)v11 startCardEmulation:1 authorization:v7 error:&v44];
+    v12 = [(NFLoyaltyAndPaymentSession *)v11 startCardEmulation:1 authorization:authorizationCopy error:&v44];
     v13 = v44;
 
     if ((v12 & 1) == 0)
@@ -302,17 +302,17 @@ LABEL_16:
   v22[4] = *MEMORY[0x277D85DE8];
   v20.receiver = self;
   v20.super_class = PaymentHandler;
-  v6 = [(STSTransactionHandler *)&v20 stopTransaction];
+  stopTransaction = [(STSTransactionHandler *)&v20 stopTransaction];
   if (self->_nfSession)
   {
     sub_265398094(OS_LOG_TYPE_INFO, 0, "[PaymentHandler stopTransaction]", 118, self, &stru_2876E3E50, v4, v5, v18);
     nfSession = self->_nfSession;
-    v19 = v6;
+    v19 = stopTransaction;
     [(NFLoyaltyAndPaymentSession *)nfSession stopCardEmulation:&v19];
     v8 = v19;
 
     v9 = v8;
-    v6 = v9;
+    stopTransaction = v9;
   }
 
   else
@@ -340,65 +340,65 @@ LABEL_16:
   return v9;
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didEnterFieldWithNotification:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didEnterFieldWithNotification:(id)notification
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSession:didEnterFieldWithNotification:]", 258, self, @"%@", v6, v7, v5);
-  v9 = sub_265399348(v5);
+  notificationCopy = notification;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSession:didEnterFieldWithNotification:]", 258, self, @"%@", v6, v7, notificationCopy);
+  v9 = sub_265399348(notificationCopy);
 
-  v8 = [(STSTransactionHandler *)self parent];
-  [v8 fireFieldNotificationEvent:v9];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireFieldNotificationEvent:v9];
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didExpireTransactionForApplet:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didExpireTransactionForApplet:(id)applet
 {
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSession:didExpireTransactionForApplet:]", 276, self, @"EXPIRED: %@", v4, v5, a4);
-  v7 = [(STSTransactionHandler *)self parent];
-  [v7 fireDidExpireTransaction:1];
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSession:didExpireTransactionForApplet:]", 276, self, @"EXPIRED: %@", v4, v5, applet);
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireDidExpireTransaction:1];
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didStartTransaction:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didStartTransaction:(id)transaction
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSession:didStartTransaction:]", 282, self, @"START: %@", v6, v7, v5);
+  transactionCopy = transaction;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSession:didStartTransaction:]", 282, self, @"START: %@", v6, v7, transactionCopy);
   v8 = [STSTransactionStartEvent alloc];
-  v9 = [(STSHandler *)self activeSTSCredential];
-  v11 = [(STSTransactionStartEvent *)v8 initWithCredential:v9 andNearFieldStartEvent:v5];
+  activeSTSCredential = [(STSHandler *)self activeSTSCredential];
+  v11 = [(STSTransactionStartEvent *)v8 initWithCredential:activeSTSCredential andNearFieldStartEvent:transactionCopy];
 
-  v10 = [(STSTransactionHandler *)self parent];
-  [v10 fireTransactionStartEvent:v11];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireTransactionStartEvent:v11];
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didEndTransaction:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didEndTransaction:(id)transaction
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSession:didEndTransaction:]", 290, self, @"END: %@", v6, v7, v5);
+  transactionCopy = transaction;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSession:didEndTransaction:]", 290, self, @"END: %@", v6, v7, transactionCopy);
   v8 = [STSTransactionEndEvent alloc];
-  v9 = [(STSHandler *)self activeSTSCredential];
-  v11 = [(STSTransactionEndEvent *)v8 initWithCredential:v9 andNearFieldEndEvent:v5];
+  activeSTSCredential = [(STSHandler *)self activeSTSCredential];
+  v11 = [(STSTransactionEndEvent *)v8 initWithCredential:activeSTSCredential andNearFieldEndEvent:transactionCopy];
 
-  v10 = [(STSTransactionHandler *)self parent];
-  [v10 fireTransactionEndEvent:v11];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireTransactionEndEvent:v11];
 }
 
-- (void)loyaltyAndPaymentSessionHasPendingServerRequest:(id)a3
+- (void)loyaltyAndPaymentSessionHasPendingServerRequest:(id)request
 {
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSessionHasPendingServerRequest:]", 302, self, @"Pending priority server request", v3, v4, v6);
-  v7 = [(STSTransactionHandler *)self parent];
-  [v7 fireHasPendingServerRequest:1];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireHasPendingServerRequest:1];
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didPerformValueAddedServiceTransactions:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didPerformValueAddedServiceTransactions:(id)transactions
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSession:didPerformValueAddedServiceTransactions:]", 313, self, @"HCE transactions: %@", v6, v7, v5);
-  v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  transactionsCopy = transactions;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSession:didPerformValueAddedServiceTransactions:]", 313, self, @"HCE transactions: %@", v6, v7, transactionsCopy);
+  v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(transactionsCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v5;
+  obj = transactionsCopy;
   v8 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v8)
   {
@@ -406,7 +406,7 @@ LABEL_16:
     v10 = *v41;
     v11 = 0x277D2C000uLL;
     v31 = *v41;
-    v32 = self;
+    selfCopy = self;
     do
     {
       v12 = 0;
@@ -443,9 +443,9 @@ LABEL_16:
                 }
 
                 v20 = *(*(&v36 + 1) + 8 * i);
-                v21 = [v15 merchantId];
-                v22 = [v20 merchantId];
-                v23 = [v21 isEqualToData:v22];
+                merchantId = [v15 merchantId];
+                merchantId2 = [v20 merchantId];
+                v23 = [merchantId isEqualToData:merchantId2];
 
                 if (v23)
                 {
@@ -465,13 +465,13 @@ LABEL_16:
 
 LABEL_18:
             v10 = v31;
-            self = v32;
+            self = selfCopy;
             v11 = 0x277D2C000;
             v9 = v33;
           }
 
-          v27 = [v15 asDictionary];
-          v28 = [STSVASTransaction vasTransactionForCredential:v17 withDictionary:v27];
+          asDictionary = [v15 asDictionary];
+          v28 = [STSVASTransaction vasTransactionForCredential:v17 withDictionary:asDictionary];
 
           [v34 addObject:v28];
         }
@@ -493,18 +493,18 @@ LABEL_18:
     while (v9);
   }
 
-  v29 = [(STSTransactionHandler *)self parent];
-  [v29 fireDidPerformAuxiliaryTransactions:v34];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireDidPerformAuxiliaryTransactions:v34];
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loyaltyAndPaymentSessionDidReceiveActivityTimeout:(id)a3 result:(id)a4
+- (void)loyaltyAndPaymentSessionDidReceiveActivityTimeout:(id)timeout result:(id)result
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSessionDidReceiveActivityTimeout:result:]", 359, self, @"Activity Timeout : %@", v6, v7, v5);
-  v8 = [(STSTransactionHandler *)self parent];
-  [v8 fireDidReceiveActivityTimeout:v5];
+  resultCopy = result;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[PaymentHandler loyaltyAndPaymentSessionDidReceiveActivityTimeout:result:]", 359, self, @"Activity Timeout : %@", v6, v7, resultCopy);
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireDidReceiveActivityTimeout:resultCopy];
 }
 
 @end

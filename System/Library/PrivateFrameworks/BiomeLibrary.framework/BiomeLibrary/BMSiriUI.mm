@@ -1,16 +1,16 @@
 @interface BMSiriUI
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriUI)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriUI)initWithSessionID:(id)a3 uuid:(id)a4 viewMode:(id)a5 dismissalReason:(id)a6 starting:(id)a7 absoluteTimestamp:(id)a8 turnID:(id)a9 carplayPPID:(id)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriUI)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriUI)initWithSessionID:(id)d uuid:(id)uuid viewMode:(id)mode dismissalReason:(id)reason starting:(id)starting absoluteTimestamp:(id)timestamp turnID:(id)iD carplayPPID:(id)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriUI
@@ -45,30 +45,30 @@
 {
   v3 = objc_opt_new();
   [(BMSiriUI *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriUI *)self sessionID];
-    v7 = [v5 sessionID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    sessionID = [(BMSiriUI *)self sessionID];
+    sessionID2 = [v5 sessionID];
+    v8 = sessionID2;
+    if (sessionID == sessionID2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriUI *)self sessionID];
-      v10 = [v5 sessionID];
-      v11 = [v9 isEqual:v10];
+      sessionID3 = [(BMSiriUI *)self sessionID];
+      sessionID4 = [v5 sessionID];
+      v11 = [sessionID3 isEqual:sessionID4];
 
       if (!v11)
       {
@@ -76,18 +76,18 @@
       }
     }
 
-    v13 = [(BMSiriUI *)self uuid];
-    v14 = [v5 uuid];
-    v15 = v14;
-    if (v13 == v14)
+    uuid = [(BMSiriUI *)self uuid];
+    uuid2 = [v5 uuid];
+    v15 = uuid2;
+    if (uuid == uuid2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriUI *)self uuid];
-      v17 = [v5 uuid];
-      v18 = [v16 isEqual:v17];
+      uuid3 = [(BMSiriUI *)self uuid];
+      uuid4 = [v5 uuid];
+      v18 = [uuid3 isEqual:uuid4];
 
       if (!v18)
       {
@@ -95,18 +95,18 @@
       }
     }
 
-    v19 = [(BMSiriUI *)self viewMode];
-    v20 = [v5 viewMode];
-    v21 = v20;
-    if (v19 == v20)
+    viewMode = [(BMSiriUI *)self viewMode];
+    viewMode2 = [v5 viewMode];
+    v21 = viewMode2;
+    if (viewMode == viewMode2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriUI *)self viewMode];
-      v23 = [v5 viewMode];
-      v24 = [v22 isEqual:v23];
+      viewMode3 = [(BMSiriUI *)self viewMode];
+      viewMode4 = [v5 viewMode];
+      v24 = [viewMode3 isEqual:viewMode4];
 
       if (!v24)
       {
@@ -114,18 +114,18 @@
       }
     }
 
-    v25 = [(BMSiriUI *)self dismissalReason];
-    v26 = [v5 dismissalReason];
-    v27 = v26;
-    if (v25 == v26)
+    dismissalReason = [(BMSiriUI *)self dismissalReason];
+    dismissalReason2 = [v5 dismissalReason];
+    v27 = dismissalReason2;
+    if (dismissalReason == dismissalReason2)
     {
     }
 
     else
     {
-      v28 = [(BMSiriUI *)self dismissalReason];
-      v29 = [v5 dismissalReason];
-      v30 = [v28 isEqual:v29];
+      dismissalReason3 = [(BMSiriUI *)self dismissalReason];
+      dismissalReason4 = [v5 dismissalReason];
+      v30 = [dismissalReason3 isEqual:dismissalReason4];
 
       if (!v30)
       {
@@ -145,25 +145,25 @@
         goto LABEL_30;
       }
 
-      v31 = [(BMSiriUI *)self starting];
-      if (v31 != [v5 starting])
+      starting = [(BMSiriUI *)self starting];
+      if (starting != [v5 starting])
       {
         goto LABEL_30;
       }
     }
 
-    v32 = [(BMSiriUI *)self absoluteTimestamp];
-    v33 = [v5 absoluteTimestamp];
-    v34 = v33;
-    if (v32 == v33)
+    absoluteTimestamp = [(BMSiriUI *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v34 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v35 = [(BMSiriUI *)self absoluteTimestamp];
-      v36 = [v5 absoluteTimestamp];
-      v37 = [v35 isEqual:v36];
+      absoluteTimestamp3 = [(BMSiriUI *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v37 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v37)
       {
@@ -171,18 +171,18 @@
       }
     }
 
-    v38 = [(BMSiriUI *)self turnID];
-    v39 = [v5 turnID];
-    v40 = v39;
-    if (v38 == v39)
+    turnID = [(BMSiriUI *)self turnID];
+    turnID2 = [v5 turnID];
+    v40 = turnID2;
+    if (turnID == turnID2)
     {
     }
 
     else
     {
-      v41 = [(BMSiriUI *)self turnID];
-      v42 = [v5 turnID];
-      v43 = [v41 isEqual:v42];
+      turnID3 = [(BMSiriUI *)self turnID];
+      turnID4 = [v5 turnID];
+      v43 = [turnID3 isEqual:turnID4];
 
       if (!v43)
       {
@@ -194,18 +194,18 @@ LABEL_31:
       }
     }
 
-    v45 = [(BMSiriUI *)self carplayPPID];
-    v46 = [v5 carplayPPID];
-    if (v45 == v46)
+    carplayPPID = [(BMSiriUI *)self carplayPPID];
+    carplayPPID2 = [v5 carplayPPID];
+    if (carplayPPID == carplayPPID2)
     {
       v12 = 1;
     }
 
     else
     {
-      v47 = [(BMSiriUI *)self carplayPPID];
-      v48 = [v5 carplayPPID];
-      v12 = [v47 isEqual:v48];
+      carplayPPID3 = [(BMSiriUI *)self carplayPPID];
+      carplayPPID4 = [v5 carplayPPID];
+      v12 = [carplayPPID3 isEqual:carplayPPID4];
     }
 
     goto LABEL_31;
@@ -237,10 +237,10 @@ LABEL_32:
 - (id)jsonDictionary
 {
   v32[8] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriUI *)self sessionID];
-  v4 = [(BMSiriUI *)self uuid];
-  v5 = [(BMSiriUI *)self viewMode];
-  v30 = [(BMSiriUI *)self dismissalReason];
+  sessionID = [(BMSiriUI *)self sessionID];
+  uuid = [(BMSiriUI *)self uuid];
+  viewMode = [(BMSiriUI *)self viewMode];
+  dismissalReason = [(BMSiriUI *)self dismissalReason];
   if ([(BMSiriUI *)self hasStarting])
   {
     v29 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriUI starting](self, "starting")}];
@@ -251,12 +251,12 @@ LABEL_32:
     v29 = 0;
   }
 
-  v6 = [(BMSiriUI *)self absoluteTimestamp];
-  if (v6)
+  absoluteTimestamp = [(BMSiriUI *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(BMSiriUI *)self absoluteTimestamp];
-    [v8 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMSiriUI *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v9 = [v7 numberWithDouble:?];
   }
 
@@ -265,82 +265,82 @@ LABEL_32:
     v9 = 0;
   }
 
-  v10 = [(BMSiriUI *)self turnID];
-  v11 = [(BMSiriUI *)self carplayPPID];
+  turnID = [(BMSiriUI *)self turnID];
+  carplayPPID = [(BMSiriUI *)self carplayPPID];
   v31[0] = @"sessionID";
-  v12 = v3;
-  if (!v3)
+  null = sessionID;
+  if (!sessionID)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v12;
-  v32[0] = v12;
+  v26 = null;
+  v32[0] = null;
   v31[1] = @"uuid";
-  v13 = v4;
-  if (!v4)
+  null2 = uuid;
+  if (!uuid)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v13;
-  v32[1] = v13;
+  v25 = null2;
+  v32[1] = null2;
   v31[2] = @"viewMode";
-  v14 = v5;
-  if (!v5)
+  null3 = viewMode;
+  if (!viewMode)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v14;
-  v32[2] = v14;
+  v24 = null3;
+  v32[2] = null3;
   v31[3] = @"dismissalReason";
-  v15 = v30;
-  if (!v30)
+  null4 = dismissalReason;
+  if (!dismissalReason)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v3;
-  v32[3] = v15;
+  v28 = sessionID;
+  v32[3] = null4;
   v31[4] = @"starting";
-  v16 = v29;
+  null5 = v29;
   if (!v29)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v4;
-  v32[4] = v16;
+  v27 = uuid;
+  v32[4] = null5;
   v31[5] = @"absoluteTimestamp";
-  v17 = v9;
+  null6 = v9;
   if (!v9)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v5;
-  v32[5] = v17;
+  v18 = viewMode;
+  v32[5] = null6;
   v31[6] = @"turnID";
-  v19 = v10;
-  if (!v10)
+  null7 = turnID;
+  if (!turnID)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[6] = v19;
+  v32[6] = null7;
   v31[7] = @"carplayPPID";
-  v20 = v11;
-  if (!v11)
+  null8 = carplayPPID;
+  if (!carplayPPID)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[7] = v20;
+  v32[7] = null8;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:8];
-  if (v11)
+  if (carplayPPID)
   {
-    if (v10)
+    if (turnID)
     {
       goto LABEL_25;
     }
@@ -349,7 +349,7 @@ LABEL_32:
   else
   {
 
-    if (v10)
+    if (turnID)
     {
       goto LABEL_25;
     }
@@ -364,7 +364,7 @@ LABEL_25:
   {
   }
 
-  if (v30)
+  if (dismissalReason)
   {
     if (v18)
     {
@@ -413,23 +413,23 @@ LABEL_33:
   return v21;
 }
 
-- (BMSiriUI)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriUI)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v90[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"sessionID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"sessionID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"uuid"];
-    v71 = a4;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
+    errorCopy = error;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
           goto LABEL_61;
@@ -443,8 +443,8 @@ LABEL_4:
         v74 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v88 forKeys:&v87 count:1];
         v32 = [v29 initWithDomain:v30 code:2 userInfo:?];
         v10 = 0;
-        a4 = 0;
-        *v71 = v32;
+        error = 0;
+        *errorCopy = v32;
         goto LABEL_60;
       }
 
@@ -456,15 +456,15 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"viewMode"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"viewMode"];
     v74 = v11;
     if (v11 && (v12 = v11, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        a4 = v71;
-        if (!v71)
+        error = errorCopy;
+        if (!errorCopy)
         {
           v31 = 0;
           goto LABEL_60;
@@ -478,8 +478,8 @@ LABEL_4:
         v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
         v35 = [v70 initWithDomain:v33 code:2 userInfo:v34];
         v31 = 0;
-        a4 = 0;
-        *v71 = v35;
+        error = 0;
+        *errorCopy = v35;
         v13 = v34;
 LABEL_59:
 
@@ -495,16 +495,16 @@ LABEL_60:
       v69 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"dismissalReason"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"dismissalReason"];
     v67 = v8;
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v65 = self;
+      selfCopy = self;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        a4 = v71;
-        if (!v71)
+        error = errorCopy;
+        if (!errorCopy)
         {
           v72 = 0;
           v31 = v69;
@@ -521,27 +521,27 @@ LABEL_60:
         v39 = v37;
         v40 = [v73 initWithDomain:v38 code:2 userInfo:v37];
         v72 = 0;
-        a4 = 0;
+        error = 0;
         v31 = v69;
-        *v71 = v40;
+        *errorCopy = v40;
         goto LABEL_58;
       }
 
       v15 = v9;
       v16 = v7;
       v72 = v13;
-      v14 = v65;
+      selfCopy2 = selfCopy;
     }
 
     else
     {
-      v14 = self;
+      selfCopy2 = self;
       v15 = v9;
       v16 = v7;
       v72 = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"starting"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"starting"];
     v66 = v10;
     v63 = v13;
     if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -549,15 +549,15 @@ LABEL_60:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v71)
+        if (!errorCopy)
         {
           v68 = 0;
-          a4 = 0;
+          error = 0;
           v31 = v69;
           v39 = v17;
           v7 = v16;
           v9 = v15;
-          self = v14;
+          self = selfCopy2;
           v8 = v67;
           goto LABEL_58;
         }
@@ -570,13 +570,13 @@ LABEL_60:
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
         v43 = [v41 initWithDomain:v42 code:2 userInfo:v18];
         v68 = 0;
-        a4 = 0;
-        *v71 = v43;
+        error = 0;
+        *errorCopy = v43;
         v13 = v63;
         v39 = v17;
         v7 = v16;
         v9 = v15;
-        self = v14;
+        self = selfCopy2;
         v8 = v67;
 LABEL_57:
 
@@ -597,7 +597,7 @@ LABEL_58:
       v68 = 0;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"absoluteTimestamp"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
     v7 = v16;
     if (v18)
     {
@@ -606,7 +606,7 @@ LABEL_58:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         objc_opt_class();
-        self = v14;
+        self = selfCopy2;
         if (objc_opt_isKindOfClass())
         {
           v23 = MEMORY[0x1E695DF00];
@@ -632,10 +632,10 @@ LABEL_58:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v71)
+            if (!errorCopy)
             {
               v64 = 0;
-              a4 = 0;
+              error = 0;
               goto LABEL_56;
             }
 
@@ -647,8 +647,8 @@ LABEL_58:
             v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
             v58 = [v56 initWithDomain:v57 code:2 userInfo:v45];
             v64 = 0;
-            a4 = 0;
-            *v71 = v58;
+            error = 0;
+            *errorCopy = v58;
 LABEL_55:
 
 LABEL_56:
@@ -663,17 +663,17 @@ LABEL_56:
 
         v64 = v28;
 LABEL_46:
-        v45 = [v6 objectForKeyedSubscript:@"turnID"];
-        v46 = self;
+        v45 = [dictionaryCopy objectForKeyedSubscript:@"turnID"];
+        errorCopy2 = self;
         if (v45 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v71)
+            if (!errorCopy)
             {
               v47 = 0;
-              a4 = 0;
+              error = 0;
               goto LABEL_54;
             }
 
@@ -685,8 +685,8 @@ LABEL_46:
             v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
             v53 = [v60 initWithDomain:v52 code:2 userInfo:v48];
             v47 = 0;
-            a4 = 0;
-            *v71 = v53;
+            error = 0;
+            *errorCopy = v53;
             goto LABEL_53;
           }
 
@@ -698,13 +698,13 @@ LABEL_46:
           v47 = 0;
         }
 
-        v48 = [v6 objectForKeyedSubscript:@"carplayPPID"];
+        v48 = [dictionaryCopy objectForKeyedSubscript:@"carplayPPID"];
         if (v48 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (v71)
+            if (errorCopy)
             {
               v61 = objc_alloc(MEMORY[0x1E696ABC0]);
               v59 = *MEMORY[0x1E698F240];
@@ -712,11 +712,11 @@ LABEL_46:
               v54 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"carplayPPID"];
               v76 = v54;
               v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-              *v71 = [v61 initWithDomain:v59 code:2 userInfo:v55];
+              *errorCopy = [v61 initWithDomain:v59 code:2 userInfo:v55];
             }
 
             v49 = 0;
-            a4 = 0;
+            error = 0;
             goto LABEL_53;
           }
 
@@ -728,12 +728,12 @@ LABEL_46:
           v49 = 0;
         }
 
-        a4 = [(BMSiriUI *)v46 initWithSessionID:v67 uuid:v66 viewMode:v69 dismissalReason:v72 starting:v68 absoluteTimestamp:v64 turnID:v47 carplayPPID:v49];
-        v46 = a4;
+        error = [(BMSiriUI *)errorCopy2 initWithSessionID:v67 uuid:v66 viewMode:v69 dismissalReason:v72 starting:v68 absoluteTimestamp:v64 turnID:v47 carplayPPID:v49];
+        errorCopy2 = error;
 LABEL_53:
 
 LABEL_54:
-        self = v46;
+        self = errorCopy2;
         goto LABEL_55;
       }
 
@@ -746,7 +746,7 @@ LABEL_54:
       v9 = v15;
     }
 
-    self = v14;
+    self = selfCopy2;
     goto LABEL_46;
   }
 
@@ -757,13 +757,13 @@ LABEL_54:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     goto LABEL_62;
   }
 
-  v19 = a4;
+  errorCopy3 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v89 = *MEMORY[0x1E696A578];
@@ -772,73 +772,73 @@ LABEL_54:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v90 forKeys:&v89 count:1];
   v22 = [v20 initWithDomain:v21 code:2 userInfo:v9];
   v8 = 0;
-  a4 = 0;
-  *v19 = v22;
+  error = 0;
+  *errorCopy3 = v22;
 LABEL_61:
 
 LABEL_62:
   v50 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_sessionID)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_viewMode)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_dismissalReason)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_hasStarting)
   {
     starting = self->_starting;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_turnID)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_carplayPPID)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v32.receiver = self;
   v32.super_class = BMSiriUI;
   v5 = [(BMEventBase *)&v32 init];
@@ -847,12 +847,12 @@ LABEL_62:
     goto LABEL_58;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -863,18 +863,18 @@ LABEL_62:
       while (1)
       {
         LOBYTE(v33) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v33) & 0x7F) << v7;
@@ -892,9 +892,9 @@ LABEL_62:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -930,18 +930,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v33) = 0;
-              v23 = [v4 position] + 1;
-              if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+              v23 = [fromCopy position] + 1;
+              if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
               {
-                v25 = [v4 data];
-                [v25 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v22 |= (LOBYTE(v33) & 0x7F) << v20;
@@ -959,7 +959,7 @@ LABEL_16:
               }
             }
 
-            v26 = (v22 != 0) & ~[v4 hasError];
+            v26 = (v22 != 0) & ~[fromCopy hasError];
 LABEL_53:
             v5->_starting = v26;
             goto LABEL_48;
@@ -969,18 +969,18 @@ LABEL_53:
           {
             v5->_hasRaw_absoluteTimestamp = 1;
             v33 = 0.0;
-            v18 = [v4 position] + 8;
-            if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 8, v19 <= objc_msgSend(v4, "length")))
+            v18 = [fromCopy position] + 8;
+            if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 8, v19 <= objc_msgSend(fromCopy, "length")))
             {
-              v29 = [v4 data];
-              [v29 getBytes:&v33 range:{objc_msgSend(v4, "position"), 8}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v5->_raw_absoluteTimestamp = v33;
@@ -1033,13 +1033,13 @@ LABEL_47:
       }
 
 LABEL_48:
-      v28 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v28 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_57:
     v30 = 0;
@@ -1057,43 +1057,43 @@ LABEL_58:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriUI *)self sessionID];
-  v5 = [(BMSiriUI *)self uuid];
-  v6 = [(BMSiriUI *)self viewMode];
-  v7 = [(BMSiriUI *)self dismissalReason];
+  sessionID = [(BMSiriUI *)self sessionID];
+  uuid = [(BMSiriUI *)self uuid];
+  viewMode = [(BMSiriUI *)self viewMode];
+  dismissalReason = [(BMSiriUI *)self dismissalReason];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriUI starting](self, "starting")}];
-  v9 = [(BMSiriUI *)self absoluteTimestamp];
-  v10 = [(BMSiriUI *)self turnID];
-  v11 = [(BMSiriUI *)self carplayPPID];
-  v12 = [v3 initWithFormat:@"BMSiriUI with sessionID: %@, uuid: %@, viewMode: %@, dismissalReason: %@, starting: %@, absoluteTimestamp: %@, turnID: %@, carplayPPID: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  absoluteTimestamp = [(BMSiriUI *)self absoluteTimestamp];
+  turnID = [(BMSiriUI *)self turnID];
+  carplayPPID = [(BMSiriUI *)self carplayPPID];
+  v12 = [v3 initWithFormat:@"BMSiriUI with sessionID: %@, uuid: %@, viewMode: %@, dismissalReason: %@, starting: %@, absoluteTimestamp: %@, turnID: %@, carplayPPID: %@", sessionID, uuid, viewMode, dismissalReason, v8, absoluteTimestamp, turnID, carplayPPID];
 
   return v12;
 }
 
-- (BMSiriUI)initWithSessionID:(id)a3 uuid:(id)a4 viewMode:(id)a5 dismissalReason:(id)a6 starting:(id)a7 absoluteTimestamp:(id)a8 turnID:(id)a9 carplayPPID:(id)a10
+- (BMSiriUI)initWithSessionID:(id)d uuid:(id)uuid viewMode:(id)mode dismissalReason:(id)reason starting:(id)starting absoluteTimestamp:(id)timestamp turnID:(id)iD carplayPPID:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v17 = a7;
-  v18 = a8;
-  v23 = a9;
-  v19 = a10;
+  dCopy = d;
+  uuidCopy = uuid;
+  modeCopy = mode;
+  reasonCopy = reason;
+  startingCopy = starting;
+  timestampCopy = timestamp;
+  iDCopy = iD;
+  pIDCopy = pID;
   v28.receiver = self;
   v28.super_class = BMSiriUI;
   v20 = [(BMEventBase *)&v28 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v20->_sessionID, a3);
-    objc_storeStrong(&v20->_uuid, a4);
-    objc_storeStrong(&v20->_viewMode, a5);
-    objc_storeStrong(&v20->_dismissalReason, a6);
-    if (v17)
+    objc_storeStrong(&v20->_sessionID, d);
+    objc_storeStrong(&v20->_uuid, uuid);
+    objc_storeStrong(&v20->_viewMode, mode);
+    objc_storeStrong(&v20->_dismissalReason, reason);
+    if (startingCopy)
     {
       v20->_hasStarting = 1;
-      v20->_starting = [v17 BOOLValue];
+      v20->_starting = [startingCopy BOOLValue];
     }
 
     else
@@ -1102,10 +1102,10 @@ LABEL_58:
       v20->_starting = 0;
     }
 
-    if (v18)
+    if (timestampCopy)
     {
       v20->_hasRaw_absoluteTimestamp = 1;
-      [v18 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1115,8 +1115,8 @@ LABEL_58:
     }
 
     v20->_raw_absoluteTimestamp = v21;
-    objc_storeStrong(&v20->_turnID, a9);
-    objc_storeStrong(&v20->_carplayPPID, a10);
+    objc_storeStrong(&v20->_turnID, iD);
+    objc_storeStrong(&v20->_carplayPPID, pID);
   }
 
   return v20;
@@ -1148,9 +1148,9 @@ LABEL_58:
   return v10;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1158,8 +1158,8 @@ LABEL_58:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriUI alloc] initByReadFrom:v7];
     v4 = v8;

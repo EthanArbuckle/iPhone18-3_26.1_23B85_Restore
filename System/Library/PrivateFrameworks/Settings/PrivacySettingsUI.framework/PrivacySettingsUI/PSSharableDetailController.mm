@@ -7,8 +7,8 @@
 - (void)shareLog
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v3 = [(PSSharableDetailController *)self specifier];
-  v4 = [v3 propertyForKey:*MEMORY[0x277D3F908]];
+  specifier = [(PSSharableDetailController *)self specifier];
+  v4 = [specifier propertyForKey:*MEMORY[0x277D3F908]];
 
   if ([v4 length])
   {
@@ -30,10 +30,10 @@
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:7];
     [v8 setExcludedActivityTypes:v11];
 
-    v12 = [(PSSharableDetailController *)self navigationItem];
-    v13 = [v12 rightBarButtonItem];
-    v14 = [v8 popoverPresentationController];
-    [v14 setBarButtonItem:v13];
+    navigationItem = [(PSSharableDetailController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    popoverPresentationController = [v8 popoverPresentationController];
+    [popoverPresentationController setBarButtonItem:rightBarButtonItem];
 
     [(PSSharableDetailController *)self presentViewController:v8 animated:1 completion:0];
   }

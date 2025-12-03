@@ -1,12 +1,12 @@
 @interface AWAttentionSampler
 - (AWAttentionSampler)init;
-- (AWAttentionSampler)initWithOptions:(id)a3;
+- (AWAttentionSampler)initWithOptions:(id)options;
 - (CGRect)lastFaceBounds;
 - (id)description;
-- (void)finishDeadlineComputationWithOptions:(id)a3;
+- (void)finishDeadlineComputationWithOptions:(id)options;
 - (void)setUnitTestMode;
 - (void)startDeadlineComputation;
-- (void)updateSamplingDeadline:(unint64_t)a3 forClient:(id)a4;
+- (void)updateSamplingDeadline:(unint64_t)deadline forClient:(id)client;
 @end
 
 @implementation AWAttentionSampler
@@ -60,23 +60,23 @@
   return result;
 }
 
-- (AWAttentionSampler)initWithOptions:(id)a3
+- (AWAttentionSampler)initWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  optionsCopy = options;
+  v5 = optionsCopy;
+  if (!optionsCopy)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 valueForKey:@"eventMask"];
+  v6 = [optionsCopy valueForKey:@"eventMask"];
 
   if (v6)
   {
     v7 = [v5 valueForKey:@"eventMask"];
-    v8 = [v7 unsignedLongValue];
+    unsignedLongValue = [v7 unsignedLongValue];
 
-    if (v8 == 128)
+    if (unsignedLongValue == 128)
     {
       v6 = [[AWPearlAttentionSampler alloc] initWithOptions:v5];
       goto LABEL_6;
@@ -91,7 +91,7 @@ LABEL_6:
   return &v6->super;
 }
 
-- (void)finishDeadlineComputationWithOptions:(id)a3
+- (void)finishDeadlineComputationWithOptions:(id)options
 {
   dispatch_assert_queue_V2(self->_queue);
   v4 = self->_nextDeadline != -1;
@@ -101,18 +101,18 @@ LABEL_6:
   [(AWSampleLogger *)sampleLogger shouldSample:v4];
 }
 
-- (void)updateSamplingDeadline:(unint64_t)a3 forClient:(id)a4
+- (void)updateSamplingDeadline:(unint64_t)deadline forClient:(id)client
 {
   queue = self->_queue;
-  v9 = a4;
+  clientCopy = client;
   dispatch_assert_queue_V2(queue);
   nextDeadline = self->_nextDeadline;
-  if (nextDeadline == -1 || nextDeadline < a3)
+  if (nextDeadline == -1 || nextDeadline < deadline)
   {
-    self->_nextDeadline = a3;
+    self->_nextDeadline = deadline;
   }
 
-  [(AWSampleLogger *)self->_sampleLogger updateDataForClient:v9 deadline:a3];
+  [(AWSampleLogger *)self->_sampleLogger updateDataForClient:clientCopy deadline:deadline];
 }
 
 - (void)setUnitTestMode

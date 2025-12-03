@@ -1,45 +1,45 @@
 @interface TabSnapshotCache
 + (id)defaultSnapshotCache;
-+ (void)removeSavedSnapshotsKeepingSnapshotsWithIdentifiers:(id)a3;
-- (BOOL)hasValidSnapshotWithIdentifier:(id)a3;
-- (BOOL)isIdentifier:(id)a3 memberOfSameGroupAsIdentifier:(id)a4;
++ (void)removeSavedSnapshotsKeepingSnapshotsWithIdentifiers:(id)identifiers;
+- (BOOL)hasValidSnapshotWithIdentifier:(id)identifier;
+- (BOOL)isIdentifier:(id)identifier memberOfSameGroupAsIdentifier:(id)asIdentifier;
 - (NSString)debugDescription;
 - (TabSnapshotCache)init;
-- (TabSnapshotCache)initWithThumbnailCacheDirectoryURL:(id)a3;
+- (TabSnapshotCache)initWithThumbnailCacheDirectoryURL:(id)l;
 - (TabSnapshotCacheProviding)fallbackProvider;
 - (id)_allIdentifiersToCache;
-- (id)_contextForDelegate:(id)a3;
-- (id)_entryForIdentifier:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)_preferredURLForSnapshotWithIdentifier:(id)a3;
-- (id)_readSnapshotImageFromURL:(id)a3 forIdentifier:(id)a4;
-- (id)_writeSnapshotImage:(CGImage *)a3 toURL:(id)a4 forIdentifier:(id)a5;
-- (id)identifiersToCacheForDelegate:(id)a3;
-- (id)metadataWithIdentifier:(id)a3;
-- (id)snapshotWithIdentifier:(id)a3;
-- (void)_beginUpdatingStateForIdentifier:(id)a3;
+- (id)_contextForDelegate:(id)delegate;
+- (id)_entryForIdentifier:(id)identifier createIfNeeded:(BOOL)needed;
+- (id)_preferredURLForSnapshotWithIdentifier:(id)identifier;
+- (id)_readSnapshotImageFromURL:(id)l forIdentifier:(id)identifier;
+- (id)_writeSnapshotImage:(CGImage *)image toURL:(id)l forIdentifier:(id)identifier;
+- (id)identifiersToCacheForDelegate:(id)delegate;
+- (id)metadataWithIdentifier:(id)identifier;
+- (id)snapshotWithIdentifier:(id)identifier;
+- (void)_beginUpdatingStateForIdentifier:(id)identifier;
 - (void)_calculateFitsInCache;
-- (void)_enumerateIdentifiersForEntry:(id)a3 respondingToSelector:(SEL)a4 withBlock:(id)a5;
-- (void)_finishUpdatingToState:(int64_t)a3 cachedSnapshot:(id)a4 metadata:(id)a5 forEntry:(id)a6;
-- (void)_requestNextSnapshotIfNecessaryForDelegate:(id)a3;
-- (void)_requestSavedSnapshotForIdentifier:(id)a3;
-- (void)_saveSnapshotForIdentifier:(id)a3;
+- (void)_enumerateIdentifiersForEntry:(id)entry respondingToSelector:(SEL)selector withBlock:(id)block;
+- (void)_finishUpdatingToState:(int64_t)state cachedSnapshot:(id)snapshot metadata:(id)metadata forEntry:(id)entry;
+- (void)_requestNextSnapshotIfNecessaryForDelegate:(id)delegate;
+- (void)_requestSavedSnapshotForIdentifier:(id)identifier;
+- (void)_saveSnapshotForIdentifier:(id)identifier;
 - (void)_sendDidFinishUpdatingToDelegateIfNeeded;
-- (void)addIdentifier:(id)a3 toGroupWithIdentifier:(id)a4;
-- (void)adjustRequestedSnapshotCountBy:(int64_t)a3 forProvider:(id)a4;
+- (void)addIdentifier:(id)identifier toGroupWithIdentifier:(id)withIdentifier;
+- (void)adjustRequestedSnapshotCountBy:(int64_t)by forProvider:(id)provider;
 - (void)cleanUpSavedSnapshots;
 - (void)invalidateRecoverableEntries;
-- (void)invalidateSnapshotWithIdentifier:(id)a3;
-- (void)performBatchUpdatesWithBlock:(id)a3;
-- (void)removeIdentifier:(id)a3 fromGroupWithIdentifier:(id)a4;
-- (void)removeSnapshotWithIdentifier:(id)a3;
-- (void)requestNextSnapshotIfNecessaryWithOptions:(unint64_t)a3;
-- (void)requestSnapshotWithIdentifier:(id)a3 fromProvider:(id)a4;
+- (void)invalidateSnapshotWithIdentifier:(id)identifier;
+- (void)performBatchUpdatesWithBlock:(id)block;
+- (void)removeIdentifier:(id)identifier fromGroupWithIdentifier:(id)withIdentifier;
+- (void)removeSnapshotWithIdentifier:(id)identifier;
+- (void)requestNextSnapshotIfNecessaryWithOptions:(unint64_t)options;
+- (void)requestSnapshotWithIdentifier:(id)identifier fromProvider:(id)provider;
 - (void)requestSnapshotsFromFallbackProvider;
-- (void)setCapacity:(unint64_t)a3 forDelegate:(id)a4;
-- (void)setIdentifiersToCache:(id)a3 forDelegate:(id)a4;
-- (void)setPersistentIdentifiersProvider:(id)a3;
-- (void)setUpdating:(BOOL)a3 forDelegate:(id)a4;
-- (void)tabSnapshotCacheEntryDidUpdateState:(id)a3;
+- (void)setCapacity:(unint64_t)capacity forDelegate:(id)delegate;
+- (void)setIdentifiersToCache:(id)cache forDelegate:(id)delegate;
+- (void)setPersistentIdentifiersProvider:(id)provider;
+- (void)setUpdating:(BOOL)updating forDelegate:(id)delegate;
+- (void)tabSnapshotCacheEntryDidUpdateState:(id)state;
 @end
 
 @implementation TabSnapshotCache
@@ -49,7 +49,7 @@
   v2 = defaultSnapshotCache_defaultTabSnapshotCacheInstance;
   if (!defaultSnapshotCache_defaultTabSnapshotCacheInstance)
   {
-    v3 = objc_alloc_init(a1);
+    v3 = objc_alloc_init(self);
     v4 = defaultSnapshotCache_defaultTabSnapshotCacheInstance;
     defaultSnapshotCache_defaultTabSnapshotCacheInstance = v3;
 
@@ -109,8 +109,8 @@
         }
 
         v12 = [(TabSnapshotCache *)self _contextForDelegate:*(*(&v40 + 1) + 8 * i)];
-        v13 = [v12 identifiersToCache];
-        v14 = [v13 set];
+        identifiersToCache = [v12 identifiersToCache];
+        v14 = [identifiersToCache set];
         [v33 unionSet:v14];
       }
 
@@ -154,12 +154,12 @@
         if (v24)
         {
           v25 = [(TabSnapshotCache *)self _entryForIdentifier:v22];
-          v26 = [v25 groupMembers];
-          [v26 removeObject:v22];
+          groupMembers = [v25 groupMembers];
+          [groupMembers removeObject:v22];
 
           v27 = [(TabSnapshotCache *)self _entryForIdentifier:v24];
-          v28 = [v27 groupMembers];
-          v29 = [v28 count];
+          groupMembers2 = [v27 groupMembers];
+          v29 = [groupMembers2 count];
 
           if (!v29)
           {
@@ -187,16 +187,16 @@
   dispatch_async(fileSystemAccessQueue, block);
 }
 
-- (TabSnapshotCache)initWithThumbnailCacheDirectoryURL:(id)a3
+- (TabSnapshotCache)initWithThumbnailCacheDirectoryURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v36.receiver = self;
   v36.super_class = TabSnapshotCache;
   v6 = [(TabSnapshotCache *)&v36 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_thumbnailCacheDirectoryURL, a3);
+    objc_storeStrong(&v6->_thumbnailCacheDirectoryURL, l);
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v9 = dispatch_queue_create("com.apple.mobilesafari.TabSnapshotCache.FileSystem", v8);
     fileSystemAccessQueue = v7->_fileSystemAccessQueue;
@@ -210,19 +210,19 @@
     groupIdentifiers = v7->_groupIdentifiers;
     v7->_groupIdentifiers = v13;
 
-    v15 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     delegateToContextMap = v7->_delegateToContextMap;
-    v7->_delegateToContextMap = v15;
+    v7->_delegateToContextMap = weakToStrongObjectsMapTable;
 
-    v17 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     snapshotCacheObservers = v7->_snapshotCacheObservers;
-    v7->_snapshotCacheObservers = v17;
+    v7->_snapshotCacheObservers = weakObjectsHashTable;
 
     v19 = objc_alloc_init(MEMORY[0x277CBEB58]);
     identifiersPendingUpdate = v7->_identifiersPendingUpdate;
     v7->_identifiersPendingUpdate = v19;
 
-    v21 = [objc_alloc(MEMORY[0x277D28DB0]) initWithDirectoryURL:v5];
+    v21 = [objc_alloc(MEMORY[0x277D28DB0]) initWithDirectoryURL:lCopy];
     metadataStore = v7->_metadataStore;
     v7->_metadataStore = v21;
 
@@ -238,7 +238,7 @@
     v33[3] = &unk_2781DC7B8;
     v26 = v7;
     v34 = v26;
-    v35 = v5;
+    v35 = lCopy;
     [(SFTabSnapshotMetadataStore *)v25 loadMetadataWithCompletion:v33];
     v27 = v7->_fileSystemAccessQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -377,12 +377,12 @@ void __55__TabSnapshotCache_initWithThumbnailCacheDirectoryURL___block_invoke_5(
   }
 }
 
-- (id)_entryForIdentifier:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_entryForIdentifier:(id)identifier createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   groupIdentifiers = self->_groupIdentifiers;
-  v7 = a3;
-  v8 = [(NSMutableDictionary *)groupIdentifiers objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  v8 = [(NSMutableDictionary *)groupIdentifiers objectForKeyedSubscript:identifierCopy];
   v9 = v8;
   if (v8)
   {
@@ -391,7 +391,7 @@ void __55__TabSnapshotCache_initWithThumbnailCacheDirectoryURL___block_invoke_5(
 
   else
   {
-    v10 = v7;
+    v10 = identifierCopy;
   }
 
   v11 = v10;
@@ -404,7 +404,7 @@ void __55__TabSnapshotCache_initWithThumbnailCacheDirectoryURL___block_invoke_5(
 
   else
   {
-    v13 = !v4;
+    v13 = !neededCopy;
   }
 
   if (!v13)
@@ -418,13 +418,13 @@ void __55__TabSnapshotCache_initWithThumbnailCacheDirectoryURL___block_invoke_5(
   return v12;
 }
 
-- (id)_preferredURLForSnapshotWithIdentifier:(id)a3
+- (id)_preferredURLForSnapshotWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [a3 UUIDString];
+  uUIDString = [identifier UUIDString];
   v6 = [MEMORY[0x277CBEAA8] now];
   [v6 timeIntervalSinceReferenceDate];
-  v8 = [v4 stringWithFormat:@"%@_%f", v5, v7];
+  v8 = [v4 stringWithFormat:@"%@_%f", uUIDString, v7];
 
   if (deviceSupportsASTC)
   {
@@ -447,7 +447,7 @@ void __55__TabSnapshotCache_initWithThumbnailCacheDirectoryURL___block_invoke_5(
 - (id)_allIdentifiersToCache
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -468,7 +468,7 @@ void __55__TabSnapshotCache_initWithThumbnailCacheDirectoryURL___block_invoke_5(
         }
 
         v9 = [(TabSnapshotCache *)self identifiersToCacheForDelegate:*(*(&v11 + 1) + 8 * i), v11];
-        [v3 unionOrderedSet:v9];
+        [orderedSet unionOrderedSet:v9];
       }
 
       v6 = [(NSMapTable *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -477,26 +477,26 @@ void __55__TabSnapshotCache_initWithThumbnailCacheDirectoryURL___block_invoke_5(
     while (v6);
   }
 
-  return v3;
+  return orderedSet;
 }
 
-- (id)identifiersToCacheForDelegate:(id)a3
+- (id)identifiersToCacheForDelegate:(id)delegate
 {
-  v3 = [(TabSnapshotCache *)self _contextForDelegate:a3];
-  v4 = [v3 identifiersToCache];
+  v3 = [(TabSnapshotCache *)self _contextForDelegate:delegate];
+  identifiersToCache = [v3 identifiersToCache];
 
-  return v4;
+  return identifiersToCache;
 }
 
-- (void)setIdentifiersToCache:(id)a3 forDelegate:(id)a4
+- (void)setIdentifiersToCache:(id)cache forDelegate:(id)delegate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TabSnapshotCache *)self identifiersToCacheForDelegate:v7];
-  if (([v8 isEqualToOrderedSet:v6] & 1) == 0)
+  cacheCopy = cache;
+  delegateCopy = delegate;
+  v8 = [(TabSnapshotCache *)self identifiersToCacheForDelegate:delegateCopy];
+  if (([v8 isEqualToOrderedSet:cacheCopy] & 1) == 0)
   {
-    v9 = [v6 mutableCopy];
+    v9 = [cacheCopy mutableCopy];
     [v9 minusOrderedSet:v8];
     v21 = 0u;
     v22 = 0u;
@@ -532,86 +532,86 @@ void __55__TabSnapshotCache_initWithThumbnailCacheDirectoryURL___block_invoke_5(
       while (v12);
     }
 
-    v17 = [v6 copy];
-    v18 = [(TabSnapshotCache *)self _contextForDelegate:v7];
+    v17 = [cacheCopy copy];
+    v18 = [(TabSnapshotCache *)self _contextForDelegate:delegateCopy];
     [v18 setIdentifiersToCache:v17];
 
-    if (([v7 tabSnapshotCacheShouldDeferNextSnapshotRequest:self] & 1) == 0)
+    if (([delegateCopy tabSnapshotCacheShouldDeferNextSnapshotRequest:self] & 1) == 0)
     {
       [(TabSnapshotCache *)self requestNextSnapshotIfNecessary];
     }
   }
 }
 
-- (id)snapshotWithIdentifier:(id)a3
+- (id)snapshotWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = [(TabSnapshotCache *)self _entryForIdentifier:?];
-    v4 = [v3 snapshot];
+    snapshot = [v3 snapshot];
   }
 
   else
   {
-    v4 = 0;
+    snapshot = 0;
   }
 
-  return v4;
+  return snapshot;
 }
 
-- (id)metadataWithIdentifier:(id)a3
+- (id)metadataWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = [(TabSnapshotCache *)self _entryForIdentifier:?];
-    v4 = [v3 metadata];
+    metadata = [v3 metadata];
   }
 
   else
   {
-    v4 = 0;
+    metadata = 0;
   }
 
-  return v4;
+  return metadata;
 }
 
-- (BOOL)hasValidSnapshotWithIdentifier:(id)a3
+- (BOOL)hasValidSnapshotWithIdentifier:(id)identifier
 {
-  v3 = [(TabSnapshotCache *)self _entryForIdentifier:a3];
-  v4 = [v3 snapshot];
+  v3 = [(TabSnapshotCache *)self _entryForIdentifier:identifier];
+  snapshot = [v3 snapshot];
 
-  if (v4)
+  if (snapshot)
   {
-    LOBYTE(v4) = ([v3 state] - 1) < 2;
+    LOBYTE(snapshot) = ([v3 state] - 1) < 2;
   }
 
-  return v4;
+  return snapshot;
 }
 
-- (void)setPersistentIdentifiersProvider:(id)a3
+- (void)setPersistentIdentifiersProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   persistentIdentifiersProvider = self->_persistentIdentifiersProvider;
   self->_persistentIdentifiersProvider = v4;
 
   [(TabSnapshotCache *)self cleanUpSavedSnapshots];
 }
 
-- (void)removeSnapshotWithIdentifier:(id)a3
+- (void)removeSnapshotWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_snapshots objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_snapshots objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 metadata];
-    v8 = [v7 fileName];
+    metadata = [v5 metadata];
+    fileName = [metadata fileName];
 
-    [(NSMutableDictionary *)self->_snapshots setObject:0 forKeyedSubscript:v4];
-    [(NSMutableDictionary *)self->_groupIdentifiers setObject:0 forKeyedSubscript:v4];
-    if (v8)
+    [(NSMutableDictionary *)self->_snapshots setObject:0 forKeyedSubscript:identifierCopy];
+    [(NSMutableDictionary *)self->_groupIdentifiers setObject:0 forKeyedSubscript:identifierCopy];
+    if (fileName)
     {
-      v9 = [(NSURL *)self->_thumbnailCacheDirectoryURL URLByAppendingPathComponent:v8];
+      v9 = [(NSURL *)self->_thumbnailCacheDirectoryURL URLByAppendingPathComponent:fileName];
       fileSystemAccessQueue = self->_fileSystemAccessQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -651,10 +651,10 @@ void __49__TabSnapshotCache_removeSnapshotWithIdentifier___block_invoke(uint64_t
   }
 }
 
-- (void)invalidateSnapshotWithIdentifier:(id)a3
+- (void)invalidateSnapshotWithIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [(TabSnapshotCache *)self _entryForIdentifier:a3];
+  v4 = [(TabSnapshotCache *)self _entryForIdentifier:identifier];
   v5 = WBS_LOG_CHANNEL_PREFIXTabSnapshots();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -670,24 +670,24 @@ void __49__TabSnapshotCache_removeSnapshotWithIdentifier___block_invoke(uint64_t
   [(TabSnapshotCache *)self requestNextSnapshotIfNecessary];
 }
 
-- (void)_requestSavedSnapshotForIdentifier:(id)a3
+- (void)_requestSavedSnapshotForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TabSnapshotCache *)self _entryForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(TabSnapshotCache *)self _entryForIdentifier:identifierCopy];
   v6 = WBS_LOG_CHANNEL_PREFIXTabSnapshots();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [(TabSnapshotCache *)v6 _requestSavedSnapshotForIdentifier:v5];
   }
 
-  v7 = [v5 metadata];
-  [(TabSnapshotCache *)self _beginUpdatingStateForIdentifier:v4];
-  v8 = [v7 fileName];
-  if (v8)
+  metadata = [v5 metadata];
+  [(TabSnapshotCache *)self _beginUpdatingStateForIdentifier:identifierCopy];
+  fileName = [metadata fileName];
+  if (fileName)
   {
     thumbnailCacheDirectoryURL = self->_thumbnailCacheDirectoryURL;
-    v10 = [v7 fileName];
-    v11 = [(NSURL *)thumbnailCacheDirectoryURL URLByAppendingPathComponent:v10 isDirectory:0];
+    fileName2 = [metadata fileName];
+    v11 = [(NSURL *)thumbnailCacheDirectoryURL URLByAppendingPathComponent:fileName2 isDirectory:0];
   }
 
   else
@@ -702,12 +702,12 @@ void __49__TabSnapshotCache_removeSnapshotWithIdentifier___block_invoke(uint64_t
   block[3] = &unk_2781D7D88;
   block[4] = self;
   v18 = v11;
-  v19 = v4;
+  v19 = identifierCopy;
   v20 = v5;
-  v21 = v7;
-  v13 = v7;
+  v21 = metadata;
+  v13 = metadata;
   v14 = v5;
-  v15 = v4;
+  v15 = identifierCopy;
   v16 = v11;
   dispatch_async(fileSystemAccessQueue, block);
 }
@@ -750,14 +750,14 @@ uint64_t __55__TabSnapshotCache__requestSavedSnapshotForIdentifier___block_invok
   }
 }
 
-- (id)_readSnapshotImageFromURL:(id)a3 forIdentifier:(id)a4
+- (id)_readSnapshotImageFromURL:(id)l forIdentifier:(id)identifier
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  lCopy = l;
+  identifierCopy = identifier;
+  if (lCopy)
   {
-    v7 = CGImageSourceCreateWithURL(v5, 0);
+    v7 = CGImageSourceCreateWithURL(lCopy, 0);
     if (v7)
     {
       v8 = v7;
@@ -770,15 +770,15 @@ uint64_t __55__TabSnapshotCache__requestSavedSnapshotForIdentifier___block_invok
       CGImageRelease(ImageAtIndex);
       if (deviceSupportsASTC == 1)
       {
-        v12 = v11;
+        safari_decodedImageIfPossible = v11;
       }
 
       else
       {
-        v12 = [(UIImage *)v11 safari_decodedImageIfPossible];
+        safari_decodedImageIfPossible = [(UIImage *)v11 safari_decodedImageIfPossible];
       }
 
-      v13 = v12;
+      v13 = safari_decodedImageIfPossible;
 
       goto LABEL_11;
     }
@@ -805,11 +805,11 @@ LABEL_11:
   return v13;
 }
 
-- (void)_saveSnapshotForIdentifier:(id)a3
+- (void)_saveSnapshotForIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TabSnapshotCache *)self _entryForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(TabSnapshotCache *)self _entryForIdentifier:identifierCopy];
   v6 = WBS_LOG_CHANNEL_PREFIXTabSnapshots();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -822,15 +822,15 @@ LABEL_11:
 
   if (v5)
   {
-    [(TabSnapshotCache *)self _beginUpdatingStateForIdentifier:v4];
-    v9 = [v5 metadata];
-    v10 = [v9 fileName];
-    if (v10)
+    [(TabSnapshotCache *)self _beginUpdatingStateForIdentifier:identifierCopy];
+    metadata = [v5 metadata];
+    fileName = [metadata fileName];
+    if (fileName)
     {
       thumbnailCacheDirectoryURL = self->_thumbnailCacheDirectoryURL;
-      v12 = [v5 metadata];
-      v13 = [v12 fileName];
-      v14 = [(NSURL *)thumbnailCacheDirectoryURL URLByAppendingPathComponent:v13 isDirectory:0];
+      metadata2 = [v5 metadata];
+      fileName2 = [metadata2 fileName];
+      v14 = [(NSURL *)thumbnailCacheDirectoryURL URLByAppendingPathComponent:fileName2 isDirectory:0];
     }
 
     else
@@ -838,13 +838,13 @@ LABEL_11:
       v14 = 0;
     }
 
-    v15 = [(TabSnapshotCache *)self _preferredURLForSnapshotWithIdentifier:v4];
-    v16 = [v5 metadata];
-    v17 = [v15 lastPathComponent];
-    [v16 setFileName:v17];
+    v15 = [(TabSnapshotCache *)self _preferredURLForSnapshotWithIdentifier:identifierCopy];
+    metadata3 = [v5 metadata];
+    lastPathComponent = [v15 lastPathComponent];
+    [metadata3 setFileName:lastPathComponent];
 
-    [(SFTabSnapshotMetadataStore *)self->_metadataStore deleteMetadataForIdentifier:v4 completion:&__block_literal_global_141];
-    [(SFTabSnapshotMetadataStore *)self->_metadataStore saveMetadata:v16 completion:&__block_literal_global_143];
+    [(SFTabSnapshotMetadataStore *)self->_metadataStore deleteMetadataForIdentifier:identifierCopy completion:&__block_literal_global_141];
+    [(SFTabSnapshotMetadataStore *)self->_metadataStore saveMetadata:metadata3 completion:&__block_literal_global_143];
     fileSystemAccessQueue = self->_fileSystemAccessQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -854,8 +854,8 @@ LABEL_11:
     v23 = v5;
     v24 = v15;
     v25 = v14;
-    v26 = v16;
-    v19 = v16;
+    v26 = metadata3;
+    v19 = metadata3;
     v20 = v14;
     v21 = v15;
     dispatch_async(fileSystemAccessQueue, block);
@@ -918,11 +918,11 @@ uint64_t __47__TabSnapshotCache__saveSnapshotForIdentifier___block_invoke_4(uint
   return [v4 _finishUpdatingToState:v6 forEntry:v5];
 }
 
-- (id)_writeSnapshotImage:(CGImage *)a3 toURL:(id)a4 forIdentifier:(id)a5
+- (id)_writeSnapshotImage:(CGImage *)image toURL:(id)l forIdentifier:(id)identifier
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
   if (deviceSupportsASTC == 1)
   {
     v10 = *MEMORY[0x277CD2DD0];
@@ -947,18 +947,18 @@ uint64_t __47__TabSnapshotCache__saveSnapshotForIdentifier___block_invoke_4(uint
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
   }
 
-  v14 = CGImageDestinationCreateWithURL(v8, v12, 1uLL, 0);
+  v14 = CGImageDestinationCreateWithURL(lCopy, v12, 1uLL, 0);
   if (v14)
   {
     v15 = v14;
-    CGImageDestinationAddImage(v14, a3, v11);
+    CGImageDestinationAddImage(v14, image, v11);
     v16 = CGImageDestinationFinalize(v15);
     CFRelease(v15);
     if (v16)
     {
       if (deviceSupportsASTC == 1)
       {
-        v17 = [(TabSnapshotCache *)self _readSnapshotImageFromURL:v8 forIdentifier:v9];
+        v17 = [(TabSnapshotCache *)self _readSnapshotImageFromURL:lCopy forIdentifier:identifierCopy];
         goto LABEL_13;
       }
     }
@@ -988,10 +988,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)_beginUpdatingStateForIdentifier:(id)a3
+- (void)_beginUpdatingStateForIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(TabSnapshotCache *)self _entryForIdentifier:a3];
+  v3 = [(TabSnapshotCache *)self _entryForIdentifier:identifier];
   v4 = WBS_LOG_CHANNEL_PREFIXTabSnapshots();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -1006,26 +1006,26 @@ LABEL_13:
   [v3 setStateUpdateCancelled:0];
 }
 
-- (void)_finishUpdatingToState:(int64_t)a3 cachedSnapshot:(id)a4 metadata:(id)a5 forEntry:(id)a6
+- (void)_finishUpdatingToState:(int64_t)state cachedSnapshot:(id)snapshot metadata:(id)metadata forEntry:(id)entry
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  snapshotCopy = snapshot;
+  metadataCopy = metadata;
+  entryCopy = entry;
   v13 = WBS_LOG_CHANNEL_PREFIXTabSnapshots();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = v13;
-    v15 = [v12 debugDescription];
+    v15 = [entryCopy debugDescription];
     v16 = v15;
-    if (a3 > 4)
+    if (state > 4)
     {
       v17 = @"Empty";
     }
 
     else
     {
-      v17 = off_2781DC828[a3];
+      v17 = off_2781DC828[state];
     }
 
     *buf = 138543874;
@@ -1033,32 +1033,32 @@ LABEL_13:
     v23 = 2112;
     v24 = v17;
     v25 = 2112;
-    v26 = v10;
+    v26 = snapshotCopy;
     _os_log_impl(&dword_215819000, v14, OS_LOG_TYPE_INFO, "Finish updating entry: %{public}@ (toState = %@; snapshot = %@)", buf, 0x20u);
   }
 
-  if ([v12 isUpdatingState])
+  if ([entryCopy isUpdatingState])
   {
-    [v12 setUpdatingState:0];
-    if (([v12 stateUpdateCancelled] & 1) == 0)
+    [entryCopy setUpdatingState:0];
+    if (([entryCopy stateUpdateCancelled] & 1) == 0)
     {
-      [v12 setState:a3];
-      if (v10)
+      [entryCopy setState:state];
+      if (snapshotCopy)
       {
-        [v12 setSnapshot:v10];
-        v18 = [v12 metadata];
-        v19 = [v18 fileName];
-        [v11 setFileName:v19];
+        [entryCopy setSnapshot:snapshotCopy];
+        metadata = [entryCopy metadata];
+        fileName = [metadata fileName];
+        [metadataCopy setFileName:fileName];
 
-        [v12 setMetadata:v11];
-        if (deviceSupportsASTC != 1 || [v12 state] == 2)
+        [entryCopy setMetadata:metadataCopy];
+        if (deviceSupportsASTC != 1 || [entryCopy state] == 2)
         {
           v20[0] = MEMORY[0x277D85DD0];
           v20[1] = 3221225472;
           v20[2] = __76__TabSnapshotCache__finishUpdatingToState_cachedSnapshot_metadata_forEntry___block_invoke;
           v20[3] = &unk_2781DC7E0;
           v20[4] = self;
-          [(TabSnapshotCache *)self _enumerateIdentifiersForEntry:v12 respondingToSelector:sel_tabSnapshotCache_didCacheSnapshotWithIdentifier_ withBlock:v20];
+          [(TabSnapshotCache *)self _enumerateIdentifiersForEntry:entryCopy respondingToSelector:sel_tabSnapshotCache_didCacheSnapshotWithIdentifier_ withBlock:v20];
         }
       }
 
@@ -1069,26 +1069,26 @@ LABEL_13:
   }
 }
 
-- (void)_enumerateIdentifiersForEntry:(id)a3 respondingToSelector:(SEL)a4 withBlock:(id)a5
+- (void)_enumerateIdentifiersForEntry:(id)entry respondingToSelector:(SEL)selector withBlock:(id)block
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
-  if ([v6 isGroup])
+  entryCopy = entry;
+  blockCopy = block;
+  if ([entryCopy isGroup])
   {
-    v8 = [v6 groupMembers];
-    v9 = [v8 copy];
+    groupMembers = [entryCopy groupMembers];
+    v9 = [groupMembers copy];
   }
 
   else
   {
     v10 = MEMORY[0x277CBEB98];
-    v8 = [v6 identifier];
-    v9 = [v10 setWithObject:v8];
+    groupMembers = [entryCopy identifier];
+    v9 = [v10 setWithObject:groupMembers];
   }
 
   v39 = v9;
-  v33 = v6;
+  v33 = entryCopy;
 
   v54 = 0u;
   v55 = 0u;
@@ -1138,7 +1138,7 @@ LABEL_13:
                 v22 = *(*(&v48 + 1) + 8 * i);
                 if ([v16 containsObject:v22])
                 {
-                  v7[2](v7, v15, v22);
+                  blockCopy[2](blockCopy, v15, v22);
                 }
               }
 
@@ -1203,7 +1203,7 @@ LABEL_13:
                   objc_enumerationMutation(v28);
                 }
 
-                v7[2](v7, v27, *(*(&v40 + 1) + 8 * k));
+                blockCopy[2](blockCopy, v27, *(*(&v40 + 1) + 8 * k));
               }
 
               v30 = [v28 countByEnumeratingWithState:&v40 objects:v56 count:16];
@@ -1224,13 +1224,13 @@ LABEL_13:
 - (NSString)debugDescription
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(TabSnapshotCache *)self _allIdentifiersToCache];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  _allIdentifiersToCache = [(TabSnapshotCache *)self _allIdentifiersToCache];
+  v5 = [_allIdentifiersToCache countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1241,23 +1241,23 @@ LABEL_13:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allIdentifiersToCache);
         }
 
         v9 = [(TabSnapshotCache *)self _entryForIdentifier:*(*(&v19 + 1) + 8 * i)];
         if ([v9 state])
         {
-          v10 = [v9 state];
+          state = [v9 state];
           v11 = @"e";
-          if (v10 != 3)
+          if (state != 3)
           {
-            v12 = [v9 state];
+            state2 = [v9 state];
             v11 = @"r";
-            if (v12 != 4)
+            if (state2 != 4)
             {
-              v13 = [v9 state];
+              state3 = [v9 state];
               v11 = @"█";
-              if (v13 != 2)
+              if (state3 != 2)
               {
                 if ([v9 state] == 1)
                 {
@@ -1278,10 +1278,10 @@ LABEL_13:
           v11 = @"*";
         }
 
-        [v3 appendString:v11];
+        [string appendString:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [_allIdentifiersToCache countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -1290,25 +1290,25 @@ LABEL_13:
   v14 = MEMORY[0x277CCACA8];
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  v17 = [v14 stringWithFormat:@"<%@: %p delegateToContextMap = %@, snapshotCacheStates = %@;>", v16, self, self->_delegateToContextMap, v3];;
+  v17 = [v14 stringWithFormat:@"<%@: %p delegateToContextMap = %@, snapshotCacheStates = %@;>", v16, self, self->_delegateToContextMap, string];;
 
   return v17;
 }
 
-- (void)_requestNextSnapshotIfNecessaryForDelegate:(id)a3
+- (void)_requestNextSnapshotIfNecessaryForDelegate:(id)delegate
 {
   v36 = *MEMORY[0x277D85DE8];
-  v26 = a3;
+  delegateCopy = delegate;
   v4 = [(TabSnapshotCache *)self _contextForDelegate:?];
-  v5 = [v4 identifiersToCache];
+  identifiersToCache = [v4 identifiersToCache];
   v25 = v4;
-  v27 = [v4 updating];
+  updating = [v4 updating];
   v6 = [MEMORY[0x277CBEB58] set];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v5;
+  v7 = identifiersToCache;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v8)
   {
@@ -1328,27 +1328,27 @@ LABEL_13:
         v13 = [(TabSnapshotCache *)self _entryForIdentifier:v12 createIfNeeded:1];
         if ([v13 isGroup])
         {
-          v14 = [v13 identifier];
-          v15 = [v6 containsObject:v14];
+          identifier = [v13 identifier];
+          v15 = [v6 containsObject:identifier];
 
           if (v15)
           {
             goto LABEL_10;
           }
 
-          v16 = [v13 identifier];
-          [v6 addObject:v16];
+          identifier2 = [v13 identifier];
+          [v6 addObject:identifier2];
         }
 
-        v17 = [v13 fitsInCache];
+        fitsInCache = [v13 fitsInCache];
         if (([v13 isUpdatingState] & 1) == 0)
         {
-          v18 = [v13 state];
-          if (v18 > 1)
+          state = [v13 state];
+          if (state > 1)
           {
-            if (v18 == 2)
+            if (state == 2)
             {
-              if ((v17 & 1) == 0)
+              if ((fitsInCache & 1) == 0)
               {
                 v21 = WBS_LOG_CHANNEL_PREFIXTabSnapshots();
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -1371,23 +1371,23 @@ LABEL_13:
               }
             }
 
-            else if (v18 == 3 && v17 != 0)
+            else if (state == 3 && fitsInCache != 0)
             {
               [(TabSnapshotCache *)self _requestSavedSnapshotForIdentifier:v12];
             }
           }
 
-          else if (v18)
+          else if (state)
           {
-            if (v18 == 1 && v27 != 0)
+            if (state == 1 && updating != 0)
             {
               [(TabSnapshotCache *)self _saveSnapshotForIdentifier:v12];
             }
           }
 
-          else if (v27)
+          else if (updating)
           {
-            [(TabSnapshotCache *)self requestSnapshotWithIdentifier:v12 fromProvider:v26];
+            [(TabSnapshotCache *)self requestSnapshotWithIdentifier:v12 fromProvider:delegateCopy];
           }
         }
 
@@ -1405,56 +1405,56 @@ LABEL_10:
   }
 }
 
-- (void)adjustRequestedSnapshotCountBy:(int64_t)a3 forProvider:(id)a4
+- (void)adjustRequestedSnapshotCountBy:(int64_t)by forProvider:(id)provider
 {
-  v9 = a4;
-  self->_currentlyRequestedSnapshotCount += a3;
+  providerCopy = provider;
+  self->_currentlyRequestedSnapshotCount += by;
   WeakRetained = objc_loadWeakRetained(&self->_fallbackProvider);
 
-  v7 = v9;
-  if (WeakRetained == v9)
+  v7 = providerCopy;
+  if (WeakRetained == providerCopy)
   {
-    self->_fallbackProviderNumberOfRequests += a3;
+    self->_fallbackProviderNumberOfRequests += by;
   }
 
   else
   {
-    v8 = [(TabSnapshotCache *)self _contextForDelegate:v9];
-    [v8 setNumberOfRequests:{objc_msgSend(v8, "numberOfRequests") + a3}];
+    v8 = [(TabSnapshotCache *)self _contextForDelegate:providerCopy];
+    [v8 setNumberOfRequests:{objc_msgSend(v8, "numberOfRequests") + by}];
 
-    v7 = v9;
+    v7 = providerCopy;
   }
 }
 
-- (void)requestSnapshotWithIdentifier:(id)a3 fromProvider:(id)a4
+- (void)requestSnapshotWithIdentifier:(id)identifier fromProvider:(id)provider
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TabSnapshotCache *)self _entryForIdentifier:v6 createIfNeeded:1];
+  identifierCopy = identifier;
+  providerCopy = provider;
+  v8 = [(TabSnapshotCache *)self _entryForIdentifier:identifierCopy createIfNeeded:1];
   if ([v8 fitsInCache] && self->_currentlyRequestedSnapshotCount <= 7)
   {
     WeakRetained = objc_loadWeakRetained(&self->_fallbackProvider);
 
-    if (WeakRetained == v7)
+    if (WeakRetained == providerCopy)
     {
       fallbackProviderNumberOfRequests = self->_fallbackProviderNumberOfRequests;
     }
 
     else
     {
-      v10 = [(TabSnapshotCache *)self _contextForDelegate:v7];
+      v10 = [(TabSnapshotCache *)self _contextForDelegate:providerCopy];
       fallbackProviderNumberOfRequests = [v10 numberOfRequests];
     }
 
-    if ((objc_opt_respondsToSelector() & 1) == 0 || fallbackProviderNumberOfRequests < [v7 maximumNumberOfRequestsForTabSnapshotCache:self])
+    if ((objc_opt_respondsToSelector() & 1) == 0 || fallbackProviderNumberOfRequests < [providerCopy maximumNumberOfRequestsForTabSnapshotCache:self])
     {
-      if ((objc_opt_respondsToSelector() & 1) != 0 && ([v7 tabSnapshotCache:self canAcceptRequestForIdentifier:v6] & 1) == 0)
+      if ((objc_opt_respondsToSelector() & 1) != 0 && ([providerCopy tabSnapshotCache:self canAcceptRequestForIdentifier:identifierCopy] & 1) == 0)
       {
         v15 = WBS_LOG_CHANNEL_PREFIXTabSnapshots();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
-          if (WeakRetained == v7)
+          if (WeakRetained == providerCopy)
           {
             v16 = @"Fallback provider";
           }
@@ -1473,14 +1473,14 @@ LABEL_10:
           _os_log_impl(&dword_215819000, v17, OS_LOG_TYPE_INFO, "%{public}@ skipped request for entry %{public}@", buf, 0x16u);
         }
 
-        [(NSMutableOrderedSet *)self->_identifiersNotHandledByProvider addObject:v6];
+        [(NSMutableOrderedSet *)self->_identifiersNotHandledByProvider addObject:identifierCopy];
       }
 
       else
       {
-        [(NSMutableOrderedSet *)self->_identifiersNotHandledByProvider removeObject:v6];
-        [(TabSnapshotCache *)self adjustRequestedSnapshotCountBy:1 forProvider:v7];
-        [(TabSnapshotCache *)self _beginUpdatingStateForIdentifier:v6];
+        [(NSMutableOrderedSet *)self->_identifiersNotHandledByProvider removeObject:identifierCopy];
+        [(TabSnapshotCache *)self adjustRequestedSnapshotCountBy:1 forProvider:providerCopy];
+        [(TabSnapshotCache *)self _beginUpdatingStateForIdentifier:identifierCopy];
         v12 = WBS_LOG_CHANNEL_PREFIXTabSnapshots();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
@@ -1496,9 +1496,9 @@ LABEL_10:
         v19[2] = __63__TabSnapshotCache_requestSnapshotWithIdentifier_fromProvider___block_invoke;
         v19[3] = &unk_2781DC808;
         v19[4] = self;
-        v20 = v7;
+        v20 = providerCopy;
         v21 = v8;
-        [v20 tabSnapshotCache:self requestSnapshotWithIdentifier:v6 completion:v19];
+        [v20 tabSnapshotCache:self requestSnapshotWithIdentifier:identifierCopy completion:v19];
       }
     }
   }
@@ -1565,9 +1565,9 @@ void __63__TabSnapshotCache_requestSnapshotWithIdentifier_fromProvider___block_i
   if (WeakRetained)
   {
     v4 = self->_identifiersNotHandledByProvider;
-    v5 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     identifiersNotHandledByProvider = self->_identifiersNotHandledByProvider;
-    self->_identifiersNotHandledByProvider = v5;
+    self->_identifiersNotHandledByProvider = orderedSet;
 
     v27 = 0u;
     v28 = 0u;
@@ -1634,9 +1634,9 @@ void __63__TabSnapshotCache_requestSnapshotWithIdentifier_fromProvider___block_i
   }
 }
 
-- (void)requestNextSnapshotIfNecessaryWithOptions:(unint64_t)a3
+- (void)requestNextSnapshotIfNecessaryWithOptions:(unint64_t)options
 {
-  self->_requestNextSnapshotOptions |= a3;
+  self->_requestNextSnapshotOptions |= options;
   if (!self->_needsRequestNextSnapshot)
   {
     self->_needsRequestNextSnapshot = 1;
@@ -1755,8 +1755,8 @@ void __62__TabSnapshotCache_requestNextSnapshotIfNecessaryWithOptions___block_in
         v21 = 0u;
         v22 = 0u;
         v17 = v4;
-        v5 = [v4 identifiersToCache];
-        v6 = [v5 countByEnumeratingWithState:&v19 objects:v29 count:16];
+        identifiersToCache = [v4 identifiersToCache];
+        v6 = [identifiersToCache countByEnumeratingWithState:&v19 objects:v29 count:16];
         if (v6)
         {
           v7 = v6;
@@ -1767,7 +1767,7 @@ void __62__TabSnapshotCache_requestNextSnapshotIfNecessaryWithOptions___block_in
             {
               if (*v20 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(identifiersToCache);
               }
 
               v10 = [(TabSnapshotCache *)self _entryForIdentifier:*(*(&v19 + 1) + 8 * i)];
@@ -1788,7 +1788,7 @@ void __62__TabSnapshotCache_requestNextSnapshotIfNecessaryWithOptions___block_in
               }
             }
 
-            v7 = [v5 countByEnumeratingWithState:&v19 objects:v29 count:16];
+            v7 = [identifiersToCache countByEnumeratingWithState:&v19 objects:v29 count:16];
           }
 
           while (v7);
@@ -1829,12 +1829,12 @@ void __62__TabSnapshotCache_requestNextSnapshotIfNecessaryWithOptions___block_in
         }
 
         v7 = [(TabSnapshotCache *)self _contextForDelegate:*(*(&v46 + 1) + 8 * v6)];
-        v8 = [v7 identifiersToCache];
+        identifiersToCache = [v7 identifiersToCache];
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v9 = [v8 countByEnumeratingWithState:&v42 objects:v52 count:16];
+        v9 = [identifiersToCache countByEnumeratingWithState:&v42 objects:v52 count:16];
         if (v9)
         {
           v10 = v9;
@@ -1846,7 +1846,7 @@ void __62__TabSnapshotCache_requestNextSnapshotIfNecessaryWithOptions___block_in
             {
               if (*v43 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(identifiersToCache);
               }
 
               v13 = [(TabSnapshotCache *)self _entryForIdentifier:*(*(&v42 + 1) + 8 * v12) createIfNeeded:1];
@@ -1856,7 +1856,7 @@ void __62__TabSnapshotCache_requestNextSnapshotIfNecessaryWithOptions___block_in
             }
 
             while (v10 != v12);
-            v10 = [v8 countByEnumeratingWithState:&v42 objects:v52 count:16];
+            v10 = [identifiersToCache countByEnumeratingWithState:&v42 objects:v52 count:16];
           }
 
           while (v10);
@@ -1893,15 +1893,15 @@ void __62__TabSnapshotCache_requestNextSnapshotIfNecessaryWithOptions___block_in
 
         obja = v14;
         v15 = [(TabSnapshotCache *)self _contextForDelegate:*(*(&v38 + 1) + 8 * v14)];
-        v16 = [v15 identifiersToCache];
+        identifiersToCache2 = [v15 identifiersToCache];
         v31 = v15;
-        v17 = [v15 capacity];
+        capacity = [v15 capacity];
         v18 = [MEMORY[0x277CBEB58] set];
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v19 = v16;
+        v19 = identifiersToCache2;
         v20 = [v19 countByEnumeratingWithState:&v34 objects:v50 count:16];
         if (v20)
         {
@@ -1916,7 +1916,7 @@ LABEL_22:
               objc_enumerationMutation(v19);
             }
 
-            if (!v17)
+            if (!capacity)
             {
               goto LABEL_32;
             }
@@ -1927,8 +1927,8 @@ LABEL_22:
               goto LABEL_29;
             }
 
-            v25 = [v24 identifier];
-            v26 = [v18 containsObject:v25];
+            identifier = [v24 identifier];
+            v26 = [v18 containsObject:identifier];
 
             if ((v26 & 1) == 0)
             {
@@ -1949,13 +1949,13 @@ LABEL_30:
             }
           }
 
-          v27 = [v24 identifier];
-          [v18 addObject:v27];
+          identifier2 = [v24 identifier];
+          [v18 addObject:identifier2];
 
 LABEL_29:
           [v24 fitsInCache];
           [v24 setFitsInCache:1];
-          --v17;
+          --capacity;
           goto LABEL_30;
         }
 
@@ -1972,9 +1972,9 @@ LABEL_32:
   }
 }
 
-- (void)performBatchUpdatesWithBlock:(id)a3
+- (void)performBatchUpdatesWithBlock:(id)block
 {
-  (*(a3 + 2))(a3, a2);
+  (*(block + 2))(block, a2);
 
   [(TabSnapshotCache *)self requestNextSnapshotIfNecessary];
 }
@@ -2024,8 +2024,8 @@ LABEL_32:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = [(NSHashTable *)self->_snapshotCacheObservers allObjects];
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v23 count:16];
+    allObjects = [(NSHashTable *)self->_snapshotCacheObservers allObjects];
+    v10 = [allObjects countByEnumeratingWithState:&v15 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2037,7 +2037,7 @@ LABEL_32:
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allObjects);
           }
 
           v14 = *(*(&v15 + 1) + 8 * v13);
@@ -2050,7 +2050,7 @@ LABEL_32:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v23 count:16];
+        v11 = [allObjects countByEnumeratingWithState:&v15 objects:v23 count:16];
       }
 
       while (v11);
@@ -2058,48 +2058,48 @@ LABEL_32:
   }
 }
 
-- (id)_contextForDelegate:(id)a3
+- (id)_contextForDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_delegateToContextMap objectForKey:v4];
+  delegateCopy = delegate;
+  v5 = [(NSMapTable *)self->_delegateToContextMap objectForKey:delegateCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(TabSnapshotCacheContext);
-    -[TabSnapshotCacheContext setCapacity:](v5, "setCapacity:", [v4 capacityForTabSnapshotCache:self]);
-    [(NSMapTable *)self->_delegateToContextMap setObject:v5 forKey:v4];
+    -[TabSnapshotCacheContext setCapacity:](v5, "setCapacity:", [delegateCopy capacityForTabSnapshotCache:self]);
+    [(NSMapTable *)self->_delegateToContextMap setObject:v5 forKey:delegateCopy];
   }
 
   return v5;
 }
 
-- (void)setUpdating:(BOOL)a3 forDelegate:(id)a4
+- (void)setUpdating:(BOOL)updating forDelegate:(id)delegate
 {
-  v4 = a3;
-  v6 = [(TabSnapshotCache *)self _contextForDelegate:a4];
-  if ([v6 updating] != v4)
+  updatingCopy = updating;
+  v6 = [(TabSnapshotCache *)self _contextForDelegate:delegate];
+  if ([v6 updating] != updatingCopy)
   {
-    [v6 setUpdating:v4];
-    if (v4)
+    [v6 setUpdating:updatingCopy];
+    if (updatingCopy)
     {
       [(TabSnapshotCache *)self requestNextSnapshotIfNecessary];
     }
   }
 }
 
-- (void)setCapacity:(unint64_t)a3 forDelegate:(id)a4
+- (void)setCapacity:(unint64_t)capacity forDelegate:(id)delegate
 {
-  v6 = [(TabSnapshotCache *)self _contextForDelegate:a4];
-  if ([v6 capacity] != a3)
+  v6 = [(TabSnapshotCache *)self _contextForDelegate:delegate];
+  if ([v6 capacity] != capacity)
   {
-    [v6 setCapacity:a3];
+    [v6 setCapacity:capacity];
     [(TabSnapshotCache *)self requestNextSnapshotIfNecessary];
   }
 }
 
-+ (void)removeSavedSnapshotsKeepingSnapshotsWithIdentifiers:(id)a3
++ (void)removeSavedSnapshotsKeepingSnapshotsWithIdentifiers:(id)identifiers
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = SafariThumbnailCacheDirectoryPath();
   [MEMORY[0x277CCAA00] defaultManager];
   v18 = 0u;
@@ -2128,7 +2128,7 @@ LABEL_32:
         {
           v12 = [v11 substringToIndex:36];
           v13 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v12];
-          if (v13 && ([v3 containsObject:v13] & 1) == 0)
+          if (v13 && ([identifiersCopy containsObject:v13] & 1) == 0)
           {
             v14 = [v4 stringByAppendingPathComponent:v11];
             if ([v17 _web_removeFileOnlyAtPath:v14])
@@ -2152,52 +2152,52 @@ LABEL_32:
   }
 }
 
-- (void)addIdentifier:(id)a3 toGroupWithIdentifier:(id)a4
+- (void)addIdentifier:(id)identifier toGroupWithIdentifier:(id)withIdentifier
 {
   identifiersPendingUpdate = self->_identifiersPendingUpdate;
-  v7 = a4;
-  v8 = a3;
-  [(NSMutableSet *)identifiersPendingUpdate removeObject:v8];
-  [(NSMutableDictionary *)self->_groupIdentifiers setObject:v7 forKeyedSubscript:v8];
+  withIdentifierCopy = withIdentifier;
+  identifierCopy = identifier;
+  [(NSMutableSet *)identifiersPendingUpdate removeObject:identifierCopy];
+  [(NSMutableDictionary *)self->_groupIdentifiers setObject:withIdentifierCopy forKeyedSubscript:identifierCopy];
 
-  v9 = [(TabSnapshotCache *)self _entryForIdentifier:v8 createIfNeeded:1];
-  v10 = [v9 groupMembers];
-  [v10 addObject:v8];
+  v9 = [(TabSnapshotCache *)self _entryForIdentifier:identifierCopy createIfNeeded:1];
+  groupMembers = [v9 groupMembers];
+  [groupMembers addObject:identifierCopy];
 
   [(TabSnapshotCache *)self requestNextSnapshotIfNecessary];
 }
 
-- (void)removeIdentifier:(id)a3 fromGroupWithIdentifier:(id)a4
+- (void)removeIdentifier:(id)identifier fromGroupWithIdentifier:(id)withIdentifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_groupIdentifiers objectForKeyedSubscript:v6];
-  v9 = [v8 isEqual:v7];
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  v8 = [(NSMutableDictionary *)self->_groupIdentifiers objectForKeyedSubscript:identifierCopy];
+  v9 = [v8 isEqual:withIdentifierCopy];
 
   if (v9)
   {
-    v10 = [(TabSnapshotCache *)self _entryForIdentifier:v6];
-    v11 = [v10 groupMembers];
-    [v11 removeObject:v6];
+    v10 = [(TabSnapshotCache *)self _entryForIdentifier:identifierCopy];
+    groupMembers = [v10 groupMembers];
+    [groupMembers removeObject:identifierCopy];
 
-    v12 = [(TabSnapshotCache *)self _entryForIdentifier:v7];
-    v13 = [v12 groupMembers];
-    v14 = [v13 count];
+    v12 = [(TabSnapshotCache *)self _entryForIdentifier:withIdentifierCopy];
+    groupMembers2 = [v12 groupMembers];
+    v14 = [groupMembers2 count];
 
     if (!v14)
     {
-      [(NSMutableSet *)self->_identifiersPendingUpdate removeObject:v7];
+      [(NSMutableSet *)self->_identifiersPendingUpdate removeObject:withIdentifierCopy];
     }
 
-    [(NSMutableDictionary *)self->_groupIdentifiers removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_groupIdentifiers removeObjectForKey:identifierCopy];
     [(TabSnapshotCache *)self requestNextSnapshotIfNecessary];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v15 = [(NSMapTable *)self->_delegateToContextMap objectEnumerator];
-    v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    objectEnumerator = [(NSMapTable *)self->_delegateToContextMap objectEnumerator];
+    v16 = [objectEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v16)
     {
       v17 = v16;
@@ -2208,31 +2208,31 @@ LABEL_32:
         {
           if (*v23 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          v20 = [*(*(&v22 + 1) + 8 * i) identifiersToCache];
-          v21 = [v20 containsObject:v6];
+          identifiersToCache = [*(*(&v22 + 1) + 8 * i) identifiersToCache];
+          v21 = [identifiersToCache containsObject:identifierCopy];
 
           if (v21)
           {
 
-            v15 = [(TabSnapshotCache *)self _entryForIdentifier:v6];
-            if (v15)
+            objectEnumerator = [(TabSnapshotCache *)self _entryForIdentifier:identifierCopy];
+            if (objectEnumerator)
             {
-              [(TabSnapshotCache *)self tabSnapshotCacheEntryDidUpdateState:v15];
+              [(TabSnapshotCache *)self tabSnapshotCacheEntryDidUpdateState:objectEnumerator];
             }
 
             else
             {
-              [(NSMutableSet *)self->_identifiersPendingUpdate addObject:v6];
+              [(NSMutableSet *)self->_identifiersPendingUpdate addObject:identifierCopy];
             }
 
             goto LABEL_16;
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v17 = [objectEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v17)
         {
           continue;
@@ -2246,32 +2246,32 @@ LABEL_16:
   }
 }
 
-- (BOOL)isIdentifier:(id)a3 memberOfSameGroupAsIdentifier:(id)a4
+- (BOOL)isIdentifier:(id)identifier memberOfSameGroupAsIdentifier:(id)asIdentifier
 {
   groupIdentifiers = self->_groupIdentifiers;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)groupIdentifiers objectForKeyedSubscript:a3];
-  v9 = [(NSMutableDictionary *)self->_groupIdentifiers objectForKeyedSubscript:v7];
+  asIdentifierCopy = asIdentifier;
+  v8 = [(NSMutableDictionary *)groupIdentifiers objectForKeyedSubscript:identifier];
+  v9 = [(NSMutableDictionary *)self->_groupIdentifiers objectForKeyedSubscript:asIdentifierCopy];
 
   LOBYTE(groupIdentifiers) = [v8 isEqual:v9];
   return groupIdentifiers;
 }
 
-- (void)tabSnapshotCacheEntryDidUpdateState:(id)a3
+- (void)tabSnapshotCacheEntryDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 isPendingUpdate];
+  stateCopy = state;
+  isPendingUpdate = [stateCopy isPendingUpdate];
   identifiersPendingUpdate = self->_identifiersPendingUpdate;
-  v7 = [v4 identifier];
+  identifier = [stateCopy identifier];
 
-  if (v5)
+  if (isPendingUpdate)
   {
-    [(NSMutableSet *)identifiersPendingUpdate addObject:v7];
+    [(NSMutableSet *)identifiersPendingUpdate addObject:identifier];
   }
 
   else
   {
-    [(NSMutableSet *)identifiersPendingUpdate removeObject:v7];
+    [(NSMutableSet *)identifiersPendingUpdate removeObject:identifier];
   }
 }
 

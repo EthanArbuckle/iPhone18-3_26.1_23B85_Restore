@@ -1,8 +1,8 @@
 @interface CRTest
-- (BOOL)shouldRun:(id)a3;
+- (BOOL)shouldRun:(id)run;
 - (CRTest)init;
-- (void)run:(id)a3 withContext:(id)a4;
-- (void)update:(id)a3 testIndex:(int64_t)a4 testResult:(id)a5;
+- (void)run:(id)run withContext:(id)context;
+- (void)update:(id)update testIndex:(int64_t)index testResult:(id)result;
 @end
 
 @implementation CRTest
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (BOOL)shouldRun:(id)a3
+- (BOOL)shouldRun:(id)run
 {
-  v4 = a3;
-  if (v4)
+  runCopy = run;
+  if (runCopy)
   {
-    v5 = [(CRTest *)self overrides];
+    overrides = [(CRTest *)self overrides];
 
-    if (v5)
+    if (overrides)
     {
-      v6 = [(CRTest *)self overrides];
-      v7 = [v6 objectForKeyedSubscript:@"enabled"];
+      overrides2 = [(CRTest *)self overrides];
+      v7 = [overrides2 objectForKeyedSubscript:@"enabled"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && ![v7 BOOLValue])
@@ -47,12 +47,12 @@
       }
     }
 
-    v8 = [v4 lastTestStatusCode];
-    if (v8)
+    lastTestStatusCode = [runCopy lastTestStatusCode];
+    if (lastTestStatusCode)
     {
-      v7 = v8;
-      v9 = [v4 lastTestStatusCode];
-      v10 = [v9 isEqual:&off_1000113D8];
+      v7 = lastTestStatusCode;
+      lastTestStatusCode2 = [runCopy lastTestStatusCode];
+      v10 = [lastTestStatusCode2 isEqual:&off_1000113D8];
 
 LABEL_11:
       goto LABEL_12;
@@ -71,35 +71,35 @@ LABEL_12:
   return v10 & 1;
 }
 
-- (void)run:(id)a3 withContext:(id)a4
+- (void)run:(id)run withContext:(id)context
 {
-  v5 = a3;
+  runCopy = run;
   v6 = objc_opt_new();
   v9 = @"parameters";
   v10 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  v8 = [(CRTest *)self testId];
-  [v5 startTest:v8 parameters:v7];
+  testId = [(CRTest *)self testId];
+  [runCopy startTest:testId parameters:v7];
 }
 
-- (void)update:(id)a3 testIndex:(int64_t)a4 testResult:(id)a5
+- (void)update:(id)update testIndex:(int64_t)index testResult:(id)result
 {
-  v8 = a3;
-  if (v8 && a5)
+  updateCopy = update;
+  if (updateCopy && result)
   {
-    v9 = a5;
-    v10 = [v9 statusCode];
-    [(CRTest *)self setStatusCode:v10];
+    resultCopy = result;
+    statusCode = [resultCopy statusCode];
+    [(CRTest *)self setStatusCode:statusCode];
 
-    v11 = [v9 data];
+    data = [resultCopy data];
 
-    [(CRTest *)self setResultData:v11];
-    v12 = [(CRTest *)self overrides];
+    [(CRTest *)self setResultData:data];
+    overrides = [(CRTest *)self overrides];
 
-    if (v12)
+    if (overrides)
     {
-      v13 = [(CRTest *)self overrides];
-      v14 = [v13 objectForKeyedSubscript:@"forceFailed"];
+      overrides2 = [(CRTest *)self overrides];
+      v14 = [overrides2 objectForKeyedSubscript:@"forceFailed"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && [v14 BOOLValue])
@@ -108,37 +108,37 @@ LABEL_12:
       }
     }
 
-    v15 = [(CRTest *)self testId];
-    [v8 setLastRunTestId:v15];
+    testId = [(CRTest *)self testId];
+    [updateCopy setLastRunTestId:testId];
 
-    v16 = [(CRTest *)self statusCode];
-    [v8 setLastTestStatusCode:v16];
+    statusCode2 = [(CRTest *)self statusCode];
+    [updateCopy setLastTestStatusCode:statusCode2];
 
-    [v8 setLastRunTestIndex:a4];
-    v17 = [v8 lastTestStatusCode];
-    if (v17)
+    [updateCopy setLastRunTestIndex:index];
+    lastTestStatusCode = [updateCopy lastTestStatusCode];
+    if (lastTestStatusCode)
     {
-      v18 = v17;
-      v19 = [v8 lastTestStatusCode];
-      v20 = [v19 isEqual:&off_1000113D8];
+      v18 = lastTestStatusCode;
+      lastTestStatusCode2 = [updateCopy lastTestStatusCode];
+      v20 = [lastTestStatusCode2 isEqual:&off_1000113D8];
 
       if ((v20 & 1) == 0)
       {
-        v21 = [(CRTest *)self testingRemovableSPC];
-        if (v21 && (v22 = v21, -[CRTest testingRemovableSPC](self, "testingRemovableSPC"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 count], v23, v22, v24))
+        testingRemovableSPC = [(CRTest *)self testingRemovableSPC];
+        if (testingRemovableSPC && (v22 = testingRemovableSPC, -[CRTest testingRemovableSPC](self, "testingRemovableSPC"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 count], v23, v22, v24))
         {
-          [v8 setLastTestStatusCode:&off_1000113D8];
-          v25 = [v8 removedPartSPC];
-          v26 = [(CRTest *)self testingRemovableSPC];
-          [v25 unionSet:v26];
+          [updateCopy setLastTestStatusCode:&off_1000113D8];
+          removedPartSPC = [updateCopy removedPartSPC];
+          testingRemovableSPC2 = [(CRTest *)self testingRemovableSPC];
+          [removedPartSPC unionSet:testingRemovableSPC2];
 
-          v27 = [v8 partSPC];
-          v28 = [(CRTest *)self testingRemovableSPC];
-          v29 = [v28 allObjects];
-          [v27 removeObjectsInArray:v29];
+          partSPC = [updateCopy partSPC];
+          testingRemovableSPC3 = [(CRTest *)self testingRemovableSPC];
+          allObjects = [testingRemovableSPC3 allObjects];
+          [partSPC removeObjectsInArray:allObjects];
 
-          v30 = [v8 partSPC];
-          v31 = [v30 count];
+          partSPC2 = [updateCopy partSPC];
+          v31 = [partSPC2 count];
 
           if (!v31)
           {
@@ -149,17 +149,17 @@ LABEL_12:
               _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "No more remaining SPC", v37, 2u);
             }
 
-            [v8 setLastTestStatusCode:&off_1000113F0];
+            [updateCopy setLastTestStatusCode:&off_1000113F0];
           }
         }
 
         else
         {
-          v33 = [v8 removedPartSPC];
+          removedPartSPC2 = [updateCopy removedPartSPC];
           v34 = [NSSet alloc];
-          v35 = [v8 partSPC];
-          v36 = [v34 initWithArray:v35];
-          [v33 unionSet:v36];
+          partSPC3 = [updateCopy partSPC];
+          v36 = [v34 initWithArray:partSPC3];
+          [removedPartSPC2 unionSet:v36];
         }
       }
     }

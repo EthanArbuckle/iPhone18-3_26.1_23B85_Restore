@@ -1,60 +1,60 @@
 @interface NTKLocalTimelineComplicationController
-+ (Class)complicationDataSourceClassForComplication:(id)a3 family:(int64_t)a4 device:(id)a5;
++ (Class)complicationDataSourceClassForComplication:(id)complication family:(int64_t)family device:(id)device;
 - (CLKComplicationTemplate)sharingTemplate;
 - (Class)richComplicationDisplayViewClass;
-- (NTKLocalTimelineComplicationController)initWithComplication:(id)a3 variant:(id)a4 device:(id)a5;
-- (id)activeDisplayTemplateForDisplayWrapper:(id)a3;
+- (NTKLocalTimelineComplicationController)initWithComplication:(id)complication variant:(id)variant device:(id)device;
+- (id)activeDisplayTemplateForDisplayWrapper:(id)wrapper;
 - (id)alwaysOnTemplate;
 - (id)lockedTemplate;
 - (void)_applyAnimationMode;
 - (void)_applyCachingMode;
 - (void)_applyUpdatingMode;
 - (void)_cancelDelayedBlocks;
-- (void)_completeExtendRightOperationWithBoundaryDate:(id)a3 entries:(id)a4;
-- (void)_completeSetupOperationWithEndDate:(id)a3 currentEntry:(id)a4;
+- (void)_completeExtendRightOperationWithBoundaryDate:(id)date entries:(id)entries;
+- (void)_completeSetupOperationWithEndDate:(id)date currentEntry:(id)entry;
 - (void)_deactivate;
 - (void)_extendTimelineIfNecessaryAndPossible;
-- (void)_queueAnimationForNextUpdate:(unint64_t)a3;
-- (void)_requestDataSourceToUpdateToState:(int64_t)a3;
+- (void)_queueAnimationForNextUpdate:(unint64_t)update;
+- (void)_requestDataSourceToUpdateToState:(int64_t)state;
 - (void)_resetTimelineForCachingChange;
-- (void)_startExtendOperationIfNecessaryForTimeline:(id)a3 withDate:(id)a4 minBuffer:(double)a5;
-- (void)_startExtendRightOperationFromDate:(id)a3;
+- (void)_startExtendOperationIfNecessaryForTimeline:(id)timeline withDate:(id)date minBuffer:(double)buffer;
+- (void)_startExtendRightOperationFromDate:(id)date;
 - (void)_startSetupOperationIfPossible;
-- (void)_suspendRightBoundaryDate:(id)a3;
-- (void)_updateAllDisplayWrappersToCurrentTemplateWithReason:(int64_t)a3 animation:(unint64_t)queuedAnimation;
+- (void)_suspendRightBoundaryDate:(id)date;
+- (void)_updateAllDisplayWrappersToCurrentTemplateWithReason:(int64_t)reason animation:(unint64_t)queuedAnimation;
 - (void)_updateDimStateForCurrentTimeline;
-- (void)_updateDisplayWrapper:(id)a3 toCurrentTemplateWithReason:(int64_t)a4 animation:(unint64_t)a5;
-- (void)_updateIsComplicationActive:(BOOL)a3;
-- (void)addDisplayWrapper:(id)a3;
-- (void)appendEntries:(id)a3 withTritiumUpdatePriority:(int64_t)a4;
-- (void)entriesDidChangeInTimeline:(id)a3;
+- (void)_updateDisplayWrapper:(id)wrapper toCurrentTemplateWithReason:(int64_t)reason animation:(unint64_t)animation;
+- (void)_updateIsComplicationActive:(BOOL)active;
+- (void)addDisplayWrapper:(id)wrapper;
+- (void)appendEntries:(id)entries withTritiumUpdatePriority:(int64_t)priority;
+- (void)entriesDidChangeInTimeline:(id)timeline;
 - (void)invalidateEntries;
 - (void)invalidateSwitcherTemplate;
-- (void)setDisplayProperties:(id)a3 forDisplayWrapper:(id)a4;
-- (void)setIgnoreNewTemplates:(BOOL)a3;
-- (void)setShowsLockedUI:(BOOL)a3;
-- (void)setTimelineEndDate:(id)a3;
-- (void)timeline:(id)a3 didChangeNowEntryFrom:(id)a4 to:(id)a5;
+- (void)setDisplayProperties:(id)properties forDisplayWrapper:(id)wrapper;
+- (void)setIgnoreNewTemplates:(BOOL)templates;
+- (void)setShowsLockedUI:(BOOL)i;
+- (void)setTimelineEndDate:(id)date;
+- (void)timeline:(id)timeline didChangeNowEntryFrom:(id)from to:(id)to;
 @end
 
 @implementation NTKLocalTimelineComplicationController
 
-- (NTKLocalTimelineComplicationController)initWithComplication:(id)a3 variant:(id)a4 device:(id)a5
+- (NTKLocalTimelineComplicationController)initWithComplication:(id)complication variant:(id)variant device:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  complicationCopy = complication;
+  variantCopy = variant;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = NTKLocalTimelineComplicationController;
-  v11 = [(NTKComplicationController *)&v22 initWithComplication:v8 variant:v9 device:v10];
+  v11 = [(NTKComplicationController *)&v22 initWithComplication:complicationCopy variant:variantCopy device:deviceCopy];
   if (v11)
   {
-    v12 = [objc_opt_class() complicationDataSourceClassForComplication:v8 family:objc_msgSend(v9 device:{"family"), v10}];
+    v12 = [objc_opt_class() complicationDataSourceClassForComplication:complicationCopy family:objc_msgSend(variantCopy device:{"family"), deviceCopy}];
     v13 = objc_opt_new();
-    v14 = [v9 metrics];
-    [v13 setShowsBackground:{objc_msgSend(v14, "opaque")}];
+    metrics = [variantCopy metrics];
+    [v13 setShowsBackground:{objc_msgSend(metrics, "opaque")}];
 
-    v15 = [[v12 alloc] initWithComplication:v8 family:objc_msgSend(v9 forDevice:"family") context:{v10, v13}];
+    v15 = [[v12 alloc] initWithComplication:complicationCopy family:objc_msgSend(variantCopy forDevice:"family") context:{deviceCopy, v13}];
     dataSource = v11->_dataSource;
     v11->_dataSource = v15;
 
@@ -75,38 +75,38 @@
   return v11;
 }
 
-+ (Class)complicationDataSourceClassForComplication:(id)a3 family:(int64_t)a4 device:(id)a5
++ (Class)complicationDataSourceClassForComplication:(id)complication family:(int64_t)family device:(id)device
 {
-  v7 = a5;
-  v8 = +[NTKComplicationDataSource dataSourceClassForComplicationType:family:forDevice:](NTKComplicationDataSource, "dataSourceClassForComplicationType:family:forDevice:", [a3 complicationType], a4, v7);
+  deviceCopy = device;
+  v8 = +[NTKComplicationDataSource dataSourceClassForComplicationType:family:forDevice:](NTKComplicationDataSource, "dataSourceClassForComplicationType:family:forDevice:", [complication complicationType], family, deviceCopy);
 
   return v8;
 }
 
-- (void)setIgnoreNewTemplates:(BOOL)a3
+- (void)setIgnoreNewTemplates:(BOOL)templates
 {
-  v3 = a3;
+  templatesCopy = templates;
   v14 = *MEMORY[0x277D85DE8];
-  if ([(NTKTimelineComplicationController *)self ignoreNewTemplates]!= a3)
+  if ([(NTKTimelineComplicationController *)self ignoreNewTemplates]!= templates)
   {
     v5 = _NTKLoggingObjectForDomain(40, "NTKLoggingDomainTritium");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       dataSource = self->_dataSource;
       *buf = 138412802;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = dataSource;
       v12 = 1024;
-      v13 = v3;
+      v13 = templatesCopy;
       _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "%@ %@ setIgnoreNewTemplates: %i", buf, 0x1Cu);
     }
   }
 
   v7.receiver = self;
   v7.super_class = NTKLocalTimelineComplicationController;
-  [(NTKTimelineComplicationController *)&v7 setIgnoreNewTemplates:v3];
-  if (!v3)
+  [(NTKTimelineComplicationController *)&v7 setIgnoreNewTemplates:templatesCopy];
+  if (!templatesCopy)
   {
     [(NTKLocalTimelineComplicationController *)self _updateAllDisplayWrappersToCurrentTemplateWithReason:0];
   }
@@ -123,16 +123,16 @@
 
 - (void)_resetTimelineForCachingChange
 {
-  v3 = [(TLTimeline *)self->_timeline nowEntry];
-  [(TLTimeline *)self->_timeline resetWithEntry:v3];
+  nowEntry = [(TLTimeline *)self->_timeline nowEntry];
+  [(TLTimeline *)self->_timeline resetWithEntry:nowEntry];
   [(NSMutableSet *)self->_suspendedRightBoundaryDates removeAllObjects];
   [(NTKLocalTimelineComplicationController *)self _queueAnimationForNextUpdate:1];
 }
 
 - (void)_applyCachingMode
 {
-  v3 = [(NTKComplicationController *)self cachingMode];
-  if (v3 == 2)
+  cachingMode = [(NTKComplicationController *)self cachingMode];
+  if (cachingMode == 2)
   {
 
     [(NTKLocalTimelineComplicationController *)self _startSetupOperationIfPossible];
@@ -140,9 +140,9 @@
 
   else
   {
-    if (v3 != 1)
+    if (cachingMode != 1)
     {
-      if (v3)
+      if (cachingMode)
       {
         return;
       }
@@ -179,12 +179,12 @@
   }
 }
 
-- (void)_requestDataSourceToUpdateToState:(int64_t)a3
+- (void)_requestDataSourceToUpdateToState:(int64_t)state
 {
   dataSourceState = self->_dataSourceState;
-  if (a3 != 1 || dataSourceState)
+  if (state != 1 || dataSourceState)
   {
-    if (!a3 && dataSourceState == 1)
+    if (!state && dataSourceState == 1)
     {
       self->_dataSourceState = 0;
       [(CLKCComplicationDataSource *)self->_dataSource pause];
@@ -200,9 +200,9 @@
 
 - (void)_applyAnimationMode
 {
-  v3 = [(NTKComplicationController *)self animationMode];
+  animationMode = [(NTKComplicationController *)self animationMode];
   dataSource = self->_dataSource;
-  if (v3 == 1)
+  if (animationMode == 1)
   {
 
     [(CLKCComplicationDataSource *)dataSource resumeAnimations];
@@ -215,10 +215,10 @@
   }
 }
 
-- (void)_updateIsComplicationActive:(BOOL)a3
+- (void)_updateIsComplicationActive:(BOOL)active
 {
   dataSource = self->_dataSource;
-  if (a3)
+  if (active)
   {
     [(CLKCComplicationDataSource *)dataSource becomeActive];
   }
@@ -229,26 +229,26 @@
   }
 }
 
-- (void)setDisplayProperties:(id)a3 forDisplayWrapper:(id)a4
+- (void)setDisplayProperties:(id)properties forDisplayWrapper:(id)wrapper
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKComplicationController *)self effectiveFaceDataMode];
+  propertiesCopy = properties;
+  wrapperCopy = wrapper;
+  effectiveFaceDataMode = [(NTKComplicationController *)self effectiveFaceDataMode];
   v24.receiver = self;
   v24.super_class = NTKLocalTimelineComplicationController;
-  [(NTKComplicationController *)&v24 setDisplayProperties:v6 forDisplayWrapper:v7];
-  v9 = [(NTKComplicationController *)self effectiveFaceDataMode];
-  v10 = [v6 faceDataMode];
-  if (v9 != v8)
+  [(NTKComplicationController *)&v24 setDisplayProperties:propertiesCopy forDisplayWrapper:wrapperCopy];
+  effectiveFaceDataMode2 = [(NTKComplicationController *)self effectiveFaceDataMode];
+  faceDataMode = [propertiesCopy faceDataMode];
+  if (effectiveFaceDataMode2 != effectiveFaceDataMode)
   {
-    v11 = v10;
+    v11 = faceDataMode;
     v12 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [(NTKLocalTimelineComplicationController *)self setDisplayProperties:v9 forDisplayWrapper:v12];
+      [(NTKLocalTimelineComplicationController *)self setDisplayProperties:effectiveFaceDataMode2 forDisplayWrapper:v12];
     }
 
-    if (v9 == 1)
+    if (effectiveFaceDataMode2 == 1)
     {
       v20 = 0;
       v21 = &v20;
@@ -261,7 +261,7 @@
       v19[3] = &unk_278786480;
       v19[4] = &v20;
       [(CLKCComplicationDataSource *)dataSource getTimelineEndDateWithHandler:v19];
-      if (self->_hasBeenLive && (v8 - 3) <= 2 && *(v21 + 24) == 1)
+      if (self->_hasBeenLive && (effectiveFaceDataMode - 3) <= 2 && *(v21 + 24) == 1)
       {
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
@@ -279,40 +279,40 @@
       _Block_object_dispose(&v20, 8);
     }
 
-    else if ([(CLKCComplicationDataSource *)self->_dataSource alwaysShowIdealizedTemplateInSwitcher]|| v9 == 3 && !self->_hasBeenLive && !self->_switcherTemplate)
+    else if ([(CLKCComplicationDataSource *)self->_dataSource alwaysShowIdealizedTemplateInSwitcher]|| effectiveFaceDataMode2 == 3 && !self->_hasBeenLive && !self->_switcherTemplate)
     {
-      v14 = [(CLKCComplicationDataSource *)self->_dataSource currentSwitcherTemplate];
+      currentSwitcherTemplate = [(CLKCComplicationDataSource *)self->_dataSource currentSwitcherTemplate];
       switcherTemplate = self->_switcherTemplate;
-      self->_switcherTemplate = v14;
+      self->_switcherTemplate = currentSwitcherTemplate;
 
       [(CLKComplicationTemplate *)self->_switcherTemplate finalize];
-      if (v11 == 3 && v8 == 1)
+      if (v11 == 3 && effectiveFaceDataMode == 1)
       {
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2;
       }
 
       else
       {
-        v16 = self;
+        selfCopy2 = self;
         v17 = 0;
       }
 
-      [(NTKLocalTimelineComplicationController *)v16 _updateAllDisplayWrappersToCurrentTemplateWithReason:v17];
+      [(NTKLocalTimelineComplicationController *)selfCopy2 _updateAllDisplayWrappersToCurrentTemplateWithReason:v17];
     }
   }
 }
 
-- (void)setShowsLockedUI:(BOOL)a3
+- (void)setShowsLockedUI:(BOOL)i
 {
-  v3 = a3;
-  v5 = [(NTKComplicationController *)self showsLockedUI];
+  iCopy = i;
+  showsLockedUI = [(NTKComplicationController *)self showsLockedUI];
   v7.receiver = self;
   v7.super_class = NTKLocalTimelineComplicationController;
-  [(NTKComplicationController *)&v7 setShowsLockedUI:v3];
-  if (v5 != v3)
+  [(NTKComplicationController *)&v7 setShowsLockedUI:iCopy];
+  if (showsLockedUI != iCopy)
   {
-    if (v3)
+    if (iCopy)
     {
       v6 = 3;
     }
@@ -326,28 +326,28 @@
   }
 }
 
-- (void)addDisplayWrapper:(id)a3
+- (void)addDisplayWrapper:(id)wrapper
 {
   v6.receiver = self;
   v6.super_class = NTKLocalTimelineComplicationController;
-  v4 = a3;
-  [(NTKComplicationController *)&v6 addDisplayWrapper:v4];
-  v5 = [(NTKLocalTimelineComplicationController *)self activeDisplayTemplateForDisplayWrapper:v4, v6.receiver, v6.super_class];
-  [v4 setComplicationTemplate:v5 reason:0 animation:0];
+  wrapperCopy = wrapper;
+  [(NTKComplicationController *)&v6 addDisplayWrapper:wrapperCopy];
+  v5 = [(NTKLocalTimelineComplicationController *)self activeDisplayTemplateForDisplayWrapper:wrapperCopy, v6.receiver, v6.super_class];
+  [wrapperCopy setComplicationTemplate:v5 reason:0 animation:0];
 
-  [v4 setDimmed:0];
+  [wrapperCopy setDimmed:0];
 }
 
-- (void)_queueAnimationForNextUpdate:(unint64_t)a3
+- (void)_queueAnimationForNextUpdate:(unint64_t)update
 {
   if ([(CLKCComplicationDataSource *)self->_dataSource timelineAnimationBehavior])
   {
     self->_hasQueuedAnimation = 1;
-    self->_queuedAnimation = a3;
+    self->_queuedAnimation = update;
   }
 }
 
-- (void)_updateAllDisplayWrappersToCurrentTemplateWithReason:(int64_t)a3 animation:(unint64_t)queuedAnimation
+- (void)_updateAllDisplayWrappersToCurrentTemplateWithReason:(int64_t)reason animation:(unint64_t)queuedAnimation
 {
   if (![(NTKTimelineComplicationController *)self ignoreNewTemplates])
   {
@@ -369,27 +369,27 @@
     v7[2] = __105__NTKLocalTimelineComplicationController__updateAllDisplayWrappersToCurrentTemplateWithReason_animation___block_invoke;
     v7[3] = &unk_2787864A8;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = reason;
     v7[6] = queuedAnimation;
     [(NTKComplicationController *)self enumerateDisplayWrappersWithBlock:v7];
   }
 }
 
-- (void)_updateDisplayWrapper:(id)a3 toCurrentTemplateWithReason:(int64_t)a4 animation:(unint64_t)a5
+- (void)_updateDisplayWrapper:(id)wrapper toCurrentTemplateWithReason:(int64_t)reason animation:(unint64_t)animation
 {
-  v10 = a3;
+  wrapperCopy = wrapper;
   v8 = [(NTKLocalTimelineComplicationController *)self activeDisplayTemplateForDisplayWrapper:?];
   if ([(NTKComplicationController *)self showsLockedUI])
   {
-    v9 = [(NTKLocalTimelineComplicationController *)self lockedTemplate];
+    lockedTemplate = [(NTKLocalTimelineComplicationController *)self lockedTemplate];
 
-    if (v8 == v9)
+    if (v8 == lockedTemplate)
     {
-      a5 = 0;
+      animation = 0;
     }
   }
 
-  [v10 setComplicationTemplate:v8 reason:a4 animation:a5];
+  [wrapperCopy setComplicationTemplate:v8 reason:reason animation:animation];
 }
 
 - (void)invalidateEntries
@@ -404,19 +404,19 @@
   [(NTKLocalTimelineComplicationController *)self _startSetupOperationIfPossible];
 }
 
-- (void)setTimelineEndDate:(id)a3
+- (void)setTimelineEndDate:(id)date
 {
-  objc_storeStrong(&self->_timelineEndDate, a3);
+  objc_storeStrong(&self->_timelineEndDate, date);
 
   [(NTKLocalTimelineComplicationController *)self _updateDimStateForCurrentTimeline];
 }
 
-- (void)appendEntries:(id)a3 withTritiumUpdatePriority:(int64_t)a4
+- (void)appendEntries:(id)entries withTritiumUpdatePriority:(int64_t)priority
 {
   timeline = self->_timeline;
-  v6 = a3;
-  v7 = [(TLTimeline *)timeline _rightmostDate];
-  [(TLTimeline *)self->_timeline extendTimelineFromDate:v7 withEntries:v6];
+  entriesCopy = entries;
+  _rightmostDate = [(TLTimeline *)timeline _rightmostDate];
+  [(TLTimeline *)self->_timeline extendTimelineFromDate:_rightmostDate withEntries:entriesCopy];
 }
 
 - (void)invalidateSwitcherTemplate
@@ -426,9 +426,9 @@
 
   if (!self->_hasBeenLive)
   {
-    v4 = [(CLKCComplicationDataSource *)self->_dataSource currentSwitcherTemplate];
+    currentSwitcherTemplate = [(CLKCComplicationDataSource *)self->_dataSource currentSwitcherTemplate];
     v5 = self->_switcherTemplate;
-    self->_switcherTemplate = v4;
+    self->_switcherTemplate = currentSwitcherTemplate;
 
     [(CLKComplicationTemplate *)self->_switcherTemplate finalize];
 
@@ -436,14 +436,14 @@
   }
 }
 
-- (void)timeline:(id)a3 didChangeNowEntryFrom:(id)a4 to:(id)a5
+- (void)timeline:(id)timeline didChangeNowEntryFrom:(id)from to:(id)to
 {
   if (!self->_timeTravelDate)
   {
     dataSource = self->_dataSource;
-    v9 = a5;
-    v10 = a4;
-    v11 = [(NTKTimelineComplicationController *)self _animationForTimelineEntryTransitionFrom:v10 to:v9 withAnimationBehavior:[(CLKCComplicationDataSource *)dataSource timelineAnimationBehavior]];
+    toCopy = to;
+    fromCopy = from;
+    v11 = [(NTKTimelineComplicationController *)self _animationForTimelineEntryTransitionFrom:fromCopy to:toCopy withAnimationBehavior:[(CLKCComplicationDataSource *)dataSource timelineAnimationBehavior]];
 
     [(NTKLocalTimelineComplicationController *)self _updateAllDisplayWrappersToCurrentTemplateWithReason:1 animation:v11];
 
@@ -451,18 +451,18 @@
   }
 }
 
-- (void)entriesDidChangeInTimeline:(id)a3
+- (void)entriesDidChangeInTimeline:(id)timeline
 {
-  v4 = [objc_opt_class() tritiumUpdatePriority];
+  tritiumUpdatePriority = [objc_opt_class() tritiumUpdatePriority];
 
-  [(NTKComplicationController *)self notifyDelegateOnTimelineChangeWithTritiumUpdatePriority:v4];
+  [(NTKComplicationController *)self notifyDelegateOnTimelineChangeWithTritiumUpdatePriority:tritiumUpdatePriority];
 }
 
-- (void)_completeSetupOperationWithEndDate:(id)a3 currentEntry:(id)a4
+- (void)_completeSetupOperationWithEndDate:(id)date currentEntry:(id)entry
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  entryCopy = entry;
   v8 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -475,23 +475,23 @@
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "Timeline setup operation %@ completed for %@", &v17, 0x16u);
   }
 
-  [v7 finalize];
+  [entryCopy finalize];
   v11 = self->_currentOperation;
   self->_currentOperation = 0;
 
-  self->_supportsTimeTravelForward = v6 != 0;
-  [(NTKLocalTimelineComplicationController *)self setTimelineEndDate:v6];
-  if (v7)
+  self->_supportsTimeTravelForward = dateCopy != 0;
+  [(NTKLocalTimelineComplicationController *)self setTimelineEndDate:dateCopy];
+  if (entryCopy)
   {
     timeline = self->_timeline;
     if (timeline)
     {
-      [(TLTimeline *)timeline resetWithEntry:v7];
+      [(TLTimeline *)timeline resetWithEntry:entryCopy];
     }
 
     else
     {
-      v15 = [objc_alloc(MEMORY[0x277D71500]) initWithEntry:v7];
+      v15 = [objc_alloc(MEMORY[0x277D71500]) initWithEntry:entryCopy];
       v16 = self->_timeline;
       self->_timeline = v15;
 
@@ -545,10 +545,10 @@ void __72__NTKLocalTimelineComplicationController__startSetupOperationIfPossible
 
 - (id)alwaysOnTemplate
 {
-  v2 = [(CLKCComplicationDataSource *)self->_dataSource alwaysOnTemplate];
-  [v2 finalize];
+  alwaysOnTemplate = [(CLKCComplicationDataSource *)self->_dataSource alwaysOnTemplate];
+  [alwaysOnTemplate finalize];
 
-  return v2;
+  return alwaysOnTemplate;
 }
 
 - (void)_extendTimelineIfNecessaryAndPossible
@@ -556,21 +556,21 @@ void __72__NTKLocalTimelineComplicationController__startSetupOperationIfPossible
   if (!self->_currentOperation && self->_timeline && [(NTKComplicationController *)self effectiveFaceDataMode]!= 3 && [(NTKComplicationController *)self effectiveFaceDataMode]!= 4 && [(NTKComplicationController *)self effectiveFaceDataMode]!= 5)
   {
     timeline = self->_timeline;
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [(NTKLocalTimelineComplicationController *)self _startExtendOperationIfNecessaryForTimeline:timeline withDate:v4 minBuffer:300.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(NTKLocalTimelineComplicationController *)self _startExtendOperationIfNecessaryForTimeline:timeline withDate:date minBuffer:300.0];
   }
 }
 
-- (void)_startExtendOperationIfNecessaryForTimeline:(id)a3 withDate:(id)a4 minBuffer:(double)a5
+- (void)_startExtendOperationIfNecessaryForTimeline:(id)timeline withDate:(id)date minBuffer:(double)buffer
 {
-  v8 = a4;
-  v9 = [a3 _rightmostDate];
-  [v9 timeIntervalSinceDate:v8];
+  dateCopy = date;
+  _rightmostDate = [timeline _rightmostDate];
+  [_rightmostDate timeIntervalSinceDate:dateCopy];
   v11 = v10;
 
   if (self->_supportsTimeTravelForward)
   {
-    if (v11 >= a5)
+    if (v11 >= buffer)
     {
       v12 = 0;
       goto LABEL_7;
@@ -580,10 +580,10 @@ void __72__NTKLocalTimelineComplicationController__startSetupOperationIfPossible
   }
 
   v12 = 0;
-  if (([v9 isEqualToDate:v9] & 1) == 0 && v11 < a5)
+  if (([_rightmostDate isEqualToDate:_rightmostDate] & 1) == 0 && v11 < buffer)
   {
 LABEL_6:
-    v12 = [(NSMutableSet *)self->_suspendedRightBoundaryDates containsObject:v9]^ 1;
+    v12 = [(NSMutableSet *)self->_suspendedRightBoundaryDates containsObject:_rightmostDate]^ 1;
   }
 
 LABEL_7:
@@ -592,8 +592,8 @@ LABEL_7:
   v16[2] = __105__NTKLocalTimelineComplicationController__startExtendOperationIfNecessaryForTimeline_withDate_minBuffer___block_invoke;
   v16[3] = &unk_27877E438;
   v16[4] = self;
-  v17 = v9;
-  v13 = v9;
+  v17 = _rightmostDate;
+  v13 = _rightmostDate;
   v14 = _Block_copy(v16);
   v15 = v14;
   if (v12)
@@ -611,20 +611,20 @@ uint64_t __105__NTKLocalTimelineComplicationController__startExtendOperationIfNe
   return [v2 _suspendRightBoundaryDate:v3];
 }
 
-- (void)_suspendRightBoundaryDate:(id)a3
+- (void)_suspendRightBoundaryDate:(id)date
 {
-  v4 = a3;
-  [(NSMutableSet *)self->_suspendedRightBoundaryDates addObject:v4];
+  dateCopy = date;
+  [(NSMutableSet *)self->_suspendedRightBoundaryDates addObject:dateCopy];
   v5 = [NTKDelayedBlock alloc];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __68__NTKLocalTimelineComplicationController__suspendRightBoundaryDate___block_invoke;
   v11 = &unk_2787864F8;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = dateCopy;
+  v6 = dateCopy;
   v7 = [(NTKDelayedBlock *)v5 initWithDelay:&v8 action:120.0];
-  [(NSMutableSet *)self->_delayedBlocks addObject:v7, v8, v9, v10, v11, v12];
+  [(NSMutableSet *)self->_delayedBlocks addObject:v7, v8, v9, v10, v11, selfCopy];
 }
 
 uint64_t __68__NTKLocalTimelineComplicationController__suspendRightBoundaryDate___block_invoke(uint64_t a1, uint64_t a2)
@@ -672,11 +672,11 @@ uint64_t __68__NTKLocalTimelineComplicationController__suspendRightBoundaryDate_
   [(NSMutableSet *)self->_delayedBlocks removeAllObjects];
 }
 
-- (void)_completeExtendRightOperationWithBoundaryDate:(id)a3 entries:(id)a4
+- (void)_completeExtendRightOperationWithBoundaryDate:(id)date entries:(id)entries
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  entriesCopy = entries;
   v8 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -687,7 +687,7 @@ uint64_t __68__NTKLocalTimelineComplicationController__suspendRightBoundaryDate_
     v24 = 2112;
     v25 = dataSource;
     v26 = 2048;
-    v27 = [v7 count];
+    v27 = [entriesCopy count];
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "Timeline extend right operation %@ completed for %@ with %lu entries", buf, 0x20u);
   }
 
@@ -698,7 +698,7 @@ uint64_t __68__NTKLocalTimelineComplicationController__suspendRightBoundaryDate_
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = v7;
+  v12 = entriesCopy;
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v13)
   {
@@ -724,22 +724,22 @@ uint64_t __68__NTKLocalTimelineComplicationController__suspendRightBoundaryDate_
     while (v14);
   }
 
-  [(TLTimeline *)self->_timeline extendTimelineFromDate:v6 withEntries:v12];
+  [(TLTimeline *)self->_timeline extendTimelineFromDate:dateCopy withEntries:v12];
   [(NTKLocalTimelineComplicationController *)self _extendTimelineIfNecessaryAndPossible];
 }
 
-- (void)_startExtendRightOperationFromDate:(id)a3
+- (void)_startExtendRightOperationFromDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   objc_initWeak(&location, self);
   v5 = [(NTKTimelineDataOperation *)NTKTimelineExtendDataOperation operationWithLocalDataSource:self->_dataSource];
-  [v5 setExtendsRightFromDate:v4];
+  [v5 setExtendsRightFromDate:dateCopy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__NTKLocalTimelineComplicationController__startExtendRightOperationFromDate___block_invoke;
   v7[3] = &unk_278786520;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = dateCopy;
   v8 = v6;
   [v5 setHandler:v7];
   objc_storeStrong(&self->_currentOperation, v5);
@@ -761,8 +761,8 @@ void __77__NTKLocalTimelineComplicationController__startExtendRightOperationFrom
   if (objc_opt_respondsToSelector())
   {
     dataSource = self->_dataSource;
-    v4 = [(NTKComplicationController *)self device];
-    v5 = [(CLKCComplicationDataSource *)dataSource richComplicationDisplayViewClassForDevice:v4];
+    device = [(NTKComplicationController *)self device];
+    v5 = [(CLKCComplicationDataSource *)dataSource richComplicationDisplayViewClassForDevice:device];
 
     v6 = v5;
   }
@@ -775,28 +775,28 @@ void __77__NTKLocalTimelineComplicationController__startExtendRightOperationFrom
   return v6;
 }
 
-- (id)activeDisplayTemplateForDisplayWrapper:(id)a3
+- (id)activeDisplayTemplateForDisplayWrapper:(id)wrapper
 {
-  v4 = [(NTKComplicationController *)self displayPropertiesForDisplayWrapper:a3];
-  v5 = [v4 contentOverride];
+  v4 = [(NTKComplicationController *)self displayPropertiesForDisplayWrapper:wrapper];
+  contentOverride = [v4 contentOverride];
 
-  if (v5)
+  if (contentOverride)
   {
-    v6 = [(CLKCComplicationDataSource *)self->_dataSource sampleTemplate];
+    sampleTemplate = [(CLKCComplicationDataSource *)self->_dataSource sampleTemplate];
 
-    if (v6)
+    if (sampleTemplate)
     {
-      v7 = [(CLKCComplicationDataSource *)self->_dataSource sampleTemplate];
+      sampleTemplate2 = [(CLKCComplicationDataSource *)self->_dataSource sampleTemplate];
 LABEL_9:
-      v8 = v7;
+      v8 = sampleTemplate2;
       goto LABEL_13;
     }
   }
 
   if ([(NTKComplicationController *)self showsLockedUI])
   {
-    v7 = [(NTKLocalTimelineComplicationController *)self lockedTemplate];
-    if (v7)
+    sampleTemplate2 = [(NTKLocalTimelineComplicationController *)self lockedTemplate];
+    if (sampleTemplate2)
     {
       goto LABEL_9;
     }
@@ -806,18 +806,18 @@ LABEL_9:
   {
     if ([(NTKComplicationController *)self effectiveFaceDataMode]== 3)
     {
-      v7 = self->_switcherTemplate;
-      if (v7)
+      sampleTemplate2 = self->_switcherTemplate;
+      if (sampleTemplate2)
       {
         goto LABEL_9;
       }
     }
   }
 
-  v9 = [(NTKLocalTimelineComplicationController *)self _currentEntry];
-  v10 = [v9 complicationTemplate];
-  switcherTemplate = v10;
-  if (!v10)
+  _currentEntry = [(NTKLocalTimelineComplicationController *)self _currentEntry];
+  complicationTemplate = [_currentEntry complicationTemplate];
+  switcherTemplate = complicationTemplate;
+  if (!complicationTemplate)
   {
     switcherTemplate = self->_switcherTemplate;
   }
@@ -831,38 +831,38 @@ LABEL_13:
 
 - (id)lockedTemplate
 {
-  v2 = [(CLKCComplicationDataSource *)self->_dataSource lockedTemplate];
-  [v2 finalize];
+  lockedTemplate = [(CLKCComplicationDataSource *)self->_dataSource lockedTemplate];
+  [lockedTemplate finalize];
 
-  return v2;
+  return lockedTemplate;
 }
 
 - (void)_updateDimStateForCurrentTimeline
 {
   if (self->_timeTravelDate)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     if (self->_supportsTimeTravelForward)
     {
       timelineEndDate = self->_timelineEndDate;
       if (timelineEndDate)
       {
-        v5 = timelineEndDate;
+        distantFuture = timelineEndDate;
       }
 
       else
       {
-        v5 = [MEMORY[0x277CBEAA8] distantFuture];
+        distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
       }
     }
 
     else
     {
-      v5 = [MEMORY[0x277CBEAA8] date];
+      distantFuture = [MEMORY[0x277CBEAA8] date];
     }
 
-    v7 = v5;
-    v6 = [(NSDate *)self->_timeTravelDate compare:v3]!= NSOrderedDescending || [(NSDate *)self->_timeTravelDate compare:v7]!= NSOrderedAscending;
+    v7 = distantFuture;
+    v6 = [(NSDate *)self->_timeTravelDate compare:date]!= NSOrderedDescending || [(NSDate *)self->_timeTravelDate compare:v7]!= NSOrderedAscending;
   }
 
   else
@@ -880,11 +880,11 @@ LABEL_13:
 
 - (CLKComplicationTemplate)sharingTemplate
 {
-  v3 = [(CLKCComplicationDataSource *)self->_dataSource sampleTemplate];
-  v4 = v3;
-  if (v3)
+  sampleTemplate = [(CLKCComplicationDataSource *)self->_dataSource sampleTemplate];
+  v4 = sampleTemplate;
+  if (sampleTemplate)
   {
-    [(CLKComplicationTemplate *)v3 finalize];
+    [(CLKComplicationTemplate *)sampleTemplate finalize];
     switcherTemplate = v4;
   }
 

@@ -8,7 +8,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilHashMap_init();
     JreStrongAssignAndConsume(&qword_100554BA8, v2);
@@ -398,14 +398,14 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(JavaUtilHashtable *)v2 entrySet];
-    v4 = v3;
-    if (!v3)
+    entrySet = [(JavaUtilHashtable *)v2 entrySet];
+    v4 = entrySet;
+    if (!entrySet)
     {
       JreThrowNullPointerException();
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [entrySet countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = *v12;
@@ -424,16 +424,16 @@
             JreThrowNullPointerException();
           }
 
-          v9 = [*(*(&v11 + 1) + 8 * i) getKey];
+          getKey = [*(*(&v11 + 1) + 8 * i) getKey];
           objc_opt_class();
-          if (v9 && (objc_opt_isKindOfClass() & 1) == 0)
+          if (getKey && (objc_opt_isKindOfClass() & 1) == 0)
           {
             JreThrowClassCastException();
           }
 
-          v10 = [v8 getValue];
+          getValue = [v8 getValue];
           objc_opt_class();
-          if (v10)
+          if (getValue)
           {
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
@@ -441,7 +441,7 @@
             }
           }
 
-          sub_100188938(v10, v9);
+          sub_100188938(getValue, getKey);
         }
 
         v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];

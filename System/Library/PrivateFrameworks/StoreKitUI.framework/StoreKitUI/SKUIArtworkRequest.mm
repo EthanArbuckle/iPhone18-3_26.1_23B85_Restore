@@ -1,11 +1,11 @@
 @interface SKUIArtworkRequest
 - (BOOL)cachesInMemory;
 - (SKUIArtworkRequestDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)newLoadOperation;
 - (void)description;
-- (void)finishWithResource:(id)a3;
+- (void)finishWithResource:(id)resource;
 @end
 
 @implementation SKUIArtworkRequest
@@ -43,9 +43,9 @@
   return 1;
 }
 
-- (void)finishWithResource:(id)a3
+- (void)finishWithResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -61,30 +61,30 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained artworkRequest:self didLoadImage:v4];
+    [WeakRetained artworkRequest:self didLoadImage:resourceCopy];
   }
 
   else
   {
     v14 = [(SKUIArtworkRequest *)self URL];
-    v15 = [v14 scheme];
-    v16 = [v15 isEqualToString:@"x-apple-identity-image"];
+    scheme = [v14 scheme];
+    v16 = [scheme isEqualToString:@"x-apple-identity-image"];
 
     if (v16)
     {
       v17 = MEMORY[0x277D755B8];
-      v18 = UIImagePNGRepresentation(v4);
+      v18 = UIImagePNGRepresentation(resourceCopy);
       v19 = [v17 imageWithData:v18];
     }
 
     else
     {
-      v19 = v4;
+      v19 = resourceCopy;
     }
 
     v20 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v19, @"SKUIArtworkRequestImageKey", 0}];
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 postNotificationName:@"SKUIArtworkRequestDidLoadImageNotification" object:self userInfo:v20];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SKUIArtworkRequestDidLoadImageNotification" object:self userInfo:v20];
   }
 }
 
@@ -105,7 +105,7 @@
   return [[SKUILoadArtworkResourceOperation alloc] initWithResourceRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content())
   {
@@ -121,16 +121,16 @@
 
   v20.receiver = self;
   v20.super_class = SKUIArtworkRequest;
-  v13 = [(SKUIResourceRequest *)&v20 copyWithZone:a3];
+  v13 = [(SKUIResourceRequest *)&v20 copyWithZone:zone];
   objc_storeStrong(v13 + 3, self->_dataConsumer);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   objc_storeWeak(v13 + 4, WeakRetained);
 
-  v15 = [(NSString *)self->_imageName copyWithZone:a3];
+  v15 = [(NSString *)self->_imageName copyWithZone:zone];
   v16 = v13[5];
   v13[5] = v15;
 
-  v17 = [(NSURL *)self->_url copyWithZone:a3];
+  v17 = [(NSURL *)self->_url copyWithZone:zone];
   v18 = v13[6];
   v13[6] = v17;
 

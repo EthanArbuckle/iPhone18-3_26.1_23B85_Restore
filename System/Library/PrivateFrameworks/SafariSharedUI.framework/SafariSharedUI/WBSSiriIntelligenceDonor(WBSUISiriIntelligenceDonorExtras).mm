@@ -23,7 +23,7 @@ LABEL_7:
   {
     if ((a5 & 1) == 0)
     {
-      [a1 donateDataForPageWithURL:v19 fullPageText:0 readerText:0 profileIdentifier:v16 personalizationData:v17];
+      [self donateDataForPageWithURL:v19 fullPageText:0 readerText:0 profileIdentifier:v16 personalizationData:v17];
     }
 
     v22[0] = MEMORY[0x1E69E9820];
@@ -32,7 +32,7 @@ LABEL_7:
     v22[3] = &unk_1E8289718;
     v28 = a5;
     v23 = v19;
-    v24 = a1;
+    selfCopy = self;
     v25 = v16;
     v26 = v17;
     v27 = v18;
@@ -41,7 +41,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [a1 donateDataForPageWithURL:v19 fullPageText:0 readerText:v15 profileIdentifier:v16 personalizationData:v17];
+  [self donateDataForPageWithURL:v19 fullPageText:0 readerText:v15 profileIdentifier:v16 personalizationData:v17];
   v20 = 1;
 LABEL_8:
 

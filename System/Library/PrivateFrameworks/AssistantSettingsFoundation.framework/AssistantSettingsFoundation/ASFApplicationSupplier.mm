@@ -1,18 +1,18 @@
 @interface ASFApplicationSupplier
-- (id)applicationForBundleId:(id)a3;
+- (id)applicationForBundleId:(id)id;
 @end
 
 @implementation ASFApplicationSupplier
 
-- (id)applicationForBundleId:(id)a3
+- (id)applicationForBundleId:(id)id
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:0 error:0];
+  idCopy = id;
+  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:idCopy allowPlaceholder:0 error:0];
   if (v4)
   {
     v5 = [ASFApplication alloc];
-    v6 = [v4 localizedName];
-    v7 = [(ASFApplication *)v5 initWithBundleId:v3 localizedName:v6];
+    localizedName = [v4 localizedName];
+    v7 = [(ASFApplication *)v5 initWithBundleId:idCopy localizedName:localizedName];
   }
 
   else

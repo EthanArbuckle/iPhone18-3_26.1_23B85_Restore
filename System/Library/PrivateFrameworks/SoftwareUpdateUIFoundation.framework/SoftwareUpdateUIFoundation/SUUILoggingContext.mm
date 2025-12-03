@@ -9,7 +9,7 @@
 + (id)statefulUILogger;
 + (id)uiKitLogger;
 + (id)updateOperationLogger;
-- (SUUILoggingContext)initWithCategory:(id)a3;
+- (SUUILoggingContext)initWithCategory:(id)category;
 @end
 
 @implementation SUUILoggingContext
@@ -254,34 +254,34 @@ uint64_t __33__SUUILoggingContext_uiKitLogger__block_invoke()
   return MEMORY[0x277D82BD8](v1);
 }
 
-- (SUUILoggingContext)initWithCategory:(id)a3
+- (SUUILoggingContext)initWithCategory:(id)category
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v14;
-  v14 = 0;
+  objc_storeStrong(location, category);
+  v3 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v3;
   v12.super_class = SUUILoggingContext;
   v11 = [(SUUILoggingContext *)&v12 init];
-  v14 = v11;
-  objc_storeStrong(&v14, v11);
+  selfCopy = v11;
+  objc_storeStrong(&selfCopy, v11);
   if (v11)
   {
-    objc_storeStrong(&v14->_category, location[0]);
+    objc_storeStrong(&selfCopy->_category, location[0]);
     subsystem = [@"com.apple.SoftwareUpdateUI" UTF8String];
     v9 = location[0];
     v4 = location[0];
     v5 = os_log_create(subsystem, [v9 UTF8String]);
-    oslog = v14->_oslog;
-    v14->_oslog = v5;
+    oslog = selfCopy->_oslog;
+    selfCopy->_oslog = v5;
     MEMORY[0x277D82BD8](oslog);
   }
 
-  v8 = MEMORY[0x277D82BE0](v14);
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 

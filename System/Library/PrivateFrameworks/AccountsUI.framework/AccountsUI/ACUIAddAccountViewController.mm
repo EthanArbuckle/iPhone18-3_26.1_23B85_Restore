@@ -1,38 +1,38 @@
 @interface ACUIAddAccountViewController
-+ (id)_debugStringForAction:(int64_t)a3;
++ (id)_debugStringForAction:(int64_t)action;
 - (ACUIAddAccountDataSource)addAccountDataSource;
 - (ACUIAddAccountViewController)init;
-- (BOOL)_viewControllerIsNotAddOrAddOther:(id)a3;
+- (BOOL)_viewControllerIsNotAddOrAddOther:(id)other;
 - (BOOL)isStolenDeviceProtectionFeatureAvailableAndEnabled;
-- (BOOL)shouldAddSpecifierForAccountTypeID:(id)a3;
+- (BOOL)shouldAddSpecifierForAccountTypeID:(id)d;
 - (BOOL)shouldAddSpecifierForOtherAccountTypes;
 - (id)_specifierForAOLAccount;
-- (id)_specifierForCustomControlledAccountWithName:(id)a3 accountTypeID:(id)a4;
+- (id)_specifierForCustomControlledAccountWithName:(id)name accountTypeID:(id)d;
 - (id)_specifierForExchangeAccount;
 - (id)_specifierForGmailAccount;
 - (id)_specifierForOutlookAccount;
 - (id)_specifierForPrimaryiCloudAccount;
-- (id)_specifierForRegionalAccountType:(id)a3;
+- (id)_specifierForRegionalAccountType:(id)type;
 - (id)_specifierForYahooAccount;
 - (id)_specifierForiCloudAccount;
 - (id)_specifiersForRegionalMailAccounts;
-- (id)giantSpecifierWithName:(id)a3 forAccountTypeID:(id)a4;
+- (id)giantSpecifierWithName:(id)name forAccountTypeID:(id)d;
 - (id)specifierForOtherAccounts;
 - (id)specifiers;
-- (void)_addAccountSpecifierWasTapped:(id)a3;
-- (void)_alertIfAccountTypePreventsMultiples:(id)a3 withCompletion:(id)a4;
-- (void)_allowedToAddAccountTypeID:(id)a3 fromSpecifier:(id)a4;
-- (void)_createCustomControlledAccountTapped:(id)a3;
+- (void)_addAccountSpecifierWasTapped:(id)tapped;
+- (void)_alertIfAccountTypePreventsMultiples:(id)multiples withCompletion:(id)completion;
+- (void)_allowedToAddAccountTypeID:(id)d fromSpecifier:(id)specifier;
+- (void)_createCustomControlledAccountTapped:(id)tapped;
 - (void)_dismissAndBecomeFirstResponder;
 - (void)_popToLayerAboveAddAccountFlow;
-- (void)_presentPrimaryAppleIDSignInController:(id)a3;
+- (void)_presentPrimaryAppleIDSignInController:(id)controller;
 - (void)dealloc;
-- (void)setSpecifier:(id)a3;
-- (void)setupViewControllerDidDismiss:(id)a3;
-- (void)signInControllerDidCompleteWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setSpecifier:(id)specifier;
+- (void)setupViewControllerDidDismiss:(id)dismiss;
+- (void)signInControllerDidCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ACUIAddAccountViewController
@@ -67,8 +67,8 @@
 {
   if (!self->_addAccountDataSource)
   {
-    v4 = [(ACUIAddAccountViewController *)self specifier];
-    v5 = [v4 propertyForKey:@"ACUIAddAccountDataSourceKey"];
+    specifier = [(ACUIAddAccountViewController *)self specifier];
+    v5 = [specifier propertyForKey:@"ACUIAddAccountDataSourceKey"];
     v6 = 0;
     if (v5)
     {
@@ -88,7 +88,7 @@
     }
 
     MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v4);
+    MEMORY[0x277D82BD8](specifier);
   }
 
   addAccountDataSource = self->_addAccountDataSource;
@@ -98,11 +98,11 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = SBSSpringBoardServerPort();
-  MEMORY[0x23EEFC450](v2, v5->_originalCellFlag, v5->_originalWifiFlag);
-  v3.receiver = v5;
+  MEMORY[0x23EEFC450](v2, selfCopy->_originalCellFlag, selfCopy->_originalWifiFlag);
+  v3.receiver = selfCopy;
   v3.super_class = ACUIAddAccountViewController;
   [(ACUIAddAccountViewController *)&v3 dealloc];
 }
@@ -110,12 +110,12 @@
 - (void)viewDidLoad
 {
   v36[4] = *MEMORY[0x277D85DE8];
-  v35 = self;
+  selfCopy = self;
   v34 = a2;
   v33.receiver = self;
   v33.super_class = ACUIAddAccountViewController;
   [(ACUIAddAccountViewController *)&v33 viewDidLoad];
-  v31 = [(ACUIAddAccountViewController *)v35 addAccountDataSource];
+  addAccountDataSource = [(ACUIAddAccountViewController *)selfCopy addAccountDataSource];
   objc_opt_class();
   v32 = 0;
   if (objc_opt_isKindOfClass())
@@ -123,97 +123,97 @@
     v32 = _os_feature_enabled_impl();
   }
 
-  MEMORY[0x277D82BD8](v31);
-  if ((v32 & 1) != 0 && !v35->_modernAddFlow)
+  MEMORY[0x277D82BD8](addAccountDataSource);
+  if ((v32 & 1) != 0 && !selfCopy->_modernAddFlow)
   {
-    if (*(&v35->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]))
+    if (*(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]))
     {
       v30 = MEMORY[0x277D3FC60];
-      [*(&v35->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) removeFromSuperview];
-      objc_storeStrong((&v35->super.super.super.super.super.isa + *v30), 0);
+      [*(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) removeFromSuperview];
+      objc_storeStrong((&selfCopy->super.super.super.super.super.isa + *v30), 0);
     }
 
-    v2 = [getACUISAddAccountControllerSwapClass() modernAddFlowWrappedForViewController:v35];
-    modernAddFlow = v35->_modernAddFlow;
-    v35->_modernAddFlow = v2;
+    v2 = [getACUISAddAccountControllerSwapClass() modernAddFlowWrappedForViewController:selfCopy];
+    modernAddFlow = selfCopy->_modernAddFlow;
+    selfCopy->_modernAddFlow = v2;
     MEMORY[0x277D82BD8](modernAddFlow);
-    v4 = [(UIViewController *)v35->_modernAddFlow view];
-    [(UIView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    MEMORY[0x277D82BD8](v4);
-    [(ACUIAddAccountViewController *)v35 addChildViewController:v35->_modernAddFlow];
-    v6 = [(ACUIAddAccountViewController *)v35 view];
-    v5 = [(UIViewController *)v35->_modernAddFlow view];
-    [v6 addSubview:?];
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
-    [(UIViewController *)v35->_modernAddFlow didMoveToParentViewController:v35];
+    view = [(UIViewController *)selfCopy->_modernAddFlow view];
+    [(UIView *)view setTranslatesAutoresizingMaskIntoConstraints:0];
+    MEMORY[0x277D82BD8](view);
+    [(ACUIAddAccountViewController *)selfCopy addChildViewController:selfCopy->_modernAddFlow];
+    view2 = [(ACUIAddAccountViewController *)selfCopy view];
+    view3 = [(UIViewController *)selfCopy->_modernAddFlow view];
+    [view2 addSubview:?];
+    MEMORY[0x277D82BD8](view3);
+    MEMORY[0x277D82BD8](view2);
+    [(UIViewController *)selfCopy->_modernAddFlow didMoveToParentViewController:selfCopy];
     v7 = MEMORY[0x277CCAAD0];
-    v28 = [(UIViewController *)v35->_modernAddFlow view];
-    v27 = [(UIView *)v28 topAnchor];
-    v26 = [(ACUIAddAccountViewController *)v35 view];
-    v25 = [v26 topAnchor];
-    v24 = [(NSLayoutYAxisAnchor *)v27 constraintEqualToAnchor:?];
+    view4 = [(UIViewController *)selfCopy->_modernAddFlow view];
+    topAnchor = [(UIView *)view4 topAnchor];
+    view5 = [(ACUIAddAccountViewController *)selfCopy view];
+    topAnchor2 = [view5 topAnchor];
+    v24 = [(NSLayoutYAxisAnchor *)topAnchor constraintEqualToAnchor:?];
     v36[0] = v24;
-    v23 = [(UIViewController *)v35->_modernAddFlow view];
-    v22 = [(UIView *)v23 bottomAnchor];
-    v21 = [(ACUIAddAccountViewController *)v35 view];
-    v20 = [v21 bottomAnchor];
-    v19 = [(NSLayoutYAxisAnchor *)v22 constraintEqualToAnchor:?];
+    view6 = [(UIViewController *)selfCopy->_modernAddFlow view];
+    bottomAnchor = [(UIView *)view6 bottomAnchor];
+    view7 = [(ACUIAddAccountViewController *)selfCopy view];
+    bottomAnchor2 = [view7 bottomAnchor];
+    v19 = [(NSLayoutYAxisAnchor *)bottomAnchor constraintEqualToAnchor:?];
     v36[1] = v19;
-    v18 = [(UIViewController *)v35->_modernAddFlow view];
-    v17 = [(UIView *)v18 leadingAnchor];
-    v16 = [(ACUIAddAccountViewController *)v35 view];
-    v15 = [v16 leadingAnchor];
-    v14 = [(NSLayoutXAxisAnchor *)v17 constraintEqualToAnchor:?];
+    view8 = [(UIViewController *)selfCopy->_modernAddFlow view];
+    leadingAnchor = [(UIView *)view8 leadingAnchor];
+    view9 = [(ACUIAddAccountViewController *)selfCopy view];
+    leadingAnchor2 = [view9 leadingAnchor];
+    v14 = [(NSLayoutXAxisAnchor *)leadingAnchor constraintEqualToAnchor:?];
     v36[2] = v14;
-    v13 = [(UIViewController *)v35->_modernAddFlow view];
-    v12 = [(UIView *)v13 trailingAnchor];
-    v11 = [(ACUIAddAccountViewController *)v35 view];
-    v10 = [v11 trailingAnchor];
-    v9 = [(NSLayoutXAxisAnchor *)v12 constraintEqualToAnchor:?];
+    view10 = [(UIViewController *)selfCopy->_modernAddFlow view];
+    trailingAnchor = [(UIView *)view10 trailingAnchor];
+    view11 = [(ACUIAddAccountViewController *)selfCopy view];
+    trailingAnchor2 = [view11 trailingAnchor];
+    v9 = [(NSLayoutXAxisAnchor *)trailingAnchor constraintEqualToAnchor:?];
     v36[3] = v9;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:4];
     [v7 activateConstraints:?];
     MEMORY[0x277D82BD8](v8);
     MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](view11);
+    MEMORY[0x277D82BD8](trailingAnchor);
+    MEMORY[0x277D82BD8](view10);
     MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v18);
+    MEMORY[0x277D82BD8](leadingAnchor2);
+    MEMORY[0x277D82BD8](view9);
+    MEMORY[0x277D82BD8](leadingAnchor);
+    MEMORY[0x277D82BD8](view8);
     MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
-    MEMORY[0x277D82BD8](v23);
+    MEMORY[0x277D82BD8](bottomAnchor2);
+    MEMORY[0x277D82BD8](view7);
+    MEMORY[0x277D82BD8](bottomAnchor);
+    MEMORY[0x277D82BD8](view6);
     MEMORY[0x277D82BD8](v24);
-    MEMORY[0x277D82BD8](v25);
-    MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
-    MEMORY[0x277D82BD8](v28);
-    v29 = [(UIViewController *)v35->_modernAddFlow view];
-    [(UIView *)v29 layoutIfNeeded];
-    MEMORY[0x277D82BD8](v29);
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](view5);
+    MEMORY[0x277D82BD8](topAnchor);
+    MEMORY[0x277D82BD8](view4);
+    view12 = [(UIViewController *)selfCopy->_modernAddFlow view];
+    [(UIView *)view12 layoutIfNeeded];
+    MEMORY[0x277D82BD8](view12);
   }
 
   *MEMORY[0x277D85DE8];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = ACUIAddAccountViewController;
-  [(ACUIAddAccountViewController *)&v6 viewWillAppear:a3];
+  [(ACUIAddAccountViewController *)&v6 viewWillAppear:appear];
   if (([MEMORY[0x277D75128] shouldMakeUIForDefaultPNG] & 1) == 0)
   {
-    v4 = [(ACUIAddAccountViewController *)v9 addAccountDataSource];
+    addAccountDataSource = [(ACUIAddAccountViewController *)selfCopy addAccountDataSource];
     objc_opt_class();
     v5 = 0;
     if (objc_opt_isKindOfClass())
@@ -221,86 +221,86 @@
       v5 = _os_feature_enabled_impl();
     }
 
-    MEMORY[0x277D82BD8](v4);
+    MEMORY[0x277D82BD8](addAccountDataSource);
     if (v5)
     {
-      v3 = [(ACUIAddAccountViewController *)v9 navigationItem];
-      [v3 setTitle:0];
-      MEMORY[0x277D82BD8](v3);
+      navigationItem = [(ACUIAddAccountViewController *)selfCopy navigationItem];
+      [navigationItem setTitle:0];
+      MEMORY[0x277D82BD8](navigationItem);
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = ACUIAddAccountViewController;
-  [(ACUIAddAccountViewController *)&v5 viewDidAppear:a3];
-  v3 = [(ACUIAddAccountViewController *)v8 specifier];
-  v4 = [v3 propertyForKey:*MEMORY[0x277D3FD90]];
-  MEMORY[0x277D82BD8](v3);
-  [ACUIUtils emitNavigationEventForSubPane:"emitNavigationEventForSubPane:subPath:account:inHostAppBundleID:" subPath:v8 account:@"ADD_ACCOUNT" inHostAppBundleID:?];
+  [(ACUIAddAccountViewController *)&v5 viewDidAppear:appear];
+  specifier = [(ACUIAddAccountViewController *)selfCopy specifier];
+  v4 = [specifier propertyForKey:*MEMORY[0x277D3FD90]];
+  MEMORY[0x277D82BD8](specifier);
+  [ACUIUtils emitNavigationEventForSubPane:"emitNavigationEventForSubPane:subPath:account:inHostAppBundleID:" subPath:selfCopy account:@"ADD_ACCOUNT" inHostAppBundleID:?];
   objc_storeStrong(&v4, 0);
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5.receiver = v7;
+  objc_storeStrong(location, specifier);
+  v5.receiver = selfCopy;
   v5.super_class = ACUIAddAccountViewController;
   [(ACUIAddAccountViewController *)&v5 setSpecifier:location[0]];
   v3 = [location[0] propertyForKey:*MEMORY[0x277D3FD70]];
-  [(ACUIAddAccountViewController *)v7 setFilteredDataclass:?];
+  [(ACUIAddAccountViewController *)selfCopy setFilteredDataclass:?];
   MEMORY[0x277D82BD8](v3);
   obj = [location[0] propertyForKey:@"ACUIAddAccountDataSourceKey"];
   if (obj)
   {
-    objc_storeStrong(&v7->_addAccountDataSource, obj);
-    [(ACUIAddAccountViewController *)v7 reloadSpecifiers];
+    objc_storeStrong(&selfCopy->_addAccountDataSource, obj);
+    [(ACUIAddAccountViewController *)selfCopy reloadSpecifiers];
   }
 
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)shouldAddSpecifierForAccountTypeID:(id)a3
+- (BOOL)shouldAddSpecifierForAccountTypeID:(id)d
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(ACUIAddAccountViewController *)v15 addAccountDataSource];
-  v8 = [(ACUIAddAccountDataSource *)v7 shouldAddSpecifierForAccountTypeID:location[0]];
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(location, d);
+  addAccountDataSource = [(ACUIAddAccountViewController *)selfCopy addAccountDataSource];
+  v8 = [(ACUIAddAccountDataSource *)addAccountDataSource shouldAddSpecifierForAccountTypeID:location[0]];
+  MEMORY[0x277D82BD8](addAccountDataSource);
   v13 = v8;
   v11 = 0;
   v9 = 0;
   if (v8)
   {
-    v12 = [(ACUIAddAccountViewController *)v15 filteredDataclass];
+    filteredDataclass = [(ACUIAddAccountViewController *)selfCopy filteredDataclass];
     v11 = 1;
-    v9 = v12 != 0;
+    v9 = filteredDataclass != 0;
   }
 
   if (v11)
   {
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](filteredDataclass);
   }
 
   if (v9)
   {
-    v10 = [(ACAccountStore *)v15->_accountStore accountTypeWithAccountTypeIdentifier:location[0]];
-    v6 = [(ACAccountType *)v10 supportedDataclasses];
-    v5 = [(ACUIAddAccountViewController *)v15 filteredDataclass];
-    v13 = [v6 containsObject:?];
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    v10 = [(ACAccountStore *)selfCopy->_accountStore accountTypeWithAccountTypeIdentifier:location[0]];
+    supportedDataclasses = [(ACAccountType *)v10 supportedDataclasses];
+    filteredDataclass2 = [(ACUIAddAccountViewController *)selfCopy filteredDataclass];
+    v13 = [supportedDataclasses containsObject:?];
+    MEMORY[0x277D82BD8](filteredDataclass2);
+    MEMORY[0x277D82BD8](supportedDataclasses);
     objc_storeStrong(&v10, 0);
   }
 
@@ -312,7 +312,7 @@
 - (BOOL)shouldAddSpecifierForOtherAccountTypes
 {
   v16[5] = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   v16[0] = *MEMORY[0x277CB8C60];
   v16[1] = *MEMORY[0x277CB8BD8];
@@ -337,7 +337,7 @@
       }
 
       v11 = *(__b[1] + 8 * v5);
-      if ([(ACUIAddAccountViewController *)v13 shouldAddSpecifierForAccountTypeID:v11])
+      if ([(ACUIAddAccountViewController *)selfCopy shouldAddSpecifierForAccountTypeID:v11])
       {
         break;
       }
@@ -377,9 +377,9 @@ LABEL_9:
 
 - (id)specifiers
 {
-  v22 = self;
+  selfCopy = self;
   v21[1] = a2;
-  v18 = [(ACUIAddAccountViewController *)self addAccountDataSource];
+  addAccountDataSource = [(ACUIAddAccountViewController *)self addAccountDataSource];
   objc_opt_class();
   v19 = 0;
   if (objc_opt_isKindOfClass())
@@ -387,43 +387,43 @@ LABEL_9:
     v19 = _os_feature_enabled_impl();
   }
 
-  MEMORY[0x277D82BD8](v18);
+  MEMORY[0x277D82BD8](addAccountDataSource);
   if (v19)
   {
-    objc_storeStrong((&v22->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]), 0);
+    objc_storeStrong((&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]), 0);
     v23 = 0;
   }
 
   else
   {
-    if (!*(&v22->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]))
+    if (!*(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]))
     {
-      v17 = [(ACUIAddAccountViewController *)v22 table];
-      [v17 _setMarginWidth:50.0];
-      MEMORY[0x277D82BD8](v17);
+      table = [(ACUIAddAccountViewController *)selfCopy table];
+      [table _setMarginWidth:50.0];
+      MEMORY[0x277D82BD8](table);
       v21[0] = objc_alloc_init(MEMORY[0x277CBEB18]);
       if (([MEMORY[0x277D75128] shouldMakeUIForDefaultPNG] & 1) == 0)
       {
-        v16 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+        emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
         [v21[0] addObject:?];
-        MEMORY[0x277D82BD8](v16);
-        if ([(ACUIAddAccountViewController *)v22 shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8BA0]])
+        MEMORY[0x277D82BD8](emptyGroupSpecifier);
+        if ([(ACUIAddAccountViewController *)selfCopy shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8BA0]])
         {
-          v15 = [(ACUIAddAccountViewController *)v22 _specifierForiCloudAccount];
+          _specifierForiCloudAccount = [(ACUIAddAccountViewController *)selfCopy _specifierForiCloudAccount];
           [v21[0] addObject:?];
-          MEMORY[0x277D82BD8](v15);
+          MEMORY[0x277D82BD8](_specifierForiCloudAccount);
         }
 
-        if ([(ACUIAddAccountViewController *)v22 shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8C00]])
+        if ([(ACUIAddAccountViewController *)selfCopy shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8C00]])
         {
-          v14 = [(ACUIAddAccountViewController *)v22 _specifierForExchangeAccount];
+          _specifierForExchangeAccount = [(ACUIAddAccountViewController *)selfCopy _specifierForExchangeAccount];
           [v21[0] addObject:?];
-          MEMORY[0x277D82BD8](v14);
+          MEMORY[0x277D82BD8](_specifierForExchangeAccount);
         }
 
-        if ([(ACUIAddAccountViewController *)v22 shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8C60]])
+        if ([(ACUIAddAccountViewController *)selfCopy shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8C60]])
         {
-          location = [(ACUIAddAccountViewController *)v22 _specifiersForRegionalMailAccounts];
+          location = [(ACUIAddAccountViewController *)selfCopy _specifiersForRegionalMailAccounts];
           if ([location count])
           {
             [v21[0] addObjectsFromArray:location];
@@ -432,52 +432,52 @@ LABEL_9:
           objc_storeStrong(&location, 0);
         }
 
-        if ([(ACUIAddAccountViewController *)v22 shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8C40]])
+        if ([(ACUIAddAccountViewController *)selfCopy shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8C40]])
         {
           v12 = v21[0];
-          v13 = [(ACUIAddAccountViewController *)v22 _specifierForGmailAccount];
+          _specifierForGmailAccount = [(ACUIAddAccountViewController *)selfCopy _specifierForGmailAccount];
           [v12 addObject:?];
-          MEMORY[0x277D82BD8](v13);
+          MEMORY[0x277D82BD8](_specifierForGmailAccount);
         }
 
-        if ([(ACUIAddAccountViewController *)v22 shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8D38]])
+        if ([(ACUIAddAccountViewController *)selfCopy shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8D38]])
         {
           v10 = v21[0];
-          v11 = [(ACUIAddAccountViewController *)v22 _specifierForYahooAccount];
+          _specifierForYahooAccount = [(ACUIAddAccountViewController *)selfCopy _specifierForYahooAccount];
           [v10 addObject:?];
-          MEMORY[0x277D82BD8](v11);
+          MEMORY[0x277D82BD8](_specifierForYahooAccount);
         }
 
-        if ([(ACUIAddAccountViewController *)v22 shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8B98]])
+        if ([(ACUIAddAccountViewController *)selfCopy shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8B98]])
         {
           v8 = v21[0];
-          v9 = [(ACUIAddAccountViewController *)v22 _specifierForAOLAccount];
+          _specifierForAOLAccount = [(ACUIAddAccountViewController *)selfCopy _specifierForAOLAccount];
           [v8 addObject:?];
-          MEMORY[0x277D82BD8](v9);
+          MEMORY[0x277D82BD8](_specifierForAOLAccount);
         }
 
-        if ([(ACUIAddAccountViewController *)v22 shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8C50]])
+        if ([(ACUIAddAccountViewController *)selfCopy shouldAddSpecifierForAccountTypeID:*MEMORY[0x277CB8C50]])
         {
           v6 = v21[0];
-          v7 = [(ACUIAddAccountViewController *)v22 _specifierForOutlookAccount];
+          _specifierForOutlookAccount = [(ACUIAddAccountViewController *)selfCopy _specifierForOutlookAccount];
           [v6 addObject:?];
-          MEMORY[0x277D82BD8](v7);
+          MEMORY[0x277D82BD8](_specifierForOutlookAccount);
         }
 
-        if ([(ACUIAddAccountViewController *)v22 shouldAddSpecifierForOtherAccountTypes])
+        if ([(ACUIAddAccountViewController *)selfCopy shouldAddSpecifierForOtherAccountTypes])
         {
           v4 = v21[0];
-          v5 = [(ACUIAddAccountViewController *)v22 specifierForOtherAccounts];
+          specifierForOtherAccounts = [(ACUIAddAccountViewController *)selfCopy specifierForOtherAccounts];
           [v4 addObject:?];
-          MEMORY[0x277D82BD8](v5);
+          MEMORY[0x277D82BD8](specifierForOtherAccounts);
         }
       }
 
-      objc_storeStrong((&v22->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]), v21[0]);
+      objc_storeStrong((&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]), v21[0]);
       objc_storeStrong(v21, 0);
     }
 
-    v23 = MEMORY[0x277D82BE0](*(&v22->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]));
+    v23 = MEMORY[0x277D82BE0](*(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]));
   }
 
   v2 = v23;
@@ -487,12 +487,12 @@ LABEL_9:
 
 - (id)_specifierForiCloudAccount
 {
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   v16[0] = 0;
-  v11 = [(ACUIAddAccountViewController *)self viewProvidersManager];
-  location = [(ACUIAccountViewProvidersManager *)v11 configurationInfoForCreatingAccountWithType:*MEMORY[0x277CB8BA0]];
-  MEMORY[0x277D82BD8](v11);
+  viewProvidersManager = [(ACUIAddAccountViewController *)self viewProvidersManager];
+  location = [(ACUIAccountViewProvidersManager *)viewProvidersManager configurationInfoForCreatingAccountWithType:*MEMORY[0x277CB8BA0]];
+  MEMORY[0x277D82BD8](viewProvidersManager);
   v13 = 0;
   v12 = 0;
   if (location)
@@ -509,16 +509,16 @@ LABEL_9:
 
   if (v12)
   {
-    v2 = [(ACUIAddAccountViewController *)v17 _specifierForPrimaryiCloudAccount];
+    _specifierForPrimaryiCloudAccount = [(ACUIAddAccountViewController *)selfCopy _specifierForPrimaryiCloudAccount];
   }
 
   else
   {
-    v2 = [(ACUIAddAccountViewController *)v17 giantSpecifierWithName:@"iCloud" forAccountTypeID:*MEMORY[0x277CB8BA0]];
+    _specifierForPrimaryiCloudAccount = [(ACUIAddAccountViewController *)selfCopy giantSpecifierWithName:@"iCloud" forAccountTypeID:*MEMORY[0x277CB8BA0]];
   }
 
   v3 = v16[0];
-  v16[0] = v2;
+  v16[0] = _specifierForPrimaryiCloudAccount;
   MEMORY[0x277D82BD8](v3);
   v7 = v16[0];
   v6 = MEMORY[0x277D755B8];
@@ -538,15 +538,15 @@ LABEL_9:
 
 - (id)_specifierForPrimaryiCloudAccount
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:@"iCloud" target:self set:0 get:0 detail:0 cell:10 edit:0];
   [v7[0] setButtonAction:sel__presentPrimaryAppleIDSignInController_];
-  v5 = [(ACUIAddAccountViewController *)v8 viewProvidersManager];
-  v4 = [(ACUIAccountViewProvidersManager *)v5 configurationInfoForCreatingAccountWithType:*MEMORY[0x277CB8BA0]];
+  viewProvidersManager = [(ACUIAddAccountViewController *)selfCopy viewProvidersManager];
+  v4 = [(ACUIAccountViewProvidersManager *)viewProvidersManager configurationInfoForCreatingAccountWithType:*MEMORY[0x277CB8BA0]];
   location = [v4 mutableCopy];
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](viewProvidersManager);
   if ([location count])
   {
     [v7[0] setUserInfo:location];
@@ -559,29 +559,29 @@ LABEL_9:
   return v3;
 }
 
-- (void)_presentPrimaryAppleIDSignInController:(id)a3
+- (void)_presentPrimaryAppleIDSignInController:(id)controller
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(ACUIAddAccountViewController *)v14 addAccountDataSource];
+  objc_storeStrong(location, controller);
+  addAccountDataSource = [(ACUIAddAccountViewController *)selfCopy addAccountDataSource];
   v6 = MEMORY[0x277CB8BA0];
   v3 = *MEMORY[0x277CB8BA0];
-  v4 = [(ACUIAddAccountViewController *)v14 viewProvidersManager];
-  v12 = [(ACUIAddAccountDataSource *)v5 viewControllerClassForCreatingAccountWithType:v3 withViewProviderManager:?];
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  viewProvidersManager = [(ACUIAddAccountViewController *)selfCopy viewProvidersManager];
+  v12 = [(ACUIAddAccountDataSource *)addAccountDataSource viewControllerClassForCreatingAccountWithType:v3 withViewProviderManager:?];
+  MEMORY[0x277D82BD8](viewProvidersManager);
+  MEMORY[0x277D82BD8](addAccountDataSource);
   v11 = objc_alloc_init(v12);
-  v7 = [(ACUIAddAccountViewController *)v14 viewProvidersManager];
-  [(ACUIAccountViewProvidersManager *)v7 setDelegate:v14 forSignInController:v11 forAccountWithType:*v6];
-  MEMORY[0x277D82BD8](v7);
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
-  MEMORY[0x277D82BD8](v8);
-  v15 = v9;
+  viewProvidersManager2 = [(ACUIAddAccountViewController *)selfCopy viewProvidersManager];
+  [(ACUIAccountViewProvidersManager *)viewProvidersManager2 setDelegate:selfCopy forSignInController:v11 forAccountWithType:*v6];
+  MEMORY[0x277D82BD8](viewProvidersManager2);
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+  MEMORY[0x277D82BD8](currentDevice);
+  v15 = userInterfaceIdiom;
   v10 = 1;
-  if (v9 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v10 = v15 == 5;
   }
@@ -592,25 +592,25 @@ LABEL_9:
     [v11 setModalTransitionStyle:0];
   }
 
-  [(ACUIAddAccountViewController *)v14 presentViewController:v11 animated:1 completion:?];
+  [(ACUIAddAccountViewController *)selfCopy presentViewController:v11 animated:1 completion:?];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)signInControllerDidCompleteWithSuccess:(BOOL)a3 error:(id)a4
+- (void)signInControllerDidCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  successCopy = success;
   location = 0;
-  objc_storeStrong(&location, a4);
-  [(ACUIAddAccountViewController *)v8 _dismissAndBecomeFirstResponder];
-  if (v6)
+  objc_storeStrong(&location, error);
+  [(ACUIAddAccountViewController *)selfCopy _dismissAndBecomeFirstResponder];
+  if (successCopy)
   {
-    [(ACUIAddAccountViewController *)v8 setupViewControllerDidDismiss:?];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:@"ACUIAccountSetupDidFinish" object:0];
-    MEMORY[0x277D82BD8](v4);
+    [(ACUIAddAccountViewController *)selfCopy setupViewControllerDidDismiss:?];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ACUIAccountSetupDidFinish" object:0];
+    MEMORY[0x277D82BD8](defaultCenter);
   }
 
   objc_storeStrong(&location, 0);
@@ -663,7 +663,7 @@ uint64_t __63__ACUIAddAccountViewController__dismissAndBecomeFirstResponder__blo
 
 - (id)_specifierForGmailAccount
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   if (__UseGoogleMail())
   {
@@ -687,7 +687,7 @@ uint64_t __63__ACUIAddAccountViewController__dismissAndBecomeFirstResponder__blo
   }
 
   v13 = MEMORY[0x277D82BE0](v3);
-  v12 = [(ACUIAddAccountViewController *)v15 _specifierForCustomControlledAccountWithName:v14[0] accountTypeID:*MEMORY[0x277CB8C40]];
+  v12 = [(ACUIAddAccountViewController *)selfCopy _specifierForCustomControlledAccountWithName:v14[0] accountTypeID:*MEMORY[0x277CB8C40]];
   v8 = v12;
   v7 = MEMORY[0x277D755B8];
   v6 = v13;
@@ -706,25 +706,25 @@ uint64_t __63__ACUIAddAccountViewController__dismissAndBecomeFirstResponder__blo
   return v11;
 }
 
-- (id)_specifierForCustomControlledAccountWithName:(id)a3 accountTypeID:(id)a4
+- (id)_specifierForCustomControlledAccountWithName:(id)name accountTypeID:(id)d
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11 = [(ACUIAddAccountViewController *)v14 giantSpecifierWithName:location[0] forAccountTypeID:v12];
-  v9 = [(ACUIAddAccountViewController *)v14 addAccountDataSource];
+  objc_storeStrong(&v12, d);
+  v11 = [(ACUIAddAccountViewController *)selfCopy giantSpecifierWithName:location[0] forAccountTypeID:v12];
+  addAccountDataSource = [(ACUIAddAccountViewController *)selfCopy addAccountDataSource];
   v7 = v12;
-  v8 = [(ACUIAddAccountViewController *)v14 viewProvidersManager];
-  v10 = [(ACUIAddAccountDataSource *)v9 controllerClassForCreatingAccountWithType:v7 withViewProviderManager:?];
-  MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
+  viewProvidersManager = [(ACUIAddAccountViewController *)selfCopy viewProvidersManager];
+  v10 = [(ACUIAddAccountDataSource *)addAccountDataSource controllerClassForCreatingAccountWithType:v7 withViewProviderManager:?];
+  MEMORY[0x277D82BD8](viewProvidersManager);
+  MEMORY[0x277D82BD8](addAccountDataSource);
   if (v10)
   {
     [v11 setDetailControllerClass:0];
-    [v11 setTarget:v14];
+    [v11 setTarget:selfCopy];
     [v11 setButtonAction:sel__createCustomControlledAccountTapped_];
   }
 
@@ -736,13 +736,13 @@ uint64_t __63__ACUIAddAccountViewController__dismissAndBecomeFirstResponder__blo
   return v5;
 }
 
-- (void)_addAccountSpecifierWasTapped:(id)a3
+- (void)_addAccountSpecifierWasTapped:(id)tapped
 {
   v45 = *MEMORY[0x277D85DE8];
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   v39 = [location[0] propertyForKey:@"ACUIAccountType"];
   v38 = _ACUILogSystem();
   v37 = OS_LOG_TYPE_DEFAULT;
@@ -754,14 +754,14 @@ uint64_t __63__ACUIAddAccountViewController__dismissAndBecomeFirstResponder__blo
 
   objc_storeStrong(&v38, 0);
   v36 = 0;
-  v18 = 0;
+  isStolenDeviceProtectionFeatureAvailableAndEnabled = 0;
   if ([v39 isEqualToString:*MEMORY[0x277CB8C00]])
   {
-    v18 = [(ACUIAddAccountViewController *)v41 isStolenDeviceProtectionFeatureAvailableAndEnabled];
+    isStolenDeviceProtectionFeatureAvailableAndEnabled = [(ACUIAddAccountViewController *)selfCopy isStolenDeviceProtectionFeatureAvailableAndEnabled];
   }
 
-  v36 = v18;
-  if (v18)
+  v36 = isStolenDeviceProtectionFeatureAvailableAndEnabled;
+  if (isStolenDeviceProtectionFeatureAvailableAndEnabled)
   {
     v35 = [objc_alloc(MEMORY[0x277CD47A8]) initWithIdentifier:@"com.apple.account.Exchange.add"];
     v5 = v35;
@@ -794,7 +794,7 @@ uint64_t __63__ACUIAddAccountViewController__dismissAndBecomeFirstResponder__blo
     v29 = 0;
     v30 = __62__ACUIAddAccountViewController__addAccountSpecifierWasTapped___block_invoke;
     v31 = &unk_278BFA780;
-    v32 = MEMORY[0x277D82BE0](v41);
+    v32 = MEMORY[0x277D82BE0](selfCopy);
     v33 = MEMORY[0x277D82BE0](v39);
     v34 = MEMORY[0x277D82BE0](location[0]);
     [v5 armWithOptions:v6 completion:&v27];
@@ -818,14 +818,14 @@ uint64_t __63__ACUIAddAccountViewController__dismissAndBecomeFirstResponder__blo
 
   else
   {
-    v4 = v41;
+    v4 = selfCopy;
     v3 = v39;
     v19 = MEMORY[0x277D85DD0];
     v20 = -1073741824;
     v21 = 0;
     v22 = __62__ACUIAddAccountViewController__addAccountSpecifierWasTapped___block_invoke_142;
     v23 = &unk_278BFA7A8;
-    v24 = MEMORY[0x277D82BE0](v41);
+    v24 = MEMORY[0x277D82BE0](selfCopy);
     v25 = MEMORY[0x277D82BE0](v39);
     v26 = MEMORY[0x277D82BE0](location[0]);
     [(ACUIAddAccountViewController *)v4 _alertIfAccountTypePreventsMultiples:v3 withCompletion:&v19];
@@ -927,15 +927,15 @@ uint64_t __62__ACUIAddAccountViewController__addAccountSpecifierWasTapped___bloc
   return result;
 }
 
-- (void)_allowedToAddAccountTypeID:(id)a3 fromSpecifier:(id)a4
+- (void)_allowedToAddAccountTypeID:(id)d fromSpecifier:(id)specifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, specifier);
   v19 = _ACUILogSystem();
   v18 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -945,15 +945,15 @@ uint64_t __62__ACUIAddAccountViewController__addAccountSpecifierWasTapped___bloc
   }
 
   objc_storeStrong(&v19, 0);
-  v17 = [(ACUIAddAccountViewController *)v22 viewProvidersManager];
-  v11 = [(ACUIAddAccountViewController *)v22 addAccountDataSource];
-  v16 = [(ACUIAddAccountDataSource *)v11 viewControllerClassForCreatingAccountWithType:location[0] withViewProviderManager:v17];
-  MEMORY[0x277D82BD8](v11);
-  v12 = [v20 userInfo];
-  MEMORY[0x277D82BD8](v12);
-  if (!v12)
+  viewProvidersManager = [(ACUIAddAccountViewController *)selfCopy viewProvidersManager];
+  addAccountDataSource = [(ACUIAddAccountViewController *)selfCopy addAccountDataSource];
+  v16 = [(ACUIAddAccountDataSource *)addAccountDataSource viewControllerClassForCreatingAccountWithType:location[0] withViewProviderManager:viewProvidersManager];
+  MEMORY[0x277D82BD8](addAccountDataSource);
+  userInfo = [v20 userInfo];
+  MEMORY[0x277D82BD8](userInfo);
+  if (!userInfo)
   {
-    v10 = [v17 configurationInfoForCreatingAccountWithType:location[0]];
+    v10 = [viewProvidersManager configurationInfoForCreatingAccountWithType:location[0]];
     v15 = [v10 mutableCopy];
     MEMORY[0x277D82BD8](v10);
     if ([v15 count])
@@ -972,34 +972,34 @@ uint64_t __62__ACUIAddAccountViewController__addAccountSpecifierWasTapped___bloc
   v5 = *(v20 + *MEMORY[0x277D3FC98]);
   v14 = objc_opt_new();
   [v14 setSpecifier:v20];
-  [v14 setParentController:v22];
+  [v14 setParentController:selfCopy];
   v8 = v14;
-  v9 = [(ACUIAddAccountViewController *)v22 rootController];
+  rootController = [(ACUIAddAccountViewController *)selfCopy rootController];
   [v8 setRootController:?];
-  MEMORY[0x277D82BD8](v9);
-  [(ACUIAddAccountViewController *)v22 showController:v14];
+  MEMORY[0x277D82BD8](rootController);
+  [(ACUIAddAccountViewController *)selfCopy showController:v14];
   objc_storeStrong(&v14, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&viewProvidersManager, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_createCustomControlledAccountTapped:(id)a3
+- (void)_createCustomControlledAccountTapped:(id)tapped
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   v13 = [location[0] propertyForKey:@"ACUIAccountType"];
-  v4 = v15;
+  v4 = selfCopy;
   v3 = v13;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___block_invoke;
   v9 = &unk_278BFA7A8;
-  v10 = MEMORY[0x277D82BE0](v15);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   v11 = MEMORY[0x277D82BE0](v13);
   v12 = MEMORY[0x277D82BE0](location[0]);
   [(ACUIAddAccountViewController *)v4 _alertIfAccountTypePreventsMultiples:v3 withCompletion:?];
@@ -1164,20 +1164,20 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
   objc_storeStrong(v14, 0);
 }
 
-+ (id)_debugStringForAction:(int64_t)a3
++ (id)_debugStringForAction:(int64_t)action
 {
-  v8 = a1;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  actionCopy = action;
   location = MEMORY[0x277D82BE0](@"unknown");
-  if (v6)
+  if (actionCopy)
   {
-    if (v6 == 1)
+    if (actionCopy == 1)
     {
       objc_storeStrong(&location, @"dataclass configuration");
     }
 
-    else if (v6 == 2)
+    else if (actionCopy == 2)
     {
       objc_storeStrong(&location, @"alternate configuration");
     }
@@ -1260,7 +1260,7 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
 - (id)_specifiersForRegionalMailAccounts
 {
   v37 = *MEMORY[0x277D85DE8];
-  v32 = self;
+  selfCopy = self;
   v31[1] = a2;
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v31[0] = [v13 URLForResource:@"RegionalMailAccountTypes" withExtension:@"plist"];
@@ -1270,20 +1270,20 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
     v27 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:v31[0]];
     if (v27)
     {
-      v11 = [(ACUIAddAccountViewController *)v32 filteredDataclass];
+      filteredDataclass = [(ACUIAddAccountViewController *)selfCopy filteredDataclass];
       v23 = 0;
       v21 = 0;
       v12 = 0;
-      if (v11)
+      if (filteredDataclass)
       {
-        v24 = [(ACUIAddAccountViewController *)v32 filteredDataclass];
+        filteredDataclass2 = [(ACUIAddAccountViewController *)selfCopy filteredDataclass];
         v23 = 1;
         v10 = 1;
-        if (![(NSString *)v24 isEqualToString:*MEMORY[0x277CB9150]])
+        if (![(NSString *)filteredDataclass2 isEqualToString:*MEMORY[0x277CB9150]])
         {
-          v22 = [(ACUIAddAccountViewController *)v32 filteredDataclass];
+          filteredDataclass3 = [(ACUIAddAccountViewController *)selfCopy filteredDataclass];
           v21 = 1;
-          v10 = [(NSString *)v22 isEqualToString:*MEMORY[0x277CB9178]];
+          v10 = [(NSString *)filteredDataclass3 isEqualToString:*MEMORY[0x277CB9178]];
         }
 
         v12 = v10 ^ 1;
@@ -1291,15 +1291,15 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
 
       if (v21)
       {
-        MEMORY[0x277D82BD8](v22);
+        MEMORY[0x277D82BD8](filteredDataclass3);
       }
 
       if (v23)
       {
-        MEMORY[0x277D82BD8](v24);
+        MEMORY[0x277D82BD8](filteredDataclass2);
       }
 
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](filteredDataclass);
       if (v12)
       {
         v33 = 0;
@@ -1331,7 +1331,7 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
             v15 = [v17 objectForKeyedSubscript:@"Regions"];
             if ([v15 containsObject:v20])
             {
-              v14 = [(ACUIAddAccountViewController *)v32 _specifierForRegionalAccountType:v17];
+              v14 = [(ACUIAddAccountViewController *)selfCopy _specifierForRegionalAccountType:v17];
               if (v14)
               {
                 [v18 addObject:v14];
@@ -1409,12 +1409,12 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
   return v2;
 }
 
-- (id)_specifierForRegionalAccountType:(id)a3
+- (id)_specifierForRegionalAccountType:(id)type
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   v14 = [location[0] objectForKeyedSubscript:@"RegionalDisplayName"];
   v13 = [location[0] objectForKeyedSubscript:@"LargeIcon"];
   v12 = [location[0] objectForKeyedSubscript:@"AccessibilityLabel"];
@@ -1437,7 +1437,7 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
   }
 
   v10[1] = v5;
-  v10[0] = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v14 target:v16 set:0 get:0 detail:objc_opt_class() cell:v5 edit:0];
+  v10[0] = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v14 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:v5 edit:0];
   [v10[0] setButtonAction:sel__addAccountSpecifierWasTapped_];
   [v10[0] setProperty:*MEMORY[0x277CB8C60] forKey:@"ACUIAccountType"];
   [v10[0] setUserInfo:location[0]];
@@ -1464,31 +1464,31 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
 
 - (id)specifierForOtherAccounts
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
   v11 = MEMORY[0x277D3FAD8];
   v9 = MEMORY[0x277CCA8D8];
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14 = @"OTHER";
   v12 = [v13 localizedStringForKey:? value:? table:?];
-  v10 = v19;
-  v18[0] = [v11 preferenceSpecifierNamed:v12 target:v19 set:0 get:0 detail:objc_opt_class() cell:11 edit:0];
+  v10 = selfCopy;
+  v18[0] = [v11 preferenceSpecifierNamed:v12 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:11 edit:0];
   MEMORY[0x277D82BD8](v12);
   MEMORY[0x277D82BD8](v13);
   [v18[0] setProperty:v14 forKey:*MEMORY[0x277D3FFB8]];
   v15 = v18[0];
-  v16 = [(ACUIAddAccountViewController *)v19 addAccountDataSource];
+  addAccountDataSource = [(ACUIAddAccountViewController *)selfCopy addAccountDataSource];
   [v15 setProperty:? forKey:?];
-  MEMORY[0x277D82BD8](v16);
-  v17 = [(ACUIAddAccountViewController *)v19 filteredDataclass];
-  MEMORY[0x277D82BD8](v17);
-  if (v17)
+  MEMORY[0x277D82BD8](addAccountDataSource);
+  filteredDataclass = [(ACUIAddAccountViewController *)selfCopy filteredDataclass];
+  MEMORY[0x277D82BD8](filteredDataclass);
+  if (filteredDataclass)
   {
     v7 = v18[0];
-    v8 = [(ACUIAddAccountViewController *)v19 filteredDataclass];
+    filteredDataclass2 = [(ACUIAddAccountViewController *)selfCopy filteredDataclass];
     v2 = *MEMORY[0x277D3FD70];
     [v7 setProperty:? forKey:?];
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](filteredDataclass2);
   }
 
   location = v18;
@@ -1499,22 +1499,22 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
   return v3;
 }
 
-- (id)giantSpecifierWithName:(id)a3 forAccountTypeID:(id)a4
+- (id)giantSpecifierWithName:(id)name forAccountTypeID:(id)d
 {
-  obj = a4;
-  v19 = self;
+  obj = d;
+  selfCopy = self;
   location[1] = a2;
   v13 = location;
   v14 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v12 = &v17;
   v17 = 0;
   objc_storeStrong(&v17, obj);
   v10 = MEMORY[0x277D3FAD8];
   v8 = location[0];
-  v9 = v19;
-  v4 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:location[0] target:v19 set:0 get:0 detail:objc_opt_class() cell:10 edit:0];
+  v9 = selfCopy;
+  v4 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:location[0] target:selfCopy set:0 get:0 detail:objc_opt_class() cell:10 edit:0];
   v11 = &v16;
   v16 = v4;
   [v4 setButtonAction:sel__addAccountSpecifierWasTapped_];
@@ -1528,42 +1528,42 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
   return v5;
 }
 
-- (void)setupViewControllerDidDismiss:(id)a3
+- (void)setupViewControllerDidDismiss:(id)dismiss
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(ACUIAddAccountViewController *)v4 _popToLayerAboveAddAccountFlow];
+  objc_storeStrong(location, dismiss);
+  [(ACUIAddAccountViewController *)selfCopy _popToLayerAboveAddAccountFlow];
   objc_storeStrong(location, 0);
 }
 
 - (void)_popToLayerAboveAddAccountFlow
 {
   v36 = *MEMORY[0x277D85DE8];
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  v21 = [(ACUIAddAccountViewController *)self navigationController];
-  v30 = [v21 viewControllers];
-  MEMORY[0x277D82BD8](v21);
+  navigationController = [(ACUIAddAccountViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  MEMORY[0x277D82BD8](navigationController);
   v27 = 0;
   v22 = 0;
-  if (([v30 containsObject:v32] & 1) == 0)
+  if (([viewControllers containsObject:selfCopy] & 1) == 0)
   {
-    v28 = [(ACUIAddAccountViewController *)v32 parentViewController];
+    parentViewController = [(ACUIAddAccountViewController *)selfCopy parentViewController];
     v27 = 1;
-    v22 = [v30 containsObject:?];
+    v22 = [viewControllers containsObject:?];
   }
 
   if (v27)
   {
-    MEMORY[0x277D82BD8](v28);
+    MEMORY[0x277D82BD8](parentViewController);
   }
 
   v29 = v22 & 1;
   memset(__b, 0, sizeof(__b));
-  obj = [v30 reverseObjectEnumerator];
+  obj = [viewControllers reverseObjectEnumerator];
   v20 = [obj countByEnumeratingWithState:__b objects:v35 count:16];
   if (v20)
   {
@@ -1582,8 +1582,8 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
       if (v29)
       {
         memset(v23, 0, sizeof(v23));
-        v13 = [v26 childViewControllers];
-        v14 = [v13 countByEnumeratingWithState:v23 objects:v34 count:16];
+        childViewControllers = [v26 childViewControllers];
+        v14 = [childViewControllers countByEnumeratingWithState:v23 objects:v34 count:16];
         if (v14)
         {
           v10 = *v23[2];
@@ -1594,11 +1594,11 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
             v9 = v11;
             if (*v23[2] != v10)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(childViewControllers);
             }
 
             v24 = *(v23[1] + 8 * v11);
-            if ([(ACUIAddAccountViewController *)v32 _viewControllerIsNotAddOrAddOther:v24])
+            if ([(ACUIAddAccountViewController *)selfCopy _viewControllerIsNotAddOrAddOther:v24])
             {
               break;
             }
@@ -1607,7 +1607,7 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
             if (v9 + 1 >= v12)
             {
               v11 = 0;
-              v12 = [v13 countByEnumeratingWithState:v23 objects:v34 count:16];
+              v12 = [childViewControllers countByEnumeratingWithState:v23 objects:v34 count:16];
               if (!v12)
               {
                 goto LABEL_18;
@@ -1619,14 +1619,14 @@ void __69__ACUIAddAccountViewController__createCustomControlledAccountTapped___b
         }
 
 LABEL_18:
-        MEMORY[0x277D82BD8](v13);
+        MEMORY[0x277D82BD8](childViewControllers);
         if (location[0])
         {
           break;
         }
       }
 
-      else if ([(ACUIAddAccountViewController *)v32 _viewControllerIsNotAddOrAddOther:v26])
+      else if ([(ACUIAddAccountViewController *)selfCopy _viewControllerIsNotAddOrAddOther:v26])
       {
         objc_storeStrong(location, v26);
         break;
@@ -1646,41 +1646,41 @@ LABEL_18:
   }
 
   MEMORY[0x277D82BD8](obj);
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
-  MEMORY[0x277D82BD8](v6);
-  v33 = v7;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+  MEMORY[0x277D82BD8](currentDevice);
+  v33 = userInterfaceIdiom;
   v8 = 1;
-  if (v7 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v8 = v33 == 5;
   }
 
   if (location[0])
   {
-    v5 = [(ACUIAddAccountViewController *)v32 navigationController];
-    v2 = [v5 popToViewController:location[0] animated:v8];
-    MEMORY[0x277D82BD8](v5);
+    navigationController2 = [(ACUIAddAccountViewController *)selfCopy navigationController];
+    v2 = [navigationController2 popToViewController:location[0] animated:v8];
+    MEMORY[0x277D82BD8](navigationController2);
   }
 
   else
   {
-    v4 = [(ACUIAddAccountViewController *)v32 navigationController];
-    v3 = [v4 popToRootViewControllerAnimated:v8];
-    MEMORY[0x277D82BD8](v4);
+    navigationController3 = [(ACUIAddAccountViewController *)selfCopy navigationController];
+    v3 = [navigationController3 popToRootViewControllerAnimated:v8];
+    MEMORY[0x277D82BD8](navigationController3);
   }
 
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&viewControllers, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_viewControllerIsNotAddOrAddOther:(id)a3
+- (BOOL)_viewControllerIsNotAddOrAddOther:(id)other
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, other);
   objc_opt_class();
   v4 = 0;
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1698,14 +1698,14 @@ LABEL_18:
   return v4;
 }
 
-- (void)_alertIfAccountTypePreventsMultiples:(id)a3 withCompletion:(id)a4
+- (void)_alertIfAccountTypePreventsMultiples:(id)multiples withCompletion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, multiples);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, completion);
   v16 = MEMORY[0x277D85DD0];
   v17 = -1073741824;
   v18 = 0;
@@ -1713,8 +1713,8 @@ LABEL_18:
   v20 = &unk_278BFA870;
   v21 = MEMORY[0x277D82BE0](v23);
   v22 = MEMORY[0x23EEFC830](&v16);
-  objc_initWeak(&v15, v25);
-  accountStore = v25->_accountStore;
+  objc_initWeak(&v15, selfCopy);
+  accountStore = selfCopy->_accountStore;
   v5 = location[0];
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
@@ -1722,7 +1722,7 @@ LABEL_18:
   v10 = __84__ACUIAddAccountViewController__alertIfAccountTypePreventsMultiples_withCompletion___block_invoke_3;
   v11 = &unk_278BFA8C0;
   objc_copyWeak(&v14, &v15);
-  v12 = MEMORY[0x277D82BE0](v25);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   v13 = MEMORY[0x277D82BE0](v22);
   [(ACAccountStore *)accountStore accountTypeWithIdentifier:v5 completion:&v7];
   objc_storeStrong(&v13, 0);
@@ -1874,25 +1874,25 @@ void __84__ACUIAddAccountViewController__alertIfAccountTypePreventsMultiples_wit
     return 0;
   }
 
-  v6 = [MEMORY[0x277CD47B0] sharedInstance];
-  v7 = [v6 isFeatureSupported];
-  MEMORY[0x277D82BD8](v6);
-  if ((v7 & 1) == 0)
+  mEMORY[0x277CD47B0] = [MEMORY[0x277CD47B0] sharedInstance];
+  isFeatureSupported = [mEMORY[0x277CD47B0] isFeatureSupported];
+  MEMORY[0x277D82BD8](mEMORY[0x277CD47B0]);
+  if ((isFeatureSupported & 1) == 0)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x277CD47B0] sharedInstance];
-  v5 = [v4 isFeatureAvailable];
-  MEMORY[0x277D82BD8](v4);
-  if ((v5 & 1) == 0)
+  mEMORY[0x277CD47B0]2 = [MEMORY[0x277CD47B0] sharedInstance];
+  isFeatureAvailable = [mEMORY[0x277CD47B0]2 isFeatureAvailable];
+  MEMORY[0x277D82BD8](mEMORY[0x277CD47B0]2);
+  if ((isFeatureAvailable & 1) == 0)
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x277CD47B0] sharedInstance];
-  v8 = [v3 isFeatureEnabled] & 1;
-  MEMORY[0x277D82BD8](v3);
+  mEMORY[0x277CD47B0]3 = [MEMORY[0x277CD47B0] sharedInstance];
+  v8 = [mEMORY[0x277CD47B0]3 isFeatureEnabled] & 1;
+  MEMORY[0x277D82BD8](mEMORY[0x277CD47B0]3);
   return v8;
 }
 

@@ -1,16 +1,16 @@
 @interface CRLInstantAlphaBinaryBitmap
-- (CRLInstantAlphaBinaryBitmap)initWithWidth:(int64_t)a3 height:(int64_t)a4;
-- (CRLInstantAlphaBinaryBitmap)initWithWidth:(int64_t)a3 height:(int64_t)a4 rowBytes:(int64_t)a5;
+- (CRLInstantAlphaBinaryBitmap)initWithWidth:(int64_t)width height:(int64_t)height;
+- (CRLInstantAlphaBinaryBitmap)initWithWidth:(int64_t)width height:(int64_t)height rowBytes:(int64_t)bytes;
 - (id)medianBitmap;
 - (void)dealloc;
-- (void)unionWithBitmap:(id)a3;
+- (void)unionWithBitmap:(id)bitmap;
 @end
 
 @implementation CRLInstantAlphaBinaryBitmap
 
-- (CRLInstantAlphaBinaryBitmap)initWithWidth:(int64_t)a3 height:(int64_t)a4 rowBytes:(int64_t)a5
+- (CRLInstantAlphaBinaryBitmap)initWithWidth:(int64_t)width height:(int64_t)height rowBytes:(int64_t)bytes
 {
-  if (a3 < 1 || a4 < 1 || (a3 >> 3) > a5)
+  if (width < 1 || height < 1 || (width >> 3) > bytes)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -45,10 +45,10 @@
   v13 = v12;
   if (v12)
   {
-    v12->mWidth = a3;
-    v12->mHeight = a4;
-    v12->mRowBytes = a5;
-    v14 = malloc_type_calloc(a4, a5, 0x100004077774924uLL);
+    v12->mWidth = width;
+    v12->mHeight = height;
+    v12->mRowBytes = bytes;
+    v14 = malloc_type_calloc(height, bytes, 0x100004077774924uLL);
     v13->mData = v14;
     if (!v14)
     {
@@ -60,11 +60,11 @@
   return v13;
 }
 
-- (CRLInstantAlphaBinaryBitmap)initWithWidth:(int64_t)a3 height:(int64_t)a4
+- (CRLInstantAlphaBinaryBitmap)initWithWidth:(int64_t)width height:(int64_t)height
 {
-  v7 = sub_1000CDCD4(vcvtpd_u64_f64(vcvtd_n_f64_s64(a3, 3uLL)));
+  v7 = sub_1000CDCD4(vcvtpd_u64_f64(vcvtd_n_f64_s64(width, 3uLL)));
 
-  return [(CRLInstantAlphaBinaryBitmap *)self initWithWidth:a3 height:a4 rowBytes:v7];
+  return [(CRLInstantAlphaBinaryBitmap *)self initWithWidth:width height:height rowBytes:v7];
 }
 
 - (void)dealloc
@@ -80,16 +80,16 @@
   [(CRLInstantAlphaBinaryBitmap *)&v4 dealloc];
 }
 
-- (void)unionWithBitmap:(id)a3
+- (void)unionWithBitmap:(id)bitmap
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->mWidth == v4[1] && (mHeight = self->mHeight, mHeight == v4[2]))
+  bitmapCopy = bitmap;
+  v5 = bitmapCopy;
+  if (self->mWidth == bitmapCopy[1] && (mHeight = self->mHeight, mHeight == bitmapCopy[2]))
   {
     if (mHeight >= 1)
     {
       v7 = 0;
-      v8 = v4[4];
+      v8 = bitmapCopy[4];
       mRowBytes = self->mRowBytes;
       mData = self->mData;
       do
@@ -107,7 +107,7 @@
 
         ++v7;
         mData += mRowBytes;
-        v8 += v4[3];
+        v8 += bitmapCopy[3];
       }
 
       while (mHeight > v7);
@@ -165,8 +165,8 @@
         v37 = v5 + 1;
         do
         {
-          v8 = self;
-          v9 = v8;
+          selfCopy = self;
+          v9 = selfCopy;
           if (self->mWidth <= v7 || self->mHeight <= v5)
           {
             v38 = 0;

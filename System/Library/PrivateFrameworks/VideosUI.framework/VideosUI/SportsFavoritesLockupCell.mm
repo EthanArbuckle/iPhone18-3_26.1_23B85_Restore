@@ -1,17 +1,17 @@
 @interface SportsFavoritesLockupCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation SportsFavoritesLockupCell
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1E4103290(width);
   v7 = v6;
 
@@ -24,26 +24,26 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E41034F0();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E4103EB0();
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1E4103F80(a3);
+  selfCopy = self;
+  sub_1E4103F80(highlighted);
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v5 = self;
-  sub_1E4104288(a3);
+  selfCopy = self;
+  sub_1E4104288(selected);
 }
 
 @end

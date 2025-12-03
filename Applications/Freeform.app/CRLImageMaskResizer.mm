@@ -1,17 +1,17 @@
 @interface CRLImageMaskResizer
-- (CRLImageMaskResizer)initWithInteractiveCanvasController:(id)a3;
-- (void)beginResizingRep:(id)a3;
-- (void)endResizingRepAtScale:(double)a3;
+- (CRLImageMaskResizer)initWithInteractiveCanvasController:(id)controller;
+- (void)beginResizingRep:(id)rep;
+- (void)endResizingRepAtScale:(double)scale;
 - (void)operationDidEnd;
-- (void)updateResizeToScale:(double)a3;
+- (void)updateResizeToScale:(double)scale;
 @end
 
 @implementation CRLImageMaskResizer
 
-- (CRLImageMaskResizer)initWithInteractiveCanvasController:(id)a3
+- (CRLImageMaskResizer)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -47,17 +47,17 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_interactiveCanvasController, v4);
+    objc_storeWeak(&v10->_interactiveCanvasController, controllerCopy);
   }
 
   return v11;
 }
 
-- (void)beginResizingRep:(id)a3
+- (void)beginResizingRep:(id)rep
 {
-  v19 = a3;
+  repCopy = rep;
   v4 = objc_opt_class();
-  v5 = sub_100013F00(v4, v19);
+  v5 = sub_100013F00(v4, repCopy);
   v6 = v5;
   if (self->_maskResizeTracker)
   {
@@ -77,46 +77,46 @@
     self->_maskResizeTracker = v8;
 
     WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v11 = [WeakRetained tmCoordinator];
-    [v11 registerTrackerManipulator:self];
+    tmCoordinator = [WeakRetained tmCoordinator];
+    [tmCoordinator registerTrackerManipulator:self];
 
     v12 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v13 = [v12 tmCoordinator];
-    [v13 takeControlWithTrackerManipulator:self];
+    tmCoordinator2 = [v12 tmCoordinator];
+    [tmCoordinator2 takeControlWithTrackerManipulator:self];
 
     v14 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v15 = [v14 dynamicOperationController];
-    [v15 beginOperation];
+    dynamicOperationController = [v14 dynamicOperationController];
+    [dynamicOperationController beginOperation];
 
     v16 = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v17 = [v16 dynamicOperationController];
-    v18 = [NSSet setWithObject:v19];
-    [v17 startTransformingReps:v18];
+    dynamicOperationController2 = [v16 dynamicOperationController];
+    v18 = [NSSet setWithObject:repCopy];
+    [dynamicOperationController2 startTransformingReps:v18];
   }
 }
 
-- (void)updateResizeToScale:(double)a3
+- (void)updateResizeToScale:(double)scale
 {
   maskResizeTracker = self->_maskResizeTracker;
   if (maskResizeTracker)
   {
-    [(CRLMaskResizeTracker *)maskResizeTracker setSliderValue:a3];
+    [(CRLMaskResizeTracker *)maskResizeTracker setSliderValue:scale];
     WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v5 = [WeakRetained dynamicOperationController];
-    [v5 handleTrackerManipulator:self];
+    dynamicOperationController = [WeakRetained dynamicOperationController];
+    [dynamicOperationController handleTrackerManipulator:self];
   }
 }
 
-- (void)endResizingRepAtScale:(double)a3
+- (void)endResizingRepAtScale:(double)scale
 {
   maskResizeTracker = self->_maskResizeTracker;
   if (maskResizeTracker)
   {
     self->_readyToEnd = 1;
-    [(CRLMaskResizeTracker *)maskResizeTracker setSliderValue:a3];
+    [(CRLMaskResizeTracker *)maskResizeTracker setSliderValue:scale];
     WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-    v5 = [WeakRetained dynamicOperationController];
-    [v5 handleTrackerManipulator:self];
+    dynamicOperationController = [WeakRetained dynamicOperationController];
+    [dynamicOperationController handleTrackerManipulator:self];
   }
 }
 

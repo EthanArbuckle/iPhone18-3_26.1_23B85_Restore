@@ -1,6 +1,6 @@
 @interface TSCH3DBarUnitCubeResource
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)defaultDataBuffer;
 + (id)sharedInstance;
 @end
@@ -9,7 +9,7 @@
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSCH3DBarUnitCubeResource;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_2761CD574;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A46A00 != -1)
   {
     dispatch_once(&qword_280A46A00, block);
@@ -31,7 +31,7 @@
   return v2;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCH3DBarUnitCubeResource allocWithZone:]");

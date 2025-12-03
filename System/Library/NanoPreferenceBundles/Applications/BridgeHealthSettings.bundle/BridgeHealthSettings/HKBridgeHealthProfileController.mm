@@ -1,7 +1,7 @@
 @interface HKBridgeHealthProfileController
-+ (id)orderedRowIdentifiersBySectionIdentifierWithCardioFitnessMedicationsSectionHidden:(BOOL)a3 deviceSupportsWheelchair:(BOOL)a4;
-+ (id)orderedSectionIdentifiersWithCardioFitnessMedicationsSectionHidden:(BOOL)a3 deviceSupportsWheelchair:(BOOL)a4;
-- (HKBridgeHealthProfileController)initWithHealthStore:(id)a3 activeTinkerDevice:(id)a4;
++ (id)orderedRowIdentifiersBySectionIdentifierWithCardioFitnessMedicationsSectionHidden:(BOOL)hidden deviceSupportsWheelchair:(BOOL)wheelchair;
++ (id)orderedSectionIdentifiersWithCardioFitnessMedicationsSectionHidden:(BOOL)hidden deviceSupportsWheelchair:(BOOL)wheelchair;
+- (HKBridgeHealthProfileController)initWithHealthStore:(id)store activeTinkerDevice:(id)device;
 - (NSLengthFormatter)lengthFormatter;
 - (NSMassFormatter)massFormatter;
 - (id)_birthdayDescription;
@@ -9,20 +9,20 @@
 - (id)_circleImageView;
 - (id)_createBetaBlockerCheckMarkCell;
 - (id)_createCalciumChannelBlockerCheckMarkCell;
-- (id)_dateFromGregorianComponents:(id)a3;
-- (id)_displayStringForBiologicalSex:(int64_t)a3;
-- (id)_displayStringForWeight:(int64_t)a3;
-- (id)_displayStringForWheelchairUse:(int64_t)a3;
+- (id)_dateFromGregorianComponents:(id)components;
+- (id)_displayStringForBiologicalSex:(int64_t)sex;
+- (id)_displayStringForWeight:(int64_t)weight;
+- (id)_displayStringForWheelchairUse:(int64_t)use;
 - (id)_minDate;
-- (id)_pickerDisplayStringForHeightForRow:(int64_t)a3 forComponent:(int64_t)a4;
-- (id)_textDisplayStringForHeight:(id)a3;
-- (id)getCellForIndexPath:(id)a3;
+- (id)_pickerDisplayStringForHeightForRow:(int64_t)row forComponent:(int64_t)component;
+- (id)_textDisplayStringForHeight:(id)height;
+- (id)getCellForIndexPath:(id)path;
 - (id)localizedPaneTitle;
-- (id)pickerView:(id)a3 attributedTitleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)_profileRowIdentifierForSection:(int64_t)a3 forRow:(int64_t)a4;
-- (int64_t)numberOfComponentsInPickerView:(id)a3;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)_birthdateChanged:(id)a3;
+- (id)pickerView:(id)view attributedTitleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)_profileRowIdentifierForSection:(int64_t)section forRow:(int64_t)row;
+- (int64_t)numberOfComponentsInPickerView:(id)view;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)_birthdateChanged:(id)changed;
 - (void)_cancel;
 - (void)_createCells;
 - (void)_createPickers;
@@ -30,56 +30,56 @@
 - (void)_loadDisplayNameForTinker;
 - (void)_mainQueue_startActivityIndicator;
 - (void)_mainQueue_stopActivityIndicator;
-- (void)_makeCardioFitnessMedicationsAppear:(BOOL)a3;
+- (void)_makeCardioFitnessMedicationsAppear:(BOOL)appear;
 - (void)_requestWheelchairDiagnosticsSubmissionIfNecessary;
 - (void)_resetSelectedCell;
-- (void)_setBiologicalSex:(int64_t)a3;
+- (void)_setBiologicalSex:(int64_t)sex;
 - (void)_setDefaultValuesOnBirthdayPickerIfRequired;
 - (void)_setDefaultValuesOnHeightPickerIfRequired;
 - (void)_setDefaultValuesOnWeightPickerIfRequired;
-- (void)_setHeight:(id)a3;
+- (void)_setHeight:(id)height;
 - (void)_setHeightAndWeightProperties;
 - (void)_setNavigationButtonsOnEditCompletion;
 - (void)_setNavigationButtonsToEnableEditing;
-- (void)_setWeight:(id)a3;
-- (void)_setWheelchairUse:(int64_t)a3;
+- (void)_setWeight:(id)weight;
+- (void)_setWheelchairUse:(int64_t)use;
 - (void)_setupCloudSyncObserverForTinkerProfile;
 - (void)_toggleEdit;
-- (void)_updateDisplayWithHeightValue:(id)a3;
-- (void)_updateDisplayWithWeightValue:(id)a3;
+- (void)_updateDisplayWithHeightValue:(id)value;
+- (void)_updateDisplayWithWeightValue:(id)value;
 - (void)_updateHeight;
-- (void)_updatePickersForHeight:(id)a3;
+- (void)_updatePickersForHeight:(id)height;
 - (void)_updateUserCharacteristics;
 - (void)_updateWeight;
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4;
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status;
 - (void)dealloc;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 - (void)setCardioFitnessMedicationCheckmarks;
 - (void)setupDataSource;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateCheckMarksForCell:(id)a3 option:(unint64_t)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateCheckMarksForCell:(id)cell option:(unint64_t)option;
 - (void)viewDidLoad;
 @end
 
 @implementation HKBridgeHealthProfileController
 
-- (HKBridgeHealthProfileController)initWithHealthStore:(id)a3 activeTinkerDevice:(id)a4
+- (HKBridgeHealthProfileController)initWithHealthStore:(id)store activeTinkerDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  deviceCopy = device;
   v23.receiver = self;
   v23.super_class = HKBridgeHealthProfileController;
   v9 = [(HKBridgeHealthProfileController *)&v23 initWithStyle:1];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_healthStore, a3);
-    objc_storeStrong(&v10->_activeTinkerDevice, a4);
-    if (v8)
+    objc_storeStrong(&v9->_healthStore, store);
+    objc_storeStrong(&v10->_activeTinkerDevice, device);
+    if (deviceCopy)
     {
       v11 = [[NSUUID alloc] initWithUUIDString:@"E5E86144-6C47-4545-8F52-A5D468C1DA85"];
-      v10->_deviceSupportsWheelchair = [v8 supportsCapability:v11];
+      v10->_deviceSupportsWheelchair = [deviceCopy supportsCapability:v11];
 
       cardioFitnessMedicationsSectionHidden = 1;
       v10->_cardioFitnessMedicationsSectionHidden = 1;
@@ -88,9 +88,9 @@
     else
     {
       v13 = +[NRPairedDeviceRegistry sharedInstance];
-      v14 = [v13 getActivePairedDevice];
+      getActivePairedDevice = [v13 getActivePairedDevice];
       v15 = [[NSUUID alloc] initWithUUIDString:@"E5E86144-6C47-4545-8F52-A5D468C1DA85"];
-      v10->_deviceSupportsWheelchair = [v14 supportsCapability:v15];
+      v10->_deviceSupportsWheelchair = [getActivePairedDevice supportsCapability:v15];
 
       v10->_cardioFitnessMedicationsSectionHidden = 0;
       cardioFitnessMedicationsSectionHidden = v10->_cardioFitnessMedicationsSectionHidden;
@@ -104,7 +104,7 @@
     orderedRowIdentifiersBySectionIdentifier = v10->_orderedRowIdentifiersBySectionIdentifier;
     v10->_orderedRowIdentifiersBySectionIdentifier = v18;
 
-    v20 = [[HKBirthdateChangeManager alloc] initWithHealthStore:v7];
+    v20 = [[HKBirthdateChangeManager alloc] initWithHealthStore:storeCopy];
     birthdateChangeManager = v10->_birthdateChangeManager;
     v10->_birthdateChangeManager = v20;
   }
@@ -115,8 +115,8 @@
 - (void)_setupCloudSyncObserverForTinkerProfile
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v3 = [(HKBridgeHealthProfileController *)self navigationItem];
-  [v3 setRightBarButtonItem:0];
+  navigationItem = [(HKBridgeHealthProfileController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:0];
 
   v4 = [[HKCloudSyncObserver alloc] initWithHealthStore:self->_healthStore delegate:self];
   cloudSyncObserver = self->_cloudSyncObserver;
@@ -139,15 +139,15 @@
 
     [(UIActivityIndicatorView *)self->_tinkerSyncActivityIndicator setHidesWhenStopped:1];
     v6 = self->_tinkerSyncActivityIndicator;
-    v7 = [(HKBridgeHealthProfileController *)self tableView];
-    [v7 setBackgroundView:v6];
+    tableView = [(HKBridgeHealthProfileController *)self tableView];
+    [tableView setBackgroundView:v6];
 
     tinkerSyncActivityIndicator = self->_tinkerSyncActivityIndicator;
   }
 
   [(UIActivityIndicatorView *)tinkerSyncActivityIndicator startAnimating];
-  v8 = [(HKBridgeHealthProfileController *)self navigationItem];
-  [v8 setRightBarButtonItem:0];
+  navigationItem = [(HKBridgeHealthProfileController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:0];
 }
 
 - (void)_mainQueue_stopActivityIndicator
@@ -157,33 +157,33 @@
   [(HKBridgeHealthProfileController *)self _updateUserCharacteristics];
   [(UIActivityIndicatorView *)self->_tinkerSyncActivityIndicator stopAnimating];
   editButton = self->_editButton;
-  v4 = [(HKBridgeHealthProfileController *)self navigationItem];
-  [v4 setRightBarButtonItem:editButton];
+  navigationItem = [(HKBridgeHealthProfileController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:editButton];
 }
 
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1F18;
   v6[3] = &unk_184C0;
-  v7 = a4;
-  v8 = self;
-  v5 = v7;
+  statusCopy = status;
+  selfCopy = self;
+  v5 = statusCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-+ (id)orderedSectionIdentifiersWithCardioFitnessMedicationsSectionHidden:(BOOL)a3 deviceSupportsWheelchair:(BOOL)a4
++ (id)orderedSectionIdentifiersWithCardioFitnessMedicationsSectionHidden:(BOOL)hidden deviceSupportsWheelchair:(BOOL)wheelchair
 {
-  v4 = a4;
+  wheelchairCopy = wheelchair;
   v6 = objc_alloc_init(NSMutableArray);
   [v6 addObject:&off_19410];
-  if (v4)
+  if (wheelchairCopy)
   {
     [v6 addObject:&off_19428];
   }
 
-  if (!a3)
+  if (!hidden)
   {
     [v6 addObject:&off_19440];
   }
@@ -193,17 +193,17 @@
   return v7;
 }
 
-+ (id)orderedRowIdentifiersBySectionIdentifierWithCardioFitnessMedicationsSectionHidden:(BOOL)a3 deviceSupportsWheelchair:(BOOL)a4
++ (id)orderedRowIdentifiersBySectionIdentifierWithCardioFitnessMedicationsSectionHidden:(BOOL)hidden deviceSupportsWheelchair:(BOOL)wheelchair
 {
-  v4 = a4;
+  wheelchairCopy = wheelchair;
   v6 = objc_alloc_init(NSMutableDictionary);
   [v6 setObject:&off_19540 forKey:&off_19410];
-  if (v4)
+  if (wheelchairCopy)
   {
     [v6 setObject:&off_19558 forKey:&off_19428];
   }
 
-  if (!a3)
+  if (!hidden)
   {
     [v6 setObject:&off_19570 forKey:&off_19440];
   }
@@ -230,21 +230,21 @@
   v4 = [v3 localizedStringForKey:@"HEALTH_DETAILS" value:&stru_188B0 table:@"Localizable"];
   [(HKBridgeHealthProfileController *)self setTitle:v4];
 
-  v5 = [(HKBridgeHealthProfileController *)self tableView];
-  [v5 setRowHeight:UITableViewAutomaticDimension];
+  tableView = [(HKBridgeHealthProfileController *)self tableView];
+  [tableView setRowHeight:UITableViewAutomaticDimension];
 
   v6 = [UIFont hk_preferredFontForTextStyle:UIFontTextStyleBody];
   [v6 lineHeight];
   v8 = v7 * 3.0;
-  v9 = [(HKBridgeHealthProfileController *)self tableView];
-  [v9 setEstimatedRowHeight:v8];
+  tableView2 = [(HKBridgeHealthProfileController *)self tableView];
+  [tableView2 setEstimatedRowHeight:v8];
 
-  v10 = [(HKBridgeHealthProfileController *)self tableView];
-  [v10 setAllowsSelectionDuringEditing:1];
+  tableView3 = [(HKBridgeHealthProfileController *)self tableView];
+  [tableView3 setAllowsSelectionDuringEditing:1];
 
   [(HKBridgeHealthProfileController *)self setEditing:0];
-  v11 = [(HKBridgeHealthProfileController *)self tableView];
-  [v11 setAllowsSelection:0];
+  tableView4 = [(HKBridgeHealthProfileController *)self tableView];
+  [tableView4 setAllowsSelection:0];
 
   v12 = [UIBarButtonItem alloc];
   v13 = [NSBundle bundleForClass:objc_opt_class()];
@@ -254,8 +254,8 @@
   self->_editButton = v15;
 
   v17 = self->_editButton;
-  v18 = [(HKBridgeHealthProfileController *)self navigationItem];
-  [v18 setRightBarButtonItem:v17];
+  navigationItem = [(HKBridgeHealthProfileController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v17];
 
   [(HKBridgeHealthProfileController *)self _createPickers];
   [(HKBridgeHealthProfileController *)self _createCells];
@@ -270,21 +270,21 @@
 
   objc_initWeak(&location, self);
   v19 = [BridgeHealthProfileDiffableDataSource alloc];
-  v20 = [(HKBridgeHealthProfileController *)self tableView];
+  tableView5 = [(HKBridgeHealthProfileController *)self tableView];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_24DC;
   v24[3] = &unk_184E8;
   objc_copyWeak(&v25, &location);
   v24[4] = self;
-  v21 = [(BridgeHealthProfileDiffableDataSource *)v19 initWithTableView:v20 cellProvider:v24];
+  v21 = [(BridgeHealthProfileDiffableDataSource *)v19 initWithTableView:tableView5 cellProvider:v24];
   [(HKBridgeHealthProfileController *)self setDataSource:v21];
 
   if ([(HKBridgeHealthProfileController *)self _isTinkerDevice])
   {
-    v22 = [(HKBridgeHealthProfileController *)self dataSource];
+    dataSource = [(HKBridgeHealthProfileController *)self dataSource];
     v23 = objc_opt_new();
-    [v22 applySnapshot:v23 animatingDifferences:0];
+    [dataSource applySnapshot:v23 animatingDifferences:0];
   }
 
   else
@@ -298,52 +298,52 @@
 
 - (void)setupDataSource
 {
-  v3 = [(HKBridgeHealthProfileController *)self dataSource];
-  [v3 setDefaultRowAnimation:0];
+  dataSource = [(HKBridgeHealthProfileController *)self dataSource];
+  [dataSource setDefaultRowAnimation:0];
 
   v4 = objc_alloc_init(NSDiffableDataSourceSnapshot);
   [(HKBridgeHealthProfileController *)self setCurrentSnapshot:v4];
 
-  v5 = [(HKBridgeHealthProfileController *)self currentSnapshot];
-  [v5 appendSectionsWithIdentifiers:self->_orderedSectionIdentifiers];
+  currentSnapshot = [(HKBridgeHealthProfileController *)self currentSnapshot];
+  [currentSnapshot appendSectionsWithIdentifiers:self->_orderedSectionIdentifiers];
 
-  v6 = [(HKBridgeHealthProfileController *)self currentSnapshot];
+  currentSnapshot2 = [(HKBridgeHealthProfileController *)self currentSnapshot];
   v7 = [(NSDictionary *)self->_orderedRowIdentifiersBySectionIdentifier objectForKey:&off_19410];
-  [v6 appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:&off_19410];
+  [currentSnapshot2 appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:&off_19410];
 
   if (self->_deviceSupportsWheelchair)
   {
-    v8 = [(HKBridgeHealthProfileController *)self currentSnapshot];
+    currentSnapshot3 = [(HKBridgeHealthProfileController *)self currentSnapshot];
     v9 = [(NSDictionary *)self->_orderedRowIdentifiersBySectionIdentifier objectForKey:&off_19428];
-    [v8 appendItemsWithIdentifiers:v9 intoSectionWithIdentifier:&off_19428];
+    [currentSnapshot3 appendItemsWithIdentifiers:v9 intoSectionWithIdentifier:&off_19428];
   }
 
   if (!self->_cardioFitnessMedicationsSectionHidden)
   {
-    v10 = [(HKBridgeHealthProfileController *)self currentSnapshot];
-    [v10 appendItemsWithIdentifiers:&off_19588 intoSectionWithIdentifier:&off_19440];
+    currentSnapshot4 = [(HKBridgeHealthProfileController *)self currentSnapshot];
+    [currentSnapshot4 appendItemsWithIdentifiers:&off_19588 intoSectionWithIdentifier:&off_19440];
   }
 
-  v11 = [(HKBridgeHealthProfileController *)self dataSource];
-  v12 = [(HKBridgeHealthProfileController *)self currentSnapshot];
-  [v11 applySnapshot:v12 animatingDifferences:0];
+  dataSource2 = [(HKBridgeHealthProfileController *)self dataSource];
+  currentSnapshot5 = [(HKBridgeHealthProfileController *)self currentSnapshot];
+  [dataSource2 applySnapshot:currentSnapshot5 animatingDifferences:0];
 
   v13 = +[NSNotificationCenter defaultCenter];
   [v13 addObserver:self selector:"applicationWillEnterForeground:" name:UIApplicationWillEnterForegroundNotification object:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = HKBridgeHealthProfileController;
-  [(HKBridgeHealthProfileController *)&v10 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKBridgeHealthProfileController *)&v10 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKBridgeHealthProfileController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKBridgeHealthProfileController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -357,24 +357,24 @@
   }
 }
 
-- (int64_t)_profileRowIdentifierForSection:(int64_t)a3 forRow:(int64_t)a4
+- (int64_t)_profileRowIdentifierForSection:(int64_t)section forRow:(int64_t)row
 {
   orderedRowIdentifiersBySectionIdentifier = self->_orderedRowIdentifiersBySectionIdentifier;
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:section];
   v7 = [(NSDictionary *)orderedRowIdentifiersBySectionIdentifier objectForKey:v6];
-  v8 = [v7 objectAtIndex:a4];
+  v8 = [v7 objectAtIndex:row];
 
-  v9 = [v8 integerValue];
-  return v9;
+  integerValue = [v8 integerValue];
+  return integerValue;
 }
 
-- (id)getCellForIndexPath:(id)a3
+- (id)getCellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 row];
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = [pathCopy row];
 
-  v7 = [(HKBridgeHealthProfileController *)self _profileRowIdentifierForSection:v5 forRow:v6];
+  v7 = [(HKBridgeHealthProfileController *)self _profileRowIdentifierForSection:section forRow:v6];
   if (v7 > 7 || (v8 = *(&self->super.super.super.super.isa + *off_18690[v7])) == 0)
   {
     v8 = HKErrorTableViewCell();
@@ -399,19 +399,19 @@
   [(_BHSHealthProfileDatePicker *)v7 setMaximumDate:v8];
 
   v9 = self->_birthdatePicker;
-  v10 = [(HKBridgeHealthProfileController *)self _minDate];
-  [(_BHSHealthProfileDatePicker *)v9 setMinimumDate:v10];
+  _minDate = [(HKBridgeHealthProfileController *)self _minDate];
+  [(_BHSHealthProfileDatePicker *)v9 setMinimumDate:_minDate];
 
   v11 = self->_birthdatePicker;
-  v12 = [objc_opt_class() _textColor];
-  [(_BHSHealthProfileDatePicker *)v11 _setTextColor:v12];
+  _textColor = [objc_opt_class() _textColor];
+  [(_BHSHealthProfileDatePicker *)v11 _setTextColor:_textColor];
 
   [(_BHSHealthProfileDatePicker *)self->_birthdatePicker _setHighlightsToday:0];
   [(_BHSHealthProfileDatePicker *)self->_birthdatePicker addTarget:self action:"_birthdateChanged:" forControlEvents:4096];
   [(_BHSHealthProfileDatePicker *)self->_birthdatePicker _setUsesBlackChrome:1];
   v13 = self->_birthdatePicker;
-  v14 = [objc_opt_class() _backgroundColor];
-  [(_BHSHealthProfileDatePicker *)v13 setBackgroundColor:v14];
+  _backgroundColor = [objc_opt_class() _backgroundColor];
+  [(_BHSHealthProfileDatePicker *)v13 setBackgroundColor:_backgroundColor];
 
   v15 = objc_alloc_init(_BHSHealthProfilePickerView);
   biologicalSexPicker = self->_biologicalSexPicker;
@@ -419,8 +419,8 @@
 
   [(_BHSHealthProfilePickerView *)self->_biologicalSexPicker setDataSource:self];
   [(_BHSHealthProfilePickerView *)self->_biologicalSexPicker setDelegate:self];
-  v17 = [objc_opt_class() _backgroundColor];
-  [(_BHSHealthProfilePickerView *)self->_biologicalSexPicker setBackgroundColor:v17];
+  _backgroundColor2 = [objc_opt_class() _backgroundColor];
+  [(_BHSHealthProfilePickerView *)self->_biologicalSexPicker setBackgroundColor:_backgroundColor2];
 
   v18 = objc_alloc_init(_BHSHealthProfilePickerView);
   heightPicker = self->_heightPicker;
@@ -428,8 +428,8 @@
 
   [(_BHSHealthProfilePickerView *)self->_heightPicker setDataSource:self];
   [(_BHSHealthProfilePickerView *)self->_heightPicker setDelegate:self];
-  v20 = [objc_opt_class() _backgroundColor];
-  [(_BHSHealthProfilePickerView *)self->_heightPicker setBackgroundColor:v20];
+  _backgroundColor3 = [objc_opt_class() _backgroundColor];
+  [(_BHSHealthProfilePickerView *)self->_heightPicker setBackgroundColor:_backgroundColor3];
 
   v21 = objc_alloc_init(_BHSHealthProfilePickerView);
   weightPicker = self->_weightPicker;
@@ -437,8 +437,8 @@
 
   [(_BHSHealthProfilePickerView *)self->_weightPicker setDataSource:self];
   [(_BHSHealthProfilePickerView *)self->_weightPicker setDelegate:self];
-  v23 = [objc_opt_class() _backgroundColor];
-  [(_BHSHealthProfilePickerView *)self->_weightPicker setBackgroundColor:v23];
+  _backgroundColor4 = [objc_opt_class() _backgroundColor];
+  [(_BHSHealthProfilePickerView *)self->_weightPicker setBackgroundColor:_backgroundColor4];
 
   v24 = objc_alloc_init(_BHSHealthProfilePickerView);
   wheelchairUsePicker = self->_wheelchairUsePicker;
@@ -446,8 +446,8 @@
 
   [(_BHSHealthProfilePickerView *)self->_wheelchairUsePicker setDataSource:self];
   [(_BHSHealthProfilePickerView *)self->_wheelchairUsePicker setDelegate:self];
-  v26 = [objc_opt_class() _backgroundColor];
-  [(_BHSHealthProfilePickerView *)self->_wheelchairUsePicker setBackgroundColor:v26];
+  _backgroundColor5 = [objc_opt_class() _backgroundColor];
+  [(_BHSHealthProfilePickerView *)self->_wheelchairUsePicker setBackgroundColor:_backgroundColor5];
 }
 
 - (void)_createCells
@@ -458,8 +458,8 @@
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"BIRTHDATE" value:&stru_188B0 table:@"Localizable"];
-  v7 = [(HKBridgeHealthProfileTableViewCell *)self->_birthdateCell textLabel];
-  [v7 setText:v6];
+  textLabel = [(HKBridgeHealthProfileTableViewCell *)self->_birthdateCell textLabel];
+  [textLabel setText:v6];
 
   [(HKBridgeHealthProfileTableViewCell *)self->_birthdateCell setInputView:self->_birthdatePicker];
   v8 = [[HKBridgeHealthProfileTableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
@@ -468,8 +468,8 @@
 
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"BIOLOGICAL_SEX" value:&stru_188B0 table:@"Localizable"];
-  v12 = [(HKBridgeHealthProfileTableViewCell *)self->_biologicalSexCell textLabel];
-  [v12 setText:v11];
+  textLabel2 = [(HKBridgeHealthProfileTableViewCell *)self->_biologicalSexCell textLabel];
+  [textLabel2 setText:v11];
 
   [(HKBridgeHealthProfileTableViewCell *)self->_biologicalSexCell setInputView:self->_biologicalSexPicker];
   v13 = [[HKBridgeHealthProfileTableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
@@ -478,8 +478,8 @@
 
   v15 = [NSBundle bundleForClass:objc_opt_class()];
   v16 = [v15 localizedStringForKey:@"HEIGHT" value:&stru_188B0 table:@"Localizable"];
-  v17 = [(HKBridgeHealthProfileTableViewCell *)self->_heightCell textLabel];
-  [v17 setText:v16];
+  textLabel3 = [(HKBridgeHealthProfileTableViewCell *)self->_heightCell textLabel];
+  [textLabel3 setText:v16];
 
   [(HKBridgeHealthProfileTableViewCell *)self->_heightCell setInputView:self->_heightPicker];
   v18 = [[HKBridgeHealthProfileTableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
@@ -488,8 +488,8 @@
 
   v20 = [NSBundle bundleForClass:objc_opt_class()];
   v21 = [v20 localizedStringForKey:@"WEIGHT" value:&stru_188B0 table:@"Localizable"];
-  v22 = [(HKBridgeHealthProfileTableViewCell *)self->_weightCell textLabel];
-  [v22 setText:v21];
+  textLabel4 = [(HKBridgeHealthProfileTableViewCell *)self->_weightCell textLabel];
+  [textLabel4 setText:v21];
 
   [(HKBridgeHealthProfileTableViewCell *)self->_weightCell setInputView:self->_weightPicker];
   v23 = [[HKBridgeHealthProfileTableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
@@ -498,8 +498,8 @@
 
   v25 = [NSBundle bundleForClass:objc_opt_class()];
   v26 = [v25 localizedStringForKey:@"WHEELCHAIR_USE" value:&stru_188B0 table:@"Localizable"];
-  v27 = [(HKBridgeHealthProfileTableViewCell *)self->_wheelchairUseCell textLabel];
-  [v27 setText:v26];
+  textLabel5 = [(HKBridgeHealthProfileTableViewCell *)self->_wheelchairUseCell textLabel];
+  [textLabel5 setText:v26];
 
   [(HKBridgeHealthProfileTableViewCell *)self->_wheelchairUseCell setInputView:self->_wheelchairUsePicker];
   v28 = [[HKBridgeHealthProfileTableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
@@ -509,19 +509,19 @@
   [(HKBridgeHealthProfileTableViewCell *)self->_cardioFitnessMedicationsCell setSelectionStyle:0];
   v30 = [NSBundle bundleForClass:objc_opt_class()];
   v31 = [v30 localizedStringForKey:@"CARDIO_FITNESS_RELATED_MEDICATIONS" value:&stru_188B0 table:@"Localizable"];
-  v32 = [(HKBridgeHealthProfileTableViewCell *)self->_cardioFitnessMedicationsCell textLabel];
-  [v32 setText:v31];
+  textLabel6 = [(HKBridgeHealthProfileTableViewCell *)self->_cardioFitnessMedicationsCell textLabel];
+  [textLabel6 setText:v31];
 
   v33 = [(HKBridgeHealthProfileController *)self displayNumberOfActiveCardioFitnessMedications:self->_activeCardioFitnessMedications];
   [(HKBridgeHealthProfileTableViewCell *)self->_cardioFitnessMedicationsCell _setBadgeText:v33];
 
-  v34 = [(HKBridgeHealthProfileController *)self _createCalciumChannelBlockerCheckMarkCell];
+  _createCalciumChannelBlockerCheckMarkCell = [(HKBridgeHealthProfileController *)self _createCalciumChannelBlockerCheckMarkCell];
   calciumChannelBlockerUseCell = self->_calciumChannelBlockerUseCell;
-  self->_calciumChannelBlockerUseCell = v34;
+  self->_calciumChannelBlockerUseCell = _createCalciumChannelBlockerCheckMarkCell;
 
-  v36 = [(HKBridgeHealthProfileController *)self _createBetaBlockerCheckMarkCell];
+  _createBetaBlockerCheckMarkCell = [(HKBridgeHealthProfileController *)self _createBetaBlockerCheckMarkCell];
   betaBlockerUseCell = self->_betaBlockerUseCell;
-  self->_betaBlockerUseCell = v36;
+  self->_betaBlockerUseCell = _createBetaBlockerCheckMarkCell;
 
   _objc_release_x1();
 }
@@ -531,17 +531,17 @@
   v3 = [[HKBridgeHealthProfileTableViewCell alloc] initWithStyle:3 reuseIdentifier:0];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"CALCIUM_CHANNEL_BLOCKER_USE" value:&stru_188B0 table:@"Localizable"];
-  v6 = [(HKBridgeHealthProfileTableViewCell *)v3 textLabel];
-  [v6 setText:v5];
+  textLabel = [(HKBridgeHealthProfileTableViewCell *)v3 textLabel];
+  [textLabel setText:v5];
 
   [(HKBridgeHealthProfileTableViewCell *)v3 setSelectionStyle:0];
-  v7 = [(HKBridgeHealthProfileController *)self _circleImageView];
-  [(HKBridgeHealthProfileTableViewCell *)v3 setEditingAccessoryView:v7];
+  _circleImageView = [(HKBridgeHealthProfileController *)self _circleImageView];
+  [(HKBridgeHealthProfileTableViewCell *)v3 setEditingAccessoryView:_circleImageView];
 
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"CALCIUM_CHANNEL_BLOCKER_EXAMPLES" value:&stru_188B0 table:@"Localizable"];
-  v10 = [(HKBridgeHealthProfileTableViewCell *)v3 detailTextLabel];
-  [v10 setText:v9];
+  detailTextLabel = [(HKBridgeHealthProfileTableViewCell *)v3 detailTextLabel];
+  [detailTextLabel setText:v9];
 
   return v3;
 }
@@ -551,17 +551,17 @@
   v3 = [[HKBridgeHealthProfileTableViewCell alloc] initWithStyle:3 reuseIdentifier:0];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BETA_BLOCKER_USE" value:&stru_188B0 table:@"Localizable"];
-  v6 = [(HKBridgeHealthProfileTableViewCell *)v3 textLabel];
-  [v6 setText:v5];
+  textLabel = [(HKBridgeHealthProfileTableViewCell *)v3 textLabel];
+  [textLabel setText:v5];
 
   [(HKBridgeHealthProfileTableViewCell *)v3 setSelectionStyle:0];
-  v7 = [(HKBridgeHealthProfileController *)self _circleImageView];
-  [(HKBridgeHealthProfileTableViewCell *)v3 setEditingAccessoryView:v7];
+  _circleImageView = [(HKBridgeHealthProfileController *)self _circleImageView];
+  [(HKBridgeHealthProfileTableViewCell *)v3 setEditingAccessoryView:_circleImageView];
 
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"BETA_BLOCKER_EXAMPLES" value:&stru_188B0 table:@"Localizable"];
-  v10 = [(HKBridgeHealthProfileTableViewCell *)v3 detailTextLabel];
-  [v10 setText:v9];
+  detailTextLabel = [(HKBridgeHealthProfileTableViewCell *)v3 detailTextLabel];
+  [detailTextLabel setText:v9];
 
   return v3;
 }
@@ -597,23 +597,23 @@
   if ([v4 takingCalciumChannelBlockers])
   {
     self->_currentCardioFitnessMedicationsUse |= 1uLL;
-    v8 = [(HKBridgeHealthProfileController *)self _checkmarkedCircleImageView];
-    [(HKBridgeHealthProfileTableViewCell *)self->_calciumChannelBlockerUseCell setEditingAccessoryView:v8];
+    _checkmarkedCircleImageView = [(HKBridgeHealthProfileController *)self _checkmarkedCircleImageView];
+    [(HKBridgeHealthProfileTableViewCell *)self->_calciumChannelBlockerUseCell setEditingAccessoryView:_checkmarkedCircleImageView];
 
     ++self->_activeCardioFitnessMedications;
   }
 
   else
   {
-    v9 = [(HKBridgeHealthProfileController *)self _circleImageView];
-    [(HKBridgeHealthProfileTableViewCell *)self->_calciumChannelBlockerUseCell setEditingAccessoryView:v9];
+    _circleImageView = [(HKBridgeHealthProfileController *)self _circleImageView];
+    [(HKBridgeHealthProfileTableViewCell *)self->_calciumChannelBlockerUseCell setEditingAccessoryView:_circleImageView];
   }
 
   if ([v4 takingBetaBlockers])
   {
     self->_currentCardioFitnessMedicationsUse |= 2uLL;
-    v10 = [(HKBridgeHealthProfileController *)self _checkmarkedCircleImageView];
-    [(HKBridgeHealthProfileTableViewCell *)self->_betaBlockerUseCell setEditingAccessoryView:v10];
+    _checkmarkedCircleImageView2 = [(HKBridgeHealthProfileController *)self _checkmarkedCircleImageView];
+    [(HKBridgeHealthProfileTableViewCell *)self->_betaBlockerUseCell setEditingAccessoryView:_checkmarkedCircleImageView2];
 
     activeCardioFitnessMedications = (self->_activeCardioFitnessMedications + 1);
     self->_activeCardioFitnessMedications = activeCardioFitnessMedications;
@@ -621,8 +621,8 @@
 
   else
   {
-    v12 = [(HKBridgeHealthProfileController *)self _circleImageView];
-    [(HKBridgeHealthProfileTableViewCell *)self->_betaBlockerUseCell setEditingAccessoryView:v12];
+    _circleImageView2 = [(HKBridgeHealthProfileController *)self _circleImageView];
+    [(HKBridgeHealthProfileTableViewCell *)self->_betaBlockerUseCell setEditingAccessoryView:_circleImageView2];
 
     activeCardioFitnessMedications = self->_activeCardioFitnessMedications;
   }
@@ -631,36 +631,36 @@
   [(HKBridgeHealthProfileTableViewCell *)self->_cardioFitnessMedicationsCell _setBadgeText:v13];
 }
 
-- (void)_makeCardioFitnessMedicationsAppear:(BOOL)a3
+- (void)_makeCardioFitnessMedicationsAppear:(BOOL)appear
 {
   if (!self->_cardioFitnessMedicationsSectionHidden)
   {
-    v4 = a3;
-    v6 = [(HKBridgeHealthProfileController *)self currentSnapshot];
-    v7 = v6;
-    if (v4)
+    appearCopy = appear;
+    currentSnapshot = [(HKBridgeHealthProfileController *)self currentSnapshot];
+    v7 = currentSnapshot;
+    if (appearCopy)
     {
-      [v6 appendItemsWithIdentifiers:&off_195A0 intoSectionWithIdentifier:&off_19440];
+      [currentSnapshot appendItemsWithIdentifiers:&off_195A0 intoSectionWithIdentifier:&off_19440];
     }
 
     else
     {
-      [v6 deleteItemsWithIdentifiers:&off_195A0];
+      [currentSnapshot deleteItemsWithIdentifiers:&off_195A0];
     }
 
-    v9 = [(HKBridgeHealthProfileController *)self dataSource];
-    v8 = [(HKBridgeHealthProfileController *)self currentSnapshot];
-    [v9 applySnapshot:v8 animatingDifferences:1];
+    dataSource = [(HKBridgeHealthProfileController *)self dataSource];
+    currentSnapshot2 = [(HKBridgeHealthProfileController *)self currentSnapshot];
+    [dataSource applySnapshot:currentSnapshot2 animatingDifferences:1];
   }
 }
 
 - (void)_setHeightAndWeightProperties
 {
-  v3 = [(HKBridgeHealthProfileController *)self lengthFormatter];
-  v4 = [v3 numberFormatter];
-  v5 = [v4 locale];
+  lengthFormatter = [(HKBridgeHealthProfileController *)self lengthFormatter];
+  numberFormatter = [lengthFormatter numberFormatter];
+  locale = [numberFormatter locale];
 
-  v6 = [v5 objectForKey:NSLocaleUsesMetricSystem];
+  v6 = [locale objectForKey:NSLocaleUsesMetricSystem];
   self->_isMetricLocale = [v6 BOOLValue];
   v7 = +[HKUnit poundUnit];
   v8 = [HKQuantity quantityWithUnit:v7 doubleValue:1000.0];
@@ -673,8 +673,8 @@
   self->_minWeightQuantity = v11;
 
   v19 = 0;
-  v13 = [(HKBridgeHealthProfileController *)self massFormatter];
-  v14 = [v13 unitStringFromKilograms:&v19 usedUnit:2.0];
+  massFormatter = [(HKBridgeHealthProfileController *)self massFormatter];
+  v14 = [massFormatter unitStringFromKilograms:&v19 usedUnit:2.0];
 
   v15 = [HKUnit unitFromMassFormatterUnit:v19];
   localeWeightUnit = self->_localeWeightUnit;
@@ -710,29 +710,29 @@
 
 - (void)_cancel
 {
-  v3 = [(HKBridgeHealthProfileController *)self view];
-  [v3 endEditing:1];
+  view = [(HKBridgeHealthProfileController *)self view];
+  [view endEditing:1];
 
   [(HKBridgeHealthProfileController *)self _updateUserCharacteristics];
   [(HKBridgeHealthProfileController *)self setCardioFitnessMedicationCheckmarks];
   [(HKBridgeHealthProfileController *)self _makeCardioFitnessMedicationsAppear:0];
   [(HKBridgeHealthProfileController *)self setEditing:0];
-  v4 = [(HKBridgeHealthProfileController *)self tableView];
-  [v4 setAllowsSelection:0];
+  tableView = [(HKBridgeHealthProfileController *)self tableView];
+  [tableView setAllowsSelection:0];
 
   [(HKBridgeHealthProfileController *)self _setNavigationButtonsToEnableEditing];
 }
 
 - (void)_toggleEdit
 {
-  v3 = [(HKBridgeHealthProfileController *)self tableView];
-  v4 = [(HKBridgeHealthProfileController *)self tableView];
-  [v3 setAllowsSelection:{objc_msgSend(v4, "allowsSelection") ^ 1}];
+  tableView = [(HKBridgeHealthProfileController *)self tableView];
+  tableView2 = [(HKBridgeHealthProfileController *)self tableView];
+  [tableView setAllowsSelection:{objc_msgSend(tableView2, "allowsSelection") ^ 1}];
 
-  v5 = [(HKBridgeHealthProfileController *)self tableView];
-  LODWORD(v4) = [v5 allowsSelection];
+  tableView3 = [(HKBridgeHealthProfileController *)self tableView];
+  LODWORD(tableView2) = [tableView3 allowsSelection];
 
-  if (v4)
+  if (tableView2)
   {
     [(HKBridgeHealthProfileController *)self setEditing:1];
     [(HKBridgeHealthProfileController *)self _makeCardioFitnessMedicationsAppear:1];
@@ -744,8 +744,8 @@
   else
   {
     [(HKBridgeHealthProfileController *)self setEditing:0];
-    v6 = [(HKBridgeHealthProfileController *)self view];
-    [v6 endEditing:1];
+    view = [(HKBridgeHealthProfileController *)self view];
+    [view endEditing:1];
 
     birthdateChangeManager = self->_birthdateChangeManager;
     dateOfBirth = self->_dateOfBirth;
@@ -787,17 +787,17 @@
     if ([v9 shouldShowWarning] && !-[HKBridgeHealthProfileController _isTinkerDevice](self, "_isTinkerDevice"))
     {
       v15 = +[HKHealthChecklistUtilities shared];
-      v16 = [v15 isHealthChecklistAvailable];
+      isHealthChecklistAvailable = [v15 isHealthChecklistAvailable];
 
-      v17 = [v9 newAge];
-      if (v16)
+      newAge = [v9 newAge];
+      if (isHealthChecklistAvailable)
       {
-        [HKBirthdateChangeManager showDisabledWarningWithHealthChecklistWithAge:v17 presentingViewController:self openHealthChecklistInContext:0];
+        [HKBirthdateChangeManager showDisabledWarningWithHealthChecklistWithAge:newAge presentingViewController:self openHealthChecklistInContext:0];
       }
 
       else
       {
-        [HKBirthdateChangeManager showDisabledWarningWithAge:v17 presentingViewController:self];
+        [HKBirthdateChangeManager showDisabledWarningWithAge:newAge presentingViewController:self];
       }
     }
   }
@@ -806,36 +806,36 @@
 - (void)_setNavigationButtonsOnEditCompletion
 {
   v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_toggleEdit"];
-  v4 = [(HKBridgeHealthProfileController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(HKBridgeHealthProfileController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancel"];
-  v5 = [(HKBridgeHealthProfileController *)self navigationItem];
-  [v5 setLeftBarButtonItem:v6];
+  navigationItem2 = [(HKBridgeHealthProfileController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v6];
 }
 
 - (void)_setNavigationButtonsToEnableEditing
 {
   editButton = self->_editButton;
-  v4 = [(HKBridgeHealthProfileController *)self navigationItem];
-  [v4 setRightBarButtonItem:editButton];
+  navigationItem = [(HKBridgeHealthProfileController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:editButton];
 
-  v5 = [(HKBridgeHealthProfileController *)self navigationItem];
-  [v5 setLeftBarButtonItem:0];
+  navigationItem2 = [(HKBridgeHealthProfileController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:0];
 }
 
 - (void)_updateUserCharacteristics
 {
   [(HKBridgeHealthProfileController *)self _updateWeight];
   [(HKBridgeHealthProfileController *)self _updateHeight];
-  v3 = [(HKBridgeHealthProfileController *)self healthStore];
+  healthStore = [(HKBridgeHealthProfileController *)self healthStore];
   v28 = 0;
-  v4 = [v3 biologicalSexWithError:&v28];
+  v4 = [healthStore biologicalSexWithError:&v28];
   v5 = v28;
 
   if (v4)
   {
-    v6 = [v4 biologicalSex];
+    biologicalSex = [v4 biologicalSex];
   }
 
   else
@@ -849,27 +849,27 @@
       }
     }
 
-    v6 = 0;
+    biologicalSex = 0;
   }
 
-  self->_biologicalSex = v6;
+  self->_biologicalSex = biologicalSex;
   v7 = [(HKBridgeHealthProfileController *)self _displayStringForBiologicalSex:?];
-  v8 = [(HKBridgeHealthProfileTableViewCell *)self->_biologicalSexCell detailTextLabel];
-  [v8 setText:v7];
+  detailTextLabel = [(HKBridgeHealthProfileTableViewCell *)self->_biologicalSexCell detailTextLabel];
+  [detailTextLabel setText:v7];
 
   [(_BHSHealthProfilePickerView *)self->_biologicalSexPicker selectRow:self->_biologicalSex inComponent:0 animated:0];
-  v9 = [(HKBridgeHealthProfileController *)self healthStore];
+  healthStore2 = [(HKBridgeHealthProfileController *)self healthStore];
   v27 = 0;
-  v10 = [v9 dateOfBirthComponentsWithError:&v27];
+  v10 = [healthStore2 dateOfBirthComponentsWithError:&v27];
   v11 = v27;
   dateOfBirth = self->_dateOfBirth;
   self->_dateOfBirth = v10;
 
   if (self->_dateOfBirth)
   {
-    v13 = [(HKBridgeHealthProfileController *)self _birthdayDescription];
-    v14 = [(HKBridgeHealthProfileTableViewCell *)self->_birthdateCell detailTextLabel];
-    [v14 setText:v13];
+    _birthdayDescription = [(HKBridgeHealthProfileController *)self _birthdayDescription];
+    detailTextLabel2 = [(HKBridgeHealthProfileTableViewCell *)self->_birthdateCell detailTextLabel];
+    [detailTextLabel2 setText:_birthdayDescription];
 
     birthdatePicker = self->_birthdatePicker;
     v16 = [(HKBridgeHealthProfileController *)self _dateFromGregorianComponents:self->_dateOfBirth];
@@ -889,18 +889,18 @@
 
     v16 = [NSBundle bundleForClass:objc_opt_class()];
     v17 = [v16 localizedStringForKey:@"BIRTHDATE_NOT_SET" value:&stru_188B0 table:@"Localizable"];
-    v18 = [(HKBridgeHealthProfileTableViewCell *)self->_birthdateCell detailTextLabel];
-    [v18 setText:v17];
+    detailTextLabel3 = [(HKBridgeHealthProfileTableViewCell *)self->_birthdateCell detailTextLabel];
+    [detailTextLabel3 setText:v17];
   }
 
-  v19 = [(HKBridgeHealthProfileController *)self healthStore];
+  healthStore3 = [(HKBridgeHealthProfileController *)self healthStore];
   v26 = 0;
-  v20 = [v19 wheelchairUseWithError:&v26];
+  v20 = [healthStore3 wheelchairUseWithError:&v26];
   v21 = v26;
 
   if (v20)
   {
-    v22 = [v20 wheelchairUse];
+    wheelchairUse = [v20 wheelchairUse];
   }
 
   else
@@ -914,18 +914,18 @@
       }
     }
 
-    v22 = 0;
+    wheelchairUse = 0;
   }
 
-  self->_wheelchairUse = v22;
+  self->_wheelchairUse = wheelchairUse;
   v23 = [(HKBridgeHealthProfileController *)self _displayStringForWheelchairUse:?];
-  v24 = [(HKBridgeHealthProfileTableViewCell *)self->_wheelchairUseCell detailTextLabel];
-  [v24 setText:v23];
+  detailTextLabel4 = [(HKBridgeHealthProfileTableViewCell *)self->_wheelchairUseCell detailTextLabel];
+  [detailTextLabel4 setText:v23];
 
   [(_BHSHealthProfilePickerView *)self->_wheelchairUsePicker selectRow:self->_wheelchairUse inComponent:0 animated:0];
   [(HKBridgeHealthProfileController *)self setCardioFitnessMedicationCheckmarks];
-  v25 = [(HKBridgeHealthProfileController *)self tableView];
-  [v25 reloadData];
+  tableView = [(HKBridgeHealthProfileController *)self tableView];
+  [tableView reloadData];
 }
 
 - (NSLengthFormatter)lengthFormatter
@@ -960,11 +960,11 @@
   return massFormatter;
 }
 
-- (void)_setBiologicalSex:(int64_t)a3
+- (void)_setBiologicalSex:(int64_t)sex
 {
-  v5 = [(HKBridgeHealthProfileController *)self healthStore];
+  healthStore = [(HKBridgeHealthProfileController *)self healthStore];
   v9 = 0;
-  v6 = [v5 _setBiologicalSex:a3 error:&v9];
+  v6 = [healthStore _setBiologicalSex:sex error:&v9];
   v7 = v9;
 
   if ((v6 & 1) == 0)
@@ -978,18 +978,18 @@
   }
 }
 
-- (id)_displayStringForBiologicalSex:(int64_t)a3
+- (id)_displayStringForBiologicalSex:(int64_t)sex
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = v4;
-  if ((a3 - 1) > 2)
+  if ((sex - 1) > 2)
   {
     v6 = @"BIOLOGICAL_SEX_NOT_SET";
   }
 
   else
   {
-    v6 = off_186D0[a3 - 1];
+    v6 = off_186D0[sex - 1];
   }
 
   v7 = [v4 localizedStringForKey:v6 value:&stru_188B0 table:@"Localizable"];
@@ -997,17 +997,17 @@
   return v7;
 }
 
-- (void)_birthdateChanged:(id)a3
+- (void)_birthdateChanged:(id)changed
 {
   v4 = +[NSCalendar hk_gregorianCalendar];
-  v5 = [(_BHSHealthProfileDatePicker *)self->_birthdatePicker date];
-  v6 = [v4 hk_dateOfBirthDateComponentsWithDate:v5];
+  date = [(_BHSHealthProfileDatePicker *)self->_birthdatePicker date];
+  v6 = [v4 hk_dateOfBirthDateComponentsWithDate:date];
   dateOfBirth = self->_dateOfBirth;
   self->_dateOfBirth = v6;
 
-  v9 = [(HKBridgeHealthProfileController *)self _birthdayDescription];
-  v8 = [(HKBridgeHealthProfileTableViewCell *)self->_birthdateCell detailTextLabel];
-  [v8 setText:v9];
+  _birthdayDescription = [(HKBridgeHealthProfileController *)self _birthdayDescription];
+  detailTextLabel = [(HKBridgeHealthProfileTableViewCell *)self->_birthdateCell detailTextLabel];
+  [detailTextLabel setText:_birthdayDescription];
 }
 
 - (id)_birthdayDescription
@@ -1024,20 +1024,20 @@
   return v5;
 }
 
-- (id)_dateFromGregorianComponents:(id)a3
+- (id)_dateFromGregorianComponents:(id)components
 {
-  v3 = a3;
+  componentsCopy = components;
   v4 = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-  v5 = [v4 dateFromComponents:v3];
+  v5 = [v4 dateFromComponents:componentsCopy];
 
   return v5;
 }
 
 - (void)_updateHeight
 {
-  v3 = [(HKBridgeHealthProfileController *)self healthStore];
+  healthStore = [(HKBridgeHealthProfileController *)self healthStore];
   v9 = 0;
-  v4 = [v3 _heightCharacteristicQuantityWithError:&v9];
+  v4 = [healthStore _heightCharacteristicQuantityWithError:&v9];
   v5 = v9;
 
   if (v5)
@@ -1054,8 +1054,8 @@
 LABEL_6:
       v6 = [NSBundle bundleForClass:objc_opt_class()];
       v7 = [v6 localizedStringForKey:@"HEIGHT_NOT_SET" value:&stru_188B0 table:@"Localizable"];
-      v8 = [(HKBridgeHealthProfileTableViewCell *)self->_heightCell detailTextLabel];
-      [v8 setText:v7];
+      detailTextLabel = [(HKBridgeHealthProfileTableViewCell *)self->_heightCell detailTextLabel];
+      [detailTextLabel setText:v7];
 
       goto LABEL_7;
     }
@@ -1072,24 +1072,24 @@ LABEL_4:
 LABEL_7:
 }
 
-- (void)_updateDisplayWithHeightValue:(id)a3
+- (void)_updateDisplayWithHeightValue:(id)value
 {
-  v6 = a3;
-  v4 = [(HKBridgeHealthProfileController *)self _textDisplayStringForHeight:v6];
-  v5 = [(HKBridgeHealthProfileTableViewCell *)self->_heightCell detailTextLabel];
-  [v5 setText:v4];
+  valueCopy = value;
+  v4 = [(HKBridgeHealthProfileController *)self _textDisplayStringForHeight:valueCopy];
+  detailTextLabel = [(HKBridgeHealthProfileTableViewCell *)self->_heightCell detailTextLabel];
+  [detailTextLabel setText:v4];
 
-  [(HKBridgeHealthProfileController *)self _updatePickersForHeight:v6];
+  [(HKBridgeHealthProfileController *)self _updatePickersForHeight:valueCopy];
 }
 
-- (void)_updatePickersForHeight:(id)a3
+- (void)_updatePickersForHeight:(id)height
 {
   isMetricLocale = self->_isMetricLocale;
-  v5 = a3;
+  heightCopy = height;
   if (isMetricLocale)
   {
     v6 = [HKUnit meterUnitWithMetricPrefix:5];
-    [v5 doubleValueForUnit:v6];
+    [heightCopy doubleValueForUnit:v6];
     v8 = v7;
 
     v9 = llround(v8) - 30;
@@ -1115,7 +1115,7 @@ LABEL_7:
   else
   {
     v13 = +[HKUnit inchUnit];
-    [v5 doubleValueForUnit:v13];
+    [heightCopy doubleValueForUnit:v13];
     v15 = v14;
 
     v16 = llround(v15);
@@ -1155,84 +1155,84 @@ LABEL_7:
   [(_BHSHealthProfilePickerView *)heightPicker selectRow:v10 inComponent:v12 animated:0];
 }
 
-- (id)_pickerDisplayStringForHeightForRow:(int64_t)a3 forComponent:(int64_t)a4
+- (id)_pickerDisplayStringForHeightForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v7 = [(HKBridgeHealthProfileController *)self lengthFormatter];
-  [v7 setUnitStyle:2];
+  lengthFormatter = [(HKBridgeHealthProfileController *)self lengthFormatter];
+  [lengthFormatter setUnitStyle:2];
 
   if (self->_isMetricLocale)
   {
-    v8 = [(HKBridgeHealthProfileController *)self lengthFormatter];
-    v9 = v8;
-    v10 = (a3 + 30);
+    lengthFormatter2 = [(HKBridgeHealthProfileController *)self lengthFormatter];
+    v9 = lengthFormatter2;
+    rowCopy = (row + 30);
     v11 = 9;
   }
 
   else
   {
-    v8 = [(HKBridgeHealthProfileController *)self lengthFormatter];
-    v9 = v8;
-    if (a4)
+    lengthFormatter2 = [(HKBridgeHealthProfileController *)self lengthFormatter];
+    v9 = lengthFormatter2;
+    if (component)
     {
-      v10 = a3;
+      rowCopy = row;
       v11 = 1281;
     }
 
     else
     {
-      v10 = (a3 + 1);
+      rowCopy = (row + 1);
       v11 = 1282;
     }
   }
 
-  v12 = [v8 stringFromValue:v11 unit:v10];
+  v12 = [lengthFormatter2 stringFromValue:v11 unit:rowCopy];
 
   return v12;
 }
 
-- (id)_textDisplayStringForHeight:(id)a3
+- (id)_textDisplayStringForHeight:(id)height
 {
   if (self->_isMetricLocale)
   {
-    v4 = a3;
-    v5 = [(HKBridgeHealthProfileController *)self lengthFormatter];
+    heightCopy = height;
+    lengthFormatter = [(HKBridgeHealthProfileController *)self lengthFormatter];
     v6 = [HKUnit meterUnitWithMetricPrefix:5];
-    [v4 doubleValueForUnit:v6];
+    [heightCopy doubleValueForUnit:v6];
     v8 = v7;
 
-    v9 = [v5 stringFromValue:9 unit:v8];
+    v9 = [lengthFormatter stringFromValue:9 unit:v8];
   }
 
   else
   {
-    v10 = a3;
-    v5 = +[HKPersonHeightFormatter sharedFormatter];
+    heightCopy2 = height;
+    lengthFormatter = +[HKPersonHeightFormatter sharedFormatter];
     v6 = [HKUnit meterUnitWithMetricPrefix:5];
-    [v10 doubleValueForUnit:v6];
+    [heightCopy2 doubleValueForUnit:v6];
     v12 = v11;
 
     v13 = [NSNumber numberWithDouble:v12];
-    v9 = [v5 localizedStringFromHeightInCentimeters:v13];
+    v9 = [lengthFormatter localizedStringFromHeightInCentimeters:v13];
   }
 
   return v9;
 }
 
-- (void)_setHeight:(id)a3
+- (void)_setHeight:(id)height
 {
-  if (a3)
+  if (height)
   {
-    v4 = a3;
-    v5 = [(HKBridgeHealthProfileController *)self healthStore];
-    [v5 _setHeightCharacteristicQuantity:v4 error:0];
+    heightCopy = height;
+    healthStore = [(HKBridgeHealthProfileController *)self healthStore];
+    [healthStore _setHeightCharacteristicQuantity:heightCopy error:0];
   }
 }
 
 - (void)_updateWeight
 {
-  v3 = [(HKBridgeHealthProfileController *)self healthStore];
+  healthStore = [(HKBridgeHealthProfileController *)self healthStore];
   v9 = 0;
-  v4 = [v3 _bodyMassCharacteristicQuantityWithError:&v9];
+  v4 = [healthStore _bodyMassCharacteristicQuantityWithError:&v9];
   v5 = v9;
 
   if (v5)
@@ -1249,8 +1249,8 @@ LABEL_7:
 LABEL_6:
       v6 = [NSBundle bundleForClass:objc_opt_class()];
       v7 = [v6 localizedStringForKey:@"WEIGHT_NOT_SET" value:&stru_188B0 table:@"Localizable"];
-      v8 = [(HKBridgeHealthProfileTableViewCell *)self->_weightCell detailTextLabel];
-      [v8 setText:v7];
+      detailTextLabel = [(HKBridgeHealthProfileTableViewCell *)self->_weightCell detailTextLabel];
+      [detailTextLabel setText:v7];
 
       goto LABEL_7;
     }
@@ -1267,25 +1267,25 @@ LABEL_4:
 LABEL_7:
 }
 
-- (void)_setWeight:(id)a3
+- (void)_setWeight:(id)weight
 {
-  if (a3)
+  if (weight)
   {
-    v4 = a3;
-    v5 = [(HKBridgeHealthProfileController *)self healthStore];
-    [v5 _setBodyMassCharacteristicQuantity:v4 error:0];
+    weightCopy = weight;
+    healthStore = [(HKBridgeHealthProfileController *)self healthStore];
+    [healthStore _setBodyMassCharacteristicQuantity:weightCopy error:0];
   }
 }
 
-- (void)_updateDisplayWithWeightValue:(id)a3
+- (void)_updateDisplayWithWeightValue:(id)value
 {
-  [a3 doubleValueForUnit:self->_localeWeightUnit];
+  [value doubleValueForUnit:self->_localeWeightUnit];
   v5 = llround(v4);
   if (v5)
   {
     v6 = [(HKBridgeHealthProfileController *)self _displayStringForWeight:v5];
-    v7 = [(HKBridgeHealthProfileTableViewCell *)self->_weightCell detailTextLabel];
-    [v7 setText:v6];
+    detailTextLabel = [(HKBridgeHealthProfileTableViewCell *)self->_weightCell detailTextLabel];
+    [detailTextLabel setText:v6];
 
     minWeightInLocaleUnit = self->_minWeightInLocaleUnit;
     if ((v5 - minWeightInLocaleUnit) > minWeightInLocaleUnit)
@@ -1309,18 +1309,18 @@ LABEL_7:
   }
 }
 
-- (id)_displayStringForWeight:(int64_t)a3
+- (id)_displayStringForWeight:(int64_t)weight
 {
-  v5 = [(HKBridgeHealthProfileController *)self massFormatter];
-  v6 = [v5 stringFromValue:+[HKUnit massFormatterUnitFromUnit:](HKUnit unit:{"massFormatterUnitFromUnit:", self->_localeWeightUnit), a3}];
+  massFormatter = [(HKBridgeHealthProfileController *)self massFormatter];
+  v6 = [massFormatter stringFromValue:+[HKUnit massFormatterUnitFromUnit:](HKUnit unit:{"massFormatterUnitFromUnit:", self->_localeWeightUnit), weight}];
 
   return v6;
 }
 
 - (void)_resetSelectedCell
 {
-  v3 = [(HKBridgeHealthProfileController *)self view];
-  [v3 endEditing:1];
+  view = [(HKBridgeHealthProfileController *)self view];
+  [view endEditing:1];
 
   selectedCell = self->_selectedCell;
   self->_selectedCell = 0;
@@ -1341,16 +1341,16 @@ LABEL_7:
   return v6;
 }
 
-- (id)_displayStringForWheelchairUse:(int64_t)a3
+- (id)_displayStringForWheelchairUse:(int64_t)use
 {
-  if (a3 > 2)
+  if (use > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_186E8[a3];
+    v3 = off_186E8[use];
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:v3 value:&stru_188B0 table:@"Localizable"];
   }
@@ -1358,14 +1358,14 @@ LABEL_7:
   return v5;
 }
 
-- (void)_setWheelchairUse:(int64_t)a3
+- (void)_setWheelchairUse:(int64_t)use
 {
   if ([(HKBridgeHealthProfileController *)self wheelchairUseChanged])
   {
     [(HKBridgeHealthProfileController *)self _requestWheelchairDiagnosticsSubmissionIfNecessary];
-    v6 = [(HKBridgeHealthProfileController *)self healthStore];
+    healthStore = [(HKBridgeHealthProfileController *)self healthStore];
     v10 = 0;
-    v7 = [v6 _setWheelchairUse:a3 error:&v10];
+    v7 = [healthStore _setWheelchairUse:use error:&v10];
     v8 = v10;
 
     if ((v7 & 1) == 0)
@@ -1387,14 +1387,14 @@ LABEL_7:
   if ([(HKBridgeHealthProfileController *)self wheelchairUse]== &dword_0 + 2)
   {
     v3 = +[MCProfileConnection sharedConnection];
-    v4 = [v3 isDiagnosticSubmissionAllowed];
+    isDiagnosticSubmissionAllowed = [v3 isDiagnosticSubmissionAllowed];
 
-    if (v4)
+    if (isDiagnosticSubmissionAllowed)
     {
       v5 = +[MCProfileConnection sharedConnection];
-      v6 = [v5 hasWheelchairDataSubmissionAllowedBeenSet];
+      hasWheelchairDataSubmissionAllowedBeenSet = [v5 hasWheelchairDataSubmissionAllowedBeenSet];
 
-      if ((v6 & 1) == 0)
+      if ((hasWheelchairDataSubmissionAllowedBeenSet & 1) == 0)
       {
         v7 = [NSBundle bundleForClass:objc_opt_class()];
         v8 = [v7 localizedStringForKey:@"FEEDBACK_WHEELCHAIR_TITLE" value:&stru_188B0 table:@"Localizable"];
@@ -1428,9 +1428,9 @@ LABEL_7:
   }
 }
 
-- (int64_t)numberOfComponentsInPickerView:(id)a3
+- (int64_t)numberOfComponentsInPickerView:(id)view
 {
-  if (self->_heightPicker != a3)
+  if (self->_heightPicker != view)
   {
     return 1;
   }
@@ -1443,22 +1443,22 @@ LABEL_7:
   return 2;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v6 = a3;
-  if (self->_biologicalSexPicker == v6)
+  viewCopy = view;
+  if (self->_biologicalSexPicker == viewCopy)
   {
     v7 = 4;
   }
 
-  else if (self->_heightPicker == v6)
+  else if (self->_heightPicker == viewCopy)
   {
     if (self->_isMetricLocale)
     {
       v7 = 246;
     }
 
-    else if (a4)
+    else if (component)
     {
       v7 = 12;
     }
@@ -1469,12 +1469,12 @@ LABEL_7:
     }
   }
 
-  else if (self->_weightPicker == v6)
+  else if (self->_weightPicker == viewCopy)
   {
     v7 = self->_maxWeightInLocaleUnit - self->_minWeightInLocaleUnit + 1;
   }
 
-  else if (self->_wheelchairUsePicker == v6)
+  else if (self->_wheelchairUsePicker == viewCopy)
   {
     v7 = 3;
   }
@@ -1522,73 +1522,73 @@ LABEL_7:
   }
 }
 
-- (id)pickerView:(id)a3 attributedTitleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view attributedTitleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v8 = a3;
-  v9 = v8;
-  if (self->_biologicalSexPicker == v8)
+  viewCopy = view;
+  v9 = viewCopy;
+  if (self->_biologicalSexPicker == viewCopy)
   {
-    v11 = [(HKBridgeHealthProfileController *)self _displayStringForBiologicalSex:a4];
+    v11 = [(HKBridgeHealthProfileController *)self _displayStringForBiologicalSex:row];
   }
 
-  else if (self->_heightPicker == v8)
+  else if (self->_heightPicker == viewCopy)
   {
-    v11 = [(HKBridgeHealthProfileController *)self _pickerDisplayStringForHeightForRow:a4 forComponent:a5];
+    v11 = [(HKBridgeHealthProfileController *)self _pickerDisplayStringForHeightForRow:row forComponent:component];
   }
 
-  else if (self->_weightPicker == v8)
+  else if (self->_weightPicker == viewCopy)
   {
-    v11 = [(HKBridgeHealthProfileController *)self _displayStringForWeight:self->_minWeightInLocaleUnit + a4];
+    v11 = [(HKBridgeHealthProfileController *)self _displayStringForWeight:self->_minWeightInLocaleUnit + row];
   }
 
   else
   {
-    if (self->_wheelchairUsePicker != v8)
+    if (self->_wheelchairUsePicker != viewCopy)
     {
       v10 = &stru_188B0;
       goto LABEL_11;
     }
 
-    v11 = [(HKBridgeHealthProfileController *)self _displayStringForWheelchairUse:a4];
+    v11 = [(HKBridgeHealthProfileController *)self _displayStringForWheelchairUse:row];
   }
 
   v10 = v11;
 LABEL_11:
   v12 = [NSAttributedString alloc];
   v17 = NSForegroundColorAttributeName;
-  v13 = [objc_opt_class() _textColor];
-  v18 = v13;
+  _textColor = [objc_opt_class() _textColor];
+  v18 = _textColor;
   v14 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
   v15 = [v12 initWithString:v10 attributes:v14];
 
   return v15;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v7 = a3;
-  if (self->_biologicalSexPicker == v7)
+  viewCopy = view;
+  if (self->_biologicalSexPicker == viewCopy)
   {
-    self->_biologicalSex = a4;
-    v14 = v7;
-    v8 = [(HKBridgeHealthProfileController *)self _displayStringForBiologicalSex:a4];
+    self->_biologicalSex = row;
+    v14 = viewCopy;
+    v8 = [(HKBridgeHealthProfileController *)self _displayStringForBiologicalSex:row];
     v9 = 48;
     goto LABEL_10;
   }
 
-  if (self->_heightPicker == v7)
+  if (self->_heightPicker == viewCopy)
   {
-    v14 = v7;
+    v14 = viewCopy;
     [(HKBridgeHealthProfileController *)self _heightPickerUpdated];
 LABEL_11:
-    v7 = v14;
+    viewCopy = v14;
     goto LABEL_12;
   }
 
-  if (self->_weightPicker == v7)
+  if (self->_weightPicker == viewCopy)
   {
-    v10 = self->_minWeightInLocaleUnit + a4;
-    v14 = v7;
+    v10 = self->_minWeightInLocaleUnit + row;
+    v14 = viewCopy;
     v11 = [HKQuantity quantityWithUnit:self->_localeWeightUnit doubleValue:v10];
     weight = self->_weight;
     self->_weight = v11;
@@ -1598,16 +1598,16 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if (self->_wheelchairUsePicker == v7 && self->_wheelchairUse != a4)
+  if (self->_wheelchairUsePicker == viewCopy && self->_wheelchairUse != row)
   {
-    v14 = v7;
+    v14 = viewCopy;
     [(HKBridgeHealthProfileController *)self setWheelchairUseChanged:1];
-    [(HKBridgeHealthProfileController *)self setWheelchairUse:a4];
-    v8 = [(HKBridgeHealthProfileController *)self _displayStringForWheelchairUse:a4];
+    [(HKBridgeHealthProfileController *)self setWheelchairUse:row];
+    v8 = [(HKBridgeHealthProfileController *)self _displayStringForWheelchairUse:row];
     v9 = 96;
 LABEL_10:
-    v13 = [*(&self->super.super.super.super.isa + v9) detailTextLabel];
-    [v13 setText:v8];
+    detailTextLabel = [*(&self->super.super.super.super.isa + v9) detailTextLabel];
+    [detailTextLabel setText:v8];
 
     goto LABEL_11;
   }
@@ -1638,35 +1638,35 @@ LABEL_12:
   v9 = v7;
 
   v11 = [(HKBridgeHealthProfileController *)self _textDisplayStringForHeight:v9];
-  v10 = [(HKBridgeHealthProfileTableViewCell *)self->_heightCell detailTextLabel];
+  detailTextLabel = [(HKBridgeHealthProfileTableViewCell *)self->_heightCell detailTextLabel];
 
-  [v10 setText:v11];
+  [detailTextLabel setText:v11];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [a3 cellForRowAtIndexPath:a4];
+  v5 = [view cellForRowAtIndexPath:path];
   obj = v5;
   if (v5 == self->_betaBlockerUseCell)
   {
-    v10 = self;
+    selfCopy2 = self;
     v11 = obj;
     v12 = 2;
 LABEL_10:
-    v7 = [(HKBridgeHealthProfileController *)v10 updateCheckMarksForCell:v11 option:v12];
+    _resetSelectedCell = [(HKBridgeHealthProfileController *)selfCopy2 updateCheckMarksForCell:v11 option:v12];
     goto LABEL_14;
   }
 
   if (v5 == self->_calciumChannelBlockerUseCell)
   {
-    v10 = self;
+    selfCopy2 = self;
     v11 = obj;
     v12 = 1;
     goto LABEL_10;
   }
 
   selectedCell = self->_selectedCell;
-  v7 = [(HKBridgeHealthProfileController *)self _resetSelectedCell];
+  _resetSelectedCell = [(HKBridgeHealthProfileController *)self _resetSelectedCell];
   v8 = obj;
   if (obj == selectedCell)
   {
@@ -1690,33 +1690,33 @@ LABEL_10:
     [(HKBridgeHealthProfileController *)self _setDefaultValuesOnBirthdayPickerIfRequired];
   }
 
-  v7 = [(HKBridgeHealthProfileTableViewCell *)obj becomeFirstResponder];
+  _resetSelectedCell = [(HKBridgeHealthProfileTableViewCell *)obj becomeFirstResponder];
 LABEL_14:
   v8 = obj;
 LABEL_15:
 
-  _objc_release_x1(v7, v8);
+  _objc_release_x1(_resetSelectedCell, v8);
 }
 
-- (void)updateCheckMarksForCell:(id)a3 option:(unint64_t)a4
+- (void)updateCheckMarksForCell:(id)cell option:(unint64_t)option
 {
-  v6 = self->_currentCardioFitnessMedicationsUse & a4;
-  v7 = a3;
+  v6 = self->_currentCardioFitnessMedicationsUse & option;
+  cellCopy = cell;
   if (v6)
   {
-    v8 = [(HKBridgeHealthProfileController *)self _circleImageView];
-    [v7 setEditingAccessoryView:v8];
+    _circleImageView = [(HKBridgeHealthProfileController *)self _circleImageView];
+    [cellCopy setEditingAccessoryView:_circleImageView];
 
-    v9 = self->_currentCardioFitnessMedicationsUse & ~a4;
+    v9 = self->_currentCardioFitnessMedicationsUse & ~option;
     v10 = -1;
   }
 
   else
   {
-    v11 = [(HKBridgeHealthProfileController *)self _checkmarkedCircleImageView];
-    [v7 setEditingAccessoryView:v11];
+    _checkmarkedCircleImageView = [(HKBridgeHealthProfileController *)self _checkmarkedCircleImageView];
+    [cellCopy setEditingAccessoryView:_checkmarkedCircleImageView];
 
-    v9 = self->_currentCardioFitnessMedicationsUse | a4;
+    v9 = self->_currentCardioFitnessMedicationsUse | option;
     v10 = 1;
   }
 

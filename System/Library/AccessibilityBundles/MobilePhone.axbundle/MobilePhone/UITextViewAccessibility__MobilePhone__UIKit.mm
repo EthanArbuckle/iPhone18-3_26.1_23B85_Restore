@@ -1,14 +1,14 @@
 @interface UITextViewAccessibility__MobilePhone__UIKit
-- (BOOL)_accessibilityActivateTextViewLink:(id)a3;
+- (BOOL)_accessibilityActivateTextViewLink:(id)link;
 @end
 
 @implementation UITextViewAccessibility__MobilePhone__UIKit
 
-- (BOOL)_accessibilityActivateTextViewLink:(id)a3
+- (BOOL)_accessibilityActivateTextViewLink:(id)link
 {
-  v4 = a3;
-  v5 = [(UITextViewAccessibility__MobilePhone__UIKit *)self accessibilityContainer];
-  v6 = [v5 _accessibilityActivateTextViewLink:v4];
+  linkCopy = link;
+  accessibilityContainer = [(UITextViewAccessibility__MobilePhone__UIKit *)self accessibilityContainer];
+  v6 = [accessibilityContainer _accessibilityActivateTextViewLink:linkCopy];
 
   return v6;
 }

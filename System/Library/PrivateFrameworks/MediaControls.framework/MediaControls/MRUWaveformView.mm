@@ -1,13 +1,13 @@
 @interface MRUWaveformView
-- (MRUWaveformView)initWithFrame:(CGRect)a3 context:(unint64_t)a4;
-- (MRUWaveformView)initWithFrame:(CGRect)a3 context:(unint64_t)a4 settings:(id)a5;
-- (void)applyContext:(unint64_t)a3;
+- (MRUWaveformView)initWithFrame:(CGRect)frame context:(unint64_t)context;
+- (MRUWaveformView)initWithFrame:(CGRect)frame context:(unint64_t)context settings:(id)settings;
+- (void)applyContext:(unint64_t)context;
 - (void)layoutSubviews;
-- (void)setArtworkImage:(id)a3;
-- (void)setBarVisualStyle:(int64_t)a3;
-- (void)setFillColor:(id)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setWaveformData:(id)a3;
+- (void)setArtworkImage:(id)image;
+- (void)setBarVisualStyle:(int64_t)style;
+- (void)setFillColor:(id)color;
+- (void)setStylingProvider:(id)provider;
+- (void)setWaveformData:(id)data;
 - (void)updateArtworkFilters;
 - (void)updateBars;
 - (void)updateDimmed;
@@ -24,8 +24,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(MRUWaveformView *)self bars];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  bars = [(MRUWaveformView *)self bars];
+  v4 = [bars countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -37,51 +37,51 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(bars);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(MRUWaveformView *)self traitCollection];
-        [v8 setAlpha:{(objc_msgSend(v9, "mr_shouldDim") ^ 1)}];
+        traitCollection = [(MRUWaveformView *)self traitCollection];
+        [v8 setAlpha:{(objc_msgSend(traitCollection, "mr_shouldDim") ^ 1)}];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [bars countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (MRUWaveformView)initWithFrame:(CGRect)a3 context:(unint64_t)a4 settings:(id)a5
+- (MRUWaveformView)initWithFrame:(CGRect)frame context:(unint64_t)context settings:(id)settings
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v68[2] = *MEMORY[0x1E69E9840];
-  v12 = a5;
+  settingsCopy = settings;
   v65.receiver = self;
   v65.super_class = MRUWaveformView;
-  v13 = [(MRUWaveformView *)&v65 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(MRUWaveformView *)&v65 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    v13->_context = a4;
+    height->_context = context;
     v15 = [MEMORY[0x1E69DC888] colorWithWhite:0.392156863 alpha:1.0];
     fillColor = v14->_fillColor;
     v14->_fillColor = v15;
 
-    objc_storeStrong(&v14->_settings, a5);
+    objc_storeStrong(&v14->_settings, settings);
     v17 = +[MRUWaveformData zero];
     waveformData = v14->_waveformData;
     v14->_waveformData = v17;
 
     v14->_barVisualStyle = 2;
-    v19 = [(MRUWaveformView *)v14 layer];
-    [v19 setMasksToBounds:1];
+    layer = [(MRUWaveformView *)v14 layer];
+    [layer setMasksToBounds:1];
 
     v20 = objc_alloc(MEMORY[0x1E6979378]);
     v21 = [v20 initWithType:*MEMORY[0x1E6979890]];
@@ -152,9 +152,9 @@
     barsView = v14->_barsView;
     v14->_barsView = v43;
 
-    v64 = v12;
-    v45 = [v12 stops];
-    v46 = [v45 count] - 1;
+    v64 = settingsCopy;
+    stops = [settingsCopy stops];
+    v46 = [stops count] - 1;
 
     v47 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v46];
     if (v46 >= 1)
@@ -167,14 +167,14 @@
       do
       {
         v53 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v48, v49, v50, v51}];
-        v54 = [v53 layer];
-        [v54 setCornerCurve:v52];
+        layer2 = [v53 layer];
+        [layer2 setCornerCurve:v52];
 
-        v55 = [v53 layer];
-        [v55 setAllowsEdgeAntialiasing:1];
+        layer3 = [v53 layer];
+        [layer3 setAllowsEdgeAntialiasing:1];
 
-        v56 = [MEMORY[0x1E69DC888] whiteColor];
-        [v53 setBackgroundColor:v56];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [v53 setBackgroundColor:whiteColor];
 
         [v47 addObject:v53];
         [(UIView *)v14->_barsView addSubview:v53];
@@ -186,8 +186,8 @@
     }
 
     objc_storeStrong(&v14->_bars, v47);
-    v57 = [(UIView *)v14->_barsContainerView layer];
-    [v57 addSublayer:v14->_contentLayer];
+    layer4 = [(UIView *)v14->_barsContainerView layer];
+    [layer4 addSublayer:v14->_contentLayer];
 
     [(UIView *)v14->_barsContainerView addSubview:v14->_barsView];
     [(MRUWaveformView *)v14 addSubview:v14->_barsContainerView];
@@ -200,7 +200,7 @@
     v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v66 count:1];
     v61 = [(MRUWaveformView *)v14 registerForTraitChanges:v60 withAction:sel_updateDimmed];
 
-    v12 = v64;
+    settingsCopy = v64;
   }
 
   return v14;
@@ -227,52 +227,52 @@
   [(CALayer *)self->_fallbackLayer setFrame:?];
 }
 
-- (MRUWaveformView)initWithFrame:(CGRect)a3 context:(unint64_t)a4
+- (MRUWaveformView)initWithFrame:(CGRect)frame context:(unint64_t)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10 = +[MRUWaveformSettings currentSettings];
-  v11 = [(MRUWaveformView *)self initWithFrame:a4 context:v10 settings:x, y, width, height];
+  height = [(MRUWaveformView *)self initWithFrame:context context:v10 settings:x, y, width, height];
 
-  return v11;
+  return height;
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  objc_storeStrong(&self->_stylingProvider, a3);
+  objc_storeStrong(&self->_stylingProvider, provider);
 
   [(MRUWaveformView *)self updateVisualStyling];
 }
 
-- (void)setArtworkImage:(id)a3
+- (void)setArtworkImage:(id)image
 {
-  v5 = a3;
-  if (self->_artworkImage != v5)
+  imageCopy = image;
+  if (self->_artworkImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_artworkImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_artworkImage, image);
     [(MRUWaveformView *)self updateLayers];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_fillColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_fillColor, a3);
+    objc_storeStrong(&self->_fillColor, color);
     [(CALayer *)self->_fallbackLayer setBackgroundColor:[(UIColor *)self->_fillColor CGColor]];
   }
 }
 
-- (void)setBarVisualStyle:(int64_t)a3
+- (void)setBarVisualStyle:(int64_t)style
 {
-  if (self->_barVisualStyle != a3)
+  if (self->_barVisualStyle != style)
   {
-    self->_barVisualStyle = a3;
+    self->_barVisualStyle = style;
     [(MRUWaveformView *)self updateVisualStyling];
   }
 }
@@ -375,15 +375,15 @@ void __31__MRUWaveformView_updateLayers__block_invoke(uint64_t a1)
   [(CALayer *)artworkLayer setValue:v16 forKeyPath:@"filters.colorSaturate.inputAmount"];
 }
 
-- (void)applyContext:(unint64_t)a3
+- (void)applyContext:(unint64_t)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(context)
   {
     case 2uLL:
       v15 = *MEMORY[0x1E69798E0];
-      v16 = [(UIView *)self->_barsView layer];
-      [v16 setCompositingFilter:v15];
+      layer = [(UIView *)self->_barsView layer];
+      [layer setCompositingFilter:v15];
 
       [(MRUWaveformSettings *)self->_settings opacity];
       [(UIView *)self->_barsContainerView setAlpha:v17];
@@ -399,8 +399,8 @@ void __31__MRUWaveformView_updateLayers__block_invoke(uint64_t a1)
       [(CALayer *)contentLayer setOpacity:0.0];
       break;
     case 0uLL:
-      v4 = [MEMORY[0x1E69DC888] blackColor];
-      [(UIView *)self->_barsView setBackgroundColor:v4];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [(UIView *)self->_barsView setBackgroundColor:blackColor];
 
       v21 = 0u;
       v22 = 0u;
@@ -422,8 +422,8 @@ void __31__MRUWaveformView_updateLayers__block_invoke(uint64_t a1)
               objc_enumerationMutation(v5);
             }
 
-            v11 = [*(*(&v19 + 1) + 8 * i) layer];
-            [v11 setCompositingFilter:v9];
+            layer2 = [*(*(&v19 + 1) + 8 * i) layer];
+            [layer2 setCompositingFilter:v9];
           }
 
           v7 = [(NSArray *)v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -441,9 +441,9 @@ void __31__MRUWaveformView_updateLayers__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setWaveformData:(id)a3
+- (void)setWaveformData:(id)data
 {
-  objc_storeStrong(&self->_waveformData, a3);
+  objc_storeStrong(&self->_waveformData, data);
 
   [(MRUWaveformView *)self updateBars];
 }
@@ -461,11 +461,11 @@ void __31__MRUWaveformView_updateLayers__block_invoke(uint64_t a1)
     do
     {
       v9 = [(NSArray *)self->_bars objectAtIndexedSubscript:v6];
-      v10 = [v9 layer];
-      [v10 removeAllAnimations];
+      layer = [v9 layer];
+      [layer removeAllAnimations];
 
-      v11 = [(MRUWaveformData *)self->_waveformData amplitudes];
-      v12 = [v11 objectAtIndexedSubscript:v6];
+      amplitudes = [(MRUWaveformData *)self->_waveformData amplitudes];
+      v12 = [amplitudes objectAtIndexedSubscript:v6];
       [v12 floatValue];
       v14 = v13;
 
@@ -531,8 +531,8 @@ void __31__MRUWaveformView_updateLayers__block_invoke(uint64_t a1)
         v7 = *(*(&v12 + 1) + 8 * v6);
         stylingProvider = self->_stylingProvider;
         barVisualStyle = self->_barVisualStyle;
-        v10 = [(MRUWaveformView *)self traitCollection];
-        [(MRUVisualStylingProvider *)stylingProvider applyStyle:barVisualStyle toView:v7 traitCollection:v10];
+        traitCollection = [(MRUWaveformView *)self traitCollection];
+        [(MRUVisualStylingProvider *)stylingProvider applyStyle:barVisualStyle toView:v7 traitCollection:traitCollection];
 
         ++v6;
       }

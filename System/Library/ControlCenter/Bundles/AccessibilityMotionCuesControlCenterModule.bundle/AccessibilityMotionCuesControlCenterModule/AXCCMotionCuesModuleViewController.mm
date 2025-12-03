@@ -1,12 +1,12 @@
 @interface AXCCMotionCuesModuleViewController
 - (AXCCMotionCuesModuleViewControllerDelegate)motionCuesDelegate;
 - (CCUIToggleModule)module;
-- (id)localizedStringForKey:(id)a3;
-- (id)trailingImageForMenuItem:(id)a3;
+- (id)localizedStringForKey:(id)key;
+- (id)trailingImageForMenuItem:(id)item;
 - (void)_settingsDidChange;
 - (void)_updateGlyphImage;
 - (void)_updateMenuItems;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
 - (void)dealloc;
 - (void)viewDidLoad;
 @end
@@ -44,8 +44,8 @@
   v6 = [(AXCCMotionCuesModuleViewController *)self localizedStringForKey:@"MotionCuesTitle"];
   [(CCUIMenuModuleViewController *)self setTitle:v6];
 
-  v7 = [MEMORY[0x29EDC7A00] systemBlueColor];
-  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:v7];
+  systemBlueColor = [MEMORY[0x29EDC7A00] systemBlueColor];
+  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:systemBlueColor];
 
   [(CCUIButtonModuleViewController *)self setSelected:_AXSMotionCuesActive() != 0];
   objc_initWeak(&location, self);
@@ -65,7 +65,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
   v9 = *MEMORY[0x29EDCA608];
   if (AXDeviceIsPad())
@@ -98,11 +98,11 @@
   }
 }
 
-- (id)trailingImageForMenuItem:(id)a3
+- (id)trailingImageForMenuItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:@"AlwaysOn"];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  v5 = [identifier isEqualToString:@"AlwaysOn"];
 
   if (v5)
   {
@@ -112,8 +112,8 @@
 
   else
   {
-    v8 = [v3 identifier];
-    v9 = [v8 isEqualToString:@"OnInTheCar"];
+    identifier2 = [itemCopy identifier];
+    v9 = [identifier2 isEqualToString:@"OnInTheCar"];
 
     v6 = MEMORY[0x29EDC7AC8];
     if (v9)
@@ -132,12 +132,12 @@
   return v10;
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
   v3 = MEMORY[0x29EDB9F48];
-  v4 = a3;
+  keyCopy = key;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 localizedStringForKey:v4 value:&stru_2A23DF5F8 table:@"MotionCues"];
+  v6 = [v5 localizedStringForKey:keyCopy value:&stru_2A23DF5F8 table:@"MotionCues"];
 
   return v6;
 }

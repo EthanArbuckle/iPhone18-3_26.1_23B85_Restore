@@ -1,21 +1,21 @@
 @interface DMFFetchManagedBooksResultObject
-- (DMFFetchManagedBooksResultObject)initWithBooks:(id)a3;
-- (DMFFetchManagedBooksResultObject)initWithCoder:(id)a3;
+- (DMFFetchManagedBooksResultObject)initWithBooks:(id)books;
+- (DMFFetchManagedBooksResultObject)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFFetchManagedBooksResultObject
 
-- (DMFFetchManagedBooksResultObject)initWithBooks:(id)a3
+- (DMFFetchManagedBooksResultObject)initWithBooks:(id)books
 {
-  v4 = a3;
+  booksCopy = books;
   v9.receiver = self;
   v9.super_class = DMFFetchManagedBooksResultObject;
   v5 = [(CATTaskResultObject *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [booksCopy copy];
     books = v5->_books;
     v5->_books = v6;
   }
@@ -23,18 +23,18 @@
   return v5;
 }
 
-- (DMFFetchManagedBooksResultObject)initWithCoder:(id)a3
+- (DMFFetchManagedBooksResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = DMFFetchManagedBooksResultObject;
-  v5 = [(CATTaskResultObject *)&v12 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"books"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"books"];
     books = v5->_books;
     v5->_books = v9;
   }
@@ -42,21 +42,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DMFFetchManagedBooksResultObject;
-  v4 = a3;
-  [(CATTaskResultObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskResultObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(DMFFetchManagedBooksResultObject *)self books:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"books"];
+  [coderCopy encodeObject:v5 forKey:@"books"];
 }
 
 - (id)description
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(DMFFetchManagedBooksResultObject *)self books];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_11];
+  books = [(DMFFetchManagedBooksResultObject *)self books];
+  v3 = [books sortedArrayUsingComparator:&__block_literal_global_11];
 
   v4 = [MEMORY[0x1E696AD60] stringWithString:@"["];
   v13 = 0u;

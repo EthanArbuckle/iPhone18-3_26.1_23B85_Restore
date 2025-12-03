@@ -1,14 +1,14 @@
 @interface PKIssuerProvisioningExtensionConsumerContext
 - (PKIssuerProvisioningExtensionConsumerContext)init;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (void)connectWithCompletion:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (void)connectWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)generateRequestWithEntryIdentifier:(id)a3 configuration:(id)a4 certificateChain:(id)a5 nonce:(id)a6 nonceSignature:(id)a7 completionHandler:(id)a8;
-- (void)passEntriesWithCompletion:(id)a3;
-- (void)performWhenConnected:(id)a3;
-- (void)remotePassEntriesWithCompletion:(id)a3;
-- (void)statusWithCompletion:(id)a3;
+- (void)generateRequestWithEntryIdentifier:(id)identifier configuration:(id)configuration certificateChain:(id)chain nonce:(id)nonce nonceSignature:(id)signature completionHandler:(id)handler;
+- (void)passEntriesWithCompletion:(id)completion;
+- (void)performWhenConnected:(id)connected;
+- (void)remotePassEntriesWithCompletion:(id)completion;
+- (void)statusWithCompletion:(id)completion;
 @end
 
 @implementation PKIssuerProvisioningExtensionConsumerContext
@@ -68,43 +68,43 @@
   [(PKIssuerProvisioningExtensionConsumerContext *)&v10 dealloc];
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PKIssuerProvisioningExtensionConsumerContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(PKIssuerProvisioningExtensionConsumerContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PKIssuerProvisioningExtensionConsumerContext *)self _auxiliaryConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(PKIssuerProvisioningExtensionConsumerContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (void)connectWithCompletion:(id)a3
+- (void)connectWithCompletion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4);
+    (*(completionCopy + 2))(completionCopy);
   }
 
   os_unfair_lock_lock(&self->_lock);
   if (!self->_connected)
   {
     self->_connected = 1;
-    v6 = [(PKIssuerProvisioningExtensionConsumerContext *)self _auxiliaryConnection];
-    v7 = v6;
-    if (v6)
+    _auxiliaryConnection = [(PKIssuerProvisioningExtensionConsumerContext *)self _auxiliaryConnection];
+    v7 = _auxiliaryConnection;
+    if (_auxiliaryConnection)
     {
-      [v6 auditToken];
+      [_auxiliaryConnection auditToken];
       v8 = SecTaskCreateWithAuditToken(0, &token);
       if (v8)
       {
@@ -182,12 +182,12 @@
   }
 }
 
-- (void)performWhenConnected:(id)a3
+- (void)performWhenConnected:(id)connected
 {
-  v4 = a3;
-  if (v4)
+  connectedCopy = connected;
+  if (connectedCopy)
   {
-    aBlock = v4;
+    aBlock = connectedCopy;
     os_unfair_lock_lock(&self->_lock);
     if (self->_connected)
     {
@@ -215,18 +215,18 @@
   }
 }
 
-- (void)statusWithCompletion:(id)a3
+- (void)statusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v22[0] = 0;
     v22[1] = v22;
     v22[2] = 0x3032000000;
     v22[3] = __Block_byref_object_copy__47;
     v22[4] = __Block_byref_object_dispose__47;
-    v23 = _Block_copy(v4);
+    v23 = _Block_copy(completionCopy);
     v20[0] = 0;
     v20[1] = v20;
     v20[2] = 0x2020000000;
@@ -323,18 +323,18 @@ void __69__PKIssuerProvisioningExtensionConsumerContext_statusWithCompletion___b
   }
 }
 
-- (void)passEntriesWithCompletion:(id)a3
+- (void)passEntriesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v22[0] = 0;
     v22[1] = v22;
     v22[2] = 0x3032000000;
     v22[3] = __Block_byref_object_copy__47;
     v22[4] = __Block_byref_object_dispose__47;
-    v23 = _Block_copy(v4);
+    v23 = _Block_copy(completionCopy);
     v20[0] = 0;
     v20[1] = v20;
     v20[2] = 0x2020000000;
@@ -445,18 +445,18 @@ void __74__PKIssuerProvisioningExtensionConsumerContext_passEntriesWithCompletio
   }
 }
 
-- (void)remotePassEntriesWithCompletion:(id)a3
+- (void)remotePassEntriesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v22[0] = 0;
     v22[1] = v22;
     v22[2] = 0x3032000000;
     v22[3] = __Block_byref_object_copy__47;
     v22[4] = __Block_byref_object_dispose__47;
-    v23 = _Block_copy(v4);
+    v23 = _Block_copy(completionCopy);
     v20[0] = 0;
     v20[1] = v20;
     v20[2] = 0x2020000000;
@@ -567,28 +567,28 @@ void __80__PKIssuerProvisioningExtensionConsumerContext_remotePassEntriesWithCom
   }
 }
 
-- (void)generateRequestWithEntryIdentifier:(id)a3 configuration:(id)a4 certificateChain:(id)a5 nonce:(id)a6 nonceSignature:(id)a7 completionHandler:(id)a8
+- (void)generateRequestWithEntryIdentifier:(id)identifier configuration:(id)configuration certificateChain:(id)chain nonce:(id)nonce nonceSignature:(id)signature completionHandler:(id)handler
 {
   v64 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v14 = a4;
-  v40 = a5;
-  v15 = a6;
-  v41 = a7;
-  v16 = a8;
-  if (v16)
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  chainCopy = chain;
+  nonceCopy = nonce;
+  signatureCopy = signature;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v17 = [v14 encryptionScheme];
+    encryptionScheme = [configurationCopy encryptionScheme];
     v18 = self->_teamID;
     if (self->_entitled)
     {
       v60 = 0u;
       v61 = 0u;
-      v19 = [(PKIssuerProvisioningExtensionConsumerContext *)self _auxiliaryConnection];
-      v20 = v19;
-      if (v19)
+      _auxiliaryConnection = [(PKIssuerProvisioningExtensionConsumerContext *)self _auxiliaryConnection];
+      v20 = _auxiliaryConnection;
+      if (_auxiliaryConnection)
       {
-        [v19 auditToken];
+        [_auxiliaryConnection auditToken];
       }
 
       else
@@ -599,8 +599,8 @@ void __80__PKIssuerProvisioningExtensionConsumerContext_remotePassEntriesWithCom
 
       v59 = 0;
       v58 = 0;
-      v22 = v15;
-      V0YaM92nP0Xx19HNvczPJ(&v60, 32, [v15 bytes], objc_msgSend(v15, "length"), &v59, &v58);
+      v22 = nonceCopy;
+      V0YaM92nP0Xx19HNvczPJ(&v60, 32, [nonceCopy bytes], objc_msgSend(nonceCopy, "length"), &v59, &v58);
       v24 = v23;
       if (!v23 && v59 && v58)
       {
@@ -619,7 +619,7 @@ void __80__PKIssuerProvisioningExtensionConsumerContext_remotePassEntriesWithCom
           *&buf[12] = 1024;
           *&buf[14] = v24;
           *&buf[18] = 2112;
-          *&buf[20] = v42;
+          *&buf[20] = identifierCopy;
           *&buf[28] = 2114;
           *&buf[30] = v18;
           _os_log_impl(&dword_1AD337000, v26, OS_LOG_TYPE_DEFAULT, "Ex<%@>: ConsumerContext: Proceeding with provisioning without fairplay data: %d for identifier: %@ and teamID: %{public}@", buf, 0x26u);
@@ -644,8 +644,8 @@ void __80__PKIssuerProvisioningExtensionConsumerContext_remotePassEntriesWithCom
     *&buf[16] = 0x3032000000;
     *&buf[24] = __Block_byref_object_copy__47;
     *&buf[32] = __Block_byref_object_dispose__47;
-    v28 = _Block_copy(v16);
-    v39 = v16;
+    v28 = _Block_copy(handlerCopy);
+    v39 = handlerCopy;
     v29 = v21;
     v63 = v28;
     *&v60 = 0;
@@ -661,7 +661,7 @@ void __80__PKIssuerProvisioningExtensionConsumerContext_remotePassEntriesWithCom
     handler[3] = &unk_1E79DA218;
     v56 = &v60;
     handler[4] = self;
-    v32 = v42;
+    v32 = identifierCopy;
     v55 = v32;
     v57 = buf;
     dispatch_source_set_event_handler(v30, handler);
@@ -682,16 +682,16 @@ void __80__PKIssuerProvisioningExtensionConsumerContext_remotePassEntriesWithCom
     v35 = v33;
     v44 = v35;
     v48 = &v60;
-    v36 = v17;
+    v36 = encryptionScheme;
     v45 = v36;
     v37 = v18;
     v46 = v37;
     v38 = v29;
     v47 = v38;
     v49 = buf;
-    [v34 generateRequestWithEntryIdentifier:v32 configuration:v14 certificateChain:v40 nonce:v15 nonceSignature:v41 completionHandler:v43];
+    [v34 generateRequestWithEntryIdentifier:v32 configuration:configurationCopy certificateChain:chainCopy nonce:nonceCopy nonceSignature:signatureCopy completionHandler:v43];
 
-    v16 = v39;
+    handlerCopy = v39;
     _Block_object_dispose(&v60, 8);
     _Block_object_dispose(buf, 8);
   }

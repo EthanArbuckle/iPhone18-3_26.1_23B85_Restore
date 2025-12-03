@@ -1,18 +1,18 @@
 @interface IDSTemporaryPhoneUserExpirationManager
-- (IDSTemporaryPhoneUserExpirationManager)initWithUserStore:(id)a3 delegate:(id)a4;
+- (IDSTemporaryPhoneUserExpirationManager)initWithUserStore:(id)store delegate:(id)delegate;
 - (IDSTemporaryPhoneUserExpirationManagerDelegate)delegate;
-- (void)_attemptToKickoffExpirationTimerForUser:(id)a3;
-- (void)_cancelExpirationTimerForUser:(id)a3;
-- (void)_expireTimer:(id)a3;
-- (void)_kickoffExpirationTimerForInfo:(id)a3;
+- (void)_attemptToKickoffExpirationTimerForUser:(id)user;
+- (void)_cancelExpirationTimerForUser:(id)user;
+- (void)_expireTimer:(id)timer;
+- (void)_kickoffExpirationTimerForInfo:(id)info;
 @end
 
 @implementation IDSTemporaryPhoneUserExpirationManager
 
-- (IDSTemporaryPhoneUserExpirationManager)initWithUserStore:(id)a3 delegate:(id)a4
+- (IDSTemporaryPhoneUserExpirationManager)initWithUserStore:(id)store delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = IDSTemporaryPhoneUserExpirationManager;
   v8 = [(IDSTemporaryPhoneUserExpirationManager *)&v22 init];
@@ -24,9 +24,9 @@
     usersToTimers = v9->_usersToTimers;
     v9->_usersToTimers = v10;
 
-    objc_storeWeak(&v9->_delegate, v7);
-    [v6 addActionListener:v9 forRealm:2];
-    v12 = [v6 usersWithRealm:2];
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    [storeCopy addActionListener:v9 forRealm:2];
+    v12 = [storeCopy usersWithRealm:2];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -61,142 +61,142 @@
   return v9;
 }
 
-- (void)_attemptToKickoffExpirationTimerForUser:(id)a3
+- (void)_attemptToKickoffExpirationTimerForUser:(id)user
 {
-  v9 = a3;
-  v4 = [v9 realm] == 2;
-  v5 = v9;
+  userCopy = user;
+  v4 = [userCopy realm] == 2;
+  v5 = userCopy;
   if (v4)
   {
-    v6 = v9;
-    v7 = [v6 expirationDate];
+    v6 = userCopy;
+    expirationDate = [v6 expirationDate];
 
-    if (v7)
+    if (expirationDate)
     {
       v8 = [[IDSTemporaryPhoneUserExpirationTimerInfo alloc] initWithUser:v6];
       [(IDSTemporaryPhoneUserExpirationManager *)self _kickoffExpirationTimerForInfo:v8];
     }
 
-    v5 = v9;
+    v5 = userCopy;
   }
 }
 
-- (void)_kickoffExpirationTimerForInfo:(id)a3
+- (void)_kickoffExpirationTimerForInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 user];
+    user = [infoCopy user];
     v25 = 138412546;
-    v26 = v6;
+    v26 = user;
     v27 = 2048;
-    v28 = [v4 expirationPhase];
+    expirationPhase = [infoCopy expirationPhase];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting expiration timer for temporary user %@ with phase %ld", &v25, 0x16u);
   }
 
-  v7 = [v4 user];
+  user2 = [infoCopy user];
   os_unfair_lock_lock(&self->_usersToTimersLock);
-  v8 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
-  v9 = [v7 uniqueIdentifier];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  usersToTimers = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
+  uniqueIdentifier = [user2 uniqueIdentifier];
+  v10 = [usersToTimers objectForKeyedSubscript:uniqueIdentifier];
 
   if (v10)
   {
-    v11 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
-    v12 = [v7 uniqueIdentifier];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    usersToTimers2 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
+    uniqueIdentifier2 = [user2 uniqueIdentifier];
+    v13 = [usersToTimers2 objectForKeyedSubscript:uniqueIdentifier2];
     [v13 invalidate];
 
-    v14 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
-    v15 = [v7 uniqueIdentifier];
-    [v14 setObject:0 forKeyedSubscript:v15];
+    usersToTimers3 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
+    uniqueIdentifier3 = [user2 uniqueIdentifier];
+    [usersToTimers3 setObject:0 forKeyedSubscript:uniqueIdentifier3];
   }
 
   v16 = [IMTimer alloc];
-  [v4 expirationInterval];
+  [infoCopy expirationInterval];
   v18 = v17;
-  v19 = [v7 uniqueIdentifier];
+  uniqueIdentifier4 = [user2 uniqueIdentifier];
   v20 = im_primary_queue();
-  v21 = [v16 initWithTimeInterval:v19 name:1 shouldWake:self target:"_expireTimer:" selector:v4 userInfo:v20 queue:v18];
+  v21 = [v16 initWithTimeInterval:uniqueIdentifier4 name:1 shouldWake:self target:"_expireTimer:" selector:infoCopy userInfo:v20 queue:v18];
 
-  v22 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
-  v23 = [v7 uniqueIdentifier];
-  [v22 setObject:v21 forKeyedSubscript:v23];
+  usersToTimers4 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
+  uniqueIdentifier5 = [user2 uniqueIdentifier];
+  [usersToTimers4 setObject:v21 forKeyedSubscript:uniqueIdentifier5];
 
   os_unfair_lock_unlock(&self->_usersToTimersLock);
-  [v4 expirationInterval];
+  [infoCopy expirationInterval];
   if (v24 <= 0.0)
   {
     [(IDSTemporaryPhoneUserExpirationManager *)self _expireTimer:v21];
   }
 }
 
-- (void)_cancelExpirationTimerForUser:(id)a3
+- (void)_cancelExpirationTimerForUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = userCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing expiration timer for temporary user %@", &v11, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_usersToTimersLock);
-  v6 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
-  v7 = [v4 uniqueIdentifier];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  usersToTimers = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
+  uniqueIdentifier = [userCopy uniqueIdentifier];
+  v8 = [usersToTimers objectForKeyedSubscript:uniqueIdentifier];
   [v8 invalidate];
 
-  v9 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
-  v10 = [v4 uniqueIdentifier];
-  [v9 setObject:0 forKeyedSubscript:v10];
+  usersToTimers2 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
+  uniqueIdentifier2 = [userCopy uniqueIdentifier];
+  [usersToTimers2 setObject:0 forKeyedSubscript:uniqueIdentifier2];
 
   os_unfair_lock_unlock(&self->_usersToTimersLock);
 }
 
-- (void)_expireTimer:(id)a3
+- (void)_expireTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 user];
+  timerCopy = timer;
+  userInfo = [timerCopy userInfo];
+  user = [userInfo user];
   v7 = +[IMRGLog registration];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v6;
+    v17 = user;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Expiration timer fired for temporary user %@", &v16, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_usersToTimersLock);
-  v8 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
-  v9 = [v6 uniqueIdentifier];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  usersToTimers = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
+  uniqueIdentifier = [user uniqueIdentifier];
+  v10 = [usersToTimers objectForKeyedSubscript:uniqueIdentifier];
 
   if (v10)
   {
-    [v4 invalidate];
-    v11 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
-    v12 = [v6 uniqueIdentifier];
-    [v11 setObject:0 forKeyedSubscript:v12];
+    [timerCopy invalidate];
+    usersToTimers2 = [(IDSTemporaryPhoneUserExpirationManager *)self usersToTimers];
+    uniqueIdentifier2 = [user uniqueIdentifier];
+    [usersToTimers2 setObject:0 forKeyedSubscript:uniqueIdentifier2];
 
     os_unfair_lock_unlock(&self->_usersToTimersLock);
-    v13 = [v5 expirationPhase];
-    if (v13 == 1)
+    expirationPhase = [userInfo expirationPhase];
+    if (expirationPhase == 1)
     {
-      v15 = [(IDSTemporaryPhoneUserExpirationManager *)self delegate];
-      [(IDSTemporaryPhoneUserExpirationTimerInfo *)v15 expirationManager:self didExpireUser:v6];
+      delegate = [(IDSTemporaryPhoneUserExpirationManager *)self delegate];
+      [(IDSTemporaryPhoneUserExpirationTimerInfo *)delegate expirationManager:self didExpireUser:user];
       goto LABEL_9;
     }
 
-    if (!v13)
+    if (!expirationPhase)
     {
-      v14 = [(IDSTemporaryPhoneUserExpirationManager *)self delegate];
-      [v14 expirationManager:self nearingExpirationForUser:v6];
+      delegate2 = [(IDSTemporaryPhoneUserExpirationManager *)self delegate];
+      [delegate2 expirationManager:self nearingExpirationForUser:user];
 
-      v15 = [[IDSTemporaryPhoneUserExpirationTimerInfo alloc] initWithUser:v6 expirationPhase:1];
-      [(IDSTemporaryPhoneUserExpirationManager *)self _kickoffExpirationTimerForInfo:v15];
+      delegate = [[IDSTemporaryPhoneUserExpirationTimerInfo alloc] initWithUser:user expirationPhase:1];
+      [(IDSTemporaryPhoneUserExpirationManager *)self _kickoffExpirationTimerForInfo:delegate];
 LABEL_9:
     }
   }

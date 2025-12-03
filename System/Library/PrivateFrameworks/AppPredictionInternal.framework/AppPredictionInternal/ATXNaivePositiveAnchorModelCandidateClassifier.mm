@@ -1,32 +1,32 @@
 @interface ATXNaivePositiveAnchorModelCandidateClassifier
-- (ATXNaivePositiveAnchorModelCandidateClassifier)initWithCandidateId:(id)a3 candidateType:(id)a4 anchor:(id)a5;
-- (ATXNaivePositiveAnchorModelCandidateClassifier)initWithCoder:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (id)classifyCandidateForAnchorOccurrence:(id)a3 trainingResult:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (ATXNaivePositiveAnchorModelCandidateClassifier)initWithCandidateId:(id)id candidateType:(id)type anchor:(id)anchor;
+- (ATXNaivePositiveAnchorModelCandidateClassifier)initWithCoder:(id)coder;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (id)classifyCandidateForAnchorOccurrence:(id)occurrence trainingResult:(id)result;
+- (void)encodeWithCoder:(id)coder;
 - (void)train;
 @end
 
 @implementation ATXNaivePositiveAnchorModelCandidateClassifier
 
-- (ATXNaivePositiveAnchorModelCandidateClassifier)initWithCandidateId:(id)a3 candidateType:(id)a4 anchor:(id)a5
+- (ATXNaivePositiveAnchorModelCandidateClassifier)initWithCandidateId:(id)id candidateType:(id)type anchor:(id)anchor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  typeCopy = type;
+  anchorCopy = anchor;
   v18.receiver = self;
   v18.super_class = ATXNaivePositiveAnchorModelCandidateClassifier;
   v11 = [(ATXNaivePositiveAnchorModelCandidateClassifier *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_anchor, a5);
-    v13 = [v8 copy];
+    objc_storeStrong(&v11->_anchor, anchor);
+    v13 = [idCopy copy];
     candidateId = v12->_candidateId;
     v12->_candidateId = v13;
 
-    v15 = [v9 copy];
+    v15 = [typeCopy copy];
     candidateType = v12->_candidateType;
     v12->_candidateType = v15;
 
@@ -41,7 +41,7 @@
   v10 = *MEMORY[0x277D85DE8];
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
-  v4 = *(a1 + 24);
+  v4 = *(self + 24);
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v5, v6, OS_LOG_TYPE_DEBUG, v7, v8, 0x16u);
@@ -49,7 +49,7 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)classifyCandidateForAnchorOccurrence:(id)a3 trainingResult:(id)a4
+- (id)classifyCandidateForAnchorOccurrence:(id)occurrence trainingResult:(id)result
 {
   v5 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -62,10 +62,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -75,7 +75,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_candidateId;
       v7 = v6;
       if (v6 == v5->_candidateId)
@@ -118,33 +118,33 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -156,45 +156,45 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   candidateId = self->_candidateId;
-  v5 = a3;
-  [v5 encodeObject:candidateId forKey:@"codingKeyForCandidateId"];
-  [v5 encodeObject:self->_candidateType forKey:@"codingKeyForCandidateType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:candidateId forKey:@"codingKeyForCandidateId"];
+  [coderCopy encodeObject:self->_candidateType forKey:@"codingKeyForCandidateType"];
   anchor = self->_anchor;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v5 encodeObject:v8 forKey:@"codingKeyForAnchor"];
+  [coderCopy encodeObject:v8 forKey:@"codingKeyForAnchor"];
 }
 
-- (ATXNaivePositiveAnchorModelCandidateClassifier)initWithCoder:(id)a3
+- (ATXNaivePositiveAnchorModelCandidateClassifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForCandidateId"];
-  if (![(ATXNaivePositiveAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v5 key:@"codingKeyForCandidateId" coder:v4 errorDomain:@"com.apple.proactive.NaivePositiveAnchorModelCandidateClassifier" errorCode:-1])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForCandidateId"];
+  if (![(ATXNaivePositiveAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v5 key:@"codingKeyForCandidateId" coder:coderCopy errorDomain:@"com.apple.proactive.NaivePositiveAnchorModelCandidateClassifier" errorCode:-1])
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForCandidateType"];
-    if ([(ATXNaivePositiveAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v7 key:@"codingKeyForCandidateType" coder:v4 errorDomain:@"com.apple.proactive.NaivePositiveAnchorModelCandidateClassifier" errorCode:-1])
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForCandidateType"];
+    if ([(ATXNaivePositiveAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v7 key:@"codingKeyForCandidateType" coder:coderCopy errorDomain:@"com.apple.proactive.NaivePositiveAnchorModelCandidateClassifier" errorCode:-1])
     {
-      v6 = 0;
+      selfCopy = 0;
 LABEL_21:
 
       goto LABEL_22;
     }
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForAnchor"];
-    if ([(ATXNaivePositiveAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v8 key:@"codingKeyForAnchor" coder:v4 errorDomain:@"com.apple.proactive.NaivePositiveAnchorModelCandidateClassifier" errorCode:-1])
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForAnchor"];
+    if ([(ATXNaivePositiveAnchorModelCandidateClassifier *)self checkAndReportDecodingFailureIfNeededForid:v8 key:@"codingKeyForAnchor" coder:coderCopy errorDomain:@"com.apple.proactive.NaivePositiveAnchorModelCandidateClassifier" errorCode:-1])
     {
-      v6 = 0;
+      selfCopy = 0;
 LABEL_20:
 
       goto LABEL_21;
     }
 
     v9 = +[ATXAnchorModelHyperParameters sharedInstance];
-    v10 = [v9 enabledAnchors];
-    v11 = [v10 containsObject:v8];
+    enabledAnchors = [v9 enabledAnchors];
+    v11 = [enabledAnchors containsObject:v8];
 
     if (v11)
     {
@@ -205,7 +205,7 @@ LABEL_20:
         if (objc_opt_isKindOfClass())
         {
           self = [(ATXNaivePositiveAnchorModelCandidateClassifier *)self initWithCandidateId:v5 candidateType:v7 anchor:v12];
-          v6 = self;
+          selfCopy = self;
 LABEL_19:
 
           goto LABEL_20;
@@ -237,14 +237,14 @@ LABEL_19:
       }
     }
 
-    v6 = 0;
+    selfCopy = 0;
     goto LABEL_19;
   }
 
-  v6 = 0;
+  selfCopy = 0;
 LABEL_22:
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)classifyCandidateForAnchorOccurrence:(uint64_t)a1 trainingResult:.cold.1(uint64_t a1)

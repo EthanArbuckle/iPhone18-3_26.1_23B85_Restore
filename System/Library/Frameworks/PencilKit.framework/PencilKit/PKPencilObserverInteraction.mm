@@ -1,6 +1,6 @@
 @interface PKPencilObserverInteraction
-+ (id)interactionForScene:(uint64_t)a1;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
++ (id)interactionForScene:(uint64_t)scene;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (UIView)view;
 - (id).cxx_construct;
 - (uint64_t)_trackHoverInEdgeForInputPoint:(uint64_t)result;
@@ -9,50 +9,50 @@
 - (void)_updateActivePencilMinutes;
 - (void)_updatePencilShadowView:(void *)result;
 - (void)createShadowViewIfNecessary;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 - (void)hidePencilShadowViewIfNecessary;
-- (void)hoverController:(id)a3 didBegin:(id *)a4;
-- (void)hoverController:(id)a3 didUpdate:(id *)a4;
-- (void)hoverController:(id)a3 intentionalHoverWithDuration:(double)a4;
-- (void)hoverControllerDidEnd:(id)a3;
-- (void)initWithDelegate:(void *)a1;
-- (void)pencilInteractionDidTap:(id)a3;
-- (void)pencilObserver:(id)a3 didBeginAtPoint:(id *)a4;
-- (void)pencilObserver:(id)a3 didMoveToPoint:(id *)a4;
-- (void)pencilObserverDidEnd:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)hoverController:(id)controller didBegin:(id *)begin;
+- (void)hoverController:(id)controller didUpdate:(id *)update;
+- (void)hoverController:(id)controller intentionalHoverWithDuration:(double)duration;
+- (void)hoverControllerDidEnd:(id)end;
+- (void)initWithDelegate:(void *)delegate;
+- (void)pencilInteractionDidTap:(id)tap;
+- (void)pencilObserver:(id)observer didBeginAtPoint:(id *)point;
+- (void)pencilObserver:(id)observer didMoveToPoint:(id *)point;
+- (void)pencilObserverDidEnd:(id)end;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation PKPencilObserverInteraction
 
-- (void)initWithDelegate:(void *)a1
+- (void)initWithDelegate:(void *)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
-    v8.receiver = a1;
+    v8.receiver = delegate;
     v8.super_class = PKPencilObserverInteraction;
     v4 = objc_msgSendSuper2(&v8, sel_init);
-    a1 = v4;
+    delegate = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 5, v3);
       v5 = objc_alloc_init(PKPencilStatisticsManager);
-      v6 = a1[7];
-      a1[7] = v5;
+      v6 = delegate[7];
+      delegate[7] = v5;
     }
   }
 
-  return a1;
+  return delegate;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   if (self->_pencilObserver)
   {
-    v4 = [(PKPencilObserverInteraction *)self view];
-    [v4 removeGestureRecognizer:self->_pencilObserver];
+    view = [(PKPencilObserverInteraction *)self view];
+    [view removeGestureRecognizer:self->_pencilObserver];
 
     pencilObserver = self->_pencilObserver;
     self->_pencilObserver = 0;
@@ -62,11 +62,11 @@
   self->_hoverController = 0;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  [(PKPencilObserverInteraction *)self setView:v4];
-  if (v4)
+  viewCopy = view;
+  [(PKPencilObserverInteraction *)self setView:viewCopy];
+  if (viewCopy)
   {
     objc_initWeak(&location, self);
     v12[0] = MEMORY[0x1E69E9820];
@@ -74,26 +74,26 @@
     v12[2] = __45__PKPencilObserverInteraction_didMoveToView___block_invoke;
     v12[3] = &unk_1E82D7C40;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
+    v13 = viewCopy;
     [PKHoverSettings checkIfHoverIsSupported:v12];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
+  window = [viewCopy window];
+  windowScene = [window windowScene];
 
-  if (v6)
+  if (windowScene)
   {
     WeakRetained = +[PKPencilInteraction observerPencilInteraction];
     [WeakRetained setDelegate:self];
-    [v4 addInteraction:WeakRetained];
+    [viewCopy addInteraction:WeakRetained];
     objc_storeWeak(&self->_pencilInteraction, WeakRetained);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    v9 = [v4 window];
-    v10 = [v9 windowScene];
-    [v8 addObserver:self selector:sel_sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:v10];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    window2 = [viewCopy window];
+    windowScene2 = [window2 windowScene];
+    [defaultCenter addObserver:self selector:sel_sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:windowScene2];
   }
 
   else
@@ -102,12 +102,12 @@
     objc_storeWeak(&self->_pencilInteraction, 0);
     if (WeakRetained)
     {
-      v11 = [WeakRetained view];
-      [v11 removeInteraction:WeakRetained];
+      view = [WeakRetained view];
+      [view removeInteraction:WeakRetained];
     }
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 removeObserver:self name:*MEMORY[0x1E69DE348] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE348] object:0];
   }
 }
 
@@ -477,22 +477,22 @@ LABEL_9:
   return result;
 }
 
-+ (id)interactionForScene:(uint64_t)a1
++ (id)interactionForScene:(uint64_t)scene
 {
   v2 = a2;
   objc_opt_self();
   v3 = [PKTextInputInteraction interactionForScene:v2];
-  v4 = [v3 pencilObserverInteraction];
+  pencilObserverInteraction = [v3 pencilObserverInteraction];
 
-  return v4;
+  return pencilObserverInteraction;
 }
 
 - (uint64_t)isActive
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = *(a1 + 64);
+    v2 = *(self + 64);
     if (v2 && (*(v2 + 56) & 1) != 0)
     {
       return 1;
@@ -500,15 +500,15 @@ LABEL_9:
 
     else
     {
-      v3 = *(a1 + 72);
-      v1 = [v3 state] == 2 || objc_msgSend(*(v1 + 72), "state") == 1;
+      v3 = *(self + 72);
+      selfCopy = [v3 state] == 2 || objc_msgSend(*(selfCopy + 72), "state") == 1;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v4 = +[PKPencilDevice activePencil];
   [v4 appSceneDidEnterBackground];
@@ -603,23 +603,23 @@ LABEL_9:
 
 - (void)_updateActivePencilMinutes
 {
-  if (a1)
+  if (self)
   {
     v2 = CACurrentMediaTime();
-    if (v2 - *(a1 + 96) >= 60.0)
+    if (v2 - *(self + 96) >= 60.0)
     {
-      v3 = *(a1 + 56);
+      v3 = *(self + 56);
       if (v3)
       {
         ++*(v3 + 120);
       }
 
-      *(a1 + 96) = v2;
+      *(self + 96) = v2;
     }
   }
 }
 
-- (void)hoverController:(id)a3 intentionalHoverWithDuration:(double)a4
+- (void)hoverController:(id)controller intentionalHoverWithDuration:(double)duration
 {
   if (self)
   {
@@ -629,83 +629,83 @@ LABEL_9:
       ptr = statisticsManager->_intentionalHoverStats.__ptr_;
       if (ptr)
       {
-        PKRunningStat::push(ptr, a4);
+        PKRunningStat::push(ptr, duration);
       }
 
-      statisticsManager->_intentionalHoverDuration = statisticsManager->_intentionalHoverDuration + a4;
+      statisticsManager->_intentionalHoverDuration = statisticsManager->_intentionalHoverDuration + duration;
     }
   }
 }
 
-- (void)hoverController:(id)a3 didBegin:(id *)a4
+- (void)hoverController:(id)controller didBegin:(id *)begin
 {
   [(PKPencilStatisticsManager *)self->_statisticsManager startAnalyticsSessionIfNecessary];
   self->_timestampForHoverBegan = CACurrentMediaTime();
-  v6 = *&a4->var13;
-  v20 = *&a4->var11;
+  v6 = *&begin->var13;
+  v20 = *&begin->var11;
   v21 = v6;
-  var15 = a4->var15;
-  v7 = *&a4->var5;
-  v16 = *&a4->var3;
+  var15 = begin->var15;
+  v7 = *&begin->var5;
+  v16 = *&begin->var3;
   v17 = v7;
-  v8 = *&a4->var9;
-  v18 = *&a4->var7;
+  v8 = *&begin->var9;
+  v18 = *&begin->var7;
   v19 = v8;
-  v9 = *&a4->var1;
-  var0 = a4->var0;
+  v9 = *&begin->var1;
+  var0 = begin->var0;
   v15 = v9;
   [(PKPencilObserverInteraction *)self _trackHoverInEdgeForInputPoint:?];
   [(PKPencilObserverInteraction *)self _updateActivePencilMinutes];
-  v10 = *&a4->var13;
-  v20 = *&a4->var11;
+  v10 = *&begin->var13;
+  v20 = *&begin->var11;
   v21 = v10;
-  var15 = a4->var15;
-  v11 = *&a4->var5;
-  v16 = *&a4->var3;
+  var15 = begin->var15;
+  v11 = *&begin->var5;
+  v16 = *&begin->var3;
   v17 = v11;
-  v12 = *&a4->var9;
-  v18 = *&a4->var7;
+  v12 = *&begin->var9;
+  v18 = *&begin->var7;
   v19 = v12;
-  v13 = *&a4->var1;
-  var0 = a4->var0;
+  v13 = *&begin->var1;
+  var0 = begin->var0;
   v15 = v13;
   [(PKPencilObserverInteraction *)self _updatePencilShadowView:?];
 }
 
-- (void)hoverController:(id)a3 didUpdate:(id *)a4
+- (void)hoverController:(id)controller didUpdate:(id *)update
 {
-  v6 = *&a4->var13;
-  v20 = *&a4->var11;
+  v6 = *&update->var13;
+  v20 = *&update->var11;
   v21 = v6;
-  var15 = a4->var15;
-  v7 = *&a4->var5;
-  v16 = *&a4->var3;
+  var15 = update->var15;
+  v7 = *&update->var5;
+  v16 = *&update->var3;
   v17 = v7;
-  v8 = *&a4->var9;
-  v18 = *&a4->var7;
+  v8 = *&update->var9;
+  v18 = *&update->var7;
   v19 = v8;
-  v9 = *&a4->var1;
-  var0 = a4->var0;
+  v9 = *&update->var1;
+  var0 = update->var0;
   v15 = v9;
   [(PKPencilObserverInteraction *)self _trackHoverInEdgeForInputPoint:?];
   [(PKPencilObserverInteraction *)self _updateActivePencilMinutes];
-  v10 = *&a4->var13;
-  v20 = *&a4->var11;
+  v10 = *&update->var13;
+  v20 = *&update->var11;
   v21 = v10;
-  var15 = a4->var15;
-  v11 = *&a4->var5;
-  v16 = *&a4->var3;
+  var15 = update->var15;
+  v11 = *&update->var5;
+  v16 = *&update->var3;
   v17 = v11;
-  v12 = *&a4->var9;
-  v18 = *&a4->var7;
+  v12 = *&update->var9;
+  v18 = *&update->var7;
   v19 = v12;
-  v13 = *&a4->var1;
-  var0 = a4->var0;
+  v13 = *&update->var1;
+  var0 = update->var0;
   v15 = v13;
   [(PKPencilObserverInteraction *)self _updatePencilShadowView:?];
 }
 
-- (void)hoverControllerDidEnd:(id)a3
+- (void)hoverControllerDidEnd:(id)end
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = CACurrentMediaTime();
@@ -736,51 +736,51 @@ LABEL_9:
   [(PKPencilObserverInteraction *)self performSelector:sel_hidePencilShadowViewIfNecessary withObject:0 afterDelay:0.0666666667];
 }
 
-- (void)pencilObserver:(id)a3 didBeginAtPoint:(id *)a4
+- (void)pencilObserver:(id)observer didBeginAtPoint:(id *)point
 {
   [(PKPencilStatisticsManager *)self->_statisticsManager startAnalyticsSessionIfNecessary];
   [(PKPencilObserverInteraction *)self _updateActivePencilMinutes];
-  self->_currentLocation = a4->var0;
+  self->_currentLocation = point->var0;
   self->_timestampForPencilObserverBegan = CACurrentMediaTime();
   [(PKHoverController *)self->_hoverController didReceiveNormalTouch:?];
-  v6 = *&a4->var13;
-  v10[6] = *&a4->var11;
+  v6 = *&point->var13;
+  v10[6] = *&point->var11;
   v10[7] = v6;
-  var15 = a4->var15;
-  v7 = *&a4->var5;
-  v10[2] = *&a4->var3;
+  var15 = point->var15;
+  v7 = *&point->var5;
+  v10[2] = *&point->var3;
   v10[3] = v7;
-  v8 = *&a4->var9;
-  v10[4] = *&a4->var7;
+  v8 = *&point->var9;
+  v10[4] = *&point->var7;
   v10[5] = v8;
-  v9 = *&a4->var1;
-  v10[0] = a4->var0;
+  v9 = *&point->var1;
+  v10[0] = point->var0;
   v10[1] = v9;
   [(PKPencilObserverInteraction *)self _updatePencilShadowView:v10];
 }
 
-- (void)pencilObserver:(id)a3 didMoveToPoint:(id *)a4
+- (void)pencilObserver:(id)observer didMoveToPoint:(id *)point
 {
   [(PKPencilObserverInteraction *)self _updateActivePencilMinutes];
-  self->_currentLocation = a4->var0;
+  self->_currentLocation = point->var0;
   [(PKHoverController *)self->_hoverController didReceiveNormalTouch:?];
-  v6 = *&a4->var13;
-  v10[6] = *&a4->var11;
+  v6 = *&point->var13;
+  v10[6] = *&point->var11;
   v10[7] = v6;
-  var15 = a4->var15;
-  v7 = *&a4->var5;
-  v10[2] = *&a4->var3;
+  var15 = point->var15;
+  v7 = *&point->var5;
+  v10[2] = *&point->var3;
   v10[3] = v7;
-  v8 = *&a4->var9;
-  v10[4] = *&a4->var7;
+  v8 = *&point->var9;
+  v10[4] = *&point->var7;
   v10[5] = v8;
-  v9 = *&a4->var1;
-  v10[0] = a4->var0;
+  v9 = *&point->var1;
+  v10[0] = point->var0;
   v10[1] = v9;
   [(PKPencilObserverInteraction *)self _updatePencilShadowView:v10];
 }
 
-- (void)pencilObserverDidEnd:(id)a3
+- (void)pencilObserverDidEnd:(id)end
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = CACurrentMediaTime();
@@ -838,12 +838,12 @@ LABEL_9:
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  if ([v5 type] == 2 && (hoverController = self->_hoverController) != 0)
+  touchCopy = touch;
+  if ([touchCopy type] == 2 && (hoverController = self->_hoverController) != 0)
   {
-    [(PKHoverController *)hoverController didReceiveNormalTouch:v5];
+    [(PKHoverController *)hoverController didReceiveNormalTouch:touchCopy];
     v7 = 1;
   }
 
@@ -855,7 +855,7 @@ LABEL_9:
   return v7;
 }
 
-- (void)pencilInteractionDidTap:(id)a3
+- (void)pencilInteractionDidTap:(id)tap
 {
   [(PKPencilStatisticsManager *)self->_statisticsManager startAnalyticsSessionIfNecessary];
   hoverController = self->_hoverController;

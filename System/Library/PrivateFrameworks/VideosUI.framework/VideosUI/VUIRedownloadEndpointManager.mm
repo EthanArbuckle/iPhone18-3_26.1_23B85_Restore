@@ -1,12 +1,12 @@
 @interface VUIRedownloadEndpointManager
 + (id)sharedInstance;
 - (VUIRedownloadEndpointManager)init;
-- (void)_performRedownloadWithType:(int64_t)a3 buyParams:(id)a4 completion:(id)a5;
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
-- (void)performRedownloadWithType:(int64_t)a3 buyParams:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleEngagementRequest:(id)a4 completion:(id)a5;
+- (void)_performRedownloadWithType:(int64_t)type buyParams:(id)params completion:(id)completion;
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)performRedownloadWithType:(int64_t)type buyParams:(id)params completion:(id)completion;
+- (void)purchase:(id)purchase handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)purchase:(id)purchase handleDialogRequest:(id)request completion:(id)completion;
+- (void)purchase:(id)purchase handleEngagementRequest:(id)request completion:(id)completion;
 @end
 
 @implementation VUIRedownloadEndpointManager
@@ -49,16 +49,16 @@ void __46__VUIRedownloadEndpointManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)performRedownloadWithType:(int64_t)a3 buyParams:(id)a4 completion:(id)a5
+- (void)performRedownloadWithType:(int64_t)type buyParams:(id)params completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3)
+  paramsCopy = params;
+  completionCopy = completion;
+  if (type)
   {
-    v10 = [(VUIRedownloadEndpointManager *)self initialRedownloadInProgress];
+    initialRedownloadInProgress = [(VUIRedownloadEndpointManager *)self initialRedownloadInProgress];
     v11 = sLogObject_9;
     v12 = os_log_type_enabled(sLogObject_9, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (initialRedownloadInProgress)
     {
       if (v12)
       {
@@ -67,11 +67,11 @@ void __46__VUIRedownloadEndpointManager_sharedInstance__block_invoke()
       }
 
       v13 = objc_alloc_init(VUIRedownloadInfo);
-      [(VUIRedownloadInfo *)v13 setBuyParams:v8];
-      [(VUIRedownloadInfo *)v13 setRedownloadType:a3];
-      [(VUIRedownloadInfo *)v13 setCompletion:v9];
-      v14 = [(VUIRedownloadEndpointManager *)self pendingRedownloadInfos];
-      [v14 addObject:v13];
+      [(VUIRedownloadInfo *)v13 setBuyParams:paramsCopy];
+      [(VUIRedownloadInfo *)v13 setRedownloadType:type];
+      [(VUIRedownloadInfo *)v13 setCompletion:completionCopy];
+      pendingRedownloadInfos = [(VUIRedownloadEndpointManager *)self pendingRedownloadInfos];
+      [pendingRedownloadInfos addObject:v13];
     }
 
     else
@@ -89,8 +89,8 @@ void __46__VUIRedownloadEndpointManager_sharedInstance__block_invoke()
       v15[2] = __79__VUIRedownloadEndpointManager_performRedownloadWithType_buyParams_completion___block_invoke;
       v15[3] = &unk_1E87321C8;
       objc_copyWeak(&v17, buf);
-      v16 = v9;
-      [(VUIRedownloadEndpointManager *)self _performRedownloadWithType:a3 buyParams:v8 completion:v15];
+      v16 = completionCopy;
+      [(VUIRedownloadEndpointManager *)self _performRedownloadWithType:type buyParams:paramsCopy completion:v15];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(buf);
@@ -99,7 +99,7 @@ void __46__VUIRedownloadEndpointManager_sharedInstance__block_invoke()
 
   else
   {
-    [(VUIRedownloadEndpointManager *)self _performRedownloadWithType:0 buyParams:v8 completion:v9];
+    [(VUIRedownloadEndpointManager *)self _performRedownloadWithType:0 buyParams:paramsCopy completion:completionCopy];
   }
 }
 
@@ -256,16 +256,16 @@ void __79__VUIRedownloadEndpointManager_performRedownloadWithType_buyParams_comp
   }
 }
 
-- (void)_performRedownloadWithType:(int64_t)a3 buyParams:(id)a4 completion:(id)a5
+- (void)_performRedownloadWithType:(int64_t)type buyParams:(id)params completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  paramsCopy = params;
+  completionCopy = completion;
   v10 = sLogObject_9;
   if (os_log_type_enabled(sLogObject_9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"Download";
-    if (!a3)
+    if (!type)
     {
       v11 = @"Streaming";
     }
@@ -275,8 +275,8 @@ void __79__VUIRedownloadEndpointManager_performRedownloadWithType_buyParams_comp
     _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "Starting redownload of type %@", buf, 0xCu);
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E698CAE0]) initWithPurchaseType:0 buyParams:v8];
-  if (!a3 && (objc_opt_respondsToSelector() & 1) != 0)
+  v12 = [objc_alloc(MEMORY[0x1E698CAE0]) initWithPurchaseType:0 buyParams:paramsCopy];
+  if (!type && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [v12 setURLBagKey:@"redownloadProduct"];
   }
@@ -296,7 +296,7 @@ void __79__VUIRedownloadEndpointManager_performRedownloadWithType_buyParams_comp
   v17[1] = 3221225472;
   v17[2] = __80__VUIRedownloadEndpointManager__performRedownloadWithType_buyParams_completion___block_invoke_47;
   v17[3] = &unk_1E8732218;
-  v16 = v9;
+  v16 = completionCopy;
   v18 = v16;
   [v15 resultWithCompletion:v17];
 
@@ -464,51 +464,51 @@ LABEL_16:
   TVPPerformBlockOnMainThreadIfNeeded();
 }
 
-- (void)purchase:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleAuthenticateRequest:(id)request completion:(id)completion
 {
   v7 = MEMORY[0x1E698C7C8];
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v10 = [v7 alloc];
-  v11 = [MEMORY[0x1E698C7C8] createBagForSubProfile];
-  v13 = [v10 initWithRequest:v9 bag:v11];
+  createBagForSubProfile = [MEMORY[0x1E698C7C8] createBagForSubProfile];
+  v13 = [v10 initWithRequest:requestCopy bag:createBagForSubProfile];
 
   [v13 setDelegate:self];
-  v12 = [v13 performAuthentication];
-  [v12 addFinishBlock:v8];
+  performAuthentication = [v13 performAuthentication];
+  [performAuthentication addFinishBlock:completionCopy];
 }
 
-- (void)purchase:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleDialogRequest:(id)request completion:(id)completion
 {
   v6 = MEMORY[0x1E698CB50];
-  v7 = a5;
-  v8 = a4;
-  v10 = [[v6 alloc] initWithRequest:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  v10 = [[v6 alloc] initWithRequest:requestCopy];
 
-  v9 = [v10 present];
-  [v9 addFinishBlock:v7];
+  present = [v10 present];
+  [present addFinishBlock:completionCopy];
 }
 
-- (void)purchase:(id)a3 handleEngagementRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleEngagementRequest:(id)request completion:(id)completion
 {
   v6 = MEMORY[0x1E698CB58];
-  v7 = a5;
-  v8 = a4;
-  v10 = [[v6 alloc] initWithRequest:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  v10 = [[v6 alloc] initWithRequest:requestCopy];
 
-  v9 = [v10 present];
-  [v9 addFinishBlock:v7];
+  present = [v10 present];
+  [present addFinishBlock:completionCopy];
 }
 
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
   v6 = MEMORY[0x1E698CB50];
-  v7 = a5;
-  v8 = a4;
-  v10 = [[v6 alloc] initWithRequest:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  v10 = [[v6 alloc] initWithRequest:requestCopy];
 
-  v9 = [v10 present];
-  [v9 addFinishBlock:v7];
+  present = [v10 present];
+  [present addFinishBlock:completionCopy];
 }
 
 @end

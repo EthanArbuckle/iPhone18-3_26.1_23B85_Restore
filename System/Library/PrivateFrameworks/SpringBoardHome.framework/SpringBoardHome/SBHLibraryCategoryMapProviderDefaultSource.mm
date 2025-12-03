@@ -1,44 +1,44 @@
 @interface SBHLibraryCategoryMapProviderDefaultSource
-- (SBHLibraryCategoryMapProviderDefaultSource)initWithIconModel:(id)a3;
+- (SBHLibraryCategoryMapProviderDefaultSource)initWithIconModel:(id)model;
 - (SBHLibraryCategoryMapProviderSourceDelegate)delegate;
-- (void)_requestRefresh:(id)a3;
-- (void)requestLibraryCategoryMapWithOptions:(unint64_t)a3 existingLibraryCategoryMap:(id)a4 forbiddenApplicationIdentifiers:(id)a5 sessionId:(unint64_t)a6 queue:(id)a7 completion:(id)a8;
+- (void)_requestRefresh:(id)refresh;
+- (void)requestLibraryCategoryMapWithOptions:(unint64_t)options existingLibraryCategoryMap:(id)map forbiddenApplicationIdentifiers:(id)identifiers sessionId:(unint64_t)id queue:(id)queue completion:(id)completion;
 @end
 
 @implementation SBHLibraryCategoryMapProviderDefaultSource
 
-- (SBHLibraryCategoryMapProviderDefaultSource)initWithIconModel:(id)a3
+- (SBHLibraryCategoryMapProviderDefaultSource)initWithIconModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = SBHLibraryCategoryMapProviderDefaultSource;
   v6 = [(SBHLibraryCategoryMapProviderDefaultSource *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_iconModel, a3);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v7 selector:sel__requestRefresh_ name:@"SBIconModelDidAddIconNotification" object:v7->_iconModel];
+    objc_storeStrong(&v6->_iconModel, model);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__requestRefresh_ name:@"SBIconModelDidAddIconNotification" object:v7->_iconModel];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v7 selector:sel__requestRefresh_ name:@"SBIconModelWillRemoveIconNotification" object:v7->_iconModel];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__requestRefresh_ name:@"SBIconModelWillRemoveIconNotification" object:v7->_iconModel];
   }
 
   return v7;
 }
 
-- (void)requestLibraryCategoryMapWithOptions:(unint64_t)a3 existingLibraryCategoryMap:(id)a4 forbiddenApplicationIdentifiers:(id)a5 sessionId:(unint64_t)a6 queue:(id)a7 completion:(id)a8
+- (void)requestLibraryCategoryMapWithOptions:(unint64_t)options existingLibraryCategoryMap:(id)map forbiddenApplicationIdentifiers:(id)identifiers sessionId:(unint64_t)id queue:(id)queue completion:(id)completion
 {
   v64 = *MEMORY[0x1E69E9840];
-  v44 = a5;
-  v11 = a7;
-  v41 = a8;
-  queue = v11;
+  identifiersCopy = identifiers;
+  queueCopy = queue;
+  completionCopy = completion;
+  queue = queueCopy;
   BSDispatchQueueAssert();
   v12 = self->_iconModel;
-  v42 = [(SBHIconModel *)v12 leafIcons];
-  v13 = [v42 allObjects];
-  v14 = [v13 sortedArrayUsingComparator:&__block_literal_global_30];
+  leafIcons = [(SBHIconModel *)v12 leafIcons];
+  allObjects = [leafIcons allObjects];
+  v14 = [allObjects sortedArrayUsingComparator:&__block_literal_global_30];
 
   v15 = objc_opt_new();
   v16 = objc_opt_new();
@@ -68,16 +68,16 @@
         }
 
         v23 = *(*(&v58 + 1) + 8 * v22);
-        v24 = [v23 applicationBundleID];
-        if (-[SBHIconModel isIconVisible:](v12, "isIconVisible:", v23) && ([v23 isFolderIcon] & 1) == 0 && (objc_msgSend(v23, "isWidgetIcon") & 1) == 0 && (!v24 || (objc_msgSend(v44, "containsObject:", v24) & 1) == 0))
+        applicationBundleID = [v23 applicationBundleID];
+        if (-[SBHIconModel isIconVisible:](v12, "isIconVisible:", v23) && ([v23 isFolderIcon] & 1) == 0 && (objc_msgSend(v23, "isWidgetIcon") & 1) == 0 && (!applicationBundleID || (objc_msgSend(identifiersCopy, "containsObject:", applicationBundleID) & 1) == 0))
         {
           v49 = v22;
           v56 = 0u;
           v57 = 0u;
           v54 = 0u;
           v55 = 0u;
-          v25 = [v23 iTunesCategoriesOrderedByRelevancy];
-          v26 = [v25 countByEnumeratingWithState:&v54 objects:v62 count:16];
+          iTunesCategoriesOrderedByRelevancy = [v23 iTunesCategoriesOrderedByRelevancy];
+          v26 = [iTunesCategoriesOrderedByRelevancy countByEnumeratingWithState:&v54 objects:v62 count:16];
           if (!v26)
           {
             v29 = v21;
@@ -94,7 +94,7 @@
             {
               if (*v55 != v28)
               {
-                objc_enumerationMutation(v25);
+                objc_enumerationMutation(iTunesCategoriesOrderedByRelevancy);
               }
 
               v31 = *(*(&v54 + 1) + 8 * i);
@@ -104,14 +104,14 @@
                 if (v32)
                 {
                   v33 = v32;
-                  if (v24)
+                  if (applicationBundleID)
                   {
                     goto LABEL_19;
                   }
 
 LABEL_21:
-                  v36 = [v50 leafIdentifier];
-                  [v15 addApplicationIdentifier:v36 forCategoryIdentifier:v33];
+                  leafIdentifier = [v50 leafIdentifier];
+                  [v15 addApplicationIdentifier:leafIdentifier forCategoryIdentifier:v33];
                 }
 
                 else
@@ -120,20 +120,20 @@ LABEL_21:
                   v35 = v29++;
                   v33 = [(SBHLibraryCategoryIdentifier *)v34 initWithPredictionCategoryID:v35 localizedDisplayNameKey:v31];
                   [v16 setObject:v33 forKey:v31];
-                  if (!v24)
+                  if (!applicationBundleID)
                   {
                     goto LABEL_21;
                   }
 
 LABEL_19:
-                  [v15 addApplicationIdentifier:v24 forCategoryIdentifier:v33];
+                  [v15 addApplicationIdentifier:applicationBundleID forCategoryIdentifier:v33];
                 }
 
                 continue;
               }
             }
 
-            v27 = [v25 countByEnumeratingWithState:&v54 objects:v62 count:16];
+            v27 = [iTunesCategoriesOrderedByRelevancy countByEnumeratingWithState:&v54 objects:v62 count:16];
             if (!v27)
             {
 LABEL_27:
@@ -159,8 +159,8 @@ LABEL_27:
     while (v19);
   }
 
-  v37 = [v15 categoryIdentifiers];
-  v38 = [v37 sortedArrayUsingComparator:&__block_literal_global_9_0];
+  categoryIdentifiers = [v15 categoryIdentifiers];
+  v38 = [categoryIdentifiers sortedArrayUsingComparator:&__block_literal_global_9_0];
   [v15 setCategoryIdentifiers:v38];
 
   block[0] = MEMORY[0x1E69E9820];
@@ -168,9 +168,9 @@ LABEL_27:
   block[2] = __169__SBHLibraryCategoryMapProviderDefaultSource_requestLibraryCategoryMapWithOptions_existingLibraryCategoryMap_forbiddenApplicationIdentifiers_sessionId_queue_completion___block_invoke_3;
   block[3] = &unk_1E80898D8;
   v52 = v15;
-  v53 = v41;
+  v53 = completionCopy;
   v39 = v15;
-  v40 = v41;
+  v40 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -194,10 +194,10 @@ uint64_t __169__SBHLibraryCategoryMapProviderDefaultSource_requestLibraryCategor
   return v7;
 }
 
-- (void)_requestRefresh:(id)a3
+- (void)_requestRefresh:(id)refresh
 {
-  v4 = [(SBHLibraryCategoryMapProviderDefaultSource *)self delegate];
-  [v4 requestLibraryCategoryMapUpdateWithRefreshOptions:6 source:self];
+  delegate = [(SBHLibraryCategoryMapProviderDefaultSource *)self delegate];
+  [delegate requestLibraryCategoryMapUpdateWithRefreshOptions:6 source:self];
 }
 
 - (SBHLibraryCategoryMapProviderSourceDelegate)delegate

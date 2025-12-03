@@ -1,6 +1,6 @@
 @interface _AvailableExperimentsDebugController
 - (void)prepareContent;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _AvailableExperimentsDebugController
@@ -17,11 +17,11 @@
   v5 = [(MapsDebugValuesViewController *)self addSectionWithTitle:0 content:v6];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = _AvailableExperimentsDebugController;
-  [(MapsDebugValuesViewController *)&v8 viewWillAppear:a3];
+  [(MapsDebugValuesViewController *)&v8 viewWillAppear:appear];
   objc_initWeak(&location, self);
   v4 = +[GEOExperimentConfiguration sharedConfiguration];
   v5[0] = _NSConcreteStackBlock;

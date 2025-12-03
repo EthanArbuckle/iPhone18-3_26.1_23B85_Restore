@@ -1,53 +1,53 @@
 @interface _UILabelContentLayer
-- (id)actionForKey:(id)a3;
+- (id)actionForKey:(id)key;
 - (void)display;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation _UILabelContentLayer
 
 - (void)display
 {
-  v3 = [(_UILabelContentLayer *)self superlayer];
-  v4 = [v3 delegate];
-  [v4 layerWillDraw:v3];
+  superlayer = [(_UILabelContentLayer *)self superlayer];
+  delegate = [superlayer delegate];
+  [delegate layerWillDraw:superlayer];
 
   v5.receiver = self;
   v5.super_class = _UILabelContentLayer;
   [(_UILabelContentLayer *)&v5 display];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v11 = [(_UILabelContentLayer *)self superlayer];
+  superlayer = [(_UILabelContentLayer *)self superlayer];
   [(_UILabelContentLayer *)self frame];
   v6 = v5;
   v8 = v7;
-  CGContextSaveGState(a3);
-  CGContextTranslateCTM(a3, -v6, -v8);
-  v9 = [v11 delegate];
-  v10 = [v9 layer];
-  [v10 drawInContext:a3];
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, -v6, -v8);
+  delegate = [superlayer delegate];
+  layer = [delegate layer];
+  [layer drawInContext:context];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (self->_wantsAnimation)
   {
-    v5 = [(_UILabelContentLayer *)self superlayer];
-    v6 = [v5 delegate];
-    if (+[UIView _isInAnimationBlockWithAnimationsEnabled](UIView, "_isInAnimationBlockWithAnimationsEnabled") && [v6 _shouldAnimatePropertyWithKey:v4])
+    superlayer = [(_UILabelContentLayer *)self superlayer];
+    delegate = [superlayer delegate];
+    if (+[UIView _isInAnimationBlockWithAnimationsEnabled](UIView, "_isInAnimationBlockWithAnimationsEnabled") && [delegate _shouldAnimatePropertyWithKey:keyCopy])
     {
       v7 = +[UIView _currentViewAnimationState];
-      v8 = [v7 actionForLayer:self forKey:v4 forView:v6];
+      v8 = [v7 actionForLayer:self forKey:keyCopy forView:delegate];
 
       if (v8 && +[UIView _isAnimationTracking])
       {
         v9 = +[UIView _currentViewAnimationState];
-        [v9 _trackAnimation:v8 withAnimationKey:v4 forKeyPath:v4 inLayer:self];
+        [v9 _trackAnimation:v8 withAnimationKey:keyCopy forKeyPath:keyCopy inLayer:self];
       }
     }
 

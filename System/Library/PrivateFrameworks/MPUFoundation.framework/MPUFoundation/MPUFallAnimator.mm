@@ -1,37 +1,37 @@
 @interface MPUFallAnimator
-+ (void)animateFallForView:(id)a3 withCompletionHandler:(id)a4;
++ (void)animateFallForView:(id)view withCompletionHandler:(id)handler;
 @end
 
 @implementation MPUFallAnimator
 
-+ (void)animateFallForView:(id)a3 withCompletionHandler:(id)a4
++ (void)animateFallForView:(id)view withCompletionHandler:(id)handler
 {
   v87[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  viewCopy = view;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (viewCopy)
   {
-    v66 = v6;
-    v8 = [v5 layer];
-    [v8 setAnchorPoint:{0.5, 1.0}];
-    [v8 position];
+    v66 = handlerCopy;
+    layer = [viewCopy layer];
+    [layer setAnchorPoint:{0.5, 1.0}];
+    [layer position];
     v10 = v9;
     v12 = v11;
-    [v8 bounds];
-    v64 = v8;
-    [v8 setPosition:{v10, v12 + CGRectGetHeight(v88) * 0.5}];
+    [layer bounds];
+    v64 = layer;
+    [layer setPosition:{v10, v12 + CGRectGetHeight(v88) * 0.5}];
     v13 = objc_alloc(MEMORY[0x277D75D18]);
-    [v5 bounds];
+    [viewCopy bounds];
     v14 = [v13 initWithFrame:?];
-    v15 = [MEMORY[0x277D75348] blackColor];
-    [v14 setBackgroundColor:v15];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v14 setBackgroundColor:blackColor];
 
     v16 = 0.0;
     [v14 setAlpha:0.0];
-    v67 = v5;
+    v67 = viewCopy;
     v62 = v14;
-    [v5 addSubview:v14];
+    [viewCopy addSubview:v14];
     v17 = objc_alloc_init(_MPUFallAnimatorDynamicItem);
     [(_MPUFallAnimatorDynamicItem *)v17 setBounds:0.0, 0.0, 5.0, 100.0];
     [(_MPUFallAnimatorDynamicItem *)v17 setCenter:50.0, 100.0];
@@ -196,16 +196,16 @@
     [v57 setDuration:v16 * v58];
     [v57 setFillMode:v56];
     [v57 setRemovedOnCompletion:0];
-    v59 = [v53 layer];
-    [v59 addAnimation:v57 forKey:@"fallingAnimation"];
+    layer2 = [v53 layer];
+    [layer2 addAnimation:v57 forKey:@"fallingAnimation"];
 
     [MEMORY[0x277CD9FF0] commit];
-    v5 = v67;
+    viewCopy = v67;
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    (*(v6 + 2))(v6);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 }
 

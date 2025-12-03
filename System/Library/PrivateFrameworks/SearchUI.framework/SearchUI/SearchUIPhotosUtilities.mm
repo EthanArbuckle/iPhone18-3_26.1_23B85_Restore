@@ -1,10 +1,10 @@
 @interface SearchUIPhotosUtilities
-+ (id)coreSpotlightIdentifierForAsset:(id)a3;
-+ (id)fetchAssetsForImages:(id)a3;
-+ (id)fetchOptionsForLibrary:(id)a3;
-+ (id)fetchResultForPhotoIdentifiers:(id)a3 isSyndicated:(BOOL)a4;
-+ (id)personWithIdentifier:(id)a3 isSyndicated:(BOOL)a4;
-+ (id)sharedPhotoLibraryIsSyndicated:(BOOL)a3;
++ (id)coreSpotlightIdentifierForAsset:(id)asset;
++ (id)fetchAssetsForImages:(id)images;
++ (id)fetchOptionsForLibrary:(id)library;
++ (id)fetchResultForPhotoIdentifiers:(id)identifiers isSyndicated:(BOOL)syndicated;
++ (id)personWithIdentifier:(id)identifier isSyndicated:(BOOL)syndicated;
++ (id)sharedPhotoLibraryIsSyndicated:(BOOL)syndicated;
 + (void)shutdownPhotoLibraries;
 @end
 
@@ -29,10 +29,10 @@
 
   if (systemPhotoLibrary)
   {
-    v4 = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
-    if (v4)
+    systemPhotoLibraryURL = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
+    if (systemPhotoLibraryURL)
     {
-      [MEMORY[0x1E69789A8] unsafeShutdownLibraryWithPhotoLibraryURL:v4];
+      [MEMORY[0x1E69789A8] unsafeShutdownLibraryWithPhotoLibraryURL:systemPhotoLibraryURL];
       v5 = systemPhotoLibrary;
       systemPhotoLibrary = 0;
 
@@ -79,9 +79,9 @@
   }
 }
 
-+ (id)sharedPhotoLibraryIsSyndicated:(BOOL)a3
++ (id)sharedPhotoLibraryIsSyndicated:(BOOL)syndicated
 {
-  v3 = a3;
+  syndicatedCopy = syndicated;
   if (sharedPhotoLibraryIsSyndicated__enableMultiLibraryModeOnceToken != -1)
   {
     +[SearchUIPhotosUtilities sharedPhotoLibraryIsSyndicated:];
@@ -103,7 +103,7 @@
   }
 
   v6 = &systemPhotoLibrary;
-  if (v3)
+  if (syndicatedCopy)
   {
     v7 = &syndicatedPhotoLibrary;
   }
@@ -116,7 +116,7 @@
   v8 = *v7;
   if (!v8)
   {
-    if (v3)
+    if (syndicatedCopy)
     {
       v9 = 3;
     }
@@ -127,7 +127,7 @@
     }
 
     v16 = 0;
-    if (v3)
+    if (syndicatedCopy)
     {
       v6 = &syndicatedPhotoLibrary;
     }
@@ -140,7 +140,7 @@
       v11 = SearchUIGeneralLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(SearchUIPhotosUtilities *)v10 sharedPhotoLibraryIsSyndicated:v3, v11];
+        [(SearchUIPhotosUtilities *)v10 sharedPhotoLibraryIsSyndicated:syndicatedCopy, v11];
       }
     }
 
@@ -172,25 +172,25 @@
   return v8;
 }
 
-+ (id)fetchResultForPhotoIdentifiers:(id)a3 isSyndicated:(BOOL)a4
++ (id)fetchResultForPhotoIdentifiers:(id)identifiers isSyndicated:(BOOL)syndicated
 {
-  v4 = a4;
+  syndicatedCopy = syndicated;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v7 = [a1 sharedPhotoLibraryIsSyndicated:v4];
+    v7 = [self sharedPhotoLibraryIsSyndicated:syndicatedCopy];
     if (v7)
     {
-      v8 = [a1 fetchOptionsForLibrary:v7];
-      if (v4)
+      v8 = [self fetchOptionsForLibrary:v7];
+      if (syndicatedCopy)
       {
-        [MEMORY[0x1E6978630] fetchAssetsWithSyndicationIdentifiers:v6 options:v8 includeRejected:1];
+        [MEMORY[0x1E6978630] fetchAssetsWithSyndicationIdentifiers:identifiersCopy options:v8 includeRejected:1];
       }
 
       else
       {
-        [MEMORY[0x1E6978630] fetchAssetsWithLocalIdentifiers:v6 options:v8];
+        [MEMORY[0x1E6978630] fetchAssetsWithLocalIdentifiers:identifiersCopy options:v8];
       }
       v9 = ;
       if (!v9)
@@ -198,9 +198,9 @@
         v10 = SearchUIGeneralLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          v12 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+          v12 = [MEMORY[0x1E696AD98] numberWithBool:syndicatedCopy];
           v13 = 138412802;
-          v14 = v6;
+          v14 = identifiersCopy;
           v15 = 2112;
           v16 = v8;
           v17 = 2112;
@@ -224,17 +224,17 @@
   return v9;
 }
 
-+ (id)fetchAssetsForImages:(id)a3
++ (id)fetchAssetsForImages:(id)images
 {
   v67 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  imagesCopy = images;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v6 = v3;
+  v6 = imagesCopy;
   v7 = [v6 countByEnumeratingWithState:&v59 objects:v66 count:16];
   if (v7)
   {
@@ -260,8 +260,8 @@
           v12 = v5;
         }
 
-        v13 = [v11 photoIdentifier];
-        [v12 addObject:v13];
+        photoIdentifier = [v11 photoIdentifier];
+        [v12 addObject:photoIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v59 objects:v66 count:16];
@@ -366,8 +366,8 @@
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v47 + 1) + 8 * m) photoIdentifier];
-        v36 = [v17 objectForKeyedSubscript:v35];
+        photoIdentifier2 = [*(*(&v47 + 1) + 8 * m) photoIdentifier];
+        v36 = [v17 objectForKeyedSubscript:photoIdentifier2];
 
         if (v36)
         {
@@ -376,8 +376,8 @@
 
         else
         {
-          v37 = [MEMORY[0x1E695DFB0] null];
-          [v29 addObject:v37];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v29 addObject:null];
         }
       }
 
@@ -392,17 +392,17 @@
   return v38;
 }
 
-+ (id)personWithIdentifier:(id)a3 isSyndicated:(BOOL)a4
++ (id)personWithIdentifier:(id)identifier isSyndicated:(BOOL)syndicated
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
-    v4 = a4;
-    v5 = a3;
-    v6 = [SearchUIPhotosUtilities sharedPhotoLibraryIsSyndicated:v4];
+    syndicatedCopy = syndicated;
+    identifierCopy = identifier;
+    v6 = [SearchUIPhotosUtilities sharedPhotoLibraryIsSyndicated:syndicatedCopy];
     v7 = [SearchUIPhotosUtilities fetchOptionsForLibrary:v6];
     v8 = MEMORY[0x1E6978980];
-    v13[0] = v5;
+    v13[0] = identifierCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     v10 = [v8 fetchPersonsWithLocalIdentifiers:v9 options:v7];
   }
@@ -412,51 +412,51 @@
     v10 = 0;
   }
 
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  return v11;
+  return firstObject;
 }
 
-+ (id)fetchOptionsForLibrary:(id)a3
++ (id)fetchOptionsForLibrary:(id)library
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 librarySpecificFetchOptions];
+  libraryCopy = library;
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
   v8[0] = *MEMORY[0x1E6978C20];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  [v4 addFetchPropertySets:v5];
+  [librarySpecificFetchOptions addFetchPropertySets:v5];
 
-  [v4 setIncludeGuestAssets:1];
-  v6 = [v3 wellKnownPhotoLibraryIdentifier];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
+  wellKnownPhotoLibraryIdentifier = [libraryCopy wellKnownPhotoLibraryIdentifier];
 
-  if (v6 == 1)
+  if (wellKnownPhotoLibraryIdentifier == 1)
   {
-    [v4 setIncludeAssetSourceTypes:7];
+    [librarySpecificFetchOptions setIncludeAssetSourceTypes:7];
   }
 
-  return v4;
+  return librarySpecificFetchOptions;
 }
 
-+ (id)coreSpotlightIdentifierForAsset:(id)a3
++ (id)coreSpotlightIdentifierForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v4 wellKnownPhotoLibraryIdentifier];
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
+  wellKnownPhotoLibraryIdentifier = [photoLibrary wellKnownPhotoLibraryIdentifier];
 
-  v6 = [v3 curationProperties];
-  v7 = [v6 syndicationIdentifier];
+  curationProperties = [assetCopy curationProperties];
+  syndicationIdentifier = [curationProperties syndicationIdentifier];
 
-  if (v5 == 3 && v7)
+  if (wellKnownPhotoLibraryIdentifier == 3 && syndicationIdentifier)
   {
-    v8 = v7;
+    uuid = syndicationIdentifier;
   }
 
   else
   {
-    v8 = [v3 uuid];
+    uuid = [assetCopy uuid];
   }
 
-  v9 = v8;
+  v9 = uuid;
 
   return v9;
 }

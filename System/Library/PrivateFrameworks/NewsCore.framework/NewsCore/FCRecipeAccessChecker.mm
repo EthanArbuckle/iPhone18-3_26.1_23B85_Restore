@@ -1,7 +1,7 @@
 @interface FCRecipeAccessChecker
 - (FCRecipeAccessChecker)init;
-- (FCRecipeAccessChecker)initWithAccessCheckers:(id)a3;
-- (FCRecipeAccessChecker)initWithPrivateChannelMembershipController:(id)a3;
+- (FCRecipeAccessChecker)initWithAccessCheckers:(id)checkers;
+- (FCRecipeAccessChecker)initWithPrivateChannelMembershipController:(id)controller;
 @end
 
 @implementation FCRecipeAccessChecker
@@ -32,10 +32,10 @@
   objc_exception_throw(v6);
 }
 
-- (FCRecipeAccessChecker)initWithAccessCheckers:(id)a3
+- (FCRecipeAccessChecker)initWithAccessCheckers:(id)checkers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  checkersCopy = checkers;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Do not call method"];
@@ -59,11 +59,11 @@
   objc_exception_throw(v8);
 }
 
-- (FCRecipeAccessChecker)initWithPrivateChannelMembershipController:(id)a3
+- (FCRecipeAccessChecker)initWithPrivateChannelMembershipController:(id)controller
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  controllerCopy = controller;
+  if (!controllerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "privateChannelMembershipController != nil"];
     *buf = 136315906;
@@ -82,8 +82,8 @@
   v13[1] = 3221225472;
   v13[2] = __68__FCRecipeAccessChecker_initWithPrivateChannelMembershipController___block_invoke;
   v13[3] = &unk_1E7C36D40;
-  v14 = v4;
-  v6 = v4;
+  v14 = controllerCopy;
+  v6 = controllerCopy;
   v7 = [v5 fc_array:v13];
   v12.receiver = self;
   v12.super_class = FCRecipeAccessChecker;

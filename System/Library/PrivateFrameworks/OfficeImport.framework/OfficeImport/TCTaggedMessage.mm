@@ -1,21 +1,21 @@
 @interface TCTaggedMessage
-+ (id)taggedMessageWithMessageText:(id)a3;
-- (TCTaggedMessage)initWithMessageText:(id)a3;
++ (id)taggedMessageWithMessageText:(id)text;
+- (TCTaggedMessage)initWithMessageText:(id)text;
 @end
 
 @implementation TCTaggedMessage
 
-+ (id)taggedMessageWithMessageText:(id)a3
++ (id)taggedMessageWithMessageText:(id)text
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMessageText:v4];
+  textCopy = text;
+  v5 = [[self alloc] initWithMessageText:textCopy];
 
   return v5;
 }
 
-- (TCTaggedMessage)initWithMessageText:(id)a3
+- (TCTaggedMessage)initWithMessageText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v11.receiver = self;
   v11.super_class = TCTaggedMessage;
   v5 = [(TCTaggedMessage *)&v11 init];
@@ -24,7 +24,7 @@
   {
     v7 = [TCTaggedMessage initWithMessageText:]::currentTag++;
     v5->mMessageTag = v7;
-    v8 = [v4 copy];
+    v8 = [textCopy copy];
     mMessageText = v6->mMessageText;
     v6->mMessageText = v8;
   }

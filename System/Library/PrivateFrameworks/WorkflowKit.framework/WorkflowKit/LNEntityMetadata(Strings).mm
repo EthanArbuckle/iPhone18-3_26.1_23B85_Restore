@@ -10,7 +10,7 @@
   v8 = a4;
   v9 = a5;
   Class = object_getClass(a3);
-  v11 = [a1 wf_descriptionClassForEntityType:v8 appBundleIdentifier:v9];
+  v11 = [self wf_descriptionClassForEntityType:v8 appBundleIdentifier:v9];
   if (v11)
   {
     v12 = object_getClass(v11);

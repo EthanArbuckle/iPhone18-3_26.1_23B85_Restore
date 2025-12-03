@@ -1,14 +1,14 @@
 @interface NPKProtoStandalonePaymentPass
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsActivationState:(id)a3;
+- (int)StringAsActivationState:(id)state;
 - (int)activationState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentPass
@@ -26,30 +26,30 @@
   }
 }
 
-- (int)StringAsActivationState:(id)a3
+- (int)StringAsActivationState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Activated"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Activated"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"RequiresActivation"])
+  else if ([stateCopy isEqualToString:@"RequiresActivation"])
   {
     v4 = 110;
   }
 
-  else if ([v3 isEqualToString:@"Activating"])
+  else if ([stateCopy isEqualToString:@"Activating"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"Suspended"])
+  else if ([stateCopy isEqualToString:@"Suspended"])
   {
     v4 = 130;
   }
 
-  else if ([v3 isEqualToString:@"Deactivated"])
+  else if ([stateCopy isEqualToString:@"Deactivated"])
   {
     v4 = 140;
   }
@@ -68,44 +68,44 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentPass;
   v4 = [(NPKProtoStandalonePaymentPass *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentPass *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentPass *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   pass = self->_pass;
   if (pass)
   {
-    v5 = [(NPKProtoStandalonePass *)pass dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"pass"];
+    dictionaryRepresentation = [(NPKProtoStandalonePass *)pass dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"pass"];
   }
 
   primaryAccountIdentifier = self->_primaryAccountIdentifier;
   if (primaryAccountIdentifier)
   {
-    [v3 setObject:primaryAccountIdentifier forKey:@"primaryAccountIdentifier"];
+    [dictionary setObject:primaryAccountIdentifier forKey:@"primaryAccountIdentifier"];
   }
 
   primaryAccountNumberSuffix = self->_primaryAccountNumberSuffix;
   if (primaryAccountNumberSuffix)
   {
-    [v3 setObject:primaryAccountNumberSuffix forKey:@"primaryAccountNumberSuffix"];
+    [dictionary setObject:primaryAccountNumberSuffix forKey:@"primaryAccountNumberSuffix"];
   }
 
   deviceAccountIdentifier = self->_deviceAccountIdentifier;
   if (deviceAccountIdentifier)
   {
-    [v3 setObject:deviceAccountIdentifier forKey:@"deviceAccountIdentifier"];
+    [dictionary setObject:deviceAccountIdentifier forKey:@"deviceAccountIdentifier"];
   }
 
   deviceAccountNumberSuffix = self->_deviceAccountNumberSuffix;
   if (deviceAccountNumberSuffix)
   {
-    [v3 setObject:deviceAccountNumberSuffix forKey:@"deviceAccountNumberSuffix"];
+    [dictionary setObject:deviceAccountNumberSuffix forKey:@"deviceAccountNumberSuffix"];
   }
 
   if (*&self->_has)
@@ -139,7 +139,7 @@
         case 140:
           v11 = @"Deactivated";
 LABEL_24:
-          [v3 setObject:v11 forKey:@"activationState"];
+          [dictionary setObject:v11 forKey:@"activationState"];
 
           goto LABEL_25;
       }
@@ -153,22 +153,22 @@ LABEL_25:
   devicePrimaryPaymentApplication = self->_devicePrimaryPaymentApplication;
   if (devicePrimaryPaymentApplication)
   {
-    v13 = [(NPKProtoStandalonePaymentApplication *)devicePrimaryPaymentApplication dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"devicePrimaryPaymentApplication"];
+    dictionaryRepresentation2 = [(NPKProtoStandalonePaymentApplication *)devicePrimaryPaymentApplication dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"devicePrimaryPaymentApplication"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_pass)
   {
     [NPKProtoStandalonePaymentPass writeTo:];
   }
 
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteSubmessage();
   if (self->_primaryAccountIdentifier)
   {
@@ -207,31 +207,31 @@ LABEL_25:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setPass:self->_pass];
+  toCopy = to;
+  [toCopy setPass:self->_pass];
   if (self->_primaryAccountIdentifier)
   {
-    [v5 setPrimaryAccountIdentifier:?];
+    [toCopy setPrimaryAccountIdentifier:?];
   }
 
   if (self->_primaryAccountNumberSuffix)
   {
-    [v5 setPrimaryAccountNumberSuffix:?];
+    [toCopy setPrimaryAccountNumberSuffix:?];
   }
 
-  v4 = v5;
+  v4 = toCopy;
   if (self->_deviceAccountIdentifier)
   {
-    [v5 setDeviceAccountIdentifier:?];
-    v4 = v5;
+    [toCopy setDeviceAccountIdentifier:?];
+    v4 = toCopy;
   }
 
   if (self->_deviceAccountNumberSuffix)
   {
-    [v5 setDeviceAccountNumberSuffix:?];
-    v4 = v5;
+    [toCopy setDeviceAccountNumberSuffix:?];
+    v4 = toCopy;
   }
 
   if (*&self->_has)
@@ -242,31 +242,31 @@ LABEL_25:
 
   if (self->_devicePrimaryPaymentApplication)
   {
-    [v5 setDevicePrimaryPaymentApplication:?];
-    v4 = v5;
+    [toCopy setDevicePrimaryPaymentApplication:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoStandalonePass *)self->_pass copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoStandalonePass *)self->_pass copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_primaryAccountIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_primaryAccountIdentifier copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(NSString *)self->_primaryAccountNumberSuffix copyWithZone:a3];
+  v10 = [(NSString *)self->_primaryAccountNumberSuffix copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
-  v12 = [(NSString *)self->_deviceAccountIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_deviceAccountIdentifier copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
-  v14 = [(NSString *)self->_deviceAccountNumberSuffix copyWithZone:a3];
+  v14 = [(NSString *)self->_deviceAccountNumberSuffix copyWithZone:zone];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
@@ -276,23 +276,23 @@ LABEL_25:
     *(v5 + 64) |= 1u;
   }
 
-  v16 = [(NPKProtoStandalonePaymentApplication *)self->_devicePrimaryPaymentApplication copyWithZone:a3];
+  v16 = [(NPKProtoStandalonePaymentApplication *)self->_devicePrimaryPaymentApplication copyWithZone:zone];
   v17 = *(v5 + 32);
   *(v5 + 32) = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   pass = self->_pass;
-  if (pass | *(v4 + 5))
+  if (pass | *(equalCopy + 5))
   {
     if (![(NPKProtoStandalonePass *)pass isEqual:?])
     {
@@ -301,7 +301,7 @@ LABEL_25:
   }
 
   primaryAccountIdentifier = self->_primaryAccountIdentifier;
-  if (primaryAccountIdentifier | *(v4 + 6))
+  if (primaryAccountIdentifier | *(equalCopy + 6))
   {
     if (![(NSString *)primaryAccountIdentifier isEqual:?])
     {
@@ -310,7 +310,7 @@ LABEL_25:
   }
 
   primaryAccountNumberSuffix = self->_primaryAccountNumberSuffix;
-  if (primaryAccountNumberSuffix | *(v4 + 7))
+  if (primaryAccountNumberSuffix | *(equalCopy + 7))
   {
     if (![(NSString *)primaryAccountNumberSuffix isEqual:?])
     {
@@ -319,7 +319,7 @@ LABEL_25:
   }
 
   deviceAccountIdentifier = self->_deviceAccountIdentifier;
-  if (deviceAccountIdentifier | *(v4 + 2))
+  if (deviceAccountIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)deviceAccountIdentifier isEqual:?])
     {
@@ -328,7 +328,7 @@ LABEL_25:
   }
 
   deviceAccountNumberSuffix = self->_deviceAccountNumberSuffix;
-  if (deviceAccountNumberSuffix | *(v4 + 3))
+  if (deviceAccountNumberSuffix | *(equalCopy + 3))
   {
     if (![(NSString *)deviceAccountNumberSuffix isEqual:?])
     {
@@ -336,16 +336,16 @@ LABEL_25:
     }
   }
 
-  v10 = *(v4 + 64);
+  v10 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_activationState != *(v4 + 2))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_activationState != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v12 = 0;
@@ -353,7 +353,7 @@ LABEL_19:
   }
 
   devicePrimaryPaymentApplication = self->_devicePrimaryPaymentApplication;
-  if (devicePrimaryPaymentApplication | *(v4 + 4))
+  if (devicePrimaryPaymentApplication | *(equalCopy + 4))
   {
     v12 = [(NPKProtoStandalonePaymentApplication *)devicePrimaryPaymentApplication isEqual:?];
   }
@@ -388,12 +388,12 @@ LABEL_20:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(NPKProtoStandalonePaymentApplication *)self->_devicePrimaryPaymentApplication hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   pass = self->_pass;
-  v6 = *(v4 + 5);
-  v9 = v4;
+  v6 = *(fromCopy + 5);
+  v9 = fromCopy;
   if (pass)
   {
     if (!v6)
@@ -414,40 +414,40 @@ LABEL_20:
     [(NPKProtoStandalonePaymentPass *)self setPass:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(NPKProtoStandalonePaymentPass *)self setPrimaryAccountIdentifier:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NPKProtoStandalonePaymentPass *)self setPrimaryAccountNumberSuffix:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NPKProtoStandalonePaymentPass *)self setDeviceAccountIdentifier:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NPKProtoStandalonePaymentPass *)self setDeviceAccountNumberSuffix:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_activationState = *(v4 + 2);
+    self->_activationState = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
   devicePrimaryPaymentApplication = self->_devicePrimaryPaymentApplication;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (devicePrimaryPaymentApplication)
   {
     if (!v8)
@@ -468,7 +468,7 @@ LABEL_7:
     [(NPKProtoStandalonePaymentPass *)self setDevicePrimaryPaymentApplication:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_23:
 }
 

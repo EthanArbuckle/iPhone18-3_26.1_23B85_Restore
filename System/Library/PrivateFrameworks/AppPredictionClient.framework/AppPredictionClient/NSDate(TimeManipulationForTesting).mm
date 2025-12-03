@@ -16,10 +16,10 @@
 + (uint64_t)test_performBlockWithAbilityToManipulateTime:()TimeManipulationForTesting
 {
   v4 = a3;
-  [a1 test_beginManipulationOfTime];
+  [self test_beginManipulationOfTime];
   v4[2](v4);
 
-  return [a1 test_endManipulationOfTime];
+  return [self test_endManipulationOfTime];
 }
 
 + (void)test_beginManipulationOfTime
@@ -33,7 +33,7 @@
   v6[2] = __66__NSDate_TimeManipulationForTesting__test_beginManipulationOfTime__block_invoke;
   v6[3] = &__block_descriptor_48_e5_v8__0l;
   v6[4] = a2;
-  v6[5] = a1;
+  v6[5] = self;
   dispatch_barrier_sync(v5, v6);
 }
 
@@ -48,7 +48,7 @@
   v6[2] = __64__NSDate_TimeManipulationForTesting__test_endManipulationOfTime__block_invoke;
   v6[3] = &__block_descriptor_48_e5_v8__0l;
   v6[4] = a2;
-  v6[5] = a1;
+  v6[5] = self;
   dispatch_barrier_sync(v5, v6);
 }
 
@@ -61,7 +61,7 @@
   block[2] = __58__NSDate_TimeManipulationForTesting__test_setCurrentDate___block_invoke;
   block[3] = &unk_1E80C0E10;
   v10 = a2;
-  v11 = a1;
+  selfCopy = self;
   v9 = v5;
   v7 = v5;
   dispatch_barrier_async(v6, block);
@@ -75,7 +75,7 @@
   block[2] = __77__NSDate_TimeManipulationForTesting__test_adjustCurrentDateWithTimeInterval___block_invoke;
   block[3] = &__block_descriptor_56_e5_v8__0l;
   block[4] = a2;
-  block[5] = a1;
+  block[5] = self;
   *&block[6] = a3;
   dispatch_barrier_async(v6, block);
 }
@@ -138,7 +138,7 @@
   v5[2] = __72__NSDate_TimeManipulationForTesting___atx_dateWithTimeIntervalSinceNow___block_invoke;
   v5[3] = &unk_1E80C24A0;
   v5[4] = &v6;
-  *&v5[5] = a1;
+  *&v5[5] = self;
   dispatch_sync(v2, v5);
 
   v3 = v7[5];
@@ -177,7 +177,7 @@
   v5[1] = 3221225472;
   v5[2] = __63__NSDate_TimeManipulationForTesting___atx_timeIntervalSinceNow__block_invoke;
   v5[3] = &unk_1E80C29A0;
-  v5[4] = a1;
+  v5[4] = self;
   v5[5] = &v6;
   dispatch_sync(v2, v5);
 

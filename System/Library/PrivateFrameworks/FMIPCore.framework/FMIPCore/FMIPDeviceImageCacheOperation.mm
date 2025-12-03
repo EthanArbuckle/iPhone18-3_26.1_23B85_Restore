@@ -1,32 +1,32 @@
 @interface FMIPDeviceImageCacheOperation
 - (_TtC8FMIPCore29FMIPDeviceImageCacheOperation)init;
 - (void)main;
-- (void)setFinished:(BOOL)a3;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
 @implementation FMIPDeviceImageCacheOperation
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  v6 = self;
+  selfCopy = self;
   v4 = sub_24A82CF94();
-  [(FMIPDeviceImageCacheOperation *)v6 willChangeValueForKey:v4];
+  [(FMIPDeviceImageCacheOperation *)selfCopy willChangeValueForKey:v4];
 
-  *(&v6->super.super.isa + OBJC_IVAR____TtC8FMIPCore29FMIPDeviceImageCacheOperation__isFinished) = a3;
+  *(&selfCopy->super.super.isa + OBJC_IVAR____TtC8FMIPCore29FMIPDeviceImageCacheOperation__isFinished) = finished;
   v5 = sub_24A82CF94();
-  [(FMIPDeviceImageCacheOperation *)v6 didChangeValueForKey:v5];
+  [(FMIPDeviceImageCacheOperation *)selfCopy didChangeValueForKey:v5];
 }
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A6D2E7C();
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A6D2FD0();
 }
 

@@ -1,9 +1,9 @@
 @interface TILanguageModelOfflineLearningAgent
 + (id)sharedLearningAgent;
-- (BOOL)continueLearningTaskWithStrategy:(id)a3;
+- (BOOL)continueLearningTaskWithStrategy:(id)strategy;
 - (TILanguageModelOfflineLearningAgent)init;
 - (void)handleRemovalOfLearnedModels;
-- (void)performLearningIfNecessaryWithStrategy:(id)a3 lastAdaptationTime:(double)a4;
+- (void)performLearningIfNecessaryWithStrategy:(id)strategy lastAdaptationTime:(double)time;
 @end
 
 @implementation TILanguageModelOfflineLearningAgent
@@ -11,9 +11,9 @@
 - (void)handleRemovalOfLearnedModels
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(TILanguageModelOfflineLearningAgent *)self currentLearningTask];
+  currentLearningTask = [(TILanguageModelOfflineLearningAgent *)self currentLearningTask];
 
-  if (v3)
+  if (currentLearningTask)
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -32,23 +32,23 @@
       }
     }
 
-    v5 = [(TILanguageModelOfflineLearningAgent *)self currentLearningTask];
-    [v5 setCancelled:1];
+    currentLearningTask2 = [(TILanguageModelOfflineLearningAgent *)self currentLearningTask];
+    [currentLearningTask2 setCancelled:1];
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performLearningIfNecessaryWithStrategy:(id)a3 lastAdaptationTime:(double)a4
+- (void)performLearningIfNecessaryWithStrategy:(id)strategy lastAdaptationTime:(double)time
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 0.0)
+  strategyCopy = strategy;
+  v7 = strategyCopy;
+  if (time == 0.0)
   {
-    v8 = [v6 learningTask];
+    learningTask = [strategyCopy learningTask];
 
-    if (v8)
+    if (learningTask)
     {
       v9 = +[TIKeyboardAssertionManager sharedAssertionManager];
       [v9 retainBackgroundActivityAssertion];
@@ -68,15 +68,15 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         v13 = MEMORY[0x277CCACA8];
-        v14 = [v18[5] learningTask];
-        v15 = [v14 clientIdentifier];
-        v16 = [v13 stringWithFormat:@"%s Beginning offline learing task for client '%@'", "-[TILanguageModelOfflineLearningAgent performLearningIfNecessaryWithStrategy:lastAdaptationTime:]", v15];
+        learningTask2 = [v18[5] learningTask];
+        clientIdentifier = [learningTask2 clientIdentifier];
+        v16 = [v13 stringWithFormat:@"%s Beginning offline learing task for client '%@'", "-[TILanguageModelOfflineLearningAgent performLearningIfNecessaryWithStrategy:lastAdaptationTime:]", clientIdentifier];
         *buf = 138412290;
         v24 = v16;
         _os_log_debug_impl(&dword_22CA55000, v10, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v11 = [(TILanguageModelOfflineLearningAgent *)self dispatchQueue];
+      dispatchQueue = [(TILanguageModelOfflineLearningAgent *)self dispatchQueue];
       TIDispatchAsync();
 
       _Block_object_dispose(&v17, 8);
@@ -137,16 +137,16 @@ uint64_t __97__TILanguageModelOfflineLearningAgent_performLearningIfNecessaryWit
   return result;
 }
 
-- (BOOL)continueLearningTaskWithStrategy:(id)a3
+- (BOOL)continueLearningTaskWithStrategy:(id)strategy
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  strategyCopy = strategy;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(TILanguageModelOfflineLearningAgent *)self currentLearningTask];
-  v7 = [v6 dataSource];
-  v8 = [v7 nextOutgoingMessageBatch];
+  currentLearningTask = [(TILanguageModelOfflineLearningAgent *)self currentLearningTask];
+  dataSource = [currentLearningTask dataSource];
+  nextOutgoingMessageBatch = [dataSource nextOutgoingMessageBatch];
 
-  if (v8)
+  if (nextOutgoingMessageBatch)
   {
     if (TICanLogMessageAtLevel_onceToken != -1)
     {
@@ -159,24 +159,24 @@ uint64_t __97__TILanguageModelOfflineLearningAgent_performLearningIfNecessaryWit
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v26 = MEMORY[0x277CCACA8];
-        v27 = [v8 count];
-        v28 = [v6 clientIdentifier];
-        v29 = [v26 stringWithFormat:@"%s Retrieved %lu messages from %@ for %@", "-[TILanguageModelOfflineLearningAgent continueLearningTaskWithStrategy:]", v27, v6, v28];
+        v27 = [nextOutgoingMessageBatch count];
+        clientIdentifier = [currentLearningTask clientIdentifier];
+        v29 = [v26 stringWithFormat:@"%s Retrieved %lu messages from %@ for %@", "-[TILanguageModelOfflineLearningAgent continueLearningTaskWithStrategy:]", v27, currentLearningTask, clientIdentifier];
         *buf = 138412290;
         v39 = v29;
         _os_log_debug_impl(&dword_22CA55000, v9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
 
-    v10 = [v4 filterMessages:v8];
+    v10 = [strategyCopy filterMessages:nextOutgoingMessageBatch];
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v12 = v10;
-    v13 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    currentLearningTask3 = v10;
+    v13 = [currentLearningTask3 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v13)
     {
       v14 = v13;
@@ -187,11 +187,11 @@ uint64_t __97__TILanguageModelOfflineLearningAgent_performLearningIfNecessaryWit
         {
           if (*v34 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(currentLearningTask3);
           }
 
-          v17 = [*(*(&v33 + 1) + 8 * i) recipient];
-          v18 = [v17 copy];
+          recipient = [*(*(&v33 + 1) + 8 * i) recipient];
+          v18 = [recipient copy];
 
           if ([v18 length])
           {
@@ -199,14 +199,14 @@ uint64_t __97__TILanguageModelOfflineLearningAgent_performLearningIfNecessaryWit
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v14 = [currentLearningTask3 countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v14);
     }
 
     v19 = [TILanguageModelOfflineLearningAgent contactRecordsForRecipients:v11];
-    v20 = [v4 learnMessages:v12 withRecipientRecords:v19];
+    v20 = [strategyCopy learnMessages:currentLearningTask3 withRecipientRecords:v19];
   }
 
   else
@@ -222,21 +222,21 @@ uint64_t __97__TILanguageModelOfflineLearningAgent_performLearningIfNecessaryWit
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
         v30 = MEMORY[0x277CCACA8];
-        v31 = [v6 clientIdentifier];
-        v32 = [v30 stringWithFormat:@"%s Finished importing data for %@", "-[TILanguageModelOfflineLearningAgent continueLearningTaskWithStrategy:]", v31];
+        clientIdentifier2 = [currentLearningTask clientIdentifier];
+        v32 = [v30 stringWithFormat:@"%s Finished importing data for %@", "-[TILanguageModelOfflineLearningAgent continueLearningTaskWithStrategy:]", clientIdentifier2];
         *buf = 138412290;
         v39 = v32;
         _os_log_debug_impl(&dword_22CA55000, v21, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
 
-    [v4 didFinishLearning];
-    v22 = [(TILanguageModelOfflineLearningAgent *)self currentLearningTask];
-    [v22 didFinishLearning];
+    [strategyCopy didFinishLearning];
+    currentLearningTask2 = [(TILanguageModelOfflineLearningAgent *)self currentLearningTask];
+    [currentLearningTask2 didFinishLearning];
 
     v23 = objc_opt_class();
-    v12 = [(TILanguageModelOfflineLearningAgent *)self currentLearningTask];
-    [v23 didFinishLearningWithAgent:self task:v12];
+    currentLearningTask3 = [(TILanguageModelOfflineLearningAgent *)self currentLearningTask];
+    [v23 didFinishLearningWithAgent:self task:currentLearningTask3];
     v20 = 0;
   }
 

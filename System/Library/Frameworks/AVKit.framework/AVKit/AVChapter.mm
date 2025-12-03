@@ -1,61 +1,61 @@
 @interface AVChapter
-+ (id)chapterAtTime:(double)a3 inChapters:(id)a4;
-+ (id)playbackChapterWithStartTime:(double)a3 duration:(double)a4 number:(unint64_t)a5 title:(id)a6 imageFaultBlock:(id)a7;
++ (id)chapterAtTime:(double)time inChapters:(id)chapters;
++ (id)playbackChapterWithStartTime:(double)time duration:(double)duration number:(unint64_t)number title:(id)title imageFaultBlock:(id)block;
 + (void)initialize;
-- (AVChapter)initWithStartTime:(double)a3 duration:(double)a4 number:(unint64_t)a5 title:(id)a6 imageFaultBlock:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (AVChapter)initWithStartTime:(double)time duration:(double)duration number:(unint64_t)number title:(id)title imageFaultBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (UIImage)image;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setCGImage:(CGImage *)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setCGImage:(CGImage *)image;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation AVChapter
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"cgImage"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"cgImage"])
   {
-    v5 = [(AVChapter *)self cgImage];
+    cgImage = [(AVChapter *)self cgImage];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = AVChapter;
-    v5 = [(AVChapter *)&v8 valueForUndefinedKey:v4];
+    cgImage = [(AVChapter *)&v8 valueForUndefinedKey:keyCopy];
   }
 
-  v6 = v5;
+  v6 = cgImage;
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 isEqualToString:@"cgImage"])
+  keyCopy = key;
+  valueCopy = value;
+  if ([keyCopy isEqualToString:@"cgImage"])
   {
-    [(AVChapter *)self setCGImage:v7];
+    [(AVChapter *)self setCGImage:valueCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = AVChapter;
-    [(AVChapter *)&v8 setValue:v7 forUndefinedKey:v6];
+    [(AVChapter *)&v8 setValue:valueCopy forUndefinedKey:keyCopy];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -63,14 +63,14 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([(AVChapter *)self startTime], v6 = v5, [(AVChapter *)v4 startTime], v6 == v7) && ([(AVChapter *)self duration], v9 = v8, [(AVChapter *)v4 duration], v9 == v10) && (v11 = [(AVChapter *)self number], v11 == [(AVChapter *)v4 number]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([(AVChapter *)self startTime], v6 = v5, [(AVChapter *)equalCopy startTime], v6 == v7) && ([(AVChapter *)self duration], v9 = v8, [(AVChapter *)equalCopy duration], v9 == v10) && (v11 = [(AVChapter *)self number], v11 == [(AVChapter *)equalCopy number]))
     {
-      v12 = [(AVChapter *)self title];
-      v13 = [(AVChapter *)v4 title];
-      if ([v12 isEqualToString:v13])
+      title = [(AVChapter *)self title];
+      title2 = [(AVChapter *)equalCopy title];
+      if ([title isEqualToString:title2])
       {
-        v14 = [(AVChapter *)self cgImage];
-        v15 = v14 == [(AVChapter *)v4 cgImage];
+        cgImage = [(AVChapter *)self cgImage];
+        v15 = cgImage == [(AVChapter *)equalCopy cgImage];
       }
 
       else
@@ -90,42 +90,42 @@
 
 - (unint64_t)hash
 {
-  v2 = [(AVChapter *)self title];
-  v3 = [v2 hash];
+  title = [(AVChapter *)self title];
+  v3 = [title hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   [(AVChapter *)self startTime];
   v6 = v5;
   [(AVChapter *)self duration];
   v8 = v7;
-  v9 = [(AVChapter *)self number];
-  v10 = [(AVChapter *)self title];
+  number = [(AVChapter *)self number];
+  title = [(AVChapter *)self title];
   v11 = [self->_imageBlock copy];
-  v12 = [v4 initWithStartTime:v9 duration:v10 number:v11 title:v6 imageFaultBlock:v8];
+  v12 = [v4 initWithStartTime:number duration:title number:v11 title:v6 imageFaultBlock:v8];
 
   return v12;
 }
 
-- (void)setCGImage:(CGImage *)a3
+- (void)setCGImage:(CGImage *)image
 {
   cgImage = self->_cgImage;
-  if (cgImage != a3)
+  if (cgImage != image)
   {
     if (cgImage)
     {
       CGImageRelease(cgImage);
     }
 
-    self->_cgImage = a3;
-    if (a3)
+    self->_cgImage = image;
+    if (image)
     {
 
-      CGImageRetain(a3);
+      CGImageRetain(image);
     }
   }
 }
@@ -138,21 +138,21 @@
   [(AVChapter *)&v3 dealloc];
 }
 
-- (AVChapter)initWithStartTime:(double)a3 duration:(double)a4 number:(unint64_t)a5 title:(id)a6 imageFaultBlock:(id)a7
+- (AVChapter)initWithStartTime:(double)time duration:(double)duration number:(unint64_t)number title:(id)title imageFaultBlock:(id)block
 {
-  v13 = a6;
-  v14 = a7;
+  titleCopy = title;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = AVChapter;
   v15 = [(AVChapter *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    v15->_startTime = a3;
-    v15->_duration = a4;
-    v15->_number = a5;
-    objc_storeStrong(&v15->_title, a6);
-    v17 = _Block_copy(v14);
+    v15->_startTime = time;
+    v15->_duration = duration;
+    v15->_number = number;
+    objc_storeStrong(&v15->_title, title);
+    v17 = _Block_copy(blockCopy);
     imageBlock = v16->_imageBlock;
     v16->_imageBlock = v17;
 
@@ -205,11 +205,11 @@ void __69__AVChapter_initWithStartTime_duration_number_title_imageFaultBlock___b
   CGImageRelease(v3);
 }
 
-+ (id)chapterAtTime:(double)a3 inChapters:(id)a4
++ (id)chapterAtTime:(double)time inChapters:(id)chapters
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (![v5 count])
+  chaptersCopy = chapters;
+  if (![chaptersCopy count])
   {
     goto LABEL_17;
   }
@@ -218,7 +218,7 @@ void __69__AVChapter_initWithStartTime_duration_number_title_imageFaultBlock___b
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5;
+  v6 = chaptersCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -238,7 +238,7 @@ void __69__AVChapter_initWithStartTime_duration_number_title_imageFaultBlock___b
         }
 
         [*(*(&v17 + 1) + 8 * v11) startTime];
-        if (v13 > a3)
+        if (v13 > time)
         {
           v9 = v12;
           goto LABEL_13;
@@ -281,18 +281,18 @@ LABEL_17:
   return v15;
 }
 
-+ (id)playbackChapterWithStartTime:(double)a3 duration:(double)a4 number:(unint64_t)a5 title:(id)a6 imageFaultBlock:(id)a7
++ (id)playbackChapterWithStartTime:(double)time duration:(double)duration number:(unint64_t)number title:(id)title imageFaultBlock:(id)block
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = [[a1 alloc] initWithStartTime:a5 duration:v13 number:v12 title:a3 imageFaultBlock:a4];
+  blockCopy = block;
+  titleCopy = title;
+  v14 = [[self alloc] initWithStartTime:number duration:titleCopy number:blockCopy title:time imageFaultBlock:duration];
 
   return v14;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = dispatch_queue_create("com.apple.AVKit.ChapterImageQueue", 0);
     v3 = _imageQueue;

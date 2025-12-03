@@ -1,12 +1,12 @@
 @interface NEVPNConnectivityManager
-- (NEVPNConnectivityManager)initWithDelegate:(id)a3;
+- (NEVPNConnectivityManager)initWithDelegate:(id)delegate;
 - (NEVPNConnectivityManagerDelegate)delegate;
-- (id)toggleVPNConnectivity:(BOOL)a3;
-- (void)cancelSessions:(void *)a3 withCompletionHandler:;
+- (id)toggleVPNConnectivity:(BOOL)connectivity;
+- (void)cancelSessions:(void *)sessions withCompletionHandler:;
 - (void)dealloc;
 - (void)refreshConfigurations;
 - (void)refreshConnectivityState;
-- (void)sessionStatusDidChange:(id)a3;
+- (void)sessionStatusDidChange:(id)change;
 @end
 
 @implementation NEVPNConnectivityManager
@@ -18,16 +18,16 @@
   return WeakRetained;
 }
 
-- (void)sessionStatusDidChange:(id)a3
+- (void)sessionStatusDidChange:(id)change
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (changeCopy)
     {
-      Property = objc_getProperty(v4, v6, 8, 1);
+      Property = objc_getProperty(changeCopy, v6, 8, 1);
     }
 
     else
@@ -35,10 +35,10 @@
       Property = 0;
     }
 
-    v9 = [Property name];
-    if (v4)
+    name = [Property name];
+    if (changeCopy)
     {
-      v10 = objc_getProperty(v4, v8, 8, 1);
+      v10 = objc_getProperty(changeCopy, v8, 8, 1);
     }
 
     else
@@ -46,11 +46,11 @@
       v10 = 0;
     }
 
-    v11 = [v10 identifier];
+    identifier = [v10 identifier];
     v14 = 138412546;
-    v15 = v9;
+    v15 = name;
     v16 = 2112;
-    v17 = v11;
+    v17 = identifier;
     _os_log_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_DEFAULT, "Session status of %@ (%@) changed", &v14, 0x16u);
   }
 
@@ -61,9 +61,9 @@
 - (void)refreshConnectivityState
 {
   v89 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy2 = self;
     v82[0] = 0;
     v82[1] = v82;
     v82[2] = 0x2020000000;
@@ -80,20 +80,20 @@
     v73 = &v72;
     v74 = 0x2020000000;
     v75 = 0;
-    v3 = objc_getProperty(a1, a2, 56, 1);
+    v3 = objc_getProperty(self, a2, 56, 1);
     v55 = [v3 copy];
-    self = v2;
+    self = selfCopy2;
 
     v4 = [v55 count];
     if (v4)
     {
       if (v4 == 1)
       {
-        v5 = [v55 firstObject];
-        v7 = v5;
-        if (v5)
+        firstObject = [v55 firstObject];
+        v7 = firstObject;
+        if (firstObject)
         {
-          Property = objc_getProperty(v5, v6, 8, 1);
+          Property = objc_getProperty(firstObject, v6, 8, 1);
         }
 
         else
@@ -102,8 +102,8 @@
         }
 
         v9 = Property;
-        v10 = [v9 relay];
-        if (v10)
+        relay = [v9 relay];
+        if (relay)
         {
 
           v4 = 2;
@@ -111,11 +111,11 @@
 
         else
         {
-          v11 = [v55 firstObject];
-          v13 = v11;
-          if (v11)
+          firstObject2 = [v55 firstObject];
+          v13 = firstObject2;
+          if (firstObject2)
           {
-            v14 = objc_getProperty(v11, v12, 8, 1);
+            v14 = objc_getProperty(firstObject2, v12, 8, 1);
           }
 
           else
@@ -125,9 +125,9 @@
 
           v15 = v14;
           v16 = [v15 VPN];
-          v17 = [v16 isEnabled];
+          isEnabled = [v16 isEnabled];
 
-          if (v17)
+          if (isEnabled)
           {
             v4 = 1;
           }
@@ -183,8 +183,8 @@
           }
 
           v26 = v25;
-          v27 = [v26 appVPN];
-          if (v27)
+          appVPN = [v26 appVPN];
+          if (appVPN)
           {
 
 LABEL_27:
@@ -203,8 +203,8 @@ LABEL_27:
           }
 
           v31 = v30;
-          v32 = [v31 alwaysOnVPN];
-          v33 = v32 == 0;
+          alwaysOnVPN = [v31 alwaysOnVPN];
+          v33 = alwaysOnVPN == 0;
 
           if (!v33)
           {
@@ -223,8 +223,8 @@ LABEL_28:
           }
 
           v35 = v34;
-          v36 = [v35 relay];
-          v37 = v36 == 0;
+          relay2 = [v35 relay];
+          v37 = relay2 == 0;
 
           if (!v37)
           {
@@ -266,13 +266,13 @@ LABEL_38:
                   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
                   {
                     v45 = objc_getProperty(v42, v44, 8, 1);
-                    v46 = [v45 name];
+                    name = [v45 name];
                     v48 = objc_getProperty(v42, v47, 8, 1);
-                    v49 = [v48 identifier];
+                    identifier = [v48 identifier];
                     *buf = 138412546;
-                    v84 = v46;
+                    v84 = name;
                     v85 = 2112;
-                    v86 = v49;
+                    v86 = identifier;
                     _os_log_impl(&dword_1BA83C000, v43, OS_LOG_TYPE_DEFAULT, "Fetching status of %@ (%@)", buf, 0x16u);
                   }
 
@@ -299,18 +299,18 @@ LABEL_38:
             while (v39);
           }
 
-          v2 = self;
+          selfCopy2 = self;
           break;
         }
       }
     }
 
-    v53 = objc_getProperty(v2, v18, 48, 1);
+    v53 = objc_getProperty(selfCopy2, v18, 48, 1);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __52__NEVPNConnectivityManager_refreshConnectivityState__block_invoke_45;
     block[3] = &unk_1E7F096D0;
-    block[4] = v2;
+    block[4] = selfCopy2;
     block[5] = &v78;
     block[6] = v82;
     block[7] = &v72;
@@ -723,10 +723,10 @@ void __52__NEVPNConnectivityManager_refreshConnectivityState__block_invoke_39(ui
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (id)toggleVPNConnectivity:(BOOL)a3
+- (id)toggleVPNConnectivity:(BOOL)connectivity
 {
   v64 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!connectivity)
   {
     [(NEVPNConnectivityManager *)self setConnectivityState:3];
     v52 = 0u;
@@ -796,9 +796,9 @@ LABEL_42:
                   v42 = 0;
                 }
 
-                v43 = [v42 name];
+                name = [v42 name];
                 *buf = v49;
-                v62 = v43;
+                v62 = name;
                 _os_log_error_impl(&dword_1BA83C000, v40, OS_LOG_TYPE_ERROR, "No ne_session available for %@", buf, 0xCu);
               }
             }
@@ -808,9 +808,9 @@ LABEL_42:
 
       else
       {
-        v44 = [0 isEnabled];
+        isEnabled = [0 isEnabled];
         v38 = 0;
-        if (v44)
+        if (isEnabled)
         {
           goto LABEL_42;
         }
@@ -876,9 +876,9 @@ LABEL_42:
 
         else
         {
-          v24 = [0 isEnabled];
+          isEnabled2 = [0 isEnabled];
           v14 = 0;
-          if ((v24 & 1) == 0)
+          if ((isEnabled2 & 1) == 0)
           {
             goto LABEL_21;
           }
@@ -901,9 +901,9 @@ LABEL_42:
               v18 = 0;
             }
 
-            v19 = [v18 name];
+            name2 = [v18 name];
             *buf = v48;
-            v62 = v19;
+            v62 = name2;
             _os_log_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_DEFAULT, "Starting %@", buf, 0xCu);
           }
 
@@ -926,9 +926,9 @@ LABEL_42:
               v22 = 0;
             }
 
-            v23 = [v22 name];
+            name3 = [v22 name];
             *buf = v48;
-            v62 = v23;
+            v62 = name3;
             _os_log_error_impl(&dword_1BA83C000, v20, OS_LOG_TYPE_ERROR, "No ne_session available for %@", buf, 0xCu);
           }
         }
@@ -978,11 +978,11 @@ LABEL_60:
   [(NEVPNConnectivityManager *)&v5 dealloc];
 }
 
-- (void)cancelSessions:(void *)a3 withCompletionHandler:
+- (void)cancelSessions:(void *)sessions withCompletionHandler:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  sessionsCopy = sessions;
+  if (self)
   {
     if ([v5 count])
     {
@@ -993,21 +993,21 @@ LABEL_60:
         _os_log_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_DEFAULT, "Canceling sessions", buf, 2u);
       }
 
-      v9 = objc_getProperty(a1, v8, 48, 1);
+      v9 = objc_getProperty(self, v8, 48, 1);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __65__NEVPNConnectivityManager_cancelSessions_withCompletionHandler___block_invoke;
       block[3] = &unk_1E7F0AAA0;
       v12 = v5;
       v13 = v9;
-      v14 = v6;
+      v14 = sessionsCopy;
       v10 = v9;
       dispatch_async(v10, block);
     }
 
-    else if (v6)
+    else if (sessionsCopy)
     {
-      v6[2](v6);
+      sessionsCopy[2](sessionsCopy);
     }
   }
 }
@@ -1089,19 +1089,19 @@ uint64_t __65__NEVPNConnectivityManager_cancelSessions_withCompletionHandler___b
   return result;
 }
 
-- (NEVPNConnectivityManager)initWithDelegate:(id)a3
+- (NEVPNConnectivityManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = NEVPNConnectivityManager;
   v5 = [(NEVPNConnectivityManager *)&v21 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [[NEConfigurationManager alloc] initForAllUsers];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    initForAllUsers = [[NEConfigurationManager alloc] initForAllUsers];
     configManager = v6->_configManager;
-    v6->_configManager = v7;
+    v6->_configManager = initForAllUsers;
 
     *&v6->_visibilityStyle = xmmword_1BAA4E5A0;
     v6->_hasRelayConfigurations = 0;
@@ -1149,16 +1149,16 @@ void __45__NEVPNConnectivityManager_initWithDelegate___block_invoke(uint64_t a1)
 
 - (void)refreshConfigurations
 {
-  if (a1)
+  if (self)
   {
-    v3 = objc_getProperty(a1, a2, 56, 1);
-    objc_setProperty_atomic(a1, v4, 0, 56);
+    v3 = objc_getProperty(self, a2, 56, 1);
+    objc_setProperty_atomic(self, v4, 0, 56);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __49__NEVPNConnectivityManager_refreshConfigurations__block_invoke;
     v5[3] = &unk_1E7F0B0E8;
-    v5[4] = a1;
-    [(NEVPNConnectivityManager *)a1 cancelSessions:v3 withCompletionHandler:v5];
+    v5[4] = self;
+    [(NEVPNConnectivityManager *)self cancelSessions:v3 withCompletionHandler:v5];
   }
 }
 

@@ -2,32 +2,32 @@
 + (id)sharedWorkQueue;
 + (unsigned)confirmYesSoundID;
 + (void)preloadResources;
-- (BOOL)_presentAssetCollectionByLemonadeUI:(id)a3;
-- (BOOL)_presentOneUpByLemonadeUI:(id)a3;
-- (BOOL)_presentViewControllerByLemonadeUI:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)_presentAssetCollectionByLemonadeUI:(id)i;
+- (BOOL)_presentOneUpByLemonadeUI:(id)i;
+- (BOOL)_presentViewControllerByLemonadeUI:(id)i;
+- (BOOL)isEqual:(id)equal;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PXGadgetDelegate)delegate;
 - (PXRegionOfInterest)regionOfInterestForOneUpTransition;
 - (PXSurveyQuestionConfiguration)configuration;
 - (PXSurveyQuestionConfigurationHandlers)handlers;
 - (PXSurveyQuestionGadget)init;
-- (PXSurveyQuestionGadget)initWithSurveyQuestion:(id)a3 gadgetType:(unint64_t)a4;
+- (PXSurveyQuestionGadget)initWithSurveyQuestion:(id)question gadgetType:(unint64_t)type;
 - (PXSurveyQuestionGadgetLemonadeUIDelegate)lemonadeUIDelegate;
 - (UIImage)currentImage;
-- (id)additionalReasonsForWallpaperQuestionsForAnswer:(unint64_t)a3;
-- (id)gadgetContentView:(id)a3 additionalReasonMessageForAnswer:(unint64_t)a4;
-- (id)gadgetContentView:(id)a3 additionalReasonTitleForAnswer:(unint64_t)a4;
-- (id)gadgetContentView:(id)a3 additionalReasonsForAnswer:(unint64_t)a4;
+- (id)additionalReasonsForWallpaperQuestionsForAnswer:(unint64_t)answer;
+- (id)gadgetContentView:(id)view additionalReasonMessageForAnswer:(unint64_t)answer;
+- (id)gadgetContentView:(id)view additionalReasonTitleForAnswer:(unint64_t)answer;
+- (id)gadgetContentView:(id)view additionalReasonsForAnswer:(unint64_t)answer;
 - (unsigned)questionType;
 - (void)_didFinishUpdatingSurveyQuestionStateFromAnswer;
 - (void)_playConfirmYesSound;
 - (void)_updateContentViewConfiguration;
-- (void)_updateSurveyQuestionStateFromAnswer:(unint64_t)a3 andReason:(id)a4;
-- (void)prepareCollectionViewItem:(id)a3;
+- (void)_updateSurveyQuestionStateFromAnswer:(unint64_t)answer andReason:(id)reason;
+- (void)prepareCollectionViewItem:(id)item;
 - (void)refreshQuestionContentView;
-- (void)removeCollectionViewItem:(id)a3;
-- (void)setContentHidden:(BOOL)a3;
+- (void)removeCollectionViewItem:(id)item;
+- (void)setContentHidden:(BOOL)hidden;
 @end
 
 @implementation PXSurveyQuestionGadget
@@ -48,25 +48,25 @@
 
 - (void)_playConfirmYesSound
 {
-  v2 = [objc_opt_class() confirmYesSoundID];
-  if (v2)
+  confirmYesSoundID = [objc_opt_class() confirmYesSoundID];
+  if (confirmYesSoundID)
   {
 
-    AudioServicesPlaySystemSound(v2);
+    AudioServicesPlaySystemSound(confirmYesSoundID);
   }
 }
 
 - (unsigned)questionType
 {
-  v2 = [(PXSurveyQuestionGadget *)self question];
-  v3 = [v2 type];
+  question = [(PXSurveyQuestionGadget *)self question];
+  type = [question type];
 
-  return v3;
+  return type;
 }
 
-- (id)gadgetContentView:(id)a3 additionalReasonMessageForAnswer:(unint64_t)a4
+- (id)gadgetContentView:(id)view additionalReasonMessageForAnswer:(unint64_t)answer
 {
-  if ([(PHQuestion *)self->_question type:a3]== 25)
+  if ([(PHQuestion *)self->_question type:view]== 25)
   {
     v5 = @"PXInternalPhotosChallengeAdditionalReasonExhaustiveMomentLabelingMessage";
   }
@@ -96,9 +96,9 @@
   return v9;
 }
 
-- (id)gadgetContentView:(id)a3 additionalReasonTitleForAnswer:(unint64_t)a4
+- (id)gadgetContentView:(id)view additionalReasonTitleForAnswer:(unint64_t)answer
 {
-  if ([(PHQuestion *)self->_question type:a3]== 24)
+  if ([(PHQuestion *)self->_question type:view]== 24)
   {
     v5 = @"PXInternalPhotosChallengeAlbumClassificationAdditionalReasonTitle";
 LABEL_7:
@@ -120,14 +120,14 @@ LABEL_7:
 
   if ([(PHQuestion *)self->_question type]== 26)
   {
-    v8 = [(PHQuestion *)self->_question additionalInfo];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69C16E0]];
+    additionalInfo = [(PHQuestion *)self->_question additionalInfo];
+    v9 = [additionalInfo objectForKeyedSubscript:*MEMORY[0x1E69C16E0]];
     v10 = [v9 isEqual:MEMORY[0x1E695E110]];
 
     if (v10)
     {
-      v11 = [(PHQuestion *)self->_question additionalInfo];
-      [v11 objectForKeyedSubscript:*MEMORY[0x1E69C16F0]];
+      additionalInfo2 = [(PHQuestion *)self->_question additionalInfo];
+      [additionalInfo2 objectForKeyedSubscript:*MEMORY[0x1E69C16F0]];
       objc_claimAutoreleasedReturnValue();
 
       v12 = @"PXInternalPhotosChallengeTripTitlingAdditionalReasonTitle";
@@ -137,14 +137,14 @@ LABEL_7:
 
   if ([(PHQuestion *)self->_question type]== 28)
   {
-    v13 = [(PHQuestion *)self->_question additionalInfo];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69C16E0]];
+    additionalInfo3 = [(PHQuestion *)self->_question additionalInfo];
+    v14 = [additionalInfo3 objectForKeyedSubscript:*MEMORY[0x1E69C16E0]];
     v15 = [v14 isEqual:MEMORY[0x1E695E110]];
 
     if (v15)
     {
-      v16 = [(PHQuestion *)self->_question additionalInfo];
-      [v16 objectForKeyedSubscript:*MEMORY[0x1E69C16E8]];
+      additionalInfo4 = [(PHQuestion *)self->_question additionalInfo];
+      [additionalInfo4 objectForKeyedSubscript:*MEMORY[0x1E69C16E8]];
       objc_claimAutoreleasedReturnValue();
 
       v12 = @"PXInternalPhotosChallengeDayHighlightTitlingAdditionalReasonTitle";
@@ -163,8 +163,8 @@ LABEL_17:
 
   if ([(PHQuestion *)self->_question type]== 5 && [(PHQuestion *)self->_question entityType]== 1)
   {
-    v17 = [(PHQuestion *)self->_question additionalInfo];
-    v18 = [v17 objectForKeyedSubscript:*MEMORY[0x1E69C1688]];
+    additionalInfo5 = [(PHQuestion *)self->_question additionalInfo];
+    v18 = [additionalInfo5 objectForKeyedSubscript:*MEMORY[0x1E69C1688]];
     v19 = [v18 isEqualToString:@"CHILD"];
 
     if (v19)
@@ -186,10 +186,10 @@ LABEL_8:
   return v6;
 }
 
-- (id)additionalReasonsForWallpaperQuestionsForAnswer:(unint64_t)a3
+- (id)additionalReasonsForWallpaperQuestionsForAnswer:(unint64_t)answer
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  if (a3 == 2)
+  if (answer == 2)
   {
     v3 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeWallpaperAnswerNoReasonSomewhatPoor", @"PhotosUICore");
     v7[0] = v3;
@@ -206,12 +206,12 @@ LABEL_8:
   return v5;
 }
 
-- (id)gadgetContentView:(id)a3 additionalReasonsForAnswer:(unint64_t)a4
+- (id)gadgetContentView:(id)view additionalReasonsForAnswer:(unint64_t)answer
 {
   v74[5] = *MEMORY[0x1E69E9840];
   if ([(PHQuestion *)self->_question type]== 18)
   {
-    if (a4 == 1)
+    if (answer == 1)
     {
       v6 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeContentSyndicationAnswerYesReasonInPhoto", @"PhotosUICore");
       v73[0] = v6;
@@ -228,7 +228,7 @@ LABEL_8:
       goto LABEL_15;
     }
 
-    if (a4 == 2)
+    if (answer == 2)
     {
       v6 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeContentSyndicationAnswerNoReasonNotPresent", @"PhotosUICore");
       v74[0] = v6;
@@ -254,9 +254,9 @@ LABEL_29:
 
   if ([(PHQuestion *)self->_question type]== 20)
   {
-    if (a4 != 1)
+    if (answer != 1)
     {
-      if (a4 == 2)
+      if (answer == 2)
       {
         v6 = PXLocalizedSharedLibraryString(@"PXInternalPhotosChallengeSharedLibraryAnswerNoReasonNotCriticalText");
         v72[0] = v6;
@@ -303,9 +303,9 @@ LABEL_28:
 
   if ([(PHQuestion *)self->_question type]== 23)
   {
-    if (a4 != 1)
+    if (answer != 1)
     {
-      if (a4 == 2)
+      if (answer == 2)
       {
         v6 = PXLocalizedSharedLibraryString(@"PXInternalPhotosChallengeSharedLibraryAnswerNoReasonNotCriticalText");
         v70[0] = v6;
@@ -352,9 +352,9 @@ LABEL_27:
 
   if ([(PHQuestion *)self->_question type]== 24)
   {
-    if (a4 != 1)
+    if (answer != 1)
     {
-      if (a4 == 2)
+      if (answer == 2)
       {
         v6 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeAlbumClassificationAnswerNoReasonAppleWork", @"PhotosUICore");
         v68[0] = v6;
@@ -416,14 +416,14 @@ LABEL_38:
 
   if ([(PHQuestion *)self->_question type]== 25)
   {
-    if (a4 != 1)
+    if (answer != 1)
     {
       goto LABEL_62;
     }
 
-    v20 = [(PXSurveyQuestionGadget *)self question];
-    v21 = [v20 additionalInfo];
-    v6 = [v21 objectForKeyedSubscript:*MEMORY[0x1E69C1610]];
+    question = [(PXSurveyQuestionGadget *)self question];
+    additionalInfo = [question additionalInfo];
+    v6 = [additionalInfo objectForKeyedSubscript:*MEMORY[0x1E69C1610]];
 
     if (v6)
     {
@@ -448,14 +448,14 @@ LABEL_48:
 
   if ([(PHQuestion *)self->_question type]== 8)
   {
-    if (a4 != 1)
+    if (answer != 1)
     {
       goto LABEL_62;
     }
 
-    v24 = [(PXSurveyQuestionGadget *)self question];
-    v25 = [v24 additionalInfo];
-    v6 = [v25 objectForKeyedSubscript:*MEMORY[0x1E69C1630]];
+    question2 = [(PXSurveyQuestionGadget *)self question];
+    additionalInfo2 = [question2 additionalInfo];
+    v6 = [additionalInfo2 objectForKeyedSubscript:*MEMORY[0x1E69C1630]];
 
     if (v6)
     {
@@ -468,13 +468,13 @@ LABEL_48:
 
   if ([(PHQuestion *)self->_question type]== 26 || [(PHQuestion *)self->_question type]== 28)
   {
-    v33 = [(PHQuestion *)self->_question additionalInfo];
-    v34 = [v33 objectForKeyedSubscript:*MEMORY[0x1E69C16E0]];
+    additionalInfo3 = [(PHQuestion *)self->_question additionalInfo];
+    v34 = [additionalInfo3 objectForKeyedSubscript:*MEMORY[0x1E69C16E0]];
     v35 = [v34 isEqual:MEMORY[0x1E695E110]];
 
     if (v35)
     {
-      if (a4 == 2)
+      if (answer == 2)
       {
         v6 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeYes", @"PhotosUICore");
         v65[0] = v6;
@@ -486,7 +486,7 @@ LABEL_48:
 
       else
       {
-        if (a4 != 1)
+        if (answer != 1)
         {
           goto LABEL_62;
         }
@@ -505,7 +505,7 @@ LABEL_48:
 
   if ([(PHQuestion *)self->_question type]== 27)
   {
-    if (a4 != 2)
+    if (answer != 2)
     {
       goto LABEL_62;
     }
@@ -521,7 +521,7 @@ LABEL_48:
 
   if ([(PHQuestion *)self->_question type]== 13 && [(PHQuestion *)self->_question entityType]== 1)
   {
-    if (a4 != 1)
+    if (answer != 1)
     {
       goto LABEL_62;
     }
@@ -539,13 +539,13 @@ LABEL_69:
 
   if ([(PHQuestion *)self->_question type]== 5 && [(PHQuestion *)self->_question entityType]== 1)
   {
-    v38 = [(PHQuestion *)self->_question additionalInfo];
-    v39 = [v38 objectForKeyedSubscript:*MEMORY[0x1E69C1688]];
+    additionalInfo4 = [(PHQuestion *)self->_question additionalInfo];
+    v39 = [additionalInfo4 objectForKeyedSubscript:*MEMORY[0x1E69C1688]];
     v40 = [v39 isEqualToString:@"CHILD"];
 
     if (v40)
     {
-      if (a4 == 1)
+      if (answer == 1)
       {
         v6 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeAdditionalReasonBaby", @"PhotosUICore");
         v62[0] = v6;
@@ -568,7 +568,7 @@ LABEL_69:
 
   if ([(PHQuestion *)self->_question type]== 15)
   {
-    if (a4 == 2)
+    if (answer == 2)
     {
       v6 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeMemoryMusicQualityAnswerNoReasonPlaysTooOften", @"PhotosUICore");
       v61[0] = v6;
@@ -588,9 +588,9 @@ LABEL_69:
     goto LABEL_62;
   }
 
-  v43 = [(PHQuestion *)self->_question type];
+  type = [(PHQuestion *)self->_question type];
   v17 = MEMORY[0x1E695E0F0];
-  if (a4 == 2 && v43 == 30)
+  if (answer == 2 && type == 30)
   {
     v59 = PXLocalizedStoryPromptSuggestionsString(@"PXInternalPhotosChallengeStoryPromptSuggestionsAnswerNoReasonUnsafe");
     v60[0] = v59;
@@ -618,7 +618,7 @@ LABEL_69:
 LABEL_63:
   if ([(PHQuestion *)self->_question type]== 22)
   {
-    v41 = [(PXSurveyQuestionGadget *)self additionalReasonsForWallpaperQuestionsForAnswer:a4];
+    v41 = [(PXSurveyQuestionGadget *)self additionalReasonsForWallpaperQuestionsForAnswer:answer];
 
     v17 = v41;
   }
@@ -629,13 +629,13 @@ LABEL_63:
 - (void)_didFinishUpdatingSurveyQuestionStateFromAnswer
 {
   [(PXSurveyQuestionGadget *)self _playConfirmYesSound];
-  v3 = [(PXSurveyQuestionGadget *)self delegate];
-  [v3 didAnswerQuestionForGadget:self];
+  delegate = [(PXSurveyQuestionGadget *)self delegate];
+  [delegate didAnswerQuestionForGadget:self];
 }
 
-- (void)_updateSurveyQuestionStateFromAnswer:(unint64_t)a3 andReason:(id)a4
+- (void)_updateSurveyQuestionStateFromAnswer:(unint64_t)answer andReason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -643,14 +643,14 @@ LABEL_63:
   aBlock[3] = &unk_1E774C318;
   objc_copyWeak(&v17, &location);
   v7 = _Block_copy(aBlock);
-  if (a3 <= 1)
+  if (answer <= 1)
   {
-    if (!a3)
+    if (!answer)
     {
       goto LABEL_15;
     }
 
-    if (a3 == 1)
+    if (answer == 1)
     {
       v8 = 2;
     }
@@ -663,7 +663,7 @@ LABEL_63:
 
   else
   {
-    switch(a3)
+    switch(answer)
     {
       case 2uLL:
         v8 = 3;
@@ -682,22 +682,22 @@ LABEL_63:
 
   if ([(PHQuestion *)self->_question type]!= 25 || [(PHQuestion *)self->_question state]!= v8)
   {
-    v9 = [(PHQuestion *)self->_question photoLibrary];
+    photoLibrary = [(PHQuestion *)self->_question photoLibrary];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __73__PXSurveyQuestionGadget__updateSurveyQuestionStateFromAnswer_andReason___block_invoke_2;
     v13[3] = &unk_1E773A980;
     v13[4] = self;
     v15 = v8;
-    v14 = v6;
+    v14 = reasonCopy;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __73__PXSurveyQuestionGadget__updateSurveyQuestionStateFromAnswer_andReason___block_invoke_3;
     v10[3] = &unk_1E773CEE8;
     objc_copyWeak(v12, &location);
-    v12[1] = a3;
+    v12[1] = answer;
     v11 = v7;
-    [v9 performChanges:v13 completionHandler:v10];
+    [photoLibrary performChanges:v13 completionHandler:v10];
 
     objc_destroyWeak(v12);
     goto LABEL_17;
@@ -1078,14 +1078,14 @@ uint64_t __73__PXSurveyQuestionGadget__updateSurveyQuestionStateFromAnswer_andRe
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)setContentHidden:(BOOL)a3
+- (void)setContentHidden:(BOOL)hidden
 {
-  if (self->_contentHidden != a3)
+  if (self->_contentHidden != hidden)
   {
-    v4 = a3;
-    self->_contentHidden = a3;
-    v5 = [(PXSurveyQuestionGadget *)self contentView];
-    [v5 setContentHidden:v4];
+    hiddenCopy = hidden;
+    self->_contentHidden = hidden;
+    contentView = [(PXSurveyQuestionGadget *)self contentView];
+    [contentView setContentHidden:hiddenCopy];
   }
 }
 
@@ -1130,10 +1130,10 @@ void __57__PXSurveyQuestionGadget__updateContentViewConfiguration__block_invoke(
   }
 }
 
-- (void)removeCollectionViewItem:(id)a3
+- (void)removeCollectionViewItem:(id)item
 {
-  v13 = a3;
-  if (v13)
+  itemCopy = item;
+  if (itemCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1141,28 +1141,28 @@ void __57__PXSurveyQuestionGadget__updateContentViewConfiguration__block_invoke(
       goto LABEL_3;
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v10 = NSStringFromClass(v11);
-    v12 = [v13 px_descriptionForAssertionMessage];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:227 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collectionViewItem", v10, v12}];
+    px_descriptionForAssertionMessage = [itemCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:227 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collectionViewItem", v10, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:227 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collectionViewItem", v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:227 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collectionViewItem", v10}];
   }
 
 LABEL_3:
-  [v13 updateButtonsWithAnswerState:0 reason:0];
-  v5 = [v13 configuration];
-  [v5 setHandlers:0];
+  [itemCopy updateButtonsWithAnswerState:0 reason:0];
+  configuration = [itemCopy configuration];
+  [configuration setHandlers:0];
 
   v6 = objc_alloc_init(PXSurveyQuestionDefaultConfiguration);
-  [v13 setConfiguration:v6];
+  [itemCopy setConfiguration:v6];
 
   [(PXSurveyQuestionsGadgetContentView *)self->_contentView setDelegate:0];
   contentView = self->_contentView;
@@ -1171,10 +1171,10 @@ LABEL_3:
   self->_configurationRequestId = 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)prepareCollectionViewItem:(id)a3
+- (void)prepareCollectionViewItem:(id)item
 {
-  v14 = a3;
-  if (v14)
+  itemCopy = item;
+  if (itemCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1182,28 +1182,28 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [(PXSurveyQuestionsGadgetContentView *)v14 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:218 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collectionViewItem", v11, v13}];
+    px_descriptionForAssertionMessage = [(PXSurveyQuestionsGadgetContentView *)itemCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:218 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collectionViewItem", v11, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:218 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collectionViewItem", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:218 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collectionViewItem", v11}];
   }
 
 LABEL_3:
   contentView = self->_contentView;
-  self->_contentView = v14;
+  self->_contentView = itemCopy;
 
   v6 = [PXSurveyQuestionDefaultConfiguration alloc];
-  v7 = [(PHQuestion *)self->_question px_displayTitle];
-  v8 = [(PXSurveyQuestionDefaultConfiguration *)v6 initWithTitle:v7];
+  px_displayTitle = [(PHQuestion *)self->_question px_displayTitle];
+  v8 = [(PXSurveyQuestionDefaultConfiguration *)v6 initWithTitle:px_displayTitle];
   [(PXSurveyQuestionsGadgetContentView *)self->_contentView setConfiguration:v8];
 
   [(PXSurveyQuestionsGadgetContentView *)self->_contentView updateButtonsWithAnswerState:[(PXSurveyQuestionGadget *)self answer] reason:self->_currentAnswerReason];
@@ -1211,51 +1211,51 @@ LABEL_3:
   [(PXSurveyQuestionGadget *)self _updateContentViewConfiguration];
 }
 
-- (BOOL)_presentViewControllerByLemonadeUI:(id)a3
+- (BOOL)_presentViewControllerByLemonadeUI:(id)i
 {
-  v4 = a3;
-  v5 = [(PXSurveyQuestionGadget *)self lemonadeUIDelegate];
-  if (v5)
+  iCopy = i;
+  lemonadeUIDelegate = [(PXSurveyQuestionGadget *)self lemonadeUIDelegate];
+  if (lemonadeUIDelegate)
   {
-    v6 = [(PXSurveyQuestionGadget *)self regionOfInterestForOneUpTransition];
-    [v5 surveyQuestionGadget:self presentViewController:v4 regionOfInterest:v6];
+    regionOfInterestForOneUpTransition = [(PXSurveyQuestionGadget *)self regionOfInterestForOneUpTransition];
+    [lemonadeUIDelegate surveyQuestionGadget:self presentViewController:iCopy regionOfInterest:regionOfInterestForOneUpTransition];
   }
 
-  return v5 != 0;
+  return lemonadeUIDelegate != 0;
 }
 
-- (BOOL)_presentAssetCollectionByLemonadeUI:(id)a3
+- (BOOL)_presentAssetCollectionByLemonadeUI:(id)i
 {
-  v4 = a3;
-  v5 = [(PXSurveyQuestionGadget *)self lemonadeUIDelegate];
-  if (v5)
+  iCopy = i;
+  lemonadeUIDelegate = [(PXSurveyQuestionGadget *)self lemonadeUIDelegate];
+  if (lemonadeUIDelegate)
   {
-    v6 = [(PXSurveyQuestionGadget *)self regionOfInterestForOneUpTransition];
-    [v5 surveyQuestionGadget:self presentAssetCollection:v4 regionOfInterest:v6];
+    regionOfInterestForOneUpTransition = [(PXSurveyQuestionGadget *)self regionOfInterestForOneUpTransition];
+    [lemonadeUIDelegate surveyQuestionGadget:self presentAssetCollection:iCopy regionOfInterest:regionOfInterestForOneUpTransition];
   }
 
-  return v5 != 0;
+  return lemonadeUIDelegate != 0;
 }
 
-- (BOOL)_presentOneUpByLemonadeUI:(id)a3
+- (BOOL)_presentOneUpByLemonadeUI:(id)i
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PXSurveyQuestionGadget *)self lemonadeUIDelegate];
-  if (!v6)
+  iCopy = i;
+  lemonadeUIDelegate = [(PXSurveyQuestionGadget *)self lemonadeUIDelegate];
+  if (!lemonadeUIDelegate)
   {
     v9 = 0;
     goto LABEL_10;
   }
 
-  v7 = [(PXSurveyQuestionGadget *)self question];
-  v8 = v5;
+  question = [(PXSurveyQuestionGadget *)self question];
+  v8 = iCopy;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    [v16 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:165 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v18}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:165 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v18}];
 LABEL_13:
 
     goto LABEL_4;
@@ -1264,11 +1264,11 @@ LABEL_13:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = objc_opt_class();
     v18 = NSStringFromClass(v19);
-    v20 = [v8 px_descriptionForAssertionMessage];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:165 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v18, v20}];
+    px_descriptionForAssertionMessage = [v8 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:165 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v18, px_descriptionForAssertionMessage}];
 
     goto LABEL_13;
   }
@@ -1276,27 +1276,27 @@ LABEL_13:
 LABEL_4:
   v21 = 0;
   v22 = 0;
-  v9 = [v7 px_assetCollectionAndAssetFetchResultForAsset:v8 assetCollection:&v22 assetFetchResult:&v21];
+  v9 = [question px_assetCollectionAndAssetFetchResultForAsset:v8 assetCollection:&v22 assetFetchResult:&v21];
   v10 = v22;
   v11 = v21;
   if (v9)
   {
-    v12 = [(PXSurveyQuestionGadget *)self regionOfInterestForOneUpTransition];
-    [v6 surveyQuestionGadgetPresentOneUp:self keyAsset:v8 assetCollection:v10 regionOfInterest:v12];
+    regionOfInterestForOneUpTransition = [(PXSurveyQuestionGadget *)self regionOfInterestForOneUpTransition];
+    [lemonadeUIDelegate surveyQuestionGadgetPresentOneUp:self keyAsset:v8 assetCollection:v10 regionOfInterest:regionOfInterestForOneUpTransition];
   }
 
   else
   {
-    v12 = PLUIGetLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    regionOfInterestForOneUpTransition = PLUIGetLog();
+    if (os_log_type_enabled(regionOfInterestForOneUpTransition, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v8 uuid];
-      v14 = [v7 uuid];
+      uuid = [v8 uuid];
+      uuid2 = [question uuid];
       *buf = 138543618;
-      v24 = v13;
+      v24 = uuid;
       v25 = 2114;
-      v26 = v14;
-      _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_ERROR, "Failed to prepare for one up: No collection or fetch result for asset: %{public}@ for question: %{public}@", buf, 0x16u);
+      v26 = uuid2;
+      _os_log_impl(&dword_1A3C1C000, regionOfInterestForOneUpTransition, OS_LOG_TYPE_ERROR, "Failed to prepare for one up: No collection or fetch result for asset: %{public}@ for question: %{public}@", buf, 0x16u);
     }
   }
 
@@ -1306,21 +1306,21 @@ LABEL_10:
 
 - (PXRegionOfInterest)regionOfInterestForOneUpTransition
 {
-  v4 = [(PXSurveyQuestionGadget *)self contentView];
-  if (!v4)
+  contentView = [(PXSurveyQuestionGadget *)self contentView];
+  if (!contentView)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = NSStringFromSelector(a2);
-    [v13 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:153 description:{@"%@ asked for ROI for 1-Up transition, but our view is not loaded!", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:153 description:{@"%@ asked for ROI for 1-Up transition, but our view is not loaded!", v14}];
 
     abort();
   }
 
-  v5 = v4;
-  [v4 contentBoundsInCoordinateSpace:v4];
+  v5 = contentView;
+  [contentView contentBoundsInCoordinateSpace:contentView];
   v10 = [[off_1E7721860 alloc] initWithRect:v5 inCoordinateSpace:{v6, v7, v8, v9}];
-  v11 = [v5 configuration];
-  [v11 contentRectForOneUp];
+  configuration = [v5 configuration];
+  [configuration contentRectForOneUp];
   [v10 setImageContentsRect:?];
 
   return v10;
@@ -1328,16 +1328,16 @@ LABEL_10:
 
 - (UIImage)currentImage
 {
-  v2 = [(PXSurveyQuestionGadget *)self contentView];
-  v3 = [v2 configuration];
-  v4 = [v3 contentImageForOneUp];
+  contentView = [(PXSurveyQuestionGadget *)self contentView];
+  configuration = [contentView configuration];
+  contentImageForOneUp = [configuration contentImageForOneUp];
 
-  return v4;
+  return contentImageForOneUp;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [PXSurveyQuestionsGadgetContentView sizeThatFits:a3.width, a3.height];
+  [PXSurveyQuestionsGadgetContentView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -1345,12 +1345,12 @@ LABEL_10:
 
 - (PXSurveyQuestionConfiguration)configuration
 {
-  v2 = [(PXSurveyQuestionGadget *)self contentView];
-  v3 = [v2 configuration];
-  v4 = v3;
-  if (v3)
+  contentView = [(PXSurveyQuestionGadget *)self contentView];
+  configuration = [contentView configuration];
+  v4 = configuration;
+  if (configuration)
   {
-    v5 = v3;
+    v5 = configuration;
   }
 
   else
@@ -1438,10 +1438,10 @@ void __34__PXSurveyQuestionGadget_handlers__block_invoke_3(uint64_t a1, void *a2
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -1452,12 +1452,12 @@ void __34__PXSurveyQuestionGadget_handlers__block_invoke_3(uint64_t a1, void *a2
     if (objc_opt_isKindOfClass())
     {
       question = self->_question;
-      v6 = v4;
-      v7 = [(PHQuestion *)question uuid];
-      v8 = [(PXSurveyQuestionGadget *)v6 question];
+      v6 = equalCopy;
+      uuid = [(PHQuestion *)question uuid];
+      question = [(PXSurveyQuestionGadget *)v6 question];
 
-      v9 = [v8 uuid];
-      v10 = [v7 isEqualToString:v9];
+      uuid2 = [question uuid];
+      v10 = [uuid isEqualToString:uuid2];
     }
 
     else
@@ -1469,17 +1469,17 @@ void __34__PXSurveyQuestionGadget_handlers__block_invoke_3(uint64_t a1, void *a2
   return v10;
 }
 
-- (PXSurveyQuestionGadget)initWithSurveyQuestion:(id)a3 gadgetType:(unint64_t)a4
+- (PXSurveyQuestionGadget)initWithSurveyQuestion:(id)question gadgetType:(unint64_t)type
 {
-  v7 = a3;
+  questionCopy = question;
   v11.receiver = self;
   v11.super_class = PXSurveyQuestionGadget;
   v8 = [(PXSurveyQuestionGadget *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_question, a3);
-    v9->_gadgetType = a4;
+    objc_storeStrong(&v8->_question, question);
+    v9->_gadgetType = type;
     v9->_configurationRequestId = 0x7FFFFFFFFFFFFFFFLL;
   }
 
@@ -1488,8 +1488,8 @@ void __34__PXSurveyQuestionGadget_handlers__block_invoke_3(uint64_t a1, void *a2
 
 - (PXSurveyQuestionGadget)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:81 description:{@"%s is not available as initializer", "-[PXSurveyQuestionGadget init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionGadget.m" lineNumber:81 description:{@"%s is not available as initializer", "-[PXSurveyQuestionGadget init]"}];
 
   abort();
 }
@@ -1500,7 +1500,7 @@ void __34__PXSurveyQuestionGadget_handlers__block_invoke_3(uint64_t a1, void *a2
   block[1] = 3221225472;
   block[2] = __42__PXSurveyQuestionGadget_preloadResources__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (preloadResources_onceToken_120267 != -1)
   {
     dispatch_once(&preloadResources_onceToken_120267, block);

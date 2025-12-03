@@ -1,67 +1,67 @@
 @interface ADLocalMeCardStore
 + (id)sharedStore;
 - (id)_init;
-- (void)addMeCardObserver:(id)a3;
-- (void)meCard:(id)a3;
-- (void)removeMeCardObserver:(id)a3;
-- (void)storeMeCard:(id)a3;
+- (void)addMeCardObserver:(id)observer;
+- (void)meCard:(id)card;
+- (void)removeMeCardObserver:(id)observer;
+- (void)storeMeCard:(id)card;
 @end
 
 @implementation ADLocalMeCardStore
 
-- (void)removeMeCardObserver:(id)a3
+- (void)removeMeCardObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002822F0;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addMeCardObserver:(id)a3
+- (void)addMeCardObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002823A0;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)meCard:(id)a3
+- (void)meCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100282450;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = cardCopy;
+  v6 = cardCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)storeMeCard:(id)a3
+- (void)storeMeCard:(id)card
 {
-  v4 = a3;
+  cardCopy = card;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002825D0;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = cardCopy;
+  v6 = cardCopy;
   dispatch_async(queue, v7);
 }
 

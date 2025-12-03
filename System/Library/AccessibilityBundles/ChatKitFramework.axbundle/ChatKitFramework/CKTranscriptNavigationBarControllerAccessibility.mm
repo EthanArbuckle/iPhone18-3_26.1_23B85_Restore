@@ -1,25 +1,25 @@
 @interface CKTranscriptNavigationBarControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)applyChange:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)applyChange:(id)change;
 @end
 
 @implementation CKTranscriptNavigationBarControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKTranscriptNavigationBarController" hasInstanceMethod:@"applyChange:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKTranscriptNavigationBarController" hasInstanceMethod:@"currentState" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptNavigationBarController" hasInstanceMethod:@"backNavigationItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UINavigationItem" hasInstanceMethod:@"backBarButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ChatKit.NavigationBarState" hasInstanceMethod:@"unreadCount" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKTranscriptNavigationBarController" hasInstanceMethod:@"applyChange:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptNavigationBarController" hasInstanceMethod:@"currentState" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptNavigationBarController" hasInstanceMethod:@"backNavigationItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UINavigationItem" hasInstanceMethod:@"backBarButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ChatKit.NavigationBarState" hasInstanceMethod:@"unreadCount" withFullSignature:{"q", 0}];
 }
 
-- (void)applyChange:(id)a3
+- (void)applyChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = CKTranscriptNavigationBarControllerAccessibility;
-  [(CKTranscriptNavigationBarControllerAccessibility *)&v9 applyChange:a3];
+  [(CKTranscriptNavigationBarControllerAccessibility *)&v9 applyChange:change];
   v4 = [(CKTranscriptNavigationBarControllerAccessibility *)self safeValueForKey:@"currentState"];
   v5 = [(CKTranscriptNavigationBarControllerAccessibility *)self safeValueForKeyPath:@"backNavigationItem.backBarButtonItem"];
   v7[0] = MEMORY[0x29EDCA5F8];

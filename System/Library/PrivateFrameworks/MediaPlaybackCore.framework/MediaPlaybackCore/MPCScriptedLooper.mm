@@ -1,25 +1,25 @@
 @interface MPCScriptedLooper
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_CMTimeForFrame:(SEL)a3;
-- (MPCScriptedLooper)initWithAsset:(id)a3 audioSession:(id)a4;
-- (MPCScriptedLooper)initWithAsset:(id)a3 sceneCollection:(id)a4 audioSession:(id)a5;
-- (MPCScriptedLooper)initWithURL:(id)a3 sceneCollection:(id)a4 audioSession:(id)a5;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_CMTimeForFrame:(SEL)frame;
+- (MPCScriptedLooper)initWithAsset:(id)asset audioSession:(id)session;
+- (MPCScriptedLooper)initWithAsset:(id)asset sceneCollection:(id)collection audioSession:(id)session;
+- (MPCScriptedLooper)initWithURL:(id)l sceneCollection:(id)collection audioSession:(id)session;
 - (id)currentScene;
-- (int64_t)frameForCMTime:(id *)a3;
+- (int64_t)frameForCMTime:(id *)time;
 - (void)_advanceScene;
-- (void)_createSceneCollectionForAssetWithPreloadedKeys:(id)a3;
+- (void)_createSceneCollectionForAssetWithPreloadedKeys:(id)keys;
 - (void)_executeCurrentScene;
 - (void)_executeSceneCollection;
 - (void)_loopIfNeeded;
 - (void)_pause;
-- (void)_sharedInitWithItem:(id)a3 audioSession:(id)a4;
+- (void)_sharedInitWithItem:(id)item audioSession:(id)session;
 - (void)_updateRateIfNeeded;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pauseScenes;
 - (void)playScenes;
 - (void)restartScenes;
-- (void)seekToFrameIfNeeded:(int64_t)a3 completionHandler:(id)a4;
-- (void)setTimeObserver:(id)a3;
+- (void)seekToFrameIfNeeded:(int64_t)needed completionHandler:(id)handler;
+- (void)setTimeObserver:(id)observer;
 @end
 
 @implementation MPCScriptedLooper
@@ -28,50 +28,50 @@
 {
   if ([(MPCScriptedLooper *)self isExecutingPauseScene]|| [(MPCScriptedLooper *)self isSceneExecutionPaused])
   {
-    v3 = [(MPCScriptedLooper *)self player];
-    [v3 pause];
+    player = [(MPCScriptedLooper *)self player];
+    [player pause];
   }
 
   else
   {
-    v3 = [(MPCScriptedLooper *)self player];
-    [v3 play];
+    player = [(MPCScriptedLooper *)self player];
+    [player play];
   }
 }
 
 - (void)_pause
 {
   [(MPCScriptedLooper *)self setExecutingPauseScene:1];
-  v4 = [(MPCScriptedLooper *)self player];
-  v5 = [v4 status];
+  player = [(MPCScriptedLooper *)self player];
+  status = [player status];
 
-  if (v5 == 1)
+  if (status == 1)
   {
     [(MPCScriptedLooper *)self _updateRateIfNeeded];
-    v6 = [(MPCScriptedLooper *)self currentScene];
-    v7 = [v6 iterations];
+    currentScene = [(MPCScriptedLooper *)self currentScene];
+    iterations = [currentScene iterations];
 
-    if (v7)
+    if (iterations)
     {
-      v8 = [(MPCScriptedLooper *)self sceneCollection];
-      [v8 frameRate];
+      sceneCollection = [(MPCScriptedLooper *)self sceneCollection];
+      [sceneCollection frameRate];
       v10 = v9;
 
       if (v10 == 0.0)
       {
-        v17 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v17 handleFailureInMethod:a2 object:self file:@"MPCScriptedLooper.m" lineNumber:452 description:@"Scene collection frame rate cannot be 0."];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"MPCScriptedLooper.m" lineNumber:452 description:@"Scene collection frame rate cannot be 0."];
       }
 
-      v11 = [(MPCScriptedLooper *)self currentScene];
-      v12 = [v11 iterations];
-      v13 = [(MPCScriptedLooper *)self sceneCollection];
-      [v13 frameRate];
-      v15 = v12 / v14;
+      currentScene2 = [(MPCScriptedLooper *)self currentScene];
+      iterations2 = [currentScene2 iterations];
+      sceneCollection2 = [(MPCScriptedLooper *)self sceneCollection];
+      [sceneCollection2 frameRate];
+      v15 = iterations2 / v14;
 
       v16 = dispatch_time(0, (v15 * 1000000000.0));
-      v18 = [(MPCScriptedLooper *)self pauseFinishedBlock];
-      dispatch_after(v16, MEMORY[0x1E69E96A0], v18);
+      pauseFinishedBlock = [(MPCScriptedLooper *)self pauseFinishedBlock];
+      dispatch_after(v16, MEMORY[0x1E69E96A0], pauseFinishedBlock);
     }
   }
 }
@@ -79,8 +79,8 @@
 - (void)_advanceScene
 {
   v3 = [(MPCScriptedLooper *)self currentSceneIndex]+ 1;
-  v4 = [(MPCSceneCollection *)self->_sceneCollection scenes];
-  v5 = [v4 count];
+  scenes = [(MPCSceneCollection *)self->_sceneCollection scenes];
+  v5 = [scenes count];
 
   if (v3 >= v5)
   {
@@ -98,10 +98,10 @@
 
 - (void)_loopIfNeeded
 {
-  v3 = [(MPCScriptedLooper *)self currentScene];
-  v4 = [v3 iterations];
+  currentScene = [(MPCScriptedLooper *)self currentScene];
+  iterations = [currentScene iterations];
 
-  if (v4 && (v5 = [(MPCScriptedLooper *)self currentLoopCount]+ 1, [(MPCScriptedLooper *)self setCurrentLoopCount:v5], v5 >= v4))
+  if (iterations && (v5 = [(MPCScriptedLooper *)self currentLoopCount]+ 1, [(MPCScriptedLooper *)self setCurrentLoopCount:v5], v5 >= iterations))
   {
     [(MPCScriptedLooper *)self setTimeObserver:0];
     [(MPCScriptedLooper *)self setItemDidPlayToEndObserver:0];
@@ -111,8 +111,8 @@
 
   else
   {
-    v6 = [(MPCScriptedLooper *)self currentScene];
-    -[MPCScriptedLooper seekToFrameIfNeeded:completionHandler:](self, "seekToFrameIfNeeded:completionHandler:", [v6 startFrame], 0);
+    currentScene2 = [(MPCScriptedLooper *)self currentScene];
+    -[MPCScriptedLooper seekToFrameIfNeeded:completionHandler:](self, "seekToFrameIfNeeded:completionHandler:", [currentScene2 startFrame], 0);
   }
 }
 
@@ -120,15 +120,15 @@
 {
   [(MPCScriptedLooper *)self setCurrentLoopCount:0];
   objc_initWeak(&location, self);
-  v3 = [(MPCScriptedLooper *)self currentScene];
-  v4 = [v3 startFrame];
+  currentScene = [(MPCScriptedLooper *)self currentScene];
+  startFrame = [currentScene startFrame];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __41__MPCScriptedLooper__executeCurrentScene__block_invoke;
   v5[3] = &unk_1E82395A0;
   objc_copyWeak(&v6, &location);
   v5[4] = self;
-  [(MPCScriptedLooper *)self seekToFrameIfNeeded:v4 completionHandler:v5];
+  [(MPCScriptedLooper *)self seekToFrameIfNeeded:startFrame completionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -231,8 +231,8 @@ void __41__MPCScriptedLooper__executeCurrentScene__block_invoke_3(uint64_t a1)
 
 - (void)_executeSceneCollection
 {
-  v3 = [(MPCScriptedLooper *)self sceneCollection];
-  if (v3 && (v4 = v3, v5 = [objc_opt_class() isScriptedLoopingDisabled], v4, !v5))
+  sceneCollection = [(MPCScriptedLooper *)self sceneCollection];
+  if (sceneCollection && (v4 = sceneCollection, v5 = [objc_opt_class() isScriptedLoopingDisabled], v4, !v5))
   {
 
     [(MPCScriptedLooper *)self _executeCurrentScene];
@@ -242,15 +242,15 @@ void __41__MPCScriptedLooper__executeCurrentScene__block_invoke_3(uint64_t a1)
   {
     objc_initWeak(&location, self);
     v6 = objc_alloc(MEMORY[0x1E6970828]);
-    v7 = [(MPCScriptedLooper *)self player];
-    v8 = [v7 currentItem];
+    player = [(MPCScriptedLooper *)self player];
+    currentItem = [player currentItem];
     v9 = *MEMORY[0x1E6987A10];
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __44__MPCScriptedLooper__executeSceneCollection__block_invoke;
     v14 = &unk_1E8239578;
     objc_copyWeak(&v15, &location);
-    v10 = [v6 initWithName:v9 object:v8 handler:&v11];
+    v10 = [v6 initWithName:v9 object:currentItem handler:&v11];
     [(MPCScriptedLooper *)self setItemDidPlayToEndObserver:v10, v11, v12, v13, v14];
 
     objc_destroyWeak(&v15);
@@ -269,22 +269,22 @@ void __44__MPCScriptedLooper__executeSceneCollection__block_invoke(uint64_t a1)
   }
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_CMTimeForFrame:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_CMTimeForFrame:(SEL)frame
 {
   v5 = 1000 * a4;
-  v8 = [(MPCScriptedLooper *)self sceneCollection];
-  [v8 frameRate];
+  sceneCollection = [(MPCScriptedLooper *)self sceneCollection];
+  [sceneCollection frameRate];
   CMTimeMake(retstr, v5, (v6 * 1000.0));
 
   return result;
 }
 
-- (void)_createSceneCollectionForAssetWithPreloadedKeys:(id)a3
+- (void)_createSceneCollectionForAssetWithPreloadedKeys:(id)keys
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v37 = 0;
-  v5 = [v4 statusOfValueForKey:@"metadata" error:&v37];
+  v5 = [keysCopy statusOfValueForKey:@"metadata" error:&v37];
   v6 = v37;
   v7 = v6;
   if (v5 > 2)
@@ -295,11 +295,11 @@ void __44__MPCScriptedLooper__executeSceneCollection__block_invoke(uint64_t a1)
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v41 = self;
+        selfCopy10 = self;
         _os_log_impl(&dword_1C5C61000, v21, OS_LOG_TYPE_INFO, "MPCScriptedLooper %p: Cancelled preloading metadata.", buf, 0xCu);
       }
 
-      v12 = self;
+      selfCopy3 = self;
       v13 = 3;
     }
 
@@ -317,11 +317,11 @@ void __44__MPCScriptedLooper__executeSceneCollection__block_invoke(uint64_t a1)
       v11 = [v9 errorWithDomain:@"MPCScriptedLooperErrorDomain" code:0 userInfo:v10];
       [(MPCScriptedLooper *)self setError:v11];
 
-      v12 = self;
+      selfCopy3 = self;
       v13 = 2;
     }
 
-    [(MPCScriptedLooper *)v12 setStatus:v13];
+    [(MPCScriptedLooper *)selfCopy3 setStatus:v13];
     goto LABEL_40;
   }
 
@@ -331,7 +331,7 @@ void __44__MPCScriptedLooper__executeSceneCollection__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v41 = self;
+      selfCopy10 = self;
       v42 = 2048;
       v43 = v5;
       _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, "MPCScriptedLooper %p: metadataStatus was %ld.", buf, 0x16u);
@@ -339,7 +339,7 @@ void __44__MPCScriptedLooper__executeSceneCollection__block_invoke(uint64_t a1)
 
 LABEL_10:
     v36 = 0;
-    v14 = [v4 statusOfValueForKey:@"playable" error:&v36];
+    v14 = [keysCopy statusOfValueForKey:@"playable" error:&v36];
     v15 = v36;
     v16 = v15;
     if (v14 > 2)
@@ -350,11 +350,11 @@ LABEL_10:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
           *buf = 134217984;
-          v41 = self;
+          selfCopy10 = self;
           _os_log_impl(&dword_1C5C61000, v27, OS_LOG_TYPE_INFO, "MPCScriptedLooper %p: Cancelled preloading playable.", buf, 0xCu);
         }
 
-        v25 = self;
+        selfCopy8 = self;
         v26 = 3;
         goto LABEL_30;
       }
@@ -388,17 +388,17 @@ LABEL_10:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
-          v41 = self;
+          selfCopy10 = self;
           v42 = 2048;
           v43 = v14;
           _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_DEFAULT, "MPCScriptedLooper %p: playableStatus was %ld.", buf, 0x16u);
         }
       }
 
-      if ([v4 isPlayable])
+      if ([keysCopy isPlayable])
       {
-        v22 = [v4 metadata];
-        v23 = [MPCScriptedSceneCollectionParser sceneCollectionForMetadataItems:v22];
+        metadata = [keysCopy metadata];
+        v23 = [MPCScriptedSceneCollectionParser sceneCollectionForMetadataItems:metadata];
 
         [(MPCScriptedLooper *)self setSceneCollection:v23];
         [(MPCScriptedLooper *)self setStatus:1];
@@ -410,13 +410,13 @@ LABEL_10:
       [(MPCScriptedLooper *)self setError:v24];
     }
 
-    v25 = self;
+    selfCopy8 = self;
     v26 = 2;
 LABEL_30:
-    [(MPCScriptedLooper *)v25 setStatus:v26];
+    [(MPCScriptedLooper *)selfCopy8 setStatus:v26];
 LABEL_31:
     v35 = 0;
-    v28 = [v4 statusOfValueForKey:@"duration" error:&v35];
+    v28 = [keysCopy statusOfValueForKey:@"duration" error:&v35];
     v29 = v35;
     if (v28 == 4)
     {
@@ -424,7 +424,7 @@ LABEL_31:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v41 = self;
+        selfCopy10 = self;
         v31 = "MPCScriptedLooper %p: Cancelled preloading duration.";
         v32 = v30;
         v33 = OS_LOG_TYPE_INFO;
@@ -446,7 +446,7 @@ LABEL_39:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218242;
-        v41 = self;
+        selfCopy10 = self;
         v42 = 2114;
         v43 = v29;
         v31 = "MPCScriptedLooper %p: Failed to preload duration. error=%{public}@";
@@ -470,27 +470,27 @@ LABEL_40:
   [(MPCScriptedLooper *)self _executeSceneCollection];
 }
 
-- (int64_t)frameForCMTime:(id *)a3
+- (int64_t)frameForCMTime:(id *)time
 {
-  v9 = *a3;
+  v9 = *time;
   Seconds = CMTimeGetSeconds(&v9);
-  v5 = [(MPCScriptedLooper *)self sceneCollection];
-  [v5 frameRate];
+  sceneCollection = [(MPCScriptedLooper *)self sceneCollection];
+  [sceneCollection frameRate];
   v7 = (Seconds * v6);
 
   return v7;
 }
 
-- (void)seekToFrameIfNeeded:(int64_t)a3 completionHandler:(id)a4
+- (void)seekToFrameIfNeeded:(int64_t)needed completionHandler:(id)handler
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   memset(&v45, 0, sizeof(v45));
-  v7 = [(MPCScriptedLooper *)self player];
-  v8 = v7;
-  if (v7)
+  player = [(MPCScriptedLooper *)self player];
+  v8 = player;
+  if (player)
   {
-    [v7 currentTime];
+    [player currentTime];
   }
 
   else
@@ -504,19 +504,19 @@ LABEL_40:
   aBlock[1] = 3221225472;
   aBlock[2] = __59__MPCScriptedLooper_seekToFrameIfNeeded_completionHandler___block_invoke;
   aBlock[3] = &unk_1E8239528;
-  v34 = v6;
+  v34 = handlerCopy;
   v44 = v34;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (v9 + 1 == a3)
+  if (v9 + 1 == needed)
   {
     v10[2](v10);
   }
 
   value = *MEMORY[0x1E6960CC0];
   timescale = *(MEMORY[0x1E6960CC0] + 8);
-  v12 = [(MPCScriptedLooper *)self sceneCollection];
-  v13 = v12 == 0;
+  sceneCollection = [(MPCScriptedLooper *)self sceneCollection];
+  v13 = sceneCollection == 0;
 
   epoch = *(MEMORY[0x1E6960CC0] + 16);
   v33 = epoch;
@@ -531,7 +531,7 @@ LABEL_40:
     goto LABEL_10;
   }
 
-  [(MPCScriptedLooper *)self _CMTimeForFrame:a3];
+  [(MPCScriptedLooper *)self _CMTimeForFrame:needed];
   value = time1.value;
   flags = time1.flags;
   timescale = time1.timescale;
@@ -568,25 +568,25 @@ LABEL_11:
   v35 = CMTimeCopyDescription(v19, &time1);
   time1 = v45;
   v20 = CMTimeCopyDescription(v19, &time1);
-  v21 = [(MPCScriptedLooper *)self player];
-  v22 = [v21 currentItem];
-  v23 = [v22 asset];
-  v24 = [v23 URL];
+  player2 = [(MPCScriptedLooper *)self player];
+  currentItem = [player2 currentItem];
+  asset = [currentItem asset];
+  v24 = [asset URL];
 
   v25 = os_log_create("com.apple.amp.mediaplaybackcore", "ScriptedLooper");
   v26 = v25;
   if ((v18 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v25))
   {
-    v27 = [(MPCScriptedLooper *)self currentSceneIndex];
-    v28 = [(MPCScriptedLooper *)self currentLoopCount];
+    currentSceneIndex = [(MPCScriptedLooper *)self currentSceneIndex];
+    currentLoopCount = [(MPCScriptedLooper *)self currentLoopCount];
     LODWORD(time1.value) = 138544642;
     *(&time1.value + 4) = v35;
     LOWORD(time1.flags) = 2114;
     *(&time1.flags + 2) = v20;
     HIWORD(time1.epoch) = 2048;
-    v47 = v27;
+    v47 = currentSceneIndex;
     v48 = 2048;
-    v49 = v28;
+    v49 = currentLoopCount;
     v50 = 2114;
     v51 = v24;
     v52 = 2048;
@@ -596,13 +596,13 @@ LABEL_11:
 
   if (![(MPCScriptedLooper *)self isSceneExecutionPaused])
   {
-    v29 = [(MPCScriptedLooper *)self player];
-    [v29 pause];
+    player3 = [(MPCScriptedLooper *)self player];
+    [player3 pause];
   }
 
   objc_initWeak(&location, self);
-  v30 = [(MPCScriptedLooper *)self player];
-  v31 = [v30 currentItem];
+  player4 = [(MPCScriptedLooper *)self player];
+  currentItem2 = [player4 currentItem];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __59__MPCScriptedLooper_seekToFrameIfNeeded_completionHandler___block_invoke_68;
@@ -619,7 +619,7 @@ LABEL_11:
   time2.epoch = v33;
   v36 = *&time2.value;
   v37 = v33;
-  [v31 seekToTime:&time1 toleranceBefore:&time2 toleranceAfter:&v36 completionHandler:v38];
+  [currentItem2 seekToTime:&time1 toleranceBefore:&time2 toleranceAfter:&v36 completionHandler:v38];
 
   objc_destroyWeak(v40);
   objc_destroyWeak(&location);
@@ -663,45 +663,45 @@ void __59__MPCScriptedLooper_seekToFrameIfNeeded_completionHandler___block_invok
   }
 }
 
-- (void)setTimeObserver:(id)a3
+- (void)setTimeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   timeObserver = self->_timeObserver;
-  if (timeObserver != v5)
+  if (timeObserver != observerCopy)
   {
-    v8 = v5;
+    v8 = observerCopy;
     if (timeObserver)
     {
-      v7 = [(MPCScriptedLooper *)self player];
-      [v7 removeTimeObserver:self->_timeObserver];
+      player = [(MPCScriptedLooper *)self player];
+      [player removeTimeObserver:self->_timeObserver];
     }
 
-    objc_storeStrong(&self->_timeObserver, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_timeObserver, observer);
+    observerCopy = v8;
   }
 }
 
 - (id)currentScene
 {
-  v3 = [(MPCScriptedLooper *)self sceneCollection];
-  v4 = [v3 scenes];
-  v5 = [v4 objectAtIndexedSubscript:{-[MPCScriptedLooper currentSceneIndex](self, "currentSceneIndex")}];
+  sceneCollection = [(MPCScriptedLooper *)self sceneCollection];
+  scenes = [sceneCollection scenes];
+  v5 = [scenes objectAtIndexedSubscript:{-[MPCScriptedLooper currentSceneIndex](self, "currentSceneIndex")}];
 
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (MPCScriptedLooperPlayerStatusKVOContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (MPCScriptedLooperPlayerStatusKVOContext == context)
   {
-    v22 = [(MPCScriptedLooper *)self player];
-    v23 = [v22 status];
+    player = [(MPCScriptedLooper *)self player];
+    status = [player status];
 
-    if (v23 == 1)
+    if (status == 1)
     {
       if ([(MPCScriptedLooper *)self isExecutingPauseScene])
       {
@@ -709,13 +709,13 @@ void __59__MPCScriptedLooper_seekToFrameIfNeeded_completionHandler___block_invok
       }
     }
 
-    else if (v23 == 2)
+    else if (status == 2)
     {
       v24 = MEMORY[0x1E696ABC0];
       v31 = *MEMORY[0x1E696AA08];
-      v25 = [(MPCScriptedLooper *)self player];
-      v26 = [v25 error];
-      v32[0] = v26;
+      player2 = [(MPCScriptedLooper *)self player];
+      error = [player2 error];
+      v32[0] = error;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
       v28 = [v24 errorWithDomain:@"MPCScriptedLooperErrorDomain" code:4 userInfo:v27];
       [(MPCScriptedLooper *)self setError:v28];
@@ -724,20 +724,20 @@ void __59__MPCScriptedLooper_seekToFrameIfNeeded_completionHandler___block_invok
     }
   }
 
-  else if (MPCScriptedLooperItemStatusKVOContext == a6)
+  else if (MPCScriptedLooperItemStatusKVOContext == context)
   {
-    v13 = [(MPCScriptedLooper *)self player];
-    v14 = [v13 currentItem];
-    v15 = [v14 status];
+    player3 = [(MPCScriptedLooper *)self player];
+    currentItem = [player3 currentItem];
+    status2 = [currentItem status];
 
-    if (v15 == 2)
+    if (status2 == 2)
     {
       v16 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696AA08];
-      v17 = [(MPCScriptedLooper *)self player];
-      v18 = [v17 currentItem];
-      v19 = [v18 error];
-      v30 = v19;
+      player4 = [(MPCScriptedLooper *)self player];
+      currentItem2 = [player4 currentItem];
+      error2 = [currentItem2 error];
+      v30 = error2;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
       v21 = [v16 errorWithDomain:@"MPCScriptedLooperErrorDomain" code:5 userInfo:v20];
       [(MPCScriptedLooper *)self setError:v21];
@@ -770,8 +770,8 @@ LABEL_8:
   if ([(MPCScriptedLooper *)self isExecutingPauseScene])
   {
     [(MPCScriptedLooper *)self setExecutingPauseScene:0];
-    v3 = [(MPCScriptedLooper *)self pauseFinishedBlock];
-    dispatch_block_cancel(v3);
+    pauseFinishedBlock = [(MPCScriptedLooper *)self pauseFinishedBlock];
+    dispatch_block_cancel(pauseFinishedBlock);
   }
 
   [(MPCScriptedLooper *)self _executeSceneCollection];
@@ -779,35 +779,35 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [(MPCScriptedLooper *)self player];
-  [v3 removeObserver:self forKeyPath:@"status"];
+  player = [(MPCScriptedLooper *)self player];
+  [player removeObserver:self forKeyPath:@"status"];
 
-  v4 = [(MPCScriptedLooper *)self player];
-  v5 = [v4 currentItem];
-  [v5 removeObserver:self forKeyPath:@"status"];
+  player2 = [(MPCScriptedLooper *)self player];
+  currentItem = [player2 currentItem];
+  [currentItem removeObserver:self forKeyPath:@"status"];
 
-  v6 = [(MPCScriptedLooper *)self player];
-  v7 = [(MPCScriptedLooper *)self timeObserver];
-  [v6 removeTimeObserver:v7];
+  player3 = [(MPCScriptedLooper *)self player];
+  timeObserver = [(MPCScriptedLooper *)self timeObserver];
+  [player3 removeTimeObserver:timeObserver];
 
   v8.receiver = self;
   v8.super_class = MPCScriptedLooper;
   [(MPCScriptedLooper *)&v8 dealloc];
 }
 
-- (void)_sharedInitWithItem:(id)a3 audioSession:(id)a4
+- (void)_sharedInitWithItem:(id)item audioSession:(id)session
 {
-  v6 = a4;
+  sessionCopy = session;
   v7 = MEMORY[0x1E6988098];
-  v8 = a3;
+  itemCopy = item;
   v9 = [v7 playerWithPlayerItem:0];
   v10 = v9;
-  if (v6)
+  if (sessionCopy)
   {
-    [(AVPlayer *)v9 setAudioSession:v6];
+    [(AVPlayer *)v9 setAudioSession:sessionCopy];
   }
 
-  [(AVPlayer *)v10 replaceCurrentItemWithPlayerItem:v8];
+  [(AVPlayer *)v10 replaceCurrentItemWithPlayerItem:itemCopy];
   [(AVPlayer *)v10 setActionAtItemEnd:2];
   player = self->_player;
   self->_player = v10;
@@ -815,7 +815,7 @@ LABEL_8:
 
   self->_sceneExecutionPaused = 1;
   [(AVPlayer *)v12 addObserver:self forKeyPath:@"status" options:1 context:MPCScriptedLooperPlayerStatusKVOContext];
-  [v8 addObserver:self forKeyPath:@"status" options:1 context:MPCScriptedLooperItemStatusKVOContext];
+  [itemCopy addObserver:self forKeyPath:@"status" options:1 context:MPCScriptedLooperItemStatusKVOContext];
 
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x1E69E9820];
@@ -839,50 +839,50 @@ void __54__MPCScriptedLooper__sharedInitWithItem_audioSession___block_invoke(uin
   [WeakRetained _advanceScene];
 }
 
-- (MPCScriptedLooper)initWithAsset:(id)a3 sceneCollection:(id)a4 audioSession:(id)a5
+- (MPCScriptedLooper)initWithAsset:(id)asset sceneCollection:(id)collection audioSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  collectionCopy = collection;
+  sessionCopy = session;
   v15.receiver = self;
   v15.super_class = MPCScriptedLooper;
   v11 = [(MPCScriptedLooper *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sceneCollection, a4);
+    objc_storeStrong(&v11->_sceneCollection, collection);
     v12->_status = 1;
-    v13 = [MEMORY[0x1E69880B0] playerItemWithAsset:v8];
-    [(MPCScriptedLooper *)v12 _sharedInitWithItem:v13 audioSession:v10];
+    v13 = [MEMORY[0x1E69880B0] playerItemWithAsset:assetCopy];
+    [(MPCScriptedLooper *)v12 _sharedInitWithItem:v13 audioSession:sessionCopy];
     [(MPCScriptedLooper *)v12 _executeSceneCollection];
   }
 
   return v12;
 }
 
-- (MPCScriptedLooper)initWithURL:(id)a3 sceneCollection:(id)a4 audioSession:(id)a5
+- (MPCScriptedLooper)initWithURL:(id)l sceneCollection:(id)collection audioSession:(id)session
 {
   v8 = MEMORY[0x1E6987E28];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 assetWithURL:a3];
-  v12 = [(MPCScriptedLooper *)self initWithAsset:v11 sceneCollection:v10 audioSession:v9];
+  sessionCopy = session;
+  collectionCopy = collection;
+  v11 = [v8 assetWithURL:l];
+  v12 = [(MPCScriptedLooper *)self initWithAsset:v11 sceneCollection:collectionCopy audioSession:sessionCopy];
 
   return v12;
 }
 
-- (MPCScriptedLooper)initWithAsset:(id)a3 audioSession:(id)a4
+- (MPCScriptedLooper)initWithAsset:(id)asset audioSession:(id)session
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  sessionCopy = session;
   v17.receiver = self;
   v17.super_class = MPCScriptedLooper;
   v8 = [(MPCScriptedLooper *)&v17 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E69880B0] playerItemWithAsset:v6];
-    [(MPCScriptedLooper *)v8 _sharedInitWithItem:v9 audioSession:v7];
+    v9 = [MEMORY[0x1E69880B0] playerItemWithAsset:assetCopy];
+    [(MPCScriptedLooper *)v8 _sharedInitWithItem:v9 audioSession:sessionCopy];
     v15[0] = 0;
     v15[1] = v15;
     v15[2] = 0x3032000000;
@@ -898,7 +898,7 @@ void __54__MPCScriptedLooper__sharedInitWithItem_audioSession___block_invoke(uin
     v12[2] = __48__MPCScriptedLooper_initWithAsset_audioSession___block_invoke;
     v12[3] = &unk_1E82394D8;
     v14 = v15;
-    v13 = v6;
+    v13 = assetCopy;
     [v13 loadValuesAsynchronouslyForKeys:v10 completionHandler:v12];
 
     _Block_object_dispose(v15, 8);

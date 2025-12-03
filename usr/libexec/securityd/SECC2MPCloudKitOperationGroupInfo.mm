@@ -1,35 +1,35 @@
 @interface SECC2MPCloudKitOperationGroupInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SECC2MPCloudKitOperationGroupInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(SECC2MPCloudKitOperationGroupInfo *)self setOperationGroupId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SECC2MPCloudKitOperationGroupInfo *)self setOperationGroupName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[28])
+  if (fromCopy[28])
   {
-    self->_operationGroupTriggered = v4[24];
+    self->_operationGroupTriggered = fromCopy[24];
     *&self->_has |= 1u;
   }
 }
@@ -51,16 +51,16 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   operationGroupId = self->_operationGroupId;
-  if (operationGroupId | *(v4 + 1))
+  if (operationGroupId | *(equalCopy + 1))
   {
     if (![(NSString *)operationGroupId isEqual:?])
     {
@@ -69,7 +69,7 @@
   }
 
   operationGroupName = self->_operationGroupName;
-  if (operationGroupName | *(v4 + 2))
+  if (operationGroupName | *(equalCopy + 2))
   {
     if (![(NSString *)operationGroupName isEqual:?])
     {
@@ -77,10 +77,10 @@
     }
   }
 
-  v7 = (*(v4 + 28) & 1) == 0;
+  v7 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
 LABEL_8:
       v7 = 0;
@@ -89,13 +89,13 @@ LABEL_8:
 
     if (self->_operationGroupTriggered)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_8;
     }
@@ -108,14 +108,14 @@ LABEL_9:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_operationGroupId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_operationGroupId copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_operationGroupName copyWithZone:a3];
+  v8 = [(NSString *)self->_operationGroupName copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -128,50 +128,50 @@ LABEL_9:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_operationGroupId)
   {
-    [v4 setOperationGroupId:?];
-    v4 = v5;
+    [toCopy setOperationGroupId:?];
+    toCopy = v5;
   }
 
   if (self->_operationGroupName)
   {
     [v5 setOperationGroupName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_operationGroupTriggered;
-    v4[28] |= 1u;
+    toCopy[24] = self->_operationGroupTriggered;
+    toCopy[28] |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_operationGroupId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_operationGroupName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     operationGroupTriggered = self->_operationGroupTriggered;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
@@ -205,8 +205,8 @@ LABEL_9:
   v7.receiver = self;
   v7.super_class = SECC2MPCloudKitOperationGroupInfo;
   v3 = [(SECC2MPCloudKitOperationGroupInfo *)&v7 description];
-  v4 = [(SECC2MPCloudKitOperationGroupInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SECC2MPCloudKitOperationGroupInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

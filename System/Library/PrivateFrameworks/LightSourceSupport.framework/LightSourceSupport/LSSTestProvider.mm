@@ -1,21 +1,21 @@
 @interface LSSTestProvider
 - (LSSProviderDelegate)delegate;
-- (LSSTestProvider)initWithQueue:(id)a3 delegate:(id)a4;
-- (void)_updateAngle:(double)a3 forTime:;
-- (void)_updateRealtime:(double)a3 forTime:;
+- (LSSTestProvider)initWithQueue:(id)queue delegate:(id)delegate;
+- (void)_updateAngle:(double)angle forTime:;
+- (void)_updateRealtime:(double)realtime forTime:;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation LSSTestProvider
 
-- (LSSTestProvider)initWithQueue:(id)a3 delegate:(id)a4
+- (LSSTestProvider)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   if (!LSSHasInternalUI())
   {
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
@@ -30,15 +30,15 @@
       if (!os_log_type_enabled(_MergedGlobals_17, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_6:
-        objc_storeStrong(&v9->_queue, a3);
-        objc_storeWeak(&v9->_delegate, v8);
+        objc_storeStrong(&v9->_queue, queue);
+        objc_storeWeak(&v9->_delegate, delegateCopy);
         v11 = +[LSSSettings currentSettings];
         v9->_expectRealtimeUpdates = [(LSSSettings *)v11 BOOLForKey:?];
-        v12 = [(LSSSettings *)v11 defaults];
-        [v12 addObserver:v9 forKeyPath:@"test_realtime" options:1 context:0];
+        defaults = [(LSSSettings *)v11 defaults];
+        [defaults addObserver:v9 forKeyPath:@"test_realtime" options:1 context:0];
 
-        v13 = [(LSSSettings *)v11 defaults];
-        [v13 addObserver:v9 forKeyPath:@"test_lightAngle" options:5 context:0];
+        defaults2 = [(LSSSettings *)v11 defaults];
+        [defaults2 addObserver:v9 forKeyPath:@"test_lightAngle" options:5 context:0];
 
         goto LABEL_7;
       }
@@ -61,10 +61,10 @@ LABEL_6:
 
 LABEL_7:
   self = v9;
-  v14 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)invalidate
@@ -72,22 +72,22 @@ LABEL_9:
   v5 = +[LSSSettings currentSettings];
   if ([(LSSSettings *)v5 dynamic])
   {
-    v3 = [(LSSSettings *)v5 defaults];
-    [v3 removeObserver:self forKeyPath:@"test_realtime"];
+    defaults = [(LSSSettings *)v5 defaults];
+    [defaults removeObserver:self forKeyPath:@"test_realtime"];
 
-    v4 = [(LSSSettings *)v5 defaults];
-    [v4 removeObserver:self forKeyPath:@"test_lightAngle"];
+    defaults2 = [(LSSSettings *)v5 defaults];
+    [defaults2 removeObserver:self forKeyPath:@"test_lightAngle"];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  changeCopy = change;
   v10 = LSSMediaTime();
-  if ([v8 isEqualToString:@"test_lightAngle"])
+  if ([pathCopy isEqualToString:@"test_lightAngle"])
   {
-    v11 = [v9 objectForKey:*MEMORY[0x277CCA2F0]];
+    v11 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       if (qword_280D2F630 == -1)
@@ -130,9 +130,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:@"test_realtime"])
+  if ([pathCopy isEqualToString:@"test_realtime"])
   {
-    v11 = [v9 objectForKey:*MEMORY[0x277CCA2F0]];
+    v11 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       if (qword_280D2F630 == -1)
@@ -182,10 +182,10 @@ LABEL_16:
   return WeakRetained;
 }
 
-- (void)_updateAngle:(double)a3 forTime:
+- (void)_updateAngle:(double)angle forTime:
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     if (qword_280D2F630 != -1)
     {
@@ -199,19 +199,19 @@ LABEL_16:
       _os_log_debug_impl(&dword_255E8B000, v6, OS_LOG_TYPE_DEBUG, "angle", __dst, 2u);
     }
 
-    *(a1 + 80) = 0;
-    *(a1 + 88) = 0;
-    *(a1 + 96) = xmmword_255E9C9F0;
+    *(self + 80) = 0;
+    *(self + 88) = 0;
+    *(self + 96) = xmmword_255E9C9F0;
     v8 = __sincos_stret(a2 * 3.14159265 / 180.0);
     *&v7 = v8.__cosval;
-    *(a1 + 32) = a3;
+    *(self + 32) = angle;
     *(&v7 + 1) = *&v8.__sinval;
-    *(a1 + 48) = v7;
-    *(a1 + 64) = 0u;
-    *(a1 + 112) = 1065353216;
-    if (*(a1 + 16) == 1)
+    *(self + 48) = v7;
+    *(self + 64) = 0u;
+    *(self + 112) = 1065353216;
+    if (*(self + 16) == 1)
     {
-      if (*(a1 + 128))
+      if (*(self + 128))
       {
         v9 = 2;
       }
@@ -227,22 +227,22 @@ LABEL_16:
       v9 = 0;
     }
 
-    *(a1 + 116) = v9;
-    memcpy(__dst, (a1 + 32), 0x60uLL);
-    WeakRetained = objc_loadWeakRetained((a1 + 136));
+    *(self + 116) = v9;
+    memcpy(__dst, (self + 32), 0x60uLL);
+    WeakRetained = objc_loadWeakRetained((self + 136));
     OUTLINED_FUNCTION_0_8(WeakRetained, v11, v12, v13, v14, v15, v16, v17, v19[0], v19[1], v19[2], v19[3], v19[4], v19[5], v19[6], v19[7], v19[8], v19[9], v19[10], v19[11], __dst[0]);
-    [v6 provider:a1 updatedLight:v19];
+    [v6 provider:self updatedLight:v19];
 
-    *(a1 + 16) = 1;
+    *(self + 16) = 1;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateRealtime:(double)a3 forTime:
+- (void)_updateRealtime:(double)realtime forTime:
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     if (qword_280D2F630 != -1)
     {
@@ -257,9 +257,9 @@ LABEL_16:
       _os_log_impl(&dword_255E8B000, v6, OS_LOG_TYPE_DEFAULT, "expect realtime: %d", buf, 8u);
     }
 
-    if (*(a1 + 128) != a2)
+    if (*(self + 128) != a2)
     {
-      *(a1 + 128) = a2;
+      *(self + 128) = a2;
       if ((a2 & 1) == 0)
       {
         if (qword_280D2F630 != -1)
@@ -274,12 +274,12 @@ LABEL_16:
           _os_log_impl(&dword_255E8B000, v7, OS_LOG_TYPE_DEFAULT, "need to pause", buf, 2u);
         }
 
-        *(a1 + 32) = a3;
-        *(a1 + 116) = 0;
-        memcpy(buf, (a1 + 32), 0x60uLL);
-        WeakRetained = objc_loadWeakRetained((a1 + 136));
+        *(self + 32) = realtime;
+        *(self + 116) = 0;
+        memcpy(buf, (self + 32), 0x60uLL);
+        WeakRetained = objc_loadWeakRetained((self + 136));
         OUTLINED_FUNCTION_0_8(WeakRetained, v9, v10, v11, v12, v13, v14, v15, v17[0], v17[1], v17[2], v17[3], v17[4], v17[5], v17[6], v17[7], v17[8], v17[9], v17[10], v17[11], buf[0]);
-        [v7 provider:a1 updatedLight:v17];
+        [v7 provider:self updatedLight:v17];
       }
     }
   }

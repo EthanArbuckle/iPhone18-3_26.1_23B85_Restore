@@ -1,6 +1,6 @@
 @interface DIAttributeImage
 - (DIAttributeImage)init;
-- (DIAttributeImage)initWithCoder:(id)a3;
+- (DIAttributeImage)initWithCoder:(id)coder;
 - (NSData)getCurrentValue;
 - (NSString)encoding;
 - (id)defaultValue;
@@ -8,46 +8,46 @@
 - (unint64_t)format;
 - (unint64_t)height;
 - (unint64_t)width;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCurrentValue:(id)a3;
-- (void)setEncoding:(id)a3;
-- (void)setFormat:(unint64_t)a3;
-- (void)setHeight:(unint64_t)a3;
-- (void)setWidth:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCurrentValue:(id)value;
+- (void)setEncoding:(id)encoding;
+- (void)setFormat:(unint64_t)format;
+- (void)setHeight:(unint64_t)height;
+- (void)setWidth:(unint64_t)width;
 @end
 
 @implementation DIAttributeImage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = DIAttributeImage;
-  v4 = a3;
-  [(DIAttribute *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DIAttribute *)&v5 encodeWithCoder:coderCopy];
   os_unfair_lock_lock(&self->super._lock);
-  [v4 encodeObject:self->_encoding forKey:{@"encoding", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_format forKey:@"format"];
-  [v4 encodeInteger:self->_height forKey:@"height"];
-  [v4 encodeInteger:self->_width forKey:@"width"];
+  [coderCopy encodeObject:self->_encoding forKey:{@"encoding", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_format forKey:@"format"];
+  [coderCopy encodeInteger:self->_height forKey:@"height"];
+  [coderCopy encodeInteger:self->_width forKey:@"width"];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (DIAttributeImage)initWithCoder:(id)a3
+- (DIAttributeImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DIAttributeImage;
-  v5 = [(DIAttribute *)&v9 initWithCoder:v4];
+  v5 = [(DIAttribute *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encoding"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encoding"];
     encoding = v5->_encoding;
     v5->_encoding = v6;
 
-    v5->_format = [v4 decodeIntegerForKey:@"format"];
-    v5->_height = [v4 decodeIntegerForKey:@"height"];
-    v5->_width = [v4 decodeIntegerForKey:@"width"];
+    v5->_format = [coderCopy decodeIntegerForKey:@"format"];
+    v5->_height = [coderCopy decodeIntegerForKey:@"height"];
+    v5->_width = [coderCopy decodeIntegerForKey:@"width"];
   }
 
   return v5;
@@ -73,20 +73,20 @@
   return v3;
 }
 
-- (void)setCurrentValue:(id)a3
+- (void)setCurrentValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = DIAttributeImage;
-  [(DIAttribute *)&v3 setCurrentValue:a3];
+  [(DIAttribute *)&v3 setCurrentValue:value];
 }
 
-- (void)setEncoding:(id)a3
+- (void)setEncoding:(id)encoding
 {
-  v6 = a3;
+  encodingCopy = encoding;
   os_unfair_lock_lock(&self->super._lock);
-  if (self->_encoding != v6)
+  if (self->_encoding != encodingCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)encodingCopy copyWithZone:0];
     encoding = self->_encoding;
     self->_encoding = v4;
   }
@@ -94,26 +94,26 @@
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setFormat:(unint64_t)a3
+- (void)setFormat:(unint64_t)format
 {
   os_unfair_lock_lock(&self->super._lock);
-  self->_format = a3;
+  self->_format = format;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setHeight:(unint64_t)a3
+- (void)setHeight:(unint64_t)height
 {
   os_unfair_lock_lock(&self->super._lock);
-  self->_height = a3;
+  self->_height = height;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setWidth:(unint64_t)a3
+- (void)setWidth:(unint64_t)width
 {
   os_unfair_lock_lock(&self->super._lock);
-  self->_width = a3;
+  self->_width = width;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -122,18 +122,18 @@
 {
   v4.receiver = self;
   v4.super_class = DIAttributeImage;
-  v2 = [(DIAttribute *)&v4 getCurrentValue];
+  getCurrentValue = [(DIAttribute *)&v4 getCurrentValue];
 
-  return v2;
+  return getCurrentValue;
 }
 
 - (id)defaultValue
 {
   v4.receiver = self;
   v4.super_class = DIAttributeImage;
-  v2 = [(DIAttribute *)&v4 defaultValue];
+  defaultValue = [(DIAttribute *)&v4 defaultValue];
 
-  return v2;
+  return defaultValue;
 }
 
 - (NSString)encoding
@@ -180,8 +180,8 @@
   os_unfair_lock_lock(&self->super._lock);
   [v3 appendFormat:@"encoding: '%@'; ", self->_encoding];
   os_unfair_lock_unlock(&self->super._lock);
-  v5 = [(DIAttributeImage *)self getCurrentValue];
-  [v3 appendFormat:@"currentValue: '%@'; ", v5];
+  getCurrentValue = [(DIAttributeImage *)self getCurrentValue];
+  [v3 appendFormat:@"currentValue: '%@'; ", getCurrentValue];
 
   [v3 appendFormat:@">"];
 

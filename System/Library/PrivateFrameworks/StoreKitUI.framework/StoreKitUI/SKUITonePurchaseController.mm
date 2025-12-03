@@ -1,21 +1,21 @@
 @interface SKUITonePurchaseController
-- (SKUITonePurchaseController)initWithItem:(id)a3;
+- (SKUITonePurchaseController)initWithItem:(id)item;
 - (UIViewController)parentViewController;
 - (void)_dismissContactPicker;
-- (void)_finishContactPicker:(id)a3 withContact:(id)a4;
-- (void)_finishWithTonePurchase:(id)a3;
-- (void)_presentViewController:(id)a3;
+- (void)_finishContactPicker:(id)picker withContact:(id)contact;
+- (void)_finishWithTonePurchase:(id)purchase;
+- (void)_presentViewController:(id)controller;
 - (void)_showContactPicker;
-- (void)contactPickerDidCancel:(id)a3;
+- (void)contactPickerDidCancel:(id)cancel;
 - (void)dealloc;
-- (void)showPurchaseFlowWithCompletionBlock:(id)a3;
+- (void)showPurchaseFlowWithCompletionBlock:(id)block;
 @end
 
 @implementation SKUITonePurchaseController
 
-- (SKUITonePurchaseController)initWithItem:(id)a3
+- (SKUITonePurchaseController)initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUITonePurchaseController initWithItem:];
@@ -27,7 +27,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
   }
 
   return v7;
@@ -41,9 +41,9 @@
   [(SKUITonePurchaseController *)&v3 dealloc];
 }
 
-- (void)showPurchaseFlowWithCompletionBlock:(id)a3
+- (void)showPurchaseFlowWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = __TonePurchaseControllers;
   if (!__TonePurchaseControllers)
   {
@@ -55,7 +55,7 @@
   }
 
   [v5 addObject:self];
-  v8 = [v4 copy];
+  v8 = [blockCopy copy];
   completionBlock = self->_completionBlock;
   self->_completionBlock = v8;
 
@@ -73,8 +73,8 @@
   v12 = ;
   [v10 setTitle:v12];
 
-  v13 = [(SKUIItem *)self->_item title];
-  v14 = [v13 length];
+  title = [(SKUIItem *)self->_item title];
+  v14 = [title length];
 
   if (v14)
   {
@@ -90,8 +90,8 @@
     }
     v16 = ;
     v17 = MEMORY[0x277CCACA8];
-    v18 = [(SKUIItem *)self->_item title];
-    v19 = [v17 stringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:0, v18];
+    title2 = [(SKUIItem *)self->_item title];
+    v19 = [v17 stringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:0, title2];
     [v10 setMessage:v19];
   }
 
@@ -225,7 +225,7 @@ void __66__SKUITonePurchaseController_showPurchaseFlowWithCompletionBlock___bloc
   [WeakRetained _finishWithTonePurchase:0];
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   [(SKUITonePurchaseController *)self _dismissContactPicker];
 
@@ -242,17 +242,17 @@ void __66__SKUITonePurchaseController_showPurchaseFlowWithCompletionBlock___bloc
   [(CNContactPickerViewController *)v4 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_finishContactPicker:(id)a3 withContact:(id)a4
+- (void)_finishContactPicker:(id)picker withContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  pickerCopy = picker;
+  contactCopy = contact;
   v8 = objc_alloc_init(MEMORY[0x277D69C80]);
-  if (v7)
+  if (contactCopy)
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "iOSLegacyIdentifier")}];
+    v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(contactCopy, "iOSLegacyIdentifier")}];
     [v8 setAssigneeIdentifier:v9];
-    v10 = [v7 identifier];
-    [v8 setAssigneeContactIdentifier:v10];
+    identifier = [contactCopy identifier];
+    [v8 setAssigneeContactIdentifier:identifier];
   }
 
   [(SKUITonePurchaseController *)self _dismissContactPicker];
@@ -272,7 +272,7 @@ void __66__SKUITonePurchaseController_showPurchaseFlowWithCompletionBlock___bloc
       [SKUIClientContext localizedStringForKey:@"BUY_TONE_SET_AS_RINGTONE" inBundles:0 inTable:v13];
     }
     v14 = ;
-    v25 = v6;
+    v25 = pickerCopy;
 
     v15 = MEMORY[0x277D750F8];
     v31[0] = MEMORY[0x277D85DD0];
@@ -317,8 +317,8 @@ void __66__SKUITonePurchaseController_showPurchaseFlowWithCompletionBlock___bloc
     }
 
     [v11 addAction:v23];
-    v24 = [v25 transitionCoordinator];
-    if (v24)
+    transitionCoordinator = [v25 transitionCoordinator];
+    if (transitionCoordinator)
     {
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
@@ -326,7 +326,7 @@ void __66__SKUITonePurchaseController_showPurchaseFlowWithCompletionBlock___bloc
       v26[3] = &unk_2781FB740;
       v26[4] = self;
       v27 = v11;
-      [v24 animateAlongsideTransition:0 completion:v26];
+      [transitionCoordinator animateAlongsideTransition:0 completion:v26];
     }
 
     else
@@ -338,7 +338,7 @@ void __66__SKUITonePurchaseController_showPurchaseFlowWithCompletionBlock___bloc
     objc_destroyWeak(&v33);
 
     objc_destroyWeak(location);
-    v6 = v25;
+    pickerCopy = v25;
   }
 
   else
@@ -362,16 +362,16 @@ void __63__SKUITonePurchaseController__finishContactPicker_withContact___block_i
   [WeakRetained _finishWithTonePurchase:*(a1 + 32)];
 }
 
-- (void)_finishWithTonePurchase:(id)a3
+- (void)_finishWithTonePurchase:(id)purchase
 {
   completionBlock = self->_completionBlock;
-  v5 = a3;
+  purchaseCopy = purchase;
   v9 = [completionBlock copy];
   v6 = self->_completionBlock;
   self->_completionBlock = 0;
 
   v7 = +[SKUIItemStateCenter defaultCenter];
-  [v7 purchaseTone:self->_item withProperties:v5 clientContext:self->_clientContext completionBlock:v9];
+  [v7 purchaseTone:self->_item withProperties:purchaseCopy clientContext:self->_clientContext completionBlock:v9];
 
   [__TonePurchaseControllers removeObject:self];
   if (![__TonePurchaseControllers count])
@@ -381,32 +381,32 @@ void __63__SKUITonePurchaseController__finishContactPicker_withContact___block_i
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v8 = a3;
-  v4 = [(SKUITonePurchaseController *)self parentViewController];
-  v5 = [v4 presentedViewController];
+  controllerCopy = controller;
+  parentViewController = [(SKUITonePurchaseController *)self parentViewController];
+  presentedViewController = [parentViewController presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     do
     {
-      v6 = [v4 presentedViewController];
+      presentedViewController2 = [parentViewController presentedViewController];
 
-      v7 = [v6 presentedViewController];
+      v6PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v4 = v6;
+      parentViewController = presentedViewController2;
     }
 
-    while (v7);
+    while (v6PresentedViewController);
   }
 
   else
   {
-    v6 = v4;
+    presentedViewController2 = parentViewController;
   }
 
-  [v6 presentViewController:v8 animated:1 completion:0];
+  [presentedViewController2 presentViewController:controllerCopy animated:1 completion:0];
 }
 
 - (void)_showContactPicker

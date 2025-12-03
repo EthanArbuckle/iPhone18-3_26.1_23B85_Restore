@@ -1,193 +1,193 @@
 @interface PRPosterMutableConfiguredProperties
-- (BOOL)applyUpdate:(id)a3 error:(id *)a4;
-- (BOOL)applyUpdates:(id)a3 error:(id *)a4;
-- (void)mergeConfiguredProperties:(id)a3;
+- (BOOL)applyUpdate:(id)update error:(id *)error;
+- (BOOL)applyUpdates:(id)updates error:(id *)error;
+- (void)mergeConfiguredProperties:(id)properties;
 @end
 
 @implementation PRPosterMutableConfiguredProperties
 
-- (void)mergeConfiguredProperties:(id)a3
+- (void)mergeConfiguredProperties:(id)properties
 {
-  v52 = a3;
-  v4 = [v52 titleStyleConfiguration];
-  if (v4)
+  propertiesCopy = properties;
+  titleStyleConfiguration = [propertiesCopy titleStyleConfiguration];
+  if (titleStyleConfiguration)
   {
-    v5 = v4;
-    v6 = [(PRPosterConfiguredProperties *)self titleStyleConfiguration];
+    v5 = titleStyleConfiguration;
+    titleStyleConfiguration2 = [(PRPosterConfiguredProperties *)self titleStyleConfiguration];
 
-    if (!v6)
+    if (!titleStyleConfiguration2)
     {
-      v7 = [v52 titleStyleConfiguration];
-      [(PRPosterConfiguredProperties *)self setTitleStyleConfiguration:v7];
+      titleStyleConfiguration3 = [propertiesCopy titleStyleConfiguration];
+      [(PRPosterConfiguredProperties *)self setTitleStyleConfiguration:titleStyleConfiguration3];
     }
   }
 
-  v8 = [v52 complicationLayout];
-  if (v8)
+  complicationLayout = [propertiesCopy complicationLayout];
+  if (complicationLayout)
   {
-    v9 = v8;
-    v10 = [(PRPosterConfiguredProperties *)self complicationLayout];
+    v9 = complicationLayout;
+    complicationLayout2 = [(PRPosterConfiguredProperties *)self complicationLayout];
 
-    if (!v10)
+    if (!complicationLayout2)
     {
-      v11 = [v52 complicationLayout];
-      [(PRPosterConfiguredProperties *)self setComplicationLayout:v11];
+      complicationLayout3 = [propertiesCopy complicationLayout];
+      [(PRPosterConfiguredProperties *)self setComplicationLayout:complicationLayout3];
     }
   }
 
-  v12 = [v52 focusConfiguration];
-  if (v12)
+  focusConfiguration = [propertiesCopy focusConfiguration];
+  if (focusConfiguration)
   {
-    v13 = v12;
-    v14 = [(PRPosterConfiguredProperties *)self focusConfiguration];
+    v13 = focusConfiguration;
+    focusConfiguration2 = [(PRPosterConfiguredProperties *)self focusConfiguration];
 
-    if (!v14)
+    if (!focusConfiguration2)
     {
-      v15 = [v52 focusConfiguration];
-      [(PRPosterConfiguredProperties *)self setFocusConfiguration:v15];
+      focusConfiguration3 = [propertiesCopy focusConfiguration];
+      [(PRPosterConfiguredProperties *)self setFocusConfiguration:focusConfiguration3];
     }
   }
 
-  v16 = [v52 renderingConfiguration];
-  if (v16)
+  renderingConfiguration = [propertiesCopy renderingConfiguration];
+  if (renderingConfiguration)
   {
-    v17 = v16;
-    v18 = [(PRPosterConfiguredProperties *)self renderingConfiguration];
+    v17 = renderingConfiguration;
+    renderingConfiguration2 = [(PRPosterConfiguredProperties *)self renderingConfiguration];
 
-    if (!v18)
+    if (!renderingConfiguration2)
     {
-      v19 = [v52 renderingConfiguration];
-      [(PRPosterConfiguredProperties *)self setRenderingConfiguration:v19];
+      renderingConfiguration3 = [propertiesCopy renderingConfiguration];
+      [(PRPosterConfiguredProperties *)self setRenderingConfiguration:renderingConfiguration3];
     }
   }
 
-  v20 = [v52 homeScreenConfiguration];
-  if (v20)
+  homeScreenConfiguration = [propertiesCopy homeScreenConfiguration];
+  if (homeScreenConfiguration)
   {
-    v21 = v20;
-    v22 = [(PRPosterConfiguredProperties *)self homeScreenConfiguration];
+    v21 = homeScreenConfiguration;
+    homeScreenConfiguration2 = [(PRPosterConfiguredProperties *)self homeScreenConfiguration];
 
-    if (!v22)
+    if (!homeScreenConfiguration2)
     {
-      v23 = [v52 homeScreenConfiguration];
-      [(PRPosterConfiguredProperties *)self setHomeScreenConfiguration:v23];
+      homeScreenConfiguration3 = [propertiesCopy homeScreenConfiguration];
+      [(PRPosterConfiguredProperties *)self setHomeScreenConfiguration:homeScreenConfiguration3];
     }
   }
 
-  v24 = [v52 colorVariationsConfiguration];
-  if (v24)
+  colorVariationsConfiguration = [propertiesCopy colorVariationsConfiguration];
+  if (colorVariationsConfiguration)
   {
-    v25 = v24;
-    v26 = [(PRPosterConfiguredProperties *)self colorVariationsConfiguration];
+    v25 = colorVariationsConfiguration;
+    colorVariationsConfiguration2 = [(PRPosterConfiguredProperties *)self colorVariationsConfiguration];
 
-    if (!v26)
+    if (!colorVariationsConfiguration2)
     {
-      v27 = [v52 colorVariationsConfiguration];
-      [(PRPosterConfiguredProperties *)self setColorVariationsConfiguration:v27];
+      colorVariationsConfiguration3 = [propertiesCopy colorVariationsConfiguration];
+      [(PRPosterConfiguredProperties *)self setColorVariationsConfiguration:colorVariationsConfiguration3];
     }
   }
 
-  v28 = [v52 quickActionsConfiguration];
-  if (v28)
+  quickActionsConfiguration = [propertiesCopy quickActionsConfiguration];
+  if (quickActionsConfiguration)
   {
-    v29 = v28;
-    v30 = [(PRPosterConfiguredProperties *)self quickActionsConfiguration];
+    v29 = quickActionsConfiguration;
+    quickActionsConfiguration2 = [(PRPosterConfiguredProperties *)self quickActionsConfiguration];
 
-    if (!v30)
+    if (!quickActionsConfiguration2)
     {
-      v31 = [v52 quickActionsConfiguration];
-      [(PRPosterConfiguredProperties *)self setQuickActionsConfiguration:v31];
+      quickActionsConfiguration3 = [propertiesCopy quickActionsConfiguration];
+      [(PRPosterConfiguredProperties *)self setQuickActionsConfiguration:quickActionsConfiguration3];
     }
   }
 
-  v32 = [v52 ambientConfiguration];
-  if (v32)
+  ambientConfiguration = [propertiesCopy ambientConfiguration];
+  if (ambientConfiguration)
   {
-    v33 = v32;
-    v34 = [(PRPosterConfiguredProperties *)self ambientConfiguration];
+    v33 = ambientConfiguration;
+    ambientConfiguration2 = [(PRPosterConfiguredProperties *)self ambientConfiguration];
 
-    if (!v34)
+    if (!ambientConfiguration2)
     {
-      v35 = [v52 ambientConfiguration];
-      [(PRPosterConfiguredProperties *)self setAmbientConfiguration:v35];
+      ambientConfiguration3 = [propertiesCopy ambientConfiguration];
+      [(PRPosterConfiguredProperties *)self setAmbientConfiguration:ambientConfiguration3];
     }
   }
 
-  v36 = [v52 suggestionMetadata];
-  if (v36)
+  suggestionMetadata = [propertiesCopy suggestionMetadata];
+  if (suggestionMetadata)
   {
-    v37 = v36;
-    v38 = [(PRPosterConfiguredProperties *)self suggestionMetadata];
+    v37 = suggestionMetadata;
+    suggestionMetadata2 = [(PRPosterConfiguredProperties *)self suggestionMetadata];
 
-    if (!v38)
+    if (!suggestionMetadata2)
     {
-      v39 = [v52 suggestionMetadata];
-      [(PRPosterConfiguredProperties *)self setSuggestionMetadata:v39];
+      suggestionMetadata3 = [propertiesCopy suggestionMetadata];
+      [(PRPosterConfiguredProperties *)self setSuggestionMetadata:suggestionMetadata3];
     }
   }
 
-  v40 = [v52 otherMetadata];
-  if (v40)
+  otherMetadata = [propertiesCopy otherMetadata];
+  if (otherMetadata)
   {
-    v41 = v40;
-    v42 = [(PRPosterConfiguredProperties *)self otherMetadata];
+    v41 = otherMetadata;
+    otherMetadata2 = [(PRPosterConfiguredProperties *)self otherMetadata];
 
-    if (!v42)
+    if (!otherMetadata2)
     {
-      v43 = [v52 otherMetadata];
-      [(PRPosterConfiguredProperties *)self setOtherMetadata:v43];
+      otherMetadata3 = [propertiesCopy otherMetadata];
+      [(PRPosterConfiguredProperties *)self setOtherMetadata:otherMetadata3];
     }
   }
 
-  v44 = [v52 ambientWidgetLayout];
-  if (v44)
+  ambientWidgetLayout = [propertiesCopy ambientWidgetLayout];
+  if (ambientWidgetLayout)
   {
-    v45 = v44;
-    v46 = [(PRPosterConfiguredProperties *)self ambientWidgetLayout];
+    v45 = ambientWidgetLayout;
+    ambientWidgetLayout2 = [(PRPosterConfiguredProperties *)self ambientWidgetLayout];
 
-    if (!v46)
+    if (!ambientWidgetLayout2)
     {
-      v47 = [v52 ambientWidgetLayout];
-      [(PRPosterConfiguredProperties *)self setAmbientWidgetLayout:v47];
+      ambientWidgetLayout3 = [propertiesCopy ambientWidgetLayout];
+      [(PRPosterConfiguredProperties *)self setAmbientWidgetLayout:ambientWidgetLayout3];
     }
   }
 
-  v48 = [v52 userInfo];
-  if (v48)
+  userInfo = [propertiesCopy userInfo];
+  if (userInfo)
   {
-    v49 = v48;
-    v50 = [(PRPosterConfiguredProperties *)self userInfo];
+    v49 = userInfo;
+    userInfo2 = [(PRPosterConfiguredProperties *)self userInfo];
 
-    if (!v50)
+    if (!userInfo2)
     {
-      v51 = [v52 userInfo];
-      [(PRPosterConfiguredProperties *)self setUserInfo:v51];
+      userInfo3 = [propertiesCopy userInfo];
+      [(PRPosterConfiguredProperties *)self setUserInfo:userInfo3];
     }
   }
 }
 
-- (BOOL)applyUpdate:(id)a3 error:(id *)a4
+- (BOOL)applyUpdate:(id)update error:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!update)
   {
     return 1;
   }
 
-  v11 = a3;
+  updateCopy = update;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v11 count:1];
+  updateCopy2 = update;
+  v8 = [v6 arrayWithObjects:&updateCopy count:1];
 
-  v9 = [(PRPosterMutableConfiguredProperties *)self applyUpdates:v8 error:a4, v11, v12];
+  v9 = [(PRPosterMutableConfiguredProperties *)self applyUpdates:v8 error:error, updateCopy, v12];
   return v9;
 }
 
-- (BOOL)applyUpdates:(id)a3 error:(id *)a4
+- (BOOL)applyUpdates:(id)updates error:(id *)error
 {
   v325 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (![v6 count])
+  updatesCopy = updates;
+  if (![updatesCopy count])
   {
     v264 = 1;
     goto LABEL_258;
@@ -197,7 +197,7 @@
   v296 = 0u;
   v293 = 0u;
   v294 = 0u;
-  v7 = v6;
+  v7 = updatesCopy;
   v8 = [v7 countByEnumeratingWithState:&v293 objects:v324 count:16];
   if (v8)
   {
@@ -212,16 +212,16 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v293 + 1) + 8 * i) type];
-        if (v12 <= 0xB && ((1 << v12) & 0xCC0) != 0)
+        type = [*(*(&v293 + 1) + 8 * i) type];
+        if (type <= 0xB && ((1 << type) & 0xCC0) != 0)
         {
-          if (a4)
+          if (error)
           {
             v262 = MEMORY[0x1E696ABC0];
             v322 = *MEMORY[0x1E696A588];
             v323 = @"Update type not supported!";
             v263 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v323 forKeys:&v322 count:1];
-            *a4 = [v262 pr_errorWithCode:2 userInfo:v263];
+            *error = [v262 pr_errorWithCode:2 userInfo:v263];
           }
 
           v264 = 0;
@@ -242,8 +242,8 @@
   v290 = 0u;
   v291 = 0u;
   v292 = 0u;
-  v15 = v14;
-  v16 = [v15 countByEnumeratingWithState:&v289 objects:v321 count:16];
+  userInfo = v14;
+  v16 = [userInfo countByEnumeratingWithState:&v289 objects:v321 count:16];
   v17 = v16 != 0;
   if (!v16)
   {
@@ -256,16 +256,16 @@
 
   v18 = v16;
   v277 = v16 != 0;
-  v278 = self;
-  v279 = a4;
-  v281 = v6;
+  selfCopy = self;
+  errorCopy = error;
+  v281 = updatesCopy;
   v282 = 0;
   v280 = 0;
   v285 = 0;
   v283 = 0;
   v287 = *MEMORY[0x1E696A588];
   v288 = *v290;
-  v284 = v15;
+  v284 = userInfo;
 LABEL_16:
   v19 = 0;
   v286 = v18;
@@ -273,19 +273,19 @@ LABEL_16:
   {
     if (*v290 != v288)
     {
-      objc_enumerationMutation(v15);
+      objc_enumerationMutation(userInfo);
     }
 
     v20 = *(*(&v289 + 1) + 8 * v19);
-    v21 = [v20 type];
-    switch(v21)
+    type2 = [v20 type];
+    switch(type2)
     {
       case 1:
       case 2:
       case 8:
-        v22 = [v20 payload];
+        payload = [v20 payload];
         v23 = objc_opt_class();
-        v24 = v22;
+        v24 = payload;
         if (v23)
         {
           if (objc_opt_isKindOfClass())
@@ -304,9 +304,9 @@ LABEL_16:
           v25 = 0;
         }
 
-        v30 = v25;
+        color2 = v25;
 
-        if (!v30 || v21 == 2 && ([v30 complications], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "count"), v31, v32 >= 2))
+        if (!color2 || type2 == 2 && ([color2 complications], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "count"), v31, v32 >= 2))
         {
           v33 = MEMORY[0x1E696ABC0];
           v317 = v287;
@@ -317,11 +317,11 @@ LABEL_16:
           goto LABEL_33;
         }
 
-        v39 = [v7 complicationLayout];
-        v40 = v39;
-        if (v39)
+        complicationLayout = [v7 complicationLayout];
+        v40 = complicationLayout;
+        if (complicationLayout)
         {
-          v41 = v39;
+          v41 = complicationLayout;
         }
 
         else
@@ -329,18 +329,18 @@ LABEL_16:
           v41 = [[PRPosterComplicationLayout alloc] initWithInlineComplication:0 sidebarComplicationIconLayout:0 sidebarComplications:0 complicationIconLayout:0 complications:0];
         }
 
-        v37 = v41;
+        homeScreenConfiguration = v41;
 
-        switch(v21)
+        switch(type2)
         {
           case 1:
             v206 = [PRPosterComplicationLayout alloc];
-            v99 = [v37 inlineComplication];
-            v100 = [v37 sidebarComplications];
-            v207 = v30;
+            inlineComplication = [homeScreenConfiguration inlineComplication];
+            sidebarComplications = [homeScreenConfiguration sidebarComplications];
+            v207 = color2;
 LABEL_174:
-            v101 = [v207 complications];
-            v103 = -[PRPosterComplicationLayout initWithInlineComplication:sidebarComplicationIconLayout:sidebarComplications:complicationIconLayout:complications:complicationsUseBottomLayout:](v206, "initWithInlineComplication:sidebarComplicationIconLayout:sidebarComplications:complicationIconLayout:complications:complicationsUseBottomLayout:", v99, 0, v100, 0, v101, [v37 complicationsUseBottomLayout]);
+            complications = [v207 complications];
+            v103 = -[PRPosterComplicationLayout initWithInlineComplication:sidebarComplicationIconLayout:sidebarComplications:complicationIconLayout:complications:complicationsUseBottomLayout:](v206, "initWithInlineComplication:sidebarComplicationIconLayout:sidebarComplications:complicationIconLayout:complications:complicationsUseBottomLayout:", inlineComplication, 0, sidebarComplications, 0, complications, [homeScreenConfiguration complicationsUseBottomLayout]);
 
 LABEL_175:
             v18 = v286;
@@ -348,24 +348,24 @@ LABEL_175:
             [v7 setComplicationLayout:v103];
             v52 = 0;
             v53 = 1;
-            v37 = v103;
+            homeScreenConfiguration = v103;
             v283 = 1;
             goto LABEL_232;
           case 8:
             v206 = [PRPosterComplicationLayout alloc];
-            v99 = [v37 inlineComplication];
-            v100 = [v30 complications];
-            v207 = v37;
+            inlineComplication = [homeScreenConfiguration inlineComplication];
+            sidebarComplications = [color2 complications];
+            v207 = homeScreenConfiguration;
             goto LABEL_174;
           case 2:
             v98 = [PRPosterComplicationLayout alloc];
-            v99 = [v30 complications];
-            v100 = [v99 firstObject];
-            v101 = [v37 sidebarComplications];
-            v102 = [v37 complications];
-            v103 = -[PRPosterComplicationLayout initWithInlineComplication:sidebarComplicationIconLayout:sidebarComplications:complicationIconLayout:complications:complicationsUseBottomLayout:](v98, "initWithInlineComplication:sidebarComplicationIconLayout:sidebarComplications:complicationIconLayout:complications:complicationsUseBottomLayout:", v100, 0, v101, 0, v102, [v37 complicationsUseBottomLayout]);
+            inlineComplication = [color2 complications];
+            sidebarComplications = [inlineComplication firstObject];
+            complications = [homeScreenConfiguration sidebarComplications];
+            complications2 = [homeScreenConfiguration complications];
+            v103 = -[PRPosterComplicationLayout initWithInlineComplication:sidebarComplicationIconLayout:sidebarComplications:complicationIconLayout:complications:complicationsUseBottomLayout:](v98, "initWithInlineComplication:sidebarComplicationIconLayout:sidebarComplications:complicationIconLayout:complications:complicationsUseBottomLayout:", sidebarComplications, 0, complications, 0, complications2, [homeScreenConfiguration complicationsUseBottomLayout]);
 
-            v15 = v284;
+            userInfo = v284;
             goto LABEL_175;
         }
 
@@ -381,9 +381,9 @@ LABEL_44:
       case 3:
       case 4:
       case 5:
-        v26 = [v20 payload];
+        payload2 = [v20 payload];
         v27 = objc_opt_class();
-        v28 = v26;
+        v28 = payload2;
         if (v27)
         {
           if (objc_opt_isKindOfClass())
@@ -402,12 +402,12 @@ LABEL_44:
           v29 = 0;
         }
 
-        v30 = v29;
+        color2 = v29;
 
-        v42 = [v30 tristate];
-        v43 = [v42 BOOLValue];
+        tristate = [color2 tristate];
+        bOOLValue = [tristate BOOLValue];
 
-        if (!v30 || ([v30 tristate], v44 = objc_claimAutoreleasedReturnValue(), v44, !v44))
+        if (!color2 || ([color2 tristate], v44 = objc_claimAutoreleasedReturnValue(), v44, !v44))
         {
           v48 = MEMORY[0x1E696ABC0];
           v305 = v287;
@@ -418,8 +418,8 @@ LABEL_44:
           goto LABEL_42;
         }
 
-        v37 = [v7 homeScreenConfiguration];
-        v45 = [v37 mutableCopy];
+        homeScreenConfiguration = [v7 homeScreenConfiguration];
+        v45 = [homeScreenConfiguration mutableCopy];
         v46 = v45;
         if (v45)
         {
@@ -433,15 +433,15 @@ LABEL_44:
 
         v104 = v47;
 
-        if (v21 == 5)
+        if (type2 == 5)
         {
-          v109 = [v104 lockPosterAppearance];
-          v110 = [v109 allowsModifyingLegibilityBlur];
+          lockPosterAppearance = [v104 lockPosterAppearance];
+          allowsModifyingLegibilityBlur = [lockPosterAppearance allowsModifyingLegibilityBlur];
 
-          if (v110)
+          if (allowsModifyingLegibilityBlur)
           {
-            v107 = [v104 lockPosterAppearance];
-            v108 = [v107 copyWithLegibilityBlurEnabled:v43];
+            lockPosterAppearance2 = [v104 lockPosterAppearance];
+            v108 = [lockPosterAppearance2 copyWithLegibilityBlurEnabled:bOOLValue];
             [v104 setLockPosterAppearance:v108];
             goto LABEL_101;
           }
@@ -456,18 +456,18 @@ LABEL_44:
 
         else
         {
-          if (v21 != 4)
+          if (type2 != 4)
           {
             goto LABEL_203;
           }
 
-          v105 = [v104 homePosterAppearance];
-          v106 = [v105 allowsModifyingLegibilityBlur];
+          homePosterAppearance = [v104 homePosterAppearance];
+          allowsModifyingLegibilityBlur2 = [homePosterAppearance allowsModifyingLegibilityBlur];
 
-          if (v106)
+          if (allowsModifyingLegibilityBlur2)
           {
-            v107 = [v104 homePosterAppearance];
-            v108 = [v107 copyWithLegibilityBlurEnabled:v43];
+            lockPosterAppearance2 = [v104 homePosterAppearance];
+            v108 = [lockPosterAppearance2 copyWithLegibilityBlurEnabled:bOOLValue];
             [v104 setHomePosterAppearance:v108];
 LABEL_101:
 
@@ -498,27 +498,27 @@ LABEL_203:
         v285 = 1;
 LABEL_204:
 
-        v15 = v284;
+        userInfo = v284;
         goto LABEL_232;
       case 6:
       case 7:
       case 10:
       case 11:
-        if (v279)
+        if (errorCopy)
         {
           v271 = MEMORY[0x1E696ABC0];
           v299 = v287;
           v300 = @"Update type not supported!";
           v272 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v300 forKeys:&v299 count:1];
-          *v279 = [v271 pr_errorWithCode:2 userInfo:v272];
+          *errorCopy = [v271 pr_errorWithCode:2 userInfo:v272];
         }
 
         v52 = 0;
         goto LABEL_256;
       case 9:
-        v78 = [v20 payload];
+        payload3 = [v20 payload];
         v79 = objc_opt_class();
-        v80 = v78;
+        v80 = payload3;
         if (v79)
         {
           if (objc_opt_isKindOfClass())
@@ -537,15 +537,15 @@ LABEL_204:
           v81 = 0;
         }
 
-        v30 = v81;
+        color2 = v81;
 
-        if (v30)
+        if (color2)
         {
-          v37 = [v30 propertyListRoot];
+          homeScreenConfiguration = [color2 propertyListRoot];
           v169 = [PRPosterAmbientWidgetLayout alloc];
-          if (v37)
+          if (homeScreenConfiguration)
           {
-            v170 = v37;
+            v170 = homeScreenConfiguration;
           }
 
           else
@@ -569,13 +569,13 @@ LABEL_204:
         v50 = &v312;
         v51 = &v311;
 LABEL_42:
-        v37 = [v49 dictionaryWithObjects:v50 forKeys:v51 count:1];
+        homeScreenConfiguration = [v49 dictionaryWithObjects:v50 forKeys:v51 count:1];
         v38 = v48;
         goto LABEL_43;
       case 12:
-        v74 = [v20 payload];
+        payload4 = [v20 payload];
         v75 = objc_opt_class();
-        v76 = v74;
+        v76 = payload4;
         if (v75)
         {
           if (objc_opt_isKindOfClass())
@@ -594,10 +594,10 @@ LABEL_42:
           v77 = 0;
         }
 
-        v30 = v77;
+        color2 = v77;
 
-        v158 = [v7 ambientConfiguration];
-        v159 = [v158 mutableCopy];
+        ambientConfiguration = [v7 ambientConfiguration];
+        v159 = [ambientConfiguration mutableCopy];
         v160 = v159;
         if (v159)
         {
@@ -609,15 +609,15 @@ LABEL_42:
           v161 = objc_opt_new();
         }
 
-        v37 = v161;
+        homeScreenConfiguration = v161;
 
-        v162 = [v30 propertyListRoot];
-        v163 = [v162 objectForKey:@"creationBehavior"];
+        propertyListRoot = [color2 propertyListRoot];
+        v163 = [propertyListRoot objectForKey:@"creationBehavior"];
 
         v164 = v163 != 0;
-        if (v163 && ([v30 propertyListRoot], v165 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v165, "objectForKey:", @"creationBehavior"), v166 = objc_claimAutoreleasedReturnValue(), v167 = objc_msgSend(v166, "unsignedIntegerValue"), v166, v165, objc_msgSend(v37, "creationBehavior") != v167))
+        if (v163 && ([color2 propertyListRoot], v165 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v165, "objectForKey:", @"creationBehavior"), v166 = objc_claimAutoreleasedReturnValue(), v167 = objc_msgSend(v166, "unsignedIntegerValue"), v166, v165, objc_msgSend(homeScreenConfiguration, "creationBehavior") != v167))
         {
-          [v37 setCreationBehavior:v167];
+          [homeScreenConfiguration setCreationBehavior:v167];
           v168 = 1;
         }
 
@@ -626,64 +626,64 @@ LABEL_42:
           v168 = 0;
         }
 
-        v210 = [v30 propertyListRoot];
-        v211 = [v210 objectForKey:@"deletionBehavior"];
+        propertyListRoot2 = [color2 propertyListRoot];
+        v211 = [propertyListRoot2 objectForKey:@"deletionBehavior"];
 
         if (v211)
         {
-          v212 = [v30 propertyListRoot];
-          v213 = [v212 objectForKey:@"deletionBehavior"];
-          v214 = [v213 unsignedIntegerValue];
+          propertyListRoot3 = [color2 propertyListRoot];
+          v213 = [propertyListRoot3 objectForKey:@"deletionBehavior"];
+          unsignedIntegerValue = [v213 unsignedIntegerValue];
 
-          if ([v37 deletionBehavior] == v214)
+          if ([homeScreenConfiguration deletionBehavior] == unsignedIntegerValue)
           {
             v164 = 1;
           }
 
           else
           {
-            [v37 setDeletionBehavior:v214];
+            [homeScreenConfiguration setDeletionBehavior:unsignedIntegerValue];
             v164 = 1;
             v168 = 1;
           }
         }
 
-        v215 = [v30 propertyListRoot];
-        v216 = [v215 objectForKey:@"supportedDataLayout"];
+        propertyListRoot4 = [color2 propertyListRoot];
+        v216 = [propertyListRoot4 objectForKey:@"supportedDataLayout"];
 
         if (v216)
         {
-          v217 = [v30 propertyListRoot];
-          v218 = [v217 objectForKey:@"supportedDataLayout"];
-          v219 = [v218 unsignedIntegerValue];
+          propertyListRoot5 = [color2 propertyListRoot];
+          v218 = [propertyListRoot5 objectForKey:@"supportedDataLayout"];
+          unsignedIntegerValue2 = [v218 unsignedIntegerValue];
 
-          if ([v37 supportedDataLayout] == v219)
+          if ([homeScreenConfiguration supportedDataLayout] == unsignedIntegerValue2)
           {
             v164 = 1;
           }
 
           else
           {
-            [v37 setSupportedDataLayout:v219];
+            [homeScreenConfiguration setSupportedDataLayout:unsignedIntegerValue2];
             v164 = 1;
             v168 = 1;
           }
         }
 
-        v220 = [v30 propertyListRoot];
-        v221 = [v220 objectForKey:@"editingBehavior"];
+        propertyListRoot6 = [color2 propertyListRoot];
+        v221 = [propertyListRoot6 objectForKey:@"editingBehavior"];
 
         if (v221)
         {
-          v222 = [v30 propertyListRoot];
-          v223 = [v222 objectForKey:@"editingBehavior"];
-          v224 = [v223 unsignedIntegerValue];
+          propertyListRoot7 = [color2 propertyListRoot];
+          v223 = [propertyListRoot7 objectForKey:@"editingBehavior"];
+          unsignedIntegerValue3 = [v223 unsignedIntegerValue];
 
-          if ([v37 editingBehavior] != v224)
+          if ([homeScreenConfiguration editingBehavior] != unsignedIntegerValue3)
           {
-            [v37 setEditingBehavior:v224];
+            [homeScreenConfiguration setEditingBehavior:unsignedIntegerValue3];
 LABEL_191:
-            v225 = [v37 copy];
+            v225 = [homeScreenConfiguration copy];
             [v7 setAmbientConfiguration:v225];
             v52 = 0;
             v53 = 1;
@@ -722,9 +722,9 @@ LABEL_216:
 
         goto LABEL_231;
       case 13:
-        v62 = [v20 payload];
+        payload5 = [v20 payload];
         v63 = objc_opt_class();
-        v64 = v62;
+        v64 = payload5;
         if (v63)
         {
           if (objc_opt_isKindOfClass())
@@ -743,27 +743,27 @@ LABEL_216:
           v65 = 0;
         }
 
-        v30 = v65;
+        color2 = v65;
 
-        if (v30)
+        if (color2)
         {
-          v120 = [v30 tristate];
-          if (v120)
+          tristate2 = [color2 tristate];
+          if (tristate2)
           {
-            v121 = [v30 tristate];
-            v122 = [v121 BOOLValue];
+            tristate3 = [color2 tristate];
+            bOOLValue2 = [tristate3 BOOLValue];
           }
 
           else
           {
-            v122 = 0;
+            bOOLValue2 = 0;
           }
 
-          v37 = [v7 homeScreenConfiguration];
-          v230 = [v37 customizationConfiguration];
-          v231 = [v230 isDimmed];
+          homeScreenConfiguration = [v7 homeScreenConfiguration];
+          customizationConfiguration = [homeScreenConfiguration customizationConfiguration];
+          isDimmed = [customizationConfiguration isDimmed];
 
-          if (v122 == v231)
+          if (bOOLValue2 == isDimmed)
           {
             v18 = v286;
 LABEL_198:
@@ -771,7 +771,7 @@ LABEL_198:
             goto LABEL_235;
           }
 
-          v232 = [v37 mutableCopy];
+          v232 = [homeScreenConfiguration mutableCopy];
           v233 = v232;
           if (v232)
           {
@@ -785,8 +785,8 @@ LABEL_198:
 
           v254 = v234;
 
-          v255 = [v254 customizationConfiguration];
-          v256 = [v255 configurationUpdatingDimmed:v122];
+          customizationConfiguration2 = [v254 customizationConfiguration];
+          v256 = [customizationConfiguration2 configurationUpdatingDimmed:bOOLValue2];
           [v254 setCustomizationConfiguration:v256];
 
           [v7 setHomeScreenConfiguration:v254];
@@ -804,8 +804,8 @@ LABEL_231:
           v313 = v287;
           v314 = @"Home Screen Legibility payload was invalid; expecting BOOL value not nil";
           v53 = 1;
-          v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v314 forKeys:&v313 count:1];
-          v52 = [v123 pr_errorWithCode:3 userInfo:v37];
+          homeScreenConfiguration = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v314 forKeys:&v313 count:1];
+          v52 = [v123 pr_errorWithCode:3 userInfo:homeScreenConfiguration];
         }
 
 LABEL_232:
@@ -819,7 +819,7 @@ LABEL_235:
             continue;
           }
 
-          v258 = [v15 countByEnumeratingWithState:&v289 objects:v321 count:16];
+          v258 = [userInfo countByEnumeratingWithState:&v289 objects:v321 count:16];
           v18 = v258;
           if (!v258)
           {
@@ -827,20 +827,20 @@ LABEL_235:
             v259 = v283;
             if (v283)
             {
-              v260 = [v7 complicationLayout];
-              v261 = v278;
-              [(PRPosterConfiguredProperties *)v278 setComplicationLayout:v260];
+              complicationLayout2 = [v7 complicationLayout];
+              v261 = selfCopy;
+              [(PRPosterConfiguredProperties *)selfCopy setComplicationLayout:complicationLayout2];
             }
 
             else
             {
-              v261 = v278;
+              v261 = selfCopy;
             }
 
             if (v285)
             {
-              v274 = [v7 homeScreenConfiguration];
-              [(PRPosterConfiguredProperties *)v261 setHomeScreenConfiguration:v274];
+              homeScreenConfiguration2 = [v7 homeScreenConfiguration];
+              [(PRPosterConfiguredProperties *)v261 setHomeScreenConfiguration:homeScreenConfiguration2];
 
               v270 = 1;
             }
@@ -852,8 +852,8 @@ LABEL_235:
 
             if (v280)
             {
-              v275 = [v7 ambientConfiguration];
-              [(PRPosterConfiguredProperties *)v261 setAmbientConfiguration:v275];
+              ambientConfiguration2 = [v7 ambientConfiguration];
+              [(PRPosterConfiguredProperties *)v261 setAmbientConfiguration:ambientConfiguration2];
 
               v269 = 1;
             }
@@ -863,12 +863,12 @@ LABEL_235:
               v269 = 0;
             }
 
-            v6 = v281;
+            updatesCopy = v281;
             v17 = v277;
             if (v282)
             {
-              v276 = [v7 ambientWidgetLayout];
-              [(PRPosterConfiguredProperties *)v261 setAmbientWidgetLayout:v276];
+              ambientWidgetLayout = [v7 ambientWidgetLayout];
+              [(PRPosterConfiguredProperties *)v261 setAmbientWidgetLayout:ambientWidgetLayout];
 
               v268 = 1;
               if ((v282 & 0x100000000) == 0)
@@ -888,8 +888,8 @@ LABEL_235:
               }
             }
 
-            v15 = [v7 userInfo];
-            [(PRPosterConfiguredProperties *)v261 setUserInfo:v15];
+            userInfo = [v7 userInfo];
+            [(PRPosterConfiguredProperties *)v261 setUserInfo:userInfo];
 LABEL_251:
 
 LABEL_252:
@@ -909,24 +909,24 @@ LABEL_252:
           v52 = [v265 pr_errorWithCode:0 userInfo:v266];
         }
 
-        if (v279)
+        if (errorCopy)
         {
           v267 = v52;
-          *v279 = v52;
+          *errorCopy = v52;
         }
 
 LABEL_256:
 
         v264 = 0;
-        v6 = v281;
+        updatesCopy = v281;
 LABEL_257:
 
 LABEL_258:
         return v264 & 1;
       case 14:
-        v70 = [v20 payload];
+        payload6 = [v20 payload];
         v71 = objc_opt_class();
-        v72 = v70;
+        v72 = payload6;
         if (v71)
         {
           if (objc_opt_isKindOfClass())
@@ -947,9 +947,9 @@ LABEL_258:
 
         v131 = v73;
 
-        v132 = [v20 payload];
+        payload7 = [v20 payload];
         v133 = objc_opt_class();
-        v134 = v132;
+        v134 = payload7;
         if (v133)
         {
           if (objc_opt_isKindOfClass())
@@ -972,53 +972,53 @@ LABEL_258:
 
         if (v136)
         {
-          v137 = objc_alloc_init(MEMORY[0x1E69C5558]);
-          v138 = [v136 color];
-          v139 = [v138 UIColor];
-          v140 = [v137 copyWithVariatedColor:v139];
+          saturation = objc_alloc_init(MEMORY[0x1E69C5558]);
+          color = [v136 color];
+          uIColor = [color UIColor];
+          v140 = [saturation copyWithVariatedColor:uIColor];
           goto LABEL_134;
         }
 
-        v141 = [v131 variation];
-        if (v141 || ([v131 luminance], (v141 = objc_claimAutoreleasedReturnValue()) != 0))
+        variation = [v131 variation];
+        if (variation || ([v131 luminance], (variation = objc_claimAutoreleasedReturnValue()) != 0))
         {
 
 LABEL_133:
           v142 = objc_alloc(MEMORY[0x1E69C5558]);
-          v138 = [v131 variation];
-          [v138 doubleValue];
+          color = [v131 variation];
+          [color doubleValue];
           v144 = v143;
-          v139 = [v131 luminance];
-          [v139 doubleValue];
+          uIColor = [v131 luminance];
+          [uIColor doubleValue];
           v146 = v145;
-          v137 = [v131 saturation];
-          [v137 doubleValue];
+          saturation = [v131 saturation];
+          [saturation doubleValue];
           v148 = v147;
-          v149 = [v131 alpha];
-          [v149 doubleValue];
+          alpha = [v131 alpha];
+          [alpha doubleValue];
           v140 = [v142 initWithVariation:v144 luminance:v146 saturation:v148 alpha:v150];
 
 LABEL_134:
           goto LABEL_135;
         }
 
-        v257 = [v131 saturation];
+        saturation2 = [v131 saturation];
 
-        if (v257)
+        if (saturation2)
         {
           goto LABEL_133;
         }
 
         v140 = 0;
 LABEL_135:
-        v151 = [v7 homeScreenConfiguration];
-        v152 = [v151 customizationConfiguration];
-        v153 = [v152 tintColorStyle];
-        v154 = [v153 isEqual:v140];
+        homeScreenConfiguration3 = [v7 homeScreenConfiguration];
+        customizationConfiguration3 = [homeScreenConfiguration3 customizationConfiguration];
+        tintColorStyle = [customizationConfiguration3 tintColorStyle];
+        v154 = [tintColorStyle isEqual:v140];
 
         if ((v154 & 1) == 0)
         {
-          v155 = [v151 mutableCopy];
+          v155 = [homeScreenConfiguration3 mutableCopy];
           v156 = v155;
           if (v155)
           {
@@ -1032,8 +1032,8 @@ LABEL_135:
 
           v247 = v157;
 
-          v248 = [v247 customizationConfiguration];
-          v249 = [v248 configurationUpdatingTintColorStyle:v140];
+          customizationConfiguration4 = [v247 customizationConfiguration];
+          v249 = [customizationConfiguration4 configurationUpdatingTintColorStyle:v140];
           [v247 setCustomizationConfiguration:v249];
 
           [v7 setHomeScreenConfiguration:v247];
@@ -1044,18 +1044,18 @@ LABEL_135:
 
         if (v154)
         {
-          v15 = v284;
+          userInfo = v284;
           goto LABEL_235;
         }
 
         v52 = 0;
         v53 = 1;
-        v15 = v284;
+        userInfo = v284;
         goto LABEL_233;
       case 15:
-        v66 = [v20 payload];
+        payload8 = [v20 payload];
         v67 = objc_opt_class();
-        v68 = v66;
+        v68 = payload8;
         if (v67)
         {
           if (objc_opt_isKindOfClass())
@@ -1076,19 +1076,19 @@ LABEL_135:
 
         v124 = v69;
 
-        v30 = [v124 color];
+        color2 = [v124 color];
 
-        v37 = [v7 homeScreenConfiguration];
-        v125 = [v37 customizationConfiguration];
-        v126 = [v125 suggestedTintColor];
-        v127 = [v126 isEqual:v30];
+        homeScreenConfiguration = [v7 homeScreenConfiguration];
+        customizationConfiguration5 = [homeScreenConfiguration customizationConfiguration];
+        suggestedTintColor = [customizationConfiguration5 suggestedTintColor];
+        v127 = [suggestedTintColor isEqual:color2];
 
         if (v127)
         {
           goto LABEL_198;
         }
 
-        v128 = [v37 mutableCopy];
+        v128 = [homeScreenConfiguration mutableCopy];
         v129 = v128;
         if (v128)
         {
@@ -1102,17 +1102,17 @@ LABEL_135:
 
         v243 = v130;
 
-        v244 = [v243 customizationConfiguration];
-        v245 = [v30 UIColor];
-        v246 = [v244 configurationUpdatingSuggestedTintColor:v245];
+        customizationConfiguration6 = [v243 customizationConfiguration];
+        uIColor2 = [color2 UIColor];
+        v246 = [customizationConfiguration6 configurationUpdatingSuggestedTintColor:uIColor2];
         [v243 setCustomizationConfiguration:v246];
 
         [v7 setHomeScreenConfiguration:v243];
         goto LABEL_230;
       case 16:
-        v82 = [v20 payload];
+        payload9 = [v20 payload];
         v83 = objc_opt_class();
-        v84 = v82;
+        v84 = payload9;
         if (v83)
         {
           if (objc_opt_isKindOfClass())
@@ -1133,14 +1133,14 @@ LABEL_135:
 
         v172 = v85;
 
-        v173 = [v172 tristate];
+        tristate4 = [v172 tristate];
 
         v174 = @"SMALL";
-        if (v173)
+        if (tristate4)
         {
-          v175 = [v173 BOOLValue];
+          bOOLValue3 = [tristate4 BOOLValue];
           v176 = @"LARGE";
-          if (!v175)
+          if (!bOOLValue3)
           {
             v176 = @"SMALL";
           }
@@ -1150,14 +1150,14 @@ LABEL_135:
           v174 = v177;
         }
 
-        v178 = [v7 homeScreenConfiguration];
-        v179 = [v178 customizationConfiguration];
-        v180 = [v179 iconUserInterfaceSize];
-        v181 = [v180 isEqual:v174];
+        homeScreenConfiguration4 = [v7 homeScreenConfiguration];
+        customizationConfiguration7 = [homeScreenConfiguration4 customizationConfiguration];
+        iconUserInterfaceSize = [customizationConfiguration7 iconUserInterfaceSize];
+        v181 = [iconUserInterfaceSize isEqual:v174];
 
         if ((v181 & 1) == 0)
         {
-          v182 = [v178 mutableCopy];
+          v182 = [homeScreenConfiguration4 mutableCopy];
           v183 = v182;
           if (v182)
           {
@@ -1171,13 +1171,13 @@ LABEL_135:
 
           v250 = v184;
 
-          v251 = [v178 customizationConfiguration];
-          v252 = [v251 configurationUpdatingIconUserInterfaceSize:v174];
+          customizationConfiguration8 = [homeScreenConfiguration4 customizationConfiguration];
+          v252 = [customizationConfiguration8 configurationUpdatingIconUserInterfaceSize:v174];
           [v250 setCustomizationConfiguration:v252];
 
           [v7 setHomeScreenConfiguration:v250];
           v285 = 1;
-          v15 = v284;
+          userInfo = v284;
           v18 = v286;
         }
 
@@ -1188,9 +1188,9 @@ LABEL_135:
 
         goto LABEL_235;
       case 17:
-        v54 = [v20 payload];
+        payload10 = [v20 payload];
         v55 = objc_opt_class();
-        v56 = v54;
+        v56 = payload10;
         if (v55)
         {
           if (objc_opt_isKindOfClass())
@@ -1211,19 +1211,19 @@ LABEL_135:
 
         v111 = v57;
 
-        v30 = [v111 propertyListRoot];
+        color2 = [v111 propertyListRoot];
 
-        v37 = [v7 homeScreenConfiguration];
-        v112 = [v37 customizationConfiguration];
-        v113 = [v112 iconUserInterfaceStyleType];
-        v114 = [v113 isEqual:v30];
+        homeScreenConfiguration = [v7 homeScreenConfiguration];
+        customizationConfiguration9 = [homeScreenConfiguration customizationConfiguration];
+        iconUserInterfaceStyleType = [customizationConfiguration9 iconUserInterfaceStyleType];
+        v114 = [iconUserInterfaceStyleType isEqual:color2];
 
         if (v114)
         {
           goto LABEL_198;
         }
 
-        v115 = [v37 mutableCopy];
+        v115 = [homeScreenConfiguration mutableCopy];
         v116 = v115;
         if (v115)
         {
@@ -1237,13 +1237,13 @@ LABEL_135:
 
         v240 = v117;
 
-        v241 = [v37 customizationConfiguration];
-        v242 = [v241 configurationUpdatingIconUserInterfaceStyle:v30];
+        customizationConfiguration10 = [homeScreenConfiguration customizationConfiguration];
+        v242 = [customizationConfiguration10 configurationUpdatingIconUserInterfaceStyle:color2];
         goto LABEL_227;
       case 18:
-        v58 = [v20 payload];
+        payload11 = [v20 payload];
         v59 = objc_opt_class();
-        v60 = v58;
+        v60 = payload11;
         if (v59)
         {
           if (objc_opt_isKindOfClass())
@@ -1262,15 +1262,15 @@ LABEL_135:
           v61 = 0;
         }
 
-        v30 = v61;
+        color2 = v61;
 
-        if (v30)
+        if (color2)
         {
-          v118 = [v30 propertyListRoot];
-          v37 = v118;
-          if (v118)
+          propertyListRoot8 = [color2 propertyListRoot];
+          homeScreenConfiguration = propertyListRoot8;
+          if (propertyListRoot8)
           {
-            v119 = v118;
+            v119 = propertyListRoot8;
           }
 
           else
@@ -1292,15 +1292,15 @@ LABEL_135:
         v35 = &v320;
         v36 = &v319;
 LABEL_33:
-        v37 = [v34 dictionaryWithObjects:v35 forKeys:v36 count:1];
+        homeScreenConfiguration = [v34 dictionaryWithObjects:v35 forKeys:v36 count:1];
         v38 = v33;
 LABEL_43:
-        v52 = [v38 pr_errorWithCode:3 userInfo:v37];
+        v52 = [v38 pr_errorWithCode:3 userInfo:homeScreenConfiguration];
         goto LABEL_44;
       case 19:
-        v90 = [v20 payload];
+        payload12 = [v20 payload];
         v91 = objc_opt_class();
-        v92 = v90;
+        v92 = payload12;
         if (v91)
         {
           if (objc_opt_isKindOfClass())
@@ -1321,19 +1321,19 @@ LABEL_43:
 
         v192 = v93;
 
-        v30 = [v192 propertyListRoot];
+        color2 = [v192 propertyListRoot];
 
-        v37 = [v7 homeScreenConfiguration];
-        v193 = [v37 customizationConfiguration];
-        v194 = [v193 iconUserInterfaceStyleVariant];
-        v195 = [v194 isEqual:v30];
+        homeScreenConfiguration = [v7 homeScreenConfiguration];
+        customizationConfiguration11 = [homeScreenConfiguration customizationConfiguration];
+        iconUserInterfaceStyleVariant = [customizationConfiguration11 iconUserInterfaceStyleVariant];
+        v195 = [iconUserInterfaceStyleVariant isEqual:color2];
 
         if (v195)
         {
           goto LABEL_198;
         }
 
-        v196 = [v37 mutableCopy];
+        v196 = [homeScreenConfiguration mutableCopy];
         v197 = v196;
         if (v196)
         {
@@ -1347,13 +1347,13 @@ LABEL_43:
 
         v240 = v198;
 
-        v241 = [v37 customizationConfiguration];
-        v242 = [v241 configurationUpdatingIconUserInterfaceStyleVariant:v30];
+        customizationConfiguration10 = [homeScreenConfiguration customizationConfiguration];
+        v242 = [customizationConfiguration10 configurationUpdatingIconUserInterfaceStyleVariant:color2];
         goto LABEL_227;
       case 20:
-        v94 = [v20 payload];
+        payload13 = [v20 payload];
         v95 = objc_opt_class();
-        v96 = v94;
+        v96 = payload13;
         if (v95)
         {
           if (objc_opt_isKindOfClass())
@@ -1374,19 +1374,19 @@ LABEL_43:
 
         v199 = v97;
 
-        v30 = [v199 propertyListRoot];
+        color2 = [v199 propertyListRoot];
 
-        v37 = [v7 homeScreenConfiguration];
-        v200 = [v37 customizationConfiguration];
-        v201 = [v200 userSelectedVariantsForStyleTypes];
-        v202 = [v201 isEqualToDictionary:v30];
+        homeScreenConfiguration = [v7 homeScreenConfiguration];
+        customizationConfiguration12 = [homeScreenConfiguration customizationConfiguration];
+        userSelectedVariantsForStyleTypes = [customizationConfiguration12 userSelectedVariantsForStyleTypes];
+        v202 = [userSelectedVariantsForStyleTypes isEqualToDictionary:color2];
 
         if (v202)
         {
           goto LABEL_198;
         }
 
-        v203 = [v37 mutableCopy];
+        v203 = [homeScreenConfiguration mutableCopy];
         v204 = v203;
         if (v203)
         {
@@ -1400,13 +1400,13 @@ LABEL_43:
 
         v240 = v205;
 
-        v241 = [v37 customizationConfiguration];
-        v242 = [v241 configurationUpdatingUserSelectedVariantsForStyleTypes:v30];
+        customizationConfiguration10 = [homeScreenConfiguration customizationConfiguration];
+        v242 = [customizationConfiguration10 configurationUpdatingUserSelectedVariantsForStyleTypes:color2];
         goto LABEL_227;
       case 21:
-        v86 = [v20 payload];
+        payload14 = [v20 payload];
         v87 = objc_opt_class();
-        v88 = v86;
+        v88 = payload14;
         if (v87)
         {
           if (objc_opt_isKindOfClass())
@@ -1427,19 +1427,19 @@ LABEL_43:
 
         v185 = v89;
 
-        v30 = [v185 propertyListRoot];
+        color2 = [v185 propertyListRoot];
 
-        v37 = [v7 homeScreenConfiguration];
-        v186 = [v37 customizationConfiguration];
-        v187 = [v186 iconTintSource];
-        v188 = [v187 isEqual:v30];
+        homeScreenConfiguration = [v7 homeScreenConfiguration];
+        customizationConfiguration13 = [homeScreenConfiguration customizationConfiguration];
+        iconTintSource = [customizationConfiguration13 iconTintSource];
+        v188 = [iconTintSource isEqual:color2];
 
         if (v188)
         {
           goto LABEL_198;
         }
 
-        v189 = [v37 mutableCopy];
+        v189 = [homeScreenConfiguration mutableCopy];
         v190 = v189;
         if (v189)
         {
@@ -1453,8 +1453,8 @@ LABEL_43:
 
         v240 = v191;
 
-        v241 = [v37 customizationConfiguration];
-        v242 = [v241 configurationUpdatingIconTintSource:v30];
+        customizationConfiguration10 = [homeScreenConfiguration customizationConfiguration];
+        v242 = [customizationConfiguration10 configurationUpdatingIconTintSource:color2];
 LABEL_227:
         v253 = v242;
         [v240 setCustomizationConfiguration:v242];

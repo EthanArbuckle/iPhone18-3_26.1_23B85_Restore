@@ -1,26 +1,26 @@
 @interface _DPNoneDPBudgetAuditor
-- (_DPNoneDPBudgetAuditor)initWithMetadata:(id)a3 plistParameters:(id)a4 error:(id *)a5;
+- (_DPNoneDPBudgetAuditor)initWithMetadata:(id)metadata plistParameters:(id)parameters error:(id *)error;
 @end
 
 @implementation _DPNoneDPBudgetAuditor
 
-- (_DPNoneDPBudgetAuditor)initWithMetadata:(id)a3 plistParameters:(id)a4 error:(id *)a5
+- (_DPNoneDPBudgetAuditor)initWithMetadata:(id)metadata plistParameters:(id)parameters error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([_DPAlgorithmParameters allowDPMechanismNone:v9])
+  metadataCopy = metadata;
+  parametersCopy = parameters;
+  if ([_DPAlgorithmParameters allowDPMechanismNone:parametersCopy])
   {
-    if (_DPMetadataIsDPMechanismNone(v8))
+    if (_DPMetadataIsDPMechanismNone(metadataCopy))
     {
       v17.receiver = self;
       v17.super_class = _DPNoneDPBudgetAuditor;
-      self = [(_DPBudgetAuditor *)&v17 initWithMetadata:v8 plistParameters:v9 targetADP:0 maxADP:0 analysis:0 error:a5];
-      v10 = self;
+      self = [(_DPBudgetAuditor *)&v17 initWithMetadata:metadataCopy plistParameters:parametersCopy targetADP:0 maxADP:0 analysis:0 error:error];
+      selfCopy = self;
       goto LABEL_11;
     }
 
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid DPMechanism=%@.", v8];
-    v12 = _DPPrivacyBudgetError(8, v14);
+    metadataCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid DPMechanism=%@.", metadataCopy];
+    v12 = _DPPrivacyBudgetError(8, metadataCopy);
 
     v13 = +[_DPLog framework];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -31,8 +31,8 @@
 
   else
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"DPMechanismNone is not allowed with plistParameters=%@.", v9];
-    v12 = _DPPrivacyBudgetError(7, v11);
+    parametersCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"DPMechanismNone is not allowed with plistParameters=%@.", parametersCopy];
+    v12 = _DPPrivacyBudgetError(7, parametersCopy);
 
     v13 = +[_DPLog framework];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -42,16 +42,16 @@ LABEL_7:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v15 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_11:
 
-  return v10;
+  return selfCopy;
 }
 
 @end

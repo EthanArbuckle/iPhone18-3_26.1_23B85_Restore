@@ -1,22 +1,22 @@
 @interface SVXServiceCommandHandlerUICloseAssistant
-- (SVXServiceCommandHandlerUICloseAssistant)initWithSessionManager:(id)a3;
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6;
+- (SVXServiceCommandHandlerUICloseAssistant)initWithSessionManager:(id)manager;
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion;
 @end
 
 @implementation SVXServiceCommandHandlerUICloseAssistant
 
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion
 {
-  v9 = a6;
-  v10 = a3;
+  completionCopy = completion;
+  commandCopy = command;
   v11 = mach_absolute_time();
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUICloseAssistant.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUICloseAssistant class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUICloseAssistant.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUICloseAssistant class]]"}];
   }
 
   sessionManager = self->_sessionManager;
@@ -26,10 +26,10 @@
   v16[3] = &__block_descriptor_40_e20_v16__0__SVXSession_8l;
   v16[4] = v11;
   [(SVXSessionManager *)sessionManager getCurrentSessionUsingBlock:v16];
-  if (v9)
+  if (completionCopy)
   {
     v14 = +[SVXServiceCommandResult resultSuccess];
-    v9[2](v9, v14);
+    completionCopy[2](completionCopy, v14);
   }
 }
 
@@ -43,19 +43,19 @@ void __93__SVXServiceCommandHandlerUICloseAssistant_handleCommand_withContext_ta
   [v3 deactivateWithContext:v6 completion:0];
 }
 
-- (SVXServiceCommandHandlerUICloseAssistant)initWithSessionManager:(id)a3
+- (SVXServiceCommandHandlerUICloseAssistant)initWithSessionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = SVXServiceCommandHandlerUICloseAssistant;
   v6 = [(SVXServiceCommandHandlerUICloseAssistant *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionManager, a3);
+    objc_storeStrong(&v6->_sessionManager, manager);
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
-    v9 = [objc_opt_class() supportedCommandClass];
-    v10 = NSStringFromClass(v9);
+    supportedCommandClass = [objc_opt_class() supportedCommandClass];
+    v10 = NSStringFromClass(supportedCommandClass);
     v11 = [v8 initWithFormat:@"com.apple.SiriVOXService.service-command.%@", v10];
     identifier = v7->_identifier;
     v7->_identifier = v11;

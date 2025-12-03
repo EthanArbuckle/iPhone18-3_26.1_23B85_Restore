@@ -1,8 +1,8 @@
 @interface _MKUserInteractionGestureRecognizer
 - (_MKUserInteractionGestureRecognizerTouchObserver)touchObserver;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _MKUserInteractionGestureRecognizer
@@ -14,11 +14,11 @@
   return WeakRetained;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v9 = a3;
+  cancelledCopy = cancelled;
   v5 = [(NSMutableSet *)self->_activeTouches count];
-  [(NSMutableSet *)self->_activeTouches minusSet:v9];
+  [(NSMutableSet *)self->_activeTouches minusSet:cancelledCopy];
   v6 = [(NSMutableSet *)self->_activeTouches count];
   if (v5)
   {
@@ -39,11 +39,11 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v9 = a3;
+  endedCopy = ended;
   v5 = [(NSMutableSet *)self->_activeTouches count];
-  [(NSMutableSet *)self->_activeTouches minusSet:v9];
+  [(NSMutableSet *)self->_activeTouches minusSet:endedCopy];
   v6 = [(NSMutableSet *)self->_activeTouches count];
   if (v5)
   {
@@ -64,9 +64,9 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v12 = a3;
+  beganCopy = began;
   v5 = [(NSMutableSet *)self->_activeTouches count];
   activeTouches = self->_activeTouches;
   if (!activeTouches)
@@ -78,7 +78,7 @@
     activeTouches = self->_activeTouches;
   }
 
-  [(NSMutableSet *)activeTouches unionSet:v12];
+  [(NSMutableSet *)activeTouches unionSet:beganCopy];
   v9 = [(NSMutableSet *)self->_activeTouches count];
   if (v5)
   {

@@ -1,62 +1,62 @@
 @interface DACalDAVREMReminderProxy
-- (DACalDAVREMReminderProxy)initWithReminder:(id)a3;
+- (DACalDAVREMReminderProxy)initWithReminder:(id)reminder;
 - (NSString)description;
-- (void)updatePropertiesWithReminder:(id)a3;
+- (void)updatePropertiesWithReminder:(id)reminder;
 @end
 
 @implementation DACalDAVREMReminderProxy
 
-- (DACalDAVREMReminderProxy)initWithReminder:(id)a3
+- (DACalDAVREMReminderProxy)initWithReminder:(id)reminder
 {
-  v4 = a3;
+  reminderCopy = reminder;
   v8.receiver = self;
   v8.super_class = DACalDAVREMReminderProxy;
   v5 = [(DACalDAVREMReminderProxy *)&v8 init];
   if (v5)
   {
-    v6 = [v4 objectID];
-    [(DACalDAVREMReminderProxy *)v5 setObjectID:v6];
+    objectID = [reminderCopy objectID];
+    [(DACalDAVREMReminderProxy *)v5 setObjectID:objectID];
 
-    [(DACalDAVREMReminderProxy *)v5 updatePropertiesWithReminder:v4];
+    [(DACalDAVREMReminderProxy *)v5 updatePropertiesWithReminder:reminderCopy];
   }
 
   return v5;
 }
 
-- (void)updatePropertiesWithReminder:(id)a3
+- (void)updatePropertiesWithReminder:(id)reminder
 {
-  v5 = a3;
-  v11 = v5;
-  if (!v5)
+  reminderCopy = reminder;
+  v11 = reminderCopy;
+  if (!reminderCopy)
   {
     [(DACalDAVREMReminderProxy *)a2 updatePropertiesWithReminder:?];
-    v5 = 0;
+    reminderCopy = 0;
   }
 
-  v6 = [v5 objectID];
-  v7 = [(DACalDAVREMReminderProxy *)self objectID];
-  v8 = [v6 isEqual:v7];
+  objectID = [reminderCopy objectID];
+  objectID2 = [(DACalDAVREMReminderProxy *)self objectID];
+  v8 = [objectID isEqual:objectID2];
 
   if ((v8 & 1) == 0)
   {
     [(DACalDAVREMReminderProxy *)a2 updatePropertiesWithReminder:?];
   }
 
-  v9 = [v11 daCalendarItemUniqueIdentifier];
-  [(DACalDAVREMReminderProxy *)self setDaCalendarItemUniqueIdentifier:v9];
+  daCalendarItemUniqueIdentifier = [v11 daCalendarItemUniqueIdentifier];
+  [(DACalDAVREMReminderProxy *)self setDaCalendarItemUniqueIdentifier:daCalendarItemUniqueIdentifier];
 
-  v10 = [v11 externalModificationTag];
-  [(DACalDAVREMReminderProxy *)self setExternalModificationTag:v10];
+  externalModificationTag = [v11 externalModificationTag];
+  [(DACalDAVREMReminderProxy *)self setExternalModificationTag:externalModificationTag];
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DACalDAVREMReminderProxy *)self objectID];
-  v6 = [(DACalDAVREMReminderProxy *)self daCalendarItemUniqueIdentifier];
-  v7 = [(DACalDAVREMReminderProxy *)self externalModificationTag];
-  v8 = [v3 stringWithFormat:@"<%@: %p, objectID: %@, UID: %@, etag: %@>", v4, self, v5, v6, v7];
+  objectID = [(DACalDAVREMReminderProxy *)self objectID];
+  daCalendarItemUniqueIdentifier = [(DACalDAVREMReminderProxy *)self daCalendarItemUniqueIdentifier];
+  externalModificationTag = [(DACalDAVREMReminderProxy *)self externalModificationTag];
+  v8 = [v3 stringWithFormat:@"<%@: %p, objectID: %@, UID: %@, etag: %@>", v4, self, objectID, daCalendarItemUniqueIdentifier, externalModificationTag];
 
   return v8;
 }

@@ -1,21 +1,21 @@
 @interface BYTelephonyStateNotifier
-+ (unint64_t)retrieveSIMUnlockStateFromToken:(int)a3;
-- (BYTelephonyStateNotifier)initWithNotificationQueue:(id)a3 notificationBlock:(id)a4;
++ (unint64_t)retrieveSIMUnlockStateFromToken:(int)token;
+- (BYTelephonyStateNotifier)initWithNotificationQueue:(id)queue notificationBlock:(id)block;
 - (id)initForNotifying;
 - (unint64_t)currentSIMUnlockState;
-- (void)_beginObservingWithNotificationQueue:(id)a3 notificationBlock:(id)a4;
+- (void)_beginObservingWithNotificationQueue:(id)queue notificationBlock:(id)block;
 - (void)_endObservingState;
 - (void)dealloc;
 - (void)initForNotifying;
-- (void)notifySIMUnlockStateChangedTo:(unint64_t)a3;
+- (void)notifySIMUnlockStateChangedTo:(unint64_t)to;
 @end
 
 @implementation BYTelephonyStateNotifier
 
-- (BYTelephonyStateNotifier)initWithNotificationQueue:(id)a3 notificationBlock:(id)a4
+- (BYTelephonyStateNotifier)initWithNotificationQueue:(id)queue notificationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = BYTelephonyStateNotifier;
   v8 = [(BYTelephonyStateNotifier *)&v11 init];
@@ -23,11 +23,11 @@
   if (v8)
   {
     v8->_simUnlockNotificationToken = -1;
-    if (v6)
+    if (queueCopy)
     {
-      if (v7)
+      if (blockCopy)
       {
-        [(BYTelephonyStateNotifier *)v8 _beginObservingWithNotificationQueue:v6 notificationBlock:v7];
+        [(BYTelephonyStateNotifier *)v8 _beginObservingWithNotificationQueue:queueCopy notificationBlock:blockCopy];
       }
     }
   }
@@ -65,12 +65,12 @@
 - (unint64_t)currentSIMUnlockState
 {
   v3 = objc_opt_class();
-  v4 = [(BYTelephonyStateNotifier *)self simUnlockNotificationToken];
+  simUnlockNotificationToken = [(BYTelephonyStateNotifier *)self simUnlockNotificationToken];
 
-  return [v3 retrieveSIMUnlockStateFromToken:v4];
+  return [v3 retrieveSIMUnlockStateFromToken:simUnlockNotificationToken];
 }
 
-- (void)notifySIMUnlockStateChangedTo:(unint64_t)a3
+- (void)notifySIMUnlockStateChangedTo:(unint64_t)to
 {
   is_valid_token = notify_is_valid_token([(BYTelephonyStateNotifier *)self simUnlockNotificationToken]);
   v6 = _BYLoggingFacility();
@@ -90,7 +90,7 @@
     [BYTelephonyStateNotifier notifySIMUnlockStateChangedTo:v7];
   }
 
-  if (notify_set_state([(BYTelephonyStateNotifier *)self simUnlockNotificationToken], a3))
+  if (notify_set_state([(BYTelephonyStateNotifier *)self simUnlockNotificationToken], to))
   {
     v8 = _BYLoggingFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -111,17 +111,17 @@ LABEL_13:
   }
 }
 
-- (void)_beginObservingWithNotificationQueue:(id)a3 notificationBlock:(id)a4
+- (void)_beginObservingWithNotificationQueue:(id)queue notificationBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __83__BYTelephonyStateNotifier__beginObservingWithNotificationQueue_notificationBlock___block_invoke;
   v9[3] = &unk_1E7D03B80;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
-  if (notify_register_dispatch("com.apple.purplebuddy.simUnlockStateChanged", &self->_simUnlockNotificationToken, a3, v9))
+  v10 = blockCopy;
+  v7 = blockCopy;
+  if (notify_register_dispatch("com.apple.purplebuddy.simUnlockStateChanged", &self->_simUnlockNotificationToken, queue, v9))
   {
     v8 = _BYLoggingFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -156,9 +156,9 @@ uint64_t __83__BYTelephonyStateNotifier__beginObservingWithNotificationQueue_not
   [(BYTelephonyStateNotifier *)self setSimUnlockNotificationToken:0xFFFFFFFFLL];
 }
 
-+ (unint64_t)retrieveSIMUnlockStateFromToken:(int)a3
++ (unint64_t)retrieveSIMUnlockStateFromToken:(int)token
 {
-  if (!notify_is_valid_token(a3))
+  if (!notify_is_valid_token(token))
   {
     v5 = _BYLoggingFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -170,7 +170,7 @@ uint64_t __83__BYTelephonyStateNotifier__beginObservingWithNotificationQueue_not
   }
 
   state64 = 0;
-  if (notify_get_state(a3, &state64))
+  if (notify_get_state(token, &state64))
   {
     v4 = _BYLoggingFacility();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))

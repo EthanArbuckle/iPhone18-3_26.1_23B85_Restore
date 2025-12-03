@@ -1,32 +1,32 @@
 @interface PGTitleSpecPublicEventArgument
-+ (id)_cleanUpEventName:(id)a3;
-+ (id)argumentWithPublicEventType:(unint64_t)a3;
-- (PGTitleSpecPublicEventArgument)initWithPublicEventType:(unint64_t)a3;
-- (PGTitleSpecPublicEventArgument)initWithPublicEventType:(unint64_t)a3 shouldUseLongPublicEventTitle:(BOOL)a4;
-- (id)_commonPublicEventNodeForMomentNodes:(id)a3;
-- (id)_generateTitleWithBusinessNameForPublicEventNode:(id)a3;
-- (id)_generateTitleWithCategoryNameForPublicEventNode:(id)a3;
-- (id)_generateTitleWithEventNameForPublicEventNode:(id)a3;
-- (id)_generateTitleWithPerformerNamesForPublicEventNode:(id)a3;
-- (id)_resolvedStringWithMomentNodes:(id)a3 argumentEvaluationContext:(id)a4;
-- (id)_resolvedStringWithMomentNodes:(id)a3 features:(id)a4 argumentEvaluationContext:(id)a5;
-- (id)_resolvedStringWithPublicEventNode:(id)a3 inMomentNodes:(id)a4;
++ (id)_cleanUpEventName:(id)name;
++ (id)argumentWithPublicEventType:(unint64_t)type;
+- (PGTitleSpecPublicEventArgument)initWithPublicEventType:(unint64_t)type;
+- (PGTitleSpecPublicEventArgument)initWithPublicEventType:(unint64_t)type shouldUseLongPublicEventTitle:(BOOL)title;
+- (id)_commonPublicEventNodeForMomentNodes:(id)nodes;
+- (id)_generateTitleWithBusinessNameForPublicEventNode:(id)node;
+- (id)_generateTitleWithCategoryNameForPublicEventNode:(id)node;
+- (id)_generateTitleWithEventNameForPublicEventNode:(id)node;
+- (id)_generateTitleWithPerformerNamesForPublicEventNode:(id)node;
+- (id)_resolvedStringWithMomentNodes:(id)nodes argumentEvaluationContext:(id)context;
+- (id)_resolvedStringWithMomentNodes:(id)nodes features:(id)features argumentEvaluationContext:(id)context;
+- (id)_resolvedStringWithPublicEventNode:(id)node inMomentNodes:(id)nodes;
 @end
 
 @implementation PGTitleSpecPublicEventArgument
 
-- (id)_generateTitleWithCategoryNameForPublicEventNode:(id)a3
+- (id)_generateTitleWithCategoryNameForPublicEventNode:(id)node
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 preciseLocalizedCategoryNames];
-  if ([v4 count])
+  nodeCopy = node;
+  preciseLocalizedCategoryNames = [nodeCopy preciseLocalizedCategoryNames];
+  if ([preciseLocalizedCategoryNames count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v4;
+    v5 = preciseLocalizedCategoryNames;
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
@@ -77,10 +77,10 @@
   return v8;
 }
 
-- (id)_generateTitleWithPerformerNamesForPublicEventNode:(id)a3
+- (id)_generateTitleWithPerformerNamesForPublicEventNode:(id)node
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodeCopy = node;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -90,20 +90,20 @@
   v19[2] = __85__PGTitleSpecPublicEventArgument__generateTitleWithPerformerNamesForPublicEventNode___block_invoke;
   v19[3] = &unk_278880090;
   v19[4] = &v20;
-  [v3 enumeratePublicEventCategoryNodesUsingBlock:v19];
+  [nodeCopy enumeratePublicEventCategoryNodesUsingBlock:v19];
   if (!*(v21 + 24))
   {
     v9 = 0;
     goto LABEL_15;
   }
 
-  v4 = [v3 performers];
-  if ([v4 count])
+  performers = [nodeCopy performers];
+  if ([performers count])
   {
     v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:0 ascending:1 selector:sel_localizedCompare_];
     v24[0] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-    v7 = [v4 sortedArrayUsingDescriptors:v6];
+    v7 = [performers sortedArrayUsingDescriptors:v6];
 
     v8 = [v7 count];
     if (v8 == 3)
@@ -180,18 +180,18 @@ void __85__PGTitleSpecPublicEventArgument__generateTitleWithPerformerNamesForPub
   *a3 = *(*(*v6 + 8) + 24);
 }
 
-- (id)_generateTitleWithBusinessNameForPublicEventNode:(id)a3
+- (id)_generateTitleWithBusinessNameForPublicEventNode:(id)node
 {
-  v3 = [a3 businessNode];
-  v4 = [v3 name];
+  businessNode = [node businessNode];
+  name = [businessNode name];
 
-  return v4;
+  return name;
 }
 
-- (id)_generateTitleWithEventNameForPublicEventNode:(id)a3
+- (id)_generateTitleWithEventNameForPublicEventNode:(id)node
 {
-  v3 = [a3 name];
-  v4 = [objc_opt_class() _cleanUpEventName:v3];
+  name = [node name];
+  v4 = [objc_opt_class() _cleanUpEventName:name];
   if ([v4 length])
   {
     v5 = v4;
@@ -205,16 +205,16 @@ void __85__PGTitleSpecPublicEventArgument__generateTitleWithPerformerNamesForPub
   return v5;
 }
 
-- (id)_commonPublicEventNodeForMomentNodes:(id)a3
+- (id)_commonPublicEventNodeForMomentNodes:(id)nodes
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodesCopy = nodes;
   v4 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:0 valueOptions:0];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v3;
+  obj = nodesCopy;
   v41 = [obj countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v41)
   {
@@ -233,13 +233,13 @@ void __85__PGTitleSpecPublicEventArgument__generateTitleWithPerformerNamesForPub
 
         v42 = v6;
         v7 = *(*(&v52 + 1) + 8 * v6);
-        v8 = [v7 numberOfAssets];
-        v9 = [v7 publicEventNodes];
+        numberOfAssets = [v7 numberOfAssets];
+        publicEventNodes = [v7 publicEventNodes];
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v10 = [v9 countByEnumeratingWithState:&v48 objects:v59 count:16];
+        v10 = [publicEventNodes countByEnumeratingWithState:&v48 objects:v59 count:16];
         if (v10)
         {
           v11 = v10;
@@ -250,22 +250,22 @@ void __85__PGTitleSpecPublicEventArgument__generateTitleWithPerformerNamesForPub
             {
               if (*v49 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(publicEventNodes);
               }
 
               v14 = *(*(&v48 + 1) + 8 * i);
               v15 = [v4 objectForKey:v14];
-              v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v15, "unsignedIntegerValue") + v8}];
+              v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v15, "unsignedIntegerValue") + numberOfAssets}];
               [v4 setObject:v16 forKey:v14];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v48 objects:v59 count:16];
+            v11 = [publicEventNodes countByEnumeratingWithState:&v48 objects:v59 count:16];
           }
 
           while (v11);
         }
 
-        v5 = v8 + v43;
+        v5 = numberOfAssets + v43;
 
         v6 = v42 + 1;
       }
@@ -284,14 +284,14 @@ void __85__PGTitleSpecPublicEventArgument__generateTitleWithPerformerNamesForPub
   }
 
   v18 = [MEMORY[0x277CBEB58] set];
-  v19 = [v4 keyEnumerator];
-  v20 = [v19 allObjects];
+  keyEnumerator = [v4 keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v21 = v20;
+  v21 = allObjects;
   v22 = [v21 countByEnumeratingWithState:&v44 objects:v58 count:16];
   if (v22)
   {
@@ -323,22 +323,22 @@ void __85__PGTitleSpecPublicEventArgument__generateTitleWithPerformerNamesForPub
 
   if ([v18 count] == 1)
   {
-    v29 = [v18 anyObject];
-    v30 = [v29 categories];
+    anyObject = [v18 anyObject];
+    categories = [anyObject categories];
     v31 = +[PGGraphPublicEventNode unsupportedCategoriesForTitles];
-    v32 = [v30 intersectsSet:v31];
+    v32 = [categories intersectsSet:v31];
 
     if (v32)
     {
       v33 = +[PGLogging sharedLogging];
-      v34 = [v33 loggingConnection];
+      loggingConnection = [v33 loggingConnection];
 
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
-        v35 = [v29 name];
+        name = [anyObject name];
         *buf = 138412290;
-        v57 = v35;
-        _os_log_impl(&dword_22F0FC000, v34, OS_LOG_TYPE_INFO, "Public event node has an unsupported category for titles %@", buf, 0xCu);
+        v57 = name;
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "Public event node has an unsupported category for titles %@", buf, 0xCu);
       }
 
       v36 = 0;
@@ -346,7 +346,7 @@ void __85__PGTitleSpecPublicEventArgument__generateTitleWithPerformerNamesForPub
 
     else
     {
-      v36 = v29;
+      v36 = anyObject;
     }
   }
 
@@ -360,12 +360,12 @@ void __85__PGTitleSpecPublicEventArgument__generateTitleWithPerformerNamesForPub
   return v36;
 }
 
-- (id)_resolvedStringWithPublicEventNode:(id)a3 inMomentNodes:(id)a4
+- (id)_resolvedStringWithPublicEventNode:(id)node inMomentNodes:(id)nodes
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  nodesCopy = nodes;
   v8 = 0;
-  if (!v6)
+  if (!nodeCopy)
   {
 LABEL_16:
     v13 = 0;
@@ -377,13 +377,13 @@ LABEL_16:
   {
     if (type == 2)
     {
-      v10 = [(PGTitleSpecPublicEventArgument *)self _generateTitleWithPerformerNamesForPublicEventNode:v6];
+      v10 = [(PGTitleSpecPublicEventArgument *)self _generateTitleWithPerformerNamesForPublicEventNode:nodeCopy];
       goto LABEL_11;
     }
 
     if (type == 3)
     {
-      v10 = [(PGTitleSpecPublicEventArgument *)self _generateTitleWithCategoryNameForPublicEventNode:v6];
+      v10 = [(PGTitleSpecPublicEventArgument *)self _generateTitleWithCategoryNameForPublicEventNode:nodeCopy];
       goto LABEL_11;
     }
   }
@@ -392,13 +392,13 @@ LABEL_16:
   {
     if (!type)
     {
-      v10 = [(PGTitleSpecPublicEventArgument *)self _generateTitleWithEventNameForPublicEventNode:v6];
+      v10 = [(PGTitleSpecPublicEventArgument *)self _generateTitleWithEventNameForPublicEventNode:nodeCopy];
       goto LABEL_11;
     }
 
     if (type == 1)
     {
-      v10 = [(PGTitleSpecPublicEventArgument *)self _generateTitleWithBusinessNameForPublicEventNode:v6];
+      v10 = [(PGTitleSpecPublicEventArgument *)self _generateTitleWithBusinessNameForPublicEventNode:nodeCopy];
 LABEL_11:
       v8 = v10;
     }
@@ -428,19 +428,19 @@ LABEL_17:
   return v13;
 }
 
-- (id)_resolvedStringWithMomentNodes:(id)a3 features:(id)a4 argumentEvaluationContext:(id)a5
+- (id)_resolvedStringWithMomentNodes:(id)nodes features:(id)features argumentEvaluationContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 anyObject];
-  v10 = [v9 graph];
+  nodesCopy = nodes;
+  featuresCopy = features;
+  anyObject = [nodesCopy anyObject];
+  graph = [anyObject graph];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v8;
+  v11 = featuresCopy;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -458,8 +458,8 @@ LABEL_17:
         v16 = *(*(&v21 + 1) + 8 * i);
         if ([v16 type] == 21)
         {
-          v18 = [v16 nodeInGraph:v10];
-          v17 = [(PGTitleSpecPublicEventArgument *)self _resolvedStringWithPublicEventNode:v18 inMomentNodes:v7];
+          v18 = [v16 nodeInGraph:graph];
+          v17 = [(PGTitleSpecPublicEventArgument *)self _resolvedStringWithPublicEventNode:v18 inMomentNodes:nodesCopy];
 
           goto LABEL_11;
         }
@@ -483,63 +483,63 @@ LABEL_11:
   return v17;
 }
 
-- (id)_resolvedStringWithMomentNodes:(id)a3 argumentEvaluationContext:(id)a4
+- (id)_resolvedStringWithMomentNodes:(id)nodes argumentEvaluationContext:(id)context
 {
-  v5 = a3;
-  v6 = [(PGTitleSpecPublicEventArgument *)self _commonPublicEventNodeForMomentNodes:v5];
-  v7 = [(PGTitleSpecPublicEventArgument *)self _resolvedStringWithPublicEventNode:v6 inMomentNodes:v5];
+  nodesCopy = nodes;
+  v6 = [(PGTitleSpecPublicEventArgument *)self _commonPublicEventNodeForMomentNodes:nodesCopy];
+  v7 = [(PGTitleSpecPublicEventArgument *)self _resolvedStringWithPublicEventNode:v6 inMomentNodes:nodesCopy];
 
   return v7;
 }
 
-- (PGTitleSpecPublicEventArgument)initWithPublicEventType:(unint64_t)a3 shouldUseLongPublicEventTitle:(BOOL)a4
+- (PGTitleSpecPublicEventArgument)initWithPublicEventType:(unint64_t)type shouldUseLongPublicEventTitle:(BOOL)title
 {
   v7.receiver = self;
   v7.super_class = PGTitleSpecPublicEventArgument;
   result = [(PGTitleSpecPublicEventArgument *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_shouldUseLongPublicEventTitle = a4;
+    result->_type = type;
+    result->_shouldUseLongPublicEventTitle = title;
   }
 
   return result;
 }
 
-- (PGTitleSpecPublicEventArgument)initWithPublicEventType:(unint64_t)a3
+- (PGTitleSpecPublicEventArgument)initWithPublicEventType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PGTitleSpecPublicEventArgument;
   result = [(PGTitleSpecPublicEventArgument *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
     result->_shouldUseLongPublicEventTitle = 0;
   }
 
   return result;
 }
 
-+ (id)_cleanUpEventName:(id)a3
++ (id)_cleanUpEventName:(id)name
 {
-  v3 = a3;
-  if ([v3 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    v4 = [v3 pg_stringByRemovingParenthesesAndBrackets];
-    v5 = [v4 pg_stringByRemovingDates];
+    pg_stringByRemovingParenthesesAndBrackets = [nameCopy pg_stringByRemovingParenthesesAndBrackets];
+    pg_stringByRemovingDates = [pg_stringByRemovingParenthesesAndBrackets pg_stringByRemovingDates];
   }
 
   else
   {
-    v5 = v3;
+    pg_stringByRemovingDates = nameCopy;
   }
 
-  return v5;
+  return pg_stringByRemovingDates;
 }
 
-+ (id)argumentWithPublicEventType:(unint64_t)a3
++ (id)argumentWithPublicEventType:(unint64_t)type
 {
-  v3 = [[PGTitleSpecPublicEventArgument alloc] initWithPublicEventType:a3];
+  v3 = [[PGTitleSpecPublicEventArgument alloc] initWithPublicEventType:type];
 
   return v3;
 }

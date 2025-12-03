@@ -1,6 +1,6 @@
 @interface HAPMetricsDispatcher
 + (id)sharedInstance;
-- (void)submitLogEvent:(id)a3;
+- (void)submitLogEvent:(id)event;
 @end
 
 @implementation HAPMetricsDispatcher
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = sub_100027B74;
   block[3] = &unk_1002735F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002ACBD0 != -1)
   {
     dispatch_once(&qword_1002ACBD0, block);
@@ -22,15 +22,15 @@
   return v2;
 }
 
-- (void)submitLogEvent:(id)a3
+- (void)submitLogEvent:(id)event
 {
-  v6 = a3;
-  v4 = [(HAPMetricsDispatcher *)self logDispatcher];
+  eventCopy = event;
+  logDispatcher = [(HAPMetricsDispatcher *)self logDispatcher];
 
-  if (v4)
+  if (logDispatcher)
   {
-    v5 = [(HAPMetricsDispatcher *)self logDispatcher];
-    [v5 submitLogEvent:v6];
+    logDispatcher2 = [(HAPMetricsDispatcher *)self logDispatcher];
+    [logDispatcher2 submitLogEvent:eventCopy];
   }
 }
 

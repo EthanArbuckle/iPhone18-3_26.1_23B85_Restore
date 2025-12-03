@@ -1,18 +1,18 @@
 @interface NSString
-- (BOOL)bl_isInVolume:(id)a3;
+- (BOOL)bl_isInVolume:(id)volume;
 - (id)numberFromDecimalDigits;
 - (id)numberFromHexDigits;
 @end
 
 @implementation NSString
 
-- (BOOL)bl_isInVolume:(id)a3
+- (BOOL)bl_isInVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   if ([(NSString *)self length]&& (memset(&v8, 0, 512), !statfs([(NSString *)self fileSystemRepresentation:0], &v8)))
   {
     v6 = [NSString stringWithUTF8String:v8.f_mntonname];
-    v5 = [v6 isEqualToString:v4];
+    v5 = [v6 isEqualToString:volumeCopy];
   }
 
   else

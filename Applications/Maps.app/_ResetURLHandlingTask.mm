@@ -11,8 +11,8 @@
   v4 = objc_alloc_init(GEOURLOptions);
   [(MapsActivity *)v3 setDisplayOptions:v4];
 
-  v5 = [(MapsActivity *)v3 displayOptions];
-  [v5 setMapType:0];
+  displayOptions = [(MapsActivity *)v3 displayOptions];
+  [displayOptions setMapType:0];
 
   v6 = [RichMapsActivity alloc];
   v7 = objc_alloc_init(ResetAction);

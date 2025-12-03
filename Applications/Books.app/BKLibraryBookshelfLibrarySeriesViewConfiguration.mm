@@ -1,5 +1,5 @@
 @interface BKLibraryBookshelfLibrarySeriesViewConfiguration
-- (BKLibraryBookshelfLibrarySeriesViewConfiguration)initWithSeriesContainer:(id)a3 initialViewMode:(unint64_t)a4;
+- (BKLibraryBookshelfLibrarySeriesViewConfiguration)initWithSeriesContainer:(id)container initialViewMode:(unint64_t)mode;
 - (id)noBooksDescription;
 - (id)noBooksDescriptionHeader;
 - (id)seriesID;
@@ -10,27 +10,27 @@
 
 @implementation BKLibraryBookshelfLibrarySeriesViewConfiguration
 
-- (BKLibraryBookshelfLibrarySeriesViewConfiguration)initWithSeriesContainer:(id)a3 initialViewMode:(unint64_t)a4
+- (BKLibraryBookshelfLibrarySeriesViewConfiguration)initWithSeriesContainer:(id)container initialViewMode:(unint64_t)mode
 {
-  v6 = a3;
+  containerCopy = container;
   v15.receiver = self;
   v15.super_class = BKLibraryBookshelfLibrarySeriesViewConfiguration;
   v7 = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)&v15 init];
   if (v7)
   {
     v8 = +[BKLibraryManager defaultManager];
-    [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)v7 setSeriesContainer:v6];
-    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v7 setInitialViewMode:a4];
+    [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)v7 setSeriesContainer:containerCopy];
+    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v7 setInitialViewMode:mode];
     [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)v7 setInitialSortMode:+[BKCollection sortModeForSeriesCollections]];
-    v9 = [v6 managedObjectContext];
+    managedObjectContext = [containerCopy managedObjectContext];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1001B2A0C;
     v12[3] = &unk_100A03440;
-    v13 = v6;
+    v13 = containerCopy;
     v14 = v8;
     v10 = v8;
-    [v9 performBlock:v12];
+    [managedObjectContext performBlock:v12];
   }
 
   return v7;
@@ -38,26 +38,26 @@
 
 - (id)seriesID
 {
-  v2 = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesContainer];
-  v3 = [v2 assetID];
+  seriesContainer = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesContainer];
+  assetID = [seriesContainer assetID];
 
-  return v3;
+  return assetID;
 }
 
 - (id)viewTitle
 {
-  v2 = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesContainer];
-  v3 = [v2 title];
+  seriesContainer = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesContainer];
+  title = [seriesContainer title];
 
-  return v3;
+  return title;
 }
 
 - (id)viewDescription
 {
-  v2 = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesContainer];
-  v3 = [v2 displayAuthor];
+  seriesContainer = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesContainer];
+  displayAuthor = [seriesContainer displayAuthor];
 
-  return v3;
+  return displayAuthor;
 }
 
 - (id)noBooksDescriptionHeader
@@ -89,12 +89,12 @@
   [(BKLibrarySortByMode *)v6 setTitle:v8];
 
   [(BKLibrarySortByMode *)v6 setLabel:v5];
-  v9 = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesID];
-  v10 = [v3 contentPredicateForSeriesID:v9 onlyPurchased:1 forceCloud:1 allowsExplicit:1];
+  seriesID = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesID];
+  v10 = [v3 contentPredicateForSeriesID:seriesID onlyPurchased:1 forceCloud:1 allowsExplicit:1];
   [(BKLibrarySortByMode *)v6 setAllowExplicitPredicate:v10];
 
-  v11 = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesID];
-  v12 = [v3 contentPredicateForSeriesID:v11 onlyPurchased:1 forceCloud:1 allowsExplicit:0];
+  seriesID2 = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesID];
+  v12 = [v3 contentPredicateForSeriesID:seriesID2 onlyPurchased:1 forceCloud:1 allowsExplicit:0];
   [(BKLibrarySortByMode *)v6 setHideExplicitPredicate:v12];
 
   v13 = [NSSortDescriptor sortDescriptorWithKey:@"seriesSortKey" ascending:1];
@@ -113,12 +113,12 @@
   [(BKLibrarySortByMode *)v15 setTitle:v17];
 
   [(BKLibrarySortByMode *)v15 setLabel:v5];
-  v18 = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesID];
-  v19 = [v3 contentPredicateForSeriesID:v18 onlyPurchased:0 forceCloud:1 allowsExplicit:1];
+  seriesID3 = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesID];
+  v19 = [v3 contentPredicateForSeriesID:seriesID3 onlyPurchased:0 forceCloud:1 allowsExplicit:1];
   [(BKLibrarySortByMode *)v15 setAllowExplicitPredicate:v19];
 
-  v20 = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesID];
-  v21 = [v3 contentPredicateForSeriesID:v20 onlyPurchased:0 forceCloud:1 allowsExplicit:0];
+  seriesID4 = [(BKLibraryBookshelfLibrarySeriesViewConfiguration *)self seriesID];
+  v21 = [v3 contentPredicateForSeriesID:seriesID4 onlyPurchased:0 forceCloud:1 allowsExplicit:0];
   [(BKLibrarySortByMode *)v15 setHideExplicitPredicate:v21];
 
   v22 = [NSSortDescriptor sortDescriptorWithKey:@"seriesSortKey" ascending:1];

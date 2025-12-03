@@ -1,26 +1,26 @@
 @interface SBBlurViewCoordinator
 - (SBBlurViewCoordinator)init;
-- (SBBlurViewCoordinator)initWithElementViewControllers:(id)a3;
+- (SBBlurViewCoordinator)initWithElementViewControllers:(id)controllers;
 - (id)description;
-- (void)_fireBlocksForState:(unint64_t)a3;
-- (void)_setState:(unint64_t)a3;
-- (void)addNotifyBlock:(id)a3 forState:(unint64_t)a4;
-- (void)removeNotifyBlock:(id)a3 forState:(unint64_t)a4;
-- (void)setBlurred:(BOOL)a3 withAnimationFactory:(id)a4 completion:(id)a5;
+- (void)_fireBlocksForState:(unint64_t)state;
+- (void)_setState:(unint64_t)state;
+- (void)addNotifyBlock:(id)block forState:(unint64_t)state;
+- (void)removeNotifyBlock:(id)block forState:(unint64_t)state;
+- (void)setBlurred:(BOOL)blurred withAnimationFactory:(id)factory completion:(id)completion;
 @end
 
 @implementation SBBlurViewCoordinator
 
-- (SBBlurViewCoordinator)initWithElementViewControllers:(id)a3
+- (SBBlurViewCoordinator)initWithElementViewControllers:(id)controllers
 {
-  v5 = a3;
+  controllersCopy = controllers;
   v11.receiver = self;
   v11.super_class = SBBlurViewCoordinator;
   v6 = [(SBBlurViewCoordinator *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_elementVCs, a3);
+    objc_storeStrong(&v6->_elementVCs, controllers);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     mapStateToBlocks = v7->_mapStateToBlocks;
     v7->_mapStateToBlocks = v8;
@@ -33,8 +33,8 @@
 
 - (SBBlurViewCoordinator)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBBlurViewCoordinator.m" lineNumber:35 description:@"use initWithElementViewControllers:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBBlurViewCoordinator.m" lineNumber:35 description:@"use initWithElementViewControllers:"];
 
   return 0;
 }
@@ -55,25 +55,25 @@
 
   v6 = [v3 appendObject:v5 withName:@"state"];
   [v3 appendArraySection:self->_elementVCs withName:@"coordinatingVCs" skipIfEmpty:1];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (void)setBlurred:(BOOL)a3 withAnimationFactory:(id)a4 completion:(id)a5
+- (void)setBlurred:(BOOL)blurred withAnimationFactory:(id)factory completion:(id)completion
 {
-  v6 = a3;
+  blurredCopy = blurred;
   v54 = *MEMORY[0x277D85DE8];
-  v35 = a4;
-  v9 = a5;
-  if (![(SBBlurViewCoordinator *)self isBlurred]&& v6)
+  factoryCopy = factory;
+  completionCopy = completion;
+  if (![(SBBlurViewCoordinator *)self isBlurred]&& blurredCopy)
   {
-    v34 = v9;
+    v34 = completionCopy;
     state = self->_state;
     if (state && state != 3)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"SBBlurViewCoordinator.m" lineNumber:56 description:@"Unexpected state transition for the blur coordinator to blur."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBBlurViewCoordinator.m" lineNumber:56 description:@"Unexpected state transition for the blur coordinator to blur."];
     }
 
     v32 = a2;
@@ -100,7 +100,7 @@
 
           v18 = *(*(&v48 + 1) + 8 * i);
           dispatch_group_enter(v12);
-          [v35 duration];
+          [factoryCopy duration];
           v20 = v19;
           v46[0] = MEMORY[0x277D85DD0];
           v46[1] = 3221225472;
@@ -123,7 +123,7 @@
     v44[4] = self;
     v45[1] = v32;
     v21 = v45;
-    v9 = v34;
+    completionCopy = v34;
     v45[0] = v34;
     v22 = MEMORY[0x277D85CD0];
     v23 = v44;
@@ -133,7 +133,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ([(SBBlurViewCoordinator *)self isBlurred]&& !v6)
+  if ([(SBBlurViewCoordinator *)self isBlurred]&& !blurredCopy)
   {
     if (self->_state - 3 <= 0xFFFFFFFFFFFFFFFDLL)
     {
@@ -164,7 +164,7 @@ LABEL_26:
 
           v29 = *(*(&v40 + 1) + 8 * j);
           dispatch_group_enter(v12);
-          [v35 duration];
+          [factoryCopy duration];
           v31 = v30;
           v38[0] = MEMORY[0x277D85DD0];
           v38[1] = 3221225472;
@@ -187,7 +187,7 @@ LABEL_26:
     block[4] = self;
     v37[1] = v33;
     v21 = v37;
-    v37[0] = v9;
+    v37[0] = completionCopy;
     v22 = MEMORY[0x277D85CD0];
     v23 = block;
     goto LABEL_26;
@@ -248,32 +248,32 @@ uint64_t __68__SBBlurViewCoordinator_setBlurred_withAnimationFactory_completion_
   return result;
 }
 
-- (void)addNotifyBlock:(id)a3 forState:(unint64_t)a4
+- (void)addNotifyBlock:(id)block forState:(unint64_t)state
 {
-  v6 = a3;
-  if (self->_state == a4)
+  blockCopy = block;
+  if (self->_state == state)
   {
-    v13 = v6;
-    v6[2]();
+    v13 = blockCopy;
+    blockCopy[2]();
   }
 
   else
   {
-    if (!v6)
+    if (!blockCopy)
     {
       goto LABEL_8;
     }
 
-    v13 = v6;
+    v13 = blockCopy;
     mapStateToBlocks = self->_mapStateToBlocks;
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
     v9 = [(NSMutableDictionary *)mapStateToBlocks objectForKey:v8];
 
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v10 = self->_mapStateToBlocks;
-      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
       [(NSMutableDictionary *)v10 setObject:v9 forKey:v11];
     }
 
@@ -281,28 +281,28 @@ uint64_t __68__SBBlurViewCoordinator_setBlurred_withAnimationFactory_completion_
     [v9 addObject:v12];
   }
 
-  v6 = v13;
+  blockCopy = v13;
 LABEL_8:
 }
 
-- (void)removeNotifyBlock:(id)a3 forState:(unint64_t)a4
+- (void)removeNotifyBlock:(id)block forState:(unint64_t)state
 {
   mapStateToBlocks = self->_mapStateToBlocks;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v10 = [v6 numberWithUnsignedInteger:a4];
+  blockCopy = block;
+  v10 = [v6 numberWithUnsignedInteger:state];
   v8 = [(NSMutableDictionary *)mapStateToBlocks objectForKey:v10];
-  v9 = MEMORY[0x223D6F7F0](v7);
+  v9 = MEMORY[0x223D6F7F0](blockCopy);
 
   [v8 removeObject:v9];
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     v4 = SBLogAppResize();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -323,7 +323,7 @@ LABEL_8:
       v10 = 138412802;
       v11 = v6;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
       v15 = v9;
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_INFO, "<%@:%p>: blur view coordinator state changed to: %@", &v10, 0x20u);
@@ -333,7 +333,7 @@ LABEL_8:
   }
 }
 
-- (void)_fireBlocksForState:(unint64_t)a3
+- (void)_fireBlocksForState:(unint64_t)state
 {
   v20 = *MEMORY[0x277D85DE8];
   mapStateToBlocks = self->_mapStateToBlocks;
@@ -371,7 +371,7 @@ LABEL_8:
   }
 
   v13 = self->_mapStateToBlocks;
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
   [(NSMutableDictionary *)v13 removeObjectForKey:v14];
 }
 

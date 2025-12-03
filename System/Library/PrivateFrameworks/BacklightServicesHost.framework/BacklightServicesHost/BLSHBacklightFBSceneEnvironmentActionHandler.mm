@@ -1,20 +1,20 @@
 @interface BLSHBacklightFBSceneEnvironmentActionHandler
-- (id)respondToActions:(id)a3 forFBScene:(id)a4;
+- (id)respondToActions:(id)actions forFBScene:(id)scene;
 @end
 
 @implementation BLSHBacklightFBSceneEnvironmentActionHandler
 
-- (id)respondToActions:(id)a3 forFBScene:(id)a4
+- (id)respondToActions:(id)actions forFBScene:(id)scene
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 mutableCopy];
+  actionsCopy = actions;
+  sceneCopy = scene;
+  v7 = [actionsCopy mutableCopy];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v5;
+  v8 = actionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v9)
   {
@@ -51,9 +51,9 @@
             _os_log_debug_impl(&dword_21FD11000, v16, OS_LOG_TYPE_DEBUG, "respondToActions: matched action: %@", buf, 0xCu);
           }
 
-          v17 = [v6 backlightSceneHostEnvironment];
-          v18 = [v15 reason];
-          [v17 clientDidRequestInvalidationForReason:v18];
+          backlightSceneHostEnvironment = [sceneCopy backlightSceneHostEnvironment];
+          reason = [v15 reason];
+          [backlightSceneHostEnvironment clientDidRequestInvalidationForReason:reason];
 
           [v7 removeObject:v15];
         }

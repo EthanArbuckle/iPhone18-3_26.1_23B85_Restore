@@ -1,18 +1,18 @@
 @interface LinkedStockProviderFactory
 - (_TtC8StocksUI26LinkedStockProviderFactory)init;
-- (id)createLinkedContentProviderForArticle:(id)a3;
+- (id)createLinkedContentProviderForArticle:(id)article;
 @end
 
 @implementation LinkedStockProviderFactory
 
-- (id)createLinkedContentProviderForArticle:(id)a3
+- (id)createLinkedContentProviderForArticle:(id)article
 {
   sub_22046DA2C(self + OBJC_IVAR____TtC8StocksUI26LinkedStockProviderFactory_metadataManager, v13);
   v5 = type metadata accessor for LinkedStockProvider();
   v6 = objc_allocWithZone(v5);
   v7 = OBJC_IVAR____TtC8StocksUI19LinkedStockProvider_stocks;
-  v8 = a3;
-  v9 = self;
+  articleCopy = article;
+  selfCopy = self;
   sub_2205CF8EC(MEMORY[0x277D84F90]);
   sub_2206F1048();
   swift_allocObject();

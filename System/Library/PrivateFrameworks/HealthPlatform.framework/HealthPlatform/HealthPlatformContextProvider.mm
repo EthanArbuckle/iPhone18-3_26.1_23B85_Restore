@@ -1,10 +1,10 @@
 @interface HealthPlatformContextProvider
-- (void)storeDidUpdateWithNote:(id)a3;
+- (void)storeDidUpdateWithNote:(id)note;
 @end
 
 @implementation HealthPlatformContextProvider
 
-- (void)storeDidUpdateWithNote:(id)a3
+- (void)storeDidUpdateWithNote:(id)note
 {
   v3 = sub_22855BE9C();
   v4 = *(v3 - 8);

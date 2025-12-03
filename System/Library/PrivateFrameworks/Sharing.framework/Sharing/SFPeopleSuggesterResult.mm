@@ -1,19 +1,19 @@
 @interface SFPeopleSuggesterResult
-- (SFPeopleSuggesterResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFPeopleSuggesterResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFPeopleSuggesterResult
 
-- (SFPeopleSuggesterResult)initWithCoder:(id)a3
+- (SFPeopleSuggesterResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SFPeopleSuggesterResult;
   v5 = [(SFPeopleSuggesterResult *)&v10 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -35,36 +35,36 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   contactID = self->_contactID;
-  v9 = v4;
+  v9 = coderCopy;
   if (contactID)
   {
-    [v4 encodeObject:contactID forKey:@"cnID"];
-    v4 = v9;
+    [coderCopy encodeObject:contactID forKey:@"cnID"];
+    coderCopy = v9;
   }
 
   flags = self->_flags;
   if (flags)
   {
     [v9 encodeInt64:flags forKey:@"flags"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   handles = self->_handles;
   if (handles)
   {
     [v9 encodeObject:handles forKey:@"hnds"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   sendersKnownAlias = self->_sendersKnownAlias;
   if (sendersKnownAlias)
   {
     [v9 encodeObject:sendersKnownAlias forKey:@"ska"];
-    v4 = v9;
+    coderCopy = v9;
   }
 }
 

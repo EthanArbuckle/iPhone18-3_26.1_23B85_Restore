@@ -1,26 +1,26 @@
 @interface LibcoreIoGaiException
-- (LibcoreIoGaiException)initWithNSString:(id)a3 withInt:(int)a4;
-- (LibcoreIoGaiException)initWithNSString:(id)a3 withInt:(int)a4 withJavaLangThrowable:(id)a5;
+- (LibcoreIoGaiException)initWithNSString:(id)string withInt:(int)int;
+- (LibcoreIoGaiException)initWithNSString:(id)string withInt:(int)int withJavaLangThrowable:(id)throwable;
 - (id)getMessage;
-- (id)rethrowAsUnknownHostExceptionWithNSString:(id)a3;
+- (id)rethrowAsUnknownHostExceptionWithNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation LibcoreIoGaiException
 
-- (LibcoreIoGaiException)initWithNSString:(id)a3 withInt:(int)a4
+- (LibcoreIoGaiException)initWithNSString:(id)string withInt:(int)int
 {
   JavaLangRuntimeException_init(self, a2);
-  JreStrongAssign(&self->error_, a3);
-  *(&self->super.super.super.rawFrameCount + 1) = a4;
+  JreStrongAssign(&self->error_, string);
+  *(&self->super.super.super.rawFrameCount + 1) = int;
   return self;
 }
 
-- (LibcoreIoGaiException)initWithNSString:(id)a3 withInt:(int)a4 withJavaLangThrowable:(id)a5
+- (LibcoreIoGaiException)initWithNSString:(id)string withInt:(int)int withJavaLangThrowable:(id)throwable
 {
-  JavaLangRuntimeException_initWithJavaLangThrowable_(self, a5);
-  JreStrongAssign(&self->error_, a3);
-  *(&self->super.super.super.rawFrameCount + 1) = a4;
+  JavaLangRuntimeException_initWithJavaLangThrowable_(self, throwable);
+  JreStrongAssign(&self->error_, string);
+  *(&self->super.super.super.rawFrameCount + 1) = int;
   return self;
 }
 
@@ -46,9 +46,9 @@
   return JreStrcat("$$$$$C", v10, v11, v12, v13, v14, v15, v16, *&self->error_);
 }
 
-- (id)rethrowAsUnknownHostExceptionWithNSString:(id)a3
+- (id)rethrowAsUnknownHostExceptionWithNSString:(id)string
 {
-  v4 = new_JavaNetUnknownHostException_initWithNSString_(a3);
+  v4 = new_JavaNetUnknownHostException_initWithNSString_(string);
   [(JavaLangThrowable *)v4 initCauseWithJavaLangThrowable:self];
   objc_exception_throw(v4);
 }

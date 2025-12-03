@@ -1,6 +1,6 @@
 @interface CalculationResultCompletionProvider
 - (CalculationResultCompletionProvider)init;
-- (void)setQueryToComplete:(id)a3;
+- (void)setQueryToComplete:(id)complete;
 @end
 
 @implementation CalculationResultCompletionProvider
@@ -22,10 +22,10 @@
   return v2;
 }
 
-- (void)setQueryToComplete:(id)a3
+- (void)setQueryToComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [v4 queryString];
+  completeCopy = complete;
+  queryString = [completeCopy queryString];
   objc_initWeak(&location, self);
   calcuationResultProvider = self->_calcuationResultProvider;
   v9[0] = MEMORY[0x277D85DD0];
@@ -33,9 +33,9 @@
   v9[2] = __58__CalculationResultCompletionProvider_setQueryToComplete___block_invoke;
   v9[3] = &unk_2781D8530;
   objc_copyWeak(&v12, &location);
-  v7 = v5;
+  v7 = queryString;
   v10 = v7;
-  v8 = v4;
+  v8 = completeCopy;
   v11 = v8;
   [(WBSCalculationResultProvider *)calcuationResultProvider evaluateQuery:v8 resultHandler:v9];
 

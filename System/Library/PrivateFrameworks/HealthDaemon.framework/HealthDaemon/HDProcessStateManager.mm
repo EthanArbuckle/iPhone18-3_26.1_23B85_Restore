@@ -1,19 +1,19 @@
 @interface HDProcessStateManager
-- (BOOL)applicationIsForeground:(id)a3;
-- (BOOL)isApplicationFrontBoardVisibleForBundleIdentifier:(id)a3;
-- (BOOL)isApplicationInExtendedRuntimeSessionForBundleIdentifier:(id)a3;
-- (BOOL)registerObserver:(id)a3 forBundleIdentifier:(id)a4;
+- (BOOL)applicationIsForeground:(id)foreground;
+- (BOOL)isApplicationFrontBoardVisibleForBundleIdentifier:(id)identifier;
+- (BOOL)isApplicationInExtendedRuntimeSessionForBundleIdentifier:(id)identifier;
+- (BOOL)registerObserver:(id)observer forBundleIdentifier:(id)identifier;
 - (HDApplicationStateMonitorProvider)applicationStateMonitorProvider;
 - (HDProcessStateManager)init;
-- (HDProcessStateManager)initWithApplicationStateMonitorProvider:(id)a3;
+- (HDProcessStateManager)initWithApplicationStateMonitorProvider:(id)provider;
 - (id)diagnosticDescription;
-- (int)processIdentifierForApplicationIdentifier:(id)a3;
-- (unsigned)applicationStateForBundleIdentifier:(id)a3;
-- (void)_handleBackboardApplicationInfoChanged:(uint64_t)a1;
+- (int)processIdentifierForApplicationIdentifier:(id)identifier;
+- (unsigned)applicationStateForBundleIdentifier:(id)identifier;
+- (void)_handleBackboardApplicationInfoChanged:(uint64_t)changed;
 - (void)dealloc;
-- (void)registerForegroundClientProcessObserver:(id)a3;
-- (void)unregisterForegroundClientProcessObserver:(id)a3;
-- (void)unregisterObserver:(id)a3 forBundleIdentifier:(id)a4;
+- (void)registerForegroundClientProcessObserver:(id)observer;
+- (void)unregisterForegroundClientProcessObserver:(id)observer;
+- (void)unregisterObserver:(id)observer forBundleIdentifier:(id)identifier;
 @end
 
 @implementation HDProcessStateManager
@@ -28,16 +28,16 @@
   return 0;
 }
 
-- (HDProcessStateManager)initWithApplicationStateMonitorProvider:(id)a3
+- (HDProcessStateManager)initWithApplicationStateMonitorProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v23.receiver = self;
   v23.super_class = HDProcessStateManager;
   v5 = [(HDProcessStateManager *)&v23 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_applicationStateMonitorProvider, v4);
+    objc_storeWeak(&v5->_applicationStateMonitorProvider, providerCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     processObserversByBundleID = v6->_processObserversByBundleID;
     v6->_processObserversByBundleID = v7;
@@ -51,21 +51,21 @@
     processInfoByBundleID = v6->_processInfoByBundleID;
     v6->_processInfoByBundleID = v11;
 
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     foregroundClientProcessObservers = v6->_foregroundClientProcessObservers;
-    v6->_foregroundClientProcessObservers = v13;
+    v6->_foregroundClientProcessObservers = weakObjectsHashTable;
 
     v15 = objc_alloc_init(MEMORY[0x277CBEB98]);
     foregroundClientBundleIdentifiers = v6->_foregroundClientBundleIdentifiers;
     v6->_foregroundClientBundleIdentifiers = v15;
 
     WeakRetained = objc_loadWeakRetained(&v6->_applicationStateMonitorProvider);
-    v18 = [WeakRetained createRBSProcessStateProvider];
+    createRBSProcessStateProvider = [WeakRetained createRBSProcessStateProvider];
     rbsProcessStateProvider = v6->_rbsProcessStateProvider;
-    v6->_rbsProcessStateProvider = v18;
+    v6->_rbsProcessStateProvider = createRBSProcessStateProvider;
 
-    v20 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v20 addObject:v6];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v6];
 
     v21 = v6;
   }
@@ -75,20 +75,20 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-  [v3 removeObject:self];
+  mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+  [mEMORY[0x277D10AF8] removeObject:self];
 
   v4.receiver = self;
   v4.super_class = HDProcessStateManager;
   [(HDProcessStateManager *)&v4 dealloc];
 }
 
-- (BOOL)registerObserver:(id)a3 forBundleIdentifier:(id)a4
+- (BOOL)registerObserver:(id)observer forBundleIdentifier:(id)identifier
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 length] == 0;
+  observerCopy = observer;
+  identifierCopy = identifier;
+  v8 = [identifierCopy length] == 0;
   _HKInitializeLogging();
   v9 = HKLogProcessState();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
@@ -101,16 +101,16 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        *&buf[4] = v6;
+        *&buf[4] = observerCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v7;
+        *&buf[14] = identifierCopy;
         _os_log_debug_impl(&dword_228986000, v11, OS_LOG_TYPE_DEBUG, "Registering observer %@ for process state changes for %@", buf, 0x16u);
       }
     }
 
     os_unfair_lock_lock(&self->_lock);
-    v12 = v6;
-    v13 = v7;
+    v12 = observerCopy;
+    v13 = identifierCopy;
     if (!self)
     {
       v16 = 0;
@@ -119,7 +119,7 @@
 
     os_unfair_lock_assert_owner(&self->_lock);
     v14 = [(NSMutableDictionary *)self->_processObserversByBundleID objectForKey:v13];
-    v15 = v14;
+    weakObjectsHashTable = v14;
     if (v14)
     {
       [v14 addObject:v12];
@@ -131,14 +131,14 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v15 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [v15 addObject:v12];
-    [(NSMutableDictionary *)self->_processObserversByBundleID setObject:v15 forKey:v13];
-    v18 = [(BKSApplicationStateMonitor *)self->_applicationMonitor interestedBundleIDs];
-    v19 = v18;
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [weakObjectsHashTable addObject:v12];
+    [(NSMutableDictionary *)self->_processObserversByBundleID setObject:weakObjectsHashTable forKey:v13];
+    interestedBundleIDs = [(BKSApplicationStateMonitor *)self->_applicationMonitor interestedBundleIDs];
+    v19 = interestedBundleIDs;
     if (self->_applicationMonitor)
     {
-      if ([v18 containsObject:v13])
+      if ([interestedBundleIDs containsObject:v13])
       {
 LABEL_28:
         v16 = 1;
@@ -168,10 +168,10 @@ LABEL_29:
 
     else
     {
-      v24 = [(HDProcessStateManager *)self applicationStateMonitorProvider];
+      applicationStateMonitorProvider = [(HDProcessStateManager *)self applicationStateMonitorProvider];
       v40[0] = v13;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-      v26 = [v24 createApplicationStateMonitorWithBundleIDs:v25 states:15 elevatedPriority:1];
+      v26 = [applicationStateMonitorProvider createApplicationStateMonitorWithBundleIDs:v25 states:15 elevatedPriority:1];
       applicationMonitor = self->_applicationMonitor;
       self->_applicationMonitor = v26;
 
@@ -245,12 +245,12 @@ LABEL_32:
   return v16;
 }
 
-- (void)unregisterObserver:(id)a3 forBundleIdentifier:(id)a4
+- (void)unregisterObserver:(id)observer forBundleIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 length];
+  observerCopy = observer;
+  identifierCopy = identifier;
+  v8 = [identifierCopy length];
   _HKInitializeLogging();
   v9 = HKLogProcessState();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
@@ -263,24 +263,24 @@ LABEL_32:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         v19 = 138412546;
-        v20 = v6;
+        v20 = observerCopy;
         v21 = 2112;
-        v22 = v7;
+        v22 = identifierCopy;
         _os_log_debug_impl(&dword_228986000, v11, OS_LOG_TYPE_DEBUG, "Unregistering observer %@ for process state changes for %@", &v19, 0x16u);
       }
     }
 
     os_unfair_lock_lock(&self->_lock);
-    v12 = v7;
+    v12 = identifierCopy;
     if (self)
     {
-      v13 = v6;
+      v13 = observerCopy;
       os_unfair_lock_assert_owner(&self->_lock);
       v14 = [(NSMutableDictionary *)self->_processObserversByBundleID objectForKeyedSubscript:v12];
       [v14 removeObject:v13];
 
-      v15 = [v14 allObjects];
-      v16 = [v15 count];
+      allObjects = [v14 allObjects];
+      v16 = [allObjects count];
 
       if (!v16)
       {
@@ -304,37 +304,37 @@ LABEL_32:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForegroundClientProcessObserver:(id)a3
+- (void)registerForegroundClientProcessObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_lock);
-    [(NSHashTable *)self->_foregroundClientProcessObservers addObject:v4];
+    [(NSHashTable *)self->_foregroundClientProcessObservers addObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)unregisterForegroundClientProcessObserver:(id)a3
+- (void)unregisterForegroundClientProcessObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_lock);
-    [(NSHashTable *)self->_foregroundClientProcessObservers removeObject:v4];
+    [(NSHashTable *)self->_foregroundClientProcessObservers removeObject:observerCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (unsigned)applicationStateForBundleIdentifier:(id)a3
+- (unsigned)applicationStateForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(NSMutableDictionary *)self->_processInfoByBundleID objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_processInfoByBundleID objectForKeyedSubscript:identifierCopy];
     v6 = self->_applicationMonitor;
     os_unfair_lock_unlock(&self->_lock);
     if (v5)
@@ -344,16 +344,16 @@ LABEL_32:
 
     else if (v6)
     {
-      v7 = [(BKSApplicationStateMonitor *)v6 applicationStateForApplication:v4];
+      v7 = [(BKSApplicationStateMonitor *)v6 applicationStateForApplication:identifierCopy];
     }
 
     else
     {
-      v8 = [(HDProcessStateManager *)self applicationStateMonitorProvider];
-      v9 = [v8 createApplicationStateMonitor];
+      applicationStateMonitorProvider = [(HDProcessStateManager *)self applicationStateMonitorProvider];
+      createApplicationStateMonitor = [applicationStateMonitorProvider createApplicationStateMonitor];
 
-      v7 = [v9 applicationStateForApplication:v4];
-      [v9 invalidate];
+      v7 = [createApplicationStateMonitor applicationStateForApplication:identifierCopy];
+      [createApplicationStateMonitor invalidate];
     }
   }
 
@@ -365,17 +365,17 @@ LABEL_32:
   return v7;
 }
 
-- (BOOL)isApplicationInExtendedRuntimeSessionForBundleIdentifier:(id)a3
+- (BOOL)isApplicationInExtendedRuntimeSessionForBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D46F50] identifierWithPid:{-[HDProcessStateManager processIdentifierForApplicationIdentifier:](self, "processIdentifierForApplicationIdentifier:", a3)}];
+  v4 = [MEMORY[0x277D46F50] identifierWithPid:{-[HDProcessStateManager processIdentifierForApplicationIdentifier:](self, "processIdentifierForApplicationIdentifier:", identifier)}];
   v5 = [(HDRBSProcessStateProvider *)self->_rbsProcessStateProvider stateForProcessIdentifier:v4];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 tags];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  tags = [v5 tags];
+  v7 = [tags countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -386,7 +386,7 @@ LABEL_32:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(tags);
         }
 
         if ([*(*(&v14 + 1) + 8 * i) isEqualToString:@"CSLExtendedRuntimeSession"])
@@ -396,7 +396,7 @@ LABEL_32:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [tags countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -413,25 +413,25 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)isApplicationFrontBoardVisibleForBundleIdentifier:(id)a3
+- (BOOL)isApplicationFrontBoardVisibleForBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   _HKInitializeLogging();
   v5 = HKLogProcessState();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2114;
-    v16 = v4;
+    v16 = identifierCopy;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Verifying FrontBoard visibility for %{public}@", &v13, 0x16u);
   }
 
-  v6 = [MEMORY[0x277D46F50] identifierWithPid:{-[HDProcessStateManager processIdentifierForApplicationIdentifier:](self, "processIdentifierForApplicationIdentifier:", v4)}];
+  v6 = [MEMORY[0x277D46F50] identifierWithPid:{-[HDProcessStateManager processIdentifierForApplicationIdentifier:](self, "processIdentifierForApplicationIdentifier:", identifierCopy)}];
   v7 = [(HDRBSProcessStateProvider *)self->_rbsProcessStateProvider stateForProcessIdentifier:v6];
-  v8 = [v7 endowmentNamespaces];
-  v9 = [v8 containsObject:*MEMORY[0x277D0AC90]];
+  endowmentNamespaces = [v7 endowmentNamespaces];
+  v9 = [endowmentNamespaces containsObject:*MEMORY[0x277D0AC90]];
 
   if (v9)
   {
@@ -440,7 +440,7 @@ LABEL_11:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
       v16 = v6;
       _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Current process identifier %{public}@ has FBS scene visibility endowment", &v13, 0x16u);
@@ -451,43 +451,43 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)applicationIsForeground:(id)a3
+- (BOOL)applicationIsForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = [(HDProcessStateManager *)self applicationStateMonitorProvider];
-  v6 = [v5 createApplicationStateMonitor];
+  foregroundCopy = foreground;
+  applicationStateMonitorProvider = [(HDProcessStateManager *)self applicationStateMonitorProvider];
+  createApplicationStateMonitor = [applicationStateMonitorProvider createApplicationStateMonitor];
 
-  LODWORD(v5) = [v6 applicationStateForApplication:v4];
-  [v6 invalidate];
+  LODWORD(applicationStateMonitorProvider) = [createApplicationStateMonitor applicationStateForApplication:foregroundCopy];
+  [createApplicationStateMonitor invalidate];
 
-  return v5 == 8;
+  return applicationStateMonitorProvider == 8;
 }
 
-- (int)processIdentifierForApplicationIdentifier:(id)a3
+- (int)processIdentifierForApplicationIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDProcessStateManager *)self applicationStateMonitorProvider];
-  v6 = [v5 createApplicationStateMonitor];
+  identifierCopy = identifier;
+  applicationStateMonitorProvider = [(HDProcessStateManager *)self applicationStateMonitorProvider];
+  createApplicationStateMonitor = [applicationStateMonitorProvider createApplicationStateMonitor];
 
-  v7 = [v6 applicationInfoForApplication:v4];
-  [v6 invalidate];
+  v7 = [createApplicationStateMonitor applicationInfoForApplication:identifierCopy];
+  [createApplicationStateMonitor invalidate];
   v8 = [v7 objectForKey:*MEMORY[0x277CEEE80]];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 intValue];
+    intValue = [v8 intValue];
   }
 
   else
   {
-    v10 = -1;
+    intValue = -1;
   }
 
   v11 = [v7 objectForKey:*MEMORY[0x277CEEE70]];
-  v12 = [v11 unsignedIntValue];
+  unsignedIntValue = [v11 unsignedIntValue];
 
-  if (v12 == 1 && v10 != -1)
+  if (unsignedIntValue == 1 && intValue != -1)
   {
     _HKInitializeLogging();
     v14 = HKLogProcessState();
@@ -499,34 +499,34 @@ LABEL_11:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v19 = 138543618;
-        v20 = v4;
+        v20 = identifierCopy;
         v21 = 1026;
-        v22 = v10;
+        v22 = intValue;
         _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_INFO, "Process %{public}@ is terminated but monitor reported pid %{public}d. Returning -1.", &v19, 0x12u);
       }
     }
 
-    v10 = -1;
+    intValue = -1;
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return v10;
+  return intValue;
 }
 
-- (void)_handleBackboardApplicationInfoChanged:(uint64_t)a1
+- (void)_handleBackboardApplicationInfoChanged:(uint64_t)changed
 {
   v84 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!changed)
   {
     v49 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  v2 = a1;
+  changedCopy = changed;
   v3 = a2;
-  os_unfair_lock_lock((v2 + 48));
+  os_unfair_lock_lock((changedCopy + 48));
   v4 = v3;
-  os_unfair_lock_assert_owner((v2 + 48));
+  os_unfair_lock_assert_owner((changedCopy + 48));
   v5 = *MEMORY[0x277CEEE68];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277CEEE68]];
   if (!v6)
@@ -534,8 +534,8 @@ LABEL_11:
     goto LABEL_29;
   }
 
-  v7 = [*(v2 + 64) copy];
-  v52 = v2;
+  v7 = [*(changedCopy + 64) copy];
+  v52 = changedCopy;
   v51 = v4;
   v8 = v4;
   objc_opt_self();
@@ -552,16 +552,16 @@ LABEL_11:
 
   v9->_pid = [v14 intValue];
   v50 = v6;
-  [*(v2 + 64) setObject:v9 forKeyedSubscript:v6];
+  [*(changedCopy + 64) setObject:v9 forKeyedSubscript:v6];
 
   v15 = v7;
-  os_unfair_lock_assert_owner((v2 + 48));
+  os_unfair_lock_assert_owner((changedCopy + 48));
   v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v17 = [*(v2 + 64) allKeys];
-  [v16 addObjectsFromArray:v17];
+  allKeys = [*(changedCopy + 64) allKeys];
+  [v16 addObjectsFromArray:allKeys];
 
-  v18 = [v15 allKeys];
-  [v16 addObjectsFromArray:v18];
+  allKeys2 = [v15 allKeys];
+  [v16 addObjectsFromArray:allKeys2];
 
   v19 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v20 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -591,7 +591,7 @@ LABEL_11:
       }
 
       v22 = *(*(&v60 + 1) + 8 * v21);
-      v23 = [*(v2 + 64) objectForKeyedSubscript:v22];
+      v23 = [*(changedCopy + 64) objectForKeyedSubscript:v22];
       v24 = [v15 objectForKeyedSubscript:v22];
       v25 = v24;
       if (v23)
@@ -621,7 +621,7 @@ LABEL_10:
       v27 = *(v24 + 8);
 LABEL_14:
       v28 = v22;
-      os_unfair_lock_assert_owner((v2 + 48));
+      os_unfair_lock_assert_owner((changedCopy + 48));
       if (v26 != v27)
       {
         _HKInitializeLogging();
@@ -640,7 +640,7 @@ LABEL_14:
           *&buf[30] = v31;
           *&buf[38] = 2048;
           v76 = v27 == 2;
-          v2 = v52;
+          changedCopy = v52;
           *v77 = 2048;
           *&v77[2] = v26 == 2;
           v78 = 2048;
@@ -652,15 +652,15 @@ LABEL_14:
           _os_log_impl(&dword_228986000, v29, OS_LOG_TYPE_DEFAULT, "Process %@ (%d) state changed %{public}@ -> %{public}@: suspended %ld -> %ld, foreground %ld -> %ld, terminated %ld", buf, 0x58u);
         }
 
-        v32 = [*(v2 + 8) objectForKeyedSubscript:v28];
-        v33 = [v32 allObjects];
+        v32 = [*(changedCopy + 8) objectForKeyedSubscript:v28];
+        allObjects = [v32 allObjects];
 
-        v34 = *(v2 + 56);
+        v34 = *(changedCopy + 56);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __141__HDProcessStateManager__lock_notifyObserversProcessWithBundleIdentifier_processIdentifier_applicationStateChanged_previousApplicationState___block_invoke;
         block[3] = &unk_27861D970;
-        v65 = v33;
+        v65 = allObjects;
         v67 = v27;
         v68 = v26;
         v66 = v28;
@@ -669,7 +669,7 @@ LABEL_14:
         v71 = v27 == 8;
         v72 = v26 == 8;
         v73 = v26 < 2;
-        v35 = v33;
+        v35 = allObjects;
         dispatch_async(v34, block);
 
         v15 = v53;
@@ -694,22 +694,22 @@ LABEL_14:
   while (v37);
 LABEL_25:
 
-  if (([v19 isEqual:v20] & 1) == 0 && (objc_msgSend(*(v2 + 24), "isEqual:", v19) & 1) == 0)
+  if (([v19 isEqual:v20] & 1) == 0 && (objc_msgSend(*(changedCopy + 24), "isEqual:", v19) & 1) == 0)
   {
-    v38 = [*(v2 + 16) allObjects];
+    allObjects2 = [*(changedCopy + 16) allObjects];
     v39 = [v19 copy];
     v40 = [v20 copy];
-    v41 = *(v2 + 56);
+    v41 = *(changedCopy + 56);
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
     *&buf[16] = __83__HDProcessStateManager__lock_handleProcessInfoChangedWithAllPreviousProcessInfos___block_invoke;
     *&buf[24] = &unk_278613830;
-    *&buf[32] = v38;
+    *&buf[32] = allObjects2;
     v76 = v39;
     *v77 = v40;
     v42 = v40;
     v43 = v39;
-    v44 = v38;
+    v44 = allObjects2;
     v45 = v41;
     v19 = v55;
     dispatch_async(v45, buf);
@@ -718,8 +718,8 @@ LABEL_25:
   }
 
   v46 = [v19 copy];
-  v47 = *(v2 + 24);
-  *(v2 + 24) = v46;
+  v47 = *(changedCopy + 24);
+  *(changedCopy + 24) = v46;
 
   v6 = v50;
   v4 = v51;
@@ -727,7 +727,7 @@ LABEL_29:
 
   v48 = *MEMORY[0x277D85DE8];
 
-  os_unfair_lock_unlock((v2 + 48));
+  os_unfair_lock_unlock((changedCopy + 48));
 }
 
 void __68__HDProcessStateManager__lock_registerObserver_forBundleIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -852,8 +852,8 @@ void __141__HDProcessStateManager__lock_notifyObserversProcessWithBundleIdentifi
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(NSMutableDictionary *)self->_processInfoByBundleID allValues];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allValues = [(NSMutableDictionary *)self->_processInfoByBundleID allValues];
+  v5 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -865,7 +865,7 @@ void __141__HDProcessStateManager__lock_notifyObserversProcessWithBundleIdentifi
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
@@ -890,7 +890,7 @@ void __141__HDProcessStateManager__lock_notifyObserversProcessWithBundleIdentifi
       }
 
       while (v6 != v8);
-      v14 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v14 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
       v6 = v14;
     }
 

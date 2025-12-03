@@ -1,32 +1,32 @@
 @interface IOAccessoryLDCMPortManagerTypeC
 - ($01BB1521EC52D44A8E7628F5261DCEC8)wetMeasurementInfo;
 - (BOOL)_checkIsReceptacleEmpty;
-- (BOOL)_holdPowerAssertionTypeC:(BOOL)a3;
+- (BOOL)_holdPowerAssertionTypeC:(BOOL)c;
 - (BOOL)_setInitialUserNotificationTimestamp;
 - (BOOL)_throttleUserNotification;
-- (IOAccessoryLDCMPortManagerTypeC)initWithParams:(unint64_t)a3 dryPollingIntervalNs:(unint64_t)a4;
-- (id)_fetchFilesToUpload:(id)a3;
-- (int)_halogenErrorToAnalyticError:(unsigned __int8)a3;
-- (int)_measurementErrorToAnalyticError:(unsigned __int8)a3;
+- (IOAccessoryLDCMPortManagerTypeC)initWithParams:(unint64_t)params dryPollingIntervalNs:(unint64_t)ns;
+- (id)_fetchFilesToUpload:(id)upload;
+- (int)_halogenErrorToAnalyticError:(unsigned __int8)error;
+- (int)_measurementErrorToAnalyticError:(unsigned __int8)error;
 - (void)_checkPortState;
 - (void)_controlLDCMMeasurements;
 - (void)_dismissWetPrompt;
-- (void)_fileRadarHalogenTypeC:(id)a3 TTRCategory:(int)a4;
-- (void)_generateAlternateMeasurementAnalytics:(BOOL)a3 measurementInfo:(id *)a4 intervalSinceLastPass:(double)a5;
-- (void)_generateAnalytics:(BOOL)a3 dryToWetTransition:(BOOL)a4 measurementInfo:(id *)a5;
-- (void)_generateFailureAnalytics:(int)a3 recordLDCMDisabled:(BOOL)a4 analyticsError:(int)a5;
+- (void)_fileRadarHalogenTypeC:(id)c TTRCategory:(int)category;
+- (void)_generateAlternateMeasurementAnalytics:(BOOL)analytics measurementInfo:(id *)info intervalSinceLastPass:(double)pass;
+- (void)_generateAnalytics:(BOOL)analytics dryToWetTransition:(BOOL)transition measurementInfo:(id *)info;
+- (void)_generateFailureAnalytics:(int)analytics recordLDCMDisabled:(BOOL)disabled analyticsError:(int)error;
 - (void)_generateLDCMCSVData;
 - (void)_loadFrontBoard;
 - (void)_manageLDCMSettings;
 - (void)_processLDCMAnalyticsDefauts;
-- (void)_processLDCMDefauts:(BOOL)a3;
+- (void)_processLDCMDefauts:(BOOL)defauts;
 - (void)_processMitigationsOverride;
 - (void)_readLDCMBootArgs;
 - (void)_registerForLDCMNotifications;
 - (void)_resetLDCMErrorDict;
 - (void)_showMitigationAlert;
 - (void)_showWetPrompt;
-- (void)_writeAndNotifyDefaults:(id)a3 value:(id)a4 domain:(id)a5 notify:(BOOL)a6 notification:(id)a7;
+- (void)_writeAndNotifyDefaults:(id)defaults value:(id)value domain:(id)domain notify:(BOOL)notify notification:(id)notification;
 - (void)dealloc;
 - (void)handleAttachEvent;
 - (void)handleDetachEvent;
@@ -250,7 +250,7 @@ void __64__IOAccessoryLDCMPortManagerTypeC__registerForLDCMNotifications__block_
   }
 }
 
-- (void)_processLDCMDefauts:(BOOL)a3
+- (void)_processLDCMDefauts:(BOOL)defauts
 {
   v5 = CFPreferencesCopyValue(@"DisablePeriodicMeasurements", @"com.apple.CoreAccessories.LDCMPreferences", @"mobile", *MEMORY[0x277CBF030]);
   v6 = v5;
@@ -263,7 +263,7 @@ LABEL_7:
     return;
   }
 
-  if (!a3)
+  if (!defauts)
   {
     dispatch_resume([(IOAccessoryLDCMPortManagerTypeC *)self halogenTypeCDispatchQueue]);
   }
@@ -317,15 +317,15 @@ LABEL_7:
   }
 }
 
-- (void)_writeAndNotifyDefaults:(id)a3 value:(id)a4 domain:(id)a5 notify:(BOOL)a6 notification:(id)a7
+- (void)_writeAndNotifyDefaults:(id)defaults value:(id)value domain:(id)domain notify:(BOOL)notify notification:(id)notification
 {
-  v8 = a6;
-  CFPreferencesSetValue(a3, a4, a5, @"mobile", *MEMORY[0x277CBF030]);
-  if (v8)
+  notifyCopy = notify;
+  CFPreferencesSetValue(defaults, value, domain, @"mobile", *MEMORY[0x277CBF030]);
+  if (notifyCopy)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
-    CFNotificationCenterPostNotification(DarwinNotifyCenter, a7, self, 0, 1u);
+    CFNotificationCenterPostNotification(DarwinNotifyCenter, notification, self, 0, 1u);
   }
 }
 
@@ -386,21 +386,21 @@ uint64_t __52__IOAccessoryLDCMPortManagerTypeC_handleDetachEvent__block_invoke(u
   }
 }
 
-- (BOOL)_holdPowerAssertionTypeC:(BOOL)a3
+- (BOOL)_holdPowerAssertionTypeC:(BOOL)c
 {
   v12[4] = *MEMORY[0x277D85DE8];
   isPowerAssertionHeld = self->_isPowerAssertionHeld;
-  if (isPowerAssertionHeld == a3)
+  if (isPowerAssertionHeld == c)
   {
     result = 1;
   }
 
   else
   {
-    v5 = a3;
-    if (isPowerAssertionHeld || !a3)
+    cCopy = c;
+    if (isPowerAssertionHeld || !c)
     {
-      if (a3 || !self->_isPowerAssertionHeld)
+      if (c || !self->_isPowerAssertionHeld)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
@@ -450,7 +450,7 @@ uint64_t __52__IOAccessoryLDCMPortManagerTypeC_handleDetachEvent__block_invoke(u
       }
     }
 
-    result = self->_isPowerAssertionHeld == v5;
+    result = self->_isPowerAssertionHeld == cCopy;
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -473,29 +473,29 @@ uint64_t __52__IOAccessoryLDCMPortManagerTypeC_handleDetachEvent__block_invoke(u
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_halogenErrorToAnalyticError:(unsigned __int8)a3
+- (int)_halogenErrorToAnalyticError:(unsigned __int8)error
 {
-  if ((a3 - 1) >= 0xA)
+  if ((error - 1) >= 0xA)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return error;
   }
 }
 
-- (int)_measurementErrorToAnalyticError:(unsigned __int8)a3
+- (int)_measurementErrorToAnalyticError:(unsigned __int8)error
 {
-  if (((a3 - 3) & 0xF8) != 0)
+  if (((error - 3) & 0xF8) != 0)
   {
     return 0;
   }
 
   else
   {
-    return (a3 - 3) + 11;
+    return (error - 3) + 11;
   }
 }
 
@@ -567,7 +567,7 @@ _BYTE *__58__IOAccessoryLDCMPortManagerTypeC_performTypeCMeasurement__block_invo
     v3 = 136315394;
     v4 = "[IOAccessoryLDCMPortManagerTypeC _generateLDCMCSVData]";
     v5 = 2112;
-    v6 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s Error in creating directory. %@\n", &v3, 0x16u);
   }
 
@@ -597,7 +597,7 @@ uint64_t __55__IOAccessoryLDCMPortManagerTypeC__generateLDCMCSVData__block_invok
   return [v9 compare:{objc_msgSend(v11, "objectForKey:", v8)}];
 }
 
-- (id)_fetchFilesToUpload:(id)a3
+- (id)_fetchFilesToUpload:(id)upload
 {
   v4 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
   v5 = [v4 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"self BEGINSWITH[cd] 'internalMeasurementData'"}];
@@ -608,7 +608,7 @@ uint64_t __55__IOAccessoryLDCMPortManagerTypeC__generateLDCMCSVData__block_invok
     v8 = 1;
     do
     {
-      [v6 replaceObjectAtIndex:v7 withObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@%@", a3, objc_msgSend(v6, "objectAtIndex:", v7))}];
+      [v6 replaceObjectAtIndex:v7 withObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@%@", upload, objc_msgSend(v6, "objectAtIndex:", v7))}];
       v7 = v8;
     }
 
@@ -859,9 +859,9 @@ void __52__IOAccessoryLDCMPortManagerTypeC__dismissWetPrompt__block_invoke()
   }
 }
 
-- (void)_generateAlternateMeasurementAnalytics:(BOOL)a3 measurementInfo:(id *)a4 intervalSinceLastPass:(double)a5
+- (void)_generateAlternateMeasurementAnalytics:(BOOL)analytics measurementInfo:(id *)info intervalSinceLastPass:(double)pass
 {
-  v7 = a3;
+  analyticsCopy = analytics;
   v24 = *MEMORY[0x277D85DE8];
   if (self->_isInternalBuild)
   {
@@ -881,8 +881,8 @@ void __52__IOAccessoryLDCMPortManagerTypeC__dismissWetPrompt__block_invoke()
 
   v10 = v9;
   [v9 setString:&stru_2866AF328];
-  var0 = a4->var0;
-  if (a4->var0 == 2)
+  var0 = info->var0;
+  if (info->var0 == 2)
   {
     v12 = @"com.apple.ioaccessorymanager.ldcm.usbc.referenceMeasurementFailure";
     v13 = @"com.apple.ioaccessorymanager.ldcm.usbc.referenceMeasurement";
@@ -896,12 +896,12 @@ void __52__IOAccessoryLDCMPortManagerTypeC__dismissWetPrompt__block_invoke()
     v13 = @"com.apple.ioaccessorymanager.ldcm.usbc.selfTest";
     v14 = @"com.apple.ioaccessorymanager.ldcm.usbc.selfTestFailToPassDuration";
 LABEL_11:
-    if (a5 > 0.0)
+    if (pass > 0.0)
     {
       v13 = v14;
     }
 
-    if (v7)
+    if (analyticsCopy)
     {
       v15 = v13;
     }
@@ -915,16 +915,16 @@ LABEL_11:
     if ([v10 length])
     {
       v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      if (a5 <= 0.0)
+      if (pass <= 0.0)
       {
-        [v16 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", a4->var14), @"resistance"}];
-        v17 = [MEMORY[0x277CCABB0] numberWithDouble:a4->var15];
+        [v16 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", info->var14), @"resistance"}];
+        v17 = [MEMORY[0x277CCABB0] numberWithDouble:info->var15];
         v18 = @"capacitance";
       }
 
       else
       {
-        v17 = [MEMORY[0x277CCABB0] numberWithDouble:floor(a5 / 60.0)];
+        v17 = [MEMORY[0x277CCABB0] numberWithDouble:floor(pass / 60.0)];
         v18 = @"duration";
       }
 
@@ -958,17 +958,17 @@ LABEL_25:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_generateFailureAnalytics:(int)a3 recordLDCMDisabled:(BOOL)a4 analyticsError:(int)a5
+- (void)_generateFailureAnalytics:(int)analytics recordLDCMDisabled:(BOOL)disabled analyticsError:(int)error
 {
-  v6 = a4;
-  if (a3 != 1)
+  disabledCopy = disabled;
+  if (analytics != 1)
   {
-    if (a3 == 10)
+    if (analytics == 10)
     {
       self->_isReceptacleEmpty;
     }
 
-    else if (a3 != 3)
+    else if (analytics != 3)
     {
       goto LABEL_7;
     }
@@ -976,21 +976,21 @@ LABEL_25:
 
   AnalyticsSendEvent();
 LABEL_7:
-  if (v6)
+  if (disabledCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInteger:", a5), @"disable_reason"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInteger:", error), @"disable_reason"}];
     AnalyticsSendEvent();
 
     self->_didReportDisabledAnalytic = 1;
   }
 }
 
-- (void)_generateAnalytics:(BOOL)a3 dryToWetTransition:(BOOL)a4 measurementInfo:(id *)a5
+- (void)_generateAnalytics:(BOOL)analytics dryToWetTransition:(BOOL)transition measurementInfo:(id *)info
 {
-  v6 = a4;
+  transitionCopy = transition;
   v26 = *MEMORY[0x277D85DE8];
-  if (a3 && ![(IOAccessoryLDCMPortManagerTypeC *)self _throttleUserNotification])
+  if (analytics && ![(IOAccessoryLDCMPortManagerTypeC *)self _throttleUserNotification])
   {
     [(IOAccessoryLDCMPortManagerTypeC *)self _showWetPrompt];
     self->_initialAlertShown = 1;
@@ -998,19 +998,19 @@ LABEL_7:
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  var2 = a5->var2;
+  var2 = info->var2;
   if (var2 > 6)
   {
     if (var2 <= 8)
     {
       if (var2 == 7)
       {
-        if (a5->var9 < 0.07)
+        if (info->var9 < 0.07)
         {
           [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:"), @"badCalCurrentAmp"}];
         }
 
-        if (a5->var8 >= 0.07)
+        if (info->var8 >= 0.07)
         {
           goto LABEL_38;
         }
@@ -1021,12 +1021,12 @@ LABEL_7:
 
       else
       {
-        if (a5->var17 < 24.0)
+        if (info->var17 < 24.0)
         {
           [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:"), @"badMeasurementCurrentSNR"}];
         }
 
-        if (a5->var16 >= 24.0)
+        if (info->var16 >= 24.0)
         {
           goto LABEL_38;
         }
@@ -1040,12 +1040,12 @@ LABEL_7:
 
     if (var2 == 9)
     {
-      if (a5->var19 < 0.14)
+      if (info->var19 < 0.14)
       {
         [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:"), @"badMeasurementCurrentAmp"}];
       }
 
-      if (a5->var18 >= 0.14)
+      if (info->var18 >= 0.14)
       {
         goto LABEL_38;
       }
@@ -1057,7 +1057,7 @@ LABEL_7:
 
     if (var2 == 10)
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithDouble:a5->var15];
+      v10 = [MEMORY[0x277CCABB0] numberWithDouble:info->var15];
       v11 = @"badMeasurementNegativeCap";
       goto LABEL_37;
     }
@@ -1113,10 +1113,10 @@ LABEL_49:
         goto LABEL_40;
       }
 
-      [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", a5->var14), @"resistance"}];
-      [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", a5->var22), @"impedance"}];
-      [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", a5->var15), @"capacitance"}];
-      [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", a5->var23), @"impedancePhase"}];
+      [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", info->var14), @"resistance"}];
+      [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", info->var22), @"impedance"}];
+      [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", info->var15), @"capacitance"}];
+      [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", info->var23), @"impedancePhase"}];
       isReceptacleEmpty = self->_isReceptacleEmpty;
       v17 = @"com.apple.ioaccessorymanager.ldcm.usbc.dryMeasurementPortNotEmpty";
       v18 = @"com.apple.ioaccessorymanager.ldcm.usbc.dryMeasurement";
@@ -1140,12 +1140,12 @@ LABEL_49:
   {
     if (var2 == 6)
     {
-      if (a5->var7 < 24.0)
+      if (info->var7 < 24.0)
       {
         [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:"), @"badCalCurrentSNR"}];
       }
 
-      if (a5->var6 >= 24.0)
+      if (info->var6 >= 24.0)
       {
         goto LABEL_38;
       }
@@ -1164,18 +1164,18 @@ LABEL_39:
     goto LABEL_41;
   }
 
-  if (v6)
+  if (transitionCopy)
   {
-    *&self->_wetMeasurementInfo.intialResistance = *&a5->var14;
-    self->_wetMeasurementInfo.intialImpedance = a5->var22;
+    *&self->_wetMeasurementInfo.intialResistance = *&info->var14;
+    self->_wetMeasurementInfo.intialImpedance = info->var22;
     [objc_msgSend(MEMORY[0x277CBEAA8] "date")];
     self->_wetMeasurementInfo.initialWetWallTime = v19;
-    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", a5->var14), @"resistance"}];
-    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", a5->var22), @"impedance"}];
-    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", a5->var15), @"capacitance"}];
-    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", a5->var23), @"impedancePhase"}];
-    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", a5->var16), @"measurementVoltageSNR"}];
-    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", a5->var17), @"measurementCurrentSNR"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", info->var14), @"resistance"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", info->var22), @"impedance"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", info->var15), @"capacitance"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", info->var23), @"impedancePhase"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", info->var16), @"measurementVoltageSNR"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", info->var17), @"measurementCurrentSNR"}];
     if (!self->_isReceptacleEmpty)
     {
       self->_newAccArrived;
@@ -1220,7 +1220,7 @@ LABEL_40:
   return result;
 }
 
-- (IOAccessoryLDCMPortManagerTypeC)initWithParams:(unint64_t)a3 dryPollingIntervalNs:(unint64_t)a4
+- (IOAccessoryLDCMPortManagerTypeC)initWithParams:(unint64_t)params dryPollingIntervalNs:(unint64_t)ns
 {
   v54 = *MEMORY[0x277D85DE8];
   v51.receiver = self;
@@ -1232,8 +1232,8 @@ LABEL_40:
     goto LABEL_21;
   }
 
-  *(v6 + 12) = 1000000000 * a3;
-  *(v6 + 13) = 1000000000 * a4;
+  *(v6 + 12) = 1000000000 * params;
+  *(v6 + 13) = 1000000000 * ns;
   *(v6 + 5) = 0;
   *(v6 + 7) = 0;
   v6[16] = 0;
@@ -1461,7 +1461,7 @@ LABEL_21:
 - (void)performTypeCSelfTest
 {
   v56[5] = *MEMORY[0x277D85DE8];
-  v3 = [(IOAccessoryLDCMPortManagerTypeC *)self typeC];
+  typeC = [(IOAccessoryLDCMPortManagerTypeC *)self typeC];
   [(NSCondition *)self->_condition lock];
   [OUTLINED_FUNCTION_13() setIsMeasurementActive:?];
   [(NSCondition *)self->_condition unlock];
@@ -1477,7 +1477,7 @@ LABEL_21:
     goto LABEL_32;
   }
 
-  if (!v3)
+  if (!typeC)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -1504,7 +1504,7 @@ LABEL_32:
     _os_log_impl(v4, v5, v6, v7, v8, v9);
   }
 
-  if ([(HalogenTypeC *)v3 doLDCMMeasurement:3 isCalibrationNeeded:0 isReceptacleEmpty:self->_isReceptacleEmpty isReceptacleWet:self->_isWet withWetTransitionThreshold:3.5 withDryTransitionThreshold:1.0])
+  if ([(HalogenTypeC *)typeC doLDCMMeasurement:3 isCalibrationNeeded:0 isReceptacleEmpty:self->_isReceptacleEmpty isReceptacleWet:self->_isWet withWetTransitionThreshold:3.5 withDryTransitionThreshold:1.0])
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -1524,10 +1524,10 @@ LABEL_35:
   v52 = 3221225472;
   v53 = __55__IOAccessoryLDCMPortManagerTypeC_performTypeCSelfTest__block_invoke;
   v54 = &unk_279793038;
-  v55 = self;
+  selfCopy = self;
   dispatch_async(v10, block);
   memcpy(__dst, &xmmword_25491C358, sizeof(__dst));
-  [(HalogenTypeC *)v3 getMeasurementInfo];
+  [(HalogenTypeC *)typeC getMeasurementInfo];
   if (__dst[2] == 15)
   {
     v25 = self->_selfTestPassCount + 1;
@@ -1641,8 +1641,8 @@ LABEL_27:
     goto LABEL_34;
   }
 
-  v3 = [(IOAccessoryLDCMPortManagerTypeC *)self typeC];
-  if (!v3)
+  typeC = [(IOAccessoryLDCMPortManagerTypeC *)self typeC];
+  if (!typeC)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -1656,7 +1656,7 @@ LABEL_34:
     goto LABEL_37;
   }
 
-  v4 = v3;
+  v4 = typeC;
   if (![OUTLINED_FUNCTION_13() _holdPowerAssertionTypeC:?])
   {
     goto LABEL_29;
@@ -1690,7 +1690,7 @@ LABEL_37:
   v59 = 3221225472;
   v60 = __67__IOAccessoryLDCMPortManagerTypeC_performTypeCReferenceMeasurement__block_invoke;
   v61 = &unk_279793038;
-  v62 = self;
+  selfCopy = self;
   dispatch_async(v11, block);
   memcpy(__dst, &xmmword_25491C358, sizeof(__dst));
   [(HalogenTypeC *)v4 getMeasurementInfo];
@@ -1804,16 +1804,16 @@ LABEL_29:
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fileRadarHalogenTypeC:(id)a3 TTRCategory:(int)a4
+- (void)_fileRadarHalogenTypeC:(id)c TTRCategory:(int)category
 {
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8 = "Unkown measurement state\n\n";
-  if (a4 == 1)
+  if (category == 1)
   {
     v8 = "MANUAL RADAR REQUESTED\n\n";
   }
 
-  if (a4)
+  if (category)
   {
     v9 = v8;
   }
@@ -1834,7 +1834,7 @@ LABEL_29:
   [v10 appendString:@"- Time since exposure\n"];
   [v10 appendString:@"\n\nIf no:\n\n"];
   [v10 appendString:@"Please describe what happened just before seeing the dialog. For example… Did you just connect an accessory? Did you drop your device? Are you in a humid environment?\n\n\n"];
-  [v10 appendString:a3];
+  [v10 appendString:c];
   v11 = [MEMORY[0x277CCAB68] stringWithString:@"tap-to-radar://new?ComponentName=LDCM&ComponentVersion=AutofilledBugs&ComponentID=750390&Classification=Other Bug&Reproducibility=Not Applicable&"];
   v12 = [(IOAccessoryLDCMPortManagerTypeC *)self _fetchFilesToUpload:@"/var/logs/ldcm/"];
   if ([v12 count])
@@ -1858,16 +1858,16 @@ LABEL_29:
     if (v14)
     {
       v16 = v14;
-      [v7 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", 1), v14}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", 1), v14}];
       [objc_msgSend(MEMORY[0x277CC1E80] "defaultWorkspace")];
     }
   }
 
   else
   {
-    v15 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
 
-    [v15 openURL:v13 configuration:0 completionHandler:&__block_literal_global_1];
+    [defaultWorkspace openURL:v13 configuration:0 completionHandler:&__block_literal_global_1];
   }
 }
 

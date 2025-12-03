@@ -1,33 +1,33 @@
 @interface PKFusedDoubleCellView
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKFusedDoubleCellView)init;
-- (PKFusedDoubleCellView)initWithFrame:(CGRect)a3;
-- (double)_layoutLabelsSideBySide:(CGRect)a3 halfSize:(CGSize)a4 leftTitleSize:(CGSize)a5 leftDetailSize:(CGSize)a6 leftSubDetailSize:(CGSize)a7 disclosureSize:(CGSize)a8 disclosurePadding:(double)a9 rightSize:(CGSize)a10 rightTitleSize:(CGSize)a11 rightDetailSize:(CGSize)a12 rightSubDetailSize:(CGSize)a13 isTemplateLayout:(BOOL)a14;
-- (double)_layoutLabelsStacked:(CGRect)a3 disclosureSize:(CGSize)a4 disclosurePadding:(double)a5 isTemplateLayout:(BOOL)a6;
+- (PKFusedDoubleCellView)initWithFrame:(CGRect)frame;
+- (double)_layoutLabelsSideBySide:(CGRect)side halfSize:(CGSize)size leftTitleSize:(CGSize)titleSize leftDetailSize:(CGSize)detailSize leftSubDetailSize:(CGSize)subDetailSize disclosureSize:(CGSize)disclosureSize disclosurePadding:(double)padding rightSize:(CGSize)self0 rightTitleSize:(CGSize)self1 rightDetailSize:(CGSize)self2 rightSubDetailSize:(CGSize)self3 isTemplateLayout:(BOOL)self4;
+- (double)_layoutLabelsStacked:(CGRect)stacked disclosureSize:(CGSize)size disclosurePadding:(double)padding isTemplateLayout:(BOOL)layout;
 - (id)_detailFont;
 - (id)_titleFont;
 - (void)_setupViews;
-- (void)_updateContent:(BOOL)a3;
-- (void)endUpdates:(BOOL)a3;
+- (void)_updateContent:(BOOL)content;
+- (void)endUpdates:(BOOL)updates;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setEnableDisclosure:(BOOL)a3;
-- (void)setLeftDetail:(id)a3;
-- (void)setLeftDetailColor:(id)a3;
-- (void)setLeftSubDetail:(id)a3;
-- (void)setLeftSubDetailColor:(id)a3;
-- (void)setLeftTitle:(id)a3;
-- (void)setLeftTitleColor:(id)a3;
-- (void)setPass:(id)a3;
-- (void)setRightDetail:(id)a3;
-- (void)setRightDetailColor:(id)a3;
-- (void)setRightSubDetail:(id)a3;
-- (void)setRightSubDetailColor:(id)a3;
-- (void)setRightTitle:(id)a3;
-- (void)setRightTitleColor:(id)a3;
-- (void)setTitleFont:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setEnableDisclosure:(BOOL)disclosure;
+- (void)setLeftDetail:(id)detail;
+- (void)setLeftDetailColor:(id)color;
+- (void)setLeftSubDetail:(id)detail;
+- (void)setLeftSubDetailColor:(id)color;
+- (void)setLeftTitle:(id)title;
+- (void)setLeftTitleColor:(id)color;
+- (void)setPass:(id)pass;
+- (void)setRightDetail:(id)detail;
+- (void)setRightDetailColor:(id)color;
+- (void)setRightSubDetail:(id)detail;
+- (void)setRightSubDetailColor:(id)color;
+- (void)setRightTitle:(id)title;
+- (void)setRightTitleColor:(id)color;
+- (void)setTitleFont:(id)font;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKFusedDoubleCellView
@@ -46,11 +46,11 @@
   return v3;
 }
 
-- (PKFusedDoubleCellView)initWithFrame:(CGRect)a3
+- (PKFusedDoubleCellView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKFusedDoubleCellView;
-  v3 = [(PKFusedDoubleCellView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKFusedDoubleCellView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -76,7 +76,7 @@
 
 - (void)_setupViews
 {
-  v31 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
   [(UIView *)self pkui_setMaskType:3];
   v3 = objc_alloc(MEMORY[0x1E69DCC10]);
   v4 = *MEMORY[0x1E695F058];
@@ -112,8 +112,8 @@
   self->_separatorView = v20;
 
   v22 = self->_separatorView;
-  v23 = [MEMORY[0x1E69DC888] separatorColor];
-  [(UIView *)v22 setBackgroundColor:v23];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  [(UIView *)v22 setBackgroundColor:separatorColor];
 
   [(UIView *)self->_separatorView setAlpha:0.0];
   v24 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -132,8 +132,8 @@
   self->_disclosureView = v26;
 
   v28 = self->_disclosureView;
-  v29 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [(UIImageView *)v28 setTintColor:v29];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [(UIImageView *)v28 setTintColor:tertiaryLabelColor];
 
   [(UIImageView *)self->_disclosureView setAlpha:0.0];
   [*(&self->super.super.super.isa + v30) setAccessibilityIdentifier:@"PKFusedDoubleCellView.leftTitleView"];
@@ -150,7 +150,7 @@
   [(PKFusedDoubleCellView *)self addSubview:self->_rightSubDetailView];
   [(PKFusedDoubleCellView *)self addSubview:self->_disclosureView];
   [(PKFusedDoubleCellView *)self addSubview:self->_separatorView];
-  [(PKFusedDoubleCellView *)self setBackgroundColor:v31];
+  [(PKFusedDoubleCellView *)self setBackgroundColor:secondarySystemGroupedBackgroundColor];
 }
 
 - (id)_titleFont
@@ -184,9 +184,9 @@
   return PKRoundedSystemFontOfSizeAndWeight(v4, v5);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKFusedDoubleCellView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKFusedDoubleCellView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -201,16 +201,16 @@
   [(PKFusedDoubleCellView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  v4 = a4;
-  y = a3.origin.y;
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
-  v7 = [(PKFusedDoubleCellView *)self traitCollection];
-  v8 = [v7 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v8);
+  layoutCopy = layout;
+  y = bounds.origin.y;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  x = bounds.origin.x;
+  traitCollection = [(PKFusedDoubleCellView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v10 = _UISolariumFeatureFlagEnabled();
   _UISolariumFeatureFlagEnabled();
@@ -341,12 +341,12 @@
   v41 = height + -24.0;
   if (fmax(v54, fmax(v52, v51)) > v17 || v28 + v26 + fmax(v30, fmax(v33, v36)) > v17 || IsAccessibilityCategory)
   {
-    [(PKFusedDoubleCellView *)self _layoutLabelsStacked:v4 disclosureSize:v39 disclosurePadding:v40 isTemplateLayout:v58, v41, v26, v50, v28];
+    [(PKFusedDoubleCellView *)self _layoutLabelsStacked:layoutCopy disclosureSize:v39 disclosurePadding:v40 isTemplateLayout:v58, v41, v26, v50, v28];
   }
 
   else
   {
-    [(PKFusedDoubleCellView *)self _layoutLabelsSideBySide:v4 halfSize:v39 leftTitleSize:v40 leftDetailSize:v58 leftSubDetailSize:v41 disclosureSize:v17 disclosurePadding:3.40282347e38 rightSize:v54 rightTitleSize:v49 rightDetailSize:*&v52 rightSubDetailSize:v48 isTemplateLayout:*&v51, v47, *&v26, *&v50, *&v28, v17 - v26 + -10.0, 0x47EFFFFFE0000000, *&v30, v46, *&v33, v45, *&v36, v38];
+    [(PKFusedDoubleCellView *)self _layoutLabelsSideBySide:layoutCopy halfSize:v39 leftTitleSize:v40 leftDetailSize:v58 leftSubDetailSize:v41 disclosureSize:v17 disclosurePadding:3.40282347e38 rightSize:v54 rightTitleSize:v49 rightDetailSize:*&v52 rightSubDetailSize:v48 isTemplateLayout:*&v51, v47, *&v26, *&v50, *&v28, v17 - v26 + -10.0, 0x47EFFFFFE0000000, *&v30, v46, *&v33, v45, *&v36, v38];
   }
 
   v43 = v42 + 0.0 + 12.0 + 12.0;
@@ -356,17 +356,17 @@
   return result;
 }
 
-- (double)_layoutLabelsSideBySide:(CGRect)a3 halfSize:(CGSize)a4 leftTitleSize:(CGSize)a5 leftDetailSize:(CGSize)a6 leftSubDetailSize:(CGSize)a7 disclosureSize:(CGSize)a8 disclosurePadding:(double)a9 rightSize:(CGSize)a10 rightTitleSize:(CGSize)a11 rightDetailSize:(CGSize)a12 rightSubDetailSize:(CGSize)a13 isTemplateLayout:(BOOL)a14
+- (double)_layoutLabelsSideBySide:(CGRect)side halfSize:(CGSize)size leftTitleSize:(CGSize)titleSize leftDetailSize:(CGSize)detailSize leftSubDetailSize:(CGSize)subDetailSize disclosureSize:(CGSize)disclosureSize disclosurePadding:(double)padding rightSize:(CGSize)self0 rightTitleSize:(CGSize)self1 rightDetailSize:(CGSize)self2 rightSubDetailSize:(CGSize)self3 isTemplateLayout:(BOOL)self4
 {
-  width_low = LOBYTE(a6.width);
-  rect = a3.size.height;
-  height = a5.height;
-  width = a3.size.width;
-  amount = a4.width;
-  y = a3.origin.y;
-  v56 = a3.origin.y;
-  x = a3.origin.x;
-  v18 = [(PKFusedDoubleCellView *)self _shouldReverseLayoutDirection:*&a6.width];
+  width_low = LOBYTE(detailSize.width);
+  rect = side.size.height;
+  height = titleSize.height;
+  width = side.size.width;
+  amount = size.width;
+  y = side.origin.y;
+  v56 = side.origin.y;
+  x = side.origin.x;
+  v18 = [(PKFusedDoubleCellView *)self _shouldReverseLayoutDirection:*&detailSize.width];
   if (v18)
   {
     v19 = CGRectMinXEdge;
@@ -392,7 +392,7 @@
   remainder.origin.y = y;
   remainder.size.width = width;
   remainder.size.height = rect;
-  v21 = fmax(height + a10.width + a11.width, fmax(v73 + v74 + v75, a12.width));
+  v21 = fmax(height + rightSize.width + rightTitleSize.width, fmax(v73 + v74 + v75, rightDetailSize.width));
   v22 = PKUIPixelLength();
   memset(&slice, 0, sizeof(slice));
   v76.origin.x = x;
@@ -411,16 +411,16 @@
   v69.size.height = v26;
   CGRectDivide(remainder, &v72, &remainder, 6.5, v20);
   memset(&v68, 0, sizeof(v68));
-  CGRectDivide(remainder, &v68, &remainder, a11.height, v19);
+  CGRectDivide(remainder, &v68, &remainder, rightTitleSize.height, v19);
   PKContentAlignmentMake();
   PKSizeAlignedInRect();
   v68.origin.x = v27;
   v68.origin.y = v28;
   v68.size.width = v29;
   v68.size.height = v30;
-  CGRectDivide(remainder, &v72, &remainder, a12.height, v19);
+  CGRectDivide(remainder, &v72, &remainder, rightDetailSize.height, v19);
   memset(&v67, 0, sizeof(v67));
-  CGRectDivide(remainder, &v67, &remainder, a13.width, v19);
+  CGRectDivide(remainder, &v67, &remainder, rightSubDetailSize.width, v19);
   memset(&v66, 0, sizeof(v66));
   CGRectDivide(slice, &v66, &slice, height, CGRectMinYEdge);
   PKContentAlignmentMake();
@@ -430,7 +430,7 @@
   v66.size.width = v33;
   v66.size.height = v34;
   memset(&v65, 0, sizeof(v65));
-  CGRectDivide(slice, &v65, &slice, a10.width, CGRectMinYEdge);
+  CGRectDivide(slice, &v65, &slice, rightSize.width, CGRectMinYEdge);
   PKContentAlignmentMake();
   PKSizeAlignedInRect();
   v65.origin.x = v35;
@@ -438,7 +438,7 @@
   v65.size.width = v37;
   v65.size.height = v38;
   memset(&v64, 0, sizeof(v64));
-  CGRectDivide(slice, &v64, &slice, a11.width, CGRectMinYEdge);
+  CGRectDivide(slice, &v64, &slice, rightTitleSize.width, CGRectMinYEdge);
   PKContentAlignmentMake();
   PKSizeAlignedInRect();
   v64.origin.x = v39;
@@ -484,15 +484,15 @@
   return v21;
 }
 
-- (double)_layoutLabelsStacked:(CGRect)a3 disclosureSize:(CGSize)a4 disclosurePadding:(double)a5 isTemplateLayout:(BOOL)a6
+- (double)_layoutLabelsStacked:(CGRect)stacked disclosureSize:(CGSize)size disclosurePadding:(double)padding isTemplateLayout:(BOOL)layout
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = [(PKFusedDoubleCellView *)self _shouldReverseLayoutDirection:a3.origin.x];
+  height = size.height;
+  width = size.width;
+  v8 = stacked.size.height;
+  v9 = stacked.size.width;
+  y = stacked.origin.y;
+  x = stacked.origin.x;
+  v13 = [(PKFusedDoubleCellView *)self _shouldReverseLayoutDirection:stacked.origin.x];
   remainder.origin.x = x;
   remainder.origin.y = y;
   rect = y;
@@ -656,7 +656,7 @@
   v69.origin.y = v59;
   v69.size.width = v60;
   v69.size.height = v61;
-  if (!a6)
+  if (!layout)
   {
     [(UILabel *)self->_leftTitleView setFrame:v77.origin.x, v77.origin.y, v77.size.width, v77.size.height];
     [(UILabel *)self->_leftDetailView setFrame:v76.origin.x, v76.origin.y, v76.size.width, v76.size.height];
@@ -671,28 +671,28 @@
   return v45 + v27 + 0.0 + 13.0 + v44;
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_pass, a3);
+    objc_storeStrong(&self->_pass, pass);
   }
 }
 
-- (void)setEnableDisclosure:(BOOL)a3
+- (void)setEnableDisclosure:(BOOL)disclosure
 {
-  if (self->_enableDisclosure != a3)
+  if (self->_enableDisclosure != disclosure)
   {
-    self->_enableDisclosure = a3;
+    self->_enableDisclosure = disclosure;
   }
 }
 
-- (void)setLeftTitle:(id)a3
+- (void)setLeftTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   leftTitle = self->_leftTitle;
-  v6 = v4;
+  v6 = titleCopy;
   v10 = v6;
   if (leftTitle == v6)
   {
@@ -724,11 +724,11 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setLeftDetail:(id)a3
+- (void)setLeftDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   leftDetail = self->_leftDetail;
-  v6 = v4;
+  v6 = detailCopy;
   v10 = v6;
   if (leftDetail == v6)
   {
@@ -760,11 +760,11 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setLeftSubDetail:(id)a3
+- (void)setLeftSubDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   leftSubDetail = self->_leftSubDetail;
-  v6 = v4;
+  v6 = detailCopy;
   v10 = v6;
   if (leftSubDetail == v6)
   {
@@ -796,11 +796,11 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setRightTitle:(id)a3
+- (void)setRightTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   rightTitle = self->_rightTitle;
-  v6 = v4;
+  v6 = titleCopy;
   v10 = v6;
   if (rightTitle == v6)
   {
@@ -832,11 +832,11 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setRightDetail:(id)a3
+- (void)setRightDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   rightDetail = self->_rightDetail;
-  v6 = v4;
+  v6 = detailCopy;
   v10 = v6;
   if (rightDetail == v6)
   {
@@ -868,11 +868,11 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setRightSubDetail:(id)a3
+- (void)setRightSubDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   rightSubDetail = self->_rightSubDetail;
-  v6 = v4;
+  v6 = detailCopy;
   v10 = v6;
   if (rightSubDetail == v6)
   {
@@ -904,118 +904,118 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setLeftTitleColor:(id)a3
+- (void)setLeftTitleColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_leftTitleColor, a3);
+    objc_storeStrong(&self->_leftTitleColor, color);
   }
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_titleFont, a3);
+    objc_storeStrong(&self->_titleFont, font);
   }
 }
 
-- (void)setLeftDetailColor:(id)a3
+- (void)setLeftDetailColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_leftDetailColor, a3);
+    objc_storeStrong(&self->_leftDetailColor, color);
   }
 }
 
-- (void)setLeftSubDetailColor:(id)a3
+- (void)setLeftSubDetailColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_leftSubDetailColor, a3);
+    objc_storeStrong(&self->_leftSubDetailColor, color);
   }
 }
 
-- (void)setRightTitleColor:(id)a3
+- (void)setRightTitleColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_rightTitleColor, a3);
+    objc_storeStrong(&self->_rightTitleColor, color);
   }
 }
 
-- (void)setRightDetailColor:(id)a3
+- (void)setRightDetailColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_rightDetailColor, a3);
+    objc_storeStrong(&self->_rightDetailColor, color);
   }
 }
 
-- (void)setRightSubDetailColor:(id)a3
+- (void)setRightSubDetailColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_rightSubDetailColor, a3);
+    objc_storeStrong(&self->_rightSubDetailColor, color);
   }
 }
 
-- (void)endUpdates:(BOOL)a3
+- (void)endUpdates:(BOOL)updates
 {
   v3 = self->_deferUpdateCounter - 1;
   self->_deferUpdateCounter = v3;
   if (!v3)
   {
-    [(PKFusedDoubleCellView *)self _updateContent:a3];
+    [(PKFusedDoubleCellView *)self _updateContent:updates];
   }
 }
 
-- (void)_updateContent:(BOOL)a3
+- (void)_updateContent:(BOOL)content
 {
   if (!self->_deferUpdateCounter)
   {
-    v4 = a3;
-    v32 = [(PKFusedDoubleCellView *)self _titleFont];
-    v6 = [(PKFusedDoubleCellView *)self _detailFont];
-    v7 = [(PKFusedDoubleCellView *)self _subDetailFont];
-    [(UILabel *)self->_leftTitleView setFont:v32];
+    contentCopy = content;
+    _titleFont = [(PKFusedDoubleCellView *)self _titleFont];
+    _detailFont = [(PKFusedDoubleCellView *)self _detailFont];
+    _subDetailFont = [(PKFusedDoubleCellView *)self _subDetailFont];
+    [(UILabel *)self->_leftTitleView setFont:_titleFont];
     leftTitleView = self->_leftTitleView;
     leftTitle = self->_leftTitle;
     leftTitleColor = self->_leftTitleColor;
     if (leftTitleColor)
     {
-      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(leftTitleView, self->_leftTitle, leftTitleColor, 0, v4);
+      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(leftTitleView, self->_leftTitle, leftTitleColor, 0, contentCopy);
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69DC888] labelColor];
-      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(leftTitleView, leftTitle, v11, 0, v4);
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(leftTitleView, leftTitle, labelColor, 0, contentCopy);
     }
 
-    [(UILabel *)self->_rightTitleView setFont:v32];
+    [(UILabel *)self->_rightTitleView setFont:_titleFont];
     rightTitleView = self->_rightTitleView;
     rightTitle = self->_rightTitle;
     rightTitleColor = self->_rightTitleColor;
     if (rightTitleColor)
     {
-      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(rightTitleView, self->_rightTitle, rightTitleColor, 0, v4);
+      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(rightTitleView, self->_rightTitle, rightTitleColor, 0, contentCopy);
     }
 
     else
     {
-      v15 = [MEMORY[0x1E69DC888] labelColor];
-      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(rightTitleView, rightTitle, v15, 0, v4);
+      labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(rightTitleView, rightTitle, labelColor2, 0, contentCopy);
     }
 
-    [(UILabel *)self->_leftDetailView setFont:v6];
+    [(UILabel *)self->_leftDetailView setFont:_detailFont];
     [(UILabel *)self->_leftDetailView setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)self->_leftDetailView setMinimumScaleFactor:0.5];
     leftDetailView = self->_leftDetailView;
@@ -1023,16 +1023,16 @@ LABEL_10:
     leftDetailColor = self->_leftDetailColor;
     if (leftDetailColor)
     {
-      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(leftDetailView, self->_leftDetail, leftDetailColor, 1, v4);
+      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(leftDetailView, self->_leftDetail, leftDetailColor, 1, contentCopy);
     }
 
     else
     {
-      v19 = [MEMORY[0x1E69DC888] labelColor];
-      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(leftDetailView, leftDetail, v19, 1, v4);
+      labelColor3 = [MEMORY[0x1E69DC888] labelColor];
+      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(leftDetailView, leftDetail, labelColor3, 1, contentCopy);
     }
 
-    [(UILabel *)self->_rightDetailView setFont:v6];
+    [(UILabel *)self->_rightDetailView setFont:_detailFont];
     [(UILabel *)self->_rightDetailView setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)self->_rightDetailView setMinimumScaleFactor:0.5];
     rightDetailView = self->_rightDetailView;
@@ -1040,55 +1040,55 @@ LABEL_10:
     rightDetailColor = self->_rightDetailColor;
     if (rightDetailColor)
     {
-      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(rightDetailView, self->_rightDetail, rightDetailColor, 1, v4);
+      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(rightDetailView, self->_rightDetail, rightDetailColor, 1, contentCopy);
     }
 
     else
     {
-      v23 = [MEMORY[0x1E69DC888] labelColor];
-      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(rightDetailView, rightDetail, v23, 1, v4);
+      labelColor4 = [MEMORY[0x1E69DC888] labelColor];
+      __40__PKFusedDoubleCellView__updateContent___block_invoke_2(rightDetailView, rightDetail, labelColor4, 1, contentCopy);
     }
 
     if (self->_leftSubDetail)
     {
-      [(UILabel *)self->_leftSubDetailView setFont:v7];
+      [(UILabel *)self->_leftSubDetailView setFont:_subDetailFont];
       leftSubDetailView = self->_leftSubDetailView;
       leftSubDetail = self->_leftSubDetail;
       leftSubDetailColor = self->_leftSubDetailColor;
       if (leftSubDetailColor)
       {
-        __40__PKFusedDoubleCellView__updateContent___block_invoke_2(leftSubDetailView, leftSubDetail, leftSubDetailColor, 0, v4);
+        __40__PKFusedDoubleCellView__updateContent___block_invoke_2(leftSubDetailView, leftSubDetail, leftSubDetailColor, 0, contentCopy);
       }
 
       else
       {
-        v27 = [MEMORY[0x1E69DC888] labelColor];
-        __40__PKFusedDoubleCellView__updateContent___block_invoke_2(leftSubDetailView, leftSubDetail, v27, 0, v4);
+        labelColor5 = [MEMORY[0x1E69DC888] labelColor];
+        __40__PKFusedDoubleCellView__updateContent___block_invoke_2(leftSubDetailView, leftSubDetail, labelColor5, 0, contentCopy);
       }
     }
 
     if (self->_rightSubDetail)
     {
-      [(UILabel *)self->_rightSubDetailView setFont:v7];
+      [(UILabel *)self->_rightSubDetailView setFont:_subDetailFont];
       rightSubDetailView = self->_rightSubDetailView;
       rightSubDetail = self->_rightSubDetail;
       rightSubDetailColor = self->_rightSubDetailColor;
       if (rightSubDetailColor)
       {
-        __40__PKFusedDoubleCellView__updateContent___block_invoke_2(rightSubDetailView, rightSubDetail, rightSubDetailColor, 0, v4);
+        __40__PKFusedDoubleCellView__updateContent___block_invoke_2(rightSubDetailView, rightSubDetail, rightSubDetailColor, 0, contentCopy);
       }
 
       else
       {
-        v31 = [MEMORY[0x1E69DC888] labelColor];
-        __40__PKFusedDoubleCellView__updateContent___block_invoke_2(rightSubDetailView, rightSubDetail, v31, 0, v4);
+        labelColor6 = [MEMORY[0x1E69DC888] labelColor];
+        __40__PKFusedDoubleCellView__updateContent___block_invoke_2(rightSubDetailView, rightSubDetail, labelColor6, 0, contentCopy);
       }
     }
 
-    __45__PKAdjustableSingleCellView__updateContent___block_invoke(self->_disclosureView, self->_enableDisclosure, v4);
-    __45__PKAdjustableSingleCellView__updateContent___block_invoke(self->_separatorView, 1u, v4);
+    __45__PKAdjustableSingleCellView__updateContent___block_invoke(self->_disclosureView, self->_enableDisclosure, contentCopy);
+    __45__PKAdjustableSingleCellView__updateContent___block_invoke(self->_separatorView, 1u, contentCopy);
     [(PKFusedDoubleCellView *)self setNeedsLayout];
-    if (v4)
+    if (contentCopy)
     {
       [(PKFusedDoubleCellView *)self layoutIfNeeded];
     }
@@ -1149,28 +1149,28 @@ void __40__PKFusedDoubleCellView__updateContent___block_invoke_2(void *a1, uint6
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v12.receiver = self;
   v12.super_class = PKFusedDoubleCellView;
-  [(PKFusedDoubleCellView *)&v12 traitCollectionDidChange:v4];
-  v5 = [(PKFusedDoubleCellView *)self traitCollection];
-  v6 = v5;
-  if (v4)
+  [(PKFusedDoubleCellView *)&v12 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKFusedDoubleCellView *)self traitCollection];
+  v6 = traitCollection;
+  if (changeCopy)
   {
-    if (v5)
+    if (traitCollection)
     {
-      v7 = [v4 preferredContentSizeCategory];
-      v8 = [v6 preferredContentSizeCategory];
-      v9 = UIContentSizeCategoryCompareToCategory(v7, v8);
+      preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [v6 preferredContentSizeCategory];
+      v9 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
 
       if (v9)
       {
-        v10 = [v4 preferredContentSizeCategory];
+        preferredContentSizeCategory3 = [changeCopy preferredContentSizeCategory];
         v11 = *MEMORY[0x1E69DDC90];
 
-        if (v10 != v11)
+        if (preferredContentSizeCategory3 != v11)
         {
           [(PKFusedDoubleCellView *)self _updateContent:0];
         }

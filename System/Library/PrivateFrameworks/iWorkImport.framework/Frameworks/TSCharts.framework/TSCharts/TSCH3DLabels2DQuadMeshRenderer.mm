@@ -1,13 +1,13 @@
 @interface TSCH3DLabels2DQuadMeshRenderer
-- (void)renderWithMeshRenderLabelInfo:(id)a3;
+- (void)renderWithMeshRenderLabelInfo:(id)info;
 @end
 
 @implementation TSCH3DLabels2DQuadMeshRenderer
 
-- (void)renderWithMeshRenderLabelInfo:(id)a3
+- (void)renderWithMeshRenderLabelInfo:(id)info
 {
-  v3 = a3;
-  v8 = objc_msgSend_renderer(v3, v4, v5, v6, v7);
+  infoCopy = info;
+  v8 = objc_msgSend_renderer(infoCopy, v4, v5, v6, v7);
   v13 = objc_msgSend_pipeline(v8, v9, v10, v11, v12);
   v18 = objc_msgSend_processor(v13, v14, v15, v16, v17);
 
@@ -15,7 +15,7 @@
   v25[1] = 3221225472;
   v25[2] = sub_276218408;
   v25[3] = &unk_27A6B67A0;
-  v19 = v3;
+  v19 = infoCopy;
   v26 = v19;
   v20 = v8;
   v27 = v20;

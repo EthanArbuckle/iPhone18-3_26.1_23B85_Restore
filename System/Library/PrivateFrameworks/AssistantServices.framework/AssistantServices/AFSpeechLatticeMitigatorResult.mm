@@ -1,9 +1,9 @@
 @interface AFSpeechLatticeMitigatorResult
-- (AFSpeechLatticeMitigatorResult)initWithCoder:(id)a3;
-- (AFSpeechLatticeMitigatorResult)initWithResults:(id)a3 score:(float)a4 threshold:(float)a5;
-- (AFSpeechLatticeMitigatorResult)initWithResults:(id)a3 score:(float)a4 threshold:(float)a5 calibrationScale:(float)a6 calibrationOffset:(float)a7;
+- (AFSpeechLatticeMitigatorResult)initWithCoder:(id)coder;
+- (AFSpeechLatticeMitigatorResult)initWithResults:(id)results score:(float)score threshold:(float)threshold;
+- (AFSpeechLatticeMitigatorResult)initWithResults:(id)results score:(float)score threshold:(float)threshold calibrationScale:(float)scale calibrationOffset:(float)offset;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSpeechLatticeMitigatorResult
@@ -29,39 +29,39 @@
   return v8;
 }
 
-- (AFSpeechLatticeMitigatorResult)initWithResults:(id)a3 score:(float)a4 threshold:(float)a5 calibrationScale:(float)a6 calibrationOffset:(float)a7
+- (AFSpeechLatticeMitigatorResult)initWithResults:(id)results score:(float)score threshold:(float)threshold calibrationScale:(float)scale calibrationOffset:(float)offset
 {
-  v12 = a3;
+  resultsCopy = results;
   v17.receiver = self;
   v17.super_class = AFSpeechLatticeMitigatorResult;
   v13 = [(AFSpeechLatticeMitigatorResult *)&v17 init];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [resultsCopy copy];
     version = v13->_version;
     v13->_version = v14;
 
-    v13->_score = a4;
-    v13->_threshold = a5;
-    v13->_calibrationScale = a6;
-    v13->_calibrationOffset = a7;
+    v13->_score = score;
+    v13->_threshold = threshold;
+    v13->_calibrationScale = scale;
+    v13->_calibrationOffset = offset;
   }
 
   return v13;
 }
 
-- (AFSpeechLatticeMitigatorResult)initWithResults:(id)a3 score:(float)a4 threshold:(float)a5
+- (AFSpeechLatticeMitigatorResult)initWithResults:(id)results score:(float)score threshold:(float)threshold
 {
-  v8 = a3;
+  resultsCopy = results;
   v15.receiver = self;
   v15.super_class = AFSpeechLatticeMitigatorResult;
   v9 = [(AFSpeechLatticeMitigatorResult *)&v15 init];
   if (v9)
   {
     LODWORD(v12) = 1.0;
-    *&v10 = a4;
-    *&v11 = a5;
-    v13 = [(AFSpeechLatticeMitigatorResult *)v9 initWithResults:v8 score:v10 threshold:v11 calibrationScale:v12 calibrationOffset:0.0];
+    *&v10 = score;
+    *&v11 = threshold;
+    v13 = [(AFSpeechLatticeMitigatorResult *)v9 initWithResults:resultsCopy score:v10 threshold:v11 calibrationScale:v12 calibrationOffset:0.0];
   }
 
   else
@@ -72,44 +72,44 @@
   return v13;
 }
 
-- (AFSpeechLatticeMitigatorResult)initWithCoder:(id)a3
+- (AFSpeechLatticeMitigatorResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = AFSpeechLatticeMitigatorResult;
   v5 = [(AFSpeechLatticeMitigatorResult *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_version"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_version"];
     version = v5->_version;
     v5->_version = v6;
 
-    [v4 decodeFloatForKey:@"_score"];
+    [coderCopy decodeFloatForKey:@"_score"];
     v5->_score = v8;
-    [v4 decodeFloatForKey:@"_threshold"];
+    [coderCopy decodeFloatForKey:@"_threshold"];
     v5->_threshold = v9;
-    [v4 decodeFloatForKey:@"_calibrationScale"];
+    [coderCopy decodeFloatForKey:@"_calibrationScale"];
     v5->_calibrationScale = v10;
-    [v4 decodeFloatForKey:@"_calibrationOffset"];
+    [coderCopy decodeFloatForKey:@"_calibrationOffset"];
     v5->_calibrationOffset = v11;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v9 = a3;
-  [v9 encodeObject:version forKey:@"_version"];
+  coderCopy = coder;
+  [coderCopy encodeObject:version forKey:@"_version"];
   *&v5 = self->_score;
-  [v9 encodeFloat:@"_score" forKey:v5];
+  [coderCopy encodeFloat:@"_score" forKey:v5];
   *&v6 = self->_threshold;
-  [v9 encodeFloat:@"_threshold" forKey:v6];
+  [coderCopy encodeFloat:@"_threshold" forKey:v6];
   *&v7 = self->_calibrationScale;
-  [v9 encodeFloat:@"_calibrationScale" forKey:v7];
+  [coderCopy encodeFloat:@"_calibrationScale" forKey:v7];
   *&v8 = self->_calibrationOffset;
-  [v9 encodeFloat:@"_calibrationOffset" forKey:v8];
+  [coderCopy encodeFloat:@"_calibrationOffset" forKey:v8];
 }
 
 @end

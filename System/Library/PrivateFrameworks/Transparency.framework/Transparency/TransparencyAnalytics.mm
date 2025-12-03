@@ -1,35 +1,35 @@
 @interface TransparencyAnalytics
-+ (BOOL)doWithAnalyticsForEventName:(id)a3 error:(id *)a4 block:(id)a5;
++ (BOOL)doWithAnalyticsForEventName:(id)name error:(id *)error block:(id)block;
 + (id)analyticsApplications;
-+ (id)errorChain:(id)a3 depth:(unint64_t)a4;
++ (id)errorChain:(id)chain depth:(unint64_t)depth;
 + (id)logger;
-+ (id)privacyURI:(id)a3;
-+ (unint64_t)doKTResultWithAnalyticsForEventName:(id)a3 error:(id *)a4 block:(id)a5;
-+ (unint64_t)doKTResultWithAnalyticsForEventName:(id)a3 validateType:(unint64_t)a4 error:(id *)a5 block:(id)a6;
++ (id)privacyURI:(id)i;
++ (unint64_t)doKTResultWithAnalyticsForEventName:(id)name error:(id *)error block:(id)block;
++ (unint64_t)doKTResultWithAnalyticsForEventName:(id)name validateType:(unint64_t)type error:(id *)error block:(id)block;
 + (void)unsetGlobalLogger;
-- (BOOL)skipLogResult:(id)a3;
+- (BOOL)skipLogResult:(id)result;
 - (TransparencyAnalytics)init;
-- (id)fuzzyTimeSinceDateKey:(id)a3;
-- (id)fuzzyTimeSinceLastSuccess:(id)a3;
+- (id)fuzzyTimeSinceDateKey:(id)key;
+- (id)fuzzyTimeSinceLastSuccess:(id)success;
 - (id)nfsReporting;
-- (void)addMultiSamplerForName:(id)a3 withTimeInterval:(double)a4 block:(id)a5;
-- (void)addNFSReporting:(id)a3;
-- (void)addUserInfoAttributes:(id)a3 error:(id)a4;
+- (void)addMultiSamplerForName:(id)name withTimeInterval:(double)interval block:(id)block;
+- (void)addNFSReporting:(id)reporting;
+- (void)addUserInfoAttributes:(id)attributes error:(id)error;
 - (void)dealloc;
 - (void)loadCollectionConfiguration;
-- (void)logHardFailureForEventNamed:(id)a3 withAttributes:(id)a4;
-- (void)logMetric:(id)a3 withName:(id)a4;
-- (void)logRockwellForEventNamed:(id)a3 withAttributes:(id)a4;
-- (void)logSoftFailureForEventNamed:(id)a3 withAttributes:(id)a4;
-- (void)logSuccessForEventNamed:(id)a3;
-- (void)noteEventNamed:(id)a3;
-- (void)noteLaunchSequence:(id)a3;
-- (void)removeMultiSamplerForName:(id)a3;
-- (void)setCKManateeState:(int)a3;
-- (void)setFailureNowForPropertyKey:(id)a3;
-- (void)setSuccessNowForPropertyKey:(id)a3;
+- (void)logHardFailureForEventNamed:(id)named withAttributes:(id)attributes;
+- (void)logMetric:(id)metric withName:(id)name;
+- (void)logRockwellForEventNamed:(id)named withAttributes:(id)attributes;
+- (void)logSoftFailureForEventNamed:(id)named withAttributes:(id)attributes;
+- (void)logSuccessForEventNamed:(id)named;
+- (void)noteEventNamed:(id)named;
+- (void)noteLaunchSequence:(id)sequence;
+- (void)removeMultiSamplerForName:(id)name;
+- (void)setCKManateeState:(int)state;
+- (void)setFailureNowForPropertyKey:(id)key;
+- (void)setSuccessNowForPropertyKey:(id)key;
 - (void)setupCollection;
-- (void)updateCollectionConfigurationWithData:(id)a3;
+- (void)updateCollectionConfigurationWithData:(id)data;
 @end
 
 @implementation TransparencyAnalytics
@@ -39,11 +39,11 @@
   os_unfair_lock_lock(&analytics_lock);
   if (!analytics)
   {
-    v2 = [MEMORY[0x1E696AE30] processInfo];
-    v3 = [v2 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
 
-    v4 = [v3 isEqualToString:@"transparencyd"];
-    v5 = [v3 isEqualToString:@"swtransparencyd"];
+    v4 = [processName isEqualToString:@"transparencyd"];
+    v5 = [processName isEqualToString:@"swtransparencyd"];
     v6 = objc_alloc_init(TransparencyAnalytics);
     v7 = analytics;
     analytics = v6;
@@ -56,13 +56,13 @@
         v8 = off_1E8700E68;
       }
 
-      v9 = [(__objc2_class *)*v8 logger];
-      [analytics setSfanalytics:v9];
+      logger = [(__objc2_class *)*v8 logger];
+      [analytics setSfanalytics:logger];
     }
 
-    v10 = [analytics sfanalytics];
+    sfanalytics = [analytics sfanalytics];
 
-    if (v10)
+    if (sfanalytics)
     {
       [analytics loadCollectionConfiguration];
       [analytics setupCollection];
@@ -147,8 +147,8 @@ uint64_t __40__TransparencyAnalytics_setupCollection__block_invoke_2()
 
 - (void)loadCollectionConfiguration
 {
-  v2 = [(TransparencyAnalytics *)self sfanalytics];
-  [v2 loadCollectionConfiguration];
+  sfanalytics = [(TransparencyAnalytics *)self sfanalytics];
+  [sfanalytics loadCollectionConfiguration];
 }
 
 + (void)unsetGlobalLogger
@@ -189,12 +189,12 @@ void __46__TransparencyAnalytics_analyticsApplications__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)doWithAnalyticsForEventName:(id)a3 error:(id *)a4 block:(id)a5
++ (BOOL)doWithAnalyticsForEventName:(id)name error:(id *)error block:(id)block
 {
-  v7 = a3;
-  if (a4)
+  nameCopy = name;
+  if (error)
   {
-    v8 = *a4;
+    v8 = *error;
   }
 
   else
@@ -204,16 +204,16 @@ void __46__TransparencyAnalytics_analyticsApplications__block_invoke()
 
   v19 = 0;
   v20 = v8;
-  v9 = *(a5 + 2);
+  v9 = *(block + 2);
   v10 = v8;
-  v11 = v9(a5, &v20, &v19);
+  v11 = v9(block, &v20, &v19);
   v12 = v20;
 
   v13 = v19;
   if (v11)
   {
     v14 = +[TransparencyAnalytics logger];
-    [v14 logSuccessForEventNamed:v7];
+    [v14 logSuccessForEventNamed:nameCopy];
   }
 
   else
@@ -222,7 +222,7 @@ void __46__TransparencyAnalytics_analyticsApplications__block_invoke()
     v14 = v15;
     if (v12 && v13)
     {
-      [v15 logResultForEvent:v7 hardFailure:1 result:v12 withAttributes:v13];
+      [v15 logResultForEvent:nameCopy hardFailure:1 result:v12 withAttributes:v13];
     }
 
     else
@@ -230,19 +230,19 @@ void __46__TransparencyAnalytics_analyticsApplications__block_invoke()
       if (!v12)
       {
         v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TransparencyErrorUnknown" code:-120 userInfo:0];
-        [v14 logResultForEvent:v7 hardFailure:1 result:v18];
+        [v14 logResultForEvent:nameCopy hardFailure:1 result:v18];
 
         goto LABEL_14;
       }
 
-      [v15 logResultForEvent:v7 hardFailure:1 result:v12];
+      [v15 logResultForEvent:nameCopy hardFailure:1 result:v12];
     }
   }
 
-  if (a4 && v12)
+  if (error && v12)
   {
     v16 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
 LABEL_14:
@@ -250,12 +250,12 @@ LABEL_14:
   return v11;
 }
 
-+ (unint64_t)doKTResultWithAnalyticsForEventName:(id)a3 validateType:(unint64_t)a4 error:(id *)a5 block:(id)a6
++ (unint64_t)doKTResultWithAnalyticsForEventName:(id)name validateType:(unint64_t)type error:(id *)error block:(id)block
 {
-  v8 = a3;
-  if (a5)
+  nameCopy = name;
+  if (error)
   {
-    v9 = *a5;
+    v9 = *error;
   }
 
   else
@@ -265,13 +265,13 @@ LABEL_14:
 
   v26 = 0;
   v27 = v9;
-  v10 = *(a6 + 2);
+  v10 = *(block + 2);
   v11 = v9;
-  v12 = v10(a6, &v27, &v26);
+  v12 = v10(block, &v27, &v26);
   v13 = v27;
 
   v14 = v26;
-  if ([v8 isEqual:@"ktIDSPV2OptIn"])
+  if ([nameCopy isEqual:@"ktIDSPV2OptIn"])
   {
     v15 = [v14 objectForKeyedSubscript:@"peerOptIn"];
     v16 = [v15 isEqual:@"On"];
@@ -280,7 +280,7 @@ LABEL_14:
     {
       v17 = [TransparencyAnalytics formatEventName:@"PV2OptInBoth" application:@"IDS"];
 
-      v8 = v17;
+      nameCopy = v17;
     }
   }
 
@@ -289,7 +289,7 @@ LABEL_14:
     if (v12 == 1)
     {
       v18 = +[TransparencyAnalytics logger];
-      [v18 logSuccessForEventNamed:v8];
+      [v18 logSuccessForEventNamed:nameCopy];
       goto LABEL_17;
     }
 
@@ -299,16 +299,16 @@ LABEL_14:
   else
   {
     v19 = [v14 objectForKeyedSubscript:@"ktSoftFailure"];
-    v20 = [v19 BOOLValue];
+    bOOLValue = [v19 BOOLValue];
 
-    v21 = v20 ^ 1;
+    v21 = bOOLValue ^ 1;
   }
 
   v22 = +[TransparencyAnalytics logger];
   v18 = v22;
   if (v13 && v14)
   {
-    [v22 logResultForEvent:v8 hardFailure:v21 & 1 result:v13 withAttributes:v14];
+    [v22 logResultForEvent:nameCopy hardFailure:v21 & 1 result:v13 withAttributes:v14];
   }
 
   else
@@ -316,20 +316,20 @@ LABEL_14:
     if (!v13)
     {
       v24 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TransparencyErrorUnknown" code:-120 userInfo:0];
-      [v18 logResultForEvent:v8 hardFailure:v21 & 1 result:v24];
+      [v18 logResultForEvent:nameCopy hardFailure:v21 & 1 result:v24];
 
       goto LABEL_21;
     }
 
-    [v22 logResultForEvent:v8 hardFailure:v21 & 1 result:v13];
+    [v22 logResultForEvent:nameCopy hardFailure:v21 & 1 result:v13];
   }
 
 LABEL_17:
 
-  if (a5 && v13)
+  if (error && v13)
   {
     v23 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
 LABEL_21:
@@ -337,43 +337,43 @@ LABEL_21:
   return v12;
 }
 
-+ (unint64_t)doKTResultWithAnalyticsForEventName:(id)a3 error:(id *)a4 block:(id)a5
++ (unint64_t)doKTResultWithAnalyticsForEventName:(id)name error:(id *)error block:(id)block
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [objc_opt_class() doKTResultWithAnalyticsForEventName:v8 validateType:0 error:a4 block:v7];
+  blockCopy = block;
+  nameCopy = name;
+  v9 = [objc_opt_class() doKTResultWithAnalyticsForEventName:nameCopy validateType:0 error:error block:blockCopy];
 
   return v9;
 }
 
-+ (id)errorChain:(id)a3 depth:(unint64_t)a4
++ (id)errorChain:(id)chain depth:(unint64_t)depth
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 <= 5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  chainCopy = chain;
+  if (depth <= 5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v32[0] = @"domain";
-    v7 = [v6 domain];
+    domain = [chainCopy domain];
     v32[1] = @"code";
-    v33[0] = v7;
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "code")}];
+    v33[0] = domain;
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(chainCopy, "code")}];
     v33[1] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
     v10 = [v9 mutableCopy];
 
-    v11 = [v6 userInfo];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
-    v13 = [a1 errorChain:v12 depth:a4 + 1];
+    userInfo = [chainCopy userInfo];
+    v12 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    v13 = [self errorChain:v12 depth:depth + 1];
     [v10 setObject:v13 forKeyedSubscript:@"child"];
 
-    v14 = [v6 userInfo];
-    v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E696A750]];
+    userInfo2 = [chainCopy userInfo];
+    v15 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A750]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v26 = v10;
-      v16 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
@@ -393,10 +393,10 @@ LABEL_21:
               objc_enumerationMutation(v17);
             }
 
-            v22 = [a1 errorChain:*(*(&v27 + 1) + 8 * i) depth:a4 + 1];
+            v22 = [self errorChain:*(*(&v27 + 1) + 8 * i) depth:depth + 1];
             if (v22)
             {
-              [v16 addObject:v22];
+              [array addObject:v22];
             }
           }
 
@@ -407,9 +407,9 @@ LABEL_21:
       }
 
       v10 = v26;
-      if ([v16 count])
+      if ([array count])
       {
-        [v26 setObject:v16 forKeyedSubscript:@"multiple"];
+        [v26 setObject:array forKeyedSubscript:@"multiple"];
       }
     }
 
@@ -426,31 +426,31 @@ LABEL_21:
   return v23;
 }
 
-+ (id)privacyURI:(id)a3
++ (id)privacyURI:(id)i
 {
-  v3 = a3;
+  iCopy = i;
   if (+[TransparencyAnalytics hasInternalDiagnostics])
   {
-    v4 = v3;
+    kt_hexString = iCopy;
   }
 
   else
   {
-    v5 = [v3 dataUsingEncoding:4];
-    v6 = [v5 kt_sha256];
-    v4 = [v6 kt_hexString];
+    v5 = [iCopy dataUsingEncoding:4];
+    kt_sha256 = [v5 kt_sha256];
+    kt_hexString = [kt_sha256 kt_hexString];
   }
 
-  return v4;
+  return kt_hexString;
 }
 
-- (void)logSuccessForEventNamed:(id)a3
+- (void)logSuccessForEventNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   sfanalytics = self->_sfanalytics;
   if (sfanalytics)
   {
-    [(SFAnalytics *)sfanalytics logSuccessForEventNamed:v4];
+    [(SFAnalytics *)sfanalytics logSuccessForEventNamed:namedCopy];
   }
 
   else
@@ -459,26 +459,26 @@ LABEL_21:
     v6[1] = 3221225472;
     v6[2] = __49__TransparencyAnalytics_logSuccessForEventNamed___block_invoke;
     v6[3] = &unk_1E8702080;
-    v7 = v4;
+    v7 = namedCopy;
     [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v6 errorHandler:&__block_literal_global_118_0];
   }
 }
 
-- (void)logHardFailureForEventNamed:(id)a3 withAttributes:(id)a4
+- (void)logHardFailureForEventNamed:(id)named withAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  namedCopy = named;
+  attributesCopy = attributes;
+  v8 = attributesCopy;
   if (self->_sfanalytics)
   {
-    v9 = [v7 mutableCopy];
+    v9 = [attributesCopy mutableCopy];
     v10 = [MEMORY[0x1E696AD98] numberWithLongLong:114];
     [v9 setObject:v10 forKeyedSubscript:@"transparencyVersion"];
 
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{+[TransparencySettings getEnvironment](TransparencySettings, "getEnvironment")}];
     [v9 setObject:v11 forKeyedSubscript:@"ktEnvironment"];
 
-    [(SFAnalytics *)self->_sfanalytics logHardFailureForEventNamed:v6 withAttributes:v9];
+    [(SFAnalytics *)self->_sfanalytics logHardFailureForEventNamed:namedCopy withAttributes:v9];
   }
 
   else
@@ -487,27 +487,27 @@ LABEL_21:
     v12[1] = 3221225472;
     v12[2] = __68__TransparencyAnalytics_logHardFailureForEventNamed_withAttributes___block_invoke;
     v12[3] = &unk_1E87011D0;
-    v13 = v6;
+    v13 = namedCopy;
     v14 = v8;
     [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v12 errorHandler:&__block_literal_global_121];
   }
 }
 
-- (void)logSoftFailureForEventNamed:(id)a3 withAttributes:(id)a4
+- (void)logSoftFailureForEventNamed:(id)named withAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  namedCopy = named;
+  attributesCopy = attributes;
+  v8 = attributesCopy;
   if (self->_sfanalytics)
   {
-    v9 = [v7 mutableCopy];
+    v9 = [attributesCopy mutableCopy];
     v10 = [MEMORY[0x1E696AD98] numberWithLongLong:114];
     [v9 setObject:v10 forKeyedSubscript:@"transparencyVersion"];
 
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{+[TransparencySettings getEnvironment](TransparencySettings, "getEnvironment")}];
     [v9 setObject:v11 forKeyedSubscript:@"ktEnvironment"];
 
-    [(SFAnalytics *)self->_sfanalytics logSoftFailureForEventNamed:v6 withAttributes:v9];
+    [(SFAnalytics *)self->_sfanalytics logSoftFailureForEventNamed:namedCopy withAttributes:v9];
   }
 
   else
@@ -516,19 +516,19 @@ LABEL_21:
     v12[1] = 3221225472;
     v12[2] = __68__TransparencyAnalytics_logSoftFailureForEventNamed_withAttributes___block_invoke;
     v12[3] = &unk_1E87011D0;
-    v13 = v6;
+    v13 = namedCopy;
     v14 = v8;
     [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v12 errorHandler:&__block_literal_global_123];
   }
 }
 
-- (void)noteEventNamed:(id)a3
+- (void)noteEventNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   sfanalytics = self->_sfanalytics;
   if (sfanalytics)
   {
-    [(SFAnalytics *)sfanalytics noteEventNamed:v4];
+    [(SFAnalytics *)sfanalytics noteEventNamed:namedCopy];
   }
 
   else
@@ -537,28 +537,28 @@ LABEL_21:
     v6[1] = 3221225472;
     v6[2] = __40__TransparencyAnalytics_noteEventNamed___block_invoke;
     v6[3] = &unk_1E8702080;
-    v7 = v4;
+    v7 = namedCopy;
     [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v6 errorHandler:&__block_literal_global_125_0];
   }
 }
 
-- (void)noteLaunchSequence:(id)a3
+- (void)noteLaunchSequence:(id)sequence
 {
   sfanalytics = self->_sfanalytics;
   if (sfanalytics)
   {
-    [(SFAnalytics *)sfanalytics noteLaunchSequence:a3];
+    [(SFAnalytics *)sfanalytics noteLaunchSequence:sequence];
   }
 }
 
-- (BOOL)skipLogResult:(id)a3
+- (BOOL)skipLogResult:(id)result
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 code] == -134)
+  resultCopy = result;
+  v4 = resultCopy;
+  if (resultCopy && [resultCopy code] == -134)
   {
-    v5 = [v4 domain];
-    v6 = [v5 isEqual:@"TransparencyErrorUnknown"];
+    domain = [v4 domain];
+    v6 = [domain isEqual:@"TransparencyErrorUnknown"];
   }
 
   else
@@ -569,17 +569,17 @@ LABEL_21:
   return v6;
 }
 
-- (void)addUserInfoAttributes:(id)a3 error:(id)a4
+- (void)addUserInfoAttributes:(id)attributes error:(id)error
 {
-  v5 = a3;
-  v6 = [a4 userInfo];
+  attributesCopy = attributes;
+  userInfo = [error userInfo];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__TransparencyAnalytics_addUserInfoAttributes_error___block_invoke;
   v8[3] = &unk_1E87020A8;
-  v9 = v5;
-  v7 = v5;
-  [v6 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = attributesCopy;
+  v7 = attributesCopy;
+  [userInfo enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __53__TransparencyAnalytics_addUserInfoAttributes_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -608,14 +608,14 @@ void __53__TransparencyAnalytics_addUserInfoAttributes_error___block_invoke(uint
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logMetric:(id)a3 withName:(id)a4
+- (void)logMetric:(id)metric withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  metricCopy = metric;
+  nameCopy = name;
   sfanalytics = self->_sfanalytics;
   if (sfanalytics)
   {
-    [(SFAnalytics *)sfanalytics logMetric:v6 withName:v7];
+    [(SFAnalytics *)sfanalytics logMetric:metricCopy withName:nameCopy];
   }
 
   else
@@ -624,67 +624,67 @@ void __53__TransparencyAnalytics_addUserInfoAttributes_error___block_invoke(uint
     v9[1] = 3221225472;
     v9[2] = __44__TransparencyAnalytics_logMetric_withName___block_invoke;
     v9[3] = &unk_1E87011D0;
-    v10 = v6;
-    v11 = v7;
+    v10 = metricCopy;
+    v11 = nameCopy;
     [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v9 errorHandler:&__block_literal_global_137];
   }
 }
 
-- (void)logRockwellForEventNamed:(id)a3 withAttributes:(id)a4
+- (void)logRockwellForEventNamed:(id)named withAttributes:(id)attributes
 {
-  v10 = a3;
-  v6 = a4;
+  namedCopy = named;
+  attributesCopy = attributes;
   if (self->_sfanalytics && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [v6 mutableCopy];
+    v7 = [attributesCopy mutableCopy];
     v8 = [MEMORY[0x1E696AD98] numberWithLongLong:114];
     [v7 setObject:v8 forKeyedSubscript:@"transparencyVersion"];
 
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{+[TransparencySettings getEnvironment](TransparencySettings, "getEnvironment")}];
     [v7 setObject:v9 forKeyedSubscript:@"ktEnvironment"];
 
-    [(SFAnalytics *)self->_sfanalytics logRockwellFailureForEventNamed:v10 withAttributes:v7];
+    [(SFAnalytics *)self->_sfanalytics logRockwellFailureForEventNamed:namedCopy withAttributes:v7];
   }
 }
 
-- (void)setSuccessNowForPropertyKey:(id)a3
+- (void)setSuccessNowForPropertyKey:(id)key
 {
-  v9 = a3;
-  v4 = [(TransparencyAnalytics *)self failureKey:v9];
-  v5 = [(TransparencyAnalytics *)self datePropertyForKey:v9];
+  keyCopy = key;
+  v4 = [(TransparencyAnalytics *)self failureKey:keyCopy];
+  v5 = [(TransparencyAnalytics *)self datePropertyForKey:keyCopy];
   v6 = [(TransparencyAnalytics *)self datePropertyForKey:v4];
   v7 = v6;
   if (!v5 || v6 && [v5 compare:v6] < 0)
   {
-    v8 = [MEMORY[0x1E695DF00] date];
-    [(TransparencyAnalytics *)self setDateProperty:v8 forKey:v9];
+    date = [MEMORY[0x1E695DF00] date];
+    [(TransparencyAnalytics *)self setDateProperty:date forKey:keyCopy];
   }
 }
 
-- (void)setFailureNowForPropertyKey:(id)a3
+- (void)setFailureNowForPropertyKey:(id)key
 {
-  v9 = a3;
+  keyCopy = key;
   v4 = [(TransparencyAnalytics *)self failureKey:?];
   v5 = [(TransparencyAnalytics *)self datePropertyForKey:v4];
   if (!v5)
   {
-    v6 = [MEMORY[0x1E695DF00] date];
-    [(TransparencyAnalytics *)self setDateProperty:v6 forKey:v4];
+    date = [MEMORY[0x1E695DF00] date];
+    [(TransparencyAnalytics *)self setDateProperty:date forKey:v4];
   }
 
-  v7 = [(TransparencyAnalytics *)self datePropertyForKey:v9];
+  v7 = [(TransparencyAnalytics *)self datePropertyForKey:keyCopy];
   if (v7 && [v5 compare:v7] < 0)
   {
-    v8 = [MEMORY[0x1E695DF00] date];
-    [(TransparencyAnalytics *)self setDateProperty:v8 forKey:v4];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [(TransparencyAnalytics *)self setDateProperty:date2 forKey:v4];
   }
 }
 
-- (id)fuzzyTimeSinceLastSuccess:(id)a3
+- (id)fuzzyTimeSinceLastSuccess:(id)success
 {
-  v4 = a3;
-  v5 = [(TransparencyAnalytics *)self failureKey:v4];
-  v6 = [(SFAnalytics *)self->_sfanalytics datePropertyForKey:v4];
+  successCopy = success;
+  v5 = [(TransparencyAnalytics *)self failureKey:successCopy];
+  v6 = [(SFAnalytics *)self->_sfanalytics datePropertyForKey:successCopy];
 
   v7 = [(SFAnalytics *)self->_sfanalytics datePropertyForKey:v5];
   v8 = v7;
@@ -727,9 +727,9 @@ LABEL_13:
   return v9;
 }
 
-- (id)fuzzyTimeSinceDateKey:(id)a3
+- (id)fuzzyTimeSinceDateKey:(id)key
 {
-  v3 = [(SFAnalytics *)self->_sfanalytics datePropertyForKey:a3];
+  v3 = [(SFAnalytics *)self->_sfanalytics datePropertyForKey:key];
   if (v3)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(MEMORY[0x1E697AAA0], "fuzzyDaysSinceDate:", v3)}];
@@ -743,14 +743,14 @@ LABEL_13:
   return v4;
 }
 
-- (void)addMultiSamplerForName:(id)a3 withTimeInterval:(double)a4 block:(id)a5
+- (void)addMultiSamplerForName:(id)name withTimeInterval:(double)interval block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  blockCopy = block;
   sfanalytics = self->_sfanalytics;
   if (sfanalytics)
   {
-    v11 = [(SFAnalytics *)sfanalytics AddMultiSamplerForName:v8 withTimeInterval:v9 block:a4];
+    v11 = [(SFAnalytics *)sfanalytics AddMultiSamplerForName:nameCopy withTimeInterval:blockCopy block:interval];
   }
 
   else
@@ -776,13 +776,13 @@ uint64_t __71__TransparencyAnalytics_addMultiSamplerForName_withTimeInterval_blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)removeMultiSamplerForName:(id)a3
+- (void)removeMultiSamplerForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   sfanalytics = self->_sfanalytics;
   if (sfanalytics)
   {
-    [(SFAnalytics *)sfanalytics removeMultiSamplerForName:v4];
+    [(SFAnalytics *)sfanalytics removeMultiSamplerForName:nameCopy];
   }
 
   else
@@ -808,57 +808,57 @@ uint64_t __51__TransparencyAnalytics_removeMultiSamplerForName___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)updateCollectionConfigurationWithData:(id)a3
+- (void)updateCollectionConfigurationWithData:(id)data
 {
-  v6 = a3;
+  dataCopy = data;
   [(SFAnalytics *)self->_sfanalytics updateCollectionConfigurationWithData:?];
   sfanalytics = self->_sfanalytics;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = +[SWTransparencySFAnalytics logger];
-    [v5 updateCollectionConfigurationWithData:v6];
+    [v5 updateCollectionConfigurationWithData:dataCopy];
 
     notify_post(kTransparencySFACollectionUpdateName);
   }
 }
 
-- (void)addNFSReporting:(id)a3
+- (void)addNFSReporting:(id)reporting
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(TransparencyAnalytics *)v4 nfsObserver];
+  reportingCopy = reporting;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nfsObserver = [(TransparencyAnalytics *)selfCopy nfsObserver];
 
-  if (!v5)
+  if (!nfsObserver)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    [(TransparencyAnalytics *)v4 setNfsObserver:v6];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [(TransparencyAnalytics *)selfCopy setNfsObserver:weakObjectsHashTable];
   }
 
-  v7 = [(TransparencyAnalytics *)v4 nfsObserver];
-  [v7 addObject:v8];
+  nfsObserver2 = [(TransparencyAnalytics *)selfCopy nfsObserver];
+  [nfsObserver2 addObject:reportingCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)nfsReporting
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(TransparencyAnalytics *)v2 nfsObserver];
-  v4 = [v3 allObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nfsObserver = [(TransparencyAnalytics *)selfCopy nfsObserver];
+  allObjects = [nfsObserver allObjects];
 
-  objc_sync_exit(v2);
-  if ([v4 count])
+  objc_sync_exit(selfCopy);
+  if ([allObjects count])
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = allObjects;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -873,9 +873,9 @@ uint64_t __51__TransparencyAnalytics_removeMultiSamplerForName___block_invoke()
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 status];
-          v12 = [v10 name];
-          [v5 setObject:v11 forKeyedSubscript:v12];
+          status = [v10 status];
+          name = [v10 name];
+          [dictionary setObject:status forKeyedSubscript:name];
         }
 
         v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -887,17 +887,17 @@ uint64_t __51__TransparencyAnalytics_removeMultiSamplerForName___block_invoke()
 
   else
   {
-    v5 = 0;
+    dictionary = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
-- (void)setCKManateeState:(int)a3
+- (void)setCKManateeState:(int)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
 
     [(TransparencyAnalytics *)self setNumberProperty:0 forKey:@"CKManateeState"];

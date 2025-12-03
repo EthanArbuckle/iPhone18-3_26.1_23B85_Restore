@@ -1,12 +1,12 @@
 @interface PKAvatarView
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplate:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplate:(BOOL)template;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKAvatarView)init;
 - (void)layoutSubviews;
-- (void)setContact:(id)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setPlaceholderName:(id)a3;
-- (void)setShowsName:(BOOL)a3;
+- (void)setContact:(id)contact;
+- (void)setPlaceholderImage:(id)image;
+- (void)setPlaceholderName:(id)name;
+- (void)setShowsName:(BOOL)name;
 @end
 
 @implementation PKAvatarView
@@ -22,8 +22,8 @@
     avatarViewController = v2->_avatarViewController;
     v2->_avatarViewController = v3;
 
-    v5 = [(CNAvatarViewController *)v2->_avatarViewController view];
-    [(PKAvatarView *)v2 addSubview:v5];
+    view = [(CNAvatarViewController *)v2->_avatarViewController view];
+    [(PKAvatarView *)v2 addSubview:view];
 
     v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     contactNameLabel = v2->_contactNameLabel;
@@ -41,59 +41,59 @@
   return v2;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_contact, a3);
+  contactCopy = contact;
+  objc_storeStrong(&self->_contact, contact);
   avatarViewController = self->_avatarViewController;
-  v15[0] = v5;
+  v15[0] = contactCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   [(CNAvatarViewController *)avatarViewController setContacts:v7];
 
-  v8 = [(CNAvatarViewController *)self->_avatarViewController view];
-  [v8 setHidden:0];
+  view = [(CNAvatarViewController *)self->_avatarViewController view];
+  [view setHidden:0];
 
-  v9 = [(CNAvatarViewController *)self->_avatarViewController view];
-  [(PKAvatarView *)self bringSubviewToFront:v9];
+  view2 = [(CNAvatarViewController *)self->_avatarViewController view];
+  [(PKAvatarView *)self bringSubviewToFront:view2];
 
   v10 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
   v14 = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
-  v12 = [v5 areKeysAvailable:v11];
+  v12 = [contactCopy areKeysAvailable:v11];
 
   if (v12)
   {
-    v13 = [MEMORY[0x1E695CD80] stringFromContact:v5 style:0];
+    v13 = [MEMORY[0x1E695CD80] stringFromContact:contactCopy style:0];
     [(UILabel *)self->_contactNameLabel setText:v13];
   }
 }
 
-- (void)setPlaceholderName:(id)a3
+- (void)setPlaceholderName:(id)name
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695CF18];
-  v5 = a3;
+  nameCopy = name;
   v6 = objc_alloc_init(v4);
-  [v6 setGivenName:v5];
+  [v6 setGivenName:nameCopy];
 
   avatarViewController = self->_avatarViewController;
   v11[0] = v6;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   [(CNAvatarViewController *)avatarViewController setContacts:v8];
 
-  v9 = [(CNAvatarViewController *)self->_avatarViewController view];
-  [v9 setHidden:0];
+  view = [(CNAvatarViewController *)self->_avatarViewController view];
+  [view setHidden:0];
 
-  v10 = [(CNAvatarViewController *)self->_avatarViewController view];
-  [(PKAvatarView *)self bringSubviewToFront:v10];
+  view2 = [(CNAvatarViewController *)self->_avatarViewController view];
+  [(PKAvatarView *)self bringSubviewToFront:view2];
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   placeholderImageView = self->_placeholderImageView;
-  v9 = v4;
+  v9 = imageCopy;
   if (!placeholderImageView)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -102,30 +102,30 @@
 
     [(UIImageView *)self->_placeholderImageView setContentMode:1];
     [(PKAvatarView *)self addSubview:self->_placeholderImageView];
-    v4 = v9;
+    imageCopy = v9;
     placeholderImageView = self->_placeholderImageView;
   }
 
-  [(UIImageView *)placeholderImageView setImage:v4];
+  [(UIImageView *)placeholderImageView setImage:imageCopy];
   [(PKAvatarView *)self bringSubviewToFront:self->_placeholderImageView];
-  v8 = [(CNAvatarViewController *)self->_avatarViewController view];
-  [v8 setHidden:1];
+  view = [(CNAvatarViewController *)self->_avatarViewController view];
+  [view setHidden:1];
 }
 
-- (void)setShowsName:(BOOL)a3
+- (void)setShowsName:(BOOL)name
 {
-  if (self->_showsName != a3)
+  if (self->_showsName != name)
   {
-    self->_showsName = a3;
-    [(UILabel *)self->_contactNameLabel setHidden:!a3];
+    self->_showsName = name;
+    [(UILabel *)self->_contactNameLabel setHidden:!name];
 
     [(PKAvatarView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKAvatarView *)self _layoutWithBounds:1 isTemplate:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKAvatarView *)self _layoutWithBounds:1 isTemplate:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -140,12 +140,12 @@
   [(PKAvatarView *)self _layoutWithBounds:0 isTemplate:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplate:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplate:(BOOL)template
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(PKAvatarView *)self _shouldReverseLayoutDirection])
   {
     v10 = CGRectMaxXEdge;
@@ -163,8 +163,8 @@
   v11 = *(MEMORY[0x1E695F058] + 16);
   v29.origin = *MEMORY[0x1E695F058];
   v29.size = v11;
-  v12 = [(CNAvatarViewController *)self->_avatarViewController view];
-  [v12 frame];
+  view = [(CNAvatarViewController *)self->_avatarViewController view];
+  [view frame];
 
   v32.origin.x = x;
   v32.origin.y = y;
@@ -174,12 +174,12 @@
   PKRectCenteredIntegralRect();
   v16 = v15;
   v18 = v17;
-  if (!a4)
+  if (!template)
   {
     v19 = v13;
     v20 = v14;
-    v21 = [(CNAvatarViewController *)self->_avatarViewController view];
-    [v21 setFrame:{v19, v20, v16, v18}];
+    view2 = [(CNAvatarViewController *)self->_avatarViewController view];
+    [view2 setFrame:{v19, v20, v16, v18}];
 
     [(UIImageView *)self->_placeholderImageView setFrame:v19, v20, v16, v18];
   }
@@ -194,7 +194,7 @@
       [(UILabel *)self->_contactNameLabel sizeThatFits:remainder.size.width, remainder.size.height];
       v24 = v23;
       CGRectDivide(remainder, &v29, &remainder, v25, v10);
-      if (!a4)
+      if (!template)
       {
         contactNameLabel = self->_contactNameLabel;
         PKRectCenteredIntegralRect();

@@ -1,98 +1,98 @@
 @interface VideosExtrasLockupCollectionViewCell
 - (CGSize)thumbnailMaxSize;
 - (IKLockupElement)lockup;
-- (VideosExtrasLockupCollectionViewCell)initWithFrame:(CGRect)a3;
+- (VideosExtrasLockupCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)thumbnailImage;
-- (void)_handlePinchGesture:(id)a3;
-- (void)finalizeZoomingImageTransitionWithContext:(id)a3 transitionFinished:(BOOL)a4;
-- (void)performZoomingImageTransitionWithContext:(id)a3;
+- (void)_handlePinchGesture:(id)gesture;
+- (void)finalizeZoomingImageTransitionWithContext:(id)context transitionFinished:(BOOL)finished;
+- (void)performZoomingImageTransitionWithContext:(id)context;
 - (void)prepareForReuse;
-- (void)prepareZoomingImageTransitionWithContext:(id)a3;
-- (void)setAllowsPinchingThumbnailImageForInteractiveZoomingImageTransition:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setThumbnailBorderColor:(id)a3;
-- (void)setThumbnailImage:(id)a3;
-- (void)setThumbnailImageAccessibilityText:(id)a3;
-- (void)setThumbnailImagePlaceholder:(id)a3;
-- (void)setThumbnailMaxSize:(CGSize)a3;
-- (void)setThumbnailOverlayImage:(id)a3;
-- (void)setZoomingImageTransitionIdentifier:(id)a3;
+- (void)prepareZoomingImageTransitionWithContext:(id)context;
+- (void)setAllowsPinchingThumbnailImageForInteractiveZoomingImageTransition:(BOOL)transition;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setThumbnailBorderColor:(id)color;
+- (void)setThumbnailImage:(id)image;
+- (void)setThumbnailImageAccessibilityText:(id)text;
+- (void)setThumbnailImagePlaceholder:(id)placeholder;
+- (void)setThumbnailMaxSize:(CGSize)size;
+- (void)setThumbnailOverlayImage:(id)image;
+- (void)setZoomingImageTransitionIdentifier:(id)identifier;
 - (void)updateConstraints;
 @end
 
 @implementation VideosExtrasLockupCollectionViewCell
 
-- (VideosExtrasLockupCollectionViewCell)initWithFrame:(CGRect)a3
+- (VideosExtrasLockupCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v59.receiver = self;
   v59.super_class = VideosExtrasLockupCollectionViewCell;
-  v3 = [(VideosExtrasLockupCollectionViewCell *)&v59 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VideosExtrasLockupCollectionViewCell *)&v59 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [[VideosExtrasConstrainedArtworkContainerView alloc] initForAutolayout];
+    initForAutolayout = [[VideosExtrasConstrainedArtworkContainerView alloc] initForAutolayout];
     artworkContainerView = v3->_artworkContainerView;
-    v3->_artworkContainerView = v4;
+    v3->_artworkContainerView = initForAutolayout;
 
     [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainerView setUserInteractionEnabled:1];
     [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainerView setMultipleTouchEnabled:1];
-    v6 = [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainerView artworkView];
-    [v6 setUserInteractionEnabled:1];
+    artworkView = [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainerView artworkView];
+    [artworkView setUserInteractionEnabled:1];
 
-    v7 = [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainerView artworkView];
-    [v7 setMultipleTouchEnabled:1];
+    artworkView2 = [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainerView artworkView];
+    [artworkView2 setMultipleTouchEnabled:1];
 
-    v8 = [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainerView artworkView];
-    [v8 setDimsWhenHighlighted:1];
+    artworkView3 = [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainerView artworkView];
+    [artworkView3 setDimsWhenHighlighted:1];
 
     v9 = [MEMORY[0x1E69DC888] colorWithWhite:0.2 alpha:1.0];
-    v10 = [v9 CGColor];
-    v11 = [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainerView artworkView];
-    v12 = [v11 layer];
-    [v12 setBorderColor:v10];
+    cGColor = [v9 CGColor];
+    artworkView4 = [(VideosExtrasConstrainedArtworkContainerView *)v3->_artworkContainerView artworkView];
+    layer = [artworkView4 layer];
+    [layer setBorderColor:cGColor];
 
     [(VideosExtrasLockupCollectionViewCell *)v3 addSubview:v3->_artworkContainerView];
-    v13 = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
+    initForAutolayout2 = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
     textContainerView = v3->_textContainerView;
-    v3->_textContainerView = v13;
+    v3->_textContainerView = initForAutolayout2;
 
     [(VideosExtrasLockupCollectionViewCell *)v3 addSubview:v3->_textContainerView];
-    v15 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+    initForAutolayout3 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
     titleLabel = v3->_titleLabel;
-    v3->_titleLabel = v15;
+    v3->_titleLabel = initForAutolayout3;
 
     LODWORD(v17) = 1148846080;
     [(UILabel *)v3->_titleLabel setContentCompressionResistancePriority:1 forAxis:v17];
     [(UILabel *)v3->_titleLabel MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
     [(UILabel *)v3->_titleLabel setAdjustsFontSizeToFitWidth:0];
     [(UILabel *)v3->_titleLabel setNumberOfLines:0];
-    v18 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v3->_titleLabel setBackgroundColor:v18];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v3->_titleLabel setBackgroundColor:clearColor];
 
     [(VideosExtrasLockupCollectionViewCell *)v3 addSubview:v3->_titleLabel];
-    v19 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+    initForAutolayout4 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
     subtitleLabel = v3->_subtitleLabel;
-    v3->_subtitleLabel = v19;
+    v3->_subtitleLabel = initForAutolayout4;
 
     LODWORD(v21) = 1148846080;
     [(UILabel *)v3->_subtitleLabel setContentCompressionResistancePriority:1 forAxis:v21];
     [(UILabel *)v3->_subtitleLabel MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
     [(UILabel *)v3->_subtitleLabel setAdjustsFontSizeToFitWidth:0];
     [(UILabel *)v3->_subtitleLabel setNumberOfLines:0];
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v3->_subtitleLabel setBackgroundColor:v22];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v3->_subtitleLabel setBackgroundColor:clearColor2];
 
     [(VideosExtrasLockupCollectionViewCell *)v3 addSubview:v3->_subtitleLabel];
-    v23 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+    initForAutolayout5 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
     descriptionLabel = v3->_descriptionLabel;
-    v3->_descriptionLabel = v23;
+    v3->_descriptionLabel = initForAutolayout5;
 
     LODWORD(v25) = 1144750080;
     [(UILabel *)v3->_descriptionLabel setContentCompressionResistancePriority:1 forAxis:v25];
     [(UILabel *)v3->_descriptionLabel MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
     [(UILabel *)v3->_descriptionLabel setAdjustsFontSizeToFitWidth:0];
     [(UILabel *)v3->_descriptionLabel setNumberOfLines:0];
-    v26 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v3->_descriptionLabel setBackgroundColor:v26];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v3->_descriptionLabel setBackgroundColor:clearColor3];
 
     [(VideosExtrasLockupCollectionViewCell *)v3 addSubview:v3->_descriptionLabel];
     v58 = [MEMORY[0x1E696ACD8] constraintWithItem:v3->_artworkContainerView attribute:5 relatedBy:0 toItem:v3 attribute:5 multiplier:1.0 constant:0.0];
@@ -135,31 +135,31 @@
     v38 = MEMORY[0x1E69AD980];
     v39 = v3->_subtitleLabel;
     v40 = v3->_titleLabel;
-    v41 = [(VideosExtrasLockupCollectionViewCell *)v3 subtitleTextStyle];
-    v42 = [v38 constraintWithAutoupdatingBaselineOfView:v39 toView:v40 attribute:11 withTextStyle:v41 nonStandardLeading:20.0];
+    subtitleTextStyle = [(VideosExtrasLockupCollectionViewCell *)v3 subtitleTextStyle];
+    v42 = [v38 constraintWithAutoupdatingBaselineOfView:v39 toView:v40 attribute:11 withTextStyle:subtitleTextStyle nonStandardLeading:20.0];
 
     v47 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v3->_subtitleLabel toView:v3->_textContainerView alongEdges:10 insets:{v34, v35, v36, v37}];
     v46 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v3->_descriptionLabel toView:v3->_textContainerView alongEdges:10 insets:{v34, v35, v36, v37}];
     v43 = [MEMORY[0x1E696ACD8] constraintWithItem:v3->_descriptionLabel attribute:4 relatedBy:-1 toItem:v3->_textContainerView attribute:4 multiplier:1.0 constant:0.0];
-    v44 = [MEMORY[0x1E695DF70] array];
-    [v44 addObject:v58];
-    [v44 addObject:v57];
-    [v44 addObject:v56];
-    [v44 addObject:v3->_artworkContainerWidthConstraint];
-    [v44 addObject:v3->_artworkContainerHeightConstraint];
-    [v44 addObject:v55];
-    [v44 addObject:v54];
-    [v44 addObject:v53];
-    [v44 addObject:v52];
-    [v44 addObject:v51];
-    [v44 addObject:v50];
-    [v44 addObject:v49];
-    [v44 addObjectsFromArray:v48];
-    [v44 addObject:v42];
-    [v44 addObjectsFromArray:v47];
-    [v44 addObjectsFromArray:v46];
-    [v44 addObject:v43];
-    [(VideosExtrasLockupCollectionViewCell *)v3 addConstraints:v44];
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObject:v58];
+    [array addObject:v57];
+    [array addObject:v56];
+    [array addObject:v3->_artworkContainerWidthConstraint];
+    [array addObject:v3->_artworkContainerHeightConstraint];
+    [array addObject:v55];
+    [array addObject:v54];
+    [array addObject:v53];
+    [array addObject:v52];
+    [array addObject:v51];
+    [array addObject:v50];
+    [array addObject:v49];
+    [array addObjectsFromArray:v48];
+    [array addObject:v42];
+    [array addObjectsFromArray:v47];
+    [array addObjectsFromArray:v46];
+    [array addObject:v43];
+    [(VideosExtrasLockupCollectionViewCell *)v3 addConstraints:array];
   }
 
   return v3;
@@ -170,11 +170,11 @@
   v5.receiver = self;
   v5.super_class = VideosExtrasLockupCollectionViewCell;
   [(VideosExtrasLockupCollectionViewCell *)&v5 prepareForReuse];
-  v3 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
-  [v3 setPlaceholderImage:0];
+  artworkView = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
+  [artworkView setPlaceholderImage:0];
 
-  v4 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
-  [v4 setImage:0];
+  artworkView2 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
+  [artworkView2 setImage:0];
 
   [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView setOverlayImage:0];
   [(UILabel *)self->_titleLabel setText:0];
@@ -188,18 +188,18 @@
   [(UILabel *)self->_descriptionLabel setFont:0];
 }
 
-- (void)setThumbnailImage:(id)a3
+- (void)setThumbnailImage:(id)image
 {
   artworkContainerView = self->_artworkContainerView;
-  v4 = a3;
-  v10 = [(VideosExtrasConstrainedArtworkContainerView *)artworkContainerView artworkView];
-  [v10 setImage:v4];
+  imageCopy = image;
+  artworkView = [(VideosExtrasConstrainedArtworkContainerView *)artworkContainerView artworkView];
+  [artworkView setImage:imageCopy];
 
-  v5 = [v10 image];
-  if (v5)
+  image = [artworkView image];
+  if (image)
   {
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v8 = 1.0 / v7;
   }
 
@@ -208,45 +208,45 @@
     v8 = 0.0;
   }
 
-  v9 = [v10 layer];
-  [v9 setBorderWidth:v8];
+  layer = [artworkView layer];
+  [layer setBorderWidth:v8];
 }
 
-- (void)setThumbnailBorderColor:(id)a3
+- (void)setThumbnailBorderColor:(id)color
 {
-  v5 = a3;
-  v6 = [a3 CGColor];
-  v8 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
-  v7 = [v8 layer];
-  [v7 setBorderColor:v6];
+  colorCopy = color;
+  cGColor = [color CGColor];
+  artworkView = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
+  layer = [artworkView layer];
+  [layer setBorderColor:cGColor];
 }
 
-- (void)setThumbnailImagePlaceholder:(id)a3
-{
-  artworkContainerView = self->_artworkContainerView;
-  v4 = a3;
-  v5 = [(VideosExtrasConstrainedArtworkContainerView *)artworkContainerView artworkView];
-  [v5 setPlaceholderImage:v4];
-}
-
-- (void)setThumbnailImageAccessibilityText:(id)a3
+- (void)setThumbnailImagePlaceholder:(id)placeholder
 {
   artworkContainerView = self->_artworkContainerView;
-  v4 = a3;
-  v5 = [(VideosExtrasConstrainedArtworkContainerView *)artworkContainerView artworkView];
-  [v5 setAccessibilityLabel:v4];
+  placeholderCopy = placeholder;
+  artworkView = [(VideosExtrasConstrainedArtworkContainerView *)artworkContainerView artworkView];
+  [artworkView setPlaceholderImage:placeholderCopy];
 }
 
-- (void)setAllowsPinchingThumbnailImageForInteractiveZoomingImageTransition:(BOOL)a3
+- (void)setThumbnailImageAccessibilityText:(id)text
 {
-  if (self->_allowsPinchingThumbnailImageForInteractiveZoomingImageTransition != a3)
+  artworkContainerView = self->_artworkContainerView;
+  textCopy = text;
+  artworkView = [(VideosExtrasConstrainedArtworkContainerView *)artworkContainerView artworkView];
+  [artworkView setAccessibilityLabel:textCopy];
+}
+
+- (void)setAllowsPinchingThumbnailImageForInteractiveZoomingImageTransition:(BOOL)transition
+{
+  if (self->_allowsPinchingThumbnailImageForInteractiveZoomingImageTransition != transition)
   {
-    self->_allowsPinchingThumbnailImageForInteractiveZoomingImageTransition = a3;
-    if (a3)
+    self->_allowsPinchingThumbnailImageForInteractiveZoomingImageTransition = transition;
+    if (transition)
     {
       v5 = [objc_alloc(MEMORY[0x1E69DCD80]) initWithTarget:self action:sel__handlePinchGesture_];
-      v6 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
-      [v6 addGestureRecognizer:v5];
+      artworkView = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
+      [artworkView addGestureRecognizer:v5];
 
       pinchGestureRecognizer = self->_pinchGestureRecognizer;
       self->_pinchGestureRecognizer = v5;
@@ -265,8 +265,8 @@
 
     else
     {
-      v11 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
-      [v11 removeGestureRecognizer:self->_pinchGestureRecognizer];
+      artworkView2 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
+      [artworkView2 removeGestureRecognizer:self->_pinchGestureRecognizer];
 
       [(UIPinchGestureRecognizer *)self->_pinchGestureRecognizer removeTarget:self action:0];
       v12 = self->_pinchGestureRecognizer;
@@ -278,7 +278,7 @@
   }
 }
 
-- (void)_handlePinchGesture:(id)a3
+- (void)_handlePinchGesture:(id)gesture
 {
   v4 = self->_interactiveTransitionSourceContext;
   v5 = [(VideosExtrasLockupCollectionViewCell *)self targetForAction:sel_handlePinchGestureForZoomingImageInteractiveTransitionWithContext_ withSender:v4];
@@ -287,17 +287,17 @@
 
 - (id)thumbnailImage
 {
-  v2 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
-  v3 = [v2 image];
+  artworkView = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
+  image = [artworkView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setThumbnailMaxSize:(CGSize)a3
+- (void)setThumbnailMaxSize:(CGSize)size
 {
-  if (self->_artworkSize.width != a3.width || self->_artworkSize.height != a3.height)
+  if (self->_artworkSize.width != size.width || self->_artworkSize.height != size.height)
   {
-    self->_artworkSize = a3;
+    self->_artworkSize = size;
     [(VideosExtrasLockupCollectionViewCell *)self setNeedsUpdateConstraints];
   }
 }
@@ -311,9 +311,9 @@
   return result;
 }
 
-- (void)setThumbnailOverlayImage:(id)a3
+- (void)setThumbnailOverlayImage:(id)image
 {
-  [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView setOverlayImage:a3];
+  [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView setOverlayImage:image];
   artworkContainerView = self->_artworkContainerView;
 
   [(VideosExtrasConstrainedArtworkContainerView *)artworkContainerView setOverlayScale:0.2];
@@ -324,8 +324,8 @@
   p_artworkSize = &self->_artworkSize;
   [(NSLayoutConstraint *)self->_artworkContainerWidthConstraint setConstant:self->_artworkSize.width];
   [(NSLayoutConstraint *)self->_artworkContainerHeightConstraint setConstant:p_artworkSize->height];
-  v4 = [(UILabel *)self->_titleLabel text];
-  v5 = [v4 length];
+  text = [(UILabel *)self->_titleLabel text];
+  v5 = [text length];
 
   if (v5)
   {
@@ -343,13 +343,13 @@
   subtitleBaselineConstraint = self->_subtitleBaselineConstraint;
   if (subtitleBaselineConstraint)
   {
-    v10 = [(NSLayoutConstraint *)subtitleBaselineConstraint secondItem];
-    v11 = v10;
-    if (v10 == v8)
+    secondItem = [(NSLayoutConstraint *)subtitleBaselineConstraint secondItem];
+    v11 = secondItem;
+    if (secondItem == v8)
     {
-      v12 = [(NSLayoutConstraint *)self->_subtitleBaselineConstraint secondAttribute];
+      secondAttribute = [(NSLayoutConstraint *)self->_subtitleBaselineConstraint secondAttribute];
 
-      if (v12 == v7)
+      if (secondAttribute == v7)
       {
         goto LABEL_9;
       }
@@ -372,14 +372,14 @@ LABEL_9:
 
   v14 = MEMORY[0x1E69AD980];
   subtitleLabel = self->_subtitleLabel;
-  v16 = [(VideosExtrasLockupCollectionViewCell *)self subtitleTextStyle];
-  v17 = [v14 constraintWithAutoupdatingBaselineOfView:subtitleLabel relation:0 toView:v8 attribute:v7 withTextStyle:v16 multiplier:1.0 nonStandardLeading:20.0];
+  subtitleTextStyle = [(VideosExtrasLockupCollectionViewCell *)self subtitleTextStyle];
+  v17 = [v14 constraintWithAutoupdatingBaselineOfView:subtitleLabel relation:0 toView:v8 attribute:v7 withTextStyle:subtitleTextStyle multiplier:1.0 nonStandardLeading:20.0];
   v18 = self->_subtitleBaselineConstraint;
   self->_subtitleBaselineConstraint = v17;
 
 LABEL_11:
-  v19 = [(UILabel *)self->_subtitleLabel text];
-  if ([v19 length])
+  text2 = [(UILabel *)self->_subtitleLabel text];
+  if ([text2 length])
   {
     p_subtitleLabel = &self->_subtitleLabel;
   }
@@ -391,17 +391,17 @@ LABEL_11:
 
   v21 = *p_subtitleLabel;
 
-  v22 = [(UILabel *)v21 text];
-  v23 = [v22 length];
+  text3 = [(UILabel *)v21 text];
+  v23 = [text3 length];
 
   if (v23)
   {
-    v24 = v21;
+    selfCopy = v21;
   }
 
   else
   {
-    v24 = self;
+    selfCopy = self;
   }
 
   if (v23)
@@ -414,20 +414,20 @@ LABEL_11:
     v25 = 3;
   }
 
-  v26 = v24;
+  v26 = selfCopy;
   descriptionBaselineConstraint = self->_descriptionBaselineConstraint;
   if (!descriptionBaselineConstraint)
   {
     goto LABEL_26;
   }
 
-  v28 = [(NSLayoutConstraint *)descriptionBaselineConstraint secondItem];
-  v29 = v28;
-  if (v28 == v26)
+  secondItem2 = [(NSLayoutConstraint *)descriptionBaselineConstraint secondItem];
+  v29 = secondItem2;
+  if (secondItem2 == v26)
   {
-    v30 = [(NSLayoutConstraint *)self->_descriptionBaselineConstraint secondAttribute];
+    secondAttribute2 = [(NSLayoutConstraint *)self->_descriptionBaselineConstraint secondAttribute];
 
-    if (v30 == v25)
+    if (secondAttribute2 == v25)
     {
       goto LABEL_25;
     }
@@ -447,8 +447,8 @@ LABEL_25:
 LABEL_26:
     v32 = MEMORY[0x1E69AD980];
     descriptionLabel = self->_descriptionLabel;
-    v34 = [(VideosExtrasLockupCollectionViewCell *)self descriptionTextStyle];
-    v35 = [v32 constraintWithAutoupdatingBaselineOfView:descriptionLabel toView:v26 attribute:v25 withTextStyle:v34 nonStandardLeading:30.0];
+    descriptionTextStyle = [(VideosExtrasLockupCollectionViewCell *)self descriptionTextStyle];
+    v35 = [v32 constraintWithAutoupdatingBaselineOfView:descriptionLabel toView:v26 attribute:v25 withTextStyle:descriptionTextStyle nonStandardLeading:30.0];
     v36 = self->_descriptionBaselineConstraint;
     self->_descriptionBaselineConstraint = v35;
 
@@ -460,11 +460,11 @@ LABEL_26:
   [(VideosExtrasLockupCollectionViewCell *)&v37 updateConstraints];
 }
 
-- (void)setZoomingImageTransitionIdentifier:(id)a3
+- (void)setZoomingImageTransitionIdentifier:(id)identifier
 {
-  if (self->_zoomingImageTransitionIdentifier != a3)
+  if (self->_zoomingImageTransitionIdentifier != identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     zoomingImageTransitionIdentifier = self->_zoomingImageTransitionIdentifier;
     self->_zoomingImageTransitionIdentifier = v4;
 
@@ -475,45 +475,45 @@ LABEL_26:
   }
 }
 
-- (void)prepareZoomingImageTransitionWithContext:(id)a3
+- (void)prepareZoomingImageTransitionWithContext:(id)context
 {
-  v7 = a3;
-  if ([v7 appearState] == 1)
+  contextCopy = context;
+  if ([contextCopy appearState] == 1)
   {
-    v4 = [v7 zoomingImageView];
-    v5 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
-    [v4 replicateStateFromImageView:v5];
+    zoomingImageView = [contextCopy zoomingImageView];
+    artworkView = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
+    [zoomingImageView replicateStateFromImageView:artworkView];
   }
 
-  v6 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
-  [v6 setHidden:1];
+  artworkView2 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
+  [artworkView2 setHidden:1];
 }
 
-- (void)performZoomingImageTransitionWithContext:(id)a3
+- (void)performZoomingImageTransitionWithContext:(id)context
 {
-  v6 = a3;
-  if (![v6 appearState])
+  contextCopy = context;
+  if (![contextCopy appearState])
   {
-    v4 = [v6 zoomingImageView];
-    v5 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
-    [v4 replicateStateFromImageView:v5];
+    zoomingImageView = [contextCopy zoomingImageView];
+    artworkView = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
+    [zoomingImageView replicateStateFromImageView:artworkView];
   }
 }
 
-- (void)finalizeZoomingImageTransitionWithContext:(id)a3 transitionFinished:(BOOL)a4
+- (void)finalizeZoomingImageTransitionWithContext:(id)context transitionFinished:(BOOL)finished
 {
-  v4 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView:a3];
+  v4 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView:context];
   [v4 setHidden:0];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = VideosExtrasLockupCollectionViewCell;
   [(VideosExtrasLockupCollectionViewCell *)&v6 setHighlighted:?];
-  v5 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
-  [v5 setHighlighted:v3];
+  artworkView = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainerView artworkView];
+  [artworkView setHighlighted:highlightedCopy];
 }
 
 - (IKLockupElement)lockup

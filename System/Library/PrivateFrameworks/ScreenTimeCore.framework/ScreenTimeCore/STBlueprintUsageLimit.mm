@@ -1,24 +1,24 @@
 @interface STBlueprintUsageLimit
 + (id)limitKeyPaths;
-- (BOOL)_validateBlueprint:(id)a3;
-- (BOOL)_validateIdentifiers:(id)a3;
-- (BOOL)updateWithDictionaryRepresentation:(id)a3;
-- (BOOL)validateForDelete:(id *)a3;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
+- (BOOL)_validateBlueprint:(id)blueprint;
+- (BOOL)_validateIdentifiers:(id)identifiers;
+- (BOOL)updateWithDictionaryRepresentation:(id)representation;
+- (BOOL)validateForDelete:(id *)delete;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 - (STBlueprintUsageLimitScheduleRepresentation)budgetLimitScheduleRepresentation;
 - (id)dictionaryRepresentation;
-- (void)_usageLimitDidChangeFromOldApplicationIdentifiers:(id)a3 oldCategoryIdentifiers:(id)a4 oldCategoryIdentifiersVersion2:(id)a5 oldWebDomains:(id)a6 oldItemIdentifiers:(id)a7 oldItemType:(id)a8 toNewApplicationIdentifiers:(id)a9 newCategoryIdentifiers:(id)a10 newCategoryIdentifiersVersion2:(id)a11 newWebDomains:(id)a12 newItemIdentifiers:(id)a13 newItemType:(id)a14;
+- (void)_usageLimitDidChangeFromOldApplicationIdentifiers:(id)identifiers oldCategoryIdentifiers:(id)categoryIdentifiers oldCategoryIdentifiersVersion2:(id)version2 oldWebDomains:(id)domains oldItemIdentifiers:(id)itemIdentifiers oldItemType:(id)type toNewApplicationIdentifiers:(id)applicationIdentifiers newCategoryIdentifiers:(id)self0 newCategoryIdentifiersVersion2:(id)self1 newWebDomains:(id)self2 newItemIdentifiers:(id)self3 newItemType:(id)self4;
 - (void)awakeFromFetch;
-- (void)setApplicationIdentifiers:(id)a3;
-- (void)setBudgetLimit:(double)a3;
-- (void)setBudgetLimit:(double)a3 forDay:(unint64_t)a4;
-- (void)setBudgetLimitScheduleRepresentation:(id)a3;
-- (void)setCategoryIdentifiers:(id)a3;
-- (void)setCategoryIdentifiersVersion2:(id)a3;
-- (void)setItemIdentifiers:(id)a3;
-- (void)setUsageItemType:(id)a3;
-- (void)setWebsiteIdentifiers:(id)a3;
+- (void)setApplicationIdentifiers:(id)identifiers;
+- (void)setBudgetLimit:(double)limit;
+- (void)setBudgetLimit:(double)limit forDay:(unint64_t)day;
+- (void)setBudgetLimitScheduleRepresentation:(id)representation;
+- (void)setCategoryIdentifiers:(id)identifiers;
+- (void)setCategoryIdentifiersVersion2:(id)version2;
+- (void)setItemIdentifiers:(id)identifiers;
+- (void)setUsageItemType:(id)type;
+- (void)setWebsiteIdentifiers:(id)identifiers;
 @end
 
 @implementation STBlueprintUsageLimit
@@ -28,126 +28,126 @@
   v9.receiver = self;
   v9.super_class = STBlueprintUsageLimit;
   [(STBlueprintUsageLimit *)&v9 awakeFromFetch];
-  v3 = [(STBlueprintUsageLimit *)self applicationIdentifiers];
-  v4 = [(STBlueprintUsageLimit *)self categoryIdentifiers];
-  v5 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
-  v6 = [(STBlueprintUsageLimit *)self websiteIdentifiers];
-  v7 = [(STBlueprintUsageLimit *)self itemIdentifiers];
-  v8 = [(STBlueprintUsageLimit *)self usageItemType];
-  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:0 oldCategoryIdentifiers:0 oldCategoryIdentifiersVersion2:0 oldWebDomains:0 oldItemIdentifiers:0 oldItemType:0 toNewApplicationIdentifiers:v3 newCategoryIdentifiers:v4 newCategoryIdentifiersVersion2:v5 newWebDomains:v6 newItemIdentifiers:v7 newItemType:v8];
+  applicationIdentifiers = [(STBlueprintUsageLimit *)self applicationIdentifiers];
+  categoryIdentifiers = [(STBlueprintUsageLimit *)self categoryIdentifiers];
+  categoryIdentifiersVersion2 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
+  websiteIdentifiers = [(STBlueprintUsageLimit *)self websiteIdentifiers];
+  itemIdentifiers = [(STBlueprintUsageLimit *)self itemIdentifiers];
+  usageItemType = [(STBlueprintUsageLimit *)self usageItemType];
+  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:0 oldCategoryIdentifiers:0 oldCategoryIdentifiersVersion2:0 oldWebDomains:0 oldItemIdentifiers:0 oldItemType:0 toNewApplicationIdentifiers:applicationIdentifiers newCategoryIdentifiers:categoryIdentifiers newCategoryIdentifiersVersion2:categoryIdentifiersVersion2 newWebDomains:websiteIdentifiers newItemIdentifiers:itemIdentifiers newItemType:usageItemType];
 }
 
-- (void)setApplicationIdentifiers:(id)a3
+- (void)setApplicationIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v10 = [(STBlueprintUsageLimit *)self applicationIdentifiers];
-  [(STBlueprintUsageLimit *)self managedObjectOriginal_setApplicationIdentifiers:v4];
-  v5 = [(STBlueprintUsageLimit *)self categoryIdentifiers];
-  v6 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
-  v7 = [(STBlueprintUsageLimit *)self websiteIdentifiers];
-  v8 = [(STBlueprintUsageLimit *)self itemIdentifiers];
-  v9 = [(STBlueprintUsageLimit *)self usageItemType];
-  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:v10 oldCategoryIdentifiers:v5 oldCategoryIdentifiersVersion2:v6 oldWebDomains:v7 oldItemIdentifiers:v8 oldItemType:v9 toNewApplicationIdentifiers:v4 newCategoryIdentifiers:v5 newCategoryIdentifiersVersion2:v6 newWebDomains:v7 newItemIdentifiers:v8 newItemType:v9];
+  identifiersCopy = identifiers;
+  applicationIdentifiers = [(STBlueprintUsageLimit *)self applicationIdentifiers];
+  [(STBlueprintUsageLimit *)self managedObjectOriginal_setApplicationIdentifiers:identifiersCopy];
+  categoryIdentifiers = [(STBlueprintUsageLimit *)self categoryIdentifiers];
+  categoryIdentifiersVersion2 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
+  websiteIdentifiers = [(STBlueprintUsageLimit *)self websiteIdentifiers];
+  itemIdentifiers = [(STBlueprintUsageLimit *)self itemIdentifiers];
+  usageItemType = [(STBlueprintUsageLimit *)self usageItemType];
+  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:applicationIdentifiers oldCategoryIdentifiers:categoryIdentifiers oldCategoryIdentifiersVersion2:categoryIdentifiersVersion2 oldWebDomains:websiteIdentifiers oldItemIdentifiers:itemIdentifiers oldItemType:usageItemType toNewApplicationIdentifiers:identifiersCopy newCategoryIdentifiers:categoryIdentifiers newCategoryIdentifiersVersion2:categoryIdentifiersVersion2 newWebDomains:websiteIdentifiers newItemIdentifiers:itemIdentifiers newItemType:usageItemType];
 }
 
-- (void)setCategoryIdentifiers:(id)a3
+- (void)setCategoryIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v10 = [(STBlueprintUsageLimit *)self categoryIdentifiers];
-  [(STBlueprintUsageLimit *)self managedObjectOriginal_setCategoryIdentifiers:v4];
-  v5 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
-  v6 = [(STBlueprintUsageLimit *)self applicationIdentifiers];
-  v7 = [(STBlueprintUsageLimit *)self websiteIdentifiers];
-  v8 = [(STBlueprintUsageLimit *)self itemIdentifiers];
-  v9 = [(STBlueprintUsageLimit *)self usageItemType];
-  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:v6 oldCategoryIdentifiers:v10 oldCategoryIdentifiersVersion2:v5 oldWebDomains:v7 oldItemIdentifiers:v8 oldItemType:v9 toNewApplicationIdentifiers:v6 newCategoryIdentifiers:v4 newCategoryIdentifiersVersion2:v5 newWebDomains:v7 newItemIdentifiers:v8 newItemType:v9];
+  identifiersCopy = identifiers;
+  categoryIdentifiers = [(STBlueprintUsageLimit *)self categoryIdentifiers];
+  [(STBlueprintUsageLimit *)self managedObjectOriginal_setCategoryIdentifiers:identifiersCopy];
+  categoryIdentifiersVersion2 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
+  applicationIdentifiers = [(STBlueprintUsageLimit *)self applicationIdentifiers];
+  websiteIdentifiers = [(STBlueprintUsageLimit *)self websiteIdentifiers];
+  itemIdentifiers = [(STBlueprintUsageLimit *)self itemIdentifiers];
+  usageItemType = [(STBlueprintUsageLimit *)self usageItemType];
+  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:applicationIdentifiers oldCategoryIdentifiers:categoryIdentifiers oldCategoryIdentifiersVersion2:categoryIdentifiersVersion2 oldWebDomains:websiteIdentifiers oldItemIdentifiers:itemIdentifiers oldItemType:usageItemType toNewApplicationIdentifiers:applicationIdentifiers newCategoryIdentifiers:identifiersCopy newCategoryIdentifiersVersion2:categoryIdentifiersVersion2 newWebDomains:websiteIdentifiers newItemIdentifiers:itemIdentifiers newItemType:usageItemType];
 }
 
-- (void)setCategoryIdentifiersVersion2:(id)a3
+- (void)setCategoryIdentifiersVersion2:(id)version2
 {
-  v4 = a3;
-  v10 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
-  [(STBlueprintUsageLimit *)self managedObjectOriginal_setCategoryIdentifiersVersion2:v4];
-  v5 = [(STBlueprintUsageLimit *)self categoryIdentifiers];
-  v6 = [(STBlueprintUsageLimit *)self applicationIdentifiers];
-  v7 = [(STBlueprintUsageLimit *)self websiteIdentifiers];
-  v8 = [(STBlueprintUsageLimit *)self itemIdentifiers];
-  v9 = [(STBlueprintUsageLimit *)self usageItemType];
-  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:v6 oldCategoryIdentifiers:v5 oldCategoryIdentifiersVersion2:v10 oldWebDomains:v7 oldItemIdentifiers:v8 oldItemType:v9 toNewApplicationIdentifiers:v6 newCategoryIdentifiers:v5 newCategoryIdentifiersVersion2:v4 newWebDomains:v7 newItemIdentifiers:v8 newItemType:v9];
+  version2Copy = version2;
+  categoryIdentifiersVersion2 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
+  [(STBlueprintUsageLimit *)self managedObjectOriginal_setCategoryIdentifiersVersion2:version2Copy];
+  categoryIdentifiers = [(STBlueprintUsageLimit *)self categoryIdentifiers];
+  applicationIdentifiers = [(STBlueprintUsageLimit *)self applicationIdentifiers];
+  websiteIdentifiers = [(STBlueprintUsageLimit *)self websiteIdentifiers];
+  itemIdentifiers = [(STBlueprintUsageLimit *)self itemIdentifiers];
+  usageItemType = [(STBlueprintUsageLimit *)self usageItemType];
+  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:applicationIdentifiers oldCategoryIdentifiers:categoryIdentifiers oldCategoryIdentifiersVersion2:categoryIdentifiersVersion2 oldWebDomains:websiteIdentifiers oldItemIdentifiers:itemIdentifiers oldItemType:usageItemType toNewApplicationIdentifiers:applicationIdentifiers newCategoryIdentifiers:categoryIdentifiers newCategoryIdentifiersVersion2:version2Copy newWebDomains:websiteIdentifiers newItemIdentifiers:itemIdentifiers newItemType:usageItemType];
 }
 
-- (void)setWebsiteIdentifiers:(id)a3
+- (void)setWebsiteIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v10 = [(STBlueprintUsageLimit *)self websiteIdentifiers];
-  [(STBlueprintUsageLimit *)self managedObjectOriginal_setWebsiteIdentifiers:v4];
-  v5 = [(STBlueprintUsageLimit *)self applicationIdentifiers];
-  v6 = [(STBlueprintUsageLimit *)self categoryIdentifiers];
-  v7 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
-  v8 = [(STBlueprintUsageLimit *)self itemIdentifiers];
-  v9 = [(STBlueprintUsageLimit *)self usageItemType];
-  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:v5 oldCategoryIdentifiers:v6 oldCategoryIdentifiersVersion2:v7 oldWebDomains:v10 oldItemIdentifiers:v8 oldItemType:v9 toNewApplicationIdentifiers:v5 newCategoryIdentifiers:v6 newCategoryIdentifiersVersion2:v7 newWebDomains:v4 newItemIdentifiers:v8 newItemType:v9];
+  identifiersCopy = identifiers;
+  websiteIdentifiers = [(STBlueprintUsageLimit *)self websiteIdentifiers];
+  [(STBlueprintUsageLimit *)self managedObjectOriginal_setWebsiteIdentifiers:identifiersCopy];
+  applicationIdentifiers = [(STBlueprintUsageLimit *)self applicationIdentifiers];
+  categoryIdentifiers = [(STBlueprintUsageLimit *)self categoryIdentifiers];
+  categoryIdentifiersVersion2 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
+  itemIdentifiers = [(STBlueprintUsageLimit *)self itemIdentifiers];
+  usageItemType = [(STBlueprintUsageLimit *)self usageItemType];
+  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:applicationIdentifiers oldCategoryIdentifiers:categoryIdentifiers oldCategoryIdentifiersVersion2:categoryIdentifiersVersion2 oldWebDomains:websiteIdentifiers oldItemIdentifiers:itemIdentifiers oldItemType:usageItemType toNewApplicationIdentifiers:applicationIdentifiers newCategoryIdentifiers:categoryIdentifiers newCategoryIdentifiersVersion2:categoryIdentifiersVersion2 newWebDomains:identifiersCopy newItemIdentifiers:itemIdentifiers newItemType:usageItemType];
 }
 
-- (void)setItemIdentifiers:(id)a3
+- (void)setItemIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v10 = [(STBlueprintUsageLimit *)self itemIdentifiers];
-  [(STBlueprintUsageLimit *)self managedObjectOriginal_setItemIdentifiers:v4];
-  v5 = [(STBlueprintUsageLimit *)self applicationIdentifiers];
-  v6 = [(STBlueprintUsageLimit *)self categoryIdentifiers];
-  v7 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
-  v8 = [(STBlueprintUsageLimit *)self websiteIdentifiers];
-  v9 = [(STBlueprintUsageLimit *)self usageItemType];
-  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:v5 oldCategoryIdentifiers:v6 oldCategoryIdentifiersVersion2:v7 oldWebDomains:v8 oldItemIdentifiers:v10 oldItemType:v9 toNewApplicationIdentifiers:v5 newCategoryIdentifiers:v6 newCategoryIdentifiersVersion2:v7 newWebDomains:v8 newItemIdentifiers:v4 newItemType:v9];
+  identifiersCopy = identifiers;
+  itemIdentifiers = [(STBlueprintUsageLimit *)self itemIdentifiers];
+  [(STBlueprintUsageLimit *)self managedObjectOriginal_setItemIdentifiers:identifiersCopy];
+  applicationIdentifiers = [(STBlueprintUsageLimit *)self applicationIdentifiers];
+  categoryIdentifiers = [(STBlueprintUsageLimit *)self categoryIdentifiers];
+  categoryIdentifiersVersion2 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
+  websiteIdentifiers = [(STBlueprintUsageLimit *)self websiteIdentifiers];
+  usageItemType = [(STBlueprintUsageLimit *)self usageItemType];
+  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:applicationIdentifiers oldCategoryIdentifiers:categoryIdentifiers oldCategoryIdentifiersVersion2:categoryIdentifiersVersion2 oldWebDomains:websiteIdentifiers oldItemIdentifiers:itemIdentifiers oldItemType:usageItemType toNewApplicationIdentifiers:applicationIdentifiers newCategoryIdentifiers:categoryIdentifiers newCategoryIdentifiersVersion2:categoryIdentifiersVersion2 newWebDomains:websiteIdentifiers newItemIdentifiers:identifiersCopy newItemType:usageItemType];
 }
 
-- (void)setUsageItemType:(id)a3
+- (void)setUsageItemType:(id)type
 {
-  v4 = a3;
-  v10 = [(STBlueprintUsageLimit *)self usageItemType];
-  [(STBlueprintUsageLimit *)self managedObjectOriginal_setUsageItemType:v4];
-  v5 = [(STBlueprintUsageLimit *)self applicationIdentifiers];
-  v6 = [(STBlueprintUsageLimit *)self categoryIdentifiers];
-  v7 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
-  v8 = [(STBlueprintUsageLimit *)self websiteIdentifiers];
-  v9 = [(STBlueprintUsageLimit *)self itemIdentifiers];
-  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:v5 oldCategoryIdentifiers:v6 oldCategoryIdentifiersVersion2:v7 oldWebDomains:v8 oldItemIdentifiers:v9 oldItemType:v10 toNewApplicationIdentifiers:v5 newCategoryIdentifiers:v6 newCategoryIdentifiersVersion2:v7 newWebDomains:v8 newItemIdentifiers:v9 newItemType:v4];
+  typeCopy = type;
+  usageItemType = [(STBlueprintUsageLimit *)self usageItemType];
+  [(STBlueprintUsageLimit *)self managedObjectOriginal_setUsageItemType:typeCopy];
+  applicationIdentifiers = [(STBlueprintUsageLimit *)self applicationIdentifiers];
+  categoryIdentifiers = [(STBlueprintUsageLimit *)self categoryIdentifiers];
+  categoryIdentifiersVersion2 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
+  websiteIdentifiers = [(STBlueprintUsageLimit *)self websiteIdentifiers];
+  itemIdentifiers = [(STBlueprintUsageLimit *)self itemIdentifiers];
+  [(STBlueprintUsageLimit *)self _usageLimitDidChangeFromOldApplicationIdentifiers:applicationIdentifiers oldCategoryIdentifiers:categoryIdentifiers oldCategoryIdentifiersVersion2:categoryIdentifiersVersion2 oldWebDomains:websiteIdentifiers oldItemIdentifiers:itemIdentifiers oldItemType:usageItemType toNewApplicationIdentifiers:applicationIdentifiers newCategoryIdentifiers:categoryIdentifiers newCategoryIdentifiersVersion2:categoryIdentifiersVersion2 newWebDomains:websiteIdentifiers newItemIdentifiers:itemIdentifiers newItemType:typeCopy];
 }
 
-- (void)_usageLimitDidChangeFromOldApplicationIdentifiers:(id)a3 oldCategoryIdentifiers:(id)a4 oldCategoryIdentifiersVersion2:(id)a5 oldWebDomains:(id)a6 oldItemIdentifiers:(id)a7 oldItemType:(id)a8 toNewApplicationIdentifiers:(id)a9 newCategoryIdentifiers:(id)a10 newCategoryIdentifiersVersion2:(id)a11 newWebDomains:(id)a12 newItemIdentifiers:(id)a13 newItemType:(id)a14
+- (void)_usageLimitDidChangeFromOldApplicationIdentifiers:(id)identifiers oldCategoryIdentifiers:(id)categoryIdentifiers oldCategoryIdentifiersVersion2:(id)version2 oldWebDomains:(id)domains oldItemIdentifiers:(id)itemIdentifiers oldItemType:(id)type toNewApplicationIdentifiers:(id)applicationIdentifiers newCategoryIdentifiers:(id)self0 newCategoryIdentifiersVersion2:(id)self1 newWebDomains:(id)self2 newItemIdentifiers:(id)self3 newItemType:(id)self4
 {
   v54[2] = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v51 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
-  v28 = a13;
-  v50 = a14;
-  v52 = v19;
-  if ([v19 count] || objc_msgSend(v20, "count") || objc_msgSend(v21, "count") || objc_msgSend(v22, "count") || (v29 = objc_msgSend(v51, "isEqualToString:", @"app"), v30 = v23, (v29 & 1) == 0))
+  identifiersCopy = identifiers;
+  categoryIdentifiersCopy = categoryIdentifiers;
+  version2Copy = version2;
+  domainsCopy = domains;
+  itemIdentifiersCopy = itemIdentifiers;
+  typeCopy = type;
+  applicationIdentifiersCopy = applicationIdentifiers;
+  newCategoryIdentifiersCopy = newCategoryIdentifiers;
+  identifiersVersion2Copy = identifiersVersion2;
+  webDomainsCopy = webDomains;
+  newItemIdentifiersCopy = newItemIdentifiers;
+  itemTypeCopy = itemType;
+  v52 = identifiersCopy;
+  if ([identifiersCopy count] || objc_msgSend(categoryIdentifiersCopy, "count") || objc_msgSend(version2Copy, "count") || objc_msgSend(domainsCopy, "count") || (v29 = objc_msgSend(typeCopy, "isEqualToString:", @"app"), v30 = itemIdentifiersCopy, (v29 & 1) == 0))
   {
-    v30 = v19;
+    v30 = identifiersCopy;
   }
 
-  v45 = v22;
-  v46 = v23;
-  v48 = v21;
-  v49 = v20;
+  v45 = domainsCopy;
+  v46 = itemIdentifiersCopy;
+  v48 = version2Copy;
+  v49 = categoryIdentifiersCopy;
   v31 = v30;
-  if ([v24 count] || objc_msgSend(v25, "count") || objc_msgSend(v26, "count") || objc_msgSend(v27, "count") || (v32 = objc_msgSend(v50, "isEqualToString:", @"app"), v33 = v28, (v32 & 1) == 0))
+  if ([applicationIdentifiersCopy count] || objc_msgSend(newCategoryIdentifiersCopy, "count") || objc_msgSend(identifiersVersion2Copy, "count") || objc_msgSend(webDomainsCopy, "count") || (v32 = objc_msgSend(itemTypeCopy, "isEqualToString:", @"app"), v33 = newItemIdentifiersCopy, (v32 & 1) == 0))
   {
-    v33 = v24;
+    v33 = applicationIdentifiersCopy;
   }
 
-  v34 = v24;
-  v35 = v26;
+  v34 = applicationIdentifiersCopy;
+  v35 = identifiersVersion2Copy;
   v36 = MEMORY[0x1E695E0F0];
   if (v31)
   {
@@ -175,10 +175,10 @@
   v54[0] = v37;
   v54[1] = v39;
   v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:v53 count:2];
-  v41 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   [(STBlueprintUsageLimit *)self blueprint];
-  v43 = v42 = v25;
-  [v41 postNotificationName:@"LimitedApplicationsDidChange" object:v43 userInfo:v40];
+  v43 = v42 = newCategoryIdentifiersCopy;
+  [defaultCenter postNotificationName:@"LimitedApplicationsDidChange" object:v43 userInfo:v40];
 
   v44 = *MEMORY[0x1E69E9840];
 }
@@ -252,7 +252,7 @@ LABEL_10:
   return v3;
 }
 
-- (void)setBudgetLimit:(double)a3
+- (void)setBudgetLimit:(double)limit
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -276,7 +276,7 @@ LABEL_10:
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+        v11 = [MEMORY[0x1E696AD98] numberWithDouble:limit];
         [(STBlueprintUsageLimit *)self setValue:v11 forKeyPath:v10];
 
         ++v9;
@@ -292,28 +292,28 @@ LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setBudgetLimit:(double)a3 forDay:(unint64_t)a4
+- (void)setBudgetLimit:(double)limit forDay:(unint64_t)day
 {
-  if (a4 - 8 <= 0xFFFFFFFFFFFFFFF8)
+  if (day - 8 <= 0xFFFFFFFFFFFFFFF8)
   {
     [STBlueprintUsageLimit setBudgetLimit:a2 forDay:self];
   }
 
   v9 = +[STBlueprintUsageLimit limitKeyPaths];
-  v7 = [v9 objectAtIndexedSubscript:a4 - 1];
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v7 = [v9 objectAtIndexedSubscript:day - 1];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:limit];
   [(STBlueprintUsageLimit *)self setValue:v8 forKeyPath:v7];
 }
 
-- (void)setBudgetLimitScheduleRepresentation:(id)a3
+- (void)setBudgetLimitScheduleRepresentation:(id)representation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 simpleSchedule];
-  v6 = v5;
-  if (v5)
+  representationCopy = representation;
+  simpleSchedule = [representationCopy simpleSchedule];
+  v6 = simpleSchedule;
+  if (simpleSchedule)
   {
-    [v5 budgetLimit];
+    [simpleSchedule budgetLimit];
     [(STBlueprintUsageLimit *)self setBudgetLimit:?];
   }
 
@@ -321,8 +321,8 @@ LABEL_10:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v4 customScheduleItems];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  customScheduleItems = [representationCopy customScheduleItems];
+  v8 = [customScheduleItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -333,7 +333,7 @@ LABEL_10:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(customScheduleItems);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
@@ -341,7 +341,7 @@ LABEL_10:
         -[STBlueprintUsageLimit setBudgetLimit:forDay:](self, "setBudgetLimit:forDay:", [v12 day], v13);
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [customScheduleItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -350,29 +350,29 @@ LABEL_10:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateWithDictionaryRepresentation:(id)a3
+- (BOOL)updateWithDictionaryRepresentation:(id)representation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"applicationIdentifiers"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"applicationIdentifiers"];
   [(STBlueprintUsageLimit *)self setApplicationIdentifiers:v5];
 
-  v6 = [v4 objectForKeyedSubscript:@"categoryIdentifiers"];
+  v6 = [representationCopy objectForKeyedSubscript:@"categoryIdentifiers"];
   [(STBlueprintUsageLimit *)self setCategoryIdentifiers:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"categoryIdentifiersVersion2"];
+  v7 = [representationCopy objectForKeyedSubscript:@"categoryIdentifiersVersion2"];
   [(STBlueprintUsageLimit *)self setCategoryIdentifiersVersion2:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"websiteIdentifiers"];
+  v8 = [representationCopy objectForKeyedSubscript:@"websiteIdentifiers"];
   [(STBlueprintUsageLimit *)self setWebsiteIdentifiers:v8];
 
-  v9 = [v4 objectForKeyedSubscript:@"itemIdentifiers"];
+  v9 = [representationCopy objectForKeyedSubscript:@"itemIdentifiers"];
   [(STBlueprintUsageLimit *)self setItemIdentifiers:v9];
 
-  v10 = [v4 objectForKeyedSubscript:@"usageItemType"];
+  v10 = [representationCopy objectForKeyedSubscript:@"usageItemType"];
   [(STBlueprintUsageLimit *)self setUsageItemType:v10];
 
-  v11 = [v4 objectForKeyedSubscript:@"notificationTimeInterval"];
+  v11 = [representationCopy objectForKeyedSubscript:@"notificationTimeInterval"];
   [(STBlueprintUsageLimit *)self setNotificationTimeInterval:v11];
 
   v12 = +[STBlueprintUsageLimit limitKeyPaths];
@@ -395,7 +395,7 @@ LABEL_10:
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        v18 = [v4 objectForKeyedSubscript:v17];
+        v18 = [representationCopy objectForKeyedSubscript:v17];
         [(STBlueprintUsageLimit *)self setValue:v18 forKeyPath:v17];
       }
 
@@ -413,26 +413,26 @@ LABEL_10:
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(STBlueprintUsageLimit *)self applicationIdentifiers];
-  [v3 setObject:v4 forKeyedSubscript:@"applicationIdentifiers"];
+  applicationIdentifiers = [(STBlueprintUsageLimit *)self applicationIdentifiers];
+  [v3 setObject:applicationIdentifiers forKeyedSubscript:@"applicationIdentifiers"];
 
-  v5 = [(STBlueprintUsageLimit *)self categoryIdentifiers];
-  [v3 setObject:v5 forKeyedSubscript:@"categoryIdentifiers"];
+  categoryIdentifiers = [(STBlueprintUsageLimit *)self categoryIdentifiers];
+  [v3 setObject:categoryIdentifiers forKeyedSubscript:@"categoryIdentifiers"];
 
-  v6 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
-  [v3 setObject:v6 forKeyedSubscript:@"categoryIdentifiersVersion2"];
+  categoryIdentifiersVersion2 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
+  [v3 setObject:categoryIdentifiersVersion2 forKeyedSubscript:@"categoryIdentifiersVersion2"];
 
-  v7 = [(STBlueprintUsageLimit *)self websiteIdentifiers];
-  [v3 setObject:v7 forKeyedSubscript:@"websiteIdentifiers"];
+  websiteIdentifiers = [(STBlueprintUsageLimit *)self websiteIdentifiers];
+  [v3 setObject:websiteIdentifiers forKeyedSubscript:@"websiteIdentifiers"];
 
-  v8 = [(STBlueprintUsageLimit *)self itemIdentifiers];
-  [v3 setObject:v8 forKeyedSubscript:@"itemIdentifiers"];
+  itemIdentifiers = [(STBlueprintUsageLimit *)self itemIdentifiers];
+  [v3 setObject:itemIdentifiers forKeyedSubscript:@"itemIdentifiers"];
 
-  v9 = [(STBlueprintUsageLimit *)self usageItemType];
-  [v3 setObject:v9 forKeyedSubscript:@"usageItemType"];
+  usageItemType = [(STBlueprintUsageLimit *)self usageItemType];
+  [v3 setObject:usageItemType forKeyedSubscript:@"usageItemType"];
 
-  v10 = [(STBlueprintUsageLimit *)self notificationTimeInterval];
-  [v3 setObject:v10 forKeyedSubscript:@"notificationTimeInterval"];
+  notificationTimeInterval = [(STBlueprintUsageLimit *)self notificationTimeInterval];
+  [v3 setObject:notificationTimeInterval forKeyedSubscript:@"notificationTimeInterval"];
 
   v11 = +[STBlueprintUsageLimit limitKeyPaths];
   v21 = 0u;
@@ -471,7 +471,7 @@ LABEL_10:
   return v18;
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v10.receiver = self;
   v10.super_class = STBlueprintUsageLimit;
@@ -490,13 +490,13 @@ LABEL_10:
       v6 = +[STLog coreDataValidation];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
-        [STBlueprintUsageLimit validateForUpdate:a3];
+        [STBlueprintUsageLimit validateForUpdate:update];
       }
     }
 
     v9.receiver = self;
     v9.super_class = STBlueprintUsageLimit;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:update otherErrors:v5];
   }
 
   else
@@ -504,7 +504,7 @@ LABEL_10:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STBlueprintUsageLimit validateForUpdate:a3];
+      [STBlueprintUsageLimit validateForUpdate:update];
     }
 
     v7 = 0;
@@ -513,7 +513,7 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v10.receiver = self;
   v10.super_class = STBlueprintUsageLimit;
@@ -532,13 +532,13 @@ LABEL_10:
       v6 = +[STLog coreDataValidation];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
-        [STBlueprintUsageLimit validateForInsert:a3];
+        [STBlueprintUsageLimit validateForInsert:insert];
       }
     }
 
     v9.receiver = self;
     v9.super_class = STBlueprintUsageLimit;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:insert otherErrors:v5];
   }
 
   else
@@ -546,7 +546,7 @@ LABEL_10:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STBlueprintUsageLimit validateForInsert:a3];
+      [STBlueprintUsageLimit validateForInsert:insert];
     }
 
     v7 = 0;
@@ -555,7 +555,7 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)validateForDelete:(id *)a3
+- (BOOL)validateForDelete:(id *)delete
 {
   v10.receiver = self;
   v10.super_class = STBlueprintUsageLimit;
@@ -572,13 +572,13 @@ LABEL_10:
       v6 = +[STLog coreDataValidation];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
-        [STBlueprintUsageLimit validateForDelete:a3];
+        [STBlueprintUsageLimit validateForDelete:delete];
       }
     }
 
     v9.receiver = self;
     v9.super_class = STBlueprintUsageLimit;
-    v7 = [(NSManagedObject *)&v9 parseValidationErrors:a3 otherErrors:v5];
+    v7 = [(NSManagedObject *)&v9 parseValidationErrors:delete otherErrors:v5];
   }
 
   else
@@ -586,7 +586,7 @@ LABEL_10:
     v5 = +[STLog coreDataValidation];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [STBlueprintUsageLimit validateForDelete:a3];
+      [STBlueprintUsageLimit validateForDelete:delete];
     }
 
     v7 = 0;
@@ -595,56 +595,56 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)_validateBlueprint:(id)a3
+- (BOOL)_validateBlueprint:(id)blueprint
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(STBlueprintUsageLimit *)self blueprint];
+  blueprintCopy = blueprint;
+  blueprint = [(STBlueprintUsageLimit *)self blueprint];
 
-  if (!v5)
+  if (!blueprint)
   {
     v6 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A578];
     v12[0] = @"STBlueprintUsageLimit is missing a blueprint.";
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v8 = [v6 errorWithDomain:@"STErrorDomain" code:547 userInfo:v7];
-    [v4 addObject:v8];
+    [blueprintCopy addObject:v8];
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v5 != 0;
+  return blueprint != 0;
 }
 
-- (BOOL)_validateIdentifiers:(id)a3
+- (BOOL)_validateIdentifiers:(id)identifiers
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(STBlueprintUsageLimit *)self applicationIdentifiers];
-  if (!v5)
+  identifiersCopy = identifiers;
+  applicationIdentifiers = [(STBlueprintUsageLimit *)self applicationIdentifiers];
+  if (!applicationIdentifiers)
   {
     goto LABEL_8;
   }
 
-  v6 = v5;
-  v7 = [(STBlueprintUsageLimit *)self categoryIdentifiers];
-  if (!v7)
+  v6 = applicationIdentifiers;
+  categoryIdentifiers = [(STBlueprintUsageLimit *)self categoryIdentifiers];
+  if (!categoryIdentifiers)
   {
     goto LABEL_7;
   }
 
-  v8 = v7;
-  v9 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
-  if (!v9)
+  v8 = categoryIdentifiers;
+  categoryIdentifiersVersion2 = [(STBlueprintUsageLimit *)self categoryIdentifiersVersion2];
+  if (!categoryIdentifiersVersion2)
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = v9;
-  v11 = [(STBlueprintUsageLimit *)self websiteIdentifiers];
+  v10 = categoryIdentifiersVersion2;
+  websiteIdentifiers = [(STBlueprintUsageLimit *)self websiteIdentifiers];
 
-  if (!v11)
+  if (!websiteIdentifiers)
   {
 LABEL_8:
     v13 = MEMORY[0x1E696ABC0];
@@ -652,7 +652,7 @@ LABEL_8:
     v19[0] = @"STBlueprintUsageLimit is missing a valid identifier";
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v15 = [v13 errorWithDomain:@"STErrorDomain" code:548 userInfo:v14];
-    [v4 addObject:v15];
+    [identifiersCopy addObject:v15];
 
     v12 = 0;
     goto LABEL_9;

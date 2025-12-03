@@ -1,27 +1,27 @@
 @interface PLSDevice
-+ (unint64_t)getAriadneID:(id)a3;
-- (BOOL)hasSensor:(id)a3;
-- (BOOL)isTimer:(id)a3;
-- (PLSDevice)initWithContext:(id)a3 isLocalReplay:(BOOL)a4;
-- (id)getDomainForCameraKey:(id)a3;
-- (id)populateTimerContextForFrequency:(unint64_t)a3;
-- (unsigned)getRateForTimer:(id)a3;
-- (void)initDataStream:(id)a3 length:(unint64_t)a4 type:(unint64_t)a5 framerate:(unint64_t)a6 isShared:(BOOL)a7 domain:(id)a8;
-- (void)initIOSurfaceStream:(id)a3 framerate:(unint64_t)a4 isShared:(BOOL)a5 isExported:(BOOL)a6 domain:(id)a7;
++ (unint64_t)getAriadneID:(id)d;
+- (BOOL)hasSensor:(id)sensor;
+- (BOOL)isTimer:(id)timer;
+- (PLSDevice)initWithContext:(id)context isLocalReplay:(BOOL)replay;
+- (id)getDomainForCameraKey:(id)key;
+- (id)populateTimerContextForFrequency:(unint64_t)frequency;
+- (unsigned)getRateForTimer:(id)timer;
+- (void)initDataStream:(id)stream length:(unint64_t)length type:(unint64_t)type framerate:(unint64_t)framerate isShared:(BOOL)shared domain:(id)domain;
+- (void)initIOSurfaceStream:(id)stream framerate:(unint64_t)framerate isShared:(BOOL)shared isExported:(BOOL)exported domain:(id)domain;
 - (void)initializeIMU;
-- (void)loadPlist:(id)a3;
-- (void)loadSourceConfiguration:(id)a3;
+- (void)loadPlist:(id)plist;
+- (void)loadSourceConfiguration:(id)configuration;
 - (void)populateCameraContext;
-- (void)populateProviderTypeForStream:(id)a3;
-- (void)replaceSensors:(id)a3;
+- (void)populateProviderTypeForStream:(id)stream;
+- (void)replaceSensors:(id)sensors;
 - (void)resetSensors;
 @end
 
 @implementation PLSDevice
 
-- (PLSDevice)initWithContext:(id)a3 isLocalReplay:(BOOL)a4
+- (PLSDevice)initWithContext:(id)context isLocalReplay:(BOOL)replay
 {
-  v7 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = PLSDevice;
   v8 = [(PLSDevice *)&v14 init];
@@ -31,8 +31,8 @@
     currentSensors = v8->_currentSensors;
     v8->_currentSensors = v9;
 
-    objc_storeStrong(&v8->_context, a3);
-    if (!a4)
+    objc_storeStrong(&v8->_context, context);
+    if (!replay)
     {
       [(PLSDevice *)v8 initializeIMU];
       [(PLSDevice *)v8 initializeFastPath];
@@ -48,13 +48,13 @@
   return v8;
 }
 
-- (void)loadPlist:(id)a3
+- (void)loadPlist:(id)plist
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  plistCopy = plist;
   v9 = [v4 bundleForClass:objc_opt_class()];
   v6 = MEMORY[0x277CBEAC0];
-  v7 = [v9 pathForResource:v5 ofType:@"plist"];
+  v7 = [v9 pathForResource:plistCopy ofType:@"plist"];
 
   v8 = [v6 dictionaryWithContentsOfFile:v7];
 
@@ -72,11 +72,11 @@
   [(NSMutableDictionary *)currentSensors setObject:v34 forKeyedSubscript:v4];
 
   v5 = [(PLSSensorProperties *)v34 key];
-  v6 = [(PLSSensorProperties *)v34 sensorFrameRate];
+  sensorFrameRate = [(PLSSensorProperties *)v34 sensorFrameRate];
   v7 = MEMORY[0x277D3E6C8];
   v8 = [(PLSSensorProperties *)v34 key];
   v9 = [v7 customDomain:v8];
-  [(PLSDevice *)self initDataStream:v5 length:24 type:2 framerate:v6 isShared:0 domain:v9];
+  [(PLSDevice *)self initDataStream:v5 length:24 type:2 framerate:sensorFrameRate isShared:0 domain:v9];
 
   v10 = objc_alloc_init(PLSSensorProperties);
   [(PLSSensorProperties *)v10 setKey:PLSResourceKeyAccel[0]];
@@ -87,11 +87,11 @@
   [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:v12];
 
   v13 = [(PLSSensorProperties *)v10 key];
-  v14 = [(PLSSensorProperties *)v10 sensorFrameRate];
+  sensorFrameRate2 = [(PLSSensorProperties *)v10 sensorFrameRate];
   v15 = MEMORY[0x277D3E6C8];
   v16 = [(PLSSensorProperties *)v10 key];
   v17 = [v15 customDomain:v16];
-  [(PLSDevice *)self initDataStream:v13 length:24 type:1 framerate:v14 isShared:0 domain:v17];
+  [(PLSDevice *)self initDataStream:v13 length:24 type:1 framerate:sensorFrameRate2 isShared:0 domain:v17];
 
   v18 = objc_alloc_init(PLSSensorProperties);
   [(PLSSensorProperties *)v18 setKey:PLSResourceKeyBioMotion[0]];
@@ -102,11 +102,11 @@
   [(NSMutableDictionary *)v19 setObject:v18 forKeyedSubscript:v20];
 
   v21 = [(PLSSensorProperties *)v18 key];
-  v22 = [(PLSSensorProperties *)v18 sensorFrameRate];
+  sensorFrameRate3 = [(PLSSensorProperties *)v18 sensorFrameRate];
   v23 = MEMORY[0x277D3E6C8];
   v24 = [(PLSSensorProperties *)v18 key];
   v25 = [v23 customDomain:v24];
-  [(PLSDevice *)self initDataStream:v21 length:88 type:0 framerate:v22 isShared:0 domain:v25];
+  [(PLSDevice *)self initDataStream:v21 length:88 type:0 framerate:sensorFrameRate3 isShared:0 domain:v25];
 
   v26 = objc_alloc_init(PLSSensorProperties);
   [(PLSSensorProperties *)v26 setKey:PLSResourceKeyVIS[0]];
@@ -117,33 +117,33 @@
   [(NSMutableDictionary *)v27 setObject:v26 forKeyedSubscript:v28];
 
   v29 = [(PLSSensorProperties *)v26 key];
-  v30 = [(PLSSensorProperties *)v26 sensorFrameRate];
+  sensorFrameRate4 = [(PLSSensorProperties *)v26 sensorFrameRate];
   v31 = MEMORY[0x277D3E6C8];
   v32 = [(PLSSensorProperties *)v26 key];
   v33 = [v31 customDomain:v32];
-  [(PLSDevice *)self initDataStream:v29 length:40 type:0 framerate:v30 isShared:0 domain:v33];
+  [(PLSDevice *)self initDataStream:v29 length:40 type:0 framerate:sensorFrameRate4 isShared:0 domain:v33];
 }
 
-- (void)populateProviderTypeForStream:(id)a3
+- (void)populateProviderTypeForStream:(id)stream
 {
-  v10 = a3;
-  v4 = ([v10 resourceClass] - 7) > 2 || objc_msgSend(v10, "provider") == 9;
-  v5 = [v10 options];
+  streamCopy = stream;
+  v4 = ([streamCopy resourceClass] - 7) > 2 || objc_msgSend(streamCopy, "provider") == 9;
+  options = [streamCopy options];
   v7 = v6;
-  v8 = [v10 key];
+  v8 = [streamCopy key];
   v9 = [(PLSDevice *)self propertiesForKey:v8];
 
-  if (v5 == 2 && v7 == 2 && [v9 type] == 4 && v4 && (objc_msgSend(v10, "resourceClass") - 7) <= 2)
+  if (options == 2 && v7 == 2 && [v9 type] == 4 && v4 && (objc_msgSend(streamCopy, "resourceClass") - 7) <= 2)
   {
-    [v10 setProvider:0];
+    [streamCopy setProvider:0];
   }
 }
 
-- (id)populateTimerContextForFrequency:(unint64_t)a3
+- (id)populateTimerContextForFrequency:(unint64_t)frequency
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"timer%03llu", a3];
-  v6 = [(PLSDevice *)self propertiesForKey:v5];
-  v7 = [(PSContext *)self->_context resourceStreamForKey:v5];
+  frequency = [MEMORY[0x277CCACA8] stringWithFormat:@"timer%03llu", frequency];
+  v6 = [(PLSDevice *)self propertiesForKey:frequency];
+  v7 = [(PSContext *)self->_context resourceStreamForKey:frequency];
   v8 = v7;
   if (v6)
   {
@@ -156,10 +156,10 @@
   else
   {
     v10 = objc_alloc_init(PLSSensorProperties);
-    [(PLSSensorProperties *)v10 setKey:v5];
+    [(PLSSensorProperties *)v10 setKey:frequency];
     [(PLSSensorProperties *)v10 setType:7];
-    [(PLSSensorProperties *)v10 setSensorFrameRate:a3];
-    [(NSMutableDictionary *)self->_currentSensors setObject:v10 forKeyedSubscript:v5];
+    [(PLSSensorProperties *)v10 setSensorFrameRate:frequency];
+    [(NSMutableDictionary *)self->_currentSensors setObject:v10 forKeyedSubscript:frequency];
 
     if (v8)
     {
@@ -167,12 +167,12 @@
     }
   }
 
-  v11 = [MEMORY[0x277D3E6C8] timerDomain:a3];
-  [(PLSDevice *)self initDataStream:v5 length:16 type:0 framerate:a3 isShared:0 domain:v11];
+  v11 = [MEMORY[0x277D3E6C8] timerDomain:frequency];
+  [(PLSDevice *)self initDataStream:frequency length:16 type:0 framerate:frequency isShared:0 domain:v11];
 
 LABEL_3:
 
-  return v5;
+  return frequency;
 }
 
 - (void)populateCameraContext
@@ -182,9 +182,9 @@ LABEL_3:
   [(PLSDevice *)self loadPlist:@"PSSources_iOS"];
 }
 
-+ (unint64_t)getAriadneID:(id)a3
++ (unint64_t)getAriadneID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (getAriadneID__onceTokenCameraAriadne != -1)
   {
     +[PLSDevice getAriadneID:];
@@ -201,7 +201,7 @@ LABEL_3:
   }
 
   v4 = &getAriadneID__cameraAriadneIDs;
-  v5 = [getAriadneID__cameraAriadneIDs objectForKey:v3];
+  v5 = [getAriadneID__cameraAriadneIDs objectForKey:dCopy];
 
   if (v5)
   {
@@ -209,15 +209,15 @@ LABEL_3:
   }
 
   v4 = &getAriadneID__hidAriadneIDs;
-  v6 = [getAriadneID__hidAriadneIDs objectForKey:v3];
+  v6 = [getAriadneID__hidAriadneIDs objectForKey:dCopy];
 
-  if (v6 || (v4 = &getAriadneID__systemEventAriadneIDs, [getAriadneID__systemEventAriadneIDs objectForKey:v3], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if (v6 || (v4 = &getAriadneID__systemEventAriadneIDs, [getAriadneID__systemEventAriadneIDs objectForKey:dCopy], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
 LABEL_10:
-    v8 = [*v4 objectForKeyedSubscript:v3];
-    v9 = [v8 unsignedIntValue];
+    v8 = [*v4 objectForKeyedSubscript:dCopy];
+    unsignedIntValue = [v8 unsignedIntValue];
 
-    v10 = v9;
+    v10 = unsignedIntValue;
   }
 
   else
@@ -262,14 +262,14 @@ void __26__PLSDevice_getAriadneID___block_invoke_82()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadSourceConfiguration:(id)a3
+- (void)loadSourceConfiguration:(id)configuration
 {
   v52 = *MEMORY[0x277D85DE8];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = a3;
+  obj = configuration;
   v38 = [obj countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v38)
   {
@@ -333,9 +333,9 @@ void __26__PLSDevice_getAriadneID___block_invoke_82()
         v22 = objc_alloc_init(PLSSensorProperties);
         [(PLSSensorProperties *)v22 setKey:v5];
         v23 = +[PLSSettings currentSettings];
-        v24 = [v23 synchronizeStreamPairs];
+        synchronizeStreamPairs = [v23 synchronizeStreamPairs];
 
-        if (v24)
+        if (synchronizeStreamPairs)
         {
           v25 = [v6 objectForKeyedSubscript:@"Sync"];
           [(PLSSensorProperties *)v22 setSyncedKey:v25];
@@ -400,11 +400,11 @@ LABEL_28:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initDataStream:(id)a3 length:(unint64_t)a4 type:(unint64_t)a5 framerate:(unint64_t)a6 isShared:(BOOL)a7 domain:(id)a8
+- (void)initDataStream:(id)stream length:(unint64_t)length type:(unint64_t)type framerate:(unint64_t)framerate isShared:(BOOL)shared domain:(id)domain
 {
-  v9 = a7;
-  v14 = a3;
-  if (v9)
+  sharedCopy = shared;
+  streamCopy = stream;
+  if (sharedCopy)
   {
     v15 = 2;
   }
@@ -417,12 +417,12 @@ LABEL_28:
   v20 = v15;
   v21 = 1;
   v16 = MEMORY[0x277D3E690];
-  v17 = a8;
-  v18 = [v16 dataStreamWithResourceKey:v14 type:a5 options:&v20 length:a4];
-  [v18 setFramerate:{a6, v20, v21}];
-  [v18 setDomain:v17];
+  domainCopy = domain;
+  v18 = [v16 dataStreamWithResourceKey:streamCopy type:type options:&v20 length:length];
+  [v18 setFramerate:{framerate, v20, v21}];
+  [v18 setDomain:domainCopy];
 
-  if (([v14 isEqualToString:PLSResourceKeyFastIMU800[0]] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", PLSResourceKeyFastMagnetometer[0]))
+  if (([streamCopy isEqualToString:PLSResourceKeyFastIMU800[0]] & 1) != 0 || objc_msgSend(streamCopy, "isEqualToString:", PLSResourceKeyFastMagnetometer[0]))
   {
     [v18 setTotalBufferCountHint:2000];
     [v18 setReservedForReaderBufferCountHint:1000];
@@ -435,11 +435,11 @@ LABEL_28:
   }
 }
 
-- (void)initIOSurfaceStream:(id)a3 framerate:(unint64_t)a4 isShared:(BOOL)a5 isExported:(BOOL)a6 domain:(id)a7
+- (void)initIOSurfaceStream:(id)stream framerate:(unint64_t)framerate isShared:(BOOL)shared isExported:(BOOL)exported domain:(id)domain
 {
-  v7 = a6;
+  exportedCopy = exported;
   v11 = 1;
-  if (a5)
+  if (shared)
   {
     v11 = 2;
   }
@@ -447,15 +447,15 @@ LABEL_28:
   v16 = v11;
   v17 = 2;
   v12 = MEMORY[0x277D3E6A8];
-  v13 = a7;
-  v14 = [v12 ioSurfaceStreamWithResourceKey:a3 options:&v16 properties:0];
-  [v14 setFramerate:{a4, v16, v17}];
-  [v14 setDomain:v13];
+  domainCopy = domain;
+  v14 = [v12 ioSurfaceStreamWithResourceKey:stream options:&v16 properties:0];
+  [v14 setFramerate:{framerate, v16, v17}];
+  [v14 setDomain:domainCopy];
 
   context = self->_context;
   if (context)
   {
-    if (v7)
+    if (exportedCopy)
     {
       [(PSContext *)context addResourceStream:v14];
     }
@@ -467,53 +467,53 @@ LABEL_28:
   }
 }
 
-- (BOOL)isTimer:(id)a3
+- (BOOL)isTimer:(id)timer
 {
-  v3 = a3;
-  [v3 hasPrefix:PLSResourceKeyTimer[0]];
-  v4 = [v3 length] == 8 && objc_msgSend(v3, "characterAtIndex:", 5) - 58 >= 0xFFFFFFF6 && objc_msgSend(v3, "characterAtIndex:", 6) - 58 >= 0xFFFFFFF6 && objc_msgSend(v3, "characterAtIndex:", 7) - 48 < 0xA;
+  timerCopy = timer;
+  [timerCopy hasPrefix:PLSResourceKeyTimer[0]];
+  v4 = [timerCopy length] == 8 && objc_msgSend(timerCopy, "characterAtIndex:", 5) - 58 >= 0xFFFFFFF6 && objc_msgSend(timerCopy, "characterAtIndex:", 6) - 58 >= 0xFFFFFFF6 && objc_msgSend(timerCopy, "characterAtIndex:", 7) - 48 < 0xA;
 
   return v4;
 }
 
-- (unsigned)getRateForTimer:(id)a3
+- (unsigned)getRateForTimer:(id)timer
 {
-  v4 = a3;
-  if ([(PLSDevice *)self isTimer:v4])
+  timerCopy = timer;
+  if ([(PLSDevice *)self isTimer:timerCopy])
   {
-    v5 = [v4 substringWithRange:{5, 3}];
-    v6 = [v5 intValue];
+    v5 = [timerCopy substringWithRange:{5, 3}];
+    intValue = [v5 intValue];
 
-    return v6;
+    return intValue;
   }
 
   else
   {
-    [(PLSDevice *)&v11 getRateForTimer:v4];
+    [(PLSDevice *)&v11 getRateForTimer:timerCopy];
     return [(PLSDevice *)v8 propertiesForKey:v9, v10];
   }
 }
 
-- (BOOL)hasSensor:(id)a3
+- (BOOL)hasSensor:(id)sensor
 {
-  v4 = a3;
-  if ([(PLSDevice *)self isTimer:v4])
+  sensorCopy = sensor;
+  if ([(PLSDevice *)self isTimer:sensorCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(NSMutableDictionary *)self->_currentSensors objectForKey:v4];
+    v6 = [(NSMutableDictionary *)self->_currentSensors objectForKey:sensorCopy];
     v5 = v6 != 0;
   }
 
   return v5;
 }
 
-- (void)replaceSensors:(id)a3
+- (void)replaceSensors:(id)sensors
 {
-  v4 = [a3 mutableCopy];
+  v4 = [sensors mutableCopy];
   currentSensors = self->_currentSensors;
   self->_currentSensors = v4;
 
@@ -529,10 +529,10 @@ LABEL_28:
   MEMORY[0x2821F96F8]();
 }
 
-- (id)getDomainForCameraKey:(id)a3
+- (id)getDomainForCameraKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PLSDevice *)self propertiesForKey:v4];
+  keyCopy = key;
+  v5 = [(PLSDevice *)self propertiesForKey:keyCopy];
   v6 = v5;
   if (v5 && [v5 isCamera])
   {
@@ -543,13 +543,13 @@ LABEL_28:
 
     else
     {
-      v9 = [MEMORY[0x277CBEB18] arrayWithObject:v4];
-      v10 = [v6 syncedKey];
+      v9 = [MEMORY[0x277CBEB18] arrayWithObject:keyCopy];
+      syncedKey = [v6 syncedKey];
 
-      if (v10)
+      if (syncedKey)
       {
-        v11 = [v6 syncedKey];
-        [v9 addObject:v11];
+        syncedKey2 = [v6 syncedKey];
+        [v9 addObject:syncedKey2];
       }
 
       [v9 sortUsingSelector:sel_compare_];

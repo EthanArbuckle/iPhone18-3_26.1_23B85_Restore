@@ -1,40 +1,40 @@
 @interface HDHRBloodPressureJournalSyncRequester
-- (HDHRBloodPressureJournalSyncRequester)initWithProfile:(id)a3;
-- (void)requestStateSyncWithReason:(id)a3;
+- (HDHRBloodPressureJournalSyncRequester)initWithProfile:(id)profile;
+- (void)requestStateSyncWithReason:(id)reason;
 @end
 
 @implementation HDHRBloodPressureJournalSyncRequester
 
-- (HDHRBloodPressureJournalSyncRequester)initWithProfile:(id)a3
+- (HDHRBloodPressureJournalSyncRequester)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDHRBloodPressureJournalSyncRequester;
   v5 = [(HDHRBloodPressureJournalSyncRequester *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (void)requestStateSyncWithReason:(id)a3
+- (void)requestStateSyncWithReason:(id)reason
 {
   v4 = MEMORY[0x277CCDA40];
-  v5 = a3;
+  reasonCopy = reason;
   v6 = objc_alloc_init(v4);
   v7 = [objc_alloc(MEMORY[0x277CCD0C8]) initWithPush:1 pull:1 lite:1];
   v8 = [objc_alloc(MEMORY[0x277CCD140]) initWithChangesSyncRequest:v7 contextSyncRequest:0 stateSyncRequest:v6 medicalIDSyncRequest:0 summarySharingSyncRequest:0];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v10 = [WeakRetained cloudSyncManager];
+  cloudSyncManager = [WeakRetained cloudSyncManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__HDHRBloodPressureJournalSyncRequester_requestStateSyncWithReason___block_invoke;
   v11[3] = &unk_278660408;
   v11[4] = self;
-  [v10 syncWithRequest:v8 reason:v5 completion:v11];
+  [cloudSyncManager syncWithRequest:v8 reason:reasonCopy completion:v11];
 }
 
 void __68__HDHRBloodPressureJournalSyncRequester_requestStateSyncWithReason___block_invoke(uint64_t a1, int a2, void *a3)

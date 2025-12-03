@@ -1,22 +1,22 @@
 @interface RTLocationOfInterestMetrics
-- (BOOL)collectMetricsWithError:(id *)a3;
-- (RTLocationOfInterestMetrics)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 learnedLocationStore:(id)a5 locationStore:(id)a6;
-- (id)_countNearbyLocationsOfInterestForLocationOfInterest:(id)a3 outError:(id *)a4;
-- (id)_metricForLocationOfInterest:(id)a3;
-- (id)_shuffledIndicesForArraySize:(unint64_t)a3;
-- (int)_signalEnvironmentTypeForLocationOfInterest:(id)a3;
-- (void)_submitMetric:(id)a3;
+- (BOOL)collectMetricsWithError:(id *)error;
+- (RTLocationOfInterestMetrics)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator learnedLocationStore:(id)store locationStore:(id)locationStore;
+- (id)_countNearbyLocationsOfInterestForLocationOfInterest:(id)interest outError:(id *)error;
+- (id)_metricForLocationOfInterest:(id)interest;
+- (id)_shuffledIndicesForArraySize:(unint64_t)size;
+- (int)_signalEnvironmentTypeForLocationOfInterest:(id)interest;
+- (void)_submitMetric:(id)metric;
 @end
 
 @implementation RTLocationOfInterestMetrics
 
-- (RTLocationOfInterestMetrics)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 learnedLocationStore:(id)a5 locationStore:(id)a6
+- (RTLocationOfInterestMetrics)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator learnedLocationStore:(id)store locationStore:(id)locationStore
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  storeCopy = store;
+  locationStoreCopy = locationStore;
+  if (!managerCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -31,7 +31,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v12)
+  if (!calculatorCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -44,7 +44,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v13)
+  if (!storeCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -56,7 +56,7 @@ LABEL_13:
 
 LABEL_14:
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -66,20 +66,20 @@ LABEL_14:
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_defaultsManager, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_defaultsManager, manager);
+    objc_storeStrong(p_isa + 2, calculator);
+    objc_storeStrong(p_isa + 3, store);
+    objc_storeStrong(p_isa + 4, locationStore);
   }
 
   self = p_isa;
-  v17 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v17;
+  return selfCopy;
 }
 
-- (BOOL)collectMetricsWithError:(id *)a3
+- (BOOL)collectMetricsWithError:(id *)error
 {
   aSelector = a2;
   v69[1] = *MEMORY[0x277D85DE8];
@@ -97,11 +97,11 @@ LABEL_15:
 
   v6 = objc_alloc(MEMORY[0x277CCA970]);
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-3628800.0];
-  v8 = [MEMORY[0x277CBEAA8] distantFuture];
-  v47 = [v6 initWithStartDate:v7 endDate:v8];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v47 = [v6 initWithStartDate:v7 endDate:distantFuture];
 
   v46 = [[RTStoredLocationOfInterestEnumerationOptions alloc] initWithAscendingVisitEntryDate:1 batchSize:5 dateInterval:v47 singleVisit:0];
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10 = dispatch_semaphore_create(0);
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -122,9 +122,9 @@ LABEL_15:
   v12 = v10;
   v53 = v12;
   v57 = v58;
-  v13 = v9;
+  v13 = array;
   v54 = v13;
-  v55 = self;
+  selfCopy = self;
   [(RTLearnedLocationStore *)learnedLocationStore enumerateStoredLocationsOfInterestWithOptions:v46 enumerationBlock:v52];
   v14 = v12;
   v15 = [MEMORY[0x277CBEAA8] now];
@@ -136,11 +136,11 @@ LABEL_15:
     v19 = v18;
     v20 = objc_opt_new();
     v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_12];
-    v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v23 = [v22 filteredArrayUsingPredicate:v21];
-    v24 = [v23 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+    firstObject = [v23 firstObject];
 
-    [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+    [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
     {
@@ -192,9 +192,9 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v33, OS_LOG_TYPE_ERROR, "%@, error, %@", v61, 0x16u);
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
     }
   }
 
@@ -329,11 +329,11 @@ LABEL_18:
 LABEL_19:
 }
 
-- (int)_signalEnvironmentTypeForLocationOfInterest:(id)a3
+- (int)_signalEnvironmentTypeForLocationOfInterest:(id)interest
 {
   v102 = *MEMORY[0x277D85DE8];
-  v56 = a3;
-  if (!v56)
+  interestCopy = interest;
+  if (!interestCopy)
   {
     oslog = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -350,18 +350,18 @@ LABEL_19:
   v59 = [MEMORY[0x277CBEAA8] now];
   v65 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:oslog endDate:v59];
   v3 = objc_alloc(MEMORY[0x277CE41F8]);
-  v4 = [v56 location];
-  v5 = [v4 location];
-  [v5 latitude];
+  location = [interestCopy location];
+  v4Location = [location location];
+  [v4Location latitude];
   v7 = v6;
-  v8 = [v56 location];
-  v9 = [v8 location];
-  [v9 longitude];
+  location2 = [interestCopy location];
+  v8Location = [location2 location];
+  [v8Location longitude];
   v11 = CLLocationCoordinate2DMake(v7, v10);
-  v12 = [v56 location];
-  v13 = [v12 location];
-  v14 = [v13 date];
-  v64 = [v3 initWithCoordinate:v14 altitude:v11.latitude horizontalAccuracy:v11.longitude verticalAccuracy:0.0 timestamp:{250.0, -1.0}];
+  location3 = [interestCopy location];
+  v12Location = [location3 location];
+  date = [v12Location date];
+  v64 = [v3 initWithCoordinate:date altitude:v11.latitude horizontalAccuracy:v11.longitude verticalAccuracy:0.0 timestamp:{250.0, -1.0}];
 
   v61 = objc_opt_new();
   v94[0] = 0;
@@ -415,11 +415,11 @@ LABEL_19:
       v25 = v24;
       v26 = objc_opt_new();
       v27 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_12];
-      v28 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v29 = [v28 filteredArrayUsingPredicate:v27];
-      v30 = [v29 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v29 = [callStackSymbols filteredArrayUsingPredicate:v27];
+      firstObject = [v29 firstObject];
 
-      [v26 submitToCoreAnalytics:v30 type:1 duration:v25];
+      [v26 submitToCoreAnalytics:firstObject type:1 duration:v25];
       v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
       {
@@ -477,13 +477,13 @@ LABEL_10:
     {
       v40 = [*(v85 + 5) dateByAddingTimeInterval:1.0];
 
-      v41 = [v65 endDate];
+      endDate = [v65 endDate];
 
-      if (v91[3] && ![v41 isBeforeDate:v40])
+      if (v91[3] && ![endDate isBeforeDate:v40])
       {
         v39 = 0;
         v38 = v65;
-        v65 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v40 endDate:v41];
+        v65 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v40 endDate:endDate];
       }
 
       else
@@ -491,7 +491,7 @@ LABEL_10:
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
           v39 = 6;
-          v59 = v41;
+          v59 = endDate;
           oslog = v40;
           goto LABEL_26;
         }
@@ -508,7 +508,7 @@ LABEL_10:
         v39 = 6;
       }
 
-      v59 = v41;
+      v59 = endDate;
       oslog = v40;
     }
 
@@ -551,7 +551,7 @@ LABEL_32:
     v66[2] = __75__RTLocationOfInterestMetrics__signalEnvironmentTypeForLocationOfInterest___block_invoke_27;
     v66[3] = &unk_2788C5E18;
     v70 = a2;
-    v48 = v56;
+    v48 = interestCopy;
     v67 = v48;
     v68 = v94;
     v69 = buf;
@@ -562,12 +562,12 @@ LABEL_32:
       if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
       {
         v50 = NSStringFromSelector(a2);
-        v51 = [v48 identifier];
+        identifier = [v48 identifier];
         v52 = *(*&buf[8] + 24);
         *v95 = 138412802;
         *&v95[4] = v50;
         v96 = 2112;
-        v97 = v51;
+        v97 = identifier;
         v98 = 2048;
         v99 = v52;
         _os_log_impl(&dword_2304B3000, v49, OS_LOG_TYPE_INFO, "%@, LOI identifier, %@, selected signal environment type, %lu", v95, 0x20u);
@@ -702,11 +702,11 @@ void __75__RTLocationOfInterestMetrics__signalEnvironmentTypeForLocationOfIntere
   }
 }
 
-- (id)_countNearbyLocationsOfInterestForLocationOfInterest:(id)a3 outError:(id *)a4
+- (id)_countNearbyLocationsOfInterestForLocationOfInterest:(id)interest outError:(id *)error
 {
   aSelector = a2;
   v96[1] = *MEMORY[0x277D85DE8];
-  v67 = a3;
+  interestCopy = interest;
   v63 = [RTMetric binsFromStart:&unk_2845A18F8 toEnd:&unk_2845A1908 gap:&unk_2845A1918];
   v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v63, "count")}];
   if ([v63 count])
@@ -720,10 +720,10 @@ void __75__RTLocationOfInterestMetrics__signalEnvironmentTypeForLocationOfIntere
     while (v5 < [v63 count]);
   }
 
-  v6 = [v67 location];
-  v7 = [v6 location];
+  location = [interestCopy location];
+  v6Location = [location location];
 
-  if (!v7)
+  if (!v6Location)
   {
     v29 = MEMORY[0x277CCA9B8];
     v94 = *MEMORY[0x277CCA450];
@@ -731,11 +731,11 @@ void __75__RTLocationOfInterestMetrics__signalEnvironmentTypeForLocationOfIntere
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v95 forKeys:&v94 count:1];
     v61 = [v29 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v30];
 
-    if (a4)
+    if (error)
     {
       v31 = v61;
       v32 = 0;
-      *a4 = v61;
+      *error = v61;
     }
 
     else
@@ -760,8 +760,8 @@ void __75__RTLocationOfInterestMetrics__signalEnvironmentTypeForLocationOfIntere
   v84 = __Block_byref_object_dispose__16;
   v85 = 0;
   learnedLocationStore = self->_learnedLocationStore;
-  v10 = [v67 location];
-  v11 = [v10 location];
+  location2 = [interestCopy location];
+  v10Location = [location2 location];
   v76[0] = MEMORY[0x277D85DD0];
   v76[1] = 3221225472;
   v76[2] = __93__RTLocationOfInterestMetrics__countNearbyLocationsOfInterestForLocationOfInterest_outError___block_invoke;
@@ -770,7 +770,7 @@ void __75__RTLocationOfInterestMetrics__signalEnvironmentTypeForLocationOfIntere
   v79 = &v86;
   v12 = v8;
   v77 = v12;
-  [(RTLearnedLocationStore *)learnedLocationStore fetchLocationsOfInterestWithinDistance:v11 location:v76 handler:1000.0];
+  [(RTLearnedLocationStore *)learnedLocationStore fetchLocationsOfInterestWithinDistance:v10Location location:v76 handler:1000.0];
 
   dsema = v12;
   v13 = [MEMORY[0x277CBEAA8] now];
@@ -788,11 +788,11 @@ LABEL_13:
   v17 = v16;
   v18 = objc_opt_new();
   v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_12];
-  v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v21 = [v20 filteredArrayUsingPredicate:v19];
-  v22 = [v21 firstObject];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+  firstObject = [v21 firstObject];
 
-  [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+  [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
   v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
   {
@@ -825,10 +825,10 @@ LABEL_14:
   v33 = v81[5];
   if (v33)
   {
-    if (a4)
+    if (error)
     {
       v32 = 0;
-      *a4 = v33;
+      *error = v33;
     }
 
     else
@@ -859,19 +859,19 @@ LABEL_37:
           }
 
           v37 = *(*(&v72 + 1) + 8 * i);
-          v38 = [v37 identifier];
-          v39 = [v67 identifier];
-          v40 = v38 == v39;
+          identifier = [v37 identifier];
+          identifier2 = [interestCopy identifier];
+          v40 = identifier == identifier2;
 
           if (!v40)
           {
             distanceCalculator = self->_distanceCalculator;
-            v42 = [v67 location];
-            v43 = [v42 location];
-            v44 = [v37 location];
-            v45 = [v44 location];
+            location3 = [interestCopy location];
+            v42Location = [location3 location];
+            location4 = [v37 location];
+            v44Location = [location4 location];
             v71 = 0;
-            [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v43 toLocation:v45 error:&v71];
+            [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v42Location toLocation:v44Location error:&v71];
             v47 = v46;
             v48 = v71;
 
@@ -986,17 +986,17 @@ void __93__RTLocationOfInterestMetrics__countNearbyLocationsOfInterestForLocatio
   }
 }
 
-- (id)_metricForLocationOfInterest:(id)a3
+- (id)_metricForLocationOfInterest:(id)interest
 {
   v122 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v106 = v5;
-  if (v5)
+  interestCopy = interest;
+  v106 = interestCopy;
+  if (interestCopy)
   {
-    v6 = v5;
+    v6 = interestCopy;
     v107 = objc_opt_new();
-    v7 = [v6 location];
-    oslog = [v7 location];
+    location = [v6 location];
+    oslog = [location location];
 
     v8 = MEMORY[0x277CCABB0];
     [oslog horizontalUncertainty];
@@ -1007,26 +1007,26 @@ void __93__RTLocationOfInterestMetrics__countNearbyLocationsOfInterestForLocatio
     [v107 setObject:v11 forKeyedSubscript:@"sourceAccuracy"];
 
     v12 = MEMORY[0x277CCABB0];
-    v13 = [v106 place];
-    v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(v13, "type")}];
+    place = [v106 place];
+    v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(place, "type")}];
     [v107 setObject:v14 forKeyedSubscript:@"placeType"];
 
     v15 = MEMORY[0x277CCABB0];
-    v16 = [v106 place];
-    v17 = [v16 mapItem];
-    v18 = [v17 extendedAttributes];
-    v19 = [v15 numberWithBool:{objc_msgSend(v18, "isMe")}];
+    place2 = [v106 place];
+    mapItem = [place2 mapItem];
+    extendedAttributes = [mapItem extendedAttributes];
+    v19 = [v15 numberWithBool:{objc_msgSend(extendedAttributes, "isMe")}];
     [v107 setObject:v19 forKeyedSubscript:@"isMeCardAddress"];
 
     v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[RTLocationOfInterestMetrics _signalEnvironmentTypeForLocationOfInterest:](self, "_signalEnvironmentTypeForLocationOfInterest:", v106)}];
     [v107 setObject:v20 forKeyedSubscript:@"signalEnvironment"];
 
     distanceCalculator = self->_distanceCalculator;
-    v22 = [v106 place];
-    v23 = [v22 mapItem];
-    v24 = [v23 location];
+    place3 = [v106 place];
+    mapItem2 = [place3 mapItem];
+    location2 = [mapItem2 location];
     v115 = 0;
-    [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v24 toLocation:oslog error:&v115];
+    [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:location2 toLocation:oslog error:&v115];
     v26 = v25;
     v102 = v115;
 
@@ -1036,15 +1036,15 @@ void __93__RTLocationOfInterestMetrics__countNearbyLocationsOfInterestForLocatio
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         v28 = NSStringFromSelector(a2);
-        v29 = [v106 place];
-        v30 = [v29 mapItem];
-        v31 = [v30 location];
+        place4 = [v106 place];
+        mapItem3 = [place4 mapItem];
+        location3 = [mapItem3 location];
         *buf = 138413315;
         *&buf[4] = v28;
         *&buf[12] = 2117;
         *&buf[14] = oslog;
         *&buf[22] = 2117;
-        v117 = v31;
+        v117 = location3;
         v118 = 2048;
         v119 = v26;
         v120 = 2112;
@@ -1068,10 +1068,10 @@ void __93__RTLocationOfInterestMetrics__countNearbyLocationsOfInterestForLocatio
       }
     }
 
-    v37 = [v106 place];
-    v38 = [v37 mapItem];
-    v39 = [v38 location];
-    v40 = [v39 referenceFrame] == 2;
+    place5 = [v106 place];
+    mapItem4 = [place5 mapItem];
+    location4 = [mapItem4 location];
+    v40 = [location4 referenceFrame] == 2;
 
     if (!v40)
     {
@@ -1080,14 +1080,14 @@ void __93__RTLocationOfInterestMetrics__countNearbyLocationsOfInterestForLocatio
       v114 = 0;
       [oslog latitude];
       [oslog longitude];
-      v41 = [v106 place];
-      v42 = [v41 mapItem];
-      v43 = [v42 location];
-      [v43 latitude];
-      v44 = [v106 place];
-      v45 = [v44 mapItem];
-      v46 = [v45 location];
-      [v46 longitude];
+      place6 = [v106 place];
+      mapItem5 = [place6 mapItem];
+      location5 = [mapItem5 location];
+      [location5 latitude];
+      place7 = [v106 place];
+      mapItem6 = [place7 mapItem];
+      location6 = [mapItem6 location];
+      [location6 longitude];
       v47 = RTCommonConvertGeodeticToLocalFrame();
 
       if (v47)
@@ -1119,23 +1119,23 @@ void __93__RTLocationOfInterestMetrics__countNearbyLocationsOfInterestForLocatio
     [v107 setObject:&unk_28459C738 forKeyedSubscript:@"visitCount"];
     [v107 setObject:&unk_28459C738 forKeyedSubscript:@"highAccuracyVisitCount"];
     [v107 setObject:&unk_28459C738 forKeyedSubscript:@"lowAccuracyVisitCount"];
-    v52 = [v106 visits];
-    v53 = [v52 count] == 0;
+    visits = [v106 visits];
+    v53 = [visits count] == 0;
 
     if (!v53)
     {
-      v54 = [v106 visits];
-      v55 = [v54 count] > 1;
+      visits2 = [v106 visits];
+      v55 = [visits2 count] > 1;
 
       if (v55)
       {
-        v56 = [v106 visits];
-        v57 = [v56 lastObject];
-        v58 = [v57 exitDate];
-        v59 = [v106 visits];
-        v60 = [v59 firstObject];
-        v61 = [v60 entryDate];
-        [v58 timeIntervalSinceDate:v61];
+        visits3 = [v106 visits];
+        lastObject = [visits3 lastObject];
+        exitDate = [lastObject exitDate];
+        visits4 = [v106 visits];
+        firstObject = [visits4 firstObject];
+        entryDate = [firstObject entryDate];
+        [exitDate timeIntervalSinceDate:entryDate];
         v63 = v62;
 
         v64 = [MEMORY[0x277CCABB0] numberWithInt:(v63 / 86400.0)];
@@ -1150,18 +1150,18 @@ void __93__RTLocationOfInterestMetrics__countNearbyLocationsOfInterestForLocatio
       v110 = &v109;
       v111 = 0x2020000000;
       v112 = 0;
-      v65 = [v106 visits];
+      visits5 = [v106 visits];
       v108[0] = MEMORY[0x277D85DD0];
       v108[1] = 3221225472;
       v108[2] = __60__RTLocationOfInterestMetrics__metricForLocationOfInterest___block_invoke;
       v108[3] = &unk_2788C5E68;
       v108[4] = buf;
       v108[5] = &v109;
-      [v65 enumerateObjectsUsingBlock:v108];
+      [visits5 enumerateObjectsUsingBlock:v108];
 
       v66 = MEMORY[0x277CCABB0];
-      v67 = [v106 visits];
-      v68 = [v66 numberWithUnsignedInteger:{objc_msgSend(v67, "count")}];
+      visits6 = [v106 visits];
+      v68 = [v66 numberWithUnsignedInteger:{objc_msgSend(visits6, "count")}];
       [v107 setObject:v68 forKeyedSubscript:@"visitCount"];
 
       v69 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*(*&buf[8] + 24)];
@@ -1170,13 +1170,13 @@ void __93__RTLocationOfInterestMetrics__countNearbyLocationsOfInterestForLocatio
       v70 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v110[3]];
       [v107 setObject:v70 forKeyedSubscript:@"lowAccuracyVisitCount"];
 
-      v71 = [v106 visits];
-      v103 = -[RTLocationOfInterestMetrics _shuffledIndicesForArraySize:](self, "_shuffledIndicesForArraySize:", [v71 count]);
+      visits7 = [v106 visits];
+      v103 = -[RTLocationOfInterestMetrics _shuffledIndicesForArraySize:](self, "_shuffledIndicesForArraySize:", [visits7 count]);
 
       for (i = 0; ; ++i)
       {
-        v73 = [v106 visits];
-        v74 = [v73 count];
+        visits8 = [v106 visits];
+        v74 = [visits8 count];
 
         v75 = 20;
         if (v74 < 0x14)
@@ -1191,39 +1191,39 @@ void __93__RTLocationOfInterestMetrics__countNearbyLocationsOfInterestForLocatio
 
         v76 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%lu", @"visit", i];
         v77 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%lu", @"dwellIntervalVisit", i];
-        v78 = [v106 visits];
+        visits9 = [v106 visits];
         v79 = [v103 objectAtIndexedSubscript:i];
-        v80 = [v78 objectAtIndex:{objc_msgSend(v79, "unsignedIntValue")}];
+        v80 = [visits9 objectAtIndex:{objc_msgSend(v79, "unsignedIntValue")}];
 
         v81 = MEMORY[0x277CCABB0];
-        v82 = [v80 exitDate];
-        v83 = [v80 entryDate];
-        [v82 timeIntervalSinceDate:v83];
+        exitDate2 = [v80 exitDate];
+        entryDate2 = [v80 entryDate];
+        [exitDate2 timeIntervalSinceDate:entryDate2];
         v85 = [v81 numberWithInt:(v84 / 900.0)];
         [v107 setObject:v85 forKeyedSubscript:v77];
 
         v114 = 0;
         [oslog latitude];
         [oslog longitude];
-        v86 = [v80 location];
-        v87 = [v86 location];
-        [v87 latitude];
-        v88 = [v80 location];
-        v89 = [v88 location];
-        [v89 longitude];
+        location7 = [v80 location];
+        v86Location = [location7 location];
+        [v86Location latitude];
+        location8 = [v80 location];
+        v88Location = [location8 location];
+        [v88Location longitude];
         v90 = RTCommonConvertGeodeticToLocalFrame();
 
         if (v90)
         {
           v91 = MEMORY[0x277CCACA8];
           v92 = v114;
-          v93 = [v80 location];
-          v94 = [v93 location];
-          [v94 horizontalUncertainty];
+          location9 = [v80 location];
+          v93Location = [location9 location];
+          [v93Location horizontalUncertainty];
           v96 = v95;
-          v97 = [v80 location];
-          v98 = [v97 location];
-          v99 = [v91 stringWithFormat:@"%.1f, %.1f, %.1f, %lu", 0, v92, v96, objc_msgSend(v98, "sourceAccuracy")];
+          location10 = [v80 location];
+          v97Location = [location10 location];
+          v99 = [v91 stringWithFormat:@"%.1f, %.1f, %.1f, %lu", 0, v92, v96, objc_msgSend(v97Location, "sourceAccuracy")];
 
           [v107 setObject:v99 forKeyedSubscript:v76];
         }
@@ -1264,13 +1264,13 @@ void __60__RTLocationOfInterestMetrics__metricForLocationOfInterest___block_invo
   ++*(*(*(a1 + v6) + 8) + 24);
 }
 
-- (id)_shuffledIndicesForArraySize:(unint64_t)a3
+- (id)_shuffledIndicesForArraySize:(unint64_t)size
 {
-  if (a3)
+  if (size)
   {
-    v3 = a3;
+    sizeCopy = size;
     v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
-    for (i = 0; i != v3; ++i)
+    for (i = 0; i != sizeCopy; ++i)
     {
       v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i];
       [v4 addObject:v6];
@@ -1281,10 +1281,10 @@ void __60__RTLocationOfInterestMetrics__metricForLocationOfInterest___block_invo
     {
       [v4 exchangeObjectAtIndex:v7 withObjectAtIndex:v7 + RTCommonRandomInt()];
       ++v7;
-      --v3;
+      --sizeCopy;
     }
 
-    while (v3);
+    while (sizeCopy);
     v8 = [v4 copy];
   }
 
@@ -1303,14 +1303,14 @@ void __60__RTLocationOfInterestMetrics__metricForLocationOfInterest___block_invo
   return v8;
 }
 
-- (void)_submitMetric:(id)a3
+- (void)_submitMetric:(id)metric
 {
-  v3 = a3;
-  if (v3)
+  metricCopy = metric;
+  if (metricCopy)
   {
     v4 = objc_alloc(MEMORY[0x277CCACA8]);
     v5 = [v4 initWithCString:RTAnalyticsEventLocationOfInterestMetrics encoding:1];
-    log_analytics_submission(v5, v3);
+    log_analytics_submission(v5, metricCopy);
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v5];
     AnalyticsSendEvent();
   }

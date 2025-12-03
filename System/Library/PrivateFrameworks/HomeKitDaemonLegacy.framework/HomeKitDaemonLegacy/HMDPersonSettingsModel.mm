@@ -4,10 +4,10 @@
 + (id)hmbProperties;
 - (HMDPersonSettingsModel)init;
 - (NSDictionary)faceClassificationNotificationsEnabledByPersonUUID;
-- (id)classificationNotificationsEnabledForPersonUUID:(id)a3;
+- (id)classificationNotificationsEnabledForPersonUUID:(id)d;
 - (id)unarchivedClassificationNotificationsEnabledForPersonUUID;
-- (void)archiveClassificationNotificationsEnabledForPersonUUID:(id)a3;
-- (void)setClassificationNotificationsEnabled:(id)a3 forPersonUUID:(id)a4;
+- (void)archiveClassificationNotificationsEnabledForPersonUUID:(id)d;
+- (void)setClassificationNotificationsEnabled:(id)enabled forPersonUUID:(id)d;
 @end
 
 @implementation HMDPersonSettingsModel
@@ -79,12 +79,12 @@ void __39__HMDPersonSettingsModel_hmbProperties__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)archiveClassificationNotificationsEnabledForPersonUUID:(id)a3
+- (void)archiveClassificationNotificationsEnabledForPersonUUID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x277CCAAB0];
-  v6 = [v4 copy];
+  v6 = [dCopy copy];
   v14 = 0;
   v7 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v14];
   v8 = v14;
@@ -97,7 +97,7 @@ void __39__HMDPersonSettingsModel_hmbProperties__block_invoke()
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -115,36 +115,36 @@ void __39__HMDPersonSettingsModel_hmbProperties__block_invoke()
 
 - (id)unarchivedClassificationNotificationsEnabledForPersonUUID
 {
-  v2 = [(HMDPersonSettingsModel *)self faceClassificationNotificationsEnabledByPersonUUID];
-  v3 = [v2 mutableCopy];
+  faceClassificationNotificationsEnabledByPersonUUID = [(HMDPersonSettingsModel *)self faceClassificationNotificationsEnabledByPersonUUID];
+  v3 = [faceClassificationNotificationsEnabledByPersonUUID mutableCopy];
 
   return v3;
 }
 
-- (void)setClassificationNotificationsEnabled:(id)a3 forPersonUUID:(id)a4
+- (void)setClassificationNotificationsEnabled:(id)enabled forPersonUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDPersonSettingsModel *)self unarchivedClassificationNotificationsEnabledForPersonUUID];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  dCopy = d;
+  enabledCopy = enabled;
+  unarchivedClassificationNotificationsEnabledForPersonUUID = [(HMDPersonSettingsModel *)self unarchivedClassificationNotificationsEnabledForPersonUUID];
+  [unarchivedClassificationNotificationsEnabledForPersonUUID setObject:enabledCopy forKeyedSubscript:dCopy];
 
-  [(HMDPersonSettingsModel *)self archiveClassificationNotificationsEnabledForPersonUUID:v8];
+  [(HMDPersonSettingsModel *)self archiveClassificationNotificationsEnabledForPersonUUID:unarchivedClassificationNotificationsEnabledForPersonUUID];
 }
 
-- (id)classificationNotificationsEnabledForPersonUUID:(id)a3
+- (id)classificationNotificationsEnabledForPersonUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDPersonSettingsModel *)self unarchivedClassificationNotificationsEnabledForPersonUUID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  unarchivedClassificationNotificationsEnabledForPersonUUID = [(HMDPersonSettingsModel *)self unarchivedClassificationNotificationsEnabledForPersonUUID];
+  v6 = [unarchivedClassificationNotificationsEnabledForPersonUUID objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
 - (HMDPersonSettingsModel)init
 {
-  v3 = [objc_opt_class() sentinelModelUUID];
-  v4 = [objc_opt_class() sentinelParentUUID];
-  v5 = [(HMBModel *)self initWithModelID:v3 parentModelID:v4];
+  sentinelModelUUID = [objc_opt_class() sentinelModelUUID];
+  sentinelParentUUID = [objc_opt_class() sentinelParentUUID];
+  v5 = [(HMBModel *)self initWithModelID:sentinelModelUUID parentModelID:sentinelParentUUID];
 
   return v5;
 }
@@ -152,9 +152,9 @@ void __39__HMDPersonSettingsModel_hmbProperties__block_invoke()
 - (NSDictionary)faceClassificationNotificationsEnabledByPersonUUID
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonSettingsModel *)self classificationNotificationSettingsData];
+  classificationNotificationSettingsData = [(HMDPersonSettingsModel *)self classificationNotificationSettingsData];
 
-  if (v3)
+  if (classificationNotificationSettingsData)
   {
     v4 = MEMORY[0x277CCAAC8];
     v5 = MEMORY[0x277CBEB98];
@@ -163,20 +163,20 @@ void __39__HMDPersonSettingsModel_hmbProperties__block_invoke()
     v24[2] = objc_opt_class();
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:3];
     v7 = [v5 setWithArray:v6];
-    v8 = [(HMDPersonSettingsModel *)self classificationNotificationSettingsData];
+    classificationNotificationSettingsData2 = [(HMDPersonSettingsModel *)self classificationNotificationSettingsData];
     v19 = 0;
-    v9 = [v4 unarchivedObjectOfClasses:v7 fromData:v8 error:&v19];
+    v9 = [v4 unarchivedObjectOfClasses:v7 fromData:classificationNotificationSettingsData2 error:&v19];
     v10 = v19;
 
     if (v9)
     {
-      v11 = v9;
+      dictionary = v9;
     }
 
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -189,20 +189,20 @@ void __39__HMDPersonSettingsModel_hmbProperties__block_invoke()
       }
 
       objc_autoreleasePoolPop(v13);
-      v11 = [MEMORY[0x277CBEAC0] dictionary];
+      dictionary = [MEMORY[0x277CBEAC0] dictionary];
     }
 
-    v12 = v11;
+    dictionary2 = dictionary;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return dictionary2;
 }
 
 @end

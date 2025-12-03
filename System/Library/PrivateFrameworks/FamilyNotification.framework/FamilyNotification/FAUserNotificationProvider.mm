@@ -1,18 +1,18 @@
 @interface FAUserNotificationProvider
-- (BOOL)customCategoryForNotification:(id)a3;
+- (BOOL)customCategoryForNotification:(id)notification;
 - (FAUserNotificationProvider)init;
 - (FAUserNotificationProviderDelegate)delegate;
-- (id)_actionsForNotification:(id)a3;
-- (id)_categoryForNotification:(id)a3;
-- (id)_customCategoryIdentifierForNotification:(id)a3;
+- (id)_actionsForNotification:(id)notification;
+- (id)_categoryForNotification:(id)notification;
+- (id)_customCategoryIdentifierForNotification:(id)notification;
 - (id)_defaultNotificationCategories;
-- (id)_notificationContent:(id)a3;
-- (void)_addCategoryForNotification:(id)a3;
-- (void)_notifyDelegateOfAction:(id)a3 forNote:(id)a4;
-- (void)deliveredNotifications:(id)a3;
-- (void)postNotification:(id)a3;
-- (void)tearDownNotificationWithIdentifier:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (id)_notificationContent:(id)content;
+- (void)_addCategoryForNotification:(id)notification;
+- (void)_notifyDelegateOfAction:(id)action forNote:(id)note;
+- (void)deliveredNotifications:(id)notifications;
+- (void)postNotification:(id)notification;
+- (void)tearDownNotificationWithIdentifier:(id)identifier;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation FAUserNotificationProvider
@@ -31,8 +31,8 @@
     [(UNUserNotificationCenter *)v2->_notificationCenter setDelegate:v2];
     [(UNUserNotificationCenter *)v2->_notificationCenter setWantsNotificationResponsesDelivered];
     v5 = v2->_notificationCenter;
-    v6 = [(FAUserNotificationProvider *)v2 _defaultNotificationCategories];
-    [(UNUserNotificationCenter *)v5 setNotificationCategories:v6];
+    _defaultNotificationCategories = [(FAUserNotificationProvider *)v2 _defaultNotificationCategories];
+    [(UNUserNotificationCenter *)v5 setNotificationCategories:_defaultNotificationCategories];
 
     v7 = objc_alloc_init(NSLock);
     categoryLock = v2->_categoryLock;
@@ -51,13 +51,13 @@
   return v2;
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(FAUserNotificationProvider *)self _notificationContent:v4];
-  v6 = [v4 identifier];
+  notificationCopy = notification;
+  v5 = [(FAUserNotificationProvider *)self _notificationContent:notificationCopy];
+  identifier = [notificationCopy identifier];
 
-  v7 = [UNNotificationRequest requestWithIdentifier:v6 content:v5 trigger:0];
+  v7 = [UNNotificationRequest requestWithIdentifier:identifier content:v5 trigger:0];
 
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -70,9 +70,9 @@
   [(UNUserNotificationCenter *)self->_notificationCenter addNotificationRequest:v7 withCompletionHandler:&stru_100008400];
 }
 
-- (id)_notificationContent:(id)a3
+- (id)_notificationContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -81,30 +81,30 @@
   }
 
   v6 = objc_alloc_init(UNMutableNotificationContent);
-  if ([v4 hasHeader])
+  if ([contentCopy hasHeader])
   {
     v7 = [NSString localizedUserNotificationStringForKey:@"FAFamilyHeader" arguments:0];
     [v6 setHeader:v7];
   }
 
-  v8 = [v4 title];
-  [v6 setTitle:v8];
+  title = [contentCopy title];
+  [v6 setTitle:title];
 
-  v9 = [v4 informativeText];
-  [v6 setBody:v9];
+  informativeText = [contentCopy informativeText];
+  [v6 setBody:informativeText];
 
-  v10 = [v4 relevanceDate];
-  [v6 setDate:v10];
+  relevanceDate = [contentCopy relevanceDate];
+  [v6 setDate:relevanceDate];
 
-  v11 = [v4 expiryDate];
-  [v6 setExpirationDate:v11];
+  expiryDate = [contentCopy expiryDate];
+  [v6 setExpirationDate:expiryDate];
 
   v12 = +[UNNotificationSound defaultSound];
   [v6 setSound:v12];
 
   [v6 setShouldBackgroundDefaultAction:1];
-  [v6 setShouldPreventNotificationDismissalAfterDefaultAction:{objc_msgSend(v4, "shouldPersistWhenActivated")}];
-  if ([(FAUserNotificationProvider *)self customCategoryForNotification:v4])
+  [v6 setShouldPreventNotificationDismissalAfterDefaultAction:{objc_msgSend(contentCopy, "shouldPersistWhenActivated")}];
+  if ([(FAUserNotificationProvider *)self customCategoryForNotification:contentCopy])
   {
     v13 = _FALogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -113,10 +113,10 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Notification calls for custom action buttons", &v24, 2u);
     }
 
-    v14 = [(FAUserNotificationProvider *)self _customCategoryIdentifierForNotification:v4];
+    v14 = [(FAUserNotificationProvider *)self _customCategoryIdentifierForNotification:contentCopy];
     [v6 setCategoryIdentifier:v14];
 
-    [(FAUserNotificationProvider *)self _addCategoryForNotification:v4];
+    [(FAUserNotificationProvider *)self _addCategoryForNotification:contentCopy];
   }
 
   else
@@ -125,29 +125,29 @@
   }
 
   v26[0] = @"FAFamilyNotificationUUIDKey";
-  v15 = [v4 uuid];
+  uuid = [contentCopy uuid];
   v26[1] = @"FAFamilyNotificationAsDictionaryKey";
-  v27[0] = v15;
-  v16 = [v4 cacheDictionaryRepresentation];
-  v27[1] = v16;
+  v27[0] = uuid;
+  cacheDictionaryRepresentation = [contentCopy cacheDictionaryRepresentation];
+  v27[1] = cacheDictionaryRepresentation;
   v17 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
   [v6 setUserInfo:v17];
 
-  v18 = [v4 iconName];
+  iconName = [contentCopy iconName];
 
-  if (v18)
+  if (iconName)
   {
     v19 = _FALogSystem();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v4 iconName];
+      iconName2 = [contentCopy iconName];
       v24 = 138412290;
-      v25 = v20;
+      v25 = iconName2;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Setting icon for notification with name: %@", &v24, 0xCu);
     }
 
-    v21 = [v4 iconName];
-    v22 = [UNNotificationIcon iconForApplicationIdentifier:v21];
+    iconName3 = [contentCopy iconName];
+    v22 = [UNNotificationIcon iconForApplicationIdentifier:iconName3];
 
     [v6 setIcon:v22];
   }
@@ -155,31 +155,31 @@
   return v6;
 }
 
-- (void)tearDownNotificationWithIdentifier:(id)a3
+- (void)tearDownNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Tearing down notification %@:", buf, 0xCu);
   }
 
   notificationCenter = self->_notificationCenter;
-  v11 = v4;
+  v11 = identifierCopy;
   v7 = [NSArray arrayWithObjects:&v11 count:1];
   [(UNUserNotificationCenter *)notificationCenter removePendingNotificationRequestsWithIdentifiers:v7];
 
   v8 = self->_notificationCenter;
-  v10 = v4;
+  v10 = identifierCopy;
   v9 = [NSArray arrayWithObjects:&v10 count:1];
   [(UNUserNotificationCenter *)v8 removeDeliveredNotificationsWithIdentifiers:v9];
 }
 
-- (void)deliveredNotifications:(id)a3
+- (void)deliveredNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -192,83 +192,83 @@
   v8[1] = 3221225472;
   v8[2] = sub_100002CE8;
   v8[3] = &unk_1000082A0;
-  v9 = v4;
-  v7 = v4;
+  v9 = notificationsCopy;
+  v7 = notificationsCopy;
   [(UNUserNotificationCenter *)notificationCenter getDeliveredNotificationsWithCompletionHandler:v8];
 }
 
-- (id)_categoryForNotification:(id)a3
+- (id)_categoryForNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(FAUserNotificationProvider *)self _customCategoryIdentifierForNotification:v4];
-  v6 = [(FAUserNotificationProvider *)self _actionsForNotification:v4];
+  notificationCopy = notification;
+  v5 = [(FAUserNotificationProvider *)self _customCategoryIdentifierForNotification:notificationCopy];
+  v6 = [(FAUserNotificationProvider *)self _actionsForNotification:notificationCopy];
 
   v7 = [UNNotificationCategory categoryWithIdentifier:v5 actions:v6 intentIdentifiers:&__NSArray0__struct options:1];
 
   return v7;
 }
 
-- (id)_customCategoryIdentifierForNotification:(id)a3
+- (id)_customCategoryIdentifierForNotification:(id)notification
 {
-  v3 = [a3 uuid];
-  v4 = [NSString stringWithFormat:@"%@.%@", @"com.apple.familynotifications", v3];
+  uuid = [notification uuid];
+  v4 = [NSString stringWithFormat:@"%@.%@", @"com.apple.familynotifications", uuid];
 
   return v4;
 }
 
-- (void)_addCategoryForNotification:(id)a3
+- (void)_addCategoryForNotification:(id)notification
 {
   categoryLock = self->_categoryLock;
-  v5 = a3;
+  notificationCopy = notification;
   [(NSLock *)categoryLock lock];
-  v6 = [(UNUserNotificationCenter *)self->_notificationCenter notificationCategories];
-  v8 = [v6 mutableCopy];
+  notificationCategories = [(UNUserNotificationCenter *)self->_notificationCenter notificationCategories];
+  v8 = [notificationCategories mutableCopy];
 
-  v7 = [(FAUserNotificationProvider *)self _categoryForNotification:v5];
+  v7 = [(FAUserNotificationProvider *)self _categoryForNotification:notificationCopy];
 
   [v8 addObject:v7];
   [(UNUserNotificationCenter *)self->_notificationCenter setNotificationCategories:v8];
   [(NSLock *)self->_categoryLock unlock];
 }
 
-- (BOOL)customCategoryForNotification:(id)a3
+- (BOOL)customCategoryForNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 actionButtonLabel];
-  if (v4)
+  notificationCopy = notification;
+  actionButtonLabel = [notificationCopy actionButtonLabel];
+  if (actionButtonLabel)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 otherButtonLabel];
-    v5 = v6 != 0;
+    otherButtonLabel = [notificationCopy otherButtonLabel];
+    v5 = otherButtonLabel != 0;
   }
 
   return v5;
 }
 
-- (id)_actionsForNotification:(id)a3
+- (id)_actionsForNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = [[NSMutableArray alloc] initWithCapacity:2];
-  v5 = [v3 actionButtonLabel];
+  actionButtonLabel = [notificationCopy actionButtonLabel];
 
-  if (v5)
+  if (actionButtonLabel)
   {
-    v6 = [v3 actionButtonLabel];
-    v7 = [UNNotificationAction actionWithIdentifier:UNNotificationDefaultActionIdentifier title:v6 options:0];
+    actionButtonLabel2 = [notificationCopy actionButtonLabel];
+    v7 = [UNNotificationAction actionWithIdentifier:UNNotificationDefaultActionIdentifier title:actionButtonLabel2 options:0];
 
     [v4 addObject:v7];
   }
 
-  v8 = [v3 otherButtonLabel];
+  otherButtonLabel = [notificationCopy otherButtonLabel];
 
-  if (v8)
+  if (otherButtonLabel)
   {
-    v9 = [v3 otherButtonLabel];
-    v10 = [UNNotificationAction actionWithIdentifier:UNNotificationDismissActionIdentifier title:v9 options:0];
+    otherButtonLabel2 = [notificationCopy otherButtonLabel];
+    v10 = [UNNotificationAction actionWithIdentifier:UNNotificationDismissActionIdentifier title:otherButtonLabel2 options:0];
 
     [v4 addObject:v10];
   }
@@ -276,79 +276,79 @@
   return v4;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v9 = _FALogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v7;
+    v19 = responseCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received notification response - %@", &v18, 0xCu);
   }
 
-  v10 = [v7 notification];
-  v11 = [v10 request];
-  v12 = [v11 content];
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
 
-  v13 = [v12 userInfo];
+  userInfo = [content userInfo];
 
-  if (v13)
+  if (userInfo)
   {
-    v14 = [v12 userInfo];
-    v15 = [v14 objectForKeyedSubscript:@"FAFamilyNotificationAsDictionaryKey"];
+    userInfo2 = [content userInfo];
+    v15 = [userInfo2 objectForKeyedSubscript:@"FAFamilyNotificationAsDictionaryKey"];
 
     v16 = [[FAFamilyNotification alloc] initWithCacheDictionaryRepresentation:v15];
     if (v16)
     {
-      v17 = [v7 actionIdentifier];
-      [(FAUserNotificationProvider *)self _notifyDelegateOfAction:v17 forNote:v16];
+      actionIdentifier = [responseCopy actionIdentifier];
+      [(FAUserNotificationProvider *)self _notifyDelegateOfAction:actionIdentifier forNote:v16];
     }
 
     else
     {
-      v17 = _FALogSystem();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      actionIdentifier = _FALogSystem();
+      if (os_log_type_enabled(actionIdentifier, OS_LOG_TYPE_ERROR))
       {
-        sub_10000367C(v17);
+        sub_10000367C(actionIdentifier);
       }
     }
   }
 
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)_notifyDelegateOfAction:(id)a3 forNote:(id)a4
+- (void)_notifyDelegateOfAction:(id)action forNote:(id)note
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  noteCopy = note;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = actionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Attempting to notifying delegate of action %@", &v10, 0xCu);
   }
 
-  if ([v6 isEqualToString:UNNotificationDefaultActionIdentifier])
+  if ([actionCopy isEqualToString:UNNotificationDefaultActionIdentifier])
   {
-    v9 = [(FAUserNotificationProvider *)self delegate];
-    [v9 provider:self didActivateNotification:v7];
+    delegate = [(FAUserNotificationProvider *)self delegate];
+    [delegate provider:self didActivateNotification:noteCopy];
   }
 
-  else if ([v6 isEqualToString:UNNotificationDismissActionIdentifier])
+  else if ([actionCopy isEqualToString:UNNotificationDismissActionIdentifier])
   {
-    v9 = [(FAUserNotificationProvider *)self delegate];
-    [v9 provider:self didDismissNotification:v7];
+    delegate = [(FAUserNotificationProvider *)self delegate];
+    [delegate provider:self didDismissNotification:noteCopy];
   }
 
   else
   {
-    v9 = _FALogSystem();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    delegate = _FALogSystem();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
-      sub_1000036C0(v9);
+      sub_1000036C0(delegate);
     }
   }
 }

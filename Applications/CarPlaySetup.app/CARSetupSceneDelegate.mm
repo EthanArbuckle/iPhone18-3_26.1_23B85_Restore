@@ -1,21 +1,21 @@
 @interface CARSetupSceneDelegate
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation CARSetupSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v9 = a3;
-  v6 = [(CARSetupSceneDelegate *)self window];
+  sceneCopy = scene;
+  window = [(CARSetupSceneDelegate *)self window];
 
-  if (!v6)
+  if (!window)
   {
-    v7 = [[UIWindow alloc] initWithWindowScene:v9];
+    v7 = [[UIWindow alloc] initWithWindowScene:sceneCopy];
     [(CARSetupSceneDelegate *)self setWindow:v7];
 
-    v8 = [(CARSetupSceneDelegate *)self window];
-    [v8 makeKeyAndVisible];
+    window2 = [(CARSetupSceneDelegate *)self window];
+    [window2 makeKeyAndVisible];
   }
 }
 

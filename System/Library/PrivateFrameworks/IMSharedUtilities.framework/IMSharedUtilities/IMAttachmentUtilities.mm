@@ -1,5 +1,5 @@
 @interface IMAttachmentUtilities
-+ (BOOL)asset:(id)a3 containsMetadataKey:(id)a4;
++ (BOOL)asset:(id)asset containsMetadataKey:(id)key;
 + (Class)__AVDataAssetClass;
 + (id)photosSupportedPreviewGeneratorClasses;
 @end
@@ -16,7 +16,7 @@
   return qword_1EB30AD58;
 }
 
-+ (BOOL)asset:(id)a3 containsMetadataKey:(id)a4
++ (BOOL)asset:(id)asset containsMetadataKey:(id)key
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v6 = dispatch_semaphore_create(0);
@@ -27,7 +27,7 @@
   v19[2] = sub_1A863DD54;
   v19[3] = &unk_1E7826DA8;
   v19[4] = v6;
-  [a3 loadValuesAsynchronouslyForKeys:v7 completionHandler:v19];
+  [asset loadValuesAsynchronouslyForKeys:v7 completionHandler:v19];
   v8 = dispatch_time(0, 100000000);
   if (dispatch_semaphore_wait(v6, v8))
   {
@@ -37,7 +37,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v21 = a4;
+        keyCopy3 = key;
         v22 = 2048;
         v23 = 0x4059000000000000;
         _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Failed to fetch metadata for %@: Timeout during async fetch(%f ms)", buf, 0x16u);
@@ -50,8 +50,8 @@
 
   dispatch_release(v6);
   v12 = MEMORY[0x1E6987FE0];
-  v13 = [a3 metadataForFormat:*MEMORY[0x1E6987708]];
-  v14 = [v12 metadataItemsFromArray:v13 withKey:a4 keySpace:*MEMORY[0x1E6987858]];
+  v13 = [asset metadataForFormat:*MEMORY[0x1E6987708]];
+  v14 = [v12 metadataItemsFromArray:v13 withKey:key keySpace:*MEMORY[0x1E6987858]];
   if (![v14 count])
   {
     if (IMOSLoggingEnabled())
@@ -60,7 +60,7 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v21 = a4;
+        keyCopy3 = key;
         _os_log_impl(&dword_1A85E5000, v17, OS_LOG_TYPE_INFO, "IMAttachmentUtilities failed to load metadata for key %@", buf, 0xCu);
       }
     }
@@ -79,7 +79,7 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v21 = a4;
+        keyCopy3 = key;
         _os_log_impl(&dword_1A85E5000, v16, OS_LOG_TYPE_INFO, "IMAttachmentUtilities found %@ metadata with unexpected contents, assuming metadata doesn't exist", buf, 0xCu);
       }
     }

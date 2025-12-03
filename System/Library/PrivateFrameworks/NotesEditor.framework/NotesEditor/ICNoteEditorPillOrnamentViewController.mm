@@ -1,18 +1,18 @@
 @interface ICNoteEditorPillOrnamentViewController
-- (ICNoteEditorPillOrnamentViewController)initWithRootViewController:(id)a3;
+- (ICNoteEditorPillOrnamentViewController)initWithRootViewController:(id)controller;
 - (NSArray)toolbarItems;
-- (void)setToolbarItems:(id)a3;
+- (void)setToolbarItems:(id)items;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation ICNoteEditorPillOrnamentViewController
 
-- (ICNoteEditorPillOrnamentViewController)initWithRootViewController:(id)a3
+- (ICNoteEditorPillOrnamentViewController)initWithRootViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = ICNoteEditorPillOrnamentViewController;
-  v3 = [(ICPillOrnamentViewController *)&v7 initWithRootViewController:a3 contentAnchorPoint:0.5 sceneAnchorPoint:0.0 offset:0.5 cornerRadius:1.0, 0.0, -20.0, 0.0];
+  v3 = [(ICPillOrnamentViewController *)&v7 initWithRootViewController:controller contentAnchorPoint:0.5 sceneAnchorPoint:0.0 offset:0.5 cornerRadius:1.0, 0.0, -20.0, 0.0];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75C58]);
@@ -30,12 +30,12 @@
   v6.receiver = self;
   v6.super_class = ICNoteEditorPillOrnamentViewController;
   [(ICNoteEditorPillOrnamentViewController *)&v6 viewDidLoad];
-  v3 = [(ICPillOrnamentViewController *)self contentView];
-  v4 = [(ICNoteEditorPillOrnamentViewController *)self toolbar];
-  [v3 addSubview:v4];
+  contentView = [(ICPillOrnamentViewController *)self contentView];
+  toolbar = [(ICNoteEditorPillOrnamentViewController *)self toolbar];
+  [contentView addSubview:toolbar];
 
-  v5 = [(ICNoteEditorPillOrnamentViewController *)self toolbar];
-  [v5 ic_addAnchorsToFillSuperview];
+  toolbar2 = [(ICNoteEditorPillOrnamentViewController *)self toolbar];
+  [toolbar2 ic_addAnchorsToFillSuperview];
 }
 
 - (void)viewDidLayoutSubviews
@@ -48,17 +48,17 @@
 
 - (NSArray)toolbarItems
 {
-  v2 = [(ICNoteEditorPillOrnamentViewController *)self toolbar];
-  v3 = [v2 items];
+  toolbar = [(ICNoteEditorPillOrnamentViewController *)self toolbar];
+  items = [toolbar items];
 
-  return v3;
+  return items;
 }
 
-- (void)setToolbarItems:(id)a3
+- (void)setToolbarItems:(id)items
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorPillOrnamentViewController *)self toolbar];
-  [v5 setItems:v4];
+  itemsCopy = items;
+  toolbar = [(ICNoteEditorPillOrnamentViewController *)self toolbar];
+  [toolbar setItems:itemsCopy];
 }
 
 @end

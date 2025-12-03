@@ -1,20 +1,20 @@
 @interface RPNearbyInvitationDevice
-- (BOOL)isEqualToDevice:(id)a3;
-- (RPNearbyInvitationDevice)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (unsigned)updateWithEndpoint:(id)a3;
-- (unsigned)updateWithSFDevice:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqualToDevice:(id)device;
+- (RPNearbyInvitationDevice)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
+- (unsigned)updateWithEndpoint:(id)endpoint;
+- (unsigned)updateWithSFDevice:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RPNearbyInvitationDevice
 
-- (RPNearbyInvitationDevice)initWithCoder:(id)a3
+- (RPNearbyInvitationDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = RPNearbyInvitationDevice;
-  v5 = [(RPEndpoint *)&v8 initWithCoder:v4];
+  v5 = [(RPEndpoint *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
     v9 = 0;
@@ -29,32 +29,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = RPNearbyInvitationDevice;
-  [(RPEndpoint *)&v5 encodeWithCoder:v4];
+  [(RPEndpoint *)&v5 encodeWithCoder:coderCopy];
   if (self->_deviceColor)
   {
-    [v4 encodeInteger:? forKey:?];
+    [coderCopy encodeInteger:? forKey:?];
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   NSAppendPrintF();
   v11 = 0;
-  v9 = [(RPEndpoint *)self identifier];
+  identifier = [(RPEndpoint *)self identifier];
   NSAppendPrintF();
   v4 = v11;
 
-  v10 = [(RPNearbyInvitationDevice *)self deviceColor];
+  deviceColor = [(RPNearbyInvitationDevice *)self deviceColor];
   NSAppendPrintF();
   v5 = v4;
 
-  v6 = [(RPEndpoint *)self model];
-  if (v6)
+  model = [(RPEndpoint *)self model];
+  if (model)
   {
     NSAppendPrintF();
     v7 = v5;
@@ -65,24 +65,24 @@
   return v5;
 }
 
-- (BOOL)isEqualToDevice:(id)a3
+- (BOOL)isEqualToDevice:(id)device
 {
   identifier = self->super._identifier;
-  v4 = [a3 identifier];
-  LOBYTE(identifier) = [(NSString *)identifier isEqualToString:v4];
+  identifier = [device identifier];
+  LOBYTE(identifier) = [(NSString *)identifier isEqualToString:identifier];
 
   return identifier;
 }
 
-- (unsigned)updateWithSFDevice:(id)a3
+- (unsigned)updateWithSFDevice:(id)device
 {
   v10.receiver = self;
   v10.super_class = RPNearbyInvitationDevice;
-  v4 = a3;
-  v5 = [(RPEndpoint *)&v10 updateWithSFDevice:v4];
-  v6 = [v4 bleDevice];
+  deviceCopy = device;
+  v5 = [(RPEndpoint *)&v10 updateWithSFDevice:deviceCopy];
+  bleDevice = [deviceCopy bleDevice];
 
-  v7 = [v6 advertisementFields];
+  advertisementFields = [bleDevice advertisementFields];
   Int64Ranged = CFDictionaryGetInt64Ranged();
 
   if (self->_deviceColor != Int64Ranged)
@@ -94,11 +94,11 @@
   return v5;
 }
 
-- (unsigned)updateWithEndpoint:(id)a3
+- (unsigned)updateWithEndpoint:(id)endpoint
 {
   v4.receiver = self;
   v4.super_class = RPNearbyInvitationDevice;
-  return [(RPEndpoint *)&v4 updateWithEndpoint:a3];
+  return [(RPEndpoint *)&v4 updateWithEndpoint:endpoint];
 }
 
 @end

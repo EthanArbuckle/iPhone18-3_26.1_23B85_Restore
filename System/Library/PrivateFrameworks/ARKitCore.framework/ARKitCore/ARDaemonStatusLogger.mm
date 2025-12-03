@@ -1,39 +1,39 @@
 @interface ARDaemonStatusLogger
-- (id)generateStringFromStatusDictionary:(id)a3 forServerObject:(id)a4 andProcessName:(id)a5;
-- (void)_logOrGenerateString:(id)a3 fromDictionary:(id)a4 forServerObject:(id)a5 andProcessName:(id)a6;
-- (void)_logProcessInformationFromDictionary:(id)a3 forServerObject:(id)a4 andProcessName:(id)a5 generatedTestString:(id)a6;
-- (void)_logSystemInformationFromDictionary:(id)a3 forServerObject:(id)a4 generatedTestString:(id)a5;
+- (id)generateStringFromStatusDictionary:(id)dictionary forServerObject:(id)object andProcessName:(id)name;
+- (void)_logOrGenerateString:(id)string fromDictionary:(id)dictionary forServerObject:(id)object andProcessName:(id)name;
+- (void)_logProcessInformationFromDictionary:(id)dictionary forServerObject:(id)object andProcessName:(id)name generatedTestString:(id)string;
+- (void)_logSystemInformationFromDictionary:(id)dictionary forServerObject:(id)object generatedTestString:(id)string;
 @end
 
 @implementation ARDaemonStatusLogger
 
-- (id)generateStringFromStatusDictionary:(id)a3 forServerObject:(id)a4 andProcessName:(id)a5
+- (id)generateStringFromStatusDictionary:(id)dictionary forServerObject:(id)object andProcessName:(id)name
 {
   v8 = MEMORY[0x1E696AD60];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  nameCopy = name;
+  objectCopy = object;
+  dictionaryCopy = dictionary;
   v12 = objc_alloc_init(v8);
-  [(ARDaemonStatusLogger *)self _logOrGenerateString:v12 fromDictionary:v11 forServerObject:v10 andProcessName:v9];
+  [(ARDaemonStatusLogger *)self _logOrGenerateString:v12 fromDictionary:dictionaryCopy forServerObject:objectCopy andProcessName:nameCopy];
 
   return v12;
 }
 
-- (void)_logOrGenerateString:(id)a3 fromDictionary:(id)a4 forServerObject:(id)a5 andProcessName:(id)a6
+- (void)_logOrGenerateString:(id)string fromDictionary:(id)dictionary forServerObject:(id)object andProcessName:(id)name
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  stringCopy = string;
+  dictionaryCopy = dictionary;
+  objectCopy = object;
+  nameCopy = name;
   v14 = _ARLogGeneral_48();
   v15 = v14;
-  if (!v10)
+  if (!stringCopy)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v42 = v12;
+      v42 = objectCopy;
       _os_log_impl(&dword_1C241C000, v15, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] START", buf, 0xCu);
     }
 
@@ -41,7 +41,7 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v42 = v12;
+      v42 = objectCopy;
       _os_log_impl(&dword_1C241C000, v16, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] {", buf, 0xCu);
     }
 
@@ -49,7 +49,7 @@
   }
 
   *buf = 134349056;
-  v42 = v12;
+  v42 = objectCopy;
   LODWORD(v39) = 12;
   v20 = _os_log_send_and_compose_impl();
 
@@ -72,14 +72,14 @@
       v24 = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:4];
     }
 
-    [v10 appendString:v24];
-    [v10 appendString:@"\n"];
+    [stringCopy appendString:v24];
+    [stringCopy appendString:@"\n"];
     free(v20);
   }
 
   v29 = _ARLogGeneral_48();
   *buf = 134349056;
-  v42 = v12;
+  v42 = objectCopy;
   LODWORD(v39) = 12;
   v38 = buf;
   v30 = _os_log_send_and_compose_impl();
@@ -100,22 +100,22 @@
       v16 = [*(v21 + 3776) stringWithCString:v30 encoding:4];
     }
 
-    [v10 appendString:v16];
-    [v10 appendString:@"\n"];
+    [stringCopy appendString:v16];
+    [stringCopy appendString:@"\n"];
     free(v30);
 LABEL_6:
   }
 
-  [(ARDaemonStatusLogger *)self _logProcessInformationFromDictionary:v11 forServerObject:v12 andProcessName:v13 generatedTestString:v10, v38, v39];
-  [(ARDaemonStatusLogger *)self _logSystemInformationFromDictionary:v11 forServerObject:v12 generatedTestString:v10];
+  [(ARDaemonStatusLogger *)self _logProcessInformationFromDictionary:dictionaryCopy forServerObject:objectCopy andProcessName:nameCopy generatedTestString:stringCopy, v38, v39];
+  [(ARDaemonStatusLogger *)self _logSystemInformationFromDictionary:dictionaryCopy forServerObject:objectCopy generatedTestString:stringCopy];
   v17 = _ARLogGeneral_48();
   v18 = v17;
-  if (!v10)
+  if (!stringCopy)
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v42 = v12;
+      v42 = objectCopy;
       _os_log_impl(&dword_1C241C000, v18, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] }", buf, 0xCu);
     }
 
@@ -123,7 +123,7 @@ LABEL_6:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v42 = v12;
+      v42 = objectCopy;
       _os_log_impl(&dword_1C241C000, v19, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] END", buf, 0xCu);
     }
 
@@ -131,7 +131,7 @@ LABEL_6:
   }
 
   *buf = 134349056;
-  v42 = v12;
+  v42 = objectCopy;
   LODWORD(v40) = 12;
   v25 = _os_log_send_and_compose_impl();
 
@@ -150,14 +150,14 @@ LABEL_6:
       v28 = [MEMORY[0x1E696AEC0] stringWithCString:v25 encoding:4];
     }
 
-    [v10 appendString:v28];
-    [v10 appendString:@"\n"];
+    [stringCopy appendString:v28];
+    [stringCopy appendString:@"\n"];
     free(v25);
   }
 
   v34 = _ARLogGeneral_48();
   *buf = 134349056;
-  v42 = v12;
+  v42 = objectCopy;
   LODWORD(v40) = 12;
   v35 = _os_log_send_and_compose_impl();
 
@@ -176,32 +176,32 @@ LABEL_6:
       v19 = [MEMORY[0x1E696AEC0] stringWithCString:v35 encoding:4];
     }
 
-    [v10 appendString:v19];
-    [v10 appendString:@"\n"];
+    [stringCopy appendString:v19];
+    [stringCopy appendString:@"\n"];
     free(v35);
 LABEL_12:
   }
 }
 
-- (void)_logProcessInformationFromDictionary:(id)a3 forServerObject:(id)a4 andProcessName:(id)a5 generatedTestString:(id)a6
+- (void)_logProcessInformationFromDictionary:(id)dictionary forServerObject:(id)object andProcessName:(id)name generatedTestString:(id)string
 {
   v68 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 objectForKey:v11];
+  dictionaryCopy = dictionary;
+  objectCopy = object;
+  nameCopy = name;
+  stringCopy = string;
+  v13 = [dictionaryCopy objectForKey:nameCopy];
   v14 = _ARLogGeneral_48();
   v15 = v14;
-  if (!v12)
+  if (!stringCopy)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v16 = [v13 objectForKey:@"pid"];
       *buf = 134349570;
-      v63 = v10;
+      v63 = objectCopy;
       v64 = 2114;
-      v65 = v11;
+      v65 = nameCopy;
       v66 = 2114;
       v67 = v16;
       _os_log_impl(&dword_1C241C000, v15, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] \t%{public}@: {pid: %{public}@},", buf, 0x20u);
@@ -210,12 +210,12 @@ LABEL_12:
     v17 = _ARLogGeneral_48();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_spawn_time", v11];
-      v19 = [v9 objectForKey:v18];
+      nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_spawn_time", nameCopy];
+      v19 = [dictionaryCopy objectForKey:nameCopy];
       *buf = 134349570;
-      v63 = v10;
+      v63 = objectCopy;
       v64 = 2114;
-      v65 = v11;
+      v65 = nameCopy;
       v66 = 2114;
       v67 = v19;
       _os_log_impl(&dword_1C241C000, v17, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] \t%{public}@_spawn_time: %{public}@,", buf, 0x20u);
@@ -224,12 +224,12 @@ LABEL_12:
     v20 = _ARLogGeneral_48();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_up_time", v11];
-      v22 = [v9 objectForKey:v21];
+      nameCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_up_time", nameCopy];
+      v22 = [dictionaryCopy objectForKey:nameCopy2];
       *buf = 134349570;
-      v63 = v10;
+      v63 = objectCopy;
       v64 = 2114;
-      v65 = v11;
+      v65 = nameCopy;
       v66 = 2114;
       v67 = v22;
       _os_log_impl(&dword_1C241C000, v20, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] \t%{public}@_up_time: %{public}@,", buf, 0x20u);
@@ -238,12 +238,12 @@ LABEL_12:
     v23 = _ARLogGeneral_48();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_up_time_including_sleep", v11];
-      v25 = [v9 objectForKey:v24];
+      nameCopy3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_up_time_including_sleep", nameCopy];
+      v25 = [dictionaryCopy objectForKey:nameCopy3];
       *buf = 134349570;
-      v63 = v10;
+      v63 = objectCopy;
       v64 = 2114;
-      v65 = v11;
+      v65 = nameCopy;
       v66 = 2114;
       v67 = v25;
       _os_log_impl(&dword_1C241C000, v23, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] \t%{public}@_up_time_including_sleep: %{public}@,", buf, 0x20u);
@@ -252,12 +252,12 @@ LABEL_12:
     v26 = _ARLogGeneral_48();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
-      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_up_time_including_sleep_and_drift_correction", v11];
-      v28 = [v9 objectForKey:v27];
+      nameCopy4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_up_time_including_sleep_and_drift_correction", nameCopy];
+      v28 = [dictionaryCopy objectForKey:nameCopy4];
       *buf = 134349570;
-      v63 = v10;
+      v63 = objectCopy;
       v64 = 2114;
-      v65 = v11;
+      v65 = nameCopy;
       v66 = 2114;
       v67 = v28;
       _os_log_impl(&dword_1C241C000, v26, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] \t%{public}@_up_time_including_sleep_and_drift_correction: %{public}@,", buf, 0x20u);
@@ -268,9 +268,9 @@ LABEL_12:
 
   [v13 objectForKey:@"pid"];
   *buf = 134349570;
-  v63 = v10;
+  v63 = objectCopy;
   v64 = 2114;
-  v65 = v11;
+  v65 = nameCopy;
   v67 = v66 = 2114;
   LODWORD(v61) = 32;
   v29 = _os_log_send_and_compose_impl();
@@ -290,18 +290,18 @@ LABEL_12:
       v32 = [MEMORY[0x1E696AEC0] stringWithCString:v29 encoding:4];
     }
 
-    [v12 appendString:v32];
-    [v12 appendString:@"\n"];
+    [stringCopy appendString:v32];
+    [stringCopy appendString:@"\n"];
     free(v29);
   }
 
   v33 = _ARLogGeneral_48();
-  v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_spawn_time", v11];
-  v35 = [v9 objectForKey:v34];
+  nameCopy5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_spawn_time", nameCopy];
+  v35 = [dictionaryCopy objectForKey:nameCopy5];
   *buf = 134349570;
-  v63 = v10;
+  v63 = objectCopy;
   v64 = 2114;
-  v65 = v11;
+  v65 = nameCopy;
   v66 = 2114;
   v67 = v35;
   LODWORD(v61) = 32;
@@ -322,18 +322,18 @@ LABEL_12:
       v39 = [MEMORY[0x1E696AEC0] stringWithCString:v36 encoding:4];
     }
 
-    [v12 appendString:v39];
-    [v12 appendString:@"\n"];
+    [stringCopy appendString:v39];
+    [stringCopy appendString:@"\n"];
     free(v36);
   }
 
   v40 = _ARLogGeneral_48();
-  v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_up_time", v11];
-  v42 = [v9 objectForKey:v41];
+  nameCopy6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_up_time", nameCopy];
+  v42 = [dictionaryCopy objectForKey:nameCopy6];
   *buf = 134349570;
-  v63 = v10;
+  v63 = objectCopy;
   v64 = 2114;
-  v65 = v11;
+  v65 = nameCopy;
   v66 = 2114;
   v67 = v42;
   LODWORD(v61) = 32;
@@ -354,18 +354,18 @@ LABEL_12:
       v46 = [MEMORY[0x1E696AEC0] stringWithCString:v43 encoding:4];
     }
 
-    [v12 appendString:v46];
-    [v12 appendString:@"\n"];
+    [stringCopy appendString:v46];
+    [stringCopy appendString:@"\n"];
     free(v43);
   }
 
   v47 = _ARLogGeneral_48();
-  v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_up_time_including_sleep", v11];
-  v49 = [v9 objectForKey:v48];
+  nameCopy7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_up_time_including_sleep", nameCopy];
+  v49 = [dictionaryCopy objectForKey:nameCopy7];
   *buf = 134349570;
-  v63 = v10;
+  v63 = objectCopy;
   v64 = 2114;
-  v65 = v11;
+  v65 = nameCopy;
   v66 = 2114;
   v67 = v49;
   LODWORD(v61) = 32;
@@ -386,18 +386,18 @@ LABEL_12:
       v53 = [MEMORY[0x1E696AEC0] stringWithCString:v50 encoding:4];
     }
 
-    [v12 appendString:v53];
-    [v12 appendString:@"\n"];
+    [stringCopy appendString:v53];
+    [stringCopy appendString:@"\n"];
     free(v50);
   }
 
   v54 = _ARLogGeneral_48();
-  v55 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_up_time_including_sleep_and_drift_correction", v11];
-  v56 = [v9 objectForKey:v55];
+  nameCopy8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_up_time_including_sleep_and_drift_correction", nameCopy];
+  v56 = [dictionaryCopy objectForKey:nameCopy8];
   *buf = 134349570;
-  v63 = v10;
+  v63 = objectCopy;
   v64 = 2114;
-  v65 = v11;
+  v65 = nameCopy;
   v66 = 2114;
   v67 = v56;
   LODWORD(v61) = 32;
@@ -419,28 +419,28 @@ LABEL_12:
       v26 = [MEMORY[0x1E696AEC0] stringWithCString:v57 encoding:4];
     }
 
-    [v12 appendString:v26];
-    [v12 appendString:@"\n"];
+    [stringCopy appendString:v26];
+    [stringCopy appendString:@"\n"];
     free(v57);
 LABEL_12:
   }
 }
 
-- (void)_logSystemInformationFromDictionary:(id)a3 forServerObject:(id)a4 generatedTestString:(id)a5
+- (void)_logSystemInformationFromDictionary:(id)dictionary forServerObject:(id)object generatedTestString:(id)string
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  objectCopy = object;
+  stringCopy = string;
   v10 = _ARLogGeneral_48();
   v11 = v10;
-  if (!v9)
+  if (!stringCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v12 = [v7 objectForKey:@"system_boot_time"];
+      v12 = [dictionaryCopy objectForKey:@"system_boot_time"];
       *buf = 134349314;
-      v44 = v8;
+      v44 = objectCopy;
       v45 = 2114;
       v46 = v12;
       _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] \tsystem_boot_time: %{public}@,", buf, 0x16u);
@@ -449,9 +449,9 @@ LABEL_12:
     v13 = _ARLogGeneral_48();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v7 objectForKey:@"system_up_time"];
+      v14 = [dictionaryCopy objectForKey:@"system_up_time"];
       *buf = 134349314;
-      v44 = v8;
+      v44 = objectCopy;
       v45 = 2114;
       v46 = v14;
       _os_log_impl(&dword_1C241C000, v13, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] \tsystem_up_time: %{public}@,", buf, 0x16u);
@@ -460,9 +460,9 @@ LABEL_12:
     v15 = _ARLogGeneral_48();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [v7 objectForKey:@"system_up_time_including_sleep"];
+      v16 = [dictionaryCopy objectForKey:@"system_up_time_including_sleep"];
       *buf = 134349314;
-      v44 = v8;
+      v44 = objectCopy;
       v45 = 2114;
       v46 = v16;
       _os_log_impl(&dword_1C241C000, v15, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] \tsystem_up_time_including_sleep: %{public}@,", buf, 0x16u);
@@ -471,9 +471,9 @@ LABEL_12:
     v17 = _ARLogGeneral_48();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [v7 objectForKey:@"system_up_time_including_sleep_and_drift_correction"];
+      v18 = [dictionaryCopy objectForKey:@"system_up_time_including_sleep_and_drift_correction"];
       *buf = 134349314;
-      v44 = v8;
+      v44 = objectCopy;
       v45 = 2114;
       v46 = v18;
       _os_log_impl(&dword_1C241C000, v17, OS_LOG_TYPE_INFO, "ARServer <%{public}p>: Status [UPDATE] \tsystem_up_time_including_sleep_and_drift_correction: %{public}@,", buf, 0x16u);
@@ -482,9 +482,9 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  [v7 objectForKey:@"system_boot_time"];
+  [dictionaryCopy objectForKey:@"system_boot_time"];
   *buf = 134349314;
-  v44 = v8;
+  v44 = objectCopy;
   v46 = v45 = 2114;
   LODWORD(v42) = 22;
   v19 = _os_log_send_and_compose_impl();
@@ -508,15 +508,15 @@ LABEL_12:
       v23 = [MEMORY[0x1E696AEC0] stringWithCString:v19 encoding:4];
     }
 
-    [v9 appendString:v23];
-    [v9 appendString:@"\n"];
+    [stringCopy appendString:v23];
+    [stringCopy appendString:@"\n"];
     free(v19);
   }
 
   v24 = _ARLogGeneral_48();
-  v25 = [v7 objectForKey:@"system_up_time"];
+  v25 = [dictionaryCopy objectForKey:@"system_up_time"];
   *buf = 134349314;
-  v44 = v8;
+  v44 = objectCopy;
   v45 = 2114;
   v46 = v25;
   LODWORD(v42) = 22;
@@ -540,15 +540,15 @@ LABEL_12:
       v29 = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:4];
     }
 
-    [v9 appendString:v29];
-    [v9 appendString:@"\n"];
+    [stringCopy appendString:v29];
+    [stringCopy appendString:@"\n"];
     free(v26);
   }
 
   v30 = _ARLogGeneral_48();
-  v31 = [v7 objectForKey:@"system_up_time_including_sleep"];
+  v31 = [dictionaryCopy objectForKey:@"system_up_time_including_sleep"];
   *buf = 134349314;
-  v44 = v8;
+  v44 = objectCopy;
   v45 = 2114;
   v46 = v31;
   LODWORD(v42) = 22;
@@ -572,15 +572,15 @@ LABEL_12:
       v35 = [MEMORY[0x1E696AEC0] stringWithCString:v32 encoding:4];
     }
 
-    [v9 appendString:v35];
-    [v9 appendString:@"\n"];
+    [stringCopy appendString:v35];
+    [stringCopy appendString:@"\n"];
     free(v32);
   }
 
   v36 = _ARLogGeneral_48();
-  v37 = [v7 objectForKey:@"system_up_time_including_sleep_and_drift_correction"];
+  v37 = [dictionaryCopy objectForKey:@"system_up_time_including_sleep_and_drift_correction"];
   *buf = 134349314;
-  v44 = v8;
+  v44 = objectCopy;
   v45 = 2114;
   v46 = v37;
   LODWORD(v42) = 22;
@@ -602,8 +602,8 @@ LABEL_12:
       v17 = [*(v20 + 3776) stringWithCString:v38 encoding:4];
     }
 
-    [v9 appendString:v17];
-    [v9 appendString:@"\n"];
+    [stringCopy appendString:v17];
+    [stringCopy appendString:@"\n"];
     free(v38);
 LABEL_10:
   }

@@ -1,10 +1,10 @@
 @interface JoinCallIntentHandler
 - (JoinCallIntentHandler)init;
-- (JoinCallIntentHandler)initWithCallCenter:(id)a3 contactsDataSource:(id)a4;
-- (id)_responseForMatchingConversation:(id)a3 intent:(id)a4;
-- (void)confirmJoinCall:(id)a3 completion:(id)a4;
-- (void)handleJoinCall:(id)a3 completion:(id)a4;
-- (void)resolveGroupConversationForJoinCall:(id)a3 withCompletion:(id)a4;
+- (JoinCallIntentHandler)initWithCallCenter:(id)center contactsDataSource:(id)source;
+- (id)_responseForMatchingConversation:(id)conversation intent:(id)intent;
+- (void)confirmJoinCall:(id)call completion:(id)completion;
+- (void)handleJoinCall:(id)call completion:(id)completion;
+- (void)resolveGroupConversationForJoinCall:(id)call withCompletion:(id)completion;
 @end
 
 @implementation JoinCallIntentHandler
@@ -15,43 +15,43 @@
   v4 = dispatch_queue_create([v3 UTF8String], 0);
 
   v5 = [TUCallCenter callCenterWithQueue:v4];
-  v6 = [v5 contactStore];
-  v7 = [(JoinCallIntentHandler *)self initWithCallCenter:v5 contactsDataSource:v6];
+  contactStore = [v5 contactStore];
+  v7 = [(JoinCallIntentHandler *)self initWithCallCenter:v5 contactsDataSource:contactStore];
 
   return v7;
 }
 
-- (JoinCallIntentHandler)initWithCallCenter:(id)a3 contactsDataSource:(id)a4
+- (JoinCallIntentHandler)initWithCallCenter:(id)center contactsDataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  centerCopy = center;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = JoinCallIntentHandler;
   v9 = [(JoinCallIntentHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_callCenter, a3);
-    objc_storeStrong(&v10->_contactsDataSource, a4);
+    objc_storeStrong(&v9->_callCenter, center);
+    objc_storeStrong(&v10->_contactsDataSource, source);
   }
 
   return v10;
 }
 
-- (void)handleJoinCall:(id)a3 completion:(id)a4
+- (void)handleJoinCall:(id)call completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  callCopy = call;
+  completionCopy = completion;
   v8 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = callCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Handling join call intent: %@", &buf, 0xCu);
   }
 
-  v9 = [v6 groupConversation];
-  v10 = [v9 conversationId];
+  groupConversation = [callCopy groupConversation];
+  conversationId = [groupConversation conversationId];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -59,22 +59,22 @@
   v25 = sub_100021958;
   v26 = sub_100021968;
   v27 = 0;
-  v11 = [(JoinCallIntentHandler *)self callCenter];
-  v12 = [v11 queue];
+  callCenter = [(JoinCallIntentHandler *)self callCenter];
+  queue = [callCenter queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100021970;
   block[3] = &unk_10004D130;
-  v13 = v10;
+  v13 = conversationId;
   v20 = v13;
-  v21 = self;
+  selfCopy = self;
   p_buf = &buf;
-  dispatch_sync(v12, block);
+  dispatch_sync(queue, block);
 
   v14 = *(*(&buf + 1) + 40);
   if (v14)
   {
-    v15 = [(JoinCallIntentHandler *)self _responseForMatchingConversation:v14 intent:v6];
+    v15 = [(JoinCallIntentHandler *)self _responseForMatchingConversation:v14 intent:callCopy];
   }
 
   else
@@ -90,19 +90,19 @@
   }
 
   v17 = v15;
-  v7[2](v7, v15);
+  completionCopy[2](completionCopy, v15);
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (id)_responseForMatchingConversation:(id)a3 intent:(id)a4
+- (id)_responseForMatchingConversation:(id)conversation intent:(id)intent
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TUJoinConversationRequest alloc] initWithConversation:v6 originatingUIType:37];
+  intentCopy = intent;
+  conversationCopy = conversation;
+  v7 = [[TUJoinConversationRequest alloc] initWithConversation:conversationCopy originatingUIType:37];
 
   [v7 setVideoEnabled:1];
-  v8 = [NSUserActivity makeActivityWithIntent:v5 joinRequestAttachment:v7];
+  v8 = [NSUserActivity makeActivityWithIntent:intentCopy joinRequestAttachment:v7];
 
   v9 = IntentHandlerDefaultLog();
   v10 = v9;
@@ -136,26 +136,26 @@
   return v14;
 }
 
-- (void)confirmJoinCall:(id)a3 completion:(id)a4
+- (void)confirmJoinCall:(id)call completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  callCopy = call;
+  completionCopy = completion;
   v7 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = callCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Confirming join call intent: %@", &v9, 0xCu);
   }
 
   v8 = [[INJoinCallIntentResponse alloc] initWithCode:1 userActivity:0];
-  v6[2](v6, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (void)resolveGroupConversationForJoinCall:(id)a3 withCompletion:(id)a4
+- (void)resolveGroupConversationForJoinCall:(id)call withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  callCopy = call;
+  completionCopy = completion;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -166,28 +166,28 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v6;
+    v31 = callCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Resolving join call intent: %@", buf, 0xCu);
   }
 
-  v9 = [v6 groupConversation];
-  v10 = [v9 conversationId];
-  v11 = [v10 length] == 0;
+  groupConversation = [callCopy groupConversation];
+  conversationId = [groupConversation conversationId];
+  v11 = [conversationId length] == 0;
 
   if (v11)
   {
-    v16 = [(JoinCallIntentHandler *)self callCenter];
-    v17 = [v16 queue];
+    callCenter = [(JoinCallIntentHandler *)self callCenter];
+    queue = [callCenter queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000220C0;
     block[3] = &unk_10004D130;
-    v21 = v6;
-    v22 = self;
+    v21 = callCopy;
+    selfCopy = self;
     v23 = &v24;
-    dispatch_sync(v17, block);
+    dispatch_sync(queue, block);
 
-    v13 = v21;
+    groupConversation2 = v21;
   }
 
   else
@@ -199,8 +199,8 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "INCallGroupConversation already resolved.", buf, 2u);
     }
 
-    v13 = [v6 groupConversation];
-    v14 = [INCallGroupConversationResolutionResult successWithResolvedCallGroupConversation:v13];
+    groupConversation2 = [callCopy groupConversation];
+    v14 = [INCallGroupConversationResolutionResult successWithResolvedCallGroupConversation:groupConversation2];
     v15 = v25[5];
     v25[5] = v14;
   }
@@ -214,7 +214,7 @@
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Calling completion on resolution result: %@", buf, 0xCu);
   }
 
-  v7[2](v7, v25[5]);
+  completionCopy[2](completionCopy, v25[5]);
   _Block_object_dispose(&v24, 8);
 }
 

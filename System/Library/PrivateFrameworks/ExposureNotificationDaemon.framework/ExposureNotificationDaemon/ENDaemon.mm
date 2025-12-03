@@ -1,43 +1,43 @@
 @interface ENDaemon
 - (BOOL)_bluetoothMonitorShouldRun;
 - (BOOL)_isNKDActive;
-- (BOOL)_postExposureNotificationForClassification:(id)a3 status:(int64_t)a4 region:(id)a5;
-- (BOOL)_writePreferenceActiveEntity:(id)a3;
-- (BOOL)_writePreferenceRegionPendingOnboarding:(id)a3;
+- (BOOL)_postExposureNotificationForClassification:(id)classification status:(int64_t)status region:(id)region;
+- (BOOL)_writePreferenceActiveEntity:(id)entity;
+- (BOOL)_writePreferenceRegionPendingOnboarding:(id)onboarding;
 - (BOOL)isDeviceUnlocked;
 - (BOOL)isOnboardingNeeded;
-- (BOOL)isProxyEnabledForTestResultManager:(id)a3;
+- (BOOL)isProxyEnabledForTestResultManager:(id)manager;
 - (ENDaemon)init;
 - (ENDaemonDelegate)delegate;
 - (double)timeForAvailabilityAlertCycleReset;
-- (id)_getBundleIDFromBundle:(__CFBundle *)a3;
-- (id)_getDelegateAndReturnError:(id *)a3;
-- (id)_getDiagnosedVaccineStatusForDifferentialPrivacyWithUserVaccinationStatus:(id)a3;
-- (id)_getDownloadEndpointsAndReturnError:(id *)a3;
-- (id)_getInfoDictFromAppProxy:(id)a3;
-- (id)_getInfoDictFromBundle:(__CFBundle *)a3;
-- (id)_getReportTypeForSession:(id)a3;
-- (id)_getReportTypeFromMetadata:(id)a3;
+- (id)_getBundleIDFromBundle:(__CFBundle *)bundle;
+- (id)_getDelegateAndReturnError:(id *)error;
+- (id)_getDiagnosedVaccineStatusForDifferentialPrivacyWithUserVaccinationStatus:(id)status;
+- (id)_getDownloadEndpointsAndReturnError:(id *)error;
+- (id)_getInfoDictFromAppProxy:(id)proxy;
+- (id)_getInfoDictFromBundle:(__CFBundle *)bundle;
+- (id)_getReportTypeForSession:(id)session;
+- (id)_getReportTypeFromMetadata:(id)metadata;
 - (id)_readPreferenceActiveEntity;
 - (id)_readPreferenceRegionPendingOnboarding;
-- (id)activeRegionForExposureDetectionManager:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (id)getExposureDatabaseAndReturnError:(id *)a3;
+- (id)activeRegionForExposureDetectionManager:(id)manager;
+- (id)descriptionWithLevel:(int)level;
+- (id)getExposureDatabaseAndReturnError:(id *)error;
 - (id)legacyHistoryPath;
-- (id)loadHistorySinceTime:(double)a3;
-- (id)loadLegacyHistorySinceTime:(double)a3;
-- (id)regionForBundleInfo:(id)a3;
-- (id)xpcConnectionForBundleID:(id)a3;
+- (id)loadHistorySinceTime:(double)time;
+- (id)loadLegacyHistorySinceTime:(double)time;
+- (id)regionForBundleInfo:(id)info;
+- (id)xpcConnectionForBundleID:(id)d;
 - (int64_t)getOverallStatus;
-- (int64_t)tccAccessForBundleID:(id)a3;
+- (int64_t)tccAccessForBundleID:(id)d;
 - (uint64_t)_updateOverallStatus;
 - (uint64_t)isOnboardingNeeded;
 - (uint64_t)legacyHistoryPath;
 - (uint64_t)stateMetricVersion;
 - (uint64_t)timeForAvailabilityAlertCycleReset;
-- (unsigned)_getAvailabilityAlertCountIncrement:(BOOL)a3 reset:(BOOL)a4;
+- (unsigned)_getAvailabilityAlertCountIncrement:(BOOL)increment reset:(BOOL)reset;
 - (unsigned)_getLatestExposureForDifferentialPrivacy;
-- (unsigned)appDequeueActivityFlagsWithBundleID:(id)a3;
+- (unsigned)appDequeueActivityFlagsWithBundleID:(id)d;
 - (unsigned)stateMetricVersion;
 - (void)_activate;
 - (void)_bluetoothMonitorEnsureStarted;
@@ -52,84 +52,84 @@
 - (void)_deferConsentForPendingRegion;
 - (void)_differentialPrivacyEnsureStarted;
 - (void)_differentialPrivacyEnsureStopped;
-- (void)_enApplicationDidInstall:(id)a3;
-- (void)_enApplicationDidUninstall:(id)a3;
-- (void)_enqueueScreenUnlockAction:(id)a3 withIdentifier:(id)a4;
+- (void)_enApplicationDidInstall:(id)install;
+- (void)_enApplicationDidUninstall:(id)uninstall;
+- (void)_enqueueScreenUnlockAction:(id)action withIdentifier:(id)identifier;
 - (void)_exposureManagersEnsureStarted;
 - (void)_exposureManagersEnsureStopped;
-- (void)_exposureNotificationRegionConfigurationChanged:(id)a3;
-- (void)_exposureNotificationRegionConfigurationRemoved:(id)a3;
-- (void)_fetchPrefRegionConfig:(id)a3 oldCustomCountryCode:(id)a4;
-- (void)_handleTestVerificationErrors:(id)a3;
+- (void)_exposureNotificationRegionConfigurationChanged:(id)changed;
+- (void)_exposureNotificationRegionConfigurationRemoved:(id)removed;
+- (void)_fetchPrefRegionConfig:(id)config oldCustomCountryCode:(id)code;
+- (void)_handleTestVerificationErrors:(id)errors;
 - (void)_invalidate;
 - (void)_migrateLegacyHistoryIfNecessary;
 - (void)_networkProxyStatusCheck;
 - (void)_periodicPersistencePurge;
-- (void)_postUserNotificationWithRequest:(id)a3 authorizationFailureHandler:(id)a4;
+- (void)_postUserNotificationWithRequest:(id)request authorizationFailureHandler:(id)handler;
 - (void)_readPreferenceActiveEntity;
 - (void)_readPreferenceRegionPendingOnboarding;
 - (void)_regionMonitorEnsureStarted;
 - (void)_regionMonitorEnsureStopped;
-- (void)_resetDataWithFlags:(unsigned int)a3;
+- (void)_resetDataWithFlags:(unsigned int)flags;
 - (void)_resetDeveloperSettings;
 - (void)_schedulePeriodicPersistencePurge;
 - (void)_scheduleUpdate;
-- (void)_setActiveRegionForApp:(id)a3 infoDict:(id)a4;
+- (void)_setActiveRegionForApp:(id)app infoDict:(id)dict;
 - (void)_startPreauthorizedTestVerificationAction;
 - (void)_tccChanged;
 - (void)_turnOffEN;
 - (void)_update;
 - (void)_updateOverallStatus;
-- (void)_updatePhase1ConfigurationIfNeeded:(id)a3;
-- (void)_xpcConnectionAccept:(id)a3;
-- (void)_xpcListenerEvent:(id)a3;
+- (void)_updatePhase1ConfigurationIfNeeded:(id)needed;
+- (void)_xpcConnectionAccept:(id)accept;
+- (void)_xpcListenerEvent:(id)event;
 - (void)activate;
-- (void)appLaunchWithBundleID:(id)a3 activity:(unsigned int)a4 shouldEnterForeground:(BOOL)a5 requiredRuntimeInSeconds:(int)a6;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)appLaunchWithBundleID:(id)d activity:(unsigned int)activity shouldEnterForeground:(BOOL)foreground requiredRuntimeInSeconds:(int)seconds;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)bluetoothPowerStateChanged;
-- (void)configurationManager:(id)a3 didResolveCurrentRegion:(BOOL)a4;
-- (void)configurationManager:(id)a3 errorDetected:(unsigned int)a4;
-- (void)configurationManager:(id)a3 exposureNotificationRegionConfigurationChanged:(id)a4;
-- (void)configurationManager:(id)a3 exposureNotificationRegionConfigurationRemovedForRegion:(id)a4;
+- (void)configurationManager:(id)manager didResolveCurrentRegion:(BOOL)region;
+- (void)configurationManager:(id)manager errorDetected:(unsigned int)detected;
+- (void)configurationManager:(id)manager exposureNotificationRegionConfigurationChanged:(id)changed;
+- (void)configurationManager:(id)manager exposureNotificationRegionConfigurationRemovedForRegion:(id)region;
 - (void)enqueuePreauthorizedTestVerificationUnlockAction;
-- (void)enqueueScreenUnlockAction:(id)a3 withIdentifier:(id)a4;
-- (void)exposureDetectionManager:(id)a3 finishedSessionWithResult:(id)a4;
-- (void)fetchServerConfigurationForAppBundleIdentifier:(id)a3 infoDictionary:(id)a4;
-- (void)fetchServerConfigurationForRegion:(id)a3 completion:(id)a4;
+- (void)enqueueScreenUnlockAction:(id)action withIdentifier:(id)identifier;
+- (void)exposureDetectionManager:(id)manager finishedSessionWithResult:(id)result;
+- (void)fetchServerConfigurationForAppBundleIdentifier:(id)identifier infoDictionary:(id)dictionary;
+- (void)fetchServerConfigurationForRegion:(id)region completion:(id)completion;
 - (void)init;
 - (void)invalidate;
-- (void)monthlyTriggerActivateWithIntervalOverride:(unsigned int)a3;
+- (void)monthlyTriggerActivateWithIntervalOverride:(unsigned int)override;
 - (void)monthlyTriggerDeactivate;
-- (void)notifyUserWithStatus:(int64_t)a3;
-- (void)onboardingManagerDidObserveDeviceUnlock:(id)a3;
+- (void)notifyUserWithStatus:(int64_t)status;
+- (void)onboardingManagerDidObserveDeviceUnlock:(id)unlock;
 - (void)onboardingTriggerDeactivate;
 - (void)onboardingTriggerResumeIfNeeded;
-- (void)onboardingTriggerRetry:(unsigned int)a3;
+- (void)onboardingTriggerRetry:(unsigned int)retry;
 - (void)pauseUpdate;
-- (void)postAnalyticsOptInNotificationForRegion:(id)a3;
+- (void)postAnalyticsOptInNotificationForRegion:(id)region;
 - (void)postENOffNotification;
-- (void)postExposureNotification:(id)a3;
-- (void)postExposureSummaryAccessNotificationWithAppBundleIdentifier:(id)a3 string:(id)a4;
-- (void)postGeneralNotificationWithTitle:(id)a3 message:(id)a4;
-- (void)postMonthlySummaryNotificationForAppBundleIdentifier:(id)a3;
-- (void)postOnboardingNotificationForRegion:(id)a3;
-- (void)postPreAuthorizationNotificationForRegion:(id)a3;
-- (void)postTestVerificationReceivedNotification:(id)a3 region:(id)a4 reportType:(unsigned int)a5;
+- (void)postExposureNotification:(id)notification;
+- (void)postExposureSummaryAccessNotificationWithAppBundleIdentifier:(id)identifier string:(id)string;
+- (void)postGeneralNotificationWithTitle:(id)title message:(id)message;
+- (void)postMonthlySummaryNotificationForAppBundleIdentifier:(id)identifier;
+- (void)postOnboardingNotificationForRegion:(id)region;
+- (void)postPreAuthorizationNotificationForRegion:(id)region;
+- (void)postTestVerificationReceivedNotification:(id)notification region:(id)region reportType:(unsigned int)type;
 - (void)prefsChanged;
-- (void)presentBuddyForRegion:(id)a3 errorHandler:(id)a4 completionHandler:(id)a5;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)setMonthlySummaryDisabled:(BOOL)a3;
-- (void)startAvailabilityAlertCycleWithBuddy:(BOOL)a3;
-- (void)startServerConfigurationFetchForRegion:(id)a3;
+- (void)presentBuddyForRegion:(id)region errorHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)setMonthlySummaryDisabled:(BOOL)disabled;
+- (void)startAvailabilityAlertCycleWithBuddy:(BOOL)buddy;
+- (void)startServerConfigurationFetchForRegion:(id)region;
 - (void)tearDownAlertHandle;
-- (void)textMessageManager:(id)a3 errorDetected:(unsigned int)a4;
+- (void)textMessageManager:(id)manager errorDetected:(unsigned int)detected;
 - (void)timeForAvailabilityAlertCycleReset;
-- (void)updateExistingConsentForPhase1ActiveRegion:(int64_t)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)xpcConnectionInvalidated:(id)a3;
+- (void)updateExistingConsentForPhase1ActiveRegion:(int64_t)region;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)xpcConnectionInvalidated:(id)invalidated;
 - (void)xpcPreAuthorizedDiagnosisKeysAvailable;
 - (void)xpcReportStatus;
 @end
@@ -230,11 +230,11 @@
     prefRegionIdentifierOverride = self->_prefRegionIdentifierOverride;
     if (!prefRegionIdentifierOverride || ![(NSString *)prefRegionIdentifierOverride length])
     {
-      v4 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-      [v4 clearTemporaryServerConfigurations];
+      configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+      [configurationStore clearTemporaryServerConfigurations];
 
-      v5 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-      [v5 clearTemporaryCountrySubdivisionList];
+      configurationStore2 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+      [configurationStore2 clearTemporaryCountrySubdivisionList];
     }
   }
 
@@ -264,9 +264,9 @@
           objc_enumerationMutation(v2);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) manager];
+        manager = [*(*(&v9 + 1) + 8 * i) manager];
 
-        if (v6)
+        if (manager)
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;
@@ -388,7 +388,7 @@ LABEL_11:
 
 - (void)_schedulePeriodicPersistencePurge
 {
-  v1 = [*a1 identifier];
+  identifier = [*self identifier];
   LogPrintF_safe();
 }
 
@@ -396,10 +396,10 @@ LABEL_11:
 {
   v17[1] = *MEMORY[0x277D85DE8];
   overallStatus = self->_overallStatus;
-  v4 = [(ENDaemon *)self getOverallStatus];
-  if (v4 != overallStatus)
+  getOverallStatus = [(ENDaemon *)self getOverallStatus];
+  if (getOverallStatus != overallStatus)
   {
-    v5 = v4;
+    v5 = getOverallStatus;
     if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
       [(ENDaemon *)overallStatus _updateOverallStatus];
@@ -415,10 +415,10 @@ LABEL_11:
 
       else if (v5 == 1)
       {
-        v8 = [(ENDaemon *)self userNotificationCenter];
+        userNotificationCenter = [(ENDaemon *)self userNotificationCenter];
         v17[0] = @"com.apple.ExposureNotification.UserNotification.off";
         v9 = [MEMORY[0x277CBEA68] arrayWithObjects:v17 count:1];
-        [v8 removeDeliveredNotificationsWithIdentifiers:v9];
+        [userNotificationCenter removeDeliveredNotificationsWithIdentifiers:v9];
       }
 
       *&self->_wasInRestrictedStatus = 0;
@@ -437,10 +437,10 @@ LABEL_11:
       {
         if (v5 == 1)
         {
-          v6 = self;
+          selfCopy2 = self;
           v7 = 1;
 LABEL_17:
-          [(ENDaemon *)v6 notifyUserWithStatus:v7];
+          [(ENDaemon *)selfCopy2 notifyUserWithStatus:v7];
           goto LABEL_22;
         }
 
@@ -457,7 +457,7 @@ LABEL_21:
     {
       if (v5 == 4)
       {
-        v6 = self;
+        selfCopy2 = self;
         v7 = 4;
         goto LABEL_17;
       }
@@ -529,9 +529,9 @@ LABEL_23:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained isBluetoothPoweredOn];
+  isBluetoothPoweredOn = [WeakRetained isBluetoothPoweredOn];
 
-  if (v4)
+  if (isBluetoothPoweredOn)
   {
     return 1;
   }
@@ -630,11 +630,11 @@ void __21__ENDaemon__activate__block_invoke_2(uint64_t a1)
     v22 = [objc_alloc(MEMORY[0x277CE2030]) initWithBundleIdentifier:@"com.apple.ExposureNotification.UserNotification" queue:self->_dispatchQueue];
     [(ENDaemon *)self setUserNotificationCenter:v22];
 
-    v23 = [(ENDaemon *)self userNotificationCenter];
-    [v23 setDelegate:self];
+    userNotificationCenter = [(ENDaemon *)self userNotificationCenter];
+    [userNotificationCenter setDelegate:self];
 
-    v24 = [(ENDaemon *)self userNotificationCenter];
-    [v24 setWantsNotificationResponsesDelivered];
+    userNotificationCenter2 = [(ENDaemon *)self userNotificationCenter];
+    [userNotificationCenter2 setWantsNotificationResponsesDelivered];
 
     [(ENTemporaryExposureKeyManager *)self->_temporaryExposureKeyManager resetClientState];
     v25 = objc_alloc_init(MEMORY[0x277CBEB30]);
@@ -648,21 +648,21 @@ void __21__ENDaemon__activate__block_invoke_2(uint64_t a1)
     [(ENOnboardingManager *)self->_onboardingManager setDelegate:self];
     self = self;
 
-    v29 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v29 = 0;
+    selfCopy = 0;
   }
 
-  return v29;
+  return selfCopy;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v191 = *MEMORY[0x277D85DE8];
-  v132 = a3;
+  levelCopy = level;
   v183 = 0;
   v184 = &v183;
   v185 = 0x3032000000;
@@ -680,15 +680,15 @@ void __21__ENDaemon__activate__block_invoke_2(uint64_t a1)
   mach_absolute_time();
   startTicks = self->_startTicks;
   v6 = UpTicksToSeconds();
-  v7 = [(ENDaemon *)self getOverallStatus];
-  if (v7 > 6)
+  getOverallStatus = [(ENDaemon *)self getOverallStatus];
+  if (getOverallStatus > 6)
   {
     v8 = "?";
   }
 
   else
   {
-    v8 = off_278FD20E0[v7];
+    v8 = off_278FD20E0[getOverallStatus];
   }
 
   v117 = v8;
@@ -701,45 +701,45 @@ void __21__ENDaemon__activate__block_invoke_2(uint64_t a1)
   objc_storeStrong(v9, v180);
   v133 = self->_configurationManager;
   v134 = [(ENConfigurationManager *)v133 configurationStore:activeEntity];
-  v10 = [(ENActiveEntity *)self->_activeEntity entity];
-  v11 = [v10 region];
+  entity = [(ENActiveEntity *)self->_activeEntity entity];
+  region = [entity region];
 
-  if (v11)
+  if (region)
   {
-    v12 = [v134 configurationForRegion:v11];
-    v13 = [v134 serverConfigurationForRegion:v11];
-    v14 = [v12 userConsent];
+    v12 = [v134 configurationForRegion:region];
+    v13 = [v134 serverConfigurationForRegion:region];
+    userConsent = [v12 userConsent];
     v15 = (v184 + 5);
     v179 = v184[5];
-    v16 = [v13 enEnabled];
-    v17 = [v12 enVersion];
+    enEnabled = [v13 enEnabled];
+    enVersion = [v12 enVersion];
     v18 = "disabled";
-    if (v16)
+    if (enEnabled)
     {
       v18 = "enabled";
     }
 
     v97 = v18;
-    v112 = v17;
+    v112 = enVersion;
     NSAppendPrintF_safe();
     objc_storeStrong(v15, v179);
     v19 = (v184 + 5);
     v178 = v184[5];
-    v20 = [v14 consent];
-    if (v20 <= 4)
+    consent = [userConsent consent];
+    if (consent <= 4)
     {
-      v21 = off_278FD2090[v20];
+      v21 = off_278FD2090[consent];
     }
 
-    v22 = [v14 differentialPrivacyConsent];
-    if (v22 > 4)
+    differentialPrivacyConsent = [userConsent differentialPrivacyConsent];
+    if (differentialPrivacyConsent > 4)
     {
       v23 = "?";
     }
 
     else
     {
-      v23 = off_278FD2090[v22];
+      v23 = off_278FD2090[differentialPrivacyConsent];
     }
 
     v111 = v23;
@@ -752,19 +752,19 @@ void __21__ENDaemon__activate__block_invoke_2(uint64_t a1)
     objc_storeStrong(v24, v177);
   }
 
-  v25 = [(ENActiveEntity *)self->_activeEntity entity];
-  v26 = [v25 bundleIdentifier];
+  entity2 = [(ENActiveEntity *)self->_activeEntity entity];
+  bundleIdentifier = [entity2 bundleIdentifier];
 
-  if (v26)
+  if (bundleIdentifier)
   {
-    v27 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:v26 placeholder:0];
+    v27 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:bundleIdentifier placeholder:0];
     v28 = (v184 + 5);
     v176 = v184[5];
-    v29 = [v27 appState];
-    [v29 isInstalled];
-    v30 = [v27 appState];
-    [v30 isPlaceholder];
-    v31 = [(ENDaemon *)self tccAccessForBundleID:v26];
+    appState = [v27 appState];
+    [appState isInstalled];
+    appState2 = [v27 appState];
+    [appState2 isPlaceholder];
+    v31 = [(ENDaemon *)self tccAccessForBundleID:bundleIdentifier];
     if (v31 <= 2)
     {
       v32 = off_278FD2078[v31];
@@ -876,13 +876,13 @@ void __21__ENDaemon__activate__block_invoke_2(uint64_t a1)
   objc_storeStrong(v47, v165);
   v49 = (v184 + 5);
   v164 = v184[5];
-  v50 = [(ENActiveEntity *)self->_activeEntity entity];
-  v104 = [v50 bundleIdentifier];
+  entity3 = [(ENActiveEntity *)self->_activeEntity entity];
+  bundleIdentifier2 = [entity3 bundleIdentifier];
   btTracingAppID = self->_btTracingAppID;
   NSAppendPrintF_safe();
   objc_storeStrong(v49, v164);
 
-  v51 = [(ENDaemon *)self _getLegalConsentPageCount:v104];
+  v51 = [(ENDaemon *)self _getLegalConsentPageCount:bundleIdentifier2];
   v52 = (v184 + 5);
   v163 = v184[5];
   v105 = v51;
@@ -910,7 +910,7 @@ void __21__ENDaemon__activate__block_invoke_2(uint64_t a1)
   objc_storeStrong(v54, v161);
   v56 = (v184 + 5);
   v160 = v184[5];
-  v57 = [(PrivacyProxyServiceStatus *)self->_networkProxyStatus serviceStatus];
+  serviceStatus = [(PrivacyProxyServiceStatus *)self->_networkProxyStatus serviceStatus];
   if ((self->_networkProxyTraffic & 0x800) != 0)
   {
     v58 = "yes";
@@ -921,13 +921,13 @@ void __21__ENDaemon__activate__block_invoke_2(uint64_t a1)
     v58 = "no";
   }
 
-  v107 = v57;
+  v107 = serviceStatus;
   v114 = v58;
   NSAppendPrintF_safe();
   objc_storeStrong(v56, v160);
   v59 = [(ENActiveEntity *)self->_activeEntity entity:v107];
-  v60 = [v59 region];
-  v61 = [v134 serverConfigurationForRegion:v60];
+  region2 = [v59 region];
+  v61 = [v134 serverConfigurationForRegion:region2];
 
   if (v61)
   {
@@ -991,13 +991,13 @@ void __21__ENDaemon__activate__block_invoke_2(uint64_t a1)
     v151 = 0u;
     v152 = 0u;
     v69 = self->_xpcConnections;
-    v70 = [(NSMutableSet *)v69 countByEnumeratingWithState:&v151 objects:v190 count:16, v109];
-    if (v70)
+    v109 = [(NSMutableSet *)v69 countByEnumeratingWithState:&v151 objects:v190 count:16, v109];
+    if (v109)
     {
       v71 = *v152;
       do
       {
-        for (i = 0; i != v70; ++i)
+        for (i = 0; i != v109; ++i)
         {
           if (*v152 != v71)
           {
@@ -1012,10 +1012,10 @@ void __21__ENDaemon__activate__block_invoke_2(uint64_t a1)
           objc_storeStrong(v74, v150);
         }
 
-        v70 = [(NSMutableSet *)v69 countByEnumeratingWithState:&v151 objects:v190 count:16, v110];
+        v109 = [(NSMutableSet *)v69 countByEnumeratingWithState:&v151 objects:v190 count:16, v110];
       }
 
-      while (v70);
+      while (v109);
     }
 
     v75 = (v184 + 5);
@@ -1024,7 +1024,7 @@ void __21__ENDaemon__activate__block_invoke_2(uint64_t a1)
     objc_storeStrong(v75, v149);
   }
 
-  if (v132 <= 0x13)
+  if (levelCopy <= 0x13)
   {
     v147 = 0u;
     v148 = 0u;
@@ -1096,9 +1096,9 @@ LABEL_67:
   v141 = v184[5];
   NSAppendPrintF_safe();
   objc_storeStrong(v87, v141);
-  v88 = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
-  v89 = [v134 allRegionServerConfigurations];
-  v90 = [v89 count] > 0xA;
+  _readPreferenceRegionPendingOnboarding = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
+  allRegionServerConfigurations = [v134 allRegionServerConfigurations];
+  v90 = [allRegionServerConfigurations count] > 0xA;
 
   if (v90)
   {
@@ -1107,7 +1107,7 @@ LABEL_67:
     v138[2] = __33__ENDaemon_descriptionWithLevel___block_invoke;
     v138[3] = &unk_278FD1440;
     v138[4] = v134;
-    v139 = v88;
+    v139 = _readPreferenceRegionPendingOnboarding;
     v140 = &v183;
     [v134 enumerateCachedRegionServerConfigurationsWithHandler:v138];
   }
@@ -1264,33 +1264,33 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)_writePreferenceActiveEntity:(id)a3
+- (BOOL)_writePreferenceActiveEntity:(id)entity
 {
-  v4 = a3;
-  if (v4)
+  entityCopy = entity;
+  if (entityCopy)
   {
     v16 = 0;
-    v5 = [MEMORY[0x277CCAAB8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v16];
+    v5 = [MEMORY[0x277CCAAB8] archivedDataWithRootObject:entityCopy requiringSecureCoding:1 error:&v16];
     v6 = v16;
     if (v6)
     {
-      [(ENDaemon *)v4 _writePreferenceActiveEntity:v6, &v17];
+      [(ENDaemon *)entityCopy _writePreferenceActiveEntity:v6, &v17];
       v14 = v17;
     }
 
     else if (v5)
     {
       CFPrefs_SetValue();
-      v7 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-      v8 = [v4 entity];
-      v9 = [v8 region];
-      v10 = [v7 serverConfigurationForRegion:v9];
+      configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+      entity = [entityCopy entity];
+      region = [entity region];
+      v10 = [configurationStore serverConfigurationForRegion:region];
 
       if (v10)
       {
         v11 = MEMORY[0x277CCAAB8];
-        v12 = [v4 entity];
-        v13 = [v11 archivedDataWithRootObject:v12 requiringSecureCoding:1 error:0];
+        entity2 = [entityCopy entity];
+        v13 = [v11 archivedDataWithRootObject:entity2 requiringSecureCoding:1 error:0];
 
         if (v13)
         {
@@ -1345,17 +1345,17 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)_writePreferenceRegionPendingOnboarding:(id)a3
+- (BOOL)_writePreferenceRegionPendingOnboarding:(id)onboarding
 {
-  v3 = a3;
-  if (v3)
+  onboardingCopy = onboarding;
+  if (onboardingCopy)
   {
     v8 = 0;
-    v4 = [MEMORY[0x277CCAAB8] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v8];
+    v4 = [MEMORY[0x277CCAAB8] archivedDataWithRootObject:onboardingCopy requiringSecureCoding:1 error:&v8];
     v5 = v8;
     if (v5)
     {
-      [(ENDaemon *)v3 _writePreferenceRegionPendingOnboarding:v5, &v9];
+      [(ENDaemon *)onboardingCopy _writePreferenceRegionPendingOnboarding:v5, &v9];
       v6 = v9;
     }
 
@@ -1382,17 +1382,17 @@ LABEL_6:
 
 - (BOOL)_isNKDActive
 {
-  v3 = [(ENDaemon *)self activeEntity];
-  v4 = [v3 activeStatus] == 3 && self->_prefEnableNKD;
+  activeEntity = [(ENDaemon *)self activeEntity];
+  v4 = [activeEntity activeStatus] == 3 && self->_prefEnableNKD;
 
   return v4;
 }
 
 - (void)_activate
 {
-  v3 = [MEMORY[0x277CBEB30] dictionary];
+  dictionary = [MEMORY[0x277CBEB30] dictionary];
   screenUnlockPendingActions = self->_screenUnlockPendingActions;
-  self->_screenUnlockPendingActions = v3;
+  self->_screenUnlockPendingActions = dictionary;
 
   self->_startTicks = mach_absolute_time();
   self->_startTicksFull = mach_continuous_time();
@@ -1403,10 +1403,10 @@ LABEL_6:
   v7 = CFPrefs_CopyTypedValue();
   if (v6)
   {
-    v8 = [v6 appState];
-    v9 = [v8 isInstalled];
+    appState = [v6 appState];
+    isInstalled = [appState isInstalled];
 
-    if (v9)
+    if (isInstalled)
     {
       if (v7)
       {
@@ -1446,9 +1446,9 @@ LABEL_6:
 
         v15 = [ENActiveEntity alloc];
         v16 = [objc_alloc(MEMORY[0x277CC5C18]) initWithBundleID:v5 region:v11];
-        v10 = [(ENActiveEntity *)v15 initWithEntity:v16 activeStatus:2];
+        _readPreferenceActiveEntity = [(ENActiveEntity *)v15 initWithEntity:v16 activeStatus:2];
 
-        [(ENDaemon *)self _writePreferenceActiveEntity:v10];
+        [(ENDaemon *)self _writePreferenceActiveEntity:_readPreferenceActiveEntity];
         if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
         {
           [ENDaemon _activate];
@@ -1459,7 +1459,7 @@ LABEL_6:
     }
   }
 
-  v10 = [(ENDaemon *)self _readPreferenceActiveEntity];
+  _readPreferenceActiveEntity = [(ENDaemon *)self _readPreferenceActiveEntity];
   v11 = 0;
   v12 = 0;
   if (v7)
@@ -1491,7 +1491,7 @@ LABEL_24:
   }
 
   v67 = 0;
-  objc_storeStrong(&self->_activeEntity, v10);
+  objc_storeStrong(&self->_activeEntity, _readPreferenceActiveEntity);
   self->_prefTCCAllowWithoutApps = CFPrefs_GetInt64() != 0;
   self->_wasInRestrictedStatus = CFPrefs_GetInt64() != 0;
   self->_wasInDifferentActiveRegion = CFPrefs_GetInt64() != 0;
@@ -1562,26 +1562,26 @@ LABEL_24:
 
   if (self->_proxyConfigChangedNotifyToken == -1)
   {
-    v31 = [@"com.apple.networkserviceproxy.privacy-proxy-configuration-changed" utf8ValueSafe];
+    utf8ValueSafe = [@"com.apple.networkserviceproxy.privacy-proxy-configuration-changed" utf8ValueSafe];
     v32 = self->_dispatchQueue;
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
     v62[2] = __21__ENDaemon__activate__block_invoke_7;
     v62[3] = &unk_278FD14E0;
     v62[4] = self;
-    notify_register_dispatch(v31, &self->_proxyConfigChangedNotifyToken, v32, v62);
+    notify_register_dispatch(utf8ValueSafe, &self->_proxyConfigChangedNotifyToken, v32, v62);
   }
 
   if (self->_proxyStatusChangedNotifyToken == -1)
   {
-    v33 = [@"com.apple.networkserviceproxy.privacy-proxy-service-status-changed" utf8ValueSafe];
+    utf8ValueSafe2 = [@"com.apple.networkserviceproxy.privacy-proxy-service-status-changed" utf8ValueSafe];
     v34 = self->_dispatchQueue;
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __21__ENDaemon__activate__block_invoke_8;
     v61[3] = &unk_278FD14E0;
     v61[4] = self;
-    notify_register_dispatch(v33, &self->_proxyStatusChangedNotifyToken, v34, v61);
+    notify_register_dispatch(utf8ValueSafe2, &self->_proxyStatusChangedNotifyToken, v34, v61);
   }
 
   if (!self->_systemMonitor)
@@ -1655,9 +1655,9 @@ LABEL_24:
 
   [(ENDaemon *)self _regionMonitorEnsureStarted];
   [(ENDaemon *)self _configurationManagerEnsureStarted];
-  v43 = [(ENDaemon *)self _readPreferenceActiveEntity];
+  _readPreferenceActiveEntity2 = [(ENDaemon *)self _readPreferenceActiveEntity];
   activeEntity = self->_activeEntity;
-  self->_activeEntity = v43;
+  self->_activeEntity = _readPreferenceActiveEntity2;
 
   if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
@@ -1669,12 +1669,12 @@ LABEL_24:
   self->_applicationObserver = v45;
 
   [(ApplicationObserver *)self->_applicationObserver setDelegate:self];
-  v47 = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
-  if (v47)
+  _readPreferenceRegionPendingOnboarding = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
+  if (_readPreferenceRegionPendingOnboarding)
   {
-    v48 = [(ENDaemon *)self configurationManager];
-    v49 = [v48 configurationStore];
-    v50 = [v49 serverConfigurationForRegion:v47];
+    configurationManager = [(ENDaemon *)self configurationManager];
+    configurationStore = [configurationManager configurationStore];
+    v50 = [configurationStore serverConfigurationForRegion:_readPreferenceRegionPendingOnboarding];
 
     if (!v50)
     {
@@ -1895,17 +1895,17 @@ void __21__ENDaemon__activate__block_invoke_15(uint64_t a1)
   }
 }
 
-- (unsigned)_getAvailabilityAlertCountIncrement:(BOOL)a3 reset:(BOOL)a4
+- (unsigned)_getAvailabilityAlertCountIncrement:(BOOL)increment reset:(BOOL)reset
 {
-  v4 = a4;
-  v5 = a3;
+  resetCopy = reset;
+  incrementCopy = increment;
   Int64 = CFPrefs_GetInt64();
-  if (v4)
+  if (resetCopy)
   {
     CFPrefs_RemoveValue();
   }
 
-  else if (v5)
+  else if (incrementCopy)
   {
     ++Int64;
     CFPrefs_SetInt64();
@@ -1914,88 +1914,88 @@ void __21__ENDaemon__activate__block_invoke_15(uint64_t a1)
   return Int64;
 }
 
-- (id)_getBundleIDFromBundle:(__CFBundle *)a3
+- (id)_getBundleIDFromBundle:(__CFBundle *)bundle
 {
-  v3 = CFBundleCopyBundleURL(a3);
+  v3 = CFBundleCopyBundleURL(bundle);
   if (v3)
   {
     v4 = [MEMORY[0x277CCA8D0] bundleWithURL:v3];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 bundleIdentifier];
+      bundleIdentifier = [v4 bundleIdentifier];
     }
 
     else
     {
       [ENDaemon _getBundleIDFromBundle:?];
-      v6 = v8;
+      bundleIdentifier = v8;
     }
   }
 
   else
   {
     [ENDaemon _getBundleIDFromBundle:?];
-    v6 = v8;
+    bundleIdentifier = v8;
   }
 
-  return v6;
+  return bundleIdentifier;
 }
 
-- (id)_getInfoDictFromBundle:(__CFBundle *)a3
+- (id)_getInfoDictFromBundle:(__CFBundle *)bundle
 {
-  v3 = CFBundleCopyBundleURL(a3);
+  v3 = CFBundleCopyBundleURL(bundle);
   if (v3)
   {
     v4 = [MEMORY[0x277CCA8D0] bundleWithURL:v3];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 infoDictionary];
+      infoDictionary = [v4 infoDictionary];
     }
 
     else
     {
       [ENDaemon _getInfoDictFromBundle:?];
-      v6 = v8;
+      infoDictionary = v8;
     }
   }
 
   else
   {
     [ENDaemon _getInfoDictFromBundle:?];
-    v6 = v8;
+    infoDictionary = v8;
   }
 
-  return v6;
+  return infoDictionary;
 }
 
-- (id)_getInfoDictFromAppProxy:(id)a3
+- (id)_getInfoDictFromAppProxy:(id)proxy
 {
-  v3 = [a3 bundleURL];
-  if (v3)
+  bundleURL = [proxy bundleURL];
+  if (bundleURL)
   {
-    v4 = [MEMORY[0x277CCA8D0] bundleWithURL:v3];
+    v4 = [MEMORY[0x277CCA8D0] bundleWithURL:bundleURL];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 infoDictionary];
+      infoDictionary = [v4 infoDictionary];
     }
 
     else
     {
       [ENDaemon _getInfoDictFromAppProxy:?];
-      v6 = v8;
+      infoDictionary = v8;
     }
   }
 
   else
   {
     [ENDaemon _getInfoDictFromAppProxy:?];
-    v6 = v8;
+    infoDictionary = v8;
   }
 
-  return v6;
+  return infoDictionary;
 }
 
 - (void)invalidate
@@ -2144,7 +2144,7 @@ uint64_t __22__ENDaemon_invalidate__block_invoke(uint64_t a1)
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getDelegateAndReturnError:(id *)a3
+- (id)_getDelegateAndReturnError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = WeakRetained;
@@ -2155,15 +2155,15 @@ uint64_t __22__ENDaemon_invalidate__block_invoke(uint64_t a1)
 
   else
   {
-    [ENDaemon _getDelegateAndReturnError:a3];
+    [ENDaemon _getDelegateAndReturnError:error];
   }
 
   return v5;
 }
 
-- (void)notifyUserWithStatus:(int64_t)a3
+- (void)notifyUserWithStatus:(int64_t)status
 {
-  if (a3 == 4)
+  if (status == 4)
   {
     if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
@@ -2244,16 +2244,16 @@ uint64_t __23__ENDaemon_pauseUpdate__block_invoke(uint64_t result)
     self->_prefRegionMonitorTestMode = v5;
   }
 
-  v6 = [(ENDaemon *)self _readPreferenceActiveEntity];
+  _readPreferenceActiveEntity = [(ENDaemon *)self _readPreferenceActiveEntity];
   activeEntity = self->_activeEntity;
   location = &self->_activeEntity;
-  v8 = v6;
+  v8 = _readPreferenceActiveEntity;
   v9 = activeEntity;
   v10 = v9;
   if (v8 == v9)
   {
 
-    v12 = v8;
+    screenUnlockPendingActions = v8;
 LABEL_24:
 
     goto LABEL_25;
@@ -2270,13 +2270,13 @@ LABEL_19:
       LogPrintF_safe();
     }
 
-    objc_storeStrong(location, v6);
+    objc_storeStrong(location, _readPreferenceActiveEntity);
     [(ENConfigurationManager *)self->_configurationManager setActiveEntity:self->_activeEntity];
     [(ENTemporaryExposureKeyManager *)self->_temporaryExposureKeyManager resetClientState];
     notify_post("com.apple.ExposureNotification.trackedAppChanged");
     CFPrefs_RemoveValue();
-    v12 = [(ENDaemon *)self screenUnlockPendingActions];
-    [v12 removeAllObjects];
+    screenUnlockPendingActions = [(ENDaemon *)self screenUnlockPendingActions];
+    [screenUnlockPendingActions removeAllObjects];
     goto LABEL_24;
   }
 
@@ -2291,10 +2291,10 @@ LABEL_25:
   v133 = v8;
   v134 = WeakRetained;
   v13 = [(ENConfigurationManager *)self->_configurationManager configurationStore:v123];
-  v14 = [(ENActiveEntity *)self->_activeEntity entity];
-  v15 = [v14 region];
+  entity = [(ENActiveEntity *)self->_activeEntity entity];
+  region = [entity region];
   v143 = v13;
-  v136 = [v13 serverConfigurationForRegion:v15];
+  v136 = [v13 serverConfigurationForRegion:region];
 
   CFStringGetTypeID();
   v16 = CFPrefs_CopyTypedValue();
@@ -2338,33 +2338,33 @@ LABEL_31:
 LABEL_37:
   v132 = v18;
   v23 = [(ENConfigurationManager *)self->_configurationManager configurationStore:v124];
-  v24 = [(ENActiveEntity *)self->_activeEntity entity];
-  v25 = [v24 region];
-  v26 = [v23 agencyConfigurationForRegion:v25];
+  entity2 = [(ENActiveEntity *)self->_activeEntity entity];
+  region2 = [entity2 region];
+  v26 = [v23 agencyConfigurationForRegion:region2];
 
-  v142 = [v26 agencyColor];
-  v27 = [v26 agencyHeaderStyle];
-  v141 = [v26 agencyHeaderTextColor];
-  v140 = [v26 agencyDisplayName];
-  v28 = [v26 localizedConfiguration];
-  v139 = [v28 regionName];
+  agencyColor = [v26 agencyColor];
+  agencyHeaderStyle = [v26 agencyHeaderStyle];
+  agencyHeaderTextColor = [v26 agencyHeaderTextColor];
+  agencyDisplayName = [v26 agencyDisplayName];
+  localizedConfiguration = [v26 localizedConfiguration];
+  regionName = [localizedConfiguration regionName];
 
-  v29 = [v26 localizedConfiguration];
-  v138 = [v29 agencyTurndownMessage];
+  localizedConfiguration2 = [v26 localizedConfiguration];
+  agencyTurndownMessage = [localizedConfiguration2 agencyTurndownMessage];
 
   v131 = v26;
-  v137 = [v26 agencyImageURL];
-  v30 = [(ENActiveEntity *)self->_activeEntity entity];
-  if (!v30)
+  agencyImageURL = [v26 agencyImageURL];
+  entity3 = [(ENActiveEntity *)self->_activeEntity entity];
+  if (!entity3)
   {
     goto LABEL_48;
   }
 
   v31 = objc_alloc(MEMORY[0x277CC5C18]);
-  v32 = [v30 bundleIdentifier];
-  v33 = [MEMORY[0x277CCABA8] numberWithUnsignedInteger:v27];
-  v34 = [v30 region];
-  v35 = [v31 initWithBundleID:v32 agencyColor:v142 agencyHeaderStyle:v33 agencyHeaderTextColor:v141 localizedAgencyName:v140 localizedAgencyImageURL:v137 localizedAgencyTurndownMessage:v138 localizedRegionName:v139 region:v34];
+  bundleIdentifier = [entity3 bundleIdentifier];
+  v33 = [MEMORY[0x277CCABA8] numberWithUnsignedInteger:agencyHeaderStyle];
+  region3 = [entity3 region];
+  v35 = [v31 initWithBundleID:bundleIdentifier agencyColor:agencyColor agencyHeaderStyle:v33 agencyHeaderTextColor:agencyHeaderTextColor localizedAgencyName:agencyDisplayName localizedAgencyImageURL:agencyImageURL localizedAgencyTurndownMessage:agencyTurndownMessage localizedRegionName:regionName region:region3];
 
   if (v136)
   {
@@ -2374,10 +2374,10 @@ LABEL_37:
     {
 LABEL_46:
       v42 = objc_alloc(MEMORY[0x277CC5C18]);
-      v43 = [v30 bundleIdentifier];
-      v44 = [MEMORY[0x277CCABA8] numberWithUnsignedInteger:v27];
-      v45 = [v30 region];
-      v46 = [v42 initWithBundleID:v43 agencyColor:v142 agencyHeaderStyle:v44 agencyHeaderTextColor:v141 localizedAgencyName:v140 localizedAgencyImageURL:v137 localizedAgencyTurndownMessage:v138 localizedRegionName:v139 region:v45];
+      bundleIdentifier2 = [entity3 bundleIdentifier];
+      v44 = [MEMORY[0x277CCABA8] numberWithUnsignedInteger:agencyHeaderStyle];
+      region4 = [entity3 region];
+      v46 = [v42 initWithBundleID:bundleIdentifier2 agencyColor:agencyColor agencyHeaderStyle:v44 agencyHeaderTextColor:agencyHeaderTextColor localizedAgencyName:agencyDisplayName localizedAgencyImageURL:agencyImageURL localizedAgencyTurndownMessage:agencyTurndownMessage localizedRegionName:regionName region:region4];
       [(ENActiveEntity *)self->_activeEntity setEntity:v46];
 
       [(ENDaemon *)self _writePreferenceActiveEntity:self->_activeEntity];
@@ -2386,7 +2386,7 @@ LABEL_46:
 
     v37 = v36;
     v38 = v35;
-    v39 = v30;
+    v39 = entity3;
     v40 = v39;
     if (v38 != v39)
     {
@@ -2412,12 +2412,12 @@ LABEL_47:
 
 LABEL_48:
   v47 = [(ENRegionMonitor *)self->_regionMonitor getCurrentRegionVisitWithError:0];
-  v48 = [v47 region];
+  region5 = [v47 region];
 
   v49 = CFPrefs_GetInt64() != 0;
   if (v147)
   {
-    v50 = [v143 serverConfigurationForRegion:v48];
+    v50 = [v143 serverConfigurationForRegion:region5];
     v51 = v50;
     v52 = v134;
     p_activeEntity = &self->_activeEntity;
@@ -2453,7 +2453,7 @@ LABEL_48:
     self->_prefServerForceDisable = v49;
   }
 
-  v135 = v48;
+  v135 = region5;
   Int64 = CFPrefs_GetInt64();
   v55 = Int64 != 0;
   if (self->_prefAggressiveScanning != v55)
@@ -2490,13 +2490,13 @@ LABEL_48:
     self->_availabilityAlertDisabled = v58;
   }
 
-  v59 = [(ENActiveEntity *)*p_activeEntity entity];
-  v60 = [v59 region];
+  entity4 = [(ENActiveEntity *)*p_activeEntity entity];
+  region6 = [entity4 region];
 
-  if (v60)
+  if (region6)
   {
-    v61 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-    v62 = [v61 configurationForRegion:v60];
+    configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+    v62 = [configurationStore configurationForRegion:region6];
 
     v145[0] = MEMORY[0x277D85DD0];
     v145[1] = 3221225472;
@@ -2514,12 +2514,12 @@ LABEL_48:
     p_activeEntity = &self->_activeEntity;
     if (v63)
     {
-      v60 = [v63 travelerModeEnabled];
+      region6 = [v63 travelerModeEnabled];
     }
 
     else
     {
-      v60 = 0;
+      region6 = 0;
     }
   }
 
@@ -2530,7 +2530,7 @@ LABEL_48:
   }
 
   travelStatus = self->_travelStatus;
-  if (v60 != travelStatus)
+  if (region6 != travelStatus)
   {
     if (_MergedGlobals <= 30)
     {
@@ -2547,14 +2547,14 @@ LABEL_85:
           v66 = off_278FD2238[travelStatus];
         }
 
-        if (v60 > 2)
+        if (region6 > 2)
         {
           v67 = "?";
         }
 
         else
         {
-          v67 = off_278FD2238[v60];
+          v67 = off_278FD2238[region6];
         }
 
         v125 = *&v66;
@@ -2571,7 +2571,7 @@ LABEL_85:
     }
 
 LABEL_98:
-    self->_travelStatus = v60;
+    self->_travelStatus = region6;
   }
 
   v68 = CFPrefs_GetInt64() != 0;
@@ -2640,21 +2640,21 @@ LABEL_114:
   }
 
   v75 = CFPrefs_GetInt64();
-  if (v147 || (v76 = v75, v75 >= 5))
+  if (v147 || (differentialPrivacyConsent = v75, v75 >= 5))
   {
     v77 = [(ENActiveEntity *)self->_activeEntity entity:*&v125];
-    v78 = [v77 region];
+    region7 = [v77 region];
 
-    v79 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-    v80 = [v79 configurationForRegion:v78];
-    v81 = [v80 userConsent];
-    v76 = [v81 differentialPrivacyConsent];
+    configurationStore2 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+    v80 = [configurationStore2 configurationForRegion:region7];
+    userConsent = [v80 userConsent];
+    differentialPrivacyConsent = [userConsent differentialPrivacyConsent];
 
     p_activeEntity = &self->_activeEntity;
   }
 
   prefDifferentialPrivacyConsent = self->_prefDifferentialPrivacyConsent;
-  if (v76 != prefDifferentialPrivacyConsent)
+  if (differentialPrivacyConsent != prefDifferentialPrivacyConsent)
   {
     if (_MergedGlobals <= 30)
     {
@@ -2671,14 +2671,14 @@ LABEL_126:
           v83 = off_278FD2090[prefDifferentialPrivacyConsent];
         }
 
-        if (v76 > 4)
+        if (differentialPrivacyConsent > 4)
         {
           v84 = "?";
         }
 
         else
         {
-          v84 = off_278FD2090[v76];
+          v84 = off_278FD2090[differentialPrivacyConsent];
         }
 
         v125 = *&v83;
@@ -2695,7 +2695,7 @@ LABEL_126:
     }
 
 LABEL_135:
-    self->_prefDifferentialPrivacyConsent = v76;
+    self->_prefDifferentialPrivacyConsent = differentialPrivacyConsent;
   }
 
   v85 = CFPrefs_GetInt64();
@@ -2721,33 +2721,33 @@ LABEL_135:
   }
 
   v88 = !self->_prefServerForceDisable && !self->_prefStoreDemoMode && CFPrefs_GetInt64() != 0;
-  v89 = [(ENActiveEntity *)*p_activeEntity entity:*&v125];
-  v90 = [v89 bundleIdentifier];
-  if (!v90)
+  bundleIdentifier4 = [(ENActiveEntity *)*p_activeEntity entity:*&v125];
+  bundleIdentifier3 = [bundleIdentifier4 bundleIdentifier];
+  if (!bundleIdentifier3)
   {
     v100 = 0;
     goto LABEL_169;
   }
 
-  v91 = v90;
-  v92 = [(ENActiveEntity *)*p_activeEntity activeStatus];
+  v91 = bundleIdentifier3;
+  activeStatus = [(ENActiveEntity *)*p_activeEntity activeStatus];
 
-  if (v92 == 2)
+  if (activeStatus == 2)
   {
-    v93 = [(ENActiveEntity *)*p_activeEntity entity];
-    v89 = [v93 bundleIdentifier];
+    entity5 = [(ENActiveEntity *)*p_activeEntity entity];
+    bundleIdentifier4 = [entity5 bundleIdentifier];
 
-    v94 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:v89 placeholder:0];
-    v95 = [v94 appState];
-    if ([v95 isInstalled])
+    v94 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:bundleIdentifier4 placeholder:0];
+    appState = [v94 appState];
+    if ([appState isInstalled])
     {
-      v96 = [v94 appState];
-      v97 = [v96 isPlaceholder];
+      appState2 = [v94 appState];
+      isPlaceholder = [appState2 isPlaceholder];
 
-      if ((v97 & 1) == 0 && [(ENDaemon *)self tccAccessForBundleID:v89]== 1)
+      if ((isPlaceholder & 1) == 0 && [(ENDaemon *)self tccAccessForBundleID:bundleIdentifier4]== 1)
       {
-        v98 = [v136 appBundleID];
-        v99 = [v98 length];
+        appBundleID = [v136 appBundleID];
+        v99 = [appBundleID length];
 
         if (v99)
         {
@@ -2897,10 +2897,10 @@ LABEL_195:
   v111 = CFPrefs_GetInt64();
   if (v147 || (v112 = v111, v111 >= 0x3E9))
   {
-    v113 = [v106 dailyDetectExposureLimit];
-    if (v113 - 1001 >= 0xFFFFFC18)
+    dailyDetectExposureLimit = [v106 dailyDetectExposureLimit];
+    if (dailyDetectExposureLimit - 1001 >= 0xFFFFFC18)
     {
-      v112 = v113;
+      v112 = dailyDetectExposureLimit;
     }
 
     else
@@ -2936,10 +2936,10 @@ LABEL_222:
   v115 = CFPrefs_GetInt64();
   if (v147 || (v116 = v115, v115 >= 0x3E9))
   {
-    v117 = [v106 detectExposureNKDLimit];
-    if (v117 - 1001 >= 0xFFFFFC18)
+    detectExposureNKDLimit = [v106 detectExposureNKDLimit];
+    if (detectExposureNKDLimit - 1001 >= 0xFFFFFC18)
     {
-      v116 = v117;
+      v116 = detectExposureNKDLimit;
     }
 
     else
@@ -3020,10 +3020,10 @@ LABEL_233:
   [(ENDaemon *)self _scheduleUpdate];
 }
 
-- (void)_resetDataWithFlags:(unsigned int)a3
+- (void)_resetDataWithFlags:(unsigned int)flags
 {
-  v5 = [(ENDaemon *)self delegate];
-  if ((~a3 & 0xFFF) != 0)
+  delegate = [(ENDaemon *)self delegate];
+  if ((~flags & 0xFFF) != 0)
   {
     if (_MergedGlobals <= 50 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
@@ -3044,21 +3044,21 @@ LABEL_233:
   v24 = 0;
   v6 = [(ENDaemon *)self getExposureDatabaseAndReturnError:&v24];
   v7 = v24;
-  if ((a3 & 0x40) != 0)
+  if ((flags & 0x40) != 0)
   {
     if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
       [ENDaemon _resetDataWithFlags:];
     }
 
-    [v5 resetTEKHistory];
-    v9 = [(ENDaemon *)self temporaryExposureKeyManager];
-    [v9 resetClientState];
+    [delegate resetTEKHistory];
+    temporaryExposureKeyManager = [(ENDaemon *)self temporaryExposureKeyManager];
+    [temporaryExposureKeyManager resetClientState];
 
-    if ((a3 & 1) == 0)
+    if ((flags & 1) == 0)
     {
 LABEL_11:
-      if ((a3 & 4) == 0)
+      if ((flags & 4) == 0)
       {
         goto LABEL_12;
       }
@@ -3067,7 +3067,7 @@ LABEL_11:
     }
   }
 
-  else if ((a3 & 1) == 0)
+  else if ((flags & 1) == 0)
   {
     goto LABEL_11;
   }
@@ -3077,31 +3077,31 @@ LABEL_11:
     [ENDaemon _resetDataWithFlags:];
   }
 
-  [v5 purgeAdvertisementDatabase];
-  if ((a3 & 4) == 0)
+  [delegate purgeAdvertisementDatabase];
+  if ((flags & 4) == 0)
   {
 LABEL_12:
     v8 = v7;
-    if ((a3 & 8) != 0)
+    if ((flags & 8) != 0)
     {
       goto LABEL_40;
     }
 
 LABEL_30:
-    if ((a3 & 0x10) != 0)
+    if ((flags & 0x10) != 0)
     {
       goto LABEL_44;
     }
 
 LABEL_31:
-    if ((a3 & 0x20) != 0)
+    if ((flags & 0x20) != 0)
     {
       goto LABEL_48;
     }
 
 LABEL_32:
     v11 = v8;
-    if ((a3 & 0x80) == 0)
+    if ((flags & 0x80) == 0)
     {
       goto LABEL_60;
     }
@@ -3121,7 +3121,7 @@ LABEL_22:
 
   if ((v10 & 1) != 0 || dword_281346508 > 90 || dword_281346508 == -1 && !_LogCategory_Initialize())
   {
-    if ((a3 & 8) == 0)
+    if ((flags & 8) == 0)
     {
       goto LABEL_30;
     }
@@ -3130,7 +3130,7 @@ LABEL_22:
   else
   {
     [ENDaemon _resetDataWithFlags:];
-    if ((a3 & 8) == 0)
+    if ((flags & 8) == 0)
     {
       goto LABEL_30;
     }
@@ -3142,10 +3142,10 @@ LABEL_40:
     [ENDaemon _resetDataWithFlags:];
   }
 
-  v12 = [(ENDaemon *)self downloadManager];
-  [v12 purgeAllDownloads];
+  downloadManager = [(ENDaemon *)self downloadManager];
+  [downloadManager purgeAllDownloads];
 
-  if ((a3 & 0x10) == 0)
+  if ((flags & 0x10) == 0)
   {
     goto LABEL_31;
   }
@@ -3157,7 +3157,7 @@ LABEL_44:
   }
 
   [v6 purgeAllAndCloseWithReason:@"ResetData"];
-  if ((a3 & 0x20) == 0)
+  if ((flags & 0x20) == 0)
   {
     goto LABEL_32;
   }
@@ -3168,12 +3168,12 @@ LABEL_48:
     [ENDaemon _resetDataWithFlags:];
   }
 
-  v13 = [(ENDaemon *)self configurationManager];
-  [v13 resetConfigurationCache];
+  configurationManager = [(ENDaemon *)self configurationManager];
+  [configurationManager resetConfigurationCache];
 
-  v14 = [(ENDaemon *)self regionMonitor];
+  regionMonitor = [(ENDaemon *)self regionMonitor];
   v22 = v8;
-  v15 = [v14 purgeAllRegionHistoryWithError:&v22];
+  v15 = [regionMonitor purgeAllRegionHistoryWithError:&v22];
   v11 = v22;
 
   if ((v15 & 1) == 0 && dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
@@ -3181,10 +3181,10 @@ LABEL_48:
     [ENDaemon _resetDataWithFlags:];
   }
 
-  v16 = [(ENDaemon *)self regionMonitor];
-  [v16 resetRegionMonitor];
+  regionMonitor2 = [(ENDaemon *)self regionMonitor];
+  [regionMonitor2 resetRegionMonitor];
 
-  if ((a3 & 0x80) != 0)
+  if ((flags & 0x80) != 0)
   {
 LABEL_56:
     if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
@@ -3192,12 +3192,12 @@ LABEL_56:
       [ENDaemon _resetDataWithFlags:];
     }
 
-    v17 = [(ENDaemon *)self textMessageManager];
-    [v17 purgeAllHashes];
+    textMessageManager = [(ENDaemon *)self textMessageManager];
+    [textMessageManager purgeAllHashes];
   }
 
 LABEL_60:
-  if ((a3 & 2) != 0)
+  if ((flags & 2) != 0)
   {
     if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
@@ -3215,21 +3215,21 @@ LABEL_60:
     CFPrefs_RemoveValue();
     v18 = *MEMORY[0x277CBED20];
     CFPrefs_SetValue();
-    v19 = [(ENDaemon *)self userNotificationCenter];
-    [v19 removeAllDeliveredNotifications];
+    userNotificationCenter = [(ENDaemon *)self userNotificationCenter];
+    [userNotificationCenter removeAllDeliveredNotifications];
 
     [(ENDaemon *)self onboardingTriggerDeactivate];
     v20 = *MEMORY[0x277D6C150];
     TCCAccessReset();
     v21 = *MEMORY[0x277D6C160];
     TCCAccessReset();
-    if ((a3 & 0x100) != 0)
+    if ((flags & 0x100) != 0)
     {
       goto LABEL_62;
     }
   }
 
-  else if ((a3 & 0x100) != 0)
+  else if ((flags & 0x100) != 0)
   {
 LABEL_62:
     CFPrefs_RemoveValue();
@@ -3242,18 +3242,18 @@ LABEL_62:
   [(ENDaemon *)self prefsChanged];
 }
 
-- (void)_fetchPrefRegionConfig:(id)a3 oldCustomCountryCode:(id)a4
+- (void)_fetchPrefRegionConfig:(id)config oldCustomCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  [v8 prefsChanged];
+  configCopy = config;
+  codeCopy = code;
+  configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  [configurationStore prefsChanged];
 
-  v9 = v6;
+  v9 = configCopy;
   v10 = v9;
   if (v9 && [v9 length])
   {
-    v11 = [objc_alloc(MEMORY[0x277CC5CA0]) initWithCountryCode:v10];
+    countryCode = [objc_alloc(MEMORY[0x277CC5CA0]) initWithCountryCode:v10];
     configurationManager = self->_configurationManager;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -3262,7 +3262,7 @@ LABEL_62:
     v13 = v22;
     v22[0] = v10;
     v22[1] = self;
-    [(ENConfigurationManager *)configurationManager fetchServerConfigurationsForRegion:v11 userInitiated:0 withCompletion:v21];
+    [(ENConfigurationManager *)configurationManager fetchServerConfigurationsForRegion:countryCode userInitiated:0 withCompletion:v21];
 LABEL_10:
 
     goto LABEL_11;
@@ -3273,17 +3273,17 @@ LABEL_10:
     [ENDaemon _fetchPrefRegionConfig:oldCustomCountryCode:];
   }
 
-  v14 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  [v14 clearTemporaryServerConfigurations];
+  configurationStore2 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  [configurationStore2 clearTemporaryServerConfigurations];
 
-  v15 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  [v15 clearTemporaryCountrySubdivisionList];
+  configurationStore3 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  [configurationStore3 clearTemporaryCountrySubdivisionList];
 
-  v16 = [(ENActiveEntity *)self->_activeEntity entity];
-  v17 = [v16 region];
-  v11 = [v17 countryCode];
+  entity = [(ENActiveEntity *)self->_activeEntity entity];
+  region = [entity region];
+  countryCode = [region countryCode];
 
-  if (v11 && [v7 isEqualToString:v11])
+  if (countryCode && [codeCopy isEqualToString:countryCode])
   {
     dispatchQueue = self->_dispatchQueue;
     v19[0] = MEMORY[0x277D85DD0];
@@ -3291,7 +3291,7 @@ LABEL_10:
     v19[2] = __56__ENDaemon__fetchPrefRegionConfig_oldCustomCountryCode___block_invoke_3;
     v19[3] = &unk_278FD1120;
     v13 = v20;
-    v20[0] = v7;
+    v20[0] = codeCopy;
     v20[1] = self;
     dispatch_async(dispatchQueue, v19);
     goto LABEL_10;
@@ -3400,17 +3400,17 @@ uint64_t __23__ENDaemon__tccChanged__block_invoke(uint64_t result)
     CFPrefs_SetValue();
   }
 
-  v5 = [MEMORY[0x277CBEAA0] date];
-  [v5 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA0] date];
+  [date timeIntervalSince1970];
   CFPrefs_SetDouble();
 
   [(ENDaemon *)self prefsChanged];
 }
 
-- (void)setMonthlySummaryDisabled:(BOOL)a3
+- (void)setMonthlySummaryDisabled:(BOOL)disabled
 {
-  self->_monthlySummaryDisabled = a3;
-  if (a3)
+  self->_monthlySummaryDisabled = disabled;
+  if (disabled)
   {
 
     [(ENDaemon *)self monthlyTriggerDeactivate];
@@ -3424,7 +3424,7 @@ uint64_t __23__ENDaemon__tccChanged__block_invoke(uint64_t result)
   }
 }
 
-- (void)monthlyTriggerActivateWithIntervalOverride:(unsigned int)a3
+- (void)monthlyTriggerActivateWithIntervalOverride:(unsigned int)override
 {
   if ([(ENDaemon *)self _shouldDisableMonthlySummary])
   {
@@ -3437,34 +3437,34 @@ LABEL_2:
     return;
   }
 
-  if (a3)
+  if (override)
   {
     v29 = 0;
-    v6 = a3;
+    overrideCopy = override;
   }
 
   else
   {
-    v15 = [(ENDaemon *)self monthlyNotificationTimer];
+    monthlyNotificationTimer = [(ENDaemon *)self monthlyNotificationTimer];
 
-    if (v15)
+    if (monthlyNotificationTimer)
     {
       goto LABEL_2;
     }
 
     v29 = 0;
     CFPrefs_GetDouble();
-    v6 = v16;
+    overrideCopy = v16;
   }
 
-  if (v6 == 0.0)
+  if (overrideCopy == 0.0)
   {
-    v7 = [MEMORY[0x277CBEAA0] date];
-    v8 = [MEMORY[0x277CBEA88] currentCalendar];
-    v9 = [v8 nextDateAfterDate:v7 matchingUnit:16 value:objc_msgSend(v8 options:{"component:fromDate:", 16, v7), 1024}];
-    v10 = [v8 dateBySettingUnit:32 value:10 ofDate:v9 options:0];
-    [v10 timeIntervalSinceDate:v7];
-    v6 = v11;
+    date = [MEMORY[0x277CBEAA0] date];
+    currentCalendar = [MEMORY[0x277CBEA88] currentCalendar];
+    v9 = [currentCalendar nextDateAfterDate:date matchingUnit:16 value:objc_msgSend(currentCalendar options:{"component:fromDate:", 16, date), 1024}];
+    v10 = [currentCalendar dateBySettingUnit:32 value:10 ofDate:v9 options:0];
+    [v10 timeIntervalSinceDate:date];
+    overrideCopy = v11;
     CFPrefs_SetDouble();
   }
 
@@ -3492,7 +3492,7 @@ LABEL_2:
 
   if (IsAppleInternalBuild())
   {
-    v17 = a3 != 0;
+    v17 = override != 0;
     Int64 = CFPrefs_GetInt64();
     v19 = v29 != 0;
     v20 = !v17 || !v19;
@@ -3537,7 +3537,7 @@ LABEL_2:
   v28[2] = __55__ENDaemon_monthlyTriggerActivateWithIntervalOverride___block_invoke;
   v28[3] = &unk_278FD1580;
   v28[4] = self;
-  v26 = [(ENXPCTimer *)v25 initWithName:@"com.apple.exposurenotification.weeklynotification" delay:v24 gracePeriod:1 cadence:8739 priority:v28 options:v6 block:v22];
+  v26 = [(ENXPCTimer *)v25 initWithName:@"com.apple.exposurenotification.weeklynotification" delay:v24 gracePeriod:1 cadence:8739 priority:v28 options:overrideCopy block:v22];
   [(ENDaemon *)self setMonthlyNotificationTimer:v26];
 }
 
@@ -3580,8 +3580,8 @@ void __55__ENDaemon_monthlyTriggerActivateWithIntervalOverride___block_invoke(ui
 
 - (void)monthlyTriggerDeactivate
 {
-  v3 = [(ENDaemon *)self monthlyNotificationTimer];
-  [v3 invalidate];
+  monthlyNotificationTimer = [(ENDaemon *)self monthlyNotificationTimer];
+  [monthlyNotificationTimer invalidate];
 
   [(ENDaemon *)self setMonthlyNotificationTimer:0];
   v4 = MEMORY[0x277CBED20];
@@ -3597,27 +3597,27 @@ void __55__ENDaemon_monthlyTriggerActivateWithIntervalOverride___block_invoke(ui
   CFPrefs_RemoveValue();
 }
 
-- (void)_setActiveRegionForApp:(id)a3 infoDict:(id)a4
+- (void)_setActiveRegionForApp:(id)app infoDict:(id)dict
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  dictCopy = dict;
   if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     [ENDaemon _setActiveRegionForApp:infoDict:];
   }
 
-  v8 = [(ENDaemon *)self configurationManager];
-  v9 = [v8 configurationStore];
+  configurationManager = [(ENDaemon *)self configurationManager];
+  configurationStore = [configurationManager configurationStore];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __44__ENDaemon__setActiveRegionForApp_infoDict___block_invoke;
   v12[3] = &unk_278FD15A8;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 allRegionServerConfigurationsWithCompletion:v12];
+  v13 = appCopy;
+  selfCopy = self;
+  v15 = dictCopy;
+  v10 = dictCopy;
+  v11 = appCopy;
+  [configurationStore allRegionServerConfigurationsWithCompletion:v12];
 }
 
 void __44__ENDaemon__setActiveRegionForApp_infoDict___block_invoke(uint64_t a1, void *a2)
@@ -3695,38 +3695,38 @@ LABEL_16:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateExistingConsentForPhase1ActiveRegion:(int64_t)a3
+- (void)updateExistingConsentForPhase1ActiveRegion:(int64_t)region
 {
   p_activeEntity = &self->_activeEntity;
   activeEntity = self->_activeEntity;
   if (activeEntity && [(ENActiveEntity *)activeEntity activeStatus]== 2)
   {
-    v7 = [(ENActiveEntity *)*p_activeEntity entity];
-    v8 = [v7 region];
+    entity = [(ENActiveEntity *)*p_activeEntity entity];
+    region = [entity region];
 
-    if (v8)
+    if (region)
     {
-      v9 = [(ENDaemon *)self configurationManager];
-      v10 = [v9 configurationStore];
-      v11 = [v10 configurationForRegion:v8];
+      configurationManager = [(ENDaemon *)self configurationManager];
+      configurationStore = [configurationManager configurationStore];
+      v11 = [configurationStore configurationForRegion:region];
 
-      v12 = [v11 userConsent];
-      v13 = [v12 consent];
+      userConsent = [v11 userConsent];
+      consent = [userConsent consent];
 
-      if (v13)
+      if (consent)
       {
         if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
         {
-          [(ENDaemon *)p_activeEntity updateExistingConsentForPhase1ActiveRegion:a3];
+          [(ENDaemon *)p_activeEntity updateExistingConsentForPhase1ActiveRegion:region];
         }
 
-        v14 = [v11 userConsent];
-        [v14 setConsent:a3];
+        userConsent2 = [v11 userConsent];
+        [userConsent2 setConsent:region];
 
-        v15 = [(ENDaemon *)self configurationManager];
-        v16 = [v15 configurationStore];
+        configurationManager2 = [(ENDaemon *)self configurationManager];
+        configurationStore2 = [configurationManager2 configurationStore];
         v19 = 0;
-        v17 = [v16 saveRegionConfiguration:v11 error:&v19];
+        v17 = [configurationStore2 saveRegionConfiguration:v11 error:&v19];
         v18 = v19;
 
         if ((v17 & 1) == 0 && dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
@@ -3743,21 +3743,21 @@ LABEL_16:
   }
 }
 
-- (unsigned)appDequeueActivityFlagsWithBundleID:(id)a3
+- (unsigned)appDequeueActivityFlagsWithBundleID:(id)d
 {
   appActivities = self->_appActivities;
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)appActivities objectForKeyedSubscript:v5];
-  v7 = [v6 unsignedIntValue];
+  dCopy = d;
+  v6 = [(NSMutableDictionary *)appActivities objectForKeyedSubscript:dCopy];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  [(NSMutableDictionary *)self->_appActivities setObject:0 forKeyedSubscript:v5];
-  return v7;
+  [(NSMutableDictionary *)self->_appActivities setObject:0 forKeyedSubscript:dCopy];
+  return unsignedIntValue;
 }
 
-- (id)xpcConnectionForBundleID:(id)a3
+- (id)xpcConnectionForBundleID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -3777,9 +3777,9 @@ LABEL_16:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 client];
-        v11 = [v10 signingIdentity];
-        v12 = [v11 isEqualToString:v4];
+        client = [v9 client];
+        signingIdentity = [client signingIdentity];
+        v12 = [signingIdentity isEqualToString:dCopy];
 
         if (v12)
         {
@@ -3805,19 +3805,19 @@ LABEL_11:
   return v6;
 }
 
-- (void)appLaunchWithBundleID:(id)a3 activity:(unsigned int)a4 shouldEnterForeground:(BOOL)a5 requiredRuntimeInSeconds:(int)a6
+- (void)appLaunchWithBundleID:(id)d activity:(unsigned int)activity shouldEnterForeground:(BOOL)foreground requiredRuntimeInSeconds:(int)seconds
 {
-  v7 = a5;
-  v10 = a3;
+  foregroundCopy = foreground;
+  dCopy = d;
   v11 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v12 = [v11 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v11 isSensitiveLoggingAllowed];
 
-  if (v12 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     [ENDaemon appLaunchWithBundleID:activity:shouldEnterForeground:requiredRuntimeInSeconds:];
   }
 
-  v13 = [(NSMutableDictionary *)self->_appActivities objectForKeyedSubscript:v10];
+  v13 = [(NSMutableDictionary *)self->_appActivities objectForKeyedSubscript:dCopy];
   if (!self->_appActivities)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB30]);
@@ -3825,20 +3825,20 @@ LABEL_11:
     self->_appActivities = v14;
   }
 
-  v16 = [MEMORY[0x277CCABA8] numberWithUnsignedInt:{objc_msgSend(v13, "unsignedIntValue") | a4}];
-  [(NSMutableDictionary *)self->_appActivities setObject:v16 forKeyedSubscript:v10];
+  v16 = [MEMORY[0x277CCABA8] numberWithUnsignedInt:{objc_msgSend(v13, "unsignedIntValue") | activity}];
+  [(NSMutableDictionary *)self->_appActivities setObject:v16 forKeyedSubscript:dCopy];
 
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __90__ENDaemon_appLaunchWithBundleID_activity_shouldEnterForeground_requiredRuntimeInSeconds___block_invoke;
   v32[3] = &unk_278FD1120;
   v32[4] = self;
-  v17 = v10;
+  v17 = dCopy;
   v33 = v17;
   v18 = MEMORY[0x24C214430](v32);
   v19 = objc_alloc_init(MEMORY[0x277CBEB30]);
   v20 = v19;
-  if (v7)
+  if (foregroundCopy)
   {
     [v19 setObject:&unk_285D6E3F0 forKeyedSubscript:*MEMORY[0x277D0AC50]];
     v21 = MEMORY[0x277D0AC68];
@@ -3851,19 +3851,19 @@ LABEL_11:
 
   [v20 setObject:&unk_285D6E3F0 forKeyedSubscript:*v21];
   v22 = [MEMORY[0x277D0AD68] optionsWithDictionary:v20];
-  v23 = [MEMORY[0x277D0AD70] serviceWithDefaultShellEndpoint];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD70] serviceWithDefaultShellEndpoint];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __90__ENDaemon_appLaunchWithBundleID_activity_shouldEnterForeground_requiredRuntimeInSeconds___block_invoke_540;
   v25[3] = &unk_278FD15D0;
-  v31 = v7;
-  v27 = self;
+  v31 = foregroundCopy;
+  selfCopy = self;
   v28 = v18;
-  v29 = a4;
-  v30 = a6;
+  activityCopy = activity;
+  secondsCopy = seconds;
   v26 = v17;
   v24 = v17;
-  [v23 openApplication:v24 withOptions:v22 completion:v25];
+  [serviceWithDefaultShellEndpoint openApplication:v24 withOptions:v22 completion:v25];
 }
 
 void __90__ENDaemon_appLaunchWithBundleID_activity_shouldEnterForeground_requiredRuntimeInSeconds___block_invoke(uint64_t a1)
@@ -3965,14 +3965,14 @@ uint64_t __90__ENDaemon_appLaunchWithBundleID_activity_shouldEnterForeground_req
   return [v4 invalidate];
 }
 
-- (void)postAnalyticsOptInNotificationForRegion:(id)a3
+- (void)postAnalyticsOptInNotificationForRegion:(id)region
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  regionCopy = region;
   if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     [ENDaemon postAnalyticsOptInNotificationForRegion:];
-    if (v4)
+    if (regionCopy)
     {
       goto LABEL_5;
     }
@@ -3982,14 +3982,14 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!regionCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  v5 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  v6 = [v5 serverConfigurationForRegion:v4];
+  configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  v6 = [configurationStore serverConfigurationForRegion:regionCopy];
 
   if (v6)
   {
@@ -4002,21 +4002,21 @@ LABEL_5:
 
       else
       {
-        v7 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-        v8 = [v7 agencyConfigurationForRegion:v4];
+        configurationStore2 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+        v8 = [configurationStore2 agencyConfigurationForRegion:regionCopy];
 
-        v25 = [v8 agencyDisplayName];
-        v9 = [v8 localizedConfiguration];
-        v10 = [v9 regionName];
+        agencyDisplayName = [v8 agencyDisplayName];
+        localizedConfiguration = [v8 localizedConfiguration];
+        regionName = [localizedConfiguration regionName];
 
         v11 = MEMORY[0x277CCACA0];
-        v12 = [v4 regionCode];
-        v13 = [v11 stringWithFormat:@"prefs:root=EXPOSURE_NOTIFICATION&path=ANALYTICS-CONSENT/%@", v12];
+        regionCode = [regionCopy regionCode];
+        v13 = [v11 stringWithFormat:@"prefs:root=EXPOSURE_NOTIFICATION&path=ANALYTICS-CONSENT/%@", regionCode];
 
         v14 = objc_alloc_init(MEMORY[0x277CE1F58]);
-        [v14 setTitle:v10];
+        [v14 setTitle:regionName];
         v15 = MEMORY[0x277CCACA0];
-        v28[0] = v25;
+        v28[0] = agencyDisplayName;
         v16 = [MEMORY[0x277CBEA68] arrayWithObjects:v28 count:1];
         v17 = [v15 localizedUserNotificationStringForKey:@"EN_ANALYTICS_CONSENT_SUBTITLE" arguments:v16];
         [v14 setSubtitle:v17];
@@ -4024,8 +4024,8 @@ LABEL_5:
         v18 = [MEMORY[0x277CCACA0] localizedUserNotificationStringForKey:@"EN_ANALYTICS_CONSENT_BODY" arguments:0];
         [v14 setBody:v18];
 
-        v19 = [MEMORY[0x277CE1FD8] defaultSound];
-        [v14 setSound:v19];
+        defaultSound = [MEMORY[0x277CE1FD8] defaultSound];
+        [v14 setSound:defaultSound];
 
         [v14 setThreadIdentifier:@"com.apple.ExposureNotification.UserNotification.endaemon"];
         [v14 setCategoryIdentifier:@"com.apple.ExposureNotification.UserNotification.analyticsConsent"];
@@ -4033,8 +4033,8 @@ LABEL_5:
         [v14 setDefaultActionURL:v20];
 
         v26 = @"regionCode";
-        v21 = [v4 regionCode];
-        v27 = v21;
+        regionCode2 = [regionCopy regionCode];
+        v27 = regionCode2;
         v22 = [MEMORY[0x277CBEAC8] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
         [v14 setUserInfo:v22];
 
@@ -4060,19 +4060,19 @@ LABEL_10:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postExposureSummaryAccessNotificationWithAppBundleIdentifier:(id)a3 string:(id)a4
+- (void)postExposureSummaryAccessNotificationWithAppBundleIdentifier:(id)identifier string:(id)string
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  stringCopy = string;
+  if (identifierCopy)
   {
-    v8 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:v6 placeholder:0];
-    v9 = [v8 localizedName];
+    v8 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:identifierCopy placeholder:0];
+    localizedName = [v8 localizedName];
 
     v10 = objc_alloc_init(MEMORY[0x277CE1F58]);
-    [v10 setTitle:v9];
-    v11 = [v7 length];
+    [v10 setTitle:localizedName];
+    v11 = [stringCopy length];
     v12 = MEMORY[0x277CCACA0];
     if (v11)
     {
@@ -4080,14 +4080,14 @@ LABEL_10:
       [v10 setSubtitle:v13];
 
       v12 = MEMORY[0x277CCACA0];
-      v28[0] = v7;
+      v28[0] = stringCopy;
       v14 = [MEMORY[0x277CBEA68] arrayWithObjects:v28 count:1];
       v15 = @"EN_COBRANDED_BODY";
     }
 
     else
     {
-      v27 = v7;
+      v27 = stringCopy;
       v14 = [MEMORY[0x277CBEA68] arrayWithObjects:&v27 count:1];
       v15 = @"EN_COBRANDED_BODY_STANDALONE";
     }
@@ -4095,23 +4095,23 @@ LABEL_10:
     v16 = [v12 localizedUserNotificationStringForKey:v15 arguments:v14];
     [v10 setBody:v16];
 
-    v17 = [MEMORY[0x277CE1FA8] iconForApplicationIdentifier:v6];
+    v17 = [MEMORY[0x277CE1FA8] iconForApplicationIdentifier:identifierCopy];
     [v10 setIcon:v17];
 
-    v18 = [MEMORY[0x277CE1FD8] defaultSound];
-    [v10 setSound:v18];
+    defaultSound = [MEMORY[0x277CE1FD8] defaultSound];
+    [v10 setSound:defaultSound];
 
     [v10 setThreadIdentifier:@"com.apple.ExposureNotification.UserNotification.cobranded"];
     [v10 setCategoryIdentifier:@"com.apple.ExposureNotification.UserNotification.summary"];
     [v10 setShouldBackgroundDefaultAction:1];
-    v19 = [(ENActiveEntity *)self->_activeEntity entity];
-    v20 = [v19 region];
-    v21 = [v20 regionCode];
+    entity = [(ENActiveEntity *)self->_activeEntity entity];
+    region = [entity region];
+    regionCode = [region regionCode];
 
-    if (v21)
+    if (regionCode)
     {
       v25 = @"regionCode";
-      v26 = v21;
+      v26 = regionCode;
       v22 = [MEMORY[0x277CBEAC8] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       [v10 setUserInfo:v22];
     }
@@ -4133,27 +4133,27 @@ LABEL_10:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postGeneralNotificationWithTitle:(id)a3 message:(id)a4
+- (void)postGeneralNotificationWithTitle:(id)title message:(id)message
 {
-  v12 = a3;
-  v6 = a4;
+  titleCopy = title;
+  messageCopy = message;
   if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     [ENDaemon postGeneralNotificationWithTitle:message:];
   }
 
-  if (v12 && v6)
+  if (titleCopy && messageCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x277CE1F58]);
     [v7 setTitle:&stru_285D62BB0];
-    v8 = [MEMORY[0x277CCACA0] localizedUserNotificationStringForKey:v12 arguments:0];
+    v8 = [MEMORY[0x277CCACA0] localizedUserNotificationStringForKey:titleCopy arguments:0];
     [v7 setSubtitle:v8];
 
-    v9 = [MEMORY[0x277CCACA0] localizedUserNotificationStringForKey:v6 arguments:0];
+    v9 = [MEMORY[0x277CCACA0] localizedUserNotificationStringForKey:messageCopy arguments:0];
     [v7 setBody:v9];
 
-    v10 = [MEMORY[0x277CE1FD8] defaultSound];
-    [v7 setSound:v10];
+    defaultSound = [MEMORY[0x277CE1FD8] defaultSound];
+    [v7 setSound:defaultSound];
 
     [v7 setThreadIdentifier:@"com.apple.ExposureNotification.UserNotification.endaemon"];
     [v7 setCategoryIdentifier:@"com.apple.ExposureNotification.UserNotification.preArm"];
@@ -4169,13 +4169,13 @@ LABEL_10:
   }
 }
 
-- (void)postMonthlySummaryNotificationForAppBundleIdentifier:(id)a3
+- (void)postMonthlySummaryNotificationForAppBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
-    v6 = v4;
+    v6 = identifierCopy;
     if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
       [ENDaemon postMonthlySummaryNotificationForAppBundleIdentifier:];
@@ -4189,8 +4189,8 @@ LABEL_10:
     v9 = [MEMORY[0x277CCACA0] localizedUserNotificationStringForKey:@"EN_MONTHLY_SUBTITLE" arguments:0];
     [v7 setSubtitle:v9];
 
-    v10 = [MEMORY[0x277CE1FD8] defaultSound];
-    [v7 setSound:v10];
+    defaultSound = [MEMORY[0x277CE1FD8] defaultSound];
+    [v7 setSound:defaultSound];
 
     [v7 setThreadIdentifier:@"com.apple.ExposureNotification.UserNotification.weeklyupdatenotification"];
     [v7 setCategoryIdentifier:@"com.apple.ExposureNotification.UserNotification.weekly"];
@@ -4215,13 +4215,13 @@ LABEL_10:
   }
 }
 
-- (void)postOnboardingNotificationForRegion:(id)a3
+- (void)postOnboardingNotificationForRegion:(id)region
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  regionCopy = region;
   if (_MergedGlobals > 30 || _MergedGlobals == -1 && !_LogCategory_Initialize())
   {
-    if (v4)
+    if (regionCopy)
     {
       goto LABEL_5;
     }
@@ -4232,7 +4232,7 @@ LABEL_16:
   }
 
   [ENDaemon postOnboardingNotificationForRegion:];
-  if (!v4)
+  if (!regionCopy)
   {
     goto LABEL_16;
   }
@@ -4244,15 +4244,15 @@ LABEL_5:
     [ENDaemon postOnboardingNotificationForRegion:];
   }
 
-  v5 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  v6 = [v5 agencyConfigurationForRegion:v4];
+  configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  v6 = [configurationStore agencyConfigurationForRegion:regionCopy];
 
-  v7 = [v6 agencyDisplayName];
-  v8 = v7;
-  if (v6 && v7)
+  agencyDisplayName = [v6 agencyDisplayName];
+  v8 = agencyDisplayName;
+  if (v6 && agencyDisplayName)
   {
-    v9 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-    v10 = [v9 serverConfigurationForRegion:v4];
+    configurationStore2 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+    v10 = [configurationStore2 serverConfigurationForRegion:regionCopy];
 
     if ([v10 enVersion] <= 1)
     {
@@ -4272,13 +4272,13 @@ LABEL_5:
       v15 = [v13 localizedUserNotificationStringForKey:@"EN_AVAILABLE_BODY_PHA" arguments:v14];
       [v11 setBody:v15];
 
-      v16 = [MEMORY[0x277CE1FD8] defaultSound];
-      [v11 setSound:v16];
+      defaultSound = [MEMORY[0x277CE1FD8] defaultSound];
+      [v11 setSound:defaultSound];
 
       [v11 setThreadIdentifier:@"com.apple.ExposureNotification.UserNotification.endaemon"];
       [v11 setCategoryIdentifier:@"com.apple.ExposureNotification.UserNotification.onboarding"];
-      v17 = [v4 regionCode];
-      v22 = v17;
+      regionCode = [regionCopy regionCode];
+      v22 = regionCode;
       v18 = [MEMORY[0x277CBEAC8] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       [v11 setUserInfo:v18];
 
@@ -4298,14 +4298,14 @@ LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postPreAuthorizationNotificationForRegion:(id)a3
+- (void)postPreAuthorizationNotificationForRegion:(id)region
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  regionCopy = region;
   if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     [ENDaemon postPreAuthorizationNotificationForRegion:];
-    if (v4)
+    if (regionCopy)
     {
       goto LABEL_5;
     }
@@ -4315,31 +4315,31 @@ LABEL_22:
     goto LABEL_20;
   }
 
-  if (!v4)
+  if (!regionCopy)
   {
     goto LABEL_22;
   }
 
 LABEL_5:
-  v5 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  v6 = [v5 agencyConfigurationForRegion:v4];
+  configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  v6 = [configurationStore agencyConfigurationForRegion:regionCopy];
 
-  v7 = [v6 agencyDisplayName];
-  v8 = v7;
-  if (!v6 || !v7)
+  agencyDisplayName = [v6 agencyDisplayName];
+  v8 = agencyDisplayName;
+  if (!v6 || !agencyDisplayName)
   {
     [ENDaemon postPreAuthorizationNotificationForRegion:];
     goto LABEL_19;
   }
 
-  v9 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  v10 = [v9 serverConfigurationForRegion:v4];
+  configurationStore2 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  v10 = [configurationStore2 serverConfigurationForRegion:regionCopy];
 
   if (![(ENDaemon *)self _isNKDActive])
   {
-    v11 = [v10 appBundleID];
-    v12 = v11;
-    if (!v10 || !v11 || ![v11 length])
+    appBundleID = [v10 appBundleID];
+    v12 = appBundleID;
+    if (!v10 || !appBundleID || ![appBundleID length])
     {
       [ENDaemon postPreAuthorizationNotificationForRegion:v12];
       goto LABEL_18;
@@ -4373,15 +4373,15 @@ LABEL_14:
     v19 = [v15 localizedUserNotificationStringForKey:v17 arguments:v16];
     [v13 setBody:v19];
 
-    v20 = [MEMORY[0x277CE1FD8] defaultSound];
-    [v13 setSound:v20];
+    defaultSound = [MEMORY[0x277CE1FD8] defaultSound];
+    [v13 setSound:defaultSound];
 
     [v13 setThreadIdentifier:@"com.apple.ExposureNotification.UserNotification.endaemon"];
     [v13 setCategoryIdentifier:@"com.apple.ExposureNotification.UserNotification.preArm"];
     v25[0] = @"regionCode";
-    v21 = [v4 regionCode];
+    regionCode = [regionCopy regionCode];
     v25[1] = @"isKeyReleased";
-    v26[0] = v21;
+    v26[0] = regionCode;
     v26[1] = MEMORY[0x277CBEC30];
     v22 = [MEMORY[0x277CBEAC8] dictionaryWithObjects:v26 forKeys:v25 count:2];
     [v13 setUserInfo:v22];
@@ -4409,56 +4409,56 @@ LABEL_20:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postTestVerificationReceivedNotification:(id)a3 region:(id)a4 reportType:(unsigned int)a5
+- (void)postTestVerificationReceivedNotification:(id)notification region:(id)region reportType:(unsigned int)type
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v8 = a4;
+  notificationCopy = notification;
+  regionCopy = region;
   if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     [ENDaemon postTestVerificationReceivedNotification:region:reportType:];
   }
 
-  if (!v39)
+  if (!notificationCopy)
   {
     [ENDaemon postTestVerificationReceivedNotification:region:reportType:];
     goto LABEL_24;
   }
 
-  if (!v8)
+  if (!regionCopy)
   {
     [ENDaemon postTestVerificationReceivedNotification:region:reportType:];
     goto LABEL_24;
   }
 
-  v9 = [v39 ensTestVerificationURL];
-  v10 = [v9 absoluteString];
+  ensTestVerificationURL = [notificationCopy ensTestVerificationURL];
+  absoluteString = [ensTestVerificationURL absoluteString];
 
-  v37 = v10;
-  if (!v10)
+  v37 = absoluteString;
+  if (!absoluteString)
   {
     [ENDaemon postTestVerificationReceivedNotification:region:reportType:];
     goto LABEL_23;
   }
 
-  v38 = [MEMORY[0x277CCAB60] stringWithString:v10];
-  v11 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  v12 = [v11 agencyConfigurationForRegion:v8];
+  v38 = [MEMORY[0x277CCAB60] stringWithString:absoluteString];
+  configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  v12 = [configurationStore agencyConfigurationForRegion:regionCopy];
 
-  v13 = [v12 agencyDisplayName];
-  v14 = v13;
-  if (!v12 || !v13)
+  agencyDisplayName = [v12 agencyDisplayName];
+  v14 = agencyDisplayName;
+  if (!v12 || !agencyDisplayName)
   {
     [ENDaemon postTestVerificationReceivedNotification:region:reportType:];
     goto LABEL_22;
   }
 
-  if (a5 != 3)
+  if (type != 3)
   {
-    v24 = [v12 localizedConfiguration];
-    v22 = [v24 testVerificationNotificationBody];
+    localizedConfiguration = [v12 localizedConfiguration];
+    testVerificationNotificationBody = [localizedConfiguration testVerificationNotificationBody];
 
-    if ([v22 length])
+    if ([testVerificationNotificationBody length])
     {
       v23 = [MEMORY[0x277CCACA0] localizedUserNotificationStringForKey:@"EN_SMS_SUBTITLE_TOUCH_ID" arguments:0];
       if (+[ENDaemon deviceSupportsFaceID])
@@ -4471,41 +4471,41 @@ LABEL_20:
       goto LABEL_16;
     }
 
-    [ENDaemon postTestVerificationReceivedNotification:v8 region:v22 reportType:&v40];
+    [ENDaemon postTestVerificationReceivedNotification:regionCopy region:testVerificationNotificationBody reportType:&v40];
     goto LABEL_35;
   }
 
-  if (![(ENConfigurationManager *)self->_configurationManager regionSupportsFeatures:v8 featureFlags:2])
+  if (![(ENConfigurationManager *)self->_configurationManager regionSupportsFeatures:regionCopy featureFlags:2])
   {
-    [ENDaemon postTestVerificationReceivedNotification:v8 region:&v40 reportType:?];
+    [ENDaemon postTestVerificationReceivedNotification:regionCopy region:&v40 reportType:?];
 LABEL_35:
-    v22 = v40;
+    testVerificationNotificationBody = v40;
     goto LABEL_21;
   }
 
-  v15 = [v12 localizedConfiguration];
-  v16 = [v15 selfReportNotificationBody];
+  localizedConfiguration2 = [v12 localizedConfiguration];
+  selfReportNotificationBody = [localizedConfiguration2 selfReportNotificationBody];
 
-  if ([v16 length])
+  if ([selfReportNotificationBody length])
   {
     v17 = MEMORY[0x277CCACA0];
-    v43[0] = v16;
+    v43[0] = selfReportNotificationBody;
     [MEMORY[0x277CBEA68] arrayWithObjects:v43 count:1];
-    v18 = self;
+    selfCopy = self;
     v20 = v19 = v14;
     v21 = [v17 localizedUserNotificationStringForKey:@"EN_SELF_REPORT_BODY_%@" arguments:v20];
 
     v14 = v19;
-    self = v18;
-    v22 = v21;
+    self = selfCopy;
+    testVerificationNotificationBody = v21;
     v23 = [MEMORY[0x277CCACA0] localizedUserNotificationStringForKey:@"EN_SELF_REPORT_SUBTITLE" arguments:0];
 
-    a5 = 3;
+    type = 3;
 LABEL_16:
-    v36 = [MEMORY[0x277CCACA0] stringWithFormat:@"&t=%lu", a5];
+    type = [MEMORY[0x277CCACA0] stringWithFormat:@"&t=%lu", type];
     [v38 appendString:?];
-    v26 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-    v27 = [v26 serverConfigurationForRegion:v8];
+    configurationStore2 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+    v27 = [configurationStore2 serverConfigurationForRegion:regionCopy];
 
     if (v27)
     {
@@ -4519,7 +4519,7 @@ LABEL_16:
         v28 = objc_alloc_init(MEMORY[0x277CE1F58]);
         [v28 setTitle:v14];
         [v28 setSubtitle:v23];
-        [v28 setBody:v22];
+        [v28 setBody:testVerificationNotificationBody];
         [MEMORY[0x277CE1FD8] defaultSound];
         v29 = v35 = self;
         [v28 setSound:v29];
@@ -4528,15 +4528,15 @@ LABEL_16:
         [v28 setCategoryIdentifier:@"com.apple.ExposureNotification.UserNotification.exposure"];
         [v28 setInterruptionLevel:2];
         v41[0] = @"regionCode";
-        v30 = [v8 regionCode];
+        regionCode = [regionCopy regionCode];
         v41[1] = @"isTextMessageVerificationURL";
-        v42[0] = v30;
+        v42[0] = regionCode;
         v42[1] = v38;
         [MEMORY[0x277CBEAC8] dictionaryWithObjects:v42 forKeys:v41 count:2];
-        v32 = v31 = v22;
+        v32 = v31 = testVerificationNotificationBody;
         [v28 setUserInfo:v32];
 
-        v22 = v31;
+        testVerificationNotificationBody = v31;
         [v28 setShouldBackgroundDefaultAction:1];
         [v28 setShouldAuthenticateDefaultAction:1];
         v33 = [MEMORY[0x277CE1FB8] requestWithIdentifier:@"com.apple.ExposureNotification.textMessage" content:v28 trigger:0 destinations:7];
@@ -4557,8 +4557,8 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  [ENDaemon postTestVerificationReceivedNotification:v16 region:? reportType:?];
-  v22 = 0;
+  [ENDaemon postTestVerificationReceivedNotification:selfReportNotificationBody region:? reportType:?];
+  testVerificationNotificationBody = 0;
 LABEL_21:
 
 LABEL_22:
@@ -4568,15 +4568,15 @@ LABEL_24:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentBuddyForRegion:(id)a3 errorHandler:(id)a4 completionHandler:(id)a5
+- (void)presentBuddyForRegion:(id)region errorHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ENDaemon *)self buddyAlertHandle];
-  v12 = [v11 isValid];
+  regionCopy = region;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  buddyAlertHandle = [(ENDaemon *)self buddyAlertHandle];
+  isValid = [buddyAlertHandle isValid];
 
-  if (v12)
+  if (isValid)
   {
     if (_MergedGlobals <= 40 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
@@ -4584,9 +4584,9 @@ LABEL_24:
     }
 
     v13 = ENErrorF();
-    if (v9)
+    if (handlerCopy)
     {
-      v9[2](v9, v13);
+      handlerCopy[2](handlerCopy, v13);
     }
   }
 
@@ -4597,17 +4597,17 @@ LABEL_24:
     v23[2] = __65__ENDaemon_presentBuddyForRegion_errorHandler_completionHandler___block_invoke;
     v23[3] = &unk_278FD15F8;
     v23[4] = self;
-    v14 = v9;
+    v14 = handlerCopy;
     v25 = v14;
-    v24 = v8;
-    v26 = v10;
+    v24 = regionCopy;
+    v26 = completionHandlerCopy;
     v15 = MEMORY[0x24C214430](v23);
-    v16 = [(ENDaemon *)self sharingClient];
+    sharingClient = [(ENDaemon *)self sharingClient];
 
-    if (v16)
+    if (sharingClient)
     {
-      v17 = [(ENDaemon *)self sharingClient];
-      [v17 invalidate];
+      sharingClient2 = [(ENDaemon *)self sharingClient];
+      [sharingClient2 invalidate];
 
       [(ENDaemon *)self setSharingClient:0];
     }
@@ -4615,7 +4615,7 @@ LABEL_24:
     v18 = objc_alloc_init(MEMORY[0x277D54C28]);
     [(ENDaemon *)self setSharingClient:v18];
 
-    v19 = [(ENDaemon *)self sharingClient];
+    sharingClient3 = [(ENDaemon *)self sharingClient];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __65__ENDaemon_presentBuddyForRegion_errorHandler_completionHandler___block_invoke_2;
@@ -4623,7 +4623,7 @@ LABEL_24:
     v20[4] = self;
     v21 = v14;
     v22 = v15;
-    [v19 startProxCardTransactionWithOptions:0 completion:v20];
+    [sharingClient3 startProxCardTransactionWithOptions:0 completion:v20];
   }
 }
 
@@ -4787,15 +4787,15 @@ void __65__ENDaemon_presentBuddyForRegion_errorHandler_completionHandler___block
 
 - (void)tearDownAlertHandle
 {
-  v3 = [(ENDaemon *)self buddyAlertHandle];
-  [v3 removeObserver:self];
+  buddyAlertHandle = [(ENDaemon *)self buddyAlertHandle];
+  [buddyAlertHandle removeObserver:self];
 
-  v4 = [(ENDaemon *)self buddyAlertHandle];
-  [v4 invalidate];
+  buddyAlertHandle2 = [(ENDaemon *)self buddyAlertHandle];
+  [buddyAlertHandle2 invalidate];
 
   [(ENDaemon *)self setBuddyAlertHandle:0];
-  v5 = [(ENDaemon *)self sharingClient];
-  [v5 invalidate];
+  sharingClient = [(ENDaemon *)self sharingClient];
+  [sharingClient invalidate];
 
   [(ENDaemon *)self setSharingClient:0];
 }
@@ -4814,8 +4814,8 @@ void __65__ENDaemon_presentBuddyForRegion_errorHandler_completionHandler___block
   v4 = [MEMORY[0x277CCACA0] localizedUserNotificationStringForKey:@"EN_OFF_BODY" arguments:0];
   [v8 setBody:v4];
 
-  v5 = [MEMORY[0x277CE1FD8] defaultSound];
-  [v8 setSound:v5];
+  defaultSound = [MEMORY[0x277CE1FD8] defaultSound];
+  [v8 setSound:defaultSound];
 
   [v8 setThreadIdentifier:@"com.apple.ExposureNotification.UserNotification.endaemon"];
   [v8 setCategoryIdentifier:@"com.apple.ExposureNotification.UserNotification.off"];
@@ -4826,42 +4826,42 @@ void __65__ENDaemon_presentBuddyForRegion_errorHandler_completionHandler___block
   [(ENDaemon *)self _postUserNotificationWithRequest:v7 authorizationFailureHandler:0];
 }
 
-- (void)postExposureNotification:(id)a3
+- (void)postExposureNotification:(id)notification
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 region];
-  if (v5)
+  notificationCopy = notification;
+  region = [notificationCopy region];
+  if (region)
   {
-    v6 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-    v7 = [v6 agencyConfigurationForRegion:v5];
+    configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+    v7 = [configurationStore agencyConfigurationForRegion:region];
 
-    v8 = [v7 agencyDisplayName];
+    agencyDisplayName = [v7 agencyDisplayName];
     v9 = MEMORY[0x277CCACA0];
-    v10 = [v5 regionCode];
-    v11 = [v9 stringWithFormat:@"prefs:root=EXPOSURE_NOTIFICATION&path=EXPOSURE/LATEST/%@", v10];
+    regionCode = [region regionCode];
+    v11 = [v9 stringWithFormat:@"prefs:root=EXPOSURE_NOTIFICATION&path=EXPOSURE/LATEST/%@", regionCode];
 
     v12 = objc_alloc_init(MEMORY[0x277CE1F58]);
-    v13 = [v4 classification];
-    v14 = v13;
-    if (v13)
+    classification = [notificationCopy classification];
+    v14 = classification;
+    if (classification)
     {
       v23 = @"classificationIndex";
-      v15 = [MEMORY[0x277CCABA8] numberWithUnsignedChar:{objc_msgSend(v13, "index")}];
+      v15 = [MEMORY[0x277CCABA8] numberWithUnsignedChar:{objc_msgSend(classification, "index")}];
       v24[0] = v15;
       v16 = [MEMORY[0x277CBEAC8] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       [v12 setUserInfo:v16];
     }
 
-    [v12 setTitle:v8];
-    v17 = [v4 localizedSubjectText];
-    [v12 setSubtitle:v17];
+    [v12 setTitle:agencyDisplayName];
+    localizedSubjectText = [notificationCopy localizedSubjectText];
+    [v12 setSubtitle:localizedSubjectText];
 
-    v18 = [v4 localizedBodyText];
-    [v12 setBody:v18];
+    localizedBodyText = [notificationCopy localizedBodyText];
+    [v12 setBody:localizedBodyText];
 
-    v19 = [MEMORY[0x277CE1FD8] defaultSound];
-    [v12 setSound:v19];
+    defaultSound = [MEMORY[0x277CE1FD8] defaultSound];
+    [v12 setSound:defaultSound];
 
     [v12 setThreadIdentifier:@"com.apple.ExposureNotification.UserNotification.cobranded"];
     [v12 setCategoryIdentifier:@"com.apple.ExposureNotification.UserNotification.exposure"];
@@ -4882,31 +4882,31 @@ void __65__ENDaemon_presentBuddyForRegion_errorHandler_completionHandler___block
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postUserNotificationWithRequest:(id)a3 authorizationFailureHandler:(id)a4
+- (void)_postUserNotificationWithRequest:(id)request authorizationFailureHandler:(id)handler
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ENDaemon *)self userNotificationCenter];
-  v9 = [v6 content];
-  v33 = [v9 categoryIdentifier];
+  requestCopy = request;
+  handlerCopy = handler;
+  userNotificationCenter = [(ENDaemon *)self userNotificationCenter];
+  content = [requestCopy content];
+  categoryIdentifier = [content categoryIdentifier];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v10 = [v8 deliveredNotifications];
-  v11 = [v10 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  deliveredNotifications = [userNotificationCenter deliveredNotifications];
+  v11 = [deliveredNotifications countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (!v11)
   {
     goto LABEL_12;
   }
 
   v12 = v11;
-  v29 = v7;
-  v30 = v6;
-  v31 = self;
-  v32 = v8;
+  v29 = handlerCopy;
+  v30 = requestCopy;
+  selfCopy = self;
+  v32 = userNotificationCenter;
   v34 = 0;
   v13 = *v39;
   v14 = 1;
@@ -4917,43 +4917,43 @@ void __65__ENDaemon_presentBuddyForRegion_errorHandler_completionHandler___block
     {
       if (*v39 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(deliveredNotifications);
       }
 
-      v17 = [*(*(&v38 + 1) + 8 * i) request];
-      v18 = [v17 identifier];
-      v19 = [v18 isEqualToString:v15];
+      request = [*(*(&v38 + 1) + 8 * i) request];
+      identifier = [request identifier];
+      v19 = [identifier isEqualToString:v15];
 
       if (v19)
       {
-        v20 = [v17 content];
-        v21 = [v20 categoryIdentifier];
+        content2 = [request content];
+        categoryIdentifier2 = [content2 categoryIdentifier];
         v22 = v15;
-        v23 = v10;
-        v24 = [v21 isEqualToString:v33];
+        v23 = deliveredNotifications;
+        v24 = [categoryIdentifier2 isEqualToString:categoryIdentifier];
 
         v14 &= v24;
         v34 |= v24;
-        v10 = v23;
+        deliveredNotifications = v23;
         v15 = v22;
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    v12 = [deliveredNotifications countByEnumeratingWithState:&v38 objects:v43 count:16];
   }
 
   while (v12);
 
   v25 = v34 & v14;
-  self = v31;
-  v8 = v32;
-  v7 = v29;
-  v6 = v30;
+  self = selfCopy;
+  userNotificationCenter = v32;
+  handlerCopy = v29;
+  requestCopy = v30;
   if (v25)
   {
     v42 = v15;
-    v10 = [MEMORY[0x277CBEA68] arrayWithObjects:&v42 count:1];
-    [v32 removeDeliveredNotificationsWithIdentifiers:v10];
+    deliveredNotifications = [MEMORY[0x277CBEA68] arrayWithObjects:&v42 count:1];
+    [v32 removeDeliveredNotificationsWithIdentifiers:deliveredNotifications];
 LABEL_12:
   }
 
@@ -4962,12 +4962,12 @@ LABEL_12:
   v35[2] = __73__ENDaemon__postUserNotificationWithRequest_authorizationFailureHandler___block_invoke;
   v35[3] = &unk_278FD16C0;
   v35[4] = self;
-  v35[5] = v8;
-  v36 = v6;
-  v37 = v7;
-  v26 = v6;
-  v27 = v7;
-  [v8 requestAuthorizationWithOptions:18 completionHandler:v35];
+  v35[5] = userNotificationCenter;
+  v36 = requestCopy;
+  v37 = handlerCopy;
+  v26 = requestCopy;
+  v27 = handlerCopy;
+  [userNotificationCenter requestAuthorizationWithOptions:18 completionHandler:v35];
 
   v28 = *MEMORY[0x277D85DE8];
 }
@@ -5041,55 +5041,55 @@ void __73__ENDaemon__postUserNotificationWithRequest_authorizationFailureHandler
   }
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v70[2] = *MEMORY[0x277D85DE8];
-  v59 = a3;
-  v8 = a4;
-  v9 = a5;
+  centerCopy = center;
+  responseCopy = response;
+  handlerCopy = handler;
   v67[0] = MEMORY[0x277D85DD0];
   v67[1] = 3221225472;
   v67[2] = __88__ENDaemon_userNotificationCenter_didReceiveNotificationResponse_withCompletionHandler___block_invoke;
   v67[3] = &unk_278FD16E8;
-  v60 = v9;
+  v60 = handlerCopy;
   v68 = v60;
   v10 = MEMORY[0x24C214430](v67);
-  v11 = [v8 notification];
-  v12 = [v11 request];
-  v13 = [v12 content];
-  v14 = [v13 categoryIdentifier];
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
 
-  v15 = [v8 notification];
-  v16 = [v15 request];
-  v17 = [v16 content];
-  v64 = [v17 userInfo];
+  notification2 = [responseCopy notification];
+  request2 = [notification2 request];
+  content2 = [request2 content];
+  userInfo = [content2 userInfo];
 
-  v18 = [v8 actionIdentifier];
-  v19 = [v18 isEqualToString:*MEMORY[0x277CE20E0]];
+  actionIdentifier = [responseCopy actionIdentifier];
+  v19 = [actionIdentifier isEqualToString:*MEMORY[0x277CE20E0]];
 
-  v62 = [MEMORY[0x277CC1E78] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E78] defaultWorkspace];
   v20 = *MEMORY[0x277D0AC68];
   v69[0] = *MEMORY[0x277D0AC50];
   v69[1] = v20;
   v70[0] = MEMORY[0x277CBEC30];
   v70[1] = MEMORY[0x277CBEC30];
   v61 = [MEMORY[0x277CBEAC8] dictionaryWithObjects:v70 forKeys:v69 count:2];
-  if ([v14 isEqualToString:@"com.apple.ExposureNotification.UserNotification.summary"])
+  if ([categoryIdentifier isEqualToString:@"com.apple.ExposureNotification.UserNotification.summary"])
   {
     CFStringGetTypeID();
-    v63 = CFDictionaryGetTypedValue();
+    _readPreferenceRegionPendingOnboarding2 = CFDictionaryGetTypedValue();
     activeEntity = self->_activeEntity;
     if (activeEntity)
     {
-      v22 = [(ENActiveEntity *)activeEntity entity];
-      v23 = [v22 bundleIdentifier];
+      entity = [(ENActiveEntity *)activeEntity entity];
+      bundleIdentifier = [entity bundleIdentifier];
 
       Int64 = CFDictionaryGetInt64();
-      v25 = [(ENActiveEntity *)self->_activeEntity entity];
-      v26 = [v25 region];
-      v27 = [v26 regionCode];
+      entity2 = [(ENActiveEntity *)self->_activeEntity entity];
+      region = [entity2 region];
+      regionCode = [region regionCode];
 
-      if ([v63 isEqualToString:v27])
+      if ([_readPreferenceRegionPendingOnboarding2 isEqualToString:regionCode])
       {
         if (!Int64)
         {
@@ -5099,16 +5099,16 @@ void __73__ENDaemon__postUserNotificationWithRequest_authorizationFailureHandler
           v66[1] = 3221225472;
           v66[2] = __88__ENDaemon_userNotificationCenter_didReceiveNotificationResponse_withCompletionHandler___block_invoke_2;
           v66[3] = &unk_278FD1710;
-          v66[4] = v23;
-          [v62 openApplicationWithBundleIdentifier:v23 configuration:v32 completionHandler:v66];
+          v66[4] = bundleIdentifier;
+          [defaultWorkspace openApplicationWithBundleIdentifier:bundleIdentifier configuration:v32 completionHandler:v66];
           goto LABEL_100;
         }
 
         if (v19)
         {
-          if (v23 && [v23 length])
+          if (bundleIdentifier && [bundleIdentifier length])
           {
-            [(ENDaemon *)self appLaunchWithBundleID:v23 activity:8 shouldEnterForeground:1 requiredRuntimeInSeconds:0];
+            [(ENDaemon *)self appLaunchWithBundleID:bundleIdentifier activity:8 shouldEnterForeground:1 requiredRuntimeInSeconds:0];
             goto LABEL_101;
           }
 
@@ -5117,17 +5117,17 @@ void __73__ENDaemon__postUserNotificationWithRequest_authorizationFailureHandler
           if (v36)
           {
             v37 = +[ENLoggingPrefs sharedENLoggingPrefs];
-            v38 = [v37 isSensitiveLoggingAllowed];
+            isSensitiveLoggingAllowed = [v37 isSensitiveLoggingAllowed];
 
-            if (v38 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+            if (isSensitiveLoggingAllowed && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
             {
               LogPrintF_safe();
-              [v62 openSensitiveURL:v36 withOptions:{v61, v32}];
+              [defaultWorkspace openSensitiveURL:v36 withOptions:{v61, v32}];
             }
 
             else
             {
-              [v62 openSensitiveURL:v36 withOptions:{v61, v56}];
+              [defaultWorkspace openSensitiveURL:v36 withOptions:{v61, v56}];
             }
           }
 
@@ -5162,28 +5162,28 @@ LABEL_25:
     goto LABEL_22;
   }
 
-  if (![v14 isEqualToString:@"com.apple.ExposureNotification.UserNotification.preArm"])
+  if (![categoryIdentifier isEqualToString:@"com.apple.ExposureNotification.UserNotification.preArm"])
   {
-    if ([v14 isEqualToString:@"com.apple.ExposureNotification.UserNotification.onboarding"])
+    if ([categoryIdentifier isEqualToString:@"com.apple.ExposureNotification.UserNotification.onboarding"])
     {
       if (!v19)
       {
-        v35 = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
+        _readPreferenceRegionPendingOnboarding = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
 
-        if (v35)
+        if (_readPreferenceRegionPendingOnboarding)
         {
           if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
           {
             LogPrintF_safe();
           }
 
-          v63 = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
-          if (v63)
+          _readPreferenceRegionPendingOnboarding2 = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
+          if (_readPreferenceRegionPendingOnboarding2)
           {
-            v44 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-            v23 = [v44 configurationForRegion:v63];
+            configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+            bundleIdentifier = [configurationStore configurationForRegion:_readPreferenceRegionPendingOnboarding2];
 
-            if (!v23)
+            if (!bundleIdentifier)
             {
               if (dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
               {
@@ -5193,25 +5193,25 @@ LABEL_25:
               goto LABEL_102;
             }
 
-            v45 = [v23 userConsent];
-            v46 = [v45 consent] == 2;
+            userConsent = [bundleIdentifier userConsent];
+            v46 = [userConsent consent] == 2;
 
             if (!v46)
             {
-              v47 = [v23 userConsent];
-              [v47 setConsent:3];
+              userConsent2 = [bundleIdentifier userConsent];
+              [userConsent2 setConsent:3];
 
-              v48 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+              configurationStore2 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
               v65 = 0;
-              v49 = [v48 saveRegionConfiguration:v23 error:&v65];
-              v27 = v65;
+              v49 = [configurationStore2 saveRegionConfiguration:bundleIdentifier error:&v65];
+              regionCode = v65;
 
               if (v49)
               {
-                v50 = [(ENDaemon *)self activeEntity];
-                v51 = [v50 entity];
-                v52 = [v51 region];
-                v58 = [v63 isEqual:v52];
+                activeEntity = [(ENDaemon *)self activeEntity];
+                entity3 = [activeEntity entity];
+                region2 = [entity3 region];
+                v58 = [_readPreferenceRegionPendingOnboarding2 isEqual:region2];
 
                 if (v58)
                 {
@@ -5249,26 +5249,26 @@ LABEL_102:
       }
 
       CFStringGetTypeID();
-      v63 = CFDictionaryGetTypedValue();
-      if (v63)
+      _readPreferenceRegionPendingOnboarding2 = CFDictionaryGetTypedValue();
+      if (_readPreferenceRegionPendingOnboarding2)
       {
-        v41 = [(ENDaemon *)self onboardingManager];
-        [v41 setPendingBuddyOnboarding:0];
+        onboardingManager = [(ENDaemon *)self onboardingManager];
+        [onboardingManager setPendingBuddyOnboarding:0];
 
-        v23 = [MEMORY[0x277CCACA0] stringWithFormat:@"prefs:root=EXPOSURE_NOTIFICATION&path=ONBOARDING/%@", v63];
-        v27 = [MEMORY[0x277CBEBC8] URLWithString:v23];
-        if (v27)
+        bundleIdentifier = [MEMORY[0x277CCACA0] stringWithFormat:@"prefs:root=EXPOSURE_NOTIFICATION&path=ONBOARDING/%@", _readPreferenceRegionPendingOnboarding2];
+        regionCode = [MEMORY[0x277CBEBC8] URLWithString:bundleIdentifier];
+        if (regionCode)
         {
           v42 = +[ENLoggingPrefs sharedENLoggingPrefs];
-          v43 = [v42 isSensitiveLoggingAllowed];
+          isSensitiveLoggingAllowed2 = [v42 isSensitiveLoggingAllowed];
 
-          if (v43 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+          if (isSensitiveLoggingAllowed2 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
           {
-            v57 = v23;
+            v57 = bundleIdentifier;
             LogPrintF_safe();
           }
 
-          [v62 openSensitiveURL:v27 withOptions:{v61, v57}];
+          [defaultWorkspace openSensitiveURL:regionCode withOptions:{v61, v57}];
           v54 = *MEMORY[0x277CBED20];
           CFPrefs_SetValue();
           goto LABEL_101;
@@ -5290,22 +5290,22 @@ LABEL_102:
 
     else
     {
-      if ([v14 isEqualToString:@"com.apple.ExposureNotification.UserNotification.exposure"])
+      if ([categoryIdentifier isEqualToString:@"com.apple.ExposureNotification.UserNotification.exposure"])
       {
         CFStringGetTypeID();
-        v63 = CFDictionaryGetTypedValue();
+        _readPreferenceRegionPendingOnboarding2 = CFDictionaryGetTypedValue();
         v30 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v31 = [v30 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed3 = [v30 isSensitiveLoggingAllowed];
 
-        if (v31 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+        if (isSensitiveLoggingAllowed3 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
         {
           LogPrintF_safe();
         }
 
-        if (!v63)
+        if (!_readPreferenceRegionPendingOnboarding2)
         {
           v53 = NSDictionaryGetNSNumber();
-          v23 = v53;
+          bundleIdentifier = v53;
           if (v53)
           {
             -[ENDifferentialPrivacyManager reportUserExposureNotificationTapped:classificationIndex:](self->_differentialPrivacyManager, "reportUserExposureNotificationTapped:classificationIndex:", v19, [v53 unsignedCharValue]);
@@ -5316,10 +5316,10 @@ LABEL_102:
 
         if (v19)
         {
-          v23 = [MEMORY[0x277CBEBC8] URLWithString:@"prefs:root=EXPOSURE_NOTIFICATION"];
-          [v62 openSensitiveURL:v23 withOptions:v61];
-          v27 = [MEMORY[0x277CBEBC8] URLWithString:v63];
-          [v62 openURL:v27 withOptions:v61];
+          bundleIdentifier = [MEMORY[0x277CBEBC8] URLWithString:@"prefs:root=EXPOSURE_NOTIFICATION"];
+          [defaultWorkspace openSensitiveURL:bundleIdentifier withOptions:v61];
+          regionCode = [MEMORY[0x277CBEBC8] URLWithString:_readPreferenceRegionPendingOnboarding2];
+          [defaultWorkspace openURL:regionCode withOptions:v61];
           goto LABEL_101;
         }
 
@@ -5341,7 +5341,7 @@ LABEL_103:
   if (v19)
   {
     CFStringGetTypeID();
-    v63 = CFDictionaryGetTypedValue();
+    _readPreferenceRegionPendingOnboarding2 = CFDictionaryGetTypedValue();
     if (!self->_activeEntity)
     {
       if (dword_281346508 > 90 || dword_281346508 == -1 && !_LogCategory_Initialize())
@@ -5355,33 +5355,33 @@ LABEL_22:
     }
 
     v28 = CFDictionaryGetInt64();
-    v29 = [(ENActiveEntity *)self->_activeEntity entity];
-    v23 = [v29 bundleIdentifier];
+    entity4 = [(ENActiveEntity *)self->_activeEntity entity];
+    bundleIdentifier = [entity4 bundleIdentifier];
 
-    if (v23 && [v23 length])
+    if (bundleIdentifier && [bundleIdentifier length])
     {
-      [(ENDaemon *)self appLaunchWithBundleID:v23 activity:8 shouldEnterForeground:1 requiredRuntimeInSeconds:0];
+      [(ENDaemon *)self appLaunchWithBundleID:bundleIdentifier activity:8 shouldEnterForeground:1 requiredRuntimeInSeconds:0];
       goto LABEL_102;
     }
 
     if (v28)
     {
-      v27 = [MEMORY[0x277CCACA0] stringWithFormat:@"prefs:root=EXPOSURE_NOTIFICATION&path=KEY-RELEASED"];
-      v32 = [MEMORY[0x277CBEBC8] URLWithString:v27];
+      regionCode = [MEMORY[0x277CCACA0] stringWithFormat:@"prefs:root=EXPOSURE_NOTIFICATION&path=KEY-RELEASED"];
+      v32 = [MEMORY[0x277CBEBC8] URLWithString:regionCode];
       if (v32)
       {
         v33 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v34 = [v33 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed4 = [v33 isSensitiveLoggingAllowed];
 
-        if (v34 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+        if (isSensitiveLoggingAllowed4 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
         {
           LogPrintF_safe();
-          [v62 openSensitiveURL:v32 withOptions:{v61, v27}];
+          [defaultWorkspace openSensitiveURL:v32 withOptions:{v61, regionCode}];
           goto LABEL_100;
         }
 
 LABEL_99:
-        [v62 openSensitiveURL:v32 withOptions:{v61, v56}];
+        [defaultWorkspace openSensitiveURL:v32 withOptions:{v61, v56}];
         goto LABEL_100;
       }
 
@@ -5393,17 +5393,17 @@ LABEL_99:
 
     else
     {
-      v27 = [MEMORY[0x277CCACA0] stringWithFormat:@"prefs:root=EXPOSURE_NOTIFICATION"];
-      v32 = [MEMORY[0x277CBEBC8] URLWithString:v27];
+      regionCode = [MEMORY[0x277CCACA0] stringWithFormat:@"prefs:root=EXPOSURE_NOTIFICATION"];
+      v32 = [MEMORY[0x277CBEBC8] URLWithString:regionCode];
       if (v32)
       {
         v39 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v40 = [v39 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed5 = [v39 isSensitiveLoggingAllowed];
 
-        if (v40 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+        if (isSensitiveLoggingAllowed5 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
         {
           LogPrintF_safe();
-          [v62 openSensitiveURL:v32 withOptions:{v61, v32}];
+          [defaultWorkspace openSensitiveURL:v32 withOptions:{v61, v32}];
           goto LABEL_100;
         }
 
@@ -5442,13 +5442,13 @@ void __88__ENDaemon_userNotificationCenter_didReceiveNotificationResponse_withCo
   }
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v3 = a3;
-  v4 = v3;
+  activateCopy = activate;
+  v4 = activateCopy;
   if (_MergedGlobals <= 40)
   {
-    v6 = v3;
+    v6 = activateCopy;
     if (_MergedGlobals != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
     {
       [ENDaemon remoteAlertHandleDidActivate:];
@@ -5457,9 +5457,9 @@ void __88__ENDaemon_userNotificationCenter_didReceiveNotificationResponse_withCo
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   if (_MergedGlobals <= 40 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     [ENDaemon remoteAlertHandleDidDeactivate:];
@@ -5469,11 +5469,11 @@ void __88__ENDaemon_userNotificationCenter_didReceiveNotificationResponse_withCo
   [(ENDaemon *)self tearDownAlertHandle];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v7 = a4;
-  v5 = [v7 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D67168]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:*MEMORY[0x277D67168]];
 
   if (!v6)
   {
@@ -5487,7 +5487,7 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if (([v7 code] & 0xFFFFFFFFFFFFFFFELL) != 4)
+  if (([errorCopy code] & 0xFFFFFFFFFFFFFFFELL) != 4)
   {
     if (_MergedGlobals > 90 || _MergedGlobals == -1 && !_LogCategory_Initialize())
     {
@@ -5499,7 +5499,7 @@ LABEL_10:
 
   if (_MergedGlobals <= 90 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
-    [ENDaemon remoteAlertHandle:v7 didInvalidateWithError:?];
+    [ENDaemon remoteAlertHandle:errorCopy didInvalidateWithError:?];
   }
 
 LABEL_14:
@@ -5507,26 +5507,26 @@ LABEL_14:
   [(ENDaemon *)self tearDownAlertHandle];
 }
 
-- (void)_enApplicationDidInstall:(id)a3
+- (void)_enApplicationDidInstall:(id)install
 {
-  v10 = a3;
-  v4 = [v10 bundleIdentifier];
-  if (v4)
+  installCopy = install;
+  bundleIdentifier = [installCopy bundleIdentifier];
+  if (bundleIdentifier)
   {
     if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
       [ENDaemon _enApplicationDidInstall:];
     }
 
-    v5 = [v10 bundleURL];
-    if (v5)
+    bundleURL = [installCopy bundleURL];
+    if (bundleURL)
     {
-      v6 = [MEMORY[0x277CCA8D0] bundleWithURL:v5];
+      v6 = [MEMORY[0x277CCA8D0] bundleWithURL:bundleURL];
       v7 = v6;
       if (v6 && ([v6 infoDictionary], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
       {
-        v9 = [v7 infoDictionary];
-        [(ENDaemon *)self fetchServerConfigurationForAppBundleIdentifier:v4 infoDictionary:v9];
+        infoDictionary = [v7 infoDictionary];
+        [(ENDaemon *)self fetchServerConfigurationForAppBundleIdentifier:bundleIdentifier infoDictionary:infoDictionary];
       }
 
       else
@@ -5547,17 +5547,17 @@ LABEL_14:
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__ENDaemon_applicationsDidInstall___block_invoke;
   v7[3] = &unk_278FD1120;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = installCopy;
+  selfCopy = self;
+  v6 = installCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -5608,31 +5608,31 @@ void __35__ENDaemon_applicationsDidInstall___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enApplicationDidUninstall:(id)a3
+- (void)_enApplicationDidUninstall:(id)uninstall
 {
-  v9 = a3;
-  v4 = [v9 bundleIdentifier];
-  if (v4)
+  uninstallCopy = uninstall;
+  bundleIdentifier = [uninstallCopy bundleIdentifier];
+  if (bundleIdentifier)
   {
     if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
       [ENDaemon _enApplicationDidUninstall:];
     }
 
-    v5 = [(ENActiveEntity *)self->_activeEntity entity];
-    v6 = [v5 bundleIdentifier];
-    if ([v6 length])
+    entity = [(ENActiveEntity *)self->_activeEntity entity];
+    bundleIdentifier2 = [entity bundleIdentifier];
+    if ([bundleIdentifier2 length])
     {
-      v7 = [(ENActiveEntity *)self->_activeEntity entity];
-      v8 = [v7 bundleIdentifier];
+      entity2 = [(ENActiveEntity *)self->_activeEntity entity];
+      bundleIdentifier3 = [entity2 bundleIdentifier];
     }
 
     else
     {
-      v8 = 0;
+      bundleIdentifier3 = 0;
     }
 
-    if ([v8 length] && objc_msgSend(v4, "length") && objc_msgSend(v4, "isEqualToString:", v8))
+    if ([bundleIdentifier3 length] && objc_msgSend(bundleIdentifier, "length") && objc_msgSend(bundleIdentifier, "isEqualToString:", bundleIdentifier3))
     {
       if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
       {
@@ -5651,17 +5651,17 @@ void __35__ENDaemon_applicationsDidInstall___block_invoke(uint64_t a1)
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__ENDaemon_applicationsDidUninstall___block_invoke;
   v7[3] = &unk_278FD1120;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = uninstallCopy;
+  selfCopy = self;
+  v6 = uninstallCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -5747,13 +5747,13 @@ void __42__ENDaemon__bluetoothMonitorEnsureStarted__block_invoke(uint64_t a1)
 
 - (void)_bluetoothTracingEnsureStarted
 {
-  v3 = [(ENActiveEntity *)self->_activeEntity entity];
-  v4 = [v3 bundleIdentifier];
+  entity = [(ENActiveEntity *)self->_activeEntity entity];
+  bundleIdentifier = [entity bundleIdentifier];
 
   v5 = self->_btTracingAppID;
-  if (v4)
+  if (bundleIdentifier)
   {
-    v6 = v4;
+    v6 = bundleIdentifier;
   }
 
   else
@@ -5783,11 +5783,11 @@ void __42__ENDaemon__bluetoothMonitorEnsureStarted__block_invoke(uint64_t a1)
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v10 = [(ENActiveEntity *)self->_activeEntity entity];
-  v11 = [v10 region];
+  entity2 = [(ENActiveEntity *)self->_activeEntity entity];
+  region = [entity2 region];
 
-  v12 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  v13 = [v12 serverConfigurationForRegion:v11];
+  configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  v13 = [configurationStore serverConfigurationForRegion:region];
 
   if (v13)
   {
@@ -5819,9 +5819,9 @@ LABEL_24:
 - (void)_bluetoothTracingStop
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained stopTracing];
+  stopTracing = [WeakRetained stopTracing];
 
-  if (v3 && dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
+  if (stopTracing && dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
   {
     [ENDaemon _bluetoothTracingStop];
   }
@@ -5835,14 +5835,14 @@ LABEL_24:
   }
 }
 
-- (id)regionForBundleInfo:(id)a3
+- (id)regionForBundleInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"ENDeveloperRegion"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKey:@"ENDeveloperRegion"];
   if (!v4)
   {
     v5 = *MEMORY[0x277CBED40];
-    v6 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBED40]];
+    v6 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CBED40]];
 
     v4 = [ENConfigurationManager staticRegionForBundleID:v6];
     if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
@@ -5876,16 +5876,16 @@ LABEL_20:
   return v7;
 }
 
-- (void)fetchServerConfigurationForAppBundleIdentifier:(id)a3 infoDictionary:(id)a4
+- (void)fetchServerConfigurationForAppBundleIdentifier:(id)identifier infoDictionary:(id)dictionary
 {
-  v8 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
   if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     [ENDaemon fetchServerConfigurationForAppBundleIdentifier:infoDictionary:];
   }
 
-  v7 = [(ENDaemon *)self regionForBundleInfo:v6];
+  v7 = [(ENDaemon *)self regionForBundleInfo:dictionaryCopy];
   if (v7)
   {
     [(ENDaemon *)self startServerConfigurationFetchForRegion:v7];
@@ -5897,16 +5897,16 @@ LABEL_20:
   }
 }
 
-- (void)startServerConfigurationFetchForRegion:(id)a3
+- (void)startServerConfigurationFetchForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__ENDaemon_startServerConfigurationFetchForRegion___block_invoke;
   v6[3] = &unk_278FD1760;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = regionCopy;
+  v5 = regionCopy;
   [(ENDaemon *)self fetchServerConfigurationForRegion:v5 completion:v6];
 }
 
@@ -5933,24 +5933,24 @@ void __51__ENDaemon_startServerConfigurationFetchForRegion___block_invoke(uint64
   }
 }
 
-- (void)fetchServerConfigurationForRegion:(id)a3 completion:(id)a4
+- (void)fetchServerConfigurationForRegion:(id)region completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  v9 = [v8 serverConfigurationForRegion:v6];
+  regionCopy = region;
+  completionCopy = completion;
+  configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  v9 = [configurationStore serverConfigurationForRegion:regionCopy];
 
   if (v9)
   {
     v10 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v11 = [v10 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v10 isSensitiveLoggingAllowed];
 
-    if (v11 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
       [ENDaemon fetchServerConfigurationForRegion:v9 completion:?];
     }
 
-    v7[2](v7, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 
   else
@@ -5961,8 +5961,8 @@ void __51__ENDaemon_startServerConfigurationFetchForRegion___block_invoke(uint64
     v13[2] = __57__ENDaemon_fetchServerConfigurationForRegion_completion___block_invoke;
     v13[3] = &unk_278FD17B0;
     v13[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = regionCopy;
+    v15 = completionCopy;
     [(ENConfigurationManager *)configurationManager fetchServerConfigurationsForRegion:v14 userInitiated:0 withCompletion:v13];
   }
 }
@@ -6042,21 +6042,21 @@ LABEL_16:
   (*(*(a1 + 56) + 16))(*(a1 + 56), v4);
 }
 
-- (void)configurationManager:(id)a3 exposureNotificationRegionConfigurationChanged:(id)a4
+- (void)configurationManager:(id)manager exposureNotificationRegionConfigurationChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __80__ENDaemon_configurationManager_exposureNotificationRegionConfigurationChanged___block_invoke;
   v8[3] = &unk_278FD1120;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = changedCopy;
+  v7 = changedCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
-- (void)configurationManager:(id)a3 errorDetected:(unsigned int)a4
+- (void)configurationManager:(id)manager errorDetected:(unsigned int)detected
 {
   dispatchQueue = self->_dispatchQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -6064,7 +6064,7 @@ LABEL_16:
   v5[2] = __47__ENDaemon_configurationManager_errorDetected___block_invoke;
   v5[3] = &unk_278FD17D8;
   v5[4] = self;
-  v6 = a4;
+  detectedCopy = detected;
   dispatch_async(dispatchQueue, v5);
 }
 
@@ -6074,73 +6074,73 @@ void __47__ENDaemon_configurationManager_errorDetected___block_invoke(uint64_t a
   [WeakRetained sendErrorMetricWithType:*(a1 + 40)];
 }
 
-- (void)_exposureNotificationRegionConfigurationChanged:(id)a3
+- (void)_exposureNotificationRegionConfigurationChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   v97[0] = MEMORY[0x277D85DD0];
   v97[1] = 3221225472;
   v97[2] = __60__ENDaemon__exposureNotificationRegionConfigurationChanged___block_invoke;
   v97[3] = &unk_278FD0F90;
   v97[4] = self;
   v6 = MEMORY[0x24C214430](v97);
-  v94 = [(ENDaemon *)self activeEntity];
-  v7 = [(ENDaemon *)self configurationManager];
-  v8 = [v7 configurationStore];
+  activeEntity = [(ENDaemon *)self activeEntity];
+  configurationManager = [(ENDaemon *)self configurationManager];
+  configurationStore = [configurationManager configurationStore];
 
-  v9 = [v5 region];
-  v10 = [v8 serverConfigurationForRegion:v9];
+  region = [changedCopy region];
+  v10 = [configurationStore serverConfigurationForRegion:region];
 
   v93 = v10;
-  v11 = [v10 enEnabled];
+  enEnabled = [v10 enEnabled];
   if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     NSStringFromSelector(a2);
-    v82 = v11;
-    v79 = v83 = v5;
-    v81 = v94;
+    v82 = enEnabled;
+    v79 = v83 = changedCopy;
+    v81 = activeEntity;
     LogPrintF_safe();
   }
 
-  if (v11)
+  if (enEnabled)
   {
-    v92 = [v5 region];
-    [(ENDaemon *)self _updatePhase1ConfigurationIfNeeded:v5];
-    if ([v5 enVersion] != 2)
+    region2 = [changedCopy region];
+    [(ENDaemon *)self _updatePhase1ConfigurationIfNeeded:changedCopy];
+    if ([changedCopy enVersion] != 2)
     {
 LABEL_108:
-      v23 = v92;
+      v23 = region2;
       goto LABEL_109;
     }
 
-    v12 = [v5 userConsent];
-    v13 = [v12 consent];
+    userConsent = [changedCopy userConsent];
+    consent = [userConsent consent];
 
-    v14 = [v5 userConsent];
-    v15 = [v14 differentialPrivacyConsent];
+    userConsent2 = [changedCopy userConsent];
+    differentialPrivacyConsent = [userConsent2 differentialPrivacyConsent];
 
     v16 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v17 = [v16 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v16 isSensitiveLoggingAllowed];
 
-    if (v17 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
-      if (v13 > 4)
+      if (consent > 4)
       {
         v18 = "?";
       }
 
       else
       {
-        v18 = off_278FD2090[v13];
+        v18 = off_278FD2090[consent];
       }
 
-      if (v15 > 4)
+      if (differentialPrivacyConsent > 4)
       {
         v24 = "?";
       }
 
       else
       {
-        v24 = off_278FD2090[v15];
+        v24 = off_278FD2090[differentialPrivacyConsent];
       }
 
       v79 = v18;
@@ -6148,10 +6148,10 @@ LABEL_108:
       LogPrintF_safe();
     }
 
-    if (v13 == 2)
+    if (consent == 2)
     {
       v25 = MEMORY[0x277CBEAA0];
-      [v5 creationDateTimeInterval];
+      [changedCopy creationDateTimeInterval];
       v89 = [v25 dateWithTimeIntervalSince1970:?];
       CFPrefs_GetDouble();
       if (v26 <= 0.0)
@@ -6164,53 +6164,53 @@ LABEL_108:
         v27 = v26;
       }
 
-      v28 = [v5 userConsent];
-      v29 = [v28 differentialPrivacyConsent];
+      userConsent3 = [changedCopy userConsent];
+      differentialPrivacyConsent2 = [userConsent3 differentialPrivacyConsent];
 
       if ([v93 telemetryAuthorization])
       {
-        v30 = [v94 entity];
-        v31 = [v30 region];
-        v32 = [v31 isEqual:v92];
+        entity = [activeEntity entity];
+        region3 = [entity region];
+        v32 = [region3 isEqual:region2];
 
         if ((v32 & 1) == 0)
         {
           goto LABEL_107;
         }
 
-        v33 = [MEMORY[0x277CBEAA0] date];
-        [v33 timeIntervalSinceDate:v89];
+        date = [MEMORY[0x277CBEAA0] date];
+        [date timeIntervalSinceDate:v89];
         v35 = v34;
 
-        if (v35 <= v27 || (v29 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+        if (v35 <= v27 || (differentialPrivacyConsent2 & 0xFFFFFFFFFFFFFFFBLL) != 0)
         {
           goto LABEL_107;
         }
 
         v36 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v37 = [v36 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed2 = [v36 isSensitiveLoggingAllowed];
 
-        if (v37 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+        if (isSensitiveLoggingAllowed2 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
         {
           LogPrintF_safe();
         }
 
-        v54 = [v5 userConsent];
-        [v54 setDifferentialPrivacyConsent:3];
+        userConsent4 = [changedCopy userConsent];
+        [userConsent4 setDifferentialPrivacyConsent:3];
 
-        if ([v8 saveRegionConfiguration:v5 error:0])
+        if ([configurationStore saveRegionConfiguration:changedCopy error:0])
         {
-          [(ENDaemon *)self postAnalyticsOptInNotificationForRegion:v92];
+          [(ENDaemon *)self postAnalyticsOptInNotificationForRegion:region2];
         }
       }
 
       else
       {
-        v48 = [v5 userConsent];
-        [v48 setDifferentialPrivacyConsent:4];
+        userConsent5 = [changedCopy userConsent];
+        [userConsent5 setDifferentialPrivacyConsent:4];
 
         v96 = 0;
-        v49 = [v8 saveRegionConfiguration:v5 error:&v96];
+        v49 = [configurationStore saveRegionConfiguration:changedCopy error:&v96];
         v50 = v96;
         if ((v49 & 1) == 0 && dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
         {
@@ -6218,41 +6218,41 @@ LABEL_108:
         }
       }
 
-      if (!v94)
+      if (!activeEntity)
       {
 LABEL_107:
 
         goto LABEL_108;
       }
 
-      v55 = [v94 entity];
-      v56 = [v55 region];
-      v57 = [v8 agencyConfigurationForRegion:v56];
+      entity2 = [activeEntity entity];
+      region4 = [entity2 region];
+      v57 = [configurationStore agencyConfigurationForRegion:region4];
 
-      v58 = [v57 agencyColor];
-      v59 = [v57 agencyHeaderStyle];
-      v90 = [v57 agencyHeaderTextColor];
-      v88 = [v57 agencyDisplayName];
-      v87 = [v57 agencyImageURL];
-      v91 = v57;
-      v60 = [v57 localizedConfiguration];
-      v86 = [v60 regionName];
-      v85 = v58;
+      agencyColor = [v57 agencyColor];
+      agencyHeaderStyle = [v57 agencyHeaderStyle];
+      agencyHeaderTextColor = [v57 agencyHeaderTextColor];
+      agencyDisplayName = [v57 agencyDisplayName];
+      agencyImageURL = [v57 agencyImageURL];
+      region6 = v57;
+      localizedConfiguration = [v57 localizedConfiguration];
+      regionName = [localizedConfiguration regionName];
+      v85 = agencyColor;
 
-      v61 = [v57 localizedConfiguration];
-      v84 = [v61 agencyTurndownMessage];
+      localizedConfiguration2 = [v57 localizedConfiguration];
+      agencyTurndownMessage = [localizedConfiguration2 agencyTurndownMessage];
 
       v62 = objc_alloc(MEMORY[0x277CC5C18]);
-      v63 = [v94 entity];
-      v64 = [v63 bundleIdentifier];
-      v65 = [MEMORY[0x277CCABA8] numberWithUnsignedInteger:v59];
-      v66 = [v94 entity];
-      v67 = [v66 region];
-      v68 = [v62 initWithBundleID:v64 agencyColor:v85 agencyHeaderStyle:v65 agencyHeaderTextColor:v90 localizedAgencyName:v88 localizedAgencyImageURL:v87 localizedAgencyTurndownMessage:v84 localizedRegionName:v86 region:v67];
+      entity3 = [activeEntity entity];
+      bundleIdentifier = [entity3 bundleIdentifier];
+      v65 = [MEMORY[0x277CCABA8] numberWithUnsignedInteger:agencyHeaderStyle];
+      entity4 = [activeEntity entity];
+      region5 = [entity4 region];
+      v68 = [v62 initWithBundleID:bundleIdentifier agencyColor:v85 agencyHeaderStyle:v65 agencyHeaderTextColor:agencyHeaderTextColor localizedAgencyName:agencyDisplayName localizedAgencyImageURL:agencyImageURL localizedAgencyTurndownMessage:agencyTurndownMessage localizedRegionName:regionName region:region5];
 
-      v69 = [v94 entity];
+      entity5 = [activeEntity entity];
       v70 = v68;
-      v71 = v69;
+      v71 = entity5;
       v72 = v71;
       if (v70 == v71)
       {
@@ -6280,7 +6280,7 @@ LABEL_107:
 
 LABEL_67:
 
-      v41 = v85;
+      appBundleID = v85;
 LABEL_68:
 
       goto LABEL_104;
@@ -6290,29 +6290,29 @@ LABEL_68:
     v95 = 0;
     v39 = [(ENRegionMonitor *)regionMonitor getCurrentRegionVisitWithError:&v95];
     v89 = v95;
-    v91 = [v39 region];
+    region6 = [v39 region];
 
-    if (v91)
+    if (region6)
     {
-      if ([v91 isEqual:v92])
+      if ([region6 isEqual:region2])
       {
-        v40 = [v8 serverConfigurationForRegion:v92];
-        v41 = [v40 appBundleID];
+        v40 = [configurationStore serverConfigurationForRegion:region2];
+        appBundleID = [v40 appBundleID];
 
-        if (v41 && [v41 length])
+        if (appBundleID && [appBundleID length])
         {
-          v90 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:v41 placeholder:0];
-          v42 = [v90 appState];
-          if ([v42 isInstalled])
+          agencyHeaderTextColor = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:appBundleID placeholder:0];
+          appState = [agencyHeaderTextColor appState];
+          if ([appState isInstalled])
           {
 
             goto LABEL_38;
           }
 
-          v43 = [v90 appState];
-          v44 = [v43 isPlaceholder];
+          appState2 = [agencyHeaderTextColor appState];
+          isPlaceholder = [appState2 isPlaceholder];
 
-          if (v44)
+          if (isPlaceholder)
           {
 LABEL_38:
             if (dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
@@ -6325,9 +6325,9 @@ LABEL_38:
 
           if ([(ENActiveEntity *)self->_activeEntity activeStatus]== 2)
           {
-            v51 = [(ENActiveEntity *)self->_activeEntity entity];
-            v52 = [v51 region];
-            v53 = [v91 isEqual:v52];
+            entity6 = [(ENActiveEntity *)self->_activeEntity entity];
+            region7 = [entity6 region];
+            v53 = [region6 isEqual:region7];
 
             if (v53)
             {
@@ -6336,8 +6336,8 @@ LABEL_38:
                 goto LABEL_104;
               }
 
-              v88 = [(ENActiveEntity *)self->_activeEntity entity:v79];
-              v87 = [v88 bundleIdentifier];
+              agencyDisplayName = [(ENActiveEntity *)self->_activeEntity entity:v79];
+              agencyImageURL = [agencyDisplayName bundleIdentifier];
               LogPrintF_safe();
               goto LABEL_68;
             }
@@ -6346,9 +6346,9 @@ LABEL_38:
 
         else if ([(ENActiveEntity *)self->_activeEntity activeStatus:v79]>= 1 && [(ENActiveEntity *)self->_activeEntity activeStatus]<= 2)
         {
-          v45 = [(ENActiveEntity *)self->_activeEntity entity];
-          v46 = [v45 region];
-          v47 = [v46 isEqual:v91];
+          entity7 = [(ENActiveEntity *)self->_activeEntity entity];
+          region8 = [entity7 region];
+          v47 = [region8 isEqual:region6];
 
           if (v47)
           {
@@ -6360,7 +6360,7 @@ LABEL_38:
               LogPrintF_safe();
             }
 
-            v13 = 0;
+            consent = 0;
           }
         }
 
@@ -6374,9 +6374,9 @@ LABEL_38:
           goto LABEL_105;
         }
 
-        v90 = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
-        v74 = [v90 isEqual:v92];
-        if (v13 == 1)
+        agencyHeaderTextColor = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
+        v74 = [agencyHeaderTextColor isEqual:region2];
+        if (consent == 1)
         {
           v75 = 1;
         }
@@ -6390,53 +6390,53 @@ LABEL_38:
         {
           if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
           {
-            if (v13 > 4)
+            if (consent > 4)
             {
               v76 = "?";
             }
 
             else
             {
-              v76 = off_278FD20B8[v13];
+              v76 = off_278FD20B8[consent];
             }
 
             v81 = v76;
-            v79 = v92;
+            v79 = region2;
             LogPrintF_safe();
           }
 
           v77 = [ENLoggingPrefs sharedENLoggingPrefs:v79];
-          v78 = [v77 isSensitiveLoggingAllowed];
+          isSensitiveLoggingAllowed3 = [v77 isSensitiveLoggingAllowed];
 
-          if (v78 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+          if (isSensitiveLoggingAllowed3 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
           {
-            v80 = v91;
+            v80 = region6;
             LogPrintF_safe();
           }
 
-          [(ENDaemon *)self _writePreferenceRegionPendingOnboarding:v91, v80];
+          [(ENDaemon *)self _writePreferenceRegionPendingOnboarding:region6, v80];
           [(ENDaemon *)self onboardingTriggerRetry:0];
         }
 
-        else if (v13 == 3)
+        else if (consent == 3)
         {
           if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
           {
             LogPrintF_safe();
-            [(ENDaemon *)self _writePreferenceRegionPendingOnboarding:v91, v92];
+            [(ENDaemon *)self _writePreferenceRegionPendingOnboarding:region6, region2];
           }
 
           else
           {
-            [(ENDaemon *)self _writePreferenceRegionPendingOnboarding:v91, v79];
+            [(ENDaemon *)self _writePreferenceRegionPendingOnboarding:region6, v79];
           }
         }
 
-        else if (!v13)
+        else if (!consent)
         {
           if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
           {
-            v79 = v92;
+            v79 = region2;
             LogPrintF_safe();
           }
 
@@ -6468,8 +6468,8 @@ LABEL_106:
 
   v19 = [ENActiveEntity alloc];
   v20 = objc_alloc(MEMORY[0x277CC5C18]);
-  v21 = [v5 region];
-  v22 = [v20 initWithBundleID:0 region:v21];
+  region9 = [changedCopy region];
+  v22 = [v20 initWithBundleID:0 region:region9];
   v23 = [(ENActiveEntity *)v19 initWithEntity:v22 activeStatus:1];
 
   [(ENDaemon *)self _writePreferenceActiveEntity:v23];
@@ -6478,36 +6478,36 @@ LABEL_109:
   v6[2](v6);
 }
 
-- (void)_updatePhase1ConfigurationIfNeeded:(id)a3
+- (void)_updatePhase1ConfigurationIfNeeded:(id)needed
 {
   p_activeEntity = &self->_activeEntity;
   v6 = self->_activeEntity;
-  v7 = a3;
-  v8 = [(ENDaemon *)self configurationManager];
-  v9 = [v8 configurationStore];
+  neededCopy = needed;
+  configurationManager = [(ENDaemon *)self configurationManager];
+  configurationStore = [configurationManager configurationStore];
 
-  v10 = [v7 region];
-  v11 = [v9 serverConfigurationForRegion:v10];
-  v12 = [v11 appBundleID];
+  region = [neededCopy region];
+  v11 = [configurationStore serverConfigurationForRegion:region];
+  appBundleID = [v11 appBundleID];
 
-  v13 = [v7 enVersion];
-  if ((v13 == 1 || -[ENActiveEntity activeStatus](v6, "activeStatus") == 2) && [v12 length])
+  enVersion = [neededCopy enVersion];
+  if ((enVersion == 1 || -[ENActiveEntity activeStatus](v6, "activeStatus") == 2) && [appBundleID length])
   {
-    v14 = [(ENActiveEntity *)*p_activeEntity entity];
-    v15 = [v14 bundleIdentifier];
+    entity = [(ENActiveEntity *)*p_activeEntity entity];
+    bundleIdentifier = [entity bundleIdentifier];
 
-    if (![v15 length] || !objc_msgSend(v15, "isEqualToString:", v12))
+    if (![bundleIdentifier length] || !objc_msgSend(bundleIdentifier, "isEqualToString:", appBundleID))
     {
       goto LABEL_24;
     }
 
-    v16 = [(ENActiveEntity *)*p_activeEntity entity];
-    v17 = [v16 region];
-    if ([v17 isEqual:v10])
+    entity2 = [(ENActiveEntity *)*p_activeEntity entity];
+    region2 = [entity2 region];
+    if ([region2 isEqual:region])
     {
-      v18 = [(ENActiveEntity *)*p_activeEntity activeStatus];
+      activeStatus = [(ENActiveEntity *)*p_activeEntity activeStatus];
 
-      if (v18 != 1)
+      if (activeStatus != 1)
       {
         goto LABEL_24;
       }
@@ -6517,7 +6517,7 @@ LABEL_109:
     {
     }
 
-    v19 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:v12 placeholder:0];
+    v19 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:appBundleID placeholder:0];
     if (!v19)
     {
       [ENDaemon _updatePhase1ConfigurationIfNeeded:];
@@ -6525,37 +6525,37 @@ LABEL_109:
     }
 
     v20 = v19;
-    v21 = [v19 bundleIdentifier];
-    if (v21)
+    bundleIdentifier2 = [v19 bundleIdentifier];
+    if (bundleIdentifier2)
     {
-      if ([(ENDaemon *)self tccAccessForBundleID:v21]== 1)
+      if ([(ENDaemon *)self tccAccessForBundleID:bundleIdentifier2]== 1)
       {
         v22 = [(ENDaemon *)self _getInfoDictFromAppProxy:v20];
         if (!v22)
         {
-          [(ENDaemon *)v21 _updatePhase1ConfigurationIfNeeded:v20];
+          [(ENDaemon *)bundleIdentifier2 _updatePhase1ConfigurationIfNeeded:v20];
           goto LABEL_24;
         }
 
         v23 = v22;
         CFStringGetTypeID();
         CFDictionaryGetTypedValue();
-        v29 = v21;
+        v29 = bundleIdentifier2;
         if (dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
         {
           [ENDaemon _updatePhase1ConfigurationIfNeeded:?];
         }
 
         v24 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v25 = [v24 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed = [v24 isSensitiveLoggingAllowed];
 
-        if (v25 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+        if (isSensitiveLoggingAllowed && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
         {
           LogPrintF_safe();
         }
 
         v26 = [ENActiveEntity alloc];
-        v27 = [objc_alloc(MEMORY[0x277CC5C18]) initWithBundleID:v12 region:v10];
+        v27 = [objc_alloc(MEMORY[0x277CC5C18]) initWithBundleID:appBundleID region:region];
         v28 = [(ENActiveEntity *)v26 initWithEntity:v27 activeStatus:2];
 
         [(ENDaemon *)self _writePreferenceActiveEntity:v28];
@@ -6575,7 +6575,7 @@ LABEL_24:
   }
 }
 
-- (int64_t)tccAccessForBundleID:(id)a3
+- (int64_t)tccAccessForBundleID:(id)d
 {
   v3 = TCCAccessCopyInformationForBundleId();
   if (!v3)
@@ -6633,62 +6633,62 @@ LABEL_12:
   return v12;
 }
 
-- (void)configurationManager:(id)a3 exposureNotificationRegionConfigurationRemovedForRegion:(id)a4
+- (void)configurationManager:(id)manager exposureNotificationRegionConfigurationRemovedForRegion:(id)region
 {
-  v5 = a4;
+  regionCopy = region;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __89__ENDaemon_configurationManager_exposureNotificationRegionConfigurationRemovedForRegion___block_invoke;
   v8[3] = &unk_278FD1120;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = regionCopy;
+  v7 = regionCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
-- (void)_exposureNotificationRegionConfigurationRemoved:(id)a3
+- (void)_exposureNotificationRegionConfigurationRemoved:(id)removed
 {
-  v47 = a3;
-  v5 = [(ENDaemon *)self activeEntity];
-  if (v5)
+  removedCopy = removed;
+  activeEntity = [(ENDaemon *)self activeEntity];
+  if (activeEntity)
   {
-    v6 = [(ENDaemon *)self configurationManager];
-    v7 = [v6 configurationStore];
+    configurationManager = [(ENDaemon *)self configurationManager];
+    configurationStore = [configurationManager configurationStore];
 
     overallStatus = self->_overallStatus;
-    v9 = [v5 entity];
-    v10 = [v9 region];
-    v11 = [v10 isEqual:v47];
+    entity = [activeEntity entity];
+    region = [entity region];
+    v11 = [region isEqual:removedCopy];
 
-    v12 = [v7 configurationForRegion:v47];
+    v12 = [configurationStore configurationForRegion:removedCopy];
     v13 = v12;
     v15 = overallStatus != 4 && v12 == 0;
     v46 = v15;
-    v16 = [v5 entity];
-    v17 = [v16 bundleIdentifier];
-    v18 = [v17 length];
+    entity2 = [activeEntity entity];
+    bundleIdentifier = [entity2 bundleIdentifier];
+    v18 = [bundleIdentifier length];
 
     if (v18)
     {
       v45 = a2;
       v19 = v11;
-      v20 = v7;
-      v21 = [v5 entity];
-      v22 = [v21 bundleIdentifier];
+      v20 = configurationStore;
+      entity3 = [activeEntity entity];
+      bundleIdentifier2 = [entity3 bundleIdentifier];
 
-      v23 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:v22 placeholder:0];
+      v23 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:bundleIdentifier2 placeholder:0];
       v24 = [v23 entitlementValueForKey:@"com.apple.developer.exposure-notification-test" ofClass:objc_opt_class()];
-      v25 = [v24 BOOLValueSafe];
+      bOOLValueSafe = [v24 BOOLValueSafe];
 
       v26 = overallStatus == 4;
       if (v26 && v13)
       {
-        v27 = [v13 userConsent];
-        v26 = [v27 consent] == 2;
+        userConsent = [v13 userConsent];
+        v26 = [userConsent consent] == 2;
       }
 
-      v7 = v20;
+      configurationStore = v20;
       v11 = v19;
       a2 = v45;
     }
@@ -6697,14 +6697,14 @@ LABEL_12:
     {
       if (!v13)
       {
-        v25 = 0;
+        bOOLValueSafe = 0;
         v26 = v11;
         goto LABEL_17;
       }
 
-      v22 = [v13 userConsent];
-      v25 = 0;
-      v26 = ([v22 consent] == 2) & v11;
+      bundleIdentifier2 = [v13 userConsent];
+      bOOLValueSafe = 0;
+      v26 = ([bundleIdentifier2 consent] == 2) & v11;
     }
 
 LABEL_17:
@@ -6745,7 +6745,7 @@ LABEL_17:
         v35 = "no";
       }
 
-      if (v25)
+      if (bOOLValueSafe)
       {
         v33 = "yes";
       }
@@ -6756,7 +6756,7 @@ LABEL_17:
       activeEntity = self->_activeEntity;
       v43 = v35;
       v44 = v33;
-      v41 = v47;
+      v41 = removedCopy;
       v42 = v34;
       LogPrintF_safe();
 
@@ -6778,7 +6778,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    if (v25 & 1 | ((v28 & 1) == 0))
+    if (bOOLValueSafe & 1 | ((v28 & 1) == 0))
     {
       goto LABEL_25;
     }
@@ -6789,11 +6789,11 @@ LABEL_25:
     }
 
     CFPrefs_RemoveValue();
-    v36 = [v5 activeStatus];
-    [v5 setActiveStatus:1];
-    [(ENDaemon *)self _writePreferenceActiveEntity:v5];
+    activeStatus = [activeEntity activeStatus];
+    [activeEntity setActiveStatus:1];
+    [(ENDaemon *)self _writePreferenceActiveEntity:activeEntity];
     [(ENDaemon *)self prefsChanged];
-    if (v36 < 2)
+    if (activeStatus < 2)
     {
       goto LABEL_25;
     }
@@ -6805,24 +6805,24 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)configurationManager:(id)a3 didResolveCurrentRegion:(BOOL)a4
+- (void)configurationManager:(id)manager didResolveCurrentRegion:(BOOL)region
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  regionCopy = region;
+  managerCopy = manager;
+  if (regionCopy)
   {
-    v7 = v6;
+    v7 = managerCopy;
     if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
       [ENDaemon configurationManager:didResolveCurrentRegion:];
     }
 
     [(ENDaemon *)self onboardingTriggerRetry:0];
-    v6 = v7;
+    managerCopy = v7;
   }
 }
 
-- (id)getExposureDatabaseAndReturnError:(id *)a3
+- (id)getExposureDatabaseAndReturnError:(id *)error
 {
   exposureDatabase = self->_exposureDatabase;
   if (!exposureDatabase)
@@ -6874,7 +6874,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  [(ENDaemon *)a3 getExposureDatabaseAndReturnError:v16];
+  [(ENDaemon *)error getExposureDatabaseAndReturnError:v16];
   v17 = 0;
 LABEL_10:
 
@@ -6926,26 +6926,26 @@ void __45__ENDaemon__schedulePeriodicPersistencePurge__block_invoke(uint64_t a1,
     {
       if (v6)
       {
-        v8 = [v6 classification];
-        v9 = [v8 index];
+        classification = [v6 classification];
+        index = [classification index];
 
         v10 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v11 = [v10 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed = [v10 isSensitiveLoggingAllowed];
 
-        if (v11 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+        if (isSensitiveLoggingAllowed && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
         {
           [ENDaemon _getLatestExposureForDifferentialPrivacy];
         }
 
-        v12 = v9 + 1;
+        v12 = index + 1;
       }
 
       else
       {
         v16 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v17 = [v16 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed2 = [v16 isSensitiveLoggingAllowed];
 
-        if (v17 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+        if (isSensitiveLoggingAllowed2 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
         {
           [ENDaemon _getLatestExposureForDifferentialPrivacy];
         }
@@ -6970,9 +6970,9 @@ void __45__ENDaemon__schedulePeriodicPersistencePurge__block_invoke(uint64_t a1,
   }
 
   v13 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v14 = [v13 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed3 = [v13 isSensitiveLoggingAllowed];
 
-  if (v14 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed3 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     [ENDaemon _getLatestExposureForDifferentialPrivacy];
   }
@@ -6983,9 +6983,9 @@ LABEL_18:
   return v12;
 }
 
-- (id)_getDiagnosedVaccineStatusForDifferentialPrivacyWithUserVaccinationStatus:(id)a3
+- (id)_getDiagnosedVaccineStatusForDifferentialPrivacyWithUserVaccinationStatus:(id)status
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [status BOOLValue];
   v23 = 0;
   v6 = [(ENDaemon *)self getExposureDatabaseAndReturnError:&v23];
   v7 = v23;
@@ -7022,12 +7022,12 @@ LABEL_10:
   }
 
 LABEL_7:
-  v12 = [v10 classification];
-  v13 = [v12 date];
+  classification = [v10 classification];
+  date = [classification date];
   v14 = ENDefaultExpirationDate();
 
-  v15 = [MEMORY[0x277CBEAA0] date];
-  v16 = [v15 compare:v14] == -1;
+  date2 = [MEMORY[0x277CBEAA0] date];
+  v16 = [date2 compare:v14] == -1;
 
 LABEL_11:
 LABEL_12:
@@ -7035,9 +7035,9 @@ LABEL_12:
   if (v17)
   {
     *v17 = 1;
-    if (a3)
+    if (status)
     {
-      if (v5)
+      if (bOOLValue)
       {
         v17[1] = 1;
         if (v16)
@@ -7131,33 +7131,33 @@ LABEL_12:
 LABEL_28:
     if (prefEnabled && !prefServerForceDisable && v3)
     {
-      v16 = [(ENActiveEntity *)v3 activeStatus];
-      if (v16 == 3)
+      activeStatus = [(ENActiveEntity *)v3 activeStatus];
+      if (activeStatus == 3)
       {
         v15 = 4;
         goto LABEL_76;
       }
 
-      if (v16 == 2)
+      if (activeStatus == 2)
       {
-        v17 = [(ENActiveEntity *)v3 entity];
-        v18 = [v17 bundleIdentifier];
+        entity = [(ENActiveEntity *)v3 entity];
+        bundleIdentifier = [entity bundleIdentifier];
 
-        if (v18)
+        if (bundleIdentifier)
         {
-          v19 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:v18 placeholder:0];
+          v19 = [MEMORY[0x277CC1E68] applicationProxyForIdentifier:bundleIdentifier placeholder:0];
           v20 = v19;
           if (v19)
           {
-            v21 = [v19 bundleURL];
-            if (v21)
+            bundleURL = [v19 bundleURL];
+            if (bundleURL)
             {
-              v22 = [MEMORY[0x277CCA8D0] bundleWithURL:v21];
+              v22 = [MEMORY[0x277CCA8D0] bundleWithURL:bundleURL];
               v23 = v22;
               if (v22)
               {
-                v24 = [v22 infoDictionary];
-                if (v24)
+                infoDictionary = [v22 infoDictionary];
+                if (infoDictionary)
                 {
                   v57 = 0;
                   Int64Ranged = CFDictionaryGetInt64Ranged();
@@ -7220,21 +7220,21 @@ LABEL_66:
     }
 
     v26 = [(ENRegionMonitor *)self->_regionMonitor getCurrentRegionVisitWithError:0, v46, v47];
-    v27 = [v26 region];
+    region = [v26 region];
 
-    if (v27)
+    if (region)
     {
-      v28 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-      v29 = [v28 configurationForRegion:v27];
+      configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+      v29 = [configurationStore configurationForRegion:region];
 
-      v30 = [v29 userConsent];
-      v31 = [v30 consent];
+      userConsent = [v29 userConsent];
+      consent = [userConsent consent];
 
-      if (v31)
+      if (consent)
       {
-        v32 = [v29 userConsent];
+        userConsent2 = [v29 userConsent];
 
-        if (v32)
+        if (userConsent2)
         {
           goto LABEL_59;
         }
@@ -7245,21 +7245,21 @@ LABEL_66:
 
 LABEL_48:
     v33 = objc_autoreleasePoolPush();
-    v34 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-    v35 = [v34 allRegionConfigurations];
+    configurationStore2 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+    allRegionConfigurations = [configurationStore2 allRegionConfigurations];
 
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v36 = v35;
-    v32 = [v36 countByEnumeratingWithState:&v49 objects:v58 count:16];
-    if (v32)
+    v36 = allRegionConfigurations;
+    userConsent2 = [v36 countByEnumeratingWithState:&v49 objects:v58 count:16];
+    if (userConsent2)
     {
       v37 = *v50;
       while (2)
       {
-        for (i = 0; i != v32; i = i + 1)
+        for (i = 0; i != userConsent2; i = i + 1)
         {
           if (*v50 != v37)
           {
@@ -7267,18 +7267,18 @@ LABEL_48:
           }
 
           v39 = *(*(&v49 + 1) + 8 * i);
-          v40 = [v39 userConsent];
-          v41 = [v40 consent];
+          userConsent3 = [v39 userConsent];
+          consent2 = [userConsent3 consent];
 
-          if (v41)
+          if (consent2)
           {
-            v32 = [v39 userConsent];
+            userConsent2 = [v39 userConsent];
             goto LABEL_58;
           }
         }
 
-        v32 = [v36 countByEnumeratingWithState:&v49 objects:v58 count:16];
-        if (v32)
+        userConsent2 = [v36 countByEnumeratingWithState:&v49 objects:v58 count:16];
+        if (userConsent2)
         {
           continue;
         }
@@ -7290,14 +7290,14 @@ LABEL_48:
 LABEL_58:
 
     objc_autoreleasePoolPop(v33);
-    if (!v32)
+    if (!userConsent2)
     {
       goto LABEL_66;
     }
 
 LABEL_59:
-    v42 = [v32 consent];
-    if (v42 == 3)
+    consent3 = [userConsent2 consent];
+    if (consent3 == 3)
     {
       v43 = 7;
     }
@@ -7307,7 +7307,7 @@ LABEL_59:
       v43 = 1;
     }
 
-    if (v42 == 1)
+    if (consent3 == 1)
     {
       v15 = 8;
     }
@@ -7320,16 +7320,16 @@ LABEL_59:
     goto LABEL_76;
   }
 
-  v8 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  v9 = [v8 allRegionServerConfigurations];
+  configurationStore3 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  allRegionServerConfigurations = [configurationStore3 allRegionServerConfigurations];
 
-  if (v9)
+  if (allRegionServerConfigurations)
   {
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v10 = v9;
+    v10 = allRegionServerConfigurations;
     v11 = [v10 countByEnumeratingWithState:&v53 objects:v59 count:16];
     if (v11)
     {
@@ -7399,37 +7399,37 @@ void __42__ENDaemon__exposureManagersEnsureStarted__block_invoke(uint64_t a1, ui
   [WeakRetained sendErrorMetricWithType:a2];
 }
 
-- (void)exposureDetectionManager:(id)a3 finishedSessionWithResult:(id)a4
+- (void)exposureDetectionManager:(id)manager finishedSessionWithResult:(id)result
 {
-  v16 = a4;
+  resultCopy = result;
   differentialPrivacyManager = self->_differentialPrivacyManager;
-  v6 = [v16 summary];
-  [(ENDifferentialPrivacyManager *)differentialPrivacyManager reportUserRiskScoreWithSummary:v6];
+  summary = [resultCopy summary];
+  [(ENDifferentialPrivacyManager *)differentialPrivacyManager reportUserRiskScoreWithSummary:summary];
 
   v7 = self->_differentialPrivacyManager;
-  v8 = [v16 differentialPrivacyRiskParameters];
-  [(ENDifferentialPrivacyManager *)v7 reportUserRiskParameters:v8];
+  differentialPrivacyRiskParameters = [resultCopy differentialPrivacyRiskParameters];
+  [(ENDifferentialPrivacyManager *)v7 reportUserRiskParameters:differentialPrivacyRiskParameters];
 
   v9 = self->_differentialPrivacyManager;
-  v10 = [v16 differentialPrivacyBeaconCount];
-  [(ENDifferentialPrivacyManager *)v9 reportUserBeaconCount:v10];
+  differentialPrivacyBeaconCount = [resultCopy differentialPrivacyBeaconCount];
+  [(ENDifferentialPrivacyManager *)v9 reportUserBeaconCount:differentialPrivacyBeaconCount];
 
-  v11 = [v16 exposureClassificationStatus];
-  v12 = [v16 exposureClassification];
+  exposureClassificationStatus = [resultCopy exposureClassificationStatus];
+  exposureClassification = [resultCopy exposureClassification];
   v13 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v14 = [v13 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v13 isSensitiveLoggingAllowed];
 
-  if (v14 && _MergedGlobals <= 50 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && _MergedGlobals <= 50 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
-    [ENDaemon exposureDetectionManager:v12 finishedSessionWithResult:?];
+    [ENDaemon exposureDetectionManager:exposureClassification finishedSessionWithResult:?];
   }
 
-  if (v11 >= 2)
+  if (exposureClassificationStatus >= 2)
   {
-    v15 = [v16 region];
-    if (v15)
+    region = [resultCopy region];
+    if (region)
     {
-      [(ENDaemon *)self _postExposureNotificationForClassification:v12 status:v11 region:v15];
+      [(ENDaemon *)self _postExposureNotificationForClassification:exposureClassification status:exposureClassificationStatus region:region];
     }
 
     else
@@ -7439,20 +7439,20 @@ void __42__ENDaemon__exposureManagersEnsureStarted__block_invoke(uint64_t a1, ui
   }
 }
 
-- (id)activeRegionForExposureDetectionManager:(id)a3
+- (id)activeRegionForExposureDetectionManager:(id)manager
 {
-  v3 = [(ENActiveEntity *)self->_activeEntity entity];
-  v4 = [v3 region];
+  entity = [(ENActiveEntity *)self->_activeEntity entity];
+  region = [entity region];
 
-  return v4;
+  return region;
 }
 
-- (BOOL)_postExposureNotificationForClassification:(id)a3 status:(int64_t)a4 region:(id)a5
+- (BOOL)_postExposureNotificationForClassification:(id)classification status:(int64_t)status region:(id)region
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  v11 = [v10 configurationForRegion:v9];
+  classificationCopy = classification;
+  regionCopy = region;
+  configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  v11 = [configurationStore configurationForRegion:regionCopy];
   if ([v11 enVersion] <= 1)
   {
     [ENDaemon _postExposureNotificationForClassification:v11 status:&v51 region:?];
@@ -7460,7 +7460,7 @@ void __42__ENDaemon__exposureManagersEnsureStarted__block_invoke(uint64_t a1, ui
     goto LABEL_31;
   }
 
-  v12 = [v10 agencyConfigurationForRegion:v9];
+  v12 = [configurationStore agencyConfigurationForRegion:regionCopy];
   if (!v12)
   {
     [ENDaemon _postExposureNotificationForClassification:? status:? region:?];
@@ -7470,44 +7470,44 @@ void __42__ENDaemon__exposureManagersEnsureStarted__block_invoke(uint64_t a1, ui
 
   v46 = v11;
   v13 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v14 = [v13 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v13 isSensitiveLoggingAllowed];
 
-  if (v14 && _MergedGlobals <= 50 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && _MergedGlobals <= 50 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
-    [ENDaemon _postExposureNotificationForClassification:v8 status:? region:?];
+    [ENDaemon _postExposureNotificationForClassification:classificationCopy status:? region:?];
   }
 
   v48 = v12;
-  v47 = [v12 localizedConfiguration];
+  localizedConfiguration = [v12 localizedConfiguration];
   v15 = objc_alloc_init(MEMORY[0x277CC5C68]);
-  [v15 setClassification:v8];
-  v16 = [MEMORY[0x277CCAD70] UUID];
-  [v15 setIdentifier:v16];
+  [v15 setClassification:classificationCopy];
+  uUID = [MEMORY[0x277CCAD70] UUID];
+  [v15 setIdentifier:uUID];
 
-  v17 = [MEMORY[0x277CBEAA0] date];
-  [v15 setNotificationDate:v17];
+  date = [MEMORY[0x277CBEAA0] date];
+  [v15 setNotificationDate:date];
 
-  [v15 setRegion:v9];
-  v18 = [v8 date];
-  [v18 timeIntervalSinceNow];
+  [v15 setRegion:regionCopy];
+  date2 = [classificationCopy date];
+  [date2 timeIntervalSinceNow];
   v20 = v19;
 
   v21 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v22 = [v21 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed2 = [v21 isSensitiveLoggingAllowed];
 
-  if (v22 && _MergedGlobals <= 50 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed2 && _MergedGlobals <= 50 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     v44 = (v20 / -86400.0);
     v43 = -v20;
     LogPrintF_safe();
   }
 
-  -[ENDifferentialPrivacyManager reportUserExposureNotificationWithClassificationIndex:daysDelay:](self->_differentialPrivacyManager, "reportUserExposureNotificationWithClassificationIndex:daysDelay:", [v8 index], (v20 / -86400.0));
-  if (a4 == 3)
+  -[ENDifferentialPrivacyManager reportUserExposureNotificationWithClassificationIndex:daysDelay:](self->_differentialPrivacyManager, "reportUserExposureNotificationWithClassificationIndex:daysDelay:", [classificationCopy index], (v20 / -86400.0));
+  if (status == 3)
   {
-    v23 = v47;
-    v32 = [v47 revokedNotificationBody];
-    if (!v32)
+    v23 = localizedConfiguration;
+    revokedNotificationBody = [localizedConfiguration revokedNotificationBody];
+    if (!revokedNotificationBody)
     {
       [ENDaemon _postExposureNotificationForClassification:? status:? region:?];
       v41 = v51;
@@ -7516,14 +7516,14 @@ LABEL_42:
       goto LABEL_29;
     }
 
-    v25 = v32;
-    v33 = [v47 revokedNotificationSubject];
-    if (v33)
+    v25 = revokedNotificationBody;
+    revokedNotificationSubject = [localizedConfiguration revokedNotificationSubject];
+    if (revokedNotificationSubject)
     {
-      v27 = v33;
-      v45 = v10;
-      v34 = [v48 revokedClassificationURL];
-      [v15 setLearnMoreURL:v34];
+      v27 = revokedNotificationSubject;
+      v45 = configurationStore;
+      revokedClassificationURL = [v48 revokedClassificationURL];
+      [v15 setLearnMoreURL:revokedClassificationURL];
 
       [v15 setLocalizedBodyText:v25];
       [v15 setLocalizedSubjectText:v27];
@@ -7533,7 +7533,7 @@ LABEL_20:
       v50 = 0;
       v35 = [(ENDaemon *)self getExposureDatabaseAndReturnError:&v50];
       v36 = v50;
-      v37 = [v15 notificationDate];
+      notificationDate = [v15 notificationDate];
       v38 = ENDefaultExpirationDate();
       v49 = v36;
       v39 = [v35 setValue:v15 forKey:@"LastExposureNotification" expiryDate:v38 error:&v49];
@@ -7547,8 +7547,8 @@ LABEL_20:
       [(ENDaemon *)self postExposureNotification:v15];
 
       v41 = 1;
-      v10 = v45;
-      v23 = v47;
+      configurationStore = v45;
+      v23 = localizedConfiguration;
       v12 = v48;
       goto LABEL_29;
     }
@@ -7559,9 +7559,9 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  v23 = v47;
+  v23 = localizedConfiguration;
   v12 = v48;
-  if (a4 != 2)
+  if (status != 2)
   {
     if (dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
     {
@@ -7572,31 +7572,31 @@ LABEL_41:
     goto LABEL_29;
   }
 
-  v24 = [v8 name];
-  if (v24)
+  name = [classificationCopy name];
+  if (name)
   {
-    v25 = v24;
-    v26 = [v47 notificationConfigurationForName:v24];
+    v25 = name;
+    v26 = [localizedConfiguration notificationConfigurationForName:name];
     if (v26)
     {
       v27 = v26;
-      v45 = v10;
-      v28 = [v26 classificationURL];
-      [v15 setLearnMoreURL:v28];
+      v45 = configurationStore;
+      classificationURL = [v26 classificationURL];
+      [v15 setLearnMoreURL:classificationURL];
 
-      v29 = [v27 localizedNotificationBody];
-      [v15 setLocalizedBodyText:v29];
+      localizedNotificationBody = [v27 localizedNotificationBody];
+      [v15 setLocalizedBodyText:localizedNotificationBody];
 
-      v30 = [v27 localizedNotificationSubject];
-      [v15 setLocalizedSubjectText:v30];
+      localizedNotificationSubject = [v27 localizedNotificationSubject];
+      [v15 setLocalizedSubjectText:localizedNotificationSubject];
 
-      v31 = [v27 localizedExposureDetailBody];
-      [v15 setLocalizedDetailBodyText:v31];
+      localizedExposureDetailBody = [v27 localizedExposureDetailBody];
+      [v15 setLocalizedDetailBodyText:localizedExposureDetailBody];
 
       goto LABEL_20;
     }
 
-    [ENDaemon _postExposureNotificationForClassification:v25 status:v8 region:?];
+    [ENDaemon _postExposureNotificationForClassification:v25 status:classificationCopy region:?];
     goto LABEL_41;
   }
 
@@ -7611,28 +7611,28 @@ LABEL_31:
   return v41;
 }
 
-- (void)onboardingManagerDidObserveDeviceUnlock:(id)a3
+- (void)onboardingManagerDidObserveDeviceUnlock:(id)unlock
 {
-  v4 = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
+  _readPreferenceRegionPendingOnboarding = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
   if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     [ENDaemon onboardingManagerDidObserveDeviceUnlock:?];
   }
 
-  v5 = [(ENDaemon *)self onboardingManager];
-  if ([v5 isDeviceUnlocked] && v4)
+  onboardingManager = [(ENDaemon *)self onboardingManager];
+  if ([onboardingManager isDeviceUnlocked] && _readPreferenceRegionPendingOnboarding)
   {
-    v6 = [(ENDaemon *)self onboardingManager];
-    v7 = [v6 pendingBuddyOnboarding];
+    onboardingManager2 = [(ENDaemon *)self onboardingManager];
+    pendingBuddyOnboarding = [onboardingManager2 pendingBuddyOnboarding];
 
-    if (v7)
+    if (pendingBuddyOnboarding)
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __52__ENDaemon_onboardingManagerDidObserveDeviceUnlock___block_invoke_2;
       v8[3] = &unk_278FD1898;
       v8[4] = self;
-      [(ENDaemon *)self presentBuddyForRegion:v4 errorHandler:&__block_literal_global_3 completionHandler:v8];
+      [(ENDaemon *)self presentBuddyForRegion:_readPreferenceRegionPendingOnboarding errorHandler:&__block_literal_global_3 completionHandler:v8];
     }
   }
 
@@ -7655,7 +7655,7 @@ uint64_t __52__ENDaemon_onboardingManagerDidObserveDeviceUnlock___block_invoke_2
   return v3;
 }
 
-- (void)textMessageManager:(id)a3 errorDetected:(unsigned int)a4
+- (void)textMessageManager:(id)manager errorDetected:(unsigned int)detected
 {
   dispatchQueue = self->_dispatchQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -7663,7 +7663,7 @@ uint64_t __52__ENDaemon_onboardingManagerDidObserveDeviceUnlock___block_invoke_2
   v5[2] = __45__ENDaemon_textMessageManager_errorDetected___block_invoke;
   v5[3] = &unk_278FD17D8;
   v5[4] = self;
-  v6 = a4;
+  detectedCopy = detected;
   dispatch_async(dispatchQueue, v5);
 }
 
@@ -7676,25 +7676,25 @@ void __45__ENDaemon_textMessageManager_errorDetected___block_invoke(uint64_t a1)
 - (id)legacyHistoryPath
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained bluetoothSystemContainerURL];
+  bluetoothSystemContainerURL = [WeakRetained bluetoothSystemContainerURL];
 
-  if (v3)
+  if (bluetoothSystemContainerURL)
   {
-    v4 = [v3 URLByAppendingPathComponent:@"Library/ExposureNotification"];
+    v4 = [bluetoothSystemContainerURL URLByAppendingPathComponent:@"Library/ExposureNotification"];
     v5 = [v4 URLByAppendingPathComponent:@"DetectionHistory.plist"];
-    v6 = [v5 path];
+    path = [v5 path];
   }
 
   else
   {
     [(ENDaemon *)&v8 legacyHistoryPath];
-    v6 = v8;
+    path = v8;
   }
 
-  return v6;
+  return path;
 }
 
-- (id)loadLegacyHistorySinceTime:(double)a3
+- (id)loadLegacyHistorySinceTime:(double)time
 {
   v51 = 0;
   v52 = &v51;
@@ -7708,22 +7708,22 @@ void __45__ENDaemon_textMessageManager_errorDetected___block_invoke(uint64_t a1)
   v50[3] = &unk_278FD10F8;
   v50[4] = &v51;
   v5 = MEMORY[0x24C214430](v50, a2);
-  v6 = [(ENDaemon *)self legacyHistoryPath];
-  v47 = v6;
-  if (!v6)
+  legacyHistoryPath = [(ENDaemon *)self legacyHistoryPath];
+  v47 = legacyHistoryPath;
+  if (!legacyHistoryPath)
   {
     goto LABEL_64;
   }
 
-  v7 = [MEMORY[0x277CCAA08] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA08] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:legacyHistoryPath];
 
   if (!v8)
   {
     goto LABEL_64;
   }
 
-  v9 = open_dprotected_np([v6 fileSystemRepresentation], 0, 2, 0, 384);
+  v9 = open_dprotected_np([legacyHistoryPath fileSystemRepresentation], 0, 2, 0, 384);
   v10 = v9;
   if (v9 < 0)
   {
@@ -7782,12 +7782,12 @@ LABEL_64:
   }
 
   v12 = [objc_alloc(MEMORY[0x277CBEB20]) initWithLength:v49.st_size];
-  v13 = [v12 mutableBytes];
-  v14 = &v13[st_size];
+  mutableBytes = [v12 mutableBytes];
+  v14 = &mutableBytes[st_size];
   v44 = v12;
   do
   {
-    v15 = read(v10, v13, v14 - v13);
+    v15 = read(v10, mutableBytes, v14 - mutableBytes);
     if (!v15)
     {
       break;
@@ -7803,10 +7803,10 @@ LABEL_64:
       goto LABEL_60;
     }
 
-    v13 += v15;
+    mutableBytes += v15;
   }
 
-  while (v13 < v14);
+  while (mutableBytes < v14);
   v16 = v52;
   obj = 0;
   v17 = [MEMORY[0x277CCAC50] propertyListWithData:v12 options:0 format:0 error:&obj];
@@ -7834,13 +7834,13 @@ LABEL_75:
   {
     if (_MergedGlobals != -1 || _LogCategory_Initialize())
     {
-      v37 = COERCE_DOUBLE([v17 count]);
+      timeCopy = COERCE_DOUBLE([v17 count]);
       LogPrintF_safe();
     }
 
     if (_MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
-      v37 = a3;
+      timeCopy = time;
       LogPrintF_safe();
     }
   }
@@ -7889,7 +7889,7 @@ LABEL_40:
     {
       v28 = [v23 objectAtIndexedSubscript:v27];
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && (CFDictionaryGetDouble(), v29 >= a3))
+      if ((objc_opt_isKindOfClass() & 1) != 0 && (CFDictionaryGetDouble(), v29 >= time))
       {
         ++v27;
       }
@@ -7964,7 +7964,7 @@ void __39__ENDaemon_loadLegacyHistorySinceTime___block_invoke(uint64_t a1)
   }
 }
 
-- (id)loadHistorySinceTime:(double)a3
+- (id)loadHistorySinceTime:(double)time
 {
   v16 = 0;
   v17 = &v16;
@@ -7991,7 +7991,7 @@ void __39__ENDaemon_loadLegacyHistorySinceTime___block_invoke(uint64_t a1)
     v12[1] = 3221225472;
     v12[2] = __33__ENDaemon_loadHistorySinceTime___block_invoke_2;
     v12[3] = &unk_278FD18E8;
-    *&v12[7] = a3;
+    *&v12[7] = time;
     v12[5] = v8;
     v12[6] = &v16;
     v12[4] = v7;
@@ -8068,38 +8068,38 @@ void __33__ENDaemon_loadHistorySinceTime___block_invoke_3(uint64_t a1, void *a2)
   [*(a1 + 32) insertObject:v14 atIndex:0];
 }
 
-- (void)startAvailabilityAlertCycleWithBuddy:(BOOL)a3
+- (void)startAvailabilityAlertCycleWithBuddy:(BOOL)buddy
 {
-  v3 = a3;
+  buddyCopy = buddy;
   [(ENDaemon *)self onboardingTriggerDeactivate];
-  v5 = [(ENDaemon *)self regionMonitor];
+  regionMonitor = [(ENDaemon *)self regionMonitor];
   v20 = 0;
-  v6 = [v5 getCurrentRegionVisitWithError:&v20];
+  v6 = [regionMonitor getCurrentRegionVisitWithError:&v20];
   v7 = v20;
-  v8 = [v6 region];
+  region = [v6 region];
 
-  if (v8)
+  if (region)
   {
     v9 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v10 = [v9 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v9 isSensitiveLoggingAllowed];
 
-    if (v10 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
       v11 = "no";
-      if (v3)
+      if (buddyCopy)
       {
         v11 = "yes";
       }
 
-      v18 = v8;
+      v18 = region;
       v19 = v11;
       LogPrintF_safe();
     }
 
-    [(ENDaemon *)self _writePreferenceRegionPendingOnboarding:v8, v18, v19];
-    [(ENDaemon *)self postOnboardingNotificationForRegion:v8];
+    [(ENDaemon *)self _writePreferenceRegionPendingOnboarding:region, v18, v19];
+    [(ENDaemon *)self postOnboardingNotificationForRegion:region];
     Int64 = CFPrefs_GetInt64();
-    if (v3 && !Int64)
+    if (buddyCopy && !Int64)
     {
       activeEntity = self->_activeEntity;
       if (!activeEntity || [(ENActiveEntity *)activeEntity activeStatus]<= 2)
@@ -8109,16 +8109,16 @@ void __33__ENDaemon_loadHistorySinceTime___block_invoke_3(uint64_t a1, void *a2)
           [ENDaemon startAvailabilityAlertCycleWithBuddy:];
         }
 
-        v14 = [(ENDaemon *)self onboardingManager];
-        [v14 setShouldObserveDeviceUnlocks:1];
+        onboardingManager = [(ENDaemon *)self onboardingManager];
+        [onboardingManager setShouldObserveDeviceUnlocks:1];
 
-        v15 = [(ENDaemon *)self onboardingManager];
-        v16 = [v15 isDeviceUnlocked];
+        onboardingManager2 = [(ENDaemon *)self onboardingManager];
+        isDeviceUnlocked = [onboardingManager2 isDeviceUnlocked];
 
-        if ((v16 & 1) == 0)
+        if ((isDeviceUnlocked & 1) == 0)
         {
-          v17 = [(ENDaemon *)self onboardingManager];
-          [v17 setPendingBuddyOnboarding:1];
+          onboardingManager3 = [(ENDaemon *)self onboardingManager];
+          [onboardingManager3 setPendingBuddyOnboarding:1];
         }
       }
     }
@@ -8135,19 +8135,19 @@ void __33__ENDaemon_loadHistorySinceTime___block_invoke_3(uint64_t a1, void *a2)
   }
 }
 
-- (void)onboardingTriggerRetry:(unsigned int)a3
+- (void)onboardingTriggerRetry:(unsigned int)retry
 {
-  if (a3)
+  if (retry)
   {
     CFPrefs_GetDouble();
     if (v5 == 0.0)
     {
-      v6 = [MEMORY[0x277CBEAA0] date];
-      v7 = [MEMORY[0x277CBEA88] currentCalendar];
+      date = [MEMORY[0x277CBEAA0] date];
+      currentCalendar = [MEMORY[0x277CBEA88] currentCalendar];
       v8 = objc_alloc_init(MEMORY[0x277CBEAB0]);
-      [v8 setDay:a3];
-      v9 = [v7 dateByAddingComponents:v8 toDate:v6 options:2];
-      v10 = [v7 dateBySettingUnit:32 value:10 ofDate:v9 options:0];
+      [v8 setDay:retry];
+      v9 = [currentCalendar dateByAddingComponents:v8 toDate:date options:2];
+      v10 = [currentCalendar dateBySettingUnit:32 value:10 ofDate:v9 options:0];
     }
 
     else
@@ -8155,8 +8155,8 @@ void __33__ENDaemon_loadHistorySinceTime___block_invoke_3(uint64_t a1, void *a2)
       v10 = [MEMORY[0x277CBEAA0] dateWithTimeIntervalSince1970:?];
     }
 
-    v12 = [(ENDaemon *)self onboardingTimer];
-    [v12 invalidate];
+    onboardingTimer = [(ENDaemon *)self onboardingTimer];
+    [onboardingTimer invalidate];
 
     [(ENDaemon *)self setOnboardingTimer:0];
   }
@@ -8179,19 +8179,19 @@ void __33__ENDaemon_loadHistorySinceTime___block_invoke_3(uint64_t a1, void *a2)
 
     v10 = [MEMORY[0x277CBEAA0] dateWithTimeIntervalSince1970:v20];
     [(ENDaemon *)self onboardingTriggerDeactivate];
-    v21 = [(ENDaemon *)self regionMonitor];
+    regionMonitor = [(ENDaemon *)self regionMonitor];
     v26 = 0;
-    v22 = [v21 getCurrentRegionVisitWithError:&v26];
+    v22 = [regionMonitor getCurrentRegionVisitWithError:&v26];
     v23 = v26;
-    v24 = [v22 region];
+    region = [v22 region];
 
-    if (!v24)
+    if (!region)
     {
       [ENDaemon onboardingTriggerRetry:v23];
       goto LABEL_28;
     }
 
-    [(ENDaemon *)self _writePreferenceRegionPendingOnboarding:v24];
+    [(ENDaemon *)self _writePreferenceRegionPendingOnboarding:region];
   }
 
   if ([(ENDaemon *)self isOnboardingNeeded])
@@ -8201,7 +8201,7 @@ void __33__ENDaemon_loadHistorySinceTime___block_invoke_3(uint64_t a1, void *a2)
       [ENDaemon onboardingTriggerRetry:];
     }
 
-    if (a3 == 2 || a3 == 5)
+    if (retry == 2 || retry == 5)
     {
       CFPrefs_SetInt64();
       [v10 timeIntervalSince1970];
@@ -8227,7 +8227,7 @@ void __33__ENDaemon_loadHistorySinceTime___block_invoke_3(uint64_t a1, void *a2)
     if (IsAppleInternalBuild())
     {
       CFPrefs_GetDouble();
-      if (a3)
+      if (retry)
       {
         if (v16 > 0.0)
         {
@@ -8359,14 +8359,14 @@ LABEL_22:
     [ENDaemon onboardingTriggerDeactivate];
   }
 
-  v3 = [(ENDaemon *)self onboardingManager];
-  [v3 setShouldObserveDeviceUnlocks:0];
+  onboardingManager = [(ENDaemon *)self onboardingManager];
+  [onboardingManager setShouldObserveDeviceUnlocks:0];
 
-  v4 = [(ENDaemon *)self onboardingManager];
-  [v4 setPendingBuddyOnboarding:0];
+  onboardingManager2 = [(ENDaemon *)self onboardingManager];
+  [onboardingManager2 setPendingBuddyOnboarding:0];
 
-  v5 = [(ENDaemon *)self onboardingTimer];
-  [v5 invalidate];
+  onboardingTimer = [(ENDaemon *)self onboardingTimer];
+  [onboardingTimer invalidate];
 
   [(ENDaemon *)self setOnboardingTimer:0];
   CFPrefs_RemoveValue();
@@ -8385,9 +8385,9 @@ LABEL_22:
     v28 = 0;
     v4 = [(ENRegionMonitor *)regionMonitor getCurrentRegionVisitWithError:&v28];
     v5 = v28;
-    v6 = [v4 region];
+    region = [v4 region];
 
-    if (!v6)
+    if (!region)
     {
       [(ENDaemon *)v5 timeForAvailabilityAlertCycleReset];
       v26 = v29;
@@ -8399,8 +8399,8 @@ LABEL_22:
       [ENDaemon timeForAvailabilityAlertCycleReset];
     }
 
-    v7 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-    v8 = [v7 configurationForRegion:v6];
+    configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+    v8 = [configurationStore configurationForRegion:region];
 
     if ([v8 enVersion] <= 1)
     {
@@ -8409,13 +8409,13 @@ LABEL_22:
 
     else
     {
-      v9 = [v8 userConsent];
-      v10 = [v9 consent];
+      userConsent = [v8 userConsent];
+      consent = [userConsent consent];
 
-      if (v10 != 2)
+      if (consent != 2)
       {
-        v11 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-        v12 = [v11 serverConfigurationForRegion:v6];
+        configurationStore2 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+        v12 = [configurationStore2 serverConfigurationForRegion:region];
 
         if (v12)
         {
@@ -8439,14 +8439,14 @@ LABEL_22:
 
           if (v14 > v17)
           {
-            v20 = [(ENDaemon *)self onboardingTimer];
+            onboardingTimer = [(ENDaemon *)self onboardingTimer];
 
-            if (v20)
+            if (onboardingTimer)
             {
               Int64 = CFPrefs_GetInt64();
-              v22 = [(ENDaemon *)self onboardingTimer];
-              v23 = [v22 date];
-              [v23 timeIntervalSince1970];
+              onboardingTimer2 = [(ENDaemon *)self onboardingTimer];
+              date = [onboardingTimer2 date];
+              [date timeIntervalSince1970];
               v25 = v24;
 
               if (Int64 < 1)
@@ -8489,14 +8489,14 @@ LABEL_31:
 
         else
         {
-          [(ENDaemon *)v6 timeForAvailabilityAlertCycleReset];
+          [(ENDaemon *)region timeForAvailabilityAlertCycleReset];
         }
 
         v26 = v29;
         goto LABEL_29;
       }
 
-      [(ENDaemon *)v6 timeForAvailabilityAlertCycleReset];
+      [(ENDaemon *)region timeForAvailabilityAlertCycleReset];
     }
 
     v26 = v29;
@@ -8518,29 +8518,29 @@ LABEL_31:
 
   else
   {
-    v3 = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
-    if (v3)
+    _readPreferenceRegionPendingOnboarding = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
+    if (_readPreferenceRegionPendingOnboarding)
     {
-      v4 = [(ENDaemon *)self configurationManager];
-      v5 = [v4 configurationStore];
-      v6 = [v5 configurationForRegion:v3];
+      configurationManager = [(ENDaemon *)self configurationManager];
+      configurationStore = [configurationManager configurationStore];
+      v6 = [configurationStore configurationForRegion:_readPreferenceRegionPendingOnboarding];
 
       if (v6)
       {
-        v7 = [(ENDaemon *)self configurationManager];
-        v8 = [v7 configurationStore];
-        v9 = [v8 serverConfigurationForRegion:v3];
+        configurationManager2 = [(ENDaemon *)self configurationManager];
+        configurationStore2 = [configurationManager2 configurationStore];
+        v9 = [configurationStore2 serverConfigurationForRegion:_readPreferenceRegionPendingOnboarding];
 
-        v10 = [v9 resetAvailabilityAlertForDeclinedUsers];
-        v11 = [v6 userConsent];
-        v12 = [v11 consent];
+        resetAvailabilityAlertForDeclinedUsers = [v9 resetAvailabilityAlertForDeclinedUsers];
+        userConsent = [v6 userConsent];
+        consent = [userConsent consent];
 
-        if (v12 == 2 || v12 == 1 && (v10 & 1) == 0)
+        if (consent == 2 || consent == 1 && (resetAvailabilityAlertForDeclinedUsers & 1) == 0)
         {
           v14 = +[ENLoggingPrefs sharedENLoggingPrefs];
-          v15 = [v14 isSensitiveLoggingAllowed];
+          isSensitiveLoggingAllowed = [v14 isSensitiveLoggingAllowed];
 
-          if (v15 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+          if (isSensitiveLoggingAllowed && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
           {
             [ENDaemon isOnboardingNeeded];
           }
@@ -8574,7 +8574,7 @@ LABEL_31:
 
 - (void)_regionMonitorEnsureStarted
 {
-  v1 = [*a1 getCurrentRegionVisitWithError:0];
+  v1 = [*self getCurrentRegionVisitWithError:0];
   LogPrintF_safe();
 }
 
@@ -8678,7 +8678,7 @@ LABEL_18:
   }
 }
 
-- (BOOL)isProxyEnabledForTestResultManager:(id)a3
+- (BOOL)isProxyEnabledForTestResultManager:(id)manager
 {
   networkProxyStatus = self->_networkProxyStatus;
   if (networkProxyStatus)
@@ -8703,15 +8703,15 @@ LABEL_18:
   v29[3] = &unk_278FD10F8;
   v29[4] = &v30;
   v3 = MEMORY[0x24C214430](v29, a2);
-  v4 = [(ENDaemon *)self screenUnlockPendingActions];
-  v5 = [v4 objectForKey:@"PreArmUnlockActionIdentifier"];
+  screenUnlockPendingActions = [(ENDaemon *)self screenUnlockPendingActions];
+  v5 = [screenUnlockPendingActions objectForKey:@"PreArmUnlockActionIdentifier"];
 
   if (v5)
   {
     v20 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v21 = [v20 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v20 isSensitiveLoggingAllowed];
 
-    if (v21 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
       LogPrintF_safe();
     }
@@ -8719,26 +8719,26 @@ LABEL_18:
 
   else if ([(ENDaemon *)self getOverallStatus]== 1 && [(ENDaemon *)self _isNKDActive])
   {
-    v6 = [(ENDaemon *)self activeEntity];
-    v7 = [v6 entity];
-    v8 = [v7 region];
+    activeEntity = [(ENDaemon *)self activeEntity];
+    entity = [activeEntity entity];
+    region = [entity region];
 
-    if (!v8)
+    if (!region)
     {
       v22 = ENErrorF();
-      v9 = v31[5];
+      configurationStore = v31[5];
       v31[5] = v22;
       goto LABEL_17;
     }
 
-    v9 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-    v10 = [v9 configurationForRegion:v8];
+    configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+    v10 = [configurationStore configurationForRegion:region];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 diagnosisKeysPreAuthorization];
+      diagnosisKeysPreAuthorization = [v10 diagnosisKeysPreAuthorization];
 
-      if (!v12)
+      if (!diagnosisKeysPreAuthorization)
       {
 LABEL_16:
 
@@ -8746,15 +8746,15 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v13 = [v11 diagnosisKeysPreAuthorization];
-      v14 = [v13 verificationCode];
+      diagnosisKeysPreAuthorization2 = [v11 diagnosisKeysPreAuthorization];
+      verificationCode = [diagnosisKeysPreAuthorization2 verificationCode];
 
-      if (!v14)
+      if (!verificationCode)
       {
         v24 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v25 = [v24 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed2 = [v24 isSensitiveLoggingAllowed];
 
-        if (!v25 || _MergedGlobals > 30 || _MergedGlobals == -1 && !_LogCategory_Initialize())
+        if (!isSensitiveLoggingAllowed2 || _MergedGlobals > 30 || _MergedGlobals == -1 && !_LogCategory_Initialize())
         {
           goto LABEL_15;
         }
@@ -8762,15 +8762,15 @@ LABEL_17:
         goto LABEL_28;
       }
 
-      v15 = [v11 diagnosisKeysPreAuthorization];
-      v16 = [v15 reportType];
+      diagnosisKeysPreAuthorization3 = [v11 diagnosisKeysPreAuthorization];
+      reportType = [diagnosisKeysPreAuthorization3 reportType];
 
-      if (v16 != 3)
+      if (reportType != 3)
       {
         v17 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v18 = [v17 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed3 = [v17 isSensitiveLoggingAllowed];
 
-        if (v18 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+        if (isSensitiveLoggingAllowed3 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
         {
           LogPrintF_safe();
         }
@@ -8787,9 +8787,9 @@ LABEL_17:
       }
 
       v26 = +[ENLoggingPrefs sharedENLoggingPrefs];
-      v27 = [v26 isSensitiveLoggingAllowed];
+      isSensitiveLoggingAllowed4 = [v26 isSensitiveLoggingAllowed];
 
-      if (v27 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+      if (isSensitiveLoggingAllowed4 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
       {
 LABEL_28:
         LogPrintF_safe();
@@ -8799,7 +8799,7 @@ LABEL_28:
     else
     {
       v23 = ENErrorF();
-      v14 = v31[5];
+      verificationCode = v31[5];
       v31[5] = v23;
     }
 
@@ -8832,9 +8832,9 @@ void __60__ENDaemon_enqueuePreauthorizedTestVerificationUnlockAction__block_invo
   }
 }
 
-- (id)_getReportTypeForSession:(id)a3
+- (id)_getReportTypeForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -8850,7 +8850,7 @@ void __60__ENDaemon_enqueuePreauthorizedTestVerificationUnlockAction__block_invo
   v6 = self->_testResultManager;
   v7 = (v14 + 5);
   obj = v14[5];
-  v8 = [(ENTestResultManager *)v6 metadataForSessionWithUUID:v4 error:&obj];
+  v8 = [(ENTestResultManager *)v6 metadataForSessionWithUUID:sessionCopy error:&obj];
   objc_storeStrong(v7, obj);
   v9 = [(ENDaemon *)self _getReportTypeFromMetadata:v8];
 
@@ -8878,16 +8878,16 @@ void __37__ENDaemon__getReportTypeForSession___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_getReportTypeFromMetadata:(id)a3
+- (id)_getReportTypeFromMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  metadataCopy = metadata;
+  v4 = metadataCopy;
+  if (!metadataCopy)
   {
     v8 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v9 = [v8 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v8 isSensitiveLoggingAllowed];
 
-    if (v9 && _MergedGlobals <= 90 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed && _MergedGlobals <= 90 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
       [ENDaemon _getReportTypeFromMetadata:];
     }
@@ -8895,13 +8895,13 @@ void __37__ENDaemon__getReportTypeForSession___block_invoke(uint64_t a1)
     goto LABEL_16;
   }
 
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CC5B88]];
+  v5 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x277CC5B88]];
   v6 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v7 = [v6 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed2 = [v6 isSensitiveLoggingAllowed];
 
   if (!v5)
   {
-    if (v7 && _MergedGlobals <= 90 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed2 && _MergedGlobals <= 90 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
       [ENDaemon _getReportTypeFromMetadata:];
     }
@@ -8911,7 +8911,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v7 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed2 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     LogPrintF_safe();
   }
@@ -8924,9 +8924,9 @@ LABEL_17:
 - (void)_startPreauthorizedTestVerificationAction
 {
   v3 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v4 = [v3 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v3 isSensitiveLoggingAllowed];
 
-  if (v4 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     [ENDaemon _startPreauthorizedTestVerificationAction];
   }
@@ -8946,16 +8946,16 @@ LABEL_17:
   if ([(ENDaemon *)self getOverallStatus]!= 1 || ![(ENDaemon *)self _isNKDActive])
   {
     v19 = ENErrorF();
-    v8 = v31[5];
+    region = v31[5];
     v31[5] = v19;
     goto LABEL_17;
   }
 
-  v6 = [(ENDaemon *)self activeEntity];
-  v7 = [v6 entity];
-  v8 = [v7 region];
+  activeEntity = [(ENDaemon *)self activeEntity];
+  entity = [activeEntity entity];
+  region = [entity region];
 
-  if (!v8)
+  if (!region)
   {
     v20 = ENErrorF();
     v9 = v31[5];
@@ -8967,24 +8967,24 @@ LABEL_17:
   if (!v9)
   {
     v21 = ENErrorF();
-    v10 = v31[5];
+    configurationStore = v31[5];
     v31[5] = v21;
     goto LABEL_15;
   }
 
-  v10 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-  v11 = [v10 configurationForRegion:v8];
+  configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+  v11 = [configurationStore configurationForRegion:region];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 diagnosisKeysPreAuthorization];
+    diagnosisKeysPreAuthorization = [v11 diagnosisKeysPreAuthorization];
 
-    if (!v13)
+    if (!diagnosisKeysPreAuthorization)
     {
       v23 = +[ENLoggingPrefs sharedENLoggingPrefs];
-      v24 = [v23 isSensitiveLoggingAllowed];
+      isSensitiveLoggingAllowed2 = [v23 isSensitiveLoggingAllowed];
 
-      if (v24 && _MergedGlobals <= 90 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+      if (isSensitiveLoggingAllowed2 && _MergedGlobals <= 90 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
       {
         LogPrintF_safe();
       }
@@ -8992,10 +8992,10 @@ LABEL_17:
       goto LABEL_14;
     }
 
-    v14 = [v12 diagnosisKeysPreAuthorization];
-    v15 = [v14 verificationCode];
+    diagnosisKeysPreAuthorization2 = [v12 diagnosisKeysPreAuthorization];
+    verificationCode = [diagnosisKeysPreAuthorization2 verificationCode];
 
-    if (v15)
+    if (verificationCode)
     {
       prefNetworkProxyEnabled = self->_prefNetworkProxyEnabled;
       v28[0] = MEMORY[0x277D85DD0];
@@ -9004,26 +9004,26 @@ LABEL_17:
       v28[3] = &unk_278FD19B0;
       v28[4] = self;
       v28[5] = v12;
-      v28[6] = v8;
+      v28[6] = region;
       v28[7] = v9;
-      v28[8] = v10;
+      v28[8] = configurationStore;
       v28[9] = &v30;
-      [(ENTestResultManager *)v9 startTestVerficationSessionWithCode:v15 proxyEnabled:prefNetworkProxyEnabled region:v8 completionHandler:v28];
-      v17 = [v12 diagnosisKeysPreAuthorization];
-      [v17 setVerificationCode:0];
+      [(ENTestResultManager *)v9 startTestVerficationSessionWithCode:verificationCode proxyEnabled:prefNetworkProxyEnabled region:region completionHandler:v28];
+      diagnosisKeysPreAuthorization3 = [v12 diagnosisKeysPreAuthorization];
+      [diagnosisKeysPreAuthorization3 setVerificationCode:0];
 
       v18 = (v31 + 5);
       obj = v31[5];
-      [v10 saveRegionConfiguration:v12 error:&obj];
+      [configurationStore saveRegionConfiguration:v12 error:&obj];
       objc_storeStrong(v18, obj);
     }
 
     else
     {
       v25 = +[ENLoggingPrefs sharedENLoggingPrefs];
-      v26 = [v25 isSensitiveLoggingAllowed];
+      isSensitiveLoggingAllowed3 = [v25 isSensitiveLoggingAllowed];
 
-      if (v26 && _MergedGlobals <= 90 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+      if (isSensitiveLoggingAllowed3 && _MergedGlobals <= 90 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
       {
         LogPrintF_safe();
       }
@@ -9033,7 +9033,7 @@ LABEL_17:
   else
   {
     v22 = ENErrorF();
-    v15 = v31[5];
+    verificationCode = v31[5];
     v31[5] = v22;
   }
 
@@ -9282,9 +9282,9 @@ LABEL_25:
   objc_storeStrong((v21 + 40), obj);
 }
 
-- (void)_handleTestVerificationErrors:(id)a3
+- (void)_handleTestVerificationErrors:(id)errors
 {
-  v4 = [a3 code] - 2;
+  v4 = [errors code] - 2;
   if (v4 > 0xB)
   {
     v6 = @"VERIFICATION_FAILED_GENERIC_ERROR_MESSAGE";
@@ -9300,11 +9300,11 @@ LABEL_25:
   [(ENDaemon *)self postGeneralNotificationWithTitle:v5 message:v6];
 }
 
-- (void)enqueueScreenUnlockAction:(id)a3 withIdentifier:(id)a4
+- (void)enqueueScreenUnlockAction:(id)action withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  actionCopy = action;
+  identifierCopy = identifier;
+  if (actionCopy)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -9312,8 +9312,8 @@ LABEL_25:
     block[2] = __53__ENDaemon_enqueueScreenUnlockAction_withIdentifier___block_invoke;
     block[3] = &unk_278FD19D8;
     block[4] = self;
-    v11 = v6;
-    v10 = v7;
+    v11 = actionCopy;
+    v10 = identifierCopy;
     dispatch_async(dispatchQueue, block);
   }
 
@@ -9323,13 +9323,13 @@ LABEL_25:
   }
 }
 
-- (void)_enqueueScreenUnlockAction:(id)a3 withIdentifier:(id)a4
+- (void)_enqueueScreenUnlockAction:(id)action withIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = a4;
+  actionCopy = action;
+  identifierCopy = identifier;
   if ([(ENDaemon *)self isDeviceUnlocked])
   {
-    v9[2]();
+    actionCopy[2]();
   }
 
   else
@@ -9339,27 +9339,27 @@ LABEL_25:
       [ENDaemon _enqueueScreenUnlockAction:withIdentifier:];
     }
 
-    v7 = [(ENDaemon *)self screenUnlockPendingActions];
-    v8 = MEMORY[0x24C214430](v9);
-    [v7 setObject:v8 forKey:v6];
+    screenUnlockPendingActions = [(ENDaemon *)self screenUnlockPendingActions];
+    v8 = MEMORY[0x24C214430](actionCopy);
+    [screenUnlockPendingActions setObject:v8 forKey:identifierCopy];
   }
 }
 
-- (void)_xpcListenerEvent:(id)a3
+- (void)_xpcListenerEvent:(id)event
 {
-  v7 = a3;
+  eventCopy = event;
   if (MEMORY[0x24C214BB0]() == MEMORY[0x277D86450])
   {
-    [(ENDaemon *)self _xpcConnectionAccept:v7];
+    [(ENDaemon *)self _xpcConnectionAccept:eventCopy];
     goto LABEL_8;
   }
 
-  v4 = v7;
-  if (v7 == MEMORY[0x277D863F8])
+  v4 = eventCopy;
+  if (eventCopy == MEMORY[0x277D863F8])
   {
     if (_MergedGlobals <= 30)
     {
-      if (_MergedGlobals != -1 || (v6 = _LogCategory_Initialize(), v4 = v7, v6))
+      if (_MergedGlobals != -1 || (v6 = _LogCategory_Initialize(), v4 = eventCopy, v6))
       {
         [ENDaemon _xpcListenerEvent:];
         goto LABEL_8;
@@ -9369,19 +9369,19 @@ LABEL_25:
 
   else if (dword_281346508 <= 90)
   {
-    if (dword_281346508 != -1 || (v5 = _LogCategory_Initialize(), v4 = v7, v5))
+    if (dword_281346508 != -1 || (v5 = _LogCategory_Initialize(), v4 = eventCopy, v5))
     {
       [ENDaemon _xpcListenerEvent:];
 LABEL_8:
-      v4 = v7;
+      v4 = eventCopy;
     }
   }
 }
 
-- (void)_xpcConnectionAccept:(id)a3
+- (void)_xpcConnectionAccept:(id)accept
 {
-  v4 = a3;
-  pid = xpc_connection_get_pid(v4);
+  acceptCopy = accept;
+  pid = xpc_connection_get_pid(acceptCopy);
   xpc_connection_get_audit_token();
   memset(v14, 0, sizeof(v14));
   v6 = [ENXPCClient clientWithAuditToken:v14 pid:pid];
@@ -9403,7 +9403,7 @@ LABEL_8:
   [(ENXPCConnection *)v9 setClient:v6];
   [(ENXPCConnection *)v9 setDaemon:self];
   [(ENXPCConnection *)v9 setDispatchQueue:self->_dispatchQueue];
-  [(ENXPCConnection *)v9 setXpcCnx:v4];
+  [(ENXPCConnection *)v9 setXpcCnx:acceptCopy];
   if (([v6 entitledToSkipFileSigningVerification] & 1) != 0 || -[ENDaemon prefSkipFileSigning](self, "prefSkipFileSigning"))
   {
     [(ENXPCConnection *)v9 setSkipFileSigningVerification:1];
@@ -9418,9 +9418,9 @@ LABEL_8:
   handler[2] = __33__ENDaemon__xpcConnectionAccept___block_invoke;
   handler[3] = &unk_278FD10A8;
   handler[4] = v9;
-  xpc_connection_set_event_handler(v4, handler);
-  xpc_connection_set_target_queue(v4, self->_dispatchQueue);
-  xpc_connection_activate(v4);
+  xpc_connection_set_event_handler(acceptCopy, handler);
+  xpc_connection_set_target_queue(acceptCopy, self->_dispatchQueue);
+  xpc_connection_activate(acceptCopy);
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
   {
@@ -9435,9 +9435,9 @@ LABEL_8:
   [(ENXPCConnection *)v9 activate];
 }
 
-- (void)xpcConnectionInvalidated:(id)a3
+- (void)xpcConnectionInvalidated:(id)invalidated
 {
-  [(NSMutableSet *)self->_xpcConnections removeObject:a3];
+  [(NSMutableSet *)self->_xpcConnections removeObject:invalidated];
 
   [(ENDaemon *)self _scheduleUpdate];
 }
@@ -9526,9 +9526,9 @@ LABEL_8:
   if (!IsAppleInternalBuild())
   {
     CFPrefs_RemoveValue();
-    v3 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-    [v3 clearTemporaryCountrySubdivisionList];
-    [v3 clearTemporaryServerConfigurations];
+    configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+    [configurationStore clearTemporaryCountrySubdivisionList];
+    [configurationStore clearTemporaryServerConfigurations];
     CFPrefs_RemoveValue();
   }
 }
@@ -9536,38 +9536,38 @@ LABEL_8:
 - (void)_deferConsentForPendingRegion
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
-  if (v3)
+  _readPreferenceRegionPendingOnboarding = [(ENDaemon *)self _readPreferenceRegionPendingOnboarding];
+  if (_readPreferenceRegionPendingOnboarding)
   {
-    v4 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-    v5 = [v4 configurationForRegion:v3];
+    configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+    v5 = [configurationStore configurationForRegion:_readPreferenceRegionPendingOnboarding];
 
     if (v5)
     {
-      v6 = [v5 userConsent];
-      v7 = [v6 consent];
+      userConsent = [v5 userConsent];
+      consent = [userConsent consent];
 
-      if (!v7)
+      if (!consent)
       {
         if (_MergedGlobals <= 50 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
         {
           LogPrintF_safe();
         }
 
-        v8 = [v5 userConsent];
-        [v8 setConsent:3];
+        userConsent2 = [v5 userConsent];
+        [userConsent2 setConsent:3];
 
-        v9 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+        configurationStore2 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
         v21 = 0;
-        v10 = [v9 saveRegionConfiguration:v5 error:&v21];
+        v10 = [configurationStore2 saveRegionConfiguration:v5 error:&v21];
         v11 = v21;
 
         if (v10)
         {
-          v12 = [(ENDaemon *)self activeEntity];
-          v13 = [v12 entity];
-          v14 = [v13 region];
-          v15 = [v3 isEqual:v14];
+          activeEntity = [(ENDaemon *)self activeEntity];
+          entity = [activeEntity entity];
+          region = [entity region];
+          v15 = [_readPreferenceRegionPendingOnboarding isEqual:region];
 
           if (v15)
           {
@@ -9579,16 +9579,16 @@ LABEL_8:
             [(ENDaemon *)self _turnOffEN];
           }
 
-          v16 = [(ENDaemon *)self userNotificationCenter];
+          userNotificationCenter = [(ENDaemon *)self userNotificationCenter];
           v22[0] = @"com.apple.ExposureNotification.onboarding";
           v17 = [MEMORY[0x277CBEA68] arrayWithObjects:v22 count:1];
-          [v16 removeDeliveredNotificationsWithIdentifiers:v17];
+          [userNotificationCenter removeDeliveredNotificationsWithIdentifiers:v17];
 
-          v18 = [(ENDaemon *)self onboardingManager];
-          [v18 setShouldObserveDeviceUnlocks:0];
+          onboardingManager = [(ENDaemon *)self onboardingManager];
+          [onboardingManager setShouldObserveDeviceUnlocks:0];
 
-          v19 = [(ENDaemon *)self onboardingManager];
-          [v19 setPendingBuddyOnboarding:0];
+          onboardingManager2 = [(ENDaemon *)self onboardingManager];
+          [onboardingManager2 setPendingBuddyOnboarding:0];
         }
 
         else if (dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
@@ -9638,13 +9638,13 @@ LABEL_8:
       v4 = 1209600.0;
     }
 
-    v7 = [MEMORY[0x277CBEAA0] date];
-    v8 = [v7 dateByAddingTimeInterval:-v4];
+    date = [MEMORY[0x277CBEAA0] date];
+    v8 = [date dateByAddingTimeInterval:-v4];
     CFPrefs_GetDouble();
     v10 = v9;
     if (_MergedGlobals <= 50 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
     {
-      v24 = [(NSBackgroundActivityScheduler *)self->_persistencePurgeScheduler identifier];
+      identifier = [(NSBackgroundActivityScheduler *)self->_persistencePurgeScheduler identifier];
       v26 = v8;
       LogPrintF_safe();
     }
@@ -9656,18 +9656,18 @@ LABEL_8:
     v12 = [(ENDaemon *)self getExposureDatabaseAndReturnError:&v29];
     v13 = v29;
     v14 = v13;
-    if (!v12 || (v28 = v13, v15 = [v12 purgeRecordsWithInterval:v7 nowDate:&v28 error:v4], v16 = v28, v14, v14 = v16, (v15 & 1) == 0))
+    if (!v12 || (v28 = v13, v15 = [v12 purgeRecordsWithInterval:date nowDate:&v28 error:v4], v16 = v28, v14, v14 = v16, (v15 & 1) == 0))
     {
       if (dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
       {
-        v24 = CUPrintNSError();
+        identifier = CUPrintNSError();
         LogPrintF_safe();
       }
     }
 
     regionMonitor = self->_regionMonitor;
     v27 = v14;
-    v18 = [(ENRegionMonitor *)regionMonitor purgeRegionsOlderThanDate:v8 error:&v27, v24, v26];
+    v18 = [(ENRegionMonitor *)regionMonitor purgeRegionsOlderThanDate:v8 error:&v27, identifier, v26];
     v19 = v27;
 
     if (!v18 && dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
@@ -9681,7 +9681,7 @@ LABEL_8:
     activeEntity = self->_activeEntity;
     if ((!activeEntity || [(ENActiveEntity *)activeEntity activeStatus]== 1) && v10 > 0.0)
     {
-      [v7 timeIntervalSince1970];
+      [date timeIntervalSince1970];
       if (v21 - v10 > v4)
       {
         if (_MergedGlobals <= 50 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
@@ -9709,26 +9709,26 @@ LABEL_8:
   }
 }
 
-- (id)_getDownloadEndpointsAndReturnError:(id *)a3
+- (id)_getDownloadEndpointsAndReturnError:(id *)error
 {
   v71 = *MEMORY[0x277D85DE8];
-  v5 = [(ENActiveEntity *)self->_activeEntity entity];
-  v55 = [v5 region];
+  entity = [(ENActiveEntity *)self->_activeEntity entity];
+  region = [entity region];
 
-  v6 = [(ENDaemon *)self _isNKDActive];
+  _isNKDActive = [(ENDaemon *)self _isNKDActive];
   v7 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v8 = [v7 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v7 isSensitiveLoggingAllowed];
 
-  if (v8 && _MergedGlobals <= 10 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && _MergedGlobals <= 10 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
   {
     v9 = @"<>";
-    if (v55)
+    if (region)
     {
-      v9 = v55;
+      v9 = region;
     }
 
     v10 = "no";
-    if (v6)
+    if (_isNKDActive)
     {
       v10 = "yes";
     }
@@ -9738,9 +9738,9 @@ LABEL_8:
     LogPrintF_safe();
   }
 
-  if (v55)
+  if (region)
   {
-    v11 = v6;
+    v11 = _isNKDActive;
   }
 
   else
@@ -9753,10 +9753,10 @@ LABEL_8:
     v12 = self->_regionMonitor;
     if (!v12)
     {
-      if (a3)
+      if (error)
       {
         ENErrorF();
-        *a3 = v30 = 0;
+        *error = v30 = 0;
       }
 
       else
@@ -9767,14 +9767,14 @@ LABEL_8:
       goto LABEL_66;
     }
 
-    v13 = [(ENConfigurationManager *)self->_configurationManager configurationStore];
-    v14 = v13;
-    if (!v13)
+    configurationStore = [(ENConfigurationManager *)self->_configurationManager configurationStore];
+    v14 = configurationStore;
+    if (!configurationStore)
     {
-      if (a3)
+      if (error)
       {
         ENErrorF();
-        *a3 = v30 = 0;
+        *error = v30 = 0;
       }
 
       else
@@ -9790,8 +9790,8 @@ LABEL_8:
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v15 = [v13 allCachedRegions];
-    v16 = [v15 countByEnumeratingWithState:&v65 objects:v70 count:16];
+    allCachedRegions = [configurationStore allCachedRegions];
+    v16 = [allCachedRegions countByEnumeratingWithState:&v65 objects:v70 count:16];
     if (v16)
     {
       v17 = v16;
@@ -9803,15 +9803,15 @@ LABEL_8:
         {
           if (*v66 != v19)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allCachedRegions);
           }
 
           v21 = [v14 configurationForRegion:{*(*(&v65 + 1) + 8 * i), v50, v51}];
-          v22 = [v21 userConsent];
-          v18 |= [v22 consent] == 2;
+          userConsent = [v21 userConsent];
+          v18 |= [userConsent consent] == 2;
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v65 objects:v70 count:16];
+        v17 = [allCachedRegions countByEnumeratingWithState:&v65 objects:v70 count:16];
       }
 
       while (v17);
@@ -9829,7 +9829,7 @@ LABEL_46:
           v53 = v26;
           v52 = v24;
           v31 = [objc_alloc(MEMORY[0x277CBEB50]) initWithSet:v24];
-          [v31 addObject:v55];
+          [v31 addObject:region];
           v32 = objc_alloc_init(MEMORY[0x277CBEB30]);
           v60 = 0u;
           v61 = 0u;
@@ -9855,20 +9855,20 @@ LABEL_46:
                 v40 = v39;
                 if (v39)
                 {
-                  v41 = [v39 tekLocalDownloadBaseURL];
-                  v42 = [v32 objectForKeyedSubscript:v41];
-                  if (!v42 || [(__CFString *)v38 isEqual:v55])
+                  tekLocalDownloadBaseURL = [v39 tekLocalDownloadBaseURL];
+                  v42 = [v32 objectForKeyedSubscript:tekLocalDownloadBaseURL];
+                  if (!v42 || [(__CFString *)v38 isEqual:region])
                   {
-                    [v32 setObject:v40 forKeyedSubscript:v41];
+                    [v32 setObject:v40 forKeyedSubscript:tekLocalDownloadBaseURL];
                   }
                 }
 
                 else
                 {
                   v43 = +[ENLoggingPrefs sharedENLoggingPrefs];
-                  v44 = [v43 isSensitiveLoggingAllowed];
+                  isSensitiveLoggingAllowed2 = [v43 isSensitiveLoggingAllowed];
 
-                  if (v44 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
+                  if (isSensitiveLoggingAllowed2 && _MergedGlobals <= 30 && (_MergedGlobals != -1 || _LogCategory_Initialize()))
                   {
                     v50 = v38;
                     LogPrintF_safe();
@@ -9890,7 +9890,7 @@ LABEL_46:
           v56[3] = &unk_278FD1850;
           v56[4] = v14;
           v57 = v46;
-          v58 = v55;
+          v58 = region;
           v59 = v45;
           v47 = v46;
           [v32 enumerateKeysAndObjectsUsingBlock:v56];
@@ -9905,12 +9905,12 @@ LABEL_66:
         }
 
         v27 = v25;
-        v28 = [(__CFString *)v27 domain];
-        if ([v28 isEqualToString:*MEMORY[0x277CC5BD0]])
+        domain = [(__CFString *)v27 domain];
+        if ([domain isEqualToString:*MEMORY[0x277CC5BD0]])
         {
-          v29 = [(__CFString *)v27 code];
+          code = [(__CFString *)v27 code];
 
-          if (v29 == 4)
+          if (code == 4)
           {
             if (_MergedGlobals > 10 || _MergedGlobals == -1 && !_LogCategory_Initialize())
             {
@@ -10087,7 +10087,7 @@ void __48__ENDaemon__getDownloadEndpointsAndReturnError___block_invoke(uint64_t 
       v7 = v45;
       if (v6)
       {
-        v28 = self;
+        selfCopy = self;
         v29 = v5;
         v43 = 0u;
         v44 = 0u;
@@ -10191,12 +10191,12 @@ LABEL_35:
           {
 LABEL_37:
 
-            v22 = [(ENDaemon *)v28 legacyHistoryPath];
-            if (v22)
+            legacyHistoryPath = [(ENDaemon *)selfCopy legacyHistoryPath];
+            if (legacyHistoryPath)
             {
-              v23 = [MEMORY[0x277CCAA08] defaultManager];
+              defaultManager = [MEMORY[0x277CCAA08] defaultManager];
               v38 = 0;
-              v24 = [v23 removeItemAtPath:v22 error:&v38];
+              v24 = [defaultManager removeItemAtPath:legacyHistoryPath error:&v38];
               v25 = v38;
 
               if ((v24 & 1) == 0 && dword_281346508 <= 90 && (dword_281346508 != -1 || _LogCategory_Initialize()))
@@ -10455,9 +10455,9 @@ void __21__ENDaemon__activate__block_invoke_2_cold_1(uint64_t a1, id *a2)
 
 - (uint64_t)_updateOverallStatus
 {
-  if (a1 <= 6)
+  if (self <= 6)
   {
-    v2 = off_278FD20E0[a1];
+    v2 = off_278FD20E0[self];
   }
 
   if (a2 <= 6)

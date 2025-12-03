@@ -1,68 +1,68 @@
 @interface TPSCallingLineIdRestrictionSetRequest
 + (id)unarchivedObjectClasses;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRequest:(id)a3;
-- (TPSCallingLineIdRestrictionSetRequest)initWithCoder:(id)a3;
-- (TPSCallingLineIdRestrictionSetRequest)initWithSubscriptionContext:(id)a3;
-- (TPSCallingLineIdRestrictionSetRequest)initWithSubscriptionContext:(id)a3 state:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRequest:(id)request;
+- (TPSCallingLineIdRestrictionSetRequest)initWithCoder:(id)coder;
+- (TPSCallingLineIdRestrictionSetRequest)initWithSubscriptionContext:(id)context;
+- (TPSCallingLineIdRestrictionSetRequest)initWithSubscriptionContext:(id)context state:(int64_t)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSCallingLineIdRestrictionSetRequest
 
-- (TPSCallingLineIdRestrictionSetRequest)initWithSubscriptionContext:(id)a3
+- (TPSCallingLineIdRestrictionSetRequest)initWithSubscriptionContext:(id)context
 {
   [(TPSCallingLineIdRestrictionSetRequest *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (TPSCallingLineIdRestrictionSetRequest)initWithSubscriptionContext:(id)a3 state:(int64_t)a4
+- (TPSCallingLineIdRestrictionSetRequest)initWithSubscriptionContext:(id)context state:(int64_t)state
 {
   v6.receiver = self;
   v6.super_class = TPSCallingLineIdRestrictionSetRequest;
-  result = [(TPSCallingLineIdRestrictionRequest *)&v6 initWithSubscriptionContext:a3];
+  result = [(TPSCallingLineIdRestrictionRequest *)&v6 initWithSubscriptionContext:context];
   if (result)
   {
-    result->_state = a4;
+    result->_state = state;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = TPSCallingLineIdRestrictionSetRequest;
-  result = [(TPSRequest *)&v5 copyWithZone:a3];
+  result = [(TPSRequest *)&v5 copyWithZone:zone];
   *(result + 2) = self->_state;
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = TPSCallingLineIdRestrictionSetRequest;
-  v4 = a3;
-  [(TPSRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = self->_state != 0;
   v6 = NSStringFromSelector(sel_state);
-  [v4 encodeBool:v5 forKey:{v6, v7.receiver, v7.super_class}];
+  [coderCopy encodeBool:v5 forKey:{v6, v7.receiver, v7.super_class}];
 }
 
-- (TPSCallingLineIdRestrictionSetRequest)initWithCoder:(id)a3
+- (TPSCallingLineIdRestrictionSetRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = TPSCallingLineIdRestrictionSetRequest;
-  v5 = [(TPSCallingLineIdRestrictionRequest *)&v8 initWithCoder:v4];
+  v5 = [(TPSCallingLineIdRestrictionRequest *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_state);
-    [v4 decodeBoolForKey:v6];
+    [coderCopy decodeBoolForKey:v6];
   }
 
   return v5;
@@ -73,8 +73,8 @@
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [v3 appendFormat:@"<%@ %p ", objc_opt_class(), self];
   v4 = NSStringFromSelector(sel_subscriptionContext);
-  v5 = [(TPSRequest *)self subscriptionContext];
-  [v3 appendFormat:@"%@=%@", v4, v5];
+  subscriptionContext = [(TPSRequest *)self subscriptionContext];
+  [v3 appendFormat:@"%@=%@", v4, subscriptionContext];
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector(sel_state);
@@ -95,10 +95,10 @@
   return [(TPSCallingLineIdRestrictionSetRequest *)self state]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -106,17 +106,17 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPSCallingLineIdRestrictionSetRequest *)self isEqualToRequest:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPSCallingLineIdRestrictionSetRequest *)self isEqualToRequest:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToRequest:(id)a3
+- (BOOL)isEqualToRequest:(id)request
 {
   v6.receiver = self;
   v6.super_class = TPSCallingLineIdRestrictionSetRequest;
-  v4 = [(TPSCallingLineIdRestrictionRequest *)&v6 isEqualToRequest:a3];
+  v4 = [(TPSCallingLineIdRestrictionRequest *)&v6 isEqualToRequest:request];
   if (v4)
   {
     LOBYTE(v4) = [(TPSCallingLineIdRestrictionSetRequest *)self state]!= 0;
@@ -129,7 +129,7 @@
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___TPSCallingLineIdRestrictionSetRequest;
   v4 = objc_msgSendSuper2(&v10, sel_unarchivedObjectClasses);
   v5 = [v3 initWithSet:v4];

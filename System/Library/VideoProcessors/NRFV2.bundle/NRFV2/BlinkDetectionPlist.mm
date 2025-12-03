@@ -1,6 +1,6 @@
 @interface BlinkDetectionPlist
 + (void)initialize;
-- (int)readPlist:(id)a3;
+- (int)readPlist:(id)plist;
 - (void)applyOverrides;
 @end
 
@@ -16,24 +16,24 @@
   dword_2A18C234C = -1082130432;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"BlinkDetectionMode", v6);
+  plistCopy = plist;
+  v7 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v5, @"BlinkDetectionMode", v6);
   v11 = v7;
   if (v7)
   {
     self->mode = objc_msgSend_intValue(v7, v8, v9, v10);
   }
 
-  v14 = objc_msgSend_objectForKeyedSubscript_(v4, v12, @"ConfidenceThreshold", v13);
+  v14 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v12, @"ConfidenceThreshold", v13);
   v18 = v14;
   if (v14)
   {
     self->confidenceThreshold = objc_msgSend_intValue(v14, v15, v16, v17);
   }
 
-  v21 = objc_msgSend_objectForKeyedSubscript_(v4, v19, @"LEyePortionLeft", v20);
+  v21 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v19, @"LEyePortionLeft", v20);
   v25 = v21;
   if (v21)
   {
@@ -41,7 +41,7 @@
     self->lEyePortionLeft = v26;
   }
 
-  v29 = objc_msgSend_objectForKeyedSubscript_(v4, v27, @"LEyePortionTop", v28);
+  v29 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v27, @"LEyePortionTop", v28);
   v33 = v29;
   if (v29)
   {
@@ -49,7 +49,7 @@
     self->lEyePortionTop = v34;
   }
 
-  v37 = objc_msgSend_objectForKeyedSubscript_(v4, v35, @"LEyePortionWidth", v36);
+  v37 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v35, @"LEyePortionWidth", v36);
   v41 = v37;
   if (v37)
   {
@@ -57,7 +57,7 @@
     self->lEyePortionWidth = v42;
   }
 
-  v45 = objc_msgSend_objectForKeyedSubscript_(v4, v43, @"LEyePortionHeight", v44);
+  v45 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v43, @"LEyePortionHeight", v44);
   v49 = v45;
   if (v45)
   {
@@ -65,7 +65,7 @@
     self->lEyePortionHeight = v50;
   }
 
-  v53 = objc_msgSend_objectForKeyedSubscript_(v4, v51, @"LEyePortionWeight", v52);
+  v53 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v51, @"LEyePortionWeight", v52);
   v57 = v53;
   if (v53)
   {
@@ -73,7 +73,7 @@
     self->lEyePortionWeight = v58;
   }
 
-  v61 = objc_msgSend_objectForKeyedSubscript_(v4, v59, @"REyePortionLeft", v60);
+  v61 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v59, @"REyePortionLeft", v60);
   v65 = v61;
   if (v61)
   {
@@ -81,7 +81,7 @@
     self->rEyePortionLeft = v66;
   }
 
-  v69 = objc_msgSend_objectForKeyedSubscript_(v4, v67, @"REyePortionTop", v68);
+  v69 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v67, @"REyePortionTop", v68);
   v73 = v69;
   if (v69)
   {
@@ -89,7 +89,7 @@
     self->rEyePortionTop = v74;
   }
 
-  v77 = objc_msgSend_objectForKeyedSubscript_(v4, v75, @"REyePortionWidth", v76);
+  v77 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v75, @"REyePortionWidth", v76);
   v81 = v77;
   if (v77)
   {
@@ -97,7 +97,7 @@
     self->rEyePortionWidth = v82;
   }
 
-  v85 = objc_msgSend_objectForKeyedSubscript_(v4, v83, @"REyePortionHeight", v84);
+  v85 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v83, @"REyePortionHeight", v84);
   v89 = v85;
   if (v85)
   {
@@ -105,7 +105,7 @@
     self->rEyePortionHeight = v90;
   }
 
-  v93 = objc_msgSend_objectForKeyedSubscript_(v4, v91, @"REyePortionWeight", v92);
+  v93 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v91, @"REyePortionWeight", v92);
   v97 = v93;
   if (v93)
   {
@@ -113,7 +113,7 @@
     self->rEyePortionWeight = v98;
   }
 
-  v101 = objc_msgSend_objectForKeyedSubscript_(v4, v99, @"MouthPortionLeft", v100);
+  v101 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v99, @"MouthPortionLeft", v100);
   v105 = v101;
   if (v101)
   {
@@ -121,7 +121,7 @@
     self->mouthPortionLeft = v106;
   }
 
-  v109 = objc_msgSend_objectForKeyedSubscript_(v4, v107, @"MouthPortionTop", v108);
+  v109 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v107, @"MouthPortionTop", v108);
   v113 = v109;
   if (v109)
   {
@@ -129,7 +129,7 @@
     self->mouthPortionTop = v114;
   }
 
-  v117 = objc_msgSend_objectForKeyedSubscript_(v4, v115, @"MouthPortionWidth", v116);
+  v117 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v115, @"MouthPortionWidth", v116);
   v121 = v117;
   if (v117)
   {
@@ -137,7 +137,7 @@
     self->mouthPortionWidth = v122;
   }
 
-  v125 = objc_msgSend_objectForKeyedSubscript_(v4, v123, @"MouthPortionHeight", v124);
+  v125 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v123, @"MouthPortionHeight", v124);
   v129 = v125;
   if (v125)
   {
@@ -145,7 +145,7 @@
     self->mouthHeight = v130;
   }
 
-  v133 = objc_msgSend_objectForKeyedSubscript_(v4, v131, @"MouthPortionWeight", v132);
+  v133 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v131, @"MouthPortionWeight", v132);
   v137 = v133;
   if (v133)
   {
@@ -153,7 +153,7 @@
     self->mouthPortionWeigth = v138;
   }
 
-  v141 = objc_msgSend_objectForKeyedSubscript_(v4, v139, @"BlinkScoreStrength", v140);
+  v141 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v139, @"BlinkScoreStrength", v140);
   v145 = v141;
   if (v141)
   {

@@ -1,15 +1,15 @@
 @interface PUPhotoEditPortraitFocusOverlayViewController
-- (BOOL)_isValidRect:(CGRect)a3;
+- (BOOL)_isValidRect:(CGRect)rect;
 - (CGRect)currentFocusRect;
 - (PUPhotoEditPortraitFocusDelegate)portraitFocusDelegate;
-- (PUPhotoEditPortraitFocusOverlayViewController)initWithMediaView:(id)a3 isHDR:(BOOL)a4 delegate:(id)a5;
+- (PUPhotoEditPortraitFocusOverlayViewController)initWithMediaView:(id)view isHDR:(BOOL)r delegate:(id)delegate;
 - (PUPhotoEditToolControllerDelegate)delegate;
-- (void)focusPointChanged:(CGPoint)a3;
+- (void)focusPointChanged:(CGPoint)changed;
 - (void)mediaViewIsReady;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PUPhotoEditPortraitFocusOverlayViewController
@@ -33,20 +33,20 @@
   if (([(PXUIPortraitFocusView *)self->_portraitFocusView drawingEnabled]& 1) == 0)
   {
     [(PXUIPortraitFocusView *)self->_portraitFocusView setDrawingEnabled:1];
-    v3 = [(PUPhotoEditPortraitFocusOverlayViewController *)self view];
-    [v3 setNeedsDisplay];
+    view = [(PUPhotoEditPortraitFocusOverlayViewController *)self view];
+    [view setNeedsDisplay];
   }
 }
 
 - (CGRect)currentFocusRect
 {
-  v3 = [(PUPhotoEditPortraitFocusOverlayViewController *)self delegate];
-  [v3 toolControllerOriginalImageSize:0];
+  delegate = [(PUPhotoEditPortraitFocusOverlayViewController *)self delegate];
+  [delegate toolControllerOriginalImageSize:0];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(PUPhotoEditPortraitFocusOverlayViewController *)self portraitFocusDelegate];
-  [v8 currentFocusRect];
+  portraitFocusDelegate = [(PUPhotoEditPortraitFocusOverlayViewController *)self portraitFocusDelegate];
+  [portraitFocusDelegate currentFocusRect];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -62,9 +62,9 @@
   v34.size.width = v14;
   v34.size.height = v16;
   v18 = CGRectGetMidY(v34) * v7;
-  v19 = [(PUPhotoEditPortraitFocusOverlayViewController *)self delegate];
-  v20 = [(PUPhotoEditPortraitFocusOverlayViewController *)self view];
-  [v19 toolController:0 viewPointFromOriginalPoint:v20 view:{MidX * v5, v18}];
+  delegate2 = [(PUPhotoEditPortraitFocusOverlayViewController *)self delegate];
+  view = [(PUPhotoEditPortraitFocusOverlayViewController *)self view];
+  [delegate2 toolController:0 viewPointFromOriginalPoint:view view:{MidX * v5, v18}];
   v22 = v21;
   v24 = v23;
 
@@ -101,13 +101,13 @@
   return result;
 }
 
-- (void)focusPointChanged:(CGPoint)a3
+- (void)focusPointChanged:(CGPoint)changed
 {
-  y = a3.y;
-  x = a3.x;
+  y = changed.y;
+  x = changed.x;
   v44 = *MEMORY[0x1E69E9840];
-  v6 = [(PUPhotoEditPortraitFocusOverlayViewController *)self delegate];
-  [v6 toolControllerOriginalImageSize:0];
+  delegate = [(PUPhotoEditPortraitFocusOverlayViewController *)self delegate];
+  [delegate toolControllerOriginalImageSize:0];
   v8 = v7;
   v10 = v9;
 
@@ -123,9 +123,9 @@
 
   else
   {
-    v14 = [(PUPhotoEditPortraitFocusOverlayViewController *)self delegate];
-    v15 = [(PUPhotoEditPortraitFocusOverlayViewController *)self view];
-    [v14 toolController:0 originalPointFromViewPoint:v15 view:{x, y}];
+    delegate2 = [(PUPhotoEditPortraitFocusOverlayViewController *)self delegate];
+    view = [(PUPhotoEditPortraitFocusOverlayViewController *)self view];
+    [delegate2 toolController:0 originalPointFromViewPoint:view view:{x, y}];
     v17 = v16;
     v19 = v18;
 
@@ -170,21 +170,21 @@
 
     v29 = *v21.i64 + -0.1 / v11;
     v30 = *&v21.i64[1] + -0.1;
-    v31 = [(PUPhotoEditPortraitFocusOverlayViewController *)self portraitFocusDelegate];
-    [v31 focusRectChanged:{v29, v30, 0.2 / v11, 0.2}];
+    portraitFocusDelegate = [(PUPhotoEditPortraitFocusOverlayViewController *)self portraitFocusDelegate];
+    [portraitFocusDelegate focusRectChanged:{v29, v30, 0.2 / v11, 0.2}];
 
     [(PXUIPortraitFocusView *)self->_portraitFocusView animateNextRender];
     [(PXUIPortraitFocusView *)self->_portraitFocusView setNeedsDisplay];
   }
 }
 
-- (BOOL)_isValidRect:(CGRect)a3
+- (BOOL)_isValidRect:(CGRect)rect
 {
-  v3 = fabs(a3.origin.y) != INFINITY;
-  v4 = (*&a3.origin.x & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && v3;
-  v5 = fabs(a3.size.height);
-  v6 = a3.size.width >= 0.0;
-  if (a3.size.height < 0.0)
+  v3 = fabs(rect.origin.y) != INFINITY;
+  v4 = (*&rect.origin.x & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && v3;
+  v5 = fabs(rect.size.height);
+  v6 = rect.size.width >= 0.0;
+  if (rect.size.height < 0.0)
   {
     v6 = 0;
   }
@@ -194,27 +194,27 @@
     v6 = 0;
   }
 
-  v7 = (*&a3.size.width & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && v6;
+  v7 = (*&rect.size.width & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && v6;
   return v4 && v7;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = PUPhotoEditPortraitFocusOverlayViewController;
-  v7 = a4;
-  [(PUPhotoEditPortraitFocusOverlayViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(PUPhotoEditPortraitFocusOverlayViewController *)self view];
-  [v8 setAlpha:0.0];
+  coordinatorCopy = coordinator;
+  [(PUPhotoEditPortraitFocusOverlayViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  view = [(PUPhotoEditPortraitFocusOverlayViewController *)self view];
+  [view setAlpha:0.0];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __100__PUPhotoEditPortraitFocusOverlayViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_1E7B7DC38;
   v9[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v9];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v9];
 }
 
 void __100__PUPhotoEditPortraitFocusOverlayViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -247,22 +247,22 @@ void __100__PUPhotoEditPortraitFocusOverlayViewController_viewWillTransitionToSi
   [v1 setAlpha:1.0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUPhotoEditPortraitFocusOverlayViewController;
-  [(PUPhotoEditPortraitFocusOverlayViewController *)&v4 viewWillAppear:a3];
+  [(PUPhotoEditPortraitFocusOverlayViewController *)&v4 viewWillAppear:appear];
   [(PXUIPortraitFocusView *)self->_portraitFocusView installAssociatedMediaViewGesture];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(PXUIPortraitFocusView *)self->_portraitFocusView setDrawingEnabled:0];
   [(PXUIPortraitFocusView *)self->_portraitFocusView removeAssociatedMediaViewGesture];
   v5.receiver = self;
   v5.super_class = PUPhotoEditPortraitFocusOverlayViewController;
-  [(PUPhotoEditPortraitFocusOverlayViewController *)&v5 viewWillDisappear:v3];
+  [(PUPhotoEditPortraitFocusOverlayViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -276,10 +276,10 @@ void __100__PUPhotoEditPortraitFocusOverlayViewController_viewWillTransitionToSi
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(PUPhotoEditPortraitFocusOverlayViewController *)self parentViewController];
-  v13 = [v12 view];
-  v14 = [(NUMediaView *)self->_mediaView superview];
-  [v13 convertRect:v14 fromView:{v5, v7, v9, v11}];
+  parentViewController = [(PUPhotoEditPortraitFocusOverlayViewController *)self parentViewController];
+  view = [parentViewController view];
+  superview = [(NUMediaView *)self->_mediaView superview];
+  [view convertRect:superview fromView:{v5, v7, v9, v11}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -292,20 +292,20 @@ void __100__PUPhotoEditPortraitFocusOverlayViewController_viewWillTransitionToSi
   v23 = CGPathCreateWithRect(v27, 0);
   [v3 setPath:v23];
   CGPathRelease(v23);
-  v24 = [(PUPhotoEditPortraitFocusOverlayViewController *)self view];
-  v25 = [v24 layer];
-  [v25 setMask:v3];
+  view2 = [(PUPhotoEditPortraitFocusOverlayViewController *)self view];
+  layer = [view2 layer];
+  [layer setMask:v3];
 }
 
-- (PUPhotoEditPortraitFocusOverlayViewController)initWithMediaView:(id)a3 isHDR:(BOOL)a4 delegate:(id)a5
+- (PUPhotoEditPortraitFocusOverlayViewController)initWithMediaView:(id)view isHDR:(BOOL)r delegate:(id)delegate
 {
-  v6 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  rCopy = r;
+  viewCopy = view;
+  delegateCopy = delegate;
+  v12 = delegateCopy;
+  if (viewCopy)
   {
-    if (v11)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
@@ -313,8 +313,8 @@ void __100__PUPhotoEditPortraitFocusOverlayViewController_viewWillTransitionToSi
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PUPhotoEditPortraitFocusOverlayViewController.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"mediaView != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoEditPortraitFocusOverlayViewController.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"mediaView != nil"}];
 
     if (v12)
     {
@@ -322,8 +322,8 @@ void __100__PUPhotoEditPortraitFocusOverlayViewController_viewWillTransitionToSi
     }
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"PUPhotoEditPortraitFocusOverlayViewController.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"delegate != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUPhotoEditPortraitFocusOverlayViewController.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"delegate != nil"}];
 
 LABEL_3:
   v20.receiver = self;
@@ -332,9 +332,9 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_mediaView, a3);
+    objc_storeStrong(&v13->_mediaView, view);
     objc_storeWeak(&v14->_delegate, v12);
-    v15 = [objc_alloc(MEMORY[0x1E69C3C18]) initWithMediaView:v10 isHDR:v6];
+    v15 = [objc_alloc(MEMORY[0x1E69C3C18]) initWithMediaView:viewCopy isHDR:rCopy];
     portraitFocusView = v14->_portraitFocusView;
     v14->_portraitFocusView = v15;
 

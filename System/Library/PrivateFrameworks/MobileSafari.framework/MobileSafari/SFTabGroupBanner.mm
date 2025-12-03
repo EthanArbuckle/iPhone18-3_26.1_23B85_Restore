@@ -1,27 +1,27 @@
 @interface SFTabGroupBanner
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SFTabGroupBanner)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SFTabGroupBanner)initWithFrame:(CGRect)frame;
 - (void)_updateToolbarItems;
-- (void)setCollaborationButton:(id)a3;
-- (void)setTabGroup:(id)a3;
-- (void)setTabGroupTapAction:(id)a3;
+- (void)setCollaborationButton:(id)button;
+- (void)setTabGroup:(id)group;
+- (void)setTabGroupTapAction:(id)action;
 - (void)themeDidChange;
 @end
 
 @implementation SFTabGroupBanner
 
-- (SFTabGroupBanner)initWithFrame:(CGRect)a3
+- (SFTabGroupBanner)initWithFrame:(CGRect)frame
 {
   v33[4] = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = SFTabGroupBanner;
-  v3 = [(SFPinnableBanner *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFPinnableBanner *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SFPinnableBanner *)v3 setSeparableFromStatusBar:0];
-    v5 = [MEMORY[0x1E69C8880] isSolariumEnabled];
-    if (v5)
+    isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    if (isSolariumEnabled)
     {
       v6 = 10.0;
     }
@@ -31,7 +31,7 @@
       v6 = 0.0;
     }
 
-    if ((v5 & 1) == 0)
+    if ((isSolariumEnabled & 1) == 0)
     {
       v7 = [SFThemeColorEffectView alloc];
       v8 = [MEMORY[0x1E69DC730] effectWithStyle:10];
@@ -59,21 +59,21 @@
     [(UIToolbar *)v4->_toolbar setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SFTabGroupBanner *)v4 addSubview:v4->_toolbar];
     v26 = MEMORY[0x1E696ACD8];
-    v30 = [(UIToolbar *)v4->_toolbar leadingAnchor];
-    v29 = [(SFTabGroupBanner *)v4 leadingAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    leadingAnchor = [(UIToolbar *)v4->_toolbar leadingAnchor];
+    leadingAnchor2 = [(SFTabGroupBanner *)v4 leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v33[0] = v28;
-    v27 = [(UIToolbar *)v4->_toolbar widthAnchor];
-    v15 = [(SFTabGroupBanner *)v4 widthAnchor];
-    v16 = [v27 constraintEqualToAnchor:v15];
+    widthAnchor = [(UIToolbar *)v4->_toolbar widthAnchor];
+    widthAnchor2 = [(SFTabGroupBanner *)v4 widthAnchor];
+    v16 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v33[1] = v16;
-    v17 = [(UIToolbar *)v4->_toolbar topAnchor];
-    v18 = [(SFTabGroupBanner *)v4 topAnchor];
-    v19 = [v17 constraintGreaterThanOrEqualToAnchor:v18 constant:v6];
+    topAnchor = [(UIToolbar *)v4->_toolbar topAnchor];
+    topAnchor2 = [(SFTabGroupBanner *)v4 topAnchor];
+    v19 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:v6];
     v33[2] = v19;
-    v20 = [(UIToolbar *)v4->_toolbar heightAnchor];
-    v21 = [(SFTabGroupBanner *)v4 heightAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:v6 * -2.0];
+    heightAnchor = [(UIToolbar *)v4->_toolbar heightAnchor];
+    heightAnchor2 = [(SFTabGroupBanner *)v4 heightAnchor];
+    v22 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:v6 * -2.0];
     v33[3] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
     [v26 activateConstraints:v23];
@@ -84,55 +84,55 @@
   return v4;
 }
 
-- (void)setTabGroup:(id)a3
+- (void)setTabGroup:(id)group
 {
-  v5 = a3;
-  if (self->_tabGroup != v5)
+  groupCopy = group;
+  if (self->_tabGroup != groupCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_tabGroup, a3);
+    v6 = groupCopy;
+    objc_storeStrong(&self->_tabGroup, group);
     [(SFTabGroupTitleView *)self->_titleView setTabGroup:v6];
     [(SFTabGroupTitleView *)self->_titleView sizeToFit];
     [(SFTabGroupBanner *)self _updateToolbarItems];
-    v5 = v6;
+    groupCopy = v6;
   }
 }
 
-- (void)setTabGroupTapAction:(id)a3
+- (void)setTabGroupTapAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_tabGroupTapAction, a3);
+    objc_storeStrong(&self->_tabGroupTapAction, action);
     [(SFTabGroupTitleView *)self->_titleView removeActionForIdentifier:@"com.apple.mobilesafari.TabGroupTap" forControlEvents:64];
-    [(SFTabGroupTitleView *)self->_titleView addAction:v5 forControlEvents:64];
+    [(SFTabGroupTitleView *)self->_titleView addAction:actionCopy forControlEvents:64];
   }
 }
 
-- (void)setCollaborationButton:(id)a3
+- (void)setCollaborationButton:(id)button
 {
-  v5 = a3;
-  if (self->_collaborationButton != v5)
+  buttonCopy = button;
+  if (self->_collaborationButton != buttonCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_collaborationButton, a3);
+    v6 = buttonCopy;
+    objc_storeStrong(&self->_collaborationButton, button);
     [(SFTabGroupBanner *)self _updateToolbarItems];
-    v5 = v6;
+    buttonCopy = v6;
   }
 }
 
 - (void)themeDidChange
 {
-  v3 = [(SFPinnableBanner *)self theme];
-  [(SFThemeColorEffectView *)self->_backdrop setTheme:v3];
-  -[SFTabGroupBanner setOverrideUserInterfaceStyle:](self, "setOverrideUserInterfaceStyle:", [v3 userInterfaceStyle]);
+  theme = [(SFPinnableBanner *)self theme];
+  [(SFThemeColorEffectView *)self->_backdrop setTheme:theme];
+  -[SFTabGroupBanner setOverrideUserInterfaceStyle:](self, "setOverrideUserInterfaceStyle:", [theme userInterfaceStyle]);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   LODWORD(v3) = 1148846080;
   LODWORD(v4) = 1112014848;
-  [(SFTabGroupBanner *)self systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:v3, v4];
+  [(SFTabGroupBanner *)self systemLayoutSizeFittingSize:fits.width withHorizontalFittingPriority:fits.height verticalFittingPriority:v3, v4];
   result.height = v6;
   result.width = v5;
   return result;
@@ -144,8 +144,8 @@
   v3 = MEMORY[0x1E695DF70];
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:self->_titleView];
   v9[0] = v4;
-  v5 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
-  v9[1] = v5;
+  flexibleSpaceItem = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+  v9[1] = flexibleSpaceItem;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v7 = [v3 arrayWithArray:v6];
 

@@ -1,32 +1,32 @@
 @interface PSGInputSuggester
 + (id)sharedInstance;
-- (PSGInputSuggester)initWithClient:(id)a3;
-- (void)_reportSpeedMetricWithData:(id)a3;
+- (PSGInputSuggester)initWithClient:(id)client;
+- (void)_reportSpeedMetricWithData:(id)data;
 - (void)hibernate;
-- (void)inputSuggestionsWithRequest:(id)a3 completion:(id)a4;
-- (void)logMetricForEventType:(unsigned __int8)a3 externalMetadata:(id)a4 predictedValues:(id)a5;
-- (void)logMetricForEventType:(unsigned __int8)a3 externalMetadata:(id)a4 request:(id)a5 responseItems:(id)a6;
-- (void)logTimeoutForRequest:(id)a3;
+- (void)inputSuggestionsWithRequest:(id)request completion:(id)completion;
+- (void)logMetricForEventType:(unsigned __int8)type externalMetadata:(id)metadata predictedValues:(id)values;
+- (void)logMetricForEventType:(unsigned __int8)type externalMetadata:(id)metadata request:(id)request responseItems:(id)items;
+- (void)logTimeoutForRequest:(id)request;
 - (void)warmUp;
-- (void)warmUpForLocaleIdentifier:(id)a3;
+- (void)warmUpForLocaleIdentifier:(id)identifier;
 @end
 
 @implementation PSGInputSuggester
 
 - (void)warmUp
 {
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v4 localeIdentifier];
-  [(PSGInputSuggester *)self warmUpForLocaleIdentifier:v3];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  [(PSGInputSuggester *)self warmUpForLocaleIdentifier:localeIdentifier];
 }
 
-- (void)logTimeoutForRequest:(id)a3
+- (void)logTimeoutForRequest:(id)request
 {
-  v4 = a3;
-  if (v4 || (v4 = self->_lastRequest) != 0)
+  requestCopy = request;
+  if (requestCopy || (requestCopy = self->_lastRequest) != 0)
   {
-    p_super = &v4->super;
-    [(PSGInputSuggesterClient *)self->_client logErrorForRequest:v4 trigger:0 errorType:0];
+    p_super = &requestCopy->super;
+    [(PSGInputSuggesterClient *)self->_client logErrorForRequest:requestCopy trigger:0 errorType:0];
   }
 
   else
@@ -40,12 +40,12 @@
   }
 }
 
-- (void)logMetricForEventType:(unsigned __int8)a3 externalMetadata:(id)a4 predictedValues:(id)a5
+- (void)logMetricForEventType:(unsigned __int8)type externalMetadata:(id)metadata predictedValues:(id)values
 {
-  v6 = a3;
+  typeCopy = type;
   v58 = *MEMORY[0x277D85DE8];
-  v29 = a4;
-  v28 = a5;
+  metadataCopy = metadata;
+  valuesCopy = values;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -58,41 +58,41 @@
   v45 = __Block_byref_object_copy__9;
   v46 = __Block_byref_object_dispose__10;
   v47 = 0;
-  if (v6 == 2)
+  if (typeCopy == 2)
   {
     v22 = psg_default_log_handle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v57 = v29;
+      v57 = metadataCopy;
       _os_log_debug_impl(&dword_260D18000, v22, OS_LOG_TYPE_DEBUG, "[Speed] %@", buf, 0xCu);
     }
 
-    [(PSGInputSuggester *)self _reportSpeedMetricWithData:v29];
+    [(PSGInputSuggester *)self _reportSpeedMetricWithData:metadataCopy];
     goto LABEL_36;
   }
 
-  v26 = v6;
-  if (v6 == 1)
+  v26 = typeCopy;
+  if (typeCopy == 1)
   {
-    v8 = [(_PASTuple2 *)self->_lastImpression first];
+    first = [(_PASTuple2 *)self->_lastImpression first];
     v9 = v49[5];
-    v49[5] = v8;
+    v49[5] = first;
 
-    v10 = [(_PASTuple2 *)self->_lastImpression second];
+    second = [(_PASTuple2 *)self->_lastImpression second];
     v11 = v43[5];
-    v43[5] = v10;
+    v43[5] = second;
   }
 
   else
   {
-    if (v6)
+    if (typeCopy)
     {
       log = psg_default_log_handle();
       if (os_log_type_enabled(log, OS_LOG_TYPE_FAULT))
       {
         *buf = 67109120;
-        LODWORD(v57) = v6;
+        LODWORD(v57) = typeCopy;
         _os_log_fault_impl(&dword_260D18000, log, OS_LOG_TYPE_FAULT, "Unknown event type: %d", buf, 8u);
       }
 
@@ -140,14 +140,14 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  if ([v28 count])
+  if ([valuesCopy count])
   {
     log = objc_opt_new();
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = v28;
+    obj = valuesCopy;
     v12 = [obj countByEnumeratingWithState:&v37 objects:v55 count:16];
     if (v12)
     {
@@ -181,8 +181,8 @@ LABEL_41:
                 }
 
                 v19 = *(*(&v33 + 1) + 8 * j);
-                v20 = [v19 predictedValue];
-                v21 = [v14 isEqualToString:v20];
+                predictedValue = [v19 predictedValue];
+                v21 = [v14 isEqualToString:predictedValue];
 
                 if (v21)
                 {
@@ -210,7 +210,7 @@ LABEL_24:
       while (v12);
     }
 
-    [(PSGInputSuggester *)self logMetricForEventType:v26 externalMetadata:v29 request:v49[5] responseItems:log];
+    [(PSGInputSuggester *)self logMetricForEventType:v26 externalMetadata:metadataCopy request:v49[5] responseItems:log];
     goto LABEL_35;
   }
 
@@ -221,7 +221,7 @@ LABEL_24:
     _os_log_impl(&dword_260D18000, v25, OS_LOG_TYPE_DEFAULT, "No predictedValues given. Logging last recorded as a fallback.", buf, 2u);
   }
 
-  [(PSGInputSuggester *)self logMetricForEventType:v26 externalMetadata:v29 request:v49[5] responseItems:v43[5]];
+  [(PSGInputSuggester *)self logMetricForEventType:v26 externalMetadata:metadataCopy request:v49[5] responseItems:v43[5]];
 LABEL_36:
   _Block_object_dispose(&v42, 8);
 
@@ -243,13 +243,13 @@ void __76__PSGInputSuggester_logMetricForEventType_externalMetadata_predictedVal
   *(v6 + 40) = v5;
 }
 
-- (void)_reportSpeedMetricWithData:(id)a3
+- (void)_reportSpeedMetricWithData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  dataCopy = data;
+  if ([dataCopy count])
   {
-    v5 = [v4 objectForKeyedSubscript:@"keyboardLanguage"];
+    v5 = [dataCopy objectForKeyedSubscript:@"keyboardLanguage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -263,7 +263,7 @@ void __76__PSGInputSuggester_logMetricForEventType_externalMetadata_predictedVal
 
     if ([v6 length])
     {
-      v7 = [v4 objectForKeyedSubscript:@"keyboardRegion"];
+      v7 = [dataCopy objectForKeyedSubscript:@"keyboardRegion"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -278,7 +278,7 @@ void __76__PSGInputSuggester_logMetricForEventType_externalMetadata_predictedVal
       if ([v8 length])
       {
         v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@_%@", v6, v8];
-        v10 = [v4 objectForKeyedSubscript:@"totalMessageDuration"];
+        v10 = [dataCopy objectForKeyedSubscript:@"totalMessageDuration"];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || (v11 = [v10 intValue], v11 == -1))
         {
@@ -286,7 +286,7 @@ void __76__PSGInputSuggester_logMetricForEventType_externalMetadata_predictedVal
           if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
           {
             *buf = 138412290;
-            v21 = v4;
+            v21 = dataCopy;
             _os_log_fault_impl(&dword_260D18000, v12, OS_LOG_TYPE_FAULT, "[SpeedMetric] messageDuration missing | data: %@", buf, 0xCu);
           }
         }
@@ -294,7 +294,7 @@ void __76__PSGInputSuggester_logMetricForEventType_externalMetadata_predictedVal
         else
         {
           v19 = v11;
-          v12 = [v4 objectForKeyedSubscript:@"totalMessageLength"];
+          v12 = [dataCopy objectForKeyedSubscript:@"totalMessageLength"];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0 || (v13 = [v12 intValue], v13 == -1))
           {
@@ -302,7 +302,7 @@ void __76__PSGInputSuggester_logMetricForEventType_externalMetadata_predictedVal
             if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
             {
               *buf = 138412290;
-              v21 = v4;
+              v21 = dataCopy;
               _os_log_fault_impl(&dword_260D18000, v14, OS_LOG_TYPE_FAULT, "[SpeedMetric] messageLength missing | data: %@", buf, 0xCu);
             }
           }
@@ -310,7 +310,7 @@ void __76__PSGInputSuggester_logMetricForEventType_externalMetadata_predictedVal
           else
           {
             v18 = v13;
-            v14 = [v4 objectForKeyedSubscript:@"totalWordsEntered"];
+            v14 = [dataCopy objectForKeyedSubscript:@"totalWordsEntered"];
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0 || (v15 = [v14 intValue], v15 == -1))
             {
@@ -318,7 +318,7 @@ void __76__PSGInputSuggester_logMetricForEventType_externalMetadata_predictedVal
               if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
               {
                 *buf = 138412290;
-                v21 = v4;
+                v21 = dataCopy;
                 _os_log_fault_impl(&dword_260D18000, v16, OS_LOG_TYPE_FAULT, "[SpeedMetric] messageWords missing | data: %@", buf, 0xCu);
               }
             }
@@ -337,7 +337,7 @@ void __76__PSGInputSuggester_logMetricForEventType_externalMetadata_predictedVal
         if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412290;
-          v21 = v4;
+          v21 = dataCopy;
           _os_log_fault_impl(&dword_260D18000, v9, OS_LOG_TYPE_FAULT, "[SpeedMetric] keyboardRegion missing | data: %@", buf, 0xCu);
         }
       }
@@ -349,7 +349,7 @@ void __76__PSGInputSuggester_logMetricForEventType_externalMetadata_predictedVal
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v21 = v4;
+        v21 = dataCopy;
         _os_log_fault_impl(&dword_260D18000, v8, OS_LOG_TYPE_FAULT, "[SpeedMetric] keyboardLanguage missing | data: %@", buf, 0xCu);
       }
     }
@@ -368,15 +368,15 @@ void __76__PSGInputSuggester_logMetricForEventType_externalMetadata_predictedVal
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logMetricForEventType:(unsigned __int8)a3 externalMetadata:(id)a4 request:(id)a5 responseItems:(id)a6
+- (void)logMetricForEventType:(unsigned __int8)type externalMetadata:(id)metadata request:(id)request responseItems:(id)items
 {
-  v8 = a3;
+  typeCopy = type;
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v8 == 2)
+  metadataCopy = metadata;
+  requestCopy = request;
+  itemsCopy = items;
+  v13 = itemsCopy;
+  if (typeCopy == 2)
   {
     lastImpression = psg_default_log_handle();
     if (os_log_type_enabled(lastImpression, OS_LOG_TYPE_FAULT))
@@ -393,13 +393,13 @@ LABEL_4:
     goto LABEL_25;
   }
 
-  if (![v12 count])
+  if (![itemsCopy count])
   {
     v20 = psg_default_log_handle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v29 = 67109120;
-      LODWORD(v30) = v8;
+      LODWORD(v30) = typeCopy;
       _os_log_error_impl(&dword_260D18000, v20, OS_LOG_TYPE_ERROR, "No response item specified for logging event type %d", &v29, 8u);
     }
 
@@ -408,17 +408,17 @@ LABEL_4:
     goto LABEL_25;
   }
 
-  if (v8 == 1)
+  if (typeCopy == 1)
   {
     v21 = self->_lastImpression;
     self->_lastImpression = 0;
 
-    v22 = [v10 objectForKey:@"pos"];
+    v22 = [metadataCopy objectForKey:@"pos"];
     lastImpression = v22;
     if (v22)
     {
-      v23 = [v22 unsignedIntegerValue];
-      if (v23 && v23 <= [v13 count])
+      unsignedIntegerValue = [v22 unsignedIntegerValue];
+      if (unsignedIntegerValue && unsignedIntegerValue <= [v13 count])
       {
         goto LABEL_22;
       }
@@ -427,7 +427,7 @@ LABEL_4:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v29 = 134217984;
-        v30 = v23;
+        v30 = unsignedIntegerValue;
         v25 = "position param (%tu) out of range";
 LABEL_27:
         _os_log_error_impl(&dword_260D18000, v24, OS_LOG_TYPE_ERROR, v25, &v29, 0xCu);
@@ -446,24 +446,24 @@ LABEL_27:
       }
     }
 
-    v23 = 10000;
+    unsignedIntegerValue = 10000;
 LABEL_22:
     v26 = psg_default_log_handle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       v28 = [v13 count];
       v29 = 134218240;
-      v30 = v23;
+      v30 = unsignedIntegerValue;
       v31 = 2048;
       v32 = v28;
       _os_log_debug_impl(&dword_260D18000, v26, OS_LOG_TYPE_DEBUG, "Logging engagement at position %tu of %tu item(s)", &v29, 0x16u);
     }
 
-    [(PSGInputSuggesterClient *)self->_client logEngagement:v13 request:v11 position:v23];
+    [(PSGInputSuggesterClient *)self->_client logEngagement:v13 request:requestCopy position:unsignedIntegerValue];
     goto LABEL_25;
   }
 
-  if (v8)
+  if (typeCopy)
   {
     lastImpression = psg_default_log_handle();
     if (!os_log_type_enabled(lastImpression, OS_LOG_TYPE_FAULT))
@@ -472,15 +472,15 @@ LABEL_22:
     }
 
     v29 = 67109120;
-    LODWORD(v30) = v8;
+    LODWORD(v30) = typeCopy;
     v15 = "Unknown event type: %d";
     v16 = lastImpression;
     v17 = 8;
     goto LABEL_4;
   }
 
-  [(PSGInputSuggesterClient *)self->_client logImpression:v13 request:v11];
-  v18 = [MEMORY[0x277D42648] tupleWithFirst:v11 second:v13];
+  [(PSGInputSuggesterClient *)self->_client logImpression:v13 request:requestCopy];
+  v18 = [MEMORY[0x277D42648] tupleWithFirst:requestCopy second:v13];
   v19 = self->_lastImpression;
   self->_lastImpression = v18;
 
@@ -503,10 +503,10 @@ LABEL_25:
   [v2 clearLMCache];
 }
 
-- (void)warmUpForLocaleIdentifier:(id)a3
+- (void)warmUpForLocaleIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = psg_default_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -523,12 +523,12 @@ LABEL_25:
   v8 = v6;
   v23 = v8;
   [(PSGInputSuggesterClient *)client warmUpWithCompletion:v22];
-  v9 = [MEMORY[0x277D3A468] sharedInstance];
+  mEMORY[0x277D3A468] = [MEMORY[0x277D3A468] sharedInstance];
   v10 = psg_default_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v9;
+    v25 = mEMORY[0x277D3A468];
     _os_log_impl(&dword_260D18000, v10, OS_LOG_TYPE_INFO, "PSGInputSuggester serving endpoint warming up %@", buf, 0xCu);
   }
 
@@ -537,13 +537,13 @@ LABEL_25:
   v19[1] = 3221225472;
   v19[2] = __47__PSGInputSuggester_warmUpForLocaleIdentifier___block_invoke_14;
   v19[3] = &unk_279ABCD78;
-  v12 = v9;
+  v12 = mEMORY[0x277D3A468];
   v20 = v12;
   v13 = v11;
   v21 = v13;
   [v12 warmUpWithCompletion:v19];
   v14 = +[PSGWordBoundaryFSTGrammar sharedInstance];
-  [v14 warmUpForLocaleIdentifier:v4];
+  [v14 warmUpForLocaleIdentifier:identifierCopy];
 
   if ([MEMORY[0x277D425A0] waitForSemaphore:v8 timeoutSeconds:0.5] == 1)
   {
@@ -604,21 +604,21 @@ intptr_t __47__PSGInputSuggester_warmUpForLocaleIdentifier___block_invoke_14(uin
   return result;
 }
 
-- (void)inputSuggestionsWithRequest:(id)a3 completion:(id)a4
+- (void)inputSuggestionsWithRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_lastRequest, a3);
+  requestCopy = request;
+  completionCopy = completion;
+  objc_storeStrong(&self->_lastRequest, request);
   client = self->_client;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__PSGInputSuggester_inputSuggestionsWithRequest_completion___block_invoke;
   v12[3] = &unk_279ABCD50;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = requestCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = requestCopy;
   [(PSGInputSuggesterClient *)client inputSuggestionsWithRequest:v11 completion:v12];
 }
 
@@ -652,16 +652,16 @@ void __60__PSGInputSuggester_inputSuggestionsWithRequest_completion___block_invo
   *(v5 + 32) = v4;
 }
 
-- (PSGInputSuggester)initWithClient:(id)a3
+- (PSGInputSuggester)initWithClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v11.receiver = self;
   v11.super_class = PSGInputSuggester;
   v6 = [(PSGInputSuggester *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_client, a3);
+    objc_storeStrong(&v6->_client, client);
     v8 = [MEMORY[0x277D425A0] autoreleasingSerialQueueWithLabel:"PSGInputSuggester.lastPrediction" qosClass:9];
     lastPredictionQueue = v7->_lastPredictionQueue;
     v7->_lastPredictionQueue = v8;
@@ -676,7 +676,7 @@ void __60__PSGInputSuggester_inputSuggestionsWithRequest_completion___block_invo
   block[1] = 3221225472;
   block[2] = __35__PSGInputSuggester_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2, block);

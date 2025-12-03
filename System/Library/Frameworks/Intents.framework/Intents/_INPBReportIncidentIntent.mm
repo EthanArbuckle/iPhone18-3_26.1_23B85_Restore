@@ -1,35 +1,35 @@
 @interface _INPBReportIncidentIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBReportIncidentIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBReportIncidentIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasStartTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasStartTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBReportIncidentIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBReportIncidentIntent *)self additionalDetails];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"additionalDetails"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  additionalDetails = [(_INPBReportIncidentIntent *)self additionalDetails];
+  dictionaryRepresentation = [additionalDetails dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"additionalDetails"];
 
-  v6 = [(_INPBReportIncidentIntent *)self incidentType];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"incidentType"];
+  incidentType = [(_INPBReportIncidentIntent *)self incidentType];
+  dictionaryRepresentation2 = [incidentType dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"incidentType"];
 
-  v8 = [(_INPBReportIncidentIntent *)self intentMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBReportIncidentIntent *)self intentMetadata];
+  dictionaryRepresentation3 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"intentMetadata"];
 
   if ([(_INPBReportIncidentIntent *)self hasIsClear])
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBReportIncidentIntent isClear](self, "isClear")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isClear"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isClear"];
   }
 
   if ([(_INPBReportIncidentIntent *)self hasStartTime])
@@ -37,14 +37,14 @@
     v11 = MEMORY[0x1E696AD98];
     [(_INPBReportIncidentIntent *)self startTime];
     v12 = [v11 numberWithDouble:?];
-    [v3 setObject:v12 forKeyedSubscript:@"startTime"];
+    [dictionary setObject:v12 forKeyedSubscript:@"startTime"];
   }
 
-  v13 = [(_INPBReportIncidentIntent *)self userLocation];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"userLocation"];
+  userLocation = [(_INPBReportIncidentIntent *)self userLocation];
+  dictionaryRepresentation4 = [userLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"userLocation"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -98,28 +98,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v12 ^ [(_INPBLocation *)self->_userLocation hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
-  v5 = [(_INPBReportIncidentIntent *)self additionalDetails];
-  v6 = [v4 additionalDetails];
-  if ((v5 != 0) == (v6 == 0))
+  additionalDetails = [(_INPBReportIncidentIntent *)self additionalDetails];
+  additionalDetails2 = [equalCopy additionalDetails];
+  if ((additionalDetails != 0) == (additionalDetails2 == 0))
   {
     goto LABEL_29;
   }
 
-  v7 = [(_INPBReportIncidentIntent *)self additionalDetails];
-  if (v7)
+  additionalDetails3 = [(_INPBReportIncidentIntent *)self additionalDetails];
+  if (additionalDetails3)
   {
-    v8 = v7;
-    v9 = [(_INPBReportIncidentIntent *)self additionalDetails];
-    v10 = [v4 additionalDetails];
-    v11 = [v9 isEqual:v10];
+    v8 = additionalDetails3;
+    additionalDetails4 = [(_INPBReportIncidentIntent *)self additionalDetails];
+    additionalDetails5 = [equalCopy additionalDetails];
+    v11 = [additionalDetails4 isEqual:additionalDetails5];
 
     if (!v11)
     {
@@ -131,20 +131,20 @@
   {
   }
 
-  v5 = [(_INPBReportIncidentIntent *)self incidentType];
-  v6 = [v4 incidentType];
-  if ((v5 != 0) == (v6 == 0))
+  additionalDetails = [(_INPBReportIncidentIntent *)self incidentType];
+  additionalDetails2 = [equalCopy incidentType];
+  if ((additionalDetails != 0) == (additionalDetails2 == 0))
   {
     goto LABEL_29;
   }
 
-  v12 = [(_INPBReportIncidentIntent *)self incidentType];
-  if (v12)
+  incidentType = [(_INPBReportIncidentIntent *)self incidentType];
+  if (incidentType)
   {
-    v13 = v12;
-    v14 = [(_INPBReportIncidentIntent *)self incidentType];
-    v15 = [v4 incidentType];
-    v16 = [v14 isEqual:v15];
+    v13 = incidentType;
+    incidentType2 = [(_INPBReportIncidentIntent *)self incidentType];
+    incidentType3 = [equalCopy incidentType];
+    v16 = [incidentType2 isEqual:incidentType3];
 
     if (!v16)
     {
@@ -156,20 +156,20 @@
   {
   }
 
-  v5 = [(_INPBReportIncidentIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  additionalDetails = [(_INPBReportIncidentIntent *)self intentMetadata];
+  additionalDetails2 = [equalCopy intentMetadata];
+  if ((additionalDetails != 0) == (additionalDetails2 == 0))
   {
     goto LABEL_29;
   }
 
-  v17 = [(_INPBReportIncidentIntent *)self intentMetadata];
-  if (v17)
+  intentMetadata = [(_INPBReportIncidentIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v18 = v17;
-    v19 = [(_INPBReportIncidentIntent *)self intentMetadata];
-    v20 = [v4 intentMetadata];
-    v21 = [v19 isEqual:v20];
+    v18 = intentMetadata;
+    intentMetadata2 = [(_INPBReportIncidentIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v21 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v21)
     {
@@ -181,36 +181,36 @@
   {
   }
 
-  v22 = [(_INPBReportIncidentIntent *)self hasIsClear];
-  if (v22 != [v4 hasIsClear])
+  hasIsClear = [(_INPBReportIncidentIntent *)self hasIsClear];
+  if (hasIsClear != [equalCopy hasIsClear])
   {
     goto LABEL_30;
   }
 
   if ([(_INPBReportIncidentIntent *)self hasIsClear])
   {
-    if ([v4 hasIsClear])
+    if ([equalCopy hasIsClear])
     {
       isClear = self->_isClear;
-      if (isClear != [v4 isClear])
+      if (isClear != [equalCopy isClear])
       {
         goto LABEL_30;
       }
     }
   }
 
-  v24 = [(_INPBReportIncidentIntent *)self hasStartTime];
-  if (v24 != [v4 hasStartTime])
+  hasStartTime = [(_INPBReportIncidentIntent *)self hasStartTime];
+  if (hasStartTime != [equalCopy hasStartTime])
   {
     goto LABEL_30;
   }
 
   if ([(_INPBReportIncidentIntent *)self hasStartTime])
   {
-    if ([v4 hasStartTime])
+    if ([equalCopy hasStartTime])
     {
       startTime = self->_startTime;
-      [v4 startTime];
+      [equalCopy startTime];
       if (startTime != v26)
       {
         goto LABEL_30;
@@ -218,12 +218,12 @@
     }
   }
 
-  v5 = [(_INPBReportIncidentIntent *)self userLocation];
-  v6 = [v4 userLocation];
-  if ((v5 != 0) != (v6 == 0))
+  additionalDetails = [(_INPBReportIncidentIntent *)self userLocation];
+  additionalDetails2 = [equalCopy userLocation];
+  if ((additionalDetails != 0) != (additionalDetails2 == 0))
   {
-    v27 = [(_INPBReportIncidentIntent *)self userLocation];
-    if (!v27)
+    userLocation = [(_INPBReportIncidentIntent *)self userLocation];
+    if (!userLocation)
     {
 
 LABEL_33:
@@ -231,10 +231,10 @@ LABEL_33:
       goto LABEL_31;
     }
 
-    v28 = v27;
-    v29 = [(_INPBReportIncidentIntent *)self userLocation];
-    v30 = [v4 userLocation];
-    v31 = [v29 isEqual:v30];
+    v28 = userLocation;
+    userLocation2 = [(_INPBReportIncidentIntent *)self userLocation];
+    userLocation3 = [equalCopy userLocation];
+    v31 = [userLocation2 isEqual:userLocation3];
 
     if (v31)
     {
@@ -254,16 +254,16 @@ LABEL_31:
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBReportIncidentIntent allocWithZone:](_INPBReportIncidentIntent init];
-  v6 = [(_INPBString *)self->_additionalDetails copyWithZone:a3];
+  v6 = [(_INPBString *)self->_additionalDetails copyWithZone:zone];
   [(_INPBReportIncidentIntent *)v5 setAdditionalDetails:v6];
 
-  v7 = [(_INPBSupportedTrafficIncidentType *)self->_incidentType copyWithZone:a3];
+  v7 = [(_INPBSupportedTrafficIncidentType *)self->_incidentType copyWithZone:zone];
   [(_INPBReportIncidentIntent *)v5 setIncidentType:v7];
 
-  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v8 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBReportIncidentIntent *)v5 setIntentMetadata:v8];
 
   if ([(_INPBReportIncidentIntent *)self hasIsClear])
@@ -277,60 +277,60 @@ LABEL_31:
     [(_INPBReportIncidentIntent *)v5 setStartTime:?];
   }
 
-  v9 = [(_INPBLocation *)self->_userLocation copyWithZone:a3];
+  v9 = [(_INPBLocation *)self->_userLocation copyWithZone:zone];
   [(_INPBReportIncidentIntent *)v5 setUserLocation:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBReportIncidentIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBReportIncidentIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBReportIncidentIntent)initWithCoder:(id)a3
+- (_INPBReportIncidentIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBReportIncidentIntent *)self initWithData:v6];
+    self = [(_INPBReportIncidentIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(_INPBReportIncidentIntent *)self additionalDetails];
+  toCopy = to;
+  additionalDetails = [(_INPBReportIncidentIntent *)self additionalDetails];
 
-  if (v4)
+  if (additionalDetails)
   {
-    v5 = [(_INPBReportIncidentIntent *)self additionalDetails];
+    additionalDetails2 = [(_INPBReportIncidentIntent *)self additionalDetails];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBReportIncidentIntent *)self incidentType];
+  incidentType = [(_INPBReportIncidentIntent *)self incidentType];
 
-  if (v6)
+  if (incidentType)
   {
-    v7 = [(_INPBReportIncidentIntent *)self incidentType];
+    incidentType2 = [(_INPBReportIncidentIntent *)self incidentType];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBReportIncidentIntent *)self intentMetadata];
+  intentMetadata = [(_INPBReportIncidentIntent *)self intentMetadata];
 
-  if (v8)
+  if (intentMetadata)
   {
-    v9 = [(_INPBReportIncidentIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBReportIncidentIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -346,21 +346,21 @@ LABEL_31:
     PBDataWriterWriteDoubleField();
   }
 
-  v12 = [(_INPBReportIncidentIntent *)self userLocation];
+  userLocation = [(_INPBReportIncidentIntent *)self userLocation];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (userLocation)
   {
-    v14 = [(_INPBReportIncidentIntent *)self userLocation];
+    userLocation2 = [(_INPBReportIncidentIntent *)self userLocation];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
-- (void)setHasStartTime:(BOOL)a3
+- (void)setHasStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }

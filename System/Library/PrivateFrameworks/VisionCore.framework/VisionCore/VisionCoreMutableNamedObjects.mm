@@ -1,14 +1,14 @@
 @interface VisionCoreMutableNamedObjects
-- (BOOL)assignObject:(id)a3 toName:(id)a4 error:(id *)a5;
-- (VisionCoreMutableNamedObjects)initWithCapacity:(unint64_t)a3;
-- (VisionCoreMutableNamedObjects)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (uint64_t)_assignObject:(void *)a3 ofKind:(void *)a4 toName:(void *)a5 error:;
+- (BOOL)assignObject:(id)object toName:(id)name error:(id *)error;
+- (VisionCoreMutableNamedObjects)initWithCapacity:(unint64_t)capacity;
+- (VisionCoreMutableNamedObjects)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (uint64_t)_assignObject:(void *)object ofKind:(void *)kind toName:(void *)name error:;
 @end
 
 @implementation VisionCoreMutableNamedObjects
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [VisionCoreNamedObjects alloc];
   objects = self->super._objects;
@@ -16,79 +16,79 @@
   return [(VisionCoreNamedObjects *)v4 initWithDictionary:objects];
 }
 
-- (BOOL)assignObject:(id)a3 toName:(id)a4 error:(id *)a5
+- (BOOL)assignObject:(id)object toName:(id)name error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  Class = object_getClass(v9);
+  nameCopy = name;
+  objectCopy = object;
+  Class = object_getClass(objectCopy);
   v11 = NSStringFromClass(Class);
-  LOBYTE(a5) = [(VisionCoreMutableNamedObjects *)self _assignObject:v9 ofKind:v11 toName:v8 error:a5];
+  LOBYTE(error) = [(VisionCoreMutableNamedObjects *)self _assignObject:objectCopy ofKind:v11 toName:nameCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (uint64_t)_assignObject:(void *)a3 ofKind:(void *)a4 toName:(void *)a5 error:
+- (uint64_t)_assignObject:(void *)object ofKind:(void *)kind toName:(void *)name error:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  objectCopy = object;
+  kindCopy = kind;
+  if (self)
   {
     if (v9)
     {
-      v12 = [*(a1 + 8) objectForKey:v11];
-      if (v12)
+      objectCopy = [*(self + 8) objectForKey:kindCopy];
+      if (objectCopy)
       {
-        if (a5)
+        if (name)
         {
-          v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ has already been assigned %@", v11, v9];
-          *a5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:v13];
+          v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ has already been assigned %@", kindCopy, v9];
+          *name = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:v13];
         }
 
-        a1 = 0;
+        self = 0;
       }
 
       else
       {
-        [*(a1 + 8) setObject:v9 forKey:v11];
-        a1 = 1;
+        [*(self + 8) setObject:v9 forKey:kindCopy];
+        self = 1;
       }
     }
 
     else
     {
-      if (!a5)
+      if (!name)
       {
-        a1 = 0;
+        self = 0;
         goto LABEL_11;
       }
 
-      v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ cannot be nil", v10];
-      [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:v12];
-      *a5 = a1 = 0;
+      objectCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ cannot be nil", objectCopy];
+      [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:objectCopy];
+      *name = self = 0;
     }
   }
 
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
-- (VisionCoreMutableNamedObjects)initWithCapacity:(unint64_t)a3
+- (VisionCoreMutableNamedObjects)initWithCapacity:(unint64_t)capacity
 {
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a3];
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:capacity];
   v5 = [(VisionCoreNamedObjects *)self _initWithRetainedDictionary:v4];
 
   return v5;
 }
 
-- (VisionCoreMutableNamedObjects)initWithDictionary:(id)a3
+- (VisionCoreMutableNamedObjects)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v5 = v4;
-    v6 = [v4 mutableCopy];
+    v5 = dictionaryCopy;
+    v6 = [dictionaryCopy mutableCopy];
   }
 
   else

@@ -1,6 +1,6 @@
 @interface NSString
-- (id)_crStringByAppendingString:(void *)a3 locale:(int)a4 mergeHyphenatedWord:(char)a5 allowWhitespaceDelimiter:(uint64_t *)a6 appendedStringRange:;
-- (uint64_t)_codePointIsLatinCyrillicGreek:(__int16)a1;
+- (id)_crStringByAppendingString:(void *)string locale:(int)locale mergeHyphenatedWord:(char)word allowWhitespaceDelimiter:(uint64_t *)delimiter appendedStringRange:;
+- (uint64_t)_codePointIsLatinCyrillicGreek:(__int16)greek;
 @end
 
 @implementation NSString
@@ -162,37 +162,37 @@ void __53__NSString_CRStringUtilities___crStartsWithLowercase__block_invoke(uint
   }
 }
 
-- (id)_crStringByAppendingString:(void *)a3 locale:(int)a4 mergeHyphenatedWord:(char)a5 allowWhitespaceDelimiter:(uint64_t *)a6 appendedStringRange:
+- (id)_crStringByAppendingString:(void *)string locale:(int)locale mergeHyphenatedWord:(char)word allowWhitespaceDelimiter:(uint64_t *)delimiter appendedStringRange:
 {
   v11 = a2;
-  v12 = a3;
-  if (!a1)
+  stringCopy = string;
+  if (!self)
   {
     v19 = 0;
     goto LABEL_55;
   }
 
-  if (![a1 length])
+  if (![self length])
   {
-    v18 = v11;
+    selfCopy = v11;
 LABEL_10:
-    v19 = [v18 copy];
+    v19 = [selfCopy copy];
     goto LABEL_55;
   }
 
   if (![v11 length])
   {
-    v18 = a1;
+    selfCopy = self;
     goto LABEL_10;
   }
 
-  v13 = a1;
-  if ([CRImageReader languageIsChinese:v12]|| [CRImageReader languageIsJapanese:v12])
+  selfCopy2 = self;
+  if ([CRImageReader languageIsChinese:stringCopy]|| [CRImageReader languageIsJapanese:stringCopy])
   {
-    v45 = a5;
-    v14 = [v13 characterAtIndex:{objc_msgSend(v13, "length") - 1}];
+    wordCopy = word;
+    v14 = [selfCopy2 characterAtIndex:{objc_msgSend(selfCopy2, "length") - 1}];
     v15 = [v11 characterAtIndex:{objc_msgSend(v11, "length") - 1}];
-    v44 = a4;
+    localeCopy = locale;
     if (([(NSString *)v14 _codePointIsLatinCyrillicGreek:v16]& 1) != 0)
     {
       v17 = 1;
@@ -207,17 +207,17 @@ LABEL_10:
       }
     }
 
-    v20 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-    v43 = a6;
-    if ([v20 characterIsMember:v14])
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    delimiterCopy = delimiter;
+    if ([decimalDigitCharacterSet characterIsMember:v14])
     {
       v21 = 0;
     }
 
     else
     {
-      v22 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-      if ([v22 characterIsMember:v14])
+      punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+      if ([punctuationCharacterSet characterIsMember:v14])
       {
         v21 = 0;
       }
@@ -247,17 +247,17 @@ LABEL_10:
       }
     }
 
-    v29 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-    if ([v29 characterIsMember:v15])
+    decimalDigitCharacterSet2 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    if ([decimalDigitCharacterSet2 characterIsMember:v15])
     {
       v30 = 1;
-      a4 = v44;
+      locale = localeCopy;
     }
 
     else
     {
-      v31 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-      if ([v31 characterIsMember:v15])
+      punctuationCharacterSet2 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+      if ([punctuationCharacterSet2 characterIsMember:v15])
       {
         v30 = 1;
       }
@@ -271,7 +271,7 @@ LABEL_10:
         v17 = v32;
       }
 
-      a4 = v44;
+      locale = localeCopy;
     }
 
     if (((v17 & (v28 | v30) ^ 1) & (!v28 | v21)) != 0)
@@ -284,8 +284,8 @@ LABEL_10:
       v23 = @" ";
     }
 
-    a5 = v45;
-    a6 = v43;
+    word = wordCopy;
+    delimiter = delimiterCopy;
   }
 
   else
@@ -293,22 +293,22 @@ LABEL_10:
     v23 = @" ";
   }
 
-  if ([v13 _crEndsWithHyphen])
+  if ([selfCopy2 _crEndsWithHyphen])
   {
-    v34 = [v13 length];
-    if (a4)
+    v34 = [selfCopy2 length];
+    if (locale)
     {
-      v35 = [v13 substringToIndex:v34 - 1];
+      v35 = [selfCopy2 substringToIndex:v34 - 1];
 
       v23 = &stru_1F2BB4348;
-      v13 = v35;
+      selfCopy2 = v35;
     }
 
     else if (v34 >= 2)
     {
-      v36 = [v13 characterAtIndex:{objc_msgSend(v13, "length") - 2}];
-      v37 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      LODWORD(v36) = [v37 characterIsMember:v36];
+      v36 = [selfCopy2 characterAtIndex:{objc_msgSend(selfCopy2, "length") - 2}];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      LODWORD(v36) = [whitespaceCharacterSet characterIsMember:v36];
 
       if (!v36)
       {
@@ -317,23 +317,23 @@ LABEL_10:
     }
   }
 
-  if ((a5 & 1) == 0 && [(__CFString *)v23 isEqualToString:@" "])
+  if ((word & 1) == 0 && [(__CFString *)v23 isEqualToString:@" "])
   {
     v23 = &stru_1F2BB4348;
   }
 
-  if (a6)
+  if (delimiter)
   {
-    v38 = [v13 length];
+    v38 = [selfCopy2 length];
     v39 = [(__CFString *)v23 length]+ v38;
     v40 = [v11 length];
-    *a6 = v39;
-    a6[1] = v40;
+    *delimiter = v39;
+    delimiter[1] = v40;
   }
 
-  if ([v13 length])
+  if ([selfCopy2 length])
   {
-    v41 = [v13 stringByAppendingFormat:@"%@%@", v23, v11];
+    v41 = [selfCopy2 stringByAppendingFormat:@"%@%@", v23, v11];
   }
 
   else
@@ -355,23 +355,23 @@ void __48__NSString_CRStringUtilities___crEndsWithHyphen__block_invoke()
   _MergedGlobals_15 = v0;
 }
 
-- (uint64_t)_codePointIsLatinCyrillicGreek:(__int16)a1
+- (uint64_t)_codePointIsLatinCyrillicGreek:(__int16)greek
 {
-  a2.i16[0] = a1;
-  a2.i16[1] = a1 & 0xFFDF;
+  a2.i16[0] = greek;
+  a2.i16[1] = greek & 0xFFDF;
   v2 = vdup_lane_s16(a2, 0);
-  v2.i16[1] = a1 & 0xFFDF;
+  v2.i16[1] = greek & 0xFFDF;
   v3 = 1;
-  if ((vmaxv_u16(vcgt_u16(0x158001F001A0017, vadd_s16(v2, 0xFF08FF28FFBFFF40))) & 1) == 0 && (a1 - 880) >= 0x1C0u)
+  if ((vmaxv_u16(vcgt_u16(0x158001F001A0017, vadd_s16(v2, 0xFF08FF28FFBFFF40))) & 1) == 0 && (greek - 880) >= 0x1C0u)
   {
-    v4 = (a1 - 12592) < 0x60u || (a1 + 10320) < 0x50u;
-    LODWORD(v3) = (a1 & 0xFF00) == 0x1100 || v4;
-    if ((a1 & 0xFFE0) == 0xA960)
+    v4 = (greek - 12592) < 0x60u || (greek + 10320) < 0x50u;
+    LODWORD(v3) = (greek & 0xFF00) == 0x1100 || v4;
+    if ((greek & 0xFFE0) == 0xA960)
     {
       LODWORD(v3) = 1;
     }
 
-    if (((a1 + 21504) >> 4) >= 0x2BBu)
+    if (((greek + 21504) >> 4) >= 0x2BBu)
     {
       return v3;
     }

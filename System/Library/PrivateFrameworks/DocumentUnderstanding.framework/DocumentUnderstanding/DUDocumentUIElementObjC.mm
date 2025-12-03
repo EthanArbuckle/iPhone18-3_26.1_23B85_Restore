@@ -2,10 +2,10 @@
 - (CGPoint)absoluteOriginOnScreen;
 - (CGRect)frameInWindow;
 - (DUDocumentUIElementObjC)init;
-- (void)setClassDescriptor:(id)a3;
-- (void)setSuperviewClassNames:(id)a3;
-- (void)setText:(id)a3;
-- (void)setVersion:(id)a3;
+- (void)setClassDescriptor:(id)descriptor;
+- (void)setSuperviewClassNames:(id)names;
+- (void)setText:(id)text;
+- (void)setVersion:(id)version;
 @end
 
 @implementation DUDocumentUIElementObjC
@@ -28,27 +28,27 @@
   return result;
 }
 
-- (void)setSuperviewClassNames:(id)a3
+- (void)setSuperviewClassNames:(id)names
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(names, a2, names, v3, v4);
   objc_msgSend_setSuperviewClassNames_(self->_underlyingElement, v6, v9, v7, v8);
 }
 
-- (void)setClassDescriptor:(id)a3
+- (void)setClassDescriptor:(id)descriptor
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(descriptor, a2, descriptor, v3, v4);
   objc_msgSend_setClassDescriptor_(self->_underlyingElement, v6, v9, v7, v8);
 }
 
-- (void)setVersion:(id)a3
+- (void)setVersion:(id)version
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(version, a2, version, v3, v4);
   objc_msgSend_setVersion_(self->_underlyingElement, v6, v9, v7, v8);
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(text, a2, text, v3, v4);
   objc_msgSend_setText_(self->_underlyingElement, v6, v9, v7, v8);
 }
 

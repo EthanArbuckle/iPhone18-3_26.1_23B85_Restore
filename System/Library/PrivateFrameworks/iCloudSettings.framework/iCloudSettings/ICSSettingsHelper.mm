@@ -1,17 +1,17 @@
 @interface ICSSettingsHelper
 + (id)getWebAccessStatusUpdateHook;
-+ (void)repairPrimaryAppleAccountInViewController:(id)a3 completion:(id)a4;
-+ (void)showAccountRecoveryFromViewController:(id)a3 accountManager:(id)a4;
-+ (void)showAccountRecoveryFromViewController:(id)a3 accountManager:(id)a4 highlightRowIdentifier:(id)a5;
++ (void)repairPrimaryAppleAccountInViewController:(id)controller completion:(id)completion;
++ (void)showAccountRecoveryFromViewController:(id)controller accountManager:(id)manager;
++ (void)showAccountRecoveryFromViewController:(id)controller accountManager:(id)manager highlightRowIdentifier:(id)identifier;
 @end
 
 @implementation ICSSettingsHelper
 
-+ (void)showAccountRecoveryFromViewController:(id)a3 accountManager:(id)a4
++ (void)showAccountRecoveryFromViewController:(id)controller accountManager:(id)manager
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -22,15 +22,15 @@
     _os_log_impl(&dword_275819000, v8, OS_LOG_TYPE_DEFAULT, "%@: Starting Account recovery flow.", buf, 0xCu);
   }
 
-  objc_initWeak(buf, v6);
-  objc_initWeak(&location, v7);
+  objc_initWeak(buf, controllerCopy);
+  objc_initWeak(&location, managerCopy);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__ICSSettingsHelper_showAccountRecoveryFromViewController_accountManager___block_invoke;
   v12[3] = &unk_27A666980;
   objc_copyWeak(&v13, buf);
   objc_copyWeak(&v14, &location);
-  [a1 repairPrimaryAppleAccountInViewController:v6 completion:v12];
+  [self repairPrimaryAppleAccountInViewController:controllerCopy completion:v12];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -88,12 +88,12 @@ void __74__ICSSettingsHelper_showAccountRecoveryFromViewController_accountManage
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)showAccountRecoveryFromViewController:(id)a3 accountManager:(id)a4 highlightRowIdentifier:(id)a5
++ (void)showAccountRecoveryFromViewController:(id)controller accountManager:(id)manager highlightRowIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  managerCopy = manager;
+  identifierCopy = identifier;
   v11 = _AAUILogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -104,17 +104,17 @@ void __74__ICSSettingsHelper_showAccountRecoveryFromViewController_accountManage
     _os_log_impl(&dword_275819000, v11, OS_LOG_TYPE_DEFAULT, "%@: Starting Account recovery flow.", buf, 0xCu);
   }
 
-  objc_initWeak(buf, v8);
-  objc_initWeak(&location, v9);
+  objc_initWeak(buf, controllerCopy);
+  objc_initWeak(&location, managerCopy);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __97__ICSSettingsHelper_showAccountRecoveryFromViewController_accountManager_highlightRowIdentifier___block_invoke;
   v16[3] = &unk_27A6669A8;
   objc_copyWeak(&v18, buf);
   objc_copyWeak(&v19, &location);
-  v14 = v10;
+  v14 = identifierCopy;
   v17 = v14;
-  [a1 repairPrimaryAppleAccountInViewController:v8 completion:v16];
+  [self repairPrimaryAppleAccountInViewController:controllerCopy completion:v16];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&v18);
@@ -173,15 +173,15 @@ void __97__ICSSettingsHelper_showAccountRecoveryFromViewController_accountManage
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)repairPrimaryAppleAccountInViewController:(id)a3 completion:(id)a4
++ (void)repairPrimaryAppleAccountInViewController:(id)controller completion:(id)completion
 {
   v5 = MEMORY[0x277CECA18];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   v9 = [[v5 alloc] initWithType:2];
-  v8 = [objc_alloc(MEMORY[0x277CECA70]) initWithFlowContext:v9 withPresentingViewController:v7];
+  v8 = [objc_alloc(MEMORY[0x277CECA70]) initWithFlowContext:v9 withPresentingViewController:controllerCopy];
 
-  [v8 repairIfPrimaryAppleAccountIsCDP:v6];
+  [v8 repairIfPrimaryAppleAccountIsCDP:completionCopy];
 }
 
 + (id)getWebAccessStatusUpdateHook

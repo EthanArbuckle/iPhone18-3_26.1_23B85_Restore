@@ -1,12 +1,12 @@
 @interface SXGradientFillDarkModePolicyException
-- (int64_t)shouldApplyDarkModeToComponentStyle:(id)a3 component:(id)a4 DOM:(id)a5;
+- (int64_t)shouldApplyDarkModeToComponentStyle:(id)style component:(id)component DOM:(id)m;
 @end
 
 @implementation SXGradientFillDarkModePolicyException
 
-- (int64_t)shouldApplyDarkModeToComponentStyle:(id)a3 component:(id)a4 DOM:(id)a5
+- (int64_t)shouldApplyDarkModeToComponentStyle:(id)style component:(id)component DOM:(id)m
 {
-  v5 = [a3 fill];
+  fill = [style fill];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

@@ -8,23 +8,23 @@
 
 + (void)forceLocalPlayerAgeCategoryToAdult
 {
-  v2 = [off_278236578 shared];
+  shared = [off_278236578 shared];
 
-  [v2 setForceAgeCategory:1];
+  [shared setForceAgeCategory:1];
 }
 
 + (void)forceLocalPlayerAgeCategoryToChild
 {
-  v2 = [off_278236578 shared];
+  shared = [off_278236578 shared];
 
-  [v2 setForceAgeCategory:3];
+  [shared setForceAgeCategory:3];
 }
 
 + (void)unforceLocalPlayerAgeCategory
 {
-  v2 = [off_278236578 shared];
+  shared = [off_278236578 shared];
 
-  [v2 setForceAgeCategory:0];
+  [shared setForceAgeCategory:0];
 }
 
 @end

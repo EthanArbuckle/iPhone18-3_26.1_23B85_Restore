@@ -1,6 +1,6 @@
 @interface NEFilterPacketExtensionProviderHostContext
 + (id)_extensionAuxiliaryHostProtocol;
-- (void)createPacketChannelWithCompletionHandler:(id)a3;
+- (void)createPacketChannelWithCompletionHandler:(id)handler;
 @end
 
 @implementation NEFilterPacketExtensionProviderHostContext
@@ -26,11 +26,11 @@ uint64_t __77__NEFilterPacketExtensionProviderHostContext__extensionAuxiliaryHos
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)createPacketChannelWithCompletionHandler:(id)a3
+- (void)createPacketChannelWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa delegate];
-  [v5 createPacketChannelForExtension:self completionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(NEExtensionProviderHostContext *)&self->super.super.super.super.isa delegate];
+  [delegate createPacketChannelForExtension:self completionHandler:handlerCopy];
 }
 
 @end

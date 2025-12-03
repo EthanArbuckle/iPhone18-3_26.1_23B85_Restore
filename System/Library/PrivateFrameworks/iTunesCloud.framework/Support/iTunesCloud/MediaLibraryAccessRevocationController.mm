@@ -1,25 +1,25 @@
 @interface MediaLibraryAccessRevocationController
 + (MediaLibraryAccessRevocationController)sharedController;
 + (id)_identifiersOfApplicationsWithGrantedAccessToMediaLibrary;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_identifiersOfApplicationsWithExpiredAccessToMediaLibrary;
 - (id)_init;
-- (id)_storeRequestContextWithIdentity:(id)a3 applicationIdentifier:(id)a4;
-- (id)_storeRequestContextWithIdentity:(id)a3 clientInfo:(id)a4;
+- (id)_storeRequestContextWithIdentity:(id)identity applicationIdentifier:(id)identifier;
+- (id)_storeRequestContextWithIdentity:(id)identity clientInfo:(id)info;
 - (id)_supportedInterfaceForXPCConnection;
 - (void)_checkForRecentRevocations;
-- (void)_displayNotificationForBuilder:(id)a3 withReplyBlock:(id)a4;
-- (void)_registerFailureToRevokeMusicUserTokensForApplicationIdentifier:(id)a3 error:(id)a4;
-- (void)_registerFailureToRevokeMusicUserTokensForApplicationsWithIdentifiers:(id)a3 error:(id)a4;
-- (void)_revokeMusicUserTokensForApplicationWithIdentifier:(id)a3 andUserIdentity:(id)a4 withCompletion:(id)a5;
-- (void)_revokeMusicUserTokensForApplicationsWithIdentifiers:(id)a3;
+- (void)_displayNotificationForBuilder:(id)builder withReplyBlock:(id)block;
+- (void)_registerFailureToRevokeMusicUserTokensForApplicationIdentifier:(id)identifier error:(id)error;
+- (void)_registerFailureToRevokeMusicUserTokensForApplicationsWithIdentifiers:(id)identifiers error:(id)error;
+- (void)_revokeMusicUserTokensForApplicationWithIdentifier:(id)identifier andUserIdentity:(id)identity withCompletion:(id)completion;
+- (void)_revokeMusicUserTokensForApplicationsWithIdentifiers:(id)identifiers;
 - (void)_startObservingRevocations;
 - (void)_stopObservingRevocations;
 - (void)dealloc;
-- (void)revokeMusicKitUserTokensForUserIdentity:(id)a3 withCompletion:(id)a4;
+- (void)revokeMusicKitUserTokensForUserIdentity:(id)identity withCompletion:(id)completion;
 - (void)startObservingRevocations;
 - (void)stopObservingRevocations;
-- (void)validateExpirationForBundleIdentifier:(id)a3 withReplyBlock:(id)a4;
+- (void)validateExpirationForBundleIdentifier:(id)identifier withReplyBlock:(id)block;
 @end
 
 @implementation MediaLibraryAccessRevocationController
@@ -36,19 +36,19 @@
   return v3;
 }
 
-- (id)_storeRequestContextWithIdentity:(id)a3 clientInfo:(id)a4
+- (id)_storeRequestContextWithIdentity:(id)identity clientInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  identityCopy = identity;
+  infoCopy = info;
   v7 = [ICStoreRequestContext alloc];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000DF1FC;
   v12[3] = &unk_1001DF490;
-  v13 = v5;
-  v14 = v6;
-  v8 = v6;
-  v9 = v5;
+  v13 = identityCopy;
+  v14 = infoCopy;
+  v8 = infoCopy;
+  v9 = identityCopy;
   v10 = [v7 initWithBlock:v12];
 
   return v10;
@@ -92,63 +92,63 @@
   }
 }
 
-- (void)_registerFailureToRevokeMusicUserTokensForApplicationsWithIdentifiers:(id)a3 error:(id)a4
+- (void)_registerFailureToRevokeMusicUserTokensForApplicationsWithIdentifiers:(id)identifiers error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  errorCopy = error;
   v7 = os_log_create("com.apple.amp.itunescloudd", "SDK");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v8 = 138543618;
-    v9 = v5;
+    v9 = identifiersCopy;
     v10 = 2114;
-    v11 = v6;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to revoke Music User Tokens for applications %{public}@ with error %{public}@.", &v8, 0x16u);
   }
 }
 
-- (void)_registerFailureToRevokeMusicUserTokensForApplicationIdentifier:(id)a3 error:(id)a4
+- (void)_registerFailureToRevokeMusicUserTokensForApplicationIdentifier:(id)identifier error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   v7 = os_log_create("com.apple.amp.itunescloudd", "SDK");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v8 = 138543618;
-    v9 = v5;
+    v9 = identifierCopy;
     v10 = 2114;
-    v11 = v6;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to revoke Music User Tokens for application %{public}@ with error %{public}@.", &v8, 0x16u);
   }
 }
 
-- (id)_storeRequestContextWithIdentity:(id)a3 applicationIdentifier:(id)a4
+- (id)_storeRequestContextWithIdentity:(id)identity applicationIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  identityCopy = identity;
+  identifierCopy = identifier;
   v7 = [ICStoreRequestContext alloc];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000DF790;
   v12[3] = &unk_1001DF490;
-  v13 = v5;
-  v14 = v6;
-  v8 = v6;
-  v9 = v5;
+  v13 = identityCopy;
+  v14 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = identityCopy;
   v10 = [v7 initWithBlock:v12];
 
   return v10;
 }
 
-- (void)_revokeMusicUserTokensForApplicationsWithIdentifiers:(id)a3
+- (void)_revokeMusicUserTokensForApplicationsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[ICUserIdentity activeAccount];
   v6 = os_log_create("com.apple.amp.itunescloudd", "SDK");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = v4;
+    v18 = identifiersCopy;
     v19 = 2114;
     v20 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Revoking Music User Tokens for applications %{public}@ using identity %{public}@.", buf, 0x16u);
@@ -158,7 +158,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v4;
+  v7 = identifiersCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -186,60 +186,60 @@
   }
 }
 
-- (void)_revokeMusicUserTokensForApplicationWithIdentifier:(id)a3 andUserIdentity:(id)a4 withCompletion:(id)a5
+- (void)_revokeMusicUserTokensForApplicationWithIdentifier:(id)identifier andUserIdentity:(id)identity withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  identityCopy = identity;
+  completionCopy = completion;
   v11 = os_log_create("com.apple.amp.itunescloudd", "SDK");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
-    v26 = v8;
+    v26 = identifierCopy;
     v27 = 2114;
-    v28 = v9;
+    v28 = identityCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Revoking music kit user tokens for application '%{public}@' and user identity %{public}@", buf, 0x20u);
   }
 
-  v12 = [(MediaLibraryAccessRevocationController *)self _storeRequestContextWithIdentity:v9 applicationIdentifier:v8];
+  v12 = [(MediaLibraryAccessRevocationController *)self _storeRequestContextWithIdentity:identityCopy applicationIdentifier:identifierCopy];
   v13 = +[ICURLBagProvider sharedBagProvider];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000DFD0C;
   v18[3] = &unk_1001DD918;
   v18[4] = self;
-  v19 = v8;
-  v21 = v9;
-  v22 = v10;
+  v19 = identifierCopy;
+  v21 = identityCopy;
+  v22 = completionCopy;
   v20 = v12;
-  v14 = v9;
+  v14 = identityCopy;
   v15 = v12;
-  v16 = v10;
-  v17 = v8;
+  v16 = completionCopy;
+  v17 = identifierCopy;
   [v13 getBagForRequestContext:v15 withCompletionHandler:v18];
 }
 
-- (void)_displayNotificationForBuilder:(id)a3 withReplyBlock:(id)a4
+- (void)_displayNotificationForBuilder:(id)builder withReplyBlock:(id)block
 {
-  v5 = a4;
-  v6 = [a3 createCFUserNotification];
-  if (v6)
+  blockCopy = block;
+  createCFUserNotification = [builder createCFUserNotification];
+  if (createCFUserNotification)
   {
-    v7 = v6;
+    v7 = createCFUserNotification;
     responseFlags = 0;
-    v8 = CFUserNotificationReceiveResponse(v6, 0.0, &responseFlags);
+    v8 = CFUserNotificationReceiveResponse(createCFUserNotification, 0.0, &responseFlags);
     CFRelease(v7);
     if (v8)
     {
       v9 = [NSError errorWithDomain:ICErrorDomain code:v8 userInfo:0];
-      v5[2](v5, 0, v9);
+      blockCopy[2](blockCopy, 0, v9);
     }
 
     else
     {
-      (v5)[2](v5, responseFlags == 0, 0);
+      (blockCopy)[2](blockCopy, responseFlags == 0, 0);
     }
   }
 
@@ -252,7 +252,7 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to create a CFUserNotification to renew media library access for TCC expiration", buf, 2u);
     }
 
-    v5[2](v5, 0, 0);
+    blockCopy[2](blockCopy, 0, 0);
   }
 }
 
@@ -263,19 +263,19 @@
   v4 = v3;
   if (!self->_identifiersOfApplicationsWithGrantedAccessToMediaLibraryIncludingTCCAcceptanceDates)
   {
-    v5 = [v3 mediaLibraryAccessApplicationIdentifiersWithTCCAcceptanceDates];
+    mediaLibraryAccessApplicationIdentifiersWithTCCAcceptanceDates = [v3 mediaLibraryAccessApplicationIdentifiersWithTCCAcceptanceDates];
     identifiersOfApplicationsWithGrantedAccessToMediaLibraryIncludingTCCAcceptanceDates = self->_identifiersOfApplicationsWithGrantedAccessToMediaLibraryIncludingTCCAcceptanceDates;
-    self->_identifiersOfApplicationsWithGrantedAccessToMediaLibraryIncludingTCCAcceptanceDates = v5;
+    self->_identifiersOfApplicationsWithGrantedAccessToMediaLibraryIncludingTCCAcceptanceDates = mediaLibraryAccessApplicationIdentifiersWithTCCAcceptanceDates;
   }
 
-  v7 = [objc_opt_class() _identifiersOfApplicationsWithGrantedAccessToMediaLibrary];
+  _identifiersOfApplicationsWithGrantedAccessToMediaLibrary = [objc_opt_class() _identifiersOfApplicationsWithGrantedAccessToMediaLibrary];
   if (self->_identifiersOfApplicationsWithGrantedAccessToMediaLibraryIncludingTCCAcceptanceDates)
   {
     v8 = [NSSet alloc];
-    v9 = [(NSDictionary *)self->_identifiersOfApplicationsWithGrantedAccessToMediaLibraryIncludingTCCAcceptanceDates allKeys];
-    v10 = [v8 initWithArray:v9];
+    allKeys = [(NSDictionary *)self->_identifiersOfApplicationsWithGrantedAccessToMediaLibraryIncludingTCCAcceptanceDates allKeys];
+    v10 = [v8 initWithArray:allKeys];
 
-    if ([v10 isEqualToSet:v7])
+    if ([v10 isEqualToSet:_identifiersOfApplicationsWithGrantedAccessToMediaLibrary])
     {
 
       v11 = 0;
@@ -284,7 +284,7 @@
 
     v25 = v4;
     v12 = [v10 mutableCopy];
-    [v12 minusSet:v7];
+    [v12 minusSet:_identifiersOfApplicationsWithGrantedAccessToMediaLibrary];
     v11 = [v12 copy];
   }
 
@@ -300,8 +300,8 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v24 = v7;
-  v15 = v7;
+  v24 = _identifiersOfApplicationsWithGrantedAccessToMediaLibrary;
+  v15 = _identifiersOfApplicationsWithGrantedAccessToMediaLibrary;
   v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v16)
   {
@@ -339,7 +339,7 @@
   v4 = v25;
   [v25 setMediaLibraryAccessApplicationIdentifiersWithTCCAcceptanceDates:self->_identifiersOfApplicationsWithGrantedAccessToMediaLibraryIncludingTCCAcceptanceDates];
 
-  v7 = v24;
+  _identifiersOfApplicationsWithGrantedAccessToMediaLibrary = v24;
 LABEL_18:
   if ([v11 count])
   {
@@ -395,24 +395,24 @@ LABEL_18:
   return v16;
 }
 
-- (void)revokeMusicKitUserTokensForUserIdentity:(id)a3 withCompletion:(id)a4
+- (void)revokeMusicKitUserTokensForUserIdentity:(id)identity withCompletion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E07F8;
   v7[3] = &unk_1001DD8F0;
-  v8 = a4;
-  v6 = v8;
-  [(MediaLibraryAccessRevocationController *)self _revokeMusicUserTokensForApplicationWithIdentifier:0 andUserIdentity:a3 withCompletion:v7];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(MediaLibraryAccessRevocationController *)self _revokeMusicUserTokensForApplicationWithIdentifier:0 andUserIdentity:identity withCompletion:v7];
 }
 
-- (void)validateExpirationForBundleIdentifier:(id)a3 withReplyBlock:(id)a4
+- (void)validateExpirationForBundleIdentifier:(id)identifier withReplyBlock:(id)block
 {
-  v33 = a3;
-  v5 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v31 = +[NSXPCConnection currentConnection];
-  v6 = [(MediaLibraryAccessRevocationController *)self _identifiersOfApplicationsWithExpiredAccessToMediaLibrary];
-  if ([v6 containsObject:v33])
+  _identifiersOfApplicationsWithExpiredAccessToMediaLibrary = [(MediaLibraryAccessRevocationController *)self _identifiersOfApplicationsWithExpiredAccessToMediaLibrary];
+  if ([_identifiersOfApplicationsWithExpiredAccessToMediaLibrary containsObject:identifierCopy])
   {
     v30 = CFPreferencesCopyAppValue(@"SBParentalControlsCapabilities", @"com.apple.springboard");
     if ([v30 containsObject:kTCCServiceMediaLibrary])
@@ -424,12 +424,12 @@ LABEL_18:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Can not present dialog for renewing applications, parental controls active", buf, 2u);
       }
 
-      (*(v5 + 2))(v5, 0, 0);
+      (*(blockCopy + 2))(blockCopy, 0, 0);
     }
 
     else
     {
-      v8 = [v31 processIdentifier];
+      processIdentifier = [v31 processIdentifier];
       *buf = 0;
       v48 = buf;
       v49 = 0x2020000000;
@@ -439,24 +439,24 @@ LABEL_18:
       block[1] = 3221225472;
       block[2] = sub_1000E0E1C;
       block[3] = &unk_1001DD878;
-      v28 = v8;
-      v46 = v8;
+      v28 = processIdentifier;
+      v46 = processIdentifier;
       block[4] = self;
       v45 = buf;
-      v44 = v5;
+      v44 = blockCopy;
       dispatch_barrier_sync(accessQueue, block);
       if (v48[24] == 1)
       {
         v29 = objc_alloc_init(ICUserNotificationBuilder);
-        if ([v6 count] == 1)
+        if ([_identifiersOfApplicationsWithExpiredAccessToMediaLibrary count] == 1)
         {
           v10 = +[NSBundle mediaPlayerBundle];
           v11 = [v10 localizedStringForKey:@"TCC_EXPIRATION_SINGLE_APP_TITLE" value:&stru_1001E0388 table:@"MediaPlayer"];
 
-          v12 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v33 allowPlaceholder:0 error:0];
-          v13 = [v12 localizedName];
+          v12 = [[LSApplicationRecord alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:0];
+          localizedName = [v12 localizedName];
 
-          v14 = [NSString stringWithFormat:v11, v13];
+          v14 = [NSString stringWithFormat:v11, localizedName];
           [v29 setTitle:v14];
         }
 
@@ -471,7 +471,7 @@ LABEL_18:
           v42 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v17 = v6;
+          v17 = _identifiersOfApplicationsWithExpiredAccessToMediaLibrary;
           v18 = [v17 countByEnumeratingWithState:&v39 objects:v51 count:16];
           if (v18)
           {
@@ -486,11 +486,11 @@ LABEL_18:
                 }
 
                 v21 = [[LSApplicationRecord alloc] initWithBundleIdentifier:*(*(&v39 + 1) + 8 * i) allowPlaceholder:0 error:0];
-                v22 = [v21 localizedName];
+                localizedName2 = [v21 localizedName];
 
-                if (v22)
+                if (localizedName2)
                 {
-                  [v11 addObject:v22];
+                  [v11 addObject:localizedName2];
                 }
               }
 
@@ -500,8 +500,8 @@ LABEL_18:
             while (v18);
           }
 
-          v13 = [v11 componentsJoinedByString:@"\n"];
-          [v29 setMessage:v13];
+          localizedName = [v11 componentsJoinedByString:@"\n"];
+          [v29 setMessage:localizedName];
         }
 
         v23 = +[NSBundle mediaPlayerBundle];
@@ -518,8 +518,8 @@ LABEL_18:
         v34[3] = &unk_1001DDD98;
         v34[4] = self;
         v35 = v29;
-        v36 = v6;
-        v37 = v33;
+        v36 = _identifiersOfApplicationsWithExpiredAccessToMediaLibrary;
+        v37 = identifierCopy;
         v38 = v28;
         v27 = v29;
         dispatch_async(&_dispatch_main_q, v34);
@@ -531,44 +531,44 @@ LABEL_18:
 
   else
   {
-    (*(v5 + 2))(v5, 1, 0);
+    (*(blockCopy + 2))(blockCopy, 1, 0);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 processIdentifier];
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
   v7 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 1024;
-    v17 = v6;
+    v17 = processIdentifier;
     v18 = 2114;
     v19 = @"com.apple.itunescloudd.tcchelper";
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ connection from pid %i beginning for service %{public}@.", buf, 0x1Cu);
   }
 
-  v8 = [(MediaLibraryAccessRevocationController *)self _supportedInterfaceForXPCConnection];
-  [v5 setExportedInterface:v8];
-  [v5 setExportedObject:self];
+  _supportedInterfaceForXPCConnection = [(MediaLibraryAccessRevocationController *)self _supportedInterfaceForXPCConnection];
+  [connectionCopy setExportedInterface:_supportedInterfaceForXPCConnection];
+  [connectionCopy setExportedObject:self];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000E1654;
   v12[3] = &unk_1001DF780;
   v12[4] = self;
-  v13 = v6;
-  [v5 setInterruptionHandler:v12];
+  v13 = processIdentifier;
+  [connectionCopy setInterruptionHandler:v12];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000E172C;
   v10[3] = &unk_1001DF780;
   v10[4] = self;
-  v11 = v6;
-  [v5 setInvalidationHandler:v10];
-  [v5 resume];
+  v11 = processIdentifier;
+  [connectionCopy setInvalidationHandler:v10];
+  [connectionCopy resume];
 
   return 1;
 }

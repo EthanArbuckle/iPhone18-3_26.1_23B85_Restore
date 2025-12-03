@@ -1,23 +1,23 @@
 @interface SONetLogonParser
-+ (id)parseNetLoginUsingData:(id)a3;
++ (id)parseNetLoginUsingData:(id)data;
 @end
 
 @implementation SONetLogonParser
 
-+ (id)parseNetLoginUsingData:(id)a3
++ (id)parseNetLoginUsingData:(id)data
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v23 = [MEMORY[0x277CBEC10] mutableCopy];
   v22[1] = v22;
-  v4 = v22 - (([v3 length] + 15) & 0xFFFFFFFFFFFFFFF0);
-  [v3 getBytes:v4 length:{objc_msgSend(v3, "length")}];
+  v4 = v22 - (([dataCopy length] + 15) & 0xFFFFFFFFFFFFFFF0);
+  [dataCopy getBytes:v4 length:{objc_msgSend(dataCopy, "length")}];
   v5 = 0;
   v6 = 1;
   v7 = 24;
   do
   {
-    if ([v3 length] <= v7)
+    if ([dataCopy length] <= v7)
     {
       v10 = &stru_285206D08;
     }
@@ -44,7 +44,7 @@
           }
 
           v7 = v4[v12];
-          if ([v3 length] < v7)
+          if ([dataCopy length] < v7)
           {
             v7 = v12;
             goto LABEL_20;
@@ -71,7 +71,7 @@
         }
 
         v8 = v7;
-        if ([v3 length] <= v7)
+        if ([dataCopy length] <= v7)
         {
           goto LABEL_20;
         }

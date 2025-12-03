@@ -1,15 +1,15 @@
 @interface WebFixedPositionContent
 - (BOOL)hasFixedOrStickyPositionLayers;
-- (WebFixedPositionContent)initWithWebView:(id)a3;
+- (WebFixedPositionContent)initWithWebView:(id)view;
 - (void)dealloc;
-- (void)overflowScrollPositionForLayer:(id)a3 changedTo:(CGPoint)a4;
-- (void)scrollOrZoomChanged:(CGRect)a3;
-- (void)setViewportConstrainedLayers:(void *)a3 stickyContainerMap:(const void *)a4;
+- (void)overflowScrollPositionForLayer:(id)layer changedTo:(CGPoint)to;
+- (void)scrollOrZoomChanged:(CGRect)changed;
+- (void)setViewportConstrainedLayers:(void *)layers stickyContainerMap:(const void *)map;
 @end
 
 @implementation WebFixedPositionContent
 
-- (WebFixedPositionContent)initWithWebView:(id)a3
+- (WebFixedPositionContent)initWithWebView:(id)view
 {
   v7.receiver = self;
   v7.super_class = WebFixedPositionContent;
@@ -19,7 +19,7 @@
     v5 = result;
     v6 = WTF::fastMalloc(0x10);
     result = v5;
-    *v6 = a3;
+    *v6 = view;
     v6[1] = 0;
     v5->_private = v6;
   }
@@ -83,10 +83,10 @@
   [(WebFixedPositionContent *)&v10 dealloc];
 }
 
-- (void)scrollOrZoomChanged:(CGRect)a3
+- (void)scrollOrZoomChanged:(CGRect)changed
 {
   v3 = 0;
-  v35 = a3;
+  changedCopy = changed;
   atomic_compare_exchange_strong_explicit(webFixedPositionContentDataLock, &v3, 1u, memory_order_acquire, memory_order_acquire);
   if (v3)
   {
@@ -146,7 +146,7 @@ LABEL_12:
 
         if ((*(*v11 + 16))(v11) == 1)
         {
-          WebCore::FloatRect::FloatRect(v34, &v35);
+          WebCore::FloatRect::FloatRect(v34, &changedCopy);
           WebCore::StickyPositionViewportConstraints::anchorLayerPositionForConstrainingRect(v11, v34);
           v14 = v13;
           v16 = v15;
@@ -168,7 +168,7 @@ LABEL_25:
         goto LABEL_25;
       }
 
-      WebCore::FloatRect::FloatRect(v34, &v35);
+      WebCore::FloatRect::FloatRect(v34, &changedCopy);
       WebCore::ViewportConstraints::viewportRelativeLayerPosition(v11, v34);
       v24 = v23;
       v26 = v25;
@@ -203,19 +203,19 @@ LABEL_8:
   }
 }
 
-- (void)overflowScrollPositionForLayer:(id)a3 changedTo:(CGPoint)a4
+- (void)overflowScrollPositionForLayer:(id)layer changedTo:(CGPoint)to
 {
   v4 = 0;
   atomic_compare_exchange_strong_explicit(webFixedPositionContentDataLock, &v4, 1u, memory_order_acquire, memory_order_acquire);
   if (v4)
   {
-    v28 = a3;
-    y = a4.y;
-    x = a4.x;
+    layerCopy = layer;
+    y = to.y;
+    x = to.x;
     MEMORY[0x1CCA63990](webFixedPositionContentDataLock, a2);
-    a4.x = x;
-    a4.y = y;
-    a3 = v28;
+    to.x = x;
+    to.y = y;
+    layer = layerCopy;
     v5 = *(self->_private + 1);
     if (!v5)
     {
@@ -258,13 +258,13 @@ LABEL_8:
     v9 = &v5[2 * v6];
     if (v8 != v9)
     {
-      v10 = a4.x;
-      v11 = a4.y;
+      v10 = to.x;
+      v11 = to.y;
 LABEL_12:
       v12 = v8[1];
-      if (*v12 == a3)
+      if (*v12 == layer)
       {
-        v13 = a3;
+        layerCopy2 = layer;
         v14 = *v8;
         v15 = v12[1];
         *v31 = v10;
@@ -278,7 +278,7 @@ LABEL_12:
         v23 = v22;
         [v14 anchorPoint];
         [v14 setPosition:{(v17 - *(v15 + 2)) + v24 * v21, (v19 - *(v15 + 3)) + v25 * v23}];
-        a3 = v13;
+        layer = layerCopy2;
       }
 
       while (1)
@@ -323,7 +323,7 @@ uint64_t __54__WebFixedPositionContent_didFinishScrollingOrZooming__block_invoke
   return result;
 }
 
-- (void)setViewportConstrainedLayers:(void *)a3 stickyContainerMap:(const void *)a4
+- (void)setViewportConstrainedLayers:(void *)layers stickyContainerMap:(const void *)map
 {
   v7 = 0;
   atomic_compare_exchange_strong_explicit(webFixedPositionContentDataLock, &v7, 1u, memory_order_acquire, memory_order_acquire);
@@ -388,8 +388,8 @@ uint64_t __54__WebFixedPositionContent_didFinishScrollingOrZooming__block_invoke
 
   WTF::fastFree((v9 - 16), a2);
 LABEL_14:
-  v15 = *a3;
-  if (!*a3)
+  v15 = *layers;
+  if (!*layers)
   {
     v17 = 0;
     v16 = 0;
@@ -417,7 +417,7 @@ LABEL_25:
   }
 
   v18 = 16 * v16;
-  v19 = *a3;
+  v19 = *layers;
   while (*v19 + 1 <= 1)
   {
     v19 += 2;
@@ -458,9 +458,9 @@ LABEL_31:
         JUMPOUT(0x1C7AD4160);
       }
 
-      v24 = *a4;
+      v24 = *map;
       v25 = ~(v21 << 32);
-      if (!*a4)
+      if (!*map)
       {
         goto LABEL_39;
       }

@@ -1,14 +1,14 @@
 @interface CSTimerView
 - (CSTimerView)init;
 - (NSString)timerText;
-- (id)_newTimerDialForSettings:(id)a3 withFont:(id)a4;
+- (id)_newTimerDialForSettings:(id)settings withFont:(id)font;
 - (id)_timerFont;
 - (id)accessoryView;
 - (void)_updateLegibilityStrength;
 - (void)dealloc;
-- (void)setFont:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setFont:(id)font;
+- (void)setLegibilitySettings:(id)settings;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)updateTimerLabel;
 @end
 
@@ -22,16 +22,16 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CSTimerView *)v2 _timerFont];
-    [(CSTimerView *)v3 setFont:v4];
+    _timerFont = [(CSTimerView *)v2 _timerFont];
+    [(CSTimerView *)v3 setFont:_timerFont];
 
-    v5 = [(SBFLockScreenDateSubtitleView *)v3 legibilitySettings];
-    v6 = [(SBFLockScreenDateSubtitleView *)v3 font];
-    v7 = [(CSTimerView *)v3 _newTimerDialForSettings:v5 withFont:v6];
+    legibilitySettings = [(SBFLockScreenDateSubtitleView *)v3 legibilitySettings];
+    font = [(SBFLockScreenDateSubtitleView *)v3 font];
+    v7 = [(CSTimerView *)v3 _newTimerDialForSettings:legibilitySettings withFont:font];
     [(SBFLockScreenDateSubtitleView *)v3 setAccessoryView:v7];
 
-    v8 = [MEMORY[0x277D65E90] rootSettings];
-    [v8 addKeyObserver:v3];
+    rootSettings = [MEMORY[0x277D65E90] rootSettings];
+    [rootSettings addKeyObserver:v3];
   }
 
   return v3;
@@ -39,8 +39,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D65E90] rootSettings];
-  [v3 removeKeyObserver:self];
+  rootSettings = [MEMORY[0x277D65E90] rootSettings];
+  [rootSettings removeKeyObserver:self];
 
   v4.receiver = self;
   v4.super_class = CSTimerView;
@@ -51,9 +51,9 @@
 {
   v7.receiver = self;
   v7.super_class = CSTimerView;
-  v2 = [(SBFLockScreenDateSubtitleView *)&v7 accessoryView];
+  accessoryView = [(SBFLockScreenDateSubtitleView *)&v7 accessoryView];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = accessoryView;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -72,27 +72,27 @@
   return v3;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v6.receiver = self;
   v6.super_class = CSTimerView;
-  v4 = a3;
-  [(SBFLockScreenDateSubtitleView *)&v6 setFont:v4];
+  fontCopy = font;
+  [(SBFLockScreenDateSubtitleView *)&v6 setFont:fontCopy];
   v5 = [(CSTimerView *)self accessoryView:v6.receiver];
-  [v5 setFont:v4];
+  [v5 setFont:fontCopy];
 
   [v5 sizeToFit];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
   v7.receiver = self;
   v7.super_class = CSTimerView;
-  v4 = a3;
-  [(SBFLockScreenDateSubtitleView *)&v7 setLegibilitySettings:v4];
+  settingsCopy = settings;
+  [(SBFLockScreenDateSubtitleView *)&v7 setLegibilitySettings:settingsCopy];
   [(CSTimerView *)self _updateLegibilityStrength:v7.receiver];
-  v5 = [(SBFLockScreenDateSubtitleView *)self font];
-  v6 = [(CSTimerView *)self _newTimerDialForSettings:v4 withFont:v5];
+  font = [(SBFLockScreenDateSubtitleView *)self font];
+  v6 = [(CSTimerView *)self _newTimerDialForSettings:settingsCopy withFont:font];
 
   [(SBFLockScreenDateSubtitleView *)self setAccessoryView:v6];
 }
@@ -101,8 +101,8 @@
 {
   [(NSDate *)self->_endDate timeIntervalSinceNow];
   v3 = v2;
-  v4 = [MEMORY[0x277CF0BF0] sharedInstance];
-  v5 = [v4 formatAbbreviatedTimerDuration:v3];
+  mEMORY[0x277CF0BF0] = [MEMORY[0x277CF0BF0] sharedInstance];
+  v5 = [mEMORY[0x277CF0BF0] formatAbbreviatedTimerDuration:v3];
 
   if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
   {
@@ -121,17 +121,17 @@
 
 - (void)updateTimerLabel
 {
-  v3 = [(CSTimerView *)self timerText];
-  [(SBFLockScreenDateSubtitleView *)self setString:v3];
+  timerText = [(CSTimerView *)self timerText];
+  [(SBFLockScreenDateSubtitleView *)self setString:timerText];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
   v5 = MEMORY[0x277D65E90];
-  v6 = a3;
-  v7 = [v5 rootSettings];
+  settingsCopy = settings;
+  rootSettings = [v5 rootSettings];
 
-  if (v7 == v6)
+  if (rootSettings == settingsCopy)
   {
 
     [(CSTimerView *)self _updateLegibilityStrength];
@@ -140,26 +140,26 @@
 
 - (void)_updateLegibilityStrength
 {
-  v3 = [(SBFLockScreenDateSubtitleView *)self legibilitySettings];
-  v4 = [v3 style];
+  legibilitySettings = [(SBFLockScreenDateSubtitleView *)self legibilitySettings];
+  style = [legibilitySettings style];
 
-  v5 = [MEMORY[0x277D65E90] rootSettings];
-  [v5 timerTextStrengthForStyle:v4];
+  rootSettings = [MEMORY[0x277D65E90] rootSettings];
+  [rootSettings timerTextStrengthForStyle:style];
   [(SBFLockScreenDateSubtitleView *)self setStrength:?];
 }
 
-- (id)_newTimerDialForSettings:(id)a3 withFont:(id)a4
+- (id)_newTimerDialForSettings:(id)settings withFont:(id)font
 {
   v5 = MEMORY[0x277D67960];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithSymbolFont:v6];
+  fontCopy = font;
+  settingsCopy = settings;
+  v8 = [[v5 alloc] initWithSymbolFont:fontCopy];
 
-  v9 = [MEMORY[0x277D65E90] rootSettings];
-  [v9 timerDialStrengthForStyle:{objc_msgSend(v7, "style")}];
+  rootSettings = [MEMORY[0x277D65E90] rootSettings];
+  [rootSettings timerDialStrengthForStyle:{objc_msgSend(settingsCopy, "style")}];
   [v8 setStrength:?];
 
-  [v8 setLegibilitySettings:v7];
+  [v8 setLegibilitySettings:settingsCopy];
   [v8 sizeToFit];
   return v8;
 }
@@ -167,8 +167,8 @@
 - (id)_timerFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(SBFLockScreenDateSubtitleView *)self font];
-  [v3 pointSize];
+  font = [(SBFLockScreenDateSubtitleView *)self font];
+  [font pointSize];
   v4 = [v2 monospacedDigitSystemFontOfSize:? weight:?];
 
   return v4;

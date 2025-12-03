@@ -1,21 +1,21 @@
 @interface XRWaitingRoom
 + (void)initialize;
-- (BOOL)_holdReceivedAgent:(id)a3 ticket:(id)a4;
-- (XRWaitingRoom)initWithDispatchQueue:(id)a3 funnelTarget:(id)a4;
-- (XRWaitingRoom)initWithOwner:(id)a3 dispatchQueue:(id)a4;
-- (id)ownerTicketForAgent:(id)a3 leaveWhenEmpty:(BOOL)a4;
-- (void)_escortAgentToExit:(id)a3 withTicket:(id)a4;
+- (BOOL)_holdReceivedAgent:(id)agent ticket:(id)ticket;
+- (XRWaitingRoom)initWithDispatchQueue:(id)queue funnelTarget:(id)target;
+- (XRWaitingRoom)initWithOwner:(id)owner dispatchQueue:(id)queue;
+- (id)ownerTicketForAgent:(id)agent leaveWhenEmpty:(BOOL)empty;
+- (void)_escortAgentToExit:(id)exit withTicket:(id)ticket;
 - (void)abandon;
-- (void)setupMeetingWithOwner:(id)a3 worker:(id)a4 mode:(id)a5;
-- (void)setupMeetingWithOwner:(id)a3 worker:(id)a4 team:(id)a5 mode:(id)a6;
-- (void)setupOwnerVisit:(id)a3 leaveWhenEmpty:(BOOL)a4 mode:(id)a5;
+- (void)setupMeetingWithOwner:(id)owner worker:(id)worker mode:(id)mode;
+- (void)setupMeetingWithOwner:(id)owner worker:(id)worker team:(id)team mode:(id)mode;
+- (void)setupOwnerVisit:(id)visit leaveWhenEmpty:(BOOL)empty mode:(id)mode;
 @end
 
 @implementation XRWaitingRoom
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_27EE86700 = objc_opt_new();
 
@@ -23,11 +23,11 @@
   }
 }
 
-- (XRWaitingRoom)initWithDispatchQueue:(id)a3 funnelTarget:(id)a4
+- (XRWaitingRoom)initWithDispatchQueue:(id)queue funnelTarget:(id)target
 {
   v12.receiver = self;
   v12.super_class = XRWaitingRoom;
-  v4 = [(XRMobileAgentQueueStop *)&v12 initWithDispatchQueue:a3 funnelTarget:a4];
+  v4 = [(XRMobileAgentQueueStop *)&v12 initWithDispatchQueue:queue funnelTarget:target];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -46,25 +46,25 @@
   return v4;
 }
 
-- (XRWaitingRoom)initWithOwner:(id)a3 dispatchQueue:(id)a4
+- (XRWaitingRoom)initWithOwner:(id)owner dispatchQueue:(id)queue
 {
-  result = objc_msgSend_initWithDispatchQueue_(self, a2, a4, a4, v4);
+  result = objc_msgSend_initWithDispatchQueue_(self, a2, queue, queue, v4);
   if (result)
   {
-    result->_ownerID = a3;
+    result->_ownerID = owner;
   }
 
   return result;
 }
 
-- (BOOL)_holdReceivedAgent:(id)a3 ticket:(id)a4
+- (BOOL)_holdReceivedAgent:(id)agent ticket:(id)ticket
 {
   v182 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (self->_ownerID != v6)
+  agentCopy = agent;
+  v7 = agentCopy;
+  if (self->_ownerID != agentCopy)
   {
-    v8 = v6;
+    v8 = agentCopy;
     v13 = objc_msgSend_ticket(v8, v9, v10, v11, v12);
     v17 = v13;
     if (self->_abandoned)
@@ -155,7 +155,7 @@
     goto LABEL_49;
   }
 
-  objc_storeStrong(&self->_visitingOwner, a3);
+  objc_storeStrong(&self->_visitingOwner, agent);
   if (self->_abandoned)
   {
     objc_msgSend__welcomeAgent_(self, v18, self->_visitingOwner, v20, v21);
@@ -302,66 +302,66 @@ LABEL_49:
   return 1;
 }
 
-- (void)_escortAgentToExit:(id)a3 withTicket:(id)a4
+- (void)_escortAgentToExit:(id)exit withTicket:(id)ticket
 {
-  v5 = a3;
-  v12 = v5;
-  if (self->_ownerID == v5)
+  exitCopy = exit;
+  v12 = exitCopy;
+  if (self->_ownerID == exitCopy)
   {
-    objc_msgSend_setGreetingVisitor_(v5, v6, 0, v7, v8);
+    objc_msgSend_setGreetingVisitor_(exitCopy, v6, 0, v7, v8);
     objc_msgSend_setGreetingTeam_(v12, v9, 0, v10, v11);
   }
 
   else
   {
-    objc_msgSend_setRoomOwner_(v5, v6, 0, v7, v8);
+    objc_msgSend_setRoomOwner_(exitCopy, v6, 0, v7, v8);
   }
 }
 
-- (void)setupMeetingWithOwner:(id)a3 worker:(id)a4 mode:(id)a5
+- (void)setupMeetingWithOwner:(id)owner worker:(id)worker mode:(id)mode
 {
-  v13 = a3;
-  v8 = a5;
-  if ((objc_msgSend_holdsItinerary_(a4, v9, v13, v10, v11) & 1) == 0)
+  ownerCopy = owner;
+  modeCopy = mode;
+  if ((objc_msgSend_holdsItinerary_(worker, v9, ownerCopy, v10, v11) & 1) == 0)
   {
     sub_2480B3378();
   }
 
-  objc_msgSend_setNextStop_mode_ticket_(v13, v12, self, v8, 0);
+  objc_msgSend_setNextStop_mode_ticket_(ownerCopy, v12, self, modeCopy, 0);
 }
 
-- (void)setupMeetingWithOwner:(id)a3 worker:(id)a4 team:(id)a5 mode:(id)a6
+- (void)setupMeetingWithOwner:(id)owner worker:(id)worker team:(id)team mode:(id)mode
 {
-  v29 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
-  if ((objc_msgSend_holdsItinerary_(v29, v13, v12, v14, v15) & 1) == 0)
+  workerCopy = worker;
+  teamCopy = team;
+  modeCopy = mode;
+  ownerCopy = owner;
+  if ((objc_msgSend_holdsItinerary_(workerCopy, v13, ownerCopy, v14, v15) & 1) == 0)
   {
     sub_2480B33EC();
   }
 
-  v20 = objc_msgSend_members(v10, v16, v17, v18, v19);
-  v24 = objc_msgSend_containsObject_(v20, v21, v29, v22, v23);
+  v20 = objc_msgSend_members(teamCopy, v16, v17, v18, v19);
+  v24 = objc_msgSend_containsObject_(v20, v21, workerCopy, v22, v23);
 
   if ((v24 & 1) == 0)
   {
     sub_2480B3460();
   }
 
-  v27 = objc_msgSend_visitorTicketForAgent_team_(self, v25, v29, v10, v26);
-  objc_msgSend_setNextStop_mode_ticket_(v12, v28, self, v11, v27);
+  v27 = objc_msgSend_visitorTicketForAgent_team_(self, v25, workerCopy, teamCopy, v26);
+  objc_msgSend_setNextStop_mode_ticket_(ownerCopy, v28, self, modeCopy, v27);
 }
 
-- (id)ownerTicketForAgent:(id)a3 leaveWhenEmpty:(BOOL)a4
+- (id)ownerTicketForAgent:(id)agent leaveWhenEmpty:(BOOL)empty
 {
-  v4 = a4;
-  if (self->_ownerID != a3)
+  emptyCopy = empty;
+  if (self->_ownerID != agent)
   {
     sub_2480B34D4();
   }
 
-  if (v4)
+  if (emptyCopy)
   {
     v5 = qword_27EE86700;
   }
@@ -374,16 +374,16 @@ LABEL_49:
   return v5;
 }
 
-- (void)setupOwnerVisit:(id)a3 leaveWhenEmpty:(BOOL)a4 mode:(id)a5
+- (void)setupOwnerVisit:(id)visit leaveWhenEmpty:(BOOL)empty mode:(id)mode
 {
-  if (a4)
+  if (empty)
   {
-    objc_msgSend_setNextStop_mode_ticket_(a3, a2, self, a5, qword_27EE86700);
+    objc_msgSend_setNextStop_mode_ticket_(visit, a2, self, mode, qword_27EE86700);
   }
 
   else
   {
-    objc_msgSend_setNextStop_mode_ticket_(a3, a2, self, a5, 0);
+    objc_msgSend_setNextStop_mode_ticket_(visit, a2, self, mode, 0);
   }
 }
 

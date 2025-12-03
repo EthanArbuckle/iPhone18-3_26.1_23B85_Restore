@@ -1,6 +1,6 @@
 @interface PVColorCorrectEffect
 + (void)registerEffects;
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
 @end
 
 @implementation PVColorCorrectEffect
@@ -15,7 +15,7 @@
   [PVColorCorrectEffect_Cool registerEffectWithID:@"Helium:9215A4CB-FB6F-47F8-944B-1785F0551131" displayName:@"Cool"];
 }
 
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v9 = v6;
   look = self->_look;
@@ -35,7 +35,7 @@
     v14 = flt_26034319C[look];
   }
 
-  [(NSLock *)self->super.super._inspectablePropertiesLock lock:a3];
+  [(NSLock *)self->super.super._inspectablePropertiesLock lock:time];
   inspectableProperties = self->super.super._inspectableProperties;
   if (inspectableProperties)
   {
@@ -64,7 +64,7 @@
   }
 
   [(NSLock *)self->super.super._inspectablePropertiesLock unlock];
-  PVInputHGNodeMap<unsigned int>::GetNode(a4, 0, &v26);
+  PVInputHGNodeMap<unsigned int>::GetNode(inputs, 0, &v26);
   v24 = HGObject::operator new(0x1A0uLL);
   HGColorCorrect::HGColorCorrect(v24);
   (*(*v24 + 120))(v24, 0, v26);

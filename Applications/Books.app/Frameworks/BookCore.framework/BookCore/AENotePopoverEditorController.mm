@@ -1,19 +1,19 @@
 @interface AENotePopoverEditorController
 - (AEAnnotationEditorDelegate)delegate;
 - (AENotePopoverEditorController)init;
-- (BOOL)popoverControllerShouldDismissPopover:(id)a3;
+- (BOOL)popoverControllerShouldDismissPopover:(id)popover;
 - (CGSize)p_popoverSize;
-- (unint64_t)p_permittedArrowDirectionsWithRect:(CGRect)a3 view:(id)a4;
+- (unint64_t)p_permittedArrowDirectionsWithRect:(CGRect)rect view:(id)view;
 - (void)dealloc;
 - (void)hide;
-- (void)noteEditorViewControllerDidEndEditing:(id)a3;
+- (void)noteEditorViewControllerDidEndEditing:(id)editing;
 - (void)p_didHide;
 - (void)p_didShow;
 - (void)p_willHide;
 - (void)p_willShow;
-- (void)presentFromRect:(CGRect)a3 view:(id)a4;
-- (void)setAnnotationTheme:(id)a3;
-- (void)setTheme:(id)a3;
+- (void)presentFromRect:(CGRect)rect view:(id)view;
+- (void)setAnnotationTheme:(id)theme;
+- (void)setTheme:(id)theme;
 @end
 
 @implementation AENotePopoverEditorController
@@ -49,18 +49,18 @@
   [(AENotePopoverEditorController *)&v3 dealloc];
 }
 
-- (void)presentFromRect:(CGRect)a3 view:(id)a4
+- (void)presentFromRect:(CGRect)rect view:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(AENotePopoverEditorController *)self p_permittedArrowDirectionsWithRect:v9 view:x, y, width, height];
-  if ((v10 & 0xC) != 0)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  height = [(AENotePopoverEditorController *)self p_permittedArrowDirectionsWithRect:viewCopy view:x, y, width, height];
+  if ((height & 0xC) != 0)
   {
-    v11 = [v9 window];
-    [v11 bounds];
+    window = [viewCopy window];
+    [window bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -76,12 +76,12 @@
     v22 = v17;
     v23 = v19;
     CGRectDivide(*(&size - 8), &slice, &remainder, v19 * 0.5, CGRectMinYEdge);
-    [v9 convertRect:0 fromView:{slice.origin.x, slice.origin.y, slice.size.width, slice.size.height}];
+    [viewCopy convertRect:0 fromView:{slice.origin.x, slice.origin.y, slice.size.width, slice.size.height}];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
-    [v9 convertRect:0 fromView:{slice.origin.x, slice.origin.y, slice.size.width, slice.size.height}];
+    [viewCopy convertRect:0 fromView:{slice.origin.x, slice.origin.y, slice.size.width, slice.size.height}];
     r2_24 = v33;
     v40 = v32;
     r2_8 = v35;
@@ -126,8 +126,8 @@
   }
 
   [(AENotePopoverEditorController *)self p_willShow];
-  v36 = [(AENotePopoverEditorController *)self popoverController];
-  [v36 presentPopoverFromRect:v9 inView:v10 permittedArrowDirections:1 animated:{x, y, width, height}];
+  popoverController = [(AENotePopoverEditorController *)self popoverController];
+  [popoverController presentPopoverFromRect:viewCopy inView:height permittedArrowDirections:1 animated:{x, y, width, height}];
 
   [(AENotePopoverEditorController *)self p_didShow];
 }
@@ -135,30 +135,30 @@
 - (void)hide
 {
   [(AENotePopoverEditorController *)self p_willHide];
-  v3 = [(AENotePopoverEditorController *)self popoverController];
-  [v3 dismissPopoverAnimated:1];
+  popoverController = [(AENotePopoverEditorController *)self popoverController];
+  [popoverController dismissPopoverAnimated:1];
 
   [(AENotePopoverEditorController *)self p_didHide];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v5 = a3;
+  themeCopy = theme;
   p_theme = &self->_theme;
-  if (self->_theme != v5)
+  if (self->_theme != themeCopy)
   {
-    objc_storeStrong(p_theme, a3);
-    v7 = [(AENotePopoverEditorController *)self annotation];
+    objc_storeStrong(p_theme, theme);
+    annotation = [(AENotePopoverEditorController *)self annotation];
 
-    if (v7)
+    if (annotation)
     {
-      v8 = [(AENotePopoverEditorController *)self theme];
-      v9 = [v8 annotationPageTheme];
+      theme = [(AENotePopoverEditorController *)self theme];
+      annotationPageTheme = [theme annotationPageTheme];
 
-      v10 = [(AENotePopoverEditorController *)self annotation];
-      v11 = [v10 annotationStyle];
-      v12 = [(AENotePopoverEditorController *)self annotation];
-      v13 = +[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme, "themeForAnnotationStyle:pageTheme:isUnderline:", v11, v9, [v12 annotationIsUnderline]);
+      annotation2 = [(AENotePopoverEditorController *)self annotation];
+      annotationStyle = [annotation2 annotationStyle];
+      annotation3 = [(AENotePopoverEditorController *)self annotation];
+      v13 = +[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme, "themeForAnnotationStyle:pageTheme:isUnderline:", annotationStyle, annotationPageTheme, [annotation3 annotationIsUnderline]);
 
       if (v13)
       {
@@ -167,44 +167,44 @@
     }
 
     theme = self->_theme;
-    v15 = [(AENotePopoverEditorController *)self noteEditorViewController];
-    v16 = [v15 textView];
-    [(IMTheme *)theme stylizeKeyboard:v16];
+    noteEditorViewController = [(AENotePopoverEditorController *)self noteEditorViewController];
+    textView = [noteEditorViewController textView];
+    [(IMTheme *)theme stylizeKeyboard:textView];
   }
 
   _objc_release_x1(p_theme);
 }
 
-- (void)setAnnotationTheme:(id)a3
+- (void)setAnnotationTheme:(id)theme
 {
-  v5 = a3;
+  themeCopy = theme;
   p_annotationTheme = &self->_annotationTheme;
-  if (self->_annotationTheme != v5)
+  if (self->_annotationTheme != themeCopy)
   {
-    objc_storeStrong(p_annotationTheme, a3);
-    v7 = [(AENotePopoverEditorController *)self annotationTheme];
-    v8 = [v7 noteTextColor];
-    v9 = [(AENotePopoverEditorController *)self noteEditorViewController];
-    v10 = [v9 textView];
-    [v10 setTextColor:v8];
+    objc_storeStrong(p_annotationTheme, theme);
+    annotationTheme = [(AENotePopoverEditorController *)self annotationTheme];
+    noteTextColor = [annotationTheme noteTextColor];
+    noteEditorViewController = [(AENotePopoverEditorController *)self noteEditorViewController];
+    textView = [noteEditorViewController textView];
+    [textView setTextColor:noteTextColor];
 
-    v11 = [(AENotePopoverEditorController *)self annotationTheme];
-    v12 = [v11 noteFillColor];
-    v13 = [(AENotePopoverEditorController *)self popoverController];
-    [v13 setBackgroundColor:v12];
+    annotationTheme2 = [(AENotePopoverEditorController *)self annotationTheme];
+    noteFillColor = [annotationTheme2 noteFillColor];
+    popoverController = [(AENotePopoverEditorController *)self popoverController];
+    [popoverController setBackgroundColor:noteFillColor];
 
-    v14 = [(AENotePopoverEditorController *)self annotationTheme];
-    v15 = [v14 noteFillColor];
-    v16 = [(AENotePopoverEditorController *)self popoverController];
-    v17 = [v16 contentViewController];
-    v18 = [v17 viewIfLoaded];
-    [v18 setBackgroundColor:v15];
+    annotationTheme3 = [(AENotePopoverEditorController *)self annotationTheme];
+    noteFillColor2 = [annotationTheme3 noteFillColor];
+    popoverController2 = [(AENotePopoverEditorController *)self popoverController];
+    contentViewController = [popoverController2 contentViewController];
+    viewIfLoaded = [contentViewController viewIfLoaded];
+    [viewIfLoaded setBackgroundColor:noteFillColor2];
   }
 
   _objc_release_x1(p_annotationTheme);
 }
 
-- (BOOL)popoverControllerShouldDismissPopover:(id)a3
+- (BOOL)popoverControllerShouldDismissPopover:(id)popover
 {
   if (!UIAccessibilityIsVoiceOverRunning() && !UIAccessibilityIsSwitchControlRunning())
   {
@@ -214,82 +214,82 @@
   return 1;
 }
 
-- (void)noteEditorViewControllerDidEndEditing:(id)a3
+- (void)noteEditorViewControllerDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v8 = [(AENotePopoverEditorController *)self delegate];
-  v5 = [(AENotePopoverEditorController *)self annotation];
-  v6 = [v4 textView];
+  editingCopy = editing;
+  delegate = [(AENotePopoverEditorController *)self delegate];
+  annotation = [(AENotePopoverEditorController *)self annotation];
+  textView = [editingCopy textView];
 
-  v7 = [v6 text];
-  [v8 editorController:self editedAnnotation:v5 toText:v7];
+  text = [textView text];
+  [delegate editorController:self editedAnnotation:annotation toText:text];
 }
 
 - (void)p_willShow
 {
-  v3 = [(AENotePopoverEditorController *)self annotationTheme];
-  v4 = [v3 noteFillColor];
-  v5 = [(AENotePopoverEditorController *)self popoverController];
-  [v5 setBackgroundColor:v4];
+  annotationTheme = [(AENotePopoverEditorController *)self annotationTheme];
+  noteFillColor = [annotationTheme noteFillColor];
+  popoverController = [(AENotePopoverEditorController *)self popoverController];
+  [popoverController setBackgroundColor:noteFillColor];
 
-  v6 = [(AENotePopoverEditorController *)self annotationTheme];
-  v7 = [v6 noteFillColor];
-  v8 = [(AENotePopoverEditorController *)self popoverController];
-  v9 = [v8 contentViewController];
-  v10 = [v9 viewIfLoaded];
-  [v10 setBackgroundColor:v7];
+  annotationTheme2 = [(AENotePopoverEditorController *)self annotationTheme];
+  noteFillColor2 = [annotationTheme2 noteFillColor];
+  popoverController2 = [(AENotePopoverEditorController *)self popoverController];
+  contentViewController = [popoverController2 contentViewController];
+  viewIfLoaded = [contentViewController viewIfLoaded];
+  [viewIfLoaded setBackgroundColor:noteFillColor2];
 
-  v11 = [(AENotePopoverEditorController *)self delegate];
+  delegate = [(AENotePopoverEditorController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 willShowAnnotationEditor:self];
+    [delegate willShowAnnotationEditor:self];
   }
 }
 
 - (void)p_didShow
 {
-  v4 = [(AENotePopoverEditorController *)self delegate];
+  delegate = [(AENotePopoverEditorController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 didShowAnnotationEditor:self];
+    [delegate didShowAnnotationEditor:self];
   }
 
   if ([(AENotePopoverEditorController *)self editsOnLaunch])
   {
-    v3 = [(AENotePopoverEditorController *)self noteEditorViewController];
-    [v3 beginEditing];
+    noteEditorViewController = [(AENotePopoverEditorController *)self noteEditorViewController];
+    [noteEditorViewController beginEditing];
   }
 }
 
 - (void)p_willHide
 {
-  v3 = [(AENotePopoverEditorController *)self noteEditorViewController];
-  [v3 endEditing];
+  noteEditorViewController = [(AENotePopoverEditorController *)self noteEditorViewController];
+  [noteEditorViewController endEditing];
 
-  v4 = [(AENotePopoverEditorController *)self delegate];
+  delegate = [(AENotePopoverEditorController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 willHideAnnotationEditor:self];
+    [delegate willHideAnnotationEditor:self];
   }
 }
 
 - (void)p_didHide
 {
-  v3 = [(AENotePopoverEditorController *)self delegate];
+  delegate = [(AENotePopoverEditorController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 didHideAnnotationEditor:self];
+    [delegate didHideAnnotationEditor:self];
   }
 }
 
-- (unint64_t)p_permittedArrowDirectionsWithRect:(CGRect)a3 view:(id)a4
+- (unint64_t)p_permittedArrowDirectionsWithRect:(CGRect)rect view:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(AENotePopoverEditorController *)self preferVerticalPresentation];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  preferVerticalPresentation = [(AENotePopoverEditorController *)self preferVerticalPresentation];
   [(AENotePopoverEditorController *)self p_popoverSize];
   v12 = v11;
   v14 = v13;
@@ -313,24 +313,24 @@
   v49.size.width = width;
   v49.size.height = height;
   v44 = v12 + CGRectGetMaxX(v49);
-  v16 = [(AENotePopoverEditorController *)self noteEditorViewController];
-  v17 = [v16 bc_windowForViewController];
-  v18 = [v17 windowScene];
-  v19 = [v18 interfaceOrientation];
+  noteEditorViewController = [(AENotePopoverEditorController *)self noteEditorViewController];
+  bc_windowForViewController = [noteEditorViewController bc_windowForViewController];
+  windowScene = [bc_windowForViewController windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
   p_y = &CGRectZero.origin.y;
   p_size = &CGRectZero.size;
   p_height = &CGRectZero.size.height;
   v23 = CGRectZero.origin.x;
-  if ((v19 - 1) <= 3)
+  if ((interfaceOrientation - 1) <= 3)
   {
-    p_height = (&unk_2A41C0 + 8 * (v19 - 1));
-    p_size = (&unk_2A41E0 + 8 * (v19 - 1));
-    p_y = (&unk_2A4200 + 8 * (v19 - 1));
+    p_height = (&unk_2A41C0 + 8 * (interfaceOrientation - 1));
+    p_size = (&unk_2A41E0 + 8 * (interfaceOrientation - 1));
+    p_y = (&unk_2A4200 + 8 * (interfaceOrientation - 1));
     v23 = 0.0;
   }
 
-  [v9 convertRect:0 fromView:{v23, *p_y, p_size->width, *p_height}];
+  [viewCopy convertRect:0 fromView:{v23, *p_y, p_size->width, *p_height}];
   v24 = CGRectGetMinY(v50) + -10.0;
   v51.origin.x = x;
   v51.origin.y = y;
@@ -338,7 +338,7 @@
   v51.size.height = height;
   MinY = CGRectGetMinY(v51);
   v26 = v24 + -28.5 + -17.5;
-  [v9 frame];
+  [viewCopy frame];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -355,7 +355,7 @@
     v35 = 0;
   }
 
-  if (!v10)
+  if (!preferVerticalPresentation)
   {
     v42 = MinY <= v26;
     if (v15 < 10.0)
@@ -398,8 +398,8 @@ LABEL_11:
 
 - (CGSize)p_popoverSize
 {
-  v2 = [(AENotePopoverEditorController *)self noteEditorViewController];
-  [v2 preferredContentSize];
+  noteEditorViewController = [(AENotePopoverEditorController *)self noteEditorViewController];
+  [noteEditorViewController preferredContentSize];
   v4 = v3;
   v6 = v5;
 

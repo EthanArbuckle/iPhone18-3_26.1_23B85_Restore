@@ -7,28 +7,28 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(AccessibilityNode__Music__SwiftUI *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"Music.accountButton"];
+  accessibilityIdentifier = [(AccessibilityNode__Music__SwiftUI *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"Music.accountButton"];
 
   if (v4)
   {
-    v5 = accessibilityMusicLocalizedString(@"account");
+    accessibilityLabel = accessibilityMusicLocalizedString(@"account");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = AccessibilityNode__Music__SwiftUI;
-    v5 = [(AccessibilityNode__Music__SwiftUI *)&v7 accessibilityLabel];
+    accessibilityLabel = [(AccessibilityNode__Music__SwiftUI *)&v7 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(AccessibilityNode__Music__SwiftUI *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"Music.accountButton"];
+  accessibilityIdentifier = [(AccessibilityNode__Music__SwiftUI *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"Music.accountButton"];
 
   if (v4)
   {

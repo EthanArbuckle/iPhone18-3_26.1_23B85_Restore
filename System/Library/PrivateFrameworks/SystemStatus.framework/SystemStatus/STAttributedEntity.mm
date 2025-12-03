@@ -1,70 +1,70 @@
 @interface STAttributedEntity
 + (id)genericSystemServicesEntity;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesAttributedEntity:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesAttributedEntity:(id)entity;
 - (NSString)bundleIdentifier;
 - (NSString)bundlePath;
 - (NSString)executablePath;
-- (STAttributedEntity)initWithAuditToken:(id *)a3;
-- (STAttributedEntity)initWithBundlePath:(id)a3;
-- (STAttributedEntity)initWithCoder:(id)a3;
-- (STAttributedEntity)initWithExecutableIdentity:(id)a3 website:(id)a4 systemService:(BOOL)a5 localizedDisplayName:(id)a6 localizedExecutableDisplayName:(id)a7;
-- (STAttributedEntity)initWithExecutablePath:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (STAttributedEntity)initWithAuditToken:(id *)token;
+- (STAttributedEntity)initWithBundlePath:(id)path;
+- (STAttributedEntity)initWithCoder:(id)coder;
+- (STAttributedEntity)initWithExecutableIdentity:(id)identity website:(id)website systemService:(BOOL)service localizedDisplayName:(id)name localizedExecutableDisplayName:(id)displayName;
+- (STAttributedEntity)initWithExecutablePath:(id)path;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STAttributedEntity
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STAttributedEntity *)self executableIdentity];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  executableIdentity = [(STAttributedEntity *)self executableIdentity];
+  v5 = [builder appendObject:executableIdentity];
 
-  v6 = [(STAttributedEntity *)self website];
-  v7 = [v3 appendString:v6];
+  website = [(STAttributedEntity *)self website];
+  v7 = [builder appendString:website];
 
-  v8 = [v3 appendBool:{-[STAttributedEntity isSystemService](self, "isSystemService")}];
-  v9 = [(STAttributedEntity *)self localizedDisplayName];
-  v10 = [v3 appendString:v9];
+  v8 = [builder appendBool:{-[STAttributedEntity isSystemService](self, "isSystemService")}];
+  localizedDisplayName = [(STAttributedEntity *)self localizedDisplayName];
+  v10 = [builder appendString:localizedDisplayName];
 
-  v11 = [(STAttributedEntity *)self localizedExecutableDisplayName];
-  v12 = [v3 appendString:v11];
+  localizedExecutableDisplayName = [(STAttributedEntity *)self localizedExecutableDisplayName];
+  v12 = [builder appendString:localizedExecutableDisplayName];
 
-  v13 = [v3 hash];
+  v13 = [builder hash];
   return v13;
 }
 
 - (NSString)bundlePath
 {
-  v2 = [(STAttributedEntity *)self executableIdentity];
-  v3 = [v2 bundlePath];
+  executableIdentity = [(STAttributedEntity *)self executableIdentity];
+  bundlePath = [executableIdentity bundlePath];
 
-  return v3;
+  return bundlePath;
 }
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(STAttributedEntity *)self executableIdentity];
-  v3 = [v2 bundleIdentifier];
+  executableIdentity = [(STAttributedEntity *)self executableIdentity];
+  bundleIdentifier = [executableIdentity bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
 {
-  v4 = [(STAttributedEntity *)self executableIdentity];
-  if (v4)
+  executableIdentity = [(STAttributedEntity *)self executableIdentity];
+  if (executableIdentity)
   {
-    v6 = v4;
-    [v4 auditToken];
-    v4 = v6;
+    v6 = executableIdentity;
+    [executableIdentity auditToken];
+    executableIdentity = v6;
   }
 
   else
@@ -84,16 +84,16 @@
   v8[0] = v4;
   v8[1] = v4;
   v5 = [(STExecutableIdentity *)v3 initWithAuditToken:v8 bundlePath:0 executablePath:0 systemExecutable:0];
-  v6 = [[a1 alloc] initWithExecutableIdentity:v5 systemService:1];
+  v6 = [[self alloc] initWithExecutableIdentity:v5 systemService:1];
 
   return v6;
 }
 
-- (STAttributedEntity)initWithAuditToken:(id *)a3
+- (STAttributedEntity)initWithAuditToken:(id *)token
 {
   v5 = [STExecutableIdentity alloc];
-  v6 = *&a3->var0[4];
-  v10[0] = *a3->var0;
+  v6 = *&token->var0[4];
+  v10[0] = *token->var0;
   v10[1] = v6;
   v7 = [(STExecutableIdentity *)v5 initWithAuditToken:v10];
   v8 = [(STAttributedEntity *)self initWithExecutableIdentity:v7];
@@ -101,30 +101,30 @@
   return v8;
 }
 
-- (STAttributedEntity)initWithBundlePath:(id)a3
+- (STAttributedEntity)initWithBundlePath:(id)path
 {
-  v4 = a3;
-  v5 = [[STExecutableIdentity alloc] initWithBundlePath:v4];
+  pathCopy = path;
+  v5 = [[STExecutableIdentity alloc] initWithBundlePath:pathCopy];
 
   v6 = [(STAttributedEntity *)self initWithExecutableIdentity:v5];
   return v6;
 }
 
-- (STAttributedEntity)initWithExecutablePath:(id)a3
+- (STAttributedEntity)initWithExecutablePath:(id)path
 {
-  v4 = a3;
-  v5 = [[STExecutableIdentity alloc] initWithExecutablePath:v4];
+  pathCopy = path;
+  v5 = [[STExecutableIdentity alloc] initWithExecutablePath:pathCopy];
 
   v6 = [(STAttributedEntity *)self initWithExecutableIdentity:v5];
   return v6;
 }
 
-- (STAttributedEntity)initWithExecutableIdentity:(id)a3 website:(id)a4 systemService:(BOOL)a5 localizedDisplayName:(id)a6 localizedExecutableDisplayName:(id)a7
+- (STAttributedEntity)initWithExecutableIdentity:(id)identity website:(id)website systemService:(BOOL)service localizedDisplayName:(id)name localizedExecutableDisplayName:(id)displayName
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  identityCopy = identity;
+  websiteCopy = website;
+  nameCopy = name;
+  displayNameCopy = displayName;
   if (self)
   {
     v25.receiver = self;
@@ -132,20 +132,20 @@
     self = [(STAttributedEntity *)&v25 init];
     if (self)
     {
-      v16 = [v12 copy];
+      v16 = [identityCopy copy];
       executableIdentity = self->_executableIdentity;
       self->_executableIdentity = v16;
 
-      v18 = [v13 copy];
+      v18 = [websiteCopy copy];
       website = self->_website;
       self->_website = v18;
 
-      self->_systemService = a5;
-      v20 = [v14 copy];
+      self->_systemService = service;
+      v20 = [nameCopy copy];
       localizedDisplayName = self->_localizedDisplayName;
       self->_localizedDisplayName = v20;
 
-      v22 = [v15 copy];
+      v22 = [displayNameCopy copy];
       localizedExecutableDisplayName = self->_localizedExecutableDisplayName;
       self->_localizedExecutableDisplayName = v22;
     }
@@ -156,40 +156,40 @@
 
 - (NSString)executablePath
 {
-  v2 = [(STAttributedEntity *)self executableIdentity];
-  v3 = [v2 executablePath];
+  executableIdentity = [(STAttributedEntity *)self executableIdentity];
+  executablePath = [executableIdentity executablePath];
 
-  return v3;
+  return executablePath;
 }
 
-- (BOOL)matchesAttributedEntity:(id)a3
+- (BOOL)matchesAttributedEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(STAttributedEntity *)self website];
-  v6 = [v4 website];
-  if ((!(v5 | v6) || [v5 isEqualToString:v6]) && (v7 = -[STAttributedEntity isSystemService](self, "isSystemService"), v7 == objc_msgSend(v4, "isSystemService")))
+  entityCopy = entity;
+  website = [(STAttributedEntity *)self website];
+  website2 = [entityCopy website];
+  if ((!(website | website2) || [website isEqualToString:website2]) && (v7 = -[STAttributedEntity isSystemService](self, "isSystemService"), v7 == objc_msgSend(entityCopy, "isSystemService")))
   {
-    v9 = [(STAttributedEntity *)self localizedDisplayName];
-    v10 = [v4 localizedDisplayName];
-    if (v9 | v10 && ![v9 isEqualToString:v10])
+    localizedDisplayName = [(STAttributedEntity *)self localizedDisplayName];
+    localizedDisplayName2 = [entityCopy localizedDisplayName];
+    if (localizedDisplayName | localizedDisplayName2 && ![localizedDisplayName isEqualToString:localizedDisplayName2])
     {
       v8 = 0;
     }
 
     else
     {
-      v11 = [(STAttributedEntity *)self localizedExecutableDisplayName];
-      v12 = [v4 localizedExecutableDisplayName];
-      if (v11 | v12 && ![v11 isEqualToString:v12])
+      localizedExecutableDisplayName = [(STAttributedEntity *)self localizedExecutableDisplayName];
+      localizedExecutableDisplayName2 = [entityCopy localizedExecutableDisplayName];
+      if (localizedExecutableDisplayName | localizedExecutableDisplayName2 && ![localizedExecutableDisplayName isEqualToString:localizedExecutableDisplayName2])
       {
         v8 = 0;
       }
 
       else
       {
-        v13 = [(STAttributedEntity *)self executableIdentity];
-        v14 = [v4 executableIdentity];
-        v8 = [v13 matchesExecutableIdentity:v14];
+        executableIdentity = [(STAttributedEntity *)self executableIdentity];
+        executableIdentity2 = [entityCopy executableIdentity];
+        v8 = [executableIdentity matchesExecutableIdentity:executableIdentity2];
       }
     }
   }
@@ -202,97 +202,97 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STAttributedEntity *)self executableIdentity];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  executableIdentity = [(STAttributedEntity *)self executableIdentity];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __30__STAttributedEntity_isEqual___block_invoke;
   v30[3] = &unk_1E85DDCD8;
-  v7 = v4;
+  v7 = equalCopy;
   v31 = v7;
-  v8 = [v5 appendObject:v6 counterpart:v30];
+  v8 = [v5 appendObject:executableIdentity counterpart:v30];
 
-  v9 = [(STAttributedEntity *)self website];
+  website = [(STAttributedEntity *)self website];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __30__STAttributedEntity_isEqual___block_invoke_2;
   v28[3] = &unk_1E85DDD28;
   v10 = v7;
   v29 = v10;
-  v11 = [v5 appendString:v9 counterpart:v28];
+  v11 = [v5 appendString:website counterpart:v28];
 
-  v12 = [(STAttributedEntity *)self isSystemService];
+  isSystemService = [(STAttributedEntity *)self isSystemService];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __30__STAttributedEntity_isEqual___block_invoke_3;
   v26[3] = &unk_1E85DDD50;
   v13 = v10;
   v27 = v13;
-  v14 = [v5 appendBool:v12 counterpart:v26];
-  v15 = [(STAttributedEntity *)self localizedDisplayName];
+  v14 = [v5 appendBool:isSystemService counterpart:v26];
+  localizedDisplayName = [(STAttributedEntity *)self localizedDisplayName];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __30__STAttributedEntity_isEqual___block_invoke_4;
   v24[3] = &unk_1E85DDD28;
   v16 = v13;
   v25 = v16;
-  v17 = [v5 appendString:v15 counterpart:v24];
+  v17 = [v5 appendString:localizedDisplayName counterpart:v24];
 
-  v18 = [(STAttributedEntity *)self localizedExecutableDisplayName];
+  localizedExecutableDisplayName = [(STAttributedEntity *)self localizedExecutableDisplayName];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __30__STAttributedEntity_isEqual___block_invoke_5;
   v22[3] = &unk_1E85DDD28;
   v23 = v16;
   v19 = v16;
-  v20 = [v5 appendString:v18 counterpart:v22];
+  v20 = [v5 appendString:localizedExecutableDisplayName counterpart:v22];
 
-  LOBYTE(v18) = [v5 isEqual];
-  return v18;
+  LOBYTE(localizedExecutableDisplayName) = [v5 isEqual];
+  return localizedExecutableDisplayName;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STAttributedEntity *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STAttributedEntity *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STAttributedEntity *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STAttributedEntity *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STAttributedEntity *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STAttributedEntity *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __70__STAttributedEntity__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDF30;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
-    v13 = a3;
+    selfCopy = self;
+    prefixCopy = prefix;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;
@@ -336,44 +336,44 @@ void __70__STAttributedEntity__descriptionBuilderWithMultilinePrefix_forDebug___
   [v13 appendString:v14 withName:@"localizedExecutableDisplayName" skipIfEmpty:1];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STAttributedEntity *)self executableIdentity];
-  [v4 encodeObject:v5 forKey:@"executableIdentity"];
+  coderCopy = coder;
+  executableIdentity = [(STAttributedEntity *)self executableIdentity];
+  [coderCopy encodeObject:executableIdentity forKey:@"executableIdentity"];
 
-  v6 = [(STAttributedEntity *)self website];
-  [v4 encodeObject:v6 forKey:@"website"];
+  website = [(STAttributedEntity *)self website];
+  [coderCopy encodeObject:website forKey:@"website"];
 
-  [v4 encodeBool:-[STAttributedEntity isSystemService](self forKey:{"isSystemService"), @"systemService"}];
-  v7 = [(STAttributedEntity *)self localizedDisplayName];
-  [v4 encodeObject:v7 forKey:@"localizedDisplayName"];
+  [coderCopy encodeBool:-[STAttributedEntity isSystemService](self forKey:{"isSystemService"), @"systemService"}];
+  localizedDisplayName = [(STAttributedEntity *)self localizedDisplayName];
+  [coderCopy encodeObject:localizedDisplayName forKey:@"localizedDisplayName"];
 
-  v8 = [(STAttributedEntity *)self localizedExecutableDisplayName];
-  [v4 encodeObject:v8 forKey:@"localizedExecutableDisplayName"];
+  localizedExecutableDisplayName = [(STAttributedEntity *)self localizedExecutableDisplayName];
+  [coderCopy encodeObject:localizedExecutableDisplayName forKey:@"localizedExecutableDisplayName"];
 }
 
-- (STAttributedEntity)initWithCoder:(id)a3
+- (STAttributedEntity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"executableIdentity"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"website"];
-  v7 = [v4 decodeBoolForKey:@"systemService"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDisplayName"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedExecutableDisplayName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"executableIdentity"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"website"];
+  v7 = [coderCopy decodeBoolForKey:@"systemService"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDisplayName"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedExecutableDisplayName"];
 
   if (v5)
   {
     self = [(STAttributedEntity *)self initWithExecutableIdentity:v5 website:v6 systemService:v7 localizedDisplayName:v8 localizedExecutableDisplayName:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

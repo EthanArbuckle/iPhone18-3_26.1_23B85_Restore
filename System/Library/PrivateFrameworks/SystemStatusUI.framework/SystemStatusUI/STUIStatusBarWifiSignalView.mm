@@ -1,10 +1,10 @@
 @interface STUIStatusBarWifiSignalView
-+ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)a3 iconSize:(int64_t)a4;
-+ (double)_barThicknessAtIndex:(unint64_t)a3 iconSize:(int64_t)a4;
-+ (double)_interspaceForIconSize:(int64_t)a3;
-+ (double)_totalWidthForIconSize:(int64_t)a3;
-+ (double)widthForIconSize:(int64_t)a3;
-+ (id)_barImageWithSize:(CGSize)a3 forScale:(double)a4 distance:(double)a5 angle:(double)a6 centerPoint:(CGPoint)a7 cornerRadius:(double)a8 thickness:(double)a9 rounded:(BOOL)a10;
++ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)bars iconSize:(int64_t)size;
++ (double)_barThicknessAtIndex:(unint64_t)index iconSize:(int64_t)size;
++ (double)_interspaceForIconSize:(int64_t)size;
++ (double)_totalWidthForIconSize:(int64_t)size;
++ (double)widthForIconSize:(int64_t)size;
++ (id)_barImageWithSize:(CGSize)size forScale:(double)scale distance:(double)distance angle:(double)angle centerPoint:(CGPoint)point cornerRadius:(double)radius thickness:(double)thickness rounded:(BOOL)self0;
 - (CGSize)intrinsicContentSize;
 - (double)_barCornerRadius;
 - (id)accessibilityHUDRepresentation;
@@ -15,7 +15,7 @@
 - (void)_updateBars;
 - (void)_updateCycleAnimationIfNeeded;
 - (void)_updateCycleAnimationNow;
-- (void)_updateFromMode:(int64_t)a3;
+- (void)_updateFromMode:(int64_t)mode;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 @end
@@ -32,9 +32,9 @@
     v3 = 0;
     do
     {
-      v4 = [MEMORY[0x277CD9ED0] layer];
-      v5 = [(STUIStatusBarWifiSignalView *)self layer];
-      [v5 addSublayer:v4];
+      layer = [MEMORY[0x277CD9ED0] layer];
+      layer2 = [(STUIStatusBarWifiSignalView *)self layer];
+      [layer2 addSublayer:layer];
 
       ++v3;
     }
@@ -76,32 +76,32 @@
   cycleAnimation = self->_cycleAnimation;
   if (!cycleAnimation || ![(STUIStatusBarCycleAnimation *)cycleAnimation state])
   {
-    v4 = [(STUIStatusBarWifiSignalView *)self layer];
-    v5 = [v4 sublayers];
+    layer = [(STUIStatusBarWifiSignalView *)self layer];
+    sublayers = [layer sublayers];
 
     if ([(STUIStatusBarSignalView *)self numberOfBars]>= 1)
     {
       v6 = 0;
       do
       {
-        v7 = [v5 objectAtIndexedSubscript:v6];
+        v7 = [sublayers objectAtIndexedSubscript:v6];
         if ([(STUIStatusBarSignalView *)self signalMode]== 2 && v6 < [(STUIStatusBarSignalView *)self numberOfActiveBars])
         {
-          v8 = [(STUIStatusBarSignalView *)self activeColor];
+          activeColor = [(STUIStatusBarSignalView *)self activeColor];
         }
 
         else
         {
-          v8 = [(STUIStatusBarSignalView *)self inactiveColor];
+          activeColor = [(STUIStatusBarSignalView *)self inactiveColor];
         }
 
-        v9 = v8;
-        v10 = [v8 colorWithAlphaComponent:1.0];
-        v11 = [v10 CGColor];
+        v9 = activeColor;
+        v10 = [activeColor colorWithAlphaComponent:1.0];
+        cGColor = [v10 CGColor];
 
         [v9 alphaComponent];
         v13 = v12;
-        [v7 setContentsMultiplyColor:v11];
+        [v7 setContentsMultiplyColor:cGColor];
         *&v14 = v13;
         [v7 setOpacity:v14];
 
@@ -126,9 +126,9 @@
   v4.receiver = self;
   v4.super_class = STUIStatusBarWifiSignalView;
   [(STUIStatusBarWifiSignalView *)&v4 didMoveToWindow];
-  v3 = [(STUIStatusBarWifiSignalView *)self window];
+  window = [(STUIStatusBarWifiSignalView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(STUIStatusBarWifiSignalView *)self _updateActiveBars];
   }
@@ -137,10 +137,10 @@
 - (CGSize)intrinsicContentSize
 {
   v3 = objc_opt_class();
-  v4 = [(STUIStatusBarSignalView *)self numberOfBars];
-  v5 = [(STUIStatusBarSignalView *)self iconSize];
+  numberOfBars = [(STUIStatusBarSignalView *)self numberOfBars];
+  iconSize = [(STUIStatusBarSignalView *)self iconSize];
 
-  [v3 _intrinsicContentSizeForNumberOfBars:v4 iconSize:v5];
+  [v3 _intrinsicContentSizeForNumberOfBars:numberOfBars iconSize:iconSize];
   result.height = v7;
   result.width = v6;
   return result;
@@ -148,8 +148,8 @@
 
 - (void)layoutSubviews
 {
-  v35 = [(STUIStatusBarWifiSignalView *)self layer];
-  v3 = [v35 sublayers];
+  layer = [(STUIStatusBarWifiSignalView *)self layer];
+  sublayers = [layer sublayers];
   [(STUIStatusBarWifiSignalView *)self _barCornerRadius];
   v5 = v4;
   [(STUIStatusBarWifiSignalView *)self bounds];
@@ -169,7 +169,7 @@
   v44.size.width = v11;
   v44.size.height = v13;
   MaxY = CGRectGetMaxY(v44);
-  v17 = [(STUIStatusBarSignalView *)self rounded];
+  rounded = [(STUIStatusBarSignalView *)self rounded];
   rect = v7;
   v45.origin.x = v7;
   v18 = v9;
@@ -179,12 +179,12 @@
   Height = CGRectGetHeight(v45);
   v40 = MidX;
   v20 = acos(MidX / Height);
-  v21 = [(STUIStatusBarWifiSignalView *)self traitCollection];
-  v22 = v21;
-  if (!v21 || ([v21 displayScale], v23 == 0.0))
+  traitCollection = [(STUIStatusBarWifiSignalView *)self traitCollection];
+  v22 = traitCollection;
+  if (!traitCollection || ([traitCollection displayScale], v23 == 0.0))
   {
-    v25 = [(STUIStatusBarWifiSignalView *)self _screen];
-    [v25 scale];
+    _screen = [(STUIStatusBarWifiSignalView *)self _screen];
+    [_screen scale];
     v39 = v26;
   }
 
@@ -202,11 +202,11 @@
     v28 = 0.0;
     do
     {
-      v29 = [v3 objectAtIndexedSubscript:v27];
+      v29 = [sublayers objectAtIndexedSubscript:v27];
       [objc_opt_class() _barThicknessAtIndex:v27 iconSize:{-[STUIStatusBarSignalView iconSize](self, "iconSize")}];
       v31 = v30 - v5;
       v32 = v20;
-      if (v17)
+      if (rounded)
       {
         v46.origin.x = rect;
         v46.origin.y = v18;
@@ -216,7 +216,7 @@
         v32 = v20 + atan(v31 * 0.5 / v33);
       }
 
-      v34 = [objc_opt_class() _barImageWithSize:v17 forScale:v11 distance:v13 angle:v39 centerPoint:v28 cornerRadius:v32 thickness:v40 rounded:{v36, v5, *&v31}];
+      v34 = [objc_opt_class() _barImageWithSize:rounded forScale:v11 distance:v13 angle:v39 centerPoint:v28 cornerRadius:v32 thickness:v40 rounded:{v36, v5, *&v31}];
       [v29 setContents:{objc_msgSend(v34, "CGImage")}];
       [(STUIStatusBarWifiSignalView *)self bounds];
       [v29 setBounds:?];
@@ -235,53 +235,53 @@
 
 - (double)_barCornerRadius
 {
-  v2 = [(STUIStatusBarSignalView *)self iconSize];
+  iconSize = [(STUIStatusBarSignalView *)self iconSize];
   result = 0.5;
-  if (v2 <= 0x11)
+  if (iconSize <= 0x11)
   {
-    return dbl_26C5820C8[v2];
+    return dbl_26C5820C8[iconSize];
   }
 
   return result;
 }
 
-+ (double)_barThicknessAtIndex:(unint64_t)a3 iconSize:(int64_t)a4
++ (double)_barThicknessAtIndex:(unint64_t)index iconSize:(int64_t)size
 {
   result = 2.25;
-  if (!a3)
+  if (!index)
   {
     result = 3.25;
   }
 
-  if (a4 <= 0x11)
+  if (size <= 0x11)
   {
     v5 = &unk_26C5821E8;
-    if (!a3)
+    if (!index)
     {
       v5 = &unk_26C582158;
     }
 
-    return v5[a4];
+    return v5[size];
   }
 
   return result;
 }
 
-+ (double)_interspaceForIconSize:(int64_t)a3
++ (double)_interspaceForIconSize:(int64_t)size
 {
   result = 1.5;
-  if (a3 <= 0xF)
+  if (size <= 0xF)
   {
-    return dbl_26C582278[a3];
+    return dbl_26C582278[size];
   }
 
   return result;
 }
 
-+ (double)_totalWidthForIconSize:(int64_t)a3
++ (double)_totalWidthForIconSize:(int64_t)size
 {
   result = 15.5;
-  switch(a3)
+  switch(size)
   {
     case 0:
       result = 0.0;
@@ -336,30 +336,30 @@
   return result;
 }
 
-+ (double)widthForIconSize:(int64_t)a3
++ (double)widthForIconSize:(int64_t)size
 {
-  if (!a3)
+  if (!size)
   {
     return 0.0;
   }
 
-  [a1 _totalWidthForIconSize:?];
+  [self _totalWidthForIconSize:?];
   return result;
 }
 
-+ (id)_barImageWithSize:(CGSize)a3 forScale:(double)a4 distance:(double)a5 angle:(double)a6 centerPoint:(CGPoint)a7 cornerRadius:(double)a8 thickness:(double)a9 rounded:(BOOL)a10
++ (id)_barImageWithSize:(CGSize)size forScale:(double)scale distance:(double)distance angle:(double)angle centerPoint:(CGPoint)point cornerRadius:(double)radius thickness:(double)thickness rounded:(BOOL)self0
 {
-  v10 = a10;
-  y = a7.y;
-  x = a7.x;
-  height = a3.height;
-  width = a3.width;
+  roundedCopy = rounded;
+  y = point.y;
+  x = point.x;
+  height = size.height;
+  width = size.width;
   if (qword_280C1E778 != -1)
   {
     dispatch_once(&qword_280C1E778, &__block_literal_global_7);
   }
 
-  v18 = [[STUIStatusBarSignalViewCacheKey alloc] initWithClass:objc_opt_class() size:v10 rect:width radius:height lineWidth:x alternate:y scale:a5, a6, a8, a9, *&a4];
+  v18 = [[STUIStatusBarSignalViewCacheKey alloc] initWithClass:objc_opt_class() size:roundedCopy rect:width radius:height lineWidth:x alternate:y scale:distance, angle, radius, thickness, *&scale];
   v19 = [_MergedGlobals_2 objectForKey:v18];
   if (!v19)
   {
@@ -369,10 +369,10 @@
     aBlock[3] = &__block_descriptor_80_e19__CGPoint_dd_16__0d8l;
     *&aBlock[4] = x;
     *&aBlock[5] = y;
-    *&aBlock[6] = a6;
+    *&aBlock[6] = angle;
     *&aBlock[7] = width;
     *&aBlock[8] = height;
-    *&aBlock[9] = a8;
+    *&aBlock[9] = radius;
     v20 = _Block_copy(aBlock);
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
@@ -381,24 +381,24 @@
     *&v38[4] = width;
     *&v38[5] = height;
     v21 = _Block_copy(v38);
-    v22 = [MEMORY[0x277D75568] preferredFormat];
-    [v22 setScale:a4];
-    [v22 setOpaque:0];
-    [v22 setPreferredRange:0x7FFFLL];
-    v23 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v22 format:{width, height}];
+    preferredFormat = [MEMORY[0x277D75568] preferredFormat];
+    [preferredFormat setScale:scale];
+    [preferredFormat setOpaque:0];
+    [preferredFormat setPreferredRange:0x7FFFLL];
+    v23 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:preferredFormat format:{width, height}];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __116__STUIStatusBarWifiSignalView__barImageWithSize_forScale_distance_angle_centerPoint_cornerRadius_thickness_rounded___block_invoke_4;
     v28[3] = &unk_279D38A48;
-    v37 = v10;
-    v31 = a5;
+    v37 = roundedCopy;
+    distanceCopy = distance;
     v32 = x;
     v33 = y;
-    v34 = a9;
+    thicknessCopy = thickness;
     v29 = v20;
     v30 = v21;
-    v35 = a6;
-    v36 = a8;
+    angleCopy = angle;
+    radiusCopy = radius;
     v24 = v21;
     v25 = v20;
     v19 = [v23 imageWithActions:v28];
@@ -483,40 +483,40 @@ void __116__STUIStatusBarWifiSignalView__barImageWithSize_forScale_distance_angl
 - (void)_updateCycleAnimationNow
 {
   v44[4] = *MEMORY[0x277D85DE8];
-  v3 = [(STUIStatusBarSignalView *)self activeColor];
-  v4 = [(STUIStatusBarSignalView *)self inactiveColor];
-  v5 = v4;
-  if (v3 && v4 && [(STUIStatusBarSignalView *)self numberOfBars])
+  activeColor = [(STUIStatusBarSignalView *)self activeColor];
+  inactiveColor = [(STUIStatusBarSignalView *)self inactiveColor];
+  v5 = inactiveColor;
+  if (activeColor && inactiveColor && [(STUIStatusBarSignalView *)self numberOfBars])
   {
-    v6 = [(STUIStatusBarWifiSignalView *)self layer];
-    v7 = [v6 sublayers];
+    layer = [(STUIStatusBarWifiSignalView *)self layer];
+    sublayers = [layer sublayers];
 
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [(STUIStatusBarSignalView *)self numberOfBars];
+    array = [MEMORY[0x277CBEB18] array];
+    numberOfBars = [(STUIStatusBarSignalView *)self numberOfBars];
     if ([(STUIStatusBarSignalView *)self numberOfBars]>= 1)
     {
       v10 = 0;
-      v11 = (v9 + 2);
+      v11 = (numberOfBars + 2);
       v12 = v11 * 0.2;
       v36 = *MEMORY[0x277CDA080];
       v13 = v11 + 0.5;
       v14 = 1.0 / v11;
       v15 = 3.0 / v11;
       v35 = *MEMORY[0x277CDA058];
-      v38 = v7;
-      v39 = v3;
-      v37 = v8;
+      v38 = sublayers;
+      v39 = activeColor;
+      v37 = array;
       do
       {
-        v41 = [v7 objectAtIndexedSubscript:{v10, v35}];
-        v16 = [MEMORY[0x277CD9E00] animation];
-        [v16 setDuration:v12];
+        v41 = [sublayers objectAtIndexedSubscript:{v10, v35}];
+        animation = [MEMORY[0x277CD9E00] animation];
+        [animation setDuration:v12];
         LODWORD(v17) = 2139095040;
-        [v16 setRepeatCount:v17];
-        [v16 setAutoreverses:0];
-        [v16 setBeginTimeMode:v36];
-        [v16 duration];
-        [v16 setBeginTime:v10 / v13 * v18];
+        [animation setRepeatCount:v17];
+        [animation setAutoreverses:0];
+        [animation setBeginTimeMode:v36];
+        [animation duration];
+        [animation setBeginTime:v10 / v13 * v18];
         v44[0] = &unk_287D1B320;
         v19 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
         v44[1] = v19;
@@ -534,7 +534,7 @@ void __116__STUIStatusBarWifiSignalView__barImageWithSize_forScale_distance_angl
         v23 = [v22 numberWithDouble:?];
         v43[0] = v23;
         v24 = MEMORY[0x277CCABB0];
-        [v3 alphaComponent];
+        [activeColor alphaComponent];
         v25 = [v24 numberWithDouble:?];
         v43[1] = v25;
         v26 = MEMORY[0x277CCABB0];
@@ -550,16 +550,16 @@ void __116__STUIStatusBarWifiSignalView__barImageWithSize_forScale_distance_angl
         [v21 setValues:v31];
 
         v5 = v30;
-        v8 = v37;
+        array = v37;
         v42 = v21;
         v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v42 count:1];
-        [v16 setAnimations:v32];
+        [animation setAnimations:v32];
 
-        v33 = [STUIStatusBarCycleLayerAnimation cycleAnimationWithLayer:v41 animation:v16 key:@"searching"];
+        v33 = [STUIStatusBarCycleLayerAnimation cycleAnimationWithLayer:v41 animation:animation key:@"searching"];
         [v37 addObject:v33];
 
-        v3 = v39;
-        v7 = v38;
+        activeColor = v39;
+        sublayers = v38;
 
         ++v10;
       }
@@ -567,12 +567,12 @@ void __116__STUIStatusBarWifiSignalView__barImageWithSize_forScale_distance_angl
       while (v10 < [(STUIStatusBarSignalView *)self numberOfBars]);
     }
 
-    v34 = [[STUIStatusBarCycleAnimation alloc] initWithLayerAnimations:v8];
+    v34 = [[STUIStatusBarCycleAnimation alloc] initWithLayerAnimations:array];
     [(STUIStatusBarWifiSignalView *)self setCycleAnimation:v34];
   }
 }
 
-- (void)_updateFromMode:(int64_t)a3
+- (void)_updateFromMode:(int64_t)mode
 {
   cycleAnimation = self->_cycleAnimation;
   if (!cycleAnimation || ![(STUIStatusBarCycleAnimation *)cycleAnimation state])
@@ -610,30 +610,30 @@ uint64_t __47__STUIStatusBarWifiSignalView__updateFromMode___block_invoke(uint64
   return result;
 }
 
-+ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)a3 iconSize:(int64_t)a4
++ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)bars iconSize:(int64_t)size
 {
-  if (a3)
+  if (bars)
   {
     v7 = 0;
     v8 = 0.0;
     do
     {
-      [a1 _barThicknessAtIndex:v7 iconSize:a4];
+      [self _barThicknessAtIndex:v7 iconSize:size];
       v8 = v8 + v9;
       ++v7;
     }
 
-    while (a3 != v7);
+    while (bars != v7);
   }
 
-  [a1 _interspaceForIconSize:a4];
-  if (a4 <= 0x11 && ((1 << a4) & 0x235DC) == 0 && !a4)
+  [self _interspaceForIconSize:size];
+  if (size <= 0x11 && ((1 << size) & 0x235DC) == 0 && !size)
   {
-    v15 = [MEMORY[0x277D759A0] mainScreen];
-    [v15 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
   }
 
-  [a1 _totalWidthForIconSize:a4];
+  [self _totalWidthForIconSize:size];
   v11 = v10;
   UICeilToScale();
   v13 = v12;
@@ -648,15 +648,15 @@ uint64_t __47__STUIStatusBarWifiSignalView__updateFromMode___block_invoke(uint64
   v3 = MEMORY[0x277CCACA8];
   if ([(STUIStatusBarSignalView *)self signalMode]== 2)
   {
-    v4 = [(STUIStatusBarSignalView *)self numberOfActiveBars];
+    numberOfActiveBars = [(STUIStatusBarSignalView *)self numberOfActiveBars];
   }
 
   else
   {
-    v4 = 0;
+    numberOfActiveBars = 0;
   }
 
-  v5 = [v3 stringWithFormat:@"AXHUD_WiFi_%d", v4];
+  v5 = [v3 stringWithFormat:@"AXHUD_WiFi_%d", numberOfActiveBars];
   v6 = [MEMORY[0x277D755B8] kitImageNamed:v5];
   v7 = objc_alloc(MEMORY[0x277D750B0]);
   v8 = [v7 initWithTitle:0 image:v6 imageInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];

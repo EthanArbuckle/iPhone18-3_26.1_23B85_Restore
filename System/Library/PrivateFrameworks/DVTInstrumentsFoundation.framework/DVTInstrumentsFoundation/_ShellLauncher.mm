@@ -1,9 +1,9 @@
 @interface _ShellLauncher
 - (_ShellLauncher)init;
-- (void)_queue_completeWithPid:(int)a3 error:(id)a4;
-- (void)_queue_launchWithCompletion:(id)a3;
-- (void)_queue_launchWithRetries:(int)a3;
-- (void)launchWithCompletion:(id)a3;
+- (void)_queue_completeWithPid:(int)pid error:(id)error;
+- (void)_queue_launchWithCompletion:(id)completion;
+- (void)_queue_launchWithRetries:(int)retries;
+- (void)launchWithCompletion:(id)completion;
 @end
 
 @implementation _ShellLauncher
@@ -20,36 +20,36 @@
     v2->_queue = v3;
 
     v2->_launching = 0;
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     launchCompletions = v2->_launchCompletions;
-    v2->_launchCompletions = v5;
+    v2->_launchCompletions = array;
   }
 
   return v2;
 }
 
-- (void)launchWithCompletion:(id)a3
+- (void)launchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_248002EB8;
   v7[3] = &unk_278EF4508;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_launchWithCompletion:(id)a3
+- (void)_queue_launchWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     launchCompletions = self->_launchCompletions;
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(completionCopy);
     [(NSMutableArray *)launchCompletions addObject:v7];
   }
 
@@ -78,17 +78,17 @@
   }
 }
 
-- (void)_queue_launchWithRetries:(int)a3
+- (void)_queue_launchWithRetries:(int)retries
 {
   v20[1] = *MEMORY[0x277D85DE8];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_2480031A8;
   aBlock[3] = &unk_278EF2C78;
-  v16 = a3;
+  retriesCopy = retries;
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
-  v5 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
   v19 = *MEMORY[0x277D0AB58];
   v20[0] = &unk_285A37088;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
@@ -108,15 +108,15 @@
   v13[4] = self;
   v14 = v4;
   v11 = v4;
-  [v5 openApplication:@"com.apple.PreviewShell" withOptions:v10 completion:v13];
+  [serviceWithDefaultShellEndpoint openApplication:@"com.apple.PreviewShell" withOptions:v10 completion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_completeWithPid:(int)a3 error:(id)a4
+- (void)_queue_completeWithPid:(int)pid error:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;

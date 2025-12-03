@@ -1,7 +1,7 @@
 @interface PSSGResourceOptions
 + (id)optionsWithoutStrides;
-- (BOOL)isEqual:(id)a3;
-- (PSSGResourceOptions)initWithDefaultStride:(unsigned int)a3 supportedStrides:(id)a4 setupSupported:(BOOL)a5 baseMSGSyncID:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (PSSGResourceOptions)initWithDefaultStride:(unsigned int)stride supportedStrides:(id)strides setupSupported:(BOOL)supported baseMSGSyncID:(id)d;
 - (id)description;
 @end
 
@@ -14,38 +14,38 @@
   return v2;
 }
 
-- (PSSGResourceOptions)initWithDefaultStride:(unsigned int)a3 supportedStrides:(id)a4 setupSupported:(BOOL)a5 baseMSGSyncID:(id)a6
+- (PSSGResourceOptions)initWithDefaultStride:(unsigned int)stride supportedStrides:(id)strides setupSupported:(BOOL)supported baseMSGSyncID:(id)d
 {
-  v11 = a4;
-  v12 = a6;
+  stridesCopy = strides;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = PSSGResourceOptions;
   v13 = [(PSSGResourceOptions *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    v13->_defaultStride = a3;
-    objc_storeStrong(&v13->_supportedStrides, a4);
-    v14->_setupResumeSupported = a5;
-    objc_storeStrong(&v14->_baseMSGSyncID, a6);
+    v13->_defaultStride = stride;
+    objc_storeStrong(&v13->_supportedStrides, strides);
+    v14->_setupResumeSupported = supported;
+    objc_storeStrong(&v14->_baseMSGSyncID, d);
     v15 = v14;
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PSSGResourceOptions *)self defaultStride];
-  if (v5 == [v4 defaultStride])
+  equalCopy = equal;
+  defaultStride = [(PSSGResourceOptions *)self defaultStride];
+  if (defaultStride == [equalCopy defaultStride])
   {
     v6 = MEMORY[0x277CBEB98];
-    v7 = [(PSSGResourceOptions *)self supportedStrides];
-    v8 = [v6 setWithArray:v7];
+    supportedStrides = [(PSSGResourceOptions *)self supportedStrides];
+    v8 = [v6 setWithArray:supportedStrides];
     v9 = MEMORY[0x277CBEB98];
-    v10 = [v4 supportedStrides];
-    v11 = [v9 setWithArray:v10];
+    supportedStrides2 = [equalCopy supportedStrides];
+    v11 = [v9 setWithArray:supportedStrides2];
     v12 = [v8 isEqual:v11];
   }
 
@@ -60,9 +60,9 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PSSGResourceOptions *)self defaultStride];
-  v5 = [(PSSGResourceOptions *)self supportedStrides];
-  v6 = [v3 stringWithFormat:@"default: %d supported: %@", v4, v5];
+  defaultStride = [(PSSGResourceOptions *)self defaultStride];
+  supportedStrides = [(PSSGResourceOptions *)self supportedStrides];
+  v6 = [v3 stringWithFormat:@"default: %d supported: %@", defaultStride, supportedStrides];
 
   return v6;
 }

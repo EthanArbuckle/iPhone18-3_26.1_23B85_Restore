@@ -61,11 +61,11 @@
 
 - (uint64_t)fc_isWebOptInURL
 {
-  result = [a1 fc_isNewsURL];
+  result = [self fc_isNewsURL];
   if (result)
   {
-    v3 = [a1 path];
-    v4 = [v3 containsString:@"weboptin"];
+    path = [self path];
+    v4 = [path containsString:@"weboptin"];
 
     return v4;
   }
@@ -75,16 +75,16 @@
 
 - (uint64_t)fc_hasValidArticleComponents
 {
-  v2 = [a1 lastPathComponent];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 isEqualToString:@"articles"];
+  lastPathComponent = [self lastPathComponent];
+  lowercaseString = [lastPathComponent lowercaseString];
+  v4 = [lowercaseString isEqualToString:@"articles"];
 
-  v5 = [a1 pathComponents];
-  if ([v5 count] == 2)
+  pathComponents = [self pathComponents];
+  if ([pathComponents count] == 2)
   {
-    v6 = [v2 fc_isValidArticleID];
+    fc_isValidArticleID = [lastPathComponent fc_isValidArticleID];
 
-    if (!(v4 & 1 | ((v6 & 1) == 0)))
+    if (!(v4 & 1 | ((fc_isValidArticleID & 1) == 0)))
     {
       goto LABEL_6;
     }
@@ -94,9 +94,9 @@
   {
   }
 
-  if (([a1 _isFeldsparOldArticleURL] & 1) == 0)
+  if (([self _isFeldsparOldArticleURL] & 1) == 0)
   {
-    v7 = [a1 fc_isHardPaywallNewsArticleURL:0];
+    v7 = [self fc_isHardPaywallNewsArticleURL:0];
     goto LABEL_8;
   }
 
@@ -109,11 +109,11 @@ LABEL_8:
 
 - (uint64_t)fc_isNewsArticleURL
 {
-  result = [a1 fc_isNewsURL];
+  result = [self fc_isNewsURL];
   if (result)
   {
 
-    return [a1 fc_hasValidArticleComponents];
+    return [self fc_hasValidArticleComponents];
   }
 
   return result;
@@ -121,10 +121,10 @@ LABEL_8:
 
 - (uint64_t)fc_isNewsArticleVideoURL
 {
-  result = [a1 fc_isNewsArticleURL];
+  result = [self fc_isNewsArticleURL];
   if (result)
   {
-    v3 = [a1 fc_valueForQueryItemWithName:@"v"];
+    v3 = [self fc_valueForQueryItemWithName:@"v"];
     v4 = [v3 isEqualToString:@"1"];
 
     return v4;
@@ -135,91 +135,91 @@ LABEL_8:
 
 - (id)fc_URLWithVideoTarget:()FCAdditions
 {
-  v4 = a1;
+  selfCopy = self;
   if (a3)
   {
     v5 = [MEMORY[0x1E696AF60] queryItemWithName:@"v" value:@"1"];
-    v6 = [v4 fc_URLByAddingQueryItem:v5];
+    v6 = [selfCopy fc_URLByAddingQueryItem:v5];
 
-    v4 = v6;
+    selfCopy = v6;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (uint64_t)fc_isNewsIssueURL
 {
-  if (![a1 fc_isNewsURL])
+  if (![self fc_isNewsURL])
   {
     return 0;
   }
 
-  v2 = [a1 lastPathComponent];
-  v3 = [a1 pathComponents];
-  if ([v3 count] == 2)
+  lastPathComponent = [self lastPathComponent];
+  pathComponents = [self pathComponents];
+  if ([pathComponents count] == 2)
   {
-    v4 = [v2 fc_isValidIssueID];
+    fc_isValidIssueID = [lastPathComponent fc_isValidIssueID];
   }
 
   else
   {
-    v4 = 0;
+    fc_isValidIssueID = 0;
   }
 
-  return v4;
+  return fc_isValidIssueID;
 }
 
 - (uint64_t)fc_isHardPaywallNewsArticleURL:()FCAdditions
 {
-  if (![a1 fc_isNewsURL])
+  if (![self fc_isNewsURL])
   {
     return 0;
   }
 
-  v5 = [a1 lastPathComponent];
-  v6 = [a1 pathComponents];
-  v7 = [v6 count];
+  lastPathComponent = [self lastPathComponent];
+  pathComponents = [self pathComponents];
+  v7 = [pathComponents count];
   v8 = v7 == 2;
   if (v7 == 2)
   {
-    v9 = [v5 fc_isValidHardPaywallArticleID];
+    fc_isValidHardPaywallArticleID = [lastPathComponent fc_isValidHardPaywallArticleID];
 
-    if (!a3 || !v9)
+    if (!a3 || !fc_isValidHardPaywallArticleID)
     {
       goto LABEL_8;
     }
 
-    v6 = v5;
-    if ([v6 length] >= 2)
+    pathComponents = lastPathComponent;
+    if ([pathComponents length] >= 2)
     {
-      v10 = [v6 substringFromIndex:1];
-      v11 = [v10 nf_stringByReversingString];
+      v10 = [pathComponents substringFromIndex:1];
+      nf_stringByReversingString = [v10 nf_stringByReversingString];
 
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"A%@", v11];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"A%@", nf_stringByReversingString];
       *a3 = v12;
     }
   }
 
-  v9 = v8;
+  fc_isValidHardPaywallArticleID = v8;
 LABEL_8:
 
-  return v9;
+  return fc_isValidHardPaywallArticleID;
 }
 
 - (id)fc_NewsArticleID
 {
-  v2 = [a1 path];
-  v3 = [v2 lastPathComponent];
+  path = [self path];
+  lastPathComponent = [path lastPathComponent];
 
-  if ([v3 fc_isValidArticleID])
+  if ([lastPathComponent fc_isValidArticleID])
   {
-    v4 = v3;
+    v4 = lastPathComponent;
   }
 
   else
   {
     v9 = 0;
-    v5 = [a1 fc_isHardPaywallNewsArticleURL:&v9];
+    v5 = [self fc_isHardPaywallNewsArticleURL:&v9];
     v6 = v9;
     v7 = v6;
     v4 = 0;
@@ -235,7 +235,7 @@ LABEL_8:
 - (id)fc_NewsArticleIDs
 {
   v19 = *MEMORY[0x1E69E9840];
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
   [v1 queryItems];
   v14 = 0u;
   v15 = 0u;
@@ -256,13 +256,13 @@ LABEL_8:
         }
 
         v7 = *(*(&v14 + 1) + 8 * i);
-        v8 = [v7 name];
-        v9 = [v8 isEqualToString:@"articleList"];
+        name = [v7 name];
+        v9 = [name isEqualToString:@"articleList"];
 
         if (v9)
         {
-          v11 = [v7 value];
-          v10 = [v11 componentsSeparatedByString:{@", "}];
+          value = [v7 value];
+          v10 = [value componentsSeparatedByString:{@", "}];
 
           goto LABEL_11;
         }
@@ -288,12 +288,12 @@ LABEL_11:
 
 - (id)fc_NewsIssueID
 {
-  v1 = [a1 path];
-  v2 = [v1 lastPathComponent];
+  path = [self path];
+  lastPathComponent = [path lastPathComponent];
 
-  if ([v2 fc_isValidIssueID])
+  if ([lastPathComponent fc_isValidIssueID])
   {
-    v3 = v2;
+    v3 = lastPathComponent;
   }
 
   else
@@ -306,12 +306,12 @@ LABEL_11:
 
 - (id)fc_NewsRecipeID
 {
-  v1 = [a1 path];
-  v2 = [v1 lastPathComponent];
+  path = [self path];
+  lastPathComponent = [path lastPathComponent];
 
-  if ([v2 fc_isValidRecipeID])
+  if ([lastPathComponent fc_isValidRecipeID])
   {
-    v3 = v2;
+    v3 = lastPathComponent;
   }
 
   else
@@ -324,30 +324,30 @@ LABEL_11:
 
 - (uint64_t)fc_isNewsURL
 {
-  v2 = [a1 scheme];
-  v3 = [a1 host];
-  if (v2)
+  scheme = [self scheme];
+  host = [self host];
+  if (scheme)
   {
-    if ([v2 isEqualToString:@"applenews"])
+    if ([scheme isEqualToString:@"applenews"])
     {
       v4 = 1;
     }
 
     else
     {
-      v4 = [v2 isEqualToString:@"applenewss"];
+      v4 = [scheme isEqualToString:@"applenewss"];
     }
 
-    if (([v2 isEqualToString:@"http"] & 1) != 0 || (v6 = objc_msgSend(v2, "isEqualToString:", @"https")) != 0)
+    if (([scheme isEqualToString:@"http"] & 1) != 0 || (v6 = objc_msgSend(scheme, "isEqualToString:", @"https")) != 0)
     {
-      if ([v3 isEqualToString:@"news.apple.com"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"apple.news"))
+      if ([host isEqualToString:@"news.apple.com"] & 1) != 0 || (objc_msgSend(host, "isEqualToString:", @"apple.news"))
       {
         LOBYTE(v6) = 1;
       }
 
       else
       {
-        LOBYTE(v6) = [v3 isEqualToString:@"one.apple.com"];
+        LOBYTE(v6) = [host isEqualToString:@"one.apple.com"];
       }
     }
 
@@ -364,14 +364,14 @@ LABEL_11:
 
 - (uint64_t)fc_isStocksURL
 {
-  v2 = [a1 scheme];
-  v3 = [a1 host];
-  if (v2)
+  scheme = [self scheme];
+  host = [self host];
+  if (scheme)
   {
-    v4 = [v2 isEqualToString:@"stocks"];
-    if (([v2 isEqualToString:@"http"] & 1) != 0 || (v5 = objc_msgSend(v2, "isEqualToString:", @"https")) != 0)
+    v4 = [scheme isEqualToString:@"stocks"];
+    if (([scheme isEqualToString:@"http"] & 1) != 0 || (v5 = objc_msgSend(scheme, "isEqualToString:", @"https")) != 0)
     {
-      LOBYTE(v5) = [v3 isEqualToString:@"stocks.apple.com"];
+      LOBYTE(v5) = [host isEqualToString:@"stocks.apple.com"];
     }
 
     v6 = v4 | v5;
@@ -387,14 +387,14 @@ LABEL_11:
 
 - (BOOL)_isFeldsparOldArticleURL
 {
-  v2 = [a1 pathComponents];
-  v3 = [v2 count];
+  pathComponents = [self pathComponents];
+  v3 = [pathComponents count];
 
-  v4 = [a1 path];
+  path = [self path];
   v5 = 0;
-  if ([v4 length] && v3 == 3)
+  if ([path length] && v3 == 3)
   {
-    v5 = [v4 rangeOfString:@"articles" options:1] != 0x7FFFFFFFFFFFFFFFLL;
+    v5 = [path rangeOfString:@"articles" options:1] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v5;
@@ -402,17 +402,17 @@ LABEL_11:
 
 - (uint64_t)fc_isFeldsparInterstitialPreviewURL
 {
-  if (![a1 fc_isNewsURL])
+  if (![self fc_isNewsURL])
   {
     return 0;
   }
 
-  v2 = [a1 pathComponents];
-  if ([v2 count] == 2)
+  pathComponents = [self pathComponents];
+  if ([pathComponents count] == 2)
   {
-    v3 = [a1 path];
-    v4 = [v3 lastPathComponent];
-    v5 = [v4 isEqualToString:@"interstitial-preview"];
+    path = [self path];
+    lastPathComponent = [path lastPathComponent];
+    v5 = [lastPathComponent isEqualToString:@"interstitial-preview"];
   }
 
   else
@@ -425,38 +425,38 @@ LABEL_11:
 
 - (uint64_t)fc_isNewsTagURL
 {
-  if ([a1 fc_isNewsURL])
+  if ([self fc_isNewsURL])
   {
-    v2 = [a1 lastPathComponent];
-    v3 = [v2 lowercaseString];
-    v4 = [v3 isEqualToString:@"topics"];
+    lastPathComponent = [self lastPathComponent];
+    lowercaseString = [lastPathComponent lowercaseString];
+    v4 = [lowercaseString isEqualToString:@"topics"];
 
-    v5 = [v2 lowercaseString];
-    v6 = [v5 isEqualToString:@"channels"];
+    lowercaseString2 = [lastPathComponent lowercaseString];
+    v6 = [lowercaseString2 isEqualToString:@"channels"];
 
-    LODWORD(v5) = [v2 fc_isValidTagID];
-    v7 = [a1 pathComponents];
-    v8 = ([v7 count] == 2) & v5 & ((v4 | v6) ^ 1);
+    LODWORD(lowercaseString2) = [lastPathComponent fc_isValidTagID];
+    pathComponents = [self pathComponents];
+    v8 = ([pathComponents count] == 2) & lowercaseString2 & ((v4 | v6) ^ 1);
 
-    if (v5)
+    if (lowercaseString2)
     {
-      if ([a1 _isFeldsparOldChannelURL])
+      if ([self _isFeldsparOldChannelURL])
       {
-        v9 = 1;
+        _isFeldsparOldTopicURL = 1;
       }
 
       else
       {
-        v9 = [a1 _isFeldsparOldTopicURL];
+        _isFeldsparOldTopicURL = [self _isFeldsparOldTopicURL];
       }
     }
 
     else
     {
-      v9 = 0;
+      _isFeldsparOldTopicURL = 0;
     }
 
-    v10 = v8 | v9;
+    v10 = v8 | _isFeldsparOldTopicURL;
   }
 
   else
@@ -469,45 +469,45 @@ LABEL_11:
 
 - (uint64_t)fc_isNewsSportsEventURL
 {
-  if (![a1 fc_isNewsURL])
+  if (![self fc_isNewsURL])
   {
     return 0;
   }
 
-  v2 = [a1 lastPathComponent];
-  v3 = [v2 fc_isValidSportsEventID];
-  v4 = [a1 pathComponents];
-  v5 = ([v4 count] == 2) & v3;
+  lastPathComponent = [self lastPathComponent];
+  fc_isValidSportsEventID = [lastPathComponent fc_isValidSportsEventID];
+  pathComponents = [self pathComponents];
+  v5 = ([pathComponents count] == 2) & fc_isValidSportsEventID;
 
   return v5;
 }
 
 - (uint64_t)fc_isNewsPuzzleURL
 {
-  if (![a1 fc_isNewsURL])
+  if (![self fc_isNewsURL])
   {
     return 0;
   }
 
-  v2 = [a1 lastPathComponent];
-  v3 = [v2 fc_isValidPuzzleID];
-  v4 = [a1 pathComponents];
-  v5 = ([v4 count] == 2) & v3;
+  lastPathComponent = [self lastPathComponent];
+  fc_isValidPuzzleID = [lastPathComponent fc_isValidPuzzleID];
+  pathComponents = [self pathComponents];
+  v5 = ([pathComponents count] == 2) & fc_isValidPuzzleID;
 
   return v5;
 }
 
 - (uint64_t)fc_isNewsPuzzleTypeURL
 {
-  if (![a1 fc_isNewsURL])
+  if (![self fc_isNewsURL])
   {
     return 0;
   }
 
-  v2 = [a1 lastPathComponent];
-  v3 = [v2 fc_isValidPuzzleTypeID];
-  v4 = [a1 pathComponents];
-  v5 = ([v4 count] == 2) & v3;
+  lastPathComponent = [self lastPathComponent];
+  fc_isValidPuzzleTypeID = [lastPathComponent fc_isValidPuzzleTypeID];
+  pathComponents = [self pathComponents];
+  v5 = ([pathComponents count] == 2) & fc_isValidPuzzleTypeID;
 
   return v5;
 }
@@ -517,11 +517,11 @@ LABEL_11:
   v7 = a4;
   v8 = MEMORY[0x1E695DF70];
   v9 = a3;
-  v10 = [v8 array];
-  [v10 addObject:@"/"];
-  [v10 addObjectsFromArray:v9];
+  array = [v8 array];
+  [array addObject:@"/"];
+  [array addObjectsFromArray:v9];
 
-  v11 = [MEMORY[0x1E696AEC0] pathWithComponents:v10];
+  v11 = [MEMORY[0x1E696AEC0] pathWithComponents:array];
   v12 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v12 setPath:v11];
   if ([v7 count])
@@ -563,7 +563,7 @@ LABEL_11:
   v7 = a4;
   if (!v7)
   {
-    v28 = [a1 fc_NewsURLForArticleID:v6 internal:0 targetIsVideo:0 hardPaywall:0];
+    v28 = [self fc_NewsURLForArticleID:v6 internal:0 targetIsVideo:0 hardPaywall:0];
     goto LABEL_32;
   }
 
@@ -627,21 +627,21 @@ LABEL_11:
   v44 = v6;
   v50 = v6;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
-  v41 = [a1 fc_NewsURLWithPathComponents:v8];
+  v41 = [self fc_NewsURLWithPathComponents:v8];
 
   v43 = v7;
   v9 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v7 resolvingAgainstBaseURL:0];
   v10 = objc_alloc_init(MEMORY[0x1E696AF20]);
   v42 = v9;
-  v11 = [v9 fragment];
-  [v10 setQuery:v11];
+  fragment = [v9 fragment];
+  [v10 setQuery:fragment];
 
-  v12 = [v10 queryItems];
-  v13 = v12;
+  queryItems = [v10 queryItems];
+  v13 = queryItems;
   v14 = MEMORY[0x1E695E0F0];
-  if (v12)
+  if (queryItems)
   {
-    v14 = v12;
+    v14 = queryItems;
   }
 
   v15 = v14;
@@ -667,8 +667,8 @@ LABEL_11:
         }
 
         v22 = *(*(&v45 + 1) + 8 * i);
-        v23 = [v22 name];
-        v24 = [v23 isEqualToString:@"nff_cid"];
+        name = [v22 name];
+        v24 = [name isEqualToString:@"nff_cid"];
 
         if ((v24 & 1) == 0)
         {
@@ -683,12 +683,12 @@ LABEL_11:
   }
 
   [v10 setQueryItems:v16];
-  v25 = [v10 query];
-  if ([v25 length])
+  query = [v10 query];
+  if ([query length])
   {
-    v26 = [v10 query];
+    query2 = [v10 query];
     v27 = v42;
-    [v42 setFragment:v26];
+    [v42 setFragment:query2];
   }
 
   else
@@ -714,9 +714,9 @@ LABEL_11:
 
   v32 = v31;
 
-  v33 = [v32 dataRepresentation];
+  dataRepresentation = [v32 dataRepresentation];
 
-  v34 = [v33 base64EncodedStringWithOptions:0];
+  v34 = [dataRepresentation base64EncodedStringWithOptions:0];
 
   v35 = [MEMORY[0x1E696AF60] queryItemWithName:@"route" value:v34];
   v28 = [v41 fc_URLByAddingQueryItem:v35];
@@ -801,7 +801,7 @@ LABEL_10:
   v12 = v11;
   v22 = v11;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
-  v14 = [a1 fc_NewsURLWithPathComponents:v13 internal:a4];
+  v14 = [self fc_NewsURLWithPathComponents:v13 internal:a4];
 
   if (a5)
   {
@@ -851,7 +851,7 @@ LABEL_18:
 
   v11 = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
-  v6 = [a1 fc_NewsURLWithPathComponents:v5];
+  v6 = [self fc_NewsURLWithPathComponents:v5];
 
   v7 = *MEMORY[0x1E69E9840];
 
@@ -860,12 +860,12 @@ LABEL_18:
 
 - (id)fc_feldsparTagID
 {
-  v1 = [a1 path];
-  v2 = [v1 lastPathComponent];
+  path = [self path];
+  lastPathComponent = [path lastPathComponent];
 
-  if ([v2 fc_isValidTagID])
+  if ([lastPathComponent fc_isValidTagID])
   {
-    v3 = v2;
+    v3 = lastPathComponent;
   }
 
   else
@@ -879,18 +879,18 @@ LABEL_18:
 - (uint64_t)fc_isEqualToURL:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 absoluteURL];
-  v6 = [v4 absoluteURL];
-  if ([v5 isEqual:v6])
+  absoluteURL = [self absoluteURL];
+  absoluteURL2 = [v4 absoluteURL];
+  if ([absoluteURL isEqual:absoluteURL2])
   {
     v7 = 1;
   }
 
-  else if ([a1 isFileURL] && objc_msgSend(v4, "isFileURL"))
+  else if ([self isFileURL] && objc_msgSend(v4, "isFileURL"))
   {
-    v8 = [a1 path];
-    v9 = [v4 path];
-    v7 = [v8 isEqual:v9];
+    path = [self path];
+    path2 = [v4 path];
+    v7 = [path isEqual:path2];
   }
 
   else
@@ -903,14 +903,14 @@ LABEL_18:
 
 - (BOOL)_isFeldsparOldTopicURL
 {
-  v2 = [a1 pathComponents];
-  v3 = [v2 count];
+  pathComponents = [self pathComponents];
+  v3 = [pathComponents count];
 
-  v4 = [a1 path];
+  path = [self path];
   v5 = 0;
-  if ([v4 length] && v3 == 3)
+  if ([path length] && v3 == 3)
   {
-    v5 = [v4 rangeOfString:@"topics" options:1] != 0x7FFFFFFFFFFFFFFFLL;
+    v5 = [path rangeOfString:@"topics" options:1] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v5;
@@ -918,14 +918,14 @@ LABEL_18:
 
 - (BOOL)_isFeldsparOldChannelURL
 {
-  v2 = [a1 pathComponents];
-  v3 = [v2 count];
+  pathComponents = [self pathComponents];
+  v3 = [pathComponents count];
 
-  v4 = [a1 path];
+  path = [self path];
   v5 = 0;
-  if ([v4 length] && v3 == 3)
+  if ([path length] && v3 == 3)
   {
-    v5 = [v4 rangeOfString:@"channels" options:1] != 0x7FFFFFFFFFFFFFFFLL;
+    v5 = [path rangeOfString:@"channels" options:1] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v5;
@@ -933,11 +933,11 @@ LABEL_18:
 
 - (uint64_t)fc_isWebArchiveURL
 {
-  v2 = [a1 scheme];
-  v3 = [a1 pathExtension];
-  if ([v2 isEqualToString:@"file"])
+  scheme = [self scheme];
+  pathExtension = [self pathExtension];
+  if ([scheme isEqualToString:@"file"])
   {
-    v4 = [v3 isEqualToString:@"webarchive"];
+    v4 = [pathExtension isEqualToString:@"webarchive"];
   }
 
   else
@@ -950,48 +950,48 @@ LABEL_18:
 
 - (uint64_t)fc_isHTTPScheme
 {
-  v2 = [a1 scheme];
-  if ([v2 isEqualToString:@"http"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"https"))
+  scheme = [self scheme];
+  if ([scheme isEqualToString:@"http"] & 1) != 0 || (objc_msgSend(scheme, "isEqualToString:", @"https"))
   {
-    v3 = 1;
+    fc_isWebArchiveURL = 1;
   }
 
   else
   {
-    v3 = [a1 fc_isWebArchiveURL];
+    fc_isWebArchiveURL = [self fc_isWebArchiveURL];
   }
 
-  return v3;
+  return fc_isWebArchiveURL;
 }
 
 - (uint64_t)fc_isStoreURL
 {
-  v2 = [a1 scheme];
-  if ([v2 hasPrefix:@"itms"])
+  scheme = [self scheme];
+  if ([scheme hasPrefix:@"itms"])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 host];
-    if ([v4 isEqualToString:@"itunes.apple.com"])
+    host = [self host];
+    if ([host isEqualToString:@"itunes.apple.com"])
     {
       v3 = 1;
     }
 
     else
     {
-      v5 = [a1 host];
-      if ([v5 isEqualToString:@"buy.itunes.apple.com"])
+      host2 = [self host];
+      if ([host2 isEqualToString:@"buy.itunes.apple.com"])
       {
         v3 = 1;
       }
 
       else
       {
-        v6 = [a1 host];
-        v3 = [v6 isEqualToString:@"storepreview.apple.com"];
+        host3 = [self host];
+        v3 = [host3 isEqualToString:@"storepreview.apple.com"];
       }
     }
   }
@@ -1001,7 +1001,7 @@ LABEL_18:
 
 - (id)fc_URLByDeletingQuery
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
   [v1 setQuery:0];
   v2 = [v1 URL];
 
@@ -1010,7 +1010,7 @@ LABEL_18:
 
 - (id)fc_URLByDeletingFragment
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
   [v1 setFragment:0];
   v2 = [v1 URL];
 
@@ -1021,40 +1021,40 @@ LABEL_18:
 {
   v4 = MEMORY[0x1E696AF20];
   v5 = a3;
-  v6 = [v4 componentsWithURL:a1 resolvingAgainstBaseURL:0];
-  v7 = [v6 queryItems];
-  if (v7)
+  v6 = [v4 componentsWithURL:self resolvingAgainstBaseURL:0];
+  queryItems = [v6 queryItems];
+  if (queryItems)
   {
-    v8 = [v6 queryItems];
-    v9 = [v8 mutableCopy];
+    queryItems2 = [v6 queryItems];
+    array = [queryItems2 mutableCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  [v9 addObject:v5];
-  [v6 setQueryItems:v9];
+  [array addObject:v5];
+  [v6 setQueryItems:array];
   v10 = [v6 URL];
   v11 = v10;
   if (v10)
   {
-    a1 = v10;
+    self = v10;
   }
 
-  v12 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
 - (id)fc_valueForQueryItemWithName:()FCAdditions
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 query];
-  v6 = [v5 stringByRemovingPercentEncoding];
-  v7 = [v6 componentsSeparatedByString:@"&"];
+  query = [self query];
+  stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
+  v7 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"&"];
 
   v22 = 0u;
   v23 = 0u;
@@ -1077,11 +1077,11 @@ LABEL_18:
         }
 
         v13 = [*(*(&v20 + 1) + 8 * i) componentsSeparatedByString:@"="];
-        v14 = [v13 firstObject];
-        v15 = [v13 lastObject];
-        if ([v14 isEqualToString:v4])
+        firstObject = [v13 firstObject];
+        lastObject = [v13 lastObject];
+        if ([firstObject isEqualToString:v4])
         {
-          v16 = v15;
+          v16 = lastObject;
 
           v10 = v16;
         }
@@ -1106,9 +1106,9 @@ LABEL_18:
 - (uint64_t)fc_directoryExists
 {
   v6 = 0;
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [a1 path];
-  v4 = [v2 fileExistsAtPath:v3 isDirectory:&v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [self path];
+  v4 = [defaultManager fileExistsAtPath:path isDirectory:&v6];
 
   return v4;
 }
@@ -1118,34 +1118,34 @@ LABEL_18:
   v4 = a3;
   if (FCMIMETypeIsGZip(v4))
   {
-    v5 = 1;
+    fc_isGzipped = 1;
   }
 
   else if (v4 && !FCMIMETypeIsBinary(v4))
   {
-    v5 = 0;
+    fc_isGzipped = 0;
   }
 
   else
   {
     v6 = MEMORY[0x1E696AC00];
-    v7 = [a1 path];
-    v8 = [v6 fileHandleForReadingAtPath:v7];
+    path = [self path];
+    v8 = [v6 fileHandleForReadingAtPath:path];
 
     v9 = [v8 readDataOfLength:2];
     [v8 closeFile];
-    v5 = [v9 fc_isGzipped];
+    fc_isGzipped = [v9 fc_isGzipped];
   }
 
-  return v5;
+  return fc_isGzipped;
 }
 
 - (uint64_t)fc_fileSystemFreeSize
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [a1 path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [self path];
   v13 = 0;
-  v4 = [v2 attributesOfFileSystemForPath:v3 error:&v13];
+  v4 = [defaultManager attributesOfFileSystemForPath:path error:&v13];
   v5 = v13;
 
   if (v4)
@@ -1154,7 +1154,7 @@ LABEL_18:
     if (v6)
     {
       v7 = v6;
-      v8 = [v6 longLongValue];
+      longLongValue = [v6 longLongValue];
     }
 
     else
@@ -1167,7 +1167,7 @@ LABEL_18:
       }
 
       v7 = 0;
-      v8 = 0x7FFFFFFFFFFFFFFFLL;
+      longLongValue = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
@@ -1179,11 +1179,11 @@ LABEL_18:
     v11[3] = &unk_1E7C3F068;
     v12 = v5;
     __43__NSURL_FCAdditions__fc_fileSystemFreeSize__block_invoke(v11);
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    longLongValue = 0x7FFFFFFFFFFFFFFFLL;
     v7 = v12;
   }
 
-  return v8;
+  return longLongValue;
 }
 
 - (uint64_t)fc_volumeAvailableCapacityForOpportunisticUsage
@@ -1191,7 +1191,7 @@ LABEL_18:
   v14 = 0;
   v1 = *MEMORY[0x1E695DD58];
   v13 = 0;
-  v2 = [a1 getResourceValue:&v14 forKey:v1 error:&v13];
+  v2 = [self getResourceValue:&v14 forKey:v1 error:&v13];
   v3 = v14;
   v4 = v13;
   v5 = v4;
@@ -1206,7 +1206,7 @@ LABEL_18:
     __69__NSURL_FCAdditions__fc_volumeAvailableCapacityForOpportunisticUsage__block_invoke(v11);
 
 LABEL_7:
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    longLongValue = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_8;
   }
 
@@ -1223,33 +1223,33 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v7 = [v6 longLongValue];
+  longLongValue = [v6 longLongValue];
 LABEL_8:
 
-  return v7;
+  return longLongValue;
 }
 
 - (uint64_t)getUInt16XAttrWithName:()FCAdditions
 {
   value = 0;
-  v5 = a1;
+  selfCopy = self;
   v6 = a3;
-  v7 = [a1 fileSystemRepresentation];
-  v8 = [v6 cString];
+  fileSystemRepresentation = [self fileSystemRepresentation];
+  cString = [v6 cString];
 
-  getxattr(v7, v8, &value, 2uLL, 0, 0);
+  getxattr(fileSystemRepresentation, cString, &value, 2uLL, 0, 0);
   return value;
 }
 
 - (uint64_t)setUInt16XAttr:()FCAdditions withName:
 {
   value = a3;
-  v6 = a1;
+  selfCopy = self;
   v7 = a4;
-  v8 = [a1 fileSystemRepresentation];
-  v9 = [v7 cString];
+  fileSystemRepresentation = [self fileSystemRepresentation];
+  cString = [v7 cString];
 
-  return setxattr(v8, v9, &value, 2uLL, 0, 0);
+  return setxattr(fileSystemRepresentation, cString, &value, 2uLL, 0, 0);
 }
 
 @end

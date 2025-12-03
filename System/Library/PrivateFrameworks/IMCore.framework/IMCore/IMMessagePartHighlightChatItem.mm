@@ -1,32 +1,32 @@
 @interface IMMessagePartHighlightChatItem
 - (IMAssociatedMessageGeometryDescriptor)geometryDescriptor;
 - (_NSRange)highlightedMessagePartRange;
-- (id)_initWithItem:(id)a3 highlightedMessagePartGUID:(id)a4 highlightedMessagePartIndex:(int64_t)a5 highlightedMessagePartRange:(_NSRange)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item highlightedMessagePartGUID:(id)d highlightedMessagePartIndex:(int64_t)index highlightedMessagePartRange:(_NSRange)range;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMMessagePartHighlightChatItem
 
-- (id)_initWithItem:(id)a3 highlightedMessagePartGUID:(id)a4 highlightedMessagePartIndex:(int64_t)a5 highlightedMessagePartRange:(_NSRange)a6
+- (id)_initWithItem:(id)item highlightedMessagePartGUID:(id)d highlightedMessagePartIndex:(int64_t)index highlightedMessagePartRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v11 = a3;
-  v12 = a4;
+  length = range.length;
+  location = range.location;
+  itemCopy = item;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = IMMessagePartHighlightChatItem;
-  v13 = [(IMChatItem *)&v25 _initWithItem:v11];
+  v13 = [(IMChatItem *)&v25 _initWithItem:itemCopy];
   v14 = v13;
   if (v13)
   {
-    *(v13 + 8) = a5;
+    *(v13 + 8) = index;
     *(v13 + 10) = location;
     *(v13 + 11) = length;
-    objc_storeStrong(v13 + 9, a4);
-    v14[56] = objc_msgSend_isFromMe(v11, v15, v16);
+    objc_storeStrong(v13 + 9, d);
+    v14[56] = objc_msgSend_isFromMe(itemCopy, v15, v16);
     v17 = MEMORY[0x1E69A8148];
-    v20 = objc_msgSend_guid(v11, v18, v19);
-    v22 = objc_msgSend_encodeMessagePartGUID_prefix_partNumber_(v17, v21, v20, @"mh", a5);
+    v20 = objc_msgSend_guid(itemCopy, v18, v19);
+    v22 = objc_msgSend_encodeMessagePartGUID_prefix_partNumber_(v17, v21, v20, @"mh", index);
     objc_msgSend__setGUID_(v14, v23, v22);
   }
 
@@ -42,7 +42,7 @@
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);

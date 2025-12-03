@@ -2,23 +2,23 @@
 + (id)sharedManager;
 - (ICStorageManager)init;
 - (unint64_t)storageSpaceAvailable;
-- (void)ensureStorageIsAvailable:(unint64_t)a3 withCompletionHandler:(id)a4;
+- (void)ensureStorageIsAvailable:(unint64_t)available withCompletionHandler:(id)handler;
 @end
 
 @implementation ICStorageManager
 
-- (void)ensureStorageIsAvailable:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)ensureStorageIsAvailable:(unint64_t)available withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__ICStorageManager_ensureStorageIsAvailable_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7BF7288;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  availableCopy = available;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -68,10 +68,10 @@ void __67__ICStorageManager_ensureStorageIsAvailable_withCompletionHandler___blo
 - (unint64_t)storageSpaceAvailable
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v3 = NSHomeDirectory();
   v11 = 0;
-  v4 = [v2 attributesOfFileSystemForPath:v3 error:&v11];
+  v4 = [defaultManager attributesOfFileSystemForPath:v3 error:&v11];
   v5 = v11;
 
   if (v5)
@@ -86,11 +86,11 @@ void __67__ICStorageManager_ensureStorageIsAvailable_withCompletionHandler___blo
   }
 
   v7 = [v4 objectForKey:*MEMORY[0x1E696A3C0]];
-  v8 = [v7 unsignedLongLongValue];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
 
-  if (v8 >= 0x1F400000)
+  if (unsignedLongLongValue >= 0x1F400000)
   {
-    v9 = v8 - 524288000;
+    v9 = unsignedLongLongValue - 524288000;
   }
 
   else

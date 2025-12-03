@@ -1,8 +1,8 @@
 @interface ICNoteEditorContextualBarButton
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (NSString)largeContentTitle;
-- (_TtC11NotesEditor31ICNoteEditorContextualBarButton)initWithCoder:(id)a3;
-- (_TtC11NotesEditor31ICNoteEditorContextualBarButton)initWithFrame:(CGRect)a3;
+- (_TtC11NotesEditor31ICNoteEditorContextualBarButton)initWithCoder:(id)coder;
+- (_TtC11NotesEditor31ICNoteEditorContextualBarButton)initWithFrame:(CGRect)frame;
 - (void)accessibilityElementDidBecomeFocused;
 - (void)updateColoration;
 @end
@@ -11,31 +11,31 @@
 
 - (void)updateColoration
 {
-  v6 = self;
-  v2 = [(ICNoteEditorContextualBarButton *)v6 window];
-  if (v2)
+  selfCopy = self;
+  window = [(ICNoteEditorContextualBarButton *)selfCopy window];
+  if (window)
   {
-    v3 = v2;
-    v4 = [v2 tintColor];
-    [(ICNoteEditorContextualBarButton *)v6 setTintColor:v4];
+    v3 = window;
+    tintColor = [window tintColor];
+    [(ICNoteEditorContextualBarButton *)selfCopy setTintColor:tintColor];
 
-    v5 = [objc_opt_self() clearColor];
-    [(ICNoteEditorContextualBarButton *)v6 setBackgroundColor:v5];
+    clearColor = [objc_opt_self() clearColor];
+    [(ICNoteEditorContextualBarButton *)selfCopy setBackgroundColor:clearColor];
   }
 }
 
 - (void)accessibilityElementDidBecomeFocused
 {
-  v2 = self;
+  selfCopy = self;
   sub_215351624();
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v5 = self;
-    v6 = sub_2153270FC(v5, a3);
+    selfCopy = self;
+    v6 = sub_2153270FC(selfCopy, scroll);
     swift_unknownObjectRelease();
   }
 
@@ -52,10 +52,10 @@
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
   v2 = v9.receiver;
-  v3 = [(ICNoteEditorContextualBarButton *)&v9 largeContentTitle];
-  if (v3)
+  largeContentTitle = [(ICNoteEditorContextualBarButton *)&v9 largeContentTitle];
+  if (largeContentTitle)
   {
-    v4 = v3;
+    v4 = largeContentTitle;
     sub_2154A1D6C();
 
 LABEL_4:
@@ -78,12 +78,12 @@ LABEL_5:
   return v7;
 }
 
-- (_TtC11NotesEditor31ICNoteEditorContextualBarButton)initWithFrame:(CGRect)a3
+- (_TtC11NotesEditor31ICNoteEditorContextualBarButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super._responderFlags + OBJC_IVAR____TtC11NotesEditor31ICNoteEditorContextualBarButton_accessibilityContextualBarButtonDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -93,7 +93,7 @@ LABEL_5:
   return [(ICMorphableButton *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC11NotesEditor31ICNoteEditorContextualBarButton)initWithCoder:(id)a3
+- (_TtC11NotesEditor31ICNoteEditorContextualBarButton)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super._responderFlags + OBJC_IVAR____TtC11NotesEditor31ICNoteEditorContextualBarButton_accessibilityContextualBarButtonDelegate) = 0;
@@ -101,8 +101,8 @@ LABEL_5:
   swift_unknownObjectWeakInit();
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(ICMorphableButton *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(ICMorphableButton *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

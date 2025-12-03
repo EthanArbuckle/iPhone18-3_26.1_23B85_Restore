@@ -10,16 +10,16 @@
 
 - (BOOL)_axIsStartHandle
 {
-  v2 = [(EKDayOccurrenceResizeHandleViewAccessibility *)self accessibilityIdentifier];
-  v3 = [v2 isEqualToString:@"StartHandle"];
+  accessibilityIdentifier = [(EKDayOccurrenceResizeHandleViewAccessibility *)self accessibilityIdentifier];
+  v3 = [accessibilityIdentifier isEqualToString:@"StartHandle"];
 
   return v3;
 }
 
 - (BOOL)_axIsEndHandle
 {
-  v2 = [(EKDayOccurrenceResizeHandleViewAccessibility *)self accessibilityIdentifier];
-  v3 = [v2 isEqualToString:@"EndHandle"];
+  accessibilityIdentifier = [(EKDayOccurrenceResizeHandleViewAccessibility *)self accessibilityIdentifier];
+  v3 = [accessibilityIdentifier isEqualToString:@"EndHandle"];
 
   return v3;
 }

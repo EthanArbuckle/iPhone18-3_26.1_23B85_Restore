@@ -1,103 +1,103 @@
 @interface TUIBarChartView
-+ (id)renderModelWithIdentifier:(id)a3 title:(id)a4 footer:(id)a5 columns:(int64_t)a6 cornerRadius:(double)a7 progress:(double)a8 spacing:(double)a9 color:(id)a10 backgroundColor:(id)a11 shadowColor:(id)a12;
-- (void)_configureWithModel:(id)a3;
++ (id)renderModelWithIdentifier:(id)identifier title:(id)title footer:(id)footer columns:(int64_t)columns cornerRadius:(double)radius progress:(double)progress spacing:(double)spacing color:(id)self0 backgroundColor:(id)self1 shadowColor:(id)self2;
+- (void)_configureWithModel:(id)model;
 - (void)_setupBarChartBars;
 - (void)_setupTextFields;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation TUIBarChartView
 
-+ (id)renderModelWithIdentifier:(id)a3 title:(id)a4 footer:(id)a5 columns:(int64_t)a6 cornerRadius:(double)a7 progress:(double)a8 spacing:(double)a9 color:(id)a10 backgroundColor:(id)a11 shadowColor:(id)a12
++ (id)renderModelWithIdentifier:(id)identifier title:(id)title footer:(id)footer columns:(int64_t)columns cornerRadius:(double)radius progress:(double)progress spacing:(double)spacing color:(id)self0 backgroundColor:(id)self1 shadowColor:(id)self2
 {
-  v21 = a12;
-  v22 = a11;
-  v23 = a10;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
+  shadowColorCopy = shadowColor;
+  backgroundColorCopy = backgroundColor;
+  colorCopy = color;
+  footerCopy = footer;
+  titleCopy = title;
+  identifierCopy = identifier;
   v27 = objc_alloc_init(_TUIBarChartRenderModel);
-  [(_TUIBarChartRenderModel *)v27 setTitle:v25];
+  [(_TUIBarChartRenderModel *)v27 setTitle:titleCopy];
 
-  [(_TUIBarChartRenderModel *)v27 setFooter:v24];
-  [(_TUIBarChartRenderModel *)v27 setColumns:a6];
-  [(_TUIBarChartRenderModel *)v27 setCornerRadius:a7];
-  [(_TUIBarChartRenderModel *)v27 setProgress:a8];
-  [(_TUIBarChartRenderModel *)v27 setSpacing:a9];
-  [(_TUIBarChartRenderModel *)v27 setColor:v23];
+  [(_TUIBarChartRenderModel *)v27 setFooter:footerCopy];
+  [(_TUIBarChartRenderModel *)v27 setColumns:columns];
+  [(_TUIBarChartRenderModel *)v27 setCornerRadius:radius];
+  [(_TUIBarChartRenderModel *)v27 setProgress:progress];
+  [(_TUIBarChartRenderModel *)v27 setSpacing:spacing];
+  [(_TUIBarChartRenderModel *)v27 setColor:colorCopy];
 
-  [(_TUIBarChartRenderModel *)v27 setBackgroundColor:v22];
-  [(_TUIBarChartRenderModel *)v27 setShadowColor:v21];
+  [(_TUIBarChartRenderModel *)v27 setBackgroundColor:backgroundColorCopy];
+  [(_TUIBarChartRenderModel *)v27 setShadowColor:shadowColorCopy];
 
-  v28 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierBarChartView" identifier:v26 submodel:v27];
+  v28 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierBarChartView" identifier:identifierCopy submodel:v27];
 
   return v28;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = TUIBarChartView;
-  v4 = a3;
-  [(TUIReusableBaseView *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
+  attributesCopy = attributes;
+  [(TUIReusableBaseView *)&v7 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
 
-  v6 = [v5 submodel];
-  [(TUIBarChartView *)self _configureWithModel:v6];
+  submodel = [renderModel submodel];
+  [(TUIBarChartView *)self _configureWithModel:submodel];
 }
 
-- (void)_configureWithModel:(id)a3
+- (void)_configureWithModel:(id)model
 {
-  v18 = a3;
-  objc_storeStrong(&self->_renderModel, a3);
-  v5 = [(_TUIBarChartRenderModel *)self->_renderModel title];
+  modelCopy = model;
+  objc_storeStrong(&self->_renderModel, model);
+  title = [(_TUIBarChartRenderModel *)self->_renderModel title];
   title = self->_title;
-  self->_title = v5;
+  self->_title = title;
 
-  v7 = [(_TUIBarChartRenderModel *)self->_renderModel footer];
+  footer = [(_TUIBarChartRenderModel *)self->_renderModel footer];
   footer = self->_footer;
-  self->_footer = v7;
+  self->_footer = footer;
 
-  self->_columns = [v18 columns];
-  [v18 cornerRadius];
+  self->_columns = [modelCopy columns];
+  [modelCopy cornerRadius];
   self->_cornerRadius = v9;
-  [v18 progress];
+  [modelCopy progress];
   self->_progress = v10;
-  [v18 spacing];
+  [modelCopy spacing];
   self->_spacing = v11;
-  v12 = [(_TUIBarChartRenderModel *)self->_renderModel color];
-  v13 = v12;
-  if (!v12)
+  color = [(_TUIBarChartRenderModel *)self->_renderModel color];
+  v13 = color;
+  if (!color)
   {
     v13 = +[UIColor redColor];
   }
 
   objc_storeStrong(&self->_color, v13);
-  if (!v12)
+  if (!color)
   {
   }
 
-  v14 = [(_TUIBarChartRenderModel *)self->_renderModel color];
-  v15 = v14;
-  if (!v14)
+  color2 = [(_TUIBarChartRenderModel *)self->_renderModel color];
+  v15 = color2;
+  if (!color2)
   {
     v15 = +[UIColor whiteColor];
   }
 
   objc_storeStrong(&self->_backgroundColor, v15);
-  if (!v14)
+  if (!color2)
   {
   }
 
-  v16 = [(_TUIBarChartRenderModel *)self->_renderModel color];
-  v17 = v16;
-  if (!v16)
+  color3 = [(_TUIBarChartRenderModel *)self->_renderModel color];
+  v17 = color3;
+  if (!color3)
   {
     v17 = +[UIColor yellowColor];
   }
 
   objc_storeStrong(&self->_shadowColor, v17);
-  if (!v16)
+  if (!color3)
   {
   }
 
@@ -107,17 +107,17 @@
 
 - (void)_setupTextFields
 {
-  v3 = [(TUIBarChartView *)self title];
-  v4 = [v3 length];
+  title = [(TUIBarChartView *)self title];
+  v4 = [title length];
 
   if (v4)
   {
     [(TUIBarChartView *)self setCalculatedInsetForTitleText:20.0];
     [(TUIBarChartView *)self bounds];
     v6 = [[UILabel alloc] initWithFrame:{0.0, 0.0, v5, 20.0}];
-    v7 = [(TUIBarChartView *)self title];
-    v8 = [v7 uppercaseString];
-    [v6 setText:v8];
+    title2 = [(TUIBarChartView *)self title];
+    uppercaseString = [title2 uppercaseString];
+    [v6 setText:uppercaseString];
 
     v9 = [UIFont boldSystemFontOfSize:12.0];
     [v6 setFont:v9];
@@ -134,8 +134,8 @@
     [(TUIBarChartView *)self addSubview:v6];
   }
 
-  v12 = [(TUIBarChartView *)self footer];
-  v13 = [v12 length];
+  footer = [(TUIBarChartView *)self footer];
+  v13 = [footer length];
 
   if (v13)
   {
@@ -144,9 +144,9 @@
     v15 = v14 + -20.0;
     [(TUIBarChartView *)self bounds];
     v22 = [[UILabel alloc] initWithFrame:{0.0, v15, v16, 20.0}];
-    v17 = [(TUIBarChartView *)self footer];
-    v18 = [v17 uppercaseString];
-    [v22 setText:v18];
+    footer2 = [(TUIBarChartView *)self footer];
+    uppercaseString2 = [footer2 uppercaseString];
+    [v22 setText:uppercaseString2];
 
     v19 = [UIFont systemFontOfSize:12.0];
     [v22 setFont:v19];
@@ -183,20 +183,20 @@
   v15 = v14;
   [(TUIBarChartView *)self calculatedInsetForFooterText];
   v17 = v13 - (v15 + v16);
-  v18 = [(TUIBarChartView *)self columns];
+  columns = [(TUIBarChartView *)self columns];
   v32.origin.x = v7;
   v32.origin.y = v9;
   v32.size.width = v11;
   v32.size.height = v17;
-  v19 = (CGRectGetWidth(v32) - (v18 - 1) * v3) / v18;
-  if (v18 <= 1)
+  v19 = (CGRectGetWidth(v32) - (columns - 1) * v3) / columns;
+  if (columns <= 1)
   {
     v20 = 1;
   }
 
   else
   {
-    v20 = v18;
+    v20 = columns;
   }
 
   v21 = 0.0;
@@ -220,8 +220,8 @@
 
     [v27 setCornerRadius:self->_cornerRadius];
     [v27 setMasksToBounds:1];
-    v29 = [(TUIBarChartView *)self layer];
-    [v29 addSublayer:v27];
+    layer = [(TUIBarChartView *)self layer];
+    [layer addSublayer:v27];
 
     v30 = +[CALayer layer];
     v31 = v23 + v26;

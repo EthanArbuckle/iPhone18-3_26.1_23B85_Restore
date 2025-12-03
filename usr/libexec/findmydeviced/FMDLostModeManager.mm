@@ -61,8 +61,8 @@
     v4 = objc_alloc_init(FMStateCapture);
     [(FMDLostModeManager *)v2 setStateCapture:v4];
 
-    v5 = [(FMDLostModeManager *)v2 stateCapture];
-    [v5 setStateCaptureBlock:&stru_1002CD800];
+    stateCapture = [(FMDLostModeManager *)v2 stateCapture];
+    [stateCapture setStateCaptureBlock:&stru_1002CD800];
 
     [(FMDLostModeManager *)v2 _loadLostModeInfo];
     [(FMDLostModeManager *)v2 _updateLocationServicesState];
@@ -90,12 +90,12 @@
 
 - (void)_updateLocationServicesState
 {
-  v3 = [(FMDLostModeManager *)self enableLocationServices];
-  v4 = [(FMDLostModeManager *)self locationServicesAssertion];
+  enableLocationServices = [(FMDLostModeManager *)self enableLocationServices];
+  locationServicesAssertion = [(FMDLostModeManager *)self locationServicesAssertion];
 
-  if (v3)
+  if (enableLocationServices)
   {
-    if (!v4)
+    if (!locationServicesAssertion)
     {
       v5 = sub_100002880();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -110,7 +110,7 @@
     }
   }
 
-  else if (v4)
+  else if (locationServicesAssertion)
   {
     v8 = sub_100002880();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -119,8 +119,8 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Releasing the emergency location services assertion", v10, 2u);
     }
 
-    v9 = [(FMDLostModeManager *)self locationServicesAssertion];
-    [v9 invalidate];
+    locationServicesAssertion2 = [(FMDLostModeManager *)self locationServicesAssertion];
+    [locationServicesAssertion2 invalidate];
 
     [(FMDLostModeManager *)self setLocationServicesAssertion:0];
   }
@@ -134,11 +134,11 @@
     v3 = [NSNumber numberWithBool:[(FMDLostModeManager *)self lostModeEnabled]];
     v16[0] = v3;
     v15[1] = @"lostModeMessage";
-    v4 = [(FMDLostModeManager *)self lockScreenMessage];
-    v5 = v4;
-    if (v4)
+    lockScreenMessage = [(FMDLostModeManager *)self lockScreenMessage];
+    v5 = lockScreenMessage;
+    if (lockScreenMessage)
     {
-      v6 = v4;
+      v6 = lockScreenMessage;
     }
 
     else
@@ -148,11 +148,11 @@
 
     v16[1] = v6;
     v15[2] = @"lostModeOwnerNumber";
-    v7 = [(FMDLostModeManager *)self lockScreenOwnerNumber];
-    v8 = v7;
-    if (v7)
+    lockScreenOwnerNumber = [(FMDLostModeManager *)self lockScreenOwnerNumber];
+    v8 = lockScreenOwnerNumber;
+    if (lockScreenOwnerNumber)
     {
-      v9 = v7;
+      v9 = lockScreenOwnerNumber;
     }
 
     else

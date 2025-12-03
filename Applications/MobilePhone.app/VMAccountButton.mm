@@ -1,9 +1,9 @@
 @interface VMAccountButton
 + (NSCache)imageCache;
-+ (id)backgroundImageForSize:(CGSize)a3 state:(unint64_t)a4;
-+ (id)backgroundImageNameForSize:(CGSize)a3 state:(unint64_t)a4;
++ (id)backgroundImageForSize:(CGSize)size state:(unint64_t)state;
++ (id)backgroundImageNameForSize:(CGSize)size state:(unint64_t)state;
 - (CGSize)intrinsicContentSize;
-- (VMAccountButton)initWithFrame:(CGRect)a3;
+- (VMAccountButton)initWithFrame:(CGRect)frame;
 - (double)preferredIntrinsicContentSizeWidth;
 - (double)titleLabelFirstBaselineAnchorLayoutConstraintConstant;
 - (double)titleLabelLastBaselineAnchorLayoutConstraintConstant;
@@ -13,22 +13,22 @@
 
 @implementation VMAccountButton
 
-+ (id)backgroundImageNameForSize:(CGSize)a3 state:(unint64_t)a4
++ (id)backgroundImageNameForSize:(CGSize)size state:(unint64_t)state
 {
-  v6 = NSStringFromCGSize(a3);
-  v7 = [NSNumber numberWithUnsignedInteger:a4];
-  v8 = [NSString stringWithFormat:@"<%@ backgroundImage, size=%@, state=%@>", a1, v6, v7];
+  v6 = NSStringFromCGSize(size);
+  v7 = [NSNumber numberWithUnsignedInteger:state];
+  v8 = [NSString stringWithFormat:@"<%@ backgroundImage, size=%@, state=%@>", self, v6, v7];
 
   return v8;
 }
 
-+ (id)backgroundImageForSize:(CGSize)a3 state:(unint64_t)a4
++ (id)backgroundImageForSize:(CGSize)size state:(unint64_t)state
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [a1 backgroundImageNameForSize:a4 state:?];
-  v8 = [a1 imageCache];
-  v9 = [v8 objectForKey:v7];
+  height = size.height;
+  width = size.width;
+  v7 = [self backgroundImageNameForSize:state state:?];
+  imageCache = [self imageCache];
+  v9 = [imageCache objectForKey:v7];
 
   if (!v9)
   {
@@ -42,8 +42,8 @@
     *&v15[4] = width;
     *&v15[5] = height;
     v12 = [v11 imageWithActions:v15];
-    v13 = [a1 imageCache];
-    [v13 setObject:v12 forKey:v7];
+    imageCache2 = [self imageCache];
+    [imageCache2 setObject:v12 forKey:v7];
   }
 
   return v9;
@@ -82,11 +82,11 @@ void __29__VMAccountButton_imageCache__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (VMAccountButton)initWithFrame:(CGRect)a3
+- (VMAccountButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VMAccountButton;
-  v3 = [(VMAccountButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VMAccountButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -101,11 +101,11 @@ void __29__VMAccountButton_imageCache__block_invoke(id a1)
 {
   [(VMAccountButton *)self setContentEdgeInsets:0.0, 16.0, 0.0, 16.0];
   [(VMAccountButton *)self setContentHorizontalAlignment:0];
-  v5 = [(VMAccountButton *)self titleLabel];
+  titleLabel = [(VMAccountButton *)self titleLabel];
   v3 = +[UIFont telephonyUIBodyShortFont];
-  [v5 setFont:v3];
+  [titleLabel setFont:v3];
 
-  [v5 setTextAlignment:1];
+  [titleLabel setTextAlignment:1];
   v4 = +[UIColor dynamicSecondaryLabelColor];
   [(VMAccountButton *)self setTitleColor:v4 forState:0];
 }
@@ -165,10 +165,10 @@ void __29__VMAccountButton_imageCache__block_invoke(id a1)
 
 - (double)titleLabelFirstBaselineAnchorLayoutConstraintConstant
 {
-  v2 = [(VMAccountButton *)self titleLabel];
-  v3 = [v2 font];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 objectForKey:UIFontDescriptorTextStyleAttribute];
+  titleLabel = [(VMAccountButton *)self titleLabel];
+  font = [titleLabel font];
+  fontDescriptor = [font fontDescriptor];
+  v5 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v5)
   {
@@ -187,10 +187,10 @@ void __29__VMAccountButton_imageCache__block_invoke(id a1)
 
 - (double)titleLabelLastBaselineAnchorLayoutConstraintConstant
 {
-  v2 = [(VMAccountButton *)self titleLabel];
-  v3 = [v2 font];
-  v4 = [v3 fontDescriptor];
-  v5 = [v4 objectForKey:UIFontDescriptorTextStyleAttribute];
+  titleLabel = [(VMAccountButton *)self titleLabel];
+  font = [titleLabel font];
+  fontDescriptor = [font fontDescriptor];
+  v5 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v5)
   {

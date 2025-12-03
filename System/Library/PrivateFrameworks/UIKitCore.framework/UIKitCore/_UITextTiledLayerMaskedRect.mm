@@ -1,39 +1,39 @@
 @interface _UITextTiledLayerMaskedRect
-+ (id)ghostedRect:(CGRect)a3;
-+ (id)rect:(CGRect)a3 alpha:(double)a4;
++ (id)ghostedRect:(CGRect)rect;
++ (id)rect:(CGRect)rect alpha:(double)alpha;
 - (CGRect)boundingRect;
-- (_UITextTiledLayerMaskedRect)initWithRect:(CGRect)a3 alpha:(double)a4;
+- (_UITextTiledLayerMaskedRect)initWithRect:(CGRect)rect alpha:(double)alpha;
 - (id)description;
 @end
 
 @implementation _UITextTiledLayerMaskedRect
 
-+ (id)ghostedRect:(CGRect)a3
++ (id)ghostedRect:(CGRect)rect
 {
-  v3 = [[a1 alloc] initWithRect:a3.origin.x alpha:{a3.origin.y, a3.size.width, a3.size.height, 0.2}];
+  v3 = [[self alloc] initWithRect:rect.origin.x alpha:{rect.origin.y, rect.size.width, rect.size.height, 0.2}];
 
   return v3;
 }
 
-+ (id)rect:(CGRect)a3 alpha:(double)a4
++ (id)rect:(CGRect)rect alpha:(double)alpha
 {
-  v4 = [[a1 alloc] initWithRect:a3.origin.x alpha:{a3.origin.y, a3.size.width, a3.size.height, a4}];
+  v4 = [[self alloc] initWithRect:rect.origin.x alpha:{rect.origin.y, rect.size.width, rect.size.height, alpha}];
 
   return v4;
 }
 
-- (_UITextTiledLayerMaskedRect)initWithRect:(CGRect)a3 alpha:(double)a4
+- (_UITextTiledLayerMaskedRect)initWithRect:(CGRect)rect alpha:(double)alpha
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10.receiver = self;
   v10.super_class = _UITextTiledLayerMaskedRect;
   result = [(_UITextTiledLayerMaskedRect *)&v10 init];
   if (result)
   {
-    result->_alpha = a4;
+    result->_alpha = alpha;
     result->_boundingRect.origin.x = x;
     result->_boundingRect.origin.y = y;
     result->_boundingRect.size.width = width;

@@ -1,10 +1,10 @@
 @interface JavaTextDateFormatSymbols
 + (id)getInstance;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (JavaTextDateFormatSymbols)init;
 - (NSString)description;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)getAmPmStrings;
 - (id)getEras;
 - (id)getMonths;
@@ -15,16 +15,16 @@
 - (id)internalZoneStrings;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)setAmPmStringsWithNSStringArray:(id)a3;
-- (void)setErasWithNSStringArray:(id)a3;
-- (void)setLocalPatternCharsWithNSString:(id)a3;
-- (void)setMonthsWithNSStringArray:(id)a3;
-- (void)setShortMonthsWithNSStringArray:(id)a3;
-- (void)setShortWeekdaysWithNSStringArray:(id)a3;
-- (void)setWeekdaysWithNSStringArray:(id)a3;
-- (void)setZoneStringsWithNSStringArray2:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)setAmPmStringsWithNSStringArray:(id)array;
+- (void)setErasWithNSStringArray:(id)array;
+- (void)setLocalPatternCharsWithNSString:(id)string;
+- (void)setMonthsWithNSStringArray:(id)array;
+- (void)setShortMonthsWithNSStringArray:(id)array;
+- (void)setShortWeekdaysWithNSStringArray:(id)array;
+- (void)setWeekdaysWithNSStringArray:(id)array;
+- (void)setZoneStringsWithNSStringArray2:(id)array2;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaTextDateFormatSymbols
@@ -58,28 +58,28 @@
   return JavaTextDateFormatSymbols_getInstanceWithJavaUtilLocale_(Default);
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
+  [stream defaultReadObject];
   v4 = LibcoreIcuLocaleData_getWithJavaUtilLocale_(self->locale_);
 
   JreStrongAssign(&self->localeData_, v4);
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   [(JavaTextDateFormatSymbols *)self internalZoneStrings];
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
 }
 
 - (id)clone
@@ -89,9 +89,9 @@
   return [(JavaTextDateFormatSymbols *)&v3 clone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
     return v6;
@@ -105,7 +105,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     localPatternChars = self->localPatternChars_;
     goto LABEL_21;
@@ -123,29 +123,29 @@ LABEL_21:
     JreThrowNullPointerException();
   }
 
-  v6 = [(NSString *)v5 isEqual:*(a3 + 11)];
+  v6 = [(NSString *)v5 isEqual:*(equal + 11)];
   if (v6)
   {
-    v6 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->ampms_, *(a3 + 1));
+    v6 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->ampms_, *(equal + 1));
     if (v6)
     {
-      v6 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->eras_, *(a3 + 2));
+      v6 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->eras_, *(equal + 2));
       if (v6)
       {
-        v6 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->months_, *(a3 + 3));
+        v6 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->months_, *(equal + 3));
         if (v6)
         {
-          v6 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->shortMonths_, *(a3 + 4));
+          v6 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->shortMonths_, *(equal + 4));
           if (v6)
           {
-            v6 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->shortWeekdays_, *(a3 + 5));
+            v6 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->shortWeekdays_, *(equal + 5));
             if (v6)
             {
-              v6 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->weekdays_, *(a3 + 6));
+              v6 = JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(self->weekdays_, *(equal + 6));
               if (v6)
               {
 
-                LOBYTE(v6) = sub_100291690(self, a3);
+                LOBYTE(v6) = sub_100291690(self, equal);
               }
             }
           }
@@ -168,14 +168,14 @@ LABEL_21:
   JavaUtilArrays_toStringWithNSObjectArray_(self->shortMonths_);
   JavaUtilArrays_toStringWithNSObjectArray_(self->shortWeekdays_);
   JavaUtilArrays_toStringWithNSObjectArray_(self->weekdays_);
-  v6 = [(JavaTextDateFormatSymbols *)self internalZoneStrings];
-  if (!v6)
+  internalZoneStrings = [(JavaTextDateFormatSymbols *)self internalZoneStrings];
+  if (!internalZoneStrings)
   {
     JreThrowNullPointerException();
   }
 
-  v7 = v6;
-  v8 = v6[2];
+  v7 = internalZoneStrings;
+  v8 = internalZoneStrings[2];
   if (v8 <= 0)
   {
     IOSArray_throwOutOfBoundsWithMsg(v8, 0);
@@ -352,7 +352,7 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v3 = [(JavaTextDateFormatSymbols *)self internalZoneStrings];
+  internalZoneStrings = [(JavaTextDateFormatSymbols *)self internalZoneStrings];
   localPatternChars = self->localPatternChars_;
   if (!localPatternChars)
   {
@@ -481,14 +481,14 @@ LABEL_28:
     v7 += [v30 hash];
   }
 
-  if (!v3)
+  if (!internalZoneStrings)
   {
 LABEL_43:
     JreThrowNullPointerException();
   }
 
-  v31 = (v3 + 6);
-  v32 = &v3[2 * v3[2] + 6];
+  v31 = (internalZoneStrings + 6);
+  v32 = &internalZoneStrings[2 * internalZoneStrings[2] + 6];
   while (v31 < v32)
   {
     v34 = *v31++;
@@ -519,33 +519,33 @@ LABEL_43:
   return v7;
 }
 
-- (void)setAmPmStringsWithNSStringArray:(id)a3
+- (void)setAmPmStringsWithNSStringArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 clone];
+  clone = [array clone];
 
-  JreStrongAssign(&self->ampms_, v4);
+  JreStrongAssign(&self->ampms_, clone);
 }
 
-- (void)setErasWithNSStringArray:(id)a3
+- (void)setErasWithNSStringArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 clone];
+  clone = [array clone];
 
-  JreStrongAssign(&self->eras_, v4);
+  JreStrongAssign(&self->eras_, clone);
 }
 
-- (void)setLocalPatternCharsWithNSString:(id)a3
+- (void)setLocalPatternCharsWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     v5 = new_JavaLangNullPointerException_initWithNSString_(@"data == null");
     objc_exception_throw(v5);
@@ -553,67 +553,67 @@ LABEL_43:
 
   p_localPatternChars = &self->localPatternChars_;
 
-  JreStrongAssign(p_localPatternChars, a3);
+  JreStrongAssign(p_localPatternChars, string);
 }
 
-- (void)setMonthsWithNSStringArray:(id)a3
+- (void)setMonthsWithNSStringArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 clone];
+  clone = [array clone];
 
-  JreStrongAssign(&self->months_, v4);
+  JreStrongAssign(&self->months_, clone);
 }
 
-- (void)setShortMonthsWithNSStringArray:(id)a3
+- (void)setShortMonthsWithNSStringArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 clone];
+  clone = [array clone];
 
-  JreStrongAssign(&self->shortMonths_, v4);
+  JreStrongAssign(&self->shortMonths_, clone);
 }
 
-- (void)setShortWeekdaysWithNSStringArray:(id)a3
+- (void)setShortWeekdaysWithNSStringArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 clone];
+  clone = [array clone];
 
-  JreStrongAssign(&self->shortWeekdays_, v4);
+  JreStrongAssign(&self->shortWeekdays_, clone);
 }
 
-- (void)setWeekdaysWithNSStringArray:(id)a3
+- (void)setWeekdaysWithNSStringArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 clone];
+  clone = [array clone];
 
-  JreStrongAssign(&self->weekdays_, v4);
+  JreStrongAssign(&self->weekdays_, clone);
 }
 
-- (void)setZoneStringsWithNSStringArray2:(id)a3
+- (void)setZoneStringsWithNSStringArray2:(id)array2
 {
-  if (!a3)
+  if (!array2)
   {
     v16 = new_JavaLangNullPointerException_initWithNSString_(@"zoneStrings == null");
 LABEL_10:
     objc_exception_throw(v16);
   }
 
-  for (i = (a3 + 24); i < (a3 + 8 * *(a3 + 2) + 24); ++i)
+  for (i = (array2 + 24); i < (array2 + 8 * *(array2 + 2) + 24); ++i)
   {
     v5 = *i;
     if (!*i)
@@ -630,7 +630,7 @@ LABEL_10:
     }
   }
 
-  v6 = sub_100291BB4(a3);
+  v6 = sub_100291BB4(array2);
   JreStrongAssign(&self->zoneStrings_, v6);
   self->customZoneStrings_ = 1;
 }
@@ -642,11 +642,11 @@ LABEL_10:
   [(JavaTextDateFormatSymbols *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaTextDateFormatSymbols *)self clone];
+  clone = [(JavaTextDateFormatSymbols *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

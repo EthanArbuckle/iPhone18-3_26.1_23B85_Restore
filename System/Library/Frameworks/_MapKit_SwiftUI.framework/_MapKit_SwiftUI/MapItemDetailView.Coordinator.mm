@@ -1,17 +1,17 @@
 @interface MapItemDetailView.Coordinator
 - (_TtCV15_MapKit_SwiftUIP33_88864655A4452E6E3BB4AF822A3E769217MapItemDetailView11Coordinator)init;
-- (void)mapItemDetailViewControllerDidFinish:(id)a3;
+- (void)mapItemDetailViewControllerDidFinish:(id)finish;
 @end
 
 @implementation MapItemDetailView.Coordinator
 
-- (void)mapItemDetailViewControllerDidFinish:(id)a3
+- (void)mapItemDetailViewControllerDidFinish:(id)finish
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCV15_MapKit_SwiftUIP33_88864655A4452E6E3BB4AF822A3E769217MapItemDetailView11Coordinator_didRequestDismissal);
   if (v3)
   {
     v4 = *&self->didRequestDismissal[OBJC_IVAR____TtCV15_MapKit_SwiftUIP33_88864655A4452E6E3BB4AF822A3E769217MapItemDetailView11Coordinator_didRequestDismissal];
-    v5 = self;
+    selfCopy = self;
     v6 = sub_213CD4E28(v3);
     v3(v6);
 

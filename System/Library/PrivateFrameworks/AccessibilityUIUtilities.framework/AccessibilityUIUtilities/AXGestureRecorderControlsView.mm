@@ -1,48 +1,48 @@
 @interface AXGestureRecorderControlsView
-- (AXGestureRecorderControlsView)initWithFrame:(CGRect)a3;
+- (AXGestureRecorderControlsView)initWithFrame:(CGRect)frame;
 - (AXGestureRecorderControlsViewDelegate)delegate;
 - (BOOL)isLeftButtonEnabled;
 - (BOOL)isRightButtonEnabled;
 - (id)makeButton;
-- (void)_buttonTapped:(id)a3;
+- (void)_buttonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setLeftButtonColor:(int)a3 title:(id)a4 enabled:(BOOL)a5 rightButtonColor:(int)a6 title:(id)a7 enabled:(BOOL)a8 animationDuration:(double)a9 completion:(id)a10;
-- (void)setLeftButtonEnabled:(BOOL)a3;
-- (void)setMiddleButton:(id)a3;
-- (void)setProgress:(float)a3;
-- (void)setRightButtonEnabled:(BOOL)a3;
+- (void)setLeftButtonColor:(int)color title:(id)title enabled:(BOOL)enabled rightButtonColor:(int)buttonColor title:(id)a7 enabled:(BOOL)a8 animationDuration:(double)duration completion:(id)self0;
+- (void)setLeftButtonEnabled:(BOOL)enabled;
+- (void)setMiddleButton:(id)button;
+- (void)setProgress:(float)progress;
+- (void)setRightButtonEnabled:(BOOL)enabled;
 @end
 
 @implementation AXGestureRecorderControlsView
 
-- (AXGestureRecorderControlsView)initWithFrame:(CGRect)a3
+- (AXGestureRecorderControlsView)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v20.receiver = self;
   v20.super_class = AXGestureRecorderControlsView;
-  v4 = [(AXGestureRecorderControlsView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(AXGestureRecorderControlsView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    [(AXGestureRecorderControlsView *)v4 setBackgroundColor:v5];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    [(AXGestureRecorderControlsView *)v4 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
     v6 = objc_alloc(MEMORY[0x1E69DD250]);
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v9 = [v6 initWithFrame:{0.0, 0.0, width, 1.0 / v8}];
 
-    v10 = [MEMORY[0x1E69DC888] separatorColor];
-    [v9 setBackgroundColor:v10];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [v9 setBackgroundColor:separatorColor];
 
     [v9 setAutoresizingMask:2];
     [(AXGestureRecorderControlsView *)v4 addSubview:v9];
     v11 = objc_alloc(MEMORY[0x1E69DD250]);
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v12 scale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 scale];
     v14 = [v11 initWithFrame:{0.0, 45.0, width, 1.0 / v13}];
 
-    v15 = [MEMORY[0x1E69DC888] separatorColor];
-    [v14 setBackgroundColor:v15];
+    separatorColor2 = [MEMORY[0x1E69DC888] separatorColor];
+    [v14 setBackgroundColor:separatorColor2];
 
     [v14 setAutoresizingMask:2];
     [(AXGestureRecorderControlsView *)v4 addSubview:v14];
@@ -51,8 +51,8 @@
     v4->_progressView = v16;
 
     [(ASTBiggerProgressView *)v4->_progressView setAutoresizingMask:2];
-    v18 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
-    [(ASTBiggerProgressView *)v4->_progressView setTrackTintColor:v18];
+    quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+    [(ASTBiggerProgressView *)v4->_progressView setTrackTintColor:quaternaryLabelColor];
 
     [(ASTBiggerProgressView *)v4->_progressView setProgress:0.0];
     [(AXGestureRecorderControlsView *)v4 addSubview:v4->_progressView];
@@ -61,10 +61,10 @@
   return v4;
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
   progressView = self->_progressView;
-  if (fabsf(a3) >= 2.2204e-16)
+  if (fabsf(progress) >= 2.2204e-16)
   {
     v13 = [(ASTBiggerProgressView *)progressView safeValueForKeyPath:@"_progressView.image"];
     [v13 capInsets];
@@ -81,7 +81,7 @@
       *&v12 = *&v12 / v11;
     }
 
-    *&v12 = *&v12 + ((1.0 - *&v12) * a3);
+    *&v12 = *&v12 + ((1.0 - *&v12) * progress);
     [(ASTBiggerProgressView *)self->_progressView setProgress:1 animated:v12];
   }
 
@@ -94,8 +94,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(AXGestureRecorderControlsView *)self effectiveUserInterfaceLayoutDirection];
-  if (v3 == 1)
+  effectiveUserInterfaceLayoutDirection = [(AXGestureRecorderControlsView *)self effectiveUserInterfaceLayoutDirection];
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v4 = &OBJC_IVAR___AXGestureRecorderControlsView__rightButton;
   }
@@ -106,7 +106,7 @@
   }
 
   v5 = *(&self->super.super.super.isa + *v4);
-  if (v3 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v6 = &OBJC_IVAR___AXGestureRecorderControlsView__leftButton;
   }
@@ -256,47 +256,47 @@
   }
 
   v4 = [MEMORY[0x1E69DC738] buttonWithType:1];
-  v5 = [v4 titleLabel];
-  [v5 setFont:v2];
+  titleLabel = [v4 titleLabel];
+  [titleLabel setFont:v2];
 
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
-  v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v4 setTitleColor:v7 forState:2];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v4 setTitleColor:secondaryLabelColor forState:2];
 
-  v8 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [v4 setTitleColor:v8 forState:0];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [v4 setTitleColor:systemBlueColor forState:0];
 
   return v4;
 }
 
-- (void)setLeftButtonColor:(int)a3 title:(id)a4 enabled:(BOOL)a5 rightButtonColor:(int)a6 title:(id)a7 enabled:(BOOL)a8 animationDuration:(double)a9 completion:(id)a10
+- (void)setLeftButtonColor:(int)color title:(id)title enabled:(BOOL)enabled rightButtonColor:(int)buttonColor title:(id)a7 enabled:(BOOL)a8 animationDuration:(double)duration completion:(id)self0
 {
   v10 = a8;
-  v12 = a5;
+  enabledCopy = enabled;
   v35 = *MEMORY[0x1E69E9840];
-  v14 = a4;
+  titleCopy = title;
   v15 = a7;
-  v16 = a10;
-  v17 = [(AXGestureRecorderControlsView *)self leftButton];
-  v18 = [(AXGestureRecorderControlsView *)self rightButton];
-  if (!v17)
+  completionCopy = completion;
+  leftButton = [(AXGestureRecorderControlsView *)self leftButton];
+  rightButton = [(AXGestureRecorderControlsView *)self rightButton];
+  if (!leftButton)
   {
-    v26 = v12;
+    v26 = enabledCopy;
     v27 = v10;
     v28 = v15;
-    v17 = [(AXGestureRecorderControlsView *)self makeButton];
-    v19 = [(AXGestureRecorderControlsView *)self makeButton];
+    leftButton = [(AXGestureRecorderControlsView *)self makeButton];
+    makeButton = [(AXGestureRecorderControlsView *)self makeButton];
 
-    [(AXGestureRecorderControlsView *)self setRightButton:v19];
-    [(AXGestureRecorderControlsView *)self setLeftButton:v17];
+    [(AXGestureRecorderControlsView *)self setRightButton:makeButton];
+    [(AXGestureRecorderControlsView *)self setLeftButton:leftButton];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v33[0] = v17;
-    v33[1] = v19;
+    v33[0] = leftButton;
+    v33[1] = makeButton;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
     v21 = [v20 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v21)
@@ -323,20 +323,20 @@
       while (v22);
     }
 
-    v18 = v19;
+    rightButton = makeButton;
     v15 = v28;
-    v12 = v26;
+    enabledCopy = v26;
     v10 = v27;
   }
 
-  [v17 setTitle:v14 forState:0];
-  [v18 setTitle:v15 forState:0];
-  [v17 setEnabled:v12];
-  [v18 setEnabled:v10];
+  [leftButton setTitle:titleCopy forState:0];
+  [rightButton setTitle:v15 forState:0];
+  [leftButton setEnabled:enabledCopy];
+  [rightButton setEnabled:v10];
   UIAccessibilityPostNotification(*MEMORY[0x1E69DD8E8], 0);
-  if (v16)
+  if (completionCopy)
   {
-    v16[2](v16, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   [(AXGestureRecorderControlsView *)self layoutSubviews];
@@ -344,17 +344,17 @@
 
 - (BOOL)isLeftButtonEnabled
 {
-  v2 = [(AXGestureRecorderControlsView *)self leftButton];
-  v3 = [v2 isEnabled];
+  leftButton = [(AXGestureRecorderControlsView *)self leftButton];
+  isEnabled = [leftButton isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)setLeftButtonEnabled:(BOOL)a3
+- (void)setLeftButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(AXGestureRecorderControlsView *)self leftButton];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  leftButton = [(AXGestureRecorderControlsView *)self leftButton];
+  [leftButton setEnabled:enabledCopy];
 
   v5 = *MEMORY[0x1E69DD8E8];
 
@@ -363,32 +363,32 @@
 
 - (BOOL)isRightButtonEnabled
 {
-  v2 = [(AXGestureRecorderControlsView *)self rightButton];
-  v3 = [v2 isEnabled];
+  rightButton = [(AXGestureRecorderControlsView *)self rightButton];
+  isEnabled = [rightButton isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)setRightButtonEnabled:(BOOL)a3
+- (void)setRightButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(AXGestureRecorderControlsView *)self rightButton];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  rightButton = [(AXGestureRecorderControlsView *)self rightButton];
+  [rightButton setEnabled:enabledCopy];
 
   v5 = *MEMORY[0x1E69DD8E8];
 
   UIAccessibilityPostNotification(v5, 0);
 }
 
-- (void)setMiddleButton:(id)a3
+- (void)setMiddleButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   middleButton = self->_middleButton;
-  if (middleButton != v5)
+  if (middleButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(UIButton *)middleButton removeFromSuperview];
-    objc_storeStrong(&self->_middleButton, a3);
+    objc_storeStrong(&self->_middleButton, button);
     if (v7)
     {
       [(AXGestureRecorderControlsView *)self addSubview:v7];
@@ -398,21 +398,21 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v8 = a3;
-  v4 = [(AXGestureRecorderControlsView *)self leftButton];
+  tappedCopy = tapped;
+  leftButton = [(AXGestureRecorderControlsView *)self leftButton];
 
-  if (v4 == v8)
+  if (leftButton == tappedCopy)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(AXGestureRecorderControlsView *)self rightButton];
+    rightButton = [(AXGestureRecorderControlsView *)self rightButton];
 
-    if (v5 == v8)
+    if (rightButton == tappedCopy)
     {
       v6 = 1;
     }
@@ -423,8 +423,8 @@
     }
   }
 
-  v7 = [(AXGestureRecorderControlsView *)self delegate];
-  [v7 gestureRecorderControlsView:self buttonTappedAtIndex:v6];
+  delegate = [(AXGestureRecorderControlsView *)self delegate];
+  [delegate gestureRecorderControlsView:self buttonTappedAtIndex:v6];
 }
 
 - (AXGestureRecorderControlsViewDelegate)delegate

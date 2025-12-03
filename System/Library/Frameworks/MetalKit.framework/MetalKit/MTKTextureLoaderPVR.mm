@@ -1,22 +1,22 @@
 @interface MTKTextureLoaderPVR
-+ (BOOL)isPVRFile:(id)a3;
-- (BOOL)determineFormat:(unsigned int)a3 options:(id)a4;
-- (MTKTextureLoaderPVR)initWithData:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)getDataForArrayElement:(unint64_t)a3 face:(unint64_t)a4 level:(unint64_t)a5 depthPlane:(unint64_t)a6 bytesPerRow:(unint64_t *)a7 bytesPerImage:(unint64_t *)a8;
++ (BOOL)isPVRFile:(id)file;
+- (BOOL)determineFormat:(unsigned int)format options:(id)options;
+- (MTKTextureLoaderPVR)initWithData:(id)data options:(id)options error:(id *)error;
+- (id)getDataForArrayElement:(unint64_t)element face:(unint64_t)face level:(unint64_t)level depthPlane:(unint64_t)plane bytesPerRow:(unint64_t *)row bytesPerImage:(unint64_t *)image;
 - (void)dealloc;
-- (void)determineBlockSize:(unint64_t *)a3 blocksWide:(unint64_t *)a4 blocksHigh:(unint64_t *)a5 bytesPerBlock:(unint64_t *)a6 fromFormat:(unsigned int)a7 width:(unint64_t)a8 andHeight:(unint64_t)a9;
+- (void)determineBlockSize:(unint64_t *)size blocksWide:(unint64_t *)wide blocksHigh:(unint64_t *)high bytesPerBlock:(unint64_t *)block fromFormat:(unsigned int)format width:(unint64_t)width andHeight:(unint64_t)height;
 @end
 
 @implementation MTKTextureLoaderPVR
 
-+ (BOOL)isPVRFile:(id)a3
++ (BOOL)isPVRFile:(id)file
 {
-  if (!a3)
+  if (!file)
   {
     return 0;
   }
 
-  if ([a3 length] < 0x34)
+  if ([file length] < 0x34)
   {
     return 0;
   }
@@ -24,40 +24,40 @@
   v7 = 0;
   v6 = 0u;
   memset(v5, 0, sizeof(v5));
-  [a3 getBytes:v5 length:52];
+  [file getBytes:v5 length:52];
   return HIDWORD(v6) == 559044176;
 }
 
-- (MTKTextureLoaderPVR)initWithData:(id)a3 options:(id)a4 error:(id *)a5
+- (MTKTextureLoaderPVR)initWithData:(id)data options:(id)options error:(id *)error
 {
   v23.receiver = self;
   v23.super_class = MTKTextureLoaderPVR;
   v8 = [(MTKTextureLoaderData *)&v23 init];
   if (v8)
   {
-    v8->_imageData = a3;
-    if (![MTKTextureLoaderPVR isPVRFile:a3])
+    v8->_imageData = data;
+    if (![MTKTextureLoaderPVR isPVRFile:data])
     {
       [MTKTextureLoaderPVR initWithData:options:error:];
     }
 
-    v9 = [(NSData *)v8->_imageData bytes];
-    v10 = v9;
-    v11 = v9[4];
+    bytes = [(NSData *)v8->_imageData bytes];
+    v10 = bytes;
+    v11 = bytes[4];
     v8->_pvrFormat = v11;
-    v12 = v9[12];
+    v12 = bytes[12];
     if (v12 <= 1)
     {
       v12 = 1;
     }
 
     v8->_numSurfaces = v12;
-    [(MTKTextureLoaderData *)v8 setWidth:v9[2]];
+    [(MTKTextureLoaderData *)v8 setWidth:bytes[2]];
     [(MTKTextureLoaderData *)v8 setHeight:v10[1]];
     [(MTKTextureLoaderData *)v8 setNumMipmapLevels:v10[3] + 1];
     [(MTKTextureLoaderData *)v8 setNumFaces:1];
     [(MTKTextureLoaderData *)v8 setImageOrigin:@"MTKTextureLoaderOriginTopLeft"];
-    if ([(MTKTextureLoaderPVR *)v8 determineFormat:v8->_pvrFormat options:a4])
+    if ([(MTKTextureLoaderPVR *)v8 determineFormat:v8->_pvrFormat options:options])
     {
       [(MTKTextureLoaderData *)v8 pixelFormat];
       MTLPixelFormatGetInfoForDevice();
@@ -66,7 +66,7 @@
       *&v8->_pixelFormatInfo.type.compressed.blockWidth = v21;
       *&v8->_pixelFormatInfo.name = v19;
       flags = v8->_pixelFormatInfo.flags;
-      v14 = [a4 objectForKey:@"MTKTextureLoaderOptionOrigin"];
+      v14 = [options objectForKey:@"MTKTextureLoaderOptionOrigin"];
       v15 = v14;
       if ((flags & 0x400) == 0 || !v14)
       {
@@ -78,7 +78,7 @@
           v8->_numSurfaces = numSurfaces / 6;
           if (numSurfaces >= 0xC)
           {
-            if (!a5)
+            if (!error)
             {
               goto LABEL_13;
             }
@@ -102,12 +102,12 @@
 
         if (!v15 || [(MTKTextureLoaderData *)v8 textureType]== 2 || [(MTKTextureLoaderData *)v8 textureType]== 3 || [(MTKTextureLoaderData *)v8 textureType]== 5)
         {
-          if (![a4 objectForKey:@"MTKTextureLoaderOptionCubeLayout"])
+          if (![options objectForKey:@"MTKTextureLoaderOptionCubeLayout"])
           {
             return v8;
           }
 
-          if (!a5)
+          if (!error)
           {
             goto LABEL_13;
           }
@@ -117,7 +117,7 @@
 
         else
         {
-          if (!a5)
+          if (!error)
           {
             goto LABEL_13;
           }
@@ -126,18 +126,18 @@
         }
 
 LABEL_12:
-        *a5 = _newMTKTextureErrorWithCodeAndErrorString(0, v16);
+        *error = _newMTKTextureErrorWithCodeAndErrorString(0, v16);
         goto LABEL_13;
       }
 
-      if (a5)
+      if (error)
       {
         v16 = @"Vertical flip is not supported for compressed PVR textures";
         goto LABEL_12;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v16 = @"Could not determine format from PVR header";
       goto LABEL_12;
@@ -159,19 +159,19 @@ LABEL_13:
   [(MTKTextureLoaderData *)&v3 dealloc];
 }
 
-- (id)getDataForArrayElement:(unint64_t)a3 face:(unint64_t)a4 level:(unint64_t)a5 depthPlane:(unint64_t)a6 bytesPerRow:(unint64_t *)a7 bytesPerImage:(unint64_t *)a8
+- (id)getDataForArrayElement:(unint64_t)element face:(unint64_t)face level:(unint64_t)level depthPlane:(unint64_t)plane bytesPerRow:(unint64_t *)row bytesPerImage:(unint64_t *)image
 {
-  v13 = [(NSData *)self->_imageData bytes];
+  bytes = [(NSData *)self->_imageData bytes];
   v14 = [(NSData *)self->_imageData length];
   result = [(MTKTextureLoaderData *)self depth];
   if (result)
   {
-    v31 = a8;
-    v32 = a3;
+    imageCopy = image;
+    elementCopy = element;
     v16 = 0;
     v17 = v14 - 52;
-    v18 = v13 + 52;
-    v33 = a6;
+    v18 = bytes + 52;
+    planeCopy = plane;
     while (![(MTKTextureLoaderData *)self numArrayElements])
     {
 LABEL_35:
@@ -193,8 +193,8 @@ LABEL_35:
 
 LABEL_34:
       v19 = v36 + 1;
-      a3 = v32;
-      a6 = v33;
+      element = elementCopy;
+      plane = planeCopy;
       v16 = v34;
       if ([(MTKTextureLoaderData *)self numArrayElements]<= v36 + 1)
       {
@@ -203,12 +203,12 @@ LABEL_34:
     }
 
     v20 = 0;
-    v22 = v16 == a6 && v19 == a3;
+    v22 = v16 == plane && v19 == element;
     v37 = v22;
     while (1)
     {
-      v23 = [(MTKTextureLoaderData *)self width];
-      v24 = [(MTKTextureLoaderData *)self height];
+      width = [(MTKTextureLoaderData *)self width];
+      height = [(MTKTextureLoaderData *)self height];
       if ([(MTKTextureLoaderData *)self numMipmapLevels])
       {
         break;
@@ -222,7 +222,7 @@ LABEL_33:
     }
 
     v25 = 0;
-    v26 = v20 == a4 && v37;
+    v26 = v20 == face && v37;
     while (1)
     {
       v42 = 0;
@@ -231,15 +231,15 @@ LABEL_33:
       v39 = 0;
       if ((self->_pixelFormatInfo.flags & 0x400) != 0)
       {
-        [(MTKTextureLoaderPVR *)self determineBlockSize:&v42 blocksWide:&v41 blocksHigh:&v40 bytesPerBlock:&v39 fromFormat:self->_pvrFormat width:v23 andHeight:v24];
+        [(MTKTextureLoaderPVR *)self determineBlockSize:&v42 blocksWide:&v41 blocksHigh:&v40 bytesPerBlock:&v39 fromFormat:self->_pvrFormat width:width andHeight:height];
         v27 = v41 * v39;
         v28 = v41 * v39 * v40;
       }
 
       else
       {
-        v27 = self->_pixelFormatInfo.type.normal.pixelBytes * v23;
-        v28 = v27 * v24;
+        v27 = self->_pixelFormatInfo.type.normal.pixelBytes * width;
+        v28 = v27 * height;
       }
 
       v29 = v17 >= v28;
@@ -249,32 +249,32 @@ LABEL_33:
         return 0;
       }
 
-      if (a5 == v25 && v26)
+      if (level == v25 && v26)
       {
-        *a7 = v27;
-        *v31 = v28;
+        *row = v27;
+        *imageCopy = v28;
         return [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v18 length:? freeWhenDone:?];
       }
 
       v18 += v28;
-      if (v23 <= 1)
+      if (width <= 1)
       {
-        v23 = 1;
+        width = 1;
       }
 
       else
       {
-        v23 >>= 1;
+        width >>= 1;
       }
 
-      if (v24 <= 1)
+      if (height <= 1)
       {
-        v24 = 1;
+        height = 1;
       }
 
       else
       {
-        v24 >>= 1;
+        height >>= 1;
       }
 
       if ([(MTKTextureLoaderData *)self numMipmapLevels]<= ++v25)
@@ -287,15 +287,15 @@ LABEL_33:
   return result;
 }
 
-- (BOOL)determineFormat:(unsigned int)a3 options:(id)a4
+- (BOOL)determineFormat:(unsigned int)format options:(id)options
 {
-  v6 = [objc_msgSend(a4 objectForKey:{@"MTKTextureLoaderOptionSRGB", "BOOLValue"}];
+  v6 = [objc_msgSend(options objectForKey:{@"MTKTextureLoaderOptionSRGB", "BOOLValue"}];
   result = 0;
-  if (a3 > 23)
+  if (format > 23)
   {
-    if (a3 <= 26)
+    if (format <= 26)
     {
-      if (a3 == 24)
+      if (format == 24)
       {
         v8 = v6 == 0;
         v9 = 164;
@@ -303,7 +303,7 @@ LABEL_33:
 
       else
       {
-        if (a3 != 25)
+        if (format != 25)
         {
 LABEL_10:
           v8 = v6 == 0;
@@ -329,7 +329,7 @@ LABEL_26:
       goto LABEL_29;
     }
 
-    switch(a3)
+    switch(format)
     {
       case 0x1Bu:
         v10 = 1;
@@ -345,11 +345,11 @@ LABEL_26:
     }
   }
 
-  else if (a3 > 18)
+  else if (format > 18)
   {
-    if (a3 != 19)
+    if (format != 19)
     {
-      if (a3 == 22)
+      if (format == 22)
       {
         v8 = v6 == 0;
         v9 = 10;
@@ -357,7 +357,7 @@ LABEL_26:
 
       else
       {
-        if (a3 != 23)
+        if (format != 23)
         {
           return result;
         }
@@ -374,7 +374,7 @@ LABEL_26:
 
   else
   {
-    switch(a3)
+    switch(format)
     {
       case 0x10u:
         v10 = 42;
@@ -394,9 +394,9 @@ LABEL_29:
   return 1;
 }
 
-- (void)determineBlockSize:(unint64_t *)a3 blocksWide:(unint64_t *)a4 blocksHigh:(unint64_t *)a5 bytesPerBlock:(unint64_t *)a6 fromFormat:(unsigned int)a7 width:(unint64_t)a8 andHeight:(unint64_t)a9
+- (void)determineBlockSize:(unint64_t *)size blocksWide:(unint64_t *)wide blocksHigh:(unint64_t *)high bytesPerBlock:(unint64_t *)block fromFormat:(unsigned int)format width:(unint64_t)width andHeight:(unint64_t)height
 {
-  v9 = (a9 + 3) >> 2;
+  v9 = (height + 3) >> 2;
   v10 = 2;
   if (v9 <= 2)
   {
@@ -404,7 +404,7 @@ LABEL_29:
   }
 
   v11 = 3;
-  if (a7 == 24)
+  if (format == 24)
   {
     v11 = 7;
     v12 = 3;
@@ -416,21 +416,21 @@ LABEL_29:
   }
 
   v13 = 16;
-  if (a7 == 24)
+  if (format == 24)
   {
     v13 = 32;
   }
 
-  v14 = (v11 + a8) >> v12;
+  v14 = (v11 + width) >> v12;
   if (v14 > 2)
   {
     v10 = v14;
   }
 
-  *a4 = v10;
-  *a5 = v9;
-  *a3 = v13;
-  *a6 = 8;
+  *wide = v10;
+  *high = v9;
+  *size = v13;
+  *block = 8;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface HMDCompositeSettingsControllerUpdateLogEvent
-- (HMDCompositeSettingsControllerUpdateLogEvent)initWithStartTime:(double)a3 keyPath:(id)a4;
+- (HMDCompositeSettingsControllerUpdateLogEvent)initWithStartTime:(double)time keyPath:(id)path;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -7,7 +7,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (self)
   {
     Property = objc_getProperty(self, v3, 40, 1);
@@ -18,25 +18,25 @@
     Property = 0;
   }
 
-  [v4 setObject:Property forKeyedSubscript:@"keyPath"];
+  [dictionary setObject:Property forKeyedSubscript:@"keyPath"];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMMLogEvent durationMilliseconds](self, "durationMilliseconds")}];
-  [v4 setObject:v6 forKeyedSubscript:@"latency"];
+  [dictionary setObject:v6 forKeyedSubscript:@"latency"];
 
-  v7 = [v4 copy];
+  v7 = [dictionary copy];
 
   return v7;
 }
 
-- (HMDCompositeSettingsControllerUpdateLogEvent)initWithStartTime:(double)a3 keyPath:(id)a4
+- (HMDCompositeSettingsControllerUpdateLogEvent)initWithStartTime:(double)time keyPath:(id)path
 {
-  v7 = a4;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = HMDCompositeSettingsControllerUpdateLogEvent;
-  v8 = [(HMMLogEvent *)&v11 initWithStartTime:a3];
+  v8 = [(HMMLogEvent *)&v11 initWithStartTime:time];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_keyPath, a4);
+    objc_storeStrong(&v8->_keyPath, path);
   }
 
   return v9;

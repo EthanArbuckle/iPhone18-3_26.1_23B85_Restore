@@ -1,7 +1,7 @@
 @interface CISIntegrationServerModule
 - (CISIntegrationServerModule)init;
 - (void)activate;
-- (void)receivedNotificationNamed:(id)a3;
+- (void)receivedNotificationNamed:(id)named;
 @end
 
 @implementation CISIntegrationServerModule
@@ -35,16 +35,16 @@
   self->server = v4;
 
   [(IntegrationServer *)self->server startServer];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel_regularSyncRequested name:*MEMORY[0x277CF7678] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_regularSyncRequested name:*MEMORY[0x277CF7678] object:0];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_catchupSyncRequested name:*MEMORY[0x277CF70F8] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_catchupSyncRequested name:*MEMORY[0x277CF70F8] object:0];
 }
 
-- (void)receivedNotificationNamed:(id)a3
+- (void)receivedNotificationNamed:(id)named
 {
-  if ([a3 isEqualToString:@"com.apple.reminderkit.storeChanged"])
+  if ([named isEqualToString:@"com.apple.reminderkit.storeChanged"])
   {
     server = self->server;
 

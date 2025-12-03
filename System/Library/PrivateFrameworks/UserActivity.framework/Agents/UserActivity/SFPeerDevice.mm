@@ -1,7 +1,7 @@
 @interface SFPeerDevice
-+ (id)deviceTypeForModelIdentifier:(id)a3;
++ (id)deviceTypeForModelIdentifier:(id)identifier;
 + (id)peerForSelf;
-+ (id)testPeerForModel:(id)a3;
++ (id)testPeerForModel:(id)model;
 - (NSString)deviceType;
 - (id)copy;
 @end
@@ -15,8 +15,8 @@
   v2 = objc_alloc_init(SFPeerDevice);
   v3 = sub_1000174B8();
   v4 = +[NSUUID UUID];
-  v5 = [v4 UUIDString];
-  [v2 setUniqueID:v5];
+  uUIDString = [v4 UUIDString];
+  [v2 setUniqueID:uUIDString];
 
   v6 = [NSString stringWithCString:v12.machine encoding:4];
   [v2 setModelIdentifier:v6];
@@ -39,18 +39,18 @@
   return v2;
 }
 
-+ (id)testPeerForModel:(id)a3
++ (id)testPeerForModel:(id)model
 {
   bzero(&v13, 0x500uLL);
-  v4 = a3;
+  modelCopy = model;
   uname(&v13);
   v5 = objc_alloc_init(SFPeerDevice);
   v6 = sub_1000174B8();
   v7 = +[NSUUID UUID];
-  v8 = [v7 UUIDString];
-  [v5 setUniqueID:v8];
+  uUIDString = [v7 UUIDString];
+  [v5 setUniqueID:uUIDString];
 
-  [v5 setModelIdentifier:v4];
+  [v5 setModelIdentifier:modelCopy];
   v9 = [v6 objectForKeyedSubscript:@"ProductName"];
   [v5 setProductName:v9];
 
@@ -70,36 +70,36 @@
 - (id)copy
 {
   v3 = objc_alloc_init(SFPeerDevice);
-  v4 = [(SFPeerDevice *)self uniqueID];
-  v5 = [v4 copy];
+  uniqueID = [(SFPeerDevice *)self uniqueID];
+  v5 = [uniqueID copy];
   [v3 setUniqueID:v5];
 
-  v6 = [(SFPeerDevice *)self modelIdentifier];
-  v7 = [v6 copy];
+  modelIdentifier = [(SFPeerDevice *)self modelIdentifier];
+  v7 = [modelIdentifier copy];
   [v3 setModelIdentifier:v7];
 
-  v8 = [(SFPeerDevice *)self productName];
-  v9 = [v8 copy];
+  productName = [(SFPeerDevice *)self productName];
+  v9 = [productName copy];
   [v3 setProductName:v9];
 
-  v10 = [(SFPeerDevice *)self productVersion];
-  v11 = [v10 copy];
+  productVersion = [(SFPeerDevice *)self productVersion];
+  v11 = [productVersion copy];
   [v3 setProductVersion:v11];
 
-  v12 = [(SFPeerDevice *)self productBuildVersion];
-  v13 = [v12 copy];
+  productBuildVersion = [(SFPeerDevice *)self productBuildVersion];
+  v13 = [productBuildVersion copy];
   [v3 setProductBuildVersion:v13];
 
-  v14 = [(SFPeerDevice *)self name];
-  v15 = [v14 copy];
+  name = [(SFPeerDevice *)self name];
+  v15 = [name copy];
   [v3 setName:v15];
 
-  v16 = [(SFPeerDevice *)self deviceColor];
-  v17 = [v16 copy];
+  deviceColor = [(SFPeerDevice *)self deviceColor];
+  v17 = [deviceColor copy];
   [v3 setDeviceColor:v17];
 
-  v18 = [(SFPeerDevice *)self enclosureColor];
-  v19 = [v18 copy];
+  enclosureColor = [(SFPeerDevice *)self enclosureColor];
+  v19 = [enclosureColor copy];
   [v3 setEnclosureColor:v19];
 
   return v3;
@@ -107,18 +107,18 @@
 
 - (NSString)deviceType
 {
-  v2 = [(SFPeerDevice *)self modelIdentifier];
-  v3 = [SFPeerDevice deviceTypeForModelIdentifier:v2];
+  modelIdentifier = [(SFPeerDevice *)self modelIdentifier];
+  v3 = [SFPeerDevice deviceTypeForModelIdentifier:modelIdentifier];
 
   return v3;
 }
 
-+ (id)deviceTypeForModelIdentifier:(id)a3
++ (id)deviceTypeForModelIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v4 = [UTType _typeWithDeviceModelCode:v3];
+    v4 = [UTType _typeWithDeviceModelCode:identifierCopy];
     if ([v4 conformsToType:_UTTypeAppleDevice] && (objc_msgSend(v4, "identifier"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v6 = v5;

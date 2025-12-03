@@ -1,40 +1,40 @@
 @interface HMDHomeSaveRequest
-- (id)_initWithHome:(id)a3 reason:(id)a4 information:(id)a5 postSyncNotification:(BOOL)a6 objectChange:(BOOL)a7 saveOptions:(unint64_t)a8;
-- (void)_updateSaveOptions:(BOOL)a3 reason:(id)a4;
+- (id)_initWithHome:(id)home reason:(id)reason information:(id)information postSyncNotification:(BOOL)notification objectChange:(BOOL)change saveOptions:(unint64_t)options;
+- (void)_updateSaveOptions:(BOOL)options reason:(id)reason;
 @end
 
 @implementation HMDHomeSaveRequest
 
-- (void)_updateSaveOptions:(BOOL)a3 reason:(id)a4
+- (void)_updateSaveOptions:(BOOL)options reason:(id)reason
 {
-  if (a3)
+  if (options)
   {
     self->_saveOptions |= 2uLL;
   }
 
-  if (![HMDHomeManager doesSaveReasonAffectOnlyLocalData:a4])
+  if (![HMDHomeManager doesSaveReasonAffectOnlyLocalData:reason])
   {
     self->_saveOptions |= 1uLL;
   }
 }
 
-- (id)_initWithHome:(id)a3 reason:(id)a4 information:(id)a5 postSyncNotification:(BOOL)a6 objectChange:(BOOL)a7 saveOptions:(unint64_t)a8
+- (id)_initWithHome:(id)home reason:(id)reason information:(id)information postSyncNotification:(BOOL)notification objectChange:(BOOL)change saveOptions:(unint64_t)options
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  homeCopy = home;
+  reasonCopy = reason;
+  informationCopy = information;
   v20.receiver = self;
   v20.super_class = HMDHomeSaveRequest;
   v17 = [(HMDHomeSaveRequest *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_home, a3);
-    objc_storeStrong(&v18->_reason, a4);
-    objc_storeStrong(&v18->_information, a5);
-    v18->_objectChange = a7;
-    v18->_incrementGeneration = [HMDHomeManager shouldIncrementGenerationCounterForReason:v15];
-    v18->_saveOptions = a8;
+    objc_storeStrong(&v17->_home, home);
+    objc_storeStrong(&v18->_reason, reason);
+    objc_storeStrong(&v18->_information, information);
+    v18->_objectChange = change;
+    v18->_incrementGeneration = [HMDHomeManager shouldIncrementGenerationCounterForReason:reasonCopy];
+    v18->_saveOptions = options;
   }
 
   return v18;

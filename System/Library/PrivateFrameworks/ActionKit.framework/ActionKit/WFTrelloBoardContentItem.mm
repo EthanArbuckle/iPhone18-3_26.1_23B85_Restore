@@ -1,11 +1,11 @@
 @interface WFTrelloBoardContentItem
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 - (id)board;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFTrelloBoardContentItem
@@ -28,20 +28,20 @@
   return v4;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Trello boards", @"Trello boards");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Trello board", @"Trello board");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -89,15 +89,15 @@ void __44__WFTrelloBoardContentItem_propertyBuilders__block_invoke(uint64_t a1, 
   (v5)[2](v5, v7);
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v7 = MEMORY[0x277CFC488];
-    v8 = [(WFTrelloBoardContentItem *)self board];
-    v9 = [v8 URL];
-    v10 = [(WFTrelloBoardContentItem *)self name];
-    v6 = [v7 object:v9 named:v10];
+    board = [(WFTrelloBoardContentItem *)self board];
+    v9 = [board URL];
+    name = [(WFTrelloBoardContentItem *)self name];
+    v6 = [v7 object:v9 named:name];
   }
 
   else

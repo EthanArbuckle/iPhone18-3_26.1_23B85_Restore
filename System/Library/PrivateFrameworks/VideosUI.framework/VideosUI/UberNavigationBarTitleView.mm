@@ -1,39 +1,39 @@
 @interface UberNavigationBarTitleView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)contentDidChange;
 - (void)layoutSubviews;
-- (void)setScrolledNonUberPercentage:(double)a3;
+- (void)setScrolledNonUberPercentage:(double)percentage;
 @end
 
 @implementation UberNavigationBarTitleView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E398C9F8();
 }
 
 - (void)contentDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E398D198();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1E398D224(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_1E398D224(event, x, y);
 
   return v10;
 }
 
-- (void)setScrolledNonUberPercentage:(double)a3
+- (void)setScrolledNonUberPercentage:(double)percentage
 {
-  v4 = self;
-  sub_1E398D7B8(a3);
+  selfCopy = self;
+  sub_1E398D7B8(percentage);
 }
 
 @end

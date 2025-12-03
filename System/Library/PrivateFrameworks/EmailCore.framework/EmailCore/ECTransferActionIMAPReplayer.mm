@@ -1,31 +1,31 @@
 @interface ECTransferActionIMAPReplayer
-- (BOOL)deleteSourceMessagesFromTransferItems:(id)a3;
+- (BOOL)deleteSourceMessagesFromTransferItems:(id)items;
 - (BOOL)downloadFailed;
-- (BOOL)isRecoverableError:(id)a3;
+- (BOOL)isRecoverableError:(id)error;
 - (ECIMAPLocalActionReplayerDelegate)delegate;
-- (id)_transferItems:(id)a3 destinationMailboxURL:(id)a4 isMove:(BOOL)a5;
-- (id)appendItem:(id)a3 mailboxURL:(id)a4;
-- (id)fetchBodyDataForRemoteID:(id)a3 mailboxURL:(id)a4;
-- (id)moveItems:(id)a3 destinationMailboxURL:(id)a4;
+- (id)_transferItems:(id)items destinationMailboxURL:(id)l isMove:(BOOL)move;
+- (id)appendItem:(id)item mailboxURL:(id)l;
+- (id)fetchBodyDataForRemoteID:(id)d mailboxURL:(id)l;
+- (id)moveItems:(id)items destinationMailboxURL:(id)l;
 @end
 
 @implementation ECTransferActionIMAPReplayer
 
-- (id)moveItems:(id)a3 destinationMailboxURL:(id)a4
+- (id)moveItems:(id)items destinationMailboxURL:(id)l
 {
-  v4 = [(ECTransferActionIMAPReplayer *)self _transferItems:a3 destinationMailboxURL:a4 isMove:1];
+  v4 = [(ECTransferActionIMAPReplayer *)self _transferItems:items destinationMailboxURL:l isMove:1];
 
   return v4;
 }
 
-- (id)_transferItems:(id)a3 destinationMailboxURL:(id)a4 isMove:(BOOL)a5
+- (id)_transferItems:(id)items destinationMailboxURL:(id)l isMove:(BOOL)move
 {
-  v5 = a5;
+  moveCopy = move;
   v87 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ECTransferActionIMAPReplayer *)self delegate];
-  v11 = [v10 imapMailboxNameForMailboxURL:v9];
+  itemsCopy = items;
+  lCopy = l;
+  delegate = [(ECTransferActionIMAPReplayer *)self delegate];
+  v11 = [delegate imapMailboxNameForMailboxURL:lCopy];
 
   if (v11)
   {
@@ -34,8 +34,8 @@
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v13 = [v8 allKeys];
-    v14 = [v13 countByEnumeratingWithState:&v77 objects:v86 count:16];
+    allKeys = [itemsCopy allKeys];
+    v14 = [allKeys countByEnumeratingWithState:&v77 objects:v86 count:16];
     if (v14)
     {
       v15 = *v78;
@@ -45,43 +45,43 @@
         {
           if (*v78 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allKeys);
           }
 
-          v17 = [*(*(&v77 + 1) + 8 * i) integerValue];
-          if (v17)
+          integerValue = [*(*(&v77 + 1) + 8 * i) integerValue];
+          if (integerValue)
           {
-            [v12 addIndex:v17];
+            [v12 addIndex:integerValue];
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v77 objects:v86 count:16];
+        v14 = [allKeys countByEnumeratingWithState:&v77 objects:v86 count:16];
       }
 
       while (v14);
     }
 
-    v18 = [(ECTransferActionIMAPReplayer *)self delegate];
-    v19 = [(ECLocalActionReplayer *)self action];
-    v20 = [v19 mailboxURL];
-    v54 = [v18 flagsForIMAPUIDs:v12 mailboxURL:v20];
+    delegate2 = [(ECTransferActionIMAPReplayer *)self delegate];
+    action = [(ECLocalActionReplayer *)self action];
+    mailboxURL = [action mailboxURL];
+    v54 = [delegate2 flagsForIMAPUIDs:v12 mailboxURL:mailboxURL];
 
-    if (v5)
+    if (moveCopy)
     {
-      v21 = [(ECTransferActionIMAPReplayer *)self serverInterface];
+      serverInterface = [(ECTransferActionIMAPReplayer *)self serverInterface];
       v75 = 0;
       v76 = 0;
-      v22 = [v21 moveUIDs:v12 toMailboxNamed:v11 copyInfo:&v76 error:&v75];
+      v22 = [serverInterface moveUIDs:v12 toMailboxNamed:v11 copyInfo:&v76 error:&v75];
       v23 = v76;
       v24 = v75;
 
       if ((v22 & 1) == 0)
       {
 LABEL_13:
-        v25 = [(ECTransferActionIMAPReplayer *)self serverInterface];
-        v26 = [v25 hasValidConnection];
+        serverInterface2 = [(ECTransferActionIMAPReplayer *)self serverInterface];
+        hasValidConnection = [serverInterface2 hasValidConnection];
 
-        if (v26)
+        if (hasValidConnection)
         {
           v27 = +[ECLocalActionReplayer log];
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -98,7 +98,7 @@ LABEL_13:
           v57[1] = 3221225472;
           v57[2] = __76__ECTransferActionIMAPReplayer__transferItems_destinationMailboxURL_isMove___block_invoke_11;
           v57[3] = &unk_27874C4D0;
-          v58 = v8;
+          v58 = itemsCopy;
           v29 = [(ECTransferMessageActionResults *)v28 initWithBuilder:v57];
         }
 
@@ -116,10 +116,10 @@ LABEL_35:
 
     else
     {
-      v33 = [(ECTransferActionIMAPReplayer *)self serverInterface];
+      serverInterface3 = [(ECTransferActionIMAPReplayer *)self serverInterface];
       v73 = 0;
       v74 = 0;
-      v34 = [v33 copyUIDs:v12 toMailboxNamed:v11 copyInfo:&v74 error:&v73];
+      v34 = [serverInterface3 copyUIDs:v12 toMailboxNamed:v11 copyInfo:&v74 error:&v73];
       v23 = v74;
       v24 = v73;
 
@@ -130,19 +130,19 @@ LABEL_35:
     }
 
     v53 = objc_opt_new();
-    if (v23 && (-[ECTransferActionIMAPReplayer delegate](self, "delegate"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 checkUIDValidity:objc_msgSend(v23 mailboxURL:{"uidValidity"), v9}], v35, v36))
+    if (v23 && (-[ECTransferActionIMAPReplayer delegate](self, "delegate"), v35 = objc_claimAutoreleasedReturnValue(), v36 = [v35 checkUIDValidity:objc_msgSend(v23 mailboxURL:{"uidValidity"), lCopy}], v35, v36))
     {
       *buf = 0;
       v83 = buf;
       v84 = 0x2020000000;
       v85 = 0;
       v50 = objc_opt_new();
-      v37 = [v23 sourceUIDsToDestinationUIDs];
+      sourceUIDsToDestinationUIDs = [v23 sourceUIDsToDestinationUIDs];
       v67[0] = MEMORY[0x277D85DD0];
       v67[1] = 3221225472;
       v67[2] = __76__ECTransferActionIMAPReplayer__transferItems_destinationMailboxURL_isMove___block_invoke;
       v67[3] = &unk_27874C458;
-      v38 = v8;
+      v38 = itemsCopy;
       v68 = v38;
       v69 = v54;
       v51 = v53;
@@ -150,11 +150,11 @@ LABEL_35:
       v39 = v50;
       v71 = v39;
       v72 = buf;
-      [v37 enumerateKeysAndObjectsUsingBlock:v67];
+      [sourceUIDsToDestinationUIDs enumerateKeysAndObjectsUsingBlock:v67];
 
-      v52 = [v38 allValues];
+      allValues = [v38 allValues];
       v40 = [v39 count];
-      if (v40 >= [v52 count])
+      if (v40 >= [allValues count])
       {
         v41 = 0;
       }
@@ -166,7 +166,7 @@ LABEL_35:
         v65[2] = __76__ECTransferActionIMAPReplayer__transferItems_destinationMailboxURL_isMove___block_invoke_2;
         v65[3] = &unk_27874C480;
         v66 = v39;
-        v41 = [v52 ef_filter:v65];
+        v41 = [allValues ef_filter:v65];
       }
 
       if ([v41 count])
@@ -174,8 +174,8 @@ LABEL_35:
         v43 = +[ECLocalActionReplayer log];
         if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
         {
-          v44 = [(ECLocalActionReplayer *)self action];
-          -[ECTransferActionIMAPReplayer _transferItems:destinationMailboxURL:isMove:].cold.2(v44, v81, [v41 count], v43);
+          action2 = [(ECLocalActionReplayer *)self action];
+          -[ECTransferActionIMAPReplayer _transferItems:destinationMailboxURL:isMove:].cold.2(action2, v81, [v41 count], v43);
         }
       }
 
@@ -201,7 +201,7 @@ LABEL_35:
       v59[1] = 3221225472;
       v59[2] = __76__ECTransferActionIMAPReplayer__transferItems_destinationMailboxURL_isMove___block_invoke_2_10;
       v59[3] = &unk_27874C4D0;
-      v60 = v8;
+      v60 = itemsCopy;
       v29 = [(ECTransferMessageActionResults *)v42 initWithBuilder:v59];
     }
 
@@ -211,8 +211,8 @@ LABEL_35:
   v30 = +[ECLocalActionReplayer log];
   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
   {
-    v31 = [(ECLocalActionReplayer *)self action];
-    [ECTransferActionIMAPReplayer _transferItems:v31 destinationMailboxURL:buf isMove:v30];
+    action3 = [(ECLocalActionReplayer *)self action];
+    [ECTransferActionIMAPReplayer _transferItems:action3 destinationMailboxURL:buf isMove:v30];
   }
 
   v32 = [ECTransferMessageActionResults alloc];
@@ -220,7 +220,7 @@ LABEL_35:
   v55[1] = 3221225472;
   v55[2] = __76__ECTransferActionIMAPReplayer__transferItems_destinationMailboxURL_isMove___block_invoke_12;
   v55[3] = &unk_27874C4D0;
-  v56 = v8;
+  v56 = itemsCopy;
   v29 = [(ECTransferMessageActionResults *)v32 initWithBuilder:v55];
   v12 = v56;
 LABEL_36:
@@ -323,16 +323,16 @@ void __76__ECTransferActionIMAPReplayer__transferItems_destinationMailboxURL_isM
   [v4 setFailedItems:v3];
 }
 
-- (BOOL)deleteSourceMessagesFromTransferItems:(id)a3
+- (BOOL)deleteSourceMessagesFromTransferItems:(id)items
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -346,12 +346,12 @@ void __76__ECTransferActionIMAPReplayer__transferItems_destinationMailboxURL_isM
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v20 + 1) + 8 * i) sourceRemoteID];
-        v11 = [v10 integerValue];
+        sourceRemoteID = [*(*(&v20 + 1) + 8 * i) sourceRemoteID];
+        integerValue = [sourceRemoteID integerValue];
 
-        if (v11)
+        if (integerValue)
         {
-          [v5 addIndex:v11];
+          [v5 addIndex:integerValue];
         }
       }
 
@@ -364,56 +364,56 @@ void __76__ECTransferActionIMAPReplayer__transferItems_destinationMailboxURL_isM
   if ([v5 count])
   {
     v12 = [[ECMessageFlagChange alloc] initWithBuilder:&__block_literal_global_23];
-    v13 = [(ECTransferActionIMAPReplayer *)self serverInterface];
-    v14 = [v13 storeFlagChange:v12 forUIDs:v5];
+    serverInterface = [(ECTransferActionIMAPReplayer *)self serverInterface];
+    v14 = [serverInterface storeFlagChange:v12 forUIDs:v5];
 
-    v15 = [(ECTransferActionIMAPReplayer *)self serverInterface];
-    [v15 expungeUIDs:v5];
+    serverInterface2 = [(ECTransferActionIMAPReplayer *)self serverInterface];
+    [serverInterface2 expungeUIDs:v5];
 
     if (v14)
     {
-      v16 = 1;
+      hasValidConnection = 1;
     }
 
     else
     {
-      v17 = [(ECTransferActionIMAPReplayer *)self serverInterface];
-      v16 = [v17 hasValidConnection];
+      serverInterface3 = [(ECTransferActionIMAPReplayer *)self serverInterface];
+      hasValidConnection = [serverInterface3 hasValidConnection];
     }
   }
 
   else
   {
-    v16 = 1;
+    hasValidConnection = 1;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v16;
+  return hasValidConnection;
 }
 
-- (id)fetchBodyDataForRemoteID:(id)a3 mailboxURL:(id)a4
+- (id)fetchBodyDataForRemoteID:(id)d mailboxURL:(id)l
 {
-  v5 = a3;
-  v6 = [(ECTransferActionIMAPReplayer *)self delegate];
-  v7 = [(ECLocalActionReplayer *)self action];
-  v8 = [v7 mailboxURL];
-  v9 = [v6 messageDataForRemoteID:v5 mailboxURL:v8];
+  dCopy = d;
+  delegate = [(ECTransferActionIMAPReplayer *)self delegate];
+  action = [(ECLocalActionReplayer *)self action];
+  mailboxURL = [action mailboxURL];
+  v9 = [delegate messageDataForRemoteID:dCopy mailboxURL:mailboxURL];
 
   return v9;
 }
 
 - (BOOL)downloadFailed
 {
-  v3 = [(ECLocalActionReplayer *)self error];
-  v4 = [(ECTransferActionIMAPReplayer *)self serverInterface];
-  if ([v4 hasValidConnection])
+  error = [(ECLocalActionReplayer *)self error];
+  serverInterface = [(ECTransferActionIMAPReplayer *)self serverInterface];
+  if ([serverInterface hasValidConnection])
   {
     LOBYTE(v5) = 1;
   }
 
-  else if (v3)
+  else if (error)
   {
-    v5 = ![(ECTransferActionIMAPReplayer *)self isRecoverableError:v3];
+    v5 = ![(ECTransferActionIMAPReplayer *)self isRecoverableError:error];
   }
 
   else
@@ -424,23 +424,23 @@ void __76__ECTransferActionIMAPReplayer__transferItems_destinationMailboxURL_isM
   return v5;
 }
 
-- (BOOL)isRecoverableError:(id)a3
+- (BOOL)isRecoverableError:(id)error
 {
-  v4 = a3;
-  v5 = [(ECTransferActionIMAPReplayer *)self delegate];
-  v6 = [v5 errorIsIMAPError:v4];
+  errorCopy = error;
+  delegate = [(ECTransferActionIMAPReplayer *)self delegate];
+  v6 = [delegate errorIsIMAPError:errorCopy];
 
   return v6 ^ 1;
 }
 
-- (id)appendItem:(id)a3 mailboxURL:(id)a4
+- (id)appendItem:(id)item mailboxURL:(id)l
 {
   v60 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v40 = a4;
-  v6 = [v39 destinationMessage];
-  v7 = [(ECTransferActionIMAPReplayer *)self delegate];
-  v8 = [v7 imapMailboxNameForMailboxURL:v40];
+  itemCopy = item;
+  lCopy = l;
+  destinationMessage = [itemCopy destinationMessage];
+  delegate = [(ECTransferActionIMAPReplayer *)self delegate];
+  v8 = [delegate imapMailboxNameForMailboxURL:lCopy];
 
   if (!v8)
   {
@@ -449,14 +449,14 @@ void __76__ECTransferActionIMAPReplayer__transferItems_destinationMailboxURL_isM
     {
       [(ECLocalActionReplayer *)self action];
       objc_claimAutoreleasedReturnValue();
-      [MEMORY[0x277D07198] ec_redactedStringForMailboxURL:v40];
+      [MEMORY[0x277D07198] ec_redactedStringForMailboxURL:lCopy];
       objc_claimAutoreleasedReturnValue();
       [ECTransferActionIMAPReplayer appendItem:mailboxURL:];
     }
   }
 
-  v10 = [(ECTransferActionIMAPReplayer *)self delegate];
-  v11 = [v10 messageDataForMessage:v6];
+  delegate2 = [(ECTransferActionIMAPReplayer *)self delegate];
+  v11 = [delegate2 messageDataForMessage:destinationMessage];
 
   v12 = [v11 length];
   v13 = 0;
@@ -471,45 +471,45 @@ void __76__ECTransferActionIMAPReplayer__transferItems_destinationMailboxURL_isM
     goto LABEL_11;
   }
 
-  v15 = [(ECTransferActionIMAPReplayer *)self serverInterface];
-  v16 = [v6 flags];
-  v17 = [v6 dateReceived];
+  serverInterface = [(ECTransferActionIMAPReplayer *)self serverInterface];
+  flags = [destinationMessage flags];
+  dateReceived = [destinationMessage dateReceived];
   v52 = 0;
   v53 = 0;
-  v18 = [v15 appendData:v11 toMailboxNamed:v8 flags:v16 dateReceived:v17 appendInfo:&v53 error:&v52];
+  v18 = [serverInterface appendData:v11 toMailboxNamed:v8 flags:flags dateReceived:dateReceived appendInfo:&v53 error:&v52];
   v14 = v53;
   v13 = v52;
 
   if (v18)
   {
-    if (!v14 || (-[ECTransferActionIMAPReplayer delegate](self, "delegate"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 checkUIDValidity:objc_msgSend(v14 mailboxURL:{"uidValidity"), v40}], v19, !v20))
+    if (!v14 || (-[ECTransferActionIMAPReplayer delegate](self, "delegate"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 checkUIDValidity:objc_msgSend(v14 mailboxURL:{"uidValidity"), lCopy}], v19, !v20))
     {
       v33 = [ECTransferMessageActionResults alloc];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __54__ECTransferActionIMAPReplayer_appendItem_mailboxURL___block_invoke_3;
       v44[3] = &unk_27874C4D0;
-      v45 = v39;
+      v45 = itemCopy;
       v26 = [(ECTransferMessageActionResults *)v33 initWithBuilder:v44];
       v27 = &v45;
       goto LABEL_20;
     }
 
-    v21 = [v14 newMessageUID];
+    newMessageUID = [v14 newMessageUID];
     v22 = [ECServerMessage alloc];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __54__ECTransferActionIMAPReplayer_appendItem_mailboxURL___block_invoke;
     v49[3] = &unk_27874C518;
-    v50 = v6;
-    v51 = v21;
+    v50 = destinationMessage;
+    v51 = newMessageUID;
     v23 = [(ECServerMessage *)v22 initWithIMAPServerMessageBuilder:v49];
     v24 = [ECTransferMessageActionResults alloc];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __54__ECTransferActionIMAPReplayer_appendItem_mailboxURL___block_invoke_2;
     v46[3] = &unk_27874C540;
-    v47 = v39;
+    v47 = itemCopy;
     v25 = v23;
     v48 = v25;
     v26 = [(ECTransferMessageActionResults *)v24 initWithBuilder:v46];
@@ -520,15 +520,15 @@ void __76__ECTransferActionIMAPReplayer__transferItems_destinationMailboxURL_isM
   else
   {
 LABEL_11:
-    v28 = [(ECTransferActionIMAPReplayer *)self serverInterface];
-    if ([v28 hasValidConnection])
+    serverInterface2 = [(ECTransferActionIMAPReplayer *)self serverInterface];
+    if ([serverInterface2 hasValidConnection])
     {
     }
 
     else
     {
-      v29 = [(ECTransferActionIMAPReplayer *)self delegate];
-      v30 = [v29 errorIsIMAPError:v13];
+      delegate3 = [(ECTransferActionIMAPReplayer *)self delegate];
+      v30 = [delegate3 errorIsIMAPError:v13];
 
       if (!v30)
       {
@@ -540,11 +540,11 @@ LABEL_11:
     v31 = +[ECLocalActionReplayer log];
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
-      v36 = [(ECLocalActionReplayer *)self action];
+      action = [(ECLocalActionReplayer *)self action];
       v37 = [v11 length];
       v38 = [MEMORY[0x277D07198] partiallyRedactedStringForString:v8];
       *buf = 138543874;
-      v55 = v36;
+      v55 = action;
       v56 = 2048;
       v57 = v37;
       v58 = 2114;
@@ -557,7 +557,7 @@ LABEL_11:
     v41[1] = 3221225472;
     v41[2] = __54__ECTransferActionIMAPReplayer_appendItem_mailboxURL___block_invoke_17;
     v41[3] = &unk_27874C540;
-    v42 = v39;
+    v42 = itemCopy;
     v13 = v13;
     v43 = v13;
     v26 = [(ECTransferMessageActionResults *)v32 initWithBuilder:v41];

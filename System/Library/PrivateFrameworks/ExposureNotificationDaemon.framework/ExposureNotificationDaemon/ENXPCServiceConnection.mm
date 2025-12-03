@@ -1,35 +1,35 @@
 @interface ENXPCServiceConnection
-+ (id)connectionWithXPCConnection:(id)a3 serviceListener:(id)a4 dispatchQueue:(id)a5;
++ (id)connectionWithXPCConnection:(id)connection serviceListener:(id)listener dispatchQueue:(id)queue;
 - (void)activate;
 - (void)invalidate;
-- (void)xpcConnectionEvent:(id)a3;
-- (void)xpcConnectionRequest:(id)a3;
-- (void)xpcFileSessionActivate:(id)a3 archive:(BOOL)a4;
-- (void)xpcFileSessionInvalidate:(id)a3;
-- (void)xpcFileSessionReadTEKBatch:(id)a3;
-- (void)xpcSendMessage:(id)a3;
-- (void)xpcSendReplyError:(id)a3 request:(id)a4;
+- (void)xpcConnectionEvent:(id)event;
+- (void)xpcConnectionRequest:(id)request;
+- (void)xpcFileSessionActivate:(id)activate archive:(BOOL)archive;
+- (void)xpcFileSessionInvalidate:(id)invalidate;
+- (void)xpcFileSessionReadTEKBatch:(id)batch;
+- (void)xpcSendMessage:(id)message;
+- (void)xpcSendReplyError:(id)error request:(id)request;
 @end
 
 @implementation ENXPCServiceConnection
 
-+ (id)connectionWithXPCConnection:(id)a3 serviceListener:(id)a4 dispatchQueue:(id)a5
++ (id)connectionWithXPCConnection:(id)connection serviceListener:(id)listener dispatchQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  connectionCopy = connection;
+  listenerCopy = listener;
+  queueCopy = queue;
   v10 = objc_alloc_init(ENXPCServiceConnection);
   dispatchQueue = v10->_dispatchQueue;
-  v10->_dispatchQueue = v9;
-  v12 = v9;
+  v10->_dispatchQueue = queueCopy;
+  v12 = queueCopy;
 
   serviceListener = v10->_serviceListener;
-  v10->_serviceListener = v8;
-  v14 = v8;
+  v10->_serviceListener = listenerCopy;
+  v14 = listenerCopy;
 
-  v10->_pid = xpc_connection_get_pid(v7);
+  v10->_pid = xpc_connection_get_pid(connectionCopy);
   xpcConnection = v10->_xpcConnection;
-  v10->_xpcConnection = v7;
+  v10->_xpcConnection = connectionCopy;
 
   return v10;
 }
@@ -58,17 +58,17 @@
   self->_xpcConnection = 0;
 }
 
-- (void)xpcConnectionEvent:(id)a3
+- (void)xpcConnectionEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   if (MEMORY[0x24C214BB0]() == MEMORY[0x277D86468])
   {
-    [(ENXPCServiceConnection *)self xpcConnectionRequest:v6];
+    [(ENXPCServiceConnection *)self xpcConnectionRequest:eventCopy];
     goto LABEL_12;
   }
 
-  v4 = v6;
-  if (v6 == MEMORY[0x277D863F8])
+  v4 = eventCopy;
+  if (eventCopy == MEMORY[0x277D863F8])
   {
     if (gLogCategory_ENXPCServiceConnection <= 20 && (gLogCategory_ENXPCServiceConnection != -1 || _LogCategory_Initialize()))
     {
@@ -81,31 +81,31 @@
 
   if (gLogCategory__ENXPCServiceConnection <= 90)
   {
-    if (gLogCategory__ENXPCServiceConnection != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (gLogCategory__ENXPCServiceConnection != -1 || (v5 = _LogCategory_Initialize(), v4 = eventCopy, v5))
     {
       [ENXPCServiceConnection xpcConnectionEvent:];
 LABEL_12:
-      v4 = v6;
+      v4 = eventCopy;
     }
   }
 }
 
-- (void)xpcConnectionRequest:(id)a3
+- (void)xpcConnectionRequest:(id)request
 {
-  v11 = a3;
-  int64 = xpc_dictionary_get_int64(v11, "smTyp");
+  requestCopy = request;
+  int64 = xpc_dictionary_get_int64(requestCopy, "smTyp");
   v5 = int64;
   if (int64 > 11)
   {
     if (int64 == 12)
     {
-      [(ENXPCServiceConnection *)self xpcFileSessionInvalidate:v11];
+      [(ENXPCServiceConnection *)self xpcFileSessionInvalidate:requestCopy];
       goto LABEL_16;
     }
 
     if (int64 == 13)
     {
-      [(ENXPCServiceConnection *)self xpcFileSessionReadTEKBatch:v11];
+      [(ENXPCServiceConnection *)self xpcFileSessionReadTEKBatch:requestCopy];
       goto LABEL_16;
     }
   }
@@ -114,19 +114,19 @@ LABEL_12:
   {
     if (int64 == 10)
     {
-      v6 = self;
-      v7 = v11;
+      selfCopy2 = self;
+      v7 = requestCopy;
       v8 = 1;
       goto LABEL_14;
     }
 
     if (int64 == 11)
     {
-      v6 = self;
-      v7 = v11;
+      selfCopy2 = self;
+      v7 = requestCopy;
       v8 = 0;
 LABEL_14:
-      [(ENXPCServiceConnection *)v6 xpcFileSessionActivate:v7 archive:v8];
+      [(ENXPCServiceConnection *)selfCopy2 xpcFileSessionActivate:v7 archive:v8];
       goto LABEL_16;
     }
   }
@@ -140,15 +140,15 @@ LABEL_14:
   {
     v10 = v5;
     v9 = ENErrorF();
-    [(ENXPCServiceConnection *)self xpcSendReplyError:v9 request:v11, v10];
+    [(ENXPCServiceConnection *)self xpcSendReplyError:v9 request:requestCopy, v10];
   }
 
 LABEL_16:
 }
 
-- (void)xpcSendMessage:(id)a3
+- (void)xpcSendMessage:(id)message
 {
-  message = a3;
+  message = message;
   v4 = self->_xpcConnection;
   v5 = v4;
   if (v4)
@@ -162,14 +162,14 @@ LABEL_16:
   }
 }
 
-- (void)xpcSendReplyError:(id)a3 request:(id)a4
+- (void)xpcSendReplyError:(id)error request:(id)request
 {
-  v9 = a3;
-  v6 = a4;
+  errorCopy = error;
+  requestCopy = request;
   v7 = self->_xpcConnection;
   if (v7)
   {
-    reply = xpc_dictionary_create_reply(v6);
+    reply = xpc_dictionary_create_reply(requestCopy);
     if (reply)
     {
       CUXPCEncodeNSError();
@@ -188,10 +188,10 @@ LABEL_16:
   }
 }
 
-- (void)xpcFileSessionActivate:(id)a3 archive:(BOOL)a4
+- (void)xpcFileSessionActivate:(id)activate archive:(BOOL)archive
 {
-  v4 = a4;
-  v6 = a3;
+  archiveCopy = archive;
+  activateCopy = activate;
   v66 = 0;
   v67 = &v66;
   v68 = 0x3032000000;
@@ -204,7 +204,7 @@ LABEL_16:
   v63[3] = &unk_278FD10D0;
   v65 = &v66;
   v63[4] = self;
-  v7 = v6;
+  v7 = activateCopy;
   v64 = v7;
   v8 = MEMORY[0x24C214430](v63);
   p_fileSession = &self->_fileSession;
@@ -269,12 +269,12 @@ LABEL_16:
       objc_storeStrong(v17 + 5, v54);
       if (v18)
       {
-        v47 = self;
+        selfCopy = self;
         v19 = objc_alloc_init(ENFileSessionDaemon);
         [(ENFileSessionDaemon *)v19 setBatchSize:v13];
         [(ENFileSessionDaemon *)v19 setFlags:v16];
         v20 = *(v60 + 6);
-        if (v4)
+        if (archiveCopy)
         {
           v21 = v67;
           v53 = v67[5];
@@ -301,31 +301,31 @@ LABEL_35:
           }
         }
 
-        v25 = [(ENFileSessionDaemon *)v19 file];
-        v26 = [v25 metadata];
-        v27 = v26;
+        file = [(ENFileSessionDaemon *)v19 file];
+        metadata = [file metadata];
+        v27 = metadata;
         v28 = MEMORY[0x277CBEC08];
-        if (v26)
+        if (metadata)
         {
-          v28 = v26;
+          v28 = metadata;
         }
 
         v29 = v28;
 
-        v30 = [(ENFileSessionDaemon *)v19 file];
-        v31 = [v30 sha256Data];
-        v32 = v31;
-        if (v31)
+        file2 = [(ENFileSessionDaemon *)v19 file];
+        sha256Data = [file2 sha256Data];
+        v32 = sha256Data;
+        if (sha256Data)
         {
-          v33 = v31;
+          data = sha256Data;
         }
 
         else
         {
-          v33 = [MEMORY[0x277CBEA98] data];
+          data = [MEMORY[0x277CBEA98] data];
         }
 
-        v34 = v33;
+        v34 = data;
 
         v51 = 0;
         v35 = [(ENFileSessionDaemon *)v19 readSignaturesAndReturnError:&v51];
@@ -348,14 +348,14 @@ LABEL_35:
             v37 = v34;
             v38 = v34;
             v39 = reply;
-            v40 = [v38 bytes];
+            bytes = [v38 bytes];
             v41 = [v38 length];
-            if (!v40)
+            if (!bytes)
             {
-              v40 = "";
+              bytes = "";
             }
 
-            xpc_dictionary_set_data(v39, "fileHash", v40, v41);
+            xpc_dictionary_set_data(v39, "fileHash", bytes, v41);
           }
 
           if (v35)
@@ -363,7 +363,7 @@ LABEL_35:
             xpc_dictionary_set_value(reply, "sigA", v35);
           }
 
-          [(ENXPCServiceConnection *)v47 xpcSendMessage:reply, v45, v46];
+          [(ENXPCServiceConnection *)selfCopy xpcSendMessage:reply, v45, v46];
         }
 
         else if (gLogCategory__ENXPCServiceConnection <= 90 && (gLogCategory__ENXPCServiceConnection != -1 || _LogCategory_Initialize()))
@@ -437,9 +437,9 @@ uint64_t __57__ENXPCServiceConnection_xpcFileSessionActivate_archive___block_inv
   return result;
 }
 
-- (void)xpcFileSessionInvalidate:(id)a3
+- (void)xpcFileSessionInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -452,7 +452,7 @@ uint64_t __57__ENXPCServiceConnection_xpcFileSessionActivate_archive___block_inv
   v12[3] = &unk_278FD10D0;
   v14 = &v15;
   v12[4] = self;
-  v5 = v4;
+  v5 = invalidateCopy;
   v13 = v5;
   v6 = MEMORY[0x24C214430](v12);
   v7 = self->_fileSession;
@@ -523,9 +523,9 @@ LABEL_7:
   return [v6 xpcSendReplyError:v5 request:v7];
 }
 
-- (void)xpcFileSessionReadTEKBatch:(id)a3
+- (void)xpcFileSessionReadTEKBatch:(id)batch
 {
-  v4 = a3;
+  batchCopy = batch;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -538,7 +538,7 @@ LABEL_7:
   v21[3] = &unk_278FD10D0;
   v23 = &v24;
   v21[4] = self;
-  v5 = v4;
+  v5 = batchCopy;
   v22 = v5;
   v6 = MEMORY[0x24C214430](v21);
   v7 = self->_fileSession;

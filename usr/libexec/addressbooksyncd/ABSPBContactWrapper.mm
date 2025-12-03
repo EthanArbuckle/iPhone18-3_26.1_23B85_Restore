@@ -1,25 +1,25 @@
 @interface ABSPBContactWrapper
 - (BOOL)containsCustomPoster;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addGroupName:(id)a3;
-- (void)addLinkTo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsMe:(BOOL)a3;
-- (void)setHasSharedPhotoDisplayPreference:(BOOL)a3;
-- (void)setHasSourceType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addGroupName:(id)name;
+- (void)addLinkTo:(id)to;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsMe:(BOOL)me;
+- (void)setHasSharedPhotoDisplayPreference:(BOOL)preference;
+- (void)setHasSourceType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABSPBContactWrapper
 
-- (void)setHasSourceType:(BOOL)a3
+- (void)setHasSourceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -32,27 +32,27 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addGroupName:(id)a3
+- (void)addGroupName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   groupNames = self->_groupNames;
-  v8 = v4;
+  v8 = nameCopy;
   if (!groupNames)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_groupNames;
     self->_groupNames = v6;
 
-    v4 = v8;
+    nameCopy = v8;
     groupNames = self->_groupNames;
   }
 
-  [(NSMutableArray *)groupNames addObject:v4];
+  [(NSMutableArray *)groupNames addObject:nameCopy];
 }
 
-- (void)setHasIsMe:(BOOL)a3
+- (void)setHasIsMe:(BOOL)me
 {
-  if (a3)
+  if (me)
   {
     v3 = 8;
   }
@@ -65,27 +65,27 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addLinkTo:(id)a3
+- (void)addLinkTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   linkTos = self->_linkTos;
-  v8 = v4;
+  v8 = toCopy;
   if (!linkTos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_linkTos;
     self->_linkTos = v6;
 
-    v4 = v8;
+    toCopy = v8;
     linkTos = self->_linkTos;
   }
 
-  [(NSMutableArray *)linkTos addObject:v4];
+  [(NSMutableArray *)linkTos addObject:toCopy];
 }
 
-- (void)setHasSharedPhotoDisplayPreference:(BOOL)a3
+- (void)setHasSharedPhotoDisplayPreference:(BOOL)preference
 {
-  if (a3)
+  if (preference)
   {
     v3 = 2;
   }
@@ -103,8 +103,8 @@
   v7.receiver = self;
   v7.super_class = ABSPBContactWrapper;
   v3 = [(ABSPBContactWrapper *)&v7 description];
-  v4 = [(ABSPBContactWrapper *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ABSPBContactWrapper *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -134,8 +134,8 @@
   pb = self->_pb;
   if (pb)
   {
-    v9 = [(ABSPBContact *)pb dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"pb"];
+    dictionaryRepresentation = [(ABSPBContact *)pb dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"pb"];
   }
 
   reserved1 = self->_reserved1;
@@ -223,8 +223,8 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v40 + 1) + 8 * i) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation2 = [*(*(&v40 + 1) + 8 * i) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation2];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v40 objects:v44 count:16];
@@ -263,8 +263,8 @@
   containerAttributes = self->_containerAttributes;
   if (containerAttributes)
   {
-    v33 = [(ABSPBContainerAttributes *)containerAttributes dictionaryRepresentation];
-    [v4 setObject:v33 forKey:@"containerAttributes"];
+    dictionaryRepresentation3 = [(ABSPBContainerAttributes *)containerAttributes dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"containerAttributes"];
   }
 
   wallpaperImageData = self->_wallpaperImageData;
@@ -300,9 +300,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     sourceType = self->_sourceType;
@@ -483,23 +483,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[40] = self->_sourceType;
-    *(v4 + 204) |= 4u;
+    toCopy[40] = self->_sourceType;
+    *(toCopy + 204) |= 4u;
   }
 
-  v16 = v4;
+  v16 = toCopy;
   if ([(ABSPBContactWrapper *)self groupNamesCount])
   {
     [v16 clearGroupNames];
-    v5 = [(ABSPBContactWrapper *)self groupNamesCount];
-    if (v5)
+    groupNamesCount = [(ABSPBContactWrapper *)self groupNamesCount];
+    if (groupNamesCount)
     {
-      v6 = v5;
+      v6 = groupNamesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ABSPBContactWrapper *)self groupNameAtIndex:i];
@@ -547,10 +547,10 @@
   if ([(ABSPBContactWrapper *)self linkTosCount])
   {
     [v16 clearLinkTos];
-    v11 = [(ABSPBContactWrapper *)self linkTosCount];
-    if (v11)
+    linkTosCount = [(ABSPBContactWrapper *)self linkTosCount];
+    if (linkTosCount)
     {
-      v12 = v11;
+      v12 = linkTosCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(ABSPBContactWrapper *)self linkToAtIndex:j];
@@ -656,9 +656,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -685,7 +685,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v63 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v63 + 1) + 8 * i) copyWithZone:zone];
         [v6 addGroupName:v12];
       }
 
@@ -695,11 +695,11 @@
     while (v9);
   }
 
-  v13 = [(NSData *)self->_vcardData copyWithZone:a3];
+  v13 = [(NSData *)self->_vcardData copyWithZone:zone];
   v14 = *(v6 + 22);
   *(v6 + 22) = v13;
 
-  v15 = [(NSString *)self->_guid copyWithZone:a3];
+  v15 = [(NSString *)self->_guid copyWithZone:zone];
   v16 = *(v6 + 10);
   *(v6 + 10) = v15;
 
@@ -717,11 +717,11 @@
     *(v6 + 204) |= 1u;
   }
 
-  v18 = [(NSString *)self->_externalGuid copyWithZone:a3];
+  v18 = [(NSString *)self->_externalGuid copyWithZone:zone];
   v19 = *(v6 + 7);
   *(v6 + 7) = v18;
 
-  v20 = [(NSData *)self->_thumbnail copyWithZone:a3];
+  v20 = [(NSData *)self->_thumbnail copyWithZone:zone];
   v21 = *(v6 + 21);
   *(v6 + 21) = v20;
 
@@ -744,7 +744,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v59 + 1) + 8 * j) copyWithZone:{a3, v59}];
+        v27 = [*(*(&v59 + 1) + 8 * j) copyWithZone:{zone, v59}];
         [v6 addLinkTo:v27];
       }
 
@@ -754,51 +754,51 @@
     while (v24);
   }
 
-  v28 = [(NSData *)self->_fastEncodingData copyWithZone:a3];
+  v28 = [(NSData *)self->_fastEncodingData copyWithZone:zone];
   v29 = *(v6 + 8);
   *(v6 + 8) = v28;
 
-  v30 = [(NSString *)self->_linkGuid copyWithZone:a3];
+  v30 = [(NSString *)self->_linkGuid copyWithZone:zone];
   v31 = *(v6 + 13);
   *(v6 + 13) = v30;
 
-  v32 = [(NSData *)self->_archive copyWithZone:a3];
+  v32 = [(NSData *)self->_archive copyWithZone:zone];
   v33 = *(v6 + 4);
   *(v6 + 4) = v32;
 
-  v34 = [(ABSPBContact *)self->_pb copyWithZone:a3];
+  v34 = [(ABSPBContact *)self->_pb copyWithZone:zone];
   v35 = *(v6 + 15);
   *(v6 + 15) = v34;
 
-  v36 = [(NSString *)self->_accountExternalIdentifier copyWithZone:a3];
+  v36 = [(NSString *)self->_accountExternalIdentifier copyWithZone:zone];
   v37 = *(v6 + 3);
   *(v6 + 3) = v36;
 
-  v38 = [(NSData *)self->_imageData copyWithZone:a3];
+  v38 = [(NSData *)self->_imageData copyWithZone:zone];
   v39 = *(v6 + 11);
   *(v6 + 11) = v38;
 
-  v40 = [(NSString *)self->_imageType copyWithZone:a3];
+  v40 = [(NSString *)self->_imageType copyWithZone:zone];
   v41 = *(v6 + 12);
   *(v6 + 12) = v40;
 
-  v42 = [(NSData *)self->_reserved1 copyWithZone:a3];
+  v42 = [(NSData *)self->_reserved1 copyWithZone:zone];
   v43 = *(v6 + 16);
   *(v6 + 16) = v42;
 
-  v44 = [(NSData *)self->_reserved2 copyWithZone:a3];
+  v44 = [(NSData *)self->_reserved2 copyWithZone:zone];
   v45 = *(v6 + 17);
   *(v6 + 17) = v44;
 
-  v46 = [(NSData *)self->_reserved3 copyWithZone:a3];
+  v46 = [(NSData *)self->_reserved3 copyWithZone:zone];
   v47 = *(v6 + 18);
   *(v6 + 18) = v46;
 
-  v48 = [(ABSPBContainerAttributes *)self->_containerAttributes copyWithZone:a3];
+  v48 = [(ABSPBContainerAttributes *)self->_containerAttributes copyWithZone:zone];
   v49 = *(v6 + 5);
   *(v6 + 5) = v48;
 
-  v50 = [(NSData *)self->_wallpaperImageData copyWithZone:a3];
+  v50 = [(NSData *)self->_wallpaperImageData copyWithZone:zone];
   v51 = *(v6 + 24);
   *(v6 + 24) = v50;
 
@@ -808,51 +808,51 @@
     *(v6 + 204) |= 2u;
   }
 
-  v52 = [(NSData *)self->_encryptedPronounData copyWithZone:a3, v59];
+  v52 = [(NSData *)self->_encryptedPronounData copyWithZone:zone, v59];
   v53 = *(v6 + 6);
   *(v6 + 6) = v52;
 
-  v54 = [(NSData *)self->_wallpaperDataRepresentation copyWithZone:a3];
+  v54 = [(NSData *)self->_wallpaperDataRepresentation copyWithZone:zone];
   v55 = *(v6 + 23);
   *(v6 + 23) = v54;
 
-  v56 = [(NSData *)self->_sensitiveContentConfiguration copyWithZone:a3];
+  v56 = [(NSData *)self->_sensitiveContentConfiguration copyWithZone:zone];
   v57 = *(v6 + 19);
   *(v6 + 19) = v56;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
-  v5 = *(v4 + 204);
+  v5 = *(equalCopy + 204);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 204) & 4) == 0 || self->_sourceType != *(v4 + 40))
+    if ((*(equalCopy + 204) & 4) == 0 || self->_sourceType != *(equalCopy + 40))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((*(v4 + 204) & 4) != 0)
+  else if ((*(equalCopy + 204) & 4) != 0)
   {
     goto LABEL_58;
   }
 
   groupNames = self->_groupNames;
-  if (groupNames | *(v4 + 9) && ![(NSMutableArray *)groupNames isEqual:?])
+  if (groupNames | *(equalCopy + 9) && ![(NSMutableArray *)groupNames isEqual:?])
   {
     goto LABEL_58;
   }
 
   vcardData = self->_vcardData;
-  if (vcardData | *(v4 + 22))
+  if (vcardData | *(equalCopy + 22))
   {
     if (![(NSData *)vcardData isEqual:?])
     {
@@ -861,7 +861,7 @@
   }
 
   guid = self->_guid;
-  if (guid | *(v4 + 10))
+  if (guid | *(equalCopy + 10))
   {
     if (![(NSString *)guid isEqual:?])
     {
@@ -869,55 +869,55 @@
     }
   }
 
-  v9 = *(v4 + 204);
+  v9 = *(equalCopy + 204);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 204) & 8) == 0)
+    if ((*(equalCopy + 204) & 8) == 0)
     {
       goto LABEL_58;
     }
 
-    v10 = *(v4 + 200);
+    v10 = *(equalCopy + 200);
     if (self->_isMe)
     {
-      if ((*(v4 + 200) & 1) == 0)
+      if ((*(equalCopy + 200) & 1) == 0)
       {
         goto LABEL_58;
       }
     }
 
-    else if (*(v4 + 200))
+    else if (*(equalCopy + 200))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((*(v4 + 204) & 8) != 0)
+  else if ((*(equalCopy + 204) & 8) != 0)
   {
     goto LABEL_58;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 204) & 1) == 0 || self->_modDate != *(v4 + 1))
+    if ((*(equalCopy + 204) & 1) == 0 || self->_modDate != *(equalCopy + 1))
     {
       goto LABEL_58;
     }
   }
 
-  else if (*(v4 + 204))
+  else if (*(equalCopy + 204))
   {
     goto LABEL_58;
   }
 
   externalGuid = self->_externalGuid;
-  if (externalGuid | *(v4 + 7) && ![(NSString *)externalGuid isEqual:?])
+  if (externalGuid | *(equalCopy + 7) && ![(NSString *)externalGuid isEqual:?])
   {
     goto LABEL_58;
   }
 
   thumbnail = self->_thumbnail;
-  if (thumbnail | *(v4 + 21))
+  if (thumbnail | *(equalCopy + 21))
   {
     if (![(NSData *)thumbnail isEqual:?])
     {
@@ -926,7 +926,7 @@
   }
 
   linkTos = self->_linkTos;
-  if (linkTos | *(v4 + 14))
+  if (linkTos | *(equalCopy + 14))
   {
     if (![(NSMutableArray *)linkTos isEqual:?])
     {
@@ -935,7 +935,7 @@
   }
 
   fastEncodingData = self->_fastEncodingData;
-  if (fastEncodingData | *(v4 + 8))
+  if (fastEncodingData | *(equalCopy + 8))
   {
     if (![(NSData *)fastEncodingData isEqual:?])
     {
@@ -944,7 +944,7 @@
   }
 
   linkGuid = self->_linkGuid;
-  if (linkGuid | *(v4 + 13))
+  if (linkGuid | *(equalCopy + 13))
   {
     if (![(NSString *)linkGuid isEqual:?])
     {
@@ -953,7 +953,7 @@
   }
 
   archive = self->_archive;
-  if (archive | *(v4 + 4))
+  if (archive | *(equalCopy + 4))
   {
     if (![(NSData *)archive isEqual:?])
     {
@@ -962,7 +962,7 @@
   }
 
   pb = self->_pb;
-  if (pb | *(v4 + 15))
+  if (pb | *(equalCopy + 15))
   {
     if (![(ABSPBContact *)pb isEqual:?])
     {
@@ -971,7 +971,7 @@
   }
 
   accountExternalIdentifier = self->_accountExternalIdentifier;
-  if (accountExternalIdentifier | *(v4 + 3))
+  if (accountExternalIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)accountExternalIdentifier isEqual:?])
     {
@@ -980,7 +980,7 @@
   }
 
   imageData = self->_imageData;
-  if (imageData | *(v4 + 11))
+  if (imageData | *(equalCopy + 11))
   {
     if (![(NSData *)imageData isEqual:?])
     {
@@ -989,7 +989,7 @@
   }
 
   imageType = self->_imageType;
-  if (imageType | *(v4 + 12))
+  if (imageType | *(equalCopy + 12))
   {
     if (![(NSString *)imageType isEqual:?])
     {
@@ -998,7 +998,7 @@
   }
 
   reserved1 = self->_reserved1;
-  if (reserved1 | *(v4 + 16))
+  if (reserved1 | *(equalCopy + 16))
   {
     if (![(NSData *)reserved1 isEqual:?])
     {
@@ -1007,7 +1007,7 @@
   }
 
   reserved2 = self->_reserved2;
-  if (reserved2 | *(v4 + 17))
+  if (reserved2 | *(equalCopy + 17))
   {
     if (![(NSData *)reserved2 isEqual:?])
     {
@@ -1016,7 +1016,7 @@
   }
 
   reserved3 = self->_reserved3;
-  if (reserved3 | *(v4 + 18))
+  if (reserved3 | *(equalCopy + 18))
   {
     if (![(NSData *)reserved3 isEqual:?])
     {
@@ -1025,7 +1025,7 @@
   }
 
   containerAttributes = self->_containerAttributes;
-  if (containerAttributes | *(v4 + 5))
+  if (containerAttributes | *(equalCopy + 5))
   {
     if (![(ABSPBContainerAttributes *)containerAttributes isEqual:?])
     {
@@ -1034,7 +1034,7 @@
   }
 
   wallpaperImageData = self->_wallpaperImageData;
-  if (wallpaperImageData | *(v4 + 24))
+  if (wallpaperImageData | *(equalCopy + 24))
   {
     if (![(NSData *)wallpaperImageData isEqual:?])
     {
@@ -1042,10 +1042,10 @@
     }
   }
 
-  v26 = *(v4 + 204);
+  v26 = *(equalCopy + 204);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 204) & 2) == 0)
+    if ((*(equalCopy + 204) & 2) == 0)
     {
       goto LABEL_62;
     }
@@ -1055,20 +1055,20 @@ LABEL_58:
     goto LABEL_59;
   }
 
-  if ((*(v4 + 204) & 2) == 0 || self->_sharedPhotoDisplayPreference != *(v4 + 2))
+  if ((*(equalCopy + 204) & 2) == 0 || self->_sharedPhotoDisplayPreference != *(equalCopy + 2))
   {
     goto LABEL_58;
   }
 
 LABEL_62:
   encryptedPronounData = self->_encryptedPronounData;
-  if (encryptedPronounData | *(v4 + 6) && ![(NSData *)encryptedPronounData isEqual:?])
+  if (encryptedPronounData | *(equalCopy + 6) && ![(NSData *)encryptedPronounData isEqual:?])
   {
     goto LABEL_58;
   }
 
   wallpaperDataRepresentation = self->_wallpaperDataRepresentation;
-  if (wallpaperDataRepresentation | *(v4 + 23))
+  if (wallpaperDataRepresentation | *(equalCopy + 23))
   {
     if (![(NSData *)wallpaperDataRepresentation isEqual:?])
     {
@@ -1077,7 +1077,7 @@ LABEL_62:
   }
 
   sensitiveContentConfiguration = self->_sensitiveContentConfiguration;
-  if (sensitiveContentConfiguration | *(v4 + 19))
+  if (sensitiveContentConfiguration | *(equalCopy + 19))
   {
     v27 = [(NSData *)sensitiveContentConfiguration isEqual:?];
   }
@@ -1182,13 +1182,13 @@ LABEL_59:
   return v22 ^ v23 ^ [(NSData *)self->_sensitiveContentConfiguration hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((*(v4 + 204) & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((*(fromCopy + 204) & 4) != 0)
   {
-    self->_sourceType = *(v4 + 40);
+    self->_sourceType = *(fromCopy + 40);
     *&self->_has |= 4u;
   }
 
@@ -1196,7 +1196,7 @@ LABEL_59:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = *(v4 + 9);
+  v6 = *(fromCopy + 9);
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
@@ -1388,19 +1388,19 @@ LABEL_59:
 {
   if ([(ABSPBContactWrapper *)self sharedPhotoDisplayPreference]&& [(ABSPBContactWrapper *)self sharedPhotoDisplayPreference]!= 2)
   {
-    v3 = [(ABSPBContactWrapper *)self isMe];
+    isMe = [(ABSPBContactWrapper *)self isMe];
   }
 
   else
   {
-    v3 = 1;
+    isMe = 1;
   }
 
   v4 = *(qword_100071D00 + 8);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"shared";
-    if (v3)
+    if (isMe)
     {
       v5 = @"custom";
     }
@@ -1410,7 +1410,7 @@ LABEL_59:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "CNContactSharedPhotoDisplayPreference indicates a %@ poster", &v7, 0xCu);
   }
 
-  return v3;
+  return isMe;
 }
 
 @end

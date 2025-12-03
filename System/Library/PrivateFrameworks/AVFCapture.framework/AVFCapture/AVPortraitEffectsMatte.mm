@@ -1,7 +1,7 @@
 @interface AVPortraitEffectsMatte
 + (AVPortraitEffectsMatte)portraitEffectsMatteFromDictionaryRepresentation:(NSDictionary *)imageSourceAuxDataInfoDictionary error:(NSError *)outError;
-- (AVPortraitEffectsMatte)initWithPixelBuffer:(__CVBuffer *)a3 auxiliaryMetadata:(CGImageMetadata *)a4;
-- (AVPortraitEffectsMatte)initWithPixelBuffer:(__CVBuffer *)a3 portraitEffectsMatteMetadataDictionary:(id)a4;
+- (AVPortraitEffectsMatte)initWithPixelBuffer:(__CVBuffer *)buffer auxiliaryMetadata:(CGImageMetadata *)metadata;
+- (AVPortraitEffectsMatte)initWithPixelBuffer:(__CVBuffer *)buffer portraitEffectsMatteMetadataDictionary:(id)dictionary;
 - (AVPortraitEffectsMatte)portraitEffectsMatteByApplyingExifOrientation:(CGImagePropertyOrientation)exifOrientation;
 - (AVPortraitEffectsMatte)portraitEffectsMatteByReplacingPortraitEffectsMatteWithPixelBuffer:(CVPixelBufferRef)pixelBuffer error:(NSError *)outError;
 - (CGImageMetadata)copyAuxiliaryMetadata;
@@ -122,8 +122,8 @@ LABEL_43:
   }
 
   v21 = v17;
-  v22 = [a1 _allSupportedPortraitEffectsMattePixelFormatTypes];
-  if (([v22 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v14)}] & 1) == 0)
+  _allSupportedPortraitEffectsMattePixelFormatTypes = [self _allSupportedPortraitEffectsMattePixelFormatTypes];
+  if (([_allSupportedPortraitEffectsMattePixelFormatTypes containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v14)}] & 1) == 0)
   {
     +[AVPortraitEffectsMatte portraitEffectsMatteFromDictionaryRepresentation:error:];
     v38 = 0;
@@ -162,23 +162,23 @@ LABEL_43:
     v30 = BytesPerRow;
   }
 
-  v31 = [v7 bytes];
+  bytes = [v7 bytes];
   BaseAddress = CVPixelBufferGetBaseAddress(pixelBufferOut);
   v33 = [v7 length];
   if (v30 <= v33)
   {
-    v34 = &v31[v33];
+    v34 = &bytes[v33];
     v35 = 1;
     do
     {
-      memcpy(BaseAddress, v31, v30);
+      memcpy(BaseAddress, bytes, v30);
       if (v35 >= v23)
       {
         break;
       }
 
-      v36 = &v31[v30 + v21];
-      v31 += v21;
+      v36 = &bytes[v30 + v21];
+      bytes += v21;
       BaseAddress += v29;
       ++v35;
     }
@@ -439,7 +439,7 @@ LABEL_6:
   return pixelBuffer;
 }
 
-- (AVPortraitEffectsMatte)initWithPixelBuffer:(__CVBuffer *)a3 portraitEffectsMatteMetadataDictionary:(id)a4
+- (AVPortraitEffectsMatte)initWithPixelBuffer:(__CVBuffer *)buffer portraitEffectsMatteMetadataDictionary:(id)dictionary
 {
   v10.receiver = self;
   v10.super_class = AVPortraitEffectsMatte;
@@ -450,9 +450,9 @@ LABEL_6:
     v6->_internal = internal;
     if (internal)
     {
-      if (a3)
+      if (buffer)
       {
-        v8 = CFRetain(a3);
+        v8 = CFRetain(buffer);
         internal = v6->_internal;
       }
 
@@ -462,9 +462,9 @@ LABEL_6:
       }
 
       internal->pixelBuffer = v8;
-      if (a4)
+      if (dictionary)
       {
-        v6->_internal->version = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E69914E0]), "intValue"}];
+        v6->_internal->version = [objc_msgSend(dictionary objectForKeyedSubscript:{*MEMORY[0x1E69914E0]), "intValue"}];
       }
     }
 
@@ -478,13 +478,13 @@ LABEL_6:
   return v6;
 }
 
-- (AVPortraitEffectsMatte)initWithPixelBuffer:(__CVBuffer *)a3 auxiliaryMetadata:(CGImageMetadata *)a4
+- (AVPortraitEffectsMatte)initWithPixelBuffer:(__CVBuffer *)buffer auxiliaryMetadata:(CGImageMetadata *)metadata
 {
-  v5 = [(AVPortraitEffectsMatte *)self initWithPixelBuffer:a3 portraitEffectsMatteMetadataDictionary:0];
+  v5 = [(AVPortraitEffectsMatte *)self initWithPixelBuffer:buffer portraitEffectsMatteMetadataDictionary:0];
   v6 = v5;
-  if (a4 && v5)
+  if (metadata && v5)
   {
-    v5->_internal->version = [AVAuxiliaryMetadataStringTagWithPrefixedKey(a4 *MEMORY[0x1E69914D0]];
+    v5->_internal->version = [AVAuxiliaryMetadataStringTagWithPrefixedKey(metadata *MEMORY[0x1E69914D0]];
   }
 
   return v6;
@@ -528,11 +528,11 @@ LABEL_8:
 
 - (NSDictionary)dictionaryRepresentationForAuxiliaryDataType:(NSString *)outAuxDataType
 {
-  v5 = [(AVPortraitEffectsMatte *)self pixelFormatType];
+  pixelFormatType = [(AVPortraitEffectsMatte *)self pixelFormatType];
   Width = CVPixelBufferGetWidth([(AVPortraitEffectsMatte *)self mattingImage]);
   Height = CVPixelBufferGetHeight([(AVPortraitEffectsMatte *)self mattingImage]);
   BytesPerRow = CVPixelBufferGetBytesPerRow([(AVPortraitEffectsMatte *)self mattingImage]);
-  if (!v5 || !Width || !Height || (v9 = BytesPerRow) == 0 || (v10 = [MEMORY[0x1E695DF88] dataWithLength:BytesPerRow * Height]) == 0)
+  if (!pixelFormatType || !Width || !Height || (v9 = BytesPerRow) == 0 || (v10 = [MEMORY[0x1E695DF88] dataWithLength:BytesPerRow * Height]) == 0)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_11();
@@ -541,19 +541,19 @@ LABEL_8:
   }
 
   v11 = v10;
-  v12 = [(AVPortraitEffectsMatte *)self mattingImage];
-  if (CVPixelBufferLockBaseAddress(v12, 1uLL))
+  mattingImage = [(AVPortraitEffectsMatte *)self mattingImage];
+  if (CVPixelBufferLockBaseAddress(mattingImage, 1uLL))
   {
     return 0;
   }
 
-  BaseAddress = CVPixelBufferGetBaseAddress(v12);
+  BaseAddress = CVPixelBufferGetBaseAddress(mattingImage);
   memcpy([v11 mutableBytes], BaseAddress, v9 * Height);
-  CVPixelBufferUnlockBaseAddress(v12, 1uLL);
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  [(NSDictionary *)v14 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696D218]];
+  CVPixelBufferUnlockBaseAddress(mattingImage, 1uLL);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [(NSDictionary *)dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x1E696D218]];
   v19[0] = *MEMORY[0x1E696DEC0];
-  v20[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5];
+  v20[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:pixelFormatType];
   v19[1] = *MEMORY[0x1E696DFB8];
   v20[1] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:Width];
   v19[2] = *MEMORY[0x1E696DD58];
@@ -561,12 +561,12 @@ LABEL_8:
   v19[3] = *MEMORY[0x1E696D430];
   v20[3] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v9];
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:4];
-  [(NSDictionary *)v14 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696D220]];
-  v16 = [(AVPortraitEffectsMatte *)self copyAuxiliaryMetadata];
-  if (v16)
+  [(NSDictionary *)dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x1E696D220]];
+  copyAuxiliaryMetadata = [(AVPortraitEffectsMatte *)self copyAuxiliaryMetadata];
+  if (copyAuxiliaryMetadata)
   {
-    v17 = v16;
-    [(NSDictionary *)v14 setObject:v16 forKeyedSubscript:*MEMORY[0x1E696D228]];
+    v17 = copyAuxiliaryMetadata;
+    [(NSDictionary *)dictionary setObject:copyAuxiliaryMetadata forKeyedSubscript:*MEMORY[0x1E696D228]];
     CFRelease(v17);
   }
 
@@ -575,7 +575,7 @@ LABEL_8:
     *outAuxDataType = [(AVPortraitEffectsMatte *)self auxiliaryImageType];
   }
 
-  return v14;
+  return dictionary;
 }
 
 + (uint64_t)portraitEffectsMatteFromDictionaryRepresentation:error:.cold.1()

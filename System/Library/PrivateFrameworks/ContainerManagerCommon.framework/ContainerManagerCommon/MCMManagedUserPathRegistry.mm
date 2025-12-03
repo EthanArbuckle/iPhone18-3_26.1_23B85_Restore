@@ -8,9 +8,9 @@
 - (MCMManagedPath)userCaches;
 - (MCMManagedPath)userHome;
 - (MCMManagedPath)userLibrary;
-- (MCMManagedUserPathRegistry)initWithUserIdentity:(id)a3 daemonUser:(id)a4;
+- (MCMManagedUserPathRegistry)initWithUserIdentity:(id)identity daemonUser:(id)user;
 - (MCMUserIdentity)userIdentity;
-- (void)_initPathPropertiesWithUserIdentity:(id)a3;
+- (void)_initPathPropertiesWithUserIdentity:(id)identity;
 @end
 
 @implementation MCMManagedUserPathRegistry
@@ -95,21 +95,21 @@
   return result;
 }
 
-- (void)_initPathPropertiesWithUserIdentity:(id)a3
+- (void)_initPathPropertiesWithUserIdentity:(id)identity
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v31 = [v4 homeDirectoryURL];
-  v5 = [v4 posixUser];
-  v6 = [[MCMManagedPath alloc] initWithURL:v31 flags:0 ACLConfig:0 mode:493 dpClass:0xFFFFFFFFLL owner:v5 parent:0];
+  identityCopy = identity;
+  homeDirectoryURL = [identityCopy homeDirectoryURL];
+  posixUser = [identityCopy posixUser];
+  v6 = [[MCMManagedPath alloc] initWithURL:homeDirectoryURL flags:0 ACLConfig:0 mode:493 dpClass:0xFFFFFFFFLL owner:posixUser parent:0];
   userHome = self->_userHome;
   self->_userHome = v6;
 
-  v8 = [(MCMManagedPath *)self->_userHome managedPathByAppendingPathComponent:@"Library" flags:2 ACLConfig:2 mode:493 dpClass:0xFFFFFFFFLL owner:v5];
+  v8 = [(MCMManagedPath *)self->_userHome managedPathByAppendingPathComponent:@"Library" flags:2 ACLConfig:2 mode:493 dpClass:0xFFFFFFFFLL owner:posixUser];
   userLibrary = self->_userLibrary;
   self->_userLibrary = v8;
 
-  if ([v4 isDataSeparated])
+  if ([identityCopy isDataSeparated])
   {
     v10 = 2;
   }
@@ -119,15 +119,15 @@
     v10 = 0;
   }
 
-  v11 = [(MCMManagedPath *)self->_userLibrary managedPathByAppendingPathComponent:@"Caches" flags:v10 ACLConfig:2 mode:493 dpClass:0xFFFFFFFFLL owner:v5];
+  v11 = [(MCMManagedPath *)self->_userLibrary managedPathByAppendingPathComponent:@"Caches" flags:v10 ACLConfig:2 mode:493 dpClass:0xFFFFFFFFLL owner:posixUser];
   userCaches = self->_userCaches;
   self->_userCaches = v11;
 
-  v13 = [(MCMManagedPath *)self->_userCaches managedPathByAppendingPathComponent:@"com.apple.containermanagerd" flags:3 ACLConfig:1 mode:493 dpClass:4 owner:v5];
+  v13 = [(MCMManagedPath *)self->_userCaches managedPathByAppendingPathComponent:@"com.apple.containermanagerd" flags:3 ACLConfig:1 mode:493 dpClass:4 owner:posixUser];
   containermanagerUserCaches = self->_containermanagerUserCaches;
   self->_containermanagerUserCaches = v13;
 
-  v15 = [(MCMManagedPath *)self->_containermanagerUserCaches managedPathByAppendingPathComponent:@"Dead" flags:7 ACLConfig:1 mode:493 dpClass:4 owner:v5];
+  v15 = [(MCMManagedPath *)self->_containermanagerUserCaches managedPathByAppendingPathComponent:@"Dead" flags:7 ACLConfig:1 mode:493 dpClass:4 owner:posixUser];
   containermanagerUserDeathrow = self->_containermanagerUserDeathrow;
   self->_containermanagerUserDeathrow = v15;
 
@@ -143,22 +143,22 @@
   containermanagerUserDeleteOperations = self->_containermanagerUserDeleteOperations;
   self->_containermanagerUserDeleteOperations = 0;
 
-  v21 = [v4 isDataSeparated];
-  if ((v21 & 1) == 0)
+  isDataSeparated = [identityCopy isDataSeparated];
+  if ((isDataSeparated & 1) == 0)
   {
-    v22 = [(MCMManagedPath *)self->_userLibrary managedPathByAppendingPathComponent:@"MobileContainerManager" flags:7 ACLConfig:1 mode:493 dpClass:4 owner:v5];
+    v22 = [(MCMManagedPath *)self->_userLibrary managedPathByAppendingPathComponent:@"MobileContainerManager" flags:7 ACLConfig:1 mode:493 dpClass:4 owner:posixUser];
     v23 = self->_containermanagerUserLibrary;
     self->_containermanagerUserLibrary = v22;
 
-    v24 = [(MCMManagedPath *)self->_containermanagerUserLibrary managedPathByAppendingPathComponent:@"PendingUpdates" flags:7 ACLConfig:1 mode:493 dpClass:4 owner:v5];
+    v24 = [(MCMManagedPath *)self->_containermanagerUserLibrary managedPathByAppendingPathComponent:@"PendingUpdates" flags:7 ACLConfig:1 mode:493 dpClass:4 owner:posixUser];
     v25 = self->_containermanagerUserPendingUpdates;
     self->_containermanagerUserPendingUpdates = v24;
 
-    v26 = [(MCMManagedPath *)self->_containermanagerUserLibrary managedPathByAppendingPathComponent:@"Replace" flags:7 ACLConfig:1 mode:493 dpClass:4 owner:v5];
+    v26 = [(MCMManagedPath *)self->_containermanagerUserLibrary managedPathByAppendingPathComponent:@"Replace" flags:7 ACLConfig:1 mode:493 dpClass:4 owner:posixUser];
     v27 = self->_containermanagerUserReplaceOperations;
     self->_containermanagerUserReplaceOperations = v26;
 
-    v28 = [(MCMManagedPath *)self->_containermanagerUserLibrary managedPathByAppendingPathComponent:@"Delete" flags:7 ACLConfig:1 mode:493 dpClass:4 owner:v5];
+    v28 = [(MCMManagedPath *)self->_containermanagerUserLibrary managedPathByAppendingPathComponent:@"Delete" flags:7 ACLConfig:1 mode:493 dpClass:4 owner:posixUser];
     v29 = self->_containermanagerUserDeleteOperations;
     self->_containermanagerUserDeleteOperations = v28;
   }
@@ -166,18 +166,18 @@
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (MCMManagedUserPathRegistry)initWithUserIdentity:(id)a3 daemonUser:(id)a4
+- (MCMManagedUserPathRegistry)initWithUserIdentity:(id)identity daemonUser:(id)user
 {
   v19[5] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  identityCopy = identity;
   v17.receiver = self;
   v17.super_class = MCMManagedUserPathRegistry;
-  v8 = [(MCMManagedPathRegistry *)&v17 initWithDaemonUser:a4 privileged:0];
+  v8 = [(MCMManagedPathRegistry *)&v17 initWithDaemonUser:user privileged:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_userIdentity, a3);
-    [(MCMManagedUserPathRegistry *)v9 _initPathPropertiesWithUserIdentity:v7];
+    objc_storeStrong(&v8->_userIdentity, identity);
+    [(MCMManagedUserPathRegistry *)v9 _initPathPropertiesWithUserIdentity:identityCopy];
     v19[0] = v9->_userHome;
     v19[1] = v9->_userLibrary;
     v19[2] = v9->_userCaches;

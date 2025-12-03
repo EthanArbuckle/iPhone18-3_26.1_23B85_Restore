@@ -1,7 +1,7 @@
 @interface WLDRemoteAlertPresenter
 + (BOOL)isUnlocked;
 - (BOOL)_isPad;
-- (BOOL)promptForBundleID:(id)a3;
+- (BOOL)promptForBundleID:(id)d;
 - (WLDRemoteAlertPresenter)init;
 @end
 
@@ -22,9 +22,9 @@
   return v3 == 3 || v3 == 0;
 }
 
-- (BOOL)promptForBundleID:(id)a3
+- (BOOL)promptForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (([objc_opt_class() isUnlocked] & 1) == 0)
   {
     NSLog(@"WLDRemoteAlertPresenter: security does not allow prompting");
@@ -40,15 +40,15 @@ LABEL_5:
   }
 
   v6 = dispatch_semaphore_create(0);
-  NSLog(@"WLDRemoteAlertPresenter: promptForBundleID: %@", v4);
-  v7 = [(WLDRemoteAlertPresenter *)self _isPad];
+  NSLog(@"WLDRemoteAlertPresenter: promptForBundleID: %@", dCopy);
+  _isPad = [(WLDRemoteAlertPresenter *)self _isPad];
   v8 = +[TVAppAccountStoreObjC activeAccount];
-  v9 = [v8 username];
+  username = [v8 username];
 
-  v24[0] = v9;
+  v24[0] = username;
   v23[0] = WLKViewServiceAccountNameKey;
   v23[1] = WLKViewServiceAppBundlesKey;
-  v22 = v4;
+  v22 = dCopy;
   v10 = [NSArray arrayWithObjects:&v22 count:1];
   v24[1] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -56,7 +56,7 @@ LABEL_5:
   v21[0] = @"TVAccessViewServiceViewController";
   v20[0] = SBSUIRemoteAlertOptionViewControllerClass;
   v20[1] = SBSUIRemoteAlertOptionStatusBarStyle;
-  v12 = [NSNumber numberWithInteger:v7];
+  v12 = [NSNumber numberWithInteger:_isPad];
   v20[2] = SBSUIRemoteAlertOptionUserInfo;
   v21[1] = v12;
   v21[2] = v11;

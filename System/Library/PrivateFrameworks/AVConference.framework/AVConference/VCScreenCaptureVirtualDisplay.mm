@@ -1,18 +1,18 @@
 @interface VCScreenCaptureVirtualDisplay
-- (VCScreenCaptureVirtualDisplay)initWithDelegate:(id)a3 screenCaptureSourceContext:(const _VCScreenCaptureSourceContext *)a4;
-- (int)pauseScreenCapture:(BOOL)a3;
-- (int)setupCaptureSession:(id)a3;
-- (int)startScreenCaptureWithConfig:(id)a3;
+- (VCScreenCaptureVirtualDisplay)initWithDelegate:(id)delegate screenCaptureSourceContext:(const _VCScreenCaptureSourceContext *)context;
+- (int)pauseScreenCapture:(BOOL)capture;
+- (int)setupCaptureSession:(id)session;
+- (int)startScreenCaptureWithConfig:(id)config;
 - (int)stopScreenCapture;
-- (void)callbackWithEventString:(id)a3;
+- (void)callbackWithEventString:(id)string;
 - (void)dealloc;
 - (void)finalize;
-- (void)shouldClearScreen:(BOOL)a3;
+- (void)shouldClearScreen:(BOOL)screen;
 @end
 
 @implementation VCScreenCaptureVirtualDisplay
 
-- (VCScreenCaptureVirtualDisplay)initWithDelegate:(id)a3 screenCaptureSourceContext:(const _VCScreenCaptureSourceContext *)a4
+- (VCScreenCaptureVirtualDisplay)initWithDelegate:(id)delegate screenCaptureSourceContext:(const _VCScreenCaptureSourceContext *)context
 {
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -28,7 +28,7 @@
       v17 = 1024;
       v18 = 61;
       v19 = 2112;
-      v20 = a3;
+      delegateCopy = delegate;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d inDelegate=%@", buf, 0x26u);
     }
   }
@@ -38,9 +38,9 @@
   v9 = [(VCObject *)&v12 init];
   if (v9)
   {
-    *(v9 + 21) = a3;
-    cannedScreenCaptureSource = a4->cannedScreenCaptureSource;
-    *(v9 + 184) = *&a4->sinkContext;
+    *(v9 + 21) = delegate;
+    cannedScreenCaptureSource = context->cannedScreenCaptureSource;
+    *(v9 + 184) = *&context->sinkContext;
     *(v9 + 25) = cannedScreenCaptureSource;
   }
 
@@ -55,7 +55,7 @@
   [(VCObject *)&v2 dealloc];
 }
 
-- (int)setupCaptureSession:(id)a3
+- (int)setupCaptureSession:(id)session
 {
   v46 = *MEMORY[0x1E69E9840];
   v5 = FigVirtualDisplayProcessorCreate();
@@ -108,7 +108,7 @@
     v40 = 2112;
     v41 = v23;
     v42 = 2048;
-    v43 = self;
+    selfCopy5 = self;
     v44 = 1024;
     LODWORD(v45) = v22;
     v30 = " [%s] %s:%d %@(%p) FigVirtualDisplayProcessorCreate %d";
@@ -132,9 +132,9 @@ LABEL_55:
       v10 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (session)
         {
-          v11 = [objc_msgSend(a3 description];
+          v11 = [objc_msgSend(session description];
         }
 
         else
@@ -176,9 +176,9 @@ LABEL_55:
       v13 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (a3)
+        if (session)
         {
-          v14 = [objc_msgSend(a3 "description")];
+          v14 = [objc_msgSend(session "description")];
         }
 
         else
@@ -195,7 +195,7 @@ LABEL_55:
         v40 = 2112;
         v41 = v8;
         v42 = 2048;
-        v43 = self;
+        selfCopy5 = self;
         v44 = 2080;
         v45 = v14;
         v15 = " [%s] %s:%d %@(%p) FigVirtualDisplayProcessorCreate options: %s";
@@ -207,7 +207,7 @@ LABEL_20:
     }
   }
 
-  v33 = self;
+  selfCopy3 = self;
   v18 = FigVirtualDisplaySinkConduitCreate();
   if (v18)
   {
@@ -229,12 +229,12 @@ LABEL_20:
 
     if (objc_opt_respondsToSelector())
     {
-      v25 = [(VCScreenCaptureVirtualDisplay *)self performSelector:sel_logPrefix, v33];
+      selfCopy3 = [(VCScreenCaptureVirtualDisplay *)self performSelector:sel_logPrefix, selfCopy3];
     }
 
     else
     {
-      v25 = &stru_1F570E008;
+      selfCopy3 = &stru_1F570E008;
     }
 
     v20 = -2146893820;
@@ -257,9 +257,9 @@ LABEL_20:
     v38 = 1024;
     v39 = 94;
     v40 = 2112;
-    v41 = v25;
+    v41 = selfCopy3;
     v42 = 2048;
-    v43 = self;
+    selfCopy5 = self;
     v44 = 1024;
     LODWORD(v45) = v24;
     v30 = " [%s] %s:%d %@(%p) FigVirtualDisplaySinkConduitCreate %d";
@@ -291,12 +291,12 @@ LABEL_20:
   {
     if (objc_opt_respondsToSelector())
     {
-      v27 = [(VCScreenCaptureVirtualDisplay *)self performSelector:sel_logPrefix, v33];
+      selfCopy32 = [(VCScreenCaptureVirtualDisplay *)self performSelector:sel_logPrefix, selfCopy3];
     }
 
     else
     {
-      v27 = &stru_1F570E008;
+      selfCopy32 = &stru_1F570E008;
     }
 
     v20 = -2146893820;
@@ -313,9 +313,9 @@ LABEL_20:
         v38 = 1024;
         v39 = 97;
         v40 = 2112;
-        v41 = v27;
+        v41 = selfCopy32;
         v42 = 2048;
-        v43 = self;
+        selfCopy5 = self;
         v44 = 1024;
         LODWORD(v45) = v26;
         v30 = " [%s] %s:%d %@(%p) FigVirtualDisplaySessionCreateWithComponents %d";
@@ -327,7 +327,7 @@ LABEL_20:
   return v20;
 }
 
-- (int)startScreenCaptureWithConfig:(id)a3
+- (int)startScreenCaptureWithConfig:(id)config
 {
   v40 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -363,7 +363,7 @@ LABEL_20:
     }
   }
 
-  v10 = [(VCScreenCaptureVirtualDisplay *)self setupCaptureSession:a3];
+  v10 = [(VCScreenCaptureVirtualDisplay *)self setupCaptureSession:config];
   if (v10)
   {
     [(VCScreenCaptureVirtualDisplay *)v10 startScreenCaptureWithConfig:buf];
@@ -379,7 +379,7 @@ LABEL_20:
   v12 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (v12)
   {
-    v13 = v12(v11, a3, v27);
+    v13 = v12(v11, config, v27);
     if (!v13)
     {
       v14 = self->_session;
@@ -434,7 +434,7 @@ LABEL_20:
         v34 = 2112;
         v35 = v21;
         v36 = 2048;
-        v37 = self;
+        selfCopy2 = self;
         v38 = 1024;
         v39 = v20;
         v24 = " [%s] %s:%d %@(%p) FigVirtualDisplaySessionGetStartStatus %d";
@@ -505,7 +505,7 @@ LABEL_38:
         v34 = 2112;
         v35 = v19;
         v36 = 2048;
-        v37 = self;
+        selfCopy2 = self;
         v38 = 1024;
         v39 = v18;
         v24 = " [%s] %s:%d %@(%p) FigVirtualDisplaySessionStart failed %d";
@@ -691,9 +691,9 @@ void __62__VCScreenCaptureVirtualDisplay_startScreenCaptureWithConfig___block_in
   return 0;
 }
 
-- (int)pauseScreenCapture:(BOOL)a3
+- (int)pauseScreenCapture:(BOOL)capture
 {
-  v3 = a3;
+  captureCopy = capture;
   v23 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -706,7 +706,7 @@ void __62__VCScreenCaptureVirtualDisplay_startScreenCaptureWithConfig___block_in
       v15 = 136315906;
       v18 = "[VCScreenCaptureVirtualDisplay pauseScreenCapture:]";
       v17 = 2080;
-      if (v3)
+      if (captureCopy)
       {
         v7 = "Pausing";
       }
@@ -723,7 +723,7 @@ void __62__VCScreenCaptureVirtualDisplay_startScreenCaptureWithConfig___block_in
   if (session)
   {
     v9 = *(CMBaseObjectGetVTable() + 16);
-    if (v3)
+    if (captureCopy)
     {
       v10 = *(v9 + 24);
       if (v10)
@@ -754,7 +754,7 @@ LABEL_16:
       v16 = v11;
       v17 = 2080;
       v18 = "[VCScreenCaptureVirtualDisplay pauseScreenCapture:]";
-      if (v3)
+      if (captureCopy)
       {
         v13 = "Pausing";
       }
@@ -796,21 +796,21 @@ LABEL_16:
   self->_frameCallback.sinkCallback = 0;
 }
 
-- (void)shouldClearScreen:(BOOL)a3
+- (void)shouldClearScreen:(BOOL)screen
 {
   delegate = self->_delegate;
   if (delegate)
   {
-    [(VCScreenCaptureSourceDelegate *)delegate screenCaptureSourceShouldClearScreen:a3];
+    [(VCScreenCaptureSourceDelegate *)delegate screenCaptureSourceShouldClearScreen:screen];
   }
 }
 
-- (void)callbackWithEventString:(id)a3
+- (void)callbackWithEventString:(id)string
 {
   delegate = self->_delegate;
   if (delegate)
   {
-    [(VCScreenCaptureSourceDelegate *)delegate screenCaptureSourceProcessEventString:a3];
+    [(VCScreenCaptureSourceDelegate *)delegate screenCaptureSourceProcessEventString:string];
   }
 }
 

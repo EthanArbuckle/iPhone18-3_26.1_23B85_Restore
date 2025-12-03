@@ -10,7 +10,7 @@
 - (id)imageResource;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)applyConfirmedOptin:(BOOL)a3;
+- (void)applyConfirmedOptin:(BOOL)optin;
 @end
 
 @implementation COSLocationOptinViewController
@@ -56,7 +56,7 @@
 
 + (BOOL)controllerNeedsToRun
 {
-  if ([a1 locationRestricted])
+  if ([self locationRestricted])
   {
     return 0;
   }
@@ -116,27 +116,27 @@
 
 - (id)imageResource
 {
-  v2 = [UIApp activeWatch];
-  v3 = sub_100059F28(v2);
+  activeWatch = [UIApp activeWatch];
+  v3 = sub_100059F28(activeWatch);
 
   return v3;
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
-  v3 = a3;
+  optinCopy = optin;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 bridgeController];
-  [v6 tellGizmoToSetLocationEnabled:v3];
+  bridgeController = [v5 bridgeController];
+  [bridgeController tellGizmoToSetLocationEnabled:optinCopy];
 
-  [sub_10001CD38() setLocationServicesEnabled:v3];
-  if (v3)
+  [sub_10001CD38() setLocationServicesEnabled:optinCopy];
+  if (optinCopy)
   {
     +[COSLocationOptinViewController authorizeLocationForWatchFaces];
   }
 
-  v7 = [(COSLocationOptinViewController *)self delegate];
-  [v7 buddyControllerDone:self];
+  delegate = [(COSLocationOptinViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (id)suggestedButtonTitle

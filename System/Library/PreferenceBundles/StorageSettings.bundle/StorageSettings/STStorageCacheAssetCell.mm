@@ -1,35 +1,35 @@
 @interface STStorageCacheAssetCell
-+ (id)specifierForAsset:(id)a3;
-- (id)dateStringForAsset:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
++ (id)specifierForAsset:(id)asset;
+- (id)dateStringForAsset:(id)asset;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation STStorageCacheAssetCell
 
-+ (id)specifierForAsset:(id)a3
++ (id)specifierForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = [PSSpecifier preferenceSpecifierNamed:&stru_2D2D0 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
   [v4 setProperty:objc_opt_class() forKey:PSCellClassKey];
   v5 = [NSNumber numberWithBool:1];
   [v4 setProperty:v5 forKey:PSEnabledKey];
 
-  if (v3)
+  if (assetCopy)
   {
-    [v4 setProperty:v3 forKey:@"stCacheAsset"];
+    [v4 setProperty:assetCopy forKey:@"stCacheAsset"];
   }
 
   return v4;
 }
 
-- (id)dateStringForAsset:(id)a3
+- (id)dateStringForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 consumedDate];
-  v5 = v4;
-  if (v4)
+  assetCopy = asset;
+  consumedDate = [assetCopy consumedDate];
+  downloadStartDate = consumedDate;
+  if (consumedDate)
   {
-    [v4 timeIntervalSinceReferenceDate];
+    [consumedDate timeIntervalSinceReferenceDate];
     if (v6 != 0.0)
     {
       v7 = STStorageLocStr(@"VIEWED_FMT");
@@ -48,26 +48,26 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v10 = [v3 lastViewedDate];
+  lastViewedDate = [assetCopy lastViewedDate];
 
-  if (v10)
+  if (lastViewedDate)
   {
     v9 = STStorageLocStr(@"PARTIALLY_VIEWED");
 
     goto LABEL_11;
   }
 
-  v11 = [v3 downloadCompletionDate];
-  if (v11)
+  downloadCompletionDate = [assetCopy downloadCompletionDate];
+  if (downloadCompletionDate)
   {
 
-    v5 = 0;
+    downloadStartDate = 0;
     goto LABEL_9;
   }
 
-  v5 = [v3 downloadStartDate];
+  downloadStartDate = [assetCopy downloadStartDate];
 
-  if (!v5)
+  if (!downloadStartDate)
   {
     goto LABEL_9;
   }
@@ -78,18 +78,18 @@ LABEL_11:
   return v9;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v19.receiver = self;
   v19.super_class = STStorageCacheAssetCell;
-  [(STStorageCacheAssetCell *)&v19 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:@"stCacheAsset"];
+  [(STStorageCacheAssetCell *)&v19 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"stCacheAsset"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 displayName];
-    [(STStorageCacheAssetCell *)self setTitle:v7];
+    displayName = [v5 displayName];
+    [(STStorageCacheAssetCell *)self setTitle:displayName];
 
     v8 = [(STStorageCacheAssetCell *)self dateStringForAsset:v6];
     [(STStorageCacheAssetCell *)self setInfo:v8];
@@ -101,13 +101,13 @@ LABEL_11:
     block[3] = &unk_2CA38;
     v10 = v6;
     v17 = v10;
-    v18 = self;
+    selfCopy = self;
     dispatch_async(v9, block);
 
-    v11 = [v4 propertyForKey:@"_hideSize"];
-    v12 = [v11 BOOLValue];
+    v11 = [specifierCopy propertyForKey:@"_hideSize"];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       [(STStorageCacheAssetCell *)self setSizeString:&stru_2D2D0];
     }
@@ -119,7 +119,7 @@ LABEL_11:
       v13[2] = sub_FD10;
       v13[3] = &unk_2CA38;
       v14 = v10;
-      v15 = self;
+      selfCopy2 = self;
       dispatch_async(v9, v13);
     }
   }

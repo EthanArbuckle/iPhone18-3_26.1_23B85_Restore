@@ -1,13 +1,13 @@
 @interface CNEntitySpotlightIndexing
-+ (void)associateAttributeSet:(id)a3 withContactEntityIdentifiedBy:(id)a4;
++ (void)associateAttributeSet:(id)set withContactEntityIdentifiedBy:(id)by;
 @end
 
 @implementation CNEntitySpotlightIndexing
 
-+ (void)associateAttributeSet:(id)a3 withContactEntityIdentifiedBy:(id)a4
++ (void)associateAttributeSet:(id)set withContactEntityIdentifiedBy:(id)by
 {
-  v5 = a3;
-  v6 = a4;
+  setCopy = set;
+  byCopy = by;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -27,11 +27,11 @@
   v8 = v7;
   _Block_object_dispose(&v14, 8);
   v9 = +[_TtC8Contacts33CNContactEntityIdentifierProvider EntityTypeIdentifier];
-  v10 = [v5 displayName];
-  v11 = v10;
-  if (v10)
+  displayName = [setCopy displayName];
+  v11 = displayName;
+  if (displayName)
   {
-    v12 = v10;
+    v12 = displayName;
   }
 
   else
@@ -39,7 +39,7 @@
     v12 = &stru_1F094DAB0;
   }
 
-  [v7 tagCSSearchableItem:v5 entityInstanceIdentifier:v6 typeIdentifier:v9 displayTitle:v12 displaySubtitle:0 displaySynonyms:0 typeDisplayName:0 typeDisplaySynonyms:0 propertyDictionary:0 priority:&unk_1F0987210];
+  [v7 tagCSSearchableItem:setCopy entityInstanceIdentifier:byCopy typeIdentifier:v9 displayTitle:v12 displaySubtitle:0 displaySynonyms:0 typeDisplayName:0 typeDisplaySynonyms:0 propertyDictionary:0 priority:&unk_1F0987210];
 }
 
 @end

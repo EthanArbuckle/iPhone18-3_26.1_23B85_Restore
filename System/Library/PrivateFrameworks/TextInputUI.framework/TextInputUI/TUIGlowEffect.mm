@@ -1,21 +1,21 @@
 @interface TUIGlowEffect
-+ (BOOL)adjustVisibilityForDarkMode:(BOOL)a3 tintColor:(CGColor *)a4 alpha:(double)a5 outTintColor:(CGColor *)a6 outAlpha:(double *)a7;
++ (BOOL)adjustVisibilityForDarkMode:(BOOL)mode tintColor:(CGColor *)color alpha:(double)alpha outTintColor:(CGColor *)tintColor outAlpha:(double *)outAlpha;
 - (CAFrameRateRange)preferredFrameRateRange;
-- (TUIGlowEffect)initWithLayer:(id)a3;
-- (id)estimateAnimationValueForKeyPath:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (TUIGlowEffect)initWithLayer:(id)layer;
+- (id)estimateAnimationValueForKeyPath:(id)path;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
-- (void)recordAnimation:(id)a3 duration:(double)a4 fromValue:(id)a5 toValue:(id)a6 keyPath:(id)a7;
-- (void)setBlurRadius:(double)a3;
-- (void)setMinimumRadius:(double)a3;
-- (void)setNonPulseRadius:(double)a3 animated:(BOOL)a4 duration:(double)a5;
-- (void)setPreferredFrameRateRange:(CAFrameRateRange)a3;
-- (void)setPulseInterval:(double)a3;
-- (void)setPulseRadius:(double)a3;
-- (void)setPulsing:(BOOL)a3;
-- (void)setTintColor:(CGColor *)a3 animated:(BOOL)a4 duration:(double)a5 autoreverses:(BOOL)a6 repeatCount:(double)a7;
+- (void)recordAnimation:(id)animation duration:(double)duration fromValue:(id)value toValue:(id)toValue keyPath:(id)path;
+- (void)setBlurRadius:(double)radius;
+- (void)setMinimumRadius:(double)radius;
+- (void)setNonPulseRadius:(double)radius animated:(BOOL)animated duration:(double)duration;
+- (void)setPreferredFrameRateRange:(CAFrameRateRange)range;
+- (void)setPulseInterval:(double)interval;
+- (void)setPulseRadius:(double)radius;
+- (void)setPulsing:(BOOL)pulsing;
+- (void)setTintColor:(CGColor *)color animated:(BOOL)animated duration:(double)duration autoreverses:(BOOL)autoreverses repeatCount:(double)count;
 - (void)setupFilters;
-- (void)updatePropertyForKeyPath:(id)a3 oldValue:(id)a4 newValue:(id)a5 animated:(BOOL)a6 duration:(double)a7 autoreverses:(BOOL)a8 repeatCount:(double)a9;
+- (void)updatePropertyForKeyPath:(id)path oldValue:(id)value newValue:(id)newValue animated:(BOOL)animated duration:(double)duration autoreverses:(BOOL)autoreverses repeatCount:(double)count;
 - (void)updatePulseAnimationRadius;
 @end
 
@@ -55,8 +55,8 @@
   v16[2] = v10;
   v16[3] = v11;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:4];
-  v15 = [(TUIGlowEffect *)self layer];
-  [v15 setFilters:v14];
+  layer = [(TUIGlowEffect *)self layer];
+  [layer setFilters:v14];
 }
 
 - (CAFrameRateRange)preferredFrameRateRange
@@ -70,34 +70,34 @@
   return result;
 }
 
-- (void)updatePropertyForKeyPath:(id)a3 oldValue:(id)a4 newValue:(id)a5 animated:(BOOL)a6 duration:(double)a7 autoreverses:(BOOL)a8 repeatCount:(double)a9
+- (void)updatePropertyForKeyPath:(id)path oldValue:(id)value newValue:(id)newValue animated:(BOOL)animated duration:(double)duration autoreverses:(BOOL)autoreverses repeatCount:(double)count
 {
-  v10 = a8;
-  v12 = a6;
-  v29 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = [(TUIGlowEffect *)self layer];
-  [v18 removeAnimationForKey:v29];
+  autoreversesCopy = autoreverses;
+  animatedCopy = animated;
+  pathCopy = path;
+  valueCopy = value;
+  newValueCopy = newValue;
+  layer = [(TUIGlowEffect *)self layer];
+  [layer removeAnimationForKey:pathCopy];
 
-  if (v12)
+  if (animatedCopy)
   {
-    v19 = [(TUIGlowEffect *)self estimateAnimationValueForKeyPath:v29];
-    v20 = [MEMORY[0x1E6979318] animationWithKeyPath:v29];
+    layer3 = [(TUIGlowEffect *)self estimateAnimationValueForKeyPath:pathCopy];
+    v20 = [MEMORY[0x1E6979318] animationWithKeyPath:pathCopy];
     v21 = v20;
-    if (v19)
+    if (layer3)
     {
-      v22 = v19;
+      v22 = layer3;
     }
 
     else
     {
-      v22 = v16;
+      v22 = valueCopy;
     }
 
     [v20 setFromValue:v22];
-    [v21 setToValue:v17];
-    [v21 setDuration:a7];
+    [v21 setToValue:newValueCopy];
+    [v21 setDuration:duration];
     [v21 setRemovedOnCompletion:0];
     [v21 setFillMode:*MEMORY[0x1E69797E8]];
     [v21 setDelegate:self];
@@ -105,46 +105,46 @@
     *&v24 = self->_preferredFrameRateRange.maximum;
     *&v25 = self->_preferredFrameRateRange.preferred;
     [v21 setPreferredFrameRateRange:{v23, v24, v25}];
-    *&v26 = a9;
+    *&v26 = count;
     [v21 setRepeatCount:v26];
-    [v21 setAutoreverses:v10];
+    [v21 setAutoreverses:autoreversesCopy];
     v27 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
     [v21 setTimingFunction:v27];
 
-    v28 = [(TUIGlowEffect *)self layer];
-    [v28 addAnimation:v21 forKey:v29];
+    layer2 = [(TUIGlowEffect *)self layer];
+    [layer2 addAnimation:v21 forKey:pathCopy];
 
-    [(TUIGlowEffect *)self recordAnimation:v21 duration:v16 fromValue:v17 toValue:v29 keyPath:a7];
-    v17 = v21;
+    [(TUIGlowEffect *)self recordAnimation:v21 duration:valueCopy fromValue:newValueCopy toValue:pathCopy keyPath:duration];
+    newValueCopy = v21;
   }
 
   else
   {
-    v19 = [(TUIGlowEffect *)self layer];
-    [v19 setValue:v17 forKeyPath:v29];
+    layer3 = [(TUIGlowEffect *)self layer];
+    [layer3 setValue:newValueCopy forKeyPath:pathCopy];
   }
 }
 
-- (id)estimateAnimationValueForKeyPath:(id)a3
+- (id)estimateAnimationValueForKeyPath:(id)path
 {
   v39 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  pathCopy = path;
   [v4 timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [(NSMutableDictionary *)self->_animationStates objectForKeyedSubscript:v5];
+  v8 = [(NSMutableDictionary *)self->_animationStates objectForKeyedSubscript:pathCopy];
 
   if (v8)
   {
-    v9 = [v8 animation];
-    v10 = [v9 fromValue];
-    v11 = [v9 toValue];
+    animation = [v8 animation];
+    fromValue = [animation fromValue];
+    toValue = [animation toValue];
     [v8 startTime];
     v13 = v12;
-    [v9 duration];
-    if (v7 >= v13 + v14 || ([v9 duration], v15 < 2.22044605e-16))
+    [animation duration];
+    if (v7 >= v13 + v14 || ([animation duration], v15 < 2.22044605e-16))
     {
-      v16 = v11;
+      v16 = toValue;
 LABEL_5:
       v17 = v16;
 LABEL_6:
@@ -154,10 +154,10 @@ LABEL_6:
 
     [v8 startTime];
     v19 = v18;
-    [v9 duration];
+    [animation duration];
     v21 = v20;
-    v22 = CFGetTypeID(v10);
-    if (v22 != CFGetTypeID(v11))
+    v22 = CFGetTypeID(fromValue);
+    if (v22 != CFGetTypeID(toValue))
     {
 LABEL_20:
       v17 = 0;
@@ -167,17 +167,17 @@ LABEL_20:
     v35 = (v7 - v19) / v21;
     if (v22 == CFNumberGetTypeID())
     {
-      [v10 floatValue];
+      [fromValue floatValue];
       v24 = v23;
-      [v11 floatValue];
+      [toValue floatValue];
       v16 = [MEMORY[0x1E696AD98] numberWithDouble:v24 + v35 * (v25 - v24)];
       goto LABEL_5;
     }
 
     if (v22 == CGColorGetTypeID())
     {
-      v26 = v10;
-      v27 = v11;
+      v26 = fromValue;
+      v27 = toValue;
       NumberOfComponents = CGColorGetNumberOfComponents(v26);
       v29 = CGColorGetNumberOfComponents(v26);
       if (NumberOfComponents == 4 && v29 == 4)
@@ -207,24 +207,24 @@ LABEL_16:
   return v17;
 }
 
-- (void)recordAnimation:(id)a3 duration:(double)a4 fromValue:(id)a5 toValue:(id)a6 keyPath:(id)a7
+- (void)recordAnimation:(id)animation duration:(double)duration fromValue:(id)value toValue:(id)toValue keyPath:(id)path
 {
-  v9 = a7;
-  v10 = a3;
+  pathCopy = path;
+  animationCopy = animation;
   v11 = objc_alloc_init(_TUICursorEffectAnimationState);
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   [(_TUICursorEffectAnimationState *)v11 setStartTime:?];
-  [(_TUICursorEffectAnimationState *)v11 setAnimation:v10];
+  [(_TUICursorEffectAnimationState *)v11 setAnimation:animationCopy];
 
-  [(NSMutableDictionary *)self->_animationStates setObject:v11 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_animationStates setObject:v11 forKeyedSubscript:pathCopy];
 }
 
-- (void)setPreferredFrameRateRange:(CAFrameRateRange)a3
+- (void)setPreferredFrameRateRange:(CAFrameRateRange)range
 {
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
-  if (!CAFrameRateRangeIsEqualToRange(self->_preferredFrameRateRange, a3))
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
+  if (!CAFrameRateRangeIsEqualToRange(self->_preferredFrameRateRange, range))
   {
     self->_preferredFrameRateRange.minimum = minimum;
     self->_preferredFrameRateRange.maximum = maximum;
@@ -235,66 +235,66 @@ LABEL_16:
   }
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  if (self->_blurRadius != a3)
+  if (self->_blurRadius != radius)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-    v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
     [(TUIGlowEffect *)self updatePropertyForKeyPath:@"filters.blurFilter.inputRadius" oldValue:v5 newValue:v6 animated:0 duration:0 autoreverses:0.0 repeatCount:0.0];
 
-    self->_blurRadius = a3;
+    self->_blurRadius = radius;
   }
 }
 
-- (void)setNonPulseRadius:(double)a3 animated:(BOOL)a4 duration:(double)a5
+- (void)setNonPulseRadius:(double)radius animated:(BOOL)animated duration:(double)duration
 {
-  if (self->_nonPulseRadius != a3)
+  if (self->_nonPulseRadius != radius)
   {
-    v7 = a4;
+    animatedCopy = animated;
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-    v10 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    [(TUIGlowEffect *)self updatePropertyForKeyPath:@"filters.nonPulseFilter.inputRadius" oldValue:v9 newValue:v10 animated:v7 duration:0 autoreverses:a5 repeatCount:0.0];
+    v10 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
+    [(TUIGlowEffect *)self updatePropertyForKeyPath:@"filters.nonPulseFilter.inputRadius" oldValue:v9 newValue:v10 animated:animatedCopy duration:0 autoreverses:duration repeatCount:0.0];
 
-    self->_nonPulseRadius = a3;
+    self->_nonPulseRadius = radius;
   }
 }
 
-- (void)setPulseRadius:(double)a3
+- (void)setPulseRadius:(double)radius
 {
-  if (self->_pulseRadius != a3)
+  if (self->_pulseRadius != radius)
   {
-    self->_pulseRadius = a3;
+    self->_pulseRadius = radius;
     [(TUIGlowEffect *)self setPulsing:self->_pulsing];
   }
 }
 
-- (void)setMinimumRadius:(double)a3
+- (void)setMinimumRadius:(double)radius
 {
-  if (self->_minimumRadius != a3)
+  if (self->_minimumRadius != radius)
   {
-    self->_minimumRadius = a3;
+    self->_minimumRadius = radius;
     [(TUIGlowEffect *)self setPulsing:self->_pulsing];
   }
 }
 
-- (void)setPulseInterval:(double)a3
+- (void)setPulseInterval:(double)interval
 {
-  if (self->_pulseInterval != a3)
+  if (self->_pulseInterval != interval)
   {
     if (self->_pulsing)
     {
-      [(CABasicAnimation *)self->_pulseAnimation setDuration:a3];
+      [(CABasicAnimation *)self->_pulseAnimation setDuration:interval];
       [(TUIGlowEffect *)self setPulsing:self->_pulsing];
     }
 
-    self->_pulseInterval = a3;
+    self->_pulseInterval = interval;
   }
 }
 
-- (void)setPulsing:(BOOL)a3
+- (void)setPulsing:(BOOL)pulsing
 {
-  if (a3)
+  if (pulsing)
   {
     v5 = [MEMORY[0x1E6979318] animationWithKeyPath:@"filters.pulseFilter.inputRadius"];
     [(CABasicAnimation *)v5 setDuration:self->_pulseInterval * 0.5];
@@ -311,24 +311,24 @@ LABEL_16:
     v11 = v5;
 
     [(TUIGlowEffect *)self updatePulseAnimationRadius];
-    v12 = [(TUIGlowEffect *)self layer];
-    [v12 addAnimation:v11 forKey:@"filters.pulseFilter.inputRadius"];
+    layer = [(TUIGlowEffect *)self layer];
+    [layer addAnimation:v11 forKey:@"filters.pulseFilter.inputRadius"];
   }
 
   else
   {
-    v13 = [(TUIGlowEffect *)self layer];
-    [v13 removeAnimationForKey:@"filters.pulseFilter.inputRadius"];
+    layer2 = [(TUIGlowEffect *)self layer];
+    [layer2 removeAnimationForKey:@"filters.pulseFilter.inputRadius"];
 
-    v14 = [(TUIGlowEffect *)self layer];
+    layer3 = [(TUIGlowEffect *)self layer];
     v15 = [MEMORY[0x1E696AD98] numberWithDouble:self->_minimumRadius];
-    [v14 setValue:v15 forKeyPath:@"filters.pulseFilter.inputRadius"];
+    [layer3 setValue:v15 forKeyPath:@"filters.pulseFilter.inputRadius"];
 
-    v12 = self->_pulseAnimation;
+    layer = self->_pulseAnimation;
     self->_pulseAnimation = 0;
   }
 
-  self->_pulsing = a3;
+  self->_pulsing = pulsing;
 }
 
 - (void)updatePulseAnimationRadius
@@ -339,20 +339,20 @@ LABEL_16:
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_minimumRadius + self->_pulseRadius];
   [(CABasicAnimation *)self->_pulseAnimation setToValue:v4];
 
-  v5 = [(TUIGlowEffect *)self layer];
-  [v5 removeAnimationForKey:@"filters.pulseFilter.inputRadius"];
+  layer = [(TUIGlowEffect *)self layer];
+  [layer removeAnimationForKey:@"filters.pulseFilter.inputRadius"];
 
-  v6 = [(TUIGlowEffect *)self layer];
-  [v6 addAnimation:self->_pulseAnimation forKey:@"filters.pulseFilter.inputRadius"];
+  layer2 = [(TUIGlowEffect *)self layer];
+  [layer2 addAnimation:self->_pulseAnimation forKey:@"filters.pulseFilter.inputRadius"];
 }
 
-- (void)setTintColor:(CGColor *)a3 animated:(BOOL)a4 duration:(double)a5 autoreverses:(BOOL)a6 repeatCount:(double)a7
+- (void)setTintColor:(CGColor *)color animated:(BOOL)animated duration:(double)duration autoreverses:(BOOL)autoreverses repeatCount:(double)count
 {
-  v8 = a6;
-  v10 = a4;
-  v13 = !a4;
-  v14 = [(TUIGlowEffect *)self layer];
-  v18 = [v14 animationForKey:@"filters.thresholdFilter.inputColor"];
+  autoreversesCopy = autoreverses;
+  animatedCopy = animated;
+  v13 = !animated;
+  layer = [(TUIGlowEffect *)self layer];
+  v18 = [layer animationForKey:@"filters.thresholdFilter.inputColor"];
 
   tintColor = self->_tintColor;
   if (v18)
@@ -365,32 +365,32 @@ LABEL_16:
     v16 = 0;
   }
 
-  if (v16 || tintColor != a3)
+  if (v16 || tintColor != color)
   {
-    [(TUIGlowEffect *)self updatePropertyForKeyPath:@"filters.thresholdFilter.inputColor" oldValue:tintColor newValue:a3 animated:v10 duration:v8 autoreverses:a5 repeatCount:a7];
-    Copy = CGColorCreateCopy(a3);
+    [(TUIGlowEffect *)self updatePropertyForKeyPath:@"filters.thresholdFilter.inputColor" oldValue:tintColor newValue:color animated:animatedCopy duration:autoreversesCopy autoreverses:duration repeatCount:count];
+    Copy = CGColorCreateCopy(color);
     CGColorRelease(self->_tintColor);
     self->_tintColor = Copy;
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v11 = a3;
+  stopCopy = stop;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     animationStates = self->_animationStates;
-    v6 = [v11 keyPath];
-    v7 = [(NSMutableDictionary *)animationStates objectForKeyedSubscript:v6];
+    keyPath = [stopCopy keyPath];
+    v7 = [(NSMutableDictionary *)animationStates objectForKeyedSubscript:keyPath];
 
-    v8 = [v7 animation];
+    animation = [v7 animation];
 
-    if (v8 == v11)
+    if (animation == stopCopy)
     {
       v9 = self->_animationStates;
-      v10 = [v11 keyPath];
-      [(NSMutableDictionary *)v9 removeObjectForKey:v10];
+      keyPath2 = [stopCopy keyPath];
+      [(NSMutableDictionary *)v9 removeObjectForKey:keyPath2];
     }
   }
 }
@@ -403,16 +403,16 @@ LABEL_16:
   [(TUIGlowEffect *)&v3 dealloc];
 }
 
-- (TUIGlowEffect)initWithLayer:(id)a3
+- (TUIGlowEffect)initWithLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   v11.receiver = self;
   v11.super_class = TUIGlowEffect;
   v6 = [(TUIGlowEffect *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_layer, a3);
+    objc_storeStrong(&v6->_layer, layer);
     v7->_tintColor = CGColorCreateSRGB(0.2, 0.5, 1.0, 0.6);
     v7->_blurRadius = 5.0;
     v7->_pulsing = 1;
@@ -429,36 +429,36 @@ LABEL_16:
   return v7;
 }
 
-+ (BOOL)adjustVisibilityForDarkMode:(BOOL)a3 tintColor:(CGColor *)a4 alpha:(double)a5 outTintColor:(CGColor *)a6 outAlpha:(double *)a7
++ (BOOL)adjustVisibilityForDarkMode:(BOOL)mode tintColor:(CGColor *)color alpha:(double)alpha outTintColor:(CGColor *)tintColor outAlpha:(double *)outAlpha
 {
   components[4] = *MEMORY[0x1E69E9840];
   if (adjustVisibilityForDarkMode_tintColor_alpha_outTintColor_outAlpha__onceToken != -1)
   {
     dispatch_once(&adjustVisibilityForDarkMode_tintColor_alpha_outTintColor_outAlpha__onceToken, &__block_literal_global_7057);
-    if (a3)
+    if (mode)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
     result = 0;
-    *a6 = a4;
-    *a7 = a5;
+    *tintColor = color;
+    *outAlpha = alpha;
     return result;
   }
 
-  if (!a3)
+  if (!mode)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  if (CGColorGetNumberOfComponents(a4) <= 2)
+  if (CGColorGetNumberOfComponents(color) <= 2)
   {
     goto LABEL_5;
   }
 
-  v12 = CGColorGetComponents(a4);
+  v12 = CGColorGetComponents(color);
   *v13.i64 = v12[2];
   v14.f64[0] = 0.0784313725;
   v15 = vcgtq_f64(vabdq_f64(*v12, vextq_s8(*v12, v13, 8uLL)), vdupq_n_s64(0x3FB4141414141414uLL));
@@ -591,7 +591,7 @@ LABEL_3:
     v31 = 0.2;
   }
 
-  v32 = v31 + a5;
+  v32 = v31 + alpha;
   *v30.i64 = *v30.i64 - trunc(*v30.i64);
   v33 = *vbslq_s8(v29, v30, v19).i64;
   v34 = (v33 * 6.0);
@@ -657,8 +657,8 @@ LABEL_49:
   components[3] = 1.0;
   v42 = CGColorCreate(adjustVisibilityForDarkMode_tintColor_alpha_outTintColor_outAlpha__extendedSRGBColorSpace, components);
   CFAutorelease(v42);
-  *a6 = v42;
-  *a7 = v32;
+  *tintColor = v42;
+  *outAlpha = v32;
   return 1;
 }
 

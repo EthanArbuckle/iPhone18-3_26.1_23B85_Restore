@@ -1,14 +1,14 @@
 @interface NoOpUserDefaults
-- (_TtC18CosmeticAssessmentP33_BE684D266D0968A7C25A12883B94DB4416NoOpUserDefaults)initWithSuiteName:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setURL:(id)a3 forKey:(id)a4;
+- (_TtC18CosmeticAssessmentP33_BE684D266D0968A7C25A12883B94DB4416NoOpUserDefaults)initWithSuiteName:(id)name;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setURL:(id)l forKey:(id)key;
 @end
 
 @implementation NoOpUserDefaults
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
     swift_unknownObjectRetain();
     sub_247D20238();
@@ -23,12 +23,12 @@
   sub_247C27100(v4, &unk_27EE63300);
 }
 
-- (void)setURL:(id)a3 forKey:(id)a4
+- (void)setURL:(id)l forKey:(id)key
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE63220);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v10 - v6;
-  if (a3)
+  if (l)
   {
     sub_247D1EDD8();
     v8 = sub_247D1EE08();
@@ -44,18 +44,18 @@
   sub_247C27100(v7, &qword_27EE63220);
 }
 
-- (_TtC18CosmeticAssessmentP33_BE684D266D0968A7C25A12883B94DB4416NoOpUserDefaults)initWithSuiteName:(id)a3
+- (_TtC18CosmeticAssessmentP33_BE684D266D0968A7C25A12883B94DB4416NoOpUserDefaults)initWithSuiteName:(id)name
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     sub_247D1FBE8();
-    a3 = sub_247D1FBB8();
+    name = sub_247D1FBB8();
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = [(NoOpUserDefaults *)&v8 initWithSuiteName:a3];
+  v6 = [(NoOpUserDefaults *)&v8 initWithSuiteName:name];
 
   if (v6)
   {

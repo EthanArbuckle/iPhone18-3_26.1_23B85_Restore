@@ -15,7 +15,7 @@
   v36 = __Block_byref_object_copy__26011;
   v37 = __Block_byref_object_dispose__26012;
   v38 = 0;
-  v5 = [a1 activeTransitionContexts];
+  activeTransitionContexts = [self activeTransitionContexts];
   v27 = MEMORY[0x277D85DD0];
   v28 = 3221225472;
   v29 = __114__HAPCharacteristicValueTransitionState_NaturalLighting__naturalLightingActiveTransitionContextForCharacteristic___block_invoke;
@@ -23,27 +23,27 @@
   v32 = &v33;
   v6 = v4;
   v31 = v6;
-  v7 = [v5 na_firstObjectPassingTest:&v27];
+  v7 = [activeTransitionContexts na_firstObjectPassingTest:&v27];
 
   if (v7)
   {
-    v8 = [v7 timeElapsedSinceStart];
-    v9 = [v8 value];
+    timeElapsedSinceStart = [v7 timeElapsedSinceStart];
+    value = [timeElapsedSinceStart value];
 
-    if (v9)
+    if (value)
     {
-      v10 = [v34[5] startTime];
-      v11 = [v10 value];
+      startTime = [v34[5] startTime];
+      value2 = [startTime value];
 
-      if (v11)
+      if (value2)
       {
         v12 = MEMORY[0x277CBEAA8];
-        [v11 doubleValue];
+        [value2 doubleValue];
         v14 = [v12 dateWithTimeIntervalSinceReferenceDate:v13 / 1000.0];
-        v15 = [v34[5] transitionChecksum];
-        v16 = [v15 value];
+        transitionChecksum = [v34[5] transitionChecksum];
+        value3 = [transitionChecksum value];
 
-        v17 = -[HMDNaturalLightingActiveTransitionContext initWithStartDate:millisecondsElapsedSinceStartDate:transitionChecksum:]([HMDNaturalLightingActiveTransitionContext alloc], "initWithStartDate:millisecondsElapsedSinceStartDate:transitionChecksum:", v14, [v9 unsignedLongLongValue], v16);
+        v17 = -[HMDNaturalLightingActiveTransitionContext initWithStartDate:millisecondsElapsedSinceStartDate:transitionChecksum:]([HMDNaturalLightingActiveTransitionContext alloc], "initWithStartDate:millisecondsElapsedSinceStartDate:transitionChecksum:", v14, [value unsignedLongLongValue], value3);
       }
 
       else
@@ -99,14 +99,14 @@
 - (uint64_t)isNaturalLightingEnabledForCharacteristic:()NaturalLighting
 {
   v4 = a3;
-  v5 = [a1 activeTransitionContexts];
+  activeTransitionContexts = [self activeTransitionContexts];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __100__HAPCharacteristicValueTransitionState_NaturalLighting__isNaturalLightingEnabledForCharacteristic___block_invoke;
   v9[3] = &unk_278671878;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 na_any:v9];
+  v7 = [activeTransitionContexts na_any:v9];
 
   return v7;
 }

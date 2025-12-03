@@ -1,5 +1,5 @@
 @interface MPSGraphExecutableSerializationDescriptor
-+ (void)validateMinimumDeploymentTargetVersion:(optional<MPSGraphOperatingSystemVersion> *)a3 forPlatform:(unint64_t)a4;
++ (void)validateMinimumDeploymentTargetVersion:(optional<MPSGraphOperatingSystemVersion> *)version forPlatform:(unint64_t)platform;
 - (MPSGraphExecutableSerializationDescriptor)init;
 - (NSString)minimumDeploymentTarget;
 - (optional<MPSGraphOperatingSystemVersion>)getUserSetMinimumDeploymentTarget;
@@ -61,33 +61,33 @@ LABEL_9:
 - (void)setMinimumDeploymentTarget:(NSString *)minimumDeploymentTarget
 {
   v7 = minimumDeploymentTarget;
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = [(NSString *)v7 copy];
-  v6 = v4->_minimumDeploymentTarget;
-  v4->_minimumDeploymentTarget = v5;
+  v6 = selfCopy->_minimumDeploymentTarget;
+  selfCopy->_minimumDeploymentTarget = v5;
 
-  v4->_userSetMinimumDeploymentTarget = 1;
-  objc_sync_exit(v4);
+  selfCopy->_userSetMinimumDeploymentTarget = 1;
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)minimumDeploymentTarget
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_minimumDeploymentTarget;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_minimumDeploymentTarget;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (optional<MPSGraphOperatingSystemVersion>)getUserSetMinimumDeploymentTarget
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_userSetMinimumDeploymentTarget)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_userSetMinimumDeploymentTarget)
   {
-    [(MPSGraphExecutableSerializationDescriptor *)v4 getDeploymentTargetAsOSVersion];
+    [(MPSGraphExecutableSerializationDescriptor *)selfCopy getDeploymentTargetAsOSVersion];
     *&retstr->var0.var0 = v6;
     retstr->var0.var1.var2 = v7;
     retstr->var1 = 1;
@@ -99,21 +99,21 @@ LABEL_9:
     retstr->var1 = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return result;
 }
 
-+ (void)validateMinimumDeploymentTargetVersion:(optional<MPSGraphOperatingSystemVersion> *)a3 forPlatform:(unint64_t)a4
++ (void)validateMinimumDeploymentTargetVersion:(optional<MPSGraphOperatingSystemVersion> *)version forPlatform:(unint64_t)platform
 {
-  if (a3->var1)
+  if (version->var1)
   {
-    var0 = a3->var0.var1.var0;
-    var1 = a3->var0.var1.var1;
-    var2 = a3->var0.var1.var2;
-    if (a4 > 1)
+    var0 = version->var0.var1.var0;
+    var1 = version->var0.var1.var1;
+    var2 = version->var0.var1.var2;
+    if (platform > 1)
     {
-      if (a4 == 2)
+      if (platform == 2)
       {
         if (var0 <= 17 && (var0 != 17 || var1 <= 0 && (var1 || var2 < 0)) && MTLReportFailureTypeEnabled())
         {
@@ -122,16 +122,16 @@ LABEL_9:
         }
       }
 
-      else if (a4 == 3 && var0 <= 1 && (var0 != 1 || var1 <= 1 && (var1 != 1 || var2 < 0)) && MTLReportFailureTypeEnabled())
+      else if (platform == 3 && var0 <= 1 && (var0 != 1 || var1 <= 1 && (var1 != 1 || var2 < 0)) && MTLReportFailureTypeEnabled())
       {
 
         goto LABEL_13;
       }
     }
 
-    else if (a4)
+    else if (platform)
     {
-      if (a4 == 1 && var0 <= 17 && (var0 != 17 || var1 <= 0 && (var1 || var2 < 0)) && MTLReportFailureTypeEnabled())
+      if (platform == 1 && var0 <= 17 && (var0 != 17 || var1 <= 0 && (var1 || var2 < 0)) && MTLReportFailureTypeEnabled())
       {
 
 LABEL_13:

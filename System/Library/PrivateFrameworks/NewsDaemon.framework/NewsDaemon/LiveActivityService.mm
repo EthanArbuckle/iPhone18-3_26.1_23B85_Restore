@@ -1,20 +1,20 @@
 @interface LiveActivityService
 - (_TtC5newsd19LiveActivityService)init;
-- (void)cancelScheduledLiveActivityWithId:(NSString *)a3 backgroundTaskID:(NSString *)a4 completionHandler:(id)a5;
-- (void)scheduleLiveActivityWithRequest:(_TtC10NewsDaemon27LiveActivityScheduleRequest *)a3 completionHandler:(id)a4;
+- (void)cancelScheduledLiveActivityWithId:(NSString *)id backgroundTaskID:(NSString *)d completionHandler:(id)handler;
+- (void)scheduleLiveActivityWithRequest:(_TtC10NewsDaemon27LiveActivityScheduleRequest *)request completionHandler:(id)handler;
 @end
 
 @implementation LiveActivityService
 
-- (void)scheduleLiveActivityWithRequest:(_TtC10NewsDaemon27LiveActivityScheduleRequest *)a3 completionHandler:(id)a4
+- (void)scheduleLiveActivityWithRequest:(_TtC10NewsDaemon27LiveActivityScheduleRequest *)request completionHandler:(id)handler
 {
   v7 = sub_100015140(&unk_10007EB50, &qword_10005AB40);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = request;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -29,21 +29,21 @@
   v15[3] = 0;
   v15[4] = &unk_10005A980;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_10004039C(0, 0, v10, &unk_10005A988, v15);
 }
 
-- (void)cancelScheduledLiveActivityWithId:(NSString *)a3 backgroundTaskID:(NSString *)a4 completionHandler:(id)a5
+- (void)cancelScheduledLiveActivityWithId:(NSString *)id backgroundTaskID:(NSString *)d completionHandler:(id)handler
 {
   v9 = sub_100015140(&unk_10007EB50, &qword_10005AB40);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = id;
+  v14[3] = d;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -58,9 +58,9 @@
   v17[3] = 0;
   v17[4] = &unk_10005A958;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  idCopy = id;
+  dCopy = d;
+  selfCopy = self;
   sub_10004039C(0, 0, v12, &unk_10005A960, v17);
 }
 

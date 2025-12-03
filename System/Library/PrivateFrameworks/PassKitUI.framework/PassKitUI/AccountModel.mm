@@ -1,7 +1,7 @@
 @interface AccountModel
 - (_TtC9PassKitUI12AccountModel)init;
 - (void)dealloc;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
 @end
 
 @implementation AccountModel
@@ -17,7 +17,7 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   v6.receiver = self;
@@ -25,11 +25,11 @@
   [(AccountModel *)&v6 dealloc];
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1BD1E1538(*&a4 & 0x101);
+  selfCopy = self;
+  sub_1BD1E1538(*&state & 0x101);
   swift_unknownObjectRelease();
 }
 

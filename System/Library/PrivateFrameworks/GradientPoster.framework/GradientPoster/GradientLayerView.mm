@@ -1,7 +1,7 @@
 @interface GradientLayerView
 + (Class)layerClass;
-- (_TtC14GradientPoster17GradientLayerView)initWithCoder:(id)a3;
-- (_TtC14GradientPoster17GradientLayerView)initWithFrame:(CGRect)a3;
+- (_TtC14GradientPoster17GradientLayerView)initWithCoder:(id)coder;
+- (_TtC14GradientPoster17GradientLayerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation GradientLayerView
@@ -13,20 +13,20 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC14GradientPoster17GradientLayerView)initWithFrame:(CGRect)a3
+- (_TtC14GradientPoster17GradientLayerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for GradientLayerView();
-  v7 = [(GradientLayerView *)&v9 initWithFrame:x, y, width, height];
-  [(GradientLayerView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  return v7;
+  height = [(GradientLayerView *)&v9 initWithFrame:x, y, width, height];
+  [(GradientLayerView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+  return height;
 }
 
-- (_TtC14GradientPoster17GradientLayerView)initWithCoder:(id)a3
+- (_TtC14GradientPoster17GradientLayerView)initWithCoder:(id)coder
 {
   result = sub_25011C478();
   __break(1u);

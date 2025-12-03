@@ -26,9 +26,9 @@
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MCMCommand *)self context];
-  v5 = [v4 userIdentityCache];
-  [v5 flush];
+  context = [(MCMCommand *)self context];
+  userIdentityCache = [context userIdentityCache];
+  [userIdentityCache flush];
 
   v6 = container_log_handle_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -38,8 +38,8 @@
   }
 
   v7 = objc_opt_new();
-  v8 = [(MCMCommand *)self resultPromise];
-  [v8 completeWithResult:v7];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v7];
 
   objc_autoreleasePoolPop(v3);
   v9 = *MEMORY[0x1E69E9840];
@@ -48,12 +48,12 @@
 - (BOOL)preflightClientAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 isAllowedToControlCaches];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  isAllowedToControlCaches = [clientIdentity isAllowedToControlCaches];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToControlCaches;
 }
 
 @end

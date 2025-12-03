@@ -1,101 +1,101 @@
 @interface MRNowPlayingControllerHelper
-- (void)controller:(id)a3 clientPropertiesDidChangeFrom:(id)a4 to:(id)a5;
-- (void)controller:(id)a3 contentItemsDidUpdateWithContentItemChanges:(id)a4;
-- (void)controller:(id)a3 didFailWithError:(id)a4;
-- (void)controller:(id)a3 didLoadArtworkForContentItems:(id)a4;
-- (void)controller:(id)a3 didLoadResponse:(id)a4;
-- (void)controller:(id)a3 playbackQueueDidChangeFrom:(id)a4 to:(id)a5;
-- (void)controller:(id)a3 playbackRateDidChangeFrom:(float)a4 to:(float)a5;
-- (void)controller:(id)a3 playerLastPlayingDateDidChange:(id)a4;
-- (void)controller:(id)a3 playerPathDidChange:(id)a4;
-- (void)controller:(id)a3 supportedCommandsDidChangeFrom:(id)a4 to:(id)a5;
-- (void)controllerWillReloadForInvalidation:(id)a3;
+- (void)controller:(id)controller clientPropertiesDidChangeFrom:(id)from to:(id)to;
+- (void)controller:(id)controller contentItemsDidUpdateWithContentItemChanges:(id)changes;
+- (void)controller:(id)controller didFailWithError:(id)error;
+- (void)controller:(id)controller didLoadArtworkForContentItems:(id)items;
+- (void)controller:(id)controller didLoadResponse:(id)response;
+- (void)controller:(id)controller playbackQueueDidChangeFrom:(id)from to:(id)to;
+- (void)controller:(id)controller playbackRateDidChangeFrom:(float)from to:(float)to;
+- (void)controller:(id)controller playerLastPlayingDateDidChange:(id)change;
+- (void)controller:(id)controller playerPathDidChange:(id)change;
+- (void)controller:(id)controller supportedCommandsDidChangeFrom:(id)from to:(id)to;
+- (void)controllerWillReloadForInvalidation:(id)invalidation;
 @end
 
 @implementation MRNowPlayingControllerHelper
 
-- (void)controller:(id)a3 didLoadResponse:(id)a4
+- (void)controller:(id)controller didLoadResponse:(id)response
 {
   didLoadResponse = self->_didLoadResponse;
   if (didLoadResponse)
   {
-    didLoadResponse[2](didLoadResponse, a4);
+    didLoadResponse[2](didLoadResponse, response);
   }
 }
 
-- (void)controller:(id)a3 playbackRateDidChangeFrom:(float)a4 to:(float)a5
+- (void)controller:(id)controller playbackRateDidChangeFrom:(float)from to:(float)to
 {
   playbackRateDidChange = self->_playbackRateDidChange;
   if (playbackRateDidChange)
   {
-    playbackRateDidChange[2](a5);
+    playbackRateDidChange[2](to);
   }
 }
 
-- (void)controller:(id)a3 playbackQueueDidChangeFrom:(id)a4 to:(id)a5
+- (void)controller:(id)controller playbackQueueDidChangeFrom:(id)from to:(id)to
 {
   playbackQueueDidChange = self->_playbackQueueDidChange;
   if (playbackQueueDidChange)
   {
-    playbackQueueDidChange[2](playbackQueueDidChange, a5);
+    playbackQueueDidChange[2](playbackQueueDidChange, to);
   }
 }
 
-- (void)controller:(id)a3 contentItemsDidUpdateWithContentItemChanges:(id)a4
+- (void)controller:(id)controller contentItemsDidUpdateWithContentItemChanges:(id)changes
 {
   contentItemsDidUpdate = self->_contentItemsDidUpdate;
   if (contentItemsDidUpdate)
   {
-    contentItemsDidUpdate[2](contentItemsDidUpdate, a4);
+    contentItemsDidUpdate[2](contentItemsDidUpdate, changes);
   }
 }
 
-- (void)controller:(id)a3 didLoadArtworkForContentItems:(id)a4
+- (void)controller:(id)controller didLoadArtworkForContentItems:(id)items
 {
   contentItemsDidLoadArtwork = self->_contentItemsDidLoadArtwork;
   if (contentItemsDidLoadArtwork)
   {
-    contentItemsDidLoadArtwork[2](contentItemsDidLoadArtwork, a4);
+    contentItemsDidLoadArtwork[2](contentItemsDidLoadArtwork, items);
   }
 }
 
-- (void)controller:(id)a3 supportedCommandsDidChangeFrom:(id)a4 to:(id)a5
+- (void)controller:(id)controller supportedCommandsDidChangeFrom:(id)from to:(id)to
 {
   supportedCommandsDidChange = self->_supportedCommandsDidChange;
   if (supportedCommandsDidChange)
   {
-    supportedCommandsDidChange[2](supportedCommandsDidChange, a5);
+    supportedCommandsDidChange[2](supportedCommandsDidChange, to);
   }
 }
 
-- (void)controller:(id)a3 playerLastPlayingDateDidChange:(id)a4
+- (void)controller:(id)controller playerLastPlayingDateDidChange:(id)change
 {
   playerLastPlayingDateDidChange = self->_playerLastPlayingDateDidChange;
   if (playerLastPlayingDateDidChange)
   {
-    playerLastPlayingDateDidChange[2](playerLastPlayingDateDidChange, a4);
+    playerLastPlayingDateDidChange[2](playerLastPlayingDateDidChange, change);
   }
 }
 
-- (void)controller:(id)a3 clientPropertiesDidChangeFrom:(id)a4 to:(id)a5
+- (void)controller:(id)controller clientPropertiesDidChangeFrom:(id)from to:(id)to
 {
   clientPropertiesDidChange = self->_clientPropertiesDidChange;
   if (clientPropertiesDidChange)
   {
-    clientPropertiesDidChange[2](clientPropertiesDidChange, a5);
+    clientPropertiesDidChange[2](clientPropertiesDidChange, to);
   }
 }
 
-- (void)controller:(id)a3 playerPathDidChange:(id)a4
+- (void)controller:(id)controller playerPathDidChange:(id)change
 {
   playerPathDidChange = self->_playerPathDidChange;
   if (playerPathDidChange)
   {
-    playerPathDidChange[2](playerPathDidChange, a4);
+    playerPathDidChange[2](playerPathDidChange, change);
   }
 }
 
-- (void)controllerWillReloadForInvalidation:(id)a3
+- (void)controllerWillReloadForInvalidation:(id)invalidation
 {
   didInvalidate = self->_didInvalidate;
   if (didInvalidate)
@@ -104,12 +104,12 @@
   }
 }
 
-- (void)controller:(id)a3 didFailWithError:(id)a4
+- (void)controller:(id)controller didFailWithError:(id)error
 {
   didFailWithError = self->_didFailWithError;
   if (didFailWithError)
   {
-    didFailWithError[2](didFailWithError, a4);
+    didFailWithError[2](didFailWithError, error);
   }
 }
 

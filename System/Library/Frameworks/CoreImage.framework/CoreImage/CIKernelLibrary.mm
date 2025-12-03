@@ -1,38 +1,38 @@
 @interface CIKernelLibrary
 + (id)cache;
-+ (id)cachedLibraryWithURL:(id)a3 error:(id *)a4;
-+ (id)coreImageDylibWithDevice:(id)a3;
-+ (id)internalBinaryArchiveWithName:(id)a3 device:(id)a4;
-+ (id)internalLibraryWithName:(id)a3 device:(id)a4;
-+ (id)libraryWithData:(id)a3 error:(id *)a4;
-+ (id)libraryWithSource:(id)a3 error:(id *)a4;
-+ (id)libraryWithURL:(id)a3 error:(id *)a4;
++ (id)cachedLibraryWithURL:(id)l error:(id *)error;
++ (id)coreImageDylibWithDevice:(id)device;
++ (id)internalBinaryArchiveWithName:(id)name device:(id)device;
++ (id)internalLibraryWithName:(id)name device:(id)device;
++ (id)libraryWithData:(id)data error:(id *)error;
++ (id)libraryWithSource:(id)source error:(id *)error;
++ (id)libraryWithURL:(id)l error:(id *)error;
 + (void)clearCache;
-- (CIKernelLibrary)initWithData:(id)a3 error:(id *)a4;
-- (CIKernelLibrary)initWithSource:(id)a3 error:(id *)a4;
-- (CIKernelLibrary)initWithURL:(id)a3 error:(id *)a4;
+- (CIKernelLibrary)initWithData:(id)data error:(id *)error;
+- (CIKernelLibrary)initWithSource:(id)source error:(id *)error;
+- (CIKernelLibrary)initWithURL:(id)l error:(id *)error;
 - (id)functionNames;
-- (id)functionWithName:(id)a3;
-- (id)newFunctionWithName:(id)a3;
-- (id)newSpecializedFunctionWithDescriptor:(id)a3;
-- (id)newSpecializedFunctionWithName:(id)a3 constants:(void *)a4;
-- (id)refelectionWithFunctionName:(id)a3;
+- (id)functionWithName:(id)name;
+- (id)newFunctionWithName:(id)name;
+- (id)newSpecializedFunctionWithDescriptor:(id)descriptor;
+- (id)newSpecializedFunctionWithName:(id)name constants:(void *)constants;
+- (id)refelectionWithFunctionName:(id)name;
 - (unint64_t)functionCount;
 - (void)dealloc;
 @end
 
 @implementation CIKernelLibrary
 
-+ (id)libraryWithData:(id)a3 error:(id *)a4
++ (id)libraryWithData:(id)data error:(id *)error
 {
-  v4 = [[a1 alloc] initWithData:a3 error:a4];
+  v4 = [[self alloc] initWithData:data error:error];
 
   return v4;
 }
 
-+ (id)libraryWithURL:(id)a3 error:(id *)a4
++ (id)libraryWithURL:(id)l error:(id *)error
 {
-  v4 = [[a1 alloc] initWithURL:a3 error:a4];
+  v4 = [[self alloc] initWithURL:l error:error];
 
   return v4;
 }
@@ -56,20 +56,20 @@ id __24__CIKernelLibrary_cache__block_invoke()
 
 + (void)clearCache
 {
-  v2 = [a1 cache];
-  objc_sync_enter(v2);
-  [v2 removeAllObjects];
+  cache = [self cache];
+  objc_sync_enter(cache);
+  [cache removeAllObjects];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(cache);
 }
 
-+ (id)cachedLibraryWithURL:(id)a3 error:(id *)a4
++ (id)cachedLibraryWithURL:(id)l error:(id *)error
 {
-  v7 = [a1 cache];
-  v8 = [a3 absoluteString];
-  objc_sync_enter(v7);
-  v9 = [v7 objectForKey:v8];
-  v10 = v9;
+  cache = [self cache];
+  absoluteString = [l absoluteString];
+  objc_sync_enter(cache);
+  v9 = [cache objectForKey:absoluteString];
+  null = v9;
   if (v9)
   {
     v11 = v9;
@@ -78,27 +78,27 @@ id __24__CIKernelLibrary_cache__block_invoke()
   else
   {
     v15 = 0;
-    v12 = [[a1 alloc] initWithURL:a3 error:&v15];
+    v12 = [[self alloc] initWithURL:l error:&v15];
     if (v12)
     {
-      v10 = v12;
+      null = v12;
     }
 
     else
     {
-      v10 = v15;
+      null = v15;
     }
 
-    if (!v10)
+    if (!null)
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    [v7 setObject:v10 forKey:v8];
+    [cache setObject:null forKey:absoluteString];
   }
 
-  objc_sync_exit(v7);
-  if (v10 == [MEMORY[0x1E695DFB0] null])
+  objc_sync_exit(cache);
+  if (null == [MEMORY[0x1E695DFB0] null])
   {
     return 0;
   }
@@ -106,39 +106,39 @@ id __24__CIKernelLibrary_cache__block_invoke()
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v10;
+    return null;
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   result = 0;
-  if (a4)
+  if (error)
   {
     if (isKindOfClass)
     {
       result = 0;
-      *a4 = v10;
+      *error = null;
     }
   }
 
   return result;
 }
 
-+ (id)libraryWithSource:(id)a3 error:(id *)a4
++ (id)libraryWithSource:(id)source error:(id *)error
 {
-  v4 = [[a1 alloc] initWithSource:a3 error:a4];
+  v4 = [[self alloc] initWithSource:source error:error];
 
   return v4;
 }
 
-- (CIKernelLibrary)initWithSource:(id)a3 error:(id *)a4
+- (CIKernelLibrary)initWithSource:(id)source error:(id *)error
 {
   v31[2] = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = CIKernelLibrary;
   v6 = [(CIKernelLibrary *)&v22 init];
   v6->_harvest_for_this_library = 1;
-  v6->_mtl_source = a3;
+  v6->_mtl_source = source;
   v7 = CIMetalCopyDefaultDevice();
   if (CIMetalDeviceIsSupported(v7, v8))
   {
@@ -153,7 +153,7 @@ id __24__CIKernelLibrary_cache__block_invoke()
       [CIKernelLibrary initWithSource:error:];
     }
 
-    v10 = [objc_msgSend(MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\\\\\n" options:0 error:{0), "stringByReplacingMatchesInString:options:range:withTemplate:", a3, 0, 0, objc_msgSend(a3, "length"), &stru_1F1040378}];
+    v10 = [objc_msgSend(MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\\\\\n" options:0 error:{0), "stringByReplacingMatchesInString:options:range:withTemplate:", source, 0, 0, objc_msgSend(source, "length"), &stru_1F1040378}];
     v11 = [objc_msgSend(MEMORY[0x1E696AE70] regularExpressionWithPattern:@"#[ \\t]*(include|import)[ \\t]+(<|\" options:0 error:{0), "stringByReplacingMatchesInString:options:range:withTemplate:", v10, 0, 0, objc_msgSend(v10, "length""), &stru_1F1040378}];
     v12 = [v7 newLibraryWithSource:objc_msgSend(newMTLLibraryWithSource(objc_object  {objcproto9MTLDevice}* options:NSString * error:{NSError **)::_runtime_header, "stringByAppendingString:", v11), v9, &v23}];
 
@@ -193,7 +193,7 @@ id __24__CIKernelLibrary_cache__block_invoke()
     }
 
     v6->_library = 0;
-    if (a4 && v18)
+    if (error && v18)
     {
       v20 = *v15;
       v25[0] = @"CINonLocalizedDescriptionKey";
@@ -205,7 +205,7 @@ id __24__CIKernelLibrary_cache__block_invoke()
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_19;
       }
@@ -216,7 +216,7 @@ id __24__CIKernelLibrary_cache__block_invoke()
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -224,13 +224,13 @@ id __24__CIKernelLibrary_cache__block_invoke()
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CIKernelLibrary" code:1 userInfo:&unk_1F1082820];
   }
 
-  *a4 = v13;
+  *error = v13;
 LABEL_19:
 
   if (v6->_library)
   {
     XXH64_reset(v24, 0);
-    CI::XXHashHelper::addstr(v24, [a3 UTF8String]);
+    CI::XXHashHelper::addstr(v24, [source UTF8String]);
     v6->_digest = XXH64_digest(v24);
   }
 
@@ -243,22 +243,22 @@ LABEL_19:
   return v6;
 }
 
-- (CIKernelLibrary)initWithData:(id)a3 error:(id *)a4
+- (CIKernelLibrary)initWithData:(id)data error:(id *)error
 {
   v22[2] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = CIKernelLibrary;
   v6 = [(CIKernelLibrary *)&v20 init];
   v6->_harvest_for_this_library = 1;
-  v7 = a3;
-  v8 = [a3 bytes];
-  v9 = [a3 length];
+  dataCopy = data;
+  bytes = [data bytes];
+  v9 = [data length];
   destructor[0] = MEMORY[0x1E69E9820];
   destructor[1] = 3221225472;
   destructor[2] = __38__CIKernelLibrary_initWithData_error___block_invoke;
   destructor[3] = &unk_1E75C2AA0;
-  destructor[4] = a3;
-  v6->_data = dispatch_data_create(v8, v9, 0, destructor);
+  destructor[4] = data;
+  v6->_data = dispatch_data_create(bytes, v9, 0, destructor);
   v10 = CIMetalCopyDefaultDevice();
   if (CIMetalDeviceIsSupported(v10, v11))
   {
@@ -271,7 +271,7 @@ LABEL_19:
       goto LABEL_12;
     }
 
-    if (a4 && v18[0].i64[0])
+    if (error && v18[0].i64[0])
     {
       v14 = *MEMORY[0x1E696AA08];
       v21[0] = @"CINonLocalizedDescriptionKey";
@@ -283,7 +283,7 @@ LABEL_19:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -294,7 +294,7 @@ LABEL_19:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -302,17 +302,17 @@ LABEL_19:
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CIKernelLibrary" code:1 userInfo:&unk_1F1082870];
   }
 
-  *a4 = v13;
+  *error = v13;
 LABEL_12:
 
   if (v6->_library)
   {
     XXH64_reset(v18, 0);
-    v15 = [a3 bytes];
-    v16 = [a3 length];
-    if (v15 && v16)
+    bytes2 = [data bytes];
+    v16 = [data length];
+    if (bytes2 && v16)
     {
-      XXH64_update(v18, v15, v16);
+      XXH64_update(v18, bytes2, v16);
     }
 
     v6->_digest = XXH64_digest(v18);
@@ -327,19 +327,19 @@ LABEL_12:
   return v6;
 }
 
-- (CIKernelLibrary)initWithURL:(id)a3 error:(id *)a4
+- (CIKernelLibrary)initWithURL:(id)l error:(id *)error
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = CIKernelLibrary;
   v6 = [(CIKernelLibrary *)&v15 init];
   v6->_harvest_for_this_library = 1;
-  v6->_url = a3;
+  v6->_url = l;
   v7 = CIMetalCopyDefaultDevice();
   if (CIMetalDeviceIsSupported(v7, v8))
   {
     v14[0].i64[0] = 0;
-    v9 = [v7 newLibraryWithURL:a3 error:v14];
+    v9 = [v7 newLibraryWithURL:l error:v14];
     v6->_library = v9;
     if (v9)
     {
@@ -347,7 +347,7 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    if (a4 && v14[0].i64[0])
+    if (error && v14[0].i64[0])
     {
       v11 = *MEMORY[0x1E696AA08];
       v16[0] = @"CINonLocalizedDescriptionKey";
@@ -359,7 +359,7 @@ LABEL_12:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -370,7 +370,7 @@ LABEL_12:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -378,13 +378,13 @@ LABEL_12:
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CIKernelLibrary" code:1 userInfo:&unk_1F10828C0];
   }
 
-  *a4 = v10;
+  *error = v10;
 LABEL_12:
 
   if (v6->_library)
   {
     XXH64_reset(v14, 0);
-    CI::XXHashHelper::add(v14, [a3 absoluteString]);
+    CI::XXHashHelper::add(v14, [l absoluteString]);
     v6->_digest = XXH64_digest(v14);
     if (CI_HARVESTING_SPECIFIC_LIBRARY_LIST())
     {
@@ -443,10 +443,10 @@ LABEL_12:
 
 - (id)functionNames
 {
-  v3 = [(MTLLibrary *)self->_library externFunctionNames];
-  if ([v3 count])
+  externFunctionNames = [(MTLLibrary *)self->_library externFunctionNames];
+  if ([externFunctionNames count])
   {
-    return v3;
+    return externFunctionNames;
   }
 
   library = self->_library;
@@ -454,7 +454,7 @@ LABEL_12:
   return [(MTLLibrary *)library functionNames];
 }
 
-- (id)refelectionWithFunctionName:(id)a3
+- (id)refelectionWithFunctionName:(id)name
 {
   v5 = NSSelectorFromString(&cfstr_Reflectionforf.isa);
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -464,44 +464,44 @@ LABEL_12:
 
   library = self->_library;
 
-  return [(MTLLibrary *)library performSelector:v5 withObject:a3];
+  return [(MTLLibrary *)library performSelector:v5 withObject:name];
 }
 
-- (id)functionWithName:(id)a3
+- (id)functionWithName:(id)name
 {
   v5 = [(NSSet *)self->_extern_function_names containsObject:?];
   library = self->_library;
   if (v5)
   {
-    v7 = [(MTLLibrary *)library newExternFunctionWithName:a3];
+    v7 = [(MTLLibrary *)library newExternFunctionWithName:name];
   }
 
   else
   {
-    v7 = [(MTLLibrary *)library newFunctionWithName:a3];
+    v7 = [(MTLLibrary *)library newFunctionWithName:name];
   }
 
   return v7;
 }
 
-- (id)newFunctionWithName:(id)a3
+- (id)newFunctionWithName:(id)name
 {
   v5 = [(NSSet *)self->_extern_function_names containsObject:?];
   library = self->_library;
   if (v5)
   {
 
-    return [(MTLLibrary *)library newExternFunctionWithName:a3];
+    return [(MTLLibrary *)library newExternFunctionWithName:name];
   }
 
   else
   {
 
-    return [(MTLLibrary *)library newFunctionWithName:a3];
+    return [(MTLLibrary *)library newFunctionWithName:name];
   }
 }
 
-- (id)newSpecializedFunctionWithDescriptor:(id)a3
+- (id)newSpecializedFunctionWithDescriptor:(id)descriptor
 {
   v25 = *MEMORY[0x1E69E9840];
   v19 = 0;
@@ -517,7 +517,7 @@ LABEL_12:
     *&block[8] = 3221225472;
     *&block[16] = ___ZL26isHarvestingForThisProcessv_block_invoke;
     v21 = &__block_descriptor_40_e5_v8__0l;
-    v22 = v5;
+    descriptorCopy = v5;
     if (isHarvestingForThisProcess(void)::onceToken != -1)
     {
       dispatch_once(&isHarvestingForThisProcess(void)::onceToken, block);
@@ -540,7 +540,7 @@ LABEL_8:
       *&block[8] = 3221225472;
       *&block[16] = ___ZL37addSpecializedFunctionToBinaryArchiveP21MTLFunctionDescriptorPU21objcproto10MTLLibrary11objc_object_block_invoke;
       v21 = &unk_1E75C3640;
-      v22 = a3;
+      descriptorCopy = descriptor;
       v23 = v10;
       v24 = library;
       dispatch_sync(v11, block);
@@ -549,9 +549,9 @@ LABEL_8:
 
   if ((CI_LOG_BIN_ARCHIVE_MISS() & 8) != 0)
   {
-    [a3 setOptions:{4, 0}];
-    v12 = [(MTLLibrary *)self->_library newFunctionWithDescriptor:a3 error:&v18];
-    [a3 setOptions:0];
+    [descriptor setOptions:{4, 0}];
+    v12 = [(MTLLibrary *)self->_library newFunctionWithDescriptor:descriptor error:&v18];
+    [descriptor setOptions:0];
     if (v12)
     {
       return v12;
@@ -560,9 +560,9 @@ LABEL_8:
     v13 = ci_logger_compile();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [a3 name];
+      name = [descriptor name];
       *block = 138543362;
-      *&block[4] = v14;
+      *&block[4] = name;
       _os_log_impl(&dword_19CC36000, v13, OS_LOG_TYPE_INFO, "Failed finding %{public}@ stitchable function in the archive", block, 0xCu);
     }
 
@@ -572,15 +572,15 @@ LABEL_8:
     }
   }
 
-  v12 = [(MTLLibrary *)self->_library newFunctionWithDescriptor:a3 error:&v19];
+  v12 = [(MTLLibrary *)self->_library newFunctionWithDescriptor:descriptor error:&v19];
   if (v19)
   {
     v15 = ci_logger_compile();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [a3 name];
+      name2 = [descriptor name];
       *block = 138543618;
-      *&block[4] = v16;
+      *&block[4] = name2;
       *&block[12] = 2114;
       *&block[14] = v19;
       _os_log_impl(&dword_19CC36000, v15, OS_LOG_TYPE_INFO, "Failed creating %{public}@ function from library %{public}@", block, 0x16u);
@@ -590,11 +590,11 @@ LABEL_8:
   return v12;
 }
 
-- (id)newSpecializedFunctionWithName:(id)a3 constants:(void *)a4
+- (id)newSpecializedFunctionWithName:(id)name constants:(void *)constants
 {
   v10 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  v4 = [(MTLLibrary *)self->_library newFunctionWithName:a3 constantValues:a4 error:&v7];
+  v4 = [(MTLLibrary *)self->_library newFunctionWithName:name constantValues:constants error:&v7];
   if (v7)
   {
     v5 = ci_logger_compile();
@@ -609,28 +609,28 @@ LABEL_8:
   return v4;
 }
 
-+ (id)internalLibraryWithName:(id)a3 device:(id)a4
++ (id)internalLibraryWithName:(id)name device:(id)device
 {
   v19 = *MEMORY[0x1E69E9840];
   v12 = 0;
-  v6 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "URLForResource:withExtension:", a3, @"metallib"}];
+  v6 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "URLForResource:withExtension:", name, @"metallib"}];
   if (!v6)
   {
     return 0;
   }
 
   v7 = v6;
-  v8 = [a4 newLibraryWithURL:v6 error:&v12];
+  v8 = [device newLibraryWithURL:v6 error:&v12];
   if (v12)
   {
     v9 = ci_logger_compile();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v7 path];
+      path = [v7 path];
       *buf = 138543874;
-      v14 = a3;
+      nameCopy = name;
       v15 = 2114;
-      v16 = v10;
+      v16 = path;
       v17 = 2114;
       v18 = v12;
       _os_log_impl(&dword_19CC36000, v9, OS_LOG_TYPE_INFO, "Failed loading internal library: %{public}@ from %{public}@: %{public}@\n", buf, 0x20u);
@@ -640,16 +640,16 @@ LABEL_8:
   return v8;
 }
 
-+ (id)coreImageDylibWithDevice:(id)a3
++ (id)coreImageDylibWithDevice:(id)device
 {
-  if (![a3 supportsDynamicLibraries])
+  if (![device supportsDynamicLibraries])
   {
     return 0;
   }
 
   v5 = objc_opt_new();
-  v6 = [v5 temporaryDirectory];
-  v7 = [v6 URLByAppendingPathComponent:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"coreimage_%@", objc_msgSend(a3, "name"))}];
+  temporaryDirectory = [v5 temporaryDirectory];
+  v7 = [temporaryDirectory URLByAppendingPathComponent:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"coreimage_%@", objc_msgSend(device, "name"))}];
   if (+[CIKernelLibrary(Internal) coreImageDylibWithDevice:]::once_token != -1)
   {
     +[CIKernelLibrary(Internal) coreImageDylibWithDevice:];
@@ -667,9 +667,9 @@ LABEL_8:
   block[3] = &unk_1E75C6168;
   block[4] = v5;
   block[5] = v7;
-  block[7] = a1;
+  block[7] = self;
   block[8] = &v11;
-  block[6] = a3;
+  block[6] = device;
   dispatch_sync(+[CIKernelLibrary(Internal) coreImageDylibWithDevice:]::q, block);
 
   v8 = v12[5];
@@ -739,15 +739,15 @@ void __54__CIKernelLibrary_Internal__coreImageDylibWithDevice___block_invoke_102
   }
 }
 
-+ (id)internalBinaryArchiveWithName:(id)a3 device:(id)a4
++ (id)internalBinaryArchiveWithName:(id)name device:(id)device
 {
   v11 = 0;
-  v5 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "URLForResource:withExtension:", a3, @"metallib"}];
+  v5 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "URLForResource:withExtension:", name, @"metallib"}];
   v6 = objc_opt_new();
   [v6 setUrl:v5];
-  if (v5 && [MEMORY[0x1E69741F0] archiveTypeAtURL:v5 device:a4 error:&v11] == 2)
+  if (v5 && [MEMORY[0x1E69741F0] archiveTypeAtURL:v5 device:device error:&v11] == 2)
   {
-    v7 = [a4 newBinaryArchiveWithDescriptor:v6 error:&v11];
+    v7 = [device newBinaryArchiveWithDescriptor:v6 error:&v11];
     if (v11)
     {
       v8 = ci_logger_compile();

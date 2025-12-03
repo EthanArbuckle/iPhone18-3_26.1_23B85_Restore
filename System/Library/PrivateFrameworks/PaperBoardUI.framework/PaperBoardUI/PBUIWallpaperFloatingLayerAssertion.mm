@@ -1,11 +1,11 @@
 @interface PBUIWallpaperFloatingLayerAssertion
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initWithContainerView:(void *)a3 forReason:(void *)a4 invalidationBlock:;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initWithContainerView:(void *)view forReason:(void *)reason invalidationBlock:;
 - (id)succinctDescription;
 - (uint64_t)containerView;
 - (void)dealloc;
-- (void)invalidateWithAnimationFactory:(id)a3;
+- (void)invalidateWithAnimationFactory:(id)factory;
 @end
 
 @implementation PBUIWallpaperFloatingLayerAssertion
@@ -40,9 +40,9 @@ void __89__PBUIWallpaperFloatingLayerAssertion_initWithContainerView_forReason_i
   BSDispatchMain();
 }
 
-- (void)invalidateWithAnimationFactory:(id)a3
+- (void)invalidateWithAnimationFactory:(id)factory
 {
-  v4 = [a3 copy];
+  v4 = [factory copy];
   invalidationAnimationFactory = self->_invalidationAnimationFactory;
   self->_invalidationAnimationFactory = v4;
 
@@ -61,40 +61,40 @@ void __89__PBUIWallpaperFloatingLayerAssertion_initWithContainerView_forReason_i
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIWallpaperFloatingLayerAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIWallpaperFloatingLayerAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIWallpaperFloatingLayerAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIWallpaperFloatingLayerAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(PBUIWallpaperFloatingLayerAssertion *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_containerView withName:@"ContainerView"];
+  succinctDescriptionBuilder = [(PBUIWallpaperFloatingLayerAssertion *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_containerView withName:@"ContainerView"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (id)initWithContainerView:(void *)a3 forReason:(void *)a4 invalidationBlock:
+- (id)initWithContainerView:(void *)view forReason:(void *)reason invalidationBlock:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (a1)
+  viewCopy = view;
+  reasonCopy = reason;
+  v11 = reasonCopy;
+  if (self)
   {
-    if (!v10)
+    if (!reasonCopy)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
-      [v17 handleFailureInMethod:sel_initWithContainerView_forReason_invalidationBlock_ object:a1 file:@"PBUIWallpaperFloatingLayerAssertion.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"invalidationBlock"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithContainerView_forReason_invalidationBlock_ object:self file:@"PBUIWallpaperFloatingLayerAssertion.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"invalidationBlock"}];
     }
 
     v19[0] = MEMORY[0x277D85DD0];
@@ -103,9 +103,9 @@ void __89__PBUIWallpaperFloatingLayerAssertion_initWithContainerView_forReason_i
     v19[3] = &unk_278363A00;
     v20 = v11;
     v12 = MEMORY[0x223D62EE0](v19);
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = PBUIWallpaperFloatingLayerAssertion;
-    v13 = objc_msgSendSuper2(&v18, sel_initWithIdentifier_forReason_invalidationBlock_, @"WallpaperFloatingLayer", v9, v12);
+    v13 = objc_msgSendSuper2(&v18, sel_initWithIdentifier_forReason_invalidationBlock_, @"WallpaperFloatingLayer", viewCopy, v12);
     v14 = v13;
     if (v13)
     {

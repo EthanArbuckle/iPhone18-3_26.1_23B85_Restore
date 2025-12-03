@@ -3,7 +3,7 @@
 - (id)allYValues;
 - (id)maxYValue;
 - (id)minYValue;
-- (id)yValueForKey:(id)a3;
+- (id)yValueForKey:(id)key;
 @end
 
 @implementation BalanceChartPoint
@@ -22,10 +22,10 @@
   return result;
 }
 
-- (id)yValueForKey:(id)a3
+- (id)yValueForKey:(id)key
 {
   sub_1C3D20104();
-  v4 = self;
+  selfCopy = self;
   sub_1C3C4F898(v12);
 
   v5 = v13;
@@ -51,7 +51,7 @@
 
 - (id)allYValues
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C3C4FBC8();
 
   v3 = sub_1C3D202A4();

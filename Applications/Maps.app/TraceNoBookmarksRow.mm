@@ -1,20 +1,20 @@
 @interface TraceNoBookmarksRow
-- (void)configureCell:(id)a3;
+- (void)configureCell:(id)cell;
 @end
 
 @implementation TraceNoBookmarksRow
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
   v6.receiver = self;
   v6.super_class = TraceNoBookmarksRow;
-  v3 = a3;
-  [(TraceBookmarkRow *)&v6 configureCell:v3];
+  cellCopy = cell;
+  [(TraceBookmarkRow *)&v6 configureCell:cellCopy];
   v4 = [UIColor blueColor:v6.receiver];
-  v5 = [v3 textLabel];
-  [v5 setTextColor:v4];
+  textLabel = [cellCopy textLabel];
+  [textLabel setTextColor:v4];
 
-  [v3 setUserInteractionEnabled:0];
+  [cellCopy setUserInteractionEnabled:0];
 }
 
 @end

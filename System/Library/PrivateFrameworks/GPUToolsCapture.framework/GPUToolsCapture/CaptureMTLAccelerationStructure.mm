@@ -1,17 +1,17 @@
 @interface CaptureMTLAccelerationStructure
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasResource:(id)a3;
-- (CaptureMTLAccelerationStructure)initWithBaseObject:(id)a3 captureDevice:(id)a4 captureBuffer:(id)a5;
-- (CaptureMTLAccelerationStructure)initWithBaseObject:(id)a3 captureHeap:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasResource:(id)resource;
+- (CaptureMTLAccelerationStructure)initWithBaseObject:(id)object captureDevice:(id)device captureBuffer:(id)buffer;
+- (CaptureMTLAccelerationStructure)initWithBaseObject:(id)object captureHeap:(id)heap;
 - (MTLBuffer)buffer;
 - (NSString)description;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (unint64_t)streamReference;
 - (void)dealloc;
 - (void)makeAliasable;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 - (void)touch;
 - (void)waitUntilComplete;
 @end
@@ -45,10 +45,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLAccelerationStructure *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLAccelerationStructure *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -63,14 +63,14 @@
   *(v14 + 15) |= 8u;
 }
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  v6 = [(MTLAccelerationStructureSPI *)self->_baseObject setPurgeableState:a3];
+  v6 = [(MTLAccelerationStructureSPI *)self->_baseObject setPurgeableState:state];
   v7 = v18;
   *(v18 + 8) = -15650;
   v8 = BYTE9(v19);
@@ -90,10 +90,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLAccelerationStructure *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLAccelerationStructure *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -103,7 +103,7 @@
 
   *v9 = var0;
   *(v9 + 1) = v6;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = state;
   s();
   *v14 = v15;
   *(v14 + 8) = BYTE8(v19);
@@ -144,10 +144,10 @@
     }
 
     *(v6 + 13) = v7;
-    v11 = [(CaptureMTLAccelerationStructure *)self traceStream];
-    if (v11)
+    traceStream = [(CaptureMTLAccelerationStructure *)self traceStream];
+    if (traceStream)
     {
-      var0 = v11->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -163,72 +163,72 @@
   }
 }
 
-- (BOOL)doesAliasResource:(id)a3
+- (BOOL)doesAliasResource:(id)resource
 {
   baseObject = self->_baseObject;
-  v4 = [a3 baseObject];
-  LOBYTE(baseObject) = [(MTLAccelerationStructureSPI *)baseObject doesAliasResource:v4];
+  baseObject = [resource baseObject];
+  LOBYTE(baseObject) = [(MTLAccelerationStructureSPI *)baseObject doesAliasResource:baseObject];
 
   return baseObject;
 }
 
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count
 {
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4);
+  __chkstk_darwin(self, 8 * count);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, v7);
-  if (a4)
+  if (count)
   {
     v9 = v8;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
+      v11 = *resources++;
       *v9 = [v11 baseObject];
       v9 += 8;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
-  return [(MTLAccelerationStructureSPI *)baseObject doesAliasAnyResources:v8 count:a4];
+  return [(MTLAccelerationStructureSPI *)baseObject doesAliasAnyResources:v8 count:count];
 }
 
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count
 {
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4);
+  __chkstk_darwin(self, 8 * count);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, v7);
-  if (a4)
+  if (count)
   {
     v9 = v8;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
+      v11 = *resources++;
       *v9 = [v11 baseObject];
       v9 += 8;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
-  return [(MTLAccelerationStructureSPI *)baseObject doesAliasAllResources:v8 count:a4];
+  return [(MTLAccelerationStructureSPI *)baseObject doesAliasAllResources:v8 count:count];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLAccelerationStructureSPI *)self->_baseObject setLabel:v4];
+  [(MTLAccelerationStructureSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -15661;
   v7 = BYTE9(v20);
@@ -248,10 +248,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLAccelerationStructure *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLAccelerationStructure *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -259,16 +259,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -277,13 +277,13 @@
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLAccelerationStructureSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLAccelerationStructureSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -391,10 +391,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLAccelerationStructure *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLAccelerationStructure *)self traceStream];
+  if (traceStream)
   {
-    v17 = v16->var0;
+    v17 = traceStream->var0;
   }
 
   else
@@ -425,23 +425,23 @@
   return buffer;
 }
 
-- (CaptureMTLAccelerationStructure)initWithBaseObject:(id)a3 captureHeap:(id)a4
+- (CaptureMTLAccelerationStructure)initWithBaseObject:(id)object captureHeap:(id)heap
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  heapCopy = heap;
   v21.receiver = self;
   v21.super_class = CaptureMTLAccelerationStructure;
   v9 = [(CaptureMTLAccelerationStructure *)&v21 init];
   if (v9)
   {
-    v10 = [v8 device];
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v9->_captureHeap, a4);
-    objc_storeStrong(&v9->_captureDevice, v10);
-    v11 = [v8 traceContext];
-    v9->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v9->_traceStream = GTTraceContext_openStream(v11, v12, v9);
+    device = [heapCopy device];
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v9->_captureHeap, heap);
+    objc_storeStrong(&v9->_captureDevice, device);
+    traceContext = [heapCopy traceContext];
+    v9->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v9->_traceStream = GTTraceContext_openStream(traceContext, v12, v9);
 
     traceStream = v9->_traceStream;
     if (traceStream)
@@ -454,11 +454,11 @@
       v14 = 0;
     }
 
-    RegisterAccelerationStructure(v9, v14, [v7 gpuResourceID]);
-    v15 = [(MTLAccelerationStructureSPI *)v9->_baseObject buffer];
-    if (v15)
+    RegisterAccelerationStructure(v9, v14, [objectCopy gpuResourceID]);
+    buffer = [(MTLAccelerationStructureSPI *)v9->_baseObject buffer];
+    if (buffer)
     {
-      v16 = [[CaptureMTLBuffer alloc] initWithBaseObject:v15 captureHeap:v8];
+      v16 = [[CaptureMTLBuffer alloc] initWithBaseObject:buffer captureHeap:heapCopy];
       buffer = v9->_buffer;
       v9->_buffer = v16;
     }
@@ -474,26 +474,26 @@
   return v9;
 }
 
-- (CaptureMTLAccelerationStructure)initWithBaseObject:(id)a3 captureDevice:(id)a4 captureBuffer:(id)a5
+- (CaptureMTLAccelerationStructure)initWithBaseObject:(id)object captureDevice:(id)device captureBuffer:(id)buffer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  deviceCopy = device;
+  bufferCopy = buffer;
   v46.receiver = self;
   v46.super_class = CaptureMTLAccelerationStructure;
   v12 = [(CaptureMTLAccelerationStructure *)&v46 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_baseObject, a3);
-    objc_storeStrong(&v13->_captureDevice, a4);
+    objc_storeStrong(&v12->_baseObject, object);
+    objc_storeStrong(&v13->_captureDevice, device);
     captureHeap = v13->_captureHeap;
     v13->_captureHeap = 0;
 
-    v15 = [v10 traceContext];
-    v13->_traceContext = v15;
-    v16 = DEVICEOBJECT(v9);
-    v13->_traceStream = GTTraceContext_openStream(v15, v16, v13);
+    traceContext = [deviceCopy traceContext];
+    v13->_traceContext = traceContext;
+    v16 = DEVICEOBJECT(objectCopy);
+    v13->_traceStream = GTTraceContext_openStream(traceContext, v16, v13);
 
     traceStream = v13->_traceStream;
     if (traceStream)
@@ -506,10 +506,10 @@
       v18 = 0;
     }
 
-    RegisterAccelerationStructure(v13, v18, [v9 gpuResourceID]);
-    if (v11)
+    RegisterAccelerationStructure(v13, v18, [objectCopy gpuResourceID]);
+    if (bufferCopy)
     {
-      v19 = v11;
+      v19 = bufferCopy;
       buffer = v13->_buffer;
       v13->_buffer = v19;
     }
@@ -519,7 +519,7 @@
       buffer = [(MTLAccelerationStructureSPI *)v13->_baseObject buffer];
       if (buffer)
       {
-        v24 = [[CaptureMTLBuffer alloc] initWithBaseObject:buffer captureDevice:v10];
+        v24 = [[CaptureMTLBuffer alloc] initWithBaseObject:buffer captureDevice:deviceCopy];
         v25 = v13->_buffer;
         v13->_buffer = v24;
 
@@ -562,10 +562,10 @@
 
           *(v31 + 13) = v32;
           SaveMTLBufferInfo(&v43, v13->_buffer);
-          v36 = [(CaptureMTLDevice *)v13->_captureDevice traceStream];
-          if (v36)
+          traceStream = [(CaptureMTLDevice *)v13->_captureDevice traceStream];
+          if (traceStream)
           {
-            var0 = v36->var0;
+            var0 = traceStream->var0;
           }
 
           else
@@ -573,10 +573,10 @@
             var0 = 0;
           }
 
-          v37 = [(CaptureMTLBuffer *)v13->_buffer traceStream];
-          if (v37)
+          traceStream2 = [(CaptureMTLBuffer *)v13->_buffer traceStream];
+          if (traceStream2)
           {
-            v38 = v37->var0;
+            v38 = traceStream2->var0;
           }
 
           else
@@ -585,11 +585,11 @@
           }
 
           v39 = [(CaptureMTLBuffer *)v13->_buffer length];
-          v40 = [(CaptureMTLBuffer *)v13->_buffer resourceOptions];
+          resourceOptions = [(CaptureMTLBuffer *)v13->_buffer resourceOptions];
           *v33 = var0;
           *(v33 + 1) = v38;
           *(v33 + 2) = v39;
-          *(v33 + 3) = v40;
+          *(v33 + 3) = resourceOptions;
           *(v33 + 4) = 0;
           v41 = v44;
           *v28 = v45;

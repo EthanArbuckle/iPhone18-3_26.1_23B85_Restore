@@ -1,35 +1,35 @@
 @interface HUProgrammableSwitchEventOptionItem
-+ (id)_buildOutTriggerEditorOptionsForCharacteristic:(id)a3 triggerValue:(id)a4 latestResults:(id)a5;
-+ (id)_longformTitleForCharacteristic:(id)a3 latestResults:(id)a4;
-+ (id)_sectionTitleForCharacteristic:(id)a3 latestResults:(id)a4;
-+ (id)_triggerBuilderContextAwareTitleForCharacteristic:(id)a3 latestResults:(id)a4;
++ (id)_buildOutTriggerEditorOptionsForCharacteristic:(id)characteristic triggerValue:(id)value latestResults:(id)results;
++ (id)_longformTitleForCharacteristic:(id)characteristic latestResults:(id)results;
++ (id)_sectionTitleForCharacteristic:(id)characteristic latestResults:(id)results;
++ (id)_triggerBuilderContextAwareTitleForCharacteristic:(id)characteristic latestResults:(id)results;
 - (HMCharacteristic)characteristic;
-- (HUProgrammableSwitchEventOptionItem)initWithCharacteristic:(id)a3 triggerValue:(id)a4 valueSource:(id)a5;
-- (HUProgrammableSwitchEventOptionItem)initWithCharacteristics:(id)a3 thresholdValueRange:(id)a4;
-- (HUProgrammableSwitchEventOptionItem)initWithCharacteristics:(id)a3 triggerValue:(id)a4;
-- (HUProgrammableSwitchEventOptionItem)initWithCharacteristics:(id)a3 triggerValueRange:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUProgrammableSwitchEventOptionItem)initWithCharacteristic:(id)characteristic triggerValue:(id)value valueSource:(id)source;
+- (HUProgrammableSwitchEventOptionItem)initWithCharacteristics:(id)characteristics thresholdValueRange:(id)range;
+- (HUProgrammableSwitchEventOptionItem)initWithCharacteristics:(id)characteristics triggerValue:(id)value;
+- (HUProgrammableSwitchEventOptionItem)initWithCharacteristics:(id)characteristics triggerValueRange:(id)range;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUProgrammableSwitchEventOptionItem
 
-- (HUProgrammableSwitchEventOptionItem)initWithCharacteristic:(id)a3 triggerValue:(id)a4 valueSource:(id)a5
+- (HUProgrammableSwitchEventOptionItem)initWithCharacteristic:(id)characteristic triggerValue:(id)value valueSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  sourceCopy = source;
+  if (sourceCopy)
   {
-    if (v9)
+    if (characteristicCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HUProgrammableSwitchEventOptionItem.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"characteristic"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUProgrammableSwitchEventOptionItem.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"characteristic"}];
 
-    if (v10)
+    if (valueCopy)
     {
       goto LABEL_4;
     }
@@ -37,94 +37,94 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"HUProgrammableSwitchEventOptionItem.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"valueSource"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUProgrammableSwitchEventOptionItem.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"valueSource"}];
 
-  if (!v9)
+  if (!characteristicCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v10)
+  if (valueCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"HUProgrammableSwitchEventOptionItem.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"triggerValue"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"HUProgrammableSwitchEventOptionItem.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"triggerValue"}];
 
 LABEL_4:
-  v12 = [MEMORY[0x277CBEB98] setWithObject:v9];
+  v12 = [MEMORY[0x277CBEB98] setWithObject:characteristicCopy];
   v18.receiver = self;
   v18.super_class = HUProgrammableSwitchEventOptionItem;
-  v13 = [(HUCharacteristicEventOptionItem *)&v18 initWithCharacteristics:v12 triggerValue:v10];
+  v13 = [(HUCharacteristicEventOptionItem *)&v18 initWithCharacteristics:v12 triggerValue:valueCopy];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_valueSource, a5);
+    objc_storeStrong(&v13->_valueSource, source);
   }
 
   return v13;
 }
 
-- (HUProgrammableSwitchEventOptionItem)initWithCharacteristics:(id)a3 triggerValue:(id)a4
+- (HUProgrammableSwitchEventOptionItem)initWithCharacteristics:(id)characteristics triggerValue:(id)value
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithCharacteristic_triggerValue_valueSource_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUProgrammableSwitchEventOptionItem.m" lineNumber:42 description:{@"%s is unavailable; use %@ instead", "-[HUProgrammableSwitchEventOptionItem initWithCharacteristics:triggerValue:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUProgrammableSwitchEventOptionItem.m" lineNumber:42 description:{@"%s is unavailable; use %@ instead", "-[HUProgrammableSwitchEventOptionItem initWithCharacteristics:triggerValue:]", v7}];
 
   return 0;
 }
 
-- (HUProgrammableSwitchEventOptionItem)initWithCharacteristics:(id)a3 triggerValueRange:(id)a4
+- (HUProgrammableSwitchEventOptionItem)initWithCharacteristics:(id)characteristics triggerValueRange:(id)range
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithCharacteristic_triggerValue_valueSource_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUProgrammableSwitchEventOptionItem.m" lineNumber:47 description:{@"%s is unavailable; use %@ instead", "-[HUProgrammableSwitchEventOptionItem initWithCharacteristics:triggerValueRange:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUProgrammableSwitchEventOptionItem.m" lineNumber:47 description:{@"%s is unavailable; use %@ instead", "-[HUProgrammableSwitchEventOptionItem initWithCharacteristics:triggerValueRange:]", v7}];
 
   return 0;
 }
 
-- (HUProgrammableSwitchEventOptionItem)initWithCharacteristics:(id)a3 thresholdValueRange:(id)a4
+- (HUProgrammableSwitchEventOptionItem)initWithCharacteristics:(id)characteristics thresholdValueRange:(id)range
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithCharacteristic_triggerValue_valueSource_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUProgrammableSwitchEventOptionItem.m" lineNumber:52 description:{@"%s is unavailable; use %@ instead", "-[HUProgrammableSwitchEventOptionItem initWithCharacteristics:thresholdValueRange:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUProgrammableSwitchEventOptionItem.m" lineNumber:52 description:{@"%s is unavailable; use %@ instead", "-[HUProgrammableSwitchEventOptionItem initWithCharacteristics:thresholdValueRange:]", v7}];
 
   return 0;
 }
 
 - (HMCharacteristic)characteristic
 {
-  v2 = [(HUCharacteristicEventOptionItem *)self characteristics];
-  v3 = [v2 anyObject];
+  characteristics = [(HUCharacteristicEventOptionItem *)self characteristics];
+  anyObject = [characteristics anyObject];
 
-  return v3;
+  return anyObject;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v125 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUCharacteristicEventOptionItem *)self characteristics];
-  v6 = [v5 count];
+  optionsCopy = options;
+  characteristics = [(HUCharacteristicEventOptionItem *)self characteristics];
+  v6 = [characteristics count];
 
   if (!v6)
   {
     NSLog(&cfstr_MustHaveCharac.isa);
   }
 
-  v7 = [(HUCharacteristicEventOptionItem *)self characteristics];
+  characteristics2 = [(HUCharacteristicEventOptionItem *)self characteristics];
 
-  if (v7)
+  if (characteristics2)
   {
-    v8 = [(HUCharacteristicEventOptionItem *)self triggerValue];
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    triggerValue = [(HUCharacteristicEventOptionItem *)self triggerValue];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v10 = MEMORY[0x277CD19F8];
-    v11 = [(HUCharacteristicEventOptionItem *)self characteristics];
-    v12 = [v10 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:v11 triggerValue:v8];
+    characteristics3 = [(HUCharacteristicEventOptionItem *)self characteristics];
+    v12 = [v10 hf_triggerValueNaturalLanguageDescriptionWithCharacteristics:characteristics3 triggerValue:triggerValue];
 
     if (v12)
     {
@@ -142,59 +142,59 @@ LABEL_4:
       v14 = MEMORY[0x277D13F60];
     }
 
-    [v9 setObject:v13 forKeyedSubscript:*v14];
-    v15 = [(HUProgrammableSwitchEventOptionItem *)self characteristic];
-    if (!v15)
+    [dictionary setObject:v13 forKeyedSubscript:*v14];
+    characteristic = [(HUProgrammableSwitchEventOptionItem *)self characteristic];
+    if (!characteristic)
     {
       NSLog(&cfstr_NoProgrammable.isa);
     }
 
-    v16 = [v15 hf_home];
-    v17 = [v15 hf_designatedEventTriggerForProgrammableSwitchWithTriggerValue:v8];
-    v18 = [v16 hf_remoteAccessState];
+    hf_home = [characteristic hf_home];
+    v17 = [characteristic hf_designatedEventTriggerForProgrammableSwitchWithTriggerValue:triggerValue];
+    hf_remoteAccessState = [hf_home hf_remoteAccessState];
     v19 = v17 != 0;
-    if (v18 != 1)
+    if (hf_remoteAccessState != 1)
     {
       v19 = 1;
     }
 
     v89 = v12;
-    v92 = self;
+    selfCopy = self;
     v84 = v19;
-    if (v18 == 1)
+    if (hf_remoteAccessState == 1)
     {
       v20 = 1;
     }
 
     else
     {
-      v20 = [v16 hf_currentUserIsAdministrator] ^ 1;
+      v20 = [hf_home hf_currentUserIsAdministrator] ^ 1;
     }
 
     v86 = v20;
-    v90 = v9;
-    v91 = v4;
+    v90 = dictionary;
+    v91 = optionsCopy;
     v87 = v17;
-    v88 = v16;
-    v94 = v8;
+    v88 = hf_home;
+    v94 = triggerValue;
     if (v17)
     {
       v24 = MEMORY[0x277CBEB98];
-      v25 = [v9 allKeys];
-      v26 = [v24 setWithArray:v25];
+      allKeys = [dictionary allKeys];
+      v26 = [v24 setWithArray:allKeys];
 
-      v27 = [objc_alloc(MEMORY[0x277D14C60]) initWithHome:v16 trigger:v17];
-      v28 = [v27 updateWithOptions:v4];
+      v27 = [objc_alloc(MEMORY[0x277D14C60]) initWithHome:hf_home trigger:v17];
+      v28 = [v27 updateWithOptions:optionsCopy];
       v115[0] = MEMORY[0x277D85DD0];
       v115[1] = 3221225472;
       v115[2] = __67__HUProgrammableSwitchEventOptionItem__subclass_updateWithOptions___block_invoke;
       v115[3] = &unk_277DC1220;
       v116 = v26;
-      v29 = v92;
-      v117 = v9;
-      v118 = v92;
-      v119 = v15;
-      v120 = v8;
+      selfCopy2 = selfCopy;
+      v117 = dictionary;
+      v118 = selfCopy;
+      v119 = characteristic;
+      v120 = triggerValue;
       v30 = v26;
       v31 = [v28 flatMap:v115];
     }
@@ -202,35 +202,35 @@ LABEL_4:
     else
     {
       v32 = MEMORY[0x277D2C900];
-      v33 = [MEMORY[0x277D14780] outcomeWithResults:v9];
+      v33 = [MEMORY[0x277D14780] outcomeWithResults:dictionary];
       v31 = [v32 futureWithResult:v33];
 
-      v29 = self;
+      selfCopy2 = self;
     }
 
-    v34 = [v15 service];
-    v35 = [v34 hf_labelNamespaceCharacteristic];
+    service = [characteristic service];
+    hf_labelNamespaceCharacteristic = [service hf_labelNamespaceCharacteristic];
 
-    v95 = v15;
-    v36 = [v15 service];
-    v37 = [v36 hf_labelIndexCharacteristic];
+    v95 = characteristic;
+    service2 = [characteristic service];
+    hf_labelIndexCharacteristic = [service2 hf_labelIndexCharacteristic];
 
     v38 = objc_opt_new();
-    v39 = [v35 service];
-    [v38 na_safeAddObject:v39];
+    service3 = [hf_labelNamespaceCharacteristic service];
+    [v38 na_safeAddObject:service3];
 
-    v40 = [v37 service];
-    [v38 na_safeAddObject:v40];
+    service4 = [hf_labelIndexCharacteristic service];
+    [v38 na_safeAddObject:service4];
 
-    v41 = [v35 service];
-    v42 = [v41 accessory];
-    v43 = [v42 hf_programmableSwitchNamespaceServices];
-    v44 = [v43 allObjects];
-    v45 = v44;
+    service5 = [hf_labelNamespaceCharacteristic service];
+    accessory = [service5 accessory];
+    hf_programmableSwitchNamespaceServices = [accessory hf_programmableSwitchNamespaceServices];
+    allObjects = [hf_programmableSwitchNamespaceServices allObjects];
+    v45 = allObjects;
     v46 = MEMORY[0x277CBEBF8];
-    if (v44)
+    if (allObjects)
     {
-      v46 = v44;
+      v46 = allObjects;
     }
 
     v47 = v46;
@@ -268,15 +268,15 @@ LABEL_4:
     v83 = v53;
     if ([v38 count])
     {
-      v54 = [(HUProgrammableSwitchEventOptionItem *)v29 valueSource];
-      v55 = [v54 readValuesForCharacteristicTypes:v53 inServices:v38];
+      valueSource = [(HUProgrammableSwitchEventOptionItem *)selfCopy2 valueSource];
+      v55 = [valueSource readValuesForCharacteristicTypes:v53 inServices:v38];
       v103[0] = MEMORY[0x277D85DD0];
       v103[1] = 3221225472;
       v103[2] = __67__HUProgrammableSwitchEventOptionItem__subclass_updateWithOptions___block_invoke_3;
       v103[3] = &unk_277DC1270;
       v104 = v48;
-      v105 = v35;
-      v106 = v37;
+      v105 = hf_labelNamespaceCharacteristic;
+      v106 = hf_labelIndexCharacteristic;
       v107 = v95;
       v108 = v94;
       v109 = v84;
@@ -284,26 +284,26 @@ LABEL_4:
       v56 = [v55 flatMap:v103];
 
       v57 = v104;
-      v58 = v29;
+      v58 = selfCopy2;
       v59 = 0x277D2C000;
     }
 
     else
     {
-      v82 = v35;
-      v60 = [v37 value];
-      if (!v60)
+      v82 = hf_labelNamespaceCharacteristic;
+      value = [hf_labelIndexCharacteristic value];
+      if (!value)
       {
         v61 = MEMORY[0x277CCABB0];
-        v62 = [v95 service];
-        v60 = [v61 numberWithUnsignedInteger:{objc_msgSend(v62, "hf_fallbackProgrammableSwitchIndex")}];
+        service6 = [v95 service];
+        value = [v61 numberWithUnsignedInteger:{objc_msgSend(service6, "hf_fallbackProgrammableSwitchIndex")}];
       }
 
       v63 = MEMORY[0x277CBEB38];
       v122[0] = @"sectionNamespace";
       v64 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D14D48]];
       v123[0] = v64;
-      v123[1] = v60;
+      v123[1] = value;
       v122[1] = @"sectionElementIndex";
       v122[2] = @"sectionIndex";
       v123[2] = &unk_282491D78;
@@ -323,12 +323,12 @@ LABEL_4:
       v70 = MEMORY[0x277D2C900];
       v71 = [MEMORY[0x277D14780] outcomeWithResults:v66];
       v72 = v70;
-      v57 = v60;
+      v57 = value;
       v56 = [v72 futureWithResult:v71];
 
-      v58 = v92;
+      v58 = selfCopy;
       v31 = v93;
-      v35 = v82;
+      hf_labelNamespaceCharacteristic = v82;
     }
 
     v73 = *(v59 + 2304);
@@ -343,19 +343,19 @@ LABEL_4:
     v96[4] = v58;
     v97 = v95;
     v98 = v94;
-    v99 = v37;
-    v100 = v35;
+    v99 = hf_labelIndexCharacteristic;
+    v100 = hf_labelNamespaceCharacteristic;
     v101 = v87;
     v102 = v48;
     v75 = v48;
     v76 = v87;
-    v77 = v35;
-    v78 = v37;
+    v77 = hf_labelNamespaceCharacteristic;
+    v78 = hf_labelIndexCharacteristic;
     v79 = v94;
     v80 = v95;
     v23 = [v74 flatMap:v96];
 
-    v4 = v91;
+    optionsCopy = v91;
   }
 
   else
@@ -591,48 +591,48 @@ id __67__HUProgrammableSwitchEventOptionItem__subclass_updateWithOptions___block
   return v21;
 }
 
-+ (id)_longformTitleForCharacteristic:(id)a3 latestResults:(id)a4
++ (id)_longformTitleForCharacteristic:(id)characteristic latestResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _shortformTitleForLatestResults:v7];
-  v9 = [v6 service];
-  v10 = [v9 accessory];
-  v11 = [v10 hf_numberOfProgrammableSwitches];
+  characteristicCopy = characteristic;
+  resultsCopy = results;
+  v8 = [self _shortformTitleForLatestResults:resultsCopy];
+  service = [characteristicCopy service];
+  accessory = [service accessory];
+  hf_numberOfProgrammableSwitches = [accessory hf_numberOfProgrammableSwitches];
 
-  if (v11 == 1)
+  if (hf_numberOfProgrammableSwitches == 1)
   {
-    v12 = [MEMORY[0x277CBEAF8] currentLocale];
-    v13 = [v8 lowercaseStringWithLocale:v12];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v13 = [v8 lowercaseStringWithLocale:currentLocale];
   }
 
   else
   {
-    v12 = [a1 _sectionTitleForCharacteristic:v6 latestResults:v7];
-    v20 = HULocalizedStringWithFormat(@"HUProgrammableSwitchEventOptionLongFormTitleFormatString", @"%@%@", v14, v15, v16, v17, v18, v19, v12);
-    v21 = [MEMORY[0x277CBEAF8] currentLocale];
-    v13 = [v20 lowercaseStringWithLocale:v21];
+    currentLocale = [self _sectionTitleForCharacteristic:characteristicCopy latestResults:resultsCopy];
+    v20 = HULocalizedStringWithFormat(@"HUProgrammableSwitchEventOptionLongFormTitleFormatString", @"%@%@", v14, v15, v16, v17, v18, v19, currentLocale);
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+    v13 = [v20 lowercaseStringWithLocale:currentLocale2];
   }
 
   return v13;
 }
 
-+ (id)_sectionTitleForCharacteristic:(id)a3 latestResults:(id)a4
++ (id)_sectionTitleForCharacteristic:(id)characteristic latestResults:(id)results
 {
-  v5 = a4;
-  v6 = [a3 service];
-  v7 = [v6 accessory];
-  v8 = [v7 hf_numberOfProgrammableSwitches];
+  resultsCopy = results;
+  service = [characteristic service];
+  accessory = [service accessory];
+  hf_numberOfProgrammableSwitches = [accessory hf_numberOfProgrammableSwitches];
 
-  if (v8 == 1)
+  if (hf_numberOfProgrammableSwitches == 1)
   {
     v9 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsItemManagerProgrammableSwitchDefaultSectionTitle", @"HUServiceDetailsItemManagerProgrammableSwitchDefaultSectionTitle", 1);
   }
 
   else
   {
-    v10 = [v5 objectForKey:@"sectionElementIndex"];
-    v11 = [v5 objectForKey:@"sectionNamespace"];
+    v10 = [resultsCopy objectForKey:@"sectionElementIndex"];
+    v11 = [resultsCopy objectForKey:@"sectionNamespace"];
     [v11 unsignedIntegerValue];
     [v10 unsignedIntegerValue];
     v9 = HFProgrammableSwitchLocalizableStringForAccessoryNamingSystemAndIndex();
@@ -641,42 +641,42 @@ id __67__HUProgrammableSwitchEventOptionItem__subclass_updateWithOptions___block
   return v9;
 }
 
-+ (id)_triggerBuilderContextAwareTitleForCharacteristic:(id)a3 latestResults:(id)a4
++ (id)_triggerBuilderContextAwareTitleForCharacteristic:(id)characteristic latestResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _shortformTitleForLatestResults:v7];
-  v9 = [v6 service];
-  v10 = [v9 accessory];
-  v11 = [v10 hf_numberOfProgrammableSwitches];
+  characteristicCopy = characteristic;
+  resultsCopy = results;
+  v8 = [self _shortformTitleForLatestResults:resultsCopy];
+  service = [characteristicCopy service];
+  accessory = [service accessory];
+  hf_numberOfProgrammableSwitches = [accessory hf_numberOfProgrammableSwitches];
 
-  if (v11 == 1)
+  if (hf_numberOfProgrammableSwitches == 1)
   {
-    v12 = [v8 localizedCapitalizedString];
+    localizedCapitalizedString = [v8 localizedCapitalizedString];
   }
 
   else
   {
-    v13 = [a1 _sectionTitleForCharacteristic:v6 latestResults:v7];
+    v13 = [self _sectionTitleForCharacteristic:characteristicCopy latestResults:resultsCopy];
     v20 = HULocalizedStringWithFormat(@"HUProgrammableSwitchEventOptionLongFormTitleFormatString", @"%@%@", v14, v15, v16, v17, v18, v19, v13);
-    v12 = [v20 localizedCapitalizedString];
+    localizedCapitalizedString = [v20 localizedCapitalizedString];
   }
 
-  return v12;
+  return localizedCapitalizedString;
 }
 
-+ (id)_buildOutTriggerEditorOptionsForCharacteristic:(id)a3 triggerValue:(id)a4 latestResults:(id)a5
++ (id)_buildOutTriggerEditorOptionsForCharacteristic:(id)characteristic triggerValue:(id)value latestResults:(id)results
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [a1 _sectionTitleForCharacteristic:v8 latestResults:v9];
+  characteristicCopy = characteristic;
+  resultsCopy = results;
+  valueCopy = value;
+  v11 = [self _sectionTitleForCharacteristic:characteristicCopy latestResults:resultsCopy];
   v12 = objc_opt_new();
   [v12 na_safeSetObject:v11 forKey:@"sectionTitleKey"];
-  v13 = [v8 hf_eventTriggersForTriggerValue:v10];
+  v13 = [characteristicCopy hf_eventTriggersForTriggerValue:valueCopy];
   v14 = [v13 mutableCopy];
 
-  v15 = [v8 hf_designatedEventTriggerForProgrammableSwitchWithTriggerValue:v10];
+  v15 = [characteristicCopy hf_designatedEventTriggerForProgrammableSwitchWithTriggerValue:valueCopy];
 
   if (v15)
   {
@@ -700,7 +700,7 @@ id __67__HUProgrammableSwitchEventOptionItem__subclass_updateWithOptions___block
   v20 = _HULocalizedStringWithDefaultValue(@"HUTriggerActionEditorInstructionsDescriptionStringForProgrammableSwitch", @"HUTriggerActionEditorInstructionsDescriptionStringForProgrammableSwitch", 1);
   [v16 setActionEditorInstructionsDescription:v20];
 
-  v21 = [a1 _triggerBuilderContextAwareTitleForCharacteristic:v8 latestResults:v9];
+  v21 = [self _triggerBuilderContextAwareTitleForCharacteristic:characteristicCopy latestResults:resultsCopy];
 
   [v16 setTriggerContextAwareTitle:v21];
   [v16 setUnsupportedTriggers:v14];

@@ -4,17 +4,17 @@
 - (BOOL)canBeDefaultInputDevice;
 - (BOOL)canBeDefaultOutputDevice;
 - (BOOL)canBeDefaultSystemDevice;
-- (BOOL)createAudioProcID:(void *)a3 forIOProc:(void *)a4 withClientData:(void *)a5 error:(id *)a6;
-- (BOOL)destroyAudioProcID:(void *)a3 error:(id *)a4;
+- (BOOL)createAudioProcID:(void *)d forIOProc:(void *)proc withClientData:(void *)data error:(id *)error;
+- (BOOL)destroyAudioProcID:(void *)d error:(id *)error;
 - (BOOL)externalSecureMute;
 - (BOOL)isAlive;
 - (BOOL)isHidden;
 - (BOOL)isReferenceStreamEnabled;
 - (BOOL)isRunning;
-- (BOOL)setInputStreamUsage:(id)a3 forAudioProc:(void *)a4;
-- (BOOL)setOutputStreamUsage:(id)a3 forAudioProc:(void *)a4;
-- (BOOL)startAudioProc:(void *)a3 error:(id *)a4;
-- (BOOL)stopAudioProc:(void *)a3 error:(id *)a4;
+- (BOOL)setInputStreamUsage:(id)usage forAudioProc:(void *)proc;
+- (BOOL)setOutputStreamUsage:(id)usage forAudioProc:(void *)proc;
+- (BOOL)startAudioProc:(void *)proc error:(id *)error;
+- (BOOL)stopAudioProc:(void *)proc error:(id *)error;
 - (BOOL)supportsHeySiri;
 - (NSArray)controlObjectIDs;
 - (NSArray)controls;
@@ -39,8 +39,8 @@
 - (double)actualSampleRate;
 - (double)nominalSampleRate;
 - (float)ioCycleUsage;
-- (id)inputStreamUsageForAudioProc:(void *)a3;
-- (id)outputStreamUsageForAudioProc:(void *)a3;
+- (id)inputStreamUsageForAudioProc:(void *)proc;
+- (id)outputStreamUsageForAudioProc:(void *)proc;
 - (int)hogModeOwner;
 - (unsigned)clockDomain;
 - (unsigned)inputLatency;
@@ -53,13 +53,13 @@
 - (unsigned)outputSafetyOffset;
 - (unsigned)transportType;
 - (unsigned)zeroTimestampPeriod;
-- (void)setClientDescription:(id)a3;
-- (void)setClockDeviceUID:(id)a3;
-- (void)setEnableReferenceStream:(BOOL)a3;
-- (void)setExternalSecureMute:(BOOL)a3;
-- (void)setIoThreadOSWorkgroup:(id)a3;
-- (void)setName:(id)a3;
-- (void)setNominalSampleRate:(double)a3;
+- (void)setClientDescription:(id)description;
+- (void)setClockDeviceUID:(id)d;
+- (void)setEnableReferenceStream:(BOOL)stream;
+- (void)setExternalSecureMute:(BOOL)mute;
+- (void)setIoThreadOSWorkgroup:(id)workgroup;
+- (void)setName:(id)name;
+- (void)setNominalSampleRate:(double)rate;
 @end
 
 @implementation ASAAudioDevice
@@ -90,10 +90,10 @@ LABEL_7:
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  [(ASAObject *)self setMainGlobalProperty:1819173229 withData:&v4 ofSize:8 withQualifier:0 ofSize:0];
+  nameCopy = name;
+  [(ASAObject *)self setMainGlobalProperty:1819173229 withData:&nameCopy ofSize:8 withQualifier:0 ofSize:0];
 }
 
 - (NSString)manufacturer
@@ -291,10 +291,10 @@ LABEL_7:
   return v4;
 }
 
-- (void)setNominalSampleRate:(double)a3
+- (void)setNominalSampleRate:(double)rate
 {
-  v4 = a3;
-  if (![(ASAObject *)self setMainGlobalProperty:1853059700 withData:&v4 ofSize:8 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  rateCopy = rate;
+  if (![(ASAObject *)self setMainGlobalProperty:1853059700 withData:&rateCopy ofSize:8 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
     _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not write nominal sample rate property\n", v3, 2u);
@@ -340,10 +340,10 @@ LABEL_7:
   return v4 != 0;
 }
 
-- (void)setExternalSecureMute:(BOOL)a3
+- (void)setExternalSecureMute:(BOOL)mute
 {
-  v4 = a3;
-  if (![(ASAObject *)self setMainGlobalProperty:1702392685 withData:&v4 ofSize:4 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  muteCopy = mute;
+  if (![(ASAObject *)self setMainGlobalProperty:1702392685 withData:&muteCopy ofSize:4 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
     _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not set kAudioDevicePropertyExternalSecureMute\n", v3, 2u);
@@ -484,10 +484,10 @@ LABEL_7:
   return v2;
 }
 
-- (void)setIoThreadOSWorkgroup:(id)a3
+- (void)setIoThreadOSWorkgroup:(id)workgroup
 {
-  v4 = a3;
-  [(ASAObject *)self setMainGlobalProperty:1869838183 withData:&v4 ofSize:8 withQualifier:0 ofSize:0];
+  workgroupCopy = workgroup;
+  [(ASAObject *)self setMainGlobalProperty:1869838183 withData:&workgroupCopy ofSize:8 withQualifier:0 ofSize:0];
 }
 
 - (float)ioCycleUsage
@@ -516,10 +516,10 @@ LABEL_7:
   return v4 != 0;
 }
 
-- (void)setEnableReferenceStream:(BOOL)a3
+- (void)setEnableReferenceStream:(BOOL)stream
 {
-  v4 = a3;
-  if (![(ASAObject *)self setMainOutputProperty:1952542820 withData:&v4 ofSize:4 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  streamCopy = stream;
+  if (![(ASAObject *)self setMainOutputProperty:1952542820 withData:&streamCopy ofSize:4 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
     _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not set reference stream enabled property\n", v3, 2u);
@@ -533,9 +533,9 @@ LABEL_7:
   v7 = 4;
   if (![(ASAObject *)self getMainGlobalProperty:1869180523 withData:&v6 ofSize:&v7 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(ASAAudioDevice *)self deviceUID];
+    deviceUID = [(ASAAudioDevice *)self deviceUID];
     *buf = 138412290;
-    v9 = v3;
+    v9 = deviceUID;
     _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not read hog mode property on %@", buf, 0xCu);
   }
 
@@ -547,13 +547,13 @@ LABEL_7:
 - (BOOL)acquireHogMode
 {
   v5 = getpid();
-  v3 = [(ASAAudioDevice *)self hogModeOwner];
-  if (v3 == v5)
+  hogModeOwner = [(ASAAudioDevice *)self hogModeOwner];
+  if (hogModeOwner == v5)
   {
     return 1;
   }
 
-  if (v3 == -1)
+  if (hogModeOwner == -1)
   {
     return [(ASAObject *)self setMainGlobalProperty:1869180523 withData:&v5 ofSize:4 withQualifier:0 ofSize:0];
   }
@@ -583,11 +583,11 @@ LABEL_7:
     v6 = v5;
     bzero(v5, v4);
     v7 = [(ASAObject *)self getMainGlobalProperty:1634429294 withData:v6 ofSize:&v15 withQualifier:0 ofSize:0];
-    v8 = 0;
+    array = 0;
     if (v7)
     {
       v9 = v15;
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v9 >= 4)
       {
         v10 = v9 >> 2;
@@ -596,7 +596,7 @@ LABEL_7:
         {
           v12 = *v11++;
           v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v12];
-          [v8 addObject:v13];
+          [array addObject:v13];
 
           --v10;
         }
@@ -610,10 +610,10 @@ LABEL_7:
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
 - (NSArray)nominalSampleRates
@@ -625,11 +625,11 @@ LABEL_7:
     v6 = v5;
     bzero(v5, v4);
     v7 = [(ASAObject *)self getMainGlobalProperty:1853059619 withData:v6 ofSize:&v15 withQualifier:0 ofSize:0];
-    v8 = 0;
+    array = 0;
     if (v7)
     {
       v9 = v15;
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v9 >= 0x10)
       {
         v10 = v9 >> 4;
@@ -641,7 +641,7 @@ LABEL_7:
           {
             *&v12 = v12;
             v13 = [MEMORY[0x277CCABB0] numberWithFloat:v12];
-            [v8 addObject:v13];
+            [array addObject:v13];
           }
 
           v11 += 2;
@@ -657,10 +657,10 @@ LABEL_7:
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
 - (NSArray)nominalSampleRateRanges
@@ -672,11 +672,11 @@ LABEL_7:
     v6 = v5;
     bzero(v5, v4);
     v7 = [(ASAObject *)self getMainGlobalProperty:1853059619 withData:v6 ofSize:&v14 withQualifier:0 ofSize:0];
-    v8 = 0;
+    array = 0;
     if (v7)
     {
       v9 = v14;
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v9 >= 0x10)
       {
         v10 = v9 >> 4;
@@ -684,7 +684,7 @@ LABEL_7:
         do
         {
           v12 = [ASASampleRateRange rangeWithMinimum:*(v11 - 1) maximum:*v11];
-          [v8 addObject:v12];
+          [array addObject:v12];
 
           v11 += 2;
           --v10;
@@ -699,15 +699,15 @@ LABEL_7:
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
 - (NSArray)inputStreamObjectIDs
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(ASAObject *)self sizeOfMainInputProperty:1937009955 withQualifier:0 ofSize:0];
   v13 = v4;
   if (v4)
@@ -726,7 +726,7 @@ LABEL_7:
         {
           v10 = *v9++;
           v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v10];
-          [v3 addObject:v11];
+          [array addObject:v11];
 
           --v8;
         }
@@ -738,19 +738,19 @@ LABEL_7:
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)inputStreams
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(ASAAudioDevice *)self inputStreamObjectIDs];
-  v3 = [MEMORY[0x277CBEB18] array];
+  inputStreamObjectIDs = [(ASAAudioDevice *)self inputStreamObjectIDs];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = inputStreamObjectIDs;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -770,7 +770,7 @@ LABEL_7:
         v11 = -[ASAObject initWithAudioObjectID:](v10, "initWithAudioObjectID:", [v9 unsignedIntValue]);
         if (v11)
         {
-          [v3 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -782,12 +782,12 @@ LABEL_7:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)outputStreamObjectIDs
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(ASAObject *)self sizeOfMainOutputProperty:1937009955 withQualifier:0 ofSize:0];
   v13 = v4;
   if (v4)
@@ -806,7 +806,7 @@ LABEL_7:
         {
           v10 = *v9++;
           v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v10];
-          [v3 addObject:v11];
+          [array addObject:v11];
 
           --v8;
         }
@@ -818,19 +818,19 @@ LABEL_7:
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)outputStreams
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(ASAAudioDevice *)self outputStreamObjectIDs];
-  v3 = [MEMORY[0x277CBEB18] array];
+  outputStreamObjectIDs = [(ASAAudioDevice *)self outputStreamObjectIDs];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = outputStreamObjectIDs;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -850,7 +850,7 @@ LABEL_7:
         v11 = -[ASAObject initWithAudioObjectID:](v10, "initWithAudioObjectID:", [v9 unsignedIntValue]);
         if (v11)
         {
-          [v3 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -862,12 +862,12 @@ LABEL_7:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)controlObjectIDs
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(ASAObject *)self sizeOfMainGlobalProperty:1668575852 withQualifier:0 ofSize:0];
   v13 = v4;
   if (v4)
@@ -886,7 +886,7 @@ LABEL_7:
         {
           v10 = *v9++;
           v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v10];
-          [v3 addObject:v11];
+          [array addObject:v11];
 
           --v8;
         }
@@ -898,19 +898,19 @@ LABEL_7:
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)controls
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [(ASAAudioDevice *)self controlObjectIDs];
-  v3 = [MEMORY[0x277CBEB18] array];
+  controlObjectIDs = [(ASAAudioDevice *)self controlObjectIDs];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = v2;
+  v4 = controlObjectIDs;
   v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -928,13 +928,13 @@ LABEL_7:
         v9 = *(*(&v17 + 1) + 8 * i);
         v10 = [ASAObject alloc];
         v11 = -[ASAObject initWithAudioObjectID:](v10, "initWithAudioObjectID:", [v9 unsignedIntValue]);
-        v12 = [(ASAObject *)v11 baseClass];
-        if (v12 > 1936483441)
+        baseClass = [(ASAObject *)v11 baseClass];
+        if (baseClass > 1936483441)
         {
-          if (v12 != 1936483442)
+          if (baseClass != 1936483442)
           {
             v13 = off_278CE2A50;
-            if (v12 == 1953458028)
+            if (baseClass == 1953458028)
             {
               goto LABEL_15;
             }
@@ -947,9 +947,9 @@ LABEL_7:
 
         else
         {
-          if (v12 != 1818588780)
+          if (baseClass != 1818588780)
           {
-            if (v12 == 1936483188)
+            if (baseClass == 1936483188)
             {
               v13 = off_278CE2A98;
               goto LABEL_15;
@@ -967,7 +967,7 @@ LABEL_15:
         v14 = [objc_alloc(*v13) initWithAudioObjectID:{-[ASAObject objectID](v11, "objectID")}];
         if (v14)
         {
-          [v3 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -979,7 +979,7 @@ LABEL_15:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (NSURL)iconURL
@@ -999,17 +999,17 @@ LABEL_15:
 
   if (cf)
   {
-    v3 = [cf absoluteURL];
+    absoluteURL = [cf absoluteURL];
     CFRelease(cf);
   }
 
   else
   {
 LABEL_7:
-    v3 = 0;
+    absoluteURL = 0;
   }
 
-  return v3;
+  return absoluteURL;
 }
 
 - (NSString)clockDeviceUID
@@ -1038,10 +1038,10 @@ LABEL_7:
   return v2;
 }
 
-- (void)setClockDeviceUID:(id)a3
+- (void)setClockDeviceUID:(id)d
 {
-  v4 = a3;
-  if (![(ASAObject *)self setMainGlobalProperty:1634755428 withData:&v4 ofSize:8 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  dCopy = d;
+  if (![(ASAObject *)self setMainGlobalProperty:1634755428 withData:&dCopy ofSize:8 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
     _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not read clock device UID property\n", v3, 2u);
@@ -1103,10 +1103,10 @@ LABEL_7:
   return v2;
 }
 
-- (void)setClientDescription:(id)a3
+- (void)setClientDescription:(id)description
 {
-  v4 = a3;
-  if (![(ASAObject *)self setMainGlobalProperty:1667523955 withData:&v4 ofSize:8 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  descriptionCopy = description;
+  if (![(ASAObject *)self setMainGlobalProperty:1667523955 withData:&descriptionCopy ofSize:8 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
     _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not set client dictionary property\n", v3, 2u);
@@ -1165,75 +1165,75 @@ LABEL_7:
   return v2;
 }
 
-- (BOOL)createAudioProcID:(void *)a3 forIOProc:(void *)a4 withClientData:(void *)a5 error:(id *)a6
+- (BOOL)createAudioProcID:(void *)d forIOProc:(void *)proc withClientData:(void *)data error:(id *)error
 {
-  IOProcID = AudioDeviceCreateIOProcID([(ASAObject *)self objectID], a4, a5, a3);
+  IOProcID = AudioDeviceCreateIOProcID([(ASAObject *)self objectID], proc, data, d);
   v8 = IOProcID;
-  if (a6 && IOProcID)
+  if (error && IOProcID)
   {
-    *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:IOProcID userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:IOProcID userInfo:0];
   }
 
   return v8 == 0;
 }
 
-- (BOOL)destroyAudioProcID:(void *)a3 error:(id *)a4
+- (BOOL)destroyAudioProcID:(void *)d error:(id *)error
 {
-  v5 = AudioDeviceDestroyIOProcID([(ASAObject *)self objectID], a3);
+  v5 = AudioDeviceDestroyIOProcID([(ASAObject *)self objectID], d);
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v5 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v5 userInfo:0];
   }
 
   return v6 == 0;
 }
 
-- (BOOL)startAudioProc:(void *)a3 error:(id *)a4
+- (BOOL)startAudioProc:(void *)proc error:(id *)error
 {
-  v5 = AudioDeviceStart([(ASAObject *)self objectID], a3);
+  v5 = AudioDeviceStart([(ASAObject *)self objectID], proc);
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v5 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v5 userInfo:0];
   }
 
   return v6 == 0;
 }
 
-- (BOOL)stopAudioProc:(void *)a3 error:(id *)a4
+- (BOOL)stopAudioProc:(void *)proc error:(id *)error
 {
-  v5 = AudioDeviceStop([(ASAObject *)self objectID], a3);
+  v5 = AudioDeviceStop([(ASAObject *)self objectID], proc);
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v5 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v5 userInfo:0];
   }
 
   return v6 == 0;
 }
 
-- (id)inputStreamUsageForAudioProc:(void *)a3
+- (id)inputStreamUsageForAudioProc:(void *)proc
 {
   v5 = [(ASAObject *)self sizeOfMainInputProperty:1937009955 withQualifier:0 ofSize:0];
   v14 = v5;
   if (v5 >= 4 && (v6 = v5, v14 = (v5 & 0xFFFFFFFC) + 12, (v7 = malloc_type_calloc(1uLL, v14, 0x1080040FC6463CFuLL)) != 0))
   {
     v8 = v7;
-    *v7 = a3;
+    *v7 = proc;
     v7[2] = v6 >> 2;
     v9 = [(ASAObject *)self getMainInputProperty:1937077093 withData:v7 ofSize:&v14 withQualifier:0 ofSize:0];
-    v10 = 0;
+    array = 0;
     if (v9)
     {
-      v10 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v8[2])
       {
         v11 = 0;
         do
         {
           v12 = [MEMORY[0x277CCABB0] numberWithBool:v8[v11 + 3] != 0];
-          [v10 addObject:v12];
+          [array addObject:v12];
 
           ++v11;
         }
@@ -1247,26 +1247,26 @@ LABEL_7:
 
   else
   {
-    v10 = 0;
+    array = 0;
   }
 
-  return v10;
+  return array;
 }
 
-- (BOOL)setInputStreamUsage:(id)a3 forAudioProc:(void *)a4
+- (BOOL)setInputStreamUsage:(id)usage forAudioProc:(void *)proc
 {
-  v6 = a3;
-  v7 = [v6 count];
+  usageCopy = usage;
+  v7 = [usageCopy count];
   v8 = v7;
   if (v7 && (v9 = (4 * v7 + 12), (v10 = malloc_type_calloc(1uLL, v9, 0x1080040FC6463CFuLL)) != 0))
   {
     v11 = v10;
     v12 = 0;
-    *v10 = a4;
+    *v10 = proc;
     *(v10 + 2) = v8;
     do
     {
-      v13 = [v6 objectAtIndexedSubscript:v12];
+      v13 = [usageCopy objectAtIndexedSubscript:v12];
       v11[v12 + 3] = [v13 unsignedIntValue];
 
       ++v12;
@@ -1285,27 +1285,27 @@ LABEL_7:
   return v14;
 }
 
-- (id)outputStreamUsageForAudioProc:(void *)a3
+- (id)outputStreamUsageForAudioProc:(void *)proc
 {
   v5 = [(ASAObject *)self sizeOfMainOutputProperty:1937009955 withQualifier:0 ofSize:0];
   v14 = v5;
   if (v5 >= 4 && (v6 = v5, v14 = (v5 & 0xFFFFFFFC) + 12, (v7 = malloc_type_calloc(1uLL, v14, 0x1080040FC6463CFuLL)) != 0))
   {
     v8 = v7;
-    *v7 = a3;
+    *v7 = proc;
     v7[2] = v6 >> 2;
     v9 = [(ASAObject *)self getMainOutputProperty:1937077093 withData:v7 ofSize:&v14 withQualifier:0 ofSize:0];
-    v10 = 0;
+    array = 0;
     if (v9)
     {
-      v10 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v8[2])
       {
         v11 = 0;
         do
         {
           v12 = [MEMORY[0x277CCABB0] numberWithBool:v8[v11 + 3] != 0];
-          [v10 addObject:v12];
+          [array addObject:v12];
 
           ++v11;
         }
@@ -1319,26 +1319,26 @@ LABEL_7:
 
   else
   {
-    v10 = 0;
+    array = 0;
   }
 
-  return v10;
+  return array;
 }
 
-- (BOOL)setOutputStreamUsage:(id)a3 forAudioProc:(void *)a4
+- (BOOL)setOutputStreamUsage:(id)usage forAudioProc:(void *)proc
 {
-  v6 = a3;
-  v7 = [v6 count];
+  usageCopy = usage;
+  v7 = [usageCopy count];
   v8 = v7;
   if (v7 && (v9 = (4 * v7 + 12), (v10 = malloc_type_calloc(1uLL, v9, 0x1080040FC6463CFuLL)) != 0))
   {
     v11 = v10;
     v12 = 0;
-    *v10 = a4;
+    *v10 = proc;
     *(v10 + 2) = v8;
     do
     {
-      v13 = [v6 objectAtIndexedSubscript:v12];
+      v13 = [usageCopy objectAtIndexedSubscript:v12];
       v11[v12 + 3] = [v13 unsignedIntValue];
 
       ++v12;

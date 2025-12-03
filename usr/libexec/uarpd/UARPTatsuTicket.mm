@@ -1,13 +1,13 @@
 @interface UARPTatsuTicket
-- (UARPTatsuTicket)initWithTicketDictionary:(id)a3;
+- (UARPTatsuTicket)initWithTicketDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation UARPTatsuTicket
 
-- (UARPTatsuTicket)initWithTicketDictionary:(id)a3
+- (UARPTatsuTicket)initWithTicketDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v60.receiver = self;
   v60.super_class = UARPTatsuTicket;
   v5 = [(UARPTatsuTicket *)&v60 init];
@@ -20,7 +20,7 @@
   uuid = v5->_uuid;
   v5->_uuid = v6;
 
-  v8 = [v4 objectForKeyedSubscript:@"Ticket Name"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"Ticket Name"];
   if (v8)
   {
     objc_opt_class();
@@ -34,7 +34,7 @@
       manifestProperties = v5->_manifestProperties;
       v5->_manifestProperties = v11;
 
-      v13 = [v4 objectForKeyedSubscript:@"Manifest Properties"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"Manifest Properties"];
       if (v13)
       {
         objc_opt_class();
@@ -88,7 +88,7 @@
           objectProperties = v5->_objectProperties;
           v5->_objectProperties = v21;
 
-          v23 = [v4 objectForKeyedSubscript:@"Object Properties"];
+          v23 = [dictionaryCopy objectForKeyedSubscript:@"Object Properties"];
           if (!v23 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
 LABEL_41:
@@ -145,7 +145,7 @@ LABEL_42:
           ftabProperties = v5->_ftabProperties;
           v5->_ftabProperties = v30;
 
-          v32 = [v4 objectForKeyedSubscript:@"FTAB Properties"];
+          v32 = [dictionaryCopy objectForKeyedSubscript:@"FTAB Properties"];
           if (v32)
           {
             objc_opt_class();
@@ -205,7 +205,7 @@ LABEL_50:
             v32 = v46;
           }
 
-          v40 = [v4 objectForKeyedSubscript:{@"Manifest Location", v46}];
+          v40 = [dictionaryCopy objectForKeyedSubscript:{@"Manifest Location", v46}];
           if (v40)
           {
             v41 = v40;
@@ -213,7 +213,7 @@ LABEL_50:
 
           else
           {
-            v41 = [v4 objectForKeyedSubscript:@"Manifest Destination"];
+            v41 = [dictionaryCopy objectForKeyedSubscript:@"Manifest Destination"];
             if (!v41)
             {
 LABEL_49:

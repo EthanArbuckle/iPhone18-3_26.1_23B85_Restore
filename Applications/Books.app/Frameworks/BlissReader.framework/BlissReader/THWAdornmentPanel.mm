@@ -1,23 +1,23 @@
 @interface THWAdornmentPanel
-- (BOOL)autosizedCanvasControllerIsRelatedCanvasScrolling:(id)a3;
-- (CGPoint)stackedControlContainerOrigin:(id)a3;
-- (THWAdornmentPanel)initWithDelegate:(id)a3 kind:(int)a4 expandedRep:(id)a5 documentRoot:(id)a6;
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3;
+- (BOOL)autosizedCanvasControllerIsRelatedCanvasScrolling:(id)scrolling;
+- (CGPoint)stackedControlContainerOrigin:(id)origin;
+- (THWAdornmentPanel)initWithDelegate:(id)delegate kind:(int)kind expandedRep:(id)rep documentRoot:(id)root;
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets;
 - (double)height;
-- (double)stackedControlContainer:(id)a3 leftRightInsetForTextLayout:(id)a4;
-- (double)stackedControlContainer:(id)a3 verticalPaddingAfter:(id)a4;
-- (double)stackedControlContainerMinHeight:(id)a3;
-- (id)autosizedCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forRep:(id)a5;
-- (id)autosizedCanvasController:(id)a3 geometryProviderForLayout:(id)a4;
-- (id)autosizedCanvasController:(id)a3 primaryTargetForGesture:(id)a4;
-- (id)controlContainerAdditionalChildLayouts:(id)a3;
-- (id)p_styleProviderForLayout:(id)a3 inPanel:(int)a4;
-- (id)stackedControlContainer:(id)a3 layoutGeometryForLayout:(id)a4;
-- (id)stackedControlContainer:(id)a3 styleProviderForLayout:(id)a4;
-- (unsigned)stackedControlContainer:(id)a3 alignmentForLayout:(id)a4;
-- (unsigned)stackedControlContainer:(id)a3 maxLineCountForLayout:(id)a4;
-- (void)animateWithCrossFadeContent:(BOOL)a3 backgroundLayout:(BOOL)a4 duration:(double)a5;
-- (void)autosizedCanvasControllerDidResize:(id)a3;
+- (double)stackedControlContainer:(id)container leftRightInsetForTextLayout:(id)layout;
+- (double)stackedControlContainer:(id)container verticalPaddingAfter:(id)after;
+- (double)stackedControlContainerMinHeight:(id)height;
+- (id)autosizedCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forRep:(id)rep;
+- (id)autosizedCanvasController:(id)controller geometryProviderForLayout:(id)layout;
+- (id)autosizedCanvasController:(id)controller primaryTargetForGesture:(id)gesture;
+- (id)controlContainerAdditionalChildLayouts:(id)layouts;
+- (id)p_styleProviderForLayout:(id)layout inPanel:(int)panel;
+- (id)stackedControlContainer:(id)container layoutGeometryForLayout:(id)layout;
+- (id)stackedControlContainer:(id)container styleProviderForLayout:(id)layout;
+- (unsigned)stackedControlContainer:(id)container alignmentForLayout:(id)layout;
+- (unsigned)stackedControlContainer:(id)container maxLineCountForLayout:(id)layout;
+- (void)animateWithCrossFadeContent:(BOOL)content backgroundLayout:(BOOL)layout duration:(double)duration;
+- (void)autosizedCanvasControllerDidResize:(id)resize;
 - (void)dealloc;
 - (void)invalidateChildren;
 - (void)invalidateLayoutsAndFrames;
@@ -30,7 +30,7 @@
 
 @implementation THWAdornmentPanel
 
-- (THWAdornmentPanel)initWithDelegate:(id)a3 kind:(int)a4 expandedRep:(id)a5 documentRoot:(id)a6
+- (THWAdornmentPanel)initWithDelegate:(id)delegate kind:(int)kind expandedRep:(id)rep documentRoot:(id)root
 {
   v20.receiver = self;
   v20.super_class = THWAdornmentPanel;
@@ -38,11 +38,11 @@
   v11 = v10;
   if (v10)
   {
-    v10->_delegate = a3;
-    v10->_kind = a4;
+    v10->_delegate = delegate;
+    v10->_kind = kind;
     v10->_stackedControlContainer = [[THWStackedControlContainer alloc] initWithDelegate:v10];
-    v11->_autosizedCanvasController = [[THWAutosizedCanvasController alloc] initWithDelegate:v11 documentRoot:a6];
-    v11->_expandedRep = a5;
+    v11->_autosizedCanvasController = [[THWAutosizedCanvasController alloc] initWithDelegate:v11 documentRoot:root];
+    v11->_expandedRep = rep;
     v12 = [TSWOverlayPanelView alloc];
     [(THWAdornmentPanelDelegate *)v11->_delegate adornmentPanelWidth:v11];
     v14 = v13;
@@ -51,12 +51,12 @@
     v11->_view = v16;
     [(TSWOverlayPanelView *)v16 setAutoresizingMask:2];
     [(TSWOverlayPanelView *)v11->_view setTsdAlpha:0.0];
-    v17 = [(THWAutosizedCanvasController *)v11->_autosizedCanvasController canvasView];
-    -[TSDCanvasView setTsdBackgroundColor:](v17, "setTsdBackgroundColor:", [+[TSUColor clearColor](TSUColor "clearColor")]);
-    [(TSDCanvasView *)v17 setUserInteractionEnabled:1];
-    [(TSDCanvasView *)v17 setClipsToBounds:0];
+    canvasView = [(THWAutosizedCanvasController *)v11->_autosizedCanvasController canvasView];
+    -[TSDCanvasView setTsdBackgroundColor:](canvasView, "setTsdBackgroundColor:", [+[TSUColor clearColor](TSUColor "clearColor")]);
+    [(TSDCanvasView *)canvasView setUserInteractionEnabled:1];
+    [(TSDCanvasView *)canvasView setClipsToBounds:0];
     [(TSDInteractiveCanvasController *)[(THWAutosizedCanvasController *)v11->_autosizedCanvasController interactiveCanvasController] setCreateRepsForOffscreenLayouts:1];
-    [(TSWOverlayPanelView *)v11->_view addSubview:v17];
+    [(TSWOverlayPanelView *)v11->_view addSubview:canvasView];
     if (v11->_stackedControlContainer)
     {
       [(TSDInteractiveCanvasController *)[(THWAutosizedCanvasController *)v11->_autosizedCanvasController interactiveCanvasController] setInfosToDisplay:[NSArray arrayWithObject:?]];
@@ -98,8 +98,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 children];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  children = [v2 children];
+  v4 = [children countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -111,7 +111,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         objc_opt_class();
@@ -122,7 +122,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [children countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -131,9 +131,9 @@
 
 - (void)layoutIfNeeded
 {
-  v2 = [(THWAdornmentPanel *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWAdornmentPanel *)self interactiveCanvasController];
 
-  [v2 layoutIfNeeded];
+  [interactiveCanvasController layoutIfNeeded];
 }
 
 - (void)invalidateLayoutsAndFrames
@@ -160,37 +160,37 @@
   if ([(TSWOverlayPanelView *)self->_view isHidden])
   {
     [(TSWOverlayPanelView *)self->_view setHidden:0];
-    v3 = [(TSWOverlayPanelView *)self->_view layer];
+    layer = [(TSWOverlayPanelView *)self->_view layer];
 
-    [v3 setOpacity:0.0];
+    [layer setOpacity:0.0];
   }
 }
 
-- (void)animateWithCrossFadeContent:(BOOL)a3 backgroundLayout:(BOOL)a4 duration:(double)a5
+- (void)animateWithCrossFadeContent:(BOOL)content backgroundLayout:(BOOL)layout duration:(double)duration
 {
-  v6 = a4;
-  v7 = a3;
+  layoutCopy = layout;
+  contentCopy = content;
   [(THWAdornmentPanel *)self p_unhideViewIfNeeded];
   *&self->_hasBeenSizedDuringAnimation = 256;
-  self->_animationDuration = a5;
-  v9 = [(THWAutosizedCanvasController *)self->_autosizedCanvasController interactiveCanvasController];
-  if (v6)
+  self->_animationDuration = duration;
+  interactiveCanvasController = [(THWAutosizedCanvasController *)self->_autosizedCanvasController interactiveCanvasController];
+  if (layoutCopy)
   {
-    [(TSDInteractiveCanvasController *)v9 forceBackgroundLayout];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController forceBackgroundLayout];
   }
 
-  if (v7)
+  if (contentCopy)
   {
     v10 = +[CATransition animation];
     [v10 setType:kCATransitionFade];
-    [v10 setDuration:a5];
-    v11 = [(TSDCanvasView *)[(THWAutosizedCanvasController *)self->_autosizedCanvasController canvasView] layer];
+    [v10 setDuration:duration];
+    layer = [(TSDCanvasView *)[(THWAutosizedCanvasController *)self->_autosizedCanvasController canvasView] layer];
 
-    [v11 addAnimation:v10 forKey:@"fadeAnimation"];
+    [layer addAnimation:v10 forKey:@"fadeAnimation"];
   }
 }
 
-- (id)autosizedCanvasController:(id)a3 geometryProviderForLayout:(id)a4
+- (id)autosizedCanvasController:(id)controller geometryProviderForLayout:(id)layout
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -202,7 +202,7 @@
   return [(THWExpandedRep *)expandedRep expandedLayoutGeometryProvider];
 }
 
-- (id)autosizedCanvasController:(id)a3 primaryTargetForGesture:(id)a4
+- (id)autosizedCanvasController:(id)controller primaryTargetForGesture:(id)gesture
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -212,10 +212,10 @@
   expandedRep = self->_expandedRep;
   kind = self->_kind;
 
-  return [(THWExpandedRep *)expandedRep expandedPanel:kind primaryTargetForGesture:a4];
+  return [(THWExpandedRep *)expandedRep expandedPanel:kind primaryTargetForGesture:gesture];
 }
 
-- (BOOL)autosizedCanvasControllerIsRelatedCanvasScrolling:(id)a3
+- (BOOL)autosizedCanvasControllerIsRelatedCanvasScrolling:(id)scrolling
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -295,7 +295,7 @@
   [(THWAdornmentPanelDelegate *)self->_delegate adornmentPanelDidLayout:self];
 }
 
-- (void)autosizedCanvasControllerDidResize:(id)a3
+- (void)autosizedCanvasControllerDidResize:(id)resize
 {
   if (+[NSThread isMainThread])
   {
@@ -304,19 +304,19 @@
   }
 }
 
-- (id)autosizedCanvasController:(id)a3 delegateConformingToProtocol:(id)a4 forRep:(id)a5
+- (id)autosizedCanvasController:(id)controller delegateConformingToProtocol:(id)protocol forRep:(id)rep
 {
-  result = [a5 parentRep];
+  result = [rep parentRep];
   if (result)
   {
-    if (protocol_isEqual(a4, &OBJC_PROTOCOL___TSDLayoutGeometryProvider) && (objc_opt_respondsToSelector() & 1) != 0)
+    if (protocol_isEqual(protocol, &OBJC_PROTOCOL___TSDLayoutGeometryProvider) && (objc_opt_respondsToSelector() & 1) != 0)
     {
       expandedRep = self->_expandedRep;
 
       return [(THWExpandedRep *)expandedRep expandedLayoutGeometryProvider];
     }
 
-    else if ([(THWExpandedRep *)self->_expandedRep conformsToProtocol:a4])
+    else if ([(THWExpandedRep *)self->_expandedRep conformsToProtocol:protocol])
     {
       return self->_expandedRep;
     }
@@ -330,7 +330,7 @@
   return result;
 }
 
-- (id)controlContainerAdditionalChildLayouts:(id)a3
+- (id)controlContainerAdditionalChildLayouts:(id)layouts
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -343,7 +343,7 @@
   return [(THWExpandedRep *)expandedRep expandedAdditionalChildLayoutsForPanel:kind];
 }
 
-- (CGPoint)stackedControlContainerOrigin:(id)a3
+- (CGPoint)stackedControlContainerOrigin:(id)origin
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -352,7 +352,7 @@
   return result;
 }
 
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets
 {
   v4 = objc_opt_respondsToSelector();
   v5 = 10.0;
@@ -371,7 +371,7 @@
   return result;
 }
 
-- (double)stackedControlContainer:(id)a3 verticalPaddingAfter:(id)a4
+- (double)stackedControlContainer:(id)container verticalPaddingAfter:(id)after
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -381,26 +381,26 @@
   expandedRep = self->_expandedRep;
   kind = self->_kind;
 
-  [(THWExpandedRep *)expandedRep expandedVerticalPaddingAfterForLayout:a4 inPanel:kind];
+  [(THWExpandedRep *)expandedRep expandedVerticalPaddingAfterForLayout:after inPanel:kind];
   return result;
 }
 
-- (id)stackedControlContainer:(id)a3 layoutGeometryForLayout:(id)a4
+- (id)stackedControlContainer:(id)container layoutGeometryForLayout:(id)layout
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  [(THWAdornmentPanel *)self stackedControlContainerInsets:a3];
+  [(THWAdornmentPanel *)self stackedControlContainerInsets:container];
   expandedRep = self->_expandedRep;
   kind = self->_kind;
   [(THWAdornmentPanelDelegate *)self->_delegate adornmentPanelWidth:self];
 
-  return [THWExpandedRep expandedLayoutGeometryForLayout:"expandedLayoutGeometryForLayout:inPanel:withWidth:insets:" inPanel:a4 withWidth:kind insets:?];
+  return [THWExpandedRep expandedLayoutGeometryForLayout:"expandedLayoutGeometryForLayout:inPanel:withWidth:insets:" inPanel:layout withWidth:kind insets:?];
 }
 
-- (unsigned)stackedControlContainer:(id)a3 alignmentForLayout:(id)a4
+- (unsigned)stackedControlContainer:(id)container alignmentForLayout:(id)layout
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -410,12 +410,12 @@
   expandedRep = self->_expandedRep;
   kind = self->_kind;
 
-  return [(THWExpandedRep *)expandedRep expandedAlignmentForLayout:a4 inPanel:kind];
+  return [(THWExpandedRep *)expandedRep expandedAlignmentForLayout:layout inPanel:kind];
 }
 
-- (id)p_styleProviderForLayout:(id)a3 inPanel:(int)a4
+- (id)p_styleProviderForLayout:(id)layout inPanel:(int)panel
 {
-  v5 = -[THWAdornmentWPStyleProvider initWithStorage:]([THWAdornmentWPStyleProvider alloc], "initWithStorage:", [a3 info]);
+  v5 = -[THWAdornmentWPStyleProvider initWithStorage:]([THWAdornmentWPStyleProvider alloc], "initWithStorage:", [layout info]);
   if ([(TSWOverlayPanelView *)self->_view appearance])
   {
     v6 = [(TSWOverlayPanelView *)self->_view appearance]== 2 && [(THWAdornmentPanelDelegate *)[(THWAdornmentPanel *)self delegate] adornmentPanelBackgroundAppearance:self]== 0;
@@ -434,10 +434,10 @@
   return v5;
 }
 
-- (id)stackedControlContainer:(id)a3 styleProviderForLayout:(id)a4
+- (id)stackedControlContainer:(id)container styleProviderForLayout:(id)layout
 {
-  v7 = [(THWAdornmentPanel *)self p_styleProviderForLayout:a4 inPanel:self->_kind];
-  v8 = [(THWAdornmentPanel *)self stackedControlContainer:a3 alignmentForLayout:a4];
+  v7 = [(THWAdornmentPanel *)self p_styleProviderForLayout:layout inPanel:self->_kind];
+  v8 = [(THWAdornmentPanel *)self stackedControlContainer:container alignmentForLayout:layout];
   if (self->_kind)
   {
     v9 = v8;
@@ -448,11 +448,11 @@
   {
     v11 = [[TSWPText alloc] initWithParagraphStyle:{objc_msgSend(v7, "paragraphStyleAtParIndex:effectiveRange:", 0, 0)}];
     [v11 setStyleProvider:v7];
-    [v11 measureStorage:{objc_msgSend(a4, "info")}];
+    [v11 measureStorage:{objc_msgSend(layout, "info")}];
     v13 = v12;
-    [(THWAdornmentPanel *)self stackedControlContainerWidth:a3];
+    [(THWAdornmentPanel *)self stackedControlContainerWidth:container];
     v15 = v14;
-    [(THWAdornmentPanel *)self stackedControlContainerInsets:a3];
+    [(THWAdornmentPanel *)self stackedControlContainerInsets:container];
     v18 = (v15 - v16 - v17 - v13) * 0.5;
     [(THWAdornmentPanelDelegate *)self->_delegate adornmentPanelTitleLeftIndent:self];
     v20 = v18 > v19;
@@ -474,7 +474,7 @@
   return v7;
 }
 
-- (unsigned)stackedControlContainer:(id)a3 maxLineCountForLayout:(id)a4
+- (unsigned)stackedControlContainer:(id)container maxLineCountForLayout:(id)layout
 {
   if (self->_kind)
   {
@@ -499,10 +499,10 @@
   expandedRep = self->_expandedRep;
   kind = self->_kind;
 
-  return [(THWExpandedRep *)expandedRep expandedMaxLineCountForTextLayout:a4 inPanel:kind withDefault:v6];
+  return [(THWExpandedRep *)expandedRep expandedMaxLineCountForTextLayout:layout inPanel:kind withDefault:v6];
 }
 
-- (double)stackedControlContainer:(id)a3 leftRightInsetForTextLayout:(id)a4
+- (double)stackedControlContainer:(id)container leftRightInsetForTextLayout:(id)layout
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -512,11 +512,11 @@
   expandedRep = self->_expandedRep;
   kind = self->_kind;
 
-  [(THWExpandedRep *)expandedRep expandedLeftRightInsetForTextLayout:a4 inPanel:kind];
+  [(THWExpandedRep *)expandedRep expandedLeftRightInsetForTextLayout:layout inPanel:kind];
   return result;
 }
 
-- (double)stackedControlContainerMinHeight:(id)a3
+- (double)stackedControlContainerMinHeight:(id)height
 {
   if (self->_kind > 1u)
   {

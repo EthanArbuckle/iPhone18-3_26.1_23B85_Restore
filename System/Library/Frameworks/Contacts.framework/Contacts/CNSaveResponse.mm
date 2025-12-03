@@ -1,8 +1,8 @@
 @interface CNSaveResponse
 - (CNSaveResponse)init;
-- (CNSaveResponse)initWithCoder:(id)a3;
-- (void)applySnapshotsToSaveRequest:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CNSaveResponse)initWithCoder:(id)coder;
+- (void)applySnapshotsToSaveRequest:(id)request;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNSaveResponse
@@ -30,9 +30,9 @@
   return v2;
 }
 
-- (CNSaveResponse)initWithCoder:(id)a3
+- (CNSaveResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = CNSaveResponse;
   v5 = [(CNSaveResponse *)&v29 init];
@@ -43,7 +43,7 @@
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_contactSnapshotsByIndexPath"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_contactSnapshotsByIndexPath"];
     contactSnapshotsByIndexPath = v5->_contactSnapshotsByIndexPath;
     v5->_contactSnapshotsByIndexPath = v11;
 
@@ -52,7 +52,7 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v13 setWithObjects:{v14, v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"_groupSnapshotsByIndexPath"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"_groupSnapshotsByIndexPath"];
     groupSnapshotsByIndexPath = v5->_groupSnapshotsByIndexPath;
     v5->_groupSnapshotsByIndexPath = v18;
 
@@ -61,57 +61,57 @@
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v24 = [v20 setWithObjects:{v21, v22, v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"_containerSnapshotsByIndexPath"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"_containerSnapshotsByIndexPath"];
     containerSnapshotsByIndexPath = v5->_containerSnapshotsByIndexPath;
     v5->_containerSnapshotsByIndexPath = v25;
 
-    v5->_didAffectMeCard = [v4 decodeBoolForKey:@"_didAffectMeCard"];
+    v5->_didAffectMeCard = [coderCopy decodeBoolForKey:@"_didAffectMeCard"];
     v27 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contactSnapshotsByIndexPath = self->_contactSnapshotsByIndexPath;
-  v5 = a3;
-  [v5 encodeObject:contactSnapshotsByIndexPath forKey:@"_contactSnapshotsByIndexPath"];
-  [v5 encodeObject:self->_groupSnapshotsByIndexPath forKey:@"_groupSnapshotsByIndexPath"];
-  [v5 encodeObject:self->_containerSnapshotsByIndexPath forKey:@"_containerSnapshotsByIndexPath"];
-  [v5 encodeBool:self->_didAffectMeCard forKey:@"_didAffectMeCard"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contactSnapshotsByIndexPath forKey:@"_contactSnapshotsByIndexPath"];
+  [coderCopy encodeObject:self->_groupSnapshotsByIndexPath forKey:@"_groupSnapshotsByIndexPath"];
+  [coderCopy encodeObject:self->_containerSnapshotsByIndexPath forKey:@"_containerSnapshotsByIndexPath"];
+  [coderCopy encodeBool:self->_didAffectMeCard forKey:@"_didAffectMeCard"];
 }
 
-- (void)applySnapshotsToSaveRequest:(id)a3
+- (void)applySnapshotsToSaveRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 allContacts];
+  requestCopy = request;
+  allContacts = [requestCopy allContacts];
   contactSnapshotsByIndexPath = self->_contactSnapshotsByIndexPath;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __46__CNSaveResponse_applySnapshotsToSaveRequest___block_invoke;
   v18[3] = &unk_1E7415C20;
-  v19 = v5;
-  v7 = v5;
+  v19 = allContacts;
+  v7 = allContacts;
   [(NSMutableDictionary *)contactSnapshotsByIndexPath enumerateKeysAndObjectsUsingBlock:v18];
-  v8 = [v4 allGroups];
+  allGroups = [requestCopy allGroups];
   groupSnapshotsByIndexPath = self->_groupSnapshotsByIndexPath;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __46__CNSaveResponse_applySnapshotsToSaveRequest___block_invoke_2;
   v16[3] = &unk_1E7415C48;
-  v17 = v8;
-  v10 = v8;
+  v17 = allGroups;
+  v10 = allGroups;
   [(NSMutableDictionary *)groupSnapshotsByIndexPath enumerateKeysAndObjectsUsingBlock:v16];
-  v11 = [v4 allContainers];
+  allContainers = [requestCopy allContainers];
 
   containerSnapshotsByIndexPath = self->_containerSnapshotsByIndexPath;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__CNSaveResponse_applySnapshotsToSaveRequest___block_invoke_3;
   v14[3] = &unk_1E7415C70;
-  v15 = v11;
-  v13 = v11;
+  v15 = allContainers;
+  v13 = allContainers;
   [(NSMutableDictionary *)containerSnapshotsByIndexPath enumerateKeysAndObjectsUsingBlock:v14];
 }
 

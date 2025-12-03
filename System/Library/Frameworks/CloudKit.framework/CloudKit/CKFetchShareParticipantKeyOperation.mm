@@ -1,32 +1,32 @@
 @interface CKFetchShareParticipantKeyOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
-- (CKFetchShareParticipantKeyOperation)initWithShareIDs:(id)a3;
+- (CKFetchShareParticipantKeyOperation)initWithShareIDs:(id)ds;
 - (id)activityCreate;
 - (id)shareParticipantKeyCompletionBlock;
 - (id)shareParticipantKeyFetchedBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleParticipantKeyFetchForRecordID:(id)a3 participantKey:(id)a4 error:(id)a5;
-- (void)setShareParticipantKeyCompletionBlock:(id)a3;
-- (void)setShareParticipantKeyFetchedBlock:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleParticipantKeyFetchForRecordID:(id)d participantKey:(id)key error:(id)error;
+- (void)setShareParticipantKeyCompletionBlock:(id)block;
+- (void)setShareParticipantKeyFetchedBlock:(id)block;
 @end
 
 @implementation CKFetchShareParticipantKeyOperation
 
-- (CKFetchShareParticipantKeyOperation)initWithShareIDs:(id)a3
+- (CKFetchShareParticipantKeyOperation)initWithShareIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v13.receiver = self;
   v13.super_class = CKFetchShareParticipantKeyOperation;
   v7 = [(CKOperation *)&v13 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(dsCopy, v5, v6);
     shareIDs = v7->_shareIDs;
     v7->_shareIDs = v8;
 
@@ -38,9 +38,9 @@
   return v7;
 }
 
-- (void)setShareParticipantKeyFetchedBlock:(id)a3
+- (void)setShareParticipantKeyFetchedBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -54,16 +54,16 @@
     v12[2] = sub_1885EF36C;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     shareParticipantKeyFetchedBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_shareParticipantKeyFetchedBlock != v6)
+  if (self->_shareParticipantKeyFetchedBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     shareParticipantKeyFetchedBlock = self->_shareParticipantKeyFetchedBlock;
     self->_shareParticipantKeyFetchedBlock = v9;
 LABEL_9:
@@ -106,9 +106,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setShareParticipantKeyCompletionBlock:(id)a3
+- (void)setShareParticipantKeyCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -122,16 +122,16 @@ LABEL_9:
     v12[2] = sub_1885EF6F8;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     shareParticipantKeyCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_shareParticipantKeyCompletionBlock != v6)
+  if (self->_shareParticipantKeyCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     shareParticipantKeyCompletionBlock = self->_shareParticipantKeyCompletionBlock;
     self->_shareParticipantKeyCompletionBlock = v9;
 LABEL_9:
@@ -174,36 +174,36 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_shareIDs(self, v5, v6);
-  objc_msgSend_setShareIDs_(v4, v8, v7);
+  objc_msgSend_setShareIDs_(infoCopy, v8, v7);
 
   v11 = objc_msgSend_baseTokensByShareID(self, v9, v10);
-  objc_msgSend_setBaseTokensByShareID_(v4, v12, v11);
+  objc_msgSend_setBaseTokensByShareID_(infoCopy, v12, v11);
 
   v15 = objc_msgSend_childRecordIDsByShareID(self, v13, v14);
-  objc_msgSend_setChildRecordIDsByShareID_(v4, v16, v15);
+  objc_msgSend_setChildRecordIDsByShareID_(infoCopy, v16, v15);
 
   v17.receiver = self;
   v17.super_class = CKFetchShareParticipantKeyOperation;
-  [(CKDatabaseOperation *)&v17 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v17 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v17.receiver = self;
   v17.super_class = CKFetchShareParticipantKeyOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v17 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_shareIDs(v4, v5, v6, v17.receiver, v17.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v17 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_shareIDs(infoCopy, v5, v6, v17.receiver, v17.super_class);
   objc_msgSend_setShareIDs_(self, v8, v7);
 
-  v11 = objc_msgSend_baseTokensByShareID(v4, v9, v10);
+  v11 = objc_msgSend_baseTokensByShareID(infoCopy, v9, v10);
   objc_msgSend_setBaseTokensByShareID_(self, v12, v11);
 
-  v15 = objc_msgSend_childRecordIDsByShareID(v4, v13, v14);
+  v15 = objc_msgSend_childRecordIDsByShareID(infoCopy, v13, v14);
 
   objc_msgSend_setChildRecordIDsByShareID_(self, v16, v15);
 }
@@ -232,10 +232,10 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_shareIDs(self, a2, a3);
+  v5 = objc_msgSend_shareIDs(self, a2, run);
   v8 = objc_msgSend_count(v5, v6, v7);
 
   if (v8)
@@ -261,7 +261,7 @@ LABEL_9:
           }
 
           v19 = objc_msgSend_zoneID(*(*(&v28 + 1) + 8 * v18), v14, v15);
-          v21 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v20, v19, a3);
+          v21 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v20, v19, run);
 
           if (!v21)
           {
@@ -285,16 +285,16 @@ LABEL_9:
 
     v27.receiver = self;
     v27.super_class = CKFetchShareParticipantKeyOperation;
-    result = [(CKDatabaseOperation *)&v27 CKOperationShouldRun:a3];
+    result = [(CKDatabaseOperation *)&v27 CKOperationShouldRun:run];
   }
 
   else
   {
-    if (a3)
+    if (run)
     {
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
-      *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v25, @"CKErrorDomain", 12, @"No share IDs were passed to %@", v24);
+      *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v25, @"CKErrorDomain", 12, @"No share IDs were passed to %@", v24);
     }
 
 LABEL_14:
@@ -305,12 +305,12 @@ LABEL_14:
   return result;
 }
 
-- (void)handleParticipantKeyFetchForRecordID:(id)a3 participantKey:(id)a4 error:(id)a5
+- (void)handleParticipantKeyFetchForRecordID:(id)d participantKey:(id)key error:(id)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v12 = objc_msgSend_CKClientSuitableError(a5, v10, v11);
+  dCopy = d;
+  keyCopy = key;
+  v12 = objc_msgSend_CKClientSuitableError(error, v10, v11);
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -356,7 +356,7 @@ LABEL_14:
       if (v26 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
       {
         v43 = 138412546;
-        v44 = v8;
+        v44 = dCopy;
         v45 = 2112;
         v46 = v12;
         _os_signpost_emit_with_name_impl(&dword_1883EA000, v21, OS_SIGNPOST_EVENT, v26, "CKFetchShareParticipantKeyOperation", "Share %@ fetched participant key with error: %@", &v43, 0x16u);
@@ -364,7 +364,7 @@ LABEL_14:
     }
 
     v27 = objc_msgSend_errorsByShareID(self, v15, v16);
-    objc_msgSend_setObject_forKeyedSubscript_(v27, v28, v12, v8);
+    objc_msgSend_setObject_forKeyedSubscript_(v27, v28, v12, dCopy);
 LABEL_14:
 
     goto LABEL_15;
@@ -401,7 +401,7 @@ LABEL_14:
     if (v42 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
     {
       v43 = 138412290;
-      v44 = v8;
+      v44 = dCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v27, OS_SIGNPOST_EVENT, v42, "CKFetchShareParticipantKeyOperation", "Share %@ fetched participant key", &v43, 0xCu);
     }
 
@@ -414,15 +414,15 @@ LABEL_15:
   if (v29)
   {
     v32 = objc_msgSend_shareParticipantKeyFetchedBlock(self, v30, v31);
-    (v32)[2](v32, v8, v9, v12);
+    (v32)[2](v32, dCopy, keyCopy, v12);
   }
 
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -470,7 +470,7 @@ LABEL_15:
     }
   }
 
-  v19 = v4;
+  v19 = errorCopy;
   v20 = v19;
   if (!v19)
   {
@@ -597,10 +597,10 @@ LABEL_15:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -644,7 +644,7 @@ LABEL_15:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKFetchShareParticipantKeyOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -659,15 +659,15 @@ LABEL_15:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleParticipantKeyFetchForRecordID_participantKey_error_, 2, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleParticipantKeyFetchForRecordID_participantKey_error_, 2, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKFetchShareParticipantKeyOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

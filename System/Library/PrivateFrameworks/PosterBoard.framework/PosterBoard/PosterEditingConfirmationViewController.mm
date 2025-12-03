@@ -1,46 +1,46 @@
 @interface PosterEditingConfirmationViewController
-- (_TtC11PosterBoard39PosterEditingConfirmationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11PosterBoard39PosterEditingConfirmationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PosterEditingConfirmationViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B614F24();
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v7 = a3;
-  v8 = self;
-  sub_21B616754(a3, a4);
+  windowCopy = window;
+  selfCopy = self;
+  sub_21B616754(window, disappear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PosterEditingConfirmationViewController();
   swift_unknownObjectRetain();
   v7 = v8.receiver;
-  [(PosterEditingConfirmationViewController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(PosterEditingConfirmationViewController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   if (swift_unknownObjectWeakLoadStrong())
   {
-    sub_21B644E48(v7, a4);
+    sub_21B644E48(v7, coordinator);
     swift_unknownObjectRelease();
   }
 
   swift_unknownObjectRelease();
 }
 
-- (_TtC11PosterBoard39PosterEditingConfirmationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11PosterBoard39PosterEditingConfirmationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_21B6C8DA4();
     v7 = v6;
@@ -52,8 +52,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_21B61722C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_21B61722C(v5, v7, bundle);
 }
 
 @end

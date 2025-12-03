@@ -1,7 +1,7 @@
 @interface CNVCardFilteredPerson
-+ (id)filteredPersonWithPerson:(id)a3 scope:(id)a4;
++ (id)filteredPersonWithPerson:(id)person scope:(id)scope;
 + (id)os_log;
-- (CNVCardFilteredPerson)initWithPerson:(id)a3 scope:(id)a4;
+- (CNVCardFilteredPerson)initWithPerson:(id)person scope:(id)scope;
 - (NSArray)addressingGrammars;
 - (NSArray)calendarURIs;
 - (NSArray)emailAddresses;
@@ -51,8 +51,8 @@
 - (NSString)suffix;
 - (NSString)title;
 - (NSString)uid;
-- (id)filterItems:(id)a3 property:(id)a4;
-- (id)largeImageHashOfType:(id)a3;
+- (id)filterItems:(id)items property:(id)property;
+- (id)largeImageHashOfType:(id)type;
 - (int)downtimeWhitelistAuthorization;
 - (int)sharedPhotoDisplayPreference;
 @end
@@ -78,18 +78,18 @@ uint64_t __31__CNVCardFilteredPerson_os_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)filteredPersonWithPerson:(id)a3 scope:(id)a4
++ (id)filteredPersonWithPerson:(id)person scope:(id)scope
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEmpty])
+  personCopy = person;
+  scopeCopy = scope;
+  if ([scopeCopy isEmpty])
   {
-    v8 = v6;
+    v8 = personCopy;
   }
 
   else
   {
-    v8 = [[a1 alloc] initWithPerson:v6 scope:v7];
+    v8 = [[self alloc] initWithPerson:personCopy scope:scopeCopy];
   }
 
   v9 = v8;
@@ -97,18 +97,18 @@ uint64_t __31__CNVCardFilteredPerson_os_log__block_invoke()
   return v9;
 }
 
-- (CNVCardFilteredPerson)initWithPerson:(id)a3 scope:(id)a4
+- (CNVCardFilteredPerson)initWithPerson:(id)person scope:(id)scope
 {
-  v7 = a3;
-  v8 = a4;
+  personCopy = person;
+  scopeCopy = scope;
   v13.receiver = self;
   v13.super_class = CNVCardFilteredPerson;
   v9 = [(CNVCardFilteredPerson *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_person, a3);
-    objc_storeStrong(&v10->_scope, a4);
+    objc_storeStrong(&v9->_person, person);
+    objc_storeStrong(&v10->_scope, scope);
     v11 = v10;
   }
 
@@ -117,232 +117,232 @@ uint64_t __31__CNVCardFilteredPerson_os_log__block_invoke()
 
 - (NSString)firstName
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"First"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"First"];
 
   if (v4)
   {
-    v5 = 0;
+    firstName = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person firstName];
+    firstName = [(CNVCardPerson *)self->_person firstName];
   }
 
-  return v5;
+  return firstName;
 }
 
 - (NSString)lastName
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"Last"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"Last"];
 
   if (v4)
   {
-    v5 = 0;
+    lastName = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person lastName];
+    lastName = [(CNVCardPerson *)self->_person lastName];
   }
 
-  return v5;
+  return lastName;
 }
 
 - (NSString)middleName
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"Middle"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"Middle"];
 
   if (v4)
   {
-    v5 = 0;
+    middleName = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person middleName];
+    middleName = [(CNVCardPerson *)self->_person middleName];
   }
 
-  return v5;
+  return middleName;
 }
 
 - (NSString)title
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"Title"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"Title"];
 
   if (v4)
   {
-    v5 = 0;
+    title = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person title];
+    title = [(CNVCardPerson *)self->_person title];
   }
 
-  return v5;
+  return title;
 }
 
 - (NSString)suffix
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"Suffix"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"Suffix"];
 
   if (v4)
   {
-    v5 = 0;
+    suffix = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person suffix];
+    suffix = [(CNVCardPerson *)self->_person suffix];
   }
 
-  return v5;
+  return suffix;
 }
 
 - (NSString)nickname
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"Nickname"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"Nickname"];
 
   if (v4)
   {
-    v5 = 0;
+    nickname = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person nickname];
+    nickname = [(CNVCardPerson *)self->_person nickname];
   }
 
-  return v5;
+  return nickname;
 }
 
 - (NSString)maidenName
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 _cn_any:&__block_literal_global_5];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields _cn_any:&__block_literal_global_5];
 
   if (v4)
   {
-    v5 = 0;
+    maidenName = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person maidenName];
+    maidenName = [(CNVCardPerson *)self->_person maidenName];
   }
 
-  return v5;
+  return maidenName;
 }
 
 - (NSString)phoneticFirstName
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"FirstPhonetic"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"FirstPhonetic"];
 
   if (v4)
   {
-    v5 = 0;
+    phoneticFirstName = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person phoneticFirstName];
+    phoneticFirstName = [(CNVCardPerson *)self->_person phoneticFirstName];
   }
 
-  return v5;
+  return phoneticFirstName;
 }
 
 - (NSString)phoneticMiddleName
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"MiddlePhonetic"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"MiddlePhonetic"];
 
   if (v4)
   {
-    v5 = 0;
+    phoneticMiddleName = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person phoneticMiddleName];
+    phoneticMiddleName = [(CNVCardPerson *)self->_person phoneticMiddleName];
   }
 
-  return v5;
+  return phoneticMiddleName;
 }
 
 - (NSString)phoneticLastName
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"LastPhonetic"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"LastPhonetic"];
 
   if (v4)
   {
-    v5 = 0;
+    phoneticLastName = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person phoneticLastName];
+    phoneticLastName = [(CNVCardPerson *)self->_person phoneticLastName];
   }
 
-  return v5;
+  return phoneticLastName;
 }
 
 - (NSString)pronunciationFirstName
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"FirstPronunciation"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"FirstPronunciation"];
 
   if (v4)
   {
-    v5 = 0;
+    pronunciationFirstName = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person pronunciationFirstName];
+    pronunciationFirstName = [(CNVCardPerson *)self->_person pronunciationFirstName];
   }
 
-  return v5;
+  return pronunciationFirstName;
 }
 
 - (NSString)pronunciationLastName
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"LastPronunciation"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"LastPronunciation"];
 
   if (v4)
   {
-    v5 = 0;
+    pronunciationLastName = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person pronunciationLastName];
+    pronunciationLastName = [(CNVCardPerson *)self->_person pronunciationLastName];
   }
 
-  return v5;
+  return pronunciationLastName;
 }
 
 - (NSArray)addressingGrammars
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"AddressingGrammar"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"AddressingGrammar"];
 
   if (v4)
   {
-    v5 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
-      _os_log_impl(&dword_2771F5000, v5, OS_LOG_TYPE_DEFAULT, "Excluding pronouns from VCard", v9, 2u);
+      _os_log_impl(&dword_2771F5000, os_log, OS_LOG_TYPE_DEFAULT, "Excluding pronouns from VCard", v9, 2u);
     }
 
     v6 = 0;
@@ -350,8 +350,8 @@ uint64_t __31__CNVCardFilteredPerson_os_log__block_invoke()
 
   else
   {
-    v7 = [(CNVCardPerson *)self->_person addressingGrammars];
-    v6 = [(CNVCardFilteredPerson *)self filterItems:v7 property:@"AddressingGrammar"];
+    addressingGrammars = [(CNVCardPerson *)self->_person addressingGrammars];
+    v6 = [(CNVCardFilteredPerson *)self filterItems:addressingGrammars property:@"AddressingGrammar"];
   }
 
   return v6;
@@ -359,111 +359,111 @@ uint64_t __31__CNVCardFilteredPerson_os_log__block_invoke()
 
 - (NSString)organization
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"Organization"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"Organization"];
 
   if (v4)
   {
-    v5 = 0;
+    organization = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person organization];
+    organization = [(CNVCardPerson *)self->_person organization];
   }
 
-  return v5;
+  return organization;
 }
 
 - (NSString)phoneticOrganization
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"OrganizationPhonetic"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"OrganizationPhonetic"];
 
   if (v4)
   {
-    v5 = 0;
+    phoneticOrganization = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person phoneticOrganization];
+    phoneticOrganization = [(CNVCardPerson *)self->_person phoneticOrganization];
   }
 
-  return v5;
+  return phoneticOrganization;
 }
 
 - (NSString)department
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"ABDepartment"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"ABDepartment"];
 
   if (v4)
   {
-    v5 = 0;
+    department = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person department];
+    department = [(CNVCardPerson *)self->_person department];
   }
 
-  return v5;
+  return department;
 }
 
 - (NSString)jobTitle
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"JobTitle"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"JobTitle"];
 
   if (v4)
   {
-    v5 = 0;
+    jobTitle = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person jobTitle];
+    jobTitle = [(CNVCardPerson *)self->_person jobTitle];
   }
 
-  return v5;
+  return jobTitle;
 }
 
 - (NSArray)emailAddresses
 {
-  v3 = [(CNVCardPerson *)self->_person emailAddresses];
-  v4 = [(CNVCardFilteredPerson *)self filterItems:v3 property:@"Email"];
+  emailAddresses = [(CNVCardPerson *)self->_person emailAddresses];
+  v4 = [(CNVCardFilteredPerson *)self filterItems:emailAddresses property:@"Email"];
 
   return v4;
 }
 
 - (NSArray)phoneNumbers
 {
-  v3 = [(CNVCardPerson *)self->_person phoneNumbers];
-  v4 = [(CNVCardFilteredPerson *)self filterItems:v3 property:@"Phone"];
+  phoneNumbers = [(CNVCardPerson *)self->_person phoneNumbers];
+  v4 = [(CNVCardFilteredPerson *)self filterItems:phoneNumbers property:@"Phone"];
 
   return v4;
 }
 
 - (NSArray)postalAddresses
 {
-  v3 = [(CNVCardPerson *)self->_person postalAddresses];
-  v4 = [(CNVCardFilteredPerson *)self filterItems:v3 property:@"Address"];
+  postalAddresses = [(CNVCardPerson *)self->_person postalAddresses];
+  v4 = [(CNVCardFilteredPerson *)self filterItems:postalAddresses property:@"Address"];
 
   return v4;
 }
 
 - (NSArray)socialProfiles
 {
-  v3 = [(CNVCardPerson *)self->_person socialProfiles];
+  socialProfiles = [(CNVCardPerson *)self->_person socialProfiles];
   if (([(CNVCardFilteredPersonScope *)self->_scope filterOptions]& 1) == 0)
   {
-    v4 = [v3 _cn_map:&__block_literal_global_8];
+    v4 = [socialProfiles _cn_map:&__block_literal_global_8];
 
-    v3 = v4;
+    socialProfiles = v4;
   }
 
-  v5 = [(CNVCardFilteredPerson *)self filterItems:v3 property:@"SocialProfile"];
+  v5 = [(CNVCardFilteredPerson *)self filterItems:socialProfiles property:@"SocialProfile"];
 
   return v5;
 }
@@ -486,15 +486,15 @@ id __39__CNVCardFilteredPerson_socialProfiles__block_invoke(uint64_t a1, void *a
 
 - (NSArray)instantMessagingAddresses
 {
-  v3 = [(CNVCardPerson *)self->_person instantMessagingAddresses];
+  instantMessagingAddresses = [(CNVCardPerson *)self->_person instantMessagingAddresses];
   if (([(CNVCardFilteredPersonScope *)self->_scope filterOptions]& 1) == 0)
   {
-    v4 = [v3 _cn_map:&__block_literal_global_10];
+    v4 = [instantMessagingAddresses _cn_map:&__block_literal_global_10];
 
-    v3 = v4;
+    instantMessagingAddresses = v4;
   }
 
-  v5 = [(CNVCardFilteredPerson *)self filterItems:v3 property:@"InstantMessage"];
+  v5 = [(CNVCardFilteredPerson *)self filterItems:instantMessagingAddresses property:@"InstantMessage"];
 
   return v5;
 }
@@ -517,49 +517,49 @@ id __50__CNVCardFilteredPerson_instantMessagingAddresses__block_invoke(uint64_t 
 
 - (NSArray)urls
 {
-  v3 = [(CNVCardPerson *)self->_person urls];
-  v4 = [(CNVCardFilteredPerson *)self filterItems:v3 property:@"URLs"];
+  urls = [(CNVCardPerson *)self->_person urls];
+  v4 = [(CNVCardFilteredPerson *)self filterItems:urls property:@"URLs"];
 
   return v4;
 }
 
 - (NSArray)calendarURIs
 {
-  v3 = [(CNVCardPerson *)self->_person calendarURIs];
-  v4 = [(CNVCardFilteredPerson *)self filterItems:v3 property:@"calendarURIs"];
+  calendarURIs = [(CNVCardPerson *)self->_person calendarURIs];
+  v4 = [(CNVCardFilteredPerson *)self filterItems:calendarURIs property:@"calendarURIs"];
 
   return v4;
 }
 
 - (NSDictionary)activityAlerts
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"ActivityAlert"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"ActivityAlert"];
 
   if (v4)
   {
-    v5 = 0;
+    activityAlerts = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person activityAlerts];
+    activityAlerts = [(CNVCardPerson *)self->_person activityAlerts];
   }
 
-  return v5;
+  return activityAlerts;
 }
 
-- (id)filterItems:(id)a3 property:(id)a4
+- (id)filterItems:(id)items property:(id)property
 {
-  v6 = a4;
+  propertyCopy = property;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __46__CNVCardFilteredPerson_filterItems_property___block_invoke;
   v10[3] = &unk_27A710EA0;
-  v11 = v6;
-  v12 = self;
-  v7 = v6;
-  v8 = [a3 _cn_filter:v10];
+  v11 = propertyCopy;
+  selfCopy = self;
+  v7 = propertyCopy;
+  v8 = [items _cn_filter:v10];
 
   return v8;
 }
@@ -579,99 +579,99 @@ uint64_t __46__CNVCardFilteredPerson_filterItems_property___block_invoke(uint64_
 
 - (NSArray)imageReferences
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"com.apple.image.thumbnail"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"com.apple.image.thumbnail"];
 
   if (v4)
   {
-    v5 = 0;
+    imageReferences = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person imageReferences];
+    imageReferences = [(CNVCardPerson *)self->_person imageReferences];
   }
 
-  return v5;
+  return imageReferences;
 }
 
 - (NSDictionary)imageCropRects
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"com.apple.image.thumbnail"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"com.apple.image.thumbnail"];
 
   if (v4)
   {
-    v5 = 0;
+    imageCropRects = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person imageCropRects];
+    imageCropRects = [(CNVCardPerson *)self->_person imageCropRects];
   }
 
-  return v5;
+  return imageCropRects;
 }
 
 - (NSDictionary)largeImageCropRects
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"com.apple.image.thumbnail"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"com.apple.image.thumbnail"];
 
   if (v4)
   {
-    v5 = 0;
+    largeImageCropRects = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person largeImageCropRects];
+    largeImageCropRects = [(CNVCardPerson *)self->_person largeImageCropRects];
   }
 
-  return v5;
+  return largeImageCropRects;
 }
 
 - (NSData)largeImageData
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"com.apple.image.thumbnail"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"com.apple.image.thumbnail"];
 
   if (v4)
   {
-    v5 = 0;
+    largeImageData = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person largeImageData];
+    largeImageData = [(CNVCardPerson *)self->_person largeImageData];
   }
 
-  return v5;
+  return largeImageData;
 }
 
 - (NSData)imageData
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"com.apple.image.thumbnail"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"com.apple.image.thumbnail"];
 
   if (v4)
   {
-    v5 = 0;
+    imageData = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person imageData];
+    imageData = [(CNVCardPerson *)self->_person imageData];
   }
 
-  return v5;
+  return imageData;
 }
 
-- (id)largeImageHashOfType:(id)a3
+- (id)largeImageHashOfType:(id)type
 {
-  v4 = a3;
-  v5 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v6 = [v5 containsObject:@"com.apple.image.thumbnail"];
+  typeCopy = type;
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v6 = [excludedFields containsObject:@"com.apple.image.thumbnail"];
 
   if (v6)
   {
@@ -680,7 +680,7 @@ uint64_t __46__CNVCardFilteredPerson_filterItems_property___block_invoke(uint64_
 
   else
   {
-    v7 = [(CNVCardPerson *)self->_person largeImageHashOfType:v4];
+    v7 = [(CNVCardPerson *)self->_person largeImageHashOfType:typeCopy];
   }
 
   return v7;
@@ -688,62 +688,62 @@ uint64_t __46__CNVCardFilteredPerson_filterItems_property___block_invoke(uint64_
 
 - (NSData)wallpaper
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"wallpaper"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"wallpaper"];
 
   if (v4)
   {
-    v5 = 0;
+    wallpaper = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person wallpaper];
+    wallpaper = [(CNVCardPerson *)self->_person wallpaper];
   }
 
-  return v5;
+  return wallpaper;
 }
 
 - (NSData)watchWallpaperImageData
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"watchWallpaperImageData"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"watchWallpaperImageData"];
 
   if (v4)
   {
-    v5 = 0;
+    watchWallpaperImageData = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person watchWallpaperImageData];
+    watchWallpaperImageData = [(CNVCardPerson *)self->_person watchWallpaperImageData];
   }
 
-  return v5;
+  return watchWallpaperImageData;
 }
 
 - (NSString)posterIdentifier
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"posterIdentifier"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"posterIdentifier"];
 
   if (v4)
   {
-    v5 = 0;
+    posterIdentifier = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person posterIdentifier];
+    posterIdentifier = [(CNVCardPerson *)self->_person posterIdentifier];
   }
 
-  return v5;
+  return posterIdentifier;
 }
 
 - (int)sharedPhotoDisplayPreference
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"sharedPhotoDisplayPreference"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"sharedPhotoDisplayPreference"];
 
   if (v4)
   {
@@ -757,88 +757,88 @@ uint64_t __46__CNVCardFilteredPerson_filterItems_property___block_invoke(uint64_
 
 - (NSData)imageBackgroundColorsData
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"imageBackgroundColorsData"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"imageBackgroundColorsData"];
 
   if (v4)
   {
-    v5 = 0;
+    imageBackgroundColorsData = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person imageBackgroundColorsData];
+    imageBackgroundColorsData = [(CNVCardPerson *)self->_person imageBackgroundColorsData];
   }
 
-  return v5;
+  return imageBackgroundColorsData;
 }
 
 - (NSData)sensitiveContentConfiguration
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"sensitiveContentConfiguration"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"sensitiveContentConfiguration"];
 
   if (v4)
   {
-    v5 = 0;
+    sensitiveContentConfiguration = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person sensitiveContentConfiguration];
+    sensitiveContentConfiguration = [(CNVCardPerson *)self->_person sensitiveContentConfiguration];
   }
 
-  return v5;
+  return sensitiveContentConfiguration;
 }
 
 - (NSDateComponents)birthdayComponents
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 _cn_any:&__block_literal_global_15];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields _cn_any:&__block_literal_global_15];
 
   if (v4)
   {
-    v5 = 0;
+    birthdayComponents = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person birthdayComponents];
+    birthdayComponents = [(CNVCardPerson *)self->_person birthdayComponents];
   }
 
-  return v5;
+  return birthdayComponents;
 }
 
 - (NSDateComponents)alternateBirthdayComponents
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 _cn_any:&__block_literal_global_17];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields _cn_any:&__block_literal_global_17];
 
   if (v4)
   {
-    v5 = 0;
+    alternateBirthdayComponents = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person alternateBirthdayComponents];
+    alternateBirthdayComponents = [(CNVCardPerson *)self->_person alternateBirthdayComponents];
   }
 
-  return v5;
+  return alternateBirthdayComponents;
 }
 
 - (NSArray)otherDateComponents
 {
-  v3 = [(CNVCardPerson *)self->_person otherDateComponents];
-  v4 = [(CNVCardFilteredPerson *)self filterItems:v3 property:@"ABDateComponents"];
+  otherDateComponents = [(CNVCardPerson *)self->_person otherDateComponents];
+  v4 = [(CNVCardFilteredPerson *)self filterItems:otherDateComponents property:@"ABDateComponents"];
 
   return v4;
 }
 
 - (NSArray)relatedNames
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"ABRelatedNames"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"ABRelatedNames"];
 
   if (v4)
   {
@@ -847,8 +847,8 @@ uint64_t __46__CNVCardFilteredPerson_filterItems_property___block_invoke(uint64_
 
   else
   {
-    v6 = [(CNVCardPerson *)self->_person relatedNames];
-    v5 = [(CNVCardFilteredPerson *)self filterItems:v6 property:@"ABRelatedNames"];
+    relatedNames = [(CNVCardPerson *)self->_person relatedNames];
+    v5 = [(CNVCardFilteredPerson *)self filterItems:relatedNames property:@"ABRelatedNames"];
   }
 
   return v5;
@@ -856,62 +856,62 @@ uint64_t __46__CNVCardFilteredPerson_filterItems_property___block_invoke(uint64_
 
 - (NSString)note
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"Note"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"Note"];
 
   if (v4)
   {
-    v5 = 0;
+    note = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person note];
+    note = [(CNVCardPerson *)self->_person note];
   }
 
-  return v5;
+  return note;
 }
 
 - (NSArray)namesOfParentGroups
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"ABParentGroups"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"ABParentGroups"];
 
   if (v4)
   {
-    v5 = 0;
+    namesOfParentGroups = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person namesOfParentGroups];
+    namesOfParentGroups = [(CNVCardPerson *)self->_person namesOfParentGroups];
   }
 
-  return v5;
+  return namesOfParentGroups;
 }
 
 - (NSString)cardDAVUID
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"externalUUID"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"externalUUID"];
 
   if (v4)
   {
-    v5 = 0;
+    cardDAVUID = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person cardDAVUID];
+    cardDAVUID = [(CNVCardPerson *)self->_person cardDAVUID];
   }
 
-  return v5;
+  return cardDAVUID;
 }
 
 - (NSString)uid
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"UID"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"UID"];
 
   if (v4)
   {
@@ -928,62 +928,62 @@ uint64_t __46__CNVCardFilteredPerson_filterItems_property___block_invoke(uint64_
 
 - (NSString)phonemeData
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"PhonemeData"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"PhonemeData"];
 
   if (v4)
   {
-    v5 = 0;
+    phonemeData = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person phonemeData];
+    phonemeData = [(CNVCardPerson *)self->_person phonemeData];
   }
 
-  return v5;
+  return phonemeData;
 }
 
 - (NSString)preferredLikenessSource
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"PreferredLikenessSource"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"PreferredLikenessSource"];
 
   if (v4)
   {
-    v5 = 0;
+    preferredLikenessSource = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person preferredLikenessSource];
+    preferredLikenessSource = [(CNVCardPerson *)self->_person preferredLikenessSource];
   }
 
-  return v5;
+  return preferredLikenessSource;
 }
 
 - (NSString)preferredApplePersonaIdentifier
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"PreferredApplePersonaIdentifier"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"PreferredApplePersonaIdentifier"];
 
   if (v4)
   {
-    v5 = 0;
+    preferredApplePersonaIdentifier = 0;
   }
 
   else
   {
-    v5 = [(CNVCardPerson *)self->_person preferredApplePersonaIdentifier];
+    preferredApplePersonaIdentifier = [(CNVCardPerson *)self->_person preferredApplePersonaIdentifier];
   }
 
-  return v5;
+  return preferredApplePersonaIdentifier;
 }
 
 - (int)downtimeWhitelistAuthorization
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v4 = [v3 containsObject:@"GuardianWhitelisted"];
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v4 = [excludedFields containsObject:@"GuardianWhitelisted"];
 
   if (v4)
   {
@@ -997,77 +997,77 @@ uint64_t __46__CNVCardFilteredPerson_filterItems_property___block_invoke(uint64_
 
 - (NSString)imageType
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  if ([v3 containsObject:@"com.apple.image.thumbnail"])
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  if ([excludedFields containsObject:@"com.apple.image.thumbnail"])
   {
 
 LABEL_4:
-    v6 = 0;
+    imageType = 0;
     goto LABEL_6;
   }
 
-  v4 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v5 = [v4 containsObject:@"imageType"];
+  excludedFields2 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v5 = [excludedFields2 containsObject:@"imageType"];
 
   if (v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [(CNVCardPerson *)self->_person imageType];
+  imageType = [(CNVCardPerson *)self->_person imageType];
 LABEL_6:
 
-  return v6;
+  return imageType;
 }
 
 - (NSData)imageHash
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  if ([v3 containsObject:@"com.apple.image.thumbnail"])
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  if ([excludedFields containsObject:@"com.apple.image.thumbnail"])
   {
 
 LABEL_4:
-    v6 = 0;
+    imageHash = 0;
     goto LABEL_6;
   }
 
-  v4 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v5 = [v4 containsObject:@"imageHash"];
+  excludedFields2 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v5 = [excludedFields2 containsObject:@"imageHash"];
 
   if (v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [(CNVCardPerson *)self->_person imageHash];
+  imageHash = [(CNVCardPerson *)self->_person imageHash];
 LABEL_6:
 
-  return v6;
+  return imageHash;
 }
 
 - (NSData)memojiMetadata
 {
-  v3 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  if ([v3 containsObject:@"com.apple.image.thumbnail"])
+  excludedFields = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  if ([excludedFields containsObject:@"com.apple.image.thumbnail"])
   {
 
 LABEL_4:
-    v6 = 0;
+    memojiMetadata = 0;
     goto LABEL_6;
   }
 
-  v4 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
-  v5 = [v4 containsObject:@"memojiMetadata"];
+  excludedFields2 = [(CNVCardFilteredPersonScope *)self->_scope excludedFields];
+  v5 = [excludedFields2 containsObject:@"memojiMetadata"];
 
   if (v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [(CNVCardPerson *)self->_person memojiMetadata];
+  memojiMetadata = [(CNVCardPerson *)self->_person memojiMetadata];
 LABEL_6:
 
-  return v6;
+  return memojiMetadata;
 }
 
 @end

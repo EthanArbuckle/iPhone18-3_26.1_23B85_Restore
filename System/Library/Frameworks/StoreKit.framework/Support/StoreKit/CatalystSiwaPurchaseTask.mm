@@ -1,27 +1,27 @@
 @interface CatalystSiwaPurchaseTask
-- (CatalystSiwaPurchaseTask)initWithPurchase:(id)a3 client:(id)a4 dialogContext:(id)a5 paymentSheetDelegate:(id)a6;
+- (CatalystSiwaPurchaseTask)initWithPurchase:(id)purchase client:(id)client dialogContext:(id)context paymentSheetDelegate:(id)delegate;
 - (id)_performPurchase;
 - (void)main;
 @end
 
 @implementation CatalystSiwaPurchaseTask
 
-- (CatalystSiwaPurchaseTask)initWithPurchase:(id)a3 client:(id)a4 dialogContext:(id)a5 paymentSheetDelegate:(id)a6
+- (CatalystSiwaPurchaseTask)initWithPurchase:(id)purchase client:(id)client dialogContext:(id)context paymentSheetDelegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  purchaseCopy = purchase;
+  clientCopy = client;
+  contextCopy = context;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = CatalystSiwaPurchaseTask;
   v15 = [(Task *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_purchase, a3);
-    objc_storeStrong(&v16->_client, a4);
-    objc_storeStrong(&v16->_dialogContext, a5);
-    objc_storeWeak(&v16->_paymentSheetDelegate, v14);
+    objc_storeStrong(&v15->_purchase, purchase);
+    objc_storeStrong(&v16->_client, client);
+    objc_storeStrong(&v16->_dialogContext, context);
+    objc_storeWeak(&v16->_paymentSheetDelegate, delegateCopy);
   }
 
   return v16;
@@ -50,9 +50,9 @@
     }
 
 LABEL_8:
-    v5 = [(CatalystSiwaPurchaseTask *)self _performPurchase];
+    _performPurchase = [(CatalystSiwaPurchaseTask *)self _performPurchase];
     v15 = 0;
-    v6 = [v5 resultWithError:&v15];
+    v6 = [_performPurchase resultWithError:&v15];
     v3 = v15;
 
     objc_storeStrong(&self->_purchaseResult, v6);
@@ -68,11 +68,11 @@ LABEL_8:
       {
         purchase = self->_purchase;
         v9 = v7;
-        v10 = [(AMSPurchaseSIWA *)purchase logUUID];
+        logUUID = [(AMSPurchaseSIWA *)purchase logUUID];
         *buf = 138543618;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 2114;
-        v19 = v10;
+        v19 = logUUID;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Purchase completed.", buf, 0x16u);
       }
 
@@ -96,11 +96,11 @@ LABEL_8:
         {
           v12 = self->_purchase;
           v13 = v11;
-          v14 = [(AMSPurchaseSIWA *)v12 logUUID];
+          logUUID2 = [(AMSPurchaseSIWA *)v12 logUUID];
           *buf = 138543874;
-          v17 = self;
+          selfCopy2 = self;
           v18 = 2114;
-          v19 = v14;
+          v19 = logUUID2;
           v20 = 2112;
           v21 = v3;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: Purchase resulted in error: %@.", buf, 0x20u);
@@ -147,7 +147,7 @@ LABEL_23:
     v14[2] = sub_10000AAE0;
     v14[3] = &unk_10037FBF0;
     v15 = v3;
-    v16 = self;
+    selfCopy = self;
     [(DialogProtocol *)dialogContext handlePurchase:purchase paymentSheetDelegate:WeakRetained completionHandler:v14];
 
     v8 = v15;
@@ -165,11 +165,11 @@ LABEL_23:
     {
       v10 = self->_purchase;
       v11 = v9;
-      v12 = [(AMSPurchaseSIWA *)v10 logUUID];
+      logUUID = [(AMSPurchaseSIWA *)v10 logUUID];
       *buf = 138543618;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
-      v20 = v12;
+      v20 = logUUID;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@]: No dialog observer to process purchase.", buf, 0x16u);
     }
 

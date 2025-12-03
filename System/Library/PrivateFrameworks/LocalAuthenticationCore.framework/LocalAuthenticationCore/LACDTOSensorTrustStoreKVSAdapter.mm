@@ -1,32 +1,32 @@
 @interface LACDTOSensorTrustStoreKVSAdapter
-- (LACDTOSensorTrustStoreKVSAdapter)initWithKVStore:(id)a3;
-- (void)storeSensorTrustState:(id)a3 completion:(id)a4;
+- (LACDTOSensorTrustStoreKVSAdapter)initWithKVStore:(id)store;
+- (void)storeSensorTrustState:(id)state completion:(id)completion;
 @end
 
 @implementation LACDTOSensorTrustStoreKVSAdapter
 
-- (LACDTOSensorTrustStoreKVSAdapter)initWithKVStore:(id)a3
+- (LACDTOSensorTrustStoreKVSAdapter)initWithKVStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = LACDTOSensorTrustStoreKVSAdapter;
   v6 = [(LACDTOSensorTrustStoreKVSAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_kvStore, a3);
+    objc_storeStrong(&v6->_kvStore, store);
   }
 
   return v7;
 }
 
-- (void)storeSensorTrustState:(id)a3 completion:(id)a4
+- (void)storeSensorTrustState:(id)state completion:(id)completion
 {
-  v6 = a4;
-  if ([a3 isDisapproved])
+  completionCopy = completion;
+  if ([state isDisapproved])
   {
     v8 = [[LACDTOKVStoreValue alloc] initWithBoolValue:0];
-    [(LACDTOKVStoreWriter *)self->_kvStore setValue:v8 forKey:6 completion:v6];
+    [(LACDTOKVStoreWriter *)self->_kvStore setValue:v8 forKey:6 completion:completionCopy];
   }
 
   else
@@ -37,7 +37,7 @@
       [LACDTOSensorTrustStoreKVSAdapter storeSensorTrustState:v7 completion:?];
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

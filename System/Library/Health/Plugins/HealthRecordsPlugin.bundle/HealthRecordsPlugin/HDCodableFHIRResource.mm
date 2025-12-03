@@ -8,19 +8,19 @@
 {
   if ([(HDCodableFHIRResource *)self hasUniquenessChecksum])
   {
-    v3 = [(HDCodableFHIRResource *)self uniquenessChecksum];
+    uniquenessChecksum = [(HDCodableFHIRResource *)self uniquenessChecksum];
   }
 
   else
   {
-    v4 = [(HDCodableFHIRResource *)self fhirVersion];
-    v5 = [HKFHIRVersion versionFromVersionString:v4];
+    fhirVersion = [(HDCodableFHIRResource *)self fhirVersion];
+    v5 = [HKFHIRVersion versionFromVersionString:fhirVersion];
 
     v6 = [HDFHIRResourceData alloc];
-    v7 = [(HDCodableFHIRResource *)self rawContent];
-    v8 = [(HDCodableFHIRResource *)self sourceURL];
-    v9 = [NSURL hk_safeURLWithString:v8];
-    v10 = [v6 initWithData:v7 sourceURL:v9 FHIRVersion:v5];
+    rawContent = [(HDCodableFHIRResource *)self rawContent];
+    sourceURL = [(HDCodableFHIRResource *)self sourceURL];
+    v9 = [NSURL hk_safeURLWithString:sourceURL];
+    v10 = [v6 initWithData:rawContent sourceURL:v9 FHIRVersion:v5];
 
     [(HDCodableFHIRResource *)self receivedDate];
     v11 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
@@ -30,7 +30,7 @@
 
     if (v12)
     {
-      v3 = [v12 uniquenessChecksum];
+      uniquenessChecksum = [v12 uniquenessChecksum];
     }
 
     else
@@ -42,12 +42,12 @@
         sub_A3318(v13, v14);
       }
 
-      v15 = [(HDCodableFHIRResource *)self rawContent];
-      v3 = [v15 hk_MD5];
+      rawContent2 = [(HDCodableFHIRResource *)self rawContent];
+      uniquenessChecksum = [rawContent2 hk_MD5];
     }
   }
 
-  return v3;
+  return uniquenessChecksum;
 }
 
 @end

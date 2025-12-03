@@ -1,28 +1,28 @@
 @interface AMLUserLevelPhotosSearchMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsUiSurface:(id)a3;
+- (int)StringAsUiSurface:(id)surface;
 - (int)uiSurface;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCoverageWeekly:(BOOL)a3;
-- (void)setHasIsProductionModel:(BOOL)a3;
-- (void)setHasNdcgDaily:(BOOL)a3;
-- (void)setHasNdcgWeekly:(BOOL)a3;
-- (void)setHasTtrDaily:(BOOL)a3;
-- (void)setHasTtrWeekly:(BOOL)a3;
-- (void)setHasUiSurface:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCoverageWeekly:(BOOL)weekly;
+- (void)setHasIsProductionModel:(BOOL)model;
+- (void)setHasNdcgDaily:(BOOL)daily;
+- (void)setHasNdcgWeekly:(BOOL)weekly;
+- (void)setHasTtrDaily:(BOOL)daily;
+- (void)setHasTtrWeekly:(BOOL)weekly;
+- (void)setHasUiSurface:(BOOL)surface;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AMLUserLevelPhotosSearchMetrics
 
-- (void)setHasIsProductionModel:(BOOL)a3
+- (void)setHasIsProductionModel:(BOOL)model
 {
-  if (a3)
+  if (model)
   {
     v3 = 0x80;
   }
@@ -35,9 +35,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasTtrDaily:(BOOL)a3
+- (void)setHasTtrDaily:(BOOL)daily
 {
-  if (a3)
+  if (daily)
   {
     v3 = 16;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTtrWeekly:(BOOL)a3
+- (void)setHasTtrWeekly:(BOOL)weekly
 {
-  if (a3)
+  if (weekly)
   {
     v3 = 32;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasCoverageWeekly:(BOOL)a3
+- (void)setHasCoverageWeekly:(BOOL)weekly
 {
-  if (a3)
+  if (weekly)
   {
     v3 = 2;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasNdcgDaily:(BOOL)a3
+- (void)setHasNdcgDaily:(BOOL)daily
 {
-  if (a3)
+  if (daily)
   {
     v3 = 4;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNdcgWeekly:(BOOL)a3
+- (void)setHasNdcgWeekly:(BOOL)weekly
 {
-  if (a3)
+  if (weekly)
   {
     v3 = 8;
   }
@@ -123,9 +123,9 @@
   }
 }
 
-- (void)setHasUiSurface:(BOOL)a3
+- (void)setHasUiSurface:(BOOL)surface
 {
-  if (a3)
+  if (surface)
   {
     v3 = 64;
   }
@@ -138,25 +138,25 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (int)StringAsUiSurface:(id)a3
+- (int)StringAsUiSurface:(id)surface
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AMLUISurfaceTypeUnknown"])
+  surfaceCopy = surface;
+  if ([surfaceCopy isEqualToString:@"AMLUISurfaceTypeUnknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AMLUISurfaceTypeSpotlight"])
+  else if ([surfaceCopy isEqualToString:@"AMLUISurfaceTypeSpotlight"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AMLUISurfaceTypePhotosApp"])
+  else if ([surfaceCopy isEqualToString:@"AMLUISurfaceTypePhotosApp"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AMLUISurfaceTypeStoryTellingBackground"])
+  else if ([surfaceCopy isEqualToString:@"AMLUISurfaceTypeStoryTellingBackground"])
   {
     v4 = 3;
   }
@@ -175,32 +175,32 @@
   v8.receiver = self;
   v8.super_class = AMLUserLevelPhotosSearchMetrics;
   v4 = [(AMLUserLevelPhotosSearchMetrics *)&v8 description];
-  v5 = [(AMLUserLevelPhotosSearchMetrics *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AMLUserLevelPhotosSearchMetrics *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 0x80000000) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_isProductionModel];
-    [v3 setObject:v4 forKey:@"isProductionModel"];
+    [dictionary setObject:v4 forKey:@"isProductionModel"];
   }
 
   modelName = self->_modelName;
   if (modelName)
   {
-    [v3 setObject:modelName forKey:@"modelName"];
+    [dictionary setObject:modelName forKey:@"modelName"];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_ttrDaily];
-    [v3 setObject:v11 forKey:@"ttrDaily"];
+    [dictionary setObject:v11 forKey:@"ttrDaily"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -221,7 +221,7 @@ LABEL_7:
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:self->_ttrWeekly];
-  [v3 setObject:v12 forKey:@"ttrWeekly"];
+  [dictionary setObject:v12 forKey:@"ttrWeekly"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -237,7 +237,7 @@ LABEL_8:
 
 LABEL_19:
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:self->_coverageDaily];
-  [v3 setObject:v13 forKey:@"coverageDaily"];
+  [dictionary setObject:v13 forKey:@"coverageDaily"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -253,7 +253,7 @@ LABEL_9:
 
 LABEL_20:
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_coverageWeekly];
-  [v3 setObject:v14 forKey:@"coverageWeekly"];
+  [dictionary setObject:v14 forKey:@"coverageWeekly"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -269,20 +269,20 @@ LABEL_10:
 
 LABEL_21:
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:self->_ndcgDaily];
-  [v3 setObject:v15 forKey:@"ndcgDaily"];
+  [dictionary setObject:v15 forKey:@"ndcgDaily"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_ndcgWeekly];
-    [v3 setObject:v7 forKey:@"ndcgWeekly"];
+    [dictionary setObject:v7 forKey:@"ndcgWeekly"];
   }
 
 LABEL_12:
   metricDefinitionVersion = self->_metricDefinitionVersion;
   if (metricDefinitionVersion)
   {
-    [v3 setObject:metricDefinitionVersion forKey:@"metricDefinitionVersion"];
+    [dictionary setObject:metricDefinitionVersion forKey:@"metricDefinitionVersion"];
   }
 
   if ((*&self->_has & 0x40) != 0)
@@ -298,45 +298,45 @@ LABEL_12:
       v10 = off_2782B5E80[uiSurface];
     }
 
-    [v3 setObject:v10 forKey:@"uiSurface"];
+    [dictionary setObject:v10 forKey:@"uiSurface"];
   }
 
   trialDeploymentId = self->_trialDeploymentId;
   if (trialDeploymentId)
   {
-    [v3 setObject:trialDeploymentId forKey:@"trialDeploymentId"];
+    [dictionary setObject:trialDeploymentId forKey:@"trialDeploymentId"];
   }
 
   trialExperimentId = self->_trialExperimentId;
   if (trialExperimentId)
   {
-    [v3 setObject:trialExperimentId forKey:@"trialExperimentId"];
+    [dictionary setObject:trialExperimentId forKey:@"trialExperimentId"];
   }
 
   trialTreatmentId = self->_trialTreatmentId;
   if (trialTreatmentId)
   {
-    [v3 setObject:trialTreatmentId forKey:@"trialTreatmentId"];
+    [dictionary setObject:trialTreatmentId forKey:@"trialTreatmentId"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v14 = v4;
+  toCopy = to;
+  v14 = toCopy;
   if ((*&self->_has & 0x80000000) != 0)
   {
     isProductionModel = self->_isProductionModel;
     PBDataWriterWriteBOOLField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_modelName)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   has = self->_has;
@@ -344,7 +344,7 @@ LABEL_12:
   {
     ttrDaily = self->_ttrDaily;
     PBDataWriterWriteDoubleField();
-    v4 = v14;
+    toCopy = v14;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -365,7 +365,7 @@ LABEL_7:
 
   ttrWeekly = self->_ttrWeekly;
   PBDataWriterWriteDoubleField();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -381,7 +381,7 @@ LABEL_8:
 LABEL_27:
   coverageDaily = self->_coverageDaily;
   PBDataWriterWriteDoubleField();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -397,7 +397,7 @@ LABEL_9:
 LABEL_28:
   coverageWeekly = self->_coverageWeekly;
   PBDataWriterWriteDoubleField();
-  v4 = v14;
+  toCopy = v14;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -413,69 +413,69 @@ LABEL_10:
 LABEL_29:
   ndcgDaily = self->_ndcgDaily;
   PBDataWriterWriteDoubleField();
-  v4 = v14;
+  toCopy = v14;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
     ndcgWeekly = self->_ndcgWeekly;
     PBDataWriterWriteDoubleField();
-    v4 = v14;
+    toCopy = v14;
   }
 
 LABEL_12:
   if (self->_metricDefinitionVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
     uiSurface = self->_uiSurface;
     PBDataWriterWriteInt32Field();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_trialDeploymentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_trialExperimentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_trialTreatmentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v14;
+    toCopy = v14;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x80000000) != 0)
   {
-    v4[100] = self->_isProductionModel;
-    v4[104] |= 0x80u;
+    toCopy[100] = self->_isProductionModel;
+    toCopy[104] |= 0x80u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_modelName)
   {
-    [v4 setModelName:?];
-    v4 = v6;
+    [toCopy setModelName:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(v4 + 5) = *&self->_ttrDaily;
-    v4[104] |= 0x10u;
+    *(toCopy + 5) = *&self->_ttrDaily;
+    toCopy[104] |= 0x10u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -494,8 +494,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 6) = *&self->_ttrWeekly;
-  v4[104] |= 0x20u;
+  *(toCopy + 6) = *&self->_ttrWeekly;
+  toCopy[104] |= 0x20u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -509,8 +509,8 @@ LABEL_8:
   }
 
 LABEL_27:
-  *(v4 + 1) = *&self->_coverageDaily;
-  v4[104] |= 1u;
+  *(toCopy + 1) = *&self->_coverageDaily;
+  toCopy[104] |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -524,8 +524,8 @@ LABEL_9:
   }
 
 LABEL_28:
-  *(v4 + 2) = *&self->_coverageWeekly;
-  v4[104] |= 2u;
+  *(toCopy + 2) = *&self->_coverageWeekly;
+  toCopy[104] |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -539,50 +539,50 @@ LABEL_10:
   }
 
 LABEL_29:
-  *(v4 + 3) = *&self->_ndcgDaily;
-  v4[104] |= 4u;
+  *(toCopy + 3) = *&self->_ndcgDaily;
+  toCopy[104] |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
-    *(v4 + 4) = *&self->_ndcgWeekly;
-    v4[104] |= 8u;
+    *(toCopy + 4) = *&self->_ndcgWeekly;
+    toCopy[104] |= 8u;
   }
 
 LABEL_12:
   if (self->_metricDefinitionVersion)
   {
     [v6 setMetricDefinitionVersion:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    *(v4 + 24) = self->_uiSurface;
-    v4[104] |= 0x40u;
+    *(toCopy + 24) = self->_uiSurface;
+    toCopy[104] |= 0x40u;
   }
 
   if (self->_trialDeploymentId)
   {
     [v6 setTrialDeploymentId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_trialExperimentId)
   {
     [v6 setTrialExperimentId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_trialTreatmentId)
   {
     [v6 setTrialTreatmentId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x80000000) != 0)
   {
@@ -590,7 +590,7 @@ LABEL_12:
     *(v5 + 104) |= 0x80u;
   }
 
-  v7 = [(NSString *)self->_modelName copyWithZone:a3];
+  v7 = [(NSString *)self->_modelName copyWithZone:zone];
   v8 = *(v6 + 64);
   *(v6 + 64) = v7;
 
@@ -672,7 +672,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  v10 = [(NSString *)self->_metricDefinitionVersion copyWithZone:a3];
+  v10 = [(NSString *)self->_metricDefinitionVersion copyWithZone:zone];
   v11 = *(v6 + 56);
   *(v6 + 56) = v10;
 
@@ -682,31 +682,31 @@ LABEL_10:
     *(v6 + 104) |= 0x40u;
   }
 
-  v12 = [(NSString *)self->_trialDeploymentId copyWithZone:a3];
+  v12 = [(NSString *)self->_trialDeploymentId copyWithZone:zone];
   v13 = *(v6 + 72);
   *(v6 + 72) = v12;
 
-  v14 = [(NSString *)self->_trialExperimentId copyWithZone:a3];
+  v14 = [(NSString *)self->_trialExperimentId copyWithZone:zone];
   v15 = *(v6 + 80);
   *(v6 + 80) = v14;
 
-  v16 = [(NSString *)self->_trialTreatmentId copyWithZone:a3];
+  v16 = [(NSString *)self->_trialTreatmentId copyWithZone:zone];
   v17 = *(v6 + 88);
   *(v6 + 88) = v16;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   has = self->_has;
-  v6 = v4[104];
+  v6 = equalCopy[104];
   if ((*&has & 0x80000000) != 0)
   {
     if ((v6 & 0x80000000) == 0)
@@ -714,16 +714,16 @@ LABEL_10:
       goto LABEL_58;
     }
 
-    v8 = v4[100];
+    v8 = equalCopy[100];
     if (self->_isProductionModel)
     {
-      if ((v4[100] & 1) == 0)
+      if ((equalCopy[100] & 1) == 0)
       {
         goto LABEL_58;
       }
     }
 
-    else if (v4[100])
+    else if (equalCopy[100])
     {
       goto LABEL_58;
     }
@@ -735,7 +735,7 @@ LABEL_10:
   }
 
   modelName = self->_modelName;
-  if (modelName | *(v4 + 8))
+  if (modelName | *(equalCopy + 8))
   {
     if (![(NSString *)modelName isEqual:?])
     {
@@ -745,87 +745,87 @@ LABEL_10:
     *&has = self->_has;
   }
 
-  v9 = v4[104];
+  v9 = equalCopy[104];
   if ((*&has & 0x10) != 0)
   {
-    if ((v4[104] & 0x10) == 0 || self->_ttrDaily != *(v4 + 5))
+    if ((equalCopy[104] & 0x10) == 0 || self->_ttrDaily != *(equalCopy + 5))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((v4[104] & 0x10) != 0)
+  else if ((equalCopy[104] & 0x10) != 0)
   {
     goto LABEL_58;
   }
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v4[104] & 0x20) == 0 || self->_ttrWeekly != *(v4 + 6))
+    if ((equalCopy[104] & 0x20) == 0 || self->_ttrWeekly != *(equalCopy + 6))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((v4[104] & 0x20) != 0)
+  else if ((equalCopy[104] & 0x20) != 0)
   {
     goto LABEL_58;
   }
 
   if (*&has)
   {
-    if ((v4[104] & 1) == 0 || self->_coverageDaily != *(v4 + 1))
+    if ((equalCopy[104] & 1) == 0 || self->_coverageDaily != *(equalCopy + 1))
     {
       goto LABEL_58;
     }
   }
 
-  else if (v4[104])
+  else if (equalCopy[104])
   {
     goto LABEL_58;
   }
 
   if ((*&has & 2) != 0)
   {
-    if ((v4[104] & 2) == 0 || self->_coverageWeekly != *(v4 + 2))
+    if ((equalCopy[104] & 2) == 0 || self->_coverageWeekly != *(equalCopy + 2))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((v4[104] & 2) != 0)
+  else if ((equalCopy[104] & 2) != 0)
   {
     goto LABEL_58;
   }
 
   if ((*&has & 4) != 0)
   {
-    if ((v4[104] & 4) == 0 || self->_ndcgDaily != *(v4 + 3))
+    if ((equalCopy[104] & 4) == 0 || self->_ndcgDaily != *(equalCopy + 3))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((v4[104] & 4) != 0)
+  else if ((equalCopy[104] & 4) != 0)
   {
     goto LABEL_58;
   }
 
   if ((*&has & 8) != 0)
   {
-    if ((v4[104] & 8) == 0 || self->_ndcgWeekly != *(v4 + 4))
+    if ((equalCopy[104] & 8) == 0 || self->_ndcgWeekly != *(equalCopy + 4))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((v4[104] & 8) != 0)
+  else if ((equalCopy[104] & 8) != 0)
   {
     goto LABEL_58;
   }
 
   metricDefinitionVersion = self->_metricDefinitionVersion;
-  if (metricDefinitionVersion | *(v4 + 7))
+  if (metricDefinitionVersion | *(equalCopy + 7))
   {
     if ([(NSString *)metricDefinitionVersion isEqual:?])
     {
@@ -839,28 +839,28 @@ LABEL_58:
   }
 
 LABEL_47:
-  v11 = v4[104];
+  v11 = equalCopy[104];
   if ((*&has & 0x40) != 0)
   {
-    if ((v4[104] & 0x40) == 0 || self->_uiSurface != *(v4 + 24))
+    if ((equalCopy[104] & 0x40) == 0 || self->_uiSurface != *(equalCopy + 24))
     {
       goto LABEL_58;
     }
   }
 
-  else if ((v4[104] & 0x40) != 0)
+  else if ((equalCopy[104] & 0x40) != 0)
   {
     goto LABEL_58;
   }
 
   trialDeploymentId = self->_trialDeploymentId;
-  if (trialDeploymentId | *(v4 + 9) && ![(NSString *)trialDeploymentId isEqual:?])
+  if (trialDeploymentId | *(equalCopy + 9) && ![(NSString *)trialDeploymentId isEqual:?])
   {
     goto LABEL_58;
   }
 
   trialExperimentId = self->_trialExperimentId;
-  if (trialExperimentId | *(v4 + 10))
+  if (trialExperimentId | *(equalCopy + 10))
   {
     if (![(NSString *)trialExperimentId isEqual:?])
     {
@@ -869,7 +869,7 @@ LABEL_47:
   }
 
   trialTreatmentId = self->_trialTreatmentId;
-  if (trialTreatmentId | *(v4 + 11))
+  if (trialTreatmentId | *(equalCopy + 11))
   {
     v15 = [(NSString *)trialTreatmentId isEqual:?];
   }
@@ -1117,28 +1117,28 @@ LABEL_59:
   return v34 ^ [(NSString *)self->_trialTreatmentId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[104] < 0)
+  fromCopy = from;
+  if (fromCopy[104] < 0)
   {
-    self->_isProductionModel = v4[100];
+    self->_isProductionModel = fromCopy[100];
     *&self->_has |= 0x80u;
   }
 
-  v6 = v4;
-  if (*(v4 + 8))
+  v6 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(AMLUserLevelPhotosSearchMetrics *)self setModelName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = v4[104];
+  v5 = fromCopy[104];
   if ((v5 & 0x10) != 0)
   {
-    self->_ttrDaily = *(v4 + 5);
+    self->_ttrDaily = *(fromCopy + 5);
     *&self->_has |= 0x10u;
-    v5 = v4[104];
+    v5 = fromCopy[104];
     if ((v5 & 0x20) == 0)
     {
 LABEL_7:
@@ -1151,14 +1151,14 @@ LABEL_7:
     }
   }
 
-  else if ((v4[104] & 0x20) == 0)
+  else if ((fromCopy[104] & 0x20) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_ttrWeekly = *(v4 + 6);
+  self->_ttrWeekly = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = v4[104];
+  v5 = fromCopy[104];
   if ((v5 & 1) == 0)
   {
 LABEL_8:
@@ -1171,9 +1171,9 @@ LABEL_8:
   }
 
 LABEL_27:
-  self->_coverageDaily = *(v4 + 1);
+  self->_coverageDaily = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = v4[104];
+  v5 = fromCopy[104];
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -1186,9 +1186,9 @@ LABEL_9:
   }
 
 LABEL_28:
-  self->_coverageWeekly = *(v4 + 2);
+  self->_coverageWeekly = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = v4[104];
+  v5 = fromCopy[104];
   if ((v5 & 4) == 0)
   {
 LABEL_10:
@@ -1201,44 +1201,44 @@ LABEL_10:
   }
 
 LABEL_29:
-  self->_ndcgDaily = *(v4 + 3);
+  self->_ndcgDaily = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((v4[104] & 8) != 0)
+  if ((fromCopy[104] & 8) != 0)
   {
 LABEL_11:
-    self->_ndcgWeekly = *(v4 + 4);
+    self->_ndcgWeekly = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
 LABEL_12:
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(AMLUserLevelPhotosSearchMetrics *)self setMetricDefinitionVersion:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((v4[104] & 0x40) != 0)
+  if ((fromCopy[104] & 0x40) != 0)
   {
-    self->_uiSurface = *(v4 + 24);
+    self->_uiSurface = *(fromCopy + 24);
     *&self->_has |= 0x40u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(AMLUserLevelPhotosSearchMetrics *)self setTrialDeploymentId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(AMLUserLevelPhotosSearchMetrics *)self setTrialExperimentId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(AMLUserLevelPhotosSearchMetrics *)self setTrialTreatmentId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

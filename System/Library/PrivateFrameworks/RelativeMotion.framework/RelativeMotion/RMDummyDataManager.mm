@@ -1,24 +1,24 @@
 @interface RMDummyDataManager
-- (RMDummyDataManager)initWithQueue:(id)a3;
+- (RMDummyDataManager)initWithQueue:(id)queue;
 - (id)dummyDataConfiguration;
 - (void)invalidate;
-- (void)startReceivingDummyDataUpdates:(id)a3;
+- (void)startReceivingDummyDataUpdates:(id)updates;
 - (void)stopReceivingDummyDataUpdates;
 @end
 
 @implementation RMDummyDataManager
 
-- (RMDummyDataManager)initWithQueue:(id)a3
+- (RMDummyDataManager)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = RMDummyDataManager;
   v5 = [(RMDummyDataManager *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(RMDummyDataManager *)v5 setQueue:v4];
-    v7 = [[RMConnectionClient alloc] initWithQueue:v4 serviceName:@"com.apple.relatived.tempest" messageHandler:&__block_literal_global_5];
+    [(RMDummyDataManager *)v5 setQueue:queueCopy];
+    v7 = [[RMConnectionClient alloc] initWithQueue:queueCopy serviceName:@"com.apple.relatived.tempest" messageHandler:&__block_literal_global_5];
     [(RMDummyDataManager *)v6 setConnectionClient:v7];
   }
 
@@ -27,16 +27,16 @@
 
 - (void)invalidate
 {
-  v3 = [(RMDummyDataManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(RMDummyDataManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(RMDummyDataManager *)self isReceivingRelatveData])
   {
     [(RMDummyDataManager *)self stopReceivingDummyDataUpdates];
   }
 
-  v4 = [(RMDummyDataManager *)self connectionClient];
-  [(RMConnectionClient *)v4 invalidate];
+  connectionClient = [(RMDummyDataManager *)self connectionClient];
+  [(RMConnectionClient *)connectionClient invalidate];
 
   [(RMDummyDataManager *)self setConnectionClient:0];
 
@@ -66,24 +66,24 @@
   return v2;
 }
 
-- (void)startReceivingDummyDataUpdates:(id)a3
+- (void)startReceivingDummyDataUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(RMDummyDataManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  updatesCopy = updates;
+  queue = [(RMDummyDataManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(RMDummyDataManager *)self setRelativeDataCallback:v4];
-  v6 = [(RMDummyDataManager *)self connectionClient];
-  [(RMConnectionClient *)v6 connect];
+  [(RMDummyDataManager *)self setRelativeDataCallback:updatesCopy];
+  connectionClient = [(RMDummyDataManager *)self connectionClient];
+  [(RMConnectionClient *)connectionClient connect];
 
-  v7 = [(RMDummyDataManager *)self connectionClient];
-  v8 = [(RMDummyDataManager *)self dummyDataConfiguration];
+  connectionClient2 = [(RMDummyDataManager *)self connectionClient];
+  dummyDataConfiguration = [(RMDummyDataManager *)self dummyDataConfiguration];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__RMDummyDataManager_startReceivingDummyDataUpdates___block_invoke;
   v9[3] = &unk_279AF5318;
   v9[4] = self;
-  [(RMConnectionClient *)v7 requestStreamingWithMessage:v8 data:v9 callback:?];
+  [(RMConnectionClient *)connectionClient2 requestStreamingWithMessage:dummyDataConfiguration data:v9 callback:?];
 }
 
 void __53__RMDummyDataManager_startReceivingDummyDataUpdates___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -125,11 +125,11 @@ void __53__RMDummyDataManager_startReceivingDummyDataUpdates___block_invoke(uint
 
 - (void)stopReceivingDummyDataUpdates
 {
-  v3 = [(RMDummyDataManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(RMDummyDataManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(RMDummyDataManager *)self connectionClient];
-  [(RMConnectionClient *)v4 stopStreaming];
+  connectionClient = [(RMDummyDataManager *)self connectionClient];
+  [(RMConnectionClient *)connectionClient stopStreaming];
 
   [(RMDummyDataManager *)self setIsReceivingRelatveData:0];
 

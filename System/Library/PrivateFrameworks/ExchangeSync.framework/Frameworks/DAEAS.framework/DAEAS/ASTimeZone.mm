@@ -1,28 +1,28 @@
 @interface ASTimeZone
-+ (BOOL)_dateIsValidTransitionDate:(id)a3 inYear:(int)a4 withTimeZone:(id)a5;
++ (BOOL)_dateIsValidTransitionDate:(id)date inYear:(int)year withTimeZone:(id)zone;
 + (BOOL)acceptsTopLevelLeaves;
 + (BOOL)frontingBasicTypes;
 + (BOOL)notifyOfUnknownTokens;
 + (BOOL)parsingLeafNode;
 + (BOOL)parsingWithSubItems;
 + (id)_curTZDataVersion;
-+ (id)_tzCachePathCreateIfMissing:(BOOL)a3;
++ (id)_tzCachePathCreateIfMissing:(BOOL)missing;
 + (id)gmt;
 + (void)_cacheTimeZoneInfo;
 + (void)_fillOutCurrentTimeZoneInfo;
-- ($31FC2A3E460831F3E4E0FB7CDAAFBC8B)mallocTZIForDate:(id)a3;
-- (ASTimeZone)initWithCodingDict:(id)a3;
-- (ASTimeZone)initWithName:(id)a3;
-- (ASTimeZone)initWithName:(id)a3 data:(id)a4;
-- (ASTimeZone)initWithTZNameFromCalDB:(id)a3;
-- (BOOL)_dateIsValidTransitionDate:(id)a3 inYear:(int64_t)a4 outDaylightBias:(int64_t *)a5;
-- (BOOL)isDaylightSavingTimeForDate:(id)a3;
-- (_SYSTEMTIME)_ruleForDate:(id)a3;
-- (double)daylightSavingTimeOffsetForDate:(id)a3;
-- (id)dateForRule:(_SYSTEMTIME *)a3 inYear:(int64_t)a4;
+- ($31FC2A3E460831F3E4E0FB7CDAAFBC8B)mallocTZIForDate:(id)date;
+- (ASTimeZone)initWithCodingDict:(id)dict;
+- (ASTimeZone)initWithName:(id)name;
+- (ASTimeZone)initWithName:(id)name data:(id)data;
+- (ASTimeZone)initWithTZNameFromCalDB:(id)b;
+- (BOOL)_dateIsValidTransitionDate:(id)date inYear:(int64_t)year outDaylightBias:(int64_t *)bias;
+- (BOOL)isDaylightSavingTimeForDate:(id)date;
+- (_SYSTEMTIME)_ruleForDate:(id)date;
+- (double)daylightSavingTimeOffsetForDate:(id)date;
+- (id)dateForRule:(_SYSTEMTIME *)rule inYear:(int64_t)year;
 - (id)description;
 - (id)dictForCoding;
-- (int64_t)secondsFromGMTForDate:(id)a3;
+- (int64_t)secondsFromGMTForDate:(id)date;
 - (void)dealloc;
 @end
 
@@ -37,7 +37,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_6 = v2;
     acceptsTopLevelLeaves___haveChecked_6 = 1;
   }
@@ -54,7 +54,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_6 = v2;
     parsingLeafNode___haveChecked_6 = 1;
   }
@@ -71,7 +71,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_6 = v2;
     parsingWithSubItems___haveChecked_6 = 1;
   }
@@ -88,7 +88,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_6 = v2;
     frontingBasicTypes___haveChecked_6 = 1;
   }
@@ -105,7 +105,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_6 = v2;
     notifyOfUnknownTokens___haveChecked_6 = 1;
   }
@@ -128,43 +128,43 @@
   return v2;
 }
 
-- (ASTimeZone)initWithTZNameFromCalDB:(id)a3
+- (ASTimeZone)initWithTZNameFromCalDB:(id)b
 {
-  v4 = a3;
+  bCopy = b;
   v11.receiver = self;
   v11.super_class = ASTimeZone;
   v5 = [(ASTimeZone *)&v11 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:v4];
+    v6 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:bCopy];
     wrappedTimeZone = v5->_wrappedTimeZone;
     v5->_wrappedTimeZone = v6;
 
     if (!v5->_wrappedTimeZone)
     {
-      v8 = [MEMORY[0x277CBEBB0] defaultTimeZone];
+      defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
       v9 = v5->_wrappedTimeZone;
-      v5->_wrappedTimeZone = v8;
+      v5->_wrappedTimeZone = defaultTimeZone;
     }
   }
 
   return v5;
 }
 
-+ (BOOL)_dateIsValidTransitionDate:(id)a3 inYear:(int)a4 withTimeZone:(id)a5
++ (BOOL)_dateIsValidTransitionDate:(id)date inYear:(int)year withTimeZone:(id)zone
 {
-  v7 = a3;
-  v8 = a5;
-  if (v7 && ([v7 timeIntervalSinceReferenceDate], v9 != 0.0) && objc_msgSend(v7, "yearOfCommonEra") == a4)
+  dateCopy = date;
+  zoneCopy = zone;
+  if (dateCopy && ([dateCopy timeIntervalSinceReferenceDate], v9 != 0.0) && objc_msgSend(dateCopy, "yearOfCommonEra") == year)
   {
     v10 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v7 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v12 = [v10 initWithTimeIntervalSinceReferenceDate:v11 + -86400.0];
     v13 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v7 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v15 = [v13 initWithTimeIntervalSinceReferenceDate:v14 + 86400.0];
-    LODWORD(v13) = [v8 isDaylightSavingTimeForDate:v12];
-    v16 = v13 ^ [v8 isDaylightSavingTimeForDate:v15];
+    LODWORD(v13) = [zoneCopy isDaylightSavingTimeForDate:v12];
+    v16 = v13 ^ [zoneCopy isDaylightSavingTimeForDate:v15];
   }
 
   else
@@ -182,11 +182,11 @@
   v106 = objc_opt_new();
   v107 = objc_opt_new();
   v105 = objc_opt_new();
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v3 dateWithCalendarFormat:0 timeZone:0];
-  v5 = [v4 yearOfCommonEra];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [date dateWithCalendarFormat:0 timeZone:0];
+  yearOfCommonEra = [v4 yearOfCommonEra];
 
-  v6 = [objc_alloc(MEMORY[0x277CCA8F8]) initWithYear:v5 month:2 day:1 hour:0 minute:0 second:0 timeZone:0];
+  v6 = [objc_alloc(MEMORY[0x277CCA8F8]) initWithYear:yearOfCommonEra month:2 day:1 hour:0 minute:0 second:0 timeZone:0];
   v174 = 0;
   v175 = &v174;
   v176 = 0x3032000000;
@@ -217,19 +217,19 @@
   v157 = &v160;
   v90 = v6;
   v153 = v90;
-  v158 = a1;
-  v159 = v5;
+  selfCopy = self;
+  v159 = yearOfCommonEra;
   v121 = MEMORY[0x24C2119B0](v152);
   v110 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{@"America/Anchorage", @"America/Campo_Grande", @"America/Chicago", @"America/Chihuahua", @"America/Denver", @"America/Halifax", @"America/Los_Angeles", @"America/Mexico_City", @"America/New_York", @"America/Santiago", @"America/Sao_Paulo", @"Atlantic/Azores", @"Australia/Adelaide", @"Australia/Sydney", @"Europe/Athens", @"Europe/Berlin", @"Europe/London", @"Pacific/Auckland", 0}];
-  v7 = [v110 allObjects];
-  v8 = [v7 mutableCopy];
+  allObjects = [v110 allObjects];
+  v8 = [allObjects mutableCopy];
 
   v150 = 0u;
   v151 = 0u;
   v148 = 0u;
   v149 = 0u;
-  v9 = [MEMORY[0x277CBEBB0] knownTimeZoneNames];
-  v10 = [v9 countByEnumeratingWithState:&v148 objects:v194 count:16];
+  knownTimeZoneNames = [MEMORY[0x277CBEBB0] knownTimeZoneNames];
+  v10 = [knownTimeZoneNames countByEnumeratingWithState:&v148 objects:v194 count:16];
   if (v10)
   {
     v11 = *v149;
@@ -239,7 +239,7 @@
       {
         if (*v149 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(knownTimeZoneNames);
         }
 
         v13 = *(*(&v148 + 1) + 8 * i);
@@ -249,7 +249,7 @@
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v148 objects:v194 count:16];
+      v10 = [knownTimeZoneNames countByEnumeratingWithState:&v148 objects:v194 count:16];
     }
 
     while (v10);
@@ -370,9 +370,9 @@
             v48 = v175[5];
             if (v47)
             {
-              v49 = [v48 monthOfYear];
+              monthOfYear = [v48 monthOfYear];
               v50 = v106;
-              if (v49 >= 7)
+              if (monthOfYear >= 7)
               {
                 v50 = v107;
               }
@@ -380,9 +380,9 @@
 
             else
             {
-              v51 = [v48 monthOfYear];
+              monthOfYear2 = [v48 monthOfYear];
               v50 = v108;
-              if (v51 > 6)
+              if (monthOfYear2 > 6)
               {
                 v50 = v105;
               }
@@ -447,8 +447,8 @@
         v138 = 0u;
         v139 = 0u;
         v95 = v54;
-        v94 = [v54 allKeys];
-        v91 = [v94 countByEnumeratingWithState:&v136 objects:v190 count:16];
+        allKeys = [v54 allKeys];
+        v91 = [allKeys countByEnumeratingWithState:&v136 objects:v190 count:16];
         if (v91)
         {
           v93 = *v137;
@@ -458,7 +458,7 @@
             {
               if (*v137 != v93)
               {
-                objc_enumerationMutation(v94);
+                objc_enumerationMutation(allKeys);
               }
 
               v55 = [v95 objectForKeyedSubscript:*(*(&v136 + 1) + 8 * k)];
@@ -467,8 +467,8 @@
               v132 = 0u;
               v133 = 0u;
               v103 = v55;
-              v99 = [v55 allKeys];
-              v101 = [v99 countByEnumeratingWithState:&v132 objects:v189 count:16];
+              allKeys2 = [v55 allKeys];
+              v101 = [allKeys2 countByEnumeratingWithState:&v132 objects:v189 count:16];
               if (v101)
               {
                 v100 = *v133;
@@ -478,7 +478,7 @@
                   {
                     if (*v133 != v100)
                     {
-                      objc_enumerationMutation(v99);
+                      objc_enumerationMutation(allKeys2);
                     }
 
                     v56 = *(*(&v132 + 1) + 8 * m);
@@ -627,14 +627,14 @@ LABEL_88:
                     [v103 setObject:v113 forKeyedSubscript:v102];
                   }
 
-                  v101 = [v99 countByEnumeratingWithState:&v132 objects:v189 count:16];
+                  v101 = [allKeys2 countByEnumeratingWithState:&v132 objects:v189 count:16];
                 }
 
                 while (v101);
               }
             }
 
-            v91 = [v94 countByEnumeratingWithState:&v136 objects:v190 count:16];
+            v91 = [allKeys countByEnumeratingWithState:&v136 objects:v190 count:16];
           }
 
           while (v91);
@@ -732,14 +732,14 @@ void __41__ASTimeZone__fillOutCurrentTimeZoneInfo__block_invoke(uint64_t a1, voi
 LABEL_7:
 }
 
-+ (id)_tzCachePathCreateIfMissing:(BOOL)a3
++ (id)_tzCachePathCreateIfMissing:(BOOL)missing
 {
-  v3 = a3;
+  missingCopy = missing;
   v4 = [CPSharedResourcesDirectory() stringByAppendingPathComponent:@"Library/Caches/DataAccess"];
-  if (v3)
+  if (missingCopy)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   v6 = [v4 stringByAppendingPathComponent:@"EASTimeZone.data"];
@@ -792,7 +792,7 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
   block[1] = 3221225472;
   block[2] = __32__ASTimeZone__cacheTimeZoneInfo__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_cacheTimeZoneInfo_onceToken != -1)
   {
     dispatch_once(&_cacheTimeZoneInfo_onceToken, block);
@@ -802,17 +802,17 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ASTimeZone *)self name];
-  v5 = [(ASTimeZone *)self abbreviation];
-  v6 = [(ASTimeZone *)self secondsFromGMT];
-  v7 = [(ASTimeZone *)self isDaylightSavingTime];
+  name = [(ASTimeZone *)self name];
+  abbreviation = [(ASTimeZone *)self abbreviation];
+  secondsFromGMT = [(ASTimeZone *)self secondsFromGMT];
+  isDaylightSavingTime = [(ASTimeZone *)self isDaylightSavingTime];
   v8 = &stru_285D39BD0;
-  if (v7)
+  if (isDaylightSavingTime)
   {
     v8 = @" (Daylight)";
   }
 
-  v9 = [v3 stringWithFormat:@"%@ (%@) offset %ld%@", v4, v5, v6, v8];
+  v9 = [v3 stringWithFormat:@"%@ (%@) offset %ld%@", name, abbreviation, secondsFromGMT, v8];
 
   return v9;
 }
@@ -836,71 +836,71 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
   [(ASTimeZone *)&v5 dealloc];
 }
 
-- (id)dateForRule:(_SYSTEMTIME *)a3 inYear:(int64_t)a4
+- (id)dateForRule:(_SYSTEMTIME *)rule inYear:(int64_t)year
 {
-  if (*&a3->var1 || a3->var3 || a3->var4)
+  if (*&rule->var1 || rule->var3 || rule->var4)
   {
     v6 = objc_opt_new();
-    [v6 setYear:a4];
-    [v6 setMonth:a3->var1];
-    [v6 setWeekday:a3->var2 + 1];
-    if (a3->var3 == 5)
+    [v6 setYear:year];
+    [v6 setMonth:rule->var1];
+    [v6 setWeekday:rule->var2 + 1];
+    if (rule->var3 == 5)
     {
       var3 = -1;
     }
 
     else
     {
-      var3 = a3->var3;
+      var3 = rule->var3;
     }
 
     [v6 setWeekdayOrdinal:var3];
-    [v6 setHour:a3->var4];
-    v8 = [MEMORY[0x277CBEA80] currentCalendar];
+    [v6 setHour:rule->var4];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v9 = +[ASTimeZone gmt];
-    [v8 setTimeZone:v9];
+    [currentCalendar setTimeZone:v9];
 
-    v10 = [v8 dateFromComponents:v6];
+    distantPast = [currentCalendar dateFromComponents:v6];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  return v10;
+  return distantPast;
 }
 
-- (int64_t)secondsFromGMTForDate:(id)a3
+- (int64_t)secondsFromGMTForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (self->_dstOffset)
   {
     v5 = objc_autoreleasePoolPush();
     v6 = +[ASTimeZone gmt];
-    v7 = [v4 dateWithCalendarFormat:0 timeZone:v6];
+    v7 = [dateCopy dateWithCalendarFormat:0 timeZone:v6];
 
-    v8 = [v7 yearOfCommonEra];
-    v9 = [(ASTimeZone *)self dateForRule:self->_daylightDate inYear:v8];
-    v10 = [(ASTimeZone *)self dateForRule:self->_standardDate inYear:v8];
+    yearOfCommonEra = [v7 yearOfCommonEra];
+    v9 = [(ASTimeZone *)self dateForRule:self->_daylightDate inYear:yearOfCommonEra];
+    v10 = [(ASTimeZone *)self dateForRule:self->_standardDate inYear:yearOfCommonEra];
     if ([v9 compare:v10] == 1)
     {
-      if ([v4 compare:v9] == -1)
+      if ([dateCopy compare:v9] == -1)
       {
-        v16 = [(ASTimeZone *)self dateForRule:self->_daylightDate inYear:v8 - 1];
+        v16 = [(ASTimeZone *)self dateForRule:self->_daylightDate inYear:yearOfCommonEra - 1];
         v12 = v9;
         v9 = v16;
       }
 
       else
       {
-        v11 = [(ASTimeZone *)self dateForRule:self->_standardDate inYear:v8 + 1];
+        v11 = [(ASTimeZone *)self dateForRule:self->_standardDate inYear:yearOfCommonEra + 1];
         v12 = v10;
         v10 = v11;
       }
     }
 
-    if ([v4 compare:v9] == -1 || objc_msgSend(v4, "compare:", v10) == 1)
+    if ([dateCopy compare:v9] == -1 || objc_msgSend(dateCopy, "compare:", v10) == 1)
     {
       gmtOffset = self->_gmtOffset;
     }
@@ -918,7 +918,7 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
   else
   {
     v13 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v4 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v14 = [v13 initWithTimeIntervalSinceReferenceDate:?];
     v15 = [(NSTimeZone *)self->_wrappedTimeZone secondsFromGMTForDate:v14];
   }
@@ -926,36 +926,36 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
   return v15;
 }
 
-- (BOOL)isDaylightSavingTimeForDate:(id)a3
+- (BOOL)isDaylightSavingTimeForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (self->_dstOffset)
   {
     v5 = objc_autoreleasePoolPush();
     v6 = +[ASTimeZone gmt];
-    v7 = [v4 dateWithCalendarFormat:0 timeZone:v6];
+    v7 = [dateCopy dateWithCalendarFormat:0 timeZone:v6];
 
-    v8 = [v7 yearOfCommonEra];
-    v9 = [(ASTimeZone *)self dateForRule:self->_daylightDate inYear:v8];
-    v10 = [(ASTimeZone *)self dateForRule:self->_standardDate inYear:v8];
+    yearOfCommonEra = [v7 yearOfCommonEra];
+    v9 = [(ASTimeZone *)self dateForRule:self->_daylightDate inYear:yearOfCommonEra];
+    v10 = [(ASTimeZone *)self dateForRule:self->_standardDate inYear:yearOfCommonEra];
     if ([v9 compare:v10] == 1)
     {
-      if ([v4 compare:v9] == -1)
+      if ([dateCopy compare:v9] == -1)
       {
-        v16 = [(ASTimeZone *)self dateForRule:self->_daylightDate inYear:v8 - 1];
+        v16 = [(ASTimeZone *)self dateForRule:self->_daylightDate inYear:yearOfCommonEra - 1];
         v12 = v9;
         v9 = v16;
       }
 
       else
       {
-        v11 = [(ASTimeZone *)self dateForRule:self->_standardDate inYear:v8 + 1];
+        v11 = [(ASTimeZone *)self dateForRule:self->_standardDate inYear:yearOfCommonEra + 1];
         v12 = v10;
         v10 = v11;
       }
     }
 
-    v15 = [v4 compare:v9] != -1 && objc_msgSend(v4, "compare:", v10) != 1;
+    v15 = [dateCopy compare:v9] != -1 && objc_msgSend(dateCopy, "compare:", v10) != 1;
 
     objc_autoreleasePoolPop(v5);
   }
@@ -963,7 +963,7 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
   else
   {
     v13 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v4 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v14 = [v13 initWithTimeIntervalSinceReferenceDate:?];
     v15 = [(NSTimeZone *)self->_wrappedTimeZone isDaylightSavingTimeForDate:v14];
   }
@@ -971,13 +971,13 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
   return v15;
 }
 
-- (double)daylightSavingTimeOffsetForDate:(id)a3
+- (double)daylightSavingTimeOffsetForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (self->_dstOffset)
   {
     v5 = 0.0;
-    if ([(ASTimeZone *)self isDaylightSavingTimeForDate:v4])
+    if ([(ASTimeZone *)self isDaylightSavingTimeForDate:dateCopy])
     {
       v5 = (-60 * self->_dstOffset);
     }
@@ -986,7 +986,7 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
   else
   {
     v6 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v4 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v7 = [v6 initWithTimeIntervalSinceReferenceDate:?];
     [(NSTimeZone *)self->_wrappedTimeZone daylightSavingTimeOffsetForDate:v7];
     v5 = v8;
@@ -995,11 +995,11 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
   return v5;
 }
 
-- (BOOL)_dateIsValidTransitionDate:(id)a3 inYear:(int64_t)a4 outDaylightBias:(int64_t *)a5
+- (BOOL)_dateIsValidTransitionDate:(id)date inYear:(int64_t)year outDaylightBias:(int64_t *)bias
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8 && ([v8 timeIntervalSinceReferenceDate], v10 != 0.0) && objc_msgSend(v9, "yearOfCommonEra") == a4)
+  dateCopy = date;
+  v9 = dateCopy;
+  if (dateCopy && ([dateCopy timeIntervalSinceReferenceDate], v10 != 0.0) && objc_msgSend(v9, "yearOfCommonEra") == year)
   {
     v11 = objc_alloc(MEMORY[0x277CBEAA8]);
     [v9 timeIntervalSinceReferenceDate];
@@ -1009,7 +1009,7 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
     v16 = [v14 initWithTimeIntervalSinceReferenceDate:v15 + 86400.0];
     v17 = [(ASTimeZone *)self isDaylightSavingTimeForDate:v13];
     v18 = v17 ^ [(ASTimeZone *)self isDaylightSavingTimeForDate:v16];
-    if (a5)
+    if (bias)
     {
       v19 = [(ASTimeZone *)self secondsFromGMTForDate:v13];
       v20 = [(ASTimeZone *)self secondsFromGMTForDate:v16];
@@ -1019,7 +1019,7 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
         v21 = v20 - v19;
       }
 
-      *a5 = v21 / 60;
+      *bias = v21 / 60;
     }
   }
 
@@ -1031,27 +1031,27 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
   return v18;
 }
 
-- (_SYSTEMTIME)_ruleForDate:(id)a3
+- (_SYSTEMTIME)_ruleForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[ASTimeZone gmt];
-  v5 = [v3 dateWithCalendarFormat:0 timeZone:v4];
+  v5 = [dateCopy dateWithCalendarFormat:0 timeZone:v4];
 
-  v6 = [v5 yearOfCommonEra];
+  yearOfCommonEra = [v5 yearOfCommonEra];
   v7 = objc_opt_new();
   [v7 setDay:{objc_msgSend(v5, "dayOfMonth")}];
   [v7 setMonth:{objc_msgSend(v5, "monthOfYear")}];
-  [v7 setYear:v6];
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
+  [v7 setYear:yearOfCommonEra];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v9 = +[ASTimeZone gmt];
-  [v8 setTimeZone:v9];
+  [currentCalendar setTimeZone:v9];
 
-  v10 = [v8 dateFromComponents:v7];
-  v11 = [v8 components:1024 fromDate:v10];
-  v12 = [v11 weekdayOrdinal];
-  if (v12 < 4)
+  v10 = [currentCalendar dateFromComponents:v7];
+  v11 = [currentCalendar components:1024 fromDate:v10];
+  weekdayOrdinal = [v11 weekdayOrdinal];
+  if (weekdayOrdinal < 4)
   {
-    v17 = v12;
+    v17 = weekdayOrdinal;
   }
 
   else
@@ -1060,12 +1060,12 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
 
     [v13 setDay:{objc_msgSend(v5, "dayOfMonth") + 7}];
     [v13 setMonth:{objc_msgSend(v5, "monthOfYear")}];
-    [v13 setYear:v6];
-    v14 = [v8 dateFromComponents:v13];
+    [v13 setYear:yearOfCommonEra];
+    v14 = [currentCalendar dateFromComponents:v13];
 
-    v15 = [v8 components:24 fromDate:v14];
-    v16 = [v15 month];
-    if (v16 == [v5 monthOfYear])
+    v15 = [currentCalendar components:24 fromDate:v14];
+    month = [v15 month];
+    if (month == [v5 monthOfYear])
     {
       v17 = 4;
     }
@@ -1079,12 +1079,12 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
     v10 = v14;
   }
 
-  v18 = [v5 monthOfYear];
-  v19 = [v5 dayOfWeek];
-  v20 = [v5 hourOfDay];
+  monthOfYear = [v5 monthOfYear];
+  dayOfWeek = [v5 dayOfWeek];
+  hourOfDay = [v5 hourOfDay];
 
-  v21 = (v17 << 48) | (v19 << 32) | (v18 << 16);
-  v22 = v20;
+  v21 = (v17 << 48) | (dayOfWeek << 32) | (monthOfYear << 16);
+  v22 = hourOfDay;
   result.var4 = v22;
   result.var5 = WORD1(v22);
   result.var6 = WORD2(v22);
@@ -1096,13 +1096,13 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
   return result;
 }
 
-- ($31FC2A3E460831F3E4E0FB7CDAAFBC8B)mallocTZIForDate:(id)a3
+- ($31FC2A3E460831F3E4E0FB7CDAAFBC8B)mallocTZIForDate:(id)date
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = [a3 dateWithCalendarFormat:0 timeZone:self];
-  v5 = [v4 yearOfCommonEra];
+  v4 = [date dateWithCalendarFormat:0 timeZone:self];
+  yearOfCommonEra = [v4 yearOfCommonEra];
   v6 = malloc_type_calloc(0xACuLL, 1uLL, 0x10000402F7E722EuLL);
-  v55 = [objc_alloc(MEMORY[0x277CCA8F8]) initWithYear:v5 month:1 day:1 hour:0 minute:0 second:0 timeZone:self];
+  v55 = [objc_alloc(MEMORY[0x277CCA8F8]) initWithYear:yearOfCommonEra month:1 day:1 hour:0 minute:0 second:0 timeZone:self];
   v7 = [(ASTimeZone *)self nextDaylightSavingTimeTransitionAfterDate:?];
   v8 = [v7 dateWithCalendarFormat:0 timeZone:self];
 
@@ -1116,9 +1116,9 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
   v16 = [v15 dateWithCalendarFormat:0 timeZone:self];
 
   v56 = 0;
-  if ([(ASTimeZone *)self _dateIsValidTransitionDate:v8 inYear:v5 outDaylightBias:&v56])
+  if ([(ASTimeZone *)self _dateIsValidTransitionDate:v8 inYear:yearOfCommonEra outDaylightBias:&v56])
   {
-    if ([(ASTimeZone *)self _dateIsValidTransitionDate:v16 inYear:v5 outDaylightBias:0])
+    if ([(ASTimeZone *)self _dateIsValidTransitionDate:v16 inYear:yearOfCommonEra outDaylightBias:0])
     {
       v53 = v4;
       v17 = DALoggingwithCategory();
@@ -1128,7 +1128,7 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
         v52 = [v8 dateWithCalendarFormat:0 timeZone:self];
         v19 = [v16 dateWithCalendarFormat:0 timeZone:self];
         *buf = 134218754;
-        v58 = v5;
+        v58 = yearOfCommonEra;
         v59 = 2112;
         v60 = v55;
         v61 = 2112;
@@ -1197,7 +1197,7 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
         v43 = [(ASTimeZone *)self secondsFromGMTForDate:v11];
         v44 = ((v43 * 0x7777777777777777) >> 64) - v43;
         *v6 = (v44 >> 5) + (v44 >> 63);
-        v35 = [objc_alloc(MEMORY[0x277CCA8F8]) initWithYear:v5 month:12 day:31 hour:23 minute:59 second:59 timeZone:self];
+        v35 = [objc_alloc(MEMORY[0x277CCA8F8]) initWithYear:yearOfCommonEra month:12 day:31 hour:23 minute:59 second:59 timeZone:self];
         v45 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v35 sinceDate:0.0];
         *(v6 + 68) = [(ASTimeZone *)self _ruleForDate:v45];
         *(v6 + 76) = v46;
@@ -1213,12 +1213,12 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
 
   else
   {
-    v27 = [(ASTimeZone *)self secondsFromGMT];
-    v28 = [(ASTimeZone *)self isDaylightSavingTime];
-    v29 = v27 - 3600;
-    if (!v28)
+    secondsFromGMT = [(ASTimeZone *)self secondsFromGMT];
+    isDaylightSavingTime = [(ASTimeZone *)self isDaylightSavingTime];
+    v29 = secondsFromGMT - 3600;
+    if (!isDaylightSavingTime)
     {
-      v29 = v27;
+      v29 = secondsFromGMT;
     }
 
     v30 = ((v29 * 0x7777777777777777) >> 64) - v29;
@@ -1230,35 +1230,35 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
   return v6;
 }
 
-- (ASTimeZone)initWithName:(id)a3
+- (ASTimeZone)initWithName:(id)name
 {
   v4.receiver = self;
   v4.super_class = ASTimeZone;
   return [(ASTimeZone *)&v4 init];
 }
 
-- (ASTimeZone)initWithName:(id)a3 data:(id)a4
+- (ASTimeZone)initWithName:(id)name data:(id)data
 {
   v5.receiver = self;
   v5.super_class = ASTimeZone;
-  return [(ASTimeZone *)&v5 init:a3];
+  return [(ASTimeZone *)&v5 init:name];
 }
 
-- (ASTimeZone)initWithCodingDict:(id)a3
+- (ASTimeZone)initWithCodingDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v16.receiver = self;
   v16.super_class = ASTimeZone;
   v5 = [(ASTimeZone *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"gmtOffset"];
+    v6 = [dictCopy objectForKeyedSubscript:@"gmtOffset"];
     v5->_gmtOffset = [v6 intValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"dstOffset"];
+    v7 = [dictCopy objectForKeyedSubscript:@"dstOffset"];
     v5->_dstOffset = [v7 intValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"standardDate"];
+    v8 = [dictCopy objectForKeyedSubscript:@"standardDate"];
     if ([v8 length])
     {
       v9 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
@@ -1266,7 +1266,7 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
       [v8 getBytes:v9 length:16];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"daylightDate"];
+    v10 = [dictCopy objectForKeyedSubscript:@"daylightDate"];
     if ([v10 length])
     {
       v11 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
@@ -1274,19 +1274,19 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
       [v10 getBytes:v11 length:16];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"wrappedTZName"];
+    v12 = [dictCopy objectForKeyedSubscript:@"wrappedTZName"];
     if (v12)
     {
-      v13 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:v12];
+      defaultTimeZone = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:v12];
     }
 
     else
     {
-      v13 = [MEMORY[0x277CBEBB0] defaultTimeZone];
+      defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
     }
 
     wrappedTimeZone = v5->_wrappedTimeZone;
-    v5->_wrappedTimeZone = v13;
+    v5->_wrappedTimeZone = defaultTimeZone;
   }
 
   return v5;
@@ -1294,34 +1294,34 @@ void __31__ASTimeZone__curTZDataVersion__block_invoke()
 
 - (id)dictForCoding
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_gmtOffset];
-  [v3 setObject:v4 forKeyedSubscript:@"gmtOffset"];
+  [dictionary setObject:v4 forKeyedSubscript:@"gmtOffset"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_dstOffset];
-  [v3 setObject:v5 forKeyedSubscript:@"dstOffset"];
+  [dictionary setObject:v5 forKeyedSubscript:@"dstOffset"];
 
   standardDate = self->_standardDate;
   if (standardDate)
   {
     v7 = [MEMORY[0x277CBEA90] dataWithBytes:standardDate length:16];
-    [v3 setObject:v7 forKeyedSubscript:@"standardDate"];
+    [dictionary setObject:v7 forKeyedSubscript:@"standardDate"];
   }
 
   daylightDate = self->_daylightDate;
   if (daylightDate)
   {
     v9 = [MEMORY[0x277CBEA90] dataWithBytes:daylightDate length:16];
-    [v3 setObject:v9 forKeyedSubscript:@"daylightDate"];
+    [dictionary setObject:v9 forKeyedSubscript:@"daylightDate"];
   }
 
-  v10 = [(NSTimeZone *)self->_wrappedTimeZone name];
-  if (v10)
+  name = [(NSTimeZone *)self->_wrappedTimeZone name];
+  if (name)
   {
-    [v3 setObject:v10 forKeyedSubscript:@"wrappedTZName"];
+    [dictionary setObject:name forKeyedSubscript:@"wrappedTZName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

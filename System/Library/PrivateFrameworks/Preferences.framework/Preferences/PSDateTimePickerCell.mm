@@ -1,30 +1,30 @@
 @interface PSDateTimePickerCell
-- (PSDateTimePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (PSDateTimePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)dealloc;
-- (void)timeZoneChanged:(id)a3;
+- (void)timeZoneChanged:(id)changed;
 @end
 
 @implementation PSDateTimePickerCell
 
-- (PSDateTimePickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PSDateTimePickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v94.receiver = self;
   v94.super_class = PSDateTimePickerCell;
-  v9 = [(PSTableCell *)&v94 initWithStyle:a3 reuseIdentifier:a4];
+  v9 = [(PSTableCell *)&v94 initWithStyle:style reuseIdentifier:identifier];
   if (!v9)
   {
     goto LABEL_16;
   }
 
-  v10 = [v8 target];
-  if (([v10 conformsToProtocol:&unk_1EFEC6610] & 1) == 0)
+  target = [specifierCopy target];
+  if (([target conformsToProtocol:&unk_1EFEC6610] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v11 = [v8 target];
+  target2 = [specifierCopy target];
   v12 = objc_opt_respondsToSelector();
 
   if ((v12 & 1) == 0)
@@ -46,13 +46,13 @@ LABEL_6:
     [(UIDatePicker *)v9->_datePicker setDatePickerMode:2];
     [(UIDatePicker *)v9->_datePicker setPreferredDatePickerStyle:3];
     v23 = v9->_datePicker;
-    v13 = [MEMORY[0x1E695DFE8] systemTimeZone];
-    [(UIDatePicker *)v23 setTimeZone:v13];
+    systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+    [(UIDatePicker *)v23 setTimeZone:systemTimeZone];
     goto LABEL_7;
   }
 
-  v13 = [v8 target];
-  v14 = [v13 datePickerForSpecifier:v8];
+  systemTimeZone = [specifierCopy target];
+  v14 = [systemTimeZone datePickerForSpecifier:specifierCopy];
   v15 = v9->_datePicker;
   v9->_datePicker = v14;
 
@@ -65,8 +65,8 @@ LABEL_7:
   v91[3] = &unk_1E71DCAD8;
   v26 = v9;
   v92 = v26;
-  v90 = v8;
-  v27 = v8;
+  v90 = specifierCopy;
+  v27 = specifierCopy;
   v93 = v27;
   v28 = [v25 actionWithHandler:v91];
   [(UIDatePicker *)v24 addAction:v28 forControlEvents:4096];
@@ -78,136 +78,136 @@ LABEL_7:
   v31 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v26[152] setFont:v31];
 
-  v32 = [MEMORY[0x1E69DC888] labelColor];
-  [v26[152] setTextColor:v32];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [v26[152] setTextColor:labelColor];
 
   [v26[152] setTranslatesAutoresizingMaskIntoConstraints:0];
-  v33 = [v26 contentView];
-  [v33 addSubview:v26[152]];
+  contentView = [v26 contentView];
+  [contentView addSubview:v26[152]];
 
   [(UIDatePicker *)v9->_datePicker setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIDatePicker *)v9->_datePicker setClipsToBounds:1];
-  v34 = [v26 contentView];
-  [v34 addSubview:v9->_datePicker];
+  contentView2 = [v26 contentView];
+  [contentView2 addSubview:v9->_datePicker];
 
   v35 = [v27 propertyForKey:@"InlineDatePicker"];
-  v36 = [v35 BOOLValue];
+  bOOLValue = [v35 BOOLValue];
 
-  v37 = [MEMORY[0x1E69DC668] sharedApplication];
-  v38 = [v37 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
   v39 = 0;
-  if (UIContentSizeCategoryIsAccessibilityCategory(v38))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    v40 = [MEMORY[0x1E69DC938] currentDevice];
-    v39 = [v40 sf_isiPhone] & v36;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v39 = [currentDevice sf_isiPhone] & bOOLValue;
   }
 
-  v41 = [v26 contentView];
-  v42 = [v41 layoutMarginsGuide];
+  contentView3 = [v26 contentView];
+  layoutMarginsGuide = [contentView3 layoutMarginsGuide];
 
-  v43 = [v26 contentView];
+  contentView4 = [v26 contentView];
   if (v39)
   {
     [v26[152] setNumberOfLines:0];
-    v44 = [v26[152] topAnchor];
-    v45 = [v42 topAnchor];
-    v46 = [v44 constraintEqualToSystemSpacingBelowAnchor:v45 multiplier:1.0];
+    topAnchor = [v26[152] topAnchor];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v46 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
     [v46 setActive:1];
 
-    v47 = [v26[152] leadingAnchor];
-    v48 = [v42 leadingAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
+    leadingAnchor = [v26[152] leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v49 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v49 setActive:1];
 
-    v50 = [v26[152] trailingAnchor];
-    v51 = [v42 trailingAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51];
+    trailingAnchor = [v26[152] trailingAnchor];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v52 setActive:1];
 
-    v53 = [(UIDatePicker *)v9->_datePicker topAnchor];
-    v54 = [v26[152] bottomAnchor];
-    v55 = [v53 constraintEqualToSystemSpacingBelowAnchor:v54 multiplier:1.0];
+    topAnchor3 = [(UIDatePicker *)v9->_datePicker topAnchor];
+    bottomAnchor = [v26[152] bottomAnchor];
+    v55 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:1.0];
     [v55 setActive:1];
 
-    v56 = [(UIDatePicker *)v9->_datePicker leadingAnchor];
-    v57 = [v43 leadingAnchor];
-    v58 = [v56 constraintEqualToAnchor:v57];
+    leadingAnchor3 = [(UIDatePicker *)v9->_datePicker leadingAnchor];
+    leadingAnchor4 = [contentView4 leadingAnchor];
+    v58 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v58 setActive:1];
 
-    v59 = [(UIDatePicker *)v9->_datePicker trailingAnchor];
-    v60 = [v43 trailingAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60];
+    trailingAnchor3 = [(UIDatePicker *)v9->_datePicker trailingAnchor];
+    trailingAnchor4 = [contentView4 trailingAnchor];
+    v61 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v61 setActive:1];
 
-    v62 = [v43 bottomAnchor];
-    v63 = [(UIDatePicker *)v9->_datePicker bottomAnchor];
-    v64 = [v62 constraintEqualToSystemSpacingBelowAnchor:v63 multiplier:1.0];
+    bottomAnchor2 = [contentView4 bottomAnchor];
+    bottomAnchor3 = [(UIDatePicker *)v9->_datePicker bottomAnchor];
+    v64 = [bottomAnchor2 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor3 multiplier:1.0];
   }
 
   else
   {
-    if (v36)
+    if (bOOLValue)
     {
       v65 = [v27 objectForKeyedSubscript:@"allowMultilineTitleKey"];
       [v26[152] setNumberOfLines:{objc_msgSend(v65, "BOOLValue") ^ 1}];
 
-      v66 = [v26[152] topAnchor];
-      v67 = [v42 topAnchor];
-      v68 = [v66 constraintEqualToAnchor:v67];
+      topAnchor4 = [v26[152] topAnchor];
+      topAnchor5 = [layoutMarginsGuide topAnchor];
+      v68 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
       [v68 setActive:1];
 
-      v69 = [v26[152] leadingAnchor];
-      v70 = [v42 leadingAnchor];
-      v71 = [v69 constraintEqualToAnchor:v70];
+      leadingAnchor5 = [v26[152] leadingAnchor];
+      leadingAnchor6 = [layoutMarginsGuide leadingAnchor];
+      v71 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
       [v71 setActive:1];
 
-      v72 = [v26[152] bottomAnchor];
-      v73 = [v42 bottomAnchor];
-      v74 = [v72 constraintEqualToAnchor:v73];
+      bottomAnchor4 = [v26[152] bottomAnchor];
+      bottomAnchor5 = [layoutMarginsGuide bottomAnchor];
+      v74 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
       [v74 setActive:1];
 
-      v75 = [(UIDatePicker *)v9->_datePicker topAnchor];
-      v76 = [v43 topAnchor];
-      v77 = [v75 constraintEqualToAnchor:v76];
+      topAnchor6 = [(UIDatePicker *)v9->_datePicker topAnchor];
+      topAnchor7 = [contentView4 topAnchor];
+      v77 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
       [v77 setActive:1];
 
-      v78 = [(UIDatePicker *)v9->_datePicker leadingAnchor];
-      v79 = [v26[152] trailingAnchor];
-      [v78 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v79 multiplier:1.0];
+      leadingAnchor7 = [(UIDatePicker *)v9->_datePicker leadingAnchor];
+      trailingAnchor5 = [v26[152] trailingAnchor];
+      [leadingAnchor7 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor5 multiplier:1.0];
     }
 
     else
     {
       [v26[152] setHidden:1];
-      v80 = [(UIDatePicker *)v9->_datePicker topAnchor];
-      v81 = [v43 topAnchor];
-      v82 = [v80 constraintEqualToAnchor:v81];
+      topAnchor8 = [(UIDatePicker *)v9->_datePicker topAnchor];
+      topAnchor9 = [contentView4 topAnchor];
+      v82 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
       [v82 setActive:1];
 
-      v78 = [(UIDatePicker *)v9->_datePicker leadingAnchor];
-      v79 = [v43 leadingAnchor];
-      [v78 constraintEqualToAnchor:v79];
+      leadingAnchor7 = [(UIDatePicker *)v9->_datePicker leadingAnchor];
+      trailingAnchor5 = [contentView4 leadingAnchor];
+      [leadingAnchor7 constraintEqualToAnchor:trailingAnchor5];
     }
     v83 = ;
     [v83 setActive:1];
 
-    v84 = [(UIDatePicker *)v9->_datePicker trailingAnchor];
-    v85 = [v43 trailingAnchor];
-    v86 = [v84 constraintEqualToAnchor:v85];
+    trailingAnchor6 = [(UIDatePicker *)v9->_datePicker trailingAnchor];
+    trailingAnchor7 = [contentView4 trailingAnchor];
+    v86 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     [v86 setActive:1];
 
-    v62 = [(UIDatePicker *)v9->_datePicker bottomAnchor];
-    v63 = [v43 bottomAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63];
+    bottomAnchor2 = [(UIDatePicker *)v9->_datePicker bottomAnchor];
+    bottomAnchor3 = [contentView4 bottomAnchor];
+    v64 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   }
 
   v87 = v64;
   [v64 setActive:1];
 
-  v88 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v88 addObserver:v26 selector:sel_timeZoneChanged_ name:*MEMORY[0x1E695DA68] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v26 selector:sel_timeZoneChanged_ name:*MEMORY[0x1E695DA68] object:0];
 
-  v8 = v90;
+  specifierCopy = v90;
 LABEL_16:
 
   return v9;
@@ -247,17 +247,17 @@ void __64__PSDateTimePickerCell_initWithStyle_reuseIdentifier_specifier___block_
   }
 }
 
-- (void)timeZoneChanged:(id)a3
+- (void)timeZoneChanged:(id)changed
 {
   datePicker = self->_datePicker;
-  v4 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  [(UIDatePicker *)datePicker setTimeZone:v4];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  [(UIDatePicker *)datePicker setTimeZone:systemTimeZone];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSDateTimePickerCell;

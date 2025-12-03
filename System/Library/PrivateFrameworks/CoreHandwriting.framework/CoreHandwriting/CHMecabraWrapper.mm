@@ -1,7 +1,7 @@
 @interface CHMecabraWrapper
 - (CHMecabraWrapper)init;
 - (void)dealloc;
-- (void)initMecabraIfNeededWithType:(int)a3 learningDictURL:(id)a4;
+- (void)initMecabraIfNeededWithType:(int)type learningDictURL:(id)l;
 @end
 
 @implementation CHMecabraWrapper
@@ -19,14 +19,14 @@
   return result;
 }
 
-- (void)initMecabraIfNeededWithType:(int)a3 learningDictURL:(id)a4
+- (void)initMecabraIfNeededWithType:(int)type learningDictURL:(id)l
 {
-  v6 = a4;
-  if (a3 && !self->_mecabra)
+  lCopy = l;
+  if (type && !self->_mecabra)
   {
-    v7 = v6;
+    v7 = lCopy;
     self->_mecabra = MecabraCreateWithOptions();
-    v6 = v7;
+    lCopy = v7;
   }
 }
 

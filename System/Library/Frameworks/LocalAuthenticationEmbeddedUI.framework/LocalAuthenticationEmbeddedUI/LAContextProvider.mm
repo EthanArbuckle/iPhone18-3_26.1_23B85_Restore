@@ -7,9 +7,9 @@
 
 - (id)createContext
 {
-  v2 = [objc_opt_self() createContext];
+  createContext = [objc_opt_self() createContext];
 
-  return v2;
+  return createContext;
 }
 
 - (_TtC29LocalAuthenticationEmbeddedUI17LAContextProvider)init

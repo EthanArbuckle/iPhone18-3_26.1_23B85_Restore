@@ -1,16 +1,16 @@
 @interface CRTTMergeableStringUndoEditCommand
-- (BOOL)_applyToString:(id)a3;
-- (BOOL)applyToString:(id)a3;
+- (BOOL)_applyToString:(id)string;
+- (BOOL)applyToString:(id)string;
 - (BOOL)hasTemporaryIDs;
 - (CRContext)context;
 - (_TtC9Coherence34CRTTMergeableStringUndoEditCommand)init;
 - (id)description;
-- (id)renamedWith:(id)a3;
+- (id)renamedWith:(id)with;
 - (id)temporaryIDs;
 - (void)dealloc;
 - (void)retainTemporaryIDs;
-- (void)updateInsertTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4;
-- (void)updateTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4;
+- (void)updateInsertTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d;
+- (void)updateTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d;
 @end
 
 @implementation CRTTMergeableStringUndoEditCommand
@@ -29,8 +29,8 @@
 
 - (void)dealloc
 {
-  v3 = [(CRTTMergeableStringUndoEditCommand *)self temporaryIDs];
-  [_TtC9Coherence19CRGlobalContextObjC releaseObjCSequence:v3];
+  temporaryIDs = [(CRTTMergeableStringUndoEditCommand *)self temporaryIDs];
+  [_TtC9Coherence19CRGlobalContextObjC releaseObjCSequence:temporaryIDs];
 
   deleteRanges = self->_deleteRanges;
   if (deleteRanges)
@@ -58,7 +58,7 @@
   [(CRTTMergeableStringUndoEditCommand *)&v7 dealloc];
 }
 
-- (void)updateTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4
+- (void)updateTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d
 {
   v16 = *MEMORY[0x1E69E9840];
   __p = 0;
@@ -71,7 +71,7 @@
   {
     do
     {
-      Coherence_namespace::updateTopoIDRange(v8, a3, a4, &__p);
+      Coherence_namespace::updateTopoIDRange(v8, range, d, &__p);
       v8 += 28;
     }
 
@@ -84,10 +84,10 @@
     std::vector<Coherence_namespace::TopoIDRange>::__assign_with_size[abi:ne200100]<Coherence_namespace::TopoIDRange*,Coherence_namespace::TopoIDRange*>(deleteRanges, __p, v12, 0x6DB6DB6DB6DB6DB7 * ((v12 - __p) >> 2));
   }
 
-  v15[0] = *a3->charID.replica.uuid;
-  *(v15 + 12) = *&a3->charID.replica.uuid[12];
-  v14[0] = *a4->charID.replica.uuid;
-  *(v14 + 12) = *&a4->charID.replica.uuid[12];
+  v15[0] = *range->charID.replica.uuid;
+  *(v15 + 12) = *&range->charID.replica.uuid[12];
+  v14[0] = *d->charID.replica.uuid;
+  *(v14 + 12) = *&d->charID.replica.uuid[12];
   [(CRTTMergeableStringUndoEditCommand *)self updateInsertTopoIDRange:v15 toNewRangeID:v14];
   if (__p)
   {
@@ -192,11 +192,11 @@
 
 - (void)retainTemporaryIDs
 {
-  v2 = [(CRTTMergeableStringUndoEditCommand *)self temporaryIDs];
+  temporaryIDs = [(CRTTMergeableStringUndoEditCommand *)self temporaryIDs];
   [_TtC9Coherence19CRGlobalContextObjC retainObjCSequence:?];
 }
 
-- (void)updateInsertTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4
+- (void)updateInsertTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d
 {
   v15 = *MEMORY[0x1E69E9840];
   insertStrings = self->_insertStrings;
@@ -206,18 +206,18 @@
   {
     do
     {
-      if (*(v5 + 16) == a3->charID.replica.index && !uuid_compare(v5, a3->charID.replica.uuid) && (Coherence_namespace::TopoID::operator<(v5, a3) & 1) == 0)
+      if (*(v5 + 16) == range->charID.replica.index && !uuid_compare(v5, range->charID.replica.uuid) && (Coherence_namespace::TopoID::operator<(v5, range) & 1) == 0)
       {
-        v12 = *a3->charID.replica.uuid;
-        v9 = a3->length + a3->charID.clock;
-        index = a3->charID.replica.index;
+        v12 = *range->charID.replica.uuid;
+        v9 = range->length + range->charID.clock;
+        index = range->charID.replica.index;
         v14 = v9;
         if ((Coherence_namespace::TopoID::operator>=(v5, &v12) & 1) == 0)
         {
-          v10 = *a4->charID.replica.uuid;
-          *(v5 + 16) = a4->charID.replica.index;
+          v10 = *d->charID.replica.uuid;
+          *(v5 + 16) = d->charID.replica.index;
           *v5 = v10;
-          *(v5 + 20) = *(v5 + 20) + a4->charID.clock - a3->charID.clock;
+          *(v5 + 20) = *(v5 + 20) + d->charID.clock - range->charID.clock;
         }
       }
 
@@ -230,12 +230,12 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)renamedWith:(id)a3
+- (id)renamedWith:(id)with
 {
   v36 = *MEMORY[0x1E69E9840];
-  v25 = a3;
+  withCopy = with;
   v4 = objc_alloc_init(_TtC9Coherence34CRTTMergeableStringUndoEditCommand);
-  v24 = self;
+  selfCopy = self;
   deleteRanges = self->_deleteRanges;
   v6 = *deleteRanges;
   v7 = deleteRanges[1];
@@ -249,7 +249,7 @@
       if (*&v31[16])
       {
         v9 = Coherence_namespace::TopoReplica::objc(v31);
-        v10 = [v25 renamedWithRange:*&v31[20] replica:{*&v31[24], v9}];
+        v10 = [withCopy renamedWithRange:*&v31[20] replica:{*&v31[24], v9}];
         if ([v10 rangeCount])
         {
           v11 = *&v31[20];
@@ -281,7 +281,7 @@
     while (v6 != v7);
   }
 
-  insertStrings = v24->_insertStrings;
+  insertStrings = selfCopy->_insertStrings;
   v14 = *insertStrings;
   v15 = insertStrings[1];
   if (*insertStrings != v15)
@@ -297,7 +297,7 @@
         if (*&v31[16])
         {
           v17 = Coherence_namespace::TopoReplica::objc(v31);
-          v18 = [v25 renamedWithRange:*&v31[20] replica:{*&v31[24], v17}];
+          v18 = [withCopy renamedWithRange:*&v31[20] replica:{*&v31[24], v17}];
           v19 = *&v31[20];
           v20 = *&v31[24];
           v26[0] = MEMORY[0x1E69E9820];
@@ -391,31 +391,31 @@ uint64_t __50__CRTTMergeableStringUndoEditCommand_renamedWith___block_invoke_2(i
   return 0;
 }
 
-- (BOOL)applyToString:(id)a3
+- (BOOL)applyToString:(id)string
 {
-  v4 = a3;
-  [v4 useRenameIfAvailable];
+  stringCopy = string;
+  [stringCopy useRenameIfAvailable];
   v5 = +[_TtC9Coherence19CRGlobalContextObjC objCRenames];
-  [v4 apply:v5 skipRetain:0 alwaysApply:0];
+  [stringCopy apply:v5 skipRetain:0 alwaysApply:0];
   if ([(CRTTMergeableStringUndoEditCommand *)self hasTemporaryIDs])
   {
     v6 = [(CRTTMergeableStringUndoEditCommand *)self renamedWith:v5];
-    v7 = [v6 _applyToString:v4];
+    v7 = [v6 _applyToString:stringCopy];
   }
 
   else
   {
-    v7 = [(CRTTMergeableStringUndoEditCommand *)self _applyToString:v4];
+    v7 = [(CRTTMergeableStringUndoEditCommand *)self _applyToString:stringCopy];
   }
 
   return v7;
 }
 
-- (BOOL)_applyToString:(id)a3
+- (BOOL)_applyToString:(id)string
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 hasAllIDsIn:self->_insertStrings])
+  stringCopy = string;
+  if (![stringCopy hasAllIDsIn:self->_insertStrings])
   {
     goto LABEL_21;
   }
@@ -450,7 +450,7 @@ uint64_t __50__CRTTMergeableStringUndoEditCommand_renamedWith___block_invoke_2(i
       v22 = v25;
       v23 = v26;
       v24 = v9;
-      [v4 getSubstrings:&v19 forTopoIDRange:{&v22, __p}];
+      [stringCopy getSubstrings:&v19 forTopoIDRange:{&v22, __p}];
       v8 += v9;
       v6 = (v6 + 28);
     }
@@ -458,7 +458,7 @@ uint64_t __50__CRTTMergeableStringUndoEditCommand_renamedWith___block_invoke_2(i
     while (v6 != v7);
   }
 
-  [v4 getCharacterRanges:&__p forSubstrings:&v19];
+  [stringCopy getCharacterRanges:&__p forSubstrings:&v19];
   v10 = __p;
   if (__p == v17)
   {
@@ -480,7 +480,7 @@ uint64_t __50__CRTTMergeableStringUndoEditCommand_renamedWith___block_invoke_2(i
 
   if (v11 == v8)
   {
-    [v4 deleteSubstrings:&v19 withCharacterRanges:&__p];
+    [stringCopy deleteSubstrings:&v19 withCharacterRanges:&__p];
     v10 = __p;
   }
 
@@ -499,7 +499,7 @@ uint64_t __50__CRTTMergeableStringUndoEditCommand_renamedWith___block_invoke_2(i
   if (v11 == v8)
   {
 LABEL_20:
-    [v4 undeleteSubstrings:{self->_insertStrings, __p}];
+    [stringCopy undeleteSubstrings:{self->_insertStrings, __p}];
     v13 = 1;
   }
 
@@ -509,10 +509,10 @@ LABEL_21:
     v13 = 0;
   }
 
-  [v4 coalesce];
+  [stringCopy coalesce];
   if (v13)
   {
-    [v4 updateSubstringIndexes];
+    [stringCopy updateSubstringIndexes];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -531,8 +531,8 @@ LABEL_21:
     do
     {
       v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v5];
-      v8 = [v7 Coherence_shortDescription];
-      [v3 appendFormat:@"%@.%d:%d-%u, ", v8, v5[4], v5[5], v5[5] + v5[6] - 1];
+      coherence_shortDescription = [v7 Coherence_shortDescription];
+      [v3 appendFormat:@"%@.%d:%d-%u, ", coherence_shortDescription, v5[4], v5[5], v5[5] + v5[6] - 1];
 
       v5 += 7;
     }
@@ -549,8 +549,8 @@ LABEL_21:
     do
     {
       v12 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v10];
-      v13 = [v12 Coherence_shortDescription];
-      [v3 appendFormat:@"%@.%d:%d-%u=>'%@', ", v13, *(v10 + 16), *(v10 + 20), (*(v10 + 20) + *(v10 + 24) - 1), *(v10 + 32)];
+      coherence_shortDescription2 = [v12 Coherence_shortDescription];
+      [v3 appendFormat:@"%@.%d:%d-%u=>'%@', ", coherence_shortDescription2, *(v10 + 16), *(v10 + 20), (*(v10 + 20) + *(v10 + 24) - 1), *(v10 + 32)];
 
       v10 += 40;
     }

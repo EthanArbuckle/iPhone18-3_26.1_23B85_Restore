@@ -1,15 +1,15 @@
 @interface HUCAPackageIconManager
 + (id)sharedInstance;
 - (HUCAPackageIconManager)init;
-- (id)_loadPackageWithIconDescriptor:(id)a3;
-- (id)_packageDataForIconDescriptor:(id)a3;
-- (id)_prefetchIcons:(id)a3;
-- (id)_queueForIconDescriptorIdentifier:(id)a3;
-- (id)prefetchIconDescriptors:(id)a3;
-- (id)tryReclaimPackage:(id)a3 forIconDescriptor:(id)a4;
+- (id)_loadPackageWithIconDescriptor:(id)descriptor;
+- (id)_packageDataForIconDescriptor:(id)descriptor;
+- (id)_prefetchIcons:(id)icons;
+- (id)_queueForIconDescriptorIdentifier:(id)identifier;
+- (id)prefetchIconDescriptors:(id)descriptors;
+- (id)tryReclaimPackage:(id)package forIconDescriptor:(id)descriptor;
 - (void)_startPrefetchIfNecessary;
-- (void)prioritizeIconDescriptors:(id)a3;
-- (void)returnPackageToCache:(id)a3 forIconDescriptor:(id)a4;
+- (void)prioritizeIconDescriptors:(id)descriptors;
+- (void)returnPackageToCache:(id)cache forIconDescriptor:(id)descriptor;
 @end
 
 @implementation HUCAPackageIconManager
@@ -66,40 +66,40 @@ uint64_t __40__HUCAPackageIconManager_sharedInstance__block_invoke_2()
   return v2;
 }
 
-- (id)tryReclaimPackage:(id)a3 forIconDescriptor:(id)a4
+- (id)tryReclaimPackage:(id)package forIconDescriptor:(id)descriptor
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  packageCopy = package;
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"HUCAPackageIconManager.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"descriptor"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUCAPackageIconManager.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"descriptor"}];
   }
 
-  v9 = [(HUCAPackageIconManager *)self packageReuseQueue];
-  v10 = [v8 identifier];
-  v11 = [v9 objectForKey:v10];
+  packageReuseQueue = [(HUCAPackageIconManager *)self packageReuseQueue];
+  identifier = [descriptorCopy identifier];
+  v11 = [packageReuseQueue objectForKey:identifier];
 
   os_unfair_lock_lock(&self->_queueLock);
-  if (v7)
+  if (packageCopy)
   {
-    v12 = [v11 allObjects];
-    v13 = [v12 containsObject:v7];
+    allObjects = [v11 allObjects];
+    v13 = [allObjects containsObject:packageCopy];
 
     if (v13)
     {
-      [v11 dequeueObject:v7];
-      v14 = v7;
+      [v11 dequeueObject:packageCopy];
+      dequeue = packageCopy;
 LABEL_8:
-      v15 = v14;
+      v15 = dequeue;
       goto LABEL_10;
     }
   }
 
   if ([v11 count])
   {
-    v14 = [v11 dequeue];
+    dequeue = [v11 dequeue];
     goto LABEL_8;
   }
 
@@ -112,9 +112,9 @@ LABEL_10:
     v17 = HFLogForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [v8 identifier];
+      identifier2 = [descriptorCopy identifier];
       *buf = 138412546;
-      v26 = v23;
+      v26 = identifier2;
       v27 = 2048;
       v28 = v16;
       _os_log_debug_impl(&dword_254573000, v17, OS_LOG_TYPE_DEBUG, "HUCAPackageIconManager: dequeued package with identifier %@, queue now contains %lu packages", buf, 0x16u);
@@ -123,29 +123,29 @@ LABEL_10:
 
   else
   {
-    v18 = [v8 identifier];
-    v15 = [(HUCAPackageIconManager *)self _loadPackageWithIconDescriptor:v18];
+    identifier3 = [descriptorCopy identifier];
+    v15 = [(HUCAPackageIconManager *)self _loadPackageWithIconDescriptor:identifier3];
   }
 
-  v19 = [v15 rootLayer];
-  [v19 setGeometryFlipped:1];
+  rootLayer = [v15 rootLayer];
+  [rootLayer setGeometryFlipped:1];
 
-  v20 = [v15 rootLayer];
-  [v20 setShouldRasterize:1];
+  rootLayer2 = [v15 rootLayer];
+  [rootLayer2 setShouldRasterize:1];
 
   v21 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (void)returnPackageToCache:(id)a3 forIconDescriptor:(id)a4
+- (void)returnPackageToCache:(id)cache forIconDescriptor:(id)descriptor
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  cacheCopy = cache;
+  descriptorCopy = descriptor;
+  if (descriptorCopy)
   {
-    if (!v7)
+    if (!cacheCopy)
     {
       goto LABEL_6;
     }
@@ -153,27 +153,27 @@ LABEL_10:
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HUCAPackageIconManager.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"descriptor"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUCAPackageIconManager.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"descriptor"}];
 
-    if (!v7)
+    if (!cacheCopy)
     {
       goto LABEL_6;
     }
   }
 
-  v9 = [v8 identifier];
-  v10 = [(HUCAPackageIconManager *)self _queueForIconDescriptorIdentifier:v9];
+  identifier = [descriptorCopy identifier];
+  v10 = [(HUCAPackageIconManager *)self _queueForIconDescriptorIdentifier:identifier];
 
   os_unfair_lock_lock(&self->_queueLock);
-  [v10 enqueue:v7];
+  [v10 enqueue:cacheCopy];
   os_unfair_lock_unlock(&self->_queueLock);
   v11 = HFLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [v8 identifier];
+    identifier2 = [descriptorCopy identifier];
     *buf = 138412546;
-    v16 = v13;
+    v16 = identifier2;
     v17 = 2048;
     v18 = [v10 count];
     _os_log_debug_impl(&dword_254573000, v11, OS_LOG_TYPE_DEBUG, "HUCAPackageIconManager: reclaimed package with identifier %@, queue now contains %lu packages", buf, 0x16u);
@@ -183,10 +183,10 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)prefetchIconDescriptors:(id)a3
+- (id)prefetchIconDescriptors:(id)descriptors
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorsCopy = descriptors;
   if ([MEMORY[0x277D14678] isSpringBoard])
   {
     v5 = 0;
@@ -194,19 +194,19 @@ LABEL_6:
 
   else
   {
-    v6 = [v4 na_map:&__block_literal_global_19];
+    v6 = [descriptorsCopy na_map:&__block_literal_global_19];
     v22 = 0;
     v23 = &v22;
     v24 = 0x2020000000;
     v25 = 0;
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __50__HUCAPackageIconManager_prefetchIconDescriptors___block_invoke_2;
     v21[3] = &unk_27977D628;
     v21[4] = self;
     v21[5] = &v22;
-    v8 = [v6 na_reduceWithInitialValue:v7 reducer:v21];
+    v8 = [v6 na_reduceWithInitialValue:dictionary reducer:v21];
 
     if (v23[3])
     {
@@ -287,43 +287,43 @@ BOOL __50__HUCAPackageIconManager_prefetchIconDescriptors___block_invoke_23(uint
   return v5 >= 0;
 }
 
-- (void)prioritizeIconDescriptors:(id)a3
+- (void)prioritizeIconDescriptors:(id)descriptors
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v5 = HFLogForCategory();
-  v6 = [(HUCAPackageIconManager *)self signpostID];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostID = [(HUCAPackageIconManager *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
+    v7 = signpostID;
     if (os_signpost_enabled(v5))
     {
       v11 = 134217984;
-      v12 = [v4 count];
+      v12 = [descriptorsCopy count];
       _os_signpost_emit_with_name_impl(&dword_254573000, v5, OS_SIGNPOST_EVENT, v7, "PackageIconManagerPrefetch", "Prioritized icon descriptors: %lu", &v11, 0xCu);
     }
   }
 
-  v8 = [(HUCAPackageIconManager *)self prefetchPriorityQueue];
-  v9 = [v4 na_map:&__block_literal_global_26];
-  [v8 prioritizeObjects:v9];
+  prefetchPriorityQueue = [(HUCAPackageIconManager *)self prefetchPriorityQueue];
+  v9 = [descriptorsCopy na_map:&__block_literal_global_26];
+  [prefetchPriorityQueue prioritizeObjects:v9];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_prefetchIcons:(id)a3
+- (id)_prefetchIcons:(id)icons
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  iconsCopy = icons;
   v5 = HFLogForCategory();
-  v6 = [(HUCAPackageIconManager *)self signpostID];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostID = [(HUCAPackageIconManager *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
+    v7 = signpostID;
     if (os_signpost_enabled(v5))
     {
       *buf = 134217984;
-      v21 = [v4 count];
+      v21 = [iconsCopy count];
       _os_signpost_emit_with_name_impl(&dword_254573000, v5, OS_SIGNPOST_EVENT, v7, "PackageIconManagerPrefetch", "Number of icon descriptors prefetch requested: %lu", buf, 0xCu);
     }
   }
@@ -332,7 +332,7 @@ BOOL __50__HUCAPackageIconManager_prefetchIconDescriptors___block_invoke_23(uint
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = iconsCopy;
     _os_log_debug_impl(&dword_254573000, v8, OS_LOG_TYPE_DEBUG, "HUCAPackageIconManager: prefetchIconDescriptors prefetching icon descriptors: %@", buf, 0xCu);
   }
 
@@ -341,7 +341,7 @@ BOOL __50__HUCAPackageIconManager_prefetchIconDescriptors___block_invoke_23(uint
   v19[2] = __41__HUCAPackageIconManager__prefetchIcons___block_invoke;
   v19[3] = &unk_27977D678;
   v19[4] = self;
-  v9 = [v4 na_map:v19];
+  v9 = [iconsCopy na_map:v19];
   [(HUCAPackageIconManager *)self _startPrefetchIfNecessary];
   v10 = MEMORY[0x277D2C8C0];
   v16[0] = MEMORY[0x277D85DD0];
@@ -350,8 +350,8 @@ BOOL __50__HUCAPackageIconManager_prefetchIconDescriptors___block_invoke_23(uint
   v16[3] = &unk_27977D6A0;
   v16[4] = self;
   v17 = v9;
-  v18 = v4;
-  v11 = v4;
+  v18 = iconsCopy;
+  v11 = iconsCopy;
   v12 = v9;
   v13 = [v10 tokenWithCancelationBlock:v16];
 
@@ -398,13 +398,13 @@ void __41__HUCAPackageIconManager__prefetchIcons___block_invoke_2(uint64_t a1)
   if (!dispatch_group_wait(self->_prefetchDispatchGroup, 0))
   {
     objc_initWeak(&location, self);
-    v3 = [(HUCAPackageIconManager *)self prefetchScheduler];
+    prefetchScheduler = [(HUCAPackageIconManager *)self prefetchScheduler];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __51__HUCAPackageIconManager__startPrefetchIfNecessary__block_invoke;
     v4[3] = &unk_27977D6C8;
     objc_copyWeak(&v5, &location);
-    [v3 performBlock:v4];
+    [prefetchScheduler performBlock:v4];
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -467,25 +467,25 @@ void __51__HUCAPackageIconManager__startPrefetchIfNecessary__block_invoke(uint64
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_loadPackageWithIconDescriptor:(id)a3
+- (id)_loadPackageWithIconDescriptor:(id)descriptor
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUCAPackageIconManager *)self _packageDataForIconDescriptor:v4];
+  descriptorCopy = descriptor;
+  v5 = [(HUCAPackageIconManager *)self _packageDataForIconDescriptor:descriptorCopy];
   if (v5)
   {
     [MEMORY[0x277CD9FF0] begin];
     v6 = MEMORY[0x277CD9F28];
-    v7 = [v5 data];
-    v8 = [v5 typeIdentifier];
+    data = [v5 data];
+    typeIdentifier = [v5 typeIdentifier];
     v15 = 0;
-    v9 = [v6 packageWithData:v7 type:v8 options:0 error:&v15];
+    v9 = [v6 packageWithData:data type:typeIdentifier options:0 error:&v15];
     v10 = v15;
 
     [MEMORY[0x277CD9FF0] commit];
     if (!v9)
     {
-      NSLog(&cfstr_FailedToIdenti.isa, v4);
+      NSLog(&cfstr_FailedToIdenti.isa, descriptorCopy);
     }
 
     if (v10)
@@ -493,11 +493,11 @@ void __51__HUCAPackageIconManager__startPrefetchIfNecessary__block_invoke(uint64
       v11 = HFLogForCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v14 = [v10 localizedDescription];
+        localizedDescription = [v10 localizedDescription];
         *buf = 138412546;
-        v17 = v4;
+        v17 = descriptorCopy;
         v18 = 2112;
-        v19 = v14;
+        v19 = localizedDescription;
         _os_log_error_impl(&dword_254573000, v11, OS_LOG_TYPE_ERROR, "HUCAPackageIconManager: Failed to identify CAPackage for icon identifier: %@ due to error: %@", buf, 0x16u);
       }
     }
@@ -513,33 +513,33 @@ void __51__HUCAPackageIconManager__startPrefetchIfNecessary__block_invoke(uint64
   return v9;
 }
 
-- (id)_packageDataForIconDescriptor:(id)a3
+- (id)_packageDataForIconDescriptor:(id)descriptor
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUCAPackageIconManager *)self packageDataCache];
-  v6 = [v5 objectForKey:v4];
+  descriptorCopy = descriptor;
+  packageDataCache = [(HUCAPackageIconManager *)self packageDataCache];
+  v6 = [packageDataCache objectForKey:descriptorCopy];
 
   if (!v6)
   {
     v7 = objc_alloc(MEMORY[0x277D74210]);
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v6 = [v7 initWithName:v4 bundle:v8];
+    v6 = [v7 initWithName:descriptorCopy bundle:v8];
 
     if (v6)
     {
-      v9 = [(HUCAPackageIconManager *)self packageDataCache];
-      [v9 setObject:v6 forKey:v4];
+      packageDataCache2 = [(HUCAPackageIconManager *)self packageDataCache];
+      [packageDataCache2 setObject:v6 forKey:descriptorCopy];
     }
 
     else
     {
-      v9 = HFLogForCategory();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      packageDataCache2 = HFLogForCategory();
+      if (os_log_type_enabled(packageDataCache2, OS_LOG_TYPE_ERROR))
       {
         v13 = 138412290;
-        v14 = v4;
-        _os_log_error_impl(&dword_254573000, v9, OS_LOG_TYPE_ERROR, "HUCAPackageIconManager: Failed to load NSDataAsset for icon identifier: %@", &v13, 0xCu);
+        v14 = descriptorCopy;
+        _os_log_error_impl(&dword_254573000, packageDataCache2, OS_LOG_TYPE_ERROR, "HUCAPackageIconManager: Failed to load NSDataAsset for icon identifier: %@", &v13, 0xCu);
       }
     }
   }
@@ -551,17 +551,17 @@ void __51__HUCAPackageIconManager__startPrefetchIfNecessary__block_invoke(uint64
   return v10;
 }
 
-- (id)_queueForIconDescriptorIdentifier:(id)a3
+- (id)_queueForIconDescriptorIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HUCAPackageIconManager *)self packageReuseQueue];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  packageReuseQueue = [(HUCAPackageIconManager *)self packageReuseQueue];
+  v6 = [packageReuseQueue objectForKey:identifierCopy];
 
   if (!v6)
   {
     v6 = objc_opt_new();
-    v7 = [(HUCAPackageIconManager *)self packageReuseQueue];
-    [v7 setObject:v6 forKey:v4];
+    packageReuseQueue2 = [(HUCAPackageIconManager *)self packageReuseQueue];
+    [packageReuseQueue2 setObject:v6 forKey:identifierCopy];
   }
 
   return v6;

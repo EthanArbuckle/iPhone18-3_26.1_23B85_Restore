@@ -2,7 +2,7 @@
 + (id)overrides;
 + (id)overridesFileURL;
 + (void)overrides;
-- (id)overrideForSymbol:(id)a3 shape:(int64_t)a4 size:(CGSize)a5;
+- (id)overrideForSymbol:(id)symbol shape:(int64_t)shape size:(CGSize)size;
 @end
 
 @implementation IFGraphicSymbolOverrides
@@ -65,14 +65,14 @@ void __44__IFGraphicSymbolOverrides_overridesFileURL__block_invoke()
     }
 
     v10 = [[IFGraphicSymbolOverridesParser alloc] initWithRawOverrides:v7];
-    v11 = [(IFGraphicSymbolOverridesParser *)v10 parse];
-    [(IFGraphicSymbolOverrides *)v4 setItems:v11];
+    parse = [(IFGraphicSymbolOverridesParser *)v10 parse];
+    [(IFGraphicSymbolOverrides *)v4 setItems:parse];
 
     if (v4)
     {
-      v12 = [(IFGraphicSymbolOverrides *)v4 items];
+      items = [(IFGraphicSymbolOverrides *)v4 items];
 
-      if (v12)
+      if (items)
       {
         [overrides_cache setObject:v4 forKey:@"overrides"];
       }
@@ -93,20 +93,20 @@ uint64_t __37__IFGraphicSymbolOverrides_overrides__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)overrideForSymbol:(id)a3 shape:(int64_t)a4 size:(CGSize)a5
+- (id)overrideForSymbol:(id)symbol shape:(int64_t)shape size:(CGSize)size
 {
-  height = a5.height;
+  height = size.height;
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  symbolCopy = symbol;
   v8 = +[IFGraphicSymbolOverrides overrides];
-  v9 = [v8 items];
-  v10 = [v9 _IF_arrayForKey:v7];
+  items = [v8 items];
+  v10 = [items _IF_arrayForKey:symbolCopy];
 
   if (v10 && [v10 count])
   {
     LODWORD(v11) = llround(height);
     v12 = [MEMORY[0x1E696AD98] numberWithInt:v11];
-    v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF.shape == %d && SELF.enclosureDimension == %@", a4, v12];
+    v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF.shape == %d && SELF.enclosureDimension == %@", shape, v12];
     v14 = [v10 filteredArrayUsingPredicate:v13];
     if ([v14 count] == 1)
     {
@@ -115,8 +115,8 @@ uint64_t __37__IFGraphicSymbolOverrides_overrides__block_invoke()
 
     else
     {
-      v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF.shape == %d && SELF.isDefault == YES", a4];
-      v17 = [v10 filteredArrayUsingPredicate:v16];
+      shape = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF.shape == %d && SELF.isDefault == YES", shape];
+      v17 = [v10 filteredArrayUsingPredicate:shape];
       if ([v17 count] == 1)
       {
         v15 = [v17 objectAtIndexedSubscript:0];
@@ -124,8 +124,8 @@ uint64_t __37__IFGraphicSymbolOverrides_overrides__block_invoke()
 
       else
       {
-        v18 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF.shape == %d", a4];
-        v19 = [v10 filteredArrayUsingPredicate:v18];
+        shape2 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF.shape == %d", shape];
+        v19 = [v10 filteredArrayUsingPredicate:shape2];
         v20 = v19;
         if (v19 && [v19 count])
         {
@@ -142,29 +142,29 @@ uint64_t __37__IFGraphicSymbolOverrides_overrides__block_invoke()
             v26 = [v20 sortedArrayUsingDescriptors:v28];
 
             [v26 valueForKey:@"enclosureDimension"];
-            v22 = v29 = v18;
+            v22 = v29 = shape2;
             v23 = [v22 indexOfObject:v12 inSortedRange:0 options:objc_msgSend(v22 usingComparator:{"count"), 1536, &__block_literal_global_193}];
             v15 = [v26 objectAtIndexedSubscript:{v23 - (v23 == objc_msgSend(v22, "count"))}];
 
-            v18 = v29;
+            shape2 = v29;
           }
         }
 
         else
         {
-          v27 = v18;
+          v27 = shape2;
           v21 = IFDefaultLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v32 = v7;
+            v32 = symbolCopy;
             v33 = 2048;
-            v34 = a4;
+            shapeCopy = shape;
             _os_log_impl(&dword_1B9DEC000, v21, OS_LOG_TYPE_INFO, "Failed to find override for %@ matching shape %lu", buf, 0x16u);
           }
 
           v15 = 0;
-          v18 = v27;
+          shape2 = v27;
         }
       }
     }
@@ -195,7 +195,7 @@ uint64_t __57__IFGraphicSymbolOverrides_overrideForSymbol_shape_size___block_inv
 + (void)overrides
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   OUTLINED_FUNCTION_1();
   _os_log_error_impl(&dword_1B9DEC000, a2, OS_LOG_TYPE_ERROR, "Failed to collect graphic variant overrides from plist. Error: %@", v4, 0xCu);
 }

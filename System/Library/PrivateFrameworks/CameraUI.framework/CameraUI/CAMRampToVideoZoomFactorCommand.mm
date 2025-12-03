@@ -1,57 +1,57 @@
 @interface CAMRampToVideoZoomFactorCommand
-- (CAMRampToVideoZoomFactorCommand)initWithVideoZoomFactor:(double)a3 duration:(double)a4 zoomRampTuning:(int64_t)a5 graphConfiguration:(id)a6;
-- (CAMRampToVideoZoomFactorCommand)initWithVideoZoomFactor:(double)a3 rate:(float)a4 graphConfiguration:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMRampToVideoZoomFactorCommand)initWithVideoZoomFactor:(double)factor duration:(double)duration zoomRampTuning:(int64_t)tuning graphConfiguration:(id)configuration;
+- (CAMRampToVideoZoomFactorCommand)initWithVideoZoomFactor:(double)factor rate:(float)rate graphConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMRampToVideoZoomFactorCommand
 
-- (CAMRampToVideoZoomFactorCommand)initWithVideoZoomFactor:(double)a3 rate:(float)a4 graphConfiguration:(id)a5
+- (CAMRampToVideoZoomFactorCommand)initWithVideoZoomFactor:(double)factor rate:(float)rate graphConfiguration:(id)configuration
 {
-  v9 = a5;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = CAMRampToVideoZoomFactorCommand;
   v10 = [(CAMCaptureCommand *)&v14 initWithSubcommands:0];
   v11 = v10;
   if (v10)
   {
-    v10->__videoZoomFactor = a3;
-    v10->__rate = a4;
+    v10->__videoZoomFactor = factor;
+    v10->__rate = rate;
     v10->__duration = 0.0;
     v10->__videoZoomRampTuning = 0;
-    objc_storeStrong(&v10->__graphConfiguration, a5);
+    objc_storeStrong(&v10->__graphConfiguration, configuration);
     v12 = v11;
   }
 
   return v11;
 }
 
-- (CAMRampToVideoZoomFactorCommand)initWithVideoZoomFactor:(double)a3 duration:(double)a4 zoomRampTuning:(int64_t)a5 graphConfiguration:(id)a6
+- (CAMRampToVideoZoomFactorCommand)initWithVideoZoomFactor:(double)factor duration:(double)duration zoomRampTuning:(int64_t)tuning graphConfiguration:(id)configuration
 {
-  v11 = a6;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = CAMRampToVideoZoomFactorCommand;
   v12 = [(CAMCaptureCommand *)&v16 initWithSubcommands:0];
   v13 = v12;
   if (v12)
   {
-    v12->__videoZoomFactor = a3;
+    v12->__videoZoomFactor = factor;
     v12->__rate = 0.0;
-    v12->__duration = a4;
-    v12->__videoZoomRampTuning = a5;
-    objc_storeStrong(&v12->__graphConfiguration, a6);
+    v12->__duration = duration;
+    v12->__videoZoomRampTuning = tuning;
+    objc_storeStrong(&v12->__graphConfiguration, configuration);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = CAMRampToVideoZoomFactorCommand;
-  v4 = [(CAMCaptureCommand *)&v11 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v11 copyWithZone:zone];
   [(CAMRampToVideoZoomFactorCommand *)self _videoZoomFactor];
   v4[4] = v5;
   [(CAMRampToVideoZoomFactorCommand *)self _rate];
@@ -59,31 +59,31 @@
   [(CAMRampToVideoZoomFactorCommand *)self _duration];
   v4[5] = v7;
   v4[6] = [(CAMRampToVideoZoomFactorCommand *)self _videoZoomRampTuning];
-  v8 = [(CAMRampToVideoZoomFactorCommand *)self _graphConfiguration];
+  _graphConfiguration = [(CAMRampToVideoZoomFactorCommand *)self _graphConfiguration];
   v9 = v4[7];
-  v4[7] = v8;
+  v4[7] = _graphConfiguration;
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   [(CAMRampToVideoZoomFactorCommand *)self _videoZoomFactor];
   v6 = v5;
   [(CAMRampToVideoZoomFactorCommand *)self _rate];
   v8 = v7;
   [(CAMRampToVideoZoomFactorCommand *)self _duration];
   v10 = v9;
-  v11 = [v4 currentVideoDevice];
-  v12 = [v4 currentVideoDeviceFormat];
-  v13 = [v4 currentStillImageOutput];
-  v14 = [v13 isDepthDataDeliveryEnabled];
-  v15 = [(CAMRampToVideoZoomFactorCommand *)self _graphConfiguration];
-  v16 = [v15 mode];
+  currentVideoDevice = [contextCopy currentVideoDevice];
+  currentVideoDeviceFormat = [contextCopy currentVideoDeviceFormat];
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
+  isDepthDataDeliveryEnabled = [currentStillImageOutput isDepthDataDeliveryEnabled];
+  _graphConfiguration = [(CAMRampToVideoZoomFactorCommand *)self _graphConfiguration];
+  mode = [_graphConfiguration mode];
 
-  [v12 videoMaxZoomFactor];
+  [currentVideoDeviceFormat videoMaxZoomFactor];
   if (v6 <= v17)
   {
     v18 = v6;
@@ -118,13 +118,13 @@
     v18 = 1.0;
   }
 
-  if (!v14)
+  if (!isDepthDataDeliveryEnabled)
   {
     goto LABEL_25;
   }
 
-  v35 = v16;
-  [v12 supportedVideoZoomRangesForDepthDataDelivery];
+  v35 = mode;
+  [currentVideoDeviceFormat supportedVideoZoomRangesForDepthDataDelivery];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -185,27 +185,27 @@ LABEL_25:
       v33 = [CAMCaptureConversions AVCaptureDeviceVideoZoomRampTuningForCAMVideoZoomRampTuning:[(CAMRampToVideoZoomFactorCommand *)self _videoZoomRampTuning]];
       v32 = v18;
       *&v34 = v32;
-      [v11 rampToVideoZoomFactor:v33 withTuning:v34];
+      [currentVideoDevice rampToVideoZoomFactor:v33 withTuning:v34];
     }
 
     else if (v10 <= 0.0)
     {
       if (v8 <= 0.0)
       {
-        [v11 setVideoZoomFactor:v18];
+        [currentVideoDevice setVideoZoomFactor:v18];
       }
 
       else
       {
         *&v31 = v8;
-        [v11 rampToVideoZoomFactor:v18 withRate:v31];
+        [currentVideoDevice rampToVideoZoomFactor:v18 withRate:v31];
       }
     }
 
     else
     {
       *&v30 = v18;
-      [v11 rampExponentiallyToVideoZoomFactor:v30 withDuration:v10];
+      [currentVideoDevice rampExponentiallyToVideoZoomFactor:v30 withDuration:v10];
     }
   }
 }

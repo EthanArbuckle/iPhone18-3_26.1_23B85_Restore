@@ -7,12 +7,12 @@
 - (NSDictionary)context
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(RAPWebBundleImageContext *)self identifier];
+  identifier = [(RAPWebBundleImageContext *)self identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [(RAPWebBundleImageContext *)self identifier];
-    [v3 setObject:v5 forKeyedSubscript:@"icon"];
+    identifier2 = [(RAPWebBundleImageContext *)self identifier];
+    [v3 setObject:identifier2 forKeyedSubscript:@"icon"];
   }
 
   v6 = [v3 copy];

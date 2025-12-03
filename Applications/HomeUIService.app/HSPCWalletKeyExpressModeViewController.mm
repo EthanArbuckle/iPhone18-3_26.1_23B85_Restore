@@ -1,24 +1,24 @@
 @interface HSPCWalletKeyExpressModeViewController
-+ (id)_expresssModePassConflictError:(id)a3;
-- (HSPCWalletKeyExpressModeViewController)initWithCoordinator:(id)a3 config:(id)a4;
++ (id)_expresssModePassConflictError:(id)error;
+- (HSPCWalletKeyExpressModeViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)_addWalletKeyWithExpressMode;
-- (id)_addWalletKeyWithiPhoneExpressModeOptions:(int64_t)a3 pairedWatchesExpressModeOptions:(int64_t)a4;
+- (id)_addWalletKeyWithiPhoneExpressModeOptions:(int64_t)options pairedWatchesExpressModeOptions:(int64_t)modeOptions;
 - (id)_enableExpressModeButtonTapped;
 - (id)_requireAuthenticationButtonTapped;
 - (id)_shouldShowSingleContinueButton;
 - (id)commitConfiguration;
 - (id)dismissButtonBlock;
-- (void)_enableExpressModeAfterAuthWithPromise:(id)a3;
-- (void)_sendAnalytics:(unint64_t)a3;
-- (void)_updateHasOnboardedForWalletKey:(id)a3;
+- (void)_enableExpressModeAfterAuthWithPromise:(id)promise;
+- (void)_sendAnalytics:(unint64_t)analytics;
+- (void)_updateHasOnboardedForWalletKey:(id)key;
 @end
 
 @implementation HSPCWalletKeyExpressModeViewController
 
-- (HSPCWalletKeyExpressModeViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCWalletKeyExpressModeViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = [[HUIconView alloc] initWithFrame:1 contentMode:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v27.receiver = self;
   v27.super_class = HSPCWalletKeyExpressModeViewController;
@@ -26,25 +26,25 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_config, a4);
-    objc_storeStrong(&v11->_coordinator, a3);
+    objc_storeStrong(&v10->_config, config);
+    objc_storeStrong(&v11->_coordinator, coordinator);
     objc_storeStrong(&v11->_iconImageView, v9);
     v12 = sub_100063A44(@"HSProximityCardWalletKeyExpressModeTapToUnlockTitle");
     [(HSPCWalletKeyExpressModeViewController *)v11 setTitle:v12];
 
     objc_initWeak(&location, v11);
-    v13 = [v8 home];
-    v14 = [v13 hf_fetchWalletKeyDeviceStateForCurrentDevice];
+    home = [configCopy home];
+    hf_fetchWalletKeyDeviceStateForCurrentDevice = [home hf_fetchWalletKeyDeviceStateForCurrentDevice];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100026F08;
     v24[3] = &unk_1000C6740;
     objc_copyWeak(&v25, &location);
-    v15 = [v14 flatMap:v24];
+    v15 = [hf_fetchWalletKeyDeviceStateForCurrentDevice flatMap:v24];
     v16 = [v15 recover:&stru_1000C6760];
 
-    v17 = [v8 home];
-    v18 = [HFWalletUtilities walletKeyIconDescriptorForHome:v17 shouldUseKeyholeAsset:0 foriPhoneDevice:1];
+    home2 = [configCopy home];
+    v18 = [HFWalletUtilities walletKeyIconDescriptorForHome:home2 shouldUseKeyholeAsset:0 foriPhoneDevice:1];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100027390;
@@ -62,16 +62,16 @@
 
 - (id)commitConfiguration
 {
-  v4 = [(HSPCWalletKeyExpressModeViewController *)self continueAction];
+  continueAction = [(HSPCWalletKeyExpressModeViewController *)self continueAction];
 
-  if (v4)
+  if (continueAction)
   {
     v5 = HFLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = NSStringFromSelector(a2);
       v9 = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped Continue button", &v9, 0x16u);
@@ -79,15 +79,15 @@
 
     [(HSPCWalletKeyExpressModeViewController *)self _sendAnalytics:2];
     [(HSPCWalletKeyExpressModeViewController *)self _updateHasOnboardedForWalletKey:0];
-    v7 = [NAFuture futureWithResult:&off_1000CD5E8];
+    _enableExpressModeButtonTapped = [NAFuture futureWithResult:&off_1000CD5E8];
   }
 
   else
   {
-    v7 = [(HSPCWalletKeyExpressModeViewController *)self _enableExpressModeButtonTapped];
+    _enableExpressModeButtonTapped = [(HSPCWalletKeyExpressModeViewController *)self _enableExpressModeButtonTapped];
   }
 
-  return v7;
+  return _enableExpressModeButtonTapped;
 }
 
 - (id)_enableExpressModeButtonTapped
@@ -97,34 +97,34 @@
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped Enable Express Mode button", buf, 0x16u);
   }
 
   [(HSPCWalletKeyExpressModeViewController *)self _sendAnalytics:0];
-  v6 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
-  v7 = [v6 walletKey];
-  v8 = [v7 isExpressEnabled];
+  walletKeyDeviceState = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
+  walletKey = [walletKeyDeviceState walletKey];
+  isExpressEnabled = [walletKey isExpressEnabled];
 
-  if (v8)
+  if (isExpressEnabled)
   {
-    v9 = [NAFuture futureWithResult:&off_1000CD5E8];
+    _addWalletKeyWithExpressMode = [NAFuture futureWithResult:&off_1000CD5E8];
   }
 
   else
   {
-    v10 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
-    v11 = [v10 walletKey];
-    v12 = v11 == 0;
+    walletKeyDeviceState2 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
+    walletKey2 = [walletKeyDeviceState2 walletKey];
+    v12 = walletKey2 == 0;
 
-    v13 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
-    v14 = [v13 expressEnablementConflictingPassDescription];
+    walletKeyDeviceState3 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
+    expressEnablementConflictingPassDescription = [walletKeyDeviceState3 expressEnablementConflictingPassDescription];
 
     if (v12)
     {
-      if (v14)
+      if (expressEnablementConflictingPassDescription)
       {
         objc_initWeak(buf, self);
         v22[0] = _NSConcreteStackBlock;
@@ -132,8 +132,8 @@
         v22[2] = sub_100027AAC;
         v22[3] = &unk_1000C67B0;
         objc_copyWeak(&v24, buf);
-        v23 = v14;
-        v9 = [NAFuture futureWithBlock:v22];
+        v23 = expressEnablementConflictingPassDescription;
+        _addWalletKeyWithExpressMode = [NAFuture futureWithBlock:v22];
 
         objc_destroyWeak(&v24);
         objc_destroyWeak(buf);
@@ -141,14 +141,14 @@
 
       else
       {
-        v9 = [(HSPCWalletKeyExpressModeViewController *)self _addWalletKeyWithExpressMode];
+        _addWalletKeyWithExpressMode = [(HSPCWalletKeyExpressModeViewController *)self _addWalletKeyWithExpressMode];
       }
     }
 
     else
     {
       objc_initWeak(buf, self);
-      if (v14)
+      if (expressEnablementConflictingPassDescription)
       {
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;
@@ -156,8 +156,8 @@
         v19[3] = &unk_1000C67B0;
         v15 = &v21;
         objc_copyWeak(&v21, buf);
-        v20 = v14;
-        v9 = [NAFuture futureWithBlock:v19];
+        v20 = expressEnablementConflictingPassDescription;
+        _addWalletKeyWithExpressMode = [NAFuture futureWithBlock:v19];
       }
 
       else
@@ -168,7 +168,7 @@
         v17[3] = &unk_1000C6580;
         v15 = &v18;
         objc_copyWeak(&v18, buf);
-        v9 = [NAFuture futureWithBlock:v17];
+        _addWalletKeyWithExpressMode = [NAFuture futureWithBlock:v17];
       }
 
       objc_destroyWeak(v15);
@@ -176,12 +176,12 @@
     }
   }
 
-  return v9;
+  return _addWalletKeyWithExpressMode;
 }
 
-- (void)_enableExpressModeAfterAuthWithPromise:(id)a3
+- (void)_enableExpressModeAfterAuthWithPromise:(id)promise
 {
-  v4 = a3;
+  promiseCopy = promise;
   v5 = objc_alloc_init(LAContext);
   v15 = 0;
   v6 = [v5 canEvaluatePolicy:2 error:&v15];
@@ -196,7 +196,7 @@
     v11[3] = &unk_1000C6828;
     objc_copyWeak(&v14, location);
     v12 = v5;
-    v13 = v4;
+    v13 = promiseCopy;
     [v12 evaluatePolicy:2 localizedReason:v8 reply:v11];
 
     objc_destroyWeak(&v14);
@@ -224,7 +224,7 @@
     }
 
     [v5 invalidate];
-    [v4 finishWithResult:&off_1000CD600];
+    [promiseCopy finishWithResult:&off_1000CD600];
   }
 }
 
@@ -235,22 +235,22 @@
   {
     v5 = NSStringFromSelector(a2);
     v13 = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped Require Authentication button", &v13, 0x16u);
   }
 
   [(HSPCWalletKeyExpressModeViewController *)self _sendAnalytics:1];
-  v6 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
-  v7 = [v6 walletKey];
+  walletKeyDeviceState = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
+  walletKey = [walletKeyDeviceState walletKey];
 
-  if (v7)
+  if (walletKey)
   {
-    v8 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
-    v9 = [v8 walletKey];
-    v10 = [v9 UUID];
-    [(HSPCWalletKeyExpressModeViewController *)self _updateHasOnboardedForWalletKey:v10];
+    walletKeyDeviceState2 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
+    walletKey2 = [walletKeyDeviceState2 walletKey];
+    uUID = [walletKey2 UUID];
+    [(HSPCWalletKeyExpressModeViewController *)self _updateHasOnboardedForWalletKey:uUID];
 
     [NAFuture futureWithResult:&off_1000CD5E8];
   }
@@ -272,7 +272,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v30 = self;
+      selfCopy4 = self;
       v31 = 2080;
       v32 = "[HSPCWalletKeyExpressModeViewController _shouldShowSingleContinueButton]";
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "(%@:%s) Showing single continue button for iPad", buf, 0x16u);
@@ -283,10 +283,10 @@
 
   else
   {
-    v5 = [(HSPCWalletKeyExpressModeViewController *)self config];
-    v6 = [v5 delegate];
-    v7 = [(HSPCWalletKeyExpressModeViewController *)self config];
-    v8 = [v6 stateMachineConfigurationGetLaunchReason:v7];
+    config = [(HSPCWalletKeyExpressModeViewController *)self config];
+    delegate = [config delegate];
+    config2 = [(HSPCWalletKeyExpressModeViewController *)self config];
+    v8 = [delegate stateMachineConfigurationGetLaunchReason:config2];
 
     if (v8)
     {
@@ -296,14 +296,14 @@
       v11 = v28;
       if (v10)
       {
-        v12 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
-        v13 = [v12 walletKey];
-        v14 = [v13 isExpressEnabled];
+        walletKeyDeviceState = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
+        walletKey = [walletKeyDeviceState walletKey];
+        isExpressEnabled = [walletKey isExpressEnabled];
 
         v15 = HFLogForCategory();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          if (v14)
+          if (isExpressEnabled)
           {
             v16 = @"single continue button";
           }
@@ -313,20 +313,20 @@
             v16 = @"two buttons";
           }
 
-          v17 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
-          v18 = [v17 walletKey];
+          walletKeyDeviceState2 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
+          walletKey2 = [walletKeyDeviceState2 walletKey];
           *buf = 138413058;
-          v30 = self;
+          selfCopy4 = self;
           v31 = 2080;
           v32 = "[HSPCWalletKeyExpressModeViewController _shouldShowSingleContinueButton]";
           v33 = 2112;
           v34 = v16;
           v35 = 2112;
-          v36 = v18;
+          v36 = walletKey2;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "(%@:%s) Showing %@ because walletKeyState = %@", buf, 0x2Au);
         }
 
-        v19 = [NSNumber numberWithBool:v14];
+        v19 = [NSNumber numberWithBool:isExpressEnabled];
         v4 = [NAFuture futureWithResult:v19];
       }
 
@@ -336,7 +336,7 @@
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v30 = self;
+          selfCopy4 = self;
           v31 = 2080;
           v32 = "[HSPCWalletKeyExpressModeViewController _shouldShowSingleContinueButton]";
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "(%@:%s) Showing single continue button because cannot do local authentication", buf, 0x16u);
@@ -348,25 +348,25 @@
 
     else
     {
-      v20 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
-      v21 = [v20 walletKey];
+      walletKeyDeviceState3 = [(HSPCWalletKeyExpressModeViewController *)self walletKeyDeviceState];
+      walletKey3 = [walletKeyDeviceState3 walletKey];
 
       v22 = HFLogForCategory();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v23 = @"NO";
-        if (v21)
+        if (walletKey3)
         {
           v23 = @"YES";
         }
 
         *buf = 138413058;
-        v30 = self;
+        selfCopy4 = self;
         v31 = 2080;
         v32 = "[HSPCWalletKeyExpressModeViewController _shouldShowSingleContinueButton]";
         v33 = 2112;
         v34 = v23;
-        if (v21)
+        if (walletKey3)
         {
           v24 = @"single continue button";
         }
@@ -381,7 +381,7 @@
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "(%@:%s) hasWalletKey is %@, so showing %@", buf, 0x2Au);
       }
 
-      v25 = [NSNumber numberWithBool:v21 != 0];
+      v25 = [NSNumber numberWithBool:walletKey3 != 0];
       v4 = [NAFuture futureWithResult:v25];
     }
   }
@@ -391,10 +391,10 @@
 
 - (id)_addWalletKeyWithExpressMode
 {
-  v3 = [(HSPCWalletKeyExpressModeViewController *)self config];
-  v4 = [v3 delegate];
-  v5 = [(HSPCWalletKeyExpressModeViewController *)self config];
-  v6 = [v4 stateMachineConfigurationGetLaunchReason:v5];
+  config = [(HSPCWalletKeyExpressModeViewController *)self config];
+  delegate = [config delegate];
+  config2 = [(HSPCWalletKeyExpressModeViewController *)self config];
+  v6 = [delegate stateMachineConfigurationGetLaunchReason:config2];
 
   if (v6)
   {
@@ -409,11 +409,11 @@
   return [(HSPCWalletKeyExpressModeViewController *)self _addWalletKeyWithiPhoneExpressModeOptions:3 pairedWatchesExpressModeOptions:v7];
 }
 
-- (id)_addWalletKeyWithiPhoneExpressModeOptions:(int64_t)a3 pairedWatchesExpressModeOptions:(int64_t)a4
+- (id)_addWalletKeyWithiPhoneExpressModeOptions:(int64_t)options pairedWatchesExpressModeOptions:(int64_t)modeOptions
 {
-  v7 = [(HSPCWalletKeyExpressModeViewController *)self config];
-  v8 = [v7 home];
-  v9 = [v8 hf_addWalletKeyWithOptions:a3];
+  config = [(HSPCWalletKeyExpressModeViewController *)self config];
+  home = [config home];
+  v9 = [home hf_addWalletKeyWithOptions:options];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100029194;
@@ -421,11 +421,11 @@
   v25[4] = self;
   v10 = [v9 addCompletionBlock:v25];
 
-  v11 = [(HSPCWalletKeyExpressModeViewController *)self config];
-  v12 = [v11 home];
-  v13 = [v12 hf_addWalletKeyToPairedWatchesWithOptions:a4 | 1];
-  v14 = [v13 recoverIgnoringError];
-  v15 = [v14 flatMap:&stru_1000C6890];
+  config2 = [(HSPCWalletKeyExpressModeViewController *)self config];
+  home2 = [config2 home];
+  v13 = [home2 hf_addWalletKeyToPairedWatchesWithOptions:modeOptions | 1];
+  recoverIgnoringError = [v13 recoverIgnoringError];
+  v15 = [recoverIgnoringError flatMap:&stru_1000C6890];
 
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
@@ -445,44 +445,44 @@
   return v19;
 }
 
-- (void)_updateHasOnboardedForWalletKey:(id)a3
+- (void)_updateHasOnboardedForWalletKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HSPCWalletKeyExpressModeViewController *)self config];
-    v7 = [v6 home];
+    config = [(HSPCWalletKeyExpressModeViewController *)self config];
+    home = [config home];
     v19 = 136315650;
     v20 = "[HSPCWalletKeyExpressModeViewController _updateHasOnboardedForWalletKey:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = keyCopy;
     v23 = 2112;
-    v24 = v7;
+    v24 = home;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: Updating hasOnboarded for Wallet Key (%@) for home %@", &v19, 0x20u);
   }
 
-  v8 = [(HSPCWalletKeyExpressModeViewController *)self config];
-  v9 = [v8 home];
-  v10 = [v9 hf_setHasOnboardedForWalletKey];
+  config2 = [(HSPCWalletKeyExpressModeViewController *)self config];
+  home2 = [config2 home];
+  hf_setHasOnboardedForWalletKey = [home2 hf_setHasOnboardedForWalletKey];
 
   v11 = [HFUserItem alloc];
-  v12 = [(HSPCWalletKeyExpressModeViewController *)self config];
-  v13 = [v12 home];
-  v14 = [(HSPCWalletKeyExpressModeViewController *)self config];
-  v15 = [v14 home];
-  v16 = [v15 currentUser];
-  v17 = [v11 initWithHome:v13 user:v16 nameStyle:0];
+  config3 = [(HSPCWalletKeyExpressModeViewController *)self config];
+  home3 = [config3 home];
+  config4 = [(HSPCWalletKeyExpressModeViewController *)self config];
+  home4 = [config4 home];
+  currentUser = [home4 currentUser];
+  v17 = [v11 initWithHome:home3 user:currentUser nameStyle:0];
 
-  v18 = [v17 setDismissWalletKeyExpressModeOnboarding:1 forWalletKeyUUID:v4];
+  v18 = [v17 setDismissWalletKeyExpressModeOnboarding:1 forWalletKeyUUID:keyCopy];
 }
 
-- (void)_sendAnalytics:(unint64_t)a3
+- (void)_sendAnalytics:(unint64_t)analytics
 {
-  v6 = [(HSPCWalletKeyExpressModeViewController *)self config];
-  v7 = [v6 delegate];
-  v8 = [(HSPCWalletKeyExpressModeViewController *)self config];
-  v9 = [v7 stateMachineConfigurationGetLaunchReason:v8];
+  config = [(HSPCWalletKeyExpressModeViewController *)self config];
+  delegate = [config delegate];
+  config2 = [(HSPCWalletKeyExpressModeViewController *)self config];
+  v9 = [delegate stateMachineConfigurationGetLaunchReason:config2];
 
   if (v9 > 9)
   {
@@ -516,13 +516,13 @@ LABEL_4:
   }
 
 LABEL_10:
-  if (a3 >= 4)
+  if (analytics >= 4)
   {
-    NSLog(@"(%@:%s) express mode selection %lu is invalid", self, "[HSPCWalletKeyExpressModeViewController _sendAnalytics:]", a3);
+    NSLog(@"(%@:%s) express mode selection %lu is invalid", self, "[HSPCWalletKeyExpressModeViewController _sendAnalytics:]", analytics);
   }
 
   v15 = objc_opt_new();
-  v13 = [NSNumber numberWithUnsignedInteger:a3];
+  v13 = [NSNumber numberWithUnsignedInteger:analytics];
   [v15 na_safeSetObject:v13 forKey:HFAnalyticsWalletKeyExpressModeSelectionKey];
 
   v14 = [NSNumber numberWithUnsignedInteger:v11];
@@ -543,12 +543,12 @@ LABEL_10:
   return v2;
 }
 
-+ (id)_expresssModePassConflictError:(id)a3
++ (id)_expresssModePassConflictError:(id)error
 {
   v14 = HFErrorHandlerOptionFailedItemNameKey;
-  v15 = a3;
-  v3 = a3;
-  v4 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
+  errorCopy = error;
+  errorCopy2 = error;
+  v4 = [NSDictionary dictionaryWithObjects:&errorCopy forKeys:&v14 count:1];
   v5 = [v4 mutableCopy];
 
   v12[0] = HFErrorUserInfoOptionsKey;

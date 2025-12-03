@@ -6,11 +6,11 @@
 
 - (id)identifier
 {
-  v1 = [a1 trigger];
-  v2 = [v1 uniqueIdentifier];
-  v3 = [v2 UUIDString];
+  trigger = [self trigger];
+  uniqueIdentifier = [trigger uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 @end

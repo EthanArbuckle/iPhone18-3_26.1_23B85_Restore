@@ -1,26 +1,26 @@
 @interface HUQuickControlButtonRowView
 - (BOOL)hasCenteredContent;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (HUQuickControlButtonRowView)initWithButtonViews:(id)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (HUQuickControlButtonRowView)initWithButtonViews:(id)views;
 - (void)_clearButtonConstraints;
-- (void)addButtonView:(id)a3;
-- (void)insertButtonView:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeButtonView:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPreferredContentAlignment:(int64_t)a3;
+- (void)addButtonView:(id)view;
+- (void)insertButtonView:(id)view atIndex:(unint64_t)index;
+- (void)removeButtonView:(id)view;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setPreferredContentAlignment:(int64_t)alignment;
 - (void)updateConstraints;
 @end
 
 @implementation HUQuickControlButtonRowView
 
-- (void)setPreferredContentAlignment:(int64_t)a3
+- (void)setPreferredContentAlignment:(int64_t)alignment
 {
-  if (self->_preferredContentAlignment != a3)
+  if (self->_preferredContentAlignment != alignment)
   {
-    self->_preferredContentAlignment = a3;
-    v4 = [(HUQuickControlButtonRowView *)self buttonViews];
-    v5 = [v4 count];
+    self->_preferredContentAlignment = alignment;
+    buttonViews = [(HUQuickControlButtonRowView *)self buttonViews];
+    v5 = [buttonViews count];
 
     if (v5 == 1)
     {
@@ -30,10 +30,10 @@
   }
 }
 
-- (HUQuickControlButtonRowView)initWithButtonViews:(id)a3
+- (HUQuickControlButtonRowView)initWithButtonViews:(id)views
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewsCopy = views;
   v21.receiver = self;
   v21.super_class = HUQuickControlButtonRowView;
   v5 = [(HUQuickControlButtonRowView *)&v21 init];
@@ -58,7 +58,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = v4;
+    v10 = viewsCopy;
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v11)
     {
@@ -84,39 +84,39 @@
       while (v12);
     }
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v6 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x277D76810] object:0];
   }
 
   return v6;
 }
 
-- (void)addButtonView:(id)a3
+- (void)addButtonView:(id)view
 {
-  v4 = a3;
-  v5 = [(HUQuickControlButtonRowView *)self mutableButtonViews];
-  -[HUQuickControlButtonRowView insertButtonView:atIndex:](self, "insertButtonView:atIndex:", v4, [v5 count]);
+  viewCopy = view;
+  mutableButtonViews = [(HUQuickControlButtonRowView *)self mutableButtonViews];
+  -[HUQuickControlButtonRowView insertButtonView:atIndex:](self, "insertButtonView:atIndex:", viewCopy, [mutableButtonViews count]);
 }
 
-- (void)insertButtonView:(id)a3 atIndex:(unint64_t)a4
+- (void)insertButtonView:(id)view atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(HUQuickControlButtonRowView *)self mutableButtonViews];
-  [v7 insertObject:v6 atIndex:a4];
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  mutableButtonViews = [(HUQuickControlButtonRowView *)self mutableButtonViews];
+  [mutableButtonViews insertObject:viewCopy atIndex:index];
 
-  v8 = [(HUQuickControlButtonRowView *)self scrollView];
-  [v8 addSubview:v6];
+  scrollView = [(HUQuickControlButtonRowView *)self scrollView];
+  [scrollView addSubview:viewCopy];
 
   [(HUQuickControlButtonRowView *)self _clearButtonConstraints];
 }
 
-- (void)removeButtonView:(id)a3
+- (void)removeButtonView:(id)view
 {
-  v4 = a3;
-  [v4 removeFromSuperview];
-  v5 = [(HUQuickControlButtonRowView *)self mutableButtonViews];
-  [v5 removeObject:v4];
+  viewCopy = view;
+  [viewCopy removeFromSuperview];
+  mutableButtonViews = [(HUQuickControlButtonRowView *)self mutableButtonViews];
+  [mutableButtonViews removeObject:viewCopy];
 
   [(HUQuickControlButtonRowView *)self _clearButtonConstraints];
 }
@@ -124,52 +124,52 @@
 - (void)updateConstraints
 {
   v4 = objc_opt_new();
-  v5 = [(HUQuickControlButtonRowView *)self scrollView];
-  v6 = [v5 topAnchor];
-  v7 = [(HUQuickControlButtonRowView *)self topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  scrollView = [(HUQuickControlButtonRowView *)self scrollView];
+  topAnchor = [scrollView topAnchor];
+  topAnchor2 = [(HUQuickControlButtonRowView *)self topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v4 addObject:v8];
 
-  v9 = [(HUQuickControlButtonRowView *)self scrollView];
-  v10 = [v9 bottomAnchor];
-  v11 = [(HUQuickControlButtonRowView *)self bottomAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  scrollView2 = [(HUQuickControlButtonRowView *)self scrollView];
+  bottomAnchor = [scrollView2 bottomAnchor];
+  bottomAnchor2 = [(HUQuickControlButtonRowView *)self bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v4 addObject:v12];
 
-  v13 = [(HUQuickControlButtonRowView *)self scrollView];
-  v14 = [v13 leadingAnchor];
-  v15 = [(HUQuickControlButtonRowView *)self leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  scrollView3 = [(HUQuickControlButtonRowView *)self scrollView];
+  leadingAnchor = [scrollView3 leadingAnchor];
+  leadingAnchor2 = [(HUQuickControlButtonRowView *)self leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v4 addObject:v16];
 
-  v17 = [(HUQuickControlButtonRowView *)self scrollView];
-  v18 = [v17 trailingAnchor];
-  v19 = [(HUQuickControlButtonRowView *)self trailingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  scrollView4 = [(HUQuickControlButtonRowView *)self scrollView];
+  trailingAnchor = [scrollView4 trailingAnchor];
+  trailingAnchor2 = [(HUQuickControlButtonRowView *)self trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v4 addObject:v20];
 
-  v21 = [(HUQuickControlButtonRowView *)self buttonViews];
-  v22 = [v21 count];
+  buttonViews = [(HUQuickControlButtonRowView *)self buttonViews];
+  v22 = [buttonViews count];
 
-  v23 = [(HUQuickControlButtonRowView *)self buttonViews];
-  v24 = v23;
+  buttonViews2 = [(HUQuickControlButtonRowView *)self buttonViews];
+  v24 = buttonViews2;
   if (v22 == 1)
   {
-    v25 = [v23 firstObject];
+    firstObject = [buttonViews2 firstObject];
 
-    v26 = [v25 widthAnchor];
-    v27 = [(HUQuickControlButtonRowView *)self widthAnchor];
-    v28 = [v26 constraintLessThanOrEqualToAnchor:v27];
+    widthAnchor = [firstObject widthAnchor];
+    widthAnchor2 = [(HUQuickControlButtonRowView *)self widthAnchor];
+    v28 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
     [v4 addObject:v28];
 
-    v29 = [v25 topAnchor];
-    v30 = [(HUQuickControlButtonRowView *)self topAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    topAnchor3 = [firstObject topAnchor];
+    topAnchor4 = [(HUQuickControlButtonRowView *)self topAnchor];
+    v31 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [v4 addObject:v31];
 
-    v32 = [v25 bottomAnchor];
-    v33 = [(HUQuickControlButtonRowView *)self bottomAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    bottomAnchor3 = [firstObject bottomAnchor];
+    bottomAnchor4 = [(HUQuickControlButtonRowView *)self bottomAnchor];
+    v34 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [v4 addObject:v34];
 
     v44[0] = MEMORY[0x277D85DD0];
@@ -177,9 +177,9 @@
     v44[2] = __48__HUQuickControlButtonRowView_updateConstraints__block_invoke;
     v44[3] = &unk_277DBF9E0;
     v44[4] = self;
-    v45 = v25;
+    v45 = firstObject;
     v46 = a2;
-    v35 = v25;
+    v35 = firstObject;
     v36 = __48__HUQuickControlButtonRowView_updateConstraints__block_invoke(v44);
     [v4 addObject:v36];
   }
@@ -191,15 +191,15 @@
     v41[2] = __48__HUQuickControlButtonRowView_updateConstraints__block_invoke_2;
     v41[3] = &unk_277DBFA08;
     v42 = v4;
-    v43 = self;
+    selfCopy = self;
     [v24 enumerateObjectsUsingBlock:v41];
 
     v35 = v42;
   }
 
-  v37 = [(HUQuickControlButtonRowView *)self scrollView];
-  v38 = [v37 heightAnchor];
-  v39 = [v38 constraintEqualToConstant:30.0];
+  scrollView5 = [(HUQuickControlButtonRowView *)self scrollView];
+  heightAnchor = [scrollView5 heightAnchor];
+  v39 = [heightAnchor constraintEqualToConstant:30.0];
   [v4 addObject:v39];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v4];
@@ -304,22 +304,22 @@ LABEL_6:
   [v25 addObject:v29];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  v7 = [(HUQuickControlButtonRowView *)self buttonViews];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  buttonViews = [(HUQuickControlButtonRowView *)self buttonViews];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__HUQuickControlButtonRowView_pointInside_withEvent___block_invoke;
   v9[3] = &unk_277DBFA30;
-  v9[4] = v6;
+  v9[4] = selfCopy;
   *&v9[5] = x;
   *&v9[6] = y;
-  LOBYTE(v6) = [v7 na_any:v9];
+  LOBYTE(selfCopy) = [buttonViews na_any:v9];
 
-  return v6;
+  return selfCopy;
 }
 
 uint64_t __53__HUQuickControlButtonRowView_pointInside_withEvent___block_invoke(double *a1, void *a2)
@@ -334,47 +334,47 @@ uint64_t __53__HUQuickControlButtonRowView_pointInside_withEvent___block_invoke(
   return v6;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = HUQuickControlButtonRowView;
-  [(HUQuickControlButtonRowView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(HUQuickControlButtonRowView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(HUQuickControlButtonRowView *)self _updateLayoutIfNecessary];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = HUQuickControlButtonRowView;
-  [(HUQuickControlButtonRowView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(HUQuickControlButtonRowView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(HUQuickControlButtonRowView *)self _updateLayoutIfNecessary];
 }
 
 - (BOOL)hasCenteredContent
 {
-  v3 = [(HUQuickControlButtonRowView *)self buttonViews];
-  v4 = [v3 count];
+  buttonViews = [(HUQuickControlButtonRowView *)self buttonViews];
+  v4 = [buttonViews count];
 
   if (v4 == 1)
   {
     return [(HUQuickControlButtonRowView *)self preferredContentAlignment]== 3;
   }
 
-  v6 = [(HUQuickControlButtonRowView *)self buttonViews];
-  v5 = [v6 count] > 2;
+  buttonViews2 = [(HUQuickControlButtonRowView *)self buttonViews];
+  v5 = [buttonViews2 count] > 2;
 
   return v5;
 }
 
 - (void)_clearButtonConstraints
 {
-  v3 = [(HUQuickControlButtonRowView *)self buttonConstraints];
+  buttonConstraints = [(HUQuickControlButtonRowView *)self buttonConstraints];
 
-  if (v3)
+  if (buttonConstraints)
   {
     v4 = MEMORY[0x277CCAAD0];
-    v5 = [(HUQuickControlButtonRowView *)self buttonConstraints];
-    [v4 deactivateConstraints:v5];
+    buttonConstraints2 = [(HUQuickControlButtonRowView *)self buttonConstraints];
+    [v4 deactivateConstraints:buttonConstraints2];
 
     [(HUQuickControlButtonRowView *)self setButtonConstraints:0];
   }

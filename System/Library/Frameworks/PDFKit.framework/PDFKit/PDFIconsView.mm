@@ -2,33 +2,33 @@
 - (CGRect)contentRect;
 - (CGSize)_iconsLayoutSize;
 - (id)currentPage;
-- (id)initFromThumbnailView:(id)a3;
+- (id)initFromThumbnailView:(id)view;
 - (int)_iconsLayoutIconCount;
 - (void)_configureIcons;
-- (void)_updateScrubberAtViewLocation:(CGPoint)a3;
-- (void)_updateScrubberForPageIndex:(int)a3 goToPage:(BOOL)a4;
-- (void)currentPageChanged:(id)a3;
-- (void)documentMutated:(id)a3;
+- (void)_updateScrubberAtViewLocation:(CGPoint)location;
+- (void)_updateScrubberForPageIndex:(int)index goToPage:(BOOL)page;
+- (void)currentPageChanged:(id)changed;
+- (void)documentMutated:(id)mutated;
 - (void)layoutSubviews;
-- (void)pageChanged:(id)a3;
-- (void)setIconConfigurationHandler:(id)a3;
-- (void)setPrefersIconOverlaySelection:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)pageChanged:(id)changed;
+- (void)setIconConfigurationHandler:(id)handler;
+- (void)setPrefersIconOverlaySelection:(BOOL)selection;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 - (void)updateIconsImages;
 @end
 
 @implementation PDFIconsView
 
-- (id)initFromThumbnailView:(id)a3
+- (id)initFromThumbnailView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = PDFIconsView;
   v5 = [(PDFIconsView *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_thumbnailView, v4);
+    objc_storeWeak(&v5->_thumbnailView, viewCopy);
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     icons = v6->_icons;
     v6->_icons = v7;
@@ -41,8 +41,8 @@
     v6->_iconConfigurationHandler = 0;
 
     v6->_prefersIconOverlaySelection = 0;
-    v11 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
-    [(PDFIconsView *)v6 setBackgroundColor:v11];
+    tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+    [(PDFIconsView *)v6 setBackgroundColor:tertiarySystemBackgroundColor];
   }
 
   return v6;
@@ -91,39 +91,39 @@
 
   else
   {
-    v4 = [(PDFPageIconLayer *)self->_activeIcon document];
-    v3 = [v4 pageAtIndex:{-[PDFPageIconLayer pageIndex](self->_activeIcon, "pageIndex")}];
+    document = [(PDFPageIconLayer *)self->_activeIcon document];
+    v3 = [document pageAtIndex:{-[PDFPageIconLayer pageIndex](self->_activeIcon, "pageIndex")}];
   }
 
   return v3;
 }
 
-- (void)documentMutated:(id)a3
+- (void)documentMutated:(id)mutated
 {
   [(PDFIconsView *)self updateIconsImages];
 
   [(PDFIconsView *)self setNeedsLayout];
 }
 
-- (void)currentPageChanged:(id)a3
+- (void)currentPageChanged:(id)changed
 {
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v5 = [WeakRetained PDFView];
-  v8 = [v5 currentPage];
+  pDFView = [WeakRetained PDFView];
+  currentPage = [pDFView currentPage];
 
-  v6 = [v8 document];
-  v7 = [v6 indexForPage:v8];
+  document = [currentPage document];
+  v7 = [document indexForPage:currentPage];
 
   [(PDFIconsView *)self _updateScrubberForPageIndex:v7 goToPage:0];
 }
 
-- (void)pageChanged:(id)a3
+- (void)pageChanged:(id)changed
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"page"];
-  v6 = [v5 document];
-  v7 = [v6 indexForPage:v5];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:@"page"];
+  document = [v5 document];
+  v7 = [document indexForPage:v5];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -167,7 +167,7 @@ LABEL_11:
   if ([(PDFPageIconLayer *)self->_activeIcon pageIndex]== v7)
   {
     [(PDFPageIconLayer *)self->_activeIcon setNeedsUpdate];
-    [(PDFPageIconLayer *)self->_activeIcon updateAsPageIndex:v7 forDocument:v6];
+    [(PDFPageIconLayer *)self->_activeIcon updateAsPageIndex:v7 forDocument:document];
   }
 }
 
@@ -175,11 +175,11 @@ LABEL_11:
 {
   v100 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v88 = [WeakRetained PDFView];
-  v4 = [v88 document];
-  v5 = [WeakRetained layoutMode];
-  v6 = [(PDFIconsView *)self _iconsLayoutIconCount];
-  v7 = v6;
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
+  layoutMode = [WeakRetained layoutMode];
+  _iconsLayoutIconCount = [(PDFIconsView *)self _iconsLayoutIconCount];
+  v7 = _iconsLayoutIconCount;
   v8 = [(NSMutableArray *)self->_icons count];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
@@ -187,17 +187,17 @@ LABEL_11:
   [WeakRetained thumbnailSize];
   v93 = v10;
   v94 = v9;
-  v11 = v6 - v8;
-  if (v6 != v8)
+  v11 = _iconsLayoutIconCount - v8;
+  if (_iconsLayoutIconCount != v8)
   {
     if (v11 >= 0)
     {
-      v12 = v6 - v8;
+      v12 = _iconsLayoutIconCount - v8;
     }
 
     else
     {
-      v12 = v8 - v6;
+      v12 = v8 - _iconsLayoutIconCount;
     }
 
     if (v12 <= 1)
@@ -222,8 +222,8 @@ LABEL_11:
       else
       {
         v14 = [[PDFPageIconLayer alloc] initWithSize:v94, v93];
-        v15 = [(PDFIconsView *)self layer];
-        [v15 addSublayer:v14];
+        layer = [(PDFIconsView *)self layer];
+        [layer addSublayer:v14];
 
         [(NSMutableArray *)self->_icons addObject:v14];
       }
@@ -264,7 +264,7 @@ LABEL_11:
     v90 = MidY - v35 * 0.5 + 1.0;
     do
     {
-      if (v5)
+      if (layoutMode)
       {
         v37 = v90;
       }
@@ -274,7 +274,7 @@ LABEL_11:
         v37 = v90 + v36 * (v93 + 2.0);
       }
 
-      if (v5)
+      if (layoutMode)
       {
         v38 = v92 + v36 * v91;
       }
@@ -284,17 +284,17 @@ LABEL_11:
         v38 = v92;
       }
 
-      v39 = [v4 pageCount];
-      v40 = v39;
-      v41 = v39 - 1;
-      v42 = llroundf((v36 / (v7 - 1)) * (v39 - 1));
+      pageCount = [document pageCount];
+      v40 = pageCount;
+      v41 = pageCount - 1;
+      v42 = llroundf((v36 / (v7 - 1)) * (pageCount - 1));
       v43 = v42 & ~(v42 >> 31);
-      if (v43 < v39)
+      if (v43 < pageCount)
       {
         v41 = v43;
       }
 
-      if (v7 == v39)
+      if (v7 == pageCount)
       {
         v44 = v36;
       }
@@ -304,9 +304,9 @@ LABEL_11:
         v44 = v41;
       }
 
-      if (v5 == 1)
+      if (layoutMode == 1)
       {
-        if ([v88 displaysRTL])
+        if ([pDFView displaysRTL])
         {
           v44 = (~v44 + v40);
         }
@@ -317,7 +317,7 @@ LABEL_11:
         }
       }
 
-      v45 = [v4 pageAtIndex:v44];
+      v45 = [document pageAtIndex:v44];
       [v45 boundsForBox:1];
       v50 = PDFRectFromCGRect(v46, v47, v48, v49);
       v52 = PDFRectRotate([v45 rotation], v50, v51);
@@ -336,7 +336,7 @@ LABEL_11:
       v103.size.height = v70;
       v103.origin.x = v38 - (v68 - v94) * 0.5;
       [v71 setFrame:{COERCE_DOUBLE(CGRectIntegral(v103)), v37 - (v70 - v93) * 0.5, v68, v70}];
-      [v71 updateAsPageIndex:v44 forDocument:v4];
+      [v71 updateAsPageIndex:v44 forDocument:document];
 
       ++v36;
     }
@@ -345,8 +345,8 @@ LABEL_11:
   }
 
   [MEMORY[0x1E6979518] commit];
-  v72 = [v88 currentPage];
-  v73 = [v4 indexForPage:v72];
+  currentPage = [pDFView currentPage];
+  v73 = [document indexForPage:currentPage];
 
   [(PDFIconsView *)self _updateScrubberForPageIndex:v73 goToPage:1];
   x = *MEMORY[0x1E695F050];
@@ -404,20 +404,20 @@ LABEL_11:
     self->_contentRect.origin.y = y;
     self->_contentRect.size.width = width;
     self->_contentRect.size.height = height;
-    v87 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v87 postNotificationName:@"PDFThumbnailIconsViewContentRectDidChangeNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PDFThumbnailIconsViewContentRectDidChangeNotification" object:self userInfo:0];
   }
 }
 
 - (int)_iconsLayoutIconCount
 {
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v4 = [WeakRetained PDFView];
-  v5 = [v4 document];
-  v6 = [WeakRetained layoutMode];
-  if (v4)
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
+  layoutMode = [WeakRetained layoutMode];
+  if (pDFView)
   {
-    v7 = v5 == 0;
+    v7 = document == 0;
   }
 
   else
@@ -425,9 +425,9 @@ LABEL_11:
     v7 = 1;
   }
 
-  if (v7 || (v8 = v6, ([v5 isLocked] & 1) != 0) || !objc_msgSend(v5, "pageCount"))
+  if (v7 || (v8 = layoutMode, ([document isLocked] & 1) != 0) || !objc_msgSend(document, "pageCount"))
   {
-    v24 = 0;
+    pageCount = 0;
   }
 
   else
@@ -452,27 +452,27 @@ LABEL_11:
       v23 = v12 - (v14 + v18);
     }
 
-    v24 = vcvtmd_s64_f64(v23 / (v21 + 2.0));
-    if ([v5 pageCount] < v24)
+    pageCount = vcvtmd_s64_f64(v23 / (v21 + 2.0));
+    if ([document pageCount] < pageCount)
     {
-      v24 = [v5 pageCount];
+      pageCount = [document pageCount];
     }
   }
 
-  return v24;
+  return pageCount;
 }
 
 - (CGSize)_iconsLayoutSize
 {
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v4 = [WeakRetained layoutMode];
+  layoutMode = [WeakRetained layoutMode];
   [WeakRetained thumbnailSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(PDFIconsView *)self _iconsLayoutIconCount];
-  if (v4)
+  _iconsLayoutIconCount = [(PDFIconsView *)self _iconsLayoutIconCount];
+  if (layoutMode)
   {
-    v10 = (v6 + 2.0) * v9;
+    v10 = (v6 + 2.0) * _iconsLayoutIconCount;
   }
 
   else
@@ -480,14 +480,14 @@ LABEL_11:
     v10 = v6 + 2.0;
   }
 
-  if (v4)
+  if (layoutMode)
   {
     v11 = v8 + 2.0;
   }
 
   else
   {
-    v11 = (v8 + 2.0) * v9;
+    v11 = (v8 + 2.0) * _iconsLayoutIconCount;
   }
 
   v12 = v10;
@@ -497,24 +497,24 @@ LABEL_11:
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  [v5 locationInView:self];
+  anyObject = [began anyObject];
+  [anyObject locationInView:self];
   [(PDFIconsView *)self _updateScrubberAtViewLocation:?];
 }
 
-- (void)_updateScrubberAtViewLocation:(CGPoint)a3
+- (void)_updateScrubberAtViewLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v6 = [WeakRetained PDFView];
-  v7 = [v6 document];
-  v8 = [WeakRetained layoutMode];
-  if (v7)
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
+  layoutMode = [WeakRetained layoutMode];
+  if (document)
   {
-    v9 = v8;
+    v9 = layoutMode;
     [(PDFIconsView *)self bounds];
     v11 = v10;
     v13 = v12;
@@ -552,11 +552,11 @@ LABEL_11:
     if (v32 >= -0.1 && v32 <= 1.1)
     {
       v33 = CGFloatClamp(v32, 0.0, 1.0);
-      v34 = [v7 pageCount];
-      v35 = vcvtmd_s64_f64(v33 * v34);
-      if (v35 >= v34)
+      pageCount = [document pageCount];
+      v35 = vcvtmd_s64_f64(v33 * pageCount);
+      if (v35 >= pageCount)
       {
-        v36 = (v34 - 1);
+        v36 = (pageCount - 1);
       }
 
       else
@@ -566,9 +566,9 @@ LABEL_11:
 
       if (v9 == 1)
       {
-        if ([v6 displaysRTL])
+        if ([pDFView displaysRTL])
         {
-          v36 = (~v36 + v34);
+          v36 = (~v36 + pageCount);
         }
 
         else
@@ -582,19 +582,19 @@ LABEL_11:
   }
 }
 
-- (void)_updateScrubberForPageIndex:(int)a3 goToPage:(BOOL)a4
+- (void)_updateScrubberForPageIndex:(int)index goToPage:(BOOL)page
 {
-  v4 = a4;
-  v5 = *&a3;
+  pageCopy = page;
+  v5 = *&index;
   v92 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v8 = [WeakRetained PDFView];
-  v9 = [v8 document];
-  v10 = [WeakRetained layoutMode];
-  v11 = [v9 pageCount];
-  if (v8)
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
+  layoutMode = [WeakRetained layoutMode];
+  pageCount = [document pageCount];
+  if (pDFView)
   {
-    v12 = v9 == 0;
+    v12 = document == 0;
   }
 
   else
@@ -602,7 +602,7 @@ LABEL_11:
     v12 = 1;
   }
 
-  if (v12 || (v14 = v11, v15 = [v9 isLocked], (v15 & 1) != 0 || v14 <= 0))
+  if (v12 || (v14 = pageCount, v15 = [document isLocked], (v15 & 1) != 0 || v14 <= 0))
   {
     [(PDFPageIconLayer *)self->_activeIcon removeFromSuperlayer];
     activeIcon = self->_activeIcon;
@@ -614,12 +614,12 @@ LABEL_11:
     [(PDFIconsView *)self _iconsLayoutSize];
     v17 = v16;
     v19 = v18;
-    v20 = [(PDFIconsView *)self _iconsLayoutIconCount];
+    _iconsLayoutIconCount = [(PDFIconsView *)self _iconsLayoutIconCount];
     [WeakRetained thumbnailSize];
     v23 = v22;
     v24 = 2.0;
     v84 = v19;
-    if (v20 >= v14)
+    if (_iconsLayoutIconCount >= v14)
     {
       v83 = v21;
     }
@@ -627,7 +627,7 @@ LABEL_11:
     else
     {
       v25 = v14;
-      if (v10)
+      if (layoutMode)
       {
         v83 = v21;
         v23 = (v17 + -2.0 - v23) / v25;
@@ -662,12 +662,12 @@ LABEL_11:
     v94.size.height = v41;
     MidY = CGRectGetMidY(v94);
     v44 = MidY;
-    v86 = v4;
-    if (v10)
+    v86 = pageCopy;
+    if (layoutMode)
     {
-      v45 = [v8 displaysRTL];
+      displaysRTL = [pDFView displaysRTL];
       v46 = v14 + ~v5;
-      if (!v45)
+      if (!displaysRTL)
       {
         v46 = v5;
       }
@@ -688,7 +688,7 @@ LABEL_11:
     v53 = v52 * iconScale;
     v54 = v47 - (v50 * iconScale - v50) * 0.5;
     v55 = v48 - (v52 * iconScale - v52) * 0.5;
-    v85 = [v9 pageAtIndex:?];
+    v85 = [document pageAtIndex:?];
     [(PDFPageIconLayer *)v85 boundsForBox:1];
     v57 = v56;
     v59 = v58;
@@ -727,8 +727,8 @@ LABEL_11:
 
       [(PDFPageIconLayer *)self->_activeIcon setZPosition:1.0];
       [(PDFPageIconLayer *)self->_activeIcon setSelected:1];
-      v74 = [(PDFIconsView *)self layer];
-      [v74 addSublayer:self->_activeIcon];
+      layer = [(PDFIconsView *)self layer];
+      [layer addSublayer:self->_activeIcon];
     }
 
     [(PDFIconsView *)self _configureIcons];
@@ -757,11 +757,11 @@ LABEL_11:
           v80 = *(*(&v87 + 1) + 8 * i);
           if ([v80 pageIndex] == v5)
           {
-            v81 = [v80 contents];
+            contents = [v80 contents];
 
-            if (v81)
+            if (contents)
             {
-              [(PDFPageIconLayer *)self->_activeIcon setContents:v81];
+              [(PDFPageIconLayer *)self->_activeIcon setContents:contents];
             }
 
             goto LABEL_38;
@@ -780,22 +780,22 @@ LABEL_11:
 
 LABEL_38:
     [MEMORY[0x1E6979518] commit];
-    [(PDFPageIconLayer *)self->_activeIcon updateAsPageIndex:v5 forDocument:v9];
+    [(PDFPageIconLayer *)self->_activeIcon updateAsPageIndex:v5 forDocument:document];
     if (v86)
     {
-      v82 = [v9 pageAtIndex:v5];
-      [v8 goToPage:v82];
+      v82 = [document pageAtIndex:v5];
+      [pDFView goToPage:v82];
     }
 
     activeIcon = v85;
   }
 }
 
-- (void)setIconConfigurationHandler:(id)a3
+- (void)setIconConfigurationHandler:(id)handler
 {
-  if (self->_iconConfigurationHandler != a3)
+  if (self->_iconConfigurationHandler != handler)
   {
-    v4 = [a3 copy];
+    v4 = [handler copy];
     iconConfigurationHandler = self->_iconConfigurationHandler;
     self->_iconConfigurationHandler = v4;
 
@@ -803,11 +803,11 @@ LABEL_38:
   }
 }
 
-- (void)setPrefersIconOverlaySelection:(BOOL)a3
+- (void)setPrefersIconOverlaySelection:(BOOL)selection
 {
-  if (self->_prefersIconOverlaySelection != a3)
+  if (self->_prefersIconOverlaySelection != selection)
   {
-    self->_prefersIconOverlaySelection = a3;
+    self->_prefersIconOverlaySelection = selection;
     [(PDFIconsView *)self _configureIcons];
   }
 }

@@ -1,11 +1,11 @@
 @interface NRRepeatingAlertEngineItem
-- (BOOL)presentAlertWithString:(id)a3;
+- (BOOL)presentAlertWithString:(id)string;
 - (BOOL)shouldTriggerAlertNow;
-- (NRRepeatingAlertEngineItem)initWithName:(id)a3 strings:(id)a4 maxAcknowledgementCount:(int64_t)a5 reoccurrenceInterval:(double)a6 localizedStrings:(BOOL)a7 userNotificationCenter:(id)a8;
-- (id)_localizedString:(unint64_t)a3;
-- (id)string:(unint64_t)a3 localized:(BOOL)a4;
+- (NRRepeatingAlertEngineItem)initWithName:(id)name strings:(id)strings maxAcknowledgementCount:(int64_t)count reoccurrenceInterval:(double)interval localizedStrings:(BOOL)localizedStrings userNotificationCenter:(id)center;
+- (id)_localizedString:(unint64_t)string;
+- (id)string:(unint64_t)string localized:(BOOL)localized;
 - (void)_dismissAlert;
-- (void)alertResponseWithResponseFlags:(unint64_t)a3;
+- (void)alertResponseWithResponseFlags:(unint64_t)flags;
 - (void)clearNotifications;
 - (void)defaultButtonWasPressed;
 - (void)dismissAlert;
@@ -13,22 +13,22 @@
 - (void)loadFromDefaults;
 - (void)logAcknowledgement;
 - (void)notificationDismissed;
-- (void)presentAlertIfEnabledWithString:(id)a3;
-- (void)presentUINotifictaionWithString:(id)a3;
-- (void)recordButtonPress:(unint64_t)a3;
+- (void)presentAlertIfEnabledWithString:(id)string;
+- (void)presentUINotifictaionWithString:(id)string;
+- (void)recordButtonPress:(unint64_t)press;
 - (void)resetState;
 - (void)saveToDefaults;
-- (void)setEnabled:(BOOL)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)setEnabled:(BOOL)enabled;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation NRRepeatingAlertEngineItem
 
-- (NRRepeatingAlertEngineItem)initWithName:(id)a3 strings:(id)a4 maxAcknowledgementCount:(int64_t)a5 reoccurrenceInterval:(double)a6 localizedStrings:(BOOL)a7 userNotificationCenter:(id)a8
+- (NRRepeatingAlertEngineItem)initWithName:(id)name strings:(id)strings maxAcknowledgementCount:(int64_t)count reoccurrenceInterval:(double)interval localizedStrings:(BOOL)localizedStrings userNotificationCenter:(id)center
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  nameCopy = name;
+  stringsCopy = strings;
+  centerCopy = center;
   v23.receiver = self;
   v23.super_class = NRRepeatingAlertEngineItem;
   v17 = [(NRRepeatingAlertEngineItem *)&v23 init];
@@ -41,7 +41,7 @@
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v14;
+      v25 = nameCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "initWithName: %@", buf, 0xCu);
     }
   }
@@ -53,14 +53,14 @@
       sub_1001037DC();
     }
 
-    objc_storeStrong(&v17->_name, a3);
-    objc_storeStrong(&v17->_strings, a4);
-    v17->_maxAcknowledgementCount = a5;
-    v17->_reoccurrenceInterval = a6;
-    v17->_localizedStrings = a7;
-    objc_storeStrong(&v17->_notificationCenter, a8);
+    objc_storeStrong(&v17->_name, name);
+    objc_storeStrong(&v17->_strings, strings);
+    v17->_maxAcknowledgementCount = count;
+    v17->_reoccurrenceInterval = interval;
+    v17->_localizedStrings = localizedStrings;
+    objc_storeStrong(&v17->_notificationCenter, center);
     [(NRRepeatingAlertEngineItem *)v17 loadFromDefaults];
-    [v16 setDelegate:v17];
+    [centerCopy setDelegate:v17];
   }
 
   return v17;
@@ -126,15 +126,15 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 integerValue];
+      integerValue = [v5 integerValue];
     }
 
     else
     {
-      v6 = 0;
+      integerValue = 0;
     }
 
-    self->_acknowledgementCount = v6;
+    self->_acknowledgementCount = integerValue;
     v7 = [v4 objectForKeyedSubscript:@"lastAcknowledgedDate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -201,11 +201,11 @@ LABEL_10:
   return 1;
 }
 
-- (void)presentAlertIfEnabledWithString:(id)a3
+- (void)presentAlertIfEnabledWithString:(id)string
 {
   if (self->_enabled)
   {
-    [(NRRepeatingAlertEngineItem *)self presentAlertWithString:a3];
+    [(NRRepeatingAlertEngineItem *)self presentAlertWithString:string];
   }
 }
 
@@ -220,17 +220,17 @@ LABEL_10:
   [(NRRepeatingAlertEngineItem *)self saveToDefaults];
 }
 
-- (id)_localizedString:(unint64_t)a3
+- (id)_localizedString:(unint64_t)string
 {
-  v3 = [(NSArray *)self->_strings objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_strings objectAtIndexedSubscript:string];
   v4 = [NSBundle bundleWithIdentifier:@"com.apple.private.NanoRegistry"];
   v5 = +[NSLocale _deviceLanguage];
-  v6 = [v4 localizations];
+  localizations = [v4 localizations];
   v17 = v5;
   v7 = [NSArray arrayWithObjects:&v17 count:1];
-  v8 = [NSBundle preferredLocalizationsFromArray:v6 forPreferences:v7];
+  v8 = [NSBundle preferredLocalizationsFromArray:localizations forPreferences:v7];
 
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
   v10 = nr_daemon_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -240,33 +240,33 @@ LABEL_10:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v9;
+      v16 = firstObject;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Language to load: %@", &v15, 0xCu);
     }
   }
 
-  v13 = [v4 localizedStringForKey:v3 value:0 table:@"Localizable-tinker" localization:v9];
+  v13 = [v4 localizedStringForKey:v3 value:0 table:@"Localizable-tinker" localization:firstObject];
 
   return v13;
 }
 
-- (id)string:(unint64_t)a3 localized:(BOOL)a4
+- (id)string:(unint64_t)string localized:(BOOL)localized
 {
-  if (a4)
+  if (localized)
   {
-    [(NRRepeatingAlertEngineItem *)self _localizedString:a3];
+    [(NRRepeatingAlertEngineItem *)self _localizedString:string];
   }
 
   else
   {
-    [(NSArray *)self->_strings objectAtIndexedSubscript:a3];
+    [(NSArray *)self->_strings objectAtIndexedSubscript:string];
   }
   v4 = ;
 
   return v4;
 }
 
-- (void)presentUINotifictaionWithString:(id)a3
+- (void)presentUINotifictaionWithString:(id)string
 {
   self->_alertBeingShown = 1;
   v4 = objc_alloc_init(UNMutableNotificationContent);
@@ -295,8 +295,8 @@ LABEL_10:
   [v4 setBody:v11];
 
   [v4 setCategoryIdentifier:@"NRUserNotifications"];
-  v12 = [objc_opt_class() launchURL];
-  v13 = [NSURL URLWithString:v12];
+  launchURL = [objc_opt_class() launchURL];
+  v13 = [NSURL URLWithString:launchURL];
   v14 = nr_daemon_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -330,9 +330,9 @@ LABEL_10:
     v21 = nr_daemon_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(UNUserNotificationCenter *)self->_notificationCenter notificationCategories];
+      notificationCategories = [(UNUserNotificationCenter *)self->_notificationCenter notificationCategories];
       *buf = 138412290;
-      v27 = v22;
+      v27 = notificationCategories;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Categories %@", buf, 0xCu);
     }
   }
@@ -347,10 +347,10 @@ LABEL_10:
   [(UNUserNotificationCenter *)notificationCenter addNotificationRequest:v23 withCompletionHandler:v25];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v9 = nr_daemon_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -360,13 +360,13 @@ LABEL_10:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 138412290;
-      v29 = v7;
+      selfCopy2 = responseCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "userNotificationCenter delegate called with response: %@", &v28, 0xCu);
     }
   }
 
-  v12 = [(NRRepeatingAlertEngineItem *)v7 actionIdentifier];
-  v13 = [v12 isEqualToString:UNNotificationDefaultActionIdentifier];
+  actionIdentifier = [(NRRepeatingAlertEngineItem *)responseCopy actionIdentifier];
+  v13 = [actionIdentifier isEqualToString:UNNotificationDefaultActionIdentifier];
 
   if (v13)
   {
@@ -379,7 +379,7 @@ LABEL_10:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v28 = 138412290;
-        v29 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Got UNNotificationDefaultActionIdentifier action : %@", &v28, 0xCu);
       }
     }
@@ -389,8 +389,8 @@ LABEL_10:
 
   else
   {
-    v17 = [(NRRepeatingAlertEngineItem *)v7 actionIdentifier];
-    v18 = [v17 isEqualToString:UNNotificationDismissActionIdentifier];
+    actionIdentifier2 = [(NRRepeatingAlertEngineItem *)responseCopy actionIdentifier];
+    v18 = [actionIdentifier2 isEqualToString:UNNotificationDismissActionIdentifier];
 
     if (v18)
     {
@@ -403,7 +403,7 @@ LABEL_10:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           v28 = 138412290;
-          v29 = self;
+          selfCopy2 = self;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Got UNNotificationDismissActionIdentifier action: %@", &v28, 0xCu);
         }
       }
@@ -413,8 +413,8 @@ LABEL_10:
 
     else
     {
-      v22 = [(NRRepeatingAlertEngineItem *)v7 actionIdentifier];
-      v23 = [v22 isEqualToString:@"MigrationAlertNext"];
+      actionIdentifier3 = [(NRRepeatingAlertEngineItem *)responseCopy actionIdentifier];
+      v23 = [actionIdentifier3 isEqualToString:@"MigrationAlertNext"];
 
       if ((v23 & 1) == 0)
       {
@@ -426,9 +426,9 @@ LABEL_10:
           v26 = nr_daemon_log();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [(NRRepeatingAlertEngineItem *)v7 actionIdentifier];
+            actionIdentifier4 = [(NRRepeatingAlertEngineItem *)responseCopy actionIdentifier];
             v28 = 138412290;
-            v29 = v27;
+            selfCopy2 = actionIdentifier4;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Got unhandled action: %@", &v28, 0xCu);
           }
         }
@@ -438,16 +438,16 @@ LABEL_10:
 
   [(NRRepeatingAlertEngineItem *)self logAcknowledgement];
   self->_alertBeingShown = 0;
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 }
 
-- (BOOL)presentAlertWithString:(id)a3
+- (BOOL)presentAlertWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = CFPreferencesCopyAppValue(@"alertStatus", @"com.apple.NanoRegistry");
   v6 = [v5 mutableCopy];
 
-  if (v4)
+  if (stringCopy)
   {
     if (!v6)
     {
@@ -455,7 +455,7 @@ LABEL_10:
     }
 
     v7 = [(NSString *)self->_name stringByAppendingString:@".string"];
-    [v6 setObject:v4 forKeyedSubscript:v7];
+    [v6 setObject:stringCopy forKeyedSubscript:v7];
 
     CFPreferencesSetAppValue(@"alertStatus", v6, @"com.apple.NanoRegistry");
     CFPreferencesAppSynchronize(@"com.apple.NanoRegistry");
@@ -464,7 +464,7 @@ LABEL_10:
   else
   {
     v8 = [(NSString *)self->_name stringByAppendingString:@".string"];
-    v4 = [v6 objectForKeyedSubscript:v8];
+    stringCopy = [v6 objectForKeyedSubscript:v8];
   }
 
   v15 = 0;
@@ -475,10 +475,10 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_1000D20A0;
   block[3] = &unk_1001796A8;
-  v13 = v4;
+  v13 = stringCopy;
   v14 = &v15;
   block[4] = self;
-  v9 = v4;
+  v9 = stringCopy;
   dispatch_sync(&_dispatch_main_q, block);
   v10 = *(v16 + 24);
 
@@ -530,20 +530,20 @@ LABEL_10:
   self->_transaction = 0;
 }
 
-- (void)alertResponseWithResponseFlags:(unint64_t)a3
+- (void)alertResponseWithResponseFlags:(unint64_t)flags
 {
-  v3 = a3;
+  flagsCopy = flags;
   [(NRRepeatingAlertEngineItem *)self _dismissAlert];
 
-  [(NRRepeatingAlertEngineItem *)self recordButtonPress:v3 & 3];
+  [(NRRepeatingAlertEngineItem *)self recordButtonPress:flagsCopy & 3];
 }
 
-- (void)recordButtonPress:(unint64_t)a3
+- (void)recordButtonPress:(unint64_t)press
 {
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
-  if (a3 == 2)
+  if (press == 2)
   {
     if (v6)
     {
@@ -561,7 +561,7 @@ LABEL_10:
     [(NRRepeatingAlertEngineItem *)self otherButtonWasPressed];
   }
 
-  else if (a3 == 1)
+  else if (press == 1)
   {
     if (v6)
     {
@@ -579,7 +579,7 @@ LABEL_10:
     [(NRRepeatingAlertEngineItem *)self alternateButtonWasPressed];
   }
 
-  else if (a3)
+  else if (press)
   {
     if (v6)
     {
@@ -590,7 +590,7 @@ LABEL_10:
         v15 = 138412546;
         v16 = v14;
         v17 = 2048;
-        v18 = a3;
+        pressCopy = press;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Alert %@ response- unknown response type (%lu)", &v15, 0x16u);
       }
     }
@@ -714,12 +714,12 @@ LABEL_10:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    if (a3)
+    self->_enabled = enabled;
+    if (enabled)
     {
       lastAcknowledgedDate = self->_lastAcknowledgedDate;
       self->_acknowledgementCount = 0;

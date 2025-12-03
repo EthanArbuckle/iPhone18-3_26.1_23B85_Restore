@@ -1,16 +1,16 @@
 @interface _TVDescriptiveAlertViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setChildViews:(id)a3;
+- (void)setChildViews:(id)views;
 @end
 
 @implementation _TVDescriptiveAlertViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVDescriptiveAlertView" hasInstanceVariable:@"_viewsAboveScrollView" withType:"NSArray"];
-  [v3 validateClass:@"_TVDescriptiveAlertView" hasInstanceMethod:@"setChildViews:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVDescriptiveAlertView" hasInstanceVariable:@"_viewsAboveScrollView" withType:"NSArray"];
+  [validationsCopy validateClass:@"_TVDescriptiveAlertView" hasInstanceMethod:@"setChildViews:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -61,11 +61,11 @@
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (void)setChildViews:(id)a3
+- (void)setChildViews:(id)views
 {
   v4.receiver = self;
   v4.super_class = _TVDescriptiveAlertViewAccessibility;
-  [(_TVDescriptiveAlertViewAccessibility *)&v4 setChildViews:a3];
+  [(_TVDescriptiveAlertViewAccessibility *)&v4 setChildViews:views];
   [(_TVDescriptiveAlertViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

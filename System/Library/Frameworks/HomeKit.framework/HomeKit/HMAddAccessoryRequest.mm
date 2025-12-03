@@ -1,15 +1,15 @@
 @interface HMAddAccessoryRequest
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMAccessorySetupPayload)payloadWithOwnershipToken:(HMAccessoryOwnershipToken *)ownershipToken;
 - (HMAccessorySetupPayload)payloadWithURL:(NSURL *)setupPayloadURL ownershipToken:(HMAccessoryOwnershipToken *)ownershipToken;
 - (HMAddAccessoryRequest)init;
-- (HMAddAccessoryRequest)initWithCoder:(id)a3;
-- (HMAddAccessoryRequest)initWithIdentifier:(id)a3 accessoryName:(id)a4 accessoryCategory:(id)a5;
+- (HMAddAccessoryRequest)initWithCoder:(id)coder;
+- (HMAddAccessoryRequest)initWithIdentifier:(id)identifier accessoryName:(id)name accessoryCategory:(id)category;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAddAccessoryRequest
@@ -18,21 +18,21 @@
 {
   v22[5] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v21 = [(HMAddAccessoryRequest *)self requestIdentifier];
-  v20 = [v3 initWithName:@"ID" value:v21];
+  requestIdentifier = [(HMAddAccessoryRequest *)self requestIdentifier];
+  v20 = [v3 initWithName:@"ID" value:requestIdentifier];
   v22[0] = v20;
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v5 = [(HMAddAccessoryRequest *)self home];
-  v6 = [v5 name];
-  v7 = [v4 initWithName:@"Home Name" value:v6];
+  home = [(HMAddAccessoryRequest *)self home];
+  name = [home name];
+  v7 = [v4 initWithName:@"Home Name" value:name];
   v22[1] = v7;
   v8 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v9 = [(HMAddAccessoryRequest *)self accessoryName];
-  v10 = [v8 initWithName:@"Accessory Name" value:v9];
+  accessoryName = [(HMAddAccessoryRequest *)self accessoryName];
+  v10 = [v8 initWithName:@"Accessory Name" value:accessoryName];
   v22[2] = v10;
   v11 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v12 = [(HMAddAccessoryRequest *)self accessoryCategory];
-  v13 = [v11 initWithName:@"Accessory Category" value:v12];
+  accessoryCategory = [(HMAddAccessoryRequest *)self accessoryCategory];
+  v13 = [v11 initWithName:@"Accessory Category" value:accessoryCategory];
   v22[3] = v13;
   v14 = objc_alloc(MEMORY[0x1E69A29C8]);
   [(HMAddAccessoryRequest *)self requiresSetupPayloadURL];
@@ -55,16 +55,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMAddAccessoryRequest *)self requestIdentifier];
-  v3 = [v2 hash];
+  requestIdentifier = [(HMAddAccessoryRequest *)self requestIdentifier];
+  v3 = [requestIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -74,7 +74,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -85,9 +85,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMAddAccessoryRequest *)self requestIdentifier];
-      v8 = [(HMAddAccessoryRequest *)v6 requestIdentifier];
-      v9 = [v7 hmf_isEqualToUUID:v8];
+      requestIdentifier = [(HMAddAccessoryRequest *)self requestIdentifier];
+      requestIdentifier2 = [(HMAddAccessoryRequest *)v6 requestIdentifier];
+      v9 = [requestIdentifier hmf_isEqualToUUID:requestIdentifier2];
     }
 
     else
@@ -99,25 +99,25 @@
   return v9;
 }
 
-- (HMAddAccessoryRequest)initWithIdentifier:(id)a3 accessoryName:(id)a4 accessoryCategory:(id)a5
+- (HMAddAccessoryRequest)initWithIdentifier:(id)identifier accessoryName:(id)name accessoryCategory:(id)category
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  categoryCopy = category;
   v20.receiver = self;
   v20.super_class = HMAddAccessoryRequest;
   v11 = [(HMAddAccessoryRequest *)&v20 init];
   if (v11)
   {
-    v12 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v8];
+    v12 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:identifierCopy];
     requestIdentifier = v11->_requestIdentifier;
     v11->_requestIdentifier = v12;
 
-    v14 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:v9];
+    v14 = [MEMORY[0x1E69A2A20] hmf_cachedInstanceForString:nameCopy];
     accessoryName = v11->_accessoryName;
     v11->_accessoryName = v14;
 
-    v16 = [HMFObjectCacheHMAccessoryCategory cachedInstanceForHMAccessoryCategory:v10];
+    v16 = [HMFObjectCacheHMAccessoryCategory cachedInstanceForHMAccessoryCategory:categoryCopy];
     accessoryCategory = v11->_accessoryCategory;
     v11->_accessoryCategory = v16;
 
@@ -127,27 +127,27 @@
   return v11;
 }
 
-- (HMAddAccessoryRequest)initWithCoder:(id)a3
+- (HMAddAccessoryRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = HMAddAccessoryRequest;
   v5 = [(HMAddAccessoryRequest *)&v16 init];
   if (v5)
   {
-    v6 = [v4 hm_decodeAndCacheStringForKey:@"HMAAR.accessoryName"];
+    v6 = [coderCopy hm_decodeAndCacheStringForKey:@"HMAAR.accessoryName"];
     accessoryName = v5->_accessoryName;
     v5->_accessoryName = v6;
 
-    v8 = [v4 hm_decodeAndCacheUUIDForKey:@"HMAAR.identifier"];
+    v8 = [coderCopy hm_decodeAndCacheUUIDForKey:@"HMAAR.identifier"];
     requestIdentifier = v5->_requestIdentifier;
     v5->_requestIdentifier = v8;
 
-    v10 = [v4 hm_decodeHMAccessoryCategoryAndCacheForKey:@"HMAAR.category"];
+    v10 = [coderCopy hm_decodeHMAccessoryCategoryAndCacheForKey:@"HMAAR.category"];
     accessoryCategory = v5->_accessoryCategory;
     v5->_accessoryCategory = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAAR.accessoryDescription"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAAR.accessoryDescription"];
     accessoryDescription = v5->_accessoryDescription;
     v5->_accessoryDescription = v12;
 
@@ -158,9 +158,9 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
@@ -178,7 +178,7 @@
   v6 = setupPayloadURL;
   v7 = ownershipToken;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -200,7 +200,7 @@
   v15 = *MEMORY[0x1E69E9840];
   v4 = ownershipToken;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {

@@ -1,16 +1,16 @@
 @interface BuddyChoiceController
 + (id)cloudConfigSkipKey;
 - (BFFFlowItemDelegate)delegate;
-- (void)_tappedChoice:(id)a3;
-- (void)didSelectChoice:(id)a3;
-- (void)setChoices:(id)a3;
+- (void)_tappedChoice:(id)choice;
+- (void)didSelectChoice:(id)choice;
+- (void)setChoices:(id)choices;
 @end
 
 @implementation BuddyChoiceController
 
 + (id)cloudConfigSkipKey
 {
-  v7 = a1;
+  selfCopy = self;
   aSelector = a2;
   oslog = _BYLoggingFacility();
   v4 = OS_LOG_TYPE_DEFAULT;
@@ -27,12 +27,12 @@
   return 0;
 }
 
-- (void)setChoices:(id)a3
+- (void)setChoices:(id)choices
 {
   val = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, choices);
   if (*(val + 2) != location[0])
   {
     v26 = 0u;
@@ -84,7 +84,7 @@
 
       v19 = v8;
       v9 = val;
-      v10 = [v20 title];
+      title = [v20 title];
       v11 = v19;
       v12 = _NSConcreteStackBlock;
       v13 = -1073741824;
@@ -93,7 +93,7 @@
       v16 = &unk_10032AFA8;
       objc_copyWeak(&v18, &from);
       v17 = v20;
-      [v9 addButtonWithTitle:v10 style:v11 action:&v12];
+      [v9 addButtonWithTitle:title style:v11 action:&v12];
 
       objc_storeStrong(&v17, 0);
       objc_destroyWeak(&v18);
@@ -106,19 +106,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_tappedChoice:(id)a3
+- (void)_tappedChoice:(id)choice
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, choice);
   v3 = location[0];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_10012B704;
   v8 = &unk_10032AEF0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   [v3 runConfirmationIfNeededCompletion:&v4];
   objc_storeStrong(&v10, 0);
@@ -126,14 +126,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)didSelectChoice:(id)a3
+- (void)didSelectChoice:(id)choice
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyChoiceController *)v5 delegate];
-  -[BFFFlowItemDelegate flowItemDone:nextItemClass:](v3, "flowItemDone:nextItemClass:", v5, [location[0] nextControllerClass]);
+  objc_storeStrong(location, choice);
+  delegate = [(BuddyChoiceController *)selfCopy delegate];
+  -[BFFFlowItemDelegate flowItemDone:nextItemClass:](delegate, "flowItemDone:nextItemClass:", selfCopy, [location[0] nextControllerClass]);
 
   objc_storeStrong(location, 0);
 }

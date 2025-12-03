@@ -10,19 +10,19 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(CSDAVConferenceConfiguration *)self isCaller];
-  v5 = [(CSDAVConferenceConfiguration *)self capabilities];
-  v6 = [NSString stringWithFormat:@"<%@ %p caller=%d capabilities=%@ deviceRole=%d>", v3, self, v4, v5, [(CSDAVConferenceConfiguration *)self deviceRole]];
+  isCaller = [(CSDAVConferenceConfiguration *)self isCaller];
+  capabilities = [(CSDAVConferenceConfiguration *)self capabilities];
+  v6 = [NSString stringWithFormat:@"<%@ %p caller=%d capabilities=%@ deviceRole=%d>", v3, self, isCaller, capabilities, [(CSDAVConferenceConfiguration *)self deviceRole]];
 
   return v6;
 }
 
 - (int)deviceRole
 {
-  v2 = [(CSDAVConferenceConfiguration *)self capabilities];
-  v3 = [v2 deviceRole];
+  capabilities = [(CSDAVConferenceConfiguration *)self capabilities];
+  deviceRole = [capabilities deviceRole];
 
-  return v3;
+  return deviceRole;
 }
 
 - (CGSize)localLandscapeAspectRatio

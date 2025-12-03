@@ -1,50 +1,50 @@
 @interface SMSuggestionsStore
-+ (id)fetchRequestForSuggestionEnumerationOptions:(id)a3 error:(id *)a4;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_clearSuggestionsWithHandler:(id)a3;
-- (void)_deleteSuggestionsPredating:(id)a3 handler:(id)a4;
-- (void)_fetchSuggestionsCountWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchSuggestionsWithOptions:(id)a3 handler:(id)a4;
-- (void)clearSuggestionsWithHandler:(id)a3;
-- (void)deleteSuggestionsPredating:(id)a3 handler:(id)a4;
-- (void)fetchSuggestionsCountWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchSuggestionsWithOptions:(id)a3 handler:(id)a4;
-- (void)storeSuggestions:(id)a3 handler:(id)a4;
++ (id)fetchRequestForSuggestionEnumerationOptions:(id)options error:(id *)error;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_clearSuggestionsWithHandler:(id)handler;
+- (void)_deleteSuggestionsPredating:(id)predating handler:(id)handler;
+- (void)_fetchSuggestionsCountWithOptions:(id)options handler:(id)handler;
+- (void)_fetchSuggestionsWithOptions:(id)options handler:(id)handler;
+- (void)clearSuggestionsWithHandler:(id)handler;
+- (void)deleteSuggestionsPredating:(id)predating handler:(id)handler;
+- (void)fetchSuggestionsCountWithOptions:(id)options handler:(id)handler;
+- (void)fetchSuggestionsWithOptions:(id)options handler:(id)handler;
+- (void)storeSuggestions:(id)suggestions handler:(id)handler;
 @end
 
 @implementation SMSuggestionsStore
 
-- (void)fetchSuggestionsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchSuggestionsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__SMSuggestionsStore_fetchSuggestionsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchSuggestionsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchSuggestionsWithOptions:(id)options handler:(id)handler
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __59__SMSuggestionsStore__fetchSuggestionsWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4910;
     aBlock[4] = self;
-    v20 = v7;
-    v9 = v8;
+    v20 = optionsCopy;
+    v9 = handlerCopy;
     v21 = v9;
     v22 = a2;
     v10 = _Block_copy(aBlock);
@@ -223,29 +223,29 @@ void __59__SMSuggestionsStore__fetchSuggestionsWithOptions_handler___block_invok
   }
 }
 
-- (void)fetchSuggestionsCountWithOptions:(id)a3 handler:(id)a4
+- (void)fetchSuggestionsCountWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__SMSuggestionsStore_fetchSuggestionsCountWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchSuggestionsCountWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchSuggestionsCountWithOptions:(id)options handler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -263,11 +263,11 @@ void __59__SMSuggestionsStore__fetchSuggestionsWithOptions_handler___block_invok
   aBlock[2] = __64__SMSuggestionsStore__fetchSuggestionsCountWithOptions_handler___block_invoke;
   aBlock[3] = &unk_2788C4910;
   aBlock[4] = self;
-  v17 = v7;
-  v10 = v8;
+  v17 = optionsCopy;
+  v10 = handlerCopy;
   v18 = v10;
   v19 = a2;
-  v11 = v7;
+  v11 = optionsCopy;
   v12 = _Block_copy(aBlock);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -347,76 +347,76 @@ void __64__SMSuggestionsStore__fetchSuggestionsCountWithOptions_handler___block_
   v11();
 }
 
-- (void)storeSuggestions:(id)a3 handler:(id)a4
+- (void)storeSuggestions:(id)suggestions handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  suggestionsCopy = suggestions;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__SMSuggestionsStore_storeSuggestions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = suggestionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = suggestionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)clearSuggestionsWithHandler:(id)a3
+- (void)clearSuggestionsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__SMSuggestionsStore_clearSuggestionsWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_clearSuggestionsWithHandler:(id)a3
+- (void)_clearSuggestionsWithHandler:(id)handler
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [(RTStore *)self removeAll:v5 handler:v4];
+  [(RTStore *)self removeAll:v5 handler:handlerCopy];
 }
 
-- (void)deleteSuggestionsPredating:(id)a3 handler:(id)a4
+- (void)deleteSuggestionsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__SMSuggestionsStore_deleteSuggestionsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deleteSuggestionsPredating:(id)a3 handler:(id)a4
+- (void)_deleteSuggestionsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
-    v11 = v6;
-    v12 = self;
-    v8 = v7;
+    v11 = predatingCopy;
+    selfCopy = self;
+    v8 = handlerCopy;
     v13 = v8;
     v9 = _Block_copy(aBlock);
     [(RTStore *)self _performBlock:v9 contextType:0 errorHandler:v8];
@@ -439,10 +439,10 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
   [v7 executeDeleteRequests:v8 context:v3 handler:a1[6]];
 }
 
-+ (id)fetchRequestForSuggestionEnumerationOptions:(id)a3 error:(id *)a4
++ (id)fetchRequestForSuggestionEnumerationOptions:(id)options error:(id *)error
 {
   v84 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -451,7 +451,7 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
       *buf = 136315394;
       v81 = "+[SMSuggestionsStore fetchRequestForSuggestionEnumerationOptions:error:]";
       v82 = 2112;
-      v83 = v4;
+      v83 = optionsCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, options, %@", buf, 0x16u);
     }
   }
@@ -459,40 +459,40 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
   v63 = +[SMSuggestionMO fetchRequest];
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  if ([v4 sortByCreationDate])
+  if ([optionsCopy sortByCreationDate])
   {
-    v8 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"creationDate" ascending:{objc_msgSend(v4, "ascending")}];
+    v8 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"creationDate" ascending:{objc_msgSend(optionsCopy, "ascending")}];
     [v6 addObject:v8];
   }
 
-  if (([v4 includeSuppressed] & 1) == 0)
+  if (([optionsCopy includeSuppressed] & 1) == 0)
   {
     v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %ld)", @"suppressionReason", 1];
     [v7 addObject:v9];
   }
 
   v62 = v6;
-  v10 = [v4 dateInterval];
+  dateInterval = [optionsCopy dateInterval];
 
-  if (v10)
+  if (dateInterval)
   {
     v11 = MEMORY[0x277CCAC30];
-    v12 = [v4 dateInterval];
-    v13 = [v12 startDate];
-    v14 = [v4 dateInterval];
-    v15 = [v14 endDate];
-    v16 = [v11 predicateWithFormat:@"%K >= %@ AND %K <= %@", @"creationDate", v13, @"creationDate", v15];
+    dateInterval2 = [optionsCopy dateInterval];
+    startDate = [dateInterval2 startDate];
+    dateInterval3 = [optionsCopy dateInterval];
+    endDate = [dateInterval3 endDate];
+    v16 = [v11 predicateWithFormat:@"%K >= %@ AND %K <= %@", @"creationDate", startDate, @"creationDate", endDate];
     [v7 addObject:v16];
   }
 
-  v17 = [v4 filteredToSuggestionTriggers];
+  filteredToSuggestionTriggers = [optionsCopy filteredToSuggestionTriggers];
   v18 = 0x277CCA000;
   v64 = v7;
-  if (v17)
+  if (filteredToSuggestionTriggers)
   {
-    v19 = v17;
-    v20 = [v4 filteredToSuggestionTriggers];
-    v21 = [v20 count];
+    v19 = filteredToSuggestionTriggers;
+    filteredToSuggestionTriggers2 = [optionsCopy filteredToSuggestionTriggers];
+    v21 = [filteredToSuggestionTriggers2 count];
 
     if (v21)
     {
@@ -501,8 +501,8 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
       v74 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v23 = [v4 filteredToSuggestionTriggers];
-      v24 = [v23 countByEnumeratingWithState:&v73 objects:v79 count:16];
+      filteredToSuggestionTriggers3 = [optionsCopy filteredToSuggestionTriggers];
+      v24 = [filteredToSuggestionTriggers3 countByEnumeratingWithState:&v73 objects:v79 count:16];
       if (v24)
       {
         v25 = v24;
@@ -513,7 +513,7 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
           {
             if (*v74 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(filteredToSuggestionTriggers3);
             }
 
             v28 = *(*(&v73 + 1) + 8 * i);
@@ -524,7 +524,7 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
             objc_autoreleasePoolPop(v29);
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v73 objects:v79 count:16];
+          v25 = [filteredToSuggestionTriggers3 countByEnumeratingWithState:&v73 objects:v79 count:16];
         }
 
         while (v25);
@@ -537,12 +537,12 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
     }
   }
 
-  v32 = [v4 filteredToSuggestionUserTypes];
-  if (v32)
+  filteredToSuggestionUserTypes = [optionsCopy filteredToSuggestionUserTypes];
+  if (filteredToSuggestionUserTypes)
   {
-    v33 = v32;
-    v34 = [v4 filteredToSuggestionUserTypes];
-    v35 = [v34 count];
+    v33 = filteredToSuggestionUserTypes;
+    filteredToSuggestionUserTypes2 = [optionsCopy filteredToSuggestionUserTypes];
+    v35 = [filteredToSuggestionUserTypes2 count];
 
     if (v35)
     {
@@ -551,8 +551,8 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
       v70 = 0u;
       v71 = 0u;
       v72 = 0u;
-      v37 = [v4 filteredToSuggestionUserTypes];
-      v38 = [v37 countByEnumeratingWithState:&v69 objects:v78 count:16];
+      filteredToSuggestionUserTypes3 = [optionsCopy filteredToSuggestionUserTypes];
+      v38 = [filteredToSuggestionUserTypes3 countByEnumeratingWithState:&v69 objects:v78 count:16];
       if (v38)
       {
         v39 = v38;
@@ -563,7 +563,7 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
           {
             if (*v70 != v40)
             {
-              objc_enumerationMutation(v37);
+              objc_enumerationMutation(filteredToSuggestionUserTypes3);
             }
 
             v42 = *(*(&v69 + 1) + 8 * j);
@@ -574,7 +574,7 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
             objc_autoreleasePoolPop(v43);
           }
 
-          v39 = [v37 countByEnumeratingWithState:&v69 objects:v78 count:16];
+          v39 = [filteredToSuggestionUserTypes3 countByEnumeratingWithState:&v69 objects:v78 count:16];
         }
 
         while (v39);
@@ -587,12 +587,12 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
     }
   }
 
-  v46 = [v4 filteredToSessionTypes];
-  if (v46)
+  filteredToSessionTypes = [optionsCopy filteredToSessionTypes];
+  if (filteredToSessionTypes)
   {
-    v47 = v46;
-    v48 = [v4 filteredToSessionTypes];
-    v49 = [v48 count];
+    v47 = filteredToSessionTypes;
+    filteredToSessionTypes2 = [optionsCopy filteredToSessionTypes];
+    v49 = [filteredToSessionTypes2 count];
 
     if (v49)
     {
@@ -601,8 +601,8 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
       v66 = 0u;
       v67 = 0u;
       v68 = 0u;
-      v51 = [v4 filteredToSessionTypes];
-      v52 = [v51 countByEnumeratingWithState:&v65 objects:v77 count:16];
+      filteredToSessionTypes3 = [optionsCopy filteredToSessionTypes];
+      v52 = [filteredToSessionTypes3 countByEnumeratingWithState:&v65 objects:v77 count:16];
       if (v52)
       {
         v53 = v52;
@@ -613,7 +613,7 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
           {
             if (*v66 != v54)
             {
-              objc_enumerationMutation(v51);
+              objc_enumerationMutation(filteredToSessionTypes3);
             }
 
             v56 = *(*(&v65 + 1) + 8 * k);
@@ -624,7 +624,7 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
             objc_autoreleasePoolPop(v57);
           }
 
-          v53 = [v51 countByEnumeratingWithState:&v65 objects:v77 count:16];
+          v53 = [filteredToSessionTypes3 countByEnumeratingWithState:&v65 objects:v77 count:16];
         }
 
         while (v53);
@@ -641,20 +641,20 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
   [v63 setPredicate:v60];
 
   [v63 setSortDescriptors:v62];
-  [v63 setFetchBatchSize:{objc_msgSend(v4, "batchSize")}];
-  [v63 setFetchLimit:{objc_msgSend(v4, "fetchLimit")}];
-  [v63 setFetchOffset:{objc_msgSend(v4, "offset")}];
+  [v63 setFetchBatchSize:{objc_msgSend(optionsCopy, "batchSize")}];
+  [v63 setFetchLimit:{objc_msgSend(optionsCopy, "fetchLimit")}];
+  [v63 setFetchOffset:{objc_msgSend(optionsCopy, "offset")}];
   [v63 setReturnsObjectsAsFaults:0];
 
   return v63;
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (!a5)
+  optionsCopy = options;
+  v8 = optionsCopy;
+  if (!error)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -666,7 +666,7 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
     goto LABEL_13;
   }
 
-  if (v7)
+  if (optionsCopy)
   {
     v9 = objc_opt_class();
     if (![v9 isEqual:objc_opt_class()])
@@ -684,7 +684,7 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
       v22 = [v19 errorWithDomain:v20 code:7 userInfo:v21];
 
       v23 = v22;
-      *a5 = v22;
+      *error = v22;
 
       goto LABEL_13;
     }
@@ -695,14 +695,14 @@ void __58__SMSuggestionsStore__deleteSuggestionsPredating_handler___block_invoke
     if (v11)
     {
       v12 = v11;
-      *a5 = v12;
+      *error = v12;
 
 LABEL_13:
       v10 = 0;
       goto LABEL_14;
     }
 
-    [v10 setFetchOffset:a4];
+    [v10 setFetchOffset:offset];
   }
 
   else
@@ -715,7 +715,7 @@ LABEL_13:
     }
 
     _RTErrorInvalidParameterCreate(@"options");
-    *a5 = v10 = 0;
+    *error = v10 = 0;
   }
 
 LABEL_14:

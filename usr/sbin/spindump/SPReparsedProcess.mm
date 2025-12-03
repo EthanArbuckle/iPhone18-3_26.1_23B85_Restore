@@ -1,98 +1,98 @@
 @interface SPReparsedProcess
-- (BOOL)setTargetProcessWithHint:(id)a3;
-- (SPReparsedProcess)initWithSampleStore:(id)a3;
-- (void)_performSamplePrinterWork:(id)a3;
-- (void)_saveReportToStream:(__sFILE *)a3;
+- (BOOL)setTargetProcessWithHint:(id)hint;
+- (SPReparsedProcess)initWithSampleStore:(id)store;
+- (void)_performSamplePrinterWork:(id)work;
+- (void)_saveReportToStream:(__sFILE *)stream;
 @end
 
 @implementation SPReparsedProcess
 
-- (SPReparsedProcess)initWithSampleStore:(id)a3
+- (SPReparsedProcess)initWithSampleStore:(id)store
 {
-  v5 = a3;
-  if (v5)
+  storeCopy = store;
+  if (storeCopy)
   {
     v26.receiver = self;
     v26.super_class = SPReparsedProcess;
     v6 = [(SPProcessEvent *)&v26 init];
     if (v6)
     {
-      snprintf(__str, 0x40uLL, "com.apple.spindump.reparsed_process_%d", [v5 targetProcessId]);
+      snprintf(__str, 0x40uLL, "com.apple.spindump.reparsed_process_%d", [storeCopy targetProcessId]);
       v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v8 = dispatch_queue_create(__str, v7);
       processingQueue = v6->super._processingQueue;
       v6->super._processingQueue = v8;
 
-      v6->super._targetProcessId = [v5 targetProcessId];
-      v6->super._targetThreadId = [v5 targetThreadId];
-      v6->super._targetHIDEventMachAbs = [v5 targetHIDEventMachAbs];
-      v6->super._targetHIDEventEndMachAbs = [v5 targetHIDEventEndMachAbs];
-      v10 = [v5 event];
+      v6->super._targetProcessId = [storeCopy targetProcessId];
+      v6->super._targetThreadId = [storeCopy targetThreadId];
+      v6->super._targetHIDEventMachAbs = [storeCopy targetHIDEventMachAbs];
+      v6->super._targetHIDEventEndMachAbs = [storeCopy targetHIDEventEndMachAbs];
+      event = [storeCopy event];
       event = v6->super._event;
-      v6->super._event = v10;
+      v6->super._event = event;
 
-      v12 = [v5 eventNote];
+      eventNote = [storeCopy eventNote];
       eventNote = v6->super._eventNote;
-      v6->super._eventNote = v12;
+      v6->super._eventNote = eventNote;
 
-      v14 = [v5 eventTimeRange];
-      [(SPProcessEvent *)v6 setEventTimeRange:v14];
+      eventTimeRange = [storeCopy eventTimeRange];
+      [(SPProcessEvent *)v6 setEventTimeRange:eventTimeRange];
 
-      v15 = [v5 signature];
+      signature = [storeCopy signature];
       signature = v6->super._signature;
-      v6->super._signature = v15;
+      v6->super._signature = signature;
 
-      [v5 extraDuration];
+      [storeCopy extraDuration];
       v6->super._extraDuration = v17;
-      v18 = [v5 durationNote];
+      durationNote = [storeCopy durationNote];
       durationNote = v6->super._durationNote;
-      v6->super._durationNote = v18;
+      v6->super._durationNote = durationNote;
 
-      v20 = [v5 stepsNote];
+      stepsNote = [storeCopy stepsNote];
       stepsNote = v6->super._stepsNote;
-      v6->super._stepsNote = v20;
+      v6->super._stepsNote = stepsNote;
 
-      v22 = [v5 customOutput];
+      customOutput = [storeCopy customOutput];
       customOutput = v6->super._customOutput;
-      v6->super._customOutput = v22;
+      v6->super._customOutput = customOutput;
 
-      objc_storeStrong(&v6->_sampleStore, a3);
+      objc_storeStrong(&v6->_sampleStore, store);
       v6->super._isLiveSampling = 0;
     }
 
     self = v6;
-    v24 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-- (BOOL)setTargetProcessWithHint:(id)a3
+- (BOOL)setTargetProcessWithHint:(id)hint
 {
-  v4 = [(SASampleStore *)self->_sampleStore setTargetProcessWithHint:a3];
+  v4 = [(SASampleStore *)self->_sampleStore setTargetProcessWithHint:hint];
   self->super._targetProcessId = [(SASampleStore *)self->_sampleStore targetProcessId];
   return v4;
 }
 
-- (void)_saveReportToStream:(__sFILE *)a3
+- (void)_saveReportToStream:(__sFILE *)stream
 {
-  if (a3)
+  if (stream)
   {
-    [(SPProcessEvent *)self _saveReportToStream:a3 withSampleStore:self->_sampleStore];
+    [(SPProcessEvent *)self _saveReportToStream:stream withSampleStore:self->_sampleStore];
   }
 }
 
-- (void)_performSamplePrinterWork:(id)a3
+- (void)_performSamplePrinterWork:(id)work
 {
   sampleStore = self->_sampleStore;
-  v6 = a3;
+  workCopy = work;
   v7 = [(SPProcessEvent *)self _samplePrinterForSampleStore:sampleStore];
-  (*(a3 + 2))(v6, v7);
+  (*(work + 2))(workCopy, v7);
 }
 
 @end

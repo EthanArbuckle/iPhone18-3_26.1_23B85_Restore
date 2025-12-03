@@ -2,34 +2,34 @@
 + (id)allowedImportFileTypes;
 - (BOOL)_doITIPFileImport;
 - (BOOL)_doImportFiles;
-- (BOOL)_isAnyAttendeeAddressFrom:(id)a3 organizer:(id)a4 equivalentTo:(id)a5;
-- (BOOL)_message:(id)a3 hasNewSelfOrganizedEventForCalendar:(id)a4;
+- (BOOL)_isAnyAttendeeAddressFrom:(id)from organizer:(id)organizer equivalentTo:(id)to;
+- (BOOL)_message:(id)_message hasNewSelfOrganizedEventForCalendar:(id)calendar;
 - (BOOL)_separateICalFilesForITIP;
 - (BOOL)_sortFilesByImportCalendar;
 - (BOOL)importICalFiles;
-- (BOOL)shouldImportContinueGivenDecision:(int)a3 eventsAffected:(unint64_t)a4;
-- (EKICSImporter)initWithFilePaths:(id)a3 calendar:(id)a4 options:(unint64_t)a5;
-- (id)_existingEventFromICSEvent:(id)a3 calendar:(id)a4;
-- (id)_findBestEventFromEvents:(id)a3;
-- (id)_findCalendarForExistingEvent:(id)a3;
-- (id)_initWithFilePaths:(id)a3 eventStore:(id)a4 calendar:(id)a5 options:(unint64_t)a6;
-- (id)_matchingAttendeeAddressesFrom:(id)a3 organizer:(id)a4 inSource:(id)a5;
+- (BOOL)shouldImportContinueGivenDecision:(int)decision eventsAffected:(unint64_t)affected;
+- (EKICSImporter)initWithFilePaths:(id)paths calendar:(id)calendar options:(unint64_t)options;
+- (id)_existingEventFromICSEvent:(id)event calendar:(id)calendar;
+- (id)_findBestEventFromEvents:(id)events;
+- (id)_findCalendarForExistingEvent:(id)event;
+- (id)_initWithFilePaths:(id)paths eventStore:(id)store calendar:(id)calendar options:(unint64_t)options;
+- (id)_matchingAttendeeAddressesFrom:(id)from organizer:(id)organizer inSource:(id)source;
 - (id)callbackQueue;
-- (id)eventFromDocument:(id)a3;
-- (id)infoForNewCalendarForFiles:(id)a3 forITIPFiles:(id)a4 nonITIPFiles:(id)a5;
-- (id)selectCalendarWithTitle:(id)a3 color:(id)a4 description:(id)a5 error:(id *)a6;
-- (int)countReminders:(id)a3;
-- (unint64_t)_separateFilesForImport:(id)a3;
+- (id)eventFromDocument:(id)document;
+- (id)infoForNewCalendarForFiles:(id)files forITIPFiles:(id)pFiles nonITIPFiles:(id)iPFiles;
+- (id)selectCalendarWithTitle:(id)title color:(id)color description:(id)description error:(id *)error;
+- (int)countReminders:(id)reminders;
+- (unint64_t)_separateFilesForImport:(id)import;
 - (void)_createImportHandle;
-- (void)_importWithCompletion:(id)a3;
+- (void)_importWithCompletion:(id)completion;
 - (void)_separateICalFilesForITIP;
 - (void)_sortFilesByImportCalendar;
-- (void)asyncImportWithCompletion:(id)a3;
-- (void)callCompletionWithSuccess:(BOOL)a3;
+- (void)asyncImportWithCompletion:(id)completion;
+- (void)callCompletionWithSuccess:(BOOL)success;
 - (void)callImportDroppedRemindersCallbackIfThereWereReminders;
-- (void)importFoundBackupFile:(id)a3;
+- (void)importFoundBackupFile:(id)file;
 - (void)setImportProgressAsIndeterminate;
-- (void)syncImportWithCompletion:(id)a3;
+- (void)syncImportWithCompletion:(id)completion;
 @end
 
 @implementation EKICSImporter
@@ -64,21 +64,21 @@ uint64_t __36__EKICSImporter__createImportHandle__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (EKICSImporter)initWithFilePaths:(id)a3 calendar:(id)a4 options:(unint64_t)a5
+- (EKICSImporter)initWithFilePaths:(id)paths calendar:(id)calendar options:(unint64_t)options
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v8 eventStore];
-  v11 = [(EKICSImporter *)self _initWithFilePaths:v9 eventStore:v10 calendar:v8 options:a5];
+  calendarCopy = calendar;
+  pathsCopy = paths;
+  eventStore = [calendarCopy eventStore];
+  v11 = [(EKICSImporter *)self _initWithFilePaths:pathsCopy eventStore:eventStore calendar:calendarCopy options:options];
 
   return v11;
 }
 
-- (id)_initWithFilePaths:(id)a3 eventStore:(id)a4 calendar:(id)a5 options:(unint64_t)a6
+- (id)_initWithFilePaths:(id)paths eventStore:(id)store calendar:(id)calendar options:(unint64_t)options
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  pathsCopy = paths;
+  storeCopy = store;
+  calendarCopy = calendar;
   v30.receiver = self;
   v30.super_class = EKICSImporter;
   v14 = [(EKICSImporter *)&v30 init];
@@ -86,10 +86,10 @@ uint64_t __36__EKICSImporter__createImportHandle__block_invoke()
   if (v14)
   {
     [(EKICSImporter *)v14 _createImportHandle];
-    objc_storeStrong(&v15->_importFilePaths, a3);
-    objc_storeStrong(&v15->_calendar, a5);
-    objc_storeStrong(&v15->_eventStore, a4);
-    v15->_options = a6;
+    objc_storeStrong(&v15->_importFilePaths, paths);
+    objc_storeStrong(&v15->_calendar, calendar);
+    objc_storeStrong(&v15->_eventStore, store);
+    v15->_options = options;
     v16 = objc_opt_new();
     nonITIPFiles = v15->_nonITIPFiles;
     v15->_nonITIPFiles = v16;
@@ -121,9 +121,9 @@ uint64_t __36__EKICSImporter__createImportHandle__block_invoke()
   return v15;
 }
 
-- (void)asyncImportWithCompletion:(id)a3
+- (void)asyncImportWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = dispatch_queue_create("com.apple.EventKit.ICSImporter", v5);
 
@@ -132,8 +132,8 @@ uint64_t __36__EKICSImporter__createImportHandle__block_invoke()
   v8[2] = __43__EKICSImporter_asyncImportWithCompletion___block_invoke;
   v8[3] = &unk_1E77FD1A8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(v6, v8);
 }
 
@@ -146,21 +146,21 @@ uint64_t __43__EKICSImporter_asyncImportWithCompletion___block_invoke(uint64_t a
   return [v2 _importWithCompletion:v3];
 }
 
-- (void)syncImportWithCompletion:(id)a3
+- (void)syncImportWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(EKICSImporter *)self setAsynchronous:0];
-  [(EKICSImporter *)self _importWithCompletion:v4];
+  [(EKICSImporter *)self _importWithCompletion:completionCopy];
 }
 
-- (void)_importWithCompletion:(id)a3
+- (void)_importWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(EKICSImporter *)self setImportProgressAsIndeterminate];
-  [(EKICSImporter *)self setCompletionCallback:v4];
+  [(EKICSImporter *)self setCompletionCallback:completionCopy];
 
-  v5 = [(EKICSImporter *)self importFilePaths];
-  v6 = [(EKICSImporter *)self _separateFilesForImport:v5];
+  importFilePaths = [(EKICSImporter *)self importFilePaths];
+  v6 = [(EKICSImporter *)self _separateFilesForImport:importFilePaths];
 
   if (v6)
   {
@@ -203,9 +203,9 @@ LABEL_15:
       [EKICSImporter _importWithCompletion:];
     }
 
-    v9 = [(EKICSImporter *)self importError];
+    importError = [(EKICSImporter *)self importError];
 
-    if (!v9)
+    if (!importError)
     {
       v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"EKICSImportErrorDomain" code:9 userInfo:0];
       [(EKICSImporter *)self setImportError:v10];
@@ -227,68 +227,68 @@ LABEL_16:
   if (os_log_type_enabled(EKICSImportHandle, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(EKICSImporter *)self iCalFilesToImport];
-    v6 = [v5 allKeys];
-    v7 = [(EKICSImporter *)self vCalFilesToImport];
-    v8 = [(EKICSImporter *)self calendar];
+    iCalFilesToImport = [(EKICSImporter *)self iCalFilesToImport];
+    allKeys = [iCalFilesToImport allKeys];
+    vCalFilesToImport = [(EKICSImporter *)self vCalFilesToImport];
+    calendar = [(EKICSImporter *)self calendar];
     v12 = 138412802;
-    v13 = v6;
+    v13 = allKeys;
     v14 = 2112;
-    v15 = v7;
+    v15 = vCalFilesToImport;
     v16 = 2112;
-    v17 = v8;
+    v17 = calendar;
     _os_log_impl(&dword_1A805E000, v4, OS_LOG_TYPE_DEFAULT, "Importing iCal files (%@) and vCal files (%@) to calendar %@", &v12, 0x20u);
   }
 
-  v9 = [(EKICSImporter *)self _separateICalFilesForITIP];
-  if (v9)
+  _separateICalFilesForITIP = [(EKICSImporter *)self _separateICalFilesForITIP];
+  if (_separateICalFilesForITIP)
   {
-    v9 = [(EKICSImporter *)self _sortFilesByImportCalendar];
-    if (v9)
+    _separateICalFilesForITIP = [(EKICSImporter *)self _sortFilesByImportCalendar];
+    if (_separateICalFilesForITIP)
     {
-      v9 = [(EKICSImporter *)self _doImportFiles];
-      if (v9)
+      _separateICalFilesForITIP = [(EKICSImporter *)self _doImportFiles];
+      if (_separateICalFilesForITIP)
       {
         [(EKICSImporter *)self callImportDroppedRemindersCallbackIfThereWereReminders];
-        LOBYTE(v9) = 1;
+        LOBYTE(_separateICalFilesForITIP) = 1;
       }
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v9;
+  return _separateICalFilesForITIP;
 }
 
 - (BOOL)_sortFilesByImportCalendar
 {
   v127 = *MEMORY[0x1E69E9840];
-  v91 = [(EKICSImporter *)self calendar];
+  calendar = [(EKICSImporter *)self calendar];
   v2 = EKICSImportHandle;
   v3 = os_log_type_enabled(EKICSImportHandle, OS_LOG_TYPE_DEFAULT);
-  if (v91)
+  if (calendar)
   {
     if (v3)
     {
       v4 = v2;
-      v5 = [v91 objectID];
+      objectID = [calendar objectID];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v5;
+      *(&buf + 4) = objectID;
       _os_log_impl(&dword_1A805E000, v4, OS_LOG_TYPE_DEFAULT, "Importing files to user-specified calendar with identifier(%@)", &buf, 0xCu);
     }
 
     v6 = MEMORY[0x1E6992FC8];
-    v7 = [(EKICSImporter *)self iTIPFiles];
-    v8 = [v7 allKeys];
-    [v6 addArray:v8 withKey:v91 toStrongTableOfArrays:&self->_calendarToITIPFiles];
+    iTIPFiles = [(EKICSImporter *)self iTIPFiles];
+    allKeys = [iTIPFiles allKeys];
+    [v6 addArray:allKeys withKey:calendar toStrongTableOfArrays:&self->_calendarToITIPFiles];
 
     v9 = MEMORY[0x1E6992FC8];
-    v10 = [(EKICSImporter *)self nonITIPFiles];
-    v11 = [v10 allKeys];
-    [v9 addArray:v11 withKey:v91 toStrongTableOfArrays:&self->_calendarToICalFiles];
+    nonITIPFiles = [(EKICSImporter *)self nonITIPFiles];
+    allKeys2 = [nonITIPFiles allKeys];
+    [v9 addArray:allKeys2 withKey:calendar toStrongTableOfArrays:&self->_calendarToICalFiles];
 
     v12 = MEMORY[0x1E6992FC8];
-    v13 = [(EKICSImporter *)self vCalFilesToImport];
-    [v12 addArray:v13 withKey:v91 toStrongTableOfArrays:&self->_calendarToVCalFiles];
+    vCalFilesToImport = [(EKICSImporter *)self vCalFilesToImport];
+    [v12 addArray:vCalFilesToImport withKey:calendar toStrongTableOfArrays:&self->_calendarToVCalFiles];
 
     goto LABEL_5;
   }
@@ -312,9 +312,9 @@ LABEL_16:
   aBlock[4] = self;
   aBlock[5] = &buf;
   v89 = _Block_copy(aBlock);
-  v15 = [(EKICSImporter *)self iTIPFiles];
+  iTIPFiles2 = [(EKICSImporter *)self iTIPFiles];
   p_calendarToITIPFiles = &self->_calendarToITIPFiles;
-  v16 = v89[2](v89, v15);
+  v16 = v89[2](v89, iTIPFiles2);
 
   if (!v16)
   {
@@ -330,7 +330,7 @@ LABEL_16:
   }
 
   v17 = *p_calendarToITIPFiles;
-  v18 = self;
+  selfCopy2 = self;
   if (*p_calendarToITIPFiles)
   {
     v114 = 0;
@@ -353,13 +353,13 @@ LABEL_16:
           }
 
           v21 = *(*(&v110 + 1) + 8 * i);
-          v22 = [v21 source];
-          v23 = [v21 constraints];
-          v24 = [v23 requiresOutgoingInvitationsInDefaultCalendar];
+          source = [v21 source];
+          constraints = [v21 constraints];
+          requiresOutgoingInvitationsInDefaultCalendar = [constraints requiresOutgoingInvitationsInDefaultCalendar];
 
-          if (v24)
+          if (requiresOutgoingInvitationsInDefaultCalendar)
           {
-            v25 = [v22 calendarsForEntityType:0];
+            v25 = [source calendarsForEntityType:0];
             v108 = 0u;
             v109 = 0u;
             v106 = 0u;
@@ -405,9 +405,9 @@ LABEL_18:
 
               v32 = [*p_calendarToITIPFiles objectForKey:v21];
               [MEMORY[0x1E6992FC8] addArray:v32 withKey:v31 toStrongTableOfArrays:p_calendarToITIPFiles];
-              v33 = [v31 objectID];
-              v34 = [v21 objectID];
-              v35 = [v33 isEqual:v34];
+              objectID2 = [v31 objectID];
+              objectID3 = [v21 objectID];
+              v35 = [objectID2 isEqual:objectID3];
 
               if ((v35 & 1) == 0)
               {
@@ -424,7 +424,7 @@ LABEL_29:
               if (os_log_type_enabled(EKICSImportHandle, OS_LOG_TYPE_ERROR))
               {
                 *v118 = 138412290;
-                v119 = v22;
+                v119 = source;
                 _os_log_error_impl(&dword_1A805E000, v36, OS_LOG_TYPE_ERROR, "%@ doesn't have a default calendar to put the items into.", v118, 0xCu);
               }
             }
@@ -464,12 +464,12 @@ LABEL_29:
       while (v38);
     }
 
-    v18 = self;
+    selfCopy2 = self;
   }
 
-  v41 = [(EKICSImporter *)v18 nonITIPFiles];
-  p_calendarToICalFiles = &v18->_calendarToICalFiles;
-  v42 = v89[2](v89, v41);
+  nonITIPFiles2 = [(EKICSImporter *)selfCopy2 nonITIPFiles];
+  p_calendarToICalFiles = &selfCopy2->_calendarToICalFiles;
+  v42 = v89[2](v89, nonITIPFiles2);
 
   if ((v42 & 1) == 0)
   {
@@ -484,14 +484,14 @@ LABEL_29:
     goto LABEL_90;
   }
 
-  v43 = [(EKICSImporter *)self vCalFilesToImport];
-  v44 = [v43 count] == 0;
+  vCalFilesToImport2 = [(EKICSImporter *)self vCalFilesToImport];
+  v44 = [vCalFilesToImport2 count] == 0;
 
   if (!v44)
   {
     v45 = MEMORY[0x1E6992FC8];
-    v46 = [(EKICSImporter *)self vCalFilesToImport];
-    [v45 addArray:v46 toArray:*(&buf + 1) + 40];
+    vCalFilesToImport3 = [(EKICSImporter *)self vCalFilesToImport];
+    [v45 addArray:vCalFilesToImport3 toArray:*(&buf + 1) + 40];
   }
 
   if (![*(*(&buf + 1) + 40) count])
@@ -499,8 +499,8 @@ LABEL_29:
     goto LABEL_89;
   }
 
-  v47 = [(EKICSImporter *)self selectCalendar];
-  v48 = v47 == 0;
+  selectCalendar = [(EKICSImporter *)self selectCalendar];
+  v48 = selectCalendar == 0;
 
   v49 = EKICSImportHandle;
   if (v48)
@@ -527,28 +527,28 @@ LABEL_29:
   }
 
   v52 = *(*(&buf + 1) + 40);
-  v53 = [(EKICSImporter *)self iTIPFiles];
-  v54 = [(EKICSImporter *)self nonITIPFiles];
-  v90 = [(EKICSImporter *)self infoForNewCalendarForFiles:v52 forITIPFiles:v53 nonITIPFiles:v54];
+  iTIPFiles3 = [(EKICSImporter *)self iTIPFiles];
+  nonITIPFiles3 = [(EKICSImporter *)self nonITIPFiles];
+  v90 = [(EKICSImporter *)self infoForNewCalendarForFiles:v52 forITIPFiles:iTIPFiles3 nonITIPFiles:nonITIPFiles3];
 
   if (!v90)
   {
     v87 = 0;
-    v88 = 0;
+    x_wr_caldesc = 0;
 LABEL_62:
-    v62 = [*(*(&buf + 1) + 40) firstObject];
-    v63 = [v62 lastPathComponent];
-    v64 = [v63 stringByDeletingPathExtension];
+    firstObject = [*(*(&buf + 1) + 40) firstObject];
+    lastPathComponent = [firstObject lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v55 = v64;
+    v55 = stringByDeletingPathExtension;
     goto LABEL_63;
   }
 
-  v56 = [v90 x_apple_calendar_color];
-  v57 = v56;
-  if (v56)
+  x_apple_calendar_color = [v90 x_apple_calendar_color];
+  v57 = x_apple_calendar_color;
+  if (x_apple_calendar_color)
   {
-    [v56 red];
+    [x_apple_calendar_color red];
     [v57 green];
     [v57 blue];
     v87 = CalColorStringRepresentation();
@@ -559,11 +559,11 @@ LABEL_62:
     v87 = 0;
   }
 
-  v61 = [v90 x_wr_calname];
-  v88 = [v90 x_wr_caldesc];
+  x_wr_calname = [v90 x_wr_calname];
+  x_wr_caldesc = [v90 x_wr_caldesc];
 
-  v55 = v61;
-  if (!v61)
+  v55 = x_wr_calname;
+  if (!x_wr_calname)
   {
     goto LABEL_62;
   }
@@ -601,9 +601,9 @@ LABEL_63:
     v68 = EKICSImportHandle;
     if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
     {
-      v69 = [v65 objectID];
+      objectID4 = [v65 objectID];
       *v118 = 138412290;
-      v119 = v69;
+      v119 = objectID4;
       _os_log_impl(&dword_1A805E000, v68, OS_LOG_TYPE_DEFAULT, "User selected calendar: UID( %@)", v118, 0xCu);
     }
 
@@ -634,14 +634,14 @@ LABEL_63:
           }
 
           v75 = *(*(&v97 + 1) + 8 * k);
-          v76 = [(EKICSImporter *)self iTIPFiles];
-          v77 = [v76 objectForKeyedSubscript:v75];
+          iTIPFiles4 = [(EKICSImporter *)self iTIPFiles];
+          v77 = [iTIPFiles4 objectForKeyedSubscript:v75];
 
           p_calendarToVCalFiles = &self->_calendarToITIPFiles;
           if (!v77)
           {
-            v79 = [(EKICSImporter *)self nonITIPFiles];
-            v80 = [v79 objectForKeyedSubscript:v75];
+            nonITIPFiles4 = [(EKICSImporter *)self nonITIPFiles];
+            v80 = [nonITIPFiles4 objectForKeyedSubscript:v75];
 
             if (v80)
             {
@@ -730,22 +730,22 @@ uint64_t __43__EKICSImporter__sortFilesByImportCalendar__block_invoke(uint64_t a
   return 1;
 }
 
-- (id)infoForNewCalendarForFiles:(id)a3 forITIPFiles:(id)a4 nonITIPFiles:(id)a5
+- (id)infoForNewCalendarForFiles:(id)files forITIPFiles:(id)pFiles nonITIPFiles:(id)iPFiles
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v30 = a4;
-  v28 = a5;
-  obj = v7;
+  filesCopy = files;
+  pFilesCopy = pFiles;
+  iPFilesCopy = iPFiles;
+  obj = filesCopy;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  v8 = [filesCopy countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v8)
   {
     v9 = v8;
-    v10 = 0;
+    calendar2 = 0;
     v11 = *v32;
     do
     {
@@ -757,7 +757,7 @@ uint64_t __43__EKICSImporter__sortFilesByImportCalendar__block_invoke(uint64_t a
         }
 
         v13 = *(*(&v31 + 1) + 8 * i);
-        v14 = [v30 objectForKeyedSubscript:v13];
+        v14 = [pFilesCopy objectForKeyedSubscript:v13];
         v15 = v14;
         if (v14)
         {
@@ -766,14 +766,14 @@ uint64_t __43__EKICSImporter__sortFilesByImportCalendar__block_invoke(uint64_t a
 
         else
         {
-          v16 = [v28 objectForKeyedSubscript:v13];
+          v16 = [iPFilesCopy objectForKeyedSubscript:v13];
         }
 
         v17 = v16;
 
         if (v17)
         {
-          v18 = v10 == 0;
+          v18 = calendar2 == 0;
         }
 
         else
@@ -787,10 +787,10 @@ uint64_t __43__EKICSImporter__sortFilesByImportCalendar__block_invoke(uint64_t a
           v36 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v19 = [v17 calendar];
-          v20 = [v19 components];
+          calendar = [v17 calendar];
+          components = [calendar components];
 
-          v21 = [v20 countByEnumeratingWithState:&v35 objects:v40 count:16];
+          v21 = [components countByEnumeratingWithState:&v35 objects:v40 count:16];
           if (v21)
           {
             v22 = v21;
@@ -801,7 +801,7 @@ uint64_t __43__EKICSImporter__sortFilesByImportCalendar__block_invoke(uint64_t a
               {
                 if (*v36 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(components);
                 }
 
                 v25 = *(*(&v35 + 1) + 8 * j);
@@ -809,12 +809,12 @@ uint64_t __43__EKICSImporter__sortFilesByImportCalendar__block_invoke(uint64_t a
                 if (objc_opt_isKindOfClass())
                 {
 
-                  v10 = [v17 calendar];
+                  calendar2 = [v17 calendar];
                   goto LABEL_24;
                 }
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v35 objects:v40 count:16];
+              v22 = [components countByEnumeratingWithState:&v35 objects:v40 count:16];
               if (v22)
               {
                 continue;
@@ -824,7 +824,7 @@ uint64_t __43__EKICSImporter__sortFilesByImportCalendar__block_invoke(uint64_t a
             }
           }
 
-          v10 = 0;
+          calendar2 = 0;
         }
 
 LABEL_24:
@@ -838,30 +838,30 @@ LABEL_24:
 
   else
   {
-    v10 = 0;
+    calendar2 = 0;
   }
 
   v26 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return calendar2;
 }
 
-- (unint64_t)_separateFilesForImport:(id)a3
+- (unint64_t)_separateFilesForImport:(id)import
 {
   v35 = *MEMORY[0x1E69E9840];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  importCopy = import;
+  v5 = [importCopy countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v31;
     v8 = 0x1E695D000uLL;
     v9 = 0x1E69E3000uLL;
-    v27 = self;
+    selfCopy = self;
 LABEL_3:
     v10 = 0;
     v28 = v6;
@@ -869,7 +869,7 @@ LABEL_3:
     {
       if (*v31 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(importCopy);
       }
 
       v11 = *(*(&v30 + 1) + 8 * v10);
@@ -882,32 +882,32 @@ LABEL_3:
       {
         v12 = [*(v8 + 3824) dataWithContentsOfFile:v11];
         v13 = [objc_alloc(*(v9 + 3248)) initWithData:v12 options:0 error:0];
-        v14 = [v13 calendar];
-        if (v14)
+        calendar = [v13 calendar];
+        if (calendar)
         {
-          v15 = v14;
+          v15 = calendar;
           [MEMORY[0x1E6992FC8] setValue:v13 withKey:v11 inDictionary:&self->_iCalFilesToImport];
         }
 
         else
         {
-          v16 = v4;
+          v16 = importCopy;
           v17 = [objc_alloc(*(v9 + 3248)) initWithData:v12 options:1 error:0];
-          v18 = [v17 calendar];
-          v19 = [v18 version];
-          v20 = [v19 isEqualToString:@"1.0"];
+          calendar2 = [v17 calendar];
+          version = [calendar2 version];
+          v20 = [version isEqualToString:@"1.0"];
 
           v21 = EKICSImportHandle;
           if (!v20)
           {
-            v4 = v16;
+            importCopy = v16;
             if (os_log_type_enabled(EKICSImportHandle, OS_LOG_TYPE_ERROR))
             {
               [EKICSImporter _separateFilesForImport:];
             }
 
             v24 = [MEMORY[0x1E696ABC0] errorWithDomain:@"EKICSImportErrorDomain" code:0 userInfo:0];
-            [(EKICSImporter *)v27 setImportError:v24];
+            [(EKICSImporter *)selfCopy setImportError:v24];
 
             v22 = 2;
 LABEL_31:
@@ -915,15 +915,15 @@ LABEL_31:
             goto LABEL_32;
           }
 
-          v4 = v16;
+          importCopy = v16;
           if (os_log_type_enabled(EKICSImportHandle, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
             _os_log_impl(&dword_1A805E000, v21, OS_LOG_TYPE_DEFAULT, "Attempting to open version 1.0 .ics file.  Will treat it as a vcs file and import.", buf, 2u);
           }
 
-          self = v27;
-          [MEMORY[0x1E6992FC8] addObject:v11 toArray:&v27->_vCalFilesToImport];
+          self = selfCopy;
+          [MEMORY[0x1E6992FC8] addObject:v11 toArray:&selfCopy->_vCalFilesToImport];
 
           v8 = 0x1E695D000;
           v9 = 0x1E69E3000;
@@ -939,7 +939,7 @@ LABEL_31:
 
       if (v6 == ++v10)
       {
-        v6 = [v4 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v6 = [importCopy countByEnumeratingWithState:&v30 objects:v34 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -949,14 +949,14 @@ LABEL_31:
       }
     }
 
-    if ([v4 count] >= 2 && os_log_type_enabled(EKICSImportHandle, OS_LOG_TYPE_ERROR))
+    if ([importCopy count] >= 2 && os_log_type_enabled(EKICSImportHandle, OS_LOG_TYPE_ERROR))
     {
       [EKICSImporter _separateFilesForImport:];
     }
 
-    v23 = [(EKICSImporter *)self importFoundBackupFile];
+    importFoundBackupFile = [(EKICSImporter *)self importFoundBackupFile];
 
-    if (v23)
+    if (importFoundBackupFile)
     {
       v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11];
       [(EKICSImporter *)self importFoundBackupFile:v12];
@@ -988,7 +988,7 @@ LABEL_32:
 
 - (BOOL)_separateICalFilesForITIP
 {
-  v2 = self;
+  selfCopy = self;
   v48 = *MEMORY[0x1E69E9840];
   v37 = 0u;
   v38 = 0u;
@@ -999,10 +999,10 @@ LABEL_32:
   if (v34)
   {
     v33 = *v38;
-    p_iTIPFiles = &v2->_iTIPFiles;
-    p_nonITIPFiles = &v2->_nonITIPFiles;
+    p_iTIPFiles = &selfCopy->_iTIPFiles;
+    p_nonITIPFiles = &selfCopy->_nonITIPFiles;
     v3 = 0x1E6992000uLL;
-    v32 = v2;
+    v32 = selfCopy;
     while (2)
     {
       for (i = 0; i != v34; ++i)
@@ -1013,12 +1013,12 @@ LABEL_32:
         }
 
         v5 = *(*(&v37 + 1) + 8 * i);
-        v6 = [(NSMutableDictionary *)v2->_iCalFilesToImport objectForKeyedSubscript:v5];
-        v7 = [v6 calendar];
-        if (!v7)
+        v6 = [(NSMutableDictionary *)selfCopy->_iCalFilesToImport objectForKeyedSubscript:v5];
+        calendar = [v6 calendar];
+        if (!calendar)
         {
           v25 = [MEMORY[0x1E696ABC0] errorWithDomain:@"EKICSImportErrorDomain" code:0 userInfo:0];
-          [(EKICSImporter *)v2 setImportError:v25];
+          [(EKICSImporter *)selfCopy setImportError:v25];
 
           v26 = EKICSImportHandle;
           if (os_log_type_enabled(EKICSImportHandle, OS_LOG_TYPE_DEFAULT))
@@ -1031,15 +1031,15 @@ LABEL_32:
           goto LABEL_35;
         }
 
-        v8 = [(EKICSImporter *)v2 countReminders:v7];
+        v8 = [(EKICSImporter *)selfCopy countReminders:calendar];
         if (v8 >= 1)
         {
           v9 = v8;
-          [*(v3 + 4040) addObject:v5 toArray:&v2->_filesWithReminders];
-          v2->_droppedReminderCount += v9;
+          [*(v3 + 4040) addObject:v5 toArray:&selfCopy->_filesWithReminders];
+          selfCopy->_droppedReminderCount += v9;
         }
 
-        if ([v7 method] == 1 || !objc_msgSend(v7, "method"))
+        if ([calendar method] == 1 || !objc_msgSend(calendar, "method"))
         {
           v36 = v6;
           v13 = EKICSImportHandle;
@@ -1054,8 +1054,8 @@ LABEL_32:
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v14 = [v7 components];
-          v15 = [v14 countByEnumeratingWithState:&v41 objects:buf count:16];
+          components = [calendar components];
+          v15 = [components countByEnumeratingWithState:&v41 objects:buf count:16];
           if (v15)
           {
             v16 = v15;
@@ -1067,7 +1067,7 @@ LABEL_17:
             {
               if (*v42 != v18)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(components);
               }
 
               v20 = *(*(&v41 + 1) + 8 * v19);
@@ -1081,7 +1081,7 @@ LABEL_17:
               v17 |= isKindOfClass;
               if (v16 == ++v19)
               {
-                v16 = [v14 countByEnumeratingWithState:&v41 objects:buf count:16];
+                v16 = [components countByEnumeratingWithState:&v41 objects:buf count:16];
                 if (v16)
                 {
                   goto LABEL_17;
@@ -1089,7 +1089,7 @@ LABEL_17:
 
                 v12 = p_nonITIPFiles;
                 v6 = v36;
-                v2 = v32;
+                selfCopy = v32;
                 v3 = 0x1E6992000;
                 if ((v17 & 1) == 0)
                 {
@@ -1101,22 +1101,22 @@ LABEL_17:
             }
           }
 
-          v2 = v32;
+          selfCopy = v32;
           v6 = v36;
           v3 = 0x1E6992000uLL;
 LABEL_26:
-          v22 = [(EKICSImporter *)v2 makeDecision];
+          makeDecision = [(EKICSImporter *)selfCopy makeDecision];
 
           v12 = p_nonITIPFiles;
-          if (v22)
+          if (makeDecision)
           {
-            v23 = [(EKICSImporter *)v2 shouldImportContinueGivenDecision:0 eventsAffected:1, p_nonITIPFiles];
+            p_nonITIPFiles = [(EKICSImporter *)selfCopy shouldImportContinueGivenDecision:0 eventsAffected:1, p_nonITIPFiles];
             v12 = p_nonITIPFiles;
-            if (!v23)
+            if (!p_nonITIPFiles)
             {
-              [(EKICSImporter *)v2 setNumInvalidEvents:[(EKICSImporter *)v2 numInvalidEvents]+ 1];
+              [(EKICSImporter *)selfCopy setNumInvalidEvents:[(EKICSImporter *)selfCopy numInvalidEvents]+ 1];
               v27 = [MEMORY[0x1E696ABC0] errorWithDomain:@"EKICSImportErrorDomain" code:5 userInfo:0];
-              [(EKICSImporter *)v2 setImportError:v27];
+              [(EKICSImporter *)selfCopy setImportError:v27];
 
               if (os_log_type_enabled(EKICSImportHandle, OS_LOG_TYPE_ERROR))
               {
@@ -1166,25 +1166,25 @@ LABEL_36:
   return v24;
 }
 
-- (BOOL)_message:(id)a3 hasNewSelfOrganizedEventForCalendar:(id)a4
+- (BOOL)_message:(id)_message hasNewSelfOrganizedEventForCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 document];
-  v9 = [(EKICSImporter *)self _findCalendarForExistingEvent:v8];
+  _messageCopy = _message;
+  calendarCopy = calendar;
+  document = [_messageCopy document];
+  v9 = [(EKICSImporter *)self _findCalendarForExistingEvent:document];
 
   if (v9)
   {
-    v10 = [v6 event];
-    v11 = [v10 organizer];
+    event = [_messageCopy event];
+    organizer = [event organizer];
 
-    v12 = [v11 value];
+    value = [organizer value];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v7 ownerIdentityAddress];
-      v14 = [v11 value];
-      v15 = [v13 isEqual:v14];
+      ownerIdentityAddress = [calendarCopy ownerIdentityAddress];
+      value2 = [organizer value];
+      v15 = [ownerIdentityAddress isEqual:value2];
 
       if (v15)
       {
@@ -1196,15 +1196,15 @@ LABEL_36:
     {
     }
 
-    v17 = [v7 ownerIdentityEmail];
-    v18 = [v11 emailAddress];
-    v19 = [v17 isEqualToString:v18];
+    ownerIdentityEmail = [calendarCopy ownerIdentityEmail];
+    emailAddress = [organizer emailAddress];
+    v19 = [ownerIdentityEmail isEqualToString:emailAddress];
 
     if ((v19 & 1) == 0)
     {
-      v20 = [v7 ownerIdentityPhoneNumber];
-      v21 = [v11 phoneNumber];
-      v16 = [v20 isEqualToString:v21];
+      ownerIdentityPhoneNumber = [calendarCopy ownerIdentityPhoneNumber];
+      phoneNumber = [organizer phoneNumber];
+      v16 = [ownerIdentityPhoneNumber isEqualToString:phoneNumber];
 
       goto LABEL_10;
     }
@@ -1249,8 +1249,8 @@ LABEL_11:
 
           v21 = v4;
           v5 = *(*(&v26 + 1) + 8 * v4);
-          v6 = [(EKICSImporter *)self calendarToITIPFiles];
-          v7 = [v6 objectForKey:v5];
+          calendarToITIPFiles = [(EKICSImporter *)self calendarToITIPFiles];
+          v7 = [calendarToITIPFiles objectForKey:v5];
 
           v24 = 0u;
           v25 = 0u;
@@ -1273,8 +1273,8 @@ LABEL_11:
                 }
 
                 v13 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:*(*(&v22 + 1) + 8 * v12)];
-                v14 = [(EKICSImporter *)self eventStore];
-                v15 = [v14 importICSData:v13 intoCalendar:v5 options:v3 | self->_options];
+                eventStore = [(EKICSImporter *)self eventStore];
+                v15 = [eventStore importICSData:v13 intoCalendar:v5 options:v3 | self->_options];
 
                 if (v15)
                 {
@@ -1309,14 +1309,14 @@ LABEL_11:
 - (BOOL)_doImportFiles
 {
   v96 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   importedItems = self->_importedItems;
-  self->_importedItems = v3;
+  self->_importedItems = array;
 
   if (![(EKICSImporter *)self _doITIPFileImport])
   {
-    v5 = [(EKICSImporter *)self iTIPFiles];
-    v6 = [v5 count];
+    iTIPFiles = [(EKICSImporter *)self iTIPFiles];
+    v6 = [iTIPFiles count];
 
     if (v6)
     {
@@ -1324,18 +1324,18 @@ LABEL_11:
       if (os_log_type_enabled(EKICSImportHandle, OS_LOG_TYPE_DEFAULT))
       {
         v8 = v7;
-        v9 = [(EKICSImporter *)self iTIPFiles];
+        iTIPFiles2 = [(EKICSImporter *)self iTIPFiles];
         *buf = 138412290;
-        v95 = v9;
+        v95 = iTIPFiles2;
         _os_log_impl(&dword_1A805E000, v8, OS_LOG_TYPE_DEFAULT, "We did not import the iTip files [%@].", buf, 0xCu);
       }
     }
   }
 
-  v10 = [(EKICSImporter *)self calendarToVCalFiles];
-  v11 = [v10 count];
+  calendarToVCalFiles = [(EKICSImporter *)self calendarToVCalFiles];
+  v11 = [calendarToVCalFiles count];
 
-  v62 = self;
+  selfCopy = self;
   if (!v11)
   {
     goto LABEL_34;
@@ -1362,8 +1362,8 @@ LABEL_11:
         }
 
         v15 = *(*(&v84 + 1) + 8 * i);
-        v16 = [(EKICSImporter *)self calendarToVCalFiles];
-        v17 = [v16 objectForKey:v15];
+        calendarToVCalFiles2 = [(EKICSImporter *)self calendarToVCalFiles];
+        v17 = [calendarToVCalFiles2 objectForKey:v15];
 
         v82 = 0u;
         v83 = 0u;
@@ -1398,7 +1398,7 @@ LABEL_11:
           while (v20);
         }
 
-        self = v62;
+        self = selfCopy;
       }
 
       v60 = [obj countByEnumeratingWithState:&v84 objects:v93 count:16];
@@ -1407,12 +1407,12 @@ LABEL_11:
     while (v60);
   }
 
-  v24 = [(EKICSImporter *)self eventStore];
+  eventStore = [(EKICSImporter *)self eventStore];
   v79 = 0;
-  v25 = [v24 importVCSData:v13 intoCalendars:v12 error:&v79];
+  eventStore2 = [eventStore importVCSData:v13 intoCalendars:v12 error:&v79];
   v26 = v79;
 
-  if (!v25)
+  if (!eventStore2)
   {
     if (v26)
     {
@@ -1430,7 +1430,7 @@ LABEL_11:
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v28 = v25;
+  v28 = eventStore2;
   v29 = [v28 countByEnumeratingWithState:&v75 objects:v91 count:16];
   if (v29)
   {
@@ -1454,11 +1454,11 @@ LABEL_11:
     while (v30);
   }
 
-  if (v25)
+  if (eventStore2)
   {
 LABEL_34:
-    v33 = [(EKICSImporter *)self calendarToICalFiles];
-    v34 = [v33 count];
+    calendarToICalFiles = [(EKICSImporter *)self calendarToICalFiles];
+    v34 = [calendarToICalFiles count];
 
     if (v34)
     {
@@ -1483,8 +1483,8 @@ LABEL_34:
             }
 
             v38 = *(*(&v71 + 1) + 8 * m);
-            v39 = [(EKICSImporter *)self calendarToICalFiles];
-            v40 = [v39 objectForKey:v38];
+            calendarToICalFiles2 = [(EKICSImporter *)self calendarToICalFiles];
+            v40 = [calendarToICalFiles2 objectForKey:v38];
 
             v69 = 0u;
             v70 = 0u;
@@ -1519,7 +1519,7 @@ LABEL_34:
               while (v43);
             }
 
-            self = v62;
+            self = selfCopy;
           }
 
           v61 = [obja countByEnumeratingWithState:&v71 objects:v90 count:16];
@@ -1528,10 +1528,10 @@ LABEL_34:
         while (v61);
       }
 
-      v25 = [(EKICSImporter *)self eventStore];
-      v47 = [v25 importICSData:v36 intoCalendars:v35 options:*MEMORY[0x1E6992E28] | self->_options];
+      eventStore2 = [(EKICSImporter *)self eventStore];
+      v47 = [eventStore2 importICSData:v36 intoCalendars:v35 options:*MEMORY[0x1E6992E28] | self->_options];
 
-      LOBYTE(v25) = v47 != 0;
+      LOBYTE(eventStore2) = v47 != 0;
       if (!v47)
       {
         v48 = [MEMORY[0x1E696ABC0] errorWithDomain:@"EKICSImportErrorDomain" code:10 userInfo:0];
@@ -1569,26 +1569,26 @@ LABEL_34:
 
     else
     {
-      LOBYTE(v25) = 1;
+      LOBYTE(eventStore2) = 1;
     }
   }
 
   v54 = *MEMORY[0x1E69E9840];
-  return v25;
+  return eventStore2;
 }
 
-- (id)_existingEventFromICSEvent:(id)a3 calendar:(id)a4
+- (id)_existingEventFromICSEvent:(id)event calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uid];
+  eventCopy = event;
+  calendarCopy = calendar;
+  v8 = [eventCopy uid];
   v9 = *MEMORY[0x1E6993100];
-  v10 = [v6 recurrence_id];
+  recurrence_id = [eventCopy recurrence_id];
 
   v11 = v9;
-  if (v10)
+  if (recurrence_id)
   {
-    v12 = [v6 recurrence_id];
+    recurrence_id2 = [eventCopy recurrence_id];
     v11 = COERCE_DOUBLE(CalCreateDateTimeFromICSDate());
 
     CalDateTimeRelease();
@@ -1607,24 +1607,24 @@ LABEL_34:
     v15 = [(EKICSImporter *)self _findBestEventFromEvents:v14];
     if (v15)
     {
-      v16 = [(EKICSImporter *)self existingEventIDs];
-      v17 = [v15 objectID];
-      [v16 addObject:v17];
+      existingEventIDs = [(EKICSImporter *)self existingEventIDs];
+      objectID = [v15 objectID];
+      [existingEventIDs addObject:objectID];
 
       v18 = v15;
     }
 
     else
     {
-      v20 = [v6 recurrence_id];
+      recurrence_id3 = [eventCopy recurrence_id];
 
-      if (!v20)
+      if (!recurrence_id3)
       {
         v18 = 0;
         goto LABEL_10;
       }
 
-      v21 = [v6 uid];
+      v21 = [eventCopy uid];
 
       if (![v21 length])
       {
@@ -1650,15 +1650,15 @@ LABEL_12:
   return v18;
 }
 
-- (id)_findBestEventFromEvents:(id)a3
+- (id)_findBestEventFromEvents:(id)events
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  eventsCopy = events;
+  v4 = [eventsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v4)
   {
     v6 = 0;
@@ -1675,32 +1675,32 @@ LABEL_12:
     {
       if (*v19 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(eventsCopy);
       }
 
       v9 = *(*(&v18 + 1) + 8 * v8);
-      v10 = [v9 calendar];
-      if ([v10 allowsContentModifications])
+      calendar = [v9 calendar];
+      if ([calendar allowsContentModifications])
       {
-        v11 = [v10 source];
-        if (([v11 isEnabledForEvents] & 1) == 0)
+        source = [calendar source];
+        if (([source isEnabledForEvents] & 1) == 0)
         {
           goto LABEL_10;
         }
 
-        v12 = [v10 source];
-        if ([v12 isDelegate])
+        source2 = [calendar source];
+        if ([source2 isDelegate])
         {
 
 LABEL_10:
           goto LABEL_11;
         }
 
-        if ([v10 sharingStatus] == 2)
+        if ([calendar sharingStatus] == 2)
         {
-          v13 = [v10 allowsScheduling];
+          allowsScheduling = [calendar allowsScheduling];
 
-          if (!v13)
+          if (!allowsScheduling)
           {
             goto LABEL_11;
           }
@@ -1730,7 +1730,7 @@ LABEL_11:
     }
 
     while (v5 != v8);
-    v14 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v14 = [eventsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     v5 = v14;
   }
 
@@ -1742,28 +1742,28 @@ LABEL_24:
   return v6;
 }
 
-- (id)_findCalendarForExistingEvent:(id)a3
+- (id)_findCalendarForExistingEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKICSImporter *)self eventFromDocument:v4];
-  v6 = [v4 calendar];
+  eventCopy = event;
+  v5 = [(EKICSImporter *)self eventFromDocument:eventCopy];
+  calendar = [eventCopy calendar];
 
-  v7 = [(EKICSImporter *)self _existingEventFromICSEvent:v5 calendar:v6];
+  v7 = [(EKICSImporter *)self _existingEventFromICSEvent:v5 calendar:calendar];
 
   if (v7)
   {
-    v8 = [v7 calendar];
+    calendar2 = [v7 calendar];
     v9 = EKICSImportHandle;
     v10 = os_log_type_enabled(EKICSImportHandle, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (calendar2)
     {
       if (v10)
       {
         v11 = v9;
-        v12 = [v8 objectID];
+        objectID = [calendar2 objectID];
         v15 = 138412290;
-        v16 = v12;
+        v16 = objectID;
         _os_log_impl(&dword_1A805E000, v11, OS_LOG_TYPE_DEFAULT, "Importing pre-existing event.  Will stay on current calendar: objectID(%@)", &v15, 0xCu);
       }
     }
@@ -1777,34 +1777,34 @@ LABEL_24:
 
   else
   {
-    v8 = 0;
+    calendar2 = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return calendar2;
 }
 
-- (BOOL)_isAnyAttendeeAddressFrom:(id)a3 organizer:(id)a4 equivalentTo:(id)a5
+- (BOOL)_isAnyAttendeeAddressFrom:(id)from organizer:(id)organizer equivalentTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  fromCopy = from;
+  organizerCopy = organizer;
+  toCopy = to;
+  v10 = toCopy;
+  if (toCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __66__EKICSImporter__isAnyAttendeeAddressFrom_organizer_equivalentTo___block_invoke;
     aBlock[3] = &unk_1E77FE3C0;
-    v25 = v9;
+    v25 = toCopy;
     v11 = _Block_copy(aBlock);
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = v7;
+    v12 = fromCopy;
     v13 = [v12 countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v13)
     {
@@ -1836,7 +1836,7 @@ LABEL_24:
       }
     }
 
-    if ((v11)[2](v11, v8))
+    if ((v11)[2](v11, organizerCopy))
     {
 LABEL_13:
       v17 = 1;
@@ -1897,18 +1897,18 @@ LABEL_8:
   return v8;
 }
 
-- (id)_matchingAttendeeAddressesFrom:(id)a3 organizer:(id)a4 inSource:(id)a5
+- (id)_matchingAttendeeAddressesFrom:(id)from organizer:(id)organizer inSource:(id)source
 {
   v42 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v28 = a4;
-  v8 = [a5 ownerAddresses];
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  fromCopy = from;
+  organizerCopy = organizer;
+  ownerAddresses = [source ownerAddresses];
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(ownerAddresses, "count")}];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v10 = v8;
+  v10 = ownerAddresses;
   v11 = [v10 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v11)
   {
@@ -1948,7 +1948,7 @@ LABEL_8:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v18 = v7;
+  v18 = fromCopy;
   v19 = [v18 countByEnumeratingWithState:&v29 objects:v40 count:16];
   if (v19)
   {
@@ -1976,7 +1976,7 @@ LABEL_8:
     while (v20);
   }
 
-  v24 = (v17)[2](v17, v28);
+  v24 = (v17)[2](v17, organizerCopy);
   if (v24)
   {
     [MEMORY[0x1E6992FC8] addObject:v24 toSet:&v33];
@@ -2071,20 +2071,20 @@ LABEL_19:
   return v2;
 }
 
-- (id)eventFromDocument:(id)a3
+- (id)eventFromDocument:(id)document
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [a3 calendar];
-  v4 = [v3 componentKeys];
-  if ([v4 count] == 1)
+  calendar = [document calendar];
+  componentKeys = [calendar componentKeys];
+  if ([componentKeys count] == 1)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v3 componentForKey:v5];
+    v5 = [componentKeys objectAtIndexedSubscript:0];
+    v6 = [calendar componentForKey:v5];
 
     if (!v6)
     {
-      v13 = [v4 objectAtIndexedSubscript:0];
-      v14 = [v3 componentOccurrencesForKey:v13];
+      v13 = [componentKeys objectAtIndexedSubscript:0];
+      v14 = [calendar componentOccurrencesForKey:v13];
 
       if (![v14 count])
       {
@@ -2131,7 +2131,7 @@ LABEL_15:
   {
     v12 = v11;
     v17 = 134217984;
-    v18 = [v4 count];
+    v18 = [componentKeys count];
     _os_log_impl(&dword_1A805E000, v12, OS_LOG_TYPE_DEFAULT, "ICS calendar expected to contain a single item, but instead it contained %lu", &v17, 0xCu);
   }
 
@@ -2143,16 +2143,16 @@ LABEL_16:
   return v10;
 }
 
-- (int)countReminders:(id)a3
+- (int)countReminders:(id)reminders
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 componentKeys];
+  remindersCopy = reminders;
+  componentKeys = [remindersCopy componentKeys];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [componentKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2164,15 +2164,15 @@ LABEL_16:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(componentKeys);
         }
 
-        v10 = [v3 componentForKey:*(*(&v13 + 1) + 8 * i)];
+        v10 = [remindersCopy componentForKey:*(*(&v13 + 1) + 8 * i)];
         objc_opt_class();
         v7 += objc_opt_isKindOfClass() & 1;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [componentKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -2204,38 +2204,38 @@ LABEL_16:
   return v3;
 }
 
-- (void)callCompletionWithSuccess:(BOOL)a3
+- (void)callCompletionWithSuccess:(BOOL)success
 {
-  v5 = [(EKICSImporter *)self _getImportedCalendarItems];
-  v6 = [(EKICSImporter *)self numInvalidEvents];
-  v7 = [(EKICSImporter *)self importError];
-  if (!a3)
+  _getImportedCalendarItems = [(EKICSImporter *)self _getImportedCalendarItems];
+  numInvalidEvents = [(EKICSImporter *)self numInvalidEvents];
+  importError = [(EKICSImporter *)self importError];
+  if (!success)
   {
     v8 = EKICSImportHandle;
     if (os_log_type_enabled(EKICSImportHandle, OS_LOG_TYPE_ERROR))
     {
-      [(EKICSImporter *)v8 callCompletionWithSuccess:v7];
+      [(EKICSImporter *)v8 callCompletionWithSuccess:importError];
     }
   }
 
-  v9 = [(EKICSImporter *)self completionCallback];
+  completionCallback = [(EKICSImporter *)self completionCallback];
 
-  if (v9)
+  if (completionCallback)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __43__EKICSImporter_callCompletionWithSuccess___block_invoke;
     aBlock[3] = &unk_1E77FE410;
     aBlock[4] = self;
-    v16 = a3;
-    v13 = v5;
-    v15 = v6;
-    v14 = v7;
+    successCopy = success;
+    v13 = _getImportedCalendarItems;
+    v15 = numInvalidEvents;
+    v14 = importError;
     v10 = _Block_copy(aBlock);
     if ([(EKICSImporter *)self asynchronous])
     {
-      v11 = [(EKICSImporter *)self callbackQueue];
-      dispatch_sync(v11, v10);
+      callbackQueue = [(EKICSImporter *)self callbackQueue];
+      dispatch_sync(callbackQueue, v10);
     }
 
     else
@@ -2253,20 +2253,20 @@ void __43__EKICSImporter_callCompletionWithSuccess___block_invoke(uint64_t a1)
   (*(v2 + 2))(v2, *(a1 + 64), *(a1 + 40), *(a1 + 56), *(a1 + 48));
 }
 
-- (id)selectCalendarWithTitle:(id)a3 color:(id)a4 description:(id)a5 error:(id *)a6
+- (id)selectCalendarWithTitle:(id)title color:(id)color description:(id)description error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  titleCopy = title;
+  colorCopy = color;
+  descriptionCopy = description;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__10;
   v38 = __Block_byref_object_dispose__10;
   v39 = 0;
-  v13 = [(EKICSImporter *)self selectCalendar];
+  selectCalendar = [(EKICSImporter *)self selectCalendar];
 
-  if (v13)
+  if (selectCalendar)
   {
     v28 = 0;
     v29 = &v28;
@@ -2279,16 +2279,16 @@ void __43__EKICSImporter_callCompletionWithSuccess___block_invoke(uint64_t a1)
     v20 = __65__EKICSImporter_selectCalendarWithTitle_color_description_error___block_invoke;
     v21 = &unk_1E77FE438;
     v26 = &v34;
-    v22 = self;
-    v23 = v10;
-    v24 = v11;
-    v25 = v12;
+    selfCopy = self;
+    v23 = titleCopy;
+    v24 = colorCopy;
+    v25 = descriptionCopy;
     v27 = &v28;
     v14 = _Block_copy(&v18);
     if ([(EKICSImporter *)self asynchronous:v18])
     {
-      v15 = [(EKICSImporter *)self callbackQueue];
-      dispatch_sync(v15, v14);
+      callbackQueue = [(EKICSImporter *)self callbackQueue];
+      dispatch_sync(callbackQueue, v14);
     }
 
     else
@@ -2296,9 +2296,9 @@ void __43__EKICSImporter_callCompletionWithSuccess___block_invoke(uint64_t a1)
       v14[2](v14);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = v29[5];
+      *error = v29[5];
     }
 
     _Block_object_dispose(&v28, 8);
@@ -2325,24 +2325,24 @@ void __65__EKICSImporter_selectCalendarWithTitle_color_description_error___block
   *(v8 + 40) = v7;
 }
 
-- (void)importFoundBackupFile:(id)a3
+- (void)importFoundBackupFile:(id)file
 {
-  v4 = a3;
-  v5 = [(EKICSImporter *)self importFoundBackupFile];
+  fileCopy = file;
+  importFoundBackupFile = [(EKICSImporter *)self importFoundBackupFile];
 
-  if (v5)
+  if (importFoundBackupFile)
   {
     v8 = MEMORY[0x1E69E9820];
     v9 = 3221225472;
     v10 = __39__EKICSImporter_importFoundBackupFile___block_invoke;
     v11 = &unk_1E77FD580;
-    v12 = self;
-    v13 = v4;
+    selfCopy = self;
+    v13 = fileCopy;
     v6 = _Block_copy(&v8);
     if ([(EKICSImporter *)self asynchronous:v8])
     {
-      v7 = [(EKICSImporter *)self callbackQueue];
-      dispatch_sync(v7, v6);
+      callbackQueue = [(EKICSImporter *)self callbackQueue];
+      dispatch_sync(callbackQueue, v6);
     }
 
     else
@@ -2360,15 +2360,15 @@ void __39__EKICSImporter_importFoundBackupFile___block_invoke(uint64_t a1)
 
 - (void)setImportProgressAsIndeterminate
 {
-  v3 = [(EKICSImporter *)self importSetProgressAsIndeterminate];
+  importSetProgressAsIndeterminate = [(EKICSImporter *)self importSetProgressAsIndeterminate];
 
-  if (v3)
+  if (importSetProgressAsIndeterminate)
   {
     if ([(EKICSImporter *)self asynchronous])
     {
       queue = [(EKICSImporter *)self callbackQueue];
-      v4 = [(EKICSImporter *)self importSetProgressAsIndeterminate];
-      dispatch_sync(queue, v4);
+      importSetProgressAsIndeterminate2 = [(EKICSImporter *)self importSetProgressAsIndeterminate];
+      dispatch_sync(queue, importSetProgressAsIndeterminate2);
     }
 
     else
@@ -2379,15 +2379,15 @@ void __39__EKICSImporter_importFoundBackupFile___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)shouldImportContinueGivenDecision:(int)a3 eventsAffected:(unint64_t)a4
+- (BOOL)shouldImportContinueGivenDecision:(int)decision eventsAffected:(unint64_t)affected
 {
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v7 = [(EKICSImporter *)self makeDecision];
+  makeDecision = [(EKICSImporter *)self makeDecision];
 
-  if (v7)
+  if (makeDecision)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -2395,13 +2395,13 @@ void __39__EKICSImporter_importFoundBackupFile___block_invoke(uint64_t a1)
     v12[3] = &unk_1E77FE460;
     v12[4] = self;
     v12[5] = &v14;
-    v12[6] = a4;
-    v13 = a3;
+    v12[6] = affected;
+    decisionCopy = decision;
     v8 = _Block_copy(v12);
     if ([(EKICSImporter *)self asynchronous])
     {
-      v9 = [(EKICSImporter *)self callbackQueue];
-      dispatch_sync(v9, v8);
+      callbackQueue = [(EKICSImporter *)self callbackQueue];
+      dispatch_sync(callbackQueue, v8);
     }
 
     else
@@ -2423,8 +2423,8 @@ void __66__EKICSImporter_shouldImportContinueGivenDecision_eventsAffected___bloc
 
 - (void)callImportDroppedRemindersCallbackIfThereWereReminders
 {
-  v3 = [(EKICSImporter *)self importDroppedReminders];
-  if (v3)
+  importDroppedReminders = [(EKICSImporter *)self importDroppedReminders];
+  if (importDroppedReminders)
   {
     droppedReminderCount = self->_droppedReminderCount;
 
@@ -2438,8 +2438,8 @@ void __66__EKICSImporter_shouldImportContinueGivenDecision_eventsAffected___bloc
       v5 = _Block_copy(aBlock);
       if ([(EKICSImporter *)self asynchronous])
       {
-        v6 = [(EKICSImporter *)self callbackQueue];
-        dispatch_sync(v6, v5);
+        callbackQueue = [(EKICSImporter *)self callbackQueue];
+        dispatch_sync(callbackQueue, v5);
       }
 
       else

@@ -1,16 +1,16 @@
 @interface FIUIStateMachine
-- (FIUIStateMachine)initWithLabel:(id)a3 queue:(id)a4;
+- (FIUIStateMachine)initWithLabel:(id)label queue:(id)queue;
 - (id)description;
 - (id)graphDescription;
 - (void)_queue_handleEvents;
-- (void)_queue_processEvent:(int64_t)a3;
-- (void)_queue_setInitialStateIfNeeded:(id)a3;
-- (void)addChildStates:(id)a3 toState:(id)a4 withEntryState:(id)a5;
-- (void)addState:(id)a3;
-- (void)addStates:(id)a3;
+- (void)_queue_processEvent:(int64_t)event;
+- (void)_queue_setInitialStateIfNeeded:(id)needed;
+- (void)addChildStates:(id)states toState:(id)state withEntryState:(id)entryState;
+- (void)addState:(id)state;
+- (void)addStates:(id)states;
 - (void)dealloc;
-- (void)event:(int64_t)a3;
-- (void)eventAsync:(int64_t)a3;
+- (void)event:(int64_t)event;
+- (void)eventAsync:(int64_t)async;
 - (void)export;
 @end
 
@@ -20,11 +20,11 @@
 {
   v82 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(NSMutableSet *)self->_states allObjects];
-  v56 = [v4 sortedArrayUsingComparator:&__block_literal_global_17];
+  allObjects = [(NSMutableSet *)self->_states allObjects];
+  v56 = [allObjects sortedArrayUsingComparator:&__block_literal_global_17];
 
-  v5 = [(FIUIStateMachine *)self label];
-  v6 = [v5 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+  label = [(FIUIStateMachine *)self label];
+  v6 = [label stringByReplacingOccurrencesOfString:@" " withString:@"_"];
   v7 = v6;
   if (v6)
   {
@@ -36,14 +36,14 @@
     v8 = @"state_machine";
   }
 
-  v9 = [(FIUIState *)self->_initialState label];
-  [v3 appendFormat:@"digraph %@ {\n   rankdir=LR;\n compound=true; \n   node [shape=doublecircle width=1]; %@;\n   node [shape=circle width=1];\n", v8, v9];
+  label2 = [(FIUIState *)self->_initialState label];
+  [v3 appendFormat:@"digraph %@ {\n   rankdir=LR;\n compound=true; \n   node [shape=doublecircle width=1]; %@;\n   node [shape=circle width=1];\n", v8, label2];
 
   v76 = 0u;
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v58 = self;
+  selfCopy = self;
   obj = self->_parentStates;
   v10 = [(NSMutableSet *)obj countByEnumeratingWithState:&v74 objects:v81 count:16];
   if (v10)
@@ -60,18 +60,18 @@
         }
 
         v14 = *(*(&v74 + 1) + 8 * i);
-        v15 = [v14 label];
-        [v3 appendFormat:@"subgraph cluster%@ {\n", v15];
+        label3 = [v14 label];
+        [v3 appendFormat:@"subgraph cluster%@ {\n", label3];
 
-        v16 = [v14 label];
-        [v3 appendFormat:@"label = <<font color=blue>%@</font>>; \n", v16];
+        label4 = [v14 label];
+        [v3 appendFormat:@"label = <<font color=blue>%@</font>>; \n", label4];
 
         v72 = 0u;
         v73 = 0u;
         v70 = 0u;
         v71 = 0u;
-        v17 = [v14 childStates];
-        v18 = [v17 countByEnumeratingWithState:&v70 objects:v80 count:16];
+        childStates = [v14 childStates];
+        v18 = [childStates countByEnumeratingWithState:&v70 objects:v80 count:16];
         if (v18)
         {
           v19 = v18;
@@ -82,14 +82,14 @@
             {
               if (*v71 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(childStates);
               }
 
-              v22 = [*(*(&v70 + 1) + 8 * j) label];
-              [v3 appendFormat:@"%@ ;\n", v22];
+              label5 = [*(*(&v70 + 1) + 8 * j) label];
+              [v3 appendFormat:@"%@ ;\n", label5];
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v70 objects:v80 count:16];
+            v19 = [childStates countByEnumeratingWithState:&v70 objects:v80 count:16];
           }
 
           while (v19);
@@ -104,8 +104,8 @@
     while (v11);
   }
 
-  v23 = [(NSMutableSet *)v58->_parentStates allObjects];
-  v24 = [v56 arrayByAddingObjectsFromArray:v23];
+  allObjects2 = [(NSMutableSet *)selfCopy->_parentStates allObjects];
+  v24 = [v56 arrayByAddingObjectsFromArray:allObjects2];
 
   v68 = 0u;
   v69 = 0u;
@@ -132,8 +132,8 @@
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v27 = [v26 allTransitions];
-        v28 = [v27 sortedArrayUsingComparator:&__block_literal_global_338_0];
+        allTransitions = [v26 allTransitions];
+        v28 = [allTransitions sortedArrayUsingComparator:&__block_literal_global_338_0];
 
         v59 = v28;
         v29 = [v28 countByEnumeratingWithState:&v62 objects:v78 count:16];
@@ -151,52 +151,52 @@
               }
 
               v32 = *(*(&v62 + 1) + 8 * k);
-              v33 = [v26 childStates];
-              if ([v33 count])
+              childStates2 = [v26 childStates];
+              if ([childStates2 count])
               {
-                v34 = [v26 childStates];
-                v35 = [v34 allObjects];
-                v36 = [v35 firstObject];
+                childStates3 = [v26 childStates];
+                allObjects3 = [childStates3 allObjects];
+                firstObject = [allObjects3 firstObject];
               }
 
               else
               {
-                v36 = v26;
+                firstObject = v26;
               }
 
-              v37 = [v32 toState];
-              v38 = [v37 entryState];
-              v39 = [v32 toState];
-              v40 = v39;
-              if (v38)
+              toState = [v32 toState];
+              entryState = [toState entryState];
+              toState2 = [v32 toState];
+              v40 = toState2;
+              if (entryState)
               {
-                v41 = [v39 entryState];
+                entryState2 = [toState2 entryState];
 
-                v40 = v41;
+                v40 = entryState2;
               }
 
-              v42 = [v36 label];
-              v43 = [v40 label];
-              v44 = [v32 label];
-              [v3 appendFormat:@"   %@ -> %@ [ label = %@ (%ld) ", v42, v43, v44, objc_msgSend(v32, "event")];
+              label6 = [firstObject label];
+              label7 = [v40 label];
+              label8 = [v32 label];
+              [v3 appendFormat:@"   %@ -> %@ [ label = %@ (%ld) ", label6, label7, label8, objc_msgSend(v32, "event")];
 
-              v45 = [v26 childStates];
-              v46 = [v45 count];
+              childStates4 = [v26 childStates];
+              v46 = [childStates4 count];
 
               if (v46)
               {
-                v47 = [v26 label];
-                [v3 appendFormat:@", ltail = cluster%@ ", v47];
+                label9 = [v26 label];
+                [v3 appendFormat:@", ltail = cluster%@ ", label9];
               }
 
-              v48 = [v32 toState];
-              v49 = [v48 entryState];
+              toState3 = [v32 toState];
+              entryState3 = [toState3 entryState];
 
-              if (v49)
+              if (entryState3)
               {
-                v50 = [v32 toState];
-                v51 = [v50 label];
-                [v3 appendFormat:@", lhead = cluster%@ ", v51];
+                toState4 = [v32 toState];
+                label10 = [toState4 label];
+                [v3 appendFormat:@", lhead = cluster%@ ", label10];
               }
 
               [v3 appendString:@"];\n"];
@@ -251,11 +251,11 @@ uint64_t __36__FIUIStateMachine_graphDescription__block_invoke_2(uint64_t a1, vo
     self->_handlingEvent = 1;
     while ([(NSMutableArray *)self->_pendingEvents count])
     {
-      v3 = [(NSMutableArray *)self->_pendingEvents firstObject];
-      v4 = [v3 longValue];
+      firstObject = [(NSMutableArray *)self->_pendingEvents firstObject];
+      longValue = [firstObject longValue];
 
       [(NSMutableArray *)self->_pendingEvents removeObjectAtIndex:0];
-      [(FIUIStateMachine *)self _queue_processEvent:v4];
+      [(FIUIStateMachine *)self _queue_processEvent:longValue];
     }
 
     self->_handlingEvent = 0;
@@ -270,25 +270,25 @@ uint64_t __36__FIUIStateMachine_graphDescription__block_invoke_2(uint64_t a1, vo
   [(FIUIStateMachine *)&v3 dealloc];
 }
 
-- (FIUIStateMachine)initWithLabel:(id)a3 queue:(id)a4
+- (FIUIStateMachine)initWithLabel:(id)label queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  labelCopy = label;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = FIUIStateMachine;
   v9 = [(FIUIStateMachine *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a4);
-    objc_storeStrong(&v10->_label, a3);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_label, label);
     v11 = objc_opt_new();
     states = v10->_states;
     v10->_states = v11;
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingEvents = v10->_pendingEvents;
-    v10->_pendingEvents = v13;
+    v10->_pendingEvents = array;
 
     v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     parentStates = v10->_parentStates;
@@ -298,17 +298,17 @@ uint64_t __36__FIUIStateMachine_graphDescription__block_invoke_2(uint64_t a1, vo
   return v10;
 }
 
-- (void)event:(int64_t)a3
+- (void)event:(int64_t)event
 {
   dispatch_assert_queue_V2(self->_queue);
   pendingEvents = self->_pendingEvents;
-  v6 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithLong:event];
   [(NSMutableArray *)pendingEvents addObject:v6];
 
   [(FIUIStateMachine *)self _queue_handleEvents];
 }
 
-- (void)eventAsync:(int64_t)a3
+- (void)eventAsync:(int64_t)async
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -317,7 +317,7 @@ uint64_t __36__FIUIStateMachine_graphDescription__block_invoke_2(uint64_t a1, vo
   block[2] = __31__FIUIStateMachine_eventAsync___block_invoke;
   block[3] = &unk_1E878CCB8;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = async;
   dispatch_async(queue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -329,7 +329,7 @@ void __31__FIUIStateMachine_eventAsync___block_invoke(uint64_t a1)
   [WeakRetained event:*(a1 + 40)];
 }
 
-- (void)_queue_processEvent:(int64_t)a3
+- (void)_queue_processEvent:(int64_t)event
 {
   dispatch_assert_queue_V2(self->_queue);
   v5 = self->_state;
@@ -337,16 +337,16 @@ void __31__FIUIStateMachine_eventAsync___block_invoke(uint64_t a1)
   {
     while (1)
     {
-      v6 = [(FIUIState *)v5 transitionForEvent:a3];
+      v6 = [(FIUIState *)v5 transitionForEvent:event];
       if (v6)
       {
         break;
       }
 
-      v7 = [(FIUIState *)v5 parentState];
+      parentState = [(FIUIState *)v5 parentState];
 
-      v5 = v7;
-      if (!v7)
+      v5 = parentState;
+      if (!parentState)
       {
         goto LABEL_4;
       }
@@ -362,88 +362,88 @@ LABEL_4:
   }
 
   v8 = self->_state;
-  v9 = [v33 toState];
-  v10 = [v33 toState];
-  v11 = [v10 entryState];
+  toState = [v33 toState];
+  toState2 = [v33 toState];
+  entryState = [toState2 entryState];
 
-  if (v11)
+  if (entryState)
   {
-    v12 = [v33 toState];
-    v13 = [v12 entryState];
+    toState3 = [v33 toState];
+    entryState2 = [toState3 entryState];
 
-    v9 = v13;
+    toState = entryState2;
   }
 
-  v14 = [(FIUIStateMachine *)self diagnosticHandler];
-  v15 = [(FIUIStateMachine *)self errorHandler];
-  v31 = [v9 entry];
-  v32 = [(FIUIState *)self->_state exit];
-  v16 = [v33 handler];
-  v30 = [(FIUIStateMachine *)self transitionalEventFilter];
-  v17 = [v33 gate];
+  diagnosticHandler = [(FIUIStateMachine *)self diagnosticHandler];
+  errorHandler = [(FIUIStateMachine *)self errorHandler];
+  entry = [toState entry];
+  exit = [(FIUIState *)self->_state exit];
+  handler = [v33 handler];
+  transitionalEventFilter = [(FIUIStateMachine *)self transitionalEventFilter];
+  gate = [v33 gate];
   if (!v33 && [(FIUIState *)v8 isTransitional])
   {
     v29 = v8;
     transitionalEvents = self->_transitionalEvents;
     if (!transitionalEvents)
     {
-      v19 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v20 = self->_transitionalEvents;
-      self->_transitionalEvents = v19;
+      self->_transitionalEvents = array;
 
       transitionalEvents = self->_transitionalEvents;
     }
 
-    v21 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+    v21 = [MEMORY[0x1E696AD98] numberWithLong:event];
     [(NSMutableArray *)transitionalEvents addObject:v21];
-    v22 = v30;
+    v22 = transitionalEventFilter;
     goto LABEL_34;
   }
 
-  if (v17 && ((v17)[2](v17, self, self->_state, v9, a3, 0) & 1) == 0)
+  if (gate && ((gate)[2](gate, self, self->_state, toState, event, 0) & 1) == 0)
   {
 
-    v9 = 0;
+    toState = 0;
   }
 
   v23 = v33;
-  if (v14)
+  if (diagnosticHandler)
   {
-    (v14)[2](v14, self, self->_state, v9, a3, 0);
+    (diagnosticHandler)[2](diagnosticHandler, self, self->_state, toState, event, 0);
     v23 = v33;
   }
 
-  if (!v23 && v15)
+  if (!v23 && errorHandler)
   {
-    (v15)[2](v15, self, self->_state, a3, 0);
+    (errorHandler)[2](errorHandler, self, self->_state, event, 0);
   }
 
-  if (v9)
+  if (toState)
   {
-    if (v32)
+    if (exit)
     {
-      (*(v32 + 16))();
+      (*(exit + 16))();
     }
 
-    objc_storeStrong(&self->_state, v9);
-    if (v16)
+    objc_storeStrong(&self->_state, toState);
+    if (handler)
     {
-      (v16)[2](v16, self, v8, v9, a3, 0);
+      (handler)[2](handler, self, v8, toState, event, 0);
     }
 
-    v24 = v31;
-    if (v31)
+    v24 = entry;
+    if (entry)
     {
-      (*(v31 + 16))(v31, self, v8, v9, a3, 0);
+      (*(entry + 16))(entry, self, v8, toState, event, 0);
     }
 
-    if (([v9 isTransitional] & 1) == 0)
+    if (([toState isTransitional] & 1) == 0)
     {
-      v22 = v30;
+      v22 = transitionalEventFilter;
       if (![(NSMutableArray *)self->_transitionalEvents count])
       {
 LABEL_35:
-        v28 = v32;
+        v28 = exit;
         goto LABEL_38;
       }
 
@@ -452,9 +452,9 @@ LABEL_35:
       v25 = self->_transitionalEvents;
       self->_transitionalEvents = 0;
 
-      if (v30)
+      if (transitionalEventFilter)
       {
-        v26 = (*(v30 + 16))(v30, self, v9, v21, 0);
+        v26 = (*(transitionalEventFilter + 16))(transitionalEventFilter, self, toState, v21, 0);
 
         v21 = v26;
       }
@@ -468,51 +468,51 @@ LABEL_35:
 LABEL_34:
 
       v8 = v29;
-      v24 = v31;
+      v24 = entry;
       goto LABEL_35;
     }
   }
 
   else
   {
-    v24 = v31;
+    v24 = entry;
   }
 
-  v28 = v32;
-  v22 = v30;
+  v28 = exit;
+  v22 = transitionalEventFilter;
 LABEL_38:
 }
 
-- (void)_queue_setInitialStateIfNeeded:(id)a3
+- (void)_queue_setInitialStateIfNeeded:(id)needed
 {
-  v5 = a3;
+  neededCopy = needed;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_state)
   {
-    objc_storeStrong(&self->_state, a3);
-    objc_storeStrong(&self->_initialState, a3);
+    objc_storeStrong(&self->_state, needed);
+    objc_storeStrong(&self->_initialState, needed);
   }
 }
 
-- (void)addState:(id)a3
+- (void)addState:(id)state
 {
   queue = self->_queue;
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(queue);
-  [(NSMutableSet *)self->_states addObject:v5];
-  [(FIUIStateMachine *)self _queue_setInitialStateIfNeeded:v5];
+  [(NSMutableSet *)self->_states addObject:stateCopy];
+  [(FIUIStateMachine *)self _queue_setInitialStateIfNeeded:stateCopy];
 }
 
-- (void)addStates:(id)a3
+- (void)addStates:(id)states
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statesCopy = states;
   dispatch_assert_queue_V2(self->_queue);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v4;
+  v5 = statesCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -538,8 +538,8 @@ LABEL_38:
     while (v7);
   }
 
-  v10 = [v5 firstObject];
-  [(FIUIStateMachine *)self _queue_setInitialStateIfNeeded:v10];
+  firstObject = [v5 firstObject];
+  [(FIUIStateMachine *)self _queue_setInitialStateIfNeeded:firstObject];
 }
 
 - (id)description
@@ -554,19 +554,19 @@ LABEL_38:
 
 - (void)export
 {
-  v4 = [(FIUIStateMachine *)self label];
-  v3 = [(FIUIStateMachine *)self graphDescription];
-  [FIUIStateMachineExporter exportWithName:v4 graphDescription:v3];
+  label = [(FIUIStateMachine *)self label];
+  graphDescription = [(FIUIStateMachine *)self graphDescription];
+  [FIUIStateMachineExporter exportWithName:label graphDescription:graphDescription];
 }
 
-- (void)addChildStates:(id)a3 toState:(id)a4 withEntryState:(id)a5
+- (void)addChildStates:(id)states toState:(id)state withEntryState:(id)entryState
 {
   parentStates = self->_parentStates;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(NSMutableSet *)parentStates addObject:v9];
-  [v9 addChildStates:v10 withEntryState:v8];
+  entryStateCopy = entryState;
+  stateCopy = state;
+  statesCopy = states;
+  [(NSMutableSet *)parentStates addObject:stateCopy];
+  [stateCopy addChildStates:statesCopy withEntryState:entryStateCopy];
 }
 
 @end

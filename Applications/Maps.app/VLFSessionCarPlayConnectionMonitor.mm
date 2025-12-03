@@ -1,22 +1,22 @@
 @interface VLFSessionCarPlayConnectionMonitor
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
-- (VLFSessionCarPlayConnectionMonitor)initWithObserver:(id)a3;
+- (VLFSessionCarPlayConnectionMonitor)initWithObserver:(id)observer;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateState;
 @end
 
 @implementation VLFSessionCarPlayConnectionMonitor
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = NSStringFromSelector("state");
-  if (([v10 isEqualToString:v13] & 1) == 0)
+  if (([pathCopy isEqualToString:v13] & 1) == 0)
   {
 
     goto LABEL_7;
@@ -24,12 +24,12 @@
 
   v14 = +[CarDisplayController sharedInstance];
 
-  if (v14 != v11)
+  if (v14 != objectCopy)
   {
 LABEL_7:
     v16.receiver = self;
     v16.super_class = VLFSessionCarPlayConnectionMonitor;
-    [(VLFSessionCarPlayConnectionMonitor *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VLFSessionCarPlayConnectionMonitor *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_8;
   }
 
@@ -81,20 +81,20 @@ LABEL_8:
 
   v9 = v8;
   v10 = +[CarDisplayController sharedInstance];
-  v11 = [v10 state];
-  v12 = [(VLFSessionMonitor *)self state];
+  state = [v10 state];
+  state2 = [(VLFSessionMonitor *)self state];
   v13 = @"Hide";
-  if (v12 == 1)
+  if (state2 == 1)
   {
     v13 = @"EnablePuck";
   }
 
-  if (v12 == 2)
+  if (state2 == 2)
   {
     v13 = @"EnablePuckAndBanner";
   }
 
-  v14 = [NSString stringWithFormat:@"<%@: isEnabled: %@, affectsPuckVisibility: %@, affectsBannerVisibility: %@, currentValue: %lu, currentState: %@>", v3, v5, v7, v9, v11, v13];
+  v14 = [NSString stringWithFormat:@"<%@: isEnabled: %@, affectsPuckVisibility: %@, affectsBannerVisibility: %@, currentValue: %lu, currentState: %@>", v3, v5, v7, v9, state, v13];
 
   return v14;
 }
@@ -102,11 +102,11 @@ LABEL_8:
 - (void)updateState
 {
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 state];
+  state = [v3 state];
 
   v5 = sub_100F748E8();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4 == 2)
+  if (state == 2)
   {
     if (v6)
     {
@@ -143,11 +143,11 @@ LABEL_8:
   [(VLFSessionCarPlayConnectionMonitor *)&v5 dealloc];
 }
 
-- (VLFSessionCarPlayConnectionMonitor)initWithObserver:(id)a3
+- (VLFSessionCarPlayConnectionMonitor)initWithObserver:(id)observer
 {
   v7.receiver = self;
   v7.super_class = VLFSessionCarPlayConnectionMonitor;
-  v3 = [(VLFSessionMonitor *)&v7 initWithObserver:a3];
+  v3 = [(VLFSessionMonitor *)&v7 initWithObserver:observer];
   if (v3)
   {
     v4 = +[CarDisplayController sharedInstance];

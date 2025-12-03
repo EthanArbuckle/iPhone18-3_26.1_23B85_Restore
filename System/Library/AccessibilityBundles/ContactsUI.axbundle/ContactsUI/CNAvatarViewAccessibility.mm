@@ -1,5 +1,5 @@
 @interface CNAvatarViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityElementsHidden;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
@@ -8,11 +8,11 @@
 
 @implementation CNAvatarViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNAvatarView" hasInstanceMethod:@"contact" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAvatarView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNAvatarView" hasInstanceMethod:@"contact" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAvatarView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -44,11 +44,11 @@
 
 - (BOOL)accessibilityElementsHidden
 {
-  v3 = [(CNAvatarViewAccessibility *)self storedAccessibilityElementsHidden];
-  v4 = v3;
-  if (v3)
+  storedAccessibilityElementsHidden = [(CNAvatarViewAccessibility *)self storedAccessibilityElementsHidden];
+  v4 = storedAccessibilityElementsHidden;
+  if (storedAccessibilityElementsHidden)
   {
-    LOBYTE(v5) = [v3 BOOLValue];
+    LOBYTE(v5) = [storedAccessibilityElementsHidden BOOLValue];
   }
 
   else
@@ -61,9 +61,9 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(CNAvatarViewAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(CNAvatarViewAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (!v3)
+  if (!isAccessibilityUserDefinedElement)
   {
     return AXDoesRequestingClientDeserveAutomation() != 0;
   }

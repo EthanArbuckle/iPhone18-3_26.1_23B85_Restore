@@ -1,23 +1,23 @@
 @interface VSUIActionStatusView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VSUIActionStatusView)initWithCoder:(id)a3;
-- (VSUIActionStatusView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VSUIActionStatusView)initWithCoder:(id)coder;
+- (VSUIActionStatusView)initWithFrame:(CGRect)frame;
 - (VSUIActionStatusViewDelegate)delegate;
 - (void)_setUpViews;
 - (void)_updateAcitivityViewSubviewWithDelegateProvidedView;
-- (void)progressStateMachine:(id)a3 didTransitionToState:(unint64_t)a4 fromState:(unint64_t)a5 forEvent:(unint64_t)a6;
-- (void)progressStateMachine:(id)a3 ignoredEvent:(unint64_t)a4;
+- (void)progressStateMachine:(id)machine didTransitionToState:(unint64_t)state fromState:(unint64_t)fromState forEvent:(unint64_t)event;
+- (void)progressStateMachine:(id)machine ignoredEvent:(unint64_t)event;
 - (void)resetState;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation VSUIActionStatusView
 
-- (VSUIActionStatusView)initWithFrame:(CGRect)a3
+- (VSUIActionStatusView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VSUIActionStatusView;
-  v3 = [(VSUIActionStatusView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VSUIActionStatusView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,11 +27,11 @@
   return v4;
 }
 
-- (VSUIActionStatusView)initWithCoder:(id)a3
+- (VSUIActionStatusView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = VSUIActionStatusView;
-  v3 = [(VSUIActionStatusView *)&v6 initWithCoder:a3];
+  v3 = [(VSUIActionStatusView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -43,28 +43,28 @@
 
 - (void)resetState
 {
-  v3 = [(VSUIActionStatusView *)self activityView];
-  [v3 setHidden:1];
+  activityView = [(VSUIActionStatusView *)self activityView];
+  [activityView setHidden:1];
 
-  v4 = [(VSUIActionStatusView *)self errorView];
-  [v4 setHidden:1];
+  errorView = [(VSUIActionStatusView *)self errorView];
+  [errorView setHidden:1];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(VSUIActionStatusView *)self _updateAcitivityViewSubviewWithDelegateProvidedView];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(VSUIActionStatusView *)self errorView];
-  v7 = [v6 isHidden];
+  height = fits.height;
+  width = fits.width;
+  errorView = [(VSUIActionStatusView *)self errorView];
+  isHidden = [errorView isHidden];
 
-  if (v7)
+  if (isHidden)
   {
     v15.receiver = self;
     v15.super_class = VSUIActionStatusView;
@@ -73,8 +73,8 @@
 
   else
   {
-    v10 = [(VSUIActionStatusView *)self errorView];
-    [v10 sizeThatFits:{width, height}];
+    errorView2 = [(VSUIActionStatusView *)self errorView];
+    [errorView2 sizeThatFits:{width, height}];
     v12 = v11;
     v14 = v13;
 
@@ -87,87 +87,87 @@
   return result;
 }
 
-- (void)progressStateMachine:(id)a3 didTransitionToState:(unint64_t)a4 fromState:(unint64_t)a5 forEvent:(unint64_t)a6
+- (void)progressStateMachine:(id)machine didTransitionToState:(unint64_t)state fromState:(unint64_t)fromState forEvent:(unint64_t)event
 {
-  v9 = a3;
-  if (a4 > 0)
+  machineCopy = machine;
+  if (state > 0)
   {
-    if (a4 - 1 >= 2)
+    if (state - 1 >= 2)
     {
-      if (a4 != 3)
+      if (state != 3)
       {
         goto LABEL_15;
       }
 
-      v18 = v9;
-      v17 = [(VSUIActionStatusView *)self activityView];
-      [v17 setHidden:a6 != 2];
+      v18 = machineCopy;
+      activityView = [(VSUIActionStatusView *)self activityView];
+      [activityView setHidden:event != 2];
 
       goto LABEL_12;
     }
 
-    v18 = v9;
-    v10 = [(VSUIActionStatusView *)self activityView];
-    v11 = v10;
+    v18 = machineCopy;
+    activityView2 = [(VSUIActionStatusView *)self activityView];
+    v11 = activityView2;
     v12 = 0;
 LABEL_11:
-    [v10 setHidden:v12];
+    [activityView2 setHidden:v12];
 
 LABEL_12:
-    v14 = [(VSUIActionStatusView *)self errorView];
-    v15 = v14;
+    errorView = [(VSUIActionStatusView *)self errorView];
+    v15 = errorView;
 LABEL_13:
     v16 = 1;
     goto LABEL_14;
   }
 
-  if (a4 == -1)
+  if (state == -1)
   {
-    v18 = v9;
-    v10 = [(VSUIActionStatusView *)self activityView];
-    v11 = v10;
+    v18 = machineCopy;
+    activityView2 = [(VSUIActionStatusView *)self activityView];
+    v11 = activityView2;
     v12 = 1;
     goto LABEL_11;
   }
 
-  if (a4)
+  if (state)
   {
     goto LABEL_15;
   }
 
-  v18 = v9;
-  v13 = [(VSUIActionStatusView *)self activityView];
-  [v13 setHidden:1];
+  v18 = machineCopy;
+  activityView3 = [(VSUIActionStatusView *)self activityView];
+  [activityView3 setHidden:1];
 
-  v14 = [(VSUIActionStatusView *)self errorView];
-  v15 = v14;
-  if (a6 != 3)
+  errorView = [(VSUIActionStatusView *)self errorView];
+  v15 = errorView;
+  if (event != 3)
   {
     goto LABEL_13;
   }
 
   v16 = 0;
 LABEL_14:
-  [v14 setHidden:v16];
+  [errorView setHidden:v16];
 
-  v9 = v18;
+  machineCopy = v18;
 LABEL_15:
 }
 
-- (void)progressStateMachine:(id)a3 ignoredEvent:(unint64_t)a4
+- (void)progressStateMachine:(id)machine ignoredEvent:(unint64_t)event
 {
   v5 = *MEMORY[0x277CF93F0];
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_ERROR))
   {
-    [VSUIActionStatusView progressStateMachine:v5 ignoredEvent:a4];
+    [VSUIActionStatusView progressStateMachine:v5 ignoredEvent:event];
   }
 }
 
 - (void)_setUpViews
 {
   v32[8] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75348] systemGray5Color];
-  v4 = [v3 colorWithAlphaComponent:0.5];
+  systemGray5Color = [MEMORY[0x277D75348] systemGray5Color];
+  v4 = [systemGray5Color colorWithAlphaComponent:0.5];
   [(VSUIActionStatusView *)self setBackgroundColor:v4];
 
   v5 = objc_opt_new();
@@ -181,35 +181,35 @@ LABEL_15:
   [(VSUIActionStatusView *)self addSubview:v6];
   [(VSUIActionStatusView *)self setErrorView:v6];
   v22 = MEMORY[0x277CCAAD0];
-  v31 = [v5 heightAnchor];
-  v30 = [v31 constraintEqualToConstant:20.0];
+  heightAnchor = [v5 heightAnchor];
+  v30 = [heightAnchor constraintEqualToConstant:20.0];
   v32[0] = v30;
-  v29 = [v5 widthAnchor];
-  v28 = [v29 constraintEqualToConstant:20.0];
+  widthAnchor = [v5 widthAnchor];
+  v28 = [widthAnchor constraintEqualToConstant:20.0];
   v32[1] = v28;
-  v27 = [v5 centerXAnchor];
-  v26 = [(VSUIActionStatusView *)self centerXAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  centerXAnchor = [v5 centerXAnchor];
+  centerXAnchor2 = [(VSUIActionStatusView *)self centerXAnchor];
+  v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v32[2] = v25;
-  v24 = [v5 centerYAnchor];
-  v23 = [(VSUIActionStatusView *)self centerYAnchor];
-  v21 = [v24 constraintEqualToAnchor:v23];
+  centerYAnchor = [v5 centerYAnchor];
+  centerYAnchor2 = [(VSUIActionStatusView *)self centerYAnchor];
+  v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v32[3] = v21;
-  v20 = [v6 topAnchor];
-  v19 = [(VSUIActionStatusView *)self topAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  topAnchor = [v6 topAnchor];
+  topAnchor2 = [(VSUIActionStatusView *)self topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v32[4] = v18;
-  v17 = [v6 bottomAnchor];
-  v16 = [(VSUIActionStatusView *)self bottomAnchor];
-  v7 = [v17 constraintEqualToAnchor:v16];
+  bottomAnchor = [v6 bottomAnchor];
+  bottomAnchor2 = [(VSUIActionStatusView *)self bottomAnchor];
+  v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[5] = v7;
-  v8 = [v6 leadingAnchor];
-  v9 = [(VSUIActionStatusView *)self leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  leadingAnchor = [v6 leadingAnchor];
+  leadingAnchor2 = [(VSUIActionStatusView *)self leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[6] = v10;
-  v11 = [v6 trailingAnchor];
-  v12 = [(VSUIActionStatusView *)self trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  trailingAnchor = [v6 trailingAnchor];
+  trailingAnchor2 = [(VSUIActionStatusView *)self trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v32[7] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:8];
   [v22 activateConstraints:v14];
@@ -220,31 +220,31 @@ LABEL_15:
 - (void)_updateAcitivityViewSubviewWithDelegateProvidedView
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v3 = [(VSUIActionStatusView *)self delegate];
-  v4 = [v3 progressViewController];
-  v5 = [v4 view];
+  delegate = [(VSUIActionStatusView *)self delegate];
+  progressViewController = [delegate progressViewController];
+  view = [progressViewController view];
 
-  if (v5)
+  if (view)
   {
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v5 removeFromSuperview];
-    [(UIView *)self->_activityView addSubview:v5];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    [view removeFromSuperview];
+    [(UIView *)self->_activityView addSubview:view];
     v16 = MEMORY[0x277CCAAD0];
-    v20 = [v5 leadingAnchor];
-    v19 = [(UIView *)self->_activityView leadingAnchor];
-    v18 = [v20 constraintEqualToAnchor:v19];
+    leadingAnchor = [view leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_activityView leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v21[0] = v18;
-    v17 = [v5 trailingAnchor];
-    v6 = [(UIView *)self->_activityView trailingAnchor];
-    v7 = [v17 constraintEqualToAnchor:v6];
+    trailingAnchor = [view trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_activityView trailingAnchor];
+    v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v21[1] = v7;
-    v8 = [v5 topAnchor];
-    v9 = [(UIView *)self->_activityView topAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    topAnchor = [view topAnchor];
+    topAnchor2 = [(UIView *)self->_activityView topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v21[2] = v10;
-    v11 = [v5 bottomAnchor];
-    v12 = [(UIView *)self->_activityView bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    bottomAnchor = [view bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_activityView bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v21[3] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
     [v16 activateConstraints:v14];

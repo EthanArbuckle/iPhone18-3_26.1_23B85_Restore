@@ -1,33 +1,33 @@
 @interface CKDPRecordRetrieveChangesResponseMergeableDeltaChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDeltas:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDeltas:(id)deltas;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordRetrieveChangesResponseMergeableDeltaChange
 
-- (void)addDeltas:(id)a3
+- (void)addDeltas:(id)deltas
 {
-  v4 = a3;
+  deltasCopy = deltas;
   deltas = self->_deltas;
-  v8 = v4;
+  v8 = deltasCopy;
   if (!deltas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_deltas;
     self->_deltas = v6;
 
-    v4 = v8;
+    deltasCopy = v8;
     deltas = self->_deltas;
   }
 
-  objc_msgSend_addObject_(deltas, v4, v4);
+  objc_msgSend_addObject_(deltas, deltasCopy, deltasCopy);
 }
 
 - (id)description
@@ -116,10 +116,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteSubmessage();
@@ -175,30 +175,30 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v18 = a3;
+  toCopy = to;
   identifier = self->_identifier;
   if (identifier)
   {
-    objc_msgSend_setIdentifier_(v18, v4, identifier);
+    objc_msgSend_setIdentifier_(toCopy, v4, identifier);
   }
 
   recordIdentifier = self->_recordIdentifier;
   if (recordIdentifier)
   {
-    objc_msgSend_setRecordIdentifier_(v18, v4, recordIdentifier);
+    objc_msgSend_setRecordIdentifier_(toCopy, v4, recordIdentifier);
   }
 
   fieldIdentifier = self->_fieldIdentifier;
   if (fieldIdentifier)
   {
-    objc_msgSend_setFieldIdentifier_(v18, v4, fieldIdentifier);
+    objc_msgSend_setFieldIdentifier_(toCopy, v4, fieldIdentifier);
   }
 
   if (objc_msgSend_deltasCount(self, v4, fieldIdentifier))
   {
-    objc_msgSend_clearDeltas(v18, v8, v9);
+    objc_msgSend_clearDeltas(toCopy, v8, v9);
     v12 = objc_msgSend_deltasCount(self, v10, v11);
     if (v12)
     {
@@ -206,7 +206,7 @@
       for (i = 0; i != v13; ++i)
       {
         v15 = objc_msgSend_deltasAtIndex_(self, v8, i);
-        objc_msgSend_addDeltas_(v18, v16, v15);
+        objc_msgSend_addDeltas_(toCopy, v16, v15);
       }
     }
   }
@@ -214,25 +214,25 @@
   recordType = self->_recordType;
   if (recordType)
   {
-    objc_msgSend_setRecordType_(v18, v8, recordType);
+    objc_msgSend_setRecordType_(toCopy, v8, recordType);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v39 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_identifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_identifier, v11, zone);
   v13 = v10[3];
   v10[3] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_recordIdentifier, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_recordIdentifier, v14, zone);
   v16 = v10[4];
   v10[4] = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_fieldIdentifier, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_fieldIdentifier, v17, zone);
   v19 = v10[2];
   v10[2] = v18;
 
@@ -256,7 +256,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v27 = objc_msgSend_copyWithZone_(*(*(&v34 + 1) + 8 * v26), v23, a3, v34);
+        v27 = objc_msgSend_copyWithZone_(*(*(&v34 + 1) + 8 * v26), v23, zone, v34);
         objc_msgSend_addDeltas_(v10, v28, v27);
 
         ++v26;
@@ -269,7 +269,7 @@
     while (v24);
   }
 
-  v30 = objc_msgSend_copyWithZone_(self->_recordType, v29, a3);
+  v30 = objc_msgSend_copyWithZone_(self->_recordType, v29, zone);
   v31 = v10[5];
   v10[5] = v30;
 
@@ -277,17 +277,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_12;
   }
 
   identifier = self->_identifier;
-  v9 = v4[3];
+  v9 = equalCopy[3];
   if (identifier | v9)
   {
     if (!objc_msgSend_isEqual_(identifier, v7, v9))
@@ -296,10 +296,10 @@
     }
   }
 
-  if (((recordIdentifier = self->_recordIdentifier, v11 = v4[4], !(recordIdentifier | v11)) || objc_msgSend_isEqual_(recordIdentifier, v7, v11)) && ((fieldIdentifier = self->_fieldIdentifier, v13 = v4[2], !(fieldIdentifier | v13)) || objc_msgSend_isEqual_(fieldIdentifier, v7, v13)) && ((deltas = self->_deltas, v15 = v4[1], !(deltas | v15)) || objc_msgSend_isEqual_(deltas, v7, v15)))
+  if (((recordIdentifier = self->_recordIdentifier, v11 = equalCopy[4], !(recordIdentifier | v11)) || objc_msgSend_isEqual_(recordIdentifier, v7, v11)) && ((fieldIdentifier = self->_fieldIdentifier, v13 = equalCopy[2], !(fieldIdentifier | v13)) || objc_msgSend_isEqual_(fieldIdentifier, v7, v13)) && ((deltas = self->_deltas, v15 = equalCopy[1], !(deltas | v15)) || objc_msgSend_isEqual_(deltas, v7, v15)))
   {
     recordType = self->_recordType;
-    v17 = v4[5];
+    v17 = equalCopy[5];
     if (recordType | v17)
     {
       isEqual = objc_msgSend_isEqual_(recordType, v7, v17);
@@ -329,12 +329,12 @@ LABEL_12:
   return v13 ^ objc_msgSend_hash(self->_recordType, v14, v15);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   identifier = self->_identifier;
-  v7 = *(v5 + 3);
+  v7 = *(fromCopy + 3);
   if (identifier)
   {
     if (v7)
@@ -349,7 +349,7 @@ LABEL_12:
   }
 
   recordIdentifier = self->_recordIdentifier;
-  v9 = *(v5 + 4);
+  v9 = *(fromCopy + 4);
   if (recordIdentifier)
   {
     if (v9)
@@ -364,7 +364,7 @@ LABEL_12:
   }
 
   fieldIdentifier = self->_fieldIdentifier;
-  v11 = *(v5 + 2);
+  v11 = *(fromCopy + 2);
   if (fieldIdentifier)
   {
     if (v11)
@@ -382,7 +382,7 @@ LABEL_12:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = *(v5 + 1);
+  v12 = *(fromCopy + 1);
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v23, v27, 16);
   if (v14)
   {
@@ -407,7 +407,7 @@ LABEL_12:
   }
 
   recordType = self->_recordType;
-  v21 = *(v5 + 5);
+  v21 = *(fromCopy + 5);
   if (recordType)
   {
     if (v21)

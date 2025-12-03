@@ -1,23 +1,23 @@
 @interface AAFamilyDetailsResponse
 + (id)_privacySensitiveKeys;
-- (AAFamilyDetailsResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (AAFamilyDetailsResponse)initWithHTTPResponse:(id)response data:(id)data;
 - (NSArray)firstNames;
 - (id)privacySensitiveResponseBody;
 @end
 
 @implementation AAFamilyDetailsResponse
 
-- (AAFamilyDetailsResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (AAFamilyDetailsResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v127 = *MEMORY[0x1E69E9840];
   v122.receiver = self;
   v122.super_class = AAFamilyDetailsResponse;
-  v4 = [(AAResponse *)&v122 initWithHTTPResponse:a3 data:a4];
+  v4 = [(AAResponse *)&v122 initWithHTTPResponse:response data:data];
   v5 = v4;
   if (v4 && [(NSHTTPURLResponse *)v4->super._httpResponse statusCode]== 200)
   {
-    v6 = [(AAResponse *)v5 responseDictionary];
-    v7 = [v6 objectForKey:@"family-members"];
+    responseDictionary = [(AAResponse *)v5 responseDictionary];
+    v7 = [responseDictionary objectForKey:@"family-members"];
 
     objc_opt_class();
     v94 = v7;
@@ -124,8 +124,8 @@
       v5->_members = v101;
     }
 
-    v34 = [(AAResponse *)v5 responseDictionary];
-    v35 = [v34 objectForKey:@"family-invitations"];
+    responseDictionary2 = [(AAResponse *)v5 responseDictionary];
+    v35 = [responseDictionary2 objectForKey:@"family-invitations"];
 
     objc_opt_class();
     v100 = v35;
@@ -185,8 +185,8 @@
       v105->_invites = v36;
     }
 
-    v50 = [(AAResponse *)v5 responseDictionary];
-    v51 = [v50 objectForKey:@"transfer-requests"];
+    responseDictionary3 = [(AAResponse *)v5 responseDictionary];
+    v51 = [responseDictionary3 objectForKey:@"transfer-requests"];
 
     objc_opt_class();
     v98 = v51;
@@ -259,8 +259,8 @@
       v105->_invites = v66;
     }
 
-    v68 = [(AAResponse *)v5 responseDictionary];
-    v69 = [v68 objectForKey:@"pending-members"];
+    responseDictionary4 = [(AAResponse *)v5 responseDictionary];
+    v69 = [responseDictionary4 objectForKey:@"pending-members"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -317,8 +317,8 @@
       v51 = v98;
     }
 
-    v82 = [(AAResponse *)v5 responseDictionary];
-    v83 = [v82 objectForKey:@"family-meta-info"];
+    responseDictionary5 = [(AAResponse *)v5 responseDictionary];
+    v83 = [responseDictionary5 objectForKey:@"family-meta-info"];
 
     if (v83)
     {
@@ -388,10 +388,10 @@ uint64_t __53__AAFamilyDetailsResponse_initWithHTTPResponse_data___block_invoke(
           v9 = *(*(&v13 + 1) + 8 * i);
           if (([v9 isMe] & 1) == 0)
           {
-            v10 = [v9 firstName];
-            if (v10)
+            firstName = [v9 firstName];
+            if (firstName)
             {
-              [v3 addObject:v10];
+              [v3 addObject:firstName];
             }
           }
         }
@@ -446,14 +446,14 @@ void __48__AAFamilyDetailsResponse__privacySensitiveKeys__block_invoke()
 
 - (id)privacySensitiveResponseBody
 {
-  v3 = [(AAResponse *)self responseDictionary];
+  responseDictionary = [(AAResponse *)self responseDictionary];
 
-  if (v3)
+  if (responseDictionary)
   {
     v4 = [AAPrivacySensitiveDictionaryLog alloc];
-    v5 = [(AAResponse *)self responseDictionary];
+    responseDictionary2 = [(AAResponse *)self responseDictionary];
     v6 = +[AAFamilyDetailsResponse _privacySensitiveKeys];
-    v7 = [(AAPrivacySensitiveDictionaryLog *)v4 initWithDictionary:v5 forKeys:v6];
+    v7 = [(AAPrivacySensitiveDictionaryLog *)v4 initWithDictionary:responseDictionary2 forKeys:v6];
   }
 
   else

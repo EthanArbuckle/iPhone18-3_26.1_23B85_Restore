@@ -1,25 +1,25 @@
 @interface HMDRestrictedGuestHomeAccessSettings
-+ (BOOL)shouldConsiderStartDate:(id)a3 endDate:(id)a4 currentTime:(id)a5;
-+ (id)convertWeekDayRulesToDateIntervals:(id)a3 currentTime:(id)a4 timeZone:(id)a5;
-+ (id)dateIntervalFromWeekDayRule:(id)a3 currentTime:(id)a4 timeZone:(id)a5;
++ (BOOL)shouldConsiderStartDate:(id)date endDate:(id)endDate currentTime:(id)time;
++ (id)convertWeekDayRulesToDateIntervals:(id)intervals currentTime:(id)time timeZone:(id)zone;
++ (id)dateIntervalFromWeekDayRule:(id)rule currentTime:(id)time timeZone:(id)zone;
 + (id)logCategory;
-+ (id)mergeIntervals:(id)a3;
-+ (void)__logIntervals:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)updateRestrictedGuestSettingsFromWorkingStore:(id)a3;
-- (HMDRestrictedGuestHomeAccessSettings)initWithAllowedAccessories:(id)a3 schedule:(id)a4;
-- (HMDRestrictedGuestHomeAccessSettings)initWithCoder:(id)a3;
-- (HMDRestrictedGuestHomeAccessSettings)initWithRestrictedGuestHomeAccessSettings:(id)a3;
++ (id)mergeIntervals:(id)intervals;
++ (void)__logIntervals:(id)intervals;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)updateRestrictedGuestSettingsFromWorkingStore:(id)store;
+- (HMDRestrictedGuestHomeAccessSettings)initWithAllowedAccessories:(id)accessories schedule:(id)schedule;
+- (HMDRestrictedGuestHomeAccessSettings)initWithCoder:(id)coder;
+- (HMDRestrictedGuestHomeAccessSettings)initWithRestrictedGuestHomeAccessSettings:(id)settings;
 - (HMRestrictedGuestHomeAccessSchedule)schedule;
 - (NSArray)matterWeekDaySchedules;
 - (NSArray)uuidsOfAllowedAccessories;
-- (id)_nextScheduledIntervalFromDate:(id)a3 timeZone:(id)a4;
+- (id)_nextScheduledIntervalFromDate:(id)date timeZone:(id)zone;
 - (id)attributeDescriptions;
-- (id)matterYearDaySchedulesWithTimeZone:(id)a3;
+- (id)matterYearDaySchedulesWithTimeZone:(id)zone;
 - (id)nextScheduledInterval;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSchedule:(id)a3;
-- (void)setUuidsOfAllowedAccessories:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSchedule:(id)schedule;
+- (void)setUuidsOfAllowedAccessories:(id)accessories;
 @end
 
 @implementation HMDRestrictedGuestHomeAccessSettings
@@ -28,12 +28,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDRestrictedGuestHomeAccessSettings *)self uuidsOfAllowedAccessories];
-  v5 = [v3 initWithName:@"allowedAccessories" value:v4];
+  uuidsOfAllowedAccessories = [(HMDRestrictedGuestHomeAccessSettings *)self uuidsOfAllowedAccessories];
+  v5 = [v3 initWithName:@"allowedAccessories" value:uuidsOfAllowedAccessories];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
-  v8 = [v6 initWithName:@"schedule" value:v7];
+  schedule = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
+  v8 = [v6 initWithName:@"schedule" value:schedule];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -42,51 +42,51 @@
   return v9;
 }
 
-- (id)_nextScheduledIntervalFromDate:(id)a3 timeZone:(id)a4
+- (id)_nextScheduledIntervalFromDate:(id)date timeZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
+  dateCopy = date;
+  zoneCopy = zone;
+  schedule = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
 
-  if (v8)
+  if (schedule)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v10 = objc_opt_class();
-    v11 = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
-    v12 = [v11 weekDayRules];
-    v13 = [v10 convertWeekDayRulesToDateIntervals:v12 currentTime:v6 timeZone:v7];
-    [v9 addObjectsFromArray:v13];
+    schedule2 = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
+    weekDayRules = [schedule2 weekDayRules];
+    v13 = [v10 convertWeekDayRulesToDateIntervals:weekDayRules currentTime:dateCopy timeZone:zoneCopy];
+    [array addObjectsFromArray:v13];
 
-    v14 = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
-    v15 = [v14 yearDayRules];
+    schedule3 = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
+    yearDayRules = [schedule3 yearDayRules];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __80__HMDRestrictedGuestHomeAccessSettings__nextScheduledIntervalFromDate_timeZone___block_invoke;
     v20[3] = &unk_278670B88;
     v20[4] = self;
-    v21 = v6;
-    v16 = v9;
+    v21 = dateCopy;
+    v16 = array;
     v22 = v16;
-    [v15 hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
+    [yearDayRules hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
 
     v17 = [objc_opt_class() mergeIntervals:v16];
     if ([v17 count])
     {
-      v18 = [v17 firstObject];
+      firstObject = [v17 firstObject];
     }
 
     else
     {
-      v18 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v18 = 0;
+    firstObject = 0;
   }
 
-  return v18;
+  return firstObject;
 }
 
 void __80__HMDRestrictedGuestHomeAccessSettings__nextScheduledIntervalFromDate_timeZone___block_invoke(void *a1, void *a2)
@@ -111,39 +111,39 @@ void __80__HMDRestrictedGuestHomeAccessSettings__nextScheduledIntervalFromDate_t
 - (id)nextScheduledInterval
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v6 = [(HMDRestrictedGuestHomeAccessSettings *)self _nextScheduledIntervalFromDate:v4 timeZone:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  v6 = [(HMDRestrictedGuestHomeAccessSettings *)self _nextScheduledIntervalFromDate:date timeZone:localTimeZone];
 
   objc_autoreleasePoolPop(v3);
 
   return v6;
 }
 
-- (BOOL)updateRestrictedGuestSettingsFromWorkingStore:(id)a3
+- (BOOL)updateRestrictedGuestSettingsFromWorkingStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = [v4 home];
-  v6 = [v5 backingStore];
-  v7 = [v6 context];
+  home = [storeCopy home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __86__HMDRestrictedGuestHomeAccessSettings_updateRestrictedGuestSettingsFromWorkingStore___block_invoke;
   v10[3] = &unk_27868A4D8;
   v10[4] = self;
-  v8 = v4;
+  v8 = storeCopy;
   v11 = v8;
   v12 = &v13;
-  [v7 unsafeSynchronousBlock:v10];
-  LOBYTE(v4) = *(v14 + 24);
+  [context unsafeSynchronousBlock:v10];
+  LOBYTE(storeCopy) = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
-  return v4;
+  return storeCopy;
 }
 
 void __86__HMDRestrictedGuestHomeAccessSettings_updateRestrictedGuestSettingsFromWorkingStore___block_invoke(uint64_t a1)
@@ -255,11 +255,11 @@ void __86__HMDRestrictedGuestHomeAccessSettings_updateRestrictedGuestSettingsFro
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_autoreleasePoolPush();
-  v6 = v4;
+  v6 = equalCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -274,17 +274,17 @@ void __86__HMDRestrictedGuestHomeAccessSettings_updateRestrictedGuestSettingsFro
   v8 = v7;
 
   v9 = MEMORY[0x277CBEB98];
-  v10 = [(HMDRestrictedGuestHomeAccessSettings *)self uuidsOfAllowedAccessories];
-  v11 = [v9 setWithArray:v10];
+  uuidsOfAllowedAccessories = [(HMDRestrictedGuestHomeAccessSettings *)self uuidsOfAllowedAccessories];
+  v11 = [v9 setWithArray:uuidsOfAllowedAccessories];
 
   v12 = MEMORY[0x277CBEB98];
-  v13 = [v8 uuidsOfAllowedAccessories];
-  v14 = [v12 setWithArray:v13];
+  uuidsOfAllowedAccessories2 = [v8 uuidsOfAllowedAccessories];
+  v14 = [v12 setWithArray:uuidsOfAllowedAccessories2];
 
   if (v8 && HMFEqualObjects())
   {
-    v15 = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
-    v16 = [v8 schedule];
+    schedule = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
+    schedule2 = [v8 schedule];
     v17 = HMFEqualObjects();
   }
 
@@ -297,18 +297,18 @@ void __86__HMDRestrictedGuestHomeAccessSettings_updateRestrictedGuestSettingsFro
   return v17;
 }
 
-- (id)matterYearDaySchedulesWithTimeZone:(id)a3
+- (id)matterYearDaySchedulesWithTimeZone:(id)zone
 {
-  v4 = a3;
-  v5 = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
-  v6 = [v5 yearDayRules];
+  zoneCopy = zone;
+  schedule = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
+  yearDayRules = [schedule yearDayRules];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __75__HMDRestrictedGuestHomeAccessSettings_matterYearDaySchedulesWithTimeZone___block_invoke;
   v13[3] = &unk_278670B60;
-  v14 = v4;
-  v7 = v4;
-  v8 = [v6 na_map:v13];
+  v14 = zoneCopy;
+  v7 = zoneCopy;
+  v8 = [yearDayRules na_map:v13];
   v9 = v8;
   if (v8)
   {
@@ -342,9 +342,9 @@ id __75__HMDRestrictedGuestHomeAccessSettings_matterYearDaySchedulesWithTimeZone
 
 - (NSArray)matterWeekDaySchedules
 {
-  v2 = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
-  v3 = [v2 weekDayRules];
-  v4 = [v3 na_map:&__block_literal_global_15862];
+  schedule = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
+  weekDayRules = [schedule weekDayRules];
+  v4 = [weekDayRules na_map:&__block_literal_global_15862];
   v5 = v4;
   if (v4)
   {
@@ -385,12 +385,12 @@ id __62__HMDRestrictedGuestHomeAccessSettings_matterWeekDaySchedules__block_invo
   return v17;
 }
 
-- (void)setSchedule:(id)a3
+- (void)setSchedule:(id)schedule
 {
-  v4 = a3;
+  scheduleCopy = schedule;
   os_unfair_lock_lock_with_options();
   schedule = self->_schedule;
-  self->_schedule = v4;
+  self->_schedule = scheduleCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -404,12 +404,12 @@ id __62__HMDRestrictedGuestHomeAccessSettings_matterWeekDaySchedules__block_invo
   return v3;
 }
 
-- (void)setUuidsOfAllowedAccessories:(id)a3
+- (void)setUuidsOfAllowedAccessories:(id)accessories
 {
-  v4 = a3;
+  accessoriesCopy = accessories;
   os_unfair_lock_lock_with_options();
   uuidsOfAllowedAccessories = self->_uuidsOfAllowedAccessories;
-  self->_uuidsOfAllowedAccessories = v4;
+  self->_uuidsOfAllowedAccessories = accessoriesCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -423,60 +423,60 @@ id __62__HMDRestrictedGuestHomeAccessSettings_matterWeekDaySchedules__block_invo
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDRestrictedGuestHomeAccessSettings *)self uuidsOfAllowedAccessories];
-  [v4 encodeObject:v5 forKey:*MEMORY[0x277CD0D08]];
+  coderCopy = coder;
+  uuidsOfAllowedAccessories = [(HMDRestrictedGuestHomeAccessSettings *)self uuidsOfAllowedAccessories];
+  [coderCopy encodeObject:uuidsOfAllowedAccessories forKey:*MEMORY[0x277CD0D08]];
 
-  v6 = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
-  [v4 encodeObject:v6 forKey:*MEMORY[0x277CD0D18]];
+  schedule = [(HMDRestrictedGuestHomeAccessSettings *)self schedule];
+  [coderCopy encodeObject:schedule forKey:*MEMORY[0x277CD0D18]];
 }
 
-- (HMDRestrictedGuestHomeAccessSettings)initWithCoder:(id)a3
+- (HMDRestrictedGuestHomeAccessSettings)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v13[0] = objc_opt_class();
   v13[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v7 = [v4 setWithArray:v6];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:*MEMORY[0x277CD0D08]];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:*MEMORY[0x277CD0D08]];
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD0D18]];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD0D18]];
 
   v10 = [(HMDRestrictedGuestHomeAccessSettings *)self initWithAllowedAccessories:v8 schedule:v9];
   v11 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (HMDRestrictedGuestHomeAccessSettings)initWithAllowedAccessories:(id)a3 schedule:(id)a4
+- (HMDRestrictedGuestHomeAccessSettings)initWithAllowedAccessories:(id)accessories schedule:(id)schedule
 {
-  v7 = a3;
-  v8 = a4;
+  accessoriesCopy = accessories;
+  scheduleCopy = schedule;
   v12.receiver = self;
   v12.super_class = HMDRestrictedGuestHomeAccessSettings;
   v9 = [(HMDRestrictedGuestHomeAccessSettings *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_uuidsOfAllowedAccessories, a3);
-    objc_storeStrong(&v10->_schedule, a4);
+    objc_storeStrong(&v9->_uuidsOfAllowedAccessories, accessories);
+    objc_storeStrong(&v10->_schedule, schedule);
   }
 
   return v10;
 }
 
-- (HMDRestrictedGuestHomeAccessSettings)initWithRestrictedGuestHomeAccessSettings:(id)a3
+- (HMDRestrictedGuestHomeAccessSettings)initWithRestrictedGuestHomeAccessSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [v4 identifiersOfAccessAllowedToAccessories];
-  v6 = [v5 allObjects];
+  settingsCopy = settings;
+  identifiersOfAccessAllowedToAccessories = [settingsCopy identifiersOfAccessAllowedToAccessories];
+  allObjects = [identifiersOfAccessAllowedToAccessories allObjects];
 
-  if (v6)
+  if (allObjects)
   {
-    v7 = v6;
+    v7 = allObjects;
   }
 
   else
@@ -484,20 +484,20 @@ id __62__HMDRestrictedGuestHomeAccessSettings_matterWeekDaySchedules__block_invo
     v7 = MEMORY[0x277CBEBF8];
   }
 
-  v8 = [v4 guestAccessSchedule];
+  guestAccessSchedule = [settingsCopy guestAccessSchedule];
 
-  v9 = [(HMDRestrictedGuestHomeAccessSettings *)self initWithAllowedAccessories:v7 schedule:v8];
+  v9 = [(HMDRestrictedGuestHomeAccessSettings *)self initWithAllowedAccessories:v7 schedule:guestAccessSchedule];
   return v9;
 }
 
-+ (void)__logIntervals:(id)a3
++ (void)__logIntervals:(id)intervals
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __55__HMDRestrictedGuestHomeAccessSettings___logIntervals___block_invoke;
   v3[3] = &__block_descriptor_40_e31_v32__0__NSDateInterval_8Q16_B24l;
-  v3[4] = a1;
-  [a3 hmf_enumerateWithAutoreleasePoolUsingBlock:v3];
+  v3[4] = self;
+  [intervals hmf_enumerateWithAutoreleasePoolUsingBlock:v3];
 }
 
 void __55__HMDRestrictedGuestHomeAccessSettings___logIntervals___block_invoke(uint64_t a1, void *a2)
@@ -545,16 +545,16 @@ void __51__HMDRestrictedGuestHomeAccessSettings_logCategory__block_invoke()
   logCategory__hmf_once_v13_15890 = v1;
 }
 
-+ (BOOL)shouldConsiderStartDate:(id)a3 endDate:(id)a4 currentTime:(id)a5
++ (BOOL)shouldConsiderStartDate:(id)date endDate:(id)endDate currentTime:(id)time
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 compare:v8];
-  v12 = [v10 compare:v9];
+  dateCopy = date;
+  endDateCopy = endDate;
+  timeCopy = time;
+  v11 = [timeCopy compare:dateCopy];
+  v12 = [timeCopy compare:endDateCopy];
   v13 = objc_autoreleasePoolPush();
-  v14 = a1;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -565,11 +565,11 @@ void __51__HMDRestrictedGuestHomeAccessSettings_logCategory__block_invoke()
     *buf = 138544386;
     v25 = v16;
     v26 = 2112;
-    v27 = v8;
+    v27 = dateCopy;
     v28 = 2112;
     v29 = v17;
     v30 = 2112;
-    v31 = v9;
+    v31 = endDateCopy;
     v32 = 2112;
     v33 = v18;
     _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@startDate: %@ / in future: %@, endDate: %@ / in future: %@", buf, 0x34u);
@@ -584,34 +584,34 @@ void __51__HMDRestrictedGuestHomeAccessSettings_logCategory__block_invoke()
   return v20;
 }
 
-+ (id)mergeIntervals:(id)a3
++ (id)mergeIntervals:(id)intervals
 {
-  v3 = a3;
-  if ([v3 hmf_isEmpty])
+  intervalsCopy = intervals;
+  if ([intervalsCopy hmf_isEmpty])
   {
     v4 = MEMORY[0x277CBEBF8];
     goto LABEL_17;
   }
 
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-  [v3 sortUsingComparator:&__block_literal_global_21_15895];
-  v6 = [v3 firstObject];
-  v7 = [v6 startDate];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(intervalsCopy, "count")}];
+  [intervalsCopy sortUsingComparator:&__block_literal_global_21_15895];
+  firstObject = [intervalsCopy firstObject];
+  startDate = [firstObject startDate];
 
-  v8 = [v3 firstObject];
-  v9 = [v8 endDate];
+  firstObject2 = [intervalsCopy firstObject];
+  endDate = [firstObject2 endDate];
 
-  if ([v3 count] >= 2)
+  if ([intervalsCopy count] >= 2)
   {
     v10 = 2;
     v11 = 1;
     while (1)
     {
-      v12 = [v3 objectAtIndexedSubscript:v11];
-      [v9 timeIntervalSince1970];
+      v12 = [intervalsCopy objectAtIndexedSubscript:v11];
+      [endDate timeIntervalSince1970];
       v14 = v13;
-      v15 = [v12 startDate];
-      [v15 timeIntervalSince1970];
+      startDate2 = [v12 startDate];
+      [startDate2 timeIntervalSince1970];
       if (v14 > v16)
       {
         break;
@@ -624,18 +624,18 @@ void __51__HMDRestrictedGuestHomeAccessSettings_logCategory__block_invoke()
         goto LABEL_8;
       }
 
-      v25 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v7 endDate:v9];
+      v25 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate endDate:endDate];
       [v5 addObject:v25];
 
-      v26 = [v12 startDate];
+      startDate3 = [v12 startDate];
 
-      v24 = [v12 endDate];
-      v7 = v26;
+      endDate2 = [v12 endDate];
+      startDate = startDate3;
 LABEL_13:
 
       v11 = v10;
-      v27 = [v3 count] > v10++;
-      v9 = v24;
+      v27 = [intervalsCopy count] > v10++;
+      endDate = endDate2;
       if (!v27)
       {
         goto LABEL_16;
@@ -643,10 +643,10 @@ LABEL_13:
     }
 
 LABEL_8:
-    [v9 timeIntervalSince1970];
+    [endDate timeIntervalSince1970];
     v19 = v18;
-    v20 = [v12 endDate];
-    [v20 timeIntervalSince1970];
+    endDate3 = [v12 endDate];
+    [endDate3 timeIntervalSince1970];
     v22 = v21;
 
     if (v19 >= v22)
@@ -659,13 +659,13 @@ LABEL_8:
       v23 = v22;
     }
 
-    v24 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v23];
+    endDate2 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v23];
     goto LABEL_13;
   }
 
-  v24 = v9;
+  endDate2 = endDate;
 LABEL_16:
-  v28 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v7 endDate:v24];
+  v28 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate endDate:endDate2];
   [v5 addObject:v28];
 
   v4 = [v5 copy];
@@ -674,40 +674,40 @@ LABEL_17:
   return v4;
 }
 
-+ (id)dateIntervalFromWeekDayRule:(id)a3 currentTime:(id)a4 timeZone:(id)a5
++ (id)dateIntervalFromWeekDayRule:(id)rule currentTime:(id)time timeZone:(id)zone
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  ruleCopy = rule;
+  timeCopy = time;
+  zoneCopy = zone;
+  if (!ruleCopy)
   {
     v24 = 0;
     goto LABEL_17;
   }
 
-  [v8 daysOfTheWeek];
+  [ruleCopy daysOfTheWeek];
   v11 = HMDaysOfTheWeekToDateComponents();
-  v12 = [v8 startTime];
-  v13 = [HMDCalendarEvent nextTimerDateAfterDate:v9 timeZone:v10 fireDateComponents:v12 recurrences:v11];
+  startTime = [ruleCopy startTime];
+  v13 = [HMDCalendarEvent nextTimerDateAfterDate:timeCopy timeZone:zoneCopy fireDateComponents:startTime recurrences:v11];
 
-  v14 = [v8 endTime];
-  if ([v14 hour] == 23)
+  endTime = [ruleCopy endTime];
+  if ([endTime hour] == 23)
   {
-    v15 = [v8 endTime];
-    v16 = [v15 minute];
+    endTime2 = [ruleCopy endTime];
+    minute = [endTime2 minute];
 
-    if (v16 == 59)
+    if (minute == 59)
     {
       v36 = v13;
       v38 = v11;
-      v17 = [v9 addTimeInterval:86400.0];
-      v18 = [MEMORY[0x277CBEA80] currentCalendar];
-      v19 = [v18 components:124 fromDate:v17];
+      v17 = [timeCopy addTimeInterval:86400.0];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v19 = [currentCalendar components:124 fromDate:v17];
 
       v20 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-      v21 = [MEMORY[0x277CBEA80] currentCalendar];
-      [v20 setWeekday:{objc_msgSend(v21, "component:fromDate:", 512, v9)}];
+      currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+      [v20 setWeekday:{objc_msgSend(currentCalendar2, "component:fromDate:", 512, timeCopy)}];
 
       if ([v19 hour] != 23)
       {
@@ -719,8 +719,8 @@ LABEL_17:
         [v19 setHour:0];
         [v19 setMinute:0];
         [v19 setSecond:0];
-        v22 = [MEMORY[0x277CBEA80] currentCalendar];
-        v23 = [v22 dateFromComponents:v19];
+        currentCalendar3 = [MEMORY[0x277CBEA80] currentCalendar];
+        v23 = [currentCalendar3 dateFromComponents:v19];
       }
 
       else
@@ -742,23 +742,23 @@ LABEL_20:
   {
   }
 
-  v25 = [v8 endTime];
-  v23 = [HMDCalendarEvent nextTimerDateAfterDate:v9 timeZone:v10 fireDateComponents:v25 recurrences:v11];
+  endTime3 = [ruleCopy endTime];
+  v23 = [HMDCalendarEvent nextTimerDateAfterDate:timeCopy timeZone:zoneCopy fireDateComponents:endTime3 recurrences:v11];
 
 LABEL_11:
   if ([v13 compare:v23] == 1)
   {
     v37 = v13;
     v39 = v11;
-    v26 = [v8 startTime];
-    [v26 hour];
-    v27 = [v8 startTime];
-    [v27 minute];
+    startTime2 = [ruleCopy startTime];
+    [startTime2 hour];
+    startTime3 = [ruleCopy startTime];
+    [startTime3 minute];
     v28 = HMDateFromDateWithHourAndMinuteComponents();
 
     v29 = v23;
     v30 = objc_autoreleasePoolPush();
-    v31 = a1;
+    selfCopy = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
@@ -790,28 +790,28 @@ LABEL_17:
   return v24;
 }
 
-+ (id)convertWeekDayRulesToDateIntervals:(id)a3 currentTime:(id)a4 timeZone:(id)a5
++ (id)convertWeekDayRulesToDateIntervals:(id)intervals currentTime:(id)time timeZone:(id)zone
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [v8 count])
+  intervalsCopy = intervals;
+  timeCopy = time;
+  zoneCopy = zone;
+  if (intervalsCopy && [intervalsCopy count])
   {
-    v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(intervalsCopy, "count")}];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v26 = v8;
-    obj = v8;
+    v26 = intervalsCopy;
+    obj = intervalsCopy;
     v31 = [obj countByEnumeratingWithState:&v32 objects:v42 count:16];
     if (v31)
     {
       v12 = *v33;
       v28 = v11;
-      v29 = a1;
-      v27 = v10;
+      selfCopy = self;
+      v27 = zoneCopy;
       do
       {
         for (i = 0; i != v31; ++i)
@@ -821,32 +821,32 @@ LABEL_17:
             objc_enumerationMutation(obj);
           }
 
-          v14 = [a1 dateIntervalFromWeekDayRule:*(*(&v32 + 1) + 8 * i) currentTime:v9 timeZone:v10];
+          v14 = [self dateIntervalFromWeekDayRule:*(*(&v32 + 1) + 8 * i) currentTime:timeCopy timeZone:zoneCopy];
           if (v14)
           {
             v15 = objc_autoreleasePoolPush();
-            v16 = a1;
+            selfCopy2 = self;
             v17 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
             {
               v18 = HMFGetLogIdentifier();
-              v19 = [v14 startDate];
+              startDate = [v14 startDate];
               [v14 endDate];
               v20 = v12;
-              v22 = v21 = v9;
+              v22 = v21 = timeCopy;
               *buf = 138543874;
               v37 = v18;
               v38 = 2112;
-              v39 = v19;
+              v39 = startDate;
               v40 = 2112;
               v41 = v22;
               _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@[Calculated interval : [%@, %@]]", buf, 0x20u);
 
-              v9 = v21;
+              timeCopy = v21;
               v12 = v20;
 
-              v10 = v27;
-              a1 = v29;
+              zoneCopy = v27;
+              self = selfCopy;
 
               v11 = v28;
             }
@@ -863,7 +863,7 @@ LABEL_17:
     }
 
     v23 = [v11 copy];
-    v8 = v26;
+    intervalsCopy = v26;
   }
 
   else

@@ -1,47 +1,47 @@
 @interface PKCurrencyAmountSelectorOption
-- (BOOL)isEqual:(id)a3;
-- (PKCurrencyAmountSelectorOption)initWithCurrencyAmount:(id)a3 displayValue:(id)a4 customOption:(BOOL)a5 selected:(BOOL)a6;
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (int64_t)compare:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKCurrencyAmountSelectorOption)initWithCurrencyAmount:(id)amount displayValue:(id)value customOption:(BOOL)option selected:(BOOL)selected;
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation PKCurrencyAmountSelectorOption
 
-- (PKCurrencyAmountSelectorOption)initWithCurrencyAmount:(id)a3 displayValue:(id)a4 customOption:(BOOL)a5 selected:(BOOL)a6
+- (PKCurrencyAmountSelectorOption)initWithCurrencyAmount:(id)amount displayValue:(id)value customOption:(BOOL)option selected:(BOOL)selected
 {
-  v11 = a3;
-  v12 = a4;
+  amountCopy = amount;
+  valueCopy = value;
   v18.receiver = self;
   v18.super_class = PKCurrencyAmountSelectorOption;
   v13 = [(PKCurrencyAmountSelectorOption *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_currencyAmount, a3);
-    v15 = [v12 copy];
+    objc_storeStrong(&v13->_currencyAmount, amount);
+    v15 = [valueCopy copy];
     displayValue = v14->_displayValue;
     v14->_displayValue = v15;
 
-    v14->_isCustomOption = a5;
-    v14->_selected = a6;
+    v14->_isCustomOption = option;
+    v14->_selected = selected;
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -108,25 +108,25 @@ LABEL_18:
   return v4;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   currencyAmount = self->_currencyAmount;
-  v4 = a3;
-  v5 = [(PKCurrencyAmount *)currencyAmount amount];
-  v6 = [v4 currencyAmount];
+  compareCopy = compare;
+  amount = [(PKCurrencyAmount *)currencyAmount amount];
+  currencyAmount = [compareCopy currencyAmount];
 
-  v7 = [v6 amount];
+  amount2 = [currencyAmount amount];
 
-  if (v5 == v7)
+  if (amount == amount2)
   {
     v8 = 0;
   }
 
-  else if (v5)
+  else if (amount)
   {
-    if (v7)
+    if (amount2)
     {
-      v8 = [v5 compare:v7];
+      v8 = [amount compare:amount2];
     }
 
     else
@@ -143,18 +143,18 @@ LABEL_18:
   return v8;
 }
 
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() cellReuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  cellReuseIdentifier = [objc_opt_class() cellReuseIdentifier];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:cellReuseIdentifier forIndexPath:pathCopy];
 
-  v10 = [v9 defaultContentConfiguration];
-  v11 = [(PKCurrencyAmountSelectorOption *)self displayValue];
-  [v10 setText:v11];
+  defaultContentConfiguration = [v9 defaultContentConfiguration];
+  displayValue = [(PKCurrencyAmountSelectorOption *)self displayValue];
+  [defaultContentConfiguration setText:displayValue];
 
-  [v9 setContentConfiguration:v10];
+  [v9 setContentConfiguration:defaultContentConfiguration];
   if (self->_selected)
   {
     v12 = 3;

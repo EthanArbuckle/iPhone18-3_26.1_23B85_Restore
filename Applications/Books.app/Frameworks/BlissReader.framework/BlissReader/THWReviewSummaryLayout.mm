@@ -1,15 +1,15 @@
 @interface THWReviewSummaryLayout
-- (CGPoint)stackedControlContainerOrigin:(id)a3;
-- (THWReviewSummaryLayout)initWithDelegate:(id)a3;
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3;
-- (double)stackedControlContainerWidth:(id)a3;
+- (CGPoint)stackedControlContainerOrigin:(id)origin;
+- (THWReviewSummaryLayout)initWithDelegate:(id)delegate;
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets;
+- (double)stackedControlContainerWidth:(id)width;
 - (id)checkingLayout;
 - (id)checkingWPLayout;
-- (id)controlContainerChildInfosForLayout:(id)a3;
+- (id)controlContainerChildInfosForLayout:(id)layout;
 - (id)dependentLayouts;
 - (id)instructionalWPLayout;
 - (id)resultsLayout;
-- (id)storageWithStyle:(id)a3 string:(id)a4;
+- (id)storageWithStyle:(id)style string:(id)string;
 - (id)summaryWPLayout;
 - (void)dealloc;
 - (void)invalidateSize;
@@ -19,7 +19,7 @@
 
 @implementation THWReviewSummaryLayout
 
-- (THWReviewSummaryLayout)initWithDelegate:(id)a3
+- (THWReviewSummaryLayout)initWithDelegate:(id)delegate
 {
   v9.receiver = self;
   v9.super_class = THWReviewSummaryLayout;
@@ -27,7 +27,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_delegate = a3;
+    v4->_delegate = delegate;
     v6 = [[THWStackedControlContainer alloc] initWithDelegate:v4];
     v5->_resultStack = v6;
     [(THWControlContainer *)v6 setTag:7];
@@ -49,18 +49,18 @@
 
 - (id)checkingLayout
 {
-  v3 = [(THWReviewSummaryLayout *)self layoutController];
+  layoutController = [(THWReviewSummaryLayout *)self layoutController];
   checkingStack = self->_checkingStack;
 
-  return [v3 layoutForInfo:checkingStack childOfLayout:self];
+  return [layoutController layoutForInfo:checkingStack childOfLayout:self];
 }
 
 - (id)resultsLayout
 {
-  v3 = [(THWReviewSummaryLayout *)self layoutController];
+  layoutController = [(THWReviewSummaryLayout *)self layoutController];
   resultStack = self->_resultStack;
 
-  return [v3 layoutForInfo:resultStack childOfLayout:self];
+  return [layoutController layoutForInfo:resultStack childOfLayout:self];
 }
 
 - (id)checkingWPLayout
@@ -115,17 +115,17 @@
   [-[THWReviewSummaryLayout checkingWPLayout](self "checkingWPLayout")];
 }
 
-- (id)storageWithStyle:(id)a3 string:(id)a4
+- (id)storageWithStyle:(id)style string:(id)string
 {
-  v6 = [(THWReviewSummaryLayoutDelegate *)self->_delegate reviewSummaryContext];
-  v7 = [[TSSStylesheet alloc] initWithContext:v6];
+  reviewSummaryContext = [(THWReviewSummaryLayoutDelegate *)self->_delegate reviewSummaryContext];
+  v7 = [[TSSStylesheet alloc] initWithContext:reviewSummaryContext];
   v8 = [THWPStorage alloc];
-  if (!a4)
+  if (!string)
   {
-    a4 = @" ";
+    string = @" ";
   }
 
-  v9 = [(THWPStorage *)v8 initWithContext:v6 string:a4 kind:3 stylesheet:v7 paragraphStyle:a3 listStyle:[TSWPListStyle defaultStyleWithContext:?], 0, 0];
+  v9 = [(THWPStorage *)v8 initWithContext:reviewSummaryContext string:string kind:3 stylesheet:v7 paragraphStyle:style listStyle:[TSWPListStyle defaultStyleWithContext:?], 0, 0];
 
   return v9;
 }
@@ -147,10 +147,10 @@
     self->_checkingAnswerStorage = -[THWReviewSummaryLayout storageWithStyle:string:](self, "storageWithStyle:string:", -[THWReviewSummaryLayoutDelegate reviewSummaryCheckingParagraphStyleWithIndent:](self->_delegate, "reviewSummaryCheckingParagraphStyleWithIndent:", 40.0), [THBundle() localizedStringForKey:@"Checking Answers…" value:&stru_471858 table:0]);
   }
 
-  v3 = [(THWReviewSummaryLayoutDelegate *)self->_delegate reviewSummaryQuestionCount];
-  v4 = [(THWReviewSummaryLayoutDelegate *)self->_delegate reviewSummaryCorrectCount];
-  -[TSWPStorage replaceCharactersInRange:withString:undoTransaction:](self->_summaryStorage, "replaceCharactersInRange:withString:undoTransaction:", 0, -[TSWPStorage length](self->_summaryStorage, "length"), +[NSString stringWithFormat:](NSString, "stringWithFormat:", [THBundle() localizedStringForKey:@"%lu out of %lu Answers Correct" value:&stru_471858 table:0], v4, v3), 0);
-  if (v4 == v3)
+  reviewSummaryQuestionCount = [(THWReviewSummaryLayoutDelegate *)self->_delegate reviewSummaryQuestionCount];
+  reviewSummaryCorrectCount = [(THWReviewSummaryLayoutDelegate *)self->_delegate reviewSummaryCorrectCount];
+  -[TSWPStorage replaceCharactersInRange:withString:undoTransaction:](self->_summaryStorage, "replaceCharactersInRange:withString:undoTransaction:", 0, -[TSWPStorage length](self->_summaryStorage, "length"), +[NSString stringWithFormat:](NSString, "stringWithFormat:", [THBundle() localizedStringForKey:@"%lu out of %lu Answers Correct" value:&stru_471858 table:0], reviewSummaryCorrectCount, reviewSummaryQuestionCount), 0);
+  if (reviewSummaryCorrectCount == reviewSummaryQuestionCount)
   {
     v5 = @"Congratulations!\nYou’ve successfully completed this review.";
   }
@@ -165,16 +165,16 @@
   [(THWReviewSummaryLayout *)self invalidateChildren];
 }
 
-- (id)controlContainerChildInfosForLayout:(id)a3
+- (id)controlContainerChildInfosForLayout:(id)layout
 {
-  if ([a3 tag] == &dword_4 + 2)
+  if ([layout tag] == &dword_4 + 2)
   {
     checkingAnswerStorage = self->_checkingAnswerStorage;
 
     return [NSArray arrayWithObject:checkingAnswerStorage];
   }
 
-  else if ([a3 tag] == &dword_4 + 3)
+  else if ([layout tag] == &dword_4 + 3)
   {
     return [NSArray arrayWithObjects:self->_summaryStorage, self->_instructionalStorage, 0];
   }
@@ -185,15 +185,15 @@
   }
 }
 
-- (double)stackedControlContainerWidth:(id)a3
+- (double)stackedControlContainerWidth:(id)width
 {
-  v3 = [(THWReviewSummaryLayout *)self geometry];
+  geometry = [(THWReviewSummaryLayout *)self geometry];
 
-  [v3 size];
+  [geometry size];
   return result;
 }
 
-- (CGPoint)stackedControlContainerOrigin:(id)a3
+- (CGPoint)stackedControlContainerOrigin:(id)origin
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -202,7 +202,7 @@
   return result;
 }
 
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets
 {
   v3 = 13.0;
   v4 = 15.0;

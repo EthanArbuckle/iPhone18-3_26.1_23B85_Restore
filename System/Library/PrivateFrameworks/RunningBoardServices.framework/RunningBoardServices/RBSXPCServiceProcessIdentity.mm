@@ -1,28 +1,28 @@
 @interface RBSXPCServiceProcessIdentity
-- (BOOL)_matchesIdentity:(id)a3;
+- (BOOL)_matchesIdentity:(id)identity;
 - (BOOL)inheritsCoalitionBand;
-- (BOOL)isEqualToIdentity:(id)a3;
+- (BOOL)isEqualToIdentity:(id)identity;
 - (BOOL)isExtension;
 - (BOOL)isExternal;
 - (BOOL)isMultiInstanceExtension;
 - (BOOL)supportsLaunchingDirectly;
-- (RBSXPCServiceProcessIdentity)initWithDecodeFromJob:(id)a3 uuid:(id)a4;
-- (RBSXPCServiceProcessIdentity)initWithRBSXPCCoder:(id)a3;
+- (RBSXPCServiceProcessIdentity)initWithDecodeFromJob:(id)job uuid:(id)uuid;
+- (RBSXPCServiceProcessIdentity)initWithRBSXPCCoder:(id)coder;
 - (id)encodeForJob;
 - (id)hostIdentifier;
 - (id)hostIdentity;
 - (id)xpcServiceIdentifier;
 - (unsigned)defaultManageFlags;
 - (void)encodeForJob;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSXPCServiceProcessIdentity
 
 - (BOOL)isExtension
 {
-  v2 = [(RBSXPCServiceIdentity *)self->_serviceIdentity definition];
-  v3 = [v2 variant] > 1;
+  definition = [(RBSXPCServiceIdentity *)self->_serviceIdentity definition];
+  v3 = [definition variant] > 1;
 
   return v3;
 }
@@ -36,9 +36,9 @@
   }
 
   v3 = defaultManageFlags___xpcserviceUnmanagedSet;
-  v4 = [(RBSXPCServiceIdentity *)self->_serviceIdentity definition];
-  v5 = [v4 identifier];
-  LODWORD(v3) = [v3 containsObject:v5];
+  definition = [(RBSXPCServiceIdentity *)self->_serviceIdentity definition];
+  identifier = [definition identifier];
+  LODWORD(v3) = [v3 containsObject:identifier];
 
   if (v3)
   {
@@ -57,29 +57,29 @@
 
   else
   {
-    v10 = [(RBSXPCServiceIdentity *)self->_serviceIdentity host];
-    v11 = [v10 identity];
-    v12 = [v11 defaultManageFlags];
+    host = [(RBSXPCServiceIdentity *)self->_serviceIdentity host];
+    identity = [host identity];
+    defaultManageFlags = [identity defaultManageFlags];
 
     v13 = *MEMORY[0x1E69E9840];
-    return v12;
+    return defaultManageFlags;
   }
 }
 
 - (id)hostIdentifier
 {
-  v2 = [(RBSXPCServiceIdentity *)self->_serviceIdentity host];
-  v3 = [v2 identifier];
+  host = [(RBSXPCServiceIdentity *)self->_serviceIdentity host];
+  identifier = [host identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)xpcServiceIdentifier
 {
-  v2 = [(RBSXPCServiceIdentity *)self->_serviceIdentity definition];
-  v3 = [v2 identifier];
+  definition = [(RBSXPCServiceIdentity *)self->_serviceIdentity definition];
+  identifier = [definition identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)encodeForJob
@@ -93,34 +93,34 @@
     xpc_dictionary_set_int64(empty, "p", pid);
   }
 
-  v5 = [(RBSXPCServiceProcessIdentity *)self hostIdentifier];
-  v6 = [v5 pid];
+  hostIdentifier = [(RBSXPCServiceProcessIdentity *)self hostIdentifier];
+  v6 = [hostIdentifier pid];
 
   if (v6)
   {
     xpc_dictionary_set_int64(empty, "h", v6);
   }
 
-  v7 = [(RBSXPCServiceProcessIdentity *)self hostIdentity];
-  v8 = [v7 uuid];
+  hostIdentity = [(RBSXPCServiceProcessIdentity *)self hostIdentity];
+  uuid = [hostIdentity uuid];
 
-  if (v8)
+  if (uuid)
   {
     *uuid = 0;
     v24 = 0;
-    [v8 getUUIDBytes:uuid];
+    [uuid getUUIDBytes:uuid];
     xpc_dictionary_set_uuid(empty, "hu", uuid);
   }
 
-  v9 = [(RBSXPCServiceIdentity *)self->_serviceIdentity host];
-  v10 = [v9 identity];
+  host = [(RBSXPCServiceIdentity *)self->_serviceIdentity host];
+  identity = [host identity];
 
-  if (v10)
+  if (identity)
   {
-    v11 = [v10 encodeForJob];
-    if (v11)
+    encodeForJob = [identity encodeForJob];
+    if (encodeForJob)
     {
-      xpc_dictionary_set_value(empty, "H", v11);
+      xpc_dictionary_set_value(empty, "H", encodeForJob);
     }
 
     else
@@ -128,38 +128,38 @@
       v12 = rbs_process_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        [(RBSXPCServiceProcessIdentity *)v10 encodeForJob];
+        [(RBSXPCServiceProcessIdentity *)identity encodeForJob];
       }
     }
   }
 
-  v13 = [(RBSXPCServiceProcessIdentity *)self xpcServiceIdentifier];
-  v14 = [v13 UTF8String];
+  xpcServiceIdentifier = [(RBSXPCServiceProcessIdentity *)self xpcServiceIdentifier];
+  uTF8String = [xpcServiceIdentifier UTF8String];
 
-  if (v14)
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(empty, "i", v14);
+    xpc_dictionary_set_string(empty, "i", uTF8String);
   }
 
-  v15 = [(RBSXPCServiceProcessIdentity *)self personaString];
-  v16 = [v15 UTF8String];
+  personaString = [(RBSXPCServiceProcessIdentity *)self personaString];
+  uTF8String2 = [personaString UTF8String];
 
-  if (v16)
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(empty, "o", v16);
+    xpc_dictionary_set_string(empty, "o", uTF8String2);
   }
 
-  v17 = [(RBSXPCServiceProcessIdentity *)self validationToken];
-  v18 = v17;
-  if (v17)
+  validationToken = [(RBSXPCServiceProcessIdentity *)self validationToken];
+  v18 = validationToken;
+  if (validationToken)
   {
-    xpc_dictionary_set_data(empty, "v", [v17 bytes], objc_msgSend(v17, "length"));
+    xpc_dictionary_set_data(empty, "v", [validationToken bytes], objc_msgSend(validationToken, "length"));
   }
 
-  v19 = [(RBSXPCServiceIdentity *)self->_serviceIdentity definition];
-  v20 = [v19 variant];
+  definition = [(RBSXPCServiceIdentity *)self->_serviceIdentity definition];
+  variant = [definition variant];
 
-  xpc_dictionary_set_int64(empty, "r", v20);
+  xpc_dictionary_set_int64(empty, "r", variant);
   v21 = *MEMORY[0x1E69E9840];
 
   return empty;
@@ -167,16 +167,16 @@
 
 - (id)hostIdentity
 {
-  v2 = [(RBSXPCServiceIdentity *)self->_serviceIdentity host];
-  v3 = [v2 identity];
+  host = [(RBSXPCServiceIdentity *)self->_serviceIdentity host];
+  identity = [host identity];
 
-  return v3;
+  return identity;
 }
 
 - (BOOL)isExternal
 {
-  v2 = [(RBSXPCServiceIdentity *)self->_serviceIdentity definition];
-  v3 = [v2 variant] == 3;
+  definition = [(RBSXPCServiceIdentity *)self->_serviceIdentity definition];
+  v3 = [definition variant] == 3;
 
   return v3;
 }
@@ -188,8 +188,8 @@
     return 0;
   }
 
-  v3 = [(RBSXPCServiceIdentity *)self->_serviceIdentity uuid];
-  v4 = v3 != 0;
+  uuid = [(RBSXPCServiceIdentity *)self->_serviceIdentity uuid];
+  v4 = uuid != 0;
 
   return v4;
 }
@@ -208,11 +208,11 @@ uint64_t __50__RBSXPCServiceProcessIdentity_defaultManageFlags__block_invoke()
     return 0;
   }
 
-  v3 = [(RBSXPCServiceProcessIdentity *)self hostIdentity];
+  hostIdentity = [(RBSXPCServiceProcessIdentity *)self hostIdentity];
   v4 = +[RBSProcessHandle currentProcess];
-  v5 = [v4 identity];
-  v6 = v5;
-  if (v3 == v5)
+  identity = [v4 identity];
+  v6 = identity;
+  if (hostIdentity == identity)
   {
     v7 = 1;
   }
@@ -220,9 +220,9 @@ uint64_t __50__RBSXPCServiceProcessIdentity_defaultManageFlags__block_invoke()
   else
   {
     v7 = 0;
-    if (v3 && v5)
+    if (hostIdentity && identity)
     {
-      v7 = [v3 isEqual:v5];
+      v7 = [hostIdentity isEqual:identity];
     }
   }
 
@@ -237,23 +237,23 @@ uint64_t __50__RBSXPCServiceProcessIdentity_defaultManageFlags__block_invoke()
     return 0;
   }
 
-  v3 = [(RBSXPCServiceIdentity *)serviceIdentity definition];
-  v4 = [v3 variant] == 1 && objc_msgSend(v3, "scope") == 1;
+  definition = [(RBSXPCServiceIdentity *)serviceIdentity definition];
+  v4 = [definition variant] == 1 && objc_msgSend(definition, "scope") == 1;
 
   return v4;
 }
 
-- (RBSXPCServiceProcessIdentity)initWithDecodeFromJob:(id)a3 uuid:(id)a4
+- (RBSXPCServiceProcessIdentity)initWithDecodeFromJob:(id)job uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
-  string = xpc_dictionary_get_string(v6, "i");
+  jobCopy = job;
+  uuidCopy = uuid;
+  string = xpc_dictionary_get_string(jobCopy, "i");
   if (string)
   {
     v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
-    int64 = xpc_dictionary_get_int64(v6, "p");
-    v9 = xpc_dictionary_get_int64(v6, "h");
-    uuid = xpc_dictionary_get_uuid(v6, "hu");
+    int64 = xpc_dictionary_get_int64(jobCopy, "p");
+    v9 = xpc_dictionary_get_int64(jobCopy, "h");
+    uuid = xpc_dictionary_get_uuid(jobCopy, "hu");
     if (uuid)
     {
       v11 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:uuid];
@@ -264,7 +264,7 @@ uint64_t __50__RBSXPCServiceProcessIdentity_defaultManageFlags__block_invoke()
       v11 = 0;
     }
 
-    v13 = xpc_dictionary_get_value(v6, "H");
+    v13 = xpc_dictionary_get_value(jobCopy, "H");
     if (v13)
     {
       v14 = [RBSProcessIdentity decodeFromJob:v13 uuid:v11];
@@ -275,9 +275,9 @@ uint64_t __50__RBSXPCServiceProcessIdentity_defaultManageFlags__block_invoke()
       v14 = 0;
     }
 
-    v26 = xpc_dictionary_get_int64(v6, "e");
-    v25 = xpc_dictionary_get_int64(v6, "r");
-    v15 = xpc_dictionary_get_string(v6, "o");
+    v26 = xpc_dictionary_get_int64(jobCopy, "e");
+    v25 = xpc_dictionary_get_int64(jobCopy, "r");
+    v15 = xpc_dictionary_get_string(jobCopy, "o");
     if (v15)
     {
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v15];
@@ -289,8 +289,8 @@ uint64_t __50__RBSXPCServiceProcessIdentity_defaultManageFlags__block_invoke()
     }
 
     length = 0;
-    data = xpc_dictionary_get_data(v6, "v", &length);
-    v17 = v7;
+    data = xpc_dictionary_get_data(jobCopy, "v", &length);
+    v17 = uuidCopy;
     if (data)
     {
       v18 = objc_alloc(MEMORY[0x1E695DEF0]);
@@ -315,45 +315,45 @@ uint64_t __50__RBSXPCServiceProcessIdentity_defaultManageFlags__block_invoke()
     }
 
     v22 = [RBSXPCServiceDefinition definitionWithIdentifier:v29 variant:v25 scope:v20];
-    v7 = v17;
+    uuidCopy = v17;
     v23 = [RBSXPCServiceIdentity identityWithDefinition:v22 sessionID:0 host:v19 UUID:v17 persona:v27 validationToken:data];
     self = [(RBSXPCServiceProcessIdentity *)self _initWithXPCServiceID:v23 pid:int64 auid:v26];
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_serviceIdentity forKey:@"_serviceIdentity"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_serviceIdentity forKey:@"_serviceIdentity"];
   if (self->super._pid >= 1)
   {
-    [v4 encodeInt64:? forKey:?];
+    [coderCopy encodeInt64:? forKey:?];
   }
 }
 
-- (RBSXPCServiceProcessIdentity)initWithRBSXPCCoder:(id)a3
+- (RBSXPCServiceProcessIdentity)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_serviceIdentity"];
-  v6 = [v4 decodeInt64ForKey:@"_pid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_serviceIdentity"];
+  v6 = [coderCopy decodeInt64ForKey:@"_pid"];
 
   v7 = [(RBSXPCServiceProcessIdentity *)self _initWithXPCServiceID:v5 pid:v6 auid:0];
   return v7;
 }
 
-- (BOOL)isEqualToIdentity:(id)a3
+- (BOOL)isEqualToIdentity:(id)identity
 {
-  v4 = a3;
-  if (v4 == self)
+  identityCopy = identity;
+  if (identityCopy == self)
   {
     v6 = 1;
   }
@@ -361,15 +361,15 @@ uint64_t __50__RBSXPCServiceProcessIdentity_defaultManageFlags__block_invoke()
   else
   {
     v5 = [(RBSProcessIdentity *)self hash];
-    v6 = v5 == [(RBSProcessIdentity *)v4 hash]&& [(RBSXPCServiceProcessIdentity *)self _matchesIdentity:v4];
+    v6 = v5 == [(RBSProcessIdentity *)identityCopy hash]&& [(RBSXPCServiceProcessIdentity *)self _matchesIdentity:identityCopy];
   }
 
   return v6;
 }
 
-- (BOOL)_matchesIdentity:(id)a3
+- (BOOL)_matchesIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
   {
@@ -377,7 +377,7 @@ uint64_t __50__RBSXPCServiceProcessIdentity_defaultManageFlags__block_invoke()
   }
 
   serviceIdentity = self->_serviceIdentity;
-  v9 = v4[7];
+  v9 = identityCopy[7];
   if (serviceIdentity == v9)
   {
     v6 = 1;
@@ -404,7 +404,7 @@ LABEL_3:
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_fault_impl(&dword_18E8AD000, log, OS_LOG_TYPE_FAULT, "error encoding host identity for job: %@ of %@", &v4, 0x16u);

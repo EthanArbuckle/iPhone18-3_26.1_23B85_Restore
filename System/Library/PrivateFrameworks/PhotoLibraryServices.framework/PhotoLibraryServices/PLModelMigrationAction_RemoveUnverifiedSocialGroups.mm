@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_RemoveUnverifiedSocialGroups
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RemoveUnverifiedSocialGroups
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v105 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v66 = 0;
   v67 = &v66;
   v68 = 0x2020000000;
@@ -22,8 +22,8 @@
   v8 = +[PLGraphNode entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"primaryLabelCode", 1000];
-  [v9 setPredicate:v10];
+  1000 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"primaryLabelCode", 1000];
+  [v9 setPredicate:1000];
 
   v54 = 0;
   v55 = &v54;
@@ -38,7 +38,7 @@
   v52[1] = 3221225472;
   v52[2] = __99__PLModelMigrationAction_RemoveUnverifiedSocialGroups_performActionWithManagedObjectContext_error___block_invoke;
   v52[3] = &unk_1E7575B30;
-  v53 = v6;
+  v53 = contextCopy;
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
   v51[2] = __99__PLModelMigrationAction_RemoveUnverifiedSocialGroups_performActionWithManagedObjectContext_error___block_invoke_2;
@@ -71,8 +71,8 @@
       goto LABEL_16;
     }
 
-    v20 = [(PLModelMigrationActionCore *)self logger];
-    v21 = v20 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v21 = logger == 0;
 
     if (!v21)
     {
@@ -109,9 +109,9 @@
       memset(buf, 0, sizeof(buf));
       v22 = PLMigrationGetLog();
       os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
-      v23 = [v55[5] totalUnitCount];
+      totalUnitCount = [v55[5] totalUnitCount];
       v70 = 134217984;
-      v71 = v23;
+      v71 = totalUnitCount;
       LODWORD(v44) = 12;
       v24 = _os_log_send_and_compose_impl();
 
@@ -124,9 +124,9 @@
     v35 = PLMigrationGetLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v55[5] totalUnitCount];
+      totalUnitCount2 = [v55[5] totalUnitCount];
       *buf = 134217984;
-      *&buf[4] = v36;
+      *&buf[4] = totalUnitCount2;
       _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_DEFAULT, "Removed %lld rejected member labels.", buf, 0xCu);
     }
 
@@ -144,8 +144,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v28 = [(PLModelMigrationActionCore *)self logger];
-  v29 = v28 == 0;
+  logger2 = [(PLModelMigrationActionCore *)self logger];
+  v29 = logger2 == 0;
 
   if (v29)
   {
@@ -220,10 +220,10 @@ LABEL_8:
 LABEL_16:
   v40 = v67[3];
   v41 = v61[5];
-  if (v40 != 1 && a4)
+  if (v40 != 1 && error)
   {
     v41 = v41;
-    *a4 = v41;
+    *error = v41;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];

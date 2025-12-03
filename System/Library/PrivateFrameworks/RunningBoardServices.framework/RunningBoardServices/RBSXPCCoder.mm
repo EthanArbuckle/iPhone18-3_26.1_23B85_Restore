@@ -1,28 +1,28 @@
 @interface RBSXPCCoder
 + (id)coder;
-+ (id)coderWithMessage:(id)a3;
-+ (id)rbs_testEncode:(id)a3 andDecodeOfExpectedClass:(Class)a4;
-- (BOOL)containsValueForKey:(id)a3;
-- (BOOL)decodeBoolForKey:(id)a3;
-- (RBSXPCCoder)initWithMessage:(id)a3;
-- (RBSXPCCoder)initWithRBSXPCCoder:(id)a3;
-- (double)decodeDoubleForKey:(id)a3;
++ (id)coderWithMessage:(id)message;
++ (id)rbs_testEncode:(id)encode andDecodeOfExpectedClass:(Class)class;
+- (BOOL)containsValueForKey:(id)key;
+- (BOOL)decodeBoolForKey:(id)key;
+- (RBSXPCCoder)initWithMessage:(id)message;
+- (RBSXPCCoder)initWithRBSXPCCoder:(id)coder;
+- (double)decodeDoubleForKey:(id)key;
 - (id)_finishCoding;
-- (id)_implicitDecodeXPCObjectForKey:(id)a3;
-- (id)decodeDictionaryOfClass:(Class)a3 forKey:(id)a4;
-- (id)decodeStringForKey:(id)a3;
-- (id)decodeXPCObjectOfType:(_xpc_type_s *)a3 forKey:(id)a4;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (unint64_t)decodeUInt64ForKey:(id)a3;
-- (void)_removeValueForKey:(id)a3;
+- (id)_implicitDecodeXPCObjectForKey:(id)key;
+- (id)decodeDictionaryOfClass:(Class)class forKey:(id)key;
+- (id)decodeStringForKey:(id)key;
+- (id)decodeXPCObjectOfType:(_xpc_type_s *)type forKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (unint64_t)decodeUInt64ForKey:(id)key;
+- (void)_removeValueForKey:(id)key;
 - (void)dealloc;
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4;
-- (void)encodeCollection:(id)a3 forKey:(id)a4;
-- (void)encodeDictionary:(id)a3 forKey:(id)a4;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
-- (void)encodeUInt64:(unint64_t)a3 forKey:(id)a4;
+- (void)encodeBool:(BOOL)bool forKey:(id)key;
+- (void)encodeCollection:(id)collection forKey:(id)key;
+- (void)encodeDictionary:(id)dictionary forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
+- (void)encodeUInt64:(unint64_t)int64 forKey:(id)key;
 @end
 
 @implementation RBSXPCCoder
@@ -34,10 +34,10 @@
     archiver = self->_archiver;
     if (archiver)
     {
-      v4 = [(NSKeyedArchiver *)archiver encodedData];
-      if ([v4 length])
+      encodedData = [(NSKeyedArchiver *)archiver encodedData];
+      if ([encodedData length])
       {
-        xpc_dictionary_set_data(self->_message, "bsx_archive", [v4 bytes], objc_msgSend(v4, "length"));
+        xpc_dictionary_set_data(self->_message, "bsx_archive", [encodedData bytes], objc_msgSend(encodedData, "length"));
       }
 
       v5 = self->_archiver;
@@ -53,31 +53,31 @@
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_0_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
 + (id)coder
 {
-  v2 = [[a1 alloc] initWithMessage:0];
+  v2 = [[self alloc] initWithMessage:0];
 
   return v2;
 }
 
-+ (id)coderWithMessage:(id)a3
++ (id)coderWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMessage:v4];
+  messageCopy = message;
+  v5 = [[self alloc] initWithMessage:messageCopy];
 
   return v5;
 }
 
-- (RBSXPCCoder)initWithMessage:(id)a3
+- (RBSXPCCoder)initWithMessage:(id)message
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && MEMORY[0x193AD5A20](v5) != MEMORY[0x1E69E9E80])
+  messageCopy = message;
+  v6 = messageCopy;
+  if (messageCopy && MEMORY[0x193AD5A20](messageCopy) != MEMORY[0x1E69E9E80])
   {
     [RBSXPCCoder initWithMessage:];
   }
@@ -91,7 +91,7 @@
     v7->_finalized = 0;
     if (v6)
     {
-      objc_storeStrong(&v7->_message, a3);
+      objc_storeStrong(&v7->_message, message);
       v9 = xpc_dictionary_get_remote_connection(v6);
       v10 = 16;
     }
@@ -109,65 +109,65 @@
   return v8;
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   if (RBSAtomicGetFlag(&self->_finalized))
   {
     [RBSXPCCoder encodeObject:forKey:];
-    if (v6)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
   }
 
-  else if (v6)
+  else if (keyCopy)
   {
     goto LABEL_3;
   }
 
   [RBSXPCCoder encodeObject:forKey:];
 LABEL_3:
-  if (v7)
+  if (objectCopy)
   {
-    _RBSXPCEncodeObjectForKey(self, v7, v6);
+    _RBSXPCEncodeObjectForKey(self, objectCopy, keyCopy);
   }
 }
 
-- (void)encodeCollection:(id)a3 forKey:(id)a4
+- (void)encodeCollection:(id)collection forKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7 && (_NSIsNSArray() & 1) == 0 && (_NSIsNSSet() & 1) == 0 && (_NSIsNSOrderedSet() & 1) == 0)
+  collectionCopy = collection;
+  keyCopy = key;
+  if (collectionCopy && (_NSIsNSArray() & 1) == 0 && (_NSIsNSSet() & 1) == 0 && (_NSIsNSOrderedSet() & 1) == 0)
   {
-    [RBSXPCCoder encodeCollection:v7 forKey:?];
+    [RBSXPCCoder encodeCollection:collectionCopy forKey:?];
   }
 
-  [(RBSXPCCoder *)self encodeObject:v7 forKey:v6];
+  [(RBSXPCCoder *)self encodeObject:collectionCopy forKey:keyCopy];
 }
 
-- (void)encodeDictionary:(id)a3 forKey:(id)a4
+- (void)encodeDictionary:(id)dictionary forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v10;
-  v8 = v6;
-  if (v10)
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v7 = dictionaryCopy;
+  v8 = keyCopy;
+  if (dictionaryCopy)
   {
     v9 = _NSIsNSDictionary();
-    v7 = v10;
+    v7 = dictionaryCopy;
     if ((v9 & 1) == 0)
     {
       [RBSXPCCoder encodeDictionary:forKey:];
-      v7 = v10;
+      v7 = dictionaryCopy;
     }
   }
 
   [(RBSXPCCoder *)self encodeObject:v7 forKey:v8];
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
   codingContext = self->_codingContext;
   if (!codingContext)
@@ -176,19 +176,19 @@ LABEL_3:
   }
 
   v9 = codingContext;
-  v7 = a4;
-  v8 = [v7 UTF8String];
+  keyCopy = key;
+  uTF8String = [keyCopy UTF8String];
 
-  RBSSerializeDoubleToXPCDictionaryWithKey(v9, v8, a3);
+  RBSSerializeDoubleToXPCDictionaryWithKey(v9, uTF8String, double);
 }
 
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4
+- (void)encodeBool:(BOOL)bool forKey:(id)key
 {
-  v7 = a4;
-  v8 = [a4 UTF8String];
-  if (v8)
+  keyCopy = key;
+  uTF8String = [key UTF8String];
+  if (uTF8String)
   {
-    v9 = v8;
+    v9 = uTF8String;
     codingContext = self->_codingContext;
     if (!codingContext)
     {
@@ -196,17 +196,17 @@ LABEL_3:
     }
 
     v11 = codingContext;
-    xpc_dictionary_set_BOOL(v11, v9, a3);
+    xpc_dictionary_set_BOOL(v11, v9, bool);
   }
 }
 
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key
 {
-  v7 = a4;
-  v8 = [a4 UTF8String];
-  if (v8)
+  keyCopy = key;
+  uTF8String = [key UTF8String];
+  if (uTF8String)
   {
-    v9 = v8;
+    v9 = uTF8String;
     codingContext = self->_codingContext;
     if (!codingContext)
     {
@@ -214,17 +214,17 @@ LABEL_3:
     }
 
     v11 = codingContext;
-    xpc_dictionary_set_int64(v11, v9, a3);
+    xpc_dictionary_set_int64(v11, v9, int64);
   }
 }
 
-- (void)encodeUInt64:(unint64_t)a3 forKey:(id)a4
+- (void)encodeUInt64:(unint64_t)int64 forKey:(id)key
 {
-  v7 = a4;
-  v8 = [a4 UTF8String];
-  if (v8)
+  keyCopy = key;
+  uTF8String = [key UTF8String];
+  if (uTF8String)
   {
-    v9 = v8;
+    v9 = uTF8String;
     codingContext = self->_codingContext;
     if (!codingContext)
     {
@@ -232,11 +232,11 @@ LABEL_3:
     }
 
     v11 = codingContext;
-    xpc_dictionary_set_uint64(v11, v9, a3);
+    xpc_dictionary_set_uint64(v11, v9, int64);
   }
 }
 
-- (BOOL)containsValueForKey:(id)a3
+- (BOOL)containsValueForKey:(id)key
 {
   codingContext = self->_codingContext;
   if (!codingContext)
@@ -245,27 +245,27 @@ LABEL_3:
   }
 
   v5 = codingContext;
-  v6 = a3;
-  v7 = [v6 UTF8String];
+  keyCopy = key;
+  uTF8String = [keyCopy UTF8String];
 
-  v8 = RBSXPCDictionaryGetValue(v5, v7, 0);
+  v8 = RBSXPCDictionaryGetValue(v5, uTF8String, 0);
 
   return v8 != 0;
 }
 
-- (id)decodeDictionaryOfClass:(Class)a3 forKey:(id)a4
+- (id)decodeDictionaryOfClass:(Class)class forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v7 = objc_opt_class();
-  v8 = _BSXPCDecodeObjectForKey(self, v6, v7, a3);
+  v8 = _BSXPCDecodeObjectForKey(self, keyCopy, v7, class);
 
   return v8;
 }
 
-- (id)decodeXPCObjectOfType:(_xpc_type_s *)a3 forKey:(id)a4
+- (id)decodeXPCObjectOfType:(_xpc_type_s *)type forKey:(id)key
 {
-  v6 = a4;
-  if (a3)
+  keyCopy = key;
+  if (type)
   {
     class4NSXPC = xpc_get_class4NSXPC();
   }
@@ -276,12 +276,12 @@ LABEL_3:
     v8 = class4NSXPC;
   }
 
-  v9 = [(RBSXPCCoder *)self decodeObjectOfClass:class4NSXPC forKey:v6];
+  v9 = [(RBSXPCCoder *)self decodeObjectOfClass:class4NSXPC forKey:keyCopy];
 
   return v9;
 }
 
-- (id)decodeStringForKey:(id)a3
+- (id)decodeStringForKey:(id)key
 {
   codingContext = self->_codingContext;
   if (!codingContext)
@@ -290,10 +290,10 @@ LABEL_3:
   }
 
   v5 = codingContext;
-  v6 = a3;
-  v7 = [v6 UTF8String];
+  keyCopy = key;
+  uTF8String = [keyCopy UTF8String];
 
-  v8 = RBSXPCDictionaryGetValue(v5, v7, MEMORY[0x1E69E9F10]);
+  v8 = RBSXPCDictionaryGetValue(v5, uTF8String, MEMORY[0x1E69E9F10]);
 
   if (v8)
   {
@@ -308,7 +308,7 @@ LABEL_3:
   return v9;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
   codingContext = self->_codingContext;
   if (!codingContext)
@@ -317,20 +317,20 @@ LABEL_3:
   }
 
   v5 = codingContext;
-  v6 = a3;
-  v7 = [v6 UTF8String];
+  keyCopy = key;
+  uTF8String = [keyCopy UTF8String];
 
-  v8 = RBSDeserializeDoubleFromXPCDictionaryWithKey(v5, v7);
+  v8 = RBSDeserializeDoubleFromXPCDictionaryWithKey(v5, uTF8String);
   return v8;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
-  if (v6)
+  keyCopy = key;
+  uTF8String = [key UTF8String];
+  if (uTF8String)
   {
-    v7 = v6;
+    v7 = uTF8String;
     codingContext = self->_codingContext;
     if (!codingContext)
     {
@@ -340,16 +340,16 @@ LABEL_3:
     v9 = codingContext;
     v10 = xpc_dictionary_get_BOOL(v9, v7);
 
-    LOBYTE(v6) = v10;
+    LOBYTE(uTF8String) = v10;
   }
 
-  return v6;
+  return uTF8String;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
-  v5 = a3;
-  result = [a3 UTF8String];
+  keyCopy = key;
+  result = [key UTF8String];
   if (result)
   {
     v7 = result;
@@ -368,10 +368,10 @@ LABEL_3:
   return result;
 }
 
-- (unint64_t)decodeUInt64ForKey:(id)a3
+- (unint64_t)decodeUInt64ForKey:(id)key
 {
-  v5 = a3;
-  result = [a3 UTF8String];
+  keyCopy = key;
+  result = [key UTF8String];
   if (result)
   {
     v7 = result;
@@ -390,9 +390,9 @@ LABEL_3:
   return result;
 }
 
-- (void)_removeValueForKey:(id)a3
+- (void)_removeValueForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     codingContext = self->_codingContext;
     if (!codingContext)
@@ -401,20 +401,20 @@ LABEL_3:
     }
 
     v5 = codingContext;
-    v6 = a3;
-    v7 = [v6 UTF8String];
+    keyCopy = key;
+    uTF8String = [keyCopy UTF8String];
 
     v8 = v5;
     xdict = v8;
-    if (v7)
+    if (uTF8String)
     {
       if (v8)
       {
-        v9 = xpc_dictionary_get_value(v8, v7);
+        v9 = xpc_dictionary_get_value(v8, uTF8String);
 
         if (v9)
         {
-          xpc_dictionary_set_value(xdict, v7, 0);
+          xpc_dictionary_set_value(xdict, uTF8String, 0);
         }
       }
     }
@@ -426,7 +426,7 @@ LABEL_3:
   }
 }
 
-- (id)_implicitDecodeXPCObjectForKey:(id)a3
+- (id)_implicitDecodeXPCObjectForKey:(id)key
 {
   codingContext = self->_codingContext;
   if (!codingContext)
@@ -435,10 +435,10 @@ LABEL_3:
   }
 
   v5 = codingContext;
-  v6 = a3;
-  v7 = [v6 UTF8String];
+  keyCopy = key;
+  uTF8String = [keyCopy UTF8String];
 
-  v8 = RBSXPCDictionaryGetValue(v5, v7, 0);
+  v8 = RBSXPCDictionaryGetValue(v5, uTF8String, 0);
 
   if (v8 && (NSClassFromString(&cfstr_OsXpcObject.isa), v9 = objc_claimAutoreleasedReturnValue(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -453,24 +453,24 @@ LABEL_3:
   return v10;
 }
 
-- (RBSXPCCoder)initWithRBSXPCCoder:(id)a3
+- (RBSXPCCoder)initWithRBSXPCCoder:(id)coder
 {
-  v4 = [a3 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"message"];
+  v4 = [coder decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"message"];
   v5 = [(RBSXPCCoder *)self initWithMessage:v4];
 
   return v5;
 }
 
-+ (id)rbs_testEncode:(id)a3 andDecodeOfExpectedClass:(Class)a4
++ (id)rbs_testEncode:(id)encode andDecodeOfExpectedClass:(Class)class
 {
-  v5 = a3;
+  encodeCopy = encode;
   v6 = +[RBSXPCCoder coder];
-  [v6 encodeObject:v5 forKey:@"RBSUnitTesting"];
+  [v6 encodeObject:encodeCopy forKey:@"RBSUnitTesting"];
 
-  v7 = [v6 createMessage];
-  v8 = [RBSXPCCoder coderWithMessage:v7];
+  createMessage = [v6 createMessage];
+  v8 = [RBSXPCCoder coderWithMessage:createMessage];
 
-  v9 = [v8 decodeObjectOfClass:a4 forKey:@"RBSUnitTesting"];
+  v9 = [v8 decodeObjectOfClass:class forKey:@"RBSUnitTesting"];
 
   return v9;
 }

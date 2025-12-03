@@ -179,7 +179,7 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = __35__PowerUIUPOManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -207,9 +207,9 @@ uint64_t __35__PowerUIUPOManager_sharedInstance__block_invoke(uint64_t a1)
   {
     v3 = MEMORY[0x277CBEAA8];
     v4 = log;
-    v5 = [v3 date];
+    date = [v3 date];
     v7 = 138412290;
-    v8 = v5;
+    v8 = date;
     _os_log_impl(&dword_21B766000, v4, OS_LOG_TYPE_DEFAULT, "Data provider loaded: %@", &v7, 0xCu);
   }
 
@@ -225,13 +225,13 @@ uint64_t __35__PowerUIUPOManager_sharedInstance__block_invoke(uint64_t a1)
     [(UNUserNotificationCenter *)self->_userNotificationCenter removeAllDeliveredNotifications];
   }
 
-  v6 = [(PowerUIUPOManager *)self mitigationsEnabledNotificationRequest];
-  [(UNUserNotificationCenter *)self->_userNotificationCenter addNotificationRequest:v6 withCompletionHandler:0];
+  mitigationsEnabledNotificationRequest = [(PowerUIUPOManager *)self mitigationsEnabledNotificationRequest];
+  [(UNUserNotificationCenter *)self->_userNotificationCenter addNotificationRequest:mitigationsEnabledNotificationRequest withCompletionHandler:0];
   ADClientAddValueForScalarKey();
   [(NSUserDefaults *)self->_defaults setBool:1 forKey:@"bulletinPosted"];
   defaults = self->_defaults;
-  v5 = [(PowerUIUPOManager *)self upoTime];
-  [(NSUserDefaults *)defaults setObject:v5 forKey:@"upoTime"];
+  upoTime = [(PowerUIUPOManager *)self upoTime];
+  [(NSUserDefaults *)defaults setObject:upoTime forKey:@"upoTime"];
 }
 
 - (void)removeMitigationsEnabledNotification
@@ -325,8 +325,8 @@ uint64_t __55__PowerUIUPOManager_registerForWithdrawalNotifications__block_invok
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Bulletin requested", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [(PowerUIUPOManager *)self setUpoTime:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(PowerUIUPOManager *)self setUpoTime:date];
 
   v6 = 0;
   v5 = SBSSpringBoardBlockableServerPort();
@@ -345,8 +345,8 @@ uint64_t __55__PowerUIUPOManager_registerForWithdrawalNotifications__block_invok
   [v3 setBody:v5];
 
   [v3 setCategoryIdentifier:@"mitigations-enabled"];
-  v6 = [(PowerUIUPOManager *)self upoTime];
-  [v3 setDate:v6];
+  upoTime = [(PowerUIUPOManager *)self upoTime];
+  [v3 setDate:upoTime];
 
   [v3 setShouldSuppressScreenLightUp:1];
   v7 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.Battery/BATTERY_HEALTH_TITLE"];
@@ -356,9 +356,9 @@ uint64_t __55__PowerUIUPOManager_registerForWithdrawalNotifications__block_invok
   [v3 setIcon:v8];
 
   v9 = MEMORY[0x277CE1FC0];
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [v10 UUIDString];
-  v12 = [v9 requestWithIdentifier:v11 content:v3 trigger:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v12 = [v9 requestWithIdentifier:uUIDString content:v3 trigger:0];
 
   return v12;
 }

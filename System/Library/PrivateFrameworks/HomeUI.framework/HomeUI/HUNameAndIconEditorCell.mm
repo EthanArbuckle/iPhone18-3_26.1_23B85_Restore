@@ -1,26 +1,26 @@
 @interface HUNameAndIconEditorCell
-- (HUNameAndIconEditorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUNameAndIconEditorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HUNameAndIconEditorCellDelegate)delegate;
 - (UIFont)textFieldFont;
-- (void)_handleIconButtonTap:(id)a3;
+- (void)_handleIconButtonTap:(id)tap;
 - (void)_setupConstraints;
 - (void)_updateDisabled;
 - (void)_updateVariableTextFieldConstraints;
 - (void)prepareForReuse;
-- (void)setDisabled:(BOOL)a3;
-- (void)setHideIconButton:(BOOL)a3;
-- (void)setTextFieldFont:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setHideIconButton:(BOOL)button;
+- (void)setTextFieldFont:(id)font;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUNameAndIconEditorCell
 
-- (HUNameAndIconEditorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUNameAndIconEditorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v34.receiver = self;
   v34.super_class = HUNameAndIconEditorCell;
-  v4 = [(HUNameAndIconEditorCell *)&v34 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(HUNameAndIconEditorCell *)&v34 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D75D18]);
@@ -31,28 +31,28 @@
     v10 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], v7, v8, v9}];
     [(HUNameAndIconEditorCell *)v4 setContainerView:v10];
 
-    v11 = [(HUNameAndIconEditorCell *)v4 containerView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    containerView = [(HUNameAndIconEditorCell *)v4 containerView];
+    [containerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(HUNameAndIconEditorCell *)v4 contentView];
-    v13 = [(HUNameAndIconEditorCell *)v4 containerView];
-    [v12 addSubview:v13];
+    contentView = [(HUNameAndIconEditorCell *)v4 contentView];
+    containerView2 = [(HUNameAndIconEditorCell *)v4 containerView];
+    [contentView addSubview:containerView2];
 
     v14 = [[HUIconButton alloc] initWithFrame:v6, v7, v8, v9];
     [(HUNameAndIconEditorCell *)v4 setIconButton:v14];
 
-    v15 = [(HUNameAndIconEditorCell *)v4 iconButton];
-    [v15 addTarget:v4 action:sel__handleIconButtonTap_ forControlEvents:64];
+    iconButton = [(HUNameAndIconEditorCell *)v4 iconButton];
+    [iconButton addTarget:v4 action:sel__handleIconButtonTap_ forControlEvents:64];
 
-    v16 = [(HUNameAndIconEditorCell *)v4 iconButton];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    iconButton2 = [(HUNameAndIconEditorCell *)v4 iconButton];
+    [iconButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v17 = [(HUNameAndIconEditorCell *)v4 containerView];
-    v18 = [(HUNameAndIconEditorCell *)v4 iconButton];
-    [v17 addSubview:v18];
+    containerView3 = [(HUNameAndIconEditorCell *)v4 containerView];
+    iconButton3 = [(HUNameAndIconEditorCell *)v4 iconButton];
+    [containerView3 addSubview:iconButton3];
 
-    v19 = [(HUNameAndIconEditorCell *)v4 iconButton];
-    [v19 setContentMode:1];
+    iconButton4 = [(HUNameAndIconEditorCell *)v4 iconButton];
+    [iconButton4 setContentMode:1];
 
     v20 = [objc_alloc(MEMORY[0x277D75BB8]) initWithFrame:{v6, v7, v8, v9}];
     [(HUNameAndIconEditorCell *)v4 setTextField:v20];
@@ -61,30 +61,30 @@
     v22 = MEMORY[0x277D74300];
     [v21 scaledValueForValue:17.0];
     v23 = [v22 systemFontOfSize:? weight:?];
-    v24 = [(HUNameAndIconEditorCell *)v4 textField];
-    [v24 setFont:v23];
+    textField = [(HUNameAndIconEditorCell *)v4 textField];
+    [textField setFont:v23];
 
-    v25 = [(HUNameAndIconEditorCell *)v4 textField];
-    [v25 setReturnKeyType:9];
+    textField2 = [(HUNameAndIconEditorCell *)v4 textField];
+    [textField2 setReturnKeyType:9];
 
-    v26 = [(HUNameAndIconEditorCell *)v4 textField];
-    [v26 setClearButtonMode:1];
+    textField3 = [(HUNameAndIconEditorCell *)v4 textField];
+    [textField3 setClearButtonMode:1];
 
-    v27 = [(HUNameAndIconEditorCell *)v4 textField];
-    [v27 setAutocapitalizationType:1];
+    textField4 = [(HUNameAndIconEditorCell *)v4 textField];
+    [textField4 setAutocapitalizationType:1];
 
-    v28 = [(HUNameAndIconEditorCell *)v4 textField];
-    [v28 setContentVerticalAlignment:0];
+    textField5 = [(HUNameAndIconEditorCell *)v4 textField];
+    [textField5 setContentVerticalAlignment:0];
 
-    v29 = [(HUNameAndIconEditorCell *)v4 textField];
-    [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+    textField6 = [(HUNameAndIconEditorCell *)v4 textField];
+    [textField6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v30 = [(HUNameAndIconEditorCell *)v4 textField];
-    [v30 setAdjustsFontForContentSizeCategory:1];
+    textField7 = [(HUNameAndIconEditorCell *)v4 textField];
+    [textField7 setAdjustsFontForContentSizeCategory:1];
 
-    v31 = [(HUNameAndIconEditorCell *)v4 containerView];
-    v32 = [(HUNameAndIconEditorCell *)v4 textField];
-    [v31 addSubview:v32];
+    containerView4 = [(HUNameAndIconEditorCell *)v4 containerView];
+    textField8 = [(HUNameAndIconEditorCell *)v4 textField];
+    [containerView4 addSubview:textField8];
 
     [(HUNameAndIconEditorCell *)v4 setHideIconButton:0];
     [(HUNameAndIconEditorCell *)v4 _setupConstraints];
@@ -99,123 +99,123 @@
   v4.super_class = HUNameAndIconEditorCell;
   [(HUNameAndIconEditorCell *)&v4 prepareForReuse];
   [(HUNameAndIconEditorCell *)self setDisabled:0];
-  v3 = [(HUNameAndIconEditorCell *)self iconButton];
-  [v3 setHidden:0];
+  iconButton = [(HUNameAndIconEditorCell *)self iconButton];
+  [iconButton setHidden:0];
 }
 
 - (void)_setupConstraints
 {
   v54[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HUNameAndIconEditorCell *)self containerView];
-  v5 = [v4 leadingAnchor];
-  v6 = [(HUNameAndIconEditorCell *)self contentView];
-  v7 = [v6 leadingAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
-  [v3 addObject:v8];
+  array = [MEMORY[0x277CBEB18] array];
+  containerView = [(HUNameAndIconEditorCell *)self containerView];
+  leadingAnchor = [containerView leadingAnchor];
+  contentView = [(HUNameAndIconEditorCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v8];
 
-  v9 = [(HUNameAndIconEditorCell *)self containerView];
-  v10 = [v9 trailingAnchor];
-  v11 = [(HUNameAndIconEditorCell *)self contentView];
-  v12 = [v11 trailingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
-  [v3 addObject:v13];
+  containerView2 = [(HUNameAndIconEditorCell *)self containerView];
+  trailingAnchor = [containerView2 trailingAnchor];
+  contentView2 = [(HUNameAndIconEditorCell *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v13];
 
-  v14 = [(HUNameAndIconEditorCell *)self containerView];
-  v15 = [v14 topAnchor];
-  v16 = [(HUNameAndIconEditorCell *)self contentView];
-  v17 = [v16 topAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
-  v53 = v3;
-  [v3 addObject:v18];
+  containerView3 = [(HUNameAndIconEditorCell *)self containerView];
+  topAnchor = [containerView3 topAnchor];
+  contentView3 = [(HUNameAndIconEditorCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  v53 = array;
+  [array addObject:v18];
 
-  v19 = [(HUNameAndIconEditorCell *)self containerView];
-  v20 = [v19 bottomAnchor];
-  v21 = [(HUNameAndIconEditorCell *)self contentView];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
-  [v3 addObject:v23];
+  containerView4 = [(HUNameAndIconEditorCell *)self containerView];
+  bottomAnchor = [containerView4 bottomAnchor];
+  contentView4 = [(HUNameAndIconEditorCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v23];
 
-  v52 = [(HUNameAndIconEditorCell *)self iconButton];
-  v50 = [v52 leadingAnchor];
-  v51 = [(HUNameAndIconEditorCell *)self containerView];
-  v49 = [v51 leadingAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49 constant:10.0];
+  iconButton = [(HUNameAndIconEditorCell *)self iconButton];
+  leadingAnchor3 = [iconButton leadingAnchor];
+  containerView5 = [(HUNameAndIconEditorCell *)self containerView];
+  leadingAnchor4 = [containerView5 leadingAnchor];
+  v48 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:10.0];
   v54[0] = v48;
-  v47 = [(HUNameAndIconEditorCell *)self iconButton];
-  v46 = [v47 topAnchor];
-  v24 = [(HUNameAndIconEditorCell *)self containerView];
-  v25 = [v24 topAnchor];
-  v26 = [v46 constraintEqualToAnchor:v25 constant:10.0];
+  iconButton2 = [(HUNameAndIconEditorCell *)self iconButton];
+  topAnchor3 = [iconButton2 topAnchor];
+  containerView6 = [(HUNameAndIconEditorCell *)self containerView];
+  topAnchor4 = [containerView6 topAnchor];
+  v26 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:10.0];
   v54[1] = v26;
-  v27 = [(HUNameAndIconEditorCell *)self iconButton];
-  v28 = [v27 bottomAnchor];
-  v29 = [(HUNameAndIconEditorCell *)self containerView];
-  v30 = [v29 bottomAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30 constant:-10.0];
+  iconButton3 = [(HUNameAndIconEditorCell *)self iconButton];
+  bottomAnchor3 = [iconButton3 bottomAnchor];
+  containerView7 = [(HUNameAndIconEditorCell *)self containerView];
+  bottomAnchor4 = [containerView7 bottomAnchor];
+  v31 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-10.0];
   v54[2] = v31;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:3];
   [(HUNameAndIconEditorCell *)self setIconButtonConstraints:v32];
 
-  v33 = [(HUNameAndIconEditorCell *)self iconButton];
+  iconButton4 = [(HUNameAndIconEditorCell *)self iconButton];
   LODWORD(v34) = 1148846080;
-  [v33 setContentHuggingPriority:0 forAxis:v34];
+  [iconButton4 setContentHuggingPriority:0 forAxis:v34];
 
-  v35 = [(HUNameAndIconEditorCell *)self iconButton];
+  iconButton5 = [(HUNameAndIconEditorCell *)self iconButton];
   LODWORD(v36) = 1148846080;
-  [v35 setContentHuggingPriority:1 forAxis:v36];
+  [iconButton5 setContentHuggingPriority:1 forAxis:v36];
 
-  v37 = [(HUNameAndIconEditorCell *)self iconButton];
+  iconButton6 = [(HUNameAndIconEditorCell *)self iconButton];
   LODWORD(v38) = 1148846080;
-  [v37 setContentCompressionResistancePriority:0 forAxis:v38];
+  [iconButton6 setContentCompressionResistancePriority:0 forAxis:v38];
 
-  v39 = [(HUNameAndIconEditorCell *)self iconButtonConstraints];
-  [v53 addObjectsFromArray:v39];
+  iconButtonConstraints = [(HUNameAndIconEditorCell *)self iconButtonConstraints];
+  [v53 addObjectsFromArray:iconButtonConstraints];
 
   [(HUNameAndIconEditorCell *)self _updateVariableTextFieldConstraints];
-  v40 = [(HUNameAndIconEditorCell *)self textField];
-  v41 = [v40 trailingAnchor];
-  v42 = [(HUNameAndIconEditorCell *)self containerView];
-  v43 = [v42 layoutMarginsGuide];
-  v44 = [v43 trailingAnchor];
-  v45 = [v41 constraintEqualToAnchor:v44];
+  textField = [(HUNameAndIconEditorCell *)self textField];
+  trailingAnchor3 = [textField trailingAnchor];
+  containerView8 = [(HUNameAndIconEditorCell *)self containerView];
+  layoutMarginsGuide = [containerView8 layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide trailingAnchor];
+  v45 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v53 addObject:v45];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v53];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
+    self->_disabled = disabled;
     [(HUNameAndIconEditorCell *)self _updateDisabled];
   }
 }
 
 - (UIFont)textFieldFont
 {
-  v2 = [(HUNameAndIconEditorCell *)self textField];
-  v3 = [v2 font];
+  textField = [(HUNameAndIconEditorCell *)self textField];
+  font = [textField font];
 
-  return v3;
+  return font;
 }
 
-- (void)setTextFieldFont:(id)a3
+- (void)setTextFieldFont:(id)font
 {
-  v4 = a3;
-  v5 = [(HUNameAndIconEditorCell *)self textField];
-  [v5 setFont:v4];
+  fontCopy = font;
+  textField = [(HUNameAndIconEditorCell *)self textField];
+  [textField setFont:fontCopy];
 }
 
-- (void)setHideIconButton:(BOOL)a3
+- (void)setHideIconButton:(BOOL)button
 {
-  if (self->_hideIconButton != a3)
+  if (self->_hideIconButton != button)
   {
-    v4 = a3;
-    self->_hideIconButton = a3;
-    v6 = [(HUNameAndIconEditorCell *)self iconButton];
-    [v6 setHidden:v4];
+    buttonCopy = button;
+    self->_hideIconButton = button;
+    iconButton = [(HUNameAndIconEditorCell *)self iconButton];
+    [iconButton setHidden:buttonCopy];
 
     [(HUNameAndIconEditorCell *)self _updateVariableTextFieldConstraints];
   }
@@ -224,12 +224,12 @@
 - (void)_updateVariableTextFieldConstraints
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HUNameAndIconEditorCell *)self textFieldLeadingConstraint];
+  textFieldLeadingConstraint = [(HUNameAndIconEditorCell *)self textFieldLeadingConstraint];
 
-  if (v3)
+  if (textFieldLeadingConstraint)
   {
-    v4 = [(HUNameAndIconEditorCell *)self textFieldLeadingConstraint];
-    v49[0] = v4;
+    textFieldLeadingConstraint2 = [(HUNameAndIconEditorCell *)self textFieldLeadingConstraint];
+    v49[0] = textFieldLeadingConstraint2;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:1];
   }
 
@@ -238,13 +238,13 @@
     v5 = MEMORY[0x277CBEBF8];
   }
 
-  v6 = [(HUNameAndIconEditorCell *)self textFieldTopBottomConstraints];
-  v7 = [v6 hmf_isEmpty];
+  textFieldTopBottomConstraints = [(HUNameAndIconEditorCell *)self textFieldTopBottomConstraints];
+  hmf_isEmpty = [textFieldTopBottomConstraints hmf_isEmpty];
 
-  if ((v7 & 1) == 0)
+  if ((hmf_isEmpty & 1) == 0)
   {
-    v8 = [(HUNameAndIconEditorCell *)self textFieldTopBottomConstraints];
-    v9 = [v5 arrayByAddingObjectsFromArray:v8];
+    textFieldTopBottomConstraints2 = [(HUNameAndIconEditorCell *)self textFieldTopBottomConstraints];
+    v9 = [v5 arrayByAddingObjectsFromArray:textFieldTopBottomConstraints2];
 
     v5 = v9;
   }
@@ -253,14 +253,14 @@
   v45 = v5;
   if ([(HUNameAndIconEditorCell *)self hideIconButton])
   {
-    v10 = [(HUNameAndIconEditorCell *)self containerView];
-    [v10 leadingAnchor];
+    containerView = [(HUNameAndIconEditorCell *)self containerView];
+    [containerView leadingAnchor];
   }
 
   else
   {
-    v10 = [(HUNameAndIconEditorCell *)self iconButton];
-    [v10 trailingAnchor];
+    containerView = [(HUNameAndIconEditorCell *)self iconButton];
+    [containerView trailingAnchor];
   }
   v11 = ;
 
@@ -274,107 +274,107 @@
     v12 = 12.0;
   }
 
-  v13 = [(HUNameAndIconEditorCell *)self textField];
-  v14 = [v13 leadingAnchor];
+  textField = [(HUNameAndIconEditorCell *)self textField];
+  leadingAnchor = [textField leadingAnchor];
   v44 = v11;
-  v15 = [v14 constraintEqualToAnchor:v11 constant:v12];
+  v15 = [leadingAnchor constraintEqualToAnchor:v11 constant:v12];
   [(HUNameAndIconEditorCell *)self setTextFieldLeadingConstraint:v15];
 
-  LODWORD(v13) = [(HUNameAndIconEditorCell *)self hideIconButton];
-  v16 = [(HUNameAndIconEditorCell *)self textField];
-  v17 = [v16 topAnchor];
-  v43 = v17;
-  if (v13)
+  LODWORD(textField) = [(HUNameAndIconEditorCell *)self hideIconButton];
+  textField2 = [(HUNameAndIconEditorCell *)self textField];
+  topAnchor = [textField2 topAnchor];
+  v43 = topAnchor;
+  if (textField)
   {
-    v41 = [(HUNameAndIconEditorCell *)self contentView];
-    v40 = [v41 layoutMarginsGuide];
-    v39 = [v40 topAnchor];
-    v18 = [v17 constraintEqualToAnchor:v39];
+    contentView = [(HUNameAndIconEditorCell *)self contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v48[0] = v18;
-    v19 = [(HUNameAndIconEditorCell *)self textField];
-    v20 = [v19 bottomAnchor];
-    v21 = [(HUNameAndIconEditorCell *)self contentView];
-    v22 = [v21 layoutMarginsGuide];
-    v23 = [v22 bottomAnchor];
-    v24 = [v20 constraintEqualToAnchor:v23];
+    textField3 = [(HUNameAndIconEditorCell *)self textField];
+    bottomAnchor = [textField3 bottomAnchor];
+    contentView2 = [(HUNameAndIconEditorCell *)self contentView];
+    layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v48[1] = v24;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:2];
     [(HUNameAndIconEditorCell *)self setTextFieldTopBottomConstraints:v25];
 
     v26 = MEMORY[0x277CCAAD0];
-    v16 = [(HUNameAndIconEditorCell *)self iconButtonConstraints];
-    [v26 deactivateConstraints:v16];
+    textField2 = [(HUNameAndIconEditorCell *)self iconButtonConstraints];
+    [v26 deactivateConstraints:textField2];
   }
 
   else
   {
-    v42 = [(HUNameAndIconEditorCell *)self containerView];
-    v27 = [v42 topAnchor];
-    v28 = [v17 constraintEqualToAnchor:v27];
+    containerView2 = [(HUNameAndIconEditorCell *)self containerView];
+    topAnchor3 = [containerView2 topAnchor];
+    v28 = [topAnchor constraintEqualToAnchor:topAnchor3];
     v47[0] = v28;
-    v29 = [(HUNameAndIconEditorCell *)self textField];
-    v30 = [v29 bottomAnchor];
-    v31 = [(HUNameAndIconEditorCell *)self containerView];
-    v32 = [v31 bottomAnchor];
-    v33 = [v30 constraintEqualToAnchor:v32];
+    textField4 = [(HUNameAndIconEditorCell *)self textField];
+    bottomAnchor3 = [textField4 bottomAnchor];
+    containerView3 = [(HUNameAndIconEditorCell *)self containerView];
+    bottomAnchor4 = [containerView3 bottomAnchor];
+    v33 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v47[1] = v33;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:2];
     [(HUNameAndIconEditorCell *)self setTextFieldTopBottomConstraints:v34];
   }
 
-  v35 = [(HUNameAndIconEditorCell *)self textFieldLeadingConstraint];
-  v46 = v35;
+  textFieldLeadingConstraint3 = [(HUNameAndIconEditorCell *)self textFieldLeadingConstraint];
+  v46 = textFieldLeadingConstraint3;
   v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
-  v37 = [(HUNameAndIconEditorCell *)self textFieldTopBottomConstraints];
-  v38 = [v36 arrayByAddingObjectsFromArray:v37];
+  textFieldTopBottomConstraints3 = [(HUNameAndIconEditorCell *)self textFieldTopBottomConstraints];
+  v38 = [v36 arrayByAddingObjectsFromArray:textFieldTopBottomConstraints3];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v38];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v3.receiver = self;
   v3.super_class = HUNameAndIconEditorCell;
-  [(HUNameAndIconEditorCell *)&v3 traitCollectionDidChange:a3];
+  [(HUNameAndIconEditorCell *)&v3 traitCollectionDidChange:change];
 }
 
-- (void)_handleIconButtonTap:(id)a3
+- (void)_handleIconButtonTap:(id)tap
 {
-  v4 = [(HUNameAndIconEditorCell *)self delegate];
+  delegate = [(HUNameAndIconEditorCell *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(HUNameAndIconEditorCell *)self delegate];
-    [v6 nameAndIconEditorCellDidTapIcon:self];
+    delegate2 = [(HUNameAndIconEditorCell *)self delegate];
+    [delegate2 nameAndIconEditorCellDidTapIcon:self];
   }
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v5 = [(HUNameAndIconEditorCell *)self item];
-  v12 = [v5 latestResults];
+  animationCopy = animation;
+  item = [(HUNameAndIconEditorCell *)self item];
+  latestResults = [item latestResults];
 
-  v6 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13E88]];
-  v7 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13EA0]];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E88]];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA0]];
   v8 = [MEMORY[0x277D14AC0] displayIconDescriptorFromIconDescriptor:v6 symbolName:v7];
 
   [(HUNameAndIconEditorCell *)self _updateDisabled];
-  v9 = [(HUNameAndIconEditorCell *)self iconButton];
-  [v9 updateWithIconDescriptor:v8 animated:v3];
+  iconButton = [(HUNameAndIconEditorCell *)self iconButton];
+  [iconButton updateWithIconDescriptor:v8 animated:animationCopy];
 
   if ([v7 isEqualToString:*MEMORY[0x277D141B0]])
   {
-    v10 = [MEMORY[0x277D75348] systemGrayColor];
-    v11 = [(HUNameAndIconEditorCell *)self iconButton];
-    [v11 setTintColor:v10];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    iconButton2 = [(HUNameAndIconEditorCell *)self iconButton];
+    [iconButton2 setTintColor:systemGrayColor];
   }
 
   else
   {
-    v10 = [(HUNameAndIconEditorCell *)self iconButton];
-    [v10 setTintColor:0];
+    systemGrayColor = [(HUNameAndIconEditorCell *)self iconButton];
+    [systemGrayColor setTintColor:0];
   }
 }
 
@@ -387,18 +387,18 @@
 
   else
   {
-    v4 = [(HUNameAndIconEditorCell *)self item];
-    v5 = [v4 latestResults];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    item = [(HUNameAndIconEditorCell *)self item];
+    latestResults = [item latestResults];
+    v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
     v3 = [v6 BOOLValue] ^ 1;
   }
 
   [(HUNameAndIconEditorCell *)self setUserInteractionEnabled:v3];
-  v7 = [(HUNameAndIconEditorCell *)self iconButton];
-  [v7 setEnabled:v3];
+  iconButton = [(HUNameAndIconEditorCell *)self iconButton];
+  [iconButton setEnabled:v3];
 
-  v8 = [(HUNameAndIconEditorCell *)self textField];
-  [v8 setEnabled:v3];
+  textField = [(HUNameAndIconEditorCell *)self textField];
+  [textField setEnabled:v3];
 
   if ([(HUNameAndIconEditorCell *)self isDisabled])
   {
@@ -410,11 +410,11 @@
     [MEMORY[0x277D75348] labelColor];
   }
   v9 = ;
-  v10 = [(HUNameAndIconEditorCell *)self textField];
-  [v10 setTextColor:v9];
+  textField2 = [(HUNameAndIconEditorCell *)self textField];
+  [textField2 setTextColor:v9];
 
-  v11 = [(HUNameAndIconEditorCell *)self textField];
-  [v11 setClearButtonMode:v3];
+  textField3 = [(HUNameAndIconEditorCell *)self textField];
+  [textField3 setClearButtonMode:v3];
 }
 
 - (HUNameAndIconEditorCellDelegate)delegate

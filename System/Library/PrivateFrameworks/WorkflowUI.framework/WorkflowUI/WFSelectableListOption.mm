@@ -1,17 +1,17 @@
 @interface WFSelectableListOption
-- (WFSelectableListOption)initWithDisplayTitle:(id)a3 value:(id)a4;
+- (WFSelectableListOption)initWithDisplayTitle:(id)title value:(id)value;
 @end
 
 @implementation WFSelectableListOption
 
-- (WFSelectableListOption)initWithDisplayTitle:(id)a3 value:(id)a4
+- (WFSelectableListOption)initWithDisplayTitle:(id)title value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  titleCopy = title;
+  valueCopy = value;
+  v9 = valueCopy;
+  if (titleCopy)
   {
-    if (v8)
+    if (valueCopy)
     {
       goto LABEL_3;
     }
@@ -19,8 +19,8 @@
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFTriggerTableViewController.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"displayTitle"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerTableViewController.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"displayTitle"}];
 
     if (v9)
     {
@@ -28,8 +28,8 @@
     }
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"WFTriggerTableViewController.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"value"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTriggerTableViewController.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"value"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -37,11 +37,11 @@ LABEL_3:
   v10 = [(WFSelectableListOption *)&v17 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [titleCopy copy];
     displayTitle = v10->_displayTitle;
     v10->_displayTitle = v11;
 
-    objc_storeStrong(&v10->_value, a4);
+    objc_storeStrong(&v10->_value, value);
     v13 = v10;
   }
 

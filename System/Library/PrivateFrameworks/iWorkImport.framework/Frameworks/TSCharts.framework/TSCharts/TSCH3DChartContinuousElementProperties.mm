@@ -1,21 +1,21 @@
 @interface TSCH3DChartContinuousElementProperties
-- (BOOL)applyElementTransform:(void *)a3 series:(id)a4 index:(tvec2<int>)a5 propertyAccessor:(id)a6;
-- (float)chartMinZForScene:(id)a3;
-- (float)depthForScene:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)applyElementTransform:(void *)transform series:(id)series index:(tvec2<int>)index propertyAccessor:(id)accessor;
+- (float)chartMinZForScene:(id)scene;
+- (float)depthForScene:(id)scene;
+- (id)copyWithZone:(_NSZone *)zone;
 - (tvec2<int>)seriesSize;
 - (void)reset;
-- (void)resetWithEnumerator:(id)a3 layoutSettings:(id *)a4;
+- (void)resetWithEnumerator:(id)enumerator layoutSettings:(id *)settings;
 - (void)updateLabels;
 @end
 
 @implementation TSCH3DChartContinuousElementProperties
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = TSCH3DChartContinuousElementProperties;
-  result = [(TSCH3DChartBasicElementProperties *)&v5 copyWithZone:a3];
+  result = [(TSCH3DChartBasicElementProperties *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 16) = LODWORD(self->_depthGapFactor);
@@ -80,13 +80,13 @@
   }
 }
 
-- (void)resetWithEnumerator:(id)a3 layoutSettings:(id *)a4
+- (void)resetWithEnumerator:(id)enumerator layoutSettings:(id *)settings
 {
-  self->_maxLimitingSeries = a4->var9;
-  v5 = *a4;
+  self->_maxLimitingSeries = settings->var9;
+  v5 = *settings;
   v4.receiver = self;
   v4.super_class = TSCH3DChartContinuousElementProperties;
-  [(TSCH3DChartBasicElementProperties *)&v4 resetWithEnumerator:a3 layoutSettings:&v5];
+  [(TSCH3DChartBasicElementProperties *)&v4 resetWithEnumerator:enumerator layoutSettings:&v5];
 }
 
 - (void)reset
@@ -164,7 +164,7 @@
   objc_msgSend_updateLabels(self, v137, v138, v139, v140);
 }
 
-- (float)chartMinZForScene:(id)a3
+- (float)chartMinZForScene:(id)scene
 {
   *&v4 = +[TSCH3DChartLineSceneObject chartSeriesDepth]_0();
   v5 = *&v4;
@@ -173,9 +173,9 @@
   return v10 + ((v5 * -0.5) * depthLimitFactor);
 }
 
-- (float)depthForScene:(id)a3
+- (float)depthForScene:(id)scene
 {
-  v7 = objc_msgSend_seriesCount(self, a2, v3, v4, v5, a3);
+  v7 = objc_msgSend_seriesCount(self, a2, v3, v4, v5, scene);
   objc_msgSend_p_interSetDepthGapProperty(self, v8, v9, v10, v11);
   if (v7 <= 1)
   {
@@ -190,11 +190,11 @@
   return (v7 + ((v13 - 1) * v12)) * self->_depthLimitFactor;
 }
 
-- (BOOL)applyElementTransform:(void *)a3 series:(id)a4 index:(tvec2<int>)a5 propertyAccessor:(id)a6
+- (BOOL)applyElementTransform:(void *)transform series:(id)series index:(tvec2<int>)index propertyAccessor:(id)accessor
 {
-  v10 = a4;
-  v12 = a6;
-  if (!v12)
+  seriesCopy = series;
+  accessorCopy = accessor;
+  if (!accessorCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v13, v14, v15, "[TSCH3DChartContinuousElementProperties applyElementTransform:series:index:propertyAccessor:]");
@@ -205,21 +205,21 @@
   }
 
   v31 = objc_msgSend_seriesCount(self, v11, v13, v14, v15);
-  v36 = objc_msgSend_seriesType(v10, v32, v33, v34, v35);
+  v36 = objc_msgSend_seriesType(seriesCopy, v32, v33, v34, v35);
   v41 = objc_msgSend_sceneObjectClass(v36, v37, v38, v39, v40);
   objc_msgSend_chartSeriesDepth(v41, v42, v43, v44, v45);
   v47 = *&v46;
   objc_msgSend_p_interSetDepthGapProperty(self, v48, v46, v49, v50);
   v52 = v51;
 
-  v57 = objc_msgSend_seriesType(v10, v53, v54, v55, v56);
+  v57 = objc_msgSend_seriesType(seriesCopy, v53, v54, v55, v56);
   v62 = objc_msgSend_sceneObjectClass(v57, v58, v59, v60, v61);
   LODWORD(v36) = objc_msgSend_supportsChartSeriesDepthOffset(v62, v63, v64, v65, v66);
 
   v67 = 0.0;
   if (v36)
   {
-    v67 = (v47 + v52) * (v31 + ~*(*&a5 + 4));
+    v67 = (v47 + v52) * (v31 + ~*(*&index + 4));
   }
 
   v71 = xmmword_2764D60D0;
@@ -230,7 +230,7 @@
   v69 = 0;
   v70 = v67;
   v76 = 1;
-  sub_276168C80(a3, &v69);
+  sub_276168C80(transform, &v69);
 
   return 1;
 }

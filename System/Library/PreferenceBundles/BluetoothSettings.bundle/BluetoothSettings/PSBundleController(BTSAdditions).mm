@@ -6,7 +6,7 @@
 
 - (id)bundleParentController
 {
-  WeakRetained = objc_loadWeakRetained((a1 + *MEMORY[0x277D3FBE0]));
+  WeakRetained = objc_loadWeakRetained((self + *MEMORY[0x277D3FBE0]));
 
   return WeakRetained;
 }

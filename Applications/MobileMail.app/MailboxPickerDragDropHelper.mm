@@ -1,46 +1,46 @@
 @interface MailboxPickerDragDropHelper
-- (BOOL)_canMoveDragItems:(id)a3 toFavoriteItem:(id)a4;
-- (BOOL)_dragItemsAreAllMessages:(id)a3;
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4;
-- (MailboxPickerDragDropHelper)initWithDelegate:(id)a3;
+- (BOOL)_canMoveDragItems:(id)items toFavoriteItem:(id)item;
+- (BOOL)_dragItemsAreAllMessages:(id)messages;
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session;
+- (MailboxPickerDragDropHelper)initWithDelegate:(id)delegate;
 - (MailboxPickerDragDropHelperDelegate)delegate;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (int64_t)_collectionView:(id)a3 dataOwnerForDropSession:(id)a4 withDestinationIndexPath:(id)a5;
-- (void)collectionView:(id)a3 dropSessionDidEnter:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidExit:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (int64_t)_collectionView:(id)view dataOwnerForDropSession:(id)session withDestinationIndexPath:(id)path;
+- (void)collectionView:(id)view dropSessionDidEnter:(id)enter;
+- (void)collectionView:(id)view dropSessionDidExit:(id)exit;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
 @end
 
 @implementation MailboxPickerDragDropHelper
 
-- (MailboxPickerDragDropHelper)initWithDelegate:(id)a3
+- (MailboxPickerDragDropHelper)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = MailboxPickerDragDropHelper;
   v5 = [(MailboxPickerDragDropHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session
 {
-  v5 = [a4 items];
-  LOBYTE(self) = [(MailboxPickerDragDropHelper *)self _dragItemsAreAllMessages:v5];
+  items = [session items];
+  LOBYTE(self) = [(MailboxPickerDragDropHelper *)self _dragItemsAreAllMessages:items];
 
   return self;
 }
 
-- (void)collectionView:(id)a3 dropSessionDidEnter:(id)a4
+- (void)collectionView:(id)view dropSessionDidEnter:(id)enter
 {
-  v17 = [a4 items];
-  v5 = v17;
-  if ([(MailboxPickerDragDropHelper *)self _dragItemsAreAllMessages:v17])
+  items = [enter items];
+  v5 = items;
+  if ([(MailboxPickerDragDropHelper *)self _dragItemsAreAllMessages:items])
   {
     v6 = [UIImage imageNamed:@"MFMailMessageDragPreview"];
     [v6 size];
@@ -53,7 +53,7 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = v17;
+    v11 = items;
     v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v12)
     {
@@ -83,15 +83,15 @@
       while (v12);
     }
 
-    v5 = v17;
+    v5 = items;
   }
 }
 
-- (void)collectionView:(id)a3 dropSessionDidExit:(id)a4
+- (void)collectionView:(id)view dropSessionDidExit:(id)exit
 {
-  v5 = a4;
-  v6 = [v5 items];
-  LODWORD(self) = [(MailboxPickerDragDropHelper *)self _dragItemsAreAllMessages:v6];
+  exitCopy = exit;
+  items = [exitCopy items];
+  LODWORD(self) = [(MailboxPickerDragDropHelper *)self _dragItemsAreAllMessages:items];
 
   if (self)
   {
@@ -99,8 +99,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v7 = [v5 items];
-    v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    items2 = [exitCopy items];
+    v8 = [items2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v8)
     {
       v9 = *v12;
@@ -111,7 +111,7 @@
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(items2);
           }
 
           [*(*(&v11 + 1) + 8 * v10) setPreviewProvider:0];
@@ -119,7 +119,7 @@
         }
 
         while (v8 != v10);
-        v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [items2 countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -127,17 +127,17 @@
   }
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v32 = a3;
-  v33 = a4;
-  v34 = self;
-  v35 = [(MailboxPickerDragDropHelper *)self delegate];
-  v6 = [v33 destinationIndexPath];
-  if (v6)
+  viewCopy = view;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  delegate = [(MailboxPickerDragDropHelper *)self delegate];
+  destinationIndexPath = [coordinatorCopy destinationIndexPath];
+  if (destinationIndexPath)
   {
-    v36 = v6;
-    v7 = [v32 cellForItemAtIndexPath:?];
+    v36 = destinationIndexPath;
+    v7 = [viewCopy cellForItemAtIndexPath:?];
     [v7 bounds];
     v9 = v8;
     v11 = v10;
@@ -158,8 +158,8 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v18 = [v33 items];
-    v19 = [v18 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    items = [coordinatorCopy items];
+    v19 = [items countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v19)
     {
       v20 = *v38;
@@ -169,22 +169,22 @@
         {
           if (*v38 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(items);
           }
 
           v22 = *(*(&v37 + 1) + 8 * i);
-          v23 = [v22 sourceIndexPath];
-          v24 = v23 == 0;
+          sourceIndexPath = [v22 sourceIndexPath];
+          v24 = sourceIndexPath == 0;
 
           if (v24)
           {
-            v25 = [v22 dragItem];
-            v26 = [v25 localObject];
+            dragItem = [v22 dragItem];
+            localObject = [dragItem localObject];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v27 = v26;
-              v28 = [v35 mailboxPickerDragDropHelper:v34 favoriteItemAtIndexPath:v36];
+              v27 = localObject;
+              v28 = [delegate mailboxPickerDragDropHelper:selfCopy favoriteItemAtIndexPath:v36];
               if ([v28 type] == 4)
               {
                 [v28 mailboxType];
@@ -193,55 +193,55 @@
 
               else
               {
-                v29 = [v28 representingMailbox];
-                v30 = [v35 mailboxPickerDragDropHelper:v34 mailboxForMailboxUid:v29];
+                representingMailbox = [v28 representingMailbox];
+                v30 = [delegate mailboxPickerDragDropHelper:selfCopy mailboxForMailboxUid:representingMailbox];
                 [v27 setTargetMailbox:v30];
               }
 
               [v27 performInteraction];
-              v31 = [v33 dropItem:v25 intoItemAtIndexPath:v36 rect:{MidX, MidY, 0.0, 0.0}];
+              v31 = [coordinatorCopy dropItem:dragItem intoItemAtIndexPath:v36 rect:{MidX, MidY, 0.0, 0.0}];
             }
           }
         }
 
-        v19 = [v18 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v19 = [items countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v19);
     }
 
-    v6 = v36;
+    destinationIndexPath = v36;
   }
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  viewCopy = view;
+  updateCopy = update;
+  pathCopy = path;
+  if (pathCopy)
   {
-    v11 = [v9 localDragSession];
+    localDragSession = [updateCopy localDragSession];
 
-    if (v11)
+    if (localDragSession)
     {
-      if ([v8 hasActiveDrag])
+      if ([viewCopy hasActiveDrag])
       {
         v12 = 3;
         v13 = 1;
         goto LABEL_14;
       }
 
-      v14 = [v9 items];
-      v15 = [(MailboxPickerDragDropHelper *)self _dragItemsAreAllMessages:v14];
+      items = [updateCopy items];
+      v15 = [(MailboxPickerDragDropHelper *)self _dragItemsAreAllMessages:items];
 
       if (v15)
       {
-        v16 = [(MailboxPickerDragDropHelper *)self delegate];
-        v17 = [v16 mailboxPickerDragDropHelper:self favoriteItemAtIndexPath:v10];
+        delegate = [(MailboxPickerDragDropHelper *)self delegate];
+        v17 = [delegate mailboxPickerDragDropHelper:self favoriteItemAtIndexPath:pathCopy];
 
-        v18 = [v9 items];
-        v19 = [(MailboxPickerDragDropHelper *)self _canMoveDragItems:v18 toFavoriteItem:v17];
+        items2 = [updateCopy items];
+        v19 = [(MailboxPickerDragDropHelper *)self _canMoveDragItems:items2 toFavoriteItem:v17];
 
         v20 = v19 == 0;
         if (v19)
@@ -277,24 +277,24 @@ LABEL_14:
   return v21;
 }
 
-- (int64_t)_collectionView:(id)a3 dataOwnerForDropSession:(id)a4 withDestinationIndexPath:(id)a5
+- (int64_t)_collectionView:(id)view dataOwnerForDropSession:(id)session withDestinationIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  viewCopy = view;
+  sessionCopy = session;
+  pathCopy = path;
+  if (!pathCopy)
   {
     goto LABEL_13;
   }
 
-  v11 = [v9 localDragSession];
-  if (!v11 || ([v8 hasActiveDrag] & 1) != 0)
+  localDragSession = [sessionCopy localDragSession];
+  if (!localDragSession || ([viewCopy hasActiveDrag] & 1) != 0)
   {
     goto LABEL_4;
   }
 
-  v13 = [v9 items];
-  v14 = [(MailboxPickerDragDropHelper *)self _dragItemsAreAllMessages:v13];
+  items = [sessionCopy items];
+  v14 = [(MailboxPickerDragDropHelper *)self _dragItemsAreAllMessages:items];
 
   if (!v14)
   {
@@ -303,17 +303,17 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v15 = [(MailboxPickerDragDropHelper *)self delegate];
-  v11 = [v15 mailboxPickerDragDropHelper:self favoriteItemAtIndexPath:v10];
+  delegate = [(MailboxPickerDragDropHelper *)self delegate];
+  localDragSession = [delegate mailboxPickerDragDropHelper:self favoriteItemAtIndexPath:pathCopy];
 
-  if ([v11 acceptsMessageTransfers])
+  if ([localDragSession acceptsMessageTransfers])
   {
-    v16 = [v11 account];
+    account = [localDragSession account];
 
-    if (v16)
+    if (account)
     {
-      v17 = [v11 account];
-      if ([v17 sourceIsManaged])
+      account2 = [localDragSession account];
+      if ([account2 sourceIsManaged])
       {
         v12 = 2;
       }
@@ -335,36 +335,36 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)_dragItemsAreAllMessages:(id)a3
+- (BOOL)_dragItemsAreAllMessages:(id)messages
 {
-  v3 = a3;
-  if ([MessageListItemDragContext dragItemsAreAllMessageListItems:v3])
+  messagesCopy = messages;
+  if ([MessageListItemDragContext dragItemsAreAllMessageListItems:messagesCopy])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [MFMailMessage dragItemsAreAllMessages:v3];
+    v4 = [MFMailMessage dragItemsAreAllMessages:messagesCopy];
   }
 
   return v4;
 }
 
-- (BOOL)_canMoveDragItems:(id)a3 toFavoriteItem:(id)a4
+- (BOOL)_canMoveDragItems:(id)items toFavoriteItem:(id)item
 {
-  v16 = a3;
-  v5 = a4;
-  if ([v5 acceptsMessageTransfers])
+  itemsCopy = items;
+  itemCopy = item;
+  if ([itemCopy acceptsMessageTransfers])
   {
-    v6 = [v5 account];
-    if (v6)
+    account = [itemCopy account];
+    if (account)
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v7 = v16;
+      v7 = itemsCopy;
       v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
@@ -378,12 +378,12 @@ LABEL_14:
               objc_enumerationMutation(v7);
             }
 
-            v11 = [*(*(&v17 + 1) + 8 * i) localObject];
+            localObject = [*(*(&v17 + 1) + 8 * i) localObject];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v12 = v11;
-              v13 = [v12 isPermittedWithTargetAccount:v6];
+              v12 = localObject;
+              v13 = [v12 isPermittedWithTargetAccount:account];
 
               if ((v13 & 1) == 0)
               {

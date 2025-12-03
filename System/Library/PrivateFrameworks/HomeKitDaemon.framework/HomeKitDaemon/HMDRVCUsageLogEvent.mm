@@ -6,28 +6,28 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(HMMLogEvent *)self error];
-  v6 = [v4 numberWithInteger:{objc_msgSend(v5, "code")}];
-  [v3 setObject:v6 forKeyedSubscript:@"errorCode"];
+  error = [(HMMLogEvent *)self error];
+  v6 = [v4 numberWithInteger:{objc_msgSend(error, "code")}];
+  [dictionary setObject:v6 forKeyedSubscript:@"errorCode"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDRVCUsageLogEvent source](self, "source")}];
-  [v3 setObject:v7 forKeyedSubscript:@"source"];
+  [dictionary setObject:v7 forKeyedSubscript:@"source"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDRVCUsageLogEvent wholeHouse](self, "wholeHouse")}];
-  [v3 setObject:v8 forKeyedSubscript:@"wholeHouse"];
+  [dictionary setObject:v8 forKeyedSubscript:@"wholeHouse"];
 
-  v9 = [(HMDRVCUsageLogEvent *)self roomCount];
-  [v3 setObject:v9 forKeyedSubscript:@"roomCount"];
+  roomCount = [(HMDRVCUsageLogEvent *)self roomCount];
+  [dictionary setObject:roomCount forKeyedSubscript:@"roomCount"];
 
-  v10 = [(HMDRVCUsageLogEvent *)self roomsInHome];
-  [v3 setObject:v10 forKeyedSubscript:@"roomsInHome"];
+  roomsInHome = [(HMDRVCUsageLogEvent *)self roomsInHome];
+  [dictionary setObject:roomsInHome forKeyedSubscript:@"roomsInHome"];
 
-  v11 = [(HMDRVCUsageLogEvent *)self cleanModes];
-  [v3 setObject:v11 forKeyedSubscript:@"cleanModes"];
+  cleanModes = [(HMDRVCUsageLogEvent *)self cleanModes];
+  [dictionary setObject:cleanModes forKeyedSubscript:@"cleanModes"];
 
-  v12 = [v3 copy];
+  v12 = [dictionary copy];
 
   return v12;
 }

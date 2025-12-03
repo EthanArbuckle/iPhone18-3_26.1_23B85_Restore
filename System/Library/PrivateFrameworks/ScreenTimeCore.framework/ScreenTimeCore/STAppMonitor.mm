@@ -1,24 +1,24 @@
 @interface STAppMonitor
-- (STAppMonitor)initWithPersistenceController:(id)a3;
-- (void)_didDetectNewAppUsage:(id)a3;
+- (STAppMonitor)initWithPersistenceController:(id)controller;
+- (void)_didDetectNewAppUsage:(id)usage;
 - (void)_scheduleAppDiscoveryBackgroundActivity;
-- (void)_updateLocalAppsWithBackgroundActivity:(id)a3 completionHandler:(id)a4;
+- (void)_updateLocalAppsWithBackgroundActivity:(id)activity completionHandler:(id)handler;
 - (void)dealloc;
 - (void)resume;
 @end
 
 @implementation STAppMonitor
 
-- (STAppMonitor)initWithPersistenceController:(id)a3
+- (STAppMonitor)initWithPersistenceController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = STAppMonitor;
   v6 = [(STAppMonitor *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistenceController, a3);
+    objc_storeStrong(&v6->_persistenceController, controller);
     v8 = objc_opt_new();
     operationQueue = v7->_operationQueue;
     v7->_operationQueue = v8;
@@ -58,20 +58,20 @@
   [(STAppMonitor *)self setRunning:1];
 }
 
-- (void)_didDetectNewAppUsage:(id)a3
+- (void)_didDetectNewAppUsage:(id)usage
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 objectForKeyedSubscript:@"AppMonitorUsageUpdatedBundleIdentifiers"];
+  userInfo = [usage userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"AppMonitorUsageUpdatedBundleIdentifiers"];
 
   if (v7)
   {
-    v5 = [(STAppMonitor *)self cachedAppBundleIdentifiers];
+    cachedAppBundleIdentifiers = [(STAppMonitor *)self cachedAppBundleIdentifiers];
     v6 = [NSMutableSet setWithArray:v7];
-    [v6 minusSet:v5];
+    [v6 minusSet:cachedAppBundleIdentifiers];
     if ([v6 count])
     {
       [(STAppMonitor *)self _scheduleAppDiscoveryBackgroundActivity];
-      [v5 unionSet:v6];
+      [cachedAppBundleIdentifiers unionSet:v6];
     }
   }
 
@@ -105,10 +105,10 @@
   [v6 scheduleWithBlock:v7];
 }
 
-- (void)_updateLocalAppsWithBackgroundActivity:(id)a3 completionHandler:(id)a4
+- (void)_updateLocalAppsWithBackgroundActivity:(id)activity completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  handlerCopy = handler;
   v8 = self->_operationQueue;
   objc_sync_enter(v8);
   if (self->_operationInProgress)
@@ -128,7 +128,7 @@
     self->_operationInProgress = 1;
     objc_sync_exit(v8);
 
-    v11 = [[STPersistLocalAppsOperation alloc] initWithPersistenceController:self->_persistenceController installedApps:0 backgroundActivity:v6];
+    v11 = [[STPersistLocalAppsOperation alloc] initWithPersistenceController:self->_persistenceController installedApps:0 backgroundActivity:activityCopy];
     [(NSOperationQueue *)v8 addOperation:v11];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -136,7 +136,7 @@
     v12[3] = &unk_1001A2CB8;
     v12[4] = self;
     v13 = v11;
-    v14 = v7;
+    v14 = handlerCopy;
     v10 = v11;
     [(NSOperationQueue *)v8 addOperationWithBlock:v12];
   }

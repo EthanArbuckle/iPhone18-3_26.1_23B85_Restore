@@ -1,22 +1,22 @@
 @interface PUWallpaperPosterMigrator
-- (PUWallpaperPosterMigrator)initWithAssetDirectory:(id)a3 configurationType:(unint64_t)a4;
-- (void)_handleLoadedConfiguration:(id)a3 scale:(double)a4 completionBlock:(id)a5;
-- (void)_handleSegmentationItem:(id)a3 imageSize:(CGSize)a4 scale:(double)a5 options:(id)a6 error:(id)a7 completionBlock:(id)a8;
-- (void)attemptMigrationWithCompletionBlock:(id)a3;
+- (PUWallpaperPosterMigrator)initWithAssetDirectory:(id)directory configurationType:(unint64_t)type;
+- (void)_handleLoadedConfiguration:(id)configuration scale:(double)scale completionBlock:(id)block;
+- (void)_handleSegmentationItem:(id)item imageSize:(CGSize)size scale:(double)scale options:(id)options error:(id)error completionBlock:(id)block;
+- (void)attemptMigrationWithCompletionBlock:(id)block;
 @end
 
 @implementation PUWallpaperPosterMigrator
 
-- (void)_handleSegmentationItem:(id)a3 imageSize:(CGSize)a4 scale:(double)a5 options:(id)a6 error:(id)a7 completionBlock:(id)a8
+- (void)_handleSegmentationItem:(id)item imageSize:(CGSize)size scale:(double)scale options:(id)options error:(id)error completionBlock:(id)block
 {
   v63 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
-  if (v12)
+  itemCopy = item;
+  optionsCopy = options;
+  errorCopy = error;
+  blockCopy = block;
+  if (itemCopy)
   {
-    v16 = [objc_alloc(MEMORY[0x1E69BDEA0]) initWithSegmentationItem:v12];
+    v16 = [objc_alloc(MEMORY[0x1E69BDEA0]) initWithSegmentationItem:itemCopy];
     [v16 setResponseQueue:MEMORY[0x1E69E96A0]];
     v17 = [objc_alloc(MEMORY[0x1E69B3C00]) initWithLevel:0];
     [v16 setPriority:v17];
@@ -45,9 +45,9 @@
     }
 
     [v16 setLayerStackOptions:v18];
-    if ([v13 supportsCropping])
+    if ([optionsCopy supportsCropping])
     {
-      [v13 cropRect];
+      [optionsCopy cropRect];
       v21 = v20;
       v23 = v22;
       v25 = v24;
@@ -97,16 +97,16 @@
           aBlock[3] = &__block_descriptor_64_e56___PFPosterOrientedLayout_16__0__PFPosterOrientedLayout_8l;
           v60 = v67;
           v42 = _Block_copy(aBlock);
-          v43 = [MEMORY[0x1E69BDF40] effectiveLayoutForSegmentationItem:v12 editConfiguration:0 layerStackOptions:v18];
+          v43 = [MEMORY[0x1E69BDF40] effectiveLayoutForSegmentationItem:itemCopy editConfiguration:0 layerStackOptions:v18];
           v51 = objc_alloc(MEMORY[0x1E69C0800]);
           v54 = v43;
           [v43 portraitLayout];
           v53 = v52 = v42;
           v44 = v42 + 2;
           v45 = (v42[2])(v42, v53);
-          v46 = [v43 landscapeLayout];
+          landscapeLayout = [v43 landscapeLayout];
           v47 = v42;
-          v48 = v46;
+          v48 = landscapeLayout;
           v49 = (*v44)(v47);
           v50 = [v51 initWithPortraitLayout:v45 landscapeLayout:v49];
           [v16 setLayout:v50];
@@ -120,9 +120,9 @@
     v55[1] = 3221225472;
     v55[2] = __99__PUWallpaperPosterMigrator__handleSegmentationItem_imageSize_scale_options_error_completionBlock___block_invoke_2;
     v55[3] = &unk_1E7B80520;
-    v56 = v13;
-    v58 = v15;
-    v57 = v12;
+    v56 = optionsCopy;
+    v58 = blockCopy;
+    v57 = itemCopy;
     [v16 submit:v55];
   }
 
@@ -132,11 +132,11 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v62 = v14;
+      v62 = errorCopy;
       _os_log_impl(&dword_1B36F3000, v19, OS_LOG_TYPE_ERROR, "Loading segmentation item failed during migration: %{public}@", buf, 0xCu);
     }
 
-    (*(v15 + 2))(v15, 0, 0, v14);
+    (*(blockCopy + 2))(blockCopy, 0, 0, errorCopy);
   }
 }
 
@@ -188,19 +188,19 @@ void __99__PUWallpaperPosterMigrator__handleSegmentationItem_imageSize_scale_opt
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_handleLoadedConfiguration:(id)a3 scale:(double)a4 completionBlock:(id)a5
+- (void)_handleLoadedConfiguration:(id)configuration scale:(double)scale completionBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 wallpaperOriginalImage];
-  v11 = [v10 CGImage];
+  configurationCopy = configuration;
+  blockCopy = block;
+  wallpaperOriginalImage = [configurationCopy wallpaperOriginalImage];
+  cGImage = [wallpaperOriginalImage CGImage];
 
-  Width = CGImageGetWidth(v11);
-  Height = CGImageGetHeight(v11);
-  if (v11 && (v14 = Width, v15 = Height, (PXSizeIsEmpty() & 1) == 0))
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
+  if (cGImage && (v14 = Width, v15 = Height, (PXSizeIsEmpty() & 1) == 0))
   {
-    v17 = [[PUWallpaperPosterLegacyAsset alloc] initWithProxyImage:v11];
+    v17 = [[PUWallpaperPosterLegacyAsset alloc] initWithProxyImage:cGImage];
     v18 = [objc_alloc(MEMORY[0x1E69BDF40]) initWithParallaxAsset:v17];
     objc_initWeak(buf, self);
     v19[0] = MEMORY[0x1E69E9820];
@@ -210,9 +210,9 @@ void __99__PUWallpaperPosterMigrator__handleSegmentationItem_imageSize_scale_opt
     objc_copyWeak(v22, buf);
     v22[1] = *&v14;
     v22[2] = *&v15;
-    v22[3] = *&a4;
-    v20 = v8;
-    v21 = v9;
+    v22[3] = *&scale;
+    v20 = configurationCopy;
+    v21 = blockCopy;
     [v18 loadSegmentationItemWithCompletion:v19];
 
     objc_destroyWeak(v22);
@@ -225,12 +225,12 @@ void __99__PUWallpaperPosterMigrator__handleSegmentationItem_imageSize_scale_opt
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v24 = v8;
+      v24 = configurationCopy;
       _os_log_impl(&dword_1B36F3000, v16, OS_LOG_TYPE_ERROR, "Failed to load original image during poster migration: %{public}@", buf, 0xCu);
     }
 
     v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PUWallpaperPosterErrorDomain" code:-111 userInfo:0];
-    (*(v9 + 2))(v9, 0, 0, v17);
+    (*(blockCopy + 2))(blockCopy, 0, 0, v17);
   }
 }
 
@@ -244,23 +244,23 @@ void __78__PUWallpaperPosterMigrator__handleLoadedConfiguration_scale_completion
   [WeakRetained _handleSegmentationItem:v6 imageSize:v8 scale:v5 options:*(a1 + 40) error:*(a1 + 56) completionBlock:{*(a1 + 64), v7}];
 }
 
-- (void)attemptMigrationWithCompletionBlock:(id)a3
+- (void)attemptMigrationWithCompletionBlock:(id)block
 {
-  v5 = a3;
-  v6 = [(PUWallpaperPosterMigrator *)self configurationType];
+  blockCopy = block;
+  configurationType = [(PUWallpaperPosterMigrator *)self configurationType];
   objc_initWeak(&location, self);
-  v7 = [(PUWallpaperPosterMigrator *)self queue];
+  queue = [(PUWallpaperPosterMigrator *)self queue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__PUWallpaperPosterMigrator_attemptMigrationWithCompletionBlock___block_invoke;
   v9[3] = &unk_1E7B7A9A0;
   v11[1] = a2;
-  v11[2] = v6;
+  v11[2] = configurationType;
   v9[4] = self;
   objc_copyWeak(v11, &location);
-  v10 = v5;
-  v8 = v5;
-  dispatch_async(v7, v9);
+  v10 = blockCopy;
+  v8 = blockCopy;
+  dispatch_async(queue, v9);
 
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
@@ -301,17 +301,17 @@ LABEL_10:
   [WeakRetained _handleLoadedConfiguration:v4 scale:*(a1 + 40) completionBlock:?];
 }
 
-- (PUWallpaperPosterMigrator)initWithAssetDirectory:(id)a3 configurationType:(unint64_t)a4
+- (PUWallpaperPosterMigrator)initWithAssetDirectory:(id)directory configurationType:(unint64_t)type
 {
-  v7 = a3;
+  directoryCopy = directory;
   v14.receiver = self;
   v14.super_class = PUWallpaperPosterMigrator;
   v8 = [(PUWallpaperPosterMigrator *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_assetDirectory, a3);
-    v9->_configurationType = a4;
+    objc_storeStrong(&v8->_assetDirectory, directory);
+    v9->_configurationType = type;
     v10 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v11 = dispatch_queue_create("com.apple.photos.poster-migration", v10);
     queue = v9->_queue;

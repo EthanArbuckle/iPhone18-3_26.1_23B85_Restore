@@ -1,147 +1,147 @@
 @interface DMFBook
-- (BOOL)isEqual:(id)a3;
-- (DMFBook)initWithCoder:(id)a3;
-- (DMFBook)initWithPersistentID:(id)a3 iTunesStoreID:(id)a4 author:(id)a5 title:(id)a6 version:(id)a7 type:(unint64_t)a8 state:(unint64_t)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (DMFBook)initWithCoder:(id)coder;
+- (DMFBook)initWithPersistentID:(id)d iTunesStoreID:(id)iD author:(id)author title:(id)title version:(id)version type:(unint64_t)type state:(unint64_t)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFBook
 
-- (DMFBook)initWithPersistentID:(id)a3 iTunesStoreID:(id)a4 author:(id)a5 title:(id)a6 version:(id)a7 type:(unint64_t)a8 state:(unint64_t)a9
+- (DMFBook)initWithPersistentID:(id)d iTunesStoreID:(id)iD author:(id)author title:(id)title version:(id)version type:(unint64_t)type state:(unint64_t)state
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  authorCopy = author;
+  titleCopy = title;
+  versionCopy = version;
   v32.receiver = self;
   v32.super_class = DMFBook;
   v20 = [(DMFBook *)&v32 init];
   if (v20)
   {
-    v21 = [v15 copy];
+    v21 = [dCopy copy];
     persistentID = v20->_persistentID;
     v20->_persistentID = v21;
 
-    v23 = [v16 copy];
+    v23 = [iDCopy copy];
     iTunesStoreID = v20->_iTunesStoreID;
     v20->_iTunesStoreID = v23;
 
-    v25 = [v17 copy];
+    v25 = [authorCopy copy];
     author = v20->_author;
     v20->_author = v25;
 
-    v27 = [v18 copy];
+    v27 = [titleCopy copy];
     title = v20->_title;
     v20->_title = v27;
 
-    v29 = [v19 copy];
+    v29 = [versionCopy copy];
     version = v20->_version;
     v20->_version = v29;
 
-    v20->_type = a8;
-    v20->_state = a9;
+    v20->_type = type;
+    v20->_state = state;
   }
 
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(DMFBook *)self persistentID];
-  v6 = [(DMFBook *)self iTunesStoreID];
-  v7 = [(DMFBook *)self author];
-  v8 = [(DMFBook *)self title];
-  v9 = [(DMFBook *)self version];
-  v10 = [v4 initWithPersistentID:v5 iTunesStoreID:v6 author:v7 title:v8 version:v9 type:-[DMFBook type](self state:{"type"), -[DMFBook state](self, "state")}];
+  persistentID = [(DMFBook *)self persistentID];
+  iTunesStoreID = [(DMFBook *)self iTunesStoreID];
+  author = [(DMFBook *)self author];
+  title = [(DMFBook *)self title];
+  version = [(DMFBook *)self version];
+  v10 = [v4 initWithPersistentID:persistentID iTunesStoreID:iTunesStoreID author:author title:title version:version type:-[DMFBook type](self state:{"type"), -[DMFBook state](self, "state")}];
 
   return v10;
 }
 
-- (DMFBook)initWithCoder:(id)a3
+- (DMFBook)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = DMFBook;
   v5 = [(DMFBook *)&v24 init];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"persistentID"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"persistentID"];
     persistentID = v5->_persistentID;
     v5->_persistentID = v7;
 
     v9 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"iTunesStoreID"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"iTunesStoreID"];
     iTunesStoreID = v5->_iTunesStoreID;
     v5->_iTunesStoreID = v10;
 
     v12 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"author"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"author"];
     author = v5->_author;
     v5->_author = v13;
 
     v15 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"title"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"title"];
     title = v5->_title;
     v5->_title = v16;
 
     v18 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"version"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"version"];
     version = v5->_version;
     v5->_version = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v21 unsignedIntegerValue];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     v5->_state = [v22 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DMFBook *)self persistentID];
-  [v4 encodeObject:v5 forKey:@"persistentID"];
+  coderCopy = coder;
+  persistentID = [(DMFBook *)self persistentID];
+  [coderCopy encodeObject:persistentID forKey:@"persistentID"];
 
-  v6 = [(DMFBook *)self iTunesStoreID];
-  [v4 encodeObject:v6 forKey:@"iTunesStoreID"];
+  iTunesStoreID = [(DMFBook *)self iTunesStoreID];
+  [coderCopy encodeObject:iTunesStoreID forKey:@"iTunesStoreID"];
 
-  v7 = [(DMFBook *)self author];
-  [v4 encodeObject:v7 forKey:@"author"];
+  author = [(DMFBook *)self author];
+  [coderCopy encodeObject:author forKey:@"author"];
 
-  v8 = [(DMFBook *)self title];
-  [v4 encodeObject:v8 forKey:@"title"];
+  title = [(DMFBook *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v9 = [(DMFBook *)self version];
-  [v4 encodeObject:v9 forKey:@"version"];
+  version = [(DMFBook *)self version];
+  [coderCopy encodeObject:version forKey:@"version"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFBook type](self, "type")}];
-  [v4 encodeObject:v10 forKey:@"type"];
+  [coderCopy encodeObject:v10 forKey:@"type"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFBook state](self, "state")}];
-  [v4 encodeObject:v11 forKey:@"state"];
+  [coderCopy encodeObject:v11 forKey:@"state"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(DMFBook *)self iTunesStoreID];
-  v3 = [v2 hash];
+  iTunesStoreID = [(DMFBook *)self iTunesStoreID];
+  v3 = [iTunesStoreID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v33 = 1;
   }
@@ -151,11 +151,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DMFBook *)self iTunesStoreID];
-      v7 = [(DMFBook *)v5 iTunesStoreID];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      iTunesStoreID = [(DMFBook *)self iTunesStoreID];
+      iTunesStoreID2 = [(DMFBook *)v5 iTunesStoreID];
+      v8 = iTunesStoreID;
+      v9 = iTunesStoreID2;
       if (v8 | v9 && (v10 = [v8 isEqual:v9], v9, v8, !v10))
       {
         v33 = 0;
@@ -163,10 +163,10 @@
 
       else
       {
-        v11 = [(DMFBook *)self persistentID];
-        v12 = [(DMFBook *)v5 persistentID];
-        v13 = v11;
-        v14 = v12;
+        persistentID = [(DMFBook *)self persistentID];
+        persistentID2 = [(DMFBook *)v5 persistentID];
+        v13 = persistentID;
+        v14 = persistentID2;
         if (v13 | v14 && (v15 = [v13 isEqual:v14], v14, v13, !v15))
         {
           v33 = 0;
@@ -174,10 +174,10 @@
 
         else
         {
-          v16 = [(DMFBook *)self author];
-          v17 = [(DMFBook *)v5 author];
-          v18 = v16;
-          v19 = v17;
+          author = [(DMFBook *)self author];
+          author2 = [(DMFBook *)v5 author];
+          v18 = author;
+          v19 = author2;
           if (v18 | v19 && (v20 = [v18 isEqual:v19], v19, v18, !v20))
           {
             v33 = 0;
@@ -186,10 +186,10 @@
           else
           {
             v37 = v19;
-            v21 = [(DMFBook *)self title];
-            v22 = [(DMFBook *)v5 title];
-            v23 = v21;
-            v24 = v22;
+            title = [(DMFBook *)self title];
+            title2 = [(DMFBook *)v5 title];
+            v23 = title;
+            v24 = title2;
             v38 = v23;
             if (v23 | v24 && (v25 = [v23 isEqual:v24], v24, v38, !v25))
             {
@@ -199,14 +199,14 @@
             else
             {
               v36 = v13;
-              v26 = [(DMFBook *)self version];
-              v27 = [(DMFBook *)v5 version];
-              v28 = v26;
-              v29 = v27;
+              version = [(DMFBook *)self version];
+              version2 = [(DMFBook *)v5 version];
+              v28 = version;
+              v29 = version2;
               if ((!(v28 | v29) || (v30 = [v28 isEqual:v29], v29, v28, v30)) && (v31 = -[DMFBook type](self, "type"), v31 == -[DMFBook type](v5, "type")))
               {
-                v32 = [(DMFBook *)self state];
-                v33 = v32 == [(DMFBook *)v5 state];
+                state = [(DMFBook *)self state];
+                v33 = state == [(DMFBook *)v5 state];
               }
 
               else
@@ -242,17 +242,17 @@
   }
 
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@:%p {\n", objc_opt_class(), self];
-  v4 = [(DMFBook *)self persistentID];
-  [v3 appendFormat:@"\tPersistent ID   : %@\n", v4];
+  persistentID = [(DMFBook *)self persistentID];
+  [v3 appendFormat:@"\tPersistent ID   : %@\n", persistentID];
 
-  v5 = [(DMFBook *)self iTunesStoreID];
-  [v3 appendFormat:@"\tiTunes Store ID : %@\n", v5];
+  iTunesStoreID = [(DMFBook *)self iTunesStoreID];
+  [v3 appendFormat:@"\tiTunes Store ID : %@\n", iTunesStoreID];
 
-  v6 = [(DMFBook *)self author];
-  [v3 appendFormat:@"\tAuthor          : %@\n", v6];
+  author = [(DMFBook *)self author];
+  [v3 appendFormat:@"\tAuthor          : %@\n", author];
 
-  v7 = [(DMFBook *)self title];
-  [v3 appendFormat:@"\tTitle           : %@\n", v7];
+  title = [(DMFBook *)self title];
+  [v3 appendFormat:@"\tTitle           : %@\n", title];
 
   v8 = description_typeMap;
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFBook type](self, "type")}];
@@ -264,8 +264,8 @@
   v13 = [v11 objectForKeyedSubscript:v12];
   [v3 appendFormat:@"\tState           : %@\n", v13];
 
-  v14 = [(DMFBook *)self version];
-  [v3 appendFormat:@"\tVersion         : %@\n", v14];
+  version = [(DMFBook *)self version];
+  [v3 appendFormat:@"\tVersion         : %@\n", version];
 
   [v3 appendString:@"}>"];
   v15 = [v3 copy];

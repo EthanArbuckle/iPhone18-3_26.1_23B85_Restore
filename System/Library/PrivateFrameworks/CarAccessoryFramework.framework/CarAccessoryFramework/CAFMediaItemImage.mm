@@ -1,22 +1,22 @@
 @interface CAFMediaItemImage
-- (CAFMediaItemImage)initWithDictionary:(id)a3;
-- (CAFMediaItemImage)initWithIdentifier:(id)a3 imageData:(id)a4;
+- (CAFMediaItemImage)initWithDictionary:(id)dictionary;
+- (CAFMediaItemImage)initWithIdentifier:(id)identifier imageData:(id)data;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFMediaItemImage
 
-- (CAFMediaItemImage)initWithDictionary:(id)a3
+- (CAFMediaItemImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = CAFMediaItemImage;
   v5 = [(CAFMediaItemImage *)&v13 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"identifier"];
+    v6 = [dictionaryCopy objectForKey:@"identifier"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -31,7 +31,7 @@
     v5->_identifier = v7;
 
     objc_opt_class();
-    v9 = [v4 objectForKey:@"imageData"];
+    v9 = [dictionaryCopy objectForKey:@"imageData"];
     if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v10 = v9;
@@ -49,18 +49,18 @@
   return v5;
 }
 
-- (CAFMediaItemImage)initWithIdentifier:(id)a3 imageData:(id)a4
+- (CAFMediaItemImage)initWithIdentifier:(id)identifier imageData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = CAFMediaItemImage;
   v9 = [(CAFMediaItemImage *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_imageData, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_imageData, data);
   }
 
   return v10;
@@ -70,29 +70,29 @@
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"identifier";
-  v3 = [(CAFMediaItemImage *)self identifier];
-  v4 = v3;
-  if (!v3)
+  identifier = [(CAFMediaItemImage *)self identifier];
+  null = identifier;
+  if (!identifier)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   v10[1] = @"imageData";
-  v11[0] = v4;
-  v5 = [(CAFMediaItemImage *)self imageData];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  imageData = [(CAFMediaItemImage *)self imageData];
+  null2 = imageData;
+  if (!imageData)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!imageData)
   {
   }
 
-  if (!v3)
+  if (!identifier)
   {
   }
 
@@ -105,9 +105,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFMediaItemImage *)self identifier];
-  v6 = [(CAFMediaItemImage *)self imageData];
-  v7 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@ }>", v4, self, @"identifier", v5, @"imageData", v6];
+  identifier = [(CAFMediaItemImage *)self identifier];
+  imageData = [(CAFMediaItemImage *)self imageData];
+  v7 = [v3 stringWithFormat:@"<%@: %p { %@: %@, %@: %@ }>", v4, self, @"identifier", identifier, @"imageData", imageData];
 
   return v7;
 }

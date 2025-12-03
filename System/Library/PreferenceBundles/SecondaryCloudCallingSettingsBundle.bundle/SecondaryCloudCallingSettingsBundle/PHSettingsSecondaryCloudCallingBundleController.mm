@@ -1,18 +1,18 @@
 @interface PHSettingsSecondaryCloudCallingBundleController
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3;
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller;
 - (id)labelValue;
 - (id)parentListController;
-- (id)specifiersWithSpecifier:(id)a3;
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4;
-- (void)performButtonActionForSpecifier:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller;
+- (void)performButtonActionForSpecifier:(id)specifier;
 @end
 
 @implementation PHSettingsSecondaryCloudCallingBundleController
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
-  v4 = [(PHSettingsSecondaryCloudCallingBundleController *)self specifiersArray];
-  if (!v4 && (+[TUCallCapabilities supportsPrimaryCalling]& 1) == 0)
+  specifiersArray = [(PHSettingsSecondaryCloudCallingBundleController *)self specifiersArray];
+  if (!specifiersArray && (+[TUCallCapabilities supportsPrimaryCalling]& 1) == 0)
   {
     if (!+[TUCallCapabilities supportsThumperCalling])
     {
@@ -20,20 +20,20 @@
     }
 
     v5 = [NSBundle bundleForClass:objc_opt_class()];
-    v4 = [v5 localizedStringForKey:@"SECONDARY_CLOUD_CALLING_CELL_TITLE" value:&stru_C760 table:@"SecondaryCloudCallingSettings"];
+    specifiersArray = [v5 localizedStringForKey:@"SECONDARY_CLOUD_CALLING_CELL_TITLE" value:&stru_C760 table:@"SecondaryCloudCallingSettings"];
 
-    v6 = [(PHSettingsSecondaryCloudCallingBundleController *)self parentListController];
-    v7 = [(PHSettingsSecondaryCloudCallingBundleController *)self isStateDrivenNavigationPossibleWithParentController:v6];
+    parentListController = [(PHSettingsSecondaryCloudCallingBundleController *)self parentListController];
+    v7 = [(PHSettingsSecondaryCloudCallingBundleController *)self isStateDrivenNavigationPossibleWithParentController:parentListController];
 
     if (v7)
     {
-      v8 = [PSSpecifier preferenceSpecifierNamed:v4 target:self set:0 get:"labelValue" detail:0 cell:2 edit:0];
+      v8 = [PSSpecifier preferenceSpecifierNamed:specifiersArray target:self set:0 get:"labelValue" detail:0 cell:2 edit:0];
       [v8 setButtonAction:"performButtonActionForSpecifier:"];
     }
 
     else
     {
-      v8 = [PSSpecifier preferenceSpecifierNamed:v4 target:self set:0 get:"labelValue" detail:objc_opt_class() cell:2 edit:0];
+      v8 = [PSSpecifier preferenceSpecifierNamed:specifiersArray target:self set:0 get:"labelValue" detail:objc_opt_class() cell:2 edit:0];
     }
 
     [v8 setIdentifier:@"SECONDARY_CLOUD_CALLING"];
@@ -83,14 +83,14 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (void)performButtonActionForSpecifier:(id)a3
+- (void)performButtonActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(PHSettingsSecondaryCloudCallingBundleController *)self parentListController];
-  [(PHSettingsSecondaryCloudCallingBundleController *)self handleUserDidTapOnMainSpecifier:v4 parentController:v5];
+  specifierCopy = specifier;
+  parentListController = [(PHSettingsSecondaryCloudCallingBundleController *)self parentListController];
+  [(PHSettingsSecondaryCloudCallingBundleController *)self handleUserDidTapOnMainSpecifier:specifierCopy parentController:parentListController];
 }
 
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller
 {
   v4 = sub_6684();
   v5 = *(v4 - 8);
@@ -105,17 +105,17 @@ LABEL_9:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = [v9 traitCollection];
+  controllerCopy = controller;
+  traitCollection = [controllerCopy traitCollection];
   sub_66D4();
 
-  LOBYTE(v10) = sub_6664();
+  LOBYTE(traitCollection) = sub_6664();
   (*(v5 + 8))(v8, v4);
 
-  return v10 & 1;
+  return traitCollection & 1;
 }
 
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller
 {
   v18 = sub_6684();
   v5 = *(v18 - 8);
@@ -137,10 +137,10 @@ LABEL_9:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v15 = a4;
+  controllerCopy = controller;
   sub_66E4();
   sub_6644();
-  v16 = [v15 traitCollection];
+  traitCollection = [controllerCopy traitCollection];
   sub_66D4();
 
   sub_610C();

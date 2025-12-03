@@ -1,19 +1,19 @@
 @interface CRUAlertCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation CRUAlertCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = CRUAlertCell;
-  v4 = a3;
-  [(PSTableCell *)&v7 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"CRImageAlertKey", v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"CRImageAlertKey", v7.receiver, v7.super_class}];
 
-  v6 = [(PSTableCell *)self valueLabel];
-  [v6 setAttributedText:v5];
+  valueLabel = [(PSTableCell *)self valueLabel];
+  [valueLabel setAttributedText:v5];
 }
 
 @end

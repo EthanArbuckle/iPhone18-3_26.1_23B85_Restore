@@ -1,26 +1,26 @@
 @interface DIMSchemaDIMEphemeralIdentifiers
-- (BOOL)isEqual:(id)a3;
-- (DIMSchemaDIMEphemeralIdentifiers)initWithDictionary:(id)a3;
-- (DIMSchemaDIMEphemeralIdentifiers)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DIMSchemaDIMEphemeralIdentifiers)initWithDictionary:(id)dictionary;
+- (DIMSchemaDIMEphemeralIdentifiers)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DIMSchemaDIMEphemeralIdentifiers
 
-- (DIMSchemaDIMEphemeralIdentifiers)initWithDictionary:(id)a3
+- (DIMSchemaDIMEphemeralIdentifiers)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = DIMSchemaDIMEphemeralIdentifiers;
   v5 = [(DIMSchemaDIMEphemeralIdentifiers *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"userEphemeralId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"userEphemeralId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(DIMSchemaDIMEphemeralIdentifiers *)v5 setUserEphemeralId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"homeEphemeralId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"homeEphemeralId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(DIMSchemaDIMEphemeralIdentifiers *)v5 setHomeEphemeralId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"secondsSinceEphemeralIdCreation"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"secondsSinceEphemeralIdCreation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (DIMSchemaDIMEphemeralIdentifiers)initWithJSON:(id)a3
+- (DIMSchemaDIMEphemeralIdentifiers)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DIMSchemaDIMEphemeralIdentifiers *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DIMSchemaDIMEphemeralIdentifiers *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DIMSchemaDIMEphemeralIdentifiers *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,48 +85,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_homeEphemeralId)
   {
-    v4 = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    homeEphemeralId = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
+    dictionaryRepresentation = [homeEphemeralId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"homeEphemeralId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"homeEphemeralId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"homeEphemeralId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"homeEphemeralId"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DIMSchemaDIMEphemeralIdentifiers secondsSinceEphemeralIdCreation](self, "secondsSinceEphemeralIdCreation")}];
-    [v3 setObject:v7 forKeyedSubscript:@"secondsSinceEphemeralIdCreation"];
+    [dictionary setObject:v7 forKeyedSubscript:@"secondsSinceEphemeralIdCreation"];
   }
 
   if (self->_userEphemeralId)
   {
-    v8 = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    userEphemeralId = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
+    dictionaryRepresentation2 = [userEphemeralId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"userEphemeralId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"userEphemeralId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"userEphemeralId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"userEphemeralId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -146,28 +146,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
-  v6 = [v4 userEphemeralId];
-  if ((v5 != 0) == (v6 == 0))
+  userEphemeralId = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
+  userEphemeralId2 = [equalCopy userEphemeralId];
+  if ((userEphemeralId != 0) == (userEphemeralId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
-  if (v7)
+  userEphemeralId3 = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
+  if (userEphemeralId3)
   {
-    v8 = v7;
-    v9 = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
-    v10 = [v4 userEphemeralId];
-    v11 = [v9 isEqual:v10];
+    v8 = userEphemeralId3;
+    userEphemeralId4 = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
+    userEphemeralId5 = [equalCopy userEphemeralId];
+    v11 = [userEphemeralId4 isEqual:userEphemeralId5];
 
     if (!v11)
     {
@@ -179,22 +179,22 @@
   {
   }
 
-  v5 = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
-  v6 = [v4 homeEphemeralId];
-  if ((v5 != 0) == (v6 == 0))
+  userEphemeralId = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
+  userEphemeralId2 = [equalCopy homeEphemeralId];
+  if ((userEphemeralId != 0) == (userEphemeralId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
-  if (v12)
+  homeEphemeralId = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
+  if (homeEphemeralId)
   {
-    v13 = v12;
-    v14 = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
-    v15 = [v4 homeEphemeralId];
-    v16 = [v14 isEqual:v15];
+    v13 = homeEphemeralId;
+    homeEphemeralId2 = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
+    homeEphemeralId3 = [equalCopy homeEphemeralId];
+    v16 = [homeEphemeralId2 isEqual:homeEphemeralId3];
 
     if (!v16)
     {
@@ -206,9 +206,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[32] & 1))
+  if ((*&self->_has & 1) == (equalCopy[32] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (secondsSinceEphemeralIdCreation = self->_secondsSinceEphemeralIdCreation, secondsSinceEphemeralIdCreation == [v4 secondsSinceEphemeralIdCreation]))
+    if ((*&self->_has & 1) == 0 || (secondsSinceEphemeralIdCreation = self->_secondsSinceEphemeralIdCreation, secondsSinceEphemeralIdCreation == [equalCopy secondsSinceEphemeralIdCreation]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -222,22 +222,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
+  toCopy = to;
+  userEphemeralId = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
 
-  if (v4)
+  if (userEphemeralId)
   {
-    v5 = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
+    userEphemeralId2 = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
+  homeEphemeralId = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
 
-  if (v6)
+  if (homeEphemeralId)
   {
-    v7 = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
+    homeEphemeralId2 = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -247,26 +247,26 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = DIMSchemaDIMEphemeralIdentifiers;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  userEphemeralId = [(DIMSchemaDIMEphemeralIdentifiers *)self userEphemeralId];
+  v7 = [userEphemeralId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DIMSchemaDIMEphemeralIdentifiers *)self deleteUserEphemeralId];
   }
 
-  v9 = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  homeEphemeralId = [(DIMSchemaDIMEphemeralIdentifiers *)self homeEphemeralId];
+  v10 = [homeEphemeralId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DIMSchemaDIMEphemeralIdentifiers *)self deleteHomeEphemeralId];
   }

@@ -1,27 +1,27 @@
 @interface MapsAppTestETA
 - (BOOL)runTest;
-- (void)doAfterStartedTestAtLocation:(CLLocationCoordinate2D)a3;
-- (void)startAtLocation:(CLLocationCoordinate2D)a3;
+- (void)doAfterStartedTestAtLocation:(CLLocationCoordinate2D)location;
+- (void)startAtLocation:(CLLocationCoordinate2D)location;
 @end
 
 @implementation MapsAppTestETA
 
-- (void)doAfterStartedTestAtLocation:(CLLocationCoordinate2D)a3
+- (void)doAfterStartedTestAtLocation:(CLLocationCoordinate2D)location
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v5 = [(MapsAppTest *)self mainMKMapView];
-  [v5 convertCoordinate:v5 toPointToView:{latitude, longitude}];
-  [v5 _handleSelectionAtPoint:?];
+  longitude = location.longitude;
+  latitude = location.latitude;
+  mainMKMapView = [(MapsAppTest *)self mainMKMapView];
+  [mainMKMapView convertCoordinate:mainMKMapView toPointToView:{latitude, longitude}];
+  [mainMKMapView _handleSelectionAtPoint:?];
 }
 
-- (void)startAtLocation:(CLLocationCoordinate2D)a3
+- (void)startAtLocation:(CLLocationCoordinate2D)location
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v6 = [GEOMapRegion _mapstest_mapRegionWithCenterLatitude:a3.latitude longitude:a3.longitude size:0.01];
-  v7 = [(MapsAppTest *)self mainVKMapView];
-  [v7 setMapRegion:v6 pitch:0.0 yaw:0.0];
+  longitude = location.longitude;
+  latitude = location.latitude;
+  v6 = [GEOMapRegion _mapstest_mapRegionWithCenterLatitude:location.latitude longitude:location.longitude size:0.01];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  [mainVKMapView setMapRegion:v6 pitch:0.0 yaw:0.0];
 
   v8 = dispatch_time(0, 3000000000);
   block[0] = _NSConcreteStackBlock;
@@ -36,18 +36,18 @@
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self options];
-  v4 = [(MapsAppTest *)self testCoordinator];
-  [v4 pptTestResetForLaunchURL];
+  options = [(MapsAppTest *)self options];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestResetForLaunchURL];
 
-  [v3 _mapstest_locationCoordinate2D];
+  [options _mapstest_locationCoordinate2D];
   v6 = v5;
   v8 = v7;
   [(MapsAppTest *)self registerGEOManifestSubtests];
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 addObserver:self selector:"finishedTest" name:MapsButtonETAUpdatedNotification object:0];
 
-  -[MapsAppTest switchToMapType:](self, "switchToMapType:", [v3 _mapstest_mapTypeWithDefaultType:{-[MapsAppTestETA defaultMapType](self, "defaultMapType")}]);
+  -[MapsAppTest switchToMapType:](self, "switchToMapType:", [options _mapstest_mapTypeWithDefaultType:{-[MapsAppTestETA defaultMapType](self, "defaultMapType")}]);
   v10 = dispatch_time(0, 1000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

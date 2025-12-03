@@ -1,55 +1,55 @@
 @interface PSYLinkUpgradeMonitor
 - (BOOL)_holdingAWDLCompanionLinkPreference;
 - (BOOL)holdingAnyCompanionLinkPreference;
-- (PSYLinkUpgradeMonitor)initWithRegistryDevice:(id)a3 delegateQueue:(id)a4;
+- (PSYLinkUpgradeMonitor)initWithRegistryDevice:(id)device delegateQueue:(id)queue;
 - (PSYLinkUpgradeMonitorDelegate)delegate;
 - (id)createNetworkRelayDeviceMonitor;
-- (int64_t)localLinkTypeFromNRLinkType:(unsigned __int8)a3 linkSubtype:(unsigned __int8)a4;
+- (int64_t)localLinkTypeFromNRLinkType:(unsigned __int8)type linkSubtype:(unsigned __int8)subtype;
 - (void)_awdlUpgradeTimedout;
 - (void)_cancelAWDLUgpradeTimeoutTimer;
-- (void)_enteredCompatibilityStateOnDevice:(id)a3;
-- (void)_informDelegateAboutLinkChangedTo:(int64_t)a3;
+- (void)_enteredCompatibilityStateOnDevice:(id)device;
+- (void)_informDelegateAboutLinkChangedTo:(int64_t)to;
 - (void)_onInitialPropertyExchangeComplete;
 - (void)_onQueue_requestLinkUpgrade;
 - (void)_onQueue_resetCompanionLinkPreference;
 - (void)_performLinkUpgradeToInfraWiFi;
-- (void)_updateCompanionLinkPreferenceToAWDLforBTUUID:(id)a3;
+- (void)_updateCompanionLinkPreferenceToAWDLforBTUUID:(id)d;
 - (void)createNetworkRelayDeviceMonitor;
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4;
-- (void)registry:(id)a3 changed:(id)a4 properties:(id)a5;
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected;
+- (void)registry:(id)registry changed:(id)changed properties:(id)properties;
 - (void)requestLinkUpgrade;
 - (void)resetCompanionLinkPreference;
 - (void)resetMonitor;
-- (void)wirelessCredentialUpdateRequestCompletedWithResult:(BOOL)a3;
+- (void)wirelessCredentialUpdateRequestCompletedWithResult:(BOOL)result;
 @end
 
 @implementation PSYLinkUpgradeMonitor
 
-- (PSYLinkUpgradeMonitor)initWithRegistryDevice:(id)a3 delegateQueue:(id)a4
+- (PSYLinkUpgradeMonitor)initWithRegistryDevice:(id)device delegateQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = PSYLinkUpgradeMonitor;
   v9 = [(PSYLinkUpgradeMonitor *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_delegateQueue, a4);
+    objc_storeStrong(&v9->_delegateQueue, queue);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_get_global_queue(0, 0);
     v13 = dispatch_queue_create_with_target_V2("com.apple.PairedSync.linkMonitorQueue", v11, v12);
     processingQueue = v10->_processingQueue;
     v10->_processingQueue = v13;
 
-    objc_storeStrong(&v10->_pdrRegistryDevice, a3);
+    objc_storeStrong(&v10->_pdrRegistryDevice, device);
     v10->_networkRelayDevicePreferencesLock._os_unfair_lock_opaque = 0;
     v15 = +[PSYRegistrySingleton registry];
     [v15 addDelegate:v10];
 
-    v16 = [(PSYLinkUpgradeMonitor *)v10 createNetworkRelayDeviceMonitor];
+    createNetworkRelayDeviceMonitor = [(PSYLinkUpgradeMonitor *)v10 createNetworkRelayDeviceMonitor];
     networkRelayDeviceMonitor = v10->_networkRelayDeviceMonitor;
-    v10->_networkRelayDeviceMonitor = v16;
+    v10->_networkRelayDeviceMonitor = createNetworkRelayDeviceMonitor;
   }
 
   return v10;
@@ -58,12 +58,12 @@
 - (id)createNetworkRelayDeviceMonitor
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(PSYLinkUpgradeMonitor *)self pdrRegistryDevice];
-  v4 = [v3 pairingID];
-  [(PSYLinkUpgradeMonitor *)self setMonitoringBluetoothIdPairingId:v4];
+  pdrRegistryDevice = [(PSYLinkUpgradeMonitor *)self pdrRegistryDevice];
+  pairingID = [pdrRegistryDevice pairingID];
+  [(PSYLinkUpgradeMonitor *)self setMonitoringBluetoothIdPairingId:pairingID];
 
-  v5 = [(PSYLinkUpgradeMonitor *)self pdrRegistryDevice];
-  v6 = [v5 valueForProperty:*MEMORY[0x277D37B58]];
+  pdrRegistryDevice2 = [(PSYLinkUpgradeMonitor *)self pdrRegistryDevice];
+  v6 = [pdrRegistryDevice2 valueForProperty:*MEMORY[0x277D37B58]];
 
   v7 = psylink_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -126,7 +126,7 @@ LABEL_14:
   return v12;
 }
 
-- (void)_informDelegateAboutLinkChangedTo:(int64_t)a3
+- (void)_informDelegateAboutLinkChangedTo:(int64_t)to
 {
   objc_initWeak(&location, self);
   delegateQueue = self->_delegateQueue;
@@ -135,7 +135,7 @@ LABEL_14:
   block[2] = __59__PSYLinkUpgradeMonitor__informDelegateAboutLinkChangedTo___block_invoke;
   block[3] = &unk_2799FBA28;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = to;
   dispatch_async(delegateQueue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -195,9 +195,9 @@ void __43__PSYLinkUpgradeMonitor_requestLinkUpgrade__block_invoke(uint64_t a1)
     {
       [(PSYLinkUpgradeMonitor *)self setMonitoringCompatibilityState:1];
       v15 = [(PDRDevice *)self->_pdrRegistryDevice valueForProperty:*MEMORY[0x277D37B68]];
-      v16 = [v15 unsignedIntValue];
+      unsignedIntValue = [v15 unsignedIntValue];
 
-      if (v16 >= 3)
+      if (unsignedIntValue >= 3)
       {
         v17 = psylink_log();
         v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
@@ -210,7 +210,7 @@ void __43__PSYLinkUpgradeMonitor_requestLinkUpgrade__block_invoke(uint64_t a1)
             v27 = 136315394;
             v28 = "[PSYLinkUpgradeMonitor _onQueue_requestLinkUpgrade]";
             v29 = 2048;
-            v30 = v16;
+            v30 = unsignedIntValue;
             _os_log_impl(&dword_25DF25000, v19, OS_LOG_TYPE_DEFAULT, "%s: already initial properties exchanged: %ld", &v27, 0x16u);
           }
         }
@@ -329,13 +329,13 @@ LABEL_36:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enteredCompatibilityStateOnDevice:(id)a3
+- (void)_enteredCompatibilityStateOnDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 pairingID];
-  v6 = [(PSYLinkUpgradeMonitor *)self pdrRegistryDevice];
-  v7 = [v6 pairingID];
-  v8 = [v5 isEqual:v7];
+  deviceCopy = device;
+  pairingID = [deviceCopy pairingID];
+  pdrRegistryDevice = [(PSYLinkUpgradeMonitor *)self pdrRegistryDevice];
+  pairingID2 = [pdrRegistryDevice pairingID];
+  v8 = [pairingID isEqual:pairingID2];
 
   if (v8)
   {
@@ -346,7 +346,7 @@ LABEL_36:
     block[2] = __60__PSYLinkUpgradeMonitor__enteredCompatibilityStateOnDevice___block_invoke;
     block[3] = &unk_2799FB778;
     objc_copyWeak(&v12, &location);
-    v11 = v4;
+    v11 = deviceCopy;
     dispatch_async(processingQueue, block);
 
     objc_destroyWeak(&v12);
@@ -512,11 +512,11 @@ void __53__PSYLinkUpgradeMonitor_resetCompanionLinkPreference__block_invoke(uint
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registry:(id)a3 changed:(id)a4 properties:(id)a5
+- (void)registry:(id)registry changed:(id)changed properties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  registryCopy = registry;
+  changedCopy = changed;
+  propertiesCopy = properties;
   objc_initWeak(&location, self);
   processingQueue = self->_processingQueue;
   v15[0] = MEMORY[0x277D85DD0];
@@ -524,13 +524,13 @@ void __53__PSYLinkUpgradeMonitor_resetCompanionLinkPreference__block_invoke(uint
   v15[2] = __53__PSYLinkUpgradeMonitor_registry_changed_properties___block_invoke;
   v15[3] = &unk_2799FBA78;
   objc_copyWeak(&v20, &location);
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v19 = self;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = changedCopy;
+  v17 = propertiesCopy;
+  v18 = registryCopy;
+  selfCopy = self;
+  v12 = registryCopy;
+  v13 = propertiesCopy;
+  v14 = changedCopy;
   dispatch_async(processingQueue, v15);
 
   objc_destroyWeak(&v20);
@@ -600,10 +600,10 @@ void __53__PSYLinkUpgradeMonitor_registry_changed_properties___block_invoke(id *
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCompanionLinkPreferenceToAWDLforBTUUID:(id)a3
+- (void)_updateCompanionLinkPreferenceToAWDLforBTUUID:(id)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D2C9C8] newDeviceIdentifierWithBluetoothUUID:a3];
+  v4 = [MEMORY[0x277D2C9C8] newDeviceIdentifierWithBluetoothUUID:d];
   v5 = psylink_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -612,25 +612,25 @@ void __53__PSYLinkUpgradeMonitor_registry_changed_properties___block_invoke(id *
     v7 = psylink_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 nrDeviceIdentifier];
+      nrDeviceIdentifier = [v4 nrDeviceIdentifier];
       *buf = 136315394;
       v35 = "[PSYLinkUpgradeMonitor _updateCompanionLinkPreferenceToAWDLforBTUUID:]";
       v36 = 2114;
-      v37 = v8;
+      v37 = nrDeviceIdentifier;
       _os_log_impl(&dword_25DF25000, v7, OS_LOG_TYPE_DEFAULT, "%s: NetworkRelayDeviceIdentifier: %{public}@", buf, 0x16u);
     }
   }
 
-  v9 = [(NRDeviceMonitor *)self->_networkRelayDeviceMonitor deviceIdentifier];
-  v10 = [v9 nrDeviceIdentifier];
-  v11 = [v4 nrDeviceIdentifier];
-  v12 = [v10 isEqual:v11];
+  deviceIdentifier = [(NRDeviceMonitor *)self->_networkRelayDeviceMonitor deviceIdentifier];
+  nrDeviceIdentifier2 = [deviceIdentifier nrDeviceIdentifier];
+  nrDeviceIdentifier3 = [v4 nrDeviceIdentifier];
+  v12 = [nrDeviceIdentifier2 isEqual:nrDeviceIdentifier3];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [(PSYLinkUpgradeMonitor *)self createNetworkRelayDeviceMonitor];
+    createNetworkRelayDeviceMonitor = [(PSYLinkUpgradeMonitor *)self createNetworkRelayDeviceMonitor];
     networkRelayDeviceMonitor = self->_networkRelayDeviceMonitor;
-    self->_networkRelayDeviceMonitor = v13;
+    self->_networkRelayDeviceMonitor = createNetworkRelayDeviceMonitor;
   }
 
   if ([(NRDeviceMonitor *)self->_networkRelayDeviceMonitor isConnected])
@@ -776,27 +776,27 @@ void __53__PSYLinkUpgradeMonitor_registry_changed_properties___block_invoke(id *
           v15 = psylink_log();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [v7 nrDeviceIdentifier];
+            nrDeviceIdentifier = [v7 nrDeviceIdentifier];
             v30 = 136315650;
             v31 = "[PSYLinkUpgradeMonitor _performLinkUpgradeToInfraWiFi]";
             v32 = 2114;
             v33 = v4;
             v34 = 2114;
-            v35 = v16;
+            v35 = nrDeviceIdentifier;
             _os_log_impl(&dword_25DF25000, v15, OS_LOG_TYPE_DEFAULT, "%s: BT identifier: %{public}@ networkRelayDeviceIdentifier: %{public}@", &v30, 0x20u);
           }
         }
 
-        v17 = [(NRDeviceMonitor *)self->_networkRelayDeviceMonitor deviceIdentifier];
-        v18 = [v17 nrDeviceIdentifier];
-        v19 = [v7 nrDeviceIdentifier];
-        v20 = [v18 isEqual:v19];
+        deviceIdentifier = [(NRDeviceMonitor *)self->_networkRelayDeviceMonitor deviceIdentifier];
+        nrDeviceIdentifier2 = [deviceIdentifier nrDeviceIdentifier];
+        nrDeviceIdentifier3 = [v7 nrDeviceIdentifier];
+        v20 = [nrDeviceIdentifier2 isEqual:nrDeviceIdentifier3];
 
         if ((v20 & 1) == 0)
         {
-          v21 = [(PSYLinkUpgradeMonitor *)self createNetworkRelayDeviceMonitor];
+          createNetworkRelayDeviceMonitor = [(PSYLinkUpgradeMonitor *)self createNetworkRelayDeviceMonitor];
           networkRelayDeviceMonitor = self->_networkRelayDeviceMonitor;
-          self->_networkRelayDeviceMonitor = v21;
+          self->_networkRelayDeviceMonitor = createNetworkRelayDeviceMonitor;
         }
 
         self->_currentLinkSubType = [(NRDeviceMonitor *)self->_networkRelayDeviceMonitor linkSubtype];
@@ -890,7 +890,7 @@ LABEL_27:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)wirelessCredentialUpdateRequestCompletedWithResult:(BOOL)a3
+- (void)wirelessCredentialUpdateRequestCompletedWithResult:(BOOL)result
 {
   objc_initWeak(&location, self);
   processingQueue = self->_processingQueue;
@@ -899,7 +899,7 @@ LABEL_27:
   v6[2] = __76__PSYLinkUpgradeMonitor_wirelessCredentialUpdateRequestCompletedWithResult___block_invoke;
   v6[3] = &unk_2799FBAA0;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  resultCopy = result;
   v6[4] = self;
   dispatch_async(processingQueue, v6);
   objc_destroyWeak(&v7);
@@ -1001,9 +1001,9 @@ void __37__PSYLinkUpgradeMonitor_resetMonitor__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected
 {
-  v4 = a4;
+  connectedCopy = connected;
   v14 = *MEMORY[0x277D85DE8];
   v6 = psylink_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -1016,12 +1016,12 @@ void __37__PSYLinkUpgradeMonitor_resetMonitor__block_invoke(uint64_t a1)
       v10 = 136315394;
       v11 = "[PSYLinkUpgradeMonitor deviceIsConnectedDidChange:isConnected:]";
       v12 = 1024;
-      v13 = v4;
+      v13 = connectedCopy;
       _os_log_impl(&dword_25DF25000, v8, OS_LOG_TYPE_DEFAULT, "%s: connected %{BOOL}d", &v10, 0x12u);
     }
   }
 
-  if (v4 && self->_pendingAWDLUpgradeRequest)
+  if (connectedCopy && self->_pendingAWDLUpgradeRequest)
   {
     [(PSYLinkUpgradeMonitor *)self _onQueue_requestLinkUpgrade];
   }
@@ -1029,25 +1029,25 @@ void __37__PSYLinkUpgradeMonitor_resetMonitor__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)localLinkTypeFromNRLinkType:(unsigned __int8)a3 linkSubtype:(unsigned __int8)a4
+- (int64_t)localLinkTypeFromNRLinkType:(unsigned __int8)type linkSubtype:(unsigned __int8)subtype
 {
   v4 = 3;
-  if (!a4)
+  if (!subtype)
   {
     v4 = 0;
   }
 
-  if (a4 == 102)
+  if (subtype == 102)
   {
     v4 = 2;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     v4 = 0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return 1;
   }
@@ -1061,8 +1061,8 @@ void __37__PSYLinkUpgradeMonitor_resetMonitor__block_invoke(uint64_t a1)
 - (BOOL)holdingAnyCompanionLinkPreference
 {
   os_unfair_lock_lock(&self->_networkRelayDevicePreferencesLock);
-  v3 = [(NRDevicePreferences *)self->_networkRelayDevicePreferences companionLinkPreferences];
-  v4 = v3 != 0;
+  companionLinkPreferences = [(NRDevicePreferences *)self->_networkRelayDevicePreferences companionLinkPreferences];
+  v4 = companionLinkPreferences != 0;
 
   os_unfair_lock_unlock(&self->_networkRelayDevicePreferencesLock);
   return v4;
@@ -1071,8 +1071,8 @@ void __37__PSYLinkUpgradeMonitor_resetMonitor__block_invoke(uint64_t a1)
 - (BOOL)_holdingAWDLCompanionLinkPreference
 {
   os_unfair_lock_lock(&self->_networkRelayDevicePreferencesLock);
-  v3 = [(NRDevicePreferences *)self->_networkRelayDevicePreferences companionLinkPreferences];
-  v4 = v3 != 0;
+  companionLinkPreferences = [(NRDevicePreferences *)self->_networkRelayDevicePreferences companionLinkPreferences];
+  v4 = companionLinkPreferences != 0;
 
   os_unfair_lock_unlock(&self->_networkRelayDevicePreferencesLock);
   return v4;

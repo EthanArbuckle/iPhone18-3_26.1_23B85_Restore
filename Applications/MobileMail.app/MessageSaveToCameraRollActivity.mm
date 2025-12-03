@@ -1,8 +1,8 @@
 @interface MessageSaveToCameraRollActivity
 - (ContentRepresentationHandlingDelegate)delegate;
 - (MessageSaveToCameraRollActivity)init;
-- (MessageSaveToCameraRollActivity)initWithAttachmentHandlingDelegate:(id)a3 context:(int64_t)a4;
-- (void)_prepareWithActivityItems:(id)a3;
+- (MessageSaveToCameraRollActivity)initWithAttachmentHandlingDelegate:(id)delegate context:(int64_t)context;
+- (void)_prepareWithActivityItems:(id)items;
 @end
 
 @implementation MessageSaveToCameraRollActivity
@@ -15,31 +15,31 @@
   return 0;
 }
 
-- (MessageSaveToCameraRollActivity)initWithAttachmentHandlingDelegate:(id)a3 context:(int64_t)a4
+- (MessageSaveToCameraRollActivity)initWithAttachmentHandlingDelegate:(id)delegate context:(int64_t)context
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = MessageSaveToCameraRollActivity;
   v7 = [(MessageSaveToCameraRollActivity *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(MessageSaveToCameraRollActivity *)v7 setDelegate:v6];
-    [(MessageSaveToCameraRollActivity *)v8 setContext:a4];
+    [(MessageSaveToCameraRollActivity *)v7 setDelegate:delegateCopy];
+    [(MessageSaveToCameraRollActivity *)v8 setContext:context];
   }
 
   return v8;
 }
 
-- (void)_prepareWithActivityItems:(id)a3
+- (void)_prepareWithActivityItems:(id)items
 {
-  v13 = a3;
-  v3 = [v13 mutableCopy];
+  itemsCopy = items;
+  v3 = [itemsCopy mutableCopy];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v13;
+  v4 = itemsCopy;
   v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -69,8 +69,8 @@
 
           else
           {
-            v12 = [v9 path];
-            NSLog(@"failed to ingest %@ (%@)", v12, v11);
+            path = [v9 path];
+            NSLog(@"failed to ingest %@ (%@)", path, v11);
           }
         }
 

@@ -1,43 +1,43 @@
 @interface PKPGSVTransitionInterstitialView
-- (CGFloat)resolveIndeterminatePositionWithPriorItemFrame:(CGFloat)a3 animated:(CGFloat)a4;
-- (double)_setCurrentItem:(int)a3 withDefaultSize:(char)a4 force:(double)a5 animated:(double)a6;
-- (double)pushItem:(double)a3 withDefaultSize:(double)a4 containerAlpha:(double)a5;
-- (double)updateCurrentItem:(double)a3 withDefaultSize:(double)a4 containerAlpha:(double)a5;
-- (id)_initForItem:(void *)a3 inView:(void *)a4 withSpringFactory:(void *)a5 dismissalSpringFactory:(void *)a6 defaultSize:(double)a7 containerAlpha:(double)a8 activationObserver:(double)a9;
+- (CGFloat)resolveIndeterminatePositionWithPriorItemFrame:(CGFloat)frame animated:(CGFloat)animated;
+- (double)_setCurrentItem:(int)item withDefaultSize:(char)size force:(double)force animated:(double)animated;
+- (double)pushItem:(double)item withDefaultSize:(double)size containerAlpha:(double)alpha;
+- (double)updateCurrentItem:(double)item withDefaultSize:(double)size containerAlpha:(double)alpha;
+- (id)_initForItem:(void *)item inView:(void *)view withSpringFactory:(void *)factory dismissalSpringFactory:(void *)springFactory defaultSize:(double)size containerAlpha:(double)alpha activationObserver:(double)observer;
 - (void)_incrementAnimationCount;
 - (void)_pruneObsoleteSnapshots;
-- (void)_setContainerAlpha:(double)a3 animated:;
-- (void)_setPosition:(uint64_t)a1 animated:(int)a2;
-- (void)_setPreviousItem:(int)a3 withDefaultSize:(char)a4 force:(double)a5 animated:(double)a6;
-- (void)_swapItemsAnimated:(uint64_t)a1;
+- (void)_setContainerAlpha:(double)alpha animated:;
+- (void)_setPosition:(uint64_t)position animated:(int)animated;
+- (void)_setPreviousItem:(int)item withDefaultSize:(char)size force:(double)force animated:(double)animated;
+- (void)_swapItemsAnimated:(uint64_t)animated;
 - (void)_updateActive;
-- (void)_updatePositionAnimated:(uint64_t)a1;
+- (void)_updatePositionAnimated:(uint64_t)animated;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAnchorPoint:(CGPoint)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setAnchorPoint:(CGPoint)point;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PKPGSVTransitionInterstitialView
 
-- (id)_initForItem:(void *)a3 inView:(void *)a4 withSpringFactory:(void *)a5 dismissalSpringFactory:(void *)a6 defaultSize:(double)a7 containerAlpha:(double)a8 activationObserver:(double)a9
+- (id)_initForItem:(void *)item inView:(void *)view withSpringFactory:(void *)factory dismissalSpringFactory:(void *)springFactory defaultSize:(double)size containerAlpha:(double)alpha activationObserver:(double)observer
 {
   v17 = a2;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  result = a6;
-  if (v19)
+  itemCopy = item;
+  viewCopy = view;
+  factoryCopy = factory;
+  result = springFactory;
+  if (viewCopy)
   {
     v22 = result;
-    v35.receiver = a1;
+    v35.receiver = self;
     v35.super_class = PKPGSVTransitionInterstitialView;
     v23 = objc_msgSendSuper2(&v35, sel_initWithFrame_, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24));
     v24 = v23;
     if (v23)
     {
-      objc_storeStrong(v23 + 53, a4);
-      objc_storeStrong((v24 + 432), a5);
+      objc_storeStrong(v23 + 53, view);
+      objc_storeStrong((v24 + 432), factory);
       v25 = !UIAccessibilityIsReduceTransparencyEnabled() && !UIAccessibilityIsReduceMotionEnabled();
       *(v24 + 408) = v25;
       v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -52,9 +52,9 @@
       v31 = *(v24 + 528);
       *(v24 + 528) = v30;
 
-      [v18 addSubview:v24];
-      [(PKPGSVTransitionInterstitialView *)v24 _setContainerAlpha:a9 animated:?];
-      [(PKPGSVTransitionInterstitialView *)v24 _setCurrentItem:v17 withDefaultSize:1 force:0 animated:a7, a8];
+      [itemCopy addSubview:v24];
+      [(PKPGSVTransitionInterstitialView *)v24 _setContainerAlpha:observer animated:?];
+      [(PKPGSVTransitionInterstitialView *)v24 _setCurrentItem:v17 withDefaultSize:1 force:0 animated:size, alpha];
       [(PKPGSVTransitionInterstitialView *)v24 _setPreviousItem:1 withDefaultSize:0 force:*MEMORY[0x1E695F060] animated:*(MEMORY[0x1E695F060] + 8)];
       if (v17)
       {
@@ -87,53 +87,53 @@
   return result;
 }
 
-- (void)_setContainerAlpha:(double)a3 animated:
+- (void)_setContainerAlpha:(double)alpha animated:
 {
-  v6 = [a1 layer];
+  layer = [self layer];
   v7 = 0;
   v17 = 0;
   if (a2)
   {
-    v7 = a1[53];
+    v7 = self[53];
   }
 
-  [a1 pkui_setAlpha:v7 withAnimationFactory:&v17 animation:0 removePriorAnimation:a3];
+  [self pkui_setAlpha:v7 withAnimationFactory:&v17 animation:0 removePriorAnimation:alpha];
   if (v17)
   {
-    v9 = [(PKPGSVTransitionInterstitialView *)a1 _incrementAnimationCount];
+    _incrementAnimationCount = [(PKPGSVTransitionInterstitialView *)self _incrementAnimationCount];
     v10 = v17;
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __64__PKPGSVTransitionInterstitialView__setContainerAlpha_animated___block_invoke;
     v15 = &unk_1E8010AD8;
-    v16 = v9;
-    v11 = v9;
+    v16 = _incrementAnimationCount;
+    v11 = _incrementAnimationCount;
     [v10 pkui_setCompletionHandler:&v12];
-    [v6 removeAnimationForKey:{@"opacity", v12, v13, v14, v15}];
-    [v6 addAnimation:v17 forKey:@"opacity"];
+    [layer removeAnimationForKey:{@"opacity", v12, v13, v14, v15}];
+    [layer addAnimation:v17 forKey:@"opacity"];
   }
 
-  else if (v8 != a3)
+  else if (v8 != alpha)
   {
-    [v6 removeAnimationForKey:@"opacity"];
+    [layer removeAnimationForKey:@"opacity"];
   }
 }
 
-- (double)_setCurrentItem:(int)a3 withDefaultSize:(char)a4 force:(double)a5 animated:(double)a6
+- (double)_setCurrentItem:(int)item withDefaultSize:(char)size force:(double)force animated:(double)animated
 {
   v12 = a2;
   v13 = v12;
-  if ((*(a1 + 413) & 1) == 0)
+  if ((*(self + 413) & 1) == 0)
   {
-    if (*(a1 + 448) == v12 && (a3 & 1) == 0)
+    if (*(self + 448) == v12 && (item & 1) == 0)
     {
       goto LABEL_18;
     }
 
-    [a1 layoutIfNeeded];
-    if (*(a1 + 456))
+    [self layoutIfNeeded];
+    if (*(self + 456))
     {
-      v14 = a3 == 0;
+      v14 = item == 0;
     }
 
     else
@@ -143,88 +143,88 @@
 
     if (!v14)
     {
-      [*(a1 + 512) addObject:?];
-      v15 = *(a1 + 456);
-      *(a1 + 456) = 0;
+      [*(self + 512) addObject:?];
+      v15 = *(self + 456);
+      *(self + 456) = 0;
     }
 
-    if (*(a1 + 464))
+    if (*(self + 464))
     {
-      [*(a1 + 520) addObject:?];
-      v16 = *(a1 + 464);
-      *(a1 + 464) = 0;
+      [*(self + 520) addObject:?];
+      v16 = *(self + 464);
+      *(self + 464) = 0;
     }
 
-    v17 = *(a1 + 472);
+    v17 = *(self + 472);
     if (v17)
     {
-      v18 = *(a1 + 528);
+      v18 = *(self + 528);
       v19 = _Block_copy(v17);
       [v18 addObject:v19];
 
-      v20 = *(a1 + 472);
-      *(a1 + 472) = 0;
+      v20 = *(self + 472);
+      *(self + 472) = 0;
     }
 
-    objc_storeStrong((a1 + 448), a2);
+    objc_storeStrong((self + 448), a2);
     if (v13)
     {
-      v21 = *(a1 + 408);
+      v21 = *(self + 408);
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __83__PKPGSVTransitionInterstitialView__setCurrentItem_withDefaultSize_force_animated___block_invoke;
       v27[3] = &unk_1E8023AC0;
-      v27[4] = a1;
+      v27[4] = self;
       [(PKPGSVTransitionInterstitialItem *)v13 beginTrackingWithConfiguration:v21 handler:v27];
     }
 
-    else if (!*(a1 + 456))
+    else if (!*(self + 456))
     {
-      v22 = [[PKPGSVTransitionInterstitialSnapshotContainerView alloc] initWithSnapshotSize:a5, a6];
-      v23 = *(a1 + 456);
-      *(a1 + 456) = v22;
+      animated = [[PKPGSVTransitionInterstitialSnapshotContainerView alloc] initWithSnapshotSize:force, animated];
+      v23 = *(self + 456);
+      *(self + 456) = animated;
 
-      v24 = *(a1 + 456);
-      [a1 anchorPoint];
+      v24 = *(self + 456);
+      [self anchorPoint];
       [v24 setAnchorPoint:?];
-      [*(a1 + 456) setHidden:1];
-      [a1 addSubview:*(a1 + 456)];
+      [*(self + 456) setHidden:1];
+      [self addSubview:*(self + 456)];
     }
 
-    [a1 setNeedsLayout];
-    *(a1 + 409) = a4;
-    [a1 layoutIfNeeded];
-    *(a1 + 409) = 0;
-    [(PKPGSVTransitionInterstitialView *)a1 _pruneObsoleteSnapshots];
-    if (*(a1 + 448))
+    [self setNeedsLayout];
+    *(self + 409) = size;
+    [self layoutIfNeeded];
+    *(self + 409) = 0;
+    [(PKPGSVTransitionInterstitialView *)self _pruneObsoleteSnapshots];
+    if (*(self + 448))
     {
 LABEL_18:
-      v25 = *(a1 + 456);
+      v25 = *(self + 456);
       if (v25)
       {
-        a5 = *(v25 + 408);
+        force = *(v25 + 408);
       }
 
       else
       {
-        a5 = 0.0;
+        force = 0.0;
       }
     }
   }
 
-  return a5;
+  return force;
 }
 
-- (void)_setPreviousItem:(int)a3 withDefaultSize:(char)a4 force:(double)a5 animated:(double)a6
+- (void)_setPreviousItem:(int)item withDefaultSize:(char)size force:(double)force animated:(double)animated
 {
   v12 = a2;
   v13 = v12;
-  if ((*(a1 + 413) & 1) == 0 && (*(a1 + 480) != v12 || a3 != 0))
+  if ((*(self + 413) & 1) == 0 && (*(self + 480) != v12 || item != 0))
   {
-    [a1 layoutIfNeeded];
-    if (*(a1 + 488))
+    [self layoutIfNeeded];
+    if (*(self + 488))
     {
-      v15 = a3 == 0;
+      v15 = item == 0;
     }
 
     else
@@ -234,77 +234,77 @@ LABEL_18:
 
     if (!v15)
     {
-      [*(a1 + 512) addObject:?];
-      v16 = *(a1 + 488);
-      *(a1 + 488) = 0;
+      [*(self + 512) addObject:?];
+      v16 = *(self + 488);
+      *(self + 488) = 0;
     }
 
-    if (*(a1 + 496))
+    if (*(self + 496))
     {
-      [*(a1 + 520) addObject:?];
-      v17 = *(a1 + 496);
-      *(a1 + 496) = 0;
+      [*(self + 520) addObject:?];
+      v17 = *(self + 496);
+      *(self + 496) = 0;
     }
 
-    v18 = *(a1 + 504);
+    v18 = *(self + 504);
     if (v18)
     {
-      v19 = *(a1 + 528);
+      v19 = *(self + 528);
       v20 = _Block_copy(v18);
       [v19 addObject:v20];
 
-      v21 = *(a1 + 504);
-      *(a1 + 504) = 0;
+      v21 = *(self + 504);
+      *(self + 504) = 0;
     }
 
-    objc_storeStrong((a1 + 480), a2);
+    objc_storeStrong((self + 480), a2);
     if (v13)
     {
-      v22 = *(a1 + 408);
+      v22 = *(self + 408);
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __84__PKPGSVTransitionInterstitialView__setPreviousItem_withDefaultSize_force_animated___block_invoke;
       v27[3] = &unk_1E8023AC0;
-      v27[4] = a1;
+      v27[4] = self;
       [(PKPGSVTransitionInterstitialItem *)v13 beginTrackingWithConfiguration:v22 handler:v27];
     }
 
-    else if (!*(a1 + 488))
+    else if (!*(self + 488))
     {
-      v23 = [[PKPGSVTransitionInterstitialSnapshotContainerView alloc] initWithSnapshotSize:a5, a6];
-      v24 = *(a1 + 488);
-      *(a1 + 488) = v23;
+      animated = [[PKPGSVTransitionInterstitialSnapshotContainerView alloc] initWithSnapshotSize:force, animated];
+      v24 = *(self + 488);
+      *(self + 488) = animated;
 
-      v25 = *(a1 + 488);
-      [a1 anchorPoint];
+      v25 = *(self + 488);
+      [self anchorPoint];
       [v25 setAnchorPoint:?];
-      [*(a1 + 488) setHidden:1];
-      v26 = *(a1 + 488);
-      if (*(a1 + 456))
+      [*(self + 488) setHidden:1];
+      v26 = *(self + 488);
+      if (*(self + 456))
       {
-        [a1 insertSubview:v26 belowSubview:?];
+        [self insertSubview:v26 belowSubview:?];
       }
 
       else
       {
-        [a1 addSubview:v26];
+        [self addSubview:v26];
       }
     }
 
-    [a1 setNeedsLayout];
-    *(a1 + 409) = a4;
-    [a1 layoutIfNeeded];
-    *(a1 + 409) = 0;
-    [(PKPGSVTransitionInterstitialView *)a1 _pruneObsoleteSnapshots];
+    [self setNeedsLayout];
+    *(self + 409) = size;
+    [self layoutIfNeeded];
+    *(self + 409) = 0;
+    [(PKPGSVTransitionInterstitialView *)self _pruneObsoleteSnapshots];
   }
 }
 
-- (void)_updatePositionAnimated:(uint64_t)a1
+- (void)_updatePositionAnimated:(uint64_t)animated
 {
-  if (*(a1 + 448))
+  if (*(animated + 448))
   {
-    v20 = [a1 superview];
-    v4 = *(a1 + 448);
+    superview = [animated superview];
+    v4 = *(animated + 448);
     if (v4)
     {
       v5 = *(v4 + 8);
@@ -315,8 +315,8 @@ LABEL_18:
       v5 = 0;
     }
 
-    v6 = [v5 superview];
-    if (v20 && v6)
+    superview2 = [v5 superview];
+    if (superview && superview2)
     {
       [v5 bounds];
       v8 = v7;
@@ -324,10 +324,10 @@ LABEL_18:
       v12 = v11;
       v14 = v13;
       [v5 alignmentRectInsets];
-      [v20 convertPoint:v5 fromView:{v8 + v15 + (v12 - (v15 + v17)) * 0.5, v10 + v16 + (v14 - (v16 + v18)) * 0.5}];
+      [superview convertPoint:v5 fromView:{v8 + v15 + (v12 - (v15 + v17)) * 0.5, v10 + v16 + (v14 - (v16 + v18)) * 0.5}];
       if (a2)
       {
-        v19 = *(a1 + 411);
+        v19 = *(animated + 411);
       }
 
       else
@@ -335,24 +335,24 @@ LABEL_18:
         v19 = 0;
       }
 
-      [PKPGSVTransitionInterstitialView _setPosition:a1 animated:v19 & 1];
+      [PKPGSVTransitionInterstitialView _setPosition:animated animated:v19 & 1];
     }
   }
 }
 
 - (void)_updateActive
 {
-  v2 = (*(a1 + 413) & 1) == 0 && *(a1 + 416) != 0;
-  if (*(a1 + 412) != v2)
+  v2 = (*(self + 413) & 1) == 0 && *(self + 416) != 0;
+  if (*(self + 412) != v2)
   {
-    *(a1 + 412) = v2;
-    [(PKPGSVTransitionInterstitialView *)a1 _pruneObsoleteSnapshots];
-    v3 = *(a1 + 440);
+    *(self + 412) = v2;
+    [(PKPGSVTransitionInterstitialView *)self _pruneObsoleteSnapshots];
+    v3 = *(self + 440);
     if (v3)
     {
-      v4 = *(a1 + 412);
+      v4 = *(self + 412);
       v5 = *(v3 + 16);
-      v6 = a1;
+      selfCopy = self;
       v5(v3, v4);
     }
   }
@@ -442,10 +442,10 @@ void __43__PKPGSVTransitionInterstitialView_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAnchorPoint:(CGPoint)a3
+- (void)setAnchorPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6.receiver = self;
   v6.super_class = PKPGSVTransitionInterstitialView;
   [(PKPGSVTransitionInterstitialView *)&v6 setAnchorPoint:?];
@@ -454,11 +454,11 @@ void __43__PKPGSVTransitionInterstitialView_dealloc__block_invoke(uint64_t a1)
   [(PKPGSVTransitionInterstitialView *)self setNeedsLayout];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v4.receiver = self;
   v4.super_class = PKPGSVTransitionInterstitialView;
-  [(PKPGSVTransitionInterstitialView *)&v4 willMoveToSuperview:a3];
+  [(PKPGSVTransitionInterstitialView *)&v4 willMoveToSuperview:superview];
   if (!self->_transferring)
   {
     self->_hasPosition = 0;
@@ -795,12 +795,12 @@ LABEL_41:
 
 - (void)_incrementAnimationCount
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    ++*(a1 + 416);
-    [(PKPGSVTransitionInterstitialView *)a1 _updateActive];
-    objc_initWeak(&location, v1);
+    ++*(self + 416);
+    [(PKPGSVTransitionInterstitialView *)self _updateActive];
+    objc_initWeak(&location, selfCopy);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __60__PKPGSVTransitionInterstitialView__incrementAnimationCount__block_invoke;
@@ -823,13 +823,13 @@ LABEL_41:
     v11 = v4;
     v6 = v4;
     v7 = v5;
-    v1 = _Block_copy(v9);
+    selfCopy = _Block_copy(v9);
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __50__PKPGSVTransitionInterstitialView_layoutSubviews__block_invoke_3(uint64_t a1, void *a2, unsigned int a3)
@@ -961,15 +961,15 @@ LABEL_31:
 - (void)_pruneObsoleteSnapshots
 {
   v33 = *MEMORY[0x1E69E9840];
-  if ((*(a1 + 412) & 1) == 0)
+  if ((*(self + 412) & 1) == 0)
   {
-    if ([*(a1 + 512) count])
+    if ([*(self + 512) count])
     {
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v2 = *(a1 + 512);
+      v2 = *(self + 512);
       v3 = [v2 countByEnumeratingWithState:&v26 objects:v32 count:16];
       if (v3)
       {
@@ -995,16 +995,16 @@ LABEL_31:
         while (v4);
       }
 
-      [*(a1 + 512) removeAllObjects];
+      [*(self + 512) removeAllObjects];
     }
 
-    if ([*(a1 + 520) count])
+    if ([*(self + 520) count])
     {
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v7 = *(a1 + 520);
+      v7 = *(self + 520);
       v8 = [v7 countByEnumeratingWithState:&v22 objects:v31 count:16];
       if (v8)
       {
@@ -1030,13 +1030,13 @@ LABEL_31:
         while (v9);
       }
 
-      [*(a1 + 520) removeAllObjects];
+      [*(self + 520) removeAllObjects];
     }
 
-    if ([*(a1 + 528) count])
+    if ([*(self + 528) count])
     {
-      v12 = [*(a1 + 528) copy];
-      [*(a1 + 528) removeAllObjects];
+      v12 = [*(self + 528) copy];
+      [*(self + 528) removeAllObjects];
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
@@ -1071,42 +1071,42 @@ LABEL_31:
   }
 }
 
-- (void)_swapItemsAnimated:(uint64_t)a1
+- (void)_swapItemsAnimated:(uint64_t)animated
 {
-  if ((*(a1 + 413) & 1) == 0)
+  if ((*(animated + 413) & 1) == 0)
   {
-    [a1 layoutIfNeeded];
-    v3 = *(a1 + 480);
-    objc_storeStrong((a1 + 480), *(a1 + 448));
-    v4 = *(a1 + 448);
-    *(a1 + 448) = v3;
+    [animated layoutIfNeeded];
+    v3 = *(animated + 480);
+    objc_storeStrong((animated + 480), *(animated + 448));
+    v4 = *(animated + 448);
+    *(animated + 448) = v3;
     v16 = v3;
 
-    v5 = *(a1 + 488);
-    objc_storeStrong((a1 + 488), *(a1 + 456));
-    v6 = *(a1 + 456);
-    *(a1 + 456) = v5;
+    v5 = *(animated + 488);
+    objc_storeStrong((animated + 488), *(animated + 456));
+    v6 = *(animated + 456);
+    *(animated + 456) = v5;
     v7 = v5;
 
-    v8 = *(a1 + 496);
-    objc_storeStrong((a1 + 496), *(a1 + 464));
-    v9 = *(a1 + 464);
-    *(a1 + 464) = v8;
+    v8 = *(animated + 496);
+    objc_storeStrong((animated + 496), *(animated + 464));
+    v9 = *(animated + 464);
+    *(animated + 464) = v8;
     v10 = v8;
 
-    v11 = _Block_copy(*(a1 + 504));
-    v12 = _Block_copy(*(a1 + 472));
-    v13 = *(a1 + 504);
-    *(a1 + 504) = v12;
+    v11 = _Block_copy(*(animated + 504));
+    v12 = _Block_copy(*(animated + 472));
+    v13 = *(animated + 504);
+    *(animated + 504) = v12;
 
     v14 = _Block_copy(v11);
-    v15 = *(a1 + 472);
-    *(a1 + 472) = v14;
+    v15 = *(animated + 472);
+    *(animated + 472) = v14;
 
-    [a1 setNeedsLayout];
-    *(a1 + 409) = 1;
-    [a1 layoutIfNeeded];
-    *(a1 + 409) = 0;
+    [animated setNeedsLayout];
+    *(animated + 409) = 1;
+    [animated layoutIfNeeded];
+    *(animated + 409) = 0;
   }
 }
 
@@ -1210,17 +1210,17 @@ void __84__PKPGSVTransitionInterstitialView__setPreviousItem_withDefaultSize_for
   *(v29 + 504) = v28;
 }
 
-- (void)_setPosition:(uint64_t)a1 animated:(int)a2
+- (void)_setPosition:(uint64_t)position animated:(int)animated
 {
   v3 = 0;
   v17 = 0;
-  *(a1 + 411) = 1;
-  if (a2)
+  *(position + 411) = 1;
+  if (animated)
   {
-    v3 = *(a1 + 424);
+    v3 = *(position + 424);
   }
 
-  [a1 pkui_setPosition:v3 withAdditiveAnimationFactory:&v17 animation:?];
+  [position pkui_setPosition:v3 withAdditiveAnimationFactory:&v17 animation:?];
   if (v17)
   {
     [v17 setHighFrameRateReason:2162689];
@@ -1228,35 +1228,35 @@ void __84__PKPGSVTransitionInterstitialView__setPreviousItem_withDefaultSize_for
     LODWORD(v5) = 1123024896;
     LODWORD(v6) = 1123024896;
     [v17 setPreferredFrameRateRange:{v4, v5, v6}];
-    v7 = [(PKPGSVTransitionInterstitialView *)a1 _incrementAnimationCount];
+    _incrementAnimationCount = [(PKPGSVTransitionInterstitialView *)position _incrementAnimationCount];
     v8 = v17;
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __58__PKPGSVTransitionInterstitialView__setPosition_animated___block_invoke;
     v15 = &unk_1E8010AD8;
-    v16 = v7;
-    v9 = v7;
+    v16 = _incrementAnimationCount;
+    v9 = _incrementAnimationCount;
     [v8 pkui_setCompletionHandler:&v12];
-    v10 = [a1 layer];
-    v11 = [v10 pkui_addAdditiveAnimation:v17];
+    layer = [position layer];
+    v11 = [layer pkui_addAdditiveAnimation:v17];
   }
 }
 
-- (CGFloat)resolveIndeterminatePositionWithPriorItemFrame:(CGFloat)a3 animated:(CGFloat)a4
+- (CGFloat)resolveIndeterminatePositionWithPriorItemFrame:(CGFloat)frame animated:(CGFloat)animated
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [a1 bounds];
+  [self bounds];
   v13 = v12;
-  [a1 anchorPoint];
+  [self anchorPoint];
   v15 = v14;
-  if (*(a1 + 448))
+  if (*(self + 448))
   {
-    [a1 center];
-    v17 = *(a1 + 456);
+    [self center];
+    v17 = *(self + 456);
     if (v17)
     {
       v18 = *(v17 + 408);
@@ -1272,15 +1272,15 @@ void __84__PKPGSVTransitionInterstitialView__setPreviousItem_withDefaultSize_for
 
   else
   {
-    v21.origin.x = a3;
-    v21.origin.y = a4;
+    v21.origin.x = frame;
+    v21.origin.y = animated;
     v21.size.width = a5;
     v21.size.height = a6;
     if (!CGRectIsNull(v21))
     {
       if (a2)
       {
-        v19 = *(a1 + 411);
+        v19 = *(self + 411);
       }
 
       else
@@ -1288,68 +1288,68 @@ void __84__PKPGSVTransitionInterstitialView__setPreviousItem_withDefaultSize_for
         v19 = 0;
       }
 
-      [PKPGSVTransitionInterstitialView _setPosition:a1 animated:v19 & 1];
+      [PKPGSVTransitionInterstitialView _setPosition:self animated:v19 & 1];
     }
   }
 
-  return a3;
+  return frame;
 }
 
-- (double)pushItem:(double)a3 withDefaultSize:(double)a4 containerAlpha:(double)a5
+- (double)pushItem:(double)item withDefaultSize:(double)size containerAlpha:(double)alpha
 {
   v9 = a2;
-  if (!a1)
+  if (!self)
   {
-    a3 = 0.0;
+    item = 0.0;
     goto LABEL_14;
   }
 
-  [(PKPGSVTransitionInterstitialView *)a1 _setContainerAlpha:a5 animated:?];
+  [(PKPGSVTransitionInterstitialView *)self _setContainerAlpha:alpha animated:?];
   v10 = v9;
   v11 = v10;
-  if ((*(a1 + 413) & 1) == 0)
+  if ((*(self + 413) & 1) == 0)
   {
     if (!v10)
     {
       goto LABEL_6;
     }
 
-    if (*(a1 + 448) != v10)
+    if (*(self + 448) != v10)
     {
-      if (*(a1 + 480) != v10)
+      if (*(self + 480) != v10)
       {
 LABEL_6:
-        [(PKPGSVTransitionInterstitialView *)a1 _setPreviousItem:v10 withDefaultSize:1 force:1 animated:a3, a4];
-        [PKPGSVTransitionInterstitialView _swapItemsAnimated:a1];
-        [(PKPGSVTransitionInterstitialView *)a1 _pruneObsoleteSnapshots];
-        if (!*(a1 + 448))
+        [(PKPGSVTransitionInterstitialView *)self _setPreviousItem:v10 withDefaultSize:1 force:1 animated:item, size];
+        [PKPGSVTransitionInterstitialView _swapItemsAnimated:self];
+        [(PKPGSVTransitionInterstitialView *)self _pruneObsoleteSnapshots];
+        if (!*(self + 448))
         {
           goto LABEL_12;
         }
 
-        v12 = *(a1 + 456);
+        v12 = *(self + 456);
         if (!v12)
         {
-          a3 = 0.0;
+          item = 0.0;
           goto LABEL_12;
         }
 
         goto LABEL_11;
       }
 
-      [PKPGSVTransitionInterstitialView _swapItemsAnimated:a1];
+      [PKPGSVTransitionInterstitialView _swapItemsAnimated:self];
     }
 
-    v12 = *(a1 + 456);
+    v12 = *(self + 456);
     if (!v12)
     {
 
-      a3 = 0.0;
+      item = 0.0;
       goto LABEL_13;
     }
 
 LABEL_11:
-    a3 = *(v12 + 408);
+    item = *(v12 + 408);
   }
 
 LABEL_12:
@@ -1357,28 +1357,28 @@ LABEL_12:
   if (v11)
   {
 LABEL_13:
-    [(PKPGSVTransitionInterstitialView *)a1 _updatePositionAnimated:?];
+    [(PKPGSVTransitionInterstitialView *)self _updatePositionAnimated:?];
   }
 
 LABEL_14:
 
-  return a3;
+  return item;
 }
 
-- (double)updateCurrentItem:(double)a3 withDefaultSize:(double)a4 containerAlpha:(double)a5
+- (double)updateCurrentItem:(double)item withDefaultSize:(double)size containerAlpha:(double)alpha
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v8 = [(PKPGSVTransitionInterstitialView *)a1 _setCurrentItem:a2 withDefaultSize:0 force:1 animated:a3, a4];
+  v8 = [(PKPGSVTransitionInterstitialView *)self _setCurrentItem:a2 withDefaultSize:0 force:1 animated:item, size];
   if (a2)
   {
-    [(PKPGSVTransitionInterstitialView *)a1 _updatePositionAnimated:?];
+    [(PKPGSVTransitionInterstitialView *)self _updatePositionAnimated:?];
   }
 
-  [(PKPGSVTransitionInterstitialView *)a1 _setContainerAlpha:a5 animated:?];
+  [(PKPGSVTransitionInterstitialView *)self _setContainerAlpha:alpha animated:?];
   return v8;
 }
 

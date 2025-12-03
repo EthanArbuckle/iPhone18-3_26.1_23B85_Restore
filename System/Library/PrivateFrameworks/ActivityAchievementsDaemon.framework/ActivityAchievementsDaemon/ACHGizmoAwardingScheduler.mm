@@ -1,33 +1,33 @@
 @interface ACHGizmoAwardingScheduler
-- (ACHGizmoAwardingScheduler)initWithClient:(id)a3 dataStore:(id)a4 awardingEngine:(id)a5;
+- (ACHGizmoAwardingScheduler)initWithClient:(id)client dataStore:(id)store awardingEngine:(id)engine;
 - (void)_queue_cancelRetryAwardingEvaluationTimer;
-- (void)_queue_handleProtectedDataChange:(BOOL)a3;
-- (void)_queue_requestRetryingAwardingEvaluationWithCompletion:(id)a3;
+- (void)_queue_handleProtectedDataChange:(BOOL)change;
+- (void)_queue_requestRetryingAwardingEvaluationWithCompletion:(id)completion;
 - (void)_queue_scheduleRetryAwardingEvaluation;
 - (void)_startUp;
 - (void)activate;
-- (void)dataStoreDidPopulate:(id)a3;
+- (void)dataStoreDidPopulate:(id)populate;
 - (void)dealloc;
-- (void)performAfterFirstEvaluation:(id)a3;
-- (void)requestAwardingEvaluationWithCompletion:(id)a3;
+- (void)performAfterFirstEvaluation:(id)evaluation;
+- (void)requestAwardingEvaluationWithCompletion:(id)completion;
 @end
 
 @implementation ACHGizmoAwardingScheduler
 
-- (ACHGizmoAwardingScheduler)initWithClient:(id)a3 dataStore:(id)a4 awardingEngine:(id)a5
+- (ACHGizmoAwardingScheduler)initWithClient:(id)client dataStore:(id)store awardingEngine:(id)engine
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clientCopy = client;
+  storeCopy = store;
+  engineCopy = engine;
   v18.receiver = self;
   v18.super_class = ACHGizmoAwardingScheduler;
   v11 = [(ACHGizmoAwardingScheduler *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_client, v8);
-    objc_storeWeak(&v12->_dataStore, v9);
-    objc_storeWeak(&v12->_awardingEngine, v10);
+    objc_storeWeak(&v11->_client, clientCopy);
+    objc_storeWeak(&v12->_dataStore, storeCopy);
+    objc_storeWeak(&v12->_awardingEngine, engineCopy);
     v12->_dataStoreHasPopulated = 0;
     v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
     blocksWaitingOnFirstEvaluation = v12->_blocksWaitingOnFirstEvaluation;
@@ -75,14 +75,14 @@
   WeakRetained = objc_loadWeakRetained(&self->_dataStore);
   [WeakRetained addObserver:self];
 
-  v4 = [*MEMORY[0x277CE8C10] UTF8String];
+  uTF8String = [*MEMORY[0x277CE8C10] UTF8String];
   internalQueue = self->_internalQueue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __37__ACHGizmoAwardingScheduler__startUp__block_invoke;
   handler[3] = &unk_278491998;
   handler[4] = self;
-  notify_register_dispatch(v4, &self->_protectedDataToken, internalQueue, handler);
+  notify_register_dispatch(uTF8String, &self->_protectedDataToken, internalQueue, handler);
 }
 
 void __37__ACHGizmoAwardingScheduler__startUp__block_invoke(uint64_t a1)
@@ -95,11 +95,11 @@ void __37__ACHGizmoAwardingScheduler__startUp__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_queue_handleProtectedDataChange:(BOOL)a3
+- (void)_queue_handleProtectedDataChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   [(ACHGizmoAwardingScheduler *)self _queue_cancelRetryAwardingEvaluationTimer];
-  if (v3 && self->_needsRetry)
+  if (changeCopy && self->_needsRetry)
   {
     v5 = ACHLogAwardScheduling();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -112,9 +112,9 @@ void __37__ACHGizmoAwardingScheduler__startUp__block_invoke(uint64_t a1)
   }
 }
 
-- (void)requestAwardingEvaluationWithCompletion:(id)a3
+- (void)requestAwardingEvaluationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = ACHLogAwardScheduling();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -123,10 +123,10 @@ void __37__ACHGizmoAwardingScheduler__startUp__block_invoke(uint64_t a1)
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_awardingEngine);
-  [WeakRetained requestHistoricalEvaluationForAllSourcesWithCompletion:v4];
+  [WeakRetained requestHistoricalEvaluationForAllSourcesWithCompletion:completionCopy];
 }
 
-- (void)dataStoreDidPopulate:(id)a3
+- (void)dataStoreDidPopulate:(id)populate
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -137,9 +137,9 @@ void __37__ACHGizmoAwardingScheduler__startUp__block_invoke(uint64_t a1)
   dispatch_async(internalQueue, block);
 }
 
-- (void)_queue_requestRetryingAwardingEvaluationWithCompletion:(id)a3
+- (void)_queue_requestRetryingAwardingEvaluationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_internalQueue);
   v5 = ACHLogAwardScheduling();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -163,7 +163,7 @@ void __37__ACHGizmoAwardingScheduler__startUp__block_invoke(uint64_t a1)
   v8[2] = __84__ACHGizmoAwardingScheduler__queue_requestRetryingAwardingEvaluationWithCompletion___block_invoke;
   v8[3] = &unk_2784919E8;
   v8[4] = self;
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
   v10 = buf;
   [WeakRetained requestHistoricalEvaluationForAllSourcesWithCompletion:v8];
@@ -296,17 +296,17 @@ void __84__ACHGizmoAwardingScheduler__queue_requestRetryingAwardingEvaluationWit
   }
 }
 
-- (void)performAfterFirstEvaluation:(id)a3
+- (void)performAfterFirstEvaluation:(id)evaluation
 {
-  v4 = a3;
+  evaluationCopy = evaluation;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__ACHGizmoAwardingScheduler_performAfterFirstEvaluation___block_invoke;
   v7[3] = &unk_278491948;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = evaluationCopy;
+  v6 = evaluationCopy;
   dispatch_async(internalQueue, v7);
 }
 

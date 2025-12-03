@@ -1,37 +1,37 @@
 @interface SBCaptureIntentSceneTarget
-- (SBCaptureIntentSceneTarget)initWithScene:(id)a3 andCaptureApplication:(id)a4;
-- (void)appendDescriptionToStream:(id)a3;
+- (SBCaptureIntentSceneTarget)initWithScene:(id)scene andCaptureApplication:(id)application;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation SBCaptureIntentSceneTarget
 
-- (SBCaptureIntentSceneTarget)initWithScene:(id)a3 andCaptureApplication:(id)a4
+- (SBCaptureIntentSceneTarget)initWithScene:(id)scene andCaptureApplication:(id)application
 {
-  v7 = a3;
-  v8 = a4;
+  sceneCopy = scene;
+  applicationCopy = application;
   v12.receiver = self;
   v12.super_class = SBCaptureIntentSceneTarget;
   v9 = [(SBCaptureIntentSceneTarget *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_scene, a3);
-    objc_storeStrong(&v10->_captureApplication, a4);
+    objc_storeStrong(&v9->_scene, scene);
+    objc_storeStrong(&v10->_captureApplication, application);
   }
 
   return v10;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__SBCaptureIntentSceneTarget_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendProem:self block:v6];
 }
 

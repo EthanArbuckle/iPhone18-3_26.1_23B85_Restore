@@ -1,25 +1,25 @@
 @interface SXLineComponentView
 - (void)discardContents;
-- (void)loadComponent:(id)a3;
-- (void)presentComponentWithChanges:(id)a3;
+- (void)loadComponent:(id)component;
+- (void)presentComponentWithChanges:(id)changes;
 - (void)renderContents;
 @end
 
 @implementation SXLineComponentView
 
-- (void)loadComponent:(id)a3
+- (void)loadComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 stroke];
+  componentCopy = component;
+  component = [(SXComponentView *)self component];
+  stroke = [component stroke];
 
   v10.receiver = self;
   v10.super_class = SXLineComponentView;
-  [(SXComponentView *)&v10 loadComponent:v4];
+  [(SXComponentView *)&v10 loadComponent:componentCopy];
 
-  v7 = [(SXComponentView *)self component];
-  v8 = [v7 stroke];
-  v9 = [v8 isEqual:v6];
+  component2 = [(SXComponentView *)self component];
+  stroke2 = [component2 stroke];
+  v9 = [stroke2 isEqual:stroke];
 
   if ((v9 & 1) == 0)
   {
@@ -27,12 +27,12 @@
   }
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
-  var0 = a3.var0;
+  var0 = changes.var0;
   v5.receiver = self;
   v5.super_class = SXLineComponentView;
-  [(SXComponentView *)&v5 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
+  [(SXComponentView *)&v5 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
   if (var0)
   {
     [(SXLineComponentView *)self discardContents];
@@ -44,10 +44,10 @@
   v46.receiver = self;
   v46.super_class = SXLineComponentView;
   [(SXComponentView *)&v46 renderContents];
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 stroke];
+  component = [(SXComponentView *)self component];
+  stroke = [component stroke];
 
-  if (!v4)
+  if (!stroke)
   {
     return;
   }
@@ -57,16 +57,16 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SXComponentView *)self componentLayout];
-  [v13 maximumContentWidth];
+  componentLayout = [(SXComponentView *)self componentLayout];
+  [componentLayout maximumContentWidth];
   v15 = v14;
 
   if (v15)
   {
-    v16 = [(SXComponentView *)self unitConverter];
-    v17 = [(SXComponentView *)self componentLayout];
-    v18 = [v17 maximumContentWidth];
-    [v16 convertValueToPoints:{v18, v19}];
+    unitConverter = [(SXComponentView *)self unitConverter];
+    componentLayout2 = [(SXComponentView *)self componentLayout];
+    maximumContentWidth = [componentLayout2 maximumContentWidth];
+    [unitConverter convertValueToPoints:{maximumContentWidth, v19}];
     v21 = v20;
 
     v47.origin.x = v6;
@@ -78,13 +78,13 @@
     [(SXComponentView *)self contentFrame];
     if (CGRectGetWidth(v48) > v21)
     {
-      v23 = [(SXComponentView *)self componentLayout];
-      if ([v23 horizontalContentAlignment])
+      componentLayout3 = [(SXComponentView *)self componentLayout];
+      if ([componentLayout3 horizontalContentAlignment])
       {
-        v24 = [(SXComponentView *)self componentLayout];
-        v25 = [v24 horizontalContentAlignment];
+        componentLayout4 = [(SXComponentView *)self componentLayout];
+        horizontalContentAlignment = [componentLayout4 horizontalContentAlignment];
 
-        if (v25 == 3)
+        if (horizontalContentAlignment == 3)
         {
           [(SXComponentView *)self contentFrame];
           MaxX = CGRectGetMaxX(v51);
@@ -96,7 +96,7 @@
           goto LABEL_14;
         }
 
-        if (v25 != 2)
+        if (horizontalContentAlignment != 2)
         {
           goto LABEL_14;
         }
@@ -117,46 +117,46 @@
   }
 
 LABEL_14:
-  v28 = [(SXComponentView *)self component];
-  v29 = [v28 stroke];
-  v30 = [v29 style];
+  component2 = [(SXComponentView *)self component];
+  stroke2 = [component2 stroke];
+  style = [stroke2 style];
 
-  if (v30 == 1)
+  if (style == 1)
   {
     v31 = [SXSolidBorderView alloc];
-    v32 = [(SXComponentView *)self component];
-    v33 = [v32 stroke];
-    v34 = [(SXSolidBorderView *)v31 initWithStrokeStyle:v33];
+    component3 = [(SXComponentView *)self component];
+    stroke3 = [component3 stroke];
+    v34 = [(SXSolidBorderView *)v31 initWithStrokeStyle:stroke3];
     [(SXLineComponentView *)self setBorderView:v34];
 
-    v35 = [(SXLineComponentView *)self borderView];
-    [v35 setFrame:{v6, v8, v10, v12}];
+    borderView = [(SXLineComponentView *)self borderView];
+    [borderView setFrame:{v6, v8, v10, v12}];
 
-    v36 = [(SXComponentView *)self contentView];
-    v37 = [(SXLineComponentView *)self borderView];
-    [v36 addSubview:v37];
+    contentView = [(SXComponentView *)self contentView];
+    borderView2 = [(SXLineComponentView *)self borderView];
+    [contentView addSubview:borderView2];
   }
 
   else
   {
-    v38 = [MEMORY[0x1E6979398] layer];
-    [(SXLineComponentView *)self setStrokeLayer:v38];
+    layer = [MEMORY[0x1E6979398] layer];
+    [(SXLineComponentView *)self setStrokeLayer:layer];
 
-    v36 = [[SXStrokeRenderer alloc] initWithComponentView:?];
-    v39 = [(SXComponentView *)self component];
-    v40 = [v39 stroke];
-    v37 = [(SXStrokeRenderer *)v36 lineForStyle:v40 andFrame:v6, v8, v10, v12];
+    contentView = [[SXStrokeRenderer alloc] initWithComponentView:?];
+    component4 = [(SXComponentView *)self component];
+    stroke4 = [component4 stroke];
+    borderView2 = [(SXStrokeRenderer *)contentView lineForStyle:stroke4 andFrame:v6, v8, v10, v12];
 
-    v41 = [(SXLineComponentView *)self strokeLayer];
-    [v41 setContents:{objc_msgSend(v37, "CGImage")}];
+    strokeLayer = [(SXLineComponentView *)self strokeLayer];
+    [strokeLayer setContents:{objc_msgSend(borderView2, "CGImage")}];
 
-    v42 = [(SXLineComponentView *)self strokeLayer];
-    [v42 setFrame:{v6, v8, v10, v12}];
+    strokeLayer2 = [(SXLineComponentView *)self strokeLayer];
+    [strokeLayer2 setFrame:{v6, v8, v10, v12}];
 
-    v43 = [(SXComponentView *)self contentView];
-    v44 = [v43 layer];
-    v45 = [(SXLineComponentView *)self strokeLayer];
-    [v44 addSublayer:v45];
+    contentView2 = [(SXComponentView *)self contentView];
+    layer2 = [contentView2 layer];
+    strokeLayer3 = [(SXLineComponentView *)self strokeLayer];
+    [layer2 addSublayer:strokeLayer3];
   }
 }
 
@@ -165,12 +165,12 @@ LABEL_14:
   v5.receiver = self;
   v5.super_class = SXLineComponentView;
   [(SXComponentView *)&v5 discardContents];
-  v3 = [(SXLineComponentView *)self strokeLayer];
-  [v3 removeFromSuperlayer];
+  strokeLayer = [(SXLineComponentView *)self strokeLayer];
+  [strokeLayer removeFromSuperlayer];
 
   [(SXLineComponentView *)self setStrokeLayer:0];
-  v4 = [(SXLineComponentView *)self borderView];
-  [v4 removeFromSuperview];
+  borderView = [(SXLineComponentView *)self borderView];
+  [borderView removeFromSuperview];
 
   [(SXLineComponentView *)self setBorderView:0];
 }

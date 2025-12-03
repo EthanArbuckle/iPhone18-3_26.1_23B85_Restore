@@ -1,6 +1,6 @@
 @interface SSMLVoiceTagger
 - (_TtC12TextToSpeech15SSMLVoiceTagger)init;
-- (id)tagSSML:(id)a3;
+- (id)tagSSML:(id)l;
 @end
 
 @implementation SSMLVoiceTagger
@@ -21,11 +21,11 @@
   return [(SSMLVoiceTagger *)&v6 init];
 }
 
-- (id)tagSSML:(id)a3
+- (id)tagSSML:(id)l
 {
   v4 = sub_1A957C0F8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1A93C149C(v4, v6);
 
   return v8;

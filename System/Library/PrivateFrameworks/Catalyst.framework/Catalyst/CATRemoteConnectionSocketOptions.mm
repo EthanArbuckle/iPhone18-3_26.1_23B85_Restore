@@ -1,31 +1,31 @@
 @interface CATRemoteConnectionSocketOptions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CATRemoteConnectionSocketOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   if (v4)
   {
-    v5 = [(CATRemoteConnectionSocketOptions *)self adaptiveWriteTimeout];
-    [v4 setAdaptiveWriteTimeout:v5];
+    adaptiveWriteTimeout = [(CATRemoteConnectionSocketOptions *)self adaptiveWriteTimeout];
+    [v4 setAdaptiveWriteTimeout:adaptiveWriteTimeout];
 
-    v6 = [(CATRemoteConnectionSocketOptions *)self keepAliveEnabled];
-    [v4 setKeepAliveEnabled:v6];
+    keepAliveEnabled = [(CATRemoteConnectionSocketOptions *)self keepAliveEnabled];
+    [v4 setKeepAliveEnabled:keepAliveEnabled];
 
-    v7 = [(CATRemoteConnectionSocketOptions *)self keepAliveDelay];
-    [v4 setKeepAliveDelay:v7];
+    keepAliveDelay = [(CATRemoteConnectionSocketOptions *)self keepAliveDelay];
+    [v4 setKeepAliveDelay:keepAliveDelay];
 
-    v8 = [(CATRemoteConnectionSocketOptions *)self keepAliveInterval];
-    [v4 setKeepAliveInterval:v8];
+    keepAliveInterval = [(CATRemoteConnectionSocketOptions *)self keepAliveInterval];
+    [v4 setKeepAliveInterval:keepAliveInterval];
 
-    v9 = [(CATRemoteConnectionSocketOptions *)self keepAliveCount];
-    [v4 setKeepAliveCount:v9];
+    keepAliveCount = [(CATRemoteConnectionSocketOptions *)self keepAliveCount];
+    [v4 setKeepAliveCount:keepAliveCount];
 
-    v10 = [(CATRemoteConnectionSocketOptions *)self netServiceType];
-    [v4 setNetServiceType:v10];
+    netServiceType = [(CATRemoteConnectionSocketOptions *)self netServiceType];
+    [v4 setNetServiceType:netServiceType];
   }
 
   return v4;

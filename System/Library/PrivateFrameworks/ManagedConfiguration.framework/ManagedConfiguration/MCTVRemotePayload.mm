@@ -1,6 +1,6 @@
 @interface MCTVRemotePayload
 + (id)typeStrings;
-- (MCTVRemotePayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCTVRemotePayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)_allowedRemotesDescription;
 - (id)_allowedRemotesTitle;
 - (id)_allowedTVsDescription;
@@ -27,20 +27,20 @@
   return v2;
 }
 
-- (MCTVRemotePayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCTVRemotePayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v54.receiver = self;
   v54.super_class = MCTVRemotePayload;
-  v9 = [(MCPayload *)&v54 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v54 initWithDictionary:dictionaryCopy profile:profile outError:error];
   if (!v9)
   {
     goto LABEL_31;
   }
 
   v53 = 0;
-  v10 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"AllowedTVs" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v53];
+  v10 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"AllowedTVs" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v53];
   v11 = v53;
   if (v11)
   {
@@ -49,9 +49,9 @@
 
   else
   {
-    v13 = [MEMORY[0x1E695DF70] array];
-    v14 = [MEMORY[0x1E695DF70] array];
-    v42 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
@@ -61,9 +61,9 @@
     if (v43)
     {
       v44 = *v50;
-      v45 = v13;
-      v40 = a5;
-      v46 = v14;
+      v45 = array;
+      errorCopy = error;
+      v46 = array2;
 LABEL_6:
       v15 = 0;
       while (1)
@@ -74,7 +74,7 @@ LABEL_6:
         }
 
         v16 = *(*(&v49 + 1) + 8 * v15);
-        v17 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -91,10 +91,10 @@ LABEL_6:
           goto LABEL_20;
         }
 
-        v20 = [v18 uppercaseString];
+        uppercaseString = [v18 uppercaseString];
 
-        [v17 setObject:v20 forKeyedSubscript:@"TVDeviceID"];
-        [v46 addObject:v20];
+        [dictionary setObject:uppercaseString forKeyedSubscript:@"TVDeviceID"];
+        [v46 addObject:uppercaseString];
         v47 = 0;
         v21 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v16 key:@"TVDeviceName" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v47];
         v22 = v47;
@@ -107,17 +107,17 @@ LABEL_6:
 
         if (v21)
         {
-          [v17 setObject:v21 forKeyedSubscript:@"TVDeviceName"];
-          [v42 addObject:v21];
+          [dictionary setObject:v21 forKeyedSubscript:@"TVDeviceName"];
+          [array3 addObject:v21];
         }
 
-        [v45 addObject:v17];
+        [v45 addObject:dictionary];
 
         if (v43 == ++v15)
         {
-          a5 = v40;
-          v13 = v45;
-          v14 = v46;
+          error = errorCopy;
+          array = v45;
+          array2 = v46;
           v43 = [(NSArray *)obj countByEnumeratingWithState:&v49 objects:v59 count:16];
           if (v43)
           {
@@ -132,21 +132,21 @@ LABEL_6:
 LABEL_20:
 
       v23 = obj;
-      v24 = v42;
+      v24 = array3;
       allowedTVIDs = obj;
-      a5 = v40;
-      v13 = v45;
-      v14 = v46;
+      error = errorCopy;
+      array = v45;
+      array2 = v46;
       goto LABEL_21;
     }
 
 LABEL_16:
     v23 = obj;
 
-    objc_storeStrong(&v9->_allowedTVs, v13);
-    v24 = v42;
-    objc_storeStrong(&v9->_allowedTVNames, v42);
-    v25 = v14;
+    objc_storeStrong(&v9->_allowedTVs, array);
+    v24 = array3;
+    objc_storeStrong(&v9->_allowedTVNames, array3);
+    v25 = array2;
     v12 = 0;
     allowedTVIDs = v9->_allowedTVIDs;
     v9->_allowedTVIDs = v25;
@@ -160,10 +160,10 @@ LABEL_21:
 
   v27 = [(MCPayload *)v9 malformedPayloadErrorWithError:v12];
   v28 = v27;
-  if (a5)
+  if (error)
   {
     v29 = v27;
-    *a5 = v28;
+    *error = v28;
   }
 
   v30 = _MCLogObjects;
@@ -172,27 +172,27 @@ LABEL_21:
     v31 = v30;
     v32 = objc_opt_class();
     v33 = v32;
-    v34 = [v28 MCVerboseDescription];
+    mCVerboseDescription = [v28 MCVerboseDescription];
     *buf = 138543618;
     v56 = v32;
     v57 = 2114;
-    v58 = v34;
+    v58 = mCVerboseDescription;
     _os_log_impl(&dword_1A795B000, v31, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
   }
 
   v9 = 0;
 LABEL_27:
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v35 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v36 = v35;
-      v37 = [(MCPayload *)v9 friendlyName];
+      friendlyName = [(MCPayload *)v9 friendlyName];
       *buf = 138543618;
-      v56 = v37;
+      v56 = friendlyName;
       v57 = 2114;
-      v58 = v8;
+      v58 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v36, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -206,22 +206,22 @@ LABEL_31:
 {
   v7.receiver = self;
   v7.super_class = MCTVRemotePayload;
-  v3 = [(MCPayload *)&v7 stubDictionary];
-  v4 = [(MCTVRemotePayload *)self allowedTVs];
+  stubDictionary = [(MCPayload *)&v7 stubDictionary];
+  allowedTVs = [(MCTVRemotePayload *)self allowedTVs];
 
-  if (v4)
+  if (allowedTVs)
   {
-    v5 = [(MCTVRemotePayload *)self allowedTVs];
-    [v3 setObject:v5 forKey:@"AllowedTVs"];
+    allowedTVs2 = [(MCTVRemotePayload *)self allowedTVs];
+    [stubDictionary setObject:allowedTVs2 forKey:@"AllowedTVs"];
   }
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)_allowedRemotesTitle
 {
-  v2 = [(MCTVRemotePayload *)self allowedRemotes];
-  if ([v2 count])
+  allowedRemotes = [(MCTVRemotePayload *)self allowedRemotes];
+  if ([allowedRemotes count])
   {
     v3 = MCLocalizedString(@"TVREMOTE_REMOTES_TITLE_COLON");
   }
@@ -236,11 +236,11 @@ LABEL_31:
 
 - (id)_allowedRemotesDescription
 {
-  v3 = [(MCTVRemotePayload *)self allowedRemotes];
-  if ([v3 count])
+  allowedRemotes = [(MCTVRemotePayload *)self allowedRemotes];
+  if ([allowedRemotes count])
   {
-    v4 = [(MCTVRemotePayload *)self allowedRemotes];
-    v5 = [v4 count];
+    allowedRemotes2 = [(MCTVRemotePayload *)self allowedRemotes];
+    v5 = [allowedRemotes2 count];
     v13 = MCLocalizedFormat(@"TVREMOTE_REMOTE_COUNT", v6, v7, v8, v9, v10, v11, v12, v5);
   }
 
@@ -254,8 +254,8 @@ LABEL_31:
 
 - (id)_allowedTVsTitle
 {
-  v2 = [(MCTVRemotePayload *)self allowedTVs];
-  if ([v2 count])
+  allowedTVs = [(MCTVRemotePayload *)self allowedTVs];
+  if ([allowedTVs count])
   {
     v3 = MCLocalizedString(@"TVREMOTE_TVS_TITLE_COLON");
   }
@@ -270,11 +270,11 @@ LABEL_31:
 
 - (id)_allowedTVsDescription
 {
-  v3 = [(MCTVRemotePayload *)self allowedTVs];
-  if ([v3 count])
+  allowedTVs = [(MCTVRemotePayload *)self allowedTVs];
+  if ([allowedTVs count])
   {
-    v4 = [(MCTVRemotePayload *)self allowedTVs];
-    v5 = [v4 count];
+    allowedTVs2 = [(MCTVRemotePayload *)self allowedTVs];
+    v5 = [allowedTVs2 count];
     v13 = MCLocalizedFormat(@"TVREMOTE_TV_COUNT", v6, v7, v8, v9, v10, v11, v12, v5);
   }
 
@@ -288,72 +288,72 @@ LABEL_31:
 
 - (id)subtitle1Label
 {
-  v3 = [(MCTVRemotePayload *)self _allowedRemotesTitle];
-  v4 = v3;
-  if (v3)
+  _allowedRemotesTitle = [(MCTVRemotePayload *)self _allowedRemotesTitle];
+  v4 = _allowedRemotesTitle;
+  if (_allowedRemotesTitle)
   {
-    v5 = v3;
+    _allowedTVsTitle = _allowedRemotesTitle;
   }
 
   else
   {
-    v5 = [(MCTVRemotePayload *)self _allowedTVsTitle];
+    _allowedTVsTitle = [(MCTVRemotePayload *)self _allowedTVsTitle];
   }
 
-  v6 = v5;
+  v6 = _allowedTVsTitle;
 
   return v6;
 }
 
 - (id)subtitle1Description
 {
-  v3 = [(MCTVRemotePayload *)self _allowedRemotesDescription];
-  v4 = v3;
-  if (v3)
+  _allowedRemotesDescription = [(MCTVRemotePayload *)self _allowedRemotesDescription];
+  v4 = _allowedRemotesDescription;
+  if (_allowedRemotesDescription)
   {
-    v5 = v3;
+    _allowedTVsDescription = _allowedRemotesDescription;
   }
 
   else
   {
-    v5 = [(MCTVRemotePayload *)self _allowedTVsDescription];
+    _allowedTVsDescription = [(MCTVRemotePayload *)self _allowedTVsDescription];
   }
 
-  v6 = v5;
+  v6 = _allowedTVsDescription;
 
   return v6;
 }
 
 - (id)subtitle2Label
 {
-  v3 = [(MCTVRemotePayload *)self _allowedRemotesTitle];
-  if (v3)
+  _allowedRemotesTitle = [(MCTVRemotePayload *)self _allowedRemotesTitle];
+  if (_allowedRemotesTitle)
   {
-    v4 = [(MCTVRemotePayload *)self _allowedTVsTitle];
+    _allowedTVsTitle = [(MCTVRemotePayload *)self _allowedTVsTitle];
   }
 
   else
   {
-    v4 = 0;
+    _allowedTVsTitle = 0;
   }
 
-  return v4;
+  return _allowedTVsTitle;
 }
 
 - (id)subtitle2Description
 {
-  v3 = [(MCTVRemotePayload *)self _allowedRemotesDescription];
-  if (v3)
+  _allowedRemotesDescription = [(MCTVRemotePayload *)self _allowedRemotesDescription];
+  if (_allowedRemotesDescription)
   {
-    v4 = [(MCTVRemotePayload *)self _allowedTVsDescription];
+    _allowedTVsDescription = [(MCTVRemotePayload *)self _allowedTVsDescription];
   }
 
   else
   {
-    v4 = 0;
+    _allowedTVsDescription = 0;
   }
 
-  return v4;
+  return _allowedTVsDescription;
 }
 
 - (id)verboseDescription
@@ -365,19 +365,19 @@ LABEL_31:
   v4 = [(MCPayload *)&v35 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(MCTVRemotePayload *)self allowedRemotes];
+  allowedRemotes = [(MCTVRemotePayload *)self allowedRemotes];
 
-  if (v6)
+  if (allowedRemotes)
   {
-    v7 = [(MCTVRemotePayload *)self allowedRemotes];
-    [v5 appendFormat:@"Allowed Remotes   : %lu entries\n", objc_msgSend(v7, "count")];
+    allowedRemotes2 = [(MCTVRemotePayload *)self allowedRemotes];
+    [v5 appendFormat:@"Allowed Remotes   : %lu entries\n", objc_msgSend(allowedRemotes2, "count")];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = [(MCTVRemotePayload *)self allowedRemotes];
-    v9 = [v8 countByEnumeratingWithState:&v31 objects:v37 count:16];
+    allowedRemotes3 = [(MCTVRemotePayload *)self allowedRemotes];
+    v9 = [allowedRemotes3 countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v9)
     {
       v10 = v9;
@@ -388,25 +388,25 @@ LABEL_31:
         {
           if (*v32 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allowedRemotes3);
           }
 
           [v5 appendFormat:@"                  %@\n", *(*(&v31 + 1) + 8 * i)];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v31 objects:v37 count:16];
+        v10 = [allowedRemotes3 countByEnumeratingWithState:&v31 objects:v37 count:16];
       }
 
       while (v10);
     }
   }
 
-  v13 = [(MCTVRemotePayload *)self allowedTVs];
+  allowedTVs = [(MCTVRemotePayload *)self allowedTVs];
 
-  if (v13)
+  if (allowedTVs)
   {
-    v14 = [(MCTVRemotePayload *)self allowedTVs];
-    [v5 appendFormat:@"Allowed TVs       : %lu entries\n", objc_msgSend(v14, "count")];
+    allowedTVs2 = [(MCTVRemotePayload *)self allowedTVs];
+    [v5 appendFormat:@"Allowed TVs       : %lu entries\n", objc_msgSend(allowedTVs2, "count")];
 
     v29 = 0u;
     v30 = 0u;
@@ -459,14 +459,14 @@ LABEL_31:
 - (id)payloadDescriptionKeyValueSections
 {
   v3 = objc_opt_new();
-  v4 = [(MCTVRemotePayload *)self allowedRemotes];
-  v5 = [v4 count];
+  allowedRemotes = [(MCTVRemotePayload *)self allowedRemotes];
+  v5 = [allowedRemotes count];
 
   if (v5)
   {
-    v6 = [(MCTVRemotePayload *)self allowedRemotes];
+    allowedRemotes2 = [(MCTVRemotePayload *)self allowedRemotes];
     v7 = MCLocalizedString(@"TVREMOTE_ALLOWED_REMOTES");
-    v8 = [MCKeyValueSection sectionWithLocalizedArray:v6 title:v7 footer:0];
+    v8 = [MCKeyValueSection sectionWithLocalizedArray:allowedRemotes2 title:v7 footer:0];
 
     if (v8)
     {
@@ -474,14 +474,14 @@ LABEL_31:
     }
   }
 
-  v9 = [(MCTVRemotePayload *)self allowedTVIDs];
-  v10 = [v9 count];
+  allowedTVIDs = [(MCTVRemotePayload *)self allowedTVIDs];
+  v10 = [allowedTVIDs count];
 
   if (v10)
   {
-    v11 = [(MCTVRemotePayload *)self allowedTVIDs];
+    allowedTVIDs2 = [(MCTVRemotePayload *)self allowedTVIDs];
     v12 = MCLocalizedString(@"TVREMOTE_ALLOWED_TVS");
-    v13 = [MCKeyValueSection sectionWithLocalizedArray:v11 title:v12 footer:0];
+    v13 = [MCKeyValueSection sectionWithLocalizedArray:allowedTVIDs2 title:v12 footer:0];
 
     if (v13)
     {
@@ -489,14 +489,14 @@ LABEL_31:
     }
   }
 
-  v14 = [(MCTVRemotePayload *)self allowedTVNames];
-  v15 = [v14 count];
+  allowedTVNames = [(MCTVRemotePayload *)self allowedTVNames];
+  v15 = [allowedTVNames count];
 
   if (v15)
   {
-    v16 = [(MCTVRemotePayload *)self allowedTVNames];
+    allowedTVNames2 = [(MCTVRemotePayload *)self allowedTVNames];
     v17 = MCLocalizedString(@"TVREMOTE_ALLOWED_TV_NAMES");
-    v18 = [MCKeyValueSection sectionWithLocalizedArray:v16 title:v17 footer:0];
+    v18 = [MCKeyValueSection sectionWithLocalizedArray:allowedTVNames2 title:v17 footer:0];
 
     if (v18)
     {
@@ -515,40 +515,40 @@ LABEL_31:
 
 - (id)restrictions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:v4 forKeyedSubscript:@"union"];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [(MCTVRemotePayload *)self allowedRemotes];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"union"];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  allowedRemotes = [(MCTVRemotePayload *)self allowedRemotes];
 
-  if (v6)
+  if (allowedRemotes)
   {
-    [v4 setObject:v5 forKeyedSubscript:@"tvRemoteAllowedRemotes"];
-    v7 = [(MCTVRemotePayload *)self allowedRemotes];
-    [v5 setObject:v7 forKeyedSubscript:@"values"];
+    [dictionary2 setObject:dictionary3 forKeyedSubscript:@"tvRemoteAllowedRemotes"];
+    allowedRemotes2 = [(MCTVRemotePayload *)self allowedRemotes];
+    [dictionary3 setObject:allowedRemotes2 forKeyedSubscript:@"values"];
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [(MCTVRemotePayload *)self allowedTVIDs];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+  allowedTVIDs = [(MCTVRemotePayload *)self allowedTVIDs];
 
-  if (v9)
+  if (allowedTVIDs)
   {
-    [v4 setObject:v8 forKeyedSubscript:@"tvRemoteAllowedTVs"];
-    v10 = [(MCTVRemotePayload *)self allowedTVIDs];
-    [v8 setObject:v10 forKeyedSubscript:@"values"];
+    [dictionary2 setObject:dictionary4 forKeyedSubscript:@"tvRemoteAllowedTVs"];
+    allowedTVIDs2 = [(MCTVRemotePayload *)self allowedTVIDs];
+    [dictionary4 setObject:allowedTVIDs2 forKeyedSubscript:@"values"];
   }
 
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  v12 = [(MCTVRemotePayload *)self allowedTVNames];
+  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+  allowedTVNames = [(MCTVRemotePayload *)self allowedTVNames];
 
-  if (v12)
+  if (allowedTVNames)
   {
-    [v4 setObject:v11 forKeyedSubscript:@"tvRemoteAllowedTVNames"];
-    v13 = [(MCTVRemotePayload *)self allowedTVNames];
-    [v11 setObject:v13 forKeyedSubscript:@"values"];
+    [dictionary2 setObject:dictionary5 forKeyedSubscript:@"tvRemoteAllowedTVNames"];
+    allowedTVNames2 = [(MCTVRemotePayload *)self allowedTVNames];
+    [dictionary5 setObject:allowedTVNames2 forKeyedSubscript:@"values"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

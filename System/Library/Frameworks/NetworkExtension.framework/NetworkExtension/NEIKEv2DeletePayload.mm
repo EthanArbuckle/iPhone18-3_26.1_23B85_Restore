@@ -1,16 +1,16 @@
 @interface NEIKEv2DeletePayload
 - (BOOL)generatePayloadData;
 - (BOOL)hasRequiredFields;
-- (BOOL)parsePayloadData:(id)a3;
+- (BOOL)parsePayloadData:(id)data;
 @end
 
 @implementation NEIKEv2DeletePayload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length] <= 3)
+  dataCopy = data;
+  if ([dataCopy length] <= 3)
   {
     v24 = ne_log_obj();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -29,7 +29,7 @@ LABEL_26:
   }
 
   v32 = 0;
-  [v4 getBytes:&v32 length:4];
+  [dataCopy getBytes:&v32 length:4];
   if (self)
   {
     v5 = v32;
@@ -40,7 +40,7 @@ LABEL_26:
       {
         v14 = HIWORD(v32);
         v15 = __rev16(HIWORD(v32));
-        v16 = [v4 length] - 4;
+        v16 = [dataCopy length] - 4;
         if (v16 != 8 * v15)
         {
           v28 = ne_log_obj();
@@ -86,7 +86,7 @@ LABEL_42:
           do
           {
             *buf = 0;
-            [v4 getBytes:buf range:{v18, 8}];
+            [dataCopy getBytes:buf range:{v18, 8}];
             v19 = [NEIKEv2TLSSPI alloc];
             v20 = [(NEIKEv2TLSSPI *)v19 initWithValue:*buf];
             [v9 addObject:v20];
@@ -115,7 +115,7 @@ LABEL_42:
 LABEL_27:
 
 LABEL_28:
-      v21 = 0;
+      hasRequiredFields = 0;
       goto LABEL_18;
     }
 
@@ -125,7 +125,7 @@ LABEL_28:
       {
         v6 = HIWORD(v32);
         v7 = __rev16(HIWORD(v32));
-        v8 = [v4 length] - 4;
+        v8 = [dataCopy length] - 4;
         if (v8 == 4 * v7)
         {
 LABEL_7:
@@ -137,7 +137,7 @@ LABEL_7:
             do
             {
               *buf = 0;
-              [v4 getBytes:buf range:{v11, 4}];
+              [dataCopy getBytes:buf range:{v11, 4}];
               v12 = [NEIKEv2ESPSPI alloc];
               v13 = [(NEIKEv2ESPSPI *)v12 initWithValue:*buf];
               [v9 addObject:v13];
@@ -206,11 +206,11 @@ LABEL_25:
   }
 
 LABEL_17:
-  v21 = [(NEIKEv2DeletePayload *)self hasRequiredFields];
+  hasRequiredFields = [(NEIKEv2DeletePayload *)self hasRequiredFields];
 LABEL_18:
 
   v22 = *MEMORY[0x1E69E9840];
-  return v21;
+  return hasRequiredFields;
 }
 
 - (BOOL)generatePayloadData
@@ -271,8 +271,8 @@ LABEL_20:
               break;
             }
 
-            v27 = [v26 copySPIData];
-            [v7 appendData:v27];
+            copySPIData = [v26 copySPIData];
+            [v7 appendData:copySPIData];
 
             if (v23 == ++v25)
             {
@@ -329,8 +329,8 @@ LABEL_11:
               break;
             }
 
-            v18 = [v17 copySPIData];
-            [v7 appendData:v18];
+            copySPIData2 = [v17 copySPIData];
+            [v7 appendData:copySPIData2];
 
             if (v14 == ++v16)
             {

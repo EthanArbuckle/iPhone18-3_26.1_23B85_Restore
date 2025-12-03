@@ -1,59 +1,59 @@
 @interface LACSharedModeDataSourceTaskDecorator
-- (LACSharedModeDataSourceTaskDecorator)initWithDataSource:(id)a3 replyQueue:(id)a4;
-- (LACSharedModeDataSourceTaskDecorator)initWithDataSource:(id)a3 runtime:(id)a4 replyQueue:(id)a5;
-- (double)_timeoutForRequestWithOptions:(id)a3;
-- (id)_sharedModeBackgroundTaskWithOptions:(id)a3;
-- (id)_sharedModeFromBackgroundTaskResult:(id)a3;
-- (void)fetchSharedModeWithOptions:(id)a3 completion:(id)a4;
+- (LACSharedModeDataSourceTaskDecorator)initWithDataSource:(id)source replyQueue:(id)queue;
+- (LACSharedModeDataSourceTaskDecorator)initWithDataSource:(id)source runtime:(id)runtime replyQueue:(id)queue;
+- (double)_timeoutForRequestWithOptions:(id)options;
+- (id)_sharedModeBackgroundTaskWithOptions:(id)options;
+- (id)_sharedModeFromBackgroundTaskResult:(id)result;
+- (void)fetchSharedModeWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation LACSharedModeDataSourceTaskDecorator
 
-- (LACSharedModeDataSourceTaskDecorator)initWithDataSource:(id)a3 replyQueue:(id)a4
+- (LACSharedModeDataSourceTaskDecorator)initWithDataSource:(id)source replyQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  sourceCopy = source;
   v8 = objc_alloc_init(LACSharedModeDataSourceTaskDecoratorRuntime);
-  v9 = [(LACSharedModeDataSourceTaskDecorator *)self initWithDataSource:v7 runtime:v8 replyQueue:v6];
+  v9 = [(LACSharedModeDataSourceTaskDecorator *)self initWithDataSource:sourceCopy runtime:v8 replyQueue:queueCopy];
 
   return v9;
 }
 
-- (LACSharedModeDataSourceTaskDecorator)initWithDataSource:(id)a3 runtime:(id)a4 replyQueue:(id)a5
+- (LACSharedModeDataSourceTaskDecorator)initWithDataSource:(id)source runtime:(id)runtime replyQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  runtimeCopy = runtime;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = LACSharedModeDataSourceTaskDecorator;
   v12 = [(LACSharedModeDataSourceTaskDecorator *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataSource, a3);
-    objc_storeStrong(&v13->_runtime, a4);
-    objc_storeStrong(&v13->_replyQueue, a5);
+    objc_storeStrong(&v12->_dataSource, source);
+    objc_storeStrong(&v13->_runtime, runtime);
+    objc_storeStrong(&v13->_replyQueue, queue);
   }
 
   return v13;
 }
 
-- (void)fetchSharedModeWithOptions:(id)a3 completion:(id)a4
+- (void)fetchSharedModeWithOptions:(id)options completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8 = LACLogSharedMode();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B0233000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ will start query", buf, 0xCu);
   }
 
-  v9 = [(LACSharedModeDataSourceTaskDecorator *)self _sharedModeBackgroundTaskWithOptions:v6];
-  [(LACSharedModeDataSourceTaskDecorator *)self _timeoutForRequestWithOptions:v6];
+  v9 = [(LACSharedModeDataSourceTaskDecorator *)self _sharedModeBackgroundTaskWithOptions:optionsCopy];
+  [(LACSharedModeDataSourceTaskDecorator *)self _timeoutForRequestWithOptions:optionsCopy];
   v11 = v10;
   replyQueue = self->_replyQueue;
   v16[0] = MEMORY[0x1E69E9820];
@@ -61,7 +61,7 @@
   v16[2] = __78__LACSharedModeDataSourceTaskDecorator_fetchSharedModeWithOptions_completion___block_invoke;
   v16[3] = &unk_1E7A958F8;
   objc_copyWeak(&v19, &location);
-  v13 = v7;
+  v13 = completionCopy;
   v18 = v13;
   v14 = v9;
   v17 = v14;
@@ -99,9 +99,9 @@ void __78__LACSharedModeDataSourceTaskDecorator_fetchSharedModeWithOptions_compl
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_sharedModeBackgroundTaskWithOptions:(id)a3
+- (id)_sharedModeBackgroundTaskWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v5 = [LACBackgroundTask alloc];
   v9[0] = MEMORY[0x1E69E9820];
@@ -109,7 +109,7 @@ void __78__LACSharedModeDataSourceTaskDecorator_fetchSharedModeWithOptions_compl
   v9[2] = __77__LACSharedModeDataSourceTaskDecorator__sharedModeBackgroundTaskWithOptions___block_invoke;
   v9[3] = &unk_1E7A95948;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = optionsCopy;
   v10 = v6;
   v7 = [(LACBackgroundTask *)v5 initWithIdentifier:@"SharedModeStateQuery" worker:v9];
 
@@ -146,30 +146,30 @@ void __77__LACSharedModeDataSourceTaskDecorator__sharedModeBackgroundTaskWithOpt
   (*(v2 + 16))(v2, v4);
 }
 
-- (id)_sharedModeFromBackgroundTaskResult:(id)a3
+- (id)_sharedModeFromBackgroundTaskResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 value];
-  if (v5 && (v6 = v5, [v4 value], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, v6, (isKindOfClass & 1) != 0))
+  resultCopy = result;
+  value = [resultCopy value];
+  if (value && (v6 = value, [resultCopy value], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, v6, (isKindOfClass & 1) != 0))
   {
     [(LACSharedModeDataSourceTaskDecoratorRuntime *)self->_runtime resetMaxValue];
-    v9 = [v4 value];
+    value2 = [resultCopy value];
   }
 
   else
   {
-    v10 = [v4 error];
+    error = [resultCopy error];
 
-    if (v10)
+    if (error)
     {
-      v11 = [v4 error];
-      v12 = [v11 domain];
-      if ([v12 isEqualToString:@"LACBackgroundTaskErrorDomain"])
+      error2 = [resultCopy error];
+      domain = [error2 domain];
+      if ([domain isEqualToString:@"LACBackgroundTaskErrorDomain"])
       {
-        v13 = [v4 error];
-        v14 = [v13 code];
+        error3 = [resultCopy error];
+        code = [error3 code];
 
-        if (v14 == 2)
+        if (code == 2)
         {
           [(LACSharedModeDataSourceTaskDecoratorRuntime *)self->_runtime halveMaxValue];
         }
@@ -182,23 +182,23 @@ void __77__LACSharedModeDataSourceTaskDecorator__sharedModeBackgroundTaskWithOpt
       v15 = LACLogSharedMode();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [(LACSharedModeDataSourceTaskDecorator *)self _sharedModeFromBackgroundTaskResult:v4, v15];
+        [(LACSharedModeDataSourceTaskDecorator *)self _sharedModeFromBackgroundTaskResult:resultCopy, v15];
       }
     }
 
-    v9 = +[LACSharedMode defaultSharedMode];
+    value2 = +[LACSharedMode defaultSharedMode];
   }
 
-  v16 = v9;
+  v16 = value2;
 
   return v16;
 }
 
-- (double)_timeoutForRequestWithOptions:(id)a3
+- (double)_timeoutForRequestWithOptions:(id)options
 {
-  v4 = [a3 isPreflight];
+  isPreflight = [options isPreflight];
   runtime = self->_runtime;
-  if (v4)
+  if (isPreflight)
   {
 
     [(LACSharedModeDataSourceTaskDecoratorRuntime *)runtime minValue];

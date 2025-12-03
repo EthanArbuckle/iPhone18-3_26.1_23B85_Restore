@@ -1,5 +1,5 @@
 @interface MRURoutingTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityShowVolumeSlider;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityCustomActions;
@@ -14,21 +14,21 @@
 
 @implementation MRURoutingTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"subtitleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"didTapToExpand" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"routingAccessoryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"volumeController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRURoutingAccessoryView" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MRURoutingSubtitleView" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"volumeSlider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRURoutingTableViewCell" hasInstanceVariable:@"_iconImageView" withType:"UIImageView"];
-  [v3 validateClass:@"MRURoutingTableViewCell" hasInstanceVariable:@"_routingAccessoryView" withType:"MRURoutingAccessoryView"];
-  [v3 validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"showChevron" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MRURoutingTableViewCell" hasInstanceVariable:@"_outlineImageView" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"subtitleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"didTapToExpand" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"routingAccessoryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"volumeController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRURoutingAccessoryView" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MRURoutingSubtitleView" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"volumeSlider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRURoutingTableViewCell" hasInstanceVariable:@"_iconImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"MRURoutingTableViewCell" hasInstanceVariable:@"_routingAccessoryView" withType:"MRURoutingAccessoryView"];
+  [validationsCopy validateClass:@"MRURoutingTableViewCell" hasInstanceMethod:@"showChevron" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MRURoutingTableViewCell" hasInstanceVariable:@"_outlineImageView" withType:"UIImageView"];
 }
 
 - (id)accessibilityLabel
@@ -38,21 +38,21 @@
   v5 = [v4 safeValueForKey:@"textLabel"];
 
   v6 = [(MRURoutingTableViewCellAccessibility *)self safeUIViewForKey:@"_iconImageView"];
-  v7 = [v6 accessibilityLabel];
+  accessibilityLabel = [v6 accessibilityLabel];
 
-  if ([v7 isAXAttributedString] && objc_msgSend(v7, "hasAttribute:", *MEMORY[0x29EDBD900]))
+  if ([accessibilityLabel isAXAttributedString] && objc_msgSend(accessibilityLabel, "hasAttribute:", *MEMORY[0x29EDBD900]))
   {
-    if ([v7 isEqualToString:@"speaker.wave.2.fill"])
+    if ([accessibilityLabel isEqualToString:@"speaker.wave.2.fill"])
     {
       v8 = @"speaker.route";
 LABEL_7:
       v9 = accessibilityLocalizedString(v8);
 
-      v7 = v9;
+      accessibilityLabel = v9;
       goto LABEL_11;
     }
 
-    if ([v7 isEqualToString:@"headphones"])
+    if ([accessibilityLabel isEqualToString:@"headphones"])
     {
       v8 = @"headphones.route";
       goto LABEL_7;
@@ -61,15 +61,15 @@ LABEL_7:
     v10 = AXLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(MRURoutingTableViewCellAccessibility *)v7 accessibilityLabel];
+      [(MRURoutingTableViewCellAccessibility *)accessibilityLabel accessibilityLabel];
     }
 
-    v7 = 0;
+    accessibilityLabel = 0;
   }
 
 LABEL_11:
-  v11 = [v3 accessibilityLabel];
-  v14 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v3 accessibilityLabel];
+  accessibilityLabel3 = [v5 accessibilityLabel];
   v12 = __UIAXStringForVariables();
 
   return v12;
@@ -90,12 +90,12 @@ LABEL_11:
   if ([(MRURoutingTableViewCellAccessibility *)self _accessibilityShowVolumeSlider])
   {
     v4 = [(MRURoutingTableViewCellAccessibility *)self safeUIViewForKey:@"volumeSlider"];
-    v5 = [v4 accessibilityValue];
+    accessibilityValue = [v4 accessibilityValue];
   }
 
   else
   {
-    v5 = 0;
+    accessibilityValue = 0;
   }
 
   v6 = __UIAXStringForVariables();
@@ -107,7 +107,7 @@ LABEL_11:
 {
   v9.receiver = self;
   v9.super_class = MRURoutingTableViewCellAccessibility;
-  v3 = [(MRURoutingTableViewCellAccessibility *)&v9 accessibilityTraits];
+  accessibilityTraits = [(MRURoutingTableViewCellAccessibility *)&v9 accessibilityTraits];
   if (([(MRURoutingTableViewCellAccessibility *)self _accessibilityRoutingState]- 3) >= 2)
   {
     v4 = 0;
@@ -118,10 +118,10 @@ LABEL_11:
     v4 = *MEMORY[0x29EDC7FC0];
   }
 
-  v5 = v4 | v3;
-  v6 = [(MRURoutingTableViewCellAccessibility *)self _accessibilityShowVolumeSlider];
+  v5 = v4 | accessibilityTraits;
+  _accessibilityShowVolumeSlider = [(MRURoutingTableViewCellAccessibility *)self _accessibilityShowVolumeSlider];
   v7 = *MEMORY[0x29EDC7F60];
-  if (!v6)
+  if (!_accessibilityShowVolumeSlider)
   {
     v7 = 0;
   }
@@ -145,7 +145,7 @@ LABEL_11:
     v5 = [v3 initWithName:v4 actionHandler:v10];
 
     v13[0] = v5;
-    v6 = [MEMORY[0x29EDB8D80] arrayWithObjects:v13 count:1];
+    accessibilityCustomActions = [MEMORY[0x29EDB8D80] arrayWithObjects:v13 count:1];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -155,12 +155,12 @@ LABEL_11:
   {
     v9.receiver = self;
     v9.super_class = MRURoutingTableViewCellAccessibility;
-    v6 = [(MRURoutingTableViewCellAccessibility *)&v9 accessibilityCustomActions];
+    accessibilityCustomActions = [(MRURoutingTableViewCellAccessibility *)&v9 accessibilityCustomActions];
   }
 
   v7 = *MEMORY[0x29EDCA608];
 
-  return v6;
+  return accessibilityCustomActions;
 }
 
 uint64_t __66__MRURoutingTableViewCellAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1)
@@ -192,8 +192,8 @@ uint64_t __66__MRURoutingTableViewCellAccessibility_accessibilityCustomActions__
   v3 = [(MRURoutingTableViewCellAccessibility *)self safeValueForKey:@"volumeController"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 isVolumeControlAvailable];
-  return v5;
+  isVolumeControlAvailable = [v4 isVolumeControlAvailable];
+  return isVolumeControlAvailable;
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -243,7 +243,7 @@ uint64_t __66__MRURoutingTableViewCellAccessibility_accessibilityCustomActions__
 {
   v5 = *MEMORY[0x29EDCA608];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_29BF3C000, a2, OS_LOG_TYPE_ERROR, "Missing icon type for %@", &v3, 0xCu);
   v2 = *MEMORY[0x29EDCA608];
 }

@@ -1,6 +1,6 @@
 @interface MTRSampleMEIClusterPingCountEventEvent
 - (MTRSampleMEIClusterPingCountEventEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRSampleMEIClusterPingCountEventEvent);
-  v5 = [(MTRSampleMEIClusterPingCountEventEvent *)self getCount];
-  [(MTRSampleMEIClusterPingCountEventEvent *)v4 setCount:v5];
+  getCount = [(MTRSampleMEIClusterPingCountEventEvent *)self getCount];
+  [(MTRSampleMEIClusterPingCountEventEvent *)v4 setCount:getCount];
 
-  v6 = [(MTRSampleMEIClusterPingCountEventEvent *)self fabricIndex];
-  [(MTRSampleMEIClusterPingCountEventEvent *)v4 setFabricIndex:v6];
+  fabricIndex = [(MTRSampleMEIClusterPingCountEventEvent *)self fabricIndex];
+  [(MTRSampleMEIClusterPingCountEventEvent *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

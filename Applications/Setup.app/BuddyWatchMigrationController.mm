@@ -1,28 +1,28 @@
 @interface BuddyWatchMigrationController
-+ (void)clearWatchDataForMigrationWithSettingsManager:(id)a3 buddyPreferencesExcludedFromBackup:(id)a4;
-+ (void)setWatchDataForMigration:(id)a3 presented:(BOOL)a4 settingsManager:(id)a5 buddyPreferencesExcludedFromBackup:(id)a6;
++ (void)clearWatchDataForMigrationWithSettingsManager:(id)manager buddyPreferencesExcludedFromBackup:(id)backup;
++ (void)setWatchDataForMigration:(id)migration presented:(BOOL)presented settingsManager:(id)manager buddyPreferencesExcludedFromBackup:(id)backup;
 - (BFFFlowItemDelegate)delegate;
 - (BOOL)controllerNeedsToRun;
-- (void)controllerItemCompletedWithMigration:(BOOL)a3 preRestoreData:(id)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)controllerItemCompletedWithMigration:(BOOL)migration preRestoreData:(id)data;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BuddyWatchMigrationController
 
-+ (void)setWatchDataForMigration:(id)a3 presented:(BOOL)a4 settingsManager:(id)a5 buddyPreferencesExcludedFromBackup:(id)a6
++ (void)setWatchDataForMigration:(id)migration presented:(BOOL)presented settingsManager:(id)manager buddyPreferencesExcludedFromBackup:(id)backup
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = a4;
+  objc_storeStrong(location, migration);
+  presentedCopy = presented;
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, manager);
   v11 = 0;
-  objc_storeStrong(&v11, a6);
+  objc_storeStrong(&v11, backup);
   [v12 stashWatchData:location[0]];
   v9 = v11;
-  v10 = [NSNumber numberWithBool:v13];
+  v10 = [NSNumber numberWithBool:presentedCopy];
   [v9 setObject:v10 forKey:@"WatchMigrationPresented"];
 
   objc_storeStrong(&v11, 0);
@@ -30,14 +30,14 @@
   objc_storeStrong(location, 0);
 }
 
-+ (void)clearWatchDataForMigrationWithSettingsManager:(id)a3 buddyPreferencesExcludedFromBackup:(id)a4
++ (void)clearWatchDataForMigrationWithSettingsManager:(id)manager buddyPreferencesExcludedFromBackup:(id)backup
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, backup);
   [objc_opt_class() setWatchDataForMigration:0 presented:0 settingsManager:location[0] buddyPreferencesExcludedFromBackup:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
@@ -45,15 +45,15 @@
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = [(BuddyWatchMigrationController *)self capabilities];
-  v3 = [(BYCapabilities *)v2 supportsAppleWatch];
+  capabilities = [(BuddyWatchMigrationController *)self capabilities];
+  supportsAppleWatch = [(BYCapabilities *)capabilities supportsAppleWatch];
   v6 = 0;
   v4 = 0;
-  if (v3)
+  if (supportsAppleWatch)
   {
-    v7 = [(BuddyWatchMigrationController *)self buddyPreferencesExcludedFromBackup];
+    buddyPreferencesExcludedFromBackup = [(BuddyWatchMigrationController *)self buddyPreferencesExcludedFromBackup];
     v6 = 1;
-    v4 = [(BYPreferencesController *)v7 BOOLForKey:@"WatchMigrationPresented"]^ 1;
+    v4 = [(BYPreferencesController *)buddyPreferencesExcludedFromBackup BOOLForKey:@"WatchMigrationPresented"]^ 1;
   }
 
   v9 = v4 & 1;
@@ -64,29 +64,29 @@
   return v9 & 1;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyWatchMigrationController *)v20 pendingRestoreState];
-  v4 = [(BuddyPendingRestoreState *)v3 backupItem];
-  v18 = [(RestorableBackupItem *)v4 snapshot];
+  objc_storeStrong(location, completion);
+  pendingRestoreState = [(BuddyWatchMigrationController *)selfCopy pendingRestoreState];
+  backupItem = [(BuddyPendingRestoreState *)pendingRestoreState backupItem];
+  snapshot = [(RestorableBackupItem *)backupItem snapshot];
 
-  v17 = [v18 deviceName];
-  if (!v17)
+  deviceName = [snapshot deviceName];
+  if (!deviceName)
   {
-    v5 = [(BuddyWatchMigrationController *)v20 proximitySetupController];
-    v17 = [(ProximitySetupController *)v5 deviceName];
+    proximitySetupController = [(BuddyWatchMigrationController *)selfCopy proximitySetupController];
+    deviceName = [(ProximitySetupController *)proximitySetupController deviceName];
   }
 
-  v6 = [[BPSWatchMigrationController alloc] initWithSourceDeviceName:v17];
-  [(BuddyWatchMigrationController *)v20 setMigrationController:v6];
+  v6 = [[BPSWatchMigrationController alloc] initWithSourceDeviceName:deviceName];
+  [(BuddyWatchMigrationController *)selfCopy setMigrationController:v6];
 
-  v7 = v20;
-  v8 = [(BuddyWatchMigrationController *)v20 migrationController];
-  [(BPSWatchMigrationController *)v8 setMigrationDelegate:v7];
+  v7 = selfCopy;
+  migrationController = [(BuddyWatchMigrationController *)selfCopy migrationController];
+  [(BPSWatchMigrationController *)migrationController setMigrationDelegate:v7];
 
   v9 = dispatch_get_global_queue(25, 0);
   block = _NSConcreteStackBlock;
@@ -94,45 +94,45 @@
   v12 = 0;
   v13 = sub_100196A94;
   v14 = &unk_10032AFD0;
-  v15 = v20;
+  v15 = selfCopy;
   v16 = location[0];
   dispatch_async(v9, &block);
 
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
-  objc_storeStrong(&v17, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&deviceName, 0);
+  objc_storeStrong(&snapshot, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)controllerItemCompletedWithMigration:(BOOL)a3 preRestoreData:(id)a4
+- (void)controllerItemCompletedWithMigration:(BOOL)migration preRestoreData:(id)data
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  migrationCopy = migration;
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  if (v10)
+  objc_storeStrong(&v9, data);
+  if (migrationCopy)
   {
-    v4 = [(BuddyWatchMigrationController *)v12 settingsManager];
-    [(BFFSettingsManager *)v4 stashWatchData:v9];
+    settingsManager = [(BuddyWatchMigrationController *)selfCopy settingsManager];
+    [(BFFSettingsManager *)settingsManager stashWatchData:v9];
   }
 
   else
   {
-    v4 = [(BuddyWatchMigrationController *)v12 settingsManager];
-    [(BFFSettingsManager *)v4 stashWatchData:0];
+    settingsManager = [(BuddyWatchMigrationController *)selfCopy settingsManager];
+    [(BFFSettingsManager *)settingsManager stashWatchData:0];
   }
 
-  v5 = [(BuddyWatchMigrationController *)v12 paneFeatureAnalyticsManager];
-  v6 = [NSNumber numberWithBool:v10];
-  [(BYPaneFeatureAnalyticsManager *)v5 recordActionWithValue:v6 forFeature:10];
+  paneFeatureAnalyticsManager = [(BuddyWatchMigrationController *)selfCopy paneFeatureAnalyticsManager];
+  v6 = [NSNumber numberWithBool:migrationCopy];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager recordActionWithValue:v6 forFeature:10];
 
-  v7 = [(BuddyWatchMigrationController *)v12 buddyPreferencesExcludedFromBackup];
-  [(BYPreferencesController *)v7 setObject:&__kCFBooleanTrue forKey:@"WatchMigrationPresented"];
+  buddyPreferencesExcludedFromBackup = [(BuddyWatchMigrationController *)selfCopy buddyPreferencesExcludedFromBackup];
+  [(BYPreferencesController *)buddyPreferencesExcludedFromBackup setObject:&__kCFBooleanTrue forKey:@"WatchMigrationPresented"];
 
-  WeakRetained = objc_loadWeakRetained(&v12->_delegate);
-  [WeakRetained flowItemDone:v12];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  [WeakRetained flowItemDone:selfCopy];
 
   objc_storeStrong(&v9, 0);
 }

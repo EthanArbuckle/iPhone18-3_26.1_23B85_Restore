@@ -1,53 +1,53 @@
 @interface PHASEEngine
 - (AVAudioTime)lastRenderTime;
-- (BOOL)initInternalWithUpdateMode:(int64_t)a3 engineMode:(int64_t)a4 platform:(id)a5 spatialMode:(int64_t)a6;
-- (BOOL)setHeadphoneHRIRFile:(id)a3 error:(id *)a4;
+- (BOOL)initInternalWithUpdateMode:(int64_t)mode engineMode:(int64_t)engineMode platform:(id)platform spatialMode:(int64_t)spatialMode;
+- (BOOL)setHeadphoneHRIRFile:(id)file error:(id *)error;
 - (BOOL)startAndReturnError:(NSError *)error;
 - (NSArray)soundEvents;
 - (PHASEEngine)init;
-- (PHASEEngine)initWithEngineMode:(int64_t)a3 updateMode:(int64_t)a4;
-- (PHASEEngine)initWithPlatform:(id)a3;
+- (PHASEEngine)initWithEngineMode:(int64_t)mode updateMode:(int64_t)updateMode;
+- (PHASEEngine)initWithPlatform:(id)platform;
 - (PHASEEngine)initWithUpdateMode:(PHASEUpdateMode)updateMode;
-- (PHASEEngine)initWithUpdateMode:(int64_t)a3 engineMode:(int64_t)a4;
-- (PHASEEngine)initWithUpdateMode:(int64_t)a3 engineMode:(int64_t)a4 platform:(id)a5;
-- (PHASEEngine)initWithUpdateMode:(int64_t)a3 renderingMode:(int64_t)a4;
-- (PHASEEngine)initWithUpdateMode:(int64_t)a3 spatialMode:(int64_t)a4;
+- (PHASEEngine)initWithUpdateMode:(int64_t)mode engineMode:(int64_t)engineMode;
+- (PHASEEngine)initWithUpdateMode:(int64_t)mode engineMode:(int64_t)engineMode platform:(id)platform;
+- (PHASEEngine)initWithUpdateMode:(int64_t)mode renderingMode:(int64_t)renderingMode;
+- (PHASEEngine)initWithUpdateMode:(int64_t)mode spatialMode:(int64_t)spatialMode;
 - (PHASEMedium)defaultMedium;
 - (PHASEObject)rootObject;
 - (PHASERenderingState)renderingState;
 - (id).cxx_construct;
-- (id)rootObjectForSessionIOBinding:(id)a3 error:(id *)a4;
+- (id)rootObjectForSessionIOBinding:(id)binding error:(id *)error;
 - (id)sessionRootObjects;
 - (int64_t)engineMode;
-- (uint64_t)setSpaceBlendTargetPresetOrientation:(__n128 *)a1;
-- (void)addDucker:(id)a3;
-- (void)addGroup:(id)a3;
-- (void)addSoundEvent:(id)a3;
+- (uint64_t)setSpaceBlendTargetPresetOrientation:(__n128 *)orientation;
+- (void)addDucker:(id)ducker;
+- (void)addGroup:(id)group;
+- (void)addSoundEvent:(id)event;
 - (void)clearProfileOverride;
 - (void)dealloc;
 - (void)destroy;
-- (void)gatherExternalStreamDebugInformation:(id)a3;
+- (void)gatherExternalStreamDebugInformation:(id)information;
 - (void)pause;
-- (void)removeDucker:(id)a3;
-- (void)removeGroup:(id)a3;
-- (void)removeSoundEvent:(id)a3;
+- (void)removeDucker:(id)ducker;
+- (void)removeGroup:(id)group;
+- (void)removeSoundEvent:(id)event;
 - (void)setDefaultMedium:(PHASEMedium *)defaultMedium;
-- (void)setDefaultPrivateReverbPreset:(int64_t)a3;
+- (void)setDefaultPrivateReverbPreset:(int64_t)preset;
 - (void)setDefaultReverbPreset:(PHASEReverbPreset)defaultReverbPreset;
 - (void)setOutputSpatializationMode:(PHASESpatializationMode)outputSpatializationMode;
-- (void)setProfileOverrideWithName:(id)a3 balance:(double)a4;
-- (void)setRoomAcousticMaximumReverbTime:(double)a3;
-- (void)setRoomAcousticSmoothing:(double)a3;
-- (void)setRoomAcousticSoftLimiting:(BOOL)a3;
-- (void)setRoomAcousticTarget:(id)a3;
-- (void)setRoomAcousticTrackingMode:(int64_t)a3;
-- (void)setSceneClassification:(int64_t)a3;
-- (void)setSceneRoomUUID:(id)a3;
-- (void)setSpaceBlendLevel:(double)a3;
-- (void)setSpaceBlendTargetPreset:(int64_t)a3;
-- (void)setSpatialCategoryBandCount:(unint64_t)a3 withName:(id)a4;
-- (void)setSpatialCategoryMaxClusterCount:(unint64_t)a3 withName:(id)a4;
-- (void)setSpatialCategoryUpdateRate:(float)a3 withName:(id)a4;
+- (void)setProfileOverrideWithName:(id)name balance:(double)balance;
+- (void)setRoomAcousticMaximumReverbTime:(double)time;
+- (void)setRoomAcousticSmoothing:(double)smoothing;
+- (void)setRoomAcousticSoftLimiting:(BOOL)limiting;
+- (void)setRoomAcousticTarget:(id)target;
+- (void)setRoomAcousticTrackingMode:(int64_t)mode;
+- (void)setSceneClassification:(int64_t)classification;
+- (void)setSceneRoomUUID:(id)d;
+- (void)setSpaceBlendLevel:(double)level;
+- (void)setSpaceBlendTargetPreset:(int64_t)preset;
+- (void)setSpatialCategoryBandCount:(unint64_t)count withName:(id)name;
+- (void)setSpatialCategoryMaxClusterCount:(unint64_t)count withName:(id)name;
+- (void)setSpatialCategoryUpdateRate:(float)rate withName:(id)name;
 - (void)setUnitsPerMeter:(double)unitsPerMeter;
 - (void)setUnitsPerSecond:(double)unitsPerSecond;
 - (void)stop;
@@ -92,9 +92,9 @@
   return v6;
 }
 
-- (PHASEEngine)initWithEngineMode:(int64_t)a3 updateMode:(int64_t)a4
+- (PHASEEngine)initWithEngineMode:(int64_t)mode updateMode:(int64_t)updateMode
 {
-  v6 = self;
+  selfCopy = self;
   v14 = *MEMORY[0x277D85DE8];
   if (Phase::CurrentProcessCanSelectEngineMode(void)::onceToken != -1)
   {
@@ -103,8 +103,8 @@
 
   if (Phase::CurrentProcessCanSelectEngineMode(void)::currentProcessCanSelectEngineMode == 1)
   {
-    v6 = [(PHASEEngine *)v6 initWithUpdateMode:a4 engineMode:a3];
-    v7 = v6;
+    selfCopy = [(PHASEEngine *)selfCopy initWithUpdateMode:updateMode engineMode:mode];
+    v7 = selfCopy;
   }
 
   else
@@ -125,7 +125,7 @@
   return v7;
 }
 
-- (PHASEEngine)initWithUpdateMode:(int64_t)a3 spatialMode:(int64_t)a4
+- (PHASEEngine)initWithUpdateMode:(int64_t)mode spatialMode:(int64_t)spatialMode
 {
   v11.receiver = self;
   v11.super_class = PHASEEngine;
@@ -133,7 +133,7 @@
   v7 = v6;
   if (v6)
   {
-    if ([(PHASEEngine *)v6 initInternalWithUpdateMode:a3 engineMode:0 platform:0 spatialMode:a4])
+    if ([(PHASEEngine *)v6 initInternalWithUpdateMode:mode engineMode:0 platform:0 spatialMode:spatialMode])
     {
       v8 = v7;
     }
@@ -154,15 +154,15 @@
   return v9;
 }
 
-- (PHASEEngine)initWithUpdateMode:(int64_t)a3 renderingMode:(int64_t)a4
+- (PHASEEngine)initWithUpdateMode:(int64_t)mode renderingMode:(int64_t)renderingMode
 {
   v10.receiver = self;
   v10.super_class = PHASEEngine;
-  v5 = [(PHASEEngine *)&v10 init:a3];
+  v5 = [(PHASEEngine *)&v10 init:mode];
   v6 = v5;
   if (v5)
   {
-    if ([(PHASEEngine *)v5 initInternalWithUpdateMode:a3 engineMode:0 platform:0 spatialMode:0])
+    if ([(PHASEEngine *)v5 initInternalWithUpdateMode:mode engineMode:0 platform:0 spatialMode:0])
     {
       v7 = v6;
     }
@@ -183,12 +183,12 @@
   return v8;
 }
 
-- (BOOL)initInternalWithUpdateMode:(int64_t)a3 engineMode:(int64_t)a4 platform:(id)a5 spatialMode:(int64_t)a6
+- (BOOL)initInternalWithUpdateMode:(int64_t)mode engineMode:(int64_t)engineMode platform:(id)platform spatialMode:(int64_t)spatialMode
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = v7;
-  if (!v7 || (v9 = [v7 sampleRate], v10 == 48000.0))
+  platformCopy = platform;
+  v8 = platformCopy;
+  if (!platformCopy || (v9 = [platformCopy sampleRate], v10 == 48000.0))
   {
     self->_sampleRate = 48000.0;
     *&self->_defaultPrivateReverbPreset = xmmword_23A596FE0;
@@ -221,7 +221,7 @@
     v23 = 1024;
     v24 = 594;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 2048;
     v28 = v8;
     v29 = 2048;
@@ -234,16 +234,16 @@
   return 0;
 }
 
-- (PHASEEngine)initWithPlatform:(id)a3
+- (PHASEEngine)initWithPlatform:(id)platform
 {
-  v4 = a3;
+  platformCopy = platform;
   v9.receiver = self;
   v9.super_class = PHASEEngine;
   v5 = [(PHASEEngine *)&v9 init];
   if (v5)
   {
     GetDefaultClientEngineMode();
-    if ([(PHASEEngine *)v5 initInternalWithUpdateMode:0 engineMode:0 platform:v4 spatialMode:0])
+    if ([(PHASEEngine *)v5 initInternalWithUpdateMode:0 engineMode:0 platform:platformCopy spatialMode:0])
     {
       v6 = v5;
     }
@@ -264,7 +264,7 @@
   return v7;
 }
 
-- (PHASEEngine)initWithUpdateMode:(int64_t)a3 engineMode:(int64_t)a4
+- (PHASEEngine)initWithUpdateMode:(int64_t)mode engineMode:(int64_t)engineMode
 {
   v11.receiver = self;
   v11.super_class = PHASEEngine;
@@ -272,7 +272,7 @@
   v7 = v6;
   if (v6)
   {
-    if ([(PHASEEngine *)v6 initInternalWithUpdateMode:a3 engineMode:a4 platform:0 spatialMode:0])
+    if ([(PHASEEngine *)v6 initInternalWithUpdateMode:mode engineMode:engineMode platform:0 spatialMode:0])
     {
       v8 = v7;
     }
@@ -293,16 +293,16 @@
   return v9;
 }
 
-- (PHASEEngine)initWithUpdateMode:(int64_t)a3 engineMode:(int64_t)a4 platform:(id)a5
+- (PHASEEngine)initWithUpdateMode:(int64_t)mode engineMode:(int64_t)engineMode platform:(id)platform
 {
-  v8 = a5;
+  platformCopy = platform;
   v14.receiver = self;
   v14.super_class = PHASEEngine;
   v9 = [(PHASEEngine *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    if ([(PHASEEngine *)v9 initInternalWithUpdateMode:a3 engineMode:a4 platform:v8 spatialMode:0])
+    if ([(PHASEEngine *)v9 initInternalWithUpdateMode:mode engineMode:engineMode platform:platformCopy spatialMode:0])
     {
       v11 = v10;
     }
@@ -326,8 +326,8 @@
 - (void)destroy
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  v3 = objc_sync_enter(v2);
+  selfCopy = self;
+  v3 = objc_sync_enter(selfCopy);
   v4 = **(Phase::Logger::GetInstance(v3) + 448);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -336,12 +336,12 @@
     v16 = 1024;
     v17 = 703;
     v18 = 2048;
-    v19 = v2;
+    v19 = selfCopy;
     _os_log_impl(&dword_23A302000, v4, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: PHASEEngine destroy", &v14, 0x1Cu);
   }
 
-  [(PHASEEngine *)v2 stop];
-  ptr = v2->_impl.__ptr_;
+  [(PHASEEngine *)selfCopy stop];
+  ptr = selfCopy->_impl.__ptr_;
   if (ptr)
   {
     v6 = *(ptr + 66);
@@ -358,28 +358,28 @@
 
       if (objc_opt_respondsToSelector())
       {
-        v8 = [v7 sessionInterface];
-        v9 = v8 == 0;
+        sessionInterface = [v7 sessionInterface];
+        v9 = sessionInterface == 0;
 
         if (!v9)
         {
-          v10 = [v7 sessionInterface];
-          [v10 registerActivateAudioSessionBlock:0];
-          [v10 registerFadeClientsInAudioSessionBlock:0];
+          sessionInterface2 = [v7 sessionInterface];
+          [sessionInterface2 registerActivateAudioSessionBlock:0];
+          [sessionInterface2 registerFadeClientsInAudioSessionBlock:0];
           if (objc_opt_respondsToSelector())
           {
-            [v10 registerMuteInputClientsInAudioSessionBlock:0];
+            [sessionInterface2 registerMuteInputClientsInAudioSessionBlock:0];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v11 = [v10 sessionVolumeInterface];
-            v12 = v11 == 0;
+            sessionVolumeInterface = [sessionInterface2 sessionVolumeInterface];
+            v12 = sessionVolumeInterface == 0;
 
             if (!v12)
             {
-              v13 = [v10 sessionVolumeInterface];
-              [v13 registerVolumeChangedNotificationBlock:0];
+              sessionVolumeInterface2 = [sessionInterface2 sessionVolumeInterface];
+              [sessionVolumeInterface2 registerVolumeChangedNotificationBlock:0];
             }
           }
         }
@@ -387,19 +387,19 @@
     }
   }
 
-  [(PHASEAssetRegistry *)v2->_assetRegistry removeAll];
-  std::unique_ptr<PHASEEngineImpl>::reset[abi:ne200100](&v2->_impl.__ptr_, 0);
-  objc_sync_exit(v2);
+  [(PHASEAssetRegistry *)selfCopy->_assetRegistry removeAll];
+  std::unique_ptr<PHASEEngineImpl>::reset[abi:ne200100](&selfCopy->_impl.__ptr_, 0);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)dealloc
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(PHASEEngine *)v2 destroy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PHASEEngine *)selfCopy destroy];
+  objc_sync_exit(selfCopy);
 
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = PHASEEngine;
   [(PHASEEngine *)&v3 dealloc];
 }
@@ -407,8 +407,8 @@
 - (BOOL)startAndReturnError:(NSError *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  v5 = objc_sync_enter(v4);
+  selfCopy = self;
+  v5 = objc_sync_enter(selfCopy);
   v6 = **(Phase::Logger::GetInstance(v5) + 448);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -417,12 +417,12 @@
     v12 = 1024;
     v13 = 763;
     v14 = 2048;
-    v15 = v4;
+    v15 = selfCopy;
     _os_log_impl(&dword_23A302000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: PHASEEngine start", &v10, 0x1Cu);
   }
 
-  v4->_stopWatch.mStart.__d_.__rep_ = std::chrono::steady_clock::now().__d_.__rep_;
-  v7 = PHASEEngineImpl::Start(v4->_impl.__ptr_, 60.0);
+  selfCopy->_stopWatch.mStart.__d_.__rep_ = std::chrono::steady_clock::now().__d_.__rep_;
+  v7 = PHASEEngineImpl::Start(selfCopy->_impl.__ptr_, 60.0);
   if (error)
   {
     v7 = v7;
@@ -431,15 +431,15 @@
 
   v8 = v7 == 0;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   return v8;
 }
 
 - (void)pause
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  v3 = objc_sync_enter(v2);
+  selfCopy = self;
+  v3 = objc_sync_enter(selfCopy);
   v4 = **(Phase::Logger::GetInstance(v3) + 448);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -448,19 +448,19 @@
     v7 = 1024;
     v8 = 780;
     v9 = 2048;
-    v10 = v2;
+    v10 = selfCopy;
     _os_log_impl(&dword_23A302000, v4, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: PHASEEngine pause", &v5, 0x1Cu);
   }
 
-  PHASEEngineImpl::Pause(v2->_impl.__ptr_);
-  objc_sync_exit(v2);
+  PHASEEngineImpl::Pause(selfCopy->_impl.__ptr_);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)stop
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  v3 = objc_sync_enter(v2);
+  selfCopy = self;
+  v3 = objc_sync_enter(selfCopy);
   v4 = **(Phase::Logger::GetInstance(v3) + 448);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -469,35 +469,35 @@
     v8 = 1024;
     v9 = 790;
     v10 = 2048;
-    v11 = v2;
+    v11 = selfCopy;
     _os_log_impl(&dword_23A302000, v4, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: PHASEEngine stop", &v6, 0x1Cu);
   }
 
-  ptr = v2->_impl.__ptr_;
+  ptr = selfCopy->_impl.__ptr_;
   if (ptr)
   {
     PHASEEngineImpl::Stop(ptr);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (int64_t)engineMode
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = *(v2->_impl.__ptr_ + 2);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = *(selfCopy->_impl.__ptr_ + 2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (PHASERenderingState)renderingState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = atomic_load(v2->_impl.__ptr_ + 3);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = atomic_load(selfCopy->_impl.__ptr_ + 3);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -509,8 +509,8 @@
   if (objc_opt_isKindOfClass())
   {
     v3 = objc_alloc(MEMORY[0x277CEFCA0]);
-    v4 = [MEMORY[0x277CB83F8] sharedInstance];
-    v5 = [v3 initWithSession:v4];
+    mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+    v5 = [v3 initWithSession:mEMORY[0x277CB83F8]];
 
     v14 = 0;
     v6 = [(PHASEEngine *)self rootObjectForSessionIOBinding:v5 error:&v14];
@@ -565,17 +565,17 @@
   return sessionRootObjects;
 }
 
-- (id)rootObjectForSessionIOBinding:(id)a3 error:(id *)a4
+- (id)rootObjectForSessionIOBinding:(id)binding error:(id *)error
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  bindingCopy = binding;
+  v7 = bindingCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 session];
+  session = [bindingCopy session];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
@@ -597,28 +597,28 @@ LABEL_9:
       _os_log_impl(&dword_23A302000, v21, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346913634 userInfo:v14];
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_19;
     }
 
     goto LABEL_18;
   }
 
-  v9 = [v7 session];
-  v10 = [v9 spatialTrackingLabel];
+  session2 = [v7 session];
+  spatialTrackingLabel = [session2 spatialTrackingLabel];
 
-  if (!v10)
+  if (!spatialTrackingLabel)
   {
     goto LABEL_9;
   }
 
   v11 = objc_alloc(MEMORY[0x277CCAD78]);
-  v12 = [v7 session];
-  v13 = [v12 spatialTrackingLabel];
-  v14 = [v11 initWithUUIDString:v13];
+  session3 = [v7 session];
+  spatialTrackingLabel2 = [session3 spatialTrackingLabel];
+  v14 = [v11 initWithUUIDString:spatialTrackingLabel2];
 
   if (!v14)
   {
@@ -639,9 +639,9 @@ LABEL_9:
       _os_log_impl(&dword_23A302000, v25, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346913634 userInfo:v24];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346913634 userInfo:v24];
     }
 
     v14 = 0;
@@ -650,17 +650,17 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v15 = [(PHASEEngine *)self sessionRootObjects];
-  v16 = [v15 objectForKey:v14];
+  sessionRootObjects = [(PHASEEngine *)self sessionRootObjects];
+  v16 = [sessionRootObjects objectForKey:v14];
 
   if (!v16)
   {
     v17 = [PHASESharedRoot alloc];
-    v18 = [v7 session];
-    v16 = [(PHASESharedRoot *)v17 initWithEngine:self session:v18 sessionUUID:v14];
+    session4 = [v7 session];
+    v16 = [(PHASESharedRoot *)v17 initWithEngine:self session:session4 sessionUUID:v14];
 
-    v19 = [(PHASEEngine *)self sessionRootObjects];
-    [v19 setObject:v16 forKey:v14];
+    sessionRootObjects2 = [(PHASEEngine *)self sessionRootObjects];
+    [sessionRootObjects2 setObject:v16 forKey:v14];
   }
 
 LABEL_19:
@@ -696,7 +696,7 @@ LABEL_19:
     v9 = 1024;
     v10 = 915;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: setDefaultMedium", &v7, 0x1Cu);
   }
 
@@ -716,7 +716,7 @@ LABEL_19:
     v8 = 1024;
     v9 = 928;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: setDefaultReverbPreset", &v6, 0x1Cu);
   }
 
@@ -726,8 +726,8 @@ LABEL_19:
 - (void)setOutputSpatializationMode:(PHASESpatializationMode)outputSpatializationMode
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  v5 = objc_sync_enter(v4);
+  selfCopy = self;
+  v5 = objc_sync_enter(selfCopy);
   v6 = **(Phase::Logger::GetInstance(v5) + 448);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -746,16 +746,16 @@ LABEL_19:
     v14 = 1024;
     v15 = 938;
     v16 = 2048;
-    v17 = v4;
+    v17 = selfCopy;
     v18 = 2080;
     v19 = v7;
     _os_log_impl(&dword_23A302000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: setOutputSpatializationMode %s", &v12, 0x26u);
   }
 
-  v8 = [(PHASEEngine *)v4 engineMode];
-  if (v8)
+  engineMode = [(PHASEEngine *)selfCopy engineMode];
+  if (engineMode)
   {
-    v9 = **(Phase::Logger::GetInstance(v8) + 448);
+    v9 = **(Phase::Logger::GetInstance(engineMode) + 448);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = 136315394;
@@ -768,18 +768,18 @@ LABEL_19:
 
   else
   {
-    v10 = Phase::Controller::TaskManager::GetService<Phase::Controller::SpatializerManager>((v4->_impl.__ptr_ + 48), 9);
+    v10 = Phase::Controller::TaskManager::GetService<Phase::Controller::SpatializerManager>((selfCopy->_impl.__ptr_ + 48), 9);
     if (v10)
     {
       if (outputSpatializationMode == PHASESpatializationModeAutomatic)
       {
-        [(PHASEEngine *)v4 engineMode];
+        [(PHASEEngine *)selfCopy engineMode];
       }
 
       *(v10 + 112) = outputSpatializationMode;
       SpatializerForConfig = Phase::Controller::SpatializerManager::GetSpatializerForConfig(outputSpatializationMode, *(v10 + 80), (v10 + 88));
       Phase::Controller::SpatializerManager::SetActiveSpatializer(v10, SpatializerForConfig);
-      v4->_outputSpatializationMode = outputSpatializationMode;
+      selfCopy->_outputSpatializationMode = outputSpatializationMode;
     }
 
     else
@@ -788,15 +788,15 @@ LABEL_19:
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)setHeadphoneHRIRFile:(id)a3 error:(id *)a4
+- (BOOL)setHeadphoneHRIRFile:(id)file error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = self;
-  v8 = objc_sync_enter(v7);
+  fileCopy = file;
+  selfCopy = self;
+  v8 = objc_sync_enter(selfCopy);
   v9 = **(Phase::Logger::GetInstance(v8) + 448);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -805,16 +805,16 @@ LABEL_19:
     v33 = 1024;
     v34 = 988;
     v35 = 2048;
-    v36 = v7;
+    v36 = selfCopy;
     _os_log_impl(&dword_23A302000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: setHeadphoneHRIRFile", buf, 0x1Cu);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  if ([(PHASEEngine *)v7 engineMode])
+  if ([(PHASEEngine *)selfCopy engineMode])
   {
     v10 = *MEMORY[0x277CCA450];
     v29 = *MEMORY[0x277CCA450];
@@ -835,7 +835,7 @@ LABEL_19:
       _os_log_impl(&dword_23A302000, v14, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -844,14 +844,14 @@ LABEL_19:
     goto LABEL_10;
   }
 
-  v19 = Phase::Controller::TaskManager::GetService<Phase::Controller::SpatializerManager>((v7->_impl.__ptr_ + 48), 9);
+  v19 = Phase::Controller::TaskManager::GetService<Phase::Controller::SpatializerManager>((selfCopy->_impl.__ptr_ + 48), 9);
   if (!v19)
   {
     [MEMORY[0x277CBEAD8] raise:@"PHASE system initialization failure." format:@"SpatializerManager is unavailable"];
     goto LABEL_12;
   }
 
-  if (Phase::Controller::SpatializerManager::SetHeadphoneHRIR(v19, v6) != 2)
+  if (Phase::Controller::SpatializerManager::SetHeadphoneHRIR(v19, fileCopy) != 2)
   {
     v17 = 1;
     goto LABEL_13;
@@ -860,8 +860,8 @@ LABEL_19:
   v20 = *MEMORY[0x277CCA450];
   v27 = *MEMORY[0x277CCA450];
   v21 = MEMORY[0x277CCACA8];
-  v22 = v6;
-  v23 = [v21 stringWithFormat:@"Invalid headphone HRIR file %s", -[NSURL fileSystemRepresentation](v6, "fileSystemRepresentation")];
+  v22 = fileCopy;
+  v23 = [v21 stringWithFormat:@"Invalid headphone HRIR file %s", -[NSURL fileSystemRepresentation](fileCopy, "fileSystemRepresentation")];
   v28 = v23;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
 
@@ -878,11 +878,11 @@ LABEL_19:
     _os_log_impl(&dword_23A302000, v25, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
   }
 
-  if (a4)
+  if (error)
   {
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920801 userInfo:v12];
 LABEL_10:
-    *a4 = v16;
+    *error = v16;
   }
 
 LABEL_11:
@@ -890,25 +890,25 @@ LABEL_11:
 LABEL_12:
   v17 = 0;
 LABEL_13:
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v17;
 }
 
-- (void)setRoomAcousticTrackingMode:(int64_t)a3
+- (void)setRoomAcousticTrackingMode:(int64_t)mode
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = **(Phase::Logger::GetInstance(self) + 448);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 3)
+    if (mode > 3)
     {
       v6 = "Invalid";
     }
 
     else
     {
-      v6 = off_278B4F6C8[a3];
+      v6 = off_278B4F6C8[mode];
     }
 
     v7 = 136315906;
@@ -916,20 +916,20 @@ LABEL_13:
     v9 = 1024;
     v10 = 1048;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = v6;
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: Setting roomAcousticTrackingMode to %s", &v7, 0x26u);
   }
 
-  (*(**(self->_impl.__ptr_ + 46) + 176))(*(self->_impl.__ptr_ + 46), a3);
-  self->_roomAcousticTrackingMode = a3;
+  (*(**(self->_impl.__ptr_ + 46) + 176))(*(self->_impl.__ptr_ + 46), mode);
+  self->_roomAcousticTrackingMode = mode;
 }
 
-- (void)setRoomAcousticTarget:(id)a3
+- (void)setRoomAcousticTarget:(id)target
 {
   v63 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  targetCopy = target;
   v44 = 0;
   v45 = 0;
   v46 = 0;
@@ -945,7 +945,7 @@ LABEL_13:
   __p = 0;
   v33 = 0;
   v34 = 0;
-  v3 = **(Phase::Logger::GetInstance(v27) + 448);
+  v3 = **(Phase::Logger::GetInstance(targetCopy) + 448);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
@@ -953,7 +953,7 @@ LABEL_13:
     v49 = 1024;
     v50 = 1058;
     v51 = 2048;
-    v52 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A302000, v3, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: setRoomAcousticTarget:", buf, 0x1Cu);
   }
 
@@ -961,8 +961,8 @@ LABEL_13:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = [(Phase::Logger *)v27 subbandParameters];
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v62 count:16];
+  subbandParameters = [(Phase::Logger *)targetCopy subbandParameters];
+  v5 = [subbandParameters countByEnumeratingWithState:&v28 objects:v62 count:16];
   if (v5)
   {
     v6 = *v29;
@@ -972,7 +972,7 @@ LABEL_13:
       {
         if (*v29 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subbandParameters);
         }
 
         v8 = *(*(&v28 + 1) + 8 * i);
@@ -995,7 +995,7 @@ LABEL_13:
           v49 = 1024;
           v50 = 1066;
           v51 = 2112;
-          v52 = v19;
+          selfCopy = v19;
           _os_log_impl(&dword_23A302000, v20, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %@", buf, 0x1Cu);
         }
 
@@ -1021,7 +1021,7 @@ LABEL_13:
         std::vector<float>::push_back[abi:ne200100](&__p, buf);
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v28 objects:v62 count:16];
+      v5 = [subbandParameters countByEnumeratingWithState:&v28 objects:v62 count:16];
     }
 
     while (v5);
@@ -1030,7 +1030,7 @@ LABEL_13:
   bzero(buf, 0x2C0uLL);
   Phase::GetValuesFromFrequencyResponse<std::__wrap_iter<float *>,std::__wrap_iter<float *>,float const*,float *,&float Phase::Identity<float>,&float Phase::Identity<float>>(v44, v45, v41, Phase::sThreeBandFrequencies, Phase::sOctaveBandFrequencies, buf);
   Phase::GetValuesFromFrequencyResponse<std::__wrap_iter<float *>,std::__wrap_iter<float *>,float const*,float *,&float Phase::DecibelsToEnergy<float>,&float Phase::EnergyToDecibels<float>>(v44, v45, v38, Phase::sThreeBandFrequencies, Phase::sOctaveBandFrequencies, &v49);
-  Phase::GetValuesFromFrequencyResponse<std::__wrap_iter<float *>,std::__wrap_iter<float *>,float const*,float *,&float Phase::DecibelsToEnergy<float>,&float Phase::EnergyToDecibels<float>>(v44, v45, v35, Phase::sThreeBandFrequencies, Phase::sOctaveBandFrequencies, &v52 + 4);
+  Phase::GetValuesFromFrequencyResponse<std::__wrap_iter<float *>,std::__wrap_iter<float *>,float const*,float *,&float Phase::DecibelsToEnergy<float>,&float Phase::EnergyToDecibels<float>>(v44, v45, v35, Phase::sThreeBandFrequencies, Phase::sOctaveBandFrequencies, &selfCopy + 4);
   Phase::GetValuesFromFrequencyResponse<std::__wrap_iter<float *>,std::__wrap_iter<float *>,float const*,float *,&float Phase::Identity<float>,&float Phase::Identity<float>>(v44, v45, __p, Phase::sThreeBandFrequencies, Phase::sOctaveBandFrequencies, &v53);
   Phase::GetValuesFromFrequencyResponse<std::__wrap_iter<float *>,std::__wrap_iter<float *>,float const*,float *,&float Phase::Identity<float>,&float Phase::Identity<float>>(v44, v45, v41, Phase::sOctaveBandFrequencies, Phase::sThirdOctaveBandFrequencies, &v54);
   Phase::GetValuesFromFrequencyResponse<std::__wrap_iter<float *>,std::__wrap_iter<float *>,float const*,float *,&float Phase::DecibelsToEnergy<float>,&float Phase::EnergyToDecibels<float>>(v44, v45, v38, Phase::sOctaveBandFrequencies, Phase::sThirdOctaveBandFrequencies, &v55);
@@ -1041,7 +1041,7 @@ LABEL_13:
   Phase::GetValuesFromFrequencyResponse<std::__wrap_iter<float *>,std::__wrap_iter<float *>,float const*,float *,&float Phase::DecibelsToEnergy<float>,&float Phase::EnergyToDecibels<float>>(v44, v45, v35, Phase::sThirdOctaveBandFrequencies, &Phase::sThirdOctaveBandFrequencies[31], &v60);
   Phase::GetValuesFromFrequencyResponse<std::__wrap_iter<float *>,std::__wrap_iter<float *>,float const*,float *,&float Phase::Identity<float>,&float Phase::Identity<float>>(v44, v45, __p, Phase::sThirdOctaveBandFrequencies, &Phase::sThirdOctaveBandFrequencies[31], &v61);
   (*(**(self->_impl.__ptr_ + 46) + 184))(*(self->_impl.__ptr_ + 46), buf);
-  self->_roomAcousticTarget = v27;
+  self->_roomAcousticTarget = targetCopy;
   if (__p)
   {
     v33 = __p;
@@ -1073,7 +1073,7 @@ LABEL_13:
   }
 }
 
-- (void)setRoomAcousticMaximumReverbTime:(double)a3
+- (void)setRoomAcousticMaximumReverbTime:(double)time
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = **(Phase::Logger::GetInstance(self) + 448);
@@ -1084,20 +1084,20 @@ LABEL_13:
     v9 = 1024;
     v10 = 1158;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
-    v14 = a3;
+    timeCopy = time;
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: Setting roomAcousticMaximumReverbTime to %f", &v7, 0x26u);
   }
 
-  v6 = a3;
-  (*(**(self->_impl.__ptr_ + 46) + 192))(*(self->_impl.__ptr_ + 46), v6);
-  self->_roomAcousticMaximumReverbTime = a3;
+  timeCopy2 = time;
+  (*(**(self->_impl.__ptr_ + 46) + 192))(*(self->_impl.__ptr_ + 46), timeCopy2);
+  self->_roomAcousticMaximumReverbTime = time;
 }
 
-- (void)setRoomAcousticSoftLimiting:(BOOL)a3
+- (void)setRoomAcousticSoftLimiting:(BOOL)limiting
 {
-  v3 = a3;
+  limitingCopy = limiting;
   v15 = *MEMORY[0x277D85DE8];
   v5 = **(Phase::Logger::GetInstance(self) + 448);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1107,23 +1107,23 @@ LABEL_13:
     v9 = 1024;
     v10 = 1166;
     v7 = 136315906;
-    if (v3)
+    if (limitingCopy)
     {
       v6 = "YES";
     }
 
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = v6;
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: Setting roomAcousticSoftLimiting to %s", &v7, 0x26u);
   }
 
-  (*(**(self->_impl.__ptr_ + 46) + 200))(*(self->_impl.__ptr_ + 46), v3);
-  self->_roomAcousticSoftLimiting = v3;
+  (*(**(self->_impl.__ptr_ + 46) + 200))(*(self->_impl.__ptr_ + 46), limitingCopy);
+  self->_roomAcousticSoftLimiting = limitingCopy;
 }
 
-- (void)setRoomAcousticSmoothing:(double)a3
+- (void)setRoomAcousticSmoothing:(double)smoothing
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = **(Phase::Logger::GetInstance(self) + 448);
@@ -1134,18 +1134,18 @@ LABEL_13:
     v9 = 1024;
     v10 = 1174;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
-    v14 = a3;
+    smoothingCopy = smoothing;
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: Setting roomAcousticSmoothing to %f", &v7, 0x26u);
   }
 
-  v6 = a3;
-  (*(**(self->_impl.__ptr_ + 46) + 208))(*(self->_impl.__ptr_ + 46), v6);
-  self->_roomAcousticSmoothing = a3;
+  smoothingCopy2 = smoothing;
+  (*(**(self->_impl.__ptr_ + 46) + 208))(*(self->_impl.__ptr_ + 46), smoothingCopy2);
+  self->_roomAcousticSmoothing = smoothing;
 }
 
-- (void)setDefaultPrivateReverbPreset:(int64_t)a3
+- (void)setDefaultPrivateReverbPreset:(int64_t)preset
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = **(Phase::Logger::GetInstance(self) + 448);
@@ -1156,21 +1156,21 @@ LABEL_13:
     v16 = 1024;
     v17 = 1183;
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: setDefaultPrivateReverbPreset", &v14, 0x1Cu);
   }
 
-  if (self->_defaultPrivateReverbPreset != a3)
+  if (self->_defaultPrivateReverbPreset != preset)
   {
-    v6 = GetReverbPresetName(a3);
+    v6 = GetReverbPresetName(preset);
     v7 = v6;
     if (v6)
     {
       v8 = v6;
-      v9 = [v7 UTF8String];
-      if (v9 && (v10 = *v9, *v9))
+      uTF8String = [v7 UTF8String];
+      if (uTF8String && (v10 = *uTF8String, *uTF8String))
       {
-        v11 = v9 + 1;
+        v11 = uTF8String + 1;
         v12 = 0xCBF29CE484222325;
         do
         {
@@ -1191,15 +1191,15 @@ LABEL_13:
     else
     {
       v12 = 0;
-      a3 = 1917742958;
+      preset = 1917742958;
     }
 
-    self->_defaultPrivateReverbPreset = a3;
+    self->_defaultPrivateReverbPreset = preset;
     (*(**(self->_impl.__ptr_ + 46) + 248))(*(self->_impl.__ptr_ + 46), v12);
   }
 }
 
-- (void)setSpaceBlendTargetPreset:(int64_t)a3
+- (void)setSpaceBlendTargetPreset:(int64_t)preset
 {
   v25 = *MEMORY[0x277D85DE8];
   v5 = **(Phase::Logger::GetInstance(self) + 448);
@@ -1211,13 +1211,13 @@ LABEL_13:
     v19 = 1024;
     v20 = 1197;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 2048;
-    v24 = a3;
+    presetCopy2 = preset;
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: Trying to set spaceBlendTargetPreset to: %ld", &v17, 0x26u);
   }
 
-  if (self->_spaceBlendTargetPreset != a3)
+  if (self->_spaceBlendTargetPreset != preset)
   {
     v7 = **(Phase::Logger::GetInstance(v6) + 448);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1228,21 +1228,21 @@ LABEL_13:
       v19 = 1024;
       v20 = 1202;
       v21 = 2048;
-      v22 = spaceBlendTargetPreset;
+      selfCopy = spaceBlendTargetPreset;
       v23 = 2048;
-      v24 = a3;
+      presetCopy2 = preset;
       _os_log_impl(&dword_23A302000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Changing spaceBlendTargetPreset from %ld to %ld.", &v17, 0x26u);
     }
 
-    v9 = GetReverbPresetName(a3);
+    v9 = GetReverbPresetName(preset);
     v10 = v9;
     if (v9)
     {
       v11 = v9;
-      v12 = [v10 UTF8String];
-      if (v12 && (v13 = *v12, *v12))
+      uTF8String = [v10 UTF8String];
+      if (uTF8String && (v13 = *uTF8String, *uTF8String))
       {
-        v14 = v12 + 1;
+        v14 = uTF8String + 1;
         v15 = 0xCBF29CE484222325;
         do
         {
@@ -1263,20 +1263,20 @@ LABEL_13:
     else
     {
       v15 = 0;
-      a3 = 1917742958;
+      preset = 1917742958;
     }
 
-    self->_spaceBlendTargetPreset = a3;
+    self->_spaceBlendTargetPreset = preset;
     (*(**(self->_impl.__ptr_ + 46) + 216))(*(self->_impl.__ptr_ + 46), v15);
   }
 }
 
-- (uint64_t)setSpaceBlendTargetPresetOrientation:(__n128 *)a1
+- (uint64_t)setSpaceBlendTargetPresetOrientation:(__n128 *)orientation
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = a2.n128_f32[2];
   v4 = a2.n128_f32[3];
-  v5 = **(Phase::Logger::GetInstance(a1) + 448);
+  v5 = **(Phase::Logger::GetInstance(orientation) + 448);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136316674;
@@ -1284,7 +1284,7 @@ LABEL_13:
     *v10 = 1024;
     *&v10[2] = 1219;
     v11 = 2048;
-    v12 = a1;
+    orientationCopy = orientation;
     v13 = 2048;
     v14 = a2.n128_f32[0];
     v15 = 2048;
@@ -1296,15 +1296,15 @@ LABEL_13:
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: Setting spaceBlendTargetPresetOrientation to :%f %f %f %f", buf, 0x44u);
   }
 
-  a1[14] = a2;
-  v6 = *(a1->n128_u64[1] + 368);
+  orientation[14] = a2;
+  v6 = *(orientation->n128_u64[1] + 368);
   *buf = a2.n128_u64[0];
   *&buf[8] = v3;
   *v10 = v4;
   return (*(*v6 + 224))(v6, buf);
 }
 
-- (void)setSpaceBlendLevel:(double)a3
+- (void)setSpaceBlendLevel:(double)level
 {
   v20 = *MEMORY[0x277D85DE8];
   v6 = **(Phase::Logger::GetInstance(self) + 448);
@@ -1315,23 +1315,23 @@ LABEL_13:
     v14 = 1024;
     v15 = 1227;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2048;
-    v19 = a3;
+    levelCopy = level;
     _os_log_impl(&dword_23A302000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: Setting spaceBlendLevel to: %.2f", &v12, 0x26u);
   }
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = NSStringFromSelector(a2);
-  v10 = PHASEGetPropertyBounded<double>(v8, v9, a3, 0.0, 1.0);
+  v10 = PHASEGetPropertyBounded<double>(v8, v9, level, 0.0, 1.0);
 
   v11 = v10;
   (*(**(self->_impl.__ptr_ + 46) + 232))(*(self->_impl.__ptr_ + 46), v11);
   self->_spaceBlendLevel = v10;
 }
 
-- (void)setSceneClassification:(int64_t)a3
+- (void)setSceneClassification:(int64_t)classification
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = **(Phase::Logger::GetInstance(self) + 448);
@@ -1342,19 +1342,19 @@ LABEL_13:
     v8 = 1024;
     v9 = 1239;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: setSceneClassification", &v6, 0x1Cu);
   }
 
-  (*(**(self->_impl.__ptr_ + 46) + 240))(*(self->_impl.__ptr_ + 46), a3);
-  self->_sceneClassification = a3;
+  (*(**(self->_impl.__ptr_ + 46) + 240))(*(self->_impl.__ptr_ + 46), classification);
+  self->_sceneClassification = classification;
 }
 
-- (void)setSceneRoomUUID:(id)a3
+- (void)setSceneRoomUUID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = **(Phase::Logger::GetInstance(v4) + 448);
+  dCopy = d;
+  v5 = **(Phase::Logger::GetInstance(dCopy) + 448);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315650;
@@ -1362,19 +1362,19 @@ LABEL_13:
     v9 = 1024;
     v10 = 1247;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: setSceneRoomUUID", &v7, 0x1Cu);
   }
 
   sceneRoomUUID = self->_sceneRoomUUID;
-  self->_sceneRoomUUID = v4;
+  self->_sceneRoomUUID = dCopy;
 }
 
 - (void)setUnitsPerSecond:(double)unitsPerSecond
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = self;
-  v6 = objc_sync_enter(v5);
+  selfCopy = self;
+  v6 = objc_sync_enter(selfCopy);
   v7 = **(Phase::Logger::GetInstance(v6) + 448);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1383,7 +1383,7 @@ LABEL_13:
     v23 = 1024;
     v24 = 1267;
     v25 = 2048;
-    v26 = v5;
+    v26 = selfCopy;
     _os_log_impl(&dword_23A302000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: setUnitsPerSecond", buf, 0x1Cu);
   }
 
@@ -1392,7 +1392,7 @@ LABEL_13:
   v10 = NSStringFromSelector(a2);
   v11 = PHASEGetPropertyBounded<double>(v9, v10, unitsPerSecond, 2.22507386e-308, 1.79769313e308);
 
-  v12 = Phase::Controller::TaskManager::GetService<Phase::Controller::GroupManager>((v5->_impl.__ptr_ + 48), 10);
+  v12 = Phase::Controller::TaskManager::GetService<Phase::Controller::GroupManager>((selfCopy->_impl.__ptr_ + 48), 10);
   v13 = **(v12 + 8);
   v20 = 0;
   v19 = 1;
@@ -1437,15 +1437,15 @@ LABEL_13:
   v14[2] = v11;
   Phase::LockFreeQueueSPSC::CommitBytes(v13, 24);
   atomic_store(0, (v13 + 40));
-  v5->_unitsPerSecond = v11;
-  objc_sync_exit(v5);
+  selfCopy->_unitsPerSecond = v11;
+  objc_sync_exit(selfCopy);
 }
 
 - (void)setUnitsPerMeter:(double)unitsPerMeter
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = self;
-  v6 = objc_sync_enter(v5);
+  selfCopy = self;
+  v6 = objc_sync_enter(selfCopy);
   v7 = **(Phase::Logger::GetInstance(v6) + 448);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1454,7 +1454,7 @@ LABEL_13:
     v14 = 1024;
     v15 = 1293;
     v16 = 2048;
-    v17 = v5;
+    v17 = selfCopy;
     _os_log_impl(&dword_23A302000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d engine@%p: setUnitsPerMeter", &v12, 0x1Cu);
   }
 
@@ -1463,31 +1463,31 @@ LABEL_13:
   v10 = NSStringFromSelector(a2);
   v11 = PHASEGetPropertyBounded<double>(v9, v10, unitsPerMeter, 2.22507386e-308, 1.79769313e308);
 
-  if (v11 != v5->_unitsPerMeter)
+  if (v11 != selfCopy->_unitsPerMeter)
   {
-    (*(**(v5->_impl.__ptr_ + 51) + 48))(*(v5->_impl.__ptr_ + 51), v11);
-    v5->_unitsPerMeter = v11;
+    (*(**(selfCopy->_impl.__ptr_ + 51) + 48))(*(selfCopy->_impl.__ptr_ + 51), v11);
+    selfCopy->_unitsPerMeter = v11;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addSoundEvent:(id)a3
+- (void)addSoundEvent:(id)event
 {
   obj = self->_internalSoundEvents;
-  v5 = a3;
+  eventCopy = event;
   objc_sync_enter(obj);
-  [(NSMutableArray *)self->_internalSoundEvents addObject:v5];
+  [(NSMutableArray *)self->_internalSoundEvents addObject:eventCopy];
 
   objc_sync_exit(obj);
 }
 
-- (void)removeSoundEvent:(id)a3
+- (void)removeSoundEvent:(id)event
 {
   obj = self->_internalSoundEvents;
-  v5 = a3;
+  eventCopy = event;
   objc_sync_enter(obj);
-  [(NSMutableArray *)self->_internalSoundEvents removeObject:v5];
+  [(NSMutableArray *)self->_internalSoundEvents removeObject:eventCopy];
 
   objc_sync_exit(obj);
 }
@@ -1518,49 +1518,49 @@ LABEL_13:
   objc_sync_exit(obj);
 }
 
-- (void)addGroup:(id)a3
+- (void)addGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   groups = self->_groups;
-  v7 = v4;
-  v6 = [v4 identifier];
-  [(NSMutableDictionary *)groups setObject:v7 forKey:v6];
+  v7 = groupCopy;
+  identifier = [groupCopy identifier];
+  [(NSMutableDictionary *)groups setObject:v7 forKey:identifier];
 }
 
-- (void)removeGroup:(id)a3
+- (void)removeGroup:(id)group
 {
   groups = self->_groups;
-  v4 = [a3 identifier];
+  identifier = [group identifier];
   [(NSMutableDictionary *)groups removeObjectForKey:?];
 }
 
-- (void)addDucker:(id)a3
+- (void)addDucker:(id)ducker
 {
-  v4 = a3;
+  duckerCopy = ducker;
   duckers = self->_duckers;
-  v7 = v4;
-  v6 = [v4 identifier];
-  [(NSMutableDictionary *)duckers setObject:v7 forKey:v6];
+  v7 = duckerCopy;
+  identifier = [duckerCopy identifier];
+  [(NSMutableDictionary *)duckers setObject:v7 forKey:identifier];
 }
 
-- (void)removeDucker:(id)a3
+- (void)removeDucker:(id)ducker
 {
   duckers = self->_duckers;
-  v4 = [a3 identifier];
+  identifier = [ducker identifier];
   [(NSMutableDictionary *)duckers removeObjectForKey:?];
 }
 
-- (void)setSpatialCategoryUpdateRate:(float)a3 withName:(id)a4
+- (void)setSpatialCategoryUpdateRate:(float)rate withName:(id)name
 {
-  v9 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  if ([v9 isEqualToString:@"direct_path_transmission"])
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([nameCopy isEqualToString:@"direct_path_transmission"])
   {
     v7 = 1;
   }
 
-  else if ([v9 isEqualToString:@"early_reflections"])
+  else if ([nameCopy isEqualToString:@"early_reflections"])
   {
     v7 = 2;
   }
@@ -1570,7 +1570,7 @@ LABEL_13:
     v7 = 0;
   }
 
-  if ([v9 isEqualToString:@"late_reverb"])
+  if ([nameCopy isEqualToString:@"late_reverb"])
   {
     v8 = 3;
   }
@@ -1580,21 +1580,21 @@ LABEL_13:
     v8 = v7;
   }
 
-  (*(**(v6->_impl.__ptr_ + 51) + 24))(*(v6->_impl.__ptr_ + 51), v8, a3);
-  objc_sync_exit(v6);
+  (*(**(selfCopy->_impl.__ptr_ + 51) + 24))(*(selfCopy->_impl.__ptr_ + 51), v8, rate);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setSpatialCategoryBandCount:(unint64_t)a3 withName:(id)a4
+- (void)setSpatialCategoryBandCount:(unint64_t)count withName:(id)name
 {
-  v9 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  if ([v9 isEqualToString:@"direct_path_transmission"])
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([nameCopy isEqualToString:@"direct_path_transmission"])
   {
     v7 = 1;
   }
 
-  else if ([v9 isEqualToString:@"early_reflections"])
+  else if ([nameCopy isEqualToString:@"early_reflections"])
   {
     v7 = 2;
   }
@@ -1604,7 +1604,7 @@ LABEL_13:
     v7 = 0;
   }
 
-  if ([v9 isEqualToString:@"late_reverb"])
+  if ([nameCopy isEqualToString:@"late_reverb"])
   {
     v8 = 3;
   }
@@ -1614,21 +1614,21 @@ LABEL_13:
     v8 = v7;
   }
 
-  (*(**(v6->_impl.__ptr_ + 51) + 32))(*(v6->_impl.__ptr_ + 51), v8, a3);
-  objc_sync_exit(v6);
+  (*(**(selfCopy->_impl.__ptr_ + 51) + 32))(*(selfCopy->_impl.__ptr_ + 51), v8, count);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setSpatialCategoryMaxClusterCount:(unint64_t)a3 withName:(id)a4
+- (void)setSpatialCategoryMaxClusterCount:(unint64_t)count withName:(id)name
 {
-  v9 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  if ([v9 isEqualToString:@"direct_path_transmission"])
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([nameCopy isEqualToString:@"direct_path_transmission"])
   {
     v7 = 1;
   }
 
-  else if ([v9 isEqualToString:@"early_reflections"])
+  else if ([nameCopy isEqualToString:@"early_reflections"])
   {
     v7 = 2;
   }
@@ -1638,7 +1638,7 @@ LABEL_13:
     v7 = 0;
   }
 
-  if ([v9 isEqualToString:@"late_reverb"])
+  if ([nameCopy isEqualToString:@"late_reverb"])
   {
     v8 = 3;
   }
@@ -1648,15 +1648,15 @@ LABEL_13:
     v8 = v7;
   }
 
-  (*(**(v6->_impl.__ptr_ + 51) + 40))(*(v6->_impl.__ptr_ + 51), v8, a3);
-  objc_sync_exit(v6);
+  (*(**(selfCopy->_impl.__ptr_ + 51) + 40))(*(selfCopy->_impl.__ptr_ + 51), v8, count);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setProfileOverrideWithName:(id)a3 balance:(double)a4
+- (void)setProfileOverrideWithName:(id)name balance:(double)balance
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = **(Phase::Logger::GetInstance(v7) + 448);
+  nameCopy = name;
+  v8 = **(Phase::Logger::GetInstance(nameCopy) + 448);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 136315906;
@@ -1664,18 +1664,18 @@ LABEL_13:
     v23 = 1024;
     v24 = 1476;
     v25 = 2080;
-    v26 = [(Phase::Logger *)v7 UTF8String];
+    uTF8String = [(Phase::Logger *)nameCopy UTF8String];
     v27 = 2048;
-    v28 = a4;
+    balanceCopy = balance;
     _os_log_impl(&dword_23A302000, v8, OS_LOG_TYPE_DEFAULT, "%25s:%-5d received message setProfileOverrideWithName:%s balance:%f", &v21, 0x26u);
   }
 
   IsInternalBuild = Phase::Controller::DeviceInfo::IsInternalBuild(v9);
   if ((IsInternalBuild & 0x100) != 0 && IsInternalBuild)
   {
-    if (a4 >= 0.0)
+    if (balance >= 0.0)
     {
-      if (a4 <= 1.0)
+      if (balance <= 1.0)
       {
         goto LABEL_14;
       }
@@ -1691,9 +1691,9 @@ LABEL_13:
       v23 = 1024;
       v24 = 1496;
       v25 = 2048;
-      v26 = 0x3FF0000000000000;
+      uTF8String = 0x3FF0000000000000;
       v27 = 2048;
-      v28 = 1.0;
+      balanceCopy = 1.0;
       v12 = "%25s:%-5d setProfileOverrideWithName: Attempting to set balance to be greater than %f. Clamping to %f";
     }
 
@@ -1706,10 +1706,10 @@ LABEL_14:
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
         v16 = NSStringFromSelector(a2);
-        v17 = PHASEGetPropertyBounded<double>(v15, v16, a4, 0.0, 1.0);
+        v17 = PHASEGetPropertyBounded<double>(v15, v16, balance, 0.0, 1.0);
 
         v18 = *(self->_impl.__ptr_ + 51);
-        StringHashId = Phase::GetStringHashId(v7, v19);
+        StringHashId = Phase::GetStringHashId(nameCopy, v19);
         (*(*v18 + 56))(v18, StringHashId, v17);
         goto LABEL_15;
       }
@@ -1719,9 +1719,9 @@ LABEL_14:
       v23 = 1024;
       v24 = 1490;
       v25 = 2048;
-      v26 = 0;
+      uTF8String = 0;
       v27 = 2048;
-      v28 = 0.0;
+      balanceCopy = 0.0;
       v12 = "%25s:%-5d setProfileOverrideWithName: Attempting to set balance to be less than %f. Clamping to %f";
     }
 
@@ -1776,11 +1776,11 @@ LABEL_15:
   }
 }
 
-- (void)gatherExternalStreamDebugInformation:(id)a3
+- (void)gatherExternalStreamDebugInformation:(id)information
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   v6 = *(self->_impl.__ptr_ + 52);
   if (v6)
   {
@@ -1788,13 +1788,13 @@ LABEL_15:
     v8[1] = 3221225472;
     v8[2] = __52__PHASEEngine_gatherExternalStreamDebugInformation___block_invoke;
     v8[3] = &unk_278B4F6F0;
-    v9 = v4;
+    v9 = informationCopy;
     (*(*v6 + 88))(v6, v8);
   }
 
   else
   {
-    v7 = **(Phase::Logger::GetInstance(v4) + 448);
+    v7 = **(Phase::Logger::GetInstance(informationCopy) + 448);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;

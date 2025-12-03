@@ -17,26 +17,26 @@
   v12[3] = &unk_1E8238A50;
   v12[5] = v2;
   v12[6] = &v13;
-  v12[4] = a1;
+  v12[4] = self;
   [MEMORY[0x1E69706F8] performWithoutEnforcement:v12];
-  v3 = [a1 identifiers];
-  v4 = [v3 personalizedStore];
-  v5 = [v4 cloudID];
+  identifiers = [self identifiers];
+  personalizedStore = [identifiers personalizedStore];
+  cloudID = [personalizedStore cloudID];
 
-  if (v5)
+  if (cloudID)
   {
     *(v14 + 24) = 1;
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v5];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:cloudID];
     [v2 setRepresentativeCloudIdentifier:v6];
   }
 
-  v7 = [v3 universalStore];
-  v8 = [v7 adamID];
+  universalStore = [identifiers universalStore];
+  adamID = [universalStore adamID];
 
-  if (v8)
+  if (adamID)
   {
     *(v14 + 24) = 1;
-    v9 = [MEMORY[0x1E696AD98] numberWithLongLong:v8];
+    v9 = [MEMORY[0x1E696AD98] numberWithLongLong:adamID];
     [v2 setStoreIdentifier:v9];
   }
 

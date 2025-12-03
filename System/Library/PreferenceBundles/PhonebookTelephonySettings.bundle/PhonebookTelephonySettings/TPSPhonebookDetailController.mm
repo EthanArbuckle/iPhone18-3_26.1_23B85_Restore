@@ -1,7 +1,7 @@
 @interface TPSPhonebookDetailController
 - (TPSPhonebookController)phonebookController;
 - (UIBarButtonItem)saveBarButtonItem;
-- (id)errorAlertControllerWithMessage:(id)a3;
+- (id)errorAlertControllerWithMessage:(id)message;
 - (void)saveAction;
 - (void)viewDidLoad;
 @end
@@ -13,26 +13,26 @@
   v9.receiver = self;
   v9.super_class = TPSPhonebookDetailController;
   [(TPSPhonebookDetailController *)&v9 viewDidLoad];
-  v3 = [(TPSPhonebookDetailController *)self phonebookController];
-  v4 = [v3 isSubscriptionEditable];
+  phonebookController = [(TPSPhonebookDetailController *)self phonebookController];
+  isSubscriptionEditable = [phonebookController isSubscriptionEditable];
 
-  if (v4)
+  if (isSubscriptionEditable)
   {
     v5 = objc_opt_class();
-    v6 = [(TPSPhonebookDetailController *)self saveBarButtonItem];
+    saveBarButtonItem = [(TPSPhonebookDetailController *)self saveBarButtonItem];
   }
 
   else
   {
     v5 = objc_opt_class();
-    v6 = 0;
+    saveBarButtonItem = 0;
   }
 
-  v7 = [(TPSPhonebookDetailController *)self specifier];
-  [v7 setEditPaneClass:v5];
+  specifier = [(TPSPhonebookDetailController *)self specifier];
+  [specifier setEditPaneClass:v5];
 
-  v8 = [(TPSPhonebookDetailController *)self navigationItem];
-  [v8 setRightBarButtonItem:v6];
+  navigationItem = [(TPSPhonebookDetailController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:saveBarButtonItem];
 
   [(TPSPhonebookDetailController *)self setPane:0];
   [(TPSPhonebookDetailController *)self loadPane];
@@ -58,10 +58,10 @@
   phonebookController = self->_phonebookController;
   if (!phonebookController)
   {
-    v4 = [(TPSPhonebookDetailController *)self specifier];
+    specifier = [(TPSPhonebookDetailController *)self specifier];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v4 propertyForKey:v6];
+    v7 = [specifier propertyForKey:v6];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -71,10 +71,10 @@
 
     if (!self->_phonebookController)
     {
-      v8 = [(TPSDetailController *)self subscriptionContext];
-      if (v8)
+      subscriptionContext = [(TPSDetailController *)self subscriptionContext];
+      if (subscriptionContext)
       {
-        v9 = [[TPSPhonebookController alloc] initWithSubscriptionContext:v8];
+        v9 = [[TPSPhonebookController alloc] initWithSubscriptionContext:subscriptionContext];
         v10 = self->_phonebookController;
         self->_phonebookController = v9;
       }
@@ -88,27 +88,27 @@
 
 - (void)saveAction
 {
-  v3 = [(TPSPhonebookDetailController *)self pane];
-  v4 = [v3 preferenceValue];
+  pane = [(TPSPhonebookDetailController *)self pane];
+  preferenceValue = [pane preferenceValue];
 
-  if (v4)
+  if (preferenceValue)
   {
-    v5 = [(TPSPhonebookDetailController *)self phonebookController];
+    phonebookController = [(TPSPhonebookDetailController *)self phonebookController];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1BB8;
     v6[3] = &unk_8260;
-    v7 = v4;
-    v8 = self;
-    [v5 updateSubscriptionTelephoneNumber:v7 completion:v6];
+    v7 = preferenceValue;
+    selfCopy = self;
+    [phonebookController updateSubscriptionTelephoneNumber:v7 completion:v6];
   }
 }
 
-- (id)errorAlertControllerWithMessage:(id)a3
+- (id)errorAlertControllerWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [TPSPhonebookStrings localizedStringForKey:@"ERROR_ALERT_CONTROLLER_TITLE"];
-  v5 = [UIAlertController alertControllerWithTitle:v4 message:v3 preferredStyle:1];
+  v5 = [UIAlertController alertControllerWithTitle:v4 message:messageCopy preferredStyle:1];
 
   v6 = [TPSPhonebookStrings localizedStringForKey:@"ERROR_ALERT_ACTION_TITLE_DISMISS"];
   v7 = [UIAlertAction actionWithTitle:v6 style:0 handler:0];

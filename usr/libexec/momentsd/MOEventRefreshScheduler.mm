@@ -1,52 +1,52 @@
 @interface MOEventRefreshScheduler
-- (MOEventRefreshScheduler)initWithUniverse:(id)a3;
-- (id)_createWatchDogWithName:(id)a3;
-- (void)_collectWithRefreshVariant:(unint64_t)a3 andCompletion:(id)a4;
-- (void)_computeWithRefreshVariant:(unint64_t)a3 andCompletion:(id)a4;
-- (void)_dataDumpWithRefreshVariant:(unint64_t)a3 completion:(id)a4;
-- (void)_generateAvailabilityPredictionsWithCompletion:(id)a3;
-- (void)_purgeEventsAndBundlesWithRefreshVariant:(unint64_t)a3 andCompletion:(id)a4;
-- (void)_trendsWithRefreshVariant:(unint64_t)a3 andCompletion:(id)a4;
-- (void)_updateEngagementLightStreamWithRefreshVariant:(unint64_t)a3 completion:(id)a4;
-- (void)refreshWithRefreshVariant:(unint64_t)a3 andCompletion:(id)a4;
+- (MOEventRefreshScheduler)initWithUniverse:(id)universe;
+- (id)_createWatchDogWithName:(id)name;
+- (void)_collectWithRefreshVariant:(unint64_t)variant andCompletion:(id)completion;
+- (void)_computeWithRefreshVariant:(unint64_t)variant andCompletion:(id)completion;
+- (void)_dataDumpWithRefreshVariant:(unint64_t)variant completion:(id)completion;
+- (void)_generateAvailabilityPredictionsWithCompletion:(id)completion;
+- (void)_purgeEventsAndBundlesWithRefreshVariant:(unint64_t)variant andCompletion:(id)completion;
+- (void)_trendsWithRefreshVariant:(unint64_t)variant andCompletion:(id)completion;
+- (void)_updateEngagementLightStreamWithRefreshVariant:(unint64_t)variant completion:(id)completion;
+- (void)refreshWithRefreshVariant:(unint64_t)variant andCompletion:(id)completion;
 - (void)registerDefaultRefreshActivity;
-- (void)registerFirstRefreshActivityWithPreRegisteredTask:(BOOL)a3;
+- (void)registerFirstRefreshActivityWithPreRegisteredTask:(BOOL)task;
 - (void)registerLightRefreshActivity;
 - (void)registerNotificationAvailabilityPredictionActivity;
 @end
 
 @implementation MOEventRefreshScheduler
 
-- (MOEventRefreshScheduler)initWithUniverse:(id)a3
+- (MOEventRefreshScheduler)initWithUniverse:(id)universe
 {
-  v6 = a3;
+  universeCopy = universe;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  obj = [v6 getService:v8];
+  obj = [universeCopy getService:v8];
 
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v45 = [v6 getService:v10];
+  v45 = [universeCopy getService:v10];
 
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  v13 = [v6 getService:v12];
+  v13 = [universeCopy getService:v12];
 
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
-  v16 = [v6 getService:v15];
+  v16 = [universeCopy getService:v15];
 
   v17 = objc_opt_class();
   v18 = NSStringFromClass(v17);
-  v19 = [v6 getService:v18];
+  v19 = [universeCopy getService:v18];
 
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
-  v22 = [v6 getService:v21];
+  v22 = [universeCopy getService:v21];
 
   v23 = objc_opt_class();
   v24 = NSStringFromClass(v23);
-  v25 = [v6 getService:v24];
+  v25 = [universeCopy getService:v24];
 
   if (!v13)
   {
@@ -60,7 +60,7 @@
     v38 = v37;
     v39 = @"Invalid parameter not satisfying: eventManager";
     v40 = a2;
-    v41 = self;
+    selfCopy2 = self;
     v42 = 92;
     goto LABEL_11;
   }
@@ -77,10 +77,10 @@
     v38 = v37;
     v39 = @"Invalid parameter not satisfying: eventBundleManager";
     v40 = a2;
-    v41 = self;
+    selfCopy2 = self;
     v42 = 93;
 LABEL_11:
-    [v37 handleFailureInMethod:v40 object:v41 file:@"MOEventRefreshScheduler.m" lineNumber:v42 description:{v39, v45}];
+    [v37 handleFailureInMethod:v40 object:selfCopy2 file:@"MOEventRefreshScheduler.m" lineNumber:v42 description:{v39, v45}];
 
     v26 = 0;
     goto LABEL_12;
@@ -102,7 +102,7 @@ LABEL_12:
   queue = v26->_queue;
   v26->_queue = v28;
 
-  objc_storeStrong(&v26->_universe, a3);
+  objc_storeStrong(&v26->_universe, universe);
   v30 = [[MODaemonSPINotifier alloc] initWithName:@"MOEventRefreshScheduler"];
   notifier = v26->_notifier;
   v26->_notifier = v30;
@@ -130,8 +130,8 @@ LABEL_13:
 
 - (void)registerDefaultRefreshActivity
 {
-  v3 = [(MOEventRefreshScheduler *)self onboardingAndSettingsPersistence];
-  v4 = [v3 isAllowedToCollectAndCompute];
+  onboardingAndSettingsPersistence = [(MOEventRefreshScheduler *)self onboardingAndSettingsPersistence];
+  isAllowedToCollectAndCompute = [onboardingAndSettingsPersistence isAllowedToCollectAndCompute];
 
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshScheduler);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -145,7 +145,7 @@ LABEL_13:
   v7[1] = 3221225472;
   v7[2] = __57__MOEventRefreshScheduler_registerDefaultRefreshActivity__block_invoke;
   v7[3] = &unk_10033CBF8;
-  v8 = v4;
+  v8 = isAllowedToCollectAndCompute;
   v7[4] = self;
   [v6 registerForTaskWithIdentifier:@"com.apple.momentsd.eventRefresh" usingQueue:0 launchHandler:v7];
 }
@@ -372,24 +372,24 @@ LABEL_12:
   [v18 scheduleMomentsUIFullProcessing];
 }
 
-- (void)registerFirstRefreshActivityWithPreRegisteredTask:(BOOL)a3
+- (void)registerFirstRefreshActivityWithPreRegisteredTask:(BOOL)task
 {
-  v3 = a3;
-  v5 = [(MOEventRefreshScheduler *)self onboardingAndSettingsPersistence];
-  v6 = [v5 isAllowedToCollectAndCompute];
+  taskCopy = task;
+  onboardingAndSettingsPersistence = [(MOEventRefreshScheduler *)self onboardingAndSettingsPersistence];
+  isAllowedToCollectAndCompute = [onboardingAndSettingsPersistence isAllowedToCollectAndCompute];
 
-  v7 = [(MOEventRefreshScheduler *)self configurationManager];
-  v8 = [v7 getBoolSettingForKey:@"EventRefreshSchedulerOverrideForceFullRefreshAtBoot" withFallback:0];
+  configurationManager = [(MOEventRefreshScheduler *)self configurationManager];
+  v8 = [configurationManager getBoolSettingForKey:@"EventRefreshSchedulerOverrideForceFullRefreshAtBoot" withFallback:0];
 
-  v9 = [(MOEventRefreshScheduler *)self configurationManager];
-  v10 = [v9 getBoolSettingForKey:@"EventRefreshSchedulerOverrideAvoidFullRefreshAtBoot" withFallback:0];
+  configurationManager2 = [(MOEventRefreshScheduler *)self configurationManager];
+  v10 = [configurationManager2 getBoolSettingForKey:@"EventRefreshSchedulerOverrideAvoidFullRefreshAtBoot" withFallback:0];
 
-  v11 = [(MOEventRefreshScheduler *)self configurationManager];
-  v12 = [v11 getBoolSettingForKey:@"EventRefreshSchedulerOverrideAllowFullRefreshAtBoot" withFallback:1];
+  configurationManager3 = [(MOEventRefreshScheduler *)self configurationManager];
+  v12 = [configurationManager3 getBoolSettingForKey:@"EventRefreshSchedulerOverrideAllowFullRefreshAtBoot" withFallback:1];
 
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshScheduler);
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (!v6)
+  if (!isAllowedToCollectAndCompute)
   {
     if (v14)
     {
@@ -415,14 +415,14 @@ LABEL_12:
   v32[1] = 3221225472;
   v32[2] = __77__MOEventRefreshScheduler_registerFirstRefreshActivityWithPreRegisteredTask___block_invoke;
   v32[3] = &unk_10033CC70;
-  v33 = v6;
+  v33 = isAllowedToCollectAndCompute;
   v34 = v12;
   v35 = v10;
   v36 = v8;
   v32[4] = self;
   v16 = [v15 registerForTaskWithIdentifier:@"com.apple.momentsd.eventRefresh.first" usingQueue:0 launchHandler:v32];
 
-  if (!v3)
+  if (!taskCopy)
   {
     v18 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshScheduler);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -973,25 +973,25 @@ LABEL_12:
   [v18 scheduleMomentsUIFullProcessing];
 }
 
-- (void)refreshWithRefreshVariant:(unint64_t)a3 andCompletion:(id)a4
+- (void)refreshWithRefreshVariant:(unint64_t)variant andCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v62[0] = 0;
   v62[1] = v62;
   v62[2] = 0x3032000000;
   v62[3] = __Block_byref_object_copy__27;
   v62[4] = __Block_byref_object_dispose__27;
   v63 = 0;
-  v7 = [(MOEventRefreshScheduler *)self universe];
-  v8 = [v7 getService:@"DaemonClient"];
+  universe = [(MOEventRefreshScheduler *)self universe];
+  v8 = [universe getService:@"DaemonClient"];
 
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v10 = v9;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
+  if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     *buf = 134349056;
-    v67 = a3;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, a3, "momentsd_ScheduledRefresh", " variant=%{signpost.telemetry:number1,public}lu  enableTelemetry=YES ", buf, 0xCu);
+    variantCopy = variant;
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, variant, "momentsd_ScheduledRefresh", " variant=%{signpost.telemetry:number1,public}lu  enableTelemetry=YES ", buf, 0xCu);
   }
 
   v11 = [[MOPerformanceMeasurement alloc] initWithName:@"ScheduledRefresh" measureRecentPeak:0];
@@ -1000,8 +1000,8 @@ LABEL_12:
   v56[1] = 3221225472;
   v56[2] = __67__MOEventRefreshScheduler_refreshWithRefreshVariant_andCompletion___block_invoke;
   v56[3] = &unk_10033CCC0;
-  v61 = a3;
-  v59 = v6;
+  variantCopy2 = variant;
+  v59 = completionCopy;
   v60 = v62;
   v28 = v59;
   v56[4] = self;
@@ -1014,7 +1014,7 @@ LABEL_12:
   v52[2] = __67__MOEventRefreshScheduler_refreshWithRefreshVariant_andCompletion___block_invoke_229;
   v52[3] = &unk_10033CD10;
   v54 = v62;
-  v55 = a3;
+  variantCopy3 = variant;
   v52[4] = self;
   v12 = objc_retainBlock(v56);
   v53 = v12;
@@ -1023,7 +1023,7 @@ LABEL_12:
   v48[2] = __67__MOEventRefreshScheduler_refreshWithRefreshVariant_andCompletion___block_invoke_234;
   v48[3] = &unk_10033CD10;
   v50 = v62;
-  v51 = a3;
+  variantCopy4 = variant;
   v48[4] = self;
   v13 = objc_retainBlock(v52);
   v49 = v13;
@@ -1032,7 +1032,7 @@ LABEL_12:
   v43[2] = __67__MOEventRefreshScheduler_refreshWithRefreshVariant_andCompletion___block_invoke_239;
   v43[3] = &unk_10033CD60;
   v46 = v62;
-  v47 = a3;
+  variantCopy5 = variant;
   v43[4] = self;
   v14 = objc_retainBlock(v48);
   v44 = v14;
@@ -1044,7 +1044,7 @@ LABEL_12:
   v39[3] = &unk_10033CD10;
   v39[4] = self;
   v41 = v62;
-  v42 = a3;
+  variantCopy6 = variant;
   v16 = objc_retainBlock(v43);
   v40 = v16;
   v17 = objc_retainBlock(v39);
@@ -1053,7 +1053,7 @@ LABEL_12:
   v34[2] = __67__MOEventRefreshScheduler_refreshWithRefreshVariant_andCompletion___block_invoke_249;
   v34[3] = &unk_10033CD60;
   v37 = v62;
-  v38 = a3;
+  variantCopy7 = variant;
   v34[4] = self;
   v18 = v12;
   v35 = v18;
@@ -1065,7 +1065,7 @@ LABEL_12:
   v30[3] = &unk_10033CD10;
   v30[4] = self;
   v32 = v62;
-  v33 = a3;
+  variantCopy8 = variant;
   v20 = objc_retainBlock(v34);
   v31 = v20;
   v21 = objc_retainBlock(v30);
@@ -1078,8 +1078,8 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Refresh: RefreshLock is acquired. Running refresh.", buf, 2u);
     }
 
-    v23 = [(MOEventRefreshScheduler *)self queue];
-    dispatch_async(v23, v21);
+    queue = [(MOEventRefreshScheduler *)self queue];
+    dispatch_async(queue, v21);
     goto LABEL_12;
   }
 
@@ -1095,9 +1095,9 @@ LABEL_12:
     v64 = NSLocalizedDescriptionKey;
     v65 = @"The refresh is dropped due to an existing refresh.";
     v26 = [NSDictionary dictionaryWithObjects:&v65 forKeys:&v64 count:1];
-    v23 = [v25 initWithDomain:@"MOEventRefreshSchduler" code:0 userInfo:v26];
+    queue = [v25 initWithDomain:@"MOEventRefreshSchduler" code:0 userInfo:v26];
 
-    v28[2](v28, v23);
+    v28[2](v28, queue);
 LABEL_12:
   }
 
@@ -1556,9 +1556,9 @@ void __67__MOEventRefreshScheduler_refreshWithRefreshVariant_andCompletion___blo
   dispatch_async(v12, *(a1 + 48));
 }
 
-- (void)_purgeEventsAndBundlesWithRefreshVariant:(unint64_t)a3 andCompletion:(id)a4
+- (void)_purgeEventsAndBundlesWithRefreshVariant:(unint64_t)variant andCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [(MOEventRefreshScheduler *)self _createWatchDogWithName:@"RefreshPurge"];
   v8 = objc_alloc_init(NSMutableDictionary);
   v22[0] = 0;
@@ -1574,7 +1574,7 @@ void __67__MOEventRefreshScheduler_refreshWithRefreshVariant_andCompletion___blo
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Refresh: Calling purge events", buf, 2u);
   }
 
-  v10 = [(MOEventRefreshScheduler *)self eventManager];
+  eventManager = [(MOEventRefreshScheduler *)self eventManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __82__MOEventRefreshScheduler__purgeEventsAndBundlesWithRefreshVariant_andCompletion___block_invoke;
@@ -1583,12 +1583,12 @@ void __67__MOEventRefreshScheduler_refreshWithRefreshVariant_andCompletion___blo
   v15 = v11;
   v12 = v8;
   v16 = v12;
-  v17 = self;
+  selfCopy = self;
   v19 = v22;
-  v20 = a3;
-  v13 = v6;
+  variantCopy = variant;
+  v13 = completionCopy;
   v18 = v13;
-  [v10 cleanUpEventsWithRefreshVariant:a3 andHandler:v14];
+  [eventManager cleanUpEventsWithRefreshVariant:variant andHandler:v14];
 
   _Block_object_dispose(v22, 8);
 }
@@ -1684,9 +1684,9 @@ void __82__MOEventRefreshScheduler__purgeEventsAndBundlesWithRefreshVariant_andC
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_collectWithRefreshVariant:(unint64_t)a3 andCompletion:(id)a4
+- (void)_collectWithRefreshVariant:(unint64_t)variant andCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshScheduler);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1695,17 +1695,17 @@ void __82__MOEventRefreshScheduler__purgeEventsAndBundlesWithRefreshVariant_andC
   }
 
   v8 = [(MOEventRefreshScheduler *)self _createWatchDogWithName:@"RefreshCollect"];
-  v9 = [(MOEventRefreshScheduler *)self eventManager];
+  eventManager = [(MOEventRefreshScheduler *)self eventManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __68__MOEventRefreshScheduler__collectWithRefreshVariant_andCompletion___block_invoke;
   v12[3] = &unk_10033BC28;
   v13 = v8;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
-  [v9 collectEventsWithRefreshVariant:a3 andHandler:v12];
+  [eventManager collectEventsWithRefreshVariant:variant andHandler:v12];
 }
 
 void __68__MOEventRefreshScheduler__collectWithRefreshVariant_andCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1729,9 +1729,9 @@ void __68__MOEventRefreshScheduler__collectWithRefreshVariant_andCompletion___bl
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_trendsWithRefreshVariant:(unint64_t)a3 andCompletion:(id)a4
+- (void)_trendsWithRefreshVariant:(unint64_t)variant andCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshScheduler);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1740,17 +1740,17 @@ void __68__MOEventRefreshScheduler__collectWithRefreshVariant_andCompletion___bl
   }
 
   v8 = [(MOEventRefreshScheduler *)self _createWatchDogWithName:@"RefreshTrends"];
-  v9 = [(MOEventRefreshScheduler *)self eventManager];
+  eventManager = [(MOEventRefreshScheduler *)self eventManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __67__MOEventRefreshScheduler__trendsWithRefreshVariant_andCompletion___block_invoke;
   v12[3] = &unk_10033BC28;
   v13 = v8;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
-  [v9 runAnalyticsWithRefreshVariant:a3 andHandler:v12];
+  [eventManager runAnalyticsWithRefreshVariant:variant andHandler:v12];
 }
 
 void __67__MOEventRefreshScheduler__trendsWithRefreshVariant_andCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1774,9 +1774,9 @@ void __67__MOEventRefreshScheduler__trendsWithRefreshVariant_andCompletion___blo
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_computeWithRefreshVariant:(unint64_t)a3 andCompletion:(id)a4
+- (void)_computeWithRefreshVariant:(unint64_t)variant andCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshScheduler);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1785,17 +1785,17 @@ void __67__MOEventRefreshScheduler__trendsWithRefreshVariant_andCompletion___blo
   }
 
   v8 = [(MOEventRefreshScheduler *)self _createWatchDogWithName:@"RefreshCompute"];
-  v9 = [(MOEventRefreshScheduler *)self eventBundleManager];
+  eventBundleManager = [(MOEventRefreshScheduler *)self eventBundleManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __68__MOEventRefreshScheduler__computeWithRefreshVariant_andCompletion___block_invoke;
   v12[3] = &unk_10033BC28;
   v13 = v8;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
-  [v9 bundleEventsWithRefreshVariant:a3 andHandler:v12];
+  [eventBundleManager bundleEventsWithRefreshVariant:variant andHandler:v12];
 }
 
 void __68__MOEventRefreshScheduler__computeWithRefreshVariant_andCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1819,9 +1819,9 @@ void __68__MOEventRefreshScheduler__computeWithRefreshVariant_andCompletion___bl
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_dataDumpWithRefreshVariant:(unint64_t)a3 completion:(id)a4
+- (void)_dataDumpWithRefreshVariant:(unint64_t)variant completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshScheduler);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1831,23 +1831,23 @@ void __68__MOEventRefreshScheduler__computeWithRefreshVariant_andCompletion___bl
 
   v8 = [(MOEventRefreshScheduler *)self _createWatchDogWithName:@"DataDump"];
   v9 = objc_opt_new();
-  v10 = [NSNumber numberWithUnsignedInteger:a3];
-  v11 = [v10 stringValue];
-  [v9 setObject:v11 forKey:@"kMORefreshVariant"];
+  v10 = [NSNumber numberWithUnsignedInteger:variant];
+  stringValue = [v10 stringValue];
+  [v9 setObject:stringValue forKey:@"kMORefreshVariant"];
 
-  v12 = [&off_10036A8E8 stringValue];
-  [v9 setObject:v12 forKey:@"kMORefreshSource"];
+  stringValue2 = [&off_10036A8E8 stringValue];
+  [v9 setObject:stringValue2 forKey:@"kMORefreshSource"];
 
-  v13 = [(MOEventRefreshScheduler *)self eventBundleManager];
+  eventBundleManager = [(MOEventRefreshScheduler *)self eventBundleManager];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __66__MOEventRefreshScheduler__dataDumpWithRefreshVariant_completion___block_invoke;
   v16[3] = &unk_1003377B8;
   v17 = v8;
-  v18 = v6;
-  v14 = v6;
+  v18 = completionCopy;
+  v14 = completionCopy;
   v15 = v8;
-  [v13 captureCurrentDBStateForTrigger:2 withFeedback:0 additionalMetadata:v9 shouldUpload:1 andHandler:v16];
+  [eventBundleManager captureCurrentDBStateForTrigger:2 withFeedback:0 additionalMetadata:v9 shouldUpload:1 andHandler:v16];
 }
 
 void __66__MOEventRefreshScheduler__dataDumpWithRefreshVariant_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1862,9 +1862,9 @@ void __66__MOEventRefreshScheduler__dataDumpWithRefreshVariant_completion___bloc
   [*(a1 + 32) cancel];
 }
 
-- (void)_updateEngagementLightStreamWithRefreshVariant:(unint64_t)a3 completion:(id)a4
+- (void)_updateEngagementLightStreamWithRefreshVariant:(unint64_t)variant completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshScheduler);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1873,16 +1873,16 @@ void __66__MOEventRefreshScheduler__dataDumpWithRefreshVariant_completion___bloc
   }
 
   v8 = [(MOEventRefreshScheduler *)self _createWatchDogWithName:@"UpdateEngagement"];
-  v9 = [(MOEventRefreshScheduler *)self engagementHistoryManager];
+  engagementHistoryManager = [(MOEventRefreshScheduler *)self engagementHistoryManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __85__MOEventRefreshScheduler__updateEngagementLightStreamWithRefreshVariant_completion___block_invoke;
   v12[3] = &unk_10033B560;
   v13 = v8;
-  v14 = v6;
-  v10 = v6;
+  v14 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
-  [v9 updateEngagementLightStreamWithRefreshVariant:a3 handler:v12];
+  [engagementHistoryManager updateEngagementLightStreamWithRefreshVariant:variant handler:v12];
 }
 
 id __85__MOEventRefreshScheduler__updateEngagementLightStreamWithRefreshVariant_completion___block_invoke(uint64_t a1, void *a2)
@@ -1897,9 +1897,9 @@ id __85__MOEventRefreshScheduler__updateEngagementLightStreamWithRefreshVariant_
   return [v5 cancel];
 }
 
-- (void)_generateAvailabilityPredictionsWithCompletion:(id)a3
+- (void)_generateAvailabilityPredictionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshScheduler);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1908,16 +1908,16 @@ id __85__MOEventRefreshScheduler__updateEngagementLightStreamWithRefreshVariant_
   }
 
   v6 = [(MOEventRefreshScheduler *)self _createWatchDogWithName:@"AvailabilityPrediction"];
-  v7 = [(MOEventRefreshScheduler *)self notificationsManager];
+  notificationsManager = [(MOEventRefreshScheduler *)self notificationsManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __74__MOEventRefreshScheduler__generateAvailabilityPredictionsWithCompletion___block_invoke;
   v10[3] = &unk_10033B560;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = v6;
-  [v7 generateAvailabilityPredictionsAndRegisterTimerWithHandler:v10];
+  [notificationsManager generateAvailabilityPredictionsAndRegisterTimerWithHandler:v10];
 }
 
 id __74__MOEventRefreshScheduler__generateAvailabilityPredictionsWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -2140,18 +2140,18 @@ LABEL_12:
   *(v11 + 40) = 0;
 }
 
-- (id)_createWatchDogWithName:(id)a3
+- (id)_createWatchDogWithName:(id)name
 {
   configurationManager = self->_configurationManager;
-  v5 = a3;
-  v6 = [NSString stringWithFormat:@"%@_%@", @"WatchdogOverrideDefaultCadenceInSeconds", v5];
+  nameCopy = name;
+  nameCopy = [NSString stringWithFormat:@"%@_%@", @"WatchdogOverrideDefaultCadenceInSeconds", nameCopy];
   *&v7 = self->_watchdogCadence;
-  [(MOConfigurationManagerBase *)configurationManager getFloatSettingForKey:v6 withFallback:v7];
+  [(MOConfigurationManagerBase *)configurationManager getFloatSettingForKey:nameCopy withFallback:v7];
   v9 = v8;
 
   v10 = [MOWatchDog alloc];
   LODWORD(v11) = v9;
-  v12 = [(MOWatchDog *)v10 initWithName:v5 cadenceInSeconds:0 andHandler:v11];
+  v12 = [(MOWatchDog *)v10 initWithName:nameCopy cadenceInSeconds:0 andHandler:v11];
 
   return v12;
 }

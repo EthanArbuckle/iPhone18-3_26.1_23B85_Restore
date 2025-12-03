@@ -1,27 +1,27 @@
 @interface HPCUIDevice
-+ (id)bluetoothDeviceForAddress:(id)a3;
-- (BOOL)batteryStatus:(id *)a3;
-- (HPCUIDevice)initWithHeadphoneDevice:(id)a3 btsDevice:(id)a4;
++ (id)bluetoothDeviceForAddress:(id)address;
+- (BOOL)batteryStatus:(id *)status;
+- (HPCUIDevice)initWithHeadphoneDevice:(id)device btsDevice:(id)btsDevice;
 - (id)address;
 - (int)accessorySettingFeatureBitMask;
-- (int)getDeviceColor:(unsigned int *)a3;
+- (int)getDeviceColor:(unsigned int *)color;
 - (unsigned)productId;
 @end
 
 @implementation HPCUIDevice
 
-- (HPCUIDevice)initWithHeadphoneDevice:(id)a3 btsDevice:(id)a4
+- (HPCUIDevice)initWithHeadphoneDevice:(id)device btsDevice:(id)btsDevice
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  btsDeviceCopy = btsDevice;
   v12.receiver = self;
   v12.super_class = HPCUIDevice;
   v9 = [(HPCUIDevice *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_btsDevice, a4);
-    objc_storeStrong(&v10->_headphoneDevice, a3);
+    objc_storeStrong(&v9->_btsDevice, btsDevice);
+    objc_storeStrong(&v10->_headphoneDevice, device);
   }
 
   return v10;
@@ -29,82 +29,82 @@
 
 - (id)address
 {
-  v2 = [(HPCUIDevice *)self headphoneDevice];
-  v3 = [v2 btAddress];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"-" withString:@":"];
+  headphoneDevice = [(HPCUIDevice *)self headphoneDevice];
+  btAddress = [headphoneDevice btAddress];
+  v4 = [btAddress stringByReplacingOccurrencesOfString:@"-" withString:@":"];
 
   return v4;
 }
 
-- (BOOL)batteryStatus:(id *)a3
+- (BOOL)batteryStatus:(id *)status
 {
-  v5 = [(HPCUIDevice *)self headphoneDevice];
-  v6 = [v5 batteryStateCase];
+  headphoneDevice = [(HPCUIDevice *)self headphoneDevice];
+  batteryStateCase = [headphoneDevice batteryStateCase];
 
-  v7 = [(HPCUIDevice *)self headphoneDevice];
-  LODWORD(v5) = [v7 batteryStateLeft];
+  headphoneDevice2 = [(HPCUIDevice *)self headphoneDevice];
+  LODWORD(headphoneDevice) = [headphoneDevice2 batteryStateLeft];
 
-  v8 = [(HPCUIDevice *)self headphoneDevice];
-  LODWORD(v7) = [v8 batteryStateRight];
+  headphoneDevice3 = [(HPCUIDevice *)self headphoneDevice];
+  LODWORD(headphoneDevice2) = [headphoneDevice3 batteryStateRight];
 
-  v9 = [(HPCUIDevice *)self headphoneDevice];
-  LODWORD(v8) = [v9 batteryStateMain];
+  headphoneDevice4 = [(HPCUIDevice *)self headphoneDevice];
+  LODWORD(headphoneDevice3) = [headphoneDevice4 batteryStateMain];
 
-  v10 = [(HPCUIDevice *)self headphoneDevice];
-  [v10 batteryLevelCase];
-  a3->var6 = (v11 * 100.0);
+  headphoneDevice5 = [(HPCUIDevice *)self headphoneDevice];
+  [headphoneDevice5 batteryLevelCase];
+  status->var6 = (v11 * 100.0);
 
-  v12 = [(HPCUIDevice *)self headphoneDevice];
-  [v12 batteryLevelLeft];
-  a3->var4 = (v13 * 100.0);
+  headphoneDevice6 = [(HPCUIDevice *)self headphoneDevice];
+  [headphoneDevice6 batteryLevelLeft];
+  status->var4 = (v13 * 100.0);
 
-  v14 = [(HPCUIDevice *)self headphoneDevice];
-  [v14 batteryLevelRight];
-  a3->var2 = (v15 * 100.0);
+  headphoneDevice7 = [(HPCUIDevice *)self headphoneDevice];
+  [headphoneDevice7 batteryLevelRight];
+  status->var2 = (v15 * 100.0);
 
-  v16 = [(HPCUIDevice *)self headphoneDevice];
-  [v16 batteryLevelMain];
-  a3->var0 = (v17 * 100.0);
+  headphoneDevice8 = [(HPCUIDevice *)self headphoneDevice];
+  [headphoneDevice8 batteryLevelMain];
+  status->var0 = (v17 * 100.0);
 
-  a3->var7 = v6 == 1;
-  a3->var5 = v5 == 1;
-  a3->var3 = v7 == 1;
-  a3->var1 = v8 == 1;
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"\n battIsChagingCase: %i \nbattIsChargingLeft: %i \nbattIsChargingRight: %i \nbattIsChargingSingle: %i \nbattLevelCase: %i \nbattLevelLeft: %i \nbattLevelRight: %i \nbattLevelSingle: %i \n", v6 == 1, v5 == 1, v7 == 1, v8 == 1, a3->var6, a3->var4, a3->var2, a3->var0];
+  status->var7 = batteryStateCase == 1;
+  status->var5 = headphoneDevice == 1;
+  status->var3 = headphoneDevice2 == 1;
+  status->var1 = headphoneDevice3 == 1;
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"\n battIsChagingCase: %i \nbattIsChargingLeft: %i \nbattIsChargingRight: %i \nbattIsChargingSingle: %i \nbattLevelCase: %i \nbattLevelLeft: %i \nbattLevelRight: %i \nbattLevelSingle: %i \n", batteryStateCase == 1, headphoneDevice == 1, headphoneDevice2 == 1, headphoneDevice3 == 1, status->var6, status->var4, status->var2, status->var0];
 
   return 1;
 }
 
 - (unsigned)productId
 {
-  v2 = [(HPCUIDevice *)self headphoneDevice];
-  v3 = [v2 productInfo];
-  v4 = [v3 productID];
+  headphoneDevice = [(HPCUIDevice *)self headphoneDevice];
+  productInfo = [headphoneDevice productInfo];
+  productID = [productInfo productID];
 
-  return v4;
+  return productID;
 }
 
-- (int)getDeviceColor:(unsigned int *)a3
+- (int)getDeviceColor:(unsigned int *)color
 {
-  v5 = [MEMORY[0x1E698F468] sharedInstance];
-  v6 = [(HPCUIDevice *)self address];
-  v7 = [v5 deviceFromAddressString:v6];
+  mEMORY[0x1E698F468] = [MEMORY[0x1E698F468] sharedInstance];
+  address = [(HPCUIDevice *)self address];
+  v7 = [mEMORY[0x1E698F468] deviceFromAddressString:address];
 
-  LODWORD(a3) = [v7 getDeviceColor:a3];
-  return a3;
+  LODWORD(color) = [v7 getDeviceColor:color];
+  return color;
 }
 
 - (int)accessorySettingFeatureBitMask
 {
-  v3 = [(HPCUIDevice *)self headphoneDevice];
-  v4 = [v3 productInfo];
-  v5 = [v4 flags];
+  headphoneDevice = [(HPCUIDevice *)self headphoneDevice];
+  productInfo = [headphoneDevice productInfo];
+  flags = [productInfo flags];
 
-  v6 = [(HPCUIDevice *)self headphoneDevice];
-  v7 = [v6 supportsFeatureWithFeature:0];
+  headphoneDevice2 = [(HPCUIDevice *)self headphoneDevice];
+  v7 = [headphoneDevice2 supportsFeatureWithFeature:0];
 
-  v8 = [(HPCUIDevice *)self headphoneDevice];
-  v9 = [v8 supportsFeatureWithFeature:3];
+  headphoneDevice3 = [(HPCUIDevice *)self headphoneDevice];
+  v9 = [headphoneDevice3 supportsFeatureWithFeature:3];
 
   if (v9)
   {
@@ -116,11 +116,11 @@
     v10 = v7;
   }
 
-  v11 = [(HPCUIDevice *)self headphoneDevice];
-  v12 = [v11 cbDevice];
-  v13 = [v12 doubleTapCapability];
+  headphoneDevice4 = [(HPCUIDevice *)self headphoneDevice];
+  cbDevice = [headphoneDevice4 cbDevice];
+  doubleTapCapability = [cbDevice doubleTapCapability];
 
-  if (v13 == 2)
+  if (doubleTapCapability == 2)
   {
     v14 = v10 | 4;
   }
@@ -130,16 +130,16 @@
     v14 = v10;
   }
 
-  v15 = [(HPCUIDevice *)self headphoneDevice];
-  v16 = [v15 supportsFeatureWithFeature:5];
+  headphoneDevice5 = [(HPCUIDevice *)self headphoneDevice];
+  v16 = [headphoneDevice5 supportsFeatureWithFeature:5];
 
-  if ((*&v16 & ((v5 & 8) >> 3)) != 0)
+  if ((*&v16 & ((flags & 8) >> 3)) != 0)
   {
     v14 |= 0x20u;
   }
 
-  v17 = [(HPCUIDevice *)self headphoneDevice];
-  v18 = [v17 supportsFeatureWithFeature:5];
+  headphoneDevice6 = [(HPCUIDevice *)self headphoneDevice];
+  v18 = [headphoneDevice6 supportsFeatureWithFeature:5];
 
   if (v18)
   {
@@ -151,15 +151,15 @@
     v19 = v14;
   }
 
-  v20 = [(HPCUIDevice *)self headphoneDevice];
-  v21 = [v20 supportsFeatureWithFeature:7];
+  headphoneDevice7 = [(HPCUIDevice *)self headphoneDevice];
+  v21 = [headphoneDevice7 supportsFeatureWithFeature:7];
   v22 = v19 | 0x10;
   if (!v21)
   {
     v22 = v19;
   }
 
-  if ((v5 & 8) != 0)
+  if ((flags & 8) != 0)
   {
     v23 = v22;
   }
@@ -172,12 +172,12 @@
   return v23;
 }
 
-+ (id)bluetoothDeviceForAddress:(id)a3
++ (id)bluetoothDeviceForAddress:(id)address
 {
   v3 = MEMORY[0x1E698F468];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 deviceFromAddressString:v4];
+  addressCopy = address;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance deviceFromAddressString:addressCopy];
 
   return v6;
 }

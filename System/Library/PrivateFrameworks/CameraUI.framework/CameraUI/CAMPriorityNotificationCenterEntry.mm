@@ -1,9 +1,9 @@
 @interface CAMPriorityNotificationCenterEntry
-- (CAMPriorityNotificationCenterEntry)initWithObserver:(id)a3 selector:(SEL)a4 object:(id)a5;
+- (CAMPriorityNotificationCenterEntry)initWithObserver:(id)observer selector:(SEL)selector object:(id)object;
 - (SEL)selector;
 - (id)description;
 - (id)observer;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation CAMPriorityNotificationCenterEntry
@@ -28,29 +28,29 @@
   }
 }
 
-- (CAMPriorityNotificationCenterEntry)initWithObserver:(id)a3 selector:(SEL)a4 object:(id)a5
+- (CAMPriorityNotificationCenterEntry)initWithObserver:(id)observer selector:(SEL)selector object:(id)object
 {
-  v8 = a3;
-  v9 = a5;
+  observerCopy = observer;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = CAMPriorityNotificationCenterEntry;
   v10 = [(CAMPriorityNotificationCenterEntry *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_observer, v8);
-    if (a4)
+    objc_storeWeak(&v10->_observer, observerCopy);
+    if (selector)
     {
-      v12 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v12 = 0;
+      selectorCopy = 0;
     }
 
-    v11->_selector = v12;
-    objc_storeStrong(&v11->_object, a5);
+    v11->_selector = selectorCopy;
+    objc_storeStrong(&v11->_object, object);
   }
 
   return v11;
@@ -59,27 +59,27 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CAMPriorityNotificationCenterEntry *)self observer];
+  observer = [(CAMPriorityNotificationCenterEntry *)self observer];
   v5 = NSStringFromSelector([(CAMPriorityNotificationCenterEntry *)self selector]);
-  v6 = [(CAMPriorityNotificationCenterEntry *)self object];
-  v7 = [v3 stringWithFormat:@"<%p %@/%p>", v4, v5, v6];
+  object = [(CAMPriorityNotificationCenterEntry *)self object];
+  v7 = [v3 stringWithFormat:@"<%p %@/%p>", observer, v5, object];
 
   return v7;
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

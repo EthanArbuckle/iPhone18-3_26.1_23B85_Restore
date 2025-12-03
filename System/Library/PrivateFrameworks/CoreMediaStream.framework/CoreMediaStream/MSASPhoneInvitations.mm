@@ -1,66 +1,66 @@
 @interface MSASPhoneInvitations
 - (MSASPhoneInvitations)init;
-- (void)addPendingPhoneInvitations:(id)a3 toOwnedAlbum:(id)a4 inStateMachin:(id)a5;
-- (void)removeSharingRelationships:(id)a3 forAlbum:(id)a4;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
+- (void)addPendingPhoneInvitations:(id)invitations toOwnedAlbum:(id)album inStateMachin:(id)machin;
+- (void)removeSharingRelationships:(id)relationships forAlbum:(id)album;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
 @end
 
 @implementation MSASPhoneInvitations
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    v24 = [v15 userInfo];
+    userInfo = [errorCopy userInfo];
     *buf = 138544642;
-    v26 = v12;
+    v26 = serviceCopy;
     v27 = 2112;
-    v28 = v13;
+    v28 = accountCopy;
     v29 = 2114;
-    v30 = v14;
+    v30 = identifierCopy;
     v31 = 1024;
-    v32 = v8;
+    v32 = successCopy;
     v33 = 2114;
-    v34 = v15;
+    v34 = errorCopy;
     v35 = 2114;
-    v36 = v24;
+    v36 = userInfo;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "IDS: Get send message callback for service %{public}@ account %@ identifier %{public}@ success %d error %{public}@ info %{public}@", buf, 0x3Au);
 
-    if (!v14)
+    if (!identifierCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (!v14)
+  else if (!identifierCopy)
   {
     goto LABEL_11;
   }
 
-  v16 = [(NSMutableDictionary *)self->_sendMessageIdentifierToPhone objectForKey:v14];
+  v16 = [(NSMutableDictionary *)self->_sendMessageIdentifierToPhone objectForKey:identifierCopy];
   if (v16)
   {
-    [(NSMutableDictionary *)self->_sendMessageIdentifierToPhone removeObjectForKey:v14];
-    v17 = [(MSASStateMachine *)self->_stateMachine delegate];
-    [v17 MSASStateMachine:self->_stateMachine didFinishSendingInvitationByPhone:v16 toOwnedAlbum:self->_album info:0 error:v15];
+    [(NSMutableDictionary *)self->_sendMessageIdentifierToPhone removeObjectForKey:identifierCopy];
+    delegate = [(MSASStateMachine *)self->_stateMachine delegate];
+    [delegate MSASStateMachine:self->_stateMachine didFinishSendingInvitationByPhone:v16 toOwnedAlbum:self->_album info:0 error:errorCopy];
 
-    if (v8)
+    if (successCopy)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         album = self->_album;
         *buf = 138412802;
-        v26 = v13;
+        v26 = accountCopy;
         v27 = 2114;
         v28 = album;
         v29 = 2114;
-        v30 = v14;
+        v30 = identifierCopy;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "IDS: Successfully send message from %@ for album %{public}@ with IDS identifier %{public}@.", buf, 0x20u);
       }
     }
@@ -69,8 +69,8 @@
     {
       v19 = MEMORY[0x277CCACA8];
       v20 = self->_album;
-      v21 = [v15 userInfo];
-      v22 = [v19 stringWithFormat:@"IDS: Failed to send message from %@ for album %@ with identifier %@. Error: %@ Info: %@", v13, v20, v14, v15, v21];
+      userInfo2 = [errorCopy userInfo];
+      v22 = [v19 stringWithFormat:@"IDS: Failed to send message from %@ for album %@ with identifier %@. Error: %@ Info: %@", accountCopy, v20, identifierCopy, errorCopy, userInfo2];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -85,21 +85,21 @@ LABEL_11:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSharingRelationships:(id)a3 forAlbum:(id)a4
+- (void)removeSharingRelationships:(id)relationships forAlbum:(id)album
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v30 = self;
-  v31 = a4;
-  v7 = [(IDSService *)self->_idsService accounts];
-  v32 = [v7 anyObject];
+  relationshipsCopy = relationships;
+  selfCopy = self;
+  albumCopy = album;
+  accounts = [(IDSService *)self->_idsService accounts];
+  anyObject = [accounts anyObject];
 
-  v8 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v6, "count")}];
+  v8 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(relationshipsCopy, "count")}];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v6;
+  obj = relationshipsCopy;
   v35 = [obj countByEnumeratingWithState:&v43 objects:v60 count:16];
   if (v35)
   {
@@ -119,8 +119,8 @@ LABEL_11:
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v12 = [v11 phones];
-        v13 = [v12 countByEnumeratingWithState:&v39 objects:v59 count:16];
+        phones = [v11 phones];
+        v13 = [phones countByEnumeratingWithState:&v39 objects:v59 count:16];
         if (v13)
         {
           v14 = v13;
@@ -131,7 +131,7 @@ LABEL_11:
             {
               if (*v40 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(phones);
               }
 
               v17 = *(*(&v39 + 1) + 8 * j);
@@ -149,7 +149,7 @@ LABEL_11:
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v39 objects:v59 count:16];
+            v14 = [phones countByEnumeratingWithState:&v39 objects:v59 count:16];
           }
 
           while (v14);
@@ -164,8 +164,8 @@ LABEL_11:
 
   if ([v8 count])
   {
-    v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v20 = [v19 valueForKey:@"MSASPhoneInvitationDebugFakeAlbumUUID"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v20 = [standardUserDefaults valueForKey:@"MSASPhoneInvitationDebugFakeAlbumUUID"];
 
     if ([v20 length])
     {
@@ -176,11 +176,11 @@ LABEL_11:
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Using debugFakeAlbumGUID %@", buf, 0xCu);
       }
 
-      [v31 setGUID:v20];
+      [albumCopy setGUID:v20];
     }
 
     v38 = 0;
-    v21 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v31 requiringSecureCoding:1 error:&v38];
+    v21 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:albumCopy requiringSecureCoding:1 error:&v38];
     v22 = v38;
     if (v21)
     {
@@ -194,11 +194,11 @@ LABEL_11:
         *buf = 138544130;
         v50 = v23;
         v51 = 2112;
-        v52 = v32;
+        v52 = anyObject;
         v53 = 2112;
         v54 = v8;
         v55 = 2114;
-        v56 = v31;
+        v56 = albumCopy;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "IDS: Send message %{public}@ from %@ to %@ for album %{public}@", buf, 0x2Au);
       }
 
@@ -207,10 +207,10 @@ LABEL_11:
       v48 = v24;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
 
-      idsService = v30->_idsService;
+      idsService = selfCopy->_idsService;
       v36 = 0;
       v37 = 0;
-      LODWORD(v24) = [(IDSService *)idsService sendMessage:v23 fromAccount:v32 toDestinations:v8 priority:300 options:v25 identifier:&v37 error:&v36];
+      LODWORD(v24) = [(IDSService *)idsService sendMessage:v23 fromAccount:anyObject toDestinations:v8 priority:300 options:v25 identifier:&v37 error:&v36];
       v27 = v37;
       v28 = v36;
       if (v24)
@@ -242,26 +242,26 @@ LABEL_11:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPendingPhoneInvitations:(id)a3 toOwnedAlbum:(id)a4 inStateMachin:(id)a5
+- (void)addPendingPhoneInvitations:(id)invitations toOwnedAlbum:(id)album inStateMachin:(id)machin
 {
-  v9 = a4;
-  objc_storeStrong(&self->_stateMachine, a5);
-  v10 = a5;
-  v11 = a3;
-  objc_storeStrong(&self->_album, a4);
-  v12 = [(IDSService *)self->_idsService accounts];
-  v13 = [v12 anyObject];
+  albumCopy = album;
+  objc_storeStrong(&self->_stateMachine, machin);
+  machinCopy = machin;
+  invitationsCopy = invitations;
+  objc_storeStrong(&self->_album, album);
+  accounts = [(IDSService *)self->_idsService accounts];
+  anyObject = [accounts anyObject];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __78__MSASPhoneInvitations_addPendingPhoneInvitations_toOwnedAlbum_inStateMachin___block_invoke;
   v16[3] = &unk_278E90528;
-  v17 = v9;
-  v18 = v13;
-  v19 = self;
-  v14 = v13;
-  v15 = v9;
-  [v11 enumerateKeysAndObjectsUsingBlock:v16];
+  v17 = albumCopy;
+  v18 = anyObject;
+  selfCopy = self;
+  v14 = anyObject;
+  v15 = albumCopy;
+  [invitationsCopy enumerateKeysAndObjectsUsingBlock:v16];
 }
 
 void __78__MSASPhoneInvitations_addPendingPhoneInvitations_toOwnedAlbum_inStateMachin___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -370,9 +370,9 @@ void __78__MSASPhoneInvitations_addPendingPhoneInvitations_toOwnedAlbum_inStateM
     v2->_idsService = v3;
 
     [(IDSService *)v2->_idsService addDelegate:v2 queue:MEMORY[0x277D85CD0]];
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sendMessageIdentifierToPhone = v2->_sendMessageIdentifierToPhone;
-    v2->_sendMessageIdentifierToPhone = v5;
+    v2->_sendMessageIdentifierToPhone = dictionary;
   }
 
   return v2;

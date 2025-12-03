@@ -14,7 +14,7 @@
   v6 = (&v13 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0));
   sub_213FB568C(self + OBJC_IVAR___BlastDoorLargeImage_largeImage, v6, type metadata accessor for LargeImage);
   v7 = *v6;
-  v8 = self;
+  selfCopy = self;
 
   sub_213FB5844(v6, type metadata accessor for LargeImage);
   v9 = type metadata accessor for _ObjCMachImageWrapper();

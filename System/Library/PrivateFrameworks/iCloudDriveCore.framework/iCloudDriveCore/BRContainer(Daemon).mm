@@ -35,7 +35,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_223E7A000, a2, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: [BRContainer currentStatus] shouldn't be called by the daemon.%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -44,7 +44,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_223E7A000, a2, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: [BRContainer lastServerUpdate] shouldn't be called by the daemon.%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

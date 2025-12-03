@@ -1,28 +1,28 @@
 @interface PMSlideMapper
 - (CGRect)slideRect;
-- (PMSlideMapper)initWithPDSlide:(id)a3 slideRect:(CGRect)a4 parent:(id)a5;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapBackgroundAt:(id)a3 recursive:(BOOL)a4 withState:(id)a5;
-- (void)mapDrawablesAt:(id)a3 withState:(id)a4;
-- (void)mapMasterSlideAt:(id)a3 withState:(id)a4;
+- (PMSlideMapper)initWithPDSlide:(id)slide slideRect:(CGRect)rect parent:(id)parent;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapBackgroundAt:(id)at recursive:(BOOL)recursive withState:(id)state;
+- (void)mapDrawablesAt:(id)at withState:(id)state;
+- (void)mapMasterSlideAt:(id)at withState:(id)state;
 @end
 
 @implementation PMSlideMapper
 
-- (PMSlideMapper)initWithPDSlide:(id)a3 slideRect:(CGRect)a4 parent:(id)a5
+- (PMSlideMapper)initWithPDSlide:(id)slide slideRect:(CGRect)rect parent:(id)parent
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  slideCopy = slide;
   v16.receiver = self;
   v16.super_class = PMSlideMapper;
-  v13 = [(CMMapper *)&v16 initWithParent:a5];
+  v13 = [(CMMapper *)&v16 initWithParent:parent];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->mSlide, a3);
+    objc_storeStrong(&v13->mSlide, slide);
     v14->mRect.origin.x = x;
     v14->mRect.origin.y = y;
     v14->mRect.size.width = width;
@@ -32,17 +32,17 @@
   return v14;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v15 = a4;
+  stateCopy = state;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PDSlideChild *)self->mSlide colorMap];
-    [v15 setColorMap:v5];
+    colorMap = [(PDSlideChild *)self->mSlide colorMap];
+    [stateCopy setColorMap:colorMap];
 
-    v6 = [(PDSlideChild *)self->mSlide colorScheme];
-    [v15 setColorScheme:v6];
+    colorScheme = [(PDSlideChild *)self->mSlide colorScheme];
+    [stateCopy setColorScheme:colorScheme];
   }
 
   v7 = [OIXMLElement elementWithType:3];
@@ -52,19 +52,19 @@
   v9 = objc_alloc_init(CMStyle);
   [(CMStyle *)v9 appendOriginInfoFromPoint:self->mRect.origin.x, self->mRect.origin.y];
   [(CMMapper *)self addStyleUsingGlobalCacheTo:v7 style:v9 embedStyle:1];
-  [(PMSlideMapper *)self mapMasterSlideAt:v7 withState:v15];
-  [(PMSlideMapper *)self mapDrawablesAt:v7 withState:v15];
-  v10 = [(CMMapper *)self archiver];
-  v11 = [v10 isProgressive];
+  [(PMSlideMapper *)self mapMasterSlideAt:v7 withState:stateCopy];
+  [(PMSlideMapper *)self mapDrawablesAt:v7 withState:stateCopy];
+  archiver = [(CMMapper *)self archiver];
+  isProgressive = [archiver isProgressive];
 
-  if (v11)
+  if (isProgressive)
   {
-    v12 = [(CMMapper *)self archiver];
-    [v12 pushCssToPath:0];
+    archiver2 = [(CMMapper *)self archiver];
+    [archiver2 pushCssToPath:0];
 
-    v13 = [(CMMapper *)self archiver];
-    v14 = [v7 XMLString];
-    [v13 pushText:v14 toPath:0];
+    archiver3 = [(CMMapper *)self archiver];
+    xMLString = [v7 XMLString];
+    [archiver3 pushText:xMLString toPath:0];
   }
 }
 
@@ -81,24 +81,24 @@
   return result;
 }
 
-- (void)mapMasterSlideAt:(id)a3 withState:(id)a4
+- (void)mapMasterSlideAt:(id)at withState:(id)state
 {
-  v11 = a3;
-  v6 = a4;
-  [(PMSlideMapper *)self mapBackgroundAt:v11 recursive:1 withState:v6];
+  atCopy = at;
+  stateCopy = state;
+  [(PMSlideMapper *)self mapBackgroundAt:atCopy recursive:1 withState:stateCopy];
   if ([(PDSlideChild *)self->mSlide showMasterShapes])
   {
-    v7 = [(PDSlide *)self->mSlide slideLayout];
-    if ([v7 showMasterShapes])
+    slideLayout = [(PDSlide *)self->mSlide slideLayout];
+    if ([slideLayout showMasterShapes])
     {
-      v8 = [v7 slideMaster];
-      if (v8)
+      slideMaster = [slideLayout slideMaster];
+      if (slideMaster)
       {
-        v9 = [[PMMasterSlideMapper alloc] initWithPDSlide:v8 parent:self];
-        [(PMMasterSlideMapper *)v9 mapMasterGraphicsAt:v11 withState:v6];
+        v9 = [[PMMasterSlideMapper alloc] initWithPDSlide:slideMaster parent:self];
+        [(PMMasterSlideMapper *)v9 mapMasterGraphicsAt:atCopy withState:stateCopy];
       }
 
-      if (!v7)
+      if (!slideLayout)
       {
         goto LABEL_9;
       }
@@ -106,8 +106,8 @@
 
     else
     {
-      v8 = 0;
-      if (!v7)
+      slideMaster = 0;
+      if (!slideLayout)
       {
 LABEL_9:
 
@@ -115,8 +115,8 @@ LABEL_9:
       }
     }
 
-    v10 = [[PMMasterSlideMapper alloc] initWithPDSlide:v7 parent:self];
-    [(PMMasterSlideMapper *)v10 mapMasterGraphicsAt:v11 withState:v6];
+    v10 = [[PMMasterSlideMapper alloc] initWithPDSlide:slideLayout parent:self];
+    [(PMMasterSlideMapper *)v10 mapMasterGraphicsAt:atCopy withState:stateCopy];
 
     goto LABEL_9;
   }
@@ -124,16 +124,16 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)mapBackgroundAt:(id)a3 recursive:(BOOL)a4 withState:(id)a5
+- (void)mapBackgroundAt:(id)at recursive:(BOOL)recursive withState:(id)state
 {
-  v6 = a4;
-  v14 = a3;
-  v8 = a5;
-  v9 = [(PDSlide *)self->mSlide background];
+  recursiveCopy = recursive;
+  atCopy = at;
+  stateCopy = state;
+  background = [(PDSlide *)self->mSlide background];
   v10 = self->mSlide;
-  if (v6)
+  if (recursiveCopy)
   {
-    if (!v9)
+    if (!background)
     {
       goto LABEL_5;
     }
@@ -148,13 +148,13 @@ LABEL_10:
 
       while (1)
       {
-        v11 = [(PDSlide *)v10 parentSlideBase];
+        parentSlideBase = [(PDSlide *)v10 parentSlideBase];
 
-        v12 = [(PDSlide *)v11 background];
+        background2 = [(PDSlide *)parentSlideBase background];
 
-        v10 = v11;
-        v9 = v12;
-        if (v12)
+        v10 = parentSlideBase;
+        background = background2;
+        if (background2)
         {
           break;
         }
@@ -162,40 +162,40 @@ LABEL_10:
 LABEL_5:
         if (!v10)
         {
-          v9 = 0;
+          background = 0;
           goto LABEL_11;
         }
       }
     }
   }
 
-  else if (!v9)
+  else if (!background)
   {
     goto LABEL_11;
   }
 
-  v13 = [[PMBackgroundMapper alloc] initWithOadBackground:v9 parent:self];
-  [(PMBackgroundMapper *)v13 mapAt:v14 withState:v8];
+  v13 = [[PMBackgroundMapper alloc] initWithOadBackground:background parent:self];
+  [(PMBackgroundMapper *)v13 mapAt:atCopy withState:stateCopy];
 
 LABEL_11:
 }
 
-- (void)mapDrawablesAt:(id)a3 withState:(id)a4
+- (void)mapDrawablesAt:(id)at withState:(id)state
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(PDSlideBase *)self->mSlide drawables];
-  v8 = [v7 objectEnumerator];
+  atCopy = at;
+  stateCopy = state;
+  drawables = [(PDSlideBase *)self->mSlide drawables];
+  objectEnumerator = [drawables objectEnumerator];
   while (1)
   {
-    v9 = [v8 nextObject];
-    if (!v9)
+    nextObject = [objectEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    v10 = [(CMDrawableMapper *)[PMDrawableMapper alloc] initWithOadDrawable:v9 parent:self];
-    [(PMDrawableMapper *)v10 mapAt:v11 withState:v6];
+    v10 = [(CMDrawableMapper *)[PMDrawableMapper alloc] initWithOadDrawable:nextObject parent:self];
+    [(PMDrawableMapper *)v10 mapAt:atCopy withState:stateCopy];
   }
 }
 

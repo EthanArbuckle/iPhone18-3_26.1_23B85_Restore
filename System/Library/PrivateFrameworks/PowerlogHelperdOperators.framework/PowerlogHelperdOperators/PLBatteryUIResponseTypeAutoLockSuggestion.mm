@@ -1,16 +1,16 @@
 @interface PLBatteryUIResponseTypeAutoLockSuggestion
 - (BOOL)shouldShowSuggestionThroughOverrides;
 - (id)result;
-- (void)configure:(id)a3;
+- (void)configure:(id)configure;
 - (void)run;
 @end
 
 @implementation PLBatteryUIResponseTypeAutoLockSuggestion
 
-- (void)configure:(id)a3
+- (void)configure:(id)configure
 {
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v5 effectiveValueForSetting:*MEMORY[0x277D25D78]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = [mEMORY[0x277D262A0] effectiveValueForSetting:*MEMORY[0x277D25D78]];
   [(PLBatteryUIResponseTypeAutoLockSuggestion *)self setAutoLockTime:v4];
 }
 
@@ -26,29 +26,29 @@
 
   else
   {
-    v4 = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self autoLockTime];
-    v5 = [v4 intValue];
+    autoLockTime = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self autoLockTime];
+    intValue = [autoLockTime intValue];
 
-    if (v5 == 0x7FFFFFFF)
+    if (intValue == 0x7FFFFFFF)
     {
-      v6 = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self batteryBreakdown_Last24hrs];
+      batteryBreakdown_Last24hrs = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self batteryBreakdown_Last24hrs];
 
-      if (!v6)
+      if (!batteryBreakdown_Last24hrs)
       {
         v7 = PLBatteryUsageUIKeyFromConfiguration();
-        v8 = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self responderService];
-        v9 = [v8 responseCache];
-        v10 = [v9 objectForKeyedSubscript:&unk_287146F00];
+        responderService = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self responderService];
+        responseCache = [responderService responseCache];
+        v10 = [responseCache objectForKeyedSubscript:&unk_287146F00];
         v11 = [v10 objectForKeyedSubscript:v7];
         v12 = [v11 objectForKeyedSubscript:@"result"];
         v13 = [v12 objectForKeyedSubscript:@"PLBatteryUIBreakdownKey"];
-        v14 = [v13 firstObject];
-        [(PLBatteryUIResponseTypeAutoLockSuggestion *)self setBatteryBreakdown_Last24hrs:v14];
+        firstObject = [v13 firstObject];
+        [(PLBatteryUIResponseTypeAutoLockSuggestion *)self setBatteryBreakdown_Last24hrs:firstObject];
       }
 
-      v15 = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self batteryBreakdown_Last24hrs];
+      batteryBreakdown_Last24hrs2 = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self batteryBreakdown_Last24hrs];
 
-      if (!v15)
+      if (!batteryBreakdown_Last24hrs2)
       {
         v16 = PLLogCommon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -57,16 +57,16 @@
           _os_log_impl(&dword_25EE51000, v16, OS_LOG_TYPE_DEFAULT, "Auto Lock Suggestion: 24h breakdown cache unavailable, retry with 15 days", buf, 2u);
         }
 
-        v17 = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self responderService];
-        v18 = [v17 getBreakdownForLength:86400 fromCachedLength:1296000 forBucketSize:86400];
+        responderService2 = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self responderService];
+        v18 = [responderService2 getBreakdownForLength:86400 fromCachedLength:1296000 forBucketSize:86400];
         [(PLBatteryUIResponseTypeAutoLockSuggestion *)self setBatteryBreakdown_Last24hrs:v18];
       }
 
-      v19 = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self batteryBreakdown_Last24hrs];
+      batteryBreakdown_Last24hrs3 = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self batteryBreakdown_Last24hrs];
 
       v20 = PLLogCommon();
       v21 = v20;
-      if (v19)
+      if (batteryBreakdown_Last24hrs3)
       {
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
@@ -87,8 +87,8 @@
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v29 = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self batteryBreakdown_Last24hrs];
-        v30 = [v29 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
+        batteryBreakdown_Last24hrs4 = [(PLBatteryUIResponseTypeAutoLockSuggestion *)self batteryBreakdown_Last24hrs];
+        v30 = [batteryBreakdown_Last24hrs4 objectForKeyedSubscript:@"PLBatteryUIAppArrayKey"];
 
         v31 = [v30 countByEnumeratingWithState:&v46 objects:v51 count:16];
         if (v31)
@@ -190,9 +190,9 @@
   if (v2)
   {
     v3 = [PLUtilities powerlogDefaultForKey:@"BUI_AUTOLOCK_SUGGESTION_SHOW"];
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = bOOLValue;
   }
 
   return v2;

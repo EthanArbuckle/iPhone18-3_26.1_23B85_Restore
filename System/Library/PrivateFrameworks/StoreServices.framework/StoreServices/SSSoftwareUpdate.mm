@@ -1,6 +1,6 @@
 @interface SSSoftwareUpdate
 - (NSString)bundleIdentifier;
-- (SSSoftwareUpdate)initWithUpdateDictionary:(id)a3;
+- (SSSoftwareUpdate)initWithUpdateDictionary:(id)dictionary;
 - (int64_t)parentalControlsRank;
 - (int64_t)storeItemIdentifier;
 - (void)dealloc;
@@ -8,14 +8,14 @@
 
 @implementation SSSoftwareUpdate
 
-- (SSSoftwareUpdate)initWithUpdateDictionary:(id)a3
+- (SSSoftwareUpdate)initWithUpdateDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = SSSoftwareUpdate;
   v4 = [(SSSoftwareUpdate *)&v6 init];
   if (v4)
   {
-    v4->_dictionary = [a3 copy];
+    v4->_dictionary = [dictionary copy];
   }
 
   return v4;

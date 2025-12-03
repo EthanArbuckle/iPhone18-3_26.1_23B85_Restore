@@ -1,28 +1,28 @@
 @interface SGAhoCorasick
-- (BOOL)existsInString:(id)a3;
-- (SGAhoCorasick)initWithBytecode:(id)a3;
+- (BOOL)existsInString:(id)string;
+- (SGAhoCorasick)initWithBytecode:(id)bytecode;
 @end
 
 @implementation SGAhoCorasick
 
-- (BOOL)existsInString:(id)a3
+- (BOOL)existsInString:(id)string
 {
-  v5 = a3;
-  if (v5)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v6 = [(NSData *)self->_bytecode bytes];
-    if (!v6)
+    bytes = [(NSData *)self->_bytecode bytes];
+    if (!bytes)
     {
-      v28 = [MEMORY[0x277CCA890] currentHandler];
-      [v28 handleFailureInMethod:a2 object:self file:@"SGAhoCorasick.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"bytecode"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGAhoCorasick.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"bytecode"}];
     }
 
-    v7 = v5;
+    v7 = stringCopy;
     v8 = objc_opt_self();
 
     if (v8)
     {
-      v29 = v5;
+      v29 = stringCopy;
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
@@ -125,7 +125,7 @@ LABEL_38:
             [MEMORY[0x277CBEAD8] raise:@"SGAhoCorasickBoundsCheck" format:{@"Node %u beyond bound %u", v12, endPtr}];
           }
 
-          v18 = v6[2 * v12 + 1];
+          v18 = bytes[2 * v12 + 1];
           v19 = 1;
           if (v18 >= 2)
           {
@@ -137,7 +137,7 @@ LABEL_38:
                 [MEMORY[0x277CBEAD8] raise:@"SGAhoCorasickBoundsCheck" format:{@"Node %u beyond bound %u", (v12 + ((v19 + v18) >> 1)), v20}];
               }
 
-              if (v6[2 * (v12 + ((v19 + v18) >> 1))] < v15)
+              if (bytes[2 * (v12 + ((v19 + v18) >> 1))] < v15)
               {
                 v19 = ((v19 + v18) >> 1) + 1;
               }
@@ -159,7 +159,7 @@ LABEL_38:
               [MEMORY[0x277CBEAD8] raise:@"SGAhoCorasickBoundsCheck" format:{@"Node %u beyond bound %u", (v12 + v18), v21}];
             }
 
-            if (v6[2 * (v12 + v18)] == v15)
+            if (bytes[2 * (v12 + v18)] == v15)
             {
               break;
             }
@@ -177,7 +177,7 @@ LABEL_38:
             [MEMORY[0x277CBEAD8] raise:@"SGAhoCorasickBoundsCheck" format:{@"Node %u beyond bound %u", v12, v22}];
           }
 
-          v12 = v6[2 * v12];
+          v12 = bytes[2 * v12];
           if (v12 == 0xFFFF)
           {
             goto LABEL_52;
@@ -191,7 +191,7 @@ LABEL_38:
           }
         }
 
-        v12 = v6[2 * (v12 + v18) + 1];
+        v12 = bytes[2 * (v12 + v18) + 1];
         if (v12 != 0xFFFF)
         {
           goto LABEL_38;
@@ -201,7 +201,7 @@ LABEL_52:
         v26 = 1;
       }
 
-      v5 = v29;
+      stringCopy = v29;
     }
 
     else
@@ -218,25 +218,25 @@ LABEL_52:
   return v26;
 }
 
-- (SGAhoCorasick)initWithBytecode:(id)a3
+- (SGAhoCorasick)initWithBytecode:(id)bytecode
 {
-  v6 = a3;
-  if (!v6)
+  bytecodeCopy = bytecode;
+  if (!bytecodeCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SGAhoCorasick.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"bytecode"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGAhoCorasick.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"bytecode"}];
   }
 
-  if (![v6 length])
+  if (![bytecodeCopy length])
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SGAhoCorasick.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"bytecode.length > 0"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGAhoCorasick.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"bytecode.length > 0"}];
   }
 
-  if (([v6 length] & 3) != 0)
+  if (([bytecodeCopy length] & 3) != 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SGAhoCorasick.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"bytecode.length % sizeof(op_t) == 0"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGAhoCorasick.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"bytecode.length % sizeof(op_t) == 0"}];
   }
 
   v13.receiver = self;
@@ -245,8 +245,8 @@ LABEL_52:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_bytecode, a3);
-    v8->_endPtr = [v6 length] >> 2;
+    objc_storeStrong(&v7->_bytecode, bytecode);
+    v8->_endPtr = [bytecodeCopy length] >> 2;
   }
 
   return v8;

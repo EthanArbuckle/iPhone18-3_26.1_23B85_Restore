@@ -1,70 +1,70 @@
 @interface PBContextMenuPasteButtonTag
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (CGPoint)titleOrigin;
 - (CGSize)size;
-- (PBContextMenuPasteButtonTag)initWithCoder:(id)a3;
-- (PBContextMenuPasteButtonTag)initWithSecureName:(unsigned int)a3 size:(CGSize)a4 titleOrigin:(CGPoint)a5 layoutSize:(int64_t)a6 hasTrailingGutter:(BOOL)a7;
-- (float)backgroundStatisticsFailingContrastForStyle:(id)a3;
-- (float)backgroundStatisticsForegroundForStyle:(id)a3;
-- (float)backgroundStatisticsPassingContrastForStyle:(id)a3;
-- (id)_acceptCalloutBarPasteButtonTagVisit:(id)a3 systemInputAssistantPasteButtonTagVisit:(id)a4 undoInteractionHUDIconPasteButtonTagVisit:(id)a5 undoInteractionHUDTextPasteButtonTagVisit:(id)a6 contextMenuPasteButtonTagVisit:(id)a7 contextMenuDynamicPasteButtonTagVisit:(id)a8 editMenuPasteButtonTagVisit:(id)a9;
-- (id)resolvedStyleForStyle:(id)a3;
-- (unint64_t)authenticationMessageContextForStyle:(id)a3;
+- (PBContextMenuPasteButtonTag)initWithCoder:(id)coder;
+- (PBContextMenuPasteButtonTag)initWithSecureName:(unsigned int)name size:(CGSize)size titleOrigin:(CGPoint)origin layoutSize:(int64_t)layoutSize hasTrailingGutter:(BOOL)gutter;
+- (float)backgroundStatisticsFailingContrastForStyle:(id)style;
+- (float)backgroundStatisticsForegroundForStyle:(id)style;
+- (float)backgroundStatisticsPassingContrastForStyle:(id)style;
+- (id)_acceptCalloutBarPasteButtonTagVisit:(id)visit systemInputAssistantPasteButtonTagVisit:(id)tagVisit undoInteractionHUDIconPasteButtonTagVisit:(id)buttonTagVisit undoInteractionHUDTextPasteButtonTagVisit:(id)pasteButtonTagVisit contextMenuPasteButtonTagVisit:(id)menuPasteButtonTagVisit contextMenuDynamicPasteButtonTagVisit:(id)dynamicPasteButtonTagVisit editMenuPasteButtonTagVisit:(id)editMenuPasteButtonTagVisit;
+- (id)resolvedStyleForStyle:(id)style;
+- (unint64_t)authenticationMessageContextForStyle:(id)style;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PBContextMenuPasteButtonTag
 
-- (PBContextMenuPasteButtonTag)initWithSecureName:(unsigned int)a3 size:(CGSize)a4 titleOrigin:(CGPoint)a5 layoutSize:(int64_t)a6 hasTrailingGutter:(BOOL)a7
+- (PBContextMenuPasteButtonTag)initWithSecureName:(unsigned int)name size:(CGSize)size titleOrigin:(CGPoint)origin layoutSize:(int64_t)layoutSize hasTrailingGutter:(BOOL)gutter
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.height;
-  width = a4.width;
+  y = origin.y;
+  x = origin.x;
+  height = size.height;
+  width = size.width;
   v15.receiver = self;
   v15.super_class = PBContextMenuPasteButtonTag;
   result = [(PBContextMenuPasteButtonTag *)&v15 init];
   if (result)
   {
-    result->_secureName = a3;
+    result->_secureName = name;
     result->_size.width = width;
     result->_size.height = height;
     result->_titleOrigin.x = x;
     result->_titleOrigin.y = y;
-    result->_layoutSize = a6;
-    result->_hasTrailingGutter = a7;
+    result->_layoutSize = layoutSize;
+    result->_hasTrailingGutter = gutter;
   }
 
   return result;
 }
 
-- (PBContextMenuPasteButtonTag)initWithCoder:(id)a3
+- (PBContextMenuPasteButtonTag)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PBContextMenuPasteButtonTag;
-  v5 = [(PBPasteButtonTag *)&v11 initWithCoder:v4];
+  v5 = [(PBPasteButtonTag *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_secureName = [v4 decodeInt32ForKey:@"secureName"];
-    [v4 decodeSizeForKey:@"size"];
+    v5->_secureName = [coderCopy decodeInt32ForKey:@"secureName"];
+    [coderCopy decodeSizeForKey:@"size"];
     v5->_size.width = v6;
     v5->_size.height = v7;
-    [v4 decodePointForKey:@"titleOrigin"];
+    [coderCopy decodePointForKey:@"titleOrigin"];
     v5->_titleOrigin.x = v8;
     v5->_titleOrigin.y = v9;
-    v5->_layoutSize = [v4 decodeIntegerForKey:@"layoutSize"];
-    v5->_hasTrailingGutter = [v4 decodeBoolForKey:@"hasTrailingGutter"];
+    v5->_layoutSize = [coderCopy decodeIntegerForKey:@"layoutSize"];
+    v5->_hasTrailingGutter = [coderCopy decodeBoolForKey:@"hasTrailingGutter"];
   }
 
   return v5;
 }
 
-- (unint64_t)authenticationMessageContextForStyle:(id)a3
+- (unint64_t)authenticationMessageContextForStyle:(id)style
 {
-  if ([a3 userInterfaceStyle])
+  if ([style userInterfaceStyle])
   {
     return 0xA9745AB1695ED68BLL;
   }
@@ -75,10 +75,10 @@
   }
 }
 
-- (float)backgroundStatisticsPassingContrastForStyle:(id)a3
+- (float)backgroundStatisticsPassingContrastForStyle:(id)style
 {
-  v4 = a3;
-  if ([v4 userInterfaceStyle] == 1)
+  styleCopy = style;
+  if ([styleCopy userInterfaceStyle] == 1)
   {
     v5 = 2.1;
   }
@@ -87,17 +87,17 @@
   {
     v8.receiver = self;
     v8.super_class = PBContextMenuPasteButtonTag;
-    [(PBPasteButtonTag *)&v8 backgroundStatisticsPassingContrastForStyle:v4];
+    [(PBPasteButtonTag *)&v8 backgroundStatisticsPassingContrastForStyle:styleCopy];
     v5 = v6;
   }
 
   return v5;
 }
 
-- (float)backgroundStatisticsFailingContrastForStyle:(id)a3
+- (float)backgroundStatisticsFailingContrastForStyle:(id)style
 {
-  v4 = a3;
-  if ([v4 userInterfaceStyle] == 1)
+  styleCopy = style;
+  if ([styleCopy userInterfaceStyle] == 1)
   {
     v5 = 1.9;
   }
@@ -106,23 +106,23 @@
   {
     v8.receiver = self;
     v8.super_class = PBContextMenuPasteButtonTag;
-    [(PBPasteButtonTag *)&v8 backgroundStatisticsFailingContrastForStyle:v4];
+    [(PBPasteButtonTag *)&v8 backgroundStatisticsFailingContrastForStyle:styleCopy];
     v5 = v6;
   }
 
   return v5;
 }
 
-- (float)backgroundStatisticsForegroundForStyle:(id)a3
+- (float)backgroundStatisticsForegroundForStyle:(id)style
 {
-  v3 = [a3 userInterfaceStyle];
+  userInterfaceStyle = [style userInterfaceStyle];
   result = NAN;
-  if (v3 == 1)
+  if (userInterfaceStyle == 1)
   {
     result = 1.0;
   }
 
-  if (!v3)
+  if (!userInterfaceStyle)
   {
     return 0.0;
   }
@@ -130,17 +130,17 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PBContextMenuPasteButtonTag;
-  v4 = a3;
-  [(PBPasteButtonTag *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt32:self->_secureName forKey:{@"secureName", v5.receiver, v5.super_class}];
-  [v4 encodeSize:@"size" forKey:{self->_size.width, self->_size.height}];
-  [v4 encodePoint:@"titleOrigin" forKey:{self->_titleOrigin.x, self->_titleOrigin.y}];
-  [v4 encodeInteger:self->_layoutSize forKey:@"layoutSize"];
-  [v4 encodeBool:self->_hasTrailingGutter forKey:@"hasTrailingGutter"];
+  coderCopy = coder;
+  [(PBPasteButtonTag *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:self->_secureName forKey:{@"secureName", v5.receiver, v5.super_class}];
+  [coderCopy encodeSize:@"size" forKey:{self->_size.width, self->_size.height}];
+  [coderCopy encodePoint:@"titleOrigin" forKey:{self->_titleOrigin.x, self->_titleOrigin.y}];
+  [coderCopy encodeInteger:self->_layoutSize forKey:@"layoutSize"];
+  [coderCopy encodeBool:self->_hasTrailingGutter forKey:@"hasTrailingGutter"];
 }
 
 - (unint64_t)hash
@@ -150,11 +150,11 @@
   return *&veor_s8(*v4.i8, *&vextq_s8(v4, v4, 8uLL)) ^ self->_hasTrailingGutter ^ self->_layoutSize ^ self->_secureName ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v7 = (objc_opt_isKindOfClass() & 1) != 0 && self->_secureName == *(v4 + 3) && (self->_size.width == v4[3] ? (v5 = self->_size.height == v4[4]) : (v5 = 0), v5 && (self->_titleOrigin.x == v4[5] ? (v6 = self->_titleOrigin.y == v4[6]) : (v6 = 0), v6 && self->_layoutSize == *(v4 + 2))) && self->_hasTrailingGutter == *(v4 + 8);
+  v7 = (objc_opt_isKindOfClass() & 1) != 0 && self->_secureName == *(equalCopy + 3) && (self->_size.width == equalCopy[3] ? (v5 = self->_size.height == equalCopy[4]) : (v5 = 0), v5 && (self->_titleOrigin.x == equalCopy[5] ? (v6 = self->_titleOrigin.y == equalCopy[6]) : (v6 = 0), v6 && self->_layoutSize == *(equalCopy + 2))) && self->_hasTrailingGutter == *(equalCopy + 8);
 
   return v7;
 }
@@ -291,16 +291,16 @@
   return !v26 && !v27 && self->_layoutSize < 3;
 }
 
-- (id)resolvedStyleForStyle:(id)a3
+- (id)resolvedStyleForStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__PBContextMenuPasteButtonTag_resolvedStyleForStyle___block_invoke;
   v8[3] = &unk_279A06210;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = styleCopy;
+  v5 = styleCopy;
   v6 = [v5 copyWithChangeBlock:v8];
 
   return v6;
@@ -318,11 +318,11 @@ void __53__PBContextMenuPasteButtonTag_resolvedStyleForStyle___block_invoke(uint
   [v4 setUserInterfaceIdiom:0];
 }
 
-- (id)_acceptCalloutBarPasteButtonTagVisit:(id)a3 systemInputAssistantPasteButtonTagVisit:(id)a4 undoInteractionHUDIconPasteButtonTagVisit:(id)a5 undoInteractionHUDTextPasteButtonTagVisit:(id)a6 contextMenuPasteButtonTagVisit:(id)a7 contextMenuDynamicPasteButtonTagVisit:(id)a8 editMenuPasteButtonTagVisit:(id)a9
+- (id)_acceptCalloutBarPasteButtonTagVisit:(id)visit systemInputAssistantPasteButtonTagVisit:(id)tagVisit undoInteractionHUDIconPasteButtonTagVisit:(id)buttonTagVisit undoInteractionHUDTextPasteButtonTagVisit:(id)pasteButtonTagVisit contextMenuPasteButtonTagVisit:(id)menuPasteButtonTagVisit contextMenuDynamicPasteButtonTagVisit:(id)dynamicPasteButtonTagVisit editMenuPasteButtonTagVisit:(id)editMenuPasteButtonTagVisit
 {
-  if (a7)
+  if (menuPasteButtonTagVisit)
   {
-    v10 = (*(a7 + 2))(a7, self, a3, a4, a5, a6);
+    v10 = (*(menuPasteButtonTagVisit + 2))(menuPasteButtonTagVisit, self, visit, tagVisit, buttonTagVisit, pasteButtonTagVisit);
   }
 
   else

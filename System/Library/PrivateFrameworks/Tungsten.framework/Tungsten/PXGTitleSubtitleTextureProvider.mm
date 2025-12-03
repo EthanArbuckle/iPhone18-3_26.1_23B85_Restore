@@ -1,21 +1,21 @@
 @interface PXGTitleSubtitleTextureProvider
-+ (double)_drawWithTitle:(id)a3 subtitle:(id)a4 spec:(id)a5 targetSize:(CGSize)a6 context:(CGContext *)a7 viewport:(CGRect)a8 screenScale:(double)a9;
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7;
-- (void)_requestTextureForTitle:(id)a3 subtitle:(id)a4 spec:(id)a5 targetSize:(CGSize)a6 screenScale:(double)a7 requestID:(int)a8 renderCompletionHandler:(id)a9;
++ (double)_drawWithTitle:(id)title subtitle:(id)subtitle spec:(id)spec targetSize:(CGSize)size context:(CGContext *)context viewport:(CGRect)viewport screenScale:(double)scale;
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout;
+- (void)_requestTextureForTitle:(id)title subtitle:(id)subtitle spec:(id)spec targetSize:(CGSize)size screenScale:(double)scale requestID:(int)d renderCompletionHandler:(id)handler;
 @end
 
 @implementation PXGTitleSubtitleTextureProvider
 
-- (void)_requestTextureForTitle:(id)a3 subtitle:(id)a4 spec:(id)a5 targetSize:(CGSize)a6 screenScale:(double)a7 requestID:(int)a8 renderCompletionHandler:(id)a9
+- (void)_requestTextureForTitle:(id)title subtitle:(id)subtitle spec:(id)spec targetSize:(CGSize)size screenScale:(double)scale requestID:(int)d renderCompletionHandler:(id)handler
 {
-  v10 = *&a8;
-  height = a6.height;
-  width = a6.width;
+  v10 = *&d;
+  height = size.height;
+  width = size.width;
   v43[4] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a9;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  specCopy = spec;
+  handlerCopy = handler;
   if ([(PXGTextureProvider *)self isRequestActive:v10])
   {
     if (PXPixelSizeAreaIsZero())
@@ -26,43 +26,43 @@
     else
     {
       v29 = objc_alloc(MEMORY[0x277D3CE08]);
-      v21 = v17;
-      if (!v17)
+      null = titleCopy;
+      if (!titleCopy)
       {
-        v21 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
       }
 
-      v28 = v21;
-      v43[0] = v21;
-      v22 = v18;
-      if (!v18)
+      v28 = null;
+      v43[0] = null;
+      null2 = subtitleCopy;
+      if (!subtitleCopy)
       {
-        v22 = [MEMORY[0x277CBEB68] null];
+        null2 = [MEMORY[0x277CBEB68] null];
       }
 
-      v27 = v22;
-      v43[1] = v22;
-      v23 = v19;
-      if (!v19)
+      v27 = null2;
+      v43[1] = null2;
+      null3 = specCopy;
+      if (!specCopy)
       {
-        v23 = [MEMORY[0x277CBEB68] null];
+        null3 = [MEMORY[0x277CBEB68] null];
       }
 
-      v43[2] = v23;
+      v43[2] = null3;
       v24 = [MEMORY[0x277CCAE60] valueWithCGSize:{width, height}];
       v43[3] = v24;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:4];
       v30 = [v29 initWithObjects:v25];
 
-      if (!v19)
+      if (!specCopy)
       {
       }
 
-      if (!v18)
+      if (!subtitleCopy)
       {
       }
 
-      if (!v17)
+      if (!titleCopy)
       {
       }
 
@@ -73,14 +73,14 @@
       v35[3] = &unk_2782A7B38;
       v41[1] = *&width;
       v41[2] = *&height;
-      v36 = v17;
-      v37 = v18;
-      v38 = v19;
-      v41[3] = *&a7;
+      v36 = titleCopy;
+      v37 = subtitleCopy;
+      v38 = specCopy;
+      v41[3] = *&scale;
       objc_copyWeak(v41, &location);
       v26 = v30;
       v39 = v26;
-      v40 = v20;
+      v40 = handlerCopy;
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __130__PXGTitleSubtitleTextureProvider__requestTextureForTitle_subtitle_spec_targetSize_screenScale_requestID_renderCompletionHandler___block_invoke_3;
@@ -168,34 +168,34 @@ uint64_t __130__PXGTitleSubtitleTextureProvider__requestTextureForTitle_subtitle
   return (*(*(a1 + 64) + 16))(v8);
 }
 
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout
 {
-  v12 = a7;
+  layoutCopy = layout;
   v52.receiver = self;
   v52.super_class = PXGTitleSubtitleTextureProvider;
-  v36 = a6;
-  v13 = [(PXGTextureProvider *)&v52 requestTexturesForSpritesInRange:a3 geometries:a4 styles:a5 infos:a6 inLayout:v12];
+  infosCopy = infos;
+  v13 = [(PXGTextureProvider *)&v52 requestTexturesForSpritesInRange:range geometries:geometries styles:styles infos:infos inLayout:layoutCopy];
   v32 = v14;
   v33 = v13;
-  v15 = [v12 contentSource];
-  [v12 displayScale];
+  contentSource = [layoutCopy contentSource];
+  [layoutCopy displayScale];
   v17 = v16;
   v18 = objc_opt_respondsToSelector();
-  v37 = v12;
-  v35 = [v12 version];
-  v19 = HIDWORD(*&a3);
-  if (HIDWORD(*&a3))
+  v37 = layoutCopy;
+  version = [layoutCopy version];
+  v19 = HIDWORD(*&range);
+  if (HIDWORD(*&range))
   {
     v34 = v18 & 1;
     v20 = v33;
     do
     {
-      v21 = [v15 titleForSpriteAtIndex:a3];
-      v22 = [v15 subtitleForSpriteAtIndex:a3];
-      v23 = [v15 titleSubtitleSpecForSpriteAtIndex:a3];
-      v24 = *(&v36->var3 + 5 * a3.location);
+      v21 = [contentSource titleForSpriteAtIndex:range];
+      v22 = [contentSource subtitleForSpriteAtIndex:range];
+      v23 = [contentSource titleSubtitleSpecForSpriteAtIndex:range];
+      v24 = *(&infosCopy->var3 + 5 * range.location);
       objc_initWeak(&location, self);
-      v25 = [(PXGTitleSubtitleTextureProvider *)self workQueue];
+      workQueue = [(PXGTitleSubtitleTextureProvider *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __101__PXGTitleSubtitleTextureProvider_requestTexturesForSpritesInRange_geometries_styles_infos_inLayout___block_invoke;
@@ -208,20 +208,20 @@ uint64_t __130__PXGTitleSubtitleTextureProvider__requestTextureForTitle_subtitle
       v46 = v17;
       v48 = v20;
       v42 = v37;
-      v26 = v15;
+      v26 = contentSource;
       v50 = v34;
-      v49 = a3.location;
+      v49 = range.location;
       v43 = v26;
-      v47 = v35;
+      v47 = version;
       v27 = v23;
       v28 = v22;
       v29 = v21;
-      dispatch_async(v25, block);
+      dispatch_async(workQueue, block);
 
       objc_destroyWeak(&v44);
       objc_destroyWeak(&location);
       ++v20;
-      a3 = (a3.location + 1);
+      range = (range.location + 1);
       --v19;
     }
 
@@ -302,32 +302,32 @@ void __101__PXGTitleSubtitleTextureProvider_requestTexturesForSpritesInRange_geo
   [v7 didRenderTitleAndSubtitleSpriteAtIndex:v6 layoutVersion:v8 withLastBaseline:v9];
 }
 
-+ (double)_drawWithTitle:(id)a3 subtitle:(id)a4 spec:(id)a5 targetSize:(CGSize)a6 context:(CGContext *)a7 viewport:(CGRect)a8 screenScale:(double)a9
++ (double)_drawWithTitle:(id)title subtitle:(id)subtitle spec:(id)spec targetSize:(CGSize)size context:(CGContext *)context viewport:(CGRect)viewport screenScale:(double)scale
 {
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v15 = a6.height;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  UIGraphicsPushContext(a7);
-  CGContextTranslateCTM(a7, 0.0, v15);
-  CGContextScaleCTM(a7, 1.0, -1.0);
+  height = viewport.size.height;
+  width = viewport.size.width;
+  y = viewport.origin.y;
+  x = viewport.origin.x;
+  v15 = size.height;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  specCopy = spec;
+  UIGraphicsPushContext(context);
+  CGContextTranslateCTM(context, 0.0, v15);
+  CGContextScaleCTM(context, 1.0, -1.0);
   if (PXGShouldDisplayTextTextureBoundaries())
   {
-    CGContextSetRGBFillColor(a7, 1.0, 0.5, 1.0, 0.5);
+    CGContextSetRGBFillColor(context, 1.0, 0.5, 1.0, 0.5);
     v51.origin.x = x;
     v51.origin.y = y;
     v51.size.width = width;
     v51.size.height = height;
-    CGContextFillRect(a7, v51);
+    CGContextFillRect(context, v51);
   }
 
-  CGContextScaleCTM(a7, a9, a9);
+  CGContextScaleCTM(context, scale, scale);
   PXRectScale();
-  [v20 padding];
+  [specCopy padding];
   v22 = v21;
   v24 = v23;
   PXEdgeInsetsInsetRect();
@@ -335,7 +335,7 @@ void __101__PXGTitleSubtitleTextureProvider_requestTexturesForSpritesInRange_geo
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  CGContextGetCTM(&v50, a7);
+  CGContextGetCTM(&v50, context);
   if (v50.d >= 0.0)
   {
     v33 = v28 - (v22 - v24);
@@ -351,20 +351,20 @@ void __101__PXGTitleSubtitleTextureProvider_requestTexturesForSpritesInRange_geo
   v42[1] = 3221225472;
   v42[2] = __104__PXGTitleSubtitleTextureProvider__drawWithTitle_subtitle_spec_targetSize_context_viewport_screenScale___block_invoke;
   v42[3] = &unk_2782A7BB0;
-  v43 = v18;
-  v44 = v19;
-  v45 = v20;
+  v43 = titleCopy;
+  v44 = subtitleCopy;
+  v45 = specCopy;
   v46 = v26;
   v47 = v33;
   v48 = v30;
   v49 = v32;
-  v35 = v20;
-  v36 = v19;
-  v37 = v18;
+  v35 = specCopy;
+  v36 = subtitleCopy;
+  v37 = titleCopy;
   [v34 performChanges:v42];
   [v34 startLayerRealization];
-  v38 = [v34 layer];
-  [v38 drawInContext:a7];
+  layer = [v34 layer];
+  [layer drawInContext:context];
 
   UIGraphicsPopContext();
   [v34 layerLastBaseline];

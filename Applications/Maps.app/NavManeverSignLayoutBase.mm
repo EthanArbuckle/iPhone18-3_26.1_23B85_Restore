@@ -1,30 +1,30 @@
 @interface NavManeverSignLayoutBase
-- ($84D9B426F26CE1F36C5948DD9DEACC84)maneuverViewArrowMetricsForSign:(SEL)a3;
-- ($84D9B426F26CE1F36C5948DD9DEACC84)maneuverViewJunctionArrowMetricsForSign:(SEL)a3;
-- (BOOL)_shouldShowExitShieldForSign:(id)a3;
-- (BOOL)_shouldShowManeuverViewForSign:(id)a3;
-- (BOOL)navSignView:(id)a3 shouldAlignToTrailingForMajorText:(BOOL)a4;
-- (CGSize)maneuverViewSizeForSign:(id)a3;
-- (double)baselineMarginBetweenLabelsForSign:(id)a3;
-- (double)navSignView:(id)a3 textTrailingMarginForMajorText:(BOOL)a4;
-- (double)textBottomMarginForSign:(id)a3;
-- (double)textTopMarginForSign:(id)a3;
-- (id)navSignView:(id)a3 alternateFontForMajorText:(BOOL)a4;
-- (id)navSignView:(id)a3 preferredFontForMajorText:(BOOL)a4;
-- (int64_t)maneuverViewPositionForSign:(id)a3;
+- ($84D9B426F26CE1F36C5948DD9DEACC84)maneuverViewArrowMetricsForSign:(SEL)sign;
+- ($84D9B426F26CE1F36C5948DD9DEACC84)maneuverViewJunctionArrowMetricsForSign:(SEL)sign;
+- (BOOL)_shouldShowExitShieldForSign:(id)sign;
+- (BOOL)_shouldShowManeuverViewForSign:(id)sign;
+- (BOOL)navSignView:(id)view shouldAlignToTrailingForMajorText:(BOOL)text;
+- (CGSize)maneuverViewSizeForSign:(id)sign;
+- (double)baselineMarginBetweenLabelsForSign:(id)sign;
+- (double)navSignView:(id)view textTrailingMarginForMajorText:(BOOL)text;
+- (double)textBottomMarginForSign:(id)sign;
+- (double)textTopMarginForSign:(id)sign;
+- (id)navSignView:(id)view alternateFontForMajorText:(BOOL)text;
+- (id)navSignView:(id)view preferredFontForMajorText:(BOOL)text;
+- (int64_t)maneuverViewPositionForSign:(id)sign;
 @end
 
 @implementation NavManeverSignLayoutBase
 
-- (int64_t)maneuverViewPositionForSign:(id)a3
+- (int64_t)maneuverViewPositionForSign:(id)sign
 {
-  v3 = [a3 minorLabel];
-  v4 = [v3 lineCount] > 2;
+  minorLabel = [sign minorLabel];
+  v4 = [minorLabel lineCount] > 2;
 
   return v4;
 }
 
-- (CGSize)maneuverViewSizeForSign:(id)a3
+- (CGSize)maneuverViewSizeForSign:(id)sign
 {
   v3 = 48.0;
   v4 = 58.0;
@@ -33,7 +33,7 @@
   return result;
 }
 
-- ($84D9B426F26CE1F36C5948DD9DEACC84)maneuverViewJunctionArrowMetricsForSign:(SEL)a3
+- ($84D9B426F26CE1F36C5948DD9DEACC84)maneuverViewJunctionArrowMetricsForSign:(SEL)sign
 {
   *&retstr->var59 = 0u;
   *&retstr->var61 = 0u;
@@ -69,7 +69,7 @@
   return [SignStyle junctionArrowMetricsForStyle:0 scaledToMatchReferenceSize:0 forView:58.0, 58.0];
 }
 
-- ($84D9B426F26CE1F36C5948DD9DEACC84)maneuverViewArrowMetricsForSign:(SEL)a3
+- ($84D9B426F26CE1F36C5948DD9DEACC84)maneuverViewArrowMetricsForSign:(SEL)sign
 {
   *&retstr->var59 = 0u;
   *&retstr->var61 = 0u;
@@ -105,23 +105,23 @@
   return [SignStyle arrowMetricsForStyle:0 scaledToMatchReferenceSize:0 forView:58.0, 58.0];
 }
 
-- (id)navSignView:(id)a3 alternateFontForMajorText:(BOOL)a4
+- (id)navSignView:(id)view alternateFontForMajorText:(BOOL)text
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 maneuverSign];
-  v8 = [v7 maneuverSignType];
+  textCopy = text;
+  viewCopy = view;
+  maneuverSign = [viewCopy maneuverSign];
+  maneuverSignType = [maneuverSign maneuverSignType];
 
-  if ((v8 - 1) > 1)
+  if ((maneuverSignType - 1) > 1)
   {
     v14.receiver = self;
     v14.super_class = NavManeverSignLayoutBase;
-    v11 = [(NavSignLayoutBase *)&v14 navSignView:v6 alternateFontForMajorText:v4];
+    v11 = [(NavSignLayoutBase *)&v14 navSignView:viewCopy alternateFontForMajorText:textCopy];
   }
 
   else
   {
-    if (v4)
+    if (textCopy)
     {
       v9 = UIFontWeightHeavy;
       v10 = 27.0;
@@ -141,24 +141,24 @@
   return v12;
 }
 
-- (id)navSignView:(id)a3 preferredFontForMajorText:(BOOL)a4
+- (id)navSignView:(id)view preferredFontForMajorText:(BOOL)text
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 maneuverSign];
-  v8 = [v7 maneuverSignType];
+  textCopy = text;
+  viewCopy = view;
+  maneuverSign = [viewCopy maneuverSign];
+  maneuverSignType = [maneuverSign maneuverSignType];
 
-  if ((v8 - 1) > 1)
+  if ((maneuverSignType - 1) > 1)
   {
     v13.receiver = self;
     v13.super_class = NavManeverSignLayoutBase;
-    v10 = [(NavSignLayoutBase *)&v13 navSignView:v6 preferredFontForMajorText:v4];
+    v10 = [(NavSignLayoutBase *)&v13 navSignView:viewCopy preferredFontForMajorText:textCopy];
   }
 
   else
   {
     v9 = &UIFontWeightMedium;
-    if (v4)
+    if (textCopy)
     {
       v9 = &UIFontWeightHeavy;
     }
@@ -171,17 +171,17 @@
   return v11;
 }
 
-- (double)baselineMarginBetweenLabelsForSign:(id)a3
+- (double)baselineMarginBetweenLabelsForSign:(id)sign
 {
-  v4 = a3;
-  v5 = [v4 maneuverSign];
-  v6 = [v5 maneuverSignType];
+  signCopy = sign;
+  maneuverSign = [signCopy maneuverSign];
+  maneuverSignType = [maneuverSign maneuverSignType];
 
-  if ((v6 - 1) >= 2)
+  if ((maneuverSignType - 1) >= 2)
   {
     v10.receiver = self;
     v10.super_class = NavManeverSignLayoutBase;
-    [(NavSignLayoutBase *)&v10 baselineMarginBetweenLabelsForSign:v4];
+    [(NavSignLayoutBase *)&v10 baselineMarginBetweenLabelsForSign:signCopy];
     v7 = v8;
   }
 
@@ -193,25 +193,25 @@
   return v7;
 }
 
-- (double)textBottomMarginForSign:(id)a3
+- (double)textBottomMarginForSign:(id)sign
 {
-  v4 = a3;
-  v5 = [v4 maneuverSign];
-  v6 = [v5 maneuverSignType];
+  signCopy = sign;
+  maneuverSign = [signCopy maneuverSign];
+  maneuverSignType = [maneuverSign maneuverSignType];
 
-  if ((v6 - 1) > 1)
+  if ((maneuverSignType - 1) > 1)
   {
     v11.receiver = self;
     v11.super_class = NavManeverSignLayoutBase;
-    [(NavSignLayoutBase *)&v11 textBottomMarginForSign:v4];
+    [(NavSignLayoutBase *)&v11 textBottomMarginForSign:signCopy];
     v8 = v9;
   }
 
   else
   {
-    v7 = [v4 hasOnlySingleLineText];
+    hasOnlySingleLineText = [signCopy hasOnlySingleLineText];
 
-    if (v7)
+    if (hasOnlySingleLineText)
     {
       return 30.0;
     }
@@ -225,25 +225,25 @@
   return v8;
 }
 
-- (double)textTopMarginForSign:(id)a3
+- (double)textTopMarginForSign:(id)sign
 {
-  v4 = a3;
-  v5 = [v4 maneuverSign];
-  v6 = [v5 maneuverSignType];
+  signCopy = sign;
+  maneuverSign = [signCopy maneuverSign];
+  maneuverSignType = [maneuverSign maneuverSignType];
 
-  if ((v6 - 1) > 1)
+  if ((maneuverSignType - 1) > 1)
   {
     v11.receiver = self;
     v11.super_class = NavManeverSignLayoutBase;
-    [(NavSignLayoutBase *)&v11 textTopMarginForSign:v4];
+    [(NavSignLayoutBase *)&v11 textTopMarginForSign:signCopy];
     v8 = v9;
   }
 
   else
   {
-    v7 = [v4 hasOnlySingleLineText];
+    hasOnlySingleLineText = [signCopy hasOnlySingleLineText];
 
-    if (v7)
+    if (hasOnlySingleLineText)
     {
       return 50.0;
     }
@@ -257,47 +257,47 @@
   return v8;
 }
 
-- (BOOL)navSignView:(id)a3 shouldAlignToTrailingForMajorText:(BOOL)a4
+- (BOOL)navSignView:(id)view shouldAlignToTrailingForMajorText:(BOOL)text
 {
-  if (a4)
+  if (text)
   {
-    return ![(NavManeverSignLayoutBase *)self _shouldShowExitShieldForSign:a3];
+    return ![(NavManeverSignLayoutBase *)self _shouldShowExitShieldForSign:view];
   }
 
   v5.receiver = self;
   v5.super_class = NavManeverSignLayoutBase;
-  return [(NavSignLayoutBase *)&v5 navSignView:a3 shouldAlignToTrailingForMajorText:?];
+  return [(NavSignLayoutBase *)&v5 navSignView:view shouldAlignToTrailingForMajorText:?];
 }
 
-- (double)navSignView:(id)a3 textTrailingMarginForMajorText:(BOOL)a4
+- (double)navSignView:(id)view textTrailingMarginForMajorText:(BOOL)text
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v4 || (v7 = 5.0, ![(NavManeverSignLayoutBase *)self _shouldShowExitShieldForSign:v6]))
+  textCopy = text;
+  viewCopy = view;
+  if (!textCopy || (v7 = 5.0, ![(NavManeverSignLayoutBase *)self _shouldShowExitShieldForSign:viewCopy]))
   {
     v10.receiver = self;
     v10.super_class = NavManeverSignLayoutBase;
-    [(NavSignLayoutBase *)&v10 navSignView:v6 textTrailingMarginForMajorText:v4];
+    [(NavSignLayoutBase *)&v10 navSignView:viewCopy textTrailingMarginForMajorText:textCopy];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (BOOL)_shouldShowManeuverViewForSign:(id)a3
+- (BOOL)_shouldShowManeuverViewForSign:(id)sign
 {
-  v3 = [a3 maneuverSign];
-  v4 = [v3 hasManeuverArtwork];
+  maneuverSign = [sign maneuverSign];
+  hasManeuverArtwork = [maneuverSign hasManeuverArtwork];
 
-  return v4;
+  return hasManeuverArtwork;
 }
 
-- (BOOL)_shouldShowExitShieldForSign:(id)a3
+- (BOOL)_shouldShowExitShieldForSign:(id)sign
 {
-  v4 = [a3 maneuverSign];
-  if ([v4 hasShieldInfo] && (objc_msgSend(v4, "suppressShieldView") & 1) == 0)
+  maneuverSign = [sign maneuverSign];
+  if ([maneuverSign hasShieldInfo] && (objc_msgSend(maneuverSign, "suppressShieldView") & 1) == 0)
   {
-    v5 = ![(NavManeverSignLayoutBase *)self forceHideShieldViewForSign:v4];
+    v5 = ![(NavManeverSignLayoutBase *)self forceHideShieldViewForSign:maneuverSign];
   }
 
   else

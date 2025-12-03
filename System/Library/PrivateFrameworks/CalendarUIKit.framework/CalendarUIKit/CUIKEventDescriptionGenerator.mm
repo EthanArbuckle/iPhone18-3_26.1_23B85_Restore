@@ -1,16 +1,16 @@
 @interface CUIKEventDescriptionGenerator
 + (id)sharedGenerator;
-- (BOOL)_virtualConferenceUsesShortRepresentation:(id)a3;
-- (id)_attributedStringWithURL:(id)a3 title:(id)a4;
+- (BOOL)_virtualConferenceUsesShortRepresentation:(id)representation;
+- (id)_attributedStringWithURL:(id)l title:(id)title;
 - (id)_basicTextAttributes;
 - (id)_boldBasicTextAttributes;
-- (id)_htmlStringWithURL:(id)a3 title:(id)a4;
-- (id)_showEventURLStringForEvent:(id)a3;
-- (id)_textRepresentationForAttendee:(id)a3 includeEmailAddress:(BOOL)a4;
-- (id)_urlAttributes:(id)a3;
-- (id)_virtualConferenceHTMLRepresentation:(id)a3 isForEmail:(BOOL)a4;
-- (id)dateStringRepresentationForEvent:(id)a3;
-- (id)textRepresentationForEvent:(id)a3 withTextFormat:(unint64_t)a4 showURI:(BOOL)a5;
+- (id)_htmlStringWithURL:(id)l title:(id)title;
+- (id)_showEventURLStringForEvent:(id)event;
+- (id)_textRepresentationForAttendee:(id)attendee includeEmailAddress:(BOOL)address;
+- (id)_urlAttributes:(id)attributes;
+- (id)_virtualConferenceHTMLRepresentation:(id)representation isForEmail:(BOOL)email;
+- (id)dateStringRepresentationForEvent:(id)event;
+- (id)textRepresentationForEvent:(id)event withTextFormat:(unint64_t)format showURI:(BOOL)i;
 @end
 
 @implementation CUIKEventDescriptionGenerator
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __48__CUIKEventDescriptionGenerator_sharedGenerator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedGenerator_onceToken_2 != -1)
   {
     dispatch_once(&sharedGenerator_onceToken_2, block);
@@ -41,41 +41,41 @@ uint64_t __48__CUIKEventDescriptionGenerator_sharedGenerator__block_invoke(uint6
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (id)textRepresentationForEvent:(id)a3 withTextFormat:(unint64_t)a4 showURI:(BOOL)a5
+- (id)textRepresentationForEvent:(id)event withTextFormat:(unint64_t)format showURI:(BOOL)i
 {
-  v5 = a5;
+  iCopy = i;
   v168 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [v8 title];
-  v10 = [v8 location];
-  v152 = [v8 URL];
-  v148 = [v8 attendees];
-  v151 = [v8 displayNotes];
-  v11 = [v8 virtualConference];
-  obj = [(CUIKEventDescriptionGenerator *)self _virtualConferenceUsesShortRepresentation:v11];
-  v153 = a4;
-  if (a4 == 1)
+  eventCopy = event;
+  title = [eventCopy title];
+  location = [eventCopy location];
+  v152 = [eventCopy URL];
+  attendees = [eventCopy attendees];
+  displayNotes = [eventCopy displayNotes];
+  virtualConference = [eventCopy virtualConference];
+  obj = [(CUIKEventDescriptionGenerator *)self _virtualConferenceUsesShortRepresentation:virtualConference];
+  formatCopy = format;
+  if (format == 1)
   {
     v12 = &stru_1F4AA8958;
 LABEL_6:
     v13 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v12];
-    v146 = v153 == 3;
+    v146 = formatCopy == 3;
 LABEL_7:
     v14 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", v9];
-    v16 = [(CUIKEventDescriptionGenerator *)self _boldBasicTextAttributes];
-    v17 = [v14 initWithString:v15 attributes:v16];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", title];
+    _boldBasicTextAttributes = [(CUIKEventDescriptionGenerator *)self _boldBasicTextAttributes];
+    v136 = [v14 initWithString:v15 attributes:_boldBasicTextAttributes];
 
-    [v13 appendAttributedString:v17];
+    [v13 appendAttributedString:v136];
 LABEL_8:
 
-    a4 = v153;
+    format = formatCopy;
     goto LABEL_9;
   }
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((format & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
-    if (a4 == 3)
+    if (format == 3)
     {
       v12 = @"\n\n\n";
       goto LABEL_6;
@@ -89,50 +89,50 @@ LABEL_8:
     v13 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:&stru_1F4AA8958];
   }
 
-  if (a4 <= 1)
+  if (format <= 1)
   {
-    if (a4)
+    if (format)
     {
-      v146 = a4 == 3;
+      v146 = format == 3;
       goto LABEL_9;
     }
 
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", v9];
-    [v13 appendString:v17];
+    v136 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", title];
+    [v13 appendString:v136];
 LABEL_135:
     v146 = 0;
     goto LABEL_8;
   }
 
-  if (a4 == 2)
+  if (format == 2)
   {
-    v135 = [v9 stringByTrimmingWhitespaceAndRemovingNewlines];
-    v136 = v135;
+    stringByTrimmingWhitespaceAndRemovingNewlines = [title stringByTrimmingWhitespaceAndRemovingNewlines];
+    v136 = stringByTrimmingWhitespaceAndRemovingNewlines;
     v137 = MEMORY[0x1E696AEC0];
-    if (v5)
+    if (iCopy)
     {
-      v138 = [(CUIKEventDescriptionGenerator *)self _showEventURLStringForEvent:v8];
-      v17 = [v137 stringWithFormat:@"<b><a href = %@>%@</a></b><br />", v138, v136];
+      v138 = [(CUIKEventDescriptionGenerator *)self _showEventURLStringForEvent:eventCopy];
+      v136 = [v137 stringWithFormat:@"<b><a href = %@>%@</a></b><br />", v138, v136];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<b>%@</b><br />", v135];
+      v136 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<b>%@</b><br />", stringByTrimmingWhitespaceAndRemovingNewlines];
     }
 
-    [v13 appendString:v17];
+    [v13 appendString:v136];
 
     goto LABEL_135;
   }
 
-  v146 = a4 == 3;
-  if (a4 == 3)
+  v146 = format == 3;
+  if (format == 3)
   {
     goto LABEL_7;
   }
 
 LABEL_9:
-  v18 = [(CUIKEventDescriptionGenerator *)self dateStringRepresentationForEvent:v8];
+  v18 = [(CUIKEventDescriptionGenerator *)self dateStringRepresentationForEvent:eventCopy];
   if (!v18)
   {
     v149 = 0;
@@ -140,11 +140,11 @@ LABEL_9:
   }
 
   v149 = v18;
-  if (a4 > 1)
+  if (format > 1)
   {
-    if (a4 != 2)
+    if (format != 2)
     {
-      if (a4 != 3)
+      if (format != 3)
       {
         goto LABEL_29;
       }
@@ -161,28 +161,28 @@ LABEL_9:
     goto LABEL_29;
   }
 
-  if (!a4)
+  if (!format)
   {
     v23 = v18;
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", v18];
     goto LABEL_28;
   }
 
-  if (a4 == 1)
+  if (format == 1)
   {
 LABEL_17:
     v19 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", v149];
-    v21 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
-    v22 = [v19 initWithString:v20 attributes:v21];
+    v149 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", v149];
+    _basicTextAttributes = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
+    v22 = [v19 initWithString:v149 attributes:_basicTextAttributes];
 
     [v13 appendAttributedString:v22];
   }
 
 LABEL_29:
-  v150 = v11;
-  v156 = self;
-  if (![v10 length])
+  v150 = virtualConference;
+  selfCopy = self;
+  if (![location length])
   {
     goto LABEL_42;
   }
@@ -190,14 +190,14 @@ LABEL_29:
   v25 = MEMORY[0x1E696AEC0];
   v26 = CUIKBundle();
   v27 = [v26 localizedStringForKey:@"Location: %@" value:&stru_1F4AA8958 table:0];
-  v28 = [v25 localizedStringWithFormat:v27, v10];
+  v28 = [v25 localizedStringWithFormat:v27, location];
 
-  if (v153 <= 1)
+  if (formatCopy <= 1)
   {
-    v11 = v150;
-    if (v153)
+    virtualConference = v150;
+    if (formatCopy)
     {
-      if (v153 != 1)
+      if (formatCopy != 1)
       {
         goto LABEL_41;
       }
@@ -211,23 +211,23 @@ LABEL_29:
     goto LABEL_40;
   }
 
-  v11 = v150;
-  if (v153 == 2)
+  virtualConference = v150;
+  if (formatCopy == 2)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@<br />", v28];
     goto LABEL_39;
   }
 
-  if (v153 == 3)
+  if (formatCopy == 3)
   {
 LABEL_36:
     v29 = objc_alloc(MEMORY[0x1E696AAB0]);
     v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", v28];
-    v31 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
-    v32 = [v29 initWithString:v30 attributes:v31];
+    _basicTextAttributes2 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
+    v32 = [v29 initWithString:v30 attributes:_basicTextAttributes2];
     [v13 appendAttributedString:v32];
 
-    v11 = v150;
+    virtualConference = v150;
 LABEL_40:
   }
 
@@ -235,7 +235,7 @@ LABEL_41:
 
 LABEL_42:
   v33 = !obj;
-  if (!v11)
+  if (!virtualConference)
   {
     v33 = 1;
   }
@@ -245,44 +245,44 @@ LABEL_42:
     v34 = CUIKBundle();
     v35 = [v34 localizedStringForKey:@"Video Call: %@" value:&stru_1F4AA8958 table:0];
 
-    v36 = [v11 joinMethods];
-    v37 = [v36 firstObject];
-    v38 = [v37 URL];
+    joinMethods = [virtualConference joinMethods];
+    firstObject = [joinMethods firstObject];
+    v38 = [firstObject URL];
 
-    if (v153 > 1)
+    if (formatCopy > 1)
     {
-      if (v153 == 2)
+      if (formatCopy == 2)
       {
-        v41 = [(CUIKEventDescriptionGenerator *)self _virtualConferenceHTMLRepresentation:v8 isForEmail:0];
+        v41 = [(CUIKEventDescriptionGenerator *)self _virtualConferenceHTMLRepresentation:eventCopy isForEmail:0];
         [v13 appendString:v41];
         goto LABEL_54;
       }
 
-      if (v153 == 3)
+      if (formatCopy == 3)
       {
 LABEL_51:
         v39 = objc_alloc(MEMORY[0x1E696AAB0]);
-        v40 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
-        v41 = [v39 initWithString:v35 attributes:v40];
+        _basicTextAttributes3 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
+        v41 = [v39 initWithString:v35 attributes:_basicTextAttributes3];
 
-        v42 = [v38 absoluteString];
-        [(CUIKEventDescriptionGenerator *)self _attributedStringWithURL:v38 title:v42];
-        v44 = v43 = v10;
+        absoluteString = [v38 absoluteString];
+        [(CUIKEventDescriptionGenerator *)self _attributedStringWithURL:v38 title:absoluteString];
+        v44 = v43 = location;
 
         v45 = [MEMORY[0x1E696AAB0] localizedAttributedStringWithFormat:v41, v44];
         [v13 appendAttributedString:v45];
 
-        v10 = v43;
-        self = v156;
+        location = v43;
+        self = selfCopy;
 LABEL_54:
       }
     }
 
     else
     {
-      if (v153)
+      if (formatCopy)
       {
-        if (v153 != 1)
+        if (formatCopy != 1)
         {
           goto LABEL_55;
         }
@@ -291,8 +291,8 @@ LABEL_54:
       }
 
       v46 = MEMORY[0x1E696AEC0];
-      v47 = [v38 absoluteString];
-      v48 = [v46 localizedStringWithFormat:v35, v47];
+      absoluteString2 = [v38 absoluteString];
+      v48 = [v46 localizedStringWithFormat:v35, absoluteString2];
       [v13 appendString:v48];
 
       [v13 appendString:@"\n"];
@@ -300,7 +300,7 @@ LABEL_54:
 
 LABEL_55:
 
-    v11 = v150;
+    virtualConference = v150;
   }
 
   v157 = v13;
@@ -309,19 +309,19 @@ LABEL_55:
     goto LABEL_64;
   }
 
-  if (v153 <= 1)
+  if (formatCopy <= 1)
   {
-    if (!v153)
+    if (!formatCopy)
     {
       v78 = MEMORY[0x1E696AEC0];
-      v79 = [v152 absoluteString];
-      v80 = [v78 stringWithFormat:@"%@\n", v79];
+      absoluteString3 = [v152 absoluteString];
+      v80 = [v78 stringWithFormat:@"%@\n", absoluteString3];
       [v13 appendString:v80];
 
       goto LABEL_89;
     }
 
-    if (v153 != 1)
+    if (formatCopy != 1)
     {
       goto LABEL_89;
     }
@@ -329,37 +329,37 @@ LABEL_55:
     goto LABEL_63;
   }
 
-  if (v153 == 2)
+  if (formatCopy == 2)
   {
-    v81 = [v152 absoluteString];
-    v82 = [(CUIKEventDescriptionGenerator *)self _htmlStringWithURL:v152 title:v81];
+    absoluteString4 = [v152 absoluteString];
+    v82 = [(CUIKEventDescriptionGenerator *)self _htmlStringWithURL:v152 title:absoluteString4];
     [v13 appendString:v82];
 
     goto LABEL_89;
   }
 
-  if (v153 == 3)
+  if (formatCopy == 3)
   {
 LABEL_63:
-    v49 = [v152 absoluteString];
-    v50 = [(CUIKEventDescriptionGenerator *)self _attributedStringWithURL:v152 title:v49];
+    absoluteString5 = [v152 absoluteString];
+    v50 = [(CUIKEventDescriptionGenerator *)self _attributedStringWithURL:v152 title:absoluteString5];
 
     [v13 appendAttributedString:v50];
 LABEL_64:
-    if ((v153 | 2) != 3 || ![v148 count])
+    if ((formatCopy | 2) != 3 || ![attendees count])
     {
       goto LABEL_89;
     }
 
-    v142 = v8;
-    v144 = v9;
+    v142 = eventCopy;
+    v144 = title;
     v139 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:&stru_1F4AA8958];
     v51 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v162 = 0u;
     v163 = 0u;
     v164 = 0u;
     v165 = 0u;
-    v52 = v148;
+    v52 = attendees;
     v53 = [v52 countByEnumeratingWithState:&v162 objects:v167 count:16];
     v54 = v51;
     if (!v53)
@@ -379,11 +379,11 @@ LABEL_64:
         }
 
         v58 = *(*(&v162 + 1) + 8 * i);
-        v59 = [v58 name];
-        if (v59)
+        name = [v58 name];
+        if (name)
         {
-          v60 = v59;
-          if (!v10)
+          v60 = name;
+          if (!location)
           {
 
 LABEL_76:
@@ -391,13 +391,13 @@ LABEL_76:
             continue;
           }
 
-          v61 = [v58 name];
-          v62 = v10;
-          v63 = [v10 rangeOfString:v61];
+          name2 = [v58 name];
+          v62 = location;
+          v63 = [location rangeOfString:name2];
 
           v13 = v157;
           v64 = v63 == 0x7FFFFFFFFFFFFFFFLL;
-          v10 = v62;
+          location = v62;
           v51 = v54;
           if (v64)
           {
@@ -411,20 +411,20 @@ LABEL_76:
       {
 LABEL_79:
 
-        v9 = v144;
+        title = v144;
         v65 = v139;
         if ([v51 count])
         {
           v66 = [v51 objectAtIndex:0];
-          v67 = [(CUIKEventDescriptionGenerator *)v156 _textRepresentationForAttendee:v66 includeEmailAddress:!v146];
+          v67 = [(CUIKEventDescriptionGenerator *)selfCopy _textRepresentationForAttendee:v66 includeEmailAddress:!v146];
 
           [v139 appendAttributedString:v67];
           v68 = [v51 count];
-          v140 = v10;
+          v140 = location;
           if (v68 < 2)
           {
             v74 = v67;
-            v71 = v156;
+            v71 = selfCopy;
             v72 = v139;
           }
 
@@ -432,16 +432,16 @@ LABEL_79:
           {
             v69 = v68;
             v70 = 1;
-            v71 = v156;
+            v71 = selfCopy;
             v72 = v139;
             do
             {
               v73 = [v54 objectAtIndex:v70];
-              v74 = [(CUIKEventDescriptionGenerator *)v156 _textRepresentationForAttendee:v73 includeEmailAddress:!v146];
+              v74 = [(CUIKEventDescriptionGenerator *)selfCopy _textRepresentationForAttendee:v73 includeEmailAddress:!v146];
 
               v75 = objc_alloc(MEMORY[0x1E696AAB0]);
-              v76 = [(CUIKEventDescriptionGenerator *)v156 _basicTextAttributes];
-              v77 = [v75 initWithString:@" attributes:{", v76}];
+              _basicTextAttributes4 = [(CUIKEventDescriptionGenerator *)selfCopy _basicTextAttributes];
+              v77 = [v75 initWithString:@" attributes:{", _basicTextAttributes4}];
               [v139 appendAttributedString:v77];
 
               [v139 appendAttributedString:v74];
@@ -455,42 +455,42 @@ LABEL_79:
           v83 = objc_alloc(MEMORY[0x1E696AAB0]);
           v84 = CUIKBundle();
           v85 = [v84 localizedStringForKey:@"Invitees: " value:&stru_1F4AA8958 table:0];
-          v86 = [(CUIKEventDescriptionGenerator *)v71 _basicTextAttributes];
-          v87 = [v83 initWithString:v85 attributes:v86];
+          _basicTextAttributes5 = [(CUIKEventDescriptionGenerator *)v71 _basicTextAttributes];
+          v87 = [v83 initWithString:v85 attributes:_basicTextAttributes5];
           [v157 appendAttributedString:v87];
 
           [v157 appendAttributedString:v72];
           v88 = objc_alloc(MEMORY[0x1E696AAB0]);
-          v89 = [(CUIKEventDescriptionGenerator *)v71 _basicTextAttributes];
-          v90 = [v88 initWithString:@"\n" attributes:v89];
+          _basicTextAttributes6 = [(CUIKEventDescriptionGenerator *)v71 _basicTextAttributes];
+          v90 = [v88 initWithString:@"\n" attributes:_basicTextAttributes6];
           [v157 appendAttributedString:v90];
 
           v13 = v157;
-          v10 = v140;
-          v9 = v144;
+          location = v140;
+          title = v144;
           v65 = v72;
           v51 = v54;
         }
 
-        v8 = v142;
-        v11 = v150;
-        self = v156;
+        eventCopy = v142;
+        virtualConference = v150;
+        self = selfCopy;
         break;
       }
     }
   }
 
 LABEL_89:
-  if (v11 && !obj)
+  if (virtualConference && !obj)
   {
     v91 = CUIKBundle();
     v92 = [v91 localizedStringForKey:@"Video Call:" value:&stru_1F4AA8958 table:0];
 
-    if (v153 > 1)
+    if (formatCopy > 1)
     {
-      if (v153 != 2)
+      if (formatCopy != 2)
       {
-        if (v153 != 3)
+        if (formatCopy != 3)
         {
 LABEL_113:
 
@@ -500,43 +500,43 @@ LABEL_113:
         goto LABEL_97;
       }
 
-      v128 = [(CUIKEventDescriptionGenerator *)self _virtualConferenceHTMLRepresentation:v8 isForEmail:0];
-      [v13 appendString:v128];
+      virtualConferenceTextRepresentation = [(CUIKEventDescriptionGenerator *)self _virtualConferenceHTMLRepresentation:eventCopy isForEmail:0];
+      [v13 appendString:virtualConferenceTextRepresentation];
     }
 
     else
     {
-      if (v153)
+      if (formatCopy)
       {
-        if (v153 != 1)
+        if (formatCopy != 1)
         {
           goto LABEL_113;
         }
 
 LABEL_97:
-        v141 = v10;
-        v143 = v8;
-        v145 = v9;
+        v141 = location;
+        v143 = eventCopy;
+        v145 = title;
         v93 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\n%@\n", v92];
 
         v94 = objc_alloc(MEMORY[0x1E696AAB0]);
-        v95 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
+        _basicTextAttributes7 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
         v147 = v93;
-        v96 = [v94 initWithString:v93 attributes:v95];
+        v96 = [v94 initWithString:v93 attributes:_basicTextAttributes7];
         [v13 appendAttributedString:v96];
 
-        v97 = [v11 title];
+        title2 = [virtualConference title];
 
-        if (v97)
+        if (title2)
         {
           v98 = objc_alloc(MEMORY[0x1E696AAB0]);
           v99 = objc_alloc(MEMORY[0x1E696AEC0]);
-          v100 = [v11 title];
-          v101 = [v99 initWithFormat:@"%@\n\n", v100];
-          v102 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
-          v103 = [v98 initWithString:v101 attributes:v102];
+          title3 = [virtualConference title];
+          v100 = [v99 initWithFormat:@"%@\n\n", title3];
+          _basicTextAttributes8 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
+          v103 = [v98 initWithString:v100 attributes:_basicTextAttributes8];
 
-          v11 = v150;
+          virtualConference = v150;
           [v13 appendAttributedString:v103];
         }
 
@@ -544,7 +544,7 @@ LABEL_97:
         v161 = 0u;
         v158 = 0u;
         v159 = 0u;
-        obja = [v11 joinMethods];
+        obja = [virtualConference joinMethods];
         v104 = [obja countByEnumeratingWithState:&v158 objects:v166 count:16];
         if (v104)
         {
@@ -560,29 +560,29 @@ LABEL_97:
               }
 
               v108 = *(*(&v158 + 1) + 8 * j);
-              v109 = [v108 title];
+              title4 = [v108 title];
 
-              if (v109)
+              if (title4)
               {
                 v110 = objc_alloc(MEMORY[0x1E696AAB0]);
                 v111 = objc_alloc(MEMORY[0x1E696AEC0]);
-                v112 = [v108 title];
-                v113 = [v111 initWithFormat:@"%@\n", v112];
-                v114 = [(CUIKEventDescriptionGenerator *)v156 _basicTextAttributes];
-                v115 = [v110 initWithString:v113 attributes:v114];
+                title5 = [v108 title];
+                v112 = [v111 initWithFormat:@"%@\n", title5];
+                _basicTextAttributes9 = [(CUIKEventDescriptionGenerator *)selfCopy _basicTextAttributes];
+                v115 = [v110 initWithString:v112 attributes:_basicTextAttributes9];
 
                 v13 = v157;
                 [v157 appendAttributedString:v115];
               }
 
               v116 = [v108 URL];
-              v117 = [v116 absoluteString];
-              v118 = [(CUIKEventDescriptionGenerator *)v156 _attributedStringWithURL:v116 title:v117];
+              absoluteString6 = [v116 absoluteString];
+              v118 = [(CUIKEventDescriptionGenerator *)selfCopy _attributedStringWithURL:v116 title:absoluteString6];
 
               [v13 appendAttributedString:v118];
               v119 = objc_alloc(MEMORY[0x1E696AAB0]);
-              v120 = [(CUIKEventDescriptionGenerator *)v156 _basicTextAttributes];
-              v121 = [v119 initWithString:@"\n" attributes:v120];
+              _basicTextAttributes10 = [(CUIKEventDescriptionGenerator *)selfCopy _basicTextAttributes];
+              v121 = [v119 initWithString:@"\n" attributes:_basicTextAttributes10];
               [v13 appendAttributedString:v121];
             }
 
@@ -592,41 +592,41 @@ LABEL_97:
           while (v105);
         }
 
-        v11 = v150;
-        v122 = [v150 conferenceDetails];
+        virtualConference = v150;
+        conferenceDetails = [v150 conferenceDetails];
 
-        if (!v122)
+        if (!conferenceDetails)
         {
-          v9 = v145;
+          title = v145;
           v92 = v93;
-          v10 = v141;
-          v8 = v143;
-          self = v156;
+          location = v141;
+          eventCopy = v143;
+          self = selfCopy;
           goto LABEL_113;
         }
 
         v123 = objc_alloc(MEMORY[0x1E696AAB0]);
         v124 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v125 = [v150 conferenceDetails];
-        v126 = [v124 initWithFormat:@"%@\n\n", v125];
-        v127 = [(CUIKEventDescriptionGenerator *)v156 _basicTextAttributes];
-        v128 = [v123 initWithString:v126 attributes:v127];
+        conferenceDetails2 = [v150 conferenceDetails];
+        v125 = [v124 initWithFormat:@"%@\n\n", conferenceDetails2];
+        _basicTextAttributes11 = [(CUIKEventDescriptionGenerator *)selfCopy _basicTextAttributes];
+        virtualConferenceTextRepresentation = [v123 initWithString:v125 attributes:_basicTextAttributes11];
 
-        self = v156;
-        [v13 appendAttributedString:v128];
-        v8 = v143;
-        v9 = v145;
-        v10 = v141;
+        self = selfCopy;
+        [v13 appendAttributedString:virtualConferenceTextRepresentation];
+        eventCopy = v143;
+        title = v145;
+        location = v141;
         v92 = v147;
         goto LABEL_112;
       }
 
       v129 = MEMORY[0x1E696AEC0];
-      v128 = [v8 virtualConferenceTextRepresentation];
-      v130 = [v129 stringWithFormat:@"\n%@\n%@\n\n", v92, v128];
-      [v13 appendString:v130];
+      virtualConferenceTextRepresentation = [eventCopy virtualConferenceTextRepresentation];
+      v128 = [v129 stringWithFormat:@"\n%@\n%@\n\n", v92, virtualConferenceTextRepresentation];
+      [v13 appendString:v128];
 
-      self = v156;
+      self = selfCopy;
     }
 
 LABEL_112:
@@ -635,16 +635,16 @@ LABEL_112:
   }
 
 LABEL_114:
-  if (!v151)
+  if (!displayNotes)
   {
     goto LABEL_126;
   }
 
-  if (v153 > 1)
+  if (formatCopy > 1)
   {
-    if (v153 != 2)
+    if (formatCopy != 2)
     {
-      if (v153 != 3)
+      if (formatCopy != 3)
       {
         goto LABEL_126;
       }
@@ -652,24 +652,24 @@ LABEL_114:
       goto LABEL_121;
     }
 
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@<br />", v151];
-    v132 = LABEL_124:;
-    [v13 appendString:v132];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@<br />", displayNotes];
+    _basicTextAttributes12 = LABEL_124:;
+    [v13 appendString:_basicTextAttributes12];
     goto LABEL_125;
   }
 
-  if (!v153)
+  if (!formatCopy)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", v151];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", displayNotes];
     goto LABEL_124;
   }
 
-  if (v153 == 1)
+  if (formatCopy == 1)
   {
 LABEL_121:
     v131 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v132 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
-    v133 = [v131 initWithString:v151 attributes:v132];
+    _basicTextAttributes12 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
+    v133 = [v131 initWithString:displayNotes attributes:_basicTextAttributes12];
     [v13 appendAttributedString:v133];
 
 LABEL_125:
@@ -680,27 +680,27 @@ LABEL_126:
   return v13;
 }
 
-- (id)dateStringRepresentationForEvent:(id)a3
+- (id)dateStringRepresentationForEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 startDate];
-  if (v4)
+  eventCopy = event;
+  startDate = [eventCopy startDate];
+  if (startDate)
   {
-    if ([v3 isReminderIntegrationEvent])
+    if ([eventCopy isReminderIntegrationEvent])
     {
       v5 = MEMORY[0x1E6992F68];
-      v6 = [v3 startDate];
-      v7 = [v5 dateStringRepresentationForReminderStartDate:v6 allDay:{objc_msgSend(v3, "isAllDay")}];
+      startDate2 = [eventCopy startDate];
+      v7 = [v5 dateStringRepresentationForReminderStartDate:startDate2 allDay:{objc_msgSend(eventCopy, "isAllDay")}];
     }
 
     else
     {
-      v6 = [v3 endDateUnadjustedForLegacyClients];
-      if (v6)
+      startDate2 = [eventCopy endDateUnadjustedForLegacyClients];
+      if (startDate2)
       {
-        v8 = [v3 isAllDay];
-        v9 = [v3 timeZone];
-        v7 = [MEMORY[0x1E6992F68] dateStringRepresentationForEventCompontentsStartDate:v4 endDate:v6 allDay:v8 timeZone:v9];
+        isAllDay = [eventCopy isAllDay];
+        timeZone = [eventCopy timeZone];
+        v7 = [MEMORY[0x1E6992F68] dateStringRepresentationForEventCompontentsStartDate:startDate endDate:startDate2 allDay:isAllDay timeZone:timeZone];
       }
 
       else
@@ -718,22 +718,22 @@ LABEL_126:
   return v7;
 }
 
-- (id)_showEventURLStringForEvent:(id)a3
+- (id)_showEventURLStringForEvent:(id)event
 {
-  v3 = [a3 externalURL];
-  v4 = [v3 absoluteString];
+  externalURL = [event externalURL];
+  absoluteString = [externalURL absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
-- (BOOL)_virtualConferenceUsesShortRepresentation:(id)a3
+- (BOOL)_virtualConferenceUsesShortRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 joinMethods];
-  if ([v4 count] == 1)
+  representationCopy = representation;
+  joinMethods = [representationCopy joinMethods];
+  if ([joinMethods count] == 1)
   {
-    v5 = [v3 conferenceDetails];
-    v6 = [v5 length] == 0;
+    conferenceDetails = [representationCopy conferenceDetails];
+    v6 = [conferenceDetails length] == 0;
   }
 
   else
@@ -744,34 +744,34 @@ LABEL_126:
   return v6;
 }
 
-- (id)_textRepresentationForAttendee:(id)a3 includeEmailAddress:(BOOL)a4
+- (id)_textRepresentationForAttendee:(id)attendee includeEmailAddress:(BOOL)address
 {
-  v4 = a4;
+  addressCopy = address;
   v6 = MEMORY[0x1E696AD40];
-  v7 = a3;
+  attendeeCopy = attendee;
   v8 = [[v6 alloc] initWithString:&stru_1F4AA8958];
-  v9 = [v7 name];
-  v10 = [v7 emailAddress];
+  name = [attendeeCopy name];
+  emailAddress = [attendeeCopy emailAddress];
 
-  if (v10 && v4)
+  if (emailAddress && addressCopy)
   {
-    if (v9)
+    if (name)
     {
       v11 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ ", v9];
-      v13 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
-      v14 = [v11 initWithString:v12 attributes:v13];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ ", name];
+      _basicTextAttributes = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
+      v14 = [v11 initWithString:v12 attributes:_basicTextAttributes];
       [v8 appendAttributedString:v14];
     }
 
     v15 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v16 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
-    v17 = [v15 initWithString:@"<" attributes:v16];
+    _basicTextAttributes2 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
+    v17 = [v15 initWithString:@"<" attributes:_basicTextAttributes2];
     [v8 appendAttributedString:v17];
 
     v18 = objc_alloc(MEMORY[0x1E696AAB0]);
     v19 = [(CUIKEventDescriptionGenerator *)self _urlAttributes:0];
-    v20 = [v18 initWithString:v10 attributes:v19];
+    v20 = [v18 initWithString:emailAddress attributes:v19];
     [v8 appendAttributedString:v20];
 
     v21 = @">";
@@ -779,16 +779,16 @@ LABEL_126:
 
   else
   {
-    v21 = v9;
-    if (!v9)
+    v21 = name;
+    if (!name)
     {
       goto LABEL_8;
     }
   }
 
   v22 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v23 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
-  v24 = [v22 initWithString:v21 attributes:v23];
+  _basicTextAttributes3 = [(CUIKEventDescriptionGenerator *)self _basicTextAttributes];
+  v24 = [v22 initWithString:v21 attributes:_basicTextAttributes3];
   [v8 appendAttributedString:v24];
 
 LABEL_8:
@@ -796,34 +796,34 @@ LABEL_8:
   return v8;
 }
 
-- (id)_attributedStringWithURL:(id)a3 title:(id)a4
+- (id)_attributedStringWithURL:(id)l title:(id)title
 {
-  v6 = a4;
-  v7 = [(CUIKEventDescriptionGenerator *)self _urlAttributes:a3];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", v6];
+  titleCopy = title;
+  v7 = [(CUIKEventDescriptionGenerator *)self _urlAttributes:l];
+  titleCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n", titleCopy];
 
-  v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v8 attributes:v7];
+  v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy attributes:v7];
 
   return v9;
 }
 
-- (id)_urlAttributes:(id)a3
+- (id)_urlAttributes:(id)attributes
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (attributes)
   {
     v3 = *MEMORY[0x1E69DB670];
-    v20[0] = a3;
+    v20[0] = attributes;
     v4 = *MEMORY[0x1E69DB758];
     v19[0] = v3;
     v19[1] = v4;
     v5 = MEMORY[0x1E696AD98];
-    v6 = a3;
+    attributesCopy = attributes;
     v7 = [v5 numberWithInteger:1];
     v20[1] = v7;
     v19[2] = *MEMORY[0x1E69DB650];
-    v8 = [MEMORY[0x1E69DC888] linkColor];
-    v20[2] = v8;
+    linkColor = [MEMORY[0x1E69DC888] linkColor];
+    v20[2] = linkColor;
     v19[3] = *MEMORY[0x1E69DB648];
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:16.0];
     v20[3] = v9;
@@ -837,12 +837,12 @@ LABEL_8:
   {
     v17[0] = *MEMORY[0x1E69DB758];
     v14 = MEMORY[0x1E696AD98];
-    v6 = 0;
+    attributesCopy = 0;
     v7 = [v14 numberWithInteger:1];
     v18[0] = v7;
     v17[1] = *MEMORY[0x1E69DB650];
-    v8 = [MEMORY[0x1E69DC888] linkColor];
-    v18[1] = v8;
+    linkColor = [MEMORY[0x1E69DC888] linkColor];
+    v18[1] = linkColor;
     v17[2] = *MEMORY[0x1E69DB648];
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:16.0];
     v18[2] = v9;
@@ -879,33 +879,33 @@ LABEL_8:
   return v3;
 }
 
-- (id)_htmlStringWithURL:(id)a3 title:(id)a4
+- (id)_htmlStringWithURL:(id)l title:(id)title
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = [a3 absoluteString];
-  v8 = [v5 stringWithFormat:@"<a href=%@>%@</a><br />", v7, v6];
+  titleCopy = title;
+  absoluteString = [l absoluteString];
+  titleCopy = [v5 stringWithFormat:@"<a href=%@>%@</a><br />", absoluteString, titleCopy];
 
-  return v8;
+  return titleCopy;
 }
 
-- (id)_virtualConferenceHTMLRepresentation:(id)a3 isForEmail:(BOOL)a4
+- (id)_virtualConferenceHTMLRepresentation:(id)representation isForEmail:(BOOL)email
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = [a3 virtualConference];
-  if (v5)
+  virtualConference = [representation virtualConference];
+  if (virtualConference)
   {
-    if ([(CUIKEventDescriptionGenerator *)self _virtualConferenceUsesShortRepresentation:v5])
+    if ([(CUIKEventDescriptionGenerator *)self _virtualConferenceUsesShortRepresentation:virtualConference])
     {
       v6 = CUIKBundle();
       v7 = [v6 localizedStringForKey:@"Video Call: %@" value:&stru_1F4AA8958 table:0];
 
-      v8 = [v5 joinMethods];
-      v9 = [v8 firstObject];
-      v10 = [v9 URL];
+      joinMethods = [virtualConference joinMethods];
+      firstObject = [joinMethods firstObject];
+      v10 = [firstObject URL];
 
-      v11 = [v10 absoluteString];
-      v12 = [(CUIKEventDescriptionGenerator *)self _htmlStringWithURL:v10 title:v11];
+      absoluteString = [v10 absoluteString];
+      v12 = [(CUIKEventDescriptionGenerator *)self _htmlStringWithURL:v10 title:absoluteString];
 
       v13 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v7, v12];
     }
@@ -920,21 +920,21 @@ LABEL_8:
 
       v33 = v16;
       [v13 appendString:v16];
-      v17 = [v5 title];
+      title = [virtualConference title];
 
-      if (v17)
+      if (title)
       {
-        v18 = [v5 title];
-        [v13 appendFormat:@"%@<br /><br />", v18];
+        title2 = [virtualConference title];
+        [v13 appendFormat:@"%@<br /><br />", title2];
       }
 
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v34 = v5;
-      v19 = [v5 joinMethods];
-      v20 = [v19 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v34 = virtualConference;
+      joinMethods2 = [virtualConference joinMethods];
+      v20 = [joinMethods2 countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v20)
       {
         v21 = v20;
@@ -945,39 +945,39 @@ LABEL_8:
           {
             if (*v36 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(joinMethods2);
             }
 
             v24 = *(*(&v35 + 1) + 8 * i);
-            v25 = [v24 title];
+            title3 = [v24 title];
 
-            if (v25)
+            if (title3)
             {
-              v26 = [v24 title];
-              [v13 appendFormat:@"%@<br />", v26];
+              title4 = [v24 title];
+              [v13 appendFormat:@"%@<br />", title4];
             }
 
             v27 = [v24 URL];
-            v28 = [v27 absoluteString];
-            v29 = [(CUIKEventDescriptionGenerator *)self _htmlStringWithURL:v27 title:v28];
+            absoluteString2 = [v27 absoluteString];
+            v29 = [(CUIKEventDescriptionGenerator *)self _htmlStringWithURL:v27 title:absoluteString2];
 
             [v13 appendString:v29];
             [v13 appendString:@"<br />"];
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v35 objects:v39 count:16];
+          v21 = [joinMethods2 countByEnumeratingWithState:&v35 objects:v39 count:16];
         }
 
         while (v21);
       }
 
-      v5 = v34;
-      v30 = [v34 conferenceDetails];
+      virtualConference = v34;
+      conferenceDetails = [v34 conferenceDetails];
 
-      if (v30)
+      if (conferenceDetails)
       {
-        v31 = [v34 conferenceDetails];
-        [v13 appendFormat:@"%@<br /><br />", v31];
+        conferenceDetails2 = [v34 conferenceDetails];
+        [v13 appendFormat:@"%@<br /><br />", conferenceDetails2];
       }
     }
   }

@@ -1,13 +1,13 @@
 @interface PLSamplingClustering
-- (id)performWithDataset:(id)a3 progressBlock:(id)a4;
+- (id)performWithDataset:(id)dataset progressBlock:(id)block;
 @end
 
 @implementation PLSamplingClustering
 
-- (id)performWithDataset:(id)a3 progressBlock:(id)a4
+- (id)performWithDataset:(id)dataset progressBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  datasetCopy = dataset;
+  blockCopy = block;
   if (self->_numberOfClusters <= 1)
   {
     numberOfClusters = 1;
@@ -19,7 +19,7 @@
   }
 
   v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:numberOfClusters];
-  v10 = [v6 count] / numberOfClusters;
+  v10 = [datasetCopy count] / numberOfClusters;
   v11 = vcvtps_u32_f32(v10);
   v29 = 0;
   v30 = &v29;
@@ -36,9 +36,9 @@
   v23 = v12;
   v26 = &v29;
   v27 = v11;
-  v13 = v7;
+  v13 = blockCopy;
   v25 = v13;
-  v14 = v6;
+  v14 = datasetCopy;
   v24 = v14;
   [v14 enumerateObjectsUsingBlock:&v19];
   if ([v30[5] count])

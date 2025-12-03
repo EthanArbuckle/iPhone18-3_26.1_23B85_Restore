@@ -1,14 +1,14 @@
 @interface ControlCenterModuleLayoutManager
-- (HUGridSize)gridSizeForItem:(id)a3;
+- (HUGridSize)gridSizeForItem:(id)item;
 - (_TtC6HomeUI32ControlCenterModuleLayoutManager)init;
 @end
 
 @implementation ControlCenterModuleLayoutManager
 
-- (HUGridSize)gridSizeForItem:(id)a3
+- (HUGridSize)gridSizeForItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
+  itemCopy = item;
+  selfCopy = self;
   v6 = sub_20CF74E80();
   v8 = v7;
 

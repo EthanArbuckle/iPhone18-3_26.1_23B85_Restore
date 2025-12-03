@@ -1,19 +1,19 @@
 @interface DNDMeDeviceService
-+ (id)serviceForClientIdentifier:(id)a3;
++ (id)serviceForClientIdentifier:(id)identifier;
 - (BOOL)_queue_registerForStateUpdatesIfRequired;
-- (id)_initWithClientIdentifier:(id)a3;
+- (id)_initWithClientIdentifier:(id)identifier;
 - (void)_queue_registerForStateUpdatesIfRequired;
-- (void)addListener:(id)a3 withCompletionHandler:(id)a4;
-- (void)queryCurrentStateWithCompletionHandler:(id)a3;
-- (void)remoteService:(id)a3 didReceiveUpdatedMeDeviceState:(id)a4;
-- (void)removeListener:(id)a3;
+- (void)addListener:(id)listener withCompletionHandler:(id)handler;
+- (void)queryCurrentStateWithCompletionHandler:(id)handler;
+- (void)remoteService:(id)service didReceiveUpdatedMeDeviceState:(id)state;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation DNDMeDeviceService
 
-+ (id)serviceForClientIdentifier:(id)a3
++ (id)serviceForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (serviceForClientIdentifier__onceToken_0 != -1)
   {
     +[DNDMeDeviceService serviceForClientIdentifier:];
@@ -30,10 +30,10 @@
   block[1] = 3221225472;
   block[2] = __49__DNDMeDeviceService_serviceForClientIdentifier___block_invoke_2;
   block[3] = &unk_27843A080;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -76,9 +76,9 @@ void __49__DNDMeDeviceService_serviceForClientIdentifier___block_invoke_2(uint64
   }
 }
 
-- (void)queryCurrentStateWithCompletionHandler:(id)a3
+- (void)queryCurrentStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDMeDeviceService.queryCurrentState.async", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -89,9 +89,9 @@ void __49__DNDMeDeviceService_serviceForClientIdentifier___block_invoke_2(uint64
   block[2] = __61__DNDMeDeviceService_queryCurrentStateWithCompletionHandler___block_invoke;
   block[3] = &unk_27843A198;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v7 = handlerCopy;
   v8 = v5;
   dispatch_async(queue, block);
 
@@ -190,10 +190,10 @@ void __61__DNDMeDeviceService_queryCurrentStateWithCompletionHandler___block_inv
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addListener:(id)a3 withCompletionHandler:(id)a4
+- (void)addListener:(id)listener withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  handlerCopy = handler;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v8 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDMeDeviceService.addListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -203,11 +203,11 @@ void __61__DNDMeDeviceService_queryCurrentStateWithCompletionHandler___block_inv
   block[1] = 3221225472;
   block[2] = __56__DNDMeDeviceService_addListener_withCompletionHandler___block_invoke;
   block[3] = &unk_27843A198;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = listenerCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = listenerCopy;
   dispatch_sync(queue, block);
 }
 
@@ -264,9 +264,9 @@ void __56__DNDMeDeviceService_addListener_withCompletionHandler___block_invoke(u
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDMeDeviceService.removeListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -276,9 +276,9 @@ void __56__DNDMeDeviceService_addListener_withCompletionHandler___block_invoke(u
   v8[1] = 3221225472;
   v8[2] = __37__DNDMeDeviceService_removeListener___block_invoke;
   v8[3] = &unk_27843A1E8;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = listenerCopy;
+  selfCopy = self;
+  v7 = listenerCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -299,17 +299,17 @@ uint64_t __37__DNDMeDeviceService_removeListener___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)remoteService:(id)a3 didReceiveUpdatedMeDeviceState:(id)a4
+- (void)remoteService:(id)service didReceiveUpdatedMeDeviceState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__DNDMeDeviceService_remoteService_didReceiveUpdatedMeDeviceState___block_invoke;
   v8[3] = &unk_27843A1E8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = stateCopy;
+  selfCopy = self;
+  v7 = stateCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -372,15 +372,15 @@ void __67__DNDMeDeviceService_remoteService_didReceiveUpdatedMeDeviceState___blo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_initWithClientIdentifier:(id)a3
+- (id)_initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = DNDMeDeviceService;
   v5 = [(DNDMeDeviceService *)&v18 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v6;
 
@@ -505,7 +505,7 @@ void __56__DNDMeDeviceService_addListener_withCompletionHandler___block_invoke_c
 - (void)_queue_registerForStateUpdatesIfRequired
 {
   *v4 = 138543618;
-  *&v4[4] = a1;
+  *&v4[4] = self;
   *&v4[12] = 2114;
   *&v4[14] = *(*a2 + 40);
   OUTLINED_FUNCTION_0(&dword_22002F000, a2, a3, "[%{public}@] Error when registering 'Me Device' state update listener, error='%{public}@'", *v4, *&v4[8], *&v4[16], *MEMORY[0x277D85DE8]);

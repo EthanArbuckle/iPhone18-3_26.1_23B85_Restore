@@ -1,9 +1,9 @@
 @interface ParkedCarHeaderButtonsSectionController
 - (ParkedCarHeaderButtonsDelegate)actionDelegate;
-- (ParkedCarHeaderButtonsSectionController)initWithParkedCar:(id)a3;
+- (ParkedCarHeaderButtonsSectionController)initWithParkedCar:(id)car;
 - (id)sectionView;
 - (void)_commonInit;
-- (void)actionsRowView:(id)a3 didSelectViewModel:(id)a4 presentationOptions:(id)a5;
+- (void)actionsRowView:(id)view didSelectViewModel:(id)model presentationOptions:(id)options;
 @end
 
 @implementation ParkedCarHeaderButtonsSectionController
@@ -15,15 +15,15 @@
   return WeakRetained;
 }
 
-- (void)actionsRowView:(id)a3 didSelectViewModel:(id)a4 presentationOptions:(id)a5
+- (void)actionsRowView:(id)view didSelectViewModel:(id)model presentationOptions:(id)options
 {
-  v9 = a4;
-  v7 = a5;
+  modelCopy = model;
+  optionsCopy = options;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(ParkedCarHeaderButtonsSectionController *)self actionDelegate];
-    [v8 parkedCarHeaderButtonsSectionControllerRequestsDirections:self];
+    actionDelegate = [(ParkedCarHeaderButtonsSectionController *)self actionDelegate];
+    [actionDelegate parkedCarHeaderButtonsSectionControllerRequestsDirections:self];
   }
 
   else
@@ -31,7 +31,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v9 performWithPresentationOptions:v7];
+      [modelCopy performWithPresentationOptions:optionsCopy];
     }
   }
 }
@@ -90,11 +90,11 @@
   objc_destroyWeak(&location);
 }
 
-- (ParkedCarHeaderButtonsSectionController)initWithParkedCar:(id)a3
+- (ParkedCarHeaderButtonsSectionController)initWithParkedCar:(id)car
 {
   v6.receiver = self;
   v6.super_class = ParkedCarHeaderButtonsSectionController;
-  v3 = [(ParkedCarSectionController *)&v6 initWithParkedCar:a3];
+  v3 = [(ParkedCarSectionController *)&v6 initWithParkedCar:car];
   v4 = v3;
   if (v3)
   {

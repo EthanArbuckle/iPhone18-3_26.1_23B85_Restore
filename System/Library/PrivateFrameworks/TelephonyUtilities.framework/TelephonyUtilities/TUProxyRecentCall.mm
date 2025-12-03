@@ -9,25 +9,25 @@
 - (NSString)displayName;
 - (NSString)mostRecentCallInfo;
 - (TUProxyRecentCall)init;
-- (TUProxyRecentCall)initWithRecentCall:(id)a3;
+- (TUProxyRecentCall)initWithRecentCall:(id)call;
 - (TUSearchController)searchController;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (int64_t)mostRecentCallType;
 - (void)backingContact;
 @end
 
 @implementation TUProxyRecentCall
 
-- (TUProxyRecentCall)initWithRecentCall:(id)a3
+- (TUProxyRecentCall)initWithRecentCall:(id)call
 {
-  v5 = a3;
+  callCopy = call;
   v9.receiver = self;
   v9.super_class = TUProxyRecentCall;
   v6 = [(TUProxyRecentCall *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recentCall, a3);
+    objc_storeStrong(&v6->_recentCall, call);
   }
 
   return v7;
@@ -42,9 +42,9 @@
 
   if (_TUAssertShouldCrashApplication())
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[TUProxyRecentCall init]"];
-    [v7 handleFailureInMethod:a2 object:self file:@"TUProxyRecentCall.m" lineNumber:50 description:{@"Don't call %@, call designated initializer instead.", v8}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TUProxyRecentCall.m" lineNumber:50 description:{@"Don't call %@, call designated initializer instead.", v8}];
   }
 
   return 0;
@@ -52,20 +52,20 @@
 
 - (NSString)mostRecentCallInfo
 {
-  v3 = [(TUProxyRecentCall *)self mostRecentCallType];
-  if (v3 - 2 < 2)
+  mostRecentCallType = [(TUProxyRecentCall *)self mostRecentCallType];
+  if (mostRecentCallType - 2 < 2)
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 localizedStringForKey:@"FaceTime" value:&stru_1F098C218 table:0];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    callerIdSubStringForDisplay = [mainBundle localizedStringForKey:@"FaceTime" value:&stru_1F098C218 table:0];
     goto LABEL_5;
   }
 
-  if (v3 <= 1)
+  if (mostRecentCallType <= 1)
   {
-    v4 = [(TUProxyRecentCall *)self recentCall];
-    v5 = [v4 callerIdSubStringForDisplay];
+    mainBundle = [(TUProxyRecentCall *)self recentCall];
+    callerIdSubStringForDisplay = [mainBundle callerIdSubStringForDisplay];
 LABEL_5:
-    v6 = v5;
+    v6 = callerIdSubStringForDisplay;
 
     goto LABEL_6;
   }
@@ -76,56 +76,56 @@ LABEL_6:
   return v6;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  if (sel_callerId == a3 || sel_isoCountryCode == a3)
+  if (sel_callerId == selector || sel_isoCountryCode == selector)
   {
-    v4 = [(TUProxyRecentCall *)self recentCall];
+    recentCall = [(TUProxyRecentCall *)self recentCall];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = TUProxyRecentCall;
-    v4 = [(TUProxyRecentCall *)&v6 forwardingTargetForSelector:?];
+    recentCall = [(TUProxyRecentCall *)&v6 forwardingTargetForSelector:?];
   }
 
-  return v4;
+  return recentCall;
 }
 
 - (NSString)displayName
 {
-  v3 = [(TUProxyRecentCall *)self backingContact];
-  v4 = [v3 displayName];
+  backingContact = [(TUProxyRecentCall *)self backingContact];
+  displayName = [backingContact displayName];
 
-  if ([v4 length])
+  if ([displayName length])
   {
-    v5 = v4;
+    v5 = displayName;
     goto LABEL_8;
   }
 
-  v6 = [(TUProxyRecentCall *)self recentCall];
-  v7 = [v6 callerIdForDisplay];
-  v8 = [v7 length];
+  recentCall = [(TUProxyRecentCall *)self recentCall];
+  callerIdForDisplay = [recentCall callerIdForDisplay];
+  v8 = [callerIdForDisplay length];
 
-  v9 = [(TUProxyRecentCall *)self recentCall];
-  v10 = v9;
+  recentCall2 = [(TUProxyRecentCall *)self recentCall];
+  recentCall3 = recentCall2;
   if (v8)
   {
-    v11 = [v9 callerIdForDisplay];
+    callerIdForDisplay2 = [recentCall2 callerIdForDisplay];
 LABEL_7:
-    v5 = v11;
+    v5 = callerIdForDisplay2;
 
     goto LABEL_8;
   }
 
-  v12 = [v9 callerNameForDisplay];
-  v13 = [v12 length];
+  callerNameForDisplay = [recentCall2 callerNameForDisplay];
+  v13 = [callerNameForDisplay length];
 
   if (v13)
   {
-    v10 = [(TUProxyRecentCall *)self recentCall];
-    v11 = [v10 callerNameForDisplay];
+    recentCall3 = [(TUProxyRecentCall *)self recentCall];
+    callerIdForDisplay2 = [recentCall3 callerNameForDisplay];
     goto LABEL_7;
   }
 
@@ -137,21 +137,21 @@ LABEL_8:
 
 - (CNContact)backingContact
 {
-  v3 = [(TUProxyRecentCall *)self recentCall];
-  v4 = [v3 contactIdentifier];
+  recentCall = [(TUProxyRecentCall *)self recentCall];
+  contactIdentifier = [recentCall contactIdentifier];
 
-  if (!v4)
+  if (!contactIdentifier)
   {
     v8 = 0;
     v9 = 0;
     goto LABEL_12;
   }
 
-  v5 = [(TUProxyRecentCall *)self searchController];
-  v6 = [v5 contactStore];
-  v7 = [MEMORY[0x1E695CD58] keysToFetchForFaceTime];
+  searchController = [(TUProxyRecentCall *)self searchController];
+  contactStore = [searchController contactStore];
+  keysToFetchForFaceTime = [MEMORY[0x1E695CD58] keysToFetchForFaceTime];
   v14 = 0;
-  v8 = [v6 unifiedContactWithIdentifier:v4 keysToFetch:v7 error:&v14];
+  v8 = [contactStore unifiedContactWithIdentifier:contactIdentifier keysToFetch:keysToFetchForFaceTime error:&v14];
   v9 = v14;
 
   if (v8)
@@ -159,16 +159,16 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v10 = [v9 domain];
-  if (([v10 isEqualToString:*MEMORY[0x1E695C448]] & 1) == 0)
+  domain = [v9 domain];
+  if (([domain isEqualToString:*MEMORY[0x1E695C448]] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v11 = [v9 code];
+  code = [v9 code];
 
-  if (v11 != 200)
+  if (code != 200)
   {
 LABEL_8:
     v12 = TUDefaultLog();
@@ -186,35 +186,35 @@ LABEL_12:
 
 - (NSString)backingContactId
 {
-  v2 = [(TUProxyRecentCall *)self recentCall];
-  v3 = [v2 addressBookRecordId];
+  recentCall = [(TUProxyRecentCall *)self recentCall];
+  addressBookRecordId = [recentCall addressBookRecordId];
 
-  return v3;
+  return addressBookRecordId;
 }
 
 - (NSString)backingContactIdentifier
 {
-  v2 = [(TUProxyRecentCall *)self recentCall];
-  v3 = [v2 contactIdentifier];
+  recentCall = [(TUProxyRecentCall *)self recentCall];
+  contactIdentifier = [recentCall contactIdentifier];
 
-  return v3;
+  return contactIdentifier;
 }
 
 - (NSString)destinationId
 {
-  v3 = [(TUProxyRecentCall *)self recentCall];
-  v4 = [v3 contactIdentifier];
+  recentCall = [(TUProxyRecentCall *)self recentCall];
+  contactIdentifier = [recentCall contactIdentifier];
 
-  if (v4)
+  if (contactIdentifier)
   {
-    v5 = [(TUProxyRecentCall *)self backingContact];
-    [v5 anyDestinationID];
+    backingContact = [(TUProxyRecentCall *)self backingContact];
+    [backingContact anyDestinationID];
   }
 
   else
   {
-    v5 = [(TUProxyRecentCall *)self recentCall];
-    [v5 callerId];
+    backingContact = [(TUProxyRecentCall *)self recentCall];
+    [backingContact callerId];
   }
   v6 = ;
 
@@ -224,22 +224,22 @@ LABEL_12:
 - (NSArray)handles
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(TUProxyRecentCall *)self backingContact];
-  v4 = v3;
-  if (v3)
+  backingContact = [(TUProxyRecentCall *)self backingContact];
+  v4 = backingContact;
+  if (backingContact)
   {
-    v5 = [v3 phoneNumberStrings];
-    v6 = [v4 emailAddressStrings];
-    v7 = [v5 arrayByAddingObjectsFromArray:v6];
+    phoneNumberStrings = [backingContact phoneNumberStrings];
+    emailAddressStrings = [v4 emailAddressStrings];
+    v7 = [phoneNumberStrings arrayByAddingObjectsFromArray:emailAddressStrings];
   }
 
   else
   {
-    v8 = [(TUProxyRecentCall *)self destinationId];
-    v5 = v8;
-    if (v8)
+    destinationId = [(TUProxyRecentCall *)self destinationId];
+    phoneNumberStrings = destinationId;
+    if (destinationId)
     {
-      v11[0] = v8;
+      v11[0] = destinationId;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     }
 
@@ -268,9 +268,9 @@ LABEL_12:
 
   if (mostRecentCallType__kCHServiceProviderTelephony)
   {
-    v3 = [(TUProxyRecentCall *)self recentCall];
-    v4 = [v3 serviceProvider];
-    v5 = [v4 isEqualToString:mostRecentCallType__kCHServiceProviderTelephony];
+    recentCall = [(TUProxyRecentCall *)self recentCall];
+    serviceProvider = [recentCall serviceProvider];
+    v5 = [serviceProvider isEqualToString:mostRecentCallType__kCHServiceProviderTelephony];
 
     if (v5)
     {
@@ -283,25 +283,25 @@ LABEL_12:
     return 0;
   }
 
-  v7 = [(TUProxyRecentCall *)self recentCall];
-  v8 = [v7 serviceProvider];
-  v9 = [v8 isEqualToString:mostRecentCallType__kCHServiceProviderFaceTime];
+  recentCall2 = [(TUProxyRecentCall *)self recentCall];
+  serviceProvider2 = [recentCall2 serviceProvider];
+  v9 = [serviceProvider2 isEqualToString:mostRecentCallType__kCHServiceProviderFaceTime];
 
   if (!v9)
   {
     return 0;
   }
 
-  v10 = [(TUProxyRecentCall *)self recentCall];
-  v11 = [v10 mediaType];
+  recentCall3 = [(TUProxyRecentCall *)self recentCall];
+  mediaType = [recentCall3 mediaType];
 
   v12 = 3;
-  if (v11 != 2)
+  if (mediaType != 2)
   {
     v12 = 0;
   }
 
-  if (v11 == 1)
+  if (mediaType == 1)
   {
     return 2;
   }
@@ -346,14 +346,14 @@ void __39__TUProxyRecentCall_mostRecentCallType__block_invoke_2()
 
 - (BOOL)mostRecentCallWasMissed
 {
-  v2 = [(TUProxyRecentCall *)self recentCall];
-  v3 = [v2 callStatus];
+  recentCall = [(TUProxyRecentCall *)self recentCall];
+  callStatus = [recentCall callStatus];
   if (__CUTWeakkCHCallStatusMissed__pred_kCHCallStatusMissedCallHistory != -1)
   {
     [TUProxyRecentCall mostRecentCallWasMissed];
   }
 
-  v4 = v3 == __CUTStaticWeak_kCHCallStatusMissed;
+  v4 = callStatus == __CUTStaticWeak_kCHCallStatusMissed;
 
   return v4;
 }
@@ -361,39 +361,39 @@ void __39__TUProxyRecentCall_mostRecentCallType__block_invoke_2()
 - (NSArray)idsCanonicalDestinations
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(TUProxyRecentCall *)self backingContact];
-  v4 = [(TUProxyRecentCall *)self recentCall];
-  v5 = [v4 callerId];
+  backingContact = [(TUProxyRecentCall *)self backingContact];
+  recentCall = [(TUProxyRecentCall *)self recentCall];
+  callerId = [recentCall callerId];
 
-  if (v3)
+  if (backingContact)
   {
-    v6 = [v3 allIDSDestinations];
+    allIDSDestinations = [backingContact allIDSDestinations];
   }
 
-  else if ([v5 length])
+  else if ([callerId length])
   {
-    v7 = [v5 IDSFormattedDestinationID];
-    v8 = v7;
-    if (v7)
+    iDSFormattedDestinationID = [callerId IDSFormattedDestinationID];
+    v8 = iDSFormattedDestinationID;
+    if (iDSFormattedDestinationID)
     {
-      v11[0] = v7;
-      v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
+      v11[0] = iDSFormattedDestinationID;
+      allIDSDestinations = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     }
 
     else
     {
-      v6 = MEMORY[0x1E695E0F0];
+      allIDSDestinations = MEMORY[0x1E695E0F0];
     }
   }
 
   else
   {
-    v6 = MEMORY[0x1E695E0F0];
+    allIDSDestinations = MEMORY[0x1E695E0F0];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return allIDSDestinations;
 }
 
 - (TUSearchController)searchController
@@ -407,7 +407,7 @@ void __39__TUProxyRecentCall_mostRecentCallType__block_invoke_2()
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_error_impl(&dword_1956FD000, log, OS_LOG_TYPE_ERROR, "Error fetching backing contact for recent call %@: %@", &v4, 0x16u);

@@ -1,44 +1,44 @@
 @interface IFGraphicsContext
-+ ($2FDBBB09D977766327AC09A4EBB220D3)pixelFormatFromCGImage:(CGImage *)a3;
-+ ($2FDBBB09D977766327AC09A4EBB220D3)pixelFormatFromPreset:(unint64_t)a3;
-+ (CGColorSpace)colorSpaceFromPixelFormat:(id)a3;
-+ (id)bitmapContextWithSize:(CGSize)a3 scale:(double)a4 pixelFormat:(id)a5;
-+ (id)bitmapContextWithSize:(CGSize)a3 scale:(double)a4 preset:(unint64_t)a5;
-+ (unint64_t)presetFromCGImage:(CGImage *)a3;
-+ (unint64_t)presetFromColorSpace:(CGColorSpace *)a3;
-+ (unint64_t)presetFromPixelFormat:(id)a3;
++ ($2FDBBB09D977766327AC09A4EBB220D3)pixelFormatFromCGImage:(CGImage *)image;
++ ($2FDBBB09D977766327AC09A4EBB220D3)pixelFormatFromPreset:(unint64_t)preset;
++ (CGColorSpace)colorSpaceFromPixelFormat:(id)format;
++ (id)bitmapContextWithSize:(CGSize)size scale:(double)scale pixelFormat:(id)format;
++ (id)bitmapContextWithSize:(CGSize)size scale:(double)scale preset:(unint64_t)preset;
++ (unint64_t)presetFromCGImage:(CGImage *)image;
++ (unint64_t)presetFromColorSpace:(CGColorSpace *)space;
++ (unint64_t)presetFromPixelFormat:(id)format;
 - (CGSize)size;
 - (IFColor)fillColor;
 - (IFColor)strokeColor;
-- (IFGraphicsContext)initWithCGContext:(CGContext *)a3 preset:(unint64_t)a4;
+- (IFGraphicsContext)initWithCGContext:(CGContext *)context preset:(unint64_t)preset;
 - (IFImage)image;
 - (NSData)data;
 - (double)scale;
-- (id)imageFromRect:(CGRect)a3;
+- (id)imageFromRect:(CGRect)rect;
 - (void)dealloc;
-- (void)drawCGImage:(CGImage *)a3 centeredInRect:(CGRect)a4;
-- (void)drawSymbolImage:(id)a3 centeredInRect:(CGRect)a4;
-- (void)drawText:(id)a3 fontName:(id)a4 fontSize:(double)a5 inRect:(CGRect)a6;
-- (void)fillPath:(CGPath *)a3;
-- (void)setFillColor:(id)a3;
-- (void)setStrokeColor:(id)a3;
-- (void)strokePath:(CGPath *)a3;
+- (void)drawCGImage:(CGImage *)image centeredInRect:(CGRect)rect;
+- (void)drawSymbolImage:(id)image centeredInRect:(CGRect)rect;
+- (void)drawText:(id)text fontName:(id)name fontSize:(double)size inRect:(CGRect)rect;
+- (void)fillPath:(CGPath *)path;
+- (void)setFillColor:(id)color;
+- (void)setStrokeColor:(id)color;
+- (void)strokePath:(CGPath *)path;
 @end
 
 @implementation IFGraphicsContext
 
-+ (id)bitmapContextWithSize:(CGSize)a3 scale:(double)a4 pixelFormat:(id)a5
++ (id)bitmapContextWithSize:(CGSize)size scale:(double)scale pixelFormat:(id)format
 {
-  v7 = round(a3.width * a4);
-  v8 = round(a3.height * a4);
-  var2 = a5.var2;
+  v7 = round(size.width * scale);
+  v8 = round(size.height * scale);
+  var2 = format.var2;
   v10 = 1;
   v11 = 4353;
-  if (a5.var0 <= 3u)
+  if (format.var0 <= 3u)
   {
-    if (a5.var0 <= 1u)
+    if (format.var0 <= 1u)
     {
-      if (a5.var0)
+      if (format.var0)
       {
         goto LABEL_26;
       }
@@ -46,12 +46,12 @@
       goto LABEL_15;
     }
 
-    if (a5.var0 == 2)
+    if (format.var0 == 2)
     {
       goto LABEL_15;
     }
 
-    if (a5.var0 == 3)
+    if (format.var0 == 3)
     {
       v10 = 4352;
 LABEL_24:
@@ -62,9 +62,9 @@ LABEL_24:
     goto LABEL_14;
   }
 
-  if (a5.var0 > 5u)
+  if (format.var0 > 5u)
   {
-    if (a5.var0 == 6)
+    if (format.var0 == 6)
     {
       v12 = 0;
       v16 = 1;
@@ -72,7 +72,7 @@ LABEL_24:
       goto LABEL_41;
     }
 
-    if (a5.var0 == 7)
+    if (format.var0 == 7)
     {
       goto LABEL_35;
     }
@@ -80,7 +80,7 @@ LABEL_24:
     goto LABEL_14;
   }
 
-  if (a5.var0 == 4)
+  if (format.var0 == 4)
   {
 LABEL_19:
     v13 = +[IFColor deviceDisplayP3ColorSpace];
@@ -91,7 +91,7 @@ LABEL_36:
     goto LABEL_41;
   }
 
-  if (a5.var0 != 5)
+  if (format.var0 != 5)
   {
 LABEL_14:
     v10 = 0;
@@ -99,11 +99,11 @@ LABEL_14:
 
 LABEL_15:
   v12 = 0;
-  if (a5.var0 <= 2u)
+  if (format.var0 <= 2u)
   {
-    if (a5.var0)
+    if (format.var0)
     {
-      if (a5.var0 == 1)
+      if (format.var0 == 1)
       {
 LABEL_25:
         v11 = v10;
@@ -113,7 +113,7 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      if (a5.var0 != 2)
+      if (format.var0 != 2)
       {
         goto LABEL_27;
       }
@@ -131,9 +131,9 @@ LABEL_26:
     goto LABEL_41;
   }
 
-  if (a5.var0 > 4u)
+  if (format.var0 > 4u)
   {
-    if (a5.var0 == 5)
+    if (format.var0 == 5)
     {
       v12 = +[IFColor deviceGreyColorSpace];
       v16 = 1;
@@ -141,7 +141,7 @@ LABEL_26:
     }
 
     v11 = v10;
-    if (a5.var0 != 7)
+    if (format.var0 != 7)
     {
       goto LABEL_27;
     }
@@ -151,19 +151,19 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (a5.var0 == 3)
+  if (format.var0 == 3)
   {
     goto LABEL_24;
   }
 
   v11 = v10;
-  if (a5.var0 == 4)
+  if (format.var0 == 4)
   {
     goto LABEL_19;
   }
 
 LABEL_27:
-  if (a5.var0 == 7)
+  if (format.var0 == 7)
   {
     v15 = 4;
   }
@@ -173,7 +173,7 @@ LABEL_27:
     v15 = 1;
   }
 
-  if (a5.var0 >= 5u)
+  if (format.var0 >= 5u)
   {
     v16 = v15;
   }
@@ -184,7 +184,7 @@ LABEL_27:
   }
 
 LABEL_41:
-  v17 = CGBitmapContextCreate(0, v7, v8, a5.var2 / v16, (v7 * (var2 >> 3)), v12, v10);
+  v17 = CGBitmapContextCreate(0, v7, v8, format.var2 / v16, (v7 * (var2 >> 3)), v12, v10);
   if (v17)
   {
     v18 = v17;
@@ -195,10 +195,10 @@ LABEL_41:
     *&v22.a = *&v23.a;
     *&v22.c = v19;
     *&v22.tx = *&v23.tx;
-    CGAffineTransformScale(&v23, &v22, a4, a4);
+    CGAffineTransformScale(&v23, &v22, scale, scale);
     v22 = v23;
     CGContextSetCTM();
-    v20 = [[IFGraphicsContext alloc] initWithCGContext:v18 preset:[IFGraphicsContext presetFromPixelFormat:*&a5 & 0xFF00FFFF | (a5.var2 << 16)]];
+    v20 = [[IFGraphicsContext alloc] initWithCGContext:v18 preset:[IFGraphicsContext presetFromPixelFormat:*&format & 0xFF00FFFF | (format.var2 << 16)]];
     CFRelease(v18);
   }
 
@@ -210,11 +210,11 @@ LABEL_41:
   return v20;
 }
 
-+ (id)bitmapContextWithSize:(CGSize)a3 scale:(double)a4 preset:(unint64_t)a5
++ (id)bitmapContextWithSize:(CGSize)size scale:(double)scale preset:(unint64_t)preset
 {
-  height = a3.height;
-  width = a3.width;
-  if (a5 == 8)
+  height = size.height;
+  width = size.width;
+  if (preset == 8)
   {
     v8 = IFDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -222,22 +222,22 @@ LABEL_41:
       [IFGraphicsContext bitmapContextWithSize:v8 scale:? preset:?];
     }
 
-    a5 = 0;
+    preset = 0;
   }
 
-  v9 = [IFGraphicsContext bitmapContextWithSize:[IFGraphicsContext pixelFormatFromPreset:a5] scale:width pixelFormat:height, a4];
+  scale = [IFGraphicsContext bitmapContextWithSize:[IFGraphicsContext pixelFormatFromPreset:preset] scale:width pixelFormat:height, scale];
 
-  return v9;
+  return scale;
 }
 
-+ (unint64_t)presetFromColorSpace:(CGColorSpace *)a3
++ (unint64_t)presetFromColorSpace:(CGColorSpace *)space
 {
-  if (!a3)
+  if (!space)
   {
     return 8;
   }
 
-  Name = CGColorSpaceGetName(a3);
+  Name = CGColorSpaceGetName(space);
   if (!Name)
   {
     return 8;
@@ -293,18 +293,18 @@ LABEL_41:
   return result;
 }
 
-+ (CGColorSpace)colorSpaceFromPixelFormat:(id)a3
++ (CGColorSpace)colorSpaceFromPixelFormat:(id)format
 {
-  if (a3.var0 > 3u)
+  if (format.var0 > 3u)
   {
-    if (a3.var0 == 7)
+    if (format.var0 == 7)
     {
       return +[IFColor deviceExtendedDisplayP3ColorSpace];
     }
 
-    if (a3.var0 != 5)
+    if (format.var0 != 5)
     {
-      if (a3.var0 == 4)
+      if (format.var0 == 4)
       {
         return +[IFColor deviceDisplayP3ColorSpace];
       }
@@ -317,14 +317,14 @@ LABEL_41:
 
   else
   {
-    if (!a3.var0)
+    if (!format.var0)
     {
       return +[IFColor deviceRGBColorSpace];
     }
 
-    if (a3.var0 != 1)
+    if (format.var0 != 1)
     {
-      if (a3.var0 == 2)
+      if (format.var0 == 2)
       {
         return +[IFColor deviceSRGBColorSpace];
       }
@@ -336,47 +336,47 @@ LABEL_41:
   }
 }
 
-+ (unint64_t)presetFromCGImage:(CGImage *)a3
++ (unint64_t)presetFromCGImage:(CGImage *)image
 {
-  ColorSpace = CGImageGetColorSpace(a3);
+  ColorSpace = CGImageGetColorSpace(image);
 
   return [IFGraphicsContext presetFromColorSpace:ColorSpace];
 }
 
-+ (unint64_t)presetFromPixelFormat:(id)a3
++ (unint64_t)presetFromPixelFormat:(id)format
 {
-  if ((a3.var0 & 0xF8) != 0)
+  if ((format.var0 & 0xF8) != 0)
   {
     return 8;
   }
 
   else
   {
-    return qword_1B9E3B608[a3.var0 & 7];
+    return qword_1B9E3B608[format.var0 & 7];
   }
 }
 
-+ ($2FDBBB09D977766327AC09A4EBB220D3)pixelFormatFromCGImage:(CGImage *)a3
++ ($2FDBBB09D977766327AC09A4EBB220D3)pixelFormatFromCGImage:(CGImage *)image
 {
-  v4 = [IFGraphicsContext pixelFormatFromPreset:[IFGraphicsContext presetFromColorSpace:CGImageGetColorSpace(a3)]];
-  v5 = (CGImageGetBitmapInfo(a3) & 0xF00) != 0;
-  return (*&v4 & 0xFF0000FF | (v5 << 9) & 0xFF00FFFF | (CGImageGetBitsPerPixel(a3) << 16));
+  v4 = [IFGraphicsContext pixelFormatFromPreset:[IFGraphicsContext presetFromColorSpace:CGImageGetColorSpace(image)]];
+  v5 = (CGImageGetBitmapInfo(image) & 0xF00) != 0;
+  return (*&v4 & 0xFF0000FF | (v5 << 9) & 0xFF00FFFF | (CGImageGetBitsPerPixel(image) << 16));
 }
 
-+ ($2FDBBB09D977766327AC09A4EBB220D3)pixelFormatFromPreset:(unint64_t)a3
++ ($2FDBBB09D977766327AC09A4EBB220D3)pixelFormatFromPreset:(unint64_t)preset
 {
-  if (a3 > 7)
+  if (preset > 7)
   {
     return 0;
   }
 
   else
   {
-    return (dword_1B9E3B668[a3] | dword_1B9E3B648[a3] | dword_1B9E3B688[a3]);
+    return (dword_1B9E3B668[preset] | dword_1B9E3B648[preset] | dword_1B9E3B688[preset]);
   }
 }
 
-- (IFGraphicsContext)initWithCGContext:(CGContext *)a3 preset:(unint64_t)a4
+- (IFGraphicsContext)initWithCGContext:(CGContext *)context preset:(unint64_t)preset
 {
   v9.receiver = self;
   v9.super_class = IFGraphicsContext;
@@ -384,8 +384,8 @@ LABEL_41:
   v7 = v6;
   if (v6)
   {
-    v6->_preset = a4;
-    v6->_cgContext = CFRetain(a3);
+    v6->_preset = preset;
+    v6->_cgContext = CFRetain(context);
   }
 
   return v7;
@@ -443,12 +443,12 @@ LABEL_41:
   return v6;
 }
 
-- (id)imageFromRect:(CGRect)a3
+- (id)imageFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   Image = CGBitmapContextCreateImage(self->_cgContext);
   if (Image && (v9 = Image, [(IFGraphicsContext *)self transform], v16.origin.x = x, v16.origin.y = y, v16.size.width = width, v16.size.height = height, v17 = CGRectApplyAffineTransform(v16, &v14), v10 = CGImageCreateWithImageInRect(v9, v17), CFRelease(v9), v10))
   {
@@ -483,12 +483,12 @@ LABEL_41:
   return v2;
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
   cgContext = self->_cgContext;
-  v4 = [a3 cgColor];
+  cgColor = [color cgColor];
 
-  CGContextSetFillColorWithColor(cgContext, v4);
+  CGContextSetFillColorWithColor(cgContext, cgColor);
 }
 
 - (IFColor)strokeColor
@@ -498,24 +498,24 @@ LABEL_41:
   return v2;
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
   cgContext = self->_cgContext;
-  v4 = [a3 cgColor];
+  cgColor = [color cgColor];
 
-  CGContextSetStrokeColorWithColor(cgContext, v4);
+  CGContextSetStrokeColorWithColor(cgContext, cgColor);
 }
 
-- (void)drawCGImage:(CGImage *)a3 centeredInRect:(CGRect)a4
+- (void)drawCGImage:(CGImage *)image centeredInRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(IFGraphicsContext *)self scale];
   v11 = v10;
-  v12 = CGImageGetWidth(a3) / v10;
-  v13 = CGImageGetHeight(a3) / v11;
+  v12 = CGImageGetWidth(image) / v10;
+  v13 = CGImageGetHeight(image) / v11;
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
@@ -531,25 +531,25 @@ LABEL_41:
   v18 = v12;
   v19 = v13;
 
-  CGContextDrawImage(cgContext, *&v17, a3);
+  CGContextDrawImage(cgContext, *&v17, image);
 }
 
-- (void)drawSymbolImage:(id)a3 centeredInRect:(CGRect)a4
+- (void)drawSymbolImage:(id)image centeredInRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [v9 CGImage];
-  [v9 contentBounds];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  imageCopy = image;
+  cGImage = [imageCopy CGImage];
+  [imageCopy contentBounds];
   v12 = v11;
   v33 = v13;
-  [v9 alignmentRect];
+  [imageCopy alignmentRect];
   v15 = v14;
-  [v9 alignmentRect];
+  [imageCopy alignmentRect];
   v17 = v16;
-  [v9 baselineOffset];
+  [imageCopy baselineOffset];
   v19 = v17 - v18;
   v35.origin.x = x;
   v35.origin.y = y;
@@ -571,9 +571,9 @@ LABEL_41:
   v38.size.width = width;
   v38.size.height = height;
   v23 = v19 + MinY + CGRectGetMidY(v38) - v33 * 0.5;
-  [v9 alignmentRect];
+  [imageCopy alignmentRect];
   v25 = v24;
-  [v9 alignmentRect];
+  [imageCopy alignmentRect];
   v27 = v26;
 
   cgContext = self->_cgContext;
@@ -582,29 +582,29 @@ LABEL_41:
   v31 = v25;
   v32 = v27;
 
-  CGContextDrawImage(cgContext, *&v29, v10);
+  CGContextDrawImage(cgContext, *&v29, cGImage);
 }
 
-- (void)drawText:(id)a3 fontName:(id)a4 fontSize:(double)a5 inRect:(CGRect)a6
+- (void)drawText:(id)text fontName:(id)name fontSize:(double)size inRect:(CGRect)rect
 {
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v31[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  textCopy = text;
   [(IFGraphicsContext *)self pushState];
-  UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontUIFontSystem, a5, 0);
-  v13 = [(IFGraphicsContext *)self strokeColor];
-  v14 = [v13 cgColor];
+  UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontUIFontSystem, size, 0);
+  strokeColor = [(IFGraphicsContext *)self strokeColor];
+  cgColor = [strokeColor cgColor];
 
   v15 = *MEMORY[0x1E69659D8];
   v30[0] = *MEMORY[0x1E6965658];
   v30[1] = v15;
   v31[0] = UIFontForLanguage;
-  v31[1] = v14;
+  v31[1] = cgColor;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
 
-  v17 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v11 attributes:v16];
+  v17 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:textCopy attributes:v16];
   v18 = CTLineCreateWithAttributedString(v17);
   if (v18)
   {
@@ -655,20 +655,20 @@ LABEL_41:
   [(IFGraphicsContext *)self popState];
 }
 
-- (void)strokePath:(CGPath *)a3
+- (void)strokePath:(CGPath *)path
 {
   CGContextSaveGState(self->_cgContext);
-  CGContextAddPath(self->_cgContext, a3);
+  CGContextAddPath(self->_cgContext, path);
   CGContextStrokePath(self->_cgContext);
   cgContext = self->_cgContext;
 
   CGContextRestoreGState(cgContext);
 }
 
-- (void)fillPath:(CGPath *)a3
+- (void)fillPath:(CGPath *)path
 {
   CGContextSaveGState(self->_cgContext);
-  CGContextAddPath(self->_cgContext, a3);
+  CGContextAddPath(self->_cgContext, path);
   CGContextFillPath(self->_cgContext);
   cgContext = self->_cgContext;
 

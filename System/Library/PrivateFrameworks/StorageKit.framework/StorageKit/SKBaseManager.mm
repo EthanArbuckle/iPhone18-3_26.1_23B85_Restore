@@ -4,8 +4,8 @@
 - (SKBaseManager)init;
 - (id)allDisks;
 - (id)formatableFileSystems;
-- (id)knownDiskForDictionary:(id)a3;
-- (id)wholeDiskForDisk:(id)a3;
+- (id)knownDiskForDictionary:(id)dictionary;
+- (id)wholeDiskForDisk:(id)disk;
 @end
 
 @implementation SKBaseManager
@@ -18,9 +18,9 @@
     v2 = SKManager;
   }
 
-  v3 = [(objc_class *)v2 sharedManager];
+  sharedManager = [(objc_class *)v2 sharedManager];
 
-  return v3;
+  return sharedManager;
 }
 
 - (SKBaseManager)init
@@ -50,7 +50,7 @@
   return 0;
 }
 
-- (id)knownDiskForDictionary:(id)a3
+- (id)knownDiskForDictionary:(id)dictionary
 {
   v3 = [MEMORY[0x277CBEAD8] exceptionWithName:@"com.apple.storagekit.notimplemented" reason:@"A required method is not implemented" userInfo:0];
   [v3 raise];
@@ -58,7 +58,7 @@
   return 0;
 }
 
-- (id)wholeDiskForDisk:(id)a3
+- (id)wholeDiskForDisk:(id)disk
 {
   v3 = [MEMORY[0x277CBEAD8] exceptionWithName:@"com.apple.storagekit.notimplemented" reason:@"A required method is not implemented" userInfo:0];
   [v3 raise];

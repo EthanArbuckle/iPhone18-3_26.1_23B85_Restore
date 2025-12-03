@@ -1,13 +1,13 @@
 @interface NUChannelAudioMediaFormat
 + (id)genericAudioFormat;
-- (BOOL)canSpecializeMediaFormat:(id)a3;
-- (BOOL)isCompatibleWithMediaFormat:(id)a3;
-- (BOOL)isEqualToChannelFormat:(id)a3;
+- (BOOL)canSpecializeMediaFormat:(id)format;
+- (BOOL)isCompatibleWithMediaFormat:(id)format;
+- (BOOL)isEqualToChannelFormat:(id)format;
 - (NUChannelAudioMediaFormat)init;
-- (NUChannelAudioMediaFormat)initWithMediaTemporality:(int64_t)a3;
+- (NUChannelAudioMediaFormat)initWithMediaTemporality:(int64_t)temporality;
 - (id)description;
-- (id)specializedWithAudioMediaFormat:(id)a3;
-- (id)specializedWithComponentMediaFormat:(id)a3;
+- (id)specializedWithAudioMediaFormat:(id)format;
+- (id)specializedWithComponentMediaFormat:(id)format;
 @end
 
 @implementation NUChannelAudioMediaFormat
@@ -21,11 +21,11 @@
   return v2;
 }
 
-- (id)specializedWithComponentMediaFormat:(id)a3
+- (id)specializedWithComponentMediaFormat:(id)format
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  formatCopy = format;
+  if (formatCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -52,8 +52,8 @@
           v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v17 = MEMORY[0x1E696AF00];
           v18 = v16;
-          v19 = [v17 callStackSymbols];
-          v20 = [v19 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v17 callStackSymbols];
+          v20 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v28 = v16;
           v29 = 2114;
@@ -64,8 +64,8 @@
 
       else if (v13)
       {
-        v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v15 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v28 = v15;
         _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -80,11 +80,11 @@
   return self;
 }
 
-- (id)specializedWithAudioMediaFormat:(id)a3
+- (id)specializedWithAudioMediaFormat:(id)format
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  formatCopy = format;
+  if (formatCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -111,8 +111,8 @@
           v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v17 = MEMORY[0x1E696AF00];
           v18 = v16;
-          v19 = [v17 callStackSymbols];
-          v20 = [v19 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v17 callStackSymbols];
+          v20 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v28 = v16;
           v29 = 2114;
@@ -123,8 +123,8 @@
 
       else if (v13)
       {
-        v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v15 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v28 = v15;
         _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -139,11 +139,11 @@
   return self;
 }
 
-- (BOOL)canSpecializeMediaFormat:(id)a3
+- (BOOL)canSpecializeMediaFormat:(id)format
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  formatCopy = format;
+  if (formatCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -170,8 +170,8 @@
           v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v18 = MEMORY[0x1E696AF00];
           v19 = v17;
-          v20 = [v18 callStackSymbols];
-          v21 = [v20 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v21 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = v17;
           v30 = 2114;
@@ -182,8 +182,8 @@
 
       else if (v14)
       {
-        v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v29 = v16;
         _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -195,16 +195,16 @@
     }
   }
 
-  v5 = [v4 mediaType] == 2 && -[NUChannelAudioMediaFormat canSpecializeAudioMediaFormat:](self, "canSpecializeAudioMediaFormat:", v4);
+  v5 = [formatCopy mediaType] == 2 && -[NUChannelAudioMediaFormat canSpecializeAudioMediaFormat:](self, "canSpecializeAudioMediaFormat:", formatCopy);
 
   return v5;
 }
 
-- (BOOL)isCompatibleWithMediaFormat:(id)a3
+- (BOOL)isCompatibleWithMediaFormat:(id)format
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  formatCopy = format;
+  if (formatCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -231,8 +231,8 @@
           v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v18 = MEMORY[0x1E696AF00];
           v19 = v17;
-          v20 = [v18 callStackSymbols];
-          v21 = [v20 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v21 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = v17;
           v30 = 2114;
@@ -243,8 +243,8 @@
 
       else if (v14)
       {
-        v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v29 = v16;
         _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -256,16 +256,16 @@
     }
   }
 
-  v5 = [v4 mediaType] == 2 && -[NUChannelAudioMediaFormat isCompatibleWithAudioMediaFormat:](self, "isCompatibleWithAudioMediaFormat:", v4);
+  v5 = [formatCopy mediaType] == 2 && -[NUChannelAudioMediaFormat isCompatibleWithAudioMediaFormat:](self, "isCompatibleWithAudioMediaFormat:", formatCopy);
 
   return v5;
 }
 
-- (BOOL)isEqualToChannelFormat:(id)a3
+- (BOOL)isEqualToChannelFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUChannelAudioMediaFormat *)self isEqualToAudioMediaFormat:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUChannelAudioMediaFormat *)self isEqualToAudioMediaFormat:formatCopy];
 
   return v5;
 }
@@ -277,7 +277,7 @@
   return [(NUChannelMediaFormat *)&v3 initWithMediaTemporality:2];
 }
 
-- (NUChannelAudioMediaFormat)initWithMediaTemporality:(int64_t)a3
+- (NUChannelAudioMediaFormat)initWithMediaTemporality:(int64_t)temporality
 {
   v34 = *MEMORY[0x1E69E9840];
   if (_NULogOnceToken != -1)
@@ -323,8 +323,8 @@ LABEL_8:
     {
       v13 = MEMORY[0x1E696AF00];
       v14 = v12;
-      v15 = [v13 callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v13 callStackSymbols];
+      v16 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v16;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -340,8 +340,8 @@ LABEL_8:
     v19 = MEMORY[0x1E696AF00];
     v20 = specific;
     v21 = v17;
-    v22 = [v19 callStackSymbols];
-    v23 = [v22 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v19 callStackSymbols];
+    v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v31 = specific;
     v32 = 2114;
@@ -359,7 +359,7 @@ LABEL_14:
 
 + (id)genericAudioFormat
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

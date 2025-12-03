@@ -1,14 +1,14 @@
 @interface DIPHTTPSessionTaskDelegate
 - (_TtC8coreidvdP33_0866DFB7931A54BC66BDAA51B582B51526DIPHTTPSessionTaskDelegate)init;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity;
 @end
 
 @implementation DIPHTTPSessionTaskDelegate
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v8 = sub_100007224(&qword_100849428, &qword_1006E9430);
   v9 = *(*(v8 - 8) + 64);
@@ -21,7 +21,7 @@
   v17 = *(v16 + 64);
   __chkstk_darwin(v15);
   v19 = &v22 - ((v18 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v20 = _Block_copy(a7);
+  v20 = _Block_copy(handler);
   static URLRequest._unconditionallyBridgeFromObjectiveC(_:)();
   (*(v16 + 56))(v14, 1, 1, v15);
   sub_1005C5C10(v14, v12);
@@ -39,30 +39,30 @@
   (*(v16 + 8))(v19, v15);
 }
 
-- (void)URLSession:(id)a3 taskIsWaitingForConnectivity:(id)a4
+- (void)URLSession:(id)session taskIsWaitingForConnectivity:(id)connectivity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1005C5404(v7);
+  sessionCopy = session;
+  connectivityCopy = connectivity;
+  selfCopy = self;
+  sub_1005C5404(connectivityCopy);
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1005C5844(a4);
+  sessionCopy = session;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1005C5844(error);
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_1005C5A8C(v10, v8);
+  sessionCopy = session;
+  challengeCopy = challenge;
+  selfCopy = self;
+  sub_1005C5A8C(challengeCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }

@@ -1,14 +1,14 @@
 @interface PPSSQLiteDatabase
-+ (BOOL)_stepStatement:(sqlite3_stmt *)a3 hasRow:(BOOL *)a4 error:(id *)a5;
-- (BOOL)_prepareStatementForSQL:(id)a3 shouldCache:(BOOL)a4 error:(id *)a5 usingBlock:(id)a6;
-- (BOOL)tableWithName:(id)a3 containsColumnWithName:(id)a4;
-- (PPSSQLiteDatabase)initWithDatabaseURL:(id)a3;
-- (id)columnNamesForTable:(id)a3;
++ (BOOL)_stepStatement:(sqlite3_stmt *)statement hasRow:(BOOL *)row error:(id *)error;
+- (BOOL)_prepareStatementForSQL:(id)l shouldCache:(BOOL)cache error:(id *)error usingBlock:(id)block;
+- (BOOL)tableWithName:(id)name containsColumnWithName:(id)withName;
+- (PPSSQLiteDatabase)initWithDatabaseURL:(id)l;
+- (id)columnNamesForTable:(id)table;
 - (id)tableNames;
-- (id)typeForColumn:(id)a3 inTable:(id)a4 error:(id *)a5;
-- (int)openForReadingWithError:(id *)a3;
-- (sqlite3_stmt)_statementForSQL:(id)a3 shouldCache:(BOOL)a4 error:(id *)a5;
-- (void)_accessDatabaseUsingBlock:(id)a3;
+- (id)typeForColumn:(id)column inTable:(id)table error:(id *)error;
+- (int)openForReadingWithError:(id *)error;
+- (sqlite3_stmt)_statementForSQL:(id)l shouldCache:(BOOL)cache error:(id *)error;
+- (void)_accessDatabaseUsingBlock:(id)block;
 - (void)clearStatementCache;
 - (void)close;
 - (void)dealloc;
@@ -66,11 +66,11 @@
   [(PPSSQLiteDatabase *)&v5 dealloc];
 }
 
-- (PPSSQLiteDatabase)initWithDatabaseURL:(id)a3
+- (PPSSQLiteDatabase)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 isFileURL] & 1) == 0)
+  lCopy = l;
+  v5 = lCopy;
+  if (!lCopy || ([lCopy isFileURL] & 1) == 0)
   {
 
     self = 0;
@@ -97,16 +97,16 @@
   return v6;
 }
 
-- (int)openForReadingWithError:(id *)a3
+- (int)openForReadingWithError:(id *)error
 {
   p_db = &self->_db;
   if (!self->_db)
   {
-    v4 = [(PPSSQLiteDatabase *)self databaseURL];
-    v5 = [v4 path];
+    databaseURL = [(PPSSQLiteDatabase *)self databaseURL];
+    path = [databaseURL path];
 
-    v6 = v5;
-    if (!sqlite3_open_v2([v5 fileSystemRepresentation], p_db, 3145729, 0))
+    v6 = path;
+    if (!sqlite3_open_v2([path fileSystemRepresentation], p_db, 3145729, 0))
     {
       v7 = *p_db;
       do
@@ -192,22 +192,22 @@ LABEL_12:
   }
 }
 
-- (id)columnNamesForTable:(id)a3
+- (id)columnNamesForTable:(id)table
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA TABLE_INFO('%@')", a3];;
+  table = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA TABLE_INFO('%@')", table];;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9[4] = &v11;
   v10 = 0;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41__PPSSQLiteDatabase_columnNamesForTable___block_invoke;
   v9[3] = &unk_279A11478;
-  [(PPSSQLiteDatabase *)self executeSQL:v4 shouldCache:0 error:&v10 bindingHandler:0 enumerationHandler:v9];
+  [(PPSSQLiteDatabase *)self executeSQL:table shouldCache:0 error:&v10 bindingHandler:0 enumerationHandler:v9];
   v5 = v10;
   if (v5)
   {
@@ -250,7 +250,7 @@ uint64_t __41__PPSSQLiteDatabase_columnNamesForTable___block_invoke(uint64_t a1,
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__1;
   v14 = __Block_byref_object_dispose__1;
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v8[4] = &v10;
   v9 = 0;
   v8[0] = MEMORY[0x277D85DD0];
@@ -292,33 +292,33 @@ uint64_t __31__PPSSQLiteDatabase_tableNames__block_invoke(uint64_t a1, uint64_t 
   return 1;
 }
 
-- (BOOL)tableWithName:(id)a3 containsColumnWithName:(id)a4
+- (BOOL)tableWithName:(id)name containsColumnWithName:(id)withName
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self->_db && [v6 length] && objc_msgSend(v7, "length") && sqlite3_table_column_metadata(self->_db, 0, objc_msgSend(v6, "UTF8String"), objc_msgSend(v7, "UTF8String"), 0, 0, 0, 0, 0) == 0;
+  nameCopy = name;
+  withNameCopy = withName;
+  v8 = self->_db && [nameCopy length] && objc_msgSend(withNameCopy, "length") && sqlite3_table_column_metadata(self->_db, 0, objc_msgSend(nameCopy, "UTF8String"), objc_msgSend(withNameCopy, "UTF8String"), 0, 0, 0, 0, 0) == 0;
 
   return v8;
 }
 
-- (id)typeForColumn:(id)a3 inTable:(id)a4 error:(id *)a5
+- (id)typeForColumn:(id)column inTable:(id)table error:(id *)error
 {
-  v8 = a3;
+  columnCopy = column;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__1;
   v20 = __Block_byref_object_dispose__1;
   v21 = 0;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA TABLE_INFO('%@')", a4];;
+  table = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA TABLE_INFO('%@')", table];;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __49__PPSSQLiteDatabase_typeForColumn_inTable_error___block_invoke;
   v13[3] = &unk_279A114A0;
-  v10 = v8;
+  v10 = columnCopy;
   v14 = v10;
   v15 = &v16;
-  [(PPSSQLiteDatabase *)self executeSQL:v9 shouldCache:1 error:a5 bindingHandler:0 enumerationHandler:v13];
+  [(PPSSQLiteDatabase *)self executeSQL:table shouldCache:1 error:error bindingHandler:0 enumerationHandler:v13];
   v11 = v17[5];
 
   _Block_object_dispose(&v16, 8);
@@ -349,9 +349,9 @@ uint64_t __49__PPSSQLiteDatabase_typeForColumn_inTable_error___block_invoke(uint
   return 0;
 }
 
-- (void)_accessDatabaseUsingBlock:(id)a3
+- (void)_accessDatabaseUsingBlock:(id)block
 {
-  block = a3;
+  block = block;
   if (dispatch_get_specific("PPSSQLiteDispatchQueue") == self)
   {
     block[2]();
@@ -363,10 +363,10 @@ uint64_t __49__PPSSQLiteDatabase_typeForColumn_inTable_error___block_invoke(uint
   }
 }
 
-- (BOOL)_prepareStatementForSQL:(id)a3 shouldCache:(BOOL)a4 error:(id *)a5 usingBlock:(id)a6
+- (BOOL)_prepareStatementForSQL:(id)l shouldCache:(BOOL)cache error:(id *)error usingBlock:(id)block
 {
-  v10 = a3;
-  v11 = a6;
+  lCopy = l;
+  blockCopy = block;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -376,13 +376,13 @@ uint64_t __49__PPSSQLiteDatabase_typeForColumn_inTable_error___block_invoke(uint
   v15[2] = __74__PPSSQLiteDatabase__prepareStatementForSQL_shouldCache_error_usingBlock___block_invoke;
   v15[3] = &unk_279A114C8;
   v15[4] = self;
-  v16 = v10;
-  v20 = a4;
+  v16 = lCopy;
+  cacheCopy = cache;
   v18 = &v21;
-  v19 = a5;
-  v17 = v11;
-  v12 = v11;
-  v13 = v10;
+  errorCopy = error;
+  v17 = blockCopy;
+  v12 = blockCopy;
+  v13 = lCopy;
   [(PPSSQLiteDatabase *)self _accessDatabaseUsingBlock:v15];
   LOBYTE(self) = *(v22 + 24);
 
@@ -420,19 +420,19 @@ uint64_t __74__PPSSQLiteDatabase__prepareStatementForSQL_shouldCache_error_using
   return result;
 }
 
-+ (BOOL)_stepStatement:(sqlite3_stmt *)a3 hasRow:(BOOL *)a4 error:(id *)a5
++ (BOOL)_stepStatement:(sqlite3_stmt *)statement hasRow:(BOOL *)row error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (row)
   {
-    *a4 = 0;
+    *row = 0;
   }
 
-  if (a3)
+  if (statement)
   {
     while (1)
     {
-      v8 = sqlite3_step(a3);
+      v8 = sqlite3_step(statement);
       if (v8 == 9)
       {
         goto LABEL_20;
@@ -457,8 +457,8 @@ uint64_t __74__PPSSQLiteDatabase__prepareStatementForSQL_shouldCache_error_using
         {
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
           {
-            v13 = sqlite3_sql(a3);
-            v14 = sqlite3_db_handle(a3);
+            v13 = sqlite3_sql(statement);
+            v14 = sqlite3_db_handle(statement);
             v15 = sqlite3_errmsg(v14);
             [(PPSSQLiteDatabase *)v15 _stepStatement:v13 hasRow:v11 error:?];
           }
@@ -474,8 +474,8 @@ uint64_t __74__PPSSQLiteDatabase__prepareStatementForSQL_shouldCache_error_using
 
         else if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          v17 = sqlite3_sql(a3);
-          v18 = sqlite3_db_handle(a3);
+          v17 = sqlite3_sql(statement);
+          v18 = sqlite3_db_handle(statement);
           v19 = 136315650;
           v20 = v17;
           v21 = 1024;
@@ -486,11 +486,11 @@ uint64_t __74__PPSSQLiteDatabase__prepareStatementForSQL_shouldCache_error_using
         }
 
 LABEL_20:
-        if (a5)
+        if (error)
         {
-          sqlite3_db_handle(a3);
+          sqlite3_db_handle(statement);
           result = 0;
-          *a5 = 0;
+          *error = 0;
         }
 
         else
@@ -503,9 +503,9 @@ LABEL_20:
     }
 
     result = 1;
-    if (a4)
+    if (row)
     {
-      *a4 = 1;
+      *row = 1;
     }
   }
 
@@ -520,13 +520,13 @@ LABEL_23:
   return result;
 }
 
-- (sqlite3_stmt)_statementForSQL:(id)a3 shouldCache:(BOOL)a4 error:(id *)a5
+- (sqlite3_stmt)_statementForSQL:(id)l shouldCache:(BOOL)cache error:(id *)error
 {
-  v6 = a4;
+  cacheCopy = cache;
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  lCopy = l;
   ppStmt = 0;
-  if (!v6 || (v9 = self->_statementCache) == 0 || (Value = CFDictionaryGetValue(v9, v8), (ppStmt = Value) == 0))
+  if (!cacheCopy || (v9 = self->_statementCache) == 0 || (Value = CFDictionaryGetValue(v9, lCopy), (ppStmt = Value) == 0))
   {
     v11 = objc_autoreleasePoolPush();
     v12 = *MEMORY[0x277CBE658];
@@ -534,8 +534,8 @@ LABEL_23:
     {
       *pzTail = 0;
       db = self->_db;
-      v14 = v8;
-      v15 = sqlite3_prepare_v2(db, [v8 UTF8String], objc_msgSend(v8, "length"), &ppStmt, pzTail);
+      v14 = lCopy;
+      v15 = sqlite3_prepare_v2(db, [lCopy UTF8String], objc_msgSend(lCopy, "length"), &ppStmt, pzTail);
       v16 = v15;
       if (!v15 && *pzTail)
       {
@@ -556,7 +556,7 @@ LABEL_23:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         *pzTail = 138412802;
-        *&pzTail[4] = v8;
+        *&pzTail[4] = lCopy;
         v25 = 1024;
         v26 = v16;
         v27 = 2112;
@@ -568,7 +568,7 @@ LABEL_23:
     }
 
 LABEL_14:
-    if (v6)
+    if (cacheCopy)
     {
       statementCache = self->_statementCache;
       if (!statementCache)
@@ -579,17 +579,17 @@ LABEL_14:
 
       if (ppStmt)
       {
-        CFDictionarySetValue(statementCache, v8, ppStmt);
+        CFDictionarySetValue(statementCache, lCopy, ppStmt);
       }
     }
 
     v17 = 0;
 LABEL_20:
     objc_autoreleasePoolPop(v11);
-    if (a5)
+    if (error)
     {
       v20 = v17;
-      *a5 = v17;
+      *error = v17;
     }
 
     Value = ppStmt;

@@ -1,10 +1,10 @@
 @interface PEPlaybackRateOption
-+ (id)_playbackRateOptionsForFrameRate:(unint64_t)a3;
-+ (id)playbackRateOptionsForAsset:(id)a3;
-+ (id)playbackRateOptionsForEditSource:(id)a3;
++ (id)_playbackRateOptionsForFrameRate:(unint64_t)rate;
++ (id)playbackRateOptionsForAsset:(id)asset;
++ (id)playbackRateOptionsForEditSource:(id)source;
 - (NSString)localizedSubtitle;
 - (NSString)localizedTitle;
-- (PEPlaybackRateOption)initWithType:(unint64_t)a3 videoFrameRate:(unint64_t)a4;
+- (PEPlaybackRateOption)initWithType:(unint64_t)type videoFrameRate:(unint64_t)rate;
 - (float)playbackRate;
 @end
 
@@ -12,11 +12,11 @@
 
 - (float)playbackRate
 {
-  v2 = [(PEPlaybackRateOption *)self type];
+  type = [(PEPlaybackRateOption *)self type];
   result = 1.0;
-  if (v2 - 1 <= 4)
+  if (type - 1 <= 4)
   {
-    return flt_25E75DD50[v2 - 1];
+    return flt_25E75DD50[type - 1];
   }
 
   return result;
@@ -26,9 +26,9 @@
 {
   if ([(PEPlaybackRateOption *)self videoFrameRate])
   {
-    v3 = [(PEPlaybackRateOption *)self videoFrameRate];
+    videoFrameRate = [(PEPlaybackRateOption *)self videoFrameRate];
     [(PEPlaybackRateOption *)self playbackRate];
-    v5 = vcvtps_s32_f32(v4 * v3);
+    v5 = vcvtps_s32_f32(v4 * videoFrameRate);
     v6 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v6 setNumberStyle:0];
     v7 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
@@ -58,47 +58,47 @@
   return v6;
 }
 
-- (PEPlaybackRateOption)initWithType:(unint64_t)a3 videoFrameRate:(unint64_t)a4
+- (PEPlaybackRateOption)initWithType:(unint64_t)type videoFrameRate:(unint64_t)rate
 {
   v7.receiver = self;
   v7.super_class = PEPlaybackRateOption;
   result = [(PEPlaybackRateOption *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_videoFrameRate = a4;
+    result->_type = type;
+    result->_videoFrameRate = rate;
   }
 
   return result;
 }
 
-+ (id)_playbackRateOptionsForFrameRate:(unint64_t)a3
++ (id)_playbackRateOptionsForFrameRate:(unint64_t)rate
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a3)
+  if (rate)
   {
-    v5 = [[PEPlaybackRateOption alloc] initWithType:0 videoFrameRate:a3];
+    v5 = [[PEPlaybackRateOption alloc] initWithType:0 videoFrameRate:rate];
     [v4 addObject:v5];
 
-    if (a3 >= 0x32)
+    if (rate >= 0x32)
     {
-      v6 = [[PEPlaybackRateOption alloc] initWithType:1 videoFrameRate:a3];
+      v6 = [[PEPlaybackRateOption alloc] initWithType:1 videoFrameRate:rate];
       [v4 addObject:v6];
 
-      if (a3 >= 0x64)
+      if (rate >= 0x64)
       {
-        v7 = [[PEPlaybackRateOption alloc] initWithType:2 videoFrameRate:a3];
+        v7 = [[PEPlaybackRateOption alloc] initWithType:2 videoFrameRate:rate];
         [v4 addObject:v7];
 
-        v8 = [[PEPlaybackRateOption alloc] initWithType:3 videoFrameRate:a3];
+        v8 = [[PEPlaybackRateOption alloc] initWithType:3 videoFrameRate:rate];
         [v4 addObject:v8];
 
-        if (a3 >= 0xC8)
+        if (rate >= 0xC8)
         {
-          v9 = [[PEPlaybackRateOption alloc] initWithType:4 videoFrameRate:a3];
+          v9 = [[PEPlaybackRateOption alloc] initWithType:4 videoFrameRate:rate];
           [v4 addObject:v9];
 
-          v10 = [[PEPlaybackRateOption alloc] initWithType:5 videoFrameRate:a3];
+          v10 = [[PEPlaybackRateOption alloc] initWithType:5 videoFrameRate:rate];
           [v4 addObject:v10];
         }
       }
@@ -110,14 +110,14 @@
   return v11;
 }
 
-+ (id)playbackRateOptionsForAsset:(id)a3
++ (id)playbackRateOptionsForAsset:(id)asset
 {
-  v3 = a3;
-  if ([v3 mediaType] == 2)
+  assetCopy = asset;
+  if ([assetCopy mediaType] == 2)
   {
-    [v3 fetchPropertySetsIfNeeded];
-    v4 = [v3 photosInfoPanelExtendedProperties];
-    v5 = [v4 fps];
+    [assetCopy fetchPropertySetsIfNeeded];
+    photosInfoPanelExtendedProperties = [assetCopy photosInfoPanelExtendedProperties];
+    v5 = [photosInfoPanelExtendedProperties fps];
     [v5 floatValue];
     v7 = v6;
 
@@ -132,16 +132,16 @@
   return v8;
 }
 
-+ (id)playbackRateOptionsForEditSource:(id)a3
++ (id)playbackRateOptionsForEditSource:(id)source
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  sourceCopy = source;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = MEMORY[0x277CE63D8];
-    v5 = [v3 videoURL];
-    v6 = [v4 assetWithURL:v5];
+    videoURL = [sourceCopy videoURL];
+    v6 = [v4 assetWithURL:videoURL];
 
     v14 = 0;
     [MEMORY[0x277D2D048] nominalFrameRateForAsset:v6 error:&v14];

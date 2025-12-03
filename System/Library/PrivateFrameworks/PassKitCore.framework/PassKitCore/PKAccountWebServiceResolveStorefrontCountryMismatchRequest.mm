@@ -1,15 +1,15 @@
 @interface PKAccountWebServiceResolveStorefrontCountryMismatchRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceResolveStorefrontCountryMismatchRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKAccountWebServiceResolveStorefrontCountryMismatchRequest *)self baseURL];
-  if (!v5)
+  informationCopy = information;
+  baseURL = [(PKAccountWebServiceResolveStorefrontCountryMismatchRequest *)self baseURL];
+  if (!baseURL)
   {
     v8 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -29,7 +29,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v8 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -70,13 +70,13 @@ LABEL_14:
     v18[1] = accountIdentifier;
     v18[2] = @"resolveCountryMismatch";
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
-    v8 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:v5 endpointComponents:v7 queryParameters:0 appleAccountInformation:v4];
+    v8 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v7 queryParameters:0 appleAccountInformation:informationCopy];
 
     [v8 setHTTPMethod:@"POST"];
     [v8 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    [v9 setObject:self->_countryCode forKeyedSubscript:@"countryCode"];
-    v10 = [objc_opt_class() _HTTPBodyWithDictionary:v9];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:self->_countryCode forKeyedSubscript:@"countryCode"];
+    v10 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
     [v8 setHTTPBody:v10];
 
     v11 = [v8 copy];

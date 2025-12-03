@@ -1,77 +1,77 @@
 @interface REUpNextTimer
-+ (REUpNextTimer)timerWithFireDate:(id)a3 queue:(id)a4 block:(id)a5;
-+ (REUpNextTimer)timerWithFireInterval:(id)a3 atRate:(double)a4 queue:(id)a5 block:(id)a6;
++ (REUpNextTimer)timerWithFireDate:(id)date queue:(id)queue block:(id)block;
++ (REUpNextTimer)timerWithFireInterval:(id)interval atRate:(double)rate queue:(id)queue block:(id)block;
 - (BOOL)isValid;
-- (REUpNextTimer)initWithDateInterval:(id)a3 rate:(double)a4 queue:(id)a5 block:(id)a6;
+- (REUpNextTimer)initWithDateInterval:(id)interval rate:(double)rate queue:(id)queue block:(id)block;
 - (void)_handleTimer;
 - (void)_rescheduleTimer;
-- (void)_scheduleTimerWithInterval:(id)a3 rate:(double)a4;
+- (void)_scheduleTimerWithInterval:(id)interval rate:(double)rate;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation REUpNextTimer
 
-+ (REUpNextTimer)timerWithFireDate:(id)a3 queue:(id)a4 block:(id)a5
++ (REUpNextTimer)timerWithFireDate:(id)date queue:(id)queue block:(id)block
 {
   v8 = MEMORY[0x277CCA970];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithStartDate:v11 duration:0.0];
+  blockCopy = block;
+  queueCopy = queue;
+  dateCopy = date;
+  v12 = [[v8 alloc] initWithStartDate:dateCopy duration:0.0];
 
-  v13 = [a1 timerWithFireInterval:v12 atRate:v10 queue:v9 block:0.0];
-
-  return v13;
-}
-
-+ (REUpNextTimer)timerWithFireInterval:(id)a3 atRate:(double)a4 queue:(id)a5 block:(id)a6
-{
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithDateInterval:v12 rate:v11 queue:v10 block:a4];
+  v13 = [self timerWithFireInterval:v12 atRate:queueCopy queue:blockCopy block:0.0];
 
   return v13;
 }
 
-- (REUpNextTimer)initWithDateInterval:(id)a3 rate:(double)a4 queue:(id)a5 block:(id)a6
++ (REUpNextTimer)timerWithFireInterval:(id)interval atRate:(double)rate queue:(id)queue block:(id)block
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  blockCopy = block;
+  queueCopy = queue;
+  intervalCopy = interval;
+  v13 = [[self alloc] initWithDateInterval:intervalCopy rate:queueCopy queue:blockCopy block:rate];
+
+  return v13;
+}
+
+- (REUpNextTimer)initWithDateInterval:(id)interval rate:(double)rate queue:(id)queue block:(id)block
+{
+  intervalCopy = interval;
+  queueCopy = queue;
+  blockCopy = block;
   v28.receiver = self;
   v28.super_class = REUpNextTimer;
   v14 = [(REUpNextTimer *)&v28 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_fireInterval, a3);
-    v15->_rate = a4;
-    v16 = MEMORY[0x22AABC5E0](v13);
+    objc_storeStrong(&v14->_fireInterval, interval);
+    v15->_rate = rate;
+    v16 = MEMORY[0x22AABC5E0](blockCopy);
     block = v15->_block;
     v15->_block = v16;
 
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.RETimer", dispatch_queue_get_label(v12)];
-    v19 = dispatch_queue_create_with_target_V2([v18 UTF8String], 0, v12);
+    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.RETimer", dispatch_queue_get_label(queueCopy)];
+    v19 = dispatch_queue_create_with_target_V2([v18 UTF8String], 0, queueCopy);
     queue = v15->_queue;
     v15->_queue = v19;
 
     v21 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v15->_queue);
     [(REUpNextTimer *)v15 setDispatch_timer:v21];
 
-    [(REUpNextTimer *)v15 _scheduleTimerWithInterval:v11 rate:a4];
+    [(REUpNextTimer *)v15 _scheduleTimerWithInterval:intervalCopy rate:rate];
     objc_initWeak(&location, v15);
-    v22 = [(REUpNextTimer *)v15 dispatch_timer];
+    dispatch_timer = [(REUpNextTimer *)v15 dispatch_timer];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __55__REUpNextTimer_initWithDateInterval_rate_queue_block___block_invoke;
     handler[3] = &unk_2785F9A90;
     objc_copyWeak(&v26, &location);
-    dispatch_source_set_event_handler(v22, handler);
+    dispatch_source_set_event_handler(dispatch_timer, handler);
 
-    v23 = [(REUpNextTimer *)v15 dispatch_timer];
-    dispatch_resume(v23);
+    dispatch_timer2 = [(REUpNextTimer *)v15 dispatch_timer];
+    dispatch_resume(dispatch_timer2);
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(&location);
@@ -88,12 +88,12 @@ void __55__REUpNextTimer_initWithDateInterval_rate_queue_block___block_invoke(ui
 
 - (void)dealloc
 {
-  v3 = [(REUpNextTimer *)self dispatch_timer];
+  dispatch_timer = [(REUpNextTimer *)self dispatch_timer];
 
-  if (v3)
+  if (dispatch_timer)
   {
-    v4 = [(REUpNextTimer *)self dispatch_timer];
-    dispatch_source_cancel(v4);
+    dispatch_timer2 = [(REUpNextTimer *)self dispatch_timer];
+    dispatch_source_cancel(dispatch_timer2);
   }
 
   v5.receiver = self;
@@ -101,37 +101,37 @@ void __55__REUpNextTimer_initWithDateInterval_rate_queue_block___block_invoke(ui
   [(REUpNextTimer *)&v5 dealloc];
 }
 
-- (void)_scheduleTimerWithInterval:(id)a3 rate:(double)a4
+- (void)_scheduleTimerWithInterval:(id)interval rate:(double)rate
 {
-  v6 = a3;
+  intervalCopy = interval;
   if ([(REUpNextTimer *)self isValid])
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    if ([(REUpNextTimer *)self _isNowRepeatingTimerWithCurrentDate:v7])
+    date = [MEMORY[0x277CBEAA8] date];
+    if ([(REUpNextTimer *)self _isNowRepeatingTimerWithCurrentDate:date])
     {
       lastFireDate = self->_lastFireDate;
       if (!lastFireDate)
       {
-        objc_storeStrong(&self->_lastFireDate, v7);
+        objc_storeStrong(&self->_lastFireDate, date);
         lastFireDate = self->_lastFireDate;
       }
 
-      v9 = [(NSDate *)lastFireDate dateByAddingTimeInterval:self->_rate];
+      startDate = [(NSDate *)lastFireDate dateByAddingTimeInterval:self->_rate];
       v10 = 1;
     }
 
     else
     {
-      [v6 duration];
+      [intervalCopy duration];
       v13 = v12;
       v10 = v12 > 2.22044605e-16;
-      v14 = [v6 endDate];
-      v15 = [v14 earlierDate:v7];
+      endDate = [intervalCopy endDate];
+      v15 = [endDate earlierDate:date];
 
-      if (v15 != v7)
+      if (v15 != date)
       {
-        [0 timeIntervalSinceDate:v7];
-        v9 = 0;
+        [0 timeIntervalSinceDate:date];
+        startDate = 0;
         v16 = -1;
         v17 = -1;
         if (v13 <= 2.22044605e-16)
@@ -142,11 +142,11 @@ void __55__REUpNextTimer_initWithDateInterval_rate_queue_block___block_invoke(ui
         goto LABEL_23;
       }
 
-      v9 = [v6 startDate];
+      startDate = [intervalCopy startDate];
     }
 
-    [v9 timeIntervalSinceDate:v7];
-    if (v9)
+    [startDate timeIntervalSinceDate:date];
+    if (startDate)
     {
       if (v18 > 0.0)
       {
@@ -182,21 +182,21 @@ void __55__REUpNextTimer_initWithDateInterval_rate_queue_block___block_invoke(ui
 LABEL_29:
       v17 = -1;
 LABEL_30:
-      v26 = [(REUpNextTimer *)self dispatch_timer];
-      dispatch_source_set_timer(v26, v16, v17, 0x1DCD6500uLL);
+      dispatch_timer = [(REUpNextTimer *)self dispatch_timer];
+      dispatch_source_set_timer(dispatch_timer, v16, v17, 0x1DCD6500uLL);
 
       goto LABEL_31;
     }
 
 LABEL_23:
-    if (a4 > 1.84467441e10)
+    if (rate > 1.84467441e10)
     {
       v17 = -1;
     }
 
     else
     {
-      v17 = (a4 * 1000000000.0);
+      v17 = (rate * 1000000000.0);
     }
 
     if (v16 == -1 || v17)
@@ -204,7 +204,7 @@ LABEL_23:
       goto LABEL_30;
     }
 
-    [v6 duration];
+    [intervalCopy duration];
     v27 = [MEMORY[0x277CCABB0] numberWithDouble:?];
     _REGenerateSimulatedCrash(@"UpNextBadTimerInterval", @"About to invoke dispatch with a zero repeat interval. repeats=%d start=%lld [interval duration]=%@ %016llX rate=%f leeway=%llu nextFireDate=%@ now=%@ interval=<<%@>>", v20, v21, v22, v23, v24, v25, 1);
 
@@ -227,16 +227,16 @@ LABEL_31:
     (*(self->_block + 2))();
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastFireDate = self->_lastFireDate;
-  self->_lastFireDate = v3;
+  self->_lastFireDate = date;
 
   fireInterval = self->_fireInterval;
   if (fireInterval)
   {
-    v6 = [(NSDateInterval *)fireInterval endDate];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [v6 compare:v7];
+    endDate = [(NSDateInterval *)fireInterval endDate];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v8 = [endDate compare:date2];
 
     if (v8 == -1)
     {
@@ -250,9 +250,9 @@ LABEL_31:
 {
   if ([(REUpNextTimer *)self isValid])
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v3 = [(NSDateInterval *)self->_fireInterval endDate];
-    v4 = [v3 compare:v5];
+    date = [MEMORY[0x277CBEAA8] date];
+    endDate = [(NSDateInterval *)self->_fireInterval endDate];
+    v4 = [endDate compare:date];
 
     if (v4 == -1)
     {
@@ -268,8 +268,8 @@ LABEL_31:
 
 - (BOOL)isValid
 {
-  v2 = [(REUpNextTimer *)self dispatch_timer];
-  v3 = v2 != 0;
+  dispatch_timer = [(REUpNextTimer *)self dispatch_timer];
+  v3 = dispatch_timer != 0;
 
   return v3;
 }

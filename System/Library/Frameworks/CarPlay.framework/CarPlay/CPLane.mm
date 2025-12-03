@@ -3,13 +3,13 @@
 + (NSDictionary)accNavParameterKeysIndexed;
 + (NSDictionary)accNavParametersIndexed;
 - (CPLane)init;
-- (CPLane)initWithAngles:(id)a3;
-- (CPLane)initWithAngles:(id)a3 highlightedAngle:(id)a4 isPreferred:(BOOL)a5;
-- (CPLane)initWithCoder:(id)a3;
+- (CPLane)initWithAngles:(id)angles;
+- (CPLane)initWithAngles:(id)angles highlightedAngle:(id)angle isPreferred:(BOOL)preferred;
+- (CPLane)initWithCoder:(id)coder;
 - (NSArray)angles;
 - (NSMeasurement)highlightedAngle;
 - (NSString)description;
-- (void)setHighlightedAngle:(id)a3;
+- (void)setHighlightedAngle:(id)angle;
 @end
 
 @implementation CPLane
@@ -27,36 +27,36 @@
   return v2;
 }
 
-- (CPLane)initWithCoder:(id)a3
+- (CPLane)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CPLane;
   v5 = [(CPLane *)&v7 init];
   if (v5)
   {
     [CPAccNavUpdate resetUpdate:v5];
-    [CPAccNavUpdate decodeUpdate:v5 withCoder:v4];
+    [CPAccNavUpdate decodeUpdate:v5 withCoder:coderCopy];
   }
 
   return v5;
 }
 
-- (CPLane)initWithAngles:(id)a3 highlightedAngle:(id)a4 isPreferred:(BOOL)a5
+- (CPLane)initWithAngles:(id)angles highlightedAngle:(id)angle isPreferred:(BOOL)preferred
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  preferredCopy = preferred;
+  anglesCopy = angles;
+  angleCopy = angle;
   v14.receiver = self;
   v14.super_class = CPLane;
   v11 = [(CPLane *)&v14 init];
   if (v11)
   {
     [CPAccNavUpdate resetUpdate:v11];
-    objc_storeStrong(&v11->_highlightedAngle, a4);
-    objc_storeStrong(&v11->_angles, a3);
+    objc_storeStrong(&v11->_highlightedAngle, angle);
+    objc_storeStrong(&v11->_angles, angles);
     v12 = 1;
-    if (v5)
+    if (preferredCopy)
     {
       v12 = 2;
     }
@@ -67,9 +67,9 @@
   return v11;
 }
 
-- (CPLane)initWithAngles:(id)a3
+- (CPLane)initWithAngles:(id)angles
 {
-  v5 = a3;
+  anglesCopy = angles;
   v9.receiver = self;
   v9.super_class = CPLane;
   v6 = [(CPLane *)&v9 init];
@@ -79,7 +79,7 @@
     highlightedAngle = v6->_highlightedAngle;
     v6->_highlightedAngle = 0;
 
-    objc_storeStrong(&v6->_angles, a3);
+    objc_storeStrong(&v6->_angles, angles);
     v6->_status = 0;
   }
 
@@ -120,18 +120,18 @@ LABEL_4:
   return v4;
 }
 
-- (void)setHighlightedAngle:(id)a3
+- (void)setHighlightedAngle:(id)angle
 {
-  v4 = a3;
+  angleCopy = angle;
   if (!self->_status)
   {
     self->_status = 2;
   }
 
   highlightedAngle = self->_highlightedAngle;
-  self->_highlightedAngle = v4;
+  self->_highlightedAngle = angleCopy;
 
-  MEMORY[0x2821F96F8](v4, highlightedAngle);
+  MEMORY[0x2821F96F8](angleCopy, highlightedAngle);
 }
 
 - (NSArray)angles
@@ -215,7 +215,7 @@ void __42__CPLane_CPAccNavUpdate__accNavParameters__block_invoke()
   block[1] = 3221225472;
   block[2] = __49__CPLane_CPAccNavUpdate__accNavParametersIndexed__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accNavParametersIndexed_onceToken_1 != -1)
   {
     dispatch_once(&accNavParametersIndexed_onceToken_1, block);
@@ -241,7 +241,7 @@ uint64_t __49__CPLane_CPAccNavUpdate__accNavParametersIndexed__block_invoke(uint
   block[1] = 3221225472;
   block[2] = __52__CPLane_CPAccNavUpdate__accNavParameterKeysIndexed__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accNavParameterKeysIndexed_onceToken_1 != -1)
   {
     dispatch_once(&accNavParameterKeysIndexed_onceToken_1, block);

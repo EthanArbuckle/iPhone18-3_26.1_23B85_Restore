@@ -1,39 +1,39 @@
 @interface SBFFileCache
 - (SBFFileCache)init;
-- (SBFFileCache)initWithStore:(id)a3 faultHandler:(id)a4;
+- (SBFFileCache)initWithStore:(id)store faultHandler:(id)handler;
 - (SBFFileCacheDelegate)delegate;
 - (id)description;
-- (id)fileNameForIdentifier:(id)a3;
-- (void)_queue_createManifestEntryForGeneratedFileWrapper:(id)a3 filename:(id)a4 usingStore:(id)a5;
-- (void)_queue_evictFileWithInfo:(id)a3 usingStore:(id)a4;
-- (void)_queue_evictFilesAtManifestIndexes:(id)a3 usingStore:(id)a4;
-- (void)_queue_evictIfNeededUsingStore:(id)a3;
-- (void)_queue_loadManifestUsingStore:(id)a3;
-- (void)_queue_removeManifestEntryForFilename:(id)a3 usingStore:(id)a4;
-- (void)_queue_resetManifestUsingStore:(id)a3;
-- (void)_queue_saveManifestUsingStore:(id)a3;
-- (void)_queue_updateManifestForLoadedFileWrapper:(id)a3 filename:(id)a4 usingStore:(id)a5;
-- (void)loadFileWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)performOnWorkQueueUsingBlock:(id)a3;
+- (id)fileNameForIdentifier:(id)identifier;
+- (void)_queue_createManifestEntryForGeneratedFileWrapper:(id)wrapper filename:(id)filename usingStore:(id)store;
+- (void)_queue_evictFileWithInfo:(id)info usingStore:(id)store;
+- (void)_queue_evictFilesAtManifestIndexes:(id)indexes usingStore:(id)store;
+- (void)_queue_evictIfNeededUsingStore:(id)store;
+- (void)_queue_loadManifestUsingStore:(id)store;
+- (void)_queue_removeManifestEntryForFilename:(id)filename usingStore:(id)store;
+- (void)_queue_resetManifestUsingStore:(id)store;
+- (void)_queue_saveManifestUsingStore:(id)store;
+- (void)_queue_updateManifestForLoadedFileWrapper:(id)wrapper filename:(id)filename usingStore:(id)store;
+- (void)loadFileWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)performOnWorkQueueUsingBlock:(id)block;
 - (void)removeAllFiles;
-- (void)removeFileWithIdentifier:(id)a3;
-- (void)setAccessDateTimeAdjustment:(double)a3;
+- (void)removeFileWithIdentifier:(id)identifier;
+- (void)setAccessDateTimeAdjustment:(double)adjustment;
 @end
 
 @implementation SBFFileCache
 
-- (SBFFileCache)initWithStore:(id)a3 faultHandler:(id)a4
+- (SBFFileCache)initWithStore:(id)store faultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = SBFFileCache;
   v9 = [(SBFFileCache *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_store, a3);
-    objc_storeStrong(&v10->_faultHandler, a4);
+    objc_storeStrong(&v9->_store, store);
+    objc_storeStrong(&v10->_faultHandler, handler);
     Serial = BSDispatchQueueCreateSerial();
     queue = v10->_queue;
     v10->_queue = Serial;
@@ -51,14 +51,14 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(SBFFileCache *)self store];
-  v5 = [v3 appendObject:v4 withName:@"store"];
+  store = [(SBFFileCache *)self store];
+  v5 = [v3 appendObject:store withName:@"store"];
 
-  v6 = [(SBFFileCache *)self faultHandler];
-  v7 = [v3 appendObject:v6 withName:@"faultHandler"];
+  faultHandler = [(SBFFileCache *)self faultHandler];
+  v7 = [v3 appendObject:faultHandler withName:@"faultHandler"];
 
-  v8 = [(SBFFileCache *)self delegate];
-  v9 = [v3 appendObject:v8 withName:@"delegate"];
+  delegate = [(SBFFileCache *)self delegate];
+  v9 = [v3 appendObject:delegate withName:@"delegate"];
 
   v10 = [v3 appendUnsignedInteger:-[SBFFileCache maxTotalFileCount](self withName:{"maxTotalFileCount"), @"maxTotalFileCount"}];
   v11 = [v3 appendUnsignedInteger:-[SBFFileCache maxTotalFileSize](self withName:{"maxTotalFileSize"), @"maxTotalFileSize"}];
@@ -68,27 +68,27 @@
   v18 = __27__SBFFileCache_description__block_invoke;
   v19 = &unk_1E807F290;
   v20 = v3;
-  v21 = self;
+  selfCopy = self;
   v13 = v3;
   dispatch_sync(queue, &v16);
-  v14 = [v13 build];
+  build = [v13 build];
 
-  return v14;
+  return build;
 }
 
-- (void)loadFileWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)loadFileWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__SBFFileCache_loadFileWithIdentifier_completionHandler___block_invoke;
   v10[3] = &unk_1E807FA50;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = identifierCopy;
   [(SBFFileCache *)self performOnWorkQueueUsingBlock:v10];
 }
 
@@ -172,16 +172,16 @@ void __57__SBFFileCache_loadFileWithIdentifier_completionHandler___block_invoke_
   }
 }
 
-- (void)removeFileWithIdentifier:(id)a3
+- (void)removeFileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__SBFFileCache_removeFileWithIdentifier___block_invoke;
   v6[3] = &unk_1E807FA78;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(SBFFileCache *)self performOnWorkQueueUsingBlock:v6];
 }
 
@@ -213,34 +213,34 @@ void __30__SBFFileCache_removeAllFiles__block_invoke(uint64_t a1, void *a2)
   [*(a1 + 32) _queue_resetManifestUsingStore:v4];
 }
 
-- (id)fileNameForIdentifier:(id)a3
+- (id)fileNameForIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [a3 fileCacheStableDataRepresentation];
-  CC_SHA1([v3 bytes], objc_msgSend(v3, "length"), md);
+  fileCacheStableDataRepresentation = [identifier fileCacheStableDataRepresentation];
+  CC_SHA1([fileCacheStableDataRepresentation bytes], objc_msgSend(fileCacheStableDataRepresentation, "length"), md);
   v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:md length:20 freeWhenDone:0];
-  v5 = [v4 sbf_hexadecimalEncodedString];
+  sbf_hexadecimalEncodedString = [v4 sbf_hexadecimalEncodedString];
 
-  return v5;
+  return sbf_hexadecimalEncodedString;
 }
 
-- (void)performOnWorkQueueUsingBlock:(id)a3
+- (void)performOnWorkQueueUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SBFFileCache *)self store];
-  v6 = [(SBFFileCache *)self faultHandler];
+  blockCopy = block;
+  store = [(SBFFileCache *)self store];
+  faultHandler = [(SBFFileCache *)self faultHandler];
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __45__SBFFileCache_performOnWorkQueueUsingBlock___block_invoke;
   v11[3] = &unk_1E807F218;
   v11[4] = self;
-  v12 = v5;
-  v13 = v6;
-  v14 = v4;
-  v8 = v6;
-  v9 = v4;
-  v10 = v5;
+  v12 = store;
+  v13 = faultHandler;
+  v14 = blockCopy;
+  v8 = faultHandler;
+  v9 = blockCopy;
+  v10 = store;
   dispatch_async(queue, v11);
 }
 
@@ -257,7 +257,7 @@ uint64_t __45__SBFFileCache_performOnWorkQueueUsingBlock___block_invoke(void *a1
   return v3();
 }
 
-- (void)setAccessDateTimeAdjustment:(double)a3
+- (void)setAccessDateTimeAdjustment:(double)adjustment
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -265,7 +265,7 @@ uint64_t __45__SBFFileCache_performOnWorkQueueUsingBlock___block_invoke(void *a1
   v4[2] = __44__SBFFileCache_setAccessDateTimeAdjustment___block_invoke;
   v4[3] = &unk_1E807FAC8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = adjustment;
   dispatch_async(queue, v4);
 }
 
@@ -276,15 +276,15 @@ double __44__SBFFileCache_setAccessDateTimeAdjustment___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)_queue_loadManifestUsingStore:(id)a3
+- (void)_queue_loadManifestUsingStore:(id)store
 {
-  v19 = a3;
-  v4 = [v19 fileCache:self loadFileWrapperNamed:@"Manifest.plist"];
+  storeCopy = store;
+  v4 = [storeCopy fileCache:self loadFileWrapperNamed:@"Manifest.plist"];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 regularFileContents];
-    v7 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:0];
+    regularFileContents = [v4 regularFileContents];
+    v7 = [MEMORY[0x1E696AE40] propertyListWithData:regularFileContents options:0 format:0 error:0];
     v8 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -314,11 +314,11 @@ double __44__SBFFileCache_setAccessDateTimeAdjustment___block_invoke(uint64_t a1
     v18 = self->_manifest;
     self->_manifest = v17;
 
-    [v19 removeAllFileWrappersForFileCache:self];
+    [storeCopy removeAllFileWrappersForFileCache:self];
   }
 }
 
-- (void)_queue_saveManifestUsingStore:(id)a3
+- (void)_queue_saveManifestUsingStore:(id)store
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AE40];
@@ -328,30 +328,30 @@ double __44__SBFFileCache_setAccessDateTimeAdjustment___block_invoke(uint64_t a1
   v12[0] = manifest;
   v12[1] = &unk_1F3D3E838;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a3;
+  storeCopy = store;
   v8 = [v6 dictionaryWithObjects:v12 forKeys:v11 count:2];
   v9 = [v4 dataWithPropertyList:v8 format:200 options:0 error:0];
 
   v10 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:v9];
   [v10 setFilename:@"Manifest.plist"];
-  [v7 fileCache:self storeFileWrapper:v10];
+  [storeCopy fileCache:self storeFileWrapper:v10];
 }
 
-- (void)_queue_createManifestEntryForGeneratedFileWrapper:(id)a3 filename:(id)a4 usingStore:(id)a5
+- (void)_queue_createManifestEntryForGeneratedFileWrapper:(id)wrapper filename:(id)filename usingStore:(id)store
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  storeCopy = store;
+  filenameCopy = filename;
+  wrapperCopy = wrapper;
   [(SBFFileCache *)self _queue_accessDateTimeAdjustment];
   v12 = v11;
-  v13 = [v10 sb_fileSize];
+  sb_fileSize = [wrapperCopy sb_fileSize];
 
   v14 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:v12];
-  v18[0] = v9;
+  v18[0] = filenameCopy;
   v17[0] = @"filename";
   v17[1] = @"size";
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v13];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:sb_fileSize];
   v18[1] = v15;
   v18[2] = v14;
   v17[2] = @"generated";
@@ -360,14 +360,14 @@ double __44__SBFFileCache_setAccessDateTimeAdjustment___block_invoke(uint64_t a1
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
 
   [(NSMutableArray *)self->_manifest insertObject:v16 atIndex:0];
-  [(SBFFileCache *)self _queue_evictIfNeededUsingStore:v8];
-  [(SBFFileCache *)self _queue_saveManifestUsingStore:v8];
+  [(SBFFileCache *)self _queue_evictIfNeededUsingStore:storeCopy];
+  [(SBFFileCache *)self _queue_saveManifestUsingStore:storeCopy];
 }
 
-- (void)_queue_updateManifestForLoadedFileWrapper:(id)a3 filename:(id)a4 usingStore:(id)a5
+- (void)_queue_updateManifestForLoadedFileWrapper:(id)wrapper filename:(id)filename usingStore:(id)store
 {
-  v8 = a4;
-  v9 = a5;
+  filenameCopy = filename;
+  storeCopy = store;
   [(SBFFileCache *)self _queue_accessDateTimeAdjustment];
   v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:?];
   manifest = self->_manifest;
@@ -375,8 +375,8 @@ double __44__SBFFileCache_setAccessDateTimeAdjustment___block_invoke(uint64_t a1
   v18 = 3221225472;
   v19 = __78__SBFFileCache__queue_updateManifestForLoadedFileWrapper_filename_usingStore___block_invoke;
   v20 = &unk_1E807FAF0;
-  v21 = v8;
-  v12 = v8;
+  v21 = filenameCopy;
+  v12 = filenameCopy;
   v13 = [(NSMutableArray *)manifest indexOfObjectPassingTest:&v17];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -393,8 +393,8 @@ double __44__SBFFileCache_setAccessDateTimeAdjustment___block_invoke(uint64_t a1
     [v16 setObject:v10 forKey:@"accessed"];
     [(NSMutableArray *)self->_manifest removeObjectAtIndex:v14];
     [(NSMutableArray *)self->_manifest insertObject:v16 atIndex:0];
-    [(SBFFileCache *)self _queue_evictIfNeededUsingStore:v9];
-    [(SBFFileCache *)self _queue_saveManifestUsingStore:v9];
+    [(SBFFileCache *)self _queue_evictIfNeededUsingStore:storeCopy];
+    [(SBFFileCache *)self _queue_saveManifestUsingStore:storeCopy];
   }
 }
 
@@ -406,23 +406,23 @@ uint64_t __78__SBFFileCache__queue_updateManifestForLoadedFileWrapper_filename_u
   return v4;
 }
 
-- (void)_queue_removeManifestEntryForFilename:(id)a3 usingStore:(id)a4
+- (void)_queue_removeManifestEntryForFilename:(id)filename usingStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  filenameCopy = filename;
+  storeCopy = store;
   manifest = self->_manifest;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__SBFFileCache__queue_removeManifestEntryForFilename_usingStore___block_invoke;
   v11[3] = &unk_1E807FAF0;
-  v9 = v6;
+  v9 = filenameCopy;
   v12 = v9;
   v10 = [(NSMutableArray *)manifest indexOfObjectPassingTest:v11];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->_manifest removeObjectAtIndex:v10];
-    [(SBFFileCache *)self _queue_evictIfNeededUsingStore:v7];
-    [(SBFFileCache *)self _queue_saveManifestUsingStore:v7];
+    [(SBFFileCache *)self _queue_evictIfNeededUsingStore:storeCopy];
+    [(SBFFileCache *)self _queue_saveManifestUsingStore:storeCopy];
   }
 }
 
@@ -434,26 +434,26 @@ uint64_t __65__SBFFileCache__queue_removeManifestEntryForFilename_usingStore___b
   return v4;
 }
 
-- (void)_queue_evictIfNeededUsingStore:(id)a3
+- (void)_queue_evictIfNeededUsingStore:(id)store
 {
   v47 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v4 = [(SBFFileCache *)self maxTotalFileCount];
-  if (v4)
+  storeCopy = store;
+  maxTotalFileCount = [(SBFFileCache *)self maxTotalFileCount];
+  if (maxTotalFileCount)
   {
-    v5 = v4;
+    v5 = maxTotalFileCount;
     v6 = [(NSMutableArray *)self->_manifest count];
     if (v6 > v5)
     {
       v7 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v5, v6 - v5}];
-      [(SBFFileCache *)self _queue_evictFilesAtManifestIndexes:v7 usingStore:v29];
+      [(SBFFileCache *)self _queue_evictFilesAtManifestIndexes:v7 usingStore:storeCopy];
     }
   }
 
-  v8 = [(SBFFileCache *)self maxTotalFileSize];
-  if (v8)
+  maxTotalFileSize = [(SBFFileCache *)self maxTotalFileSize];
+  if (maxTotalFileSize)
   {
-    v9 = v8;
+    v9 = maxTotalFileSize;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
@@ -479,9 +479,9 @@ LABEL_14:
         }
 
         v15 = [*(*(&v42 + 1) + 8 * i) objectForKey:@"size"];
-        v16 = [v15 unsignedIntegerValue];
+        unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-        v12 += v16;
+        v12 += unsignedIntegerValue;
       }
 
       v11 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v42 objects:v46 count:16];
@@ -507,7 +507,7 @@ LABEL_14:
       v39 = v12;
       v40 = v9;
       [(NSMutableArray *)manifest enumerateObjectsWithOptions:2 usingBlock:v36];
-      [(SBFFileCache *)self _queue_evictFilesAtManifestIndexes:v10 usingStore:v29];
+      [(SBFFileCache *)self _queue_evictFilesAtManifestIndexes:v10 usingStore:storeCopy];
 
       _Block_object_dispose(v41, 8);
       goto LABEL_14;
@@ -529,7 +529,7 @@ LABEL_15:
     v34 = v21;
     v23 = v21;
     [(NSMutableArray *)v22 enumerateObjectsWithOptions:2 usingBlock:v33];
-    [(SBFFileCache *)self _queue_evictFilesAtManifestIndexes:v23 usingStore:v29];
+    [(SBFFileCache *)self _queue_evictFilesAtManifestIndexes:v23 usingStore:storeCopy];
   }
 
   [(SBFFileCache *)self maxAllowedTimeSinceGeneration];
@@ -546,7 +546,7 @@ LABEL_15:
     v31 = v26;
     v28 = v26;
     [(NSMutableArray *)v27 enumerateObjectsWithOptions:2 usingBlock:v30];
-    [(SBFFileCache *)self _queue_evictFilesAtManifestIndexes:v28 usingStore:v29];
+    [(SBFFileCache *)self _queue_evictFilesAtManifestIndexes:v28 usingStore:storeCopy];
   }
 }
 
@@ -594,38 +594,38 @@ void __47__SBFFileCache__queue_evictIfNeededUsingStore___block_invoke_3(uint64_t
   }
 }
 
-- (void)_queue_evictFilesAtManifestIndexes:(id)a3 usingStore:(id)a4
+- (void)_queue_evictFilesAtManifestIndexes:(id)indexes usingStore:(id)store
 {
-  v6 = a4;
+  storeCopy = store;
   manifest = self->_manifest;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __62__SBFFileCache__queue_evictFilesAtManifestIndexes_usingStore___block_invoke;
   v13 = &unk_1E807FB68;
-  v14 = self;
-  v15 = v6;
-  v8 = v6;
-  v9 = a3;
-  [(NSMutableArray *)manifest enumerateObjectsAtIndexes:v9 options:0 usingBlock:&v10];
-  [(NSMutableArray *)self->_manifest removeObjectsAtIndexes:v9, v10, v11, v12, v13, v14];
+  selfCopy = self;
+  v15 = storeCopy;
+  v8 = storeCopy;
+  indexesCopy = indexes;
+  [(NSMutableArray *)manifest enumerateObjectsAtIndexes:indexesCopy options:0 usingBlock:&v10];
+  [(NSMutableArray *)self->_manifest removeObjectsAtIndexes:indexesCopy, v10, v11, v12, v13, selfCopy];
 }
 
-- (void)_queue_evictFileWithInfo:(id)a3 usingStore:(id)a4
+- (void)_queue_evictFileWithInfo:(id)info usingStore:(id)store
 {
-  v6 = a4;
-  v8 = [a3 objectForKey:@"filename"];
-  [v6 fileCache:self removeFileWrapperNamed:v8];
+  storeCopy = store;
+  v8 = [info objectForKey:@"filename"];
+  [storeCopy fileCache:self removeFileWrapperNamed:v8];
 
-  v7 = [(SBFFileCache *)self delegate];
-  [v7 fileCacheDidEvictFile:self];
+  delegate = [(SBFFileCache *)self delegate];
+  [delegate fileCacheDidEvictFile:self];
 }
 
-- (void)_queue_resetManifestUsingStore:(id)a3
+- (void)_queue_resetManifestUsingStore:(id)store
 {
   manifest = self->_manifest;
-  v5 = a3;
+  storeCopy = store;
   [(NSMutableArray *)manifest removeAllObjects];
-  [(SBFFileCache *)self _queue_saveManifestUsingStore:v5];
+  [(SBFFileCache *)self _queue_saveManifestUsingStore:storeCopy];
 }
 
 - (SBFFileCacheDelegate)delegate

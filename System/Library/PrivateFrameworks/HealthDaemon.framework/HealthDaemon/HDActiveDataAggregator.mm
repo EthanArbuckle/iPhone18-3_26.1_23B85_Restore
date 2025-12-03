@@ -1,30 +1,30 @@
 @interface HDActiveDataAggregator
-- (BOOL)didPersistObjects:(id)a3 lastDatum:(id)a4 collector:(id)a5 error:(id *)a6;
+- (BOOL)didPersistObjects:(id)objects lastDatum:(id)datum collector:(id)collector error:(id *)error;
 - (Class)sensorDatumClass;
-- (HDActiveDataAggregator)initWithDataCollectionManager:(id)a3;
+- (HDActiveDataAggregator)initWithDataCollectionManager:(id)manager;
 - (double)aggregationInterval;
-- (double)aggregationIntervalForCollector:(id)a3;
-- (id)aggregateForState:(id)a3 collector:(id)a4 device:(id)a5 requestedAggregationDate:(id)a6 mode:(int64_t)a7 options:(unint64_t)a8 error:(id *)a9;
-- (id)configurationForCollector:(id)a3;
+- (double)aggregationIntervalForCollector:(id)collector;
+- (id)aggregateForState:(id)state collector:(id)collector device:(id)device requestedAggregationDate:(id)date mode:(int64_t)mode options:(unint64_t)options error:(id *)error;
+- (id)configurationForCollector:(id)collector;
 - (id)initialAggregationState;
-- (void)_aggregateForAllDevicesForCollector:(void *)a3 date:(uint64_t)a4 mode:(uint64_t)a5 options:;
-- (void)_aggregateForCollector:(void *)a3 device:(void *)a4 requestedAggregationDate:(uint64_t)a5 mode:(uint64_t)a6 options:;
-- (void)_requestAggregationThroughDate:(uint64_t)a3 mode:(uint64_t)a4 options:(void *)a5 completion:;
-- (void)dataCollector:(id)a3 didCollectSensorData:(id)a4 device:(id)a5 options:(unint64_t)a6;
+- (void)_aggregateForAllDevicesForCollector:(void *)collector date:(uint64_t)date mode:(uint64_t)mode options:;
+- (void)_aggregateForCollector:(void *)collector device:(void *)device requestedAggregationDate:(uint64_t)date mode:(uint64_t)mode options:;
+- (void)_requestAggregationThroughDate:(uint64_t)date mode:(uint64_t)mode options:(void *)options completion:;
+- (void)dataCollector:(id)collector didCollectSensorData:(id)data device:(id)device options:(unint64_t)options;
 - (void)recomputeCollectorConfiguration;
-- (void)registerDataCollector:(id)a3 state:(id)a4;
-- (void)requestAggregationThroughDate:(id)a3 mode:(int64_t)a4 options:(unint64_t)a5 completion:(id)a6;
-- (void)unregisterDataCollector:(id)a3;
+- (void)registerDataCollector:(id)collector state:(id)state;
+- (void)requestAggregationThroughDate:(id)date mode:(int64_t)mode options:(unint64_t)options completion:(id)completion;
+- (void)unregisterDataCollector:(id)collector;
 @end
 
 @implementation HDActiveDataAggregator
 
-- (HDActiveDataAggregator)initWithDataCollectionManager:(id)a3
+- (HDActiveDataAggregator)initWithDataCollectionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v21.receiver = self;
   v21.super_class = HDActiveDataAggregator;
-  v5 = [(HDDataAggregator *)&v21 initWithDataCollectionManager:v4];
+  v5 = [(HDDataAggregator *)&v21 initWithDataCollectionManager:managerCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCAAF8]);
@@ -37,8 +37,8 @@
 
     objc_initWeak(&location, v5);
     v10 = objc_alloc(MEMORY[0x277CCDD98]);
-    v11 = [(HDDataAggregator *)v5 dataCollectionManager];
-    v12 = [v11 sharedDelayedAggregationQueue];
+    dataCollectionManager = [(HDDataAggregator *)v5 dataCollectionManager];
+    sharedDelayedAggregationQueue = [dataCollectionManager sharedDelayedAggregationQueue];
     [(HDActiveDataAggregator *)v5 aggregationInterval];
     v14 = v13;
     v18[0] = MEMORY[0x277D85DD0];
@@ -46,7 +46,7 @@
     v18[2] = __56__HDActiveDataAggregator_initWithDataCollectionManager___block_invoke;
     v18[3] = &unk_278616F38;
     objc_copyWeak(&v19, &location);
-    v15 = [v10 initWithMode:1 queue:v12 delay:v18 block:v14];
+    v15 = [v10 initWithMode:1 queue:sharedDelayedAggregationQueue delay:v18 block:v14];
     delayedAggregationOperation = v5->_delayedAggregationOperation;
     v5->_delayedAggregationOperation = v15;
 
@@ -91,30 +91,30 @@ void __56__HDActiveDataAggregator_initWithDataCollectionManager___block_invoke(u
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_aggregateForCollector:(void *)a3 device:(void *)a4 requestedAggregationDate:(uint64_t)a5 mode:(uint64_t)a6 options:
+- (void)_aggregateForCollector:(void *)collector device:(void *)device requestedAggregationDate:(uint64_t)date mode:(uint64_t)mode options:
 {
   v61 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  if (a1)
+  collectorCopy = collector;
+  deviceCopy = device;
+  if (self)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __94__HDActiveDataAggregator__aggregateForCollector_device_requestedAggregationDate_mode_options___block_invoke;
     aBlock[3] = &unk_27861CF48;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v41 = v11;
     v14 = v11;
     v48 = v14;
-    v15 = v12;
-    v16 = v12;
+    v15 = collectorCopy;
+    v16 = collectorCopy;
     v49 = v16;
-    v40 = v13;
-    v17 = v13;
+    v40 = deviceCopy;
+    v17 = deviceCopy;
     v50 = v17;
-    v51 = a5;
-    v52 = a6;
+    dateCopy = date;
+    modeCopy = mode;
     v18 = _Block_copy(aBlock);
     v19 = MEMORY[0x277CCC298];
     v20 = *MEMORY[0x277CCC298];
@@ -128,24 +128,24 @@ void __56__HDActiveDataAggregator_initWithDataCollectionManager___block_invoke(u
       if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
       {
         *buf = 138544130;
-        v54 = v14;
+        selfCopy = v14;
         v55 = 2114;
         v56 = v16;
         v57 = 2114;
         v58 = v17;
         v59 = 2048;
-        v60 = a5;
+        dateCopy2 = date;
         _os_signpost_emit_with_name_impl(&dword_228986000, v24, OS_SIGNPOST_INTERVAL_BEGIN, v21, "active-aggregation-for-collector", "collector=%{public}@, device=%{public}@, aggregationDate=%{public}@, mode=%ld", buf, 0x2Au);
       }
     }
 
-    v25 = [a1 dataCollectionManager];
-    v26 = [v25 databaseAssertion];
-    v27 = [HDDatabaseTransactionContext contextForAccessibilityAssertion:v26];
+    dataCollectionManager = [self dataCollectionManager];
+    databaseAssertion = [dataCollectionManager databaseAssertion];
+    v27 = [HDDatabaseTransactionContext contextForAccessibilityAssertion:databaseAssertion];
 
-    v28 = [a1 dataCollectionManager];
-    v29 = [v28 profile];
-    v30 = [v29 database];
+    dataCollectionManager2 = [self dataCollectionManager];
+    profile = [dataCollectionManager2 profile];
+    database = [profile database];
     v46 = 0;
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
@@ -158,13 +158,13 @@ void __56__HDActiveDataAggregator_initWithDataCollectionManager___block_invoke(u
     v42[3] = &unk_278618968;
     v31 = v45;
     v43 = v31;
-    v32 = [(HDHealthEntity *)HDDataEntity performWriteTransactionWithHealthDatabase:v30 context:v27 error:&v46 block:v44 inaccessibilityHandler:v42];
+    v32 = [(HDHealthEntity *)HDDataEntity performWriteTransactionWithHealthDatabase:database context:v27 error:&v46 block:v44 inaccessibilityHandler:v42];
     v33 = v46;
 
     _HKInitializeLogging();
     v34 = MEMORY[0x277CCC298];
     v35 = *MEMORY[0x277CCC298];
-    v12 = v15;
+    collectorCopy = v15;
     if (os_signpost_enabled(*MEMORY[0x277CCC298]))
     {
       v36 = v35;
@@ -183,14 +183,14 @@ void __56__HDActiveDataAggregator_initWithDataCollectionManager___block_invoke(u
       if (os_log_type_enabled(*v34, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v54 = a1;
+        selfCopy = self;
         v55 = 2114;
         v56 = v33;
         _os_log_error_impl(&dword_228986000, v38, OS_LOG_TYPE_ERROR, "%{public}@: Failed to perform outer write transaction for aggregation and persistence: %{public}@", buf, 0x16u);
       }
     }
 
-    v13 = v40;
+    deviceCopy = v40;
     v11 = v41;
   }
 
@@ -462,19 +462,19 @@ uint64_t __55__HDActiveDataAggregator__reconsiderDelayedAggregation__block_invok
   return 1;
 }
 
-- (void)_requestAggregationThroughDate:(uint64_t)a3 mode:(uint64_t)a4 options:(void *)a5 completion:
+- (void)_requestAggregationThroughDate:(uint64_t)date mode:(uint64_t)mode options:(void *)options completion:
 {
   v23 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a5;
-  if (a1)
+  optionsCopy = options;
+  if (self)
   {
-    v11 = [a1 allCollectors];
+    allCollectors = [self allCollectors];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v12 = [allCollectors countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v12)
     {
       v13 = v12;
@@ -486,23 +486,23 @@ uint64_t __55__HDActiveDataAggregator__reconsiderDelayedAggregation__block_invok
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allCollectors);
           }
 
-          v16 = [*(*(&v18 + 1) + 8 * v15) collector];
-          [(HDActiveDataAggregator *)a1 _aggregateForAllDevicesForCollector:v16 date:v9 mode:a3 options:a4];
+          collector = [*(*(&v18 + 1) + 8 * v15) collector];
+          [(HDActiveDataAggregator *)self _aggregateForAllDevicesForCollector:collector date:v9 mode:date options:mode];
 
           ++v15;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v13 = [allCollectors countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v13);
     }
 
-    v10[2](v10, 1, 0);
+    optionsCopy[2](optionsCopy, 1, 0);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -554,19 +554,19 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerDataCollector:(id)a3 state:(id)a4
+- (void)registerDataCollector:(id)collector state:(id)state
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v19 = a4;
-  v20 = v6;
-  v7 = [v6 identifierForDataAggregator:self];
+  collectorCopy = collector;
+  stateCopy = state;
+  v20 = collectorCopy;
+  v7 = [collectorCopy identifierForDataAggregator:self];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [(HDDataAggregator *)self allCollectors];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allCollectors = [(HDDataAggregator *)self allCollectors];
+  v9 = [allCollectors countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -577,22 +577,22 @@ LABEL_6:
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allCollectors);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 collector];
-        v15 = [v14 identifierForDataAggregator:self];
+        collector = [v13 collector];
+        v15 = [collector identifierForDataAggregator:self];
 
         if ([v15 isEqualToString:v7])
         {
-          v16 = [v13 collector];
-          v17 = [MEMORY[0x277CBEAA8] distantFuture];
-          [(HDActiveDataAggregator *)&self->super.super.isa _aggregateForAllDevicesForCollector:v16 date:v17 mode:0 options:3];
+          collector2 = [v13 collector];
+          distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+          [(HDActiveDataAggregator *)&self->super.super.isa _aggregateForAllDevicesForCollector:collector2 date:distantFuture mode:0 options:3];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v10 = [allCollectors countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v10);
@@ -600,23 +600,23 @@ LABEL_6:
 
   v21.receiver = self;
   v21.super_class = HDActiveDataAggregator;
-  [(HDDataAggregator *)&v21 registerDataCollector:v20 state:v19];
+  [(HDDataAggregator *)&v21 registerDataCollector:v20 state:stateCopy];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_aggregateForAllDevicesForCollector:(void *)a3 date:(uint64_t)a4 mode:(uint64_t)a5 options:
+- (void)_aggregateForAllDevicesForCollector:(void *)collector date:(uint64_t)date mode:(uint64_t)mode options:
 {
   v28 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  if (a1)
+  collectorCopy = collector;
+  if (self)
   {
-    [a1[8] lock];
-    v11 = [a1[9] allKeys];
-    v12 = [v11 hk_map:&__block_literal_global_326];
+    [self[8] lock];
+    allKeys = [self[9] allKeys];
+    v12 = [allKeys hk_map:&__block_literal_global_326];
 
-    [a1[8] unlock];
+    [self[8] unlock];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -638,8 +638,8 @@ LABEL_6:
           }
 
           v17 = *(*(&v23 + 1) + 8 * v16);
-          v18 = [MEMORY[0x277CBEB68] null];
-          if (v17 == v18)
+          null = [MEMORY[0x277CBEB68] null];
+          if (v17 == null)
           {
             v19 = 0;
           }
@@ -651,7 +651,7 @@ LABEL_6:
 
           v20 = v19;
 
-          [(HDActiveDataAggregator *)a1 _aggregateForCollector:v9 device:v20 requestedAggregationDate:v10 mode:a4 options:a5];
+          [(HDActiveDataAggregator *)self _aggregateForCollector:v9 device:v20 requestedAggregationDate:collectorCopy mode:date options:mode];
           ++v16;
         }
 
@@ -666,35 +666,35 @@ LABEL_6:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterDataCollector:(id)a3
+- (void)unregisterDataCollector:(id)collector
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 distantFuture];
-  [(HDActiveDataAggregator *)&self->super.super.isa _aggregateForAllDevicesForCollector:v5 date:v6 mode:0 options:3];
+  collectorCopy = collector;
+  distantFuture = [v4 distantFuture];
+  [(HDActiveDataAggregator *)&self->super.super.isa _aggregateForAllDevicesForCollector:collectorCopy date:distantFuture mode:0 options:3];
 
   v7.receiver = self;
   v7.super_class = HDActiveDataAggregator;
-  [(HDDataAggregator *)&v7 unregisterDataCollector:v5];
+  [(HDDataAggregator *)&v7 unregisterDataCollector:collectorCopy];
 }
 
-- (void)dataCollector:(id)a3 didCollectSensorData:(id)a4 device:(id)a5 options:(unint64_t)a6
+- (void)dataCollector:(id)collector didCollectSensorData:(id)data device:(id)device options:(unint64_t)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  collectorCopy = collector;
+  dataCopy = data;
+  deviceCopy = device;
   v49.receiver = self;
   v49.super_class = HDActiveDataAggregator;
-  [(HDDataAggregator *)&v49 dataCollector:v10 didCollectSensorData:v11 device:v12 options:a6];
-  if ((a6 & 1) == 0)
+  [(HDDataAggregator *)&v49 dataCollector:collectorCopy didCollectSensorData:dataCopy device:deviceCopy options:options];
+  if ((options & 1) == 0)
   {
-    v13 = [(HDActiveDataAggregator *)self sensorDatumClass];
+    sensorDatumClass = [(HDActiveDataAggregator *)self sensorDatumClass];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __76__HDActiveDataAggregator_dataCollector_didCollectSensorData_device_options___block_invoke;
     aBlock[3] = &unk_27861DCC8;
     aBlock[4] = self;
-    aBlock[5] = v13;
+    aBlock[5] = sensorDatumClass;
     v14 = _Block_copy(aBlock);
     v44 = 0;
     v45 = &v44;
@@ -711,12 +711,12 @@ LABEL_6:
     v30[1] = 3221225472;
     v30[2] = __76__HDActiveDataAggregator_dataCollector_didCollectSensorData_device_options___block_invoke_315;
     v30[3] = &unk_27861DD10;
-    v16 = v10;
+    v16 = collectorCopy;
     v31 = v16;
-    v17 = v12;
+    v17 = deviceCopy;
     v32 = v17;
-    v33 = self;
-    v34 = v11;
+    selfCopy = self;
+    v34 = dataCopy;
     v18 = v14;
     v35 = v18;
     v36 = &v38;
@@ -725,9 +725,9 @@ LABEL_6:
     if (v45[3])
     {
       Current = CFAbsoluteTimeGetCurrent();
-      v20 = [(HDDataAggregator *)self dataCollectionManager];
-      v21 = [(HDDataAggregator *)self configuration];
-      [v21 collectionLatency];
+      dataCollectionManager = [(HDDataAggregator *)self dataCollectionManager];
+      configuration = [(HDDataAggregator *)self configuration];
+      [configuration collectionLatency];
       v23 = v22;
       [v39[5] timeIntervalSinceNow];
       v25 = v23 + v24;
@@ -744,7 +744,7 @@ LABEL_6:
       v26[3] = &unk_27861DCA0;
       v26[4] = self;
       *&v26[5] = Current;
-      [v20 performSaveWithMaximumLatency:v27 block:v26 completion:v25];
+      [dataCollectionManager performSaveWithMaximumLatency:v27 block:v26 completion:v25];
     }
 
     _Block_object_dispose(&v38, 8);
@@ -898,12 +898,12 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)configurationForCollector:(id)a3
+- (id)configurationForCollector:(id)collector
 {
   [(HDActiveDataAggregator *)self aggregationInterval];
   v5 = v4;
-  v6 = [(HDDataAggregator *)self configuration];
-  if ([v6 hasActiveWorkout])
+  configuration = [(HDDataAggregator *)self configuration];
+  if ([configuration hasActiveWorkout])
   {
     v7 = 2;
   }
@@ -918,40 +918,40 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)didPersistObjects:(id)a3 lastDatum:(id)a4 collector:(id)a5 error:(id *)a6
+- (BOOL)didPersistObjects:(id)objects lastDatum:(id)datum collector:(id)collector error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v11)
+  objectsCopy = objects;
+  datumCopy = datum;
+  collectorCopy = collector;
+  if (!datumCopy)
   {
     _HKInitializeLogging();
     v13 = *MEMORY[0x277CCC298];
     if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_FAULT))
     {
       *buf = 138543362;
-      v19 = self;
+      selfCopy = self;
       _os_log_fault_impl(&dword_228986000, v13, OS_LOG_TYPE_FAULT, "%{public}@: Persisted objects with a nil last datum.", buf, 0xCu);
     }
   }
 
   v17.receiver = self;
   v17.super_class = HDActiveDataAggregator;
-  v14 = [(HDDataAggregator *)&v17 didPersistObjects:v10 lastDatum:v11 collector:v12 error:a6];
+  v14 = [(HDDataAggregator *)&v17 didPersistObjects:objectsCopy lastDatum:datumCopy collector:collectorCopy error:error];
 
   v15 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (double)aggregationIntervalForCollector:(id)a3
+- (double)aggregationIntervalForCollector:(id)collector
 {
-  v4 = a3;
+  collectorCopy = collector;
   [(HDActiveDataAggregator *)self aggregationInterval];
   v6 = v5;
   if (objc_opt_respondsToSelector())
   {
-    [v4 preferredAggregationIntervalForAggregator:self];
+    [collectorCopy preferredAggregationIntervalForAggregator:self];
     if (v6 >= v7 && v7 >= 0.0)
     {
       v6 = v7;
@@ -968,7 +968,7 @@ LABEL_6:
   return 0;
 }
 
-- (id)aggregateForState:(id)a3 collector:(id)a4 device:(id)a5 requestedAggregationDate:(id)a6 mode:(int64_t)a7 options:(unint64_t)a8 error:(id *)a9
+- (id)aggregateForState:(id)state collector:(id)collector device:(id)device requestedAggregationDate:(id)date mode:(int64_t)mode options:(unint64_t)options error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -977,17 +977,17 @@ LABEL_6:
 
 - (double)aggregationInterval
 {
-  v3 = [(HDDataAggregator *)self configuration];
-  v4 = [(HDDataAggregator *)self objectType];
-  [v4 code];
+  configuration = [(HDDataAggregator *)self configuration];
+  objectType = [(HDDataAggregator *)self objectType];
+  [objectType code];
   HKDefaultAggregationIntervalForType();
   v6 = v5;
 
-  [v3 aggregationInterval];
+  [configuration aggregationInterval];
   if (v7 > 0.0)
   {
     v8 = v7;
-    if ((([v3 hasForegroundObserver] & 1) != 0 || objc_msgSend(v3, "hasActiveWorkout")) && v8 < v6)
+    if ((([configuration hasForegroundObserver] & 1) != 0 || objc_msgSend(configuration, "hasActiveWorkout")) && v8 < v6)
     {
       v6 = v8;
     }
@@ -1015,24 +1015,24 @@ id __80__HDActiveDataAggregator__aggregateForAllDevicesForCollector_date_mode_op
   return v6;
 }
 
-- (void)requestAggregationThroughDate:(id)a3 mode:(int64_t)a4 options:(unint64_t)a5 completion:(id)a6
+- (void)requestAggregationThroughDate:(id)date mode:(int64_t)mode options:(unint64_t)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  dateCopy = date;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__HDActiveDataAggregator_requestAggregationThroughDate_mode_options_completion___block_invoke;
   v15[3] = &unk_27861DD80;
   v15[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v18 = a4;
-  v19 = a5;
+  v16 = dateCopy;
+  v17 = completionCopy;
+  modeCopy = mode;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = HDActiveDataAggregator;
-  v12 = v10;
-  v13 = v11;
-  [(HDDataAggregator *)&v14 requestAggregationThroughDate:v12 mode:a4 options:a5 completion:v15];
+  v12 = dateCopy;
+  v13 = completionCopy;
+  [(HDDataAggregator *)&v14 requestAggregationThroughDate:v12 mode:mode options:options completion:v15];
 }
 
 void __80__HDActiveDataAggregator_requestAggregationThroughDate_mode_options_completion___block_invoke(uint64_t a1, char a2)
@@ -1053,17 +1053,17 @@ void __80__HDActiveDataAggregator_requestAggregationThroughDate_mode_options_com
   v7.receiver = self;
   v7.super_class = HDActiveDataAggregator;
   [(HDDataAggregator *)&v7 recomputeCollectorConfiguration];
-  v3 = [(HDDataAggregator *)self dataCollectionManager];
-  v4 = v3;
-  if (v3)
+  dataCollectionManager = [(HDDataAggregator *)self dataCollectionManager];
+  v4 = dataCollectionManager;
+  if (dataCollectionManager)
   {
-    v5 = [v3 sharedDelayedAggregationQueue];
+    sharedDelayedAggregationQueue = [dataCollectionManager sharedDelayedAggregationQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __57__HDActiveDataAggregator_recomputeCollectorConfiguration__block_invoke;
     block[3] = &unk_278613968;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(sharedDelayedAggregationQueue, block);
   }
 }
 

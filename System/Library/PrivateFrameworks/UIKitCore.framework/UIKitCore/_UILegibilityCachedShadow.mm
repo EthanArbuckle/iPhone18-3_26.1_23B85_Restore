@@ -1,6 +1,6 @@
 @interface _UILegibilityCachedShadow
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesSettings:(id)a3 strength:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesSettings:(id)settings strength:(double)strength;
 - (void)dealloc;
 @end
 
@@ -16,20 +16,20 @@
   [(_UILegibilityCachedShadow *)&v3 dealloc];
 }
 
-- (BOOL)matchesSettings:(id)a3 strength:(double)a4
+- (BOOL)matchesSettings:(id)settings strength:(double)strength
 {
   [(_UILegibilityCachedShadow *)self strength];
-  if (vabdd_f64(v7, a4) >= 0.00000011920929)
+  if (vabdd_f64(v7, strength) >= 0.00000011920929)
   {
     return 0;
   }
 
-  v8 = [(_UILegibilityCachedShadow *)self settings];
+  settings = [(_UILegibilityCachedShadow *)self settings];
 
-  return [(_UILegibilitySettings *)v8 isEqual:a3];
+  return [(_UILegibilitySettings *)settings isEqual:settings];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -37,10 +37,10 @@
     return 0;
   }
 
-  v5 = [a3 settings];
-  [a3 strength];
+  settings = [equal settings];
+  [equal strength];
 
-  return [(_UILegibilityCachedShadow *)self matchesSettings:v5 strength:?];
+  return [(_UILegibilityCachedShadow *)self matchesSettings:settings strength:?];
 }
 
 @end

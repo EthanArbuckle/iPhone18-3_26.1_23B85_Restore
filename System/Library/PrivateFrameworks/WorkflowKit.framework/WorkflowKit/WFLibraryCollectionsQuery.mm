@@ -1,28 +1,28 @@
 @interface WFLibraryCollectionsQuery
 + (id)sortedGroupings;
 + (id)sortedVisibleFolders;
-- (id)performReturningCollectionsIn:(id)a3 database:(id)a4;
-- (id)performReturningCountIn:(id)a3 database:(id)a4;
+- (id)performReturningCollectionsIn:(id)in database:(id)database;
+- (id)performReturningCountIn:(id)in database:(id)database;
 @end
 
 @implementation WFLibraryCollectionsQuery
 
-- (id)performReturningCollectionsIn:(id)a3 database:(id)a4
+- (id)performReturningCollectionsIn:(id)in database:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1CA625C88(v6);
+  inCopy = in;
+  databaseCopy = database;
+  selfCopy = self;
+  v9 = sub_1CA625C88(inCopy);
 
   return v9;
 }
 
-- (id)performReturningCountIn:(id)a3 database:(id)a4
+- (id)performReturningCountIn:(id)in database:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1CA625EE0(v6);
+  inCopy = in;
+  databaseCopy = database;
+  selfCopy = self;
+  v9 = sub_1CA625EE0(inCopy);
 
   return v9;
 }

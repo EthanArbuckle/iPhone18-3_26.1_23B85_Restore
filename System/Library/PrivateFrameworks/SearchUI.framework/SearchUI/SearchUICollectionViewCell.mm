@@ -1,44 +1,44 @@
 @interface SearchUICollectionViewCell
 - (BOOL)_appliesLayoutAttributesMaskingToReusableView;
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (CGRect)highlightFrame;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSArray)visibleResults;
-- (NSDirectionalEdgeInsets)_preferredSeparatorInsetsForProposedInsets:(NSDirectionalEdgeInsets)a3;
+- (NSDirectionalEdgeInsets)_preferredSeparatorInsetsForProposedInsets:(NSDirectionalEdgeInsets)insets;
 - (NSDirectionalEdgeInsets)minimumSeparatorInsets;
 - (SearchUIBackgroundColorView)backgroundPlatterView;
-- (SearchUICollectionViewCell)initWithFrame:(CGRect)a3;
+- (SearchUICollectionViewCell)initWithFrame:(CGRect)frame;
 - (SearchUICustomViewProvider)customViewProvider;
 - (SearchUIFeedbackDelegateInternal)delegate;
 - (UIView)dummyBackgroundView;
 - (id)focusEffect;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)addLinkLayer:(id)a3;
-- (void)animateFocusScaleDownEffectIsHighlighted:(BOOL)a3 isSelected:(BOOL)a4 appearance:(id)a5;
-- (void)applyLayoutAttributes:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)addLinkLayer:(id)layer;
+- (void)animateFocusScaleDownEffectIsHighlighted:(BOOL)highlighted isSelected:(BOOL)selected appearance:(id)appearance;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)didMoveToWindow;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSearchui_focusStyle:(int64_t)a3;
-- (void)setSectionBackgroundStyle:(int64_t)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSearchui_focusStyle:(int64_t)style;
+- (void)setSectionBackgroundStyle:(int64_t)style;
+- (void)setSelected:(BOOL)selected;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateCornerMasks;
-- (void)updateCornerRadius:(double)a3;
-- (void)updateFocusStyleWithAppearance:(id)a3;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateCornerRadius:(double)radius;
+- (void)updateFocusStyleWithAppearance:(id)appearance;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUICollectionViewCell
 
 - (BOOL)_appliesLayoutAttributesMaskingToReusableView
 {
-  v2 = [(SearchUICollectionViewCell *)self rowModel];
-  v3 = [v2 cardSection];
+  rowModel = [(SearchUICollectionViewCell *)self rowModel];
+  cardSection = [rowModel cardSection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -62,33 +62,33 @@
 
 - (void)updateCornerMasks
 {
-  v3 = [(SearchUICollectionViewCell *)self maskedCorners];
-  v4 = [(SearchUICollectionViewCell *)self layer];
-  [v4 setMaskedCorners:v3];
+  maskedCorners = [(SearchUICollectionViewCell *)self maskedCorners];
+  layer = [(SearchUICollectionViewCell *)self layer];
+  [layer setMaskedCorners:maskedCorners];
 
-  v5 = [(SearchUICollectionViewCell *)self maskedCorners];
-  v6 = [(SearchUICollectionViewCell *)self contentView];
-  v7 = [v6 layer];
-  [v7 setMaskedCorners:v5];
+  maskedCorners2 = [(SearchUICollectionViewCell *)self maskedCorners];
+  contentView = [(SearchUICollectionViewCell *)self contentView];
+  layer2 = [contentView layer];
+  [layer2 setMaskedCorners:maskedCorners2];
 
-  v8 = [(SearchUICollectionViewCell *)self maskedCorners];
-  v9 = [(SearchUICollectionViewCell *)self backgroundView];
-  v10 = [v9 layer];
-  [v10 setMaskedCorners:v8];
+  maskedCorners3 = [(SearchUICollectionViewCell *)self maskedCorners];
+  backgroundView = [(SearchUICollectionViewCell *)self backgroundView];
+  layer3 = [backgroundView layer];
+  [layer3 setMaskedCorners:maskedCorners3];
 
-  v11 = [(SearchUICollectionViewCell *)self maskedCorners];
-  v12 = [(SearchUICollectionViewCell *)self dummyBackgroundView];
-  v13 = [v12 layer];
-  [v13 setMaskedCorners:v11];
+  maskedCorners4 = [(SearchUICollectionViewCell *)self maskedCorners];
+  dummyBackgroundView = [(SearchUICollectionViewCell *)self dummyBackgroundView];
+  layer4 = [dummyBackgroundView layer];
+  [layer4 setMaskedCorners:maskedCorners4];
 
-  v14 = [(SearchUICollectionViewCell *)self maskedCorners];
-  v15 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-  v16 = [v15 layer];
-  [v16 setMaskedCorners:v14];
+  maskedCorners5 = [(SearchUICollectionViewCell *)self maskedCorners];
+  selectedBackgroundView = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+  layer5 = [selectedBackgroundView layer];
+  [layer5 setMaskedCorners:maskedCorners5];
 
-  v17 = [(SearchUICollectionViewCell *)self maskedCorners];
-  v18 = [(SearchUICollectionViewCell *)self backgroundPlatterView];
-  [v18 setMaskedCorners:v17];
+  maskedCorners6 = [(SearchUICollectionViewCell *)self maskedCorners];
+  backgroundPlatterView = [(SearchUICollectionViewCell *)self backgroundPlatterView];
+  [backgroundPlatterView setMaskedCorners:maskedCorners6];
 }
 
 - (SearchUIBackgroundColorView)backgroundPlatterView
@@ -127,14 +127,14 @@
   v13.receiver = self;
   v13.super_class = SearchUICollectionViewCell;
   [(SearchUICollectionViewCell *)&v13 layoutSubviews];
-  v3 = [(SearchUICollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SearchUICollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SearchUICollectionViewCell *)self sizingView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  sizingView = [(SearchUICollectionViewCell *)self sizingView];
+  [sizingView setFrame:{v5, v7, v9, v11}];
 
   [(SearchUICollectionViewCell *)self bounds];
   [(CALayer *)self->_linkLayer setFrame:?];
@@ -158,12 +158,12 @@
 - (NSArray)visibleResults
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(SearchUICollectionViewCell *)self rowModel];
-  v3 = [v2 identifyingResult];
+  rowModel = [(SearchUICollectionViewCell *)self rowModel];
+  identifyingResult = [rowModel identifyingResult];
 
-  if (v3)
+  if (identifyingResult)
   {
-    v6[0] = v3;
+    v6[0] = identifyingResult;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -175,16 +175,16 @@
   return v4;
 }
 
-- (SearchUICollectionViewCell)initWithFrame:(CGRect)a3
+- (SearchUICollectionViewCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SearchUICollectionViewCell;
-  v3 = [(SearchUICollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SearchUICollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SearchUICollectionViewCell *)v3 layer];
-    [v5 setAllowsGroupOpacity:0];
+    layer = [(SearchUICollectionViewCell *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
 
     v6 = objc_opt_new();
     [(SearchUICollectionViewCell *)v4 setSelectedBackgroundView:v6];
@@ -198,26 +198,26 @@
   return v4;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
-  v5 = [(SearchUICollectionViewCell *)self dragSource];
+  modelCopy = model;
+  dragSource = [(SearchUICollectionViewCell *)self dragSource];
 
-  if (v5)
+  if (dragSource)
   {
-    v6 = [(SearchUICollectionViewCell *)self dragSource];
-    [v6 setDragObject:v4];
+    dragSource2 = [(SearchUICollectionViewCell *)self dragSource];
+    [dragSource2 setDragObject:modelCopy];
   }
 
   else
   {
-    v6 = [(SearchUICollectionViewCell *)self delegate];
-    v7 = [SearchUIDragSource dragSourceForView:self dragObject:v4 feedbackDelegate:v6];
+    dragSource2 = [(SearchUICollectionViewCell *)self delegate];
+    v7 = [SearchUIDragSource dragSourceForView:self dragObject:modelCopy feedbackDelegate:dragSource2];
     [(SearchUICollectionViewCell *)self setDragSource:v7];
   }
 
   [(SearchUICollectionViewCell *)self setBackgroundConfiguration:0];
-  [(SearchUICollectionViewCell *)self setRowModel:v4];
+  [(SearchUICollectionViewCell *)self setRowModel:modelCopy];
   [(SearchUICollectionViewCell *)self tlk_updateWithCurrentAppearance];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -231,8 +231,8 @@
 
   if (updateWithRowModel__safeToUpdateMasking == 1)
   {
-    v8 = [(SearchUICollectionViewCell *)self _layoutAttributes];
-    [(SearchUICollectionViewCell *)self _updateMaskingUsingAttributes:v8];
+    _layoutAttributes = [(SearchUICollectionViewCell *)self _layoutAttributes];
+    [(SearchUICollectionViewCell *)self _updateMaskingUsingAttributes:_layoutAttributes];
   }
 
   [(SearchUICollectionViewCell *)self tlk_updateWithCurrentAppearance];
@@ -254,32 +254,32 @@ uint64_t __49__SearchUICollectionViewCell_updateWithRowModel___block_invoke()
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(SearchUICollectionViewCell *)self useSystemSizing])
   {
     v20.receiver = self;
     v20.super_class = SearchUICollectionViewCell;
-    *&v10 = a4;
-    *&v11 = a5;
+    *&v10 = priority;
+    *&v11 = fittingPriority;
     [(SearchUICollectionViewCell *)&v20 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v10, v11];
     width = v13;
   }
 
   else
   {
-    v14 = [(SearchUICollectionViewCell *)self sizingView];
-    v15 = v14;
-    if (a4 == 1000.0)
+    sizingView = [(SearchUICollectionViewCell *)self sizingView];
+    v15 = sizingView;
+    if (priority == 1000.0)
     {
-      [v14 effectiveLayoutSizeFittingSize:{width, 0.0}];
+      [sizingView effectiveLayoutSizeFittingSize:{width, 0.0}];
     }
 
     else
     {
-      [v14 effectiveLayoutSizeFittingSize:{1000.0, 1000.0}];
+      [sizingView effectiveLayoutSizeFittingSize:{1000.0, 1000.0}];
       width = v17;
     }
 
@@ -302,39 +302,39 @@ uint64_t __49__SearchUICollectionViewCell_updateWithRowModel___block_invoke()
   return result;
 }
 
-- (void)setSectionBackgroundStyle:(int64_t)a3
+- (void)setSectionBackgroundStyle:(int64_t)style
 {
-  if (self->_sectionBackgroundStyle != a3)
+  if (self->_sectionBackgroundStyle != style)
   {
-    self->_sectionBackgroundStyle = a3;
+    self->_sectionBackgroundStyle = style;
     [(SearchUICollectionViewCell *)self tlk_updateWithCurrentAppearance];
   }
 }
 
-- (void)setSearchui_focusStyle:(int64_t)a3
+- (void)setSearchui_focusStyle:(int64_t)style
 {
-  v5 = [(SearchUICollectionViewCell *)self resolvedFocusStyle];
-  if (!a3 || v5 != a3)
+  resolvedFocusStyle = [(SearchUICollectionViewCell *)self resolvedFocusStyle];
+  if (!style || resolvedFocusStyle != style)
   {
-    if (!a3)
+    if (!style)
     {
-      a3 = [SearchUIFocusStyleUtilities bestFocusStyleForCell:self];
+      style = [SearchUIFocusStyleUtilities bestFocusStyleForCell:self];
     }
 
-    [(SearchUICollectionViewCell *)self setResolvedFocusStyle:a3];
+    [(SearchUICollectionViewCell *)self setResolvedFocusStyle:style];
 
     [(SearchUICollectionViewCell *)self tlk_updateWithCurrentAppearance];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SearchUICollectionViewCell;
-  [(SearchUICollectionViewCell *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SearchUICollectionViewCell *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(SearchUICollectionViewCell *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SearchUICollectionViewCell *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -342,11 +342,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SearchUICollectionViewCell *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SearchUICollectionViewCell *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -354,33 +354,33 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v57.receiver = self;
   v57.super_class = SearchUICollectionViewCell;
-  [(SearchUICollectionViewCell *)&v57 tlk_updateForAppearance:v4];
-  v5 = [(SearchUICollectionViewCell *)self sectionBackgroundStyle];
-  v6 = [(SearchUICollectionViewCell *)self rowModel];
-  v7 = [v6 sectionType];
+  [(SearchUICollectionViewCell *)&v57 tlk_updateForAppearance:appearanceCopy];
+  sectionBackgroundStyle = [(SearchUICollectionViewCell *)self sectionBackgroundStyle];
+  rowModel = [(SearchUICollectionViewCell *)self rowModel];
+  sectionType = [rowModel sectionType];
 
-  v8 = [(SearchUICollectionViewCell *)self rowModel];
-  v9 = [v8 fillsBackgroundWithContent];
+  rowModel2 = [(SearchUICollectionViewCell *)self rowModel];
+  fillsBackgroundWithContent = [rowModel2 fillsBackgroundWithContent];
 
-  if (v5 != 5)
+  if (sectionBackgroundStyle != 5)
   {
-    v16 = [(SearchUICollectionViewCell *)self rowModel];
-    v17 = [v16 backgroundColor];
-    v18 = [(SearchUICollectionViewCell *)self sectionBackgroundStyle];
-    v19 = v18;
-    v23 = ((v5 - 1) < 2 || v18 == 3 || v17 != 0) && v5 != 4;
-    v24 = [(SearchUICollectionViewCell *)self backgroundPlatterView];
-    v56 = v17;
-    [v24 setColor:v17];
+    rowModel3 = [(SearchUICollectionViewCell *)self rowModel];
+    backgroundColor = [rowModel3 backgroundColor];
+    sectionBackgroundStyle2 = [(SearchUICollectionViewCell *)self sectionBackgroundStyle];
+    v19 = sectionBackgroundStyle2;
+    v23 = ((sectionBackgroundStyle - 1) < 2 || sectionBackgroundStyle2 == 3 || backgroundColor != 0) && sectionBackgroundStyle != 4;
+    backgroundPlatterView = [(SearchUICollectionViewCell *)self backgroundPlatterView];
+    v56 = backgroundColor;
+    [backgroundPlatterView setColor:backgroundColor];
 
-    v25 = [v16 backgroundImage];
-    v26 = [(SearchUICollectionViewCell *)self backgroundPlatterView];
-    [v26 setBackgroundImage:v25];
+    backgroundImage = [rowModel3 backgroundImage];
+    backgroundPlatterView2 = [(SearchUICollectionViewCell *)self backgroundPlatterView];
+    [backgroundPlatterView2 setBackgroundImage:backgroundImage];
 
     if (v23)
     {
@@ -394,7 +394,7 @@ LABEL_5:
     v30 = ;
     [(SearchUICollectionViewCell *)self setBackgroundView:v30];
 
-    if (v5 == 2)
+    if (sectionBackgroundStyle == 2)
     {
       v31 = 0.0;
     }
@@ -404,17 +404,17 @@ LABEL_5:
       v31 = 1.0;
     }
 
-    v32 = [(SearchUICollectionViewCell *)self backgroundView];
-    [v32 setAlpha:v31];
+    backgroundView = [(SearchUICollectionViewCell *)self backgroundView];
+    [backgroundView setAlpha:v31];
 
-    v33 = [v16 cardSection];
+    cardSection = [rowModel3 cardSection];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
       v35 = &SearchUIHeroCardSectionViewCornerRadiusForLeadingTrailingView;
-      if (v7 != 3)
+      if (sectionType != 3)
       {
         v35 = &SearchUIHeroCardSectionViewCornerRadius;
       }
@@ -423,9 +423,9 @@ LABEL_5:
       goto LABEL_53;
     }
 
-    v36 = [v16 identifyingResult];
-    v37 = [v36 identifier];
-    v38 = [v37 isEqualToString:@"com.apple.other:show_more"];
+    identifyingResult = [rowModel3 identifyingResult];
+    identifier = [identifyingResult identifier];
+    v38 = [identifier isEqualToString:@"com.apple.other:show_more"];
 
     if (v38)
     {
@@ -443,8 +443,8 @@ LABEL_5:
         }
 
         v40 = MEMORY[0x1E69D91A8];
-        v41 = [(SearchUICollectionViewCell *)self contentView];
-        [v40 deviceScaledRoundedValue:v41 forView:v39];
+        contentView = [(SearchUICollectionViewCell *)self contentView];
+        [v40 deviceScaledRoundedValue:contentView forView:v39];
         v15 = v42;
       }
 
@@ -461,7 +461,7 @@ LABEL_53:
       goto LABEL_54;
     }
 
-    if ((v23 | v9))
+    if ((v23 | fillsBackgroundWithContent))
     {
 LABEL_39:
       [(SearchUICollectionViewCell *)self highlightFrameCornerRadius];
@@ -478,12 +478,12 @@ LABEL_39:
       goto LABEL_52;
     }
 
-    v45 = [(SearchUICollectionViewCell *)self rowModel];
-    if ([v45 hasCustomCornerRounding])
+    rowModel4 = [(SearchUICollectionViewCell *)self rowModel];
+    if ([rowModel4 hasCustomCornerRounding])
     {
-      v46 = [(SearchUICollectionViewCell *)self sectionBackgroundStyle];
+      sectionBackgroundStyle3 = [(SearchUICollectionViewCell *)self sectionBackgroundStyle];
 
-      if (v46 == 4)
+      if (sectionBackgroundStyle3 == 4)
       {
         goto LABEL_39;
       }
@@ -494,7 +494,7 @@ LABEL_39:
     }
 
     v15 = 0.0;
-    if (!v7)
+    if (!sectionType)
     {
       if ([MEMORY[0x1E69D9240] isIpad])
       {
@@ -502,15 +502,15 @@ LABEL_39:
         {
           if (([MEMORY[0x1E69D9240] isSiri] & 1) == 0)
           {
-            v47 = [(SearchUICollectionViewCell *)self contentView];
-            [v47 bounds];
+            contentView2 = [(SearchUICollectionViewCell *)self contentView];
+            [contentView2 bounds];
             v49 = v48;
 
             v15 = 22.0;
             if (v49 <= 52.0)
             {
-              v50 = [(SearchUICollectionViewCell *)self contentView];
-              [v50 bounds];
+              contentView3 = [(SearchUICollectionViewCell *)self contentView];
+              [contentView3 bounds];
               v15 = v51 * 0.5;
             }
           }
@@ -521,15 +521,15 @@ LABEL_39:
     goto LABEL_53;
   }
 
-  v10 = [(SearchUICollectionViewCell *)self dummyBackgroundView];
-  [(SearchUICollectionViewCell *)self setBackgroundView:v10];
+  dummyBackgroundView = [(SearchUICollectionViewCell *)self dummyBackgroundView];
+  [(SearchUICollectionViewCell *)self setBackgroundView:dummyBackgroundView];
 
-  v11 = [(SearchUICollectionViewCell *)self rowModel];
-  v12 = [v11 cardSection];
+  rowModel5 = [(SearchUICollectionViewCell *)self rowModel];
+  cardSection2 = [rowModel5 cardSection];
   objc_opt_class();
   v13 = objc_opt_isKindOfClass();
 
-  if ((v13 & 1) != 0 && v7 == 3)
+  if ((v13 & 1) != 0 && sectionType == 3)
   {
     +[SearchUIAutoLayout sectionCornerRadius];
     v15 = v14;
@@ -537,12 +537,12 @@ LABEL_39:
 
   else
   {
-    v27 = [(SearchUICollectionViewCell *)self rowModel];
-    v28 = [v27 cardSection];
+    rowModel6 = [(SearchUICollectionViewCell *)self rowModel];
+    cardSection3 = [rowModel6 cardSection];
     objc_opt_class();
     v29 = objc_opt_isKindOfClass();
 
-    if ((v29 & (v7 == 1)) != 0)
+    if ((v29 & (sectionType == 1)) != 0)
     {
       v15 = 20.0;
     }
@@ -556,11 +556,11 @@ LABEL_39:
 LABEL_54:
   [(SearchUICollectionViewCell *)self setPreferredCornerRadius:v15];
   [(SearchUICollectionViewCell *)self updateCornerRadius:v15];
-  v52 = [(SearchUICollectionViewCell *)self rowModel];
-  if ([v52 hasCustomCornerRounding])
+  rowModel7 = [(SearchUICollectionViewCell *)self rowModel];
+  if ([rowModel7 hasCustomCornerRounding])
   {
-    v53 = [(SearchUICollectionViewCell *)self rowModel];
-    -[SearchUICollectionViewCell setMaskedCorners:](self, "setMaskedCorners:", [v53 cornerMask]);
+    rowModel8 = [(SearchUICollectionViewCell *)self rowModel];
+    -[SearchUICollectionViewCell setMaskedCorners:](self, "setMaskedCorners:", [rowModel8 cornerMask]);
   }
 
   else
@@ -568,74 +568,74 @@ LABEL_54:
     [(SearchUICollectionViewCell *)self setMaskedCorners:SearchUIDefaultCornerMask];
   }
 
-  v54 = [(SearchUICollectionViewCell *)self traitCollection];
-  v55 = [v54 userInterfaceIdiom];
+  traitCollection = [(SearchUICollectionViewCell *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v55 == 3)
+  if (userInterfaceIdiom == 3)
   {
     [(SearchUICollectionViewCell *)self setMaskedCorners:SearchUIDefaultCornerMask];
   }
 
-  [(SearchUICollectionViewCell *)self updateFocusStyleWithAppearance:v4];
+  [(SearchUICollectionViewCell *)self updateFocusStyleWithAppearance:appearanceCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v5.receiver = self;
   v5.super_class = SearchUICollectionViewCell;
-  [(SearchUICollectionViewCell *)&v5 setHighlighted:a3];
+  [(SearchUICollectionViewCell *)&v5 setHighlighted:highlighted];
   v4 = [MEMORY[0x1E69D9108] bestAppearanceForView:self];
   [(SearchUICollectionViewCell *)self updateFocusStyleWithAppearance:v4];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v5.receiver = self;
   v5.super_class = SearchUICollectionViewCell;
-  [(SearchUICollectionViewCell *)&v5 setSelected:a3];
+  [(SearchUICollectionViewCell *)&v5 setSelected:selected];
   v4 = [MEMORY[0x1E69D9108] bestAppearanceForView:self];
   [(SearchUICollectionViewCell *)self updateFocusStyleWithAppearance:v4];
 }
 
-- (void)updateFocusStyleWithAppearance:(id)a3
+- (void)updateFocusStyleWithAppearance:(id)appearance
 {
-  v84 = a3;
-  v4 = [(SearchUICollectionViewCell *)self backgroundView];
-  [v4 frame];
+  appearanceCopy = appearance;
+  backgroundView = [(SearchUICollectionViewCell *)self backgroundView];
+  [backgroundView frame];
   x = v5;
   y = v7;
   width = v9;
   height = v11;
 
-  v13 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-  v14 = [v13 layer];
-  [v14 setShadowOpacity:0.0];
+  selectedBackgroundView = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+  layer = [selectedBackgroundView layer];
+  [layer setShadowOpacity:0.0];
 
-  v15 = [(SearchUICollectionViewCell *)self resolvedFocusStyle];
+  resolvedFocusStyle = [(SearchUICollectionViewCell *)self resolvedFocusStyle];
   v16 = 0;
-  if (v15 <= 3)
+  if (resolvedFocusStyle <= 3)
   {
-    if (v15 >= 2)
+    if (resolvedFocusStyle >= 2)
     {
       v17 = 0;
-      if (v15 == 3)
+      if (resolvedFocusStyle == 3)
       {
         +[SearchUIFocusStyleUtilities secondaryHaloProminence];
         +[SearchUIAutoLayout selectionBorderWidth];
         v22 = v21;
-        v23 = [(SearchUICollectionViewCell *)self highlightReferenceView];
-        v24 = v23;
-        if (v23)
+        highlightReferenceView = [(SearchUICollectionViewCell *)self highlightReferenceView];
+        v24 = highlightReferenceView;
+        if (highlightReferenceView)
         {
-          v25 = v23;
+          selfCopy = highlightReferenceView;
         }
 
         else
         {
-          v25 = self;
+          selfCopy = self;
         }
 
-        v26 = v25;
+        v26 = selfCopy;
 
         if ([(SearchUICollectionViewCell *)self highlightFrameMatchesHighlightView])
         {
@@ -673,8 +673,8 @@ LABEL_54:
         [(SearchUICollectionViewCell *)self highlightFrameCornerRadius];
         if (v62 == -1.0)
         {
-          v63 = [(SearchUICollectionViewCell *)v26 layer];
-          [v63 cornerRadius];
+          layer2 = [(SearchUICollectionViewCell *)v26 layer];
+          [layer2 cornerRadius];
           v65 = v64;
         }
 
@@ -684,21 +684,21 @@ LABEL_54:
           v65 = v66;
         }
 
-        v67 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-        v68 = [v67 layer];
-        [v68 setCornerRadius:v22 + v65];
+        selectedBackgroundView2 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+        layer3 = [selectedBackgroundView2 layer];
+        [layer3 setCornerRadius:v22 + v65];
 
-        v69 = [(SearchUICollectionViewCell *)v26 layer];
-        v70 = [v69 cornerCurve];
-        v71 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-        v72 = [v71 layer];
-        [v72 setCornerCurve:v70];
+        layer4 = [(SearchUICollectionViewCell *)v26 layer];
+        cornerCurve = [layer4 cornerCurve];
+        selectedBackgroundView3 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+        layer5 = [selectedBackgroundView3 layer];
+        [layer5 setCornerCurve:cornerCurve];
 
-        v73 = [(SearchUICollectionViewCell *)v26 layer];
-        v74 = [v73 maskedCorners];
-        v75 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-        v76 = [v75 layer];
-        [v76 setMaskedCorners:v74];
+        layer6 = [(SearchUICollectionViewCell *)v26 layer];
+        maskedCorners = [layer6 maskedCorners];
+        selectedBackgroundView4 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+        layer7 = [selectedBackgroundView4 layer];
+        [layer7 setMaskedCorners:maskedCorners];
 
         v16 = 0;
         v17 = 1;
@@ -712,13 +712,13 @@ LABEL_54:
       goto LABEL_15;
     }
 
-    v18 = [(SearchUICollectionViewCell *)self rowModel];
-    if (![v18 sectionType])
+    rowModel = [(SearchUICollectionViewCell *)self rowModel];
+    if (![rowModel sectionType])
     {
-      v19 = [(SearchUICollectionViewCell *)self rowModel];
-      v20 = [v19 fillsBackgroundWithContent];
+      rowModel2 = [(SearchUICollectionViewCell *)self rowModel];
+      fillsBackgroundWithContent = [rowModel2 fillsBackgroundWithContent];
 
-      if (v20)
+      if (fillsBackgroundWithContent)
       {
 LABEL_15:
         v16 = 0;
@@ -727,8 +727,8 @@ LABEL_35:
         goto LABEL_44;
       }
 
-      v18 = [(SearchUICollectionViewCell *)self backgroundView];
-      [v18 frame];
+      rowModel = [(SearchUICollectionViewCell *)self backgroundView];
+      [rowModel frame];
       v87 = CGRectInset(v86, 8.0, 0.0);
       x = v87.origin.x;
       y = v87.origin.y;
@@ -739,7 +739,7 @@ LABEL_35:
     goto LABEL_15;
   }
 
-  if ((v15 - 5) < 2)
+  if ((resolvedFocusStyle - 5) < 2)
   {
 LABEL_6:
     v17 = 0;
@@ -747,10 +747,10 @@ LABEL_6:
     goto LABEL_44;
   }
 
-  if (v15 == 4)
+  if (resolvedFocusStyle == 4)
   {
-    v31 = [(SearchUICollectionViewCell *)self rowModel];
-    v32 = [v31 isTappable];
+    rowModel3 = [(SearchUICollectionViewCell *)self rowModel];
+    isTappable = [rowModel3 isTappable];
 
     if (height * 0.5 <= 36.0)
     {
@@ -762,8 +762,8 @@ LABEL_6:
       v33 = 36.0;
     }
 
-    v34 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-    [v34 _setContinuousCornerRadius:v33];
+    selectedBackgroundView5 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+    [selectedBackgroundView5 _setContinuousCornerRadius:v33];
 
     if (_UISolariumEnabled())
     {
@@ -777,8 +777,8 @@ LABEL_6:
         v35 = 46.0;
       }
 
-      v36 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-      [v36 _setContinuousCornerRadius:v35];
+      selectedBackgroundView6 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+      [selectedBackgroundView6 _setContinuousCornerRadius:v35];
 
       [(SearchUICollectionViewCell *)self _setFocusStyle:0];
       [(SearchUICollectionViewCell *)self bounds];
@@ -787,35 +787,35 @@ LABEL_6:
       y = v89.origin.y;
       width = v89.size.width;
       height = v89.size.height;
-      v37 = [MEMORY[0x1E69DC888] blackColor];
-      v38 = [v37 CGColor];
-      v39 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-      v40 = [v39 layer];
-      [v40 setShadowColor:v38];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      cGColor = [blackColor CGColor];
+      selectedBackgroundView7 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+      layer8 = [selectedBackgroundView7 layer];
+      [layer8 setShadowColor:cGColor];
 
-      v41 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-      v42 = [v41 layer];
-      [v42 setShadowOffset:{0.0, 12.0}];
+      selectedBackgroundView8 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+      layer9 = [selectedBackgroundView8 layer];
+      [layer9 setShadowOffset:{0.0, 12.0}];
 
-      v43 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-      v44 = [v43 layer];
-      [v44 setShadowRadius:18.0];
+      selectedBackgroundView9 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+      layer10 = [selectedBackgroundView9 layer];
+      [layer10 setShadowRadius:18.0];
 
-      v45 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-      v46 = [v45 layer];
+      selectedBackgroundView10 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+      layer11 = [selectedBackgroundView10 layer];
       LODWORD(v47) = 1050253722;
-      [v46 setShadowOpacity:v47];
+      [layer11 setShadowOpacity:v47];
     }
 
-    v16 = v32 ^ 1u;
+    v16 = isTappable ^ 1u;
     v48 = [MEMORY[0x1E69DC888] colorWithWhite:0.921568627 alpha:1.0];
-    v49 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-    [v49 setBackgroundColor:v48];
+    selectedBackgroundView11 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+    [selectedBackgroundView11 setBackgroundColor:v48];
 
     [(SearchUICollectionViewCell *)self setMaskedCorners:SearchUIDefaultCornerMask];
     if (-[SearchUICollectionViewCell isSelected](self, "isSelected") && (-[SearchUICollectionViewCell rowModel](self, "rowModel"), v50 = objc_claimAutoreleasedReturnValue(), v51 = [v50 isTappable], v50, v51))
     {
-      v52 = [MEMORY[0x1E69D9108] appearanceWithVibrancyEnabled:objc_msgSend(v84 isDark:{"isVibrant"), 0}];
+      v52 = [MEMORY[0x1E69D9108] appearanceWithVibrancyEnabled:objc_msgSend(appearanceCopy isDark:{"isVibrant"), 0}];
       [v52 overrideAppearanceForView:self];
     }
 
@@ -824,30 +824,30 @@ LABEL_6:
       [MEMORY[0x1E69D9108] disableAppearanceOverrideForView:self];
     }
 
-    v53 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-    [v53 _continuousCornerRadius];
+    selectedBackgroundView12 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+    [selectedBackgroundView12 _continuousCornerRadius];
     [(SearchUICollectionViewCell *)self setPreferredCornerRadius:?];
 
     goto LABEL_35;
   }
 
-  if (v15 == 7)
+  if (resolvedFocusStyle == 7)
   {
-    [(SearchUICollectionViewCell *)self animateFocusScaleDownEffectIsHighlighted:[(SearchUICollectionViewCell *)self isHighlighted] isSelected:[(SearchUICollectionViewCell *)self isSelected] appearance:v84];
+    [(SearchUICollectionViewCell *)self animateFocusScaleDownEffectIsHighlighted:[(SearchUICollectionViewCell *)self isHighlighted] isSelected:[(SearchUICollectionViewCell *)self isSelected] appearance:appearanceCopy];
     goto LABEL_6;
   }
 
   v17 = 0;
 LABEL_44:
-  v77 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-  [v77 setFrame:{x, y, width, height}];
+  selectedBackgroundView13 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+  [selectedBackgroundView13 setFrame:{x, y, width, height}];
 
-  v78 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-  [v78 setHidden:v16];
+  selectedBackgroundView14 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+  [selectedBackgroundView14 setHidden:v16];
 
   v79 = +[SearchUIFocusStyleUtilities secondaryHaloProminence];
-  v80 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-  [v80 setProminence:v79];
+  selectedBackgroundView15 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+  [selectedBackgroundView15 setProminence:v79];
 
   v81 = 0.0;
   if (v17)
@@ -856,41 +856,41 @@ LABEL_44:
     v81 = v82;
   }
 
-  v83 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-  [v83 setBorderWidth:v81];
+  selectedBackgroundView16 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+  [selectedBackgroundView16 setBorderWidth:v81];
 }
 
-- (void)animateFocusScaleDownEffectIsHighlighted:(BOOL)a3 isSelected:(BOOL)a4 appearance:(id)a5
+- (void)animateFocusScaleDownEffectIsHighlighted:(BOOL)highlighted isSelected:(BOOL)selected appearance:(id)appearance
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(SearchUICollectionViewCell *)self highlightReferenceView];
-  v10 = v9;
-  if (v9)
+  selectedCopy = selected;
+  highlightedCopy = highlighted;
+  appearanceCopy = appearance;
+  highlightReferenceView = [(SearchUICollectionViewCell *)self highlightReferenceView];
+  v10 = highlightReferenceView;
+  if (highlightReferenceView)
   {
-    v11 = v9;
+    selfCopy = highlightReferenceView;
   }
 
   else
   {
-    v11 = self;
+    selfCopy = self;
   }
 
-  v12 = v11;
+  v12 = selfCopy;
 
-  v13 = v6 || v5;
-  if (v6 || v5)
+  v13 = highlightedCopy || selectedCopy;
+  if (highlightedCopy || selectedCopy)
   {
-    v14 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+    selectedOverlayView = [(SearchUICollectionViewCell *)self selectedOverlayView];
 
-    if (!v14)
+    if (!selectedOverlayView)
     {
       v15 = objc_opt_new();
       [(SearchUICollectionViewCell *)self setSelectedOverlayView:v15];
 
-      v16 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-      [v16 setHidden:1];
+      selectedOverlayView2 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+      [selectedOverlayView2 setHidden:1];
     }
   }
 
@@ -904,12 +904,12 @@ LABEL_44:
     memset(&v74, 0, sizeof(v74));
   }
 
-  v17 = CGAffineTransformIsIdentity(&v74) ^ v6;
-  v18 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-  if (v18)
+  v17 = CGAffineTransformIsIdentity(&v74) ^ highlightedCopy;
+  selectedOverlayView3 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+  if (selectedOverlayView3)
   {
-    v19 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-    v20 = v13 ^ [v19 isHidden];
+    selectedOverlayView4 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+    v20 = v13 ^ [selectedOverlayView4 isHidden];
   }
 
   else
@@ -919,17 +919,17 @@ LABEL_44:
 
   if ((v17 & v20 & 1) == 0)
   {
-    v66 = v8;
-    v21 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-    v22 = [v21 superview];
+    v66 = appearanceCopy;
+    selectedOverlayView5 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+    superview = [selectedOverlayView5 superview];
 
-    if (v22 != v12)
+    if (superview != v12)
     {
-      v23 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-      [v23 removeFromSuperview];
+      selectedOverlayView6 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+      [selectedOverlayView6 removeFromSuperview];
 
-      v24 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-      [(SearchUICollectionViewCell *)v12 addSubview:v24];
+      selectedOverlayView7 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+      [(SearchUICollectionViewCell *)v12 addSubview:selectedOverlayView7];
     }
 
     [(SearchUICollectionViewCell *)v12 bounds];
@@ -937,79 +937,79 @@ LABEL_44:
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v33 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-    [v33 setFrame:{v26, v28, v30, v32}];
+    selectedOverlayView8 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+    [selectedOverlayView8 setFrame:{v26, v28, v30, v32}];
 
-    v34 = [(SearchUICollectionViewCell *)v12 layer];
-    [v34 cornerRadius];
+    layer = [(SearchUICollectionViewCell *)v12 layer];
+    [layer cornerRadius];
     v36 = v35;
-    v37 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-    v38 = [v37 layer];
-    [v38 setCornerRadius:v36];
+    selectedOverlayView9 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+    layer2 = [selectedOverlayView9 layer];
+    [layer2 setCornerRadius:v36];
 
-    v39 = [(SearchUICollectionViewCell *)v12 layer];
-    v40 = [v39 cornerCurve];
-    v41 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-    v42 = [v41 layer];
-    [v42 setCornerCurve:v40];
+    layer3 = [(SearchUICollectionViewCell *)v12 layer];
+    cornerCurve = [layer3 cornerCurve];
+    selectedOverlayView10 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+    layer4 = [selectedOverlayView10 layer];
+    [layer4 setCornerCurve:cornerCurve];
 
-    v43 = [(SearchUICollectionViewCell *)v12 layer];
-    v44 = [v43 maskedCorners];
-    v45 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-    v46 = [v45 layer];
-    [v46 setMaskedCorners:v44];
+    layer5 = [(SearchUICollectionViewCell *)v12 layer];
+    maskedCorners = [layer5 maskedCorners];
+    selectedOverlayView11 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+    layer6 = [selectedOverlayView11 layer];
+    [layer6 setMaskedCorners:maskedCorners];
 
     v47 = [v66 colorForProminence:3];
-    v48 = [(SearchUICollectionViewCell *)self rowModel];
-    v49 = [v48 cardSection];
+    rowModel = [(SearchUICollectionViewCell *)self rowModel];
+    cardSection = [rowModel cardSection];
     objc_opt_class();
-    LOBYTE(v46) = objc_opt_isKindOfClass();
+    LOBYTE(layer6) = objc_opt_isKindOfClass();
 
-    if (v46)
+    if (layer6)
     {
-      v50 = [(SearchUICollectionViewCell *)self rowModel];
-      v51 = [v50 cardSection];
+      rowModel2 = [(SearchUICollectionViewCell *)self rowModel];
+      cardSection2 = [rowModel2 cardSection];
 
-      if ([v51 useAppIconMetrics])
+      if ([cardSection2 useAppIconMetrics])
       {
-        v52 = [v51 thumbnail];
+        thumbnail = [cardSection2 thumbnail];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if ((isKindOfClass & 1) == 0)
         {
-          v54 = [MEMORY[0x1E69DC888] blackColor];
-          v55 = [v54 colorWithAlphaComponent:0.25];
+          blackColor = [MEMORY[0x1E69DC888] blackColor];
+          v55 = [blackColor colorWithAlphaComponent:0.25];
 
           v47 = v55;
         }
       }
     }
 
-    v56 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-    [v56 setBackgroundColor:v47];
+    selectedOverlayView12 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+    [selectedOverlayView12 setBackgroundColor:v47];
 
     if (v13)
     {
-      v57 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-      v58 = [v57 isHidden];
+      selectedOverlayView13 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+      isHidden = [selectedOverlayView13 isHidden];
 
-      if (v58)
+      if (isHidden)
       {
-        v59 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-        [v59 setHidden:0];
+        selectedOverlayView14 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+        [selectedOverlayView14 setHidden:0];
 
-        v60 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-        [v60 setAlpha:0.0];
+        selectedOverlayView15 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+        [selectedOverlayView15 setAlpha:0.0];
 
-        v61 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-        [(SearchUICollectionViewCell *)self bringSubviewToFront:v61];
+        selectedOverlayView16 = [(SearchUICollectionViewCell *)self selectedOverlayView];
+        [(SearchUICollectionViewCell *)self bringSubviewToFront:selectedOverlayView16];
       }
     }
 
     v62 = 0.25;
     v63 = [objc_alloc(MEMORY[0x1E69DCF88]) initWithDuration:0.25 bounce:0.35];
-    if ((!v6 & (v20 | v17 ^ 1)) == 0)
+    if ((!highlightedCopy & (v20 | v17 ^ 1)) == 0)
     {
       v62 = 0.0;
     }
@@ -1027,11 +1027,11 @@ LABEL_44:
     v70[4] = self;
     v71 = v13;
     [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v72 options:v70 animations:0.2 completion:v62];
-    v8 = v66;
+    appearanceCopy = v66;
     if ((v17 & 1) == 0)
     {
       memset(&v74, 0, sizeof(v74));
-      if (v6)
+      if (highlightedCopy)
       {
         CGAffineTransformMakeScale(&v74, 0.9, 0.9);
       }
@@ -1094,24 +1094,24 @@ uint64_t __93__SearchUICollectionViewCell_animateFocusScaleDownEffectIsHighlight
 {
   if ([(SearchUICollectionViewCell *)self resolvedFocusStyle]== 2)
   {
-    v3 = [MEMORY[0x1E69DCA28] effect];
-    [v3 setContainerView:self];
+    effect = [MEMORY[0x1E69DCA28] effect];
+    [effect setContainerView:self];
   }
 
   else
   {
-    v3 = 0;
+    effect = 0;
   }
 
-  return v3;
+  return effect;
 }
 
-- (NSDirectionalEdgeInsets)_preferredSeparatorInsetsForProposedInsets:(NSDirectionalEdgeInsets)a3
+- (NSDirectionalEdgeInsets)_preferredSeparatorInsetsForProposedInsets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
   [(SearchUICollectionViewCell *)self minimumSeparatorInsets];
   v9 = v8;
   v11 = v10;
@@ -1130,12 +1130,12 @@ uint64_t __93__SearchUICollectionViewCell_animateFocusScaleDownEffectIsHighlight
 
   else
   {
-    v19 = [(SearchUICollectionViewCell *)self sfSeparatorStyle];
-    if (v19 != 1)
+    sfSeparatorStyle = [(SearchUICollectionViewCell *)self sfSeparatorStyle];
+    if (sfSeparatorStyle != 1)
     {
-      v20 = v19;
-      v21 = [(SearchUICollectionViewCell *)self contentView];
-      [v21 bounds];
+      v20 = sfSeparatorStyle;
+      contentView = [(SearchUICollectionViewCell *)self contentView];
+      [contentView bounds];
       v23 = v22;
       v25 = v24;
       v50 = top;
@@ -1146,7 +1146,7 @@ uint64_t __93__SearchUICollectionViewCell_animateFocusScaleDownEffectIsHighlight
       v30 = v9;
       v31 = v13;
       v33 = v32;
-      v34 = [(SearchUICollectionViewCell *)self sizingView];
+      sizingView = [(SearchUICollectionViewCell *)self sizingView];
       v35 = v29;
       v15 = v27;
       v11 = v26;
@@ -1155,14 +1155,14 @@ uint64_t __93__SearchUICollectionViewCell_animateFocusScaleDownEffectIsHighlight
       v9 = v30;
       top = v50;
       bottom = v51;
-      [v34 setFrame:{v23, v25, v35, v36}];
+      [sizingView setFrame:{v23, v25, v35, v36}];
 
-      v37 = [(SearchUICollectionViewCell *)self sizingView];
-      [v37 layoutIfNeeded];
+      sizingView2 = [(SearchUICollectionViewCell *)self sizingView];
+      [sizingView2 layoutIfNeeded];
 
-      v38 = [(SearchUICollectionViewCell *)self leadingView];
-      v39 = [(SearchUICollectionViewCell *)self leadingTextView];
-      [SearchUICardSectionView separatorInsetsForStyle:v20 cellView:self leadingView:v38 leadingTextView:v39];
+      leadingView = [(SearchUICollectionViewCell *)self leadingView];
+      leadingTextView = [(SearchUICollectionViewCell *)self leadingTextView];
+      [SearchUICardSectionView separatorInsetsForStyle:v20 cellView:self leadingView:leadingView leadingTextView:leadingTextView];
       leading = v40;
       trailing = v41;
 
@@ -1217,58 +1217,58 @@ uint64_t __93__SearchUICollectionViewCell_animateFocusScaleDownEffectIsHighlight
   return result;
 }
 
-- (void)updateCornerRadius:(double)a3
+- (void)updateCornerRadius:(double)radius
 {
-  v3 = a3;
-  if (a3 == -1.0)
+  radiusCopy = radius;
+  if (radius == -1.0)
   {
     [(SearchUICollectionViewCell *)self bounds];
-    v3 = v5 * 0.5;
+    radiusCopy = v5 * 0.5;
   }
 
   [(SearchUICollectionViewCell *)self bounds];
-  if (v3 >= v6 * 0.5)
+  if (radiusCopy >= v6 * 0.5)
   {
-    v3 = v6 * 0.5;
+    radiusCopy = v6 * 0.5;
   }
 
-  [(SearchUICollectionViewCell *)self _setContinuousCornerRadius:v3];
-  v7 = [(SearchUICollectionViewCell *)self contentView];
-  [v7 _setContinuousCornerRadius:v3];
+  [(SearchUICollectionViewCell *)self _setContinuousCornerRadius:radiusCopy];
+  contentView = [(SearchUICollectionViewCell *)self contentView];
+  [contentView _setContinuousCornerRadius:radiusCopy];
 
-  v8 = [(SearchUICollectionViewCell *)self backgroundPlatterView];
-  [v8 _setContinuousCornerRadius:v3];
+  backgroundPlatterView = [(SearchUICollectionViewCell *)self backgroundPlatterView];
+  [backgroundPlatterView _setContinuousCornerRadius:radiusCopy];
 
-  v9 = [(SearchUICollectionViewCell *)self dummyBackgroundView];
-  [v9 _setContinuousCornerRadius:v3];
+  dummyBackgroundView = [(SearchUICollectionViewCell *)self dummyBackgroundView];
+  [dummyBackgroundView _setContinuousCornerRadius:radiusCopy];
 
-  v10 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-  [v10 borderWidth];
-  v12 = v3 + v11;
-  v13 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
-  [v13 _setContinuousCornerRadius:v12];
+  selectedBackgroundView = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+  [selectedBackgroundView borderWidth];
+  v12 = radiusCopy + v11;
+  selectedBackgroundView2 = [(SearchUICollectionViewCell *)self selectedBackgroundView];
+  [selectedBackgroundView2 _setContinuousCornerRadius:v12];
 
   [(SearchUICollectionViewCell *)self updateCornerMasks];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = SearchUICollectionViewCell;
-  [(SearchUICollectionViewCell *)&v21 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [(SearchUICollectionViewCell *)self focusEffect];
+  [(SearchUICollectionViewCell *)&v21 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  focusEffect = [(SearchUICollectionViewCell *)self focusEffect];
 
-  v8 = [(SearchUICollectionViewCell *)self rowModel];
-  v9 = [v8 cardSection];
+  rowModel = [(SearchUICollectionViewCell *)self rowModel];
+  cardSection = [rowModel cardSection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if (!v7)
+  if (!focusEffect)
   {
-    v11 = [v6 nextFocusedView];
+    nextFocusedView = [contextCopy nextFocusedView];
 
-    if (v11 == self)
+    if (nextFocusedView == self)
     {
       if ((isKindOfClass & 1) == 0)
       {
@@ -1276,17 +1276,17 @@ uint64_t __93__SearchUICollectionViewCell_animateFocusScaleDownEffectIsHighlight
       }
 
       [(SearchUICollectionViewCell *)self tlk_updateWithCurrentAppearance];
-      v12 = [(SearchUICollectionViewCell *)self delegate];
+      delegate = [(SearchUICollectionViewCell *)self delegate];
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
       {
-        v14 = [(SearchUICollectionViewCell *)self delegate];
-        v15 = [(SearchUICollectionViewCell *)self rowModel];
-        v16 = [v15 identifyingResult];
-        v17 = [(SearchUICollectionViewCell *)self rowModel];
-        v18 = [v17 cardSection];
-        [v14 didUpdateKeyboardFocusToResult:v16 cardSection:v18];
+        delegate2 = [(SearchUICollectionViewCell *)self delegate];
+        rowModel2 = [(SearchUICollectionViewCell *)self rowModel];
+        identifyingResult = [rowModel2 identifyingResult];
+        rowModel3 = [(SearchUICollectionViewCell *)self rowModel];
+        cardSection2 = [rowModel3 cardSection];
+        [delegate2 didUpdateKeyboardFocusToResult:identifyingResult cardSection:cardSection2];
       }
     }
 
@@ -1299,10 +1299,10 @@ uint64_t __93__SearchUICollectionViewCell_animateFocusScaleDownEffectIsHighlight
   if (isKindOfClass)
   {
     [(SearchUICollectionViewCell *)self setHighlighted:0];
-    v19 = [v6 nextFocusedView];
-    v20 = [(SearchUICollectionViewCell *)self viewForForcedFocus];
+    nextFocusedView2 = [contextCopy nextFocusedView];
+    viewForForcedFocus = [(SearchUICollectionViewCell *)self viewForForcedFocus];
 
-    if (v19 == v20)
+    if (nextFocusedView2 == viewForForcedFocus)
     {
       [(SearchUICollectionViewCell *)self setupManualFocus];
     }
@@ -1314,16 +1314,16 @@ uint64_t __93__SearchUICollectionViewCell_animateFocusScaleDownEffectIsHighlight
   }
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 isForcingHeight];
-  [v4 frame];
+  attributesCopy = attributes;
+  isForcingHeight = [attributesCopy isForcingHeight];
+  [attributesCopy frame];
   v8.receiver = self;
   v8.super_class = SearchUICollectionViewCell;
-  v6 = [(SearchUICollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:v4];
+  v6 = [(SearchUICollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:attributesCopy];
 
-  if (v5)
+  if (isForcingHeight)
   {
     [v6 frame];
     [v6 setFrame:?];
@@ -1332,51 +1332,51 @@ uint64_t __93__SearchUICollectionViewCell_animateFocusScaleDownEffectIsHighlight
   return v6;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v5.receiver = self;
   v5.super_class = SearchUICollectionViewCell;
-  [(SearchUICollectionViewCell *)&v5 applyLayoutAttributes:a3];
+  [(SearchUICollectionViewCell *)&v5 applyLayoutAttributes:attributes];
   v4 = [MEMORY[0x1E69D9108] bestAppearanceForView:self];
   [(SearchUICollectionViewCell *)self updateFocusStyleWithAppearance:v4];
 }
 
-- (void)addLinkLayer:(id)a3
+- (void)addLinkLayer:(id)layer
 {
-  v8 = a3;
-  v4 = [(SearchUICollectionViewCell *)self linkLayer];
+  layerCopy = layer;
+  linkLayer = [(SearchUICollectionViewCell *)self linkLayer];
 
-  v5 = [(SearchUICollectionViewCell *)self layer];
-  v6 = v5;
-  if (v4)
+  layer = [(SearchUICollectionViewCell *)self layer];
+  v6 = layer;
+  if (linkLayer)
   {
-    v7 = [(SearchUICollectionViewCell *)self linkLayer];
-    [v6 replaceSublayer:v7 with:v8];
+    linkLayer2 = [(SearchUICollectionViewCell *)self linkLayer];
+    [v6 replaceSublayer:linkLayer2 with:layerCopy];
   }
 
   else
   {
-    [v5 addSublayer:v8];
+    [layer addSublayer:layerCopy];
   }
 
-  [(SearchUICollectionViewCell *)self setLinkLayer:v8];
+  [(SearchUICollectionViewCell *)self setLinkLayer:layerCopy];
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 nextFocusedItem];
-  v6 = [v4 previouslyFocusedItem];
+  contextCopy = context;
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-  if (v5 == v6)
+  if (nextFocusedItem == previouslyFocusedItem)
   {
-    v8 = [(SearchUICollectionViewCell *)self delegate];
+    delegate = [(SearchUICollectionViewCell *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(SearchUICollectionViewCell *)self delegate];
-      [v10 didUpdateKeyboardFocusToResult:0 cardSection:0];
+      delegate2 = [(SearchUICollectionViewCell *)self delegate];
+      [delegate2 didUpdateKeyboardFocusToResult:0 cardSection:0];
     }
 
     v7 = 0;
@@ -1386,7 +1386,7 @@ uint64_t __93__SearchUICollectionViewCell_animateFocusScaleDownEffectIsHighlight
   {
     v12.receiver = self;
     v12.super_class = SearchUICollectionViewCell;
-    v7 = [(SearchUICollectionViewCell *)&v12 shouldUpdateFocusInContext:v4];
+    v7 = [(SearchUICollectionViewCell *)&v12 shouldUpdateFocusInContext:contextCopy];
   }
 
   return v7;
@@ -1410,51 +1410,51 @@ uint64_t __93__SearchUICollectionViewCell_animateFocusScaleDownEffectIsHighlight
   v13.receiver = self;
   v13.super_class = SearchUICollectionViewCell;
   [(SearchUICollectionViewCell *)&v13 prepareForReuse];
-  v3 = [(SearchUICollectionViewCell *)self selectionAnimator];
+  selectionAnimator = [(SearchUICollectionViewCell *)self selectionAnimator];
 
-  if (v3)
+  if (selectionAnimator)
   {
-    v4 = [(SearchUICollectionViewCell *)self selectionAnimator];
-    [v4 stopAnimation:1];
+    selectionAnimator2 = [(SearchUICollectionViewCell *)self selectionAnimator];
+    [selectionAnimator2 stopAnimation:1];
 
-    v5 = [(SearchUICollectionViewCell *)self selectionAnimator];
-    [v5 finishAnimationAtPosition:2];
+    selectionAnimator3 = [(SearchUICollectionViewCell *)self selectionAnimator];
+    [selectionAnimator3 finishAnimationAtPosition:2];
 
     [(SearchUICollectionViewCell *)self setSelectionAnimator:0];
   }
 
   [(SearchUICollectionViewCell *)self _removeAllAnimations:1];
-  v6 = [(SearchUICollectionViewCell *)self highlightReferenceView];
-  v7 = v6;
-  if (v6)
+  highlightReferenceView = [(SearchUICollectionViewCell *)self highlightReferenceView];
+  v7 = highlightReferenceView;
+  if (highlightReferenceView)
   {
-    v8 = v6;
+    selfCopy = highlightReferenceView;
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  v9 = v8;
+  v9 = selfCopy;
 
   v10 = *(MEMORY[0x1E695EFD0] + 16);
   v12[0] = *MEMORY[0x1E695EFD0];
   v12[1] = v10;
   v12[2] = *(MEMORY[0x1E695EFD0] + 32);
   [(SearchUICollectionViewCell *)v9 setTransform:v12];
-  v11 = [(SearchUICollectionViewCell *)self selectedOverlayView];
-  [v11 setHidden:1];
+  selectedOverlayView = [(SearchUICollectionViewCell *)self selectedOverlayView];
+  [selectedOverlayView setHidden:1];
 
   [SearchUIAppEntityAnnotator resetAnnotationForView:self];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69D91A8] tappableControlViewForPoint:self inView:v7 withEvent:{x, y}];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  v8 = [MEMORY[0x1E69D91A8] tappableControlViewForPoint:self inView:eventCopy withEvent:{x, y}];
   v9 = v8;
   if (v8)
   {
@@ -1465,7 +1465,7 @@ uint64_t __93__SearchUICollectionViewCell_animateFocusScaleDownEffectIsHighlight
   {
     v13.receiver = self;
     v13.super_class = SearchUICollectionViewCell;
-    v10 = [(SearchUICollectionViewCell *)&v13 hitTest:v7 withEvent:x, y];
+    v10 = [(SearchUICollectionViewCell *)&v13 hitTest:eventCopy withEvent:x, y];
   }
 
   v11 = v10;

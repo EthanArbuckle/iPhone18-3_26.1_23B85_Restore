@@ -1,18 +1,18 @@
 @interface AVTAvatarDescriptor
-+ (BOOL)canLoadDataRepresentation:(id)a3;
-+ (id)_descriptorWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-+ (id)_dictionaryRepresentationFromDataRepresentation:(id)a3 error:(id *)a4;
-+ (id)dataRepresentationFromUnsecureDataRepresentation:(id)a3 error:(id *)a4;
-+ (id)descriptorWithDataRepresentation:(id)a3 error:(id *)a4;
-+ (id)descriptorWithURL:(id)a3 error:(id *)a4;
++ (BOOL)canLoadDataRepresentation:(id)representation;
++ (id)_descriptorWithDictionaryRepresentation:(id)representation error:(id *)error;
++ (id)_dictionaryRepresentationFromDataRepresentation:(id)representation error:(id *)error;
++ (id)dataRepresentationFromUnsecureDataRepresentation:(id)representation error:(id *)error;
++ (id)descriptorWithDataRepresentation:(id)representation error:(id *)error;
++ (id)descriptorWithURL:(id)l error:(id *)error;
 + (unsigned)classIdentifier;
 + (void)classIdentifier;
-- (AVTAvatarDescriptor)initWithCoder:(id)a3;
-- (AVTAvatarDescriptor)initWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AVTAvatarDescriptor)initWithCoder:(id)coder;
+- (AVTAvatarDescriptor)initWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dataRepresentation;
-- (void)encodeInDictionaryRepresentation:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeInDictionaryRepresentation:(id)representation;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVTAvatarDescriptor
@@ -31,14 +31,14 @@
   return v5;
 }
 
-+ (id)_dictionaryRepresentationFromDataRepresentation:(id)a3 error:(id *)a4
++ (id)_dictionaryRepresentationFromDataRepresentation:(id)representation error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  representationCopy = representation;
+  if (representationCopy)
   {
     v20 = 0;
-    v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v5 options:0 error:&v20];
+    v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:representationCopy options:0 error:&v20];
     v7 = v20;
     v8 = v7;
     if (v6)
@@ -52,7 +52,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      if (a4)
+      if (error)
       {
         v11 = MEMORY[0x1E696ABC0];
         v21 = *MEMORY[0x1E696A578];
@@ -65,7 +65,7 @@ LABEL_13:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v12 = *MEMORY[0x1E696AA08];
@@ -79,21 +79,21 @@ LABEL_13:
       v16 = 2;
 LABEL_11:
       v17 = [v13 dictionaryWithObjects:v14 forKeys:v15 count:v16];
-      *a4 = [v11 errorWithDomain:@"AVTErrorDomain" code:3 userInfo:v17];
+      *error = [v11 errorWithDomain:@"AVTErrorDomain" code:3 userInfo:v17];
     }
 
     v9 = 0;
     goto LABEL_13;
   }
 
-  if (a4)
+  if (error)
   {
     v10 = MEMORY[0x1E696ABC0];
     v25 = *MEMORY[0x1E696A578];
     v26[0] = @"There's no data to load";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     [v10 errorWithDomain:@"AVTErrorDomain" code:3 userInfo:v8];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
 LABEL_14:
 
     goto LABEL_15;
@@ -107,9 +107,9 @@ LABEL_15:
   return v9;
 }
 
-+ (BOOL)canLoadDataRepresentation:(id)a3
++ (BOOL)canLoadDataRepresentation:(id)representation
 {
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:0];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:representation options:0 error:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -119,7 +119,7 @@ LABEL_15:
     v7 = 0;
     if ((v9 & 1) == 0)
     {
-      v7 = [a1 _canLoadDataRepresentationWithVersion:objc_msgSend(v6 minimumCompatibleVersion:"intValue") error:{objc_msgSend(v5, "intValue"), 0}];
+      v7 = [self _canLoadDataRepresentationWithVersion:objc_msgSend(v6 minimumCompatibleVersion:"intValue") error:{objc_msgSend(v5, "intValue"), 0}];
     }
   }
 
@@ -131,9 +131,9 @@ LABEL_15:
   return v7;
 }
 
-+ (id)_descriptorWithDictionaryRepresentation:(id)a3 error:(id *)a4
++ (id)_descriptorWithDictionaryRepresentation:(id)representation error:(id *)error
 {
-  v5 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -142,26 +142,26 @@ LABEL_15:
   }
 
   v14 = 0;
-  v6 = [v5 avt_objectForKey:@"minVersion" ofClass:objc_opt_class() didFail:&v14 error:a4];
-  v7 = [v5 avt_objectForKey:@"version" ofClass:objc_opt_class() didFail:&v14 error:a4];
-  if ((v14 & 1) == 0 && [objc_opt_class() _canLoadDataRepresentationWithVersion:objc_msgSend(v7 minimumCompatibleVersion:"intValue") error:{objc_msgSend(v6, "intValue"), a4}])
+  v6 = [representationCopy avt_objectForKey:@"minVersion" ofClass:objc_opt_class() didFail:&v14 error:error];
+  v7 = [representationCopy avt_objectForKey:@"version" ofClass:objc_opt_class() didFail:&v14 error:error];
+  if ((v14 & 1) == 0 && [objc_opt_class() _canLoadDataRepresentationWithVersion:objc_msgSend(v7 minimumCompatibleVersion:"intValue") error:{objc_msgSend(v6, "intValue"), error}])
   {
-    v8 = [v5 avt_objectForKey:@"class" ofClass:objc_opt_class() didFail:&v14 error:a4];
+    v8 = [representationCopy avt_objectForKey:@"class" ofClass:objc_opt_class() didFail:&v14 error:error];
     v9 = v8;
     if ((v14 & 1) == 0)
     {
-      v10 = [v8 intValue];
-      if (v10 == 1)
+      intValue = [v8 intValue];
+      if (intValue == 1)
       {
         v11 = off_1E7F470E0;
         goto LABEL_12;
       }
 
-      if (v10 == 2)
+      if (intValue == 2)
       {
         v11 = off_1E7F47158;
 LABEL_12:
-        v12 = [objc_alloc(*v11) initWithDictionaryRepresentation:v5 error:a4];
+        v12 = [objc_alloc(*v11) initWithDictionaryRepresentation:representationCopy error:error];
         goto LABEL_13;
       }
     }
@@ -180,12 +180,12 @@ LABEL_15:
   return v12;
 }
 
-+ (id)descriptorWithURL:(id)a3 error:(id *)a4
++ (id)descriptorWithURL:(id)l error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:a3 options:1 error:a4];
+  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:l options:1 error:error];
   if (v6)
   {
-    v7 = [a1 descriptorWithDataRepresentation:v6 error:a4];
+    v7 = [self descriptorWithDataRepresentation:v6 error:error];
   }
 
   else
@@ -196,20 +196,20 @@ LABEL_15:
   return v7;
 }
 
-+ (id)descriptorWithDataRepresentation:(id)a3 error:(id *)a4
++ (id)descriptorWithDataRepresentation:(id)representation error:(id *)error
 {
-  v6 = [a1 _dictionaryRepresentationFromDataRepresentation:a3 error:?];
-  v7 = [a1 _descriptorWithDictionaryRepresentation:v6 error:a4];
+  v6 = [self _dictionaryRepresentationFromDataRepresentation:representation error:?];
+  v7 = [self _descriptorWithDictionaryRepresentation:v6 error:error];
 
   return v7;
 }
 
-+ (id)dataRepresentationFromUnsecureDataRepresentation:(id)a3 error:(id *)a4
++ (id)dataRepresentationFromUnsecureDataRepresentation:(id)representation error:(id *)error
 {
-  v4 = [a1 descriptorWithDataRepresentation:a3 error:a4];
-  v5 = [v4 dataRepresentation];
+  v4 = [self descriptorWithDataRepresentation:representation error:error];
+  dataRepresentation = [v4 dataRepresentation];
 
-  return v5;
+  return dataRepresentation;
 }
 
 + (unsigned)classIdentifier
@@ -223,7 +223,7 @@ LABEL_15:
   return 0;
 }
 
-- (void)encodeInDictionaryRepresentation:(id)a3
+- (void)encodeInDictionaryRepresentation:(id)representation
 {
   v3 = avt_default_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -232,7 +232,7 @@ LABEL_15:
   }
 }
 
-- (AVTAvatarDescriptor)initWithDictionaryRepresentation:(id)a3 error:(id *)a4
+- (AVTAvatarDescriptor)initWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v5 = avt_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -243,7 +243,7 @@ LABEL_15:
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = avt_default_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -254,24 +254,24 @@ LABEL_15:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v3 = a3;
-  [v3 encodeInteger:12 forKey:@"version"];
-  [v3 encodeInteger:12 forKey:@"minVersion"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:12 forKey:@"version"];
+  [coderCopy encodeInteger:12 forKey:@"minVersion"];
 }
 
-- (AVTAvatarDescriptor)initWithCoder:(id)a3
+- (AVTAvatarDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"version"];
-  v6 = [v4 decodeIntegerForKey:@"minVersion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"version"];
+  v6 = [coderCopy decodeIntegerForKey:@"minVersion"];
 
   if (v5 > 6)
   {
     if (v6 < 13)
     {
-      v8 = self;
+      selfCopy = self;
       goto LABEL_9;
     }
 
@@ -291,10 +291,10 @@ LABEL_15:
     }
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_9:
 
-  return v8;
+  return selfCopy;
 }
 
 + (void)classIdentifier

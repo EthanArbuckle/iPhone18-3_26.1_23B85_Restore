@@ -10,12 +10,12 @@
   v7.super_class = MTBridgeDestructiveTableCell;
   [(MTBridgeDestructiveTableCell *)&v7 layoutSubviews];
   v3 = +[UIColor systemRedColor];
-  v4 = [(MTBridgeDestructiveTableCell *)self titleLabel];
-  [v4 setTextColor:v3];
+  titleLabel = [(MTBridgeDestructiveTableCell *)self titleLabel];
+  [titleLabel setTextColor:v3];
 
   v5 = +[UIColor systemRedColor];
-  v6 = [(MTBridgeDestructiveTableCell *)self titleLabel];
-  [v6 setHighlightedTextColor:v5];
+  titleLabel2 = [(MTBridgeDestructiveTableCell *)self titleLabel];
+  [titleLabel2 setHighlightedTextColor:v5];
 }
 
 @end

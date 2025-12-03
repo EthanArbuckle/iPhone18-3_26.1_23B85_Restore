@@ -1,8 +1,8 @@
 @interface PUImageTextAttachment
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
 - (CGSize)size;
-- (PUImageTextAttachment)initWithImageView:(id)a3 size:(CGSize)a4;
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5;
+- (PUImageTextAttachment)initWithImageView:(id)view size:(CGSize)size;
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container;
 @end
 
 @implementation PUImageTextAttachment
@@ -16,11 +16,11 @@
   return result;
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
   v16.receiver = self;
   v16.super_class = PUImageTextAttachment;
-  [(PUImageTextAttachment *)&v16 attachmentBoundsForAttributes:a3 location:a4 textContainer:a5 proposedLineFragment:a6.origin.x position:a6.origin.y, a6.size.width, a6.size.height, a7.x, a7.y];
+  [(PUImageTextAttachment *)&v16 attachmentBoundsForAttributes:attributes location:location textContainer:container proposedLineFragment:fragment.origin.x position:fragment.origin.y, fragment.size.width, fragment.size.height, position.x, position.y];
   v9 = v8;
   [(PUImageTextAttachment *)self size];
   v11 = v10;
@@ -34,18 +34,18 @@
   return result;
 }
 
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container
 {
   viewProvider = self->_viewProvider;
   if (!viewProvider)
   {
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
+    containerCopy = container;
+    locationCopy = location;
+    viewCopy = view;
     v12 = [_PUImageTextAttachmentViewProvider alloc];
-    v13 = [v9 textLayoutManager];
+    textLayoutManager = [containerCopy textLayoutManager];
 
-    v14 = [(NSTextAttachmentViewProvider *)v12 initWithTextAttachment:self parentView:v11 textLayoutManager:v13 location:v10];
+    v14 = [(NSTextAttachmentViewProvider *)v12 initWithTextAttachment:self parentView:viewCopy textLayoutManager:textLayoutManager location:locationCopy];
     v15 = self->_viewProvider;
     self->_viewProvider = v14;
 
@@ -55,18 +55,18 @@
   return viewProvider;
 }
 
-- (PUImageTextAttachment)initWithImageView:(id)a3 size:(CGSize)a4
+- (PUImageTextAttachment)initWithImageView:(id)view size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = PUImageTextAttachment;
   v9 = [(PUImageTextAttachment *)&v12 initWithData:0 ofType:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_imageView, a3);
+    objc_storeStrong(&v9->_imageView, view);
     v10->_size.width = width;
     v10->_size.height = height;
   }

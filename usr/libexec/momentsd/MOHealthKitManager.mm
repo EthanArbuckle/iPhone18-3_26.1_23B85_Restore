@@ -1,59 +1,59 @@
 @interface MOHealthKitManager
-+ (id)convertBiologicalSexObjToString:(id)a3;
-- (MOHealthKitManager)initWithUniverse:(id)a3;
-- (id)_createEventFromMindfulSession:(id)a3;
-- (id)_createEventFromStateOfMind:(id)a3;
-- (id)_createEventFromWorkout:(id)a3;
-- (id)_createQueryBasedonEvents:(id)a3 withPredicate:(id)a4;
-- (id)_findUnrehydratedEventsWithStoredEvents:(id)a3 stateOfMind:(id)a4;
-- (id)_findUnrehydratedEventsWithStoredEvents:(id)a3 workouts:(id)a4;
-- (void)_createEventsFromStateOfMind:(id)a3 handler:(id)a4;
-- (void)_createEventsFromWorkout:(id)a3 handler:(id)a4;
-- (void)_createNewEventsFromStateOfMind:(id)a3 storedEvents:(id)a4 handler:(id)a5;
-- (void)_createNewEventsFromWorkouts:(id)a3 storedEvents:(id)a4 handler:(id)a5;
-- (void)_fetchLocationsFrom:(id)a3 handler:(id)a4;
-- (void)_fetchMindfulSessionBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
-- (void)_fetchStateOfMindBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
-- (void)_fetchStateOfMindEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)_fetchUserAgeWithHandler:(id)a3;
-- (void)_fetchUserBiologicalSexWithHandler:(id)a3;
-- (void)_fetchWorkoutEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)_fetchWorkoutRouteLocations:(id)a3 CompletionHandler:(id)a4;
-- (void)_fetchWorkoutRoutes:(id)a3 CompletionHandler:(id)a4;
-- (void)_fetchWorkoutsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
-- (void)_rehydrateStateOfMind:(id)a3 handler:(id)a4;
-- (void)_rehydrateStoredEvents:(id)a3 fromMindfulSession:(id)a4 handler:(id)a5;
-- (void)_rehydrateStoredEvents:(id)a3 fromStateOfMind:(id)a4 handler:(id)a5;
-- (void)_rehydrateStoredEvents:(id)a3 fromWorkouts:(id)a4 handler:(id)a5;
-- (void)_rehydrateWorkouts:(id)a3 handler:(id)a4;
-- (void)_saveMindfulSessions:(id)a3 handler:(id)a4;
-- (void)_saveWorkouts:(id)a3 handler:(id)a4;
-- (void)_setDynamicProperties:(id)a3 mindfulSession:(id)a4;
-- (void)_setDynamicProperties:(id)a3 stateOfMind:(id)a4;
-- (void)_setDynamicProperties:(id)a3 workout:(id)a4;
-- (void)fetchStateOfMindEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)fetchUserAgeWithHandler:(id)a3;
-- (void)fetchUserBiologicalSexWithHandler:(id)a3;
-- (void)fetchWorkoutEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)rehydrateStateOfMind:(id)a3 handler:(id)a4;
-- (void)rehydrateWorkouts:(id)a3 handler:(id)a4;
++ (id)convertBiologicalSexObjToString:(id)string;
+- (MOHealthKitManager)initWithUniverse:(id)universe;
+- (id)_createEventFromMindfulSession:(id)session;
+- (id)_createEventFromStateOfMind:(id)mind;
+- (id)_createEventFromWorkout:(id)workout;
+- (id)_createQueryBasedonEvents:(id)events withPredicate:(id)predicate;
+- (id)_findUnrehydratedEventsWithStoredEvents:(id)events stateOfMind:(id)mind;
+- (id)_findUnrehydratedEventsWithStoredEvents:(id)events workouts:(id)workouts;
+- (void)_createEventsFromStateOfMind:(id)mind handler:(id)handler;
+- (void)_createEventsFromWorkout:(id)workout handler:(id)handler;
+- (void)_createNewEventsFromStateOfMind:(id)mind storedEvents:(id)events handler:(id)handler;
+- (void)_createNewEventsFromWorkouts:(id)workouts storedEvents:(id)events handler:(id)handler;
+- (void)_fetchLocationsFrom:(id)from handler:(id)handler;
+- (void)_fetchMindfulSessionBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
+- (void)_fetchStateOfMindBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
+- (void)_fetchStateOfMindEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)_fetchUserAgeWithHandler:(id)handler;
+- (void)_fetchUserBiologicalSexWithHandler:(id)handler;
+- (void)_fetchWorkoutEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)_fetchWorkoutRouteLocations:(id)locations CompletionHandler:(id)handler;
+- (void)_fetchWorkoutRoutes:(id)routes CompletionHandler:(id)handler;
+- (void)_fetchWorkoutsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
+- (void)_rehydrateStateOfMind:(id)mind handler:(id)handler;
+- (void)_rehydrateStoredEvents:(id)events fromMindfulSession:(id)session handler:(id)handler;
+- (void)_rehydrateStoredEvents:(id)events fromStateOfMind:(id)mind handler:(id)handler;
+- (void)_rehydrateStoredEvents:(id)events fromWorkouts:(id)workouts handler:(id)handler;
+- (void)_rehydrateWorkouts:(id)workouts handler:(id)handler;
+- (void)_saveMindfulSessions:(id)sessions handler:(id)handler;
+- (void)_saveWorkouts:(id)workouts handler:(id)handler;
+- (void)_setDynamicProperties:(id)properties mindfulSession:(id)session;
+- (void)_setDynamicProperties:(id)properties stateOfMind:(id)mind;
+- (void)_setDynamicProperties:(id)properties workout:(id)workout;
+- (void)fetchStateOfMindEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)fetchUserAgeWithHandler:(id)handler;
+- (void)fetchUserBiologicalSexWithHandler:(id)handler;
+- (void)fetchWorkoutEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)rehydrateStateOfMind:(id)mind handler:(id)handler;
+- (void)rehydrateWorkouts:(id)workouts handler:(id)handler;
 @end
 
 @implementation MOHealthKitManager
 
-- (MOHealthKitManager)initWithUniverse:(id)a3
+- (MOHealthKitManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 getService:v7];
+  v8 = [universeCopy getService:v7];
 
   if (v8)
   {
     v9 = objc_alloc_init(HKHealthStore);
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v5 getService:v11];
+    v12 = [universeCopy getService:v11];
 
     if (v12)
     {
@@ -75,7 +75,7 @@
         }
 
         self = v13;
-        v17 = self;
+        selfCopy = self;
         goto LABEL_14;
       }
     }
@@ -92,7 +92,7 @@
       [v20 handleFailureInMethod:a2 object:self file:@"MOHealthKitManager.m" lineNumber:54 description:@"Invalid parameter not satisfying: eventStore"];
     }
 
-    v17 = 0;
+    selfCopy = 0;
 LABEL_14:
 
     goto LABEL_15;
@@ -106,33 +106,33 @@ LABEL_14:
 
   v9 = +[NSAssertionHandler currentHandler];
   [v9 handleFailureInMethod:a2 object:self file:@"MOHealthKitManager.m" lineNumber:47 description:@"Invalid parameter not satisfying: configurationManager"];
-  v17 = 0;
+  selfCopy = 0;
 LABEL_15:
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)_fetchWorkoutsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)_fetchWorkoutsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [HKQuery predicateForSamplesWithStartDate:a3 endDate:a4 options:2];
+  handlerCopy = handler;
+  v9 = [HKQuery predicateForSamplesWithStartDate:date endDate:endDate options:2];
   v10 = [[NSSortDescriptor alloc] initWithKey:HKSampleSortIdentifierEndDate ascending:0];
   v21 = v10;
   v11 = [NSArray arrayWithObjects:&v21 count:1];
 
-  v12 = [(MOHealthKitManager *)self queue];
+  queue = [(MOHealthKitManager *)self queue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __79__MOHealthKitManager__fetchWorkoutsBetweenStartDate_EndDate_CompletionHandler___block_invoke;
   v16[3] = &unk_100340848;
   v17 = v9;
   v18 = v11;
-  v19 = self;
-  v20 = v8;
-  v13 = v8;
+  selfCopy = self;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v11;
   v15 = v9;
-  dispatch_async(v12, v16);
+  dispatch_async(queue, v16);
 }
 
 void __79__MOHealthKitManager__fetchWorkoutsBetweenStartDate_EndDate_CompletionHandler___block_invoke(uint64_t a1)
@@ -186,27 +186,27 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_fetchStateOfMindBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)_fetchStateOfMindBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [HKQuery predicateForSamplesWithStartDate:a3 endDate:a4 options:2];
+  handlerCopy = handler;
+  v9 = [HKQuery predicateForSamplesWithStartDate:date endDate:endDate options:2];
   v10 = [[NSSortDescriptor alloc] initWithKey:HKSampleSortIdentifierEndDate ascending:0];
   v21 = v10;
   v11 = [NSArray arrayWithObjects:&v21 count:1];
 
-  v12 = [(MOHealthKitManager *)self queue];
+  queue = [(MOHealthKitManager *)self queue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __82__MOHealthKitManager__fetchStateOfMindBetweenStartDate_EndDate_CompletionHandler___block_invoke;
   v16[3] = &unk_100340848;
   v17 = v9;
   v18 = v11;
-  v19 = self;
-  v20 = v8;
-  v13 = v8;
+  selfCopy = self;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v11;
   v15 = v9;
-  dispatch_async(v12, v16);
+  dispatch_async(queue, v16);
 }
 
 void __82__MOHealthKitManager__fetchStateOfMindBetweenStartDate_EndDate_CompletionHandler___block_invoke(uint64_t a1)
@@ -260,179 +260,179 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)_createEventFromWorkout:(id)a3
+- (id)_createEventFromWorkout:(id)workout
 {
-  v4 = a3;
+  workoutCopy = workout;
   v5 = [MOEvent alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v4 startDate];
-  v8 = [v4 endDate];
+  startDate = [workoutCopy startDate];
+  endDate = [workoutCopy endDate];
   v9 = +[NSDate date];
-  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:v7 endDate:v8 creationDate:v9 provider:1 category:2];
+  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:startDate endDate:endDate creationDate:v9 provider:1 category:2];
 
-  v11 = [v4 endDate];
-  v12 = [(MOHealthKitManager *)self configurationManager];
+  endDate2 = [workoutCopy endDate];
+  configurationManager = [(MOHealthKitManager *)self configurationManager];
   LODWORD(v13) = 1242802176;
-  [v12 getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v13];
-  v15 = [v11 dateByAddingTimeInterval:v14];
+  [configurationManager getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v13];
+  v15 = [endDate2 dateByAddingTimeInterval:v14];
   [(MOEvent *)v10 setExpirationDate:v15];
 
-  v16 = [v4 UUID];
+  uUID = [workoutCopy UUID];
 
-  v17 = [v16 UUIDString];
-  [(MOEvent *)v10 setIdentifierFromProvider:v17];
+  uUIDString = [uUID UUIDString];
+  [(MOEvent *)v10 setIdentifierFromProvider:uUIDString];
 
   return v10;
 }
 
-- (id)_createEventFromStateOfMind:(id)a3
+- (id)_createEventFromStateOfMind:(id)mind
 {
-  v4 = a3;
+  mindCopy = mind;
   v5 = [MOEvent alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v4 startDate];
-  v8 = [v4 endDate];
+  startDate = [mindCopy startDate];
+  endDate = [mindCopy endDate];
   v9 = +[NSDate date];
-  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:v7 endDate:v8 creationDate:v9 provider:1 category:24];
+  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:startDate endDate:endDate creationDate:v9 provider:1 category:24];
 
-  v11 = [v4 endDate];
-  v12 = [(MOHealthKitManager *)self configurationManager];
+  endDate2 = [mindCopy endDate];
+  configurationManager = [(MOHealthKitManager *)self configurationManager];
   LODWORD(v13) = 1242802176;
-  [v12 getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v13];
-  v15 = [v11 dateByAddingTimeInterval:v14];
+  [configurationManager getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v13];
+  v15 = [endDate2 dateByAddingTimeInterval:v14];
   [(MOEvent *)v10 setExpirationDate:v15];
 
-  v16 = [v4 UUID];
+  uUID = [mindCopy UUID];
 
-  v17 = [v16 UUIDString];
-  [(MOEvent *)v10 setIdentifierFromProvider:v17];
+  uUIDString = [uUID UUIDString];
+  [(MOEvent *)v10 setIdentifierFromProvider:uUIDString];
 
   return v10;
 }
 
-- (void)_setDynamicProperties:(id)a3 stateOfMind:(id)a4
+- (void)_setDynamicProperties:(id)properties stateOfMind:(id)mind
 {
-  v26 = a3;
-  v5 = a4;
-  v6 = [v5 sourceRevision];
-  v7 = [v6 source];
-  v8 = [v7 bundleIdentifier];
-  [v26 setAppBundle:v8];
+  propertiesCopy = properties;
+  mindCopy = mind;
+  sourceRevision = [mindCopy sourceRevision];
+  source = [sourceRevision source];
+  bundleIdentifier = [source bundleIdentifier];
+  [propertiesCopy setAppBundle:bundleIdentifier];
 
-  v9 = [v5 sourceRevision];
-  v10 = [v9 source];
-  [v26 setFromFirstParty:{objc_msgSend(v10, "_hasFirstPartyBundleID")}];
+  sourceRevision2 = [mindCopy sourceRevision];
+  source2 = [sourceRevision2 source];
+  [propertiesCopy setFromFirstParty:{objc_msgSend(source2, "_hasFirstPartyBundleID")}];
 
-  v11 = [v26 stateOfMindEvent];
+  stateOfMindEvent = [propertiesCopy stateOfMindEvent];
 
-  if (!v11)
+  if (!stateOfMindEvent)
   {
     v12 = objc_alloc_init(MOEventStateOfMind);
-    [v26 setStateOfMindEvent:v12];
+    [propertiesCopy setStateOfMindEvent:v12];
   }
 
-  v13 = [v5 kind];
-  v14 = [v26 stateOfMindEvent];
-  [v14 setReflectiveInterval:v13];
+  kind = [mindCopy kind];
+  stateOfMindEvent2 = [propertiesCopy stateOfMindEvent];
+  [stateOfMindEvent2 setReflectiveInterval:kind];
 
-  [v5 valence];
+  [mindCopy valence];
   v16 = v15;
-  v17 = [v26 stateOfMindEvent];
-  [v17 setValence:v16];
+  stateOfMindEvent3 = [propertiesCopy stateOfMindEvent];
+  [stateOfMindEvent3 setValence:v16];
 
-  [v5 valence];
+  [mindCopy valence];
   v18 = HKStateOfMindValenceClassificationForValence();
   [v18 doubleValue];
   v20 = v19;
-  v21 = [v26 stateOfMindEvent];
-  [v21 setValenceClassification:v20];
+  stateOfMindEvent4 = [propertiesCopy stateOfMindEvent];
+  [stateOfMindEvent4 setValenceClassification:v20];
 
-  v22 = [v5 labels];
-  v23 = [v26 stateOfMindEvent];
-  [v23 setLabels:v22];
+  labels = [mindCopy labels];
+  stateOfMindEvent5 = [propertiesCopy stateOfMindEvent];
+  [stateOfMindEvent5 setLabels:labels];
 
-  v24 = [v5 associations];
-  v25 = [v26 stateOfMindEvent];
-  [v25 setDomains:v24];
+  associations = [mindCopy associations];
+  stateOfMindEvent6 = [propertiesCopy stateOfMindEvent];
+  [stateOfMindEvent6 setDomains:associations];
 }
 
-- (void)_setDynamicProperties:(id)a3 workout:(id)a4
+- (void)_setDynamicProperties:(id)properties workout:(id)workout
 {
-  v36 = a3;
-  v5 = a4;
-  [v5 workoutActivityType];
+  propertiesCopy = properties;
+  workoutCopy = workout;
+  [workoutCopy workoutActivityType];
   v6 = _HKWorkoutActivityNameForActivityType();
   v7 = [v6 copy];
-  [v36 setWorkoutType:v7];
+  [propertiesCopy setWorkoutType:v7];
 
-  v8 = [v5 sourceRevision];
-  v9 = [v8 source];
-  v10 = [v9 bundleIdentifier];
-  [v36 setAppBundle:v10];
+  sourceRevision = [workoutCopy sourceRevision];
+  source = [sourceRevision source];
+  bundleIdentifier = [source bundleIdentifier];
+  [propertiesCopy setAppBundle:bundleIdentifier];
 
-  v11 = [v5 sourceRevision];
-  v12 = [v11 source];
-  [v36 setFromFirstParty:{objc_msgSend(v12, "_hasFirstPartyBundleID")}];
+  sourceRevision2 = [workoutCopy sourceRevision];
+  source2 = [sourceRevision2 source];
+  [propertiesCopy setFromFirstParty:{objc_msgSend(source2, "_hasFirstPartyBundleID")}];
 
-  [v5 duration];
+  [workoutCopy duration];
   v13 = [NSNumber numberWithDouble:?];
-  [v36 setWorkoutDuration:v13];
+  [propertiesCopy setWorkoutDuration:v13];
 
-  [v5 _totalDistanceInCanonicalUnit];
+  [workoutCopy _totalDistanceInCanonicalUnit];
   v14 = [NSNumber numberWithDouble:?];
-  [v36 setWorkoutTotalDistance:v14];
+  [propertiesCopy setWorkoutTotalDistance:v14];
 
-  [v5 _totalEnergyBurnedInCanonicalUnit];
+  [workoutCopy _totalEnergyBurnedInCanonicalUnit];
   v15 = [NSNumber numberWithDouble:?];
-  [v36 setWorkoutTotalEnergyBurned:v15];
+  [propertiesCopy setWorkoutTotalEnergyBurned:v15];
 
-  v16 = [v5 metadata];
-  v17 = [v16 objectForKeyedSubscript:HKMetadataKeyAppleFitnessPlusSession];
-  [v36 setIsFitnessPlusSession:{objc_msgSend(v17, "BOOLValue")}];
+  metadata = [workoutCopy metadata];
+  v17 = [metadata objectForKeyedSubscript:HKMetadataKeyAppleFitnessPlusSession];
+  [propertiesCopy setIsFitnessPlusSession:{objc_msgSend(v17, "BOOLValue")}];
 
-  v18 = [v5 metadata];
-  v19 = [v18 objectForKeyedSubscript:HKMetadataKeyIndoorWorkout];
-  v20 = [v19 BOOLValue];
-  v21 = [v36 workoutEvent];
-  [v21 setIsIndoors:v20];
+  metadata2 = [workoutCopy metadata];
+  v19 = [metadata2 objectForKeyedSubscript:HKMetadataKeyIndoorWorkout];
+  bOOLValue = [v19 BOOLValue];
+  workoutEvent = [propertiesCopy workoutEvent];
+  [workoutEvent setIsIndoors:bOOLValue];
 
-  v22 = [v5 metadata];
+  metadata3 = [workoutCopy metadata];
   v23 = _HKPrivateMetadataKeyWorkoutWeatherLocationCoordinatesLatitude;
-  v24 = [v22 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutWeatherLocationCoordinatesLatitude];
+  v24 = [metadata3 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutWeatherLocationCoordinatesLatitude];
   [v24 doubleValue];
   v26 = v25;
 
   if (v26 != 0.0)
   {
     v27 = [CLLocation alloc];
-    v28 = [v5 metadata];
-    v29 = [v28 objectForKeyedSubscript:v23];
+    metadata4 = [workoutCopy metadata];
+    v29 = [metadata4 objectForKeyedSubscript:v23];
     [v29 doubleValue];
     v31 = v30;
-    v32 = [v5 metadata];
-    v33 = [v32 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutWeatherLocationCoordinatesLongitude];
+    metadata5 = [workoutCopy metadata];
+    v33 = [metadata5 objectForKeyedSubscript:_HKPrivateMetadataKeyWorkoutWeatherLocationCoordinatesLongitude];
     [v33 doubleValue];
     v35 = [v27 initWithLatitude:v31 longitude:v34];
-    [v36 setWorkoutLocationStart:v35];
+    [propertiesCopy setWorkoutLocationStart:v35];
   }
 }
 
-- (void)_fetchWorkoutRoutes:(id)a3 CompletionHandler:(id)a4
+- (void)_fetchWorkoutRoutes:(id)routes CompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [HKQuery predicateForObjectsFromWorkout:a3];
+  handlerCopy = handler;
+  v7 = [HKQuery predicateForObjectsFromWorkout:routes];
   v8 = [HKAnchoredObjectQuery alloc];
   v9 = +[HKSeriesType workoutRouteType];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __60__MOHealthKitManager__fetchWorkoutRoutes_CompletionHandler___block_invoke;
   v13[3] = &unk_100340870;
-  v14 = v6;
-  v10 = v6;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
   v11 = [v8 initWithType:v9 predicate:v7 anchor:0 limit:0 resultsHandler:v13];
 
-  v12 = [(MOHealthKitManager *)self healthStore];
-  [v12 executeQuery:v11];
+  healthStore = [(MOHealthKitManager *)self healthStore];
+  [healthStore executeQuery:v11];
 }
 
 void __60__MOHealthKitManager__fetchWorkoutRoutes_CompletionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, void *a6)
@@ -457,10 +457,10 @@ void __60__MOHealthKitManager__fetchWorkoutRoutes_CompletionHandler___block_invo
   v9();
 }
 
-- (void)_fetchWorkoutRouteLocations:(id)a3 CompletionHandler:(id)a4
+- (void)_fetchWorkoutRouteLocations:(id)locations CompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  locationsCopy = locations;
+  handlerCopy = handler;
   v8 = objc_opt_new();
   v9 = [HKWorkoutRouteQuery alloc];
   v15[0] = _NSConcreteStackBlock;
@@ -468,14 +468,14 @@ void __60__MOHealthKitManager__fetchWorkoutRoutes_CompletionHandler___block_invo
   v15[2] = __68__MOHealthKitManager__fetchWorkoutRouteLocations_CompletionHandler___block_invoke;
   v15[3] = &unk_100340898;
   v17 = v8;
-  v18 = v7;
-  v16 = v6;
+  v18 = handlerCopy;
+  v16 = locationsCopy;
   v10 = v8;
-  v11 = v6;
-  v12 = v7;
+  v11 = locationsCopy;
+  v12 = handlerCopy;
   v13 = [v9 initWithRoute:v11 dataHandler:v15];
-  v14 = [(MOHealthKitManager *)self healthStore];
-  [v14 executeQuery:v13];
+  healthStore = [(MOHealthKitManager *)self healthStore];
+  [healthStore executeQuery:v13];
 }
 
 void __68__MOHealthKitManager__fetchWorkoutRouteLocations_CompletionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3, int a4, void *a5)
@@ -577,10 +577,10 @@ void __68__MOHealthKitManager__fetchWorkoutRouteLocations_CompletionHandler___bl
   }
 }
 
-- (void)_saveWorkouts:(id)a3 handler:(id)a4
+- (void)_saveWorkouts:(id)workouts handler:(id)handler
 {
-  v6 = a3;
-  v21 = a4;
+  workoutsCopy = workouts;
+  handlerCopy = handler;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -599,7 +599,7 @@ void __68__MOHealthKitManager__fetchWorkoutRouteLocations_CompletionHandler___bl
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v6;
+  v8 = workoutsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v36 count:16];
   if (v9)
   {
@@ -637,7 +637,7 @@ void __68__MOHealthKitManager__fetchWorkoutRouteLocations_CompletionHandler___bl
   v23[1] = 3221225472;
   v23[2] = __44__MOHealthKitManager__saveWorkouts_handler___block_invoke_2;
   v23[3] = &unk_100336198;
-  v20 = v21;
+  v20 = handlerCopy;
   v24 = v20;
   [(MOEventStore *)v19 storeEvents:v22 CompletionHandler:v23];
 
@@ -664,19 +664,19 @@ void __44__MOHealthKitManager__saveWorkouts_handler___block_invoke_2(uint64_t a1
   }
 }
 
-- (id)_createQueryBasedonEvents:(id)a3 withPredicate:(id)a4
+- (id)_createQueryBasedonEvents:(id)events withPredicate:(id)predicate
 {
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  predicateCopy = predicate;
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [v5 firstObject];
-  v9 = [v8 category];
+  firstObject = [eventsCopy firstObject];
+  category = [firstObject category];
 
-  if (v9 == 2)
+  if (category == 2)
   {
     v10 = [HKQueryDescriptor alloc];
     v11 = +[HKObjectType workoutType];
-    v12 = [v10 initWithSampleType:v11 predicate:v6];
+    v12 = [v10 initWithSampleType:v11 predicate:predicateCopy];
 
     v13 = _mo_log_facility_get_os_log(&MOLogFacilityHealth);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -692,14 +692,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v16 = [v5 firstObject];
-  v17 = [v16 category];
+  firstObject2 = [eventsCopy firstObject];
+  category2 = [firstObject2 category];
 
-  if (v17 == 13)
+  if (category2 == 13)
   {
     v18 = [HKQueryDescriptor alloc];
     v19 = [HKSampleType categoryTypeForIdentifier:HKCategoryTypeIdentifierMindfulSession];
-    v12 = [v18 initWithSampleType:v19 predicate:v6];
+    v12 = [v18 initWithSampleType:v19 predicate:predicateCopy];
 
     v13 = _mo_log_facility_get_os_log(&MOLogFacilityHealth);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -716,14 +716,14 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v20 = [v5 firstObject];
-  v21 = [v20 category];
+  firstObject3 = [eventsCopy firstObject];
+  category3 = [firstObject3 category];
 
-  if (v21 == 24)
+  if (category3 == 24)
   {
     v22 = [HKQueryDescriptor alloc];
     v23 = +[HKObjectType stateOfMindType];
-    v12 = [v22 initWithSampleType:v23 predicate:v6];
+    v12 = [v22 initWithSampleType:v23 predicate:predicateCopy];
 
     v13 = _mo_log_facility_get_os_log(&MOLogFacilityHealth);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -748,34 +748,34 @@ LABEL_12:
   return v7;
 }
 
-- (void)rehydrateWorkouts:(id)a3 handler:(id)a4
+- (void)rehydrateWorkouts:(id)workouts handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOHealthKitManager *)self queue];
+  workoutsCopy = workouts;
+  handlerCopy = handler;
+  queue = [(MOHealthKitManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __48__MOHealthKitManager_rehydrateWorkouts_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = workoutsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = workoutsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_rehydrateWorkouts:(id)a3 handler:(id)a4
+- (void)_rehydrateWorkouts:(id)workouts handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  workoutsCopy = workouts;
+  handlerCopy = handler;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = __49__MOHealthKitManager__rehydrateWorkouts_handler___block_invoke;
   v24[3] = &unk_100338810;
   v8 = objc_opt_new();
   v25 = v8;
-  [v6 enumerateObjectsUsingBlock:v24];
+  [workoutsCopy enumerateObjectsUsingBlock:v24];
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityHealth);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -790,7 +790,7 @@ LABEL_12:
     v11 = [NSSet setWithArray:v8];
     v12 = [HKQuery predicateForObjectsWithUUIDs:v11];
 
-    v13 = [(MOHealthKitManager *)self _createQueryBasedonEvents:v6 withPredicate:v12];
+    v13 = [(MOHealthKitManager *)self _createQueryBasedonEvents:workoutsCopy withPredicate:v12];
     if ([v13 count])
     {
       v14 = [HKSampleQuery alloc];
@@ -798,23 +798,23 @@ LABEL_12:
       v18 = 3221225472;
       v19 = __49__MOHealthKitManager__rehydrateWorkouts_handler___block_invoke_445;
       v20 = &unk_1003408C0;
-      v23 = v7;
-      v21 = v6;
-      v22 = self;
+      v23 = handlerCopy;
+      v21 = workoutsCopy;
+      selfCopy = self;
       v15 = [v14 initWithQueryDescriptors:v13 limit:0 resultsHandler:&v17];
       v16 = [(MOHealthKitManager *)self healthStore:v17];
       [v16 executeQuery:v15];
     }
 
-    else if (v7)
+    else if (handlerCopy)
     {
-      (*(v7 + 2))(v7, &__NSArray0__struct, 0);
+      (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, 0);
     }
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, &__NSArray0__struct, 0);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, 0);
   }
 }
 
@@ -882,34 +882,34 @@ void __49__MOHealthKitManager__rehydrateWorkouts_handler___block_invoke_445(uint
   }
 }
 
-- (void)rehydrateStateOfMind:(id)a3 handler:(id)a4
+- (void)rehydrateStateOfMind:(id)mind handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOHealthKitManager *)self queue];
+  mindCopy = mind;
+  handlerCopy = handler;
+  queue = [(MOHealthKitManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __51__MOHealthKitManager_rehydrateStateOfMind_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = mindCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = mindCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_rehydrateStateOfMind:(id)a3 handler:(id)a4
+- (void)_rehydrateStateOfMind:(id)mind handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  mindCopy = mind;
+  handlerCopy = handler;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = __52__MOHealthKitManager__rehydrateStateOfMind_handler___block_invoke;
   v24[3] = &unk_100338810;
   v8 = objc_opt_new();
   v25 = v8;
-  [v6 enumerateObjectsUsingBlock:v24];
+  [mindCopy enumerateObjectsUsingBlock:v24];
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityHealth);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -924,7 +924,7 @@ void __49__MOHealthKitManager__rehydrateWorkouts_handler___block_invoke_445(uint
     v11 = [NSSet setWithArray:v8];
     v12 = [HKQuery predicateForObjectsWithUUIDs:v11];
 
-    v13 = [(MOHealthKitManager *)self _createQueryBasedonEvents:v6 withPredicate:v12];
+    v13 = [(MOHealthKitManager *)self _createQueryBasedonEvents:mindCopy withPredicate:v12];
     if ([v13 count])
     {
       v14 = [HKSampleQuery alloc];
@@ -932,23 +932,23 @@ void __49__MOHealthKitManager__rehydrateWorkouts_handler___block_invoke_445(uint
       v18 = 3221225472;
       v19 = __52__MOHealthKitManager__rehydrateStateOfMind_handler___block_invoke_448;
       v20 = &unk_1003408C0;
-      v23 = v7;
-      v21 = v6;
-      v22 = self;
+      v23 = handlerCopy;
+      v21 = mindCopy;
+      selfCopy = self;
       v15 = [v14 initWithQueryDescriptors:v13 limit:0 resultsHandler:&v17];
       v16 = [(MOHealthKitManager *)self healthStore:v17];
       [v16 executeQuery:v15];
     }
 
-    else if (v7)
+    else if (handlerCopy)
     {
-      (*(v7 + 2))(v7, &__NSArray0__struct, 0);
+      (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, 0);
     }
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, &__NSArray0__struct, 0);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, 0);
   }
 }
 
@@ -1001,16 +1001,16 @@ void __52__MOHealthKitManager__rehydrateStateOfMind_handler___block_invoke_448(u
   }
 }
 
-- (void)_rehydrateStoredEvents:(id)a3 fromWorkouts:(id)a4 handler:(id)a5
+- (void)_rehydrateStoredEvents:(id)events fromWorkouts:(id)workouts handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v34 = a5;
-  v35 = v7;
-  v33 = v8;
-  if ([v7 count])
+  eventsCopy = events;
+  workoutsCopy = workouts;
+  handlerCopy = handler;
+  v35 = eventsCopy;
+  v33 = workoutsCopy;
+  if ([eventsCopy count])
   {
-    if ([v8 count])
+    if ([workoutsCopy count])
     {
       v67[0] = _NSConcreteStackBlock;
       v67[1] = 3221225472;
@@ -1018,9 +1018,9 @@ void __52__MOHealthKitManager__rehydrateStateOfMind_handler___block_invoke_448(u
       v67[3] = &unk_100338810;
       v38 = objc_opt_new();
       v68 = v38;
-      [v7 enumerateObjectsUsingBlock:v67];
-      v9 = [v38 allKeys];
-      v10 = [v9 count] == 0;
+      [eventsCopy enumerateObjectsUsingBlock:v67];
+      allKeys = [v38 allKeys];
+      v10 = [allKeys count] == 0;
 
       if (v10)
       {
@@ -1030,7 +1030,7 @@ void __52__MOHealthKitManager__rehydrateStateOfMind_handler___block_invoke_448(u
           [MOHealthKitManager _rehydrateStoredEvents:fromWorkouts:handler:];
         }
 
-        v34[2](v34, &__NSArray0__struct, 0);
+        handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
       }
 
       else
@@ -1070,9 +1070,9 @@ void __52__MOHealthKitManager__rehydrateStateOfMind_handler___block_invoke_448(u
               }
 
               v16 = *(*(&v51 + 1) + 8 * i);
-              v17 = [v16 UUID];
-              v18 = [v17 UUIDString];
-              v19 = [v38 objectForKeyedSubscript:v18];
+              uUID = [v16 UUID];
+              uUIDString = [uUID UUIDString];
+              v19 = [v38 objectForKeyedSubscript:uUIDString];
 
               if (v19)
               {
@@ -1108,16 +1108,16 @@ void __52__MOHealthKitManager__rehydrateStateOfMind_handler___block_invoke_448(u
           while (v13);
         }
 
-        v24 = [(MOHealthKitManager *)self queue];
+        queue = [(MOHealthKitManager *)self queue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __66__MOHealthKitManager__rehydrateStoredEvents_fromWorkouts_handler___block_invoke_3;
         block[3] = &unk_100340910;
         v43 = buf;
         v41 = v35;
-        v42 = v34;
+        v42 = handlerCopy;
         v44 = &v55;
-        dispatch_group_notify(v11, v24, block);
+        dispatch_group_notify(v11, queue, block);
 
         _Block_object_dispose(&v55, 8);
         _Block_object_dispose(buf, 8);
@@ -1133,12 +1133,12 @@ void __52__MOHealthKitManager__rehydrateStateOfMind_handler___block_invoke_448(u
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "no workouts for rehydrating workout events", buf, 2u);
       }
 
-      v34[2](v34, &__NSArray0__struct, 0);
+      handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
       v27 = [MORehydrationMetrics alloc];
-      v28 = [v35 firstObject];
-      v29 = [v28 category];
-      v30 = [v35 firstObject];
-      v31 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v27, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v29, [v30 provider], 1, 0, objc_msgSend(v35, "count"), 3, objc_msgSend(v35, "count"), 0.0);
+      firstObject = [v35 firstObject];
+      category = [firstObject category];
+      firstObject2 = [v35 firstObject];
+      v31 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v27, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category, [firstObject2 provider], 1, 0, objc_msgSend(v35, "count"), 3, objc_msgSend(v35, "count"), 0.0);
 
       v69 = 0;
       [(MORehydrationMetrics *)v31 submitMetricsWithError:&v69];
@@ -1154,7 +1154,7 @@ void __52__MOHealthKitManager__rehydrateStateOfMind_handler___block_invoke_448(u
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "no input events for rehydrating workout events", buf, 2u);
     }
 
-    v34[2](v34, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
   }
 }
 
@@ -1211,12 +1211,12 @@ void __66__MOHealthKitManager__rehydrateStoredEvents_fromWorkouts_handler___bloc
   [(MORehydrationMetrics *)v10 submitMetricsWithError:&v11];
 }
 
-- (void)_rehydrateStoredEvents:(id)a3 fromStateOfMind:(id)a4 handler:(id)a5
+- (void)_rehydrateStoredEvents:(id)events fromStateOfMind:(id)mind handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v7 count])
+  eventsCopy = events;
+  mindCopy = mind;
+  handlerCopy = handler;
+  if (![eventsCopy count])
   {
     v24 = _mo_log_facility_get_os_log(&MOLogFacilityHealth);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1227,7 +1227,7 @@ void __66__MOHealthKitManager__rehydrateStoredEvents_fromWorkouts_handler___bloc
     goto LABEL_19;
   }
 
-  if (![v8 count])
+  if (![mindCopy count])
   {
     v24 = _mo_log_facility_get_os_log(&MOLogFacilityHealth);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1237,26 +1237,26 @@ void __66__MOHealthKitManager__rehydrateStoredEvents_fromWorkouts_handler___bloc
 
 LABEL_19:
 
-    v9[2](v9, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
     goto LABEL_20;
   }
 
-  v25 = v9;
+  v25 = handlerCopy;
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = __69__MOHealthKitManager__rehydrateStoredEvents_fromStateOfMind_handler___block_invoke;
   v33[3] = &unk_100338810;
   v10 = objc_opt_new();
   v34 = v10;
-  v27 = v7;
-  [v7 enumerateObjectsUsingBlock:v33];
+  v27 = eventsCopy;
+  [eventsCopy enumerateObjectsUsingBlock:v33];
   v11 = objc_alloc_init(NSMutableArray);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v26 = v8;
-  v12 = v8;
+  v26 = mindCopy;
+  v12 = mindCopy;
   v13 = [v12 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v13)
   {
@@ -1272,9 +1272,9 @@ LABEL_19:
         }
 
         v17 = *(*(&v29 + 1) + 8 * i);
-        v18 = [v17 UUID];
-        v19 = [v18 UUIDString];
-        v20 = [v10 objectForKeyedSubscript:v19];
+        uUID = [v17 UUID];
+        uUIDString = [uUID UUIDString];
+        v20 = [v10 objectForKeyedSubscript:uUIDString];
 
         if (v20)
         {
@@ -1299,11 +1299,11 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "health data rehydrated state of mind count, %lu", buf, 0xCu);
   }
 
-  v9 = v25;
+  handlerCopy = v25;
   v25[2](v25, v11, 0);
 
-  v8 = v26;
-  v7 = v27;
+  mindCopy = v26;
+  eventsCopy = v27;
 LABEL_20:
 }
 
@@ -1320,12 +1320,12 @@ void __69__MOHealthKitManager__rehydrateStoredEvents_fromStateOfMind_handler___b
   }
 }
 
-- (void)_rehydrateStoredEvents:(id)a3 fromMindfulSession:(id)a4 handler:(id)a5
+- (void)_rehydrateStoredEvents:(id)events fromMindfulSession:(id)session handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v7 count])
+  eventsCopy = events;
+  sessionCopy = session;
+  handlerCopy = handler;
+  if (![eventsCopy count])
   {
     v24 = _mo_log_facility_get_os_log(&MOLogFacilityHealth);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1336,7 +1336,7 @@ void __69__MOHealthKitManager__rehydrateStoredEvents_fromStateOfMind_handler___b
     goto LABEL_19;
   }
 
-  if (![v8 count])
+  if (![sessionCopy count])
   {
     v24 = _mo_log_facility_get_os_log(&MOLogFacilityHealth);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1346,26 +1346,26 @@ void __69__MOHealthKitManager__rehydrateStoredEvents_fromStateOfMind_handler___b
 
 LABEL_19:
 
-    v9[2](v9, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
     goto LABEL_20;
   }
 
-  v25 = v9;
+  v25 = handlerCopy;
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = __72__MOHealthKitManager__rehydrateStoredEvents_fromMindfulSession_handler___block_invoke;
   v33[3] = &unk_100338810;
   v10 = objc_opt_new();
   v34 = v10;
-  v27 = v7;
-  [v7 enumerateObjectsUsingBlock:v33];
+  v27 = eventsCopy;
+  [eventsCopy enumerateObjectsUsingBlock:v33];
   v11 = objc_alloc_init(NSMutableArray);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v26 = v8;
-  v12 = v8;
+  v26 = sessionCopy;
+  v12 = sessionCopy;
   v13 = [v12 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v13)
   {
@@ -1381,9 +1381,9 @@ LABEL_19:
         }
 
         v17 = *(*(&v29 + 1) + 8 * i);
-        v18 = [v17 UUID];
-        v19 = [v18 UUIDString];
-        v20 = [v10 objectForKeyedSubscript:v19];
+        uUID = [v17 UUID];
+        uUIDString = [uUID UUIDString];
+        v20 = [v10 objectForKeyedSubscript:uUIDString];
 
         if (v20)
         {
@@ -1408,11 +1408,11 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "health data rehydrated mindful sessions count, %lu", buf, 0xCu);
   }
 
-  v9 = v25;
+  handlerCopy = v25;
   v25[2](v25, v11, 0);
 
-  v8 = v26;
-  v7 = v27;
+  sessionCopy = v26;
+  eventsCopy = v27;
 LABEL_20:
 }
 
@@ -1429,10 +1429,10 @@ void __72__MOHealthKitManager__rehydrateStoredEvents_fromMindfulSession_handler_
   }
 }
 
-- (void)_fetchLocationsFrom:(id)a3 handler:(id)a4
+- (void)_fetchLocationsFrom:(id)from handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  handlerCopy = handler;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
@@ -1443,11 +1443,11 @@ void __72__MOHealthKitManager__rehydrateStoredEvents_fromMindfulSession_handler_
   v10[1] = 3221225472;
   v10[2] = __50__MOHealthKitManager__fetchLocationsFrom_handler___block_invoke;
   v10[3] = &unk_100340988;
-  v8 = v6;
+  v8 = fromCopy;
   v11 = v8;
-  v12 = self;
+  selfCopy = self;
   v14 = v15;
-  v9 = v7;
+  v9 = handlerCopy;
   v13 = v9;
   [(MOHealthKitManager *)self _fetchWorkoutRoutes:v8 CompletionHandler:v10];
 
@@ -1605,27 +1605,27 @@ uint64_t __50__MOHealthKitManager__fetchLocationsFrom_handler___block_invoke_457
   }
 }
 
-- (void)_fetchMindfulSessionBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)_fetchMindfulSessionBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [HKQuery predicateForSamplesWithStartDate:a3 endDate:a4 options:2];
+  handlerCopy = handler;
+  v9 = [HKQuery predicateForSamplesWithStartDate:date endDate:endDate options:2];
   v10 = [[NSSortDescriptor alloc] initWithKey:HKSampleSortIdentifierEndDate ascending:0];
   v21 = v10;
   v11 = [NSArray arrayWithObjects:&v21 count:1];
 
-  v12 = [(MOHealthKitManager *)self queue];
+  queue = [(MOHealthKitManager *)self queue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __85__MOHealthKitManager__fetchMindfulSessionBetweenStartDate_EndDate_CompletionHandler___block_invoke;
   v16[3] = &unk_100340848;
   v17 = v9;
   v18 = v11;
-  v19 = self;
-  v20 = v8;
-  v13 = v8;
+  selfCopy = self;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v11;
   v15 = v9;
-  dispatch_async(v12, v16);
+  dispatch_async(queue, v16);
 }
 
 void __85__MOHealthKitManager__fetchMindfulSessionBetweenStartDate_EndDate_CompletionHandler___block_invoke(uint64_t a1)
@@ -1676,35 +1676,35 @@ void __85__MOHealthKitManager__fetchMindfulSessionBetweenStartDate_EndDate_Compl
   v10();
 }
 
-- (id)_createEventFromMindfulSession:(id)a3
+- (id)_createEventFromMindfulSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [MOEvent alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v4 startDate];
-  v8 = [v4 endDate];
+  startDate = [sessionCopy startDate];
+  endDate = [sessionCopy endDate];
   v9 = +[NSDate date];
-  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:v7 endDate:v8 creationDate:v9 provider:1 category:13];
+  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:startDate endDate:endDate creationDate:v9 provider:1 category:13];
 
-  v11 = [v4 endDate];
-  v12 = [(MOHealthKitManager *)self configurationManager];
+  endDate2 = [sessionCopy endDate];
+  configurationManager = [(MOHealthKitManager *)self configurationManager];
   LODWORD(v13) = 1242802176;
-  [v12 getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v13];
-  v15 = [v11 dateByAddingTimeInterval:v14];
+  [configurationManager getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v13];
+  v15 = [endDate2 dateByAddingTimeInterval:v14];
   [(MOEvent *)v10 setExpirationDate:v15];
 
-  v16 = [v4 UUID];
+  uUID = [sessionCopy UUID];
 
-  v17 = [v16 UUIDString];
-  [(MOEvent *)v10 setIdentifierFromProvider:v17];
+  uUIDString = [uUID UUIDString];
+  [(MOEvent *)v10 setIdentifierFromProvider:uUIDString];
 
   return v10;
 }
 
-- (void)_saveMindfulSessions:(id)a3 handler:(id)a4
+- (void)_saveMindfulSessions:(id)sessions handler:(id)handler
 {
-  v6 = a3;
-  v20 = a4;
+  sessionsCopy = sessions;
+  handlerCopy = handler;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -1723,7 +1723,7 @@ void __85__MOHealthKitManager__fetchMindfulSessionBetweenStartDate_EndDate_Compl
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v6;
+  v9 = sessionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v34 count:16];
   if (v10)
   {
@@ -1760,7 +1760,7 @@ void __85__MOHealthKitManager__fetchMindfulSessionBetweenStartDate_EndDate_Compl
   v21[1] = 3221225472;
   v21[2] = __51__MOHealthKitManager__saveMindfulSessions_handler___block_invoke_2;
   v21[3] = &unk_100336198;
-  v19 = v20;
+  v19 = handlerCopy;
   v22 = v19;
   [(MOEventStore *)v18 storeEvents:v8 CompletionHandler:v21];
 
@@ -1787,43 +1787,43 @@ void __51__MOHealthKitManager__saveMindfulSessions_handler___block_invoke_2(uint
   }
 }
 
-- (void)_setDynamicProperties:(id)a3 mindfulSession:(id)a4
+- (void)_setDynamicProperties:(id)properties mindfulSession:(id)session
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 sourceRevision];
-  v8 = [v7 source];
-  v9 = [v8 bundleIdentifier];
-  [v6 setAppBundle:v9];
+  sessionCopy = session;
+  propertiesCopy = properties;
+  sourceRevision = [sessionCopy sourceRevision];
+  source = [sourceRevision source];
+  bundleIdentifier = [source bundleIdentifier];
+  [propertiesCopy setAppBundle:bundleIdentifier];
 
-  v11 = [v5 sourceRevision];
+  sourceRevision2 = [sessionCopy sourceRevision];
 
-  v10 = [v11 source];
-  [v6 setFromFirstParty:{objc_msgSend(v10, "_hasFirstPartyBundleID")}];
+  source2 = [sourceRevision2 source];
+  [propertiesCopy setFromFirstParty:{objc_msgSend(source2, "_hasFirstPartyBundleID")}];
 }
 
-- (void)fetchUserBiologicalSexWithHandler:(id)a3
+- (void)fetchUserBiologicalSexWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MOHealthKitManager *)self queue];
+  handlerCopy = handler;
+  queue = [(MOHealthKitManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __56__MOHealthKitManager_fetchUserBiologicalSexWithHandler___block_invoke;
   v7[3] = &unk_100337B48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_fetchUserBiologicalSexWithHandler:(id)a3
+- (void)_fetchUserBiologicalSexWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(MOHealthKitManager *)self healthStore];
+    healthStore = [(MOHealthKitManager *)self healthStore];
     v11 = 0;
-    v6 = [v5 biologicalSexWithError:&v11];
+    v6 = [healthStore biologicalSexWithError:&v11];
     v7 = v11;
 
     if (v7)
@@ -1840,38 +1840,38 @@ void __51__MOHealthKitManager__saveMindfulSessions_handler___block_invoke_2(uint
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@, Unable to access biological sex due to error: %@", buf, 0x16u);
       }
 
-      v4[2](v4, 0, v7);
+      handlerCopy[2](handlerCopy, 0, v7);
     }
 
     else
     {
-      (v4)[2](v4, v6, 0);
+      (handlerCopy)[2](handlerCopy, v6, 0);
     }
   }
 }
 
-- (void)fetchUserAgeWithHandler:(id)a3
+- (void)fetchUserAgeWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MOHealthKitManager *)self queue];
+  handlerCopy = handler;
+  queue = [(MOHealthKitManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __46__MOHealthKitManager_fetchUserAgeWithHandler___block_invoke;
   v7[3] = &unk_100337B48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_fetchUserAgeWithHandler:(id)a3
+- (void)_fetchUserAgeWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(MOHealthKitManager *)self healthStore];
+    healthStore = [(MOHealthKitManager *)self healthStore];
     v19 = 0;
-    v6 = [v5 dateOfBirthComponentsWithError:&v19];
+    v6 = [healthStore dateOfBirthComponentsWithError:&v19];
     v7 = v19;
 
     if (v7)
@@ -1888,7 +1888,7 @@ void __51__MOHealthKitManager__saveMindfulSessions_handler___block_invoke_2(uint
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@, Unable to access age due to error: %@", buf, 0x16u);
       }
 
-      v4[2](v4, 0, v7);
+      handlerCopy[2](handlerCopy, 0, v7);
     }
 
     else if (v6)
@@ -1899,7 +1899,7 @@ void __51__MOHealthKitManager__saveMindfulSessions_handler___block_invoke_2(uint
       v14 = [v11 components:4 fromDate:v12 toDate:v13 options:0];
 
       v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v14 year]);
-      (v4)[2](v4, v15, 0);
+      (handlerCopy)[2](handlerCopy, v15, 0);
     }
 
     else
@@ -1914,14 +1914,14 @@ void __51__MOHealthKitManager__saveMindfulSessions_handler___block_invoke_2(uint
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%@, dateOfBirthComponents is nil.", buf, 0xCu);
       }
 
-      v4[2](v4, 0, 0);
+      handlerCopy[2](handlerCopy, 0, 0);
     }
   }
 }
 
-+ (id)convertBiologicalSexObjToString:(id)a3
++ (id)convertBiologicalSexObjToString:(id)string
 {
-  if (a3 && (v3 = [a3 biologicalSex], v3 <= 3))
+  if (string && (v3 = [string biologicalSex], v3 <= 3))
   {
     return *(&off_1003409D0 + v3);
   }
@@ -1932,35 +1932,35 @@ void __51__MOHealthKitManager__saveMindfulSessions_handler___block_invoke_2(uint
   }
 }
 
-- (void)fetchWorkoutEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)fetchWorkoutEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MOHealthKitManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOHealthKitManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __90__MOHealthKitManager_fetchWorkoutEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v22 = eventsCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = eventsCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchWorkoutEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)_fetchWorkoutEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  eventsCopy = events;
   v14 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 2];
   v15 = [NSPredicate predicateWithFormat:@"%K = %lu", @"provider", 1];
   v29[0] = v14;
@@ -1968,21 +1968,21 @@ void __51__MOHealthKitManager__saveMindfulSessions_handler___block_invoke_2(uint
   v16 = [NSArray arrayWithObjects:v29 count:2];
   v17 = [NSCompoundPredicate andPredicateWithSubpredicates:v16];
 
-  v18 = [v13 filteredArrayUsingPredicate:v17];
+  v18 = [eventsCopy filteredArrayUsingPredicate:v17];
 
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __91__MOHealthKitManager__fetchWorkoutEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   v23[3] = &unk_10033C1E8;
-  v27 = v11;
-  v28 = v12;
+  v27 = endDateCopy;
+  v28 = handlerCopy;
   v24 = v18;
-  v25 = self;
-  v26 = v10;
-  v19 = v11;
-  v20 = v10;
+  selfCopy = self;
+  v26 = dateCopy;
+  v19 = endDateCopy;
+  v20 = dateCopy;
   v21 = v18;
-  v22 = v12;
+  v22 = handlerCopy;
   [(MOHealthKitManager *)self _fetchWorkoutsBetweenStartDate:v20 EndDate:v19 CompletionHandler:v23];
 }
 
@@ -2130,35 +2130,35 @@ void __91__MOHealthKitManager__fetchWorkoutEventsBetweenStartDate_endDate_withSt
   (*(*(a1 + 80) + 16))();
 }
 
-- (void)fetchStateOfMindEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)fetchStateOfMindEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MOHealthKitManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOHealthKitManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __94__MOHealthKitManager_fetchStateOfMindEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v22 = eventsCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = eventsCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchStateOfMindEventsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)_fetchStateOfMindEventsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  eventsCopy = events;
   v14 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 24];
   v15 = [NSPredicate predicateWithFormat:@"%K = %lu", @"provider", 1];
   v29[0] = v14;
@@ -2166,21 +2166,21 @@ void __91__MOHealthKitManager__fetchWorkoutEventsBetweenStartDate_endDate_withSt
   v16 = [NSArray arrayWithObjects:v29 count:2];
   v17 = [NSCompoundPredicate andPredicateWithSubpredicates:v16];
 
-  v18 = [v13 filteredArrayUsingPredicate:v17];
+  v18 = [eventsCopy filteredArrayUsingPredicate:v17];
 
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __95__MOHealthKitManager__fetchStateOfMindEventsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   v23[3] = &unk_10033C1E8;
-  v27 = v11;
-  v28 = v12;
+  v27 = endDateCopy;
+  v28 = handlerCopy;
   v24 = v18;
-  v25 = self;
-  v26 = v10;
-  v19 = v11;
-  v20 = v10;
+  selfCopy = self;
+  v26 = dateCopy;
+  v19 = endDateCopy;
+  v20 = dateCopy;
   v21 = v18;
-  v22 = v12;
+  v22 = handlerCopy;
   [(MOHealthKitManager *)self _fetchStateOfMindBetweenStartDate:v20 EndDate:v19 CompletionHandler:v23];
 }
 
@@ -2328,11 +2328,11 @@ void __95__MOHealthKitManager__fetchStateOfMindEventsBetweenStartDate_endDate_wi
   (*(*(a1 + 80) + 16))();
 }
 
-- (void)_createEventsFromWorkout:(id)a3 handler:(id)a4
+- (void)_createEventsFromWorkout:(id)workout handler:(id)handler
 {
-  v17 = a3;
-  v18 = a4;
-  if ([v17 count])
+  workoutCopy = workout;
+  handlerCopy = handler;
+  if ([workoutCopy count])
   {
     *buf = 0;
     v33 = buf;
@@ -2348,7 +2348,7 @@ void __95__MOHealthKitManager__fetchStateOfMindEventsBetweenStartDate_endDate_wi
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v17;
+    obj = workoutCopy;
     v9 = [obj countByEnumeratingWithState:&v28 objects:v38 count:16];
     if (v9)
     {
@@ -2388,14 +2388,14 @@ void __95__MOHealthKitManager__fetchStateOfMindEventsBetweenStartDate_endDate_wi
       while (v9);
     }
 
-    v15 = [(MOHealthKitManager *)self queue];
+    queue = [(MOHealthKitManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invoke_3;
     block[3] = &unk_10033AF18;
     v22 = buf;
-    v21 = v18;
-    dispatch_group_notify(v6, v15, block);
+    v21 = handlerCopy;
+    dispatch_group_notify(v6, queue, block);
 
     _Block_object_dispose(buf, 8);
   }
@@ -2409,7 +2409,7 @@ void __95__MOHealthKitManager__fetchStateOfMindEventsBetweenStartDate_endDate_wi
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "no workouts for creating events", buf, 2u);
     }
 
-    (*(v18 + 2))(v18, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -2442,18 +2442,18 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)_createEventsFromStateOfMind:(id)a3 handler:(id)a4
+- (void)_createEventsFromStateOfMind:(id)mind handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  mindCopy = mind;
+  handlerCopy = handler;
+  if ([mindCopy count])
   {
     v8 = objc_opt_new();
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = v6;
+    v9 = mindCopy;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v10)
     {
@@ -2489,7 +2489,7 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "health: new state of mind count, %lu", buf, 0xCu);
     }
 
-    v7[2](v7, v8, 0);
+    handlerCopy[2](handlerCopy, v8, 0);
   }
 
   else
@@ -2501,29 +2501,29 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "no state of mind data for creating events", buf, 2u);
     }
 
-    v7[2](v7, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
-- (void)_createNewEventsFromWorkouts:(id)a3 storedEvents:(id)a4 handler:(id)a5
+- (void)_createNewEventsFromWorkouts:(id)workouts storedEvents:(id)events handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  workoutsCopy = workouts;
+  eventsCopy = events;
+  handlerCopy = handler;
+  if ([workoutsCopy count])
   {
-    if ([v9 count])
+    if ([eventsCopy count])
     {
-      v32 = self;
-      v33 = v10;
-      v35 = v8;
+      selfCopy = self;
+      v33 = handlerCopy;
+      v35 = workoutsCopy;
       v11 = objc_opt_new();
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v34 = v9;
-      v12 = v9;
+      v34 = eventsCopy;
+      v12 = eventsCopy;
       v13 = [v12 countByEnumeratingWithState:&v42 objects:v50 count:16];
       if (v13)
       {
@@ -2539,12 +2539,12 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
             }
 
             v17 = *(*(&v42 + 1) + 8 * i);
-            v18 = [v17 identifierFromProvider];
+            identifierFromProvider = [v17 identifierFromProvider];
 
-            if (v18)
+            if (identifierFromProvider)
             {
-              v19 = [v17 identifierFromProvider];
-              [v11 addObject:v19];
+              identifierFromProvider2 = [v17 identifierFromProvider];
+              [v11 addObject:identifierFromProvider2];
             }
           }
 
@@ -2575,9 +2575,9 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
             }
 
             v26 = *(*(&v38 + 1) + 8 * j);
-            v27 = [v26 UUID];
-            v28 = [v27 UUIDString];
-            v29 = [v11 containsObject:v28];
+            uUID = [v26 UUID];
+            uUIDString = [uUID UUIDString];
+            v29 = [v11 containsObject:uUIDString];
 
             if ((v29 & 1) == 0)
             {
@@ -2595,12 +2595,12 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       v36[1] = 3221225472;
       v36[2] = __72__MOHealthKitManager__createNewEventsFromWorkouts_storedEvents_handler___block_invoke_2;
       v36[3] = &unk_1003369E0;
-      v10 = v33;
+      handlerCopy = v33;
       v37 = v33;
-      [(MOHealthKitManager *)v32 _createEventsFromWorkout:v20 handler:v36];
+      [(MOHealthKitManager *)selfCopy _createEventsFromWorkout:v20 handler:v36];
 
-      v9 = v34;
-      v8 = v35;
+      eventsCopy = v34;
+      workoutsCopy = v35;
     }
 
     else
@@ -2616,8 +2616,8 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       v46[1] = 3221225472;
       v46[2] = __72__MOHealthKitManager__createNewEventsFromWorkouts_storedEvents_handler___block_invoke;
       v46[3] = &unk_1003369E0;
-      v47 = v10;
-      [(MOHealthKitManager *)self _createEventsFromWorkout:v8 handler:v46];
+      v47 = handlerCopy;
+      [(MOHealthKitManager *)self _createEventsFromWorkout:workoutsCopy handler:v46];
     }
   }
 
@@ -2630,29 +2630,29 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "no workouts for creating new workout events", buf, 2u);
     }
 
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)_createNewEventsFromStateOfMind:(id)a3 storedEvents:(id)a4 handler:(id)a5
+- (void)_createNewEventsFromStateOfMind:(id)mind storedEvents:(id)events handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  mindCopy = mind;
+  eventsCopy = events;
+  handlerCopy = handler;
+  if ([mindCopy count])
   {
-    if ([v9 count])
+    if ([eventsCopy count])
     {
-      v32 = self;
-      v33 = v10;
-      v35 = v8;
+      selfCopy = self;
+      v33 = handlerCopy;
+      v35 = mindCopy;
       v11 = objc_opt_new();
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v34 = v9;
-      v12 = v9;
+      v34 = eventsCopy;
+      v12 = eventsCopy;
       v13 = [v12 countByEnumeratingWithState:&v42 objects:v50 count:16];
       if (v13)
       {
@@ -2668,12 +2668,12 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
             }
 
             v17 = *(*(&v42 + 1) + 8 * i);
-            v18 = [v17 identifierFromProvider];
+            identifierFromProvider = [v17 identifierFromProvider];
 
-            if (v18)
+            if (identifierFromProvider)
             {
-              v19 = [v17 identifierFromProvider];
-              [v11 addObject:v19];
+              identifierFromProvider2 = [v17 identifierFromProvider];
+              [v11 addObject:identifierFromProvider2];
             }
           }
 
@@ -2704,9 +2704,9 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
             }
 
             v26 = *(*(&v38 + 1) + 8 * j);
-            v27 = [v26 UUID];
-            v28 = [v27 UUIDString];
-            v29 = [v11 containsObject:v28];
+            uUID = [v26 UUID];
+            uUIDString = [uUID UUIDString];
+            v29 = [v11 containsObject:uUIDString];
 
             if ((v29 & 1) == 0)
             {
@@ -2724,12 +2724,12 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       v36[1] = 3221225472;
       v36[2] = __75__MOHealthKitManager__createNewEventsFromStateOfMind_storedEvents_handler___block_invoke_2;
       v36[3] = &unk_1003369E0;
-      v10 = v33;
+      handlerCopy = v33;
       v37 = v33;
-      [(MOHealthKitManager *)v32 _createEventsFromStateOfMind:v20 handler:v36];
+      [(MOHealthKitManager *)selfCopy _createEventsFromStateOfMind:v20 handler:v36];
 
-      v9 = v34;
-      v8 = v35;
+      eventsCopy = v34;
+      mindCopy = v35;
     }
 
     else
@@ -2745,8 +2745,8 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       v46[1] = 3221225472;
       v46[2] = __75__MOHealthKitManager__createNewEventsFromStateOfMind_storedEvents_handler___block_invoke;
       v46[3] = &unk_1003369E0;
-      v47 = v10;
-      [(MOHealthKitManager *)self _createEventsFromStateOfMind:v8 handler:v46];
+      v47 = handlerCopy;
+      [(MOHealthKitManager *)self _createEventsFromStateOfMind:mindCopy handler:v46];
     }
   }
 
@@ -2759,17 +2759,17 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "no state of mind data for creating new state of mind events", buf, 2u);
     }
 
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (id)_findUnrehydratedEventsWithStoredEvents:(id)a3 workouts:(id)a4
+- (id)_findUnrehydratedEventsWithStoredEvents:(id)events workouts:(id)workouts
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  eventsCopy = events;
+  workoutsCopy = workouts;
+  if ([eventsCopy count])
   {
-    if ([v6 count])
+    if ([workoutsCopy count])
     {
       v7 = objc_opt_new();
       v8 = objc_alloc_init(NSMutableArray);
@@ -2777,8 +2777,8 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v35 = v6;
-      v9 = v6;
+      v35 = workoutsCopy;
+      v9 = workoutsCopy;
       v10 = [v9 countByEnumeratingWithState:&v40 objects:v49 count:16];
       if (v10)
       {
@@ -2793,9 +2793,9 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
               objc_enumerationMutation(v9);
             }
 
-            v14 = [*(*(&v40 + 1) + 8 * i) UUID];
-            v15 = [v14 UUIDString];
-            [v7 addObject:v15];
+            uUID = [*(*(&v40 + 1) + 8 * i) UUID];
+            uUIDString = [uUID UUIDString];
+            [v7 addObject:uUIDString];
           }
 
           v11 = [v9 countByEnumeratingWithState:&v40 objects:v49 count:16];
@@ -2808,7 +2808,7 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v16 = v5;
+      v16 = eventsCopy;
       v17 = [v16 countByEnumeratingWithState:&v36 objects:v48 count:16];
       if (v17)
       {
@@ -2824,8 +2824,8 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
             }
 
             v21 = *(*(&v36 + 1) + 8 * j);
-            v22 = [v21 identifierFromProvider];
-            v23 = [v7 containsObject:v22];
+            identifierFromProvider = [v21 identifierFromProvider];
+            v23 = [v7 containsObject:identifierFromProvider];
 
             if ((v23 & 1) == 0)
             {
@@ -2849,7 +2849,7 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "health: unrehydrated workout count, %lu", buf, 0xCu);
       }
 
-      v6 = v35;
+      workoutsCopy = v35;
     }
 
     else
@@ -2858,7 +2858,7 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v27 = v5;
+      v27 = eventsCopy;
       v28 = [v27 countByEnumeratingWithState:&v44 objects:v52 count:16];
       if (v28)
       {
@@ -2910,13 +2910,13 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
   return v8;
 }
 
-- (id)_findUnrehydratedEventsWithStoredEvents:(id)a3 stateOfMind:(id)a4
+- (id)_findUnrehydratedEventsWithStoredEvents:(id)events stateOfMind:(id)mind
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  eventsCopy = events;
+  mindCopy = mind;
+  if ([eventsCopy count])
   {
-    if ([v6 count])
+    if ([mindCopy count])
     {
       v7 = objc_opt_new();
       v8 = objc_alloc_init(NSMutableArray);
@@ -2924,8 +2924,8 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v35 = v6;
-      v9 = v6;
+      v35 = mindCopy;
+      v9 = mindCopy;
       v10 = [v9 countByEnumeratingWithState:&v40 objects:v49 count:16];
       if (v10)
       {
@@ -2940,9 +2940,9 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
               objc_enumerationMutation(v9);
             }
 
-            v14 = [*(*(&v40 + 1) + 8 * i) UUID];
-            v15 = [v14 UUIDString];
-            [v7 addObject:v15];
+            uUID = [*(*(&v40 + 1) + 8 * i) UUID];
+            uUIDString = [uUID UUIDString];
+            [v7 addObject:uUIDString];
           }
 
           v11 = [v9 countByEnumeratingWithState:&v40 objects:v49 count:16];
@@ -2955,7 +2955,7 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v16 = v5;
+      v16 = eventsCopy;
       v17 = [v16 countByEnumeratingWithState:&v36 objects:v48 count:16];
       if (v17)
       {
@@ -2971,8 +2971,8 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
             }
 
             v21 = *(*(&v36 + 1) + 8 * j);
-            v22 = [v21 identifierFromProvider];
-            v23 = [v7 containsObject:v22];
+            identifierFromProvider = [v21 identifierFromProvider];
+            v23 = [v7 containsObject:identifierFromProvider];
 
             if ((v23 & 1) == 0)
             {
@@ -2996,7 +2996,7 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "health: unrehydrated state of mind count, %lu", buf, 0xCu);
       }
 
-      v6 = v35;
+      mindCopy = v35;
     }
 
     else
@@ -3005,7 +3005,7 @@ uint64_t __55__MOHealthKitManager__createEventsFromWorkout_handler___block_invok
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v27 = v5;
+      v27 = eventsCopy;
       v28 = [v27 countByEnumeratingWithState:&v44 objects:v52 count:16];
       if (v28)
       {

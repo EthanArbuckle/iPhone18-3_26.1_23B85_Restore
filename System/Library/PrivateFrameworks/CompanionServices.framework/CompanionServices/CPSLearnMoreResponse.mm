@@ -1,10 +1,10 @@
 @interface CPSLearnMoreResponse
-- (CPSLearnMoreResponse)initWithCoder:(id)a3;
+- (CPSLearnMoreResponse)initWithCoder:(id)coder;
 @end
 
 @implementation CPSLearnMoreResponse
 
-- (CPSLearnMoreResponse)initWithCoder:(id)a3
+- (CPSLearnMoreResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CPSLearnMoreResponse;

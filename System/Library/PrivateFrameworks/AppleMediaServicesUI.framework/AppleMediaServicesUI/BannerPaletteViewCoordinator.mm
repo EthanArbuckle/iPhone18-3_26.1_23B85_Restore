@@ -1,71 +1,71 @@
 @interface BannerPaletteViewCoordinator
-- (BOOL)messageViewController:(id)a3 handleDelegateAction:(id)a4 completionHandler:(id)a5;
-- (BOOL)messageViewController:(id)a3 shouldEnqueueMetricsForDialogResult:(id)a4;
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4;
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4;
-- (void)messageViewController:(id)a3 didUpdateSize:(CGSize)a4;
-- (void)messageViewController:(id)a3 enqueueActionEventWithFields:(id)a4 inTopic:(id)a5;
+- (BOOL)messageViewController:(id)controller handleDelegateAction:(id)action completionHandler:(id)handler;
+- (BOOL)messageViewController:(id)controller shouldEnqueueMetricsForDialogResult:(id)result;
+- (void)messageViewController:(id)controller didFailWithError:(id)error;
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result;
+- (void)messageViewController:(id)controller didUpdateSize:(CGSize)size;
+- (void)messageViewController:(id)controller enqueueActionEventWithFields:(id)fields inTopic:(id)topic;
 @end
 
 @implementation BannerPaletteViewCoordinator
 
-- (void)messageViewController:(id)a3 didUpdateSize:(CGSize)a4
+- (void)messageViewController:(id)controller didUpdateSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = self;
+  height = size.height;
+  width = size.width;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1BB13B054(width, height);
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
   sub_1BB13B43C();
 }
 
-- (BOOL)messageViewController:(id)a3 handleDelegateAction:(id)a4 completionHandler:(id)a5
+- (BOOL)messageViewController:(id)controller handleDelegateAction:(id)action completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  LOBYTE(self) = sub_1BB13B794(v12, v11, sub_1BB13CA10, v9);
+  controllerCopy = controller;
+  actionCopy = action;
+  selfCopy = self;
+  LOBYTE(self) = sub_1BB13B794(selfCopy, actionCopy, sub_1BB13CA10, v9);
 
   return self & 1;
 }
 
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4
+- (void)messageViewController:(id)controller didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
+  controllerCopy = controller;
+  selfCopy = self;
+  errorCopy = error;
   sub_1BB13BA7C();
 }
 
-- (void)messageViewController:(id)a3 enqueueActionEventWithFields:(id)a4 inTopic:(id)a5
+- (void)messageViewController:(id)controller enqueueActionEventWithFields:(id)fields inTopic:(id)topic
 {
   sub_1BB1DD2D8();
-  if (a5)
+  if (topic)
   {
     sub_1BB1DD378();
   }
 
-  v8 = a3;
-  v9 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1BB13BE08();
 }
 
-- (BOOL)messageViewController:(id)a3 shouldEnqueueMetricsForDialogResult:(id)a4
+- (BOOL)messageViewController:(id)controller shouldEnqueueMetricsForDialogResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1BB13C244(v8, v7);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  v9 = sub_1BB13C244(selfCopy, resultCopy);
 
   return v9 & 1;
 }

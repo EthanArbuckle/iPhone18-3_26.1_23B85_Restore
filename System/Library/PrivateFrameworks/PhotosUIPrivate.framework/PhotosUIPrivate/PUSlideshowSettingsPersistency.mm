@@ -1,25 +1,25 @@
 @interface PUSlideshowSettingsPersistency
 + (id)createSlideshowSettingsViewModel;
-+ (void)saveSlideshowSettingsViewModel:(id)a3;
++ (void)saveSlideshowSettingsViewModel:(id)model;
 @end
 
 @implementation PUSlideshowSettingsPersistency
 
-+ (void)saveSlideshowSettingsViewModel:(id)a3
++ (void)saveSlideshowSettingsViewModel:(id)model
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v6 = [v3 standardUserDefaults];
-  v5 = [v4 propertyDictionary];
+  modelCopy = model;
+  standardUserDefaults = [v3 standardUserDefaults];
+  propertyDictionary = [modelCopy propertyDictionary];
 
-  [v6 setObject:v5 forKey:@"PUSlideshowSettingsManagerSettingsUserDefaultsKey"];
-  [v6 synchronize];
+  [standardUserDefaults setObject:propertyDictionary forKey:@"PUSlideshowSettingsManagerSettingsUserDefaultsKey"];
+  [standardUserDefaults synchronize];
 }
 
 + (id)createSlideshowSettingsViewModel
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PUSlideshowSettingsManagerSettingsUserDefaultsKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PUSlideshowSettingsManagerSettingsUserDefaultsKey"];
   v4 = [[PUSlideshowSettingsViewModel alloc] initWithPropertyDictionary:v3];
 
   return v4;

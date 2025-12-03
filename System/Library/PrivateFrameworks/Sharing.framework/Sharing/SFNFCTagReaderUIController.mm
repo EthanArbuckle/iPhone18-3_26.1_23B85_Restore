@@ -1,16 +1,16 @@
 @interface SFNFCTagReaderUIController
 - (SFNFCTagReaderUIController)init;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)_nfcTagScannedCount;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)nfcTagScannedCount:(int64_t)a3;
-- (void)setPurpose:(id)a3;
-- (void)uiActivatedWithCompletion:(id)a3;
-- (void)uiInvalidatedWithCompletion:(id)a3;
+- (void)nfcTagScannedCount:(int64_t)count;
+- (void)setPurpose:(id)purpose;
+- (void)uiActivatedWithCompletion:(id)completion;
+- (void)uiInvalidatedWithCompletion:(id)completion;
 @end
 
 @implementation SFNFCTagReaderUIController
@@ -33,29 +33,29 @@
   return v3;
 }
 
-- (void)setPurpose:(id)a3
+- (void)setPurpose:(id)purpose
 {
-  v4 = [a3 copy];
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_activateCalled)
+  v4 = [purpose copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __41__SFNFCTagReaderUIController_setPurpose___block_invoke;
     v7[3] = &unk_1E788A658;
-    v7[4] = v5;
+    v7[4] = selfCopy;
     v8 = v4;
     dispatch_async(dispatchQueue, v7);
   }
 
   else
   {
-    objc_storeStrong(&v5->_purpose, v4);
+    objc_storeStrong(&selfCopy->_purpose, v4);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __41__SFNFCTagReaderUIController_setPurpose___block_invoke(uint64_t a1)
@@ -100,37 +100,37 @@ void __41__SFNFCTagReaderUIController_setPurpose___block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__SFNFCTagReaderUIController_activateWithCompletion___block_invoke;
   v8[3] = &unk_1E788B210;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_SFNFCTagReaderUIController <= 30 && (gLogCategory_SFNFCTagReaderUIController != -1 || _LogCategory_Initialize()))
   {
     [SFNFCTagReaderUIController _activateWithCompletion:];
   }
 
   [(SFNFCTagReaderUIController *)self _ensureXPCStarted];
-  v5 = [(CUXPCAgent *)self->_xpcAgent listenerEndpoint];
-  if (v5)
+  listenerEndpoint = [(CUXPCAgent *)self->_xpcAgent listenerEndpoint];
+  if (listenerEndpoint)
   {
     v6 = _os_activity_create(&dword_1A9662000, "Sharing/SFNFCTagReaderUIController/nfcTagReaderUIActivateWithEndpoint", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
@@ -141,7 +141,7 @@ void __41__SFNFCTagReaderUIController_setPurpose___block_invoke_2(uint64_t a1, v
     v19[1] = 3221225472;
     v19[2] = __54__SFNFCTagReaderUIController__activateWithCompletion___block_invoke;
     v19[3] = &unk_1E788B6D8;
-    v8 = v4;
+    v8 = completionCopy;
     v20 = v8;
     v9 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v19];
     v22[0] = @"mode";
@@ -165,15 +165,15 @@ void __41__SFNFCTagReaderUIController_setPurpose___block_invoke_2(uint64_t a1, v
     v17[2] = __54__SFNFCTagReaderUIController__activateWithCompletion___block_invoke_2;
     v17[3] = &unk_1E788B6D8;
     v18 = v8;
-    [v9 nfcTagReaderUIActivateWithEndpoint:v5 params:v14 completion:v17];
+    [v9 nfcTagReaderUIActivateWithEndpoint:listenerEndpoint params:v14 completion:v17];
 
     os_activity_scope_leave(&state);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v15 = NSErrorWithOSStatusF();
-    (*(v4 + 2))(v4, v15);
+    (*(completionCopy + 2))(completionCopy, v15);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -478,9 +478,9 @@ uint64_t __40__SFNFCTagReaderUIController_invalidate__block_invoke(uint64_t resu
   }
 }
 
-- (void)nfcTagScannedCount:(int64_t)a3
+- (void)nfcTagScannedCount:(int64_t)count
 {
-  self->_nfcTagScanCount += a3;
+  self->_nfcTagScanCount += count;
   if (gLogCategory_SFNFCTagReaderUIController <= 30)
   {
     if (gLogCategory_SFNFCTagReaderUIController != -1)
@@ -544,9 +544,9 @@ void __49__SFNFCTagReaderUIController__nfcTagScannedCount__block_invoke(uint64_t
   }
 }
 
-- (void)uiActivatedWithCompletion:(id)a3
+- (void)uiActivatedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_SFNFCTagReaderUIController <= 30 && (gLogCategory_SFNFCTagReaderUIController != -1 || _LogCategory_Initialize()))
   {
@@ -558,12 +558,12 @@ void __49__SFNFCTagReaderUIController__nfcTagScannedCount__block_invoke(uint64_t
     [(SFNFCTagReaderUIController *)self _nfcTagScannedCount];
   }
 
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)uiInvalidatedWithCompletion:(id)a3
+- (void)uiInvalidatedWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_SFNFCTagReaderUIController <= 30 && (gLogCategory_SFNFCTagReaderUIController != -1 || _LogCategory_Initialize()))
   {
@@ -580,7 +580,7 @@ void __49__SFNFCTagReaderUIController__nfcTagScannedCount__block_invoke(uint64_t
     self->_invalidationHandler = 0;
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 @end

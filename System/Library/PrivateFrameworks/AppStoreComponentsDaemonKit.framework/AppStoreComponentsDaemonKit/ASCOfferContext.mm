@@ -1,99 +1,99 @@
 @interface ASCOfferContext
-- (ASCOfferContext)initWithCoder:(id)a3;
-- (ASCOfferContext)initWithFlags:(int64_t)a3 presentingSceneIdentifier:(id)a4 presentingSceneBundleIdentifier:(id)a5 externalDeepLinkURL:(id)a6 paymentViewServiceListener:(id)a7;
-- (ASCOfferContext)offerContextWithPresentingSceneIdentifier:(id)a3 presentingSceneBundleIdentifier:(id)a4 externalDeepLinkURL:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (ASCOfferContext)initWithCoder:(id)coder;
+- (ASCOfferContext)initWithFlags:(int64_t)flags presentingSceneIdentifier:(id)identifier presentingSceneBundleIdentifier:(id)bundleIdentifier externalDeepLinkURL:(id)l paymentViewServiceListener:(id)listener;
+- (ASCOfferContext)offerContextWithPresentingSceneIdentifier:(id)identifier presentingSceneBundleIdentifier:(id)bundleIdentifier externalDeepLinkURL:(id)l;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)offerContextByAddingFlags:(int64_t)a3;
+- (id)offerContextByAddingFlags:(int64_t)flags;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCOfferContext
 
-- (ASCOfferContext)initWithFlags:(int64_t)a3 presentingSceneIdentifier:(id)a4 presentingSceneBundleIdentifier:(id)a5 externalDeepLinkURL:(id)a6 paymentViewServiceListener:(id)a7
+- (ASCOfferContext)initWithFlags:(int64_t)flags presentingSceneIdentifier:(id)identifier presentingSceneBundleIdentifier:(id)bundleIdentifier externalDeepLinkURL:(id)l paymentViewServiceListener:(id)listener
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  lCopy = l;
+  listenerCopy = listener;
   v25.receiver = self;
   v25.super_class = ASCOfferContext;
   v16 = [(ASCOfferContext *)&v25 init];
   v17 = v16;
   if (v16)
   {
-    v16->_flags = a3;
-    v18 = [v12 copy];
+    v16->_flags = flags;
+    v18 = [identifierCopy copy];
     presentingSceneIdentifier = v17->_presentingSceneIdentifier;
     v17->_presentingSceneIdentifier = v18;
 
-    v20 = [v13 copy];
+    v20 = [bundleIdentifierCopy copy];
     presentingSceneBundleIdentifier = v17->_presentingSceneBundleIdentifier;
     v17->_presentingSceneBundleIdentifier = v20;
 
-    v22 = [v14 copy];
+    v22 = [lCopy copy];
     externalDeepLinkURL = v17->_externalDeepLinkURL;
     v17->_externalDeepLinkURL = v22;
 
-    objc_storeStrong(&v17->_paymentViewServiceListener, a7);
+    objc_storeStrong(&v17->_paymentViewServiceListener, listener);
   }
 
   return v17;
 }
 
-- (ASCOfferContext)initWithCoder:(id)a3
+- (ASCOfferContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"flags"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"presentingSceneIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"presentingSceneBundleIdentifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalDeepLinkURL"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentViewServiceListener"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"flags"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"presentingSceneIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"presentingSceneBundleIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalDeepLinkURL"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentViewServiceListener"];
 
   v10 = [(ASCOfferContext *)self initWithFlags:v5 presentingSceneIdentifier:v6 presentingSceneBundleIdentifier:v7 externalDeepLinkURL:v8 paymentViewServiceListener:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[ASCOfferContext flags](self forKey:{"flags"), @"flags"}];
-  v5 = [(ASCOfferContext *)self presentingSceneIdentifier];
-  [v4 encodeObject:v5 forKey:@"presentingSceneIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[ASCOfferContext flags](self forKey:{"flags"), @"flags"}];
+  presentingSceneIdentifier = [(ASCOfferContext *)self presentingSceneIdentifier];
+  [coderCopy encodeObject:presentingSceneIdentifier forKey:@"presentingSceneIdentifier"];
 
-  v6 = [(ASCOfferContext *)self presentingSceneBundleIdentifier];
-  [v4 encodeObject:v6 forKey:@"presentingSceneBundleIdentifier"];
+  presentingSceneBundleIdentifier = [(ASCOfferContext *)self presentingSceneBundleIdentifier];
+  [coderCopy encodeObject:presentingSceneBundleIdentifier forKey:@"presentingSceneBundleIdentifier"];
 
-  v7 = [(ASCOfferContext *)self externalDeepLinkURL];
-  [v4 encodeObject:v7 forKey:@"externalDeepLinkURL"];
+  externalDeepLinkURL = [(ASCOfferContext *)self externalDeepLinkURL];
+  [coderCopy encodeObject:externalDeepLinkURL forKey:@"externalDeepLinkURL"];
 
-  v8 = [(ASCOfferContext *)self paymentViewServiceListener];
-  [v4 encodeObject:v8 forKey:@"paymentViewServiceListener"];
+  paymentViewServiceListener = [(ASCOfferContext *)self paymentViewServiceListener];
+  [coderCopy encodeObject:paymentViewServiceListener forKey:@"paymentViewServiceListener"];
 }
 
-- (id)offerContextByAddingFlags:(int64_t)a3
+- (id)offerContextByAddingFlags:(int64_t)flags
 {
-  v5 = [(ASCOfferContext *)self flags];
+  flags = [(ASCOfferContext *)self flags];
   v6 = objc_alloc(objc_opt_class());
-  v7 = [(ASCOfferContext *)self presentingSceneIdentifier];
-  v8 = [(ASCOfferContext *)self presentingSceneBundleIdentifier];
-  v9 = [(ASCOfferContext *)self externalDeepLinkURL];
-  v10 = [(ASCOfferContext *)self paymentViewServiceListener];
-  v11 = [v6 initWithFlags:v5 | a3 presentingSceneIdentifier:v7 presentingSceneBundleIdentifier:v8 externalDeepLinkURL:v9 paymentViewServiceListener:v10];
+  presentingSceneIdentifier = [(ASCOfferContext *)self presentingSceneIdentifier];
+  presentingSceneBundleIdentifier = [(ASCOfferContext *)self presentingSceneBundleIdentifier];
+  externalDeepLinkURL = [(ASCOfferContext *)self externalDeepLinkURL];
+  paymentViewServiceListener = [(ASCOfferContext *)self paymentViewServiceListener];
+  v11 = [v6 initWithFlags:flags | flags presentingSceneIdentifier:presentingSceneIdentifier presentingSceneBundleIdentifier:presentingSceneBundleIdentifier externalDeepLinkURL:externalDeepLinkURL paymentViewServiceListener:paymentViewServiceListener];
 
   return v11;
 }
 
-- (ASCOfferContext)offerContextWithPresentingSceneIdentifier:(id)a3 presentingSceneBundleIdentifier:(id)a4 externalDeepLinkURL:(id)a5
+- (ASCOfferContext)offerContextWithPresentingSceneIdentifier:(id)identifier presentingSceneBundleIdentifier:(id)bundleIdentifier externalDeepLinkURL:(id)l
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  lCopy = l;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
   v11 = objc_alloc(objc_opt_class());
-  v12 = [(ASCOfferContext *)self flags];
-  v13 = [(ASCOfferContext *)self paymentViewServiceListener];
-  v14 = [v11 initWithFlags:v12 presentingSceneIdentifier:v10 presentingSceneBundleIdentifier:v9 externalDeepLinkURL:v8 paymentViewServiceListener:v13];
+  flags = [(ASCOfferContext *)self flags];
+  paymentViewServiceListener = [(ASCOfferContext *)self paymentViewServiceListener];
+  v14 = [v11 initWithFlags:flags presentingSceneIdentifier:identifierCopy presentingSceneBundleIdentifier:bundleIdentifierCopy externalDeepLinkURL:lCopy paymentViewServiceListener:paymentViewServiceListener];
 
   return v14;
 }
@@ -102,16 +102,16 @@
 {
   v3 = objc_alloc_init(ASCHasher);
   [(ASCHasher *)v3 combineInteger:[(ASCOfferContext *)self flags]];
-  v4 = [(ASCHasher *)v3 finalizeHash];
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
 
-  return v4;
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -134,59 +134,59 @@
 
   if (v7)
   {
-    v8 = [(ASCOfferContext *)self supportsDSIDLessInstall];
-    if (v8 == [v7 supportsDSIDLessInstall])
+    supportsDSIDLessInstall = [(ASCOfferContext *)self supportsDSIDLessInstall];
+    if (supportsDSIDLessInstall == [v7 supportsDSIDLessInstall])
     {
-      v9 = [(ASCOfferContext *)self shouldInstallParentApp];
-      if (v9 == [v7 shouldInstallParentApp])
+      shouldInstallParentApp = [(ASCOfferContext *)self shouldInstallParentApp];
+      if (shouldInstallParentApp == [v7 shouldInstallParentApp])
       {
-        v12 = [(ASCOfferContext *)self presentingSceneIdentifier];
-        v13 = [v7 presentingSceneIdentifier];
-        v14 = v13;
-        if (v12 && v13)
+        presentingSceneIdentifier = [(ASCOfferContext *)self presentingSceneIdentifier];
+        presentingSceneIdentifier2 = [v7 presentingSceneIdentifier];
+        v14 = presentingSceneIdentifier2;
+        if (presentingSceneIdentifier && presentingSceneIdentifier2)
         {
-          if ([v12 isEqual:v13])
+          if ([presentingSceneIdentifier isEqual:presentingSceneIdentifier2])
           {
 LABEL_14:
-            v15 = [(ASCOfferContext *)self presentingSceneBundleIdentifier];
-            v16 = [v7 presentingSceneBundleIdentifier];
-            v17 = v16;
-            if (v15 && v16)
+            presentingSceneBundleIdentifier = [(ASCOfferContext *)self presentingSceneBundleIdentifier];
+            presentingSceneBundleIdentifier2 = [v7 presentingSceneBundleIdentifier];
+            v17 = presentingSceneBundleIdentifier2;
+            if (presentingSceneBundleIdentifier && presentingSceneBundleIdentifier2)
             {
-              if ([v15 isEqual:v16])
+              if ([presentingSceneBundleIdentifier isEqual:presentingSceneBundleIdentifier2])
               {
 LABEL_17:
-                v18 = [(ASCOfferContext *)self externalDeepLinkURL];
-                v19 = [v7 externalDeepLinkURL];
-                v20 = v19;
-                if (v18 && v19)
+                externalDeepLinkURL = [(ASCOfferContext *)self externalDeepLinkURL];
+                externalDeepLinkURL2 = [v7 externalDeepLinkURL];
+                v20 = externalDeepLinkURL2;
+                if (externalDeepLinkURL && externalDeepLinkURL2)
                 {
-                  if (![v18 isEqual:v19])
+                  if (![externalDeepLinkURL isEqual:externalDeepLinkURL2])
                   {
                     goto LABEL_27;
                   }
                 }
 
-                else if (v18 != v19)
+                else if (externalDeepLinkURL != externalDeepLinkURL2)
                 {
                   goto LABEL_27;
                 }
 
-                v21 = [(ASCOfferContext *)self universalLinkRequired];
-                if (v21 == [v7 universalLinkRequired])
+                universalLinkRequired = [(ASCOfferContext *)self universalLinkRequired];
+                if (universalLinkRequired == [v7 universalLinkRequired])
                 {
-                  v22 = [(ASCOfferContext *)self paymentViewServiceListener];
-                  v23 = [v7 paymentViewServiceListener];
-                  v24 = v23;
-                  v25 = v22;
-                  if (v22 && v23)
+                  paymentViewServiceListener = [(ASCOfferContext *)self paymentViewServiceListener];
+                  paymentViewServiceListener2 = [v7 paymentViewServiceListener];
+                  v24 = paymentViewServiceListener2;
+                  v25 = paymentViewServiceListener;
+                  if (paymentViewServiceListener && paymentViewServiceListener2)
                   {
-                    v10 = [v22 isEqual:v23];
+                    v10 = [paymentViewServiceListener isEqual:paymentViewServiceListener2];
                   }
 
                   else
                   {
-                    v10 = v22 == v23;
+                    v10 = paymentViewServiceListener == paymentViewServiceListener2;
                   }
 
                   goto LABEL_33;
@@ -200,7 +200,7 @@ LABEL_33:
               }
             }
 
-            else if (v15 == v16)
+            else if (presentingSceneBundleIdentifier == presentingSceneBundleIdentifier2)
             {
               goto LABEL_17;
             }
@@ -212,7 +212,7 @@ LABEL_34:
           }
         }
 
-        else if (v12 == v13)
+        else if (presentingSceneIdentifier == presentingSceneIdentifier2)
         {
           goto LABEL_14;
         }
@@ -236,22 +236,22 @@ LABEL_10:
   v3 = [[ASCDescriber alloc] initWithObject:self];
   [(ASCDescriber *)v3 addBool:[(ASCOfferContext *)self supportsDSIDLessInstall] withName:@"supportsDSIDLessInstall"];
   [(ASCDescriber *)v3 addBool:[(ASCOfferContext *)self shouldInstallParentApp] withName:@"shouldInstallParentApp"];
-  v4 = [(ASCOfferContext *)self presentingSceneIdentifier];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"presentingSceneIdentifier"];
+  presentingSceneIdentifier = [(ASCOfferContext *)self presentingSceneIdentifier];
+  [(ASCDescriber *)v3 addObject:presentingSceneIdentifier withName:@"presentingSceneIdentifier"];
 
-  v5 = [(ASCOfferContext *)self presentingSceneBundleIdentifier];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"presentingSceneBundleIdentifier"];
+  presentingSceneBundleIdentifier = [(ASCOfferContext *)self presentingSceneBundleIdentifier];
+  [(ASCDescriber *)v3 addObject:presentingSceneBundleIdentifier withName:@"presentingSceneBundleIdentifier"];
 
-  v6 = [(ASCOfferContext *)self externalDeepLinkURL];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"externalDeepLinkURL"];
+  externalDeepLinkURL = [(ASCOfferContext *)self externalDeepLinkURL];
+  [(ASCDescriber *)v3 addObject:externalDeepLinkURL withName:@"externalDeepLinkURL"];
 
   [(ASCDescriber *)v3 addBool:[(ASCOfferContext *)self universalLinkRequired] withName:@"universalLinkRequired"];
-  v7 = [(ASCOfferContext *)self paymentViewServiceListener];
-  [(ASCDescriber *)v3 addObject:v7 withName:@"paymentViewServiceListener"];
+  paymentViewServiceListener = [(ASCOfferContext *)self paymentViewServiceListener];
+  [(ASCDescriber *)v3 addObject:paymentViewServiceListener withName:@"paymentViewServiceListener"];
 
-  v8 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v8;
+  return finalizeDescription;
 }
 
 @end

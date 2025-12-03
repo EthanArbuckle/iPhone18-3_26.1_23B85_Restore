@@ -1,12 +1,12 @@
 @interface IFTSchemaIFTSystemRequirement
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTSystemRequirement)initWithDictionary:(id)a3;
-- (IFTSchemaIFTSystemRequirement)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTSystemRequirement)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTSystemRequirement)initWithJSON:(id)n;
 - (IFTSchemaIFTSystemRequirementAuthenticationRequest)userAuthenticationRequired;
 - (IFTSchemaIFTSystemRequirementProtectedAppRequest)protectedAppApprovalRequired;
 - (IFTSchemaIFTSystemRequirementUserLocationForSystemRequest)userLocationForSystemRequired;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -18,28 +18,28 @@
 - (void)deleteProtectedAppApprovalRequired;
 - (void)deleteUserAuthenticationRequired;
 - (void)deleteUserLocationForSystemRequired;
-- (void)setAppLaunchRequired:(BOOL)a3;
-- (void)setAuthenticationRequired:(BOOL)a3;
-- (void)setCarBluetoothIncompatible:(BOOL)a3;
-- (void)setCarPlayIncompatible:(BOOL)a3;
-- (void)setDeviceUnlockRequired:(BOOL)a3;
-- (void)setProtectedAppApprovalRequired:(id)a3;
-- (void)setUserAuthenticationRequired:(id)a3;
-- (void)setUserLocationForSystemRequired:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAppLaunchRequired:(BOOL)required;
+- (void)setAuthenticationRequired:(BOOL)required;
+- (void)setCarBluetoothIncompatible:(BOOL)incompatible;
+- (void)setCarPlayIncompatible:(BOOL)incompatible;
+- (void)setDeviceUnlockRequired:(BOOL)required;
+- (void)setProtectedAppApprovalRequired:(id)required;
+- (void)setUserAuthenticationRequired:(id)required;
+- (void)setUserLocationForSystemRequired:(id)required;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTSystemRequirement
 
-- (IFTSchemaIFTSystemRequirement)initWithDictionary:(id)a3
+- (IFTSchemaIFTSystemRequirement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = IFTSchemaIFTSystemRequirement;
   v5 = [(IFTSchemaIFTSystemRequirement *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"deviceUnlockRequired"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"deviceUnlockRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,35 +47,35 @@
     }
 
     v19 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"authenticationRequired"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"authenticationRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTSystemRequirement setAuthenticationRequired:](v5, "setAuthenticationRequired:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"appLaunchRequired"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"appLaunchRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTSystemRequirement setAppLaunchRequired:](v5, "setAppLaunchRequired:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"carPlayIncompatible"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"carPlayIncompatible"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTSystemRequirement setCarPlayIncompatible:](v5, "setCarPlayIncompatible:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"carBluetoothIncompatible"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"carBluetoothIncompatible"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTSystemRequirement setCarBluetoothIncompatible:](v5, "setCarBluetoothIncompatible:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"protectedAppApprovalRequired"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"protectedAppApprovalRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
       [(IFTSchemaIFTSystemRequirement *)v5 setProtectedAppApprovalRequired:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"userAuthenticationRequired"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"userAuthenticationRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
       [(IFTSchemaIFTSystemRequirement *)v5 setUserAuthenticationRequired:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"userLocationForSystemRequired"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"userLocationForSystemRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,30 +105,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTSystemRequirement)initWithJSON:(id)a3
+- (IFTSchemaIFTSystemRequirement)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTSystemRequirement *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTSystemRequirement *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTSystemRequirement *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -141,12 +141,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   whichOneof_Systemrequirement = self->_whichOneof_Systemrequirement;
   if (whichOneof_Systemrequirement == 3)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTSystemRequirement appLaunchRequired](self, "appLaunchRequired")}];
-    [v3 setObject:v5 forKeyedSubscript:@"appLaunchRequired"];
+    [dictionary setObject:v5 forKeyedSubscript:@"appLaunchRequired"];
 
     whichOneof_Systemrequirement = self->_whichOneof_Systemrequirement;
   }
@@ -154,7 +154,7 @@
   if (whichOneof_Systemrequirement == 2)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTSystemRequirement authenticationRequired](self, "authenticationRequired")}];
-    [v3 setObject:v6 forKeyedSubscript:@"authenticationRequired"];
+    [dictionary setObject:v6 forKeyedSubscript:@"authenticationRequired"];
 
     whichOneof_Systemrequirement = self->_whichOneof_Systemrequirement;
   }
@@ -162,7 +162,7 @@
   if (whichOneof_Systemrequirement == 5)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTSystemRequirement carBluetoothIncompatible](self, "carBluetoothIncompatible")}];
-    [v3 setObject:v7 forKeyedSubscript:@"carBluetoothIncompatible"];
+    [dictionary setObject:v7 forKeyedSubscript:@"carBluetoothIncompatible"];
 
     whichOneof_Systemrequirement = self->_whichOneof_Systemrequirement;
   }
@@ -170,7 +170,7 @@
   if (whichOneof_Systemrequirement == 4)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTSystemRequirement carPlayIncompatible](self, "carPlayIncompatible")}];
-    [v3 setObject:v8 forKeyedSubscript:@"carPlayIncompatible"];
+    [dictionary setObject:v8 forKeyedSubscript:@"carPlayIncompatible"];
 
     whichOneof_Systemrequirement = self->_whichOneof_Systemrequirement;
   }
@@ -178,60 +178,60 @@
   if (whichOneof_Systemrequirement == 1)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTSystemRequirement deviceUnlockRequired](self, "deviceUnlockRequired")}];
-    [v3 setObject:v9 forKeyedSubscript:@"deviceUnlockRequired"];
+    [dictionary setObject:v9 forKeyedSubscript:@"deviceUnlockRequired"];
   }
 
   if (self->_protectedAppApprovalRequired)
   {
-    v10 = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    protectedAppApprovalRequired = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
+    dictionaryRepresentation = [protectedAppApprovalRequired dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"protectedAppApprovalRequired"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"protectedAppApprovalRequired"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"protectedAppApprovalRequired"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"protectedAppApprovalRequired"];
     }
   }
 
   if (self->_userAuthenticationRequired)
   {
-    v13 = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    userAuthenticationRequired = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
+    dictionaryRepresentation2 = [userAuthenticationRequired dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"userAuthenticationRequired"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"userAuthenticationRequired"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"userAuthenticationRequired"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"userAuthenticationRequired"];
     }
   }
 
   if (self->_userLocationForSystemRequired)
   {
-    v16 = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    userLocationForSystemRequired = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
+    dictionaryRepresentation3 = [userLocationForSystemRequired dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"userLocationForSystemRequired"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"userLocationForSystemRequired"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"userLocationForSystemRequired"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"userLocationForSystemRequired"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -252,64 +252,64 @@
   return v5 ^ v6 ^ [(IFTSchemaIFTSystemRequirementUserLocationForSystemRequest *)self->_userLocationForSystemRequired hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   whichOneof_Systemrequirement = self->_whichOneof_Systemrequirement;
-  if (whichOneof_Systemrequirement != [v4 whichOneof_Systemrequirement])
+  if (whichOneof_Systemrequirement != [equalCopy whichOneof_Systemrequirement])
   {
     goto LABEL_23;
   }
 
   deviceUnlockRequired = self->_deviceUnlockRequired;
-  if (deviceUnlockRequired != [v4 deviceUnlockRequired])
+  if (deviceUnlockRequired != [equalCopy deviceUnlockRequired])
   {
     goto LABEL_23;
   }
 
   authenticationRequired = self->_authenticationRequired;
-  if (authenticationRequired != [v4 authenticationRequired])
+  if (authenticationRequired != [equalCopy authenticationRequired])
   {
     goto LABEL_23;
   }
 
   appLaunchRequired = self->_appLaunchRequired;
-  if (appLaunchRequired != [v4 appLaunchRequired])
+  if (appLaunchRequired != [equalCopy appLaunchRequired])
   {
     goto LABEL_23;
   }
 
   carPlayIncompatible = self->_carPlayIncompatible;
-  if (carPlayIncompatible != [v4 carPlayIncompatible])
+  if (carPlayIncompatible != [equalCopy carPlayIncompatible])
   {
     goto LABEL_23;
   }
 
   carBluetoothIncompatible = self->_carBluetoothIncompatible;
-  if (carBluetoothIncompatible != [v4 carBluetoothIncompatible])
+  if (carBluetoothIncompatible != [equalCopy carBluetoothIncompatible])
   {
     goto LABEL_23;
   }
 
-  v11 = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
-  v12 = [v4 protectedAppApprovalRequired];
-  if ((v11 != 0) == (v12 == 0))
+  protectedAppApprovalRequired = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
+  protectedAppApprovalRequired2 = [equalCopy protectedAppApprovalRequired];
+  if ((protectedAppApprovalRequired != 0) == (protectedAppApprovalRequired2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
-  if (v13)
+  protectedAppApprovalRequired3 = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
+  if (protectedAppApprovalRequired3)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
-    v16 = [v4 protectedAppApprovalRequired];
-    v17 = [v15 isEqual:v16];
+    v14 = protectedAppApprovalRequired3;
+    protectedAppApprovalRequired4 = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
+    protectedAppApprovalRequired5 = [equalCopy protectedAppApprovalRequired];
+    v17 = [protectedAppApprovalRequired4 isEqual:protectedAppApprovalRequired5];
 
     if (!v17)
     {
@@ -321,20 +321,20 @@
   {
   }
 
-  v11 = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
-  v12 = [v4 userAuthenticationRequired];
-  if ((v11 != 0) == (v12 == 0))
+  protectedAppApprovalRequired = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
+  protectedAppApprovalRequired2 = [equalCopy userAuthenticationRequired];
+  if ((protectedAppApprovalRequired != 0) == (protectedAppApprovalRequired2 == 0))
   {
     goto LABEL_22;
   }
 
-  v18 = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
-  if (v18)
+  userAuthenticationRequired = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
+  if (userAuthenticationRequired)
   {
-    v19 = v18;
-    v20 = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
-    v21 = [v4 userAuthenticationRequired];
-    v22 = [v20 isEqual:v21];
+    v19 = userAuthenticationRequired;
+    userAuthenticationRequired2 = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
+    userAuthenticationRequired3 = [equalCopy userAuthenticationRequired];
+    v22 = [userAuthenticationRequired2 isEqual:userAuthenticationRequired3];
 
     if (!v22)
     {
@@ -346,12 +346,12 @@
   {
   }
 
-  v11 = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
-  v12 = [v4 userLocationForSystemRequired];
-  if ((v11 != 0) != (v12 == 0))
+  protectedAppApprovalRequired = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
+  protectedAppApprovalRequired2 = [equalCopy userLocationForSystemRequired];
+  if ((protectedAppApprovalRequired != 0) != (protectedAppApprovalRequired2 == 0))
   {
-    v23 = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
-    if (!v23)
+    userLocationForSystemRequired = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
+    if (!userLocationForSystemRequired)
     {
 
 LABEL_26:
@@ -359,10 +359,10 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v24 = v23;
-    v25 = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
-    v26 = [v4 userLocationForSystemRequired];
-    v27 = [v25 isEqual:v26];
+    v24 = userLocationForSystemRequired;
+    userLocationForSystemRequired2 = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
+    userLocationForSystemRequired3 = [equalCopy userLocationForSystemRequired];
+    v27 = [userLocationForSystemRequired2 isEqual:userLocationForSystemRequired3];
 
     if (v27)
     {
@@ -382,9 +382,9 @@ LABEL_24:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   whichOneof_Systemrequirement = self->_whichOneof_Systemrequirement;
   if (whichOneof_Systemrequirement == 1)
   {
@@ -415,31 +415,31 @@ LABEL_24:
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
+  protectedAppApprovalRequired = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
 
-  if (v5)
+  if (protectedAppApprovalRequired)
   {
-    v6 = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
+    protectedAppApprovalRequired2 = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
+  userAuthenticationRequired = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
 
-  if (v7)
+  if (userAuthenticationRequired)
   {
-    v8 = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
+    userAuthenticationRequired2 = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
+  userLocationForSystemRequired = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
 
-  v10 = v12;
-  if (v9)
+  v10 = toCopy;
+  if (userLocationForSystemRequired)
   {
-    v11 = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
+    userLocationForSystemRequired2 = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
     PBDataWriterWriteSubmessage();
 
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 
@@ -468,9 +468,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setUserLocationForSystemRequired:(id)a3
+- (void)setUserLocationForSystemRequired:(id)required
 {
-  v4 = a3;
+  requiredCopy = required;
   self->_deviceUnlockRequired = 0;
   self->_authenticationRequired = 0;
   self->_appLaunchRequired = 0;
@@ -482,9 +482,9 @@ LABEL_24:
   userAuthenticationRequired = self->_userAuthenticationRequired;
   self->_userAuthenticationRequired = 0;
 
-  self->_whichOneof_Systemrequirement = 8 * (v4 != 0);
+  self->_whichOneof_Systemrequirement = 8 * (requiredCopy != 0);
   userLocationForSystemRequired = self->_userLocationForSystemRequired;
-  self->_userLocationForSystemRequired = v4;
+  self->_userLocationForSystemRequired = requiredCopy;
 }
 
 - (void)deleteUserAuthenticationRequired
@@ -512,9 +512,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setUserAuthenticationRequired:(id)a3
+- (void)setUserAuthenticationRequired:(id)required
 {
-  v4 = a3;
+  requiredCopy = required;
   self->_deviceUnlockRequired = 0;
   self->_authenticationRequired = 0;
   self->_appLaunchRequired = 0;
@@ -527,14 +527,14 @@ LABEL_24:
   self->_userLocationForSystemRequired = 0;
 
   v7 = 7;
-  if (!v4)
+  if (!requiredCopy)
   {
     v7 = 0;
   }
 
   self->_whichOneof_Systemrequirement = v7;
   userAuthenticationRequired = self->_userAuthenticationRequired;
-  self->_userAuthenticationRequired = v4;
+  self->_userAuthenticationRequired = requiredCopy;
 }
 
 - (void)deleteProtectedAppApprovalRequired
@@ -562,9 +562,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setProtectedAppApprovalRequired:(id)a3
+- (void)setProtectedAppApprovalRequired:(id)required
 {
-  v4 = a3;
+  requiredCopy = required;
   self->_deviceUnlockRequired = 0;
   self->_authenticationRequired = 0;
   self->_appLaunchRequired = 0;
@@ -577,14 +577,14 @@ LABEL_24:
   self->_userLocationForSystemRequired = 0;
 
   v7 = 6;
-  if (!v4)
+  if (!requiredCopy)
   {
     v7 = 0;
   }
 
   self->_whichOneof_Systemrequirement = v7;
   protectedAppApprovalRequired = self->_protectedAppApprovalRequired;
-  self->_protectedAppApprovalRequired = v4;
+  self->_protectedAppApprovalRequired = requiredCopy;
 }
 
 - (void)deleteCarBluetoothIncompatible
@@ -596,7 +596,7 @@ LABEL_24:
   }
 }
 
-- (void)setCarBluetoothIncompatible:(BOOL)a3
+- (void)setCarBluetoothIncompatible:(BOOL)incompatible
 {
   self->_deviceUnlockRequired = 0;
   self->_authenticationRequired = 0;
@@ -612,7 +612,7 @@ LABEL_24:
   self->_userLocationForSystemRequired = 0;
 
   self->_whichOneof_Systemrequirement = 5;
-  self->_carBluetoothIncompatible = a3;
+  self->_carBluetoothIncompatible = incompatible;
 }
 
 - (void)deleteCarPlayIncompatible
@@ -624,7 +624,7 @@ LABEL_24:
   }
 }
 
-- (void)setCarPlayIncompatible:(BOOL)a3
+- (void)setCarPlayIncompatible:(BOOL)incompatible
 {
   self->_deviceUnlockRequired = 0;
   self->_authenticationRequired = 0;
@@ -640,7 +640,7 @@ LABEL_24:
   self->_userLocationForSystemRequired = 0;
 
   self->_whichOneof_Systemrequirement = 4;
-  self->_carPlayIncompatible = a3;
+  self->_carPlayIncompatible = incompatible;
 }
 
 - (void)deleteAppLaunchRequired
@@ -652,7 +652,7 @@ LABEL_24:
   }
 }
 
-- (void)setAppLaunchRequired:(BOOL)a3
+- (void)setAppLaunchRequired:(BOOL)required
 {
   self->_deviceUnlockRequired = 0;
   self->_authenticationRequired = 0;
@@ -668,7 +668,7 @@ LABEL_24:
   self->_userLocationForSystemRequired = 0;
 
   self->_whichOneof_Systemrequirement = 3;
-  self->_appLaunchRequired = a3;
+  self->_appLaunchRequired = required;
 }
 
 - (void)deleteAuthenticationRequired
@@ -680,7 +680,7 @@ LABEL_24:
   }
 }
 
-- (void)setAuthenticationRequired:(BOOL)a3
+- (void)setAuthenticationRequired:(BOOL)required
 {
   self->_deviceUnlockRequired = 0;
   self->_appLaunchRequired = 0;
@@ -696,7 +696,7 @@ LABEL_24:
   self->_userLocationForSystemRequired = 0;
 
   self->_whichOneof_Systemrequirement = 2;
-  self->_authenticationRequired = a3;
+  self->_authenticationRequired = required;
 }
 
 - (void)deleteDeviceUnlockRequired
@@ -708,7 +708,7 @@ LABEL_24:
   }
 }
 
-- (void)setDeviceUnlockRequired:(BOOL)a3
+- (void)setDeviceUnlockRequired:(BOOL)required
 {
   self->_authenticationRequired = 0;
   self->_appLaunchRequired = 0;
@@ -724,38 +724,38 @@ LABEL_24:
   self->_userLocationForSystemRequired = 0;
 
   self->_whichOneof_Systemrequirement = 1;
-  self->_deviceUnlockRequired = a3;
+  self->_deviceUnlockRequired = required;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = IFTSchemaIFTSystemRequirement;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  protectedAppApprovalRequired = [(IFTSchemaIFTSystemRequirement *)self protectedAppApprovalRequired];
+  v7 = [protectedAppApprovalRequired applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTSystemRequirement *)self deleteProtectedAppApprovalRequired];
   }
 
-  v9 = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  userAuthenticationRequired = [(IFTSchemaIFTSystemRequirement *)self userAuthenticationRequired];
+  v10 = [userAuthenticationRequired applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTSystemRequirement *)self deleteUserAuthenticationRequired];
   }
 
-  v12 = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  userLocationForSystemRequired = [(IFTSchemaIFTSystemRequirement *)self userLocationForSystemRequired];
+  v13 = [userLocationForSystemRequired applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTSystemRequirement *)self deleteUserLocationForSystemRequired];
   }

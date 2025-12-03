@@ -10,10 +10,10 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = a1;
-    v3 = [v2 keyPath];
-    v4 = [v3 lastPathComponent];
-    v5 = [v4 isEqualToString:@"position"];
+    selfCopy = self;
+    keyPath = [selfCopy keyPath];
+    lastPathComponent = [keyPath lastPathComponent];
+    v5 = [lastPathComponent isEqualToString:@"position"];
 
     if (v5)
     {
@@ -21,8 +21,8 @@
       v100 = 0u;
       v97 = 0u;
       v98 = 0u;
-      v6 = [v2 values];
-      v7 = [v6 countByEnumeratingWithState:&v97 objects:v106 count:16];
+      values = [selfCopy values];
+      v7 = [values countByEnumeratingWithState:&v97 objects:v106 count:16];
       if (v7)
       {
         v8 = v7;
@@ -34,7 +34,7 @@ LABEL_5:
         {
           if (*v98 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(values);
           }
 
           [*(*(&v97 + 1) + 8 * v10) avt_float3Value];
@@ -47,7 +47,7 @@ LABEL_5:
 
           if (v8 == ++v10)
           {
-            v8 = [v6 countByEnumeratingWithState:&v97 objects:v106 count:16];
+            v8 = [values countByEnumeratingWithState:&v97 objects:v106 count:16];
             v13 = 1;
             if (v8)
             {
@@ -69,9 +69,9 @@ LABEL_74:
       goto LABEL_72;
     }
 
-    v14 = [v2 keyPath];
-    v15 = [v14 lastPathComponent];
-    v16 = [v15 isEqualToString:@"eulerAngles"];
+    keyPath2 = [selfCopy keyPath];
+    lastPathComponent2 = [keyPath2 lastPathComponent];
+    v16 = [lastPathComponent2 isEqualToString:@"eulerAngles"];
 
     if (v16)
     {
@@ -79,8 +79,8 @@ LABEL_74:
       v96 = 0u;
       v93 = 0u;
       v94 = 0u;
-      v6 = [v2 values];
-      v17 = [v6 countByEnumeratingWithState:&v93 objects:v105 count:16];
+      values = [selfCopy values];
+      v17 = [values countByEnumeratingWithState:&v93 objects:v105 count:16];
       if (v17)
       {
         v18 = v17;
@@ -92,7 +92,7 @@ LABEL_16:
         {
           if (*v94 != v19)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(values);
           }
 
           [*(*(&v93 + 1) + 8 * v20) avt_float3Value];
@@ -105,7 +105,7 @@ LABEL_16:
 
           if (v18 == ++v20)
           {
-            v18 = [v6 countByEnumeratingWithState:&v93 objects:v105 count:16];
+            v18 = [values countByEnumeratingWithState:&v93 objects:v105 count:16];
             v13 = 1;
             if (v18)
             {
@@ -122,25 +122,25 @@ LABEL_72:
       goto LABEL_73;
     }
 
-    v23 = [v2 keyPath];
-    v24 = [v23 lastPathComponent];
-    if ([v24 hasSuffix:@"eulerAngles.x"])
+    keyPath3 = [selfCopy keyPath];
+    lastPathComponent3 = [keyPath3 lastPathComponent];
+    if ([lastPathComponent3 hasSuffix:@"eulerAngles.x"])
     {
       goto LABEL_26;
     }
 
-    v25 = [v2 keyPath];
-    v26 = [v25 lastPathComponent];
-    if ([v26 hasSuffix:@"eulerAngles.y"])
+    keyPath4 = [selfCopy keyPath];
+    lastPathComponent4 = [keyPath4 lastPathComponent];
+    if ([lastPathComponent4 hasSuffix:@"eulerAngles.y"])
     {
 
 LABEL_26:
       goto LABEL_27;
     }
 
-    v32 = [v2 keyPath];
-    v33 = [v32 lastPathComponent];
-    v34 = [v33 hasSuffix:@"eulerAngles.z"];
+    keyPath5 = [selfCopy keyPath];
+    lastPathComponent5 = [keyPath5 lastPathComponent];
+    v34 = [lastPathComponent5 hasSuffix:@"eulerAngles.z"];
 
     if (v34)
     {
@@ -149,8 +149,8 @@ LABEL_27:
       v92 = 0u;
       v89 = 0u;
       v90 = 0u;
-      v6 = [v2 values];
-      v27 = [v6 countByEnumeratingWithState:&v89 objects:v104 count:16];
+      values = [selfCopy values];
+      v27 = [values countByEnumeratingWithState:&v89 objects:v104 count:16];
       if (v27)
       {
         v28 = v27;
@@ -161,7 +161,7 @@ LABEL_29:
         {
           if (*v90 != v29)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(values);
           }
 
           [*(*(&v89 + 1) + 8 * v30) floatValue];
@@ -172,7 +172,7 @@ LABEL_29:
 
           if (v28 == ++v30)
           {
-            v28 = [v6 countByEnumeratingWithState:&v89 objects:v104 count:16];
+            v28 = [values countByEnumeratingWithState:&v89 objects:v104 count:16];
             v13 = 1;
             if (v28)
             {
@@ -187,9 +187,9 @@ LABEL_29:
       goto LABEL_72;
     }
 
-    v35 = [v2 keyPath];
-    v36 = [v35 lastPathComponent];
-    v37 = [v36 isEqualToString:@"scale"];
+    keyPath6 = [selfCopy keyPath];
+    lastPathComponent6 = [keyPath6 lastPathComponent];
+    v37 = [lastPathComponent6 isEqualToString:@"scale"];
 
     if (v37)
     {
@@ -197,8 +197,8 @@ LABEL_29:
       v88 = 0u;
       v85 = 0u;
       v86 = 0u;
-      v6 = [v2 values];
-      v38 = [v6 countByEnumeratingWithState:&v85 objects:v103 count:16];
+      values = [selfCopy values];
+      v38 = [values countByEnumeratingWithState:&v85 objects:v103 count:16];
       if (v38)
       {
         v39 = v38;
@@ -213,7 +213,7 @@ LABEL_40:
         {
           if (*v86 != v40)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(values);
           }
 
           [*(*(&v85 + 1) + 8 * v46) avt_float3Value];
@@ -226,7 +226,7 @@ LABEL_40:
 
           if (v39 == ++v46)
           {
-            v39 = [v6 countByEnumeratingWithState:&v85 objects:v103 count:16];
+            v39 = [values countByEnumeratingWithState:&v85 objects:v103 count:16];
             v13 = 1;
             if (v39)
             {
@@ -241,23 +241,23 @@ LABEL_40:
       goto LABEL_72;
     }
 
-    v49 = [v2 keyPath];
-    v50 = [v49 lastPathComponent];
-    if (([v50 hasSuffix:@"scale.x"] & 1) == 0)
+    keyPath7 = [selfCopy keyPath];
+    lastPathComponent7 = [keyPath7 lastPathComponent];
+    if (([lastPathComponent7 hasSuffix:@"scale.x"] & 1) == 0)
     {
-      v51 = [v2 keyPath];
-      v52 = [v51 lastPathComponent];
-      if (([v52 hasSuffix:@"scale.y"] & 1) == 0)
+      keyPath8 = [selfCopy keyPath];
+      lastPathComponent8 = [keyPath8 lastPathComponent];
+      if (([lastPathComponent8 hasSuffix:@"scale.y"] & 1) == 0)
       {
-        v58 = [v2 keyPath];
-        v59 = [v58 lastPathComponent];
-        v60 = [v59 hasSuffix:@"scale.z"];
+        keyPath9 = [selfCopy keyPath];
+        lastPathComponent9 = [keyPath9 lastPathComponent];
+        v60 = [lastPathComponent9 hasSuffix:@"scale.z"];
 
         if ((v60 & 1) == 0)
         {
-          v61 = [v2 keyPath];
-          v62 = [v61 lastPathComponent];
-          v63 = [v62 isEqualToString:@"orientation"];
+          keyPath10 = [selfCopy keyPath];
+          lastPathComponent10 = [keyPath10 lastPathComponent];
+          v63 = [lastPathComponent10 isEqualToString:@"orientation"];
 
           if (!v63)
           {
@@ -269,8 +269,8 @@ LABEL_40:
           v80 = 0u;
           v77 = 0u;
           v78 = 0u;
-          v6 = [v2 values];
-          v64 = [v6 countByEnumeratingWithState:&v77 objects:v101 count:16];
+          values = [selfCopy values];
+          v64 = [values countByEnumeratingWithState:&v77 objects:v101 count:16];
           if (v64)
           {
             v65 = v64;
@@ -281,7 +281,7 @@ LABEL_64:
             {
               if (*v78 != v66)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(values);
               }
 
               [*(*(&v77 + 1) + 8 * v67) avt_float4Value];
@@ -294,7 +294,7 @@ LABEL_64:
 
               if (v65 == ++v67)
               {
-                v65 = [v6 countByEnumeratingWithState:&v77 objects:v101 count:16];
+                v65 = [values countByEnumeratingWithState:&v77 objects:v101 count:16];
                 v13 = 1;
                 if (v65)
                 {
@@ -318,8 +318,8 @@ LABEL_51:
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v6 = [v2 values];
-    v53 = [v6 countByEnumeratingWithState:&v81 objects:v102 count:16];
+    values = [selfCopy values];
+    v53 = [values countByEnumeratingWithState:&v81 objects:v102 count:16];
     if (v53)
     {
       v54 = v53;
@@ -330,7 +330,7 @@ LABEL_53:
       {
         if (*v82 != v55)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(values);
         }
 
         [*(*(&v81 + 1) + 8 * v56) floatValue];
@@ -341,7 +341,7 @@ LABEL_53:
 
         if (v54 == ++v56)
         {
-          v54 = [v6 countByEnumeratingWithState:&v81 objects:v102 count:16];
+          v54 = [values countByEnumeratingWithState:&v81 objects:v102 count:16];
           v13 = 1;
           if (v54)
           {

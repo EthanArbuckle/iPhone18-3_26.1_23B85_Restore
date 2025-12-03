@@ -1,16 +1,16 @@
 @interface HAPService
-- (BOOL)_updateCharacteristic:(id)a3;
+- (BOOL)_updateCharacteristic:(id)characteristic;
 - (BOOL)_validateMandatoryCharacteristics;
 - (BOOL)_validateServiceCharacteristics;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mergeObject:(id)a3;
-- (BOOL)shouldMergeObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mergeObject:(id)object;
+- (BOOL)shouldMergeObject:(id)object;
 - (BOOL)updateAndValidateCharacteristics;
 - (CBService)cbService;
 - (HAPAccessory)accessory;
-- (HAPService)initWithType:(id)a3 instanceID:(id)a4 parsedCharacteristics:(id)a5 serviceProperties:(unint64_t)a6 linkedServices:(id)a7;
+- (HAPService)initWithType:(id)type instanceID:(id)d parsedCharacteristics:(id)characteristics serviceProperties:(unint64_t)properties linkedServices:(id)services;
 - (NSString)description;
-- (id)characteristicsOfType:(id)a3;
+- (id)characteristicsOfType:(id)type;
 - (id)propertiesDescription;
 - (unint64_t)hash;
 @end
@@ -34,36 +34,36 @@
   return v3;
 }
 
-- (HAPService)initWithType:(id)a3 instanceID:(id)a4 parsedCharacteristics:(id)a5 serviceProperties:(unint64_t)a6 linkedServices:(id)a7
+- (HAPService)initWithType:(id)type instanceID:(id)d parsedCharacteristics:(id)characteristics serviceProperties:(unint64_t)properties linkedServices:(id)services
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (sub_10007E584(v12))
+  typeCopy = type;
+  dCopy = d;
+  characteristicsCopy = characteristics;
+  servicesCopy = services;
+  if (sub_10007E584(typeCopy))
   {
-    v16 = sub_10007E724(v12);
+    v16 = sub_10007E724(typeCopy);
     if (v16)
     {
-      if (sub_10007EA14(v13))
+      if (sub_10007EA14(dCopy))
       {
         v38.receiver = self;
         v38.super_class = HAPService;
         self = [(HAPService *)&v38 init];
         if (self)
         {
-          v36 = v15;
+          v36 = servicesCopy;
           +[HAPMetadata getSharedInstance];
-          v34 = v13;
-          v18 = v17 = v14;
+          v34 = dCopy;
+          v18 = v17 = characteristicsCopy;
           v19 = [HMFObjectCacheNSString hmf_cachedInstanceForString:v16];
           type = self->_type;
           self->_type = v19;
 
           v35 = v18;
           v21 = v18;
-          v14 = v17;
-          v13 = v34;
+          characteristicsCopy = v17;
+          dCopy = v34;
           v37 = [v21 serviceUTIFromType:v16];
           if (v37)
           {
@@ -85,11 +85,11 @@
             }
           }
 
-          objc_storeStrong(&self->_instanceID, a4);
-          v15 = v36;
-          if (v14)
+          objc_storeStrong(&self->_instanceID, d);
+          servicesCopy = v36;
+          if (characteristicsCopy)
           {
-            if ([v14 count] >= 0x65)
+            if ([characteristicsCopy count] >= 0x65)
             {
               v25 = sub_10007FAA0();
               if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -107,7 +107,7 @@ LABEL_28:
               goto LABEL_29;
             }
 
-            objc_storeStrong(&self->_characteristics, a5);
+            objc_storeStrong(&self->_characteristics, characteristics);
             if (![(HAPService *)self updateAndValidateCharacteristics])
             {
               v25 = sub_10007FAA0();
@@ -126,12 +126,12 @@ LABEL_29:
             }
           }
 
-          self->_serviceProperties = a6;
-          objc_storeStrong(&self->_linkedServices, a7);
+          self->_serviceProperties = properties;
+          objc_storeStrong(&self->_linkedServices, services);
         }
 
         self = self;
-        v31 = self;
+        selfCopy = self;
         goto LABEL_22;
       }
 
@@ -171,30 +171,30 @@ LABEL_20:
     *buf = 138543618;
     v40 = v28;
     v41 = 2112;
-    v42 = v12;
+    v42 = typeCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%{public}@### Unable to initialize service because of invalid service type name: %@", buf, 0x16u);
     goto LABEL_20;
   }
 
 LABEL_21:
-  v31 = 0;
+  selfCopy = 0;
 LABEL_22:
 
-  return v31;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HAPService *)self instanceID];
-  v3 = [v2 hash];
+  instanceID = [(HAPService *)self instanceID];
+  v3 = [instanceID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -204,7 +204,7 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -218,9 +218,9 @@ LABEL_22:
       goto LABEL_8;
     }
 
-    v7 = [(HAPService *)self instanceID];
-    v8 = [(HAPService *)v6 instanceID];
-    v9 = sub_10007EC60(v7, v8);
+    instanceID = [(HAPService *)self instanceID];
+    instanceID2 = [(HAPService *)v6 instanceID];
+    v9 = sub_10007EC60(instanceID, instanceID2);
 
     if (v9 & 1) != 0 || ([(HAPService *)self type], v10 = objc_claimAutoreleasedReturnValue(), [(HAPService *)v6 type], v11 = objc_claimAutoreleasedReturnValue(), v12 = sub_10007EC2C(v10, v11), v11, v10, (v12))
     {
@@ -230,17 +230,17 @@ LABEL_8:
 
     else
     {
-      v15 = [(HAPService *)self accessory];
-      if (v15)
+      accessory = [(HAPService *)self accessory];
+      if (accessory)
       {
-        v16 = v15;
-        v17 = [(HAPService *)v6 accessory];
-        if (v17)
+        v16 = accessory;
+        accessory2 = [(HAPService *)v6 accessory];
+        if (accessory2)
         {
-          v18 = v17;
-          v19 = [(HAPService *)self accessory];
-          v20 = [(HAPService *)v6 accessory];
-          v13 = [v19 isEqual:v20];
+          v18 = accessory2;
+          accessory3 = [(HAPService *)self accessory];
+          accessory4 = [(HAPService *)v6 accessory];
+          v13 = [accessory3 isEqual:accessory4];
         }
 
         else
@@ -262,17 +262,17 @@ LABEL_8:
 - (NSString)description
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(HAPService *)self instanceID];
-  [v3 appendFormat:@"Instance ID: %@", v4];
+  instanceID = [(HAPService *)self instanceID];
+  [v3 appendFormat:@"Instance ID: %@", instanceID];
 
-  v5 = [(HAPService *)self type];
-  [v3 appendFormat:@", Type: %@", v5];
+  type = [(HAPService *)self type];
+  [v3 appendFormat:@", Type: %@", type];
 
-  v6 = [(HAPService *)self propertiesDescription];
-  [v3 appendFormat:@", Properties: %@", v6];
+  propertiesDescription = [(HAPService *)self propertiesDescription];
+  [v3 appendFormat:@", Properties: %@", propertiesDescription];
 
-  v7 = [(HAPService *)self linkedServices];
-  [v3 appendFormat:@", Linked Service: %@", v7];
+  linkedServices = [(HAPService *)self linkedServices];
+  [v3 appendFormat:@", Linked Service: %@", linkedServices];
 
   return v3;
 }
@@ -338,19 +338,19 @@ LABEL_8:
 
 - (BOOL)updateAndValidateCharacteristics
 {
-  v2 = self;
+  selfCopy = self;
   if ([(HAPService *)self _validateServiceCharacteristics])
   {
     v3 = [NSMutableSet alloc];
-    v4 = [v2 characteristics];
-    v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+    characteristics = [selfCopy characteristics];
+    v5 = [v3 initWithCapacity:{objc_msgSend(characteristics, "count")}];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v6 = [v2 characteristics];
-    v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    characteristics2 = [selfCopy characteristics];
+    v7 = [characteristics2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (!v7)
     {
       v15 = 1;
@@ -365,24 +365,24 @@ LABEL_4:
     {
       if (*v23 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(characteristics2);
       }
 
       v11 = *(*(&v22 + 1) + 8 * v10);
-      v12 = [v11 instanceID];
-      v13 = [v5 containsObject:v12];
+      instanceID = [v11 instanceID];
+      v13 = [v5 containsObject:instanceID];
 
       if (v13)
       {
         break;
       }
 
-      v14 = [v11 instanceID];
-      [v5 addObject:v14];
+      instanceID2 = [v11 instanceID];
+      [v5 addObject:instanceID2];
 
-      if (([v2 _updateCharacteristic:v11] & 1) == 0)
+      if (([selfCopy _updateCharacteristic:v11] & 1) == 0)
       {
-        v20 = v2;
+        v20 = selfCopy;
         v17 = sub_10007FAA0();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
@@ -399,7 +399,7 @@ LABEL_19:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v8 = [characteristics2 countByEnumeratingWithState:&v22 objects:v26 count:16];
         v15 = 1;
         if (v8)
         {
@@ -410,7 +410,7 @@ LABEL_19:
       }
     }
 
-    v16 = v2;
+    v16 = selfCopy;
     v17 = sub_10007FAA0();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -426,14 +426,14 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v5 = v2;
-  v6 = sub_10007FAA0();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  v5 = selfCopy;
+  characteristics2 = sub_10007FAA0();
+  if (os_log_type_enabled(characteristics2, OS_LOG_TYPE_ERROR))
   {
-    v2 = sub_10007FAFC(v5);
+    selfCopy = sub_10007FAFC(v5);
     *buf = 138543362;
-    v28 = v2;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%{public}@Failed to validate characteristics", buf, 0xCu);
+    v28 = selfCopy;
+    _os_log_impl(&_mh_execute_header, characteristics2, OS_LOG_TYPE_ERROR, "%{public}@Failed to validate characteristics", buf, 0xCu);
 LABEL_21:
   }
 
@@ -443,11 +443,11 @@ LABEL_23:
   return v15;
 }
 
-- (BOOL)_updateCharacteristic:(id)a3
+- (BOOL)_updateCharacteristic:(id)characteristic
 {
-  if (a3)
+  if (characteristic)
   {
-    [a3 setService:self];
+    [characteristic setService:self];
   }
 
   return 1;
@@ -455,8 +455,8 @@ LABEL_23:
 
 - (BOOL)_validateServiceCharacteristics
 {
-  v3 = [(HAPService *)self characteristics];
-  v4 = [v3 count];
+  characteristics = [(HAPService *)self characteristics];
+  v4 = [characteristics count];
 
   if (v4)
   {
@@ -465,11 +465,11 @@ LABEL_23:
 
   else
   {
-    v5 = self;
+    selfCopy = self;
     v6 = sub_10007FAA0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = sub_10007FAFC(v5);
+      v7 = sub_10007FAFC(selfCopy);
       v9 = 138543362;
       v10 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%{public}@One or more characteristics are required", &v9, 0xCu);
@@ -487,8 +487,8 @@ LABEL_23:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(HAPService *)self characteristics];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  characteristics = [(HAPService *)self characteristics];
+  v6 = [characteristics countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -500,38 +500,38 @@ LABEL_23:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(characteristics);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * v9) type];
-        [v4 addObject:v10];
+        type = [*(*(&v14 + 1) + 8 * v9) type];
+        [v4 addObject:type];
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [characteristics countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(HAPService *)self type];
-  v12 = [v3 validateMandatoryCharacteristics:v4 forService:v11];
+  type2 = [(HAPService *)self type];
+  v12 = [v3 validateMandatoryCharacteristics:v4 forService:type2];
 
   return v12;
 }
 
-- (id)characteristicsOfType:(id)a3
+- (id)characteristicsOfType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(HAPService *)self characteristics];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  characteristics = [(HAPService *)self characteristics];
+  v7 = [characteristics countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -542,12 +542,12 @@ LABEL_23:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(characteristics);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 type];
-        v13 = [v12 isEqualToString:v4];
+        type = [v11 type];
+        v13 = [type isEqualToString:typeCopy];
 
         if (v13)
         {
@@ -555,7 +555,7 @@ LABEL_23:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [characteristics countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -564,17 +564,17 @@ LABEL_23:
   return v5;
 }
 
-- (BOOL)shouldMergeObject:(id)a3
+- (BOOL)shouldMergeObject:(id)object
 {
-  v4 = a3;
-  if ([(HAPService *)self isEqual:v4])
+  objectCopy = object;
+  if ([(HAPService *)self isEqual:objectCopy])
   {
-    v5 = [(HAPService *)self characteristics];
-    v6 = [NSSet setWithArray:v5];
+    characteristics = [(HAPService *)self characteristics];
+    v6 = [NSSet setWithArray:characteristics];
 
-    v23 = v4;
-    v7 = [v4 characteristics];
-    v8 = [NSSet setWithArray:v7];
+    v23 = objectCopy;
+    characteristics2 = [objectCopy characteristics];
+    v8 = [NSSet setWithArray:characteristics2];
 
     v22 = v6;
     v9 = [v6 mutableCopy];
@@ -612,11 +612,11 @@ LABEL_23:
             goto LABEL_13;
           }
 
-          v18 = self;
+          selfCopy = self;
           v19 = sub_10007FAA0();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = sub_10007FAFC(v18);
+            v20 = sub_10007FAFC(selfCopy);
             *buf = 138543874;
             v29 = v20;
             v30 = 2112;
@@ -636,7 +636,7 @@ LABEL_13:
       {
 LABEL_18:
 
-        v4 = v23;
+        objectCopy = v23;
         goto LABEL_19;
       }
     }
@@ -648,13 +648,13 @@ LABEL_19:
   return v14 & 1;
 }
 
-- (BOOL)mergeObject:(id)a3
+- (BOOL)mergeObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -668,12 +668,12 @@ LABEL_19:
     if ([(HAPService *)self shouldMergeObject:v6])
     {
       v57 = v6;
-      v7 = [(HAPService *)self characteristics];
-      v8 = [NSSet setWithArray:v7];
+      characteristics = [(HAPService *)self characteristics];
+      v8 = [NSSet setWithArray:characteristics];
 
-      v58 = v4;
-      v9 = [v4 characteristics];
-      v10 = [NSSet setWithArray:v9];
+      v58 = objectCopy;
+      characteristics2 = [objectCopy characteristics];
+      v10 = [NSSet setWithArray:characteristics2];
 
       v59 = v8;
       v11 = [(HAPService *)v8 mutableCopy];
@@ -700,11 +700,11 @@ LABEL_19:
             }
 
             v16 = *(*(&v73 + 1) + 8 * i);
-            v17 = self;
+            selfCopy = self;
             v18 = sub_10007FAA0();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
             {
-              v19 = sub_10007FAFC(v17);
+              v19 = sub_10007FAFC(selfCopy);
               *buf = 138543618;
               v81 = v19;
               v82 = 2112;
@@ -722,9 +722,9 @@ LABEL_19:
       v20 = [v10 mutableCopy];
       v21 = v59;
       [v20 minusSet:v59];
-      v22 = [(HAPService *)self characteristics];
-      v23 = [v22 firstObject];
-      v24 = [v23 shouldValidateValueAfterReading];
+      characteristics3 = [(HAPService *)self characteristics];
+      firstObject = [characteristics3 firstObject];
+      shouldValidateValueAfterReading = [firstObject shouldValidateValueAfterReading];
 
       v71 = 0u;
       v72 = 0u;
@@ -746,11 +746,11 @@ LABEL_19:
             }
 
             v29 = *(*(&v69 + 1) + 8 * j);
-            v30 = self;
+            selfCopy2 = self;
             v31 = sub_10007FAA0();
             if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
             {
-              v32 = sub_10007FAFC(v30);
+              v32 = sub_10007FAFC(selfCopy2);
               *buf = 138543618;
               v81 = v32;
               v82 = 2112;
@@ -758,8 +758,8 @@ LABEL_19:
               _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "%{public}@Added characteristic: %@", buf, 0x16u);
             }
 
-            [v29 setService:v30];
-            [v29 setShouldValidateValueAfterReading:v24];
+            [v29 setService:selfCopy2];
+            [v29 setShouldValidateValueAfterReading:shouldValidateValueAfterReading];
           }
 
           v26 = [v63 countByEnumeratingWithState:&v69 objects:v78 count:16];
@@ -793,11 +793,11 @@ LABEL_19:
             }
 
             v39 = *(*(&v65 + 1) + 8 * k);
-            v40 = self;
+            selfCopy3 = self;
             v41 = sub_10007FAA0();
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
             {
-              v42 = sub_10007FAFC(v40);
+              v42 = sub_10007FAFC(selfCopy3);
               *buf = 138543618;
               v81 = v42;
               v82 = 2112;
@@ -808,7 +808,7 @@ LABEL_19:
             v43 = [v35 member:v39];
             if (v43 && [v39 mergeObject:v43])
             {
-              v44 = v40;
+              v44 = selfCopy3;
               v45 = sub_10007FAA0();
               if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
               {
@@ -832,33 +832,33 @@ LABEL_19:
         while (v36);
       }
 
-      v47 = [v62 allObjects];
-      v48 = [NSMutableArray arrayWithArray:v47];
+      allObjects = [v62 allObjects];
+      v48 = [NSMutableArray arrayWithArray:allObjects];
 
-      v49 = [v63 allObjects];
-      [v48 addObjectsFromArray:v49];
+      allObjects2 = [v63 allObjects];
+      [v48 addObjectsFromArray:allObjects2];
 
       v50 = [v48 copy];
       [(HAPService *)self setCharacteristics:v50];
 
       v6 = v57;
       -[HAPService setServiceProperties:](self, "setServiceProperties:", [v57 serviceProperties]);
-      v51 = [v57 linkedServices];
-      [(HAPService *)self setLinkedServices:v51];
+      linkedServices = [v57 linkedServices];
+      [(HAPService *)self setLinkedServices:linkedServices];
 
-      v4 = v58;
-      v52 = v59;
+      objectCopy = v58;
+      selfCopy4 = v59;
       v53 = v61;
     }
 
     else
     {
-      v52 = self;
+      selfCopy4 = self;
       v54 = sub_10007FAA0();
       v60 = v54;
       if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
       {
-        v55 = sub_10007FAFC(v52);
+        v55 = sub_10007FAFC(selfCopy4);
         *buf = 138543618;
         v81 = v55;
         v82 = 2112;

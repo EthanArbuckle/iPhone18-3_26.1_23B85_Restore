@@ -1,20 +1,20 @@
 @interface UIKeyboardInputManagerMux
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
 + (id)sharedInstance;
 - (BOOL)_systemHasKbd;
-- (BOOL)conformsToProtocol:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
 - (BOOL)hasSystemInputManager;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)addClient:(id)a3;
-- (void)forwardInvocation:(id)a3;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)addClient:(id)client;
+- (void)forwardInvocation:(id)invocation;
 - (void)removeAllClients;
-- (void)removeClient:(id)a3;
-- (void)setResponseDelegate:(id)a3;
-- (void)setSystemInputManager:(id)a3;
-- (void)setSystemInputManagerFromTextInputTraits:(id)a3 autofillMode:(unint64_t)a4 implProxy:(id)a5;
-- (void)updateClientResponseDelegatesWithDelegate:(id)a3;
+- (void)removeClient:(id)client;
+- (void)setResponseDelegate:(id)delegate;
+- (void)setSystemInputManager:(id)manager;
+- (void)setSystemInputManagerFromTextInputTraits:(id)traits autofillMode:(unint64_t)mode implProxy:(id)proxy;
+- (void)updateClientResponseDelegatesWithDelegate:(id)delegate;
 @end
 
 @implementation UIKeyboardInputManagerMux
@@ -62,20 +62,20 @@ void __42__UIKeyboardInputManagerMux__systemHasKbd__block_invoke()
 
 - (BOOL)hasSystemInputManager
 {
-  v2 = [(UIKeyboardInputManagerMux *)self systemInputManager];
-  v3 = v2 != 0;
+  systemInputManager = [(UIKeyboardInputManagerMux *)self systemInputManager];
+  v3 = systemInputManager != 0;
 
   return v3;
 }
 
-- (void)setSystemInputManagerFromTextInputTraits:(id)a3 autofillMode:(unint64_t)a4 implProxy:(id)a5
+- (void)setSystemInputManagerFromTextInputTraits:(id)traits autofillMode:(unint64_t)mode implProxy:(id)proxy
 {
-  v20 = a3;
-  v8 = a5;
-  if (([v20 isDevicePasscodeEntry] & 1) != 0 || objc_msgSend(v20, "isSecureTextEntry") && ((v11 = objc_msgSend(v20, "keyboardType"), v11 <= 0xB) && ((1 << v11) & 0x930) != 0 || v11 == 127) && a4 != 3)
+  traitsCopy = traits;
+  proxyCopy = proxy;
+  if (([traitsCopy isDevicePasscodeEntry] & 1) != 0 || objc_msgSend(traitsCopy, "isSecureTextEntry") && ((v11 = objc_msgSend(traitsCopy, "keyboardType"), v11 <= 0xB) && ((1 << v11) & 0x930) != 0 || v11 == 127) && mode != 3)
   {
-    v9 = [(UIKeyboardInputManagerMux *)self systemInputManager];
-    v10 = [v9 isMemberOfClass:objc_opt_class()];
+    systemInputManager = [(UIKeyboardInputManagerMux *)self systemInputManager];
+    v10 = [systemInputManager isMemberOfClass:objc_opt_class()];
 
     if (v10)
     {
@@ -87,7 +87,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v12 = [(UIKeyboardInputManagerMux *)self systemInputManager];
+  systemInputManager2 = [(UIKeyboardInputManagerMux *)self systemInputManager];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -98,16 +98,16 @@ LABEL_13:
 
   [(UIKeyboardInputManagerMux *)self setSystemInputManager:0];
   v14 = +[UIKeyboardInputModeController sharedInputModeController];
-  v15 = [v14 currentInputMode];
+  currentInputMode = [v14 currentInputMode];
   v16 = +[UIKeyboardInputMode dictationInputMode];
-  v17 = [v15 isEqual:v16];
+  v17 = [currentInputMode isEqual:v16];
 
   if (v17 || ![(UIKeyboardInputManagerMux *)self _systemHasKbd])
   {
     goto LABEL_13;
   }
 
-  v18 = [[UIKeyboardInputManagerClient alloc] initWithImplProxy:v8];
+  v18 = [[UIKeyboardInputManagerClient alloc] initWithImplProxy:proxyCopy];
 LABEL_14:
   v19 = v18;
   [(UIKeyboardInputManagerMux *)self setSystemInputManager:v18];
@@ -115,58 +115,58 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)setSystemInputManager:(id)a3
+- (void)setSystemInputManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   systemInputManager = self->_systemInputManager;
-  self->_systemInputManager = v4;
-  v7 = v4;
+  self->_systemInputManager = managerCopy;
+  v7 = managerCopy;
   v6 = systemInputManager;
 
   [(UIKeyboardInputManagerMux *)self removeClient:v6];
   [(UIKeyboardInputManagerMux *)self addClient:self->_systemInputManager];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
-  if (v4)
+  clientCopy = client;
+  if (clientCopy)
   {
-    v9 = v4;
-    v5 = [(NSMutableArray *)self->_clients containsObject:v4];
-    v4 = v9;
+    v9 = clientCopy;
+    v5 = [(NSMutableArray *)self->_clients containsObject:clientCopy];
+    clientCopy = v9;
     if ((v5 & 1) == 0)
     {
       [(NSMutableArray *)self->_clients addObject:v9];
       v6 = [v9 conformsToProtocol:&unk_1F0009C18];
-      v4 = v9;
+      clientCopy = v9;
       if (v6)
       {
-        v7 = [(UIKeyboardInputManagerMux *)self responseDelegate];
-        [v9 setResponseDelegate:v7];
+        responseDelegate = [(UIKeyboardInputManagerMux *)self responseDelegate];
+        [v9 setResponseDelegate:responseDelegate];
 
-        v8 = [(UIKeyboardInputManagerMux *)self responseDelegate];
-        [v8 _requestInputManagerSync];
+        responseDelegate2 = [(UIKeyboardInputManagerMux *)self responseDelegate];
+        [responseDelegate2 _requestInputManagerSync];
 
-        v4 = v9;
+        clientCopy = v9;
       }
     }
   }
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
-  if (v4)
+  clientCopy = client;
+  if (clientCopy)
   {
-    v5 = v4;
-    if ([v4 conformsToProtocol:&unk_1F0009C18])
+    v5 = clientCopy;
+    if ([clientCopy conformsToProtocol:&unk_1F0009C18])
     {
       [v5 setResponseDelegate:0];
     }
 
     [(NSMutableArray *)self->_clients removeObject:v5];
-    v4 = v5;
+    clientCopy = v5;
   }
 }
 
@@ -179,10 +179,10 @@ LABEL_15:
   [(NSMutableArray *)clients removeAllObjects];
 }
 
-- (void)updateClientResponseDelegatesWithDelegate:(id)a3
+- (void)updateClientResponseDelegatesWithDelegate:(id)delegate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -205,7 +205,7 @@ LABEL_15:
         v10 = *(*(&v11 + 1) + 8 * i);
         if ([v10 conformsToProtocol:{&unk_1F0009C18, v11}])
         {
-          [v10 setResponseDelegate:v4];
+          [v10 setResponseDelegate:delegateCopy];
         }
       }
 
@@ -216,16 +216,16 @@ LABEL_15:
   }
 }
 
-- (void)setResponseDelegate:(id)a3
+- (void)setResponseDelegate:(id)delegate
 {
-  objc_storeStrong(&self->_responseDelegate, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_responseDelegate, delegate);
+  delegateCopy = delegate;
   [(UIKeyboardInputManagerMux *)self updateClientResponseDelegatesWithDelegate:self->_responseDelegate];
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___UIKeyboardInputManagerMux;
   if (objc_msgSendSuper2(&v5, sel_instancesRespondToSelector_))
   {
@@ -234,11 +234,11 @@ LABEL_15:
 
   else
   {
-    return [MEMORY[0x1E69D9610] instancesRespondToSelector:a3];
+    return [MEMORY[0x1E69D9610] instancesRespondToSelector:selector];
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = UIKeyboardInputManagerMux;
@@ -249,11 +249,11 @@ LABEL_15:
 
   else
   {
-    return [MEMORY[0x1E69D9610] instancesRespondToSelector:a3];
+    return [MEMORY[0x1E69D9610] instancesRespondToSelector:selector];
   }
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = UIKeyboardInputManagerMux;
@@ -264,29 +264,29 @@ LABEL_15:
 
   else
   {
-    return [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
+    return [(objc_class *)class isSubclassOfClass:objc_opt_class()];
   }
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v7.receiver = self;
   v7.super_class = UIKeyboardInputManagerMux;
-  if ([(UIKeyboardInputManagerMux *)&v7 conformsToProtocol:v4])
+  if ([(UIKeyboardInputManagerMux *)&v7 conformsToProtocol:protocolCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69D9610] conformsToProtocol:v4];
+    v5 = [MEMORY[0x1E69D9610] conformsToProtocol:protocolCopy];
   }
 
   return v5;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = UIKeyboardInputManagerMux;
@@ -299,7 +299,7 @@ LABEL_15:
 
   else
   {
-    v6 = [MEMORY[0x1E69D9610] instanceMethodSignatureForSelector:a3];
+    v6 = [MEMORY[0x1E69D9610] instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -307,12 +307,12 @@ LABEL_15:
   return v7;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIKeyboardInputManagerMux *)self systemInputManager];
-  [v4 invokeWithTarget:v5];
+  invocationCopy = invocation;
+  systemInputManager = [(UIKeyboardInputManagerMux *)self systemInputManager];
+  [invocationCopy invokeWithTarget:systemInputManager];
 
   v16 = 0u;
   v17 = 0u;
@@ -335,11 +335,11 @@ LABEL_15:
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [(UIKeyboardInputManagerMux *)self systemInputManager];
+        systemInputManager2 = [(UIKeyboardInputManagerMux *)self systemInputManager];
 
-        if (v11 != v12)
+        if (v11 != systemInputManager2)
         {
-          v13 = [UIKeyboardInputManagerClientRequest untargetedInvocationWithInvocation:v4 withCompletion:0];
+          v13 = [UIKeyboardInputManagerClientRequest untargetedInvocationWithInvocation:invocationCopy withCompletion:0];
           [v13 invokeWithTarget:v11];
         }
 

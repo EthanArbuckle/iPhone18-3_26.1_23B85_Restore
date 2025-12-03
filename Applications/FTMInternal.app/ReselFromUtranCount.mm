@@ -1,16 +1,16 @@
 @interface ReselFromUtranCount
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)failureCountApAtIndex:(unint64_t)a3;
-- (unsigned)failureCountAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)failureCountApAtIndex:(unint64_t)index;
+- (unsigned)failureCountAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTotalAp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasTotalAp:(BOOL)ap;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ReselFromUtranCount
@@ -24,23 +24,23 @@
   [(ReselFromUtranCount *)&v3 dealloc];
 }
 
-- (unsigned)failureCountAtIndex:(unint64_t)a3
+- (unsigned)failureCountAtIndex:(unint64_t)index
 {
   p_failureCounts = &self->_failureCounts;
   count = self->_failureCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_failureCounts->list[a3];
+  return p_failureCounts->list[index];
 }
 
-- (void)setHasTotalAp:(BOOL)a3
+- (void)setHasTotalAp:(BOOL)ap
 {
-  if (a3)
+  if (ap)
   {
     v3 = 2;
   }
@@ -53,18 +53,18 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)failureCountApAtIndex:(unint64_t)a3
+- (unsigned)failureCountApAtIndex:(unint64_t)index
 {
   p_failureCountAps = &self->_failureCountAps;
   count = self->_failureCountAps.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_failureCountAps->list[a3];
+  return p_failureCountAps->list[index];
 }
 
 - (id)description
@@ -72,8 +72,8 @@
   v7.receiver = self;
   v7.super_class = ReselFromUtranCount;
   v3 = [(ReselFromUtranCount *)&v7 description];
-  v4 = [(ReselFromUtranCount *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ReselFromUtranCount *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -102,9 +102,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     total = self->_total;
@@ -157,23 +157,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[14] = self->_total;
-    *(v4 + 64) |= 1u;
+    toCopy[14] = self->_total;
+    *(toCopy + 64) |= 1u;
   }
 
-  v11 = v4;
+  v11 = toCopy;
   if ([(ReselFromUtranCount *)self failureCountsCount])
   {
     [v11 clearFailureCounts];
-    v5 = [(ReselFromUtranCount *)self failureCountsCount];
-    if (v5)
+    failureCountsCount = [(ReselFromUtranCount *)self failureCountsCount];
+    if (failureCountsCount)
     {
-      v6 = v5;
+      v6 = failureCountsCount;
       for (i = 0; i != v6; ++i)
       {
         [v11 addFailureCount:{-[ReselFromUtranCount failureCountAtIndex:](self, "failureCountAtIndex:", i)}];
@@ -190,10 +190,10 @@
   if ([(ReselFromUtranCount *)self failureCountApsCount])
   {
     [v11 clearFailureCountAps];
-    v8 = [(ReselFromUtranCount *)self failureCountApsCount];
-    if (v8)
+    failureCountApsCount = [(ReselFromUtranCount *)self failureCountApsCount];
+    if (failureCountApsCount)
     {
-      v9 = v8;
+      v9 = failureCountApsCount;
       for (j = 0; j != v9; ++j)
       {
         [v11 addFailureCountAp:{-[ReselFromUtranCount failureCountApAtIndex:](self, "failureCountApAtIndex:", j)}];
@@ -202,9 +202,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -223,24 +223,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_total != *(v4 + 14))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_total != *(equalCopy + 14))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_14;
   }
@@ -252,16 +252,16 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_totalAp != *(v4 + 15))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_totalAp != *(equalCopy + 15))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_14;
   }
@@ -298,20 +298,20 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[16])
+  fromCopy = from;
+  if (fromCopy[16])
   {
-    self->_total = v4[14];
+    self->_total = fromCopy[14];
     *&self->_has |= 1u;
   }
 
-  v11 = v4;
-  v5 = [v4 failureCountsCount];
-  if (v5)
+  v11 = fromCopy;
+  failureCountsCount = [fromCopy failureCountsCount];
+  if (failureCountsCount)
   {
-    v6 = v5;
+    v6 = failureCountsCount;
     for (i = 0; i != v6; ++i)
     {
       -[ReselFromUtranCount addFailureCount:](self, "addFailureCount:", [v11 failureCountAtIndex:i]);
@@ -324,10 +324,10 @@ LABEL_15:
     *&self->_has |= 2u;
   }
 
-  v8 = [v11 failureCountApsCount];
-  if (v8)
+  failureCountApsCount = [v11 failureCountApsCount];
+  if (failureCountApsCount)
   {
-    v9 = v8;
+    v9 = failureCountApsCount;
     for (j = 0; j != v9; ++j)
     {
       -[ReselFromUtranCount addFailureCountAp:](self, "addFailureCountAp:", [v11 failureCountApAtIndex:j]);

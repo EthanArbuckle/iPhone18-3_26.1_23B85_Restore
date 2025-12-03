@@ -1,24 +1,24 @@
 @interface OrgApacheLuceneUtilByteBlockPool_DirectTrackingAllocator
-- (OrgApacheLuceneUtilByteBlockPool_DirectTrackingAllocator)initWithInt:(int)a3 withOrgApacheLuceneUtilCounter:(id)a4;
-- (OrgApacheLuceneUtilByteBlockPool_DirectTrackingAllocator)initWithOrgApacheLuceneUtilCounter:(id)a3;
+- (OrgApacheLuceneUtilByteBlockPool_DirectTrackingAllocator)initWithInt:(int)int withOrgApacheLuceneUtilCounter:(id)counter;
+- (OrgApacheLuceneUtilByteBlockPool_DirectTrackingAllocator)initWithOrgApacheLuceneUtilCounter:(id)counter;
 - (id)getByteBlock;
 - (void)dealloc;
-- (void)recycleByteBlocksWithByteArray2:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (void)recycleByteBlocksWithByteArray2:(id)array2 withInt:(int)int withInt:(int)withInt;
 @end
 
 @implementation OrgApacheLuceneUtilByteBlockPool_DirectTrackingAllocator
 
-- (OrgApacheLuceneUtilByteBlockPool_DirectTrackingAllocator)initWithOrgApacheLuceneUtilCounter:(id)a3
+- (OrgApacheLuceneUtilByteBlockPool_DirectTrackingAllocator)initWithOrgApacheLuceneUtilCounter:(id)counter
 {
   self->super.blockSize_ = 0x8000;
-  JreStrongAssign(&self->bytesUsed_, a3);
+  JreStrongAssign(&self->bytesUsed_, counter);
   return self;
 }
 
-- (OrgApacheLuceneUtilByteBlockPool_DirectTrackingAllocator)initWithInt:(int)a3 withOrgApacheLuceneUtilCounter:(id)a4
+- (OrgApacheLuceneUtilByteBlockPool_DirectTrackingAllocator)initWithInt:(int)int withOrgApacheLuceneUtilCounter:(id)counter
 {
-  self->super.blockSize_ = a3;
-  JreStrongAssign(&self->bytesUsed_, a4);
+  self->super.blockSize_ = int;
+  JreStrongAssign(&self->bytesUsed_, counter);
   return self;
 }
 
@@ -36,7 +36,7 @@
   return [IOSByteArray arrayWithLength:blockSize];
 }
 
-- (void)recycleByteBlocksWithByteArray2:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)recycleByteBlocksWithByteArray2:(id)array2 withInt:(int)int withInt:(int)withInt
 {
   bytesUsed = self->bytesUsed_;
   if (!bytesUsed)
@@ -44,14 +44,14 @@
     goto LABEL_7;
   }
 
-  LODWORD(v8) = a4;
-  [(OrgApacheLuceneUtilCounter *)bytesUsed addAndGetWithLong:self->super.blockSize_ * (a4 - a5)];
-  if (v8 >= a5)
+  LODWORD(v8) = int;
+  [(OrgApacheLuceneUtilCounter *)bytesUsed addAndGetWithLong:self->super.blockSize_ * (int - withInt)];
+  if (v8 >= withInt)
   {
     return;
   }
 
-  if (!a3)
+  if (!array2)
   {
 LABEL_7:
     JreThrowNullPointerException();
@@ -60,10 +60,10 @@ LABEL_7:
   v8 = v8;
   do
   {
-    IOSObjectArray_Set(a3, v8++, 0);
+    IOSObjectArray_Set(array2, v8++, 0);
   }
 
-  while (a5 != v8);
+  while (withInt != v8);
 }
 
 - (void)dealloc

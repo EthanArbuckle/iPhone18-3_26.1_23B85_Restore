@@ -1,9 +1,9 @@
 @interface ASDRestoreService
 + (ASDRestoreService)sharedInstance;
 - (ASDRestoreService)init;
-- (void)clearFollowupsForAccountID:(id)a3 withCompletionHandler:(id)a4;
-- (void)estimateTotalDownloadSizeWithCompletionHandler:(id)a3;
-- (void)prioritizeBundleIDs:(id)a3 userInitiated:(BOOL)a4 withCompletionHandler:(id)a5;
+- (void)clearFollowupsForAccountID:(id)d withCompletionHandler:(id)handler;
+- (void)estimateTotalDownloadSizeWithCompletionHandler:(id)handler;
+- (void)prioritizeBundleIDs:(id)ds userInitiated:(BOOL)initiated withCompletionHandler:(id)handler;
 @end
 
 @implementation ASDRestoreService
@@ -44,19 +44,19 @@ uint64_t __35__ASDRestoreService_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)clearFollowupsForAccountID:(id)a3 withCompletionHandler:(id)a4
+- (void)clearFollowupsForAccountID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__ASDRestoreService_clearFollowupsForAccountID_withCompletionHandler___block_invoke;
   v11[3] = &unk_1E7CDDCD0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = dCopy;
+  v10 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getRestoreServiceWithCompletionHandler:v11];
 }
 
@@ -140,16 +140,16 @@ void __70__ASDRestoreService_clearFollowupsForAccountID_withCompletionHandler___
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)estimateTotalDownloadSizeWithCompletionHandler:(id)a3
+- (void)estimateTotalDownloadSizeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__ASDRestoreService_estimateTotalDownloadSizeWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDDD20;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getRestoreServiceWithCompletionHandler:v7];
 }
 
@@ -232,20 +232,20 @@ void __68__ASDRestoreService_estimateTotalDownloadSizeWithCompletionHandler___bl
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prioritizeBundleIDs:(id)a3 userInitiated:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)prioritizeBundleIDs:(id)ds userInitiated:(BOOL)initiated withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dsCopy = ds;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__ASDRestoreService_prioritizeBundleIDs_userInitiated_withCompletionHandler___block_invoke;
   v13[3] = &unk_1E7CDDD48;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = dsCopy;
+  v15 = handlerCopy;
+  initiatedCopy = initiated;
+  v11 = dsCopy;
+  v12 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getRestoreServiceWithCompletionHandler:v13];
 }
 

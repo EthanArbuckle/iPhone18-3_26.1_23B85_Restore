@@ -2,14 +2,14 @@
 + (NSDictionary)sessionInfo;
 + (id)defaultManager;
 - (FPRTCReportingSessionManager)init;
-- (id)sessionForDomainID:(id)a3 providerVersion:(id)a4;
-- (id)sessionForProviderID:(id)a3 version:(id)a4;
-- (id)sessionWithCommonProperties:(id)a3;
-- (void)flushMessagesWithCompletion:(id)a3;
-- (void)postMultipleReports:(id)a3 type:(unint64_t)a4 userinfo:(id)a5 session:(id)a6 observer:(id)a7;
-- (void)postReportWithCategory:(unint64_t)a3 type:(unint64_t)a4 payload:(id)a5 error:(id)a6 decoratedPayload:(id)a7 session:(id)a8 observer:(id)a9;
-- (void)postReportWithCategory:(unint64_t)a3 type:(unint64_t)a4 payload:(id)a5 userinfo:(id)a6 error:(id)a7 decoratedPayload:(id)a8 session:(id)a9 observer:(id)a10;
-- (void)waitUntilTelemetrySessionIsAvailable:(unint64_t)a3 retryDuration:(unint64_t)a4;
+- (id)sessionForDomainID:(id)d providerVersion:(id)version;
+- (id)sessionForProviderID:(id)d version:(id)version;
+- (id)sessionWithCommonProperties:(id)properties;
+- (void)flushMessagesWithCompletion:(id)completion;
+- (void)postMultipleReports:(id)reports type:(unint64_t)type userinfo:(id)userinfo session:(id)session observer:(id)observer;
+- (void)postReportWithCategory:(unint64_t)category type:(unint64_t)type payload:(id)payload error:(id)error decoratedPayload:(id)decoratedPayload session:(id)session observer:(id)observer;
+- (void)postReportWithCategory:(unint64_t)category type:(unint64_t)type payload:(id)payload userinfo:(id)userinfo error:(id)error decoratedPayload:(id)decoratedPayload session:(id)session observer:(id)self0;
+- (void)waitUntilTelemetrySessionIsAvailable:(unint64_t)available retryDuration:(unint64_t)duration;
 @end
 
 @implementation FPRTCReportingSessionManager
@@ -81,18 +81,18 @@ uint64_t __46__FPRTCReportingSessionManager_defaultManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)sessionForProviderID:(id)a3 version:(id)a4
+- (id)sessionForProviderID:(id)d version:(id)version
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (version)
   {
     v21[0] = @"provider";
     v21[1] = @"providerVersion";
-    v22[0] = a3;
-    v22[1] = a4;
+    v22[0] = d;
+    v22[1] = version;
     v6 = MEMORY[0x277CBEAC0];
-    v7 = a4;
-    v8 = a3;
+    versionCopy = version;
+    dCopy = d;
     v9 = v22;
     v10 = v21;
     v11 = v6;
@@ -102,11 +102,11 @@ uint64_t __46__FPRTCReportingSessionManager_defaultManager__block_invoke()
   else
   {
     v19 = @"provider";
-    v20 = a3;
+    dCopy2 = d;
     v13 = MEMORY[0x277CBEAC0];
-    v7 = 0;
-    v14 = a3;
-    v9 = &v20;
+    versionCopy = 0;
+    dCopy3 = d;
+    v9 = &dCopy2;
     v10 = &v19;
     v11 = v13;
     v12 = 1;
@@ -121,51 +121,51 @@ uint64_t __46__FPRTCReportingSessionManager_defaultManager__block_invoke()
   return v16;
 }
 
-- (id)sessionWithCommonProperties:(id)a3
+- (id)sessionWithCommonProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [[FPRTCReportingSession alloc] initWithWithCommonProperties:v4 manager:self];
+  propertiesCopy = properties;
+  v5 = [[FPRTCReportingSession alloc] initWithWithCommonProperties:propertiesCopy manager:self];
 
   return v5;
 }
 
-- (id)sessionForDomainID:(id)a3 providerVersion:(id)a4
+- (id)sessionForDomainID:(id)d providerVersion:(id)version
 {
-  v6 = a4;
-  v7 = [a3 fp_toProviderID];
-  v8 = [(FPRTCReportingSessionManager *)self sessionForProviderID:v7 version:v6];
+  versionCopy = version;
+  fp_toProviderID = [d fp_toProviderID];
+  v8 = [(FPRTCReportingSessionManager *)self sessionForProviderID:fp_toProviderID version:versionCopy];
 
   return v8;
 }
 
-- (void)postReportWithCategory:(unint64_t)a3 type:(unint64_t)a4 payload:(id)a5 userinfo:(id)a6 error:(id)a7 decoratedPayload:(id)a8 session:(id)a9 observer:(id)a10
+- (void)postReportWithCategory:(unint64_t)category type:(unint64_t)type payload:(id)payload userinfo:(id)userinfo error:(id)error decoratedPayload:(id)decoratedPayload session:(id)session observer:(id)self0
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  payloadCopy = payload;
+  userinfoCopy = userinfo;
+  errorCopy = error;
+  decoratedPayloadCopy = decoratedPayload;
+  sessionCopy = session;
+  observerCopy = observer;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __117__FPRTCReportingSessionManager_postReportWithCategory_type_payload_userinfo_error_decoratedPayload_session_observer___block_invoke;
   block[3] = &unk_278FFA810;
   block[4] = self;
-  v30 = v19;
-  v31 = v18;
-  v32 = v15;
-  v33 = v17;
-  v34 = v20;
-  v36 = a3;
-  v37 = a4;
-  v35 = v16;
-  v22 = v16;
-  v23 = v20;
-  v24 = v17;
-  v25 = v15;
-  v26 = v18;
-  v27 = v19;
+  v30 = sessionCopy;
+  v31 = decoratedPayloadCopy;
+  v32 = payloadCopy;
+  v33 = errorCopy;
+  v34 = observerCopy;
+  categoryCopy = category;
+  typeCopy = type;
+  v35 = userinfoCopy;
+  v22 = userinfoCopy;
+  v23 = observerCopy;
+  v24 = errorCopy;
+  v25 = payloadCopy;
+  v26 = decoratedPayloadCopy;
+  v27 = sessionCopy;
   dispatch_async(queue, block);
 }
 
@@ -224,21 +224,21 @@ void __117__FPRTCReportingSessionManager_postReportWithCategory_type_payload_use
   }
 }
 
-- (void)postMultipleReports:(id)a3 type:(unint64_t)a4 userinfo:(id)a5 session:(id)a6 observer:(id)a7
+- (void)postMultipleReports:(id)reports type:(unint64_t)type userinfo:(id)userinfo session:(id)session observer:(id)observer
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v13)
+  reportsCopy = reports;
+  userinfoCopy = userinfo;
+  sessionCopy = session;
+  observerCopy = observer;
+  if (!userinfoCopy)
   {
     v16 = *MEMORY[0x277D44098];
     v29[0] = *MEMORY[0x277D44090];
     v29[1] = v16;
     v30[0] = @"fileprovider";
     v30[1] = @"fpfs";
-    v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
+    userinfoCopy = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
   }
 
   queue = self->_queue;
@@ -247,15 +247,15 @@ void __117__FPRTCReportingSessionManager_postReportWithCategory_type_payload_use
   block[2] = __83__FPRTCReportingSessionManager_postMultipleReports_type_userinfo_session_observer___block_invoke;
   block[3] = &unk_278FFA888;
   block[4] = self;
-  v24 = v13;
-  v25 = v12;
-  v26 = v14;
-  v27 = v15;
-  v28 = a4;
-  v18 = v15;
-  v19 = v14;
-  v20 = v12;
-  v21 = v13;
+  v24 = userinfoCopy;
+  v25 = reportsCopy;
+  v26 = sessionCopy;
+  v27 = observerCopy;
+  typeCopy = type;
+  v18 = observerCopy;
+  v19 = sessionCopy;
+  v20 = reportsCopy;
+  v21 = userinfoCopy;
   dispatch_async(queue, block);
 
   v22 = *MEMORY[0x277D85DE8];
@@ -446,7 +446,7 @@ void __83__FPRTCReportingSessionManager_postMultipleReports_type_userinfo_sessio
   dispatch_group_leave(*(*(a1 + 32) + 16));
 }
 
-- (void)postReportWithCategory:(unint64_t)a3 type:(unint64_t)a4 payload:(id)a5 error:(id)a6 decoratedPayload:(id)a7 session:(id)a8 observer:(id)a9
+- (void)postReportWithCategory:(unint64_t)category type:(unint64_t)type payload:(id)payload error:(id)error decoratedPayload:(id)decoratedPayload session:(id)session observer:(id)observer
 {
   v26[2] = *MEMORY[0x277D85DE8];
   v16 = *MEMORY[0x277D44098];
@@ -455,20 +455,20 @@ void __83__FPRTCReportingSessionManager_postMultipleReports_type_userinfo_sessio
   v26[0] = @"fileprovider";
   v26[1] = @"fpfs";
   v17 = MEMORY[0x277CBEAC0];
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
+  observerCopy = observer;
+  sessionCopy = session;
+  decoratedPayloadCopy = decoratedPayload;
+  errorCopy = error;
+  payloadCopy = payload;
   v23 = [v17 dictionaryWithObjects:v26 forKeys:v25 count:2];
-  [(FPRTCReportingSessionManager *)self postReportWithCategory:a3 type:a4 payload:v22 userinfo:v23 error:v21 decoratedPayload:v20 session:v19 observer:v18];
+  [(FPRTCReportingSessionManager *)self postReportWithCategory:category type:type payload:payloadCopy userinfo:v23 error:errorCopy decoratedPayload:decoratedPayloadCopy session:sessionCopy observer:observerCopy];
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)flushMessagesWithCompletion:(id)a3
+- (void)flushMessagesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_sync(self->_queue, &__block_literal_global_29);
   p_queue = &self->_queue;
   queue = self->_queue;
@@ -477,12 +477,12 @@ void __83__FPRTCReportingSessionManager_postMultipleReports_type_userinfo_sessio
   block[1] = 3221225472;
   block[2] = __60__FPRTCReportingSessionManager_flushMessagesWithCompletion___block_invoke_2;
   block[3] = &unk_278FFA8B0;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_group_notify(v6, queue, block);
 }
 
-- (void)waitUntilTelemetrySessionIsAvailable:(unint64_t)a3 retryDuration:(unint64_t)a4
+- (void)waitUntilTelemetrySessionIsAvailable:(unint64_t)available retryDuration:(unint64_t)duration
 {
   v27[2] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277D44098];
@@ -491,10 +491,10 @@ void __83__FPRTCReportingSessionManager_postMultipleReports_type_userinfo_sessio
   v27[0] = @"fileprovider";
   v27[1] = @"fpfs";
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
-  if (a3)
+  if (available)
   {
-    v8 = 1000000000 * a4;
-    v9 = a3 - 1;
+    v8 = 1000000000 * duration;
+    v9 = available - 1;
     v10 = MEMORY[0x277D85DD0];
     do
     {

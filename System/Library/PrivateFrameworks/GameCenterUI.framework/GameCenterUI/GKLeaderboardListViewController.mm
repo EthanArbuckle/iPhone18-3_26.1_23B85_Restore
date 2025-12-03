@@ -1,68 +1,68 @@
 @interface GKLeaderboardListViewController
 - (BOOL)hasData;
 - (BOOL)isLoading;
-- (GKLeaderboardListViewController)initWithGameRecord:(id)a3 leaderboardSet:(id)a4;
+- (GKLeaderboardListViewController)initWithGameRecord:(id)record leaderboardSet:(id)set;
 - (id)title;
 - (int64_t)preferredLargeTitleDisplayMode;
 - (void)clearSelection;
 - (void)configureCloseButton;
-- (void)dataUpdated:(BOOL)a3 withError:(id)a4;
+- (void)dataUpdated:(BOOL)updated withError:(id)error;
 - (void)dealloc;
 - (void)didEnterLoadingState;
-- (void)donePressed:(id)a3;
+- (void)donePressed:(id)pressed;
 - (void)hideNoContentPlaceholder;
 - (void)loadData;
-- (void)setHorizontalLayout:(BOOL)a3;
-- (void)setLeaderboardAssetNames:(id)a3;
-- (void)setLeaderboardSetAssetNames:(id)a3;
+- (void)setHorizontalLayout:(BOOL)layout;
+- (void)setLeaderboardAssetNames:(id)names;
+- (void)setLeaderboardSetAssetNames:(id)names;
 - (void)setNeedsRefresh;
-- (void)setupNoContentView:(id)a3 withError:(id)a4;
+- (void)setupNoContentView:(id)view withError:(id)error;
 - (void)setupVisualEffect;
-- (void)showNoContentPlaceholderForError:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)showNoContentPlaceholderForError:(id)error;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateLargeTitleInsets;
 - (void)updateLayout;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation GKLeaderboardListViewController
 
-- (GKLeaderboardListViewController)initWithGameRecord:(id)a3 leaderboardSet:(id)a4
+- (GKLeaderboardListViewController)initWithGameRecord:(id)record leaderboardSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _gkPlatformNibName];
+  recordCopy = record;
+  setCopy = set;
+  _gkPlatformNibName = [objc_opt_class() _gkPlatformNibName];
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v16.receiver = self;
   v16.super_class = GKLeaderboardListViewController;
-  v10 = [(GKLoadingViewController *)&v16 initWithNibName:v8 bundle:v9];
+  v10 = [(GKLoadingViewController *)&v16 initWithNibName:_gkPlatformNibName bundle:v9];
 
   if (v10)
   {
-    if (v7 || ![v6 supportsLeaderboardSets])
+    if (setCopy || ![recordCopy supportsLeaderboardSets])
     {
       [(GKLeaderboardListViewController *)v10 setShowingLeaderboardSets:0];
-      v11 = [[GKLeaderboardListDataSource alloc] initWithGameRecord:v6 leaderboardSet:v7];
+      v11 = [[GKLeaderboardListDataSource alloc] initWithGameRecord:recordCopy leaderboardSet:setCopy];
     }
 
     else
     {
       [(GKLeaderboardListViewController *)v10 setShowingLeaderboardSets:1];
-      v11 = [(GKGameLayerCollectionDataSource *)[GKLeaderboardSetDataSource alloc] initWithGameRecord:v6];
+      v11 = [(GKGameLayerCollectionDataSource *)[GKLeaderboardSetDataSource alloc] initWithGameRecord:recordCopy];
     }
 
     v12 = v11;
     [(GKLeaderboardListViewController *)v10 setDataSource:v11];
 
-    v13 = [(GKLeaderboardListViewController *)v10 title];
-    v14 = [(GKLeaderboardListViewController *)v10 navigationItem];
-    [v14 setTitle:v13];
+    title = [(GKLeaderboardListViewController *)v10 title];
+    navigationItem = [(GKLeaderboardListViewController *)v10 navigationItem];
+    [navigationItem setTitle:title];
   }
 
   return v10;
@@ -77,19 +77,19 @@
   return v3;
 }
 
-- (void)setLeaderboardAssetNames:(id)a3
+- (void)setLeaderboardAssetNames:(id)names
 {
-  v10 = a3;
-  objc_storeStrong(&self->_leaderboardAssetNames, a3);
-  v5 = [(GKLeaderboardListViewController *)self dataSource];
+  namesCopy = names;
+  objc_storeStrong(&self->_leaderboardAssetNames, names);
+  dataSource = [(GKLeaderboardListViewController *)self dataSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [(GKLeaderboardListViewController *)self dataSource];
-  v8 = v7;
+  dataSource2 = [(GKLeaderboardListViewController *)self dataSource];
+  dataSource3 = dataSource2;
   if (isKindOfClass)
   {
-    [v7 setLeaderboardAssetNames:v10];
+    [dataSource2 setLeaderboardAssetNames:namesCopy];
   }
 
   else
@@ -102,32 +102,32 @@
       goto LABEL_6;
     }
 
-    v8 = [(GKLeaderboardListViewController *)self dataSource];
-    [v8 setAssetNames:v10];
+    dataSource3 = [(GKLeaderboardListViewController *)self dataSource];
+    [dataSource3 setAssetNames:namesCopy];
   }
 
 LABEL_6:
 }
 
-- (void)setLeaderboardSetAssetNames:(id)a3
+- (void)setLeaderboardSetAssetNames:(id)names
 {
-  v8 = a3;
-  objc_storeStrong(&self->_leaderboardSetAssetNames, a3);
-  v5 = [(GKLeaderboardListViewController *)self dataSource];
+  namesCopy = names;
+  objc_storeStrong(&self->_leaderboardSetAssetNames, names);
+  dataSource = [(GKLeaderboardListViewController *)self dataSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(GKLeaderboardListViewController *)self dataSource];
-    [v7 setLeaderboardSetAssetNames:v8];
+    dataSource2 = [(GKLeaderboardListViewController *)self dataSource];
+    [dataSource2 setLeaderboardSetAssetNames:namesCopy];
   }
 }
 
-- (void)donePressed:(id)a3
+- (void)donePressed:(id)pressed
 {
-  v3 = [(UIViewController *)self _gkExtensionViewController];
-  [v3 finish];
+  _gkExtensionViewController = [(UIViewController *)self _gkExtensionViewController];
+  [_gkExtensionViewController finish];
 }
 
 - (void)viewDidLoad
@@ -136,87 +136,87 @@ LABEL_6:
   v19.receiver = self;
   v19.super_class = GKLeaderboardListViewController;
   [(GKLeaderboardListViewController *)&v19 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(GKLeaderboardListViewController *)self collectionView];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  collectionView = [(GKLeaderboardListViewController *)self collectionView];
+  [collectionView setBackgroundColor:clearColor];
 
   [(GKLeaderboardListViewController *)self setupVisualEffect];
   v5 = objc_alloc_init(GKLeaderboardCollectionViewFlowLayout);
-  v6 = [(GKLeaderboardListViewController *)self collectionView];
-  [v6 setCollectionViewLayout:v5];
+  collectionView2 = [(GKLeaderboardListViewController *)self collectionView];
+  [collectionView2 setCollectionViewLayout:v5];
 
   [(GKLeaderboardListViewController *)self updateLayout];
-  v7 = [(GKLeaderboardListViewController *)self collectionView];
+  collectionView3 = [(GKLeaderboardListViewController *)self collectionView];
 
-  if (v7)
+  if (collectionView3)
   {
-    v8 = [(GKLeaderboardListViewController *)self collectionView];
-    v20[0] = v8;
+    collectionView4 = [(GKLeaderboardListViewController *)self collectionView];
+    v20[0] = collectionView4;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     [(GKLoadingViewController *)self setViewsToHideWhileLoading:v9];
   }
 
-  v10 = [(GKLeaderboardListViewController *)self dataSource];
-  v11 = [(GKLeaderboardListViewController *)self collectionView];
-  [v10 setupCollectionView:v11];
+  dataSource = [(GKLeaderboardListViewController *)self dataSource];
+  collectionView5 = [(GKLeaderboardListViewController *)self collectionView];
+  [dataSource setupCollectionView:collectionView5];
 
-  v12 = [(GKLeaderboardListViewController *)self dataSource];
-  [v12 setPresentationViewController:self];
+  dataSource2 = [(GKLeaderboardListViewController *)self dataSource];
+  [dataSource2 setPresentationViewController:self];
 
-  v13 = [(GKLeaderboardListViewController *)self navigationItem];
-  [v13 _setAutoScrollEdgeTransitionDistance:40.0];
+  navigationItem = [(GKLeaderboardListViewController *)self navigationItem];
+  [navigationItem _setAutoScrollEdgeTransitionDistance:40.0];
 
-  v14 = [(GKLeaderboardListViewController *)self navigationItem];
-  [v14 _setManualScrollEdgeAppearanceEnabled:1];
+  navigationItem2 = [(GKLeaderboardListViewController *)self navigationItem];
+  [navigationItem2 _setManualScrollEdgeAppearanceEnabled:1];
 
-  v15 = [(GKLeaderboardListViewController *)self preferredLargeTitleDisplayMode];
-  v16 = [(GKLeaderboardListViewController *)self navigationItem];
-  [v16 setLargeTitleDisplayMode:v15];
+  preferredLargeTitleDisplayMode = [(GKLeaderboardListViewController *)self preferredLargeTitleDisplayMode];
+  navigationItem3 = [(GKLeaderboardListViewController *)self navigationItem];
+  [navigationItem3 setLargeTitleDisplayMode:preferredLargeTitleDisplayMode];
 
   [(GKLeaderboardListViewController *)self configureCloseButton];
-  v17 = [(GKLeaderboardListViewController *)self collectionView];
-  v18 = [v17 layer];
-  [v18 setOpacity:0.0];
+  collectionView6 = [(GKLeaderboardListViewController *)self collectionView];
+  layer = [collectionView6 layer];
+  [layer setOpacity:0.0];
 }
 
 - (void)dealloc
 {
-  v3 = [(GKLeaderboardListViewController *)self collectionView];
-  [v3 setDataSource:0];
+  collectionView = [(GKLeaderboardListViewController *)self collectionView];
+  [collectionView setDataSource:0];
 
-  v4 = [(GKLeaderboardListViewController *)self collectionView];
-  [v4 setDelegate:0];
+  collectionView2 = [(GKLeaderboardListViewController *)self collectionView];
+  [collectionView2 setDelegate:0];
 
   v5.receiver = self;
   v5.super_class = GKLeaderboardListViewController;
   [(GKLeaderboardListViewController *)&v5 dealloc];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = GKLeaderboardListViewController;
-  [(GKLeaderboardListViewController *)&v4 viewIsAppearing:a3];
+  [(GKLeaderboardListViewController *)&v4 viewIsAppearing:appearing];
   [(GKLeaderboardListViewController *)self updateLargeTitleInsets];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = GKLeaderboardListViewController;
-  [(GKLeaderboardListViewController *)&v5 viewWillAppear:a3];
-  v4 = [(GKLoadingViewController *)self loadingState];
-  if (v4 == @"Initial")
+  [(GKLeaderboardListViewController *)&v5 viewWillAppear:appear];
+  loadingState = [(GKLoadingViewController *)self loadingState];
+  if (loadingState == @"Initial")
   {
     [(GKLoadingViewController *)self setLoadingState:@"LoadingState"];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = GKLeaderboardListViewController;
-  [(GKLeaderboardListViewController *)&v3 viewWillDisappear:a3];
+  [(GKLeaderboardListViewController *)&v3 viewWillDisappear:disappear];
 }
 
 - (void)viewDidLayoutSubviews
@@ -230,29 +230,29 @@ LABEL_6:
 - (void)setupVisualEffect
 {
   v7 = objc_opt_new();
-  v3 = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
-  [v7 setBackgroundEffects:v3];
+  _gkGameLayerBackgroundVisualEffect = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
+  [v7 setBackgroundEffects:_gkGameLayerBackgroundVisualEffect];
 
   [v7 _setGroupName:@"gameLayerGroup"];
-  v4 = [(GKLeaderboardListViewController *)self view];
-  [v4 insertSubview:v7 atIndex:0];
+  view = [(GKLeaderboardListViewController *)self view];
+  [view insertSubview:v7 atIndex:0];
 
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = MEMORY[0x277CCAAD0];
-  v6 = [(GKLeaderboardListViewController *)self view];
-  [v5 _gkInstallEdgeConstraintsForView:v7 containedWithinParentView:v6];
+  view2 = [(GKLeaderboardListViewController *)self view];
+  [v5 _gkInstallEdgeConstraintsForView:v7 containedWithinParentView:view2];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = GKLeaderboardListViewController;
-  [(GKLeaderboardListViewController *)&v7 viewDidAppear:a3];
+  [(GKLeaderboardListViewController *)&v7 viewDidAppear:appear];
   [(GKLeaderboardListViewController *)self clearSelection];
   [(GKLeaderboardListViewController *)self setNeedsFocusUpdate];
-  v4 = [(GKLeaderboardListViewController *)self showingLeaderboardSets];
+  showingLeaderboardSets = [(GKLeaderboardListViewController *)self showingLeaderboardSets];
   v5 = @"leaderboardGroups";
-  if (v4)
+  if (showingLeaderboardSets)
   {
     v5 = @"leaderboardCollection";
   }
@@ -263,8 +263,8 @@ LABEL_6:
 
 - (void)updateLayout
 {
-  v3 = [(GKLeaderboardListViewController *)self traitCollection];
-  category = [v3 preferredContentSizeCategory];
+  traitCollection = [(GKLeaderboardListViewController *)self traitCollection];
+  category = [traitCollection preferredContentSizeCategory];
 
   if (UIContentSizeCategoryIsAccessibilityCategory(category))
   {
@@ -273,13 +273,13 @@ LABEL_6:
 
   else
   {
-    v5 = [MEMORY[0x277D75C80] currentTraitCollection];
-    if ([v5 verticalSizeClass] == 1)
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    if ([currentTraitCollection verticalSizeClass] == 1)
     {
-      v6 = [MEMORY[0x277D75418] currentDevice];
-      v7 = [v6 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      v4 = v7 != 1;
+      v4 = userInterfaceIdiom != 1;
     }
 
     else
@@ -306,61 +306,61 @@ LABEL_6:
 
 - (void)updateLargeTitleInsets
 {
-  v3 = [(GKLeaderboardListViewController *)self navigationController];
-  v19 = [v3 navigationBar];
+  navigationController = [(GKLeaderboardListViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  v4 = [(GKLeaderboardListViewController *)self navigationItem];
-  v5 = [v4 largeTitleDisplayMode];
+  navigationItem = [(GKLeaderboardListViewController *)self navigationItem];
+  largeTitleDisplayMode = [navigationItem largeTitleDisplayMode];
 
-  if (v5 != 2 && v19)
+  if (largeTitleDisplayMode != 2 && navigationBar)
   {
     v6 = [GameLayerPageGrid alloc];
-    v7 = [(GKLeaderboardListViewController *)self view];
-    [v7 bounds];
+    view = [(GKLeaderboardListViewController *)self view];
+    [view bounds];
     v9 = v8;
     v11 = v10;
-    v12 = [(GKLeaderboardListViewController *)self traitCollection];
-    v13 = [(GameLayerPageGrid *)v6 initWithSize:v12 traitCollection:v9, v11];
+    traitCollection = [(GKLeaderboardListViewController *)self traitCollection];
+    v13 = [(GameLayerPageGrid *)v6 initWithSize:traitCollection traitCollection:v9, v11];
 
     [(GameLayerPageGrid *)v13 centeringInsets];
     v15 = v14;
     [(GameLayerPageGrid *)v13 centeringInsets];
     v17 = v16;
-    v18 = [(GKLeaderboardListViewController *)self navigationItem];
-    [v18 setLargeTitleInsets:{0.0, v15, 0.0, v17}];
+    navigationItem2 = [(GKLeaderboardListViewController *)self navigationItem];
+    [navigationItem2 setLargeTitleInsets:{0.0, v15, 0.0, v17}];
 
-    [v19 setNeedsLayout];
+    [navigationBar setNeedsLayout];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = GKLeaderboardListViewController;
-  v4 = a3;
-  [(GKLeaderboardListViewController *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(GKLeaderboardListViewController *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(GKLeaderboardListViewController *)self traitCollection:v9.receiver];
-  v6 = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
 
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v7 != v6)
+  if (preferredContentSizeCategory2 != preferredContentSizeCategory)
   {
     [(GKLeaderboardListViewController *)self updateLayout];
-    v8 = [(GKLeaderboardListViewController *)self collectionView];
-    [v8 reloadData];
+    collectionView = [(GKLeaderboardListViewController *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
 - (BOOL)isLoading
 {
-  v2 = [(GKLoadingViewController *)self loadingState];
+  loadingState = [(GKLoadingViewController *)self loadingState];
   v3 = 1;
-  if (v2)
+  if (loadingState)
   {
-    if (v2 != @"Initial" && v2 != @"LoadingState")
+    if (loadingState != @"Initial" && loadingState != @"LoadingState")
     {
-      v3 = v2 == @"RefreshingState";
+      v3 = loadingState == @"RefreshingState";
     }
   }
 
@@ -377,13 +377,13 @@ LABEL_6:
 
 - (void)loadData
 {
-  v3 = [(GKLeaderboardListViewController *)self dataSource];
+  dataSource = [(GKLeaderboardListViewController *)self dataSource];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__GKLeaderboardListViewController_loadData__block_invoke;
   v4[3] = &unk_27966B138;
   v4[4] = self;
-  [v3 loadDataWithCompletionHandler:v4];
+  [dataSource loadDataWithCompletionHandler:v4];
 }
 
 void __43__GKLeaderboardListViewController_loadData__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -421,21 +421,21 @@ void __43__GKLeaderboardListViewController_loadData__block_invoke_81(uint64_t a1
 
 - (BOOL)hasData
 {
-  v2 = [(GKLeaderboardListViewController *)self dataSource];
-  v3 = [v2 itemCount] > 0;
+  dataSource = [(GKLeaderboardListViewController *)self dataSource];
+  v3 = [dataSource itemCount] > 0;
 
   return v3;
 }
 
-- (void)dataUpdated:(BOOL)a3 withError:(id)a4
+- (void)dataUpdated:(BOOL)updated withError:(id)error
 {
-  v4 = a3;
-  v9 = a4;
+  updatedCopy = updated;
+  errorCopy = error;
   if (![(GKLeaderboardListViewController *)self hasData])
   {
     [(GKLoadingViewController *)self setLoadingState:@"NoContentState"];
-    [(GKLeaderboardListViewController *)self showNoContentPlaceholderForError:v9];
-    if (!v4)
+    [(GKLeaderboardListViewController *)self showNoContentPlaceholderForError:errorCopy];
+    if (!updatedCopy)
     {
       goto LABEL_6;
     }
@@ -445,95 +445,95 @@ void __43__GKLeaderboardListViewController_loadData__block_invoke_81(uint64_t a1
 
   [(GKLoadingViewController *)self setLoadingState:@"LoadedState"];
   [(GKLeaderboardListViewController *)self hideNoContentPlaceholder];
-  if (v4)
+  if (updatedCopy)
   {
 LABEL_5:
-    v6 = [(GKLeaderboardListViewController *)self collectionView];
+    collectionView = [(GKLeaderboardListViewController *)self collectionView];
     v7 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
-    [v6 reloadSections:v7];
+    [collectionView reloadSections:v7];
 
     [(GKLeaderboardListViewController *)self setNeedsFocusUpdate];
-    v8 = [(GKLeaderboardListViewController *)self navigationController];
-    [v8 setNeedsFocusUpdate];
+    navigationController = [(GKLeaderboardListViewController *)self navigationController];
+    [navigationController setNeedsFocusUpdate];
   }
 
 LABEL_6:
 }
 
-- (void)showNoContentPlaceholderForError:(id)a3
+- (void)showNoContentPlaceholderForError:(id)error
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (self->_collectionView)
   {
-    v5 = [(GKLeaderboardListViewController *)self collectionView];
-    [v5 setHidden:1];
+    collectionView = [(GKLeaderboardListViewController *)self collectionView];
+    [collectionView setHidden:1];
 
-    v6 = [(GKLeaderboardListViewController *)self noContentView];
+    noContentView = [(GKLeaderboardListViewController *)self noContentView];
 
-    if (!v6)
+    if (!noContentView)
     {
       v7 = [GKNoContentView alloc];
       [(UICollectionView *)self->_collectionView bounds];
       v8 = [(GKNoContentView *)v7 initWithFrame:?];
       [(GKLeaderboardListViewController *)self setNoContentView:v8];
 
-      v9 = [(GKLeaderboardListViewController *)self noContentView];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+      noContentView2 = [(GKLeaderboardListViewController *)self noContentView];
+      [noContentView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v10 = [(GKLeaderboardListViewController *)self collectionView];
-      v11 = [v10 superview];
+      collectionView2 = [(GKLeaderboardListViewController *)self collectionView];
+      superview = [collectionView2 superview];
 
-      v12 = [(GKLeaderboardListViewController *)self noContentView];
-      v13 = [(GKLeaderboardListViewController *)self collectionView];
-      [v11 insertSubview:v12 aboveSubview:v13];
+      noContentView3 = [(GKLeaderboardListViewController *)self noContentView];
+      collectionView3 = [(GKLeaderboardListViewController *)self collectionView];
+      [superview insertSubview:noContentView3 aboveSubview:collectionView3];
 
       v14 = MEMORY[0x277CCAAD0];
-      v15 = [(GKLeaderboardListViewController *)self noContentView];
-      v16 = [(GKLeaderboardListViewController *)self collectionView];
-      v17 = [v14 _gkConstraintsForView:v15 withinView:v16 insets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-      [v11 addConstraints:v17];
+      noContentView4 = [(GKLeaderboardListViewController *)self noContentView];
+      collectionView4 = [(GKLeaderboardListViewController *)self collectionView];
+      v17 = [v14 _gkConstraintsForView:noContentView4 withinView:collectionView4 insets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+      [superview addConstraints:v17];
 
-      v18 = [(GKLeaderboardListViewController *)self collectionView];
-      v22[0] = v18;
-      v19 = [(GKLeaderboardListViewController *)self noContentView];
-      v22[1] = v19;
+      collectionView5 = [(GKLeaderboardListViewController *)self collectionView];
+      v22[0] = collectionView5;
+      noContentView5 = [(GKLeaderboardListViewController *)self noContentView];
+      v22[1] = noContentView5;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
       [(GKLoadingViewController *)self setViewsToHideWhileLoading:v20];
     }
 
-    [(GKLeaderboardListViewController *)self setupNoContentView:self->_noContentView withError:v4];
-    v21 = [(GKLeaderboardListViewController *)self noContentView];
-    [v21 setHidden:0];
+    [(GKLeaderboardListViewController *)self setupNoContentView:self->_noContentView withError:errorCopy];
+    noContentView6 = [(GKLeaderboardListViewController *)self noContentView];
+    [noContentView6 setHidden:0];
   }
 }
 
 - (void)hideNoContentPlaceholder
 {
-  v3 = [(GKLeaderboardListViewController *)self noContentView];
-  [v3 setHidden:1];
+  noContentView = [(GKLeaderboardListViewController *)self noContentView];
+  [noContentView setHidden:1];
 
-  v4 = [(GKLeaderboardListViewController *)self collectionView];
-  [v4 setHidden:0];
+  collectionView = [(GKLeaderboardListViewController *)self collectionView];
+  [collectionView setHidden:0];
 }
 
-- (void)setupNoContentView:(id)a3 withError:(id)a4
+- (void)setupNoContentView:(id)view withError:(id)error
 {
-  v9 = a3;
+  viewCopy = view;
   v5 = GKGameCenterUIFrameworkBundle();
   v6 = GKGetLocalizedStringFromTableInBundle();
-  [v9 setTitle:v6];
+  [viewCopy setTitle:v6];
 
-  if (a4)
+  if (error)
   {
     v7 = GKGameCenterUIFrameworkBundle();
     v8 = GKGetLocalizedStringFromTableInBundle();
-    [v9 setMessage:v8];
+    [viewCopy setMessage:v8];
   }
 
   else
   {
-    [v9 setMessage:0];
+    [viewCopy setMessage:0];
   }
 }
 
@@ -574,44 +574,44 @@ uint64_t __50__GKLeaderboardListViewController_setNeedsRefresh__block_invoke_2(u
 {
   v5 = [MEMORY[0x277D75220] _gkXmarkedCloseButtonWithTarget:self action:sel_donePressed_];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v5];
-  v4 = [(GKLeaderboardListViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(GKLeaderboardListViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 }
 
-- (void)setHorizontalLayout:(BOOL)a3
+- (void)setHorizontalLayout:(BOOL)layout
 {
-  v3 = a3;
-  v5 = [(GKLeaderboardListViewController *)self collectionView];
-  v10 = [v5 collectionViewLayout];
+  layoutCopy = layout;
+  collectionView = [(GKLeaderboardListViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  [v10 setScrollDirection:v3];
-  v6 = [(GKLeaderboardListViewController *)self collectionView];
-  [v6 setAlwaysBounceVertical:v3 ^ 1];
+  [collectionViewLayout setScrollDirection:layoutCopy];
+  collectionView2 = [(GKLeaderboardListViewController *)self collectionView];
+  [collectionView2 setAlwaysBounceVertical:layoutCopy ^ 1];
 
-  v7 = [(GKLeaderboardListViewController *)self collectionView];
-  [v7 setAlwaysBounceHorizontal:v3];
+  collectionView3 = [(GKLeaderboardListViewController *)self collectionView];
+  [collectionView3 setAlwaysBounceHorizontal:layoutCopy];
 
-  v8 = [(GKLeaderboardListViewController *)self collectionView];
-  [v8 setShowsVerticalScrollIndicator:v3 ^ 1];
+  collectionView4 = [(GKLeaderboardListViewController *)self collectionView];
+  [collectionView4 setShowsVerticalScrollIndicator:layoutCopy ^ 1];
 
-  v9 = [(GKLeaderboardListViewController *)self collectionView];
-  [v9 setShowsHorizontalScrollIndicator:v3];
+  collectionView5 = [(GKLeaderboardListViewController *)self collectionView];
+  [collectionView5 setShowsHorizontalScrollIndicator:layoutCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = GKLeaderboardListViewController;
-  v7 = a4;
-  [(GKLeaderboardListViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(GKLeaderboardListViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __86__GKLeaderboardListViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_27966A690;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:&__block_literal_global_100];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:&__block_literal_global_100];
 }
 
 void __86__GKLeaderboardListViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -625,14 +625,14 @@ void __86__GKLeaderboardListViewController_viewWillTransitionToSize_withTransiti
 - (void)clearSelection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(GKLeaderboardListViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
+  collectionView = [(GKLeaderboardListViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = indexPathsForSelectedItems;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -649,8 +649,8 @@ void __86__GKLeaderboardListViewController_viewWillTransitionToSize_withTransiti
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(GKLeaderboardListViewController *)self collectionView];
-        [v11 deselectItemAtIndexPath:v10 animated:1];
+        collectionView2 = [(GKLeaderboardListViewController *)self collectionView];
+        [collectionView2 deselectItemAtIndexPath:v10 animated:1];
 
         ++v9;
       }

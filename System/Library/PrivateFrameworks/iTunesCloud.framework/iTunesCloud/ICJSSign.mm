@@ -1,33 +1,33 @@
 @interface ICJSSign
-- (ICJSSign)initWithConfiguration:(id)a3;
-- (id)signatureDataWithURLRequest:(id)a3;
-- (id)signatureStringWithURLRequest:(id)a3;
+- (ICJSSign)initWithConfiguration:(id)configuration;
+- (id)signatureDataWithURLRequest:(id)request;
+- (id)signatureStringWithURLRequest:(id)request;
 @end
 
 @implementation ICJSSign
 
-- (id)signatureStringWithURLRequest:(id)a3
+- (id)signatureStringWithURLRequest:(id)request
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
+  requestCopy = request;
+  string = [MEMORY[0x1E696AD60] string];
   v6 = objc_alloc(MEMORY[0x1E696AF20]);
-  v7 = [v4 URL];
+  v7 = [requestCopy URL];
   v8 = [v6 initWithURL:v7 resolvingAgainstBaseURL:0];
 
-  v9 = [v8 queryItems];
+  queryItems = [v8 queryItems];
   configuration = self->_configuration;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __42__ICJSSign_signatureStringWithURLRequest___block_invoke;
   v14[3] = &unk_1E7BF3608;
-  v15 = v4;
-  v16 = v9;
-  v17 = v5;
-  v11 = v4;
+  v15 = requestCopy;
+  v16 = queryItems;
+  v17 = string;
+  v11 = requestCopy;
   [(ICJSSignConfiguration *)configuration _enumerateComponentsUsingBlock:v14];
-  v12 = v5;
+  v12 = string;
 
-  return v5;
+  return string;
 }
 
 void __42__ICJSSign_signatureStringWithURLRequest___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -150,14 +150,14 @@ BOOL __42__ICJSSign_signatureStringWithURLRequest___block_invoke_2(uint64_t a1, 
   return v4;
 }
 
-- (id)signatureDataWithURLRequest:(id)a3
+- (id)signatureDataWithURLRequest:(id)request
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(ICJSSign *)self signatureStringWithURLRequest:a3];
-  v5 = [v4 UTF8String];
-  if (v5)
+  v4 = [(ICJSSign *)self signatureStringWithURLRequest:request];
+  uTF8String = [v4 UTF8String];
+  if (uTF8String)
   {
-    v6 = v5;
+    v6 = uTF8String;
     v7 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:20];
     CC_SHA1(v6, [v4 length], objc_msgSend(v7, "mutableBytes"));
     [v7 setLength:16];
@@ -180,7 +180,7 @@ BOOL __42__ICJSSign_signatureStringWithURLRequest___block_invoke_2(uint64_t a1, 
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v14 = 138543618;
-        v15 = self;
+        selfCopy = self;
         v16 = 1024;
         v17 = v11;
         _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_ERROR, "%{public}@ Failed to js-sign request. err=%d", &v14, 0x12u);
@@ -196,15 +196,15 @@ BOOL __42__ICJSSign_signatureStringWithURLRequest___block_invoke_2(uint64_t a1, 
   return v7;
 }
 
-- (ICJSSign)initWithConfiguration:(id)a3
+- (ICJSSign)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = ICJSSign;
   v5 = [(ICJSSign *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
   }

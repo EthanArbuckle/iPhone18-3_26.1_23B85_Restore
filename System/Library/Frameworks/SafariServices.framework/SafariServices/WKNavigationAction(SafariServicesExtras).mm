@@ -9,16 +9,16 @@
 
 - (uint64_t)_sf_shouldAskAboutInsecureFormSubmission
 {
-  if ([a1 navigationType] != 1)
+  if ([self navigationType] != 1)
   {
     return 0;
   }
 
-  if ([a1 _isRedirect])
+  if ([self _isRedirect])
   {
-    v2 = [a1 request];
-    v3 = [v2 HTTPMethod];
-    v4 = [v3 isEqualToString:@"GET"];
+    request = [self request];
+    hTTPMethod = [request HTTPMethod];
+    v4 = [hTTPMethod isEqualToString:@"GET"];
 
     if (v4)
     {
@@ -26,8 +26,8 @@
     }
   }
 
-  v5 = [a1 request];
-  v6 = [v5 URL];
+  request2 = [self request];
+  v6 = [request2 URL];
   v7 = [v6 safari_hasScheme:@"http"];
 
   if (!v7)
@@ -35,9 +35,9 @@
     return 0;
   }
 
-  v8 = [a1 sourceFrame];
-  v9 = [v8 request];
-  v10 = [v9 URL];
+  sourceFrame = [self sourceFrame];
+  request3 = [sourceFrame request];
+  v10 = [request3 URL];
   v11 = [v10 safari_hasScheme:@"https"];
 
   return v11;
@@ -46,14 +46,14 @@
 - (uint64_t)_sf_shouldPerformDownload
 {
   v15 = *MEMORY[0x1E69E9840];
-  if ([a1 _shouldPerformDownload])
+  if ([self _shouldPerformDownload])
   {
-    v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v3 = [a1 targetFrame];
-    v4 = [a1 request];
-    v5 = [v4 URL];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    targetFrame = [self targetFrame];
+    request = [self request];
+    v5 = [request URL];
 
-    if (v3 && ([v3 isMainFrame] & 1) == 0 && (objc_msgSend(a1, "sourceFrame"), v6 = objc_claimAutoreleasedReturnValue(), v6, v3 == v6))
+    if (targetFrame && ([targetFrame isMainFrame] & 1) == 0 && (objc_msgSend(self, "sourceFrame"), v6 = objc_claimAutoreleasedReturnValue(), v6, targetFrame == v6))
     {
       v8 = WBS_LOG_CHANNEL_PREFIXDownloads();
       v11 = 1;
@@ -68,7 +68,7 @@
 
     else
     {
-      v7 = [v2 BOOLForKey:*MEMORY[0x1E69B1EA8]];
+      v7 = [safari_browserDefaults BOOLForKey:*MEMORY[0x1E69B1EA8]];
       v8 = WBS_LOG_CHANNEL_PREFIXDownloads();
       v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
       if (!v7)
@@ -108,17 +108,17 @@ LABEL_16:
 
 - (uint64_t)_sf_allowsExternalRedirectWithoutPrompting
 {
-  v1 = objc_getAssociatedObject(a1, allowsExternalRedirectWithoutPromptingKey);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, allowsExternalRedirectWithoutPromptingKey);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)_sf_setAllowsExternalRedirectWithoutPrompting:()SafariServicesExtras
 {
   v2 = allowsExternalRedirectWithoutPromptingKey;
   v3 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, v2, v3, 1);
+  objc_setAssociatedObject(self, v2, v3, 1);
 }
 
 @end

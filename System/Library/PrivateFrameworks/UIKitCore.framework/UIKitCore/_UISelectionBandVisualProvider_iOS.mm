@@ -2,87 +2,87 @@
 - (BOOL)enabled;
 - (CGPoint)initialPoint;
 - (UIView)view;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)beginAtPoint:(CGPoint)a3;
-- (void)endAtPoint:(CGPoint)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setView:(id)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)beginAtPoint:(CGPoint)point;
+- (void)endAtPoint:(CGPoint)point;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setView:(id)view;
 @end
 
 @implementation _UISelectionBandVisualProvider_iOS
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     [(_UISelectionBandVisualProvider_iOS *)self setInitialPoint:1.79769313e308, 1.79769313e308];
-    v6 = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
-    v7 = [v6 view];
-    v8 = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
-    [v7 removeInteraction:v8];
+    ptrInteraction = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
+    view = [ptrInteraction view];
+    ptrInteraction2 = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
+    [view removeInteraction:ptrInteraction2];
 
     v9 = objc_storeWeak(&self->_view, obj);
     v5 = obj;
     if (obj)
     {
-      v10 = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
+      ptrInteraction3 = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
 
-      if (!v10)
+      if (!ptrInteraction3)
       {
         v11 = [[UIPointerInteraction alloc] initWithDelegate:self];
         [(_UISelectionBandVisualProvider_iOS *)self setPtrInteraction:v11];
       }
 
       v12 = objc_loadWeakRetained(&self->_view);
-      v13 = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
-      [v12 addInteraction:v13];
+      ptrInteraction4 = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
+      [v12 addInteraction:ptrInteraction4];
 
       v5 = obj;
     }
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  ptrInteraction = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
+  [ptrInteraction setEnabled:enabledCopy];
 }
 
 - (BOOL)enabled
 {
-  v2 = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
-  v3 = [v2 isEnabled];
+  ptrInteraction = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
+  isEnabled = [ptrInteraction isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)beginAtPoint:(CGPoint)a3
+- (void)beginAtPoint:(CGPoint)point
 {
-  [(_UISelectionBandVisualProvider_iOS *)self setInitialPoint:a3.x, a3.y];
-  v4 = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
-  [v4 invalidate];
+  [(_UISelectionBandVisualProvider_iOS *)self setInitialPoint:point.x, point.y];
+  ptrInteraction = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
+  [ptrInteraction invalidate];
 }
 
-- (void)endAtPoint:(CGPoint)a3
+- (void)endAtPoint:(CGPoint)point
 {
   [(_UISelectionBandVisualProvider_iOS *)self setInitialPoint:1.79769313e308, 1.79769313e308];
-  v4 = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
-  [v4 invalidate];
+  ptrInteraction = [(_UISelectionBandVisualProvider_iOS *)self ptrInteraction];
+  [ptrInteraction invalidate];
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a3;
+  interactionCopy = interaction;
   if ([(_UISelectionBandVisualProvider_iOS *)self _isActive])
   {
-    v7 = [v6 view];
-    [v7 bounds];
+    view = [interactionCopy view];
+    [view bounds];
     v8 = [UIPointerRegion regionWithRect:@"UIBandSelectionInteraction.band" identifier:?];
 
     [v8 setLatchingAxes:3];
@@ -96,9 +96,9 @@
   return v8;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  [(_UISelectionBandVisualProvider_iOS *)self initialPoint:a3];
+  [(_UISelectionBandVisualProvider_iOS *)self initialPoint:interaction];
   v4 = [UIPointerShape _elasticRectShapePinnedAtPoint:?];
   v5 = [UIPointerStyle styleWithShape:v4 constrainedAxes:0];
 

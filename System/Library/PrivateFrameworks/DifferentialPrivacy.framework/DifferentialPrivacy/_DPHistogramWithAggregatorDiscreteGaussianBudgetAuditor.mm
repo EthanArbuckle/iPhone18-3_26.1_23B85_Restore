@@ -1,16 +1,16 @@
 @interface _DPHistogramWithAggregatorDiscreteGaussianBudgetAuditor
-- (_DPHistogramWithAggregatorDiscreteGaussianBudgetAuditor)initWithMetadata:(id)a3 plistParameters:(id)a4 error:(id *)a5;
+- (_DPHistogramWithAggregatorDiscreteGaussianBudgetAuditor)initWithMetadata:(id)metadata plistParameters:(id)parameters error:(id *)error;
 @end
 
 @implementation _DPHistogramWithAggregatorDiscreteGaussianBudgetAuditor
 
-- (_DPHistogramWithAggregatorDiscreteGaussianBudgetAuditor)initWithMetadata:(id)a3 plistParameters:(id)a4 error:(id *)a5
+- (_DPHistogramWithAggregatorDiscreteGaussianBudgetAuditor)initWithMetadata:(id)metadata plistParameters:(id)parameters error:(id *)error
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v55 = a4;
-  v52 = v6;
-  v53 = [v6 objectForKeyedSubscript:?];
+  metadataCopy = metadata;
+  parametersCopy = parameters;
+  v52 = metadataCopy;
+  v53 = [metadataCopy objectForKeyedSubscript:?];
   v7 = [v53 objectForKeyedSubscript:?];
   v58 = 0u;
   v59 = 0u;
@@ -49,15 +49,15 @@
             [_DPSemanticVersion initWithString:v17 error:v44];
           }
 
-          v30 = self;
-          v16 = v55;
+          selfCopy4 = self;
+          v16 = parametersCopy;
           v31 = v52;
           v18 = v53;
-          if (a5)
+          if (error)
           {
             v45 = v17;
             v42 = 0;
-            *a5 = v17;
+            *error = v17;
           }
 
           else
@@ -79,11 +79,11 @@
     }
   }
 
-  v16 = v55;
-  v8 = [_DPBudgetAuditor maxApproximateDPFromPlist:v55 error:a5];
+  v16 = parametersCopy;
+  v8 = [_DPBudgetAuditor maxApproximateDPFromPlist:parametersCopy error:error];
   if (v8)
   {
-    v17 = [_DPBudgetAuditor targetApproximateDPFromDPConfig:v7 error:a5];
+    v17 = [_DPBudgetAuditor targetApproximateDPFromDPConfig:v7 error:error];
     v18 = v53;
     if (!v17)
     {
@@ -102,19 +102,19 @@
     [v24 doubleValue];
     v26 = v25;
 
-    v27 = [v55 objectForKeyedSubscript:@"epsilon"];
+    v27 = [parametersCopy objectForKeyedSubscript:@"epsilon"];
     [v27 doubleValue];
-    LODWORD(v24) = [_DPBudgetAuditor checkMetadataLocalEpsilon:a5 defaultLocalEpsilon:v26 error:v28];
+    LODWORD(v24) = [_DPBudgetAuditor checkMetadataLocalEpsilon:error defaultLocalEpsilon:v26 error:v28];
 
     if (v24)
     {
       v51 = v20;
-      v29 = [[_DPSymmetricRAPPORWithOHE alloc] initWithBatchSize:v20 localEpsilon:a5 error:v26];
-      v30 = self;
+      v29 = [[_DPSymmetricRAPPORWithOHE alloc] initWithBatchSize:v20 localEpsilon:error error:v26];
+      selfCopy4 = self;
       v31 = v52;
       if (v29)
       {
-        v32 = [[_DPHistogramWithAggregatorDiscreteGaussian alloc] initWithSigma:v29 rappor:a5 error:v23];
+        v32 = [[_DPHistogramWithAggregatorDiscreteGaussian alloc] initWithSigma:v29 rappor:error error:v23];
         if (v32)
         {
           v49 = v29;
@@ -150,12 +150,12 @@
 
           v57.receiver = self;
           v57.super_class = _DPHistogramWithAggregatorDiscreteGaussianBudgetAuditor;
-          v41 = [(_DPBudgetAuditor *)&v57 initWithMetadata:v40 plistParameters:v55 targetADP:v17 maxADP:v8 analysis:v50 error:a5];
+          v41 = [(_DPBudgetAuditor *)&v57 initWithMetadata:v40 plistParameters:parametersCopy targetADP:v17 maxADP:v8 analysis:v50 error:error];
 
-          v30 = v41;
+          selfCopy4 = v41;
           v32 = v50;
           v31 = v40;
-          v42 = v30;
+          v42 = selfCopy4;
           v29 = v49;
         }
 
@@ -175,7 +175,7 @@
     {
 LABEL_25:
       v42 = 0;
-      v30 = self;
+      selfCopy4 = self;
       v31 = v52;
     }
 
@@ -186,7 +186,7 @@ LABEL_31:
   {
     v42 = 0;
     v18 = v53;
-    v30 = self;
+    selfCopy4 = self;
     v31 = v52;
   }
 

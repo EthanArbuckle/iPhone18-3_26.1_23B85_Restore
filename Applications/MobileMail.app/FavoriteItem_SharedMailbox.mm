@@ -1,10 +1,10 @@
 @interface FavoriteItem_SharedMailbox
 - (BOOL)_isTokenValid;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSelectable;
 - (BOOL)wantsDisclosureButton;
-- (FavoriteItem_SharedMailbox)initWithDictionary:(id)a3;
-- (FavoriteItem_SharedMailbox)initWithSourceType:(unint64_t)a3;
+- (FavoriteItem_SharedMailbox)initWithDictionary:(id)dictionary;
+- (FavoriteItem_SharedMailbox)initWithSourceType:(unint64_t)type;
 - (id)analyticsKey;
 - (id)applicationShortcutIcon;
 - (id)badgeCountString;
@@ -19,14 +19,14 @@
 - (id)selectedIconTintColor;
 - (id)serverCountMailboxScope;
 - (id)smartMailbox;
-- (void)_observeNotifications:(BOOL)a3;
+- (void)_observeNotifications:(BOOL)notifications;
 - (void)_restartCountTokenIfNecessary;
 - (void)_startCountQueryIfNeeded;
-- (void)configureOutlineCell:(id)a3;
+- (void)configureOutlineCell:(id)cell;
 - (void)dealloc;
-- (void)setSelected:(BOOL)a3 fromUI:(BOOL)a4;
-- (void)setUnreadCountToken:(id)a3;
-- (void)wasSelected:(id)a3 indexPath:(id)a4 accessoryTapped:(BOOL)a5 animated:(BOOL)a6;
+- (void)setSelected:(BOOL)selected fromUI:(BOOL)i;
+- (void)setUnreadCountToken:(id)token;
+- (void)wasSelected:(id)selected indexPath:(id)path accessoryTapped:(BOOL)tapped animated:(BOOL)animated;
 @end
 
 @implementation FavoriteItem_SharedMailbox
@@ -43,11 +43,11 @@
 {
   v6.receiver = self;
   v6.super_class = FavoriteItem_SharedMailbox;
-  v3 = [(FavoriteItem *)&v6 dictionaryRepresentation];
+  dictionaryRepresentation = [(FavoriteItem *)&v6 dictionaryRepresentation];
   v4 = [NSNumber numberWithInteger:self->_sourceType];
-  [v3 setObject:v4 forKey:@"sourceType"];
+  [dictionaryRepresentation setObject:v4 forKey:@"sourceType"];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (id)defaultIconBlock
@@ -66,42 +66,42 @@
 - (id)defaultIconName
 {
   v2 = [SharedMailboxController sharedInstanceForSourceType:self->_sourceType];
-  v3 = [v2 iconImageName];
+  iconImageName = [v2 iconImageName];
 
-  return v3;
+  return iconImageName;
 }
 
 - (id)iconTintColor
 {
-  v2 = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
-  v3 = [v2 iconTintColor];
+  sharedMailboxController = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
+  iconTintColor = [sharedMailboxController iconTintColor];
 
-  return v3;
+  return iconTintColor;
 }
 
 - (id)selectedIconTintColor
 {
-  v2 = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
-  v3 = [v2 selectedIconTintColor];
+  sharedMailboxController = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
+  selectedIconTintColor = [sharedMailboxController selectedIconTintColor];
 
-  return v3;
+  return selectedIconTintColor;
 }
 
 - (id)applicationShortcutIcon
 {
-  v2 = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
-  v3 = [v2 applicationShortcutIconImage];
-  if (v3)
+  sharedMailboxController = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
+  applicationShortcutIconImage = [sharedMailboxController applicationShortcutIconImage];
+  if (applicationShortcutIconImage)
   {
-    v4 = [UIApplicationShortcutIcon iconWithCustomImage:v3];
+    v4 = [UIApplicationShortcutIcon iconWithCustomImage:applicationShortcutIconImage];
   }
 
   else
   {
-    v5 = [v2 applicationShortcutIconName];
-    if (v5)
+    applicationShortcutIconName = [sharedMailboxController applicationShortcutIconName];
+    if (applicationShortcutIconName)
     {
-      v4 = [UIApplicationShortcutIcon iconWithSystemImageName:v5];
+      v4 = [UIApplicationShortcutIcon iconWithSystemImageName:applicationShortcutIconName];
     }
 
     else
@@ -115,27 +115,27 @@
 
 - (id)displayName
 {
-  v2 = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
-  v3 = [v2 mailboxTitle];
+  sharedMailboxController = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
+  mailboxTitle = [sharedMailboxController mailboxTitle];
 
-  return v3;
+  return mailboxTitle;
 }
 
 - (id)criterion
 {
-  v2 = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
-  v3 = [v2 criterion];
+  sharedMailboxController = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
+  criterion = [sharedMailboxController criterion];
 
-  return v3;
+  return criterion;
 }
 
 - (BOOL)_isTokenValid
 {
-  v2 = [(FavoriteItem_SharedMailbox *)self unreadCountToken];
-  v3 = v2;
-  if (v2)
+  unreadCountToken = [(FavoriteItem_SharedMailbox *)self unreadCountToken];
+  v3 = unreadCountToken;
+  if (unreadCountToken)
   {
-    v4 = [v2 isCanceled] ^ 1;
+    v4 = [unreadCountToken isCanceled] ^ 1;
   }
 
   else
@@ -148,13 +148,13 @@
 
 - (void)_startCountQueryIfNeeded
 {
-  v3 = [(FavoriteItem *)self isSelected];
-  v4 = [(FavoriteItem_SharedMailbox *)self _isTokenValid];
-  if (!v3 || (v4 & 1) != 0)
+  isSelected = [(FavoriteItem *)self isSelected];
+  _isTokenValid = [(FavoriteItem_SharedMailbox *)self _isTokenValid];
+  if (!isSelected || (_isTokenValid & 1) != 0)
   {
-    if ((v3 & 1) == 0)
+    if ((isSelected & 1) == 0)
     {
-      if (v4)
+      if (_isTokenValid)
       {
         [(FavoriteItem_SharedMailbox *)self _observeNotifications:0];
       }
@@ -165,40 +165,40 @@
 
   else
   {
-    v6 = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
-    v5 = [v6 startCountQuery];
-    [(FavoriteItem_SharedMailbox *)self setUnreadCountToken:v5];
+    sharedMailboxController = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
+    startCountQuery = [sharedMailboxController startCountQuery];
+    [(FavoriteItem_SharedMailbox *)self setUnreadCountToken:startCountQuery];
 
     [(FavoriteItem_SharedMailbox *)self _observeNotifications:1];
   }
 }
 
-- (void)_observeNotifications:(BOOL)a3
+- (void)_observeNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  if ([(FavoriteItem_SharedMailbox *)self isObserving]!= a3)
+  notificationsCopy = notifications;
+  if ([(FavoriteItem_SharedMailbox *)self isObserving]!= notifications)
   {
     v6 = +[FavoriteItem log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
-      v8 = [(FavoriteItem_SharedMailbox *)self displayName];
+      displayName = [(FavoriteItem_SharedMailbox *)self displayName];
       v9 = NSStringFromSelector(a2);
       v12 = 138544130;
       v13 = v7;
       v14 = 2114;
-      v15 = v8;
+      v15 = displayName;
       v16 = 2114;
       v17 = v9;
       v18 = 1024;
-      v19 = v3;
+      v19 = notificationsCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@:%{public}@ - %{public}@ observe:%{BOOL}d", &v12, 0x26u);
     }
 
-    [(FavoriteItem_SharedMailbox *)self setIsObserving:v3];
+    [(FavoriteItem_SharedMailbox *)self setIsObserving:notificationsCopy];
     v10 = +[NSNotificationCenter defaultCenter];
     v11 = v10;
-    if (v3)
+    if (notificationsCopy)
     {
       [v10 addObserver:self selector:"_accountsDidChange:" name:ECMailAccountsDidChangeNotification object:0];
       [v11 addObserver:self selector:"_significantTimeChange" name:UIApplicationSignificantTimeChangeNotification object:0];
@@ -219,52 +219,52 @@
   [(FavoriteItem_SharedMailbox *)self _startCountQueryIfNeeded];
 }
 
-- (void)configureOutlineCell:(id)a3
+- (void)configureOutlineCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v8.receiver = self;
   v8.super_class = FavoriteItem_SharedMailbox;
-  [(FavoriteItem *)&v8 configureOutlineCell:v4];
-  v5 = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
-  v6 = [v5 mailboxTitle];
-  [v4 setTitle:v6];
+  [(FavoriteItem *)&v8 configureOutlineCell:cellCopy];
+  sharedMailboxController = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
+  mailboxTitle = [sharedMailboxController mailboxTitle];
+  [cellCopy setTitle:mailboxTitle];
 
-  v7 = [(FavoriteItem_SharedMailbox *)self unreadCountToken];
-  [v4 setShouldShowBadgeCountIfNecessary:v7 != 0];
+  unreadCountToken = [(FavoriteItem_SharedMailbox *)self unreadCountToken];
+  [cellCopy setShouldShowBadgeCountIfNecessary:unreadCountToken != 0];
 
-  [v4 setBadgeCount:{objc_msgSend(v5, "badgeCount")}];
+  [cellCopy setBadgeCount:{objc_msgSend(sharedMailboxController, "badgeCount")}];
 }
 
-- (void)wasSelected:(id)a3 indexPath:(id)a4 accessoryTapped:(BOOL)a5 animated:(BOOL)a6
+- (void)wasSelected:(id)selected indexPath:(id)path accessoryTapped:(BOOL)tapped animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v9 = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
-  [v9 presentFromSelectionTarget:v10 item:self accessoryTapped:v7 animated:v6];
+  animatedCopy = animated;
+  tappedCopy = tapped;
+  selectedCopy = selected;
+  sharedMailboxController = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
+  [sharedMailboxController presentFromSelectionTarget:selectedCopy item:self accessoryTapped:tappedCopy animated:animatedCopy];
 }
 
 - (BOOL)wantsDisclosureButton
 {
-  v2 = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
-  v3 = [v2 wantsDisclosureButton];
+  sharedMailboxController = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
+  wantsDisclosureButton = [sharedMailboxController wantsDisclosureButton];
 
-  return v3;
+  return wantsDisclosureButton;
 }
 
 - (id)smartMailbox
 {
-  v2 = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
-  v3 = [v2 mailbox];
+  sharedMailboxController = [(FavoriteItem_SharedMailbox *)self sharedMailboxController];
+  mailbox = [sharedMailboxController mailbox];
 
-  return v3;
+  return mailbox;
 }
 
-- (void)setSelected:(BOOL)a3 fromUI:(BOOL)a4
+- (void)setSelected:(BOOL)selected fromUI:(BOOL)i
 {
-  v4 = a4;
-  [(FavoriteItem *)self setSelected:a3];
-  if (v4)
+  iCopy = i;
+  [(FavoriteItem *)self setSelected:selected];
+  if (iCopy)
   {
     v6 = [FavoritesManager defaultsKeyForAutomaticMailboxVisibilityForSourceType:[(FavoriteItem_SharedMailbox *)self sourceType]];
     if (v6)
@@ -278,31 +278,31 @@
   }
 }
 
-- (FavoriteItem_SharedMailbox)initWithSourceType:(unint64_t)a3
+- (FavoriteItem_SharedMailbox)initWithSourceType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = FavoriteItem_SharedMailbox;
   result = [(FavoriteItem *)&v5 initWithType:5];
   if (result)
   {
-    result->_sourceType = a3;
+    result->_sourceType = type;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_sourceType == v5->_sourceType;
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_sourceType == v5->_sourceType;
   }
 
   return v6;
@@ -316,18 +316,18 @@
   }
 
   v2 = +[VIPManager defaultInstance];
-  v3 = [v2 hasVIPs];
+  hasVIPs = [v2 hasVIPs];
 
-  return v3;
+  return hasVIPs;
 }
 
-- (FavoriteItem_SharedMailbox)initWithDictionary:(id)a3
+- (FavoriteItem_SharedMailbox)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = FavoriteItem_SharedMailbox;
-  v5 = [(FavoriteItem *)&v9 initWithDictionary:v4];
-  if (v5 && ([v4 objectForKey:@"sourceType"], v6 = objc_claimAutoreleasedReturnValue(), v5->_sourceType = objc_msgSend(v6, "integerValue"), v6, v5->_sourceType > 0x1A))
+  v5 = [(FavoriteItem *)&v9 initWithDictionary:dictionaryCopy];
+  if (v5 && ([dictionaryCopy objectForKey:@"sourceType"], v6 = objc_claimAutoreleasedReturnValue(), v5->_sourceType = objc_msgSend(v6, "integerValue"), v6, v5->_sourceType > 0x1A))
   {
     v7 = 0;
   }
@@ -340,11 +340,11 @@
   return v7;
 }
 
-- (void)setUnreadCountToken:(id)a3
+- (void)setUnreadCountToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   unreadCountToken = self->_unreadCountToken;
-  if (unreadCountToken != v5)
+  if (unreadCountToken != tokenCopy)
   {
     [(EFCancelable *)unreadCountToken cancel];
     if (self->_unreadCountToken)
@@ -353,12 +353,12 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = objc_opt_class();
-        v9 = [(FavoriteItem_SharedMailbox *)self displayName];
+        displayName = [(FavoriteItem_SharedMailbox *)self displayName];
         v10 = self->_unreadCountToken;
         v12 = 138543874;
         v13 = v8;
         v14 = 2114;
-        v15 = v9;
+        v15 = displayName;
         v16 = 2114;
         v17 = v10;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@:%{public}@ - Cancel token:%{public}@", &v12, 0x20u);
@@ -370,34 +370,34 @@
       [(FavoriteItem_SharedMailbox *)self setIsObserving:0];
     }
 
-    objc_storeStrong(&self->_unreadCountToken, a3);
+    objc_storeStrong(&self->_unreadCountToken, token);
   }
 }
 
 - (id)badgeCountString
 {
-  v4 = [(FavoriteItem_SharedMailbox *)self sourceType];
-  if (v4 <= 0x1A)
+  sourceType = [(FavoriteItem_SharedMailbox *)self sourceType];
+  if (sourceType <= 0x1A)
   {
-    if (((1 << v4) & 0x2FF800C) != 0)
+    if (((1 << sourceType) & 0x2FF800C) != 0)
     {
       v5 = [NSBundle bundleWithIdentifier:@"com.apple.Message"];
       v6 = [v5 localizedStringForKey:@"MESSAGE_COUNT_FORMAT%1$lu" value:&stru_100662A88 table:@"Main"];
-      v7 = [(FavoriteItem *)self badgeCount];
-      v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [v7 integerValue]);
+      badgeCount = [(FavoriteItem *)self badgeCount];
+      v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [badgeCount integerValue]);
     }
 
     else
     {
-      if (((1 << v4) & 0x40001F3) == 0)
+      if (((1 << sourceType) & 0x40001F3) == 0)
       {
         goto LABEL_7;
       }
 
       v5 = [NSBundle bundleWithIdentifier:@"com.apple.Message"];
       v6 = [v5 localizedStringForKey:@"UNREAD_COUNT_FORMAT%1$lu" value:&stru_100662A88 table:@"Main"];
-      v7 = [(FavoriteItem *)self badgeCount];
-      v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [v7 integerValue]);
+      badgeCount = [(FavoriteItem *)self badgeCount];
+      v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [badgeCount integerValue]);
     }
 
     v2 = v8;
@@ -410,11 +410,11 @@ LABEL_7:
 
 - (id)countQueryPredicate
 {
-  v3 = [(FavoriteItem_SharedMailbox *)self sourceType];
+  sourceType = [(FavoriteItem_SharedMailbox *)self sourceType];
   v4 = objc_alloc_init(NSMutableArray);
   v5 = 0;
   v6 = 1;
-  switch(v3)
+  switch(sourceType)
   {
     case 1uLL:
       v7 = 1;
@@ -475,8 +475,8 @@ LABEL_19:
         [v4 addObject:v10];
       }
 
-      v11 = [(FavoriteItem_SharedMailbox *)self mailboxScope];
-      v12 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:v11];
+      mailboxScope = [(FavoriteItem_SharedMailbox *)self mailboxScope];
+      v12 = [EMMessageListItemPredicates predicateForMessagesWithMailboxScope:mailboxScope];
       [v4 addObject:v12];
 
       v5 = [NSCompoundPredicate andPredicateWithSubpredicates:v4];
@@ -491,14 +491,14 @@ LABEL_19:
 
 - (id)mailboxScope
 {
-  v2 = [(FavoriteItem_SharedMailbox *)self sourceType];
+  sourceType = [(FavoriteItem_SharedMailbox *)self sourceType];
   v3 = [EMMailboxScope mailboxScopeForMailboxTypes:&off_100674EF8 forExclusion:1];
   v4 = [EMMailboxScope mailboxScopeForMailboxType:7 forExclusion:0];
   v5 = v4;
   v6 = 0;
-  if (v2 <= 0x16)
+  if (sourceType <= 0x16)
   {
-    if (((1 << v2) & 0x7F0144) != 0)
+    if (((1 << sourceType) & 0x7F0144) != 0)
     {
       v7 = v3;
     }
@@ -506,7 +506,7 @@ LABEL_19:
     else
     {
       v7 = v4;
-      if (((1 << v2) & 0xBA) == 0)
+      if (((1 << sourceType) & 0xBA) == 0)
       {
         goto LABEL_6;
       }
@@ -524,15 +524,15 @@ LABEL_6:
 {
   if ([(FavoriteItem_SharedMailbox *)self sourceType]== 3)
   {
-    v3 = [(FavoriteItem_SharedMailbox *)self mailboxScope];
+    mailboxScope = [(FavoriteItem_SharedMailbox *)self mailboxScope];
   }
 
   else
   {
-    v3 = 0;
+    mailboxScope = 0;
   }
 
-  return v3;
+  return mailboxScope;
 }
 
 - (id)analyticsKey

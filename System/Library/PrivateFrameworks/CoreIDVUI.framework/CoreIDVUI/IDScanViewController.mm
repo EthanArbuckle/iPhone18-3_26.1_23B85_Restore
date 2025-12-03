@@ -1,6 +1,6 @@
 @interface IDScanViewController
 - (void)startManualCaptureTask;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -8,19 +8,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2457CC740();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2457CCCAC(a3);
+  selfCopy = self;
+  sub_2457CCCAC(appear);
 }
 
 - (void)startManualCaptureTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_2457D06B0();
 }
 

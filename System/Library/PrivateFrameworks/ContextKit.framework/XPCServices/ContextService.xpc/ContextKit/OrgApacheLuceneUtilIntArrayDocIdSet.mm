@@ -22,7 +22,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneUtilIntArrayDocIdSet_class_();
     qword_100553DC0 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

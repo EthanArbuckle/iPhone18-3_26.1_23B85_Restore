@@ -1,28 +1,28 @@
 @interface ATXHomeScreenPrediction
-- (ATXHomeScreenPrediction)initWithBlendingCacheIdentifier:(id)a3 widgetSuggestions:(id)a4 stacksAffectedByDebugRotation:(id)a5;
+- (ATXHomeScreenPrediction)initWithBlendingCacheIdentifier:(id)identifier widgetSuggestions:(id)suggestions stacksAffectedByDebugRotation:(id)rotation;
 @end
 
 @implementation ATXHomeScreenPrediction
 
-- (ATXHomeScreenPrediction)initWithBlendingCacheIdentifier:(id)a3 widgetSuggestions:(id)a4 stacksAffectedByDebugRotation:(id)a5
+- (ATXHomeScreenPrediction)initWithBlendingCacheIdentifier:(id)identifier widgetSuggestions:(id)suggestions stacksAffectedByDebugRotation:(id)rotation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  suggestionsCopy = suggestions;
+  rotationCopy = rotation;
   v19.receiver = self;
   v19.super_class = ATXHomeScreenPrediction;
   v11 = [(ATXHomeScreenPrediction *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     blendingCacheId = v11->_blendingCacheId;
     v11->_blendingCacheId = v12;
 
-    v14 = [v9 copy];
+    v14 = [suggestionsCopy copy];
     suggestions = v11->_suggestions;
     v11->_suggestions = v14;
 
-    v16 = [v10 copy];
+    v16 = [rotationCopy copy];
     stacksAffectedByDebugRotation = v11->_stacksAffectedByDebugRotation;
     v11->_stacksAffectedByDebugRotation = v16;
   }

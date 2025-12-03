@@ -1,12 +1,12 @@
 @interface _DASUrgencyOverridePolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (_DASUrgencyOverridePolicy)init;
-- (id)rationaleWithUrgencyOverride:(id)a3;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
-- (int64_t)makeDecisionBasedOnUrgencyOverride:(id)a3;
-- (void)addActivity:(id)a3 urgencyLevel:(int64_t)a4;
-- (void)removeActivity:(id)a3;
+- (id)rationaleWithUrgencyOverride:(id)override;
+- (id)responseForActivity:(id)activity withState:(id)state;
+- (int64_t)makeDecisionBasedOnUrgencyOverride:(id)override;
+- (void)addActivity:(id)activity urgencyLevel:(int64_t)level;
+- (void)removeActivity:(id)activity;
 @end
 
 @implementation _DASUrgencyOverridePolicy
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_100057B0C;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B228 != -1)
   {
     dispatch_once(&qword_10020B228, block);
@@ -58,78 +58,78 @@
   return v3;
 }
 
-- (void)addActivity:(id)a3 urgencyLevel:(int64_t)a4
+- (void)addActivity:(id)activity urgencyLevel:(int64_t)level
 {
-  v6 = a3;
+  activityCopy = activity;
   v7 = [_DASDaemonLogger logForCategory:@"UrgencyOverride"];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = activityCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Adding %@ to _urgentActivities", &v11, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
   urgentActivities = self->_urgentActivities;
-  v9 = [NSNumber numberWithInteger:a4];
-  [(NSMutableDictionary *)urgentActivities setValue:v9 forKey:v6];
+  v9 = [NSNumber numberWithInteger:level];
+  [(NSMutableDictionary *)urgentActivities setValue:v9 forKey:activityCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   v10 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
   [v10 setObject:self->_urgentActivities forKey:@"urgentActivities"];
 }
 
-- (void)removeActivity:(id)a3
+- (void)removeActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = [_DASDaemonLogger logForCategory:@"UrgencyOverride"];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = activityCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing %@ from _urgentActivities", &v7, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_urgentActivities removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_urgentActivities removeObjectForKey:activityCopy];
   os_unfair_lock_unlock(&self->_lock);
   v6 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
   [v6 setObject:self->_urgentActivities forKey:@"urgentActivities"];
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   os_unfair_lock_lock(&self->_lock);
   urgentActivities = self->_urgentActivities;
-  v6 = [v4 name];
+  name = [activityCopy name];
 
-  v7 = [(NSMutableDictionary *)urgentActivities objectForKey:v6];
-  LOBYTE(v4) = v7 != 0;
+  v7 = [(NSMutableDictionary *)urgentActivities objectForKey:name];
+  LOBYTE(activityCopy) = v7 != 0;
 
   os_unfair_lock_unlock(&self->_lock);
-  return v4;
+  return activityCopy;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = a3;
-  v6 = [(_DASUrgencyOverridePolicy *)self makeDecisionBasedOnUrgencyOverride:v5];
-  v7 = [(_DASUrgencyOverridePolicy *)self rationaleWithUrgencyOverride:v5];
+  activityCopy = activity;
+  v6 = [(_DASUrgencyOverridePolicy *)self makeDecisionBasedOnUrgencyOverride:activityCopy];
+  v7 = [(_DASUrgencyOverridePolicy *)self rationaleWithUrgencyOverride:activityCopy];
 
   v8 = [_DASPolicyResponse policyResponseWithDecision:v6 validityDuration:v7 rationale:0x384uLL];
 
   return v8;
 }
 
-- (int64_t)makeDecisionBasedOnUrgencyOverride:(id)a3
+- (int64_t)makeDecisionBasedOnUrgencyOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   os_unfair_lock_lock(&self->_lock);
   urgentActivities = self->_urgentActivities;
-  v6 = [v4 name];
+  name = [overrideCopy name];
 
-  v7 = [(NSMutableDictionary *)urgentActivities valueForKey:v6];
+  v7 = [(NSMutableDictionary *)urgentActivities valueForKey:name];
 
   os_unfair_lock_unlock(&self->_lock);
   if ([v7 intValue] == 2)
@@ -150,15 +150,15 @@
   return v8;
 }
 
-- (id)rationaleWithUrgencyOverride:(id)a3
+- (id)rationaleWithUrgencyOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   v5 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Urgency Override Policy"];
   os_unfair_lock_lock(&self->_lock);
   urgentActivities = self->_urgentActivities;
-  v7 = [v4 name];
+  name = [overrideCopy name];
 
-  v8 = [(NSMutableDictionary *)urgentActivities valueForKey:v7];
+  v8 = [(NSMutableDictionary *)urgentActivities valueForKey:name];
 
   os_unfair_lock_unlock(&self->_lock);
   v9 = [NSString stringWithFormat:@"urgencylevel == %@", v8];

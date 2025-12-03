@@ -1,23 +1,23 @@
 @interface STUserID
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUserID:(id)a3;
-- (STUserID)initWithCoder:(id)a3;
-- (STUserID)initWithDSID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUserID:(id)d;
+- (STUserID)initWithCoder:(id)coder;
+- (STUserID)initWithDSID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STUserID
 
-- (STUserID)initWithDSID:(id)a3
+- (STUserID)initWithDSID:(id)d
 {
   v8.receiver = self;
   v8.super_class = STUserID;
-  v3 = a3;
+  dCopy = d;
   v4 = [(STUserID *)&v8 init];
-  v5 = [v3 copy];
+  v5 = [dCopy copy];
 
   dsid = v4->_dsid;
   v4->_dsid = v5;
@@ -29,40 +29,40 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(STUserID *)self dsid];
-  v6 = [v3 stringWithFormat:@"<%@ { DSID: %@ }>", v4, v5];
+  dsid = [(STUserID *)self dsid];
+  v6 = [v3 stringWithFormat:@"<%@ { DSID: %@ }>", v4, dsid];
 
   return v6;
 }
 
-- (STUserID)initWithCoder:(id)a3
+- (STUserID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
 
   v6 = [(STUserID *)self initWithDSID:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STUserID *)self dsid];
-  [v4 encodeObject:v5 forKey:@"dsid"];
+  coderCopy = coder;
+  dsid = [(STUserID *)self dsid];
+  [coderCopy encodeObject:dsid forKey:@"dsid"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   dsid = self->_dsid;
 
   return [v4 initWithDSID:dsid];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -70,31 +70,31 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STUserID *)self isEqualToUserID:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(STUserID *)self isEqualToUserID:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToUserID:(id)a3
+- (BOOL)isEqualToUserID:(id)d
 {
-  if (a3 == self)
+  if (d == self)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(STUserID *)self dsid];
-  v6 = [v4 dsid];
+  dCopy = d;
+  dsid = [(STUserID *)self dsid];
+  dsid2 = [dCopy dsid];
 
-  LOBYTE(v4) = [v5 isEqualToNumber:v6];
-  return v4;
+  LOBYTE(dCopy) = [dsid isEqualToNumber:dsid2];
+  return dCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(STUserID *)self dsid];
-  v3 = [v2 hash];
+  dsid = [(STUserID *)self dsid];
+  v3 = [dsid hash];
 
   return v3;
 }

@@ -1,8 +1,8 @@
 @interface OTEscrowCheckCallResult
-- (OTEscrowCheckCallResult)initWithCoder:(id)a3;
+- (OTEscrowCheckCallResult)initWithCoder:(id)coder;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OTEscrowCheckCallResult
@@ -19,13 +19,13 @@
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[OTEscrowCheckCallResult secureTermsNeeded](self, "secureTermsNeeded")}];
   [v3 setObject:v6 forKeyedSubscript:@"secureTermsNeeded"];
 
-  v7 = [(OTEscrowCheckCallResult *)self moveRequest];
+  moveRequest = [(OTEscrowCheckCallResult *)self moveRequest];
 
-  if (v7)
+  if (moveRequest)
   {
-    v8 = [(OTEscrowCheckCallResult *)self moveRequest];
-    v9 = [v8 dictionaryRepresentation];
-    [v3 setObject:v9 forKeyedSubscript:@"moveRequest"];
+    moveRequest2 = [(OTEscrowCheckCallResult *)self moveRequest];
+    dictionaryRepresentation = [moveRequest2 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"moveRequest"];
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:{-[OTEscrowCheckCallResult repairReason](self, "repairReason")}];
@@ -37,36 +37,36 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeBool:-[OTEscrowCheckCallResult needsReenroll](self forKey:{"needsReenroll"), @"needsReenroll"}];
-  [v5 encodeBool:-[OTEscrowCheckCallResult octagonTrusted](self forKey:{"octagonTrusted"), @"octagonTrusted"}];
-  [v5 encodeBool:-[OTEscrowCheckCallResult secureTermsNeeded](self forKey:{"secureTermsNeeded"), @"secureTermsNeeded"}];
-  v4 = [(OTEscrowCheckCallResult *)self moveRequest];
-  [v5 encodeObject:v4 forKey:@"moveRequest"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[OTEscrowCheckCallResult needsReenroll](self forKey:{"needsReenroll"), @"needsReenroll"}];
+  [coderCopy encodeBool:-[OTEscrowCheckCallResult octagonTrusted](self forKey:{"octagonTrusted"), @"octagonTrusted"}];
+  [coderCopy encodeBool:-[OTEscrowCheckCallResult secureTermsNeeded](self forKey:{"secureTermsNeeded"), @"secureTermsNeeded"}];
+  moveRequest = [(OTEscrowCheckCallResult *)self moveRequest];
+  [coderCopy encodeObject:moveRequest forKey:@"moveRequest"];
 
-  [v5 encodeInteger:-[OTEscrowCheckCallResult repairReason](self forKey:{"repairReason"), @"repairReason"}];
-  [v5 encodeBool:-[OTEscrowCheckCallResult repairDisabled](self forKey:{"repairDisabled"), @"repairDisabled"}];
+  [coderCopy encodeInteger:-[OTEscrowCheckCallResult repairReason](self forKey:{"repairReason"), @"repairReason"}];
+  [coderCopy encodeBool:-[OTEscrowCheckCallResult repairDisabled](self forKey:{"repairDisabled"), @"repairDisabled"}];
 }
 
-- (OTEscrowCheckCallResult)initWithCoder:(id)a3
+- (OTEscrowCheckCallResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = OTEscrowCheckCallResult;
   v5 = [(OTEscrowCheckCallResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"moveRequest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"moveRequest"];
     moveRequest = v5->_moveRequest;
     v5->_moveRequest = v6;
 
-    v5->_needsReenroll = [v4 decodeBoolForKey:@"needsReenroll"];
-    v5->_octagonTrusted = [v4 decodeBoolForKey:@"octagonTrusted"];
-    v5->_secureTermsNeeded = [v4 decodeBoolForKey:@"secureTermsNeeded"];
-    v5->_repairReason = [v4 decodeIntegerForKey:@"repairReason"];
-    v5->_repairDisabled = [v4 decodeBoolForKey:@"repairDisabled"];
+    v5->_needsReenroll = [coderCopy decodeBoolForKey:@"needsReenroll"];
+    v5->_octagonTrusted = [coderCopy decodeBoolForKey:@"octagonTrusted"];
+    v5->_secureTermsNeeded = [coderCopy decodeBoolForKey:@"secureTermsNeeded"];
+    v5->_repairReason = [coderCopy decodeIntegerForKey:@"repairReason"];
+    v5->_repairDisabled = [coderCopy decodeBoolForKey:@"repairDisabled"];
   }
 
   return v5;
@@ -105,8 +105,8 @@
     v6 = @"NO";
   }
 
-  v7 = [(OTEscrowCheckCallResult *)self moveRequest];
-  v8 = [(OTEscrowCheckCallResult *)self repairReason];
+  moveRequest = [(OTEscrowCheckCallResult *)self moveRequest];
+  repairReason = [(OTEscrowCheckCallResult *)self repairReason];
   if ([(OTEscrowCheckCallResult *)self repairDisabled])
   {
     v9 = @"YES";
@@ -117,7 +117,7 @@
     v9 = @"NO";
   }
 
-  v10 = [v3 stringWithFormat:@"<OTEscrowCheckCallResult: needsReenroll: %@, octagonTrusted: %@, moveRequest? %@, secureTermsNeeded? %@, repairReason: %ld, repairDisabled: %@>", v4, v5, v6, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"<OTEscrowCheckCallResult: needsReenroll: %@, octagonTrusted: %@, moveRequest? %@, secureTermsNeeded? %@, repairReason: %ld, repairDisabled: %@>", v4, v5, v6, moveRequest, repairReason, v9];
 
   return v10;
 }

@@ -1,6 +1,6 @@
 @interface NTKLeghornPicayuneViewConfiguration
 - (CGAffineTransform)transform;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation NTKLeghornPicayuneViewConfiguration
@@ -14,11 +14,11 @@
   return self;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_transform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_transform.a = *&transform->a;
   *&self->_transform.c = v4;
   *&self->_transform.tx = v3;
 }

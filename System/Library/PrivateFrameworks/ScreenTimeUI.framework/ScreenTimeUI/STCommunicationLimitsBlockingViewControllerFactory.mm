@@ -1,24 +1,24 @@
 @interface STCommunicationLimitsBlockingViewControllerFactory
-+ (id)communicationLimitsBlockingViewControllerWithViewModel:(id)a3;
-+ (id)createCommunicationLimitsBlockingViewModelWithBlockingViewType:(int64_t)a3 contactNameByHandle:(id)a4 delegate:(id)a5 handles:(id)a6;
++ (id)communicationLimitsBlockingViewControllerWithViewModel:(id)model;
++ (id)createCommunicationLimitsBlockingViewModelWithBlockingViewType:(int64_t)type contactNameByHandle:(id)handle delegate:(id)delegate handles:(id)handles;
 - (_TtC12ScreenTimeUI50STCommunicationLimitsBlockingViewControllerFactory)init;
 @end
 
 @implementation STCommunicationLimitsBlockingViewControllerFactory
 
-+ (id)communicationLimitsBlockingViewControllerWithViewModel:(id)a3
++ (id)communicationLimitsBlockingViewControllerWithViewModel:(id)model
 {
   v4 = objc_allocWithZone(type metadata accessor for STCommunicationLimitsBlockingViewController());
-  *&v4[qword_27CE90620] = a3;
-  v5 = a3;
+  *&v4[qword_27CE90620] = model;
+  modelCopy = model;
   v6 = sub_21DDBD7E0();
 
   return v6;
 }
 
-+ (id)createCommunicationLimitsBlockingViewModelWithBlockingViewType:(int64_t)a3 contactNameByHandle:(id)a4 delegate:(id)a5 handles:(id)a6
++ (id)createCommunicationLimitsBlockingViewModelWithBlockingViewType:(int64_t)type contactNameByHandle:(id)handle delegate:(id)delegate handles:(id)handles
 {
-  if (a4)
+  if (handle)
   {
     v8 = sub_21DDBDA70();
   }
@@ -29,15 +29,15 @@
   }
 
   v9 = sub_21DDBDB60();
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
-    a3 = 0;
+    type = 0;
   }
 
   type metadata accessor for CommunicationLimitsBlockingViewModel();
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v10 = sub_21DDB78F8(a3, v8, a5, v9);
+  v10 = sub_21DDB78F8(type, v8, delegate, v9);
 
   return v10;
 }

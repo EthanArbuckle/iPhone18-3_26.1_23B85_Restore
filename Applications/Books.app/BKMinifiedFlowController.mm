@@ -3,52 +3,52 @@
 - (BKMinifiedFlowController)init;
 - (BKMinifiedFlowControllerDelegate)delegate;
 - (BKSceneHosting)sceneHosting;
-- (BOOL)_assetIsPresentedOnAuxiliaryCanvas:(id)a3;
+- (BOOL)_assetIsPresentedOnAuxiliaryCanvas:(id)canvas;
 - (BOOL)_legacyMinibarBehavior;
-- (BOOL)_presenterIsAudiobookPreview:(id)a3;
-- (BOOL)_shouldHandleCurrentBookNotification:(id)a3;
+- (BOOL)_presenterIsAudiobookPreview:(id)preview;
+- (BOOL)_shouldHandleCurrentBookNotification:(id)notification;
 - (BOOL)_shouldHideMinibar;
-- (BOOL)minifiedPresenterCanOpenPresenter:(id)a3 overCurrentPresenter:(id)a4;
-- (BOOL)shouldAnimateAssetWithAssetIDFromMinibar:(id)a3;
+- (BOOL)minifiedPresenterCanOpenPresenter:(id)presenter overCurrentPresenter:(id)currentPresenter;
+- (BOOL)shouldAnimateAssetWithAssetIDFromMinibar:(id)minibar;
 - (id)_currentAssetPresenters;
 - (id)minifiedBarAnimatorMinibarView;
 - (id)minifiedBarAnimatorTabBarView;
-- (id)minifiedPresenterAssetCurrentPresenterForAssetID:(id)a3;
+- (id)minifiedPresenterAssetCurrentPresenterForAssetID:(id)d;
 - (id)minifiedPresenterAssetCurrentPresenters;
-- (id)minifiedPresenterAssetCurrentPresentersForAssetIDs:(id)a3;
-- (void)_cleanLastKnownCurrentBookIfNecessary:(id)a3;
-- (void)_closeMinifiedPresenter:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_hideToolbarAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_layoutPresenterMinibar:(id)a3;
-- (void)_layoutPresenterMinibar:(id)a3 visible:(BOOL)a4 viewController:(id)a5;
+- (id)minifiedPresenterAssetCurrentPresentersForAssetIDs:(id)ds;
+- (void)_cleanLastKnownCurrentBookIfNecessary:(id)necessary;
+- (void)_closeMinifiedPresenter:(id)presenter animated:(BOOL)animated completion:(id)completion;
+- (void)_hideToolbarAnimated:(BOOL)animated completion:(id)completion;
+- (void)_layoutPresenterMinibar:(id)minibar;
+- (void)_layoutPresenterMinibar:(id)minibar visible:(BOOL)visible viewController:(id)controller;
 - (void)_notifyToolbars;
-- (void)_recentBooksProviderChanged:(id)a3;
-- (void)_setMinibarVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_recentBooksProviderChanged:(id)changed;
+- (void)_setMinibarVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
 - (void)activeRootBarKindDidChange;
 - (void)contentSizeCategoryDidChange;
 - (void)dealloc;
-- (void)minifiedBarAnimatePrepareTransitionToViewController:(id)a3;
-- (void)minifiedBarAnimatorAnimateHideIfNeededFromViewController:(id)a3;
-- (void)minifiedBarAnimatorAnimateShowIfNeededToViewController:(id)a3 force:(BOOL)a4;
-- (void)minifiedBarAnimatorFinalizeHideIfNeededToViewController:(id)a3;
-- (void)minifiedBarAnimatorPrepareShowIfNeededToViewController:(id)a3;
-- (void)minifiedPresenter:(id)a3 openStorePageForStoreID:(id)a4 fromViewController:(id)a5;
-- (void)minifiedPresenterAddPresenter:(id)a3;
-- (void)minifiedPresenterAssetPresenterForAssetIdentifier:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)minifiedPresenterAssetPresenterForStoreAsset:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)minifiedPresenterClose:(id)a3 error:(id)a4 isRetry:(BOOL)a5;
-- (void)minifiedPresenterDidCloseAssetID:(id)a3 finishedConsuming:(BOOL)a4;
-- (void)minifiedPresenterDidOpenAssetID:(id)a3;
-- (void)minifiedPresenterDidReloadAssetViewController:(id)a3;
-- (void)minifiedPresenterOpenMinified:(id)a3;
-- (void)minifiedPresenterPause:(id)a3;
-- (void)minifiedPresenterPrepareToOpen:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)minifiedPresenterUpdateCurrentBookWithCompletion:(id)a3;
-- (void)setShouldIgnoreCurrentBookNotifications:(BOOL)a3;
-- (void)toggleMinibarVisibility:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)visibleViewControllersUpdatedPostTranstionAnimated:(BOOL)a3;
-- (void)visibleViewControllersUpdatedPreTranstionAnimated:(BOOL)a3;
+- (void)minifiedBarAnimatePrepareTransitionToViewController:(id)controller;
+- (void)minifiedBarAnimatorAnimateHideIfNeededFromViewController:(id)controller;
+- (void)minifiedBarAnimatorAnimateShowIfNeededToViewController:(id)controller force:(BOOL)force;
+- (void)minifiedBarAnimatorFinalizeHideIfNeededToViewController:(id)controller;
+- (void)minifiedBarAnimatorPrepareShowIfNeededToViewController:(id)controller;
+- (void)minifiedPresenter:(id)presenter openStorePageForStoreID:(id)d fromViewController:(id)controller;
+- (void)minifiedPresenterAddPresenter:(id)presenter;
+- (void)minifiedPresenterAssetPresenterForAssetIdentifier:(id)identifier options:(id)options completion:(id)completion;
+- (void)minifiedPresenterAssetPresenterForStoreAsset:(id)asset options:(id)options completion:(id)completion;
+- (void)minifiedPresenterClose:(id)close error:(id)error isRetry:(BOOL)retry;
+- (void)minifiedPresenterDidCloseAssetID:(id)d finishedConsuming:(BOOL)consuming;
+- (void)minifiedPresenterDidOpenAssetID:(id)d;
+- (void)minifiedPresenterDidReloadAssetViewController:(id)controller;
+- (void)minifiedPresenterOpenMinified:(id)minified;
+- (void)minifiedPresenterPause:(id)pause;
+- (void)minifiedPresenterPrepareToOpen:(id)open animated:(BOOL)animated completion:(id)completion;
+- (void)minifiedPresenterUpdateCurrentBookWithCompletion:(id)completion;
+- (void)setShouldIgnoreCurrentBookNotifications:(BOOL)notifications;
+- (void)toggleMinibarVisibility:(id)visibility;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)visibleViewControllersUpdatedPostTranstionAnimated:(BOOL)animated;
+- (void)visibleViewControllersUpdatedPreTranstionAnimated:(BOOL)animated;
 @end
 
 @implementation BKMinifiedFlowController
@@ -100,58 +100,58 @@
 - (BKLibraryAssetProvider)libraryAssetProvider
 {
   v2 = +[BKAppDelegate delegate];
-  v3 = [v2 libraryAssetProvider];
+  libraryAssetProvider = [v2 libraryAssetProvider];
 
-  return v3;
+  return libraryAssetProvider;
 }
 
-- (void)minifiedPresenterAssetPresenterForStoreAsset:(id)a3 options:(id)a4 completion:(id)a5
+- (void)minifiedPresenterAssetPresenterForStoreAsset:(id)asset options:(id)options completion:(id)completion
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  v11 = [v10 minifiedAssetPresenterAssetID];
-  v12 = [v23 id];
-  v13 = [v11 isEqualToString:v12];
+  assetCopy = asset;
+  optionsCopy = options;
+  completionCopy = completion;
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  minifiedAssetPresenterAssetID = [audioBookAssetPresenter minifiedAssetPresenterAssetID];
+  v12 = [assetCopy id];
+  v13 = [minifiedAssetPresenterAssetID isEqualToString:v12];
 
-  if (v13 && (-[BKMinifiedFlowController audioBookAssetPresenter](self, "audioBookAssetPresenter"), v14 = objc_claimAutoreleasedReturnValue(), BUProtocolCast(), v15 = objc_claimAutoreleasedReturnValue(), v14, v15) || (-[BKMinifiedFlowController currentBookAssetPresenter](self, "currentBookAssetPresenter"), v16 = objc_claimAutoreleasedReturnValue(), [v16 minifiedAssetPresenterAssetID], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "id"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "isEqualToString:", v18), v18, v17, v16, v19) && (-[BKMinifiedFlowController currentBookAssetPresenter](self, "currentBookAssetPresenter"), v20 = objc_claimAutoreleasedReturnValue(), BUProtocolCast(), v15 = objc_claimAutoreleasedReturnValue(), v20, v15))
+  if (v13 && (-[BKMinifiedFlowController audioBookAssetPresenter](self, "audioBookAssetPresenter"), v14 = objc_claimAutoreleasedReturnValue(), BUProtocolCast(), v15 = objc_claimAutoreleasedReturnValue(), v14, v15) || (-[BKMinifiedFlowController currentBookAssetPresenter](self, "currentBookAssetPresenter"), v16 = objc_claimAutoreleasedReturnValue(), [v16 minifiedAssetPresenterAssetID], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(assetCopy, "id"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "isEqualToString:", v18), v18, v17, v16, v19) && (-[BKMinifiedFlowController currentBookAssetPresenter](self, "currentBookAssetPresenter"), v20 = objc_claimAutoreleasedReturnValue(), BUProtocolCast(), v15 = objc_claimAutoreleasedReturnValue(), v20, v15))
   {
-    v21 = objc_retainBlock(v9);
+    v21 = objc_retainBlock(completionCopy);
     if (v21)
     {
-      v22 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-      v21[2](v21, v22);
+      audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+      v21[2](v21, audioBookAssetPresenter2);
     }
   }
 
   else
   {
-    [(objc_class *)[(BKMinifiedFlowController *)self _storeAssetPresenterClass] minimizedPresenterWithAsset:v23 options:v8 presenter:self completion:v9];
+    [(objc_class *)[(BKMinifiedFlowController *)self _storeAssetPresenterClass] minimizedPresenterWithAsset:assetCopy options:optionsCopy presenter:self completion:completionCopy];
   }
 }
 
-- (void)minifiedPresenterAssetPresenterForAssetIdentifier:(id)a3 options:(id)a4 completion:(id)a5
+- (void)minifiedPresenterAssetPresenterForAssetIdentifier:(id)identifier options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = BCCurrentBookLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v32 = 138412290;
-    v33 = v8;
+    v33 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "minifiedPresenterAssetPresenterForAssetIdentifier assetID=%{masked.hash}@", &v32, 0xCu);
   }
 
-  v12 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  v13 = [v12 minifiedAssetPresenterAssetID];
-  v14 = [v8 permanentOrTemporaryAssetID];
-  v15 = [v13 isEqualToString:v14];
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  minifiedAssetPresenterAssetID = [audioBookAssetPresenter minifiedAssetPresenterAssetID];
+  permanentOrTemporaryAssetID = [identifierCopy permanentOrTemporaryAssetID];
+  v15 = [minifiedAssetPresenterAssetID isEqualToString:permanentOrTemporaryAssetID];
 
-  if (v15 && (-[BKMinifiedFlowController audioBookAssetPresenter](self, "audioBookAssetPresenter"), v16 = objc_claimAutoreleasedReturnValue(), BUProtocolCast(), v17 = objc_claimAutoreleasedReturnValue(), v16, v17) || (-[BKMinifiedFlowController currentBookAssetPresenter](self, "currentBookAssetPresenter"), v18 = objc_claimAutoreleasedReturnValue(), [v18 minifiedAssetPresenterAssetID], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "permanentOrTemporaryAssetID"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "isEqualToString:", v20), v20, v19, v18, v21) && (-[BKMinifiedFlowController currentBookAssetPresenter](self, "currentBookAssetPresenter"), v22 = objc_claimAutoreleasedReturnValue(), BUProtocolCast(), v17 = objc_claimAutoreleasedReturnValue(), v22, v17))
+  if (v15 && (-[BKMinifiedFlowController audioBookAssetPresenter](self, "audioBookAssetPresenter"), v16 = objc_claimAutoreleasedReturnValue(), BUProtocolCast(), v17 = objc_claimAutoreleasedReturnValue(), v16, v17) || (-[BKMinifiedFlowController currentBookAssetPresenter](self, "currentBookAssetPresenter"), v18 = objc_claimAutoreleasedReturnValue(), [v18 minifiedAssetPresenterAssetID], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(identifierCopy, "permanentOrTemporaryAssetID"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "isEqualToString:", v20), v20, v19, v18, v21) && (-[BKMinifiedFlowController currentBookAssetPresenter](self, "currentBookAssetPresenter"), v22 = objc_claimAutoreleasedReturnValue(), BUProtocolCast(), v17 = objc_claimAutoreleasedReturnValue(), v22, v17))
   {
-    v23 = objc_retainBlock(v10);
+    v23 = objc_retainBlock(completionCopy);
     v24 = v23;
     if (v23)
     {
@@ -161,46 +161,46 @@
 
   else
   {
-    v25 = [(BKMinifiedFlowController *)self libraryAssetProvider];
+    libraryAssetProvider = [(BKMinifiedFlowController *)self libraryAssetProvider];
 
-    if (v25)
+    if (libraryAssetProvider)
     {
       v26 = BCCurrentBookLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         v32 = 138412290;
-        v33 = v8;
+        v33 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "minifiedPresenterAssetPresenterForAssetIdentifier assetID=%{masked.hash}@ requesting for libraryAsset", &v32, 0xCu);
       }
 
-      v27 = [(BKMinifiedFlowController *)self libraryAssetProvider];
-      v17 = [v27 libraryAssetOnMainQueueWithAssetIdentifier:v8];
+      libraryAssetProvider2 = [(BKMinifiedFlowController *)self libraryAssetProvider];
+      v17 = [libraryAssetProvider2 libraryAssetOnMainQueueWithAssetIdentifier:identifierCopy];
 
       if ([v17 isAudiobook])
       {
-        v28 = [(BKMinifiedFlowController *)self _audiobookMinifiedAssetPresenterClass];
+        _audiobookMinifiedAssetPresenterClass = [(BKMinifiedFlowController *)self _audiobookMinifiedAssetPresenterClass];
       }
 
       else
       {
-        v28 = objc_opt_class();
+        _audiobookMinifiedAssetPresenterClass = objc_opt_class();
       }
 
-      v30 = v28;
+      v30 = _audiobookMinifiedAssetPresenterClass;
       v31 = BCCurrentBookLog();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         v32 = 138412290;
-        v33 = v8;
+        v33 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "minifiedPresenterAssetPresenterForAssetIdentifier assetID=%{masked.hash}@ requesting minified asset presenter for libraryAsset", &v32, 0xCu);
       }
 
-      [(objc_class *)v30 minimizedPresenterWithLibraryAsset:v17 options:v9 presenter:self completion:v10];
+      [(objc_class *)v30 minimizedPresenterWithLibraryAsset:v17 options:optionsCopy presenter:self completion:completionCopy];
     }
 
     else
     {
-      v29 = objc_retainBlock(v10);
+      v29 = objc_retainBlock(completionCopy);
       v17 = v29;
       if (v29)
       {
@@ -210,28 +210,28 @@
   }
 }
 
-- (id)minifiedPresenterAssetCurrentPresenterForAssetID:(id)a3
+- (id)minifiedPresenterAssetCurrentPresenterForAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  v6 = [v5 minifiedAssetPresenterAssetID];
-  v7 = [v6 isEqualToString:v4];
+  dCopy = d;
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  minifiedAssetPresenterAssetID = [audioBookAssetPresenter minifiedAssetPresenterAssetID];
+  v7 = [minifiedAssetPresenterAssetID isEqualToString:dCopy];
 
   if (v7)
   {
-    v8 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
 LABEL_5:
-    v12 = v8;
+    v12 = audioBookAssetPresenter2;
     goto LABEL_7;
   }
 
-  v9 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-  v10 = [v9 minifiedAssetPresenterAssetID];
-  v11 = [v10 isEqualToString:v4];
+  currentBookAssetPresenter = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+  minifiedAssetPresenterAssetID2 = [currentBookAssetPresenter minifiedAssetPresenterAssetID];
+  v11 = [minifiedAssetPresenterAssetID2 isEqualToString:dCopy];
 
   if (v11)
   {
-    v8 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+    audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
     goto LABEL_5;
   }
 
@@ -241,37 +241,37 @@ LABEL_7:
   return v12;
 }
 
-- (id)minifiedPresenterAssetCurrentPresentersForAssetIDs:(id)a3
+- (id)minifiedPresenterAssetCurrentPresentersForAssetIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[NSMutableSet set];
-  v6 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  if (v6)
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  if (audioBookAssetPresenter)
   {
-    v7 = v6;
-    v8 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-    v9 = [v8 minifiedAssetPresenterAssetID];
-    v10 = [v4 containsObject:v9];
+    v7 = audioBookAssetPresenter;
+    audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    minifiedAssetPresenterAssetID = [audioBookAssetPresenter2 minifiedAssetPresenterAssetID];
+    v10 = [dsCopy containsObject:minifiedAssetPresenterAssetID];
 
     if (v10)
     {
-      v11 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-      [v5 addObject:v11];
+      audioBookAssetPresenter3 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+      [v5 addObject:audioBookAssetPresenter3];
     }
   }
 
-  v12 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-  if (v12)
+  currentBookAssetPresenter = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+  if (currentBookAssetPresenter)
   {
-    v13 = v12;
-    v14 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-    v15 = [v14 minifiedAssetPresenterAssetID];
-    v16 = [v4 containsObject:v15];
+    v13 = currentBookAssetPresenter;
+    currentBookAssetPresenter2 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+    minifiedAssetPresenterAssetID2 = [currentBookAssetPresenter2 minifiedAssetPresenterAssetID];
+    v16 = [dsCopy containsObject:minifiedAssetPresenterAssetID2];
 
     if (v16)
     {
-      v17 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-      [v5 addObject:v17];
+      currentBookAssetPresenter3 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+      [v5 addObject:currentBookAssetPresenter3];
     }
   }
 
@@ -283,20 +283,20 @@ LABEL_7:
 - (id)minifiedPresenterAssetCurrentPresenters
 {
   v3 = +[NSMutableSet set];
-  v4 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
 
-  if (v4)
+  if (audioBookAssetPresenter)
   {
-    v5 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-    [v3 addObject:v5];
+    audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    [v3 addObject:audioBookAssetPresenter2];
   }
 
-  v6 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+  currentBookAssetPresenter = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
 
-  if (v6)
+  if (currentBookAssetPresenter)
   {
-    v7 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-    [v3 addObject:v7];
+    currentBookAssetPresenter2 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+    [v3 addObject:currentBookAssetPresenter2];
   }
 
   v8 = [v3 copy];
@@ -304,17 +304,17 @@ LABEL_7:
   return v8;
 }
 
-- (void)minifiedPresenterPrepareToOpen:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)minifiedPresenterPrepareToOpen:(id)open animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  openCopy = open;
+  completionCopy = completion;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v10 = [(BKMinifiedFlowController *)self minifiedAssetPresenters];
-  v11 = [v10 countByEnumeratingWithState:&v45 objects:v50 count:16];
+  minifiedAssetPresenters = [(BKMinifiedFlowController *)self minifiedAssetPresenters];
+  v11 = [minifiedAssetPresenters countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v11)
   {
     v12 = *v46;
@@ -324,7 +324,7 @@ LABEL_7:
       {
         if (*v46 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(minifiedAssetPresenters);
         }
 
         v14 = *(*(&v45 + 1) + 8 * i);
@@ -335,7 +335,7 @@ LABEL_7:
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v45 objects:v50 count:16];
+      v11 = [minifiedAssetPresenters countByEnumeratingWithState:&v45 objects:v50 count:16];
       if (v11)
       {
         continue;
@@ -347,46 +347,46 @@ LABEL_7:
 
 LABEL_11:
 
-  if ([(BKMinifiedFlowController *)self _presenterIsAudiobookPreview:v8])
+  if ([(BKMinifiedFlowController *)self _presenterIsAudiobookPreview:openCopy])
   {
-    v15 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-    if (v15)
+    audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    if (audioBookAssetPresenter)
     {
-      v16 = v15;
-      v17 = [v8 minifiedAssetPresenterIsAudiobook];
+      v16 = audioBookAssetPresenter;
+      minifiedAssetPresenterIsAudiobook = [openCopy minifiedAssetPresenterIsAudiobook];
 
-      if (v17)
+      if (minifiedAssetPresenterIsAudiobook)
       {
-        v18 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-        v19 = [v18 minifiedAssetPresenterAssetID];
-        v20 = [v8 minifiedAssetPresenterAssetID];
-        v21 = [v19 isEqual:v20];
+        audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+        minifiedAssetPresenterAssetID = [audioBookAssetPresenter2 minifiedAssetPresenterAssetID];
+        minifiedAssetPresenterAssetID2 = [openCopy minifiedAssetPresenterAssetID];
+        v21 = [minifiedAssetPresenterAssetID isEqual:minifiedAssetPresenterAssetID2];
 
         if (v21)
         {
           v22 = +[BKAppDelegate sceneManager];
-          v23 = [v22 primarySceneController];
-          v24 = [v23 rootBarCoordinator];
+          primarySceneController = [v22 primarySceneController];
+          rootBarCoordinator = [primarySceneController rootBarCoordinator];
 
-          [v24 presentFullPlayerWithCompletion:0];
+          [rootBarCoordinator presentFullPlayerWithCompletion:0];
         }
 
         else
         {
-          v38 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+          audioBookAssetPresenter3 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
 
-          if (v38 == v8)
+          if (audioBookAssetPresenter3 == openCopy)
           {
             goto LABEL_19;
           }
 
-          v24 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-          [v24 minifiedAssetPresenterPausePlayback];
+          rootBarCoordinator = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+          [rootBarCoordinator minifiedAssetPresenterPausePlayback];
         }
 
 LABEL_19:
-        v27 = objc_retainBlock(v9);
-        v28 = v27;
+        v27 = objc_retainBlock(completionCopy);
+        currentBookAssetPresenter = v27;
         if (v27)
         {
           (*(v27 + 2))(v27);
@@ -397,29 +397,29 @@ LABEL_19:
     }
   }
 
-  v25 = [v11 minifiedAssetPresenterAssetID];
-  v26 = [v8 minifiedAssetPresenterAssetID];
-  if (![v25 isEqualToString:v26] || (objc_msgSend(v11, "minifiedAssetPresenterCanStayOpenInBackground") & 1) != 0)
+  minifiedAssetPresenterAssetID3 = [v11 minifiedAssetPresenterAssetID];
+  minifiedAssetPresenterAssetID4 = [openCopy minifiedAssetPresenterAssetID];
+  if (![minifiedAssetPresenterAssetID3 isEqualToString:minifiedAssetPresenterAssetID4] || (objc_msgSend(v11, "minifiedAssetPresenterCanStayOpenInBackground") & 1) != 0)
   {
 
     goto LABEL_19;
   }
 
-  v29 = [v8 minifiedAssetPresenterIsAudiobook];
+  minifiedAssetPresenterIsAudiobook2 = [openCopy minifiedAssetPresenterIsAudiobook];
 
-  if (v29)
+  if (minifiedAssetPresenterIsAudiobook2)
   {
     goto LABEL_19;
   }
 
-  v39 = v6;
-  v40 = v9;
+  v39 = animatedCopy;
+  v40 = completionCopy;
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v30 = [(BKMinifiedFlowController *)self minifiedAssetPresenters];
-  v31 = [v30 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  minifiedAssetPresenters2 = [(BKMinifiedFlowController *)self minifiedAssetPresenters];
+  v31 = [minifiedAssetPresenters2 countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v31)
   {
     v32 = v31;
@@ -430,22 +430,22 @@ LABEL_19:
       {
         if (*v42 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(minifiedAssetPresenters2);
         }
 
-        v35 = [*(*(&v41 + 1) + 8 * j) minifiedAssetPresenterAssetID];
-        v36 = [v8 minifiedAssetPresenterAssetID];
-        v37 = [v35 isEqualToString:v36];
+        minifiedAssetPresenterAssetID5 = [*(*(&v41 + 1) + 8 * j) minifiedAssetPresenterAssetID];
+        minifiedAssetPresenterAssetID6 = [openCopy minifiedAssetPresenterAssetID];
+        v37 = [minifiedAssetPresenterAssetID5 isEqualToString:minifiedAssetPresenterAssetID6];
 
         if (v37)
         {
 
-          v9 = v40;
+          completionCopy = v40;
           goto LABEL_19;
         }
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v41 objects:v49 count:16];
+      v32 = [minifiedAssetPresenters2 countByEnumeratingWithState:&v41 objects:v49 count:16];
       if (v32)
       {
         continue;
@@ -455,34 +455,34 @@ LABEL_19:
     }
   }
 
-  v28 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-  v9 = v40;
-  [(BKMinifiedFlowController *)self _closeMinifiedPresenter:v28 animated:v39 completion:v40];
+  currentBookAssetPresenter = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+  completionCopy = v40;
+  [(BKMinifiedFlowController *)self _closeMinifiedPresenter:currentBookAssetPresenter animated:v39 completion:v40];
 LABEL_21:
 }
 
-- (BOOL)_presenterIsAudiobookPreview:(id)a3
+- (BOOL)_presenterIsAudiobookPreview:(id)preview
 {
-  v4 = a3;
+  previewCopy = preview;
   [(BKMinifiedFlowController *)self _storeAssetPresenterClass];
   LOBYTE(self) = objc_opt_isKindOfClass();
 
   return self & 1;
 }
 
-- (void)minifiedPresenterOpenMinified:(id)a3
+- (void)minifiedPresenterOpenMinified:(id)minified
 {
-  v4 = a3;
-  -[BKMinifiedFlowController setMinibarVisible:](self, "setMinibarVisible:", [v4 minifiedAssetPresenterShouldAnimateOpenClose] ^ 1);
-  [(BKMinifiedFlowController *)self minifiedPresenterOpen:v4];
+  minifiedCopy = minified;
+  -[BKMinifiedFlowController setMinibarVisible:](self, "setMinibarVisible:", [minifiedCopy minifiedAssetPresenterShouldAnimateOpenClose] ^ 1);
+  [(BKMinifiedFlowController *)self minifiedPresenterOpen:minifiedCopy];
 }
 
-- (void)minifiedPresenterAddPresenter:(id)a3
+- (void)minifiedPresenterAddPresenter:(id)presenter
 {
-  v4 = a3;
-  v5 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  v6 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-  if (v5 != v4 && [v4 minifiedAssetPresenterIsAudiobook])
+  presenterCopy = presenter;
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  currentBookAssetPresenter = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+  if (audioBookAssetPresenter != presenterCopy && [presenterCopy minifiedAssetPresenterIsAudiobook])
   {
     [(BKMinifiedFlowController *)self willChangeValueForKey:@"minifiedAssetPresenters"];
     v7 = [(NSSet *)self->_minifiedAssetPresenters mutableCopy];
@@ -497,177 +497,177 @@ LABEL_21:
       v9 = +[NSMutableSet set];
     }
 
-    v10 = v9;
+    minifiedAssetPresenterAssetID = v9;
 
-    v16 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-    v17 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    currentBookAssetPresenter2 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+    audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
 
-    if (v16 == v17)
+    if (currentBookAssetPresenter2 == audioBookAssetPresenter2)
     {
       [(BKMinifiedFlowController *)self setCurrentBookAssetPresenter:0];
     }
 
-    [(BKMinifiedFlowController *)self setAudioBookAssetPresenter:v4];
-    if (v5)
+    [(BKMinifiedFlowController *)self setAudioBookAssetPresenter:presenterCopy];
+    if (audioBookAssetPresenter)
     {
-      [v10 removeObject:v5];
+      [minifiedAssetPresenterAssetID removeObject:audioBookAssetPresenter];
       v18 = BCCurrentBookLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *v67 = 136446466;
         *&v67[4] = "[BKMinifiedFlowController minifiedPresenterAddPresenter:]";
         *&v67[12] = 2112;
-        *&v67[14] = v5;
+        *&v67[14] = audioBookAssetPresenter;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}s: Removing minified asset presenter %@", v67, 0x16u);
       }
 
-      [v5 minifiedAssetPresenterWillCloseAssetMinified];
+      [audioBookAssetPresenter minifiedAssetPresenterWillCloseAssetMinified];
       if ([(BKMinifiedFlowController *)self _legacyMinibarBehavior])
       {
-        v19 = [v5 minifiedAssetPresenterMinibar];
-        [v19 willMoveToParentViewController:0];
+        minifiedAssetPresenterMinibar = [audioBookAssetPresenter minifiedAssetPresenterMinibar];
+        [minifiedAssetPresenterMinibar willMoveToParentViewController:0];
 
-        v20 = [v5 minifiedAssetPresenterMinibar];
-        v21 = [v20 view];
-        [v21 removeFromSuperview];
+        minifiedAssetPresenterMinibar2 = [audioBookAssetPresenter minifiedAssetPresenterMinibar];
+        view = [minifiedAssetPresenterMinibar2 view];
+        [view removeFromSuperview];
 
-        v22 = [v5 minifiedAssetPresenterMinibar];
-        [v22 removeFromParentViewController];
+        minifiedAssetPresenterMinibar3 = [audioBookAssetPresenter minifiedAssetPresenterMinibar];
+        [minifiedAssetPresenterMinibar3 removeFromParentViewController];
       }
 
-      [v5 minifiedAssetPresenterDidCloseAssetMinified];
+      [audioBookAssetPresenter minifiedAssetPresenterDidCloseAssetMinified];
     }
 
-    v23 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-    if (v23)
+    currentBookAssetPresenter3 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+    if (currentBookAssetPresenter3)
     {
-      v24 = v23;
-      v25 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-      v26 = [v25 minifiedAssetPresenterCanStayOpenInBackground];
+      v24 = currentBookAssetPresenter3;
+      currentBookAssetPresenter4 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+      minifiedAssetPresenterCanStayOpenInBackground = [currentBookAssetPresenter4 minifiedAssetPresenterCanStayOpenInBackground];
 
-      if ((v26 & 1) == 0)
+      if ((minifiedAssetPresenterCanStayOpenInBackground & 1) == 0)
       {
-        v27 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-        [v10 removeObject:v27];
+        currentBookAssetPresenter5 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+        [minifiedAssetPresenterAssetID removeObject:currentBookAssetPresenter5];
 
         v28 = BCCurrentBookLog();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+          currentBookAssetPresenter6 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
           *v67 = 136446466;
           *&v67[4] = "[BKMinifiedFlowController minifiedPresenterAddPresenter:]";
           *&v67[12] = 2112;
-          *&v67[14] = v29;
+          *&v67[14] = currentBookAssetPresenter6;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%{public}s: Removing minified asset presenter %@", v67, 0x16u);
         }
 
-        v30 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-        [v30 minifiedAssetPresenterWillCloseAssetMinified];
+        currentBookAssetPresenter7 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+        [currentBookAssetPresenter7 minifiedAssetPresenterWillCloseAssetMinified];
 
-        v31 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-        v32 = [v31 minifiedAssetPresenterMinibar];
-        [v32 willMoveToParentViewController:0];
+        currentBookAssetPresenter8 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+        minifiedAssetPresenterMinibar4 = [currentBookAssetPresenter8 minifiedAssetPresenterMinibar];
+        [minifiedAssetPresenterMinibar4 willMoveToParentViewController:0];
 
-        v33 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-        v34 = [v33 minifiedAssetPresenterMinibar];
-        v35 = [v34 view];
-        [v35 removeFromSuperview];
+        currentBookAssetPresenter9 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+        minifiedAssetPresenterMinibar5 = [currentBookAssetPresenter9 minifiedAssetPresenterMinibar];
+        view2 = [minifiedAssetPresenterMinibar5 view];
+        [view2 removeFromSuperview];
 
-        v36 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-        v37 = [v36 minifiedAssetPresenterMinibar];
-        [v37 removeFromParentViewController];
+        currentBookAssetPresenter10 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+        minifiedAssetPresenterMinibar6 = [currentBookAssetPresenter10 minifiedAssetPresenterMinibar];
+        [minifiedAssetPresenterMinibar6 removeFromParentViewController];
 
-        v38 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-        [v38 minifiedAssetPresenterDidCloseAssetMinified];
+        currentBookAssetPresenter11 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+        [currentBookAssetPresenter11 minifiedAssetPresenterDidCloseAssetMinified];
       }
     }
 
-    [(BKMinifiedFlowController *)self setCurrentBookAssetPresenter:v4];
-    v39 = [(BKMinifiedFlowController *)self minibarContainerView];
-    [v39 setHidden:0];
+    [(BKMinifiedFlowController *)self setCurrentBookAssetPresenter:presenterCopy];
+    minibarContainerView = [(BKMinifiedFlowController *)self minibarContainerView];
+    [minibarContainerView setHidden:0];
 
-    if (!v4)
+    if (!presenterCopy)
     {
       goto LABEL_55;
     }
 
-    [v10 addObject:v4];
+    [minifiedAssetPresenterAssetID addObject:presenterCopy];
     v40 = BCCurrentBookLog();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       *v67 = 136446466;
       *&v67[4] = "[BKMinifiedFlowController minifiedPresenterAddPresenter:]";
       *&v67[12] = 2112;
-      *&v67[14] = v4;
+      *&v67[14] = presenterCopy;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "%{public}s: Adding minified asset presenter %@", v67, 0x16u);
     }
 
-    [v4 minifiedAssetPresenterWillOpenAssetMinified];
-    v41 = [v4 minifiedAssetPresenterMinibar];
-    if (v41)
+    [presenterCopy minifiedAssetPresenterWillOpenAssetMinified];
+    minifiedAssetPresenterMinibar7 = [presenterCopy minifiedAssetPresenterMinibar];
+    if (minifiedAssetPresenterMinibar7)
     {
       v42 = +[BKAppDelegate sceneManager];
-      v43 = [v42 primarySceneController];
-      v44 = [v43 rootBarCoordinator];
+      primarySceneController = [v42 primarySceneController];
+      rootBarCoordinator = [primarySceneController rootBarCoordinator];
 
       objc_opt_class();
       v45 = BUDynamicCast();
       v46 = v45;
-      if (v44)
+      if (rootBarCoordinator)
       {
         if (v45)
         {
-          v47 = [v44 miniPlayerViewController];
+          miniPlayerViewController = [rootBarCoordinator miniPlayerViewController];
 
-          if (!v47)
+          if (!miniPlayerViewController)
           {
-            [v44 dockMiniPlayer:v46];
+            [rootBarCoordinator dockMiniPlayer:v46];
           }
         }
       }
     }
 
-    v48 = [v4 minifiedAssetPresenterShouldAnimateOpenClose];
+    minifiedAssetPresenterShouldAnimateOpenClose = [presenterCopy minifiedAssetPresenterShouldAnimateOpenClose];
     if (objc_opt_respondsToSelector())
     {
-      v49 = [v4 minifiedAssetPresenterToolbar];
-      if (v49)
+      minifiedAssetPresenterToolbar = [presenterCopy minifiedAssetPresenterToolbar];
+      if (minifiedAssetPresenterToolbar)
       {
-        v50 = v49;
-        v51 = [(BKMinifiedFlowController *)self delegate];
-        [v51 minifiedFlowControllerDock:v50];
+        v50 = minifiedAssetPresenterToolbar;
+        delegate = [(BKMinifiedFlowController *)self delegate];
+        [delegate minifiedFlowControllerDock:v50];
 
 LABEL_54:
-        [v4 minifiedAssetPresenterDidOpenAssetMinified];
+        [presenterCopy minifiedAssetPresenterDidOpenAssetMinified];
 
         goto LABEL_55;
       }
     }
 
-    v52 = self;
-    if (v48)
+    selfCopy2 = self;
+    if (minifiedAssetPresenterShouldAnimateOpenClose)
     {
       [(BKMinifiedFlowController *)self _setMinibarVisible:1 animated:1 completion:0];
       goto LABEL_54;
     }
 
 LABEL_53:
-    [(BKMinifiedFlowController *)v52 _layoutPresenterMinibar:v4];
+    [(BKMinifiedFlowController *)selfCopy2 _layoutPresenterMinibar:presenterCopy];
     goto LABEL_54;
   }
 
-  v10 = [v4 minifiedAssetPresenterAssetID];
-  v11 = [v6 minifiedAssetPresenterAssetID];
-  if ([v10 isEqualToString:v11])
+  minifiedAssetPresenterAssetID = [presenterCopy minifiedAssetPresenterAssetID];
+  minifiedAssetPresenterAssetID2 = [currentBookAssetPresenter minifiedAssetPresenterAssetID];
+  if ([minifiedAssetPresenterAssetID isEqualToString:minifiedAssetPresenterAssetID2])
   {
 LABEL_58:
 
     goto LABEL_59;
   }
 
-  v12 = [v4 minifiedAssetPresenterIsAudiobook];
+  minifiedAssetPresenterIsAudiobook = [presenterCopy minifiedAssetPresenterIsAudiobook];
 
-  if ((v12 & 1) == 0)
+  if ((minifiedAssetPresenterIsAudiobook & 1) == 0)
   {
     [(BKMinifiedFlowController *)self willChangeValueForKey:@"minifiedAssetPresenters"];
     v13 = [(NSSet *)self->_minifiedAssetPresenters mutableCopy];
@@ -682,16 +682,16 @@ LABEL_58:
       v15 = +[NSMutableSet set];
     }
 
-    v10 = v15;
+    minifiedAssetPresenterAssetID = v15;
 
-    if (!v6 || ([v6 minifiedAssetPresenterCanStayOpenInBackground] & 1) != 0)
+    if (!currentBookAssetPresenter || ([currentBookAssetPresenter minifiedAssetPresenterCanStayOpenInBackground] & 1) != 0)
     {
       goto LABEL_47;
     }
 
-    v53 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    audioBookAssetPresenter3 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
 
-    if (v6 == v53)
+    if (currentBookAssetPresenter == audioBookAssetPresenter3)
     {
       v54 = BCCurrentBookLog();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
@@ -699,7 +699,7 @@ LABEL_58:
         *v67 = 136446466;
         *&v67[4] = "[BKMinifiedFlowController minifiedPresenterAddPresenter:]";
         *&v67[12] = 2112;
-        *&v67[14] = v6;
+        *&v67[14] = currentBookAssetPresenter;
         v55 = "%{public}s: Keeping minified audio book asset presenter %@";
         goto LABEL_45;
       }
@@ -707,158 +707,158 @@ LABEL_58:
 
     else
     {
-      [v10 removeObject:v6];
+      [minifiedAssetPresenterAssetID removeObject:currentBookAssetPresenter];
       v54 = BCCurrentBookLog();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
         *v67 = 136446466;
         *&v67[4] = "[BKMinifiedFlowController minifiedPresenterAddPresenter:]";
         *&v67[12] = 2112;
-        *&v67[14] = v6;
+        *&v67[14] = currentBookAssetPresenter;
         v55 = "%{public}s: Removing minified asset presenter %@";
 LABEL_45:
         _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, v55, v67, 0x16u);
       }
     }
 
-    [v6 minifiedAssetPresenterWillCloseAssetMinified];
-    v56 = [v6 minifiedAssetPresenterMinibar];
-    [v56 removeFromParentViewController];
+    [currentBookAssetPresenter minifiedAssetPresenterWillCloseAssetMinified];
+    minifiedAssetPresenterMinibar8 = [currentBookAssetPresenter minifiedAssetPresenterMinibar];
+    [minifiedAssetPresenterMinibar8 removeFromParentViewController];
 
-    v57 = [v6 minifiedAssetPresenterMinibar];
-    v58 = [v57 view];
-    [v58 removeFromSuperview];
+    minifiedAssetPresenterMinibar9 = [currentBookAssetPresenter minifiedAssetPresenterMinibar];
+    view3 = [minifiedAssetPresenterMinibar9 view];
+    [view3 removeFromSuperview];
 
-    [v6 minifiedAssetPresenterDidCloseAssetMinified];
+    [currentBookAssetPresenter minifiedAssetPresenterDidCloseAssetMinified];
 LABEL_47:
-    [(BKMinifiedFlowController *)self setCurrentBookAssetPresenter:v4, *v67, *&v67[16]];
-    if (!v4)
+    [(BKMinifiedFlowController *)self setCurrentBookAssetPresenter:presenterCopy, *v67, *&v67[16]];
+    if (!presenterCopy)
     {
 LABEL_55:
-      v65 = [v10 count];
+      v65 = [minifiedAssetPresenterAssetID count];
       if (v65)
       {
-        v65 = [v10 copy];
+        v65 = [minifiedAssetPresenterAssetID copy];
       }
 
       minifiedAssetPresenters = self->_minifiedAssetPresenters;
       self->_minifiedAssetPresenters = v65;
 
       [(BKMinifiedFlowController *)self didChangeValueForKey:@"minifiedAssetPresenters"];
-      v11 = +[NSNotificationCenter defaultCenter];
-      [v11 postNotificationName:@"BKMnifiedPresentersUpdatedNotification" object:self];
+      minifiedAssetPresenterAssetID2 = +[NSNotificationCenter defaultCenter];
+      [minifiedAssetPresenterAssetID2 postNotificationName:@"BKMnifiedPresentersUpdatedNotification" object:self];
       goto LABEL_58;
     }
 
-    [v10 addObject:v4];
+    [minifiedAssetPresenterAssetID addObject:presenterCopy];
     v59 = BCCurrentBookLog();
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
     {
       *v67 = 136446466;
       *&v67[4] = "[BKMinifiedFlowController minifiedPresenterAddPresenter:]";
       *&v67[12] = 2112;
-      *&v67[14] = v4;
+      *&v67[14] = presenterCopy;
       _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "%{public}s: Adding minified asset presenter %@", v67, 0x16u);
     }
 
-    [v4 minifiedAssetPresenterWillOpenAssetMinified];
-    v41 = [v4 minifiedAssetPresenterMinibar];
-    if (v41)
+    [presenterCopy minifiedAssetPresenterWillOpenAssetMinified];
+    minifiedAssetPresenterMinibar7 = [presenterCopy minifiedAssetPresenterMinibar];
+    if (minifiedAssetPresenterMinibar7)
     {
-      v60 = [(BKMinifiedFlowController *)self delegate];
-      v61 = [v60 minifiedFlowControllerMinibarContainingViewController];
-      [v61 addChildViewController:v41];
+      delegate2 = [(BKMinifiedFlowController *)self delegate];
+      minifiedFlowControllerMinibarContainingViewController = [delegate2 minifiedFlowControllerMinibarContainingViewController];
+      [minifiedFlowControllerMinibarContainingViewController addChildViewController:minifiedAssetPresenterMinibar7];
 
-      v62 = [v41 view];
-      [v62 setAutoresizingMask:0];
+      view4 = [minifiedAssetPresenterMinibar7 view];
+      [view4 setAutoresizingMask:0];
 
-      v63 = [(BKMinifiedFlowController *)self minibarContainerView];
-      v64 = [v41 view];
-      [v63 addSubview:v64];
+      minibarContainerView2 = [(BKMinifiedFlowController *)self minibarContainerView];
+      view5 = [minifiedAssetPresenterMinibar7 view];
+      [minibarContainerView2 addSubview:view5];
     }
 
-    v52 = self;
+    selfCopy2 = self;
     goto LABEL_53;
   }
 
 LABEL_59:
 }
 
-- (void)minifiedPresenter:(id)a3 openStorePageForStoreID:(id)a4 fromViewController:(id)a5
+- (void)minifiedPresenter:(id)presenter openStorePageForStoreID:(id)d fromViewController:(id)controller
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(BKMinifiedFlowController *)self delegate];
-  [v9 minifiedFlowControllerRequestShowStoreForStoreID:v8 fromViewController:v7];
+  controllerCopy = controller;
+  dCopy = d;
+  delegate = [(BKMinifiedFlowController *)self delegate];
+  [delegate minifiedFlowControllerRequestShowStoreForStoreID:dCopy fromViewController:controllerCopy];
 }
 
-- (void)minifiedPresenterClose:(id)a3 error:(id)a4 isRetry:(BOOL)a5
+- (void)minifiedPresenterClose:(id)close error:(id)error isRetry:(BOOL)retry
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 minifiedAssetPresenterAssetID];
+  closeCopy = close;
+  errorCopy = error;
+  minifiedAssetPresenterAssetID = [closeCopy minifiedAssetPresenterAssetID];
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10006F6C8;
   v13[3] = &unk_100A04348;
   objc_copyWeak(&v16, &location);
-  v11 = v9;
+  v11 = errorCopy;
   v14 = v11;
-  v12 = v10;
+  v12 = minifiedAssetPresenterAssetID;
   v15 = v12;
-  v17 = a5;
-  [(BKMinifiedFlowController *)self _closeMinifiedPresenter:v8 animated:1 completion:v13];
+  retryCopy = retry;
+  [(BKMinifiedFlowController *)self _closeMinifiedPresenter:closeCopy animated:1 completion:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (void)minifiedPresenterPause:(id)a3
+- (void)minifiedPresenterPause:(id)pause
 {
-  v3 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  [v3 minifiedAssetPresenterPausePlayback];
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  [audioBookAssetPresenter minifiedAssetPresenterPausePlayback];
 }
 
-- (void)_closeMinifiedPresenter:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_closeMinifiedPresenter:(id)presenter animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 minifiedAssetPresenterMinibar];
+  presenterCopy = presenter;
+  completionCopy = completion;
+  minifiedAssetPresenterMinibar = [presenterCopy minifiedAssetPresenterMinibar];
   objc_initWeak(&location, self);
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
   v48[2] = sub_10006FD68;
   v48[3] = &unk_100A04370;
-  v10 = v7;
+  v10 = presenterCopy;
   v49 = v10;
-  v50 = self;
-  v11 = v9;
+  selfCopy = self;
+  v11 = minifiedAssetPresenterMinibar;
   v51 = v11;
   objc_copyWeak(&v52, &location);
   v12 = objc_retainBlock(v48);
-  v13 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  v14 = [v13 minifiedAssetPresenterAssetID];
-  v15 = [v10 minifiedAssetPresenterAssetID];
-  v16 = [v14 isEqualToString:v15];
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  minifiedAssetPresenterAssetID = [audioBookAssetPresenter minifiedAssetPresenterAssetID];
+  minifiedAssetPresenterAssetID2 = [v10 minifiedAssetPresenterAssetID];
+  v16 = [minifiedAssetPresenterAssetID isEqualToString:minifiedAssetPresenterAssetID2];
 
-  v17 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
 
-  if ((v16 & ((v17 == v10) | [(BKMinifiedFlowController *)self _presenterIsAudiobookPreview:v10])) == 1)
+  if ((v16 & ((audioBookAssetPresenter2 == v10) | [(BKMinifiedFlowController *)self _presenterIsAudiobookPreview:v10])) == 1)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(BKMinifiedFlowController *)self _hideToolbarAnimated:0 completion:v8];
+      [(BKMinifiedFlowController *)self _hideToolbarAnimated:0 completion:completionCopy];
     }
 
     else
     {
       v27 = +[BKAppDelegate sceneManager];
-      v28 = [v27 primarySceneController];
-      v29 = [v28 rootBarCoordinator];
-      [v29 undockMiniPlayer];
+      primarySceneController = [v27 primarySceneController];
+      rootBarCoordinator = [primarySceneController rootBarCoordinator];
+      [rootBarCoordinator undockMiniPlayer];
 
-      v30 = objc_retainBlock(v8);
+      v30 = objc_retainBlock(completionCopy);
       v31 = v30;
       if (v30)
       {
@@ -867,8 +867,8 @@ LABEL_59:
     }
 
     [(BKMinifiedFlowController *)self setAudioBookAssetPresenter:0];
-    v32 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-    v33 = v32 == v10;
+    currentBookAssetPresenter = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+    v33 = currentBookAssetPresenter == v10;
 
     if (v33)
     {
@@ -917,16 +917,16 @@ LABEL_59:
     goto LABEL_31;
   }
 
-  v18 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-  v19 = [v18 minifiedAssetPresenterAssetID];
-  v20 = [v10 minifiedAssetPresenterAssetID];
-  v21 = [v19 isEqualToString:v20];
+  currentBookAssetPresenter2 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+  minifiedAssetPresenterAssetID3 = [currentBookAssetPresenter2 minifiedAssetPresenterAssetID];
+  minifiedAssetPresenterAssetID4 = [v10 minifiedAssetPresenterAssetID];
+  v21 = [minifiedAssetPresenterAssetID3 isEqualToString:minifiedAssetPresenterAssetID4];
 
   if (!v21)
   {
     [(BKMinifiedFlowController *)self _notifyToolbars];
     (v12[2])(v12);
-    v37 = objc_retainBlock(v8);
+    v37 = objc_retainBlock(completionCopy);
     v38 = v37;
     if (!v37)
     {
@@ -939,8 +939,8 @@ LABEL_30:
   }
 
   [(BKMinifiedFlowController *)self setCurrentBookAssetPresenter:0];
-  v22 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  v23 = v22 == v10;
+  audioBookAssetPresenter3 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  v23 = audioBookAssetPresenter3 == v10;
 
   if (!v23)
   {
@@ -986,7 +986,7 @@ LABEL_30:
   v47 = +[NSNotificationCenter defaultCenter];
   [v47 postNotificationName:@"BKMnifiedPresentersUpdatedNotification" object:self];
 
-  v37 = objc_retainBlock(v8);
+  v37 = objc_retainBlock(completionCopy);
   v38 = v37;
   if (v37)
   {
@@ -999,67 +999,67 @@ LABEL_31:
   objc_destroyWeak(&location);
 }
 
-- (void)minifiedPresenterDidOpenAssetID:(id)a3
+- (void)minifiedPresenterDidOpenAssetID:(id)d
 {
-  v12 = a3;
-  v4 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  v5 = [v4 minifiedAssetPresenterAssetID];
-  v6 = [v5 isEqualToString:v12];
+  dCopy = d;
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  minifiedAssetPresenterAssetID = [audioBookAssetPresenter minifiedAssetPresenterAssetID];
+  v6 = [minifiedAssetPresenterAssetID isEqualToString:dCopy];
 
   if (v6)
   {
-    v7 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-    [v7 minifiedAssetPresenterDidOpenAssetFully];
+    audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    [audioBookAssetPresenter2 minifiedAssetPresenterDidOpenAssetFully];
 
     [(BKMinifiedFlowController *)self _setMinibarVisible:0 animated:1 completion:0];
   }
 
   else
   {
-    v8 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-    v9 = [v8 minifiedAssetPresenterAssetID];
-    v10 = [v9 isEqualToString:v12];
+    currentBookAssetPresenter = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+    minifiedAssetPresenterAssetID2 = [currentBookAssetPresenter minifiedAssetPresenterAssetID];
+    v10 = [minifiedAssetPresenterAssetID2 isEqualToString:dCopy];
 
     if (v10)
     {
-      v11 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-      [v11 minifiedAssetPresenterDidOpenAssetFully];
+      currentBookAssetPresenter2 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+      [currentBookAssetPresenter2 minifiedAssetPresenterDidOpenAssetFully];
     }
   }
 }
 
-- (void)minifiedPresenterDidReloadAssetViewController:(id)a3
+- (void)minifiedPresenterDidReloadAssetViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [v5 assetID];
+  controllerCopy = controller;
+  asset = [controllerCopy asset];
+  assetID = [asset assetID];
 
-  v7 = [(BKMinifiedFlowController *)self minifiedAssetPresenters];
+  minifiedAssetPresenters = [(BKMinifiedFlowController *)self minifiedAssetPresenters];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100070000;
   v10[3] = &unk_100A04398;
-  v11 = v6;
-  v12 = v4;
-  v8 = v4;
-  v9 = v6;
-  [v7 enumerateObjectsUsingBlock:v10];
+  v11 = assetID;
+  v12 = controllerCopy;
+  v8 = controllerCopy;
+  v9 = assetID;
+  [minifiedAssetPresenters enumerateObjectsUsingBlock:v10];
 }
 
-- (BOOL)_assetIsPresentedOnAuxiliaryCanvas:(id)a3
+- (BOOL)_assetIsPresentedOnAuxiliaryCanvas:(id)canvas
 {
-  v4 = a3;
-  v5 = [(BKMinifiedFlowController *)self sceneHosting];
-  v6 = [v5 sceneInfoPresentingAssetID:v4];
+  canvasCopy = canvas;
+  sceneHosting = [(BKMinifiedFlowController *)self sceneHosting];
+  v6 = [sceneHosting sceneInfoPresentingAssetID:canvasCopy];
 
   objc_opt_class();
-  v7 = [v6 sceneController];
+  sceneController = [v6 sceneController];
   v8 = BUDynamicCast();
 
   if (v8 && [v8 sceneType] != 1)
   {
-    v10 = [v8 rootBarCoordinator];
-    v9 = v10 == 0;
+    rootBarCoordinator = [v8 rootBarCoordinator];
+    v9 = rootBarCoordinator == 0;
   }
 
   else
@@ -1070,11 +1070,11 @@ LABEL_31:
   return v9;
 }
 
-- (void)minifiedPresenterUpdateCurrentBookWithCompletion:(id)a3
+- (void)minifiedPresenterUpdateCurrentBookWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(BKMinifiedFlowController *)self setCurrentBookAssetPresenter:0];
-  v6 = objc_retainBlock(v4);
+  v6 = objc_retainBlock(completionCopy);
 
   v5 = v6;
   if (v6)
@@ -1084,36 +1084,36 @@ LABEL_31:
   }
 }
 
-- (void)minifiedPresenterDidCloseAssetID:(id)a3 finishedConsuming:(BOOL)a4
+- (void)minifiedPresenterDidCloseAssetID:(id)d finishedConsuming:(BOOL)consuming
 {
-  v6 = a3;
+  dCopy = d;
   if (!self->_removingHostedVC)
   {
-    v7 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-    v8 = [v7 minifiedAssetPresenterAssetID];
-    v9 = [v8 isEqualToString:v6];
+    audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    minifiedAssetPresenterAssetID = [audioBookAssetPresenter minifiedAssetPresenterAssetID];
+    v9 = [minifiedAssetPresenterAssetID isEqualToString:dCopy];
 
     if (v9)
     {
-      v10 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-      [v10 minifiedAssetPresenterDidCloseAssetFully];
+      audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+      [audioBookAssetPresenter2 minifiedAssetPresenterDidCloseAssetFully];
 
-      if (!a4)
+      if (!consuming)
       {
         [(BKMinifiedFlowController *)self _setMinibarVisible:1 animated:1 completion:0];
       }
     }
 
-    v11 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-    v12 = [v11 minifiedAssetPresenterAssetID];
-    v13 = [v12 isEqualToString:v6];
+    currentBookAssetPresenter = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+    minifiedAssetPresenterAssetID2 = [currentBookAssetPresenter minifiedAssetPresenterAssetID];
+    v13 = [minifiedAssetPresenterAssetID2 isEqualToString:dCopy];
 
     if (v13)
     {
-      v14 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-      v15 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+      audioBookAssetPresenter3 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+      currentBookAssetPresenter2 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
 
-      if (v14 == v15)
+      if (audioBookAssetPresenter3 == currentBookAssetPresenter2)
       {
         v16 = +[(BKBasePresentingViewController *)BKAssetPresentingViewController];
       }
@@ -1134,7 +1134,7 @@ LABEL_31:
         }
       }
 
-      if ([v6 isEqualToString:v16] && !+[BKSceneUtilities hasMultiWindowEnabled](BKSceneUtilities, "hasMultiWindowEnabled"))
+      if ([dCopy isEqualToString:v16] && !+[BKSceneUtilities hasMultiWindowEnabled](BKSceneUtilities, "hasMultiWindowEnabled"))
       {
         v44 = BCCurrentBookLog();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
@@ -1143,8 +1143,8 @@ LABEL_31:
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_INFO, "Closing current books presented VC. Keeping minified.", buf, 2u);
         }
 
-        v34 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-        [v34 minifiedAssetPresenterDidCloseAssetFully];
+        currentBookAssetPresenter3 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+        [currentBookAssetPresenter3 minifiedAssetPresenterDidCloseAssetFully];
       }
 
       else
@@ -1157,22 +1157,22 @@ LABEL_31:
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "Closing non-current book presented VC. Show previous current book %@.", buf, 0xCu);
         }
 
-        v34 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+        currentBookAssetPresenter3 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
         [(BKMinifiedFlowController *)self setCurrentBookAssetPresenter:0];
-        v39 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+        audioBookAssetPresenter4 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
 
-        if (v34 != v39)
+        if (currentBookAssetPresenter3 != audioBookAssetPresenter4)
         {
           [(BKMinifiedFlowController *)self willChangeValueForKey:@"minifiedAssetPresenters"];
           v40 = [(NSSet *)self->_minifiedAssetPresenters mutableCopy];
-          [v40 removeObject:v34];
+          [v40 removeObject:currentBookAssetPresenter3];
           v41 = BCCurrentBookLog();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 136446466;
             v52 = "[BKMinifiedFlowController minifiedPresenterDidCloseAssetID:finishedConsuming:]";
             v53 = 2112;
-            v54 = v34;
+            v54 = currentBookAssetPresenter3;
             _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "%{public}s: Removing minified asset presenter %@", buf, 0x16u);
           }
 
@@ -1194,14 +1194,14 @@ LABEL_50:
       goto LABEL_51;
     }
 
-    v18 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
-    if (!v18 || (v19 = v18, v20 = +[BKSceneUtilities hasMultiWindowEnabled], v19, v20))
+    currentBookAssetPresenter4 = [(BKMinifiedFlowController *)self currentBookAssetPresenter];
+    if (!currentBookAssetPresenter4 || (v19 = currentBookAssetPresenter4, v20 = +[BKSceneUtilities hasMultiWindowEnabled], v19, v20))
     {
       v21 = BCCurrentBookLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v52 = v6;
+        v52 = dCopy;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Closing book but we have no current presenter. Removing presenter with matching assetID (%@).", buf, 0xCu);
       }
 
@@ -1217,7 +1217,7 @@ LABEL_50:
       {
         v24 = v23;
         v25 = *v47;
-        v45 = v6;
+        v45 = dCopy;
 LABEL_17:
         v26 = 0;
         while (1)
@@ -1228,36 +1228,36 @@ LABEL_17:
           }
 
           v27 = *(*(&v46 + 1) + 8 * v26);
-          v28 = [v27 minifiedAssetPresenterAssetID];
-          if ([v28 isEqualToString:v6])
+          minifiedAssetPresenterAssetID3 = [v27 minifiedAssetPresenterAssetID];
+          if ([minifiedAssetPresenterAssetID3 isEqualToString:dCopy])
           {
             [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-            v29 = self;
+            selfCopy = self;
             v31 = v30 = v16;
-            v32 = [v31 minifiedAssetPresenterAssetID];
-            v33 = [v32 isEqualToString:v6];
+            minifiedAssetPresenterAssetID4 = [v31 minifiedAssetPresenterAssetID];
+            v33 = [minifiedAssetPresenterAssetID4 isEqualToString:dCopy];
 
             v16 = v30;
-            self = v29;
+            self = selfCopy;
 
             if (!v33)
             {
-              v34 = v27;
+              currentBookAssetPresenter3 = v27;
 
-              v6 = v45;
-              if (!v34)
+              dCopy = v45;
+              if (!currentBookAssetPresenter3)
               {
                 goto LABEL_30;
               }
 
-              [v16 removeObject:v34];
+              [v16 removeObject:currentBookAssetPresenter3];
               v35 = BCCurrentBookLog();
               if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 136446466;
                 v52 = "[BKMinifiedFlowController minifiedPresenterDidCloseAssetID:finishedConsuming:]";
                 v53 = 2112;
-                v54 = v34;
+                v54 = currentBookAssetPresenter3;
                 _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%{public}s: Removing minified asset presenter %@", buf, 0x16u);
               }
 
@@ -1270,7 +1270,7 @@ LABEL_17:
           }
 
           v26 = v26 + 1;
-          v6 = v45;
+          dCopy = v45;
           if (v24 == v26)
           {
             v24 = [v16 countByEnumeratingWithState:&v46 objects:v50 count:16];
@@ -1288,10 +1288,10 @@ LABEL_30:
       v35 = BCCurrentBookLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        sub_100789D1C(v6, v35);
+        sub_100789D1C(dCopy, v35);
       }
 
-      v34 = 0;
+      currentBookAssetPresenter3 = 0;
 LABEL_33:
 
       v36 = [v16 count];
@@ -1311,74 +1311,74 @@ LABEL_33:
 LABEL_51:
 }
 
-- (BOOL)minifiedPresenterCanOpenPresenter:(id)a3 overCurrentPresenter:(id)a4
+- (BOOL)minifiedPresenterCanOpenPresenter:(id)presenter overCurrentPresenter:(id)currentPresenter
 {
-  v6 = a3;
-  v7 = 0;
-  if (v6 && a4)
+  presenterCopy = presenter;
+  isAudiobook = 0;
+  if (presenterCopy && currentPresenter)
   {
-    v8 = a4;
-    v9 = [(BKMinifiedFlowController *)self libraryAssetProvider];
-    v10 = [v8 assetPresenterAssetID];
+    currentPresenterCopy = currentPresenter;
+    libraryAssetProvider = [(BKMinifiedFlowController *)self libraryAssetProvider];
+    assetPresenterAssetID = [currentPresenterCopy assetPresenterAssetID];
 
-    v11 = [v9 libraryAssetOnMainQueueWithPermanentOrTemporaryAssetID:v10];
+    v11 = [libraryAssetProvider libraryAssetOnMainQueueWithPermanentOrTemporaryAssetID:assetPresenterAssetID];
 
-    if ((![v6 minifiedAssetPresenterIsAudiobook] || objc_msgSend(v11, "isAudiobook")) && objc_msgSend(v6, "minifiedAssetPresenterIsSupplementalContent"))
+    if ((![presenterCopy minifiedAssetPresenterIsAudiobook] || objc_msgSend(v11, "isAudiobook")) && objc_msgSend(presenterCopy, "minifiedAssetPresenterIsSupplementalContent"))
     {
-      v7 = [v11 isAudiobook];
+      isAudiobook = [v11 isAudiobook];
     }
 
     else
     {
-      v7 = 0;
+      isAudiobook = 0;
     }
   }
 
-  return v7;
+  return isAudiobook;
 }
 
 - (BOOL)_legacyMinibarBehavior
 {
-  v2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  v3 = v2 == 0;
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  v3 = audioBookAssetPresenter == 0;
 
   return v3;
 }
 
-- (void)_setMinibarVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_setMinibarVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  if ([(BKMinifiedFlowController *)self minibarVisible]!= v6)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  completionCopy = completion;
+  if ([(BKMinifiedFlowController *)self minibarVisible]!= visibleCopy)
   {
-    if (v5)
+    if (animatedCopy)
     {
       if ([(BKMinifiedFlowController *)self _legacyMinibarBehavior])
       {
-        if (v6)
+        if (visibleCopy)
         {
           [(BKMinifiedFlowController *)self setMinibarVisible:1];
-          v9 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-          [(BKMinifiedFlowController *)self _layoutPresenterMinibar:v9];
+          audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+          [(BKMinifiedFlowController *)self _layoutPresenterMinibar:audioBookAssetPresenter];
         }
 
-        v10 = [(BKMinifiedFlowController *)self minibarContainerView];
-        [v10 frame];
+        minibarContainerView = [(BKMinifiedFlowController *)self minibarContainerView];
+        [minibarContainerView frame];
         v12 = v11;
         v14 = v13;
         v16 = v15;
         v18 = v17;
 
-        v19 = [(BKMinifiedFlowController *)self delegate];
-        [v19 minifiedFlowControllerMinibarBottomGuideWithViewController:0];
+        delegate = [(BKMinifiedFlowController *)self delegate];
+        [delegate minifiedFlowControllerMinibarBottomGuideWithViewController:0];
         v21 = v20;
 
         v22 = v14 + v21 - v14;
-        if (v6)
+        if (visibleCopy)
         {
-          v23 = [(BKMinifiedFlowController *)self minibarContainerView];
-          [v23 setFrame:{v12, v22, v16, v18}];
+          minibarContainerView2 = [(BKMinifiedFlowController *)self minibarContainerView];
+          [minibarContainerView2 setFrame:{v12, v22, v16, v18}];
 
           v22 = v14;
         }
@@ -1397,21 +1397,21 @@ LABEL_51:
         v27[2] = sub_100070BB8;
         v27[3] = &unk_100A043E8;
         v27[4] = self;
-        v29 = v6;
-        v28 = v8;
+        v29 = visibleCopy;
+        v28 = completionCopy;
         [UIView animateWithDuration:v30 animations:v27 completion:0.2];
       }
 
       goto LABEL_13;
     }
 
-    [(BKMinifiedFlowController *)self setMinibarVisible:v6];
-    v24 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-    [(BKMinifiedFlowController *)self _layoutPresenterMinibar:v24];
+    [(BKMinifiedFlowController *)self setMinibarVisible:visibleCopy];
+    audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    [(BKMinifiedFlowController *)self _layoutPresenterMinibar:audioBookAssetPresenter2];
   }
 
   [(BKMinifiedFlowController *)self _notifyToolbars];
-  v25 = objc_retainBlock(v8);
+  v25 = objc_retainBlock(completionCopy);
   v26 = v25;
   if (v25)
   {
@@ -1421,28 +1421,28 @@ LABEL_51:
 LABEL_13:
 }
 
-- (void)_hideToolbarAnimated:(BOOL)a3 completion:(id)a4
+- (void)_hideToolbarAnimated:(BOOL)animated completion:(id)completion
 {
-  v11 = a4;
-  v5 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  completionCopy = completion;
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-    v7 = [v6 minifiedAssetPresenterToolbar];
+    audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    minifiedAssetPresenterToolbar = [audioBookAssetPresenter2 minifiedAssetPresenterToolbar];
 
-    if (!v7)
+    if (!minifiedAssetPresenterToolbar)
     {
       goto LABEL_5;
     }
 
-    v8 = [(BKMinifiedFlowController *)self delegate];
-    [v8 minifiedFlowControllerUndock:v7];
+    delegate = [(BKMinifiedFlowController *)self delegate];
+    [delegate minifiedFlowControllerUndock:minifiedAssetPresenterToolbar];
 
-    v5 = v7;
+    audioBookAssetPresenter = minifiedAssetPresenterToolbar;
   }
 
 LABEL_5:
-  v9 = objc_retainBlock(v11);
+  v9 = objc_retainBlock(completionCopy);
   v10 = v9;
   if (v9)
   {
@@ -1450,49 +1450,49 @@ LABEL_5:
   }
 }
 
-- (void)_layoutPresenterMinibar:(id)a3
+- (void)_layoutPresenterMinibar:(id)minibar
 {
-  v4 = a3;
-  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:v4 visible:[(BKMinifiedFlowController *)self minibarVisible] viewController:0];
+  minibarCopy = minibar;
+  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:minibarCopy visible:[(BKMinifiedFlowController *)self minibarVisible] viewController:0];
 }
 
-- (void)_layoutPresenterMinibar:(id)a3 visible:(BOOL)a4 viewController:(id)a5
+- (void)_layoutPresenterMinibar:(id)minibar visible:(BOOL)visible viewController:(id)controller
 {
-  v6 = a4;
-  v50 = a3;
-  v8 = a5;
+  visibleCopy = visible;
+  minibarCopy = minibar;
+  controllerCopy = controller;
   if ([(BKMinifiedFlowController *)self _legacyMinibarBehavior])
   {
-    [v50 minifiedAssetPresenterWillLayoutAssetMinified];
-    v9 = [(BKMinifiedFlowController *)self delegate];
-    v10 = [v9 minifiedFlowControllerMinibarContainingViewController];
+    [minibarCopy minifiedAssetPresenterWillLayoutAssetMinified];
+    delegate = [(BKMinifiedFlowController *)self delegate];
+    minifiedFlowControllerMinibarContainingViewController = [delegate minifiedFlowControllerMinibarContainingViewController];
 
-    v11 = [v10 traitCollection];
-    v12 = [v11 horizontalSizeClass];
+    traitCollection = [minifiedFlowControllerMinibarContainingViewController traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    v13 = [(BKMinifiedFlowController *)self delegate];
-    [v13 minifiedFlowControllerMinibarBottomGuideWithViewController:v8];
+    delegate2 = [(BKMinifiedFlowController *)self delegate];
+    [delegate2 minifiedFlowControllerMinibarBottomGuideWithViewController:controllerCopy];
     v15 = v14;
 
-    v16 = [(BKMinifiedFlowController *)self minibarContainerView];
-    v17 = [v16 superview];
-    [v17 bounds];
+    minibarContainerView = [(BKMinifiedFlowController *)self minibarContainerView];
+    superview = [minibarContainerView superview];
+    [superview bounds];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
 
-    [v50 minifiedAssetPresenterMinibarHeight];
+    [minibarCopy minifiedAssetPresenterMinibarHeight];
     v27 = v26;
-    [v50 minifiedAssetPresenterMinibarMaxWidth];
+    [minibarCopy minifiedAssetPresenterMinibarMaxWidth];
     v29 = v28;
-    [v50 minifiedAssetPresenterMinibarFloatingHorizontalOffset];
+    [minibarCopy minifiedAssetPresenterMinibarFloatingHorizontalOffset];
     v31 = v30;
-    [v50 minifiedAssetPresenterMinibarFloatingVerticalOffset];
+    [minibarCopy minifiedAssetPresenterMinibarFloatingVerticalOffset];
     v48 = v32;
-    [v50 minifiedAssetPresenterMinibarCornerRadius];
+    [minibarCopy minifiedAssetPresenterMinibarCornerRadius];
     v49 = v33;
-    if (v12 == 1)
+    if (horizontalSizeClass == 1)
     {
       v52.origin.x = v19;
       v52.origin.y = v21;
@@ -1529,8 +1529,8 @@ LABEL_5:
     else
     {
       v47 = v15;
-      v37 = [v10 view];
-      [v37 bounds];
+      view = [minifiedFlowControllerMinibarContainingViewController view];
+      [view bounds];
       v38 = CGRectGetWidth(v54) + v31 * -2.0;
 
       if (v38 >= v29)
@@ -1571,113 +1571,113 @@ LABEL_5:
     }
 
     v41 = v15 - v27 - v48;
-    v42 = [(BKMinifiedFlowController *)self minibarContainerView];
-    v43 = [v42 layer];
-    [v43 setCornerRadius:v49];
+    minibarContainerView2 = [(BKMinifiedFlowController *)self minibarContainerView];
+    layer = [minibarContainerView2 layer];
+    [layer setCornerRadius:v49];
 
-    v44 = [v50 minifiedAssetPresenterMinibar];
-    v45 = [v44 view];
-    [v45 setFrame:{0.0, 0.0, v36, v27}];
+    minifiedAssetPresenterMinibar = [minibarCopy minifiedAssetPresenterMinibar];
+    view2 = [minifiedAssetPresenterMinibar view];
+    [view2 setFrame:{0.0, 0.0, v36, v27}];
 
-    if (!v6)
+    if (!visibleCopy)
     {
       v27 = 0.0;
     }
 
-    v46 = [(BKMinifiedFlowController *)self minibarContainerView];
-    [v46 setFrame:{v31, v41, v36, v27}];
+    minibarContainerView3 = [(BKMinifiedFlowController *)self minibarContainerView];
+    [minibarContainerView3 setFrame:{v31, v41, v36, v27}];
 
-    [v50 minifiedAssetPresenterDidLayoutAssetMinified];
+    [minibarCopy minifiedAssetPresenterDidLayoutAssetMinified];
   }
 }
 
 - (BOOL)_shouldHideMinibar
 {
-  v2 = [(BKMinifiedFlowController *)self delegate];
-  v3 = [v2 minifiedFlowControllerMinibarContainingViewController];
-  v4 = [v3 im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BKMinifiedBarVisibilityStyling];
+  delegate = [(BKMinifiedFlowController *)self delegate];
+  minifiedFlowControllerMinibarContainingViewController = [delegate minifiedFlowControllerMinibarContainingViewController];
+  v4 = [minifiedFlowControllerMinibarContainingViewController im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BKMinifiedBarVisibilityStyling];
 
-  LOBYTE(v2) = [v4 minifiedBarVisibilityStyleIsHidden];
-  return v2;
+  LOBYTE(delegate) = [v4 minifiedBarVisibilityStyleIsHidden];
+  return delegate;
 }
 
-- (void)visibleViewControllersUpdatedPreTranstionAnimated:(BOOL)a3
+- (void)visibleViewControllersUpdatedPreTranstionAnimated:(BOOL)animated
 {
   if ([(BKMinifiedFlowController *)self _shouldHideMinibar])
   {
-    v4 = [(BKMinifiedFlowController *)self minibarContainerView];
-    v5 = [v4 isHidden];
+    minibarContainerView = [(BKMinifiedFlowController *)self minibarContainerView];
+    isHidden = [minibarContainerView isHidden];
 
-    if ((v5 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v6 = [(BKMinifiedFlowController *)self minibarContainerView];
-      [v6 setHidden:1];
+      minibarContainerView2 = [(BKMinifiedFlowController *)self minibarContainerView];
+      [minibarContainerView2 setHidden:1];
     }
   }
 }
 
-- (void)visibleViewControllersUpdatedPostTranstionAnimated:(BOOL)a3
+- (void)visibleViewControllersUpdatedPostTranstionAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(BKMinifiedFlowController *)self _shouldHideMinibar])
   {
-    v5 = [(BKMinifiedFlowController *)self minibarContainerView];
-    v6 = [v5 isHidden];
+    minibarContainerView = [(BKMinifiedFlowController *)self minibarContainerView];
+    isHidden = [minibarContainerView isHidden];
 
-    if (v6)
+    if (isHidden)
     {
-      v7 = [(BKMinifiedFlowController *)self minibarVisible];
+      minibarVisible = [(BKMinifiedFlowController *)self minibarVisible];
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_1000712B4;
       v11[3] = &unk_100A033C8;
       v11[4] = self;
       [UIView performWithoutAnimation:v11];
-      v8 = [(BKMinifiedFlowController *)self minibarContainerView];
-      [v8 setHidden:0];
+      minibarContainerView2 = [(BKMinifiedFlowController *)self minibarContainerView];
+      [minibarContainerView2 setHidden:0];
 
-      [(BKMinifiedFlowController *)self _setMinibarVisible:v7 animated:v3 completion:0];
+      [(BKMinifiedFlowController *)self _setMinibarVisible:minibarVisible animated:animatedCopy completion:0];
     }
   }
 
-  v9 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
 
-  if (v9)
+  if (audioBookAssetPresenter)
   {
-    v10 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-    [(BKMinifiedFlowController *)self _layoutPresenterMinibar:v10];
+    audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    [(BKMinifiedFlowController *)self _layoutPresenterMinibar:audioBookAssetPresenter2];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100071344;
   v4[3] = &unk_100A04410;
   v4[4] = self;
-  [a4 animateAlongsideTransition:v4 completion:&stru_100A04450];
+  [coordinator animateAlongsideTransition:v4 completion:&stru_100A04450];
 }
 
 - (void)activeRootBarKindDidChange
 {
-  v3 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:v3];
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:audioBookAssetPresenter];
 }
 
 - (void)contentSizeCategoryDidChange
 {
-  v3 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:v3];
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:audioBookAssetPresenter];
 }
 
-- (void)setShouldIgnoreCurrentBookNotifications:(BOOL)a3
+- (void)setShouldIgnoreCurrentBookNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  self->_shouldIgnoreCurrentBookNotifications = a3;
+  notificationsCopy = notifications;
+  self->_shouldIgnoreCurrentBookNotifications = notifications;
   v5 = BCCurrentBookLog();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (notificationsCopy)
   {
     if (v6)
     {
@@ -1694,12 +1694,12 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "End ignoring current book update notifications.", v9, 2u);
     }
 
-    v7 = [(BKMinifiedFlowController *)self ignoredCurrentBookNotification];
+    ignoredCurrentBookNotification = [(BKMinifiedFlowController *)self ignoredCurrentBookNotification];
 
-    if (v7)
+    if (ignoredCurrentBookNotification)
     {
-      v8 = [(BKMinifiedFlowController *)self ignoredCurrentBookNotification];
-      [(BKMinifiedFlowController *)self _recentBooksProviderChanged:v8];
+      ignoredCurrentBookNotification2 = [(BKMinifiedFlowController *)self ignoredCurrentBookNotification];
+      [(BKMinifiedFlowController *)self _recentBooksProviderChanged:ignoredCurrentBookNotification2];
 
       [(BKMinifiedFlowController *)self setIgnoredCurrentBookNotification:0];
     }
@@ -1708,74 +1708,74 @@ LABEL_5:
 
 - (id)minifiedBarAnimatorMinibarView
 {
-  v2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  v3 = [v2 minifiedAssetPresenterMinibar];
-  v4 = [v3 view];
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  minifiedAssetPresenterMinibar = [audioBookAssetPresenter minifiedAssetPresenterMinibar];
+  view = [minifiedAssetPresenterMinibar view];
 
-  return v4;
+  return view;
 }
 
 - (id)minifiedBarAnimatorTabBarView
 {
-  v2 = [(BKMinifiedFlowController *)self delegate];
-  v3 = [v2 minifiedFlowControllerTabBarView];
+  delegate = [(BKMinifiedFlowController *)self delegate];
+  minifiedFlowControllerTabBarView = [delegate minifiedFlowControllerTabBarView];
 
-  return v3;
+  return minifiedFlowControllerTabBarView;
 }
 
-- (void)minifiedBarAnimatePrepareTransitionToViewController:(id)a3
+- (void)minifiedBarAnimatePrepareTransitionToViewController:(id)controller
 {
-  v4 = [a3 im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
+  v4 = [controller im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
   [(BKMinifiedFlowController *)self setMinibarVisible:v4 == 0];
 }
 
-- (void)minifiedBarAnimatorAnimateHideIfNeededFromViewController:(id)a3
+- (void)minifiedBarAnimatorAnimateHideIfNeededFromViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BKMinifiedFlowController *)self minibarContainerView];
-  [v5 setAlpha:0.0];
+  controllerCopy = controller;
+  minibarContainerView = [(BKMinifiedFlowController *)self minibarContainerView];
+  [minibarContainerView setAlpha:0.0];
 
-  v6 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:v6 visible:0 viewController:v4];
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:audioBookAssetPresenter visible:0 viewController:controllerCopy];
 }
 
-- (void)minifiedBarAnimatorFinalizeHideIfNeededToViewController:(id)a3
+- (void)minifiedBarAnimatorFinalizeHideIfNeededToViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:v5 visible:0 viewController:v4];
+  controllerCopy = controller;
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:audioBookAssetPresenter visible:0 viewController:controllerCopy];
 }
 
-- (void)minifiedBarAnimatorPrepareShowIfNeededToViewController:(id)a3
+- (void)minifiedBarAnimatorPrepareShowIfNeededToViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BKMinifiedFlowController *)self minibarContainerView];
-  [v5 setAlpha:1.0];
+  controllerCopy = controller;
+  minibarContainerView = [(BKMinifiedFlowController *)self minibarContainerView];
+  [minibarContainerView setAlpha:1.0];
 
-  v6 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:v6 visible:0 viewController:v4];
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:audioBookAssetPresenter visible:0 viewController:controllerCopy];
 }
 
-- (void)minifiedBarAnimatorAnimateShowIfNeededToViewController:(id)a3 force:(BOOL)a4
+- (void)minifiedBarAnimatorAnimateShowIfNeededToViewController:(id)controller force:(BOOL)force
 {
-  v6 = a3;
-  v13 = [v6 im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
-  v7 = [(BKMinifiedFlowController *)self minibarVisible];
-  if (!a4 && v7)
+  controllerCopy = controller;
+  v13 = [controllerCopy im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
+  minibarVisible = [(BKMinifiedFlowController *)self minibarVisible];
+  if (!force && minibarVisible)
   {
-    v8 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-    v9 = [v8 minifiedAssetPresenterAssetID];
-    v10 = [v13 assetPresenterAssetID];
-    v11 = [v9 isEqualToString:v10];
+    audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    minifiedAssetPresenterAssetID = [audioBookAssetPresenter minifiedAssetPresenterAssetID];
+    assetPresenterAssetID = [v13 assetPresenterAssetID];
+    v11 = [minifiedAssetPresenterAssetID isEqualToString:assetPresenterAssetID];
 
-    a4 = v11 ^ 1;
+    force = v11 ^ 1;
   }
 
-  v12 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:v12 visible:a4 viewController:v6];
+  audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  [(BKMinifiedFlowController *)self _layoutPresenterMinibar:audioBookAssetPresenter2 visible:force viewController:controllerCopy];
 }
 
-- (void)toggleMinibarVisibility:(id)a3
+- (void)toggleMinibarVisibility:(id)visibility
 {
   v4 = [(BKMinifiedFlowController *)self minibarVisible]^ 1;
 
@@ -1784,8 +1784,8 @@ LABEL_5:
 
 - (id)_currentAssetPresenters
 {
-  v2 = [(BKMinifiedFlowController *)self sceneHosting];
-  v3 = [v2 sceneHostingAllViewControllersConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
+  sceneHosting = [(BKMinifiedFlowController *)self sceneHosting];
+  v3 = [sceneHosting sceneHostingAllViewControllersConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
 
   return v3;
 }
@@ -1796,8 +1796,8 @@ LABEL_5:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(BKMinifiedFlowController *)self _currentAssetPresenters];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _currentAssetPresenters = [(BKMinifiedFlowController *)self _currentAssetPresenters];
+  v3 = [_currentAssetPresenters countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1809,7 +1809,7 @@ LABEL_5:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_currentAssetPresenters);
         }
 
         [*(*(&v7 + 1) + 8 * v6) assetPresenterUpdateToolbars];
@@ -1817,37 +1817,37 @@ LABEL_5:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [_currentAssetPresenters countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (BOOL)shouldAnimateAssetWithAssetIDFromMinibar:(id)a3
+- (BOOL)shouldAnimateAssetWithAssetIDFromMinibar:(id)minibar
 {
-  v4 = a3;
-  v5 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-  v6 = [v5 minifiedAssetPresenterAssetID];
-  v7 = [v6 isEqualToString:v4];
+  minibarCopy = minibar;
+  audioBookAssetPresenter = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+  minifiedAssetPresenterAssetID = [audioBookAssetPresenter minifiedAssetPresenterAssetID];
+  v7 = [minifiedAssetPresenterAssetID isEqualToString:minibarCopy];
 
   if (v7)
   {
-    v8 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
-    v9 = [v8 minifiedAssetPresenterShouldAnimateFromMinibar];
+    audioBookAssetPresenter2 = [(BKMinifiedFlowController *)self audioBookAssetPresenter];
+    minifiedAssetPresenterShouldAnimateFromMinibar = [audioBookAssetPresenter2 minifiedAssetPresenterShouldAnimateFromMinibar];
   }
 
   else
   {
-    v9 = 0;
+    minifiedAssetPresenterShouldAnimateFromMinibar = 0;
   }
 
-  return v9;
+  return minifiedAssetPresenterShouldAnimateFromMinibar;
 }
 
-- (void)_cleanLastKnownCurrentBookIfNecessary:(id)a3
+- (void)_cleanLastKnownCurrentBookIfNecessary:(id)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v4 = +[(BKBasePresentingViewController *)BKAssetPresentingViewController];
   if ([v4 length])
   {
@@ -1862,7 +1862,7 @@ LABEL_5:
     v5 = v4;
     v13 = v5;
     v14 = v15;
-    [v3 enumerateObjectsUsingBlock:v12];
+    [necessaryCopy enumerateObjectsUsingBlock:v12];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100071D44;
@@ -1892,11 +1892,11 @@ LABEL_5:
   }
 }
 
-- (BOOL)_shouldHandleCurrentBookNotification:(id)a3
+- (BOOL)_shouldHandleCurrentBookNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(BKMinifiedFlowController *)self delegate];
-  v6 = [v5 minifiedFlowControllerPresentedAssetID:self];
+  notificationCopy = notification;
+  delegate = [(BKMinifiedFlowController *)self delegate];
+  v6 = [delegate minifiedFlowControllerPresentedAssetID:self];
 
   if ([(BKMinifiedFlowController *)self shouldIgnoreCurrentBookNotifications])
   {
@@ -1914,9 +1914,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v6 length] || !objc_msgSend(v4, "length"))
+  if ([v6 length] || !objc_msgSend(notificationCopy, "length"))
   {
-    v10 = [v4 length];
+    v10 = [notificationCopy length];
     v7 = BCCurrentBookLog();
     v11 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
     if (v10)
@@ -1950,12 +1950,12 @@ LABEL_14:
   return v12;
 }
 
-- (void)_recentBooksProviderChanged:(id)a3
+- (void)_recentBooksProviderChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_opt_class();
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"BKRecentBooksProviderAssetsKey"];
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"BKRecentBooksProviderAssetsKey"];
   v7 = BUDynamicCast();
 
   objc_initWeak(&location, self);
@@ -1965,8 +1965,8 @@ LABEL_14:
   v10[3] = &unk_100A03620;
   objc_copyWeak(&v13, &location);
   v11 = v7;
-  v12 = v4;
-  v8 = v4;
+  v12 = changedCopy;
+  v8 = changedCopy;
   v9 = v7;
   dispatch_async(&_dispatch_main_q, v10);
 

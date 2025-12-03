@@ -1,10 +1,10 @@
 @interface ClarityOnboardingController
-- (void)_cancelOnboardingWithCompletion:(id)a3;
+- (void)_cancelOnboardingWithCompletion:(id)completion;
 - (void)_clearOnboarding;
 - (void)_showAdminPasscodeSetupController;
 - (void)_showAdminSettingsOnboardingController;
 - (void)_showAppSelectionController;
-- (void)_showAppleIDControllerWithAppleID:(id)a3;
+- (void)_showAppleIDControllerWithAppleID:(id)d;
 - (void)_showFinishedController;
 - (void)_showLayoutSetupController;
 - (void)_showParentalControlsSetupController;
@@ -12,7 +12,7 @@
 - (void)_showSecurityConfirmationSetupController;
 - (void)_showThingsToKnowController;
 - (void)_startOnboardingFlow;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
 - (void)viewDidLoad;
 @end
 
@@ -26,14 +26,14 @@
   v6 = settingsLocString(v5, @"ClarityUISettings");
   v7 = [v3 initWithTitle:v4 detailText:v6 icon:0 contentLayout:4];
 
-  v8 = [v7 contentView];
+  contentView = [v7 contentView];
   v9 = +[UIColor clearColor];
-  [v8 setBackgroundColor:v9];
+  [contentView setBackgroundColor:v9];
 
   v10 = [ClarityOnboardingPreviewView alloc];
   v11 = [(ClarityOnboardingPreviewView *)v10 initWithListLayout:CLFListLayoutStack];
   [(ClarityOnboardingPreviewView *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v8 addSubview:v11];
+  [contentView addSubview:v11];
   v12 = objc_opt_new();
   v13 = _NSDictionaryOfVariableBindings(@"previewView", v11, 0);
   v14 = [NSLayoutConstraint constraintsWithVisualFormat:@"|[previewView]|" options:0 metrics:0 views:v13];
@@ -49,16 +49,16 @@
   [v17 setTitle:v18 forState:0];
 
   [v17 addTarget:self action:"_didTapGetStartedButton:" forControlEvents:0x2000];
-  v19 = [v7 buttonTray];
-  [v19 addButton:v17];
+  buttonTray = [v7 buttonTray];
+  [buttonTray addButton:v17];
 
   [(ClarityOnboardingNavigationWrapperController *)self setController:v7];
   v23.receiver = self;
   v23.super_class = ClarityOnboardingController;
   [(ClarityOnboardingController *)&v23 viewDidLoad];
-  v20 = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
-  v21 = [v20 presentationController];
-  [v21 setDelegate:self];
+  setUpNavigationController = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
+  presentationController = [setUpNavigationController presentationController];
+  [presentationController setDelegate:self];
 
   v22 = +[NSNotificationCenter defaultCenter];
   [v22 addObserver:self selector:"applicationWillTerminate:" name:UIApplicationWillTerminateNotification object:0];
@@ -79,11 +79,11 @@
 - (void)_startOnboardingFlow
 {
   v3 = +[ADCoreSettings sharedInstance];
-  v4 = [v3 iCloudAccount];
+  iCloudAccount = [v3 iCloudAccount];
 
   v5 = AXLogCommon();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (iCloudAccount)
   {
     if (v6)
     {
@@ -91,7 +91,7 @@
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Clarity Onboarding was started with a signed in Apple ID.", buf, 2u);
     }
 
-    [(ClarityOnboardingController *)self _showAppleIDControllerWithAppleID:v4];
+    [(ClarityOnboardingController *)self _showAppleIDControllerWithAppleID:iCloudAccount];
   }
 
   else
@@ -106,9 +106,9 @@
   }
 }
 
-- (void)_showAppleIDControllerWithAppleID:(id)a3
+- (void)_showAppleIDControllerWithAppleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_initWeak(&location, self);
   v5 = [ClarityUIAppleIDController alloc];
   v8 = _NSConcreteStackBlock;
@@ -116,7 +116,7 @@
   v10 = __65__ClarityOnboardingController__showAppleIDControllerWithAppleID___block_invoke;
   v11 = &unk_255BD0;
   objc_copyWeak(&v12, &location);
-  v6 = [(ClarityUIAppleIDController *)v5 initWithAppleID:v4 delegate:self andCompletion:&v8];
+  v6 = [(ClarityUIAppleIDController *)v5 initWithAppleID:dCopy delegate:self andCompletion:&v8];
   v7 = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController:v8];
   [v7 pushViewController:v6 animated:1];
 
@@ -164,8 +164,8 @@ void __65__ClarityOnboardingController__showAppleIDControllerWithAppleID___block
   {
 
 LABEL_6:
-    v9 = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
-    [v9 pushViewController:v6 animated:1];
+    setUpNavigationController = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
+    [setUpNavigationController pushViewController:v6 animated:1];
 
     goto LABEL_7;
   }
@@ -279,9 +279,9 @@ void __58__ClarityOnboardingController__showThingsToKnowController__block_invoke
 - (void)_showSecurityConfirmationSetupController
 {
   v3 = +[ADCoreSettings sharedInstance];
-  v4 = [v3 iCloudAccount];
+  iCloudAccount = [v3 iCloudAccount];
 
-  v5 = [v4 clarityUI_shortName];
+  clarityUI_shortName = [iCloudAccount clarityUI_shortName];
   objc_initWeak(&location, self);
   v6 = [ClarityUISecurityConfirmationSetupController alloc];
   v9 = _NSConcreteStackBlock;
@@ -289,7 +289,7 @@ void __58__ClarityOnboardingController__showThingsToKnowController__block_invoke
   v11 = __71__ClarityOnboardingController__showSecurityConfirmationSetupController__block_invoke;
   v12 = &unk_255BD0;
   objc_copyWeak(&v13, &location);
-  v7 = [(ClarityUISecurityConfirmationSetupController *)v6 initWithShortName:v5 delegate:self andCompletion:&v9];
+  v7 = [(ClarityUISecurityConfirmationSetupController *)v6 initWithShortName:clarityUI_shortName delegate:self andCompletion:&v9];
   v8 = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController:v9];
   [v8 pushViewController:v7 animated:1];
 
@@ -489,8 +489,8 @@ void __54__ClarityOnboardingController__showFinishedController__block_invoke(uin
   v9 = [UIAlertAction actionWithTitle:v8 style:0 handler:&__block_literal_global_4];
 
   [v5 addAction:v9];
-  v10 = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
-  [v10 presentViewController:v5 animated:1 completion:0];
+  setUpNavigationController = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
+  [setUpNavigationController presentViewController:v5 animated:1 completion:0];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -513,9 +513,9 @@ void __49__ClarityOnboardingController__showPasscodeAlert__block_invoke_2(id a1,
   [v2 openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)_cancelOnboardingWithCompletion:(id)a3
+- (void)_cancelOnboardingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = settingsLocString(@"CLARITY_UI_CANCEL_ONBOARDING_TITLE", @"ClarityUISettings");
   v6 = settingsLocString(@"CLARITY_UI_CANCEL_ONBOARDING_MESSAGE", @"ClarityUISettings");
   v7 = [UIAlertController alertControllerWithTitle:v5 message:v6 preferredStyle:1];
@@ -527,7 +527,7 @@ void __49__ClarityOnboardingController__showPasscodeAlert__block_invoke_2(id a1,
   v14[2] = __63__ClarityOnboardingController__cancelOnboardingWithCompletion___block_invoke;
   v14[3] = &unk_255C60;
   objc_copyWeak(&v16, &location);
-  v9 = v4;
+  v9 = completionCopy;
   v15 = v9;
   v10 = [UIAlertAction actionWithTitle:v8 style:2 handler:v14];
   [v7 addAction:v10];
@@ -536,8 +536,8 @@ void __49__ClarityOnboardingController__showPasscodeAlert__block_invoke_2(id a1,
   v12 = [UIAlertAction actionWithTitle:v11 style:0 handler:&__block_literal_global_366];
   [v7 addAction:v12];
 
-  v13 = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
-  [v13 presentViewController:v7 animated:1 completion:0];
+  setUpNavigationController = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
+  [setUpNavigationController presentViewController:v7 animated:1 completion:0];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -553,16 +553,16 @@ void __63__ClarityOnboardingController__cancelOnboardingWithCompletion___block_i
   [v4 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v4 = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
-  v6 = [v4 topViewController];
+  setUpNavigationController = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
+  topViewController = [setUpNavigationController topViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    setUpNavigationController2 = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
+    [setUpNavigationController2 dismissViewControllerAnimated:1 completion:0];
 
     [(ClarityOnboardingController *)self dismissViewControllerAnimated:1 completion:0];
   }

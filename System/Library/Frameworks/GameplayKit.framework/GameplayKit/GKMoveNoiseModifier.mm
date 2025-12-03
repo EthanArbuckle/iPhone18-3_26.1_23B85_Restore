@@ -1,7 +1,7 @@
 @interface GKMoveNoiseModifier
 - (GKMoveNoiseModifier)init;
 - (GKMoveNoiseModifier)initWithDelta:(GKMoveNoiseModifier *)self;
-- (GKMoveNoiseModifier)initWithInputModuleCount:(unint64_t)a3;
+- (GKMoveNoiseModifier)initWithInputModuleCount:(unint64_t)count;
 - (double)valueAt:(GKMoveNoiseModifier *)self;
 - (id)cloneModule;
 @end
@@ -16,7 +16,7 @@
   return [(GKMoveNoiseModifier *)self initWithDelta:v3];
 }
 
-- (GKMoveNoiseModifier)initWithInputModuleCount:(unint64_t)a3
+- (GKMoveNoiseModifier)initWithInputModuleCount:(unint64_t)count
 {
   v4[0] = 0;
   v4[1] = 0;

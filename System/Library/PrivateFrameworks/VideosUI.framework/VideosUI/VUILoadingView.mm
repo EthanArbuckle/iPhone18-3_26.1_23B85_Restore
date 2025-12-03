@@ -1,53 +1,53 @@
 @interface VUILoadingView
-- (VUILoadingView)initWithFrame:(CGRect)a3 loadingTitle:(id)a4 loadingMessage:(id)a5;
-- (void)_setupLabels:(id)a3 message:(id)a4;
-- (void)configureMessageTextLayout:(id)a3;
-- (void)configureTitleTextLayout:(id)a3;
+- (VUILoadingView)initWithFrame:(CGRect)frame loadingTitle:(id)title loadingMessage:(id)message;
+- (void)_setupLabels:(id)labels message:(id)message;
+- (void)configureMessageTextLayout:(id)layout;
+- (void)configureTitleTextLayout:(id)layout;
 - (void)layoutSubviews;
-- (void)setMessageTextLayout:(id)a3;
-- (void)setTitleTextLayout:(id)a3;
+- (void)setMessageTextLayout:(id)layout;
+- (void)setTitleTextLayout:(id)layout;
 - (void)startTimer;
 @end
 
 @implementation VUILoadingView
 
-- (VUILoadingView)initWithFrame:(CGRect)a3 loadingTitle:(id)a4 loadingMessage:(id)a5
+- (VUILoadingView)initWithFrame:(CGRect)frame loadingTitle:(id)title loadingMessage:(id)message
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  titleCopy = title;
+  messageCopy = message;
   v19.receiver = self;
   v19.super_class = VUILoadingView;
-  v13 = [(VUILoadingView *)&v19 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(VUILoadingView *)&v19 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    v13->_delay = 1.5;
-    v15 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [(VUILoadingView *)v14 setBackgroundColor:v15];
+    height->_delay = 1.5;
+    vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [(VUILoadingView *)v14 setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
     v16 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     indicatorView = v14->_indicatorView;
     v14->_indicatorView = v16;
 
-    [(VUILoadingView *)v14 _setupLabels:v11 message:v12];
+    [(VUILoadingView *)v14 _setupLabels:titleCopy message:messageCopy];
     [(VUILoadingView *)v14 addSubview:v14->_indicatorView];
   }
 
   return v14;
 }
 
-- (void)_setupLabels:(id)a3 message:(id)a4
+- (void)_setupLabels:(id)labels message:(id)message
 {
-  v17 = a3;
-  v6 = a4;
-  if (v17)
+  labelsCopy = labels;
+  messageCopy = message;
+  if (labelsCopy)
   {
-    v7 = v17;
-    v8 = v6;
+    v7 = labelsCopy;
+    v8 = messageCopy;
   }
 
   else
@@ -55,7 +55,7 @@
     v9 = +[VUILocalizationManager sharedInstance];
     v7 = [v9 localizedStringForKey:@"LOADING"];
 
-    v10 = v6;
+    v10 = messageCopy;
     if (!v7)
     {
       goto LABEL_5;
@@ -73,11 +73,11 @@
   [(VUILoadingView *)self addSubview:self->_loadingLabel];
 
 LABEL_5:
-  if (v6)
+  if (messageCopy)
   {
     v14 = objc_alloc_init(VUITextLayout);
     [(VUILoadingView *)self configureMessageTextLayout:v14];
-    objc_storeStrong(&self->_loadingMessage, a4);
+    objc_storeStrong(&self->_loadingMessage, message);
     v15 = [VUILabel labelWithString:self->_loadingMessage textLayout:v14 existingLabel:0];
     loadingMessageLabel = self->_loadingMessageLabel;
     self->_loadingMessageLabel = v15;
@@ -87,15 +87,15 @@ LABEL_5:
   }
 }
 
-- (void)setTitleTextLayout:(id)a3
+- (void)setTitleTextLayout:(id)layout
 {
-  v5 = a3;
-  if (self->_titleTextLayout != v5)
+  layoutCopy = layout;
+  if (self->_titleTextLayout != layoutCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_titleTextLayout, a3);
-    v6 = [(VUILoadingView *)self loadingTitle];
-    v7 = [VUILabel labelWithString:v6 textLayout:v10 existingLabel:self->_loadingLabel];
+    v10 = layoutCopy;
+    objc_storeStrong(&self->_titleTextLayout, layout);
+    loadingTitle = [(VUILoadingView *)self loadingTitle];
+    v7 = [VUILabel labelWithString:loadingTitle textLayout:v10 existingLabel:self->_loadingLabel];
     loadingLabel = self->_loadingLabel;
     self->_loadingLabel = v7;
 
@@ -103,19 +103,19 @@ LABEL_5:
     [(VUILabel *)self->_loadingLabel setVuiAccessibilityIdentifier:v9];
     [(VUILabel *)self->_loadingLabel setNeedsDisplay];
 
-    v5 = v10;
+    layoutCopy = v10;
   }
 }
 
-- (void)setMessageTextLayout:(id)a3
+- (void)setMessageTextLayout:(id)layout
 {
-  v5 = a3;
-  if (self->_messageTextLayout != v5)
+  layoutCopy = layout;
+  if (self->_messageTextLayout != layoutCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_messageTextLayout, a3);
-    v6 = [(VUILoadingView *)self loadingMessage];
-    v7 = [VUILabel labelWithString:v6 textLayout:v10 existingLabel:self->_loadingMessageLabel];
+    v10 = layoutCopy;
+    objc_storeStrong(&self->_messageTextLayout, layout);
+    loadingMessage = [(VUILoadingView *)self loadingMessage];
+    v7 = [VUILabel labelWithString:loadingMessage textLayout:v10 existingLabel:self->_loadingMessageLabel];
     loadingMessageLabel = self->_loadingMessageLabel;
     self->_loadingMessageLabel = v7;
 
@@ -123,7 +123,7 @@ LABEL_5:
     [(VUILabel *)self->_loadingMessageLabel setVuiAccessibilityIdentifier:v9];
     [(VUILabel *)self->_loadingMessageLabel setNeedsDisplay];
 
-    v5 = v10;
+    layoutCopy = v10;
   }
 }
 
@@ -277,21 +277,21 @@ void __28__VUILoadingView_startTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (void)configureTitleTextLayout:(id)a3
+- (void)configureTitleTextLayout:(id)layout
 {
-  v3 = a3;
-  [v3 setTextStyle:2];
-  [v3 setFontWeight:10];
-  v4 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-  [v3 setColor:v4];
+  layoutCopy = layout;
+  [layoutCopy setTextStyle:2];
+  [layoutCopy setFontWeight:10];
+  vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+  [layoutCopy setColor:vui_primaryTextColor];
 }
 
-- (void)configureMessageTextLayout:(id)a3
+- (void)configureMessageTextLayout:(id)layout
 {
-  v3 = a3;
-  [v3 setTextStyle:14];
-  v4 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-  [v3 setColor:v4];
+  layoutCopy = layout;
+  [layoutCopy setTextStyle:14];
+  vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+  [layoutCopy setColor:vui_secondaryTextColor];
 }
 
 @end

@@ -1,41 +1,41 @@
 @interface CRListItemOutputRegion
-+ (BOOL)textStartsWithListItem:(id)a3;
-+ (id)listItemForParagraph:(id)a3;
-- (CRListItemOutputRegion)initWithLayoutListItem:(id)a3;
++ (BOOL)textStartsWithListItem:(id)item;
++ (id)listItemForParagraph:(id)paragraph;
+- (CRListItemOutputRegion)initWithLayoutListItem:(id)item;
 - (_NSRange)markerRange;
-- (id)listItemByAppendingParagraph:(id)a3;
+- (id)listItemByAppendingParagraph:(id)paragraph;
 - (int64_t)markerType;
-- (void)initWithParagraphs:(void *)a3 marker:;
+- (void)initWithParagraphs:(void *)paragraphs marker:;
 @end
 
 @implementation CRListItemOutputRegion
 
-- (CRListItemOutputRegion)initWithLayoutListItem:(id)a3
+- (CRListItemOutputRegion)initWithLayoutListItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 groups];
-  [v5 count];
+  itemCopy = item;
+  groups = [itemCopy groups];
+  [groups count];
 
-  v6 = [v4 groups];
-  v7 = [v4 marker];
+  groups2 = [itemCopy groups];
+  marker = [itemCopy marker];
 
-  v8 = [(CRListItemOutputRegion *)self initWithParagraphs:v6 marker:v7];
+  v8 = [(CRListItemOutputRegion *)self initWithParagraphs:groups2 marker:marker];
   return v8;
 }
 
-- (void)initWithParagraphs:(void *)a3 marker:
+- (void)initWithParagraphs:(void *)paragraphs marker:
 {
   v31 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  paragraphsCopy = paragraphs;
+  if (self)
   {
-    a1 = [a1 init];
-    if (a1)
+    self = [self init];
+    if (self)
     {
       if ([v5 count])
       {
-        newValue = v6;
+        newValue = paragraphsCopy;
         v28 = 0u;
         v29 = 0u;
         v26 = 0u;
@@ -60,7 +60,7 @@
               v14 = *(*(&v26 + 1) + 8 * i);
               [v14 baselineAngle];
               v16 = v15;
-              [a1 baselineAngle];
+              [self baselineAngle];
               v18 = v16 - v17;
               if (v16 - v17 <= 3.14159265)
               {
@@ -89,17 +89,17 @@
                 v19 = v19 + -6.28318531;
               }
 
-              [a1 setBaselineAngle:v19];
-              v20 = [v14 confidence];
+              [self setBaselineAngle:v19];
+              confidence = [v14 confidence];
               if (v10 < [v7 count])
               {
                 [v14 setUseLineSeparatorAsJoiningDelimiter:1];
-                v21 = [v14 children];
-                v22 = [v21 lastObject];
-                [v22 setUseLineSeparatorAsLineBreak:1];
+                children = [v14 children];
+                lastObject = [children lastObject];
+                [lastObject setUseLineSeparatorAsLineBreak:1];
               }
 
-              v12 = v12 + v20;
+              v12 = v12 + confidence;
             }
 
             v9 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -113,33 +113,33 @@
           v12 = 0.0;
         }
 
-        [a1 setConfidence:{(v12 / objc_msgSend(v7, "count"))}];
-        [a1 setShouldComputeBoundsFromChildren:1];
-        [a1 setShouldComputeTranscriptFromChildren:1];
-        [a1 setChildren:v7];
-        [a1 setParagraphRegions:v7];
-        v6 = newValue;
-        objc_setProperty_atomic(a1, v23, newValue, 352);
+        [self setConfidence:{(v12 / objc_msgSend(v7, "count"))}];
+        [self setShouldComputeBoundsFromChildren:1];
+        [self setShouldComputeTranscriptFromChildren:1];
+        [self setChildren:v7];
+        [self setParagraphRegions:v7];
+        paragraphsCopy = newValue;
+        objc_setProperty_atomic(self, v23, newValue, 352);
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)listItemByAppendingParagraph:(id)a3
+- (id)listItemByAppendingParagraph:(id)paragraph
 {
-  v4 = a3;
-  v5 = [(CROutputRegion *)self paragraphRegions];
-  v6 = [v5 lastObject];
+  paragraphCopy = paragraph;
+  paragraphRegions = [(CROutputRegion *)self paragraphRegions];
+  lastObject = [paragraphRegions lastObject];
 
-  [v6 setUseLineSeparatorAsJoiningDelimiter:1];
-  v7 = [v6 children];
-  v8 = [v7 lastObject];
-  [v8 setUseLineSeparatorAsLineBreak:1];
+  [lastObject setUseLineSeparatorAsJoiningDelimiter:1];
+  children = [lastObject children];
+  lastObject2 = [children lastObject];
+  [lastObject2 setUseLineSeparatorAsLineBreak:1];
 
-  v9 = [(CROutputRegion *)self paragraphRegions];
-  v10 = [v9 arrayByAddingObject:v4];
+  paragraphRegions2 = [(CROutputRegion *)self paragraphRegions];
+  v10 = [paragraphRegions2 arrayByAddingObject:paragraphCopy];
 
   v12 = [CRListItemOutputRegion alloc];
   if (self)
@@ -165,9 +165,9 @@
     v2 = vars8;
   }
 
-  v3 = [(CRListItemOutputRegion *)self range];
+  range = [(CRListItemOutputRegion *)self range];
   result.length = v4;
-  result.location = v3;
+  result.location = range;
   return result;
 }
 
@@ -182,25 +182,25 @@
   return [(CRListItemOutputRegion *)self type];
 }
 
-+ (BOOL)textStartsWithListItem:(id)a3
++ (BOOL)textStartsWithListItem:(id)item
 {
-  v3 = [CRListItemMarker listItemMarkerForText:a3 requiresAdjacentText:1];
+  v3 = [CRListItemMarker listItemMarkerForText:item requiresAdjacentText:1];
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (id)listItemForParagraph:(id)a3
++ (id)listItemForParagraph:(id)paragraph
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 text];
-  v5 = [CRListItemMarker listItemMarkerForText:v4 requiresAdjacentText:1];
+  paragraphCopy = paragraph;
+  text = [paragraphCopy text];
+  v5 = [CRListItemMarker listItemMarkerForText:text requiresAdjacentText:1];
 
   if (v5)
   {
     v6 = [CRListItemOutputRegion alloc];
-    v10[0] = v3;
+    v10[0] = paragraphCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     v8 = [(CRListItemOutputRegion *)v6 initWithParagraphs:v7 marker:v5];
   }

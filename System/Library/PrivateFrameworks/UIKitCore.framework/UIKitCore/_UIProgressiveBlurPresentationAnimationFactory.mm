@@ -1,26 +1,26 @@
 @interface _UIProgressiveBlurPresentationAnimationFactory
-- (_UIProgressiveBlurPresentationAnimationFactory)initWithCurve:(unint64_t)a3;
-- (id)_timingFunctionForAnimationInView:(id)a3 withKeyPath:(id)a4;
+- (_UIProgressiveBlurPresentationAnimationFactory)initWithCurve:(unint64_t)curve;
+- (id)_timingFunctionForAnimationInView:(id)view withKeyPath:(id)path;
 @end
 
 @implementation _UIProgressiveBlurPresentationAnimationFactory
 
-- (_UIProgressiveBlurPresentationAnimationFactory)initWithCurve:(unint64_t)a3
+- (_UIProgressiveBlurPresentationAnimationFactory)initWithCurve:(unint64_t)curve
 {
   v5.receiver = self;
   v5.super_class = _UIProgressiveBlurPresentationAnimationFactory;
   result = [(_UIProgressiveBlurPresentationAnimationFactory *)&v5 init];
   if (result)
   {
-    result->_curve = a3;
+    result->_curve = curve;
   }
 
   return result;
 }
 
-- (id)_timingFunctionForAnimationInView:(id)a3 withKeyPath:(id)a4
+- (id)_timingFunctionForAnimationInView:(id)view withKeyPath:(id)path
 {
-  v4 = [(_UIProgressiveBlurPresentationAnimationFactory *)self curve:a3];
+  v4 = [(_UIProgressiveBlurPresentationAnimationFactory *)self curve:view];
   if (v4 == 1)
   {
     LODWORD(v5) = 1040522936;

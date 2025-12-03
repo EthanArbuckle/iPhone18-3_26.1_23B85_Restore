@@ -1,14 +1,14 @@
 @interface COSRemoteManagementInformationHeaderView
-- (COSRemoteManagementInformationHeaderView)initWithReuseIdentifier:(id)a3;
+- (COSRemoteManagementInformationHeaderView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation COSRemoteManagementInformationHeaderView
 
-- (COSRemoteManagementInformationHeaderView)initWithReuseIdentifier:(id)a3
+- (COSRemoteManagementInformationHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v50.receiver = self;
   v50.super_class = COSRemoteManagementInformationHeaderView;
-  v3 = [(COSRemoteManagementInformationHeaderView *)&v50 initWithReuseIdentifier:a3];
+  v3 = [(COSRemoteManagementInformationHeaderView *)&v50 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -20,8 +20,8 @@
     v3->_containerView = v8;
 
     [(UIView *)v3->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [(COSRemoteManagementInformationHeaderView *)v3 contentView];
-    [v10 addSubview:v3->_containerView];
+    contentView = [(COSRemoteManagementInformationHeaderView *)v3 contentView];
+    [contentView addSubview:v3->_containerView];
 
     v11 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     organizationNameLabel = v3->_organizationNameLabel;
@@ -38,45 +38,45 @@
     [(UILabel *)v3->_organizationNameLabel setFont:v15];
 
     [(UIView *)v3->_containerView addSubview:v3->_organizationNameLabel];
-    v48 = [(UIView *)v3->_containerView leadingAnchor];
-    v49 = [(COSRemoteManagementInformationHeaderView *)v3 contentView];
-    v47 = [v49 layoutMarginsGuide];
-    v46 = [v47 leadingAnchor];
-    v45 = [v48 constraintEqualToAnchor:v46];
+    leadingAnchor = [(UIView *)v3->_containerView leadingAnchor];
+    contentView2 = [(COSRemoteManagementInformationHeaderView *)v3 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v51[0] = v45;
-    v43 = [(UIView *)v3->_containerView trailingAnchor];
-    v44 = [(COSRemoteManagementInformationHeaderView *)v3 contentView];
-    v42 = [v44 layoutMarginsGuide];
-    v41 = [v42 trailingAnchor];
-    v40 = [v43 constraintEqualToAnchor:v41];
+    trailingAnchor = [(UIView *)v3->_containerView trailingAnchor];
+    contentView3 = [(COSRemoteManagementInformationHeaderView *)v3 contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v51[1] = v40;
-    v38 = [(UIView *)v3->_containerView topAnchor];
-    v39 = [(COSRemoteManagementInformationHeaderView *)v3 contentView];
-    v37 = [v39 layoutMarginsGuide];
-    v36 = [v37 topAnchor];
-    v35 = [v38 constraintEqualToAnchor:v36];
+    topAnchor = [(UIView *)v3->_containerView topAnchor];
+    contentView4 = [(COSRemoteManagementInformationHeaderView *)v3 contentView];
+    layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v51[2] = v35;
-    v33 = [(UIView *)v3->_containerView bottomAnchor];
-    v34 = [(COSRemoteManagementInformationHeaderView *)v3 contentView];
-    v32 = [v34 layoutMarginsGuide];
-    v31 = [v32 bottomAnchor];
-    v30 = [v33 constraintEqualToAnchor:v31];
+    bottomAnchor = [(UIView *)v3->_containerView bottomAnchor];
+    contentView5 = [(COSRemoteManagementInformationHeaderView *)v3 contentView];
+    layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v51[3] = v30;
-    v29 = [(UIView *)v3->_containerView leadingAnchor];
-    v28 = [(UILabel *)v3->_organizationNameLabel leadingAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    leadingAnchor3 = [(UIView *)v3->_containerView leadingAnchor];
+    leadingAnchor4 = [(UILabel *)v3->_organizationNameLabel leadingAnchor];
+    v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v51[4] = v27;
-    v26 = [(UIView *)v3->_containerView trailingAnchor];
-    v16 = [(UILabel *)v3->_organizationNameLabel trailingAnchor];
-    v17 = [v26 constraintEqualToAnchor:v16];
+    trailingAnchor3 = [(UIView *)v3->_containerView trailingAnchor];
+    trailingAnchor4 = [(UILabel *)v3->_organizationNameLabel trailingAnchor];
+    v17 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v51[5] = v17;
-    v18 = [(UIView *)v3->_containerView topAnchor];
-    v19 = [(UILabel *)v3->_organizationNameLabel topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    topAnchor3 = [(UIView *)v3->_containerView topAnchor];
+    topAnchor4 = [(UILabel *)v3->_organizationNameLabel topAnchor];
+    v20 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v51[6] = v20;
-    v21 = [(UIView *)v3->_containerView bottomAnchor];
-    v22 = [(UILabel *)v3->_organizationNameLabel bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    bottomAnchor3 = [(UIView *)v3->_containerView bottomAnchor];
+    bottomAnchor4 = [(UILabel *)v3->_organizationNameLabel bottomAnchor];
+    v23 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v51[7] = v23;
     v24 = [NSArray arrayWithObjects:v51 count:8];
     [NSLayoutConstraint activateConstraints:v24];

@@ -1,21 +1,21 @@
 @interface UIScreenAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsFKARunningForFocusItem;
 - (id)_accessibilityNativeFocusElement;
 - (id)_focusSystem;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation UIScreenAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UIScreen";
   v4 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -26,38 +26,38 @@
   objc_storeStrong(v7, v6);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  v18.receiver = v21;
+  objc_storeStrong(&v19, coordinator);
+  v18.receiver = selfCopy;
   v18.super_class = UIScreenAccessibility;
   [(UIScreenAccessibility *)&v18 didUpdateFocusInContext:location[0] withAnimationCoordinator:v19];
-  v13 = [location[0] previouslyFocusedItem];
-  v4 = [location[0] nextFocusedItem];
-  v14 = v13 != v4;
-  MEMORY[0x29EDC9740](v4);
-  *&v5 = MEMORY[0x29EDC9740](v13).n128_u64[0];
+  previouslyFocusedItem = [location[0] previouslyFocusedItem];
+  nextFocusedItem = [location[0] nextFocusedItem];
+  v14 = previouslyFocusedItem != nextFocusedItem;
+  MEMORY[0x29EDC9740](nextFocusedItem);
+  *&v5 = MEMORY[0x29EDC9740](previouslyFocusedItem).n128_u64[0];
   v17 = v14;
   if (v14)
   {
-    v16 = [*MEMORY[0x29EDC8008] _accessibilityNativeFocusPreferredElement];
-    UIAccessibilityPostNotification(*MEMORY[0x29EDC7498], v16);
-    v11 = [location[0] nextFocusedView];
-    [v11 bounds];
+    _accessibilityNativeFocusPreferredElement = [*MEMORY[0x29EDC8008] _accessibilityNativeFocusPreferredElement];
+    UIAccessibilityPostNotification(*MEMORY[0x29EDC7498], _accessibilityNativeFocusPreferredElement);
+    nextFocusedView = [location[0] nextFocusedView];
+    [nextFocusedView bounds];
     frame.origin.x = v6;
     frame.origin.y = v7;
     frame.size.width = v8;
     frame.size.height = v9;
-    v10 = [location[0] nextFocusedView];
-    UIAccessibilityZoomFocusChanged(5, frame, v10);
-    MEMORY[0x29EDC9740](v10);
-    MEMORY[0x29EDC9740](v11);
-    objc_storeStrong(&v16, 0);
+    nextFocusedView2 = [location[0] nextFocusedView];
+    UIAccessibilityZoomFocusChanged(5, frame, nextFocusedView2);
+    MEMORY[0x29EDC9740](nextFocusedView2);
+    MEMORY[0x29EDC9740](nextFocusedView);
+    objc_storeStrong(&_accessibilityNativeFocusPreferredElement, 0);
   }
 
   objc_storeStrong(&v19, 0);
@@ -98,8 +98,8 @@
     v6 = MEMORY[0x29EDC9748](v7);
     objc_storeStrong(&v7, 0);
     v9 = v6;
-    v5 = [v6 _userInterfaceIdiom];
-    if (v5 != 3 && v5 != 2)
+    _userInterfaceIdiom = [v6 _userInterfaceIdiom];
+    if (_userInterfaceIdiom != 3 && _userInterfaceIdiom != 2)
     {
       v4 = MEMORY[0x29EDC9748](v12[0]);
       AXPerformBlockOnMainThreadAfterDelay();
@@ -131,14 +131,14 @@ void __37__UIScreenAccessibility__focusSystem__block_invoke(void *a1)
 
 - (BOOL)_accessibilityIsFKARunningForFocusItem
 {
-  v4 = [(UIScreenAccessibility *)self _userInterfaceIdiom];
+  _userInterfaceIdiom = [(UIScreenAccessibility *)self _userInterfaceIdiom];
   v3 = 0;
   if (_UIAccessibilityFullKeyboardAccessEnabled())
   {
     v3 = 0;
-    if (v4 != 3)
+    if (_userInterfaceIdiom != 3)
     {
-      return v4 != 2;
+      return _userInterfaceIdiom != 2;
     }
   }
 

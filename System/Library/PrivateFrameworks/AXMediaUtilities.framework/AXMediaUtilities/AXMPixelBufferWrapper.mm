@@ -1,17 +1,17 @@
 @interface AXMPixelBufferWrapper
-+ (AXMPixelBufferWrapper)wrapperWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4;
++ (AXMPixelBufferWrapper)wrapperWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation;
 - (AXMPixelBufferWrapper)init;
 - (CGSize)orientedSize;
 - (CGSize)unorientedSize;
-- (id)_initWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4;
+- (id)_initWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation;
 - (void)dealloc;
 @end
 
 @implementation AXMPixelBufferWrapper
 
-+ (AXMPixelBufferWrapper)wrapperWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4
++ (AXMPixelBufferWrapper)wrapperWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation
 {
-  v4 = [[AXMPixelBufferWrapper alloc] _initWithPixelBuffer:a3 orientation:*&a4];
+  v4 = [[AXMPixelBufferWrapper alloc] _initWithPixelBuffer:buffer orientation:*&orientation];
 
   return v4;
 }
@@ -23,15 +23,15 @@
   return 0;
 }
 
-- (id)_initWithPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4
+- (id)_initWithPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation
 {
   v8.receiver = self;
   v8.super_class = AXMPixelBufferWrapper;
   v6 = [(AXMPixelBufferWrapper *)&v8 init];
   if (v6)
   {
-    v6->_pixelBuffer = CVPixelBufferRetain(a3);
-    v6->_orientation = a4;
+    v6->_pixelBuffer = CVPixelBufferRetain(buffer);
+    v6->_orientation = orientation;
   }
 
   return v6;

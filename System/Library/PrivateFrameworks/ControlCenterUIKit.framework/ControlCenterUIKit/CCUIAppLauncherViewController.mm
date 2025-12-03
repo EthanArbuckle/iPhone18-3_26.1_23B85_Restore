@@ -3,49 +3,49 @@
 - (BOOL)shouldRequestAuthenticationForTransitionToExpandedContent;
 - (CCUIAppLauncherModule)module;
 - (id)_assetProvider;
-- (id)_menuItemForShortcutItem:(id)a3;
-- (id)leadingImageForMenuItem:(id)a3;
-- (void)_activateApplicationForShortcutItem:(id)a3;
-- (void)_queue_setFetchedMenuItems:(id)a3;
+- (id)_menuItemForShortcutItem:(id)item;
+- (id)leadingImageForMenuItem:(id)item;
+- (void)_activateApplicationForShortcutItem:(id)item;
+- (void)_queue_setFetchedMenuItems:(id)items;
 - (void)_queue_updateApplicationShortcutsActions;
 - (void)_updateApplicationShortcutsActionsIfNecessary;
 - (void)_updateWithFetchedMenuItemsIfNecessary;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
-- (void)buttonTouchDown:(id)a3 forEvent:(id)a4;
-- (void)didTransitionToExpandedContentMode:(BOOL)a3;
-- (void)requestAuthenticationForTransitionToExpandedContentModuleWithCompletionHandler:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
+- (void)buttonTouchDown:(id)down forEvent:(id)event;
+- (void)didTransitionToExpandedContentMode:(BOOL)mode;
+- (void)requestAuthenticationForTransitionToExpandedContentModuleWithCompletionHandler:(id)handler;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)willResignActive;
 @end
 
 @implementation CCUIAppLauncherViewController
 
-- (void)buttonTouchDown:(id)a3 forEvent:(id)a4
+- (void)buttonTouchDown:(id)down forEvent:(id)event
 {
-  v5 = [a4 allTouches];
-  v6 = [v5 anyObject];
-  v7 = [v6 type];
+  allTouches = [event allTouches];
+  anyObject = [allTouches anyObject];
+  type = [anyObject type];
 
   WeakRetained = objc_loadWeakRetained(&self->_module);
-  [WeakRetained handleTouchDownWithTouchType:v7];
+  [WeakRetained handleTouchDownWithTouchType:type];
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
-  v5 = [a4 allTouches];
-  v6 = [v5 anyObject];
-  v7 = [v6 type];
+  allTouches = [event allTouches];
+  anyObject = [allTouches anyObject];
+  type = [anyObject type];
 
   WeakRetained = objc_loadWeakRetained(&self->_module);
-  [WeakRetained handleTapWithTouchType:v7];
+  [WeakRetained handleTapWithTouchType:type];
 }
 
-- (id)leadingImageForMenuItem:(id)a3
+- (id)leadingImageForMenuItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = itemCopy;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -66,9 +66,9 @@
 
   v7 = v6;
 
-  v8 = [v7 icon];
+  icon = [v7 icon];
 
-  return v8;
+  return icon;
 }
 
 - (void)viewDidLoad
@@ -77,12 +77,12 @@
   v9.super_class = CCUIAppLauncherViewController;
   [(CCUIMenuModuleViewController *)&v9 viewDidLoad];
   WeakRetained = objc_loadWeakRetained(&self->_module);
-  v4 = [WeakRetained iconGlyph];
-  [(CCUIMenuModuleViewController *)self setGlyphImage:v4];
+  iconGlyph = [WeakRetained iconGlyph];
+  [(CCUIMenuModuleViewController *)self setGlyphImage:iconGlyph];
 
   v5 = objc_loadWeakRetained(&self->_module);
-  v6 = [v5 displayName];
-  [(CCUIMenuModuleViewController *)self setTitle:v6];
+  displayName = [v5 displayName];
+  [(CCUIMenuModuleViewController *)self setTitle:displayName];
 
   [(CCUIButtonModuleViewController *)self setValueText:0];
   [(CCUIButtonModuleViewController *)self setSelectedValueText:0];
@@ -92,11 +92,11 @@
   self->_menuItemsFetchQueue = SerialWithQoS;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CCUIAppLauncherViewController;
-  [(CCUIMenuModuleViewController *)&v4 viewDidAppear:a3];
+  [(CCUIMenuModuleViewController *)&v4 viewDidAppear:appear];
   [(CCUIAppLauncherViewController *)self _updateApplicationShortcutsActionsIfNecessary];
 }
 
@@ -107,9 +107,9 @@
   v11 = 0x2020000000;
   v12 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_module);
-  v4 = [WeakRetained supportsApplicationShortcuts];
+  supportsApplicationShortcuts = [WeakRetained supportsApplicationShortcuts];
 
-  if (v4)
+  if (supportsApplicationShortcuts)
   {
     [(CCUIAppLauncherViewController *)self _updateApplicationShortcutsActionsIfNecessary];
     menuItemsFetchQueue = self->_menuItemsFetchQueue;
@@ -146,13 +146,13 @@ uint64_t __77__CCUIAppLauncherViewController_shouldBeginTransitionToExpandedCont
   return result;
 }
 
-- (void)didTransitionToExpandedContentMode:(BOOL)a3
+- (void)didTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v7.receiver = self;
   v7.super_class = CCUIAppLauncherViewController;
   [(CCUIMenuModuleViewController *)&v7 didTransitionToExpandedContentMode:?];
-  if (v3)
+  if (modeCopy)
   {
     menuItemsFetchQueue = self->_menuItemsFetchQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -172,24 +172,24 @@ uint64_t __77__CCUIAppLauncherViewController_shouldBeginTransitionToExpandedCont
 - (BOOL)shouldRequestAuthenticationForTransitionToExpandedContent
 {
   WeakRetained = objc_loadWeakRetained(&self->_module);
-  v3 = [WeakRetained requestAuthenticationForExpandedModule];
+  requestAuthenticationForExpandedModule = [WeakRetained requestAuthenticationForExpandedModule];
 
-  return v3;
+  return requestAuthenticationForExpandedModule;
 }
 
-- (void)requestAuthenticationForTransitionToExpandedContentModuleWithCompletionHandler:(id)a3
+- (void)requestAuthenticationForTransitionToExpandedContentModuleWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = v4;
+    v8 = handlerCopy;
     WeakRetained = objc_loadWeakRetained(&self->_module);
-    v6 = [WeakRetained requestAuthenticationForExpandedModule];
+    requestAuthenticationForExpandedModule = [WeakRetained requestAuthenticationForExpandedModule];
 
-    if (v6)
+    if (requestAuthenticationForExpandedModule)
     {
-      v7 = [(CCUIMenuModuleViewController *)self contentModuleContext];
-      [v7 requestAuthenticationWithCompletionHandler:v8];
+      contentModuleContext = [(CCUIMenuModuleViewController *)self contentModuleContext];
+      [contentModuleContext requestAuthenticationWithCompletionHandler:v8];
     }
 
     else
@@ -197,7 +197,7 @@ uint64_t __77__CCUIAppLauncherViewController_shouldBeginTransitionToExpandedCont
       v8[2](v8, 1);
     }
 
-    v4 = v8;
+    handlerCopy = v8;
   }
 }
 
@@ -234,18 +234,18 @@ uint64_t __77__CCUIAppLauncherViewController_shouldBeginTransitionToExpandedCont
   }
 }
 
-- (void)_queue_setFetchedMenuItems:(id)a3
+- (void)_queue_setFetchedMenuItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   BSDispatchQueueAssert();
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_fetchedMenuItems != v6)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_fetchedMenuItems != itemsCopy)
   {
-    objc_storeStrong(&v5->_fetchedMenuItems, a3);
+    objc_storeStrong(&selfCopy->_fetchedMenuItems, items);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_updateWithFetchedMenuItemsIfNecessary
@@ -271,14 +271,14 @@ uint64_t __77__CCUIAppLauncherViewController_shouldBeginTransitionToExpandedCont
   BSDispatchQueueAssert();
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   WeakRetained = objc_loadWeakRetained(&self->_module);
-  v5 = [WeakRetained _application];
+  _application = [WeakRetained _application];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [v5 staticApplicationShortcutItems];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  staticApplicationShortcutItems = [_application staticApplicationShortcutItems];
+  v7 = [staticApplicationShortcutItems countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -290,7 +290,7 @@ uint64_t __77__CCUIAppLauncherViewController_shouldBeginTransitionToExpandedCont
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(staticApplicationShortcutItems);
         }
 
         v11 = [(CCUIAppLauncherViewController *)self _menuItemForShortcutItem:*(*(&v23 + 1) + 8 * v10)];
@@ -300,7 +300,7 @@ uint64_t __77__CCUIAppLauncherViewController_shouldBeginTransitionToExpandedCont
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v8 = [staticApplicationShortcutItems countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v8);
@@ -310,8 +310,8 @@ uint64_t __77__CCUIAppLauncherViewController_shouldBeginTransitionToExpandedCont
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [v5 dynamicApplicationShortcutItems];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  dynamicApplicationShortcutItems = [_application dynamicApplicationShortcutItems];
+  v13 = [dynamicApplicationShortcutItems countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v13)
   {
     v14 = v13;
@@ -323,7 +323,7 @@ uint64_t __77__CCUIAppLauncherViewController_shouldBeginTransitionToExpandedCont
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(dynamicApplicationShortcutItems);
         }
 
         v17 = [(CCUIAppLauncherViewController *)self _menuItemForShortcutItem:*(*(&v19 + 1) + 8 * v16)];
@@ -333,7 +333,7 @@ uint64_t __77__CCUIAppLauncherViewController_shouldBeginTransitionToExpandedCont
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v14 = [dynamicApplicationShortcutItems countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v14);
@@ -354,11 +354,11 @@ uint64_t __77__CCUIAppLauncherViewController_shouldBeginTransitionToExpandedCont
   if (!assetProvider)
   {
     WeakRetained = objc_loadWeakRetained(&self->_module);
-    v5 = [WeakRetained _application];
+    _application = [WeakRetained _application];
 
     v6 = objc_alloc(MEMORY[0x1E69CDFF0]);
-    v7 = [v5 bundleURL];
-    v8 = [v6 initWithBundleURL:v7];
+    bundleURL = [_application bundleURL];
+    v8 = [v6 initWithBundleURL:bundleURL];
     v9 = self->_assetProvider;
     self->_assetProvider = v8;
 
@@ -368,29 +368,29 @@ uint64_t __77__CCUIAppLauncherViewController_shouldBeginTransitionToExpandedCont
   return assetProvider;
 }
 
-- (id)_menuItemForShortcutItem:(id)a3
+- (id)_menuItemForShortcutItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
-  v5 = [v4 icon];
-  v6 = [(CCUIAppLauncherViewController *)self _assetProvider];
-  v7 = [v5 scui_iconImageWithAssetProvider:v6];
+  icon = [itemCopy icon];
+  _assetProvider = [(CCUIAppLauncherViewController *)self _assetProvider];
+  v7 = [icon scui_iconImageWithAssetProvider:_assetProvider];
 
   v8 = [CCUIAppShortcutMenuModuleItem alloc];
-  v9 = [v4 localizedTitle];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [v10 UUIDString];
+  localizedTitle = [itemCopy localizedTitle];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __58__CCUIAppLauncherViewController__menuItemForShortcutItem___block_invoke;
   v16[3] = &unk_1E83EA9F0;
   objc_copyWeak(&v18, &location);
-  v12 = v4;
+  v12 = itemCopy;
   v17 = v12;
-  v13 = [(CCUIMenuModuleItem *)v8 initWithTitle:v9 identifier:v11 handler:v16];
+  v13 = [(CCUIMenuModuleItem *)v8 initWithTitle:localizedTitle identifier:uUIDString handler:v16];
 
-  v14 = [v12 localizedSubtitle];
-  [(CCUIMenuModuleItem *)v13 setSubtitle:v14];
+  localizedSubtitle = [v12 localizedSubtitle];
+  [(CCUIMenuModuleItem *)v13 setSubtitle:localizedSubtitle];
 
   [(CCUIAppShortcutMenuModuleItem *)v13 setIcon:v7];
   objc_destroyWeak(&v18);
@@ -408,25 +408,25 @@ uint64_t __58__CCUIAppLauncherViewController__menuItemForShortcutItem___block_in
   return 1;
 }
 
-- (void)_activateApplicationForShortcutItem:(id)a3
+- (void)_activateApplicationForShortcutItem:(id)item
 {
   v20[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 bundleIdentifierToLaunch];
-  v6 = v5;
-  if (v5)
+  itemCopy = item;
+  bundleIdentifierToLaunch = [itemCopy bundleIdentifierToLaunch];
+  v6 = bundleIdentifierToLaunch;
+  if (bundleIdentifierToLaunch)
   {
-    v7 = v5;
+    applicationIdentifier = bundleIdentifierToLaunch;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_module);
-    v7 = [WeakRetained applicationIdentifier];
+    applicationIdentifier = [WeakRetained applicationIdentifier];
   }
 
-  v9 = [v4 activationMode] == 1;
-  v10 = [objc_alloc(MEMORY[0x1E69DCA98]) initWithSBSShortcutItem:v4];
+  v9 = [itemCopy activationMode] == 1;
+  v10 = [objc_alloc(MEMORY[0x1E69DCA98]) initWithSBSShortcutItem:itemCopy];
 
   v19[0] = *MEMORY[0x1E699F8E8];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:v9];
@@ -445,13 +445,13 @@ uint64_t __58__CCUIAppLauncherViewController__menuItemForShortcutItem___block_in
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:5];
 
   v15 = objc_loadWeakRetained(&self->_module);
-  v16 = [v15 contentModuleContext];
+  contentModuleContext = [v15 contentModuleContext];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __69__CCUIAppLauncherViewController__activateApplicationForShortcutItem___block_invoke;
   v17[3] = &unk_1E83EA5D0;
   v17[4] = self;
-  [v16 openApplication:v7 withOptions:v14 completionHandler:v17];
+  [contentModuleContext openApplication:applicationIdentifier withOptions:v14 completionHandler:v17];
 }
 
 void __69__CCUIAppLauncherViewController__activateApplicationForShortcutItem___block_invoke(uint64_t a1, int a2)

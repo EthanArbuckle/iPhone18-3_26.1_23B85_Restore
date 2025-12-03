@@ -1,44 +1,44 @@
 @interface PULayoutSampledSectioning
 - (BOOL)hasSomeSampling;
 - (PULayoutSampledSectioning)init;
-- (PUSimpleIndexPath)_mainRealItemIndexPathForVisualSection:(int64_t)a3 andUnsampledItemIndex:(int64_t)a4;
-- (PUSimpleIndexPath)mainRealItemIndexPathForVisualIndexPath:(PUSimpleIndexPath)a3;
-- (PUSimpleIndexPath)visualIndexPathForRealIndexPath:(PUSimpleIndexPath)a3 isMainItem:(BOOL *)a4;
-- (id)_sectionSamplerForVisualSection:(int64_t)a3;
-- (id)visibleUnsampledIndexesForCombinedRealSections:(id)a3;
-- (int64_t)__debugUnsampledIndexForRealIndexPath:(PUSimpleIndexPath)a3;
-- (int64_t)_unsampledItemIndexForVisualItemIndex:(int64_t)a3 visualSection:(int64_t)a4;
-- (int64_t)_visualItemIndexForUnsampledItemIndex:(int64_t)a3 visualSection:(int64_t)a4 isMainItem:(BOOL *)a5;
-- (int64_t)mainRealSectionForVisualSection:(int64_t)a3;
-- (int64_t)numberOfRealItemsInVisualSection:(int64_t)a3;
-- (int64_t)numberOfVisualItemsInVisualSection:(int64_t)a3;
-- (int64_t)visualSectionForRealSection:(int64_t)a3;
+- (PUSimpleIndexPath)_mainRealItemIndexPathForVisualSection:(int64_t)section andUnsampledItemIndex:(int64_t)index;
+- (PUSimpleIndexPath)mainRealItemIndexPathForVisualIndexPath:(PUSimpleIndexPath)path;
+- (PUSimpleIndexPath)visualIndexPathForRealIndexPath:(PUSimpleIndexPath)path isMainItem:(BOOL *)item;
+- (id)_sectionSamplerForVisualSection:(int64_t)section;
+- (id)visibleUnsampledIndexesForCombinedRealSections:(id)sections;
+- (int64_t)__debugUnsampledIndexForRealIndexPath:(PUSimpleIndexPath)path;
+- (int64_t)_unsampledItemIndexForVisualItemIndex:(int64_t)index visualSection:(int64_t)section;
+- (int64_t)_visualItemIndexForUnsampledItemIndex:(int64_t)index visualSection:(int64_t)section isMainItem:(BOOL *)item;
+- (int64_t)mainRealSectionForVisualSection:(int64_t)section;
+- (int64_t)numberOfRealItemsInVisualSection:(int64_t)section;
+- (int64_t)numberOfVisualItemsInVisualSection:(int64_t)section;
+- (int64_t)visualSectionForRealSection:(int64_t)section;
 - (void)_cacheSectioningIfNeeded;
 - (void)_discardSamplingCache;
 - (void)_discardSectioningCache;
 - (void)dealloc;
-- (void)enumerateRealMainItemIndexPathsForVisualSection:(int64_t)a3 inVisualItemRange:(_NSRange)a4 usingBlock:(id)a5;
-- (void)enumerateRealSectionsForVisualSection:(int64_t)a3 usingBlock:(id)a4;
+- (void)enumerateRealMainItemIndexPathsForVisualSection:(int64_t)section inVisualItemRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateRealSectionsForVisualSection:(int64_t)section usingBlock:(id)block;
 - (void)invalidateSampling;
 - (void)invalidateSections;
-- (void)setSupportsSamplingAndSectionGrouping:(BOOL)a3;
+- (void)setSupportsSamplingAndSectionGrouping:(BOOL)grouping;
 @end
 
 @implementation PULayoutSampledSectioning
 
-- (int64_t)__debugUnsampledIndexForRealIndexPath:(PUSimpleIndexPath)a3
+- (int64_t)__debugUnsampledIndexForRealIndexPath:(PUSimpleIndexPath)path
 {
   if (self->_supportsSamplingAndSectionGrouping)
   {
-    a3.var1 += self->_startIndexInVisualSectionForRealSection[a3.var0];
+    path.var1 += self->_startIndexInVisualSectionForRealSection[path.var0];
   }
 
-  return a3.var1;
+  return path.var1;
 }
 
-- (id)visibleUnsampledIndexesForCombinedRealSections:(id)a3
+- (id)visibleUnsampledIndexesForCombinedRealSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   if (self->_hasSomeSampling)
   {
     [(PULayoutSampledSectioning *)self _cacheSectioningIfNeeded];
@@ -75,7 +75,7 @@
     v6 = v5;
     v11 = v6;
     v16 = v17;
-    [v4 enumerateIndexesUsingBlock:v10];
+    [sectionsCopy enumerateIndexesUsingBlock:v10];
     v7 = v11;
     v8 = v6;
 
@@ -155,21 +155,21 @@ void *__76__PULayoutSampledSectioning_visibleUnsampledIndexesForCombinedRealSect
   return result;
 }
 
-- (void)enumerateRealMainItemIndexPathsForVisualSection:(int64_t)a3 inVisualItemRange:(_NSRange)a4 usingBlock:(id)a5
+- (void)enumerateRealMainItemIndexPathsForVisualSection:(int64_t)section inVisualItemRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v11 = location + length;
   if (self->_supportsSamplingAndSectionGrouping)
   {
-    if (self->_numberOfVisualSections <= a3 || v11 > [(PULayoutSampledSectioning *)self numberOfVisualItemsInVisualSection:a3])
+    if (self->_numberOfVisualSections <= section || v11 > [(PULayoutSampledSectioning *)self numberOfVisualItemsInVisualSection:section])
     {
-      v38 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v59.location = location;
       v59.length = length;
       v39 = NSStringFromRange(v59);
-      [v38 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1428 description:{@"Invalid visual item range %@ for visual section %ld containing %ld visual items", v39, a3, -[PULayoutSampledSectioning numberOfVisualItemsInVisualSection:](self, "numberOfVisualItemsInVisualSection:", a3)}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1428 description:{@"Invalid visual item range %@ for visual section %ld containing %ld visual items", v39, section, -[PULayoutSampledSectioning numberOfVisualItemsInVisualSection:](self, "numberOfVisualItemsInVisualSection:", section)}];
 
       if (!length)
       {
@@ -184,14 +184,14 @@ void *__76__PULayoutSampledSectioning_visibleUnsampledIndexesForCombinedRealSect
 
     if (self->_hasSomeSampling)
     {
-      v12 = self->_maximumNumberOfVisibleItemsForVisualSection[a3];
+      v12 = self->_maximumNumberOfVisibleItemsForVisualSection[section];
       v13 = v12 - 1;
       if (v12 >= 1)
       {
-        v14 = self->_numberOfRealItemsForVisualSection[a3];
+        v14 = self->_numberOfRealItemsForVisualSection[section];
         if (v14 > v12)
         {
-          if (self->_sectionSamplers && ([(PULayoutSampledSectioning *)self _sectionSamplerForVisualSection:a3], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+          if (self->_sectionSamplers && ([(PULayoutSampledSectioning *)self _sectionSamplerForVisualSection:section], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v16 = v15;
             v17 = [v15 unsampledIndexForIndex:location];
@@ -223,14 +223,14 @@ LABEL_19:
         v43 = 1;
         v17 = location;
 LABEL_20:
-        v21 = [(PULayoutSampledSectioning *)self _mainRealItemIndexPathForVisualSection:a3 andUnsampledItemIndex:v17];
+        v21 = [(PULayoutSampledSectioning *)self _mainRealItemIndexPathForVisualSection:section andUnsampledItemIndex:v17];
         v58[0] = 0;
-        v10[2](v10, location, v21, v22, v58);
+        blockCopy[2](blockCopy, location, v21, v22, v58);
         if (length != 1 && (v58[0] & 1) == 0)
         {
           v42 = v18;
           v23 = location + 1;
-          v24 = [(NSArray *)self->_realSectionIndexesForVisualSection objectAtIndex:a3];
+          v24 = [(NSArray *)self->_realSectionIndexesForVisualSection objectAtIndex:section];
           v25 = [v24 rangeAtIndex:self->_lastHitRangeIndex];
           v57[0] = 0;
           v57[1] = v57;
@@ -262,7 +262,7 @@ LABEL_20:
           v47 = v28;
           v51 = v55;
           v52 = v53;
-          v48 = v10;
+          v48 = blockCopy;
           v29 = _Block_copy(aBlock);
           if (v43)
           {
@@ -305,9 +305,9 @@ LABEL_20:
                   v33 = v32;
                   if (v14 <= v12)
                   {
-                    v41 = [MEMORY[0x1E696AAA8] currentHandler];
+                    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
                     v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSInteger _unsampledIndexForIndex(NSInteger, NSInteger, NSInteger)"}];
-                    [v41 handleFailureInFunction:v40 file:@"PULayoutSectioning.m" lineNumber:374 description:@"Invalid use"];
+                    [currentHandler2 handleFailureInFunction:v40 file:@"PULayoutSectioning.m" lineNumber:374 description:@"Invalid use"];
                   }
 
                   v34 = v14 - 1;
@@ -369,7 +369,7 @@ LABEL_20:
     do
     {
       v20 = v19;
-      v10[2](v10, location, a3, location, v53);
+      blockCopy[2](blockCopy, location, section, location, v53);
       if (v53[0])
       {
         break;
@@ -435,84 +435,84 @@ uint64_t __106__PULayoutSampledSectioning_enumerateRealMainItemIndexPathsForVisu
   return v10();
 }
 
-- (void)enumerateRealSectionsForVisualSection:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateRealSectionsForVisualSection:(int64_t)section usingBlock:(id)block
 {
   if (self->_supportsSamplingAndSectionGrouping)
   {
-    v7 = a4;
+    blockCopy = block;
     [(PULayoutSampledSectioning *)self _cacheSectioningIfNeeded];
-    if (a3 < 0 || self->_numberOfVisualSections <= a3)
+    if (section < 0 || self->_numberOfVisualSections <= section)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1408 description:{@"Invalid visual section %ld for %ld visual sections", a3, self->_numberOfVisualSections}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1408 description:{@"Invalid visual section %ld for %ld visual sections", section, self->_numberOfVisualSections}];
     }
 
-    v11 = [(NSArray *)self->_realSectionIndexesForVisualSection objectAtIndex:a3];
-    [v11 enumerateIndexesUsingBlock:v7];
+    v11 = [(NSArray *)self->_realSectionIndexesForVisualSection objectAtIndex:section];
+    [v11 enumerateIndexesUsingBlock:blockCopy];
   }
 
   else
   {
-    v8 = *(a4 + 2);
-    v9 = a4;
+    v8 = *(block + 2);
+    blockCopy2 = block;
     v8();
   }
 }
 
-- (int64_t)visualSectionForRealSection:(int64_t)a3
+- (int64_t)visualSectionForRealSection:(int64_t)section
 {
   if (self->_supportsSamplingAndSectionGrouping)
   {
     [(PULayoutSampledSectioning *)self _cacheSectioningIfNeeded];
-    if (a3 < 0 || self->_numberOfRealSections <= a3)
+    if (section < 0 || self->_numberOfRealSections <= section)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1394 description:{@"Invalid real section %ld for %ld real sections", a3, self->_numberOfRealSections}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1394 description:{@"Invalid real section %ld for %ld real sections", section, self->_numberOfRealSections}];
     }
 
-    return self->_visualSectionForRealSection[a3];
+    return self->_visualSectionForRealSection[section];
   }
 
-  return a3;
+  return section;
 }
 
-- (int64_t)mainRealSectionForVisualSection:(int64_t)a3
+- (int64_t)mainRealSectionForVisualSection:(int64_t)section
 {
   if (!self->_supportsSamplingAndSectionGrouping)
   {
-    return a3;
+    return section;
   }
 
   [(PULayoutSampledSectioning *)self _cacheSectioningIfNeeded];
-  if (a3 < 0 || self->_numberOfVisualSections <= a3)
+  if (section < 0 || self->_numberOfVisualSections <= section)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1380 description:{@"Invalid visual section %ld for %ld visual sections", a3, self->_numberOfVisualSections}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1380 description:{@"Invalid visual section %ld for %ld visual sections", section, self->_numberOfVisualSections}];
   }
 
-  v6 = [(NSArray *)self->_realSectionIndexesForVisualSection objectAtIndex:a3];
-  v7 = [v6 firstIndex];
+  v6 = [(NSArray *)self->_realSectionIndexesForVisualSection objectAtIndex:section];
+  firstIndex = [v6 firstIndex];
 
-  return v7;
+  return firstIndex;
 }
 
-- (PUSimpleIndexPath)visualIndexPathForRealIndexPath:(PUSimpleIndexPath)a3 isMainItem:(BOOL *)a4
+- (PUSimpleIndexPath)visualIndexPathForRealIndexPath:(PUSimpleIndexPath)path isMainItem:(BOOL *)item
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = path.var1;
+  var0 = path.var0;
   if (self->_supportsSamplingAndSectionGrouping)
   {
     [(PULayoutSampledSectioning *)self _cacheSectioningIfNeeded];
     if (var0 < 0 || var0 >= self->_numberOfRealSections)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1350 description:{@"Invalid real section index %ld for %ld real sections", var0, self->_numberOfRealSections}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1350 description:{@"Invalid real section index %ld for %ld real sections", var0, self->_numberOfRealSections}];
     }
 
     if (var1 < 0 || var1 >= self->_numberOfItemsForRealSection[var0])
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1351 description:{@"Invalid real item index %ld for real section %ld containing %ld items", var1, var0, self->_numberOfItemsForRealSection[var0]}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1351 description:{@"Invalid real item index %ld for real section %ld containing %ld items", var1, var0, self->_numberOfItemsForRealSection[var0]}];
     }
 
     v9 = self->_visualSectionForRealSection[var0];
@@ -524,14 +524,14 @@ uint64_t __106__PULayoutSampledSectioning_enumerateRealMainItemIndexPathsForVisu
 
     else
     {
-      var1 = [(PULayoutSampledSectioning *)self _visualItemIndexForUnsampledItemIndex:self->_startIndexInVisualSectionForRealSection[var0] + var1 visualSection:self->_visualSectionForRealSection[var0] isMainItem:a4];
+      var1 = [(PULayoutSampledSectioning *)self _visualItemIndexForUnsampledItemIndex:self->_startIndexInVisualSectionForRealSection[var0] + var1 visualSection:self->_visualSectionForRealSection[var0] isMainItem:item];
       var0 = v9;
     }
   }
 
-  else if (a4)
+  else if (item)
   {
-    *a4 = 1;
+    *item = 1;
   }
 
   v10 = var0;
@@ -541,10 +541,10 @@ uint64_t __106__PULayoutSampledSectioning_enumerateRealMainItemIndexPathsForVisu
   return result;
 }
 
-- (PUSimpleIndexPath)mainRealItemIndexPathForVisualIndexPath:(PUSimpleIndexPath)a3
+- (PUSimpleIndexPath)mainRealItemIndexPathForVisualIndexPath:(PUSimpleIndexPath)path
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = path.var1;
+  var0 = path.var0;
   if (!self->_supportsSamplingAndSectionGrouping)
   {
     goto LABEL_11;
@@ -553,8 +553,8 @@ uint64_t __106__PULayoutSampledSectioning_enumerateRealMainItemIndexPathsForVisu
   [(PULayoutSampledSectioning *)self _cacheSectioningIfNeeded];
   if (var0 < 0 || var0 >= self->_numberOfVisualSections)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1327 description:{@"Invalid visual section %ld for %ld visual sections", var0, self->_numberOfVisualSections}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1327 description:{@"Invalid visual section %ld for %ld visual sections", var0, self->_numberOfVisualSections}];
 
     if ((var1 & 0x8000000000000000) == 0)
     {
@@ -571,8 +571,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1328 description:{@"Invalid visual item %ld for %ld visual items in visual section #%ld", var1, -[PULayoutSampledSectioning numberOfVisualItemsInVisualSection:](self, "numberOfVisualItemsInVisualSection:", var0), var0}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1328 description:{@"Invalid visual item %ld for %ld visual items in visual section #%ld", var1, -[PULayoutSampledSectioning numberOfVisualItemsInVisualSection:](self, "numberOfVisualItemsInVisualSection:", var0), var0}];
 
 LABEL_6:
   if (!self->_numberOfRealItemsForVisualSection[var0])
@@ -594,7 +594,7 @@ LABEL_14:
   return result;
 }
 
-- (PUSimpleIndexPath)_mainRealItemIndexPathForVisualSection:(int64_t)a3 andUnsampledItemIndex:(int64_t)a4
+- (PUSimpleIndexPath)_mainRealItemIndexPathForVisualSection:(int64_t)section andUnsampledItemIndex:(int64_t)index
 {
   v20 = 0;
   v21 = &v20;
@@ -604,18 +604,18 @@ LABEL_14:
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if (self->_lastHitVisualSectionIndex != a3)
+  if (self->_lastHitVisualSectionIndex != section)
   {
     goto LABEL_8;
   }
 
   lastHitRealSectionIndex = self->_lastHitRealSectionIndex;
   v8 = self->_startIndexInVisualSectionForRealSection[lastHitRealSectionIndex];
-  v9 = a4 - v8;
-  if (a4 >= v8 && self->_numberOfItemsForRealSection[lastHitRealSectionIndex] + v8 > a4)
+  v9 = index - v8;
+  if (index >= v8 && self->_numberOfItemsForRealSection[lastHitRealSectionIndex] + v8 > index)
   {
     v23 = self->_lastHitRealSectionIndex;
-    v19 = a4 - v8;
+    v19 = index - v8;
     if (lastHitRealSectionIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_10;
@@ -624,7 +624,7 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if (a4 <= v8)
+  if (index <= v8)
   {
 LABEL_8:
     v10 = 0;
@@ -635,21 +635,21 @@ LABEL_8:
   v10 = lastHitRealSectionIndex + 1;
   lastHitRangeIndex = self->_lastHitRangeIndex;
 LABEL_9:
-  v12 = [(NSArray *)self->_realSectionIndexesForVisualSection objectAtIndex:a3];
+  v12 = [(NSArray *)self->_realSectionIndexesForVisualSection objectAtIndex:section];
   self->_lastHitRangeIndex = 0;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __90__PULayoutSampledSectioning__mainRealItemIndexPathForVisualSection_andUnsampledItemIndex___block_invoke;
   v15[3] = &unk_1E7B78FB0;
   v15[8] = v10;
-  v15[9] = a4;
+  v15[9] = index;
   v15[4] = self;
   v15[5] = &v20;
   v15[6] = &v16;
   v15[7] = lastHitRangeIndex;
   [v12 enumerateRangesWithOptions:0 usingBlock:v15];
   self->_lastHitRealSectionIndex = v21[3];
-  self->_lastHitVisualSectionIndex = a3;
+  self->_lastHitVisualSectionIndex = section;
 
   v9 = v17[3];
   lastHitRealSectionIndex = v21[3];
@@ -716,77 +716,77 @@ LABEL_11:
   return result;
 }
 
-- (int64_t)_unsampledItemIndexForVisualItemIndex:(int64_t)a3 visualSection:(int64_t)a4
+- (int64_t)_unsampledItemIndexForVisualItemIndex:(int64_t)index visualSection:(int64_t)section
 {
-  v4 = a3;
+  indexCopy = index;
   if (self->_hasSomeSampling)
   {
-    v5 = self->_maximumNumberOfVisibleItemsForVisualSection[a4];
+    v5 = self->_maximumNumberOfVisibleItemsForVisualSection[section];
     v6 = v5 - 1;
     if (v5 >= 1)
     {
-      v7 = self->_numberOfRealItemsForVisualSection[a4];
+      v7 = self->_numberOfRealItemsForVisualSection[section];
       if (v7 > v5)
       {
         if (self->_sectionSamplers)
         {
-          v8 = [(PULayoutSampledSectioning *)self _sectionSamplerForVisualSection:a4];
-          v4 = [v8 unsampledIndexForIndex:v4];
+          v8 = [(PULayoutSampledSectioning *)self _sectionSamplerForVisualSection:section];
+          indexCopy = [v8 unsampledIndexForIndex:indexCopy];
         }
 
-        else if (v6 <= a3)
+        else if (v6 <= index)
         {
           return v7 - 1;
         }
 
         else
         {
-          return (v6 + v7 * a3) / v5;
+          return (v6 + v7 * index) / v5;
         }
       }
     }
   }
 
-  return v4;
+  return indexCopy;
 }
 
-- (int64_t)_visualItemIndexForUnsampledItemIndex:(int64_t)a3 visualSection:(int64_t)a4 isMainItem:(BOOL *)a5
+- (int64_t)_visualItemIndexForUnsampledItemIndex:(int64_t)index visualSection:(int64_t)section isMainItem:(BOOL *)item
 {
-  if (a5)
+  if (item)
   {
-    *a5 = 1;
+    *item = 1;
   }
 
   if (!self->_hasSomeSampling)
   {
-    return a3;
+    return index;
   }
 
-  v7 = self->_maximumNumberOfVisibleItemsForVisualSection[a4];
+  v7 = self->_maximumNumberOfVisibleItemsForVisualSection[section];
   v8 = v7 - 1;
   if (v7 < 1)
   {
-    return a3;
+    return index;
   }
 
-  v9 = self->_numberOfRealItemsForVisualSection[a4];
+  v9 = self->_numberOfRealItemsForVisualSection[section];
   if (v9 <= v7)
   {
-    return a3;
+    return index;
   }
 
   if (self->_sectionSamplers)
   {
-    v10 = [(PULayoutSampledSectioning *)self _sectionSamplerForVisualSection:a4];
-    v11 = [v10 indexForUnsampledIndex:a3 isMainItem:a5];
+    v10 = [(PULayoutSampledSectioning *)self _sectionSamplerForVisualSection:section];
+    v11 = [v10 indexForUnsampledIndex:index isMainItem:item];
 
     return v11;
   }
 
   else
   {
-    result = v7 * a3 / v9;
-    if (a5)
+    result = v7 * index / v9;
+    if (item)
     {
       if (v8 <= result)
       {
@@ -798,62 +798,62 @@ LABEL_11:
         v13 = (v8 + result * v9) / v7;
       }
 
-      *a5 = v13 == a3;
+      *item = v13 == index;
     }
   }
 
   return result;
 }
 
-- (id)_sectionSamplerForVisualSection:(int64_t)a3
+- (id)_sectionSamplerForVisualSection:(int64_t)section
 {
-  v5 = self->_sectionSamplers[a3];
+  v5 = self->_sectionSamplers[section];
   if (!v5)
   {
-    v6 = self->_maximumNumberOfVisibleItemsForVisualSection[a3];
-    v7 = self->_numberOfRealItemsForVisualSection[a3];
-    v8 = [(NSArray *)self->_realSectionIndexesForVisualSection objectAtIndexedSubscript:a3];
+    v6 = self->_maximumNumberOfVisibleItemsForVisualSection[section];
+    v7 = self->_numberOfRealItemsForVisualSection[section];
+    v8 = [(NSArray *)self->_realSectionIndexesForVisualSection objectAtIndexedSubscript:section];
     v9 = [(PULayoutSectioning *)self->super._baseSectioning visibleUnsampledIndexesForCombinedRealSections:v8];
     v10 = [v9 count];
     if (v10 == v7 || v10 == 0)
     {
       v5 = [[PULayoutSectionSimpleSampler alloc] initWithNumberOfVisibleItems:v6 numberOfRealItems:v7];
 LABEL_43:
-      objc_storeStrong(&self->_sectionSamplers[a3], v5);
+      objc_storeStrong(&self->_sectionSamplers[section], v5);
 
       goto LABEL_44;
     }
 
     v36 = v8;
     v5 = [[PULayoutSectionListSampler alloc] initWithNumberOfVisibleItems:v6 numberOfRealItems:v7];
-    v37 = [(PULayoutSectionSimpleSampler *)v5 visibleItemIndexes];
+    visibleItemIndexes = [(PULayoutSectionSimpleSampler *)v5 visibleItemIndexes];
     v12 = v9;
     v13 = v12;
     if (v6 >= v7)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _spreadIndexesInBuffer(NSInteger *, NSInteger, NSInteger, NSIndexSet *__strong)"}];
-      [v25 handleFailureInFunction:v26 file:@"PULayoutSectioning.m" lineNumber:409 description:{@"Invalid count for visible indexes buffer (%ld) compared to maximum index (%ld)", v6, v7}];
+      [currentHandler handleFailureInFunction:v26 file:@"PULayoutSectioning.m" lineNumber:409 description:{@"Invalid count for visible indexes buffer (%ld) compared to maximum index (%ld)", v6, v7}];
     }
 
     v14 = [v13 count];
     if (v14 <= 0)
     {
-      v34 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _spreadIndexesInBuffer(NSInteger *, NSInteger, NSInteger, NSIndexSet *__strong)"}];
-      [v34 handleFailureInFunction:v27 file:@"PULayoutSectioning.m" lineNumber:412 description:@"Invalid empty hinting from base sectioning"];
+      [currentHandler2 handleFailureInFunction:v27 file:@"PULayoutSectioning.m" lineNumber:412 description:@"Invalid empty hinting from base sectioning"];
     }
 
     if ([v13 lastIndex] >= v7)
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _spreadIndexesInBuffer(NSInteger *, NSInteger, NSInteger, NSIndexSet *__strong)"}];
-      [v35 handleFailureInFunction:v28 file:@"PULayoutSectioning.m" lineNumber:413 description:{@"Invalid last index for visible indexes hint (%ld) compared to maximum index (%ld)", objc_msgSend(v13, "lastIndex"), v7}];
+      [currentHandler3 handleFailureInFunction:v28 file:@"PULayoutSectioning.m" lineNumber:413 description:{@"Invalid last index for visible indexes hint (%ld) compared to maximum index (%ld)", objc_msgSend(v13, "lastIndex"), v7}];
     }
 
     if (v6 == v14)
     {
-      [v13 getIndexes:v37 maxCount:v6 inIndexRange:0];
+      [v13 getIndexes:visibleItemIndexes maxCount:v6 inIndexRange:0];
 LABEL_42:
 
       v8 = v36;
@@ -868,7 +868,7 @@ LABEL_42:
       v39 = 3221225472;
       v40 = ___spreadIndexesInBuffer_block_invoke;
       v41 = &__block_descriptor_48_e11_v24__0q8q16l;
-      v42 = v37;
+      v42 = visibleItemIndexes;
       v43 = v15;
       _iterateBySpreadingIndexes(v6, v14, &v38);
       free(v15);
@@ -935,14 +935,14 @@ LABEL_24:
         v42 = v46;
         v43 = &v47;
         v44 = v22;
-        v45 = v37;
+        v45 = visibleItemIndexes;
         _iterateBySpreadingIndexes(v6, v7, &v38);
         free(v22);
         if (v48[3])
         {
-          v29 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
           v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _spreadIndexesInBuffer(NSInteger *, NSInteger, NSInteger, NSIndexSet *__strong)"}];
-          [v29 handleFailureInFunction:v30 file:@"PULayoutSectioning.m" lineNumber:485 description:{@"Did not properly fill up buffer. We still need %ld indexes", v48[3]}];
+          [currentHandler4 handleFailureInFunction:v30 file:@"PULayoutSectioning.m" lineNumber:485 description:{@"Did not properly fill up buffer. We still need %ld indexes", v48[3]}];
         }
 
         _Block_object_dispose(v46, 8);
@@ -965,18 +965,18 @@ LABEL_41:
 
     if (v17)
     {
-      [v13 getIndexes:v37 maxCount:v14 inIndexRange:0];
+      [v13 getIndexes:visibleItemIndexes maxCount:v14 inIndexRange:0];
     }
 
     else
     {
-      *v37 = 0;
-      [v13 getIndexes:v37 + 1 maxCount:v14 inIndexRange:0];
+      *visibleItemIndexes = 0;
+      [v13 getIndexes:visibleItemIndexes + 1 maxCount:v14 inIndexRange:0];
     }
 
     if (v33)
     {
-      v37[v6 - 1] = v32;
+      visibleItemIndexes[v6 - 1] = v32;
     }
 
     goto LABEL_41;
@@ -987,18 +987,18 @@ LABEL_44:
   return v5;
 }
 
-- (int64_t)numberOfRealItemsInVisualSection:(int64_t)a3
+- (int64_t)numberOfRealItemsInVisualSection:(int64_t)section
 {
   if (self->_supportsSamplingAndSectionGrouping)
   {
     [(PULayoutSampledSectioning *)self _cacheSectioningIfNeeded];
-    if (a3 < 0 || self->_numberOfVisualSections <= a3)
+    if (section < 0 || self->_numberOfVisualSections <= section)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1110 description:{@"Invalid visual section %ld for %ld visual sections", a3, self->_numberOfVisualSections}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1110 description:{@"Invalid visual section %ld for %ld visual sections", section, self->_numberOfVisualSections}];
     }
 
-    return self->_numberOfRealItemsForVisualSection[a3];
+    return self->_numberOfRealItemsForVisualSection[section];
   }
 
   else
@@ -1008,29 +1008,29 @@ LABEL_44:
   }
 }
 
-- (int64_t)numberOfVisualItemsInVisualSection:(int64_t)a3
+- (int64_t)numberOfVisualItemsInVisualSection:(int64_t)section
 {
   if (self->_supportsSamplingAndSectionGrouping)
   {
     [(PULayoutSampledSectioning *)self _cacheSectioningIfNeeded];
-    if (a3 < 0 || self->_numberOfVisualSections <= a3)
+    if (section < 0 || self->_numberOfVisualSections <= section)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1088 description:{@"Invalid visual section %ld for %ld visual sections", a3, self->_numberOfVisualSections}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PULayoutSectioning.m" lineNumber:1088 description:{@"Invalid visual section %ld for %ld visual sections", section, self->_numberOfVisualSections}];
     }
 
-    result = self->_numberOfRealItemsForVisualSection[a3];
+    result = self->_numberOfRealItemsForVisualSection[section];
     if (self->_hasSomeSampling)
     {
-      v7 = self->_maximumNumberOfVisibleItemsForVisualSection[a3];
+      v7 = self->_maximumNumberOfVisibleItemsForVisualSection[section];
       if (result >= v7)
       {
-        v8 = self->_maximumNumberOfVisibleItemsForVisualSection[a3];
+        v8 = self->_maximumNumberOfVisibleItemsForVisualSection[section];
       }
 
       else
       {
-        v8 = self->_numberOfRealItemsForVisualSection[a3];
+        v8 = self->_numberOfRealItemsForVisualSection[section];
       }
 
       if (v7)
@@ -1042,8 +1042,8 @@ LABEL_44:
 
   else
   {
-    v9 = [(PULayoutSectioning *)self delegate];
-    v10 = [v9 numberOfItemsInRealSection:a3 forSectioning:self];
+    delegate = [(PULayoutSectioning *)self delegate];
+    v10 = [delegate numberOfItemsInRealSection:section forSectioning:self];
 
     return v10;
   }
@@ -1100,8 +1100,8 @@ LABEL_44:
 
   else
   {
-    v7 = [(PULayoutSectioning *)self delegate];
-    v8 = [v7 numberOfRealSectionsForSectioning:self];
+    delegate = [(PULayoutSectioning *)self delegate];
+    v8 = [delegate numberOfRealSectionsForSectioning:self];
     self->_numberOfRealSections = v8;
     self->_numberOfItemsForRealSection = malloc_type_malloc(8 * v8, 0x100004000313F17uLL);
     v9 = self->_numberOfRealSections;
@@ -1109,14 +1109,14 @@ LABEL_44:
     {
       for (i = 0; i < v9; ++i)
       {
-        self->_numberOfItemsForRealSection[i] = [v7 numberOfItemsInRealSection:i forSectioning:self];
+        self->_numberOfItemsForRealSection[i] = [delegate numberOfItemsInRealSection:i forSectioning:self];
         v9 = self->_numberOfRealSections;
       }
     }
 
     self->_startIndexInVisualSectionForRealSection = malloc_type_malloc(8 * v9, 0x100004000313F17uLL);
     self->_visualSectionForRealSection = malloc_type_calloc(self->_numberOfRealSections, 8uLL, 0x100004000313F17uLL);
-    v11 = [v7 numberOfVisualSectionsForSectioning:self];
+    v11 = [delegate numberOfVisualSectionsForSectioning:self];
     obja = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v11];
     self->_hasSomeSampling = 0;
     self->_numberOfRealItemsForVisualSection = malloc_type_malloc(8 * v11, 0x100004000313F17uLL);
@@ -1141,7 +1141,7 @@ LABEL_44:
       v33 = v11;
       do
       {
-        v14 = [v7 realSectionsForVisualSection:v13 forSectioning:self];
+        v14 = [delegate realSectionsForVisualSection:v13 forSectioning:self];
         if ([v14 count] && objc_msgSend(v14, "lastIndex") >= self->_numberOfRealSections)
         {
           v15 = [v14 mutableCopy];
@@ -1175,7 +1175,7 @@ LABEL_44:
         v42 = &v50;
         v17 = v15;
         v40 = v17;
-        v41 = self;
+        selfCopy = self;
         v44 = &v46;
         v45 = v13;
         v43 = &v56;
@@ -1192,7 +1192,7 @@ LABEL_44:
         [obja addObject:v17];
         [v16 addIndexes:v17];
         self->_numberOfRealItemsForVisualSection[v13] = v47[3];
-        v20 = [v7 maximumNumberOfItemsInVisualSection:v13 withNumberOfRealItems:? forSectioning:?];
+        v20 = [delegate maximumNumberOfItemsInVisualSection:v13 withNumberOfRealItems:? forSectioning:?];
         self->_maximumNumberOfVisibleItemsForVisualSection[v13] = v20;
         if (v20 >= 1 && self->_numberOfRealItemsForVisualSection[v13] > v20)
         {
@@ -1442,12 +1442,12 @@ uint64_t __53__PULayoutSampledSectioning__cacheSectioningIfNeeded__block_invoke_
   }
 }
 
-- (void)setSupportsSamplingAndSectionGrouping:(BOOL)a3
+- (void)setSupportsSamplingAndSectionGrouping:(BOOL)grouping
 {
-  if (self->_supportsSamplingAndSectionGrouping != a3)
+  if (self->_supportsSamplingAndSectionGrouping != grouping)
   {
-    self->_supportsSamplingAndSectionGrouping = a3;
-    if (!a3)
+    self->_supportsSamplingAndSectionGrouping = grouping;
+    if (!grouping)
     {
       self->_hasSomeSampling = 0;
     }

@@ -1,12 +1,12 @@
 @interface CycleFactorLastReviewedDateInputSignal
-- (void)didUpdateKeyValueDomain:(id)a3;
+- (void)didUpdateKeyValueDomain:(id)domain;
 @end
 
 @implementation CycleFactorLastReviewedDateInputSignal
 
-- (void)didUpdateKeyValueDomain:(id)a3
+- (void)didUpdateKeyValueDomain:(id)domain
 {
-  v3 = a3;
+  domainCopy = domain;
 
   sub_29E1B5080();
 }

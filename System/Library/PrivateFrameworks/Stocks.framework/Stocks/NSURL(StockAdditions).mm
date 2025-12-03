@@ -14,11 +14,11 @@
 
     if (v5)
     {
-      v6 = [v5 percentEncodedHost];
-      if (v6)
+      percentEncodedHost = [v5 percentEncodedHost];
+      if (percentEncodedHost)
       {
-        v7 = [MEMORY[0x277CCA900] URLHostAllowedCharacterSet];
-        v8 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v7];
+        uRLHostAllowedCharacterSet = [MEMORY[0x277CCA900] URLHostAllowedCharacterSet];
+        v8 = [percentEncodedHost stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
         v9 = v8;
         if (v8)
         {
@@ -27,7 +27,7 @@
 
         else
         {
-          v10 = v6;
+          v10 = percentEncodedHost;
         }
 
         v11 = v10;
@@ -35,11 +35,11 @@
         [v5 setPercentEncodedHost:v11];
       }
 
-      v12 = [v5 percentEncodedQuery];
-      if (v12)
+      percentEncodedQuery = [v5 percentEncodedQuery];
+      if (percentEncodedQuery)
       {
-        v13 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-        v14 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:v13];
+        uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+        v14 = [percentEncodedQuery stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
         v15 = v14;
         if (v14)
         {
@@ -48,7 +48,7 @@
 
         else
         {
-          v16 = v12;
+          v16 = percentEncodedQuery;
         }
 
         v17 = v16;

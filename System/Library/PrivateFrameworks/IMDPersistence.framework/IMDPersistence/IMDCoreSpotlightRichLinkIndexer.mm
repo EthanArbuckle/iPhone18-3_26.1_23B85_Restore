@@ -4,20 +4,20 @@
 + (CSCustomAttributeKey)lpPluginPathsCustomKey;
 + (CSCustomAttributeKey)lpTitleCustomKey;
 + (IMDCoreSpotlightRichLinkIndexer)defaultIndexer;
-+ (id)_indexerForClassName:(id)a3;
-+ (id)indexerForMetadata:(id)a3;
-+ (void)insertLinkType:(id)a3 toAttributes:(id)a4;
-- (IMDCoreSpotlightRichLinkIndexer)initWithClass:(Class)a3 linkType:(id)a4 linkSubtype:(id)a5 prefix:(id)a6;
-- (id)_cleanedUpURLFromTransformer:(id)a3;
-- (id)_linkSubtypeForMetadata:(id)a3;
-- (id)_linkTypeForMetadata:(id)a3;
-- (id)_prefixFromMetadata:(id)a3;
-- (id)_transformerForMetadata:(id)a3 originalURL:(id)a4;
-- (void)_insertLinkName:(id)a3 prefix:(id)a4 toAttributes:(id)a5;
-- (void)_insertLinkName:(id)a3 toAttributes:(id)a4;
-- (void)_insertTypeInfoToSearchableAttributes:(id)a3 fromMetadata:(id)a4;
-- (void)_mapPropertiesFromMetadata:(id)a3 toAttributes:(id)a4;
-- (void)mapPropertiesFromMetadata:(id)a3 text:(id)a4 originalURL:(id)a5 attachmentPaths:(id)a6 toAttributes:(id)a7;
++ (id)_indexerForClassName:(id)name;
++ (id)indexerForMetadata:(id)metadata;
++ (void)insertLinkType:(id)type toAttributes:(id)attributes;
+- (IMDCoreSpotlightRichLinkIndexer)initWithClass:(Class)class linkType:(id)type linkSubtype:(id)subtype prefix:(id)prefix;
+- (id)_cleanedUpURLFromTransformer:(id)transformer;
+- (id)_linkSubtypeForMetadata:(id)metadata;
+- (id)_linkTypeForMetadata:(id)metadata;
+- (id)_prefixFromMetadata:(id)metadata;
+- (id)_transformerForMetadata:(id)metadata originalURL:(id)l;
+- (void)_insertLinkName:(id)name prefix:(id)prefix toAttributes:(id)attributes;
+- (void)_insertLinkName:(id)name toAttributes:(id)attributes;
+- (void)_insertTypeInfoToSearchableAttributes:(id)attributes fromMetadata:(id)metadata;
+- (void)_mapPropertiesFromMetadata:(id)metadata toAttributes:(id)attributes;
+- (void)mapPropertiesFromMetadata:(id)metadata text:(id)text originalURL:(id)l attachmentPaths:(id)paths toAttributes:(id)attributes;
 @end
 
 @implementation IMDCoreSpotlightRichLinkIndexer
@@ -34,26 +34,26 @@
   return v3;
 }
 
-+ (id)indexerForMetadata:(id)a3
++ (id)indexerForMetadata:(id)metadata
 {
-  v4 = a3;
-  v7 = objc_msgSend_specialization(v4, v5, v6);
+  metadataCopy = metadata;
+  v7 = objc_msgSend_specialization(metadataCopy, v5, v6);
 
   if (v7)
   {
-    v10 = objc_msgSend_specialization(v4, v8, v9);
+    v10 = objc_msgSend_specialization(metadataCopy, v8, v9);
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v14 = objc_msgSend__indexerForClassName_(a1, v13, v12);
+    v14 = objc_msgSend__indexerForClassName_(self, v13, v12);
 
-    if (v14 && (objc_msgSend_specialization(v4, v15, v16), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_opt_class(), v19 = objc_opt_class(), LOBYTE(v18) = objc_msgSend_isEqual_(v18, v20, v19), v17, (v18 & 1) != 0))
+    if (v14 && (objc_msgSend_specialization(metadataCopy, v15, v16), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_opt_class(), v19 = objc_opt_class(), LOBYTE(v18) = objc_msgSend_isEqual_(v18, v20, v19), v17, (v18 & 1) != 0))
     {
       v21 = v14;
     }
 
     else
     {
-      v21 = objc_msgSend_defaultIndexer(a1, v15, v16);
+      v21 = objc_msgSend_defaultIndexer(self, v15, v16);
     }
 
     v22 = v21;
@@ -61,55 +61,55 @@
 
   else
   {
-    v22 = objc_msgSend_defaultIndexer(a1, v8, v9);
+    v22 = objc_msgSend_defaultIndexer(self, v8, v9);
   }
 
   return v22;
 }
 
-+ (id)_indexerForClassName:(id)a3
++ (id)_indexerForClassName:(id)name
 {
   v3 = qword_1EBA54208;
-  v5 = a3;
+  nameCopy = name;
   if (v3 != -1)
   {
     sub_1B7CFA810();
   }
 
-  v6 = objc_msgSend_objectForKeyedSubscript_(qword_1EBA54200, v4, v5);
+  v6 = objc_msgSend_objectForKeyedSubscript_(qword_1EBA54200, v4, nameCopy);
 
   return v6;
 }
 
-- (IMDCoreSpotlightRichLinkIndexer)initWithClass:(Class)a3 linkType:(id)a4 linkSubtype:(id)a5 prefix:(id)a6
+- (IMDCoreSpotlightRichLinkIndexer)initWithClass:(Class)class linkType:(id)type linkSubtype:(id)subtype prefix:(id)prefix
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  subtypeCopy = subtype;
+  prefixCopy = prefix;
   v19.receiver = self;
   v19.super_class = IMDCoreSpotlightRichLinkIndexer;
   v14 = [(IMDCoreSpotlightRichLinkIndexer *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_class, a3);
-    v16 = NSStringFromClass(a3);
+    objc_storeStrong(&v14->_class, class);
+    v16 = NSStringFromClass(class);
     specializationClassName = v15->_specializationClassName;
     v15->_specializationClassName = v16;
 
-    objc_storeStrong(&v15->_linkType, a4);
-    objc_storeStrong(&v15->_linkSubtype, a5);
-    objc_storeStrong(&v15->_prefix, a6);
+    objc_storeStrong(&v15->_linkType, type);
+    objc_storeStrong(&v15->_linkSubtype, subtype);
+    objc_storeStrong(&v15->_prefix, prefix);
   }
 
   return v15;
 }
 
-+ (void)insertLinkType:(id)a3 toAttributes:(id)a4
++ (void)insertLinkType:(id)type toAttributes:(id)attributes
 {
-  v37 = a3;
-  v5 = a4;
-  v8 = objc_msgSend_detectedEventTypes(v5, v6, v7);
+  typeCopy = type;
+  attributesCopy = attributes;
+  v8 = objc_msgSend_detectedEventTypes(attributesCopy, v6, v7);
   v11 = objc_msgSend_mutableCopy(v8, v9, v10);
   v13 = v11;
   if (v11)
@@ -124,11 +124,11 @@
 
   v15 = v14;
 
-  objc_msgSend_addObject_(v15, v16, v37);
+  objc_msgSend_addObject_(v15, v16, typeCopy);
   v19 = objc_msgSend_copy(v15, v17, v18);
-  objc_msgSend_setDetectedEventTypes_(v5, v20, v19);
+  objc_msgSend_setDetectedEventTypes_(attributesCopy, v20, v19);
 
-  v23 = objc_msgSend_mediaTypes(v5, v21, v22);
+  v23 = objc_msgSend_mediaTypes(attributesCopy, v21, v22);
   v26 = objc_msgSend_mutableCopy(v23, v24, v25);
   v28 = v26;
   if (v26)
@@ -143,16 +143,16 @@
 
   v30 = v29;
 
-  objc_msgSend_addObject_(v30, v31, v37);
+  objc_msgSend_addObject_(v30, v31, typeCopy);
   v34 = objc_msgSend_copy(v30, v32, v33);
-  objc_msgSend_setMediaTypes_(v5, v35, v34);
+  objc_msgSend_setMediaTypes_(attributesCopy, v35, v34);
 
-  objc_msgSend_setLinkType_(v5, v36, v37);
+  objc_msgSend_setLinkType_(attributesCopy, v36, typeCopy);
 }
 
-- (id)_linkTypeForMetadata:(id)a3
+- (id)_linkTypeForMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v7 = objc_msgSend_linkType(self, v5, v6);
   v10 = objc_msgSend_length(v7, v8, v9);
 
@@ -163,7 +163,7 @@
 
   else
   {
-    v14 = objc_msgSend_infoForLinkMetadata_(_IMDOpenGraphSpotlightMappingInfo, v11, v4);
+    v14 = objc_msgSend_infoForLinkMetadata_(_IMDOpenGraphSpotlightMappingInfo, v11, metadataCopy);
     v17 = objc_msgSend_linkType(v14, v15, v16);
     v20 = objc_msgSend_length(v17, v18, v19);
 
@@ -183,9 +183,9 @@
   return v13;
 }
 
-- (id)_linkSubtypeForMetadata:(id)a3
+- (id)_linkSubtypeForMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v7 = objc_msgSend_linkSubtype(self, v5, v6);
   v9 = v7;
   if (v7)
@@ -195,42 +195,42 @@
 
   else
   {
-    v11 = objc_msgSend_infoForLinkMetadata_(_IMDOpenGraphSpotlightMappingInfo, v8, v4);
+    v11 = objc_msgSend_infoForLinkMetadata_(_IMDOpenGraphSpotlightMappingInfo, v8, metadataCopy);
     v10 = objc_msgSend_linkSubType(v11, v12, v13);
   }
 
   return v10;
 }
 
-- (id)_prefixFromMetadata:(id)a3
+- (id)_prefixFromMetadata:(id)metadata
 {
-  v3 = objc_msgSend_infoForLinkMetadata_(_IMDOpenGraphSpotlightMappingInfo, a2, a3);
+  v3 = objc_msgSend_infoForLinkMetadata_(_IMDOpenGraphSpotlightMappingInfo, a2, metadata);
   v6 = objc_msgSend_prefix(v3, v4, v5);
 
   return v6;
 }
 
-- (void)_insertTypeInfoToSearchableAttributes:(id)a3 fromMetadata:(id)a4
+- (void)_insertTypeInfoToSearchableAttributes:(id)attributes fromMetadata:(id)metadata
 {
-  v12 = a3;
-  v6 = a4;
-  v9 = objc_msgSend__linkTypeForMetadata_(self, v7, v6);
+  attributesCopy = attributes;
+  metadataCopy = metadata;
+  v9 = objc_msgSend__linkTypeForMetadata_(self, v7, metadataCopy);
   if (v9)
   {
-    objc_msgSend_insertLinkType_toAttributes_(IMDCoreSpotlightRichLinkIndexer, v8, v9, v12);
+    objc_msgSend_insertLinkType_toAttributes_(IMDCoreSpotlightRichLinkIndexer, v8, v9, attributesCopy);
   }
 
-  v11 = objc_msgSend__linkSubtypeForMetadata_(self, v8, v6);
+  v11 = objc_msgSend__linkSubtypeForMetadata_(self, v8, metadataCopy);
   if (v11)
   {
-    objc_msgSend_setLinkSubType_(v12, v10, v11);
+    objc_msgSend_setLinkSubType_(attributesCopy, v10, v11);
   }
 }
 
-- (id)_transformerForMetadata:(id)a3 originalURL:(id)a4
+- (id)_transformerForMetadata:(id)metadata originalURL:(id)l
 {
-  v5 = a3;
-  v8 = a4;
+  metadataCopy = metadata;
+  lCopy = l;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2050000000;
@@ -250,10 +250,10 @@
   v10 = v9;
   _Block_object_dispose(&v28, 8);
   v11 = objc_alloc_init(v9);
-  objc_msgSend_setMetadata_(v11, v12, v5);
+  objc_msgSend_setMetadata_(v11, v12, metadataCopy);
   objc_msgSend_setComplete_(v11, v13, 1);
   objc_msgSend_setPreferredSizeClass_(v11, v14, 5);
-  v17 = objc_msgSend_URL(v5, v15, v16);
+  v17 = objc_msgSend_URL(metadataCopy, v15, v16);
   v20 = v17;
   if (v17)
   {
@@ -262,7 +262,7 @@
 
   else
   {
-    v22 = objc_msgSend_originalURL(v5, v18, v19);
+    v22 = objc_msgSend_originalURL(metadataCopy, v18, v19);
     v23 = v22;
     if (v22)
     {
@@ -271,7 +271,7 @@
 
     else
     {
-      v24 = v8;
+      v24 = lCopy;
     }
 
     v21 = v24;
@@ -282,9 +282,9 @@
   return v11;
 }
 
-- (id)_cleanedUpURLFromTransformer:(id)a3
+- (id)_cleanedUpURLFromTransformer:(id)transformer
 {
-  v3 = objc_msgSend_originalURL(a3, a2, a3);
+  v3 = objc_msgSend_originalURL(transformer, a2, transformer);
   v6 = v3;
   if (v3)
   {
@@ -305,24 +305,24 @@
   return v6;
 }
 
-- (void)mapPropertiesFromMetadata:(id)a3 text:(id)a4 originalURL:(id)a5 attachmentPaths:(id)a6 toAttributes:(id)a7
+- (void)mapPropertiesFromMetadata:(id)metadata text:(id)text originalURL:(id)l attachmentPaths:(id)paths toAttributes:(id)attributes
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  objc_msgSend__insertTypeInfoToSearchableAttributes_fromMetadata_(self, v17, v16, v12);
-  v21 = objc_msgSend_summary(v12, v18, v19);
+  metadataCopy = metadata;
+  textCopy = text;
+  lCopy = l;
+  pathsCopy = paths;
+  attributesCopy = attributes;
+  objc_msgSend__insertTypeInfoToSearchableAttributes_fromMetadata_(self, v17, attributesCopy, metadataCopy);
+  v21 = objc_msgSend_summary(metadataCopy, v18, v19);
   if (v21)
   {
-    objc_msgSend_setTextContent_(v16, v20, v21);
+    objc_msgSend_setTextContent_(attributesCopy, v20, v21);
     goto LABEL_10;
   }
 
-  if (v13)
+  if (textCopy)
   {
-    objc_msgSend_setTextContent_(v16, v20, v13);
+    objc_msgSend_setTextContent_(attributesCopy, v20, textCopy);
     if (!IMOSLoggingEnabled())
     {
       goto LABEL_10;
@@ -347,97 +347,97 @@
 
 LABEL_10:
   v25 = objc_msgSend_lpDescriptionCustomKey(IMDCoreSpotlightRichLinkIndexer, v22, v23);
-  v50 = v13;
-  objc_msgSend_setValue_forCustomKey_(v16, v26, v13, v25);
+  v50 = textCopy;
+  objc_msgSend_setValue_forCustomKey_(attributesCopy, v26, textCopy, v25);
 
-  objc_msgSend_setMessageType_(v16, v27, @"lnk");
-  v28 = v14;
-  v30 = objc_msgSend__transformerForMetadata_originalURL_(self, v29, v12, v14);
+  objc_msgSend_setMessageType_(attributesCopy, v27, @"lnk");
+  v28 = lCopy;
+  v30 = objc_msgSend__transformerForMetadata_originalURL_(self, v29, metadataCopy, lCopy);
   if (objc_msgSend_hasMedia(v30, v31, v32))
   {
     v35 = objc_msgSend_lpHasRichMediaCustomKey(IMDCoreSpotlightRichLinkIndexer, v33, v34);
-    objc_msgSend_setValue_forCustomKey_(v16, v36, MEMORY[0x1E695E118], v35);
+    objc_msgSend_setValue_forCustomKey_(attributesCopy, v36, MEMORY[0x1E695E118], v35);
 
     v39 = objc_msgSend_lpPluginPathsCustomKey(IMDCoreSpotlightRichLinkIndexer, v37, v38);
-    objc_msgSend_setValue_forCustomKey_(v16, v40, v15, v39);
+    objc_msgSend_setValue_forCustomKey_(attributesCopy, v40, pathsCopy, v39);
   }
 
-  v41 = v15;
+  v41 = pathsCopy;
   v44 = objc_msgSend__cleanedUpURLFromTransformer_(self, v33, v30);
   if (v44)
   {
-    objc_msgSend_setURL_(v16, v42, v44);
+    objc_msgSend_setURL_(attributesCopy, v42, v44);
   }
 
-  v47 = objc_msgSend_title(v12, v42, v43);
+  v47 = objc_msgSend_title(metadataCopy, v42, v43);
   if (v47)
   {
     v48 = objc_msgSend_lpTitleCustomKey(IMDCoreSpotlightRichLinkIndexer, v45, v46);
-    objc_msgSend_setValue_forCustomKey_(v16, v49, v47, v48);
+    objc_msgSend_setValue_forCustomKey_(attributesCopy, v49, v47, v48);
   }
 
-  if (v12)
+  if (metadataCopy)
   {
-    objc_msgSend__mapPropertiesFromMetadata_toAttributes_(self, v45, v12, v16);
+    objc_msgSend__mapPropertiesFromMetadata_toAttributes_(self, v45, metadataCopy, attributesCopy);
   }
 }
 
-- (void)_mapPropertiesFromMetadata:(id)a3 toAttributes:(id)a4
+- (void)_mapPropertiesFromMetadata:(id)metadata toAttributes:(id)attributes
 {
-  v24 = a3;
-  v6 = a4;
-  objc_msgSend_setMessageType_(v6, v7, @"lnk");
-  v10 = objc_msgSend_title(v24, v8, v9);
-  objc_msgSend_setUrlDescription_(v6, v11, v10);
+  metadataCopy = metadata;
+  attributesCopy = attributes;
+  objc_msgSend_setMessageType_(attributesCopy, v7, @"lnk");
+  v10 = objc_msgSend_title(metadataCopy, v8, v9);
+  objc_msgSend_setUrlDescription_(attributesCopy, v11, v10);
 
-  v14 = objc_msgSend_summary(v24, v12, v13);
-  objc_msgSend_setContentDescription_(v6, v15, v14);
+  v14 = objc_msgSend_summary(metadataCopy, v12, v13);
+  objc_msgSend_setContentDescription_(attributesCopy, v15, v14);
 
-  v20 = objc_msgSend_title(v24, v16, v17);
+  v20 = objc_msgSend_title(metadataCopy, v16, v17);
   v21 = v20;
   if (!v20)
   {
-    v21 = objc_msgSend_siteName(v24, v18, v19);
+    v21 = objc_msgSend_siteName(metadataCopy, v18, v19);
   }
 
-  v22 = objc_msgSend__prefixFromMetadata_(self, v18, v24);
-  objc_msgSend__insertLinkName_prefix_toAttributes_(self, v23, v21, v22, v6);
+  v22 = objc_msgSend__prefixFromMetadata_(self, v18, metadataCopy);
+  objc_msgSend__insertLinkName_prefix_toAttributes_(self, v23, v21, v22, attributesCopy);
 
   if (!v20)
   {
   }
 }
 
-- (void)_insertLinkName:(id)a3 prefix:(id)a4 toAttributes:(id)a5
+- (void)_insertLinkName:(id)name prefix:(id)prefix toAttributes:(id)attributes
 {
-  v16 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (objc_msgSend_length(v16, v9, v10))
+  nameCopy = name;
+  prefixCopy = prefix;
+  attributesCopy = attributes;
+  if (objc_msgSend_length(nameCopy, v9, v10))
   {
-    if (objc_msgSend_length(v7, v11, v12))
+    if (objc_msgSend_length(prefixCopy, v11, v12))
     {
-      v14 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v16, @"%@ : %@", v7, v16);
+      v14 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], nameCopy, @"%@ : %@", prefixCopy, nameCopy);
 
       v15 = v14;
     }
 
     else
     {
-      v15 = v16;
+      v15 = nameCopy;
     }
 
-    v16 = v15;
-    objc_msgSend_setLinkName_(v8, v13, v15);
+    nameCopy = v15;
+    objc_msgSend_setLinkName_(attributesCopy, v13, v15);
   }
 }
 
-- (void)_insertLinkName:(id)a3 toAttributes:(id)a4
+- (void)_insertLinkName:(id)name toAttributes:(id)attributes
 {
-  v6 = a4;
-  v7 = a3;
+  attributesCopy = attributes;
+  nameCopy = name;
   v11 = objc_msgSend_prefix(self, v8, v9);
-  objc_msgSend__insertLinkName_prefix_toAttributes_(self, v10, v7, v11, v6);
+  objc_msgSend__insertLinkName_prefix_toAttributes_(self, v10, nameCopy, v11, attributesCopy);
 }
 
 + (CSCustomAttributeKey)lpTitleCustomKey

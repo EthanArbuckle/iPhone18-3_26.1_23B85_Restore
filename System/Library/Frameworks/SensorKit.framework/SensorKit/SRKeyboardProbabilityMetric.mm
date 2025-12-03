@@ -1,11 +1,11 @@
 @interface SRKeyboardProbabilityMetric
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)distributionSampleValues;
 - (SRKeyboardProbabilityMetric)init;
-- (SRKeyboardProbabilityMetric)initWithCoder:(id)a3;
+- (SRKeyboardProbabilityMetric)initWithCoder:(id)coder;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRKeyboardProbabilityMetric
@@ -78,9 +78,9 @@
   [(SRKeyboardProbabilityMetric *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -92,14 +92,14 @@
   }
 
   mutableSampleValues = self->_mutableSampleValues;
-  v6 = [a3 mutableSampleValues];
+  mutableSampleValues = [equal mutableSampleValues];
 
-  return [(NSMutableArray *)mutableSampleValues isEqual:v6];
+  return [(NSMutableArray *)mutableSampleValues isEqual:mutableSampleValues];
 }
 
-- (SRKeyboardProbabilityMetric)initWithCoder:(id)a3
+- (SRKeyboardProbabilityMetric)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -111,22 +111,22 @@
   {
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
-    v6->_mutableSampleValues = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithObjects:", v8, objc_opt_class(), 0), @"SampleValues", "mutableCopy"}];
+    v6->_mutableSampleValues = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithObjects:", v8, objc_opt_class(), 0), @"SampleValues", "mutableCopy"}];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   mutableSampleValues = self->_mutableSampleValues;
 
-  [a3 encodeObject:mutableSampleValues forKey:@"SampleValues"];
+  [coder encodeObject:mutableSampleValues forKey:@"SampleValues"];
 }
 
 - (id)sr_dictionaryRepresentation

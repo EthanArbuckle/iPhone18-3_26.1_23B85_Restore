@@ -1,23 +1,23 @@
 @interface CNUICoreRecentsManager
 + (CNKeyDescriptor)descriptorForRequiredKeys;
-+ (id)allHandlesToSearchForFromContact:(id)a3;
-+ (id)handlesForContactProperties:(id)a3;
-+ (id)predicateForSearchingHandlesForAllSupportedKinds:(id)a3;
-+ (id)queryForHandles:(id)a3 sorted:(BOOL)a4;
++ (id)allHandlesToSearchForFromContact:(id)contact;
++ (id)handlesForContactProperties:(id)properties;
++ (id)predicateForSearchingHandlesForAllSupportedKinds:(id)kinds;
++ (id)queryForHandles:(id)handles sorted:(BOOL)sorted;
 + (id)supportedPropertyDescriptions;
 + (id)supportedRecentsDomains;
 + (id)supportedRecentsKinds;
-+ (id)transformForPropertyDescription:(id)a3;
++ (id)transformForPropertyDescription:(id)description;
 - (CNUICoreRecentsManager)init;
-- (CNUICoreRecentsManager)initWithRecentsLibrary:(id)a3 schedulerProvider:(id)a4;
-- (id)recentContactsMatchingAllPropertiesOfContact:(id)a3;
-- (id)recentContactsMatchingContactProperties:(id)a3;
-- (id)recentsContactsMatchingHandles:(id)a3 sorted:(BOOL)a4;
-- (id)removeRecents:(id)a3;
-- (id)restoreRecents:(id)a3;
-- (id)sortedRecentHandlesMatchingAllPropertiesOfContact:(id)a3;
-- (void)removeRecents:(id)a3 completionHandler:(id)a4;
-- (void)removeRecentsWithIdentifiers:(id)a3 domain:(id)a4 completionHandler:(id)a5;
+- (CNUICoreRecentsManager)initWithRecentsLibrary:(id)library schedulerProvider:(id)provider;
+- (id)recentContactsMatchingAllPropertiesOfContact:(id)contact;
+- (id)recentContactsMatchingContactProperties:(id)properties;
+- (id)recentsContactsMatchingHandles:(id)handles sorted:(BOOL)sorted;
+- (id)removeRecents:(id)recents;
+- (id)restoreRecents:(id)recents;
+- (id)sortedRecentHandlesMatchingAllPropertiesOfContact:(id)contact;
+- (void)removeRecents:(id)recents completionHandler:(id)handler;
+- (void)removeRecentsWithIdentifiers:(id)identifiers domain:(id)domain completionHandler:(id)handler;
 @end
 
 @implementation CNUICoreRecentsManager
@@ -25,8 +25,8 @@
 + (CNKeyDescriptor)descriptorForRequiredKeys
 {
   v2 = MEMORY[0x1E695CD58];
-  v3 = [a1 supportedPropertyDescriptions];
-  v4 = [v3 _cn_map:&__block_literal_global_27];
+  supportedPropertyDescriptions = [self supportedPropertyDescriptions];
+  v4 = [supportedPropertyDescriptions _cn_map:&__block_literal_global_27];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNUICoreRecentsManager descriptorForRequiredKeys]"];
   v6 = [v2 descriptorWithKeyDescriptors:v4 description:v5];
 
@@ -35,30 +35,30 @@
 
 - (CNUICoreRecentsManager)init
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 coreRecentsLibrary];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  coreRecentsLibrary = [currentEnvironment coreRecentsLibrary];
 
-  v5 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v6 = [v5 schedulerProvider];
+  currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+  schedulerProvider = [currentEnvironment2 schedulerProvider];
 
-  v7 = [(CNUICoreRecentsManager *)self initWithRecentsLibrary:v4 schedulerProvider:v6];
+  v7 = [(CNUICoreRecentsManager *)self initWithRecentsLibrary:coreRecentsLibrary schedulerProvider:schedulerProvider];
   return v7;
 }
 
-- (CNUICoreRecentsManager)initWithRecentsLibrary:(id)a3 schedulerProvider:(id)a4
+- (CNUICoreRecentsManager)initWithRecentsLibrary:(id)library schedulerProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = CNUICoreRecentsManager;
   v9 = [(CNUICoreRecentsManager *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_recentsLibrary, a3);
-    v11 = [v8 backgroundScheduler];
+    objc_storeStrong(&v9->_recentsLibrary, library);
+    backgroundScheduler = [providerCopy backgroundScheduler];
     workQueue = v10->_workQueue;
-    v10->_workQueue = v11;
+    v10->_workQueue = backgroundScheduler;
 
     v13 = v10;
   }
@@ -66,19 +66,19 @@
   return v10;
 }
 
-- (id)recentContactsMatchingAllPropertiesOfContact:(id)a3
+- (id)recentContactsMatchingAllPropertiesOfContact:(id)contact
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() descriptorForRequiredKeys];
-  v12[0] = v5;
+  contactCopy = contact;
+  descriptorForRequiredKeys = [objc_opt_class() descriptorForRequiredKeys];
+  v12[0] = descriptorForRequiredKeys;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  if (([v4 areKeysAvailable:v6] & 1) == 0)
+  if (([contactCopy areKeysAvailable:v6] & 1) == 0)
   {
     [CNUICoreRecentsManager recentContactsMatchingAllPropertiesOfContact:];
   }
 
-  v7 = [objc_opt_class() allHandlesToSearchForFromContact:v4];
+  v7 = [objc_opt_class() allHandlesToSearchForFromContact:contactCopy];
   if ((*(*MEMORY[0x1E6996530] + 16))())
   {
     v8 = +[CNUICoreLogProvider likenesses_os_log];
@@ -100,19 +100,19 @@
   return v10;
 }
 
-- (id)sortedRecentHandlesMatchingAllPropertiesOfContact:(id)a3
+- (id)sortedRecentHandlesMatchingAllPropertiesOfContact:(id)contact
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() descriptorForRequiredKeys];
-  v12[0] = v5;
+  contactCopy = contact;
+  descriptorForRequiredKeys = [objc_opt_class() descriptorForRequiredKeys];
+  v12[0] = descriptorForRequiredKeys;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  if (([v4 areKeysAvailable:v6] & 1) == 0)
+  if (([contactCopy areKeysAvailable:v6] & 1) == 0)
   {
     [CNUICoreRecentsManager sortedRecentHandlesMatchingAllPropertiesOfContact:];
   }
 
-  v7 = [objc_opt_class() allHandlesToSearchForFromContact:v4];
+  v7 = [objc_opt_class() allHandlesToSearchForFromContact:contactCopy];
   if ((*(*MEMORY[0x1E6996530] + 16))())
   {
     v8 = +[CNUICoreLogProvider likenesses_os_log];
@@ -141,18 +141,18 @@ id __76__CNUICoreRecentsManager_sortedRecentHandlesMatchingAllPropertiesOfContac
   return v3;
 }
 
-+ (id)allHandlesToSearchForFromContact:(id)a3
++ (id)allHandlesToSearchForFromContact:(id)contact
 {
-  v4 = a3;
-  v5 = [a1 supportedPropertyDescriptions];
+  contactCopy = contact;
+  supportedPropertyDescriptions = [self supportedPropertyDescriptions];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__CNUICoreRecentsManager_allHandlesToSearchForFromContact___block_invoke;
   v9[3] = &unk_1E76E8B98;
-  v10 = v4;
-  v11 = a1;
-  v6 = v4;
-  v7 = [v5 _cn_flatMap:v9];
+  v10 = contactCopy;
+  selfCopy = self;
+  v6 = contactCopy;
+  v7 = [supportedPropertyDescriptions _cn_flatMap:v9];
 
   return v7;
 }
@@ -169,10 +169,10 @@ id __59__CNUICoreRecentsManager_allHandlesToSearchForFromContact___block_invoke(
   return v7;
 }
 
-- (id)recentContactsMatchingContactProperties:(id)a3
+- (id)recentContactsMatchingContactProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [objc_opt_class() handlesForContactProperties:v4];
+  propertiesCopy = properties;
+  v5 = [objc_opt_class() handlesForContactProperties:propertiesCopy];
   if ((*(*MEMORY[0x1E6996530] + 16))())
   {
     v6 = +[CNUICoreLogProvider likenesses_os_log];
@@ -194,13 +194,13 @@ id __59__CNUICoreRecentsManager_allHandlesToSearchForFromContact___block_invoke(
   return v8;
 }
 
-+ (id)handlesForContactProperties:(id)a3
++ (id)handlesForContactProperties:(id)properties
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 _cn_filter:&__block_literal_global_24];
+  propertiesCopy = properties;
+  v5 = [propertiesCopy _cn_filter:&__block_literal_global_24];
   v6 = [v5 count];
-  if (v6 != [v4 count])
+  if (v6 != [propertiesCopy count])
   {
     v7 = +[CNUICoreLogProvider likenesses_os_log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -210,7 +210,7 @@ id __59__CNUICoreRecentsManager_allHandlesToSearchForFromContact___block_invoke(
       v14[2] = __54__CNUICoreRecentsManager_handlesForContactProperties___block_invoke_2;
       v14[3] = &unk_1E76E8BE0;
       v15 = v5;
-      v11 = [v4 _cn_filter:v14];
+      v11 = [propertiesCopy _cn_filter:v14];
       *buf = 138412290;
       v17 = v11;
       _os_log_debug_impl(&dword_1A31E6000, v7, OS_LOG_TYPE_DEBUG, "Detected invalid properties passed in, are you sure you meant to do this? %@", buf, 0xCu);
@@ -221,13 +221,13 @@ id __59__CNUICoreRecentsManager_allHandlesToSearchForFromContact___block_invoke(
   v13[1] = 3221225472;
   v13[2] = __54__CNUICoreRecentsManager_handlesForContactProperties___block_invoke_26;
   v13[3] = &__block_descriptor_40_e27_B16__0__CNContactProperty_8l;
-  v13[4] = a1;
+  v13[4] = self;
   v8 = [v5 _cn_filter:v13];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __54__CNUICoreRecentsManager_handlesForContactProperties___block_invoke_2_27;
   v12[3] = &__block_descriptor_40_e36___NSArray_16__0__CNContactProperty_8l;
-  v12[4] = a1;
+  v12[4] = self;
   v9 = [v8 _cn_flatMap:v12];
 
   return v9;
@@ -282,10 +282,10 @@ id __54__CNUICoreRecentsManager_handlesForContactProperties___block_invoke_2_27(
   return v9;
 }
 
-- (id)recentsContactsMatchingHandles:(id)a3 sorted:(BOOL)a4
+- (id)recentsContactsMatchingHandles:(id)handles sorted:(BOOL)sorted
 {
-  v5 = a3;
-  v6 = [objc_opt_class() queryForHandles:v5];
+  handlesCopy = handles;
+  v6 = [objc_opt_class() queryForHandles:handlesCopy];
   v7 = +[CNUICoreLogProvider likenesses_os_log];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
   if (v6)
@@ -295,8 +295,8 @@ id __54__CNUICoreRecentsManager_handlesForContactProperties___block_invoke_2_27(
       [CNUICoreRecentsManager recentsContactsMatchingHandles:v6 sorted:?];
     }
 
-    v9 = [(CNUICoreRecentsManager *)self recentsLibrary];
-    v10 = [v9 _recentContactsWithQuery:v6];
+    recentsLibrary = [(CNUICoreRecentsManager *)self recentsLibrary];
+    v10 = [recentsLibrary _recentContactsWithQuery:v6];
 
     [v10 addFailureBlock:&__block_literal_global_32_0];
     [v10 addSuccessBlock:&__block_literal_global_36];
@@ -338,42 +338,42 @@ void __64__CNUICoreRecentsManager_recentsContactsMatchingHandles_sorted___block_
   }
 }
 
-- (id)removeRecents:(id)a3
+- (id)removeRecents:(id)recents
 {
   v4 = MEMORY[0x1E69967D0];
-  v5 = a3;
+  recentsCopy = recents;
   v6 = objc_alloc_init(v4);
-  v7 = [v6 errorOnlyCompletionHandlerAdapter];
-  [(CNUICoreRecentsManager *)self removeRecents:v5 completionHandler:v7];
+  errorOnlyCompletionHandlerAdapter = [v6 errorOnlyCompletionHandlerAdapter];
+  [(CNUICoreRecentsManager *)self removeRecents:recentsCopy completionHandler:errorOnlyCompletionHandlerAdapter];
 
-  v8 = [v6 future];
+  future = [v6 future];
 
-  return v8;
+  return future;
 }
 
-- (void)removeRecents:(id)a3 completionHandler:(id)a4
+- (void)removeRecents:(id)recents completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  recentsCopy = recents;
+  handlerCopy = handler;
   if ((*(*MEMORY[0x1E6996530] + 16))())
   {
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    v8 = [(CNUICoreRecentsManager *)self workQueue];
+    workQueue = [(CNUICoreRecentsManager *)self workQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __58__CNUICoreRecentsManager_removeRecents_completionHandler___block_invoke;
     v9[3] = &unk_1E76E8C68;
     v9[4] = self;
-    v10 = v6;
-    v11 = v7;
-    [v8 performBlock:v9];
+    v10 = recentsCopy;
+    v11 = handlerCopy;
+    [workQueue performBlock:v9];
   }
 }
 
@@ -423,31 +423,31 @@ void __58__CNUICoreRecentsManager_removeRecents_completionHandler___block_invoke
   }
 }
 
-- (void)removeRecentsWithIdentifiers:(id)a3 domain:(id)a4 completionHandler:(id)a5
+- (void)removeRecentsWithIdentifiers:(id)identifiers domain:(id)domain completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  domainCopy = domain;
+  handlerCopy = handler;
   if ((*(*MEMORY[0x1E6996530] + 16))())
   {
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    v11 = [(CNUICoreRecentsManager *)self workQueue];
+    workQueue = [(CNUICoreRecentsManager *)self workQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __80__CNUICoreRecentsManager_removeRecentsWithIdentifiers_domain_completionHandler___block_invoke;
     v12[3] = &unk_1E76E8C90;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
-    [v11 performBlock:v12];
+    v13 = identifiersCopy;
+    v14 = domainCopy;
+    v15 = handlerCopy;
+    [workQueue performBlock:v12];
   }
 }
 
@@ -477,29 +477,29 @@ void __80__CNUICoreRecentsManager_removeRecentsWithIdentifiers_domain_completion
   }
 }
 
-- (id)restoreRecents:(id)a3
+- (id)restoreRecents:(id)recents
 {
-  v4 = a3;
-  v5 = [(CNUICoreRecentsManager *)self recentsLibrary];
-  v6 = [v5 restorePreviouslyDeletedRecentContacts:v4];
+  recentsCopy = recents;
+  recentsLibrary = [(CNUICoreRecentsManager *)self recentsLibrary];
+  v6 = [recentsLibrary restorePreviouslyDeletedRecentContacts:recentsCopy];
 
   return v6;
 }
 
-+ (id)queryForHandles:(id)a3 sorted:(BOOL)a4
++ (id)queryForHandles:(id)handles sorted:(BOOL)sorted
 {
-  v6 = [a1 predicateForSearchingHandlesForAllSupportedKinds:a3];
+  v6 = [self predicateForSearchingHandlesForAllSupportedKinds:handles];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x1E6998FD8]);
     [v7 setSearchPredicate:v6];
-    v8 = [a1 supportedRecentsDomains];
-    [v7 setDomains:v8];
+    supportedRecentsDomains = [self supportedRecentsDomains];
+    [v7 setDomains:supportedRecentsDomains];
 
-    if (a4)
+    if (sorted)
     {
-      v9 = [MEMORY[0x1E6998FD8] frecencyComparator];
-      [v7 setComparator:v9];
+      frecencyComparator = [MEMORY[0x1E6998FD8] frecencyComparator];
+      [v7 setComparator:frecencyComparator];
     }
 
     else
@@ -516,10 +516,10 @@ void __80__CNUICoreRecentsManager_removeRecentsWithIdentifiers_domain_completion
   return v7;
 }
 
-+ (id)predicateForSearchingHandlesForAllSupportedKinds:(id)a3
++ (id)predicateForSearchingHandlesForAllSupportedKinds:(id)kinds
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  kindsCopy = kinds;
   if ((*(*MEMORY[0x1E6996530] + 16))())
   {
     v5 = 0;
@@ -527,11 +527,11 @@ void __80__CNUICoreRecentsManager_removeRecentsWithIdentifiers_domain_completion
 
   else
   {
-    v6 = [MEMORY[0x1E6998FD0] predicateForKey:*MEMORY[0x1E6998F70] inCollection:v4];
+    v6 = [MEMORY[0x1E6998FD0] predicateForKey:*MEMORY[0x1E6998F70] inCollection:kindsCopy];
     v7 = MEMORY[0x1E6998FD0];
     v8 = *MEMORY[0x1E6998F88];
-    v9 = [a1 supportedRecentsKinds];
-    v10 = [v7 predicateForKey:v8 inCollection:v9];
+    supportedRecentsKinds = [self supportedRecentsKinds];
+    v10 = [v7 predicateForKey:v8 inCollection:supportedRecentsKinds];
 
     v11 = MEMORY[0x1E6998FD0];
     v14[0] = v10;
@@ -569,30 +569,30 @@ void __80__CNUICoreRecentsManager_removeRecentsWithIdentifiers_domain_completion
 + (id)supportedPropertyDescriptions
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695CD00] emailAddressesDescription];
-  v6[0] = v2;
-  v3 = [MEMORY[0x1E695CD00] phoneNumbersDescription];
-  v6[1] = v3;
+  emailAddressesDescription = [MEMORY[0x1E695CD00] emailAddressesDescription];
+  v6[0] = emailAddressesDescription;
+  phoneNumbersDescription = [MEMORY[0x1E695CD00] phoneNumbersDescription];
+  v6[1] = phoneNumbersDescription;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
 
   return v4;
 }
 
-+ (id)transformForPropertyDescription:(id)a3
++ (id)transformForPropertyDescription:(id)description
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695CD00] emailAddressesDescription];
+  descriptionCopy = description;
+  emailAddressesDescription = [MEMORY[0x1E695CD00] emailAddressesDescription];
 
-  if (v4 == v3)
+  if (emailAddressesDescription == descriptionCopy)
   {
     v6 = &__block_literal_global_43;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695CD00] phoneNumbersDescription];
+    phoneNumbersDescription = [MEMORY[0x1E695CD00] phoneNumbersDescription];
 
-    if (v5 == v3)
+    if (phoneNumbersDescription == descriptionCopy)
     {
       v6 = &__block_literal_global_48;
     }

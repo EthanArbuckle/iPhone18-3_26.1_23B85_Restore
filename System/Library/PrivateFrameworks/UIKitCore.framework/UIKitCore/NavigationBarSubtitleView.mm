@@ -1,18 +1,18 @@
 @interface NavigationBarSubtitleView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (_TtC5UIKit25NavigationBarSubtitleView)initWithFrame:(CGRect)a3;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (_TtC5UIKit25NavigationBarSubtitleView)initWithFrame:(CGRect)frame;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation NavigationBarSubtitleView
 
-- (_TtC5UIKit25NavigationBarSubtitleView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit25NavigationBarSubtitleView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC5UIKit25NavigationBarSubtitleView_content;
   *v7 = 0;
   *(v7 + 1) = 0;
@@ -27,12 +27,12 @@
   return [(UIView *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  sub_188CE260C(width, height, a4, a5);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  sub_188CE260C(width, height, priority, fittingPriority);
   v11 = v10;
   v13 = v12;
 
@@ -45,17 +45,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188CE3BF4();
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for NavigationBarSubtitleView();
-  v4 = a3;
+  viewCopy = view;
   v5 = v8.receiver;
-  [(UIView *)&v8 _intrinsicContentSizeInvalidatedForChildView:v4];
+  [(UIView *)&v8 _intrinsicContentSizeInvalidatedForChildView:viewCopy];
   v6 = *&v5[OBJC_IVAR____TtC5UIKit25NavigationBarSubtitleView_intrinsicContentSizeInvalidationHandler];
   if (v6)
   {

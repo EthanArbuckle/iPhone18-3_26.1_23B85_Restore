@@ -1,9 +1,9 @@
 @interface PCSCTreeNode
-+ (id)_convertOperator:(int64_t)a3;
-+ (id)_translateChildNodesToExpressionFormat:(id)a3 dataDictionary:(id)a4 error:(id *)a5;
-+ (id)_translateNodeToDataAdaptor:(id)a3 dataDictionary:(id)a4 error:(id *)a5;
-+ (id)_translateRootNodeToExpressionFormat:(id)a3 error:(id *)a4;
-- (PCSCTreeNode)initWithExpression:(id)a3 version:(int64_t)a4 andParent:(id)a5 error:(id *)a6;
++ (id)_convertOperator:(int64_t)operator;
++ (id)_translateChildNodesToExpressionFormat:(id)format dataDictionary:(id)dictionary error:(id *)error;
++ (id)_translateNodeToDataAdaptor:(id)adaptor dataDictionary:(id)dictionary error:(id *)error;
++ (id)_translateRootNodeToExpressionFormat:(id)format error:(id *)error;
+- (PCSCTreeNode)initWithExpression:(id)expression version:(int64_t)version andParent:(id)parent error:(id *)error;
 - (PCSCTreeNode)parent;
 - (id)description;
 - (int)level;
@@ -11,10 +11,10 @@
 
 @implementation PCSCTreeNode
 
-- (PCSCTreeNode)initWithExpression:(id)a3 version:(int64_t)a4 andParent:(id)a5 error:(id *)a6
+- (PCSCTreeNode)initWithExpression:(id)expression version:(int64_t)version andParent:(id)parent error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  expressionCopy = expression;
+  parentCopy = parent;
   v56.receiver = self;
   v56.super_class = PCSCTreeNode;
   v12 = [(PCSCTreeNode *)&v56 init];
@@ -24,11 +24,11 @@
     goto LABEL_53;
   }
 
-  objc_storeWeak(&v12->_parent, v11);
-  v13->_version = a4;
+  objc_storeWeak(&v12->_parent, parentCopy);
+  v13->_version = version;
   if ([(PCSCTreeNode *)v13 level]>= 6)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_53;
     }
@@ -36,7 +36,7 @@
     v14 = -1111;
 LABEL_5:
     [NSError errorWithDomain:@"com.apple.ap.statusconditionserror" code:v14 userInfo:0];
-    *a6 = v15 = 0;
+    *error = v15 = 0;
     goto LABEL_54;
   }
 
@@ -52,7 +52,7 @@ LABEL_5:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a6)
+      if (!error)
       {
         goto LABEL_53;
       }
@@ -61,7 +61,7 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v38 = v10;
+    v38 = expressionCopy;
     v39 = v13->_typeTokens;
     v40 = [(NSDictionary *)v38 objectForKeyedSubscript:@"type"];
     v41 = [(NSDictionary *)v39 objectForKeyedSubscript:v40];
@@ -69,9 +69,9 @@ LABEL_5:
 
     if ([(PCSCTreeNode *)v13 type]!= 1)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [NSError errorWithDomain:@"com.apple.ap.statusconditionserror" code:-1120 userInfo:0];
+        *error = [NSError errorWithDomain:@"com.apple.ap.statusconditionserror" code:-1120 userInfo:0];
       }
 
       goto LABEL_53;
@@ -81,7 +81,7 @@ LABEL_5:
     if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
     {
       v43 = +[APIDAccountProvider privateUserAccount];
-      v44 = [v43 iTunesDSID];
+      iTunesDSID = [v43 iTunesDSID];
       *buf = 136643587;
       v58 = "[PCSCTreeNode initWithExpression:version:andParent:error:]";
       v59 = 2114;
@@ -89,7 +89,7 @@ LABEL_5:
       v61 = 2160;
       v62 = 1752392040;
       v63 = 2112;
-      v64 = v44;
+      v64 = iTunesDSID;
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "[%{sensitive}s]: found StatusCondition node: %{public}@. DSID %{mask.hash}@", buf, 0x2Au);
     }
 
@@ -98,8 +98,8 @@ LABEL_5:
     goto LABEL_30;
   }
 
-  v50 = v11;
-  v18 = v10;
+  v50 = parentCopy;
+  v18 = expressionCopy;
   v19 = +[NSMutableArray array];
   [(PCSCTreeNode *)v13 setChildren:v19];
 
@@ -131,29 +131,29 @@ LABEL_5:
       {
         v26 = v25;
         v27 = [(NSDictionary *)v13->_opTokens objectForKey:v26];
-        v28 = [v27 integerValue];
+        integerValue = [v27 integerValue];
 
-        if (v28)
+        if (integerValue)
         {
           if (![(PCSCTreeNode *)v13 operator])
           {
-            [(PCSCTreeNode *)v13 setOperator:v28];
+            [(PCSCTreeNode *)v13 setOperator:integerValue];
             goto LABEL_19;
           }
 
-          if (a6)
+          if (error)
           {
             v45 = -1118;
             goto LABEL_44;
           }
         }
 
-        else if (a6)
+        else if (error)
         {
           v45 = -1110;
 LABEL_44:
-          v11 = v50;
-          *a6 = [NSError errorWithDomain:@"com.apple.ap.statusconditionserror" code:v45 userInfo:0];
+          parentCopy = v50;
+          *error = [NSError errorWithDomain:@"com.apple.ap.statusconditionserror" code:v45 userInfo:0];
           v32 = v26;
           goto LABEL_51;
         }
@@ -163,28 +163,28 @@ LABEL_44:
       }
 
       v29 = [PCSCTreeNode alloc];
-      v30 = [(PCSCTreeNode *)v13 version];
+      version = [(PCSCTreeNode *)v13 version];
       v51 = 0;
-      v26 = [(PCSCTreeNode *)v29 initWithExpression:v25 version:v30 andParent:v13 error:&v51];
+      v26 = [(PCSCTreeNode *)v29 initWithExpression:v25 version:version andParent:v13 error:&v51];
       v31 = v51;
       v32 = v31;
       if (v31 || !v26)
       {
-        if (a6 && v31)
+        if (error && v31)
         {
           v46 = v31;
-          *a6 = v32;
+          *error = v32;
         }
 
 LABEL_50:
-        v11 = v50;
+        parentCopy = v50;
 LABEL_51:
 
         goto LABEL_52;
       }
 
-      v33 = [(PCSCTreeNode *)v13 children];
-      [v33 addObject:v26];
+      children = [(PCSCTreeNode *)v13 children];
+      [children addObject:v26];
 
 LABEL_19:
     }
@@ -203,18 +203,18 @@ LABEL_21:
   operator = v13->_operator;
   if ((operator - 1) >= 2)
   {
-    v11 = v50;
+    parentCopy = v50;
     if (operator == 3)
     {
-      v47 = [(PCSCTreeNode *)v13 children];
-      v48 = [v47 count];
+      children2 = [(PCSCTreeNode *)v13 children];
+      v48 = [children2 count];
 
       if (v48 == 1)
       {
         goto LABEL_30;
       }
 
-      if (!a6)
+      if (!error)
       {
         goto LABEL_52;
       }
@@ -224,7 +224,7 @@ LABEL_21:
 
     else
     {
-      if (!a6)
+      if (!error)
       {
         goto LABEL_52;
       }
@@ -233,14 +233,14 @@ LABEL_21:
     }
 
 LABEL_57:
-    *a6 = [NSError errorWithDomain:@"com.apple.ap.statusconditionserror" code:v37 userInfo:0];
+    *error = [NSError errorWithDomain:@"com.apple.ap.statusconditionserror" code:v37 userInfo:0];
     goto LABEL_52;
   }
 
-  v35 = [(PCSCTreeNode *)v13 children];
-  v36 = [v35 count];
+  children3 = [(PCSCTreeNode *)v13 children];
+  v36 = [children3 count];
 
-  v11 = v50;
+  parentCopy = v50;
   if (v36 > 1)
   {
 LABEL_30:
@@ -249,7 +249,7 @@ LABEL_30:
     goto LABEL_54;
   }
 
-  if (a6)
+  if (error)
   {
     v37 = -1114;
     goto LABEL_57;
@@ -277,12 +277,12 @@ LABEL_54:
   do
   {
     ++v4;
-    v5 = [v3 parent];
+    parent = [v3 parent];
 
-    v3 = v5;
+    v3 = parent;
   }
 
-  while (v5);
+  while (parent);
   return v4;
 }
 
@@ -308,11 +308,11 @@ LABEL_54:
   if (value)
   {
     v7 = v30[5];
-    v8 = [(NSDictionary *)value allKeys];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    allKeys = [(NSDictionary *)value allKeys];
+    v9 = [allKeys objectAtIndexedSubscript:0];
     v10 = self->_value;
-    v11 = [(NSDictionary *)v10 allKeys];
-    v12 = [v11 objectAtIndexedSubscript:0];
+    allKeys2 = [(NSDictionary *)v10 allKeys];
+    v12 = [allKeys2 objectAtIndexedSubscript:0];
     v13 = [(NSDictionary *)v10 objectForKeyedSubscript:v12];
     v14 = [NSString stringWithFormat:@"%@ : %@", v9, v13];
     v15 = [v7 stringByAppendingString:v14];
@@ -346,7 +346,7 @@ LABEL_54:
   return v26;
 }
 
-+ (id)_convertOperator:(int64_t)a3
++ (id)_convertOperator:(int64_t)operator
 {
   if (qword_1004EA3C8 != -1)
   {
@@ -355,22 +355,22 @@ LABEL_54:
 
   v4 = qword_1004EA3C0;
 
-  return [v4 objectAtIndex:a3];
+  return [v4 objectAtIndex:operator];
 }
 
-+ (id)_translateNodeToDataAdaptor:(id)a3 dataDictionary:(id)a4 error:(id *)a5
++ (id)_translateNodeToDataAdaptor:(id)adaptor dataDictionary:(id)dictionary error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [NSString stringWithFormat:@"DA%p", v8];
+  dictionaryCopy = dictionary;
+  adaptorCopy = adaptor;
+  adaptorCopy = [NSString stringWithFormat:@"DA%p", adaptorCopy];
   v10 = +[NSMutableDictionary dictionary];
   [v10 setObject:@"com.apple.ap.statuscondition" forKey:@"adaptor"];
-  v11 = [v8 value];
-  v12 = [v11 objectForKeyedSubscript:@"identifier"];
+  value = [adaptorCopy value];
+  v12 = [value objectForKeyedSubscript:@"identifier"];
 
-  v13 = [v8 value];
+  value2 = [adaptorCopy value];
 
-  v14 = [v13 objectForKeyedSubscript:@"bundleID"];
+  v14 = [value2 objectForKeyedSubscript:@"bundleID"];
 
   if (v12 && v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -378,14 +378,14 @@ LABEL_54:
     [v16 setObject:v12 forKey:@"conditionID"];
     [v16 setObject:v14 forKey:@"bundleID"];
     [v10 setObject:v16 forKey:@"inputs"];
-    [v7 setObject:v10 forKey:v9];
-    v15 = v9;
+    [dictionaryCopy setObject:v10 forKey:adaptorCopy];
+    v15 = adaptorCopy;
   }
 
-  else if (a5)
+  else if (error)
   {
     [NSError errorWithDomain:@"com.apple.ap.statusconditionserror" code:-1113 userInfo:0];
-    *a5 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -396,35 +396,35 @@ LABEL_54:
   return v15;
 }
 
-+ (id)_translateRootNodeToExpressionFormat:(id)a3 error:(id *)a4
++ (id)_translateRootNodeToExpressionFormat:(id)format error:(id *)error
 {
-  v5 = a3;
+  formatCopy = format;
   v6 = +[NSMutableDictionary dictionary];
   v7 = +[NSMutableDictionary dictionary];
-  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 version]);
+  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [formatCopy version]);
   [v6 setObject:v8 forKey:@"version"];
 
   v9 = +[NSMutableArray array];
-  v10 = +[PCSCTreeNode _convertOperator:](PCSCTreeNode, "_convertOperator:", [v5 operator]);
+  v10 = +[PCSCTreeNode _convertOperator:](PCSCTreeNode, "_convertOperator:", [formatCopy operator]);
   [v9 addObject:v10];
-  v11 = [v5 children];
-  if (v11)
+  children = [formatCopy children];
+  if (children)
   {
-    v12 = v11;
-    v13 = [v5 children];
-    v14 = [v13 count];
+    v12 = children;
+    children2 = [formatCopy children];
+    v14 = [children2 count];
 
     if (v14)
     {
-      v15 = [PCSCTreeNode _translateChildNodesToExpressionFormat:v5 dataDictionary:v7 error:a4];
+      v15 = [PCSCTreeNode _translateChildNodesToExpressionFormat:formatCopy dataDictionary:v7 error:error];
       [v9 addObjectsFromArray:v15];
 
 LABEL_6:
       [v6 setObject:v9 forKey:@"expression"];
       [v6 setObject:v7 forKey:@"data"];
       v18 = +[NSUUID UUID];
-      v19 = [v18 UUIDString];
-      v23 = v19;
+      uUIDString = [v18 UUIDString];
+      v23 = uUIDString;
       v20 = [v6 copy];
       v24 = v20;
       v21 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
@@ -433,7 +433,7 @@ LABEL_6:
     }
   }
 
-  v16 = [PCSCTreeNode _translateNodeToDataAdaptor:v5 dataDictionary:v7 error:a4];
+  v16 = [PCSCTreeNode _translateNodeToDataAdaptor:formatCopy dataDictionary:v7 error:error];
   if (v16)
   {
     v17 = v16;
@@ -449,17 +449,17 @@ LABEL_8:
   return v21;
 }
 
-+ (id)_translateChildNodesToExpressionFormat:(id)a3 dataDictionary:(id)a4 error:(id *)a5
++ (id)_translateChildNodesToExpressionFormat:(id)format dataDictionary:(id)dictionary error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  formatCopy = format;
+  dictionaryCopy = dictionary;
   v9 = +[NSMutableArray array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v19 = v7;
-  obj = [v7 children];
+  v19 = formatCopy;
+  obj = [formatCopy children];
   v10 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -480,14 +480,14 @@ LABEL_8:
           v15 = +[NSMutableArray array];
           v16 = +[PCSCTreeNode _convertOperator:](PCSCTreeNode, "_convertOperator:", [v14 operator]);
           [v15 addObject:v16];
-          v17 = [PCSCTreeNode _translateChildNodesToExpressionFormat:v14 dataDictionary:v8 error:a5];
+          v17 = [PCSCTreeNode _translateChildNodesToExpressionFormat:v14 dataDictionary:dictionaryCopy error:error];
           [v15 addObjectsFromArray:v17];
           [v9 addObject:v15];
         }
 
         else
         {
-          v15 = [PCSCTreeNode _translateNodeToDataAdaptor:v14 dataDictionary:v8 error:a5];
+          v15 = [PCSCTreeNode _translateNodeToDataAdaptor:v14 dataDictionary:dictionaryCopy error:error];
           [v9 addObject:v15];
         }
       }

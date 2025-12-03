@@ -1,6 +1,6 @@
 @interface BCNetworkProvider
 - (BCNetworkProvider)init;
-- (void)performDataTaskWithRequest:(id)a3 completionHandler:(id)a4;
+- (void)performDataTaskWithRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation BCNetworkProvider
@@ -13,8 +13,8 @@
   if (v2)
   {
     v3 = MEMORY[0x277CCAD30];
-    v4 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
-    v5 = [v3 sessionWithConfiguration:v4];
+    ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+    v5 = [v3 sessionWithConfiguration:ephemeralSessionConfiguration];
     session = v2->_session;
     v2->_session = v5;
   }
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (void)performDataTaskWithRequest:(id)a3 completionHandler:(id)a4
+- (void)performDataTaskWithRequest:(id)request completionHandler:(id)handler
 {
   if (self)
   {
     self = self->_session;
   }
 
-  v4 = [(BCNetworkProvider *)self dataTaskWithRequest:a3 completionHandler:a4];
+  v4 = [(BCNetworkProvider *)self dataTaskWithRequest:request completionHandler:handler];
   [v4 resume];
 }
 

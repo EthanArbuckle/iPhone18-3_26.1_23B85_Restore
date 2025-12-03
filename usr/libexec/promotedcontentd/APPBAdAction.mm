@@ -1,102 +1,102 @@
 @interface APPBAdAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)autoDismissInterval;
-- (id)actionAsString:(int)a3;
-- (id)appStoreViewTemplateAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)actionAsString:(int)string;
+- (id)appStoreViewTemplateAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)storyboardPresentationOrientationsAsString:(int)a3;
-- (id)storyboardSupportedOrientationsAsString:(int)a3;
-- (id)transitionTypeAsString:(int)a3;
-- (int)StringAsAction:(id)a3;
-- (int)StringAsAppStoreViewTemplate:(id)a3;
-- (int)StringAsStoryboardPresentationOrientations:(id)a3;
-- (int)StringAsStoryboardSupportedOrientations:(id)a3;
-- (int)StringAsTransitionType:(id)a3;
+- (id)storyboardPresentationOrientationsAsString:(int)string;
+- (id)storyboardSupportedOrientationsAsString:(int)string;
+- (id)transitionTypeAsString:(int)string;
+- (int)StringAsAction:(id)action;
+- (int)StringAsAppStoreViewTemplate:(id)template;
+- (int)StringAsStoryboardPresentationOrientations:(id)orientations;
+- (int)StringAsStoryboardSupportedOrientations:(id)orientations;
+- (int)StringAsTransitionType:(id)type;
 - (int)appStoreViewTemplate;
 - (int)storyboardPresentationOrientations;
 - (int)storyboardSupportedOrientations;
 - (int)transitionType;
 - (unint64_t)hash;
-- (void)addAllowedExternalDomains:(id)a3;
-- (void)addParameters:(id)a3;
-- (void)addStoryboardSizes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAdManagesPurchaseFlow:(BOOL)a3;
-- (void)setHasAllowSelfDismissal:(BOOL)a3;
-- (void)setHasAppStoreViewTemplate:(BOOL)a3;
-- (void)setHasAutoDismissInterval:(BOOL)a3;
-- (void)setHasBackgroundColor:(BOOL)a3;
-- (void)setHasConfirmedClickTimeInterval:(BOOL)a3;
-- (void)setHasLetterboxStoryboardColor:(BOOL)a3;
-- (void)setHasLoadNewImpressionOnActionComplete:(BOOL)a3;
-- (void)setHasPrefersToOpenInstalledApp:(BOOL)a3;
-- (void)setHasScrolling:(BOOL)a3;
-- (void)setHasStoryboardPresentationOrientations:(BOOL)a3;
-- (void)setHasStoryboardSupportedOrientations:(BOOL)a3;
-- (void)setHasSuppressesPermissionToExitDialog:(BOOL)a3;
-- (void)setHasTransitionType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAllowedExternalDomains:(id)domains;
+- (void)addParameters:(id)parameters;
+- (void)addStoryboardSizes:(id)sizes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAdManagesPurchaseFlow:(BOOL)flow;
+- (void)setHasAllowSelfDismissal:(BOOL)dismissal;
+- (void)setHasAppStoreViewTemplate:(BOOL)template;
+- (void)setHasAutoDismissInterval:(BOOL)interval;
+- (void)setHasBackgroundColor:(BOOL)color;
+- (void)setHasConfirmedClickTimeInterval:(BOOL)interval;
+- (void)setHasLetterboxStoryboardColor:(BOOL)color;
+- (void)setHasLoadNewImpressionOnActionComplete:(BOOL)complete;
+- (void)setHasPrefersToOpenInstalledApp:(BOOL)app;
+- (void)setHasScrolling:(BOOL)scrolling;
+- (void)setHasStoryboardPresentationOrientations:(BOOL)orientations;
+- (void)setHasStoryboardSupportedOrientations:(BOOL)orientations;
+- (void)setHasSuppressesPermissionToExitDialog:(BOOL)dialog;
+- (void)setHasTransitionType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAdAction
 
-- (id)actionAsString:(int)a3
+- (id)actionAsString:(int)string
 {
-  if (a3 < 0xE && ((0x3D07u >> a3) & 1) != 0)
+  if (string < 0xE && ((0x3D07u >> string) & 1) != 0)
   {
-    v4 = *(&off_10047D938 + a3);
+    v4 = *(&off_10047D938 + string);
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (int)StringAsAction:(id)a3
+- (int)StringAsAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Web"])
+  else if ([actionCopy isEqualToString:@"Web"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Storyboard"])
+  else if ([actionCopy isEqualToString:@"Storyboard"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"iTunesStore"])
+  else if ([actionCopy isEqualToString:@"iTunesStore"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"WebView"])
+  else if ([actionCopy isEqualToString:@"WebView"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"App"])
+  else if ([actionCopy isEqualToString:@"App"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"MRAID"])
+  else if ([actionCopy isEqualToString:@"MRAID"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"WebVideo"])
+  else if ([actionCopy isEqualToString:@"WebVideo"])
   {
     v4 = 13;
   }
@@ -109,9 +109,9 @@
   return v4;
 }
 
-- (void)setHasPrefersToOpenInstalledApp:(BOOL)a3
+- (void)setHasPrefersToOpenInstalledApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 4096;
   }
@@ -124,22 +124,22 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)addParameters:(id)a3
+- (void)addParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   parameters = self->_parameters;
-  v8 = v4;
+  v8 = parametersCopy;
   if (!parameters)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_parameters;
     self->_parameters = v6;
 
-    v4 = v8;
+    parametersCopy = v8;
     parameters = self->_parameters;
   }
 
-  [(NSMutableArray *)parameters addObject:v4];
+  [(NSMutableArray *)parameters addObject:parametersCopy];
 }
 
 - (int)transitionType
@@ -155,9 +155,9 @@
   }
 }
 
-- (void)setHasTransitionType:(BOOL)a3
+- (void)setHasTransitionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 256;
   }
@@ -170,33 +170,33 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (id)transitionTypeAsString:(int)a3
+- (id)transitionTypeAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"Slide";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"Fade";
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (int)StringAsTransitionType:(id)a3
+- (int)StringAsTransitionType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"Slide"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"Slide"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"Fade"])
+    if ([typeCopy isEqualToString:@"Fade"])
     {
       v4 = 2;
     }
@@ -210,9 +210,9 @@
   return v4;
 }
 
-- (void)setHasSuppressesPermissionToExitDialog:(BOOL)a3
+- (void)setHasSuppressesPermissionToExitDialog:(BOOL)dialog
 {
-  if (a3)
+  if (dialog)
   {
     v3 = 0x4000;
   }
@@ -225,9 +225,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasConfirmedClickTimeInterval:(BOOL)a3
+- (void)setHasConfirmedClickTimeInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 16;
   }
@@ -240,9 +240,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasLoadNewImpressionOnActionComplete:(BOOL)a3
+- (void)setHasLoadNewImpressionOnActionComplete:(BOOL)complete
 {
-  if (a3)
+  if (complete)
   {
     v3 = 2048;
   }
@@ -255,9 +255,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasBackgroundColor:(BOOL)a3
+- (void)setHasBackgroundColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = 8;
   }
@@ -270,9 +270,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasScrolling:(BOOL)a3
+- (void)setHasScrolling:(BOOL)scrolling
 {
-  if (a3)
+  if (scrolling)
   {
     v3 = 0x2000;
   }
@@ -285,27 +285,27 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)addStoryboardSizes:(id)a3
+- (void)addStoryboardSizes:(id)sizes
 {
-  v4 = a3;
+  sizesCopy = sizes;
   storyboardSizes = self->_storyboardSizes;
-  v8 = v4;
+  v8 = sizesCopy;
   if (!storyboardSizes)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_storyboardSizes;
     self->_storyboardSizes = v6;
 
-    v4 = v8;
+    sizesCopy = v8;
     storyboardSizes = self->_storyboardSizes;
   }
 
-  [(NSMutableArray *)storyboardSizes addObject:v4];
+  [(NSMutableArray *)storyboardSizes addObject:sizesCopy];
 }
 
-- (void)setHasLetterboxStoryboardColor:(BOOL)a3
+- (void)setHasLetterboxStoryboardColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = 32;
   }
@@ -331,9 +331,9 @@
   }
 }
 
-- (void)setHasStoryboardPresentationOrientations:(BOOL)a3
+- (void)setHasStoryboardPresentationOrientations:(BOOL)orientations
 {
-  if (a3)
+  if (orientations)
   {
     v3 = 64;
   }
@@ -346,35 +346,35 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (id)storyboardPresentationOrientationsAsString:(int)a3
+- (id)storyboardPresentationOrientationsAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D9A8 + a3);
+    v4 = *(&off_10047D9A8 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsStoryboardPresentationOrientations:(id)a3
+- (int)StringAsStoryboardPresentationOrientations:(id)orientations
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Portrait"])
+  orientationsCopy = orientations;
+  if ([orientationsCopy isEqualToString:@"Portrait"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Landscape"])
+  else if ([orientationsCopy isEqualToString:@"Landscape"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Any"])
+  else if ([orientationsCopy isEqualToString:@"Any"])
   {
     v4 = 2;
   }
@@ -400,9 +400,9 @@
   }
 }
 
-- (void)setHasStoryboardSupportedOrientations:(BOOL)a3
+- (void)setHasStoryboardSupportedOrientations:(BOOL)orientations
 {
-  if (a3)
+  if (orientations)
   {
     v3 = 128;
   }
@@ -415,35 +415,35 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (id)storyboardSupportedOrientationsAsString:(int)a3
+- (id)storyboardSupportedOrientationsAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D9A8 + a3);
+    v4 = *(&off_10047D9A8 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsStoryboardSupportedOrientations:(id)a3
+- (int)StringAsStoryboardSupportedOrientations:(id)orientations
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Portrait"])
+  orientationsCopy = orientations;
+  if ([orientationsCopy isEqualToString:@"Portrait"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Landscape"])
+  else if ([orientationsCopy isEqualToString:@"Landscape"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Any"])
+  else if ([orientationsCopy isEqualToString:@"Any"])
   {
     v4 = 2;
   }
@@ -456,9 +456,9 @@
   return v4;
 }
 
-- (void)setHasAllowSelfDismissal:(BOOL)a3
+- (void)setHasAllowSelfDismissal:(BOOL)dismissal
 {
-  if (a3)
+  if (dismissal)
   {
     v3 = 1024;
   }
@@ -484,9 +484,9 @@
   }
 }
 
-- (void)setHasAutoDismissInterval:(BOOL)a3
+- (void)setHasAutoDismissInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 2;
   }
@@ -499,27 +499,27 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)addAllowedExternalDomains:(id)a3
+- (void)addAllowedExternalDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   allowedExternalDomains = self->_allowedExternalDomains;
-  v8 = v4;
+  v8 = domainsCopy;
   if (!allowedExternalDomains)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_allowedExternalDomains;
     self->_allowedExternalDomains = v6;
 
-    v4 = v8;
+    domainsCopy = v8;
     allowedExternalDomains = self->_allowedExternalDomains;
   }
 
-  [(NSMutableArray *)allowedExternalDomains addObject:v4];
+  [(NSMutableArray *)allowedExternalDomains addObject:domainsCopy];
 }
 
-- (void)setHasAdManagesPurchaseFlow:(BOOL)a3
+- (void)setHasAdManagesPurchaseFlow:(BOOL)flow
 {
-  if (a3)
+  if (flow)
   {
     v3 = 512;
   }
@@ -545,9 +545,9 @@
   }
 }
 
-- (void)setHasAppStoreViewTemplate:(BOOL)a3
+- (void)setHasAppStoreViewTemplate:(BOOL)template
 {
-  if (a3)
+  if (template)
   {
     v3 = 4;
   }
@@ -560,75 +560,75 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (id)appStoreViewTemplateAsString:(int)a3
+- (id)appStoreViewTemplateAsString:(int)string
 {
-  if ((a3 - 4780) >= 0xB)
+  if ((string - 4780) >= 0xB)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D9C0 + (a3 - 4780));
+    v4 = *(&off_10047D9C0 + (string - 4780));
   }
 
   return v4;
 }
 
-- (int)StringAsAppStoreViewTemplate:(id)a3
+- (int)StringAsAppStoreViewTemplate:(id)template
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Text"])
+  templateCopy = template;
+  if ([templateCopy isEqualToString:@"Text"])
   {
     v4 = 4780;
   }
 
-  else if ([v3 isEqualToString:@"IPhonePortraitVideoImageImage"])
+  else if ([templateCopy isEqualToString:@"IPhonePortraitVideoImageImage"])
   {
     v4 = 4781;
   }
 
-  else if ([v3 isEqualToString:@"IPhonePortraitImageImageImage"])
+  else if ([templateCopy isEqualToString:@"IPhonePortraitImageImageImage"])
   {
     v4 = 4782;
   }
 
-  else if ([v3 isEqualToString:@"IPhoneLandscapeVideo"])
+  else if ([templateCopy isEqualToString:@"IPhoneLandscapeVideo"])
   {
     v4 = 4783;
   }
 
-  else if ([v3 isEqualToString:@"IPhoneLandscapeImage"])
+  else if ([templateCopy isEqualToString:@"IPhoneLandscapeImage"])
   {
     v4 = 4784;
   }
 
-  else if ([v3 isEqualToString:@"IPadImage"])
+  else if ([templateCopy isEqualToString:@"IPadImage"])
   {
     v4 = 4785;
   }
 
-  else if ([v3 isEqualToString:@"IPadVideo"])
+  else if ([templateCopy isEqualToString:@"IPadVideo"])
   {
     v4 = 4786;
   }
 
-  else if ([v3 isEqualToString:@"PortraitMaterial"])
+  else if ([templateCopy isEqualToString:@"PortraitMaterial"])
   {
     v4 = 4787;
   }
 
-  else if ([v3 isEqualToString:@"LandscapeMaterial"])
+  else if ([templateCopy isEqualToString:@"LandscapeMaterial"])
   {
     v4 = 4788;
   }
 
-  else if ([v3 isEqualToString:@"PortraitGrid"])
+  else if ([templateCopy isEqualToString:@"PortraitGrid"])
   {
     v4 = 4789;
   }
 
-  else if ([v3 isEqualToString:@"LandscapeGrid"])
+  else if ([templateCopy isEqualToString:@"LandscapeGrid"])
   {
     v4 = 4790;
   }
@@ -646,8 +646,8 @@
   v7.receiver = self;
   v7.super_class = APPBAdAction;
   v3 = [(APPBAdAction *)&v7 description];
-  v4 = [(APPBAdAction *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAdAction *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -715,8 +715,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v63 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation = [*(*(&v63 + 1) + 8 * i) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v63 objects:v68 count:16];
@@ -856,8 +856,8 @@ LABEL_44:
             objc_enumerationMutation(v30);
           }
 
-          v35 = [*(*(&v59 + 1) + 8 * j) dictionaryRepresentation];
-          [v29 addObject:v35];
+          dictionaryRepresentation2 = [*(*(&v59 + 1) + 8 * j) dictionaryRepresentation];
+          [v29 addObject:dictionaryRepresentation2];
         }
 
         v32 = [(NSMutableArray *)v30 countByEnumeratingWithState:&v59 objects:v67 count:16];
@@ -1022,15 +1022,15 @@ LABEL_59:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_identifier)
   {
     sub_1003941B8();
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   PBDataWriterWriteInt32Field();
   if (self->_actionURL)
@@ -1304,22 +1304,22 @@ LABEL_45:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v23 = a3;
-  [v23 setIdentifier:self->_identifier];
-  v4 = v23;
-  *(v23 + 6) = self->_action;
+  toCopy = to;
+  [toCopy setIdentifier:self->_identifier];
+  v4 = toCopy;
+  *(toCopy + 6) = self->_action;
   if (self->_actionURL)
   {
-    [v23 setActionURL:?];
-    v4 = v23;
+    [toCopy setActionURL:?];
+    v4 = toCopy;
   }
 
   if (self->_actionWebArchiveURL)
   {
-    [v23 setActionWebArchiveURL:?];
-    v4 = v23;
+    [toCopy setActionWebArchiveURL:?];
+    v4 = toCopy;
   }
 
   if ((*&self->_has & 0x1000) != 0)
@@ -1330,56 +1330,56 @@ LABEL_45:
 
   if ([(APPBAdAction *)self parametersCount])
   {
-    [v23 clearParameters];
-    v5 = [(APPBAdAction *)self parametersCount];
-    if (v5)
+    [toCopy clearParameters];
+    parametersCount = [(APPBAdAction *)self parametersCount];
+    if (parametersCount)
     {
-      v6 = v5;
+      v6 = parametersCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(APPBAdAction *)self parametersAtIndex:i];
-        [v23 addParameters:v8];
+        [toCopy addParameters:v8];
       }
     }
   }
 
   has = self->_has;
-  v10 = v23;
+  v10 = toCopy;
   if ((has & 0x100) != 0)
   {
-    *(v23 + 46) = self->_transitionType;
-    *(v23 + 98) |= 0x100u;
+    *(toCopy + 46) = self->_transitionType;
+    *(toCopy + 98) |= 0x100u;
     has = self->_has;
   }
 
   if ((has & 0x4000) != 0)
   {
-    *(v23 + 193) = self->_suppressesPermissionToExitDialog;
-    *(v23 + 98) |= 0x4000u;
+    *(toCopy + 193) = self->_suppressesPermissionToExitDialog;
+    *(toCopy + 98) |= 0x4000u;
   }
 
   if (self->_titleForExitDialog)
   {
-    [v23 setTitleForExitDialog:?];
-    v10 = v23;
+    [toCopy setTitleForExitDialog:?];
+    v10 = toCopy;
   }
 
   if (self->_messageForExitDialog)
   {
-    [v23 setMessageForExitDialog:?];
-    v10 = v23;
+    [toCopy setMessageForExitDialog:?];
+    v10 = toCopy;
   }
 
   if (self->_cancelLabelForExitDialog)
   {
-    [v23 setCancelLabelForExitDialog:?];
-    v10 = v23;
+    [toCopy setCancelLabelForExitDialog:?];
+    v10 = toCopy;
   }
 
   if (self->_continueLabelForExitDialog)
   {
-    [v23 setContinueLabelForExitDialog:?];
-    v10 = v23;
+    [toCopy setContinueLabelForExitDialog:?];
+    v10 = toCopy;
   }
 
   v11 = self->_has;
@@ -1432,15 +1432,15 @@ LABEL_27:
 LABEL_28:
   if ([(APPBAdAction *)self storyboardSizesCount])
   {
-    [v23 clearStoryboardSizes];
-    v12 = [(APPBAdAction *)self storyboardSizesCount];
-    if (v12)
+    [toCopy clearStoryboardSizes];
+    storyboardSizesCount = [(APPBAdAction *)self storyboardSizesCount];
+    if (storyboardSizesCount)
     {
-      v13 = v12;
+      v13 = storyboardSizesCount;
       for (j = 0; j != v13; ++j)
       {
         v15 = [(APPBAdAction *)self storyboardSizesAtIndex:j];
-        [v23 addStoryboardSizes:v15];
+        [toCopy addStoryboardSizes:v15];
       }
     }
   }
@@ -1448,8 +1448,8 @@ LABEL_28:
   v16 = self->_has;
   if ((v16 & 0x20) != 0)
   {
-    *(v23 + 26) = self->_letterboxStoryboardColor;
-    *(v23 + 98) |= 0x20u;
+    *(toCopy + 26) = self->_letterboxStoryboardColor;
+    *(toCopy + 98) |= 0x20u;
     v16 = self->_has;
     if ((v16 & 0x40) == 0)
     {
@@ -1468,8 +1468,8 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  *(v23 + 36) = self->_storyboardPresentationOrientations;
-  *(v23 + 98) |= 0x40u;
+  *(toCopy + 36) = self->_storyboardPresentationOrientations;
+  *(toCopy + 98) |= 0x40u;
   v16 = self->_has;
   if ((v16 & 0x80) == 0)
   {
@@ -1480,8 +1480,8 @@ LABEL_35:
     }
 
 LABEL_66:
-    *(v23 + 189) = self->_allowSelfDismissal;
-    *(v23 + 98) |= 0x400u;
+    *(toCopy + 189) = self->_allowSelfDismissal;
+    *(toCopy + 98) |= 0x400u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_38;
@@ -1491,8 +1491,8 @@ LABEL_66:
   }
 
 LABEL_65:
-  *(v23 + 40) = self->_storyboardSupportedOrientations;
-  *(v23 + 98) |= 0x80u;
+  *(toCopy + 40) = self->_storyboardSupportedOrientations;
+  *(toCopy + 98) |= 0x80u;
   v16 = self->_has;
   if ((v16 & 0x400) != 0)
   {
@@ -1503,55 +1503,55 @@ LABEL_36:
   if ((v16 & 2) != 0)
   {
 LABEL_37:
-    *(v23 + 2) = *&self->_autoDismissInterval;
-    *(v23 + 98) |= 2u;
+    *(toCopy + 2) = *&self->_autoDismissInterval;
+    *(toCopy + 98) |= 2u;
   }
 
 LABEL_38:
   if ([(APPBAdAction *)self allowedExternalDomainsCount])
   {
-    [v23 clearAllowedExternalDomains];
-    v17 = [(APPBAdAction *)self allowedExternalDomainsCount];
-    if (v17)
+    [toCopy clearAllowedExternalDomains];
+    allowedExternalDomainsCount = [(APPBAdAction *)self allowedExternalDomainsCount];
+    if (allowedExternalDomainsCount)
     {
-      v18 = v17;
+      v18 = allowedExternalDomainsCount;
       for (k = 0; k != v18; ++k)
       {
         v20 = [(APPBAdAction *)self allowedExternalDomainsAtIndex:k];
-        [v23 addAllowedExternalDomains:v20];
+        [toCopy addAllowedExternalDomains:v20];
       }
     }
   }
 
-  v21 = v23;
+  v21 = toCopy;
   if ((*&self->_has & 0x200) != 0)
   {
-    *(v23 + 188) = self->_adManagesPurchaseFlow;
-    *(v23 + 98) |= 0x200u;
+    *(toCopy + 188) = self->_adManagesPurchaseFlow;
+    *(toCopy + 98) |= 0x200u;
   }
 
   if (self->_titleForPurchaseDialog)
   {
-    [v23 setTitleForPurchaseDialog:?];
-    v21 = v23;
+    [toCopy setTitleForPurchaseDialog:?];
+    v21 = toCopy;
   }
 
   if (self->_messageForPurchaseDialog)
   {
-    [v23 setMessageForPurchaseDialog:?];
-    v21 = v23;
+    [toCopy setMessageForPurchaseDialog:?];
+    v21 = toCopy;
   }
 
   if (self->_cancelButtonForPurchaseDialog)
   {
-    [v23 setCancelButtonForPurchaseDialog:?];
-    v21 = v23;
+    [toCopy setCancelButtonForPurchaseDialog:?];
+    v21 = toCopy;
   }
 
   if (self->_okButtonForPurchaseDialog)
   {
-    [v23 setOkButtonForPurchaseDialog:?];
-    v21 = v23;
+    [toCopy setOkButtonForPurchaseDialog:?];
+    v21 = toCopy;
   }
 
   v22 = self->_has;
@@ -1569,19 +1569,19 @@ LABEL_38:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[12];
   v5[12] = v6;
 
   *(v5 + 6) = self->_action;
-  v8 = [(NSString *)self->_actionURL copyWithZone:a3];
+  v8 = [(NSString *)self->_actionURL copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_actionWebArchiveURL copyWithZone:a3];
+  v10 = [(NSString *)self->_actionWebArchiveURL copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
@@ -1610,7 +1610,7 @@ LABEL_38:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v59 + 1) + 8 * i) copyWithZone:a3];
+        v17 = [*(*(&v59 + 1) + 8 * i) copyWithZone:zone];
         [v5 addParameters:v17];
       }
 
@@ -1634,19 +1634,19 @@ LABEL_38:
     *(v5 + 98) |= 0x4000u;
   }
 
-  v19 = [(NSString *)self->_titleForExitDialog copyWithZone:a3];
+  v19 = [(NSString *)self->_titleForExitDialog copyWithZone:zone];
   v20 = v5[21];
   v5[21] = v19;
 
-  v21 = [(NSString *)self->_messageForExitDialog copyWithZone:a3];
+  v21 = [(NSString *)self->_messageForExitDialog copyWithZone:zone];
   v22 = v5[14];
   v5[14] = v21;
 
-  v23 = [(NSString *)self->_cancelLabelForExitDialog copyWithZone:a3];
+  v23 = [(NSString *)self->_cancelLabelForExitDialog copyWithZone:zone];
   v24 = v5[9];
   v5[9] = v23;
 
-  v25 = [(NSString *)self->_continueLabelForExitDialog copyWithZone:a3];
+  v25 = [(NSString *)self->_continueLabelForExitDialog copyWithZone:zone];
   v26 = v5[11];
   v5[11] = v25;
 
@@ -1717,7 +1717,7 @@ LABEL_19:
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v55 + 1) + 8 * j) copyWithZone:a3];
+        v33 = [*(*(&v55 + 1) + 8 * j) copyWithZone:zone];
         [v5 addStoryboardSizes:v33];
       }
 
@@ -1809,7 +1809,7 @@ LABEL_32:
           objc_enumerationMutation(v35);
         }
 
-        v40 = [*(*(&v51 + 1) + 8 * k) copyWithZone:{a3, v51}];
+        v40 = [*(*(&v51 + 1) + 8 * k) copyWithZone:{zone, v51}];
         [v5 addAllowedExternalDomains:v40];
       }
 
@@ -1825,19 +1825,19 @@ LABEL_32:
     *(v5 + 98) |= 0x200u;
   }
 
-  v41 = [(NSString *)self->_titleForPurchaseDialog copyWithZone:a3, v51];
+  v41 = [(NSString *)self->_titleForPurchaseDialog copyWithZone:zone, v51];
   v42 = v5[22];
   v5[22] = v41;
 
-  v43 = [(NSString *)self->_messageForPurchaseDialog copyWithZone:a3];
+  v43 = [(NSString *)self->_messageForPurchaseDialog copyWithZone:zone];
   v44 = v5[15];
   v5[15] = v43;
 
-  v45 = [(NSString *)self->_cancelButtonForPurchaseDialog copyWithZone:a3];
+  v45 = [(NSString *)self->_cancelButtonForPurchaseDialog copyWithZone:zone];
   v46 = v5[8];
   v5[8] = v45;
 
-  v47 = [(NSString *)self->_okButtonForPurchaseDialog copyWithZone:a3];
+  v47 = [(NSString *)self->_okButtonForPurchaseDialog copyWithZone:zone];
   v48 = v5[16];
   v5[16] = v47;
 
@@ -1858,16 +1858,16 @@ LABEL_32:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_39;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 12))
+  if (identifier | *(equalCopy + 12))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -1875,13 +1875,13 @@ LABEL_32:
     }
   }
 
-  if (self->_action != *(v4 + 6))
+  if (self->_action != *(equalCopy + 6))
   {
     goto LABEL_39;
   }
 
   actionURL = self->_actionURL;
-  if (actionURL | *(v4 + 4))
+  if (actionURL | *(equalCopy + 4))
   {
     if (![(NSString *)actionURL isEqual:?])
     {
@@ -1890,7 +1890,7 @@ LABEL_32:
   }
 
   actionWebArchiveURL = self->_actionWebArchiveURL;
-  if (actionWebArchiveURL | *(v4 + 5))
+  if (actionWebArchiveURL | *(equalCopy + 5))
   {
     if (![(NSString *)actionWebArchiveURL isEqual:?])
     {
@@ -1901,32 +1901,32 @@ LABEL_32:
   has = self->_has;
   if ((has & 0x1000) != 0)
   {
-    if ((*(v4 + 98) & 0x1000) == 0)
+    if ((*(equalCopy + 98) & 0x1000) == 0)
     {
       goto LABEL_39;
     }
 
     if (self->_prefersToOpenInstalledApp)
     {
-      if ((*(v4 + 191) & 1) == 0)
+      if ((*(equalCopy + 191) & 1) == 0)
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(v4 + 191))
+    else if (*(equalCopy + 191))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 98) & 0x1000) != 0)
+  else if ((*(equalCopy + 98) & 0x1000) != 0)
   {
     goto LABEL_39;
   }
 
   parameters = self->_parameters;
-  if (parameters | *(v4 + 17))
+  if (parameters | *(equalCopy + 17))
   {
     if (![(NSMutableArray *)parameters isEqual:?])
     {
@@ -1938,51 +1938,51 @@ LABEL_32:
 
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 98) & 0x100) == 0 || self->_transitionType != *(v4 + 46))
+    if ((*(equalCopy + 98) & 0x100) == 0 || self->_transitionType != *(equalCopy + 46))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 98) & 0x100) != 0)
+  else if ((*(equalCopy + 98) & 0x100) != 0)
   {
     goto LABEL_39;
   }
 
   if ((has & 0x4000) != 0)
   {
-    if ((*(v4 + 98) & 0x4000) == 0)
+    if ((*(equalCopy + 98) & 0x4000) == 0)
     {
       goto LABEL_39;
     }
 
     if (self->_suppressesPermissionToExitDialog)
     {
-      if ((*(v4 + 193) & 1) == 0)
+      if ((*(equalCopy + 193) & 1) == 0)
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(v4 + 193))
+    else if (*(equalCopy + 193))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 98) & 0x4000) != 0)
+  else if ((*(equalCopy + 98) & 0x4000) != 0)
   {
     goto LABEL_39;
   }
 
   titleForExitDialog = self->_titleForExitDialog;
-  if (titleForExitDialog | *(v4 + 21) && ![(NSString *)titleForExitDialog isEqual:?])
+  if (titleForExitDialog | *(equalCopy + 21) && ![(NSString *)titleForExitDialog isEqual:?])
   {
     goto LABEL_39;
   }
 
   messageForExitDialog = self->_messageForExitDialog;
-  if (messageForExitDialog | *(v4 + 14))
+  if (messageForExitDialog | *(equalCopy + 14))
   {
     if (![(NSString *)messageForExitDialog isEqual:?])
     {
@@ -1991,7 +1991,7 @@ LABEL_32:
   }
 
   cancelLabelForExitDialog = self->_cancelLabelForExitDialog;
-  if (cancelLabelForExitDialog | *(v4 + 9))
+  if (cancelLabelForExitDialog | *(equalCopy + 9))
   {
     if (![(NSString *)cancelLabelForExitDialog isEqual:?])
     {
@@ -2000,7 +2000,7 @@ LABEL_32:
   }
 
   continueLabelForExitDialog = self->_continueLabelForExitDialog;
-  if (continueLabelForExitDialog | *(v4 + 11))
+  if (continueLabelForExitDialog | *(equalCopy + 11))
   {
     if (![(NSString *)continueLabelForExitDialog isEqual:?])
     {
@@ -2009,10 +2009,10 @@ LABEL_32:
   }
 
   v14 = self->_has;
-  v15 = *(v4 + 98);
+  v15 = *(equalCopy + 98);
   if ((v14 & 0x10) != 0)
   {
-    if ((v15 & 0x10) == 0 || self->_confirmedClickTimeInterval != *(v4 + 20))
+    if ((v15 & 0x10) == 0 || self->_confirmedClickTimeInterval != *(equalCopy + 20))
     {
       goto LABEL_39;
     }
@@ -2025,33 +2025,33 @@ LABEL_32:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 98) & 0x800) == 0)
+    if ((*(equalCopy + 98) & 0x800) == 0)
     {
       goto LABEL_39;
     }
 
     if (self->_loadNewImpressionOnActionComplete)
     {
-      if ((*(v4 + 190) & 1) == 0)
+      if ((*(equalCopy + 190) & 1) == 0)
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(v4 + 190))
+    else if (*(equalCopy + 190))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 98) & 0x800) != 0)
+  else if ((*(equalCopy + 98) & 0x800) != 0)
   {
     goto LABEL_39;
   }
 
   if ((v14 & 8) != 0)
   {
-    if ((v15 & 8) == 0 || self->_backgroundColor != *(v4 + 15))
+    if ((v15 & 8) == 0 || self->_backgroundColor != *(equalCopy + 15))
     {
       goto LABEL_39;
     }
@@ -2064,32 +2064,32 @@ LABEL_32:
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 98) & 0x2000) == 0)
+    if ((*(equalCopy + 98) & 0x2000) == 0)
     {
       goto LABEL_39;
     }
 
     if (self->_scrolling)
     {
-      if ((*(v4 + 192) & 1) == 0)
+      if ((*(equalCopy + 192) & 1) == 0)
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(v4 + 192))
+    else if (*(equalCopy + 192))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 98) & 0x2000) != 0)
+  else if ((*(equalCopy + 98) & 0x2000) != 0)
   {
     goto LABEL_39;
   }
 
   storyboardSizes = self->_storyboardSizes;
-  if (storyboardSizes | *(v4 + 19))
+  if (storyboardSizes | *(equalCopy + 19))
   {
     if (![(NSMutableArray *)storyboardSizes isEqual:?])
     {
@@ -2099,10 +2099,10 @@ LABEL_32:
     v14 = self->_has;
   }
 
-  v19 = *(v4 + 98);
+  v19 = *(equalCopy + 98);
   if ((v14 & 0x20) != 0)
   {
-    if ((v19 & 0x20) == 0 || self->_letterboxStoryboardColor != *(v4 + 26))
+    if ((v19 & 0x20) == 0 || self->_letterboxStoryboardColor != *(equalCopy + 26))
     {
       goto LABEL_39;
     }
@@ -2115,7 +2115,7 @@ LABEL_32:
 
   if ((v14 & 0x40) != 0)
   {
-    if ((v19 & 0x40) == 0 || self->_storyboardPresentationOrientations != *(v4 + 36))
+    if ((v19 & 0x40) == 0 || self->_storyboardPresentationOrientations != *(equalCopy + 36))
     {
       goto LABEL_39;
     }
@@ -2128,7 +2128,7 @@ LABEL_32:
 
   if ((v14 & 0x80) != 0)
   {
-    if ((v19 & 0x80) == 0 || self->_storyboardSupportedOrientations != *(v4 + 40))
+    if ((v19 & 0x80) == 0 || self->_storyboardSupportedOrientations != *(equalCopy + 40))
     {
       goto LABEL_39;
     }
@@ -2141,33 +2141,33 @@ LABEL_32:
 
   if ((v14 & 0x400) != 0)
   {
-    if ((*(v4 + 98) & 0x400) == 0)
+    if ((*(equalCopy + 98) & 0x400) == 0)
     {
       goto LABEL_39;
     }
 
     if (self->_allowSelfDismissal)
     {
-      if ((*(v4 + 189) & 1) == 0)
+      if ((*(equalCopy + 189) & 1) == 0)
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(v4 + 189))
+    else if (*(equalCopy + 189))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 98) & 0x400) != 0)
+  else if ((*(equalCopy + 98) & 0x400) != 0)
   {
     goto LABEL_39;
   }
 
   if ((v14 & 2) != 0)
   {
-    if ((v19 & 2) == 0 || self->_autoDismissInterval != *(v4 + 2))
+    if ((v19 & 2) == 0 || self->_autoDismissInterval != *(equalCopy + 2))
     {
       goto LABEL_39;
     }
@@ -2179,7 +2179,7 @@ LABEL_32:
   }
 
   allowedExternalDomains = self->_allowedExternalDomains;
-  if (allowedExternalDomains | *(v4 + 6))
+  if (allowedExternalDomains | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)allowedExternalDomains isEqual:?])
     {
@@ -2191,38 +2191,38 @@ LABEL_32:
 
   if ((v14 & 0x200) != 0)
   {
-    if ((*(v4 + 98) & 0x200) == 0)
+    if ((*(equalCopy + 98) & 0x200) == 0)
     {
       goto LABEL_39;
     }
 
     if (self->_adManagesPurchaseFlow)
     {
-      if ((*(v4 + 188) & 1) == 0)
+      if ((*(equalCopy + 188) & 1) == 0)
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(v4 + 188))
+    else if (*(equalCopy + 188))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 98) & 0x200) != 0)
+  else if ((*(equalCopy + 98) & 0x200) != 0)
   {
     goto LABEL_39;
   }
 
   titleForPurchaseDialog = self->_titleForPurchaseDialog;
-  if (titleForPurchaseDialog | *(v4 + 22) && ![(NSString *)titleForPurchaseDialog isEqual:?])
+  if (titleForPurchaseDialog | *(equalCopy + 22) && ![(NSString *)titleForPurchaseDialog isEqual:?])
   {
     goto LABEL_39;
   }
 
   messageForPurchaseDialog = self->_messageForPurchaseDialog;
-  if (messageForPurchaseDialog | *(v4 + 15))
+  if (messageForPurchaseDialog | *(equalCopy + 15))
   {
     if (![(NSString *)messageForPurchaseDialog isEqual:?])
     {
@@ -2231,7 +2231,7 @@ LABEL_32:
   }
 
   cancelButtonForPurchaseDialog = self->_cancelButtonForPurchaseDialog;
-  if (cancelButtonForPurchaseDialog | *(v4 + 8))
+  if (cancelButtonForPurchaseDialog | *(equalCopy + 8))
   {
     if (![(NSString *)cancelButtonForPurchaseDialog isEqual:?])
     {
@@ -2240,7 +2240,7 @@ LABEL_32:
   }
 
   okButtonForPurchaseDialog = self->_okButtonForPurchaseDialog;
-  if (okButtonForPurchaseDialog | *(v4 + 16))
+  if (okButtonForPurchaseDialog | *(equalCopy + 16))
   {
     if (![(NSString *)okButtonForPurchaseDialog isEqual:?])
     {
@@ -2249,10 +2249,10 @@ LABEL_32:
   }
 
   v25 = self->_has;
-  v26 = *(v4 + 98);
+  v26 = *(equalCopy + 98);
   if (v25)
   {
-    if ((v26 & 1) == 0 || self->_adamIdentifier != *(v4 + 1))
+    if ((v26 & 1) == 0 || self->_adamIdentifier != *(equalCopy + 1))
     {
       goto LABEL_39;
     }
@@ -2269,7 +2269,7 @@ LABEL_32:
     goto LABEL_40;
   }
 
-  if ((v26 & 4) != 0 && self->_appStoreViewTemplate == *(v4 + 14))
+  if ((v26 & 4) != 0 && self->_appStoreViewTemplate == *(equalCopy + 14))
   {
     v16 = 1;
     goto LABEL_40;
@@ -2523,28 +2523,28 @@ LABEL_44:
   return (2654435761 * action) ^ v48 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v14 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v26 ^ v27;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 12))
+  fromCopy = from;
+  if (*(fromCopy + 12))
   {
     [(APPBAdAction *)self setIdentifier:?];
   }
 
-  self->_action = *(v4 + 6);
-  if (*(v4 + 4))
+  self->_action = *(fromCopy + 6);
+  if (*(fromCopy + 4))
   {
     [(APPBAdAction *)self setActionURL:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(APPBAdAction *)self setActionWebArchiveURL:?];
   }
 
-  if ((*(v4 + 98) & 0x1000) != 0)
+  if ((*(fromCopy + 98) & 0x1000) != 0)
   {
-    self->_prefersToOpenInstalledApp = *(v4 + 191);
+    self->_prefersToOpenInstalledApp = *(fromCopy + 191);
     *&self->_has |= 0x1000u;
   }
 
@@ -2552,7 +2552,7 @@ LABEL_44:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = *(v4 + 17);
+  v5 = *(fromCopy + 17);
   v6 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v6)
   {
@@ -2576,46 +2576,46 @@ LABEL_44:
     while (v7);
   }
 
-  v10 = *(v4 + 98);
+  v10 = *(fromCopy + 98);
   if ((v10 & 0x100) != 0)
   {
-    self->_transitionType = *(v4 + 46);
+    self->_transitionType = *(fromCopy + 46);
     *&self->_has |= 0x100u;
-    v10 = *(v4 + 98);
+    v10 = *(fromCopy + 98);
   }
 
   if ((v10 & 0x4000) != 0)
   {
-    self->_suppressesPermissionToExitDialog = *(v4 + 193);
+    self->_suppressesPermissionToExitDialog = *(fromCopy + 193);
     *&self->_has |= 0x4000u;
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(APPBAdAction *)self setTitleForExitDialog:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(APPBAdAction *)self setMessageForExitDialog:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(APPBAdAction *)self setCancelLabelForExitDialog:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(APPBAdAction *)self setContinueLabelForExitDialog:?];
   }
 
-  v11 = *(v4 + 98);
+  v11 = *(fromCopy + 98);
   if ((v11 & 0x10) != 0)
   {
-    self->_confirmedClickTimeInterval = *(v4 + 20);
+    self->_confirmedClickTimeInterval = *(fromCopy + 20);
     *&self->_has |= 0x10u;
-    v11 = *(v4 + 98);
+    v11 = *(fromCopy + 98);
     if ((v11 & 0x800) == 0)
     {
 LABEL_30:
@@ -2628,14 +2628,14 @@ LABEL_30:
     }
   }
 
-  else if ((*(v4 + 98) & 0x800) == 0)
+  else if ((*(fromCopy + 98) & 0x800) == 0)
   {
     goto LABEL_30;
   }
 
-  self->_loadNewImpressionOnActionComplete = *(v4 + 190);
+  self->_loadNewImpressionOnActionComplete = *(fromCopy + 190);
   *&self->_has |= 0x800u;
-  v11 = *(v4 + 98);
+  v11 = *(fromCopy + 98);
   if ((v11 & 8) == 0)
   {
 LABEL_31:
@@ -2648,12 +2648,12 @@ LABEL_31:
   }
 
 LABEL_70:
-  self->_backgroundColor = *(v4 + 15);
+  self->_backgroundColor = *(fromCopy + 15);
   *&self->_has |= 8u;
-  if ((*(v4 + 98) & 0x2000) != 0)
+  if ((*(fromCopy + 98) & 0x2000) != 0)
   {
 LABEL_32:
-    self->_scrolling = *(v4 + 192);
+    self->_scrolling = *(fromCopy + 192);
     *&self->_has |= 0x2000u;
   }
 
@@ -2662,7 +2662,7 @@ LABEL_33:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = *(v4 + 19);
+  v12 = *(fromCopy + 19);
   v13 = [v12 countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v13)
   {
@@ -2686,12 +2686,12 @@ LABEL_33:
     while (v14);
   }
 
-  v17 = *(v4 + 98);
+  v17 = *(fromCopy + 98);
   if ((v17 & 0x20) != 0)
   {
-    self->_letterboxStoryboardColor = *(v4 + 26);
+    self->_letterboxStoryboardColor = *(fromCopy + 26);
     *&self->_has |= 0x20u;
-    v17 = *(v4 + 98);
+    v17 = *(fromCopy + 98);
     if ((v17 & 0x40) == 0)
     {
 LABEL_42:
@@ -2709,9 +2709,9 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  self->_storyboardPresentationOrientations = *(v4 + 36);
+  self->_storyboardPresentationOrientations = *(fromCopy + 36);
   *&self->_has |= 0x40u;
-  v17 = *(v4 + 98);
+  v17 = *(fromCopy + 98);
   if ((v17 & 0x80) == 0)
   {
 LABEL_43:
@@ -2724,9 +2724,9 @@ LABEL_43:
   }
 
 LABEL_74:
-  self->_storyboardSupportedOrientations = *(v4 + 40);
+  self->_storyboardSupportedOrientations = *(fromCopy + 40);
   *&self->_has |= 0x80u;
-  v17 = *(v4 + 98);
+  v17 = *(fromCopy + 98);
   if ((v17 & 0x400) == 0)
   {
 LABEL_44:
@@ -2739,12 +2739,12 @@ LABEL_44:
   }
 
 LABEL_75:
-  self->_allowSelfDismissal = *(v4 + 189);
+  self->_allowSelfDismissal = *(fromCopy + 189);
   *&self->_has |= 0x400u;
-  if ((*(v4 + 98) & 2) != 0)
+  if ((*(fromCopy + 98) & 2) != 0)
   {
 LABEL_45:
-    self->_autoDismissInterval = *(v4 + 2);
+    self->_autoDismissInterval = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
@@ -2753,7 +2753,7 @@ LABEL_46:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = *(v4 + 6);
+  v18 = *(fromCopy + 6);
   v19 = [v18 countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v19)
   {
@@ -2777,43 +2777,43 @@ LABEL_46:
     while (v20);
   }
 
-  if ((*(v4 + 98) & 0x200) != 0)
+  if ((*(fromCopy + 98) & 0x200) != 0)
   {
-    self->_adManagesPurchaseFlow = *(v4 + 188);
+    self->_adManagesPurchaseFlow = *(fromCopy + 188);
     *&self->_has |= 0x200u;
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(APPBAdAction *)self setTitleForPurchaseDialog:?];
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(APPBAdAction *)self setMessageForPurchaseDialog:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(APPBAdAction *)self setCancelButtonForPurchaseDialog:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(APPBAdAction *)self setOkButtonForPurchaseDialog:?];
   }
 
-  v23 = *(v4 + 98);
+  v23 = *(fromCopy + 98);
   if (v23)
   {
-    self->_adamIdentifier = *(v4 + 1);
+    self->_adamIdentifier = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v23 = *(v4 + 98);
+    v23 = *(fromCopy + 98);
   }
 
   if ((v23 & 4) != 0)
   {
-    self->_appStoreViewTemplate = *(v4 + 14);
+    self->_appStoreViewTemplate = *(fromCopy + 14);
     *&self->_has |= 4u;
   }
 }

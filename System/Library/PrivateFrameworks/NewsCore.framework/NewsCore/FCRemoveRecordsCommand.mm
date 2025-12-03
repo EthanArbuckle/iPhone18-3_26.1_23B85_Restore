@@ -1,14 +1,14 @@
 @interface FCRemoveRecordsCommand
-- (BOOL)canCoalesceWithCommand:(id)a3;
+- (BOOL)canCoalesceWithCommand:(id)command;
 - (FCRemoveRecordsCommand)init;
-- (FCRemoveRecordsCommand)initWithCoder:(id)a3;
-- (FCRemoveRecordsCommand)initWithRecordIDs:(id)a3;
+- (FCRemoveRecordsCommand)initWithCoder:(id)coder;
+- (FCRemoveRecordsCommand)initWithRecordIDs:(id)ds;
 - (NSArray)deletedRecordIDs;
-- (void)applyToRemoteRecords:(id)a3 remoteDeletions:(id)a4;
-- (void)coalesceWithCommand:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3 delegate:(id)a4 qualityOfService:(int64_t)a5;
-- (void)handleRecordIDsFromStream:(void *)a3 context:(void *)a4 delegate:(uint64_t)a5 qualityOfService:;
+- (void)applyToRemoteRecords:(id)records remoteDeletions:(id)deletions;
+- (void)coalesceWithCommand:(id)command;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context delegate:(id)delegate qualityOfService:(int64_t)service;
+- (void)handleRecordIDsFromStream:(void *)stream context:(void *)context delegate:(uint64_t)delegate qualityOfService:;
 @end
 
 @implementation FCRemoveRecordsCommand
@@ -39,15 +39,15 @@
   objc_exception_throw(v6);
 }
 
-- (FCRemoveRecordsCommand)initWithRecordIDs:(id)a3
+- (FCRemoveRecordsCommand)initWithRecordIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = FCRemoveRecordsCommand;
   v5 = [(FCRemoveRecordsCommand *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dsCopy copy];
     recordIDs = v5->_recordIDs;
     v5->_recordIDs = v6;
   }
@@ -55,19 +55,19 @@
   return v5;
 }
 
-- (FCRemoveRecordsCommand)initWithCoder:(id)a3
+- (FCRemoveRecordsCommand)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"recordIDs"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"recordIDs"];
 
   v9 = [(FCRemoveRecordsCommand *)self initWithRecordIDs:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
@@ -79,29 +79,29 @@
     recordIDs = 0;
   }
 
-  [a3 encodeObject:recordIDs forKey:@"recordIDs"];
+  [coder encodeObject:recordIDs forKey:@"recordIDs"];
 }
 
-- (void)executeWithContext:(id)a3 delegate:(id)a4 qualityOfService:(int64_t)a5
+- (void)executeWithContext:(id)context delegate:(id)delegate qualityOfService:(int64_t)service
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 networkReachability];
-  v11 = [v10 isCloudKitReachable];
+  contextCopy = context;
+  delegateCopy = delegate;
+  networkReachability = [contextCopy networkReachability];
+  isCloudKitReachable = [networkReachability isCloudKitReachable];
 
-  if (v11)
+  if (isCloudKitReachable)
   {
-    v12 = [v8 internalPrivateDataContext];
+    internalPrivateDataContext = [contextCopy internalPrivateDataContext];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __71__FCRemoveRecordsCommand_executeWithContext_delegate_qualityOfService___block_invoke;
     v18[3] = &unk_1E7C3FE20;
     v18[4] = self;
-    v19 = v8;
-    v20 = v9;
-    v21 = a5;
-    [v12 prepareRecordZonesForUseWithCompletionHandler:v18];
+    v19 = contextCopy;
+    v20 = delegateCopy;
+    serviceCopy = service;
+    [internalPrivateDataContext prepareRecordZonesForUseWithCompletionHandler:v18];
   }
 
   else
@@ -115,11 +115,11 @@
       *buf = 138543618;
       v23 = v16;
       v24 = 2048;
-      v25 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B63EF000, v14, OS_LOG_TYPE_DEFAULT, "<%{public}@ %p> will not execute because CloudKit is not reachable", buf, 0x16u);
     }
 
-    [v9 command:self didFinishWithStatus:1];
+    [delegateCopy command:self didFinishWithStatus:1];
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -172,47 +172,47 @@ void __71__FCRemoveRecordsCommand_executeWithContext_delegate_qualityOfService__
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRecordIDsFromStream:(void *)a3 context:(void *)a4 delegate:(uint64_t)a5 qualityOfService:
+- (void)handleRecordIDsFromStream:(void *)stream context:(void *)context delegate:(uint64_t)delegate qualityOfService:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  streamCopy = stream;
+  contextCopy = context;
+  if (self)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __86__FCRemoveRecordsCommand_handleRecordIDsFromStream_context_delegate_qualityOfService___block_invoke;
     aBlock[3] = &unk_1E7C3FE90;
-    aBlock[4] = a1;
-    v17 = v10;
-    v20 = a5;
+    aBlock[4] = self;
+    v17 = streamCopy;
+    delegateCopy = delegate;
     v12 = v9;
     v18 = v12;
-    v19 = v11;
+    v19 = contextCopy;
     v13 = _Block_copy(aBlock);
-    v14 = FCDispatchQueueForQualityOfService(a5);
-    v15 = [v12 fetchMoreResultsWithLimit:100 qualityOfService:a5 callbackQueue:v14 completionHandler:v13];
+    v14 = FCDispatchQueueForQualityOfService(delegate);
+    v15 = [v12 fetchMoreResultsWithLimit:100 qualityOfService:delegate callbackQueue:v14 completionHandler:v13];
   }
 }
 
-- (void)applyToRemoteRecords:(id)a3 remoteDeletions:(id)a4
+- (void)applyToRemoteRecords:(id)records remoteDeletions:(id)deletions
 {
   if (self)
   {
     recordIDs = self->_recordIDs;
-    v7 = a4;
-    [a3 removeObjectsForKeys:recordIDs];
+    deletionsCopy = deletions;
+    [records removeObjectsForKeys:recordIDs];
     v8 = self->_recordIDs;
   }
 
   else
   {
-    v9 = a4;
-    [a3 removeObjectsForKeys:0];
+    deletionsCopy2 = deletions;
+    [records removeObjectsForKeys:0];
     v8 = 0;
   }
 
-  [a4 addObjectsFromArray:v8];
+  [deletions addObjectsFromArray:v8];
 }
 
 - (NSArray)deletedRecordIDs
@@ -451,24 +451,24 @@ void __85__FCRemoveRecordsCommand_handleBatchOfRecordIDs_context_qualityOfServic
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)canCoalesceWithCommand:(id)a3
+- (BOOL)canCoalesceWithCommand:(id)command
 {
-  v3 = a3;
+  commandCopy = command;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)coalesceWithCommand:(id)a3
+- (void)coalesceWithCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   objc_opt_class();
-  if (v4)
+  if (commandCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = commandCopy;
     }
 
     else
@@ -508,10 +508,10 @@ void __85__FCRemoveRecordsCommand_handleBatchOfRecordIDs_context_qualityOfServic
   }
 
   [v7 addObjectsFromArray:v9];
-  v11 = [v7 allObjects];
+  allObjects = [v7 allObjects];
   if (self)
   {
-    objc_setProperty_nonatomic_copy(self, v10, v11, 8);
+    objc_setProperty_nonatomic_copy(self, v10, allObjects, 8);
   }
 }
 

@@ -1,11 +1,11 @@
 @interface MapsSettingsTransitController
-- (BOOL)_isModeDisabled:(unint64_t)a3;
+- (BOOL)_isModeDisabled:(unint64_t)disabled;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_configureCell:(id)a3 forTransitSpecifier:(id)a4;
-- (void)_toggleMode:(unint64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_configureCell:(id)cell forTransitSpecifier:(id)specifier;
+- (void)_toggleMode:(unint64_t)mode;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -22,11 +22,11 @@
   [(MapsSettingsTransitController *)self setTitle:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = MapsSettingsTransitController;
-  [(MapsSettingsTransitController *)&v9 viewDidAppear:a3];
+  [(MapsSettingsTransitController *)&v9 viewDidAppear:appear];
   v4 = MapsSettingsTransitTitle();
   v5 = AppsSettingsTitle();
   v10[0] = v5;
@@ -37,13 +37,13 @@
   [(MapsSettingsTransitController *)self pe_emitNavigationEventForApplicationSettingsWithApplicationBundleIdentifier:@"com.apple.Maps" title:v4 localizedNavigationComponents:v7 deepLink:v8];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = MapsSettingsTransitController;
-  v6 = a4;
-  [(MapsSettingsTransitController *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(MapsSettingsTransitController *)self indexForIndexPath:v6, v11.receiver, v11.super_class];
+  pathCopy = path;
+  [(MapsSettingsTransitController *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(MapsSettingsTransitController *)self indexForIndexPath:pathCopy, v11.receiver, v11.super_class];
 
   v8 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndexedSubscript:v7];
   v9 = [v8 propertyForKey:PSValueKey];
@@ -55,13 +55,13 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = MapsSettingsTransitController;
-  v6 = a4;
-  v7 = [(MapsSettingsTransitController *)&v11 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(MapsSettingsTransitController *)self indexForIndexPath:v6, v11.receiver, v11.super_class];
+  pathCopy = path;
+  v7 = [(MapsSettingsTransitController *)&v11 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(MapsSettingsTransitController *)self indexForIndexPath:pathCopy, v11.receiver, v11.super_class];
 
   v9 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndexedSubscript:v8];
   [(MapsSettingsTransitController *)self _configureCell:v7 forTransitSpecifier:v9];
@@ -69,18 +69,18 @@
   return v7;
 }
 
-- (void)_configureCell:(id)a3 forTransitSpecifier:(id)a4
+- (void)_configureCell:(id)cell forTransitSpecifier:(id)specifier
 {
   v5 = PSValueKey;
-  v6 = a3;
-  v13 = [a4 propertyForKey:v5];
-  v7 = [v13 integerValue];
+  cellCopy = cell;
+  v13 = [specifier propertyForKey:v5];
+  integerValue = [v13 integerValue];
   v8 = [MapsSettings valueForDefaultsKey:@"DefaultDisabledTransitModesKey"];
   v9 = [v8 integerValue] & 0xF;
 
   if (v13)
   {
-    v10 = (v9 ^ v7) == 15;
+    v10 = (v9 ^ integerValue) == 15;
   }
 
   else
@@ -92,31 +92,31 @@
   if (v10)
   {
     v12 = +[UIColor grayColor];
-    [v6 setTintColor:v12];
+    [cellCopy setTintColor:v12];
   }
 
   else
   {
-    [v6 setTintColor:0];
+    [cellCopy setTintColor:0];
   }
 
-  [v6 setUserInteractionEnabled:v11];
+  [cellCopy setUserInteractionEnabled:v11];
 }
 
-- (BOOL)_isModeDisabled:(unint64_t)a3
+- (BOOL)_isModeDisabled:(unint64_t)disabled
 {
   v4 = [MapsSettings valueForDefaultsKey:@"DefaultDisabledTransitModesKey"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return [TransitPreferences isModeDisabled:a3 inModes:v5 & 0xF];
+  return [TransitPreferences isModeDisabled:disabled inModes:integerValue & 0xF];
 }
 
-- (void)_toggleMode:(unint64_t)a3
+- (void)_toggleMode:(unint64_t)mode
 {
   v4 = [MapsSettings valueForDefaultsKey:@"DefaultDisabledTransitModesKey"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  v6 = [NSNumber numberWithUnsignedInteger:[TransitPreferences disabledModesByTogglingMode:a3 inModes:v5 & 0xF]];
+  v6 = [NSNumber numberWithUnsignedInteger:[TransitPreferences disabledModesByTogglingMode:mode inModes:integerValue & 0xF]];
   [MapsSettings setValue:v6 forDefaultsKey:@"DefaultDisabledTransitModesKey" bundleID:0 syncToNano:1];
 }
 
@@ -162,16 +162,16 @@
           objc_enumerationMutation(obj);
         }
 
-        v13 = [*(*(&v29 + 1) + 8 * v11) integerValue];
-        v14 = v13;
-        if ((v13 - 1) > 7)
+        integerValue = [*(*(&v29 + 1) + 8 * v11) integerValue];
+        v14 = integerValue;
+        if ((integerValue - 1) > 7)
         {
           v15 = 0;
         }
 
         else
         {
-          v15 = off_7FDD0[(v13 - 1)];
+          v15 = off_7FDD0[(integerValue - 1)];
         }
 
         v16 = [NSBundle bundleForClass:objc_opt_class()];

@@ -1,8 +1,8 @@
 @interface ICCollapsibleThumbnailView
 - (void)performSetup;
-- (void)setImage:(id)a3;
-- (void)setImageScaling:(unint64_t)a3;
-- (void)setShowAsMovie:(BOOL)a3;
+- (void)setImage:(id)image;
+- (void)setImageScaling:(unint64_t)scaling;
+- (void)setShowAsMovie:(BOOL)movie;
 @end
 
 @implementation ICCollapsibleThumbnailView
@@ -14,43 +14,43 @@
   v4 = [(ICImageAndMovieThumbnailView *)v3 initWithFrame:0 showMovieDuration:?];
   [(ICCollapsibleThumbnailView *)self setThumbnailView:v4];
 
-  v5 = [(ICCollapsibleThumbnailView *)self thumbnailView];
-  [(ICCollapsibleBaseView *)self performSetUpWithContentView:v5];
+  thumbnailView = [(ICCollapsibleThumbnailView *)self thumbnailView];
+  [(ICCollapsibleBaseView *)self performSetUpWithContentView:thumbnailView];
 
-  v6 = [(ICCollapsibleThumbnailView *)self image];
-  v7 = [(ICCollapsibleThumbnailView *)self thumbnailView];
-  [v7 setImage:v6];
+  image = [(ICCollapsibleThumbnailView *)self image];
+  thumbnailView2 = [(ICCollapsibleThumbnailView *)self thumbnailView];
+  [thumbnailView2 setImage:image];
 
-  v8 = [(ICCollapsibleThumbnailView *)self imageScaling];
-  v9 = [(ICCollapsibleThumbnailView *)self thumbnailView];
-  [v9 setImageScaling:v8];
+  imageScaling = [(ICCollapsibleThumbnailView *)self imageScaling];
+  thumbnailView3 = [(ICCollapsibleThumbnailView *)self thumbnailView];
+  [thumbnailView3 setImageScaling:imageScaling];
 
-  v10 = [(ICCollapsibleThumbnailView *)self showAsMovie];
-  v11 = [(ICCollapsibleThumbnailView *)self thumbnailView];
-  [v11 setShowAsMovie:v10];
+  showAsMovie = [(ICCollapsibleThumbnailView *)self showAsMovie];
+  thumbnailView4 = [(ICCollapsibleThumbnailView *)self thumbnailView];
+  [thumbnailView4 setShowAsMovie:showAsMovie];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  objc_storeStrong(&self->_image, a3);
-  v5 = a3;
-  v6 = [(ICCollapsibleThumbnailView *)self thumbnailView];
-  [v6 setImage:v5];
+  objc_storeStrong(&self->_image, image);
+  imageCopy = image;
+  thumbnailView = [(ICCollapsibleThumbnailView *)self thumbnailView];
+  [thumbnailView setImage:imageCopy];
 }
 
-- (void)setImageScaling:(unint64_t)a3
+- (void)setImageScaling:(unint64_t)scaling
 {
-  self->_imageScaling = a3;
-  v4 = [(ICCollapsibleThumbnailView *)self thumbnailView];
-  [v4 setImageScaling:a3];
+  self->_imageScaling = scaling;
+  thumbnailView = [(ICCollapsibleThumbnailView *)self thumbnailView];
+  [thumbnailView setImageScaling:scaling];
 }
 
-- (void)setShowAsMovie:(BOOL)a3
+- (void)setShowAsMovie:(BOOL)movie
 {
-  v3 = a3;
-  self->_showAsMovie = a3;
-  v4 = [(ICCollapsibleThumbnailView *)self thumbnailView];
-  [v4 setShowAsMovie:v3];
+  movieCopy = movie;
+  self->_showAsMovie = movie;
+  thumbnailView = [(ICCollapsibleThumbnailView *)self thumbnailView];
+  [thumbnailView setShowAsMovie:movieCopy];
 }
 
 @end

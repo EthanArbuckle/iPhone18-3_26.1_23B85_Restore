@@ -1,45 +1,45 @@
 @interface SATaskState
-+ (SATaskState)stateWithPAStyleTaskPrivateData:(void *)a3 donatingUniquePids:;
-+ (SATaskState)stateWithStartTimestamp:(id)a3 endTimestamp:(id)a4 startSampleIndex:(unint64_t)a5 endSampleIndex:(unint64_t)a6;
-+ (SATaskStateInTransition)stateWithKCDataTransitioningTask:(uint64_t)a3 terminatedThreadsInstructionCycles:(uint64_t)a4 memoryStatus:(uint64_t)a5 machTimebase:(uint64_t)a6 donatingUniquePids:(uint64_t)a7 startTimestamp:(uint64_t)a8 endTimestamp:(uint64_t)a9 startSampleIndex:(uint64_t)a10 endSampleIndex:;
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-+ (id)stateWithKCDataDeltaTask:(void *)a3 terminatedThreadsInstructionCycles:(_DWORD *)a4 memoryStatus:(unint64_t)a5 machTimebase:(void *)a6 donatingUniquePids:(uint64_t)a7 startTimestamp:(uint64_t)a8 endTimestamp:(uint64_t)a9 startSampleIndex:(uint64_t)a10 endSampleIndex:;
-+ (id)stateWithKCDataTask:(void *)a3 terminatedThreadsInstructionCycles:(_DWORD *)a4 memoryStatus:(unint64_t)a5 machTimebase:(void *)a6 donatingUniquePids:(uint64_t)a7 startTimestamp:(uint64_t)a8 endTimestamp:(uint64_t)a9 startSampleIndex:(uint64_t)a10 endSampleIndex:;
-+ (id)stateWithStackshotTaskV1:(unint64_t)a3 machTimebase:(unsigned int)a4 hwPageSize:(uint64_t)a5 startTimestamp:(uint64_t)a6 endTimestamp:(uint64_t)a7 startSampleIndex:(uint64_t)a8 endSampleIndex:;
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (SATaskState)stateWithPAStyleTaskPrivateData:(void *)data donatingUniquePids:;
++ (SATaskState)stateWithStartTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex;
++ (SATaskStateInTransition)stateWithKCDataTransitioningTask:(uint64_t)task terminatedThreadsInstructionCycles:(uint64_t)cycles memoryStatus:(uint64_t)status machTimebase:(uint64_t)timebase donatingUniquePids:(uint64_t)pids startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)self0 endSampleIndex:;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
++ (id)stateWithKCDataDeltaTask:(void *)task terminatedThreadsInstructionCycles:(_DWORD *)cycles memoryStatus:(unint64_t)status machTimebase:(void *)timebase donatingUniquePids:(uint64_t)pids startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)self0 endSampleIndex:;
++ (id)stateWithKCDataTask:(void *)task terminatedThreadsInstructionCycles:(_DWORD *)cycles memoryStatus:(unint64_t)status machTimebase:(void *)timebase donatingUniquePids:(uint64_t)pids startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)self0 endSampleIndex:;
++ (id)stateWithStackshotTaskV1:(unint64_t)v1 machTimebase:(unsigned int)timebase hwPageSize:(uint64_t)size startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)index endSampleIndex:;
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (NSString)debugDescription;
-- (SATaskState)initWithStartTimestamp:(id)a3 endTimestamp:(id)a4 startSampleIndex:(unint64_t)a5 endSampleIndex:(unint64_t)a6;
-- (id)debugDescriptionWithTask:(uint64_t)a1;
-- (uint64_t)correspondsToKCDataDeltaTask:(void *)a3 terminatedThreadsInstructionCycles:(_DWORD *)a4 memoryStatus:(unint64_t)a5 machTimebase:(void *)a6 donatingUniquePids:;
-- (uint64_t)correspondsToKCDataTask:(void *)a3 terminatedThreadsInstructionCycles:(_DWORD *)a4 memoryStatus:(unint64_t)a5 machTimebase:(void *)a6 donatingUniquePids:;
-- (unint64_t)sampleCountInSampleIndexRangeStart:(unint64_t)a3 end:(unint64_t)a4;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)correspondsToKCDataTransitioningTask:(void *)a3 terminatedThreadsInstructionCycles:(_DWORD *)a4 memoryStatus:(uint64_t)a5 machTimebase:(void *)a6 donatingUniquePids:;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
+- (SATaskState)initWithStartTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex;
+- (id)debugDescriptionWithTask:(uint64_t)task;
+- (uint64_t)correspondsToKCDataDeltaTask:(void *)task terminatedThreadsInstructionCycles:(_DWORD *)cycles memoryStatus:(unint64_t)status machTimebase:(void *)timebase donatingUniquePids:;
+- (uint64_t)correspondsToKCDataTask:(void *)task terminatedThreadsInstructionCycles:(_DWORD *)cycles memoryStatus:(unint64_t)status machTimebase:(void *)timebase donatingUniquePids:;
+- (unint64_t)sampleCountInSampleIndexRangeStart:(unint64_t)start end:(unint64_t)end;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)correspondsToKCDataTransitioningTask:(void *)task terminatedThreadsInstructionCycles:(_DWORD *)cycles memoryStatus:(uint64_t)status machTimebase:(void *)timebase donatingUniquePids:;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
 @end
 
 @implementation SATaskState
 
-- (id)debugDescriptionWithTask:(uint64_t)a1
+- (id)debugDescriptionWithTask:(uint64_t)task
 {
-  if (a1)
+  if (task)
   {
-    v4 = *(a1 + 48);
-    v5 = *(a1 + 56);
+    v4 = *(task + 48);
+    v5 = *(task + 56);
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
     v7 = [a2 debugDescription];
-    v8 = *(a1 + 64);
+    v8 = *(task + 64);
     if (v4 == v5)
     {
-      v10 = [*(a1 + 48) debugDescription];
+      v10 = [*(task + 48) debugDescription];
       v12 = [v6 initWithFormat:@"%@ @ sample index %lu\n%@", v7, v8, v10];
     }
 
     else
     {
-      v9 = *(a1 + 72);
-      v10 = [*(a1 + 48) debugDescription];
-      v11 = [*(a1 + 56) debugDescription];
+      v9 = *(task + 72);
+      v10 = [*(task + 48) debugDescription];
+      v11 = [*(task + 56) debugDescription];
       v12 = [v6 initWithFormat:@"%@ @ sample indexes %lu-%lu\nstart:%@\n  end:%@", v7, v8, v9, v10, v11];
     }
   }
@@ -75,24 +75,24 @@
   return v10;
 }
 
-- (unint64_t)sampleCountInSampleIndexRangeStart:(unint64_t)a3 end:(unint64_t)a4
+- (unint64_t)sampleCountInSampleIndexRangeStart:(unint64_t)start end:(unint64_t)end
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && a4 != 0x7FFFFFFFFFFFFFFFLL && a3 > a4)
+  if (start != 0x7FFFFFFFFFFFFFFFLL && end != 0x7FFFFFFFFFFFFFFFLL && start > end)
   {
     v17 = *__error();
     p_super = _sa_logt();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v34 = a3;
+      startCopy = start;
       v35 = 2048;
-      v36 = a4;
+      endCopy = end;
       _os_log_error_impl(&dword_1E0E2F000, p_super, OS_LOG_TYPE_ERROR, "startSampleIndexCap %lu > endSampleIndexCap %lu", buf, 0x16u);
     }
 
     *__error() = v17;
-    _SASetCrashLogMessage(2413, "startSampleIndexCap %lu > endSampleIndexCap %lu", v18, v19, v20, v21, v22, v23, a3);
+    _SASetCrashLogMessage(2413, "startSampleIndexCap %lu > endSampleIndexCap %lu", v18, v19, v20, v21, v22, v23, start);
     _os_crash();
     __break(1u);
     goto LABEL_28;
@@ -116,7 +116,7 @@ LABEL_28:
     {
       isa = p_super[8].isa;
       *buf = 134217984;
-      v34 = isa;
+      startCopy = isa;
       _os_log_error_impl(&dword_1E0E2F000, v25, OS_LOG_TYPE_ERROR, "_startSampleIndex %lu, end NSNotFound", buf, 0xCu);
     }
 
@@ -126,34 +126,34 @@ LABEL_28:
     __break(1u);
   }
 
-  if (endSampleIndex >= a4)
+  if (endSampleIndex >= end)
   {
-    v12 = a4;
+    endCopy2 = end;
   }
 
   else
   {
-    v12 = self->_endSampleIndex;
+    endCopy2 = self->_endSampleIndex;
   }
 
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (end != 0x7FFFFFFFFFFFFFFFLL)
   {
-    endSampleIndex = v12;
+    endSampleIndex = endCopy2;
   }
 
-  if (startSampleIndex <= a3)
+  if (startSampleIndex <= start)
   {
-    v13 = a3;
+    startCopy2 = start;
   }
 
   else
   {
-    v13 = self->_startSampleIndex;
+    startCopy2 = self->_startSampleIndex;
   }
 
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (start != 0x7FFFFFFFFFFFFFFFLL)
   {
-    startSampleIndex = v13;
+    startSampleIndex = startCopy2;
   }
 
   v14 = endSampleIndex >= startSampleIndex;
@@ -173,7 +173,7 @@ LABEL_24:
   return result;
 }
 
-- (uint64_t)correspondsToKCDataTask:(void *)a3 terminatedThreadsInstructionCycles:(_DWORD *)a4 memoryStatus:(unint64_t)a5 machTimebase:(void *)a6 donatingUniquePids:
+- (uint64_t)correspondsToKCDataTask:(void *)task terminatedThreadsInstructionCycles:(_DWORD *)cycles memoryStatus:(unint64_t)status machTimebase:(void *)timebase donatingUniquePids:
 {
   if (result)
   {
@@ -184,9 +184,9 @@ LABEL_24:
     }
 
     v11 = *(result + 88);
-    if (HIDWORD(a5) && a5)
+    if (HIDWORD(status) && status)
     {
-      if (a5 == HIDWORD(a5))
+      if (status == HIDWORD(status))
       {
         if (v11 != *(a2 + 16))
         {
@@ -220,9 +220,9 @@ LABEL_24:
 
     if (*(v7 + 96) == v12)
     {
-      if (a3)
+      if (task)
       {
-        if (*a3 != *(v7 + 104) || a3[1] != *(v7 + 112))
+        if (*task != *(v7 + 104) || task[1] != *(v7 + 112))
         {
           return 0;
         }
@@ -234,14 +234,14 @@ LABEL_24:
       }
 
       v14 = *(v7 + 120);
-      if (a6)
+      if (timebase)
       {
         if (!v14)
         {
           return 0;
         }
 
-        result = [a6 isEqualToSet:?];
+        result = [timebase isEqualToSet:?];
         if (!result)
         {
           return result;
@@ -253,11 +253,11 @@ LABEL_24:
         return 0;
       }
 
-      if (a4)
+      if (cycles)
       {
-        if (*a4 == *(v7 + 28) && a4[1] == *(v7 + 32) && a4[2] == *(v7 + 36))
+        if (*cycles == *(v7 + 28) && cycles[1] == *(v7 + 32) && cycles[2] == *(v7 + 36))
         {
-          return a4[3] == *(v7 + 40);
+          return cycles[3] == *(v7 + 40);
         }
       }
 
@@ -273,7 +273,7 @@ LABEL_24:
   return result;
 }
 
-- (uint64_t)correspondsToKCDataDeltaTask:(void *)a3 terminatedThreadsInstructionCycles:(_DWORD *)a4 memoryStatus:(unint64_t)a5 machTimebase:(void *)a6 donatingUniquePids:
+- (uint64_t)correspondsToKCDataDeltaTask:(void *)task terminatedThreadsInstructionCycles:(_DWORD *)cycles memoryStatus:(unint64_t)status machTimebase:(void *)timebase donatingUniquePids:
 {
   if (result)
   {
@@ -284,9 +284,9 @@ LABEL_24:
     }
 
     v11 = *(result + 88);
-    if (HIDWORD(a5) && a5)
+    if (HIDWORD(status) && status)
     {
-      if (a5 == HIDWORD(a5))
+      if (status == HIDWORD(status))
       {
         if (v11 != *(a2 + 16))
         {
@@ -320,9 +320,9 @@ LABEL_24:
 
     if (*(v7 + 96) == v12)
     {
-      if (a3)
+      if (task)
       {
-        if (*a3 != *(v7 + 104) || a3[1] != *(v7 + 112))
+        if (*task != *(v7 + 104) || task[1] != *(v7 + 112))
         {
           return 0;
         }
@@ -334,14 +334,14 @@ LABEL_24:
       }
 
       v14 = *(v7 + 120);
-      if (a6)
+      if (timebase)
       {
         if (!v14)
         {
           return 0;
         }
 
-        result = [a6 isEqualToSet:?];
+        result = [timebase isEqualToSet:?];
         if (!result)
         {
           return result;
@@ -353,11 +353,11 @@ LABEL_24:
         return 0;
       }
 
-      if (a4)
+      if (cycles)
       {
-        if (*a4 == *(v7 + 28) && a4[1] == *(v7 + 32) && a4[2] == *(v7 + 36))
+        if (*cycles == *(v7 + 28) && cycles[1] == *(v7 + 32) && cycles[2] == *(v7 + 36))
         {
-          v15 = a4[3];
+          v15 = cycles[3];
           v16 = *(v7 + 40);
           return v15 == v16;
         }
@@ -377,7 +377,7 @@ LABEL_24:
   return result;
 }
 
-- (void)correspondsToKCDataTransitioningTask:(void *)a3 terminatedThreadsInstructionCycles:(_DWORD *)a4 memoryStatus:(uint64_t)a5 machTimebase:(void *)a6 donatingUniquePids:
+- (void)correspondsToKCDataTransitioningTask:(void *)task terminatedThreadsInstructionCycles:(_DWORD *)cycles memoryStatus:(uint64_t)status machTimebase:(void *)timebase donatingUniquePids:
 {
   if (result)
   {
@@ -387,9 +387,9 @@ LABEL_24:
       return 0;
     }
 
-    if (a3)
+    if (task)
     {
-      if (*a3 != v6[13] || a3[1] != v6[14])
+      if (*task != v6[13] || task[1] != v6[14])
       {
         return 0;
       }
@@ -401,14 +401,14 @@ LABEL_24:
     }
 
     v10 = v6[15];
-    if (a6)
+    if (timebase)
     {
       if (!v10)
       {
         return 0;
       }
 
-      result = [a6 isEqualToSet:?];
+      result = [timebase isEqualToSet:?];
       if (!result)
       {
         return result;
@@ -420,11 +420,11 @@ LABEL_24:
       return 0;
     }
 
-    if (a4)
+    if (cycles)
     {
-      if (*a4 == *(v6 + 7) && a4[1] == *(v6 + 8) && a4[2] == *(v6 + 9))
+      if (*cycles == *(v6 + 7) && cycles[1] == *(v6 + 8) && cycles[2] == *(v6 + 9))
       {
-        return (a4[3] == *(v6 + 10));
+        return (cycles[3] == *(v6 + 10));
       }
     }
 
@@ -439,17 +439,17 @@ LABEL_24:
   return result;
 }
 
-+ (id)stateWithKCDataTask:(void *)a3 terminatedThreadsInstructionCycles:(_DWORD *)a4 memoryStatus:(unint64_t)a5 machTimebase:(void *)a6 donatingUniquePids:(uint64_t)a7 startTimestamp:(uint64_t)a8 endTimestamp:(uint64_t)a9 startSampleIndex:(uint64_t)a10 endSampleIndex:
++ (id)stateWithKCDataTask:(void *)task terminatedThreadsInstructionCycles:(_DWORD *)cycles memoryStatus:(unint64_t)status machTimebase:(void *)timebase donatingUniquePids:(uint64_t)pids startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)self0 endSampleIndex:
 {
   objc_opt_self();
   v17 = [SATaskState alloc];
   if (v17)
   {
-    v18 = [(SATaskState *)v17 initWithStartTimestamp:a7 endTimestamp:a8 startSampleIndex:a9 endSampleIndex:a10];
+    v18 = [(SATaskState *)v17 initWithStartTimestamp:pids endTimestamp:timestamp startSampleIndex:endTimestamp endSampleIndex:index];
     v19 = v18;
     if (v18)
     {
-      objc_storeStrong((v18 + 120), a6);
+      objc_storeStrong((v18 + 120), timebase);
       *(v19 + 8) = *(a2 + 56);
       *(v19 + 80) = *(a2 + 40);
       *(v19 + 12) = *(a2 + 60);
@@ -457,9 +457,9 @@ LABEL_24:
       *(v19 + 20) = *(a2 + 68);
       *(v19 + 128) = *(a2 + 8);
       *(v19 + 24) = *(a2 + 80);
-      if (HIDWORD(a5) && a5)
+      if (HIDWORD(status) && status)
       {
-        if (a5 == HIDWORD(a5))
+        if (status == HIDWORD(status))
         {
           *(v19 + 88) = *(a2 + 16);
           v20 = *(a2 + 24);
@@ -480,18 +480,18 @@ LABEL_24:
       }
 
       *(v19 + 96) = v20;
-      if (a3)
+      if (task)
       {
-        *(v19 + 104) = *a3;
-        *(v19 + 112) = a3[1];
+        *(v19 + 104) = *task;
+        *(v19 + 112) = task[1];
       }
 
-      if (a4)
+      if (cycles)
       {
-        *(v19 + 28) = *a4;
-        *(v19 + 32) = a4[1];
-        *(v19 + 36) = a4[2];
-        v22 = a4[3];
+        *(v19 + 28) = *cycles;
+        *(v19 + 32) = cycles[1];
+        *(v19 + 36) = cycles[2];
+        v22 = cycles[3];
       }
 
       else
@@ -513,17 +513,17 @@ LABEL_24:
   return v19;
 }
 
-+ (id)stateWithKCDataDeltaTask:(void *)a3 terminatedThreadsInstructionCycles:(_DWORD *)a4 memoryStatus:(unint64_t)a5 machTimebase:(void *)a6 donatingUniquePids:(uint64_t)a7 startTimestamp:(uint64_t)a8 endTimestamp:(uint64_t)a9 startSampleIndex:(uint64_t)a10 endSampleIndex:
++ (id)stateWithKCDataDeltaTask:(void *)task terminatedThreadsInstructionCycles:(_DWORD *)cycles memoryStatus:(unint64_t)status machTimebase:(void *)timebase donatingUniquePids:(uint64_t)pids startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)self0 endSampleIndex:
 {
   objc_opt_self();
   v17 = [SATaskState alloc];
   if (v17)
   {
-    v18 = [(SATaskState *)v17 initWithStartTimestamp:a7 endTimestamp:a8 startSampleIndex:a9 endSampleIndex:a10];
+    v18 = [(SATaskState *)v17 initWithStartTimestamp:pids endTimestamp:timestamp startSampleIndex:endTimestamp endSampleIndex:index];
     v19 = v18;
     if (v18)
     {
-      objc_storeStrong((v18 + 120), a6);
+      objc_storeStrong((v18 + 120), timebase);
       *(v19 + 8) = *(a2 + 48);
       *(v19 + 80) = *(a2 + 32);
       *(v19 + 12) = *(a2 + 52);
@@ -531,9 +531,9 @@ LABEL_24:
       *(v19 + 20) = *(a2 + 60);
       *(v19 + 128) = *(a2 + 8);
       *(v19 + 24) = *(a2 + 72);
-      if (HIDWORD(a5) && a5)
+      if (HIDWORD(status) && status)
       {
-        if (a5 == HIDWORD(a5))
+        if (status == HIDWORD(status))
         {
           *(v19 + 88) = *(a2 + 16);
           v20 = *(a2 + 24);
@@ -554,18 +554,18 @@ LABEL_24:
       }
 
       *(v19 + 96) = v20;
-      if (a3)
+      if (task)
       {
-        *(v19 + 104) = *a3;
-        *(v19 + 112) = a3[1];
+        *(v19 + 104) = *task;
+        *(v19 + 112) = task[1];
       }
 
-      if (a4)
+      if (cycles)
       {
-        *(v19 + 28) = *a4;
-        *(v19 + 32) = a4[1];
-        *(v19 + 36) = a4[2];
-        v22 = a4[3];
+        *(v19 + 28) = *cycles;
+        *(v19 + 32) = cycles[1];
+        *(v19 + 36) = cycles[2];
+        v22 = cycles[3];
       }
 
       else
@@ -587,27 +587,27 @@ LABEL_24:
   return v19;
 }
 
-+ (SATaskStateInTransition)stateWithKCDataTransitioningTask:(uint64_t)a3 terminatedThreadsInstructionCycles:(uint64_t)a4 memoryStatus:(uint64_t)a5 machTimebase:(uint64_t)a6 donatingUniquePids:(uint64_t)a7 startTimestamp:(uint64_t)a8 endTimestamp:(uint64_t)a9 startSampleIndex:(uint64_t)a10 endSampleIndex:
++ (SATaskStateInTransition)stateWithKCDataTransitioningTask:(uint64_t)task terminatedThreadsInstructionCycles:(uint64_t)cycles memoryStatus:(uint64_t)status machTimebase:(uint64_t)timebase donatingUniquePids:(uint64_t)pids startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)self0 endSampleIndex:
 {
   objc_opt_self();
-  v17 = [[SATaskStateInTransition alloc] initWithKCDataTransitioningTask:a2 andTerminatedThreadsInstructionCycles:a3 memoryStatus:a4 machTimebase:a5 andDonatingUniquePids:a6 startTimestamp:a7 endTimestamp:a8 startSampleIndex:a9 endSampleIndex:a10];
+  v17 = [[SATaskStateInTransition alloc] initWithKCDataTransitioningTask:a2 andTerminatedThreadsInstructionCycles:task memoryStatus:cycles machTimebase:status andDonatingUniquePids:timebase startTimestamp:pids endTimestamp:timestamp startSampleIndex:endTimestamp endSampleIndex:index];
 
   return v17;
 }
 
-+ (id)stateWithStackshotTaskV1:(unint64_t)a3 machTimebase:(unsigned int)a4 hwPageSize:(uint64_t)a5 startTimestamp:(uint64_t)a6 endTimestamp:(uint64_t)a7 startSampleIndex:(uint64_t)a8 endSampleIndex:
++ (id)stateWithStackshotTaskV1:(unint64_t)v1 machTimebase:(unsigned int)timebase hwPageSize:(uint64_t)size startTimestamp:(uint64_t)timestamp endTimestamp:(uint64_t)endTimestamp startSampleIndex:(uint64_t)index endSampleIndex:
 {
   objc_opt_self();
   v15 = [SATaskState alloc];
   if (v15)
   {
-    v16 = [(SATaskState *)v15 initWithStartTimestamp:a5 endTimestamp:a6 startSampleIndex:a7 endSampleIndex:a8];
+    v16 = [(SATaskState *)v15 initWithStartTimestamp:size endTimestamp:timestamp startSampleIndex:endTimestamp endSampleIndex:index];
     v17 = v16;
     if (v16)
     {
       *(v16 + 8) = *(a2 + 60);
       v18 = *(a2 + 68);
-      *(v16 + 80) = *(a2 + 64) * a4;
+      *(v16 + 80) = *(a2 + 64) * timebase;
       *(v16 + 12) = v18;
       *(v16 + 16) = *(a2 + 72);
       *(v16 + 20) = *(a2 + 76);
@@ -619,9 +619,9 @@ LABEL_24:
 
       *(v16 + 128) = v19;
       *(v16 + 24) = *(a2 + 125);
-      if (HIDWORD(a3) && a3)
+      if (HIDWORD(v1) && v1)
       {
-        if (a3 == HIDWORD(a3))
+        if (v1 == HIDWORD(v1))
         {
           *(v16 + 88) = *(a2 + 16);
           v20 = *(a2 + 24);
@@ -656,7 +656,7 @@ LABEL_24:
   return v17;
 }
 
-- (SATaskState)initWithStartTimestamp:(id)a3 endTimestamp:(id)a4 startSampleIndex:(unint64_t)a5 endSampleIndex:(unint64_t)a6
+- (SATaskState)initWithStartTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex
 {
   v14.receiver = self;
   v14.super_class = SATaskState;
@@ -664,10 +664,10 @@ LABEL_24:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_startTimestamp, a3);
-    objc_storeStrong(&v11->_endTimestamp, a4);
-    v11->_startSampleIndex = a5;
-    v11->_endSampleIndex = a6;
+    objc_storeStrong(&v10->_startTimestamp, timestamp);
+    objc_storeStrong(&v11->_endTimestamp, endTimestamp);
+    v11->_startSampleIndex = index;
+    v11->_endSampleIndex = sampleIndex;
     *&v12 = 0x8000000080000000;
     *(&v12 + 1) = 0x8000000080000000;
     *&v11->_memoryLimitMB = v12;
@@ -676,17 +676,17 @@ LABEL_24:
   return v11;
 }
 
-+ (SATaskState)stateWithStartTimestamp:(id)a3 endTimestamp:(id)a4 startSampleIndex:(unint64_t)a5 endSampleIndex:(unint64_t)a6
++ (SATaskState)stateWithStartTimestamp:(id)timestamp endTimestamp:(id)endTimestamp startSampleIndex:(unint64_t)index endSampleIndex:(unint64_t)sampleIndex
 {
-  v6 = [[a1 alloc] initWithStartTimestamp:a3 endTimestamp:a4 startSampleIndex:a5 endSampleIndex:a6];
+  v6 = [[self alloc] initWithStartTimestamp:timestamp endTimestamp:endTimestamp startSampleIndex:index endSampleIndex:sampleIndex];
 
   return v6;
 }
 
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v78 = *MEMORY[0x1E69E9840];
-  if ([(SATaskState *)self sizeInBytesForSerializedVersion]!= a4)
+  if ([(SATaskState *)self sizeInBytesForSerializedVersion]!= length)
   {
     v20 = *__error();
     v21 = _sa_logt();
@@ -694,40 +694,40 @@ LABEL_24:
     {
       v22 = [(SATaskState *)self debugDescription];
       *buf = 136315650;
-      v74 = [v22 UTF8String];
+      uTF8String = [v22 UTF8String];
       v75 = 2048;
       *v76 = [(SATaskState *)self sizeInBytesForSerializedVersion];
       *&v76[8] = 2048;
-      *&v76[10] = a4;
+      *&v76[10] = length;
       _os_log_error_impl(&dword_1E0E2F000, v21, OS_LOG_TYPE_ERROR, "%s: size %lu != buffer length %lu", buf, 0x20u);
     }
 
     *__error() = v20;
     v23 = [(SATaskState *)self debugDescription];
-    v24 = [v23 UTF8String];
+    uTF8String2 = [v23 UTF8String];
     [(SATaskState *)self sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(3570, "%s: size %lu != buffer length %lu", v25, v26, v27, v28, v29, v30, v24);
+    _SASetCrashLogMessage(3570, "%s: size %lu != buffer length %lu", v25, v26, v27, v28, v29, v30, uTF8String2);
 
     _os_crash();
     __break(1u);
     goto LABEL_18;
   }
 
-  *&a3->var0 = 769;
-  *(&a3->var3 + 2) = *&self->_startSampleIndex;
-  *(&a3->var5 + 2) = self->_suspendCount;
-  *(&a3->var5 + 6) = self->_taskSizeInBytes;
-  *(&a3->var6 + 6) = self->_faults;
-  *(&a3->var7 + 2) = self->_pageins;
-  *(&a3->var7 + 6) = self->_cowFaults;
-  *(&a3->var8 + 2) = self->_latencyQos;
-  *(&a3->var9 + 2) = self->_terminatedThreadsUserTimeInNs;
-  *(&a3->var11 + 2) = self->_terminatedThreadsSystemTimeInNs;
-  *(&a3->var12 + 6) = self->_terminatedThreadsInstructions;
-  *(&a3->var13 + 6) = self->_terminatedThreadsCycles;
-  *(&a3->var14 + 7) = self->_ssFlags;
-  *(&a3->var1 + 1) = SASerializableIndexForPointerFromSerializationDictionary(self->_startTimestamp, a5);
-  *(&a3->var2 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_endTimestamp, a5);
+  *&buffer->var0 = 769;
+  *(&buffer->var3 + 2) = *&self->_startSampleIndex;
+  *(&buffer->var5 + 2) = self->_suspendCount;
+  *(&buffer->var5 + 6) = self->_taskSizeInBytes;
+  *(&buffer->var6 + 6) = self->_faults;
+  *(&buffer->var7 + 2) = self->_pageins;
+  *(&buffer->var7 + 6) = self->_cowFaults;
+  *(&buffer->var8 + 2) = self->_latencyQos;
+  *(&buffer->var9 + 2) = self->_terminatedThreadsUserTimeInNs;
+  *(&buffer->var11 + 2) = self->_terminatedThreadsSystemTimeInNs;
+  *(&buffer->var12 + 6) = self->_terminatedThreadsInstructions;
+  *(&buffer->var13 + 6) = self->_terminatedThreadsCycles;
+  *(&buffer->var14 + 7) = self->_ssFlags;
+  *(&buffer->var1 + 1) = SASerializableIndexForPointerFromSerializationDictionary(self->_startTimestamp, dictionary);
+  *(&buffer->var2 + 2) = SASerializableIndexForPointerFromSerializationDictionary(self->_endTimestamp, dictionary);
   if ([(NSSet *)self->_donatingUniquePids count]>= 0xFF)
   {
 LABEL_18:
@@ -736,10 +736,10 @@ LABEL_18:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       v32 = [(SATaskState *)self debugDescription];
-      v33 = [v32 UTF8String];
+      uTF8String3 = [v32 UTF8String];
       v34 = [(NSSet *)self->_donatingUniquePids count];
       *buf = 136315394;
-      v74 = v33;
+      uTF8String = uTF8String3;
       v75 = 2048;
       *v76 = v34;
       _os_log_error_impl(&dword_1E0E2F000, v31, OS_LOG_TYPE_ERROR, "%s: %lu donatingUniquePids", buf, 0x16u);
@@ -747,16 +747,16 @@ LABEL_18:
 
     *__error() = v13;
     v35 = [(SATaskState *)self debugDescription];
-    v36 = [v35 UTF8String];
+    uTF8String4 = [v35 UTF8String];
     [(NSSet *)self->_donatingUniquePids count];
-    _SASetCrashLogMessage(3592, "%s: %lu donatingUniquePids", v37, v38, v39, v40, v41, v42, v36);
+    _SASetCrashLogMessage(3592, "%s: %lu donatingUniquePids", v37, v38, v39, v40, v41, v42, uTF8String4);
 
     _os_crash();
     __break(1u);
     goto LABEL_21;
   }
 
-  v9 = &a3->var15 + 7;
+  v9 = &buffer->var15 + 7;
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
@@ -800,10 +800,10 @@ LABEL_21:
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
       v44 = [(SATaskState *)self debugDescription];
-      v45 = [v44 UTF8String];
+      uTF8String5 = [v44 UTF8String];
       v46 = [(NSSet *)self->_donatingUniquePids count];
       *buf = 136315650;
-      v74 = v45;
+      uTF8String = uTF8String5;
       v75 = 2048;
       *v76 = v46;
       *&v76[8] = 1024;
@@ -812,10 +812,10 @@ LABEL_21:
     }
 
     *__error() = v17;
-    a3 = [(SATaskState *)self debugDescription];
-    v47 = [($2089E77EEE4A1EB652AD555C69D4CCDC *)a3 UTF8String];
+    buffer = [(SATaskState *)self debugDescription];
+    uTF8String6 = [($2089E77EEE4A1EB652AD555C69D4CCDC *)buffer UTF8String];
     [(NSSet *)self->_donatingUniquePids count];
-    _SASetCrashLogMessage(3599, "%s: %lu donatingUniquePids, but %u serialized", v48, v49, v50, v51, v52, v53, v47);
+    _SASetCrashLogMessage(3599, "%s: %lu donatingUniquePids, but %u serialized", v48, v49, v50, v51, v52, v53, uTF8String6);
 
     _os_crash();
     __break(1u);
@@ -825,34 +825,34 @@ LABEL_24:
     if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
     {
       v56 = [(SATaskState *)self debugDescription];
-      v57 = [v56 UTF8String];
-      v58 = BYTE6(a3->var14);
-      v59 = [(SATaskState *)self sizeInBytesForSerializedVersion];
+      uTF8String7 = [v56 UTF8String];
+      v58 = BYTE6(buffer->var14);
+      sizeInBytesForSerializedVersion = [(SATaskState *)self sizeInBytesForSerializedVersion];
       *buf = 136315906;
-      v74 = v57;
+      uTF8String = uTF8String7;
       v75 = 1024;
       *v76 = v58;
       *&v76[4] = 2048;
       *&v76[6] = v17;
       *&v76[14] = 2048;
-      *&v76[16] = v59;
+      *&v76[16] = sizeInBytesForSerializedVersion;
       _os_log_error_impl(&dword_1E0E2F000, v55, OS_LOG_TYPE_ERROR, "%s: after serializing (with %u donating uniquepids), ended with length %ld, should be %lu", buf, 0x26u);
     }
 
     *__error() = v54;
     v60 = [(SATaskState *)self debugDescription];
-    v61 = [v60 UTF8String];
-    v62 = BYTE6(a3->var14);
+    uTF8String8 = [v60 UTF8String];
+    v62 = BYTE6(buffer->var14);
     [(SATaskState *)self sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(3603, "%s: after serializing (with %u donating uniquepids), ended with length %ld, should be %lu", v63, v64, v65, v66, v67, v68, v61);
+    _SASetCrashLogMessage(3603, "%s: after serializing (with %u donating uniquepids), ended with length %ld, should be %lu", v63, v64, v65, v66, v67, v68, uTF8String8);
 
     _os_crash();
     __break(1u);
   }
 
-  BYTE6(a3->var14) = v13;
+  BYTE6(buffer->var14) = v13;
   v16 = &v9[8 * v13];
-  v17 = v16 - a3 + 24;
+  v17 = v16 - buffer + 24;
   if (v17 != [(SATaskState *)self sizeInBytesForSerializedVersion])
   {
     goto LABEL_24;
@@ -867,100 +867,100 @@ LABEL_24:
   return 1;
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
-  v5 = [objc_opt_class() classDictionaryKey];
-  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, v5);
+  classDictionaryKey = [objc_opt_class() classDictionaryKey];
+  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(dictionary, self, classDictionaryKey);
 
   if (v6)
   {
-    [(SATimestamp *)self->_startTimestamp addSelfToSerializationDictionary:a3];
+    [(SATimestamp *)self->_startTimestamp addSelfToSerializationDictionary:dictionary];
     endTimestamp = self->_endTimestamp;
 
-    [(SATimestamp *)endTimestamp addSelfToSerializationDictionary:a3];
+    [(SATimestamp *)endTimestamp addSelfToSerializationDictionary:dictionary];
   }
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
   v70 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 4u)
+  if (*buffer >= 4u)
   {
     goto LABEL_38;
   }
 
-  v4 = a4;
-  if (a4 <= 0x66)
+  lengthCopy2 = length;
+  if (length <= 0x66)
   {
     v27 = *__error();
-    v5 = _sa_logt();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    bufferCopy = _sa_logt();
+    if (os_log_type_enabled(bufferCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v67 = v4;
+      v67 = lengthCopy2;
       v68 = 2048;
       v69 = 103;
-      _os_log_error_impl(&dword_1E0E2F000, v5, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATaskState struct %lu", buf, 0x16u);
+      _os_log_error_impl(&dword_1E0E2F000, bufferCopy, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATaskState struct %lu", buf, 0x16u);
     }
 
     *__error() = v27;
-    _SASetCrashLogMessage(3628, "bufferLength %lu < serialized SATaskState struct %lu", v28, v29, v30, v31, v32, v33, v4);
+    _SASetCrashLogMessage(3628, "bufferLength %lu < serialized SATaskState struct %lu", v28, v29, v30, v31, v32, v33, lengthCopy2);
     _os_crash();
     __break(1u);
     goto LABEL_29;
   }
 
-  v5 = a3;
-  v6 = *(a3 + 94);
+  bufferCopy = buffer;
+  v6 = *(buffer + 94);
   v7 = 8 * v6;
-  if (8 * v6 + 103 > a4)
+  if (8 * v6 + 103 > length)
   {
 LABEL_29:
     v34 = *__error();
     v35 = _sa_logt();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
-      v36 = *(v5 + 94);
+      v36 = *(bufferCopy + 94);
       *buf = 134218240;
-      v67 = v4;
+      v67 = lengthCopy2;
       v68 = 1024;
       LODWORD(v69) = v36;
       _os_log_error_impl(&dword_1E0E2F000, v35, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATask struct with %u donatingUniquePids", buf, 0x12u);
     }
 
     *__error() = v34;
-    v62 = *(v5 + 94);
-    _SASetCrashLogMessage(3630, "bufferLength %lu < serialized SATask struct with %u donatingUniquePids", v37, v38, v39, v40, v41, v42, v4);
+    v62 = *(bufferCopy + 94);
+    _SASetCrashLogMessage(3630, "bufferLength %lu < serialized SATask struct with %u donatingUniquePids", v37, v38, v39, v40, v41, v42, lengthCopy2);
     _os_crash();
     __break(1u);
     goto LABEL_32;
   }
 
-  v8 = a3 + 103;
-  if (*(a3 + 1) < 2u)
+  v8 = buffer + 103;
+  if (*(buffer + 1) < 2u)
   {
     v9 = 0;
     goto LABEL_9;
   }
 
-  if (v7 + 111 > a4)
+  if (v7 + 111 > length)
   {
 LABEL_32:
     v43 = *__error();
     v44 = _sa_logt();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
-      v45 = *(v5 + 94);
+      v45 = *(bufferCopy + 94);
       *buf = 134218240;
-      v67 = v4;
+      v67 = lengthCopy2;
       v68 = 1024;
       LODWORD(v69) = v45;
       _os_log_error_impl(&dword_1E0E2F000, v44, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATaskState struct v2 with %u donating unique pids", buf, 0x12u);
     }
 
     *__error() = v43;
-    v63 = *(v5 + 94);
-    _SASetCrashLogMessage(3638, "bufferLength %lu < serialized SATaskState struct v2 with %u donating unique pids", v46, v47, v48, v49, v50, v51, v4);
+    v63 = *(bufferCopy + 94);
+    _SASetCrashLogMessage(3638, "bufferLength %lu < serialized SATaskState struct v2 with %u donating unique pids", v46, v47, v48, v49, v50, v51, lengthCopy2);
     _os_crash();
     __break(1u);
 LABEL_35:
@@ -968,17 +968,17 @@ LABEL_35:
     v53 = _sa_logt();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
     {
-      v54 = *(v5 + 94);
+      v54 = *(bufferCopy + 94);
       *buf = 134218240;
-      v67 = v4;
+      v67 = lengthCopy2;
       v68 = 1024;
       LODWORD(v69) = v54;
       _os_log_error_impl(&dword_1E0E2F000, v53, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATaskState struct v3 with %u donating unique pids", buf, 0x12u);
     }
 
     *__error() = v52;
-    v64 = *(v5 + 94);
-    _SASetCrashLogMessage(3681, "bufferLength %lu < serialized SATaskState struct v3 with %u donating unique pids", v55, v56, v57, v58, v59, v60, v4);
+    v64 = *(bufferCopy + 94);
+    _SASetCrashLogMessage(3681, "bufferLength %lu < serialized SATaskState struct v3 with %u donating unique pids", v55, v56, v57, v58, v59, v60, lengthCopy2);
     _os_crash();
     __break(1u);
 LABEL_38:
@@ -1000,35 +1000,35 @@ LABEL_9:
 LABEL_10:
   v12 = objc_alloc_init(*v11);
   v13 = v12;
-  v14 = *(v5 + 18);
+  v14 = *(bufferCopy + 18);
   v15 = 0x7FFFFFFFFFFFFFFFLL;
   if (v14 != 0x7FFFFFFF && v14 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = *(v5 + 18);
+    v15 = *(bufferCopy + 18);
   }
 
   v12[8] = v15;
-  v16 = *(v5 + 26);
+  v16 = *(bufferCopy + 26);
   v17 = 0x7FFFFFFFFFFFFFFFLL;
   if (v16 != 0x7FFFFFFF && v16 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = *(v5 + 26);
+    v17 = *(bufferCopy + 26);
   }
 
   v12[9] = v17;
-  *(v12 + 2) = *(v5 + 34);
-  v12[10] = *(v5 + 38);
-  *(v12 + 3) = *(v5 + 46);
-  *(v12 + 4) = *(v5 + 50);
-  *(v12 + 5) = *(v5 + 54);
-  *(v12 + 6) = *(v5 + 58);
-  v12[11] = *(v5 + 62);
-  v12[12] = *(v5 + 70);
-  v12[13] = *(v5 + 78);
-  v12[14] = *(v5 + 86);
-  v12[16] = *(v5 + 95);
-  v18 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:*(v5 + 94)];
-  if (*(v5 + 94))
+  *(v12 + 2) = *(bufferCopy + 34);
+  v12[10] = *(bufferCopy + 38);
+  *(v12 + 3) = *(bufferCopy + 46);
+  *(v12 + 4) = *(bufferCopy + 50);
+  *(v12 + 5) = *(bufferCopy + 54);
+  *(v12 + 6) = *(bufferCopy + 58);
+  v12[11] = *(bufferCopy + 62);
+  v12[12] = *(bufferCopy + 70);
+  v12[13] = *(bufferCopy + 78);
+  v12[14] = *(bufferCopy + 86);
+  v12[16] = *(bufferCopy + 95);
+  v18 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:*(bufferCopy + 94)];
+  if (*(bufferCopy + 94))
   {
     v19 = 0;
     do
@@ -1039,7 +1039,7 @@ LABEL_10:
       ++v19;
     }
 
-    while (v19 < *(v5 + 94));
+    while (v19 < *(bufferCopy + 94));
   }
 
   v21 = [v18 copy];
@@ -1051,7 +1051,7 @@ LABEL_10:
     v13[17] = *v9;
   }
 
-  if (*(v5 + 1) < 3u)
+  if (*(bufferCopy + 1) < 3u)
   {
     *(v13 + 28) = 0x8000000080000000;
     v24 = 0x80000000;
@@ -1059,13 +1059,13 @@ LABEL_10:
     goto LABEL_25;
   }
 
-  v4 = a4;
-  if (v7 + 127 > a4)
+  lengthCopy2 = length;
+  if (v7 + 127 > length)
   {
     goto LABEL_35;
   }
 
-  v23 = &v8[8 * *(v5 + 94)];
+  v23 = &v8[8 * *(bufferCopy + 94)];
   *(v13 + 7) = *(v23 + 2);
   *(v13 + 8) = *(v23 + 3);
   *(v13 + 9) = *(v23 + 4);
@@ -1077,53 +1077,53 @@ LABEL_25:
   return v13;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 4u)
+  if (*buffer >= 4u)
   {
     goto LABEL_13;
   }
 
-  if (a4 <= 0x66)
+  if (length <= 0x66)
   {
     v20 = *__error();
-    v7 = _sa_logt();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    bufferCopy = _sa_logt();
+    if (os_log_type_enabled(bufferCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v39 = a4;
+      lengthCopy2 = length;
       v40 = 2048;
       v41 = 103;
-      _os_log_error_impl(&dword_1E0E2F000, v7, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATaskState struct %lu", buf, 0x16u);
+      _os_log_error_impl(&dword_1E0E2F000, bufferCopy, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATaskState struct %lu", buf, 0x16u);
     }
 
     *__error() = v20;
-    _SASetCrashLogMessage(3704, "bufferLength %lu < serialized SATaskState struct %lu", v21, v22, v23, v24, v25, v26, a4);
+    _SASetCrashLogMessage(3704, "bufferLength %lu < serialized SATaskState struct %lu", v21, v22, v23, v24, v25, v26, length);
     _os_crash();
     __break(1u);
     goto LABEL_10;
   }
 
-  v7 = a3;
-  if (8 * *(a3 + 94) + 103 > a4)
+  bufferCopy = buffer;
+  if (8 * *(buffer + 94) + 103 > length)
   {
 LABEL_10:
     v27 = *__error();
     v28 = _sa_logt();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v29 = *(v7 + 94);
+      v29 = *(bufferCopy + 94);
       *buf = 134218240;
-      v39 = a4;
+      lengthCopy2 = length;
       v40 = 1024;
       LODWORD(v41) = v29;
       _os_log_error_impl(&dword_1E0E2F000, v28, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SATask struct with %u donatingUniquePids", buf, 0x12u);
     }
 
     *__error() = v27;
-    v37 = *(v7 + 94);
-    _SASetCrashLogMessage(3705, "bufferLength %lu < serialized SATask struct with %u donatingUniquePids", v30, v31, v32, v33, v34, v35, a4);
+    v37 = *(bufferCopy + 94);
+    _SASetCrashLogMessage(3705, "bufferLength %lu < serialized SATask struct with %u donatingUniquePids", v30, v31, v32, v33, v34, v35, length);
     _os_crash();
     __break(1u);
 LABEL_13:
@@ -1131,21 +1131,21 @@ LABEL_13:
     objc_exception_throw(v36);
   }
 
-  v11 = *(a3 + 2);
+  v11 = *(buffer + 2);
   v12 = objc_opt_class();
-  v13 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v11, a5, a6, v12);
+  v13 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v11, dictionary, bufferDictionary, v12);
   startTimestamp = self->_startTimestamp;
   self->_startTimestamp = v13;
 
-  v15 = *(v7 + 10);
+  v15 = *(bufferCopy + 10);
   v16 = objc_opt_class();
-  v17 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v15, a5, a6, v16);
+  v17 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v15, dictionary, bufferDictionary, v16);
   endTimestamp = self->_endTimestamp;
   self->_endTimestamp = v17;
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (SATaskState)stateWithPAStyleTaskPrivateData:(void *)a3 donatingUniquePids:
++ (SATaskState)stateWithPAStyleTaskPrivateData:(void *)data donatingUniquePids:
 {
   objc_opt_self();
   v5 = objc_alloc_init(SATaskState);
@@ -1177,7 +1177,7 @@ LABEL_13:
   }
 
   v5->_ssFlags = v7;
-  objc_storeStrong(&v5->_donatingUniquePids, a3);
+  objc_storeStrong(&v5->_donatingUniquePids, data);
   *&v8 = 0x8000000080000000;
   *(&v8 + 1) = 0x8000000080000000;
   *&v6->_memoryLimitMB = v8;

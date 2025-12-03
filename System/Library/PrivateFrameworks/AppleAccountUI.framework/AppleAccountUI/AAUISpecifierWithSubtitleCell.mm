@@ -1,53 +1,53 @@
 @interface AAUISpecifierWithSubtitleCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AAUISpecifierWithSubtitleCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v22.receiver = self;
   v22.super_class = AAUISpecifierWithSubtitleCell;
-  v4 = a3;
-  [(PSTableCell *)&v22 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v22 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(AAUISpecifierWithSubtitleCell *)self textLabel:v22.receiver];
   v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v5 setFont:v6];
 
-  v7 = [(AAUISpecifierWithSubtitleCell *)self textLabel];
-  v8 = [MEMORY[0x1E69DC888] labelColor];
-  [v7 setTextColor:v8];
+  textLabel = [(AAUISpecifierWithSubtitleCell *)self textLabel];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [textLabel setTextColor:labelColor];
 
-  v9 = [(AAUISpecifierWithSubtitleCell *)self textLabel];
-  v10 = [v4 propertyForKey:*MEMORY[0x1E69C59A8]];
-  [v9 setText:v10];
+  textLabel2 = [(AAUISpecifierWithSubtitleCell *)self textLabel];
+  v10 = [specifierCopy propertyForKey:*MEMORY[0x1E69C59A8]];
+  [textLabel2 setText:v10];
 
-  v11 = [(AAUISpecifierWithSubtitleCell *)self textLabel];
-  [v11 setLineBreakMode:0];
+  textLabel3 = [(AAUISpecifierWithSubtitleCell *)self textLabel];
+  [textLabel3 setLineBreakMode:0];
 
-  v12 = [(AAUISpecifierWithSubtitleCell *)self textLabel];
-  [v12 setNumberOfLines:0];
+  textLabel4 = [(AAUISpecifierWithSubtitleCell *)self textLabel];
+  [textLabel4 setNumberOfLines:0];
 
-  v13 = [(AAUISpecifierWithSubtitleCell *)self detailTextLabel];
+  detailTextLabel = [(AAUISpecifierWithSubtitleCell *)self detailTextLabel];
   v14 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
-  [v13 setFont:v14];
+  [detailTextLabel setFont:v14];
 
-  v15 = [(AAUISpecifierWithSubtitleCell *)self detailTextLabel];
-  v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v15 setTextColor:v16];
+  detailTextLabel2 = [(AAUISpecifierWithSubtitleCell *)self detailTextLabel];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [detailTextLabel2 setTextColor:secondaryLabelColor];
 
-  v17 = [(AAUISpecifierWithSubtitleCell *)self detailTextLabel];
-  v18 = [v4 propertyForKey:*MEMORY[0x1E69C59A0]];
+  detailTextLabel3 = [(AAUISpecifierWithSubtitleCell *)self detailTextLabel];
+  v18 = [specifierCopy propertyForKey:*MEMORY[0x1E69C59A0]];
 
-  [v17 setText:v18];
-  v19 = [(AAUISpecifierWithSubtitleCell *)self detailTextLabel];
-  [v19 setLineBreakMode:0];
+  [detailTextLabel3 setText:v18];
+  detailTextLabel4 = [(AAUISpecifierWithSubtitleCell *)self detailTextLabel];
+  [detailTextLabel4 setLineBreakMode:0];
 
-  v20 = [(AAUISpecifierWithSubtitleCell *)self detailTextLabel];
-  [v20 setNumberOfLines:0];
+  detailTextLabel5 = [(AAUISpecifierWithSubtitleCell *)self detailTextLabel];
+  [detailTextLabel5 setNumberOfLines:0];
 
-  v21 = [(AAUISpecifierWithSubtitleCell *)self imageView];
-  [v21 setContentMode:1];
+  imageView = [(AAUISpecifierWithSubtitleCell *)self imageView];
+  [imageView setContentMode:1];
 
   [(AAUISpecifierWithSubtitleCell *)self setNeedsLayout];
 }

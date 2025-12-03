@@ -1,6 +1,6 @@
 @interface CKDPDeleteContainerResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -18,19 +18,19 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v6 = objc_msgSend_allocWithZone_(v4, v5, a3);
+  v6 = objc_msgSend_allocWithZone_(v4, v5, zone);
 
   return objc_msgSend_init(v6, v7, v8);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   v4 = objc_opt_class();
-  isMemberOfClass = objc_msgSend_isMemberOfClass_(v3, v5, v4);
+  isMemberOfClass = objc_msgSend_isMemberOfClass_(equalCopy, v5, v4);
 
   return isMemberOfClass;
 }

@@ -1,30 +1,30 @@
 @interface TSCEBooleanCellValue
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCellValue:(id)a3;
-- (TSCEBooleanCellValue)initWithArchive:(const void *)a3 locale:(id)a4;
-- (TSCEBooleanCellValue)initWithBoolean:(BOOL)a3 locale:(id)a4;
-- (TSCEBooleanCellValue)initWithBooleanValue:(id)a3 locale:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCellValue:(id)value;
+- (TSCEBooleanCellValue)initWithArchive:(const void *)archive locale:(id)locale;
+- (TSCEBooleanCellValue)initWithBoolean:(BOOL)boolean locale:(id)locale;
+- (TSCEBooleanCellValue)initWithBooleanValue:(id)value locale:(id)locale;
 - (id)displayString;
 - (id)format;
 - (id)tsceValue;
-- (int64_t)compareToCellValue:(id)a3;
-- (void)encodeToArchive:(void *)a3;
+- (int64_t)compareToCellValue:(id)value;
+- (void)encodeToArchive:(void *)archive;
 @end
 
 @implementation TSCEBooleanCellValue
 
-- (TSCEBooleanCellValue)initWithBoolean:(BOOL)a3 locale:(id)a4
+- (TSCEBooleanCellValue)initWithBoolean:(BOOL)boolean locale:(id)locale
 {
-  v4 = a3;
-  v6 = a4;
+  booleanCopy = boolean;
+  localeCopy = locale;
   v15.receiver = self;
   v15.super_class = TSCEBooleanCellValue;
-  v7 = [(TSCECellValue *)&v15 initWithLocale:v6];
+  v7 = [(TSCECellValue *)&v15 initWithLocale:localeCopy];
   v11 = v7;
   if (v7)
   {
     v7->super._valueType = 2;
-    v12 = objc_msgSend_BOOLValue_(TSCEBooleanValue, v8, v4, v9, v10);
+    v12 = objc_msgSend_BOOLValue_(TSCEBooleanValue, v8, booleanCopy, v9, v10);
     BOOLeanValue = v11->_BOOLeanValue;
     v11->_BOOLeanValue = v12;
   }
@@ -32,21 +32,21 @@
   return v11;
 }
 
-- (TSCEBooleanCellValue)initWithBooleanValue:(id)a3 locale:(id)a4
+- (TSCEBooleanCellValue)initWithBooleanValue:(id)value locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  localeCopy = locale;
   v23.receiver = self;
   v23.super_class = TSCEBooleanCellValue;
-  v8 = [(TSCECellValue *)&v23 initWithLocale:v7];
+  v8 = [(TSCECellValue *)&v23 initWithLocale:localeCopy];
   v13 = v8;
   if (v8)
   {
     v8->super._valueType = 2;
-    v18 = objc_msgSend_asBool(v6, v9, v10, v11, v12);
-    if (v6)
+    v18 = objc_msgSend_asBool(valueCopy, v9, v10, v11, v12);
+    if (valueCopy)
     {
-      objc_msgSend_format(v6, v14, v15, v16, v17);
+      objc_msgSend_format(valueCopy, v14, v15, v16, v17);
     }
 
     else
@@ -117,12 +117,12 @@
   return v6;
 }
 
-- (BOOL)isEqualToCellValue:(id)a3
+- (BOOL)isEqualToCellValue:(id)value
 {
-  v4 = a3;
-  if (objc_msgSend_valueType(v4, v5, v6, v7, v8) == 2)
+  valueCopy = value;
+  if (objc_msgSend_valueType(valueCopy, v5, v6, v7, v8) == 2)
   {
-    v13 = objc_msgSend_BOOLeanValue(v4, v9, v10, v11, v12);
+    v13 = objc_msgSend_BOOLeanValue(valueCopy, v9, v10, v11, v12);
     v18 = objc_msgSend_asBool(self->_BOOLeanValue, v14, v15, v16, v17);
     if (v18 != objc_msgSend_asBool(v13, v19, v20, v21, v22))
     {
@@ -165,20 +165,20 @@ LABEL_12:
   return isEqualNotCountingExplicitness;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = TSCEBooleanCellValue;
-  return [(TSCECellValue *)&v4 isEqual:a3];
+  return [(TSCECellValue *)&v4 isEqual:equal];
 }
 
-- (int64_t)compareToCellValue:(id)a3
+- (int64_t)compareToCellValue:(id)value
 {
-  v8 = a3;
-  v9 = v8[8];
+  valueCopy = value;
+  v9 = valueCopy[8];
   if (v9 <= 2)
   {
-    if (!v8[8])
+    if (!valueCopy[8])
     {
 LABEL_19:
       v12 = 1;
@@ -198,7 +198,7 @@ LABEL_18:
     }
 
     v13 = objc_msgSend_asBool(self->_BOOLeanValue, v4, v5, v6, v7);
-    v18 = objc_msgSend_BOOLeanValue(v8, v14, v15, v16, v17);
+    v18 = objc_msgSend_BOOLeanValue(valueCopy, v14, v15, v16, v17);
     v23 = objc_msgSend_asBool(v18, v19, v20, v21, v22);
 
     v24 = 1;
@@ -233,18 +233,18 @@ LABEL_20:
   return v12;
 }
 
-- (TSCEBooleanCellValue)initWithArchive:(const void *)a3 locale:(id)a4
+- (TSCEBooleanCellValue)initWithArchive:(const void *)archive locale:(id)locale
 {
   v18.receiver = self;
   v18.super_class = TSCEBooleanCellValue;
-  v5 = [(TSCECellValue *)&v18 initWithLocale:a4];
+  v5 = [(TSCECellValue *)&v18 initWithLocale:locale];
   v10 = v5;
   if (v5)
   {
     v5->super._valueType = 2;
-    if (*(a3 + 16))
+    if (*(archive + 16))
     {
-      objc_msgSend_formatFromArchive_(MEMORY[0x277D80680], v6, *(a3 + 3), v8, v9);
+      objc_msgSend_formatFromArchive_(MEMORY[0x277D80680], v6, *(archive + 3), v8, v9);
     }
 
     else
@@ -252,8 +252,8 @@ LABEL_20:
       objc_msgSend_BOOLeanFormat(MEMORY[0x277D80680], v6, v7, v8, v9);
     }
     v11 = ;
-    TSCEFormat::TSCEFormat(&v17, v11, *(a3 + 33) & ((*(a3 + 4) & 4u) >> 2));
-    v14 = objc_msgSend_BOOLValue_format_(TSCEBooleanValue, v12, *(a3 + 32), &v17, v13);
+    TSCEFormat::TSCEFormat(&v17, v11, *(archive + 33) & ((*(archive + 4) & 4u) >> 2));
+    v14 = objc_msgSend_BOOLValue_format_(TSCEBooleanValue, v12, *(archive + 32), &v17, v13);
     BOOLeanValue = v10->_BOOLeanValue;
     v10->_BOOLeanValue = v14;
   }
@@ -261,24 +261,24 @@ LABEL_20:
   return v10;
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
-  v7 = objc_msgSend_asBool(self->_BOOLeanValue, a2, a3, v3, v4);
-  *(a3 + 4) |= 2u;
-  *(a3 + 32) = v7;
+  v7 = objc_msgSend_asBool(self->_BOOLeanValue, a2, archive, v3, v4);
+  *(archive + 4) |= 2u;
+  *(archive + 32) = v7;
   v15 = objc_msgSend_format(self, v8, v9, v10, v11);
-  *(a3 + 4) |= 1u;
-  v16 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v16 = *(archive + 3);
   if (!v16)
   {
-    v17 = *(a3 + 1);
+    v17 = *(archive + 1);
     if (v17)
     {
       v17 = *(v17 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v16 = MEMORY[0x223DA02D0](v17);
-    *(a3 + 3) = v16;
+    *(archive + 3) = v16;
   }
 
   objc_msgSend_encodeToArchive_(v15, v12, v16, v13, v14);
@@ -295,8 +295,8 @@ LABEL_20:
     v23 = 0;
   }
 
-  *(a3 + 4) |= 4u;
-  *(a3 + 33) = v23;
+  *(archive + 4) |= 4u;
+  *(archive + 33) = v23;
 }
 
 @end

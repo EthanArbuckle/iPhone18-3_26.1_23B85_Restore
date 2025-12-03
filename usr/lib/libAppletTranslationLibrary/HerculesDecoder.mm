@@ -1,32 +1,32 @@
 @interface HerculesDecoder
-+ (BOOL)didTransactionError:(id *)a3 withTransactionResult:(unsigned __int16 *)a4;
-+ (BOOL)supportsPlasticCardMode:(unsigned __int8)a3 withTransceiver:(id)a4;
-+ (id)addAmount:(id *)a3 withCurrency:(id *)a4 usingAmountKey:(id)a5 usingCurrencyKey:(id)a6 usingExponentKey:(id)a7;
-+ (id)calculateTransactionSN:(id *)a3 withDeviceId:(id *)a4 withDeviceSN:(id *)a5;
-+ (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
-+ (id)getIdentifier:(id *)a3 withInstanceIdentifier:(id *)a4;
-+ (id)getRecords:(id)a3 withError:(id *)a4;
-+ (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9;
-+ (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
-+ (id)getTransactionsFromRecord:(id *)a3 withCityCode:(id)a4 withServerRefreshRequired:(id *)a5 withStateDict:(id)a6 withError:(id *)a7;
-+ (id)parseBalanceCollection:(id *)a3 withError:(id *)a4;
-+ (id)parseBalanceItem:(id *)a3 withError:(id *)a4;
-+ (id)parseDalData:(id)a3 withCityCode:(id)a4 withStateDict:(id)a5 withError:(id *)a6;
-+ (id)parseDateAndTime:(id *)a3;
-+ (id)parseEvent:(id *)a3 withError:(id *)a4;
-+ (id)parseIdentifierCollection:(id *)a3 withError:(id *)a4;
-+ (id)parseIdentifierItem:(id *)a3 withError:(id *)a4;
-+ (id)parsePurchaseEvent:(id *)a3 withError:(id *)a4;
-+ (id)parseSaleEvent:(id *)a3 withError:(id *)a4;
-+ (id)parseUseEvent:(id *)a3 withError:(id *)a4;
++ (BOOL)didTransactionError:(id *)error withTransactionResult:(unsigned __int16 *)result;
++ (BOOL)supportsPlasticCardMode:(unsigned __int8)mode withTransceiver:(id)transceiver;
++ (id)addAmount:(id *)amount withCurrency:(id *)currency usingAmountKey:(id)key usingCurrencyKey:(id)currencyKey usingExponentKey:(id)exponentKey;
++ (id)calculateTransactionSN:(id *)n withDeviceId:(id *)id withDeviceSN:(id *)sN;
++ (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
++ (id)getIdentifier:(id *)identifier withInstanceIdentifier:(id *)instanceIdentifier;
++ (id)getRecords:(id)records withError:(id *)error;
++ (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error;
++ (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
++ (id)getTransactionsFromRecord:(id *)record withCityCode:(id)code withServerRefreshRequired:(id *)required withStateDict:(id)dict withError:(id *)error;
++ (id)parseBalanceCollection:(id *)collection withError:(id *)error;
++ (id)parseBalanceItem:(id *)item withError:(id *)error;
++ (id)parseDalData:(id)data withCityCode:(id)code withStateDict:(id)dict withError:(id *)error;
++ (id)parseDateAndTime:(id *)time;
++ (id)parseEvent:(id *)event withError:(id *)error;
++ (id)parseIdentifierCollection:(id *)collection withError:(id *)error;
++ (id)parseIdentifierItem:(id *)item withError:(id *)error;
++ (id)parsePurchaseEvent:(id *)event withError:(id *)error;
++ (id)parseSaleEvent:(id *)event withError:(id *)error;
++ (id)parseUseEvent:(id *)event withError:(id *)error;
 @end
 
 @implementation HerculesDecoder
 
-+ (BOOL)didTransactionError:(id *)a3 withTransactionResult:(unsigned __int16 *)a4
++ (BOOL)didTransactionError:(id *)error withTransactionResult:(unsigned __int16 *)result
 {
-  v5 = *&a3->var4[31] != 0x4000 || (*(&a3->var7 + 1) ^ 0x13 | a3->var8[1] ^ 0xEE) != 0;
-  if (a4)
+  v5 = *&error->var4[31] != 0x4000 || (*(&error->var7 + 1) ^ 0x13 | error->var8[1] ^ 0xEE) != 0;
+  if (result)
   {
     if (v5)
     {
@@ -38,7 +38,7 @@
       v6 = 64;
     }
 
-    if (HIBYTE(a3->var7) == 15)
+    if (HIBYTE(error->var7) == 15)
     {
       v7 = -4096;
     }
@@ -48,16 +48,16 @@
       v7 = v6;
     }
 
-    *a4 = v7;
+    *result = v7;
   }
 
   return v5;
 }
 
-+ (BOOL)supportsPlasticCardMode:(unsigned __int8)a3 withTransceiver:(id)a4
++ (BOOL)supportsPlasticCardMode:(unsigned __int8)mode withTransceiver:(id)transceiver
 {
   v10 = 0;
-  v4 = [MifareUtils getMcmDataDal:17987 withTransceiver:a4 withError:&v10];
+  v4 = [MifareUtils getMcmDataDal:17987 withTransceiver:transceiver withError:&v10];
   v5 = v10;
   if ([v4 length] == 2 && v5 == 0)
   {
@@ -73,27 +73,27 @@
   return v7;
 }
 
-+ (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
++ (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  historyCopy = history;
   v39 = 0;
-  v9 = [MifareUtils getMcmDataDal:17987 withTransceiver:v8 withError:&v39];
+  v9 = [MifareUtils getMcmDataDal:17987 withTransceiver:historyCopy withError:&v39];
   v10 = v39;
   if ([v9 length] != 2 && v10 == 0)
   {
     v12 = ATLLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v9 asHexString];
+      asHexString = [v9 asHexString];
       *buf = 138412290;
-      v47 = v13;
+      v47 = asHexString;
       _os_log_impl(&dword_22EEF5000, v12, OS_LOG_TYPE_ERROR, "Invalid city code '%@'", buf, 0xCu);
     }
 
     v14 = objc_alloc(MEMORY[0x277CCACA8]);
-    v15 = [v9 asHexString];
-    v16 = [v14 initWithFormat:@"Invalid city code '%@'", v15];
+    asHexString2 = [v9 asHexString];
+    v16 = [v14 initWithFormat:@"Invalid city code '%@'", asHexString2];
 
     v17 = MEMORY[0x277CCA9B8];
     v44 = *MEMORY[0x277CCA450];
@@ -106,7 +106,7 @@
   {
     v21 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v9, "u16BE:", 0)}];
     v38 = 0;
-    v22 = [MifareUtils getMcmDataDal:17734 withTransceiver:v8 withError:&v38];
+    v22 = [MifareUtils getMcmDataDal:17734 withTransceiver:historyCopy withError:&v38];
     v10 = v38;
     if (![v22 length] && !v10)
     {
@@ -127,11 +127,11 @@
 
     if (v10)
     {
-      if (a7)
+      if (error)
       {
         v27 = v10;
         v20 = 0;
-        *a7 = v10;
+        *error = v10;
       }
 
       else
@@ -149,12 +149,12 @@
     if (v30)
     {
       v10 = v30;
-      if (a7)
+      if (error)
       {
 LABEL_23:
         v31 = v10;
         v20 = 0;
-        *a7 = v10;
+        *error = v10;
 LABEL_29:
 
 LABEL_30:
@@ -166,7 +166,7 @@ LABEL_30:
     {
       v32 = [v28 objectForKeyedSubscript:@"Balances"];
       v36 = 0;
-      v33 = [HerculesMappings addBalancesFromVC:v32 withTransceiver:v8 forCity:v21 withError:&v36];
+      v33 = [HerculesMappings addBalancesFromVC:v32 withTransceiver:historyCopy forCity:v21 withError:&v36];
       v10 = v36;
       [v28 setObject:v33 forKeyedSubscript:@"Balances"];
 
@@ -180,7 +180,7 @@ LABEL_30:
         goto LABEL_29;
       }
 
-      if (a7)
+      if (error)
       {
         goto LABEL_23;
       }
@@ -190,11 +190,11 @@ LABEL_30:
     goto LABEL_29;
   }
 
-  if (a7)
+  if (error)
   {
     v19 = v10;
     v20 = 0;
-    *a7 = v10;
+    *error = v10;
   }
 
   else
@@ -209,22 +209,22 @@ LABEL_31:
   return v20;
 }
 
-+ (id)getRecords:(id)a3 withError:(id *)a4
++ (id)getRecords:(id)records withError:(id *)error
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v39 = [v5 bytes];
-  v40 = [v5 length];
+  recordsCopy = records;
+  bytes = [recordsCopy bytes];
+  v40 = [recordsCopy length];
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
-  v7 = [v5 bytes];
-  v8 = [v5 bytes];
-  v9 = [v5 length];
-  v10 = v8 + v9;
-  if (v7 >= v8 + v9)
+  bytes2 = [recordsCopy bytes];
+  bytes3 = [recordsCopy bytes];
+  v9 = [recordsCopy length];
+  v10 = bytes3 + v9;
+  if (bytes2 >= bytes3 + v9)
   {
 LABEL_10:
-    v14 = [v6 reverseObjectEnumerator];
-    v15 = [v14 allObjects];
+    reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
   }
 
   else
@@ -235,7 +235,7 @@ LABEL_10:
       v36 = 0;
       v37 = 0;
       v38 = 0;
-      v12 = DERDecodeItemCtx(&v39, &v36);
+      v12 = DERDecodeItemCtx(&bytes, &v36);
       if (v12)
       {
         break;
@@ -254,12 +254,12 @@ LABEL_10:
         v27 = objc_alloc(MEMORY[0x277CCACA8]);
         v28 = [v27 initWithFormat:@"Unexpected event tag 0x%llx", v36];
         v19 = v28;
-        if (a4)
+        if (error)
         {
-          v29 = *a4;
+          v29 = *error;
           v21 = MEMORY[0x277CCA9B8];
           v30 = *MEMORY[0x277CCA450];
-          if (*a4)
+          if (*error)
           {
             v31 = *MEMORY[0x277CCA7E8];
             v41[0] = *MEMORY[0x277CCA450];
@@ -273,7 +273,7 @@ LABEL_21:
             v32 = 2;
 LABEL_25:
             v33 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:v32];
-            *a4 = [v21 errorWithDomain:@"ATL" code:3 userInfo:v33];
+            *error = [v21 errorWithDomain:@"ATL" code:3 userInfo:v33];
 
             goto LABEL_26;
           }
@@ -291,25 +291,25 @@ LABEL_24:
         goto LABEL_26;
       }
 
-      v13 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v7 length:v37 - v7 + v38 freeWhenDone:0];
+      v13 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:bytes2 length:v37 - bytes2 + v38 freeWhenDone:0];
       [v6 addObject:v13];
 
-      v7 = (v37 + v38);
+      bytes2 = (v37 + v38);
       if (v37 + v38 < v10)
       {
-        while (!*v7)
+        while (!*bytes2)
         {
-          if (++v7 >= v10)
+          if (++bytes2 >= v10)
           {
-            v7 = (v8 + v11);
+            bytes2 = (bytes3 + v11);
             break;
           }
         }
       }
 
-      v39 = v7;
-      v40 = v10 - v7;
-      if (v10 <= v7)
+      bytes = bytes2;
+      v40 = v10 - bytes2;
+      if (v10 <= bytes2)
       {
         goto LABEL_10;
       }
@@ -326,11 +326,11 @@ LABEL_24:
 
     v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode item %d", v16];
     v19 = v18;
-    if (a4)
+    if (error)
     {
-      v20 = *a4;
+      v20 = *error;
       v21 = MEMORY[0x277CCA9B8];
-      if (*a4)
+      if (*error)
       {
         v22 = *MEMORY[0x277CCA7E8];
         v47[0] = *MEMORY[0x277CCA450];
@@ -353,29 +353,29 @@ LABEL_24:
 
 LABEL_26:
 
-    v15 = 0;
+    allObjects = 0;
   }
 
   v34 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return allObjects;
 }
 
-+ (id)parseDalData:(id)a3 withCityCode:(id)a4 withStateDict:(id)a5 withError:(id *)a6
++ (id)parseDalData:(id)data withCityCode:(id)code withStateDict:(id)dict withError:(id *)error
 {
   v71[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v53 = a4;
-  v10 = a5;
-  if ([v9 length])
+  dataCopy = data;
+  codeCopy = code;
+  dictCopy = dict;
+  if ([dataCopy length])
   {
-    v11 = [HerculesDecoder getRecords:v9 withError:a6];
+    v11 = [HerculesDecoder getRecords:dataCopy withError:error];
     v12 = v11;
-    if (!*a6)
+    if (!*error)
     {
       if ([v11 count])
       {
-        v51 = v9;
+        v51 = dataCopy;
         v52 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v12, "count")}];
         v58 = 0u;
         v59 = 0u;
@@ -418,28 +418,28 @@ LABEL_26:
                 v55 = 0;
               }
 
-              if ([v10 count])
+              if ([dictCopy count])
               {
                 v21 = 0;
               }
 
               else
               {
-                v21 = v10;
+                v21 = dictCopy;
               }
 
-              v22 = [HerculesDecoder getTransactionsFromRecord:buf withCityCode:v53 withServerRefreshRequired:v20 withStateDict:v21 withError:a6];
+              v22 = [HerculesDecoder getTransactionsFromRecord:buf withCityCode:codeCopy withServerRefreshRequired:v20 withStateDict:v21 withError:error];
               if (!v16)
               {
                 v16 = v55;
               }
 
-              if (*a6)
+              if (*error)
               {
 
                 v33 = 0;
                 v12 = v50;
-                v9 = v51;
+                dataCopy = v51;
                 v34 = v52;
                 v35 = v13;
                 goto LABEL_44;
@@ -467,21 +467,21 @@ LABEL_26:
         }
 
         v54 = 0;
-        v46 = [HerculesMappings mergeTaps:v52 forCity:v53 outEnRoute:&v54];
+        v46 = [HerculesMappings mergeTaps:v52 forCity:codeCopy outEnRoute:&v54];
         v35 = v54;
 
         if (v16)
         {
-          [v10 setObject:v16 forKeyedSubscript:@"ServerRefreshRequired"];
+          [dictCopy setObject:v16 forKeyedSubscript:@"ServerRefreshRequired"];
         }
 
         v12 = v50;
-        v9 = v51;
+        dataCopy = v51;
         if (v35)
         {
           v62 = v35;
           v47 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
-          [v10 setObject:v47 forKeyedSubscript:@"TransactionInProgress"];
+          [dictCopy setObject:v47 forKeyedSubscript:@"TransactionInProgress"];
         }
 
         v34 = v46;
@@ -500,10 +500,10 @@ LABEL_44:
 
         v37 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No records"];
         v16 = v37;
-        v38 = *a6;
+        v38 = *error;
         v39 = MEMORY[0x277CCA9B8];
         v40 = *MEMORY[0x277CCA450];
-        if (*a6)
+        if (*error)
         {
           v41 = *MEMORY[0x277CCA7E8];
           v64[0] = *MEMORY[0x277CCA450];
@@ -528,7 +528,7 @@ LABEL_44:
 
         v34 = [v42 dictionaryWithObjects:v43 forKeys:v44 count:v45];
         [v39 errorWithDomain:@"ATL" code:3 userInfo:v34];
-        *a6 = v33 = 0;
+        *error = v33 = 0;
       }
 
       goto LABEL_48;
@@ -548,15 +548,15 @@ LABEL_30:
 
   v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"No DAL data"];
   v12 = v24;
-  if (!a6)
+  if (!error)
   {
     goto LABEL_30;
   }
 
-  v25 = *a6;
+  v25 = *error;
   v26 = MEMORY[0x277CCA9B8];
   v27 = *MEMORY[0x277CCA450];
-  if (*a6)
+  if (*error)
   {
     v28 = *MEMORY[0x277CCA7E8];
     v68[0] = *MEMORY[0x277CCA450];
@@ -581,7 +581,7 @@ LABEL_30:
 
   v16 = [v29 dictionaryWithObjects:v30 forKeys:v31 count:v32];
   [v26 errorWithDomain:@"ATL" code:3 userInfo:v16];
-  *a6 = v33 = 0;
+  *error = v33 = 0;
 LABEL_48:
 
 LABEL_49:
@@ -590,15 +590,15 @@ LABEL_49:
   return v33;
 }
 
-+ (id)getTransactionsFromRecord:(id *)a3 withCityCode:(id)a4 withServerRefreshRequired:(id *)a5 withStateDict:(id)a6 withError:(id *)a7
++ (id)getTransactionsFromRecord:(id *)record withCityCode:(id)code withServerRefreshRequired:(id *)required withStateDict:(id)dict withError:(id *)error
 {
   v126[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a6;
+  codeCopy = code;
+  dictCopy = dict;
   v85 = 0;
   v86[0] = 0;
   v86[1] = 0;
-  v13 = DERDecodeItemCtx(a3, &v85);
+  v13 = DERDecodeItemCtx(record, &v85);
   if (v13)
   {
     v14 = ATLLogObject();
@@ -611,12 +611,12 @@ LABEL_49:
 
     v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode E0 %d", v13];
     v16 = v15;
-    if (a7)
+    if (error)
     {
-      v17 = *a7;
+      v17 = *error;
       v18 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277CCA450];
-      if (*a7)
+      if (*error)
       {
         v20 = *MEMORY[0x277CCA7E8];
         v123[0] = *MEMORY[0x277CCA450];
@@ -633,7 +633,7 @@ LABEL_49:
         [MEMORY[0x277CBEAC0] dictionaryWithObjects:v126 forKeys:&v125 count:1];
       }
       v37 = ;
-      *a7 = [v18 errorWithDomain:@"ATL" code:3 userInfo:v37];
+      *error = [v18 errorWithDomain:@"ATL" code:3 userInfo:v37];
     }
 
 LABEL_37:
@@ -655,12 +655,12 @@ LABEL_37:
     v76 = v85;
     v31 = [v30 initWithFormat:@"Unexpected tag 0x%llx when trying to decode E0"];
     v32 = v31;
-    if (a7)
+    if (error)
     {
-      v33 = *a7;
+      v33 = *error;
       v34 = MEMORY[0x277CCA9B8];
       v35 = *MEMORY[0x277CCA450];
-      if (*a7)
+      if (*error)
       {
         v36 = *MEMORY[0x277CCA7E8];
         v119[0] = *MEMORY[0x277CCA450];
@@ -677,10 +677,10 @@ LABEL_37:
         [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
       }
       v47 = ;
-      *a7 = [v34 errorWithDomain:@"ATL" code:3 userInfo:v47];
+      *error = [v34 errorWithDomain:@"ATL" code:3 userInfo:v47];
     }
 
-    LogBinary(OS_LOG_TYPE_ERROR, "+[HerculesDecoder getTransactionsFromRecord:withCityCode:withServerRefreshRequired:withStateDict:withError:]", 296, a3->var0, a3->var1, @"Record data", v48, v49, v76);
+    LogBinary(OS_LOG_TYPE_ERROR, "+[HerculesDecoder getTransactionsFromRecord:withCityCode:withServerRefreshRequired:withStateDict:withError:]", 296, record->var0, record->var1, @"Record data", v48, v49, v76);
     goto LABEL_37;
   }
 
@@ -707,12 +707,12 @@ LABEL_37:
 
     v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode E0 contents %d", v21];
     v24 = v23;
-    if (a7)
+    if (error)
     {
-      v25 = *a7;
+      v25 = *error;
       v26 = MEMORY[0x277CCA9B8];
       v27 = *MEMORY[0x277CCA450];
-      if (*a7)
+      if (*error)
       {
         v28 = *MEMORY[0x277CCA7E8];
         v105[0] = *MEMORY[0x277CCA450];
@@ -731,7 +731,7 @@ LABEL_37:
 
       v60 = LABEL_62:;
       [v26 errorWithDomain:@"ATL" code:3 userInfo:v60];
-      *a7 = v50 = 0;
+      *error = v50 = 0;
 LABEL_67:
 
       goto LABEL_68;
@@ -754,12 +754,12 @@ LABEL_67:
     v55 = objc_alloc(MEMORY[0x277CCACA8]);
     v56 = [v55 initWithFormat:@"Incorrect record version %hhu", **buf];
     v24 = v56;
-    if (a7)
+    if (error)
     {
-      v57 = *a7;
+      v57 = *error;
       v26 = MEMORY[0x277CCA9B8];
       v58 = *MEMORY[0x277CCA450];
-      if (*a7)
+      if (*error)
       {
         v59 = *MEMORY[0x277CCA7E8];
         v101[0] = *MEMORY[0x277CCA450];
@@ -782,23 +782,23 @@ LABEL_67:
     goto LABEL_60;
   }
 
-  if (!v12)
+  if (!dictCopy)
   {
 LABEL_28:
     v40 = [HerculesDecoder parseDateAndTime:&v111];
     v41 = [HerculesDecoder calculateTransactionSN:&v111 withDeviceId:&v113 withDeviceSN:&v114];
     v42 = v41;
-    if (a5 && *(&v117 + 1) && *v117)
+    if (required && *(&v117 + 1) && *v117)
     {
       v43 = v41;
-      *a5 = v42;
+      *required = v42;
     }
 
     v44 = [MEMORY[0x277CBEA90] dataWithDERItem:&v110];
     if (*(&v112[0] + 1))
     {
       v45 = [MEMORY[0x277CBEA90] dataWithDERItem:v112];
-      v46 = [HerculesMappings getStationCode:v45 withTransitInformation:v44 forCity:v11];
+      v46 = [HerculesMappings getStationCode:v45 withTransitInformation:v44 forCity:codeCopy];
     }
 
     else
@@ -811,7 +811,7 @@ LABEL_28:
     v93 = 0x3032000000;
     v94 = __Block_byref_object_copy__0;
     v95 = __Block_byref_object_dispose__0;
-    v96 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v78[0] = MEMORY[0x277D85DD0];
     v78[1] = 3221225472;
     v78[2] = __108__HerculesDecoder_getTransactionsFromRecord_withCityCode_withServerRefreshRequired_withStateDict_withError___block_invoke;
@@ -820,7 +820,7 @@ LABEL_28:
     v79 = v24;
     v60 = v42;
     v80 = v60;
-    v81 = v11;
+    v81 = codeCopy;
     v61 = v44;
     v82 = v61;
     v62 = v46;
@@ -837,12 +837,12 @@ LABEL_28:
 
       v64 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to parse event"];
       v65 = v64;
-      if (a7)
+      if (error)
       {
-        v66 = *a7;
+        v66 = *error;
         v67 = MEMORY[0x277CCA9B8];
         v68 = *MEMORY[0x277CCA450];
-        if (*a7)
+        if (*error)
         {
           v69 = *MEMORY[0x277CCA7E8];
           v87[0] = *MEMORY[0x277CCA450];
@@ -859,7 +859,7 @@ LABEL_28:
           [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v90 forKeys:&v89 count:1];
         }
         v70 = ;
-        *a7 = [v67 errorWithDomain:@"ATL" code:3 userInfo:v70];
+        *error = [v67 errorWithDomain:@"ATL" code:3 userInfo:v70];
       }
 
       v50 = 0;
@@ -874,14 +874,14 @@ LABEL_28:
     goto LABEL_67;
   }
 
-  v38 = [HerculesDecoder parseBalanceCollection:v115 withError:a7];
+  v38 = [HerculesDecoder parseBalanceCollection:v115 withError:error];
   if (v38)
   {
-    [v12 setObject:v38 forKeyedSubscript:@"Balances"];
+    [dictCopy setObject:v38 forKeyedSubscript:@"Balances"];
     if (*(&v116 + 1))
     {
       v39 = [MEMORY[0x277CCABB0] numberWithInt:*v116 != 0];
-      [v12 setObject:v39 forKeyedSubscript:@"CardDenyListed"];
+      [dictCopy setObject:v39 forKeyedSubscript:@"CardDenyListed"];
     }
 
     goto LABEL_28;
@@ -896,12 +896,12 @@ LABEL_28:
 
   v72 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Empty balance array"];
   v24 = v72;
-  if (a7)
+  if (error)
   {
-    v73 = *a7;
+    v73 = *error;
     v26 = MEMORY[0x277CCA9B8];
     v74 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v75 = *MEMORY[0x277CCA7E8];
       v97[0] = *MEMORY[0x277CCA450];
@@ -1007,21 +1007,21 @@ LABEL_17:
   return v6;
 }
 
-+ (id)parseEvent:(id *)a3 withError:(id *)a4
++ (id)parseEvent:(id *)event withError:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  var0 = a3->var0;
-  if (a3->var0 <= 0xE000000000000002)
+  var0 = event->var0;
+  if (event->var0 <= 0xE000000000000002)
   {
     if (var0 == 0xE000000000000001)
     {
-      v7 = [HerculesDecoder parseUseEvent:&a3->var1 withError:a4];
+      v7 = [HerculesDecoder parseUseEvent:&event->var1 withError:error];
       goto LABEL_17;
     }
 
     if (var0 == 0xE000000000000002)
     {
-      v7 = [HerculesDecoder parseSaleEvent:&a3->var1 withError:a4];
+      v7 = [HerculesDecoder parseSaleEvent:&event->var1 withError:error];
       goto LABEL_17;
     }
   }
@@ -1030,7 +1030,7 @@ LABEL_17:
   {
     if (var0 == 0xE000000000000003)
     {
-      v7 = [HerculesDecoder parsePurchaseEvent:&a3->var1 withError:a4];
+      v7 = [HerculesDecoder parsePurchaseEvent:&event->var1 withError:error];
       goto LABEL_17;
     }
 
@@ -1043,7 +1043,7 @@ LABEL_17:
   v8 = ATLLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = a3->var0;
+    v9 = event->var0;
     v12 = 134217984;
     v13 = v9;
     _os_log_impl(&dword_22EEF5000, v8, OS_LOG_TYPE_DEFAULT, "Unknown event type 0x%llx", &v12, 0xCu);
@@ -1057,14 +1057,14 @@ LABEL_17:
   return v7;
 }
 
-+ (id)parseUseEvent:(id *)a3 withError:(id *)a4
++ (id)parseUseEvent:(id *)event withError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
   memset(v23, 0, sizeof(v23));
-  v5 = DERParseSequenceSpec(a3, &UseEventContentSpec, v23, 0x20uLL);
+  v5 = DERParseSequenceSpec(event, &UseEventContentSpec, v23, 0x20uLL);
   if (!v5)
   {
-    v17 = [HerculesDecoder parseIdentifierCollection:v23 withError:a4];
+    v17 = [HerculesDecoder parseIdentifierCollection:v23 withError:error];
     v9 = v17;
     if (v17)
     {
@@ -1101,14 +1101,14 @@ LABEL_13:
 
   v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode use event item contents %d", v6];
   v9 = v8;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_13;
   }
 
-  v10 = *a4;
+  v10 = *error;
   v11 = MEMORY[0x277CCA9B8];
-  if (*a4)
+  if (*error)
   {
     v12 = *MEMORY[0x277CCA7E8];
     v24[0] = *MEMORY[0x277CCA450];
@@ -1133,7 +1133,7 @@ LABEL_13:
 
   v18 = [v13 dictionaryWithObjects:v14 forKeys:v15 count:v16];
   [v11 errorWithDomain:@"ATL" code:3 userInfo:v18];
-  *a4 = v20 = 0;
+  *error = v20 = 0;
 LABEL_16:
 
 LABEL_17:
@@ -1158,14 +1158,14 @@ BOOL __43__HerculesDecoder_parseUseEvent_withError___block_invoke_2(uint64_t a1,
   return v3;
 }
 
-+ (id)parseSaleEvent:(id *)a3 withError:(id *)a4
++ (id)parseSaleEvent:(id *)event withError:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   memset(v32, 0, sizeof(v32));
   v31 = 0u;
   memset(v30, 0, sizeof(v30));
   v29 = 0u;
-  v5 = DERParseSequenceSpec(a3, &SaleEventContentSpec, &v29, 0xB0uLL);
+  v5 = DERParseSequenceSpec(event, &SaleEventContentSpec, &v29, 0xB0uLL);
   if (v5)
   {
     v6 = v5;
@@ -1179,12 +1179,12 @@ BOOL __43__HerculesDecoder_parseUseEvent_withError___block_invoke_2(uint64_t a1,
 
     v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode sale event item contents %d", v6];
     v9 = v8;
-    if (a4)
+    if (error)
     {
-      v10 = *a4;
+      v10 = *error;
       v11 = MEMORY[0x277CCA9B8];
       v12 = *MEMORY[0x277CCA450];
-      if (*a4)
+      if (*error)
       {
         v13 = *MEMORY[0x277CCA7E8];
         v36[0] = *MEMORY[0x277CCA450];
@@ -1209,7 +1209,7 @@ BOOL __43__HerculesDecoder_parseUseEvent_withError___block_invoke_2(uint64_t a1,
 
       v22 = [v14 dictionaryWithObjects:v15 forKeys:v16 count:v17];
       [v11 errorWithDomain:@"ATL" code:3 userInfo:v22];
-      *a4 = v26 = 0;
+      *error = v26 = 0;
       goto LABEL_12;
     }
 
@@ -1250,14 +1250,14 @@ LABEL_13:
   return v26;
 }
 
-+ (id)parsePurchaseEvent:(id *)a3 withError:(id *)a4
++ (id)parsePurchaseEvent:(id *)event withError:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
   v27 = 0u;
   memset(v28, 0, sizeof(v28));
   memset(v26, 0, sizeof(v26));
   v25 = 0u;
-  v5 = DERParseSequenceSpec(a3, &PurchaseEventContentSpec, &v25, 0x90uLL);
+  v5 = DERParseSequenceSpec(event, &PurchaseEventContentSpec, &v25, 0x90uLL);
   if (v5)
   {
     v6 = v5;
@@ -1271,12 +1271,12 @@ LABEL_13:
 
     v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode purchase event item contents %d", v6];
     v9 = v8;
-    if (a4)
+    if (error)
     {
-      v10 = *a4;
+      v10 = *error;
       v11 = MEMORY[0x277CCA9B8];
       v12 = *MEMORY[0x277CCA450];
-      if (*a4)
+      if (*error)
       {
         v13 = *MEMORY[0x277CCA7E8];
         v32[0] = *MEMORY[0x277CCA450];
@@ -1301,7 +1301,7 @@ LABEL_13:
 
       v18 = [v14 dictionaryWithObjects:v15 forKeys:v16 count:v17];
       [v11 errorWithDomain:@"ATL" code:3 userInfo:v18];
-      *a4 = v22 = 0;
+      *error = v22 = 0;
       goto LABEL_12;
     }
 
@@ -1336,23 +1336,23 @@ LABEL_13:
   return v22;
 }
 
-+ (id)parseBalanceCollection:(id *)a3 withError:(id *)a4
++ (id)parseBalanceCollection:(id *)collection withError:(id *)error
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  if (a3 && a3->var1)
+  if (collection && collection->var1)
   {
     *buf = 0;
     v27 = buf;
     v28 = 0x3032000000;
     v29 = __Block_byref_object_copy__0;
     v30 = __Block_byref_object_dispose__0;
-    v31 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __52__HerculesDecoder_parseBalanceCollection_withError___block_invoke;
     v25[3] = &unk_278874A30;
     v25[4] = buf;
-    if (DERDecodeSequenceWithBlock(a3, v25))
+    if (DERDecodeSequenceWithBlock(collection, v25))
     {
       v6 = ATLLogObject();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1363,11 +1363,11 @@ LABEL_13:
 
       v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to parse balance item"];
       v8 = v7;
-      if (a4)
+      if (error)
       {
-        v9 = *a4;
+        v9 = *error;
         v10 = MEMORY[0x277CCA9B8];
-        if (*a4)
+        if (*error)
         {
           v11 = *MEMORY[0x277CCA7E8];
           v32[0] = *MEMORY[0x277CCA450];
@@ -1384,7 +1384,7 @@ LABEL_13:
           [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
         }
         v12 = ;
-        *a4 = [v10 errorWithDomain:@"ATL" code:3 userInfo:v12];
+        *error = [v10 errorWithDomain:@"ATL" code:3 userInfo:v12];
       }
 
       v20 = 0;
@@ -1409,12 +1409,12 @@ LABEL_13:
 
     v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Missing or zero length balance collection"];
     v15 = v14;
-    if (a4)
+    if (error)
     {
-      v16 = *a4;
+      v16 = *error;
       v17 = MEMORY[0x277CCA9B8];
       v18 = *MEMORY[0x277CCA450];
-      if (*a4)
+      if (*error)
       {
         v19 = *MEMORY[0x277CCA7E8];
         v36[0] = *MEMORY[0x277CCA450];
@@ -1431,7 +1431,7 @@ LABEL_13:
         [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
       }
       v21 = ;
-      *a4 = [v17 errorWithDomain:@"ATL" code:3 userInfo:v21];
+      *error = [v17 errorWithDomain:@"ATL" code:3 userInfo:v21];
     }
 
     v20 = 0;
@@ -1471,16 +1471,16 @@ uint64_t __52__HerculesDecoder_parseBalanceCollection_withError___block_invoke(u
   return v5;
 }
 
-+ (id)parseBalanceItem:(id *)a3 withError:(id *)a4
++ (id)parseBalanceItem:(id *)item withError:(id *)error
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  if (a3->var0 == 0xE000000000000005)
+  if (item->var0 == 0xE000000000000005)
   {
     memset(v44, 0, sizeof(v44));
     v42 = 0u;
     v43 = 0u;
     *v41 = 0u;
-    v6 = DERParseSequenceSpec(&a3->var1, &BalanceItemContentSpec, v41, 0x70uLL);
+    v6 = DERParseSequenceSpec(&item->var1, &BalanceItemContentSpec, v41, 0x70uLL);
     if (v6)
     {
       v7 = v6;
@@ -1494,12 +1494,12 @@ uint64_t __52__HerculesDecoder_parseBalanceCollection_withError___block_invoke(u
 
       v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode balance item contents %d", v7];
       v10 = v9;
-      if (a4)
+      if (error)
       {
-        v11 = *a4;
+        v11 = *error;
         v12 = MEMORY[0x277CCA9B8];
         v13 = *MEMORY[0x277CCA450];
-        if (*a4)
+        if (*error)
         {
           v14 = *MEMORY[0x277CCA7E8];
           v35[0] = *MEMORY[0x277CCA450];
@@ -1523,17 +1523,17 @@ uint64_t __52__HerculesDecoder_parseBalanceCollection_withError___block_invoke(u
         }
 
         v32 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
-        *a4 = [v12 errorWithDomain:@"ATL" code:3 userInfo:v32];
+        *error = [v12 errorWithDomain:@"ATL" code:3 userInfo:v32];
 
-        a4 = 0;
+        error = 0;
       }
     }
 
     else
     {
-      a4 = [HerculesDecoder addAmount:v44 withCurrency:&v43 usingAmountKey:@"Balance" usingCurrencyKey:@"BalanceCurrency" usingExponentKey:@"BalanceCurrencyExponent"];
+      error = [HerculesDecoder addAmount:v44 withCurrency:&v43 usingAmountKey:@"Balance" usingCurrencyKey:@"BalanceCurrency" usingExponentKey:@"BalanceCurrencyExponent"];
       v10 = [HerculesDecoder getIdentifier:v41 withInstanceIdentifier:&v42];
-      [a4 setObject:v10 forKeyedSubscript:@"BalanceIdentifier"];
+      [error setObject:v10 forKeyedSubscript:@"BalanceIdentifier"];
     }
   }
 
@@ -1542,20 +1542,20 @@ uint64_t __52__HerculesDecoder_parseBalanceCollection_withError___block_invoke(u
     v19 = ATLLogObject();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      var0 = a3->var0;
+      var0 = item->var0;
       *v41 = 134217984;
       *&v41[4] = var0;
       _os_log_impl(&dword_22EEF5000, v19, OS_LOG_TYPE_ERROR, "Unexpected tag 0x%llx for balance item", v41, 0xCu);
     }
 
-    v21 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected tag 0x%llx for balance item", a3->var0];
+    v21 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected tag 0x%llx for balance item", item->var0];
     v22 = v21;
-    if (a4)
+    if (error)
     {
-      v23 = *a4;
+      v23 = *error;
       v24 = MEMORY[0x277CCA9B8];
       v25 = *MEMORY[0x277CCA450];
-      if (*a4)
+      if (*error)
       {
         v26 = *MEMORY[0x277CCA7E8];
         v45[0] = *MEMORY[0x277CCA450];
@@ -1579,34 +1579,34 @@ uint64_t __52__HerculesDecoder_parseBalanceCollection_withError___block_invoke(u
       }
 
       v31 = [v27 dictionaryWithObjects:v28 forKeys:v29 count:v30];
-      *a4 = [v24 errorWithDomain:@"ATL" code:3 userInfo:v31];
+      *error = [v24 errorWithDomain:@"ATL" code:3 userInfo:v31];
     }
 
-    a4 = 0;
+    error = 0;
   }
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
-+ (id)parseIdentifierCollection:(id *)a3 withError:(id *)a4
++ (id)parseIdentifierCollection:(id *)collection withError:(id *)error
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  if (a3 && a3->var1)
+  if (collection && collection->var1)
   {
     *buf = 0;
     v27 = buf;
     v28 = 0x3032000000;
     v29 = __Block_byref_object_copy__0;
     v30 = __Block_byref_object_dispose__0;
-    v31 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __55__HerculesDecoder_parseIdentifierCollection_withError___block_invoke;
     v25[3] = &unk_278874A30;
     v25[4] = buf;
-    if (DERDecodeSequenceWithBlock(a3, v25))
+    if (DERDecodeSequenceWithBlock(collection, v25))
     {
       v6 = ATLLogObject();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1617,11 +1617,11 @@ uint64_t __52__HerculesDecoder_parseBalanceCollection_withError___block_invoke(u
 
       v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to parse identifier item"];
       v8 = v7;
-      if (a4)
+      if (error)
       {
-        v9 = *a4;
+        v9 = *error;
         v10 = MEMORY[0x277CCA9B8];
-        if (*a4)
+        if (*error)
         {
           v11 = *MEMORY[0x277CCA7E8];
           v32[0] = *MEMORY[0x277CCA450];
@@ -1638,7 +1638,7 @@ uint64_t __52__HerculesDecoder_parseBalanceCollection_withError___block_invoke(u
           [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
         }
         v12 = ;
-        *a4 = [v10 errorWithDomain:@"ATL" code:3 userInfo:v12];
+        *error = [v10 errorWithDomain:@"ATL" code:3 userInfo:v12];
       }
 
       v20 = 0;
@@ -1663,12 +1663,12 @@ uint64_t __52__HerculesDecoder_parseBalanceCollection_withError___block_invoke(u
 
     v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Missing or zero length identifier collection"];
     v15 = v14;
-    if (a4)
+    if (error)
     {
-      v16 = *a4;
+      v16 = *error;
       v17 = MEMORY[0x277CCA9B8];
       v18 = *MEMORY[0x277CCA450];
-      if (*a4)
+      if (*error)
       {
         v19 = *MEMORY[0x277CCA7E8];
         v36[0] = *MEMORY[0x277CCA450];
@@ -1685,7 +1685,7 @@ uint64_t __52__HerculesDecoder_parseBalanceCollection_withError___block_invoke(u
         [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
       }
       v21 = ;
-      *a4 = [v17 errorWithDomain:@"ATL" code:3 userInfo:v21];
+      *error = [v17 errorWithDomain:@"ATL" code:3 userInfo:v21];
     }
 
     v20 = 0;
@@ -1725,17 +1725,17 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
   return v6;
 }
 
-+ (id)parseIdentifierItem:(id *)a3 withError:(id *)a4
++ (id)parseIdentifierItem:(id *)item withError:(id *)error
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  if (a3->var0 == 0xE000000000000006)
+  if (item->var0 == 0xE000000000000006)
   {
     v48 = 0u;
     v46 = 0u;
     memset(v47, 0, sizeof(v47));
     *v44 = 0u;
     memset(v45, 0, sizeof(v45));
-    v6 = DERParseSequenceSpec(&a3->var1, &IdItemContentSpec, v44, 0xA0uLL);
+    v6 = DERParseSequenceSpec(&item->var1, &IdItemContentSpec, v44, 0xA0uLL);
     if (v6)
     {
       v7 = v6;
@@ -1749,12 +1749,12 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
 
       v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode id item contents %d", v7];
       v10 = v9;
-      if (a4)
+      if (error)
       {
-        v11 = *a4;
+        v11 = *error;
         v12 = MEMORY[0x277CCA9B8];
         v13 = *MEMORY[0x277CCA450];
-        if (*a4)
+        if (*error)
         {
           v14 = *MEMORY[0x277CCA7E8];
           v38[0] = *MEMORY[0x277CCA450];
@@ -1778,9 +1778,9 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
         }
 
         v34 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
-        *a4 = [v12 errorWithDomain:@"ATL" code:3 userInfo:v34];
+        *error = [v12 errorWithDomain:@"ATL" code:3 userInfo:v34];
 
-        a4 = 0;
+        error = 0;
       }
     }
 
@@ -1789,25 +1789,25 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
       v10 = [HerculesDecoder getIdentifier:v44 withInstanceIdentifier:v45];
       if (*(&v47[0] + 1))
       {
-        v31 = [HerculesDecoder addAmount:v47 withCurrency:&v46 usingAmountKey:@"Amount" usingCurrencyKey:@"AmountCurrency" usingExponentKey:@"AmountCurrencyExponent"];
-        a4 = v31;
+        errorCopy = [HerculesDecoder addAmount:v47 withCurrency:&v46 usingAmountKey:@"Amount" usingCurrencyKey:@"AmountCurrency" usingExponentKey:@"AmountCurrencyExponent"];
+        error = errorCopy;
         v32 = @"AmountIdentifier";
       }
 
       else
       {
-        a4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
+        error = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
         if (*(&v48 + 1))
         {
           v35 = [HerculesDecoder parseDateAndTime:&v48];
-          [a4 setObject:v35 forKeyedSubscript:@"CommutePlanExpirationDate"];
+          [error setObject:v35 forKeyedSubscript:@"CommutePlanExpirationDate"];
         }
 
         v32 = @"CommutePlanIdentifier";
-        v31 = a4;
+        errorCopy = error;
       }
 
-      [v31 setObject:v10 forKeyedSubscript:v32];
+      [errorCopy setObject:v10 forKeyedSubscript:v32];
     }
   }
 
@@ -1816,20 +1816,20 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
     v19 = ATLLogObject();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      var0 = a3->var0;
+      var0 = item->var0;
       *v44 = 134217984;
       *&v44[4] = var0;
       _os_log_impl(&dword_22EEF5000, v19, OS_LOG_TYPE_ERROR, "Unexpected tag 0x%llx for identifier item", v44, 0xCu);
     }
 
-    v21 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected tag 0x%llx for identifier item", a3->var0];
+    v21 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected tag 0x%llx for identifier item", item->var0];
     v22 = v21;
-    if (a4)
+    if (error)
     {
-      v23 = *a4;
+      v23 = *error;
       v24 = MEMORY[0x277CCA9B8];
       v25 = *MEMORY[0x277CCA450];
-      if (*a4)
+      if (*error)
       {
         v26 = *MEMORY[0x277CCA7E8];
         v49[0] = *MEMORY[0x277CCA450];
@@ -1853,61 +1853,61 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
       }
 
       v33 = [v27 dictionaryWithObjects:v28 forKeys:v29 count:v30];
-      *a4 = [v24 errorWithDomain:@"ATL" code:3 userInfo:v33];
+      *error = [v24 errorWithDomain:@"ATL" code:3 userInfo:v33];
     }
 
-    a4 = 0;
+    error = 0;
   }
 
   v36 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
-+ (id)getIdentifier:(id *)a3 withInstanceIdentifier:(id *)a4
++ (id)getIdentifier:(id *)identifier withInstanceIdentifier:(id *)instanceIdentifier
 {
-  if (a4->var1)
+  if (instanceIdentifier->var1)
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [MEMORY[0x277CBEA90] dataWithDERItem:a3];
-    v7 = [v6 asHexString];
-    v8 = [MEMORY[0x277CBEA90] dataWithDERItem:a4];
-    v9 = [v8 asHexString];
-    v10 = [v5 stringWithFormat:@"%@-%@", v7, v9];
+    v6 = [MEMORY[0x277CBEA90] dataWithDERItem:identifier];
+    asHexString = [v6 asHexString];
+    v8 = [MEMORY[0x277CBEA90] dataWithDERItem:instanceIdentifier];
+    asHexString2 = [v8 asHexString];
+    asHexString3 = [v5 stringWithFormat:@"%@-%@", asHexString, asHexString2];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEA90] dataWithDERItem:a3];
-    v10 = [v6 asHexString];
+    v6 = [MEMORY[0x277CBEA90] dataWithDERItem:identifier];
+    asHexString3 = [v6 asHexString];
   }
 
-  return v10;
+  return asHexString3;
 }
 
-+ (id)parseDateAndTime:(id *)a3
++ (id)parseDateAndTime:(id *)time
 {
   v4 = MEMORY[0x277CBEAB8];
-  v5 = DecodeBCD(a3->var0, 1);
-  v6 = DecodeBCD(a3->var0 + 1, 1);
-  v7 = DecodeBCD(a3->var0 + 2, 1);
-  v8 = DecodeBCD(a3->var0 + 3, 1);
-  v9 = DecodeBCD(a3->var0 + 4, 1);
-  v10 = DecodeBCD(a3->var0 + 5, 1);
+  v5 = DecodeBCD(time->var0, 1);
+  v6 = DecodeBCD(time->var0 + 1, 1);
+  v7 = DecodeBCD(time->var0 + 2, 1);
+  v8 = DecodeBCD(time->var0 + 3, 1);
+  v9 = DecodeBCD(time->var0 + 4, 1);
+  v10 = DecodeBCD(time->var0 + 5, 1);
 
   return [v4 dateWithYear:v5 + 2000 month:v6 day:v7 hour:v8 minute:v9 second:v10];
 }
 
-+ (id)addAmount:(id *)a3 withCurrency:(id *)a4 usingAmountKey:(id)a5 usingCurrencyKey:(id)a6 usingExponentKey:(id)a7
++ (id)addAmount:(id *)amount withCurrency:(id *)currency usingAmountKey:(id)key usingCurrencyKey:(id)currencyKey usingExponentKey:(id)exponentKey
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  if (a3->var1)
+  keyCopy = key;
+  currencyKeyCopy = currencyKey;
+  exponentKeyCopy = exponentKey;
+  if (amount->var1)
   {
     v25 = 0;
-    if (a4->var1 && ([ATLCurrency currencyCodeForNumber:DecodeBCD(a4) exponentOut:&v25], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (currency->var1 && ([ATLCurrency currencyCodeForNumber:DecodeBCD(currency) exponentOut:&v25], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v15 = v14;
       v16 = [MEMORY[0x277CCABB0] numberWithShort:v25];
@@ -1919,7 +1919,7 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
       v16 = &unk_2843C6398;
     }
 
-    S32BE = ReadS32BE(a3);
+    S32BE = ReadS32BE(amount);
     if (S32BE >= 0)
     {
       v18 = S32BE;
@@ -1932,11 +1932,11 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
 
     v19 = [MEMORY[0x277CCA980] decimalNumberWithMantissa:v18 exponent:-v25 isNegative:S32BE >> 31];
     v20 = MEMORY[0x277CBEB38];
-    v26[0] = v11;
-    v26[1] = v12;
+    v26[0] = keyCopy;
+    v26[1] = currencyKeyCopy;
     v27[0] = v19;
     v27[1] = v15;
-    v26[2] = v13;
+    v26[2] = exponentKeyCopy;
     v27[2] = v16;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:3];
     v22 = [v20 dictionaryWithDictionary:v21];
@@ -1952,20 +1952,20 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
   return v22;
 }
 
-+ (id)calculateTransactionSN:(id *)a3 withDeviceId:(id *)a4 withDeviceSN:(id *)a5
++ (id)calculateTransactionSN:(id *)n withDeviceId:(id *)id withDeviceSN:(id *)sN
 {
   v8 = +[HashHelper hashHelper];
-  v9 = [(HashHelper *)v8 addData:a3->var1 withLength:?];
-  v10 = [(HashHelper *)v9 addData:a4->var1 withLength:?];
-  v11 = [(HashHelper *)v10 addData:a5->var1 withLength:?];
-  v12 = [(HashHelper *)v11 getHash];
+  v9 = [(HashHelper *)v8 addData:n->var1 withLength:?];
+  v10 = [(HashHelper *)v9 addData:id->var1 withLength:?];
+  v11 = [(HashHelper *)v10 addData:sN->var1 withLength:?];
+  getHash = [(HashHelper *)v11 getHash];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v12, "u32BE:", 0)}];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(getHash, "u32BE:", 0)}];
 
   return v13;
 }
 
-+ (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9
++ (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
   v9 = ATLLogObject();
@@ -1977,12 +1977,12 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
 
   v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"MIFARE Hercules Decoder doesn't support getServiceProviderData"];
   v11 = v10;
-  if (a9)
+  if (error)
   {
-    v12 = *a9;
+    v12 = *error;
     v13 = MEMORY[0x277CCA9B8];
     v14 = *MEMORY[0x277CCA450];
-    if (*a9)
+    if (*error)
     {
       v15 = *MEMORY[0x277CCA7E8];
       v24[0] = *MEMORY[0x277CCA450];
@@ -2006,14 +2006,14 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
     }
 
     v20 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:v19];
-    *a9 = [v13 errorWithDomain:@"ATL" code:2 userInfo:v20];
+    *error = [v13 errorWithDomain:@"ATL" code:2 userInfo:v20];
   }
 
   v21 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-+ (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
++ (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v8 = ATLLogObject();
@@ -2025,12 +2025,12 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
 
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"MIFARE Hercules Decoder doesn't support getServiceProviderData"];
   v10 = v9;
-  if (a7)
+  if (error)
   {
-    v11 = *a7;
+    v11 = *error;
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v14 = *MEMORY[0x277CCA7E8];
       v23[0] = *MEMORY[0x277CCA450];
@@ -2054,7 +2054,7 @@ uint64_t __55__HerculesDecoder_parseIdentifierCollection_withError___block_invok
     }
 
     v19 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
-    *a7 = [v12 errorWithDomain:@"ATL" code:2 userInfo:v19];
+    *error = [v12 errorWithDomain:@"ATL" code:2 userInfo:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];

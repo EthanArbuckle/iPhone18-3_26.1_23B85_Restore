@@ -1,20 +1,20 @@
 @interface IMAssistantHandleFromContact
-- (BOOL)matchesHandleID:(id)a3;
-- (BOOL)matchesIMHandle:(id)a3;
+- (BOOL)matchesHandleID:(id)d;
+- (BOOL)matchesIMHandle:(id)handle;
 - (NSString)personHandleLabel;
-- (id)_initWithPhoneNumber:(id)a3 emailAddress:(id)a4 businessID:(id)a5 handleType:(int64_t)a6 contact:(id)a7;
+- (id)_initWithPhoneNumber:(id)number emailAddress:(id)address businessID:(id)d handleType:(int64_t)type contact:(id)contact;
 - (id)description;
 @end
 
 @implementation IMAssistantHandleFromContact
 
-- (id)_initWithPhoneNumber:(id)a3 emailAddress:(id)a4 businessID:(id)a5 handleType:(int64_t)a6 contact:(id)a7
+- (id)_initWithPhoneNumber:(id)number emailAddress:(id)address businessID:(id)d handleType:(int64_t)type contact:(id)contact
 {
   v37 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v33 = a5;
-  v15 = a7;
+  numberCopy = number;
+  addressCopy = address;
+  dCopy = d;
+  contactCopy = contact;
   v34.receiver = self;
   v34.super_class = IMAssistantHandleFromContact;
   v16 = [(IMAssistantHandleFromContact *)&v34 init];
@@ -23,16 +23,16 @@
     goto LABEL_21;
   }
 
-  if (a6 <= 1)
+  if (type <= 1)
   {
-    if (!a6)
+    if (!type)
     {
 LABEL_10:
       v22 = IMLogHandleForCategory();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v36 = a6;
+        typeCopy = type;
         v23 = "Initialized IMAssistantHandleFromContact with an unrecognized handle type %ld, returning nil";
         v24 = v22;
         v25 = 12;
@@ -47,44 +47,44 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if (a6 != 1)
+    if (type != 1)
     {
       goto LABEL_15;
     }
 
-    v32 = v14;
-    v17 = v13;
-    v18 = [v13 value];
-    v19 = [v18 stringValue];
+    v32 = addressCopy;
+    v17 = numberCopy;
+    value = [numberCopy value];
+    stringValue = [value stringValue];
     handleID = v16->_handleID;
-    v16->_handleID = v19;
+    v16->_handleID = stringValue;
 
     v21 = 2;
 LABEL_14:
 
     v16->_personHandleType = v21;
-    v13 = v17;
-    v14 = v32;
+    numberCopy = v17;
+    addressCopy = v32;
     goto LABEL_15;
   }
 
-  switch(a6)
+  switch(type)
   {
     case 2:
-      v26 = v14;
-      v17 = v13;
+      v26 = addressCopy;
+      v17 = numberCopy;
       v32 = v26;
-      v27 = [v26 value];
-      v18 = v16->_handleID;
-      v16->_handleID = v27;
+      value2 = [v26 value];
+      value = v16->_handleID;
+      v16->_handleID = value2;
       v21 = 1;
       goto LABEL_14;
     case 3:
-      v32 = v14;
-      v17 = v13;
-      v28 = v33;
+      v32 = addressCopy;
+      v17 = numberCopy;
+      v28 = dCopy;
       v21 = 0;
-      v18 = v16->_handleID;
+      value = v16->_handleID;
       v16->_handleID = v28;
       goto LABEL_14;
     case 4:
@@ -107,11 +107,11 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  objc_storeStrong(&v16->_contact, a7);
-  objc_storeStrong(&v16->_labeledPhoneNumber, a3);
-  objc_storeStrong(&v16->_labeledEmailAddress, a4);
-  objc_storeStrong(&v16->_businessID, a5);
-  v16->_handleType = a6;
+  objc_storeStrong(&v16->_contact, contact);
+  objc_storeStrong(&v16->_labeledPhoneNumber, number);
+  objc_storeStrong(&v16->_labeledEmailAddress, address);
+  objc_storeStrong(&v16->_businessID, d);
+  v16->_handleType = type;
   v29 = v16;
 LABEL_22:
 
@@ -121,19 +121,19 @@ LABEL_22:
 
 - (NSString)personHandleLabel
 {
-  v3 = [(IMAssistantHandleFromContact *)self handleType];
-  if (v3 == 2)
+  handleType = [(IMAssistantHandleFromContact *)self handleType];
+  if (handleType == 2)
   {
-    v4 = [(IMAssistantHandleFromContact *)self labeledEmailAddress];
+    labeledEmailAddress = [(IMAssistantHandleFromContact *)self labeledEmailAddress];
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (handleType == 1)
   {
-    v4 = [(IMAssistantHandleFromContact *)self labeledPhoneNumber];
+    labeledEmailAddress = [(IMAssistantHandleFromContact *)self labeledPhoneNumber];
 LABEL_5:
-    v5 = v4;
-    if (v4)
+    v5 = labeledEmailAddress;
+    if (labeledEmailAddress)
     {
       v6 = INPersonHandleLabelForCNLabeledValue();
     }
@@ -152,17 +152,17 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)matchesHandleID:(id)a3
+- (BOOL)matchesHandleID:(id)d
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CD3E98] __im_assistant_handleTypeForString:v4];
+  dCopy = d;
+  v5 = [MEMORY[0x277CD3E98] __im_assistant_handleTypeForString:dCopy];
   if ([(IMAssistantHandleFromContact *)self handleType]== v5)
   {
-    v6 = [(IMAssistantHandleFromContact *)self handleID];
-    v7 = v6;
+    handleID = [(IMAssistantHandleFromContact *)self handleID];
+    v7 = handleID;
     if (v5 == 3)
     {
-      v11 = [v6 isEqualToString:v4];
+      v11 = [handleID isEqualToString:dCopy];
     }
 
     else
@@ -182,8 +182,8 @@ LABEL_10:
           goto LABEL_11;
         }
 
-        v8 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:v6];
-        v9 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:v4];
+        v8 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:handleID];
+        v9 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:dCopy];
         v10 = [v8 isLikePhoneNumber:v9];
       }
 
@@ -201,12 +201,12 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)matchesIMHandle:(id)a3
+- (BOOL)matchesIMHandle:(id)handle
 {
-  v4 = [a3 normalizedID];
-  if (v4)
+  normalizedID = [handle normalizedID];
+  if (normalizedID)
   {
-    v5 = [(IMAssistantHandleFromContact *)self matchesHandleID:v4];
+    v5 = [(IMAssistantHandleFromContact *)self matchesHandleID:normalizedID];
   }
 
   else

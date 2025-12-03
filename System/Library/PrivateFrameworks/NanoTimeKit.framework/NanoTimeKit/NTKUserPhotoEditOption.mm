@@ -1,32 +1,32 @@
 @interface NTKUserPhotoEditOption
-+ (id)optionUsingDefaultPhoto:(BOOL)a3 forDevice:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (NTKUserPhotoEditOption)initWithCoder:(id)a3;
-- (NTKUserPhotoEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4;
++ (id)optionUsingDefaultPhoto:(BOOL)photo forDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
+- (NTKUserPhotoEditOption)initWithCoder:(id)coder;
+- (NTKUserPhotoEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device;
 - (id)JSONObjectRepresentation;
 - (id)dailySnapshotKey;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKUserPhotoEditOption
 
-+ (id)optionUsingDefaultPhoto:(BOOL)a3 forDevice:(id)a4
++ (id)optionUsingDefaultPhoto:(BOOL)photo forDevice:(id)device
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithDevice:v6];
+  deviceCopy = device;
+  v7 = [[self alloc] initWithDevice:deviceCopy];
 
-  v7[16] = a3;
+  v7[16] = photo;
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     usesDefaultPhoto = self->_usesDefaultPhoto;
-    v6 = usesDefaultPhoto == [v4 usesDefaultPhoto];
+    v6 = usesDefaultPhoto == [equalCopy usesDefaultPhoto];
   }
 
   else
@@ -37,24 +37,24 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NTKUserPhotoEditOption;
-  v4 = a3;
-  [(NTKEditOption *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_usesDefaultPhoto forKey:{@"UsesDefault", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(NTKEditOption *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_usesDefaultPhoto forKey:{@"UsesDefault", v5.receiver, v5.super_class}];
 }
 
-- (NTKUserPhotoEditOption)initWithCoder:(id)a3
+- (NTKUserPhotoEditOption)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = NTKUserPhotoEditOption;
-  v5 = [(NTKEditOption *)&v7 initWithCoder:v4];
+  v5 = [(NTKEditOption *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_usesDefaultPhoto = [v4 decodeBoolForKey:@"UsesDefault"];
+    v5->_usesDefaultPhoto = [coderCopy decodeBoolForKey:@"UsesDefault"];
   }
 
   return v5;
@@ -88,31 +88,31 @@
   return *v2;
 }
 
-- (NTKUserPhotoEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4
+- (NTKUserPhotoEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device
 {
-  v6 = a3;
-  v7 = [(NTKEditOption *)self initWithDevice:a4];
+  representationCopy = representation;
+  v7 = [(NTKEditOption *)self initWithDevice:device];
   if (v7)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"object must be a string - invalid value: %@", v6}];
+      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"object must be a string - invalid value: %@", representationCopy}];
     }
 
-    if ([v6 isEqualToString:@"custom"])
+    if ([representationCopy isEqualToString:@"custom"])
     {
       v7->_usesDefaultPhoto = 0;
     }
 
-    else if ([v6 isEqualToString:@"default"])
+    else if ([representationCopy isEqualToString:@"default"])
     {
       v7->_usesDefaultPhoto = 1;
     }
 
     else
     {
-      [MEMORY[0x277CBEAD8] raise:@"NTKFaceBundleException" format:{@"invalid value: %@", v6}];
+      [MEMORY[0x277CBEAD8] raise:@"NTKFaceBundleException" format:{@"invalid value: %@", representationCopy}];
     }
   }
 

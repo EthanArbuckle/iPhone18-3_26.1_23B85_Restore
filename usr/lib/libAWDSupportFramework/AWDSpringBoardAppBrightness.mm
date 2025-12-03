@@ -1,15 +1,15 @@
 @interface AWDSpringBoardAppBrightness
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSpringBoardAppBrightness
@@ -22,9 +22,9 @@
   [(AWDSpringBoardAppBrightness *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -61,34 +61,34 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   appBundleID = self->_appBundleID;
   if (appBundleID)
   {
-    [v3 setObject:appBundleID forKey:@"appBundleID"];
+    [dictionary setObject:appBundleID forKey:@"appBundleID"];
   }
 
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_brightness), @"brightness"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_brightness), @"brightness"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_duration), @"duration"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 4) != 0)
   {
@@ -117,37 +117,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 4) != 0)
   {
-    *(a3 + 3) = self->_timestamp;
-    *(a3 + 40) |= 4u;
+    *(to + 3) = self->_timestamp;
+    *(to + 40) |= 4u;
   }
 
   if (self->_appBundleID)
   {
-    [a3 setAppBundleID:?];
+    [to setAppBundleID:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_brightness;
-    *(a3 + 40) |= 1u;
+    *(to + 1) = self->_brightness;
+    *(to + 40) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_duration;
-    *(a3 + 40) |= 2u;
+    *(to + 2) = self->_duration;
+    *(to + 40) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -155,7 +155,7 @@
     *(v5 + 40) |= 4u;
   }
 
-  *(v6 + 32) = [(NSString *)self->_appBundleID copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_appBundleID copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -173,22 +173,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 40);
+    v7 = *(equal + 40);
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 40) & 4) == 0 || self->_timestamp != *(a3 + 3))
+      if ((*(equal + 40) & 4) == 0 || self->_timestamp != *(equal + 3))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 40) & 4) != 0)
+    else if ((*(equal + 40) & 4) != 0)
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -196,7 +196,7 @@ LABEL_19:
     }
 
     appBundleID = self->_appBundleID;
-    if (appBundleID | *(a3 + 4))
+    if (appBundleID | *(equal + 4))
     {
       v5 = [(NSString *)appBundleID isEqual:?];
       if (!v5)
@@ -209,21 +209,21 @@ LABEL_19:
 
     if (has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_brightness != *(a3 + 1))
+      if ((*(equal + 40) & 1) == 0 || self->_brightness != *(equal + 1))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
       goto LABEL_19;
     }
 
-    LOBYTE(v5) = (*(a3 + 40) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 40) & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 40) & 2) == 0 || self->_duration != *(a3 + 2))
+      if ((*(equal + 40) & 2) == 0 || self->_duration != *(equal + 2))
       {
         goto LABEL_19;
       }
@@ -272,30 +272,30 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 40) & 4) != 0)
+  if ((*(from + 40) & 4) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDSpringBoardAppBrightness *)self setAppBundleID:?];
   }
 
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if (v5)
   {
-    self->_brightness = *(a3 + 1);
+    self->_brightness = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 40);
+    v5 = *(from + 40);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_duration = *(a3 + 2);
+    self->_duration = *(from + 2);
     *&self->_has |= 2u;
   }
 }

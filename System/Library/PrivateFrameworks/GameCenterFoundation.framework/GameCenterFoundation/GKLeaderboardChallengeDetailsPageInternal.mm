@@ -1,7 +1,7 @@
 @interface GKLeaderboardChallengeDetailsPageInternal
-+ (id)initWithServerFragment:(id)a3;
++ (id)initWithServerFragment:(id)fragment;
 + (id)secureCodedPropertyKeys;
-- (GKLeaderboardChallengeDetailsPageInternal)initWithServerRepresentation:(id)a3;
+- (GKLeaderboardChallengeDetailsPageInternal)initWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKLeaderboardChallengeDetailsPageInternal
@@ -37,24 +37,24 @@ void __68__GKLeaderboardChallengeDetailsPageInternal_secureCodedPropertyKeys__bl
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)initWithServerFragment:(id)a3
++ (id)initWithServerFragment:(id)fragment
 {
-  v3 = a3;
+  fragmentCopy = fragment;
   v4 = objc_alloc_init(GKLeaderboardChallengeDetailsPageInternal);
-  v5 = [v3 objectForKeyedSubscript:@"result"];
+  v5 = [fragmentCopy objectForKeyedSubscript:@"result"];
   v6 = [v5 _gkMapWithBlock:&__block_literal_global_433];
   [(GKLeaderboardChallengeDetailsPageInternal *)v4 setDetails:v6];
 
-  v7 = [v3 objectForKeyedSubscript:@"next-url"];
+  v7 = [fragmentCopy objectForKeyedSubscript:@"next-url"];
 
   [(GKLeaderboardChallengeDetailsPageInternal *)v4 setNextURL:v7];
 
   return v4;
 }
 
-- (GKLeaderboardChallengeDetailsPageInternal)initWithServerRepresentation:(id)a3
+- (GKLeaderboardChallengeDetailsPageInternal)initWithServerRepresentation:(id)representation
 {
-  v4 = [a3 objectForKeyedSubscript:@"result"];
+  v4 = [representation objectForKeyedSubscript:@"result"];
   v5 = [GKLeaderboardChallengeDetailsPageInternal initWithServerFragment:v4];
 
   return v5;

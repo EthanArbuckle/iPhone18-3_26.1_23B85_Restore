@@ -1,13 +1,13 @@
 @interface AFSiriMusicSmartPlayRequest
-- (void)performRequestWithCompletion:(id)a3;
+- (void)performRequestWithCompletion:(id)completion;
 @end
 
 @implementation AFSiriMusicSmartPlayRequest
 
-- (void)performRequestWithCompletion:(id)a3
+- (void)performRequestWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   *keys = xmmword_1E7348668;
   values[0] = xpc_int64_create(1);
   values[1] = xpc_int64_create(2);
@@ -20,16 +20,16 @@
     v9[1] = 3221225472;
     v9[2] = __60__AFSiriMusicSmartPlayRequest_performRequestWithCompletion___block_invoke;
     v9[3] = &unk_1E7348638;
-    v11 = v3;
+    v11 = completionCopy;
     v10 = v6;
     xpc_connection_send_message_with_reply(v10, v4, 0, v9);
   }
 
   else
   {
-    if (v3)
+    if (completionCopy)
     {
-      (*(v3 + 2))(v3, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     if (v6)

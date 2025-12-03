@@ -1,8 +1,8 @@
 @interface STStorageProgressView
-- (STStorageProgressView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setPercent:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (STStorageProgressView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setPercent:(double)percent;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateColors;
 @end
 
@@ -10,10 +10,10 @@
 
 - (void)updateColors
 {
-  v3 = [(STStorageProgressView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(STStorageProgressView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     [MEMORY[0x277D75348] systemDarkGrayColor];
   }
@@ -25,7 +25,7 @@
   v5 = ;
   objc_storeStrong(&self->_grayColor, v5);
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     [MEMORY[0x277D75348] systemDarkLightMidGrayColor];
   }
@@ -38,15 +38,15 @@
   objc_storeStrong(&self->_blueColor, v6);
 }
 
-- (STStorageProgressView)initWithFrame:(CGRect)a3
+- (STStorageProgressView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = STStorageProgressView;
-  v3 = [(STStorageProgressView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STStorageProgressView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(STStorageProgressView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(STStorageProgressView *)v3 setBackgroundColor:clearColor];
 
     [(STStorageProgressView *)v3 updateColors];
   }
@@ -54,9 +54,9 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(STStorageProgressView *)self bounds:a3.origin.x];
+  [(STStorageProgressView *)self bounds:rect.origin.x];
   v20 = CGRectInset(v19, 2.0, 2.0);
   x = v20.origin.x;
   y = v20.origin.y;
@@ -98,20 +98,20 @@
   UIGraphicsPopContext();
 }
 
-- (void)setPercent:(double)a3
+- (void)setPercent:(double)percent
 {
-  if (self->_percent != a3)
+  if (self->_percent != percent)
   {
-    self->_percent = a3;
+    self->_percent = percent;
     [(STStorageProgressView *)self setNeedsDisplay];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = STStorageProgressView;
-  [(STStorageProgressView *)&v4 traitCollectionDidChange:a3];
+  [(STStorageProgressView *)&v4 traitCollectionDidChange:change];
   [(STStorageProgressView *)self updateColors];
 }
 

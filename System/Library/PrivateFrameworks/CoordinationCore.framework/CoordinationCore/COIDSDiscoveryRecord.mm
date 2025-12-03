@@ -1,28 +1,28 @@
 @interface COIDSDiscoveryRecord
-- (BOOL)hasSameBackingDeviceAs:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (COIDSDiscoveryRecord)initWithIdsIdentifier:(id)a3 deviceTokenURI:(id)a4;
+- (BOOL)hasSameBackingDeviceAs:(id)as;
+- (BOOL)isEqual:(id)equal;
+- (COIDSDiscoveryRecord)initWithIdsIdentifier:(id)identifier deviceTokenURI:(id)i;
 - (NSString)description;
-- (id)newTransportWithExecutionContext:(id)a3;
+- (id)newTransportWithExecutionContext:(id)context;
 - (unint64_t)hash;
 @end
 
 @implementation COIDSDiscoveryRecord
 
-- (COIDSDiscoveryRecord)initWithIdsIdentifier:(id)a3 deviceTokenURI:(id)a4
+- (COIDSDiscoveryRecord)initWithIdsIdentifier:(id)identifier deviceTokenURI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  iCopy = i;
   v14.receiver = self;
   v14.super_class = COIDSDiscoveryRecord;
   v8 = [(COIDSDiscoveryRecord *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     IDSIdentifier = v8->_IDSIdentifier;
     v8->_IDSIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [iCopy copy];
     deviceTokenURI = v8->_deviceTokenURI;
     v8->_deviceTokenURI = v11;
   }
@@ -35,26 +35,26 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(COIDSDiscoveryRecord *)self IDSIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p, IDS: %@>", v5, self, v6];
+  iDSIdentifier = [(COIDSDiscoveryRecord *)self IDSIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p, IDS: %@>", v5, self, iDSIdentifier];
 
   return v7;
 }
 
-- (BOOL)hasSameBackingDeviceAs:(id)a3
+- (BOOL)hasSameBackingDeviceAs:(id)as
 {
-  v4 = a3;
-  v5 = [(COIDSDiscoveryRecord *)self IDSIdentifier];
-  v6 = [v4 IDSIdentifier];
+  asCopy = as;
+  iDSIdentifier = [(COIDSDiscoveryRecord *)self IDSIdentifier];
+  iDSIdentifier2 = [asCopy IDSIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(asCopy) = [iDSIdentifier isEqualToString:iDSIdentifier2];
+  return asCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(COIDSDiscoveryRecord *)self IDSIdentifier];
-  v3 = [v2 hash];
+  iDSIdentifier = [(COIDSDiscoveryRecord *)self IDSIdentifier];
+  v3 = [iDSIdentifier hash];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [v5 hash];
@@ -62,10 +62,10 @@
   return v6 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -75,9 +75,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(COIDSDiscoveryRecord *)self IDSIdentifier];
-      v6 = [(COIDSDiscoveryRecord *)v4 IDSIdentifier];
-      v7 = [v5 isEqualToString:v6];
+      iDSIdentifier = [(COIDSDiscoveryRecord *)self IDSIdentifier];
+      iDSIdentifier2 = [(COIDSDiscoveryRecord *)equalCopy IDSIdentifier];
+      v7 = [iDSIdentifier isEqualToString:iDSIdentifier2];
     }
 
     else
@@ -89,11 +89,11 @@
   return v7;
 }
 
-- (id)newTransportWithExecutionContext:(id)a3
+- (id)newTransportWithExecutionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(COIDSDiscoveryRecord *)self serviceDirector];
-  v6 = [v5 transportWithDiscoveryRecord:self withExecutionContext:v4];
+  contextCopy = context;
+  serviceDirector = [(COIDSDiscoveryRecord *)self serviceDirector];
+  v6 = [serviceDirector transportWithDiscoveryRecord:self withExecutionContext:contextCopy];
 
   return v6;
 }

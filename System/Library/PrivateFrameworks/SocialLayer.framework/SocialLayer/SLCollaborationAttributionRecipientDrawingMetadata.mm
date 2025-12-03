@@ -1,44 +1,44 @@
 @interface SLCollaborationAttributionRecipientDrawingMetadata
-- (BOOL)isEqual:(id)a3;
-- (SLCollaborationAttributionRecipientDrawingMetadata)initWithCoder:(id)a3;
-- (SLCollaborationAttributionRecipientDrawingMetadata)initWithContact:(id)a3 contactImageData:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SLCollaborationAttributionRecipientDrawingMetadata)initWithCoder:(id)coder;
+- (SLCollaborationAttributionRecipientDrawingMetadata)initWithContact:(id)contact contactImageData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SLCollaborationAttributionRecipientDrawingMetadata
 
-- (SLCollaborationAttributionRecipientDrawingMetadata)initWithContact:(id)a3 contactImageData:(id)a4
+- (SLCollaborationAttributionRecipientDrawingMetadata)initWithContact:(id)contact contactImageData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  contactCopy = contact;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = SLCollaborationAttributionRecipientDrawingMetadata;
   v9 = [(SLCollaborationAttributionRecipientDrawingMetadata *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contact, a3);
-    objc_storeStrong(&v10->_contactImageData, a4);
+    objc_storeStrong(&v9->_contact, contact);
+    objc_storeStrong(&v10->_contactImageData, data);
   }
 
   return v10;
 }
 
-- (SLCollaborationAttributionRecipientDrawingMetadata)initWithCoder:(id)a3
+- (SLCollaborationAttributionRecipientDrawingMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SLCollaborationAttributionRecipientDrawingMetadata;
   v5 = [(SLCollaborationAttributionRecipientDrawingMetadata *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
     contact = v5->_contact;
     v5->_contact = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactImageData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactImageData"];
     contactImageData = v5->_contactImageData;
     v5->_contactImageData = v8;
   }
@@ -46,33 +46,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contact];
-  [v4 encodeObject:v5 forKey:@"contact"];
+  coderCopy = coder;
+  contact = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contact];
+  [coderCopy encodeObject:contact forKey:@"contact"];
 
-  v6 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contactImageData];
-  [v4 encodeObject:v6 forKey:@"contactImageData"];
+  contactImageData = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contactImageData];
+  [coderCopy encodeObject:contactImageData forKey:@"contactImageData"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contact];
-  v6 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contactImageData];
-  v7 = [v4 initWithContact:v5 contactImageData:v6];
+  contact = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contact];
+  contactImageData = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contactImageData];
+  v7 = [v4 initWithContact:contact contactImageData:contactImageData];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     if (v6 == self)
     {
       v20 = 1;
@@ -81,35 +81,35 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v7 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contact];
-    if (!v7)
+    contact = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contact];
+    if (!contact)
     {
-      v3 = [(SLCollaborationAttributionRecipientDrawingMetadata *)v6 contact];
-      if (!v3)
+      contact2 = [(SLCollaborationAttributionRecipientDrawingMetadata *)v6 contact];
+      if (!contact2)
       {
         goto LABEL_9;
       }
     }
 
-    v8 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contact];
-    if (!v8)
+    contact3 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contact];
+    if (!contact3)
     {
       goto LABEL_18;
     }
 
-    v9 = v8;
-    v10 = [(SLCollaborationAttributionRecipientDrawingMetadata *)v6 contact];
-    if (!v10)
+    v9 = contact3;
+    contact4 = [(SLCollaborationAttributionRecipientDrawingMetadata *)v6 contact];
+    if (!contact4)
     {
       goto LABEL_17;
     }
 
-    v11 = v10;
-    v12 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contact];
-    v13 = [(SLCollaborationAttributionRecipientDrawingMetadata *)v6 contact];
-    v14 = [v12 isEqual:v13];
+    v11 = contact4;
+    contact5 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contact];
+    contact6 = [(SLCollaborationAttributionRecipientDrawingMetadata *)v6 contact];
+    v14 = [contact5 isEqual:contact6];
 
-    if (v7)
+    if (contact)
     {
 
       if (v14)
@@ -124,23 +124,23 @@ LABEL_21:
       if (v14)
       {
 LABEL_9:
-        v7 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contactImageData];
-        if (!v7)
+        contact = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contactImageData];
+        if (!contact)
         {
-          v3 = [(SLCollaborationAttributionRecipientDrawingMetadata *)v6 contactImageData];
-          if (!v3)
+          contact2 = [(SLCollaborationAttributionRecipientDrawingMetadata *)v6 contactImageData];
+          if (!contact2)
           {
             v20 = 1;
             goto LABEL_19;
           }
         }
 
-        v15 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contactImageData];
-        if (!v15)
+        contactImageData = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contactImageData];
+        if (!contactImageData)
         {
 LABEL_18:
           v20 = 0;
-          if (v7)
+          if (contact)
           {
             goto LABEL_20;
           }
@@ -150,16 +150,16 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        v9 = v15;
-        v16 = [(SLCollaborationAttributionRecipientDrawingMetadata *)v6 contactImageData];
-        if (v16)
+        v9 = contactImageData;
+        contactImageData2 = [(SLCollaborationAttributionRecipientDrawingMetadata *)v6 contactImageData];
+        if (contactImageData2)
         {
-          v17 = v16;
-          v18 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contactImageData];
-          v19 = [(SLCollaborationAttributionRecipientDrawingMetadata *)v6 contactImageData];
-          v20 = [v18 isEqualToData:v19];
+          v17 = contactImageData2;
+          contactImageData3 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contactImageData];
+          contactImageData4 = [(SLCollaborationAttributionRecipientDrawingMetadata *)v6 contactImageData];
+          v20 = [contactImageData3 isEqualToData:contactImageData4];
 
-          if (!v7)
+          if (!contact)
           {
             goto LABEL_19;
           }
@@ -187,10 +187,10 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contact];
-  v4 = [v3 hash];
-  v5 = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contactImageData];
-  v6 = [v5 hash];
+  contact = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contact];
+  v4 = [contact hash];
+  contactImageData = [(SLCollaborationAttributionRecipientDrawingMetadata *)self contactImageData];
+  v6 = [contactImageData hash];
 
   return v6 ^ v4;
 }

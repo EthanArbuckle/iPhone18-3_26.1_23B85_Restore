@@ -1,24 +1,24 @@
 @interface TSCEFunction_COUNTMATCHES
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_COUNTMATCHES
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
-  v9 = *(*a5 + 8);
+  v8 = **arguments;
+  v9 = *(*arguments + 8);
   isRegexString = objc_msgSend_isRegexString(v9, v10, v11, v12, v13);
   v55 = 0;
-  v16 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v8, v15, a3, a4, 0, &v55);
+  v16 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v8, v15, context, spec, 0, &v55);
   v17 = v55;
   v54 = v17;
-  v19 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v9, v18, a3, a4, 1, &v54);
+  v19 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v9, v18, context, spec, 1, &v54);
   v20 = v54;
 
   if (v20)
   {
-    v25 = objc_msgSend_raiseErrorOrConvert_(a3, v21, v20, v23, v24);
+    v25 = objc_msgSend_raiseErrorOrConvert_(context, v21, v20, v23, v24);
 LABEL_3:
 
     goto LABEL_12;
@@ -33,7 +33,7 @@ LABEL_3:
     v20 = v53;
     if (v20)
     {
-      v25 = objc_msgSend_raiseErrorOrConvert_(a3, v34, v20, v36, v37);
+      v25 = objc_msgSend_raiseErrorOrConvert_(context, v34, v20, v36, v37);
 
       goto LABEL_3;
     }

@@ -1,23 +1,23 @@
 @interface NTKBasePhotosFace
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (BOOL)_createResourceDirectorySuitableForSharingAtPath:(id)a3 error:(id *)a4;
-- (BOOL)_sanitizeFaceConfiguration:(id *)a3;
-- (id)_localizedNameForComplicationSlot:(id)a3;
+- (BOOL)_createResourceDirectorySuitableForSharingAtPath:(id)path error:(id *)error;
+- (BOOL)_sanitizeFaceConfiguration:(id *)configuration;
+- (id)_localizedNameForComplicationSlot:(id)slot;
 - (id)_resourceDirectorySnapshotKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_migrateLegibility;
-- (void)_updateForResourceDirectoryChange:(id)a3;
+- (void)_updateForResourceDirectoryChange:(id)change;
 @end
 
 @implementation NTKBasePhotosFace
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = NTKBasePhotosFace;
-  v4 = [(NTKFace *)&v8 copyWithZone:a3];
+  v4 = [(NTKFace *)&v8 copyWithZone:zone];
   v5 = [(NSString *)self->_cachedResourceDirectorySnapshotKey copy];
   v6 = v4[21];
   v4[21] = v5;
@@ -53,17 +53,17 @@
   return v2;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"top"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"top"])
   {
     v4 = @"ABOVE_TIME";
   }
 
   else
   {
-    v5 = [v3 isEqualToString:@"bottom"];
+    v5 = [slotCopy isEqualToString:@"bottom"];
     v4 = @"BELOW_TIME";
     if (!v5)
     {
@@ -77,7 +77,7 @@
   return v7;
 }
 
-- (void)_updateForResourceDirectoryChange:(id)a3
+- (void)_updateForResourceDirectoryChange:(id)change
 {
   cachedResourceDirectorySnapshotKey = self->_cachedResourceDirectorySnapshotKey;
   self->_cachedResourceDirectorySnapshotKey = 0;
@@ -85,17 +85,17 @@
 
 - (id)_resourceDirectorySnapshotKey
 {
-  v3 = [(NTKFace *)self resourceDirectory];
-  if (!v3 || (v4 = v3, [MEMORY[0x277CCAA00] defaultManager], v5 = objc_claimAutoreleasedReturnValue(), -[NTKFace resourceDirectory](self, "resourceDirectory"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "fileExistsAtPath:", v6), v6, v5, v4, !v7))
+  resourceDirectory = [(NTKFace *)self resourceDirectory];
+  if (!resourceDirectory || (v4 = resourceDirectory, [MEMORY[0x277CCAA00] defaultManager], v5 = objc_claimAutoreleasedReturnValue(), -[NTKFace resourceDirectory](self, "resourceDirectory"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "fileExistsAtPath:", v6), v6, v5, v4, !v7))
   {
     cachedResourceDirectorySnapshotKey = self->_cachedResourceDirectorySnapshotKey;
     self->_cachedResourceDirectorySnapshotKey = 0;
 
 LABEL_6:
-    v11 = [MEMORY[0x277CBBAE8] currentDevice];
-    v12 = [v11 isTinker];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    isTinker = [currentDevice isTinker];
 
-    if (v12)
+    if (isTinker)
     {
       v9 = @"T";
     }
@@ -115,8 +115,8 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v14 = [(NTKFace *)self resourceDirectory];
-  v15 = [NTKPhotosReader readerForResourceDirectory:v14];
+  resourceDirectory2 = [(NTKFace *)self resourceDirectory];
+  v15 = [NTKPhotosReader readerForResourceDirectory:resourceDirectory2];
 
   if ([v15 count])
   {
@@ -137,9 +137,9 @@ LABEL_9:
   return v9;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 14)
+  if (mode == 14)
   {
     v5 = NTKCompanionClockFaceLocalizedString(@"EDIT_MODE_LABEL_PHOTO_POSITION_COMPANION", @"Time Position");
   }
@@ -152,10 +152,10 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)_createResourceDirectorySuitableForSharingAtPath:(id)a3 error:(id *)a4
+- (BOOL)_createResourceDirectorySuitableForSharingAtPath:(id)path error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathCopy = path;
   v7 = objc_opt_new();
   v15 = v7;
   v8 = objc_opt_new();
@@ -166,16 +166,16 @@ LABEL_9:
 
   v11 = [NTKResourceDirectoryScrubber alloc];
   v12 = [(NTKResourceDirectoryScrubber *)v11 initWithOperations:v10, v15, v16];
-  v13 = [(NTKFace *)self resourceDirectory];
-  LOBYTE(a4) = [(NTKResourceDirectoryScrubber *)v12 scrubDirectoryAtPath:v13 toDestinationPath:v6 error:a4];
+  resourceDirectory = [(NTKFace *)self resourceDirectory];
+  LOBYTE(error) = [(NTKResourceDirectoryScrubber *)v12 scrubDirectoryAtPath:resourceDirectory toDestinationPath:pathCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_sanitizeFaceConfiguration:(id *)a3
+- (BOOL)_sanitizeFaceConfiguration:(id *)configuration
 {
-  v5 = [(NTKFace *)self selectedOptionsForCustomEditModes];
-  v6 = [v5 objectForKeyedSubscript:&unk_284183520];
+  selectedOptionsForCustomEditModes = [(NTKFace *)self selectedOptionsForCustomEditModes];
+  v6 = [selectedOptionsForCustomEditModes objectForKeyedSubscript:&unk_284183520];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -184,10 +184,10 @@ LABEL_9:
     v8 = v7;
     if (!v7 || [v7 photosContent] != 1)
     {
-      if (a3)
+      if (configuration)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.nanotimekit.photos" code:1005 userInfo:0];
-        *a3 = v16 = 0;
+        *configuration = v16 = 0;
       }
 
       else
@@ -198,19 +198,19 @@ LABEL_9:
       goto LABEL_20;
     }
 
-    v9 = [(NTKFace *)self resourceDirectory];
-    v10 = [(NTKBasePhotoResourcesManifest *)NTKPhotosFaceResourcesManifest manifestForResourceDirectory:v9];
+    resourceDirectory = [(NTKFace *)self resourceDirectory];
+    v10 = [(NTKBasePhotoResourcesManifest *)NTKPhotosFaceResourcesManifest manifestForResourceDirectory:resourceDirectory];
 
     if (v10)
     {
-      if ([v10 validateManifestWithError:a3])
+      if ([v10 validateManifestWithError:configuration])
       {
-        v11 = [(NTKFace *)self resourceDirectory];
-        v12 = [NTKPhotosReader readerForResourceDirectory:v11];
+        resourceDirectory2 = [(NTKFace *)self resourceDirectory];
+        v12 = [NTKPhotosReader readerForResourceDirectory:resourceDirectory2];
 
         v13 = [v12 count];
-        v14 = [v10 imageList];
-        v15 = [v14 count];
+        imageList = [v10 imageList];
+        v15 = [imageList count];
 
         v16 = v13 == v15;
         if (v16)
@@ -218,19 +218,19 @@ LABEL_9:
           [(NTKBasePhotosFace *)self _migrateLegibility];
         }
 
-        else if (a3)
+        else if (configuration)
         {
-          *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.nanotimekit.photos" code:1006 userInfo:0];
+          *configuration = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.nanotimekit.photos" code:1006 userInfo:0];
         }
 
         goto LABEL_19;
       }
     }
 
-    else if (a3)
+    else if (configuration)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.nanotimekit.photos" code:1006 userInfo:0];
-      *a3 = v16 = 0;
+      *configuration = v16 = 0;
 LABEL_19:
 
 LABEL_20:
@@ -249,12 +249,12 @@ LABEL_21:
 
 - (void)_migrateLegibility
 {
-  v3 = [(NTKFace *)self resourceDirectory];
+  resourceDirectory = [(NTKFace *)self resourceDirectory];
 
-  if (v3)
+  if (resourceDirectory)
   {
-    v4 = [(NTKFace *)self resourceDirectory];
-    v6 = [NTKPhotosReader readerForResourceDirectory:v4];
+    resourceDirectory2 = [(NTKFace *)self resourceDirectory];
+    v6 = [NTKPhotosReader readerForResourceDirectory:resourceDirectory2];
 
     if (NTKPhotosUpdateLegibility(v6))
     {

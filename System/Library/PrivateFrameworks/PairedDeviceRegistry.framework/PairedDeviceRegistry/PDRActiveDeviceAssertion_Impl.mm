@@ -10,14 +10,14 @@
 - (BOOL)isActive
 {
   v2 = one-time initialization token for instance;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
   }
 
-  v4 = *(&v3->super.super.isa + OBJC_IVAR___PDRActiveDeviceAssertion_Impl_identifier_);
-  v5 = *(&v3->super._isActive + OBJC_IVAR___PDRActiveDeviceAssertion_Impl_identifier_);
+  v4 = *(&selfCopy->super.super.isa + OBJC_IVAR___PDRActiveDeviceAssertion_Impl_identifier_);
+  v5 = *(&selfCopy->super._isActive + OBJC_IVAR___PDRActiveDeviceAssertion_Impl_identifier_);
 
   v6._countAndFlagsBits = v4;
   v6._object = v5;
@@ -32,16 +32,16 @@
   if (*(&self->super.super.isa + OBJC_IVAR___PDRActiveDeviceAssertion_Impl_valid) == 1)
   {
     v4 = one-time initialization token for instance;
-    v5 = self;
-    v9 = v5;
+    selfCopy = self;
+    v9 = selfCopy;
     if (v4 != -1)
     {
       swift_once();
-      v5 = v9;
+      selfCopy = v9;
     }
 
-    v6 = *(&v5->super.super.isa + OBJC_IVAR___PDRActiveDeviceAssertion_Impl_identifier_);
-    v7 = *(&v5->super._isActive + OBJC_IVAR___PDRActiveDeviceAssertion_Impl_identifier_);
+    v6 = *(&selfCopy->super.super.isa + OBJC_IVAR___PDRActiveDeviceAssertion_Impl_identifier_);
+    v7 = *(&selfCopy->super._isActive + OBJC_IVAR___PDRActiveDeviceAssertion_Impl_identifier_);
 
     v8._countAndFlagsBits = v6;
     v8._object = v7;
@@ -53,9 +53,9 @@
 
 - (void)dealloc
 {
-  v2 = self;
-  [(PDRActiveDeviceAssertion_Impl *)v2 invalidate];
-  v3.receiver = v2;
+  selfCopy = self;
+  [(PDRActiveDeviceAssertion_Impl *)selfCopy invalidate];
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for ActiveDeviceAssertion_Impl();
   [(PDRActiveDeviceAssertion_Impl *)&v3 dealloc];
 }

@@ -1,22 +1,22 @@
 @interface MFUserActivityRouter
 + (OS_os_log)log;
-- (BOOL)handoffUserActivity:(id)a3 withPayload:(id)a4;
-- (MFUserActivityRouter)initWithDelegate:(id)a3 messageRepository:(id)a4;
+- (BOOL)handoffUserActivity:(id)activity withPayload:(id)payload;
+- (MFUserActivityRouter)initWithDelegate:(id)delegate messageRepository:(id)repository;
 - (MFUserActivityRouterDelegate)delegate;
-- (id)_currentActivityUserInfoFromSendMailIntent:(id)a3;
-- (void)handoffUserActivityFailedWithType:(id)a3 error:(id)a4;
-- (void)presentAlertForHandoffError:(id)a3;
+- (id)_currentActivityUserInfoFromSendMailIntent:(id)intent;
+- (void)handoffUserActivityFailedWithType:(id)type error:(id)error;
+- (void)presentAlertForHandoffError:(id)error;
 - (void)presentAlertForReturnToSenderError;
-- (void)recoverUIAfterHandoffFailureWithType:(id)a3;
-- (void)returnToSenderErrorHandling:(id)a3 urlError:(id)a4;
-- (void)returnToSenderUserActivity:(id)a3;
-- (void)returnToSenderUserActivityFailedWithType:(id)a3 error:(id)a4;
-- (void)routeUserActivity:(id)a3;
-- (void)routeUserActivityFailedWithType:(id)a3 error:(id)a4;
-- (void)routeWillContinueUserActivityWithType:(id)a3;
-- (void)userAcknowledgedHandoffError:(id)a3;
-- (void)willHandoffUserActivityWithType:(id)a3;
-- (void)willReturnToSenderActivityWithType:(id)a3;
+- (void)recoverUIAfterHandoffFailureWithType:(id)type;
+- (void)returnToSenderErrorHandling:(id)handling urlError:(id)error;
+- (void)returnToSenderUserActivity:(id)activity;
+- (void)returnToSenderUserActivityFailedWithType:(id)type error:(id)error;
+- (void)routeUserActivity:(id)activity;
+- (void)routeUserActivityFailedWithType:(id)type error:(id)error;
+- (void)routeWillContinueUserActivityWithType:(id)type;
+- (void)userAcknowledgedHandoffError:(id)error;
+- (void)willHandoffUserActivityWithType:(id)type;
+- (void)willReturnToSenderActivityWithType:(id)type;
 @end
 
 @implementation MFUserActivityRouter
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = sub_100233694;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD768 != -1)
   {
     dispatch_once(&qword_1006DD768, block);
@@ -38,18 +38,18 @@
   return v2;
 }
 
-- (MFUserActivityRouter)initWithDelegate:(id)a3 messageRepository:(id)a4
+- (MFUserActivityRouter)initWithDelegate:(id)delegate messageRepository:(id)repository
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  repositoryCopy = repository;
   v13.receiver = self;
   v13.super_class = MFUserActivityRouter;
   v8 = [(MFUserActivityRouter *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_messageRepository, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_messageRepository, repository);
     v10 = objc_alloc_init(MFLANHandoffAgent);
     LANHandoffAgent = v9->_LANHandoffAgent;
     v9->_LANHandoffAgent = v10;
@@ -58,9 +58,9 @@
   return v9;
 }
 
-- (id)_currentActivityUserInfoFromSendMailIntent:(id)a3
+- (id)_currentActivityUserInfoFromSendMailIntent:(id)intent
 {
-  v3 = a3;
+  intentCopy = intent;
   v4 = objc_alloc_init(NSMutableDictionary);
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
@@ -76,73 +76,73 @@
   v7 = v4;
   v24 = v7;
   v8 = objc_retainBlock(&v20);
-  v9 = [v3 sender];
-  (v8[2])(v8, MSMailActivityHandoffSendMailKeySenderAddress, v9);
+  sender = [intentCopy sender];
+  (v8[2])(v8, MSMailActivityHandoffSendMailKeySenderAddress, sender);
 
-  v10 = [v3 to];
+  v10 = [intentCopy to];
   v11 = [v10 ef_compactMap:v6];
   (v8[2])(v8, MSMailActivityHandoffSendMailKeyToRecipients, v11);
 
-  v12 = [v3 cc];
+  v12 = [intentCopy cc];
   v13 = [v12 ef_compactMap:v6];
   (v8[2])(v8, MSMailActivityHandoffSendMailKeyCcRecipients, v13);
 
-  v14 = [v3 bcc];
+  v14 = [intentCopy bcc];
   v15 = [v14 ef_compactMap:v6];
   (v8[2])(v8, MSMailActivityHandoffSendMailKeyBccRecipients, v15);
 
-  v16 = [v3 subject];
-  (v8[2])(v8, MSMailActivityHandoffSendMailKeySubject, v16);
+  subject = [intentCopy subject];
+  (v8[2])(v8, MSMailActivityHandoffSendMailKeySubject, subject);
 
-  v17 = [v3 body];
-  (v8[2])(v8, MSMailActivityHandoffSendMailKeyMessageBody, v17);
+  body = [intentCopy body];
+  (v8[2])(v8, MSMailActivityHandoffSendMailKeyMessageBody, body);
 
   v18 = v7;
   return v7;
 }
 
-- (BOOL)handoffUserActivity:(id)a3 withPayload:(id)a4
+- (BOOL)handoffUserActivity:(id)activity withPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 activityType];
-  v9 = [v6 interaction];
-  v10 = [v9 intent];
+  activityCopy = activity;
+  payloadCopy = payload;
+  activityType = [activityCopy activityType];
+  interaction = [activityCopy interaction];
+  intent = [interaction intent];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [v9 intent];
-    v13 = [(MFUserActivityRouter *)self _currentActivityUserInfoFromSendMailIntent:v12];
+    intent2 = [interaction intent];
+    v13 = [(MFUserActivityRouter *)self _currentActivityUserInfoFromSendMailIntent:intent2];
 
     v14 = MSMailActivityHandoffTypeSendMail;
-    v8 = v14;
-    v7 = v13;
+    activityType = v14;
+    payloadCopy = v13;
   }
 
-  v15 = [(MFUserActivityRouter *)self delegate];
-  v16 = [v15 mailboxPickerControllerForActivityRouter:self];
+  delegate = [(MFUserActivityRouter *)self delegate];
+  v16 = [delegate mailboxPickerControllerForActivityRouter:self];
   v64 = [[MFUserActivityBrowseMailboxRoute alloc] initWithMailboxPickerController:v16];
-  v62 = [(MFUserActivityRouter *)self handoffComposeController];
-  if (!v8)
+  handoffComposeController = [(MFUserActivityRouter *)self handoffComposeController];
+  if (!activityType)
   {
-    v8 = [v7 objectForKeyedSubscript:MSMailActivityHandoffTypeKey];
+    activityType = [payloadCopy objectForKeyedSubscript:MSMailActivityHandoffTypeKey];
   }
 
-  v17 = [v7 objectForKeyedSubscript:MSMailActivityHandoffDebugKeySimulateFailureBool];
-  v18 = [v17 BOOLValue];
+  v17 = [payloadCopy objectForKeyedSubscript:MSMailActivityHandoffDebugKeySimulateFailureBool];
+  bOOLValue = [v17 BOOLValue];
 
-  if (!v18)
+  if (!bOOLValue)
   {
     v61 = v16;
-    v21 = [MSMailActivityHandoffTypeSearch isEqualToString:v8];
-    v22 = [CSQueryContinuationActionType isEqualToString:v8];
+    v21 = [MSMailActivityHandoffTypeSearch isEqualToString:activityType];
+    v22 = [CSQueryContinuationActionType isEqualToString:activityType];
     v63 = objc_alloc_init(NSMutableDictionary);
-    [v63 setObject:v8 forKeyedSubscript:@"ceActivityType"];
+    [v63 setObject:activityType forKeyedSubscript:@"ceActivityType"];
     if ((v22 | v21))
     {
-      v23 = [v6 userInfo];
+      userInfo = [activityCopy userInfo];
       if (v21)
       {
         [v63 setObject:&off_1006744F8 forKeyedSubscript:@"ceActivityIsHandoff"];
@@ -151,7 +151,7 @@
       else if (v22)
       {
         [v63 setObject:&off_100674510 forKeyedSubscript:@"ceActivityIsHandoff"];
-        v27 = [v23 objectForKeyedSubscript:CSSearchQueryString];
+        v27 = [userInfo objectForKeyedSubscript:CSSearchQueryString];
         if (v27)
         {
           v74[0] = _NSConcreteStackBlock;
@@ -160,10 +160,10 @@
           v74[3] = &unk_100656290;
           v80 = 0;
           v75 = v64;
-          v76 = v7;
+          v76 = payloadCopy;
           v81 = v22;
-          v77 = v15;
-          v78 = self;
+          v77 = delegate;
+          selfCopy = self;
           v79 = v27;
           v28 = v27;
           [UIViewController _performWithoutDeferringTransitions:v74];
@@ -186,28 +186,28 @@ LABEL_17:
       goto LABEL_34;
     }
 
-    if ([CSSearchableItemActionType isEqualToString:v8])
+    if ([CSSearchableItemActionType isEqualToString:activityType])
     {
       [v63 setObject:&off_100674528 forKeyedSubscript:@"ceActivityIsHandoff"];
-      v59 = v9;
-      v24 = [v7 objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
+      v59 = interaction;
+      v24 = [payloadCopy objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
       v25 = v63;
-      v57 = [v7 objectForKeyedSubscript:@"kCSItemBundle"];
+      v57 = [payloadCopy objectForKeyedSubscript:@"kCSItemBundle"];
       if ([v57 isEqualToString:@"com.apple.email.SearchIndexer"])
       {
-        v26 = [(MFUserActivityRouter *)self messageRepository];
-        [v26 messageForSearchIndexerIdentifier:v24];
+        messageRepository = [(MFUserActivityRouter *)self messageRepository];
+        [messageRepository messageForSearchIndexerIdentifier:v24];
       }
 
       else
       {
-        v26 = [(MFUserActivityRouter *)self messageRepository];
-        [v26 messageForSearchableItemIdentifier:v24];
+        messageRepository = [(MFUserActivityRouter *)self messageRepository];
+        [messageRepository messageForSearchableItemIdentifier:v24];
       }
       v33 = ;
 
       v34 = [v33 resultWithTimeout:0 error:5.0];
-      if (v34 && (v25 = v63, ([v15 displayMessage:v34 fromUserActivityRouter:self] & 1) != 0))
+      if (v34 && (v25 = v63, ([delegate displayMessage:v34 fromUserActivityRouter:self] & 1) != 0))
       {
         v29 = 0;
         v20 = 1;
@@ -220,7 +220,7 @@ LABEL_17:
         v20 = 0;
       }
 
-      v9 = v59;
+      interaction = v59;
       if (!v29)
       {
         goto LABEL_35;
@@ -229,9 +229,9 @@ LABEL_17:
       goto LABEL_34;
     }
 
-    if (([MSMailActivityHandoffTypeDisplayMessage isEqualToString:v8] & 1) != 0 || objc_msgSend(MSMailActivityHandoffTypeDisplayMessageAttachment, "isEqualToString:", v8))
+    if (([MSMailActivityHandoffTypeDisplayMessage isEqualToString:activityType] & 1) != 0 || objc_msgSend(MSMailActivityHandoffTypeDisplayMessageAttachment, "isEqualToString:", activityType))
     {
-      v30 = [v7 objectForKeyedSubscript:MSMailActivityHandoffDisplayMessageKeyURL];
+      v30 = [payloadCopy objectForKeyedSubscript:MSMailActivityHandoffDisplayMessageKeyURL];
       [v63 setObject:&off_100674510 forKeyedSubscript:@"ceActivityIsHandoff"];
       if (v30)
       {
@@ -242,9 +242,9 @@ LABEL_17:
         v70[3] = &unk_10064FB80;
         v71 = v63;
         v72 = v31;
-        v73 = self;
+        selfCopy2 = self;
         v32 = v31;
-        [v15 openURL:v32 fromUserActivityRouter:self completionHandler:v70];
+        [delegate openURL:v32 fromUserActivityRouter:self completionHandler:v70];
 
         v29 = 0;
 LABEL_32:
@@ -259,9 +259,9 @@ LABEL_31:
     }
 
     v37 = MSMailActivityHandoffTypeBrowseMailbox;
-    if ([MSMailActivityHandoffTypeBrowseMailbox isEqualToString:v8])
+    if ([MSMailActivityHandoffTypeBrowseMailbox isEqualToString:activityType])
     {
-      [(MFUserActivityBrowseMailboxRoute *)v64 browseMailboxForActivityPayload:v7 activityType:v37 scrollToMessage:1];
+      [(MFUserActivityBrowseMailboxRoute *)v64 browseMailboxForActivityPayload:payloadCopy activityType:v37 scrollToMessage:1];
       v29 = v20 = 0;
       if (!v29)
       {
@@ -271,22 +271,22 @@ LABEL_31:
       goto LABEL_34;
     }
 
-    if ([MSMailActivityHandoffTypeComposeSansStreams isEqualToString:v8])
+    if ([MSMailActivityHandoffTypeComposeSansStreams isEqualToString:activityType])
     {
       [v63 setObject:&off_100674510 forKeyedSubscript:@"ceActivityIsHandoff"];
-      v38 = [v7 objectForKeyedSubscript:MSMailActivityHandoffComposeKeyMessageData];
+      v38 = [payloadCopy objectForKeyedSubscript:MSMailActivityHandoffComposeKeyMessageData];
       if (v38)
       {
         v39 = [[_MFMailCompositionContext alloc] initWithComposeType:2 RFC822Data:v38];
-        if (v62)
+        if (handoffComposeController)
         {
-          v40 = [v62 _mailComposeController];
-          [v40 setCompositionContext:v39];
+          _mailComposeController = [handoffComposeController _mailComposeController];
+          [_mailComposeController setCompositionContext:v39];
         }
 
         else
         {
-          [v15 showComposeWithContext:v39 fromActivityRouter:self];
+          [delegate showComposeWithContext:v39 fromActivityRouter:self];
         }
 
         v29 = 0;
@@ -312,27 +312,27 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    if ([MSMailActivityHandoffTypeComposeWithStreams isEqualToString:v8])
+    if ([MSMailActivityHandoffTypeComposeWithStreams isEqualToString:activityType])
     {
       [v63 setObject:&off_100674510 forKeyedSubscript:@"ceActivityIsHandoff"];
       v41 = MSMailActivityHandoffDebugKeyComposeDataPath;
-      v42 = [v7 objectForKeyedSubscript:MSMailActivityHandoffDebugKeyComposeDataPath];
+      v42 = [payloadCopy objectForKeyedSubscript:MSMailActivityHandoffDebugKeyComposeDataPath];
 
       v43 = +[NSUserDefaults em_userDefaults];
       v44 = [v43 BOOLForKey:@"ComposeActivityOverLAN"];
 
-      if (v62)
+      if (handoffComposeController)
       {
         if (v42)
         {
-          v30 = [v7 objectForKeyedSubscript:v41];
+          v30 = [payloadCopy objectForKeyedSubscript:v41];
           v45 = +[NSFileManager defaultManager];
           v46 = [v45 fileExistsAtPath:v30];
 
           if (v46)
           {
             v58 = v30;
-            v60 = v9;
+            v60 = interaction;
             v47 = +[NSMutableData data];
             v48 = [NSData dataWithContentsOfFile:v58];
             if ([v48 length])
@@ -342,8 +342,8 @@ LABEL_34:
               [v47 appendData:v48];
               v49 = [NSInputStream inputStreamWithData:v47];
               v50 = +[NSOutputStream outputStreamToMemory];
-              v51 = [v62 _mailComposeController];
-              [v51 handleLargeMessageComposeHandoffWithInputStream:v49 outputStream:v50 error:0];
+              _mailComposeController2 = [handoffComposeController _mailComposeController];
+              [_mailComposeController2 handleLargeMessageComposeHandoffWithInputStream:v49 outputStream:v50 error:0];
 
               v29 = 0;
             }
@@ -354,7 +354,7 @@ LABEL_34:
             }
 
             v30 = v58;
-            v9 = v60;
+            interaction = v60;
             goto LABEL_32;
           }
 
@@ -364,8 +364,8 @@ LABEL_34:
 
         if (v44)
         {
-          v53 = [v7 objectForKeyedSubscript:MFLANHandoffHostnameKey];
-          v54 = [v7 objectForKeyedSubscript:MFLANHandoffPortNumberKey];
+          v53 = [payloadCopy objectForKeyedSubscript:MFLANHandoffHostnameKey];
+          v54 = [payloadCopy objectForKeyedSubscript:MFLANHandoffPortNumberKey];
           v55 = objc_alloc_init(MFLANHandoffContext);
           [v55 setHost:v53];
           [v55 setPort:{objc_msgSend(v54, "unsignedShortValue")}];
@@ -374,7 +374,7 @@ LABEL_34:
           v67[1] = 3221225472;
           v67[2] = sub_100234BA8;
           v67[3] = &unk_1006562B8;
-          v68 = v62;
+          v68 = handoffComposeController;
           [(MFLANHandoffAgent *)LANHandoffAgent connectToServerWithContext:v55 completion:v67];
         }
 
@@ -385,19 +385,19 @@ LABEL_34:
           v65[1] = 3221225472;
           v65[2] = sub_100234C4C;
           v65[3] = &unk_1006562E0;
-          v66 = v62;
-          [v6 getContinuationStreamsWithCompletionHandler:v65];
+          v66 = handoffComposeController;
+          [activityCopy getContinuationStreamsWithCompletionHandler:v65];
         }
       }
     }
 
-    else if ([MSMailActivityHandoffTypeSendMail isEqualToString:v8])
+    else if ([MSMailActivityHandoffTypeSendMail isEqualToString:activityType])
     {
-      v52 = [[_MFMailCompositionContext alloc] initWithHandoffActivityPayload:v7];
+      v52 = [[_MFMailCompositionContext alloc] initWithHandoffActivityPayload:payloadCopy];
       [v52 setShowContentImmediately:1];
       [v52 setCaretPosition:0x7FFFFFFFFFFFFFFFLL];
       [v52 setShowKeyboardImmediately:1];
-      [v15 showComposeWithContext:v52 fromActivityRouter:self];
+      [delegate showComposeWithContext:v52 fromActivityRouter:self];
     }
 
     v20 = 0;
@@ -406,7 +406,7 @@ LABEL_34:
   }
 
   v19 = +[NSError mailHandoffSimulatedError];
-  [v15 simulateUserActivityFailureWithType:v8 error:v19 fromActivityRouter:self];
+  [delegate simulateUserActivityFailureWithType:activityType error:v19 fromActivityRouter:self];
 
   v20 = 0;
 LABEL_36:
@@ -414,52 +414,52 @@ LABEL_36:
   return v20;
 }
 
-- (void)willHandoffUserActivityWithType:(id)a3
+- (void)willHandoffUserActivityWithType:(id)type
 {
-  v14 = a3;
-  v4 = [(MFUserActivityRouter *)self delegate];
-  v5 = [v4 mailboxPickerControllerForActivityRouter:self];
-  if ([MSMailActivityHandoffTypeBrowseMailbox isEqualToString:v14])
+  typeCopy = type;
+  delegate = [(MFUserActivityRouter *)self delegate];
+  v5 = [delegate mailboxPickerControllerForActivityRouter:self];
+  if ([MSMailActivityHandoffTypeBrowseMailbox isEqualToString:typeCopy])
   {
     [v5 dismissAndUnfocus];
   }
 
-  else if (([MSMailActivityHandoffTypeComposeSansStreams isEqualToString:v14] & 1) != 0 || objc_msgSend(MSMailActivityHandoffTypeComposeWithStreams, "isEqualToString:", v14))
+  else if (([MSMailActivityHandoffTypeComposeSansStreams isEqualToString:typeCopy] & 1) != 0 || objc_msgSend(MSMailActivityHandoffTypeComposeWithStreams, "isEqualToString:", typeCopy))
   {
     v6 = [[_MFMailCompositionContext alloc] initWithComposeType:9];
-    v7 = [v4 composeControllerForCompositionContext:v6 forActivityRouter:self];
+    v7 = [delegate composeControllerForCompositionContext:v6 forActivityRouter:self];
     [(MFUserActivityRouter *)self setHandoffComposeController:v7];
 
-    v8 = [(MFUserActivityRouter *)self handoffComposeController];
+    handoffComposeController = [(MFUserActivityRouter *)self handoffComposeController];
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"LOADING" value:&stru_100662A88 table:@"Main"];
-    [v8 setInitialTitle:v10];
+    [handoffComposeController setInitialTitle:v10];
 
-    v11 = [(MFUserActivityRouter *)self handoffComposeController];
-    v12 = [v11 _mailComposeController];
-    [v12 setProgressUIVisible:1 animated:0];
+    handoffComposeController2 = [(MFUserActivityRouter *)self handoffComposeController];
+    _mailComposeController = [handoffComposeController2 _mailComposeController];
+    [_mailComposeController setProgressUIVisible:1 animated:0];
 
-    v13 = [(MFUserActivityRouter *)self handoffComposeController];
-    [v4 presentComposeController:v13 forUserActivityRouter:self];
+    handoffComposeController3 = [(MFUserActivityRouter *)self handoffComposeController];
+    [delegate presentComposeController:handoffComposeController3 forUserActivityRouter:self];
   }
 }
 
-- (void)handoffUserActivityFailedWithType:(id)a3 error:(id)a4
+- (void)handoffUserActivityFailedWithType:(id)type error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  errorCopy = error;
   v8 = +[MFUserActivityRouter log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 ef_publicDescription];
+    ef_publicDescription = [errorCopy ef_publicDescription];
     v11 = 138543362;
-    v12 = v9;
+    v12 = ef_publicDescription;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#Hand-Off _handleHandoffError: %{public}@", &v11, 0xCu);
   }
 
-  if ([v7 mf_isSpotlightHandoffError])
+  if ([errorCopy mf_isSpotlightHandoffError])
   {
-    [(MFUserActivityRouter *)self recoverUIAfterHandoffFailureWithType:v6];
+    [(MFUserActivityRouter *)self recoverUIAfterHandoffFailureWithType:typeCopy];
     v10 = +[MFUserActivityRouter log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -470,27 +470,27 @@ LABEL_36:
 
   else
   {
-    [(MFUserActivityRouter *)self presentAlertForHandoffError:v7];
+    [(MFUserActivityRouter *)self presentAlertForHandoffError:errorCopy];
   }
 }
 
-- (void)presentAlertForHandoffError:(id)a3
+- (void)presentAlertForHandoffError:(id)error
 {
-  v4 = a3;
-  v5 = [(MFUserActivityRouter *)self delegate];
-  v6 = [v5 alertOverlayControllerForActivityRouter:self];
+  errorCopy = error;
+  delegate = [(MFUserActivityRouter *)self delegate];
+  v6 = [delegate alertOverlayControllerForActivityRouter:self];
 
-  v7 = [MailHandoffAlertControllerFactory mailAlertControllerForHandoffError:v4 acknowledgmentObserver:self];
+  v7 = [MailHandoffAlertControllerFactory mailAlertControllerForHandoffError:errorCopy acknowledgmentObserver:self];
   if (v6 && v7)
   {
     v8 = +[MFUserActivityRouter log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 ef_publicDescription];
+      ef_publicDescription = [errorCopy ef_publicDescription];
       v11 = 138412546;
       v12 = v6;
       v13 = 2114;
-      v14 = v9;
+      v14 = ef_publicDescription;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#Hand-Off Presenting alert for handoff error using overlay controller %@. error=%{public}@", &v11, 0x16u);
     }
 
@@ -519,82 +519,82 @@ LABEL_36:
   }
 }
 
-- (void)recoverUIAfterHandoffFailureWithType:(id)a3
+- (void)recoverUIAfterHandoffFailureWithType:(id)type
 {
-  v6 = a3;
-  v4 = [(MFUserActivityRouter *)self delegate];
-  if (([v6 isEqualToString:MSMailActivityHandoffTypeComposeSansStreams] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", MSMailActivityHandoffTypeComposeWithStreams))
+  typeCopy = type;
+  delegate = [(MFUserActivityRouter *)self delegate];
+  if (([typeCopy isEqualToString:MSMailActivityHandoffTypeComposeSansStreams] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", MSMailActivityHandoffTypeComposeWithStreams))
   {
-    v5 = [(MFUserActivityRouter *)self handoffComposeController];
+    handoffComposeController = [(MFUserActivityRouter *)self handoffComposeController];
     [(MFUserActivityRouter *)self setHandoffComposeController:0];
-    if (v5)
+    if (handoffComposeController)
     {
-      [v4 dismissComposeController:v5 forUserActivityRouter:self];
+      [delegate dismissComposeController:handoffComposeController forUserActivityRouter:self];
     }
   }
 }
 
-- (void)userAcknowledgedHandoffError:(id)a3
+- (void)userAcknowledgedHandoffError:(id)error
 {
-  v4 = [a3 mf_mailHandoffActivityType];
+  mf_mailHandoffActivityType = [error mf_mailHandoffActivityType];
   [(MFUserActivityRouter *)self recoverUIAfterHandoffFailureWithType:?];
 }
 
-- (void)routeUserActivity:(id)a3
+- (void)routeUserActivity:(id)activity
 {
-  v8 = a3;
-  v4 = [v8 _syRelatedUniqueIdentifier];
-  if (v4 && (v5 = _os_feature_enabled_impl(), v4, v5))
+  activityCopy = activity;
+  _syRelatedUniqueIdentifier = [activityCopy _syRelatedUniqueIdentifier];
+  if (_syRelatedUniqueIdentifier && (v5 = _os_feature_enabled_impl(), _syRelatedUniqueIdentifier, v5))
   {
-    [(MFUserActivityRouter *)self returnToSenderUserActivity:v8];
-    v6 = v8;
+    [(MFUserActivityRouter *)self returnToSenderUserActivity:activityCopy];
+    v6 = activityCopy;
   }
 
   else
   {
-    v7 = [v8 userInfo];
-    [(MFUserActivityRouter *)self handoffUserActivity:v8 withPayload:v7];
+    userInfo = [activityCopy userInfo];
+    [(MFUserActivityRouter *)self handoffUserActivity:activityCopy withPayload:userInfo];
 
-    v6 = v8;
+    v6 = activityCopy;
   }
 }
 
-- (void)routeWillContinueUserActivityWithType:(id)a3
+- (void)routeWillContinueUserActivityWithType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   if ([MSMailReturnToSenderActivityType isEqualToString:?] && _os_feature_enabled_impl())
   {
-    [(MFUserActivityRouter *)self willReturnToSenderActivityWithType:v4];
+    [(MFUserActivityRouter *)self willReturnToSenderActivityWithType:typeCopy];
   }
 
   else
   {
-    [(MFUserActivityRouter *)self willHandoffUserActivityWithType:v4];
+    [(MFUserActivityRouter *)self willHandoffUserActivityWithType:typeCopy];
   }
 }
 
-- (void)routeUserActivityFailedWithType:(id)a3 error:(id)a4
+- (void)routeUserActivityFailedWithType:(id)type error:(id)error
 {
-  v7 = a3;
-  v6 = a4;
-  if ([MSMailReturnToSenderActivityType isEqualToString:v7] && _os_feature_enabled_impl())
+  typeCopy = type;
+  errorCopy = error;
+  if ([MSMailReturnToSenderActivityType isEqualToString:typeCopy] && _os_feature_enabled_impl())
   {
-    [(MFUserActivityRouter *)self returnToSenderUserActivityFailedWithType:v7 error:v6];
+    [(MFUserActivityRouter *)self returnToSenderUserActivityFailedWithType:typeCopy error:errorCopy];
   }
 
   else
   {
-    [(MFUserActivityRouter *)self handoffUserActivityFailedWithType:v7 error:v6];
+    [(MFUserActivityRouter *)self handoffUserActivityFailedWithType:typeCopy error:errorCopy];
   }
 }
 
-- (void)returnToSenderUserActivity:(id)a3
+- (void)returnToSenderUserActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(MFUserActivityRouter *)self delegate];
-  v6 = [v4 _syRelatedUniqueIdentifier];
-  v7 = [(MFUserActivityRouter *)self messageRepository];
-  v8 = [v7 messageForSearchableItemIdentifier:v6];
+  activityCopy = activity;
+  delegate = [(MFUserActivityRouter *)self delegate];
+  _syRelatedUniqueIdentifier = [activityCopy _syRelatedUniqueIdentifier];
+  messageRepository = [(MFUserActivityRouter *)self messageRepository];
+  v8 = [messageRepository messageForSearchableItemIdentifier:_syRelatedUniqueIdentifier];
 
   v9 = [v8 resultWithTimeout:0 error:5.0];
   if (v9)
@@ -602,45 +602,45 @@ LABEL_36:
     v10 = +[MFUserActivityRouter log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v9 ef_publicDescription];
+      ef_publicDescription = [v9 ef_publicDescription];
       *buf = 138543362;
-      v20 = v11;
+      v20 = ef_publicDescription;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#ReturnToSender success: found a valid message %{public}@", buf, 0xCu);
     }
 
-    v12 = [v4 _syDocumentProvider];
+    _syDocumentProvider = [activityCopy _syDocumentProvider];
 
-    if (v12)
+    if (_syDocumentProvider)
     {
-      v13 = [v4 _syDocumentProvider];
+      _syDocumentProvider2 = [activityCopy _syDocumentProvider];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_10023594C;
       v14[3] = &unk_100656308;
       v15 = v9;
-      v16 = self;
-      v17 = v6;
-      v18 = v5;
-      [v13 loadDocumentWithHandler:v14];
+      selfCopy = self;
+      v17 = _syRelatedUniqueIdentifier;
+      v18 = delegate;
+      [_syDocumentProvider2 loadDocumentWithHandler:v14];
     }
 
     else
     {
-      [v5 displayMessage:v9 fromUserActivityRouter:self];
+      [delegate displayMessage:v9 fromUserActivityRouter:self];
     }
   }
 
   else
   {
-    [(MFUserActivityRouter *)self returnToSenderErrorHandling:v6 urlError:0];
+    [(MFUserActivityRouter *)self returnToSenderErrorHandling:_syRelatedUniqueIdentifier urlError:0];
   }
 }
 
-- (void)returnToSenderErrorHandling:(id)a3 urlError:(id)a4
+- (void)returnToSenderErrorHandling:(id)handling urlError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  handlingCopy = handling;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = +[MFUserActivityRouter log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -661,7 +661,7 @@ LABEL_36:
   }
 }
 
-- (void)willReturnToSenderActivityWithType:(id)a3
+- (void)willReturnToSenderActivityWithType:(id)type
 {
   v3 = +[MFUserActivityRouter log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -671,18 +671,18 @@ LABEL_36:
   }
 }
 
-- (void)returnToSenderUserActivityFailedWithType:(id)a3 error:(id)a4
+- (void)returnToSenderUserActivityFailedWithType:(id)type error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  errorCopy = error;
   v8 = +[MFUserActivityRouter log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 ef_publicDescription];
+    ef_publicDescription = [errorCopy ef_publicDescription];
     v10 = 138412546;
-    v11 = v6;
+    v11 = typeCopy;
     v12 = 2114;
-    v13 = v9;
+    v13 = ef_publicDescription;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#ReturnToSender return to sender user activity failed with type %@ and error=%{public}@", &v10, 0x16u);
   }
 
@@ -691,8 +691,8 @@ LABEL_36:
 
 - (void)presentAlertForReturnToSenderError
 {
-  v3 = [(MFUserActivityRouter *)self delegate];
-  v12 = [v3 alertOverlayControllerForActivityRouter:self];
+  delegate = [(MFUserActivityRouter *)self delegate];
+  v12 = [delegate alertOverlayControllerForActivityRouter:self];
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"SELECTED_MESSAGE_NOT_FOUND_ERROR_TITLE" value:&stru_100662A88 table:@"Main"];

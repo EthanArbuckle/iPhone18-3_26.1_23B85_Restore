@@ -6,9 +6,9 @@
 
 - (BOOL)readyForProcessing
 {
-  v2 = [(BWStillImageProcessorControllerRequest *)self input];
+  input = [(BWStillImageProcessorControllerRequest *)self input];
 
-  return [(BWStillImageProcessorControllerInput *)v2 receivedAllFramesInSingleContainer];
+  return [(BWStillImageProcessorControllerInput *)input receivedAllFramesInSingleContainer];
 }
 
 @end

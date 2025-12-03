@@ -3,9 +3,9 @@
 - (UILabel)accountTitleLabel;
 - (UILabel)folderTitleLabel;
 - (void)awakeFromNib;
-- (void)contentSizeCategoryChanged:(id)a3;
+- (void)contentSizeCategoryChanged:(id)changed;
 - (void)dealloc;
-- (void)setItem:(id)a3;
+- (void)setItem:(id)item;
 - (void)updateConstraints;
 - (void)updateFonts;
 @end
@@ -37,8 +37,8 @@
   }
 
   v4 = v3;
-  v5 = [(ICSEFolderSearchResultTableViewCell *)self folderIconView];
-  [v5 setTintColor:v4];
+  folderIconView = [(ICSEFolderSearchResultTableViewCell *)self folderIconView];
+  [folderIconView setTintColor:v4];
 
   [(ICSEFolderSearchResultTableViewCell *)self updateFonts];
   [(ICSEFolderSearchResultTableViewCell *)self setAccessoryType:1];
@@ -56,11 +56,11 @@
   [(ICSEFolderSearchResultTableViewCell *)&v4 dealloc];
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v19 = a3;
-  objc_storeStrong(&self->_item, a3);
-  if ([v19 isSelectable])
+  itemCopy = item;
+  objc_storeStrong(&self->_item, item);
+  if ([itemCopy isSelectable])
   {
     v5 = 1.0;
   }
@@ -70,58 +70,58 @@
     v5 = 0.5;
   }
 
-  v6 = [(ICSEFolderSearchResultTableViewCell *)self accountTitleLabel];
-  [v6 setAlpha:v5];
+  accountTitleLabel = [(ICSEFolderSearchResultTableViewCell *)self accountTitleLabel];
+  [accountTitleLabel setAlpha:v5];
 
-  v7 = [(ICSEFolderSearchResultTableViewCell *)self folderTitleLabel];
-  [v7 setAlpha:v5];
+  folderTitleLabel = [(ICSEFolderSearchResultTableViewCell *)self folderTitleLabel];
+  [folderTitleLabel setAlpha:v5];
 
-  v8 = [(ICSEFolderSearchResultTableViewCell *)self folderIconView];
-  [v8 setAlpha:v5];
+  folderIconView = [(ICSEFolderSearchResultTableViewCell *)self folderIconView];
+  [folderIconView setAlpha:v5];
 
-  v9 = [v19 folder];
-  if (!v9)
+  folder = [itemCopy folder];
+  if (!folder)
   {
     [ICAssert handleFailedAssertWithCondition:"((folder) != nil)" functionName:"[ICSEFolderSearchResultTableViewCell setItem:]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "folder"];
   }
 
-  v10 = [v9 systemImageName];
-  v11 = [UIImage ic_largeSystemImageNamed:v10];
-  v12 = [(ICSEFolderSearchResultTableViewCell *)self folderIconView];
-  [v12 setImage:v11];
+  systemImageName = [folder systemImageName];
+  v11 = [UIImage ic_largeSystemImageNamed:systemImageName];
+  folderIconView2 = [(ICSEFolderSearchResultTableViewCell *)self folderIconView];
+  [folderIconView2 setImage:v11];
 
-  v13 = [(ICSEFolderSearchResultTableViewCell *)self folderIconView];
-  [v13 setContentMode:1];
+  folderIconView3 = [(ICSEFolderSearchResultTableViewCell *)self folderIconView];
+  [folderIconView3 setContentMode:1];
 
-  v14 = [v19 title];
-  v15 = [(ICSEFolderSearchResultTableViewCell *)self folderTitleLabel];
-  [v15 setText:v14];
+  title = [itemCopy title];
+  folderTitleLabel2 = [(ICSEFolderSearchResultTableViewCell *)self folderTitleLabel];
+  [folderTitleLabel2 setText:title];
 
-  v16 = [(ICSEFolderSearchResultTableViewCell *)self showAccountName];
-  if (v16)
+  showAccountName = [(ICSEFolderSearchResultTableViewCell *)self showAccountName];
+  if (showAccountName)
   {
-    v15 = [v9 account];
-    v17 = [v15 accountName];
+    folderTitleLabel2 = [folder account];
+    accountName = [folderTitleLabel2 accountName];
   }
 
   else
   {
-    v17 = &stru_1000F6F48;
+    accountName = &stru_1000F6F48;
   }
 
-  v18 = [(ICSEFolderSearchResultTableViewCell *)self accountTitleLabel];
-  [v18 setText:v17];
+  accountTitleLabel2 = [(ICSEFolderSearchResultTableViewCell *)self accountTitleLabel];
+  [accountTitleLabel2 setText:accountName];
 
-  if (v16)
+  if (showAccountName)
   {
   }
 
-  [v19 seperatorInsets];
+  [itemCopy seperatorInsets];
   [(ICSEFolderSearchResultTableViewCell *)self setSeparatorInset:?];
   [(ICSEFolderSearchResultTableViewCell *)self setSeparatorStyle:1];
 }
 
-- (void)contentSizeCategoryChanged:(id)a3
+- (void)contentSizeCategoryChanged:(id)changed
 {
   [(ICSEFolderSearchResultTableViewCell *)self updateFonts];
   [(ICSEFolderSearchResultTableViewCell *)self setNeedsUpdateConstraints];
@@ -133,24 +133,24 @@
 {
   if (ICAccessibilityAccessibilityLargerTextSizesEnabled())
   {
-    v3 = [(ICSEFolderSearchResultTableViewCell *)self defaultConstraints];
-    [NSLayoutConstraint deactivateConstraints:v3];
+    defaultConstraints = [(ICSEFolderSearchResultTableViewCell *)self defaultConstraints];
+    [NSLayoutConstraint deactivateConstraints:defaultConstraints];
 
     [(ICSEFolderSearchResultTableViewCell *)self alternateConstraintsForAXLargerTextSizes];
   }
 
   else
   {
-    v4 = [(ICSEFolderSearchResultTableViewCell *)self alternateConstraintsForAXLargerTextSizes];
-    [NSLayoutConstraint deactivateConstraints:v4];
+    alternateConstraintsForAXLargerTextSizes = [(ICSEFolderSearchResultTableViewCell *)self alternateConstraintsForAXLargerTextSizes];
+    [NSLayoutConstraint deactivateConstraints:alternateConstraintsForAXLargerTextSizes];
 
     [(ICSEFolderSearchResultTableViewCell *)self defaultConstraints];
   }
   v5 = ;
   [NSLayoutConstraint activateConstraints:v5];
 
-  v6 = [(ICSEFolderSearchResultTableViewCell *)self folderIconView];
-  [v6 setHidden:ICAccessibilityAccessibilityLargerTextSizesEnabled()];
+  folderIconView = [(ICSEFolderSearchResultTableViewCell *)self folderIconView];
+  [folderIconView setHidden:ICAccessibilityAccessibilityLargerTextSizesEnabled()];
 
   v7.receiver = self;
   v7.super_class = ICSEFolderSearchResultTableViewCell;
@@ -164,14 +164,14 @@
   v5 = floor(v4);
 
   v6 = [UIFont systemFontOfSize:v5 weight:UIFontWeightMedium];
-  v7 = [v6 ic_fontWithSingleLineA];
-  v8 = [(ICSEFolderSearchResultTableViewCell *)self folderTitleLabel];
-  [v8 setFont:v7];
+  ic_fontWithSingleLineA = [v6 ic_fontWithSingleLineA];
+  folderTitleLabel = [(ICSEFolderSearchResultTableViewCell *)self folderTitleLabel];
+  [folderTitleLabel setFont:ic_fontWithSingleLineA];
 
   v9 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-  v10 = [v9 ic_fontWithSingleLineA];
-  v11 = [(ICSEFolderSearchResultTableViewCell *)self accountTitleLabel];
-  [v11 setFont:v10];
+  ic_fontWithSingleLineA2 = [v9 ic_fontWithSingleLineA];
+  accountTitleLabel = [(ICSEFolderSearchResultTableViewCell *)self accountTitleLabel];
+  [accountTitleLabel setFont:ic_fontWithSingleLineA2];
 
   if (ICAccessibilityAccessibilityLargerTextSizesEnabled())
   {
@@ -183,8 +183,8 @@
     +[UIColor secondaryLabelColor];
   }
   v13 = ;
-  v12 = [(ICSEFolderSearchResultTableViewCell *)self accountTitleLabel];
-  [v12 setTextColor:v13];
+  accountTitleLabel2 = [(ICSEFolderSearchResultTableViewCell *)self accountTitleLabel];
+  [accountTitleLabel2 setTextColor:v13];
 }
 
 - (UIImageView)folderIconView

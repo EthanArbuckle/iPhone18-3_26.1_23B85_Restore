@@ -1,37 +1,37 @@
 @interface SBSWallpaperClient
-- (BOOL)setWallpaperColor:(id)a3 darkColor:(id)a4 forVariants:(unint64_t)a5;
-- (BOOL)setWallpaperColorName:(id)a3 forVariants:(unint64_t)a4;
-- (BOOL)setWallpaperGradient:(id)a3 forVariants:(unint64_t)a4;
-- (BOOL)setWallpaperWithVideoWithWallpaperMode:(id)a3 cropRect:(CGRect)a4 wallpaperMode:(unsigned __int8)a5;
-- (SBSWallpaperClient)initWithCalloutQueue:(id)a3;
+- (BOOL)setWallpaperColor:(id)color darkColor:(id)darkColor forVariants:(unint64_t)variants;
+- (BOOL)setWallpaperColorName:(id)name forVariants:(unint64_t)variants;
+- (BOOL)setWallpaperGradient:(id)gradient forVariants:(unint64_t)variants;
+- (BOOL)setWallpaperWithVideoWithWallpaperMode:(id)mode cropRect:(CGRect)rect wallpaperMode:(unsigned __int8)wallpaperMode;
+- (SBSWallpaperClient)initWithCalloutQueue:(id)queue;
 - (unint64_t)posterSignificantEventsCounter;
-- (unint64_t)significantEventsCounterForPosterWithIdentifier:(id)a3;
-- (void)_fetchLockScreenBoundsCheckOfType:(int64_t)a3 orientation:(unsigned int)a4 completionHandler:(id)a5;
-- (void)fetchAdaptiveTimeBoundsForContext:(id)a3 timeHeight:(double)a4 completionHandler:(id)a5;
-- (void)fetchAdaptiveTimeHeightLimitsForContext:(id)a3 completionHandler:(id)a4;
-- (void)fetchContentCutoutBoundsForVariant:(unsigned int)a3 orientation:(unsigned int)a4 completionHandler:(id)a5;
-- (void)fetchOriginalImageForVariant:(unsigned int)a3 completionHandler:(id)a4;
-- (void)fetchOriginalVideoURLForVariant:(unsigned int)a3 completionHandler:(id)a4;
-- (void)fetchPosterSignificantEventsCounterWithCompletionHandler:(id)a3;
-- (void)fetchThumbnailForVariant:(unsigned int)a3 completionHandler:(id)a4;
-- (void)handleQuickActionConfigurationRequest:(id)a3 completionHandler:(id)a4;
-- (void)restoreDefaultWallpaperWithCompletion:(id)a3;
-- (void)triggerPosterSignificantEventWithCompletion:(id)a3;
+- (unint64_t)significantEventsCounterForPosterWithIdentifier:(id)identifier;
+- (void)_fetchLockScreenBoundsCheckOfType:(int64_t)type orientation:(unsigned int)orientation completionHandler:(id)handler;
+- (void)fetchAdaptiveTimeBoundsForContext:(id)context timeHeight:(double)height completionHandler:(id)handler;
+- (void)fetchAdaptiveTimeHeightLimitsForContext:(id)context completionHandler:(id)handler;
+- (void)fetchContentCutoutBoundsForVariant:(unsigned int)variant orientation:(unsigned int)orientation completionHandler:(id)handler;
+- (void)fetchOriginalImageForVariant:(unsigned int)variant completionHandler:(id)handler;
+- (void)fetchOriginalVideoURLForVariant:(unsigned int)variant completionHandler:(id)handler;
+- (void)fetchPosterSignificantEventsCounterWithCompletionHandler:(id)handler;
+- (void)fetchThumbnailForVariant:(unsigned int)variant completionHandler:(id)handler;
+- (void)handleQuickActionConfigurationRequest:(id)request completionHandler:(id)handler;
+- (void)restoreDefaultWallpaperWithCompletion:(id)completion;
+- (void)triggerPosterSignificantEventWithCompletion:(id)completion;
 @end
 
 @implementation SBSWallpaperClient
 
-- (SBSWallpaperClient)initWithCalloutQueue:(id)a3
+- (SBSWallpaperClient)initWithCalloutQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__SBSWallpaperClient_initWithCalloutQueue___block_invoke;
   v9[3] = &unk_1E735FD40;
-  v10 = v4;
+  v10 = queueCopy;
   v8.receiver = self;
   v8.super_class = SBSWallpaperClient;
-  v5 = v4;
+  v5 = queueCopy;
   v6 = [(FBSServiceFacilityClient *)&v8 initWithConfigurator:v9];
 
   return v6;
@@ -53,19 +53,19 @@ void __43__SBSWallpaperClient_initWithCalloutQueue___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)handleQuickActionConfigurationRequest:(id)a3 completionHandler:(id)a4
+- (void)handleQuickActionConfigurationRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  requestCopy = request;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = MEMORY[0x1E699FCF8];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __78__SBSWallpaperClient_handleQuickActionConfigurationRequest_completionHandler___block_invoke;
     v13[3] = &unk_1E735FD68;
-    v14 = v6;
-    v9 = v7;
+    v14 = requestCopy;
+    v9 = handlerCopy;
     v15 = v9;
     v10 = [v8 messageWithPacker:v13];
     v11[0] = MEMORY[0x1E69E9820];
@@ -122,22 +122,22 @@ void __78__SBSWallpaperClient_handleQuickActionConfigurationRequest_completionHa
   }
 }
 
-- (void)fetchThumbnailForVariant:(unsigned int)a3 completionHandler:(id)a4
+- (void)fetchThumbnailForVariant:(unsigned int)variant completionHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __65__SBSWallpaperClient_fetchThumbnailForVariant_completionHandler___block_invoke;
     v10[3] = &__block_descriptor_36_e33_v16__0__NSObject_OS_xpc_object__8l;
-    v11 = a3;
+    variantCopy = variant;
     v7 = [MEMORY[0x1E699FCF8] messageWithPacker:v10];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __65__SBSWallpaperClient_fetchThumbnailForVariant_completionHandler___block_invoke_2;
     v8[3] = &unk_1E735FD90;
-    v9 = v6;
+    v9 = handlerCopy;
     [(FBSServiceFacilityClient *)self sendMessage:v7 withType:0 replyHandler:v8 waitForReply:0 timeout:0.0];
   }
 }
@@ -170,22 +170,22 @@ void __65__SBSWallpaperClient_fetchThumbnailForVariant_completionHandler___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchOriginalImageForVariant:(unsigned int)a3 completionHandler:(id)a4
+- (void)fetchOriginalImageForVariant:(unsigned int)variant completionHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __69__SBSWallpaperClient_fetchOriginalImageForVariant_completionHandler___block_invoke;
     v10[3] = &__block_descriptor_36_e33_v16__0__NSObject_OS_xpc_object__8l;
-    v11 = a3;
+    variantCopy = variant;
     v7 = [MEMORY[0x1E699FCF8] messageWithPacker:v10];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __69__SBSWallpaperClient_fetchOriginalImageForVariant_completionHandler___block_invoke_2;
     v8[3] = &unk_1E735FD90;
-    v9 = v6;
+    v9 = handlerCopy;
     [(FBSServiceFacilityClient *)self sendMessage:v7 withType:1 replyHandler:v8 waitForReply:0 timeout:0.0];
   }
 }
@@ -218,22 +218,22 @@ void __69__SBSWallpaperClient_fetchOriginalImageForVariant_completionHandler___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchOriginalVideoURLForVariant:(unsigned int)a3 completionHandler:(id)a4
+- (void)fetchOriginalVideoURLForVariant:(unsigned int)variant completionHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __72__SBSWallpaperClient_fetchOriginalVideoURLForVariant_completionHandler___block_invoke;
     v10[3] = &__block_descriptor_36_e33_v16__0__NSObject_OS_xpc_object__8l;
-    v11 = a3;
+    variantCopy = variant;
     v7 = [MEMORY[0x1E699FCF8] messageWithPacker:v10];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __72__SBSWallpaperClient_fetchOriginalVideoURLForVariant_completionHandler___block_invoke_2;
     v8[3] = &unk_1E735FD90;
-    v9 = v6;
+    v9 = handlerCopy;
     [(FBSServiceFacilityClient *)self sendMessage:v7 withType:2 replyHandler:v8 waitForReply:0 timeout:0.0];
   }
 }
@@ -267,23 +267,23 @@ void __72__SBSWallpaperClient_fetchOriginalVideoURLForVariant_completionHandler_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchContentCutoutBoundsForVariant:(unsigned int)a3 orientation:(unsigned int)a4 completionHandler:(id)a5
+- (void)fetchContentCutoutBoundsForVariant:(unsigned int)variant orientation:(unsigned int)orientation completionHandler:(id)handler
 {
-  v8 = a5;
-  if (v8)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __87__SBSWallpaperClient_fetchContentCutoutBoundsForVariant_orientation_completionHandler___block_invoke;
     v12[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-    v13 = a3;
-    v14 = a4;
+    variantCopy = variant;
+    orientationCopy = orientation;
     v9 = [MEMORY[0x1E699FCF8] messageWithPacker:v12];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __87__SBSWallpaperClient_fetchContentCutoutBoundsForVariant_orientation_completionHandler___block_invoke_2;
     v10[3] = &unk_1E735FD90;
-    v11 = v8;
+    v11 = handlerCopy;
     [(FBSServiceFacilityClient *)self sendMessage:v9 withType:3 replyHandler:v10 waitForReply:0 timeout:0.0];
   }
 }
@@ -313,23 +313,23 @@ void __87__SBSWallpaperClient_fetchContentCutoutBoundsForVariant_orientation_com
   }
 }
 
-- (void)_fetchLockScreenBoundsCheckOfType:(int64_t)a3 orientation:(unsigned int)a4 completionHandler:(id)a5
+- (void)_fetchLockScreenBoundsCheckOfType:(int64_t)type orientation:(unsigned int)orientation completionHandler:(id)handler
 {
-  v8 = a5;
-  if (v8)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __86__SBSWallpaperClient__fetchLockScreenBoundsCheckOfType_orientation_completionHandler___block_invoke;
     v12[3] = &__block_descriptor_36_e33_v16__0__NSObject_OS_xpc_object__8l;
-    v13 = a4;
+    orientationCopy = orientation;
     v9 = [MEMORY[0x1E699FCF8] messageWithPacker:v12];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __86__SBSWallpaperClient__fetchLockScreenBoundsCheckOfType_orientation_completionHandler___block_invoke_2;
     v10[3] = &unk_1E735FD90;
-    v11 = v8;
-    [(FBSServiceFacilityClient *)self sendMessage:v9 withType:a3 replyHandler:v10 waitForReply:0 timeout:0.0];
+    v11 = handlerCopy;
+    [(FBSServiceFacilityClient *)self sendMessage:v9 withType:type replyHandler:v10 waitForReply:0 timeout:0.0];
   }
 }
 
@@ -350,24 +350,24 @@ void __86__SBSWallpaperClient__fetchLockScreenBoundsCheckOfType_orientation_comp
   }
 }
 
-- (void)fetchAdaptiveTimeHeightLimitsForContext:(id)a3 completionHandler:(id)a4
+- (void)fetchAdaptiveTimeHeightLimitsForContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = MEMORY[0x1E699FCF8];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __80__SBSWallpaperClient_fetchAdaptiveTimeHeightLimitsForContext_completionHandler___block_invoke;
     v12[3] = &unk_1E735FDF8;
-    v13 = v6;
+    v13 = contextCopy;
     v9 = [v8 messageWithPacker:v12];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __80__SBSWallpaperClient_fetchAdaptiveTimeHeightLimitsForContext_completionHandler___block_invoke_2;
     v10[3] = &unk_1E735FD90;
-    v11 = v7;
+    v11 = handlerCopy;
     [(FBSServiceFacilityClient *)self sendMessage:v9 withType:19 replyHandler:v10 waitForReply:0 timeout:0.0];
   }
 }
@@ -391,25 +391,25 @@ void __80__SBSWallpaperClient_fetchAdaptiveTimeHeightLimitsForContext_completion
   }
 }
 
-- (void)fetchAdaptiveTimeBoundsForContext:(id)a3 timeHeight:(double)a4 completionHandler:(id)a5
+- (void)fetchAdaptiveTimeBoundsForContext:(id)context timeHeight:(double)height completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v10 = MEMORY[0x1E699FCF8];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __85__SBSWallpaperClient_fetchAdaptiveTimeBoundsForContext_timeHeight_completionHandler___block_invoke;
     v14[3] = &unk_1E735FE20;
-    v15 = v8;
-    v16 = a4;
+    v15 = contextCopy;
+    heightCopy = height;
     v11 = [v10 messageWithPacker:v14];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __85__SBSWallpaperClient_fetchAdaptiveTimeBoundsForContext_timeHeight_completionHandler___block_invoke_2;
     v12[3] = &unk_1E735FD90;
-    v13 = v9;
+    v13 = handlerCopy;
     [(FBSServiceFacilityClient *)self sendMessage:v11 withType:20 replyHandler:v12 waitForReply:0 timeout:0.0];
   }
 }
@@ -438,15 +438,15 @@ void __85__SBSWallpaperClient_fetchAdaptiveTimeBoundsForContext_timeHeight_compl
   }
 }
 
-- (BOOL)setWallpaperWithVideoWithWallpaperMode:(id)a3 cropRect:(CGRect)a4 wallpaperMode:(unsigned __int8)a5
+- (BOOL)setWallpaperWithVideoWithWallpaperMode:(id)mode cropRect:(CGRect)rect wallpaperMode:(unsigned __int8)wallpaperMode
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = v11;
-  if (v11)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  modeCopy = mode;
+  v12 = modeCopy;
+  if (modeCopy)
   {
     v25 = 0;
     v26 = &v25;
@@ -457,12 +457,12 @@ void __85__SBSWallpaperClient_fetchAdaptiveTimeBoundsForContext_timeHeight_compl
     v18[1] = 3221225472;
     v18[2] = __84__SBSWallpaperClient_setWallpaperWithVideoWithWallpaperMode_cropRect_wallpaperMode___block_invoke;
     v18[3] = &unk_1E735FE48;
-    v19 = v11;
+    v19 = modeCopy;
     v20 = x;
     v21 = y;
     v22 = width;
     v23 = height;
-    v24 = a5;
+    wallpaperModeCopy = wallpaperMode;
     v14 = [v13 messageWithPacker:v18];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -507,11 +507,11 @@ void __84__SBSWallpaperClient_setWallpaperWithVideoWithWallpaperMode_cropRect_wa
   }
 }
 
-- (BOOL)setWallpaperColorName:(id)a3 forVariants:(unint64_t)a4
+- (BOOL)setWallpaperColorName:(id)name forVariants:(unint64_t)variants
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  nameCopy = name;
+  v7 = nameCopy;
+  if (nameCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -522,8 +522,8 @@ void __84__SBSWallpaperClient_setWallpaperWithVideoWithWallpaperMode_cropRect_wa
     v13[1] = 3221225472;
     v13[2] = __56__SBSWallpaperClient_setWallpaperColorName_forVariants___block_invoke;
     v13[3] = &unk_1E735FE20;
-    v14 = v6;
-    v15 = a4;
+    v14 = nameCopy;
+    variantsCopy = variants;
     v9 = [v8 messageWithPacker:v13];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -568,11 +568,11 @@ void __56__SBSWallpaperClient_setWallpaperColorName_forVariants___block_invoke_2
   }
 }
 
-- (BOOL)setWallpaperColor:(id)a3 darkColor:(id)a4 forVariants:(unint64_t)a5
+- (BOOL)setWallpaperColor:(id)color darkColor:(id)darkColor forVariants:(unint64_t)variants
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  colorCopy = color;
+  darkColorCopy = darkColor;
+  if (colorCopy)
   {
     v19 = 0;
     v20 = &v19;
@@ -583,9 +583,9 @@ void __56__SBSWallpaperClient_setWallpaperColorName_forVariants___block_invoke_2
     v15[1] = 3221225472;
     v15[2] = __62__SBSWallpaperClient_setWallpaperColor_darkColor_forVariants___block_invoke;
     v15[3] = &unk_1E735FE98;
-    v16 = v8;
-    v17 = v9;
-    v18 = a5;
+    v16 = colorCopy;
+    v17 = darkColorCopy;
+    variantsCopy = variants;
     v11 = [v10 messageWithPacker:v15];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -635,11 +635,11 @@ void __62__SBSWallpaperClient_setWallpaperColor_darkColor_forVariants___block_in
   }
 }
 
-- (BOOL)setWallpaperGradient:(id)a3 forVariants:(unint64_t)a4
+- (BOOL)setWallpaperGradient:(id)gradient forVariants:(unint64_t)variants
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  gradientCopy = gradient;
+  v7 = gradientCopy;
+  if (gradientCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -650,8 +650,8 @@ void __62__SBSWallpaperClient_setWallpaperColor_darkColor_forVariants___block_in
     v13[1] = 3221225472;
     v13[2] = __55__SBSWallpaperClient_setWallpaperGradient_forVariants___block_invoke;
     v13[3] = &unk_1E735FE20;
-    v14 = v6;
-    v15 = a4;
+    v14 = gradientCopy;
+    variantsCopy = variants;
     v9 = [v8 messageWithPacker:v13];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -696,17 +696,17 @@ void __55__SBSWallpaperClient_setWallpaperGradient_forVariants___block_invoke_2(
   }
 }
 
-- (void)restoreDefaultWallpaperWithCompletion:(id)a3
+- (void)restoreDefaultWallpaperWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E699FCF8] message];
+  completionCopy = completion;
+  message = [MEMORY[0x1E699FCF8] message];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__SBSWallpaperClient_restoreDefaultWallpaperWithCompletion___block_invoke;
   v7[3] = &unk_1E735FD90;
-  v8 = v4;
-  v6 = v4;
-  [(FBSServiceFacilityClient *)self sendMessage:v5 withType:15 replyHandler:v7 waitForReply:1 timeout:0.0];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:15 replyHandler:v7 waitForReply:1 timeout:0.0];
 }
 
 uint64_t __60__SBSWallpaperClient_restoreDefaultWallpaperWithCompletion___block_invoke(uint64_t a1)
@@ -720,17 +720,17 @@ uint64_t __60__SBSWallpaperClient_restoreDefaultWallpaperWithCompletion___block_
   return result;
 }
 
-- (void)triggerPosterSignificantEventWithCompletion:(id)a3
+- (void)triggerPosterSignificantEventWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E699FCF8] message];
+  completionCopy = completion;
+  message = [MEMORY[0x1E699FCF8] message];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__SBSWallpaperClient_triggerPosterSignificantEventWithCompletion___block_invoke;
   v7[3] = &unk_1E735FD90;
-  v8 = v4;
-  v6 = v4;
-  [(FBSServiceFacilityClient *)self sendMessage:v5 withType:16 replyHandler:v7 waitForReply:1 timeout:0.0];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:16 replyHandler:v7 waitForReply:1 timeout:0.0];
 }
 
 uint64_t __66__SBSWallpaperClient_triggerPosterSignificantEventWithCompletion___block_invoke(uint64_t a1)
@@ -744,9 +744,9 @@ uint64_t __66__SBSWallpaperClient_triggerPosterSignificantEventWithCompletion___
   return result;
 }
 
-- (unint64_t)significantEventsCounterForPosterWithIdentifier:(id)a3
+- (unint64_t)significantEventsCounterForPosterWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -756,7 +756,7 @@ uint64_t __66__SBSWallpaperClient_triggerPosterSignificantEventWithCompletion___
   v11[1] = 3221225472;
   v11[2] = __70__SBSWallpaperClient_significantEventsCounterForPosterWithIdentifier___block_invoke;
   v11[3] = &unk_1E735FDF8;
-  v6 = v4;
+  v6 = identifierCopy;
   v12 = v6;
   v7 = [v5 messageWithPacker:v11];
   v10[0] = MEMORY[0x1E69E9820];
@@ -789,13 +789,13 @@ void __70__SBSWallpaperClient_significantEventsCounterForPosterWithIdentifier___
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [MEMORY[0x1E699FCF8] message];
+  message = [MEMORY[0x1E699FCF8] message];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__SBSWallpaperClient_posterSignificantEventsCounter__block_invoke;
   v6[3] = &unk_1E735FE70;
   v6[4] = &v7;
-  [(FBSServiceFacilityClient *)self sendMessage:v3 withType:17 replyHandler:v6 waitForReply:1 timeout:0.0];
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:17 replyHandler:v6 waitForReply:1 timeout:0.0];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -813,17 +813,17 @@ void __52__SBSWallpaperClient_posterSignificantEventsCounter__block_invoke(uint6
   }
 }
 
-- (void)fetchPosterSignificantEventsCounterWithCompletionHandler:(id)a3
+- (void)fetchPosterSignificantEventsCounterWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E699FCF8] message];
+  handlerCopy = handler;
+  message = [MEMORY[0x1E699FCF8] message];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __79__SBSWallpaperClient_fetchPosterSignificantEventsCounterWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E735FD90;
-  v8 = v4;
-  v6 = v4;
-  [(FBSServiceFacilityClient *)self sendMessage:v5 withType:17 replyHandler:v7 waitForReply:0 timeout:0.0];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [(FBSServiceFacilityClient *)self sendMessage:message withType:17 replyHandler:v7 waitForReply:0 timeout:0.0];
 }
 
 void __79__SBSWallpaperClient_fetchPosterSignificantEventsCounterWithCompletionHandler___block_invoke(uint64_t a1, void *a2)

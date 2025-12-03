@@ -1,25 +1,25 @@
 @interface SWSetupAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SWSetupAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F524FEA0 scope:v5 callbackBlock:&__block_literal_global_4];
+  [callback whenResolvingProtocol:&unk_1F524FEA0 scope:v5 callbackBlock:&__block_literal_global_4];
 
-  v6 = [v3 privateContainer];
-  v7 = [v6 registerClass:objc_opt_class() factory:&__block_literal_global_50];
+  privateContainer = [registryCopy privateContainer];
+  v7 = [privateContainer registerClass:objc_opt_class() factory:&__block_literal_global_50];
 
-  v8 = [v3 privateContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_64];
+  privateContainer2 = [registryCopy privateContainer];
+  v9 = [privateContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_64];
 
-  v11 = [v3 privateContainer];
+  privateContainer3 = [registryCopy privateContainer];
 
-  v10 = [v11 registerClass:objc_opt_class() factory:&__block_literal_global_67];
+  v10 = [privateContainer3 registerClass:objc_opt_class() factory:&__block_literal_global_67];
 }
 
 void __34__SWSetupAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,5 +1,5 @@
 @interface SUUIDownloadsCellViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,16 +8,16 @@
 
 @implementation SUUIDownloadsCellViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIDownloadsCellView" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIDownloadsCellView" hasInstanceMethod:@"attributedTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIDownloadsCellView" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIDownloadsCellView" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SUUIDownloadsCellView" hasInstanceMethod:@"buttonType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SUUIDownloadsCollectionViewCell"];
-  [v3 validateClass:@"SUUIDownloadsCollectionViewCell" hasInstanceVariable:@"_editIndicator" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIDownloadsCellView" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIDownloadsCellView" hasInstanceMethod:@"attributedTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIDownloadsCellView" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIDownloadsCellView" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SUUIDownloadsCellView" hasInstanceMethod:@"buttonType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SUUIDownloadsCollectionViewCell"];
+  [validationsCopy validateClass:@"SUUIDownloadsCollectionViewCell" hasInstanceVariable:@"_editIndicator" withType:"UIImageView"];
 }
 
 - (BOOL)accessibilityActivate
@@ -31,19 +31,19 @@
   }
 
   v6 = [(SUUIDownloadsCellViewAccessibility *)self safeValueForKey:@"button"];
-  v7 = [v6 accessibilityActivate];
+  accessibilityActivate = [v6 accessibilityActivate];
 
-  return v7;
+  return accessibilityActivate;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v2 = *MEMORY[0x29EDC7F70];
   v3 = [(SUUIDownloadsCellViewAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Suuidownloadsc_0.isa)];
-  v4 = [v3 isSelected];
+  isSelected = [v3 isSelected];
 
   v5 = *MEMORY[0x29EDC7FC0];
-  if (!v4)
+  if (!isSelected)
   {
     v5 = 0;
   }
@@ -66,15 +66,15 @@
   [v3 floatValue];
 
   v4 = [(SUUIDownloadsCellViewAccessibility *)self safeValueForKey:@"buttonType"];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  if (v5 == 1)
+  if (unsignedIntegerValue == 1)
   {
     v6 = @"item.downloading";
     goto LABEL_5;
   }
 
-  if (v5 == 2)
+  if (unsignedIntegerValue == 2)
   {
     v6 = @"item.download.paused";
 LABEL_5:

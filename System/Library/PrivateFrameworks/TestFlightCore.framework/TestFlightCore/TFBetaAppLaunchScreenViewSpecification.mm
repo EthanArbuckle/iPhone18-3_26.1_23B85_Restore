@@ -1,20 +1,20 @@
 @interface TFBetaAppLaunchScreenViewSpecification
 - (CGSize)headerIconViewSize;
-- (TFBetaAppLaunchScreenViewSpecification)initWithTraitCollection:(id)a3;
+- (TFBetaAppLaunchScreenViewSpecification)initWithTraitCollection:(id)collection;
 - (UIEdgeInsets)buttonModuleContentLayoutInsets;
 - (UIEdgeInsets)scrollViewContentLayoutInsets;
-- (id)_createBodyTextFontForTraitCollection:(id)a3;
-- (id)_createBodyTitleFontForTraitCollection:(id)a3;
-- (id)_createPrimaryButtonTextFontForTraitCollection:(id)a3;
-- (id)_createSubtitleFontForTraitCollection:(id)a3;
-- (id)_createTitleFontForTraitCollection:(id)a3;
+- (id)_createBodyTextFontForTraitCollection:(id)collection;
+- (id)_createBodyTitleFontForTraitCollection:(id)collection;
+- (id)_createPrimaryButtonTextFontForTraitCollection:(id)collection;
+- (id)_createSubtitleFontForTraitCollection:(id)collection;
+- (id)_createTitleFontForTraitCollection:(id)collection;
 @end
 
 @implementation TFBetaAppLaunchScreenViewSpecification
 
-- (TFBetaAppLaunchScreenViewSpecification)initWithTraitCollection:(id)a3
+- (TFBetaAppLaunchScreenViewSpecification)initWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v45.receiver = self;
   v45.super_class = TFBetaAppLaunchScreenViewSpecification;
   v5 = [(TFBetaAppLaunchScreenViewSpecification *)&v45 init];
@@ -22,52 +22,52 @@
   if (v5)
   {
     v7 = MEMORY[0x277D75520];
-    v8 = [(TFBetaAppLaunchScreenViewSpecification *)v5 _titleFontStyle];
-    v9 = [v7 metricsForTextStyle:v8];
+    _titleFontStyle = [(TFBetaAppLaunchScreenViewSpecification *)v5 _titleFontStyle];
+    v9 = [v7 metricsForTextStyle:_titleFontStyle];
     titleFontMetrics = v6->_titleFontMetrics;
     v6->_titleFontMetrics = v9;
 
     v11 = MEMORY[0x277D75520];
-    v12 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _subtitleFontStyle];
-    v13 = [v11 metricsForTextStyle:v12];
+    _subtitleFontStyle = [(TFBetaAppLaunchScreenViewSpecification *)v6 _subtitleFontStyle];
+    v13 = [v11 metricsForTextStyle:_subtitleFontStyle];
     subtitleFontMetrics = v6->_subtitleFontMetrics;
     v6->_subtitleFontMetrics = v13;
 
     v15 = MEMORY[0x277D75520];
-    v16 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _bodyTitleFontStyle];
-    v17 = [v15 metricsForTextStyle:v16];
+    _bodyTitleFontStyle = [(TFBetaAppLaunchScreenViewSpecification *)v6 _bodyTitleFontStyle];
+    v17 = [v15 metricsForTextStyle:_bodyTitleFontStyle];
     bodyTitleFontMetrics = v6->_bodyTitleFontMetrics;
     v6->_bodyTitleFontMetrics = v17;
 
     v19 = MEMORY[0x277D75520];
-    v20 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _bodyTextFontStyle];
-    v21 = [v19 metricsForTextStyle:v20];
+    _bodyTextFontStyle = [(TFBetaAppLaunchScreenViewSpecification *)v6 _bodyTextFontStyle];
+    v21 = [v19 metricsForTextStyle:_bodyTextFontStyle];
     bodyTextFontMetrics = v6->_bodyTextFontMetrics;
     v6->_bodyTextFontMetrics = v21;
 
     v23 = MEMORY[0x277D75520];
-    v24 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _primaryButtonTextFontStyle];
-    v25 = [v23 metricsForTextStyle:v24];
+    _primaryButtonTextFontStyle = [(TFBetaAppLaunchScreenViewSpecification *)v6 _primaryButtonTextFontStyle];
+    v25 = [v23 metricsForTextStyle:_primaryButtonTextFontStyle];
     primaryButtonTextFontMetrics = v6->_primaryButtonTextFontMetrics;
     v6->_primaryButtonTextFontMetrics = v25;
 
-    v27 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _createTitleFontForTraitCollection:v4];
+    v27 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _createTitleFontForTraitCollection:collectionCopy];
     titleFont = v6->_titleFont;
     v6->_titleFont = v27;
 
-    v29 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _createSubtitleFontForTraitCollection:v4];
+    v29 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _createSubtitleFontForTraitCollection:collectionCopy];
     subtitleFont = v6->_subtitleFont;
     v6->_subtitleFont = v29;
 
-    v31 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _createBodyTitleFontForTraitCollection:v4];
+    v31 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _createBodyTitleFontForTraitCollection:collectionCopy];
     bodyTitleFont = v6->_bodyTitleFont;
     v6->_bodyTitleFont = v31;
 
-    v33 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _createBodyTextFontForTraitCollection:v4];
+    v33 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _createBodyTextFontForTraitCollection:collectionCopy];
     bodyTextFont = v6->_bodyTextFont;
     v6->_bodyTextFont = v33;
 
-    v35 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _createPrimaryButtonTextFontForTraitCollection:v4];
+    v35 = [(TFBetaAppLaunchScreenViewSpecification *)v6 _createPrimaryButtonTextFontForTraitCollection:collectionCopy];
     primaryButtonTextFont = v6->_primaryButtonTextFont;
     v6->_primaryButtonTextFont = v35;
 
@@ -83,17 +83,17 @@
     v6->_bodyTitleLabelLastBaselineToBodyTextLabelFirstBaseline = v40;
     *&v6->_buttonBackgroundTopEdgeToPrimaryButtonTopEdge = xmmword_26D313B20;
     v6->_interButtonPadding = 8.0;
-    v41 = [v4 horizontalSizeClass];
+    horizontalSizeClass = [collectionCopy horizontalSizeClass];
     v6->_scrollViewContentLayoutInsets.top = 0.0;
     v42 = 34.0;
-    if (v41 == 2)
+    if (horizontalSizeClass == 2)
     {
       v42 = 140.0;
     }
 
     v43 = 130.0;
     v6->_scrollViewContentLayoutInsets.left = v42;
-    if (v41 != 2)
+    if (horizontalSizeClass != 2)
     {
       v43 = 24.0;
     }
@@ -118,52 +118,52 @@
   return result;
 }
 
-- (id)_createTitleFontForTraitCollection:(id)a3
+- (id)_createTitleFontForTraitCollection:(id)collection
 {
   v4 = MEMORY[0x277D74310];
-  v5 = a3;
-  v6 = [(TFBetaAppLaunchScreenViewSpecification *)self _titleFontStyle];
-  v7 = [v4 tf_systemFontWithTextStyle:v6 weight:v5 forTraitCollection:*MEMORY[0x277D743F8]];
+  collectionCopy = collection;
+  _titleFontStyle = [(TFBetaAppLaunchScreenViewSpecification *)self _titleFontStyle];
+  v7 = [v4 tf_systemFontWithTextStyle:_titleFontStyle weight:collectionCopy forTraitCollection:*MEMORY[0x277D743F8]];
 
   return v7;
 }
 
-- (id)_createSubtitleFontForTraitCollection:(id)a3
+- (id)_createSubtitleFontForTraitCollection:(id)collection
 {
   v4 = MEMORY[0x277D74310];
-  v5 = a3;
-  v6 = [(TFBetaAppLaunchScreenViewSpecification *)self _subtitleFontStyle];
-  v7 = [v4 tf_systemFontWithTextStyle:v6 weight:v5 forTraitCollection:*MEMORY[0x277D74418]];
+  collectionCopy = collection;
+  _subtitleFontStyle = [(TFBetaAppLaunchScreenViewSpecification *)self _subtitleFontStyle];
+  v7 = [v4 tf_systemFontWithTextStyle:_subtitleFontStyle weight:collectionCopy forTraitCollection:*MEMORY[0x277D74418]];
 
   return v7;
 }
 
-- (id)_createBodyTitleFontForTraitCollection:(id)a3
+- (id)_createBodyTitleFontForTraitCollection:(id)collection
 {
   v4 = MEMORY[0x277D74310];
-  v5 = a3;
-  v6 = [(TFBetaAppLaunchScreenViewSpecification *)self _bodyTitleFontStyle];
-  v7 = [v4 tf_systemFontWithTextStyle:v6 weight:v5 forTraitCollection:*MEMORY[0x277D74420]];
+  collectionCopy = collection;
+  _bodyTitleFontStyle = [(TFBetaAppLaunchScreenViewSpecification *)self _bodyTitleFontStyle];
+  v7 = [v4 tf_systemFontWithTextStyle:_bodyTitleFontStyle weight:collectionCopy forTraitCollection:*MEMORY[0x277D74420]];
 
   return v7;
 }
 
-- (id)_createBodyTextFontForTraitCollection:(id)a3
+- (id)_createBodyTextFontForTraitCollection:(id)collection
 {
   v4 = MEMORY[0x277D74310];
-  v5 = a3;
-  v6 = [(TFBetaAppLaunchScreenViewSpecification *)self _bodyTextFontStyle];
-  v7 = [v4 tf_systemFontWithTextStyle:v6 weight:v5 forTraitCollection:*MEMORY[0x277D74418]];
+  collectionCopy = collection;
+  _bodyTextFontStyle = [(TFBetaAppLaunchScreenViewSpecification *)self _bodyTextFontStyle];
+  v7 = [v4 tf_systemFontWithTextStyle:_bodyTextFontStyle weight:collectionCopy forTraitCollection:*MEMORY[0x277D74418]];
 
   return v7;
 }
 
-- (id)_createPrimaryButtonTextFontForTraitCollection:(id)a3
+- (id)_createPrimaryButtonTextFontForTraitCollection:(id)collection
 {
   v4 = MEMORY[0x277D74310];
-  v5 = a3;
-  v6 = [(TFBetaAppLaunchScreenViewSpecification *)self _primaryButtonTextFontStyle];
-  v7 = [v4 tf_systemFontWithTextStyle:v6 weight:v5 forTraitCollection:*MEMORY[0x277D74418]];
+  collectionCopy = collection;
+  _primaryButtonTextFontStyle = [(TFBetaAppLaunchScreenViewSpecification *)self _primaryButtonTextFontStyle];
+  v7 = [v4 tf_systemFontWithTextStyle:_primaryButtonTextFontStyle weight:collectionCopy forTraitCollection:*MEMORY[0x277D74418]];
 
   return v7;
 }

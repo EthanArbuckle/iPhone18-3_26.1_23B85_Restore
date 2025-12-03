@@ -1,22 +1,22 @@
 @interface ATXActionPredictionClient
 - (ATXActionPredictionClient)init;
-- (ATXActionPredictionClient)initWithCacheBasePath:(id)a3;
-- (id)_atxActionFromProactiveSuggestion:(id)a3;
-- (id)actionPredictionsForConsumerSubType:(unsigned __int8)a3 limit:(int)a4;
-- (id)atxActionResponseFromBlendingActionPredictionCacheForConsumerSubType:(unsigned __int8)a3 limit:(int)a4;
+- (ATXActionPredictionClient)initWithCacheBasePath:(id)path;
+- (id)_atxActionFromProactiveSuggestion:(id)suggestion;
+- (id)actionPredictionsForConsumerSubType:(unsigned __int8)type limit:(int)limit;
+- (id)atxActionResponseFromBlendingActionPredictionCacheForConsumerSubType:(unsigned __int8)type limit:(int)limit;
 - (void)dealloc;
-- (void)getActionPredictionsForCandidateBundleIdentifiers:(id)a3 candidateActionTypes:(id)a4 consumerType:(unint64_t)a5 consumerSubType:(unsigned __int8)a6 limit:(int)a7 reply:(id)a8;
-- (void)getActionPredictionsForContext:(id)a3 includeBundleIds:(id)a4 excludeBundleIds:(id)a5 includeActionTypes:(id)a6 excludeActionTypes:(id)a7 limit:(unint64_t)a8 reply:(id)a9;
-- (void)removeActionPredictionNotificationsMatchingSuggestion:(id)a3 reply:(id)a4;
-- (void)shouldDisplayDailyRoutineForContext:(id)a3 reply:(id)a4;
+- (void)getActionPredictionsForCandidateBundleIdentifiers:(id)identifiers candidateActionTypes:(id)types consumerType:(unint64_t)type consumerSubType:(unsigned __int8)subType limit:(int)limit reply:(id)reply;
+- (void)getActionPredictionsForContext:(id)context includeBundleIds:(id)ids excludeBundleIds:(id)bundleIds includeActionTypes:(id)types excludeActionTypes:(id)actionTypes limit:(unint64_t)limit reply:(id)reply;
+- (void)removeActionPredictionNotificationsMatchingSuggestion:(id)suggestion reply:(id)reply;
+- (void)shouldDisplayDailyRoutineForContext:(id)context reply:(id)reply;
 @end
 
 @implementation ATXActionPredictionClient
 
 - (ATXActionPredictionClient)init
 {
-  v3 = [MEMORY[0x1E698B010] appPredictionDirectory];
-  v4 = [v3 stringByAppendingPathComponent:@"caches/ATXCacheFile"];
+  appPredictionDirectory = [MEMORY[0x1E698B010] appPredictionDirectory];
+  v4 = [appPredictionDirectory stringByAppendingPathComponent:@"caches/ATXCacheFile"];
   v5 = [(ATXActionPredictionClient *)self initWithCacheBasePath:v4];
 
   return v5;
@@ -30,9 +30,9 @@
   [(ATXActionPredictionClient *)&v3 dealloc];
 }
 
-- (ATXActionPredictionClient)initWithCacheBasePath:(id)a3
+- (ATXActionPredictionClient)initWithCacheBasePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = ATXActionPredictionClient;
   v6 = [(ATXActionPredictionClient *)&v18 init];
@@ -43,7 +43,7 @@
     serialQueue = v6->_serialQueue;
     v6->_serialQueue = v8;
 
-    objc_storeStrong(&v6->_cacheBasePath, a3);
+    objc_storeStrong(&v6->_cacheBasePath, path);
     v10 = [[ATXCacheReader alloc] initWithCacheBasePath:v6->_cacheBasePath];
     cacheReader = v6->_cacheReader;
     v6->_cacheReader = v10;
@@ -75,34 +75,34 @@ void __51__ATXActionPredictionClient_initWithCacheBasePath___block_invoke()
   }
 }
 
-- (id)actionPredictionsForConsumerSubType:(unsigned __int8)a3 limit:(int)a4
+- (id)actionPredictionsForConsumerSubType:(unsigned __int8)type limit:(int)limit
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&limit;
+  typeCopy = type;
   v18 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0x31u && ((1 << a3) & 0x2400000200000) != 0)
+  if (type <= 0x31u && ((1 << type) & 0x2400000200000) != 0)
   {
     v7 = __atxlog_handle_blending();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [MEMORY[0x1E698B028] safeStringForConsumerSubtype:v5];
+      v8 = [MEMORY[0x1E698B028] safeStringForConsumerSubtype:typeCopy];
       v16 = 138412290;
       v17 = v8;
       _os_log_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEFAULT, "Blending providing suggestions to %@ inside ATXActionPredictionClient...", &v16, 0xCu);
     }
 
-    v9 = [(ATXActionPredictionClient *)self atxActionResponseFromBlendingActionPredictionCacheForConsumerSubType:v5 limit:v4];
+    v9 = [(ATXActionPredictionClient *)self atxActionResponseFromBlendingActionPredictionCacheForConsumerSubType:typeCopy limit:v4];
   }
 
   else
   {
-    v10 = [(ATXCacheReader *)self->_cacheReader readCacheFileForConsumerSubtype:a3];
+    v10 = [(ATXCacheReader *)self->_cacheReader readCacheFileForConsumerSubtype:type];
     if (v10)
     {
       v11 = objc_autoreleasePoolPush();
       v12 = [[ATXActionCacheClientReader alloc] initWithData:v10];
-      v13 = [(ATXActionCacheClientReader *)v12 actionsWithConsumerSubType:v5 limit:v4];
-      v14 = [[ATXActionResponse alloc] initWithScoredActions:v13 cacheFileData:v10 consumerSubType:v5 error:0];
+      v13 = [(ATXActionCacheClientReader *)v12 actionsWithConsumerSubType:typeCopy limit:v4];
+      v14 = [[ATXActionResponse alloc] initWithScoredActions:v13 cacheFileData:v10 consumerSubType:typeCopy error:0];
 
       objc_autoreleasePoolPop(v11);
     }
@@ -118,19 +118,19 @@ void __51__ATXActionPredictionClient_initWithCacheBasePath___block_invoke()
   return v9;
 }
 
-- (id)atxActionResponseFromBlendingActionPredictionCacheForConsumerSubType:(unsigned __int8)a3 limit:(int)a4
+- (id)atxActionResponseFromBlendingActionPredictionCacheForConsumerSubType:(unsigned __int8)type limit:(int)limit
 {
-  v5 = a3;
+  typeCopy = type;
   v33 = *MEMORY[0x1E69E9840];
-  v7 = [[ATXProactiveSuggestionClient alloc] initWithConsumerSubType:a3];
-  v8 = [(ATXProactiveSuggestionClient *)v7 suggestionLayoutFromCache];
+  v7 = [[ATXProactiveSuggestionClient alloc] initWithConsumerSubType:type];
+  suggestionLayoutFromCache = [(ATXProactiveSuggestionClient *)v7 suggestionLayoutFromCache];
   v9 = [(ATXEngagementRecordManager *)self->_engagementRecordManager engagedExecutablesOfType:35 queryOptions:1];
-  v10 = [v8 allSuggestionsInLayout];
+  allSuggestionsInLayout = [suggestionLayoutFromCache allSuggestionsInLayout];
   v11 = __atxlog_handle_blending();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v10 count];
+    *(&buf + 4) = [allSuggestionsInLayout count];
     _os_log_impl(&dword_1BF549000, v11, OS_LOG_TYPE_DEFAULT, "Blending retrieved a layout with %lu actions in it.", &buf, 0xCu);
   }
 
@@ -142,12 +142,12 @@ void __51__ATXActionPredictionClient_initWithCacheBasePath___block_invoke()
   v21 = 3221225472;
   v22 = __104__ATXActionPredictionClient_atxActionResponseFromBlendingActionPredictionCacheForConsumerSubType_limit___block_invoke;
   v23 = &unk_1E80C0B78;
-  v27 = a4;
+  limitCopy = limit;
   p_buf = &buf;
-  v24 = self;
+  selfCopy = self;
   v12 = v9;
   v25 = v12;
-  v13 = [v10 _pas_filteredArrayWithIndexedTest:&v20];
+  v13 = [allSuggestionsInLayout _pas_filteredArrayWithIndexedTest:&v20];
   v14 = __atxlog_handle_blending();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -158,8 +158,8 @@ void __51__ATXActionPredictionClient_initWithCacheBasePath___block_invoke()
   }
 
   v16 = [ATXActionResponse alloc];
-  v17 = [v8 uuid];
-  v18 = [(ATXActionResponse *)v16 initWithProactiveSuggestions:v13 blendingModelUICacheUpdateUUID:v17 consumerSubType:v5 error:0];
+  uuid = [suggestionLayoutFromCache uuid];
+  v18 = [(ATXActionResponse *)v16 initWithProactiveSuggestions:v13 blendingModelUICacheUpdateUUID:uuid consumerSubType:typeCopy error:0];
 
   _Block_object_dispose(&buf, 8);
 
@@ -196,24 +196,24 @@ LABEL_8:
   return v7;
 }
 
-- (id)_atxActionFromProactiveSuggestion:(id)a3
+- (id)_atxActionFromProactiveSuggestion:(id)suggestion
 {
-  v3 = a3;
-  v4 = [v3 executableSpecification];
-  v5 = [v4 executableClassString];
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableClassString = [executableSpecification executableClassString];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 isEqualToString:v7];
+  v8 = [executableClassString isEqualToString:v7];
 
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
     v10 = MEMORY[0x1E696ACD0];
     v11 = objc_opt_class();
-    v12 = [v3 executableSpecification];
-    v13 = [v12 executable];
+    executableSpecification2 = [suggestionCopy executableSpecification];
+    executable = [executableSpecification2 executable];
     v18 = 0;
-    v14 = [v10 unarchivedObjectOfClass:v11 fromData:v13 error:&v18];
+    v14 = [v10 unarchivedObjectOfClass:v11 fromData:executable error:&v18];
     v15 = v18;
 
     objc_autoreleasePoolPop(v9);
@@ -232,12 +232,12 @@ LABEL_8:
   return v16;
 }
 
-- (void)getActionPredictionsForCandidateBundleIdentifiers:(id)a3 candidateActionTypes:(id)a4 consumerType:(unint64_t)a5 consumerSubType:(unsigned __int8)a6 limit:(int)a7 reply:(id)a8
+- (void)getActionPredictionsForCandidateBundleIdentifiers:(id)identifiers candidateActionTypes:(id)types consumerType:(unint64_t)type consumerSubType:(unsigned __int8)subType limit:(int)limit reply:(id)reply
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  identifiersCopy = identifiers;
+  typesCopy = types;
+  replyCopy = reply;
   if (+[ATXDeviceClass shouldComputeActions])
   {
     serialQueue = self->_serialQueue;
@@ -245,13 +245,13 @@ LABEL_8:
     block[1] = 3221225472;
     block[2] = __141__ATXActionPredictionClient_getActionPredictionsForCandidateBundleIdentifiers_candidateActionTypes_consumerType_consumerSubType_limit_reply___block_invoke;
     block[3] = &unk_1E80C0BC8;
-    v24 = v16;
+    v24 = replyCopy;
     block[4] = self;
-    v22 = v14;
-    v23 = v15;
-    v25 = a5;
-    v27 = a6;
-    v26 = a7;
+    v22 = identifiersCopy;
+    v23 = typesCopy;
+    typeCopy = type;
+    subTypeCopy = subType;
+    limitCopy = limit;
     dispatch_async(serialQueue, block);
 
     v18 = v24;
@@ -265,7 +265,7 @@ LABEL_8:
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v18 = [v19 errorWithDomain:@"ATXActionPredictionClient" code:2 userInfo:v20];
 
-    (*(v16 + 2))(v16, 0, v18);
+    (*(replyCopy + 2))(replyCopy, 0, v18);
   }
 }
 
@@ -316,11 +316,11 @@ void __141__ATXActionPredictionClient_getActionPredictionsForCandidateBundleIden
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeActionPredictionNotificationsMatchingSuggestion:(id)a3 reply:(id)a4
+- (void)removeActionPredictionNotificationsMatchingSuggestion:(id)suggestion reply:(id)reply
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  suggestionCopy = suggestion;
+  replyCopy = reply;
   if (+[ATXDeviceClass shouldComputeActions])
   {
     v13[0] = MEMORY[0x1E69E9820];
@@ -328,10 +328,10 @@ void __141__ATXActionPredictionClient_getActionPredictionsForCandidateBundleIden
     v13[2] = __89__ATXActionPredictionClient_removeActionPredictionNotificationsMatchingSuggestion_reply___block_invoke;
     v13[3] = &unk_1E80C0BF0;
     v13[4] = self;
-    v14 = v7;
+    v14 = replyCopy;
     v8 = MEMORY[0x1BFB5BA40](v13);
     v9 = [(NSXPCConnection *)self->_xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_46];
-    [v9 removeActionPredictionNotificationsMatchingSuggestion:v6 reply:v8];
+    [v9 removeActionPredictionNotificationsMatchingSuggestion:suggestionCopy reply:v8];
 
     v10 = v14;
 LABEL_5:
@@ -339,7 +339,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (replyCopy)
   {
     v11 = MEMORY[0x1E696ABC0];
     v15 = *MEMORY[0x1E696A278];
@@ -347,7 +347,7 @@ LABEL_5:
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v10 = [v11 errorWithDomain:@"ATXActionPredictionClient" code:2 userInfo:v12];
 
-    (*(v7 + 2))(v7, v10);
+    (*(replyCopy + 2))(replyCopy, v10);
     goto LABEL_5;
   }
 
@@ -375,11 +375,11 @@ void __89__ATXActionPredictionClient_removeActionPredictionNotificationsMatching
   }
 }
 
-- (void)shouldDisplayDailyRoutineForContext:(id)a3 reply:(id)a4
+- (void)shouldDisplayDailyRoutineForContext:(id)context reply:(id)reply
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  replyCopy = reply;
   if (+[ATXDeviceClass shouldComputeActions])
   {
     v20[0] = MEMORY[0x1E69E9820];
@@ -387,7 +387,7 @@ void __89__ATXActionPredictionClient_removeActionPredictionNotificationsMatching
     v20[2] = __71__ATXActionPredictionClient_shouldDisplayDailyRoutineForContext_reply___block_invoke;
     v20[3] = &unk_1E80C0C18;
     v20[4] = self;
-    v21 = v7;
+    v21 = replyCopy;
     v8 = MEMORY[0x1BFB5BA40](v20);
     xpcConnection = self->_xpcConnection;
     v15 = MEMORY[0x1E69E9820];
@@ -397,7 +397,7 @@ void __89__ATXActionPredictionClient_removeActionPredictionNotificationsMatching
     v19 = v8;
     v10 = v8;
     v11 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:&v15];
-    [v11 shouldDisplayDailyRoutineForContext:v6 reply:{v10, v15, v16, v17, v18}];
+    [v11 shouldDisplayDailyRoutineForContext:contextCopy reply:{v10, v15, v16, v17, v18}];
 
     v12 = v21;
   }
@@ -410,7 +410,7 @@ void __89__ATXActionPredictionClient_removeActionPredictionNotificationsMatching
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v12 = [v13 errorWithDomain:@"ATXActionPredictionClient" code:2 userInfo:v14];
 
-    (*(v7 + 2))(v7, 0, v12);
+    (*(replyCopy + 2))(replyCopy, 0, v12);
   }
 }
 
@@ -426,15 +426,15 @@ void __71__ATXActionPredictionClient_shouldDisplayDailyRoutineForContext_reply__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getActionPredictionsForContext:(id)a3 includeBundleIds:(id)a4 excludeBundleIds:(id)a5 includeActionTypes:(id)a6 excludeActionTypes:(id)a7 limit:(unint64_t)a8 reply:(id)a9
+- (void)getActionPredictionsForContext:(id)context includeBundleIds:(id)ids excludeBundleIds:(id)bundleIds includeActionTypes:(id)types excludeActionTypes:(id)actionTypes limit:(unint64_t)limit reply:(id)reply
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  contextCopy = context;
+  idsCopy = ids;
+  bundleIdsCopy = bundleIds;
+  typesCopy = types;
+  actionTypesCopy = actionTypes;
+  replyCopy = reply;
   if (+[ATXDeviceClass shouldComputeActions])
   {
     v30[0] = MEMORY[0x1E69E9820];
@@ -442,7 +442,7 @@ void __71__ATXActionPredictionClient_shouldDisplayDailyRoutineForContext_reply__
     v30[2] = __144__ATXActionPredictionClient_getActionPredictionsForContext_includeBundleIds_excludeBundleIds_includeActionTypes_excludeActionTypes_limit_reply___block_invoke;
     v30[3] = &unk_1E80C0C40;
     v30[4] = self;
-    v31 = v20;
+    v31 = replyCopy;
     v21 = MEMORY[0x1BFB5BA40](v30);
     xpcConnection = self->_xpcConnection;
     v28[0] = MEMORY[0x1E69E9820];
@@ -452,7 +452,7 @@ void __71__ATXActionPredictionClient_shouldDisplayDailyRoutineForContext_reply__
     v29 = v21;
     v23 = v21;
     v24 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v28];
-    [v24 getActionPredictionsForContext:v15 includeBundleIds:v16 excludeBundleIds:v17 includeActionTypes:v18 excludeActionTypes:v19 limit:a8 reply:v23];
+    [v24 getActionPredictionsForContext:contextCopy includeBundleIds:idsCopy excludeBundleIds:bundleIdsCopy includeActionTypes:typesCopy excludeActionTypes:actionTypesCopy limit:limit reply:v23];
 
     v25 = v31;
   }
@@ -465,7 +465,7 @@ void __71__ATXActionPredictionClient_shouldDisplayDailyRoutineForContext_reply__
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     v25 = [v26 errorWithDomain:@"ATXActionPredictionClient" code:2 userInfo:v27];
 
-    (*(v20 + 2))(v20, 0, v25);
+    (*(replyCopy + 2))(replyCopy, 0, v25);
   }
 }
 

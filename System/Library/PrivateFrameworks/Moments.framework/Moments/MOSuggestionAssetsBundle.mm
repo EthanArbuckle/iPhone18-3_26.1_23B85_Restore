@@ -1,24 +1,24 @@
 @interface MOSuggestionAssetsBundle
 - (MOSuggestionAssetsBundle)init;
-- (MOSuggestionAssetsBundle)initWithCoder:(id)a3;
-- (id)assetsForType:(id)a3;
-- (void)addAssets:(id)a3 forType:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MOSuggestionAssetsBundle)initWithCoder:(id)coder;
+- (id)assetsForType:(id)type;
+- (void)addAssets:(id)assets forType:(id)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOSuggestionAssetsBundle
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   assetLibrary = self->_assetLibrary;
-  v5 = a3;
-  [v5 encodeObject:assetLibrary forKey:@"coderKeyMOSuggestionAssetsBundleAssetLibrary"];
-  [v5 encodeObject:self->_availableTypes forKey:@"coderKeyMOSuggestionAssetsBundleAvailableTypes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:assetLibrary forKey:@"coderKeyMOSuggestionAssetsBundleAssetLibrary"];
+  [coderCopy encodeObject:self->_availableTypes forKey:@"coderKeyMOSuggestionAssetsBundleAvailableTypes"];
 }
 
-- (MOSuggestionAssetsBundle)initWithCoder:(id)a3
+- (MOSuggestionAssetsBundle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MOSuggestionAssetsBundle;
   v5 = [(MOSuggestionAssetsBundle *)&v19 init];
@@ -29,14 +29,14 @@
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"coderKeyMOSuggestionAssetsBundleAssetLibrary"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"coderKeyMOSuggestionAssetsBundleAssetLibrary"];
     assetLibrary = v5->_assetLibrary;
     v5->_assetLibrary = v11;
 
     v13 = MEMORY[0x277CBEB98];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"coderKeyMOSuggestionAssetsBundleAvailableTypes"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"coderKeyMOSuggestionAssetsBundleAvailableTypes"];
     availableTypes = v5->_availableTypes;
     v5->_availableTypes = v16;
   }
@@ -44,9 +44,9 @@
   return v5;
 }
 
-- (id)assetsForType:(id)a3
+- (id)assetsForType:(id)type
 {
-  v3 = [(NSMutableDictionary *)self->_assetLibrary objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_assetLibrary objectForKeyedSubscript:type];
   v4 = [v3 copy];
 
   return v4;
@@ -71,12 +71,12 @@
   return v2;
 }
 
-- (void)addAssets:(id)a3 forType:(id)a4
+- (void)addAssets:(id)assets forType:(id)type
 {
   assetLibrary = self->_assetLibrary;
-  v7 = a4;
-  [(NSMutableDictionary *)assetLibrary setObject:a3 forKeyedSubscript:v7];
-  [(NSMutableSet *)self->_availableTypes addObject:v7];
+  typeCopy = type;
+  [(NSMutableDictionary *)assetLibrary setObject:assets forKeyedSubscript:typeCopy];
+  [(NSMutableSet *)self->_availableTypes addObject:typeCopy];
 }
 
 @end

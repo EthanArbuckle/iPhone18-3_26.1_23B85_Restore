@@ -1,26 +1,26 @@
 @interface CacheDeleteServiceListener
-+ (id)cacheDeleteServiceListener:(id)a3 options:(id)a4;
-- (CacheDeleteServiceListener)initWithName:(id)a3 options:(id)a4;
-- (void)serviceCallback:(id)a3 replyBlock:(id)a4;
-- (void)serviceCancelPurge:(id)a3;
-- (void)serviceNotify:(id)a3 replyBlock:(id)a4;
-- (void)servicePeriodic:(int)a3 info:(id)a4 replyBlock:(id)a5;
-- (void)servicePing:(id)a3;
-- (void)servicePurge:(int)a3 info:(id)a4 replyBlock:(id)a5;
-- (void)servicePurgeable:(int)a3 info:(id)a4 replyBlock:(id)a5;
-- (void)setNotifyCallback:(id)a3;
-- (void)setPurgeable:(id)a3 purge:(id)a4 cancel:(id)a5 periodic:(id)a6 notify:(id)a7 callback:(id)a8 entitlements:(id)a9;
++ (id)cacheDeleteServiceListener:(id)listener options:(id)options;
+- (CacheDeleteServiceListener)initWithName:(id)name options:(id)options;
+- (void)serviceCallback:(id)callback replyBlock:(id)block;
+- (void)serviceCancelPurge:(id)purge;
+- (void)serviceNotify:(id)notify replyBlock:(id)block;
+- (void)servicePeriodic:(int)periodic info:(id)info replyBlock:(id)block;
+- (void)servicePing:(id)ping;
+- (void)servicePurge:(int)purge info:(id)info replyBlock:(id)block;
+- (void)servicePurgeable:(int)purgeable info:(id)info replyBlock:(id)block;
+- (void)setNotifyCallback:(id)callback;
+- (void)setPurgeable:(id)purgeable purge:(id)purge cancel:(id)cancel periodic:(id)periodic notify:(id)notify callback:(id)callback entitlements:(id)entitlements;
 @end
 
 @implementation CacheDeleteServiceListener
 
-- (CacheDeleteServiceListener)initWithName:(id)a3 options:(id)a4
+- (CacheDeleteServiceListener)initWithName:(id)name options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"CACHE_DELETE_LEGACY_CALLBACK"];
-  v9 = [v7 objectForKeyedSubscript:@"ANON"];
-  v10 = [v7 objectForKeyedSubscript:@"CACHE_DELETE_SERVICE_INFO"];
+  nameCopy = name;
+  optionsCopy = options;
+  v8 = [optionsCopy objectForKeyedSubscript:@"CACHE_DELETE_LEGACY_CALLBACK"];
+  v9 = [optionsCopy objectForKeyedSubscript:@"ANON"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"CACHE_DELETE_SERVICE_INFO"];
 
   serviceInfo = self->_serviceInfo;
   self->_serviceInfo = v10;
@@ -30,16 +30,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(CacheDeleteServiceInfo *)self->_serviceInfo extensionContext];
+      extensionContext = [(CacheDeleteServiceInfo *)self->_serviceInfo extensionContext];
 
-      if (v12)
+      if (extensionContext)
       {
-        v13 = [(CacheDeleteServiceInfo *)self->_serviceInfo extensionContext];
+        extensionContext2 = [(CacheDeleteServiceInfo *)self->_serviceInfo extensionContext];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
 LABEL_16:
-        v16 = 0;
+        anonymousListener = 0;
         goto LABEL_17;
       }
     }
@@ -76,21 +76,21 @@ LABEL_16:
     _os_log_impl(&dword_1BA7F1000, v15, OS_LOG_TYPE_DEFAULT, "USING ANON Listener", buf, 2u);
   }
 
-  v16 = [MEMORY[0x1E696B0D8] anonymousListener];
+  anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
   isKindOfClass = 0;
 LABEL_17:
   v28.receiver = self;
   v28.super_class = CacheDeleteServiceListener;
-  v17 = [(CacheDeleteListener *)&v28 initWithName:v6 listener:v16 protocol:&unk_1F387CF60 exportedObj:self isExtension:isKindOfClass & 1];
+  v17 = [(CacheDeleteListener *)&v28 initWithName:nameCopy listener:anonymousListener protocol:&unk_1F387CF60 exportedObj:self isExtension:isKindOfClass & 1];
   v18 = v17;
   if (v17)
   {
     v19 = "";
     if (v17->_anonymous)
     {
-      v20 = [v16 endpoint];
+      endpoint = [anonymousListener endpoint];
       endpoint = v18->_endpoint;
-      v18->_endpoint = v20;
+      v18->_endpoint = endpoint;
 
       if (v18->_anonymous)
       {
@@ -98,10 +98,10 @@ LABEL_17:
       }
     }
 
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cache_delete.listener.%@%s", v6, v19];
-    v23 = [v22 UTF8String];
+    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cache_delete.listener.%@%s", nameCopy, v19];
+    uTF8String = [v22 UTF8String];
     v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v25 = dispatch_queue_create(v23, v24);
+    v25 = dispatch_queue_create(uTF8String, v24);
     [(CacheDeleteServiceListener *)v18 setQueue:v25];
 
     v26 = v18;
@@ -120,13 +120,13 @@ LABEL_17:
   return v18;
 }
 
-+ (id)cacheDeleteServiceListener:(id)a3 options:(id)a4
++ (id)cacheDeleteServiceListener:(id)listener options:(id)options
 {
-  if (a3)
+  if (listener)
   {
-    v5 = a4;
-    v6 = a3;
-    v7 = [[CacheDeleteServiceListener alloc] initWithName:v6 options:v5];
+    optionsCopy = options;
+    listenerCopy = listener;
+    v7 = [[CacheDeleteServiceListener alloc] initWithName:listenerCopy options:optionsCopy];
 
     v8 = cacheDeleteServiceListener_options__listener;
     cacheDeleteServiceListener_options__listener = v7;
@@ -137,36 +137,36 @@ LABEL_17:
   return v9;
 }
 
-- (void)setPurgeable:(id)a3 purge:(id)a4 cancel:(id)a5 periodic:(id)a6 notify:(id)a7 callback:(id)a8 entitlements:(id)a9
+- (void)setPurgeable:(id)purgeable purge:(id)purge cancel:(id)cancel periodic:(id)periodic notify:(id)notify callback:(id)callback entitlements:(id)entitlements
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = [(CacheDeleteServiceListener *)self queue];
+  purgeableCopy = purgeable;
+  purgeCopy = purge;
+  cancelCopy = cancel;
+  periodicCopy = periodic;
+  notifyCopy = notify;
+  callbackCopy = callback;
+  entitlementsCopy = entitlements;
+  queue = [(CacheDeleteServiceListener *)self queue];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __94__CacheDeleteServiceListener_setPurgeable_purge_cancel_periodic_notify_callback_entitlements___block_invoke;
   v30[3] = &unk_1E7F03058;
-  v32 = v15;
-  v33 = v16;
-  v34 = v17;
-  v35 = v18;
-  v36 = v19;
-  v37 = v20;
+  v32 = purgeableCopy;
+  v33 = purgeCopy;
+  v34 = cancelCopy;
+  v35 = periodicCopy;
+  v36 = notifyCopy;
+  v37 = callbackCopy;
   v30[4] = self;
-  v31 = v21;
-  v23 = v21;
-  v24 = v20;
-  v25 = v19;
-  v26 = v18;
-  v27 = v17;
-  v28 = v16;
-  v29 = v15;
-  dispatch_sync(v22, v30);
+  v31 = entitlementsCopy;
+  v23 = entitlementsCopy;
+  v24 = callbackCopy;
+  v25 = notifyCopy;
+  v26 = periodicCopy;
+  v27 = cancelCopy;
+  v28 = purgeCopy;
+  v29 = purgeableCopy;
+  dispatch_sync(queue, v30);
 }
 
 uint64_t __94__CacheDeleteServiceListener_setPurgeable_purge_cancel_periodic_notify_callback_entitlements___block_invoke(uint64_t a1)
@@ -186,11 +186,11 @@ uint64_t __94__CacheDeleteServiceListener_setPurgeable_purge_cancel_periodic_not
   return [v3 addRequiredEntitlement:v4];
 }
 
-- (void)servicePurgeable:(int)a3 info:(id)a4 replyBlock:(id)a5
+- (void)servicePurgeable:(int)purgeable info:(id)info replyBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 mutableCopy];
+  infoCopy = info;
+  blockCopy = block;
+  v10 = [infoCopy mutableCopy];
   v11 = [v10 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
   v12 = [CacheDeleteVolume validateVolumeAtPath:v11];
 
@@ -200,7 +200,7 @@ uint64_t __94__CacheDeleteServiceListener_setPurgeable_purge_cancel_periodic_not
   }
 
   [v10 setObject:v12 forKeyedSubscript:@"CACHE_DELETE_VOLUME"];
-  v13 = [v8 objectForKeyedSubscript:@"CACHE_DELETE_NO_CACHE"];
+  v13 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_NO_CACHE"];
   v14 = evaluateBoolProperty(v13);
 
   v15 = v14 ? QOS_CLASS_UTILITY : QOS_CLASS_BACKGROUND;
@@ -210,10 +210,10 @@ uint64_t __94__CacheDeleteServiceListener_setPurgeable_purge_cancel_periodic_not
     v21 = 3221225472;
     v22 = __63__CacheDeleteServiceListener_servicePurgeable_info_replyBlock___block_invoke;
     v23 = &unk_1E7F03080;
-    v24 = self;
+    selfCopy = self;
     v25 = v10;
-    v27 = a3;
-    v26 = v9;
+    purgeableCopy = purgeable;
+    v26 = blockCopy;
     v18 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v15, 0, &v20);
     v19 = [(CacheDeleteServiceListener *)self queue:v20];
     dispatch_async(v19, v18);
@@ -222,7 +222,7 @@ uint64_t __94__CacheDeleteServiceListener_setPurgeable_purge_cancel_periodic_not
   else
   {
 LABEL_8:
-    (*(v9 + 2))(v9, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -281,11 +281,11 @@ void __63__CacheDeleteServiceListener_servicePurgeable_info_replyBlock___block_i
   }
 }
 
-- (void)servicePurge:(int)a3 info:(id)a4 replyBlock:(id)a5
+- (void)servicePurge:(int)purge info:(id)info replyBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [a4 mutableCopy];
+  blockCopy = block;
+  v9 = [info mutableCopy];
   v10 = [v9 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
   v11 = [CacheDeleteVolume validateVolumeAtPath:v10];
 
@@ -296,19 +296,19 @@ void __63__CacheDeleteServiceListener_servicePurgeable_info_replyBlock___block_i
   {
     if (v13)
     {
-      v16 = [v13 unsignedIntValue];
+      unsignedIntValue = [v13 unsignedIntValue];
     }
 
     else
     {
-      v16 = QOS_CLASS_UTILITY;
+      unsignedIntValue = QOS_CLASS_UTILITY;
     }
 
     v17 = CDGetLogHandle("client");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v30 = v16;
+      v30 = unsignedIntValue;
       _os_log_impl(&dword_1BA7F1000, v17, OS_LOG_TYPE_DEFAULT, "servicePurge QOS: %u", buf, 8u);
     }
 
@@ -316,18 +316,18 @@ void __63__CacheDeleteServiceListener_servicePurgeable_info_replyBlock___block_i
     v22 = 3221225472;
     v23 = __59__CacheDeleteServiceListener_servicePurge_info_replyBlock___block_invoke;
     v24 = &unk_1E7F03080;
-    v25 = self;
+    selfCopy = self;
     v26 = v9;
-    v28 = a3;
-    v27 = v8;
-    v18 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v16, 0, &v21);
+    purgeCopy = purge;
+    v27 = blockCopy;
+    v18 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, unsignedIntValue, 0, &v21);
     v19 = [(CacheDeleteServiceListener *)self queue:v21];
     dispatch_async(v19, v18);
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -388,9 +388,9 @@ void __59__CacheDeleteServiceListener_servicePurge_info_replyBlock___block_invok
   }
 }
 
-- (void)serviceCancelPurge:(id)a3
+- (void)serviceCancelPurge:(id)purge
 {
-  v4 = a3;
+  purgeCopy = purge;
   v5 = CDGetLogHandle("client");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -423,7 +423,7 @@ void __59__CacheDeleteServiceListener_servicePurge_info_replyBlock___block_invok
     }
   }
 
-  v4[2](v4);
+  purgeCopy[2](purgeCopy);
 
   v9 = CDGetLogHandle("client");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -433,20 +433,20 @@ void __59__CacheDeleteServiceListener_servicePurge_info_replyBlock___block_invok
   }
 }
 
-- (void)servicePeriodic:(int)a3 info:(id)a4 replyBlock:(id)a5
+- (void)servicePeriodic:(int)periodic info:(id)info replyBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  blockCopy = block;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __62__CacheDeleteServiceListener_servicePeriodic_info_replyBlock___block_invoke;
   v17 = &unk_1E7F03080;
-  v18 = self;
-  v19 = v8;
-  v21 = a3;
-  v20 = v9;
-  v10 = v9;
-  v11 = v8;
+  selfCopy = self;
+  v19 = infoCopy;
+  periodicCopy = periodic;
+  v20 = blockCopy;
+  v10 = blockCopy;
+  v11 = infoCopy;
   v12 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_BACKGROUND, 0, &v14);
   v13 = [(CacheDeleteServiceListener *)self queue:v14];
   dispatch_async(v13, v12);
@@ -525,9 +525,9 @@ void __62__CacheDeleteServiceListener_servicePeriodic_info_replyBlock___block_in
   }
 }
 
-- (void)servicePing:(id)a3
+- (void)servicePing:(id)ping
 {
-  v3 = a3;
+  pingCopy = ping;
   v4 = CDGetLogHandle("client");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -535,19 +535,19 @@ void __62__CacheDeleteServiceListener_servicePeriodic_info_replyBlock___block_in
     _os_log_impl(&dword_1BA7F1000, v4, OS_LOG_TYPE_DEFAULT, "PING", v5, 2u);
   }
 
-  v3[2](v3);
+  pingCopy[2](pingCopy);
 }
 
-- (void)serviceNotify:(id)a3 replyBlock:(id)a4
+- (void)serviceNotify:(id)notify replyBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  notifyCopy = notify;
+  blockCopy = block;
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v9 = dispatch_queue_attr_make_initially_inactive(v8);
   v10 = dispatch_queue_create("com.apple.cache_delete_notify", v9);
 
-  v11 = [(CacheDeleteServiceListener *)self queue];
-  dispatch_set_target_queue(v10, v11);
+  queue = [(CacheDeleteServiceListener *)self queue];
+  dispatch_set_target_queue(v10, queue);
 
   dispatch_activate(v10);
   block[0] = MEMORY[0x1E69E9820];
@@ -555,10 +555,10 @@ void __62__CacheDeleteServiceListener_servicePeriodic_info_replyBlock___block_in
   block[2] = __55__CacheDeleteServiceListener_serviceNotify_replyBlock___block_invoke;
   block[3] = &unk_1E7F030A8;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = notifyCopy;
+  v16 = blockCopy;
+  v12 = blockCopy;
+  v13 = notifyCopy;
   dispatch_async(v10, block);
 }
 
@@ -619,57 +619,57 @@ uint64_t __55__CacheDeleteServiceListener_serviceNotify_replyBlock___block_invok
   return result;
 }
 
-- (void)setNotifyCallback:(id)a3
+- (void)setNotifyCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(CacheDeleteServiceListener *)self queue];
+  callbackCopy = callback;
+  queue = [(CacheDeleteServiceListener *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__CacheDeleteServiceListener_setNotifyCallback___block_invoke;
   v7[3] = &unk_1E7F028E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = callbackCopy;
+  v6 = callbackCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)serviceCallback:(id)a3 replyBlock:(id)a4
+- (void)serviceCallback:(id)callback replyBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CacheDeleteServiceListener *)self callback];
+  callbackCopy = callback;
+  blockCopy = block;
+  callback = [(CacheDeleteServiceListener *)self callback];
 
-  if (v8)
+  if (callback)
   {
-    v9 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_QOS"];
+    v9 = [callbackCopy objectForKeyedSubscript:@"CACHE_DELETE_QOS"];
     v10 = evaluateNumberProperty(v9);
 
     if (v10)
     {
-      v11 = [v10 unsignedIntValue];
+      unsignedIntValue = [v10 unsignedIntValue];
     }
 
     else
     {
-      v11 = QOS_CLASS_BACKGROUND;
+      unsignedIntValue = QOS_CLASS_BACKGROUND;
     }
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __57__CacheDeleteServiceListener_serviceCallback_replyBlock___block_invoke;
     block[3] = &unk_1E7F030A8;
-    v19 = v7;
+    v19 = blockCopy;
     block[4] = self;
-    v18 = v6;
-    v12 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v11, 0, block);
-    v13 = [(CacheDeleteServiceListener *)self queue];
+    v18 = callbackCopy;
+    v12 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, unsignedIntValue, 0, block);
+    queue = [(CacheDeleteServiceListener *)self queue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __57__CacheDeleteServiceListener_serviceCallback_replyBlock___block_invoke_2;
     v15[3] = &unk_1E7F030D0;
     v16 = v12;
     v14 = v12;
-    dispatch_async(v13, v15);
+    dispatch_async(queue, v15);
   }
 }
 

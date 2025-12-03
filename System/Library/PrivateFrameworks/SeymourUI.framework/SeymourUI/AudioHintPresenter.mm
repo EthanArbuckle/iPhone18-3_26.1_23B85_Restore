@@ -1,10 +1,10 @@
 @interface AudioHintPresenter
-- (void)handleMediaSelectionDidChangeWithItem:(id)a3;
+- (void)handleMediaSelectionDidChangeWithItem:(id)item;
 @end
 
 @implementation AudioHintPresenter
 
-- (void)handleMediaSelectionDidChangeWithItem:(id)a3
+- (void)handleMediaSelectionDidChangeWithItem:(id)item
 {
   v3 = sub_20C13BB84();
   v4 = *(v3 - 8);

@@ -1,26 +1,26 @@
 @interface AMSDialogResult
-- (AMSDialogResult)initWithCoder:(id)a3;
-- (AMSDialogResult)initWithOriginalRequest:(id)a3 selectedActionIdentifier:(id)a4;
+- (AMSDialogResult)initWithCoder:(id)coder;
+- (AMSDialogResult)initWithOriginalRequest:(id)request selectedActionIdentifier:(id)identifier;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSDialogResult
 
-- (AMSDialogResult)initWithOriginalRequest:(id)a3 selectedActionIdentifier:(id)a4
+- (AMSDialogResult)initWithOriginalRequest:(id)request selectedActionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = AMSDialogResult;
   v9 = [(AMSDialogResult *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_originalRequest, a3);
-    if (v8)
+    objc_storeStrong(&v9->_originalRequest, request);
+    if (identifierCopy)
     {
-      v11 = v8;
+      v11 = identifierCopy;
     }
 
     else
@@ -41,65 +41,65 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AMSDialogResult *)self selectedActionIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@:%p selected:%@>", v4, self, v5];
+  selectedActionIdentifier = [(AMSDialogResult *)self selectedActionIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@:%p selected:%@>", v4, self, selectedActionIdentifier];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  v4 = [(AMSDialogResult *)self originalRequest];
+  coderCopy = coder;
+  originalRequest = [(AMSDialogResult *)self originalRequest];
 
-  if (v4)
+  if (originalRequest)
   {
-    v5 = [(AMSDialogResult *)self originalRequest];
-    [v13 encodeObject:v5 forKey:@"kCodingKeyOriginalRequest"];
+    originalRequest2 = [(AMSDialogResult *)self originalRequest];
+    [coderCopy encodeObject:originalRequest2 forKey:@"kCodingKeyOriginalRequest"];
   }
 
-  v6 = [(AMSDialogResult *)self selectedActionIdentifier];
+  selectedActionIdentifier = [(AMSDialogResult *)self selectedActionIdentifier];
 
-  if (v6)
+  if (selectedActionIdentifier)
   {
-    v7 = [(AMSDialogResult *)self selectedActionIdentifier];
-    [v13 encodeObject:v7 forKey:@"kCodingKeySelectionActionId"];
+    selectedActionIdentifier2 = [(AMSDialogResult *)self selectedActionIdentifier];
+    [coderCopy encodeObject:selectedActionIdentifier2 forKey:@"kCodingKeySelectionActionId"];
   }
 
-  v8 = [(AMSDialogResult *)self textfieldValues];
+  textfieldValues = [(AMSDialogResult *)self textfieldValues];
 
-  if (v8)
+  if (textfieldValues)
   {
-    v9 = [(AMSDialogResult *)self textfieldValues];
-    [v13 encodeObject:v9 forKey:@"kCodingKeyTextfieldValues"];
+    textfieldValues2 = [(AMSDialogResult *)self textfieldValues];
+    [coderCopy encodeObject:textfieldValues2 forKey:@"kCodingKeyTextfieldValues"];
   }
 
-  v10 = [(AMSDialogResult *)self userInfo];
+  userInfo = [(AMSDialogResult *)self userInfo];
 
-  v11 = v13;
-  if (v10)
+  v11 = coderCopy;
+  if (userInfo)
   {
-    v12 = [(AMSDialogResult *)self userInfo];
-    [v13 encodeObject:v12 forKey:@"kCodingKeyUserInfo"];
+    userInfo2 = [(AMSDialogResult *)self userInfo];
+    [coderCopy encodeObject:userInfo2 forKey:@"kCodingKeyUserInfo"];
 
-    v11 = v13;
+    v11 = coderCopy;
   }
 }
 
-- (AMSDialogResult)initWithCoder:(id)a3
+- (AMSDialogResult)initWithCoder:(id)coder
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = AMSDialogResult;
   v5 = [(AMSDialogResult *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyOriginalRequest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyOriginalRequest"];
     originalRequest = v5->_originalRequest;
     v5->_originalRequest = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeySelectionActionId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeySelectionActionId"];
     selectedActionIdentifier = v5->_selectedActionIdentifier;
     v5->_selectedActionIdentifier = v8;
 
@@ -110,12 +110,12 @@
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:3];
     v12 = [v10 setWithArray:v11];
 
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"kCodingKeyTextfieldValues"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"kCodingKeyTextfieldValues"];
     textfieldValues = v5->_textfieldValues;
     v5->_textfieldValues = v13;
 
-    v15 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"kCodingKeyUserInfo"];
+    ams_JSONClasses = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v16 = [coderCopy decodeObjectOfClasses:ams_JSONClasses forKey:@"kCodingKeyUserInfo"];
     v17 = [v16 mutableCopy];
     v18 = v17;
     if (v17)

@@ -1,10 +1,10 @@
 @interface AXSSMotionTrackingInput
-+ (id)motionTrackingInputFromPlistDictionary:(id)a3;
++ (id)motionTrackingInputFromPlistDictionary:(id)dictionary;
 - (AXSSMotionTrackingInput)init;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMotionTrackingInput:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMotionTrackingInput:(id)input;
 - (NSDictionary)plistDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -17,64 +17,64 @@
   return [(AXSSMotionTrackingInput *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(AXSSMotionTrackingInput *)self plistDictionary];
-  v4 = [AXSSMotionTrackingInput motionTrackingInputFromPlistDictionary:v3];
+  plistDictionary = [(AXSSMotionTrackingInput *)self plistDictionary];
+  v4 = [AXSSMotionTrackingInput motionTrackingInputFromPlistDictionary:plistDictionary];
 
   return v4;
 }
 
-- (BOOL)isEqualToMotionTrackingInput:(id)a3
+- (BOOL)isEqualToMotionTrackingInput:(id)input
 {
-  v4 = a3;
-  v5 = [(AXSSMotionTrackingInput *)self plistDictionary];
-  v6 = [v4 plistDictionary];
+  inputCopy = input;
+  plistDictionary = [(AXSSMotionTrackingInput *)self plistDictionary];
+  plistDictionary2 = [inputCopy plistDictionary];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(inputCopy) = [plistDictionary isEqual:plistDictionary2];
+  return inputCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(AXSSMotionTrackingInput *)self plistDictionary];
-  v3 = [v2 hash];
+  plistDictionary = [(AXSSMotionTrackingInput *)self plistDictionary];
+  v3 = [plistDictionary hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXSSMotionTrackingInput *)self isEqualToMotionTrackingInput:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXSSMotionTrackingInput *)self isEqualToMotionTrackingInput:equalCopy];
 
   return v5;
 }
 
 - (NSDictionary)plistDictionary
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   if ([v4 length])
   {
-    [v2 setObject:v4 forKeyedSubscript:@"motionTrackingInputClass"];
+    [dictionary setObject:v4 forKeyedSubscript:@"motionTrackingInputClass"];
   }
 
-  v5 = [v2 copy];
+  v5 = [dictionary copy];
 
   return v5;
 }
 
-+ (id)motionTrackingInputFromPlistDictionary:(id)a3
++ (id)motionTrackingInputFromPlistDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"motionTrackingInputClass"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"motionTrackingInputClass"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = NSClassFromString(v4), [(objc_class *)v5 isSubclassOfClass:objc_opt_class()]))
   {
-    v6 = [[v5 alloc] initWithPlistDictionary:v3];
+    v6 = [[v5 alloc] initWithPlistDictionary:dictionaryCopy];
   }
 
   else

@@ -1,7 +1,7 @@
 @interface BlurIconButton
 - (BOOL)accessibilityActivate;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -9,13 +9,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21A174();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_21A3F0();
   v5 = v4;
   v7 = v6;
@@ -27,16 +27,16 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  LOBYTE(v4) = sub_21A534(v4, x, y);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  LOBYTE(eventCopy) = sub_21A534(eventCopy, x, y);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
 - (BOOL)accessibilityActivate
@@ -45,9 +45,9 @@
   if (v2)
   {
     v3 = *&self->handler[OBJC_IVAR____TtC23ShelfKitCollectionViews14BlurIconButton_handler];
-    v4 = self;
+    selfCopy = self;
     sub_9FF04(v2);
-    v2(v4);
+    v2(selfCopy);
 
     sub_2B8D4(v2, v3);
   }

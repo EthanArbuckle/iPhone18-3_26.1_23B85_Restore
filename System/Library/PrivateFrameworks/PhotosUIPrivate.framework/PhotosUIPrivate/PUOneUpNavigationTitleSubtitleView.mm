@@ -2,34 +2,34 @@
 - (CGSize)intrinsicContentSize;
 - (void)didTapGlassTitleSubtitleView;
 - (void)layoutSubviews;
-- (void)setVisibility:(BOOL)a3;
+- (void)setVisibility:(BOOL)visibility;
 - (void)updateLabelFonts;
 - (void)updatePreferredHeight;
 @end
 
 @implementation PUOneUpNavigationTitleSubtitleView
 
-- (void)setVisibility:(BOOL)a3
+- (void)setVisibility:(BOOL)visibility
 {
-  v4 = self;
-  sub_1B3843D98(a3);
+  selfCopy = self;
+  sub_1B3843D98(visibility);
 }
 
 - (void)updateLabelFonts
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3843EB4();
 }
 
 - (void)updatePreferredHeight
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3843F70();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B38446B4();
   v4 = v3;
   v6 = v5;
@@ -43,13 +43,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3844734();
 }
 
 - (void)didTapGlassTitleSubtitleView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B384483C();
 }
 

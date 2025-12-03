@@ -1,10 +1,10 @@
 @interface ShowMoreFooterView
-- (_TtC9MomentsUI18ShowMoreFooterView)initWithCoder:(id)a3;
+- (_TtC9MomentsUI18ShowMoreFooterView)initWithCoder:(id)coder;
 @end
 
 @implementation ShowMoreFooterView
 
-- (_TtC9MomentsUI18ShowMoreFooterView)initWithCoder:(id)a3
+- (_TtC9MomentsUI18ShowMoreFooterView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI18ShowMoreFooterView_showMoreButton;
   closure #1 in variable initialization expression of ShowMoreFooterView.showMoreButton();

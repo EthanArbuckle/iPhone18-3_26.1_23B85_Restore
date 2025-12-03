@@ -1,40 +1,40 @@
 @interface WFAddToReadingListAction
 - (id)service;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)addReadingListItem:(id)a3 title:(id)a4 previewText:(id)a5 withService:(id)a6 error:(id *)a7;
-- (void)getContentDestinationWithCompletionHandler:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)addReadingListItem:(id)item title:(id)title previewText:(id)text withService:(id)service error:(id *)error;
+- (void)getContentDestinationWithCompletionHandler:(id)handler;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFAddToReadingListAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v6 = a3;
+  descriptionCopy = description;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  if (v6)
+  nameCopy = name;
+  if (descriptionCopy)
   {
     v9 = WFLocalizedString(@"Allow “%1$@” to add %2$@ to your Reading List?");
-    [v7 localizedStringWithFormat:v9, v8, v6];
+    [v7 localizedStringWithFormat:v9, nameCopy, descriptionCopy];
   }
 
   else
   {
     v9 = WFLocalizedString(@"Allow “%@” to add item(s) to your Reading List?");
-    [v7 localizedStringWithFormat:v9, v8, v12];
+    [v7 localizedStringWithFormat:v9, nameCopy, v12];
   }
   v10 = ;
 
   return v10;
 }
 
-- (void)getContentDestinationWithCompletionHandler:(id)a3
+- (void)getContentDestinationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFAddToReadingListAction *)self input];
-  v7 = v4;
-  v6 = v4;
+  handlerCopy = handler;
+  input = [(WFAddToReadingListAction *)self input];
+  v7 = handlerCopy;
+  v6 = handlerCopy;
   WFGetContentLocationFromURLActionInput();
 }
 
@@ -56,9 +56,9 @@ void __71__WFAddToReadingListAction_getContentDestinationWithCompletionHandler__
   }
 }
 
-- (void)addReadingListItem:(id)a3 title:(id)a4 previewText:(id)a5 withService:(id)a6 error:(id *)a7
+- (void)addReadingListItem:(id)item title:(id)title previewText:(id)text withService:(id)service error:(id *)error
 {
-  [a6 addReadingListItemWithURL:a3 title:a4 previewText:a5 error:a7];
+  [service addReadingListItemWithURL:item title:title previewText:text error:error];
   v8 = objc_opt_new();
   [(WFAddToReadingListAction *)self setExtendedOperation:v8];
 }
@@ -83,21 +83,21 @@ void __71__WFAddToReadingListAction_getContentDestinationWithCompletionHandler__
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 defaultReadingList];
+  defaultReadingList = [v2 defaultReadingList];
 
-  return v4;
+  return defaultReadingList;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = objc_opt_class();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__WFAddToReadingListAction_runAsynchronouslyWithInput___block_invoke;
   v6[3] = &unk_278C211D0;
   v6[4] = self;
-  [v4 generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
+  [inputCopy generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
 }
 
 void __55__WFAddToReadingListAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)

@@ -1,90 +1,90 @@
 @interface ATXHeroData
-+ (BOOL)isClipMetadataEqual:(id)a3 other:(id)a4;
-+ (id)copyClipMetadata:(id)a3;
-- (ATXHeroData)initWithCoder:(id)a3;
-- (ATXHeroData)initWithPredictedAdamId:(unint64_t)a3 bundleId:(id)a4 latitude:(double)a5 longitude:(double)a6 radiusInMeters:(unint64_t)a7 rank:(unint64_t)a8 isTouristApp:(BOOL)a9 score:(double)a10 urlHash:(id)a11 clipMetadata:(id)a12 poiCategory:(id)a13 poiMuid:(id)a14;
-- (ATXHeroData)initWithProto:(id)a3;
-- (ATXHeroData)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)isClipMetadataEqual:(id)equal other:(id)other;
++ (id)copyClipMetadata:(id)metadata;
+- (ATXHeroData)initWithCoder:(id)coder;
+- (ATXHeroData)initWithPredictedAdamId:(unint64_t)id bundleId:(id)bundleId latitude:(double)latitude longitude:(double)longitude radiusInMeters:(unint64_t)meters rank:(unint64_t)rank isTouristApp:(BOOL)app score:(double)self0 urlHash:(id)self1 clipMetadata:(id)self2 poiCategory:(id)self3 poiMuid:(id)self4;
+- (ATXHeroData)initWithProto:(id)proto;
+- (ATXHeroData)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)l key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)proto;
 @end
 
 @implementation ATXHeroData
 
-- (ATXHeroData)initWithPredictedAdamId:(unint64_t)a3 bundleId:(id)a4 latitude:(double)a5 longitude:(double)a6 radiusInMeters:(unint64_t)a7 rank:(unint64_t)a8 isTouristApp:(BOOL)a9 score:(double)a10 urlHash:(id)a11 clipMetadata:(id)a12 poiCategory:(id)a13 poiMuid:(id)a14
+- (ATXHeroData)initWithPredictedAdamId:(unint64_t)id bundleId:(id)bundleId latitude:(double)latitude longitude:(double)longitude radiusInMeters:(unint64_t)meters rank:(unint64_t)rank isTouristApp:(BOOL)app score:(double)self0 urlHash:(id)self1 clipMetadata:(id)self2 poiCategory:(id)self3 poiMuid:(id)self4
 {
-  v20 = a4;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
-  v24 = a14;
+  bundleIdCopy = bundleId;
+  hashCopy = hash;
+  metadataCopy = metadata;
+  categoryCopy = category;
+  muidCopy = muid;
   v35.receiver = self;
   v35.super_class = ATXHeroData;
   v25 = [(ATXHeroData *)&v35 init];
   v26 = v25;
   if (v25)
   {
-    v25->_adamId = a3;
-    v27 = [v20 copy];
+    v25->_adamId = id;
+    v27 = [bundleIdCopy copy];
     bundleId = v26->_bundleId;
     v26->_bundleId = v27;
 
-    v26->_latitude = a5;
-    v26->_longitude = a6;
-    v26->_radiusInMeters = a7;
-    v26->_rank = a8;
-    v26->_isTouristApp = a9;
-    v26->_score = a10;
-    v29 = [v21 copy];
+    v26->_latitude = latitude;
+    v26->_longitude = longitude;
+    v26->_radiusInMeters = meters;
+    v26->_rank = rank;
+    v26->_isTouristApp = app;
+    v26->_score = score;
+    v29 = [hashCopy copy];
     urlHash = v26->_urlHash;
     v26->_urlHash = v29;
 
-    objc_storeStrong(&v26->_clipMetadata, a12);
+    objc_storeStrong(&v26->_clipMetadata, metadata);
     v26->_latitudeAtPredictionTime = 0.0;
     v26->_longitudeAtPredictionTime = 0.0;
-    objc_storeStrong(&v26->_poiCategory, a13);
-    objc_storeStrong(&v26->_poiMuid, a14);
+    objc_storeStrong(&v26->_poiCategory, category);
+    objc_storeStrong(&v26->_poiMuid, muid);
   }
 
   return v26;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -96,33 +96,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForBOOL:(BOOL)l key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!l)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -134,33 +134,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a3 == 0.0)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (fordouble == 0.0)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -172,75 +172,75 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   latitude = self->_latitude;
-  v8 = a3;
-  [v8 encodeDouble:@"latitude" forKey:latitude];
-  [v8 encodeDouble:@"longitude" forKey:self->_longitude];
-  [v8 encodeDouble:@"latitudeAtPrediction" forKey:self->_latitudeAtPredictionTime];
-  [v8 encodeDouble:@"longitudeAtPrediction" forKey:self->_longitudeAtPredictionTime];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"latitude" forKey:latitude];
+  [coderCopy encodeDouble:@"longitude" forKey:self->_longitude];
+  [coderCopy encodeDouble:@"latitudeAtPrediction" forKey:self->_latitudeAtPredictionTime];
+  [coderCopy encodeDouble:@"longitudeAtPrediction" forKey:self->_longitudeAtPredictionTime];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_radiusInMeters];
-  [v8 encodeObject:v5 forKey:@"radius"];
+  [coderCopy encodeObject:v5 forKey:@"radius"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_rank];
-  [v8 encodeObject:v6 forKey:@"rank"];
+  [coderCopy encodeObject:v6 forKey:@"rank"];
 
-  [v8 encodeBool:self->_isTouristApp forKey:@"isTouristApp"];
-  [v8 encodeObject:self->_bundleId forKey:@"bundleId"];
+  [coderCopy encodeBool:self->_isTouristApp forKey:@"isTouristApp"];
+  [coderCopy encodeObject:self->_bundleId forKey:@"bundleId"];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_adamId];
-  [v8 encodeObject:v7 forKey:@"adamId"];
+  [coderCopy encodeObject:v7 forKey:@"adamId"];
 
-  [v8 encodeDouble:@"score" forKey:self->_score];
-  [v8 encodeObject:self->_urlHash forKey:@"urlHash"];
-  [v8 encodeObject:self->_clipMetadata forKey:@"clipMetadata"];
-  [v8 encodeObject:self->_poiCategory forKey:@"poiCategory"];
-  [v8 encodeObject:self->_poiMuid forKey:@"poiMuid"];
+  [coderCopy encodeDouble:@"score" forKey:self->_score];
+  [coderCopy encodeObject:self->_urlHash forKey:@"urlHash"];
+  [coderCopy encodeObject:self->_clipMetadata forKey:@"clipMetadata"];
+  [coderCopy encodeObject:self->_poiCategory forKey:@"poiCategory"];
+  [coderCopy encodeObject:self->_poiMuid forKey:@"poiMuid"];
 }
 
-- (ATXHeroData)initWithCoder:(id)a3
+- (ATXHeroData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"latitude"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"latitude"];
   v6 = v5;
-  v39 = [(ATXHeroData *)self checkAndReportDecodingFailureIfNeededFordouble:@"latitude" key:v4 coder:@"com.apple.proactive.hero" errorDomain:-1 errorCode:?];
-  [v4 decodeDoubleForKey:@"longitude"];
+  v39 = [(ATXHeroData *)self checkAndReportDecodingFailureIfNeededFordouble:@"latitude" key:coderCopy coder:@"com.apple.proactive.hero" errorDomain:-1 errorCode:?];
+  [coderCopy decodeDoubleForKey:@"longitude"];
   v8 = v7;
-  v38 = [(ATXHeroData *)self checkAndReportDecodingFailureIfNeededFordouble:@"longitude" key:v4 coder:@"com.apple.proactive.hero" errorDomain:-1 errorCode:?];
-  [v4 decodeDoubleForKey:@"latitudeAtPrediction"];
+  v38 = [(ATXHeroData *)self checkAndReportDecodingFailureIfNeededFordouble:@"longitude" key:coderCopy coder:@"com.apple.proactive.hero" errorDomain:-1 errorCode:?];
+  [coderCopy decodeDoubleForKey:@"latitudeAtPrediction"];
   v10 = v9;
-  v37 = [(ATXHeroData *)self checkAndReportDecodingFailureIfNeededFordouble:@"latitudeAtPrediction" key:v4 coder:@"com.apple.proactive.hero" errorDomain:-1 errorCode:?];
-  [v4 decodeDoubleForKey:@"longitudeAtPrediction"];
+  v37 = [(ATXHeroData *)self checkAndReportDecodingFailureIfNeededFordouble:@"latitudeAtPrediction" key:coderCopy coder:@"com.apple.proactive.hero" errorDomain:-1 errorCode:?];
+  [coderCopy decodeDoubleForKey:@"longitudeAtPrediction"];
   v12 = v11;
-  v36 = [(ATXHeroData *)self checkAndReportDecodingFailureIfNeededFordouble:@"longitudeAtPrediction" key:v4 coder:@"com.apple.proactive.hero" errorDomain:-1 errorCode:?];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"radius"];
-  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v13 key:@"radius" coder:v4 errorDomain:@"com.apple.proactive.hero" errorCode:-1])
+  v36 = [(ATXHeroData *)self checkAndReportDecodingFailureIfNeededFordouble:@"longitudeAtPrediction" key:coderCopy coder:@"com.apple.proactive.hero" errorDomain:-1 errorCode:?];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"radius"];
+  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v13 key:@"radius" coder:coderCopy errorDomain:@"com.apple.proactive.hero" errorCode:-1])
   {
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:70];
 
     v13 = v14;
   }
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rank"];
-  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v15 key:@"rank" coder:v4 errorDomain:@"com.apple.proactive.hero" errorCode:-1])
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rank"];
+  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v15 key:@"rank" coder:coderCopy errorDomain:@"com.apple.proactive.hero" errorCode:-1])
   {
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:0];
 
     v15 = v16;
   }
 
-  v33 = [v4 decodeBoolForKey:@"isTouristApp"];
+  v33 = [coderCopy decodeBoolForKey:@"isTouristApp"];
   v32 = [ATXHeroData checkAndReportDecodingFailureIfNeededForBOOL:"checkAndReportDecodingFailureIfNeededForBOOL:key:coder:errorDomain:errorCode:" key:? coder:? errorDomain:? errorCode:?];
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
-  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v17 key:@"bundleId" coder:v4 errorDomain:@"com.apple.proactive.hero" errorCode:-1])
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
+  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v17 key:@"bundleId" coder:coderCopy errorDomain:@"com.apple.proactive.hero" errorCode:-1])
   {
     v18 = &stru_28647D6B8;
 
     v17 = v18;
   }
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adamId"];
-  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v19 key:@"adamId" coder:v4 errorDomain:@"com.apple.proactive.hero" errorCode:-1])
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adamId"];
+  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v19 key:@"adamId" coder:coderCopy errorDomain:@"com.apple.proactive.hero" errorCode:-1])
   {
     v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:-1];
 
@@ -252,34 +252,34 @@ LABEL_7:
     v34 = v19;
   }
 
-  [v4 decodeDoubleForKey:@"score"];
+  [coderCopy decodeDoubleForKey:@"score"];
   v22 = v21;
-  v30 = [(ATXHeroData *)self checkAndReportDecodingFailureIfNeededFordouble:@"score" key:v4 coder:@"com.apple.proactive.hero" errorDomain:-1 errorCode:?];
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urlHash"];
+  v30 = [(ATXHeroData *)self checkAndReportDecodingFailureIfNeededFordouble:@"score" key:coderCopy coder:@"com.apple.proactive.hero" errorDomain:-1 errorCode:?];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urlHash"];
   v35 = v17;
-  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v23 key:@"urlHash" coder:v4 errorDomain:@"com.apple.proactive.hero" errorCode:-1])
+  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v23 key:@"urlHash" coder:coderCopy errorDomain:@"com.apple.proactive.hero" errorCode:-1])
   {
 
     v23 = 0;
   }
 
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clipMetadata"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clipMetadata"];
   v31 = v23;
-  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v24 key:@"clipMetadata" coder:v4 errorDomain:@"com.apple.proactive.hero" errorCode:-1])
+  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v24 key:@"clipMetadata" coder:coderCopy errorDomain:@"com.apple.proactive.hero" errorCode:-1])
   {
 
     v24 = 0;
   }
 
-  v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"poiCategory"];
-  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v25 key:@"poiCategory" coder:v4 errorDomain:@"com.apple.proactive.hero" errorCode:-1])
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"poiCategory"];
+  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v25 key:@"poiCategory" coder:coderCopy errorDomain:@"com.apple.proactive.hero" errorCode:-1])
   {
 
     v25 = 0;
   }
 
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"poiMuid"];
-  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v26 key:@"poiMuid" coder:v4 errorDomain:@"com.apple.proactive.hero" errorCode:-1])
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"poiMuid"];
+  if ([(ATXHeroData *)self checkAndReportDecodingFailureIfNeededForid:v26 key:@"poiMuid" coder:coderCopy errorDomain:@"com.apple.proactive.hero" errorCode:-1])
   {
 
     v26 = 0;
@@ -329,12 +329,12 @@ LABEL_7:
   return v28;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if ([v6 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v7 = v6;
+    v7 = equalCopy;
     if (self == v7)
     {
       v21 = 1;
@@ -343,10 +343,10 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    v46 = [(ATXHeroData *)self adamId];
-    v45 = [(ATXHeroData *)v7 adamId];
-    v8 = [(ATXHeroData *)self isTouristApp];
-    v9 = [(ATXHeroData *)v7 isTouristApp];
+    adamId = [(ATXHeroData *)self adamId];
+    adamId2 = [(ATXHeroData *)v7 adamId];
+    isTouristApp = [(ATXHeroData *)self isTouristApp];
+    isTouristApp2 = [(ATXHeroData *)v7 isTouristApp];
     [(ATXHeroData *)self latitude];
     v11 = v10;
     [(ATXHeroData *)v7 latitude];
@@ -355,15 +355,15 @@ LABEL_39:
     v15 = v14;
     [(ATXHeroData *)v7 longitude];
     v17 = v16;
-    v18 = [(ATXHeroData *)self urlHash];
-    if (v18 || ([(ATXHeroData *)v7 urlHash], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    urlHash = [(ATXHeroData *)self urlHash];
+    if (urlHash || ([(ATXHeroData *)v7 urlHash], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v4 = [(ATXHeroData *)v7 urlHash];
-      if (v4)
+      urlHash2 = [(ATXHeroData *)v7 urlHash];
+      if (urlHash2)
       {
-        v19 = [(ATXHeroData *)self urlHash];
-        v20 = [(ATXHeroData *)v7 urlHash];
-        v44 = [v19 isEqualToString:v20];
+        urlHash3 = [(ATXHeroData *)self urlHash];
+        urlHash4 = [(ATXHeroData *)v7 urlHash];
+        v44 = [urlHash3 isEqualToString:urlHash4];
       }
 
       else
@@ -371,28 +371,28 @@ LABEL_39:
         v44 = 0;
       }
 
-      if (v18)
+      if (urlHash)
       {
 LABEL_14:
 
-        v22 = [(ATXHeroData *)self rank];
-        v43 = [(ATXHeroData *)v7 rank];
-        v23 = [(ATXHeroData *)self poiCategory];
-        if (v23 || ([(ATXHeroData *)v7 poiCategory], (v40 = objc_claimAutoreleasedReturnValue()) != 0))
+        rank = [(ATXHeroData *)self rank];
+        rank2 = [(ATXHeroData *)v7 rank];
+        poiCategory = [(ATXHeroData *)self poiCategory];
+        if (poiCategory || ([(ATXHeroData *)v7 poiCategory], (v40 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v24 = [(ATXHeroData *)v7 poiCategory];
-          if (v24)
+          poiCategory2 = [(ATXHeroData *)v7 poiCategory];
+          if (poiCategory2)
           {
             [(ATXHeroData *)self poiCategory];
-            v4 = v22;
-            v25 = v8;
-            v27 = v26 = v9;
-            v28 = [(ATXHeroData *)v7 poiCategory];
-            v42 = [v27 isEqualToString:v28];
+            urlHash2 = rank;
+            v25 = isTouristApp;
+            v27 = v26 = isTouristApp2;
+            poiCategory3 = [(ATXHeroData *)v7 poiCategory];
+            v42 = [v27 isEqualToString:poiCategory3];
 
-            v9 = v26;
-            v8 = v25;
-            v22 = v4;
+            isTouristApp2 = v26;
+            isTouristApp = v25;
+            rank = urlHash2;
           }
 
           else
@@ -400,22 +400,22 @@ LABEL_14:
             v42 = 0;
           }
 
-          if (v23)
+          if (poiCategory)
           {
 LABEL_23:
-            v29 = v8 ^ v9;
+            v29 = isTouristApp ^ isTouristApp2;
             v30 = vabdd_f64(v11, v13);
             v31 = vabdd_f64(v15, v17);
 
-            v32 = [(ATXHeroData *)self poiMuid];
-            if (v32 || ([(ATXHeroData *)v7 poiMuid], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+            poiMuid = [(ATXHeroData *)self poiMuid];
+            if (poiMuid || ([(ATXHeroData *)v7 poiMuid], (urlHash2 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v33 = [(ATXHeroData *)v7 poiMuid];
-              if (v33)
+              poiMuid2 = [(ATXHeroData *)v7 poiMuid];
+              if (poiMuid2)
               {
-                v34 = [(ATXHeroData *)self poiMuid];
-                v35 = [(ATXHeroData *)v7 poiMuid];
-                v36 = [v34 isEqualToNumber:v35];
+                poiMuid3 = [(ATXHeroData *)self poiMuid];
+                poiMuid4 = [(ATXHeroData *)v7 poiMuid];
+                v36 = [poiMuid3 isEqualToNumber:poiMuid4];
               }
 
               else
@@ -423,7 +423,7 @@ LABEL_23:
                 v36 = 0;
               }
 
-              if (v32)
+              if (poiMuid)
               {
                 goto LABEL_32;
               }
@@ -435,7 +435,7 @@ LABEL_23:
             }
 
 LABEL_32:
-            v37 = (v46 == v45) & ~v29;
+            v37 = (adamId == adamId2) & ~v29;
             if (v30 >= 2.22044605e-16)
             {
               v37 = 0;
@@ -447,7 +447,7 @@ LABEL_32:
             }
 
             v38 = v37 & v44;
-            if (v22 != v43)
+            if (rank != rank2)
             {
               v38 = 0;
             }
@@ -484,35 +484,35 @@ LABEL_40:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ATXHeroData *)self adamId];
-  v5 = [(ATXHeroData *)self bundleId];
-  v6 = [(ATXHeroData *)self urlHash];
-  v7 = [(ATXHeroData *)self poiCategory];
+  adamId = [(ATXHeroData *)self adamId];
+  bundleId = [(ATXHeroData *)self bundleId];
+  urlHash = [(ATXHeroData *)self urlHash];
+  poiCategory = [(ATXHeroData *)self poiCategory];
   [(ATXHeroData *)self latitude];
   v9 = v8;
   [(ATXHeroData *)self longitude];
   v11 = v10;
   [(ATXHeroData *)self score];
   v13 = v12;
-  v14 = [(ATXHeroData *)self rank];
-  v15 = [(ATXHeroData *)self radiusInMeters];
-  v16 = [(ATXHeroData *)self poiMuid];
-  v17 = [v3 stringWithFormat:@"HeroApp with adamId: %ld bundleId: %@ urlHash: %@ poiCategory: %@ latitude: %f longitude: %f score: %lf rank: %lu radius: %lu poiMuid: %@", v4, v5, v6, v7, v9, v11, v13, v14, v15, v16];
+  rank = [(ATXHeroData *)self rank];
+  radiusInMeters = [(ATXHeroData *)self radiusInMeters];
+  poiMuid = [(ATXHeroData *)self poiMuid];
+  v17 = [v3 stringWithFormat:@"HeroApp with adamId: %ld bundleId: %@ urlHash: %@ poiCategory: %@ latitude: %f longitude: %f score: %lf rank: %lu radius: %lu poiMuid: %@", adamId, bundleId, urlHash, poiCategory, v9, v11, v13, rank, radiusInMeters, poiMuid];
 
   return v17;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(ATXHeroData *)self adamId];
-  v4 = [(ATXHeroData *)self urlHash];
-  v5 = [v4 hash] - v3 + 32 * v3;
+  adamId = [(ATXHeroData *)self adamId];
+  urlHash = [(ATXHeroData *)self urlHash];
+  v5 = [urlHash hash] - adamId + 32 * adamId;
 
-  v6 = [(ATXHeroData *)self poiCategory];
-  v7 = [v6 hash] - v5 + 32 * v5;
+  poiCategory = [(ATXHeroData *)self poiCategory];
+  v7 = [poiCategory hash] - v5 + 32 * v5;
 
-  v8 = [(ATXHeroData *)self poiMuid];
-  v9 = [v8 hash] - v7 + 32 * v7;
+  poiMuid = [(ATXHeroData *)self poiMuid];
+  v9 = [poiMuid hash] - v7 + 32 * v7;
 
   v10 = objc_alloc(MEMORY[0x277CCABB0]);
   [(ATXHeroData *)self latitude];
@@ -529,32 +529,32 @@ LABEL_40:
   return v17;
 }
 
-- (ATXHeroData)initWithProtoData:(id)a3
+- (ATXHeroData)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBHeroAppPrediction alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBHeroAppPrediction alloc] initWithData:dataCopy];
 
     self = [(ATXHeroData *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXHeroData)initWithProto:(id)a3
+- (ATXHeroData)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_10:
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -569,18 +569,18 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v5 = v4;
-  v6 = [v5 clipMetadata];
-  v7 = [v6 length];
+  v5 = protoCopy;
+  clipMetadata = [v5 clipMetadata];
+  v7 = [clipMetadata length];
 
   if (v7)
   {
     v8 = objc_autoreleasePoolPush();
     v9 = MEMORY[0x277CCAAC8];
     v10 = objc_opt_class();
-    v11 = [v5 clipMetadata];
+    clipMetadata2 = [v5 clipMetadata];
     v37 = 0;
-    v12 = [v9 unarchivedObjectOfClass:v10 fromData:v11 error:&v37];
+    v12 = [v9 unarchivedObjectOfClass:v10 fromData:clipMetadata2 error:&v37];
     v13 = v37;
 
     objc_autoreleasePoolPop(v8);
@@ -595,41 +595,41 @@ LABEL_10:
     v12 = 0;
   }
 
-  v22 = [v5 adamId];
-  v23 = [v5 bundleId];
+  adamId = [v5 adamId];
+  bundleId = [v5 bundleId];
   [v5 latitude];
   v25 = v24;
   [v5 longitude];
   v27 = v26;
-  v28 = [v5 radius];
-  v29 = [v5 rank];
-  v30 = [v5 isTouristApp];
+  radius = [v5 radius];
+  rank = [v5 rank];
+  isTouristApp = [v5 isTouristApp];
   [v5 score];
   v32 = v31;
-  v33 = [v5 urlHash];
-  self = [(ATXHeroData *)self initWithPredictedAdamId:v22 bundleId:v23 latitude:v28 longitude:v29 radiusInMeters:v30 rank:v33 isTouristApp:v25 score:v27 urlHash:v32 clipMetadata:v12];
+  urlHash = [v5 urlHash];
+  self = [(ATXHeroData *)self initWithPredictedAdamId:adamId bundleId:bundleId latitude:radius longitude:rank radiusInMeters:isTouristApp rank:urlHash isTouristApp:v25 score:v27 urlHash:v32 clipMetadata:v12];
 
   [v5 latitudeAtPredictionTime];
   [(ATXHeroData *)self setLatitudeAtPredictionTime:?];
   [v5 longitudeAtPredictionTime];
   [(ATXHeroData *)self setLongitudeAtPredictionTime:?];
-  v34 = [v5 poiCategory];
-  [(ATXHeroData *)self setPoiCategory:v34];
+  poiCategory = [v5 poiCategory];
+  [(ATXHeroData *)self setPoiCategory:poiCategory];
 
   v35 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v5, "poiMuid")}];
   [(ATXHeroData *)self setPoiMuid:v35];
 
-  v21 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v21;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(ATXHeroData *)self bundleId];
-  [v3 setBundleId:v4];
+  bundleId = [(ATXHeroData *)self bundleId];
+  [v3 setBundleId:bundleId];
 
   [(ATXHeroData *)self latitude];
   [v3 setLatitude:?];
@@ -638,8 +638,8 @@ LABEL_13:
   [v3 setRadius:{-[ATXHeroData radiusInMeters](self, "radiusInMeters")}];
   [v3 setRank:{-[ATXHeroData rank](self, "rank")}];
   [v3 setAdamId:{-[ATXHeroData adamId](self, "adamId")}];
-  v5 = [(ATXHeroData *)self urlHash];
-  [v3 setUrlHash:v5];
+  urlHash = [(ATXHeroData *)self urlHash];
+  [v3 setUrlHash:urlHash];
 
   [(ATXHeroData *)self score];
   [v3 setScore:?];
@@ -648,21 +648,21 @@ LABEL_13:
   [v3 setLatitudeAtPredictionTime:?];
   [(ATXHeroData *)self longitudeAtPredictionTime];
   [v3 setLongitudeAtPredictionTime:?];
-  v6 = [(ATXHeroData *)self poiCategory];
-  [v3 setPoiCategory:v6];
+  poiCategory = [(ATXHeroData *)self poiCategory];
+  [v3 setPoiCategory:poiCategory];
 
-  v7 = [(ATXHeroData *)self poiMuid];
-  [v3 setPoiMuid:{objc_msgSend(v7, "unsignedIntegerValue")}];
+  poiMuid = [(ATXHeroData *)self poiMuid];
+  [v3 setPoiMuid:{objc_msgSend(poiMuid, "unsignedIntegerValue")}];
 
-  v8 = [(ATXHeroData *)self clipMetadata];
+  clipMetadata = [(ATXHeroData *)self clipMetadata];
 
-  if (v8)
+  if (clipMetadata)
   {
     v9 = objc_autoreleasePoolPush();
     v10 = MEMORY[0x277CCAAB0];
-    v11 = [(ATXHeroData *)self clipMetadata];
+    clipMetadata2 = [(ATXHeroData *)self clipMetadata];
     v22 = 0;
-    v12 = [v10 archivedDataWithRootObject:v11 requiringSecureCoding:1 error:&v22];
+    v12 = [v10 archivedDataWithRootObject:clipMetadata2 requiringSecureCoding:1 error:&v22];
     v13 = v22;
     [v3 setClipMetadata:v12];
 
@@ -678,44 +678,44 @@ LABEL_13:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXHeroData *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXHeroData *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v23 = [ATXHeroData allocWithZone:a3];
-  v4 = [(ATXHeroData *)self adamId];
-  v5 = [(ATXHeroData *)self bundleId];
+  v23 = [ATXHeroData allocWithZone:zone];
+  adamId = [(ATXHeroData *)self adamId];
+  bundleId = [(ATXHeroData *)self bundleId];
   [(ATXHeroData *)self latitude];
   v7 = v6;
   [(ATXHeroData *)self longitude];
   v9 = v8;
-  v10 = [(ATXHeroData *)self radiusInMeters];
-  v11 = [(ATXHeroData *)self rank];
-  v12 = [(ATXHeroData *)self isTouristApp];
+  radiusInMeters = [(ATXHeroData *)self radiusInMeters];
+  rank = [(ATXHeroData *)self rank];
+  isTouristApp = [(ATXHeroData *)self isTouristApp];
   [(ATXHeroData *)self score];
   v14 = v13;
-  v15 = [(ATXHeroData *)self urlHash];
+  urlHash = [(ATXHeroData *)self urlHash];
   v16 = objc_opt_class();
-  v17 = [(ATXHeroData *)self clipMetadata];
-  v18 = [v16 copyClipMetadata:v17];
-  v19 = [(ATXHeroData *)self poiCategory];
-  v20 = [(ATXHeroData *)self poiMuid];
-  v21 = [(ATXHeroData *)v23 initWithPredictedAdamId:v4 bundleId:v5 latitude:v10 longitude:v11 radiusInMeters:v12 rank:v15 isTouristApp:v7 score:v9 urlHash:v14 clipMetadata:v18 poiCategory:v19 poiMuid:v20];
+  clipMetadata = [(ATXHeroData *)self clipMetadata];
+  v18 = [v16 copyClipMetadata:clipMetadata];
+  poiCategory = [(ATXHeroData *)self poiCategory];
+  poiMuid = [(ATXHeroData *)self poiMuid];
+  v21 = [(ATXHeroData *)v23 initWithPredictedAdamId:adamId bundleId:bundleId latitude:radiusInMeters longitude:rank radiusInMeters:isTouristApp rank:urlHash isTouristApp:v7 score:v9 urlHash:v14 clipMetadata:v18 poiCategory:poiCategory poiMuid:poiMuid];
 
   return v21;
 }
 
-+ (id)copyClipMetadata:(id)a3
++ (id)copyClipMetadata:(id)metadata
 {
-  v4 = a3;
-  if (v4)
+  metadataCopy = metadata;
+  if (metadataCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a1 requiringSecureCoding:1 error:0];
+    v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
     v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:0];
 
     objc_autoreleasePoolPop(v5);
@@ -729,17 +729,17 @@ LABEL_13:
   return v7;
 }
 
-+ (BOOL)isClipMetadataEqual:(id)a3 other:(id)a4
++ (BOOL)isClipMetadataEqual:(id)equal other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 clipBundleID];
-  v8 = [v6 clipBundleID];
-  if (v7 == v8)
+  equalCopy = equal;
+  otherCopy = other;
+  clipBundleID = [equalCopy clipBundleID];
+  clipBundleID2 = [otherCopy clipBundleID];
+  if (clipBundleID == clipBundleID2)
   {
-    v10 = [v5 clipURL];
-    v11 = [v6 clipURL];
-    v9 = v10 == v11;
+    clipURL = [equalCopy clipURL];
+    clipURL2 = [otherCopy clipURL];
+    v9 = clipURL == clipURL2;
   }
 
   else

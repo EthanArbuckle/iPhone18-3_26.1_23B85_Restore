@@ -1,20 +1,20 @@
 @interface HMDCameraStreamControlManager
 + (id)logCategory;
 - (BOOL)_canReconfigureToHigherTier;
-- (HMDCameraStreamControlManager)initWithSessionID:(id)a3 workQueue:(id)a4 streamSnapshotHandler:(id)a5 delegate:(id)a6 accessory:(id)a7 streamManagementService:(id)a8 isLocal:(BOOL)a9 isRelayed:(BOOL)a10;
+- (HMDCameraStreamControlManager)initWithSessionID:(id)d workQueue:(id)queue streamSnapshotHandler:(id)handler delegate:(id)delegate accessory:(id)accessory streamManagementService:(id)service isLocal:(BOOL)local isRelayed:(BOOL)self0;
 - (HMDCameraStreamControlManagerDelegate)delegate;
 - (HMDHAPAccessory)accessory;
 - (id)logIdentifier;
 - (id)managerProtocol;
 - (void)_callStreamFirstFrameReceived;
-- (void)_callStreamNegotiated:(id)a3;
+- (void)_callStreamNegotiated:(id)negotiated;
 - (void)_callStreamReconfigured;
 - (void)_callStreamRemoteConnectionSetup;
 - (void)_callStreamStarted;
-- (void)_callStreamStoppedWithError:(id)a3;
-- (void)_cleanUpStreamSessionWithError:(id)a3;
-- (void)_reportErrorCode:(int64_t)a3;
-- (void)_reportInternalErrorCode:(int64_t)a3;
+- (void)_callStreamStoppedWithError:(id)error;
+- (void)_cleanUpStreamSessionWithError:(id)error;
+- (void)_reportErrorCode:(int64_t)code;
+- (void)_reportInternalErrorCode:(int64_t)code;
 @end
 
 @implementation HMDCameraStreamControlManager
@@ -35,30 +35,30 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraStreamControlManager *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraStreamControlManager *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
 
 - (BOOL)_canReconfigureToHigherTier
 {
-  v2 = [(HMDCameraStreamControlManager *)self accessory];
-  v3 = [v2 manufacturer];
-  v4 = [&unk_28662BDA8 objectForKeyedSubscript:v3];
-  v5 = [v2 model];
-  v6 = [v4 containsObject:v5];
+  accessory = [(HMDCameraStreamControlManager *)self accessory];
+  manufacturer = [accessory manufacturer];
+  v4 = [&unk_28662BDA8 objectForKeyedSubscript:manufacturer];
+  model = [accessory model];
+  v6 = [v4 containsObject:model];
 
   return v6 ^ 1;
 }
 
-- (void)_callStreamStoppedWithError:(id)a3
+- (void)_callStreamStoppedWithError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraStreamControlManager *)self sessionID];
+  errorCopy = error;
+  sessionID = [(HMDCameraStreamControlManager *)self sessionID];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -66,21 +66,21 @@
     v13 = 138543874;
     v14 = v9;
     v15 = 2112;
-    v16 = v5;
+    v16 = sessionID;
     v17 = 2112;
-    v18 = v4;
+    v18 = errorCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Stream with session ID %@ stopped with error %@", &v13, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraStreamControlManager *)v7 managerProtocol];
-  v11 = [(HMDCameraStreamControlManager *)v7 delegate];
+  managerProtocol = [(HMDCameraStreamControlManager *)selfCopy managerProtocol];
+  delegate = [(HMDCameraStreamControlManager *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v11 streamControlManager:v10 didStopStreamWithSessionID:v5 error:v4];
+    [delegate streamControlManager:managerProtocol didStopStreamWithSessionID:sessionID error:errorCopy];
   }
 
-  [(HMDCameraStreamControlManager *)v7 _cleanUpStreamSessionWithError:v4];
+  [(HMDCameraStreamControlManager *)selfCopy _cleanUpStreamSessionWithError:errorCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -89,7 +89,7 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -100,11 +100,11 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCameraStreamControlManager *)v4 managerProtocol];
-  v8 = [(HMDCameraStreamControlManager *)v4 delegate];
+  managerProtocol = [(HMDCameraStreamControlManager *)selfCopy managerProtocol];
+  delegate = [(HMDCameraStreamControlManager *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 streamControlManagerDidReconfigureStream:v7];
+    [delegate streamControlManagerDidReconfigureStream:managerProtocol];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -114,7 +114,7 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -125,11 +125,11 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCameraStreamControlManager *)v4 managerProtocol];
-  v8 = [(HMDCameraStreamControlManager *)v4 delegate];
+  managerProtocol = [(HMDCameraStreamControlManager *)selfCopy managerProtocol];
+  delegate = [(HMDCameraStreamControlManager *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 streamControlManagerDidReceiveFirstFrame:v7];
+    [delegate streamControlManagerDidReceiveFirstFrame:managerProtocol];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -139,7 +139,7 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -150,11 +150,11 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCameraStreamControlManager *)v4 managerProtocol];
-  v8 = [(HMDCameraStreamControlManager *)v4 delegate];
+  managerProtocol = [(HMDCameraStreamControlManager *)selfCopy managerProtocol];
+  delegate = [(HMDCameraStreamControlManager *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 streamControlManagerDidStartStream:v7];
+    [delegate streamControlManagerDidStartStream:managerProtocol];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -164,7 +164,7 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -175,22 +175,22 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCameraStreamControlManager *)v4 managerProtocol];
-  v8 = [(HMDCameraStreamControlManager *)v4 delegate];
+  managerProtocol = [(HMDCameraStreamControlManager *)selfCopy managerProtocol];
+  delegate = [(HMDCameraStreamControlManager *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 streamControlManagerDidSetUpRemoteConnection:v7];
+    [delegate streamControlManagerDidSetUpRemoteConnection:managerProtocol];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_callStreamNegotiated:(id)a3
+- (void)_callStreamNegotiated:(id)negotiated
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  negotiatedCopy = negotiated;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -201,11 +201,11 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCameraStreamControlManager *)v6 managerProtocol];
-  v10 = [(HMDCameraStreamControlManager *)v6 delegate];
+  managerProtocol = [(HMDCameraStreamControlManager *)selfCopy managerProtocol];
+  delegate = [(HMDCameraStreamControlManager *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 streamControlManager:v9 didNegotiateStreamWithSelectedParameters:v4];
+    [delegate streamControlManager:managerProtocol didNegotiateStreamWithSelectedParameters:negotiatedCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -215,32 +215,32 @@
 {
   if ([(HMDCameraStreamControlManager *)self conformsToProtocol:&unk_286682610])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_reportInternalErrorCode:(int64_t)a3
+- (void)_reportInternalErrorCode:(int64_t)code
 {
-  v4 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:a3];
+  v4 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:code];
   [(HMDCameraStreamControlManager *)self _cleanUpStreamSessionWithError:v4];
 }
 
-- (void)_reportErrorCode:(int64_t)a3
+- (void)_reportErrorCode:(int64_t)code
 {
-  v4 = [MEMORY[0x277CCA9B8] hmErrorWithCode:a3];
+  v4 = [MEMORY[0x277CCA9B8] hmErrorWithCode:code];
   [(HMDCameraStreamControlManager *)self _cleanUpStreamSessionWithError:v4];
 }
 
-- (void)_cleanUpStreamSessionWithError:(id)a3
+- (void)_cleanUpStreamSessionWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -252,43 +252,43 @@
   objc_exception_throw(v10);
 }
 
-- (HMDCameraStreamControlManager)initWithSessionID:(id)a3 workQueue:(id)a4 streamSnapshotHandler:(id)a5 delegate:(id)a6 accessory:(id)a7 streamManagementService:(id)a8 isLocal:(BOOL)a9 isRelayed:(BOOL)a10
+- (HMDCameraStreamControlManager)initWithSessionID:(id)d workQueue:(id)queue streamSnapshotHandler:(id)handler delegate:(id)delegate accessory:(id)accessory streamManagementService:(id)service isLocal:(BOOL)local isRelayed:(BOOL)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v30 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  if (!v17)
+  dCopy = d;
+  queueCopy = queue;
+  handlerCopy = handler;
+  delegateCopy = delegate;
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v18)
+  if (!queueCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  if (!v30)
+  if (!handlerCopy)
   {
 LABEL_11:
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  if (!v20)
+  if (!accessoryCopy)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  v22 = v21;
-  if (!v21)
+  v22 = serviceCopy;
+  if (!serviceCopy)
   {
 LABEL_13:
     v28 = _HMFPreconditionFailure();
@@ -301,13 +301,13 @@ LABEL_13:
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_sessionID, a3);
-    objc_storeStrong(&v24->_streamSnapshotHandler, a5);
-    objc_storeStrong(&v24->_workQueue, a4);
-    objc_storeWeak(&v24->_delegate, v19);
-    objc_storeWeak(&v24->_accessory, v20);
-    objc_storeStrong(&v24->_streamManagementService, a8);
-    v25 = [[HMDCameraStreamMetrics alloc] initWithSessionID:v17 cameraAccessory:v20 isLocal:a9 isRelayed:a10];
+    objc_storeStrong(&v23->_sessionID, d);
+    objc_storeStrong(&v24->_streamSnapshotHandler, handler);
+    objc_storeStrong(&v24->_workQueue, queue);
+    objc_storeWeak(&v24->_delegate, delegateCopy);
+    objc_storeWeak(&v24->_accessory, accessoryCopy);
+    objc_storeStrong(&v24->_streamManagementService, service);
+    v25 = [[HMDCameraStreamMetrics alloc] initWithSessionID:dCopy cameraAccessory:accessoryCopy isLocal:local isRelayed:relayed];
     streamMetrics = v24->_streamMetrics;
     v24->_streamMetrics = v25;
   }

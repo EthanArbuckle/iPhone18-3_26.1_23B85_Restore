@@ -1,24 +1,24 @@
 @interface CNContactUpdate
-+ (id)updateMultiValueWithDiff:(id)a3 property:(id)a4;
-+ (id)updateWithValue:(id)a3 property:(id)a4;
++ (id)updateMultiValueWithDiff:(id)diff property:(id)property;
++ (id)updateWithValue:(id)value property:(id)property;
 @end
 
 @implementation CNContactUpdate
 
-+ (id)updateWithValue:(id)a3 property:(id)a4
++ (id)updateWithValue:(id)value property:(id)property
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNContactKeyValueUpdate alloc] initWithProperty:v5 value:v6];
+  propertyCopy = property;
+  valueCopy = value;
+  v7 = [[CNContactKeyValueUpdate alloc] initWithProperty:propertyCopy value:valueCopy];
 
   return v7;
 }
 
-+ (id)updateMultiValueWithDiff:(id)a3 property:(id)a4
++ (id)updateMultiValueWithDiff:(id)diff property:(id)property
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNContactMultiValueDiffUpdate alloc] initWithProperty:v5 diff:v6];
+  propertyCopy = property;
+  diffCopy = diff;
+  v7 = [[CNContactMultiValueDiffUpdate alloc] initWithProperty:propertyCopy diff:diffCopy];
 
   return v7;
 }

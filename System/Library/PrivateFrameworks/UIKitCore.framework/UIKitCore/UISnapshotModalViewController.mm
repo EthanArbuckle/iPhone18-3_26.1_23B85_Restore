@@ -1,37 +1,37 @@
 @interface UISnapshotModalViewController
-- (UISnapshotModalViewController)initWithInterfaceOrientation:(int64_t)a3;
-- (void)setDisappearingViewController:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (UISnapshotModalViewController)initWithInterfaceOrientation:(int64_t)orientation;
+- (void)setDisappearingViewController:(id)controller;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation UISnapshotModalViewController
 
-- (UISnapshotModalViewController)initWithInterfaceOrientation:(int64_t)a3
+- (UISnapshotModalViewController)initWithInterfaceOrientation:(int64_t)orientation
 {
   v5.receiver = self;
   v5.super_class = UISnapshotModalViewController;
   result = [(UIViewController *)&v5 init];
   if (result)
   {
-    result->_interfaceOrientation = a3;
+    result->_interfaceOrientation = orientation;
   }
 
   return result;
 }
 
-- (void)setDisappearingViewController:(id)a3
+- (void)setDisappearingViewController:(id)controller
 {
-  objc_storeStrong(&self->_disappearingViewController, a3);
-  v7 = a3;
-  v5 = [v7 navigationController];
+  objc_storeStrong(&self->_disappearingViewController, controller);
+  controllerCopy = controller;
+  navigationController = [controllerCopy navigationController];
   parentController = self->_parentController;
-  self->_parentController = v5;
+  self->_parentController = navigationController;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = UISnapshotModalViewController;
   [(UIViewController *)&v7 viewWillDisappear:?];
@@ -44,7 +44,7 @@
     }
 
     [(UIViewController *)self->_disappearingViewController willMoveToParentViewController:0];
-    [(UIViewController *)&self->_disappearingViewController->super.super.isa __viewWillDisappear:v3];
+    [(UIViewController *)&self->_disappearingViewController->super.super.isa __viewWillDisappear:disappearCopy];
     v6 = self->_parentController;
     if (v6)
     {
@@ -61,19 +61,19 @@ LABEL_8:
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = UISnapshotModalViewController;
   [(UIViewController *)&v7 viewDidDisappear:?];
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
-    v5 = [(UISnapshotModalViewController *)self disappearingViewController];
-    [(UIViewController *)v5 __viewDidDisappear:v3];
+    disappearingViewController = [(UISnapshotModalViewController *)self disappearingViewController];
+    [(UIViewController *)disappearingViewController __viewDidDisappear:disappearCopy];
 
-    v6 = [(UISnapshotModalViewController *)self disappearingViewController];
-    [v6 didMoveToParentViewController:0];
+    disappearingViewController2 = [(UISnapshotModalViewController *)self disappearingViewController];
+    [disappearingViewController2 didMoveToParentViewController:0];
   }
 }
 

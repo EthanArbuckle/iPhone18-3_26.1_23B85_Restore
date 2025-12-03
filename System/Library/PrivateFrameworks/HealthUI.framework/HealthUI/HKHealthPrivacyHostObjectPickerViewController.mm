@@ -1,31 +1,31 @@
 @interface HKHealthPrivacyHostObjectPickerViewController
-+ (id)requestRemoteViewControllerWithConnectionHandler:(id)a3;
++ (id)requestRemoteViewControllerWithConnectionHandler:(id)handler;
 - (HKHealthPrivacyHostObjectPickerViewControllerDelegate)delegate;
-- (void)didFinishWithError:(id)a3;
-- (void)setPromptSession:(id)a3 presentationRequests:(id)a4;
+- (void)didFinishWithError:(id)error;
+- (void)setPromptSession:(id)session presentationRequests:(id)requests;
 @end
 
 @implementation HKHealthPrivacyHostObjectPickerViewController
 
-- (void)setPromptSession:(id)a3 presentationRequests:(id)a4
+- (void)setPromptSession:(id)session presentationRequests:(id)requests
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HKHealthPrivacyHostObjectPickerViewController *)self _healthPrivacyServiceViewControllerProxy];
-  [v8 setPromptSession:v7 presentationRequests:v6];
+  requestsCopy = requests;
+  sessionCopy = session;
+  _healthPrivacyServiceViewControllerProxy = [(HKHealthPrivacyHostObjectPickerViewController *)self _healthPrivacyServiceViewControllerProxy];
+  [_healthPrivacyServiceViewControllerProxy setPromptSession:sessionCopy presentationRequests:requestsCopy];
 }
 
-- (void)didFinishWithError:(id)a3
+- (void)didFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HKHealthPrivacyHostObjectPickerViewController *)self delegate];
-  [v5 healthPrivacyHostObjectPickerViewController:self didFinishWithError:v4];
+  errorCopy = error;
+  delegate = [(HKHealthPrivacyHostObjectPickerViewController *)self delegate];
+  [delegate healthPrivacyHostObjectPickerViewController:self didFinishWithError:errorCopy];
 }
 
-+ (id)requestRemoteViewControllerWithConnectionHandler:(id)a3
++ (id)requestRemoteViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() requestViewController:@"HKHealthPrivacyServiceObjectPickerViewController" fromServiceWithBundleIdentifier:*MEMORY[0x1E696C888] connectionHandler:v3];
+  handlerCopy = handler;
+  v4 = [objc_opt_class() requestViewController:@"HKHealthPrivacyServiceObjectPickerViewController" fromServiceWithBundleIdentifier:*MEMORY[0x1E696C888] connectionHandler:handlerCopy];
 
   return v4;
 }

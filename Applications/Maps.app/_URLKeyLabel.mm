@@ -1,5 +1,5 @@
 @interface _URLKeyLabel
-- (_URLKeyLabel)initWithString:(id)a3 color:(id)a4;
+- (_URLKeyLabel)initWithString:(id)string color:(id)color;
 - (void)layoutSubviews;
 - (void)sizeToFit;
 @end
@@ -58,43 +58,43 @@
   [(_URLKeyLabel *)self setFrame:v4, v6, v16, v12];
 }
 
-- (_URLKeyLabel)initWithString:(id)a3 color:(id)a4
+- (_URLKeyLabel)initWithString:(id)string color:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  colorCopy = color;
   v19.receiver = self;
   v19.super_class = _URLKeyLabel;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v11 = [(_URLKeyLabel *)&v19 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v11)
+  height = [(_URLKeyLabel *)&v19 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     v12 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    label = v11->_label;
-    v11->_label = v12;
+    label = height->_label;
+    height->_label = v12;
 
     +[UIFont systemFontSize];
     v14 = [UIFont systemFontOfSize:?];
-    [(UILabel *)v11->_label setFont:v14];
+    [(UILabel *)height->_label setFont:v14];
 
-    [(UILabel *)v11->_label setText:v6];
-    [(UILabel *)v11->_label setTextColor:v7];
-    [(UILabel *)v11->_label setBackgroundColor:0];
-    [(UILabel *)v11->_label setOpaque:0];
-    [(UILabel *)v11->_label sizeToFit];
+    [(UILabel *)height->_label setText:stringCopy];
+    [(UILabel *)height->_label setTextColor:colorCopy];
+    [(UILabel *)height->_label setBackgroundColor:0];
+    [(UILabel *)height->_label setOpaque:0];
+    [(UILabel *)height->_label sizeToFit];
     v15 = [[UIView alloc] initWithFrame:{0.0, 0.0, 16.0, 16.0}];
-    colorView = v11->_colorView;
-    v11->_colorView = v15;
+    colorView = height->_colorView;
+    height->_colorView = v15;
 
-    [(UIView *)v11->_colorView setBackgroundColor:v7];
-    [(_URLKeyLabel *)v11 addSubview:v11->_label];
-    [(_URLKeyLabel *)v11 addSubview:v11->_colorView];
-    [(_URLKeyLabel *)v11 sizeToFit];
-    v17 = v11;
+    [(UIView *)height->_colorView setBackgroundColor:colorCopy];
+    [(_URLKeyLabel *)height addSubview:height->_label];
+    [(_URLKeyLabel *)height addSubview:height->_colorView];
+    [(_URLKeyLabel *)height sizeToFit];
+    v17 = height;
   }
 
-  return v11;
+  return height;
 }
 
 @end

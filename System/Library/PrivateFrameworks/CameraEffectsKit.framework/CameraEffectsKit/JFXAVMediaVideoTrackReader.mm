@@ -1,9 +1,9 @@
 @interface JFXAVMediaVideoTrackReader
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)startTimeOfCurrentData;
 - (BOOL)hasRemainingAvailableData;
-- (BOOL)readAheadToTime:(id *)a3;
+- (BOOL)readAheadToTime:(id *)time;
 - (id)createAssetReaderTrackOutput;
-- (id)videoSampleForTime:(id *)a3;
+- (id)videoSampleForTime:(id *)time;
 - (void)JFX_preloadData;
 - (void)JFX_updateCurrentSampleDurationIfNeeded;
 - (void)didUpdateReadingRange;
@@ -15,9 +15,9 @@
 - (id)createAssetReaderTrackOutput
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v3 = [(JFXAVMediaDataReader *)self assetTrack];
-  v4 = [v3 formatDescriptions];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  assetTrack = [(JFXAVMediaDataReader *)self assetTrack];
+  formatDescriptions = [assetTrack formatDescriptions];
+  v5 = [formatDescriptions objectAtIndexedSubscript:0];
 
   MediaSubType = CMFormatDescriptionGetMediaSubType(v5);
   if (MediaSubType == 1752589105)
@@ -42,8 +42,8 @@
   }
 
   v10 = objc_alloc(MEMORY[0x277CE6430]);
-  v11 = [(JFXAVMediaDataReader *)self assetTrack];
-  v12 = [v10 initWithTrack:v11 outputSettings:v8];
+  assetTrack2 = [(JFXAVMediaDataReader *)self assetTrack];
+  v12 = [v10 initWithTrack:assetTrack2 outputSettings:v8];
 
   return v12;
 }
@@ -56,20 +56,20 @@
   [(JFXAVMediaVideoTrackReader *)self JFX_preloadData];
 }
 
-- (BOOL)readAheadToTime:(id *)a3
+- (BOOL)readAheadToTime:(id *)time
 {
-  v5 = [(JFXAVMediaVideoTrackReader *)self nextSample];
-  if (v5)
+  nextSample = [(JFXAVMediaVideoTrackReader *)self nextSample];
+  if (nextSample)
   {
-    v6 = v5;
+    nextSample4 = nextSample;
     v7 = MEMORY[0x277CC08F0];
     do
     {
-      v8 = [(JFXAVMediaVideoTrackReader *)self nextSample];
-      v9 = v8;
-      if (v8)
+      nextSample2 = [(JFXAVMediaVideoTrackReader *)self nextSample];
+      v9 = nextSample2;
+      if (nextSample2)
       {
-        [v8 presentationTimeStamp];
+        [nextSample2 presentationTimeStamp];
       }
 
       else
@@ -77,7 +77,7 @@
         memset(&time2, 0, sizeof(time2));
       }
 
-      v22 = *a3;
+      v22 = *time;
       v10 = CMTimeCompare(&v22, &time2);
 
       if (v10 < 0)
@@ -86,20 +86,20 @@
       }
 
       v11 = objc_autoreleasePoolPush();
-      v12 = [(JFXAVMediaVideoTrackReader *)self nextSample];
-      [(JFXAVMediaVideoTrackReader *)self setCurrentSample:v12];
+      nextSample3 = [(JFXAVMediaVideoTrackReader *)self nextSample];
+      [(JFXAVMediaVideoTrackReader *)self setCurrentSample:nextSample3];
 
-      v13 = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
-      v14 = [v13 copyNextSampleBuffer];
+      assetReaderTrackOutput = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
+      copyNextSampleBuffer = [assetReaderTrackOutput copyNextSampleBuffer];
 
-      if (v14)
+      if (copyNextSampleBuffer)
       {
         v15 = [JFXAVMediaVideoTrackReaderSample alloc];
         time2 = *v7;
-        v16 = [(JFXAVMediaVideoTrackReaderSample *)v15 initWithSampleBuffer:v14 duration:&time2];
+        v16 = [(JFXAVMediaVideoTrackReaderSample *)v15 initWithSampleBuffer:copyNextSampleBuffer duration:&time2];
         [(JFXAVMediaVideoTrackReader *)self setNextSample:v16];
 
-        CFRelease(v14);
+        CFRelease(copyNextSampleBuffer);
       }
 
       else
@@ -108,44 +108,44 @@
       }
 
       objc_autoreleasePoolPop(v11);
-      v6 = [(JFXAVMediaVideoTrackReader *)self nextSample];
+      nextSample4 = [(JFXAVMediaVideoTrackReader *)self nextSample];
     }
 
-    while (v6);
+    while (nextSample4);
   }
 
   [(JFXAVMediaVideoTrackReader *)self JFX_updateCurrentSampleDurationIfNeeded];
-  v17 = [(JFXAVMediaDataReader *)self assetReader];
-  v18 = [v17 status];
+  assetReader = [(JFXAVMediaDataReader *)self assetReader];
+  status = [assetReader status];
 
-  if (v18 == 3)
+  if (status == 3)
   {
-    v19 = [(JFXAVMediaDataReader *)self assetReader];
-    v20 = [v19 error];
-    [(JFXAVMediaDataReader *)self didFailWithError:v20];
+    assetReader2 = [(JFXAVMediaDataReader *)self assetReader];
+    error = [assetReader2 error];
+    [(JFXAVMediaDataReader *)self didFailWithError:error];
   }
 
-  return v18 != 3;
+  return status != 3;
 }
 
 - (void)readAndDiscardRemainingAvailableData
 {
-  v3 = [(JFXAVMediaVideoTrackReader *)self nextSample];
+  nextSample = [(JFXAVMediaVideoTrackReader *)self nextSample];
 
-  if (v3)
+  if (nextSample)
   {
     do
     {
       v4 = objc_autoreleasePoolPush();
-      v5 = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
-      v6 = [v5 copyNextSampleBuffer];
+      assetReaderTrackOutput = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
+      copyNextSampleBuffer = [assetReaderTrackOutput copyNextSampleBuffer];
 
-      if (v6)
+      if (copyNextSampleBuffer)
       {
-        v7 = [[JFXAVMediaVideoTrackReaderSample alloc] initWithSampleBuffer:v6];
+        v7 = [[JFXAVMediaVideoTrackReaderSample alloc] initWithSampleBuffer:copyNextSampleBuffer];
         [(JFXAVMediaVideoTrackReader *)self setNextSample:v7];
 
-        CFRelease(v6);
+        CFRelease(copyNextSampleBuffer);
       }
 
       else
@@ -154,43 +154,43 @@
       }
 
       objc_autoreleasePoolPop(v4);
-      v8 = [(JFXAVMediaVideoTrackReader *)self nextSample];
+      nextSample2 = [(JFXAVMediaVideoTrackReader *)self nextSample];
     }
 
-    while (v8);
+    while (nextSample2);
   }
 
-  v9 = [(JFXAVMediaDataReader *)self assetReader];
-  v10 = [v9 status];
+  assetReader = [(JFXAVMediaDataReader *)self assetReader];
+  status = [assetReader status];
 
-  if (v10 == 3)
+  if (status == 3)
   {
-    v12 = [(JFXAVMediaDataReader *)self assetReader];
-    v11 = [v12 error];
-    [(JFXAVMediaDataReader *)self didFailWithError:v11];
+    assetReader2 = [(JFXAVMediaDataReader *)self assetReader];
+    error = [assetReader2 error];
+    [(JFXAVMediaDataReader *)self didFailWithError:error];
   }
 }
 
 - (BOOL)hasRemainingAvailableData
 {
-  v2 = [(JFXAVMediaVideoTrackReader *)self nextSample];
-  v3 = v2 != 0;
+  nextSample = [(JFXAVMediaVideoTrackReader *)self nextSample];
+  v3 = nextSample != 0;
 
   return v3;
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)startTimeOfCurrentData
 {
-  v5 = [(JFXAVMediaVideoTrackReader *)self currentSample];
+  currentSample = [(JFXAVMediaVideoTrackReader *)self currentSample];
 
-  if (v5)
+  if (currentSample)
   {
-    v7 = [(JFXAVMediaVideoTrackReader *)self currentSample];
-    if (v7)
+    currentSample2 = [(JFXAVMediaVideoTrackReader *)self currentSample];
+    if (currentSample2)
     {
-      v9 = v7;
-      [v7 presentationTimeStamp];
-      v7 = v9;
+      v9 = currentSample2;
+      [currentSample2 presentationTimeStamp];
+      currentSample2 = v9;
     }
 
     else
@@ -214,26 +214,26 @@
 - (void)JFX_preloadData
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(JFXAVMediaDataReader *)self assetReader];
-  v4 = [v3 status];
+  assetReader = [(JFXAVMediaDataReader *)self assetReader];
+  status = [assetReader status];
 
-  if (v4 == 1)
+  if (status == 1)
   {
-    v5 = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
-    v6 = [v5 copyNextSampleBuffer];
+    assetReaderTrackOutput = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
+    copyNextSampleBuffer = [assetReaderTrackOutput copyNextSampleBuffer];
 
-    if (v6)
+    if (copyNextSampleBuffer)
     {
-      v7 = [[JFXAVMediaVideoTrackReaderSample alloc] initWithSampleBuffer:v6];
+      v7 = [[JFXAVMediaVideoTrackReaderSample alloc] initWithSampleBuffer:copyNextSampleBuffer];
       [(JFXAVMediaVideoTrackReader *)self setCurrentSample:v7];
 
-      CFRelease(v6);
+      CFRelease(copyNextSampleBuffer);
     }
   }
 
-  v8 = [(JFXAVMediaVideoTrackReader *)self currentSample];
+  currentSample = [(JFXAVMediaVideoTrackReader *)self currentSample];
 
-  if (!v8)
+  if (!currentSample)
   {
     v9 = JFXLog_DebugMediaDataReader();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -249,47 +249,47 @@
     }
   }
 
-  v10 = [(JFXAVMediaDataReader *)self assetReader];
-  v11 = [v10 status];
+  assetReader2 = [(JFXAVMediaDataReader *)self assetReader];
+  status2 = [assetReader2 status];
 
-  if (v11 == 1)
+  if (status2 == 1)
   {
-    v12 = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
-    v13 = [v12 copyNextSampleBuffer];
+    assetReaderTrackOutput2 = [(JFXAVMediaDataReader *)self assetReaderTrackOutput];
+    copyNextSampleBuffer2 = [assetReaderTrackOutput2 copyNextSampleBuffer];
 
-    if (v13)
+    if (copyNextSampleBuffer2)
     {
-      v14 = [[JFXAVMediaVideoTrackReaderSample alloc] initWithSampleBuffer:v13];
+      v14 = [[JFXAVMediaVideoTrackReaderSample alloc] initWithSampleBuffer:copyNextSampleBuffer2];
       [(JFXAVMediaVideoTrackReader *)self setNextSample:v14];
 
-      CFRelease(v13);
+      CFRelease(copyNextSampleBuffer2);
     }
   }
 
   [(JFXAVMediaVideoTrackReader *)self JFX_updateCurrentSampleDurationIfNeeded];
-  v15 = [(JFXAVMediaDataReader *)self assetReader];
-  v16 = [v15 status];
+  assetReader3 = [(JFXAVMediaDataReader *)self assetReader];
+  status3 = [assetReader3 status];
 
-  if (v16 == 3)
+  if (status3 == 3)
   {
-    v17 = [(JFXAVMediaDataReader *)self assetReader];
-    v18 = [v17 error];
-    [(JFXAVMediaDataReader *)self didFailWithError:v18];
+    assetReader4 = [(JFXAVMediaDataReader *)self assetReader];
+    error = [assetReader4 error];
+    [(JFXAVMediaDataReader *)self didFailWithError:error];
   }
 }
 
 - (void)JFX_updateCurrentSampleDurationIfNeeded
 {
-  v3 = [(JFXAVMediaVideoTrackReader *)self currentSample];
+  currentSample = [(JFXAVMediaVideoTrackReader *)self currentSample];
 
-  if (v3)
+  if (currentSample)
   {
     memset(&v20, 0, sizeof(v20));
-    v4 = [(JFXAVMediaVideoTrackReader *)self currentSample];
-    v5 = v4;
-    if (v4)
+    currentSample2 = [(JFXAVMediaVideoTrackReader *)self currentSample];
+    v5 = currentSample2;
+    if (currentSample2)
     {
-      [v4 duration];
+      [currentSample2 duration];
     }
 
     else
@@ -300,20 +300,20 @@
     if ((v20.flags & 1) == 0 || (time1 = v20, time2 = **&MEMORY[0x277CC08F0], !CMTimeCompare(&time1, &time2)))
     {
       memset(&time1, 0, sizeof(time1));
-      v6 = [(JFXAVMediaVideoTrackReader *)self currentSample];
-      CMSampleBufferGetDuration(&time1, [v6 sampleBufferRef]);
+      currentSample3 = [(JFXAVMediaVideoTrackReader *)self currentSample];
+      CMSampleBufferGetDuration(&time1, [currentSample3 sampleBufferRef]);
 
       if ((time1.flags & 1) == 0)
       {
-        v7 = [(JFXAVMediaVideoTrackReader *)self nextSample];
+        nextSample = [(JFXAVMediaVideoTrackReader *)self nextSample];
 
-        if (v7)
+        if (nextSample)
         {
-          v8 = [(JFXAVMediaVideoTrackReader *)self nextSample];
-          v9 = v8;
-          if (v8)
+          nextSample2 = [(JFXAVMediaVideoTrackReader *)self nextSample];
+          v9 = nextSample2;
+          if (nextSample2)
           {
-            [v8 presentationTimeStamp];
+            [nextSample2 presentationTimeStamp];
           }
 
           else
@@ -321,11 +321,11 @@
             memset(&lhs, 0, sizeof(lhs));
           }
 
-          v10 = [(JFXAVMediaVideoTrackReader *)self currentSample];
-          v11 = v10;
-          if (v10)
+          currentSample4 = [(JFXAVMediaVideoTrackReader *)self currentSample];
+          v11 = currentSample4;
+          if (currentSample4)
           {
-            [v10 presentationTimeStamp];
+            [currentSample4 presentationTimeStamp];
           }
 
           else
@@ -341,30 +341,30 @@
       if (time1.flags)
       {
         v12 = [JFXAVMediaVideoTrackReaderSample alloc];
-        v13 = [(JFXAVMediaVideoTrackReader *)self currentSample];
-        v14 = [v13 sampleBufferRef];
+        currentSample5 = [(JFXAVMediaVideoTrackReader *)self currentSample];
+        sampleBufferRef = [currentSample5 sampleBufferRef];
         time2 = time1;
-        v15 = [(JFXAVMediaVideoTrackReaderSample *)v12 initWithSampleBuffer:v14 duration:&time2];
+        v15 = [(JFXAVMediaVideoTrackReaderSample *)v12 initWithSampleBuffer:sampleBufferRef duration:&time2];
         [(JFXAVMediaVideoTrackReader *)self setCurrentSample:v15];
       }
     }
   }
 }
 
-- (id)videoSampleForTime:(id *)a3
+- (id)videoSampleForTime:(id *)time
 {
-  v6 = *a3;
+  v6 = *time;
   if ([(JFXAVMediaDataReader *)self seekToTime:&v6])
   {
-    v4 = [(JFXAVMediaVideoTrackReader *)self currentSample];
+    currentSample = [(JFXAVMediaVideoTrackReader *)self currentSample];
   }
 
   else
   {
-    v4 = 0;
+    currentSample = 0;
   }
 
-  return v4;
+  return currentSample;
 }
 
 @end

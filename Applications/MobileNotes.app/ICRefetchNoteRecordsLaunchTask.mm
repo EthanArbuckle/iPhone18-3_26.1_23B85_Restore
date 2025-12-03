@@ -1,6 +1,6 @@
 @interface ICRefetchNoteRecordsLaunchTask
 + (NSDateFormatter)dateFormatter;
-- (ICRefetchNoteRecordsLaunchTask)initWithIdentifier:(id)a3 modifiedAfterDateString:(id)a4;
+- (ICRefetchNoteRecordsLaunchTask)initWithIdentifier:(id)identifier modifiedAfterDateString:(id)string;
 - (id)relationshipKeyPathsForPrefetching;
 - (id)taskIdentifier;
 - (void)runOneTimeLaunchTask;
@@ -8,15 +8,15 @@
 
 @implementation ICRefetchNoteRecordsLaunchTask
 
-- (ICRefetchNoteRecordsLaunchTask)initWithIdentifier:(id)a3 modifiedAfterDateString:(id)a4
+- (ICRefetchNoteRecordsLaunchTask)initWithIdentifier:(id)identifier modifiedAfterDateString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  stringCopy = string;
   v16.receiver = self;
   v16.super_class = ICRefetchNoteRecordsLaunchTask;
   v9 = [(ICRefetchNoteRecordsLaunchTask *)&v16 init];
   v10 = v9;
-  if (v9 && (objc_storeStrong(&v9->_identifier, a3), objc_storeStrong(&v10->_modifiedAfterDateString, a4), [objc_opt_class() dateFormatter], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "dateFromString:", v8), v12 = objc_claimAutoreleasedReturnValue(), modifiedAfterDate = v10->_modifiedAfterDate, v10->_modifiedAfterDate = v12, modifiedAfterDate, v11, !v10->_modifiedAfterDate))
+  if (v9 && (objc_storeStrong(&v9->_identifier, identifier), objc_storeStrong(&v10->_modifiedAfterDateString, string), [objc_opt_class() dateFormatter], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "dateFromString:", stringCopy), v12 = objc_claimAutoreleasedReturnValue(), modifiedAfterDate = v10->_modifiedAfterDate, v10->_modifiedAfterDate = v12, modifiedAfterDate, v11, !v10->_modifiedAfterDate))
   {
     [ICAssert handleFailedAssertWithCondition:"__objc_no" functionName:"[ICRefetchNoteRecordsLaunchTask initWithIdentifier:modifiedAfterDateString:]" simulateCrash:1 showAlert:0 format:@"Refetch records launch task doesn't have a valid modified after date"];
     v14 = 0;
@@ -61,8 +61,8 @@
 
 - (id)taskIdentifier
 {
-  v2 = [(ICRefetchNoteRecordsLaunchTask *)self identifier];
-  v3 = [NSString stringWithFormat:@"ICRefetchNoteRecordsLaunchTask-%@", v2];
+  identifier = [(ICRefetchNoteRecordsLaunchTask *)self identifier];
+  v3 = [NSString stringWithFormat:@"ICRefetchNoteRecordsLaunchTask-%@", identifier];
 
   return v3;
 }
@@ -79,21 +79,21 @@
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v4 = [(ICWorkerContextLaunchTask *)self workerContext];
+  workerContext = [(ICWorkerContextLaunchTask *)self workerContext];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000A53D8;
   v8[3] = &unk_100645FE0;
   v8[4] = self;
   v8[5] = &v9;
-  [v4 performBlockAndWait:v8];
+  [workerContext performBlockAndWait:v8];
 
   v5 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(ICRefetchNoteRecordsLaunchTask *)self identifier];
+    identifier = [(ICRefetchNoteRecordsLaunchTask *)self identifier];
     v7 = [NSNumber numberWithUnsignedInteger:v10[3]];
-    sub_1004DC3A8(v6, v7, buf, v5);
+    sub_1004DC3A8(identifier, v7, buf, v5);
   }
 
   _Block_object_dispose(&v9, 8);

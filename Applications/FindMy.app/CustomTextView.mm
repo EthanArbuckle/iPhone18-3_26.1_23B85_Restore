@@ -1,16 +1,16 @@
 @interface CustomTextView
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (_TtC6FindMy14CustomTextView)initWithCoder:(id)a3;
-- (_TtC6FindMy14CustomTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (_TtC6FindMy14CustomTextView)initWithCoder:(id)coder;
+- (_TtC6FindMy14CustomTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 @end
 
 @implementation CustomTextView
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -19,32 +19,32 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_1002ED870(a3, v10);
+  v8 = sub_1002ED870(action, v10);
 
   sub_100012DF0(v10, &unk_1006B8740);
   return v8 & 1;
 }
 
-- (_TtC6FindMy14CustomTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC6FindMy14CustomTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for CustomTextView();
-  return [(CustomTextView *)&v10 initWithFrame:a4 textContainer:x, y, width, height];
+  return [(CustomTextView *)&v10 initWithFrame:container textContainer:x, y, width, height];
 }
 
-- (_TtC6FindMy14CustomTextView)initWithCoder:(id)a3
+- (_TtC6FindMy14CustomTextView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CustomTextView();
-  v4 = a3;
-  v5 = [(CustomTextView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CustomTextView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

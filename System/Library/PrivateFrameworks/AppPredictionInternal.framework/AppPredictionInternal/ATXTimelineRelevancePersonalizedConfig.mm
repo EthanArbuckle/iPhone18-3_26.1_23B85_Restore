@@ -1,8 +1,8 @@
 @interface ATXTimelineRelevancePersonalizedConfig
 - (ATXTimelineRelevancePersonalizedConfig)init;
-- (ATXTimelineRelevancePersonalizedConfig)initWithPersonalizedConfiguration:(id)a3;
+- (ATXTimelineRelevancePersonalizedConfig)initWithPersonalizedConfiguration:(id)configuration;
 - (id)_readPersonalizedConfiguration;
-- (id)personalizedValueForParameter:(id)a3 forWidgetBundleIdentifier:(id)a4 kind:(id)a5;
+- (id)personalizedValueForParameter:(id)parameter forWidgetBundleIdentifier:(id)identifier kind:(id)kind;
 - (void)_readPersonalizedConfiguration;
 @end
 
@@ -16,41 +16,41 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(ATXTimelineRelevancePersonalizedConfig *)v2 _readPersonalizedConfiguration];
+    _readPersonalizedConfiguration = [(ATXTimelineRelevancePersonalizedConfig *)v2 _readPersonalizedConfiguration];
     personalizedConfiguration = v3->_personalizedConfiguration;
-    v3->_personalizedConfiguration = v4;
+    v3->_personalizedConfiguration = _readPersonalizedConfiguration;
   }
 
   return v3;
 }
 
-- (ATXTimelineRelevancePersonalizedConfig)initWithPersonalizedConfiguration:(id)a3
+- (ATXTimelineRelevancePersonalizedConfig)initWithPersonalizedConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = ATXTimelineRelevancePersonalizedConfig;
   v6 = [(ATXTimelineRelevancePersonalizedConfig *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_personalizedConfiguration, a3);
+    objc_storeStrong(&v6->_personalizedConfiguration, configuration);
   }
 
   return v7;
 }
 
-- (id)personalizedValueForParameter:(id)a3 forWidgetBundleIdentifier:(id)a4 kind:(id)a5
+- (id)personalizedValueForParameter:(id)parameter forWidgetBundleIdentifier:(id)identifier kind:(id)kind
 {
-  v8 = a3;
+  parameterCopy = parameter;
   personalizedConfiguration = self->_personalizedConfiguration;
-  v10 = a5;
-  v11 = [(NSDictionary *)personalizedConfiguration objectForKeyedSubscript:a4];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  kindCopy = kind;
+  v11 = [(NSDictionary *)personalizedConfiguration objectForKeyedSubscript:identifier];
+  v12 = [v11 objectForKeyedSubscript:kindCopy];
 
   v13 = v12;
   if (v12 || (v13 = v11) != 0)
   {
-    v14 = [v13 objectForKeyedSubscript:v8];
+    v14 = [v13 objectForKeyedSubscript:parameterCopy];
   }
 
   else
@@ -122,7 +122,7 @@
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138543618;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2114;
   v7 = a2;
   _os_log_fault_impl(&dword_2263AA000, log, OS_LOG_TYPE_FAULT, "Failed to read personalized configuration at path: %{public}@. Error: %{public}@", &v4, 0x16u);

@@ -1,33 +1,33 @@
 @interface QLPreviewItemEditedCopy
 - (BOOL)containerStillExists;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)outputURLContentType;
 - (NSURL)containerURL;
 - (NSURL)url;
-- (QLPreviewItemEditedCopy)initWithCoder:(id)a3;
-- (QLPreviewItemEditedCopy)initWithEditedCopyURL:(id)a3 temporaryDirectoryCreatedInHost:(BOOL)a4;
+- (QLPreviewItemEditedCopy)initWithCoder:(id)coder;
+- (QLPreviewItemEditedCopy)initWithEditedCopyURL:(id)l temporaryDirectoryCreatedInHost:(BOOL)host;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)markAsPurgeable;
-- (void)removeFromDisk:(BOOL)a3;
+- (void)removeFromDisk:(BOOL)disk;
 @end
 
 @implementation QLPreviewItemEditedCopy
 
-- (QLPreviewItemEditedCopy)initWithEditedCopyURL:(id)a3 temporaryDirectoryCreatedInHost:(BOOL)a4
+- (QLPreviewItemEditedCopy)initWithEditedCopyURL:(id)l temporaryDirectoryCreatedInHost:(BOOL)host
 {
-  v4 = a4;
+  hostCopy = host;
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  lCopy = l;
   v22.receiver = self;
   v22.super_class = QLPreviewItemEditedCopy;
   v8 = [(QLPreviewItemEditedCopy *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    if (v4)
+    if (hostCopy)
     {
-      objc_storeStrong(&v8->_editedCopyURL, a3);
+      objc_storeStrong(&v8->_editedCopyURL, l);
       editedCopyURLWrapper = v9->_editedCopyURLWrapper;
       v9->_editedCopyURLWrapper = 0;
     }
@@ -35,7 +35,7 @@
     else
     {
       v21 = 0;
-      v12 = [MEMORY[0x277CC6438] wrapperWithURL:v7 readonly:0 error:&v21];
+      v12 = [MEMORY[0x277CC6438] wrapperWithURL:lCopy readonly:0 error:&v21];
       v11 = v21;
       v13 = v9->_editedCopyURLWrapper;
       v9->_editedCopyURLWrapper = v12;
@@ -66,12 +66,12 @@
 
     v11 = 0;
 LABEL_10:
-    v16 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v9->_uuid;
-    v9->_uuid = v16;
+    v9->_uuid = uUID;
 
     v9->_version = 1;
-    v9->_temporaryDirectoryWasCreatedInHost = v4;
+    v9->_temporaryDirectoryWasCreatedInHost = hostCopy;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -80,10 +80,10 @@ LABEL_10:
 
 - (BOOL)containerStillExists
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(QLPreviewItemEditedCopy *)self containerURL];
-  v5 = [v4 path];
-  v6 = [v3 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  containerURL = [(QLPreviewItemEditedCopy *)self containerURL];
+  path = [containerURL path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   return v6;
 }
@@ -92,14 +92,14 @@ LABEL_10:
 {
   v42 = *MEMORY[0x277D85DE8];
   v3 = [(QLPreviewItemEditedCopy *)self url];
-  v4 = [v3 fileSystemRepresentation];
+  fileSystemRepresentation = [v3 fileSystemRepresentation];
 
   v31 = xmmword_261679A70;
   v32 = 0x40000;
   v33 = 0;
   v34 = 0;
   v35 = 0;
-  v5 = fsctl(v4, 0xC0304A6FuLL, &v31, 1u);
+  v5 = fsctl(fileSystemRepresentation, 0xC0304A6FuLL, &v31, 1u);
   v6 = MEMORY[0x277D43EF8];
   v7 = *MEMORY[0x277D43EF8];
   if (v5)
@@ -126,7 +126,7 @@ LABEL_10:
       *&v39[14] = 2048;
       *&v39[16] = 66565;
       v40 = 2112;
-      v41 = self;
+      selfCopy2 = self;
       v13 = "Failed to mark edited file %@ as purgeable: %d (%s) (flags 0x%llx) . %@ #PreviewItem";
       v14 = v8;
       v15 = OS_LOG_TYPE_ERROR;
@@ -162,10 +162,10 @@ LABEL_10:
     }
   }
 
-  v17 = [(QLPreviewItemEditedCopy *)self containerURL];
-  v18 = [v17 fileSystemRepresentation];
+  containerURL = [(QLPreviewItemEditedCopy *)self containerURL];
+  fileSystemRepresentation2 = [containerURL fileSystemRepresentation];
 
-  v19 = fsctl(v18, 0xC0304A6FuLL, &v31, 1u);
+  v19 = fsctl(fileSystemRepresentation2, 0xC0304A6FuLL, &v31, 1u);
   v20 = *v6;
   if (v19)
   {
@@ -178,12 +178,12 @@ LABEL_10:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = v20;
-      v22 = [(QLPreviewItemEditedCopy *)self containerURL];
+      containerURL2 = [(QLPreviewItemEditedCopy *)self containerURL];
       v23 = *__error();
       v24 = __error();
       v25 = strerror(*v24);
       *buf = 138413314;
-      v37 = v22;
+      v37 = containerURL2;
       v38 = 1024;
       *v39 = v23;
       *&v39[4] = 2080;
@@ -191,7 +191,7 @@ LABEL_10:
       *&v39[14] = 2048;
       *&v39[16] = 66565;
       v40 = 2112;
-      v41 = self;
+      selfCopy2 = self;
       v26 = "Failed to mark container %@ as purgeable: %d (%s) (flags 0x%llx) . %@ #PreviewItem";
       v27 = v21;
       v28 = OS_LOG_TYPE_ERROR;
@@ -212,9 +212,9 @@ LABEL_20:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v21 = v20;
-      v22 = [(QLPreviewItemEditedCopy *)self containerURL];
+      containerURL2 = [(QLPreviewItemEditedCopy *)self containerURL];
       *buf = 138412802;
-      v37 = v22;
+      v37 = containerURL2;
       v38 = 2048;
       *v39 = 66565;
       *&v39[8] = 2112;
@@ -230,7 +230,7 @@ LABEL_20:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeFromDisk:(BOOL)a3
+- (void)removeFromDisk:(BOOL)disk
 {
   v23 = *MEMORY[0x277D85DE8];
   v15 = 0;
@@ -239,7 +239,7 @@ LABEL_20:
   v18 = 0;
   v5 = objc_opt_new();
   v6 = [(QLPreviewItemEditedCopy *)self url];
-  v7 = [(QLPreviewItemEditedCopy *)self containerURL];
+  containerURL = [(QLPreviewItemEditedCopy *)self containerURL];
   v14 = 0;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -247,8 +247,8 @@ LABEL_20:
   v12[3] = &unk_279AE1220;
   v12[4] = self;
   v12[5] = &v15;
-  v13 = a3;
-  [v5 coordinateWritingItemAtURL:v6 options:1 writingItemAtURL:v7 options:1 error:&v14 byAccessor:v12];
+  diskCopy = disk;
+  [v5 coordinateWritingItemAtURL:v6 options:1 writingItemAtURL:containerURL options:1 error:&v14 byAccessor:v12];
   v8 = v14;
 
   if ((v16[3] & 1) == 0)
@@ -266,7 +266,7 @@ LABEL_20:
       *buf = 138412546;
       v20 = v8;
       v21 = 2112;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&dword_261653000, v10, OS_LOG_TYPE_ERROR, "Cannot remove edited file because coordination failed with error: %@. %@ #PreviewItem", buf, 0x16u);
     }
   }
@@ -402,10 +402,10 @@ LABEL_27:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -415,22 +415,22 @@ LABEL_27:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(QLPreviewItemEditedCopy *)self uuid];
-      v9 = [(QLPreviewItemEditedCopy *)v7 uuid];
-      if (v8 != v9)
+      v7 = equalCopy;
+      uuid = [(QLPreviewItemEditedCopy *)self uuid];
+      uuid2 = [(QLPreviewItemEditedCopy *)v7 uuid];
+      if (uuid != uuid2)
       {
-        v3 = [(QLPreviewItemEditedCopy *)self uuid];
-        v4 = [(QLPreviewItemEditedCopy *)v7 uuid];
-        if (![v3 isEqual:v4])
+        uuid3 = [(QLPreviewItemEditedCopy *)self uuid];
+        uuid4 = [(QLPreviewItemEditedCopy *)v7 uuid];
+        if (![uuid3 isEqual:uuid4])
         {
           v10 = 0;
           goto LABEL_21;
         }
       }
 
-      v11 = [(QLPreviewItemEditedCopy *)self version];
-      if (v11 != [(QLPreviewItemEditedCopy *)v7 version])
+      version = [(QLPreviewItemEditedCopy *)self version];
+      if (version != [(QLPreviewItemEditedCopy *)v7 version])
       {
         v10 = 0;
         goto LABEL_20;
@@ -451,13 +451,13 @@ LABEL_27:
         if ([v15 isEqual:v16])
         {
           [(QLPreviewItemEditedCopy *)self containerURL];
-          v17 = v22 = v4;
+          v17 = v22 = uuid4;
           [(QLPreviewItemEditedCopy *)v7 containerURL];
-          v18 = v23 = v3;
+          v18 = v23 = uuid3;
           v10 = [v17 isEqual:v18];
 
-          v3 = v23;
-          v4 = v22;
+          uuid3 = v23;
+          uuid4 = v22;
         }
 
         else
@@ -475,7 +475,7 @@ LABEL_27:
 
 LABEL_19:
 LABEL_20:
-      if (v8 == v9)
+      if (uuid == uuid2)
       {
 LABEL_22:
 
@@ -500,8 +500,8 @@ LABEL_23:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = [(QLPreviewItemEditedCopy *)self url];
-  v6 = [(QLPreviewItemEditedCopy *)self containerURL];
-  v7 = [v3 stringWithFormat:@"<%@ %@ %@>", v4, v5, v6];
+  containerURL = [(QLPreviewItemEditedCopy *)self containerURL];
+  v7 = [v3 stringWithFormat:@"<%@ %@ %@>", v4, v5, containerURL];
 
   return v7;
 }
@@ -545,85 +545,85 @@ LABEL_23:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   uuid = self->_uuid;
-  v11 = v4;
+  v11 = coderCopy;
   if (uuid)
   {
-    [v4 encodeObject:uuid forKey:@"uuid"];
-    v4 = v11;
+    [coderCopy encodeObject:uuid forKey:@"uuid"];
+    coderCopy = v11;
   }
 
   editedCopyURL = self->_editedCopyURL;
   if (editedCopyURL)
   {
     [v11 encodeObject:editedCopyURL forKey:@"editedCopyURL"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   editedCopyURLWrapper = self->_editedCopyURLWrapper;
   if (editedCopyURLWrapper)
   {
     [v11 encodeObject:editedCopyURLWrapper forKey:@"editedCopyURLWrapper"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   hostTemporaryContainerURL = self->_hostTemporaryContainerURL;
   if (hostTemporaryContainerURL)
   {
     [v11 encodeObject:hostTemporaryContainerURL forKey:@"hostTemporaryContainerURL"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   directoryURLWrapper = self->_directoryURLWrapper;
   if (directoryURLWrapper)
   {
     [v11 encodeObject:directoryURLWrapper forKey:@"directoryURLWrapper"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   version = self->_version;
   if (version)
   {
     [v11 encodeInteger:version forKey:@"version"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
-  [v4 encodeBool:self->_temporaryDirectoryWasCreatedInHost forKey:@"temporaryDirectoryWasCreatedInHost"];
+  [coderCopy encodeBool:self->_temporaryDirectoryWasCreatedInHost forKey:@"temporaryDirectoryWasCreatedInHost"];
 }
 
-- (QLPreviewItemEditedCopy)initWithCoder:(id)a3
+- (QLPreviewItemEditedCopy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = QLPreviewItemEditedCopy;
   v5 = [(QLPreviewItemEditedCopy *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"editedCopyURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"editedCopyURL"];
     editedCopyURL = v5->_editedCopyURL;
     v5->_editedCopyURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"editedCopyURLWrapper"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"editedCopyURLWrapper"];
     editedCopyURLWrapper = v5->_editedCopyURLWrapper;
     v5->_editedCopyURLWrapper = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hostTemporaryContainerURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hostTemporaryContainerURL"];
     hostTemporaryContainerURL = v5->_hostTemporaryContainerURL;
     v5->_hostTemporaryContainerURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"directoryURLWrapper"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"directoryURLWrapper"];
     directoryURLWrapper = v5->_directoryURLWrapper;
     v5->_directoryURLWrapper = v14;
 
-    v5->_version = [v4 decodeIntegerForKey:@"version"];
-    v5->_temporaryDirectoryWasCreatedInHost = [v4 decodeBoolForKey:@"temporaryDirectoryWasCreatedInHost"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"version"];
+    v5->_temporaryDirectoryWasCreatedInHost = [coderCopy decodeBoolForKey:@"temporaryDirectoryWasCreatedInHost"];
     v16 = v5;
   }
 

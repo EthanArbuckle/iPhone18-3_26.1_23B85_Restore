@@ -1,18 +1,18 @@
 @interface CKDFetchUserQuotaURLRequest
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDFetchUserQuotaURLRequest
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v3.receiver = self;
   v3.super_class = CKDFetchUserQuotaURLRequest;
-  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:a3];
+  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:builder];
 }
 
 - (id)requestOperationClasses
@@ -41,12 +41,12 @@
   return v10;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = a3;
-  if (objc_msgSend_hasUserAvailableQuotaResponse(v4, v5, v6))
+  objectCopy = object;
+  if (objc_msgSend_hasUserAvailableQuotaResponse(objectCopy, v5, v6))
   {
-    v9 = objc_msgSend_userAvailableQuotaResponse(v4, v7, v8);
+    v9 = objc_msgSend_userAvailableQuotaResponse(objectCopy, v7, v8);
     v12 = objc_msgSend_storageAvailableBytes(v9, v10, v11);
   }
 
@@ -60,22 +60,22 @@
   if (v13)
   {
     v16 = objc_msgSend_quotaFetchedBlock(self, v14, v15);
-    v19 = objc_msgSend_result(v4, v17, v18);
+    v19 = objc_msgSend_result(objectCopy, v17, v18);
     (v16)[2](v16, v12, v19);
   }
 
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v13 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_quotaFetchedBlock(self, v4, v5);
 
   if (v6)
   {
     v9 = objc_msgSend_quotaFetchedBlock(self, v7, v8);
-    v12 = objc_msgSend_result(v13, v10, v11);
+    v12 = objc_msgSend_result(failureCopy, v10, v11);
     (v9)[2](v9, 0, v12);
   }
 }

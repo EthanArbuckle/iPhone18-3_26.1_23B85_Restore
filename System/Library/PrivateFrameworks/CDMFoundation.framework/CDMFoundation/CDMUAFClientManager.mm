@@ -1,23 +1,23 @@
 @interface CDMUAFClientManager
-- (BOOL)shouldInitUAFAssetSetInSetupForLocale:(id)a3;
-- (CDMUAFClientManager)initWithAssetSet:(id)a3 usages:(id)a4;
+- (BOOL)shouldInitUAFAssetSetInSetupForLocale:(id)locale;
+- (CDMUAFClientManager)initWithAssetSet:(id)set usages:(id)usages;
 - (id)description;
 - (id)getAssetSet;
 - (id)getFactors;
 - (id)getLocale;
 - (void)initUAFAssetSet;
-- (void)setAssetSet:(id)a3;
-- (void)setLocale:(id)a3;
+- (void)setAssetSet:(id)set;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation CDMUAFClientManager
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[CDMUAFClientManager] - assetSetName: %@, Usages: %@.", v2->_assetSetName, v2->_usages];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[CDMUAFClientManager] - assetSetName: %@, Usages: %@.", selfCopy->_assetSetName, selfCopy->_usages];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -25,14 +25,14 @@
 - (id)getLocale
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = [CDMAssetsUsages cdmAssetsUsageKeyToString:0];
   v4 = [CDMAssetsUsages cdmAssetsUsageKeyToString:3];
   v5 = [CDMAssetsUsages cdmAssetsUsageKeyToString:4];
-  v6 = [(NSDictionary *)v2->_usages objectForKey:v3];
+  v6 = [(NSDictionary *)selfCopy->_usages objectForKey:v3];
 
-  usages = v2->_usages;
+  usages = selfCopy->_usages;
   if (v6)
   {
     v8 = v3;
@@ -43,7 +43,7 @@ LABEL_7:
 
   v9 = [(NSDictionary *)usages objectForKey:v4];
 
-  usages = v2->_usages;
+  usages = selfCopy->_usages;
   if (v9)
   {
     v8 = v4;
@@ -54,7 +54,7 @@ LABEL_7:
 
   if (v10)
   {
-    usages = v2->_usages;
+    usages = selfCopy->_usages;
     v8 = v5;
     goto LABEL_7;
   }
@@ -70,7 +70,7 @@ LABEL_7:
   v11 = 0;
 LABEL_8:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
@@ -78,33 +78,33 @@ LABEL_8:
 
 - (id)getFactors
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x1E69DEEF0] sharedManager];
-  v4 = [v3 assetNamesForAssetSet:v2->_assetSetName usages:v2->_usages];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mEMORY[0x1E69DEEF0] = [MEMORY[0x1E69DEEF0] sharedManager];
+  v4 = [mEMORY[0x1E69DEEF0] assetNamesForAssetSet:selfCopy->_assetSetName usages:selfCopy->_usages];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)setAssetSet:(id)a3
+- (void)setAssetSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   obj = self;
   objc_sync_enter(obj);
   assetSet = obj->_assetSet;
-  obj->_assetSet = v4;
+  obj->_assetSet = setCopy;
 
   objc_sync_exit(obj);
 }
 
 - (id)getAssetSet
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_assetSet;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_assetSet;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -112,12 +112,12 @@ LABEL_8:
 - (void)initUAFAssetSet
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    assetSetName = v2->_assetSetName;
+    assetSetName = selfCopy->_assetSetName;
     v13 = 136315394;
     v14 = "[CDMUAFClientManager initUAFAssetSet]";
     v15 = 2112;
@@ -125,17 +125,17 @@ LABEL_8:
     _os_log_debug_impl(&dword_1DC287000, v3, OS_LOG_TYPE_DEBUG, "%s Start to init UAF client for AssetSet: %@.", &v13, 0x16u);
   }
 
-  v4 = [MEMORY[0x1E69DEEF0] sharedManager];
-  v5 = [v4 retrieveAssetSet:v2->_assetSetName usages:v2->_usages];
-  assetSet = v2->_assetSet;
-  v2->_assetSet = v5;
+  mEMORY[0x1E69DEEF0] = [MEMORY[0x1E69DEEF0] sharedManager];
+  v5 = [mEMORY[0x1E69DEEF0] retrieveAssetSet:selfCopy->_assetSetName usages:selfCopy->_usages];
+  assetSet = selfCopy->_assetSet;
+  selfCopy->_assetSet = v5;
 
   v7 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v11 = v2->_assetSet;
-    v10 = v2->_assetSetName;
-    usages = v2->_usages;
+    v11 = selfCopy->_assetSet;
+    v10 = selfCopy->_assetSetName;
+    usages = selfCopy->_usages;
     v13 = 136315906;
     v14 = "[CDMUAFClientManager initUAFAssetSet]";
     v15 = 2112;
@@ -147,30 +147,30 @@ LABEL_8:
     _os_log_debug_impl(&dword_1DC287000, v7, OS_LOG_TYPE_DEBUG, "%s uafClientManager.assetSetName %@ has new assetSet %@ has usages %@", &v13, 0x2Au);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(CDMUAFClientManager *)v5 getLocale];
+  localeCopy = locale;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  getLocale = [(CDMUAFClientManager *)selfCopy getLocale];
 
-  if (v6 != v4)
+  if (getLocale != localeCopy)
   {
     v7 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      usages = v5->_usages;
+      usages = selfCopy->_usages;
       *buf = 136315650;
       v36 = "[CDMUAFClientManager setLocale:]";
       v37 = 2112;
       v38 = usages;
       v39 = 2112;
-      v40 = v4;
+      v40 = localeCopy;
       _os_log_debug_impl(&dword_1DC287000, v7, OS_LOG_TYPE_DEBUG, "%s Updating locale for usage: %@ to %@.", buf, 0x20u);
     }
 
@@ -179,8 +179,8 @@ LABEL_8:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [(NSDictionary *)v5->_usages keyEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    keyEnumerator = [(NSDictionary *)selfCopy->_usages keyEnumerator];
+    v10 = [keyEnumerator countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v10)
     {
       v11 = *v31;
@@ -190,15 +190,15 @@ LABEL_8:
         {
           if (*v31 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v13 = *(*(&v30 + 1) + 8 * i);
-          v14 = [(NSDictionary *)v5->_usages objectForKey:v13];
+          v14 = [(NSDictionary *)selfCopy->_usages objectForKey:v13];
           [v8 setObject:v14 forKey:v13];
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v10 = [keyEnumerator countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v10);
@@ -218,7 +218,7 @@ LABEL_8:
 
       if (!v22)
       {
-        v23 = [CDMAssetsUtils extractAssetKeyFromLocale:v4];
+        v23 = [CDMAssetsUtils extractAssetKeyFromLocale:localeCopy];
         [v8 setObject:v23 forKey:v16];
 
         goto LABEL_15;
@@ -234,39 +234,39 @@ LABEL_8:
       }
     }
 
-    [v8 setObject:v4 forKey:v20];
+    [v8 setObject:localeCopy forKey:v20];
 LABEL_15:
     v24 = [v8 copy];
-    v25 = v5->_usages;
-    v5->_usages = v24;
+    v25 = selfCopy->_usages;
+    selfCopy->_usages = v24;
 
-    [(CDMUAFClientManager *)v5 initUAFAssetSet];
+    [(CDMUAFClientManager *)selfCopy initUAFAssetSet];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldInitUAFAssetSetInSetupForLocale:(id)a3
+- (BOOL)shouldInitUAFAssetSetInSetupForLocale:(id)locale
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  localeCopy = locale;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = objc_alloc_init(MEMORY[0x1E695DF20]);
   v7 = os_signpost_id_generate(CDMLogContext);
   v8 = CDMLogContext;
   v9 = v8;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
-    assetSetName = v5->_assetSetName;
+    assetSetName = selfCopy->_assetSetName;
     v23 = 138412290;
     v24 = assetSetName;
     _os_signpost_emit_with_name_impl(&dword_1DC287000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "CDMUAFClientManager", "getAssets in shouldInitUAFAssetSetInSetup %@", &v23, 0xCu);
   }
 
-  v11 = [(UAFAssetSet *)v5->_assetSet assets];
+  assets = [(UAFAssetSet *)selfCopy->_assetSet assets];
 
   v12 = CDMLogContext;
   v13 = v12;
@@ -279,9 +279,9 @@ LABEL_15:
   v14 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    assetSet = v5->_assetSet;
-    v20 = v5->_assetSetName;
-    usages = v5->_usages;
+    assetSet = selfCopy->_assetSet;
+    v20 = selfCopy->_assetSetName;
+    usages = selfCopy->_usages;
     v23 = 136316162;
     v24 = "[CDMUAFClientManager shouldInitUAFAssetSetInSetupForLocale:]";
     v25 = 2112;
@@ -291,11 +291,11 @@ LABEL_15:
     v29 = 2112;
     v30 = usages;
     v31 = 2112;
-    v32 = v11;
+    v32 = assets;
     _os_log_debug_impl(&dword_1DC287000, v14, OS_LOG_TYPE_DEBUG, "%s uafClientManager.assetSetName %@ has assetSet %@ has usages %@ has assets %@", &v23, 0x34u);
   }
 
-  if (!v5->_assetSet)
+  if (!selfCopy->_assetSet)
   {
     v15 = CDMOSLoggerForCategory(0);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -313,7 +313,7 @@ LABEL_20:
     goto LABEL_17;
   }
 
-  if (![v11 count])
+  if (![assets count])
   {
     v15 = CDMOSLoggerForCategory(0);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -338,23 +338,23 @@ LABEL_20:
   v16 = 0;
 LABEL_18:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v18 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-- (CDMUAFClientManager)initWithAssetSet:(id)a3 usages:(id)a4
+- (CDMUAFClientManager)initWithAssetSet:(id)set usages:(id)usages
 {
-  v7 = a3;
-  v8 = a4;
+  setCopy = set;
+  usagesCopy = usages;
   v12.receiver = self;
   v12.super_class = CDMUAFClientManager;
   v9 = [(CDMUAFClientManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetSetName, a3);
-    objc_storeStrong(&v10->_usages, a4);
+    objc_storeStrong(&v9->_assetSetName, set);
+    objc_storeStrong(&v10->_usages, usages);
   }
 
   return v10;

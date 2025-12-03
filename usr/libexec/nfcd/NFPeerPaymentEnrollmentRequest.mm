@@ -1,19 +1,19 @@
 @interface NFPeerPaymentEnrollmentRequest
-- (NFPeerPaymentEnrollmentRequest)initWithCoder:(id)a3;
-- (NFPeerPaymentEnrollmentRequest)initWithDictionary:(id)a3;
+- (NFPeerPaymentEnrollmentRequest)initWithCoder:(id)coder;
+- (NFPeerPaymentEnrollmentRequest)initWithDictionary:(id)dictionary;
 @end
 
 @implementation NFPeerPaymentEnrollmentRequest
 
-- (NFPeerPaymentEnrollmentRequest)initWithDictionary:(id)a3
+- (NFPeerPaymentEnrollmentRequest)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = NFPeerPaymentEnrollmentRequest;
   v5 = [(NFPeerPaymentEnrollmentRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"alternateDSID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"alternateDSID"];
     alternateDSID = v5->_alternateDSID;
     v5->_alternateDSID = v6;
   }
@@ -21,15 +21,15 @@
   return v5;
 }
 
-- (NFPeerPaymentEnrollmentRequest)initWithCoder:(id)a3
+- (NFPeerPaymentEnrollmentRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NFPeerPaymentEnrollmentRequest;
   v5 = [(NFPeerPaymentEnrollmentRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alternateDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alternateDSID"];
     alternateDSID = v5->_alternateDSID;
     v5->_alternateDSID = v6;
   }

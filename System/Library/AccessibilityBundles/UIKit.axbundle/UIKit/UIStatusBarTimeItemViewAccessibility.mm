@@ -9,11 +9,11 @@
 - (BOOL)isAccessibilityElement
 {
   v5 = [(UIStatusBarTimeItemViewAccessibility *)self safeValueForKey:@"_dateTimeString"];
-  v4 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
   v3 = [v5 stringByTrimmingCharactersInSet:?];
   v6 = [v3 length];
   MEMORY[0x29EDC9740](v3);
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](whitespaceAndNewlineCharacterSet);
   MEMORY[0x29EDC9740](v5);
   return v6 != 0;
 }
@@ -35,7 +35,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIStatusBarTimeItemViewAccessibility;

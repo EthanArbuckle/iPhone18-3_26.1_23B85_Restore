@@ -1,9 +1,9 @@
 @interface AMSMetricsFigaroBagConfguration
-+ (id)configurationPromiseWithBag:(id)a3;
-- (AMSMetricsFigaroBagConfguration)initWithMetricsDictionary:(id)a3;
++ (id)configurationPromiseWithBag:(id)bag;
+- (AMSMetricsFigaroBagConfguration)initWithMetricsDictionary:(id)dictionary;
 - (NSArray)overrides;
 - (id)_generateModifiersIfNeeded;
-- (id)modifierForEvent:(id)a3;
+- (id)modifierForEvent:(id)event;
 - (void)prepareForFlush;
 @end
 
@@ -17,14 +17,14 @@
   v10 = __Block_byref_object_copy__43;
   v11 = __Block_byref_object_dispose__43;
   v12 = 0;
-  v3 = [(AMSMetricsFigaroBagConfguration *)self queue];
+  queue = [(AMSMetricsFigaroBagConfguration *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__AMSMetricsFigaroBagConfguration_overrides__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -34,12 +34,12 @@
 
 - (id)_generateModifiersIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSMetricsFigaroBagConfguration *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(AMSMetricsFigaroBagConfguration *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  overrides = v2->_overrides;
+  overrides = selfCopy->_overrides;
   if (overrides)
   {
     v5 = overrides;
@@ -47,8 +47,8 @@
   }
 
   v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(AMSMetricsFigaroBagConfguration *)v2 metricsDictionary];
-  v7 = [v6 objectForKeyedSubscript:@"overrides"];
+  metricsDictionary = [(AMSMetricsFigaroBagConfguration *)selfCopy metricsDictionary];
+  v7 = [metricsDictionary objectForKeyedSubscript:@"overrides"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -106,11 +106,11 @@
           if ([v14 count])
           {
             v17 = [AMSMetricsFigaroEventModifier alloc];
-            [(AMSMetricsFigaroBagConfguration *)v2 metricsDictionary];
-            v19 = v18 = v2;
+            [(AMSMetricsFigaroBagConfguration *)selfCopy metricsDictionary];
+            v19 = v18 = selfCopy;
             v20 = [(AMSMetricsFigaroEventModifier *)v17 initWithMetricsDictionary:v19 overrideDictionary:v15];
 
-            v2 = v18;
+            selfCopy = v18;
             [(NSArray *)v24 addObject:v20];
           }
         }
@@ -129,11 +129,11 @@ LABEL_20:
     while (v11);
   }
 
-  v21 = v2->_overrides;
-  v2->_overrides = v24;
+  v21 = selfCopy->_overrides;
+  selfCopy->_overrides = v24;
   v22 = v24;
 
-  v5 = v2->_overrides;
+  v5 = selfCopy->_overrides;
 LABEL_23:
 
   return v5;
@@ -148,7 +148,7 @@ uint64_t __44__AMSMetricsFigaroBagConfguration_overrides__block_invoke(uint64_t 
 
 - (void)prepareForFlush
 {
-  v3 = [(AMSMetricsFigaroBagConfguration *)self queue];
+  queue = [(AMSMetricsFigaroBagConfguration *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__AMSMetricsFigaroBagConfguration_prepareForFlush__block_invoke;
@@ -163,22 +163,22 @@ uint64_t __44__AMSMetricsFigaroBagConfguration_overrides__block_invoke(uint64_t 
   v9 = v5;
   v10 = v4;
   v6 = v5;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (AMSMetricsFigaroBagConfguration)initWithMetricsDictionary:(id)a3
+- (AMSMetricsFigaroBagConfguration)initWithMetricsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = AMSMetricsFigaroBagConfguration;
   v5 = [(AMSMetricsFigaroBagConfguration *)&v16 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     metricsDictionary = v5->_metricsDictionary;
     v5->_metricsDictionary = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"maxBatchSizeBytes"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"maxBatchSizeBytes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -186,10 +186,10 @@ uint64_t __44__AMSMetricsFigaroBagConfguration_overrides__block_invoke(uint64_t 
 
       if (v9)
       {
-        v10 = [v9 unsignedIntegerValue];
+        unsignedIntegerValue = [v9 unsignedIntegerValue];
 LABEL_7:
-        v5->_maxBatchSize = v10;
-        v11 = [[AMSMetricsFigaroEventModifier alloc] initWithMetricsDictionary:v4 overrideDictionary:0];
+        v5->_maxBatchSize = unsignedIntegerValue;
+        v11 = [[AMSMetricsFigaroEventModifier alloc] initWithMetricsDictionary:dictionaryCopy overrideDictionary:0];
         defaultModifier = v5->_defaultModifier;
         v5->_defaultModifier = v11;
 
@@ -207,7 +207,7 @@ LABEL_7:
       v9 = 0;
     }
 
-    v10 = 0x100000;
+    unsignedIntegerValue = 0x100000;
     goto LABEL_7;
   }
 
@@ -216,13 +216,13 @@ LABEL_8:
   return v5;
 }
 
-+ (id)configurationPromiseWithBag:(id)a3
++ (id)configurationPromiseWithBag:(id)bag
 {
-  if (a3)
+  if (bag)
   {
-    v3 = [a3 dictionaryForKey:@"metrics"];
-    v4 = [v3 valuePromise];
-    v5 = [v4 continueWithBlock:&__block_literal_global_94];
+    v3 = [bag dictionaryForKey:@"metrics"];
+    valuePromise = [v3 valuePromise];
+    v5 = [valuePromise continueWithBlock:&__block_literal_global_94];
   }
 
   else
@@ -253,18 +253,18 @@ id __63__AMSMetricsFigaroBagConfguration_configurationPromiseWithBag___block_inv
   return v6;
 }
 
-- (id)modifierForEvent:(id)a3
+- (id)modifierForEvent:(id)event
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(AMSMetricsFigaroBagConfguration *)self overrides];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    overrides = [(AMSMetricsFigaroBagConfguration *)self overrides];
+    v6 = [overrides countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -275,18 +275,18 @@ LABEL_4:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(overrides);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        if ([v10 fieldFiltersMatchEvent:v4])
+        if ([v10 fieldFiltersMatchEvent:eventCopy])
         {
           break;
         }
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [overrides countByEnumeratingWithState:&v13 objects:v17 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -296,9 +296,9 @@ LABEL_4:
         }
       }
 
-      v11 = v10;
+      defaultModifier = v10;
 
-      if (v11)
+      if (defaultModifier)
       {
         goto LABEL_13;
       }
@@ -310,10 +310,10 @@ LABEL_10:
     }
   }
 
-  v11 = [(AMSMetricsFigaroBagConfguration *)self defaultModifier];
+  defaultModifier = [(AMSMetricsFigaroBagConfguration *)self defaultModifier];
 LABEL_13:
 
-  return v11;
+  return defaultModifier;
 }
 
 @end

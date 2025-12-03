@@ -1,22 +1,22 @@
 @interface DisplayCriteria
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DisplayCriteria
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001839F4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1001839F4(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -25,7 +25,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_100183E40(v8);

@@ -1,16 +1,16 @@
 @interface MUPlaceSectionHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation MUPlaceSectionHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUPlaceSectionHeaderView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"MUPlaceSectionHeaderView" hasInstanceVariable:@"_seeAllButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUPlaceSectionHeaderView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"MUPlaceSectionHeaderView" hasInstanceVariable:@"_seeAllButton" withType:"UIButton"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -19,8 +19,8 @@
   v10.super_class = MUPlaceSectionHeaderViewAccessibility;
   v3 = *MEMORY[0x29EDC7F80] | [(MUPlaceSectionHeaderViewAccessibility *)&v10 accessibilityTraits];
   v4 = [(MUPlaceSectionHeaderViewAccessibility *)self _accessibilityStringForLabelKeyValues:@"_seeAllButton"];
-  v5 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+  v6 = [v4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v7 = [v6 length];
 
   if (v7)

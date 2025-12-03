@@ -1,30 +1,30 @@
 @interface CarUnspecifiedWidgetController
-- (void)_mapsCar_scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)_mapsCar_scene:(id)car_scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation CarUnspecifiedWidgetController
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = [(CarUnspecifiedWidgetController *)self window];
-  [v4 setHidden:1];
+  window = [(CarUnspecifiedWidgetController *)self window];
+  [window setHidden:1];
 
   [(CarUnspecifiedWidgetController *)self setWindow:0];
 }
 
-- (void)_mapsCar_scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)_mapsCar_scene:(id)car_scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = a3;
-  v7 = [[CRSUIDashboardWidgetWindow alloc] initWithWindowScene:v6];
+  car_sceneCopy = car_scene;
+  v7 = [[CRSUIDashboardWidgetWindow alloc] initWithWindowScene:car_sceneCopy];
 
   [(CarUnspecifiedWidgetController *)self setWindow:v7];
   v8 = objc_alloc_init(CarUnspecifiedViewController);
-  v9 = [(CarUnspecifiedWidgetController *)self window];
-  [v9 setRootViewController:v8];
+  window = [(CarUnspecifiedWidgetController *)self window];
+  [window setRootViewController:v8];
 
-  v10 = [(CarUnspecifiedWidgetController *)self window];
-  [v10 setHidden:0];
+  window2 = [(CarUnspecifiedWidgetController *)self window];
+  [window2 setHidden:0];
 }
 
 @end

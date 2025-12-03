@@ -1,18 +1,18 @@
 @interface AVCBasebandAudioTap
-+ (BOOL)unregisterFromTapWithError:(id *)a3;
-+ (id)registerForTapWithError:(id *)a3;
++ (BOOL)unregisterFromTapWithError:(id *)error;
++ (id)registerForTapWithError:(id *)error;
 + (id)sharedInstance;
 - (AVCBasebandAudioTap)init;
 - (AVCBasebandAudioTapDelegate)delegate;
 - (BOOL)setUpPowerSpectrumMeter;
-- (BOOL)unregisterFromTapWithError:(id *)a3;
+- (BOOL)unregisterFromTapWithError:(id *)error;
 - (id)dispatchedDelegate;
-- (id)registerForTapWithError:(id *)a3;
+- (id)registerForTapWithError:(id *)error;
 - (void)cleanUpPowerSpectrumMeter;
 - (void)dealloc;
 - (void)init;
-- (void)meterServerDidDisconnect:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)meterServerDidDisconnect:(id)disconnect;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation AVCBasebandAudioTap
@@ -118,7 +118,7 @@ uint64_t __31__AVCBasebandAudioTap_delegate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v34 = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -127,7 +127,7 @@ uint64_t __31__AVCBasebandAudioTap_delegate__block_invoke(uint64_t a1)
   block[2] = __35__AVCBasebandAudioTap_setDelegate___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = delegate;
   dispatch_sync(stateQueue, block);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -150,7 +150,7 @@ uint64_t __31__AVCBasebandAudioTap_delegate__block_invoke(uint64_t a1)
       *&v31[8] = 2112;
       *&v31[10] = v9;
       *&v31[18] = 2048;
-      *&v31[20] = a3;
+      *&v31[20] = delegate;
       v32 = 2112;
       v33 = v11;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d self=%p (%@), delegate=%p (%@)", buf, 0x44u);
@@ -241,7 +241,7 @@ AVCBasebandAudioTap *__37__AVCBasebandAudioTap_sharedInstance__block_invoke()
   return result;
 }
 
-- (id)registerForTapWithError:(id *)a3
+- (id)registerForTapWithError:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
   v14 = 0;
@@ -265,7 +265,7 @@ AVCBasebandAudioTap *__37__AVCBasebandAudioTap_sharedInstance__block_invoke()
       v24 = 1024;
       v25 = 165;
       v26 = 2048;
-      v27 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCBasebandAudioTap-registerForTapWithError [%p]", buf, 0x26u);
     }
   }
@@ -279,9 +279,9 @@ AVCBasebandAudioTap *__37__AVCBasebandAudioTap_sharedInstance__block_invoke()
   block[6] = &v14;
   block[4] = self;
   dispatch_sync(stateQueue, block);
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCBasebandAudioTap-registerForTapWithError");
@@ -298,7 +298,7 @@ AVCBasebandAudioTap *__37__AVCBasebandAudioTap_sharedInstance__block_invoke()
       v24 = 1024;
       v25 = 185;
       v26 = 2048;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2112;
       v29 = v5;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCBasebandAudioTap-registerForTapWithError [%p] result=%@", buf, 0x30u);
@@ -494,7 +494,7 @@ LABEL_7:
   return [*(a1 + 40) setDownlinkToken:{objc_msgSend(*(*(a1 + 32) + 24), "streamTokenForCellularTapType:", 1)}];
 }
 
-- (BOOL)unregisterFromTapWithError:(id *)a3
+- (BOOL)unregisterFromTapWithError:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
   v20 = 0;
@@ -521,7 +521,7 @@ LABEL_7:
       v28 = 1024;
       v29 = 192;
       v30 = 2048;
-      v31 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCBasebandAudioTap-unregisterFromTapWithError [%p]", buf, 0x26u);
     }
   }
@@ -535,9 +535,9 @@ LABEL_7:
   block[5] = &v20;
   block[6] = &v14;
   dispatch_sync(stateQueue, block);
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCBasebandAudioTap-unregisterFromTapWithError");
@@ -555,7 +555,7 @@ LABEL_7:
       v28 = 1024;
       v29 = 210;
       v30 = 2048;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 1024;
       v33 = v10;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCBasebandAudioTap-unregisterFromTapWithError [%p] success=%{BOOL}d", buf, 0x2Cu);
@@ -699,34 +699,34 @@ uint64_t __50__AVCBasebandAudioTap_unregisterFromTapWithError___block_invoke(voi
   return [*v2 cleanUpPowerSpectrumMeter];
 }
 
-+ (id)registerForTapWithError:(id *)a3
++ (id)registerForTapWithError:(id *)error
 {
   v4 = +[AVCBasebandAudioTap sharedInstance];
 
-  return [(AVCBasebandAudioTap *)v4 registerForTapWithError:a3];
+  return [(AVCBasebandAudioTap *)v4 registerForTapWithError:error];
 }
 
-+ (BOOL)unregisterFromTapWithError:(id *)a3
++ (BOOL)unregisterFromTapWithError:(id *)error
 {
   v4 = +[AVCBasebandAudioTap sharedInstance];
 
-  return [(AVCBasebandAudioTap *)v4 unregisterFromTapWithError:a3];
+  return [(AVCBasebandAudioTap *)v4 unregisterFromTapWithError:error];
 }
 
-- (void)meterServerDidDisconnect:(id)a3
+- (void)meterServerDidDisconnect:(id)disconnect
 {
   block[6] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_stateQueue);
   [(AVCBasebandAudioTap *)self cleanUpPowerSpectrumMeter];
-  v4 = [(AVCBasebandAudioTap *)self dispatchedDelegate];
-  if (v4)
+  dispatchedDelegate = [(AVCBasebandAudioTap *)self dispatchedDelegate];
+  if (dispatchedDelegate)
   {
     delegateQueue = self->_delegateQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__AVCBasebandAudioTap_meterServerDidDisconnect___block_invoke;
     block[3] = &unk_1E85F37F0;
-    block[4] = v4;
+    block[4] = dispatchedDelegate;
     block[5] = self;
     dispatch_async(delegateQueue, block);
   }

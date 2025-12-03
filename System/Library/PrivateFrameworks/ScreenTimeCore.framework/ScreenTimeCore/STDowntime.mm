@@ -1,16 +1,16 @@
 @interface STDowntime
-- (void)setStartHour:(int64_t)a3 startMinute:(int64_t)a4 endHour:(int64_t)a5 endMinute:(int64_t)a6;
+- (void)setStartHour:(int64_t)hour startMinute:(int64_t)minute endHour:(int64_t)endHour endMinute:(int64_t)endMinute;
 @end
 
 @implementation STDowntime
 
-- (void)setStartHour:(int64_t)a3 startMinute:(int64_t)a4 endHour:(int64_t)a5 endMinute:(int64_t)a6
+- (void)setStartHour:(int64_t)hour startMinute:(int64_t)minute endHour:(int64_t)endHour endMinute:(int64_t)endMinute
 {
   v60 = *MEMORY[0x1E69E9840];
-  v33 = [(STDowntime *)self managedObjectContext];
+  managedObjectContext = [(STDowntime *)self managedObjectContext];
   v9 = MEMORY[0x1E695DEE8];
-  v10 = [(STDowntime *)self calendarIdentifier];
-  v11 = [v9 calendarWithIdentifier:v10];
+  calendarIdentifier = [(STDowntime *)self calendarIdentifier];
+  v11 = [v9 calendarWithIdentifier:calendarIdentifier];
 
   v12 = objc_alloc(MEMORY[0x1E696AD50]);
   v35 = v11;
@@ -21,9 +21,9 @@
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v34 = self;
-  v16 = [(STDowntime *)self schedule];
-  v17 = [v16 countByEnumeratingWithState:&v50 objects:v59 count:16];
+  selfCopy = self;
+  schedule = [(STDowntime *)self schedule];
+  v17 = [schedule countByEnumeratingWithState:&v50 objects:v59 count:16];
   if (v17)
   {
     v18 = v17;
@@ -35,12 +35,12 @@
       {
         if (*v51 != v20)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(schedule);
         }
 
         v22 = *(*(&v50 + 1) + 8 * i);
-        v23 = [v22 weekday];
-        if ([v15 containsIndex:v23])
+        weekday = [v22 weekday];
+        if ([v15 containsIndex:weekday])
         {
           if (v19)
           {
@@ -55,16 +55,16 @@
 
         else
         {
-          [v38 removeIndex:v23];
-          [v15 addIndex:v23];
-          [v22 setStartHour:a3];
-          [v22 setStartMinute:a4];
-          [v22 setEndHour:a5];
-          [v22 setEndMinute:a6];
+          [v38 removeIndex:weekday];
+          [v15 addIndex:weekday];
+          [v22 setStartHour:hour];
+          [v22 setStartMinute:minute];
+          [v22 setEndHour:endHour];
+          [v22 setEndMinute:endMinute];
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v50 objects:v59 count:16];
+      v18 = [schedule countByEnumeratingWithState:&v50 objects:v59 count:16];
     }
 
     while (v18);
@@ -79,13 +79,13 @@
   v43[1] = 3221225472;
   v43[2] = __57__STDowntime_setStartHour_startMinute_endHour_endMinute___block_invoke;
   v43[3] = &unk_1E7CE7610;
-  v24 = v33;
-  v46 = a3;
-  v47 = a4;
-  v48 = a5;
-  v49 = a6;
+  v24 = managedObjectContext;
+  hourCopy = hour;
+  minuteCopy = minute;
+  endHourCopy = endHour;
+  endMinuteCopy = endMinute;
   v44 = v24;
-  v45 = v34;
+  v45 = selfCopy;
   [v38 enumerateIndexesUsingBlock:v43];
   v41 = 0u;
   v42 = 0u;

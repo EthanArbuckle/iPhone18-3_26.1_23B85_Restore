@@ -1,16 +1,16 @@
 @interface CKDProcessScopedStateManager
 + (id)sharedManager;
 - (id)initInternal;
-- (void)_wipePersonaBasedClientCacheForAppRecord:(id)a3;
-- (void)accountWithID:(id)a3 changedWithChangeType:(int64_t)a4;
-- (void)accountsDidGrantAccessToBundleID:(id)a3 containerIdentifiers:(id)a4;
-- (void)accountsDidRevokeAccessToBundleID:(id)a3 containerIdentifiers:(id)a4;
-- (void)accountsWillDeleteAccount:(id)a3 completionHandler:(id)a4;
-- (void)clearPCSCachesForKnownContainersWithCompletionHandler:(id)a3;
-- (void)dumpAllClientsStatusReportToFileHandle:(id)a3 completionHandler:(id)a4;
-- (void)fetchUsabilityForTestAccountCredentials:(id)a3 completionHandler:(id)a4;
+- (void)_wipePersonaBasedClientCacheForAppRecord:(id)record;
+- (void)accountWithID:(id)d changedWithChangeType:(int64_t)type;
+- (void)accountsDidGrantAccessToBundleID:(id)d containerIdentifiers:(id)identifiers;
+- (void)accountsDidRevokeAccessToBundleID:(id)d containerIdentifiers:(id)identifiers;
+- (void)accountsWillDeleteAccount:(id)account completionHandler:(id)handler;
+- (void)clearPCSCachesForKnownContainersWithCompletionHandler:(id)handler;
+- (void)dumpAllClientsStatusReportToFileHandle:(id)handle completionHandler:(id)handler;
+- (void)fetchUsabilityForTestAccountCredentials:(id)credentials completionHandler:(id)handler;
 - (void)kickOffPendingLongLivedOperations;
-- (void)maxInlineMergeableDeltaSizeWithCompletionHandler:(id)a3;
+- (void)maxInlineMergeableDeltaSizeWithCompletionHandler:(id)handler;
 - (void)updatePushTokens;
 - (void)wipeAllCachesAndDie;
 - (void)wipeServerConfigurationsAndDie;
@@ -37,38 +37,38 @@
   return [(CKDProcessScopedStateManager *)&v3 init];
 }
 
-- (void)dumpAllClientsStatusReportToFileHandle:(id)a3 completionHandler:(id)a4
+- (void)dumpAllClientsStatusReportToFileHandle:(id)handle completionHandler:(id)handler
 {
-  v11 = a4;
-  v5 = a3;
+  handlerCopy = handler;
+  handleCopy = handle;
   v8 = objc_msgSend_sharedConnectionManager(CKDXPCConnectionManager, v6, v7);
-  objc_msgSend_dumpStatusReportToFileHandle_(v8, v9, v5);
+  objc_msgSend_dumpStatusReportToFileHandle_(v8, v9, handleCopy);
 
-  v10 = v11;
-  if (v11)
+  v10 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v11 + 2))(v11, 0);
-    v10 = v11;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v10 = handlerCopy;
   }
 }
 
-- (void)clearPCSCachesForKnownContainersWithCompletionHandler:(id)a3
+- (void)clearPCSCachesForKnownContainersWithCompletionHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   objc_msgSend_evictPCSSQLCachesForKnownContainers(CKDPCSSQLCache, v3, v4);
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v5 = handlerCopy;
   }
 }
 
-- (void)accountsDidGrantAccessToBundleID:(id)a3 containerIdentifiers:(id)a4
+- (void)accountsDidGrantAccessToBundleID:(id)d containerIdentifiers:(id)identifiers
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  identifiersCopy = identifiers;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -78,20 +78,20 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = v5;
+    v10 = dCopy;
     v11 = 2112;
-    v12 = v6;
+    v12 = identifiersCopy;
     _os_log_impl(&dword_22506F000, v7, OS_LOG_TYPE_INFO, "accountsDidGrantAccessToBundleID:%@ containerIdentifiers:%@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountsDidRevokeAccessToBundleID:(id)a3 containerIdentifiers:(id)a4
+- (void)accountsDidRevokeAccessToBundleID:(id)d containerIdentifiers:(id)identifiers
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  identifiersCopy = identifiers;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -101,33 +101,33 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v24 = v5;
+    v24 = dCopy;
     v25 = 2112;
-    v26 = v6;
+    v26 = identifiersCopy;
     _os_log_impl(&dword_22506F000, v7, OS_LOG_TYPE_INFO, "accountsDidRevokeAccessToBundleID:%@ containerIdentifiers:%@", buf, 0x16u);
   }
 
-  v9 = objc_msgSend_setWithArray_(MEMORY[0x277CBEB98], v8, v6);
+  v9 = objc_msgSend_setWithArray_(MEMORY[0x277CBEB98], v8, identifiersCopy);
   v12 = objc_msgSend_defaultContext(CKDLogicalDeviceContext, v10, v11);
   v15 = objc_msgSend_metadataCache(v12, v13, v14);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_22518FD94;
   v20[3] = &unk_278548210;
-  v21 = v5;
+  v21 = dCopy;
   v22 = v9;
   v16 = v9;
-  v17 = v5;
+  v17 = dCopy;
   objc_msgSend_enumerateKnownAppContainerAccountTuplesUsingBlock_(v15, v18, v20);
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountsWillDeleteAccount:(id)a3 completionHandler:(id)a4
+- (void)accountsWillDeleteAccount:(id)account completionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  handlerCopy = handler;
   v7 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -139,7 +139,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v22 = v5;
+    v22 = accountCopy;
     _os_log_impl(&dword_22506F000, v9, OS_LOG_TYPE_INFO, "accountsWillDeleteAccount:%@", buf, 0xCu);
   }
 
@@ -157,9 +157,9 @@
       _os_log_impl(&dword_22506F000, v12, OS_LOG_TYPE_INFO, "Will not unregister any push token as we're in Buddy", buf, 2u);
     }
 
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -171,17 +171,17 @@
     v19[1] = 3221225472;
     v19[2] = sub_225190100;
     v19[3] = &unk_278548238;
-    v20 = v6;
-    objc_msgSend_unregisterAllTokensForAccountID_completionHandler_(v16, v17, v5, v19);
+    v20 = handlerCopy;
+    objc_msgSend_unregisterAllTokensForAccountID_completionHandler_(v16, v17, accountCopy, v19);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountWithID:(id)a3 changedWithChangeType:(int64_t)a4
+- (void)accountWithID:(id)d changedWithChangeType:(int64_t)type
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -193,7 +193,7 @@
     v9 = v6;
     v10 = CKStringFromAccountChangeType();
     v19 = 138412546;
-    v20 = v5;
+    v20 = dCopy;
     v21 = 2112;
     v22 = v10;
     _os_log_impl(&dword_22506F000, v9, OS_LOG_TYPE_INFO, "Account %@ changed with type %@", &v19, 0x16u);
@@ -203,31 +203,31 @@
   objc_msgSend_invalidateCache(v11, v12, v13);
 
   v16 = objc_msgSend_sharedNotifier(CKDAccountNotifier, v14, v15);
-  objc_msgSend_postAccountChangedNotificationWithAccountID_changeType_(v16, v17, v5, a4);
+  objc_msgSend_postAccountChangedNotificationWithAccountID_changeType_(v16, v17, dCopy, type);
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchUsabilityForTestAccountCredentials:(id)a3 completionHandler:(id)a4
+- (void)fetchUsabilityForTestAccountCredentials:(id)credentials completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  credentialsCopy = credentials;
   v7 = [CKDAccount alloc];
-  inited = objc_msgSend_initExplicitCredentialsAccountWithAccountOverrideInfo_(v7, v8, v6);
+  inited = objc_msgSend_initExplicitCredentialsAccountWithAccountOverrideInfo_(v7, v8, credentialsCopy);
 
   isValidTestAccount = objc_msgSend_isValidTestAccount(inited, v9, v10);
-  v5[2](v5, isValidTestAccount, 0);
+  handlerCopy[2](handlerCopy, isValidTestAccount, 0);
 }
 
-- (void)_wipePersonaBasedClientCacheForAppRecord:(id)a3
+- (void)_wipePersonaBasedClientCacheForAppRecord:(id)record
 {
   v34 = *MEMORY[0x277D85DE8];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v25 = a3;
-  obj = objc_msgSend_identities(v25, v3, v4);
+  recordCopy = record;
+  obj = objc_msgSend_identities(recordCopy, v3, v4);
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v5, &v29, v33, 16);
   if (v6)
   {
@@ -247,7 +247,7 @@
         aBlock[1] = 3221225472;
         aBlock[2] = sub_2251905FC;
         aBlock[3] = &unk_278545A00;
-        v28 = v25;
+        v28 = recordCopy;
         v11 = _Block_copy(aBlock);
         v14 = objc_msgSend_personaUniqueString(v10, v12, v13);
         if (v14)
@@ -421,10 +421,10 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)maxInlineMergeableDeltaSizeWithCompletionHandler:(id)a3
+- (void)maxInlineMergeableDeltaSizeWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handlerCopy = handler;
   v6 = objc_msgSend_sharedManager(CKDServerConfigurationManager, v4, v5);
   v9 = objc_msgSend_lastKnownServerConfiguration(v6, v7, v8);
 
@@ -465,7 +465,7 @@ LABEL_11:
     }
   }
 
-  v3[2](v3, v11);
+  handlerCopy[2](handlerCopy, v11);
 
   v14 = *MEMORY[0x277D85DE8];
 }

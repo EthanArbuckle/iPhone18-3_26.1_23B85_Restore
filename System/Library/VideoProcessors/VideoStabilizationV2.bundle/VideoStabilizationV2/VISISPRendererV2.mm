@@ -1,13 +1,13 @@
 @interface VISISPRendererV2
-- (BOOL)_isPixelBuffer422:(__CVBuffer *)a3;
-- (VISISPRendererV2)initWithISPProcessingSession:(OpaqueFigCaptureISPProcessingSession *)a3 metalContext:(id)a4 metalCommandQueue:(id)a5;
+- (BOOL)_isPixelBuffer422:(__CVBuffer *)buffer422;
+- (VISISPRendererV2)initWithISPProcessingSession:(OpaqueFigCaptureISPProcessingSession *)session metalContext:(id)context metalCommandQueue:(id)queue;
 - (VISRendererDelegate)delegate;
 - (__n128)gridSize;
 - (__n128)inputSize;
 - (__n128)outputSize;
-- (int)enqueuePixelBufferForRendering:(VISISPRendererV2 *)self inputValidBufferRect:(SEL)a2 metadata:(__CVBuffer *)a3 ltmLUT:(CGRect *)a4 outputPixelBuffer:(id)a5 transformCounts:(id)a6 transforms3x3:(__CVBuffer *)a7 transformStrides:(float *)(a8;
+- (int)enqueuePixelBufferForRendering:(VISISPRendererV2 *)self inputValidBufferRect:(SEL)rect metadata:(__CVBuffer *)metadata ltmLUT:(CGRect *)t outputPixelBuffer:(id)buffer transformCounts:(id)counts transforms3x3:(__CVBuffer *)transforms3x3 transformStrides:(float *)(a8;
 - (int)finishProcessing;
-- (int)prepareToProcess:(unsigned int)a3;
+- (int)prepareToProcess:(unsigned int)process;
 - (int)purgeResources;
 - (void)dealloc;
 @end
@@ -23,9 +23,9 @@
   [(VISISPRendererV2 *)&v3 dealloc];
 }
 
-- (int)prepareToProcess:(unsigned int)a3
+- (int)prepareToProcess:(unsigned int)process
 {
-  if (a3 - 4 < 0xFFFFFFFD)
+  if (process - 4 < 0xFFFFFFFD)
   {
     goto LABEL_60;
   }
@@ -56,7 +56,7 @@
     v37 = Function(kCFAllocatorDefault, 0, &self->_ispCaptureDevice);
     if (!v37)
     {
-      if (a3 == 3)
+      if (process == 3)
       {
         v38 = &off_563F8;
       }
@@ -100,8 +100,8 @@ LABEL_6:
   v9 = *(*(CMBaseObjectGetVTable() + 8) + 48);
   if (v9)
   {
-    v10 = v9(v8, kFigCaptureISPProcessingSessionProperty_SupportedOutputs, kCFAllocatorDefault, &self->_ispOutputIdentifiers);
-    if (v10)
+    setup = v9(v8, kFigCaptureISPProcessingSessionProperty_SupportedOutputs, kCFAllocatorDefault, &self->_ispOutputIdentifiers);
+    if (setup)
     {
       goto LABEL_63;
     }
@@ -143,8 +143,8 @@ LABEL_6:
     v16 = *(*(CMBaseObjectGetVTable() + 8) + 48);
     if (v16)
     {
-      v10 = v16(v15, kFigCaptureISPProcessingSessionProperty_InputPixelBufferAttributes, kCFAllocatorDefault, &self->_ispInputPixelBufferAttributes);
-      if (v10)
+      setup = v16(v15, kFigCaptureISPProcessingSessionProperty_InputPixelBufferAttributes, kCFAllocatorDefault, &self->_ispInputPixelBufferAttributes);
+      if (setup)
       {
         goto LABEL_63;
       }
@@ -153,8 +153,8 @@ LABEL_6:
       v18 = *(*(CMBaseObjectGetVTable() + 8) + 48);
       if (v18)
       {
-        v10 = v18(v17, kFigCaptureISPProcessingSessionProperty_OutputPixelBufferAttributes, kCFAllocatorDefault, &self->_ispOutputPixelBufferAttributes);
-        if (v10)
+        setup = v18(v17, kFigCaptureISPProcessingSessionProperty_OutputPixelBufferAttributes, kCFAllocatorDefault, &self->_ispOutputPixelBufferAttributes);
+        if (setup)
         {
           goto LABEL_63;
         }
@@ -199,8 +199,8 @@ LABEL_6:
         v28 = *(*(CMBaseObjectGetVTable() + 8) + 56);
         if (v28)
         {
-          v10 = v28(v27, kFigCaptureISPProcessingSessionProperty_OutputHandler, &__block_literal_global_0);
-          if (!v10)
+          setup = v28(v27, kFigCaptureISPProcessingSessionProperty_OutputHandler, &__block_literal_global_0);
+          if (!setup)
           {
             objc_initWeak(&location, self);
             v8 = self->_ispProcessingSession;
@@ -228,7 +228,7 @@ LABEL_55:
               {
                 objc_destroyWeak(&v44);
                 objc_destroyWeak(&location);
-                if (a3 == 3)
+                if (process == 3)
                 {
                   LODWORD(v8) = [(VISISPRendererV2 *)self prepareToProcess:?];
                   if (!v8)
@@ -256,7 +256,7 @@ LABEL_55:
                   [(VISISPStripGeneratorV2 *)self->_ispStripGenerator setOutputSize:*self->_outputSize];
                   [(VISISPStripGeneratorV2 *)self->_ispStripGenerator setGridSize:*self->_gridSize];
                   [(VISISPStripGeneratorV2 *)self->_ispStripGenerator setExtendedOutputRowsToFill:self->_extendedOutputRowsToFill];
-                  if (a3 == 1)
+                  if (process == 1)
                   {
                     v34 = 1;
                   }
@@ -267,8 +267,8 @@ LABEL_55:
                   }
 
                   [(VISISPStripGeneratorV2 *)self->_ispStripGenerator setType:v34];
-                  v10 = [(VISISPStripGeneratorV2 *)self->_ispStripGenerator setup];
-                  if (!v10)
+                  setup = [(VISISPStripGeneratorV2 *)self->_ispStripGenerator setup];
+                  if (!setup)
                   {
 LABEL_35:
                     LODWORD(v8) = 0;
@@ -298,7 +298,7 @@ LABEL_60:
           }
 
 LABEL_63:
-          LODWORD(v8) = v10;
+          LODWORD(v8) = setup;
           goto LABEL_48;
         }
       }
@@ -446,8 +446,8 @@ void __37__VISISPRendererV2_prepareToProcess___block_invoke_2(uint64_t a1, int a
 
 - (__n128)inputSize
 {
-  LOWORD(v1) = *(a1 + 128);
-  WORD2(v1) = *(a1 + 130);
+  LOWORD(v1) = *(self + 128);
+  WORD2(v1) = *(self + 130);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
@@ -455,8 +455,8 @@ void __37__VISISPRendererV2_prepareToProcess___block_invoke_2(uint64_t a1, int a
 
 - (__n128)outputSize
 {
-  LOWORD(v1) = *(a1 + 132);
-  WORD2(v1) = *(a1 + 134);
+  LOWORD(v1) = *(self + 132);
+  WORD2(v1) = *(self + 134);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
@@ -464,17 +464,17 @@ void __37__VISISPRendererV2_prepareToProcess___block_invoke_2(uint64_t a1, int a
 
 - (__n128)gridSize
 {
-  LOWORD(v1) = *(a1 + 136);
-  WORD2(v1) = *(a1 + 138);
+  LOWORD(v1) = *(self + 136);
+  WORD2(v1) = *(self + 138);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
 }
 
-- (VISISPRendererV2)initWithISPProcessingSession:(OpaqueFigCaptureISPProcessingSession *)a3 metalContext:(id)a4 metalCommandQueue:(id)a5
+- (VISISPRendererV2)initWithISPProcessingSession:(OpaqueFigCaptureISPProcessingSession *)session metalContext:(id)context metalCommandQueue:(id)queue
 {
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = VISISPRendererV2;
   v11 = [(VISISPRendererV2 *)&v19 init];
@@ -484,13 +484,13 @@ void __37__VISISPRendererV2_prepareToProcess___block_invoke_2(uint64_t a1, int a
     goto LABEL_9;
   }
 
-  v11->_ispProcessingSession = a3;
-  objc_storeStrong(&v11->_metalContext, a4);
+  v11->_ispProcessingSession = session;
+  objc_storeStrong(&v11->_metalContext, context);
   metalContext = v12->_metalContext;
   if (!metalContext)
   {
     v14 = [NSBundle bundleForClass:objc_opt_class()];
-    v15 = [[FigMetalContext alloc] initWithbundle:v14 andOptionalCommandQueue:v10];
+    v15 = [[FigMetalContext alloc] initWithbundle:v14 andOptionalCommandQueue:queueCopy];
     v16 = v12->_metalContext;
     v12->_metalContext = v15;
 
@@ -501,9 +501,9 @@ void __37__VISISPRendererV2_prepareToProcess___block_invoke_2(uint64_t a1, int a
     }
   }
 
-  if (v10)
+  if (queueCopy)
   {
-    [(FigMetalContext *)metalContext setCommandQueue:v10];
+    [(FigMetalContext *)metalContext setCommandQueue:queueCopy];
   }
 
   if (![(VISISPRendererV2 *)v12 _compileShaders])
@@ -520,17 +520,17 @@ LABEL_9:
   return v17;
 }
 
-- (int)enqueuePixelBufferForRendering:(VISISPRendererV2 *)self inputValidBufferRect:(SEL)a2 metadata:(__CVBuffer *)a3 ltmLUT:(CGRect *)a4 outputPixelBuffer:(id)a5 transformCounts:(id)a6 transforms3x3:(__CVBuffer *)a7 transformStrides:(float *)(a8
+- (int)enqueuePixelBufferForRendering:(VISISPRendererV2 *)self inputValidBufferRect:(SEL)rect metadata:(__CVBuffer *)metadata ltmLUT:(CGRect *)t outputPixelBuffer:(id)buffer transformCounts:(id)counts transforms3x3:(__CVBuffer *)transforms3x3 transformStrides:(float *)(a8
 {
   v10 = v9;
   v12 = v8;
-  v51 = a5;
-  v18 = a6;
-  v19 = 0;
+  bufferCopy = buffer;
+  countsCopy = counts;
+  iSPMeshParams = 0;
   v20 = 0;
   origin = 0;
   v54 = 0;
-  if (!a3 || !a7)
+  if (!metadata || !transforms3x3)
   {
     v21 = 0;
     goto LABEL_34;
@@ -545,19 +545,19 @@ LABEL_9:
   if (!self->_setupCompleted)
   {
     v20 = 0;
-    v19 = 0;
+    iSPMeshParams = 0;
     v21 = 0;
     goto LABEL_34;
   }
 
-  v22 = CMGetAttachment(a3, @"LowResolutionImageUsedByVideoEncoder", 0);
+  v22 = CMGetAttachment(metadata, @"LowResolutionImageUsedByVideoEncoder", 0);
   v23 = kFigCaptureISPProcessingSessionOutputID_PrimaryScalerLowRes;
   if (v22)
   {
     if (![(NSArray *)self->_ispOutputIdentifiers containsObject:kFigCaptureISPProcessingSessionOutputID_PrimaryScalerLowRes])
     {
       v20 = 0;
-      v19 = 0;
+      iSPMeshParams = 0;
       v21 = 0;
       goto LABEL_33;
     }
@@ -571,21 +571,21 @@ LABEL_9:
   }
 
   v52[0] = kFigCaptureISPProcessingSessionOutputID_PrimaryScaler;
-  v52[1] = a7;
+  v52[1] = transforms3x3;
   v52[2] = v23;
   v52[3] = v22;
-  if (a4)
+  if (t)
   {
-    size = a4->size;
-    origin = a4->origin;
+    size = t->size;
+    origin = t->origin;
     v54 = size;
   }
 
   else
   {
     origin = 0;
-    v54.width = CVPixelBufferGetWidth(a3);
-    v54.height = CVPixelBufferGetHeight(a3);
+    v54.width = CVPixelBufferGetWidth(metadata);
+    v54.height = CVPixelBufferGetHeight(metadata);
   }
 
   if (self->_ispMeshGenerator)
@@ -594,8 +594,8 @@ LABEL_9:
     v28 = [v27 generateMeshWithTransforms:v26 transforms3x3:? validBufferRect:? ltmLUT:?];
     if (!v28)
     {
-      v19 = [(VISISPMeshGeneratorV2 *)self->_ispMeshGenerator ISPMeshParams];
-      if (!v19)
+      iSPMeshParams = [(VISISPMeshGeneratorV2 *)self->_ispMeshGenerator ISPMeshParams];
+      if (!iSPMeshParams)
       {
 LABEL_36:
         v21 = 0;
@@ -613,13 +613,13 @@ LABEL_20:
         goto LABEL_29;
       }
 
-      [v34 setObject:v19 forKeyedSubscript:kFigCaptureISPProcessingSessionParameterKey_SessionTypeSpecificParameters];
+      [v34 setObject:iSPMeshParams forKeyedSubscript:kFigCaptureISPProcessingSessionParameterKey_SessionTypeSpecificParameters];
       dispatch_semaphore_wait(self->_ispBackPressure, 0xFFFFFFFFFFFFFFFFLL);
       dispatch_semaphore_wait(self->_frameCounterMutex, 0xFFFFFFFFFFFFFFFFLL);
       ++self->_numberOfFramesEnqueued;
       dispatch_semaphore_signal(self->_frameCounterMutex);
-      v35 = CMGetAttachment(a3, @"InputDepthPixelBuffer", 0);
-      v36 = CMGetAttachment(a3, @"OutputDepthPixelBuffer", 0);
+      v35 = CMGetAttachment(metadata, @"InputDepthPixelBuffer", 0);
+      v36 = CMGetAttachment(metadata, @"OutputDepthPixelBuffer", 0);
       if (v35)
       {
         v37 = v36;
@@ -627,14 +627,14 @@ LABEL_20:
         {
           v49 = a8;
           v38 = v22;
-          v39 = v18;
-          Width = CVPixelBufferGetWidth(a3);
-          v48 = COERCE_DOUBLE(__PAIR64__(CVPixelBufferGetHeight(a3), Width));
-          v41 = CVPixelBufferGetWidth(a7);
-          v42 = COERCE_DOUBLE(__PAIR64__(CVPixelBufferGetHeight(a7), v41));
-          v18 = v39;
+          v39 = countsCopy;
+          Width = CVPixelBufferGetWidth(metadata);
+          v48 = COERCE_DOUBLE(__PAIR64__(CVPixelBufferGetHeight(metadata), Width));
+          v41 = CVPixelBufferGetWidth(transforms3x3);
+          v42 = COERCE_DOUBLE(__PAIR64__(CVPixelBufferGetHeight(transforms3x3), v41));
+          countsCopy = v39;
           v22 = v38;
-          v43 = AffineTransformArrayApplyOnAttachmentPixelBuffer(self->_gpuRenderer, v35, v37, v49, &origin, v51, v48, v42, v12, v10);
+          v43 = AffineTransformArrayApplyOnAttachmentPixelBuffer(self->_gpuRenderer, v35, v37, v49, &origin, bufferCopy, v48, v42, v12, v10);
           if (v43)
           {
             v20 = v43;
@@ -648,7 +648,7 @@ LABEL_20:
       v45 = *(*(CMBaseObjectGetVTable() + 16) + 16);
       if (v45)
       {
-        v20 = v45(ispProcessingSession, self, a3, v50, v52, v21);
+        v20 = v45(ispProcessingSession, self, metadata, v50, v52, v21);
         dispatch_semaphore_signal(self->_ispRendererLock);
         if (!v20)
         {
@@ -690,34 +690,34 @@ LABEL_29:
     v28 = [v30 generateStripsWithTransforms:v29 transforms3x3:? validBufferRect:?];
     if (!v28)
     {
-      v31 = [(VISISPStripGeneratorV2 *)self->_ispStripGenerator ISPStripParams];
-      v19 = v31;
-      if (!v31)
+      iSPStripParams = [(VISISPStripGeneratorV2 *)self->_ispStripGenerator ISPStripParams];
+      iSPMeshParams = iSPStripParams;
+      if (!iSPStripParams)
       {
         goto LABEL_36;
       }
 
-      v32 = [v31 bytes];
-      if (!v32)
+      bytes = [iSPStripParams bytes];
+      if (!bytes)
       {
         goto LABEL_36;
       }
 
-      v33 = v32;
-      v32[2] = [(VISISPRendererV2 *)self _isPixelBuffer422:a3];
-      v33[3] = [(VISISPRendererV2 *)self _isPixelBuffer422:a7];
+      v33 = bytes;
+      bytes[2] = [(VISISPRendererV2 *)self _isPixelBuffer422:metadata];
+      v33[3] = [(VISISPRendererV2 *)self _isPixelBuffer422:transforms3x3];
       goto LABEL_20;
     }
   }
 
   v20 = v28;
   v21 = 0;
-  v19 = 0;
+  iSPMeshParams = 0;
 LABEL_32:
   if (v22)
   {
 LABEL_33:
-    CMRemoveAttachment(a3, @"LowResolutionImageUsedByVideoEncoder");
+    CMRemoveAttachment(metadata, @"LowResolutionImageUsedByVideoEncoder");
   }
 
 LABEL_34:
@@ -725,12 +725,12 @@ LABEL_34:
   return v20;
 }
 
-- (BOOL)_isPixelBuffer422:(__CVBuffer *)a3
+- (BOOL)_isPixelBuffer422:(__CVBuffer *)buffer422
 {
   result = 0;
-  if (a3)
+  if (buffer422)
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(buffer422);
     v4 = PixelFormatType == 645424690 || PixelFormatType == 645428786;
     v5 = v4 || PixelFormatType == 762865202;
     v6 = v5 || PixelFormatType == 762869298;

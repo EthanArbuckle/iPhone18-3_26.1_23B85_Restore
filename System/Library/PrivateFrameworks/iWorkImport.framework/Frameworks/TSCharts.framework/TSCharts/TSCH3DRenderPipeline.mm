@@ -1,17 +1,17 @@
 @interface TSCH3DRenderPipeline
-+ (id)clipRectForTargetSize:(void *)a3 intermediateSize:(void *)a4;
-+ (id)pipelineWithProcessor:(id)a3 session:(id)a4;
++ (id)clipRectForTargetSize:(void *)size intermediateSize:(void *)intermediateSize;
++ (id)pipelineWithProcessor:(id)processor session:(id)session;
 - (TSCH3DContext)context;
-- (TSCH3DRenderPipeline)initWithProcessor:(id)a3 session:(id)a4;
+- (TSCH3DRenderPipeline)initWithProcessor:(id)processor session:(id)session;
 @end
 
 @implementation TSCH3DRenderPipeline
 
-+ (id)clipRectForTargetSize:(void *)a3 intermediateSize:(void *)a4
++ (id)clipRectForTargetSize:(void *)size intermediateSize:(void *)intermediateSize
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = *a3;
-  v8 = *a4;
+  v7 = *size;
+  v8 = *intermediateSize;
   v9 = objc_msgSend_bufferWithCapacity_(TSCH3Dvec4DataBuffer, a2, v4, v5, v6, 0);
   v14 = objc_msgSend_container(v9, v10, v11, v12, v13);
   v31 = xmmword_2764D6070;
@@ -38,28 +38,28 @@
   return v25;
 }
 
-+ (id)pipelineWithProcessor:(id)a3 session:(id)a4
++ (id)pipelineWithProcessor:(id)processor session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v13 = objc_msgSend_initWithProcessor_session_(v8, v9, v10, v11, v12, v6, v7);
+  processorCopy = processor;
+  sessionCopy = session;
+  v8 = [self alloc];
+  v13 = objc_msgSend_initWithProcessor_session_(v8, v9, v10, v11, v12, processorCopy, sessionCopy);
 
   return v13;
 }
 
-- (TSCH3DRenderPipeline)initWithProcessor:(id)a3 session:(id)a4
+- (TSCH3DRenderPipeline)initWithProcessor:(id)processor session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  processorCopy = processor;
+  sessionCopy = session;
   v12.receiver = self;
   v12.super_class = TSCH3DRenderPipeline;
   v9 = [(TSCH3DRenderPipeline *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_processor, a3);
-    objc_storeStrong(&v10->_session, a4);
+    objc_storeStrong(&v9->_processor, processor);
+    objc_storeStrong(&v10->_session, session);
   }
 
   return v10;

@@ -1,30 +1,30 @@
 @interface GCControllerDirectionPad
-- (BOOL)_commitPendingValueOnQueue:(id)a3;
-- (GCControllerDirectionPad)initWithDigital:(BOOL)a3 descriptionName:(id)a4;
+- (BOOL)_commitPendingValueOnQueue:(id)queue;
+- (GCControllerDirectionPad)initWithDigital:(BOOL)digital descriptionName:(id)name;
 - (id)debugDescription;
 - (id)description;
 - (int)getAndResetTimesPressed;
-- (void)_fireValueChangedWithQueue:(id)a3;
-- (void)setUnmappedLocalizedName:(id)a3;
-- (void)setUnmappedNameLocalizationKey:(id)a3;
+- (void)_fireValueChangedWithQueue:(id)queue;
+- (void)setUnmappedLocalizedName:(id)name;
+- (void)setUnmappedNameLocalizationKey:(id)key;
 - (void)setValueForXAxis:(float)xAxis yAxis:(float)yAxis;
 @end
 
 @implementation GCControllerDirectionPad
 
-- (GCControllerDirectionPad)initWithDigital:(BOOL)a3 descriptionName:(id)a4
+- (GCControllerDirectionPad)initWithDigital:(BOOL)digital descriptionName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = GCControllerDirectionPad;
   v7 = [(GCControllerElement *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    v7->_nonAnalog = a3;
-    if (v6)
+    v7->_nonAnalog = digital;
+    if (nameCopy)
     {
-      v9 = [v6 copy];
+      v9 = [nameCopy copy];
       [(GCControllerElement *)v8 setPrimaryAlias:v9];
     }
 
@@ -48,16 +48,16 @@
   return v8;
 }
 
-- (void)_fireValueChangedWithQueue:(id)a3
+- (void)_fireValueChangedWithQueue:(id)queue
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   v5 = _gc_log_signpost();
-  v6 = [(GCControllerElement *)self device];
-  v7 = [(GCControllerElement *)self primaryAlias];
-  v8 = [(GCControllerElement *)self device];
-  v9 = [v8 physicalInputProfile];
-  [v9 lastEventTimestamp];
+  device = [(GCControllerElement *)self device];
+  primaryAlias = [(GCControllerElement *)self primaryAlias];
+  device2 = [(GCControllerElement *)self device];
+  physicalInputProfile = [device2 physicalInputProfile];
+  [physicalInputProfile lastEventTimestamp];
   v11 = v10;
 
   [(GCControllerAxisInput *)self->_xAxis value];
@@ -78,9 +78,9 @@
       if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
       {
         *buf = 134219011;
-        v33 = v6;
+        v33 = device;
         v34 = 2117;
-        v35 = v7;
+        v35 = primaryAlias;
         v36 = 2048;
         v37 = v11;
         v38 = 2053;
@@ -101,20 +101,20 @@
     v31 = v15;
     v27 = v5;
     v29 = v17;
-    dispatch_async(v4, block);
+    dispatch_async(queueCopy, block);
   }
 
-  v20 = self;
+  selfCopy = self;
   v21 = fmaxf(fabsf(v13), fabsf(v15)) > 0.0019531;
-  if (v20->_wasZeroed && v21)
+  if (selfCopy->_wasZeroed && v21)
   {
-    ++v20->_timesPressed;
-    v20->_wasZeroed = 0;
+    ++selfCopy->_timesPressed;
+    selfCopy->_wasZeroed = 0;
   }
 
   if (!v21)
   {
-    v20->_wasZeroed = 1;
+    selfCopy->_wasZeroed = 1;
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -136,13 +136,13 @@ void __55__GCControllerDirectionPad__fireValueChangedWithQueue___block_invoke(ui
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(GCControllerElement *)self primaryAlias];
-  v5 = [(GCControllerDirectionPad *)self xAxis];
-  [v5 value];
+  primaryAlias = [(GCControllerElement *)self primaryAlias];
+  xAxis = [(GCControllerDirectionPad *)self xAxis];
+  [xAxis value];
   v7 = v6;
-  v8 = [(GCControllerDirectionPad *)self yAxis];
-  [v8 value];
-  v10 = [v3 stringWithFormat:@"%@ (x: %+.3f, y: %+.3f)", v4, *&v7, v9];
+  yAxis = [(GCControllerDirectionPad *)self yAxis];
+  [yAxis value];
+  v10 = [v3 stringWithFormat:@"%@ (x: %+.3f, y: %+.3f)", primaryAlias, *&v7, v9];
 
   return v10;
 }
@@ -158,62 +158,62 @@ void __55__GCControllerDirectionPad__fireValueChangedWithQueue___block_invoke(ui
   return v7;
 }
 
-- (BOOL)_commitPendingValueOnQueue:(id)a3
+- (BOOL)_commitPendingValueOnQueue:(id)queue
 {
-  v3 = self;
+  selfCopy = self;
   xAxis = self->_xAxis;
-  v5 = a3;
-  LOBYTE(xAxis) = [(GCControllerElement *)xAxis _commitPendingValueOnQueue:v5];
-  LOBYTE(v3) = [(GCControllerElement *)v3->_yAxis _commitPendingValueOnQueue:v5];
+  queueCopy = queue;
+  LOBYTE(xAxis) = [(GCControllerElement *)xAxis _commitPendingValueOnQueue:queueCopy];
+  LOBYTE(selfCopy) = [(GCControllerElement *)selfCopy->_yAxis _commitPendingValueOnQueue:queueCopy];
 
-  return (xAxis | v3) & 1;
+  return (xAxis | selfCopy) & 1;
 }
 
 - (void)setValueForXAxis:(float)xAxis yAxis:(float)yAxis
 {
-  v20 = [(GCControllerElement *)self device];
-  if (v20)
+  device = [(GCControllerElement *)self device];
+  if (device)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v8 = v20;
+    v8 = device;
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_10;
     }
 
-    v9 = [v20 isSnapshot];
-    v8 = v20;
-    if ((v9 & 1) == 0)
+    isSnapshot = [device isSnapshot];
+    v8 = device;
+    if ((isSnapshot & 1) == 0)
     {
       goto LABEL_10;
     }
 
-    v10 = [v20 handlerQueue];
+    handlerQueue = [device handlerQueue];
   }
 
   else
   {
-    v10 = MEMORY[0x1E69E96A0];
+    handlerQueue = MEMORY[0x1E69E96A0];
     v11 = MEMORY[0x1E69E96A0];
   }
 
-  v12 = self;
-  v13 = v10;
-  v14 = [(GCControllerDirectionPad *)v12 xAxis];
+  selfCopy = self;
+  v13 = handlerQueue;
+  xAxis = [(GCControllerDirectionPad *)selfCopy xAxis];
   *&v15 = xAxis;
-  v16 = [v14 _setValue:v13 queue:v15];
+  v16 = [xAxis _setValue:v13 queue:v15];
 
-  v17 = [(GCControllerDirectionPad *)v12 yAxis];
+  yAxis = [(GCControllerDirectionPad *)selfCopy yAxis];
   *&v18 = yAxis;
-  v19 = [v17 _setValue:v13 queue:v18];
+  v19 = [yAxis _setValue:v13 queue:v18];
 
   if ((v16 & 1) != 0 || v19)
   {
-    [0 addObject:v12];
+    [0 addObject:selfCopy];
   }
 
-  v8 = v20;
+  v8 = device;
 LABEL_10:
 }
 
@@ -224,85 +224,85 @@ LABEL_10:
   return timesPressed;
 }
 
-- (void)setUnmappedLocalizedName:(id)a3
+- (void)setUnmappedLocalizedName:(id)name
 {
   v35.receiver = self;
   v35.super_class = GCControllerDirectionPad;
-  [(GCControllerElement *)&v35 setUnmappedLocalizedName:a3];
-  v4 = [(GCControllerElement *)self unmappedLocalizedName];
+  [(GCControllerElement *)&v35 setUnmappedLocalizedName:name];
+  unmappedLocalizedName = [(GCControllerElement *)self unmappedLocalizedName];
 
-  if (v4)
+  if (unmappedLocalizedName)
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = _GCFConvertStringToLocalizedString();
-    v7 = [(GCControllerElement *)self unmappedLocalizedName];
-    v8 = [v5 stringWithFormat:v6, v7];
+    unmappedLocalizedName2 = [(GCControllerElement *)self unmappedLocalizedName];
+    v8 = [v5 stringWithFormat:v6, unmappedLocalizedName2];
     v9 = [(GCControllerDirectionPad *)self up];
     [v9 setUnmappedLocalizedName:v8];
 
     v10 = MEMORY[0x1E696AEC0];
     v11 = _GCFConvertStringToLocalizedString();
-    v12 = [(GCControllerElement *)self unmappedLocalizedName];
-    v13 = [v10 stringWithFormat:v11, v12];
-    v14 = [(GCControllerDirectionPad *)self down];
-    [v14 setUnmappedLocalizedName:v13];
+    unmappedLocalizedName3 = [(GCControllerElement *)self unmappedLocalizedName];
+    v13 = [v10 stringWithFormat:v11, unmappedLocalizedName3];
+    down = [(GCControllerDirectionPad *)self down];
+    [down setUnmappedLocalizedName:v13];
 
     v15 = MEMORY[0x1E696AEC0];
     v16 = _GCFConvertStringToLocalizedString();
-    v17 = [(GCControllerElement *)self unmappedLocalizedName];
-    v18 = [v15 stringWithFormat:v16, v17];
-    v19 = [(GCControllerDirectionPad *)self left];
-    [v19 setUnmappedLocalizedName:v18];
+    unmappedLocalizedName4 = [(GCControllerElement *)self unmappedLocalizedName];
+    v18 = [v15 stringWithFormat:v16, unmappedLocalizedName4];
+    left = [(GCControllerDirectionPad *)self left];
+    [left setUnmappedLocalizedName:v18];
 
     v20 = MEMORY[0x1E696AEC0];
     v21 = _GCFConvertStringToLocalizedString();
-    v22 = [(GCControllerElement *)self unmappedLocalizedName];
-    v23 = [v20 stringWithFormat:v21, v22];
-    v24 = [(GCControllerDirectionPad *)self right];
-    [v24 setUnmappedLocalizedName:v23];
+    unmappedLocalizedName5 = [(GCControllerElement *)self unmappedLocalizedName];
+    v23 = [v20 stringWithFormat:v21, unmappedLocalizedName5];
+    right = [(GCControllerDirectionPad *)self right];
+    [right setUnmappedLocalizedName:v23];
 
     v25 = MEMORY[0x1E696AEC0];
     v26 = _GCFConvertStringToLocalizedString();
-    v27 = [(GCControllerElement *)self unmappedLocalizedName];
-    v28 = [v25 stringWithFormat:v26, v27];
-    v29 = [(GCControllerDirectionPad *)self xAxis];
-    [v29 setUnmappedLocalizedName:v28];
+    unmappedLocalizedName6 = [(GCControllerElement *)self unmappedLocalizedName];
+    v28 = [v25 stringWithFormat:v26, unmappedLocalizedName6];
+    xAxis = [(GCControllerDirectionPad *)self xAxis];
+    [xAxis setUnmappedLocalizedName:v28];
 
     v30 = MEMORY[0x1E696AEC0];
     v31 = _GCFConvertStringToLocalizedString();
-    v32 = [(GCControllerElement *)self unmappedLocalizedName];
-    v33 = [v30 stringWithFormat:v31, v32];
-    v34 = [(GCControllerDirectionPad *)self yAxis];
-    [v34 setUnmappedLocalizedName:v33];
+    unmappedLocalizedName7 = [(GCControllerElement *)self unmappedLocalizedName];
+    v33 = [v30 stringWithFormat:v31, unmappedLocalizedName7];
+    yAxis = [(GCControllerDirectionPad *)self yAxis];
+    [yAxis setUnmappedLocalizedName:v33];
   }
 }
 
-- (void)setUnmappedNameLocalizationKey:(id)a3
+- (void)setUnmappedNameLocalizationKey:(id)key
 {
   v11.receiver = self;
   v11.super_class = GCControllerDirectionPad;
-  [(GCControllerElement *)&v11 setUnmappedNameLocalizationKey:a3];
-  v4 = [(GCControllerElement *)self unmappedNameLocalizationKey];
+  [(GCControllerElement *)&v11 setUnmappedNameLocalizationKey:key];
+  unmappedNameLocalizationKey = [(GCControllerElement *)self unmappedNameLocalizationKey];
 
-  if (v4)
+  if (unmappedNameLocalizationKey)
   {
     v5 = [(GCControllerDirectionPad *)self up];
     [v5 setUnmappedNameLocalizationKey:@"DIRECTION_PAD_UP"];
 
-    v6 = [(GCControllerDirectionPad *)self down];
-    [v6 setUnmappedNameLocalizationKey:@"DIRECTION_PAD_DOWN"];
+    down = [(GCControllerDirectionPad *)self down];
+    [down setUnmappedNameLocalizationKey:@"DIRECTION_PAD_DOWN"];
 
-    v7 = [(GCControllerDirectionPad *)self left];
-    [v7 setUnmappedNameLocalizationKey:@"DIRECTION_PAD_LEFT"];
+    left = [(GCControllerDirectionPad *)self left];
+    [left setUnmappedNameLocalizationKey:@"DIRECTION_PAD_LEFT"];
 
-    v8 = [(GCControllerDirectionPad *)self right];
-    [v8 setUnmappedNameLocalizationKey:@"DIRECTION_PAD_RIGHT"];
+    right = [(GCControllerDirectionPad *)self right];
+    [right setUnmappedNameLocalizationKey:@"DIRECTION_PAD_RIGHT"];
 
-    v9 = [(GCControllerDirectionPad *)self xAxis];
-    [v9 setUnmappedNameLocalizationKey:@"DIRECTION_PAD_X_AXIS"];
+    xAxis = [(GCControllerDirectionPad *)self xAxis];
+    [xAxis setUnmappedNameLocalizationKey:@"DIRECTION_PAD_X_AXIS"];
 
-    v10 = [(GCControllerDirectionPad *)self yAxis];
-    [v10 setUnmappedNameLocalizationKey:@"DIRECTION_PAD_Y_AXIS"];
+    yAxis = [(GCControllerDirectionPad *)self yAxis];
+    [yAxis setUnmappedNameLocalizationKey:@"DIRECTION_PAD_Y_AXIS"];
   }
 }
 

@@ -1,22 +1,22 @@
 @interface FCTranslationMap
-- (FCTranslationMap)initWithPBTranslationMap:(id)a3 resourceID:(id)a4;
-- (id)favoriteTranslationForTagID:(id)a3;
-- (id)topicTranslationForTagID:(id)a3;
+- (FCTranslationMap)initWithPBTranslationMap:(id)map resourceID:(id)d;
+- (id)favoriteTranslationForTagID:(id)d;
+- (id)topicTranslationForTagID:(id)d;
 @end
 
 @implementation FCTranslationMap
 
-- (FCTranslationMap)initWithPBTranslationMap:(id)a3 resourceID:(id)a4
+- (FCTranslationMap)initWithPBTranslationMap:(id)map resourceID:(id)d
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  dCopy = d;
   v28.receiver = self;
   v28.super_class = FCTranslationMap;
   v8 = [(FCTranslationMap *)&v28 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [dCopy copy];
     resourceID = v8->_resourceID;
     v8->_resourceID = v9;
 
@@ -25,7 +25,7 @@
     v26[1] = 3221225472;
     v26[2] = __56__FCTranslationMap_initWithPBTranslationMap_resourceID___block_invoke;
     v26[3] = &unk_1E7C36EC8;
-    v12 = v6;
+    v12 = mapCopy;
     v27 = v12;
     v13 = [v11 fc_dictionary:v26];
     topicTranslationMap = v8->_topicTranslationMap;
@@ -173,13 +173,13 @@ void __56__FCTranslationMap_initWithPBTranslationMap_resourceID___block_invoke_3
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)topicTranslationForTagID:(id)a3
+- (id)topicTranslationForTagID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(FCTranslationMap *)self topicTranslationMap];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    dCopy = d;
+    topicTranslationMap = [(FCTranslationMap *)self topicTranslationMap];
+    v6 = [topicTranslationMap objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -190,13 +190,13 @@ void __56__FCTranslationMap_initWithPBTranslationMap_resourceID___block_invoke_3
   return v6;
 }
 
-- (id)favoriteTranslationForTagID:(id)a3
+- (id)favoriteTranslationForTagID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(FCTranslationMap *)self favoriteTranslationMap];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    dCopy = d;
+    favoriteTranslationMap = [(FCTranslationMap *)self favoriteTranslationMap];
+    v6 = [favoriteTranslationMap objectForKeyedSubscript:dCopy];
   }
 
   else

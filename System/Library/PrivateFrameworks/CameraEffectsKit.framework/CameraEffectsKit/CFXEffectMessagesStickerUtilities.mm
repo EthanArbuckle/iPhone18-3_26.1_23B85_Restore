@@ -1,22 +1,22 @@
 @interface CFXEffectMessagesStickerUtilities
-+ (CGSize)JFX_recommendedStickerPreviewSizeInPixelsForStickerSize:(int64_t)a3;
-+ (id)animatedPreviewFileNameForOverlayID:(id)a3;
++ (CGSize)JFX_recommendedStickerPreviewSizeInPixelsForStickerSize:(int64_t)size;
++ (id)animatedPreviewFileNameForOverlayID:(id)d;
 + (id)animatedPreviewsDirectory;
-+ (id)overlayIDFromAnimatedPreviewFileName:(id)a3;
-+ (id)stickerPropertiesForIndex:(int64_t)a3 forEffectTypeId:(id)a4;
-+ (int64_t)numberOfStickersForEffectTypeId:(id)a3;
-+ (void)cacheAnimatedStickerPreviewsForOverlayTypeId:(id)a3 atStickerSize:(int64_t)a4 previewDuration:(double)a5 previewFrameRate:(unint64_t)a6 previewCompletedBlock:(id)a7;
++ (id)overlayIDFromAnimatedPreviewFileName:(id)name;
++ (id)stickerPropertiesForIndex:(int64_t)index forEffectTypeId:(id)id;
++ (int64_t)numberOfStickersForEffectTypeId:(id)id;
++ (void)cacheAnimatedStickerPreviewsForOverlayTypeId:(id)id atStickerSize:(int64_t)size previewDuration:(double)duration previewFrameRate:(unint64_t)rate previewCompletedBlock:(id)block;
 @end
 
 @implementation CFXEffectMessagesStickerUtilities
 
-+ (void)cacheAnimatedStickerPreviewsForOverlayTypeId:(id)a3 atStickerSize:(int64_t)a4 previewDuration:(double)a5 previewFrameRate:(unint64_t)a6 previewCompletedBlock:(id)a7
++ (void)cacheAnimatedStickerPreviewsForOverlayTypeId:(id)id atStickerSize:(int64_t)size previewDuration:(double)duration previewFrameRate:(unint64_t)rate previewCompletedBlock:(id)block
 {
   v56[3] = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v35 = a7;
-  v39 = a1;
-  v37 = [a1 animatedPreviewsDirectory];
+  idCopy = id;
+  blockCopy = block;
+  selfCopy = self;
+  animatedPreviewsDirectory = [self animatedPreviewsDirectory];
   if (cacheAnimatedStickerPreviewsForOverlayTypeId_atStickerSize_previewDuration_previewFrameRate_previewCompletedBlock__onceToken != -1)
   {
     +[CFXEffectMessagesStickerUtilities cacheAnimatedStickerPreviewsForOverlayTypeId:atStickerSize:previewDuration:previewFrameRate:previewCompletedBlock:];
@@ -48,7 +48,7 @@
   v54[1] = v54;
   v54[2] = 0x2020000000;
   v54[3] = 0;
-  v38 = [CFXEffectType effectTypeWithIdentifier:v36];
+  v38 = [CFXEffectType effectTypeWithIdentifier:idCopy];
   v17 = [CFXEffect effectIdentifiersForEffectType:?];
   v18 = [v17 count];
   if (v18)
@@ -57,16 +57,16 @@
     {
       v20 = [v17 objectAtIndexedSubscript:i];
       v21 = [CFXEffect effectWithIdentifier:v20 forEffectType:v38];
-      v22 = [v21 jtEffect];
+      jtEffect = [v21 jtEffect];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0 || ([v21 jtEffect], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "isEmoji"), v24, (v25 & 1) == 0))
       {
-        v26 = [v39 animatedPreviewFileNameForOverlayID:v20];
-        v27 = [v37 stringByAppendingPathComponent:v26];
-        v28 = [MEMORY[0x277CCAA00] defaultManager];
-        v29 = [v28 fileExistsAtPath:v27];
+        v26 = [selfCopy animatedPreviewFileNameForOverlayID:v20];
+        v27 = [animatedPreviewsDirectory stringByAppendingPathComponent:v26];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v29 = [defaultManager fileExistsAtPath:v27];
 
         if ((v29 & 1) == 0)
         {
@@ -76,17 +76,17 @@
           block[1] = 3221225472;
           block[2] = __151__CFXEffectMessagesStickerUtilities_cacheAnimatedStickerPreviewsForOverlayTypeId_atStickerSize_previewDuration_previewFrameRate_previewCompletedBlock___block_invoke_17;
           block[3] = &unk_278D7B720;
-          v49 = a5;
-          v50 = a6;
-          v42 = v36;
+          durationCopy = duration;
+          rateCopy = rate;
+          v42 = idCopy;
           v43 = v34;
           v44 = v20;
           v45 = v33;
-          v51 = v39;
-          v52 = a4;
+          v51 = selfCopy;
+          sizeCopy = size;
           v46 = v27;
           v48 = v54;
-          v47 = v35;
+          v47 = blockCopy;
           v53 = i;
           dispatch_async(v30, block);
         }
@@ -254,10 +254,10 @@ void __151__CFXEffectMessagesStickerUtilities_cacheAnimatedStickerPreviewsForOve
   }
 }
 
-+ (CGSize)JFX_recommendedStickerPreviewSizeInPixelsForStickerSize:(int64_t)a3
++ (CGSize)JFX_recommendedStickerPreviewSizeInPixelsForStickerSize:(int64_t)size
 {
-  v3 = dbl_242B5BB20[a3 == 1];
-  if (a3 == 2)
+  v3 = dbl_242B5BB20[size == 1];
+  if (size == 2)
   {
     v3 = 618.0;
   }
@@ -271,51 +271,51 @@ void __151__CFXEffectMessagesStickerUtilities_cacheAnimatedStickerPreviewsForOve
 + (id)animatedPreviewsDirectory
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"animatedPreviews"];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  v4 = [lastObject stringByAppendingPathComponent:@"animatedPreviews"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    [v7 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   return v4;
 }
 
-+ (id)animatedPreviewFileNameForOverlayID:(id)a3
++ (id)animatedPreviewFileNameForOverlayID:(id)d
 {
   v3 = MEMORY[0x277CBEAF8];
-  v4 = a3;
-  v5 = [v3 preferredLanguages];
-  v6 = [v5 firstObject];
+  dCopy = d;
+  preferredLanguages = [v3 preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%@", @"CFXAnimatedPreviewV10", v4, v6];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%@", @"CFXAnimatedPreviewV10", dCopy, firstObject];
 
   v8 = [v7 stringByAppendingPathExtension:@"png"];
 
   return v8;
 }
 
-+ (id)overlayIDFromAnimatedPreviewFileName:(id)a3
++ (id)overlayIDFromAnimatedPreviewFileName:(id)name
 {
-  v3 = [a3 lastPathComponent];
-  if ([v3 isEqualToString:@"EmojiCustomAnimatedPreview.png"])
+  lastPathComponent = [name lastPathComponent];
+  if ([lastPathComponent isEqualToString:@"EmojiCustomAnimatedPreview.png"])
   {
     v4 = *MEMORY[0x277D417D0];
-    v5 = v3;
+    stringByDeletingPathExtension = lastPathComponent;
   }
 
   else
   {
-    v5 = [v3 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    if ([v5 hasPrefix:@"CFXAnimatedPreviewV10"])
+    if ([stringByDeletingPathExtension hasPrefix:@"CFXAnimatedPreviewV10"])
     {
-      v6 = [v5 componentsSeparatedByString:@"_"];
+      v6 = [stringByDeletingPathExtension componentsSeparatedByString:@"_"];
       if ([v6 count] == 3)
       {
         v4 = [v6 objectAtIndexedSubscript:1];
@@ -336,10 +336,10 @@ void __151__CFXEffectMessagesStickerUtilities_cacheAnimatedStickerPreviewsForOve
   return v4;
 }
 
-+ (int64_t)numberOfStickersForEffectTypeId:(id)a3
++ (int64_t)numberOfStickersForEffectTypeId:(id)id
 {
-  v3 = a3;
-  v4 = [CFXEffectType effectTypeWithIdentifier:v3];
+  idCopy = id;
+  v4 = [CFXEffectType effectTypeWithIdentifier:idCopy];
   v5 = [CFXEffect effectIdentifiersForEffectType:v4];
   v6 = JFXLog_pickerUI();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -351,44 +351,44 @@ void __151__CFXEffectMessagesStickerUtilities_cacheAnimatedStickerPreviewsForOve
   return v7;
 }
 
-+ (id)stickerPropertiesForIndex:(int64_t)a3 forEffectTypeId:(id)a4
++ (id)stickerPropertiesForIndex:(int64_t)index forEffectTypeId:(id)id
 {
-  v5 = a4;
-  v6 = [CFXEffectType effectTypeWithIdentifier:v5];
-  v7 = [v6 effects];
+  idCopy = id;
+  v6 = [CFXEffectType effectTypeWithIdentifier:idCopy];
+  effects = [v6 effects];
   v8 = JFXLog_pickerUI();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(CFXEffectMessagesStickerUtilities *)v5 stickerPropertiesForIndex:a3 forEffectTypeId:v8];
+    [(CFXEffectMessagesStickerUtilities *)idCopy stickerPropertiesForIndex:index forEffectTypeId:v8];
   }
 
-  v25 = v5;
+  v25 = idCopy;
 
-  v9 = [v7 objectAtIndex:a3];
-  v10 = [v9 identifier];
-  v11 = [v9 jtEffect];
+  v9 = [effects objectAtIndex:index];
+  identifier = [v9 identifier];
+  jtEffect = [v9 jtEffect];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) != 0 && ([v9 jtEffect], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEmoji"), v13, v14))
   {
-    v15 = [MEMORY[0x277CCA8D8] jfxBundle];
-    v16 = [v15 pathForResource:@"EmojiCustomAnimatedPreview.png" ofType:0];
+    jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+    v16 = [jfxBundle pathForResource:@"EmojiCustomAnimatedPreview.png" ofType:0];
   }
 
   else
   {
-    v15 = +[CFXEffectMessagesStickerUtilities animatedPreviewsDirectory];
-    v17 = [CFXEffectMessagesStickerUtilities animatedPreviewFileNameForOverlayID:v10];
-    v16 = [v15 stringByAppendingPathComponent:v17];
+    jfxBundle = +[CFXEffectMessagesStickerUtilities animatedPreviewsDirectory];
+    v17 = [CFXEffectMessagesStickerUtilities animatedPreviewFileNameForOverlayID:identifier];
+    v16 = [jfxBundle stringByAppendingPathComponent:v17];
   }
 
   v18 = [MEMORY[0x277CBEBC0] fileURLWithPath:v16];
   v19 = [CFXEffectMessagesStickerProperties alloc];
-  v20 = [v9 identifier];
-  v21 = [v9 jtEffect];
-  v22 = [v21 accessibilityName];
-  v23 = [(CFXEffectMessagesStickerProperties *)v19 initWithEffectID:v20 previewUrl:v18 localizedDescription:v22];
+  identifier2 = [v9 identifier];
+  jtEffect2 = [v9 jtEffect];
+  accessibilityName = [jtEffect2 accessibilityName];
+  v23 = [(CFXEffectMessagesStickerProperties *)v19 initWithEffectID:identifier2 previewUrl:v18 localizedDescription:accessibilityName];
 
   return v23;
 }

@@ -8,7 +8,7 @@
 - (double)_mapkit_trailingMargin
 {
   IsRightToLeft = MKApplicationLayoutDirectionIsRightToLeft();
-  [a1 layoutMargins];
+  [self layoutMargins];
   if (IsRightToLeft)
   {
     return v3;
@@ -23,7 +23,7 @@
 - (double)_mapkit_leadingMargin
 {
   IsRightToLeft = MKApplicationLayoutDirectionIsRightToLeft();
-  [a1 layoutMargins];
+  [self layoutMargins];
   if (IsRightToLeft)
   {
     return v4;

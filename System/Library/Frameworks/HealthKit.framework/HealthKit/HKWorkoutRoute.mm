@@ -1,29 +1,29 @@
 @interface HKWorkoutRoute
-+ (id)_workoutRouteWithDevice:(id)a3 metadata:(id)a4;
++ (id)_workoutRouteWithDevice:(id)device metadata:(id)metadata;
 - (BOOL)_isSmoothed;
 - (BOOL)_requiresPrivateEntitlementForQueries;
 - (id)_validateSample;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)_valueDescription;
 @end
 
 @implementation HKWorkoutRoute
 
-+ (id)_workoutRouteWithDevice:(id)a3 metadata:(id)a4
++ (id)_workoutRouteWithDevice:(id)device metadata:(id)metadata
 {
-  v6 = a4;
-  v7 = a3;
+  metadataCopy = metadata;
+  deviceCopy = device;
   v8 = +[HKSeriesType workoutRouteType];
-  v9 = [a1 _newSampleWithType:v8 startDate:v7 endDate:v6 device:&__block_literal_global_3 metadata:2.22507386e-308 config:2.22507386e-308];
+  v9 = [self _newSampleWithType:v8 startDate:deviceCopy endDate:metadataCopy device:&__block_literal_global_3 metadata:2.22507386e-308 config:2.22507386e-308];
 
   return v9;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v9.receiver = self;
   v9.super_class = HKWorkoutRoute;
-  v4 = [(HKSeriesSample *)&v9 _validateWithConfiguration:a3.var0, a3.var1];
+  v4 = [(HKSeriesSample *)&v9 _validateWithConfiguration:configuration.var0, configuration.var1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -44,18 +44,18 @@
 {
   v4.receiver = self;
   v4.super_class = HKWorkoutRoute;
-  v2 = [(HKSeriesSample *)&v4 _validateSample];
+  _validateSample = [(HKSeriesSample *)&v4 _validateSample];
 
-  return v2;
+  return _validateSample;
 }
 
 - (id)_valueDescription
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(HKSeriesSample *)self count];
-  v5 = [(HKSeriesSample *)self _isFrozen];
+  _isFrozen = [(HKSeriesSample *)self _isFrozen];
   v6 = @"N";
-  if (v5)
+  if (_isFrozen)
   {
     v6 = @"Y";
   }
@@ -65,28 +65,28 @@
 
 - (BOOL)_requiresPrivateEntitlementForQueries
 {
-  v3 = [(HKObject *)self sourceRevision];
-  v4 = [v3 source];
-  v5 = [v4 _isAppleWatch];
+  sourceRevision = [(HKObject *)self sourceRevision];
+  source = [sourceRevision source];
+  _isAppleWatch = [source _isAppleWatch];
 
-  v6 = [(HKObject *)self sourceRevision];
-  v7 = [v6 source];
-  v8 = [v7 _isFitnessApp];
+  sourceRevision2 = [(HKObject *)self sourceRevision];
+  source2 = [sourceRevision2 source];
+  _isFitnessApp = [source2 _isFitnessApp];
 
-  if ((v5 & 1) != 0 || v8)
+  if ((_isAppleWatch & 1) != 0 || _isFitnessApp)
   {
-    v8 = ![(HKWorkoutRoute *)self _isSmoothed];
+    _isFitnessApp = ![(HKWorkoutRoute *)self _isSmoothed];
   }
 
   v10.receiver = self;
   v10.super_class = HKWorkoutRoute;
-  return ([(HKSample *)&v10 _requiresPrivateEntitlementForQueries]| v8) & 1;
+  return ([(HKSample *)&v10 _requiresPrivateEntitlementForQueries]| _isFitnessApp) & 1;
 }
 
 - (BOOL)_isSmoothed
 {
-  v2 = [(HKObject *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"HKMetadataKeySyncVersion"];
+  metadata = [(HKObject *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"HKMetadataKeySyncVersion"];
 
   if (v3)
   {

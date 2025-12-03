@@ -2,7 +2,7 @@
 + (id)customAttributes;
 - (id)outputImage;
 - (void)dealloc;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation CIDiscBlur
@@ -48,9 +48,9 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:4];
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  if (([a4 isEqualToString:@"inputImage"] & 1) == 0)
+  if (([key isEqualToString:@"inputImage"] & 1) == 0)
   {
 
     self->_recipe = 0;
@@ -58,7 +58,7 @@
 
   v7.receiver = self;
   v7.super_class = CIDiscBlur;
-  [(CIDiscBlur *)&v7 setValue:a3 forKey:a4];
+  [(CIDiscBlur *)&v7 setValue:value forKey:key];
 }
 
 - (id)outputImage

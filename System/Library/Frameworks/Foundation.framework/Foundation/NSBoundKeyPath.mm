@@ -1,31 +1,31 @@
 @interface NSBoundKeyPath
-+ (id)keyPathWithRootObject:(id)a3 path:(const char *)a4;
-+ (id)newKeyPathWithRootObject:(id)a3 keyPathString:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateValue:(id *)a3 error:(id *)a4;
++ (id)keyPathWithRootObject:(id)object path:(const char *)path;
++ (id)newKeyPathWithRootObject:(id)object keyPathString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateValue:(id *)value error:(id *)error;
 - (NSString)keyPath;
 - (id)mutableArrayValue;
 - (id)mutableOrderedSetValue;
 - (id)mutableSetValue;
 - (id)value;
 - (void)dealloc;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation NSBoundKeyPath
 
-+ (id)newKeyPathWithRootObject:(id)a3 keyPathString:(id)a4
++ (id)newKeyPathWithRootObject:(id)object keyPathString:(id)string
 {
-  Instance = class_createInstance(a1, 0);
-  Instance[2] = a4;
-  [Instance setRootObject:a3];
+  Instance = class_createInstance(self, 0);
+  Instance[2] = string;
+  [Instance setRootObject:object];
   return Instance;
 }
 
-+ (id)keyPathWithRootObject:(id)a3 path:(const char *)a4
++ (id)keyPathWithRootObject:(id)object path:(const char *)path
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = [[NSString alloc] initWithUTF8String:a4];
+  v6 = [[NSString alloc] initWithUTF8String:path];
   v7 = objc_opt_class();
   if (v7)
   {
@@ -38,7 +38,7 @@
   }
 
   v12 = v8;
-  v13 = a3;
+  objectCopy = object;
   v14 = v6;
   os_unfair_lock_lock_with_options();
   Mutable = qword_1ED43E7B0;
@@ -51,7 +51,7 @@
   v10 = CFSetGetValue(Mutable, &v12);
   if (!v10)
   {
-    v10 = [a1 newKeyPathWithRootObject:a3 keyPathString:{v6, v12, v13, v14, v15}];
+    v10 = [self newKeyPathWithRootObject:object keyPathString:{v6, v12, objectCopy, v14, v15}];
     if (v10)
     {
       CFSetAddValue(qword_1ED43E7B0, v10);
@@ -87,14 +87,14 @@
   [(NSBoundKeyPath *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -104,56 +104,56 @@
     return 0;
   }
 
-  v5 = [a3 rootObject];
-  return v5 == [(NSBoundKeyPath *)self rootObject];
+  rootObject = [equal rootObject];
+  return rootObject == [(NSBoundKeyPath *)self rootObject];
 }
 
-- (BOOL)validateValue:(id *)a3 error:(id *)a4
+- (BOOL)validateValue:(id *)value error:(id *)error
 {
-  v7 = [(NSBoundKeyPath *)self rootObject];
+  rootObject = [(NSBoundKeyPath *)self rootObject];
   keyPath = self->_keyPath;
 
-  return [v7 validateValue:a3 forKeyPath:keyPath error:a4];
+  return [rootObject validateValue:value forKeyPath:keyPath error:error];
 }
 
 - (id)value
 {
-  v3 = [(NSBoundKeyPath *)self rootObject];
+  rootObject = [(NSBoundKeyPath *)self rootObject];
   keyPath = self->_keyPath;
 
-  return [v3 valueForKeyPath:keyPath];
+  return [rootObject valueForKeyPath:keyPath];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = [(NSBoundKeyPath *)self rootObject];
+  rootObject = [(NSBoundKeyPath *)self rootObject];
   keyPath = self->_keyPath;
 
-  [v5 setValue:a3 forKeyPath:keyPath];
+  [rootObject setValue:value forKeyPath:keyPath];
 }
 
 - (id)mutableArrayValue
 {
-  v3 = [(NSBoundKeyPath *)self rootObject];
+  rootObject = [(NSBoundKeyPath *)self rootObject];
   keyPath = self->_keyPath;
 
-  return [v3 mutableArrayValueForKeyPath:keyPath];
+  return [rootObject mutableArrayValueForKeyPath:keyPath];
 }
 
 - (id)mutableOrderedSetValue
 {
-  v3 = [(NSBoundKeyPath *)self rootObject];
+  rootObject = [(NSBoundKeyPath *)self rootObject];
   keyPath = self->_keyPath;
 
-  return [v3 mutableOrderedSetValueForKeyPath:keyPath];
+  return [rootObject mutableOrderedSetValueForKeyPath:keyPath];
 }
 
 - (id)mutableSetValue
 {
-  v3 = [(NSBoundKeyPath *)self rootObject];
+  rootObject = [(NSBoundKeyPath *)self rootObject];
   keyPath = self->_keyPath;
 
-  return [v3 mutableSetValueForKeyPath:keyPath];
+  return [rootObject mutableSetValueForKeyPath:keyPath];
 }
 
 @end

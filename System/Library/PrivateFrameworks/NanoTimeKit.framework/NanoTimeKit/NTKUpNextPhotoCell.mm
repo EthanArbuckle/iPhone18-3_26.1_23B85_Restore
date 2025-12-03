@@ -1,25 +1,25 @@
 @interface NTKUpNextPhotoCell
-- (void)applyLayoutAttributes:(id)a3;
-- (void)configureWithContent:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)configureWithContent:(id)content;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKUpNextPhotoCell
 
-- (void)configureWithContent:(id)a3
+- (void)configureWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v29.receiver = self;
   v29.super_class = NTKUpNextPhotoCell;
-  [(NTKUpNextBaseCell *)&v29 configureWithContent:v4];
-  v5 = [v4 overrideBodyImage];
-  [v5 size];
+  [(NTKUpNextBaseCell *)&v29 configureWithContent:contentCopy];
+  overrideBodyImage = [contentCopy overrideBodyImage];
+  [overrideBodyImage size];
   self->_aspectRatio = v6 / v7;
-  v8 = [(NTKUpNextBaseCell *)self device];
-  [v8 screenBounds];
+  device = [(NTKUpNextBaseCell *)self device];
+  [device screenBounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -50,7 +50,7 @@
   }
 
   self->_wantsFullCellPhoto = 0;
-  v23 = [v4 objectForKey:@"NTKUpNextWantsFullScreenPhotoContent"];
+  v23 = [contentCopy objectForKey:@"NTKUpNextWantsFullScreenPhotoContent"];
   if (v23)
   {
     objc_opt_class();
@@ -62,13 +62,13 @@
 
   self->_scaledImageSize.width = Width;
   self->_scaledImageSize.height = Height;
-  [v4 imageFocusRect];
+  [contentCopy imageFocusRect];
   self->_facesRect.origin.x = v24;
   self->_facesRect.origin.y = v25;
   self->_facesRect.size.width = v26;
   self->_facesRect.size.height = v27;
-  v28 = [v4 overrideBodyImage];
-  [(NTKUpNextBaseCell *)self setOverrideContentImage:v28];
+  overrideBodyImage2 = [contentCopy overrideBodyImage];
+  [(NTKUpNextBaseCell *)self setOverrideContentImage:overrideBodyImage2];
 
   [(NTKUpNextPhotoCell *)self setNeedsLayout];
 }
@@ -90,8 +90,8 @@
 
   else
   {
-    v7 = [(NTKUpNextBaseCell *)self device];
-    [v7 screenBounds];
+    device = [(NTKUpNextBaseCell *)self device];
+    [device screenBounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -225,8 +225,8 @@
     }
   }
 
-  v32 = [(NTKUpNextBaseCell *)self imageLayer];
-  [v32 setContentsRect:{v6, y, v5, v4}];
+  imageLayer = [(NTKUpNextBaseCell *)self imageLayer];
+  [imageLayer setContentsRect:{v6, y, v5, v4}];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -236,53 +236,53 @@
   v4.receiver = self;
   v4.super_class = NTKUpNextPhotoCell;
   [(NTKUpNextBaseCell *)&v4 prepareForReuse];
-  v3 = [(NTKUpNextPhotoCell *)self layer];
-  [v3 setFilters:0];
+  layer = [(NTKUpNextPhotoCell *)self layer];
+  [layer setFilters:0];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v3.receiver = self;
   v3.super_class = NTKUpNextPhotoCell;
-  [(NTKUpNextBaseCell *)&v3 applyLayoutAttributes:a3];
+  [(NTKUpNextBaseCell *)&v3 applyLayoutAttributes:attributes];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  if (fabs(a3) >= 0.00000011920929)
+  if (fabs(fraction) >= 0.00000011920929)
   {
-    v5 = [(NTKUpNextBaseCell *)self filterProvider];
-    v8 = [v5 filtersForView:self style:1 fraction:a3];
+    filterProvider = [(NTKUpNextBaseCell *)self filterProvider];
+    layer2 = [filterProvider filtersForView:self style:1 fraction:fraction];
 
-    v6 = v8;
-    if (!v8)
+    v6 = layer2;
+    if (!layer2)
     {
       goto LABEL_6;
     }
 
-    v7 = [(NTKUpNextPhotoCell *)self layer];
-    [v7 setFilters:v8];
+    layer = [(NTKUpNextPhotoCell *)self layer];
+    [layer setFilters:layer2];
   }
 
   else
   {
-    v8 = [(NTKUpNextPhotoCell *)self layer];
-    [v8 setFilters:0];
+    layer2 = [(NTKUpNextPhotoCell *)self layer];
+    [layer2 setFilters:0];
   }
 
-  v6 = v8;
+  v6 = layer2;
 LABEL_6:
 }
 
 - (void)updateMonochromeColor
 {
-  v3 = [(NTKUpNextBaseCell *)self filterProvider];
-  v5 = [v3 filtersForView:self style:1];
+  filterProvider = [(NTKUpNextBaseCell *)self filterProvider];
+  v5 = [filterProvider filtersForView:self style:1];
 
   if (v5)
   {
-    v4 = [(NTKUpNextPhotoCell *)self layer];
-    [v4 setFilters:v5];
+    layer = [(NTKUpNextPhotoCell *)self layer];
+    [layer setFilters:v5];
   }
 }
 

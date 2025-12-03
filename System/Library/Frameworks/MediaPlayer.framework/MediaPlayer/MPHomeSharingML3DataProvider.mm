@@ -1,36 +1,36 @@
 @interface MPHomeSharingML3DataProvider
 + (id)homeSharingGroupID;
-+ (void)_determineHomeSharingGroupIDWithCompletionHandler:(id)a3;
++ (void)_determineHomeSharingGroupIDWithCompletionHandler:(id)handler;
 + (void)beginScanningForLibraries;
 + (void)endScanningForLibraries;
-- (MPHomeSharingML3DataProvider)initWithHomeSharingLibrary:(id)a3;
-- (id)_tokenDataForAccountID:(unint64_t)a3;
-- (id)adjustedValueForMPProperty:(id)a3 ofEntity:(id)a4 withDefaultValue:(id)a5;
-- (id)errorResolverForItem:(id)a3;
-- (id)itemResultSetForQueryCriteria:(id)a3;
+- (MPHomeSharingML3DataProvider)initWithHomeSharingLibrary:(id)library;
+- (id)_tokenDataForAccountID:(unint64_t)d;
+- (id)adjustedValueForMPProperty:(id)property ofEntity:(id)entity withDefaultValue:(id)value;
+- (id)errorResolverForItem:(id)item;
+- (id)itemResultSetForQueryCriteria:(id)criteria;
 - (id)protectedContentSupportStorageURL;
 - (void)_fetchTokensForAuthorizedDSIDs;
-- (void)_fillContainerForQueryCriteria:(id)a3 completionBlock:(id)a4;
-- (void)_homeSharingGroupIDDidChangeNotification:(id)a3;
-- (void)_homeSharingLibraryDidBecomeUnavailable:(id)a3;
-- (void)_homeSharingLibraryDidUpdateRevisionNumber:(id)a3;
-- (void)connectWithAuthenticationData:(id)a3 completionBlock:(id)a4 progressHandler:(id)a5;
+- (void)_fillContainerForQueryCriteria:(id)criteria completionBlock:(id)block;
+- (void)_homeSharingGroupIDDidChangeNotification:(id)notification;
+- (void)_homeSharingLibraryDidBecomeUnavailable:(id)unavailable;
+- (void)_homeSharingLibraryDidUpdateRevisionNumber:(id)number;
+- (void)connectWithAuthenticationData:(id)data completionBlock:(id)block progressHandler:(id)handler;
 - (void)dealloc;
-- (void)loadQueryCriteria:(id)a3 countOfCollectionsWithCompletionBlock:(id)a4;
-- (void)loadQueryCriteria:(id)a3 countOfItemsWithCompletionBlock:(id)a4;
-- (void)loadQueryCriteria:(id)a3 hasCollectionsWithCompletionBlock:(id)a4;
-- (void)loadQueryCriteria:(id)a3 hasItemsWithCompletionBlock:(id)a4;
-- (void)setRentalPlaybackStartDateForItemID:(unint64_t)a3;
-- (void)setTokenData:(id)a3 forAuthorizedDSID:(unint64_t)a4;
-- (void)setValue:(id)a3 forProperty:(id)a4 ofItemWithIdentifier:(int64_t)a5 completionBlock:(id)a6;
+- (void)loadQueryCriteria:(id)criteria countOfCollectionsWithCompletionBlock:(id)block;
+- (void)loadQueryCriteria:(id)criteria countOfItemsWithCompletionBlock:(id)block;
+- (void)loadQueryCriteria:(id)criteria hasCollectionsWithCompletionBlock:(id)block;
+- (void)loadQueryCriteria:(id)criteria hasItemsWithCompletionBlock:(id)block;
+- (void)setRentalPlaybackStartDateForItemID:(unint64_t)d;
+- (void)setTokenData:(id)data forAuthorizedDSID:(unint64_t)d;
+- (void)setValue:(id)value forProperty:(id)property ofItemWithIdentifier:(int64_t)identifier completionBlock:(id)block;
 @end
 
 @implementation MPHomeSharingML3DataProvider
 
 + (void)beginScanningForLibraries
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"SharingDisabled"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"SharingDisabled"];
 
   if ((v4 & 1) == 0)
   {
@@ -55,8 +55,8 @@
       v8[1] = 3221225472;
       v8[2] = __57__MPHomeSharingML3DataProvider_beginScanningForLibraries__block_invoke;
       v8[3] = &__block_descriptor_40_e5_v8__0l;
-      v8[4] = a1;
-      [a1 _determineHomeSharingGroupIDWithCompletionHandler:v8];
+      v8[4] = self;
+      [self _determineHomeSharingGroupIDWithCompletionHandler:v8];
     }
   }
 }
@@ -111,26 +111,26 @@ void __57__MPHomeSharingML3DataProvider_beginScanningForLibraries__block_invoke(
 
 + (id)homeSharingGroupID
 {
-  v2 = [MEMORY[0x1E69A4630] defaultStore];
-  v3 = [v2 groupID];
+  defaultStore = [MEMORY[0x1E69A4630] defaultStore];
+  groupID = [defaultStore groupID];
 
-  return v3;
+  return groupID;
 }
 
-- (void)_fillContainerForQueryCriteria:(id)a3 completionBlock:(id)a4
+- (void)_fillContainerForQueryCriteria:(id)criteria completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  criteriaCopy = criteria;
+  blockCopy = block;
   containerFillQueue = self->_containerFillQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__MPHomeSharingML3DataProvider__fillContainerForQueryCriteria_completionBlock___block_invoke;
   block[3] = &unk_1E7681568;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = criteriaCopy;
+  selfCopy = self;
+  v14 = blockCopy;
+  v9 = blockCopy;
+  v10 = criteriaCopy;
   dispatch_async(containerFillQueue, block);
 }
 
@@ -312,9 +312,9 @@ void __79__MPHomeSharingML3DataProvider__fillContainerForQueryCriteria_completio
   }
 }
 
-- (id)_tokenDataForAccountID:(unint64_t)a3
+- (id)_tokenDataForAccountID:(unint64_t)d
 {
-  if (a3)
+  if (d)
   {
     tokenDataForDSIDs = self->_tokenDataForDSIDs;
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
@@ -331,18 +331,18 @@ void __79__MPHomeSharingML3DataProvider__fillContainerForQueryCriteria_completio
 
 - (void)_fetchTokensForAuthorizedDSIDs
 {
-  v3 = [(HSHomeSharingLibrary *)self->_homeSharingLibrary homeSharingGroupID];
+  homeSharingGroupID = [(HSHomeSharingLibrary *)self->_homeSharingLibrary homeSharingGroupID];
 
-  if (v3)
+  if (homeSharingGroupID)
   {
-    v4 = [MEMORY[0x1E69A4640] request];
+    request = [MEMORY[0x1E69A4640] request];
     homeSharingLibrary = self->_homeSharingLibrary;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __62__MPHomeSharingML3DataProvider__fetchTokensForAuthorizedDSIDs__block_invoke;
     v6[3] = &unk_1E7675EB0;
     v6[4] = self;
-    [(HSHomeSharingLibrary *)homeSharingLibrary sendRequest:v4 withResponseHandler:v6];
+    [(HSHomeSharingLibrary *)homeSharingLibrary sendRequest:request withResponseHandler:v6];
   }
 }
 
@@ -402,9 +402,9 @@ void __62__MPHomeSharingML3DataProvider__fetchTokensForAuthorizedDSIDs__block_in
   }
 }
 
-- (void)setTokenData:(id)a3 forAuthorizedDSID:(unint64_t)a4
+- (void)setTokenData:(id)data forAuthorizedDSID:(unint64_t)d
 {
-  v13 = a3;
+  dataCopy = data;
   if (!self->_tokenDataForDSIDs)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
@@ -412,20 +412,20 @@ void __62__MPHomeSharingML3DataProvider__fetchTokensForAuthorizedDSIDs__block_in
     self->_tokenDataForDSIDs = v6;
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(v13, "length")}];
-  v9 = [v8 mutableBytes];
-  v10 = v13;
-  memcpy(v9, [v13 bytes], objc_msgSend(v13, "length"));
+  v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(dataCopy, "length")}];
+  mutableBytes = [v8 mutableBytes];
+  v10 = dataCopy;
+  memcpy(mutableBytes, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
   v11 = self->_tokenDataForDSIDs;
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   [(NSMutableDictionary *)v11 setObject:v8 forKey:v12];
 }
 
-- (void)_homeSharingLibraryDidBecomeUnavailable:(id)a3
+- (void)_homeSharingLibraryDidBecomeUnavailable:(id)unavailable
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:*MEMORY[0x1E69A4628]];
+  userInfo = [unavailable userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x1E69A4628]];
 
   v5 = os_log_create("com.apple.amp.mediaplayer", "HomeSharing");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -439,7 +439,7 @@ void __62__MPHomeSharingML3DataProvider__fetchTokensForAuthorizedDSIDs__block_in
   +[MPHomeSharingML3DataProvider beginScanningForLibraries];
 }
 
-- (void)_homeSharingLibraryDidUpdateRevisionNumber:(id)a3
+- (void)_homeSharingLibraryDidUpdateRevisionNumber:(id)number
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -513,13 +513,13 @@ void __75__MPHomeSharingML3DataProvider__homeSharingLibraryDidUpdateRevisionNumb
   }
 }
 
-- (void)_homeSharingGroupIDDidChangeNotification:(id)a3
+- (void)_homeSharingGroupIDDidChangeNotification:(id)notification
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = +[MPHomeSharingML3DataProvider homeSharingGroupID];
-  v5 = [(MPHomeSharingML3DataProvider *)self homeSharingLibrary];
-  v6 = [v5 homeSharingGroupID];
-  v7 = [v4 isEqual:v6];
+  homeSharingLibrary = [(MPHomeSharingML3DataProvider *)self homeSharingLibrary];
+  homeSharingGroupID = [homeSharingLibrary homeSharingGroupID];
+  v7 = [v4 isEqual:homeSharingGroupID];
 
   if ((v7 & 1) == 0)
   {
@@ -534,8 +534,8 @@ void __75__MPHomeSharingML3DataProvider__homeSharingLibraryDidUpdateRevisionNumb
 
     [MPMediaLibrary removeLibraryDataProvider:self removalReason:0];
     v10 = +[MPMediaLibrary defaultMediaLibrary];
-    v11 = [v10 libraryDataProvider];
-    v12 = [v11 isEqual:self];
+    libraryDataProvider = [v10 libraryDataProvider];
+    v12 = [libraryDataProvider isEqual:self];
 
     if (v12)
     {
@@ -553,7 +553,7 @@ void __75__MPHomeSharingML3DataProvider__homeSharingLibraryDidUpdateRevisionNumb
 - (id)protectedContentSupportStorageURL
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [(HSHomeSharingLibrary *)self->_homeSharingLibrary uniqueIdentifier];
+  uniqueIdentifier = [(HSHomeSharingLibrary *)self->_homeSharingLibrary uniqueIdentifier];
   v4 = HSLibraryCacheDirectoryForIdentifier();
   v5 = [v4 stringByAppendingPathComponent:@"Tokens"];
   v6 = [v2 fileURLWithPath:v5];
@@ -561,7 +561,7 @@ void __75__MPHomeSharingML3DataProvider__homeSharingLibraryDidUpdateRevisionNumb
   return v6;
 }
 
-- (void)setRentalPlaybackStartDateForItemID:(unint64_t)a3
+- (void)setRentalPlaybackStartDateForItemID:(unint64_t)d
 {
   v5 = os_log_create("com.apple.amp.mediaplayer", "Library");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -571,8 +571,8 @@ void __75__MPHomeSharingML3DataProvider__homeSharingLibraryDidUpdateRevisionNumb
   }
 
   v6 = MEMORY[0x1E69B3538];
-  v7 = [(MPMediaLibraryDataProviderML3 *)self library];
-  v8 = [v6 newWithPersistentID:a3 inLibrary:v7];
+  library = [(MPMediaLibraryDataProviderML3 *)self library];
+  v8 = [v6 newWithPersistentID:d inLibrary:library];
 
   v9 = MEMORY[0x1E696AD98];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
@@ -580,26 +580,26 @@ void __75__MPHomeSharingML3DataProvider__homeSharingLibraryDidUpdateRevisionNumb
   [v8 setValue:v10 forProperty:*MEMORY[0x1E69B31A0]];
 }
 
-- (id)errorResolverForItem:(id)a3
+- (id)errorResolverForItem:(id)item
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = [a3 mediaItem];
-  if (![v4 isRental])
+  mediaItem = [item mediaItem];
+  if (![mediaItem isRental])
   {
-    v13 = [v4 valueForProperty:@"storeAccountID"];
-    v14 = [v13 unsignedLongLongValue];
+    v13 = [mediaItem valueForProperty:@"storeAccountID"];
+    unsignedLongLongValue = [v13 unsignedLongLongValue];
 
-    v15 = [(MPHomeSharingML3DataProvider *)self _tokenDataForAccountID:v14];
+    v15 = [(MPHomeSharingML3DataProvider *)self _tokenDataForAccountID:unsignedLongLongValue];
     v16 = v15;
-    if (!v14 || ![v15 length])
+    if (!unsignedLongLongValue || ![v15 length])
     {
       v21 = os_log_create("com.apple.amp.mediaplayer", "HomeSharing");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         v30 = 138543874;
-        v31 = v4;
+        v31 = mediaItem;
         v32 = 2048;
-        v33 = v14;
+        v33 = unsignedLongLongValue;
         v34 = 2048;
         v35 = [v16 length];
         _os_log_impl(&dword_1A238D000, v21, OS_LOG_TYPE_ERROR, "Cannot create error resolver for media item: %{public}@ (accountID: %llu, tokenData: %llu bytes)", &v30, 0x20u);
@@ -609,17 +609,17 @@ void __75__MPHomeSharingML3DataProvider__homeSharingLibraryDidUpdateRevisionNumb
       goto LABEL_24;
     }
 
-    v17 = [v4 valueForProperty:@"storeDownloaderAccountID"];
-    v18 = [v17 unsignedLongLongValue];
+    v17 = [mediaItem valueForProperty:@"storeDownloaderAccountID"];
+    unsignedLongLongValue2 = [v17 unsignedLongLongValue];
 
-    v19 = [v4 valueForProperty:@"storeFamilyAccountID"];
-    v20 = [v19 unsignedLongLongValue];
+    v19 = [mediaItem valueForProperty:@"storeFamilyAccountID"];
+    unsignedLongLongValue3 = [v19 unsignedLongLongValue];
 
-    v21 = [(MPHomeSharingML3DataProvider *)self _tokenDataForAccountID:v18];
-    v22 = [v4 mediaLibrary];
-    v23 = [v22 protectedContentSupportStorageURL];
+    v21 = [(MPHomeSharingML3DataProvider *)self _tokenDataForAccountID:unsignedLongLongValue2];
+    mediaLibrary = [mediaItem mediaLibrary];
+    protectedContentSupportStorageURL = [mediaLibrary protectedContentSupportStorageURL];
 
-    if (v18 && v20)
+    if (unsignedLongLongValue2 && unsignedLongLongValue3)
     {
       v24 = [v21 length];
       v25 = os_log_create("com.apple.amp.mediaplayer", "HomeSharing");
@@ -629,13 +629,13 @@ void __75__MPHomeSharingML3DataProvider__homeSharingLibraryDidUpdateRevisionNumb
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
           v30 = 138544386;
-          v31 = v4;
+          v31 = mediaItem;
           v32 = 2048;
-          v33 = v14;
+          v33 = unsignedLongLongValue;
           v34 = 2048;
           v35 = [v16 length];
           v36 = 2048;
-          v37 = v18;
+          v37 = unsignedLongLongValue2;
           v38 = 2048;
           v39 = [v21 length];
           _os_log_impl(&dword_1A238D000, v26, OS_LOG_TYPE_ERROR, "Cannot create error resolver for media item: %{public}@ (accountID: %llu, accountTokenData: %llu bytes, downloaderAccountID: %llu, downloaderTokenData: %llu bytes)", &v30, 0x34u);
@@ -648,19 +648,19 @@ void __75__MPHomeSharingML3DataProvider__homeSharingLibraryDidUpdateRevisionNumb
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         v30 = 138544386;
-        v31 = v4;
+        v31 = mediaItem;
         v32 = 2048;
-        v33 = v14;
+        v33 = unsignedLongLongValue;
         v34 = 2048;
         v35 = [v16 length];
         v36 = 2048;
-        v37 = v18;
+        v37 = unsignedLongLongValue2;
         v38 = 2048;
         v39 = [v21 length];
         _os_log_impl(&dword_1A238D000, v26, OS_LOG_TYPE_DEFAULT, "[MPHomeSharingML3DataProvider] Creating error resolver for media item: %{public}@ (accountID: %llu, accountTokenData: %llu bytes, downloaderAccountID: %llu, downloaderTokenData: %llu bytes)", &v30, 0x34u);
       }
 
-      v27 = [[MPHomeSharingErrorResolver alloc] initWithKeybagURL:v23 accountID:v14 accountTokenData:v16 downloaderAccountID:v18 downloaderAccountTokenData:v21 familyAccountID:v20];
+      v27 = [[MPHomeSharingErrorResolver alloc] initWithKeybagURL:protectedContentSupportStorageURL accountID:unsignedLongLongValue accountTokenData:v16 downloaderAccountID:unsignedLongLongValue2 downloaderAccountTokenData:v21 familyAccountID:unsignedLongLongValue3];
     }
 
     else
@@ -669,13 +669,13 @@ void __75__MPHomeSharingML3DataProvider__homeSharingLibraryDidUpdateRevisionNumb
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         v30 = 134218240;
-        v31 = v14;
+        v31 = unsignedLongLongValue;
         v32 = 2048;
         v33 = [v16 length];
         _os_log_impl(&dword_1A238D000, v28, OS_LOG_TYPE_DEFAULT, "[MPHomeSharingML3DataProvider] Creating error resolver for account ID: %llu, token data length: %lu", &v30, 0x16u);
       }
 
-      v27 = [[MPHomeSharingErrorResolver alloc] initWithKeybagURL:v23 accountID:v14 accountTokenData:v16];
+      v27 = [[MPHomeSharingErrorResolver alloc] initWithKeybagURL:protectedContentSupportStorageURL accountID:unsignedLongLongValue accountTokenData:v16];
     }
 
     v11 = v27;
@@ -686,31 +686,31 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v5 = [v4 valueForProperty:@"homeSharingID"];
-  v6 = [v5 unsignedLongLongValue];
+  v5 = [mediaItem valueForProperty:@"homeSharingID"];
+  unsignedLongLongValue4 = [v5 unsignedLongLongValue];
 
-  v7 = [v4 valueForProperty:@"storeAccountID"];
-  v8 = [v7 unsignedLongLongValue];
+  v7 = [mediaItem valueForProperty:@"storeAccountID"];
+  unsignedLongLongValue5 = [v7 unsignedLongLongValue];
 
-  v9 = [v4 valueForProperty:@"storeRentalID"];
-  v10 = [v9 unsignedLongLongValue];
+  v9 = [mediaItem valueForProperty:@"storeRentalID"];
+  unsignedLongLongValue6 = [v9 unsignedLongLongValue];
 
   v11 = 0;
-  if (v6 && v8 && v10)
+  if (unsignedLongLongValue4 && unsignedLongLongValue5 && unsignedLongLongValue6)
   {
     v12 = os_log_create("com.apple.amp.mediaplayer", "HomeSharing");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v30 = 134218496;
-      v31 = v6;
+      v31 = unsignedLongLongValue4;
       v32 = 2048;
-      v33 = v8;
+      v33 = unsignedLongLongValue5;
       v34 = 2048;
-      v35 = v10;
+      v35 = unsignedLongLongValue6;
       _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_DEFAULT, "[MPHomeSharingML3DataProvider] Creating error resolver for item ID: %llu, account ID: %llu, rental ID: %llu", &v30, 0x20u);
     }
 
-    v11 = -[MPHomeSharingRentalErrorResolver initWithItemID:homeSharingID:rentalID:accountID:]([MPHomeSharingRentalErrorResolver alloc], "initWithItemID:homeSharingID:rentalID:accountID:", [v4 persistentID], v6, v10, v8);
+    v11 = -[MPHomeSharingRentalErrorResolver initWithItemID:homeSharingID:rentalID:accountID:]([MPHomeSharingRentalErrorResolver alloc], "initWithItemID:homeSharingID:rentalID:accountID:", [mediaItem persistentID], unsignedLongLongValue4, unsignedLongLongValue6, unsignedLongLongValue5);
     [(MPHomeSharingRentalErrorResolver *)v11 setDataProvider:self];
   }
 
@@ -719,30 +719,30 @@ LABEL_25:
   return v11;
 }
 
-- (id)adjustedValueForMPProperty:(id)a3 ofEntity:(id)a4 withDefaultValue:(id)a5
+- (id)adjustedValueForMPProperty:(id)property ofEntity:(id)entity withDefaultValue:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:@"filePath"])
+  propertyCopy = property;
+  entityCopy = entity;
+  valueCopy = value;
+  if ([propertyCopy isEqualToString:@"filePath"])
   {
-    v11 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-    v12 = [v10 stringByTrimmingCharactersInSet:v11];
+    punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+    v12 = [valueCopy stringByTrimmingCharactersInSet:punctuationCharacterSet];
 
-    v13 = [v9 valueForProperty:*MEMORY[0x1E69B3030]];
-    LODWORD(v11) = [v13 longLongValue];
+    v13 = [entityCopy valueForProperty:*MEMORY[0x1E69B3030]];
+    LODWORD(punctuationCharacterSet) = [v13 longLongValue];
 
-    v14 = [MEMORY[0x1E69A4670] requestWithDatabaseID:-[HSHomeSharingLibrary databaseID](self->_homeSharingLibrary itemID:"databaseID") format:{v11, v12}];
+    v14 = [MEMORY[0x1E69A4670] requestWithDatabaseID:-[HSHomeSharingLibrary databaseID](self->_homeSharingLibrary itemID:"databaseID") format:{punctuationCharacterSet, v12}];
     v15 = [(HSHomeSharingLibrary *)self->_homeSharingLibrary urlForRequest:v14];
-    v16 = [v15 absoluteString];
-    v17 = [v16 mutableCopy];
+    absoluteString = [v15 absoluteString];
+    v17 = [absoluteString mutableCopy];
 
     [v17 replaceCharactersInRange:0 withString:{4, @"home-sharing"}];
-    v10 = v12;
+    valueCopy = v12;
     goto LABEL_9;
   }
 
-  if ([v8 isEqualToString:@"verifiedIntegrity"])
+  if ([propertyCopy isEqualToString:@"verifiedIntegrity"])
   {
     v18 = [MEMORY[0x1E696AD98] numberWithBool:1];
 LABEL_8:
@@ -750,11 +750,11 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (![v8 isEqualToString:@"albumRepresentativeItemArtworkToken"] || objc_msgSend(v10, "length"))
+  if (![propertyCopy isEqualToString:@"albumRepresentativeItemArtworkToken"] || objc_msgSend(valueCopy, "length"))
   {
     v20.receiver = self;
     v20.super_class = MPHomeSharingML3DataProvider;
-    v18 = [(MPMediaLibraryDataProviderML3 *)&v20 adjustedValueForMPProperty:v8 ofEntity:v9 withDefaultValue:v10];
+    v18 = [(MPMediaLibraryDataProviderML3 *)&v20 adjustedValueForMPProperty:propertyCopy ofEntity:entityCopy withDefaultValue:valueCopy];
     goto LABEL_8;
   }
 
@@ -764,29 +764,29 @@ LABEL_9:
   return v17;
 }
 
-- (void)setValue:(id)a3 forProperty:(id)a4 ofItemWithIdentifier:(int64_t)a5 completionBlock:(id)a6
+- (void)setValue:(id)value forProperty:(id)property ofItemWithIdentifier:(int64_t)identifier completionBlock:(id)block
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v11 isEqualToString:@"bookmarkTime"])
+  valueCopy = value;
+  propertyCopy = property;
+  blockCopy = block;
+  if ([propertyCopy isEqualToString:@"bookmarkTime"])
   {
     v13 = MEMORY[0x1E696AEC0];
-    [v10 doubleValue];
+    [valueCopy doubleValue];
     v15 = [v13 stringWithFormat:@"%u", (v14 * 1000.0)];
     v16 = @"daap.songbookmark";
     goto LABEL_10;
   }
 
-  if ([v11 isEqualToString:@"rating"])
+  if ([propertyCopy isEqualToString:@"rating"])
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", 20 * objc_msgSend(v10, "unsignedIntValue")];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", 20 * objc_msgSend(valueCopy, "unsignedIntValue")];
     v16 = @"daap.songuserrating";
     goto LABEL_10;
   }
 
-  if ([v11 isEqualToString:@"playCount"])
+  if ([propertyCopy isEqualToString:@"playCount"])
   {
     v16 = @"daap.songuserplaycount";
 LABEL_9:
@@ -794,40 +794,40 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v11 isEqualToString:@"skipCount"])
+  if ([propertyCopy isEqualToString:@"skipCount"])
   {
     v16 = @"daap.songuserskipcount";
     goto LABEL_9;
   }
 
-  if ([v11 isEqualToString:@"likedState"])
+  if ([propertyCopy isEqualToString:@"likedState"])
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", objc_msgSend(v10, "unsignedIntValue")];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", objc_msgSend(valueCopy, "unsignedIntValue")];
     v16 = @"com.apple.itunes.liked-state";
 LABEL_10:
-    if (([v11 isEqualToString:@"playCount"] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"skipCount"))
+    if (([propertyCopy isEqualToString:@"playCount"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"skipCount"))
     {
       v17 = MEMORY[0x1E69B3538];
-      v18 = [(MPMediaLibraryDataProviderML3 *)self library];
-      v19 = [v17 newWithPersistentID:a5 inLibrary:v18];
+      library = [(MPMediaLibraryDataProviderML3 *)self library];
+      v19 = [v17 newWithPersistentID:identifier inLibrary:library];
 
       v20 = [v19 valueForProperty:*MEMORY[0x1E69B3030]];
-      v21 = [v20 longLongValue];
+      longLongValue = [v20 longLongValue];
       v22 = 0x1E69A4668;
     }
 
     else
     {
       v23 = MEMORY[0x1E69B3538];
-      v24 = [(MPMediaLibraryDataProviderML3 *)self library];
-      v19 = [v23 newWithPersistentID:a5 inLibrary:v24];
+      library2 = [(MPMediaLibraryDataProviderML3 *)self library];
+      v19 = [v23 newWithPersistentID:identifier inLibrary:library2];
 
       v20 = [v19 valueForProperty:*MEMORY[0x1E69B3030]];
       v22 = 0x1E69A4678;
-      v21 = v20;
+      longLongValue = v20;
     }
 
-    v25 = [*v22 requestWithDatabaseID:-[HSHomeSharingLibrary databaseID](self->_homeSharingLibrary itemID:{"databaseID"), v21}];
+    v25 = [*v22 requestWithDatabaseID:-[HSHomeSharingLibrary databaseID](self->_homeSharingLibrary itemID:{"databaseID"), longLongValue}];
 
     [v25 setValue:v15 forArgument:v16];
     v26 = os_log_create("com.apple.amp.mediaplayer", "HomeSharing");
@@ -846,16 +846,16 @@ LABEL_10:
     v30[3] = &unk_1E7675E38;
     v31 = v16;
     v32 = v15;
-    v33 = v12;
+    v33 = blockCopy;
     v29 = v15;
     [(HSHomeSharingLibrary *)homeSharingLibrary sendRequest:v25 withResponseHandler:v30];
 
     goto LABEL_17;
   }
 
-  if (v12)
+  if (blockCopy)
   {
-    (*(v12 + 2))(v12, 1, 0);
+    (*(blockCopy + 2))(blockCopy, 1, 0);
   }
 
 LABEL_17:
@@ -886,9 +886,9 @@ void __90__MPHomeSharingML3DataProvider_setValue_forProperty_ofItemWithIdentifie
   }
 }
 
-- (id)itemResultSetForQueryCriteria:(id)a3
+- (id)itemResultSetForQueryCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -901,9 +901,9 @@ void __90__MPHomeSharingML3DataProvider_setValue_forProperty_ofItemWithIdentifie
   v10[2] = __62__MPHomeSharingML3DataProvider_itemResultSetForQueryCriteria___block_invoke;
   v10[3] = &unk_1E7681900;
   v14 = &v15;
-  v6 = v4;
+  v6 = criteriaCopy;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v7 = v5;
   v13 = v7;
   [(MPHomeSharingML3DataProvider *)self _fillContainerForQueryCriteria:v6 completionBlock:v10];
@@ -928,19 +928,19 @@ intptr_t __62__MPHomeSharingML3DataProvider_itemResultSetForQueryCriteria___bloc
   return dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)loadQueryCriteria:(id)a3 countOfCollectionsWithCompletionBlock:(id)a4
+- (void)loadQueryCriteria:(id)criteria countOfCollectionsWithCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  criteriaCopy = criteria;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __88__MPHomeSharingML3DataProvider_loadQueryCriteria_countOfCollectionsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7681568;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = blockCopy;
+  v11 = criteriaCopy;
+  v8 = blockCopy;
+  v9 = criteriaCopy;
   [(MPHomeSharingML3DataProvider *)self _fillContainerForQueryCriteria:v9 completionBlock:v10];
 }
 
@@ -953,19 +953,19 @@ id __88__MPHomeSharingML3DataProvider_loadQueryCriteria_countOfCollectionsWithCo
   return objc_msgSendSuper2(&v4, sel_loadQueryCriteria_countOfCollectionsWithCompletionBlock_, v1, v2);
 }
 
-- (void)loadQueryCriteria:(id)a3 countOfItemsWithCompletionBlock:(id)a4
+- (void)loadQueryCriteria:(id)criteria countOfItemsWithCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  criteriaCopy = criteria;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__MPHomeSharingML3DataProvider_loadQueryCriteria_countOfItemsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7681568;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = blockCopy;
+  v11 = criteriaCopy;
+  v8 = blockCopy;
+  v9 = criteriaCopy;
   [(MPHomeSharingML3DataProvider *)self _fillContainerForQueryCriteria:v9 completionBlock:v10];
 }
 
@@ -978,19 +978,19 @@ id __82__MPHomeSharingML3DataProvider_loadQueryCriteria_countOfItemsWithCompleti
   return objc_msgSendSuper2(&v4, sel_loadQueryCriteria_countOfItemsWithCompletionBlock_, v1, v2);
 }
 
-- (void)loadQueryCriteria:(id)a3 hasCollectionsWithCompletionBlock:(id)a4
+- (void)loadQueryCriteria:(id)criteria hasCollectionsWithCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  criteriaCopy = criteria;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__MPHomeSharingML3DataProvider_loadQueryCriteria_hasCollectionsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7681568;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = blockCopy;
+  v11 = criteriaCopy;
+  v8 = blockCopy;
+  v9 = criteriaCopy;
   [(MPHomeSharingML3DataProvider *)self _fillContainerForQueryCriteria:v9 completionBlock:v10];
 }
 
@@ -1003,19 +1003,19 @@ id __84__MPHomeSharingML3DataProvider_loadQueryCriteria_hasCollectionsWithComple
   return objc_msgSendSuper2(&v4, sel_loadQueryCriteria_hasCollectionsWithCompletionBlock_, v1, v2);
 }
 
-- (void)loadQueryCriteria:(id)a3 hasItemsWithCompletionBlock:(id)a4
+- (void)loadQueryCriteria:(id)criteria hasItemsWithCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  criteriaCopy = criteria;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __78__MPHomeSharingML3DataProvider_loadQueryCriteria_hasItemsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7681568;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = blockCopy;
+  v11 = criteriaCopy;
+  v8 = blockCopy;
+  v9 = criteriaCopy;
   [(MPHomeSharingML3DataProvider *)self _fillContainerForQueryCriteria:v9 completionBlock:v10];
 }
 
@@ -1028,17 +1028,17 @@ id __78__MPHomeSharingML3DataProvider_loadQueryCriteria_hasItemsWithCompletionBl
   return objc_msgSendSuper2(&v4, sel_loadQueryCriteria_hasItemsWithCompletionBlock_, v1, v2);
 }
 
-- (void)connectWithAuthenticationData:(id)a3 completionBlock:(id)a4 progressHandler:(id)a5
+- (void)connectWithAuthenticationData:(id)data completionBlock:(id)block progressHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  blockCopy = block;
+  handlerCopy = handler;
   if ([(MPHomeSharingML3DataProvider *)self isSupportedSharingVersion])
   {
     if ([(HSHomeSharingLibrary *)self->_homeSharingLibrary connectionState]== 2)
     {
-      if (v7)
+      if (blockCopy)
       {
-        v7[2](v7, 1, 0);
+        blockCopy[2](blockCopy, 1, 0);
       }
     }
 
@@ -1050,16 +1050,16 @@ id __78__MPHomeSharingML3DataProvider_loadQueryCriteria_hasItemsWithCompletionBl
       v11[2] = __94__MPHomeSharingML3DataProvider_connectWithAuthenticationData_completionBlock_progressHandler___block_invoke;
       v11[3] = &unk_1E7675E10;
       v11[4] = self;
-      v12 = v7;
-      v13 = v8;
+      v12 = blockCopy;
+      v13 = handlerCopy;
       [(HSHomeSharingLibrary *)homeSharingLibrary connectWithCompletionHandler:v11];
     }
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
     v9 = [MEMORY[0x1E696ABC0] hs_homeSharingErrorWithCode:1002 userInfo:0];
-    (v7)[2](v7, 0, v9);
+    (blockCopy)[2](blockCopy, 0, v9);
   }
 }
 
@@ -1213,26 +1213,26 @@ void __94__MPHomeSharingML3DataProvider_connectWithAuthenticationData_completion
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69A4610] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69A4620] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69A4618] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69A4610] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69A4620] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69A4618] object:0];
 
   v4.receiver = self;
   v4.super_class = MPHomeSharingML3DataProvider;
   [(MPMediaLibraryDataProviderML3 *)&v4 dealloc];
 }
 
-- (MPHomeSharingML3DataProvider)initWithHomeSharingLibrary:(id)a3
+- (MPHomeSharingML3DataProvider)initWithHomeSharingLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v20.receiver = self;
   v20.super_class = MPHomeSharingML3DataProvider;
   v6 = [(MPMediaLibraryDataProviderML3 *)&v20 initWithLibrary:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_homeSharingLibrary, a3);
+    objc_storeStrong(&v6->_homeSharingLibrary, library);
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     loadedContainerPIDs = v7->_loadedContainerPIDs;
     v7->_loadedContainerPIDs = v8;
@@ -1241,10 +1241,10 @@ void __94__MPHomeSharingML3DataProvider_connectWithAuthenticationData_completion
     blocksForLoadingContainerPIDs = v7->_blocksForLoadingContainerPIDs;
     v7->_blocksForLoadingContainerPIDs = v10;
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v7 selector:sel__homeSharingGroupIDDidChangeNotification_ name:*MEMORY[0x1E69A4610] object:0];
-    [v12 addObserver:v7 selector:sel__homeSharingLibraryDidUpdateRevisionNumber_ name:*MEMORY[0x1E69A4620] object:0];
-    [v12 addObserver:v7 selector:sel__homeSharingLibraryDidBecomeUnavailable_ name:*MEMORY[0x1E69A4618] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__homeSharingGroupIDDidChangeNotification_ name:*MEMORY[0x1E69A4610] object:0];
+    [defaultCenter addObserver:v7 selector:sel__homeSharingLibraryDidUpdateRevisionNumber_ name:*MEMORY[0x1E69A4620] object:0];
+    [defaultCenter addObserver:v7 selector:sel__homeSharingLibraryDidBecomeUnavailable_ name:*MEMORY[0x1E69A4618] object:0];
     v13 = dispatch_queue_create("com.apple.mobileipod.containerfill", 0);
     containerFillQueue = v7->_containerFillQueue;
     v7->_containerFillQueue = v13;
@@ -1262,26 +1262,26 @@ void __94__MPHomeSharingML3DataProvider_connectWithAuthenticationData_completion
   return v7;
 }
 
-+ (void)_determineHomeSharingGroupIDWithCompletionHandler:(id)a3
++ (void)_determineHomeSharingGroupIDWithCompletionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A4630] defaultStore];
-  v5 = [v4 groupID];
-  if ([v5 length])
+  handlerCopy = handler;
+  defaultStore = [MEMORY[0x1E69A4630] defaultStore];
+  groupID = [defaultStore groupID];
+  if ([groupID length])
   {
 
     goto LABEL_7;
   }
 
-  v6 = [MEMORY[0x1E69E4428] sharedMonitor];
-  v7 = [v6 isRemoteServerLikelyReachable];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  isRemoteServerLikelyReachable = [mEMORY[0x1E69E4428] isRemoteServerLikelyReachable];
 
-  if (!v7)
+  if (!isRemoteServerLikelyReachable)
   {
 LABEL_7:
-    if (v3)
+    if (handlerCopy)
     {
-      v3[2](v3);
+      handlerCopy[2](handlerCopy);
     }
 
     goto LABEL_9;
@@ -1298,8 +1298,8 @@ LABEL_7:
   v9[1] = 3221225472;
   v9[2] = __82__MPHomeSharingML3DataProvider__determineHomeSharingGroupIDWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E76792A0;
-  v10 = v4;
-  v11 = v3;
+  v10 = defaultStore;
+  v11 = handlerCopy;
   [v10 determineGroupIDWithCompletionHandler:v9];
 
 LABEL_9:

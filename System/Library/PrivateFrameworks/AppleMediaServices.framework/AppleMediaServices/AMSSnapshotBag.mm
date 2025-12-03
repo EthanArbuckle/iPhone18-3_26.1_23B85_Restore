@@ -1,52 +1,52 @@
 @interface AMSSnapshotBag
 - (AMSSnapshotBag)init;
-- (AMSSnapshotBag)initWithCoder:(id)a3;
-- (AMSSnapshotBag)initWithData:(id)a3;
+- (AMSSnapshotBag)initWithCoder:(id)coder;
+- (AMSSnapshotBag)initWithData:(id)data;
 - (BOOL)isExpired;
 - (BOOL)isLoaded;
 - (NSDate)expirationDate;
 - (NSDictionary)dictionary;
 - (NSString)profile;
 - (NSString)profileVersion;
-- (id)BOOLForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)URLForKey:(id)a3 account:(id)a4;
-- (id)_initWithDataSource:(id)a3;
-- (id)_initWithSnapshotBag:(id)a3;
-- (id)arrayForKey:(id)a3;
+- (id)BOOLForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)URLForKey:(id)key account:(id)account;
+- (id)_initWithDataSource:(id)source;
+- (id)_initWithSnapshotBag:(id)bag;
+- (id)arrayForKey:(id)key;
 - (id)compile;
-- (id)dictionaryForKey:(id)a3;
-- (id)doubleForKey:(id)a3;
-- (id)integerForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)createSnapshotWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)dictionaryForKey:(id)key;
+- (id)doubleForKey:(id)key;
+- (id)integerForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)createSnapshotWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSSnapshotBag
 
 - (NSDate)expirationDate
 {
-  v2 = [(AMSSnapshotBag *)self dataSource];
-  v3 = [v2 expirationDate];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  expirationDate = [dataSource expirationDate];
 
-  return v3;
+  return expirationDate;
 }
 
 - (NSString)profile
 {
-  v2 = [(AMSSnapshotBag *)self dataSource];
-  v3 = [v2 profile];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  profile = [dataSource profile];
 
-  return v3;
+  return profile;
 }
 
 - (NSString)profileVersion
 {
-  v2 = [(AMSSnapshotBag *)self dataSource];
-  v3 = [v2 profileVersion];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  profileVersion = [dataSource profileVersion];
 
-  return v3;
+  return profileVersion;
 }
 
 - (AMSSnapshotBag)init
@@ -58,12 +58,12 @@
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
     v8 = objc_opt_class();
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_ERROR, "%{public}@: The default initializer is deprecated and should not be used", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: The default initializer is deprecated and should not be used", buf, 0xCu);
   }
 
   v6.receiver = self;
@@ -71,13 +71,13 @@
   return [(AMSSnapshotBag *)&v6 init];
 }
 
-- (AMSSnapshotBag)initWithData:(id)a3
+- (AMSSnapshotBag)initWithData:(id)data
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ACD0];
-  v5 = a3;
+  dataCopy = data;
   v13 = 0;
-  v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v13];
+  v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v13];
 
   v7 = v13;
   if (v7)
@@ -88,15 +88,15 @@
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       *buf = 138543618;
       v15 = v10;
       v16 = 2114;
       v17 = v7;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Failed to unarchived snapshot bag. Error: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to unarchived snapshot bag. Error: %{public}@", buf, 0x16u);
     }
 
     v11 = 0;
@@ -110,39 +110,39 @@
   return v11;
 }
 
-- (id)_initWithDataSource:(id)a3
+- (id)_initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = AMSSnapshotBag;
   v6 = [(AMSSnapshotBag *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v6->_creationDate;
-    v6->_creationDate = v7;
+    v6->_creationDate = date;
 
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v6;
 }
 
-- (id)_initWithSnapshotBag:(id)a3
+- (id)_initWithSnapshotBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v13.receiver = self;
   v13.super_class = AMSSnapshotBag;
   v5 = [(AMSSnapshotBag *)&v13 init];
   if (v5)
   {
-    v6 = [v4 dataSource];
-    v7 = [v6 copy];
+    dataSource = [bagCopy dataSource];
+    v7 = [dataSource copy];
     dataSource = v5->_dataSource;
     v5->_dataSource = v7;
 
-    v9 = [v4 creationDate];
-    v10 = [v9 copy];
+    creationDate = [bagCopy creationDate];
+    v10 = [creationDate copy];
     creationDate = v5->_creationDate;
     v5->_creationDate = v10;
   }
@@ -152,11 +152,11 @@
 
 - (BOOL)isExpired
 {
-  v2 = [(AMSSnapshotBag *)self expirationDate];
-  if (v2)
+  expirationDate = [(AMSSnapshotBag *)self expirationDate];
+  if (expirationDate)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    v4 = [v3 compare:v2] == 1;
+    date = [MEMORY[0x1E695DF00] date];
+    v4 = [date compare:expirationDate] == 1;
   }
 
   else
@@ -169,18 +169,18 @@
 
 - (BOOL)isLoaded
 {
-  v2 = [(AMSSnapshotBag *)self dataSource];
-  v3 = [v2 isLoaded];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  isLoaded = [dataSource isLoaded];
 
-  return v3;
+  return isLoaded;
 }
 
 - (id)compile
 {
   v3 = objc_alloc_init(AMSMutablePromise);
-  v4 = [(AMSSnapshotBag *)self dataSource];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
 
-  if (v4)
+  if (dataSource)
   {
     if ([(AMSSnapshotBag *)self isMemberOfClass:objc_opt_class()])
     {
@@ -194,12 +194,12 @@
 
   else
   {
-    v5 = [(AMSSnapshotBag *)self profile];
-    v6 = [(AMSSnapshotBag *)self profileVersion];
-    v7 = [AMSBag bagForProfile:v5 profileVersion:v6];
+    profile = [(AMSSnapshotBag *)self profile];
+    profileVersion = [(AMSSnapshotBag *)self profileVersion];
+    v7 = [AMSBag bagForProfile:profile profileVersion:profileVersion];
 
-    v8 = [(AMSPromise *)v3 completionHandlerAdapter];
-    [v7 createSnapshotWithCompletion:v8];
+    completionHandlerAdapter = [(AMSPromise *)v3 completionHandlerAdapter];
+    [v7 createSnapshotWithCompletion:completionHandlerAdapter];
   }
 
 LABEL_7:
@@ -250,37 +250,37 @@ AMSMutablePromise *__25__AMSSnapshotBag_compile__block_invoke(uint64_t a1, uint6
   return v7;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSSnapshotBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:0];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:0];
 
   return v7;
 }
 
-- (id)BOOLForKey:(id)a3
+- (id)BOOLForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSSnapshotBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:1];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:1];
 
   return v7;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__AMSSnapshotBag_createSnapshotWithCompletion___block_invoke;
   v7[3] = &unk_1E73B36D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
@@ -297,90 +297,90 @@ void __47__AMSSnapshotBag_createSnapshotWithCompletion___block_invoke(uint64_t a
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)doubleForKey:(id)a3
+- (id)doubleForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSSnapshotBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:2];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:2];
 
   return v7;
 }
 
-- (id)integerForKey:(id)a3
+- (id)integerForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSSnapshotBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:3];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:3];
 
   return v7;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSSnapshotBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:4];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:4];
 
   return v7;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSSnapshotBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:5];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:5];
 
   return v7;
 }
 
-- (id)URLForKey:(id)a3 account:(id)a4
+- (id)URLForKey:(id)key account:(id)account
 {
-  v6 = a4;
-  v7 = a3;
+  accountCopy = account;
+  keyCopy = key;
   v8 = [AMSBagValue alloc];
-  v9 = [(AMSSnapshotBag *)self dataSource];
-  v10 = [(AMSBagValue *)v8 initWithDataSource:v9 key:v7 valueType:5 account:v6];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  v10 = [(AMSBagValue *)v8 initWithDataSource:dataSource key:keyCopy valueType:5 account:accountCopy];
 
   return v10;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSSnapshotBag *)self dataSource];
-  v7 = [(AMSBagValue *)v5 initWithDataSource:v6 key:v4 valueType:6];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  v7 = [(AMSBagValue *)v5 initWithDataSource:dataSource key:keyCopy valueType:6];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSSnapshotBag *)self creationDate];
-  [v4 encodeObject:v5 forKey:@"creationData"];
+  coderCopy = coder;
+  creationDate = [(AMSSnapshotBag *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"creationData"];
 
-  v6 = [(AMSSnapshotBag *)self dataSource];
-  [v4 encodeObject:v6 forKey:@"dataSource"];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  [coderCopy encodeObject:dataSource forKey:@"dataSource"];
 }
 
-- (AMSSnapshotBag)initWithCoder:(id)a3
+- (AMSSnapshotBag)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AMSSnapshotBag;
   v5 = [(AMSSnapshotBag *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationData"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataSource"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataSource"];
     dataSource = v5->_dataSource;
     v5->_dataSource = v8;
   }
@@ -390,10 +390,10 @@ void __47__AMSSnapshotBag_createSnapshotWithCompletion___block_invoke(uint64_t a
 
 - (NSDictionary)dictionary
 {
-  v2 = [(AMSSnapshotBag *)self dataSource];
-  v3 = [v2 dictionary];
+  dataSource = [(AMSSnapshotBag *)self dataSource];
+  dictionary = [dataSource dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 @end

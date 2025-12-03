@@ -1,26 +1,26 @@
 @interface CRSUIPunchThroughController
-- (CRSUIPunchThroughController)initWithPunchThroughIdentifier:(id)a3;
+- (CRSUIPunchThroughController)initWithPunchThroughIdentifier:(id)identifier;
 - (CRSUIPunchThroughControllerDelegate)delegate;
 - (void)_handleConnectionActivated;
 - (void)invalidate;
-- (void)requestDismissalWithCompletion:(id)a3;
-- (void)requestPresentationWithCompletion:(id)a3;
-- (void)serverDismissedPunchThroughIdentifier:(id)a3;
+- (void)requestDismissalWithCompletion:(id)completion;
+- (void)requestPresentationWithCompletion:(id)completion;
+- (void)serverDismissedPunchThroughIdentifier:(id)identifier;
 @end
 
 @implementation CRSUIPunchThroughController
 
-- (CRSUIPunchThroughController)initWithPunchThroughIdentifier:(id)a3
+- (CRSUIPunchThroughController)initWithPunchThroughIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = CRSUIPunchThroughController;
   v6 = [(CRSUIPunchThroughController *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_punchThroughIdentifier, a3);
+    objc_storeStrong(&v6->_punchThroughIdentifier, identifier);
     v7->_lock._os_unfair_lock_opaque = 0;
     v8 = MEMORY[0x277CF3288];
     v9 = +[CRSUIPunchThroughSpecification identifier];
@@ -117,24 +117,24 @@ void __62__CRSUIPunchThroughController_initWithPunchThroughIdentifier___block_in
   }
 }
 
-- (void)requestPresentationWithCompletion:(id)a3
+- (void)requestPresentationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   lock_invalidated = self->_lock_invalidated;
   if (self->_lock_connectionActivated)
   {
     if (!self->_lock_invalidated)
     {
-      v6 = [(CRSUIPunchThroughController *)self connection];
-      v7 = [v6 remoteTarget];
-      v8 = [(CRSUIPunchThroughController *)self punchThroughIdentifier];
+      connection = [(CRSUIPunchThroughController *)self connection];
+      remoteTarget = [connection remoteTarget];
+      punchThroughIdentifier = [(CRSUIPunchThroughController *)self punchThroughIdentifier];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __65__CRSUIPunchThroughController_requestPresentationWithCompletion___block_invoke;
       v11[3] = &unk_278DA0E70;
-      v12 = v4;
-      [v7 clientRequestPresentationForPunchThroughIdentifier:v8 completion:v11];
+      v12 = completionCopy;
+      [remoteTarget clientRequestPresentationForPunchThroughIdentifier:punchThroughIdentifier completion:v11];
 
       lock_pendingPresentationCompletion = v12;
 LABEL_6:
@@ -144,7 +144,7 @@ LABEL_6:
   else if (!self->_lock_invalidated)
   {
     self->_lock_hasPendingPresentationRequest = 1;
-    v10 = MEMORY[0x245D2CF20](v4);
+    v10 = MEMORY[0x245D2CF20](completionCopy);
     lock_pendingPresentationCompletion = self->_lock_pendingPresentationCompletion;
     self->_lock_pendingPresentationCompletion = v10;
     goto LABEL_6;
@@ -179,21 +179,21 @@ uint64_t __65__CRSUIPunchThroughController_requestPresentationWithCompletion___b
   return result;
 }
 
-- (void)requestDismissalWithCompletion:(id)a3
+- (void)requestDismissalWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_connectionActivated && !self->_lock_invalidated && self->_lock_presented)
   {
-    v5 = [(CRSUIPunchThroughController *)self connection];
-    v6 = [v5 remoteTarget];
-    v7 = [(CRSUIPunchThroughController *)self punchThroughIdentifier];
+    connection = [(CRSUIPunchThroughController *)self connection];
+    remoteTarget = [connection remoteTarget];
+    punchThroughIdentifier = [(CRSUIPunchThroughController *)self punchThroughIdentifier];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __62__CRSUIPunchThroughController_requestDismissalWithCompletion___block_invoke;
     v8[3] = &unk_278DA0E70;
-    v9 = v4;
-    [v6 clientRequestDismissalForPunchThroughIdentifier:v7 completion:v8];
+    v9 = completionCopy;
+    [remoteTarget clientRequestDismissalForPunchThroughIdentifier:punchThroughIdentifier completion:v8];
   }
 
   self->_lock_presented = 0;
@@ -248,7 +248,7 @@ uint64_t __62__CRSUIPunchThroughController_requestDismissalWithCompletion___bloc
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serverDismissedPunchThroughIdentifier:(id)a3
+- (void)serverDismissedPunchThroughIdentifier:(id)identifier
 {
   os_unfair_lock_lock(&self->_lock);
   self->_lock_presented = 0;
@@ -273,16 +273,16 @@ void __69__CRSUIPunchThroughController_serverDismissedPunchThroughIdentifier___b
   if (self->_lock_hasPendingPresentationRequest)
   {
     v3 = MEMORY[0x245D2CF20](self->_lock_pendingPresentationCompletion);
-    v4 = [(CRSUIPunchThroughController *)self connection];
-    v5 = [v4 remoteTarget];
-    v6 = [(CRSUIPunchThroughController *)self punchThroughIdentifier];
+    connection = [(CRSUIPunchThroughController *)self connection];
+    remoteTarget = [connection remoteTarget];
+    punchThroughIdentifier = [(CRSUIPunchThroughController *)self punchThroughIdentifier];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __57__CRSUIPunchThroughController__handleConnectionActivated__block_invoke;
     v9[3] = &unk_278DA0E70;
     v10 = v3;
     v7 = v3;
-    [v5 clientRequestPresentationForPunchThroughIdentifier:v6 completion:v9];
+    [remoteTarget clientRequestPresentationForPunchThroughIdentifier:punchThroughIdentifier completion:v9];
 
     self->_lock_hasPendingPresentationRequest = 0;
     lock_pendingPresentationCompletion = self->_lock_pendingPresentationCompletion;

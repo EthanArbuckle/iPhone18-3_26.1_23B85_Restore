@@ -1,12 +1,12 @@
 @interface SKAPresenceMembershipKey
 + (id)logger;
 - (BOOL)_generateKey;
-- (BOOL)_generateKeyFromKeyData:(id)a3;
+- (BOOL)_generateKeyFromKeyData:(id)data;
 - (NSData)privateKeyMaterial;
 - (NSData)publicKeyMaterial;
 - (SKAPresenceMembershipKey)initWithNewKeyMaterial;
-- (SKAPresenceMembershipKey)initWithPrivateKeyMaterial:(id)a3;
-- (id)signPayload:(id)a3;
+- (SKAPresenceMembershipKey)initWithPrivateKeyMaterial:(id)material;
+- (id)signPayload:(id)payload;
 - (void)_generateKey;
 - (void)dealloc;
 - (void)privateKeyMaterial;
@@ -34,9 +34,9 @@
   return v4;
 }
 
-- (SKAPresenceMembershipKey)initWithPrivateKeyMaterial:(id)a3
+- (SKAPresenceMembershipKey)initWithPrivateKeyMaterial:(id)material
 {
-  v4 = a3;
+  materialCopy = material;
   v9.receiver = self;
   v9.super_class = SKAPresenceMembershipKey;
   v5 = [(SKAPresenceMembershipKey *)&v9 init];
@@ -45,7 +45,7 @@
     goto LABEL_5;
   }
 
-  if (![v4 length] || objc_msgSend(v4, "length") != 97)
+  if (![materialCopy length] || objc_msgSend(materialCopy, "length") != 97)
   {
     v7 = +[SKAPresenceMembershipKey logger];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -56,7 +56,7 @@
     goto LABEL_9;
   }
 
-  if (![(SKAPresenceMembershipKey *)v5 _generateKeyFromKeyData:v4])
+  if (![(SKAPresenceMembershipKey *)v5 _generateKeyFromKeyData:materialCopy])
   {
 LABEL_9:
     v6 = 0;
@@ -82,14 +82,14 @@ LABEL_10:
   [(SKAPresenceMembershipKey *)&v3 dealloc];
 }
 
-- (id)signPayload:(id)a3
+- (id)signPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   if ([(SKAPresenceMembershipKey *)self privateKey])
   {
     error = 0;
-    v5 = [(SKAPresenceMembershipKey *)self privateKey];
-    v6 = SecKeyCreateSignature(v5, *MEMORY[0x277CDC300], v4, &error);
+    privateKey = [(SKAPresenceMembershipKey *)self privateKey];
+    v6 = SecKeyCreateSignature(privateKey, *MEMORY[0x277CDC300], payloadCopy, &error);
     if (v6)
     {
       v10 = 769;
@@ -218,7 +218,7 @@ LABEL_10:
   return v5 != 0;
 }
 
-- (BOOL)_generateKeyFromKeyData:(id)a3
+- (BOOL)_generateKeyFromKeyData:(id)data
 {
   v17[4] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CDC040];
@@ -234,10 +234,10 @@ LABEL_10:
   v17[2] = v6;
   v17[3] = MEMORY[0x277CBEC38];
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a3;
+  dataCopy = data;
   v10 = [v8 dictionaryWithObjects:v17 forKeys:v16 count:4];
   v15 = 0;
-  v11 = SecKeyCreateWithData(v9, v10, &v15);
+  v11 = SecKeyCreateWithData(dataCopy, v10, &v15);
 
   if (v11)
   {
@@ -291,7 +291,7 @@ uint64_t __34__SKAPresenceMembershipKey_logger__block_invoke()
 
 - (void)publicKeyMaterial
 {
-  OUTLINED_FUNCTION_2_0(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_2_0(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_0(&dword_220099000, v1, v2, "Public key externalization completed with error: %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -299,7 +299,7 @@ uint64_t __34__SKAPresenceMembershipKey_logger__block_invoke()
 
 - (void)privateKeyMaterial
 {
-  OUTLINED_FUNCTION_2_0(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_2_0(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_0(&dword_220099000, v1, v2, "Private key externalization completed with error: %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -307,7 +307,7 @@ uint64_t __34__SKAPresenceMembershipKey_logger__block_invoke()
 
 - (void)_generateKey
 {
-  OUTLINED_FUNCTION_2_0(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_2_0(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_0(&dword_220099000, v1, v2, "Membership key generation completed with error: %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];

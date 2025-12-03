@@ -1,29 +1,29 @@
 @interface GKGameLayerCollectionDataSource
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)standardCellSizeForCollectionView:(id)a3;
-- (GKGameLayerCollectionDataSource)initWithGameRecord:(id)a3;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)standardCellSizeForCollectionView:(id)view;
+- (GKGameLayerCollectionDataSource)initWithGameRecord:(id)record;
 - (UIViewController)presentationViewController;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 @end
 
 @implementation GKGameLayerCollectionDataSource
 
-- (GKGameLayerCollectionDataSource)initWithGameRecord:(id)a3
+- (GKGameLayerCollectionDataSource)initWithGameRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v8.receiver = self;
   v8.super_class = GKGameLayerCollectionDataSource;
   v5 = [(GKGameLayerCollectionDataSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(GKGameLayerCollectionDataSource *)v5 setGameRecord:v4];
+    [(GKGameLayerCollectionDataSource *)v5 setGameRecord:recordCopy];
   }
 
   return v6;
 }
 
-- (CGSize)standardCellSizeForCollectionView:(id)a3
+- (CGSize)standardCellSizeForCollectionView:(id)view
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -32,17 +32,17 @@
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v4 = objc_alloc_init(MEMORY[0x277D752A8]);
 
   return v4;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v4 = [a3 indexPathsForSelectedItems];
-  v5 = [v4 count] == 0;
+  indexPathsForSelectedItems = [view indexPathsForSelectedItems];
+  v5 = [indexPathsForSelectedItems count] == 0;
 
   return v5;
 }

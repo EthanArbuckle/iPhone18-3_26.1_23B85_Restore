@@ -1,18 +1,18 @@
 @interface APMetric
-+ (BOOL)_isMetricWithContainerAllowed:(int64_t)a3;
-- (APMetric)initWithCoder:(id)a3;
-- (APMetric)initWithPurpose:(int64_t)a3 metric:(int64_t)a4 contentIdentifier:(id)a5 contextIdentifier:(id)a6 handle:(id)a7 secondaryHandle:(id)a8 branch:(id)a9 properties:(id)a10 internalProperties:(id)a11 relayData:(id)a12 environment:(id)a13 order:(int64_t)a14 options:(int64_t)a15;
++ (BOOL)_isMetricWithContainerAllowed:(int64_t)allowed;
+- (APMetric)initWithCoder:(id)coder;
+- (APMetric)initWithPurpose:(int64_t)purpose metric:(int64_t)metric contentIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier handle:(id)handle secondaryHandle:(id)secondaryHandle branch:(id)branch properties:(id)self0 internalProperties:(id)self1 relayData:(id)self2 environment:(id)self3 order:(int64_t)self4 options:(int64_t)self5;
 - (NSString)bundleIdentifier;
 - (NSString)description;
-- (id)_descriptionWithFormat:(id)a3;
+- (id)_descriptionWithFormat:(id)format;
 - (id)_internalProperties;
 - (id)_options;
 - (id)_optionsArray;
 - (id)_properties;
 - (id)_relayData;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addInternalPropertyValue:(id)a3 forKey:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addInternalPropertyValue:(id)value forKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APMetric
@@ -261,31 +261,31 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   purpose_low = LODWORD(self->_purpose);
-  v21 = a3;
-  objc_msgSend_encodeInt32_forKey_(v21, v5, purpose_low, @"purpose");
-  objc_msgSend_encodeInt32_forKey_(v21, v6, LODWORD(self->_metric), @"metric");
-  objc_msgSend_encodeObject_forKey_(v21, v7, self->_timestamp, @"timestamp");
-  objc_msgSend_encodeObject_forKey_(v21, v8, self->_contentIdentifier, @"content_identifier");
-  objc_msgSend_encodeObject_forKey_(v21, v9, self->_contextIdentifier, @"context_identifier");
-  objc_msgSend_encodeObject_forKey_(v21, v10, self->_properties, @"properties");
-  objc_msgSend_encodeObject_forKey_(v21, v11, self->_internalProperties, @"internal_properties");
-  objc_msgSend_encodeInt32_forKey_(v21, v12, LODWORD(self->_options), @"options");
-  objc_msgSend_encodeObject_forKey_(v21, v13, self->_handle, @"handle");
-  objc_msgSend_encodeInt32_forKey_(v21, v14, LODWORD(self->_order), @"order");
-  objc_msgSend_encodeObject_forKey_(v21, v15, self->_trace, @"trace");
-  objc_msgSend_encodeObject_forKey_(v21, v16, self->_branch, @"branch");
-  objc_msgSend_encodeObject_forKey_(v21, v17, self->_relayData, @"relay");
-  objc_msgSend_encodeObject_forKey_(v21, v18, self->_environment, @"environment");
-  objc_msgSend_encodeInt32_forKey_(v21, v19, self->_source, @"source");
-  objc_msgSend_encodeObject_forKey_(v21, v20, self->_secondaryHandle, @"secondaryHandle");
+  coderCopy = coder;
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v5, purpose_low, @"purpose");
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v6, LODWORD(self->_metric), @"metric");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_timestamp, @"timestamp");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_contentIdentifier, @"content_identifier");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_contextIdentifier, @"context_identifier");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, self->_properties, @"properties");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, self->_internalProperties, @"internal_properties");
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v12, LODWORD(self->_options), @"options");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, self->_handle, @"handle");
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v14, LODWORD(self->_order), @"order");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, self->_trace, @"trace");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, self->_branch, @"branch");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v17, self->_relayData, @"relay");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v18, self->_environment, @"environment");
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v19, self->_source, @"source");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, self->_secondaryHandle, @"secondaryHandle");
 }
 
-- (APMetric)initWithCoder:(id)a3
+- (APMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v78.receiver = self;
   v78.super_class = APMetric;
   v5 = [(APMetric *)&v78 init];
@@ -305,48 +305,48 @@
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v17 = objc_msgSend_setWithObjects_(v6, v15, v7, v16, v8, v9, v10, v11, v12, v13, v14, 0);
-  v5->_purpose = objc_msgSend_decodeInt32ForKey_(v4, v18, @"purpose", v19);
-  v5->_metric = objc_msgSend_decodeInt32ForKey_(v4, v20, @"metric", v21);
+  v5->_purpose = objc_msgSend_decodeInt32ForKey_(coderCopy, v18, @"purpose", v19);
+  v5->_metric = objc_msgSend_decodeInt32ForKey_(coderCopy, v20, @"metric", v21);
   v22 = objc_opt_class();
-  v24 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v23, v22, @"timestamp");
+  v24 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v23, v22, @"timestamp");
   timestamp = v5->_timestamp;
   v5->_timestamp = v24;
 
   v26 = objc_opt_class();
-  v28 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v27, v26, @"content_identifier");
+  v28 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v27, v26, @"content_identifier");
   contentIdentifier = v5->_contentIdentifier;
   v5->_contentIdentifier = v28;
 
   v30 = objc_opt_class();
-  v32 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v31, v30, @"context_identifier");
+  v32 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v31, v30, @"context_identifier");
   contextIdentifier = v5->_contextIdentifier;
   v5->_contextIdentifier = v32;
 
-  v35 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v34, v17, @"properties");
+  v35 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v34, v17, @"properties");
   properties = v5->_properties;
   v5->_properties = v35;
 
-  v38 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v37, v17, @"internal_properties");
+  v38 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v37, v17, @"internal_properties");
   internalProperties = v5->_internalProperties;
   v5->_internalProperties = v38;
 
-  v5->_options = objc_msgSend_decodeInt32ForKey_(v4, v40, @"options", v41);
-  v5->_order = objc_msgSend_decodeInt32ForKey_(v4, v42, @"order", v43);
+  v5->_options = objc_msgSend_decodeInt32ForKey_(coderCopy, v40, @"options", v41);
+  v5->_order = objc_msgSend_decodeInt32ForKey_(coderCopy, v42, @"order", v43);
   v44 = objc_opt_class();
-  v46 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v45, v44, @"trace");
+  v46 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v45, v44, @"trace");
   trace = v5->_trace;
   v5->_trace = v46;
 
-  v49 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v48, v17, @"branch");
+  v49 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v48, v17, @"branch");
   branch = v5->_branch;
   v5->_branch = v49;
 
-  v52 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v51, v17, @"relay");
+  v52 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v51, v17, @"relay");
   relayData = v5->_relayData;
   v5->_relayData = v52;
 
   v54 = objc_opt_class();
-  v56 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v55, v54, @"handle");
+  v56 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v55, v54, @"handle");
   handle = v5->_handle;
   v5->_handle = v56;
 
@@ -354,17 +354,17 @@
   v59 = objc_opt_class();
   v60 = objc_opt_class();
   v63 = objc_msgSend_setWithObjects_(v58, v61, v59, v62, v60, 0);
-  v65 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v64, v63, @"environment");
+  v65 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v64, v63, @"environment");
   environment = v5->_environment;
   v5->_environment = v65;
 
-  v5->_source = objc_msgSend_decodeInt32ForKey_(v4, v67, @"source", v68);
+  v5->_source = objc_msgSend_decodeInt32ForKey_(coderCopy, v67, @"source", v68);
   v69 = objc_opt_class();
-  v71 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v70, v69, @"secondaryHandle");
+  v71 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v70, v69, @"secondaryHandle");
   secondaryHandle = v5->_secondaryHandle;
   v5->_secondaryHandle = v71;
 
-  LODWORD(v59) = objc_msgSend_validateMetricAndSetupIdentifiers_(v5, v73, v4, v74);
+  LODWORD(v59) = objc_msgSend_validateMetricAndSetupIdentifiers_(v5, v73, coderCopy, v74);
   objc_autoreleasePoolPop(context);
   v75 = 0;
   if (v59)
@@ -376,9 +376,9 @@ LABEL_3:
   return v75;
 }
 
-+ (BOOL)_isMetricWithContainerAllowed:(int64_t)a3
++ (BOOL)_isMetricWithContainerAllowed:(int64_t)allowed
 {
-  if (a3 == 1406)
+  if (allowed == 1406)
   {
     return 1;
   }
@@ -395,38 +395,38 @@ LABEL_3:
     v6 = qword_1BAF94D60[++v4];
   }
 
-  while (v6 != a3);
+  while (v6 != allowed);
   return v5 < 7;
 }
 
-- (APMetric)initWithPurpose:(int64_t)a3 metric:(int64_t)a4 contentIdentifier:(id)a5 contextIdentifier:(id)a6 handle:(id)a7 secondaryHandle:(id)a8 branch:(id)a9 properties:(id)a10 internalProperties:(id)a11 relayData:(id)a12 environment:(id)a13 order:(int64_t)a14 options:(int64_t)a15
+- (APMetric)initWithPurpose:(int64_t)purpose metric:(int64_t)metric contentIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier handle:(id)handle secondaryHandle:(id)secondaryHandle branch:(id)branch properties:(id)self0 internalProperties:(id)self1 relayData:(id)self2 environment:(id)self3 order:(int64_t)self4 options:(int64_t)self5
 {
   v81 = *MEMORY[0x1E69E9840];
-  v73 = a5;
-  v72 = a6;
-  v19 = a7;
-  v20 = a8;
-  obj = a9;
-  v71 = a9;
-  v21 = a10;
-  v75 = a11;
-  v22 = a12;
-  v67 = a13;
-  v70 = a13;
-  if (objc_msgSend_dictionaryContainsContainers(v21, v23, v24, v25) && (objc_msgSend__isMetricWithContainerAllowed_(APMetric, v26, a4, v27, a9, a13) & 1) == 0)
+  identifierCopy = identifier;
+  contextIdentifierCopy = contextIdentifier;
+  handleCopy = handle;
+  secondaryHandleCopy = secondaryHandle;
+  obj = branch;
+  branchCopy = branch;
+  propertiesCopy = properties;
+  internalPropertiesCopy = internalProperties;
+  dataCopy = data;
+  environmentCopy = environment;
+  environmentCopy2 = environment;
+  if (objc_msgSend_dictionaryContainsContainers(propertiesCopy, v23, v24, v25) && (objc_msgSend__isMetricWithContainerAllowed_(APMetric, v26, metric, v27, branch, environment) & 1) == 0)
   {
-    v28 = v20;
+    v28 = secondaryHandleCopy;
     v29 = APLogForCategory(0x21uLL);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v78 = a4;
+      metricCopy = metric;
       v79 = 1024;
-      v80 = a3;
+      purposeCopy = purpose;
       _os_log_impl(&dword_1BADC1000, v29, OS_LOG_TYPE_DEFAULT, "Metric (%d) for purpose (%d) has a property that is a container!", buf, 0xEu);
     }
 
-    v20 = v28;
+    secondaryHandleCopy = v28;
   }
 
   v76.receiver = self;
@@ -438,39 +438,39 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  v30->_purpose = a3;
-  v30->_metric = a4;
-  objc_storeStrong(&v30->_contentIdentifier, a5);
-  objc_storeStrong(&v31->_contextIdentifier, a6);
+  v30->_purpose = purpose;
+  v30->_metric = metric;
+  objc_storeStrong(&v30->_contentIdentifier, identifier);
+  objc_storeStrong(&v31->_contextIdentifier, contextIdentifier);
   v35 = objc_msgSend_date(MEMORY[0x1E695DF00], v32, v33, v34);
   timestamp = v31->_timestamp;
   v31->_timestamp = v35;
 
-  v40 = objc_msgSend_copy(v21, v37, v38, v39);
+  v40 = objc_msgSend_copy(propertiesCopy, v37, v38, v39);
   properties = v31->_properties;
   v31->_properties = v40;
 
-  v45 = objc_msgSend_copy(v75, v42, v43, v44);
+  v45 = objc_msgSend_copy(internalPropertiesCopy, v42, v43, v44);
   internalProperties = v31->_internalProperties;
   v31->_internalProperties = v45;
 
-  v31->_options = a15;
-  objc_storeStrong(&v31->_contextIdentifier, a6);
-  v31->_purpose = a3;
+  v31->_options = options;
+  objc_storeStrong(&v31->_contextIdentifier, contextIdentifier);
+  v31->_purpose = purpose;
   objc_storeStrong(&v31->_branch, obja);
-  v50 = objc_msgSend_copy(v22, v47, v48, v49);
+  v50 = objc_msgSend_copy(dataCopy, v47, v48, v49);
   relayData = v31->_relayData;
   v31->_relayData = v50;
 
-  objc_storeStrong(&v31->_environment, v67);
-  v31->_order = a14;
-  v55 = objc_msgSend_copy(v20, v52, v53, v54);
+  objc_storeStrong(&v31->_environment, environmentCopy);
+  v31->_order = order;
+  v55 = objc_msgSend_copy(secondaryHandleCopy, v52, v53, v54);
   secondaryHandle = v31->_secondaryHandle;
   v31->_secondaryHandle = v55;
 
-  if (v19)
+  if (handleCopy)
   {
-    v60 = objc_msgSend_copy(v19, v57, v58, v59);
+    v60 = objc_msgSend_copy(handleCopy, v57, v58, v59);
     handle = v31->_handle;
     v31->_handle = v60;
   }
@@ -486,20 +486,20 @@ LABEL_10:
   return v62;
 }
 
-- (void)addInternalPropertyValue:(id)a3 forKey:(id)a4
+- (void)addInternalPropertyValue:(id)value forKey:(id)key
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v11 = v7;
-  if (v6 && v7)
+  valueCopy = value;
+  keyCopy = key;
+  v11 = keyCopy;
+  if (valueCopy && keyCopy)
   {
     if (self->_internalProperties)
     {
       v12 = objc_msgSend_internalProperties(self, v8, v9, v10);
       v16 = objc_msgSend_mutableCopy(v12, v13, v14, v15);
 
-      objc_msgSend_setValue_forKey_(v16, v17, v6, v11);
+      objc_msgSend_setValue_forKey_(v16, v17, valueCopy, v11);
       v21 = objc_msgSend_copy(v16, v18, v19, v20);
       internalProperties = self->_internalProperties;
       self->_internalProperties = v21;
@@ -507,8 +507,8 @@ LABEL_10:
 
     else
     {
-      v26 = v7;
-      v27[0] = v6;
+      v26 = keyCopy;
+      v27[0] = valueCopy;
       v23 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v8, v27, &v26, 1);
       v24 = self->_internalProperties;
       self->_internalProperties = v23;
@@ -518,15 +518,15 @@ LABEL_10:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v23 = 0;
-  v5 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v4, v3, 1, &v23);
+  v5 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v4, selfCopy, 1, &v23);
   v6 = v23;
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   if (v6)
   {
@@ -534,13 +534,13 @@ LABEL_10:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v25 = v3;
+      v25 = selfCopy;
       v26 = 2112;
       v27 = v6;
       _os_log_impl(&dword_1BADC1000, v7, OS_LOG_TYPE_ERROR, "Error archiving metric %@! error: %@", buf, 0x16u);
     }
 
-    v10 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"Error archiving metric %@! error: %@", v9, v3, v6);
+    v10 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"Error archiving metric %@! error: %@", v9, selfCopy, v6);
     APSimulateCrash(5, v10, 0);
   }
 
@@ -556,13 +556,13 @@ LABEL_10:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v25 = v3;
+      v25 = selfCopy;
       v26 = 2112;
       v27 = v15;
       _os_log_impl(&dword_1BADC1000, v16, OS_LOG_TYPE_ERROR, "Error unarchiving metric %@! error: %@", buf, 0x16u);
     }
 
-    v19 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v17, @"Error unarchiving metric %@! error: %@", v18, v3, v15);
+    v19 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v17, @"Error unarchiving metric %@! error: %@", v18, selfCopy, v15);
     APSimulateCrash(5, v19, 0);
   }
 
@@ -570,11 +570,11 @@ LABEL_10:
   return v14;
 }
 
-- (id)_descriptionWithFormat:(id)a3
+- (id)_descriptionWithFormat:(id)format
 {
   v111 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AC80];
-  v101 = a3;
+  formatCopy = format;
   v8 = objc_msgSend_apLocalSharedFormatter(v4, v5, v6, v7);
   v12 = objc_msgSend_timestamp(self, v9, v10, v11);
   v102 = v8;
@@ -677,7 +677,7 @@ LABEL_10:
   v85 = v84;
 
   v108 = 0;
-  v87 = objc_msgSend_stringWithValidatedFormat_validFormatSpecifiers_error_(MEMORY[0x1E696AEC0], v86, v101, @"%@%ld%ld%@%@%@%@%@%@%@%@%@%ld%@", &v108, v103, v100, v99, v27, v85, v31, v38, v45, v107, v106, v105, v104, v64, v78);
+  v87 = objc_msgSend_stringWithValidatedFormat_validFormatSpecifiers_error_(MEMORY[0x1E696AEC0], v86, formatCopy, @"%@%ld%ld%@%@%@%@%@%@%@%@%@%ld%@", &v108, v103, v100, v99, v27, v85, v31, v38, v45, v107, v106, v105, v104, v64, v78);
 
   v88 = v108;
   if (v88)

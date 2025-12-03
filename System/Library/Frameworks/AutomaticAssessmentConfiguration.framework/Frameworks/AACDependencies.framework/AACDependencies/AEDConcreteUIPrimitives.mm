@@ -1,62 +1,62 @@
 @interface AEDConcreteUIPrimitives
 - (id)keyWindow;
-- (id)sceneForActivationState:(uint64_t)a1;
-- (id)suitableViewControllerForViewController:(uint64_t)a1;
-- (void)presentBannerWithTitle:(id)a3 duration:(double)a4 completion:(id)a5;
+- (id)sceneForActivationState:(uint64_t)state;
+- (id)suitableViewControllerForViewController:(uint64_t)controller;
+- (void)presentBannerWithTitle:(id)title duration:(double)duration completion:(id)completion;
 @end
 
 @implementation AEDConcreteUIPrimitives
 
-- (void)presentBannerWithTitle:(id)a3 duration:(double)a4 completion:(id)a5
+- (void)presentBannerWithTitle:(id)title duration:(double)duration completion:(id)completion
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  titleCopy = title;
+  completionCopy = completion;
   v10 = objc_alloc(MEMORY[0x277CCA898]);
   v51 = *MEMORY[0x277D764E8];
   v11 = *MEMORY[0x277D76438];
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*MEMORY[0x277D76438]];
   v52[0] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:&v51 count:1];
-  v14 = [v10 initWithString:v8 attributes:v13];
+  v14 = [v10 initWithString:titleCopy attributes:v13];
 
   UIAccessibilityPostNotification(v11, v14);
-  v15 = [(AEDConcreteUIPrimitives *)self keyWindow];
-  v16 = v15;
-  if (v15)
+  keyWindow = [(AEDConcreteUIPrimitives *)self keyWindow];
+  v16 = keyWindow;
+  if (keyWindow)
   {
-    v18 = [v15 rootViewController];
-    v19 = [(AEDConcreteUIPrimitives *)self suitableViewControllerForViewController:v18];
+    rootViewController = [keyWindow rootViewController];
+    v19 = [(AEDConcreteUIPrimitives *)self suitableViewControllerForViewController:rootViewController];
 
     if (v19)
     {
-      v20 = [v19 view];
-      v21 = [[AEDBannerView alloc] initWithTitle:v8];
+      view = [v19 view];
+      v21 = [[AEDBannerView alloc] initWithTitle:titleCopy];
       [(AEDBannerView *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(AEDBannerView *)v21 setAlpha:0.0];
       [(AEDBannerView *)v21 layer];
       v22 = v44 = v19;
       [v22 setZPosition:10000002.0];
 
-      [v20 addSubview:v21];
+      [view addSubview:v21];
       v38 = MEMORY[0x277CCAAD0];
-      v43 = [(AEDBannerView *)v21 leadingAnchor];
-      v42 = [v20 leadingAnchor];
-      v41 = [v43 constraintEqualToAnchor:v42];
+      leadingAnchor = [(AEDBannerView *)v21 leadingAnchor];
+      leadingAnchor2 = [view leadingAnchor];
+      v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v50[0] = v41;
-      v40 = [(AEDBannerView *)v21 trailingAnchor];
-      v39 = [v20 trailingAnchor];
-      v37 = [v40 constraintEqualToAnchor:v39];
+      trailingAnchor = [(AEDBannerView *)v21 trailingAnchor];
+      trailingAnchor2 = [view trailingAnchor];
+      v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v50[1] = v37;
-      v35 = [(AEDBannerView *)v21 topAnchor];
-      v36 = v20;
-      v23 = v20;
-      v34 = [v20 topAnchor];
-      v24 = [v35 constraintEqualToAnchor:v34];
+      topAnchor = [(AEDBannerView *)v21 topAnchor];
+      v36 = view;
+      v23 = view;
+      topAnchor2 = [view topAnchor];
+      v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v50[2] = v24;
-      v25 = [(AEDBannerView *)v21 bottomAnchor];
-      v26 = [v23 bottomAnchor];
-      v27 = [v25 constraintLessThanOrEqualToAnchor:v26];
+      bottomAnchor = [(AEDBannerView *)v21 bottomAnchor];
+      bottomAnchor2 = [v23 bottomAnchor];
+      v27 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
       v50[3] = v27;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:4];
       [v38 activateConstraints:v28];
@@ -70,13 +70,13 @@
       v30 = v21;
       v49 = v30;
       [v29 animateWithDuration:v48 animations:0.8];
-      v31 = dispatch_time(0, ((a4 + 0.8) * 1000000000.0));
+      v31 = dispatch_time(0, ((duration + 0.8) * 1000000000.0));
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __70__AEDConcreteUIPrimitives_presentBannerWithTitle_duration_completion___block_invoke_2;
       block[3] = &unk_278A0C508;
       v46 = v30;
-      v47 = v9;
+      v47 = completionCopy;
       v32 = v30;
       v33 = v31;
       v19 = v44;
@@ -85,13 +85,13 @@
 
     else
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -142,31 +142,31 @@ BOOL __51__AEDConcreteUIPrimitives_sceneForActivationState___block_invoke(uint64
 
 - (id)keyWindow
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [(AEDConcreteUIPrimitives *)a1 sceneForActivationState:?];
+    v2 = [(AEDConcreteUIPrimitives *)self sceneForActivationState:?];
     if (!v2)
     {
-      v2 = [(AEDConcreteUIPrimitives *)v1 sceneForActivationState:?];
+      v2 = [(AEDConcreteUIPrimitives *)selfCopy sceneForActivationState:?];
     }
 
-    v1 = [v2 keyWindow];
+    selfCopy = [v2 keyWindow];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)suitableViewControllerForViewController:(uint64_t)a1
+- (id)suitableViewControllerForViewController:(uint64_t)controller
 {
   v3 = a2;
-  if (a1)
+  if (controller)
   {
     v4 = objc_opt_new();
-    v5 = [v3 presentedViewController];
-    if (v5)
+    presentedViewController = [v3 presentedViewController];
+    if (presentedViewController)
     {
-      v6 = v5;
+      v8PresentedViewController = presentedViewController;
       while (1)
       {
         v7 = [v4 containsObject:v3];
@@ -177,24 +177,24 @@ BOOL __51__AEDConcreteUIPrimitives_sceneForActivationState___block_invoke(uint64
         }
 
         [v4 addObject:v3];
-        v8 = [v3 presentedViewController];
+        presentedViewController2 = [v3 presentedViewController];
 
-        v6 = [v8 presentedViewController];
-        v3 = v8;
-        if (!v6)
+        v8PresentedViewController = [presentedViewController2 presentedViewController];
+        v3 = presentedViewController2;
+        if (!v8PresentedViewController)
         {
           goto LABEL_8;
         }
       }
     }
 
-    v8 = v3;
+    presentedViewController2 = v3;
 LABEL_8:
-    v9 = [v8 view];
-    v10 = [v9 window];
-    if (v10)
+    view = [presentedViewController2 view];
+    window = [view window];
+    if (window)
     {
-      v11 = v8;
+      v11 = presentedViewController2;
     }
 
     else
@@ -204,7 +204,7 @@ LABEL_8:
 
     v12 = v11;
 
-    v3 = v8;
+    v3 = presentedViewController2;
   }
 
   else
@@ -215,13 +215,13 @@ LABEL_8:
   return v12;
 }
 
-- (id)sceneForActivationState:(uint64_t)a1
+- (id)sceneForActivationState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v3 connectedScenes];
-    v5 = [v4 allObjects];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    connectedScenes = [mEMORY[0x277D75128] connectedScenes];
+    allObjects = [connectedScenes allObjects];
     OUTLINED_FUNCTION_0();
     v10 = 3221225472;
     v11 = __51__AEDConcreteUIPrimitives_sceneForActivationState___block_invoke;

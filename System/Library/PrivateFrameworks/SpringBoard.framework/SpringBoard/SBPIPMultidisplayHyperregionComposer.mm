@@ -1,16 +1,16 @@
 @interface SBPIPMultidisplayHyperregionComposer
-- (CGPoint)defaultCornerPositionForLayoutSettingsPosition:(unint64_t)a3 proposedCenter:(CGPoint)a4 geometry:(SBPIPPositionGeometryContext *)a5 interaction:(SBPIPPositionInteractionStateContext *)a6;
+- (CGPoint)defaultCornerPositionForLayoutSettingsPosition:(unint64_t)position proposedCenter:(CGPoint)center geometry:(SBPIPPositionGeometryContext *)geometry interaction:(SBPIPPositionInteractionStateContext *)interaction;
 - (SBPIPMultidisplayHyperregionComposer)init;
-- (SBPIPPositionGeometryContext)_adjustGeometryContextIfNeeded:(SEL)a3 forComposer:(SBPIPPositionGeometryContext *)a4;
+- (SBPIPPositionGeometryContext)_adjustGeometryContextIfNeeded:(SEL)needed forComposer:(SBPIPPositionGeometryContext *)composer;
 - (SBPIPPositionHyperregionComposerDelegate)delegate;
-- (id)_composerForWindowScene:(id)a3;
-- (id)_identifierForScene:(id)a3;
-- (id)mergeMutableRegionsMap:(id)a3 withMap:(id)a4;
-- (id)mutableRegionMapForScene:(id)a3 geometry:(SBPIPPositionGeometryContext *)a4 interaction:(SBPIPPositionInteractionStateContext *)a5;
-- (id)positionRegionsForRegions:(id)a3 geometry:(SBPIPPositionGeometryContext *)a4 interaction:(SBPIPPositionInteractionStateContext *)a5;
-- (unint64_t)canonicalPositionForPoint:(CGPoint)a3 proposedPosition:(unint64_t)a4 geometry:(SBPIPPositionGeometryContext *)a5 interaction:(SBPIPPositionInteractionStateContext *)a6;
+- (id)_composerForWindowScene:(id)scene;
+- (id)_identifierForScene:(id)scene;
+- (id)mergeMutableRegionsMap:(id)map withMap:(id)withMap;
+- (id)mutableRegionMapForScene:(id)scene geometry:(SBPIPPositionGeometryContext *)geometry interaction:(SBPIPPositionInteractionStateContext *)interaction;
+- (id)positionRegionsForRegions:(id)regions geometry:(SBPIPPositionGeometryContext *)geometry interaction:(SBPIPPositionInteractionStateContext *)interaction;
+- (unint64_t)canonicalPositionForPoint:(CGPoint)point proposedPosition:(unint64_t)position geometry:(SBPIPPositionGeometryContext *)geometry interaction:(SBPIPPositionInteractionStateContext *)interaction;
 - (void)invalidate;
-- (void)setConnectedWindowScenes:(id)a3;
+- (void)setConnectedWindowScenes:(id)scenes;
 @end
 
 @implementation SBPIPMultidisplayHyperregionComposer
@@ -22,9 +22,9 @@
   v2 = [(SBPIPMultidisplayHyperregionComposer *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sceneIdentifiersToComposers = v2->_sceneIdentifiersToComposers;
-    v2->_sceneIdentifiersToComposers = v3;
+    v2->_sceneIdentifiersToComposers = dictionary;
   }
 
   return v2;
@@ -36,18 +36,18 @@
   [WeakRetained positionRegionComposerDidInvalidate:self];
 }
 
-- (void)setConnectedWindowScenes:(id)a3
+- (void)setConnectedWindowScenes:(id)scenes
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scenesCopy = scenes;
   if ((BSEqualArrays() & 1) == 0)
   {
     v5 = MEMORY[0x277CBEB58];
-    v6 = [(NSMutableDictionary *)self->_sceneIdentifiersToComposers allKeys];
-    v7 = [v5 setWithArray:v6];
+    allKeys = [(NSMutableDictionary *)self->_sceneIdentifiersToComposers allKeys];
+    v7 = [v5 setWithArray:allKeys];
 
-    v22 = v4;
-    v8 = [v4 copy];
+    v22 = scenesCopy;
+    v8 = [scenesCopy copy];
     connectedWindowScenes = self->_connectedWindowScenes;
     self->_connectedWindowScenes = v8;
 
@@ -71,17 +71,17 @@
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
-          v16 = [v15 session];
-          v17 = [v16 persistentIdentifier];
+          session = [v15 session];
+          persistentIdentifier = [session persistentIdentifier];
 
-          [v7 removeObject:v17];
-          v18 = [(NSMutableDictionary *)self->_sceneIdentifiersToComposers objectForKeyedSubscript:v17];
+          [v7 removeObject:persistentIdentifier];
+          v18 = [(NSMutableDictionary *)self->_sceneIdentifiersToComposers objectForKeyedSubscript:persistentIdentifier];
 
           if (!v18)
           {
             v19 = objc_alloc_init(SBPIPDefaultPositionHyperregionComposer);
             [(SBPIPDefaultPositionHyperregionComposer *)v19 setRepresentedWindowScene:v15];
-            [(NSMutableDictionary *)self->_sceneIdentifiersToComposers setObject:v19 forKeyedSubscript:v17];
+            [(NSMutableDictionary *)self->_sceneIdentifiersToComposers setObject:v19 forKeyedSubscript:persistentIdentifier];
           }
         }
 
@@ -92,34 +92,34 @@
     }
 
     sceneIdentifiersToComposers = self->_sceneIdentifiersToComposers;
-    v21 = [v7 allObjects];
-    [(NSMutableDictionary *)sceneIdentifiersToComposers removeObjectsForKeys:v21];
+    allObjects = [v7 allObjects];
+    [(NSMutableDictionary *)sceneIdentifiersToComposers removeObjectsForKeys:allObjects];
 
-    v4 = v22;
+    scenesCopy = v22;
   }
 }
 
-- (id)_composerForWindowScene:(id)a3
+- (id)_composerForWindowScene:(id)scene
 {
   sceneIdentifiersToComposers = self->_sceneIdentifiersToComposers;
-  v4 = [a3 session];
-  v5 = [v4 persistentIdentifier];
-  v6 = [(NSMutableDictionary *)sceneIdentifiersToComposers objectForKeyedSubscript:v5];
+  session = [scene session];
+  persistentIdentifier = [session persistentIdentifier];
+  v6 = [(NSMutableDictionary *)sceneIdentifiersToComposers objectForKeyedSubscript:persistentIdentifier];
 
   return v6;
 }
 
-- (id)_identifierForScene:(id)a3
+- (id)_identifierForScene:(id)scene
 {
-  v3 = [a3 session];
-  v4 = [v3 persistentIdentifier];
+  session = [scene session];
+  persistentIdentifier = [session persistentIdentifier];
 
-  return v4;
+  return persistentIdentifier;
 }
 
-- (id)mutableRegionMapForScene:(id)a3 geometry:(SBPIPPositionGeometryContext *)a4 interaction:(SBPIPPositionInteractionStateContext *)a5
+- (id)mutableRegionMapForScene:(id)scene geometry:(SBPIPPositionGeometryContext *)geometry interaction:(SBPIPPositionInteractionStateContext *)interaction
 {
-  v8 = [(SBPIPMultidisplayHyperregionComposer *)self _composerForWindowScene:a3];
+  v8 = [(SBPIPMultidisplayHyperregionComposer *)self _composerForWindowScene:scene];
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
@@ -133,24 +133,24 @@
   v36 = 0;
   v37 = 0;
   v35 = 0;
-  v9 = *&a4->stashedMinimumPadding.bottom;
-  v32 = *&a4->stashedMinimumPadding.top;
+  v9 = *&geometry->stashedMinimumPadding.bottom;
+  v32 = *&geometry->stashedMinimumPadding.top;
   v33 = v9;
-  v34 = *&a4->offscreenCorners;
-  v10 = *&a4->edgeInsets.bottom;
-  v28 = *&a4->edgeInsets.top;
+  v34 = *&geometry->offscreenCorners;
+  v10 = *&geometry->edgeInsets.bottom;
+  v28 = *&geometry->edgeInsets.top;
   v29 = v10;
-  v11 = *&a4->minimumPadding.bottom;
-  v30 = *&a4->minimumPadding.top;
+  v11 = *&geometry->minimumPadding.bottom;
+  v30 = *&geometry->minimumPadding.top;
   v31 = v11;
-  pipAnchorPointOffset = a4->pipAnchorPointOffset;
-  pipStashedSize = a4->pipStashedSize;
+  pipAnchorPointOffset = geometry->pipAnchorPointOffset;
+  pipStashedSize = geometry->pipStashedSize;
   v25 = pipAnchorPointOffset;
-  size = a4->containerBounds.size;
-  origin = a4->containerBounds.origin;
+  size = geometry->containerBounds.size;
+  origin = geometry->containerBounds.origin;
   v27 = size;
-  pipLastSteadySize = a4->pipLastSteadySize;
-  pipCurrentSize = a4->pipCurrentSize;
+  pipLastSteadySize = geometry->pipLastSteadySize;
+  pipCurrentSize = geometry->pipCurrentSize;
   v23 = pipLastSteadySize;
   [(SBPIPMultidisplayHyperregionComposer *)self _adjustGeometryContextIfNeeded:&pipCurrentSize forComposer:v8];
   v32 = v45;
@@ -166,12 +166,12 @@
   v27 = v40;
   pipCurrentSize = v35;
   v23 = v36;
-  v15 = *&a5->currentPosition.y;
-  v20[2] = *&a5->initialPosition.y;
+  v15 = *&interaction->currentPosition.y;
+  v20[2] = *&interaction->initialPosition.y;
   v20[3] = v15;
-  projectedPositionStashProgress = a5->projectedPositionStashProgress;
-  v16 = *&a5->projectedPosition.y;
-  v20[0] = *&a5->isStashed;
+  projectedPositionStashProgress = interaction->projectedPositionStashProgress;
+  v16 = *&interaction->projectedPosition.y;
+  v20[0] = *&interaction->isStashed;
   v20[1] = v16;
   v17 = [v8 positionRegionsForRegions:0 geometry:&pipCurrentSize interaction:v20];
   v18 = [v17 mutableCopy];
@@ -179,31 +179,31 @@
   return v18;
 }
 
-- (id)mergeMutableRegionsMap:(id)a3 withMap:(id)a4
+- (id)mergeMutableRegionsMap:(id)map withMap:(id)withMap
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  mapCopy = map;
+  withMapCopy = withMap;
+  v7 = withMapCopy;
+  if (mapCopy)
   {
-    v8 = v5;
+    v8 = mapCopy;
   }
 
   else
   {
-    v8 = v6;
+    v8 = withMapCopy;
   }
 
   v9 = v8;
-  if (v5 && v7)
+  if (mapCopy && v7)
   {
     v10 = MEMORY[0x277CBEB58];
-    v11 = [v5 allKeys];
-    v12 = [v10 setWithArray:v11];
+    allKeys = [mapCopy allKeys];
+    v12 = [v10 setWithArray:allKeys];
 
-    v13 = [v7 allKeys];
-    [v12 addObjectsFromArray:v13];
+    allKeys2 = [v7 allKeys];
+    [v12 addObjectsFromArray:allKeys2];
 
     v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v12, "count")}];
 
@@ -231,7 +231,7 @@
           }
 
           v18 = *(*(&v35 + 1) + 8 * v17);
-          v19 = [v5 objectForKeyedSubscript:{v18, v31}];
+          v19 = [mapCopy objectForKeyedSubscript:{v18, v31}];
           v20 = [v7 objectForKeyedSubscript:v18];
           v21 = v20;
           if (v19)
@@ -262,14 +262,14 @@
           else
           {
             v24 = [objc_alloc(MEMORY[0x277D76010]) initWithDimensions:{objc_msgSend(v19, "_dimensions")}];
-            v25 = [v19 _regions];
-            v26 = [v21 _regions];
-            [v25 arrayByAddingObjectsFromArray:v26];
+            _regions = [v19 _regions];
+            _regions2 = [v21 _regions];
+            [_regions arrayByAddingObjectsFromArray:_regions2];
             v27 = v7;
-            v29 = v28 = v5;
+            v29 = v28 = mapCopy;
             [v24 _setRegions:v29];
 
-            v5 = v28;
+            mapCopy = v28;
             v7 = v27;
             v16 = v31;
 
@@ -293,10 +293,10 @@
   return v9;
 }
 
-- (id)positionRegionsForRegions:(id)a3 geometry:(SBPIPPositionGeometryContext *)a4 interaction:(SBPIPPositionInteractionStateContext *)a5
+- (id)positionRegionsForRegions:(id)regions geometry:(SBPIPPositionGeometryContext *)geometry interaction:(SBPIPPositionInteractionStateContext *)interaction
 {
   v44 = *MEMORY[0x277D85DE8];
-  v32 = a3;
+  regionsCopy = regions;
   v8 = [(NSArray *)self->_connectedWindowScenes count];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v35 = [WeakRetained targetWindowSceneForRegionComposer:self];
@@ -305,7 +305,7 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v34 = self;
+  selfCopy = self;
   obj = self->_connectedWindowScenes;
   v10 = [(NSArray *)obj countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (!v10)
@@ -327,41 +327,41 @@
       }
 
       v15 = *(*(&v39 + 1) + 8 * i);
-      if (!a5->hasActiveGesture && v35 != v15 && v8 > 1)
+      if (!interaction->hasActiveGesture && v35 != v15 && v8 > 1)
       {
         continue;
       }
 
-      v17 = *&a4->stashedMinimumPadding.bottom;
-      v38[10] = *&a4->stashedMinimumPadding.top;
+      v17 = *&geometry->stashedMinimumPadding.bottom;
+      v38[10] = *&geometry->stashedMinimumPadding.top;
       v38[11] = v17;
-      v38[12] = *&a4->offscreenCorners;
-      v18 = *&a4->edgeInsets.bottom;
-      v38[6] = *&a4->edgeInsets.top;
+      v38[12] = *&geometry->offscreenCorners;
+      v18 = *&geometry->edgeInsets.bottom;
+      v38[6] = *&geometry->edgeInsets.top;
       v38[7] = v18;
-      v19 = *&a4->minimumPadding.bottom;
-      v38[8] = *&a4->minimumPadding.top;
+      v19 = *&geometry->minimumPadding.bottom;
+      v38[8] = *&geometry->minimumPadding.top;
       v38[9] = v19;
-      pipAnchorPointOffset = a4->pipAnchorPointOffset;
-      v38[2] = a4->pipStashedSize;
+      pipAnchorPointOffset = geometry->pipAnchorPointOffset;
+      v38[2] = geometry->pipStashedSize;
       v38[3] = pipAnchorPointOffset;
-      size = a4->containerBounds.size;
-      v38[4] = a4->containerBounds.origin;
+      size = geometry->containerBounds.size;
+      v38[4] = geometry->containerBounds.origin;
       v38[5] = size;
-      pipLastSteadySize = a4->pipLastSteadySize;
-      v38[0] = a4->pipCurrentSize;
+      pipLastSteadySize = geometry->pipLastSteadySize;
+      v38[0] = geometry->pipCurrentSize;
       v38[1] = pipLastSteadySize;
-      v23 = *&a5->currentPosition.y;
-      v36[2] = *&a5->initialPosition.y;
+      v23 = *&interaction->currentPosition.y;
+      v36[2] = *&interaction->initialPosition.y;
       v36[3] = v23;
-      projectedPositionStashProgress = a5->projectedPositionStashProgress;
-      v24 = *&a5->projectedPosition.y;
-      v36[0] = *&a5->isStashed;
+      projectedPositionStashProgress = interaction->projectedPositionStashProgress;
+      v24 = *&interaction->projectedPosition.y;
+      v36[0] = *&interaction->isStashed;
       v36[1] = v24;
-      v25 = [(SBPIPMultidisplayHyperregionComposer *)v34 mutableRegionMapForScene:v15 geometry:v38 interaction:v36];
+      v25 = [(SBPIPMultidisplayHyperregionComposer *)selfCopy mutableRegionMapForScene:v15 geometry:v38 interaction:v36];
       if (v8 >= 2)
       {
-        v26 = [v15 _sbDisplayConfiguration];
+        _sbDisplayConfiguration = [v15 _sbDisplayConfiguration];
         v27 = SBSDisplayEdgeAdjacentToNeighboringDisplay();
         if (v27)
         {
@@ -388,7 +388,7 @@ LABEL_16:
         }
       }
 
-      v29 = [(SBPIPMultidisplayHyperregionComposer *)v34 mergeMutableRegionsMap:v12 withMap:v25];
+      v29 = [(SBPIPMultidisplayHyperregionComposer *)selfCopy mergeMutableRegionsMap:v12 withMap:v25];
 
       v12 = v29;
       continue;
@@ -405,34 +405,34 @@ LABEL_25:
   return v30;
 }
 
-- (SBPIPPositionGeometryContext)_adjustGeometryContextIfNeeded:(SEL)a3 forComposer:(SBPIPPositionGeometryContext *)a4
+- (SBPIPPositionGeometryContext)_adjustGeometryContextIfNeeded:(SEL)needed forComposer:(SBPIPPositionGeometryContext *)composer
 {
   v8 = a5;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v10 = [v8 representedWindowScene];
+  representedWindowScene = [v8 representedWindowScene];
 
   if (WeakRetained)
   {
-    v11 = *&a4->stashedMinimumPadding.bottom;
-    v18[10] = *&a4->stashedMinimumPadding.top;
+    v11 = *&composer->stashedMinimumPadding.bottom;
+    v18[10] = *&composer->stashedMinimumPadding.top;
     v18[11] = v11;
-    v18[12] = *&a4->offscreenCorners;
-    v12 = *&a4->edgeInsets.bottom;
-    v18[6] = *&a4->edgeInsets.top;
+    v18[12] = *&composer->offscreenCorners;
+    v12 = *&composer->edgeInsets.bottom;
+    v18[6] = *&composer->edgeInsets.top;
     v18[7] = v12;
-    v13 = *&a4->minimumPadding.bottom;
-    v18[8] = *&a4->minimumPadding.top;
+    v13 = *&composer->minimumPadding.bottom;
+    v18[8] = *&composer->minimumPadding.top;
     v18[9] = v13;
-    pipAnchorPointOffset = a4->pipAnchorPointOffset;
-    v18[2] = a4->pipStashedSize;
+    pipAnchorPointOffset = composer->pipAnchorPointOffset;
+    v18[2] = composer->pipStashedSize;
     v18[3] = pipAnchorPointOffset;
-    size = a4->containerBounds.size;
-    v18[4] = a4->containerBounds.origin;
+    size = composer->containerBounds.size;
+    v18[4] = composer->containerBounds.origin;
     v18[5] = size;
-    pipLastSteadySize = a4->pipLastSteadySize;
-    v18[0] = a4->pipCurrentSize;
+    pipLastSteadySize = composer->pipLastSteadySize;
+    v18[0] = composer->pipCurrentSize;
     v18[1] = pipLastSteadySize;
-    [WeakRetained regionComposer:self transformGeometryContext:v18 toWindowScene:v10];
+    [WeakRetained regionComposer:self transformGeometryContext:v18 toWindowScene:representedWindowScene];
   }
 
   else
@@ -455,10 +455,10 @@ LABEL_25:
   return result;
 }
 
-- (unint64_t)canonicalPositionForPoint:(CGPoint)a3 proposedPosition:(unint64_t)a4 geometry:(SBPIPPositionGeometryContext *)a5 interaction:(SBPIPPositionInteractionStateContext *)a6
+- (unint64_t)canonicalPositionForPoint:(CGPoint)point proposedPosition:(unint64_t)position geometry:(SBPIPPositionGeometryContext *)geometry interaction:(SBPIPPositionInteractionStateContext *)interaction
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v13 = [WeakRetained targetWindowSceneForRegionComposer:self];
 
@@ -475,25 +475,25 @@ LABEL_25:
   v44 = 0;
   v41 = 0;
   v42 = 0;
-  v15 = *&a5->stashedMinimumPadding.bottom;
-  v37 = *&a5->stashedMinimumPadding.top;
+  v15 = *&geometry->stashedMinimumPadding.bottom;
+  v37 = *&geometry->stashedMinimumPadding.top;
   v38 = v15;
-  v39 = *&a5->offscreenCorners;
+  v39 = *&geometry->offscreenCorners;
   v40 = 0;
-  v16 = *&a5->edgeInsets.bottom;
-  v33 = *&a5->edgeInsets.top;
+  v16 = *&geometry->edgeInsets.bottom;
+  v33 = *&geometry->edgeInsets.top;
   v34 = v16;
-  v17 = *&a5->minimumPadding.bottom;
-  v35 = *&a5->minimumPadding.top;
+  v17 = *&geometry->minimumPadding.bottom;
+  v35 = *&geometry->minimumPadding.top;
   v36 = v17;
-  pipAnchorPointOffset = a5->pipAnchorPointOffset;
-  pipStashedSize = a5->pipStashedSize;
+  pipAnchorPointOffset = geometry->pipAnchorPointOffset;
+  pipStashedSize = geometry->pipStashedSize;
   v30 = pipAnchorPointOffset;
-  size = a5->containerBounds.size;
-  origin = a5->containerBounds.origin;
+  size = geometry->containerBounds.size;
+  origin = geometry->containerBounds.origin;
   v32 = size;
-  pipLastSteadySize = a5->pipLastSteadySize;
-  pipCurrentSize = a5->pipCurrentSize;
+  pipLastSteadySize = geometry->pipLastSteadySize;
+  pipCurrentSize = geometry->pipCurrentSize;
   v28 = pipLastSteadySize;
   [(SBPIPMultidisplayHyperregionComposer *)self _adjustGeometryContextIfNeeded:&pipCurrentSize forComposer:v14];
   v37 = v50;
@@ -509,22 +509,22 @@ LABEL_25:
   v32 = v45;
   pipCurrentSize = v40;
   v28 = v41;
-  v21 = *&a6->currentPosition.y;
-  v25[2] = *&a6->initialPosition.y;
+  v21 = *&interaction->currentPosition.y;
+  v25[2] = *&interaction->initialPosition.y;
   v25[3] = v21;
-  projectedPositionStashProgress = a6->projectedPositionStashProgress;
-  v22 = *&a6->projectedPosition.y;
-  v25[0] = *&a6->isStashed;
+  projectedPositionStashProgress = interaction->projectedPositionStashProgress;
+  v22 = *&interaction->projectedPosition.y;
+  v25[0] = *&interaction->isStashed;
   v25[1] = v22;
-  v23 = [v14 canonicalPositionForPoint:a4 proposedPosition:&pipCurrentSize geometry:v25 interaction:{x, y}];
+  v23 = [v14 canonicalPositionForPoint:position proposedPosition:&pipCurrentSize geometry:v25 interaction:{x, y}];
 
   return v23;
 }
 
-- (CGPoint)defaultCornerPositionForLayoutSettingsPosition:(unint64_t)a3 proposedCenter:(CGPoint)a4 geometry:(SBPIPPositionGeometryContext *)a5 interaction:(SBPIPPositionInteractionStateContext *)a6
+- (CGPoint)defaultCornerPositionForLayoutSettingsPosition:(unint64_t)position proposedCenter:(CGPoint)center geometry:(SBPIPPositionGeometryContext *)geometry interaction:(SBPIPPositionInteractionStateContext *)interaction
 {
-  y = a4.y;
-  x = a4.x;
+  y = center.y;
+  x = center.x;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v13 = [WeakRetained targetWindowSceneForRegionComposer:self];
 
@@ -541,25 +541,25 @@ LABEL_25:
   v48 = 0;
   v45 = 0;
   v46 = 0;
-  v15 = *&a5->stashedMinimumPadding.bottom;
-  v41 = *&a5->stashedMinimumPadding.top;
+  v15 = *&geometry->stashedMinimumPadding.bottom;
+  v41 = *&geometry->stashedMinimumPadding.top;
   v42 = v15;
-  v43 = *&a5->offscreenCorners;
+  v43 = *&geometry->offscreenCorners;
   v44 = 0;
-  v16 = *&a5->edgeInsets.bottom;
-  v37 = *&a5->edgeInsets.top;
+  v16 = *&geometry->edgeInsets.bottom;
+  v37 = *&geometry->edgeInsets.top;
   v38 = v16;
-  v17 = *&a5->minimumPadding.bottom;
-  v39 = *&a5->minimumPadding.top;
+  v17 = *&geometry->minimumPadding.bottom;
+  v39 = *&geometry->minimumPadding.top;
   v40 = v17;
-  pipAnchorPointOffset = a5->pipAnchorPointOffset;
-  pipStashedSize = a5->pipStashedSize;
+  pipAnchorPointOffset = geometry->pipAnchorPointOffset;
+  pipStashedSize = geometry->pipStashedSize;
   v34 = pipAnchorPointOffset;
-  size = a5->containerBounds.size;
-  origin = a5->containerBounds.origin;
+  size = geometry->containerBounds.size;
+  origin = geometry->containerBounds.origin;
   v36 = size;
-  pipLastSteadySize = a5->pipLastSteadySize;
-  pipCurrentSize = a5->pipCurrentSize;
+  pipLastSteadySize = geometry->pipLastSteadySize;
+  pipCurrentSize = geometry->pipCurrentSize;
   v32 = pipLastSteadySize;
   [(SBPIPMultidisplayHyperregionComposer *)self _adjustGeometryContextIfNeeded:&pipCurrentSize forComposer:v14];
   v41 = v54;
@@ -575,14 +575,14 @@ LABEL_25:
   v36 = v49;
   pipCurrentSize = v44;
   v32 = v45;
-  v21 = *&a6->currentPosition.y;
-  v29[2] = *&a6->initialPosition.y;
+  v21 = *&interaction->currentPosition.y;
+  v29[2] = *&interaction->initialPosition.y;
   v29[3] = v21;
-  projectedPositionStashProgress = a6->projectedPositionStashProgress;
-  v22 = *&a6->projectedPosition.y;
-  v29[0] = *&a6->isStashed;
+  projectedPositionStashProgress = interaction->projectedPositionStashProgress;
+  v22 = *&interaction->projectedPosition.y;
+  v29[0] = *&interaction->isStashed;
   v29[1] = v22;
-  [v14 defaultCornerPositionForLayoutSettingsPosition:a3 proposedCenter:&pipCurrentSize geometry:v29 interaction:{x, y}];
+  [v14 defaultCornerPositionForLayoutSettingsPosition:position proposedCenter:&pipCurrentSize geometry:v29 interaction:{x, y}];
   v24 = v23;
   v26 = v25;
 

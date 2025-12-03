@@ -1,16 +1,16 @@
 @interface CEKLightingDialBackground
-- (CEKLightingDialBackground)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setRadius:(double)a3;
+- (CEKLightingDialBackground)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setRadius:(double)radius;
 @end
 
 @implementation CEKLightingDialBackground
 
-- (CEKLightingDialBackground)initWithFrame:(CGRect)a3
+- (CEKLightingDialBackground)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CEKLightingDialBackground;
-  v3 = [(CEKLightingDialBackground *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKLightingDialBackground *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,16 +21,16 @@
   return v4;
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
-  if (self->_radius != a3)
+  if (self->_radius != radius)
   {
-    self->_radius = a3;
+    self->_radius = radius;
     [(CEKLightingDialBackground *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   [(CEKLightingDialBackground *)self bounds];
@@ -61,8 +61,8 @@
   y = v34.origin.y;
   width = v34.size.width;
   height = v34.size.height;
-  v22 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v23 = [v22 colorWithAlphaComponent:0.3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v23 = [systemBackgroundColor colorWithAlphaComponent:0.3];
   [v23 set];
 
   v35.origin.x = x;
@@ -70,8 +70,8 @@
   v35.size.width = width;
   v35.size.height = height;
   CGContextFillEllipseInRect(CurrentContext, v35);
-  v24 = [MEMORY[0x1E69DC888] labelColor];
-  v25 = [v24 colorWithAlphaComponent:0.1];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v25 = [labelColor colorWithAlphaComponent:0.1];
   [v25 set];
 
   CGContextSetLineWidth(CurrentContext, v15);

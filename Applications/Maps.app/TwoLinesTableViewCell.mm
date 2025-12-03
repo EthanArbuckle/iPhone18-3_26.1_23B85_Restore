@@ -3,13 +3,13 @@
 - (AutocompleteCellAccessoryDelegate)accessoryViewDelegate;
 - (CGSize)intrinsicContentSize;
 - (PersonalizedItem)personalizedItemForQuickActionMenu;
-- (TwoLinesTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 contentViewType:(int)a5;
-- (void)didTapAccessoryViewButton:(id)a3;
+- (TwoLinesTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier contentViewType:(int)type;
+- (void)didTapAccessoryViewButton:(id)button;
 - (void)prepareContentView;
 - (void)prepareForReuse;
-- (void)setAccessoryViewType:(int64_t)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setViewModel:(id)a3;
+- (void)setAccessoryViewType:(int64_t)type;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation TwoLinesTableViewCell
@@ -23,12 +23,12 @@
 
 - (PersonalizedItem)personalizedItemForQuickActionMenu
 {
-  v2 = [(TwoLinesTableViewCell *)self viewModel];
-  v3 = [v2 personalizedItemForQuickActionMenuCreator];
+  viewModel = [(TwoLinesTableViewCell *)self viewModel];
+  personalizedItemForQuickActionMenuCreator = [viewModel personalizedItemForQuickActionMenuCreator];
 
-  if (v3)
+  if (personalizedItemForQuickActionMenuCreator)
   {
-    v4 = v3[2](v3);
+    v4 = personalizedItemForQuickActionMenuCreator[2](personalizedItemForQuickActionMenuCreator);
   }
 
   else
@@ -39,56 +39,56 @@
   return v4;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->_viewModel, a3);
+    v13 = modelCopy;
+    objc_storeStrong(&self->_viewModel, model);
     [(TwoLinesContentView *)self->_twoLinesContentView setViewModel:v13];
-    v6 = [(TwoLinesContentView *)self->_twoLinesContentView viewModel];
-    v7 = [v6 axIdentifier];
-    if ([v7 length])
+    viewModel = [(TwoLinesContentView *)self->_twoLinesContentView viewModel];
+    axIdentifier = [viewModel axIdentifier];
+    if ([axIdentifier length])
     {
-      v8 = [(TwoLinesContentView *)self->_twoLinesContentView viewModel];
-      v9 = [v8 axIdentifier];
+      viewModel2 = [(TwoLinesContentView *)self->_twoLinesContentView viewModel];
+      axIdentifier2 = [viewModel2 axIdentifier];
     }
 
     else
     {
-      v9 = @"TwoLinesTableViewCell";
+      axIdentifier2 = @"TwoLinesTableViewCell";
     }
 
-    [(TwoLinesTableViewCell *)self setAccessibilityIdentifier:v9];
-    v10 = [(TwoLinesContentViewModel *)self->_viewModel customAccessoryView];
-    v11 = [(TwoLinesTableViewCell *)self accessoryView];
+    [(TwoLinesTableViewCell *)self setAccessibilityIdentifier:axIdentifier2];
+    customAccessoryView = [(TwoLinesContentViewModel *)self->_viewModel customAccessoryView];
+    accessoryView = [(TwoLinesTableViewCell *)self accessoryView];
 
-    if (v10 != v11)
+    if (customAccessoryView != accessoryView)
     {
-      v12 = [(TwoLinesContentViewModel *)self->_viewModel customAccessoryView];
-      [(TwoLinesTableViewCell *)self setAccessoryView:v12];
+      customAccessoryView2 = [(TwoLinesContentViewModel *)self->_viewModel customAccessoryView];
+      [(TwoLinesTableViewCell *)self setAccessoryView:customAccessoryView2];
     }
 
-    v5 = v13;
+    modelCopy = v13;
   }
 }
 
-- (void)didTapAccessoryViewButton:(id)a3
+- (void)didTapAccessoryViewButton:(id)button
 {
-  v6 = [(TwoLinesTableViewCell *)self accessoryViewDelegate];
-  v4 = [(TwoLinesTableViewCell *)self accessoryViewType];
-  v5 = [(TwoLinesTableViewCell *)self accessoryViewObject];
-  [v6 didTapOnAccessoryView:self withType:v4 object:v5];
+  accessoryViewDelegate = [(TwoLinesTableViewCell *)self accessoryViewDelegate];
+  accessoryViewType = [(TwoLinesTableViewCell *)self accessoryViewType];
+  accessoryViewObject = [(TwoLinesTableViewCell *)self accessoryViewObject];
+  [accessoryViewDelegate didTapOnAccessoryView:self withType:accessoryViewType object:accessoryViewObject];
 }
 
-- (void)setAccessoryViewType:(int64_t)a3
+- (void)setAccessoryViewType:(int64_t)type
 {
   v4 = 0;
-  self->_accessoryViewType = a3;
-  if (a3 > 2)
+  self->_accessoryViewType = type;
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v28 = [UIButton buttonWithType:0];
       [v28 setBounds:{0.0, 0.0, 30.0, 30.0}];
@@ -106,7 +106,7 @@
 
     else
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         goto LABEL_17;
       }
@@ -114,9 +114,9 @@
       v28 = [UIButton buttonWithType:0];
       [v28 setBounds:{0.0, 0.0, 30.0, 30.0}];
       v9 = +[UIDevice currentDevice];
-      v10 = [v9 userInterfaceIdiom];
+      userInterfaceIdiom = [v9 userInterfaceIdiom];
       v11 = @"pin";
-      if (v10 == 5)
+      if (userInterfaceIdiom == 5)
       {
         v11 = @"pin.circle";
       }
@@ -129,22 +129,22 @@
       v14 = [UIImageSymbolConfiguration configurationWithPointSize:20.0];
       [v28 setPreferredSymbolConfiguration:v14 forImageInState:0];
 
-      v15 = [v28 theme];
-      v16 = [v15 keyColor];
-      [v28 setTintColor:v16];
+      theme = [v28 theme];
+      keyColor = [theme keyColor];
+      [v28 setTintColor:keyColor];
 
       v8 = @"AccessoryPinButton";
     }
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     v28 = [UIButton buttonWithType:0];
     [v28 setBounds:{0.0, 0.0, 30.0, 30.0}];
     v17 = +[UIDevice currentDevice];
-    v18 = [v17 userInterfaceIdiom];
+    userInterfaceIdiom2 = [v17 userInterfaceIdiom];
     v19 = @"plus";
-    if (v18 == 5)
+    if (userInterfaceIdiom2 == 5)
     {
       v19 = @"plus.circle";
     }
@@ -157,16 +157,16 @@
     v22 = [UIImageSymbolConfiguration configurationWithPointSize:20.0];
     [v28 setPreferredSymbolConfiguration:v22 forImageInState:0];
 
-    v23 = [v28 theme];
-    v24 = [v23 keyColor];
-    [v28 setTintColor:v24];
+    theme2 = [v28 theme];
+    keyColor2 = [theme2 keyColor];
+    [v28 setTintColor:keyColor2];
 
     v8 = @"AccessoryAddButton";
   }
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_17;
     }
@@ -204,8 +204,8 @@ LABEL_17:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(TwoLinesTableViewCell *)self contentView];
-  [v3 frame];
+  contentView = [(TwoLinesTableViewCell *)self contentView];
+  [contentView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -216,8 +216,8 @@ LABEL_17:
   [(TwoLinesTableViewCell *)&v19 intrinsicContentSize];
   v13 = v12;
   v15 = v14;
-  v16 = [(TwoLinesTableViewCell *)self contentView];
-  [v16 setFrame:{v5, v7, v9, v11}];
+  contentView2 = [(TwoLinesTableViewCell *)self contentView];
+  [contentView2 setFrame:{v5, v7, v9, v11}];
 
   v17 = v13;
   v18 = v15;
@@ -226,13 +226,13 @@ LABEL_17:
   return result;
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = TwoLinesTableViewCell;
-  [(TwoLinesTableViewCell *)&v6 setSelected:a3 animated:a4];
-  [(TwoLinesContentView *)self->_twoLinesContentView setIsParentCellSelected:v4];
+  [(TwoLinesTableViewCell *)&v6 setSelected:selected animated:animated];
+  [(TwoLinesContentView *)self->_twoLinesContentView setIsParentCellSelected:selectedCopy];
 }
 
 - (void)prepareForReuse
@@ -247,10 +247,10 @@ LABEL_17:
 
 - (void)prepareContentView
 {
-  v3 = [(TwoLinesTableViewCell *)self _tableView];
-  v4 = [v3 style];
+  _tableView = [(TwoLinesTableViewCell *)self _tableView];
+  style = [_tableView style];
 
-  if (v4 != 2)
+  if (style != 2)
   {
     v5 = +[UIColor clearColor];
     [(TwoLinesTableViewCell *)self setBackgroundColor:v5];
@@ -261,44 +261,44 @@ LABEL_17:
   self->_twoLinesContentView = v6;
 
   [(TwoLinesContentView *)self->_twoLinesContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(TwoLinesTableViewCell *)self contentView];
-  [v8 addSubview:self->_twoLinesContentView];
+  contentView = [(TwoLinesTableViewCell *)self contentView];
+  [contentView addSubview:self->_twoLinesContentView];
 
-  v25 = [(TwoLinesContentView *)self->_twoLinesContentView topAnchor];
-  v26 = [(TwoLinesTableViewCell *)self contentView];
-  v24 = [v26 topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  topAnchor = [(TwoLinesContentView *)self->_twoLinesContentView topAnchor];
+  contentView2 = [(TwoLinesTableViewCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v27[0] = v23;
-  v21 = [(TwoLinesContentView *)self->_twoLinesContentView leadingAnchor];
-  v22 = [(TwoLinesTableViewCell *)self contentView];
-  v20 = [v22 leadingAnchor];
+  leadingAnchor = [(TwoLinesContentView *)self->_twoLinesContentView leadingAnchor];
+  contentView3 = [(TwoLinesTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
   [(TwoLinesTableViewCell *)self leadingSpacing];
-  v9 = [v21 constraintEqualToAnchor:v20 constant:?];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   v27[1] = v9;
-  v10 = [(TwoLinesContentView *)self->_twoLinesContentView trailingAnchor];
-  v11 = [(TwoLinesTableViewCell *)self contentView];
-  v12 = [v11 trailingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:-10.0];
+  trailingAnchor = [(TwoLinesContentView *)self->_twoLinesContentView trailingAnchor];
+  contentView4 = [(TwoLinesTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   v27[2] = v13;
-  v14 = [(TwoLinesContentView *)self->_twoLinesContentView bottomAnchor];
-  v15 = [(TwoLinesTableViewCell *)self contentView];
-  v16 = [v15 bottomAnchor];
+  bottomAnchor = [(TwoLinesContentView *)self->_twoLinesContentView bottomAnchor];
+  contentView5 = [(TwoLinesTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
   LODWORD(v17) = 1112276992;
-  v18 = [v14 constraintEqualToAnchor:v16 constant:0.0 priority:v17];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0 priority:v17];
   v27[3] = v18;
   v19 = [NSArray arrayWithObjects:v27 count:4];
   [NSLayoutConstraint activateConstraints:v19];
 }
 
-- (TwoLinesTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 contentViewType:(int)a5
+- (TwoLinesTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier contentViewType:(int)type
 {
   v9.receiver = self;
   v9.super_class = TwoLinesTableViewCell;
-  v6 = [(MapsThemeTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v6 = [(MapsThemeTableViewCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   v7 = v6;
   if (v6)
   {
-    v6->_contentViewType = a5;
+    v6->_contentViewType = type;
     [(TwoLinesTableViewCell *)v6 prepareContentView];
     if (sub_10000FA08(v7) == 5)
     {

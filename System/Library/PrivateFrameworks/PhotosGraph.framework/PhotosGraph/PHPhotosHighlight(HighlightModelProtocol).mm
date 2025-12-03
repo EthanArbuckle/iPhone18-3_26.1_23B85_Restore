@@ -8,17 +8,17 @@
 - (double)nonDefaultCurationScorePercentageForPhotoLibrary:()HighlightModelProtocol
 {
   v4 = a3;
-  v5 = [a1 estimatedAssetCount];
-  if (v5)
+  estimatedAssetCount = [self estimatedAssetCount];
+  if (estimatedAssetCount)
   {
-    v6 = v5;
-    v7 = [v4 librarySpecificFetchOptions];
-    [v7 setShouldPrefetchCount:1];
-    [v7 setIncludeGuestAssets:1];
+    v6 = estimatedAssetCount;
+    librarySpecificFetchOptions = [v4 librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setShouldPrefetchCount:1];
+    [librarySpecificFetchOptions setIncludeGuestAssets:1];
     v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"curationScore != 0.5 && curationScore != 0.0"];
-    [v7 setInternalPredicate:v8];
+    [librarySpecificFetchOptions setInternalPredicate:v8];
 
-    v9 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:a1 options:v7];
+    v9 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:self options:librarySpecificFetchOptions];
     v10 = [v9 count] / v6;
   }
 
@@ -43,13 +43,13 @@
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v6)
   {
-    v16 = MEMORY[0x277CBEBF8];
-    v8 = v5;
+    fetchedObjects = MEMORY[0x277CBEBF8];
+    photoLibrary = v5;
     goto LABEL_13;
   }
 
   v7 = v6;
-  v8 = 0;
+  photoLibrary = 0;
   v9 = *v20;
   do
   {
@@ -61,12 +61,12 @@
       }
 
       v11 = *(*(&v19 + 1) + 8 * i);
-      v12 = [v11 objectID];
-      [v4 addObject:v12];
+      objectID = [v11 objectID];
+      [v4 addObject:objectID];
 
-      if (!v8)
+      if (!photoLibrary)
       {
-        v8 = [v11 photoLibrary];
+        photoLibrary = [v11 photoLibrary];
       }
     }
 
@@ -75,25 +75,25 @@
 
   while (v7);
 
-  if (v8)
+  if (photoLibrary)
   {
-    v13 = [v8 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
     v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"ANY childDayGroupPhotosHighlights IN %@", v4];
-    [v13 setInternalPredicate:v14];
+    [librarySpecificFetchOptions setInternalPredicate:v14];
 
-    v15 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000304 options:v13];
-    v16 = [v15 fetchedObjects];
+    v15 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000304 options:librarySpecificFetchOptions];
+    fetchedObjects = [v15 fetchedObjects];
 
 LABEL_13:
     goto LABEL_15;
   }
 
-  v16 = MEMORY[0x277CBEBF8];
+  fetchedObjects = MEMORY[0x277CBEBF8];
 LABEL_15:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return fetchedObjects;
 }
 
 @end

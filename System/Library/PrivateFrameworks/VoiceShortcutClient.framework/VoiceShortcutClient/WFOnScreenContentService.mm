@@ -1,7 +1,7 @@
 @interface WFOnScreenContentService
 + (id)sharedService;
-- (void)getOnScreenContentWithOptions:(id)a3 completion:(id)a4;
-- (void)getOnScreenContentWithOptions:(id)a3 completionHandler:(id)a4;
+- (void)getOnScreenContentWithOptions:(id)options completion:(id)completion;
+- (void)getOnScreenContentWithOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation WFOnScreenContentService
@@ -25,20 +25,20 @@ uint64_t __41__WFOnScreenContentService_sharedService__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getOnScreenContentWithOptions:(id)a3 completionHandler:(id)a4
+- (void)getOnScreenContentWithOptions:(id)options completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  optionsCopy = options;
   v7 = +[VCVoiceShortcutClient standardClient];
-  [v7 getOnScreenContentWithOptions:v6 completionHandler:v5];
+  [v7 getOnScreenContentWithOptions:optionsCopy completionHandler:handlerCopy];
 }
 
-- (void)getOnScreenContentWithOptions:(id)a3 completion:(id)a4
+- (void)getOnScreenContentWithOptions:(id)options completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
   v7 = +[VCVoiceShortcutClient standardClient];
-  [v7 getOnScreenContentWithOptions:v6 completion:v5];
+  [v7 getOnScreenContentWithOptions:optionsCopy completion:completionCopy];
 }
 
 @end

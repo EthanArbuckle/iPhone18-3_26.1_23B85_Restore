@@ -1,21 +1,21 @@
 @interface CNFeatureFlagsTestDouble
-- (BOOL)isFeatureEnabled:(unint64_t)a3;
-- (CNFeatureFlagsTestDouble)initWithFeatureFlags:(id)a3;
+- (BOOL)isFeatureEnabled:(unint64_t)enabled;
+- (CNFeatureFlagsTestDouble)initWithFeatureFlags:(id)flags;
 - (NSString)description;
-- (void)setFeatureEnabled:(BOOL)a3 forFeature:(unint64_t)a4;
+- (void)setFeatureEnabled:(BOOL)enabled forFeature:(unint64_t)feature;
 @end
 
 @implementation CNFeatureFlagsTestDouble
 
-- (CNFeatureFlagsTestDouble)initWithFeatureFlags:(id)a3
+- (CNFeatureFlagsTestDouble)initWithFeatureFlags:(id)flags
 {
-  v4 = a3;
+  flagsCopy = flags;
   v14.receiver = self;
   v14.super_class = CNFeatureFlagsTestDouble;
   v5 = [(CNFeatureFlagsTestDouble *)&v14 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [flagsCopy mutableCopy];
     featureFlags = v5->_featureFlags;
     v5->_featureFlags = v6;
 
@@ -33,7 +33,7 @@
   return v5;
 }
 
-- (BOOL)isFeatureEnabled:(unint64_t)a3
+- (BOOL)isFeatureEnabled:(unint64_t)enabled
 {
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
@@ -41,20 +41,20 @@
   v11[2] = __45__CNFeatureFlagsTestDouble_isFeatureEnabled___block_invoke;
   v11[3] = &unk_1E6ED6EF8;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = enabled;
   v6 = CNResultWithLock(lock, v11);
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = [(CNFeatureFlags *)self->_fallback isFeatureEnabled:a3];
+    bOOLValue = [(CNFeatureFlags *)self->_fallback isFeatureEnabled:enabled];
   }
 
-  v9 = v8;
+  v9 = bOOLValue;
 
   return v9;
 }
@@ -68,7 +68,7 @@ id __45__CNFeatureFlagsTestDouble_isFeatureEnabled___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setFeatureEnabled:(BOOL)a3 forFeature:(unint64_t)a4
+- (void)setFeatureEnabled:(BOOL)enabled forFeature:(unint64_t)feature
 {
   lock = self->_lock;
   v5[0] = MEMORY[0x1E69E9820];
@@ -76,8 +76,8 @@ id __45__CNFeatureFlagsTestDouble_isFeatureEnabled___block_invoke(uint64_t a1)
   v5[2] = __57__CNFeatureFlagsTestDouble_setFeatureEnabled_forFeature___block_invoke;
   v5[3] = &unk_1E6ED6F20;
   v5[4] = self;
-  v5[5] = a4;
-  v6 = a3;
+  v5[5] = feature;
+  enabledCopy = enabled;
   CNRunWithLock(lock, v5);
 }
 
@@ -98,13 +98,13 @@ void __57__CNFeatureFlagsTestDouble_setFeatureEnabled_forFeature___block_invoke(
   v9 = 3221225472;
   v10 = __39__CNFeatureFlagsTestDouble_description__block_invoke;
   v11 = &unk_1E6ED5168;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
   CNRunWithLock(lock, &v8);
-  v6 = [v5 build];
+  build = [v5 build];
 
-  return v6;
+  return build;
 }
 
 void __39__CNFeatureFlagsTestDouble_description__block_invoke(uint64_t a1)

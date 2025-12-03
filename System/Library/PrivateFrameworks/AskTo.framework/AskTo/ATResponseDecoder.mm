@@ -1,13 +1,13 @@
 @interface ATResponseDecoder
-+ (id)responseFromJSONData:(id)a3;
++ (id)responseFromJSONData:(id)data;
 - (ATResponseDecoder)init;
 @end
 
 @implementation ATResponseDecoder
 
-+ (id)responseFromJSONData:(id)a3
++ (id)responseFromJSONData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_2258E0B40();
   v6 = v5;
 

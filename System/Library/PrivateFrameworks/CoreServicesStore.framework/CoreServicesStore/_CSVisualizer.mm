@@ -1,25 +1,25 @@
 @interface _CSVisualizer
-+ (BOOL)getUnit:(unsigned int *)a3 inTable:(unsigned int *)a4 fromURL:(id)a5;
-+ (BOOL)unitDescription:(id)a3 referencesUnit:(unsigned int)a4 inTable:(unsigned int)a5;
-+ (_NSRange)rangeOfValueForTitle:(id)a3 inDescription:(id)a4;
-+ (id)URLForUnit:(unsigned int)a3 inTable:(unsigned int)a4;
-+ (id)predicateForSearchingDescriptionWithString:(id)a3 error:(id *)a4;
-+ (void)breakDownTable:(const Table *)a3 inStore:(const void *)a4 buffer:(char *)a5;
-+ (void)enumerateReferencesToUnitsInUnitDescription:(id)a3 block:(id)a4;
-+ (void)enumerateValuesForTitlesInDescription:(id)a3 block:(id)a4;
-- (_CSVisualizer)initWithStore:(__CSStore *)a3 useStandardTableFunctions:(BOOL)a4;
++ (BOOL)getUnit:(unsigned int *)unit inTable:(unsigned int *)table fromURL:(id)l;
++ (BOOL)unitDescription:(id)description referencesUnit:(unsigned int)unit inTable:(unsigned int)table;
++ (_NSRange)rangeOfValueForTitle:(id)title inDescription:(id)description;
++ (id)URLForUnit:(unsigned int)unit inTable:(unsigned int)table;
++ (id)predicateForSearchingDescriptionWithString:(id)string error:(id *)error;
++ (void)breakDownTable:(const Table *)table inStore:(const void *)store buffer:(char *)buffer;
++ (void)enumerateReferencesToUnitsInUnitDescription:(id)description block:(id)block;
++ (void)enumerateValuesForTitlesInDescription:(id)description block:(id)block;
+- (_CSVisualizer)initWithStore:(__CSStore *)store useStandardTableFunctions:(BOOL)functions;
 - (id)breakDownUsage;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)enumerateReferencesToUnit:(unsigned int)a3 inTable:(unsigned int)a4 block:(id)a5;
+- (void)enumerateReferencesToUnit:(unsigned int)unit inTable:(unsigned int)table block:(id)block;
 - (void)setStandardTableFunctions;
 @end
 
 @implementation _CSVisualizer
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithStore:useStandardTableFunctions:", -[_CSVisualizer store](self, "store"), 0}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithStore:useStandardTableFunctions:", -[_CSVisualizer store](self, "store"), 0}];
   [(NSRecursiveLock *)self->_lock lock];
   [v4[1] addEntriesFromDictionary:self->_functions];
   [v4[4] addEntriesFromDictionary:self->_userInfo];
@@ -27,15 +27,15 @@
   return v4;
 }
 
-- (void)enumerateReferencesToUnit:(unsigned int)a3 inTable:(unsigned int)a4 block:(id)a5
+- (void)enumerateReferencesToUnit:(unsigned int)unit inTable:(unsigned int)table block:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v9 = objc_opt_class();
-  v10 = [(_CSVisualizer *)self store];
-  v11 = v10;
+  store = [(_CSVisualizer *)self store];
+  v11 = store;
   if (performConstantAssertions == 1)
   {
-    v12 = *(v10 + 43);
+    v12 = *(store + 43);
     if (v12)
     {
       (*(**(v12 + 8) + 8))(*(v12 + 8));
@@ -46,23 +46,23 @@
   v14[1] = 3221225472;
   v14[2] = __57___CSVisualizer_enumerateReferencesToUnit_inTable_block___block_invoke;
   v14[3] = &unk_1E7ED3A98;
-  v18 = a4;
-  v19 = a3;
+  tableCopy = table;
+  unitCopy = unit;
   v16 = v11 + 8;
   v17 = v9;
   v14[4] = self;
-  v13 = v8;
+  v13 = blockCopy;
   v15 = v13;
   CSStore2::Store::enumerateTables(v11 + 1, v14);
 }
 
 - (id)breakDownUsage
 {
-  v2 = [(_CSVisualizer *)self store];
-  v3 = v2;
+  store = [(_CSVisualizer *)self store];
+  v3 = store;
   if (performConstantAssertions == 1)
   {
-    v4 = *(v2 + 43);
+    v4 = *(store + 43);
     if (v4)
     {
       (*(**(v4 + 8) + 8))(*(v4 + 8));
@@ -146,11 +146,11 @@
 
 - (void)setStandardTableFunctions
 {
-  v3 = [(_CSVisualizer *)self store];
-  v4 = v3;
+  store = [(_CSVisualizer *)self store];
+  v4 = store;
   if (performConstantAssertions == 1)
   {
-    v5 = *(v3 + 43);
+    v5 = *(store + 43);
     if (v5)
     {
       (*(**(v5 + 8) + 8))(*(v5 + 8));
@@ -212,15 +212,15 @@
   [(_CSVisualizer *)&v3 dealloc];
 }
 
-- (_CSVisualizer)initWithStore:(__CSStore *)a3 useStandardTableFunctions:(BOOL)a4
+- (_CSVisualizer)initWithStore:(__CSStore *)store useStandardTableFunctions:(BOOL)functions
 {
-  v4 = a4;
+  functionsCopy = functions;
   v14.receiver = self;
   v14.super_class = _CSVisualizer;
   v6 = [(_CSVisualizer *)&v14 init];
   if (v6)
   {
-    v6->_store = CFRetain(a3);
+    v6->_store = CFRetain(store);
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     functions = v6->_functions;
     v6->_functions = v7;
@@ -233,7 +233,7 @@
     lock = v6->_lock;
     v6->_lock = v11;
 
-    if (v4)
+    if (functionsCopy)
     {
       [(_CSVisualizer *)v6 setStandardTableFunctions];
     }
@@ -242,24 +242,24 @@
   return v6;
 }
 
-+ (BOOL)getUnit:(unsigned int *)a3 inTable:(unsigned int *)a4 fromURL:(id)a5
++ (BOOL)getUnit:(unsigned int *)unit inTable:(unsigned int *)table fromURL:(id)l
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  lCopy = l;
   v8 = objc_autoreleasePoolPush();
-  v9 = [v7 absoluteString];
-  v10 = [v9 getCString:v28 maxLength:1024 encoding:4];
+  absoluteString = [lCopy absoluteString];
+  v10 = [absoluteString getCString:v28 maxLength:1024 encoding:4];
 
   if (v10 && (v24 = 0, v20 = 0, sscanf(v28, "x-csstore-vis-unit:?t=%llu&u=%llu", &v24, &v20) == 2))
   {
-    if (a4)
+    if (table)
     {
-      *a4 = v24;
+      *table = v24;
     }
 
-    if (a3)
+    if (unit)
     {
-      *a3 = v20;
+      *unit = v20;
     }
 
     v11 = 1;
@@ -267,9 +267,9 @@
 
   else
   {
-    v12 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v7 resolvingAgainstBaseURL:1];
-    v13 = [v12 scheme];
-    if (v13 && ([v12 scheme], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "caseInsensitiveCompare:", @"x-csstore-vis-unit") == 0, v14, v13, v15))
+    v12 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:lCopy resolvingAgainstBaseURL:1];
+    scheme = [v12 scheme];
+    if (scheme && ([v12 scheme], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "caseInsensitiveCompare:", @"x-csstore-vis-unit") == 0, v14, scheme, v15))
     {
       v24 = 0;
       v25 = &v24;
@@ -279,16 +279,16 @@
       v21 = &v20;
       v22 = 0x2020000000;
       v23 = 0;
-      v16 = [v12 queryItems];
+      queryItems = [v12 queryItems];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __41___CSVisualizer_getUnit_inTable_fromURL___block_invoke;
       v19[3] = &unk_1E7ED3B38;
       v19[4] = &v24;
       v19[5] = &v20;
-      v19[6] = a4;
-      v19[7] = a3;
-      [v16 enumerateObjectsUsingBlock:v19];
+      v19[6] = table;
+      v19[7] = unit;
+      [queryItems enumerateObjectsUsingBlock:v19];
 
       if (*(v25 + 24) == 1)
       {
@@ -316,15 +316,15 @@
   return v11 & 1;
 }
 
-+ (id)URLForUnit:(unsigned int)a3 inTable:(unsigned int)a4
++ (id)URLForUnit:(unsigned int)unit inTable:(unsigned int)table
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"x-csstore-vis-unit:?t=%llu&u=%llu", a4, a3];
-  v5 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v4];
+  unit = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"x-csstore-vis-unit:?t=%llu&u=%llu", table, unit];
+  v5 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:unit];
 
   return v5;
 }
 
-+ (BOOL)unitDescription:(id)a3 referencesUnit:(unsigned int)a4 inTable:(unsigned int)a5
++ (BOOL)unitDescription:(id)description referencesUnit:(unsigned int)unit inTable:(unsigned int)table
 {
   v10 = 0;
   v11 = &v10;
@@ -334,39 +334,39 @@
   v7[1] = 3221225472;
   v7[2] = __56___CSVisualizer_unitDescription_referencesUnit_inTable___block_invoke;
   v7[3] = &unk_1E7ED3B10;
-  v8 = a5;
-  v9 = a4;
+  tableCopy = table;
+  unitCopy = unit;
   v7[4] = &v10;
-  [a1 enumerateReferencesToUnitsInUnitDescription:a3 block:v7];
+  [self enumerateReferencesToUnitsInUnitDescription:description block:v7];
   v5 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
   return v5;
 }
 
-+ (void)enumerateReferencesToUnitsInUnitDescription:(id)a3 block:(id)a4
++ (void)enumerateReferencesToUnitsInUnitDescription:(id)description block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  descriptionCopy = description;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67___CSVisualizer_enumerateReferencesToUnitsInUnitDescription_block___block_invoke;
   v10[3] = &unk_1E7ED3AE8;
-  v7 = v6;
+  v7 = blockCopy;
   v11 = v7;
   v8 = MEMORY[0x1BFAE6310](v10);
   v9 = objc_autoreleasePoolPush();
-  [v5 enumerateAttributesInRange:0 options:objc_msgSend(v5 usingBlock:{"length"), 0x100000, v8}];
+  [descriptionCopy enumerateAttributesInRange:0 options:objc_msgSend(descriptionCopy usingBlock:{"length"), 0x100000, v8}];
   objc_autoreleasePoolPop(v9);
 }
 
-+ (void)breakDownTable:(const Table *)a3 inStore:(const void *)a4 buffer:(char *)a5
++ (void)breakDownTable:(const Table *)table inStore:(const void *)store buffer:(char *)buffer
 {
-  v5 = a5;
-  v7 = a3;
-  if (a3)
+  bufferCopy = buffer;
+  tableCopy = table;
+  if (table)
   {
-    v8 = *a4;
-    if (*a4)
+    v8 = *store;
+    if (*store)
     {
       v9 = *(v8 + 8);
     }
@@ -377,8 +377,8 @@
     }
 
     v10 = 0xFFFFFFFFLL;
-    v11 = a3 >= v9;
-    v12 = a3 - v9;
+    v11 = table >= v9;
+    v12 = table - v9;
     if (v11 && !HIDWORD(v12))
     {
       if ((v12 + 1) > *(*(v8 + 8) + 12) || v12 == -1)
@@ -398,7 +398,7 @@
     v10 = 0xFFFFFFFFLL;
   }
 
-  v14 = &a5[v10];
+  v14 = &buffer[v10];
   *&v15 = 0x404040404040404;
   *(&v15 + 1) = 0x404040404040404;
   *(v14 + 3) = v15;
@@ -406,9 +406,9 @@
   *(v14 + 1) = v15;
   *(v14 + 2) = v15;
   *v14 = v15;
-  v16 = a3 + 1;
-  v17 = *a4;
-  if (*a4)
+  v16 = table + 1;
+  v17 = *store;
+  if (*store)
   {
     v18 = *(v17 + 8);
   }
@@ -434,37 +434,37 @@
     }
   }
 
-  memset(&a5[v19], 68, a3->var0.var2 - 72);
-  v23 = v7[19];
+  memset(&buffer[v19], 68, table->var0.var2 - 72);
+  v23 = tableCopy[19];
   if (v23 != -1)
   {
-    v24 = *(*a4 + 8);
+    v24 = *(*store + 8);
     v25 = *(v24 + 12);
     if (v25 > v23)
     {
       v26 = (v24 + v23);
-      v7[19];
+      tableCopy[19];
       v27 = v24 + v23 < v24;
-      v7[19];
+      tableCopy[19];
       v28 = v23 + 1 > v25 || v23 == -1;
       if (v27 || v28)
       {
         v23 = 0xFFFFFFFFLL;
       }
 
-      *&v5[v23] = 134744072;
+      *&bufferCopy[v23] = 134744072;
       v95[0] = MEMORY[0x1E69E9820];
       v95[1] = 3221225472;
       v96 = ___ZN8CSStore27HashMapIjjNS_20_IdentifierFunctionsELy1EE14WriteBreakdownERKNS_5StoreEPKS2_hPh_block_invoke;
       v97 = &__block_descriptor_41_e21_v32__0I8I12B16B20_B24l;
       v99 = 4;
-      v98 = v5;
+      v98 = bufferCopy;
       v29 = v95;
       v30 = v29;
       LOBYTE(v100[0]) = 0;
       v31 = v26 + 1;
-      v32 = *a4;
-      if (*a4)
+      v32 = *store;
+      if (*store)
       {
         v33 = *(v32 + 8);
       }
@@ -477,8 +477,8 @@
       v34 = 0xFFFFFFFFLL;
       v11 = v31 >= v33;
       v35 = v31 - v33;
-      v89 = v5;
-      v91 = v7;
+      v89 = bufferCopy;
+      v91 = tableCopy;
       if (v11 && !HIDWORD(v35))
       {
         if ((v35 + 1) > *(*(v32 + 8) + 12) || v35 == -1)
@@ -509,7 +509,7 @@
 
           else
           {
-            v42 = *(*a4 + 8);
+            v42 = *(*store + 8);
             v43 = *(v42 + 12) > v41;
             v44 = v42 + v41;
             if (v43)
@@ -539,8 +539,8 @@
                 v48 = 0;
               }
 
-              v49 = *a4;
-              if (*a4)
+              v49 = *store;
+              if (*store)
               {
                 v50 = *(v49 + 8);
               }
@@ -588,25 +588,25 @@
         while (v39 < v37 && (v38 & 1) == 0);
       }
 
-      v5 = v89;
-      v7 = v91;
+      bufferCopy = v89;
+      tableCopy = v91;
     }
   }
 
-  Table = *(a4 + 34);
+  Table = *(store + 34);
   if (!Table)
   {
-    Table = CSStore2::Store::getTable(a4, &cfstr_String_0.isa);
+    Table = CSStore2::Store::getTable(store, &cfstr_String_0.isa);
   }
 
-  if (Table == v7)
+  if (Table == tableCopy)
   {
-    StringCache = CSStore2::getStringCache(a4, v22);
+    StringCache = CSStore2::getStringCache(store, v22);
     if (StringCache)
     {
       v59 = StringCache;
-      v60 = *a4;
-      if (*a4)
+      v60 = *store;
+      if (*store)
       {
         v61 = *(v60 + 8);
       }
@@ -632,19 +632,19 @@
         }
       }
 
-      *&v5[v62] = 168430090;
+      *&bufferCopy[v62] = 168430090;
       v100[0] = MEMORY[0x1E69E9820];
       v100[1] = 3221225472;
       v101 = ___ZN8CSStore27HashMapIjNS_17_StringCacheEntryENS_16_StringFunctionsELy0EE14WriteBreakdownERKNS_5StoreEPKS3_hPh_block_invoke;
       v102 = &__block_descriptor_41_e21_v32__0I8I12B16B20_B24l;
       v104 = 5;
-      v103 = v5;
+      v103 = bufferCopy;
       v65 = v100;
       v66 = v65;
       v105[0] = 0;
       v67 = v59 + 1;
-      v68 = *a4;
-      if (*a4)
+      v68 = *store;
+      if (*store)
       {
         v69 = *(v68 + 8);
       }
@@ -657,7 +657,7 @@
       v70 = 0xFFFFFFFFLL;
       v11 = v67 >= v69;
       v71 = v67 - v69;
-      v92 = v7;
+      v92 = tableCopy;
       if (v11 && !HIDWORD(v71))
       {
         if ((v71 + 1) > *(*(v68 + 8) + 12) || v71 == -1)
@@ -671,7 +671,7 @@
         }
       }
 
-      v90 = v5;
+      v90 = bufferCopy;
       (v101)(v65, v70, (8 * *v59), 1, 1, v105);
       v73 = *v59;
       if (v73 && (v105[0] & 1) == 0)
@@ -689,7 +689,7 @@
 
           else
           {
-            v78 = *(*a4 + 8);
+            v78 = *(*store + 8);
             v43 = *(v78 + 12) > v77;
             v79 = v78 + v77;
             if (v43)
@@ -719,8 +719,8 @@
                 v83 = 0;
               }
 
-              v84 = *a4;
-              if (*a4)
+              v84 = *store;
+              if (*store)
               {
                 v85 = *(v84 + 8);
               }
@@ -769,8 +769,8 @@
       }
 
       v57 = 6;
-      v5 = v90;
-      v7 = v92;
+      bufferCopy = v90;
+      tableCopy = v92;
     }
 
     else
@@ -781,26 +781,26 @@
 
   else
   {
-    v55 = *(a4 + 33);
+    v55 = *(store + 33);
     if (!v55)
     {
-      v55 = CSStore2::Store::getTable(a4, &cfstr_Array.isa);
+      v55 = CSStore2::Store::getTable(store, &cfstr_Array.isa);
     }
 
-    if (v55 == v7)
+    if (v55 == tableCopy)
     {
       v57 = 7;
     }
 
     else
     {
-      v56 = *(a4 + 35);
+      v56 = *(store + 35);
       if (!v56)
       {
-        v56 = CSStore2::Store::getTable(a4, &cfstr_Dictionary.isa);
+        v56 = CSStore2::Store::getTable(store, &cfstr_Dictionary.isa);
       }
 
-      if (v56 == v7)
+      if (v56 == tableCopy)
       {
         v57 = 8;
       }
@@ -817,22 +817,22 @@
   v93[2] = __47___CSVisualizer_breakDownTable_inStore_buffer___block_invoke;
   v93[3] = &__block_descriptor_49_e30_v24__0r__Unit_b30b2I_0c__8_B16l;
   v94 = v57;
-  v93[4] = a4;
-  v93[5] = v5;
-  CSStore2::Store::enumerateUnits(a4, v7, v93);
+  v93[4] = store;
+  v93[5] = bufferCopy;
+  CSStore2::Store::enumerateUnits(store, tableCopy, v93);
 }
 
-+ (id)predicateForSearchingDescriptionWithString:(id)a3 error:(id *)a4
++ (id)predicateForSearchingDescriptionWithString:(id)string error:(id *)error
 {
-  v4 = [_CSVisualizerPredicate predicateWithFormatString:a3 error:a4];
+  v4 = [_CSVisualizerPredicate predicateWithFormatString:string error:error];
 
   return v4;
 }
 
-+ (void)enumerateValuesForTitlesInDescription:(id)a3 block:(id)a4
++ (void)enumerateValuesForTitlesInDescription:(id)description block:(id)block
 {
-  v5 = a3;
-  v34 = a4;
+  descriptionCopy = description;
+  blockCopy = block;
   v51 = 0;
   v52 = &v51;
   v53 = 0x4812000000;
@@ -846,7 +846,7 @@
   v48[1] = 3221225472;
   v48[2] = __61___CSVisualizer_enumerateValuesForTitlesInDescription_block___block_invoke;
   v48[3] = &unk_1E7ED39E0;
-  v6 = v5;
+  v6 = descriptionCopy;
   v49 = v6;
   v50 = &v51;
   v7 = MEMORY[0x1BFAE6310](v48);
@@ -892,7 +892,7 @@
     while (v9 != v10);
   }
 
-  v33 = [v36 string];
+  string = [v36 string];
   v16 = v52[7] - v52[6];
   v17 = v45;
   if ((v46 - v45) >> 4 >= (v16 >> 4))
@@ -923,9 +923,9 @@
         context = v22;
         v27 = *v20;
         v28 = *(v23 + v19 + 8);
-        v29 = [v33 substringWithRange:{v24, v28}];
+        v29 = [string substringWithRange:{v24, v28}];
         v30 = [v36 attributedSubstringFromRange:{v25, v27}];
-        v34[2](v34, v29, v24, v28, v30, v25, v27, &v38);
+        blockCopy[2](blockCopy, v29, v24, v28, v30, v25, v27, &v38);
 
         v22 = context;
       }
@@ -966,9 +966,9 @@ LABEL_19:
   }
 }
 
-+ (_NSRange)rangeOfValueForTitle:(id)a3 inDescription:(id)a4
++ (_NSRange)rangeOfValueForTitle:(id)title inDescription:(id)description
 {
-  v6 = a3;
+  titleCopy = title;
   v15 = 0;
   v16 = &v15;
   v17 = 0x4012000000;
@@ -980,10 +980,10 @@ LABEL_19:
   v12[1] = 3221225472;
   v12[2] = __52___CSVisualizer_rangeOfValueForTitle_inDescription___block_invoke;
   v12[3] = &unk_1E7ED39B8;
-  v13 = v6;
+  v13 = titleCopy;
   v14 = &v15;
-  v7 = v6;
-  [a1 enumerateValuesForTitlesInDescription:a4 block:v12];
+  v7 = titleCopy;
+  [self enumerateValuesForTitlesInDescription:description block:v12];
   v8 = v16[6];
   v9 = v16[7];
 

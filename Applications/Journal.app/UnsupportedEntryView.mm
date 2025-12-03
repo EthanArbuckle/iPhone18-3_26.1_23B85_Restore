@@ -1,25 +1,25 @@
 @interface UnsupportedEntryView
-- (_TtC7Journal20UnsupportedEntryView)initWithCoder:(id)a3;
-- (_TtC7Journal20UnsupportedEntryView)initWithFrame:(CGRect)a3;
+- (_TtC7Journal20UnsupportedEntryView)initWithCoder:(id)coder;
+- (_TtC7Journal20UnsupportedEntryView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation UnsupportedEntryView
 
-- (_TtC7Journal20UnsupportedEntryView)initWithFrame:(CGRect)a3
+- (_TtC7Journal20UnsupportedEntryView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for UnsupportedEntryView();
-  v7 = [(UnsupportedEntryView *)&v9 initWithFrame:x, y, width, height];
+  height = [(UnsupportedEntryView *)&v9 initWithFrame:x, y, width, height];
   sub_1004B8634();
 
-  return v7;
+  return height;
 }
 
-- (_TtC7Journal20UnsupportedEntryView)initWithCoder:(id)a3
+- (_TtC7Journal20UnsupportedEntryView)initWithCoder:(id)coder
 {
   type metadata accessor for UnsupportedEntryView();
   swift_deallocPartialClassInstance();

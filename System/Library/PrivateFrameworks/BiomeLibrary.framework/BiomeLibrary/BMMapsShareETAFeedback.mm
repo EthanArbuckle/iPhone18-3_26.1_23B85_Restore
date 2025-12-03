@@ -1,15 +1,15 @@
 @interface BMMapsShareETAFeedback
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMapsShareETAFeedback)initWithIdentifier:(id)a3 bundleId:(id)a4 handle:(id)a5 startLocationId:(id)a6 endLocationId:(id)a7 contactId:(id)a8 groupId:(id)a9;
-- (BMMapsShareETAFeedback)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMapsShareETAFeedback)initWithIdentifier:(id)identifier bundleId:(id)id handle:(id)handle startLocationId:(id)locationId endLocationId:(id)endLocationId contactId:(id)contactId groupId:(id)groupId;
+- (BMMapsShareETAFeedback)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMapsShareETAFeedback
@@ -38,25 +38,25 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMapsShareETAFeedback *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(BMMapsShareETAFeedback *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(BMMapsShareETAFeedback *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqual:v10];
+      identifier3 = [(BMMapsShareETAFeedback *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqual:identifier4];
 
       if (!v11)
       {
@@ -64,18 +64,18 @@
       }
     }
 
-    v13 = [(BMMapsShareETAFeedback *)self bundleId];
-    v14 = [v5 bundleId];
-    v15 = v14;
-    if (v13 == v14)
+    bundleId = [(BMMapsShareETAFeedback *)self bundleId];
+    bundleId2 = [v5 bundleId];
+    v15 = bundleId2;
+    if (bundleId == bundleId2)
     {
     }
 
     else
     {
-      v16 = [(BMMapsShareETAFeedback *)self bundleId];
-      v17 = [v5 bundleId];
-      v18 = [v16 isEqual:v17];
+      bundleId3 = [(BMMapsShareETAFeedback *)self bundleId];
+      bundleId4 = [v5 bundleId];
+      v18 = [bundleId3 isEqual:bundleId4];
 
       if (!v18)
       {
@@ -83,18 +83,18 @@
       }
     }
 
-    v19 = [(BMMapsShareETAFeedback *)self handle];
-    v20 = [v5 handle];
-    v21 = v20;
-    if (v19 == v20)
+    handle = [(BMMapsShareETAFeedback *)self handle];
+    handle2 = [v5 handle];
+    v21 = handle2;
+    if (handle == handle2)
     {
     }
 
     else
     {
-      v22 = [(BMMapsShareETAFeedback *)self handle];
-      v23 = [v5 handle];
-      v24 = [v22 isEqual:v23];
+      handle3 = [(BMMapsShareETAFeedback *)self handle];
+      handle4 = [v5 handle];
+      v24 = [handle3 isEqual:handle4];
 
       if (!v24)
       {
@@ -102,18 +102,18 @@
       }
     }
 
-    v25 = [(BMMapsShareETAFeedback *)self startLocationId];
-    v26 = [v5 startLocationId];
-    v27 = v26;
-    if (v25 == v26)
+    startLocationId = [(BMMapsShareETAFeedback *)self startLocationId];
+    startLocationId2 = [v5 startLocationId];
+    v27 = startLocationId2;
+    if (startLocationId == startLocationId2)
     {
     }
 
     else
     {
-      v28 = [(BMMapsShareETAFeedback *)self startLocationId];
-      v29 = [v5 startLocationId];
-      v30 = [v28 isEqual:v29];
+      startLocationId3 = [(BMMapsShareETAFeedback *)self startLocationId];
+      startLocationId4 = [v5 startLocationId];
+      v30 = [startLocationId3 isEqual:startLocationId4];
 
       if (!v30)
       {
@@ -121,18 +121,18 @@
       }
     }
 
-    v31 = [(BMMapsShareETAFeedback *)self endLocationId];
-    v32 = [v5 endLocationId];
-    v33 = v32;
-    if (v31 == v32)
+    endLocationId = [(BMMapsShareETAFeedback *)self endLocationId];
+    endLocationId2 = [v5 endLocationId];
+    v33 = endLocationId2;
+    if (endLocationId == endLocationId2)
     {
     }
 
     else
     {
-      v34 = [(BMMapsShareETAFeedback *)self endLocationId];
-      v35 = [v5 endLocationId];
-      v36 = [v34 isEqual:v35];
+      endLocationId3 = [(BMMapsShareETAFeedback *)self endLocationId];
+      endLocationId4 = [v5 endLocationId];
+      v36 = [endLocationId3 isEqual:endLocationId4];
 
       if (!v36)
       {
@@ -140,18 +140,18 @@
       }
     }
 
-    v37 = [(BMMapsShareETAFeedback *)self contactId];
-    v38 = [v5 contactId];
-    v39 = v38;
-    if (v37 == v38)
+    contactId = [(BMMapsShareETAFeedback *)self contactId];
+    contactId2 = [v5 contactId];
+    v39 = contactId2;
+    if (contactId == contactId2)
     {
     }
 
     else
     {
-      v40 = [(BMMapsShareETAFeedback *)self contactId];
-      v41 = [v5 contactId];
-      v42 = [v40 isEqual:v41];
+      contactId3 = [(BMMapsShareETAFeedback *)self contactId];
+      contactId4 = [v5 contactId];
+      v42 = [contactId3 isEqual:contactId4];
 
       if (!v42)
       {
@@ -163,18 +163,18 @@ LABEL_26:
       }
     }
 
-    v44 = [(BMMapsShareETAFeedback *)self groupId];
-    v45 = [v5 groupId];
-    if (v44 == v45)
+    groupId = [(BMMapsShareETAFeedback *)self groupId];
+    groupId2 = [v5 groupId];
+    if (groupId == groupId2)
     {
       v12 = 1;
     }
 
     else
     {
-      v46 = [(BMMapsShareETAFeedback *)self groupId];
-      v47 = [v5 groupId];
-      v12 = [v46 isEqual:v47];
+      groupId3 = [(BMMapsShareETAFeedback *)self groupId];
+      groupId4 = [v5 groupId];
+      v12 = [groupId3 isEqual:groupId4];
     }
 
     goto LABEL_26;
@@ -189,78 +189,78 @@ LABEL_27:
 - (id)jsonDictionary
 {
   v26[7] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMapsShareETAFeedback *)self identifier];
-  v4 = [(BMMapsShareETAFeedback *)self bundleId];
-  v5 = [(BMMapsShareETAFeedback *)self handle];
-  v6 = [(BMMapsShareETAFeedback *)self startLocationId];
-  v7 = [(BMMapsShareETAFeedback *)self endLocationId];
-  v8 = [(BMMapsShareETAFeedback *)self contactId];
-  v9 = [(BMMapsShareETAFeedback *)self groupId];
+  identifier = [(BMMapsShareETAFeedback *)self identifier];
+  bundleId = [(BMMapsShareETAFeedback *)self bundleId];
+  handle = [(BMMapsShareETAFeedback *)self handle];
+  startLocationId = [(BMMapsShareETAFeedback *)self startLocationId];
+  endLocationId = [(BMMapsShareETAFeedback *)self endLocationId];
+  contactId = [(BMMapsShareETAFeedback *)self contactId];
+  groupId = [(BMMapsShareETAFeedback *)self groupId];
   v25[0] = @"identifier";
-  v10 = v3;
-  if (!v3)
+  null = identifier;
+  if (!identifier)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v10;
-  v26[0] = v10;
+  v22 = null;
+  v26[0] = null;
   v25[1] = @"bundleId";
-  v11 = v4;
-  if (!v4)
+  null2 = bundleId;
+  if (!bundleId)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v3;
-  v21 = v11;
-  v26[1] = v11;
+  v24 = identifier;
+  v21 = null2;
+  v26[1] = null2;
   v25[2] = @"handle";
-  v12 = v5;
-  if (!v5)
+  null3 = handle;
+  if (!handle)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v4;
-  v20 = v12;
-  v26[2] = v12;
+  v23 = bundleId;
+  v20 = null3;
+  v26[2] = null3;
   v25[3] = @"startLocationId";
-  v13 = v6;
-  if (!v6)
+  null4 = startLocationId;
+  if (!startLocationId)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[3] = v13;
+  v26[3] = null4;
   v25[4] = @"endLocationId";
-  v14 = v7;
-  if (!v7)
+  null5 = endLocationId;
+  if (!endLocationId)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v14;
+  v26[4] = null5;
   v25[5] = @"contactId";
-  v15 = v8;
-  if (!v8)
+  null6 = contactId;
+  if (!contactId)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[5] = v15;
+  v26[5] = null6;
   v25[6] = @"groupId";
-  v16 = v9;
-  if (!v9)
+  null7 = groupId;
+  if (!groupId)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[6] = v16;
+  v26[6] = null7;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:7];
-  if (v9)
+  if (groupId)
   {
-    if (v8)
+    if (contactId)
     {
       goto LABEL_17;
     }
@@ -269,17 +269,17 @@ LABEL_27:
   else
   {
 
-    if (v8)
+    if (contactId)
     {
 LABEL_17:
-      if (v7)
+      if (endLocationId)
       {
         goto LABEL_18;
       }
 
 LABEL_28:
 
-      if (v6)
+      if (startLocationId)
       {
         goto LABEL_19;
       }
@@ -288,13 +288,13 @@ LABEL_28:
     }
   }
 
-  if (!v7)
+  if (!endLocationId)
   {
     goto LABEL_28;
   }
 
 LABEL_18:
-  if (v6)
+  if (startLocationId)
   {
     goto LABEL_19;
   }
@@ -302,7 +302,7 @@ LABEL_18:
 LABEL_29:
 
 LABEL_19:
-  if (!v5)
+  if (!handle)
   {
   }
 
@@ -329,23 +329,23 @@ LABEL_23:
   return v17;
 }
 
-- (BMMapsShareETAFeedback)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMapsShareETAFeedback)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"identifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"bundleId"];
-    v55 = a4;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
+    errorCopy = error;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
           v19 = 0;
@@ -358,7 +358,7 @@ LABEL_4:
         v57 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"bundleId"];
         v69 = v57;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
-        v11 = v30 = a4;
+        v11 = v30 = error;
         v31 = [v28 initWithDomain:v29 code:2 userInfo:v11];
         v10 = 0;
         v19 = 0;
@@ -374,7 +374,7 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"handle"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"handle"];
     v53 = v9;
     v56 = v10;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -382,7 +382,7 @@ LABEL_4:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v55)
+        if (!errorCopy)
         {
           v57 = 0;
           v19 = 0;
@@ -400,7 +400,7 @@ LABEL_4:
         v35 = [v34 initWithDomain:v33 code:2 userInfo:v12];
         v57 = 0;
         v19 = 0;
-        *v55 = v35;
+        *errorCopy = v35;
 LABEL_27:
 
         v9 = v53;
@@ -417,14 +417,14 @@ LABEL_28:
       v57 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"startLocationId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"startLocationId"];
     v50 = v7;
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v55)
+        if (!errorCopy)
         {
           v20 = 0;
           v19 = 0;
@@ -442,7 +442,7 @@ LABEL_28:
         v39 = [v38 initWithDomain:v37 code:2 userInfo:v13];
         v20 = 0;
         v19 = 0;
-        *v55 = v39;
+        *errorCopy = v39;
         goto LABEL_26;
       }
 
@@ -454,21 +454,21 @@ LABEL_28:
       v52 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"endLocationId"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"endLocationId"];
     v51 = v8;
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v55)
+        if (!errorCopy)
         {
           v54 = 0;
           v19 = 0;
           goto LABEL_25;
         }
 
-        v15 = self;
+        selfCopy3 = self;
         v40 = objc_alloc(MEMORY[0x1E696ABC0]);
         v41 = *MEMORY[0x1E698F240];
         v62 = *MEMORY[0x1E696A578];
@@ -478,10 +478,10 @@ LABEL_28:
         v42 = [v40 initWithDomain:v41 code:2 userInfo:v14];
         v54 = 0;
         v19 = 0;
-        *v55 = v42;
+        *errorCopy = v42;
 LABEL_24:
 
-        self = v15;
+        self = selfCopy3;
         v8 = v51;
         v10 = v56;
 LABEL_25:
@@ -500,14 +500,14 @@ LABEL_26:
       v54 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"contactId"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"contactId"];
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
-      v15 = self;
+      selfCopy3 = self;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v55)
+        if (!errorCopy)
         {
           v16 = 0;
           v19 = 0;
@@ -523,7 +523,7 @@ LABEL_26:
         v45 = [v43 initWithDomain:v44 code:2 userInfo:v17];
         v16 = 0;
         v19 = 0;
-        *v55 = v45;
+        *errorCopy = v45;
         goto LABEL_23;
       }
 
@@ -532,17 +532,17 @@ LABEL_26:
 
     else
     {
-      v15 = self;
+      selfCopy3 = self;
       v16 = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"groupId"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"groupId"];
     if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v55)
+        if (errorCopy)
         {
           v49 = objc_alloc(MEMORY[0x1E696ABC0]);
           v48 = *MEMORY[0x1E698F240];
@@ -550,7 +550,7 @@ LABEL_26:
           v46 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"groupId"];
           v59 = v46;
           v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
-          *v55 = [v49 initWithDomain:v48 code:2 userInfo:v47];
+          *errorCopy = [v49 initWithDomain:v48 code:2 userInfo:v47];
         }
 
         v18 = 0;
@@ -566,8 +566,8 @@ LABEL_26:
       v18 = 0;
     }
 
-    v19 = [(BMMapsShareETAFeedback *)v15 initWithIdentifier:v51 bundleId:v56 handle:v57 startLocationId:v52 endLocationId:v54 contactId:v16 groupId:v18];
-    v15 = v19;
+    v19 = [(BMMapsShareETAFeedback *)selfCopy3 initWithIdentifier:v51 bundleId:v56 handle:v57 startLocationId:v52 endLocationId:v54 contactId:v16 groupId:v18];
+    selfCopy3 = v19;
 LABEL_23:
 
     goto LABEL_24;
@@ -580,7 +580,7 @@ LABEL_23:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v19 = 0;
@@ -598,7 +598,7 @@ LABEL_23:
   v27 = [v26 initWithDomain:v24 code:2 userInfo:v9];
   v8 = 0;
   v19 = 0;
-  *a4 = v27;
+  *error = v27;
 LABEL_29:
 
 LABEL_30:
@@ -610,61 +610,61 @@ LABEL_30:
 {
   v3 = objc_opt_new();
   [(BMMapsShareETAFeedback *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_handle)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_startLocationId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_endLocationId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_contactId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_groupId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMMapsShareETAFeedback;
   v5 = [(BMEventBase *)&v23 init];
@@ -673,12 +673,12 @@ LABEL_30:
     goto LABEL_24;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -689,18 +689,18 @@ LABEL_30:
       while (1)
       {
         v24 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v24 & 0x7F) << v7;
@@ -717,9 +717,9 @@ LABEL_30:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -742,13 +742,13 @@ LABEL_16:
         *(&v5->super.super.isa + v18) = v17;
       }
 
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_23:
     v21 = 0;
@@ -766,40 +766,40 @@ LABEL_24:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMapsShareETAFeedback *)self identifier];
-  v5 = [(BMMapsShareETAFeedback *)self bundleId];
-  v6 = [(BMMapsShareETAFeedback *)self handle];
-  v7 = [(BMMapsShareETAFeedback *)self startLocationId];
-  v8 = [(BMMapsShareETAFeedback *)self endLocationId];
-  v9 = [(BMMapsShareETAFeedback *)self contactId];
-  v10 = [(BMMapsShareETAFeedback *)self groupId];
-  v11 = [v3 initWithFormat:@"BMMapsShareETAFeedback with identifier: %@, bundleId: %@, handle: %@, startLocationId: %@, endLocationId: %@, contactId: %@, groupId: %@", v4, v5, v6, v7, v8, v9, v10];
+  identifier = [(BMMapsShareETAFeedback *)self identifier];
+  bundleId = [(BMMapsShareETAFeedback *)self bundleId];
+  handle = [(BMMapsShareETAFeedback *)self handle];
+  startLocationId = [(BMMapsShareETAFeedback *)self startLocationId];
+  endLocationId = [(BMMapsShareETAFeedback *)self endLocationId];
+  contactId = [(BMMapsShareETAFeedback *)self contactId];
+  groupId = [(BMMapsShareETAFeedback *)self groupId];
+  v11 = [v3 initWithFormat:@"BMMapsShareETAFeedback with identifier: %@, bundleId: %@, handle: %@, startLocationId: %@, endLocationId: %@, contactId: %@, groupId: %@", identifier, bundleId, handle, startLocationId, endLocationId, contactId, groupId];
 
   return v11;
 }
 
-- (BMMapsShareETAFeedback)initWithIdentifier:(id)a3 bundleId:(id)a4 handle:(id)a5 startLocationId:(id)a6 endLocationId:(id)a7 contactId:(id)a8 groupId:(id)a9
+- (BMMapsShareETAFeedback)initWithIdentifier:(id)identifier bundleId:(id)id handle:(id)handle startLocationId:(id)locationId endLocationId:(id)endLocationId contactId:(id)contactId groupId:(id)groupId
 {
-  v24 = a3;
-  v23 = a4;
-  v22 = a5;
-  v21 = a6;
-  v20 = a7;
-  v16 = a8;
-  v17 = a9;
+  identifierCopy = identifier;
+  idCopy = id;
+  handleCopy = handle;
+  locationIdCopy = locationId;
+  endLocationIdCopy = endLocationId;
+  contactIdCopy = contactId;
+  groupIdCopy = groupId;
   v25.receiver = self;
   v25.super_class = BMMapsShareETAFeedback;
   v18 = [(BMEventBase *)&v25 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_identifier, a3);
-    objc_storeStrong(&v18->_bundleId, a4);
-    objc_storeStrong(&v18->_handle, a5);
-    objc_storeStrong(&v18->_startLocationId, a6);
-    objc_storeStrong(&v18->_endLocationId, a7);
-    objc_storeStrong(&v18->_contactId, a8);
-    objc_storeStrong(&v18->_groupId, a9);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v18->_bundleId, id);
+    objc_storeStrong(&v18->_handle, handle);
+    objc_storeStrong(&v18->_startLocationId, locationId);
+    objc_storeStrong(&v18->_endLocationId, endLocationId);
+    objc_storeStrong(&v18->_contactId, contactId);
+    objc_storeStrong(&v18->_groupId, groupId);
   }
 
   return v18;
@@ -828,9 +828,9 @@ LABEL_24:
   return v9;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -838,8 +838,8 @@ LABEL_24:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMapsShareETAFeedback alloc] initByReadFrom:v7];
     v4 = v8;

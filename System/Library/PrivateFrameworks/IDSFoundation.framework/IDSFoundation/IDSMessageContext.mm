@@ -10,8 +10,8 @@
 - (BOOL)wantsAppAck;
 - (BOOL)wantsCheckpointing;
 - (BOOL)wantsManualAck;
-- (IDSMessageContext)initWithCoder:(id)a3;
-- (IDSMessageContext)initWithDictionary:(id)a3 boostContext:(id)a4;
+- (IDSMessageContext)initWithCoder:(id)coder;
+- (IDSMessageContext)initWithDictionary:(id)dictionary boostContext:(id)context;
 - (IDSPseudonym)targettedPseudonym;
 - (NSData)engramGroupID;
 - (NSData)senderPushToken;
@@ -44,54 +44,54 @@
 - (NSString)serviceIdentifier;
 - (NSString)storageGuid;
 - (NSString)toID;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (int64_t)broadcastID;
 - (int64_t)connectionType;
 - (unint64_t)serverTimestampInNanoseconds;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBroadcastID:(int64_t)a3;
-- (void)setBroadcastTime:(id)a3;
-- (void)setBytesSent:(id)a3;
-- (void)setConnectionType:(int64_t)a3;
-- (void)setDeliveryStatusContext:(id)a3;
-- (void)setDestinationCorrelationIdentifier:(id)a3;
-- (void)setEngramGroupID:(id)a3;
-- (void)setExpectsPeerResponse:(BOOL)a3;
-- (void)setFromID:(id)a3;
-- (void)setFromServerStorage:(BOOL)a3;
-- (void)setIncomingMessageMetrics:(id)a3;
-- (void)setIncomingResponseIdentifier:(id)a3;
-- (void)setIsDirectMessage:(BOOL)a3;
-- (void)setIsFromTrustedSender:(BOOL)a3;
-- (void)setLastFromServerStorage:(BOOL)a3;
-- (void)setNeedsDeliveryReceipt:(BOOL)a3;
-- (void)setOriginalCommand:(id)a3;
-- (void)setOriginalDestinationDevice:(id)a3;
-- (void)setOriginalGuid:(id)a3;
-- (void)setOriginalTimestamp:(id)a3;
-- (void)setOutgoingResponseIdentifier:(id)a3;
-- (void)setPriority:(id)a3;
-- (void)setPublicIntentAction:(id)a3;
-- (void)setQueueOneIdentifier:(id)a3;
-- (void)setResourceTransferMetadata:(id)a3;
-- (void)setResourceTransferSandboxExtension:(id)a3;
-- (void)setResourceTransferURLString:(id)a3;
-- (void)setSamplingUUID:(id)a3;
-- (void)setSenderCorrelationIdentifier:(id)a3;
-- (void)setSenderPushToken:(id)a3;
-- (void)setServerTimestamp:(id)a3;
-- (void)setServiceIdentifier:(id)a3;
-- (void)setShouldShowPeerErrors:(BOOL)a3;
-- (void)setSnapTrustedUser:(id)a3;
-- (void)setStorageContext:(id)a3;
-- (void)setStorageGuid:(id)a3;
-- (void)setToID:(id)a3;
-- (void)setTotalBytes:(id)a3;
-- (void)setUsedEngram:(BOOL)a3;
-- (void)setWPConnectionError:(id)a3;
-- (void)setWantsAppAck:(BOOL)a3;
-- (void)setWantsCheckpointing:(BOOL)a3;
-- (void)setWantsManualAck:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBroadcastID:(int64_t)d;
+- (void)setBroadcastTime:(id)time;
+- (void)setBytesSent:(id)sent;
+- (void)setConnectionType:(int64_t)type;
+- (void)setDeliveryStatusContext:(id)context;
+- (void)setDestinationCorrelationIdentifier:(id)identifier;
+- (void)setEngramGroupID:(id)d;
+- (void)setExpectsPeerResponse:(BOOL)response;
+- (void)setFromID:(id)d;
+- (void)setFromServerStorage:(BOOL)storage;
+- (void)setIncomingMessageMetrics:(id)metrics;
+- (void)setIncomingResponseIdentifier:(id)identifier;
+- (void)setIsDirectMessage:(BOOL)message;
+- (void)setIsFromTrustedSender:(BOOL)sender;
+- (void)setLastFromServerStorage:(BOOL)storage;
+- (void)setNeedsDeliveryReceipt:(BOOL)receipt;
+- (void)setOriginalCommand:(id)command;
+- (void)setOriginalDestinationDevice:(id)device;
+- (void)setOriginalGuid:(id)guid;
+- (void)setOriginalTimestamp:(id)timestamp;
+- (void)setOutgoingResponseIdentifier:(id)identifier;
+- (void)setPriority:(id)priority;
+- (void)setPublicIntentAction:(id)action;
+- (void)setQueueOneIdentifier:(id)identifier;
+- (void)setResourceTransferMetadata:(id)metadata;
+- (void)setResourceTransferSandboxExtension:(id)extension;
+- (void)setResourceTransferURLString:(id)string;
+- (void)setSamplingUUID:(id)d;
+- (void)setSenderCorrelationIdentifier:(id)identifier;
+- (void)setSenderPushToken:(id)token;
+- (void)setServerTimestamp:(id)timestamp;
+- (void)setServiceIdentifier:(id)identifier;
+- (void)setShouldShowPeerErrors:(BOOL)errors;
+- (void)setSnapTrustedUser:(id)user;
+- (void)setStorageContext:(id)context;
+- (void)setStorageGuid:(id)guid;
+- (void)setToID:(id)d;
+- (void)setTotalBytes:(id)bytes;
+- (void)setUsedEngram:(BOOL)engram;
+- (void)setWPConnectionError:(id)error;
+- (void)setWantsAppAck:(BOOL)ack;
+- (void)setWantsCheckpointing:(BOOL)checkpointing;
+- (void)setWantsManualAck:(BOOL)ack;
 @end
 
 @implementation IDSMessageContext
@@ -107,12 +107,12 @@
 
 - (NSDate)serverReceivedTime
 {
-  v2 = [(IDSMessageContext *)self serverTimestamp];
-  v3 = v2;
-  if (v2)
+  serverTimestamp = [(IDSMessageContext *)self serverTimestamp];
+  v3 = serverTimestamp;
+  if (serverTimestamp)
   {
     v4 = MEMORY[0x1E695DF00];
-    [v2 doubleValue];
+    [serverTimestamp doubleValue];
     v5 = [v4 dateWithTimeIntervalSince1970:?];
   }
 
@@ -218,10 +218,10 @@
   return v3;
 }
 
-- (IDSMessageContext)initWithDictionary:(id)a3 boostContext:(id)a4
+- (IDSMessageContext)initWithDictionary:(id)dictionary boostContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
   v143.receiver = self;
   v143.super_class = IDSMessageContext;
   v8 = [(IDSMessageContext *)&v143 init];
@@ -231,203 +231,203 @@
     transaction = v8->_transaction;
     v8->_transaction = v9;
 
-    objc_storeStrong(&v8->_boostContext, a4);
+    objc_storeStrong(&v8->_boostContext, context);
     v8->_lock._os_unfair_lock_opaque = 0;
-    v11 = [v6 objectForKey:@"IDSMessageContextOutgoingResponseIdentifierKey"];
+    v11 = [dictionaryCopy objectForKey:@"IDSMessageContextOutgoingResponseIdentifierKey"];
     v12 = objc_opt_self();
     outgoingResponseIdentifier = v8->_outgoingResponseIdentifier;
     v8->_outgoingResponseIdentifier = v12;
 
-    v14 = [v6 objectForKey:@"IDSMessageContextIncomingResponseIdentifierKey"];
+    v14 = [dictionaryCopy objectForKey:@"IDSMessageContextIncomingResponseIdentifierKey"];
     v15 = objc_opt_self();
     incomingResponseIdentifier = v8->_incomingResponseIdentifier;
     v8->_incomingResponseIdentifier = v15;
 
-    v17 = [v6 objectForKey:@"IDSMessageContextServiceIdentifierKey"];
+    v17 = [dictionaryCopy objectForKey:@"IDSMessageContextServiceIdentifierKey"];
     v18 = objc_opt_self();
     serviceIdentifier = v8->_serviceIdentifier;
     v8->_serviceIdentifier = v18;
 
-    v20 = [v6 objectForKey:@"IDSMessageContextStorageGuidKey"];
+    v20 = [dictionaryCopy objectForKey:@"IDSMessageContextStorageGuidKey"];
     v21 = objc_opt_self();
     storageGuid = v8->_storageGuid;
     v8->_storageGuid = v21;
 
-    v23 = [v6 objectForKey:@"IDSMessageContextFromIDKey"];
+    v23 = [dictionaryCopy objectForKey:@"IDSMessageContextFromIDKey"];
     v24 = objc_opt_self();
     fromID = v8->_fromID;
     v8->_fromID = v24;
 
-    v26 = [v6 objectForKey:@"IDSMessageContextToIDKey"];
+    v26 = [dictionaryCopy objectForKey:@"IDSMessageContextToIDKey"];
     v27 = objc_opt_self();
     toID = v8->_toID;
     v8->_toID = v27;
 
-    v29 = [v6 objectForKey:@"IDSMessageContextOriginalDestinationDeviceKey"];
+    v29 = [dictionaryCopy objectForKey:@"IDSMessageContextOriginalDestinationDeviceKey"];
     v30 = objc_opt_self();
     originalDestinationDevice = v8->_originalDestinationDevice;
     v8->_originalDestinationDevice = v30;
 
-    v32 = [v6 objectForKey:@"IDSMessageContextOriginalGUIDKey"];
+    v32 = [dictionaryCopy objectForKey:@"IDSMessageContextOriginalGUIDKey"];
     v33 = objc_opt_self();
     originalGUID = v8->_originalGUID;
     v8->_originalGUID = v33;
 
-    v35 = [v6 objectForKey:@"IDSMessageContextEngramGroupIDKey"];
+    v35 = [dictionaryCopy objectForKey:@"IDSMessageContextEngramGroupIDKey"];
     v36 = objc_opt_self();
     engramGroupID = v8->_engramGroupID;
     v8->_engramGroupID = v36;
 
-    v38 = [v6 objectForKey:@"IDSMessageContextOriginalCommandKey"];
+    v38 = [dictionaryCopy objectForKey:@"IDSMessageContextOriginalCommandKey"];
     v39 = objc_opt_self();
     originalCommand = v8->_originalCommand;
     v8->_originalCommand = v39;
 
-    v41 = [v6 objectForKey:@"IDSMessageContextIncomingOCKey"];
+    v41 = [dictionaryCopy objectForKey:@"IDSMessageContextIncomingOCKey"];
     v42 = objc_opt_self();
     incomingOC = v8->_incomingOC;
     v8->_incomingOC = v42;
 
-    v44 = [v6 objectForKey:@"IDSMessageContextPublicIntentActionKey"];
+    v44 = [dictionaryCopy objectForKey:@"IDSMessageContextPublicIntentActionKey"];
     v45 = objc_opt_self();
     publicIntentAction = v8->_publicIntentAction;
     v8->_publicIntentAction = v45;
 
-    v47 = [v6 objectForKey:@"IDSMessageContextBroadcastTimeKey"];
+    v47 = [dictionaryCopy objectForKey:@"IDSMessageContextBroadcastTimeKey"];
     v48 = objc_opt_self();
     broadcastTime = v8->_broadcastTime;
     v8->_broadcastTime = v48;
 
-    v50 = [v6 objectForKey:@"IDSMessageContextPriorityKey"];
+    v50 = [dictionaryCopy objectForKey:@"IDSMessageContextPriorityKey"];
     v51 = objc_opt_self();
     priority = v8->_priority;
     v8->_priority = v51;
 
-    v53 = [v6 objectForKey:@"IDSMessageContextServerTimestampKey"];
+    v53 = [dictionaryCopy objectForKey:@"IDSMessageContextServerTimestampKey"];
     v54 = objc_opt_self();
     serverTimestamp = v8->_serverTimestamp;
     v8->_serverTimestamp = v54;
 
-    v56 = [v6 objectForKey:@"IDSMessageContextOriginalTimestampKey"];
+    v56 = [dictionaryCopy objectForKey:@"IDSMessageContextOriginalTimestampKey"];
     v57 = objc_opt_self();
     originalTimestamp = v8->_originalTimestamp;
     v8->_originalTimestamp = v57;
 
-    v59 = [v6 objectForKey:@"IDSMessageContextSenderCorrelationIdentifierKey"];
+    v59 = [dictionaryCopy objectForKey:@"IDSMessageContextSenderCorrelationIdentifierKey"];
     v60 = objc_opt_self();
     senderCorrelationIdentifier = v8->_senderCorrelationIdentifier;
     v8->_senderCorrelationIdentifier = v60;
 
-    v62 = [v6 objectForKey:@"IDSMessageContextDestinationCorrelationIdentifierKey"];
+    v62 = [dictionaryCopy objectForKey:@"IDSMessageContextDestinationCorrelationIdentifierKey"];
     v63 = objc_opt_self();
     destinationCorrelationIdentifier = v8->_destinationCorrelationIdentifier;
     v8->_destinationCorrelationIdentifier = v63;
 
-    v65 = [v6 objectForKey:@"IDSMessageContextSequenceNumberKey"];
+    v65 = [dictionaryCopy objectForKey:@"IDSMessageContextSequenceNumberKey"];
     v66 = objc_opt_self();
     messageSequenceNumber = v8->_messageSequenceNumber;
     v8->_messageSequenceNumber = v66;
 
-    v68 = [v6 objectForKey:@"IDSMessageContextBytesSent"];
+    v68 = [dictionaryCopy objectForKey:@"IDSMessageContextBytesSent"];
     v69 = objc_opt_self();
     bytesSent = v8->_bytesSent;
     v8->_bytesSent = v69;
 
-    v71 = [v6 objectForKey:@"IDSMessageContextTotalBytes"];
+    v71 = [dictionaryCopy objectForKey:@"IDSMessageContextTotalBytes"];
     v72 = objc_opt_self();
     totalBytes = v8->_totalBytes;
     v8->_totalBytes = v72;
 
-    v74 = [v6 objectForKey:@"IDSMessageContextTargettedPseudonymKey"];
+    v74 = [dictionaryCopy objectForKey:@"IDSMessageContextTargettedPseudonymKey"];
     v75 = objc_opt_self();
     targettedPseudonymDict = v8->_targettedPseudonymDict;
     v8->_targettedPseudonymDict = v75;
 
-    v77 = [v6 objectForKey:@"IDSMessageContextStorageContextKey"];
+    v77 = [dictionaryCopy objectForKey:@"IDSMessageContextStorageContextKey"];
     v78 = objc_opt_self();
     storageContext = v8->_storageContext;
     v8->_storageContext = v78;
 
-    v80 = [v6 objectForKey:@"IDSMessageContextIncomingMessageMetricsKey"];
+    v80 = [dictionaryCopy objectForKey:@"IDSMessageContextIncomingMessageMetricsKey"];
     v81 = objc_opt_self();
     incomingMessageMetrics = v8->_incomingMessageMetrics;
     v8->_incomingMessageMetrics = v81;
 
-    v83 = [v6 objectForKey:@"IDSMessageContextSamplingUUIDKey"];
+    v83 = [dictionaryCopy objectForKey:@"IDSMessageContextSamplingUUIDKey"];
     v84 = objc_opt_self();
     samplingUUID = v8->_samplingUUID;
     v8->_samplingUUID = v84;
 
-    v86 = [v6 objectForKey:@"IDSMessageContextQueueOneIdentifierKey"];
+    v86 = [dictionaryCopy objectForKey:@"IDSMessageContextQueueOneIdentifierKey"];
     v87 = objc_opt_self();
     queueOneIdentifier = v8->_queueOneIdentifier;
     v8->_queueOneIdentifier = v87;
 
-    v89 = [v6 objectForKey:@"IDSMessageContextNeedsDeliveryReceiptKey"];
+    v89 = [dictionaryCopy objectForKey:@"IDSMessageContextNeedsDeliveryReceiptKey"];
     v8->_needsDeliveryReceipt = [v89 BOOLValue];
 
-    v90 = [v6 objectForKey:@"IDSMessageContextExpectsPeerResponseKey"];
+    v90 = [dictionaryCopy objectForKey:@"IDSMessageContextExpectsPeerResponseKey"];
     v8->_expectsPeerResponse = [v90 BOOLValue];
 
-    v91 = [v6 objectForKey:@"IDSMessageContextWantsAppAckKey"];
+    v91 = [dictionaryCopy objectForKey:@"IDSMessageContextWantsAppAckKey"];
     v8->_wantsAppAck = [v91 BOOLValue];
 
-    v92 = [v6 objectForKey:@"IDSMessageContextIsDirectMessage"];
+    v92 = [dictionaryCopy objectForKey:@"IDSMessageContextIsDirectMessage"];
     v8->_isDirectMessage = [v92 BOOLValue];
 
-    v93 = [v6 objectForKey:@"IDSMessageContextBroadcastIDKey"];
+    v93 = [dictionaryCopy objectForKey:@"IDSMessageContextBroadcastIDKey"];
     v8->_broadcastID = [v93 longLongValue];
 
-    v94 = [v6 objectForKey:@"IDSMessageContextWantsManualAckKey"];
+    v94 = [dictionaryCopy objectForKey:@"IDSMessageContextWantsManualAckKey"];
     v8->_wantsManualAck = [v94 BOOLValue];
 
-    v95 = [v6 objectForKey:@"IDSMessageContextFromServerStorageKey"];
+    v95 = [dictionaryCopy objectForKey:@"IDSMessageContextFromServerStorageKey"];
     v8->_fromServerStorage = [v95 BOOLValue];
 
-    v96 = [v6 objectForKey:@"IDSMessageContextLastFromServerStorageKey"];
+    v96 = [dictionaryCopy objectForKey:@"IDSMessageContextLastFromServerStorageKey"];
     v8->_lastFromServerStorage = [v96 BOOLValue];
 
-    v97 = [v6 objectForKey:@"IDSMessageContextConnectionTypeKey"];
+    v97 = [dictionaryCopy objectForKey:@"IDSMessageContextConnectionTypeKey"];
     v8->_connectionType = [v97 longLongValue];
 
-    v98 = [v6 objectForKey:@"IDSMessageContextUsedEngramKey"];
+    v98 = [dictionaryCopy objectForKey:@"IDSMessageContextUsedEngramKey"];
     v8->_usedEngram = [v98 BOOLValue];
 
-    v99 = [v6 objectForKey:@"IDSMessageContextAverageLocalRTTKey"];
+    v99 = [dictionaryCopy objectForKey:@"IDSMessageContextAverageLocalRTTKey"];
     [v99 doubleValue];
     v8->_averageLocalRTT = v100;
 
-    v101 = [v6 objectForKey:@"IDSMessageContextLocalMessageStateKey"];
+    v101 = [dictionaryCopy objectForKey:@"IDSMessageContextLocalMessageStateKey"];
     v8->_localMessageState = [v101 integerValue];
 
-    v102 = [v6 objectForKey:@"IDSMessageContextEndpointStateKey"];
+    v102 = [dictionaryCopy objectForKey:@"IDSMessageContextEndpointStateKey"];
     v8->_endpointState = [v102 integerValue];
 
-    v103 = [v6 objectForKey:@"IDSMessageContextDeviceBlackedOutKey"];
+    v103 = [dictionaryCopy objectForKey:@"IDSMessageContextDeviceBlackedOutKey"];
     v8->_deviceBlackedOut = [v103 BOOLValue];
 
-    v104 = [v6 objectForKey:@"IDSMessageContextMessageHadEncryptedData"];
+    v104 = [dictionaryCopy objectForKey:@"IDSMessageContextMessageHadEncryptedData"];
     v8->_messageHadEncryptedData = [v104 BOOLValue];
 
-    v105 = [v6 objectForKey:@"IDSMessageContextIsFromTrustedSender"];
+    v105 = [dictionaryCopy objectForKey:@"IDSMessageContextIsFromTrustedSender"];
     v8->_isFromTrustedSender = [v105 BOOLValue];
 
-    v106 = [v6 objectForKey:@"IDSMessageContextFileSize"];
+    v106 = [dictionaryCopy objectForKey:@"IDSMessageContextFileSize"];
     v8->_fileSize = [v106 integerValue];
 
-    v107 = [v6 objectForKey:@"IDSMessageContextWantsCheckpointing"];
+    v107 = [dictionaryCopy objectForKey:@"IDSMessageContextWantsCheckpointing"];
     v8->_wantsCheckpointing = [v107 BOOLValue];
 
-    v108 = [v6 objectForKey:@"IDSMessageContextShouldShowPeerErrors"];
+    v108 = [dictionaryCopy objectForKey:@"IDSMessageContextShouldShowPeerErrors"];
     v8->_shouldShowPeerErrors = [v108 BOOLValue];
 
-    v109 = [v6 objectForKey:@"IDSMessageContextWPConnectionErrorDomainKey"];
+    v109 = [dictionaryCopy objectForKey:@"IDSMessageContextWPConnectionErrorDomainKey"];
     v110 = objc_opt_self();
 
-    v111 = [v6 objectForKey:@"IDSMessageContextWPConnectionErrorCodeKey"];
+    v111 = [dictionaryCopy objectForKey:@"IDSMessageContextWPConnectionErrorCodeKey"];
     v112 = objc_opt_self();
 
-    v113 = [v6 objectForKey:@"IDSMessageContextWPConnectionErrorUserInfoKey"];
+    v113 = [dictionaryCopy objectForKey:@"IDSMessageContextWPConnectionErrorUserInfoKey"];
     v114 = objc_opt_self();
 
     if (v110)
@@ -444,7 +444,7 @@
     wpConnectionError = v8->_wpConnectionError;
     v8->_wpConnectionError = v116;
 
-    v118 = [v6 objectForKey:@"IDSMessageContextCertifiedDeliveryContextKey"];
+    v118 = [dictionaryCopy objectForKey:@"IDSMessageContextCertifiedDeliveryContextKey"];
     if (v118)
     {
       v119 = [[IDSCertifiedDeliveryContext alloc] initWithDictionaryRepresentation:v118];
@@ -452,7 +452,7 @@
       v8->_certifiedDeliveryContext = v119;
     }
 
-    v121 = [v6 objectForKey:@"IDSMessageContextServerStorageFetchContextKey"];
+    v121 = [dictionaryCopy objectForKey:@"IDSMessageContextServerStorageFetchContextKey"];
     if (v121)
     {
       v122 = [[IDSServerStorageFetchContext alloc] initWithDictionary:v121];
@@ -460,32 +460,32 @@
       v8->_serverStorageFetchContext = v122;
     }
 
-    v124 = [v6 objectForKey:@"ids-message-resource-transfer-url"];
+    v124 = [dictionaryCopy objectForKey:@"ids-message-resource-transfer-url"];
     v125 = objc_opt_self();
     resourceTransferURLString = v8->_resourceTransferURLString;
     v8->_resourceTransferURLString = v125;
 
-    v127 = [v6 objectForKey:@"ids-message-resource-transfer-metadata"];
+    v127 = [dictionaryCopy objectForKey:@"ids-message-resource-transfer-metadata"];
     v128 = objc_opt_self();
     resourceTransferMetadata = v8->_resourceTransferMetadata;
     v8->_resourceTransferMetadata = v128;
 
-    v130 = [v6 objectForKey:@"ids-message-resource-transfer-sandbox-extension"];
+    v130 = [dictionaryCopy objectForKey:@"ids-message-resource-transfer-sandbox-extension"];
     v131 = objc_opt_self();
     resourceTransferSandboxExtension = v8->_resourceTransferSandboxExtension;
     v8->_resourceTransferSandboxExtension = v131;
 
-    v133 = [v6 objectForKey:@"IDSMessageContextSenderPushToken"];
+    v133 = [dictionaryCopy objectForKey:@"IDSMessageContextSenderPushToken"];
     v134 = objc_opt_self();
     senderPushToken = v8->_senderPushToken;
     v8->_senderPushToken = v134;
 
-    v136 = [v6 objectForKey:@"IDSMessageContextSnapTrustedUser"];
+    v136 = [dictionaryCopy objectForKey:@"IDSMessageContextSnapTrustedUser"];
     v137 = objc_opt_self();
     snapTrustedUser = v8->_snapTrustedUser;
     v8->_snapTrustedUser = v137;
 
-    v139 = [v6 objectForKey:@"IDSMessageContextDeliveryStatusContext"];
+    v139 = [dictionaryCopy objectForKey:@"IDSMessageContextDeliveryStatusContext"];
     v140 = objc_opt_self();
     deliveryStatusContext = v8->_deliveryStatusContext;
     v8->_deliveryStatusContext = v140;
@@ -494,13 +494,13 @@
   return v8;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  keyCopy = key;
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_ERROR))
   {
-    sub_1A7E1A4A4(v3, v4);
+    sub_1A7E1A4A4(keyCopy, registration);
   }
 
   return 0;
@@ -508,29 +508,29 @@
 
 - (unint64_t)serverTimestampInNanoseconds
 {
-  v2 = [(IDSMessageContext *)self serverTimestamp];
-  [v2 doubleValue];
+  serverTimestamp = [(IDSMessageContext *)self serverTimestamp];
+  [serverTimestamp doubleValue];
   v4 = (v3 * 1000000000.0);
 
   return v4;
 }
 
-- (void)setOutgoingResponseIdentifier:(id)a3
+- (void)setOutgoingResponseIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   outgoingResponseIdentifier = self->_outgoingResponseIdentifier;
-  self->_outgoingResponseIdentifier = v4;
+  self->_outgoingResponseIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setIncomingResponseIdentifier:(id)a3
+- (void)setIncomingResponseIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   incomingResponseIdentifier = self->_incomingResponseIdentifier;
-  self->_incomingResponseIdentifier = v4;
+  self->_incomingResponseIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -544,12 +544,12 @@
   return v3;
 }
 
-- (void)setServiceIdentifier:(id)a3
+- (void)setServiceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   serviceIdentifier = self->_serviceIdentifier;
-  self->_serviceIdentifier = v4;
+  self->_serviceIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -563,22 +563,22 @@
   return v3;
 }
 
-- (void)setStorageGuid:(id)a3
+- (void)setStorageGuid:(id)guid
 {
-  v4 = a3;
+  guidCopy = guid;
   os_unfair_lock_lock(&self->_lock);
   storageGuid = self->_storageGuid;
-  self->_storageGuid = v4;
+  self->_storageGuid = guidCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setFromID:(id)a3
+- (void)setFromID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   fromID = self->_fromID;
-  self->_fromID = v4;
+  self->_fromID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -592,12 +592,12 @@
   return v3;
 }
 
-- (void)setToID:(id)a3
+- (void)setToID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   toID = self->_toID;
-  self->_toID = v4;
+  self->_toID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -611,12 +611,12 @@
   return v3;
 }
 
-- (void)setOriginalDestinationDevice:(id)a3
+- (void)setOriginalDestinationDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_lock);
   originalDestinationDevice = self->_originalDestinationDevice;
-  self->_originalDestinationDevice = v4;
+  self->_originalDestinationDevice = deviceCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -630,12 +630,12 @@
   return v3;
 }
 
-- (void)setOriginalGuid:(id)a3
+- (void)setOriginalGuid:(id)guid
 {
-  v4 = a3;
+  guidCopy = guid;
   os_unfair_lock_lock(&self->_lock);
   originalGUID = self->_originalGUID;
-  self->_originalGUID = v4;
+  self->_originalGUID = guidCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -649,12 +649,12 @@
   return v3;
 }
 
-- (void)setEngramGroupID:(id)a3
+- (void)setEngramGroupID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   engramGroupID = self->_engramGroupID;
-  self->_engramGroupID = v4;
+  self->_engramGroupID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -668,52 +668,52 @@
   return v3;
 }
 
-- (void)setOriginalCommand:(id)a3
+- (void)setOriginalCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   os_unfair_lock_lock(&self->_lock);
   originalCommand = self->_originalCommand;
-  self->_originalCommand = v4;
+  self->_originalCommand = commandCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setBroadcastTime:(id)a3
+- (void)setBroadcastTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   os_unfair_lock_lock(&self->_lock);
   broadcastTime = self->_broadcastTime;
-  self->_broadcastTime = v4;
+  self->_broadcastTime = timeCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setPriority:(id)a3
+- (void)setPriority:(id)priority
 {
-  v4 = a3;
+  priorityCopy = priority;
   os_unfair_lock_lock(&self->_lock);
   priority = self->_priority;
-  self->_priority = v4;
+  self->_priority = priorityCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setServerTimestamp:(id)a3
+- (void)setServerTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   os_unfair_lock_lock(&self->_lock);
   serverTimestamp = self->_serverTimestamp;
-  self->_serverTimestamp = v4;
+  self->_serverTimestamp = timestampCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setOriginalTimestamp:(id)a3
+- (void)setOriginalTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   os_unfair_lock_lock(&self->_lock);
   originalTimestamp = self->_originalTimestamp;
-  self->_originalTimestamp = v4;
+  self->_originalTimestamp = timestampCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -727,12 +727,12 @@
   return v3;
 }
 
-- (void)setSenderCorrelationIdentifier:(id)a3
+- (void)setSenderCorrelationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   senderCorrelationIdentifier = self->_senderCorrelationIdentifier;
-  self->_senderCorrelationIdentifier = v4;
+  self->_senderCorrelationIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -746,12 +746,12 @@
   return v3;
 }
 
-- (void)setDestinationCorrelationIdentifier:(id)a3
+- (void)setDestinationCorrelationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   destinationCorrelationIdentifier = self->_destinationCorrelationIdentifier;
-  self->_destinationCorrelationIdentifier = v4;
+  self->_destinationCorrelationIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -765,12 +765,12 @@
   return v3;
 }
 
-- (void)setPublicIntentAction:(id)a3
+- (void)setPublicIntentAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   os_unfair_lock_lock(&self->_lock);
   publicIntentAction = self->_publicIntentAction;
-  self->_publicIntentAction = v4;
+  self->_publicIntentAction = actionCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -784,12 +784,12 @@
   return v3;
 }
 
-- (void)setSenderPushToken:(id)a3
+- (void)setSenderPushToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_lock);
   senderPushToken = self->_senderPushToken;
-  self->_senderPushToken = v4;
+  self->_senderPushToken = tokenCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -803,12 +803,12 @@
   return v3;
 }
 
-- (void)setStorageContext:(id)a3
+- (void)setStorageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
   storageContext = self->_storageContext;
-  self->_storageContext = v4;
+  self->_storageContext = contextCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -822,12 +822,12 @@
   return v3;
 }
 
-- (void)setSnapTrustedUser:(id)a3
+- (void)setSnapTrustedUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   os_unfair_lock_lock(&self->_lock);
   snapTrustedUser = self->_snapTrustedUser;
-  self->_snapTrustedUser = v4;
+  self->_snapTrustedUser = userCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -841,12 +841,12 @@
   return v3;
 }
 
-- (void)setDeliveryStatusContext:(id)a3
+- (void)setDeliveryStatusContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
   deliveryStatusContext = self->_deliveryStatusContext;
-  self->_deliveryStatusContext = v4;
+  self->_deliveryStatusContext = contextCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -860,12 +860,12 @@
   return v3;
 }
 
-- (void)setIncomingMessageMetrics:(id)a3
+- (void)setIncomingMessageMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   os_unfair_lock_lock(&self->_lock);
   incomingMessageMetrics = self->_incomingMessageMetrics;
-  self->_incomingMessageMetrics = v4;
+  self->_incomingMessageMetrics = metricsCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -879,12 +879,12 @@
   return v3;
 }
 
-- (void)setSamplingUUID:(id)a3
+- (void)setSamplingUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   samplingUUID = self->_samplingUUID;
-  self->_samplingUUID = v4;
+  self->_samplingUUID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -898,12 +898,12 @@
   return v3;
 }
 
-- (void)setQueueOneIdentifier:(id)a3
+- (void)setQueueOneIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   queueOneIdentifier = self->_queueOneIdentifier;
-  self->_queueOneIdentifier = v4;
+  self->_queueOneIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -917,12 +917,12 @@
   return v3;
 }
 
-- (void)setWPConnectionError:(id)a3
+- (void)setWPConnectionError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   wpConnectionError = self->_wpConnectionError;
-  self->_wpConnectionError = v4;
+  self->_wpConnectionError = errorCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -936,22 +936,22 @@
   return v3;
 }
 
-- (void)setBytesSent:(id)a3
+- (void)setBytesSent:(id)sent
 {
-  v4 = a3;
+  sentCopy = sent;
   os_unfair_lock_lock(&self->_lock);
   bytesSent = self->_bytesSent;
-  self->_bytesSent = v4;
+  self->_bytesSent = sentCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setTotalBytes:(id)a3
+- (void)setTotalBytes:(id)bytes
 {
-  v4 = a3;
+  bytesCopy = bytes;
   os_unfair_lock_lock(&self->_lock);
   totalBytes = self->_totalBytes;
-  self->_totalBytes = v4;
+  self->_totalBytes = bytesCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -965,12 +965,12 @@
   return v3;
 }
 
-- (void)setResourceTransferURLString:(id)a3
+- (void)setResourceTransferURLString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   os_unfair_lock_lock(&self->_lock);
   resourceTransferURLString = self->_resourceTransferURLString;
-  self->_resourceTransferURLString = v4;
+  self->_resourceTransferURLString = stringCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -984,12 +984,12 @@
   return v3;
 }
 
-- (void)setResourceTransferMetadata:(id)a3
+- (void)setResourceTransferMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   os_unfair_lock_lock(&self->_lock);
   resourceTransferMetadata = self->_resourceTransferMetadata;
-  self->_resourceTransferMetadata = v4;
+  self->_resourceTransferMetadata = metadataCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1003,12 +1003,12 @@
   return v3;
 }
 
-- (void)setResourceTransferSandboxExtension:(id)a3
+- (void)setResourceTransferSandboxExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   os_unfair_lock_lock(&self->_lock);
   resourceTransferSandboxExtension = self->_resourceTransferSandboxExtension;
-  self->_resourceTransferSandboxExtension = v4;
+  self->_resourceTransferSandboxExtension = extensionCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1022,10 +1022,10 @@
   return v3;
 }
 
-- (void)setNeedsDeliveryReceipt:(BOOL)a3
+- (void)setNeedsDeliveryReceipt:(BOOL)receipt
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_needsDeliveryReceipt = a3;
+  self->_needsDeliveryReceipt = receipt;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1038,10 +1038,10 @@
   return needsDeliveryReceipt;
 }
 
-- (void)setExpectsPeerResponse:(BOOL)a3
+- (void)setExpectsPeerResponse:(BOOL)response
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_expectsPeerResponse = a3;
+  self->_expectsPeerResponse = response;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1054,34 +1054,34 @@
   return expectsPeerResponse;
 }
 
-- (void)setWantsAppAck:(BOOL)a3
+- (void)setWantsAppAck:(BOOL)ack
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_wantsAppAck = a3;
+  self->_wantsAppAck = ack;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setIsDirectMessage:(BOOL)a3
+- (void)setIsDirectMessage:(BOOL)message
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_isDirectMessage = a3;
+  self->_isDirectMessage = message;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setBroadcastID:(int64_t)a3
+- (void)setBroadcastID:(int64_t)d
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_broadcastID = a3;
+  self->_broadcastID = d;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setWantsManualAck:(BOOL)a3
+- (void)setWantsManualAck:(BOOL)ack
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_wantsManualAck = a3;
+  self->_wantsManualAck = ack;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1094,10 +1094,10 @@
   return wantsManualAck;
 }
 
-- (void)setFromServerStorage:(BOOL)a3
+- (void)setFromServerStorage:(BOOL)storage
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_fromServerStorage = a3;
+  self->_fromServerStorage = storage;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1110,10 +1110,10 @@
   return fromServerStorage;
 }
 
-- (void)setLastFromServerStorage:(BOOL)a3
+- (void)setLastFromServerStorage:(BOOL)storage
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lastFromServerStorage = a3;
+  self->_lastFromServerStorage = storage;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1126,26 +1126,26 @@
   return lastFromServerStorage;
 }
 
-- (void)setConnectionType:(int64_t)a3
+- (void)setConnectionType:(int64_t)type
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_connectionType = a3;
+  self->_connectionType = type;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setUsedEngram:(BOOL)a3
+- (void)setUsedEngram:(BOOL)engram
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_usedEngram = a3;
+  self->_usedEngram = engram;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setIsFromTrustedSender:(BOOL)a3
+- (void)setIsFromTrustedSender:(BOOL)sender
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_isFromTrustedSender = a3;
+  self->_isFromTrustedSender = sender;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1158,10 +1158,10 @@
   return isFromTrustedSender;
 }
 
-- (void)setWantsCheckpointing:(BOOL)a3
+- (void)setWantsCheckpointing:(BOOL)checkpointing
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_wantsCheckpointing = a3;
+  self->_wantsCheckpointing = checkpointing;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1174,10 +1174,10 @@
   return wantsCheckpointing;
 }
 
-- (void)setShouldShowPeerErrors:(BOOL)a3
+- (void)setShouldShowPeerErrors:(BOOL)errors
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_shouldShowPeerErrors = a3;
+  self->_shouldShowPeerErrors = errors;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1205,231 +1205,231 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   outgoingResponseIdentifier = self->_outgoingResponseIdentifier;
-  v5 = a3;
-  [v5 encodeObject:outgoingResponseIdentifier forKey:@"IDSMessageContextOutgoingResponseIdentifierKey"];
-  [v5 encodeObject:self->_incomingResponseIdentifier forKey:@"IDSMessageContextIncomingResponseIdentifierKey"];
-  [v5 encodeObject:self->_serviceIdentifier forKey:@"IDSMessageContextServiceIdentifierKey"];
-  [v5 encodeObject:self->_storageGuid forKey:@"IDSMessageContextStorageGuidKey"];
-  [v5 encodeObject:self->_fromID forKey:@"IDSMessageContextFromIDKey"];
-  [v5 encodeObject:self->_toID forKey:@"IDSMessageContextToIDKey"];
-  [v5 encodeObject:self->_originalDestinationDevice forKey:@"IDSMessageContextOriginalDestinationDeviceKey"];
-  [v5 encodeObject:self->_originalGUID forKey:@"IDSMessageContextOriginalGUIDKey"];
-  [v5 encodeObject:self->_engramGroupID forKey:@"IDSMessageContextEngramGroupIDKey"];
-  [v5 encodeObject:self->_originalCommand forKey:@"IDSMessageContextOriginalCommandKey"];
-  [v5 encodeObject:self->_incomingOC forKey:@"IDSMessageContextIncomingOCKey"];
-  [v5 encodeObject:self->_publicIntentAction forKey:@"IDSMessageContextPublicIntentActionKey"];
-  [v5 encodeObject:self->_broadcastTime forKey:@"IDSMessageContextBroadcastTimeKey"];
-  [v5 encodeObject:self->_priority forKey:@"IDSMessageContextPriorityKey"];
-  [v5 encodeObject:self->_serverTimestamp forKey:@"IDSMessageContextServerTimestampKey"];
-  [v5 encodeObject:self->_originalTimestamp forKey:@"IDSMessageContextOriginalTimestampKey"];
-  [v5 encodeObject:self->_senderCorrelationIdentifier forKey:@"IDSMessageContextSenderCorrelationIdentifierKey"];
-  [v5 encodeObject:self->_destinationCorrelationIdentifier forKey:@"IDSMessageContextDestinationCorrelationIdentifierKey"];
-  [v5 encodeObject:self->_messageSequenceNumber forKey:@"IDSMessageContextSequenceNumberKey"];
-  [v5 encodeObject:self->_bytesSent forKey:@"IDSMessageContextBytesSent"];
-  [v5 encodeObject:self->_totalBytes forKey:@"IDSMessageContextTotalBytes"];
-  [v5 encodeObject:self->_targettedPseudonymDict forKey:@"IDSMessageContextTargettedPseudonymKey"];
-  [v5 encodeBool:self->_needsDeliveryReceipt forKey:@"IDSMessageContextNeedsDeliveryReceiptKey"];
-  [v5 encodeBool:self->_expectsPeerResponse forKey:@"IDSMessageContextExpectsPeerResponseKey"];
-  [v5 encodeBool:self->_wantsAppAck forKey:@"IDSMessageContextWantsAppAckKey"];
-  [v5 encodeBool:self->_isDirectMessage forKey:@"IDSMessageContextIsDirectMessage"];
-  [v5 encodeInt64:self->_broadcastID forKey:@"IDSMessageContextBroadcastIDKey"];
-  [v5 encodeBool:self->_wantsManualAck forKey:@"IDSMessageContextWantsManualAckKey"];
-  [v5 encodeBool:self->_fromServerStorage forKey:@"IDSMessageContextFromServerStorageKey"];
-  [v5 encodeBool:self->_lastFromServerStorage forKey:@"IDSMessageContextLastFromServerStorageKey"];
-  [v5 encodeInt64:self->_connectionType forKey:@"IDSMessageContextConnectionTypeKey"];
-  [v5 encodeBool:self->_usedEngram forKey:@"IDSMessageContextUsedEngramKey"];
-  [v5 encodeDouble:@"IDSMessageContextAverageLocalRTTKey" forKey:self->_averageLocalRTT];
-  [v5 encodeInteger:self->_localMessageState forKey:@"IDSMessageContextLocalMessageStateKey"];
-  [v5 encodeInteger:self->_endpointState forKey:@"IDSMessageContextEndpointStateKey"];
-  [v5 encodeBool:self->_deviceBlackedOut forKey:@"IDSMessageContextDeviceBlackedOutKey"];
-  [v5 encodeBool:self->_messageHadEncryptedData forKey:@"IDSMessageContextMessageHadEncryptedData"];
-  [v5 encodeBool:self->_isFromTrustedSender forKey:@"IDSMessageContextIsFromTrustedSender"];
-  [v5 encodeBool:self->_wantsCheckpointing forKey:@"IDSMessageContextWantsCheckpointing"];
-  [v5 encodeBool:self->_shouldShowPeerErrors forKey:@"IDSMessageContextShouldShowPeerErrors"];
-  [v5 encodeInteger:self->_fileSize forKey:@"IDSMessageContextFileSize"];
-  [v5 encodeObject:self->_wpConnectionError forKey:@"IDSMessageContextWPConnectionErrorKey"];
-  [v5 encodeObject:self->_certifiedDeliveryContext forKey:@"IDSMessageContextCertifiedDeliveryContextKey"];
-  [v5 encodeObject:self->_serverStorageFetchContext forKey:@"IDSMessageContextServerStorageFetchContextKey"];
-  [v5 encodeObject:self->_resourceTransferURLString forKey:@"ids-message-resource-transfer-url"];
-  [v5 encodeObject:self->_resourceTransferMetadata forKey:@"ids-message-resource-transfer-metadata"];
-  [v5 encodeObject:self->_resourceTransferSandboxExtension forKey:@"ids-message-resource-transfer-sandbox-extension"];
-  [v5 encodeObject:self->_senderPushToken forKey:@"IDSMessageContextSenderPushToken"];
-  [v5 encodeObject:self->_storageContext forKey:@"IDSMessageContextStorageContextKey"];
-  [v5 encodeObject:self->_snapTrustedUser forKey:@"IDSMessageContextSnapTrustedUser"];
-  [v5 encodeObject:self->_deliveryStatusContext forKey:@"IDSMessageContextDeliveryStatusContext"];
-  [v5 encodeObject:self->_incomingMessageMetrics forKey:@"IDSMessageContextIncomingMessageMetricsKey"];
-  [v5 encodeObject:self->_samplingUUID forKey:@"IDSMessageContextSamplingUUIDKey"];
-  [v5 encodeObject:self->_queueOneIdentifier forKey:@"IDSMessageContextQueueOneIdentifierKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:outgoingResponseIdentifier forKey:@"IDSMessageContextOutgoingResponseIdentifierKey"];
+  [coderCopy encodeObject:self->_incomingResponseIdentifier forKey:@"IDSMessageContextIncomingResponseIdentifierKey"];
+  [coderCopy encodeObject:self->_serviceIdentifier forKey:@"IDSMessageContextServiceIdentifierKey"];
+  [coderCopy encodeObject:self->_storageGuid forKey:@"IDSMessageContextStorageGuidKey"];
+  [coderCopy encodeObject:self->_fromID forKey:@"IDSMessageContextFromIDKey"];
+  [coderCopy encodeObject:self->_toID forKey:@"IDSMessageContextToIDKey"];
+  [coderCopy encodeObject:self->_originalDestinationDevice forKey:@"IDSMessageContextOriginalDestinationDeviceKey"];
+  [coderCopy encodeObject:self->_originalGUID forKey:@"IDSMessageContextOriginalGUIDKey"];
+  [coderCopy encodeObject:self->_engramGroupID forKey:@"IDSMessageContextEngramGroupIDKey"];
+  [coderCopy encodeObject:self->_originalCommand forKey:@"IDSMessageContextOriginalCommandKey"];
+  [coderCopy encodeObject:self->_incomingOC forKey:@"IDSMessageContextIncomingOCKey"];
+  [coderCopy encodeObject:self->_publicIntentAction forKey:@"IDSMessageContextPublicIntentActionKey"];
+  [coderCopy encodeObject:self->_broadcastTime forKey:@"IDSMessageContextBroadcastTimeKey"];
+  [coderCopy encodeObject:self->_priority forKey:@"IDSMessageContextPriorityKey"];
+  [coderCopy encodeObject:self->_serverTimestamp forKey:@"IDSMessageContextServerTimestampKey"];
+  [coderCopy encodeObject:self->_originalTimestamp forKey:@"IDSMessageContextOriginalTimestampKey"];
+  [coderCopy encodeObject:self->_senderCorrelationIdentifier forKey:@"IDSMessageContextSenderCorrelationIdentifierKey"];
+  [coderCopy encodeObject:self->_destinationCorrelationIdentifier forKey:@"IDSMessageContextDestinationCorrelationIdentifierKey"];
+  [coderCopy encodeObject:self->_messageSequenceNumber forKey:@"IDSMessageContextSequenceNumberKey"];
+  [coderCopy encodeObject:self->_bytesSent forKey:@"IDSMessageContextBytesSent"];
+  [coderCopy encodeObject:self->_totalBytes forKey:@"IDSMessageContextTotalBytes"];
+  [coderCopy encodeObject:self->_targettedPseudonymDict forKey:@"IDSMessageContextTargettedPseudonymKey"];
+  [coderCopy encodeBool:self->_needsDeliveryReceipt forKey:@"IDSMessageContextNeedsDeliveryReceiptKey"];
+  [coderCopy encodeBool:self->_expectsPeerResponse forKey:@"IDSMessageContextExpectsPeerResponseKey"];
+  [coderCopy encodeBool:self->_wantsAppAck forKey:@"IDSMessageContextWantsAppAckKey"];
+  [coderCopy encodeBool:self->_isDirectMessage forKey:@"IDSMessageContextIsDirectMessage"];
+  [coderCopy encodeInt64:self->_broadcastID forKey:@"IDSMessageContextBroadcastIDKey"];
+  [coderCopy encodeBool:self->_wantsManualAck forKey:@"IDSMessageContextWantsManualAckKey"];
+  [coderCopy encodeBool:self->_fromServerStorage forKey:@"IDSMessageContextFromServerStorageKey"];
+  [coderCopy encodeBool:self->_lastFromServerStorage forKey:@"IDSMessageContextLastFromServerStorageKey"];
+  [coderCopy encodeInt64:self->_connectionType forKey:@"IDSMessageContextConnectionTypeKey"];
+  [coderCopy encodeBool:self->_usedEngram forKey:@"IDSMessageContextUsedEngramKey"];
+  [coderCopy encodeDouble:@"IDSMessageContextAverageLocalRTTKey" forKey:self->_averageLocalRTT];
+  [coderCopy encodeInteger:self->_localMessageState forKey:@"IDSMessageContextLocalMessageStateKey"];
+  [coderCopy encodeInteger:self->_endpointState forKey:@"IDSMessageContextEndpointStateKey"];
+  [coderCopy encodeBool:self->_deviceBlackedOut forKey:@"IDSMessageContextDeviceBlackedOutKey"];
+  [coderCopy encodeBool:self->_messageHadEncryptedData forKey:@"IDSMessageContextMessageHadEncryptedData"];
+  [coderCopy encodeBool:self->_isFromTrustedSender forKey:@"IDSMessageContextIsFromTrustedSender"];
+  [coderCopy encodeBool:self->_wantsCheckpointing forKey:@"IDSMessageContextWantsCheckpointing"];
+  [coderCopy encodeBool:self->_shouldShowPeerErrors forKey:@"IDSMessageContextShouldShowPeerErrors"];
+  [coderCopy encodeInteger:self->_fileSize forKey:@"IDSMessageContextFileSize"];
+  [coderCopy encodeObject:self->_wpConnectionError forKey:@"IDSMessageContextWPConnectionErrorKey"];
+  [coderCopy encodeObject:self->_certifiedDeliveryContext forKey:@"IDSMessageContextCertifiedDeliveryContextKey"];
+  [coderCopy encodeObject:self->_serverStorageFetchContext forKey:@"IDSMessageContextServerStorageFetchContextKey"];
+  [coderCopy encodeObject:self->_resourceTransferURLString forKey:@"ids-message-resource-transfer-url"];
+  [coderCopy encodeObject:self->_resourceTransferMetadata forKey:@"ids-message-resource-transfer-metadata"];
+  [coderCopy encodeObject:self->_resourceTransferSandboxExtension forKey:@"ids-message-resource-transfer-sandbox-extension"];
+  [coderCopy encodeObject:self->_senderPushToken forKey:@"IDSMessageContextSenderPushToken"];
+  [coderCopy encodeObject:self->_storageContext forKey:@"IDSMessageContextStorageContextKey"];
+  [coderCopy encodeObject:self->_snapTrustedUser forKey:@"IDSMessageContextSnapTrustedUser"];
+  [coderCopy encodeObject:self->_deliveryStatusContext forKey:@"IDSMessageContextDeliveryStatusContext"];
+  [coderCopy encodeObject:self->_incomingMessageMetrics forKey:@"IDSMessageContextIncomingMessageMetricsKey"];
+  [coderCopy encodeObject:self->_samplingUUID forKey:@"IDSMessageContextSamplingUUIDKey"];
+  [coderCopy encodeObject:self->_queueOneIdentifier forKey:@"IDSMessageContextQueueOneIdentifierKey"];
 }
 
-- (IDSMessageContext)initWithCoder:(id)a3
+- (IDSMessageContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v78.receiver = self;
   v78.super_class = IDSMessageContext;
   v5 = [(IDSMessageContext *)&v78 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextOutgoingResponseIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextOutgoingResponseIdentifierKey"];
     outgoingResponseIdentifier = v5->_outgoingResponseIdentifier;
     v5->_outgoingResponseIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextIncomingResponseIdentifierKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextIncomingResponseIdentifierKey"];
     incomingResponseIdentifier = v5->_incomingResponseIdentifier;
     v5->_incomingResponseIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextServiceIdentifierKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextServiceIdentifierKey"];
     serviceIdentifier = v5->_serviceIdentifier;
     v5->_serviceIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextStorageGuidKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextStorageGuidKey"];
     storageGuid = v5->_storageGuid;
     v5->_storageGuid = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextFromIDKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextFromIDKey"];
     fromID = v5->_fromID;
     v5->_fromID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextToIDKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextToIDKey"];
     toID = v5->_toID;
     v5->_toID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextOriginalDestinationDeviceKey"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextOriginalDestinationDeviceKey"];
     originalDestinationDevice = v5->_originalDestinationDevice;
     v5->_originalDestinationDevice = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextOriginalGUIDKey"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextOriginalGUIDKey"];
     originalGUID = v5->_originalGUID;
     v5->_originalGUID = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextEngramGroupIDKey"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextEngramGroupIDKey"];
     engramGroupID = v5->_engramGroupID;
     v5->_engramGroupID = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextOriginalCommandKey"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextOriginalCommandKey"];
     originalCommand = v5->_originalCommand;
     v5->_originalCommand = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextIncomingOCKey"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextIncomingOCKey"];
     incomingOC = v5->_incomingOC;
     v5->_incomingOC = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextPublicIntentActionKey"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextPublicIntentActionKey"];
     publicIntentAction = v5->_publicIntentAction;
     v5->_publicIntentAction = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextBroadcastTimeKey"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextBroadcastTimeKey"];
     broadcastTime = v5->_broadcastTime;
     v5->_broadcastTime = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextPriorityKey"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextPriorityKey"];
     priority = v5->_priority;
     v5->_priority = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextServerTimestampKey"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextServerTimestampKey"];
     serverTimestamp = v5->_serverTimestamp;
     v5->_serverTimestamp = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextOriginalTimestampKey"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextOriginalTimestampKey"];
     originalTimestamp = v5->_originalTimestamp;
     v5->_originalTimestamp = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextSenderCorrelationIdentifierKey"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextSenderCorrelationIdentifierKey"];
     senderCorrelationIdentifier = v5->_senderCorrelationIdentifier;
     v5->_senderCorrelationIdentifier = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextDestinationCorrelationIdentifierKey"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextDestinationCorrelationIdentifierKey"];
     destinationCorrelationIdentifier = v5->_destinationCorrelationIdentifier;
     v5->_destinationCorrelationIdentifier = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextSequenceNumberKey"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextSequenceNumberKey"];
     messageSequenceNumber = v5->_messageSequenceNumber;
     v5->_messageSequenceNumber = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextBytesSent"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextBytesSent"];
     bytesSent = v5->_bytesSent;
     v5->_bytesSent = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextTotalBytes"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextTotalBytes"];
     totalBytes = v5->_totalBytes;
     v5->_totalBytes = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextTargettedPseudonymKey"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextTargettedPseudonymKey"];
     targettedPseudonymDict = v5->_targettedPseudonymDict;
     v5->_targettedPseudonymDict = v48;
 
-    v5->_needsDeliveryReceipt = [v4 decodeBoolForKey:@"IDSMessageContextNeedsDeliveryReceiptKey"];
-    v5->_expectsPeerResponse = [v4 decodeBoolForKey:@"IDSMessageContextExpectsPeerResponseKey"];
-    v5->_wantsAppAck = [v4 decodeBoolForKey:@"IDSMessageContextWantsAppAckKey"];
-    v5->_isDirectMessage = [v4 decodeBoolForKey:@"IDSMessageContextIsDirectMessage"];
-    v5->_broadcastID = [v4 decodeInt64ForKey:@"IDSMessageContextBroadcastIDKey"];
-    v5->_wantsManualAck = [v4 decodeBoolForKey:@"IDSMessageContextWantsManualAckKey"];
-    v5->_fromServerStorage = [v4 decodeBoolForKey:@"IDSMessageContextFromServerStorageKey"];
-    v5->_lastFromServerStorage = [v4 decodeBoolForKey:@"IDSMessageContextLastFromServerStorageKey"];
-    v5->_connectionType = [v4 decodeInt64ForKey:@"IDSMessageContextConnectionTypeKey"];
-    v5->_usedEngram = [v4 decodeBoolForKey:@"IDSMessageContextUsedEngramKey"];
-    [v4 decodeDoubleForKey:@"IDSMessageContextAverageLocalRTTKey"];
+    v5->_needsDeliveryReceipt = [coderCopy decodeBoolForKey:@"IDSMessageContextNeedsDeliveryReceiptKey"];
+    v5->_expectsPeerResponse = [coderCopy decodeBoolForKey:@"IDSMessageContextExpectsPeerResponseKey"];
+    v5->_wantsAppAck = [coderCopy decodeBoolForKey:@"IDSMessageContextWantsAppAckKey"];
+    v5->_isDirectMessage = [coderCopy decodeBoolForKey:@"IDSMessageContextIsDirectMessage"];
+    v5->_broadcastID = [coderCopy decodeInt64ForKey:@"IDSMessageContextBroadcastIDKey"];
+    v5->_wantsManualAck = [coderCopy decodeBoolForKey:@"IDSMessageContextWantsManualAckKey"];
+    v5->_fromServerStorage = [coderCopy decodeBoolForKey:@"IDSMessageContextFromServerStorageKey"];
+    v5->_lastFromServerStorage = [coderCopy decodeBoolForKey:@"IDSMessageContextLastFromServerStorageKey"];
+    v5->_connectionType = [coderCopy decodeInt64ForKey:@"IDSMessageContextConnectionTypeKey"];
+    v5->_usedEngram = [coderCopy decodeBoolForKey:@"IDSMessageContextUsedEngramKey"];
+    [coderCopy decodeDoubleForKey:@"IDSMessageContextAverageLocalRTTKey"];
     v5->_averageLocalRTT = v50;
-    v5->_localMessageState = [v4 decodeIntegerForKey:@"IDSMessageContextLocalMessageStateKey"];
-    v5->_endpointState = [v4 decodeIntegerForKey:@"IDSMessageContextEndpointStateKey"];
-    v5->_deviceBlackedOut = [v4 decodeBoolForKey:@"IDSMessageContextDeviceBlackedOutKey"];
-    v5->_messageHadEncryptedData = [v4 decodeBoolForKey:@"IDSMessageContextMessageHadEncryptedData"];
-    v5->_isFromTrustedSender = [v4 decodeBoolForKey:@"IDSMessageContextIsFromTrustedSender"];
-    v5->_wantsCheckpointing = [v4 decodeBoolForKey:@"IDSMessageContextWantsCheckpointing"];
-    v5->_shouldShowPeerErrors = [v4 decodeBoolForKey:@"IDSMessageContextShouldShowPeerErrors"];
-    v5->_fileSize = [v4 decodeIntegerForKey:@"IDSMessageContextFileSize"];
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextWPConnectionErrorKey"];
+    v5->_localMessageState = [coderCopy decodeIntegerForKey:@"IDSMessageContextLocalMessageStateKey"];
+    v5->_endpointState = [coderCopy decodeIntegerForKey:@"IDSMessageContextEndpointStateKey"];
+    v5->_deviceBlackedOut = [coderCopy decodeBoolForKey:@"IDSMessageContextDeviceBlackedOutKey"];
+    v5->_messageHadEncryptedData = [coderCopy decodeBoolForKey:@"IDSMessageContextMessageHadEncryptedData"];
+    v5->_isFromTrustedSender = [coderCopy decodeBoolForKey:@"IDSMessageContextIsFromTrustedSender"];
+    v5->_wantsCheckpointing = [coderCopy decodeBoolForKey:@"IDSMessageContextWantsCheckpointing"];
+    v5->_shouldShowPeerErrors = [coderCopy decodeBoolForKey:@"IDSMessageContextShouldShowPeerErrors"];
+    v5->_fileSize = [coderCopy decodeIntegerForKey:@"IDSMessageContextFileSize"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextWPConnectionErrorKey"];
     wpConnectionError = v5->_wpConnectionError;
     v5->_wpConnectionError = v51;
 
-    v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextCertifiedDeliveryContextKey"];
+    v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextCertifiedDeliveryContextKey"];
     certifiedDeliveryContext = v5->_certifiedDeliveryContext;
     v5->_certifiedDeliveryContext = v53;
 
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextServerStorageFetchContextKey"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextServerStorageFetchContextKey"];
     serverStorageFetchContext = v5->_serverStorageFetchContext;
     v5->_serverStorageFetchContext = v55;
 
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ids-message-resource-transfer-url"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ids-message-resource-transfer-url"];
     resourceTransferURLString = v5->_resourceTransferURLString;
     v5->_resourceTransferURLString = v57;
 
-    v59 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ids-message-resource-transfer-metadata"];
+    v59 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ids-message-resource-transfer-metadata"];
     resourceTransferMetadata = v5->_resourceTransferMetadata;
     v5->_resourceTransferMetadata = v59;
 
-    v61 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ids-message-resource-transfer-sandbox-extension"];
+    v61 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ids-message-resource-transfer-sandbox-extension"];
     resourceTransferSandboxExtension = v5->_resourceTransferSandboxExtension;
     v5->_resourceTransferSandboxExtension = v61;
 
-    v63 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextSenderPushToken"];
+    v63 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextSenderPushToken"];
     senderPushToken = v5->_senderPushToken;
     v5->_senderPushToken = v63;
 
-    v65 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextStorageContextKey"];
+    v65 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextStorageContextKey"];
     storageContext = v5->_storageContext;
     v5->_storageContext = v65;
 
-    v67 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextSnapTrustedUser"];
+    v67 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextSnapTrustedUser"];
     snapTrustedUser = v5->_snapTrustedUser;
     v5->_snapTrustedUser = v67;
 
-    v69 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextDeliveryStatusContext"];
+    v69 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextDeliveryStatusContext"];
     deliveryStatusContext = v5->_deliveryStatusContext;
     v5->_deliveryStatusContext = v69;
 
-    v71 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextIncomingMessageMetricsKey"];
+    v71 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextIncomingMessageMetricsKey"];
     incomingMessageMetrics = v5->_incomingMessageMetrics;
     v5->_incomingMessageMetrics = v71;
 
-    v73 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextSamplingUUIDKey"];
+    v73 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextSamplingUUIDKey"];
     samplingUUID = v5->_samplingUUID;
     v5->_samplingUUID = v73;
 
-    v75 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextQueueOneIdentifierKey"];
+    v75 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSMessageContextQueueOneIdentifierKey"];
     queueOneIdentifier = v5->_queueOneIdentifier;
     v5->_queueOneIdentifier = v75;
   }

@@ -1,78 +1,78 @@
 @interface _DKChangeSet
-+ (id)_createFromData:(id)a3 deviceIdentifier:(id)a4 sequenceNumber:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7;
-+ (id)dataFromCompressedChangeSet:(id)a3;
-+ (id)fromPBCodable:(id)a3;
++ (id)_createFromData:(id)data deviceIdentifier:(id)identifier sequenceNumber:(unint64_t)number startDate:(id)date endDate:(id)endDate;
++ (id)dataFromCompressedChangeSet:(id)set;
++ (id)fromPBCodable:(id)codable;
 - (NSString)description;
-- (_DKChangeSet)initWithEventsToAdd:(id)a3 eventIDsToDelete:(id)a4 deviceIdentifier:(id)a5 sequenceNumber:(unint64_t)a6;
-- (_DKChangeSet)initWithEventsToAdd:(id)a3 eventIDsToDelete:(id)a4 deviceIdentifier:(id)a5 sequenceNumber:(unint64_t)a6 startDate:(id)a7 endDate:(id)a8 type:(id)a9;
-- (_DKChangeSet)initWithManagedObject:(id)a3;
+- (_DKChangeSet)initWithEventsToAdd:(id)add eventIDsToDelete:(id)delete deviceIdentifier:(id)identifier sequenceNumber:(unint64_t)number;
+- (_DKChangeSet)initWithEventsToAdd:(id)add eventIDsToDelete:(id)delete deviceIdentifier:(id)identifier sequenceNumber:(unint64_t)number startDate:(id)date endDate:(id)endDate type:(id)type;
+- (_DKChangeSet)initWithManagedObject:(id)object;
 - (id)asData;
-- (id)insertInManagedObjectContext:(id)a3;
+- (id)insertInManagedObjectContext:(id)context;
 - (id)toPBCodable;
 @end
 
 @implementation _DKChangeSet
 
-- (_DKChangeSet)initWithEventsToAdd:(id)a3 eventIDsToDelete:(id)a4 deviceIdentifier:(id)a5 sequenceNumber:(unint64_t)a6
+- (_DKChangeSet)initWithEventsToAdd:(id)add eventIDsToDelete:(id)delete deviceIdentifier:(id)identifier sequenceNumber:(unint64_t)number
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v11 count];
+  identifierCopy = identifier;
+  deleteCopy = delete;
+  addCopy = add;
+  v13 = [deleteCopy count];
   v14 = @"deletion";
   if (!v13)
   {
     v14 = @"addition";
   }
 
-  v15 = [(_DKChangeSet *)self initWithEventsToAdd:v12 eventIDsToDelete:v11 deviceIdentifier:v10 sequenceNumber:a6 startDate:0 endDate:0 type:v14];
+  v15 = [(_DKChangeSet *)self initWithEventsToAdd:addCopy eventIDsToDelete:deleteCopy deviceIdentifier:identifierCopy sequenceNumber:number startDate:0 endDate:0 type:v14];
 
   return v15;
 }
 
-- (_DKChangeSet)initWithEventsToAdd:(id)a3 eventIDsToDelete:(id)a4 deviceIdentifier:(id)a5 sequenceNumber:(unint64_t)a6 startDate:(id)a7 endDate:(id)a8 type:(id)a9
+- (_DKChangeSet)initWithEventsToAdd:(id)add eventIDsToDelete:(id)delete deviceIdentifier:(id)identifier sequenceNumber:(unint64_t)number startDate:(id)date endDate:(id)endDate type:(id)type
 {
-  v24 = a3;
-  v23 = a4;
-  v22 = a5;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  addCopy = add;
+  deleteCopy = delete;
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
+  typeCopy = type;
   v25.receiver = self;
   v25.super_class = _DKChangeSet;
   v18 = [(_DKChangeSet *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_eventsToAdd, a3);
-    objc_storeStrong(&v19->_eventIDsToDelete, a4);
-    objc_storeStrong(&v19->_deviceIdentifier, a5);
-    v19->_sequenceNumber = a6;
-    objc_storeStrong(&v19->_startDate, a7);
-    objc_storeStrong(&v19->_endDate, a8);
-    objc_storeStrong(&v19->_type, a9);
+    objc_storeStrong(&v18->_eventsToAdd, add);
+    objc_storeStrong(&v19->_eventIDsToDelete, delete);
+    objc_storeStrong(&v19->_deviceIdentifier, identifier);
+    v19->_sequenceNumber = number;
+    objc_storeStrong(&v19->_startDate, date);
+    objc_storeStrong(&v19->_endDate, endDate);
+    objc_storeStrong(&v19->_type, type);
   }
 
   return v19;
 }
 
-+ (id)_createFromData:(id)a3 deviceIdentifier:(id)a4 sequenceNumber:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7
++ (id)_createFromData:(id)data deviceIdentifier:(id)identifier sequenceNumber:(unint64_t)number startDate:(id)date endDate:(id)endDate
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[_DKPRChangeSet alloc] initWithData:v14];
+  endDateCopy = endDate;
+  dateCopy = date;
+  identifierCopy = identifier;
+  dataCopy = data;
+  v15 = [[_DKPRChangeSet alloc] initWithData:dataCopy];
 
   v16 = [_DKChangeSet fromPBCodable:v15];
-  [v16 setDeviceIdentifier:v13];
+  [v16 setDeviceIdentifier:identifierCopy];
 
-  [v16 setSequenceNumber:a5];
-  [v16 setStartDate:v12];
+  [v16 setSequenceNumber:number];
+  [v16 setStartDate:dateCopy];
 
-  [v16 setEndDate:v11];
-  v17 = [v16 eventIDsToDelete];
-  if ([v17 count])
+  [v16 setEndDate:endDateCopy];
+  eventIDsToDelete = [v16 eventIDsToDelete];
+  if ([eventIDsToDelete count])
   {
     v18 = @"deletion";
   }
@@ -89,10 +89,10 @@
 
 - (id)asData
 {
-  v2 = [(_DKChangeSet *)self toPBCodable];
-  v3 = [v2 data];
+  toPBCodable = [(_DKChangeSet *)self toPBCodable];
+  data = [toPBCodable data];
 
-  return v3;
+  return data;
 }
 
 - (NSString)description
@@ -138,15 +138,15 @@ LABEL_7:
 - (id)toPBCodable
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(_DKChangeSet *)self eventsToAdd];
-  if ([v3 count])
+  eventsToAdd = [(_DKChangeSet *)self eventsToAdd];
+  if ([eventsToAdd count])
   {
   }
 
   else
   {
-    v4 = [(_DKChangeSet *)self eventIDsToDelete];
-    v5 = [v4 count];
+    eventIDsToDelete = [(_DKChangeSet *)self eventIDsToDelete];
+    v5 = [eventIDsToDelete count];
 
     if (!v5)
     {
@@ -155,22 +155,22 @@ LABEL_7:
     }
   }
 
-  v6 = [(_DKChangeSet *)self eventIDsToDelete];
-  v7 = [v6 count];
+  eventIDsToDelete2 = [(_DKChangeSet *)self eventIDsToDelete];
+  v7 = [eventIDsToDelete2 count];
 
   v8 = objc_alloc_init(_DKPRChangeSet);
   v9 = MEMORY[0x1E695DF70];
   if (v7)
   {
-    v10 = [(_DKChangeSet *)self eventIDsToDelete];
-    v11 = [v9 arrayWithCapacity:{objc_msgSend(v10, "count")}];
+    eventIDsToDelete3 = [(_DKChangeSet *)self eventIDsToDelete];
+    v11 = [v9 arrayWithCapacity:{objc_msgSend(eventIDsToDelete3, "count")}];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v12 = [(_DKChangeSet *)self eventIDsToDelete];
-    v13 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
+    eventIDsToDelete4 = [(_DKChangeSet *)self eventIDsToDelete];
+    v13 = [eventIDsToDelete4 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v13)
     {
       v14 = v13;
@@ -181,14 +181,14 @@ LABEL_7:
         {
           if (*v28 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(eventIDsToDelete4);
           }
 
-          v17 = [*(*(&v27 + 1) + 8 * i) UUIDString];
-          [v11 addObject:v17];
+          uUIDString = [*(*(&v27 + 1) + 8 * i) UUIDString];
+          [v11 addObject:uUIDString];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v14 = [eventIDsToDelete4 countByEnumeratingWithState:&v27 objects:v35 count:16];
       }
 
       while (v14);
@@ -199,15 +199,15 @@ LABEL_7:
 
   else
   {
-    v18 = [(_DKChangeSet *)self eventsToAdd];
-    v11 = [v9 arrayWithCapacity:{objc_msgSend(v18, "count")}];
+    eventsToAdd2 = [(_DKChangeSet *)self eventsToAdd];
+    v11 = [v9 arrayWithCapacity:{objc_msgSend(eventsToAdd2, "count")}];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v19 = [(_DKChangeSet *)self eventsToAdd];
-    v20 = [v19 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    eventsToAdd3 = [(_DKChangeSet *)self eventsToAdd];
+    v20 = [eventsToAdd3 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v20)
     {
       v21 = v20;
@@ -218,14 +218,14 @@ LABEL_7:
         {
           if (*v32 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(eventsToAdd3);
           }
 
-          v24 = [*(*(&v31 + 1) + 8 * j) toPBCodable];
-          [v11 addObject:v24];
+          toPBCodable = [*(*(&v31 + 1) + 8 * j) toPBCodable];
+          [v11 addObject:toPBCodable];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v21 = [eventsToAdd3 countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v21);
@@ -240,10 +240,10 @@ LABEL_22:
   return v8;
 }
 
-+ (id)fromPBCodable:(id)a3
++ (id)fromPBCodable:(id)codable
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  codableCopy = codable;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -251,25 +251,25 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  v4 = v3;
-  v5 = [(_DKPRChangeSet *)v4 events];
-  if ([v5 count])
+  v4 = codableCopy;
+  events = [(_DKPRChangeSet *)v4 events];
+  if ([events count])
   {
 
 LABEL_6:
-    v9 = [(_DKPRChangeSet *)v4 deleteEventIDs];
-    v10 = [v9 count];
+    deleteEventIDs = [(_DKPRChangeSet *)v4 deleteEventIDs];
+    v10 = [deleteEventIDs count];
 
     v11 = MEMORY[0x1E695DF70];
     if (v10)
     {
-      v12 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v13 = [(_DKPRChangeSet *)v4 deleteEventIDs];
-      v14 = [v13 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      deleteEventIDs2 = [(_DKPRChangeSet *)v4 deleteEventIDs];
+      v14 = [deleteEventIDs2 countByEnumeratingWithState:&v30 objects:v38 count:16];
       if (v14)
       {
         v15 = v14;
@@ -280,36 +280,36 @@ LABEL_6:
           {
             if (*v31 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(deleteEventIDs2);
             }
 
             v18 = *(*(&v30 + 1) + 8 * i);
             v19 = objc_alloc(MEMORY[0x1E696AFB0]);
             v20 = [v19 initWithUUIDString:{v18, v30}];
-            [v12 addObject:v20];
+            [array addObject:v20];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v30 objects:v38 count:16];
+          v15 = [deleteEventIDs2 countByEnumeratingWithState:&v30 objects:v38 count:16];
         }
 
         while (v15);
       }
 
       v6 = objc_opt_new();
-      [v6 setEventIDsToDelete:v12];
+      [v6 setEventIDsToDelete:array];
     }
 
     else
     {
-      v21 = [(_DKPRChangeSet *)v4 events];
-      v12 = [v11 arrayWithCapacity:{objc_msgSend(v21, "count")}];
+      events2 = [(_DKPRChangeSet *)v4 events];
+      array = [v11 arrayWithCapacity:{objc_msgSend(events2, "count")}];
 
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v22 = [(_DKPRChangeSet *)v4 events];
-      v23 = [v22 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      events3 = [(_DKPRChangeSet *)v4 events];
+      v23 = [events3 countByEnumeratingWithState:&v34 objects:v39 count:16];
       if (v23)
       {
         v24 = v23;
@@ -320,28 +320,28 @@ LABEL_6:
           {
             if (*v35 != v25)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(events3);
             }
 
             v27 = [_DKEvent fromPBCodable:*(*(&v34 + 1) + 8 * j)];
-            [v12 addObject:v27];
+            [array addObject:v27];
           }
 
-          v24 = [v22 countByEnumeratingWithState:&v34 objects:v39 count:16];
+          v24 = [events3 countByEnumeratingWithState:&v34 objects:v39 count:16];
         }
 
         while (v24);
       }
 
       v6 = objc_opt_new();
-      [v6 setEventsToAdd:v12];
+      [v6 setEventsToAdd:array];
     }
 
     goto LABEL_24;
   }
 
-  v7 = [(_DKPRChangeSet *)v4 deleteEventIDs];
-  v8 = [v7 count];
+  deleteEventIDs3 = [(_DKPRChangeSet *)v4 deleteEventIDs];
+  v8 = [deleteEventIDs3 count];
 
   if (v8)
   {
@@ -357,26 +357,26 @@ LABEL_25:
   return v6;
 }
 
-- (_DKChangeSet)initWithManagedObject:(id)a3
+- (_DKChangeSet)initWithManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v6 = [v4 deviceIdentifier];
-  v7 = [v5 initWithUUIDString:v6];
+  deviceIdentifier = [objectCopy deviceIdentifier];
+  v7 = [v5 initWithUUIDString:deviceIdentifier];
 
-  v8 = [v4 version];
-  v9 = [v8 isEqualToNumber:&unk_1F05EEE80];
+  version = [objectCopy version];
+  v9 = [version isEqualToNumber:&unk_1F05EEE80];
 
   if ((v9 & 1) == 0)
   {
-    v12 = [v4 version];
-    v13 = [v12 isEqualToNumber:&unk_1F05EEE98];
+    version2 = [objectCopy version];
+    v13 = [version2 isEqualToNumber:&unk_1F05EEE98];
 
     if (v13)
     {
       v14 = objc_opt_class();
-      v15 = [v4 changeSet];
-      v11 = [v14 dataFromCompressedChangeSet:v15];
+      changeSet = [objectCopy changeSet];
+      v11 = [v14 dataFromCompressedChangeSet:changeSet];
 
       if (v11)
       {
@@ -395,7 +395,7 @@ LABEL_25:
       v11 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(_DKChangeSet(CoreData) *)v4 initWithManagedObject:v11];
+        [(_DKChangeSet(CoreData) *)objectCopy initWithManagedObject:v11];
       }
     }
 
@@ -403,17 +403,17 @@ LABEL_25:
     goto LABEL_13;
   }
 
-  v10 = [v4 changeSet];
-  if (v10)
+  changeSet2 = [objectCopy changeSet];
+  if (changeSet2)
   {
-    v11 = v10;
+    v11 = changeSet2;
 LABEL_6:
     v16 = objc_opt_class();
-    v17 = [v4 sequenceNumber];
-    v18 = [v17 unsignedIntegerValue];
-    v19 = [v4 startDate];
-    v20 = [v4 endDate];
-    v21 = [v16 createFromData:v11 deviceIdentifier:v7 sequenceNumber:v18 startDate:v19 endDate:v20];
+    sequenceNumber = [objectCopy sequenceNumber];
+    unsignedIntegerValue = [sequenceNumber unsignedIntegerValue];
+    startDate = [objectCopy startDate];
+    endDate = [objectCopy endDate];
+    v21 = [v16 createFromData:v11 deviceIdentifier:v7 sequenceNumber:unsignedIntegerValue startDate:startDate endDate:endDate];
 
 LABEL_13:
     goto LABEL_14;
@@ -425,34 +425,34 @@ LABEL_14:
   return v21;
 }
 
-+ (id)dataFromCompressedChangeSet:(id)a3
++ (id)dataFromCompressedChangeSet:(id)set
 {
-  v3 = a3;
-  v4 = [[_DKPRCompressedChangeSet alloc] initWithData:v3];
+  setCopy = set;
+  v4 = [[_DKPRCompressedChangeSet alloc] initWithData:setCopy];
 
   if (![(_DKPRCompressedChangeSet *)v4 uncompressedLength])
   {
     goto LABEL_6;
   }
 
-  v5 = [(_DKPRCompressedChangeSet *)v4 compressedData];
-  if (!v5)
+  compressedData = [(_DKPRCompressedChangeSet *)v4 compressedData];
+  if (!compressedData)
   {
     goto LABEL_6;
   }
 
-  v6 = v5;
-  v7 = [(_DKPRCompressedChangeSet *)v4 compressedData];
-  v8 = [v7 length];
+  v6 = compressedData;
+  compressedData2 = [(_DKPRCompressedChangeSet *)v4 compressedData];
+  v8 = [compressedData2 length];
 
   if (v8)
   {
-    v9 = [(_DKPRCompressedChangeSet *)v4 uncompressedLength];
-    v10 = malloc_type_malloc(v9 + 32, 0xE2DBC20EuLL);
-    v11 = [(_DKPRCompressedChangeSet *)v4 compressedData];
-    v12 = [v11 bytes];
-    v13 = [(_DKPRCompressedChangeSet *)v4 compressedData];
-    v14 = compression_decode_buffer(v10, v9 + 32, v12, [v13 length], 0, COMPRESSION_LZFSE);
+    uncompressedLength = [(_DKPRCompressedChangeSet *)v4 uncompressedLength];
+    v10 = malloc_type_malloc(uncompressedLength + 32, 0xE2DBC20EuLL);
+    compressedData3 = [(_DKPRCompressedChangeSet *)v4 compressedData];
+    bytes = [compressedData3 bytes];
+    compressedData4 = [(_DKPRCompressedChangeSet *)v4 compressedData];
+    v14 = compression_decode_buffer(v10, uncompressedLength + 32, bytes, [compressedData4 length], 0, COMPRESSION_LZFSE);
 
     if (v14 == [(_DKPRCompressedChangeSet *)v4 uncompressedLength])
     {
@@ -485,63 +485,63 @@ LABEL_10:
   return v15;
 }
 
-- (id)insertInManagedObjectContext:(id)a3
+- (id)insertInManagedObjectContext:(id)context
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_DKChangeSet *)self asData];
-  if (!v5)
+  contextCopy = context;
+  asData = [(_DKChangeSet *)self asData];
+  if (!asData)
   {
     goto LABEL_14;
   }
 
-  v6 = [(_DKChangeSet *)self eventsToAdd];
-  if ([v6 count] && objc_msgSend(v5, "length") >= 0x401)
+  eventsToAdd = [(_DKChangeSet *)self eventsToAdd];
+  if ([eventsToAdd count] && objc_msgSend(asData, "length") >= 0x401)
   {
   }
 
   else
   {
-    v7 = [(_DKChangeSet *)self eventIDsToDelete];
-    if (![v7 count])
+    eventIDsToDelete = [(_DKChangeSet *)self eventIDsToDelete];
+    if (![eventIDsToDelete count])
     {
 
       goto LABEL_14;
     }
 
-    v8 = [v5 length];
+    v8 = [asData length];
 
     if (v8 < 0x801)
     {
 LABEL_14:
-      v15 = 0;
+      data = 0;
       goto LABEL_15;
     }
   }
 
-  v9 = [v5 length];
+  v9 = [asData length];
   v10 = malloc_type_malloc(v9, 0xC1F1255CuLL);
-  v11 = compression_encode_buffer(v10, v9, [v5 bytes], objc_msgSend(v5, "length"), 0, COMPRESSION_LZFSE);
-  if (!v11 || (v12 = v11, v11 >= [v5 length]))
+  v11 = compression_encode_buffer(v10, v9, [asData bytes], objc_msgSend(asData, "length"), 0, COMPRESSION_LZFSE);
+  if (!v11 || (v12 = v11, v11 >= [asData length]))
   {
     free(v10);
     goto LABEL_14;
   }
 
   v13 = objc_alloc_init(_DKPRCompressedChangeSet);
-  -[_DKPRCompressedChangeSet setUncompressedLength:](v13, [v5 length]);
+  -[_DKPRCompressedChangeSet setUncompressedLength:](v13, [asData length]);
   v14 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v10 length:v12 freeWhenDone:1];
   [(_DKPRCompressedChangeSet *)v13 setCompressedData:v14];
 
-  v15 = [(_DKPRCompressedChangeSet *)v13 data];
+  data = [(_DKPRCompressedChangeSet *)v13 data];
 
-  if (v15)
+  if (data)
   {
     v16 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      v30 = [(_DKChangeSet *)self eventIDsToDelete];
-      if ([v30 count])
+      eventIDsToDelete2 = [(_DKChangeSet *)self eventIDsToDelete];
+      if ([eventIDsToDelete2 count])
       {
         v31 = @"Deletion";
       }
@@ -551,8 +551,8 @@ LABEL_14:
         v31 = @"Addition";
       }
 
-      v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v15, "length")}];
-      v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "length")}];
+      v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(data, "length")}];
+      v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(asData, "length")}];
       v34 = 138412802;
       v35 = v31;
       v36 = 2112;
@@ -564,8 +564,8 @@ LABEL_14:
   }
 
 LABEL_15:
-  v17 = [(_DKChangeSet *)self eventIDsToDelete];
-  if ([v17 count])
+  eventIDsToDelete3 = [(_DKChangeSet *)self eventIDsToDelete];
+  if ([eventIDsToDelete3 count])
   {
     +[_DKChangeSet deletionChangeSetEntityName];
   }
@@ -576,19 +576,19 @@ LABEL_15:
   }
   v18 = ;
 
-  v19 = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:v18 inManagedObjectContext:v4];
+  v19 = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:v18 inManagedObjectContext:contextCopy];
   v20 = v19;
-  if (v15)
+  if (data)
   {
-    v21 = v15;
+    v21 = data;
   }
 
   else
   {
-    v21 = v5;
+    v21 = asData;
   }
 
-  if (v15)
+  if (data)
   {
     v22 = &unk_1F05EEE98;
   }
@@ -599,21 +599,21 @@ LABEL_15:
   }
 
   [v19 setChangeSet:v21];
-  v23 = [(_DKChangeSet *)self deviceIdentifier];
-  v24 = [v23 UUIDString];
-  [v20 setDeviceIdentifier:v24];
+  deviceIdentifier = [(_DKChangeSet *)self deviceIdentifier];
+  uUIDString = [deviceIdentifier UUIDString];
+  [v20 setDeviceIdentifier:uUIDString];
 
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[_DKChangeSet sequenceNumber](self, "sequenceNumber")}];
   [v20 setSequenceNumber:v25];
 
-  v26 = [(_DKChangeSet *)self startDate];
-  [v20 setStartDate:v26];
+  startDate = [(_DKChangeSet *)self startDate];
+  [v20 setStartDate:startDate];
 
-  v27 = [(_DKChangeSet *)self endDate];
-  [v20 setEndDate:v27];
+  endDate = [(_DKChangeSet *)self endDate];
+  [v20 setEndDate:endDate];
 
   [v20 setVersion:v22];
-  [v4 insertObject:v20];
+  [contextCopy insertObject:v20];
 
   v28 = *MEMORY[0x1E69E9840];
 

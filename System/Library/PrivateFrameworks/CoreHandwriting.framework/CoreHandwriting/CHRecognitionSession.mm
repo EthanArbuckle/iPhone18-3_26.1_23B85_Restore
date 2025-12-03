@@ -1,84 +1,84 @@
 @interface CHRecognitionSession
 + (double)autoRefineTriggerFactor;
-+ (id)alignReflowableTokens:(id)a3 resultTokens:(id)a4 strokeIdentifiers:(id)a5 outStrokeIdentifiers:(id *)a6;
-+ (id)createMathRecognizerRunningRemote:(BOOL)a3 priority:(int64_t)a4;
-+ (id)createRecognizerForLocale:(id)a3 sessionMode:(int64_t)a4 remote:(BOOL)a5 priority:(int64_t)a6;
-+ (id)createRecognizerForLocales:(id)a3 sessionMode:(int64_t)a4 remote:(BOOL)a5 priority:(int64_t)a6;
-+ (id)effectiveLocalesFromLocales:(id)a3;
-+ (id)strokeIdentifiersInFullContextForStrokeIdentifiers:(id)a3 sortedStrokeGroups:(id)a4 clusteredStrokeGroups:(id)a5 unusedStrokeIdentifiers:(id *)a6;
-+ (id)strokeIdentifiersInProximalGroupsForStrokeIdentifiers:(id)a3 sortedStrokeGroups:(id)a4 clusteredStrokeGroups:(id)a5 unusedStrokeIdentifiers:(id *)a6;
-+ (void)updateStyleInventoryWithRemovedStrokeIdentifiers:(id)a3;
++ (id)alignReflowableTokens:(id)tokens resultTokens:(id)resultTokens strokeIdentifiers:(id)identifiers outStrokeIdentifiers:(id *)strokeIdentifiers;
++ (id)createMathRecognizerRunningRemote:(BOOL)remote priority:(int64_t)priority;
++ (id)createRecognizerForLocale:(id)locale sessionMode:(int64_t)mode remote:(BOOL)remote priority:(int64_t)priority;
++ (id)createRecognizerForLocales:(id)locales sessionMode:(int64_t)mode remote:(BOOL)remote priority:(int64_t)priority;
++ (id)effectiveLocalesFromLocales:(id)locales;
++ (id)strokeIdentifiersInFullContextForStrokeIdentifiers:(id)identifiers sortedStrokeGroups:(id)groups clusteredStrokeGroups:(id)strokeGroups unusedStrokeIdentifiers:(id *)strokeIdentifiers;
++ (id)strokeIdentifiersInProximalGroupsForStrokeIdentifiers:(id)identifiers sortedStrokeGroups:(id)groups clusteredStrokeGroups:(id)strokeGroups unusedStrokeIdentifiers:(id *)strokeIdentifiers;
++ (void)updateStyleInventoryWithRemovedStrokeIdentifiers:(id)identifiers;
 - (BOOL)q_needsForegroundRecognition;
 - (BOOL)q_wantsAutoRefine;
 - (CHCalculateDocumentProvider)latestCalculateDocumentProvider;
 - (CHCanvasAttachmentProvider)latestCanvasAttachmentProvider;
-- (CHRecognitionSession)initWithCoder:(id)a3;
-- (CHRecognitionSession)initWithMode:(int64_t)a3;
-- (CHRecognitionSession)initWithMode:(int64_t)a3 recognitionSessionResult:(id)a4 dataSource:(id)a5;
-- (CHRecognitionSession)initWithMode:(int64_t)a3 withVersion:(id)a4;
+- (CHRecognitionSession)initWithCoder:(id)coder;
+- (CHRecognitionSession)initWithMode:(int64_t)mode;
+- (CHRecognitionSession)initWithMode:(int64_t)mode recognitionSessionResult:(id)result dataSource:(id)source;
+- (CHRecognitionSession)initWithMode:(int64_t)mode withVersion:(id)version;
 - (CHRecognitionSessionResult)lastRecognitionResult;
 - (CHStrokeProvider)latestStrokeProvider;
 - (CHTextInputQuery)activeTextInputQuery;
 - (NSData)sessionData;
-- (id)contextLookupResultsAtLocation:(CGPoint)a3 completion:(id)a4 shouldCancel:(id)a5;
-- (id)contextLookupResultsWithSelectedStrokes:(id)a3 completion:(id)a4 shouldCancel:(id)a5;
-- (id)contextLookupResultsWithSelectionPath:(CGPath *)a3 completion:(id)a4 shouldCancel:(id)a5;
-- (id)contextualTextResultsForContextStrokes:(id)a3 completion:(id)a4 shouldCancel:(id)a5;
+- (id)contextLookupResultsAtLocation:(CGPoint)location completion:(id)completion shouldCancel:(id)cancel;
+- (id)contextLookupResultsWithSelectedStrokes:(id)strokes completion:(id)completion shouldCancel:(id)cancel;
+- (id)contextLookupResultsWithSelectionPath:(CGPath *)path completion:(id)completion shouldCancel:(id)cancel;
+- (id)contextualTextResultsForContextStrokes:(id)strokes completion:(id)completion shouldCancel:(id)cancel;
 - (id)documentLayoutAnalyzer;
-- (id)evaluationResultForStrokeGroupIdentifier:(int64_t)a3;
+- (id)evaluationResultForStrokeGroupIdentifier:(int64_t)identifier;
 - (id)indexableContent;
 - (id)lastRecognitionResultWaitingForPendingTasks;
 - (id)lineWrapper;
 - (id)mathRecognizer;
-- (id)mathTranscriptionWithEvaluationResultForStrokeGroup:(id)a3 outStrokeIdentifiers:(id *)a4 outStrokes:(id *)a5;
-- (id)recognitionOptionForKey:(id)a3;
-- (id)recognizableDrawingForStrokeGroupQueryItem:(id)a3;
-- (id)recognizerForLocale:(id)a3;
-- (id)refinedTokensForContextStrokes:(id)a3 styleControlParameter:(id)a4 completion:(id)a5 shouldCancel:(id)a6;
-- (id)refinedTokensForSingleLineContextStrokes:(id)a3 styleControlParameter:(id)a4 transcription:(id)a5 completion:(id)a6 shouldCancel:(id)a7;
-- (id)refinementOfContextStrokes:(id)a3 styleControlParameter:(id)a4 completion:(id)a5 shouldCancel:(id)a6;
-- (id)reflowableTextLinesForContextStrokes:(id)a3 point:(CGPoint)a4 completion:(id)a5 shouldCancel:(id)a6;
+- (id)mathTranscriptionWithEvaluationResultForStrokeGroup:(id)group outStrokeIdentifiers:(id *)identifiers outStrokes:(id *)strokes;
+- (id)recognitionOptionForKey:(id)key;
+- (id)recognizableDrawingForStrokeGroupQueryItem:(id)item;
+- (id)recognizerForLocale:(id)locale;
+- (id)refinedTokensForContextStrokes:(id)strokes styleControlParameter:(id)parameter completion:(id)completion shouldCancel:(id)cancel;
+- (id)refinedTokensForSingleLineContextStrokes:(id)strokes styleControlParameter:(id)parameter transcription:(id)transcription completion:(id)completion shouldCancel:(id)cancel;
+- (id)refinementOfContextStrokes:(id)strokes styleControlParameter:(id)parameter completion:(id)completion shouldCancel:(id)cancel;
+- (id)reflowableTextLinesForContextStrokes:(id)strokes point:(CGPoint)point completion:(id)completion shouldCancel:(id)cancel;
 - (id)remoteTextSynthesizer;
-- (id)strokePointTransformationsForContextStrokes:(id)a3 parameters:(id)a4 completionWithTelemetry:(id)a5 shouldCancel:(id)a6;
-- (id)structuredContextualTextResultsWithTextResults:(id)a3;
-- (id)styleSampleOptionsForPoint:(CGPoint)a3 shouldCancel:(id)a4;
-- (id)synthesizeTokensForString:(id)a3 point:(CGPoint)a4 synthesisOptions:(id)a5 completion:(id)a6 shouldCancel:(id)a7;
-- (id)synthesizeTokensForString:(id)a3 replacingStrokes:(id)a4 completion:(id)a5 shouldCancel:(id)a6;
-- (id)textCorrectionRecognizerForLocales:(id)a3;
+- (id)strokePointTransformationsForContextStrokes:(id)strokes parameters:(id)parameters completionWithTelemetry:(id)telemetry shouldCancel:(id)cancel;
+- (id)structuredContextualTextResultsWithTextResults:(id)results;
+- (id)styleSampleOptionsForPoint:(CGPoint)point shouldCancel:(id)cancel;
+- (id)synthesizeTokensForString:(id)string point:(CGPoint)point synthesisOptions:(id)options completion:(id)completion shouldCancel:(id)cancel;
+- (id)synthesizeTokensForString:(id)string replacingStrokes:(id)strokes completion:(id)completion shouldCancel:(id)cancel;
+- (id)textCorrectionRecognizerForLocales:(id)locales;
 - (id)textSynthesizer;
 - (id)textSynthesizerWithLocaleFallback;
-- (id)tokenStrokeIdentifiersForContextStrokes:(id)a3 point:(CGPoint)a4 tokenizationLevel:(int64_t)a5 completion:(id)a6 shouldCancel:(id)a7;
-- (id)tokenStrokeIdentifiersWithCoveringStroke:(id)a3 completion:(id)a4 shouldCancel:(id)a5;
+- (id)tokenStrokeIdentifiersForContextStrokes:(id)strokes point:(CGPoint)point tokenizationLevel:(int64_t)level completion:(id)completion shouldCancel:(id)cancel;
+- (id)tokenStrokeIdentifiersWithCoveringStroke:(id)stroke completion:(id)completion shouldCancel:(id)cancel;
 - (int64_t)status;
-- (void)_setLastRecognitionResult:(id)a3;
-- (void)_setLatestCalculateDocumentProvider:(id)a3;
-- (void)_setLatestCanvasAttachmentProvider:(id)a3;
-- (void)_setLatestStrokeProvider:(id)a3;
-- (void)_setSessionVersion:(id)a3;
-- (void)_setStatus:(int64_t)a3;
+- (void)_setLastRecognitionResult:(id)result;
+- (void)_setLatestCalculateDocumentProvider:(id)provider;
+- (void)_setLatestCanvasAttachmentProvider:(id)provider;
+- (void)_setLatestStrokeProvider:(id)provider;
+- (void)_setSessionVersion:(id)version;
+- (void)_setStatus:(int64_t)status;
 - (void)cancelOngoingRequests;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)rebuildRecognitionResults;
-- (void)registerChangeObserver:(id)a3;
-- (void)registerInputDrawingClient:(id)a3;
+- (void)registerChangeObserver:(id)observer;
+- (void)registerInputDrawingClient:(id)client;
 - (void)setActive;
-- (void)setDataSource:(id)a3;
-- (void)setForceLocaleNumberFormat:(BOOL)a3;
+- (void)setDataSource:(id)source;
+- (void)setForceLocaleNumberFormat:(BOOL)format;
 - (void)setIdle;
-- (void)setNeedsRecognitionUpdateImmediately:(BOOL)a3;
-- (void)setPreferredLocales:(id)a3;
-- (void)setSkipMathOperatorsInference:(BOOL)a3;
-- (void)setSkipMathTransliterations:(BOOL)a3;
-- (void)setSkipPopulatingStyleInventory:(BOOL)a3;
-- (void)unregisterChangeObserver:(id)a3;
-- (void)unregisterInputDrawingClient:(id)a3;
+- (void)setNeedsRecognitionUpdateImmediately:(BOOL)immediately;
+- (void)setPreferredLocales:(id)locales;
+- (void)setSkipMathOperatorsInference:(BOOL)inference;
+- (void)setSkipMathTransliterations:(BOOL)transliterations;
+- (void)setSkipPopulatingStyleInventory:(BOOL)inventory;
+- (void)unregisterChangeObserver:(id)observer;
+- (void)unregisterInputDrawingClient:(id)client;
 - (void)waitForPendingRecognitionTasks;
 @end
 
 @implementation CHRecognitionSession
 
-- (CHRecognitionSession)initWithMode:(int64_t)a3
+- (CHRecognitionSession)initWithMode:(int64_t)mode
 {
   v94.receiver = self;
   v94.super_class = CHRecognitionSession;
@@ -105,13 +105,13 @@
     v19 = *(v4 + 36);
     *(v4 + 36) = v18;
 
-    if (!a3)
+    if (!mode)
     {
       *(v4 + 23) = 1;
     }
 
     *(v4 + 2) = 1;
-    *(v4 + 20) = a3;
+    *(v4 + 20) = mode;
     v20 = [CHRecognitionSessionVersion alloc];
     v24 = objc_msgSend_initWithSessionVersion_sessionResultVersion_(v20, v21, 1, 5, v22, v23);
     v25 = *(v4 + 14);
@@ -263,7 +263,7 @@ LABEL_44:
 LABEL_48:
 
 LABEL_49:
-                                      if (a3 == 1)
+                                      if (mode == 1)
                                       {
                                         *(v4 + 38) = 25;
                                         v47 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -295,7 +295,7 @@ LABEL_49:
 
                                       else
                                       {
-                                        if (a3)
+                                        if (mode)
                                         {
 LABEL_58:
                                           *(v4 + 145) = 0;
@@ -498,15 +498,15 @@ LABEL_12:
   return v4;
 }
 
-- (CHRecognitionSession)initWithMode:(int64_t)a3 recognitionSessionResult:(id)a4 dataSource:(id)a5
+- (CHRecognitionSession)initWithMode:(int64_t)mode recognitionSessionResult:(id)result dataSource:(id)source
 {
-  v7 = a5;
-  v12 = objc_msgSend_initWithMode_(self, v8, a3, v9, v10, v11);
+  sourceCopy = source;
+  v12 = objc_msgSend_initWithMode_(self, v8, mode, v9, v10, v11);
   v17 = v12;
   if (v12)
   {
-    objc_msgSend_setDataSource_(v12, v13, v7, v14, v15, v16);
-    v23 = objc_msgSend_strokeProviderSnapshot(v7, v18, v19, v20, v21, v22);
+    objc_msgSend_setDataSource_(v12, v13, sourceCopy, v14, v15, v16);
+    v23 = objc_msgSend_strokeProviderSnapshot(sourceCopy, v18, v19, v20, v21, v22);
     objc_msgSend__setLatestStrokeProvider_(v17, v24, v23, v25, v26, v27);
     if (objc_msgSend_mode(v17, v28, v29, v30, v31, v32))
     {
@@ -519,7 +519,7 @@ LABEL_19:
 
       if (objc_opt_respondsToSelector())
       {
-        v43 = objc_msgSend_calculateDocumentProviderSnapshot(v7, v38, v39, v40, v41, v42);
+        v43 = objc_msgSend_calculateDocumentProviderSnapshot(sourceCopy, v38, v39, v40, v41, v42);
         objc_msgSend__setLatestCalculateDocumentProvider_(v17, v44, v43, v45, v46, v47);
       }
 
@@ -534,7 +534,7 @@ LABEL_19:
     {
       if (objc_opt_respondsToSelector())
       {
-        v43 = objc_msgSend_calculateDocumentProviderSnapshot(v7, v48, v49, v50, v51, v52);
+        v43 = objc_msgSend_calculateDocumentProviderSnapshot(sourceCopy, v48, v49, v50, v51, v52);
       }
 
       else
@@ -544,7 +544,7 @@ LABEL_19:
 
       if (objc_opt_respondsToSelector())
       {
-        v58 = objc_msgSend_canvasAttachmentProviderSnapshot(v7, v53, v54, v55, v56, v57);
+        v58 = objc_msgSend_canvasAttachmentProviderSnapshot(sourceCopy, v53, v54, v55, v56, v57);
       }
 
       else
@@ -625,22 +625,22 @@ LABEL_20:
   objc_msgSend_setActive(self->_stateTracker, v4, v5, v6, v7, v8);
 }
 
-- (void)_setSessionVersion:(id)a3
+- (void)_setSessionVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   sessionVersion = self->_sessionVersion;
   p_sessionVersion = &self->_sessionVersion;
-  if (sessionVersion != v5)
+  if (sessionVersion != versionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_sessionVersion, a3);
-    v5 = v8;
+    v8 = versionCopy;
+    objc_storeStrong(p_sessionVersion, version);
+    versionCopy = v8;
   }
 }
 
-- (void)setPreferredLocales:(id)a3
+- (void)setPreferredLocales:(id)locales
 {
-  v4 = a3;
+  localesCopy = locales;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -649,9 +649,9 @@ LABEL_20:
   v11[1] = 3221225472;
   v11[2] = sub_18391E158;
   v11[3] = &unk_1E6DDC840;
-  v5 = v4;
+  v5 = localesCopy;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   sub_18391D028(self, v11);
   if (*(v16 + 24) == 1)
@@ -662,9 +662,9 @@ LABEL_20:
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -673,9 +673,9 @@ LABEL_20:
   v10[1] = 3221225472;
   v10[2] = sub_18391E844;
   v10[3] = &unk_1E6DDC840;
-  v5 = v4;
+  v5 = sourceCopy;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
   sub_18391D028(self, v10);
   if (*(v15 + 24) == 1)
@@ -707,12 +707,12 @@ LABEL_20:
   return v2;
 }
 
-- (void)_setLastRecognitionResult:(id)a3
+- (void)_setLastRecognitionResult:(id)result
 {
-  v5 = a3;
-  if (self->_lastRecognitionResult != v5)
+  resultCopy = result;
+  if (self->_lastRecognitionResult != resultCopy)
   {
-    objc_storeStrong(&self->_lastRecognitionResult, a3);
+    objc_storeStrong(&self->_lastRecognitionResult, result);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_18391EAA0;
@@ -743,16 +743,16 @@ LABEL_20:
   return v2;
 }
 
-- (void)_setLatestStrokeProvider:(id)a3
+- (void)_setLatestStrokeProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   latestStrokeProvider = self->_latestStrokeProvider;
   p_latestStrokeProvider = &self->_latestStrokeProvider;
-  if (latestStrokeProvider != v5)
+  if (latestStrokeProvider != providerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_latestStrokeProvider, a3);
-    v5 = v8;
+    v8 = providerCopy;
+    objc_storeStrong(p_latestStrokeProvider, provider);
+    providerCopy = v8;
   }
 }
 
@@ -777,14 +777,14 @@ LABEL_20:
   return v2;
 }
 
-- (void)_setLatestCalculateDocumentProvider:(id)a3
+- (void)_setLatestCalculateDocumentProvider:(id)provider
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  providerCopy = provider;
   p_latestCalculateDocumentProvider = &self->_latestCalculateDocumentProvider;
-  if (self->_latestCalculateDocumentProvider != v5)
+  if (self->_latestCalculateDocumentProvider != providerCopy)
   {
-    objc_storeStrong(&self->_latestCalculateDocumentProvider, a3);
+    objc_storeStrong(&self->_latestCalculateDocumentProvider, provider);
     if (objc_opt_respondsToSelector())
     {
       v12 = objc_msgSend_expressionEvaluationResults(*p_latestCalculateDocumentProvider, v7, v8, v9, v10, v11);
@@ -808,7 +808,7 @@ LABEL_20:
       v31 = objc_msgSend_count(v25, v26, v27, v28, v29, v30);
       v37 = objc_msgSend_recognizedExpressions(*p_latestCalculateDocumentProvider, v32, v33, v34, v35, v36);
       v43 = 134218752;
-      v44 = self;
+      selfCopy = self;
       v45 = 2048;
       v46 = v31;
       v47 = 2048;
@@ -841,13 +841,13 @@ LABEL_20:
   return v2;
 }
 
-- (void)_setLatestCanvasAttachmentProvider:(id)a3
+- (void)_setLatestCanvasAttachmentProvider:(id)provider
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_latestCanvasAttachmentProvider != v5)
+  providerCopy = provider;
+  if (self->_latestCanvasAttachmentProvider != providerCopy)
   {
-    objc_storeStrong(&self->_latestCanvasAttachmentProvider, a3);
+    objc_storeStrong(&self->_latestCanvasAttachmentProvider, provider);
     if (qword_1EA84DC48 != -1)
     {
       dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -858,7 +858,7 @@ LABEL_20:
     {
       v12 = objc_msgSend_attachments(self->_latestCanvasAttachmentProvider, v7, v8, v9, v10, v11);
       v18 = 134218240;
-      v19 = self;
+      selfCopy = self;
       v20 = 2048;
       v21 = objc_msgSend_count(v12, v13, v14, v15, v16, v17);
       _os_log_impl(&dword_18366B000, v6, OS_LOG_TYPE_DEFAULT, "RecognitionSession %p received updated canvas attachment provider with %lu attachments.", &v18, 0x16u);
@@ -891,10 +891,10 @@ LABEL_20:
   return v2;
 }
 
-- (void)_setStatus:(int64_t)a3
+- (void)_setStatus:(int64_t)status
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_status != a3)
+  if (self->_status != status)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -906,15 +906,15 @@ LABEL_20:
     {
       status = self->_status;
       *buf = 134218496;
-      v9 = status;
+      statusCopy = status;
       v10 = 2048;
-      v11 = a3;
+      statusCopy2 = status;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_18366B000, v5, OS_LOG_TYPE_DEBUG, "RecognitionTask: Session status transitioning from %ld to %ld for session %p", buf, 0x20u);
     }
 
-    self->_status = a3;
+    self->_status = status;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = sub_18391F4F0;
@@ -974,7 +974,7 @@ LABEL_20:
   {
 LABEL_7:
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18366B000, v5, OS_LOG_TYPE_DEFAULT, "Ending cancelOngoingRequests for session %p", buf, 0xCu);
   }
 
@@ -1057,13 +1057,13 @@ LABEL_10:
   return v2;
 }
 
-+ (void)updateStyleInventoryWithRemovedStrokeIdentifiers:(id)a3
++ (void)updateStyleInventoryWithRemovedStrokeIdentifiers:(id)identifiers
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(CHRemoteTextSynthesizer);
   v6 = MEMORY[0x1E695DFA8];
-  v12 = objc_msgSend_count(v4, v7, v8, v9, v10, v11);
+  v12 = objc_msgSend_count(identifiersCopy, v7, v8, v9, v10, v11);
   v17 = objc_msgSend_setWithCapacity_(v6, v13, v12, v14, v15, v16);
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
@@ -1071,7 +1071,7 @@ LABEL_10:
   v36[3] = &unk_1E6DDF070;
   v18 = v17;
   v37 = v18;
-  objc_msgSend_enumerateObjectsUsingBlock_(v4, v19, v36, v20, v21, v22);
+  objc_msgSend_enumerateObjectsUsingBlock_(identifiersCopy, v19, v36, v20, v21, v22);
   v35 = 0;
   updated = objc_msgSend_updateStyleInventoryWithRemovedStrokeIdentifiers_error_(v5, v23, v18, &v35, v24, v25);
   v27 = v35;
@@ -1087,9 +1087,9 @@ LABEL_10:
     {
       v34 = objc_msgSend_localizedDescription(v27, v29, v30, v31, v32, v33);
       *buf = 134218498;
-      v39 = a1;
+      selfCopy = self;
       v40 = 2112;
-      v41 = v4;
+      v41 = identifiersCopy;
       v42 = 2112;
       v43 = v34;
       _os_log_impl(&dword_18366B000, v28, OS_LOG_TYPE_ERROR, "RecognitionSession %p couldn't remove strokes from the inventory with identifiers: %@. Error: %@", buf, 0x20u);
@@ -1097,10 +1097,10 @@ LABEL_10:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v139 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -1136,20 +1136,20 @@ LABEL_10:
   }
 
   v15 = objc_msgSend_mode(self, v10, v11, v12, v13, v14);
-  objc_msgSend_encodeInteger_forKey_(v4, v16, v15, @"mode", v17, v18);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v16, v15, @"mode", v17, v18);
   v24 = objc_msgSend_sessionVersion(self, v19, v20, v21, v22, v23);
-  objc_msgSend_encodeObject_forKey_(v4, v25, v24, @"version", v26, v27);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v25, v24, @"version", v26, v27);
 
   v33 = objc_msgSend_lastRecognitionResult(self, v28, v29, v30, v31, v32);
-  objc_msgSend_encodeObject_forKey_(v4, v34, v33, @"lastRecognitionResult", v35, v36);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v34, v33, @"lastRecognitionResult", v35, v36);
 
   v42 = objc_msgSend_preferredLocales(self, v37, v38, v39, v40, v41);
-  objc_msgSend_encodeObject_forKey_(v4, v43, v42, @"preferredLocales", v44, v45);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v43, v42, @"preferredLocales", v44, v45);
 
   v51 = objc_msgSend_recognitionEnvironment(self, v46, v47, v48, v49, v50);
-  objc_msgSend_encodeInteger_forKey_(v4, v52, v51, @"recognitionEnvironment", v53, v54);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v52, v51, @"recognitionEnvironment", v53, v54);
   v60 = objc_msgSend_priority(self, v55, v56, v57, v58, v59);
-  objc_msgSend_encodeInteger_forKey_(v4, v61, v60, @"priority", v62, v63);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v61, v60, @"priority", v62, v63);
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -1170,7 +1170,7 @@ LABEL_10:
     v114 = objc_msgSend_strokeGroups(v108, v109, v110, v111, v112, v113);
     v120 = objc_msgSend_count(v114, v115, v116, v117, v118, v119);
     *buf = 134219266;
-    v128 = self;
+    selfCopy = self;
     v129 = 2112;
     v130 = v125;
     v131 = 2048;
@@ -1226,12 +1226,12 @@ LABEL_20:
   }
 }
 
-- (CHRecognitionSession)initWithCoder:(id)a3
+- (CHRecognitionSession)initWithCoder:(id)coder
 {
   v130[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"version", v7, v8);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"version", v7, v8);
   if (objc_msgSend_isValidSessionVersion(v9, v10, v11, v12, v13, v14))
   {
     if (qword_1EA84DC48 != -1)
@@ -1269,16 +1269,16 @@ LABEL_20:
       _os_log_impl(&dword_18366B000, v20, OS_LOG_TYPE_DEFAULT, "BEGIN CHRecognitionSessionInitWithCoder", buf, 2u);
     }
 
-    v25 = objc_msgSend_decodeIntegerForKey_(v4, v21, @"mode", v22, v23, v24);
+    v25 = objc_msgSend_decodeIntegerForKey_(coderCopy, v21, @"mode", v22, v23, v24);
     v26 = MEMORY[0x1E695DFD8];
     v130[0] = objc_opt_class();
     v130[1] = objc_opt_class();
     v30 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v130, 2, v28, v29);
     v35 = objc_msgSend_setWithArray_(v26, v31, v30, v32, v33, v34);
-    v39 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v36, v35, @"preferredLocales", v37, v38);
+    v39 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v36, v35, @"preferredLocales", v37, v38);
 
-    v44 = objc_msgSend_decodeIntegerForKey_(v4, v40, @"recognitionEnvironment", v41, v42, v43);
-    v49 = objc_msgSend_decodeIntegerForKey_(v4, v45, @"priority", v46, v47, v48);
+    v44 = objc_msgSend_decodeIntegerForKey_(coderCopy, v40, @"recognitionEnvironment", v41, v42, v43);
+    v49 = objc_msgSend_decodeIntegerForKey_(coderCopy, v45, @"priority", v46, v47, v48);
     v53 = objc_msgSend_initWithMode_withVersion_(self, v50, v25, v9, v51, v52);
     objc_msgSend_setPreferredLocales_(v53, v54, v39, v55, v56, v57);
     objc_msgSend_setRecognitionEnvironment_(v53, v58, v44, v59, v60, v61);
@@ -1286,7 +1286,7 @@ LABEL_20:
     if (objc_msgSend_isValidSessionResultVersion(v53[14], v66, v67, v68, v69, v70))
     {
       v71 = objc_opt_class();
-      v75 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v72, v71, @"lastRecognitionResult", v73, v74);
+      v75 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v72, v71, @"lastRecognitionResult", v73, v74);
       objc_msgSend__setLastRecognitionResult_(v53, v76, v75, v77, v78, v79);
     }
 
@@ -1372,7 +1372,7 @@ LABEL_31:
     }
 
     self = v53;
-    v85 = self;
+    selfCopy = self;
     goto LABEL_38;
   }
 
@@ -1391,15 +1391,15 @@ LABEL_31:
     _os_log_impl(&dword_18366B000, v39, OS_LOG_TYPE_DEFAULT, "Nil RecognitionSession has been returned because session version %ld does not match the current session version %ld.", buf, 0x16u);
   }
 
-  v85 = 0;
+  selfCopy = 0;
 LABEL_38:
 
-  return v85;
+  return selfCopy;
 }
 
-- (id)recognitionOptionForKey:(id)a3
+- (id)recognitionOptionForKey:(id)key
 {
-  v6 = objc_msgSend_objectForKey_(self->_recognitionOptions, a2, a3, v3, v4, v5);
+  v6 = objc_msgSend_objectForKey_(self->_recognitionOptions, a2, key, v3, v4, v5);
 
   return v6;
 }
@@ -1425,24 +1425,24 @@ LABEL_38:
   return v2;
 }
 
-+ (id)createRecognizerForLocale:(id)a3 sessionMode:(int64_t)a4 remote:(BOOL)a5 priority:(int64_t)a6
++ (id)createRecognizerForLocale:(id)locale sessionMode:(int64_t)mode remote:(BOOL)remote priority:(int64_t)priority
 {
-  v7 = a5;
+  remoteCopy = remote;
   v18[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v18[0] = v10;
+  localeCopy = locale;
+  v18[0] = localeCopy;
   v14 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v11, v18, 1, v12, v13);
-  RecognizerForLocales_sessionMode_remote_priority = objc_msgSend_createRecognizerForLocales_sessionMode_remote_priority_(a1, v15, v14, a4, v7, a6);
+  RecognizerForLocales_sessionMode_remote_priority = objc_msgSend_createRecognizerForLocales_sessionMode_remote_priority_(self, v15, v14, mode, remoteCopy, priority);
 
   return RecognizerForLocales_sessionMode_remote_priority;
 }
 
-+ (id)createRecognizerForLocales:(id)a3 sessionMode:(int64_t)a4 remote:(BOOL)a5 priority:(int64_t)a6
++ (id)createRecognizerForLocales:(id)locales sessionMode:(int64_t)mode remote:(BOOL)remote priority:(int64_t)priority
 {
-  v7 = a5;
+  remoteCopy = remote;
   v129 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (a4 == 1)
+  localesCopy = locales;
+  if (mode == 1)
   {
     v10 = 4;
   }
@@ -1452,20 +1452,20 @@ LABEL_38:
     v10 = 6;
   }
 
-  v118 = v9;
+  v118 = localesCopy;
   v11 = objc_opt_class();
-  objc_msgSend_effectiveRecognitionLocales_recognitionMode_(v11, v12, v9, v10, v13, v14);
+  objc_msgSend_effectiveRecognitionLocales_recognitionMode_(v11, v12, localesCopy, v10, v13, v14);
   v121 = 0u;
   v122 = 0u;
   v119 = 0u;
   v15 = v120 = 0u;
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v119, v128, 16, v17);
-  v117 = a6;
+  priorityCopy = priority;
   if (v18)
   {
     v19 = *v120;
     v20 = 3;
-    if (a4 == 1)
+    if (mode == 1)
     {
       do
       {
@@ -1518,11 +1518,11 @@ LABEL_38:
     v20 = 3;
   }
 
-  if (v7)
+  if (remoteCopy)
   {
     v39 = objc_opt_class();
     v43 = objc_msgSend_newRemoteRecognizerWithMode_locales_(v39, v40, v10, v118, v41, v42);
-    objc_msgSend_setPriority_(v43, v44, v117, v45, v46, v47);
+    objc_msgSend_setPriority_(v43, v44, priorityCopy, v45, v46, v47);
   }
 
   else
@@ -1530,7 +1530,7 @@ LABEL_38:
     v53 = objc_alloc_init(CHRecognizerOptions);
     objc_msgSend_setEnableCachingIfAvailable_(v53, v54, 0, v55, v56, v57);
     objc_msgSend_setEnableGen2ModelIfAvailable_(v53, v58, 1, v59, v60, v61);
-    objc_msgSend_setEnableGen2CharacterLMIfAvailable_(v53, v62, a4 == 1, v63, v64, v65);
+    objc_msgSend_setEnableGen2CharacterLMIfAvailable_(v53, v62, mode == 1, v63, v64, v65);
     v71 = objc_msgSend_firstObject(v15, v66, v67, v68, v69, v70);
     if (objc_msgSend_count(v15, v72, v73, v74, v75, v76) >= 2)
     {
@@ -1563,19 +1563,19 @@ LABEL_38:
     objc_msgSend_setActiveCharacterSet_(v43, v108, v107, v109, v110, v111);
   }
 
-  objc_msgSend_setMinimumDrawingSize_(v43, v48, v49, v50, v51, v52, 3.0, 3.0, v117);
+  objc_msgSend_setMinimumDrawingSize_(v43, v48, v49, v50, v51, v52, 3.0, 3.0, priorityCopy);
   objc_msgSend_setMaxRecognitionResultCount_(v43, v112, v20, v113, v114, v115);
 
   return v43;
 }
 
-+ (id)createMathRecognizerRunningRemote:(BOOL)a3 priority:(int64_t)a4
++ (id)createMathRecognizerRunningRemote:(BOOL)remote priority:(int64_t)priority
 {
-  if (a3)
+  if (remote)
   {
     v5 = [CHRemoteMathRecognizer alloc];
     v10 = objc_msgSend_initWithEnableCachingIfAvailable_(v5, v6, 1, v7, v8, v9);
-    objc_msgSend_setPriority_(v10, v11, a4, v12, v13, v14);
+    objc_msgSend_setPriority_(v10, v11, priority, v12, v13, v14);
     if (!v10)
     {
       if (qword_1EA84DC48 != -1)
@@ -1667,7 +1667,7 @@ LABEL_19:
   return v10;
 }
 
-- (id)recognizableDrawingForStrokeGroupQueryItem:(id)a3
+- (id)recognizableDrawingForStrokeGroupQueryItem:(id)item
 {
   v90 = 0;
   v91 = &v90;
@@ -1675,8 +1675,8 @@ LABEL_19:
   v93 = sub_18391E9B8;
   v94 = sub_18391E9C8;
   v95 = 0;
-  v84 = a3;
-  v9 = objc_msgSend_strokeGroupIdentifier(v84, v4, v5, v6, v7, v8);
+  itemCopy = item;
+  v9 = objc_msgSend_strokeGroupIdentifier(itemCopy, v4, v5, v6, v7, v8);
   v15 = objc_msgSend_dataSource(self, v10, v11, v12, v13, v14);
   v85 = objc_msgSend_strokeProviderSnapshot(v15, v16, v17, v18, v19, v20);
   if (self->_mode || (objc_opt_respondsToSelector() & 1) == 0)
@@ -1727,29 +1727,29 @@ LABEL_19:
   return v79;
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_183925460;
   v6[3] = &unk_1E6DDC818;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   sub_18391D028(self, v6);
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_183925518;
   v6[3] = &unk_1E6DDC818;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   sub_18391D028(self, v6);
 }
 
@@ -1808,7 +1808,7 @@ LABEL_19:
   v11[1] = 3221225472;
   v11[2] = sub_183925A3C;
   v11[3] = &unk_1E6DE0000;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v12 = v7;
   v8 = v7;
@@ -1820,22 +1820,22 @@ LABEL_19:
   return v9;
 }
 
-- (CHRecognitionSession)initWithMode:(int64_t)a3 withVersion:(id)a4
+- (CHRecognitionSession)initWithMode:(int64_t)mode withVersion:(id)version
 {
-  v6 = a4;
-  v11 = objc_msgSend_initWithMode_(self, v7, a3, v8, v9, v10);
+  versionCopy = version;
+  v11 = objc_msgSend_initWithMode_(self, v7, mode, v8, v9, v10);
   v16 = v11;
   if (v11)
   {
-    objc_msgSend__setSessionVersion_(v11, v12, v6, v13, v14, v15);
+    objc_msgSend__setSessionVersion_(v11, v12, versionCopy, v13, v14, v15);
   }
 
   return v16;
 }
 
-- (void)setNeedsRecognitionUpdateImmediately:(BOOL)a3
+- (void)setNeedsRecognitionUpdateImmediately:(BOOL)immediately
 {
-  v8 = objc_msgSend_dataSource(self, a2, a3, v3, v4, v5);
+  v8 = objc_msgSend_dataSource(self, a2, immediately, v3, v4, v5);
   v14 = objc_msgSend_strokeProviderSnapshot(v8, v9, v10, v11, v12, v13);
   v20 = objc_msgSend_mode(self, v15, v16, v17, v18, v19);
   if (!v20)
@@ -1897,48 +1897,48 @@ LABEL_14:
   v71 = v51;
   v72 = v50;
   v73 = v44;
-  v74 = a3;
+  immediatelyCopy = immediately;
   v65 = v44;
   v66 = v50;
   v67 = v51;
   sub_18391D028(self, v68);
 }
 
-- (void)setSkipMathOperatorsInference:(BOOL)a3
+- (void)setSkipMathOperatorsInference:(BOOL)inference
 {
-  self->__skipMathOperatorsInference = a3;
-  v10 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], a2, !a3, v3, v4, v5);
+  self->__skipMathOperatorsInference = inference;
+  v10 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], a2, !inference, v3, v4, v5);
   objc_msgSend_setObject_forKeyedSubscript_(self->_recognitionOptions, v7, v10, CHGroupingPostProcessingManagerOptionExplicitOperators, v8, v9);
 }
 
-- (void)setSkipPopulatingStyleInventory:(BOOL)a3
+- (void)setSkipPopulatingStyleInventory:(BOOL)inventory
 {
-  self->__skipPopulatingStyleInventory = a3;
-  v10 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], a2, a3, v3, v4, v5);
+  self->__skipPopulatingStyleInventory = inventory;
+  v10 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], a2, inventory, v3, v4, v5);
   objc_msgSend_setObject_forKeyedSubscript_(self->_recognitionOptions, v7, v10, @"CHRecognitionTaskSkipPopulatingInventory", v8, v9);
 }
 
-- (void)setForceLocaleNumberFormat:(BOOL)a3
+- (void)setForceLocaleNumberFormat:(BOOL)format
 {
-  self->__forceLocaleNumberFormat = a3;
-  v10 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], a2, a3, v3, v4, v5);
+  self->__forceLocaleNumberFormat = format;
+  v10 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], a2, format, v3, v4, v5);
   objc_msgSend_setObject_forKeyedSubscript_(self->_recognitionOptions, v7, v10, qword_1EA84BB58, v8, v9);
 }
 
-- (void)setSkipMathTransliterations:(BOOL)a3
+- (void)setSkipMathTransliterations:(BOOL)transliterations
 {
-  self->__skipMathTransliterations = a3;
-  v10 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], a2, a3, v3, v4, v5);
+  self->__skipMathTransliterations = transliterations;
+  v10 = objc_msgSend_numberWithBool_(MEMORY[0x1E696AD98], a2, transliterations, v3, v4, v5);
   objc_msgSend_setObject_forKeyedSubscript_(self->_recognitionOptions, v7, v10, qword_1EA84BB60, v8, v9);
 }
 
-+ (id)effectiveLocalesFromLocales:(id)a3
++ (id)effectiveLocalesFromLocales:(id)locales
 {
   v76 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  localesCopy = locales;
   v4 = MEMORY[0x1E695DF70];
-  v65 = v3;
-  v10 = objc_msgSend_count(v3, v5, v6, v7, v8, v9);
+  v65 = localesCopy;
+  v10 = objc_msgSend_count(localesCopy, v5, v6, v7, v8, v9);
   v68 = objc_msgSend_arrayWithCapacity_(v4, v11, v10, v12, v13, v14);
   v73 = 0u;
   v74 = 0u;
@@ -1959,7 +1959,7 @@ LABEL_14:
         }
 
         v24 = *(*(&v71 + 1) + 8 * i);
-        if (objc_msgSend_isLocaleSupported_(a1, v17, v24, v18, v19, v20))
+        if (objc_msgSend_isLocaleSupported_(self, v17, v24, v18, v19, v20))
         {
           v26 = objc_msgSend_languageCode(v24, v17, v25, v18, v19, v20);
           v69[0] = MEMORY[0x1E69E9820];
@@ -2047,9 +2047,9 @@ LABEL_14:
   return objc_msgSend_lastRecognitionResult(self, v7, v8, v9, v10, v11);
 }
 
-- (void)registerInputDrawingClient:(id)a3
+- (void)registerInputDrawingClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -2060,7 +2060,7 @@ LABEL_14:
   block[2] = sub_183926BEC;
   block[3] = &unk_1E6DDC840;
   block[4] = self;
-  v6 = v4;
+  v6 = clientCopy;
   v13 = v6;
   v14 = &v15;
   dispatch_sync(sessionQueue, block);
@@ -2072,9 +2072,9 @@ LABEL_14:
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)unregisterInputDrawingClient:(id)a3
+- (void)unregisterInputDrawingClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -2085,7 +2085,7 @@ LABEL_14:
   block[2] = sub_183926E30;
   block[3] = &unk_1E6DDC840;
   block[4] = self;
-  v6 = v4;
+  v6 = clientCopy;
   v13 = v6;
   v14 = &v15;
   dispatch_sync(sessionQueue, block);
@@ -2118,9 +2118,9 @@ LABEL_14:
   return v2;
 }
 
-- (id)recognizerForLocale:(id)a3
+- (id)recognizerForLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -2131,10 +2131,10 @@ LABEL_14:
   v8[1] = 3221225472;
   v8[2] = sub_183929FC0;
   v8[3] = &unk_1E6DDC378;
-  v9 = v4;
+  v9 = localeCopy;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = localeCopy;
   sub_18391D028(self, v8);
   v6 = v12[5];
 
@@ -2143,11 +2143,11 @@ LABEL_14:
   return v6;
 }
 
-- (id)textCorrectionRecognizerForLocales:(id)a3
+- (id)textCorrectionRecognizerForLocales:(id)locales
 {
-  v4 = a3;
+  localesCopy = locales;
   objc_opt_self();
-  v8 = objc_msgSend_ch_descriptionWithSeparator_filterBlock_(v4, v5, @".", &unk_1EF1BF3F8, v6, v7);
+  v8 = objc_msgSend_ch_descriptionWithSeparator_filterBlock_(localesCopy, v5, @".", &unk_1EF1BF3F8, v6, v7);
 
   v17 = 0;
   v18 = &v17;
@@ -2162,7 +2162,7 @@ LABEL_14:
   v16 = &v17;
   v13[4] = self;
   v14 = v8;
-  v9 = v4;
+  v9 = localesCopy;
   v15 = v9;
   v10 = v8;
   sub_18391D028(self, v13);
@@ -2194,7 +2194,7 @@ LABEL_14:
   return v2;
 }
 
-- (id)evaluationResultForStrokeGroupIdentifier:(int64_t)a3
+- (id)evaluationResultForStrokeGroupIdentifier:(int64_t)identifier
 {
   v36 = *MEMORY[0x1E69E9840];
   if (objc_opt_respondsToSelector())
@@ -2219,7 +2219,7 @@ LABEL_14:
 
           v21 = *(*(&v31 + 1) + 8 * i);
           v22 = objc_msgSend_strokeGroupIdentifier(v21, v13, v14, v15, v16, v17);
-          v28 = objc_msgSend_integerValue(v22, v23, v24, v25, v26, v27) == a3;
+          v28 = objc_msgSend_integerValue(v22, v23, v24, v25, v26, v27) == identifier;
 
           if (v28)
           {
@@ -2250,12 +2250,12 @@ LABEL_13:
   return v29;
 }
 
-- (id)mathTranscriptionWithEvaluationResultForStrokeGroup:(id)a3 outStrokeIdentifiers:(id *)a4 outStrokes:(id *)a5
+- (id)mathTranscriptionWithEvaluationResultForStrokeGroup:(id)group outStrokeIdentifiers:(id *)identifiers outStrokes:(id *)strokes
 {
   v179 = *MEMORY[0x1E69E9840];
-  v171 = a3;
+  groupCopy = group;
   v12 = objc_msgSend_lastRecognitionResult(self, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_uniqueIdentifier(v171, v13, v14, v15, v16, v17);
+  v18 = objc_msgSend_uniqueIdentifier(groupCopy, v13, v14, v15, v16, v17);
   v23 = objc_msgSend_recognitionResultForStrokeGroupIdentifier_(v12, v19, v18, v20, v21, v22);
 
   if (!v23 || (objc_msgSend_mathResult(v23, v24, v25, v26, v27, v28), v29 = objc_claimAutoreleasedReturnValue(), v29, !v29))
@@ -2268,11 +2268,11 @@ LABEL_13:
   v30 = objc_msgSend_mathResult(v23, v24, v25, v26, v27, v28);
   v36 = objc_msgSend_preferredTranscription(v30, v31, v32, v33, v34, v35);
 
-  v42 = objc_msgSend_strokeIdentifiers(v171, v37, v38, v39, v40, v41);
+  v42 = objc_msgSend_strokeIdentifiers(groupCopy, v37, v38, v39, v40, v41);
   v48 = objc_msgSend_latestStrokeProvider(self, v43, v44, v45, v46, v47);
   v52 = objc_msgSend_sortedStrokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v49, v42, v48, v50, v51);
 
-  v58 = objc_msgSend_uniqueIdentifier(v171, v53, v54, v55, v56, v57);
+  v58 = objc_msgSend_uniqueIdentifier(groupCopy, v53, v54, v55, v56, v57);
   v63 = objc_msgSend_evaluationResultForStrokeGroupIdentifier_(self, v59, v58, v60, v61, v62);
   v69 = v63;
   if (v63)
@@ -2326,7 +2326,7 @@ LABEL_11:
 LABEL_12:
 
 LABEL_13:
-  if (a4)
+  if (identifiers)
   {
     v145 = objc_msgSend_array(MEMORY[0x1E695DF70], v24, v25, v26, v27, v28);
     v174 = 0u;
@@ -2357,13 +2357,13 @@ LABEL_13:
       while (v154);
     }
 
-    *a4 = objc_msgSend_copy(v145, v162, v163, v164, v165, v166);
+    *identifiers = objc_msgSend_copy(v145, v162, v163, v164, v165, v166);
   }
 
-  if (a5)
+  if (strokes)
   {
     v167 = v52;
-    *a5 = v52;
+    *strokes = v52;
   }
 
   v168 = v36;
@@ -2371,13 +2371,13 @@ LABEL_13:
   return v36;
 }
 
-- (id)tokenStrokeIdentifiersForContextStrokes:(id)a3 point:(CGPoint)a4 tokenizationLevel:(int64_t)a5 completion:(id)a6 shouldCancel:(id)a7
+- (id)tokenStrokeIdentifiersForContextStrokes:(id)strokes point:(CGPoint)point tokenizationLevel:(int64_t)level completion:(id)completion shouldCancel:(id)cancel
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  y = point.y;
+  x = point.x;
+  strokesCopy = strokes;
+  completionCopy = completion;
+  cancelCopy = cancel;
   v20 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x1E696AE38], v16, 1, v17, v18, v19);
   highResponsivenessQueue = self->__highResponsivenessQueue;
   v29[0] = MEMORY[0x1E69E9820];
@@ -2385,16 +2385,16 @@ LABEL_13:
   v29[2] = sub_18392B178;
   v29[3] = &unk_1E6DE00C8;
   v29[4] = self;
-  v22 = v13;
+  v22 = strokesCopy;
   v30 = v22;
   v34 = x;
   v35 = y;
-  v36 = a5;
-  v23 = v15;
+  levelCopy = level;
+  v23 = cancelCopy;
   v32 = v23;
   v24 = v20;
   v31 = v24;
-  v25 = v14;
+  v25 = completionCopy;
   v33 = v25;
   sub_18391DBB8(self, highResponsivenessQueue, @"HighResponsiveness", @"OnDemandGrouping", v29);
   v26 = v33;
@@ -2403,14 +2403,14 @@ LABEL_13:
   return v24;
 }
 
-- (id)reflowableTextLinesForContextStrokes:(id)a3 point:(CGPoint)a4 completion:(id)a5 shouldCancel:(id)a6
+- (id)reflowableTextLinesForContextStrokes:(id)strokes point:(CGPoint)point completion:(id)completion shouldCancel:(id)cancel
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v42 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  strokesCopy = strokes;
+  completionCopy = completion;
+  cancelCopy = cancel;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -2420,7 +2420,7 @@ LABEL_13:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v41 = objc_msgSend_count(v11, v15, v16, v17, v18, v19);
+    v41 = objc_msgSend_count(strokesCopy, v15, v16, v17, v18, v19);
     _os_log_impl(&dword_18366B000, v14, OS_LOG_TYPE_DEFAULT, "reflowable text lines query with context strokes %ld", buf, 0xCu);
   }
 
@@ -2431,15 +2431,15 @@ LABEL_13:
   v33[2] = sub_18392B6A4;
   v33[3] = &unk_1E6DE00F0;
   v33[4] = self;
-  v26 = v11;
+  v26 = strokesCopy;
   v34 = v26;
   v38 = x;
   v39 = y;
-  v27 = v13;
+  v27 = cancelCopy;
   v36 = v27;
   v28 = v24;
   v35 = v28;
-  v29 = v12;
+  v29 = completionCopy;
   v37 = v29;
   sub_18391DBB8(self, highResponsivenessQueue, @"HighResponsiveness", @"ReflowableTextLines", v33);
   v30 = v37;
@@ -2448,19 +2448,19 @@ LABEL_13:
   return v28;
 }
 
-+ (id)strokeIdentifiersInProximalGroupsForStrokeIdentifiers:(id)a3 sortedStrokeGroups:(id)a4 clusteredStrokeGroups:(id)a5 unusedStrokeIdentifiers:(id *)a6
++ (id)strokeIdentifiersInProximalGroupsForStrokeIdentifiers:(id)identifiers sortedStrokeGroups:(id)groups clusteredStrokeGroups:(id)strokeGroups unusedStrokeIdentifiers:(id *)strokeIdentifiers
 {
   v121 = *MEMORY[0x1E69E9840];
-  v93 = a3;
-  v100 = a4;
-  v92 = a5;
+  identifiersCopy = identifiers;
+  groupsCopy = groups;
+  strokeGroupsCopy = strokeGroups;
   v95 = objc_msgSend_set(MEMORY[0x1E695DFA8], v8, v9, v10, v11, v12);
   v98 = objc_msgSend_array(MEMORY[0x1E695DF70], v13, v14, v15, v16, v17);
   v107 = 0u;
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v18 = v93;
+  v18 = identifiersCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v19, &v105, v118, 16, v20);
   if (v21)
   {
@@ -2476,7 +2476,7 @@ LABEL_13:
 
         v24 = *(*(&v105 + 1) + 8 * i);
         v25 = objc_opt_class();
-        v33 = objc_msgSend_strokeGroupContainingStrokeIdentifier_strokeGroups_(v25, v26, v24, v100, v27, v28);
+        v33 = objc_msgSend_strokeGroupContainingStrokeIdentifier_strokeGroups_(v25, v26, v24, groupsCopy, v27, v28);
         if (v33)
         {
           objc_msgSend_addObject_(v98, v29, v33, v30, v31, v32);
@@ -2495,7 +2495,7 @@ LABEL_13:
   }
 
   v91 = v98;
-  v99 = v92;
+  v99 = strokeGroupsCopy;
   objc_opt_self();
   v97 = objc_msgSend_array(MEMORY[0x1E695DF70], v36, v37, v38, v39, v40);
   v115 = 0u;
@@ -2595,28 +2595,28 @@ LABEL_26:
     while (v75);
   }
 
-  if (a6)
+  if (strokeIdentifiers)
   {
     v89 = v95;
-    *a6 = v95;
+    *strokeIdentifiers = v95;
   }
 
   return v66;
 }
 
-+ (id)strokeIdentifiersInFullContextForStrokeIdentifiers:(id)a3 sortedStrokeGroups:(id)a4 clusteredStrokeGroups:(id)a5 unusedStrokeIdentifiers:(id *)a6
++ (id)strokeIdentifiersInFullContextForStrokeIdentifiers:(id)identifiers sortedStrokeGroups:(id)groups clusteredStrokeGroups:(id)strokeGroups unusedStrokeIdentifiers:(id *)strokeIdentifiers
 {
   v136 = *MEMORY[0x1E69E9840];
-  v103 = a3;
-  v110 = a4;
-  v102 = a5;
+  identifiersCopy = identifiers;
+  groupsCopy = groups;
+  strokeGroupsCopy = strokeGroups;
   v106 = objc_msgSend_set(MEMORY[0x1E695DFA8], v8, v9, v10, v11, v12);
   v18 = objc_msgSend_set(MEMORY[0x1E695DFA8], v13, v14, v15, v16, v17);
   v129 = 0u;
   v130 = 0u;
   v127 = 0u;
   v128 = 0u;
-  obj = v103;
+  obj = identifiersCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v19, &v127, v135, 16, v20);
   if (v21)
   {
@@ -2632,7 +2632,7 @@ LABEL_26:
 
         v24 = *(*(&v127 + 1) + 8 * i);
         v25 = objc_opt_class();
-        v33 = objc_msgSend_strokeGroupContainingStrokeIdentifier_strokeGroups_(v25, v26, v24, v110, v27, v28);
+        v33 = objc_msgSend_strokeGroupContainingStrokeIdentifier_strokeGroups_(v25, v26, v24, groupsCopy, v27, v28);
         if (v33)
         {
           objc_msgSend_addObject_(v18, v29, v33, v30, v31, v32);
@@ -2655,7 +2655,7 @@ LABEL_26:
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  v107 = v102;
+  v107 = strokeGroupsCopy;
   v43 = objc_msgSend_countByEnumeratingWithState_objects_count_(v107, v41, &v123, v134, 16, v42);
   if (v43)
   {
@@ -2772,35 +2772,35 @@ LABEL_26:
     while (v71);
   }
 
-  if (a6)
+  if (strokeIdentifiers)
   {
     v98 = v106;
-    *a6 = v106;
+    *strokeIdentifiers = v106;
   }
 
   return v68;
 }
 
-- (id)contextLookupResultsAtLocation:(CGPoint)a3 completion:(id)a4 shouldCancel:(id)a5
+- (id)contextLookupResultsAtLocation:(CGPoint)location completion:(id)completion shouldCancel:(id)cancel
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
+  y = location.y;
+  x = location.x;
+  completionCopy = completion;
+  cancelCopy = cancel;
   v15 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x1E696AE38], v11, 100, v12, v13, v14);
   highResponsivenessQueue = self->__highResponsivenessQueue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = sub_18392EF4C;
   v23[3] = &unk_1E6DE0168;
-  v17 = v10;
+  v17 = cancelCopy;
   v25 = v17;
   v23[4] = self;
   v18 = v15;
   v24 = v18;
   v27 = x;
   v28 = y;
-  v19 = v9;
+  v19 = completionCopy;
   v26 = v19;
   sub_18391DBB8(self, highResponsivenessQueue, @"HighResponsiveness", @"ContextLookupAtLocation", v23);
   v20 = v26;
@@ -2809,10 +2809,10 @@ LABEL_26:
   return v18;
 }
 
-- (id)structuredContextualTextResultsWithTextResults:(id)a3
+- (id)structuredContextualTextResultsWithTextResults:(id)results
 {
   v436 = *MEMORY[0x1E69E9840];
-  v375 = a3;
+  resultsCopy = results;
   v8 = objc_msgSend_strokeGroupingResult(self->_lastRecognitionResult, v3, v4, v5, v6, v7);
   v382 = objc_msgSend_textStrokeGroupClusters(v8, v9, v10, v11, v12, v13);
 
@@ -2821,7 +2821,7 @@ LABEL_26:
   v422 = 0u;
   v419 = 0u;
   v420 = 0u;
-  obj = v375;
+  obj = resultsCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v19, &v419, v435, 16, v20);
   if (v21)
   {
@@ -3224,25 +3224,25 @@ LABEL_75:
   return v386;
 }
 
-- (id)contextLookupResultsWithSelectedStrokes:(id)a3 completion:(id)a4 shouldCancel:(id)a5
+- (id)contextLookupResultsWithSelectedStrokes:(id)strokes completion:(id)completion shouldCancel:(id)cancel
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  strokesCopy = strokes;
+  completionCopy = completion;
+  cancelCopy = cancel;
   v15 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x1E696AE38], v11, 100, v12, v13, v14);
   highResponsivenessQueue = self->__highResponsivenessQueue;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = sub_183933838;
   v24[3] = &unk_1E6DE0208;
-  v17 = v10;
+  v17 = cancelCopy;
   v28 = v17;
   v18 = v15;
   v25 = v18;
-  v19 = v8;
+  v19 = strokesCopy;
   v26 = v19;
-  v27 = self;
-  v20 = v9;
+  selfCopy = self;
+  v20 = completionCopy;
   v29 = v20;
   sub_18391DBB8(self, highResponsivenessQueue, @"HighResponsiveness", @"ContextLookupWithSelectedStrokes", v24);
   v21 = v29;
@@ -3251,23 +3251,23 @@ LABEL_75:
   return v18;
 }
 
-- (id)contextLookupResultsWithSelectionPath:(CGPath *)a3 completion:(id)a4 shouldCancel:(id)a5
+- (id)contextLookupResultsWithSelectionPath:(CGPath *)path completion:(id)completion shouldCancel:(id)cancel
 {
-  v8 = a4;
-  v9 = a5;
+  completionCopy = completion;
+  cancelCopy = cancel;
   v14 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x1E696AE38], v10, 100, v11, v12, v13);
   highResponsivenessQueue = self->__highResponsivenessQueue;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = sub_183933AF4;
   v22[3] = &unk_1E6DE01B8;
-  v16 = v9;
+  v16 = cancelCopy;
   v24 = v16;
   v22[4] = self;
   v17 = v14;
   v23 = v17;
-  v26 = a3;
-  v18 = v8;
+  pathCopy = path;
+  v18 = completionCopy;
   v25 = v18;
   sub_18391DBB8(self, highResponsivenessQueue, @"HighResponsiveness", @"ContextLookupWithPath", v22);
   v19 = v25;
@@ -3276,11 +3276,11 @@ LABEL_75:
   return v17;
 }
 
-- (id)contextualTextResultsForContextStrokes:(id)a3 completion:(id)a4 shouldCancel:(id)a5
+- (id)contextualTextResultsForContextStrokes:(id)strokes completion:(id)completion shouldCancel:(id)cancel
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  strokesCopy = strokes;
+  completionCopy = completion;
+  cancelCopy = cancel;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -3301,12 +3301,12 @@ LABEL_75:
   v25[3] = &unk_1E6DE0208;
   v18 = v16;
   v26 = v18;
-  v27 = self;
-  v19 = v8;
+  selfCopy = self;
+  v19 = strokesCopy;
   v28 = v19;
-  v20 = v10;
+  v20 = cancelCopy;
   v29 = v20;
-  v21 = v9;
+  v21 = completionCopy;
   v30 = v21;
   sub_18391DBB8(self, highResponsivenessQueue, @"HighResponsiveness", @"ContextualTextResults", v25);
   v22 = v30;
@@ -3315,11 +3315,11 @@ LABEL_75:
   return v18;
 }
 
-- (id)tokenStrokeIdentifiersWithCoveringStroke:(id)a3 completion:(id)a4 shouldCancel:(id)a5
+- (id)tokenStrokeIdentifiersWithCoveringStroke:(id)stroke completion:(id)completion shouldCancel:(id)cancel
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  strokeCopy = stroke;
+  completionCopy = completion;
+  cancelCopy = cancel;
   v15 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x1E696AE38], v11, 100, v12, v13, v14);
   highResponsivenessQueue = self->__highResponsivenessQueue;
   v24[0] = MEMORY[0x1E69E9820];
@@ -3327,13 +3327,13 @@ LABEL_75:
   v24[2] = sub_183934628;
   v24[3] = &unk_1E6DE0208;
   v24[4] = self;
-  v17 = v8;
+  v17 = strokeCopy;
   v25 = v17;
-  v18 = v10;
+  v18 = cancelCopy;
   v27 = v18;
   v19 = v15;
   v26 = v19;
-  v20 = v9;
+  v20 = completionCopy;
   v28 = v20;
   sub_18391DBB8(self, highResponsivenessQueue, @"HighResponsiveness", @"StrokesCoveredByStroke", v24);
   v21 = v28;
@@ -3342,12 +3342,12 @@ LABEL_75:
   return v19;
 }
 
-- (id)strokePointTransformationsForContextStrokes:(id)a3 parameters:(id)a4 completionWithTelemetry:(id)a5 shouldCancel:(id)a6
+- (id)strokePointTransformationsForContextStrokes:(id)strokes parameters:(id)parameters completionWithTelemetry:(id)telemetry shouldCancel:(id)cancel
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  strokesCopy = strokes;
+  parametersCopy = parameters;
+  telemetryCopy = telemetry;
+  cancelCopy = cancel;
   v18 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x1E696AE38], v14, 100, v15, v16, v17);
   highResponsivenessQueue = self->__highResponsivenessQueue;
   v28[0] = MEMORY[0x1E69E9820];
@@ -3355,13 +3355,13 @@ LABEL_75:
   v28[2] = sub_1839363E4;
   v28[3] = &unk_1E6DE0318;
   v28[4] = self;
-  v20 = v10;
+  v20 = strokesCopy;
   v29 = v20;
-  v21 = v13;
+  v21 = cancelCopy;
   v32 = v21;
-  v22 = v12;
+  v22 = telemetryCopy;
   v33 = v22;
-  v23 = v11;
+  v23 = parametersCopy;
   v30 = v23;
   v24 = v18;
   v31 = v24;
@@ -3372,12 +3372,12 @@ LABEL_75:
   return v24;
 }
 
-+ (id)alignReflowableTokens:(id)a3 resultTokens:(id)a4 strokeIdentifiers:(id)a5 outStrokeIdentifiers:(id *)a6
++ (id)alignReflowableTokens:(id)tokens resultTokens:(id)resultTokens strokeIdentifiers:(id)identifiers outStrokeIdentifiers:(id *)strokeIdentifiers
 {
   v352 = *MEMORY[0x1E69E9840];
-  v302 = a3;
-  v8 = a4;
-  v336 = a5;
+  tokensCopy = tokens;
+  resultTokensCopy = resultTokens;
+  identifiersCopy = identifiers;
   v305 = objc_msgSend_array(MEMORY[0x1E695DF70], v9, v10, v11, v12, v13);
   v304 = objc_msgSend_array(MEMORY[0x1E695DF70], v14, v15, v16, v17, v18);
   v337 = objc_msgSend_array(MEMORY[0x1E695DF70], v19, v20, v21, v22, v23);
@@ -3385,14 +3385,14 @@ LABEL_75:
   v349 = 0u;
   v346 = 0u;
   v347 = 0u;
-  obj = v302;
+  obj = tokensCopy;
   v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v24, &v346, v351, 16, v25);
   if (!v26)
   {
 
     v335 = 0;
     v33 = &stru_1EF1C0318;
-    if (!a6)
+    if (!strokeIdentifiers)
     {
       goto LABEL_53;
     }
@@ -3626,12 +3626,12 @@ LABEL_75:
       {
 
         v234 = objc_msgSend_length(v33, v229, v230, v231, v232, v233);
-        if (v234 >= objc_msgSend_length(v228, v235, v236, v237, v238, v239) || v32 >= objc_msgSend_count(v8, v240, v241, v242, v243, v244))
+        if (v234 >= objc_msgSend_length(v228, v235, v236, v237, v238, v239) || v32 >= objc_msgSend_count(resultTokensCopy, v240, v241, v242, v243, v244))
         {
           break;
         }
 
-        v223 = objc_msgSend_objectAtIndexedSubscript_(v8, v240, v32, v242, v243, v244);
+        v223 = objc_msgSend_objectAtIndexedSubscript_(resultTokensCopy, v240, v32, v242, v243, v244);
         if ((objc_msgSend_properties(v223, v245, v246, v247, v248, v249) & 0x20) != 0)
         {
           v255 = objc_msgSend_stringByAppendingString_(v33, v250, @" ", v252, v253, v254);
@@ -3643,7 +3643,7 @@ LABEL_75:
         v261 = objc_msgSend_stringByAppendingString_(v33, v257, v256, v258, v259, v260);
 
         v267 = objc_msgSend_strokeIndexes(v223, v262, v263, v264, v265, v266);
-        v272 = objc_msgSend_objectsAtIndexes_(v336, v268, v267, v269, v270, v271);
+        v272 = objc_msgSend_objectsAtIndexes_(identifiersCopy, v268, v267, v269, v270, v271);
 
         objc_msgSend_addObjectsFromArray_(v337, v273, v272, v274, v275, v276);
         ++v32;
@@ -3672,7 +3672,7 @@ LABEL_75:
   {
     objc_msgSend_addObject_(v305, v291, v335, v292, v293, v294);
     objc_msgSend_addObject_(v304, v295, v337, v296, v297, v298);
-    if (!a6)
+    if (!strokeIdentifiers)
     {
       goto LABEL_53;
     }
@@ -3681,11 +3681,11 @@ LABEL_75:
   }
 
   v335 = 0;
-  if (a6)
+  if (strokeIdentifiers)
   {
 LABEL_52:
     v299 = v304;
-    *a6 = v304;
+    *strokeIdentifiers = v304;
   }
 
 LABEL_53:
@@ -3694,15 +3694,15 @@ LABEL_53:
   return v305;
 }
 
-- (id)refinedTokensForSingleLineContextStrokes:(id)a3 styleControlParameter:(id)a4 transcription:(id)a5 completion:(id)a6 shouldCancel:(id)a7
+- (id)refinedTokensForSingleLineContextStrokes:(id)strokes styleControlParameter:(id)parameter transcription:(id)transcription completion:(id)completion shouldCancel:(id)cancel
 {
   v69 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v57 = v14;
+  strokesCopy = strokes;
+  parameterCopy = parameter;
+  transcriptionCopy = transcription;
+  completionCopy = completion;
+  cancelCopy = cancel;
+  v57 = transcriptionCopy;
   v21 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x1E696AE38], v17, 100, v18, v19, v20);
   if (qword_1EA84DC48 != -1)
   {
@@ -3712,7 +3712,7 @@ LABEL_53:
   v22 = qword_1EA84DC60;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = objc_msgSend_count(v12, v23, v24, v25, v26, v27);
+    v28 = objc_msgSend_count(strokesCopy, v23, v24, v25, v26, v27);
     v34 = objc_msgSend_latestStrokeProvider(self, v29, v30, v31, v32, v33);
     v40 = objc_msgSend_orderedStrokes(v34, v35, v36, v37, v38, v39);
     *buf = 134218240;
@@ -3728,16 +3728,16 @@ LABEL_53:
   v58[1] = 3221225472;
   v58[2] = sub_18393C224;
   v58[3] = &unk_1E6DE0400;
-  v48 = v16;
+  v48 = cancelCopy;
   v63 = v48;
-  v49 = v15;
+  v49 = completionCopy;
   v64 = v49;
   v58[4] = self;
-  v56 = v12;
+  v56 = strokesCopy;
   v59 = v56;
   v50 = v57;
   v60 = v50;
-  v51 = v13;
+  v51 = parameterCopy;
   v61 = v51;
   v52 = v46;
   v62 = v52;
@@ -3748,12 +3748,12 @@ LABEL_53:
   return v52;
 }
 
-- (id)refinedTokensForContextStrokes:(id)a3 styleControlParameter:(id)a4 completion:(id)a5 shouldCancel:(id)a6
+- (id)refinedTokensForContextStrokes:(id)strokes styleControlParameter:(id)parameter completion:(id)completion shouldCancel:(id)cancel
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  strokesCopy = strokes;
+  parameterCopy = parameter;
+  completionCopy = completion;
+  cancelCopy = cancel;
   v18 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x1E696AE38], v14, 100, v15, v16, v17);
   highResponsivenessQueue = self->__highResponsivenessQueue;
   v28[0] = MEMORY[0x1E69E9820];
@@ -3761,15 +3761,15 @@ LABEL_53:
   v28[2] = sub_18393CC50;
   v28[3] = &unk_1E6DE0318;
   v28[4] = self;
-  v20 = v10;
+  v20 = strokesCopy;
   v29 = v20;
-  v21 = v13;
+  v21 = cancelCopy;
   v32 = v21;
-  v22 = v11;
+  v22 = parameterCopy;
   v30 = v22;
   v23 = v18;
   v31 = v23;
-  v24 = v12;
+  v24 = completionCopy;
   v33 = v24;
   sub_18391DBB8(self, highResponsivenessQueue, @"HighResponsiveness", @"RefinedTokensForContextStroke", v28);
   v25 = v33;
@@ -3778,12 +3778,12 @@ LABEL_53:
   return v23;
 }
 
-- (id)refinementOfContextStrokes:(id)a3 styleControlParameter:(id)a4 completion:(id)a5 shouldCancel:(id)a6
+- (id)refinementOfContextStrokes:(id)strokes styleControlParameter:(id)parameter completion:(id)completion shouldCancel:(id)cancel
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  strokesCopy = strokes;
+  parameterCopy = parameter;
+  completionCopy = completion;
+  cancelCopy = cancel;
   v18 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x1E696AE38], v14, 100, v15, v16, v17);
   highResponsivenessQueue = self->__highResponsivenessQueue;
   v28[0] = MEMORY[0x1E69E9820];
@@ -3791,15 +3791,15 @@ LABEL_53:
   v28[2] = sub_18393D420;
   v28[3] = &unk_1E6DE0318;
   v28[4] = self;
-  v20 = v10;
+  v20 = strokesCopy;
   v29 = v20;
-  v21 = v13;
+  v21 = cancelCopy;
   v32 = v21;
-  v22 = v11;
+  v22 = parameterCopy;
   v30 = v22;
   v23 = v18;
   v31 = v23;
-  v24 = v12;
+  v24 = completionCopy;
   v33 = v24;
   sub_18391DBB8(self, highResponsivenessQueue, @"HighResponsiveness", @"RefinementOfContextStrokes", v28);
   v25 = v33;
@@ -3808,12 +3808,12 @@ LABEL_53:
   return v23;
 }
 
-- (id)styleSampleOptionsForPoint:(CGPoint)a3 shouldCancel:(id)a4
+- (id)styleSampleOptionsForPoint:(CGPoint)point shouldCancel:(id)cancel
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v243 = *MEMORY[0x1E69E9840];
-  v211 = a4;
+  cancelCopy = cancel;
   if (!self || !self->_lastRecognitionResult)
   {
     v79 = 0;
@@ -3845,7 +3845,7 @@ LABEL_52:
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
   }
 
-  v214 = self;
+  selfCopy = self;
   v7 = qword_1EA84DC60;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -3857,15 +3857,15 @@ LABEL_52:
   }
 
   v213 = objc_msgSend_array(MEMORY[0x1E695DF70], v8, v9, v10, v11, v12);
-  v18 = objc_msgSend_strokeGroupingResult(v214->_lastRecognitionResult, v13, v14, v15, v16, v17);
-  v24 = objc_msgSend_strokeGroupOrdering(v214, v19, v20, v21, v22, v23);
+  v18 = objc_msgSend_strokeGroupingResult(selfCopy->_lastRecognitionResult, v13, v14, v15, v16, v17);
+  v24 = objc_msgSend_strokeGroupOrdering(selfCopy, v19, v20, v21, v22, v23);
   v28 = objc_msgSend_strokeGroupsSortedBy_textGroupsOnly_(v18, v25, v24, 1, v26, v27);
   v33 = objc_msgSend_strokeGroupClosestToPoint_strokeGroups_(CHStrokeGroup, v29, v28, v30, v31, v32, x, y);
 
-  lastRecognitionResult = v214->_lastRecognitionResult;
+  lastRecognitionResult = selfCopy->_lastRecognitionResult;
   v40 = objc_msgSend_uniqueIdentifier(v33, v35, v36, v37, v38, v39);
   v45 = objc_msgSend_recognitionResultForStrokeGroupIdentifier_(lastRecognitionResult, v41, v40, v42, v43, v44);
-  v51 = objc_msgSend_strokeClassificationResult(v214->_lastRecognitionResult, v46, v47, v48, v49, v50);
+  v51 = objc_msgSend_strokeClassificationResult(selfCopy->_lastRecognitionResult, v46, v47, v48, v49, v50);
   v229 = 0u;
   v230 = 0u;
   v227 = 0u;
@@ -3885,8 +3885,8 @@ LABEL_52:
         }
 
         v68 = *(*(&v227 + 1) + 8 * i);
-        v69 = objc_msgSend_textSynthesizer(v214, v60, v61, v62, v63, v64);
-        isGroupAcceptableForInventory_textSynthesizer_strokeProvider_recognitionResult_strokeClassificationResult_allowSyntheticStrokes = objc_msgSend_isGroupAcceptableForInventory_textSynthesizer_strokeProvider_recognitionResult_strokeClassificationResult_allowSyntheticStrokes_(CHRecognitionSessionTask, v70, v33, v69, v214->_latestStrokeProvider, v45, v51, 1);
+        v69 = objc_msgSend_textSynthesizer(selfCopy, v60, v61, v62, v63, v64);
+        isGroupAcceptableForInventory_textSynthesizer_strokeProvider_recognitionResult_strokeClassificationResult_allowSyntheticStrokes = objc_msgSend_isGroupAcceptableForInventory_textSynthesizer_strokeProvider_recognitionResult_strokeClassificationResult_allowSyntheticStrokes_(CHRecognitionSessionTask, v70, v33, v69, selfCopy->_latestStrokeProvider, v45, v51, 1);
 
         if (isGroupAcceptableForInventory_textSynthesizer_strokeProvider_recognitionResult_strokeClassificationResult_allowSyntheticStrokes)
         {
@@ -3934,7 +3934,7 @@ LABEL_44:
     goto LABEL_52;
   }
 
-  v80 = sub_18392C888(v214, v213, 0, 0, 0, 0, 0, v211);
+  v80 = sub_18392C888(selfCopy, v213, 0, 0, 0, 0, 0, cancelCopy);
   v86 = v80;
   if (!v80)
   {
@@ -3979,7 +3979,7 @@ LABEL_44:
   v226 = y;
   v205 = v213;
   v222 = v205;
-  v223 = v214;
+  v223 = selfCopy;
   v208 = v207;
   v224 = v208;
   objc_msgSend_enumerateTokensInTopTranscriptionPathWithBlock_(v103, v104, v221, v105, v106, v107);
@@ -4013,10 +4013,10 @@ LABEL_30:
       v136 = MEMORY[0x1E695DFD8];
       v137 = objc_msgSend_objectForKeyedSubscript_(v135, v128, @"strokeIdentifiers", v129, v130, v131);
       v142 = objc_msgSend_setWithArray_(v136, v138, v137, v139, v140, v141);
-      v148 = objc_msgSend_latestStrokeProvider(v214, v143, v144, v145, v146, v147);
+      v148 = objc_msgSend_latestStrokeProvider(selfCopy, v143, v144, v145, v146, v147);
       v152 = objc_msgSend_sortedStrokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v149, v142, v148, v150, v151);
 
-      v154 = objc_msgSend_createDrawingForStrokes_interpolationType_resolution_cancellationBlock_(CHStrokeUtilities, v153, v152, 1, 2, v211);
+      v154 = objc_msgSend_createDrawingForStrokes_interpolationType_resolution_cancellationBlock_(CHStrokeUtilities, v153, v152, 1, 2, cancelCopy);
       v159 = objc_msgSend_objectForKeyedSubscript_(v135, v155, @"transcription", v156, v157, v158);
       v165 = objc_msgSend_set(MEMORY[0x1E695DFD8], v160, v161, v162, v163, v164);
       v167 = objc_msgSend_sampleWithTranscription_drawing_script_strokeIdentifiers_(CHSynthesisStyleSample, v166, v159, v154, 0, v165);
@@ -4075,16 +4075,16 @@ LABEL_48:
   return v195;
 }
 
-- (id)synthesizeTokensForString:(id)a3 point:(CGPoint)a4 synthesisOptions:(id)a5 completion:(id)a6 shouldCancel:(id)a7
+- (id)synthesizeTokensForString:(id)string point:(CGPoint)point synthesisOptions:(id)options completion:(id)completion shouldCancel:(id)cancel
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
-  v14 = a5;
-  v48 = a6;
-  v15 = a7;
+  y = point.y;
+  x = point.x;
+  stringCopy = string;
+  optionsCopy = options;
+  completionCopy = completion;
+  cancelCopy = cancel;
   v16 = MEMORY[0x1E696AE38];
-  v22 = objc_msgSend_length(v13, v17, v18, v19, v20, v21);
+  v22 = objc_msgSend_length(stringCopy, v17, v18, v19, v20, v21);
   v47 = objc_msgSend_progressWithTotalUnitCount_(v16, v23, v22, v24, v25, v26);
   v68[0] = 0;
   v68[1] = v68;
@@ -4105,12 +4105,12 @@ LABEL_48:
   v60[3] = &unk_1E6DE0368;
   v64 = v66;
   v60[4] = self;
-  v33 = v15;
+  v33 = cancelCopy;
   v63 = v33;
   v34 = v32;
   v61 = v34;
   v65 = v68;
-  v46 = v14;
+  v46 = optionsCopy;
   v62 = v46;
   v35 = MEMORY[0x1865E6810](v60);
   highResponsivenessQueue = self->__highResponsivenessQueue;
@@ -4119,7 +4119,7 @@ LABEL_48:
   v49[2] = sub_18393FB14;
   v49[3] = &unk_1E6DE03D8;
   v49[4] = self;
-  v37 = v13;
+  v37 = stringCopy;
   v50 = v37;
   v56 = v68;
   v58 = x;
@@ -4130,7 +4130,7 @@ LABEL_48:
   v54 = v35;
   v39 = v47;
   v51 = v39;
-  v40 = v48;
+  v40 = completionCopy;
   v55 = v40;
   v52 = v34;
   v41 = v34;
@@ -4145,12 +4145,12 @@ LABEL_48:
   return v44;
 }
 
-- (id)synthesizeTokensForString:(id)a3 replacingStrokes:(id)a4 completion:(id)a5 shouldCancel:(id)a6
+- (id)synthesizeTokensForString:(id)string replacingStrokes:(id)strokes completion:(id)completion shouldCancel:(id)cancel
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  stringCopy = string;
+  strokesCopy = strokes;
+  completionCopy = completion;
+  cancelCopy = cancel;
   v18 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x1E696AE38], v14, 100, v15, v16, v17);
   v24 = objc_msgSend_array(MEMORY[0x1E695DF70], v19, v20, v21, v22, v23);
   highResponsivenessQueue = self->__highResponsivenessQueue;
@@ -4159,16 +4159,16 @@ LABEL_48:
   v35[2] = sub_183941418;
   v35[3] = &unk_1E6DE0400;
   v35[4] = self;
-  v26 = v11;
+  v26 = strokesCopy;
   v36 = v26;
-  v27 = v13;
+  v27 = cancelCopy;
   v40 = v27;
-  v28 = v10;
+  v28 = stringCopy;
   v37 = v28;
   v38 = v24;
   v29 = v18;
   v39 = v29;
-  v30 = v12;
+  v30 = completionCopy;
   v41 = v30;
   v31 = v24;
   sub_18391DBB8(self, highResponsivenessQueue, @"HighResponsiveness", @"SynthesizeTokensReplacingStrokesForString", v35);

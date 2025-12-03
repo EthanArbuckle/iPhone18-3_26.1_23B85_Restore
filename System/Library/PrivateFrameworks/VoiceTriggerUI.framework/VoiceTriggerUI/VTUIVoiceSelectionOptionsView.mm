@@ -1,15 +1,15 @@
 @interface VTUIVoiceSelectionOptionsView
-- (CGSize)_cellSizeForSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_cellSizeForSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SUICVoiceSelectionEventHandling)voiceSelectionEventHandler;
 - (SUICVoiceSelectionViewModelProviding)voiceSelectionViewModelProvider;
 - (VTUIVoiceSelectionOptionsView)init;
 - (id)_diffableTableDataSource;
-- (id)_tableCellForVoiceViewModel:(id)a3 indexPath:(id)a4;
-- (void)_createAndApplySnapshotForViewModel:(id)a3;
+- (id)_tableCellForVoiceViewModel:(id)model indexPath:(id)path;
+- (void)_createAndApplySnapshotForViewModel:(id)model;
 - (void)_setupVoicesTableView;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)voiceSelectionViewModelDidChange;
 @end
 
@@ -37,40 +37,40 @@
   voicesTableView = self->_voicesTableView;
   self->_voicesTableView = v4;
 
-  v6 = [(VTUIVoiceSelectionOptionsView *)self _diffableTableDataSource];
+  _diffableTableDataSource = [(VTUIVoiceSelectionOptionsView *)self _diffableTableDataSource];
   tableViewDataSource = self->_tableViewDataSource;
-  self->_tableViewDataSource = v6;
+  self->_tableViewDataSource = _diffableTableDataSource;
 
   [(UITableViewDiffableDataSource *)self->_tableViewDataSource setDefaultRowAnimation:5];
   [(UITableView *)self->_voicesTableView setDelegate:self];
   [(UITableView *)self->_voicesTableView setDataSource:self->_tableViewDataSource];
   [(UITableView *)self->_voicesTableView setShowsHorizontalScrollIndicator:0];
   [(UITableView *)self->_voicesTableView setShowsVerticalScrollIndicator:0];
-  v8 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [(UITableView *)self->_voicesTableView setBackgroundColor:v8];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [(UITableView *)self->_voicesTableView setBackgroundColor:systemBackgroundColor];
 
-  v9 = [(UITableView *)self->_voicesTableView layer];
-  [v9 setCornerRadius:8.0];
+  layer = [(UITableView *)self->_voicesTableView layer];
+  [layer setCornerRadius:8.0];
 
   [(UITableView *)self->_voicesTableView registerClass:objc_opt_class() forCellReuseIdentifier:@"VoiceCell"];
   [(VTUIVoiceSelectionOptionsView *)self addSubview:self->_voicesTableView];
   [(UITableView *)self->_voicesTableView setTranslatesAutoresizingMaskIntoConstraints:0];
   v21 = MEMORY[0x277CCAAD0];
-  v24 = [(UITableView *)self->_voicesTableView topAnchor];
-  v23 = [(VTUIVoiceSelectionOptionsView *)self topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  topAnchor = [(UITableView *)self->_voicesTableView topAnchor];
+  topAnchor2 = [(VTUIVoiceSelectionOptionsView *)self topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v25[0] = v22;
-  v10 = [(UITableView *)self->_voicesTableView leftAnchor];
-  v11 = [(VTUIVoiceSelectionOptionsView *)self leftAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  leftAnchor = [(UITableView *)self->_voicesTableView leftAnchor];
+  leftAnchor2 = [(VTUIVoiceSelectionOptionsView *)self leftAnchor];
+  v12 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v25[1] = v12;
-  v13 = [(UITableView *)self->_voicesTableView rightAnchor];
-  v14 = [(VTUIVoiceSelectionOptionsView *)self rightAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  rightAnchor = [(UITableView *)self->_voicesTableView rightAnchor];
+  rightAnchor2 = [(VTUIVoiceSelectionOptionsView *)self rightAnchor];
+  v15 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v25[2] = v15;
-  v16 = [(UITableView *)self->_voicesTableView bottomAnchor];
-  v17 = [(VTUIVoiceSelectionOptionsView *)self bottomAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  bottomAnchor = [(UITableView *)self->_voicesTableView bottomAnchor];
+  bottomAnchor2 = [(VTUIVoiceSelectionOptionsView *)self bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v25[3] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:4];
   [v21 activateConstraints:v19];
@@ -116,21 +116,21 @@ id __57__VTUIVoiceSelectionOptionsView__diffableTableDataSource__block_invoke(ui
   return v9;
 }
 
-- (id)_tableCellForVoiceViewModel:(id)a3 indexPath:(id)a4
+- (id)_tableCellForVoiceViewModel:(id)model indexPath:(id)path
 {
   voicesTableView = self->_voicesTableView;
-  v7 = a3;
-  v8 = [(UITableView *)voicesTableView dequeueReusableCellWithIdentifier:@"VoiceCell" forIndexPath:a4];
-  v9 = [MEMORY[0x277D756E0] cellConfiguration];
-  v10 = [v7 localizedDisplayName];
-  [v9 setText:v10];
+  modelCopy = model;
+  v8 = [(UITableView *)voicesTableView dequeueReusableCellWithIdentifier:@"VoiceCell" forIndexPath:path];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+  localizedDisplayName = [modelCopy localizedDisplayName];
+  [cellConfiguration setText:localizedDisplayName];
 
-  [v8 setContentConfiguration:v9];
-  v11 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [v8 setBackgroundColor:v11];
+  [v8 setContentConfiguration:cellConfiguration];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [v8 setBackgroundColor:secondarySystemBackgroundColor];
 
-  LODWORD(v11) = [v7 isCurrentSiriVoice];
-  if (v11)
+  LODWORD(secondarySystemBackgroundColor) = [modelCopy isCurrentSiriVoice];
+  if (secondarySystemBackgroundColor)
   {
     v12 = 3;
   }
@@ -146,34 +146,34 @@ id __57__VTUIVoiceSelectionOptionsView__diffableTableDataSource__block_invoke(ui
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v9 = [(VTUIVoiceSelectionOptionsView *)self voiceSelectionEventHandler];
-  v6 = [(SUICVoiceSelectionViewModel *)self->_viewModel voices];
-  v7 = [v5 row];
+  pathCopy = path;
+  voiceSelectionEventHandler = [(VTUIVoiceSelectionOptionsView *)self voiceSelectionEventHandler];
+  voices = [(SUICVoiceSelectionViewModel *)self->_viewModel voices];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
-  [v9 voiceSelectionView:self receivedRequestToSelectVoice:v8];
+  v8 = [voices objectAtIndexedSubscript:v7];
+  [voiceSelectionEventHandler voiceSelectionView:self receivedRequestToSelectVoice:v8];
 }
 
 - (void)voiceSelectionViewModelDidChange
 {
-  v3 = [(VTUIVoiceSelectionOptionsView *)self voiceSelectionViewModelProvider];
-  v4 = [v3 voiceSelectionViewModel];
+  voiceSelectionViewModelProvider = [(VTUIVoiceSelectionOptionsView *)self voiceSelectionViewModelProvider];
+  voiceSelectionViewModel = [voiceSelectionViewModelProvider voiceSelectionViewModel];
   viewModel = self->_viewModel;
-  self->_viewModel = v4;
+  self->_viewModel = voiceSelectionViewModel;
 
   v6 = self->_viewModel;
 
   [(VTUIVoiceSelectionOptionsView *)self _createAndApplySnapshotForViewModel:v6];
 }
 
-- (void)_createAndApplySnapshotForViewModel:(id)a3
+- (void)_createAndApplySnapshotForViewModel:(id)model
 {
-  v19 = self;
+  selfCopy = self;
   v32[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  modelCopy = model;
   v4 = objc_alloc_init(MEMORY[0x277CFB890]);
   v32[0] = @"Voice";
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
@@ -183,9 +183,9 @@ id __57__VTUIVoiceSelectionOptionsView__diffableTableDataSource__block_invoke(ui
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v20 = v3;
-  v6 = [v3 voices];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v31 count:16];
+  v20 = modelCopy;
+  voices = [modelCopy voices];
+  v7 = [voices countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -196,21 +196,21 @@ id __57__VTUIVoiceSelectionOptionsView__diffableTableDataSource__block_invoke(ui
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(voices);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 localizedDisplayName];
+        localizedDisplayName = [v11 localizedDisplayName];
 
-        if (v12)
+        if (localizedDisplayName)
         {
-          v13 = [v11 localizedDisplayName];
-          v30 = v13;
+          localizedDisplayName2 = [v11 localizedDisplayName];
+          v30 = localizedDisplayName2;
           v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
           [v4 appendItemsWithIdentifiers:v14 intoSectionWithIdentifier:@"Voice"];
 
-          v15 = [v11 localizedDisplayName];
-          v29 = v15;
+          localizedDisplayName3 = [v11 localizedDisplayName];
+          v29 = localizedDisplayName3;
           v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
           [v4 reloadItemsWithIdentifiers:v16];
         }
@@ -229,30 +229,30 @@ id __57__VTUIVoiceSelectionOptionsView__diffableTableDataSource__block_invoke(ui
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v31 count:16];
+      v8 = [voices countByEnumeratingWithState:&v21 objects:v31 count:16];
     }
 
     while (v8);
   }
 
-  [(UITableViewDiffableDataSource *)v19->_tableViewDataSource applySnapshot:v4 animatingDifferences:0];
+  [(UITableViewDiffableDataSource *)selfCopy->_tableViewDataSource applySnapshot:v4 animatingDifferences:0];
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = VTUIVoiceSelectionOptionsView;
   [(VTUIVoiceSelectionOptionsView *)&v5 setSemanticContentAttribute:?];
-  [(UITableView *)self->_voicesTableView setSemanticContentAttribute:a3];
+  [(UITableView *)self->_voicesTableView setSemanticContentAttribute:attribute];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SUICVoiceSelectionViewModel *)self->_viewModel voices];
-  v7 = [v6 count];
+  height = fits.height;
+  width = fits.width;
+  voices = [(SUICVoiceSelectionViewModel *)self->_viewModel voices];
+  v7 = [voices count];
   [(VTUIVoiceSelectionOptionsView *)self _cellSizeForSize:width, height];
   v9 = v8 * v7;
 
@@ -263,14 +263,14 @@ id __57__VTUIVoiceSelectionOptionsView__diffableTableDataSource__block_invoke(ui
   return result;
 }
 
-- (CGSize)_cellSizeForSize:(CGSize)a3
+- (CGSize)_cellSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_alloc_init(MEMORY[0x277D75B48]);
-  v7 = [MEMORY[0x277D756E0] cellConfiguration];
-  [v7 setText:@"Height Check"];
-  [v6 setContentConfiguration:v7];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+  [cellConfiguration setText:@"Height Check"];
+  [v6 setContentConfiguration:cellConfiguration];
   [v6 setSemanticContentAttribute:{-[UITableView semanticContentAttribute](self->_voicesTableView, "semanticContentAttribute")}];
   [v6 sizeThatFits:{width, height}];
   v9 = v8;

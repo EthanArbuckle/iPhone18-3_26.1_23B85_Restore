@@ -1,15 +1,15 @@
 @interface AAAbsintheSignerContextCache
-+ (AAAbsintheSignerContextCache)cacheWithContext:(id)a3;
++ (AAAbsintheSignerContextCache)cacheWithContext:(id)context;
 - (AAAbsintheSignerContextCache)init;
-- (AAAbsintheSignerContextCache)initWithContext:(id)a3;
+- (AAAbsintheSignerContextCache)initWithContext:(id)context;
 @end
 
 @implementation AAAbsintheSignerContextCache
 
-+ (AAAbsintheSignerContextCache)cacheWithContext:(id)a3
++ (AAAbsintheSignerContextCache)cacheWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithContext:v4];
+  contextCopy = context;
+  v5 = [[self alloc] initWithContext:contextCopy];
 
   return v5;
 }
@@ -21,19 +21,19 @@
   return 0;
 }
 
-- (AAAbsintheSignerContextCache)initWithContext:(id)a3
+- (AAAbsintheSignerContextCache)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = AAAbsintheSignerContextCache;
   v6 = [(AAAbsintheSignerContextCache *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v6->_creationDate;
-    v6->_creationDate = v7;
+    v6->_creationDate = date;
 
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v6;

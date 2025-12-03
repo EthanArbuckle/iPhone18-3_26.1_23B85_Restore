@@ -12,19 +12,19 @@
 
 - (uint64_t)canProcessEvent
 {
-  v0 = [MEMORY[0x277D657A8] sharedProcessorListener];
-  v1 = [v0 hasDiskCapacity];
+  mEMORY[0x277D657A8] = [MEMORY[0x277D657A8] sharedProcessorListener];
+  hasDiskCapacity = [mEMORY[0x277D657A8] hasDiskCapacity];
 
   if (SKGLogGetCurrentLoggingLevel() >= 7)
   {
     v2 = SKGLogInit();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
-      [(SKGProcessor(Items) *)v1 canProcessEvent:v2];
+      [(SKGProcessor(Items) *)hasDiskCapacity canProcessEvent:v2];
     }
   }
 
-  return v1;
+  return hasDiskCapacity;
 }
 
 - (uint64_t)canProcessEventForRecord:()Items bundleIdentifier:
@@ -36,7 +36,7 @@
   {
     if ([MEMORY[0x277D65798] recordHasTextContent:v6])
     {
-      v8 = [a1 copyContentURLFromRecord:v6];
+      v8 = [self copyContentURLFromRecord:v6];
       if (SKGLogGetCurrentLoggingLevel() >= 7)
       {
         v9 = SKGLogInit();
@@ -45,14 +45,14 @@
           v27[0] = 67109376;
           v27[1] = v8 != 0;
           v28 = 1024;
-          v29 = [a1 recordContainsValue:v6 key:@"_kMDItemContentURLFileID"];
+          v29 = [self recordContainsValue:v6 key:@"_kMDItemContentURLFileID"];
           _os_log_debug_impl(&dword_231B25000, v9, OS_LOG_TYPE_DEBUG, "SKGProcessor+Items#canProcessRecord copyContentURLFromRecordNotNil:%d recordContainsValue:%d", v27, 0xEu);
         }
       }
 
-      if (v8 && [a1 recordContainsValue:v6 key:@"_kMDItemContentURLFileID"])
+      if (v8 && [self recordContainsValue:v6 key:@"_kMDItemContentURLFileID"])
       {
-        v10 = [a1 recordMatchesContentURLOnDisk:v6 contentURL:v8];
+        v10 = [self recordMatchesContentURLOnDisk:v6 contentURL:v8];
         if (SKGLogGetCurrentLoggingLevel() >= 7)
         {
           v11 = SKGLogInit();
@@ -97,7 +97,7 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 copyNumberValueFromRecord:v6 key:@"_kMDItemContentURLFileID"];
+  v8 = [self copyNumberValueFromRecord:v6 key:@"_kMDItemContentURLFileID"];
   v9 = v8;
   v10 = 0;
   if (v8)
@@ -105,7 +105,7 @@
     v11 = *MEMORY[0x277CBEEE8];
     if (v8 != *MEMORY[0x277CBEEE8])
     {
-      v12 = [a1 copyNumberValueFromRecord:v6 key:@"_kMDItemContentURLFileVersion"];
+      v12 = [self copyNumberValueFromRecord:v6 key:@"_kMDItemContentURLFileVersion"];
       v13 = v12;
       v10 = 0;
       if (!v12 || v12 == v11)
@@ -113,7 +113,7 @@
         goto LABEL_15;
       }
 
-      v14 = [a1 copyContentTypeFromRecord:v6];
+      v14 = [self copyContentTypeFromRecord:v6];
       if (!v14)
       {
         v10 = 0;
@@ -160,7 +160,7 @@ LABEL_16:
 {
   if ((a3 & 4) != 0)
   {
-    return [a1 loadKeyphraser];
+    return [self loadKeyphraser];
   }
 
   else
@@ -185,8 +185,8 @@ LABEL_16:
     }
 
 LABEL_6:
-    v18 = [MEMORY[0x277D65798] sharedProcessor];
-    v15 = [v18 copyProtectionClassFromRecord:v10];
+    mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+    v15 = [mEMORY[0x277D65798] copyProtectionClassFromRecord:v10];
 
     if (v12)
     {
@@ -196,8 +196,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v17 = [MEMORY[0x277D65798] sharedProcessor];
-  v14 = [v17 copyReferenceIdentifierFromRecord:v10];
+  mEMORY[0x277D65798]2 = [MEMORY[0x277D65798] sharedProcessor];
+  v14 = [mEMORY[0x277D65798]2 copyReferenceIdentifierFromRecord:v10];
 
   if (!v13)
   {
@@ -214,11 +214,11 @@ LABEL_4:
   }
 
 LABEL_7:
-  v19 = [MEMORY[0x277D65798] sharedProcessor];
-  v16 = [v19 copyBundleIdentifierFromRecord:v10];
+  mEMORY[0x277D65798]3 = [MEMORY[0x277D65798] sharedProcessor];
+  v16 = [mEMORY[0x277D65798]3 copyBundleIdentifierFromRecord:v10];
 
 LABEL_8:
-  v20 = [a1 copyPersonaFromRecord:v10];
+  v20 = [self copyPersonaFromRecord:v10];
   if ([v15 isEqualToString:@"Default"])
   {
     if (!v16)
@@ -233,7 +233,7 @@ LABEL_8:
   {
 LABEL_11:
     v21 = [[SKGProcessedItem alloc] initWithReferenceIdentifier:v14 personaIdentifier:v20 bundleIdentifier:v16 protectionClass:v15];
-    v22 = [a1 copyFilePathFromRecord:v10];
+    v22 = [self copyFilePathFromRecord:v10];
     [(SKGProcessedItem *)v21 setFilePath:v22];
 
     goto LABEL_17;
@@ -263,7 +263,7 @@ LABEL_17:
   v71 = 0x2020000000;
   v72 = 1;
   context = objc_autoreleasePoolPush();
-  v22 = [a1 itemFromRecord:v17 referenceIdentifier:v18 bundleIdentifier:v19 protectionClass:v20];
+  v22 = [self itemFromRecord:v17 referenceIdentifier:v18 bundleIdentifier:v19 protectionClass:v20];
   if (!v22)
   {
     LODWORD(v38) = 0;
@@ -271,14 +271,14 @@ LABEL_17:
     goto LABEL_49;
   }
 
-  v23 = [MEMORY[0x277D65798] sharedProcessor];
-  v24 = [v23 copyLanguageFromRecord:v17];
+  mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+  v24 = [mEMORY[0x277D65798] copyLanguageFromRecord:v17];
   [v22 setLanguage:v24];
 
   if ((a7 & 0x86) != 0)
   {
-    v25 = [v22 textContentLanguage];
-    v26 = v25 == 0;
+    textContentLanguage = [v22 textContentLanguage];
+    v26 = textContentLanguage == 0;
 
     if (v26)
     {
@@ -298,7 +298,7 @@ LABEL_17:
       v62[2] = __209__SKGProcessor_Items__enumerateProcessedItemsFromRecord_referenceIdentifier_bundleIdentifier_protectionClass_processorFlags_workCost_fetchCachedLanguageBlock_cacheLanguageBlock_processedItemBlock_cancelBlock___block_invoke;
       v62[3] = &unk_27893EEA0;
       v68 = &v69;
-      v62[4] = a1;
+      v62[4] = self;
       v63 = v17;
       v64 = v22;
       v65 = v60;
@@ -318,10 +318,10 @@ LABEL_17:
     goto LABEL_37;
   }
 
-  v29 = [MEMORY[0x277D657A8] sharedProcessorListener];
-  v30 = [v29 semanticSearchEnabled];
+  mEMORY[0x277D657A8] = [MEMORY[0x277D657A8] sharedProcessorListener];
+  semanticSearchEnabled = [mEMORY[0x277D657A8] semanticSearchEnabled];
 
-  if (!v30)
+  if (!semanticSearchEnabled)
   {
     if ((v70[3] & 1) == 0)
     {
@@ -333,17 +333,17 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v31 = [MEMORY[0x277D657A8] sharedProcessorListener];
-  v32 = [v31 enableLanguageCheckForEmbedding];
+  mEMORY[0x277D657A8]2 = [MEMORY[0x277D657A8] sharedProcessorListener];
+  enableLanguageCheckForEmbedding = [mEMORY[0x277D657A8]2 enableLanguageCheckForEmbedding];
 
-  if (!v32)
+  if (!enableLanguageCheckForEmbedding)
   {
     v37 = 1;
     goto LABEL_32;
   }
 
-  v33 = [MEMORY[0x277D657A8] sharedProcessorListener];
-  v54 = [v33 supportedSemanticLanguages];
+  mEMORY[0x277D657A8]3 = [MEMORY[0x277D657A8] sharedProcessorListener];
+  supportedSemanticLanguages = [mEMORY[0x277D657A8]3 supportedSemanticLanguages];
 
   if (SKGLogGetCurrentLoggingLevel() >= 7)
   {
@@ -351,17 +351,17 @@ LABEL_36:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
     {
       v53 = v34;
-      v56 = [v22 textContentLanguage];
-      v52 = [v56 length];
-      v49 = [v22 textContentLanguage];
-      v50 = [v22 textContentLanguage];
-      v51 = [v54 containsObject:v50];
+      textContentLanguage2 = [v22 textContentLanguage];
+      v52 = [textContentLanguage2 length];
+      textContentLanguage3 = [v22 textContentLanguage];
+      textContentLanguage4 = [v22 textContentLanguage];
+      v51 = [supportedSemanticLanguages containsObject:textContentLanguage4];
       *buf = 138413058;
-      v74 = v54;
+      v74 = supportedSemanticLanguages;
       v75 = 2048;
       v76 = v52;
       v77 = 2112;
-      v78 = v49;
+      v78 = textContentLanguage3;
       v79 = 1024;
       v80 = v51 ^ 1;
       _os_log_debug_impl(&dword_231B25000, v53, OS_LOG_TYPE_DEBUG, "SKGProcessor+Items#enumerateProcessedItemsFromRecord supportedSemanticLanguages=%@ textContentLanguage=%lu textContentLanguage=%@ isContentLanguageSupported=%d", buf, 0x26u);
@@ -370,8 +370,8 @@ LABEL_36:
     }
   }
 
-  v55 = [v22 textContentLanguage];
-  if (![v55 length] || !objc_msgSend(v54, "count"))
+  textContentLanguage5 = [v22 textContentLanguage];
+  if (![textContentLanguage5 length] || !objc_msgSend(supportedSemanticLanguages, "count"))
   {
     v37 = 1;
 LABEL_30:
@@ -379,8 +379,8 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v35 = [v22 textContentLanguage];
-  v36 = [v54 containsObject:v35];
+  textContentLanguage6 = [v22 textContentLanguage];
+  v36 = [supportedSemanticLanguages containsObject:textContentLanguage6];
 
   if ((v36 & 1) == 0)
   {
@@ -393,8 +393,8 @@ LABEL_30:
       }
     }
 
-    v55 = +[SKGActivityJournal sharedJournal];
-    [v55 addEventForItem:14 bundleID:v19 identifier:v18];
+    textContentLanguage5 = +[SKGActivityJournal sharedJournal];
+    [textContentLanguage5 addEventForItem:14 bundleID:v19 identifier:v18];
     v37 = 0;
     goto LABEL_30;
   }
@@ -416,7 +416,7 @@ LABEL_32:
   v41 = +[SKGActivityJournal sharedJournal];
   [v41 addEventForItem:5 bundleID:v19 identifier:v18];
 
-  v42 = [a1 generateEmbeddingsForRecord:v17 processedItem:v22 isPriority:(a7 >> 6) & 1 workCost:a8 cancelBlock:v21];
+  v42 = [self generateEmbeddingsForRecord:v17 processedItem:v22 isPriority:(a7 >> 6) & 1 workCost:a8 cancelBlock:v21];
   *(v70 + 24) = v42;
   if ((v42 & 1) == 0)
   {
@@ -427,7 +427,7 @@ LABEL_37:
   if ((a7 & 4) != 0)
   {
     v43 = dispatch_time(0, 0);
-    v44 = [a1 generateKeyphrasesForRecord:v17 processedItem:v22 processorFlags:a7 cancelBlock:v21];
+    v44 = [self generateKeyphrasesForRecord:v17 processedItem:v22 processorFlags:a7 cancelBlock:v21];
     *(v70 + 24) = v44;
     if (a8)
     {
@@ -449,7 +449,7 @@ LABEL_37:
   {
     if (*(v70 + 24))
     {
-      v46 = [a1 generatePeopleForRecord:v17 processedItem:v22 processedItemBlock:v59 cancelBlock:v21];
+      v46 = [self generatePeopleForRecord:v17 processedItem:v22 processedItemBlock:v59 cancelBlock:v21];
       v39 = 0;
 LABEL_47:
       v38 = (a7 >> 3) & 1;

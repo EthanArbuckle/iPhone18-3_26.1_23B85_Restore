@@ -1,17 +1,17 @@
 @interface ContextRequestHandler
 - (_TtC25PodcastsClassKitExtension21ContextRequestHandler)init;
-- (void)updateDescendantsOfContext:(id)a3 completion:(id)a4;
+- (void)updateDescendantsOfContext:(id)context completion:(id)completion;
 @end
 
 @implementation ContextRequestHandler
 
-- (void)updateDescendantsOfContext:(id)a3 completion:(id)a4
+- (void)updateDescendantsOfContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10000B024(v7, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_10000B024(contextCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

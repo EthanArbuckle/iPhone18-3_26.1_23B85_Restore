@@ -1,6 +1,6 @@
 @interface PLExpandableImageViewAccessibility
 - (id)_accessibilityElementStoredUserLabel;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_axExifLabel;
 - (id)_axMainAssetURL;
 - (id)_axSourceObject;
@@ -31,7 +31,7 @@
 
 - (id)_axExifLabel
 {
-  v2 = [(PLExpandableImageViewAccessibility *)self _axMainAssetURL];
+  _axMainAssetURL = [(PLExpandableImageViewAccessibility *)self _axMainAssetURL];
   v3 = UIAccessibilityMetadataDescriptionForImage();
 
   return v3;
@@ -39,11 +39,11 @@
 
 - (id)_accessibilityElementStoredUserLabel
 {
-  v2 = [(PLExpandableImageViewAccessibility *)self _axExifLabel];
-  v3 = v2;
-  if (v2)
+  _axExifLabel = [(PLExpandableImageViewAccessibility *)self _axExifLabel];
+  v3 = _axExifLabel;
+  if (_axExifLabel)
   {
-    v4 = v2;
+    v4 = _axExifLabel;
   }
 
   else
@@ -54,11 +54,11 @@
   return v4;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  v39 = a3;
+  testCopy = test;
   v46 = *MEMORY[0x29EDCA608];
-  v5 = a4;
+  eventCopy = event;
   v6 = [(PLExpandableImageViewAccessibility *)self _accessibilityValueForKey:@"AXAccessibilityFrame"];
   [v6 rectValue];
   v8 = v7;
@@ -85,8 +85,8 @@
     [(PLExpandableImageViewAccessibility *)self _accessibilitySetRetainedValue:v23 forKey:@"AXAccessibilityFrame"];
   }
 
-  x = v39.x;
-  y = v39.y;
+  x = testCopy.x;
+  y = testCopy.y;
   UIAccessibilityPointForPoint();
   v27 = v26;
   v29 = v28;
@@ -133,7 +133,7 @@
 
   v40.receiver = self;
   v40.super_class = PLExpandableImageViewAccessibility;
-  v36 = [(PLExpandableImageViewAccessibility *)&v40 _accessibilityHitTest:v5 withEvent:x, y];
+  v36 = [(PLExpandableImageViewAccessibility *)&v40 _accessibilityHitTest:eventCopy withEvent:x, y];
 LABEL_13:
 
   v37 = *MEMORY[0x29EDCA608];
@@ -144,8 +144,8 @@ LABEL_13:
 - (id)_axSourceObject
 {
   v3 = [(PLExpandableImageViewAccessibility *)self safeValueForKey:@"_photo"];
-  v4 = [v3 accessibilityLabel];
-  v5 = [v4 length];
+  accessibilityLabel = [v3 accessibilityLabel];
+  v5 = [accessibilityLabel length];
 
   if (!v5)
   {
@@ -159,26 +159,26 @@ LABEL_13:
 
 - (id)accessibilityValue
 {
-  v2 = [(PLExpandableImageViewAccessibility *)self _axSourceObject];
-  v3 = [v2 accessibilityValue];
+  _axSourceObject = [(PLExpandableImageViewAccessibility *)self _axSourceObject];
+  accessibilityValue = [_axSourceObject accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(PLExpandableImageViewAccessibility *)self _axSourceObject];
-  v3 = [v2 accessibilityLabel];
+  _axSourceObject = [(PLExpandableImageViewAccessibility *)self _axSourceObject];
+  accessibilityLabel = [_axSourceObject accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(PLExpandableImageViewAccessibility *)self _axSourceObject];
-  v3 = [v2 accessibilityTraits];
+  _axSourceObject = [(PLExpandableImageViewAccessibility *)self _axSourceObject];
+  accessibilityTraits = [_axSourceObject accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 @end

@@ -76,7 +76,7 @@
     {
       if (v8 != 1.0)
       {
-        v11 = [(CIMix *)self _kernel];
+        _kernel = [(CIMix *)self _kernel];
         [(CIImage *)v7 extent];
         v13 = v12;
         v15 = v14;
@@ -98,7 +98,7 @@
         height = v33.size.height;
         *&v33.origin.x = v8;
         v28[2] = [MEMORY[0x1E696AD98] numberWithFloat:{v33.origin.x, v7, inputBackgroundImage}];
-        return [v11 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v28, 3), x, y, width, height}];
+        return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v28, 3), x, y, width, height}];
       }
 
       v10 = v7;

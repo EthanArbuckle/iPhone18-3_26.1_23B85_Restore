@@ -1,17 +1,17 @@
 @interface JSListenNowTabViewController
-- (_TtC16MusicApplication28JSListenNowTabViewController)initWithCoder:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC16MusicApplication28JSListenNowTabViewController)initWithCoder:(id)coder;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation JSListenNowTabViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(JSDrivenViewController *)&v5 viewWillAppear:v3];
+  [(JSDrivenViewController *)&v5 viewWillAppear:appearCopy];
   if (qword_DE6C18 != -1)
   {
     swift_once();
@@ -21,12 +21,12 @@
   sub_449D54(1, UIScreen.Dimensions.size.getter, 0);
 }
 
-- (_TtC16MusicApplication28JSListenNowTabViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication28JSListenNowTabViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(JSTabViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(JSTabViewController *)&v7 initWithCoder:coderCopy];
 
   return v5;
 }

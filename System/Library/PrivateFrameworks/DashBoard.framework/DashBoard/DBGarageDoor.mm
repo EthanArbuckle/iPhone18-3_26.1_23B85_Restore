@@ -1,7 +1,7 @@
 @interface DBGarageDoor
 + (id)serviceType;
 + (void)load;
-- (BOOL)_shouldUpdateLastUsedForCharacteristic:(id)a3;
+- (BOOL)_shouldUpdateLastUsedForCharacteristic:(id)characteristic;
 - (BOOL)current;
 - (BOOL)hasError;
 - (BOOL)obstructionDetected;
@@ -9,179 +9,179 @@
 - (BOOL)pendingWrite;
 - (id)description;
 - (id)managedCharacteristics;
-- (int64_t)_doorStateForCharacteristic:(id)a3;
+- (int64_t)_doorStateForCharacteristic:(id)characteristic;
 - (int64_t)doorState;
 - (int64_t)doorType;
 - (int64_t)targetDoorState;
-- (void)_characteristicDidUpdate:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setTargetDoorState:(int64_t)a3;
+- (void)_characteristicDidUpdate:(id)update;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)setTargetDoorState:(int64_t)state;
 @end
 
 @implementation DBGarageDoor
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___DBGarageDoor;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (BOOL)current
 {
-  v3 = [(DBGarageDoor *)self doorStateCharacteristic];
-  if ([v3 current])
+  doorStateCharacteristic = [(DBGarageDoor *)self doorStateCharacteristic];
+  if ([doorStateCharacteristic current])
   {
-    v4 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
-    if ([v4 current])
+    targetDoorStateCharacteristic = [(DBGarageDoor *)self targetDoorStateCharacteristic];
+    if ([targetDoorStateCharacteristic current])
     {
-      v5 = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
-      v6 = [v5 current];
+      obstructionDetectedCharacteristic = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
+      current = [obstructionDetectedCharacteristic current];
     }
 
     else
     {
-      v6 = 0;
+      current = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    current = 0;
   }
 
-  return v6;
+  return current;
 }
 
 - (BOOL)pendingWrite
 {
-  v2 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
-  v3 = [v2 pendingWrite];
+  targetDoorStateCharacteristic = [(DBGarageDoor *)self targetDoorStateCharacteristic];
+  pendingWrite = [targetDoorStateCharacteristic pendingWrite];
 
-  return v3;
+  return pendingWrite;
 }
 
 - (BOOL)pendingRead
 {
-  v3 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
-  if ([v3 pendingRead])
+  targetDoorStateCharacteristic = [(DBGarageDoor *)self targetDoorStateCharacteristic];
+  if ([targetDoorStateCharacteristic pendingRead])
   {
-    v4 = 1;
+    pendingRead = 1;
   }
 
   else
   {
-    v5 = [(DBGarageDoor *)self doorStateCharacteristic];
-    if ([v5 pendingRead])
+    doorStateCharacteristic = [(DBGarageDoor *)self doorStateCharacteristic];
+    if ([doorStateCharacteristic pendingRead])
     {
-      v4 = 1;
+      pendingRead = 1;
     }
 
     else
     {
-      v6 = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
-      v4 = [v6 pendingRead];
+      obstructionDetectedCharacteristic = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
+      pendingRead = [obstructionDetectedCharacteristic pendingRead];
     }
   }
 
-  return v4;
+  return pendingRead;
 }
 
 - (BOOL)hasError
 {
-  v3 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
-  if ([v3 hasError])
+  targetDoorStateCharacteristic = [(DBGarageDoor *)self targetDoorStateCharacteristic];
+  if ([targetDoorStateCharacteristic hasError])
   {
-    v4 = 1;
+    hasError = 1;
   }
 
   else
   {
-    v5 = [(DBGarageDoor *)self doorStateCharacteristic];
-    if ([v5 hasError])
+    doorStateCharacteristic = [(DBGarageDoor *)self doorStateCharacteristic];
+    if ([doorStateCharacteristic hasError])
     {
-      v4 = 1;
+      hasError = 1;
     }
 
     else
     {
-      v6 = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
-      v4 = [v6 hasError];
+      obstructionDetectedCharacteristic = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
+      hasError = [obstructionDetectedCharacteristic hasError];
     }
   }
 
-  return v4;
+  return hasError;
 }
 
-- (int64_t)_doorStateForCharacteristic:(id)a3
+- (int64_t)_doorStateForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  if (([v4 current] & 1) == 0 && (objc_msgSend(v4, "pendingWrite") & 1) == 0 && !objc_msgSend(v4, "pendingRead"))
+  characteristicCopy = characteristic;
+  if (([characteristicCopy current] & 1) == 0 && (objc_msgSend(characteristicCopy, "pendingWrite") & 1) == 0 && !objc_msgSend(characteristicCopy, "pendingRead"))
   {
     goto LABEL_12;
   }
 
   if ([(DBHomeKitService *)self reachable])
   {
-    v5 = [v4 value];
-    if (v5)
+    value = [characteristicCopy value];
+    if (value)
     {
 
       goto LABEL_10;
     }
 
-    if (([v4 hasError] & 1) == 0)
+    if (([characteristicCopy hasError] & 1) == 0)
     {
 LABEL_10:
-      v7 = [v4 value];
+      value2 = [characteristicCopy value];
 
-      if (v7)
+      if (value2)
       {
-        v6 = [v4 doorStateValue];
+        doorStateValue = [characteristicCopy doorStateValue];
         goto LABEL_13;
       }
 
 LABEL_12:
-      v6 = -1;
+      doorStateValue = -1;
       goto LABEL_13;
     }
 
-    v6 = -3;
+    doorStateValue = -3;
   }
 
   else
   {
-    v6 = -2;
+    doorStateValue = -2;
   }
 
 LABEL_13:
 
-  return v6;
+  return doorStateValue;
 }
 
 - (int64_t)doorState
 {
-  v3 = [(DBHomeKitService *)self home];
-  v4 = [v3 unsupportedLegacyHomeHubVersion];
+  home = [(DBHomeKitService *)self home];
+  unsupportedLegacyHomeHubVersion = [home unsupportedLegacyHomeHubVersion];
 
-  if (v4)
+  if (unsupportedLegacyHomeHubVersion)
   {
     return -4;
   }
 
-  v6 = [(DBGarageDoor *)self doorStateCharacteristic];
-  v5 = [(DBGarageDoor *)self _doorStateForCharacteristic:v6];
+  doorStateCharacteristic = [(DBGarageDoor *)self doorStateCharacteristic];
+  v5 = [(DBGarageDoor *)self _doorStateForCharacteristic:doorStateCharacteristic];
 
   if ((v5 & 0x8000000000000000) == 0)
   {
-    v7 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
-    v8 = [(DBGarageDoor *)self _doorStateForCharacteristic:v7];
+    targetDoorStateCharacteristic = [(DBGarageDoor *)self targetDoorStateCharacteristic];
+    v8 = [(DBGarageDoor *)self _doorStateForCharacteristic:targetDoorStateCharacteristic];
 
-    v9 = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
-    LOBYTE(v7) = [v9 BOOLValue];
+    obstructionDetectedCharacteristic = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
+    LOBYTE(targetDoorStateCharacteristic) = [obstructionDetectedCharacteristic BOOLValue];
 
-    if (v7)
+    if (targetDoorStateCharacteristic)
     {
       return 100;
     }
@@ -205,36 +205,36 @@ LABEL_13:
 
 - (int64_t)targetDoorState
 {
-  v3 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
-  v4 = [(DBGarageDoor *)self _doorStateForCharacteristic:v3];
+  targetDoorStateCharacteristic = [(DBGarageDoor *)self targetDoorStateCharacteristic];
+  v4 = [(DBGarageDoor *)self _doorStateForCharacteristic:targetDoorStateCharacteristic];
 
   return v4;
 }
 
-- (void)setTargetDoorState:(int64_t)a3
+- (void)setTargetDoorState:(int64_t)state
 {
-  v5 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
-  v6 = [v5 doorStateValue];
+  targetDoorStateCharacteristic = [(DBGarageDoor *)self targetDoorStateCharacteristic];
+  doorStateValue = [targetDoorStateCharacteristic doorStateValue];
 
-  if (v6 != a3)
+  if (doorStateValue != state)
   {
-    v7 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
-    [v7 setDoorStateValue:a3];
+    targetDoorStateCharacteristic2 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
+    [targetDoorStateCharacteristic2 setDoorStateValue:state];
   }
 }
 
 - (BOOL)obstructionDetected
 {
-  v2 = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
-  v3 = [v2 BOOLValue];
+  obstructionDetectedCharacteristic = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
+  bOOLValue = [obstructionDetectedCharacteristic BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)doorType
 {
-  v2 = [(DBHomeKitService *)self applicationData];
-  v3 = [v2 objectForKey:@"HFApplicationDataServiceIconID"];
+  applicationData = [(DBHomeKitService *)self applicationData];
+  v3 = [applicationData objectForKey:@"HFApplicationDataServiceIconID"];
 
   if (v3 && [v3 length])
   {
@@ -266,11 +266,11 @@ LABEL_13:
 {
   v26 = MEMORY[0x277CCACA8];
   v25 = objc_opt_class();
-  v24 = [(DBHomeKitService *)self name];
-  v23 = [(DBHomeKitService *)self uniqueIdentifier];
-  v22 = [(DBHomeKitService *)self home];
-  v27 = [(DBHomeKitService *)self home];
-  v28 = [v27 uniqueIdentifier];
+  name = [(DBHomeKitService *)self name];
+  uniqueIdentifier = [(DBHomeKitService *)self uniqueIdentifier];
+  home = [(DBHomeKitService *)self home];
+  home2 = [(DBHomeKitService *)self home];
+  uniqueIdentifier2 = [home2 uniqueIdentifier];
   if ([(DBHomeKitService *)self lastWritten])
   {
     v3 = @"YES";
@@ -336,29 +336,29 @@ LABEL_13:
   }
 
   v17 = NSStringFromDoorState([(DBGarageDoor *)self doorState]);
-  v9 = [(DBGarageDoor *)self doorStateCharacteristic];
-  v10 = [v9 stateDescription];
-  v11 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
-  v12 = [v11 stateDescription];
-  v13 = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
-  v14 = [v13 stateDescription];
-  v15 = [v26 stringWithFormat:@"<%@: %p name=%@ uniqueIdentifier=%@ home=(%p)%@ lastWritten=%@ reachable=%@ current=%@ pendingRead=%@ pendingWrite=%@ hasError=%@ doorState=%@ characteristics: %@ %@ %@>", v25, self, v24, v23, v22, v28, v21, v20, v19, v18, v7, v8, v17, v10, v12, v14];
+  doorStateCharacteristic = [(DBGarageDoor *)self doorStateCharacteristic];
+  stateDescription = [doorStateCharacteristic stateDescription];
+  targetDoorStateCharacteristic = [(DBGarageDoor *)self targetDoorStateCharacteristic];
+  stateDescription2 = [targetDoorStateCharacteristic stateDescription];
+  obstructionDetectedCharacteristic = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
+  stateDescription3 = [obstructionDetectedCharacteristic stateDescription];
+  v15 = [v26 stringWithFormat:@"<%@: %p name=%@ uniqueIdentifier=%@ home=(%p)%@ lastWritten=%@ reachable=%@ current=%@ pendingRead=%@ pendingWrite=%@ hasError=%@ doorState=%@ characteristics: %@ %@ %@>", v25, self, name, uniqueIdentifier, home, uniqueIdentifier2, v21, v20, v19, v18, v7, v8, v17, stateDescription, stateDescription2, stateDescription3];
 
   return v15;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBHomeKitService *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBHomeKitService *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBHomeKitService *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBHomeKitService *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 + (id)serviceType
@@ -372,61 +372,61 @@ LABEL_13:
 - (id)managedCharacteristics
 {
   v8[3] = *MEMORY[0x277D85DE8];
-  v3 = [(DBGarageDoor *)self doorStateCharacteristic];
-  v4 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
-  v8[1] = v4;
-  v5 = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
-  v8[2] = v5;
+  doorStateCharacteristic = [(DBGarageDoor *)self doorStateCharacteristic];
+  targetDoorStateCharacteristic = [(DBGarageDoor *)self targetDoorStateCharacteristic];
+  v8[1] = targetDoorStateCharacteristic;
+  obstructionDetectedCharacteristic = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
+  v8[2] = obstructionDetectedCharacteristic;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:3];
 
   return v6;
 }
 
-- (void)_characteristicDidUpdate:(id)a3
+- (void)_characteristicDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 uniqueIdentifier];
-  v6 = [(DBGarageDoor *)self doorStateCharacteristic];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v5 isEqual:v7];
+  updateCopy = update;
+  uniqueIdentifier = [updateCopy uniqueIdentifier];
+  doorStateCharacteristic = [(DBGarageDoor *)self doorStateCharacteristic];
+  uniqueIdentifier2 = [doorStateCharacteristic uniqueIdentifier];
+  v8 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v8)
   {
     v9 = DBLogForCategory(9uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [DBGarageDoor _characteristicDidUpdate:v4];
+      [DBGarageDoor _characteristicDidUpdate:updateCopy];
     }
 
-    v10 = [(DBHomeKitService *)self observers];
-    [v10 garageDoor:self didUpdateDoorState:{-[DBGarageDoor doorState](self, "doorState")}];
+    observers = [(DBHomeKitService *)self observers];
+    [observers garageDoor:self didUpdateDoorState:{-[DBGarageDoor doorState](self, "doorState")}];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v11 = [v4 uniqueIdentifier];
-  v12 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
-  v13 = [v12 uniqueIdentifier];
-  v14 = [v11 isEqual:v13];
+  uniqueIdentifier3 = [updateCopy uniqueIdentifier];
+  targetDoorStateCharacteristic = [(DBGarageDoor *)self targetDoorStateCharacteristic];
+  uniqueIdentifier4 = [targetDoorStateCharacteristic uniqueIdentifier];
+  v14 = [uniqueIdentifier3 isEqual:uniqueIdentifier4];
 
   if (v14)
   {
     v15 = DBLogForCategory(9uLL);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [DBGarageDoor _characteristicDidUpdate:v4];
+      [DBGarageDoor _characteristicDidUpdate:updateCopy];
     }
 
-    v10 = [(DBHomeKitService *)self observers];
-    [v10 garageDoor:self didUpdateTargetDoorState:{-[DBGarageDoor targetDoorState](self, "targetDoorState")}];
+    observers = [(DBHomeKitService *)self observers];
+    [observers garageDoor:self didUpdateTargetDoorState:{-[DBGarageDoor targetDoorState](self, "targetDoorState")}];
     goto LABEL_13;
   }
 
-  v16 = [v4 uniqueIdentifier];
-  v17 = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
-  v18 = [v17 uniqueIdentifier];
-  v19 = [v16 isEqual:v18];
+  uniqueIdentifier5 = [updateCopy uniqueIdentifier];
+  obstructionDetectedCharacteristic = [(DBGarageDoor *)self obstructionDetectedCharacteristic];
+  uniqueIdentifier6 = [obstructionDetectedCharacteristic uniqueIdentifier];
+  v19 = [uniqueIdentifier5 isEqual:uniqueIdentifier6];
 
   v20 = DBLogForCategory(9uLL);
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG);
@@ -434,50 +434,50 @@ LABEL_13:
   {
     if (v21)
     {
-      [DBGarageDoor _characteristicDidUpdate:v4];
+      [DBGarageDoor _characteristicDidUpdate:updateCopy];
     }
 
-    v10 = [(DBHomeKitService *)self observers];
-    [v10 garageDoor:self didUpdateObstructionDetected:{-[DBGarageDoor obstructionDetected](self, "obstructionDetected")}];
+    observers = [(DBHomeKitService *)self observers];
+    [observers garageDoor:self didUpdateObstructionDetected:{-[DBGarageDoor obstructionDetected](self, "obstructionDetected")}];
     goto LABEL_13;
   }
 
   if (v21)
   {
-    [DBGarageDoor _characteristicDidUpdate:v4];
+    [DBGarageDoor _characteristicDidUpdate:updateCopy];
   }
 
   v22.receiver = self;
   v22.super_class = DBGarageDoor;
-  [(DBHomeKitService *)&v22 _characteristicDidUpdate:v4];
+  [(DBHomeKitService *)&v22 _characteristicDidUpdate:updateCopy];
 LABEL_14:
 }
 
-- (BOOL)_shouldUpdateLastUsedForCharacteristic:(id)a3
+- (BOOL)_shouldUpdateLastUsedForCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(DBGarageDoor *)v4 _shouldUpdateLastUsedForCharacteristic:v5];
+    [(DBGarageDoor *)characteristicCopy _shouldUpdateLastUsedForCharacteristic:v5];
   }
 
-  v6 = [v4 uniqueIdentifier];
-  v7 = [(DBGarageDoor *)self targetDoorStateCharacteristic];
-  v8 = [v7 uniqueIdentifier];
-  v9 = [v6 isEqual:v8];
+  uniqueIdentifier = [characteristicCopy uniqueIdentifier];
+  targetDoorStateCharacteristic = [(DBGarageDoor *)self targetDoorStateCharacteristic];
+  uniqueIdentifier2 = [targetDoorStateCharacteristic uniqueIdentifier];
+  v9 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v9)
   {
-    v10 = [(DBGarageDoor *)self _tracksLastUsed];
+    _tracksLastUsed = [(DBGarageDoor *)self _tracksLastUsed];
   }
 
   else
   {
-    v10 = 0;
+    _tracksLastUsed = 0;
   }
 
-  return v10;
+  return _tracksLastUsed;
 }
 
 - (void)_characteristicDidUpdate:(void *)a1 .cold.1(void *a1)

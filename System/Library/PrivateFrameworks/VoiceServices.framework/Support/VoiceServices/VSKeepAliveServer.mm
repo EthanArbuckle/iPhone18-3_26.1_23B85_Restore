@@ -1,27 +1,27 @@
 @interface VSKeepAliveServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (VSKeepAliveServer)init;
 - (void)dealloc;
 @end
 
 @implementation VSKeepAliveServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = objc_alloc_init(VSKeepAliveClient);
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___VSRemoteKeepAlive];
-  [v4 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v4 setExportedObject:v5];
+  [connectionCopy setExportedObject:v5];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000EBC9C;
   v9[3] = &unk_1000FEAD8;
   v10 = v5;
   v7 = v5;
-  [v4 setInvalidationHandler:v9];
-  [v4 resume];
+  [connectionCopy setInvalidationHandler:v9];
+  [connectionCopy resume];
 
   return 1;
 }

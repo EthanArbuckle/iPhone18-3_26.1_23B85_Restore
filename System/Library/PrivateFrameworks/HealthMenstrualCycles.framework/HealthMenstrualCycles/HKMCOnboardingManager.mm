@@ -1,38 +1,38 @@
 @interface HKMCOnboardingManager
-- (BOOL)_resetOnboardingCharacteristicsWithError:(id *)a3;
-- (BOOL)_resetOnboardingKeyValueDomainWithError:(id *)a3;
-- (BOOL)_setLegacyOnboardingCompletedVersion:(int64_t)a3 error:(id *)a4;
+- (BOOL)_resetOnboardingCharacteristicsWithError:(id *)error;
+- (BOOL)_resetOnboardingKeyValueDomainWithError:(id *)error;
+- (BOOL)_setLegacyOnboardingCompletedVersion:(int64_t)version error:(id *)error;
 - (BOOL)isAnyOnboardingVersionCompleted;
-- (HKMCOnboardingManager)initWithHealthStore:(id)a3 queue:(id)a4;
+- (HKMCOnboardingManager)initWithHealthStore:(id)store queue:(id)queue;
 - (HKQuantity)userEnteredCycleLength;
 - (HKQuantity)userEnteredPeriodLength;
-- (id)_featureAvailabilityStoreForFeatureWithIdentifier:(id)a3;
-- (id)_onboardingRecordForFeatureWithIdentifier:(id)a3 error:(id *)a4;
-- (void)_saveUserEnteredCycleLength:(id)a3 userEnteredPeriodLength:(id)a4 userEnteredLastPeriodStartDay:(id)a5 addedCycleFactors:(id)a6 deletedCycleFactors:(id)a7 completion:(id)a8;
-- (void)_setCurrentOnboardingVersionCompletedWithInfo:(id)a3 completion:(id)a4;
+- (id)_featureAvailabilityStoreForFeatureWithIdentifier:(id)identifier;
+- (id)_onboardingRecordForFeatureWithIdentifier:(id)identifier error:(id *)error;
+- (void)_saveUserEnteredCycleLength:(id)length userEnteredPeriodLength:(id)periodLength userEnteredLastPeriodStartDay:(id)day addedCycleFactors:(id)factors deletedCycleFactors:(id)cycleFactors completion:(id)completion;
+- (void)_setCurrentOnboardingVersionCompletedWithInfo:(id)info completion:(id)completion;
 - (void)_triggerHealthKitSync;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3;
-- (void)featureAvailabilityProvidingDidUpdateSettings:(id)a3;
-- (void)isAnyOnboardingVersionCompletedWithCompletion:(id)a3;
-- (void)resetOnboarding:(id)a3;
-- (void)setOnboardingCompletedWithInfo:(id)a3 completion:(id)a4;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion;
+- (void)featureAvailabilityProvidingDidUpdateSettings:(id)settings;
+- (void)isAnyOnboardingVersionCompletedWithCompletion:(id)completion;
+- (void)resetOnboarding:(id)onboarding;
+- (void)setOnboardingCompletedWithInfo:(id)info completion:(id)completion;
 - (void)userEnteredCycleLength;
 - (void)userEnteredPeriodLength;
 @end
 
 @implementation HKMCOnboardingManager
 
-- (HKMCOnboardingManager)initWithHealthStore:(id)a3 queue:(id)a4
+- (HKMCOnboardingManager)initWithHealthStore:(id)store queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  queueCopy = queue;
   v35.receiver = self;
   v35.super_class = HKMCOnboardingManager;
   v9 = [(HKMCOnboardingManager *)&v35 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_healthStore, a3);
+    objc_storeStrong(&v9->_healthStore, store);
     v11 = objc_alloc(MEMORY[0x277CCD738]);
     v12 = [v11 initWithName:@"HKMCOnboardingManagerObserver" loggingCategory:*MEMORY[0x277CCC2E8]];
     observers = v10->_observers;
@@ -42,9 +42,9 @@
     menstrualCyclesStore = v10->_menstrualCyclesStore;
     v10->_menstrualCyclesStore = v14;
 
-    if (v8)
+    if (queueCopy)
     {
-      v16 = v8;
+      v16 = queueCopy;
       observerQueue = v10->_observerQueue;
       v10->_observerQueue = v16;
     }
@@ -81,7 +81,7 @@
     v10->_wristTemperatureInputFeatureAvailabilityStore = v30;
 
     [(HKFeatureAvailabilityStore *)v10->_wristTemperatureInputFeatureAvailabilityStore registerObserver:v10 queue:v10->_observerQueue];
-    v32 = [objc_alloc(MEMORY[0x277CCD570]) initWithCategory:0 domainName:@"com.apple.private.health.menstrual-cycles" healthStore:v7];
+    v32 = [objc_alloc(MEMORY[0x277CCD570]) initWithCategory:0 domainName:@"com.apple.private.health.menstrual-cycles" healthStore:storeCopy];
     legacyOnboardingKeyValueDomain = v10->_legacyOnboardingKeyValueDomain;
     v10->_legacyOnboardingKeyValueDomain = v32;
   }
@@ -89,10 +89,10 @@
   return v10;
 }
 
-- (id)_featureAvailabilityStoreForFeatureWithIdentifier:(id)a3
+- (id)_featureAvailabilityStoreForFeatureWithIdentifier:(id)identifier
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   deviationsFeatureAvailabilityStore = self->_deviationsFeatureAvailabilityStore;
   heartRateInputFeatureAvailabilityStore = self->_heartRateInputFeatureAvailabilityStore;
   wristTemperatureInputFeatureAvailabilityStore = self->_wristTemperatureInputFeatureAvailabilityStore;
@@ -105,8 +105,8 @@
   v13[1] = 3221225472;
   v13[2] = __75__HKMCOnboardingManager__featureAvailabilityStoreForFeatureWithIdentifier___block_invoke;
   v13[3] = &unk_2796D5428;
-  v14 = v4;
-  v9 = v4;
+  v14 = identifierCopy;
+  v9 = identifierCopy;
   v10 = [v8 hk_firstObjectPassingTest:v13];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -125,15 +125,15 @@ uint64_t __75__HKMCOnboardingManager__featureAvailabilityStoreForFeatureWithIden
 - (BOOL)isAnyOnboardingVersionCompleted
 {
   v2 = [(HKMCOnboardingManager *)self onboardingRecordWithError:0];
-  v3 = [v2 isOnboardingPresent];
+  isOnboardingPresent = [v2 isOnboardingPresent];
 
-  return v3;
+  return isOnboardingPresent;
 }
 
-- (id)_onboardingRecordForFeatureWithIdentifier:(id)a3 error:(id *)a4
+- (id)_onboardingRecordForFeatureWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HKMCOnboardingManager *)self _featureAvailabilityStoreForFeatureWithIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(HKMCOnboardingManager *)self _featureAvailabilityStoreForFeatureWithIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
@@ -146,10 +146,10 @@ uint64_t __75__HKMCOnboardingManager__featureAvailabilityStoreForFeatureWithIden
       v12 = v10;
       if (v12)
       {
-        if (a4)
+        if (error)
         {
           v13 = v12;
-          *a4 = v12;
+          *error = v12;
         }
 
         else
@@ -168,23 +168,23 @@ uint64_t __75__HKMCOnboardingManager__featureAvailabilityStoreForFeatureWithIden
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:110 format:{@"%@ is not a supported feature", v6}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:110 format:{@"%@ is not a supported feature", identifierCopy}];
     v9 = 0;
   }
 
   return v9;
 }
 
-- (void)isAnyOnboardingVersionCompletedWithCompletion:(id)a3
+- (void)isAnyOnboardingVersionCompletedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   featureAvailabilityStore = self->_featureAvailabilityStore;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__HKMCOnboardingManager_isAnyOnboardingVersionCompletedWithCompletion___block_invoke;
   v7[3] = &unk_2796D5450;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(HKFeatureAvailabilityStore *)featureAvailabilityStore getFeatureOnboardingRecordWithCompletion:v7];
 }
 
@@ -264,7 +264,7 @@ void __71__HKMCOnboardingManager_isAnyOnboardingVersionCompletedWithCompletion__
   return v3;
 }
 
-- (BOOL)_setLegacyOnboardingCompletedVersion:(int64_t)a3 error:(id *)a4
+- (BOOL)_setLegacyOnboardingCompletedVersion:(int64_t)version error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -276,7 +276,7 @@ void __71__HKMCOnboardingManager_isAnyOnboardingVersionCompletedWithCompletion__
     v9 = objc_opt_class();
     v10 = MEMORY[0x277CCABB0];
     v11 = v9;
-    v12 = [v10 numberWithInteger:a3];
+    v12 = [v10 numberWithInteger:version];
     *buf = 138543618;
     v29 = v9;
     v30 = 2114;
@@ -285,7 +285,7 @@ void __71__HKMCOnboardingManager_isAnyOnboardingVersionCompletedWithCompletion__
   }
 
   legacyOnboardingKeyValueDomain = self->_legacyOnboardingKeyValueDomain;
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:version];
   v27 = 0;
   LOBYTE(legacyOnboardingKeyValueDomain) = [(HKKeyValueDomain *)legacyOnboardingKeyValueDomain setNumber:v14 forKey:@"OnboardingCompleted" error:&v27];
   v15 = v27;
@@ -318,9 +318,9 @@ LABEL_13:
     }
 
     v22 = self->_legacyOnboardingKeyValueDomain;
-    v23 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v25 = 0;
-    v24 = [(HKKeyValueDomain *)v22 setDate:v23 forKey:@"OnboardingFirstCompletedDate" error:&v25];
+    v24 = [(HKKeyValueDomain *)v22 setDate:date forKey:@"OnboardingFirstCompletedDate" error:&v25];
     v15 = v25;
 
     if (v24)
@@ -352,26 +352,26 @@ LABEL_14:
   return v19;
 }
 
-- (void)_saveUserEnteredCycleLength:(id)a3 userEnteredPeriodLength:(id)a4 userEnteredLastPeriodStartDay:(id)a5 addedCycleFactors:(id)a6 deletedCycleFactors:(id)a7 completion:(id)a8
+- (void)_saveUserEnteredCycleLength:(id)length userEnteredPeriodLength:(id)periodLength userEnteredLastPeriodStartDay:(id)day addedCycleFactors:(id)factors deletedCycleFactors:(id)cycleFactors completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  lengthCopy = length;
+  periodLengthCopy = periodLength;
+  dayCopy = day;
+  factorsCopy = factors;
+  cycleFactorsCopy = cycleFactors;
+  completionCopy = completion;
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __156__HKMCOnboardingManager__saveUserEnteredCycleLength_userEnteredPeriodLength_userEnteredLastPeriodStartDay_addedCycleFactors_deletedCycleFactors_completion___block_invoke;
   v36[3] = &unk_2796D5478;
-  v20 = v19;
+  v20 = completionCopy;
   v37 = v20;
   v21 = MEMORY[0x253087260](v36);
-  if (v14)
+  if (lengthCopy)
   {
     healthStore = self->_healthStore;
     v35 = 0;
-    v23 = [(HKHealthStore *)healthStore _setUserEnteredMenstrualCycleLengthCharacteristicQuantity:v14 error:&v35];
+    v23 = [(HKHealthStore *)healthStore _setUserEnteredMenstrualCycleLengthCharacteristicQuantity:lengthCopy error:&v35];
     v24 = v35;
     v25 = v24;
     if ((v23 & 1) == 0)
@@ -386,11 +386,11 @@ LABEL_14:
     }
   }
 
-  if (v15)
+  if (periodLengthCopy)
   {
     v26 = self->_healthStore;
     v34 = 0;
-    v27 = [(HKHealthStore *)v26 _setUserEnteredMenstrualPeriodLengthCharacteristicQuantity:v15 error:&v34];
+    v27 = [(HKHealthStore *)v26 _setUserEnteredMenstrualPeriodLengthCharacteristicQuantity:periodLengthCopy error:&v34];
     v28 = v34;
     v25 = v28;
     if (v27)
@@ -419,9 +419,9 @@ LABEL_7:
   v30[3] = &unk_2796D54A0;
   v30[4] = self;
   v33 = v21;
-  v31 = v16;
-  v32 = v15;
-  [(HKHealthStore *)v29 saveObjects:v17 deleteObjects:v18 associations:0 completion:v30];
+  v31 = dayCopy;
+  v32 = periodLengthCopy;
+  [(HKHealthStore *)v29 saveObjects:factorsCopy deleteObjects:cycleFactorsCopy associations:0 completion:v30];
 
 LABEL_13:
 }
@@ -507,10 +507,10 @@ void __156__HKMCOnboardingManager__saveUserEnteredCycleLength_userEnteredPeriodL
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_setCurrentOnboardingVersionCompletedWithInfo:(id)a3 completion:(id)a4
+- (void)_setCurrentOnboardingVersionCompletedWithInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v18 = 0;
   v8 = [(HKMCOnboardingManager *)self _setLegacyOnboardingCompletedVersion:2 error:&v18];
   v9 = v18;
@@ -518,23 +518,23 @@ void __156__HKMCOnboardingManager__saveUserEnteredCycleLength_userEnteredPeriodL
   {
     v10 = objc_alloc(MEMORY[0x277CCD740]);
     v11 = *MEMORY[0x277CCC090];
-    v12 = [MEMORY[0x277CBEAA8] date];
-    v13 = [v10 initWithFeatureIdentifier:v11 version:2 completionDate:v12 countryCode:0 countryCodeProvenance:0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v13 = [v10 initWithFeatureIdentifier:v11 version:2 completionDate:date countryCode:0 countryCodeProvenance:0];
 
-    v14 = [objc_alloc(MEMORY[0x277CCD450]) initWithMenstruationProjectionsEnabled:objc_msgSend(v6 fertileWindowProjectionsEnabled:"menstruationProjectionsEnabled") areFertilityTrackingDisplayTypesVisible:objc_msgSend(v6 isSexualActivityDisplayTypeVisible:{"fertileWindowProjectionsEnabled"), objc_msgSend(v6, "fertilityTrackingDisplayTypesVisible"), objc_msgSend(v6, "sexualActivityDisplayTypeVisible")}];
+    v14 = [objc_alloc(MEMORY[0x277CCD450]) initWithMenstruationProjectionsEnabled:objc_msgSend(infoCopy fertileWindowProjectionsEnabled:"menstruationProjectionsEnabled") areFertilityTrackingDisplayTypesVisible:objc_msgSend(infoCopy isSexualActivityDisplayTypeVisible:{"fertileWindowProjectionsEnabled"), objc_msgSend(infoCopy, "fertilityTrackingDisplayTypesVisible"), objc_msgSend(infoCopy, "sexualActivityDisplayTypeVisible")}];
     featureAvailabilityStore = self->_featureAvailabilityStore;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __82__HKMCOnboardingManager__setCurrentOnboardingVersionCompletedWithInfo_completion___block_invoke;
     v16[3] = &unk_2796D49B0;
     v16[4] = self;
-    v17 = v7;
+    v17 = completionCopy;
     [(HKFeatureAvailabilityStore *)featureAvailabilityStore saveOnboardingCompletion:v13 settings:v14 completion:v16];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 
@@ -568,11 +568,11 @@ void __82__HKMCOnboardingManager__setCurrentOnboardingVersionCompletedWithInfo_c
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setOnboardingCompletedWithInfo:(id)a3 completion:(id)a4
+- (void)setOnboardingCompletedWithInfo:(id)info completion:(id)completion
 {
   v82 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -582,12 +582,12 @@ void __82__HKMCOnboardingManager__setCurrentOnboardingVersionCompletedWithInfo_c
     v10 = MEMORY[0x277CCABB0];
     v58 = v9;
     v11 = [v10 numberWithInteger:2];
-    v12 = [v6 userEnteredCycleLength];
+    userEnteredCycleLength = [infoCopy userEnteredCycleLength];
     v13 = HKSensitiveLogItem();
-    [v6 userEnteredPeriodLength];
+    [infoCopy userEnteredPeriodLength];
     v14 = v59 = self;
     v15 = HKSensitiveLogItem();
-    v16 = [v6 userEnteredLastPeriodStartDay];
+    userEnteredLastPeriodStartDay = [infoCopy userEnteredLastPeriodStartDay];
     v17 = HKSensitiveLogItem();
     *buf = 138544386;
     v73 = v9;
@@ -609,26 +609,26 @@ void __82__HKMCOnboardingManager__setCurrentOnboardingVersionCompletedWithInfo_c
   v68[2] = __67__HKMCOnboardingManager_setOnboardingCompletedWithInfo_completion___block_invoke;
   v68[3] = &unk_2796D54C8;
   v68[4] = self;
-  v18 = v7;
+  v18 = completionCopy;
   v70 = v18;
-  v19 = v6;
+  v19 = infoCopy;
   v69 = v19;
   [(HKMCOnboardingManager *)self _setCurrentOnboardingVersionCompletedWithInfo:v19 completion:v68];
-  v20 = [v19 heartRateInputSupportedCountryCode];
+  heartRateInputSupportedCountryCode = [v19 heartRateInputSupportedCountryCode];
 
   v21 = MEMORY[0x277CCC120];
-  if (v20)
+  if (heartRateInputSupportedCountryCode)
   {
     v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v23 = [v19 heartRateInputEnabled];
-    [v22 setObject:v23 forKeyedSubscript:*v21];
+    heartRateInputEnabled = [v19 heartRateInputEnabled];
+    [v22 setObject:heartRateInputEnabled forKeyedSubscript:*v21];
 
     v24 = [objc_alloc(MEMORY[0x277CCD450]) initWithDictionary:v22];
     heartRateInputFeatureAvailabilityStore = self->_heartRateInputFeatureAvailabilityStore;
-    v26 = [v19 heartRateInputSupportedCountryCode];
-    v27 = [v26 ISOCode];
-    v28 = [v19 heartRateInputSupportedCountryCode];
-    v29 = [v28 provenance];
+    heartRateInputSupportedCountryCode2 = [v19 heartRateInputSupportedCountryCode];
+    iSOCode = [heartRateInputSupportedCountryCode2 ISOCode];
+    heartRateInputSupportedCountryCode3 = [v19 heartRateInputSupportedCountryCode];
+    provenance = [heartRateInputSupportedCountryCode3 provenance];
     v67[0] = MEMORY[0x277D85DD0];
     v67[1] = 3221225472;
     v67[2] = __67__HKMCOnboardingManager_setOnboardingCompletedWithInfo_completion___block_invoke_3;
@@ -636,12 +636,12 @@ void __82__HKMCOnboardingManager__setCurrentOnboardingVersionCompletedWithInfo_c
     v67[4] = self;
     v30 = heartRateInputFeatureAvailabilityStore;
     v21 = MEMORY[0x277CCC120];
-    [(HKFeatureAvailabilityStore *)v30 setCurrentOnboardingVersionCompletedForCountryCode:v27 countryCodeProvenance:v29 date:0 settings:v24 completion:v67];
+    [(HKFeatureAvailabilityStore *)v30 setCurrentOnboardingVersionCompletedForCountryCode:iSOCode countryCodeProvenance:provenance date:0 settings:v24 completion:v67];
   }
 
-  v31 = [v19 deviationDetectionSupportedCountryCode];
+  deviationDetectionSupportedCountryCode = [v19 deviationDetectionSupportedCountryCode];
 
-  if (v31)
+  if (deviationDetectionSupportedCountryCode)
   {
     v60 = v18;
     v32 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -678,41 +678,41 @@ void __82__HKMCOnboardingManager__setCurrentOnboardingVersionCompletedWithInfo_c
 
     v41 = [objc_alloc(MEMORY[0x277CCD450]) initWithDictionary:v32];
     deviationsFeatureAvailabilityStore = self->_deviationsFeatureAvailabilityStore;
-    v43 = [v19 deviationDetectionSupportedCountryCode];
-    v44 = [v43 ISOCode];
-    v45 = [v19 deviationDetectionSupportedCountryCode];
-    v46 = [v45 provenance];
+    deviationDetectionSupportedCountryCode2 = [v19 deviationDetectionSupportedCountryCode];
+    iSOCode2 = [deviationDetectionSupportedCountryCode2 ISOCode];
+    deviationDetectionSupportedCountryCode3 = [v19 deviationDetectionSupportedCountryCode];
+    provenance2 = [deviationDetectionSupportedCountryCode3 provenance];
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
     v62[2] = __67__HKMCOnboardingManager_setOnboardingCompletedWithInfo_completion___block_invoke_394;
     v62[3] = &unk_2796D54F0;
     v62[4] = self;
-    [(HKFeatureAvailabilityStore *)deviationsFeatureAvailabilityStore setCurrentOnboardingVersionCompletedForCountryCode:v44 countryCodeProvenance:v46 date:0 settings:v41 completion:v62];
+    [(HKFeatureAvailabilityStore *)deviationsFeatureAvailabilityStore setCurrentOnboardingVersionCompletedForCountryCode:iSOCode2 countryCodeProvenance:provenance2 date:0 settings:v41 completion:v62];
 
     v18 = v60;
     v21 = MEMORY[0x277CCC120];
   }
 
-  v47 = [v19 wristTemperatureInputSupportedCountryCode];
+  wristTemperatureInputSupportedCountryCode = [v19 wristTemperatureInputSupportedCountryCode];
 
-  if (v47)
+  if (wristTemperatureInputSupportedCountryCode)
   {
     v48 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v49 = [v19 wristTemperatureInputEnabled];
-    [v48 setObject:v49 forKeyedSubscript:*v21];
+    wristTemperatureInputEnabled = [v19 wristTemperatureInputEnabled];
+    [v48 setObject:wristTemperatureInputEnabled forKeyedSubscript:*v21];
 
     v50 = [objc_alloc(MEMORY[0x277CCD450]) initWithDictionary:v48];
     wristTemperatureInputFeatureAvailabilityStore = self->_wristTemperatureInputFeatureAvailabilityStore;
-    v52 = [v19 wristTemperatureInputSupportedCountryCode];
-    v53 = [v52 ISOCode];
-    v54 = [v19 wristTemperatureInputSupportedCountryCode];
-    v55 = [v54 provenance];
+    wristTemperatureInputSupportedCountryCode2 = [v19 wristTemperatureInputSupportedCountryCode];
+    iSOCode3 = [wristTemperatureInputSupportedCountryCode2 ISOCode];
+    wristTemperatureInputSupportedCountryCode3 = [v19 wristTemperatureInputSupportedCountryCode];
+    provenance3 = [wristTemperatureInputSupportedCountryCode3 provenance];
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __67__HKMCOnboardingManager_setOnboardingCompletedWithInfo_completion___block_invoke_395;
     v61[3] = &unk_2796D54F0;
     v61[4] = self;
-    [(HKFeatureAvailabilityStore *)wristTemperatureInputFeatureAvailabilityStore setCurrentOnboardingVersionCompletedForCountryCode:v53 countryCodeProvenance:v55 date:0 settings:v50 completion:v61];
+    [(HKFeatureAvailabilityStore *)wristTemperatureInputFeatureAvailabilityStore setCurrentOnboardingVersionCompletedForCountryCode:iSOCode3 countryCodeProvenance:provenance3 date:0 settings:v50 completion:v61];
   }
 
   v56 = *MEMORY[0x277D85DE8];
@@ -864,7 +864,7 @@ void __67__HKMCOnboardingManager_setOnboardingCompletedWithInfo_completion___blo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_resetOnboardingKeyValueDomainWithError:(id *)a3
+- (BOOL)_resetOnboardingKeyValueDomainWithError:(id *)error
 {
   legacyOnboardingKeyValueDomain = self->_legacyOnboardingKeyValueDomain;
   v16 = 0;
@@ -897,10 +897,10 @@ void __67__HKMCOnboardingManager_setOnboardingCompletedWithInfo_completion___blo
   v12 = v11;
   if (v12)
   {
-    if (a3)
+    if (error)
     {
       v13 = v12;
-      *a3 = v12;
+      *error = v12;
     }
 
     else
@@ -912,7 +912,7 @@ void __67__HKMCOnboardingManager_setOnboardingCompletedWithInfo_completion___blo
   return v6;
 }
 
-- (BOOL)_resetOnboardingCharacteristicsWithError:(id *)a3
+- (BOOL)_resetOnboardingCharacteristicsWithError:(id *)error
 {
   healthStore = self->_healthStore;
   v16 = 0;
@@ -945,10 +945,10 @@ void __67__HKMCOnboardingManager_setOnboardingCompletedWithInfo_completion___blo
   v12 = v11;
   if (v12)
   {
-    if (a3)
+    if (error)
     {
       v13 = v12;
-      *a3 = v12;
+      *error = v12;
     }
 
     else
@@ -999,10 +999,10 @@ void __46__HKMCOnboardingManager__triggerHealthKitSync__block_invoke(uint64_t a1
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetOnboarding:(id)a3
+- (void)resetOnboarding:(id)onboarding
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  onboardingCopy = onboarding;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -1019,11 +1019,11 @@ void __46__HKMCOnboardingManager__triggerHealthKitSync__block_invoke(uint64_t a1
   v12 = 3221225472;
   v13 = __41__HKMCOnboardingManager_resetOnboarding___block_invoke;
   v14 = &unk_2796D49B0;
-  v15 = self;
-  v16 = v4;
-  v9 = v4;
+  selfCopy = self;
+  v16 = onboardingCopy;
+  v9 = onboardingCopy;
   [(HKFeatureAvailabilityStore *)featureAvailabilityStore resetOnboardingWithCompletion:&v11];
-  [(HKFeatureAvailabilityStore *)self->_heartRateInputFeatureAvailabilityStore resetOnboardingWithCompletion:&__block_literal_global_4, v11, v12, v13, v14, v15];
+  [(HKFeatureAvailabilityStore *)self->_heartRateInputFeatureAvailabilityStore resetOnboardingWithCompletion:&__block_literal_global_4, v11, v12, v13, v14, selfCopy];
   [(HKFeatureAvailabilityStore *)self->_deviationsFeatureAvailabilityStore resetOnboardingWithCompletion:&__block_literal_global_400];
   [(HKFeatureAvailabilityStore *)self->_wristTemperatureInputFeatureAvailabilityStore resetOnboardingWithCompletion:&__block_literal_global_402];
 
@@ -1088,10 +1088,10 @@ void __41__HKMCOnboardingManager_resetOnboarding___block_invoke_398(uint64_t a1)
   }
 }
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -1099,11 +1099,11 @@ void __41__HKMCOnboardingManager_resetOnboarding___block_invoke_398(uint64_t a1)
     v6 = v5;
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [v4 featureIdentifier];
+    featureIdentifier = [completionCopy featureIdentifier];
     *buf = 138543618;
     v14 = v7;
     v15 = 2114;
-    v16 = v9;
+    v16 = featureIdentifier;
     _os_log_impl(&dword_2518FC000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notify observers that onboarding state did change for %{public}@", buf, 0x16u);
   }
 
@@ -1118,10 +1118,10 @@ void __41__HKMCOnboardingManager_resetOnboarding___block_invoke_398(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)featureAvailabilityProvidingDidUpdateSettings:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateSettings:(id)settings
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2E8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -1129,11 +1129,11 @@ void __41__HKMCOnboardingManager_resetOnboarding___block_invoke_398(uint64_t a1)
     v6 = v5;
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [v4 featureIdentifier];
+    featureIdentifier = [settingsCopy featureIdentifier];
     *buf = 138543618;
     v16 = v7;
     v17 = 2114;
-    v18 = v9;
+    v18 = featureIdentifier;
     _os_log_impl(&dword_2518FC000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notify observers of feature settings change for %{public}@", buf, 0x16u);
   }
 
@@ -1143,8 +1143,8 @@ void __41__HKMCOnboardingManager_resetOnboarding___block_invoke_398(uint64_t a1)
   v13[2] = __71__HKMCOnboardingManager_featureAvailabilityProvidingDidUpdateSettings___block_invoke;
   v13[3] = &unk_2796D5540;
   v13[4] = self;
-  v14 = v4;
-  v11 = v4;
+  v14 = settingsCopy;
+  v11 = settingsCopy;
   [(HKObserverSet *)observers notifyObservers:v13];
 
   v12 = *MEMORY[0x277D85DE8];

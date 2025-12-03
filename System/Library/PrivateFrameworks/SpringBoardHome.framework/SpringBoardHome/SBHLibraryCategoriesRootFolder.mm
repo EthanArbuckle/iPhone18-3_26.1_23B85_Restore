@@ -1,34 +1,34 @@
 @interface SBHLibraryCategoriesRootFolder
-- (void)enumerateAllIconsWithBaseIndexPath:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (void)setSupportsBadging:(BOOL)a3;
+- (void)enumerateAllIconsWithBaseIndexPath:(id)path options:(unint64_t)options usingBlock:(id)block;
+- (void)setSupportsBadging:(BOOL)badging;
 @end
 
 @implementation SBHLibraryCategoriesRootFolder
 
-- (void)setSupportsBadging:(BOOL)a3
+- (void)setSupportsBadging:(BOOL)badging
 {
-  if (self->_supportsBadging != a3)
+  if (self->_supportsBadging != badging)
   {
-    self->_supportsBadging = a3;
-    v4 = [(SBRootFolder *)self model];
-    [v4 enumerateLeafIconsUsingBlock:&__block_literal_global_80];
+    self->_supportsBadging = badging;
+    model = [(SBRootFolder *)self model];
+    [model enumerateLeafIconsUsingBlock:&__block_literal_global_80];
   }
 }
 
-- (void)enumerateAllIconsWithBaseIndexPath:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateAllIconsWithBaseIndexPath:(id)path options:(unint64_t)options usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  blockCopy = block;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __88__SBHLibraryCategoriesRootFolder_enumerateAllIconsWithBaseIndexPath_options_usingBlock___block_invoke;
   v12[3] = &unk_1E80916C8;
-  v16 = (a4 & 2) != 0;
-  v13 = v8;
-  v14 = v9;
-  v15 = a4;
-  v10 = v9;
-  v11 = v8;
+  v16 = (options & 2) != 0;
+  v13 = pathCopy;
+  v14 = blockCopy;
+  optionsCopy = options;
+  v10 = blockCopy;
+  v11 = pathCopy;
   [(SBFolder *)self enumerateListsUsingBlock:v12];
 }
 

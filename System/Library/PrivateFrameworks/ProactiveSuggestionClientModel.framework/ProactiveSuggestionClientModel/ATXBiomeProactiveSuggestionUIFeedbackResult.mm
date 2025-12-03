@@ -1,11 +1,11 @@
 @interface ATXBiomeProactiveSuggestionUIFeedbackResult
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithProactiveSuggestionUIFeedbackResult:(id)a3;
-- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithProto:(id)a3;
-- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithProtoData:(id)a3;
-- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithSessionId:(id)a3 blendingUICacheUpdateUUID:(id)a4 clientModelId:(id)a5 clientModelCacheCreationDate:(id)a6 consumerSubType:(unsigned __int8)a7 sessionStartDate:(id)a8 sessionEndDate:(id)a9 shownSuggestions:(id)a10 engagedSuggestions:(id)a11 rejectedSuggestions:(id)a12;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXBiomeProactiveSuggestionUIFeedbackResult:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithProactiveSuggestionUIFeedbackResult:(id)result;
+- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithProto:(id)proto;
+- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithProtoData:(id)data;
+- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithSessionId:(id)id blendingUICacheUpdateUUID:(id)d clientModelId:(id)modelId clientModelCacheCreationDate:(id)date consumerSubType:(unsigned __int8)type sessionStartDate:(id)startDate sessionEndDate:(id)endDate shownSuggestions:(id)self0 engagedSuggestions:(id)self1 rejectedSuggestions:(id)self2;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXBiomeProactiveSuggestionUIFeedbackResult:(id)result;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)json;
@@ -15,110 +15,110 @@
 
 @implementation ATXBiomeProactiveSuggestionUIFeedbackResult
 
-- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithProactiveSuggestionUIFeedbackResult:(id)a3
+- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithProactiveSuggestionUIFeedbackResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 session];
-  v6 = [v5 blendingUICacheUpdateUUID];
-  if (v6)
+  resultCopy = result;
+  session = [resultCopy session];
+  blendingUICacheUpdateUUID = [session blendingUICacheUpdateUUID];
+  if (blendingUICacheUpdateUUID)
   {
-    v7 = v6;
-    v8 = [v4 session];
-    v9 = [v8 sessionStartDate];
-    if (v9)
+    sessionIdentifier = blendingUICacheUpdateUUID;
+    session2 = [resultCopy session];
+    sessionStartDate = [session2 sessionStartDate];
+    if (sessionStartDate)
     {
-      v10 = v9;
-      v11 = [v4 session];
-      v12 = [v11 sessionEndDate];
-      if (v12)
+      blendingUICacheUpdateUUID2 = sessionStartDate;
+      session3 = [resultCopy session];
+      selfCopy = [session3 sessionEndDate];
+      if (selfCopy)
       {
-        v13 = [v4 shownSuggestions];
-        v14 = [v13 count];
+        shownSuggestions = [resultCopy shownSuggestions];
+        v14 = [shownSuggestions count];
 
         if (!v14)
         {
-          v12 = 0;
+          selfCopy = 0;
           goto LABEL_11;
         }
 
-        v5 = [v4 session];
-        v7 = [v5 sessionIdentifier];
-        v8 = [v4 session];
-        v10 = [v8 blendingUICacheUpdateUUID];
-        v11 = [v4 clientCacheUpdate];
-        v29 = [v11 clientModelId];
-        v25 = [v4 clientCacheUpdate];
-        v28 = [v25 cacheCreationDate];
-        v21 = [v4 consumerSubType];
-        v24 = [v4 session];
-        v27 = [v24 sessionStartDate];
-        v23 = [v4 session];
-        v26 = [v23 sessionEndDate];
-        v22 = [v4 shownSuggestions];
-        v19 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromSuggestions:v22];
-        v20 = [v4 engagedSuggestions];
-        v15 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromSuggestions:v20];
-        v16 = [v4 rejectedSuggestions];
-        v17 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromSuggestions:v16];
-        self = [(ATXBiomeProactiveSuggestionUIFeedbackResult *)self initWithSessionId:v7 blendingUICacheUpdateUUID:v10 clientModelId:v29 clientModelCacheCreationDate:v28 consumerSubType:v21 sessionStartDate:v27 sessionEndDate:v26 shownSuggestions:v19 engagedSuggestions:v15 rejectedSuggestions:v17];
+        session = [resultCopy session];
+        sessionIdentifier = [session sessionIdentifier];
+        session2 = [resultCopy session];
+        blendingUICacheUpdateUUID2 = [session2 blendingUICacheUpdateUUID];
+        session3 = [resultCopy clientCacheUpdate];
+        clientModelId = [session3 clientModelId];
+        clientCacheUpdate = [resultCopy clientCacheUpdate];
+        cacheCreationDate = [clientCacheUpdate cacheCreationDate];
+        consumerSubType = [resultCopy consumerSubType];
+        session4 = [resultCopy session];
+        sessionStartDate2 = [session4 sessionStartDate];
+        session5 = [resultCopy session];
+        sessionEndDate = [session5 sessionEndDate];
+        shownSuggestions2 = [resultCopy shownSuggestions];
+        v19 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromSuggestions:shownSuggestions2];
+        engagedSuggestions = [resultCopy engagedSuggestions];
+        v15 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromSuggestions:engagedSuggestions];
+        rejectedSuggestions = [resultCopy rejectedSuggestions];
+        v17 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromSuggestions:rejectedSuggestions];
+        self = [(ATXBiomeProactiveSuggestionUIFeedbackResult *)self initWithSessionId:sessionIdentifier blendingUICacheUpdateUUID:blendingUICacheUpdateUUID2 clientModelId:clientModelId clientModelCacheCreationDate:cacheCreationDate consumerSubType:consumerSubType sessionStartDate:sessionStartDate2 sessionEndDate:sessionEndDate shownSuggestions:v19 engagedSuggestions:v15 rejectedSuggestions:v17];
 
-        v12 = self;
+        selfCopy = self;
       }
     }
 
     else
     {
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
 LABEL_11:
-  return v12;
+  return selfCopy;
 }
 
-- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithSessionId:(id)a3 blendingUICacheUpdateUUID:(id)a4 clientModelId:(id)a5 clientModelCacheCreationDate:(id)a6 consumerSubType:(unsigned __int8)a7 sessionStartDate:(id)a8 sessionEndDate:(id)a9 shownSuggestions:(id)a10 engagedSuggestions:(id)a11 rejectedSuggestions:(id)a12
+- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithSessionId:(id)id blendingUICacheUpdateUUID:(id)d clientModelId:(id)modelId clientModelCacheCreationDate:(id)date consumerSubType:(unsigned __int8)type sessionStartDate:(id)startDate sessionEndDate:(id)endDate shownSuggestions:(id)self0 engagedSuggestions:(id)self1 rejectedSuggestions:(id)self2
 {
-  v30 = a3;
-  v29 = a4;
-  v28 = a5;
-  v27 = a6;
-  v26 = a8;
-  v25 = a9;
-  v24 = a10;
-  v23 = a11;
-  v18 = a12;
+  idCopy = id;
+  dCopy = d;
+  modelIdCopy = modelId;
+  dateCopy = date;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
+  suggestionsCopy = suggestions;
+  engagedSuggestionsCopy = engagedSuggestions;
+  rejectedSuggestionsCopy = rejectedSuggestions;
   v31.receiver = self;
   v31.super_class = ATXBiomeProactiveSuggestionUIFeedbackResult;
   v19 = [(ATXBiomeProactiveSuggestionUIFeedbackResult *)&v31 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_sessionId, a3);
-    objc_storeStrong(&v20->_blendingUICacheUpdateUUID, a4);
-    objc_storeStrong(&v20->_clientModelId, a5);
-    objc_storeStrong(&v20->_clientModelCacheCreationDate, a6);
-    v20->_consumerSubType = a7;
-    objc_storeStrong(&v20->_sessionStartDate, a8);
-    objc_storeStrong(&v20->_sessionEndDate, a9);
-    objc_storeStrong(&v20->_shownSuggestions, a10);
-    objc_storeStrong(&v20->_engagedSuggestions, a11);
-    objc_storeStrong(&v20->_rejectedSuggestions, a12);
+    objc_storeStrong(&v19->_sessionId, id);
+    objc_storeStrong(&v20->_blendingUICacheUpdateUUID, d);
+    objc_storeStrong(&v20->_clientModelId, modelId);
+    objc_storeStrong(&v20->_clientModelCacheCreationDate, date);
+    v20->_consumerSubType = type;
+    objc_storeStrong(&v20->_sessionStartDate, startDate);
+    objc_storeStrong(&v20->_sessionEndDate, endDate);
+    objc_storeStrong(&v20->_shownSuggestions, suggestions);
+    objc_storeStrong(&v20->_engagedSuggestions, engagedSuggestions);
+    objc_storeStrong(&v20->_rejectedSuggestions, rejectedSuggestions);
   }
 
   return v20;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -133,8 +133,8 @@ LABEL_11:
 {
   v3 = objc_opt_new();
   [v3 appendFormat:@"sessionId: %@\n", self->_sessionId];
-  v4 = [(NSUUID *)self->_blendingUICacheUpdateUUID UUIDString];
-  [v3 appendFormat:@"blendingUICacheUpdateUUID: %@\n", v4];
+  uUIDString = [(NSUUID *)self->_blendingUICacheUpdateUUID UUIDString];
+  [v3 appendFormat:@"blendingUICacheUpdateUUID: %@\n", uUIDString];
 
   [v3 appendFormat:@"clientModelId: %@\n", self->_clientModelId];
   [v3 appendFormat:@"clientModelCacheCreationDate: %@\n", self->_clientModelCacheCreationDate];
@@ -164,11 +164,11 @@ LABEL_11:
   v27[0] = sessionId;
   v26[0] = @"sessionId";
   v26[1] = @"blendingUICacheUpdateUUID";
-  v5 = [(NSUUID *)blendingUICacheUpdateUUID UUIDString];
-  v6 = v5;
-  if (v5)
+  uUIDString = [(NSUUID *)blendingUICacheUpdateUUID UUIDString];
+  v6 = uUIDString;
+  if (uUIDString)
   {
-    v7 = v5;
+    v7 = uUIDString;
   }
 
   else
@@ -250,35 +250,35 @@ LABEL_11:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXBiomeProactiveSuggestionUIFeedbackResult *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXBiomeProactiveSuggestionUIFeedbackResult *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXBiomeProactiveSuggestionUIFeedbackResult *)self isEqualToATXBiomeProactiveSuggestionUIFeedbackResult:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXBiomeProactiveSuggestionUIFeedbackResult *)self isEqualToATXBiomeProactiveSuggestionUIFeedbackResult:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXBiomeProactiveSuggestionUIFeedbackResult:(id)a3
+- (BOOL)isEqualToATXBiomeProactiveSuggestionUIFeedbackResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = self->_sessionId;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == resultCopy[2])
   {
   }
 
@@ -294,7 +294,7 @@ LABEL_11:
 
   v8 = self->_blendingUICacheUpdateUUID;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == resultCopy[3])
   {
   }
 
@@ -310,7 +310,7 @@ LABEL_11:
 
   v11 = self->_clientModelId;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == resultCopy[4])
   {
   }
 
@@ -326,7 +326,7 @@ LABEL_11:
 
   v14 = self->_clientModelCacheCreationDate;
   v15 = v14;
-  if (v14 == v4[5])
+  if (v14 == resultCopy[5])
   {
   }
 
@@ -340,7 +340,7 @@ LABEL_11:
     }
   }
 
-  if (self->_consumerSubType != *(v4 + 8))
+  if (self->_consumerSubType != *(resultCopy + 8))
   {
 LABEL_32:
     v29 = 0;
@@ -349,7 +349,7 @@ LABEL_32:
 
   v17 = self->_sessionStartDate;
   v18 = v17;
-  if (v17 == v4[6])
+  if (v17 == resultCopy[6])
   {
   }
 
@@ -365,7 +365,7 @@ LABEL_32:
 
   v20 = self->_sessionEndDate;
   v21 = v20;
-  if (v20 == v4[7])
+  if (v20 == resultCopy[7])
   {
   }
 
@@ -381,7 +381,7 @@ LABEL_32:
 
   v23 = self->_shownSuggestions;
   v24 = v23;
-  if (v23 == v4[8])
+  if (v23 == resultCopy[8])
   {
   }
 
@@ -397,7 +397,7 @@ LABEL_32:
 
   v26 = self->_engagedSuggestions;
   v27 = v26;
-  if (v26 == v4[9])
+  if (v26 == resultCopy[9])
   {
   }
 
@@ -413,7 +413,7 @@ LABEL_32:
 
   v31 = self->_rejectedSuggestions;
   v32 = v31;
-  if (v31 == v4[10])
+  if (v31 == resultCopy[10])
   {
     v29 = 1;
   }
@@ -427,40 +427,40 @@ LABEL_33:
   return v29;
 }
 
-- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithProtoData:(id)a3
+- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBBiomeProactiveSuggestionUIFeedbackResult alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBBiomeProactiveSuggestionUIFeedbackResult alloc] initWithData:dataCopy];
 
     self = [(ATXBiomeProactiveSuggestionUIFeedbackResult *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXBiomeProactiveSuggestionUIFeedbackResult *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXBiomeProactiveSuggestionUIFeedbackResult *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithProto:(id)a3
+- (ATXBiomeProactiveSuggestionUIFeedbackResult)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -476,45 +476,45 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v28 = [v5 sessionId];
+  v5 = protoCopy;
+  sessionId = [v5 sessionId];
   v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v27 = [v5 blendingUICacheUpdateUUID];
-  v25 = [v6 initWithUUIDString:v27];
-  v24 = [v5 clientModelId];
+  blendingUICacheUpdateUUID = [v5 blendingUICacheUpdateUUID];
+  v25 = [v6 initWithUUIDString:blendingUICacheUpdateUUID];
+  clientModelId = [v5 clientModelId];
   v7 = MEMORY[0x1E695DF00];
   [v5 clientModelCacheCreationDate];
   v23 = [v7 dateWithTimeIntervalSinceReferenceDate:?];
   v8 = MEMORY[0x1E698B028];
-  v26 = [v5 consumerSubType];
-  v22 = [v8 consumerSubtypeForString:v26 found:0];
+  consumerSubType = [v5 consumerSubType];
+  v22 = [v8 consumerSubtypeForString:consumerSubType found:0];
   v9 = MEMORY[0x1E695DF00];
   [v5 sessionStartDate];
   v20 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
   v10 = MEMORY[0x1E695DF00];
   [v5 sessionEndDate];
   v19 = [v10 dateWithTimeIntervalSinceReferenceDate:?];
-  v21 = [v5 shownSuggestions];
-  v18 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromProtoLightWeightSuggestions:v21];
-  v11 = [v5 engagedSuggestions];
-  v12 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromProtoLightWeightSuggestions:v11];
-  v13 = [v5 rejectedSuggestions];
+  shownSuggestions = [v5 shownSuggestions];
+  v18 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromProtoLightWeightSuggestions:shownSuggestions];
+  engagedSuggestions = [v5 engagedSuggestions];
+  v12 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromProtoLightWeightSuggestions:engagedSuggestions];
+  rejectedSuggestions = [v5 rejectedSuggestions];
 
-  v14 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromProtoLightWeightSuggestions:v13];
-  self = [(ATXBiomeProactiveSuggestionUIFeedbackResult *)self initWithSessionId:v28 blendingUICacheUpdateUUID:v25 clientModelId:v24 clientModelCacheCreationDate:v23 consumerSubType:v22 sessionStartDate:v20 sessionEndDate:v19 shownSuggestions:v18 engagedSuggestions:v12 rejectedSuggestions:v14];
+  v14 = [ATXLightweightProactiveSuggestion lightWeightSuggestionsFromProtoLightWeightSuggestions:rejectedSuggestions];
+  self = [(ATXBiomeProactiveSuggestionUIFeedbackResult *)self initWithSessionId:sessionId blendingUICacheUpdateUUID:v25 clientModelId:clientModelId clientModelCacheCreationDate:v23 consumerSubType:v22 sessionStartDate:v20 sessionEndDate:v19 shownSuggestions:v18 engagedSuggestions:v12 rejectedSuggestions:v14];
 
-  v15 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
   [v3 setSessionId:self->_sessionId];
-  v4 = [(NSUUID *)self->_blendingUICacheUpdateUUID UUIDString];
-  [v3 setBlendingUICacheUpdateUUID:v4];
+  uUIDString = [(NSUUID *)self->_blendingUICacheUpdateUUID UUIDString];
+  [v3 setBlendingUICacheUpdateUUID:uUIDString];
 
   [v3 setClientModelId:self->_clientModelId];
   [(NSDate *)self->_clientModelCacheCreationDate timeIntervalSinceReferenceDate];

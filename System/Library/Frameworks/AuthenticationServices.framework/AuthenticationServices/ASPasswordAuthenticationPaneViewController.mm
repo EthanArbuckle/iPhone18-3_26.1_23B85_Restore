@@ -1,40 +1,40 @@
 @interface ASPasswordAuthenticationPaneViewController
-- (ASPasswordAuthenticationPaneViewController)initWithConfiguration:(id)a3;
+- (ASPasswordAuthenticationPaneViewController)initWithConfiguration:(id)configuration;
 - (ASPasswordAuthenticationPaneViewControllerDelegate)authenticationDelegate;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (double)_intrinsicContentHeight;
 - (id)_secureTextFieldPlaceholderText;
 - (id)_titleLabelFont;
 - (id)_titleLabelTextColor;
-- (void)_addCenteredHeaderView:(id)a3 margins:(double)a4 height:(double)a5 customSpacingAfter:(double)a6;
+- (void)_addCenteredHeaderView:(id)view margins:(double)margins height:(double)height customSpacingAfter:(double)after;
 - (void)_completeManualPasswordCredentialEntry;
 - (void)_createViews;
 - (void)_keyboardHeightDidChange;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_keyboardWillShow:(id)show;
 - (void)_setConstraints;
 - (void)_setUpHeader;
 - (void)_setUpUsernameLabel;
 - (void)_signInButtonTapped;
-- (void)_textFieldChanged:(id)a3;
-- (void)updateWithConfiguration:(id)a3;
+- (void)_textFieldChanged:(id)changed;
+- (void)updateWithConfiguration:(id)configuration;
 - (void)viewDidLoad;
 @end
 
 @implementation ASPasswordAuthenticationPaneViewController
 
-- (ASPasswordAuthenticationPaneViewController)initWithConfiguration:(id)a3
+- (ASPasswordAuthenticationPaneViewController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = ASPasswordAuthenticationPaneViewController;
   v6 = [(ASCredentialRequestPaneViewController *)&v10 initRequiringTableView:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 134, a3);
+    objc_storeStrong(v6 + 134, configuration);
     v8 = v7;
   }
 
@@ -49,21 +49,21 @@
   [(ASPasswordAuthenticationPaneViewController *)self _createViews];
   [(ASPasswordAuthenticationPaneViewController *)self _setConstraints];
   [(ASCredentialRequestPaneViewController *)self sizeToFitPaneContent];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
 }
 
-- (void)updateWithConfiguration:(id)a3
+- (void)updateWithConfiguration:(id)configuration
 {
-  v4 = [a3 headerConfiguration];
+  headerConfiguration = [configuration headerConfiguration];
   headerConfiguration = self->_headerConfiguration;
-  self->_headerConfiguration = v4;
+  self->_headerConfiguration = headerConfiguration;
 
-  v6 = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
-  [v6 updateHeaderWithConfiguration:self->_headerConfiguration];
+  headerPaneContext = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
+  [headerPaneContext updateHeaderWithConfiguration:self->_headerConfiguration];
 
   secureTextField = self->_secureTextField;
 
@@ -73,9 +73,9 @@
 - (void)_createViews
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(ASPasswordAuthenticationPaneViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(ASPasswordAuthenticationPaneViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
   if ([(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona]== 3)
   {
@@ -92,11 +92,11 @@
   v11 = [MEMORY[0x1E69DC888] colorWithRed:0.0156862745 green:0.0156862745 blue:0.0588235294 alpha:0.15];
   [(_ASInsetTextField *)v10 setBackgroundColor:v11];
 
-  v12 = [(_ASInsetTextField *)v10 layer];
-  [v12 setCornerRadius:8.0];
+  layer = [(_ASInsetTextField *)v10 layer];
+  [layer setCornerRadius:8.0];
 
-  v13 = [(ASPasswordAuthenticationPaneViewController *)self _secureTextFieldPlaceholderText];
-  [(_ASInsetTextField *)v10 setPlaceholder:v13];
+  _secureTextFieldPlaceholderText = [(ASPasswordAuthenticationPaneViewController *)self _secureTextFieldPlaceholderText];
+  [(_ASInsetTextField *)v10 setPlaceholder:_secureTextFieldPlaceholderText];
 
   [(_ASInsetTextField *)v10 setSecureTextEntry:1];
   [(_ASInsetTextField *)v10 setReturnKeyType:9];
@@ -115,10 +115,10 @@
   v15 = [[ASCredentialRequestButtonContinue alloc] initWithFrame:v6, v7, v8, v9];
   [(ASCredentialRequestButtonContinue *)v15 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ASCredentialRequestButton *)v15 addTarget:self action:sel__signInButtonTapped];
-  v16 = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona];
-  if (v16 >= 3)
+  persona = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona];
+  if (persona >= 3)
   {
-    if (v16 == 3)
+    if (persona == 3)
     {
       v19 = _WBSLocalizedString();
       [(ASCredentialRequestButton *)v15 setButtonText:v19];
@@ -152,26 +152,26 @@
   v24 = v23;
   +[ASViewServiceInterfaceUtilities continueButtonHeight];
   [(ASPasswordAuthenticationPaneViewController *)self _addCenteredHeaderView:signInButton margins:v24 height:v25 customSpacingAfter:32.0];
-  v26 = [(ASCredentialRequestPaneViewController *)self cancelBarButtonItem];
-  v31[0] = v26;
+  cancelBarButtonItem = [(ASCredentialRequestPaneViewController *)self cancelBarButtonItem];
+  v31[0] = cancelBarButtonItem;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
-  v28 = [(UIViewController *)self as_navigationItem];
-  [v28 setRightBarButtonItems:v27];
+  as_navigationItem = [(UIViewController *)self as_navigationItem];
+  [as_navigationItem setRightBarButtonItems:v27];
 
-  v29 = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
-  [v29 addEmptyViewWithSpacing:0.0];
+  headerPaneContext = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
+  [headerPaneContext addEmptyViewWithSpacing:0.0];
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_setConstraints
 {
-  v3 = [(ASPasswordAuthenticationPaneViewController *)self view];
-  v4 = [v3 bottomAnchor];
-  v5 = [(ASCredentialRequestPaneViewController *)self paneHeaderStackView];
-  v6 = [v5 superview];
-  v7 = [v6 bottomAnchor];
-  v8 = [v4 constraintGreaterThanOrEqualToAnchor:v7];
+  view = [(ASPasswordAuthenticationPaneViewController *)self view];
+  bottomAnchor = [view bottomAnchor];
+  paneHeaderStackView = [(ASCredentialRequestPaneViewController *)self paneHeaderStackView];
+  superview = [paneHeaderStackView superview];
+  bottomAnchor2 = [superview bottomAnchor];
+  v8 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
   paneHeaderStackViewBottomKeyboardConstraint = self->_paneHeaderStackViewBottomKeyboardConstraint;
   self->_paneHeaderStackViewBottomKeyboardConstraint = v8;
 
@@ -182,56 +182,56 @@
   [(NSLayoutConstraint *)v11 setActive:1];
 }
 
-- (void)_addCenteredHeaderView:(id)a3 margins:(double)a4 height:(double)a5 customSpacingAfter:(double)a6
+- (void)_addCenteredHeaderView:(id)view margins:(double)margins height:(double)height customSpacingAfter:(double)after
 {
   v33[5] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v32 = [(ASCredentialRequestPaneViewController *)self paneHeaderStackView];
+  viewCopy = view;
+  paneHeaderStackView = [(ASCredentialRequestPaneViewController *)self paneHeaderStackView];
   v11 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v11 addSubview:v10];
-  [v32 addArrangedSubview:v11];
+  [v11 addSubview:viewCopy];
+  [paneHeaderStackView addArrangedSubview:v11];
   v25 = MEMORY[0x1E696ACD8];
-  v31 = [v10 centerXAnchor];
-  v30 = [v11 centerXAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  centerXAnchor = [viewCopy centerXAnchor];
+  centerXAnchor2 = [v11 centerXAnchor];
+  v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v33[0] = v29;
-  v28 = [v10 centerYAnchor];
-  v27 = [v11 centerYAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  centerYAnchor = [viewCopy centerYAnchor];
+  centerYAnchor2 = [v11 centerYAnchor];
+  v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v33[1] = v26;
-  v12 = [v11 widthAnchor];
-  v13 = [v10 widthAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:a4 + a4];
-  v33[2] = v14;
-  v15 = [v11 heightAnchor];
-  v16 = [v10 heightAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  widthAnchor = [v11 widthAnchor];
+  widthAnchor2 = [viewCopy widthAnchor];
+  margins = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:margins + margins];
+  v33[2] = margins;
+  heightAnchor = [v11 heightAnchor];
+  heightAnchor2 = [viewCopy heightAnchor];
+  v17 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v33[3] = v17;
-  v18 = [v10 heightAnchor];
+  heightAnchor3 = [viewCopy heightAnchor];
 
-  v19 = [v18 constraintEqualToConstant:a5];
+  v19 = [heightAnchor3 constraintEqualToConstant:height];
   v33[4] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:5];
   [v25 activateConstraints:v20];
 
-  v21 = [v11 widthAnchor];
-  v22 = [v32 widthAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  widthAnchor3 = [v11 widthAnchor];
+  widthAnchor4 = [paneHeaderStackView widthAnchor];
+  v23 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   [v23 setActive:1];
 
-  [v32 setCustomSpacing:v11 afterView:a6];
+  [paneHeaderStackView setCustomSpacing:v11 afterView:after];
   v24 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_setUpHeader
 {
-  v3 = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration headerConfiguration];
+  headerConfiguration = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration headerConfiguration];
   headerConfiguration = self->_headerConfiguration;
-  self->_headerConfiguration = v3;
+  self->_headerConfiguration = headerConfiguration;
 
-  v5 = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
-  [v5 addHeaderWithConfiguration:self->_headerConfiguration];
+  headerPaneContext = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
+  [headerPaneContext addHeaderWithConfiguration:self->_headerConfiguration];
 }
 
 - (void)_setUpUsernameLabel
@@ -245,8 +245,8 @@
   v6 = [MEMORY[0x1E69DB878] defaultFontForTextStyle:*MEMORY[0x1E69DDD78]];
   [(UITextField *)v4 setFont:v6];
 
-  v7 = [(UITextField *)v4 layer];
-  [v7 setCornerRadius:8.0];
+  layer = [(UITextField *)v4 layer];
+  [layer setCornerRadius:8.0];
 
   v8 = _WBSLocalizedString();
   [(UITextField *)v4 setPlaceholder:v8];
@@ -272,40 +272,40 @@
 
 - (id)_titleLabelFont
 {
-  v2 = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona];
-  if (v2 >= 3)
+  persona = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona];
+  if (persona >= 3)
   {
-    if (v2 == 3)
+    if (persona == 3)
     {
-      v2 = +[ASViewServiceInterfaceUtilities headerTitleFont];
+      persona = +[ASViewServiceInterfaceUtilities headerTitleFont];
     }
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDDC0] weight:*MEMORY[0x1E69DB958]];
+    persona = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDDC0] weight:*MEMORY[0x1E69DB958]];
   }
 
-  return v2;
+  return persona;
 }
 
 - (id)_titleLabelTextColor
 {
-  v2 = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona];
-  if (v2 >= 3)
+  persona = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona];
+  if (persona >= 3)
   {
-    if (v2 == 3)
+    if (persona == 3)
     {
-      v2 = +[ASViewServiceInterfaceUtilities headerTitleColor];
+      persona = +[ASViewServiceInterfaceUtilities headerTitleColor];
     }
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69DC888] labelColor];
+    persona = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  return v2;
+  return persona;
 }
 
 - (void)_signInButtonTapped
@@ -351,24 +351,24 @@ LABEL_11:
 
 - (double)_intrinsicContentHeight
 {
-  v3 = [(ASCredentialRequestPaneViewController *)self paneHeaderStackView];
-  [v3 bounds];
+  paneHeaderStackView = [(ASCredentialRequestPaneViewController *)self paneHeaderStackView];
+  [paneHeaderStackView bounds];
   v5 = v4;
   LODWORD(v4) = 1148846080;
   LODWORD(v6) = 1112014848;
-  [v3 systemLayoutSizeFittingSize:v5 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v4, v6}];
+  [paneHeaderStackView systemLayoutSizeFittingSize:v5 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v4, v6}];
   v8 = v7 + self->_keyboardHeight;
 
   return v8;
 }
 
-- (void)_textFieldChanged:(id)a3
+- (void)_textFieldChanged:(id)changed
 {
-  v5 = [(UITextField *)self->_secureTextField text];
-  if ([v5 length])
+  text = [(UITextField *)self->_secureTextField text];
+  if ([text length])
   {
-    v4 = [(UITextField *)self->_usernameField text];
-    -[ASCredentialRequestButtonContinue setEnabled:](self->_signInButton, "setEnabled:", [v4 length] != 0);
+    text2 = [(UITextField *)self->_usernameField text];
+    -[ASCredentialRequestButtonContinue setEnabled:](self->_signInButton, "setEnabled:", [text2 length] != 0);
   }
 
   else
@@ -381,30 +381,30 @@ LABEL_11:
 {
   [(UITextField *)self->_usernameField setEnabled:0];
   [(UITextField *)self->_secureTextField setEnabled:0];
-  v3 = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration passwordCredentialSite];
-  v4 = v3;
+  passwordCredentialSite = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration passwordCredentialSite];
+  v4 = passwordCredentialSite;
   v5 = &stru_1F28DE020;
-  if (v3)
+  if (passwordCredentialSite)
   {
-    v5 = v3;
+    v5 = passwordCredentialSite;
   }
 
   v6 = v5;
 
   v7 = objc_alloc(MEMORY[0x1E698DFC8]);
-  v8 = [(UITextField *)self->_usernameField text];
-  v9 = [(UITextField *)self->_secureTextField text];
+  text = [(UITextField *)self->_usernameField text];
+  text2 = [(UITextField *)self->_secureTextField text];
   v10 = [MEMORY[0x1E695DF00] now];
-  v12 = [v7 initWithUser:v8 password:v9 site:v6 creationDate:v10 externalProviderBundleIdentifier:0];
+  v12 = [v7 initWithUser:text password:text2 site:v6 creationDate:v10 externalProviderBundleIdentifier:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_authenticationDelegate);
   [WeakRetained passwordAuthenticationViewController:self completedWithManuallyEnteredPasswordCredential:v12];
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
 
   [v5 CGRectValue];
   self->_keyboardHeight = CGRectGetHeight(v7);
@@ -420,8 +420,8 @@ LABEL_11:
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona];
-  if (v3 < 3)
+  persona = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona];
+  if (persona < 3)
   {
     if ([(UITextField *)self->_secureTextField becomeFirstResponder])
     {
@@ -443,7 +443,7 @@ LABEL_11:
     return v4 & 1;
   }
 
-  if (v3 != 3)
+  if (persona != 3)
   {
     return v4 & 1;
   }
@@ -465,17 +465,17 @@ void __66__ASPasswordAuthenticationPaneViewController_becomeFirstResponder__bloc
 
 - (BOOL)resignFirstResponder
 {
-  v3 = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona];
-  if (v3 >= 3)
+  persona = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona];
+  if (persona >= 3)
   {
-    if (v3 == 3)
+    if (persona == 3)
     {
       v6.receiver = self;
       v6.super_class = ASPasswordAuthenticationPaneViewController;
-      LOBYTE(v3) = [(ASPasswordAuthenticationPaneViewController *)&v6 resignFirstResponder];
+      LOBYTE(persona) = [(ASPasswordAuthenticationPaneViewController *)&v6 resignFirstResponder];
     }
 
-    return v3 & 1;
+    return persona & 1;
   }
 
   else
@@ -488,20 +488,20 @@ void __66__ASPasswordAuthenticationPaneViewController_becomeFirstResponder__bloc
 
 - (BOOL)canBecomeFirstResponder
 {
-  v3 = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona];
-  if (v3 > 3)
+  persona = [(ASPasswordAuthenticationPaneViewControllerConfiguration *)self->_configuration persona];
+  if (persona > 3)
   {
     return 0;
   }
 
-  v4 = *(&self->super.super.super.super.isa + *off_1E7AF8DD0[v3]);
+  v4 = *(&self->super.super.super.super.isa + *off_1E7AF8DD0[persona]);
 
   return [v4 canBecomeFirstResponder];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  if (self->_usernameField == a3)
+  if (self->_usernameField == return)
   {
     [(UITextField *)self->_secureTextField becomeFirstResponder];
   }

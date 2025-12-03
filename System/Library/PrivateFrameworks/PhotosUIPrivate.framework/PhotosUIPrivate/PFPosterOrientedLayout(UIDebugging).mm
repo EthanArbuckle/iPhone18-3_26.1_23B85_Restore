@@ -23,27 +23,27 @@
   v4 = v2;
   v61 = v4;
   v48 = _Block_copy(aBlock);
-  [a1 originalImageExtent];
+  [self originalImageExtent];
   v48[2](v48, @"imageExtent");
-  [a1 extendedImageExtent];
+  [self extendedImageExtent];
   v48[2](v48, @"extendedImageExtent");
-  [a1 visibleFrame];
+  [self visibleFrame];
   v48[2](v48, @"visibleFrame");
-  [a1 adaptiveVisibleFrame];
+  [self adaptiveVisibleFrame];
   v48[2](v48, @"adaptiveVisibleFrame");
-  [a1 spatialVisibleFrame];
+  [self spatialVisibleFrame];
   v48[2](v48, @"spatialVisibleFrame");
-  [a1 spatialAdaptiveFrame];
+  [self spatialAdaptiveFrame];
   v48[2](v48, @"spatialAdaptiveFrame");
-  [a1 inactiveFrame];
+  [self inactiveFrame];
   v48[2](v48, @"inactiveFrame");
-  [a1 adaptiveInactiveTopFrame];
+  [self adaptiveInactiveTopFrame];
   v48[2](v48, @"adaptiveInactiveTopFrame");
-  [a1 timeFrame];
+  [self timeFrame];
   v48[2](v48, @"timeFrame");
-  [a1 adaptiveTimeFrame];
+  [self adaptiveTimeFrame];
   v48[2](v48, @"adaptiveTimeFrame");
-  [a1 salientContentFrame];
+  [self salientContentFrame];
   v48[2](v48, @"salientContentFrame");
   v76 = v64[1];
   v77 = CGRectOffset(v76, -v76.origin.x, -v76.origin.y);
@@ -68,8 +68,8 @@
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v9 = [v4 allKeys];
-    v10 = [v9 countByEnumeratingWithState:&v56 objects:v72 count:16];
+    allKeys = [v4 allKeys];
+    v10 = [allKeys countByEnumeratingWithState:&v56 objects:v72 count:16];
     if (v10)
     {
       v11 = *v57;
@@ -79,7 +79,7 @@
         {
           if (*v57 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v56 + 1) + 8 * i);
@@ -99,7 +99,7 @@
           [v4 setObject:v23 forKeyedSubscript:v13];
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v56 objects:v72 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v56 objects:v72 count:16];
       }
 
       while (v10);
@@ -111,8 +111,8 @@
   v75.height = v8;
   UIGraphicsBeginImageContextWithOptions(v75, 1, 0.0);
   c = UIGraphicsGetCurrentContext();
-  v25 = [MEMORY[0x1E69DC888] whiteColor];
-  [v25 setFill];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [whiteColor setFill];
 
   v80.origin.x = x * v7;
   v80.origin.y = rect;
@@ -123,8 +123,8 @@
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v26 = [v4 allKeys];
-  v27 = [v26 countByEnumeratingWithState:&v52 objects:v71 count:16];
+  allKeys2 = [v4 allKeys];
+  v27 = [allKeys2 countByEnumeratingWithState:&v52 objects:v71 count:16];
   if (v27)
   {
     v28 = *v53;
@@ -137,7 +137,7 @@
       {
         if (*v53 != v28)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allKeys2);
         }
 
         v32 = *(*(&v52 + 1) + 8 * j);
@@ -173,7 +173,7 @@
         }
       }
 
-      v27 = [v26 countByEnumeratingWithState:&v52 objects:v71 count:16];
+      v27 = [allKeys2 countByEnumeratingWithState:&v52 objects:v71 count:16];
     }
 
     while (v27);

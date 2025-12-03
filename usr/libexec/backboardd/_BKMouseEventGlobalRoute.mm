@@ -1,18 +1,18 @@
 @interface _BKMouseEventGlobalRoute
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation _BKMouseEventGlobalRoute
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
-  v6 = a3;
+  equalCopy = equal;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = equalCopy;
     }
 
     else

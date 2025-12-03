@@ -1,17 +1,17 @@
 @interface TIUserModelDataStoreMock
-- (BOOL)addValue:(id)a3 andSecondaryValue:(id)a4 andRealValue:(id)a5 andProperties:(id)a6 forKey:(id)a7 forInputMode:(id)a8 forDate:(id)a9;
-- (BOOL)purgeDataForKey:(id)a3 forInputMode:(id)a4 beforeDate:(id)a5;
-- (BOOL)purgeDataForKeyPrefix:(id)a3 forInputMode:(id)a4 beforeDate:(id)a5;
-- (BOOL)setDurableValue:(id)a3 forKey:(id)a4 forDate:(id)a5;
-- (BOOL)updateDurableValue:(id)a3 forKey:(id)a4 forDate:(id)a5;
+- (BOOL)addValue:(id)value andSecondaryValue:(id)secondaryValue andRealValue:(id)realValue andProperties:(id)properties forKey:(id)key forInputMode:(id)mode forDate:(id)date;
+- (BOOL)purgeDataForKey:(id)key forInputMode:(id)mode beforeDate:(id)date;
+- (BOOL)purgeDataForKeyPrefix:(id)prefix forInputMode:(id)mode beforeDate:(id)date;
+- (BOOL)setDurableValue:(id)value forKey:(id)key forDate:(id)date;
+- (BOOL)updateDurableValue:(id)value forKey:(id)key forDate:(id)date;
 - (TIUserModelDataStoreMock)init;
-- (id)getAllKnownInputModesSinceDate:(id)a3;
-- (id)getAllValuesForKey:(id)a3 forInputMode:(id)a4 fromDate:(id)a5 toDate:(id)a6;
-- (id)getAllValuesForKey:(id)a3 forInputMode:(id)a4 sinceDate:(id)a5;
-- (id)getAllValuesForKeyPrefix:(id)a3 forInputMode:(id)a4 sinceDate:(id)a5;
-- (id)getDailyAndWeeklyValuesForKeyPrefix:(id)a3 forInputMode:(id)a4 weeklyKeySuffixes:(id)a5 endDate:(id)a6;
-- (id)getDurableValueForKey:(id)a3;
-- (id)getInputModesForKey:(id)a3;
+- (id)getAllKnownInputModesSinceDate:(id)date;
+- (id)getAllValuesForKey:(id)key forInputMode:(id)mode fromDate:(id)date toDate:(id)toDate;
+- (id)getAllValuesForKey:(id)key forInputMode:(id)mode sinceDate:(id)date;
+- (id)getAllValuesForKeyPrefix:(id)prefix forInputMode:(id)mode sinceDate:(id)date;
+- (id)getDailyAndWeeklyValuesForKeyPrefix:(id)prefix forInputMode:(id)mode weeklyKeySuffixes:(id)suffixes endDate:(id)date;
+- (id)getDurableValueForKey:(id)key;
+- (id)getInputModesForKey:(id)key;
 - (void)clear;
 @end
 
@@ -19,43 +19,43 @@
 
 - (void)clear
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   database = self->_database;
-  self->_database = v3;
+  self->_database = array;
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   durableDatabase = self->_durableDatabase;
-  self->_durableDatabase = v5;
+  self->_durableDatabase = dictionary;
 
-  v7 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   propertiesLastMigrationDate = self->_propertiesLastMigrationDate;
-  self->_propertiesLastMigrationDate = v7;
+  self->_propertiesLastMigrationDate = distantPast;
 
-  v9 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
   durableLastMigrationDate = self->_durableLastMigrationDate;
-  self->_durableLastMigrationDate = v9;
+  self->_durableLastMigrationDate = distantPast2;
 
   self->_transientLastMigrationDate = [MEMORY[0x277CBEAA8] distantPast];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)getAllValuesForKey:(id)a3 forInputMode:(id)a4 fromDate:(id)a5 toDate:(id)a6
+- (id)getAllValuesForKey:(id)key forInputMode:(id)mode fromDate:(id)date toDate:(id)toDate
 {
   v43 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v30 = a4;
-  v37 = a5;
-  v36 = a6;
-  v10 = self;
-  objc_sync_enter(v10);
-  v31 = v10;
-  v32 = [MEMORY[0x277CBEB18] array];
+  keyCopy = key;
+  modeCopy = mode;
+  dateCopy = date;
+  toDateCopy = toDate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v31 = selfCopy;
+  array = [MEMORY[0x277CBEB18] array];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v10->_database;
+  obj = selfCopy->_database;
   v11 = [(NSMutableArray *)obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v11)
   {
@@ -70,14 +70,14 @@
         }
 
         v13 = *(*(&v38 + 1) + 8 * i);
-        v14 = [v13 creationDate];
-        v15 = [v14 compare:v37];
+        creationDate = [v13 creationDate];
+        v15 = [creationDate compare:dateCopy];
 
-        v16 = [v13 creationDate];
-        v17 = [v16 compare:v36];
+        creationDate2 = [v13 creationDate];
+        v17 = [creationDate2 compare:toDateCopy];
 
         v18 = [v13 key];
-        v19 = [v18 isEqualToString:v35];
+        v19 = [v18 isEqualToString:keyCopy];
         if (v15 == 1)
         {
           v20 = v19;
@@ -97,16 +97,16 @@
           }
 
           v21 = objc_alloc(MEMORY[0x277D6F558]);
-          v22 = [v13 lastUpdateDate];
+          lastUpdateDate = [v13 lastUpdateDate];
           v23 = [v13 key];
-          v24 = [v13 inputMode];
-          v25 = [v13 value];
-          v26 = [v13 secondaryValue];
-          v27 = [v13 realValue];
-          v28 = [v13 properties];
-          v18 = [v21 initWithTimestamp:v22 withKey:v23 withInputMode:v24 withValue:v25 withSecondaryValue:v26 withRealValue:v27 withProperties:v28];
+          inputMode = [v13 inputMode];
+          value = [v13 value];
+          secondaryValue = [v13 secondaryValue];
+          realValue = [v13 realValue];
+          properties = [v13 properties];
+          v18 = [v21 initWithTimestamp:lastUpdateDate withKey:v23 withInputMode:inputMode withValue:value withSecondaryValue:secondaryValue withRealValue:realValue withProperties:properties];
 
-          [v32 addObject:v18];
+          [array addObject:v18];
         }
       }
 
@@ -118,24 +118,24 @@
 
   objc_sync_exit(v31);
 
-  return v32;
+  return array;
 }
 
-- (id)getAllValuesForKeyPrefix:(id)a3 forInputMode:(id)a4 sinceDate:(id)a5
+- (id)getAllValuesForKeyPrefix:(id)prefix forInputMode:(id)mode sinceDate:(id)date
 {
   v36 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v24 = a4;
-  v27 = a5;
-  v8 = self;
-  objc_sync_enter(v8);
-  v25 = v8;
-  v26 = [MEMORY[0x277CBEB18] array];
+  prefixCopy = prefix;
+  modeCopy = mode;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v25 = selfCopy;
+  array = [MEMORY[0x277CBEB18] array];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v8->_database;
+  obj = selfCopy->_database;
   v9 = [(NSMutableArray *)obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v9)
   {
@@ -151,10 +151,10 @@
 
         v11 = *(*(&v31 + 1) + 8 * i);
         v12 = [v11 key];
-        if ([v12 hasPrefix:v30])
+        if ([v12 hasPrefix:prefixCopy])
         {
-          v13 = [v11 creationDate];
-          v14 = [v13 compare:v27] == 1;
+          creationDate = [v11 creationDate];
+          v14 = [creationDate compare:dateCopy] == 1;
 
           if (!v14)
           {
@@ -162,16 +162,16 @@
           }
 
           v15 = objc_alloc(MEMORY[0x277D6F558]);
-          v16 = [v11 lastUpdateDate];
+          lastUpdateDate = [v11 lastUpdateDate];
           v17 = [v11 key];
-          v18 = [v11 inputMode];
-          v19 = [v11 value];
-          v20 = [v11 secondaryValue];
-          v21 = [v11 realValue];
-          v22 = [v11 properties];
-          v12 = [v15 initWithTimestamp:v16 withKey:v17 withInputMode:v18 withValue:v19 withSecondaryValue:v20 withRealValue:v21 withProperties:{v22, v24}];
+          inputMode = [v11 inputMode];
+          value = [v11 value];
+          secondaryValue = [v11 secondaryValue];
+          realValue = [v11 realValue];
+          properties = [v11 properties];
+          v12 = [v15 initWithTimestamp:lastUpdateDate withKey:v17 withInputMode:inputMode withValue:value withSecondaryValue:secondaryValue withRealValue:realValue withProperties:{properties, modeCopy}];
 
-          [v26 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -183,26 +183,26 @@
 
   objc_sync_exit(v25);
 
-  return v26;
+  return array;
 }
 
-- (BOOL)updateDurableValue:(id)a3 forKey:(id)a4 forDate:(id)a5
+- (BOOL)updateDurableValue:(id)value forKey:(id)key forDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(NSMutableDictionary *)v11->_durableDatabase objectForKey:v9];
+  valueCopy = value;
+  keyCopy = key;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = [(NSMutableDictionary *)selfCopy->_durableDatabase objectForKey:keyCopy];
   v13 = v12;
   if (v12)
   {
     v14 = MEMORY[0x277CCABB0];
-    v15 = [(TIMockUserModelDatabaseRow *)v12 value];
-    v16 = [v14 numberWithInt:{objc_msgSend(v8, "intValue") + objc_msgSend(v15, "intValue")}];
+    value = [(TIMockUserModelDatabaseRow *)v12 value];
+    v16 = [v14 numberWithInt:{objc_msgSend(valueCopy, "intValue") + objc_msgSend(value, "intValue")}];
     [(TIMockUserModelDatabaseRow *)v13 setValue:v16];
 
-    [(TIMockUserModelDatabaseRow *)v13 setLastUpdateDate:v10];
+    [(TIMockUserModelDatabaseRow *)v13 setLastUpdateDate:dateCopy];
   }
 
   else
@@ -210,28 +210,28 @@
     v17 = [TIMockUserModelDatabaseRow alloc];
     v18 = [MEMORY[0x277CCABB0] numberWithInt:0];
     v19 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
-    v13 = [(TIMockUserModelDatabaseRow *)v17 initWithKey:v9 inputMode:@"foo" value:v8 secondaryValue:v18 realValue:v19 properties:0 creationDate:v10 lastUpdateDate:v10];
+    v13 = [(TIMockUserModelDatabaseRow *)v17 initWithKey:keyCopy inputMode:@"foo" value:valueCopy secondaryValue:v18 realValue:v19 properties:0 creationDate:dateCopy lastUpdateDate:dateCopy];
   }
 
-  [(NSMutableDictionary *)v11->_durableDatabase setObject:v13 forKey:v9];
+  [(NSMutableDictionary *)selfCopy->_durableDatabase setObject:v13 forKey:keyCopy];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   return 1;
 }
 
-- (BOOL)setDurableValue:(id)a3 forKey:(id)a4 forDate:(id)a5
+- (BOOL)setDurableValue:(id)value forKey:(id)key forDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(NSMutableDictionary *)v11->_durableDatabase objectForKey:v9];
+  valueCopy = value;
+  keyCopy = key;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = [(NSMutableDictionary *)selfCopy->_durableDatabase objectForKey:keyCopy];
   v13 = v12;
   if (v12)
   {
-    [(TIMockUserModelDatabaseRow *)v12 setValue:v8];
-    [(TIMockUserModelDatabaseRow *)v13 setLastUpdateDate:v10];
+    [(TIMockUserModelDatabaseRow *)v12 setValue:valueCopy];
+    [(TIMockUserModelDatabaseRow *)v13 setLastUpdateDate:dateCopy];
   }
 
   else
@@ -239,28 +239,28 @@
     v14 = [TIMockUserModelDatabaseRow alloc];
     v15 = [MEMORY[0x277CCABB0] numberWithInt:0];
     v16 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
-    v13 = [(TIMockUserModelDatabaseRow *)v14 initWithKey:v9 inputMode:@"foo" value:v8 secondaryValue:v15 realValue:v16 properties:0 creationDate:v10 lastUpdateDate:v10];
+    v13 = [(TIMockUserModelDatabaseRow *)v14 initWithKey:keyCopy inputMode:@"foo" value:valueCopy secondaryValue:v15 realValue:v16 properties:0 creationDate:dateCopy lastUpdateDate:dateCopy];
   }
 
-  [(NSMutableDictionary *)v11->_durableDatabase setObject:v13 forKey:v9];
+  [(NSMutableDictionary *)selfCopy->_durableDatabase setObject:v13 forKey:keyCopy];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   return 1;
 }
 
-- (id)getDurableValueForKey:(id)a3
+- (id)getDurableValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_durableDatabase objectForKey:v4];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_durableDatabase objectForKey:keyCopy];
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x277D6F550]);
-    v8 = [v6 creationDate];
-    v9 = [v6 lastUpdateDate];
-    v10 = [v6 value];
-    v11 = [v7 initWithCreationDate:v8 withLastUpdateDate:v9 withKey:v4 withValue:v10];
+    creationDate = [v6 creationDate];
+    lastUpdateDate = [v6 lastUpdateDate];
+    value = [v6 value];
+    v11 = [v7 initWithCreationDate:creationDate withLastUpdateDate:lastUpdateDate withKey:keyCopy withValue:value];
   }
 
   else
@@ -268,23 +268,23 @@
     v11 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
 
-- (id)getAllKnownInputModesSinceDate:(id)a3
+- (id)getAllKnownInputModesSinceDate:(id)date
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [MEMORY[0x277CBEB58] set];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5->_database;
+  v7 = selfCopy->_database;
   v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -299,10 +299,10 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([v11 isMatchSinceDate:{v4, v15}])
+        if ([v11 isMatchSinceDate:{dateCopy, v15}])
         {
-          v12 = [v11 inputMode];
-          [v6 addObject:v12];
+          inputMode = [v11 inputMode];
+          [v6 addObject:inputMode];
         }
       }
 
@@ -314,31 +314,31 @@
 
   if ([v6 count])
   {
-    v13 = [v6 allObjects];
+    allObjects = [v6 allObjects];
   }
 
   else
   {
-    v13 = 0;
+    allObjects = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  return v13;
+  return allObjects;
 }
 
-- (id)getInputModesForKey:(id)a3
+- (id)getInputModesForKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [MEMORY[0x277CBEB58] set];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5->_database;
+  v7 = selfCopy->_database;
   v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -353,10 +353,10 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([v11 isMatchForKey:v4 forInputMode:0 sinceDate:{0, v15}])
+        if ([v11 isMatchForKey:keyCopy forInputMode:0 sinceDate:{0, v15}])
         {
-          v12 = [v11 inputMode];
-          [v6 addObject:v12];
+          inputMode = [v11 inputMode];
+          [v6 addObject:inputMode];
         }
       }
 
@@ -368,36 +368,36 @@
 
   if ([v6 count])
   {
-    v13 = [v6 allObjects];
+    allObjects = [v6 allObjects];
   }
 
   else
   {
-    v13 = 0;
+    allObjects = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  return v13;
+  return allObjects;
 }
 
-- (id)getDailyAndWeeklyValuesForKeyPrefix:(id)a3 forInputMode:(id)a4 weeklyKeySuffixes:(id)a5 endDate:(id)a6
+- (id)getDailyAndWeeklyValuesForKeyPrefix:(id)prefix forInputMode:(id)mode weeklyKeySuffixes:(id)suffixes endDate:(id)date
 {
   v38 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v31 = a4;
-  v30 = a5;
-  v29 = a6;
-  v25 = self;
-  objc_sync_enter(v25);
-  v10 = [MEMORY[0x277CBEB18] array];
+  prefixCopy = prefix;
+  modeCopy = mode;
+  suffixesCopy = suffixes;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [MEMORY[0x277CBEB18] array];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v25->_database;
+  obj = selfCopy->_database;
   v11 = [(NSMutableArray *)obj countByEnumeratingWithState:&v33 objects:v37 count:16];
-  v26 = v10;
+  v26 = array;
   if (v11)
   {
     v28 = *v34;
@@ -411,17 +411,17 @@
         }
 
         v13 = *(*(&v33 + 1) + 8 * i);
-        if ([v13 isMatchForKeyPrefix:v32 forInputMode:v31 weeklyKeySuffixes:v30 endDate:v29])
+        if ([v13 isMatchForKeyPrefix:prefixCopy forInputMode:modeCopy weeklyKeySuffixes:suffixesCopy endDate:dateCopy])
         {
           v14 = objc_alloc(MEMORY[0x277D6F558]);
-          v15 = [v13 lastUpdateDate];
+          lastUpdateDate = [v13 lastUpdateDate];
           v16 = [v13 key];
-          v17 = [v13 inputMode];
-          v18 = [v13 value];
-          v19 = [v13 secondaryValue];
-          v20 = [v13 realValue];
-          v21 = [v13 properties];
-          v22 = [v14 initWithTimestamp:v15 withKey:v16 withInputMode:v17 withValue:v18 withSecondaryValue:v19 withRealValue:v20 withProperties:v21];
+          inputMode = [v13 inputMode];
+          value = [v13 value];
+          secondaryValue = [v13 secondaryValue];
+          realValue = [v13 realValue];
+          properties = [v13 properties];
+          v22 = [v14 initWithTimestamp:lastUpdateDate withKey:v16 withInputMode:inputMode withValue:value withSecondaryValue:secondaryValue withRealValue:realValue withProperties:properties];
 
           [v26 addObject:v22];
         }
@@ -443,27 +443,27 @@
     v23 = 0;
   }
 
-  objc_sync_exit(v25);
+  objc_sync_exit(selfCopy);
 
   return v23;
 }
 
-- (id)getAllValuesForKey:(id)a3 forInputMode:(id)a4 sinceDate:(id)a5
+- (id)getAllValuesForKey:(id)key forInputMode:(id)mode sinceDate:(id)date
 {
   v37 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v24 = self;
-  objc_sync_enter(v24);
-  v8 = [MEMORY[0x277CBEB18] array];
+  keyCopy = key;
+  modeCopy = mode;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [MEMORY[0x277CBEB18] array];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v24->_database;
+  obj = selfCopy->_database;
   v9 = [(NSMutableArray *)obj countByEnumeratingWithState:&v32 objects:v36 count:16];
-  v26 = v8;
+  v26 = array;
   if (v9)
   {
     v10 = *v33;
@@ -480,17 +480,17 @@
         }
 
         v12 = *(*(&v32 + 1) + 8 * v11);
-        if ([v12 isMatchForKey:v31 forInputMode:v30 sinceDate:v29])
+        if ([v12 isMatchForKey:keyCopy forInputMode:modeCopy sinceDate:dateCopy])
         {
           v13 = objc_alloc(MEMORY[0x277D6F558]);
-          v14 = [v12 lastUpdateDate];
+          lastUpdateDate = [v12 lastUpdateDate];
           v15 = [v12 key];
-          v16 = [v12 inputMode];
-          v17 = [v12 value];
-          v18 = [v12 secondaryValue];
-          v19 = [v12 realValue];
-          v20 = [v12 properties];
-          v21 = [v13 initWithTimestamp:v14 withKey:v15 withInputMode:v16 withValue:v17 withSecondaryValue:v18 withRealValue:v19 withProperties:v20];
+          inputMode = [v12 inputMode];
+          value = [v12 value];
+          secondaryValue = [v12 secondaryValue];
+          realValue = [v12 realValue];
+          properties = [v12 properties];
+          v21 = [v13 initWithTimestamp:lastUpdateDate withKey:v15 withInputMode:inputMode withValue:value withSecondaryValue:secondaryValue withRealValue:realValue withProperties:properties];
 
           [v26 addObject:v21];
           v9 = v27;
@@ -517,26 +517,26 @@
     v22 = 0;
   }
 
-  objc_sync_exit(v24);
+  objc_sync_exit(selfCopy);
 
   return v22;
 }
 
-- (BOOL)purgeDataForKeyPrefix:(id)a3 forInputMode:(id)a4 beforeDate:(id)a5
+- (BOOL)purgeDataForKeyPrefix:(id)prefix forInputMode:(id)mode beforeDate:(id)date
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v22 = v11;
-  v12 = [MEMORY[0x277CBEB18] array];
+  prefixCopy = prefix;
+  modeCopy = mode;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v22 = selfCopy;
+  array = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v11->_database;
+  obj = selfCopy->_database;
   v13 = [(NSMutableArray *)obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
@@ -551,16 +551,16 @@
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 isMatchForKeyPrefix:v8 forInputMode:v9 sinceDate:0] ^ 1;
-        if (!v10)
+        v17 = [v16 isMatchForKeyPrefix:prefixCopy forInputMode:modeCopy sinceDate:0] ^ 1;
+        if (!dateCopy)
         {
           LOBYTE(v17) = 1;
         }
 
         if ((v17 & 1) == 0)
         {
-          v18 = [v16 lastUpdateDate];
-          v19 = [v18 compare:v10] == 1;
+          lastUpdateDate = [v16 lastUpdateDate];
+          v19 = [lastUpdateDate compare:dateCopy] == 1;
 
           if (!v19)
           {
@@ -568,7 +568,7 @@
           }
         }
 
-        [(NSMutableArray *)v12 addObject:v16];
+        [(NSMutableArray *)array addObject:v16];
       }
 
       v13 = [(NSMutableArray *)obj countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -578,27 +578,27 @@
   }
 
   database = v22->_database;
-  v22->_database = v12;
+  v22->_database = array;
 
   objc_sync_exit(v22);
   return 1;
 }
 
-- (BOOL)purgeDataForKey:(id)a3 forInputMode:(id)a4 beforeDate:(id)a5
+- (BOOL)purgeDataForKey:(id)key forInputMode:(id)mode beforeDate:(id)date
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v22 = v11;
-  v12 = [MEMORY[0x277CBEB18] array];
+  keyCopy = key;
+  modeCopy = mode;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v22 = selfCopy;
+  array = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v11->_database;
+  obj = selfCopy->_database;
   v13 = [(NSMutableArray *)obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
@@ -613,16 +613,16 @@
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 isMatchForKey:v8 forInputMode:v9 sinceDate:0] ^ 1;
-        if (!v10)
+        v17 = [v16 isMatchForKey:keyCopy forInputMode:modeCopy sinceDate:0] ^ 1;
+        if (!dateCopy)
         {
           LOBYTE(v17) = 1;
         }
 
         if ((v17 & 1) == 0)
         {
-          v18 = [v16 lastUpdateDate];
-          v19 = [v18 compare:v10] == 1;
+          lastUpdateDate = [v16 lastUpdateDate];
+          v19 = [lastUpdateDate compare:dateCopy] == 1;
 
           if (!v19)
           {
@@ -630,7 +630,7 @@
           }
         }
 
-        [(NSMutableArray *)v12 addObject:v16];
+        [(NSMutableArray *)array addObject:v16];
       }
 
       v13 = [(NSMutableArray *)obj countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -640,28 +640,28 @@
   }
 
   database = v22->_database;
-  v22->_database = v12;
+  v22->_database = array;
 
   objc_sync_exit(v22);
   return 1;
 }
 
-- (BOOL)addValue:(id)a3 andSecondaryValue:(id)a4 andRealValue:(id)a5 andProperties:(id)a6 forKey:(id)a7 forInputMode:(id)a8 forDate:(id)a9
+- (BOOL)addValue:(id)value andSecondaryValue:(id)secondaryValue andRealValue:(id)realValue andProperties:(id)properties forKey:(id)key forInputMode:(id)mode forDate:(id)date
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = self;
-  objc_sync_enter(v22);
-  database = v22->_database;
-  v24 = [[TIMockUserModelDatabaseRow alloc] initWithKey:v19 inputMode:v20 value:v15 secondaryValue:v16 realValue:v17 properties:v18 creationDate:v21 lastUpdateDate:v21];
+  valueCopy = value;
+  secondaryValueCopy = secondaryValue;
+  realValueCopy = realValue;
+  propertiesCopy = properties;
+  keyCopy = key;
+  modeCopy = mode;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  database = selfCopy->_database;
+  v24 = [[TIMockUserModelDatabaseRow alloc] initWithKey:keyCopy inputMode:modeCopy value:valueCopy secondaryValue:secondaryValueCopy realValue:realValueCopy properties:propertiesCopy creationDate:dateCopy lastUpdateDate:dateCopy];
   [(NSMutableArray *)database addObject:v24];
 
-  objc_sync_exit(v22);
+  objc_sync_exit(selfCopy);
   return 1;
 }
 
@@ -672,25 +672,25 @@
   v2 = [(TIUserModelDataStoreMock *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     database = v2->_database;
-    v2->_database = v3;
+    v2->_database = array;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     durableDatabase = v2->_durableDatabase;
-    v2->_durableDatabase = v5;
+    v2->_durableDatabase = dictionary;
 
-    v7 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     propertiesLastMigrationDate = v2->_propertiesLastMigrationDate;
-    v2->_propertiesLastMigrationDate = v7;
+    v2->_propertiesLastMigrationDate = distantPast;
 
-    v9 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
     durableLastMigrationDate = v2->_durableLastMigrationDate;
-    v2->_durableLastMigrationDate = v9;
+    v2->_durableLastMigrationDate = distantPast2;
 
-    v11 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast3 = [MEMORY[0x277CBEAA8] distantPast];
     transientLastMigrationDate = v2->_transientLastMigrationDate;
-    v2->_transientLastMigrationDate = v11;
+    v2->_transientLastMigrationDate = distantPast3;
   }
 
   return v2;

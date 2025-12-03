@@ -1,30 +1,30 @@
 @interface ASTConnectionTestResult
-- (ASTConnectionTestResult)initWithTestResults:(id)a3;
+- (ASTConnectionTestResult)initWithTestResults:(id)results;
 @end
 
 @implementation ASTConnectionTestResult
 
-- (ASTConnectionTestResult)initWithTestResults:(id)a3
+- (ASTConnectionTestResult)initWithTestResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v12.receiver = self;
   v12.super_class = ASTConnectionTestResult;
   v5 = [(ASTMaterializedConnection *)&v12 init];
   if (v5)
   {
-    v6 = [v4 testId];
+    testId = [resultsCopy testId];
     testId = v5->_testId;
-    v5->_testId = v6;
+    v5->_testId = testId;
 
-    v8 = [v4 payload];
+    payload = [resultsCopy payload];
 
-    if (v8)
+    if (payload)
     {
-      v9 = [v4 payload];
-      [(ASTMaterializedConnection *)v5 addBody:v9 gzip:+[ASTConnectionUtilities isGzipEnabled]];
+      payload2 = [resultsCopy payload];
+      [(ASTMaterializedConnection *)v5 addBody:payload2 gzip:+[ASTConnectionUtilities isGzipEnabled]];
 
-      v10 = [v4 base64Signature];
-      [(ASTMaterializedConnection *)v5 setSignature:v10];
+      base64Signature = [resultsCopy base64Signature];
+      [(ASTMaterializedConnection *)v5 setSignature:base64Signature];
     }
   }
 

@@ -1,51 +1,51 @@
 @interface SRUIFInstrumentationManager
 + (id)sharedManager;
-- (BOOL)_hasDismissedForTurnContext:(id)a3;
+- (BOOL)_hasDismissedForTurnContext:(id)context;
 - (SRUIFInstrumentationManager)init;
-- (id)_convertVirtualAudioSubTypeToString:(unsigned int)a3;
-- (id)_displayedDialogForAssistantUtteranceView:(id)a3;
-- (id)_pnrErrorMessageWithError:(id)a3;
+- (id)_convertVirtualAudioSubTypeToString:(unsigned int)string;
+- (id)_displayedDialogForAssistantUtteranceView:(id)view;
+- (id)_pnrErrorMessageWithError:(id)error;
 - (id)_routeInfoForOutputRoute;
-- (id)cardIDforSnippetAceID:(id)a3;
+- (id)cardIDforSnippetAceID:(id)d;
 - (id)latestResponseProducingTurn;
 - (id)latestStoredTurn;
-- (void)_barrierWithCompletion:(id)a3;
-- (void)_emitInstrumentation:(id)a3 forTurn:(id)a4 atTime:(unint64_t)a5;
-- (void)_populateDefaultHardwareInformationWithRouteInfo:(id)a3 forTTSEvent:(id)a4;
-- (void)_populateWirelessHardwareInformationWithRouteInfo:(id)a3 forTTSEvent:(id)a4;
+- (void)_barrierWithCompletion:(id)completion;
+- (void)_emitInstrumentation:(id)instrumentation forTurn:(id)turn atTime:(unint64_t)time;
+- (void)_populateDefaultHardwareInformationWithRouteInfo:(id)info forTTSEvent:(id)event;
+- (void)_populateWirelessHardwareInformationWithRouteInfo:(id)info forTTSEvent:(id)event;
 - (void)_prepareForTesting;
 - (void)_resetBargeInDetectedEvent;
 - (void)_storeCurrentInstrumentationTurnContextInLatestResponseProducingTurn;
-- (void)_willInstrument:(id)a3 forTurn:(id)a4;
-- (void)boostQueuedMessagesAndPerformOnQueueCompletion:(id)a3 timeout:(double)a4;
-- (void)emitCasinoRelationshipEventWithViewIDFrom:(id)a3 ViewIDTo:(id)a4 casinoFromType:(int)a5;
-- (void)emitFinalSpeechTranscriptionEventForAceObjectWithIdentifier:(id)a3;
-- (void)emitInstrumentation:(id)a3;
-- (void)emitInstrumentation:(id)a3 atTime:(unint64_t)a4;
-- (void)emitPartialSpeechTranscriptionEventForAceObjectWithIdentifier:(id)a3;
-- (void)emitPunchOutEventWithURL:(id)a3 appID:(id)a4 punchoutOrigin:(int)a5;
-- (void)emitRequestFailedWithError:(id)a3;
-- (void)emitRevealSpeechTranscriptionEventForAceObjectWithIdentifier:(id)a3;
-- (void)emitTextToSpeechBeginEvent:(id)a3;
-- (void)emitTextToSpeechEndEvent:(id)a3;
-- (void)emitTextToSpeechRequestReceivedEventFor:(id)a3 atTime:(unint64_t)a4;
-- (void)emitUIStateTransitionEventWithFromState:(int)a3 toState:(int)a4 withPresentationType:(int)a5 machAbsoluteTransitionTime:(double)a6;
-- (void)emitUIStateTransitionForSiriDismissalWithReason:(int)a3;
-- (void)emitUUFRCasinoCardSelectedEventWithCardSectionID:(id)a3 ordinalCardSectionPosition:(int64_t)a4 snippetAceId:(id)a5;
-- (void)emitUUFRPresentedEventWith:(id)a3 snippetClass:(id)a4 dialogIdentifier:(id)a5 dialogPhase:(id)a6;
-- (void)emitUUFRShownForAceObject:(id)a3 presentationType:(int)a4 dialogPhase:(id)a5 mode:(int)a6 viewRegion:(int)a7;
-- (void)emitUUFRSpokenForAceObject:(id)a3 presentationType:(int)a4 dialogPhase:(id)a5 mode:(int)a6 speakableText:(id)a7 dialogIdentifierOverride:(id)a8;
+- (void)_willInstrument:(id)instrument forTurn:(id)turn;
+- (void)boostQueuedMessagesAndPerformOnQueueCompletion:(id)completion timeout:(double)timeout;
+- (void)emitCasinoRelationshipEventWithViewIDFrom:(id)from ViewIDTo:(id)to casinoFromType:(int)type;
+- (void)emitFinalSpeechTranscriptionEventForAceObjectWithIdentifier:(id)identifier;
+- (void)emitInstrumentation:(id)instrumentation;
+- (void)emitInstrumentation:(id)instrumentation atTime:(unint64_t)time;
+- (void)emitPartialSpeechTranscriptionEventForAceObjectWithIdentifier:(id)identifier;
+- (void)emitPunchOutEventWithURL:(id)l appID:(id)d punchoutOrigin:(int)origin;
+- (void)emitRequestFailedWithError:(id)error;
+- (void)emitRevealSpeechTranscriptionEventForAceObjectWithIdentifier:(id)identifier;
+- (void)emitTextToSpeechBeginEvent:(id)event;
+- (void)emitTextToSpeechEndEvent:(id)event;
+- (void)emitTextToSpeechRequestReceivedEventFor:(id)for atTime:(unint64_t)time;
+- (void)emitUIStateTransitionEventWithFromState:(int)state toState:(int)toState withPresentationType:(int)type machAbsoluteTransitionTime:(double)time;
+- (void)emitUIStateTransitionForSiriDismissalWithReason:(int)reason;
+- (void)emitUUFRCasinoCardSelectedEventWithCardSectionID:(id)d ordinalCardSectionPosition:(int64_t)position snippetAceId:(id)id;
+- (void)emitUUFRPresentedEventWith:(id)with snippetClass:(id)class dialogIdentifier:(id)identifier dialogPhase:(id)phase;
+- (void)emitUUFRShownForAceObject:(id)object presentationType:(int)type dialogPhase:(id)phase mode:(int)mode viewRegion:(int)region;
+- (void)emitUUFRSpokenForAceObject:(id)object presentationType:(int)type dialogPhase:(id)phase mode:(int)mode speakableText:(id)text dialogIdentifierOverride:(id)override;
 - (void)emitUserBargeInEventForBargedInTurn;
-- (void)emitUserBargeInEventForBargedInTurn:(id)a3 machAbsoluteTime:(double)a4;
-- (void)emitUserViewRegionInteractionEventWithViewRegion:(int)a3 userViewInteraction:(int)a4;
-- (void)emitVRXInstrumentationEvent:(id)a3 aceViewId:(id)a4 cardEngagementProcessed:(BOOL)a5;
+- (void)emitUserBargeInEventForBargedInTurn:(id)turn machAbsoluteTime:(double)time;
+- (void)emitUserViewRegionInteractionEventWithViewRegion:(int)region userViewInteraction:(int)interaction;
+- (void)emitVRXInstrumentationEvent:(id)event aceViewId:(id)id cardEngagementProcessed:(BOOL)processed;
 - (void)hostDidBecomeActive;
 - (void)hostWillResignActive;
-- (void)processSessionEvent:(int64_t)a3 isSpeechSynthesisSpeaking:(BOOL)a4 machAbsoluteTime:(double)a5;
-- (void)setDialogIdentifiers:(id)a3 forAceViewSpeakableTextWithIdentifier:(id)a4;
-- (void)storeCardID:(id)a3 forSnippetAceID:(id)a4;
-- (void)storeClientGeneratedDUC:(id)a3;
-- (void)storeCurrentInstrumentationTurnContext:(id)a3;
+- (void)processSessionEvent:(int64_t)event isSpeechSynthesisSpeaking:(BOOL)speaking machAbsoluteTime:(double)time;
+- (void)setDialogIdentifiers:(id)identifiers forAceViewSpeakableTextWithIdentifier:(id)identifier;
+- (void)storeCardID:(id)d forSnippetAceID:(id)iD;
+- (void)storeClientGeneratedDUC:(id)c;
+- (void)storeCurrentInstrumentationTurnContext:(id)context;
 @end
 
 @implementation SRUIFInstrumentationManager
@@ -93,15 +93,15 @@
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__7;
   v13 = __Block_byref_object_dispose__7;
-  v14 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v3 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [v10[5] turnIdentifier];
+    turnIdentifier = [v10[5] turnIdentifier];
     *buf = 136315394;
     v17 = "[SRUIFInstrumentationManager _storeCurrentInstrumentationTurnContextInLatestResponseProducingTurn]";
     v18 = 2112;
-    v19 = v4;
+    v19 = turnIdentifier;
     _os_log_impl(&dword_26951F000, v3, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New turn produced output %@", buf, 0x16u);
   }
 
@@ -162,40 +162,40 @@ uint64_t __44__SRUIFInstrumentationManager_sharedManager__block_invoke()
     v3->_userDefaults = v7;
 
     v3->_shouldInstrument = 1;
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     cardInfo = v3->_cardInfo;
-    v3->_cardInfo = v9;
+    v3->_cardInfo = dictionary;
   }
 
   return v3;
 }
 
-- (void)storeCurrentInstrumentationTurnContext:(id)a3
+- (void)storeCurrentInstrumentationTurnContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   objc_initWeak(&location, self);
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 turnIdentifier];
+    turnIdentifier = [contextCopy turnIdentifier];
     *buf = 136315394;
     v15 = "[SRUIFInstrumentationManager storeCurrentInstrumentationTurnContext:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = turnIdentifier;
     _os_log_impl(&dword_26951F000, v5, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New turn provided %@", buf, 0x16u);
   }
 
   [(SRUIFInstrumentationManager *)self setPreviousInstrumentationTurnContext:self->_currentInstrumentationTurnContext];
-  [(SRUIFInstrumentationManager *)self setCurrentInstrumentationTurnContext:v4];
+  [(SRUIFInstrumentationManager *)self setCurrentInstrumentationTurnContext:contextCopy];
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__SRUIFInstrumentationManager_storeCurrentInstrumentationTurnContext___block_invoke;
   block[3] = &unk_279C61898;
   objc_copyWeak(&v12, &location);
-  v11 = v4;
-  v8 = v4;
+  v11 = contextCopy;
+  v8 = contextCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(&v12);
@@ -241,13 +241,13 @@ void __70__SRUIFInstrumentationManager_storeCurrentInstrumentationTurnContext___
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cardIDforSnippetAceID:(id)a3
+- (id)cardIDforSnippetAceID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_cardInfo objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_cardInfo objectForKeyedSubscript:dCopy];
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_cardInfo objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_cardInfo objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -258,14 +258,14 @@ void __70__SRUIFInstrumentationManager_storeCurrentInstrumentationTurnContext___
   return v6;
 }
 
-- (void)setDialogIdentifiers:(id)a3 forAceViewSpeakableTextWithIdentifier:(id)a4
+- (void)setDialogIdentifiers:(id)identifiers forAceViewSpeakableTextWithIdentifier:(id)identifier
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
   v8 = MEMORY[0x277CBEB38];
-  v21 = v7;
-  v22[0] = v6;
+  v21 = identifierCopy;
+  v22[0] = identifiersCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
   v10 = [v8 dictionaryWithDictionary:v9];
   aceViewDialogIdentifiers = self->_aceViewDialogIdentifiers;
@@ -278,10 +278,10 @@ void __70__SRUIFInstrumentationManager_storeCurrentInstrumentationTurnContext___
   block[2] = __90__SRUIFInstrumentationManager_setDialogIdentifiers_forAceViewSpeakableTextWithIdentifier___block_invoke;
   block[3] = &unk_279C61820;
   objc_copyWeak(&v19, &location);
-  v17 = v7;
-  v18 = v6;
-  v13 = v6;
-  v14 = v7;
+  v17 = identifierCopy;
+  v18 = identifiersCopy;
+  v13 = identifiersCopy;
+  v14 = identifierCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(&v19);
@@ -308,11 +308,11 @@ void __90__SRUIFInstrumentationManager_setDialogIdentifiers_forAceViewSpeakableT
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emitInstrumentation:(id)a3
+- (void)emitInstrumentation:(id)instrumentation
 {
-  v4 = a3;
+  instrumentationCopy = instrumentation;
   objc_initWeak(&location, self);
-  v5 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v6 = mach_absolute_time();
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -320,11 +320,11 @@ void __90__SRUIFInstrumentationManager_setDialogIdentifiers_forAceViewSpeakableT
   block[2] = __51__SRUIFInstrumentationManager_emitInstrumentation___block_invoke;
   block[3] = &unk_279C62AF0;
   objc_copyWeak(v13, &location);
-  v11 = v4;
-  v12 = v5;
+  v11 = instrumentationCopy;
+  v12 = currentInstrumentationTurnContext;
   v13[1] = v6;
-  v8 = v5;
-  v9 = v4;
+  v8 = currentInstrumentationTurnContext;
+  v9 = instrumentationCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v13);
@@ -337,22 +337,22 @@ void __51__SRUIFInstrumentationManager_emitInstrumentation___block_invoke(uint64
   [WeakRetained _emitInstrumentation:*(a1 + 32) forTurn:*(a1 + 40) atTime:*(a1 + 56)];
 }
 
-- (void)emitInstrumentation:(id)a3 atTime:(unint64_t)a4
+- (void)emitInstrumentation:(id)instrumentation atTime:(unint64_t)time
 {
-  v6 = a3;
+  instrumentationCopy = instrumentation;
   objc_initWeak(&location, self);
-  v7 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__SRUIFInstrumentationManager_emitInstrumentation_atTime___block_invoke;
   block[3] = &unk_279C62AF0;
   objc_copyWeak(v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v14[1] = a4;
-  v9 = v7;
-  v10 = v6;
+  v12 = instrumentationCopy;
+  v13 = currentInstrumentationTurnContext;
+  v14[1] = time;
+  v9 = currentInstrumentationTurnContext;
+  v10 = instrumentationCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v14);
@@ -365,11 +365,11 @@ void __58__SRUIFInstrumentationManager_emitInstrumentation_atTime___block_invoke
   [WeakRetained _emitInstrumentation:*(a1 + 32) forTurn:*(a1 + 40) atTime:*(a1 + 56)];
 }
 
-- (void)_emitInstrumentation:(id)a3 forTurn:(id)a4 atTime:(unint64_t)a5
+- (void)_emitInstrumentation:(id)instrumentation forTurn:(id)turn atTime:(unint64_t)time
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  instrumentationCopy = instrumentation;
+  turnCopy = turn;
+  if (!turnCopy)
   {
     v10 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
@@ -381,49 +381,49 @@ void __58__SRUIFInstrumentationManager_emitInstrumentation_atTime___block_invoke
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v8;
-    v12 = [v11 startedOrChanged];
+    v11 = instrumentationCopy;
+    startedOrChanged = [v11 startedOrChanged];
 
-    if (v12 || ([v11 ended], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+    if (startedOrChanged || ([v11 ended], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
     {
-      [(SRUIFInstrumentationManager *)self setHasNotYetEmittedLaunchContextEnd:v12 != 0];
+      [(SRUIFInstrumentationManager *)self setHasNotYetEmittedLaunchContextEnd:startedOrChanged != 0];
     }
   }
 
-  [(SRUIFInstrumentationManager *)self _willInstrument:v8 forTurn:v9];
+  [(SRUIFInstrumentationManager *)self _willInstrument:instrumentationCopy forTurn:turnCopy];
   if (self->_shouldInstrument)
   {
-    [v9 emitInstrumentation:v8 machAbsoluteTime:a5];
+    [turnCopy emitInstrumentation:instrumentationCopy machAbsoluteTime:time];
   }
 }
 
-- (void)_willInstrument:(id)a3 forTurn:(id)a4
+- (void)_willInstrument:(id)instrument forTurn:(id)turn
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  instrumentCopy = instrument;
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [a4 turnIdentifier];
-    v9 = [v5 formattedText];
+    turnIdentifier = [turn turnIdentifier];
+    formattedText = [instrumentCopy formattedText];
     v11 = 136315906;
     v12 = "[SRUIFInstrumentationManager _willInstrument:forTurn:]";
     v13 = 2112;
-    v14 = v5;
+    v14 = instrumentCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = turnIdentifier;
     v17 = 2112;
-    v18 = v9;
+    v18 = formattedText;
     _os_log_impl(&dword_26951F000, v7, OS_LOG_TYPE_DEFAULT, "%s #noisy #instrumentation %@ in turn %@: \n%@", &v11, 0x2Au);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)storeClientGeneratedDUC:(id)a3
+- (void)storeClientGeneratedDUC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   objc_initWeak(&location, self);
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -431,8 +431,8 @@ void __58__SRUIFInstrumentationManager_emitInstrumentation_atTime___block_invoke
   block[2] = __55__SRUIFInstrumentationManager_storeClientGeneratedDUC___block_invoke;
   block[3] = &unk_279C61898;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = cCopy;
+  v6 = cCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(&v9);
@@ -454,12 +454,12 @@ uint64_t __55__SRUIFInstrumentationManager_storeClientGeneratedDUC___block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)storeCardID:(id)a3 forSnippetAceID:(id)a4
+- (void)storeCardID:(id)d forSnippetAceID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  dCopy = d;
+  iDCopy = iD;
+  v8 = iDCopy;
+  if (dCopy && iDCopy)
   {
     objc_initWeak(&location, self);
     instrumentationManagerQueue = self->_instrumentationManagerQueue;
@@ -469,7 +469,7 @@ uint64_t __55__SRUIFInstrumentationManager_storeClientGeneratedDUC___block_invok
     v11[3] = &unk_279C61820;
     objc_copyWeak(&v14, &location);
     v12 = v8;
-    v13 = v6;
+    v13 = dCopy;
     dispatch_async(instrumentationManagerQueue, v11);
 
     objc_destroyWeak(&v14);
@@ -481,7 +481,7 @@ uint64_t __55__SRUIFInstrumentationManager_storeClientGeneratedDUC___block_invok
     v10 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
     {
-      [(SRUIFInstrumentationManager *)v6 storeCardID:v8 forSnippetAceID:v10];
+      [(SRUIFInstrumentationManager *)dCopy storeCardID:v8 forSnippetAceID:v10];
     }
   }
 }
@@ -505,9 +505,9 @@ void __59__SRUIFInstrumentationManager_storeCardID_forSnippetAceID___block_invok
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emitUIStateTransitionEventWithFromState:(int)a3 toState:(int)a4 withPresentationType:(int)a5 machAbsoluteTransitionTime:(double)a6
+- (void)emitUIStateTransitionEventWithFromState:(int)state toState:(int)toState withPresentationType:(int)type machAbsoluteTransitionTime:(double)time
 {
-  v11 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   objc_initWeak(&location, self);
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   v14[0] = MEMORY[0x277D85DD0];
@@ -515,12 +515,12 @@ void __59__SRUIFInstrumentationManager_storeCardID_forSnippetAceID___block_invok
   v14[2] = __127__SRUIFInstrumentationManager_emitUIStateTransitionEventWithFromState_toState_withPresentationType_machAbsoluteTransitionTime___block_invoke;
   v14[3] = &unk_279C62B18;
   objc_copyWeak(v16, &location);
-  v15 = v11;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v16[1] = *&a6;
-  v13 = v11;
+  v15 = currentInstrumentationTurnContext;
+  stateCopy = state;
+  toStateCopy = toState;
+  typeCopy = type;
+  v16[1] = *&time;
+  v13 = currentInstrumentationTurnContext;
   dispatch_async(instrumentationManagerQueue, v14);
 
   objc_destroyWeak(v16);
@@ -605,10 +605,10 @@ LABEL_22:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emitUIStateTransitionForSiriDismissalWithReason:(int)a3
+- (void)emitUIStateTransitionForSiriDismissalWithReason:(int)reason
 {
   objc_initWeak(&location, self);
-  v5 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v6 = mach_absolute_time();
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -616,10 +616,10 @@ LABEL_22:
   block[2] = __79__SRUIFInstrumentationManager_emitUIStateTransitionForSiriDismissalWithReason___block_invoke;
   block[3] = &unk_279C62B40;
   objc_copyWeak(v11, &location);
-  v12 = a3;
-  v10 = v5;
+  reasonCopy = reason;
+  v10 = currentInstrumentationTurnContext;
   v11[1] = v6;
-  v8 = v5;
+  v8 = currentInstrumentationTurnContext;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v11);
@@ -652,11 +652,11 @@ uint64_t __79__SRUIFInstrumentationManager_emitUIStateTransitionForSiriDismissal
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)emitPartialSpeechTranscriptionEventForAceObjectWithIdentifier:(id)a3
+- (void)emitPartialSpeechTranscriptionEventForAceObjectWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
-  v5 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v6 = mach_absolute_time();
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -664,11 +664,11 @@ uint64_t __79__SRUIFInstrumentationManager_emitUIStateTransitionForSiriDismissal
   block[2] = __93__SRUIFInstrumentationManager_emitPartialSpeechTranscriptionEventForAceObjectWithIdentifier___block_invoke;
   block[3] = &unk_279C62AF0;
   objc_copyWeak(v13, &location);
-  v11 = v4;
-  v12 = v5;
+  v11 = identifierCopy;
+  v12 = currentInstrumentationTurnContext;
   v13[1] = v6;
-  v8 = v5;
-  v9 = v4;
+  v8 = currentInstrumentationTurnContext;
+  v9 = identifierCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v13);
@@ -690,11 +690,11 @@ void __93__SRUIFInstrumentationManager_emitPartialSpeechTranscriptionEventForAce
   }
 }
 
-- (void)emitFinalSpeechTranscriptionEventForAceObjectWithIdentifier:(id)a3
+- (void)emitFinalSpeechTranscriptionEventForAceObjectWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
-  v5 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v6 = mach_absolute_time();
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -702,11 +702,11 @@ void __93__SRUIFInstrumentationManager_emitPartialSpeechTranscriptionEventForAce
   block[2] = __91__SRUIFInstrumentationManager_emitFinalSpeechTranscriptionEventForAceObjectWithIdentifier___block_invoke;
   block[3] = &unk_279C62AF0;
   objc_copyWeak(v13, &location);
-  v11 = v4;
-  v12 = v5;
+  v11 = identifierCopy;
+  v12 = currentInstrumentationTurnContext;
   v13[1] = v6;
-  v8 = v5;
-  v9 = v4;
+  v8 = currentInstrumentationTurnContext;
+  v9 = identifierCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v13);
@@ -728,11 +728,11 @@ void __91__SRUIFInstrumentationManager_emitFinalSpeechTranscriptionEventForAceOb
   }
 }
 
-- (void)emitRevealSpeechTranscriptionEventForAceObjectWithIdentifier:(id)a3
+- (void)emitRevealSpeechTranscriptionEventForAceObjectWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
-  v5 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v6 = mach_absolute_time();
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -740,11 +740,11 @@ void __91__SRUIFInstrumentationManager_emitFinalSpeechTranscriptionEventForAceOb
   block[2] = __92__SRUIFInstrumentationManager_emitRevealSpeechTranscriptionEventForAceObjectWithIdentifier___block_invoke;
   block[3] = &unk_279C62AF0;
   objc_copyWeak(v13, &location);
-  v11 = v4;
-  v12 = v5;
+  v11 = identifierCopy;
+  v12 = currentInstrumentationTurnContext;
   v13[1] = v6;
-  v8 = v5;
-  v9 = v4;
+  v8 = currentInstrumentationTurnContext;
+  v9 = identifierCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v13);
@@ -766,21 +766,21 @@ void __92__SRUIFInstrumentationManager_emitRevealSpeechTranscriptionEventForAceO
   }
 }
 
-- (void)emitTextToSpeechRequestReceivedEventFor:(id)a3 atTime:(unint64_t)a4
+- (void)emitTextToSpeechRequestReceivedEventFor:(id)for atTime:(unint64_t)time
 {
-  v6 = a3;
-  v7 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  forCopy = for;
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__SRUIFInstrumentationManager_emitTextToSpeechRequestReceivedEventFor_atTime___block_invoke;
   v11[3] = &unk_279C62B68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v15 = a4;
-  v9 = v7;
-  v10 = v6;
+  v12 = forCopy;
+  selfCopy = self;
+  v14 = currentInstrumentationTurnContext;
+  timeCopy = time;
+  v9 = currentInstrumentationTurnContext;
+  v10 = forCopy;
   dispatch_async(instrumentationManagerQueue, v11);
 }
 
@@ -808,11 +808,11 @@ void __78__SRUIFInstrumentationManager_emitTextToSpeechRequestReceivedEventFor_a
   [*(a1 + 40) _emitInstrumentation:v8 forTurn:*(a1 + 48) atTime:*(a1 + 56)];
 }
 
-- (void)emitTextToSpeechBeginEvent:(id)a3
+- (void)emitTextToSpeechBeginEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_initWeak(&location, self);
-  v5 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v6 = mach_absolute_time();
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   v10[0] = MEMORY[0x277D85DD0];
@@ -820,12 +820,12 @@ void __78__SRUIFInstrumentationManager_emitTextToSpeechRequestReceivedEventFor_a
   v10[2] = __58__SRUIFInstrumentationManager_emitTextToSpeechBeginEvent___block_invoke;
   v10[3] = &unk_279C62B90;
   objc_copyWeak(v14, &location);
-  v11 = v4;
-  v12 = self;
-  v13 = v5;
+  v11 = eventCopy;
+  selfCopy = self;
+  v13 = currentInstrumentationTurnContext;
   v14[1] = v6;
-  v8 = v5;
-  v9 = v4;
+  v8 = currentInstrumentationTurnContext;
+  v9 = eventCopy;
   dispatch_async(instrumentationManagerQueue, v10);
 
   objc_destroyWeak(v14);
@@ -860,20 +860,20 @@ void __58__SRUIFInstrumentationManager_emitTextToSpeechBeginEvent___block_invoke
 
 - (id)_routeInfoForOutputRoute
 {
-  v2 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v3 = [v2 attributeForKey:*MEMORY[0x277D26C70]];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v3 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26C70]];
 
   return v3;
 }
 
-- (void)_populateDefaultHardwareInformationWithRouteInfo:(id)a3 forTTSEvent:(id)a4
+- (void)_populateDefaultHardwareInformationWithRouteInfo:(id)info forTTSEvent:(id)event
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [v15 valueForKey:*MEMORY[0x277D26CA8]];
+  infoCopy = info;
+  eventCopy = event;
+  v7 = [infoCopy valueForKey:*MEMORY[0x277D26CA8]];
   if (([v7 isEqualToString:@"Speaker"] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"CarAudioOutput") & 1) == 0)
   {
-    v8 = [v15 valueForKey:*MEMORY[0x277D26D10]];
+    v8 = [infoCopy valueForKey:*MEMORY[0x277D26D10]];
     v9 = [(SRUIFInstrumentationManager *)self _convertVirtualAudioSubTypeToString:1751410292];
     if (([v8 isEqualToString:v9] & 1) == 0)
     {
@@ -898,12 +898,12 @@ LABEL_11:
           }
 
           v9 = objc_alloc_init(MEMORY[0x277D5A8D8]);
-          v10 = [v15 valueForKey:*MEMORY[0x277D26CD0]];
-          v14 = [&unk_287A18CC0 stringValue];
-          [v9 setInterfaceVendorID:v14];
+          v10 = [infoCopy valueForKey:*MEMORY[0x277D26CD0]];
+          stringValue = [&unk_287A18CC0 stringValue];
+          [v9 setInterfaceVendorID:stringValue];
 
           [v9 setInterfaceProductID:v10];
-          [v6 setHardwareInterfaceVendorID:v9];
+          [eventCopy setHardwareInterfaceVendorID:v9];
         }
       }
     }
@@ -914,30 +914,30 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_populateWirelessHardwareInformationWithRouteInfo:(id)a3 forTTSEvent:(id)a4
+- (void)_populateWirelessHardwareInformationWithRouteInfo:(id)info forTTSEvent:(id)event
 {
   v5 = MEMORY[0x277D5A8D8];
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  infoCopy = info;
   v12 = objc_alloc_init(v5);
-  v8 = [v7 valueForKey:*MEMORY[0x277D26CD0]];
+  v8 = [infoCopy valueForKey:*MEMORY[0x277D26CD0]];
 
   v9 = [v8 componentsSeparatedByString:{@", "}];
-  v10 = [v9 firstObject];
-  v11 = [v9 lastObject];
-  [v12 setInterfaceVendorID:v10];
-  [v12 setInterfaceProductID:v11];
-  [v6 setHardwareInterfaceVendorID:v12];
+  firstObject = [v9 firstObject];
+  lastObject = [v9 lastObject];
+  [v12 setInterfaceVendorID:firstObject];
+  [v12 setInterfaceProductID:lastObject];
+  [eventCopy setHardwareInterfaceVendorID:v12];
 }
 
-- (id)_convertVirtualAudioSubTypeToString:(unsigned int)a3
+- (id)_convertVirtualAudioSubTypeToString:(unsigned int)string
 {
-  if (a3)
+  if (string)
   {
-    cStr[0] = HIBYTE(a3);
-    cStr[1] = BYTE2(a3);
-    cStr[2] = BYTE1(a3);
-    cStr[3] = a3;
+    cStr[0] = HIBYTE(string);
+    cStr[1] = BYTE2(string);
+    cStr[2] = BYTE1(string);
+    cStr[3] = string;
     cStr[4] = 0;
     v4 = CFStringCreateWithCString(*MEMORY[0x277CBECE8], cStr, 0);
   }
@@ -950,11 +950,11 @@ LABEL_12:
   return v4;
 }
 
-- (void)emitTextToSpeechEndEvent:(id)a3
+- (void)emitTextToSpeechEndEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_initWeak(&location, self);
-  v5 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v6 = mach_absolute_time();
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -962,11 +962,11 @@ LABEL_12:
   block[2] = __56__SRUIFInstrumentationManager_emitTextToSpeechEndEvent___block_invoke;
   block[3] = &unk_279C62AF0;
   objc_copyWeak(v13, &location);
-  v11 = v4;
-  v12 = v5;
+  v11 = eventCopy;
+  v12 = currentInstrumentationTurnContext;
   v13[1] = v6;
-  v8 = v5;
-  v9 = v4;
+  v8 = currentInstrumentationTurnContext;
+  v9 = eventCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v13);
@@ -987,14 +987,14 @@ void __56__SRUIFInstrumentationManager_emitTextToSpeechEndEvent___block_invoke(u
   }
 }
 
-- (void)emitUUFRPresentedEventWith:(id)a3 snippetClass:(id)a4 dialogIdentifier:(id)a5 dialogPhase:(id)a6
+- (void)emitUUFRPresentedEventWith:(id)with snippetClass:(id)class dialogIdentifier:(id)identifier dialogPhase:(id)phase
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  withCopy = with;
+  classCopy = class;
+  identifierCopy = identifier;
+  phaseCopy = phase;
   objc_initWeak(&location, self);
-  v14 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v15 = mach_absolute_time();
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   v22[0] = MEMORY[0x277D85DD0];
@@ -1002,17 +1002,17 @@ void __56__SRUIFInstrumentationManager_emitTextToSpeechEndEvent___block_invoke(u
   v22[2] = __100__SRUIFInstrumentationManager_emitUUFRPresentedEventWith_snippetClass_dialogIdentifier_dialogPhase___block_invoke;
   v22[3] = &unk_279C62BB8;
   objc_copyWeak(v28, &location);
-  v23 = v10;
-  v24 = v11;
-  v25 = v13;
-  v26 = v12;
-  v27 = v14;
+  v23 = withCopy;
+  v24 = classCopy;
+  v25 = phaseCopy;
+  v26 = identifierCopy;
+  v27 = currentInstrumentationTurnContext;
   v28[1] = v15;
-  v17 = v14;
-  v18 = v12;
-  v19 = v13;
-  v20 = v11;
-  v21 = v10;
+  v17 = currentInstrumentationTurnContext;
+  v18 = identifierCopy;
+  v19 = phaseCopy;
+  v20 = classCopy;
+  v21 = withCopy;
   dispatch_async(instrumentationManagerQueue, v22);
 
   objc_destroyWeak(v28);
@@ -1051,11 +1051,11 @@ void __100__SRUIFInstrumentationManager_emitUUFRPresentedEventWith_snippetClass_
   }
 }
 
-- (void)emitCasinoRelationshipEventWithViewIDFrom:(id)a3 ViewIDTo:(id)a4 casinoFromType:(int)a5
+- (void)emitCasinoRelationshipEventWithViewIDFrom:(id)from ViewIDTo:(id)to casinoFromType:(int)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  fromCopy = from;
+  toCopy = to;
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v11 = mach_absolute_time();
   objc_initWeak(&location, self);
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
@@ -1064,14 +1064,14 @@ void __100__SRUIFInstrumentationManager_emitUUFRPresentedEventWith_snippetClass_
   block[2] = __97__SRUIFInstrumentationManager_emitCasinoRelationshipEventWithViewIDFrom_ViewIDTo_casinoFromType___block_invoke;
   block[3] = &unk_279C62BE0;
   objc_copyWeak(v20, &location);
-  v17 = v8;
-  v18 = v9;
-  v21 = a5;
-  v19 = v10;
+  v17 = fromCopy;
+  v18 = toCopy;
+  typeCopy = type;
+  v19 = currentInstrumentationTurnContext;
   v20[1] = v11;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v13 = currentInstrumentationTurnContext;
+  v14 = toCopy;
+  v15 = fromCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v20);
@@ -1094,9 +1094,9 @@ void __97__SRUIFInstrumentationManager_emitCasinoRelationshipEventWithViewIDFrom
   }
 }
 
-- (void)emitUserViewRegionInteractionEventWithViewRegion:(int)a3 userViewInteraction:(int)a4
+- (void)emitUserViewRegionInteractionEventWithViewRegion:(int)region userViewInteraction:(int)interaction
 {
-  v7 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v8 = mach_absolute_time();
   objc_initWeak(&location, self);
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
@@ -1105,11 +1105,11 @@ void __97__SRUIFInstrumentationManager_emitCasinoRelationshipEventWithViewIDFrom
   block[2] = __100__SRUIFInstrumentationManager_emitUserViewRegionInteractionEventWithViewRegion_userViewInteraction___block_invoke;
   block[3] = &unk_279C62C08;
   objc_copyWeak(v13, &location);
-  v14 = a3;
-  v15 = a4;
-  v12 = v7;
+  regionCopy = region;
+  interactionCopy = interaction;
+  v12 = currentInstrumentationTurnContext;
   v13[1] = v8;
-  v10 = v7;
+  v10 = currentInstrumentationTurnContext;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v13);
@@ -1131,11 +1131,11 @@ void __100__SRUIFInstrumentationManager_emitUserViewRegionInteractionEventWithVi
   }
 }
 
-- (void)emitUUFRShownForAceObject:(id)a3 presentationType:(int)a4 dialogPhase:(id)a5 mode:(int)a6 viewRegion:(int)a7
+- (void)emitUUFRShownForAceObject:(id)object presentationType:(int)type dialogPhase:(id)phase mode:(int)mode viewRegion:(int)region
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  objectCopy = object;
+  phaseCopy = phase;
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v15 = mach_absolute_time();
   objc_initWeak(&location, self);
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
@@ -1143,18 +1143,18 @@ void __100__SRUIFInstrumentationManager_emitUserViewRegionInteractionEventWithVi
   block[1] = 3221225472;
   block[2] = __102__SRUIFInstrumentationManager_emitUUFRShownForAceObject_presentationType_dialogPhase_mode_viewRegion___block_invoke;
   block[3] = &unk_279C62C30;
-  v21 = v12;
-  v22 = self;
-  v23 = v13;
-  v26 = a4;
-  v27 = a6;
-  v28 = a7;
-  v17 = v13;
-  v18 = v12;
+  v21 = objectCopy;
+  selfCopy = self;
+  v23 = phaseCopy;
+  typeCopy = type;
+  modeCopy = mode;
+  regionCopy = region;
+  v17 = phaseCopy;
+  v18 = objectCopy;
   objc_copyWeak(v25, &location);
-  v24 = v14;
+  v24 = currentInstrumentationTurnContext;
   v25[1] = v15;
-  v19 = v14;
+  v19 = currentInstrumentationTurnContext;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v25);
@@ -1204,31 +1204,31 @@ LABEL_7:
   [*(a1 + 40) _storeCurrentInstrumentationTurnContextInLatestResponseProducingTurn];
 }
 
-- (id)_displayedDialogForAssistantUtteranceView:(id)a3
+- (id)_displayedDialogForAssistantUtteranceView:(id)view
 {
   v3 = MEMORY[0x277D5AC60];
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc(MEMORY[0x277D5AC78]);
   v7 = objc_alloc_init(MEMORY[0x277CCAD78]);
   v8 = [v6 initWithNSUUID:v7];
 
-  v9 = [v4 text];
+  text = [viewCopy text];
 
-  [v5 setDisplayedSiriDialogOutput:v9];
+  [v5 setDisplayedSiriDialogOutput:text];
   [v5 setLinkId:v8];
 
   return v5;
 }
 
-- (void)emitUUFRSpokenForAceObject:(id)a3 presentationType:(int)a4 dialogPhase:(id)a5 mode:(int)a6 speakableText:(id)a7 dialogIdentifierOverride:(id)a8
+- (void)emitUUFRSpokenForAceObject:(id)object presentationType:(int)type dialogPhase:(id)phase mode:(int)mode speakableText:(id)text dialogIdentifierOverride:(id)override
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  objectCopy = object;
+  phaseCopy = phase;
+  textCopy = text;
+  overrideCopy = override;
   objc_initWeak(&location, self);
-  v18 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v19 = mach_absolute_time();
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   v26[0] = MEMORY[0x277D85DD0];
@@ -1236,20 +1236,20 @@ LABEL_7:
   v26[2] = __131__SRUIFInstrumentationManager_emitUUFRSpokenForAceObject_presentationType_dialogPhase_mode_speakableText_dialogIdentifierOverride___block_invoke;
   v26[3] = &unk_279C62C58;
   objc_copyWeak(v33, &location);
-  v34 = a4;
-  v35 = a6;
-  v27 = v15;
-  v28 = v14;
-  v29 = v16;
-  v30 = v18;
+  typeCopy = type;
+  modeCopy = mode;
+  v27 = phaseCopy;
+  v28 = objectCopy;
+  v29 = textCopy;
+  v30 = currentInstrumentationTurnContext;
   v33[1] = v19;
-  v31 = v17;
-  v32 = self;
-  v21 = v17;
-  v22 = v18;
-  v23 = v16;
-  v24 = v14;
-  v25 = v15;
+  v31 = overrideCopy;
+  selfCopy = self;
+  v21 = overrideCopy;
+  v22 = currentInstrumentationTurnContext;
+  v23 = textCopy;
+  v24 = objectCopy;
+  v25 = phaseCopy;
   dispatch_async(instrumentationManagerQueue, v26);
 
   objc_destroyWeak(v33);
@@ -1365,12 +1365,12 @@ void __131__SRUIFInstrumentationManager_emitUUFRSpokenForAceObject_presentationT
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emitUUFRCasinoCardSelectedEventWithCardSectionID:(id)a3 ordinalCardSectionPosition:(int64_t)a4 snippetAceId:(id)a5
+- (void)emitUUFRCasinoCardSelectedEventWithCardSectionID:(id)d ordinalCardSectionPosition:(int64_t)position snippetAceId:(id)id
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  idCopy = id;
   v10 = mach_absolute_time();
-  v11 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   objc_initWeak(&location, self);
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1378,14 +1378,14 @@ void __131__SRUIFInstrumentationManager_emitUUFRSpokenForAceObject_presentationT
   block[2] = __120__SRUIFInstrumentationManager_emitUUFRCasinoCardSelectedEventWithCardSectionID_ordinalCardSectionPosition_snippetAceId___block_invoke;
   block[3] = &unk_279C62C80;
   objc_copyWeak(v20, &location);
-  v17 = v8;
-  v18 = v9;
-  v20[1] = a4;
+  v17 = dCopy;
+  v18 = idCopy;
+  v20[1] = position;
   v20[2] = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v9;
-  v15 = v8;
+  v19 = currentInstrumentationTurnContext;
+  v13 = currentInstrumentationTurnContext;
+  v14 = idCopy;
+  v15 = dCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v20);
@@ -1412,13 +1412,13 @@ void __120__SRUIFInstrumentationManager_emitUUFRCasinoCardSelectedEventWithCardS
 
 - (void)emitUserBargeInEventForBargedInTurn
 {
-  v3 = [(SRUIFInstrumentationManager *)self previousInstrumentationTurnContext];
-  [(SRUIFInstrumentationManager *)self emitUserBargeInEventForBargedInTurn:v3 machAbsoluteTime:mach_absolute_time()];
+  previousInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self previousInstrumentationTurnContext];
+  [(SRUIFInstrumentationManager *)self emitUserBargeInEventForBargedInTurn:previousInstrumentationTurnContext machAbsoluteTime:mach_absolute_time()];
 }
 
-- (void)emitUserBargeInEventForBargedInTurn:(id)a3 machAbsoluteTime:(double)a4
+- (void)emitUserBargeInEventForBargedInTurn:(id)turn machAbsoluteTime:(double)time
 {
-  v6 = a3;
+  turnCopy = turn;
   objc_initWeak(&location, self);
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -1426,9 +1426,9 @@ void __120__SRUIFInstrumentationManager_emitUUFRCasinoCardSelectedEventWithCardS
   v9[2] = __84__SRUIFInstrumentationManager_emitUserBargeInEventForBargedInTurn_machAbsoluteTime___block_invoke;
   v9[3] = &unk_279C617D0;
   objc_copyWeak(v11, &location);
-  v10 = v6;
-  v11[1] = *&a4;
-  v8 = v6;
+  v10 = turnCopy;
+  v11[1] = *&time;
+  v8 = turnCopy;
   dispatch_async(instrumentationManagerQueue, v9);
 
   objc_destroyWeak(v11);
@@ -1449,9 +1449,9 @@ void __84__SRUIFInstrumentationManager_emitUserBargeInEventForBargedInTurn_machA
   }
 }
 
-- (void)processSessionEvent:(int64_t)a3 isSpeechSynthesisSpeaking:(BOOL)a4 machAbsoluteTime:(double)a5
+- (void)processSessionEvent:(int64_t)event isSpeechSynthesisSpeaking:(BOOL)speaking machAbsoluteTime:(double)time
 {
-  v9 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   objc_initWeak(&location, self);
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   v12[0] = MEMORY[0x277D85DD0];
@@ -1459,11 +1459,11 @@ void __84__SRUIFInstrumentationManager_emitUserBargeInEventForBargedInTurn_machA
   v12[2] = __94__SRUIFInstrumentationManager_processSessionEvent_isSpeechSynthesisSpeaking_machAbsoluteTime___block_invoke;
   v12[3] = &unk_279C62CA8;
   objc_copyWeak(v14, &location);
-  v15 = a4;
-  v14[2] = *&a5;
-  v14[1] = a3;
-  v13 = v9;
-  v11 = v9;
+  speakingCopy = speaking;
+  v14[2] = *&time;
+  v14[1] = event;
+  v13 = currentInstrumentationTurnContext;
+  v11 = currentInstrumentationTurnContext;
   dispatch_async(instrumentationManagerQueue, v12);
 
   objc_destroyWeak(v14);
@@ -1516,11 +1516,11 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)emitPunchOutEventWithURL:(id)a3 appID:(id)a4 punchoutOrigin:(int)a5
+- (void)emitPunchOutEventWithURL:(id)l appID:(id)d punchoutOrigin:(int)origin
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  lCopy = l;
+  dCopy = d;
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v11 = mach_absolute_time();
   objc_initWeak(&location, self);
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
@@ -1529,14 +1529,14 @@ LABEL_14:
   block[2] = __77__SRUIFInstrumentationManager_emitPunchOutEventWithURL_appID_punchoutOrigin___block_invoke;
   block[3] = &unk_279C62BE0;
   objc_copyWeak(v20, &location);
-  v17 = v8;
-  v18 = v9;
-  v21 = a5;
-  v19 = v10;
+  v17 = lCopy;
+  v18 = dCopy;
+  originCopy = origin;
+  v19 = currentInstrumentationTurnContext;
   v20[1] = v11;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v13 = currentInstrumentationTurnContext;
+  v14 = dCopy;
+  v15 = lCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v20);
@@ -1576,19 +1576,19 @@ void __77__SRUIFInstrumentationManager_emitPunchOutEventWithURL_appID_punchoutOr
   }
 }
 
-- (void)emitVRXInstrumentationEvent:(id)a3 aceViewId:(id)a4 cardEngagementProcessed:(BOOL)a5
+- (void)emitVRXInstrumentationEvent:(id)event aceViewId:(id)id cardEngagementProcessed:(BOOL)processed
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [VRXFeedbackConverter convertFeedbackToVRX:a3];
+  idCopy = id;
+  v9 = [VRXFeedbackConverter convertFeedbackToVRX:event];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
-    if ([v10 requiresNewTurn] && !a5)
+    if ([v10 requiresNewTurn] && !processed)
     {
-      v11 = [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationTurnContext turnIdentifier];
-      v12 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:v11];
+      turnIdentifier = [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationTurnContext turnIdentifier];
+      v12 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:turnIdentifier];
       currentInstrumentationTurnContext = self->_currentInstrumentationTurnContext;
       self->_currentInstrumentationTurnContext = v12;
 
@@ -1597,26 +1597,26 @@ void __77__SRUIFInstrumentationManager_emitPunchOutEventWithURL_appID_punchoutOr
       {
         v15 = self->_currentInstrumentationTurnContext;
         v16 = v14;
-        v17 = [(AFAnalyticsTurnBasedInstrumentationContext *)v15 turnIdentifier];
+        turnIdentifier2 = [(AFAnalyticsTurnBasedInstrumentationContext *)v15 turnIdentifier];
         v21 = 136315650;
         v22 = "[SRUIFInstrumentationManager emitVRXInstrumentationEvent:aceViewId:cardEngagementProcessed:]";
         v23 = 2112;
-        v24 = v17;
+        v24 = turnIdentifier2;
         v25 = 2112;
-        v26 = v11;
+        v26 = turnIdentifier;
         _os_log_impl(&dword_26951F000, v16, OS_LOG_TYPE_INFO, "%s #noisy #instrumentation New Turn %@ <-> Old Turn %@", &v21, 0x20u);
       }
     }
 
-    v18 = [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationTurnContext turnIdentifier];
-    if (v8)
+    turnIdentifier3 = [(AFAnalyticsTurnBasedInstrumentationContext *)self->_currentInstrumentationTurnContext turnIdentifier];
+    if (idCopy)
     {
-      [v10 emitWithTurnIdentifier:v18 aceViewId:v8];
+      [v10 emitWithTurnIdentifier:turnIdentifier3 aceViewId:idCopy];
     }
 
     else
     {
-      [v10 emitWithTurnIdentifier:v18];
+      [v10 emitWithTurnIdentifier:turnIdentifier3];
     }
   }
 
@@ -1634,10 +1634,10 @@ void __77__SRUIFInstrumentationManager_emitPunchOutEventWithURL_appID_punchoutOr
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emitRequestFailedWithError:(id)a3
+- (void)emitRequestFailedWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
+  errorCopy = error;
+  currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self currentInstrumentationTurnContext];
   v6 = mach_absolute_time();
   objc_initWeak(&location, self);
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
@@ -1646,11 +1646,11 @@ void __77__SRUIFInstrumentationManager_emitPunchOutEventWithURL_appID_punchoutOr
   block[2] = __58__SRUIFInstrumentationManager_emitRequestFailedWithError___block_invoke;
   block[3] = &unk_279C62AF0;
   objc_copyWeak(v13, &location);
-  v11 = v4;
-  v12 = v5;
+  v11 = errorCopy;
+  v12 = currentInstrumentationTurnContext;
   v13[1] = v6;
-  v8 = v5;
-  v9 = v4;
+  v8 = currentInstrumentationTurnContext;
+  v9 = errorCopy;
   dispatch_async(instrumentationManagerQueue, block);
 
   objc_destroyWeak(v13);
@@ -1676,15 +1676,15 @@ void __58__SRUIFInstrumentationManager_emitRequestFailedWithError___block_invoke
   }
 }
 
-- (BOOL)_hasDismissedForTurnContext:(id)a3
+- (BOOL)_hasDismissedForTurnContext:(id)context
 {
-  v4 = [a3 turnIdentifier];
-  v5 = [v4 UUIDString];
+  turnIdentifier = [context turnIdentifier];
+  uUIDString = [turnIdentifier UUIDString];
 
   lastDismissedIdentifier = self->_lastDismissedIdentifier;
   if (lastDismissedIdentifier)
   {
-    v7 = v5 == 0;
+    v7 = uUIDString == 0;
   }
 
   else
@@ -1692,45 +1692,45 @@ void __58__SRUIFInstrumentationManager_emitRequestFailedWithError___block_invoke
     v7 = 1;
   }
 
-  v8 = !v7 && [(NSString *)lastDismissedIdentifier isEqualToString:v5];
+  v8 = !v7 && [(NSString *)lastDismissedIdentifier isEqualToString:uUIDString];
 
   return v8;
 }
 
-- (id)_pnrErrorMessageWithError:(id)a3
+- (id)_pnrErrorMessageWithError:(id)error
 {
   v4 = MEMORY[0x277D5A980];
-  v5 = a3;
+  errorCopy = error;
   v6 = objc_alloc_init(v4);
   v7 = objc_alloc_init(MEMORY[0x277D5A988]);
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%ld", objc_msgSend(v5, "code")];
+  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%ld", objc_msgSend(errorCopy, "code")];
   [v7 setErrorCode:v8];
 
-  v9 = [v5 domain];
-  [v7 setErrorDomain:v9];
+  domain = [errorCopy domain];
+  [v7 setErrorDomain:domain];
 
   [v6 setError:v7];
-  v10 = [v5 userInfo];
+  userInfo = [errorCopy userInfo];
 
-  v11 = [v10 objectForKey:*MEMORY[0x277CCA7E8]];
+  v11 = [userInfo objectForKey:*MEMORY[0x277CCA7E8]];
 
   if (v11)
   {
     v12 = [(SRUIFInstrumentationManager *)self _pnrErrorMessageWithError:v11];
-    v13 = [v12 error];
+    error = [v12 error];
 
-    if (v13)
+    if (error)
     {
-      v14 = [v12 error];
-      [v6 setUnderlyingError:v14];
+      error2 = [v12 error];
+      [v6 setUnderlyingError:error2];
     }
 
-    v15 = [v12 underlyingError];
+    underlyingError = [v12 underlyingError];
 
-    if (v15)
+    if (underlyingError)
     {
-      v16 = [v12 underlyingError];
-      [v6 setUnderUnderlyingError:v16];
+      underlyingError2 = [v12 underlyingError];
+      [v6 setUnderUnderlyingError:underlyingError2];
     }
   }
 
@@ -1754,16 +1754,16 @@ void __58__SRUIFInstrumentationManager_emitRequestFailedWithError___block_invoke
   self->_shouldInstrument = 0;
 }
 
-- (void)_barrierWithCompletion:(id)a3
+- (void)_barrierWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   instrumentationManagerQueue = self->_instrumentationManagerQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__SRUIFInstrumentationManager__barrierWithCompletion___block_invoke;
   block[3] = &unk_279C61A08;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(instrumentationManagerQueue, block);
 }
 
@@ -1778,35 +1778,35 @@ uint64_t __54__SRUIFInstrumentationManager__barrierWithCompletion___block_invoke
   return result;
 }
 
-- (void)boostQueuedMessagesAndPerformOnQueueCompletion:(id)a3 timeout:(double)a4
+- (void)boostQueuedMessagesAndPerformOnQueueCompletion:(id)completion timeout:(double)timeout
 {
-  v6 = a3;
+  completionCopy = completion;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
   v23[3] = __Block_byref_object_copy__94;
   v23[4] = __Block_byref_object_dispose__95;
-  v24 = _Block_copy(v6);
+  v24 = _Block_copy(completionCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__SRUIFInstrumentationManager_boostQueuedMessagesAndPerformOnQueueCompletion_timeout___block_invoke;
   aBlock[3] = &unk_279C62CD0;
   aBlock[4] = v23;
   v7 = _Block_copy(aBlock);
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__SRUIFInstrumentationManager_boostQueuedMessagesAndPerformOnQueueCompletion_timeout___block_invoke_3;
   block[3] = &unk_279C61CE0;
-  v10 = v9;
+  v10 = uUIDString;
   v20 = v10;
   v11 = v7;
   v21 = v11;
   v12 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, block);
   dispatch_async(self->_instrumentationManagerQueue, v12);
-  v13 = dispatch_time(0, (a4 * 1000000000.0));
+  v13 = dispatch_time(0, (timeout * 1000000000.0));
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __86__SRUIFInstrumentationManager_boostQueuedMessagesAndPerformOnQueueCompletion_timeout___block_invoke_97;

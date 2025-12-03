@@ -7,11 +7,11 @@
 
 - (CGImage)_gkScale
 {
-  result = [a1 _gkCGImage];
+  result = [self _gkCGImage];
   if (result)
   {
     CGImageGetWidth(result);
-    return [a1 size];
+    return [self size];
   }
 
   return result;
@@ -19,9 +19,9 @@
 
 - (uint64_t)_gkCGImage
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 CGImage];
+  return [selfCopy CGImage];
 }
 
 @end

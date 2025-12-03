@@ -1,14 +1,14 @@
 @interface NLXSchemaMARRSQueryRewriteContext
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaMARRSQueryRewriteContext)initWithDictionary:(id)a3;
-- (NLXSchemaMARRSQueryRewriteContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaMARRSQueryRewriteContext)initWithDictionary:(id)dictionary;
+- (NLXSchemaMARRSQueryRewriteContext)initWithJSON:(id)n;
 - (NLXSchemaMARRSQueryRewriteEvaluated)ended;
 - (NLXSchemaMARRSQueryRewriteEvaluated)evaluated;
 - (NLXSchemaMARRSQueryRewriteFailed)failed;
 - (NLXSchemaMARRSQueryRewriteStarted)started;
 - (NLXSchemaMARRSQueryRewriteStarted)startedOrChanged;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -17,25 +17,25 @@
 - (void)deleteFailed;
 - (void)deleteStarted;
 - (void)deleteStartedOrChanged;
-- (void)setEnded:(id)a3;
-- (void)setEvaluated:(id)a3;
-- (void)setFailed:(id)a3;
-- (void)setStarted:(id)a3;
-- (void)setStartedOrChanged:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEnded:(id)ended;
+- (void)setEvaluated:(id)evaluated;
+- (void)setFailed:(id)failed;
+- (void)setStarted:(id)started;
+- (void)setStartedOrChanged:(id)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaMARRSQueryRewriteContext
 
-- (NLXSchemaMARRSQueryRewriteContext)initWithDictionary:(id)a3
+- (NLXSchemaMARRSQueryRewriteContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = NLXSchemaMARRSQueryRewriteContext;
   v5 = [(NLXSchemaMARRSQueryRewriteContext *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"started"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"started"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(NLXSchemaMARRSQueryRewriteContext *)v5 setStarted:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"evaluated"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"evaluated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(NLXSchemaMARRSQueryRewriteContext *)v5 setEvaluated:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"failed"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"failed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(NLXSchemaMARRSQueryRewriteContext *)v5 setFailed:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"startedOrChanged"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"startedOrChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(NLXSchemaMARRSQueryRewriteContext *)v5 setStartedOrChanged:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"ended"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (NLXSchemaMARRSQueryRewriteContext)initWithJSON:(id)a3
+- (NLXSchemaMARRSQueryRewriteContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaMARRSQueryRewriteContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaMARRSQueryRewriteContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaMARRSQueryRewriteContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -117,90 +117,90 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ended)
   {
-    v4 = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ended = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
+    dictionaryRepresentation = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ended"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_evaluated)
   {
-    v7 = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    evaluated = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
+    dictionaryRepresentation2 = [evaluated dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"evaluated"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"evaluated"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"evaluated"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"evaluated"];
     }
   }
 
   if (self->_failed)
   {
-    v10 = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    failed = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
+    dictionaryRepresentation3 = [failed dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"failed"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"failed"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"failed"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"failed"];
     }
   }
 
   if (self->_started)
   {
-    v13 = [(NLXSchemaMARRSQueryRewriteContext *)self started];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    started = [(NLXSchemaMARRSQueryRewriteContext *)self started];
+    dictionaryRepresentation4 = [started dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"started"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"started"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"started"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"started"];
     }
   }
 
   if (self->_startedOrChanged)
   {
-    v16 = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    startedOrChanged = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
+    dictionaryRepresentation5 = [startedOrChanged dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"startedOrChanged"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"startedOrChanged"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"startedOrChanged"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"startedOrChanged"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -212,34 +212,34 @@
   return v6 ^ [(NLXSchemaMARRSQueryRewriteEvaluated *)self->_ended hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_28;
   }
 
-  v6 = [(NLXSchemaMARRSQueryRewriteContext *)self started];
-  v7 = [v4 started];
-  if ((v6 != 0) == (v7 == 0))
+  started = [(NLXSchemaMARRSQueryRewriteContext *)self started];
+  started2 = [equalCopy started];
+  if ((started != 0) == (started2 == 0))
   {
     goto LABEL_27;
   }
 
-  v8 = [(NLXSchemaMARRSQueryRewriteContext *)self started];
-  if (v8)
+  started3 = [(NLXSchemaMARRSQueryRewriteContext *)self started];
+  if (started3)
   {
-    v9 = v8;
-    v10 = [(NLXSchemaMARRSQueryRewriteContext *)self started];
-    v11 = [v4 started];
-    v12 = [v10 isEqual:v11];
+    v9 = started3;
+    started4 = [(NLXSchemaMARRSQueryRewriteContext *)self started];
+    started5 = [equalCopy started];
+    v12 = [started4 isEqual:started5];
 
     if (!v12)
     {
@@ -251,20 +251,20 @@
   {
   }
 
-  v6 = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
-  v7 = [v4 evaluated];
-  if ((v6 != 0) == (v7 == 0))
+  started = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
+  started2 = [equalCopy evaluated];
+  if ((started != 0) == (started2 == 0))
   {
     goto LABEL_27;
   }
 
-  v13 = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
-  if (v13)
+  evaluated = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
+  if (evaluated)
   {
-    v14 = v13;
-    v15 = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
-    v16 = [v4 evaluated];
-    v17 = [v15 isEqual:v16];
+    v14 = evaluated;
+    evaluated2 = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
+    evaluated3 = [equalCopy evaluated];
+    v17 = [evaluated2 isEqual:evaluated3];
 
     if (!v17)
     {
@@ -276,20 +276,20 @@
   {
   }
 
-  v6 = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
-  v7 = [v4 failed];
-  if ((v6 != 0) == (v7 == 0))
+  started = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
+  started2 = [equalCopy failed];
+  if ((started != 0) == (started2 == 0))
   {
     goto LABEL_27;
   }
 
-  v18 = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
-  if (v18)
+  failed = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
+  if (failed)
   {
-    v19 = v18;
-    v20 = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
-    v21 = [v4 failed];
-    v22 = [v20 isEqual:v21];
+    v19 = failed;
+    failed2 = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
+    failed3 = [equalCopy failed];
+    v22 = [failed2 isEqual:failed3];
 
     if (!v22)
     {
@@ -301,20 +301,20 @@
   {
   }
 
-  v6 = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
-  v7 = [v4 startedOrChanged];
-  if ((v6 != 0) == (v7 == 0))
+  started = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
+  started2 = [equalCopy startedOrChanged];
+  if ((started != 0) == (started2 == 0))
   {
     goto LABEL_27;
   }
 
-  v23 = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
-  if (v23)
+  startedOrChanged = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
+  if (startedOrChanged)
   {
-    v24 = v23;
-    v25 = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
-    v26 = [v4 startedOrChanged];
-    v27 = [v25 isEqual:v26];
+    v24 = startedOrChanged;
+    startedOrChanged2 = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
+    startedOrChanged3 = [equalCopy startedOrChanged];
+    v27 = [startedOrChanged2 isEqual:startedOrChanged3];
 
     if (!v27)
     {
@@ -326,12 +326,12 @@
   {
   }
 
-  v6 = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) != (v7 == 0))
+  started = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
+  started2 = [equalCopy ended];
+  if ((started != 0) != (started2 == 0))
   {
-    v28 = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
-    if (!v28)
+    ended = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
+    if (!ended)
     {
 
 LABEL_31:
@@ -339,10 +339,10 @@ LABEL_31:
       goto LABEL_29;
     }
 
-    v29 = v28;
-    v30 = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
-    v31 = [v4 ended];
-    v32 = [v30 isEqual:v31];
+    v29 = ended;
+    ended2 = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
+    ended3 = [equalCopy ended];
+    v32 = [ended2 isEqual:ended3];
 
     if (v32)
     {
@@ -362,50 +362,50 @@ LABEL_29:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(NLXSchemaMARRSQueryRewriteContext *)self started];
+  toCopy = to;
+  started = [(NLXSchemaMARRSQueryRewriteContext *)self started];
 
-  if (v4)
+  if (started)
   {
-    v5 = [(NLXSchemaMARRSQueryRewriteContext *)self started];
+    started2 = [(NLXSchemaMARRSQueryRewriteContext *)self started];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
+  evaluated = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
 
-  if (v6)
+  if (evaluated)
   {
-    v7 = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
+    evaluated2 = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
+  failed = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
 
-  if (v8)
+  if (failed)
   {
-    v9 = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
+    failed2 = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
+  startedOrChanged = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
 
-  if (v10)
+  if (startedOrChanged)
   {
-    v11 = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
+    startedOrChanged2 = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
+  ended = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (ended)
   {
-    v14 = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
+    ended2 = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
@@ -434,9 +434,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   started = self->_started;
   self->_started = 0;
 
@@ -450,14 +450,14 @@ LABEL_29:
   self->_startedOrChanged = 0;
 
   v9 = 5;
-  if (!v4)
+  if (!endedCopy)
   {
     v9 = 0;
   }
 
   self->_whichContextevent = v9;
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (void)deleteStartedOrChanged
@@ -485,9 +485,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setStartedOrChanged:(id)a3
+- (void)setStartedOrChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   started = self->_started;
   self->_started = 0;
 
@@ -500,9 +500,9 @@ LABEL_29:
   ended = self->_ended;
   self->_ended = 0;
 
-  self->_whichContextevent = 4 * (v4 != 0);
+  self->_whichContextevent = 4 * (changedCopy != 0);
   startedOrChanged = self->_startedOrChanged;
-  self->_startedOrChanged = v4;
+  self->_startedOrChanged = changedCopy;
 }
 
 - (void)deleteFailed
@@ -530,9 +530,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setFailed:(id)a3
+- (void)setFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   started = self->_started;
   self->_started = 0;
 
@@ -546,14 +546,14 @@ LABEL_29:
   self->_ended = 0;
 
   v9 = 3;
-  if (!v4)
+  if (!failedCopy)
   {
     v9 = 0;
   }
 
   self->_whichContextevent = v9;
   failed = self->_failed;
-  self->_failed = v4;
+  self->_failed = failedCopy;
 }
 
 - (void)deleteEvaluated
@@ -581,9 +581,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setEvaluated:(id)a3
+- (void)setEvaluated:(id)evaluated
 {
-  v4 = a3;
+  evaluatedCopy = evaluated;
   started = self->_started;
   self->_started = 0;
 
@@ -596,9 +596,9 @@ LABEL_29:
   ended = self->_ended;
   self->_ended = 0;
 
-  self->_whichContextevent = 2 * (v4 != 0);
+  self->_whichContextevent = 2 * (evaluatedCopy != 0);
   evaluated = self->_evaluated;
-  self->_evaluated = v4;
+  self->_evaluated = evaluatedCopy;
 }
 
 - (void)deleteStarted
@@ -626,9 +626,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setStarted:(id)a3
+- (void)setStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   evaluated = self->_evaluated;
   self->_evaluated = 0;
 
@@ -641,58 +641,58 @@ LABEL_29:
   ended = self->_ended;
   self->_ended = 0;
 
-  self->_whichContextevent = v4 != 0;
+  self->_whichContextevent = startedCopy != 0;
   started = self->_started;
-  self->_started = v4;
+  self->_started = startedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = NLXSchemaMARRSQueryRewriteContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(NLXSchemaMARRSQueryRewriteContext *)self started];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  started = [(NLXSchemaMARRSQueryRewriteContext *)self started];
+  v7 = [started applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaMARRSQueryRewriteContext *)self deleteStarted];
   }
 
-  v9 = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  evaluated = [(NLXSchemaMARRSQueryRewriteContext *)self evaluated];
+  v10 = [evaluated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NLXSchemaMARRSQueryRewriteContext *)self deleteEvaluated];
   }
 
-  v12 = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  failed = [(NLXSchemaMARRSQueryRewriteContext *)self failed];
+  v13 = [failed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(NLXSchemaMARRSQueryRewriteContext *)self deleteFailed];
   }
 
-  v15 = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  startedOrChanged = [(NLXSchemaMARRSQueryRewriteContext *)self startedOrChanged];
+  v16 = [startedOrChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(NLXSchemaMARRSQueryRewriteContext *)self deleteStartedOrChanged];
   }
 
-  v18 = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  ended = [(NLXSchemaMARRSQueryRewriteContext *)self ended];
+  v19 = [ended applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(NLXSchemaMARRSQueryRewriteContext *)self deleteEnded];
   }

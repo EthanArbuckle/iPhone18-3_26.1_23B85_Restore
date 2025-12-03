@@ -1,31 +1,31 @@
 @interface TransitRouteTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
-- (id)tableTextAccessibleLabel:(id)a3;
+- (id)tableTextAccessibleLabel:(id)label;
 @end
 
 @implementation TransitRouteTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TransitRouteTableViewCell" hasInstanceVariable:@"_route" withType:"GEOComposedRoute"];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"tableTextAccessibleLabel:" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TransitRouteTableViewCell" isKindOfClass:@"RouteTableViewCell"];
-  [v3 validateClass:@"RouteTableViewCell" hasInstanceMethod:@"useRoutePreviewDescription" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TransitRouteTableViewCell" hasInstanceVariable:@"_route" withType:"GEOComposedRoute"];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"tableTextAccessibleLabel:" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TransitRouteTableViewCell" isKindOfClass:@"RouteTableViewCell"];
+  [validationsCopy validateClass:@"RouteTableViewCell" hasInstanceMethod:@"useRoutePreviewDescription" withFullSignature:{"B", 0}];
 }
 
-- (id)tableTextAccessibleLabel:(id)a3
+- (id)tableTextAccessibleLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v12.receiver = self;
   v12.super_class = TransitRouteTableViewCellAccessibility;
-  v5 = [(TransitRouteTableViewCellAccessibility *)&v12 tableTextAccessibleLabel:v4];
+  v5 = [(TransitRouteTableViewCellAccessibility *)&v12 tableTextAccessibleLabel:labelCopy];
   objc_opt_class();
   v6 = [(TransitRouteTableViewCellAccessibility *)self safeValueForKey:@"_route"];
   v7 = __UIAccessibilityCastAsClass();
 
-  v8 = [v7 _accessibilityTransitArtworkText];
+  _accessibilityTransitArtworkText = [v7 _accessibilityTransitArtworkText];
 
   v9 = __AXStringForVariables();
 
@@ -43,17 +43,17 @@
 {
   if ([(TransitRouteTableViewCellAccessibility *)self safeBoolForKey:@"useRoutePreviewDescription"])
   {
-    v3 = AXMapsLocString(@"TRANSIT_PREVIEW_HINT");
+    accessibilityHint = AXMapsLocString(@"TRANSIT_PREVIEW_HINT");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = TransitRouteTableViewCellAccessibility;
-    v3 = [(TransitRouteTableViewCellAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(TransitRouteTableViewCellAccessibility *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 @end

@@ -11,9 +11,9 @@
 - (BOOL)needToGeneratePreviews
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = [a1 attachment];
-  v7 = [v6 previewImages];
-  v8 = [v7 count];
+  attachment = [self attachment];
+  previewImages = [attachment previewImages];
+  v8 = [previewImages count];
   if (v8 < 2)
   {
     v10 = 0;
@@ -21,12 +21,12 @@
 
   else
   {
-    v2 = [a1 attachment];
-    v3 = [v2 previewUpdateDate];
-    if (v3)
+    attachment2 = [self attachment];
+    previewUpdateDate = [attachment2 previewUpdateDate];
+    if (previewUpdateDate)
     {
-      v4 = [a1 attachment];
-      if ([v4 hasFallbackImage])
+      attachment3 = [self attachment];
+      if ([attachment3 hasFallbackImage])
       {
 
         v9 = 0;
@@ -42,9 +42,9 @@
     }
   }
 
-  v11 = [a1 attachment];
-  v12 = [v11 mergeableData];
-  v9 = v12 != 0;
+  attachment4 = [self attachment];
+  mergeableData = [attachment4 mergeableData];
+  v9 = mergeableData != 0;
 
   if (!v10)
   {
@@ -69,20 +69,20 @@ LABEL_13:
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     v17 = NSStringFromSelector(a2);
-    v18 = [a1 attachment];
-    v19 = [v18 identifier];
-    v20 = [a1 attachment];
-    v21 = [v20 previewImages];
+    attachment5 = [self attachment];
+    identifier = [attachment5 identifier];
+    attachment6 = [self attachment];
+    previewImages2 = [attachment6 previewImages];
     *buf = 138413314;
     v24 = v16;
     v25 = 2112;
     v26 = v17;
     v27 = 2112;
-    v28 = v19;
+    v28 = identifier;
     v29 = 1024;
     v30 = v9;
     v31 = 2048;
-    v32 = [v21 count];
+    v32 = [previewImages2 count];
     _os_log_debug_impl(&dword_1D4171000, v13, OS_LOG_TYPE_DEBUG, "%@ %@ %@ return %d self.attachment.previewImages.count %lu", buf, 0x30u);
   }
 
@@ -249,7 +249,7 @@ LABEL_13:
     }
 
     v41 = CGImageGetWidth(a5);
-    CGAffineTransformMakeScale(&v59, v41 / (r2 * a1) * a1, v41 / (r2 * a1) * a1);
+    CGAffineTransformMakeScale(&v59, v41 / (r2 * self) * self, v41 / (r2 * self) * self);
     v69.origin.x = v37;
     v69.origin.y = v36;
     v69.size.width = v34;
@@ -316,7 +316,7 @@ LABEL_13:
   v25 = __Block_byref_object_copy__81;
   v26 = __Block_byref_object_dispose__81;
   v27 = 0;
-  v12 = [v9 managedObjectContext];
+  managedObjectContext = [v9 managedObjectContext];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __122__ICAttachmentInlineDrawingModel_PreviewGeneration__generateImageForAttachment_fromDrawing_fullResolution_appearanceInfo___block_invoke;
@@ -327,7 +327,7 @@ LABEL_13:
   v14 = v11;
   v19 = v14;
   v20 = &v22;
-  [v12 performBlockAndWait:v17];
+  [managedObjectContext performBlockAndWait:v17];
 
   v15 = v23[5];
   _Block_object_dispose(&v22, 8);
@@ -339,17 +339,17 @@ LABEL_13:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [v6 managedObjectContext];
+  managedObjectContext = [v6 managedObjectContext];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __95__ICAttachmentInlineDrawingModel_PreviewGeneration__generatePreviewsForAttachment_fromDrawing___block_invoke;
   v11[3] = &unk_1E84699C8;
   v12 = v7;
   v13 = v6;
-  v14 = a1;
+  selfCopy = self;
   v9 = v6;
   v10 = v7;
-  [v8 performBlockAndWait:v11];
+  [managedObjectContext performBlockAndWait:v11];
 }
 
 - (uint64_t)generatePreviewsInOperation:()PreviewGeneration
@@ -361,19 +361,19 @@ LABEL_13:
   v14 = __Block_byref_object_copy__81;
   v15 = __Block_byref_object_dispose__81;
   v16 = 0;
-  v5 = [a1 attachment];
-  v6 = [v5 managedObjectContext];
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__ICAttachmentInlineDrawingModel_PreviewGeneration__generatePreviewsInOperation___block_invoke;
   v10[3] = &unk_1E8468FA8;
-  v10[4] = a1;
+  v10[4] = self;
   v10[5] = &v11;
-  [v6 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
   v7 = objc_opt_class();
-  v8 = [a1 attachment];
-  [v7 generatePreviewsForAttachment:v8 fromDrawing:v12[5]];
+  attachment2 = [self attachment];
+  [v7 generatePreviewsForAttachment:attachment2 fromDrawing:v12[5]];
 
   _Block_object_dispose(&v11, 8);
   return 1;

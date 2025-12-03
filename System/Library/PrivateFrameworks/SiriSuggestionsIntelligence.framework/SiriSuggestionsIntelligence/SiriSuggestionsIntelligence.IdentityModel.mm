@@ -1,14 +1,14 @@
 @interface SiriSuggestionsIntelligence.IdentityModel
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
 @end
 
 @implementation SiriSuggestionsIntelligence.IdentityModel
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
+  optionsCopy = options;
+  selfCopy = self;
   v9 = SiriSuggestionsIntelligence.IdentityModel.prediction(from:options:)();
 
   swift_unknownObjectRelease();

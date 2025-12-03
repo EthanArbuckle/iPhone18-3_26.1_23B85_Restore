@@ -1,15 +1,15 @@
 @interface NTKCFaceDetailKaleidoscopeStyleSectionController
-+ (BOOL)hasSectionForFace:(id)a3 forEditMode:(int64_t)a4;
++ (BOOL)hasSectionForFace:(id)face forEditMode:(int64_t)mode;
 - (void)faceDidChangeResourceDirectory;
 @end
 
 @implementation NTKCFaceDetailKaleidoscopeStyleSectionController
 
-+ (BOOL)hasSectionForFace:(id)a3 forEditMode:(int64_t)a4
++ (BOOL)hasSectionForFace:(id)face forEditMode:(int64_t)mode
 {
-  v5 = a3;
-  v6 = [v5 faceStyle] == &dword_14 + 3 || objc_msgSend(v5, "faceStyle") == &stru_B8.addr + 7;
-  v7 = a4 == 15 && v6;
+  faceCopy = face;
+  v6 = [faceCopy faceStyle] == &dword_14 + 3 || objc_msgSend(faceCopy, "faceStyle") == &stru_B8.addr + 7;
+  v7 = mode == 15 && v6;
 
   return v7;
 }
@@ -19,13 +19,13 @@
   v6.receiver = self;
   v6.super_class = NTKCFaceDetailKaleidoscopeStyleSectionController;
   [(NTKCFaceDetailKaleidoscopeStyleSectionController *)&v6 faceDidChangeResourceDirectory];
-  v3 = [(NTKCFaceDetailKaleidoscopeStyleSectionController *)self selectedOptions];
-  v4 = [v3 objectForKeyedSubscript:&off_25BD0];
+  selectedOptions = [(NTKCFaceDetailKaleidoscopeStyleSectionController *)self selectedOptions];
+  v4 = [selectedOptions objectForKeyedSubscript:&off_25BD0];
 
   if ([v4 asset] == stru_3D8.segname)
   {
-    v5 = [(NTKCFaceDetailKaleidoscopeStyleSectionController *)self cell];
-    [v5 reloadVisibleCells];
+    cell = [(NTKCFaceDetailKaleidoscopeStyleSectionController *)self cell];
+    [cell reloadVisibleCells];
   }
 }
 

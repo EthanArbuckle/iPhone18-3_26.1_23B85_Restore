@@ -1,17 +1,17 @@
 @interface ANFDebugLayoutOptionsProvider
-- (CGSize)overrideViewportSize:(CGSize)a3;
+- (CGSize)overrideViewportSize:(CGSize)size;
 - (_TtC12NewsArticles29ANFDebugLayoutOptionsProvider)init;
-- (double)overrideContentScaleFactor:(double)a3;
-- (id)overrideConditionKeys:(id)a3;
-- (id)overrideContentSizeCategory:(id)a3;
-- (id)overrideOfferIdentifier:(id)a3;
-- (id)overrideTagSubscriptionStatus:(id)a3;
-- (int64_t)overrideBundleSubscriptionStatus:(int64_t)a3;
-- (int64_t)overrideChannelSubscriptionStatus:(int64_t)a3;
-- (int64_t)overrideOfferUpsellScenario:(int64_t)a3;
-- (int64_t)overrideSubscriptionActivationEligibility:(int64_t)a3;
-- (unint64_t)overrideNewsletterSubscriptionStatus:(unint64_t)a3;
-- (unint64_t)overrideViewingLocation:(unint64_t)a3;
+- (double)overrideContentScaleFactor:(double)factor;
+- (id)overrideConditionKeys:(id)keys;
+- (id)overrideContentSizeCategory:(id)category;
+- (id)overrideOfferIdentifier:(id)identifier;
+- (id)overrideTagSubscriptionStatus:(id)status;
+- (int64_t)overrideBundleSubscriptionStatus:(int64_t)status;
+- (int64_t)overrideChannelSubscriptionStatus:(int64_t)status;
+- (int64_t)overrideOfferUpsellScenario:(int64_t)scenario;
+- (int64_t)overrideSubscriptionActivationEligibility:(int64_t)eligibility;
+- (unint64_t)overrideNewsletterSubscriptionStatus:(unint64_t)status;
+- (unint64_t)overrideViewingLocation:(unint64_t)location;
 @end
 
 @implementation ANFDebugLayoutOptionsProvider
@@ -23,10 +23,10 @@
   return result;
 }
 
-- (CGSize)overrideViewportSize:(CGSize)a3
+- (CGSize)overrideViewportSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = *&self->anfOverrides[OBJC_IVAR____TtC12NewsArticles29ANFDebugLayoutOptionsProvider_anfOverrides + 128];
   v20 = *&self->anfOverrides[OBJC_IVAR____TtC12NewsArticles29ANFDebugLayoutOptionsProvider_anfOverrides + 112];
   v21[0] = v5;
@@ -56,7 +56,7 @@
   return result;
 }
 
-- (id)overrideContentSizeCategory:(id)a3
+- (id)overrideContentSizeCategory:(id)category
 {
   v4 = *&self->anfOverrides[OBJC_IVAR____TtC12NewsArticles29ANFDebugLayoutOptionsProvider_anfOverrides + 128];
   v20 = *&self->anfOverrides[OBJC_IVAR____TtC12NewsArticles29ANFDebugLayoutOptionsProvider_anfOverrides + 112];
@@ -75,7 +75,7 @@
   v14[2] = *&self->anfOverrides[OBJC_IVAR____TtC12NewsArticles29ANFDebugLayoutOptionsProvider_anfOverrides + 16];
   v15 = v8;
   v9 = sub_1D7AE2F50(v14);
-  v10 = *(&v15 + 1);
+  categoryCopy = *(&v15 + 1);
   if (*(&v15 + 1))
   {
     v11 = v9 == 1;
@@ -88,15 +88,15 @@
 
   if (v11)
   {
-    v10 = a3;
+    categoryCopy = category;
   }
 
-  v12 = v10;
+  v12 = categoryCopy;
 
   return v12;
 }
 
-- (double)overrideContentScaleFactor:(double)a3
+- (double)overrideContentScaleFactor:(double)factor
 {
   v4 = *&self->anfOverrides[OBJC_IVAR____TtC12NewsArticles29ANFDebugLayoutOptionsProvider_anfOverrides + 128];
   v14 = *&self->anfOverrides[OBJC_IVAR____TtC12NewsArticles29ANFDebugLayoutOptionsProvider_anfOverrides + 112];
@@ -119,61 +119,61 @@
     return *&v11;
   }
 
-  return a3;
+  return factor;
 }
 
-- (unint64_t)overrideViewingLocation:(unint64_t)a3
+- (unint64_t)overrideViewingLocation:(unint64_t)location
 {
-  v4 = self;
-  v5 = sub_1D7AE2004(a3);
+  selfCopy = self;
+  v5 = sub_1D7AE2004(location);
 
   return v5;
 }
 
-- (int64_t)overrideBundleSubscriptionStatus:(int64_t)a3
+- (int64_t)overrideBundleSubscriptionStatus:(int64_t)status
 {
-  v4 = self;
-  v5 = sub_1D7AE2188(a3);
+  selfCopy = self;
+  v5 = sub_1D7AE2188(status);
 
   return v5;
 }
 
-- (int64_t)overrideChannelSubscriptionStatus:(int64_t)a3
+- (int64_t)overrideChannelSubscriptionStatus:(int64_t)status
 {
-  v4 = self;
-  v5 = sub_1D7AE230C(a3);
+  selfCopy = self;
+  v5 = sub_1D7AE230C(status);
 
   return v5;
 }
 
-- (unint64_t)overrideNewsletterSubscriptionStatus:(unint64_t)a3
+- (unint64_t)overrideNewsletterSubscriptionStatus:(unint64_t)status
 {
-  v4 = self;
-  v5 = sub_1D7AE2488(a3);
+  selfCopy = self;
+  v5 = sub_1D7AE2488(status);
 
   return v5;
 }
 
-- (int64_t)overrideOfferUpsellScenario:(int64_t)a3
+- (int64_t)overrideOfferUpsellScenario:(int64_t)scenario
 {
-  v4 = self;
-  v5 = sub_1D7AE260C(a3);
+  selfCopy = self;
+  v5 = sub_1D7AE260C(scenario);
 
   return v5;
 }
 
-- (int64_t)overrideSubscriptionActivationEligibility:(int64_t)a3
+- (int64_t)overrideSubscriptionActivationEligibility:(int64_t)eligibility
 {
-  v4 = self;
-  v5 = sub_1D7AE27C0(a3);
+  selfCopy = self;
+  v5 = sub_1D7AE27C0(eligibility);
 
   return v5;
 }
 
-- (id)overrideOfferIdentifier:(id)a3
+- (id)overrideOfferIdentifier:(id)identifier
 {
   v4 = sub_1D7D3034C();
-  v5 = self;
+  selfCopy = self;
   sub_1D7AE2944(v4);
 
   v6 = sub_1D7D3031C();
@@ -181,9 +181,9 @@
   return v6;
 }
 
-- (id)overrideConditionKeys:(id)a3
+- (id)overrideConditionKeys:(id)keys
 {
-  if (a3)
+  if (keys)
   {
     v4 = sub_1D7D309AC();
   }
@@ -228,11 +228,11 @@ LABEL_9:
   return v4;
 }
 
-- (id)overrideTagSubscriptionStatus:(id)a3
+- (id)overrideTagSubscriptionStatus:(id)status
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1D7AE2C48(v4);
+  statusCopy = status;
+  selfCopy = self;
+  v6 = sub_1D7AE2C48(statusCopy);
 
   return v6;
 }

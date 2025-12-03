@@ -1,12 +1,12 @@
 @interface MIKeychainAccessGroupTracker
 + (id)sharedTracker;
-- (BOOL)_onQueue_addReferencesForBundle:(id)a3 error:(id *)a4;
-- (BOOL)_onQueue_removeReferencesForBundle:(id)a3 error:(id *)a4;
-- (BOOL)_onQueue_updateReferencesWithOldBundle:(id)a3 newBundle:(id)a4 error:(id *)a5;
-- (BOOL)_removeGroupsWithError:(id)a3 error:(id *)a4;
+- (BOOL)_onQueue_addReferencesForBundle:(id)bundle error:(id *)error;
+- (BOOL)_onQueue_removeReferencesForBundle:(id)bundle error:(id *)error;
+- (BOOL)_onQueue_updateReferencesWithOldBundle:(id)bundle newBundle:(id)newBundle error:(id *)error;
+- (BOOL)_removeGroupsWithError:(id)error error:(id *)a4;
 - (MIKeychainAccessGroupTracker)init;
-- (id)_keychainAccessGroupsForApp:(id)a3 error:(id *)a4;
-- (id)_keychainAccessGroupsForBundle:(id)a3 error:(id *)a4;
+- (id)_keychainAccessGroupsForApp:(id)app error:(id *)error;
+- (id)_keychainAccessGroupsForBundle:(id)bundle error:(id *)error;
 - (void)_onQueue_discoverReferences;
 @end
 
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __45__MIKeychainAccessGroupTracker_sharedTracker__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedTracker_onceToken != -1)
   {
     dispatch_once(&sharedTracker_onceToken, block);
@@ -68,27 +68,27 @@ uint64_t __45__MIKeychainAccessGroupTracker_sharedTracker__block_invoke()
   mach_absolute_time();
   v4 = objc_opt_new();
   v5 = +[MIDaemonConfiguration sharedInstance];
-  v6 = [v5 systemAppBundleIDToInfoMap];
+  systemAppBundleIDToInfoMap = [v5 systemAppBundleIDToInfoMap];
 
-  if (v6)
+  if (systemAppBundleIDToInfoMap)
   {
-    [v4 addObject:v6];
+    [v4 addObject:systemAppBundleIDToInfoMap];
   }
 
   v7 = +[MIDaemonConfiguration sharedInstance];
-  v8 = [v7 internalAppBundleIDToInfoMap];
+  internalAppBundleIDToInfoMap = [v7 internalAppBundleIDToInfoMap];
 
-  if (v8)
+  if (internalAppBundleIDToInfoMap)
   {
-    [v4 addObject:v8];
+    [v4 addObject:internalAppBundleIDToInfoMap];
   }
 
   v9 = +[MIDaemonConfiguration sharedInstance];
-  v10 = [v9 coreServicesAppBundleIDToInfoMap];
+  coreServicesAppBundleIDToInfoMap = [v9 coreServicesAppBundleIDToInfoMap];
 
-  if (v10)
+  if (coreServicesAppBundleIDToInfoMap)
   {
-    [v4 addObject:v10];
+    [v4 addObject:coreServicesAppBundleIDToInfoMap];
   }
 
   v11 = objc_opt_new();
@@ -107,7 +107,7 @@ uint64_t __45__MIKeychainAccessGroupTracker_sharedTracker__block_invoke()
     v39 = 0u;
     v14 = v12;
     v15 = [v14 countByEnumeratingWithState:&v39 objects:v45 count:16];
-    v31 = v10;
+    v31 = coreServicesAppBundleIDToInfoMap;
     if (v15)
     {
       v16 = v15;
@@ -122,16 +122,16 @@ uint64_t __45__MIKeychainAccessGroupTracker_sharedTracker__block_invoke()
           }
 
           v19 = *(*(&v39 + 1) + 8 * i);
-          v20 = [v19 bundle];
-          if (v20)
+          bundle = [v19 bundle];
+          if (bundle)
           {
             v38 = v13;
-            v21 = [(MIKeychainAccessGroupTracker *)self _onQueue_addReferencesForBundle:v20 error:&v38];
+            v21 = [(MIKeychainAccessGroupTracker *)self _onQueue_addReferencesForBundle:bundle error:&v38];
             v22 = v38;
 
             if (!v21 && gLogHandle && *(gLogHandle + 44) >= 7)
             {
-              v29 = v20;
+              v29 = bundle;
               MOLogWrite();
             }
 
@@ -191,7 +191,7 @@ uint64_t __45__MIKeychainAccessGroupTracker_sharedTracker__block_invoke()
       MOLogWrite();
     }
 
-    v10 = v31;
+    coreServicesAppBundleIDToInfoMap = v31;
     v4 = v32;
     v12 = v30;
   }
@@ -239,22 +239,22 @@ void __59__MIKeychainAccessGroupTracker__onQueue_discoverReferences__block_invok
   }
 }
 
-- (BOOL)_onQueue_addReferencesForBundle:(id)a3 error:(id *)a4
+- (BOOL)_onQueue_addReferencesForBundle:(id)bundle error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bundleCopy = bundle;
   v7 = [(MIKeychainAccessGroupTracker *)self q];
   dispatch_assert_queue_V2(v7);
 
-  v8 = [(MIKeychainAccessGroupTracker *)self refs];
+  refs = [(MIKeychainAccessGroupTracker *)self refs];
 
-  if (!v8)
+  if (!refs)
   {
     [(MIKeychainAccessGroupTracker *)self _onQueue_discoverReferences];
   }
 
   v25 = 0;
-  v9 = [(MIKeychainAccessGroupTracker *)self _keychainAccessGroupsForApp:v6 error:&v25];
+  v9 = [(MIKeychainAccessGroupTracker *)self _keychainAccessGroupsForApp:bundleCopy error:&v25];
   v10 = v25;
   if (v9)
   {
@@ -263,7 +263,7 @@ void __59__MIKeychainAccessGroupTracker__onQueue_discoverReferences__block_invok
       goto LABEL_19;
     }
 
-    v20 = a4;
+    errorCopy = error;
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -285,8 +285,8 @@ void __59__MIKeychainAccessGroupTracker__onQueue_discoverReferences__block_invok
           }
 
           v16 = *(*(&v21 + 1) + 8 * v15);
-          v17 = [(MIKeychainAccessGroupTracker *)self refs];
-          [v17 addObject:v16];
+          refs2 = [(MIKeychainAccessGroupTracker *)self refs];
+          [refs2 addObject:v16];
 
           ++v15;
         }
@@ -298,7 +298,7 @@ void __59__MIKeychainAccessGroupTracker__onQueue_discoverReferences__block_invok
       while (v13);
     }
 
-    a4 = v20;
+    error = errorCopy;
   }
 
   else if (gLogHandle && *(gLogHandle + 44) >= 7)
@@ -306,10 +306,10 @@ void __59__MIKeychainAccessGroupTracker__onQueue_discoverReferences__block_invok
     MOLogWrite();
   }
 
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v18 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_19:
@@ -317,24 +317,24 @@ LABEL_19:
   return v9 != 0;
 }
 
-- (BOOL)_onQueue_updateReferencesWithOldBundle:(id)a3 newBundle:(id)a4 error:(id *)a5
+- (BOOL)_onQueue_updateReferencesWithOldBundle:(id)bundle newBundle:(id)newBundle error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v42 = a4;
+  bundleCopy = bundle;
+  newBundleCopy = newBundle;
   v9 = [(MIKeychainAccessGroupTracker *)self q];
   dispatch_assert_queue_V2(v9);
 
   v10 = objc_opt_new();
-  v11 = [(MIKeychainAccessGroupTracker *)self refs];
+  refs = [(MIKeychainAccessGroupTracker *)self refs];
 
-  if (!v11)
+  if (!refs)
   {
     [(MIKeychainAccessGroupTracker *)self _onQueue_discoverReferences];
   }
 
   v53 = 0;
-  v12 = [(MIKeychainAccessGroupTracker *)self _keychainAccessGroupsForApp:v8 error:&v53];
+  v12 = [(MIKeychainAccessGroupTracker *)self _keychainAccessGroupsForApp:bundleCopy error:&v53];
   v13 = v53;
   v14 = v13;
   if (!v12)
@@ -345,7 +345,7 @@ LABEL_19:
     }
 
     v15 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_47;
     }
@@ -354,7 +354,7 @@ LABEL_19:
   }
 
   v52 = v13;
-  v15 = [(MIKeychainAccessGroupTracker *)self _keychainAccessGroupsForApp:v42 error:&v52];
+  v15 = [(MIKeychainAccessGroupTracker *)self _keychainAccessGroupsForApp:newBundleCopy error:&v52];
   v16 = v52;
 
   if (!v15)
@@ -366,7 +366,7 @@ LABEL_19:
 
     v15 = 0;
     v14 = v16;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_47;
     }
@@ -376,7 +376,7 @@ LABEL_19:
 
   if (([v12 isEqualToSet:v15] & 1) == 0)
   {
-    v38 = a5;
+    errorCopy = error;
     v39 = v16;
     v41 = v10;
     v50 = 0u;
@@ -404,16 +404,16 @@ LABEL_19:
           {
             if (!gLogHandle || *(gLogHandle + 44) >= 5)
             {
-              v36 = [v42 identifier];
+              identifier = [newBundleCopy identifier];
               v37 = v24;
               MOLogWrite();
             }
 
-            v25 = [(MIKeychainAccessGroupTracker *)self refs:v36];
+            v25 = [(MIKeychainAccessGroupTracker *)self refs:identifier];
             [v25 removeObject:v24];
 
-            v26 = [(MIKeychainAccessGroupTracker *)self refs];
-            v27 = [v26 countForObject:v24];
+            refs2 = [(MIKeychainAccessGroupTracker *)self refs];
+            v27 = [refs2 countForObject:v24];
 
             if (!v27)
             {
@@ -452,12 +452,12 @@ LABEL_19:
           {
             if (!gLogHandle || *(gLogHandle + 44) >= 5)
             {
-              v36 = [v42 identifier];
+              identifier = [newBundleCopy identifier];
               v37 = v32;
               MOLogWrite();
             }
 
-            v33 = [(MIKeychainAccessGroupTracker *)self refs:v36];
+            v33 = [(MIKeychainAccessGroupTracker *)self refs:identifier];
             [v33 addObject:v32];
           }
         }
@@ -488,8 +488,8 @@ LABEL_19:
       goto LABEL_48;
     }
 
-    a5 = v38;
-    if (!v38)
+    error = errorCopy;
+    if (!errorCopy)
     {
 LABEL_47:
       v17 = 0;
@@ -499,7 +499,7 @@ LABEL_47:
 LABEL_16:
     v18 = v14;
     v17 = 0;
-    *a5 = v14;
+    *error = v14;
 LABEL_48:
     v16 = v14;
     goto LABEL_49;
@@ -511,23 +511,23 @@ LABEL_49:
   return v17;
 }
 
-- (BOOL)_onQueue_removeReferencesForBundle:(id)a3 error:(id *)a4
+- (BOOL)_onQueue_removeReferencesForBundle:(id)bundle error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bundleCopy = bundle;
   v7 = [(MIKeychainAccessGroupTracker *)self q];
   dispatch_assert_queue_V2(v7);
 
   v8 = objc_opt_new();
-  v9 = [(MIKeychainAccessGroupTracker *)self refs];
+  refs = [(MIKeychainAccessGroupTracker *)self refs];
 
-  if (!v9)
+  if (!refs)
   {
     [(MIKeychainAccessGroupTracker *)self _onQueue_discoverReferences];
   }
 
   v36 = 0;
-  v10 = [(MIKeychainAccessGroupTracker *)self _keychainAccessGroupsForApp:v6 error:&v36];
+  v10 = [(MIKeychainAccessGroupTracker *)self _keychainAccessGroupsForApp:bundleCopy error:&v36];
   v11 = v36;
   v12 = v11;
   if (!v10)
@@ -537,7 +537,7 @@ LABEL_49:
       MOLogWrite();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_26;
     }
@@ -545,7 +545,7 @@ LABEL_49:
     goto LABEL_23;
   }
 
-  v28 = a4;
+  errorCopy = error;
   v29 = v11;
   v30 = v10;
   v34 = 0u;
@@ -570,16 +570,16 @@ LABEL_49:
         v18 = *(*(&v32 + 1) + 8 * i);
         if (!gLogHandle || *(gLogHandle + 44) >= 5)
         {
-          v26 = [v6 identifier];
+          identifier = [bundleCopy identifier];
           v27 = v18;
           MOLogWrite();
         }
 
-        v19 = [(MIKeychainAccessGroupTracker *)self refs:v26];
+        v19 = [(MIKeychainAccessGroupTracker *)self refs:identifier];
         [v19 removeObject:v18];
 
-        v20 = [(MIKeychainAccessGroupTracker *)self refs];
-        v21 = [v20 countForObject:v18];
+        refs2 = [(MIKeychainAccessGroupTracker *)self refs];
+        v21 = [refs2 countForObject:v18];
 
         if (!v21)
         {
@@ -607,9 +607,9 @@ LABEL_49:
 
   if (!v22)
   {
-    a4 = v28;
+    error = errorCopy;
     v10 = v30;
-    if (!v28)
+    if (!errorCopy)
     {
 LABEL_26:
       v23 = 0;
@@ -619,7 +619,7 @@ LABEL_26:
 LABEL_23:
     v24 = v12;
     v23 = 0;
-    *a4 = v12;
+    *error = v12;
     goto LABEL_27;
   }
 
@@ -630,9 +630,9 @@ LABEL_27:
   return v23;
 }
 
-- (BOOL)_removeGroupsWithError:(id)a3 error:(id *)a4
+- (BOOL)_removeGroupsWithError:(id)error error:(id *)a4
 {
-  v5 = a3;
+  errorCopy = error;
   if (!gLogHandle || *(gLogHandle + 44) >= 5)
   {
     MOLogWrite();
@@ -646,7 +646,7 @@ LABEL_27:
 
   else
   {
-    v8 = _CreateAndLogError("[MIKeychainAccessGroupTracker _removeGroupsWithError:error:]", 373, @"MIInstallerErrorDomain", 125, 0, 0, @"Failed to remove keychain items %@", v6, v5);
+    v8 = _CreateAndLogError("[MIKeychainAccessGroupTracker _removeGroupsWithError:error:]", 373, @"MIInstallerErrorDomain", 125, 0, 0, @"Failed to remove keychain items %@", v6, errorCopy);
 
     if (a4)
     {
@@ -658,33 +658,33 @@ LABEL_27:
   return v7;
 }
 
-- (id)_keychainAccessGroupsForBundle:(id)a3 error:(id *)a4
+- (id)_keychainAccessGroupsForBundle:(id)bundle error:(id *)error
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v18 = 0;
-  v6 = [v5 codeSigningInfoByValidatingResources:0 performingOnlineAuthorization:0 ignoringCachedSigningInfo:0 checkingTrustCacheIfApplicable:0 skippingProfileIDValidation:0 error:&v18];
+  v6 = [bundleCopy codeSigningInfoByValidatingResources:0 performingOnlineAuthorization:0 ignoringCachedSigningInfo:0 checkingTrustCacheIfApplicable:0 skippingProfileIDValidation:0 error:&v18];
   v7 = v18;
   if (v6)
   {
     v8 = objc_opt_new();
-    v9 = [v6 entitlements];
-    v10 = MICopyKeychainAccessGroupEntitlement(v9);
+    entitlements = [v6 entitlements];
+    v10 = MICopyKeychainAccessGroupEntitlement(entitlements);
 
     if (v10)
     {
       [v8 addObjectsFromArray:v10];
     }
 
-    v11 = [v6 entitlements];
-    v12 = MICopyApplicationGroupEntitlement(v11);
+    entitlements2 = [v6 entitlements];
+    v12 = MICopyApplicationGroupEntitlement(entitlements2);
 
     if (v12)
     {
       [v8 addObjectsFromArray:v12];
     }
 
-    v13 = [v6 entitlements];
-    v14 = MICopyApplicationIdentifierEntitlement(v13);
+    entitlements3 = [v6 entitlements];
+    v14 = MICopyApplicationIdentifierEntitlement(entitlements3);
 
     if (v14)
     {
@@ -701,11 +701,11 @@ LABEL_27:
       MOLogWrite();
     }
 
-    if (a4)
+    if (error)
     {
       v16 = v7;
       v15 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -717,13 +717,13 @@ LABEL_27:
   return v15;
 }
 
-- (id)_keychainAccessGroupsForApp:(id)a3 error:(id *)a4
+- (id)_keychainAccessGroupsForApp:(id)app error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  appCopy = app;
   v7 = objc_opt_new();
   v50 = 0;
-  v8 = [(MIKeychainAccessGroupTracker *)self _keychainAccessGroupsForBundle:v6 error:&v50];
+  v8 = [(MIKeychainAccessGroupTracker *)self _keychainAccessGroupsForBundle:appCopy error:&v50];
   v9 = v50;
   if (!v8)
   {
@@ -736,7 +736,7 @@ LABEL_27:
     v12 = 0;
     v30 = 0;
     v11 = v9;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -745,7 +745,7 @@ LABEL_36:
     if (!v30)
     {
       v31 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     goto LABEL_38;
@@ -753,7 +753,7 @@ LABEL_36:
 
   [v7 unionSet:v8];
   v49 = v9;
-  v10 = [v6 appExtensionBundlesWithError:&v49];
+  v10 = [appCopy appExtensionBundlesWithError:&v49];
   v11 = v49;
 
   if (!v10)
@@ -766,7 +766,7 @@ LABEL_36:
     v22 = 0;
     v12 = 0;
     v30 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -775,7 +775,7 @@ LABEL_36:
   }
 
   v35 = v8;
-  v36 = a4;
+  errorCopy = error;
   v37 = v7;
   v47 = 0u;
   v48 = 0u;
@@ -836,7 +836,7 @@ LABEL_36:
   v20 = v11;
 
   v43 = v11;
-  v21 = [v6 xpcServiceBundlesWithError:&v43];
+  v21 = [appCopy xpcServiceBundlesWithError:&v43];
   v11 = v43;
 
   if (!v21)
@@ -850,8 +850,8 @@ LABEL_36:
 
     v22 = 0;
     v30 = 0;
-    a4 = v36;
-    if (!v36)
+    error = errorCopy;
+    if (!errorCopy)
     {
       goto LABEL_38;
     }
@@ -859,7 +859,7 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  v34 = v6;
+  v34 = appCopy;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
@@ -894,7 +894,7 @@ LABEL_36:
           }
 
           v30 = 0;
-          v6 = v34;
+          appCopy = v34;
           v7 = v37;
           goto LABEL_30;
         }
@@ -918,11 +918,11 @@ LABEL_36:
 
   v7 = v37;
   v30 = [v37 copy];
-  v6 = v34;
+  appCopy = v34;
 LABEL_30:
   v8 = v35;
-  a4 = v36;
-  if (v36)
+  error = errorCopy;
+  if (errorCopy)
   {
     goto LABEL_36;
   }

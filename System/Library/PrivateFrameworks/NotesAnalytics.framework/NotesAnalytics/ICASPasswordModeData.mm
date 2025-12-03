@@ -1,24 +1,24 @@
 @interface ICASPasswordModeData
-- (ICASPasswordModeData)initWithPwdModeChangeContextPath:(id)a3 startMode:(id)a4 endMode:(id)a5;
+- (ICASPasswordModeData)initWithPwdModeChangeContextPath:(id)path startMode:(id)mode endMode:(id)endMode;
 - (id)toDict;
 @end
 
 @implementation ICASPasswordModeData
 
-- (ICASPasswordModeData)initWithPwdModeChangeContextPath:(id)a3 startMode:(id)a4 endMode:(id)a5
+- (ICASPasswordModeData)initWithPwdModeChangeContextPath:(id)path startMode:(id)mode endMode:(id)endMode
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  modeCopy = mode;
+  endModeCopy = endMode;
   v15.receiver = self;
   v15.super_class = ICASPasswordModeData;
   v12 = [(ICASPasswordModeData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_pwdModeChangeContextPath, a3);
-    objc_storeStrong(&v13->_startMode, a4);
-    objc_storeStrong(&v13->_endMode, a5);
+    objc_storeStrong(&v12->_pwdModeChangeContextPath, path);
+    objc_storeStrong(&v13->_startMode, mode);
+    objc_storeStrong(&v13->_endMode, endMode);
   }
 
   return v13;
@@ -28,47 +28,47 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v15[0] = @"pwdModeChangeContextPath";
-  v3 = [(ICASPasswordModeData *)self pwdModeChangeContextPath];
-  if (v3)
+  pwdModeChangeContextPath = [(ICASPasswordModeData *)self pwdModeChangeContextPath];
+  if (pwdModeChangeContextPath)
   {
-    v4 = [(ICASPasswordModeData *)self pwdModeChangeContextPath];
+    pwdModeChangeContextPath2 = [(ICASPasswordModeData *)self pwdModeChangeContextPath];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    pwdModeChangeContextPath2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v16[0] = v4;
+  v5 = pwdModeChangeContextPath2;
+  v16[0] = pwdModeChangeContextPath2;
   v15[1] = @"startMode";
-  v6 = [(ICASPasswordModeData *)self startMode];
-  if (v6)
+  startMode = [(ICASPasswordModeData *)self startMode];
+  if (startMode)
   {
-    v7 = [(ICASPasswordModeData *)self startMode];
+    startMode2 = [(ICASPasswordModeData *)self startMode];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    startMode2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v16[1] = v7;
+  v8 = startMode2;
+  v16[1] = startMode2;
   v15[2] = @"endMode";
-  v9 = [(ICASPasswordModeData *)self endMode];
-  if (v9)
+  endMode = [(ICASPasswordModeData *)self endMode];
+  if (endMode)
   {
-    v10 = [(ICASPasswordModeData *)self endMode];
+    endMode2 = [(ICASPasswordModeData *)self endMode];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    endMode2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v16[2] = v10;
+  v11 = endMode2;
+  v16[2] = endMode2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   v13 = *MEMORY[0x277D85DE8];

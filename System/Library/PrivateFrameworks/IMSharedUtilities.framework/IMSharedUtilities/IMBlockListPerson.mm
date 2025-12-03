@@ -1,20 +1,20 @@
 @interface IMBlockListPerson
-+ (IMBlockListPerson)personWithCNContact:(id)a3;
-- (BOOL)isEqualToPerson:(id)a3;
++ (IMBlockListPerson)personWithCNContact:(id)contact;
+- (BOOL)isEqualToPerson:(id)person;
 - (BOOL)isInAddressBook;
 - (IMBlockListPerson)init;
-- (IMBlockListPerson)initWithCNContact:(id)a3;
+- (IMBlockListPerson)initWithCNContact:(id)contact;
 - (NSString)fullName;
 - (id)companyName;
-- (id)sanitizeString:(id)a3;
+- (id)sanitizeString:(id)string;
 @end
 
 @implementation IMBlockListPerson
 
-+ (IMBlockListPerson)personWithCNContact:(id)a3
++ (IMBlockListPerson)personWithCNContact:(id)contact
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCNContact:v4];
+  contactCopy = contact;
+  v5 = [[self alloc] initWithCNContact:contactCopy];
 
   return v5;
 }
@@ -30,18 +30,18 @@
     cnPerson = v2->_cnPerson;
     v2->_cnPerson = v3;
 
-    v5 = [(CNContact *)v2->_cnPerson identifier];
+    identifier = [(CNContact *)v2->_cnPerson identifier];
     identifier = v2->_identifier;
-    v2->_identifier = v5;
+    v2->_identifier = identifier;
   }
 
   return v2;
 }
 
-- (IMBlockListPerson)initWithCNContact:(id)a3
+- (IMBlockListPerson)initWithCNContact:(id)contact
 {
-  v5 = a3;
-  if (!v5)
+  contactCopy = contact;
+  if (!contactCopy)
   {
     v7 = [(IMBlockListPerson *)self init];
     goto LABEL_10;
@@ -55,32 +55,32 @@
   {
 LABEL_10:
     v7 = v7;
-    v8 = v7;
+    identifier = v7;
     goto LABEL_11;
   }
 
-  objc_storeStrong(&v6->_cnPerson, a3);
-  v8 = [(CNContact *)v7->_cnPerson identifier];
+  objc_storeStrong(&v6->_cnPerson, contact);
+  identifier = [(CNContact *)v7->_cnPerson identifier];
 
-  if (v8)
+  if (identifier)
   {
-    v9 = [MEMORY[0x1E69A6198] sharedInstance];
-    v10 = [(CNContact *)v7->_cnPerson identifier];
-    v8 = [v9 copyOrSetObject:v7 forKey:v10];
+    mEMORY[0x1E69A6198] = [MEMORY[0x1E69A6198] sharedInstance];
+    identifier2 = [(CNContact *)v7->_cnPerson identifier];
+    identifier = [mEMORY[0x1E69A6198] copyOrSetObject:v7 forKey:identifier2];
 
-    LODWORD(v9) = [(IMBlockListPerson *)v8 isInAddressBook];
-    v11 = [(CNContact *)v7->_cnPerson identifier];
+    LODWORD(mEMORY[0x1E69A6198]) = [(IMBlockListPerson *)identifier isInAddressBook];
+    identifier3 = [(CNContact *)v7->_cnPerson identifier];
     identifier = v7->_identifier;
-    v7->_identifier = v11;
+    v7->_identifier = identifier3;
 
-    if (!v9 || v8 != v7)
+    if (!mEMORY[0x1E69A6198] || identifier != v7)
     {
-      v14 = [MEMORY[0x1E69A6198] sharedInstance];
-      v15 = [(CNContact *)v7->_cnPerson identifier];
-      [v14 removeObject:v7 key:v15];
+      mEMORY[0x1E69A6198]2 = [MEMORY[0x1E69A6198] sharedInstance];
+      identifier4 = [(CNContact *)v7->_cnPerson identifier];
+      [mEMORY[0x1E69A6198]2 removeObject:v7 key:identifier4];
 
-      v16 = [MEMORY[0x1E69A6198] sharedInstance];
-      v17 = [(CNContact *)v7->_cnPerson identifier];
+      mEMORY[0x1E69A6198]3 = [MEMORY[0x1E69A6198] sharedInstance];
+      identifier5 = [(CNContact *)v7->_cnPerson identifier];
 
       goto LABEL_10;
     }
@@ -88,28 +88,28 @@ LABEL_10:
 
 LABEL_11:
 
-  return v8;
+  return identifier;
 }
 
-- (BOOL)isEqualToPerson:(id)a3
+- (BOOL)isEqualToPerson:(id)person
 {
-  if (!a3)
+  if (!person)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(IMBlockListPerson *)self identifier];
-  v6 = [v4 identifier];
+  personCopy = person;
+  identifier = [(IMBlockListPerson *)self identifier];
+  identifier2 = [personCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(personCopy) = [identifier isEqual:identifier2];
+  return personCopy;
 }
 
 - (NSString)fullName
 {
-  v3 = [(IMBlockListPerson *)self cnPerson];
-  v4 = [IMContactStore fullNameForCNContact:v3];
+  cnPerson = [(IMBlockListPerson *)self cnPerson];
+  v4 = [IMContactStore fullNameForCNContact:cnPerson];
   v5 = [(IMBlockListPerson *)self sanitizeString:v4];
   v6 = [v5 copy];
 
@@ -121,20 +121,20 @@ LABEL_11:
 
   else
   {
-    v8 = [(IMBlockListPerson *)self cnPerson];
-    v9 = [IMContactStore companyNameForCNContact:v8];
+    cnPerson2 = [(IMBlockListPerson *)self cnPerson];
+    v9 = [IMContactStore companyNameForCNContact:cnPerson2];
 
     if (v9 && [v9 length])
     {
-      v10 = v9;
+      cachedFullName = v9;
     }
 
     else
     {
-      v10 = [(IMBlockListPerson *)self cachedFullName];
+      cachedFullName = [(IMBlockListPerson *)self cachedFullName];
     }
 
-    v7 = v10;
+    v7 = cachedFullName;
   }
 
   return v7;
@@ -142,48 +142,48 @@ LABEL_11:
 
 - (id)companyName
 {
-  v3 = [(IMBlockListPerson *)self cnPerson];
-  v4 = [IMContactStore companyNameForCNContact:v3];
+  cnPerson = [(IMBlockListPerson *)self cnPerson];
+  v4 = [IMContactStore companyNameForCNContact:cnPerson];
   v5 = [(IMBlockListPerson *)self sanitizeString:v4];
 
   if (v5)
   {
     [(IMBlockListPerson *)self setCachedCompanyName:v5];
-    v6 = v5;
+    cachedCompanyName = v5;
   }
 
   else
   {
-    v6 = [(IMBlockListPerson *)self cachedCompanyName];
+    cachedCompanyName = [(IMBlockListPerson *)self cachedCompanyName];
   }
 
-  v7 = v6;
+  v7 = cachedCompanyName;
 
   return v7;
 }
 
-- (id)sanitizeString:(id)a3
+- (id)sanitizeString:(id)string
 {
-  v3 = a3;
-  if (([v3 isNull] & 1) != 0 || !objc_msgSend(v3, "length"))
+  stringCopy = string;
+  if (([stringCopy isNull] & 1) != 0 || !objc_msgSend(stringCopy, "length"))
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = [v3 stringByRemovingWhitespace];
+    stringByRemovingWhitespace = [stringCopy stringByRemovingWhitespace];
 
-    if ([v4 length])
+    if ([stringByRemovingWhitespace length])
     {
-      v5 = v4;
-      v3 = v5;
+      v5 = stringByRemovingWhitespace;
+      stringCopy = v5;
     }
 
     else
     {
       v5 = 0;
-      v3 = v4;
+      stringCopy = stringByRemovingWhitespace;
     }
   }
 
@@ -192,8 +192,8 @@ LABEL_11:
 
 - (BOOL)isInAddressBook
 {
-  v2 = [(IMBlockListPerson *)self cnPerson];
-  v3 = [IMContactStore isCNContactAKnownContact:v2];
+  cnPerson = [(IMBlockListPerson *)self cnPerson];
+  v3 = [IMContactStore isCNContactAKnownContact:cnPerson];
 
   return v3;
 }

@@ -1,31 +1,31 @@
 @interface SUUIFlexibleSegmentedControl
-- (CGRect)frameForSegmentWithIndex:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIFlexibleSegmentedControl)initWithFrame:(CGRect)a3;
+- (CGRect)frameForSegmentWithIndex:(int64_t)index;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIFlexibleSegmentedControl)initWithFrame:(CGRect)frame;
 - (SUUIFlexibleSegmentedControlDelegate)delegate;
 - (int64_t)moreListIndex;
 - (int64_t)selectedSegmentIndex;
-- (void)_configureSegmentedControl:(id)a3 withTitles:(id)a4 boundingSize:(CGSize)a5;
-- (void)_setTitles:(id)a3 forSegmentedControl:(id)a4;
-- (void)_valueChangeAction:(id)a3;
+- (void)_configureSegmentedControl:(id)control withTitles:(id)titles boundingSize:(CGSize)size;
+- (void)_setTitles:(id)titles forSegmentedControl:(id)control;
+- (void)_valueChangeAction:(id)action;
 - (void)cancelMoreList;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setDesiredSegmentWidth:(double)a3;
-- (void)setItemTitles:(id)a3;
-- (void)setMaximumNumberOfVisibleItems:(int64_t)a3;
-- (void)setMoreListTitle:(id)a3;
-- (void)setSelectedSegmentIndex:(int64_t)a3;
-- (void)setSizesSegmentsToFitWidth:(BOOL)a3;
+- (void)setDesiredSegmentWidth:(double)width;
+- (void)setItemTitles:(id)titles;
+- (void)setMaximumNumberOfVisibleItems:(int64_t)items;
+- (void)setMoreListTitle:(id)title;
+- (void)setSelectedSegmentIndex:(int64_t)index;
+- (void)setSizesSegmentsToFitWidth:(BOOL)width;
 @end
 
 @implementation SUUIFlexibleSegmentedControl
 
-- (SUUIFlexibleSegmentedControl)initWithFrame:(CGRect)a3
+- (SUUIFlexibleSegmentedControl)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SUUIFlexibleSegmentedControl;
-  v3 = [(SUUIFlexibleSegmentedControl *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIFlexibleSegmentedControl *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -61,12 +61,12 @@
   }
 }
 
-- (CGRect)frameForSegmentWithIndex:(int64_t)a3
+- (CGRect)frameForSegmentWithIndex:(int64_t)index
 {
   v5 = MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
-  v7 = [(UISegmentedControl *)self->_segmentedControl numberOfSegments];
-  if (v7 <= a3)
+  numberOfSegments = [(UISegmentedControl *)self->_segmentedControl numberOfSegments];
+  if (numberOfSegments <= index)
   {
     v18 = *v5;
     v17 = v5[2];
@@ -75,7 +75,7 @@
 
   else
   {
-    v8 = v7;
+    v8 = numberOfSegments;
     [(UISegmentedControl *)self->_segmentedControl frame];
     v10 = v9;
     v12 = v11;
@@ -83,7 +83,7 @@
     v16 = v15;
     *&v9 = v13 / v8;
     v17 = floorf(*&v9);
-    v18 = v10 + a3 * v17;
+    v18 = v10 + index * v17;
     if (storeShouldReverseLayoutDirection())
     {
       v25.origin.x = v10;
@@ -119,15 +119,15 @@
 
 - (int64_t)moreListIndex
 {
-  v3 = [(UISegmentedControl *)self->_segmentedControl numberOfSegments];
-  if (v3 >= [(NSArray *)self->_itemTitles count])
+  numberOfSegments = [(UISegmentedControl *)self->_segmentedControl numberOfSegments];
+  if (numberOfSegments >= [(NSArray *)self->_itemTitles count])
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return v3 - 1;
+    return numberOfSegments - 1;
   }
 }
 
@@ -142,29 +142,29 @@
   return previousSelectedSegmentIndex;
 }
 
-- (void)setDesiredSegmentWidth:(double)a3
+- (void)setDesiredSegmentWidth:(double)width
 {
-  if (self->_desiredSegmentWidth != a3)
+  if (self->_desiredSegmentWidth != width)
   {
-    self->_desiredSegmentWidth = a3;
+    self->_desiredSegmentWidth = width;
     [(SUUIFlexibleSegmentedControl *)self setNeedsLayout];
   }
 }
 
-- (void)setSizesSegmentsToFitWidth:(BOOL)a3
+- (void)setSizesSegmentsToFitWidth:(BOOL)width
 {
-  if (self->_sizesSegmentsToFitWidth != a3)
+  if (self->_sizesSegmentsToFitWidth != width)
   {
-    self->_sizesSegmentsToFitWidth = a3;
+    self->_sizesSegmentsToFitWidth = width;
     [(SUUIFlexibleSegmentedControl *)self setNeedsLayout];
   }
 }
 
-- (void)setItemTitles:(id)a3
+- (void)setItemTitles:(id)titles
 {
-  if (self->_itemTitles != a3)
+  if (self->_itemTitles != titles)
   {
-    v4 = [a3 copy];
+    v4 = [titles copy];
     itemTitles = self->_itemTitles;
     self->_itemTitles = v4;
 
@@ -172,20 +172,20 @@
   }
 }
 
-- (void)setMaximumNumberOfVisibleItems:(int64_t)a3
+- (void)setMaximumNumberOfVisibleItems:(int64_t)items
 {
-  if (self->_maximumNumberOfVisibleItems != a3)
+  if (self->_maximumNumberOfVisibleItems != items)
   {
-    self->_maximumNumberOfVisibleItems = a3;
+    self->_maximumNumberOfVisibleItems = items;
     [(SUUIFlexibleSegmentedControl *)self setNeedsLayout];
   }
 }
 
-- (void)setMoreListTitle:(id)a3
+- (void)setMoreListTitle:(id)title
 {
-  if (self->_moreListTitle != a3)
+  if (self->_moreListTitle != title)
   {
-    v4 = [a3 copy];
+    v4 = [title copy];
     moreListTitle = self->_moreListTitle;
     self->_moreListTitle = v4;
 
@@ -193,14 +193,14 @@
   }
 }
 
-- (void)setSelectedSegmentIndex:(int64_t)a3
+- (void)setSelectedSegmentIndex:(int64_t)index
 {
   selectedSegmentIndex = self->_selectedSegmentIndex;
-  if (selectedSegmentIndex != a3)
+  if (selectedSegmentIndex != index)
   {
     self->_isMoreListSelected = 0;
     self->_previousSelectedSegmentIndex = selectedSegmentIndex;
-    self->_selectedSegmentIndex = a3;
+    self->_selectedSegmentIndex = index;
     [(SUUIFlexibleSegmentedControl *)self setNeedsLayout];
   }
 }
@@ -224,24 +224,24 @@
   v10 = (v4 - v9) * 0.5;
   v12 = (v6 - v11) * 0.5;
   [(UISegmentedControl *)self->_segmentedControl setFrame:floorf(v10), floorf(v12)];
-  v13 = [(SUUIFlexibleSegmentedControl *)self moreListIndex];
+  moreListIndex = [(SUUIFlexibleSegmentedControl *)self moreListIndex];
   segmentedControl = self->_segmentedControl;
   if (self->_isMoreListSelected)
   {
-    selectedSegmentIndex = v13;
+    selectedSegmentIndex = moreListIndex;
   }
 
   else
   {
-    v16 = [(UISegmentedControl *)segmentedControl numberOfSegments];
-    if (v13 >= v16)
+    numberOfSegments = [(UISegmentedControl *)segmentedControl numberOfSegments];
+    if (moreListIndex >= numberOfSegments)
     {
-      v17 = v16;
+      v17 = numberOfSegments;
     }
 
     else
     {
-      v17 = v13;
+      v17 = moreListIndex;
     }
 
     selectedSegmentIndex = self->_selectedSegmentIndex;
@@ -255,10 +255,10 @@
   [(UISegmentedControl *)segmentedControl setSelectedSegmentIndex:selectedSegmentIndex];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = objc_alloc_init(MEMORY[0x277D75A08]);
   [(SUUIFlexibleSegmentedControl *)self _configureSegmentedControl:v6 withTitles:self->_itemTitles boundingSize:width, height];
   [v6 frame];
@@ -272,20 +272,20 @@
   return result;
 }
 
-- (void)_valueChangeAction:(id)a3
+- (void)_valueChangeAction:(id)action
 {
   self->_previousSelectedSegmentIndex = self->_selectedSegmentIndex;
-  self->_selectedSegmentIndex = [a3 selectedSegmentIndex];
-  v4 = [(SUUIFlexibleSegmentedControl *)self moreListIndex];
+  self->_selectedSegmentIndex = [action selectedSegmentIndex];
+  moreListIndex = [(SUUIFlexibleSegmentedControl *)self moreListIndex];
   selectedSegmentIndex = self->_selectedSegmentIndex;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (selectedSegmentIndex == v4)
+  if (selectedSegmentIndex == moreListIndex)
   {
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(NSArray *)self->_itemTitles subarrayWithRange:v4, [(NSArray *)self->_itemTitles count]- v4];
+      v8 = [(NSArray *)self->_itemTitles subarrayWithRange:moreListIndex, [(NSArray *)self->_itemTitles count]- moreListIndex];
       v9 = objc_loadWeakRetained(&self->_delegate);
       [v9 segmentedControl:self showMoreListWithTitles:v8];
     }
@@ -305,12 +305,12 @@
   }
 }
 
-- (void)_configureSegmentedControl:(id)a3 withTitles:(id)a4 boundingSize:(CGSize)a5
+- (void)_configureSegmentedControl:(id)control withTitles:(id)titles boundingSize:(CGSize)size
 {
-  width = a5.width;
-  v34 = a3;
-  v8 = a4;
-  v9 = [v8 mutableCopy];
+  width = size.width;
+  controlCopy = control;
+  titlesCopy = titles;
+  v9 = [titlesCopy mutableCopy];
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v11 = [v9 count];
   if (self->_moreListTitle && (maximumNumberOfVisibleItems = self->_maximumNumberOfVisibleItems, v13 = v11 - maximumNumberOfVisibleItems, v11 > maximumNumberOfVisibleItems))
@@ -333,8 +333,8 @@
   v18 = *(MEMORY[0x277CBF390] + 24);
   while (1)
   {
-    [(SUUIFlexibleSegmentedControl *)self _setTitles:v9 forSegmentedControl:v34];
-    [v34 sizeThatFits:{v17, v18}];
+    [(SUUIFlexibleSegmentedControl *)self _setTitles:v9 forSegmentedControl:controlCopy];
+    [controlCopy sizeThatFits:{v17, v18}];
     v20 = v19;
     v22 = v21;
     v23 = [v9 count];
@@ -355,8 +355,8 @@
 
     else
     {
-      v26 = [v9 lastObject];
-      [v10 addObject:v26];
+      lastObject = [v9 lastObject];
+      [v10 addObject:lastObject];
 
       [v9 removeLastObject];
       v16 = 1;
@@ -392,20 +392,20 @@
     v29 = v20;
   }
 
-  [v34 setFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), v29, v22}];
-  v30 = [v9 lastObject];
-  v31 = v30;
-  if (v30 == self->_moreListTitle)
+  [controlCopy setFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), v29, v22}];
+  lastObject2 = [v9 lastObject];
+  v31 = lastObject2;
+  if (lastObject2 == self->_moreListTitle)
   {
     v32 = [v10 count];
 
     if (v32 == 1)
     {
       [v9 removeLastObject];
-      v33 = [v10 firstObject];
-      [v9 addObject:v33];
+      firstObject = [v10 firstObject];
+      [v9 addObject:firstObject];
 
-      [(SUUIFlexibleSegmentedControl *)self _setTitles:v9 forSegmentedControl:v34];
+      [(SUUIFlexibleSegmentedControl *)self _setTitles:v9 forSegmentedControl:controlCopy];
     }
   }
 
@@ -414,18 +414,18 @@
   }
 }
 
-- (void)_setTitles:(id)a3 forSegmentedControl:(id)a4
+- (void)_setTitles:(id)titles forSegmentedControl:(id)control
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 removeAllSegments];
+  controlCopy = control;
+  titlesCopy = titles;
+  [controlCopy removeAllSegments];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__SUUIFlexibleSegmentedControl__setTitles_forSegmentedControl___block_invoke;
   v8[3] = &unk_2798FCE80;
-  v9 = v5;
-  v7 = v5;
-  [v6 enumerateObjectsUsingBlock:v8];
+  v9 = controlCopy;
+  v7 = controlCopy;
+  [titlesCopy enumerateObjectsUsingBlock:v8];
 }
 
 - (SUUIFlexibleSegmentedControlDelegate)delegate

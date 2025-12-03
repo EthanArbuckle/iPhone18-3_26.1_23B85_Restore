@@ -1,33 +1,33 @@
 @interface MTTimeInBedSessionTracker
-+ (BOOL)_shouldUseBedtimeDismissedDateForAlarm:(id)a3;
-- (id)_createSleepSessionWithUserWakeTime:(id)a3 endReason:(unint64_t)a4;
-- (id)processedSessionForSession:(id)a3;
-- (void)endSessionWithDate:(id)a3 reason:(unint64_t)a4;
++ (BOOL)_shouldUseBedtimeDismissedDateForAlarm:(id)alarm;
+- (id)_createSleepSessionWithUserWakeTime:(id)time endReason:(unint64_t)reason;
+- (id)processedSessionForSession:(id)session;
+- (void)endSessionWithDate:(id)date reason:(unint64_t)reason;
 @end
 
 @implementation MTTimeInBedSessionTracker
 
-+ (BOOL)_shouldUseBedtimeDismissedDateForAlarm:(id)a3
++ (BOOL)_shouldUseBedtimeDismissedDateForAlarm:(id)alarm
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 bedtimeDismissedDate];
-  if (v5 && (v6 = v5, v7 = [v4 bedtimeDismissedAction], v6, v7 == 2))
+  alarmCopy = alarm;
+  bedtimeDismissedDate = [alarmCopy bedtimeDismissedDate];
+  if (bedtimeDismissedDate && (v6 = bedtimeDismissedDate, v7 = [alarmCopy bedtimeDismissedAction], v6, v7 == 2))
   {
-    v8 = [v4 bedtimeComponents];
+    bedtimeComponents = [alarmCopy bedtimeComponents];
     v9 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-    v10 = [v4 bedtimeDismissedDate];
-    v11 = [v9 mtPreviousDateBeforeDate:v10 matchingComponents:v8];
+    bedtimeDismissedDate2 = [alarmCopy bedtimeDismissedDate];
+    v11 = [v9 mtPreviousDateBeforeDate:bedtimeDismissedDate2 matchingComponents:bedtimeComponents];
 
-    v12 = [v4 bedtimeDismissedDate];
-    v13 = [v9 mtNextDateAfterDate:v12 matchingComponents:v8];
+    bedtimeDismissedDate3 = [alarmCopy bedtimeDismissedDate];
+    v13 = [v9 mtNextDateAfterDate:bedtimeDismissedDate3 matchingComponents:bedtimeComponents];
 
-    v14 = [v4 bedtimeDismissedDate];
-    [v14 timeIntervalSinceDate:v11];
+    bedtimeDismissedDate4 = [alarmCopy bedtimeDismissedDate];
+    [bedtimeDismissedDate4 timeIntervalSinceDate:v11];
     v16 = v15;
 
-    v17 = [v4 bedtimeDismissedDate];
-    [v13 timeIntervalSinceDate:v17];
+    bedtimeDismissedDate5 = [alarmCopy bedtimeDismissedDate];
+    [v13 timeIntervalSinceDate:bedtimeDismissedDate5];
     v19 = v18;
 
     v20 = v16 < 4500.0 || v19 < 3600.0;
@@ -36,11 +36,11 @@
       v21 = MTLogForCategory(7);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v4 bedtimeDismissedDate];
+        bedtimeDismissedDate6 = [alarmCopy bedtimeDismissedDate];
         v25 = 138543618;
-        v26 = a1;
+        selfCopy = self;
         v27 = 2112;
-        v28 = v22;
+        v28 = bedtimeDismissedDate6;
         _os_log_impl(&dword_1B1F9F000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ Ignoring user bedtime %@.", &v25, 0x16u);
       }
     }
@@ -55,35 +55,35 @@
   return v20;
 }
 
-- (void)endSessionWithDate:(id)a3 reason:(unint64_t)a4
+- (void)endSessionWithDate:(id)date reason:(unint64_t)reason
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dateCopy = date;
   v7 = MTLogForCategory(7);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = MTSleepSessionEndReasonDescription(a4);
+    v8 = MTSleepSessionEndReasonDescription(reason);
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v8;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ stopping session with reason %{public}@", &v12, 0x16u);
   }
 
-  v9 = [(MTTimeInBedSessionTracker *)self _createSleepSessionWithUserWakeTime:v6 endReason:a4];
+  v9 = [(MTTimeInBedSessionTracker *)self _createSleepSessionWithUserWakeTime:dateCopy endReason:reason];
 
-  v10 = [(MTSleepSessionTracker *)self sleepSessionTrackerDelegate];
-  [v10 sleepSessionTracker:self sessionDidComplete:v9];
+  sleepSessionTrackerDelegate = [(MTSleepSessionTracker *)self sleepSessionTrackerDelegate];
+  [sleepSessionTrackerDelegate sleepSessionTracker:self sessionDidComplete:v9];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_createSleepSessionWithUserWakeTime:(id)a3 endReason:(unint64_t)a4
+- (id)_createSleepSessionWithUserWakeTime:(id)time endReason:(unint64_t)reason
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(MTSleepSessionTracker *)self cachedAlarm];
-  if ([objc_opt_class() _shouldUseBedtimeDismissedDateForAlarm:v6] && (objc_msgSend(v6, "bedtimeDismissedDate"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  timeCopy = time;
+  cachedAlarm = [(MTSleepSessionTracker *)self cachedAlarm];
+  if ([objc_opt_class() _shouldUseBedtimeDismissedDateForAlarm:cachedAlarm] && (objc_msgSend(cachedAlarm, "bedtimeDismissedDate"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = MTLogForCategory(7);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -99,8 +99,8 @@
   else
   {
     v9 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-    v10 = [v6 bedtimeComponents];
-    v7 = [v9 mtPreviousDateBeforeDate:v5 matchingComponents:v10];
+    bedtimeComponents = [cachedAlarm bedtimeComponents];
+    v7 = [v9 mtPreviousDateBeforeDate:timeCopy matchingComponents:bedtimeComponents];
 
     v11 = MTLogForCategory(7);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -120,9 +120,9 @@
     }
   }
 
-  v12 = [v6 dismissedDate];
-  v13 = [v5 isEqualToDate:v12];
-  if (a4)
+  dismissedDate = [cachedAlarm dismissedDate];
+  v13 = [timeCopy isEqualToDate:dismissedDate];
+  if (reason)
   {
     v14 = 0;
   }
@@ -143,15 +143,15 @@
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v5;
+    *&buf[14] = timeCopy;
     _os_log_impl(&dword_1B1F9F000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ User wake time was: %@", buf, 0x16u);
   }
 
-  v16 = [v6 bedtimeComponents];
-  v38 = [v7 mtDateNearestMatchingComponents:v16];
+  bedtimeComponents2 = [cachedAlarm bedtimeComponents];
+  v38 = [v7 mtDateNearestMatchingComponents:bedtimeComponents2];
 
-  v17 = [v6 dateComponents];
-  v37 = [v5 mtDateNearestMatchingComponents:v17];
+  dateComponents = [cachedAlarm dateComponents];
+  v37 = [timeCopy mtDateNearestMatchingComponents:dateComponents];
 
   v40 = 0;
   v41 = &v40;
@@ -180,9 +180,9 @@
 
   v21 = *v18;
   v44[0] = v21;
-  v22 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  v23 = [v22 name];
-  v46[0] = v23;
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  name = [systemTimeZone name];
+  v46[0] = name;
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -241,7 +241,7 @@
   v31 = MEMORY[0x1E695DF20];
   v32 = v45;
   v33 = [v31 dictionaryWithObjects:v46 forKeys:v44 count:3];
-  v34 = [MTTimeInBedSession timeInBedSessionWithStartDate:v7 endDate:v5 intervals:0 endReason:a4 metadata:v33];
+  v34 = [MTTimeInBedSession timeInBedSessionWithStartDate:v7 endDate:timeCopy intervals:0 endReason:reason metadata:v33];
 
   [v34 setNeedsAdditionalProcessing:1];
 LABEL_27:
@@ -251,18 +251,18 @@ LABEL_27:
   return v34;
 }
 
-- (id)processedSessionForSession:(id)a3
+- (id)processedSessionForSession:(id)session
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sessionCopy = session;
   v37 = objc_opt_new();
-  v4 = [MEMORY[0x1E69978C8] inBedDetector];
-  v5 = [v3 startDate];
-  v38 = v3;
-  v6 = [v3 endDate];
+  inBedDetector = [MEMORY[0x1E69978C8] inBedDetector];
+  startDate = [sessionCopy startDate];
+  v38 = sessionCopy;
+  endDate = [sessionCopy endDate];
   v49 = 0;
-  v36 = v4;
-  v7 = [v4 detectInBedBetweenBedtimeDate:v5 wakupDate:v6 error:&v49];
+  v36 = inBedDetector;
+  v7 = [inBedDetector detectInBedBetweenBedtimeDate:startDate wakupDate:endDate error:&v49];
   v35 = v49;
 
   v8 = MTLogForCategory(7);
@@ -270,7 +270,7 @@ LABEL_27:
   {
     v9 = [v7 count];
     *buf = 138543618;
-    v52 = self;
+    selfCopy2 = self;
     v53 = 2048;
     v54 = v9;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Found %lu in-bed intervals", buf, 0x16u);
@@ -299,14 +299,14 @@ LABEL_27:
         v15 = MTLogForCategory(7);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v14 startDate];
-          v17 = [v14 endDate];
+          startDate2 = [v14 startDate];
+          endDate2 = [v14 endDate];
           *buf = 138543874;
-          v52 = self;
+          selfCopy2 = self;
           v53 = 2112;
-          v54 = v16;
+          v54 = startDate2;
           v55 = 2112;
-          v56 = v17;
+          v56 = endDate2;
           _os_log_impl(&dword_1B1F9F000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ _CDInBedDetection [%@ - %@]", buf, 0x20u);
         }
       }
@@ -353,8 +353,8 @@ LABEL_27:
             objc_enumerationMutation(v19);
           }
 
-          v25 = [*(*(&v41 + 1) + 8 * j) _mt_dateInterval];
-          [v37 na_safeAddObject:v25];
+          _mt_dateInterval = [*(*(&v41 + 1) + 8 * j) _mt_dateInterval];
+          [v37 na_safeAddObject:_mt_dateInterval];
         }
 
         v22 = [v19 countByEnumeratingWithState:&v41 objects:v50 count:16];
@@ -364,11 +364,11 @@ LABEL_27:
     }
 
     v26 = v38;
-    v27 = [v38 startDate];
-    v28 = [v38 endDate];
-    v29 = [v38 endReason];
-    v30 = [v38 metadata];
-    v31 = [MTTimeInBedSession timeInBedSessionWithStartDate:v27 endDate:v28 intervals:v37 endReason:v29 metadata:v30];
+    startDate3 = [v38 startDate];
+    endDate3 = [v38 endDate];
+    endReason = [v38 endReason];
+    metadata = [v38 metadata];
+    v31 = [MTTimeInBedSession timeInBedSessionWithStartDate:startDate3 endDate:endDate3 intervals:v37 endReason:endReason metadata:metadata];
 
     [v31 setNeedsAdditionalProcessing:0];
   }

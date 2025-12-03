@@ -1,5 +1,5 @@
 @interface LADefaultServiceSession
-- (LADefaultServiceSession)initWithService:(id)a3 serviceType:(id)a4 client:(id)a5;
+- (LADefaultServiceSession)initWithService:(id)service serviceType:(id)type client:(id)client;
 - (void)dealloc;
 @end
 
@@ -8,27 +8,27 @@
 - (void)dealloc
 {
   v6 = *MEMORY[0x1E69E9840];
-  v1 = *(a1 + 8);
-  v2 = *(a1 + 24);
+  v1 = *(self + 8);
+  v2 = *(self + 24);
   OUTLINED_FUNCTION_0_0();
   _os_log_debug_impl(&dword_1DF403000, v3, OS_LOG_TYPE_DEBUG, "Deallocated session service: %@ clientID: %@", v5, 0x16u);
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (LADefaultServiceSession)initWithService:(id)a3 serviceType:(id)a4 client:(id)a5
+- (LADefaultServiceSession)initWithService:(id)service serviceType:(id)type client:(id)client
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  serviceCopy = service;
+  typeCopy = type;
+  clientCopy = client;
   v18.receiver = self;
   v18.super_class = LADefaultServiceSession;
   v12 = [(LADefaultServiceSession *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_service, a3);
-    objc_storeStrong(&v13->_serviceType, a4);
-    objc_storeStrong(&v13->_clientID, a5);
+    objc_storeStrong(&v12->_service, service);
+    objc_storeStrong(&v13->_serviceType, type);
+    objc_storeStrong(&v13->_clientID, client);
     v14 = objc_opt_new();
     sessionID = v13->_sessionID;
     v13->_sessionID = v14;

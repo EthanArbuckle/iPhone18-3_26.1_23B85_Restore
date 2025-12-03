@@ -1,6 +1,6 @@
 @interface MediaPlayerDiagnosticExtension
-- (id)_archiveItems:(id)a3 fromDirectoryURL:(id)a4 withFileName:(id)a5 displayName:(id)a6;
-- (id)_archiveURLs:(id)a3 fromDirectoryURL:(id)a4 withFileName:(id)a5 displayName:(id)a6;
+- (id)_archiveItems:(id)items fromDirectoryURL:(id)l withFileName:(id)name displayName:(id)displayName;
+- (id)_archiveURLs:(id)ls fromDirectoryURL:(id)l withFileName:(id)name displayName:(id)displayName;
 - (id)attachmentList;
 - (id)mediaLibraryAttachments;
 - (id)mediaLogsAttachments;
@@ -9,28 +9,28 @@
 
 @implementation MediaPlayerDiagnosticExtension
 
-- (id)_archiveURLs:(id)a3 fromDirectoryURL:(id)a4 withFileName:(id)a5 displayName:(id)a6
+- (id)_archiveURLs:(id)ls fromDirectoryURL:(id)l withFileName:(id)name displayName:(id)displayName
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lsCopy = ls;
+  lCopy = l;
+  nameCopy = name;
   v11 = NSTemporaryDirectory();
   v41[0] = v11;
-  v41[1] = v10;
-  v34 = v10;
+  v41[1] = nameCopy;
+  v34 = nameCopy;
   v12 = [NSArray arrayWithObjects:v41 count:2];
   v13 = [NSURL fileURLWithPathComponents:v12];
 
   v14 = [DEUtils createUserOwnedDirectoryAtUrl:v13];
   v33 = v13;
   v15 = [[DEArchive alloc] initWithURL:v13];
-  v35 = v9;
-  v16 = [v9 path];
+  v35 = lCopy;
+  path = [lCopy path];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v17 = v8;
+  v17 = lsCopy;
   v18 = [v17 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v18)
   {
@@ -46,13 +46,13 @@
         }
 
         v22 = *(*(&v36 + 1) + 8 * i);
-        v23 = [v22 path];
-        v24 = [v23 hasPrefix:v16];
+        path2 = [v22 path];
+        v24 = [path2 hasPrefix:path];
 
         if (v24)
         {
-          v25 = [v22 path];
-          v26 = [v25 stringByReplacingCharactersInRange:0 withString:{objc_msgSend(v16, "length"), &stru_100004218}];
+          path3 = [v22 path];
+          v26 = [path3 stringByReplacingCharactersInRange:0 withString:{objc_msgSend(path, "length"), &stru_100004218}];
 
           [v15 addFile:v22 withPathName:v26];
         }
@@ -65,30 +65,30 @@
   }
 
   [v15 closeArchive];
-  v27 = [v15 tarGzUrl];
-  v28 = [DEAttachmentItem attachmentWithPathURL:v27];
+  tarGzUrl = [v15 tarGzUrl];
+  v28 = [DEAttachmentItem attachmentWithPathURL:tarGzUrl];
 
   [v28 setDeleteOnAttach:&__kCFBooleanTrue];
-  v29 = [v15 tarGzUrl];
-  v30 = [v29 path];
-  v31 = [v30 lastPathComponent];
-  [v28 setDisplayName:v31];
+  tarGzUrl2 = [v15 tarGzUrl];
+  path4 = [tarGzUrl2 path];
+  lastPathComponent = [path4 lastPathComponent];
+  [v28 setDisplayName:lastPathComponent];
 
   return v28;
 }
 
-- (id)_archiveItems:(id)a3 fromDirectoryURL:(id)a4 withFileName:(id)a5 displayName:(id)a6
+- (id)_archiveItems:(id)items fromDirectoryURL:(id)l withFileName:(id)name displayName:(id)displayName
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+  itemsCopy = items;
+  lCopy = l;
+  nameCopy = name;
+  displayNameCopy = displayName;
+  v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [itemsCopy count]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v15 = v10;
+  v15 = itemsCopy;
   v16 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v16)
   {
@@ -103,8 +103,8 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v23 + 1) + 8 * i) path];
-        [v14 addObject:v20];
+        path = [*(*(&v23 + 1) + 8 * i) path];
+        [v14 addObject:path];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -113,7 +113,7 @@
     while (v17);
   }
 
-  v21 = [(MediaPlayerDiagnosticExtension *)self _archiveURLs:v14 fromDirectoryURL:v11 withFileName:v12 displayName:v13];
+  v21 = [(MediaPlayerDiagnosticExtension *)self _archiveURLs:v14 fromDirectoryURL:lCopy withFileName:nameCopy displayName:displayNameCopy];
 
   return v21;
 }
@@ -205,8 +205,8 @@
   v5 = [NSArray arrayWithObjects:v58 count:2];
   v6 = [NSURL fileURLWithPathComponents:v5];
 
-  v7 = [v6 path];
-  v57[0] = v7;
+  path = [v6 path];
+  v57[0] = path;
   v57[1] = @"iTunes_Control";
   v57[2] = @"iTunes";
   v8 = [NSArray arrayWithObjects:v57 count:3];
@@ -255,8 +255,8 @@
           }
 
           v21 = *(*(&v50 + 1) + 8 * v19);
-          v22 = [v21 path];
-          v55[0] = v22;
+          path2 = [v21 path];
+          v55[0] = path2;
           v55[1] = @"iTunes_Control";
           v55[2] = @"iTunes";
           v23 = [NSArray arrayWithObjects:v55 count:3];
@@ -266,13 +266,13 @@
 
           if ([v10 count])
           {
-            v25 = [v21 lastPathComponent];
-            v26 = [NSString stringWithFormat:@"MediaLibrary-%@.sqlpkg", v25];
+            lastPathComponent = [v21 lastPathComponent];
+            v26 = [NSString stringWithFormat:@"MediaLibrary-%@.sqlpkg", lastPathComponent];
 
             v27 = [NSBundle bundleForClass:objc_opt_class()];
             v28 = [v27 localizedStringForKey:@"MEDIALIBRARY_DATABASE" value:&stru_100004218 table:@"MediaPlayerDiagnostics"];
-            v29 = [v21 lastPathComponent];
-            [v28 stringByAppendingFormat:@" (%@)", v29];
+            lastPathComponent2 = [v21 lastPathComponent];
+            [v28 stringByAppendingFormat:@" (%@)", lastPathComponent2];
             v31 = v30 = self;
 
             v32 = [(MediaPlayerDiagnosticExtension *)v30 _archiveItems:v10 fromDirectoryURL:v24 withFileName:v26 displayName:v31];
@@ -309,9 +309,9 @@
   {
     v37 = [NSBundle bundleForClass:objc_opt_class()];
     v38 = [v37 localizedStringForKey:@"NANOMUSIC_SYNC" value:&stru_100004218 table:@"MediaPlayerDiagnostics"];
-    v39 = self;
+    selfCopy = self;
     v40 = v38;
-    v41 = [(MediaPlayerDiagnosticExtension *)v39 _archiveURLs:v36 fromDirectoryURL:v35 withFileName:@"NanoMusicSync" displayName:v38];
+    v41 = [(MediaPlayerDiagnosticExtension *)selfCopy _archiveURLs:v36 fromDirectoryURL:v35 withFileName:@"NanoMusicSync" displayName:v38];
 
     [v3 addObject:v41];
   }
@@ -325,22 +325,22 @@
   if (!attachments)
   {
     v4 = +[NSMutableArray array];
-    v5 = [(MediaPlayerDiagnosticExtension *)self mediaLogsAttachments];
-    if (v5)
+    mediaLogsAttachments = [(MediaPlayerDiagnosticExtension *)self mediaLogsAttachments];
+    if (mediaLogsAttachments)
     {
-      [(NSArray *)v4 addObjectsFromArray:v5];
+      [(NSArray *)v4 addObjectsFromArray:mediaLogsAttachments];
     }
 
-    v6 = [(MediaPlayerDiagnosticExtension *)self mediaLibraryAttachments];
-    if (v6)
+    mediaLibraryAttachments = [(MediaPlayerDiagnosticExtension *)self mediaLibraryAttachments];
+    if (mediaLibraryAttachments)
     {
-      [(NSArray *)v4 addObjectsFromArray:v6];
+      [(NSArray *)v4 addObjectsFromArray:mediaLibraryAttachments];
     }
 
-    v7 = [(MediaPlayerDiagnosticExtension *)self preferencesAttachment];
-    if (v7)
+    preferencesAttachment = [(MediaPlayerDiagnosticExtension *)self preferencesAttachment];
+    if (preferencesAttachment)
     {
-      [(NSArray *)v4 addObject:v7];
+      [(NSArray *)v4 addObject:preferencesAttachment];
     }
 
     v8 = self->_attachments;

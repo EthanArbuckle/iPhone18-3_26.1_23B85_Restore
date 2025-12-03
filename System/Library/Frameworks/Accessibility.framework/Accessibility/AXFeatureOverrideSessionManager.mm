@@ -1,8 +1,8 @@
 @interface AXFeatureOverrideSessionManager
 + (AXFeatureOverrideSessionManager)sharedInstance;
 - (AXFeatureOverrideSessionManager)init;
-- (BOOL)endOverrideSession:(id)a3 error:(id *)a4;
-- (id)beginOverrideSessionEnablingOptions:(unint64_t)a3 disablingOptions:(unint64_t)a4 error:(id *)a5;
+- (BOOL)endOverrideSession:(id)session error:(id *)error;
+- (id)beginOverrideSessionEnablingOptions:(unint64_t)options disablingOptions:(unint64_t)disablingOptions error:(id *)error;
 @end
 
 @implementation AXFeatureOverrideSessionManager
@@ -59,20 +59,20 @@ uint64_t __49__AXFeatureOverrideSessionManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)beginOverrideSessionEnablingOptions:(unint64_t)a3 disablingOptions:(unint64_t)a4 error:(id *)a5
+- (id)beginOverrideSessionEnablingOptions:(unint64_t)options disablingOptions:(unint64_t)disablingOptions error:(id *)error
 {
   v40[3] = *MEMORY[0x1E69E9840];
   v9 = [AXFeatureOverrideSession alloc];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [(AXFeatureOverrideSession *)v9 initWithUUID:v10];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v11 = [(AXFeatureOverrideSession *)v9 initWithUUID:uUID];
 
   v12 = objc_alloc(MEMORY[0x1E695DF20]);
-  v13 = [(AXFeatureOverrideSession *)v11 uuid];
-  v14 = [v13 UUIDString];
-  v40[0] = v14;
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  uuid = [(AXFeatureOverrideSession *)v11 uuid];
+  uUIDString = [uuid UUIDString];
+  v40[0] = uUIDString;
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
   v40[1] = v15;
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:disablingOptions];
   v40[2] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:3];
   v18 = [v12 initWithObjects:v17 forKeys:&unk_1F29D9B58];
@@ -83,7 +83,7 @@ uint64_t __49__AXFeatureOverrideSessionManager_sharedInstance__block_invoke()
   v21 = v33;
   if (v21)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -101,11 +101,11 @@ uint64_t __49__AXFeatureOverrideSessionManager_sharedInstance__block_invoke()
   if ([v20 count])
   {
     v27 = [v20 objectForKeyedSubscript:@"result"];
-    v28 = [v27 integerValue];
+    integerValue = [v27 integerValue];
 
-    if (v28 == 1)
+    if (integerValue == 1)
     {
-      if (a5)
+      if (error)
       {
         v29 = MEMORY[0x1E696ABC0];
         v38 = *MEMORY[0x1E696A578];
@@ -115,13 +115,13 @@ uint64_t __49__AXFeatureOverrideSessionManager_sharedInstance__block_invoke()
         v25 = v29;
         v26 = 2;
 LABEL_4:
-        *a5 = [v25 errorWithDomain:@"AXFeatureOverrideSessionErrorDomain" code:v26 userInfo:v24];
+        *error = [v25 errorWithDomain:@"AXFeatureOverrideSessionErrorDomain" code:v26 userInfo:v24];
 
-        a5 = 0;
+        error = 0;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v30 = MEMORY[0x1E696ABC0];
       v36 = *MEMORY[0x1E696A578];
@@ -136,26 +136,26 @@ LABEL_4:
 
   else
   {
-    a5 = v11;
+    error = v11;
   }
 
 LABEL_12:
 
   v31 = *MEMORY[0x1E69E9840];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)endOverrideSession:(id)a3 error:(id *)a4
+- (BOOL)endOverrideSession:(id)session error:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DF20];
-  v7 = a3;
+  sessionCopy = session;
   v8 = [v6 alloc];
-  v9 = [v7 uuid];
+  uuid = [sessionCopy uuid];
 
-  v10 = [v9 UUIDString];
-  v32[0] = v10;
+  uUIDString = [uuid UUIDString];
+  v32[0] = uUIDString;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
   v12 = [v8 initWithObjects:v11 forKeys:&unk_1F29D9B70];
 
@@ -165,7 +165,7 @@ LABEL_12:
   v15 = v27;
   if (v15)
   {
-    if (!a4)
+    if (!error)
     {
 LABEL_9:
       v23 = 0;
@@ -180,7 +180,7 @@ LABEL_9:
     v19 = v16;
     v20 = 1;
 LABEL_8:
-    *a4 = [v19 errorWithDomain:@"AXFeatureOverrideSessionErrorDomain" code:v20 userInfo:v18];
+    *error = [v19 errorWithDomain:@"AXFeatureOverrideSessionErrorDomain" code:v20 userInfo:v18];
 
     goto LABEL_9;
   }
@@ -192,10 +192,10 @@ LABEL_8:
   }
 
   v21 = [v14 objectForKeyedSubscript:@"result"];
-  v22 = [v21 integerValue];
+  integerValue = [v21 integerValue];
 
   v23 = 0;
-  if (a4 && v22 == 2)
+  if (error && integerValue == 2)
   {
     v24 = MEMORY[0x1E696ABC0];
     v30 = *MEMORY[0x1E696A578];

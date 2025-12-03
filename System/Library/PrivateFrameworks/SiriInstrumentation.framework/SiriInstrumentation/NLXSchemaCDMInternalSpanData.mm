@@ -1,26 +1,26 @@
 @interface NLXSchemaCDMInternalSpanData
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMInternalSpanData)initWithDictionary:(id)a3;
-- (NLXSchemaCDMInternalSpanData)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMInternalSpanData)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMInternalSpanData)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMInternalSpanData
 
-- (NLXSchemaCDMInternalSpanData)initWithDictionary:(id)a3
+- (NLXSchemaCDMInternalSpanData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = NLXSchemaCDMInternalSpanData;
   v5 = [(NLXSchemaCDMInternalSpanData *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"siriVocabularySpanData"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"siriVocabularySpanData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(NLXSchemaCDMInternalSpanData *)v5 setSiriVocabularySpanData:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"plumSpanData"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"plumSpanData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(NLXSchemaCDMInternalSpanData *)v5 setPlumSpanData:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"mentionDetectorSpanData"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"mentionDetectorSpanData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(NLXSchemaCDMInternalSpanData *)v5 setMentionDetectorSpanData:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"mentionResolverSpanData"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"mentionResolverSpanData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(NLXSchemaCDMInternalSpanData *)v5 setMentionResolverSpanData:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"contextualSpanData"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"contextualSpanData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,30 +66,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMInternalSpanData)initWithJSON:(id)a3
+- (NLXSchemaCDMInternalSpanData)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMInternalSpanData *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMInternalSpanData *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMInternalSpanData *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -102,90 +102,90 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contextualSpanData)
   {
-    v4 = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    contextualSpanData = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
+    dictionaryRepresentation = [contextualSpanData dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"contextualSpanData"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"contextualSpanData"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"contextualSpanData"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"contextualSpanData"];
     }
   }
 
   if (self->_mentionDetectorSpanData)
   {
-    v7 = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    mentionDetectorSpanData = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
+    dictionaryRepresentation2 = [mentionDetectorSpanData dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"mentionDetectorSpanData"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"mentionDetectorSpanData"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"mentionDetectorSpanData"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"mentionDetectorSpanData"];
     }
   }
 
   if (self->_mentionResolverSpanData)
   {
-    v10 = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    mentionResolverSpanData = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
+    dictionaryRepresentation3 = [mentionResolverSpanData dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"mentionResolverSpanData"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"mentionResolverSpanData"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"mentionResolverSpanData"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"mentionResolverSpanData"];
     }
   }
 
   if (self->_plumSpanData)
   {
-    v13 = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    plumSpanData = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
+    dictionaryRepresentation4 = [plumSpanData dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"plumSpanData"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"plumSpanData"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"plumSpanData"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"plumSpanData"];
     }
   }
 
   if (self->_siriVocabularySpanData)
   {
-    v16 = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    siriVocabularySpanData = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
+    dictionaryRepresentation5 = [siriVocabularySpanData dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"siriVocabularySpanData"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"siriVocabularySpanData"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"siriVocabularySpanData"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"siriVocabularySpanData"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -197,28 +197,28 @@
   return v6 ^ [(NLXSchemaContextualSpanData *)self->_contextualSpanData hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
-  v6 = [v4 siriVocabularySpanData];
-  if ((v5 != 0) == (v6 == 0))
+  siriVocabularySpanData = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
+  siriVocabularySpanData2 = [equalCopy siriVocabularySpanData];
+  if ((siriVocabularySpanData != 0) == (siriVocabularySpanData2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
-  if (v7)
+  siriVocabularySpanData3 = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
+  if (siriVocabularySpanData3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
-    v10 = [v4 siriVocabularySpanData];
-    v11 = [v9 isEqual:v10];
+    v8 = siriVocabularySpanData3;
+    siriVocabularySpanData4 = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
+    siriVocabularySpanData5 = [equalCopy siriVocabularySpanData];
+    v11 = [siriVocabularySpanData4 isEqual:siriVocabularySpanData5];
 
     if (!v11)
     {
@@ -230,20 +230,20 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
-  v6 = [v4 plumSpanData];
-  if ((v5 != 0) == (v6 == 0))
+  siriVocabularySpanData = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
+  siriVocabularySpanData2 = [equalCopy plumSpanData];
+  if ((siriVocabularySpanData != 0) == (siriVocabularySpanData2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
-  if (v12)
+  plumSpanData = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
+  if (plumSpanData)
   {
-    v13 = v12;
-    v14 = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
-    v15 = [v4 plumSpanData];
-    v16 = [v14 isEqual:v15];
+    v13 = plumSpanData;
+    plumSpanData2 = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
+    plumSpanData3 = [equalCopy plumSpanData];
+    v16 = [plumSpanData2 isEqual:plumSpanData3];
 
     if (!v16)
     {
@@ -255,20 +255,20 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
-  v6 = [v4 mentionDetectorSpanData];
-  if ((v5 != 0) == (v6 == 0))
+  siriVocabularySpanData = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
+  siriVocabularySpanData2 = [equalCopy mentionDetectorSpanData];
+  if ((siriVocabularySpanData != 0) == (siriVocabularySpanData2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
-  if (v17)
+  mentionDetectorSpanData = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
+  if (mentionDetectorSpanData)
   {
-    v18 = v17;
-    v19 = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
-    v20 = [v4 mentionDetectorSpanData];
-    v21 = [v19 isEqual:v20];
+    v18 = mentionDetectorSpanData;
+    mentionDetectorSpanData2 = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
+    mentionDetectorSpanData3 = [equalCopy mentionDetectorSpanData];
+    v21 = [mentionDetectorSpanData2 isEqual:mentionDetectorSpanData3];
 
     if (!v21)
     {
@@ -280,20 +280,20 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
-  v6 = [v4 mentionResolverSpanData];
-  if ((v5 != 0) == (v6 == 0))
+  siriVocabularySpanData = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
+  siriVocabularySpanData2 = [equalCopy mentionResolverSpanData];
+  if ((siriVocabularySpanData != 0) == (siriVocabularySpanData2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
-  if (v22)
+  mentionResolverSpanData = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
+  if (mentionResolverSpanData)
   {
-    v23 = v22;
-    v24 = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
-    v25 = [v4 mentionResolverSpanData];
-    v26 = [v24 isEqual:v25];
+    v23 = mentionResolverSpanData;
+    mentionResolverSpanData2 = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
+    mentionResolverSpanData3 = [equalCopy mentionResolverSpanData];
+    v26 = [mentionResolverSpanData2 isEqual:mentionResolverSpanData3];
 
     if (!v26)
     {
@@ -305,12 +305,12 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
-  v6 = [v4 contextualSpanData];
-  if ((v5 != 0) != (v6 == 0))
+  siriVocabularySpanData = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
+  siriVocabularySpanData2 = [equalCopy contextualSpanData];
+  if ((siriVocabularySpanData != 0) != (siriVocabularySpanData2 == 0))
   {
-    v27 = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
-    if (!v27)
+    contextualSpanData = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
+    if (!contextualSpanData)
     {
 
 LABEL_30:
@@ -318,10 +318,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
-    v30 = [v4 contextualSpanData];
-    v31 = [v29 isEqual:v30];
+    v28 = contextualSpanData;
+    contextualSpanData2 = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
+    contextualSpanData3 = [equalCopy contextualSpanData];
+    v31 = [contextualSpanData2 isEqual:contextualSpanData3];
 
     if (v31)
     {
@@ -341,100 +341,100 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
+  toCopy = to;
+  siriVocabularySpanData = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
 
-  if (v4)
+  if (siriVocabularySpanData)
   {
-    v5 = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
+    siriVocabularySpanData2 = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
+  plumSpanData = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
 
-  if (v6)
+  if (plumSpanData)
   {
-    v7 = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
+    plumSpanData2 = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
+  mentionDetectorSpanData = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
 
-  if (v8)
+  if (mentionDetectorSpanData)
   {
-    v9 = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
+    mentionDetectorSpanData2 = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
+  mentionResolverSpanData = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
 
-  if (v10)
+  if (mentionResolverSpanData)
   {
-    v11 = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
+    mentionResolverSpanData2 = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
+  contextualSpanData = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (contextualSpanData)
   {
-    v14 = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
+    contextualSpanData2 = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = NLXSchemaCDMInternalSpanData;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  siriVocabularySpanData = [(NLXSchemaCDMInternalSpanData *)self siriVocabularySpanData];
+  v7 = [siriVocabularySpanData applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaCDMInternalSpanData *)self deleteSiriVocabularySpanData];
   }
 
-  v9 = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  plumSpanData = [(NLXSchemaCDMInternalSpanData *)self plumSpanData];
+  v10 = [plumSpanData applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NLXSchemaCDMInternalSpanData *)self deletePlumSpanData];
   }
 
-  v12 = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  mentionDetectorSpanData = [(NLXSchemaCDMInternalSpanData *)self mentionDetectorSpanData];
+  v13 = [mentionDetectorSpanData applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(NLXSchemaCDMInternalSpanData *)self deleteMentionDetectorSpanData];
   }
 
-  v15 = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  mentionResolverSpanData = [(NLXSchemaCDMInternalSpanData *)self mentionResolverSpanData];
+  v16 = [mentionResolverSpanData applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(NLXSchemaCDMInternalSpanData *)self deleteMentionResolverSpanData];
   }
 
-  v18 = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  contextualSpanData = [(NLXSchemaCDMInternalSpanData *)self contextualSpanData];
+  v19 = [contextualSpanData applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(NLXSchemaCDMInternalSpanData *)self deleteContextualSpanData];
   }

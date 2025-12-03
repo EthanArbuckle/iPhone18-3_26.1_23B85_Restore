@@ -9,27 +9,27 @@
 - (id)wf_image
 {
   v37 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationSpecification];
-  v3 = [v2 platform];
-  v4 = [v3 isEqualToString:@"UIKit"];
+  configurationSpecification = [self configurationSpecification];
+  platform = [configurationSpecification platform];
+  v4 = [platform isEqualToString:@"UIKit"];
 
   if (v4)
   {
     v5 = MEMORY[0x1E696ACD0];
     UIColorClass = getUIColorClass();
-    v7 = [a1 colorization];
-    v8 = [v7 foreground];
-    v9 = [v8 platformSpecificData];
+    colorization = [self colorization];
+    foreground = [colorization foreground];
+    platformSpecificData = [foreground platformSpecificData];
     v32 = 0;
-    v10 = [v5 unarchivedObjectOfClass:UIColorClass fromData:v9 error:&v32];
+    v10 = [v5 unarchivedObjectOfClass:UIColorClass fromData:platformSpecificData error:&v32];
     v11 = v32;
 
     v12 = MEMORY[0x1E696ACD0];
     UIImageSymbolConfigurationClass = getUIImageSymbolConfigurationClass();
-    v14 = [a1 configurationSpecification];
-    v15 = [v14 platformSpecificData];
+    configurationSpecification2 = [self configurationSpecification];
+    platformSpecificData2 = [configurationSpecification2 platformSpecificData];
     v31 = v11;
-    v16 = [v12 unarchivedObjectOfClass:UIImageSymbolConfigurationClass fromData:v15 error:&v31];
+    v16 = [v12 unarchivedObjectOfClass:UIImageSymbolConfigurationClass fromData:platformSpecificData2 error:&v31];
     v17 = v31;
 
     if (v16)
@@ -64,20 +64,20 @@
   }
 
   v20 = MEMORY[0x1E69E0B58];
-  v21 = [a1 systemName];
-  v22 = [a1 inImage];
-  v23 = [v22 _renderingMode];
-  if (v23 == 2)
+  systemName = [self systemName];
+  inImage = [self inImage];
+  _renderingMode = [inImage _renderingMode];
+  if (_renderingMode == 2)
   {
     v24 = 2;
   }
 
   else
   {
-    v24 = v23 == 1;
+    v24 = _renderingMode == 1;
   }
 
-  v25 = [v20 systemImageNamed:v21 configuration:v18 renderingMode:v24];
+  v25 = [v20 systemImageNamed:systemName configuration:v18 renderingMode:v24];
 
   if (v10)
   {
@@ -87,7 +87,7 @@
     v25 = v27;
   }
 
-  v28 = [v25 imageWithDisplayStyle:{objc_msgSend(a1, "wfImageDisplayStyleFromLNImageDisplayStyle:", objc_msgSend(a1, "displayStyle"))}];
+  v28 = [v25 imageWithDisplayStyle:{objc_msgSend(self, "wfImageDisplayStyleFromLNImageDisplayStyle:", objc_msgSend(self, "displayStyle"))}];
 
   v29 = *MEMORY[0x1E69E9840];
 
@@ -97,8 +97,8 @@
 - (id)serializedRepresentation
 {
   v2 = objc_opt_new();
-  v3 = [a1 systemName];
-  [v2 if_setObjectIfNonNil:v3 forKey:@"systemName"];
+  systemName = [self systemName];
+  [v2 if_setObjectIfNonNil:systemName forKey:@"systemName"];
 
   return v2;
 }
@@ -135,22 +135,22 @@
 
     if ([v10 length])
     {
-      a1 = [a1 initWithSymbolSystemName:v10];
-      v9 = a1;
+      self = [self initWithSymbolSystemName:v10];
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

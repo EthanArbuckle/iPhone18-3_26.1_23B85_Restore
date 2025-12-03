@@ -1,21 +1,21 @@
 @interface BLMLImporter
 + (id)deviceMLImporter;
 - (BLMLImporter)init;
-- (BOOL)_addLibraryItems:(id)a3 toMusicLibrary:(id)a4 itemPids:(int64_t *)a5 error:(id *)a6;
-- (BOOL)_removeDownloadWithIdentifier:(int64_t)a3 canceled:(BOOL)a4 inLibrary:(id)a5;
-- (BOOL)addLibraryItems:(id)a3 error:(id *)a4;
-- (int64_t)addLibraryItem:(id)a3 error:(id *)a4;
+- (BOOL)_addLibraryItems:(id)items toMusicLibrary:(id)library itemPids:(int64_t *)pids error:(id *)error;
+- (BOOL)_removeDownloadWithIdentifier:(int64_t)identifier canceled:(BOOL)canceled inLibrary:(id)library;
+- (BOOL)addLibraryItems:(id)items error:(id *)error;
+- (int64_t)addLibraryItem:(id)item error:(id *)error;
 - (void)_commitScheduledLibraryItems;
-- (void)_dispatchAsync:(id)a3;
-- (void)_setDownloadPropertiesForTrack:(id)a3 usingLibraryItem:(id)a4;
+- (void)_dispatchAsync:(id)async;
+- (void)_setDownloadPropertiesForTrack:(id)track usingLibraryItem:(id)item;
 - (void)commitScheduledLibraryItems;
 - (void)dealloc;
 - (void)deleteAllOTATracks;
-- (void)removeDownloadWithIdentifier:(int64_t)a3 canceled:(BOOL)a4;
-- (void)removeDownloadsWithIdentifiers:(id)a3 canceled:(BOOL)a4;
-- (void)scheduleLibraryItem:(id)a3;
-- (void)scheduleLibraryItems:(id)a3;
-- (void)setAppleIdentifier:(id)a3 forAccountIdentifier:(unint64_t)a4;
+- (void)removeDownloadWithIdentifier:(int64_t)identifier canceled:(BOOL)canceled;
+- (void)removeDownloadsWithIdentifiers:(id)identifiers canceled:(BOOL)canceled;
+- (void)scheduleLibraryItem:(id)item;
+- (void)scheduleLibraryItems:(id)items;
+- (void)setAppleIdentifier:(id)identifier forAccountIdentifier:(unint64_t)accountIdentifier;
 @end
 
 @implementation BLMLImporter
@@ -75,7 +75,7 @@
   block[1] = 3221225472;
   block[2] = sub_10006A6B0;
   block[3] = &unk_10011D1C8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10013EBE0 != -1)
   {
     dispatch_once(&qword_10013EBE0, block);
@@ -86,25 +86,25 @@
   return v2;
 }
 
-- (int64_t)addLibraryItem:(id)a3 error:(id *)a4
+- (int64_t)addLibraryItem:(id)item error:(id *)error
 {
   v10 = 0;
-  v11 = a3;
-  v6 = a3;
-  v7 = [NSArray arrayWithObjects:&v11 count:1];
+  itemCopy = item;
+  itemCopy2 = item;
+  v7 = [NSArray arrayWithObjects:&itemCopy count:1];
   v8 = +[ML3MusicLibrary autoupdatingSharedLibrary];
 
-  [(BLMLImporter *)self _addLibraryItems:v7 toMusicLibrary:v8 itemPids:&v10 error:a4];
+  [(BLMLImporter *)self _addLibraryItems:v7 toMusicLibrary:v8 itemPids:&v10 error:error];
   return v10;
 }
 
-- (BOOL)addLibraryItems:(id)a3 error:(id *)a4
+- (BOOL)addLibraryItems:(id)items error:(id *)error
 {
-  v6 = a3;
+  itemsCopy = items;
   v7 = +[ML3MusicLibrary autoupdatingSharedLibrary];
-  LOBYTE(a4) = [(BLMLImporter *)self _addLibraryItems:v6 toMusicLibrary:v7 itemPids:0 error:a4];
+  LOBYTE(error) = [(BLMLImporter *)self _addLibraryItems:itemsCopy toMusicLibrary:v7 itemPids:0 error:error];
 
-  return a4;
+  return error;
 }
 
 - (void)commitScheduledLibraryItems
@@ -131,43 +131,43 @@
   [(BLMLImporter *)self _dispatchAsync:&stru_10011D318];
 }
 
-- (void)removeDownloadsWithIdentifiers:(id)a3 canceled:(BOOL)a4
+- (void)removeDownloadsWithIdentifiers:(id)identifiers canceled:(BOOL)canceled
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006AB24;
   v7[3] = &unk_10011D390;
-  v8 = a3;
-  v9 = self;
-  v10 = a4;
-  v6 = v8;
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  canceledCopy = canceled;
+  v6 = identifiersCopy;
   [(BLMLImporter *)self _dispatchAsync:v7];
 }
 
-- (void)removeDownloadWithIdentifier:(int64_t)a3 canceled:(BOOL)a4
+- (void)removeDownloadWithIdentifier:(int64_t)identifier canceled:(BOOL)canceled
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10006AD90;
   v4[3] = &unk_10011D3E0;
   v4[4] = self;
-  v4[5] = a3;
-  v5 = a4;
+  v4[5] = identifier;
+  canceledCopy = canceled;
   [(BLMLImporter *)self _dispatchAsync:v4];
 }
 
-- (void)scheduleLibraryItem:(id)a3
+- (void)scheduleLibraryItem:(id)item
 {
-  v4 = a3;
-  v5 = [[NSArray alloc] initWithObjects:{v4, 0}];
+  itemCopy = item;
+  v5 = [[NSArray alloc] initWithObjects:{itemCopy, 0}];
 
   [(BLMLImporter *)self scheduleLibraryItems:v5];
 }
 
-- (void)scheduleLibraryItems:(id)a3
+- (void)scheduleLibraryItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v5 = BLServiceLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -177,7 +177,7 @@
       *buf = 138412546;
       v11 = v6;
       v12 = 2048;
-      v13 = [v4 count];
+      v13 = [itemsCopy count];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@: Scheduling %lu iPod library items", buf, 0x16u);
     }
 
@@ -186,33 +186,33 @@
     v8[2] = sub_10006B024;
     v8[3] = &unk_10011D1A8;
     v8[4] = self;
-    v9 = v4;
+    v9 = itemsCopy;
     [(BLMLImporter *)self _dispatchAsync:v8];
   }
 }
 
-- (void)setAppleIdentifier:(id)a3 forAccountIdentifier:(unint64_t)a4
+- (void)setAppleIdentifier:(id)identifier forAccountIdentifier:(unint64_t)accountIdentifier
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006B274;
   v7[3] = &unk_10011D408;
-  v8 = a3;
-  v9 = a4;
-  v6 = v8;
+  identifierCopy = identifier;
+  accountIdentifierCopy = accountIdentifier;
+  v6 = identifierCopy;
   [(BLMLImporter *)self _dispatchAsync:v7];
 }
 
-- (BOOL)_addLibraryItems:(id)a3 toMusicLibrary:(id)a4 itemPids:(int64_t *)a5 error:(id *)a6
+- (BOOL)_addLibraryItems:(id)items toMusicLibrary:(id)library itemPids:(int64_t *)pids error:(id *)error
 {
-  v7 = a3;
-  v93 = a4;
-  v103 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+  itemsCopy = items;
+  libraryCopy = library;
+  v103 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [itemsCopy count]);
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
-  obj = v7;
+  obj = itemsCopy;
   v8 = [obj countByEnumeratingWithState:&v108 objects:v116 count:16];
   if (v8)
   {
@@ -228,10 +228,10 @@
         }
 
         v12 = *(*(&v108 + 1) + 8 * i);
-        v13 = [v12 itemMetadata];
-        v14 = [BLMLImporterItem mediaTypeForStoreDownload:v13];
+        itemMetadata = [v12 itemMetadata];
+        v14 = [BLMLImporterItem mediaTypeForStoreDownload:itemMetadata];
 
-        v15 = [v12 libraryPersistentIdentifier];
+        libraryPersistentIdentifier = [v12 libraryPersistentIdentifier];
         v16 = BLServiceLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
@@ -239,12 +239,12 @@
           *buf = 138412546;
           v113 = v17;
           v114 = 2048;
-          *v115 = v15;
+          *v115 = libraryPersistentIdentifier;
           v18 = v17;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%@: importing item with existing library pid %lld", buf, 0x16u);
         }
 
-        if (v15)
+        if (libraryPersistentIdentifier)
         {
           v19 = v14 == 8;
         }
@@ -263,7 +263,7 @@
             *buf = 138412546;
             v113 = v21;
             v114 = 2048;
-            *v115 = v15;
+            *v115 = libraryPersistentIdentifier;
             v22 = v21;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%@: skipping import of item with existing library pid %lld", buf, 0x16u);
           }
@@ -288,7 +288,7 @@
   {
     v25 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [obj count]);
     v95 = objc_alloc_init(BLML3TrackImporter);
-    v26 = [(BLML3TrackImporter *)v95 importLibraryItems:v103 toMusicLibrary:v93 importedItemPids:v25];
+    v26 = [(BLML3TrackImporter *)v95 importLibraryItems:v103 toMusicLibrary:libraryCopy importedItemPids:v25];
     v27 = BLServiceLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
@@ -343,12 +343,12 @@ LABEL_87:
     do
     {
       v38 = [v23 objectAtIndex:v34];
-      v39 = [v38 itemMediaPath];
-      v40 = [v38 libraryPersistentIdentifier];
-      v41 = v40;
-      if (a5)
+      itemMediaPath = [v38 itemMediaPath];
+      libraryPersistentIdentifier2 = [v38 libraryPersistentIdentifier];
+      v41 = libraryPersistentIdentifier2;
+      if (pids)
       {
-        a5[v34] = v40;
+        pids[v34] = libraryPersistentIdentifier2;
       }
 
       v99 = v38;
@@ -367,20 +367,20 @@ LABEL_87:
       }
 
       v97 = v41;
-      v45 = [[ML3Track alloc] initWithPersistentID:v41 inLibrary:v93];
+      v45 = [[ML3Track alloc] initWithPersistentID:v41 inLibrary:libraryCopy];
       v101 = [v45 valueForProperty:v35];
       v46 = [v45 valueForProperty:v36];
-      v96 = [v46 longLongValue];
+      longLongValue = [v46 longLongValue];
 
-      v47 = [v39 stringByDeletingLastPathComponent];
-      v48 = [v47 lastPathComponent];
+      stringByDeletingLastPathComponent = [itemMediaPath stringByDeletingLastPathComponent];
+      lastPathComponent = [stringByDeletingLastPathComponent lastPathComponent];
 
-      v98 = v48;
+      v98 = lastPathComponent;
       v49 = ML3BaseLocationIDFromMediaRelativePathInLibrary();
       v100 = [v45 valueForProperty:v37];
-      v50 = [v100 longLongValue];
+      longLongValue2 = [v100 longLongValue];
       v51 = BLServiceLog();
-      v105 = v39;
+      v105 = itemMediaPath;
       if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
       {
         v52 = objc_opt_class();
@@ -399,22 +399,22 @@ LABEL_87:
         v36 = v53;
       }
 
-      if (v39)
+      if (itemMediaPath)
       {
         v56 = BLServiceLog();
         v57 = os_log_type_enabled(v56, OS_LOG_TYPE_INFO);
-        if (v96 <= v49 || v50)
+        if (longLongValue <= v49 || longLongValue2)
         {
           v24 = v103;
           if (v57)
           {
             v65 = objc_opt_class();
             v66 = v65;
-            v67 = [v45 persistentID];
+            persistentID = [v45 persistentID];
             *buf = 138412546;
             v113 = v65;
             v114 = 2048;
-            *v115 = v67;
+            *v115 = persistentID;
             _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_INFO, "%@: Defering populating artwork for %lld", buf, 0x16u);
           }
 
@@ -445,7 +445,7 @@ LABEL_87:
           [(BLMLImporter *)self _setDownloadPropertiesForTrack:v45 usingLibraryItem:v99];
         }
 
-        v61 = [NSSet setWithObject:v105];
+        itemArtworkData = [NSSet setWithObject:v105];
         ML3DeleteAssetsAtPaths();
       }
 
@@ -479,10 +479,10 @@ LABEL_52:
           goto LABEL_53;
         }
 
-        v61 = [v99 itemArtworkData];
-        if ([v61 length])
+        itemArtworkData = [v99 itemArtworkData];
+        if ([itemArtworkData length])
         {
-          [v45 populateArtworkCacheWithArtworkData:v61];
+          [v45 populateArtworkCacheWithArtworkData:itemArtworkData];
         }
       }
 
@@ -515,23 +515,23 @@ LABEL_53:
       {
         v73 = objc_opt_class();
         v74 = v73;
-        v75 = [v71 persistentID];
+        persistentID2 = [v71 persistentID];
         *buf = 138412546;
         v113 = v73;
         v114 = 2048;
-        *v115 = v75;
+        *v115 = persistentID2;
         _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_INFO, "%@: Setting location data for track: %lld", buf, 0x16u);
       }
 
-      v76 = [v70 itemArtworkData];
-      if ([v76 length])
+      itemArtworkData2 = [v70 itemArtworkData];
+      if ([itemArtworkData2 length])
       {
-        [v71 populateArtworkCacheWithArtworkData:v76];
+        [v71 populateArtworkCacheWithArtworkData:itemArtworkData2];
       }
 
       objc_opt_class();
-      v77 = [v70 itemMetadata];
-      v78 = [v77 sinfs];
+      itemMetadata2 = [v70 itemMetadata];
+      sinfs = [itemMetadata2 sinfs];
       v79 = BUDynamicCast();
 
       if ([v79 count])
@@ -544,11 +544,11 @@ LABEL_53:
         v80 = 0;
       }
 
-      v81 = [v70 protectionType];
-      v82 = v81;
-      if (v81 != 2 && v81 != 1)
+      protectionType = [v70 protectionType];
+      v82 = protectionType;
+      if (protectionType != 2 && protectionType != 1)
       {
-        if (v81 || !v80)
+        if (protectionType || !v80)
         {
           v82 = 0;
         }
@@ -559,21 +559,21 @@ LABEL_53:
         }
       }
 
-      v83 = [v70 itemMediaPath];
-      [v71 populateLocationPropertiesWithPath:v83 protectionType:v82];
+      itemMediaPath2 = [v70 itemMediaPath];
+      [v71 populateLocationPropertiesWithPath:itemMediaPath2 protectionType:v82];
 
       if (!v80)
       {
         goto LABEL_85;
       }
 
-      v84 = [(BLDownloadDRM *)v80 sinfsArray];
-      if (!v84)
+      sinfsArray = [(BLDownloadDRM *)v80 sinfsArray];
+      if (!sinfsArray)
       {
         goto LABEL_85;
       }
 
-      v85 = v84;
+      v85 = sinfsArray;
       objc_opt_class();
       v107 = 0;
       v86 = [v85 copyValueForField:4 error:&v107];
@@ -623,9 +623,9 @@ LABEL_85:
   LOBYTE(v26) = 1;
 LABEL_89:
 
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   return v26;
@@ -661,9 +661,9 @@ LABEL_89:
   }
 }
 
-- (void)_dispatchAsync:(id)a3
+- (void)_dispatchAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v5 = os_transaction_create();
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
@@ -671,20 +671,20 @@ LABEL_89:
   v9[2] = sub_10006C0EC;
   v9[3] = &unk_10011D430;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = asyncCopy;
+  v7 = asyncCopy;
   v8 = v5;
   dispatch_async(dispatchQueue, v9);
 }
 
-- (BOOL)_removeDownloadWithIdentifier:(int64_t)a3 canceled:(BOOL)a4 inLibrary:(id)a5
+- (BOOL)_removeDownloadWithIdentifier:(int64_t)identifier canceled:(BOOL)canceled inLibrary:(id)library
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [[NSString alloc] initWithFormat:@"%lld", a3];
+  canceledCopy = canceled;
+  libraryCopy = library;
+  identifier = [[NSString alloc] initWithFormat:@"%lld", identifier];
   v9 = ML3TrackPropertyDownloadIdentifier;
-  v10 = [ML3ComparisonPredicate predicateWithProperty:ML3TrackPropertyDownloadIdentifier equalToValue:v8];
-  v11 = [ML3Track anyInLibrary:v7 predicate:v10];
+  v10 = [ML3ComparisonPredicate predicateWithProperty:ML3TrackPropertyDownloadIdentifier equalToValue:identifier];
+  v11 = [ML3Track anyInLibrary:libraryCopy predicate:v10];
   if (v11)
   {
     v35[0] = ML3TrackPropertyLocationFileName;
@@ -706,11 +706,11 @@ LABEL_89:
     v13 = BUDynamicCast();
     if ([v13 length] || *(&v32 + 1) && objc_msgSend(*(&v32 + 1), "longLongValue") || v33 && objc_msgSend(v33, "longLongValue") || *(&v33 + 1) && (objc_msgSend(*(&v33 + 1), "BOOLValue") & 1) != 0)
     {
-      v29 = v8;
+      v29 = identifier;
       v14 = v12;
       v15 = v13;
-      v16 = v7;
-      v17 = v5;
+      v16 = libraryCopy;
+      v17 = canceledCopy;
       v18 = BLServiceLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -737,7 +737,7 @@ LABEL_89:
       }
 
       v22 = 8;
-      v7 = v16;
+      libraryCopy = v16;
       do
       {
 
@@ -745,10 +745,10 @@ LABEL_89:
       }
 
       while (v22 != -8);
-      v23 = 1;
+      deleteFromLibrary = 1;
       v13 = v15;
       v12 = v14;
-      v8 = v29;
+      identifier = v29;
     }
 
     else
@@ -765,7 +765,7 @@ LABEL_89:
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "%@: Deleting download from iPod library: %lld", buf, 0x16u);
       }
 
-      v23 = [v11 deleteFromLibrary];
+      deleteFromLibrary = [v11 deleteFromLibrary];
     }
 
     for (j = 4; j != -1; --j)
@@ -775,21 +775,21 @@ LABEL_89:
 
   else
   {
-    v23 = 1;
+    deleteFromLibrary = 1;
   }
 
-  return v23;
+  return deleteFromLibrary;
 }
 
-- (void)_setDownloadPropertiesForTrack:(id)a3 usingLibraryItem:(id)a4
+- (void)_setDownloadPropertiesForTrack:(id)track usingLibraryItem:(id)item
 {
-  v5 = a3;
-  v6 = [a4 itemDownloadIdentifier];
-  v11[0] = v6;
+  trackCopy = track;
+  itemDownloadIdentifier = [item itemDownloadIdentifier];
+  v11[0] = itemDownloadIdentifier;
   v11[1] = &__kCFBooleanFalse;
   v10[0] = ML3TrackPropertyDownloadIdentifier;
   v10[1] = ML3TrackPropertyNeedsRestore;
-  if (v6)
+  if (itemDownloadIdentifier)
   {
     v7 = 1;
   }
@@ -799,7 +799,7 @@ LABEL_89:
     v7 = 2;
   }
 
-  [v5 setValues:v11 forProperties:v10 count:v7];
+  [trackCopy setValues:v11 forProperties:v10 count:v7];
   for (i = 1; i != -1; --i)
   {
   }

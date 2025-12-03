@@ -1,10 +1,10 @@
 @interface RMModelAccountMailDeclaration_SMIMEEncryption
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithEnabled:(id)a3;
-+ (id)buildWithEnabled:(id)a3 identityAssetReference:(id)a4 userOverrideable:(id)a5 identityUserOverrideable:(id)a6 perMessageSwitchEnabled:(id)a7;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithEnabled:(id)enabled;
++ (id)buildWithEnabled:(id)enabled identityAssetReference:(id)reference userOverrideable:(id)overrideable identityUserOverrideable:(id)userOverrideable perMessageSwitchEnabled:(id)switchEnabled;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAccountMailDeclaration_SMIMEEncryption
@@ -26,21 +26,21 @@
   return v4;
 }
 
-+ (id)buildWithEnabled:(id)a3 identityAssetReference:(id)a4 userOverrideable:(id)a5 identityUserOverrideable:(id)a6 perMessageSwitchEnabled:(id)a7
++ (id)buildWithEnabled:(id)enabled identityAssetReference:(id)reference userOverrideable:(id)overrideable identityUserOverrideable:(id)userOverrideable perMessageSwitchEnabled:(id)switchEnabled
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  switchEnabledCopy = switchEnabled;
+  userOverrideableCopy = userOverrideable;
+  overrideableCopy = overrideable;
+  referenceCopy = reference;
+  enabledCopy = enabled;
   v16 = objc_opt_new();
-  [v16 setPayloadEnabled:v15];
+  [v16 setPayloadEnabled:enabledCopy];
 
-  [v16 setPayloadIdentityAssetReference:v14];
+  [v16 setPayloadIdentityAssetReference:referenceCopy];
   v17 = MEMORY[0x277CBEC28];
-  if (v13)
+  if (overrideableCopy)
   {
-    v18 = v13;
+    v18 = overrideableCopy;
   }
 
   else
@@ -50,9 +50,9 @@
 
   [v16 setPayloadUserOverrideable:v18];
 
-  if (v12)
+  if (userOverrideableCopy)
   {
-    v19 = v12;
+    v19 = userOverrideableCopy;
   }
 
   else
@@ -62,9 +62,9 @@
 
   [v16 setPayloadIdentityUserOverrideable:v19];
 
-  if (v11)
+  if (switchEnabledCopy)
   {
-    v20 = v11;
+    v20 = switchEnabledCopy;
   }
 
   else
@@ -77,21 +77,21 @@
   return v16;
 }
 
-+ (id)buildRequiredOnlyWithEnabled:(id)a3
++ (id)buildRequiredOnlyWithEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = objc_opt_new();
-  [v4 setPayloadEnabled:v3];
+  [v4 setPayloadEnabled:enabledCopy];
 
   return v4;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAccountMailDeclaration_SMIMEEncryption allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -99,39 +99,39 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"Enabled" forKeyPath:@"payloadEnabled" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"IdentityAssetReference" forKeyPath:@"payloadIdentityAssetReference" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"UserOverrideable" forKeyPath:@"payloadUserOverrideable" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"IdentityUserOverrideable" forKeyPath:@"payloadIdentityUserOverrideable" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"PerMessageSwitchEnabled" forKeyPath:@"payloadPerMessageSwitchEnabled" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5];
+  v13 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"Enabled" forKeyPath:@"payloadEnabled" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"IdentityAssetReference" forKeyPath:@"payloadIdentityAssetReference" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"UserOverrideable" forKeyPath:@"payloadUserOverrideable" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"IdentityUserOverrideable" forKeyPath:@"payloadIdentityUserOverrideable" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"PerMessageSwitchEnabled" forKeyPath:@"payloadPerMessageSwitchEnabled" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAccountMailDeclaration_SMIMEEncryption *)self payloadEnabled];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Enabled" value:v5 isRequired:1 defaultValue:0];
+  payloadEnabled = [(RMModelAccountMailDeclaration_SMIMEEncryption *)self payloadEnabled];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Enabled" value:payloadEnabled isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelAccountMailDeclaration_SMIMEEncryption *)self payloadIdentityAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"IdentityAssetReference" value:v6 isRequired:0 defaultValue:0];
+  payloadIdentityAssetReference = [(RMModelAccountMailDeclaration_SMIMEEncryption *)self payloadIdentityAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"IdentityAssetReference" value:payloadIdentityAssetReference isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelAccountMailDeclaration_SMIMEEncryption *)self payloadUserOverrideable];
+  payloadUserOverrideable = [(RMModelAccountMailDeclaration_SMIMEEncryption *)self payloadUserOverrideable];
   v8 = MEMORY[0x277CBEC28];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"UserOverrideable" value:v7 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"UserOverrideable" value:payloadUserOverrideable isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v9 = [(RMModelAccountMailDeclaration_SMIMEEncryption *)self payloadIdentityUserOverrideable];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"IdentityUserOverrideable" value:v9 isRequired:0 defaultValue:v8];
+  payloadIdentityUserOverrideable = [(RMModelAccountMailDeclaration_SMIMEEncryption *)self payloadIdentityUserOverrideable];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"IdentityUserOverrideable" value:payloadIdentityUserOverrideable isRequired:0 defaultValue:v8];
 
-  v10 = [(RMModelAccountMailDeclaration_SMIMEEncryption *)self payloadPerMessageSwitchEnabled];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"PerMessageSwitchEnabled" value:v10 isRequired:0 defaultValue:v8];
+  payloadPerMessageSwitchEnabled = [(RMModelAccountMailDeclaration_SMIMEEncryption *)self payloadPerMessageSwitchEnabled];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"PerMessageSwitchEnabled" value:payloadPerMessageSwitchEnabled isRequired:0 defaultValue:v8];
 
   v11 = [v4 copy];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16.receiver = self;
   v16.super_class = RMModelAccountMailDeclaration_SMIMEEncryption;
-  v4 = [(RMModelPayloadBase *)&v16 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v16 copyWithZone:zone];
   v5 = [(NSNumber *)self->_payloadEnabled copy];
   v6 = v4[2];
   v4[2] = v5;

@@ -1,7 +1,7 @@
 @interface HAPMetadataUnit
-+ (id)init:(id)a3 withDictionary:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (HAPMetadataUnit)initWithName:(id)a3 description:(id)a4;
++ (id)init:(id)init withDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (HAPMetadataUnit)initWithName:(id)name description:(id)description;
 - (id)description;
 - (id)generateDictionary;
 - (unint64_t)hash;
@@ -12,18 +12,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HAPMetadataUnit *)self name];
-  v4 = [v3 hash];
-  v5 = [(HAPMetadataUnit *)self unitDescription];
-  v6 = [v5 hash];
+  name = [(HAPMetadataUnit *)self name];
+  v4 = [name hash];
+  unitDescription = [(HAPMetadataUnit *)self unitDescription];
+  v6 = [unitDescription hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -33,7 +33,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -44,13 +44,13 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HAPMetadataUnit *)self name];
-      v8 = [(HAPMetadataUnit *)v6 name];
-      if ([v7 isEqualToString:v8])
+      name = [(HAPMetadataUnit *)self name];
+      name2 = [(HAPMetadataUnit *)v6 name];
+      if ([name isEqualToString:name2])
       {
-        v9 = [(HAPMetadataUnit *)self unitDescription];
-        v10 = [(HAPMetadataUnit *)v6 unitDescription];
-        v11 = [v9 isEqualToString:v10];
+        unitDescription = [(HAPMetadataUnit *)self unitDescription];
+        unitDescription2 = [(HAPMetadataUnit *)v6 unitDescription];
+        v11 = [unitDescription isEqualToString:unitDescription2];
       }
 
       else
@@ -76,14 +76,14 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = HMFGetLogIdentifier();
-    v6 = [(HAPMetadataUnit *)self name];
-    v7 = [(HAPMetadataUnit *)self unitDescription];
+    name = [(HAPMetadataUnit *)self name];
+    unitDescription = [(HAPMetadataUnit *)self unitDescription];
     v9 = 138543874;
     v10 = v5;
     v11 = 2112;
-    v12 = v6;
+    v12 = name;
     v13 = 2112;
-    v14 = v7;
+    v14 = unitDescription;
     _os_log_impl(&dword_22AADC000, v4, OS_LOG_TYPE_INFO, "%{public}@HAPMetadataUnit %@:  description: %@", &v9, 0x20u);
   }
 
@@ -94,41 +94,41 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPMetadataUnit *)self name];
-  v5 = [(HAPMetadataUnit *)self unitDescription];
-  v6 = [v3 stringWithFormat:@"Unit %@ - %@", v4, v5];
+  name = [(HAPMetadataUnit *)self name];
+  unitDescription = [(HAPMetadataUnit *)self unitDescription];
+  v6 = [v3 stringWithFormat:@"Unit %@ - %@", name, unitDescription];
 
   return v6;
 }
 
 - (id)generateDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HAPMetadataUnit *)self unitDescription];
-  [v3 setObject:v4 forKeyedSubscript:@"DefaultDescription"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  unitDescription = [(HAPMetadataUnit *)self unitDescription];
+  [dictionary setObject:unitDescription forKeyedSubscript:@"DefaultDescription"];
 
-  [v3 setObject:&stru_283E79C60 forKeyedSubscript:@"LocalizationKey"];
+  [dictionary setObject:&stru_283E79C60 forKeyedSubscript:@"LocalizationKey"];
 
-  return v3;
+  return dictionary;
 }
 
-- (HAPMetadataUnit)initWithName:(id)a3 description:(id)a4
+- (HAPMetadataUnit)initWithName:(id)name description:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  descriptionCopy = description;
   v15.receiver = self;
   v15.super_class = HAPMetadataUnit;
   v8 = [(HAPMetadataUnit *)&v15 init];
   v9 = v8;
-  if (v7 && v6)
+  if (descriptionCopy && nameCopy)
   {
     if (v8)
     {
-      v10 = [v6 copy];
+      v10 = [nameCopy copy];
       name = v9->_name;
       v9->_name = v10;
 
-      v12 = [v7 copy];
+      v12 = [descriptionCopy copy];
       unitDescription = v9->_unitDescription;
       v9->_unitDescription = v12;
     }
@@ -148,11 +148,11 @@
   return v9;
 }
 
-+ (id)init:(id)a3 withDictionary:(id)a4
++ (id)init:(id)init withDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = [a4 hmf_stringForKey:@"DefaultDescription"];
-  v7 = [[HAPMetadataUnit alloc] initWithName:v5 description:v6];
+  initCopy = init;
+  v6 = [dictionary hmf_stringForKey:@"DefaultDescription"];
+  v7 = [[HAPMetadataUnit alloc] initWithName:initCopy description:v6];
 
   return v7;
 }

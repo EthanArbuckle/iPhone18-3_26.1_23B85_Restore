@@ -1,55 +1,55 @@
 @interface STUsageGraphViewController
-- (STUsageGraphViewController)initWithCoder:(id)a3;
-- (STUsageGraphViewController)initWithTitleView:(id)a3 graphHeight:(double)a4 includePaddle:(BOOL)a5 useVibrancy:(BOOL)a6;
+- (STUsageGraphViewController)initWithCoder:(id)coder;
+- (STUsageGraphViewController)initWithTitleView:(id)view graphHeight:(double)height includePaddle:(BOOL)paddle useVibrancy:(BOOL)vibrancy;
 - (UIImage)dashedAverageLineImage;
 - (double)maximumYAxisLabelWidth;
-- (id)_closestBarViewToPoint:(CGPoint)a3;
-- (id)createBarIndicatorWithImageName:(id)a3 barView:(id)a4;
-- (id)createBarViewWithDataPoint:(id)a3 layoutGuide:(id)a4 previousView:(id)a5 previousLayoutGuide:(id)a6 layoutGuideWidthMultiplier:(double)a7;
-- (id)createDividerWithView:(id)a3 layoutGuide:(id)a4 previousLayoutGuide:(id)a5 layoutGuideWidthMultiplier:(double)a6;
+- (id)_closestBarViewToPoint:(CGPoint)point;
+- (id)createBarIndicatorWithImageName:(id)name barView:(id)view;
+- (id)createBarViewWithDataPoint:(id)point layoutGuide:(id)guide previousView:(id)view previousLayoutGuide:(id)layoutGuide layoutGuideWidthMultiplier:(double)multiplier;
+- (id)createDividerWithView:(id)view layoutGuide:(id)guide previousLayoutGuide:(id)layoutGuide layoutGuideWidthMultiplier:(double)multiplier;
 - (id)createFirstDivider;
-- (id)createWeeklyAverageLineWithLayoutGuide:(id)a3;
+- (id)createWeeklyAverageLineWithLayoutGuide:(id)guide;
 - (uint64_t)loadView;
-- (void)_handleLongPressGestureForBarSelection:(id)a3;
-- (void)_handleLongPressGestureForPaddle:(id)a3;
-- (void)_selectBarView:(id)a3;
+- (void)_handleLongPressGestureForBarSelection:(id)selection;
+- (void)_handleLongPressGestureForPaddle:(id)paddle;
+- (void)_selectBarView:(id)view;
 - (void)_setUpHorizontalDividerLabels;
-- (void)_showPaddleForBarView:(id)a3;
+- (void)_showPaddleForBarView:(id)view;
 - (void)_updateBarViewsAndIndicators;
 - (void)loadView;
-- (void)setDataSet:(id)a3 animated:(BOOL)a4;
-- (void)setPressedBarView:(id)a3;
-- (void)setSelectedWeekday:(int64_t)a3;
+- (void)setDataSet:(id)set animated:(BOOL)animated;
+- (void)setPressedBarView:(id)view;
+- (void)setSelectedWeekday:(int64_t)weekday;
 - (void)setUpBarViewHeightContraints;
-- (void)setUpGraphWithLabelFormatter:(id)a3;
-- (void)setUpWeeklyAverageLine:(BOOL)a3;
-- (void)setYAxisLabelSectionWidth:(double)a3;
+- (void)setUpGraphWithLabelFormatter:(id)formatter;
+- (void)setUpWeeklyAverageLine:(BOOL)line;
+- (void)setYAxisLabelSectionWidth:(double)width;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation STUsageGraphViewController
 
-- (STUsageGraphViewController)initWithTitleView:(id)a3 graphHeight:(double)a4 includePaddle:(BOOL)a5 useVibrancy:(BOOL)a6
+- (STUsageGraphViewController)initWithTitleView:(id)view graphHeight:(double)height includePaddle:(BOOL)paddle useVibrancy:(BOOL)vibrancy
 {
-  v10 = a3;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = STUsageGraphViewController;
   v11 = [(STUsageGraphViewController *)&v14 initWithNibName:0 bundle:0];
   titleView = v11->_titleView;
-  v11->_titleView = v10;
+  v11->_titleView = viewCopy;
 
-  v11->_graphHeight = a4;
-  v11->_includePaddle = a5;
-  v11->_useVibrancy = a6;
+  v11->_graphHeight = height;
+  v11->_includePaddle = paddle;
+  v11->_useVibrancy = vibrancy;
   [(STUsageGraphViewController *)v11 _stUsageGraphViewControllerCommonInit];
   return v11;
 }
 
-- (STUsageGraphViewController)initWithCoder:(id)a3
+- (STUsageGraphViewController)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STUsageGraphViewController;
-  v3 = [(STUsageGraphViewController *)&v5 initWithCoder:a3];
+  v3 = [(STUsageGraphViewController *)&v5 initWithCoder:coder];
   [(STUsageGraphViewController *)v3 _stUsageGraphViewControllerCommonInit];
   return v3;
 }
@@ -63,202 +63,202 @@
   v161 = v5;
   [v4 addLayoutGuide:v5];
   v6 = objc_opt_new();
-  v162 = self;
-  v154 = [(STUsageGraphViewController *)self useVibrancy];
-  if (v154)
+  selfCopy = self;
+  useVibrancy = [(STUsageGraphViewController *)self useVibrancy];
+  if (useVibrancy)
   {
     v7 = [MEMORY[0x277D75D00] widgetEffectForVibrancyStyle:102];
     v8 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v7];
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v4 addSubview:v8];
-    v9 = [v8 topAnchor];
-    v10 = [v4 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [v8 topAnchor];
+    topAnchor2 = [v4 topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v6 addObject:v11];
 
-    v12 = [v8 leadingAnchor];
-    v13 = [v4 leadingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    leadingAnchor = [v8 leadingAnchor];
+    leadingAnchor2 = [v4 leadingAnchor];
+    v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v6 addObject:v14];
 
-    v15 = [v8 bottomAnchor];
-    v16 = [v4 bottomAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    bottomAnchor = [v8 bottomAnchor];
+    bottomAnchor2 = [v4 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v6 addObject:v17];
 
-    v18 = [v8 trailingAnchor];
-    v19 = [v4 trailingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    trailingAnchor = [v8 trailingAnchor];
+    trailingAnchor2 = [v4 trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v6 addObject:v20];
 
-    self = v162;
-    v21 = [v8 contentView];
-    [(STUsageGraphViewController *)v162 setVibrancyEffectContentView:v21];
+    self = selfCopy;
+    contentView = [v8 contentView];
+    [(STUsageGraphViewController *)selfCopy setVibrancyEffectContentView:contentView];
   }
 
   else
   {
-    v21 = 0;
+    contentView = 0;
   }
 
-  v22 = [(STUsageGraphViewController *)self titleView];
-  v23 = [(STUsageGraphViewController *)self includePaddle];
-  v153 = v23;
-  if (v22)
+  titleView = [(STUsageGraphViewController *)self titleView];
+  includePaddle = [(STUsageGraphViewController *)self includePaddle];
+  v153 = includePaddle;
+  if (titleView)
   {
-    [v4 addSubview:v22];
-    v24 = [v22 topAnchor];
-    v25 = [v4 topAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    [v4 addSubview:titleView];
+    topAnchor3 = [titleView topAnchor];
+    topAnchor4 = [v4 topAnchor];
+    v26 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [v6 addObject:v26];
 
-    v27 = [v22 leadingAnchor];
-    v28 = [v4 leadingAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    leadingAnchor3 = [titleView leadingAnchor];
+    leadingAnchor4 = [v4 leadingAnchor];
+    v29 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v6 addObject:v29];
 
-    v30 = [v22 trailingAnchor];
-    v31 = [v4 trailingAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    trailingAnchor3 = [titleView trailingAnchor];
+    trailingAnchor4 = [v4 trailingAnchor];
+    v32 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v6 addObject:v32];
 
 LABEL_6:
     goto LABEL_8;
   }
 
-  if (v23)
+  if (includePaddle)
   {
     [(STUsageGraphViewController *)a2 loadView];
-    v30 = v172;
+    trailingAnchor3 = v172;
     goto LABEL_6;
   }
 
 LABEL_8:
-  v158 = v21;
-  v156 = v22;
-  v33 = [v161 leadingAnchor];
-  v34 = [v4 leadingAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  v158 = contentView;
+  v156 = titleView;
+  leadingAnchor5 = [v161 leadingAnchor];
+  leadingAnchor6 = [v4 leadingAnchor];
+  v35 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   [v6 addObject:v35];
 
-  v36 = [v161 trailingAnchor];
-  v37 = [v4 trailingAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  trailingAnchor5 = [v161 trailingAnchor];
+  trailingAnchor6 = [v4 trailingAnchor];
+  v38 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   [v6 addObject:v38];
 
-  v39 = [v161 bottomAnchor];
-  v40 = [v4 bottomAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  bottomAnchor3 = [v161 bottomAnchor];
+  bottomAnchor4 = [v4 bottomAnchor];
+  v41 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v6 addObject:v41];
 
   v42 = objc_opt_new();
   [(STUsageGraphViewController *)self setXAxisLabelSectionLayoutGuide:v42];
   [v4 addLayoutGuide:v42];
-  v43 = [v42 leadingAnchor];
-  v44 = [v161 leadingAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44];
+  leadingAnchor7 = [v42 leadingAnchor];
+  leadingAnchor8 = [v161 leadingAnchor];
+  v45 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   [v6 addObject:v45];
 
-  v46 = [v42 trailingAnchor];
-  v47 = [v161 trailingAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47];
+  trailingAnchor7 = [v42 trailingAnchor];
+  trailingAnchor8 = [v161 trailingAnchor];
+  v48 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   [v6 addObject:v48];
 
-  v49 = [v42 bottomAnchor];
-  v50 = [v161 bottomAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50];
+  bottomAnchor5 = [v42 bottomAnchor];
+  bottomAnchor6 = [v161 bottomAnchor];
+  v51 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   [v6 addObject:v51];
 
   v52 = objc_opt_new();
   [(STUsageGraphViewController *)self setYAxisLabelSectionLayoutGuide:v52];
   [v4 addLayoutGuide:v52];
-  v53 = [v52 topAnchor];
-  v54 = [v161 topAnchor];
-  [v53 constraintEqualToAnchor:v54];
+  topAnchor5 = [v52 topAnchor];
+  topAnchor6 = [v161 topAnchor];
+  [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v56 = v55 = self;
   [v6 addObject:v56];
 
-  v57 = [v52 trailingAnchor];
-  v58 = [v161 trailingAnchor];
-  v59 = [v57 constraintEqualToAnchor:v58];
+  trailingAnchor9 = [v52 trailingAnchor];
+  trailingAnchor10 = [v161 trailingAnchor];
+  v59 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   [v6 addObject:v59];
 
-  v60 = [v52 bottomAnchor];
-  v61 = [v161 bottomAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61];
+  bottomAnchor7 = [v52 bottomAnchor];
+  bottomAnchor8 = [v161 bottomAnchor];
+  v62 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   [v6 addObject:v62];
 
   v63 = objc_opt_new();
   [(STUsageGraphViewController *)v55 setBarSectionLayoutGuide:v63];
   [v4 addLayoutGuide:v63];
-  v64 = [v63 topAnchor];
-  v65 = [v161 topAnchor];
-  v66 = [v64 constraintEqualToAnchor:v65];
+  topAnchor7 = [v63 topAnchor];
+  topAnchor8 = [v161 topAnchor];
+  v66 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   [v6 addObject:v66];
 
-  v67 = [v63 leadingAnchor];
-  v68 = [v161 leadingAnchor];
-  v69 = [v67 constraintEqualToAnchor:v68];
+  leadingAnchor9 = [v63 leadingAnchor];
+  leadingAnchor10 = [v161 leadingAnchor];
+  v69 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   [v6 addObject:v69];
 
-  v70 = [v63 bottomAnchor];
+  bottomAnchor9 = [v63 bottomAnchor];
   v157 = v42;
-  v71 = [v42 topAnchor];
-  v72 = [v70 constraintEqualToAnchor:v71];
+  topAnchor9 = [v42 topAnchor];
+  v72 = [bottomAnchor9 constraintEqualToAnchor:topAnchor9];
   [v6 addObject:v72];
 
-  v73 = [v63 trailingAnchor];
+  trailingAnchor11 = [v63 trailingAnchor];
   v160 = v52;
-  v74 = [v52 leadingAnchor];
-  v75 = [v73 constraintLessThanOrEqualToAnchor:v74];
+  leadingAnchor11 = [v52 leadingAnchor];
+  v75 = [trailingAnchor11 constraintLessThanOrEqualToAnchor:leadingAnchor11];
   [v6 addObject:v75];
 
-  v76 = [v63 heightAnchor];
+  heightAnchor = [v63 heightAnchor];
   [(STUsageGraphViewController *)v55 graphHeight];
-  v77 = [v76 constraintEqualToConstant:?];
+  v77 = [heightAnchor constraintEqualToConstant:?];
   [v6 addObject:v77];
 
   v78 = [STHorizontalDivider alloc];
-  if (v154)
+  if (useVibrancy)
   {
-    v79 = [MEMORY[0x277D75348] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
     v80 = v158;
   }
 
   else
   {
-    v79 = [MEMORY[0x277D75348] systemGray3Color];
+    systemGrayColor = [MEMORY[0x277D75348] systemGray3Color];
     v80 = v4;
   }
 
-  v81 = [(STHorizontalDivider *)v78 initWithTintColor:v79];
+  v81 = [(STHorizontalDivider *)v78 initWithTintColor:systemGrayColor];
 
   [(STHorizontalDivider *)v81 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v80 addSubview:v81];
-  v82 = [(STHorizontalDivider *)v81 leadingAnchor];
-  v83 = [v63 leadingAnchor];
-  v84 = [v82 constraintEqualToAnchor:v83];
+  leadingAnchor12 = [(STHorizontalDivider *)v81 leadingAnchor];
+  leadingAnchor13 = [v63 leadingAnchor];
+  v84 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13];
   [v6 addObject:v84];
 
-  v85 = [(STHorizontalDivider *)v81 centerYAnchor];
-  v86 = [v63 bottomAnchor];
-  v87 = [v85 constraintEqualToAnchor:v86];
+  centerYAnchor = [(STHorizontalDivider *)v81 centerYAnchor];
+  bottomAnchor10 = [v63 bottomAnchor];
+  v87 = [centerYAnchor constraintEqualToAnchor:bottomAnchor10];
   [v6 addObject:v87];
 
-  v88 = [(STHorizontalDivider *)v81 trailingAnchor];
-  v89 = [v52 trailingAnchor];
-  v90 = [v88 constraintEqualToAnchor:v89];
+  trailingAnchor12 = [(STHorizontalDivider *)v81 trailingAnchor];
+  trailingAnchor13 = [v52 trailingAnchor];
+  v90 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13];
   [v6 addObject:v90];
 
-  v91 = [(STHorizontalDivider *)v81 horizontalLineTrailingAnchor];
-  v92 = [v63 trailingAnchor];
-  v93 = [v91 constraintEqualToAnchor:v92];
+  horizontalLineTrailingAnchor = [(STHorizontalDivider *)v81 horizontalLineTrailingAnchor];
+  trailingAnchor14 = [v63 trailingAnchor];
+  v93 = [horizontalLineTrailingAnchor constraintEqualToAnchor:trailingAnchor14];
   [v6 addObject:v93];
 
-  v94 = [(STHorizontalDivider *)v81 label];
-  v95 = [v94 leadingAnchor];
-  v96 = [v52 leadingAnchor];
-  v97 = [v95 constraintEqualToAnchor:v96];
+  label = [(STHorizontalDivider *)v81 label];
+  leadingAnchor14 = [label leadingAnchor];
+  leadingAnchor15 = [v52 leadingAnchor];
+  v97 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15];
   [v6 addObject:v97];
 
   v98 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v81, 0}];
@@ -276,121 +276,121 @@ LABEL_8:
   v166 = v103;
   v152 = v99;
   v167 = v152;
-  v171 = v154;
+  v171 = useVibrancy;
   v104 = v158;
   v168 = v104;
   v151 = v81;
   v169 = v151;
-  v150 = v94;
+  v150 = label;
   v170 = v150;
   v155 = v100;
   [v100 enumerateIndexesUsingBlock:v163];
   v159 = v102;
-  v105 = [v102 lastObject];
-  v106 = [v105 topAnchor];
+  lastObject = [v102 lastObject];
+  topAnchor10 = [lastObject topAnchor];
   v107 = v156;
   if (v156)
   {
-    v108 = [v156 bottomAnchor];
-    [v106 constraintEqualToSystemSpacingBelowAnchor:v108 multiplier:1.0];
+    bottomAnchor11 = [v156 bottomAnchor];
+    [topAnchor10 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor11 multiplier:1.0];
   }
 
   else
   {
-    v108 = [v101 topAnchor];
-    [v106 constraintEqualToAnchor:v108];
+    bottomAnchor11 = [v101 topAnchor];
+    [topAnchor10 constraintEqualToAnchor:bottomAnchor11];
   }
   v109 = ;
   v110 = v101;
   [v103 addObject:v109];
 
-  v149 = v105;
-  v111 = [v105 centerYAnchor];
-  v112 = [v161 topAnchor];
-  v113 = [v111 constraintEqualToAnchor:v112];
+  v149 = lastObject;
+  centerYAnchor2 = [lastObject centerYAnchor];
+  topAnchor11 = [v161 topAnchor];
+  v113 = [centerYAnchor2 constraintEqualToAnchor:topAnchor11];
   [v103 addObject:v113];
 
-  v114 = v162;
-  [(STUsageGraphViewController *)v162 setHorizontalDividers:v159];
+  v114 = selfCopy;
+  [(STUsageGraphViewController *)selfCopy setHorizontalDividers:v159];
   if (v153)
   {
     v115 = objc_opt_new();
     [v115 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v115 setHidden:1];
-    [(STUsageGraphViewController *)v162 setPaddleView:v115];
+    [(STUsageGraphViewController *)selfCopy setPaddleView:v115];
     [v110 addSubview:v115];
-    v116 = [v115 topAnchor];
-    v117 = [v156 topAnchor];
-    v118 = [v116 constraintEqualToAnchor:v117];
+    topAnchor12 = [v115 topAnchor];
+    topAnchor13 = [v156 topAnchor];
+    v118 = [topAnchor12 constraintEqualToAnchor:topAnchor13];
     [v103 addObject:v118];
 
-    v119 = [v115 leadingAnchor];
-    v120 = [v156 leadingAnchor];
-    v121 = [v119 constraintGreaterThanOrEqualToAnchor:v120];
+    leadingAnchor16 = [v115 leadingAnchor];
+    leadingAnchor17 = [v156 leadingAnchor];
+    v121 = [leadingAnchor16 constraintGreaterThanOrEqualToAnchor:leadingAnchor17];
     [v103 addObject:v121];
 
-    v122 = [v115 bottomAnchor];
-    v123 = [v156 bottomAnchor];
-    v124 = [v122 constraintEqualToAnchor:v123];
+    bottomAnchor12 = [v115 bottomAnchor];
+    bottomAnchor13 = [v156 bottomAnchor];
+    v124 = [bottomAnchor12 constraintEqualToAnchor:bottomAnchor13];
     [v103 addObject:v124];
 
-    v125 = [v115 trailingAnchor];
-    v126 = [v156 trailingAnchor];
-    v127 = [v125 constraintLessThanOrEqualToAnchor:v126];
+    trailingAnchor15 = [v115 trailingAnchor];
+    trailingAnchor16 = [v156 trailingAnchor];
+    v127 = [trailingAnchor15 constraintLessThanOrEqualToAnchor:trailingAnchor16];
     [v103 addObject:v127];
 
-    v128 = [v115 centerXAnchor];
-    v129 = [v156 centerXAnchor];
-    v130 = [v128 constraintEqualToAnchor:v129];
+    centerXAnchor = [v115 centerXAnchor];
+    centerXAnchor2 = [v156 centerXAnchor];
+    v130 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
     v148 = v130;
-    [(STUsageGraphViewController *)v162 setPaddleViewCenterXConstraint:v130];
+    [(STUsageGraphViewController *)selfCopy setPaddleViewCenterXConstraint:v130];
     LODWORD(v131) = 1132068864;
     [v130 setPriority:v131];
     [v103 addObject:v130];
     v132 = objc_opt_new();
     [v132 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v132 setHidden:1];
-    v133 = [MEMORY[0x277D75348] systemGreenColor];
-    [v132 setBackgroundColor:v133];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+    [v132 setBackgroundColor:systemGreenColor];
 
-    [(STUsageGraphViewController *)v162 setPaddleConnectorView:v132];
+    [(STUsageGraphViewController *)selfCopy setPaddleConnectorView:v132];
     [v110 addSubview:v132];
-    v134 = [v132 topAnchor];
-    v135 = [v156 bottomAnchor];
-    v136 = [v134 constraintEqualToAnchor:v135];
+    topAnchor14 = [v132 topAnchor];
+    bottomAnchor14 = [v156 bottomAnchor];
+    v136 = [topAnchor14 constraintEqualToAnchor:bottomAnchor14];
     [v103 addObject:v136];
 
-    v137 = [v132 bottomAnchor];
-    v138 = [v63 bottomAnchor];
-    v139 = [v137 constraintEqualToAnchor:v138];
+    bottomAnchor15 = [v132 bottomAnchor];
+    bottomAnchor16 = [v63 bottomAnchor];
+    v139 = [bottomAnchor15 constraintEqualToAnchor:bottomAnchor16];
     [v103 addObject:v139];
 
-    v140 = [v132 widthAnchor];
-    v141 = [v140 constraintEqualToConstant:1.0];
+    widthAnchor = [v132 widthAnchor];
+    v141 = [widthAnchor constraintEqualToConstant:1.0];
     [v103 addObject:v141];
 
-    v142 = [v132 centerXAnchor];
-    v143 = [v156 centerXAnchor];
-    [v142 constraintEqualToAnchor:v143];
+    centerXAnchor3 = [v132 centerXAnchor];
+    centerXAnchor4 = [v156 centerXAnchor];
+    [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v144 = v104;
     v146 = v145 = v110;
 
     v107 = v156;
-    [(STUsageGraphViewController *)v162 setPaddleViewConnectorCenterXConstraint:v146];
+    [(STUsageGraphViewController *)selfCopy setPaddleViewConnectorCenterXConstraint:v146];
     [v103 addObject:v146];
-    v147 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v162 action:sel__handleLongPressGestureForPaddle_];
+    v147 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:selfCopy action:sel__handleLongPressGestureForPaddle_];
     [v147 setMinimumPressDuration:0.1];
 
     v110 = v145;
     v104 = v144;
 
-    v114 = v162;
+    v114 = selfCopy;
   }
 
   else
   {
-    v147 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v162 action:sel__handleLongPressGestureForBarSelection_];
+    v147 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:selfCopy action:sel__handleLongPressGestureForBarSelection_];
     [v147 setMinimumPressDuration:0.0];
   }
 
@@ -491,16 +491,16 @@ void __38__STUsageGraphViewController_loadView__block_invoke(uint64_t a1, uint64
 - (void)viewDidLayoutSubviews
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(STUsageGraphViewController *)self dataSet];
-  v4 = [v3 timePeriod];
+  dataSet = [(STUsageGraphViewController *)self dataSet];
+  timePeriod = [dataSet timePeriod];
 
-  if (v4 == 2)
+  if (timePeriod == 2)
   {
-    v5 = [(STUsageGraphViewController *)self weeklyAverageLabel];
-    v6 = v5;
-    if (v5)
+    weeklyAverageLabel = [(STUsageGraphViewController *)self weeklyAverageLabel];
+    v6 = weeklyAverageLabel;
+    if (weeklyAverageLabel)
     {
-      v7 = [v5 isHidden] ^ 1;
+      v7 = [weeklyAverageLabel isHidden] ^ 1;
     }
 
     else
@@ -517,8 +517,8 @@ void __38__STUsageGraphViewController_loadView__block_invoke(uint64_t a1, uint64
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v16 = [(STUsageGraphViewController *)self horizontalDividers];
-    v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    horizontalDividers = [(STUsageGraphViewController *)self horizontalDividers];
+    v17 = [horizontalDividers countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v17)
     {
       v18 = v17;
@@ -529,7 +529,7 @@ void __38__STUsageGraphViewController_loadView__block_invoke(uint64_t a1, uint64
         {
           if (*v30 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(horizontalDividers);
           }
 
           v21 = *(*(&v29 + 1) + 8 * i);
@@ -552,11 +552,11 @@ void __38__STUsageGraphViewController_loadView__block_invoke(uint64_t a1, uint64
             v26 = 0;
           }
 
-          v27 = [v21 label];
-          [v27 setHidden:v26];
+          label = [v21 label];
+          [label setHidden:v26];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v18 = [horizontalDividers countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v18);
@@ -570,43 +570,43 @@ void __38__STUsageGraphViewController_loadView__block_invoke(uint64_t a1, uint64
   }
 }
 
-- (void)setDataSet:(id)a3 animated:(BOOL)a4
+- (void)setDataSet:(id)set animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v71 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (self->_dataSet != v8)
+  setCopy = set;
+  if (self->_dataSet != setCopy)
   {
     v48 = a2;
-    v9 = [(STUsageGraphViewController *)self view];
-    v10 = [(STUsageReportGraphDataSet *)v8 timePeriod];
+    view = [(STUsageGraphViewController *)self view];
+    timePeriod = [(STUsageReportGraphDataSet *)setCopy timePeriod];
     dataSet = self->_dataSet;
     if (dataSet)
     {
-      if ([(STUsageReportGraphDataSet *)dataSet timePeriod]== v10)
+      if ([(STUsageReportGraphDataSet *)dataSet timePeriod]== timePeriod)
       {
-        v12 = [(STUsageReportGraphDataSet *)self->_dataSet dataPoints];
-        v47 = [v12 count];
-        [(STUsageReportGraphDataSet *)v8 dataPoints];
-        v13 = v8;
-        v14 = v10;
-        v16 = v15 = v4;
+        dataPoints = [(STUsageReportGraphDataSet *)self->_dataSet dataPoints];
+        v47 = [dataPoints count];
+        [(STUsageReportGraphDataSet *)setCopy dataPoints];
+        v13 = setCopy;
+        v14 = timePeriod;
+        v16 = v15 = animatedCopy;
         v17 = [v16 count];
 
-        v4 = v15;
-        v10 = v14;
-        v8 = v13;
+        animatedCopy = v15;
+        timePeriod = v14;
+        setCopy = v13;
 
         if (v47 == v17)
         {
-          objc_storeStrong(&self->_dataSet, a3);
+          objc_storeStrong(&self->_dataSet, set);
           [(STUsageGraphViewController *)self _updateBarViewsAndIndicators];
 LABEL_42:
           [(STUsageGraphViewController *)self _setUpHorizontalDividerLabels];
-          if (v10 == 2 && ([(STUsageReportGraphDataSet *)v8 averageAsPercentageOfMax], v43 > 0.05))
+          if (timePeriod == 2 && ([(STUsageReportGraphDataSet *)setCopy averageAsPercentageOfMax], v43 > 0.05))
           {
-            [(STUsageGraphViewController *)self setUpWeeklyAverageLine:v4];
-            if (!v4)
+            [(STUsageGraphViewController *)self setUpWeeklyAverageLine:animatedCopy];
+            if (!animatedCopy)
             {
 LABEL_45:
               [(STUsageGraphViewController *)self setUpBarViewHeightContraints];
@@ -618,26 +618,26 @@ LABEL_48:
 
           else
           {
-            v44 = [(STUsageGraphViewController *)self weeklyAverageLine];
-            [v44 setHidden:1];
+            weeklyAverageLine = [(STUsageGraphViewController *)self weeklyAverageLine];
+            [weeklyAverageLine setHidden:1];
 
-            v45 = [(STUsageGraphViewController *)self weeklyAverageLabel];
-            [v45 setHidden:1];
+            weeklyAverageLabel = [(STUsageGraphViewController *)self weeklyAverageLabel];
+            [weeklyAverageLabel setHidden:1];
 
-            if (!v4)
+            if (!animatedCopy)
             {
               goto LABEL_45;
             }
           }
 
-          [v9 layoutIfNeeded];
+          [view layoutIfNeeded];
           [(STUsageGraphViewController *)self setUpBarViewHeightContraints];
           v46 = MEMORY[0x277D75D18];
           v49[0] = MEMORY[0x277D85DD0];
           v49[1] = 3221225472;
           v49[2] = __50__STUsageGraphViewController_setDataSet_animated___block_invoke;
           v49[3] = &unk_279B7C998;
-          v50 = v9;
+          v50 = view;
           [v46 animateWithDuration:0 delay:v49 usingSpringWithDamping:0 initialSpringVelocity:0.6 options:0.0 animations:0.9 completion:0.1];
 
           goto LABEL_48;
@@ -645,13 +645,13 @@ LABEL_48:
       }
     }
 
-    objc_storeStrong(&self->_dataSet, a3);
+    objc_storeStrong(&self->_dataSet, set);
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v18 = [(STUsageGraphViewController *)self verticalDividers];
-    v19 = [v18 countByEnumeratingWithState:&v63 objects:v70 count:16];
+    verticalDividers = [(STUsageGraphViewController *)self verticalDividers];
+    v19 = [verticalDividers countByEnumeratingWithState:&v63 objects:v70 count:16];
     if (v19)
     {
       v20 = v19;
@@ -662,13 +662,13 @@ LABEL_48:
         {
           if (*v64 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(verticalDividers);
           }
 
           [*(*(&v63 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v63 objects:v70 count:16];
+        v20 = [verticalDividers countByEnumeratingWithState:&v63 objects:v70 count:16];
       }
 
       while (v20);
@@ -678,8 +678,8 @@ LABEL_48:
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v23 = [(STUsageGraphViewController *)self barViews];
-    v24 = [v23 countByEnumeratingWithState:&v59 objects:v69 count:16];
+    barViews = [(STUsageGraphViewController *)self barViews];
+    v24 = [barViews countByEnumeratingWithState:&v59 objects:v69 count:16];
     if (v24)
     {
       v25 = v24;
@@ -690,13 +690,13 @@ LABEL_48:
         {
           if (*v60 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(barViews);
           }
 
           [*(*(&v59 + 1) + 8 * j) removeFromSuperview];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v59 objects:v69 count:16];
+        v25 = [barViews countByEnumeratingWithState:&v59 objects:v69 count:16];
       }
 
       while (v25);
@@ -706,8 +706,8 @@ LABEL_48:
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v28 = [(STUsageGraphViewController *)self barIndicators];
-    v29 = [v28 countByEnumeratingWithState:&v55 objects:v68 count:16];
+    barIndicators = [(STUsageGraphViewController *)self barIndicators];
+    v29 = [barIndicators countByEnumeratingWithState:&v55 objects:v68 count:16];
     if (v29)
     {
       v30 = v29;
@@ -718,13 +718,13 @@ LABEL_48:
         {
           if (*v56 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(barIndicators);
           }
 
           [*(*(&v55 + 1) + 8 * k) removeFromSuperview];
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v55 objects:v68 count:16];
+        v30 = [barIndicators countByEnumeratingWithState:&v55 objects:v68 count:16];
       }
 
       while (v30);
@@ -734,8 +734,8 @@ LABEL_48:
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v33 = [(STUsageGraphViewController *)self verticalLayoutGuides];
-    v34 = [v33 countByEnumeratingWithState:&v51 objects:v67 count:16];
+    verticalLayoutGuides = [(STUsageGraphViewController *)self verticalLayoutGuides];
+    v34 = [verticalLayoutGuides countByEnumeratingWithState:&v51 objects:v67 count:16];
     if (v34)
     {
       v35 = v34;
@@ -746,39 +746,39 @@ LABEL_48:
         {
           if (*v52 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(verticalLayoutGuides);
           }
 
-          [v9 removeLayoutGuide:*(*(&v51 + 1) + 8 * m)];
+          [view removeLayoutGuide:*(*(&v51 + 1) + 8 * m)];
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v51 objects:v67 count:16];
+        v35 = [verticalLayoutGuides countByEnumeratingWithState:&v51 objects:v67 count:16];
       }
 
       while (v35);
     }
 
-    v38 = [(STUsageGraphViewController *)self paddleView];
-    [v38 setHidden:1];
+    paddleView = [(STUsageGraphViewController *)self paddleView];
+    [paddleView setHidden:1];
 
-    v39 = [(STUsageGraphViewController *)self paddleConnectorView];
-    [v39 setHidden:1];
+    paddleConnectorView = [(STUsageGraphViewController *)self paddleConnectorView];
+    [paddleConnectorView setHidden:1];
 
     v40 = objc_opt_new();
     [v40 setFormattingContext:3];
-    if (v10 == 2)
+    if (timePeriod == 2)
     {
       v42 = @"ccccc";
     }
 
     else
     {
-      if (v10 != 1)
+      if (timePeriod != 1)
       {
-        if (!v10)
+        if (!timePeriod)
         {
-          v41 = [MEMORY[0x277CCA890] currentHandler];
-          [v41 handleFailureInMethod:v48 object:self file:@"STUsageGraphViewController.m" lineNumber:318 description:@"We don't have a graph for hourly reports."];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:v48 object:self file:@"STUsageGraphViewController.m" lineNumber:318 description:@"We don't have a graph for hourly reports."];
         }
 
         goto LABEL_41;
@@ -797,38 +797,38 @@ LABEL_41:
 LABEL_49:
 }
 
-- (void)setSelectedWeekday:(int64_t)a3
+- (void)setSelectedWeekday:(int64_t)weekday
 {
-  v6 = [(STUsageGraphViewController *)self dataSet];
-  if ([v6 timePeriod] != 2)
+  dataSet = [(STUsageGraphViewController *)self dataSet];
+  if ([dataSet timePeriod] != 2)
   {
     [(STUsageGraphViewController *)a2 setSelectedWeekday:?];
   }
 
-  if (self->_selectedWeekday != a3)
+  if (self->_selectedWeekday != weekday)
   {
-    self->_selectedWeekday = a3;
-    v7 = [(STUsageGraphViewController *)self barViews];
-    v8 = v7;
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    self->_selectedWeekday = weekday;
+    barViews = [(STUsageGraphViewController *)self barViews];
+    v8 = barViews;
+    if (weekday == 0x7FFFFFFFFFFFFFFFLL)
     {
       [(STUsageGraphViewController *)self _selectBarView:0];
     }
 
-    else if ([v7 count])
+    else if ([barViews count])
     {
-      v9 = [MEMORY[0x277CBEA80] currentCalendar];
-      v10 = [v6 dataPoints];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      dataPoints = [dataSet dataPoints];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __49__STUsageGraphViewController_setSelectedWeekday___block_invoke;
       v12[3] = &unk_279B7E868;
-      v16 = a3;
-      v13 = v9;
-      v14 = self;
+      weekdayCopy = weekday;
+      v13 = currentCalendar;
+      selfCopy = self;
       v15 = v8;
-      v11 = v9;
-      [v10 enumerateObjectsUsingBlock:v12];
+      v11 = currentCalendar;
+      [dataPoints enumerateObjectsUsingBlock:v12];
     }
   }
 }
@@ -850,13 +850,13 @@ void __49__STUsageGraphViewController_setSelectedWeekday___block_invoke(uint64_t
   }
 }
 
-- (void)setPressedBarView:(id)a3
+- (void)setPressedBarView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(STBarView *)self->_pressedBarView setDarkened:0];
   pressedBarView = self->_pressedBarView;
-  self->_pressedBarView = v4;
-  v6 = v4;
+  self->_pressedBarView = viewCopy;
+  v6 = viewCopy;
 
   [(STBarView *)v6 setDarkened:1];
 }
@@ -864,16 +864,16 @@ void __49__STUsageGraphViewController_setSelectedWeekday___block_invoke(uint64_t
 - (double)maximumYAxisLabelWidth
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(STUsageGraphViewController *)self weeklyAverageLabel];
-  [v3 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+  weeklyAverageLabel = [(STUsageGraphViewController *)self weeklyAverageLabel];
+  [weeklyAverageLabel sizeThatFits:{1.79769313e308, 1.79769313e308}];
   v5 = v4;
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(STUsageGraphViewController *)self horizontalDividers];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  horizontalDividers = [(STUsageGraphViewController *)self horizontalDividers];
+  v7 = [horizontalDividers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -885,11 +885,11 @@ void __49__STUsageGraphViewController_setSelectedWeekday___block_invoke(uint64_t
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(horizontalDividers);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) label];
-        [v11 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+        label = [*(*(&v15 + 1) + 8 * v10) label];
+        [label sizeThatFits:{1.79769313e308, 1.79769313e308}];
         v13 = v12;
 
         if (v5 < v13)
@@ -901,7 +901,7 @@ void __49__STUsageGraphViewController_setSelectedWeekday___block_invoke(uint64_t
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [horizontalDividers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -910,20 +910,20 @@ void __49__STUsageGraphViewController_setSelectedWeekday___block_invoke(uint64_t
   return v5;
 }
 
-- (void)setYAxisLabelSectionWidth:(double)a3
+- (void)setYAxisLabelSectionWidth:(double)width
 {
-  v5 = [(STUsageGraphViewController *)self yAxisLabelSectionWidthConstraint];
-  if (v5)
+  yAxisLabelSectionWidthConstraint = [(STUsageGraphViewController *)self yAxisLabelSectionWidthConstraint];
+  if (yAxisLabelSectionWidthConstraint)
   {
-    v8 = v5;
-    [v5 setConstant:a3];
+    v8 = yAxisLabelSectionWidthConstraint;
+    [yAxisLabelSectionWidthConstraint setConstant:width];
   }
 
   else
   {
-    v6 = [(STUsageGraphViewController *)self yAxisLabelSectionLayoutGuide];
-    v7 = [v6 widthAnchor];
-    v8 = [v7 constraintEqualToConstant:a3];
+    yAxisLabelSectionLayoutGuide = [(STUsageGraphViewController *)self yAxisLabelSectionLayoutGuide];
+    widthAnchor = [yAxisLabelSectionLayoutGuide widthAnchor];
+    v8 = [widthAnchor constraintEqualToConstant:width];
 
     [v8 setActive:1];
     [(STUsageGraphViewController *)self setYAxisLabelSectionWidthConstraint:v8];
@@ -932,28 +932,28 @@ void __49__STUsageGraphViewController_setSelectedWeekday___block_invoke(uint64_t
 
 - (void)_setUpHorizontalDividerLabels
 {
-  v3 = [(STUsageGraphViewController *)self dataSet];
-  v4 = [v3 itemType];
-  if ((v4 - 1) >= 4)
+  dataSet = [(STUsageGraphViewController *)self dataSet];
+  itemType = [dataSet itemType];
+  if ((itemType - 1) >= 4)
   {
-    if ((v4 - 5) < 2)
+    if ((itemType - 5) < 2)
     {
       v23 = 0;
       v24 = &v23;
       v25 = 0x2020000000;
       v26 = 0;
-      v14 = [v3 max];
+      v14 = [dataSet max];
       [v14 doubleValue];
       v16 = v15;
 
-      v17 = [(STUsageGraphViewController *)self horizontalDividers];
+      horizontalDividers = [(STUsageGraphViewController *)self horizontalDividers];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __59__STUsageGraphViewController__setUpHorizontalDividerLabels__block_invoke_2;
       v18[3] = &unk_279B7E8B8;
       v18[4] = &v23;
       *&v18[5] = v16 / 4uLL;
-      [v17 enumerateObjectsUsingBlock:v18];
+      [horizontalDividers enumerateObjectsUsingBlock:v18];
 
       _Block_object_dispose(&v23, 8);
     }
@@ -961,14 +961,14 @@ void __49__STUsageGraphViewController_setSelectedWeekday___block_invoke(uint64_t
 
   else
   {
-    v5 = [v3 timePeriod];
-    v6 = [v3 max];
+    timePeriod = [dataSet timePeriod];
+    v6 = [dataSet max];
     [v6 doubleValue];
     v8 = v7;
 
     v9 = objc_opt_new();
     [v9 setFormattingContext:3];
-    if (v8 <= 3600.0 && v5 == 1)
+    if (v8 <= 3600.0 && timePeriod == 1)
     {
       v11 = 64;
     }
@@ -984,7 +984,7 @@ void __49__STUsageGraphViewController_setSelectedWeekday___block_invoke(uint64_t
     v24 = &v23;
     v25 = 0x2020000000;
     v26 = 0;
-    v12 = [(STUsageGraphViewController *)self horizontalDividers];
+    horizontalDividers2 = [(STUsageGraphViewController *)self horizontalDividers];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __59__STUsageGraphViewController__setUpHorizontalDividerLabels__block_invoke;
@@ -993,7 +993,7 @@ void __49__STUsageGraphViewController_setSelectedWeekday___block_invoke(uint64_t
     v13 = v9;
     v20 = v13;
     v22 = v8 / 4uLL;
-    [v12 enumerateObjectsUsingBlock:v19];
+    [horizontalDividers2 enumerateObjectsUsingBlock:v19];
 
     _Block_object_dispose(&v23, 8);
   }
@@ -1046,12 +1046,12 @@ void __59__STUsageGraphViewController__setUpHorizontalDividerLabels__block_invok
   *(*(*(a1 + 32) + 8) + 24) = *(a1 + 40) + *(*(*(a1 + 32) + 8) + 24);
 }
 
-- (void)setUpGraphWithLabelFormatter:(id)a3
+- (void)setUpGraphWithLabelFormatter:(id)formatter
 {
-  v49 = a3;
-  v5 = [(STUsageGraphViewController *)self dataSet];
-  v52 = [v5 dataPoints];
-  v6 = [v52 count];
+  formatterCopy = formatter;
+  dataSet = [(STUsageGraphViewController *)self dataSet];
+  dataPoints = [dataSet dataPoints];
+  v6 = [dataPoints count];
   if (!v6)
   {
     goto LABEL_37;
@@ -1059,8 +1059,8 @@ void __59__STUsageGraphViewController__setUpHorizontalDividerLabels__block_invok
 
   v7 = v6;
   v45 = a2;
-  v46 = v5;
-  v8 = [v5 timePeriod];
+  v46 = dataSet;
+  timePeriod = [dataSet timePeriod];
   v48 = objc_opt_new();
   v9 = objc_opt_new();
   v51 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v7];
@@ -1068,9 +1068,9 @@ void __59__STUsageGraphViewController__setUpHorizontalDividerLabels__block_invok
   v10 = 0;
   v11 = 0;
   v53 = 0;
-  v54 = v8;
+  v54 = timePeriod;
   v12 = 0;
-  if (v8 == 1)
+  if (timePeriod == 1)
   {
     v13 = 0.5;
   }
@@ -1083,25 +1083,25 @@ void __59__STUsageGraphViewController__setUpHorizontalDividerLabels__block_invok
   v50 = v7;
   do
   {
-    v14 = [v52 objectAtIndexedSubscript:v12];
-    v15 = [v14 date];
-    v56 = v15;
+    v14 = [dataPoints objectAtIndexedSubscript:v12];
+    date = [v14 date];
+    v56 = date;
     v57 = v14;
     if (v54 != 2)
     {
-      if (v54 != 1 || (([MEMORY[0x277CBEA80] currentCalendar], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "component:fromDate:", 32, v15), v16, v18 = __ROR8__(v17, 1), v14 = v57, v19 = (1 << v18) & 0x249, v18 <= 9) ? (v20 = v19 == 0) : (v20 = 1), v20))
+      if (v54 != 1 || (([MEMORY[0x277CBEA80] currentCalendar], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "component:fromDate:", 32, date), v16, v18 = __ROR8__(v17, 1), v14 = v57, v19 = (1 << v18) & 0x249, v18 <= 9) ? (v20 = v19 == 0) : (v20 = 1), v20))
       {
 
         if (v10)
         {
           v21 = 0;
-          v22 = 0;
+          createFirstDivider = 0;
           v23 = v53 + 1;
           goto LABEL_18;
         }
 
 LABEL_16:
-        v22 = [(STUsageGraphViewController *)self createFirstDivider];
+        createFirstDivider = [(STUsageGraphViewController *)self createFirstDivider];
         v21 = 0;
         goto LABEL_17;
       }
@@ -1114,18 +1114,18 @@ LABEL_16:
 
     v21 = objc_opt_new();
     [v9 addObject:v21];
-    v22 = [(STUsageGraphViewController *)self createDividerWithView:v10 layoutGuide:v21 previousLayoutGuide:v11 layoutGuideWidthMultiplier:v13];
+    createFirstDivider = [(STUsageGraphViewController *)self createDividerWithView:v10 layoutGuide:v21 previousLayoutGuide:v11 layoutGuideWidthMultiplier:v13];
 LABEL_17:
-    v24 = [v49 stringFromDate:v15];
-    [v22 setLabelText:v24];
+    v24 = [formatterCopy stringFromDate:date];
+    [createFirstDivider setLabelText:v24];
 
-    [v48 addObject:v22];
+    [v48 addObject:createFirstDivider];
     v23 = 0;
     v14 = v57;
 LABEL_18:
-    if (v22)
+    if (createFirstDivider)
     {
-      v25 = v22;
+      v25 = createFirstDivider;
     }
 
     else
@@ -1168,10 +1168,10 @@ LABEL_18:
     v55 = v28;
     v10 = [(STUsageGraphViewController *)self createBarViewWithDataPoint:v14 layoutGuide:v11 previousView:v26 previousLayoutGuide:v28 layoutGuideWidthMultiplier:v29];
     [v51 addObject:v10];
-    v30 = [v14 indicatorImageName];
-    if (v30)
+    indicatorImageName = [v14 indicatorImageName];
+    if (indicatorImageName)
     {
-      v31 = [(STUsageGraphViewController *)self createBarIndicatorWithImageName:v30 barView:v10];
+      v31 = [(STUsageGraphViewController *)self createBarIndicatorWithImageName:indicatorImageName barView:v10];
       [v14 indicatorImageColor];
       v32 = v10;
       v33 = v11;
@@ -1189,8 +1189,8 @@ LABEL_18:
 
     if (!v12)
     {
-      v37 = [(STUsageGraphViewController *)self paddleView];
-      [v37 setDataPoint:v14];
+      paddleView = [(STUsageGraphViewController *)self paddleView];
+      [paddleView setDataPoint:v14];
     }
 
     ++v12;
@@ -1207,11 +1207,11 @@ LABEL_18:
 
   v40 = [(STUsageGraphViewController *)self createDividerWithView:v10 layoutGuide:v38 previousLayoutGuide:v11 layoutGuideWidthMultiplier:v13];
   [v48 addObject:v40];
-  v41 = [v40 trailingAnchor];
+  trailingAnchor = [v40 trailingAnchor];
   [(STUsageGraphViewController *)self barSectionLayoutGuide];
   v42 = v58 = v10;
-  v43 = [v42 trailingAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  trailingAnchor2 = [v42 trailingAnchor];
+  v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v44 setActive:1];
 
   [(STUsageGraphViewController *)self setVerticalDividers:v48];
@@ -1219,7 +1219,7 @@ LABEL_18:
   [(STUsageGraphViewController *)self setBarViews:v51];
   [(STUsageGraphViewController *)self setBarIndicators:v47];
 
-  v5 = v46;
+  dataSet = v46;
 LABEL_37:
 }
 
@@ -1230,8 +1230,8 @@ LABEL_37:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(STUsageGraphViewController *)self barViewHeightConstraints];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  barViewHeightConstraints = [(STUsageGraphViewController *)self barViewHeightConstraints];
+  v4 = [barViewHeightConstraints countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1243,38 +1243,38 @@ LABEL_37:
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(barViewHeightConstraints);
         }
 
         [*(*(&v21 + 1) + 8 * v7++) setActive:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v5 = [barViewHeightConstraints countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(STUsageGraphViewController *)self barViews];
-  v9 = [(STUsageGraphViewController *)self barSectionLayoutGuide];
-  v10 = [v9 heightAnchor];
+  barViews = [(STUsageGraphViewController *)self barViews];
+  barSectionLayoutGuide = [(STUsageGraphViewController *)self barSectionLayoutGuide];
+  heightAnchor = [barSectionLayoutGuide heightAnchor];
 
-  v11 = [(STUsageGraphViewController *)self dataSet];
-  v12 = [v11 dataPoints];
+  dataSet = [(STUsageGraphViewController *)self dataSet];
+  dataPoints = [dataSet dataPoints];
 
-  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(barViews, "count")}];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __58__STUsageGraphViewController_setUpBarViewHeightContraints__block_invoke;
   v17[3] = &unk_279B7E8E0;
-  v18 = v12;
-  v19 = v10;
+  v18 = dataPoints;
+  v19 = heightAnchor;
   v20 = v13;
   v14 = v13;
-  v15 = v10;
-  v16 = v12;
-  [v8 enumerateObjectsUsingBlock:v17];
+  v15 = heightAnchor;
+  v16 = dataPoints;
+  [barViews enumerateObjectsUsingBlock:v17];
   [(STUsageGraphViewController *)self setBarViewHeightConstraints:v14];
 }
 
@@ -1300,8 +1300,8 @@ void __58__STUsageGraphViewController_setUpBarViewHeightContraints__block_invoke
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(STUsageGraphViewController *)self barIndicators];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  barIndicators = [(STUsageGraphViewController *)self barIndicators];
+  v4 = [barIndicators countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1313,34 +1313,34 @@ void __58__STUsageGraphViewController_setUpBarViewHeightContraints__block_invoke
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(barIndicators);
         }
 
         [*(*(&v18 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [barIndicators countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(STUsageGraphViewController *)self dataSet];
-  v9 = [v8 dataPoints];
+  dataSet = [(STUsageGraphViewController *)self dataSet];
+  dataPoints = [dataSet dataPoints];
 
-  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
-  v11 = [(STUsageGraphViewController *)self barViews];
+  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(dataPoints, "count")}];
+  barViews = [(STUsageGraphViewController *)self barViews];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __58__STUsageGraphViewController__updateBarViewsAndIndicators__block_invoke;
   v14[3] = &unk_279B7E8E0;
-  v15 = v9;
-  v16 = self;
+  v15 = dataPoints;
+  selfCopy = self;
   v17 = v10;
   v12 = v10;
-  v13 = v9;
-  [v11 enumerateObjectsUsingBlock:v14];
+  v13 = dataPoints;
+  [barViews enumerateObjectsUsingBlock:v14];
 
   [(STUsageGraphViewController *)self setBarIndicators:v12];
 }
@@ -1361,18 +1361,18 @@ void __58__STUsageGraphViewController__updateBarViewsAndIndicators__block_invoke
   }
 }
 
-- (void)setUpWeeklyAverageLine:(BOOL)a3
+- (void)setUpWeeklyAverageLine:(BOOL)line
 {
-  v3 = a3;
-  v23 = [(STUsageGraphViewController *)self view];
-  v5 = [(STUsageGraphViewController *)self weeklyAverageLine];
-  v6 = [(STUsageGraphViewController *)self weeklyAverageLayoutGuide];
-  if (v5)
+  lineCopy = line;
+  view = [(STUsageGraphViewController *)self view];
+  weeklyAverageLine = [(STUsageGraphViewController *)self weeklyAverageLine];
+  weeklyAverageLayoutGuide = [(STUsageGraphViewController *)self weeklyAverageLayoutGuide];
+  if (weeklyAverageLine)
   {
-    [v23 bringSubviewToFront:v5];
-    [v5 setHidden:0];
-    v7 = [(STUsageGraphViewController *)self weeklyAverageLabel];
-    [v7 setHidden:0];
+    [view bringSubviewToFront:weeklyAverageLine];
+    [weeklyAverageLine setHidden:0];
+    weeklyAverageLabel = [(STUsageGraphViewController *)self weeklyAverageLabel];
+    [weeklyAverageLabel setHidden:0];
   }
 
   else
@@ -1380,40 +1380,40 @@ void __58__STUsageGraphViewController__updateBarViewsAndIndicators__block_invoke
     v8 = objc_opt_new();
 
     [(STUsageGraphViewController *)self setWeeklyAverageLayoutGuide:v8];
-    v5 = [(STUsageGraphViewController *)self createWeeklyAverageLineWithLayoutGuide:v8];
-    [(STUsageGraphViewController *)self setWeeklyAverageLine:v5];
-    v6 = v8;
+    weeklyAverageLine = [(STUsageGraphViewController *)self createWeeklyAverageLineWithLayoutGuide:v8];
+    [(STUsageGraphViewController *)self setWeeklyAverageLine:weeklyAverageLine];
+    weeklyAverageLayoutGuide = v8;
   }
 
-  v9 = [(STUsageGraphViewController *)self barSectionLayoutGuide];
-  v10 = [(STUsageGraphViewController *)self weeklyAverageHeightConstraint];
-  [v10 setActive:0];
-  v11 = [v6 heightAnchor];
-  v12 = [v9 heightAnchor];
-  v13 = [(STUsageGraphViewController *)self dataSet];
-  [v13 averageAsPercentageOfMax];
-  v14 = [v11 constraintEqualToAnchor:v12 multiplier:?];
+  barSectionLayoutGuide = [(STUsageGraphViewController *)self barSectionLayoutGuide];
+  weeklyAverageHeightConstraint = [(STUsageGraphViewController *)self weeklyAverageHeightConstraint];
+  [weeklyAverageHeightConstraint setActive:0];
+  heightAnchor = [weeklyAverageLayoutGuide heightAnchor];
+  heightAnchor2 = [barSectionLayoutGuide heightAnchor];
+  dataSet = [(STUsageGraphViewController *)self dataSet];
+  [dataSet averageAsPercentageOfMax];
+  v14 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:?];
 
   [v14 setActive:1];
   [(STUsageGraphViewController *)self setWeeklyAverageHeightConstraint:v14];
-  v15 = [(STUsageGraphViewController *)self weeklyAverageTrailingConstraint];
-  v16 = v15;
-  if (v3)
+  weeklyAverageTrailingConstraint = [(STUsageGraphViewController *)self weeklyAverageTrailingConstraint];
+  v16 = weeklyAverageTrailingConstraint;
+  if (lineCopy)
   {
-    [v15 setActive:0];
-    v17 = [v5 trailingAnchor];
-    v18 = [v9 leadingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    [weeklyAverageTrailingConstraint setActive:0];
+    trailingAnchor = [weeklyAverageLine trailingAnchor];
+    leadingAnchor = [barSectionLayoutGuide leadingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:leadingAnchor];
 
     [v19 setActive:1];
-    [v23 layoutIfNeeded];
+    [view layoutIfNeeded];
     v16 = v19;
   }
 
   [v16 setActive:0];
-  v20 = [v5 trailingAnchor];
-  v21 = [v9 trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  trailingAnchor2 = [weeklyAverageLine trailingAnchor];
+  trailingAnchor3 = [barSectionLayoutGuide trailingAnchor];
+  v22 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
 
   [v22 setActive:1];
   [(STUsageGraphViewController *)self setWeeklyAverageTrailingConstraint:v22];
@@ -1422,48 +1422,48 @@ void __58__STUsageGraphViewController__updateBarViewsAndIndicators__block_invoke
 - (id)createFirstDivider
 {
   v29[4] = *MEMORY[0x277D85DE8];
-  v3 = [(STUsageGraphViewController *)self vibrancyEffectContentView];
+  vibrancyEffectContentView = [(STUsageGraphViewController *)self vibrancyEffectContentView];
   v4 = [STDashedVerticalDivider alloc];
-  v28 = v3;
-  if (v3)
+  v28 = vibrancyEffectContentView;
+  if (vibrancyEffectContentView)
   {
-    v5 = [MEMORY[0x277D75348] systemDarkGrayColor];
-    v6 = [(STDashedVerticalDivider *)v4 initWithTintColor:v5];
+    systemDarkGrayColor = [MEMORY[0x277D75348] systemDarkGrayColor];
+    v6 = [(STDashedVerticalDivider *)v4 initWithTintColor:systemDarkGrayColor];
 
     [(STDashedVerticalDivider *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v3 addSubview:v6];
+    [vibrancyEffectContentView addSubview:v6];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D75348] systemGray3Color];
-    v6 = [(STDashedVerticalDivider *)v4 initWithTintColor:v7];
+    systemGray3Color = [MEMORY[0x277D75348] systemGray3Color];
+    v6 = [(STDashedVerticalDivider *)v4 initWithTintColor:systemGray3Color];
 
     [(STDashedVerticalDivider *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(STUsageGraphViewController *)self view];
-    [v8 addSubview:v6];
+    view = [(STUsageGraphViewController *)self view];
+    [view addSubview:v6];
   }
 
-  v9 = [(STUsageGraphViewController *)self graphLayoutGuide];
+  graphLayoutGuide = [(STUsageGraphViewController *)self graphLayoutGuide];
   v20 = MEMORY[0x277CCAAD0];
-  v27 = [(STDashedVerticalDivider *)v6 topAnchor];
-  v24 = v9;
-  v26 = [v9 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  topAnchor = [(STDashedVerticalDivider *)v6 topAnchor];
+  v24 = graphLayoutGuide;
+  topAnchor2 = [graphLayoutGuide topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[0] = v25;
-  v22 = [(STDashedVerticalDivider *)v6 leadingAnchor];
-  v23 = [(STUsageGraphViewController *)self xAxisLabelSectionLayoutGuide];
-  v21 = [v23 leadingAnchor];
-  v10 = [v22 constraintEqualToAnchor:v21];
+  leadingAnchor = [(STDashedVerticalDivider *)v6 leadingAnchor];
+  xAxisLabelSectionLayoutGuide = [(STUsageGraphViewController *)self xAxisLabelSectionLayoutGuide];
+  leadingAnchor2 = [xAxisLabelSectionLayoutGuide leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[1] = v10;
-  v11 = [(STDashedVerticalDivider *)v6 bottomAnchor];
-  v12 = [v9 bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor = [(STDashedVerticalDivider *)v6 bottomAnchor];
+  bottomAnchor2 = [graphLayoutGuide bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[2] = v13;
-  v14 = [(STDashedVerticalDivider *)v6 labelTopAnchor];
-  v15 = [(STUsageGraphViewController *)self barSectionLayoutGuide];
-  v16 = [v15 bottomAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16 constant:6.0];
+  labelTopAnchor = [(STDashedVerticalDivider *)v6 labelTopAnchor];
+  barSectionLayoutGuide = [(STUsageGraphViewController *)self barSectionLayoutGuide];
+  bottomAnchor3 = [barSectionLayoutGuide bottomAnchor];
+  v17 = [labelTopAnchor constraintEqualToAnchor:bottomAnchor3 constant:6.0];
   v29[3] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
   [v20 activateConstraints:v18];
@@ -1471,110 +1471,110 @@ void __58__STUsageGraphViewController__updateBarViewsAndIndicators__block_invoke
   return v6;
 }
 
-- (id)createDividerWithView:(id)a3 layoutGuide:(id)a4 previousLayoutGuide:(id)a5 layoutGuideWidthMultiplier:(double)a6
+- (id)createDividerWithView:(id)view layoutGuide:(id)guide previousLayoutGuide:(id)layoutGuide layoutGuideWidthMultiplier:(double)multiplier
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(STUsageGraphViewController *)self vibrancyEffectContentView];
-  v14 = [(STUsageGraphViewController *)self view];
+  guideCopy = guide;
+  layoutGuideCopy = layoutGuide;
+  viewCopy = view;
+  vibrancyEffectContentView = [(STUsageGraphViewController *)self vibrancyEffectContentView];
+  view = [(STUsageGraphViewController *)self view];
   v15 = [STDashedVerticalDivider alloc];
-  v47 = v11;
-  if (v13)
+  v47 = layoutGuideCopy;
+  if (vibrancyEffectContentView)
   {
-    v16 = [MEMORY[0x277D75348] systemDarkGrayColor];
-    v17 = [(STDashedVerticalDivider *)v15 initWithTintColor:v16];
+    systemDarkGrayColor = [MEMORY[0x277D75348] systemDarkGrayColor];
+    v17 = [(STDashedVerticalDivider *)v15 initWithTintColor:systemDarkGrayColor];
 
     [(STDashedVerticalDivider *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = v13;
+    v18 = vibrancyEffectContentView;
   }
 
   else
   {
-    v19 = [MEMORY[0x277D75348] systemGray3Color];
-    v17 = [(STDashedVerticalDivider *)v15 initWithTintColor:v19];
+    systemGray3Color = [MEMORY[0x277D75348] systemGray3Color];
+    v17 = [(STDashedVerticalDivider *)v15 initWithTintColor:systemGray3Color];
 
     [(STDashedVerticalDivider *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = v14;
+    v18 = view;
   }
 
   [v18 addSubview:v17];
-  v20 = [(STUsageGraphViewController *)self graphLayoutGuide];
-  v21 = [(STDashedVerticalDivider *)v17 topAnchor];
-  v22 = [v20 topAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  graphLayoutGuide = [(STUsageGraphViewController *)self graphLayoutGuide];
+  topAnchor = [(STDashedVerticalDivider *)v17 topAnchor];
+  topAnchor2 = [graphLayoutGuide topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v23 setActive:1];
 
-  v24 = [(STDashedVerticalDivider *)v17 bottomAnchor];
-  v25 = [v20 bottomAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  bottomAnchor = [(STDashedVerticalDivider *)v17 bottomAnchor];
+  bottomAnchor2 = [graphLayoutGuide bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v26 setActive:1];
 
-  v27 = [(STDashedVerticalDivider *)v17 labelTopAnchor];
-  v28 = [(STUsageGraphViewController *)self barSectionLayoutGuide];
-  v29 = [v28 bottomAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29 constant:6.0];
+  labelTopAnchor = [(STDashedVerticalDivider *)v17 labelTopAnchor];
+  barSectionLayoutGuide = [(STUsageGraphViewController *)self barSectionLayoutGuide];
+  bottomAnchor3 = [barSectionLayoutGuide bottomAnchor];
+  v30 = [labelTopAnchor constraintEqualToAnchor:bottomAnchor3 constant:6.0];
   [v30 setActive:1];
 
-  [v14 addLayoutGuide:v10];
-  v31 = [v10 topAnchor];
-  v32 = [v20 topAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  [view addLayoutGuide:guideCopy];
+  topAnchor3 = [guideCopy topAnchor];
+  topAnchor4 = [graphLayoutGuide topAnchor];
+  v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v33 setActive:1];
 
-  v34 = [v10 leadingAnchor];
-  v35 = [v12 trailingAnchor];
+  leadingAnchor = [guideCopy leadingAnchor];
+  trailingAnchor = [viewCopy trailingAnchor];
 
-  v36 = [v34 constraintEqualToAnchor:v35];
+  v36 = [leadingAnchor constraintEqualToAnchor:trailingAnchor];
   [v36 setActive:1];
 
-  v37 = [v10 bottomAnchor];
-  v38 = [v20 bottomAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38];
+  bottomAnchor4 = [guideCopy bottomAnchor];
+  bottomAnchor5 = [graphLayoutGuide bottomAnchor];
+  v39 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   [v39 setActive:1];
 
-  v40 = [v10 trailingAnchor];
-  v41 = [(STDashedVerticalDivider *)v17 dashedLineCenterXAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41];
+  trailingAnchor2 = [guideCopy trailingAnchor];
+  dashedLineCenterXAnchor = [(STDashedVerticalDivider *)v17 dashedLineCenterXAnchor];
+  v42 = [trailingAnchor2 constraintEqualToAnchor:dashedLineCenterXAnchor];
   [v42 setActive:1];
 
   if (v47)
   {
-    v43 = [v10 widthAnchor];
-    v44 = [v47 widthAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44 multiplier:a6];
+    widthAnchor = [guideCopy widthAnchor];
+    widthAnchor2 = [v47 widthAnchor];
+    v45 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:multiplier];
     [v45 setActive:1];
   }
 
   return v17;
 }
 
-- (id)createBarViewWithDataPoint:(id)a3 layoutGuide:(id)a4 previousView:(id)a5 previousLayoutGuide:(id)a6 layoutGuideWidthMultiplier:(double)a7
+- (id)createBarViewWithDataPoint:(id)point layoutGuide:(id)guide previousView:(id)view previousLayoutGuide:(id)layoutGuide layoutGuideWidthMultiplier:(double)multiplier
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a3;
-  v16 = [[STBarView alloc] initWithDataPoint:v15 useVibrancy:[(STUsageGraphViewController *)self useVibrancy]];
+  guideCopy = guide;
+  viewCopy = view;
+  layoutGuideCopy = layoutGuide;
+  pointCopy = point;
+  v16 = [[STBarView alloc] initWithDataPoint:pointCopy useVibrancy:[(STUsageGraphViewController *)self useVibrancy]];
 
   [(STBarView *)v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v17 = [(STUsageGraphViewController *)self view];
-  [v17 addSubview:v16];
-  v18 = [(STUsageGraphViewController *)self barSectionLayoutGuide];
-  v19 = [(STBarView *)v16 bottomAnchor];
-  v20 = [v18 bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  view = [(STUsageGraphViewController *)self view];
+  [view addSubview:v16];
+  barSectionLayoutGuide = [(STUsageGraphViewController *)self barSectionLayoutGuide];
+  bottomAnchor = [(STBarView *)v16 bottomAnchor];
+  bottomAnchor2 = [barSectionLayoutGuide bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v21 setActive:1];
 
-  v22 = [(STUsageGraphViewController *)self dataSet];
-  v23 = [v22 timePeriod];
-  v24 = [v22 dataPoints];
-  v25 = [v24 count];
+  dataSet = [(STUsageGraphViewController *)self dataSet];
+  timePeriod = [dataSet timePeriod];
+  dataPoints = [dataSet dataPoints];
+  v25 = [dataPoints count];
 
   if (v25)
   {
     v26 = 0.7;
-    if (v23 != 1)
+    if (timePeriod != 1)
     {
       v26 = 0.5;
     }
@@ -1593,80 +1593,80 @@ void __58__STUsageGraphViewController__updateBarViewsAndIndicators__block_invoke
     v28 = 0.0;
   }
 
-  v29 = [(STBarView *)v16 widthAnchor];
-  v30 = [v18 widthAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30 multiplier:v28];
+  widthAnchor = [(STBarView *)v16 widthAnchor];
+  widthAnchor2 = [barSectionLayoutGuide widthAnchor];
+  v31 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:v28];
   [v31 setActive:1];
 
-  [v17 addLayoutGuide:v12];
-  v32 = [v12 topAnchor];
-  v33 = [v18 topAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  [view addLayoutGuide:guideCopy];
+  topAnchor = [guideCopy topAnchor];
+  topAnchor2 = [barSectionLayoutGuide topAnchor];
+  v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v34 setActive:1];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v35 = v13;
-    v36 = [v12 leadingAnchor];
-    v37 = [v35 dashedLineCenterXAnchor];
+    v35 = viewCopy;
+    leadingAnchor = [guideCopy leadingAnchor];
+    dashedLineCenterXAnchor = [v35 dashedLineCenterXAnchor];
   }
 
   else
   {
-    v36 = [v12 leadingAnchor];
-    v37 = [v13 trailingAnchor];
+    leadingAnchor = [guideCopy leadingAnchor];
+    dashedLineCenterXAnchor = [viewCopy trailingAnchor];
   }
 
-  v38 = [v36 constraintEqualToAnchor:v37];
+  v38 = [leadingAnchor constraintEqualToAnchor:dashedLineCenterXAnchor];
   [v38 setActive:1];
 
-  v39 = [v12 bottomAnchor];
-  v40 = [v18 bottomAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  bottomAnchor3 = [guideCopy bottomAnchor];
+  bottomAnchor4 = [barSectionLayoutGuide bottomAnchor];
+  v41 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v41 setActive:1];
 
-  v42 = [v12 trailingAnchor];
-  v43 = [(STBarView *)v16 leadingAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  trailingAnchor = [guideCopy trailingAnchor];
+  leadingAnchor2 = [(STBarView *)v16 leadingAnchor];
+  v44 = [trailingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v44 setActive:1];
 
-  if (v14)
+  if (layoutGuideCopy)
   {
-    v45 = [v12 widthAnchor];
-    v46 = [v14 widthAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46 multiplier:a7];
+    widthAnchor3 = [guideCopy widthAnchor];
+    widthAnchor4 = [layoutGuideCopy widthAnchor];
+    v47 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:multiplier];
     [v47 setActive:1];
   }
 
   return v16;
 }
 
-- (id)createWeeklyAverageLineWithLayoutGuide:(id)a3
+- (id)createWeeklyAverageLineWithLayoutGuide:(id)guide
 {
   v53[9] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D755E8];
-  v5 = a3;
+  guideCopy = guide;
   v6 = [v4 alloc];
-  v7 = [(STUsageGraphViewController *)self dashedAverageLineImage];
-  v8 = [v6 initWithImage:v7];
+  dashedAverageLineImage = [(STUsageGraphViewController *)self dashedAverageLineImage];
+  v8 = [v6 initWithImage:dashedAverageLineImage];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [MEMORY[0x277D75348] systemGreenColor];
-  [v8 setTintColor:v9];
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  [v8 setTintColor:systemGreenColor];
 
-  v10 = [(STUsageGraphViewController *)self view];
-  [v10 addSubview:v8];
-  v11 = [(STUsageGraphViewController *)self barSectionLayoutGuide];
-  v52 = v10;
-  [v10 addLayoutGuide:v5];
+  view = [(STUsageGraphViewController *)self view];
+  [view addSubview:v8];
+  barSectionLayoutGuide = [(STUsageGraphViewController *)self barSectionLayoutGuide];
+  v52 = view;
+  [view addLayoutGuide:guideCopy];
   v12 = objc_opt_new();
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
   [v12 setFont:v13];
 
-  v14 = [MEMORY[0x277D75348] systemGreenColor];
-  [v12 setTextColor:v14];
+  systemGreenColor2 = [MEMORY[0x277D75348] systemGreenColor];
+  [v12 setTextColor:systemGreenColor2];
 
   v15 = +[STScreenTimeSettingsUIBundle bundle];
   v16 = [v15 localizedStringForKey:@"DailyAverageLineLabel" value:&stru_28766E5A8 table:0];
@@ -1677,47 +1677,47 @@ void __58__STUsageGraphViewController__updateBarViewsAndIndicators__block_invoke
   LODWORD(v18) = 1144766464;
   [v12 setContentCompressionResistancePriority:0 forAxis:v18];
   [(STUsageGraphViewController *)self setWeeklyAverageLabel:v12];
-  [v10 addSubview:v12];
-  v19 = [(STUsageGraphViewController *)self yAxisLabelSectionLayoutGuide];
+  [view addSubview:v12];
+  yAxisLabelSectionLayoutGuide = [(STUsageGraphViewController *)self yAxisLabelSectionLayoutGuide];
   v39 = MEMORY[0x277CCAAD0];
-  v51 = [v8 leadingAnchor];
-  v50 = [v11 leadingAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  leadingAnchor = [v8 leadingAnchor];
+  leadingAnchor2 = [barSectionLayoutGuide leadingAnchor];
+  v49 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v53[0] = v49;
-  v48 = [v8 heightAnchor];
-  v47 = [v48 constraintEqualToConstant:1.5];
+  heightAnchor = [v8 heightAnchor];
+  v47 = [heightAnchor constraintEqualToConstant:1.5];
   v53[1] = v47;
-  v45 = [v5 leadingAnchor];
-  v44 = [v11 leadingAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  leadingAnchor3 = [guideCopy leadingAnchor];
+  leadingAnchor4 = [barSectionLayoutGuide leadingAnchor];
+  v43 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v53[2] = v43;
-  v42 = [v5 bottomAnchor];
-  v46 = v11;
-  v41 = [v11 bottomAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  bottomAnchor = [guideCopy bottomAnchor];
+  v46 = barSectionLayoutGuide;
+  bottomAnchor2 = [barSectionLayoutGuide bottomAnchor];
+  v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v53[3] = v40;
-  v38 = [v5 trailingAnchor];
-  v37 = [v11 trailingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  trailingAnchor = [guideCopy trailingAnchor];
+  trailingAnchor2 = [barSectionLayoutGuide trailingAnchor];
+  v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v53[4] = v36;
-  v34 = [v5 topAnchor];
+  topAnchor = [guideCopy topAnchor];
 
-  v33 = [v8 centerYAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  centerYAnchor = [v8 centerYAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:centerYAnchor];
   v53[5] = v32;
-  v31 = [v12 leadingAnchor];
-  v35 = v19;
-  v20 = [v19 leadingAnchor];
-  v21 = [v31 constraintEqualToAnchor:v20];
+  leadingAnchor5 = [v12 leadingAnchor];
+  v35 = yAxisLabelSectionLayoutGuide;
+  leadingAnchor6 = [yAxisLabelSectionLayoutGuide leadingAnchor];
+  v21 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v53[6] = v21;
-  v22 = [v12 centerYAnchor];
+  centerYAnchor2 = [v12 centerYAnchor];
   v30 = v8;
-  v23 = [v8 centerYAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  centerYAnchor3 = [v8 centerYAnchor];
+  v24 = [centerYAnchor2 constraintEqualToAnchor:centerYAnchor3];
   v53[7] = v24;
-  v25 = [v12 trailingAnchor];
-  v26 = [v19 trailingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  trailingAnchor3 = [v12 trailingAnchor];
+  trailingAnchor4 = [yAxisLabelSectionLayoutGuide trailingAnchor];
+  v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v53[8] = v27;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:9];
   [v39 activateConstraints:v28];
@@ -1725,54 +1725,54 @@ void __58__STUsageGraphViewController__updateBarViewsAndIndicators__block_invoke
   return v30;
 }
 
-- (id)createBarIndicatorWithImageName:(id)a3 barView:(id)a4
+- (id)createBarIndicatorWithImageName:(id)name barView:(id)view
 {
   v6 = MEMORY[0x277D755B8];
-  v7 = a4;
-  v8 = a3;
+  viewCopy = view;
+  nameCopy = name;
   v9 = +[STScreenTimeSettingsUIBundle bundle];
-  v10 = [v6 imageNamed:v8 inBundle:v9];
+  v10 = [v6 imageNamed:nameCopy inBundle:v9];
 
   v11 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v10];
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [(STUsageGraphViewController *)self view];
-  [v12 addSubview:v11];
+  view = [(STUsageGraphViewController *)self view];
+  [view addSubview:v11];
 
-  v13 = [v11 topAnchor];
-  v14 = [v7 bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  topAnchor = [v11 topAnchor];
+  bottomAnchor = [viewCopy bottomAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   [v15 setActive:1];
 
-  v16 = [v11 centerXAnchor];
-  v17 = [v7 centerXAnchor];
+  centerXAnchor = [v11 centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
 
-  v18 = [v16 constraintEqualToAnchor:v17];
+  v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v18 setActive:1];
 
   return v11;
 }
 
-- (void)_handleLongPressGestureForPaddle:(id)a3
+- (void)_handleLongPressGestureForPaddle:(id)paddle
 {
-  v4 = a3;
-  v5 = [(STUsageGraphViewController *)self barViews];
-  v6 = [v5 count];
+  paddleCopy = paddle;
+  barViews = [(STUsageGraphViewController *)self barViews];
+  v6 = [barViews count];
 
   if (v6)
   {
-    if ([v4 state] > 2)
+    if ([paddleCopy state] > 2)
     {
-      v15 = [(STUsageGraphViewController *)self paddleView];
-      [v15 setHidden:1];
+      paddleView = [(STUsageGraphViewController *)self paddleView];
+      [paddleView setHidden:1];
 
-      v16 = [(STUsageGraphViewController *)self paddleConnectorView];
-      [v16 setHidden:1];
+      paddleConnectorView = [(STUsageGraphViewController *)self paddleConnectorView];
+      [paddleConnectorView setHidden:1];
 
-      v17 = [(STUsageGraphViewController *)self selectedBarView];
-      [v17 setColor:0];
+      selectedBarView = [(STUsageGraphViewController *)self selectedBarView];
+      [selectedBarView setColor:0];
 
-      v18 = [(STUsageGraphViewController *)self titleView];
-      [v18 alpha];
+      titleView = [(STUsageGraphViewController *)self titleView];
+      [titleView alpha];
       v20 = v19;
 
       if (v20 <= 0.00000011920929)
@@ -1788,13 +1788,13 @@ void __58__STUsageGraphViewController__updateBarViewsAndIndicators__block_invoke
 
     else
     {
-      v7 = [(STUsageGraphViewController *)self view];
-      [v4 locationInView:v7];
+      view = [(STUsageGraphViewController *)self view];
+      [paddleCopy locationInView:view];
       v9 = v8;
       v11 = v10;
 
-      v12 = [(STUsageGraphViewController *)self graphLayoutGuide];
-      [v12 layoutFrame];
+      graphLayoutGuide = [(STUsageGraphViewController *)self graphLayoutGuide];
+      [graphLayoutGuide layoutFrame];
       v22.x = v9;
       v22.y = v11;
       v13 = CGRectContainsPoint(v23, v22);
@@ -1814,16 +1814,16 @@ void __63__STUsageGraphViewController__handleLongPressGestureForPaddle___block_i
   [v1 setAlpha:1.0];
 }
 
-- (id)_closestBarViewToPoint:(CGPoint)a3
+- (id)_closestBarViewToPoint:(CGPoint)point
 {
-  x = a3.x;
+  x = point.x;
   v25 = *MEMORY[0x277D85DE8];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(STUsageGraphViewController *)self barViews];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  barViews = [(STUsageGraphViewController *)self barViews];
+  v5 = [barViews countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1836,13 +1836,13 @@ void __63__STUsageGraphViewController__handleLongPressGestureForPaddle___block_i
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(barViews);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 dataPoint];
-        v13 = [v12 total];
-        [v13 doubleValue];
+        dataPoint = [v11 dataPoint];
+        total = [dataPoint total];
+        [total doubleValue];
         v15 = v14;
 
         if (v15 > 0.0)
@@ -1860,7 +1860,7 @@ void __63__STUsageGraphViewController__handleLongPressGestureForPaddle___block_i
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [barViews countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
@@ -1874,15 +1874,15 @@ void __63__STUsageGraphViewController__handleLongPressGestureForPaddle___block_i
   return v7;
 }
 
-- (void)_showPaddleForBarView:(id)a3
+- (void)_showPaddleForBarView:(id)view
 {
-  v4 = a3;
-  v5 = [(STUsageGraphViewController *)self selectedBarView];
-  [v5 setColor:0];
-  if (v4)
+  viewCopy = view;
+  selectedBarView = [(STUsageGraphViewController *)self selectedBarView];
+  [selectedBarView setColor:0];
+  if (viewCopy)
   {
-    v6 = [(STUsageGraphViewController *)self titleView];
-    [v6 alpha];
+    titleView = [(STUsageGraphViewController *)self titleView];
+    [titleView alpha];
     v8 = v7;
 
     if (v8 > 0.00000011920929)
@@ -1895,48 +1895,48 @@ void __63__STUsageGraphViewController__handleLongPressGestureForPaddle___block_i
       [MEMORY[0x277D75D18] animateWithDuration:v25 animations:0.2];
     }
 
-    v9 = v4;
+    v9 = viewCopy;
 
-    v10 = [MEMORY[0x277D75348] systemGreenColor];
-    [v9 setColor:v10];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+    [v9 setColor:systemGreenColor];
 
     [(STUsageGraphViewController *)self setSelectedBarView:v9];
-    v11 = [(STUsageGraphViewController *)self paddleView];
-    [v11 setHidden:0];
-    v12 = [v9 dataPoint];
-    [v11 setDataPoint:v12];
+    paddleView = [(STUsageGraphViewController *)self paddleView];
+    [paddleView setHidden:0];
+    dataPoint = [v9 dataPoint];
+    [paddleView setDataPoint:dataPoint];
 
-    v13 = [(STUsageGraphViewController *)self paddleViewCenterXConstraint];
-    [v13 setActive:0];
-    v14 = [v11 centerXAnchor];
-    v15 = [v9 centerXAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    paddleViewCenterXConstraint = [(STUsageGraphViewController *)self paddleViewCenterXConstraint];
+    [paddleViewCenterXConstraint setActive:0];
+    centerXAnchor = [paddleView centerXAnchor];
+    centerXAnchor2 = [v9 centerXAnchor];
+    v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
     LODWORD(v17) = 1132068864;
     [v16 setPriority:v17];
     [v16 setActive:1];
     [(STUsageGraphViewController *)self setPaddleViewCenterXConstraint:v16];
-    v18 = [(STUsageGraphViewController *)self paddleConnectorView];
-    [v18 setHidden:0];
-    v19 = [(STUsageGraphViewController *)self paddleViewConnectorCenterXConstraint];
-    [v19 setActive:0];
-    v20 = [v18 centerXAnchor];
-    v21 = [v9 centerXAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    paddleConnectorView = [(STUsageGraphViewController *)self paddleConnectorView];
+    [paddleConnectorView setHidden:0];
+    paddleViewConnectorCenterXConstraint = [(STUsageGraphViewController *)self paddleViewConnectorCenterXConstraint];
+    [paddleViewConnectorCenterXConstraint setActive:0];
+    centerXAnchor3 = [paddleConnectorView centerXAnchor];
+    centerXAnchor4 = [v9 centerXAnchor];
+    v22 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
 
     [v22 setActive:1];
     [(STUsageGraphViewController *)self setPaddleViewConnectorCenterXConstraint:v22];
 
-    v5 = v9;
+    selectedBarView = v9;
   }
 
   else
   {
-    v23 = [(STUsageGraphViewController *)self paddleView];
-    [v23 setHidden:1];
+    paddleView2 = [(STUsageGraphViewController *)self paddleView];
+    [paddleView2 setHidden:1];
 
-    v24 = [(STUsageGraphViewController *)self paddleConnectorView];
-    [v24 setHidden:1];
+    paddleConnectorView2 = [(STUsageGraphViewController *)self paddleConnectorView];
+    [paddleConnectorView2 setHidden:1];
   }
 }
 
@@ -1946,30 +1946,30 @@ void __52__STUsageGraphViewController__showPaddleForBarView___block_invoke(uint6
   [v1 setAlpha:0.0];
 }
 
-- (void)_handleLongPressGestureForBarSelection:(id)a3
+- (void)_handleLongPressGestureForBarSelection:(id)selection
 {
-  v23 = a3;
-  v4 = [(STUsageGraphViewController *)self barViews];
-  if (![v4 count])
+  selectionCopy = selection;
+  barViews = [(STUsageGraphViewController *)self barViews];
+  if (![barViews count])
   {
     goto LABEL_14;
   }
 
-  v5 = [(STUsageGraphViewController *)self dataSet];
-  v6 = [v5 timePeriod];
+  dataSet = [(STUsageGraphViewController *)self dataSet];
+  timePeriod = [dataSet timePeriod];
 
-  if (v6 != 2)
+  if (timePeriod != 2)
   {
     goto LABEL_15;
   }
 
-  v4 = [(STUsageGraphViewController *)self view];
-  [v23 locationInView:v4];
+  barViews = [(STUsageGraphViewController *)self view];
+  [selectionCopy locationInView:barViews];
   v8 = v7;
   v10 = v9;
   v11 = [(STUsageGraphViewController *)self _closestBarViewToPoint:?];
-  v12 = [v23 state];
-  [v23 _translationInView:v4];
+  state = [selectionCopy state];
+  [selectionCopy _translationInView:barViews];
   v15 = -v13;
   if (v13 >= 0.0)
   {
@@ -1985,10 +1985,10 @@ void __52__STUsageGraphViewController__showPaddleForBarView___block_invoke(uint6
 
     if (v14 <= 10.0)
     {
-      if (v12 < 3)
+      if (state < 3)
       {
-        v17 = [(STUsageGraphViewController *)self graphLayoutGuide];
-        [v17 layoutFrame];
+        graphLayoutGuide = [(STUsageGraphViewController *)self graphLayoutGuide];
+        [graphLayoutGuide layoutFrame];
         v25.x = v8;
         v25.y = v10;
         v18 = CGRectContainsPoint(v27, v25);
@@ -2002,23 +2002,23 @@ void __52__STUsageGraphViewController__showPaddleForBarView___block_invoke(uint6
         goto LABEL_12;
       }
 
-      if (v12 - 4 >= 2)
+      if (state - 4 >= 2)
       {
-        if (v12 != 3)
+        if (state != 3)
         {
           goto LABEL_13;
         }
 
-        v19 = [(STUsageGraphViewController *)self graphLayoutGuide];
-        [v19 layoutFrame];
+        graphLayoutGuide2 = [(STUsageGraphViewController *)self graphLayoutGuide];
+        [graphLayoutGuide2 layoutFrame];
         v26.x = v8;
         v26.y = v10;
         v20 = CGRectContainsPoint(v28, v26);
 
         if (v20)
         {
-          v21 = [(STUsageGraphViewController *)self selectedBarView];
-          v22 = [v21 isEqual:v11];
+          selectedBarView = [(STUsageGraphViewController *)self selectedBarView];
+          v22 = [selectedBarView isEqual:v11];
 
           if (v22)
           {
@@ -2041,17 +2041,17 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_selectBarView:(id)a3
+- (void)_selectBarView:(id)view
 {
-  v4 = a3;
-  v5 = [(STUsageGraphViewController *)self selectedBarView];
-  [(STUsageGraphViewController *)self setSelectedBarView:v4];
-  v6 = [(STUsageGraphViewController *)self verticalDividers];
-  v7 = [(STUsageGraphViewController *)self barViews];
-  v8 = v7;
-  if (v4)
+  viewCopy = view;
+  selectedBarView = [(STUsageGraphViewController *)self selectedBarView];
+  [(STUsageGraphViewController *)self setSelectedBarView:viewCopy];
+  verticalDividers = [(STUsageGraphViewController *)self verticalDividers];
+  barViews = [(STUsageGraphViewController *)self barViews];
+  v8 = barViews;
+  if (viewCopy)
   {
-    v9 = [v6 objectAtIndexedSubscript:{objc_msgSend(v7, "indexOfObject:", v4)}];
+    v9 = [verticalDividers objectAtIndexedSubscript:{objc_msgSend(barViews, "indexOfObject:", viewCopy)}];
   }
 
   else
@@ -2059,29 +2059,29 @@ LABEL_15:
     v9 = 0;
   }
 
-  v10 = [(STUsageGraphViewController *)self selectedVerticalDivider];
+  selectedVerticalDivider = [(STUsageGraphViewController *)self selectedVerticalDivider];
   [(STUsageGraphViewController *)self setSelectedVerticalDivider:v9];
-  if (v4 && v5)
+  if (viewCopy && selectedBarView)
   {
-    v11 = [MEMORY[0x277D75348] systemGray4Color];
-    [v5 setColor:v11];
+    systemGray4Color = [MEMORY[0x277D75348] systemGray4Color];
+    [selectedBarView setColor:systemGray4Color];
 
-    [v10 setSelected:0];
-    [v4 setColor:0];
+    [selectedVerticalDivider setSelected:0];
+    [viewCopy setColor:0];
     [v9 setSelected:1];
   }
 
-  else if (v4 | v5)
+  else if (viewCopy | selectedBarView)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __45__STUsageGraphViewController__selectBarView___block_invoke;
     v15[3] = &unk_279B7E908;
-    v18 = v5 != 0;
-    v16 = v6;
-    v17 = v4;
+    v18 = selectedBarView != 0;
+    v16 = verticalDividers;
+    v17 = viewCopy;
     [v8 enumerateObjectsUsingBlock:v15];
-    if (v4)
+    if (viewCopy)
     {
       [MEMORY[0x277D75348] systemGrayColor];
     }
@@ -2091,11 +2091,11 @@ LABEL_15:
       [MEMORY[0x277D75348] systemGreenColor];
     }
     v12 = ;
-    v13 = [(STUsageGraphViewController *)self weeklyAverageLine];
-    [v13 setTintColor:v12];
+    weeklyAverageLine = [(STUsageGraphViewController *)self weeklyAverageLine];
+    [weeklyAverageLine setTintColor:v12];
 
-    v14 = [(STUsageGraphViewController *)self weeklyAverageLabel];
-    [v14 setTextColor:v12];
+    weeklyAverageLabel = [(STUsageGraphViewController *)self weeklyAverageLabel];
+    [weeklyAverageLabel setTextColor:v12];
   }
 }
 
@@ -2168,9 +2168,9 @@ void __52__STUsageGraphViewController_dashedAverageLineImage__block_invoke_2(uin
 
 - (uint64_t)loadView
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  *a3 = v6;
-  return [v6 handleFailureInMethod:a1 object:a2 file:@"STUsageGraphViewController.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"!includePaddle"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  *a3 = currentHandler;
+  return [currentHandler handleFailureInMethod:self object:a2 file:@"STUsageGraphViewController.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"!includePaddle"}];
 }
 
 - (void)setSelectedWeekday:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

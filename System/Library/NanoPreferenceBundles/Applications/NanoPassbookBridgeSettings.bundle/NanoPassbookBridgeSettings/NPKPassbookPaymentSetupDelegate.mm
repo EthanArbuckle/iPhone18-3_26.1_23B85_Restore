@@ -2,17 +2,17 @@
 + (id)sharedSetupDelegate;
 - (BOOL)_canAddPaymentPass;
 - (BOOL)canAddPaymentPass;
-- (BOOL)handleDeletePassRequestWithPass:(id)a3 forViewController:(id)a4;
-- (BOOL)hasPaymentPassWithUniqueID:(id)a3;
-- (BOOL)isDeletionInProgressForPass:(id)a3;
+- (BOOL)handleDeletePassRequestWithPass:(id)pass forViewController:(id)controller;
+- (BOOL)hasPaymentPassWithUniqueID:(id)d;
+- (BOOL)isDeletionInProgressForPass:(id)pass;
 - (NPKPassbookPaymentSetupDelegate)init;
 - (NPKPaymentWebServiceCompanionTargetDevice)targetDevice;
 - (NSString)defaultPaymentPassIdentifier;
 - (PKPaymentWebService)webService;
 - (id)_defaultPaymentPassIdentifier;
-- (id)defaultPaymentApplicationForPassWithUniqueID:(id)a3;
-- (id)passWithPassTypeIdentifier:(id)a3 serialNumber:(id)a4;
-- (id)passWithUniqueID:(id)a3;
+- (id)defaultPaymentApplicationForPassWithUniqueID:(id)d;
+- (id)passWithPassTypeIdentifier:(id)identifier serialNumber:(id)number;
+- (id)passWithUniqueID:(id)d;
 - (id)passes;
 - (id)paymentPasses;
 - (id)peerPaymentAccount;
@@ -20,19 +20,19 @@
 - (id)peerPaymentWebService;
 - (unint64_t)_numberOfPaymentPasses;
 - (unint64_t)countOfPasses;
-- (void)_registerForPeerPaymentWithCompletion:(id)a3;
-- (void)_setDeletionInProgress:(BOOL)a3 forPassWithUniqueID:(id)a4;
-- (void)_unregisterForPeerPaymentWithCompletion:(id)a3;
+- (void)_registerForPeerPaymentWithCompletion:(id)completion;
+- (void)_setDeletionInProgress:(BOOL)progress forPassWithUniqueID:(id)d;
+- (void)_unregisterForPeerPaymentWithCompletion:(id)completion;
 - (void)loadWebService;
-- (void)paymentSetupDidFinish:(id)a3;
+- (void)paymentSetupDidFinish:(id)finish;
 - (void)paymentSetupDidShowEligibilityIssue;
-- (void)paymentSetupDidShowError:(id)a3;
-- (void)paymentSetupRequestPasscodeUpgradeForPasscodeUpgradeFlowController:(id)a3 withVisibleViewController:(id)a4 completion:(id)a5;
-- (void)peerPaymentRegistrationStatusHasChanged:(BOOL)a3 completion:(id)a4;
-- (void)setDefaultPaymentApplication:(id)a3 forPassWithUniqueID:(id)a4 completion:(id)a5;
-- (void)setDefaultPaymentPassIdentifier:(id)a3;
-- (void)setDeletionStatusHandler:(id)a3 forPass:(id)a4;
-- (void)transactionsForTransactionSourceIdentifiers:(id)a3 withTransactionSource:(unint64_t)a4 withBackingData:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7 orderedByDate:(int64_t)a8 limit:(int64_t)a9 completion:(id)a10;
+- (void)paymentSetupDidShowError:(id)error;
+- (void)paymentSetupRequestPasscodeUpgradeForPasscodeUpgradeFlowController:(id)controller withVisibleViewController:(id)viewController completion:(id)completion;
+- (void)peerPaymentRegistrationStatusHasChanged:(BOOL)changed completion:(id)completion;
+- (void)setDefaultPaymentApplication:(id)application forPassWithUniqueID:(id)d completion:(id)completion;
+- (void)setDefaultPaymentPassIdentifier:(id)identifier;
+- (void)setDeletionStatusHandler:(id)handler forPass:(id)pass;
+- (void)transactionsForTransactionSourceIdentifiers:(id)identifiers withTransactionSource:(unint64_t)source withBackingData:(unint64_t)data startDate:(id)date endDate:(id)endDate orderedByDate:(int64_t)byDate limit:(int64_t)limit completion:(id)self0;
 @end
 
 @implementation NPKPassbookPaymentSetupDelegate
@@ -81,7 +81,7 @@
 - (PKPaymentWebService)webService
 {
   v2 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v3 = [v2 webService];
+  webService = [v2 webService];
 
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -92,25 +92,25 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = webService;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Notice: Payment setup delegate returning web service %@", &v8, 0xCu);
     }
   }
 
-  return v3;
+  return webService;
 }
 
 - (NPKPaymentWebServiceCompanionTargetDevice)targetDevice
 {
   v2 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v3 = [v2 targetDevice];
+  targetDevice = [v2 targetDevice];
 
-  return v3;
+  return targetDevice;
 }
 
-- (void)paymentSetupDidFinish:(id)a3
+- (void)paymentSetupDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -120,23 +120,23 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = finishCopy;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Notice: Payment setup finished for nav controller %@", &v12, 0xCu);
     }
   }
 
-  v8 = [(NPKPassbookPaymentSetupDelegate *)self webService];
-  v9 = [(NPKPassbookPaymentSetupDelegate *)self targetDevice];
-  v10 = [v8 context];
-  [v9 archiveContext:v10];
+  webService = [(NPKPassbookPaymentSetupDelegate *)self webService];
+  targetDevice = [(NPKPassbookPaymentSetupDelegate *)self targetDevice];
+  context = [webService context];
+  [targetDevice archiveContext:context];
 
-  v11 = [v4 presentingViewController];
-  [v11 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [finishCopy presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)paymentSetupDidShowError:(id)a3
+- (void)paymentSetupDidShowError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -146,7 +146,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = errorCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Notice: Error during provisioning: %@", &v7, 0xCu);
     }
   }
@@ -168,11 +168,11 @@
   }
 }
 
-- (void)paymentSetupRequestPasscodeUpgradeForPasscodeUpgradeFlowController:(id)a3 withVisibleViewController:(id)a4 completion:(id)a5
+- (void)paymentSetupRequestPasscodeUpgradeForPasscodeUpgradeFlowController:(id)controller withVisibleViewController:(id)viewController completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -181,25 +181,25 @@
     v13 = pk_Payment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = objc_retainBlock(v10);
+      v14 = objc_retainBlock(completionCopy);
       v16 = 138412802;
-      v17 = v8;
+      v17 = controllerCopy;
       v18 = 2112;
-      v19 = v9;
+      v19 = viewControllerCopy;
       v20 = 2112;
       v21 = v14;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Notice: Payment setup request to upgrade passcode with flow controller: %@ visible view controller: %@ completion: %@", &v16, 0x20u);
     }
   }
 
-  v15 = [(NPKPassbookPaymentSetupDelegate *)self targetDevice];
-  [v15 requestPasscodeUpgradeForPasscodeUpgradeFlowController:v8 withVisibleViewController:v9 completion:v10];
+  targetDevice = [(NPKPassbookPaymentSetupDelegate *)self targetDevice];
+  [targetDevice requestPasscodeUpgradeForPasscodeUpgradeFlowController:controllerCopy withVisibleViewController:viewControllerCopy completion:completionCopy];
 }
 
-- (BOOL)handleDeletePassRequestWithPass:(id)a3 forViewController:(id)a4
+- (BOOL)handleDeletePassRequestWithPass:(id)pass forViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  controllerCopy = controller;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -209,15 +209,15 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v30 = v6;
+      v30 = passCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Notice: Payment setup delegate: got delete request for pass %@", buf, 0xCu);
     }
   }
 
-  v11 = [v6 paymentPass];
-  v12 = [v11 isPeerPaymentPass];
+  paymentPass = [passCopy paymentPass];
+  isPeerPaymentPass = [paymentPass isPeerPaymentPass];
 
-  if (v12)
+  if (isPeerPaymentPass)
   {
     v13 = pk_Payment_log();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -233,25 +233,25 @@
     }
   }
 
-  v16 = [v6 uniqueID];
-  v17 = [v7 navigationController];
-  objc_initWeak(buf, v17);
+  uniqueID = [passCopy uniqueID];
+  navigationController = [controllerCopy navigationController];
+  objc_initWeak(buf, navigationController);
 
-  [(NPKPassbookPaymentSetupDelegate *)self _setDeletionInProgress:1 forPassWithUniqueID:v16];
-  v18 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
-  v19 = [v6 uniqueID];
+  [(NPKPassbookPaymentSetupDelegate *)self _setDeletionInProgress:1 forPassWithUniqueID:uniqueID];
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  uniqueID2 = [passCopy uniqueID];
   v20 = NPKPairedOrPairingDevice();
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_12D58;
   v24[3] = &unk_2D010;
-  v21 = v6;
+  v21 = passCopy;
   v25 = v21;
   objc_copyWeak(&v28, buf);
-  v26 = self;
-  v22 = v16;
+  selfCopy = self;
+  v22 = uniqueID;
   v27 = v22;
-  [v18 removePaymentPassWithUniqueID:v19 forDevice:v20 waitForConfirmation:v12 ^ 1 completion:v24];
+  [companionAgentConnection removePaymentPassWithUniqueID:uniqueID2 forDevice:v20 waitForConfirmation:isPeerPaymentPass ^ 1 completion:v24];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(buf);
@@ -259,60 +259,60 @@
   return 1;
 }
 
-- (BOOL)isDeletionInProgressForPass:(id)a3
+- (BOOL)isDeletionInProgressForPass:(id)pass
 {
-  v4 = a3;
-  v5 = [(NPKPassbookPaymentSetupDelegate *)self deletionInProgressPasses];
-  v6 = [v4 uniqueID];
+  passCopy = pass;
+  deletionInProgressPasses = [(NPKPassbookPaymentSetupDelegate *)self deletionInProgressPasses];
+  uniqueID = [passCopy uniqueID];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(passCopy) = [deletionInProgressPasses containsObject:uniqueID];
+  return passCopy;
 }
 
-- (void)setDeletionStatusHandler:(id)a3 forPass:(id)a4
+- (void)setDeletionStatusHandler:(id)handler forPass:(id)pass
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NPKPassbookPaymentSetupDelegate *)self deleteStatusHandlers];
-  if (v10)
+  handlerCopy = handler;
+  passCopy = pass;
+  deleteStatusHandlers = [(NPKPassbookPaymentSetupDelegate *)self deleteStatusHandlers];
+  if (handlerCopy)
   {
-    v8 = objc_retainBlock(v10);
-    v9 = [v6 uniqueID];
+    uniqueID2 = objc_retainBlock(handlerCopy);
+    uniqueID = [passCopy uniqueID];
 
-    [v7 setObject:v8 forKey:v9];
+    [deleteStatusHandlers setObject:uniqueID2 forKey:uniqueID];
   }
 
   else
   {
-    v8 = [v6 uniqueID];
+    uniqueID2 = [passCopy uniqueID];
 
-    [v7 removeObjectForKey:v8];
+    [deleteStatusHandlers removeObjectForKey:uniqueID2];
   }
 }
 
-- (void)_setDeletionInProgress:(BOOL)a3 forPassWithUniqueID:(id)a4
+- (void)_setDeletionInProgress:(BOOL)progress forPassWithUniqueID:(id)d
 {
-  v4 = a3;
-  v12 = a4;
-  v6 = [(NPKPassbookPaymentSetupDelegate *)self deletionInProgressPasses];
-  v7 = [v6 containsObject:v12];
+  progressCopy = progress;
+  dCopy = d;
+  deletionInProgressPasses = [(NPKPassbookPaymentSetupDelegate *)self deletionInProgressPasses];
+  v7 = [deletionInProgressPasses containsObject:dCopy];
 
-  if (v7 != v4)
+  if (v7 != progressCopy)
   {
-    v8 = [(NPKPassbookPaymentSetupDelegate *)self deletionInProgressPasses];
-    v9 = v8;
-    if (v4)
+    deletionInProgressPasses2 = [(NPKPassbookPaymentSetupDelegate *)self deletionInProgressPasses];
+    v9 = deletionInProgressPasses2;
+    if (progressCopy)
     {
-      [v8 addObject:v12];
+      [deletionInProgressPasses2 addObject:dCopy];
     }
 
     else
     {
-      [v8 removeObject:v12];
+      [deletionInProgressPasses2 removeObject:dCopy];
     }
 
-    v10 = [(NPKPassbookPaymentSetupDelegate *)self deleteStatusHandlers];
-    v11 = [v10 objectForKey:v12];
+    deleteStatusHandlers = [(NPKPassbookPaymentSetupDelegate *)self deleteStatusHandlers];
+    v11 = [deleteStatusHandlers objectForKey:dCopy];
 
     if (v11)
     {
@@ -324,7 +324,7 @@
 - (id)paymentPasses
 {
   v3 = +[NSMutableArray array];
-  v4 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_132D4;
@@ -332,7 +332,7 @@
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [v4 paymentPassUniqueIDsSynchronous:1 reply:v9];
+  [companionAgentConnection paymentPassUniqueIDsSynchronous:1 reply:v9];
 
   v6 = v10;
   v7 = v5;
@@ -342,13 +342,13 @@
 
 - (BOOL)canAddPaymentPass
 {
-  v3 = [(NPKPassbookPaymentSetupDelegate *)self _canAddPaymentPass];
-  v4 = v3;
-  [(NPKPassbookPaymentSetupDelegate *)self setLastProvidedCanAddPaymentPass:v3];
+  _canAddPaymentPass = [(NPKPassbookPaymentSetupDelegate *)self _canAddPaymentPass];
+  v4 = _canAddPaymentPass;
+  [(NPKPassbookPaymentSetupDelegate *)self setLastProvidedCanAddPaymentPass:_canAddPaymentPass];
   return v4;
 }
 
-- (id)passWithPassTypeIdentifier:(id)a3 serialNumber:(id)a4
+- (id)passWithPassTypeIdentifier:(id)identifier serialNumber:(id)number
 {
   v5 = PKGeneratePassUniqueID();
   v6 = [(NPKPassbookPaymentSetupDelegate *)self passWithUniqueID:v5];
@@ -361,8 +361,8 @@
   if (PKUseMockSURFServer())
   {
     v2 = PKMockPeerPaymentPassPassTypeID();
-    v3 = PKMockPeerPaymentPassSerialNumber();
-    v4 = PKGeneratePassUniqueID();
+    peerPaymentAccount2 = PKMockPeerPaymentPassSerialNumber();
+    associatedPassUniqueID2 = PKGeneratePassUniqueID();
   }
 
   else
@@ -376,40 +376,40 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-        v9 = [v8 peerPaymentAccount];
-        v10 = [v9 associatedPassUniqueID];
+        peerPaymentAccount = [v8 peerPaymentAccount];
+        associatedPassUniqueID = [peerPaymentAccount associatedPassUniqueID];
         v13 = 138412290;
-        v14 = v10;
+        v14 = associatedPassUniqueID;
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Notice: returning peer payment pass unique ID %@", &v13, 0xCu);
       }
     }
 
     v2 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-    v3 = [v2 peerPaymentAccount];
-    v4 = [v3 associatedPassUniqueID];
+    peerPaymentAccount2 = [v2 peerPaymentAccount];
+    associatedPassUniqueID2 = [peerPaymentAccount2 associatedPassUniqueID];
   }
 
-  v11 = v4;
+  v11 = associatedPassUniqueID2;
 
   return v11;
 }
 
-- (id)passWithUniqueID:(id)a3
+- (id)passWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = sub_137B4;
   v13 = sub_137C4;
   v14 = 0;
-  v5 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_137CC;
   v8[3] = &unk_2D088;
   v8[4] = &v9;
-  [v5 paymentPassWithUniqueID:v4 synchronous:1 reply:v8];
+  [companionAgentConnection paymentPassWithUniqueID:dCopy synchronous:1 reply:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -426,7 +426,7 @@
   v15 = sub_137C4;
   v16 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_139B0;
@@ -434,7 +434,7 @@
   v10 = &v11;
   v5 = v3;
   v9 = v5;
-  [v4 defaultCardUniqueID:v8];
+  [companionAgentConnection defaultCardUniqueID:v8];
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = v12[5];
@@ -444,9 +444,9 @@
   return v6;
 }
 
-- (id)defaultPaymentApplicationForPassWithUniqueID:(id)a3
+- (id)defaultPaymentApplicationForPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -454,7 +454,7 @@
   v17 = sub_137C4;
   v18 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_13B74;
@@ -462,7 +462,7 @@
   v12 = &v13;
   v7 = v5;
   v11 = v7;
-  [v6 defaultPaymentApplicationForPassWithUniqueID:v4 completion:v10];
+  [companionAgentConnection defaultPaymentApplicationForPassWithUniqueID:dCopy completion:v10];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = v14[5];
@@ -472,60 +472,60 @@
   return v8;
 }
 
-- (BOOL)hasPaymentPassWithUniqueID:(id)a3
+- (BOOL)hasPaymentPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_13CD8;
   v8[3] = &unk_2D100;
   v10 = &v11;
-  v6 = v4;
+  v6 = dCopy;
   v9 = v6;
-  [v5 paymentPassUniqueIDsSynchronous:1 reply:v8];
+  [companionAgentConnection paymentPassUniqueIDsSynchronous:1 reply:v8];
 
-  LOBYTE(v5) = *(v12 + 24);
+  LOBYTE(companionAgentConnection) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v5;
+  return companionAgentConnection;
 }
 
-- (void)setDefaultPaymentApplication:(id)a3 forPassWithUniqueID:(id)a4 completion:(id)a5
+- (void)setDefaultPaymentApplication:(id)application forPassWithUniqueID:(id)d completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
-  [v11 setDefaultPaymentApplication:v10 forPassWithUniqueID:v9 completion:v8];
+  completionCopy = completion;
+  dCopy = d;
+  applicationCopy = application;
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  [companionAgentConnection setDefaultPaymentApplication:applicationCopy forPassWithUniqueID:dCopy completion:completionCopy];
 }
 
-- (void)transactionsForTransactionSourceIdentifiers:(id)a3 withTransactionSource:(unint64_t)a4 withBackingData:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7 orderedByDate:(int64_t)a8 limit:(int64_t)a9 completion:(id)a10
+- (void)transactionsForTransactionSourceIdentifiers:(id)identifiers withTransactionSource:(unint64_t)source withBackingData:(unint64_t)data startDate:(id)date endDate:(id)endDate orderedByDate:(int64_t)byDate limit:(int64_t)limit completion:(id)self0
 {
-  v17 = a10;
-  v18 = a7;
-  v19 = a6;
-  v20 = a3;
-  v21 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
-  [v21 transactionsForTransactionSourceIdentifiers:v20 withTransactionSource:a4 withBackingData:a5 startDate:v19 endDate:v18 orderedByDate:a8 limit:a9 completion:v17];
+  completionCopy = completion;
+  endDateCopy = endDate;
+  dateCopy = date;
+  identifiersCopy = identifiers;
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  [companionAgentConnection transactionsForTransactionSourceIdentifiers:identifiersCopy withTransactionSource:source withBackingData:data startDate:dateCopy endDate:endDateCopy orderedByDate:byDate limit:limit completion:completionCopy];
 }
 
-- (void)setDefaultPaymentPassIdentifier:(id)a3
+- (void)setDefaultPaymentPassIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_13F4C;
   v8[3] = &unk_2D128;
   v9 = v5;
   v7 = v5;
-  [v6 setDefaultCardUniqueID:v4 completion:v8];
+  [companionAgentConnection setDefaultCardUniqueID:identifierCopy completion:v8];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -536,13 +536,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_14058;
   v5[3] = &unk_2D150;
   v5[4] = &v6;
-  [v2 countOfPassesSynchronous:1 completion:v5];
+  [companionAgentConnection countOfPassesSynchronous:1 completion:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -557,13 +557,13 @@
   v9 = sub_137B4;
   v10 = sub_137C4;
   v11 = 0;
-  v2 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1417C;
   v5[3] = &unk_2D178;
   v5[4] = &v6;
-  [v2 passesSynchronous:1 completion:v5];
+  [companionAgentConnection passesSynchronous:1 completion:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -571,10 +571,10 @@
   return v3;
 }
 
-- (void)peerPaymentRegistrationStatusHasChanged:(BOOL)a3 completion:(id)a4
+- (void)peerPaymentRegistrationStatusHasChanged:(BOOL)changed completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  changedCopy = changed;
+  completionCopy = completion;
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -584,7 +584,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v18 = v4;
+      v18 = changedCopy;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Notice: Got peer payment registration status change request (%d)", buf, 8u);
     }
   }
@@ -594,11 +594,11 @@
   v15[2] = sub_14350;
   v15[3] = &unk_2D1A0;
   v15[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v16 = v10;
   v11 = objc_retainBlock(v15);
   v12 = v11;
-  if (v4)
+  if (changedCopy)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -615,17 +615,17 @@
   }
 }
 
-- (void)_registerForPeerPaymentWithCompletion:(id)a3
+- (void)_registerForPeerPaymentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(NPKPassbookPaymentSetupDelegate *)self webService];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_14A94;
   v5 = v18[3] = &unk_2C778;
   v19 = v5;
-  v20 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = completionCopy;
   v21 = v6;
   v7 = objc_retainBlock(v18);
   v8 = [[PKPaymentProvisioningController alloc] initWithWebService:v5];
@@ -645,27 +645,27 @@
   [v11 validatePreconditions:v13];
 }
 
-- (void)_unregisterForPeerPaymentWithCompletion:(id)a3
+- (void)_unregisterForPeerPaymentWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NPKPassbookPaymentSetupDelegate *)self targetDevice];
-  [v5 peerPaymentUnregisterWithCompletion:v4];
+  completionCopy = completion;
+  targetDevice = [(NPKPassbookPaymentSetupDelegate *)self targetDevice];
+  [targetDevice peerPaymentUnregisterWithCompletion:completionCopy];
 }
 
 - (id)peerPaymentWebService
 {
   v2 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v3 = [v2 peerPaymentWebService];
+  peerPaymentWebService = [v2 peerPaymentWebService];
 
-  return v3;
+  return peerPaymentWebService;
 }
 
 - (id)peerPaymentAccount
 {
   v2 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v3 = [v2 peerPaymentAccount];
+  peerPaymentAccount = [v2 peerPaymentAccount];
 
-  return v3;
+  return peerPaymentAccount;
 }
 
 - (id)_defaultPaymentPassIdentifier
@@ -677,7 +677,7 @@
   v15 = sub_137C4;
   v16 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_14F04;
@@ -685,7 +685,7 @@
   v10 = &v11;
   v5 = v3;
   v9 = v5;
-  [v4 defaultCardUniqueID:v8];
+  [companionAgentConnection defaultCardUniqueID:v8];
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = v12[5];
@@ -698,8 +698,8 @@
 - (BOOL)_canAddPaymentPass
 {
   v4 = (PKEnableDynamicSEAllocation() & 1) != 0 || (v3 = NPKMaxPaymentCards()) == 0 || [(NPKPassbookPaymentSetupDelegate *)self _numberOfPaymentPasses]< v3;
-  v5 = [(NPKPassbookPaymentSetupDelegate *)self webService];
-  v6 = [v5 paymentSetupSupportedInRegion] != &dword_0 + 2;
+  webService = [(NPKPassbookPaymentSetupDelegate *)self webService];
+  v6 = [webService paymentSetupSupportedInRegion] != &dword_0 + 2;
 
   return v6 && v4;
 }
@@ -710,13 +710,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPassbookPaymentSetupDelegate *)self companionAgentConnection];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_150B0;
   v5[3] = &unk_2D268;
   v5[4] = &v6;
-  [v2 paymentPassUniqueIDsSynchronous:1 excludingDeactivated:1 reply:v5];
+  [companionAgentConnection paymentPassUniqueIDsSynchronous:1 excludingDeactivated:1 reply:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);

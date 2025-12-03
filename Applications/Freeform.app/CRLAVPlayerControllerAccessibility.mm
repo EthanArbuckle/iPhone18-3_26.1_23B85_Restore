@@ -1,23 +1,23 @@
 @interface CRLAVPlayerControllerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (void)crlaxTogglePlayback;
 @end
 
 @implementation CRLAVPlayerControllerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (void)crlaxTogglePlayback
 {
-  v3 = [(CRLAVPlayerControllerAccessibility *)self crlaxTarget];
-  [v3 setPlaying:{-[CRLAVPlayerControllerAccessibility crlaxIsPlaying](self, "crlaxIsPlaying") ^ 1}];
+  crlaxTarget = [(CRLAVPlayerControllerAccessibility *)self crlaxTarget];
+  [crlaxTarget setPlaying:{-[CRLAVPlayerControllerAccessibility crlaxIsPlaying](self, "crlaxIsPlaying") ^ 1}];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface ComAppleContextkitCategoriesConstellation_Request_QIDCountPQ
 - (IOSObjectArray)popAllCountsFromArray;
-- (void)addItemWithNSString:(id)a3 withInt:(int)a4;
+- (void)addItemWithNSString:(id)string withInt:(int)int;
 - (void)dealloc;
 @end
 
@@ -8,7 +8,7 @@
 
 - (IOSObjectArray)popAllCountsFromArray
 {
-  v2 = [a1 size];
+  v2 = [self size];
   if (qword_100554430 != -1)
   {
     sub_1000C2D84();
@@ -21,7 +21,7 @@
   {
     do
     {
-      IOSObjectArray_Set(v3, v5--, [a1 pop]);
+      IOSObjectArray_Set(v3, v5--, [self pop]);
     }
 
     while (v5 != -1);
@@ -30,7 +30,7 @@
   return v3;
 }
 
-- (void)addItemWithNSString:(id)a3 withInt:(int)a4
+- (void)addItemWithNSString:(id)string withInt:(int)int
 {
   qidToCategoryIdTreasureMap = self->this$0_->this$0_->qidToCategoryIdTreasureMap_;
   if (!qidToCategoryIdTreasureMap)
@@ -42,8 +42,8 @@
   if (v8 && ([v8 isEmpty] & 1) == 0)
   {
     v9 = [ComAppleContextkitCategoriesConstellation_QIDCount alloc];
-    JreStrongAssign(&v9->qid_, a3);
-    v9->count_ = a4;
+    JreStrongAssign(&v9->qid_, string);
+    v9->count_ = int;
     v10 = v9;
 
     [(OrgApacheLuceneUtilPriorityQueue *)self insertWithOverflowWithId:v10];

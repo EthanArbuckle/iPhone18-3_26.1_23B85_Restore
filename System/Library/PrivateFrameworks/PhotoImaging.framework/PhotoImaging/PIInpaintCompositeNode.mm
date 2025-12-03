@@ -2,75 +2,75 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)scale;
 - (NURenderNode)inputNode;
 - (PIInpaintCacheNode)inpaintNode;
-- (PIInpaintCompositeNode)initWithScale:(id)a3 sampleMode:(int64_t)a4 input:(id)a5 retouch:(id)a6;
-- (PIInpaintCompositeNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (PIInpaintCompositeNode)initWithScale:(id)scale sampleMode:(int64_t)mode input:(id)input retouch:(id)retouch;
+- (PIInpaintCompositeNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateImage:(id *)image;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 - (int64_t)sampleMode;
 @end
 
 @implementation PIInpaintCompositeNode
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
-  v5 = [(PIInpaintCompositeNode *)self inpaintNode];
-  v6 = [v5 outputImage:a3];
+  inpaintNode = [(PIInpaintCompositeNode *)self inpaintNode];
+  v6 = [inpaintNode outputImage:image];
   if (v6)
   {
     v7 = v6;
-    v8 = [v5 outputImageGeometry:a3];
+    v8 = [inpaintNode outputImageGeometry:image];
     if (v8)
     {
-      v9 = [(PIInpaintCompositeNode *)self inputNode];
-      v10 = [v9 outputImage:a3];
+      inputNode = [(PIInpaintCompositeNode *)self inputNode];
+      v10 = [inputNode outputImage:image];
       if (v10)
       {
-        v11 = [v9 outputImageGeometry:a3];
+        v11 = [inputNode outputImageGeometry:image];
         if (v11)
         {
-          v40 = v9;
+          v40 = inputNode;
           v42 = v10;
-          v12 = [(PIInpaintCompositeNode *)self scale];
+          scale = [(PIInpaintCompositeNode *)self scale];
           v44 = v13;
-          v45 = v12;
+          v45 = scale;
           NUScaleToDouble();
           v15 = v14;
-          v43 = [(NURenderNode *)self resamplingColorSpace];
-          v16 = [v8 scaledSize];
+          resamplingColorSpace = [(NURenderNode *)self resamplingColorSpace];
+          scaledSize = [v8 scaledSize];
           v18 = v17;
           v41 = v11;
-          v19 = [v11 scaledSize];
+          scaledSize2 = [v11 scaledSize];
           v21 = v20;
-          v22 = [v5 outputRegion];
+          outputRegion = [inpaintNode outputRegion];
           v55 = 0;
           v56 = 0;
-          v57 = v16;
+          v57 = scaledSize;
           v58 = v18;
-          v23 = [v22 regionByFlippingInRect:&v55];
+          v23 = [outputRegion regionByFlippingInRect:&v55];
 
           v55 = 0;
           v56 = 0;
-          v57 = v16;
+          v57 = scaledSize;
           v58 = v18;
           if ([v23 includesRect:&v55])
           {
             if (NUScaleEqual())
             {
               v11 = v41;
-              v24 = v43;
+              v24 = resamplingColorSpace;
             }
 
             else
             {
               v34 = v23;
               v35 = MEMORY[0x1E69B3C28];
-              v36 = [(PIInpaintCompositeNode *)self sampleMode];
+              sampleMode = [(PIInpaintCompositeNode *)self sampleMode];
               v55 = 0;
               v56 = 0;
-              v57 = v19;
+              v57 = scaledSize2;
               v58 = v21;
-              v24 = v43;
-              v37 = [v35 resampleImage:v7 by:v45 sampleMode:v44 extent:v36 colorSpace:{&v55, v43}];
+              v24 = resamplingColorSpace;
+              v37 = [v35 resampleImage:v7 by:v45 sampleMode:v44 extent:sampleMode colorSpace:{&v55, resamplingColorSpace}];
 
               v7 = v37;
               v23 = v34;
@@ -78,7 +78,7 @@
             }
 
             v10 = v42;
-            v9 = v40;
+            inputNode = v40;
             v7 = v7;
             v25 = v7;
           }
@@ -89,15 +89,15 @@
             v26 = [v23 regionByScalingBy:0 withRounding:{v15, v15}];
             v55 = 0;
             v56 = 0;
-            v57 = v19;
+            v57 = scaledSize2;
             v58 = v21;
             v27 = [v26 regionByClippingToRect:&v55];
 
-            v28 = [v5 padding];
-            v29 = vcvtpd_s64_f64(v15 * v28);
+            padding = [inpaintNode padding];
+            v29 = vcvtpd_s64_f64(v15 * padding);
             v55 = 0;
             v56 = 0;
-            v57 = v19;
+            v57 = scaledSize2;
             v58 = v21;
             v30 = [v27 regionByShrinkingBy:v29 inRect:{v29, &v55}];
 
@@ -115,13 +115,13 @@
             v46[3] = &unk_1E82AB670;
             v52 = v45;
             v53 = v44;
-            v54 = v28;
+            v54 = padding;
             v32 = v31;
             v7 = v7;
             v47 = v7;
-            v48 = self;
-            v24 = v43;
-            v49 = v43;
+            selfCopy = self;
+            v24 = resamplingColorSpace;
+            v49 = resamplingColorSpace;
             v33 = v30;
             v50 = v33;
             v51 = &v55;
@@ -129,7 +129,7 @@
             v25 = v56[5];
 
             _Block_object_dispose(&v55, 8);
-            v9 = v40;
+            inputNode = v40;
             v11 = v41;
             v23 = v39;
           }
@@ -240,29 +240,29 @@ void __41__PIInpaintCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
-  v14 = [v13 outputImageGeometry:a6];
+  inputsCopy = inputs;
+  settingsCopy = settings;
+  stateCopy = state;
+  v13 = [inputsCopy objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  v14 = [v13 outputImageGeometry:error];
 
   if (v14)
   {
     [v14 renderScale];
-    [v12 scale];
+    [stateCopy scale];
     NUScaleDivide();
-    v15 = [v11 mutableCopy];
+    v15 = [settingsCopy mutableCopy];
     v16 = NUScaleToString();
     [v15 setObject:v16 forKeyedSubscript:@"scale"];
 
-    v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v12, "sampleMode")}];
+    v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(stateCopy, "sampleMode")}];
     [v15 setObject:v17 forKeyedSubscript:@"sampleMode"];
 
     v20.receiver = self;
     v20.super_class = PIInpaintCompositeNode;
-    v18 = [(NURenderNode *)&v20 resolvedNodeWithCachedInputs:v10 settings:v15 pipelineState:v12 error:a6];
+    v18 = [(NURenderNode *)&v20 resolvedNodeWithCachedInputs:inputsCopy settings:v15 pipelineState:stateCopy error:error];
   }
 
   else
@@ -275,33 +275,33 @@ void __41__PIInpaintCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
 
 - (PIInpaintCacheNode)inpaintNode
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
   return v3;
 }
 
 - (NURenderNode)inputNode
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695FA48]];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FA48]];
 
   return v3;
 }
 
 - (int64_t)sampleMode
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"sampleMode"];
-  v4 = [v3 integerValue];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"sampleMode"];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)scale
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"scale"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"scale"];
   v4 = NUScaleFromString();
   v6 = v5;
 
@@ -312,11 +312,11 @@ void __41__PIInpaintCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (PIInpaintCompositeNode)initWithScale:(id)a3 sampleMode:(int64_t)a4 input:(id)a5 retouch:(id)a6
+- (PIInpaintCompositeNode)initWithScale:(id)scale sampleMode:(int64_t)mode input:(id)input retouch:(id)retouch
 {
   v49 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a6;
+  inputCopy = input;
+  retouchCopy = retouch;
   if ((NUScaleIsValid() & 1) == 0)
   {
     v18 = NUAssertLogger_16994();
@@ -328,7 +328,7 @@ void __41__PIInpaintCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v20 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v22 = NUAssertLogger_16994();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -336,11 +336,11 @@ void __41__PIInpaintCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
     {
       if (v23)
       {
-        v31 = dispatch_get_specific(*v20);
+        v31 = dispatch_get_specific(*callStackSymbols);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v20 = [v32 callStackSymbols];
-        v34 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v31;
         v47 = 2114;
@@ -351,10 +351,10 @@ void __41__PIInpaintCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v46 = v20;
+      v46 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -362,7 +362,7 @@ void __41__PIInpaintCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
     goto LABEL_17;
   }
 
-  if (!a4)
+  if (!mode)
   {
     v25 = NUAssertLogger_16994();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -373,7 +373,7 @@ void __41__PIInpaintCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v20 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v27 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v22 = NUAssertLogger_16994();
     v28 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
@@ -381,8 +381,8 @@ void __41__PIInpaintCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
     {
       if (v28)
       {
-        v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v30 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v46 = v30;
         _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -394,11 +394,11 @@ void __41__PIInpaintCompositeNode__evaluateImage___block_invoke_2(uint64_t a1)
 LABEL_17:
     if (v28)
     {
-      v35 = dispatch_get_specific(*v20);
+      v35 = dispatch_get_specific(*callStackSymbols);
       v36 = MEMORY[0x1E696AF00];
       v37 = v35;
-      v38 = [v36 callStackSymbols];
-      v39 = [v38 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v36 callStackSymbols];
+      v39 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v46 = v35;
       v47 = 2114;
@@ -415,7 +415,7 @@ LABEL_19:
   v11 = NUScaleToString();
   v44[0] = v11;
   v43[1] = @"sampleMode";
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   v43[2] = @"__dominantInputSettingsKey";
   v13 = *MEMORY[0x1E695FA48];
   v44[1] = v12;
@@ -424,8 +424,8 @@ LABEL_19:
 
   v41[0] = *MEMORY[0x1E695FAB0];
   v41[1] = v13;
-  v42[0] = v10;
-  v42[1] = v9;
+  v42[0] = retouchCopy;
+  v42[1] = inputCopy;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:2];
   v40.receiver = self;
   v40.super_class = PIInpaintCompositeNode;
@@ -434,11 +434,11 @@ LABEL_19:
   return v16;
 }
 
-- (PIInpaintCompositeNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PIInpaintCompositeNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -477,8 +477,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -505,8 +505,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

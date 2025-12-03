@@ -1,6 +1,6 @@
 @interface TUIReusableBaseView
-- (id)descendentViewWithIdentifier:(id)a3;
-- (id)descendentViewWithRefId:(id)a3;
+- (id)descendentViewWithIdentifier:(id)identifier;
+- (id)descendentViewWithRefId:(id)id;
 - (id)feedControllerHost;
 - (id)tui_querySectionUID;
 - (id)tui_querySectionUUID;
@@ -11,43 +11,43 @@
 
 - (void)prepareForReuse
 {
-  v3 = [(TUIReusableBaseView *)self layer];
-  [v3 setFlipsHorizontalAxis:0];
+  layer = [(TUIReusableBaseView *)self layer];
+  [layer setFlipsHorizontalAxis:0];
 
   [(TUIReusableBaseView *)self _removeAllAnimations:1];
 }
 
-- (id)descendentViewWithIdentifier:(id)a3
+- (id)descendentViewWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TUIReusableBaseView *)self layoutAttributes];
-  v6 = [v5 renderModel];
-  v7 = [v6 identifier];
-  v8 = [v7 isEqual:v4];
+  identifierCopy = identifier;
+  layoutAttributes = [(TUIReusableBaseView *)self layoutAttributes];
+  renderModel = [layoutAttributes renderModel];
+  identifier = [renderModel identifier];
+  v8 = [identifier isEqual:identifierCopy];
 
   if (!v8)
   {
     self = 0;
   }
 
-  v9 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (id)descendentViewWithRefId:(id)a3
+- (id)descendentViewWithRefId:(id)id
 {
-  v4 = a3;
-  v5 = [(TUIReusableBaseView *)self layoutAttributes];
-  v6 = [v5 refId];
-  v7 = [v6 isEqualToString:v4];
+  idCopy = id;
+  layoutAttributes = [(TUIReusableBaseView *)self layoutAttributes];
+  refId = [layoutAttributes refId];
+  v7 = [refId isEqualToString:idCopy];
 
   if (!v7)
   {
     self = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
 
   return self;
 }
@@ -56,25 +56,25 @@
 {
   objc_opt_class();
   v3 = TUIPlatformAncestorOfClass(self);
-  v4 = [v3 controllerHost];
+  controllerHost = [v3 controllerHost];
 
-  return v4;
+  return controllerHost;
 }
 
 - (id)tui_querySectionUUID
 {
-  v2 = [(TUIReusableBaseView *)self renderViewHost];
-  v3 = [v2 tui_querySectionUUID];
+  renderViewHost = [(TUIReusableBaseView *)self renderViewHost];
+  tui_querySectionUUID = [renderViewHost tui_querySectionUUID];
 
-  return v3;
+  return tui_querySectionUUID;
 }
 
 - (id)tui_querySectionUID
 {
-  v2 = [(TUIReusableBaseView *)self renderViewHost];
-  v3 = [v2 tui_querySectionUID];
+  renderViewHost = [(TUIReusableBaseView *)self renderViewHost];
+  tui_querySectionUID = [renderViewHost tui_querySectionUID];
 
-  return v3;
+  return tui_querySectionUID;
 }
 
 @end

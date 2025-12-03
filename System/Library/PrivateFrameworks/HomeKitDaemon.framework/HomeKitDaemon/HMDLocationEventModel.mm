@@ -1,23 +1,23 @@
 @interface HMDLocationEventModel
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 message:(id)a6;
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d message:(id)message;
 + (id)properties;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 @end
 
 @implementation HMDLocationEventModel
 
-+ (id)eventModelWithDictionary:(id)a3 home:(id)a4 eventTriggerUUID:(id)a5 message:(id)a6
++ (id)eventModelWithDictionary:(id)dictionary home:(id)home eventTriggerUUID:(id)d message:(id)message
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 hm_regionFromDataForKey:*MEMORY[0x277CD2400]];
+  dictionaryCopy = dictionary;
+  homeCopy = home;
+  dCopy = d;
+  messageCopy = message;
+  v13 = [dictionaryCopy hm_regionFromDataForKey:*MEMORY[0x277CD2400]];
   if (HMIsValidRegion())
   {
-    v14 = [HMDEventModel eventModelWithDictionary:v9 home:v10 eventTriggerUUID:v11 className:objc_opt_class() message:v12];
+    v14 = [HMDEventModel eventModelWithDictionary:dictionaryCopy home:homeCopy eventTriggerUUID:dCopy className:objc_opt_class() message:messageCopy];
     v15 = encodeRootObject();
     [v14 setRegion:v15];
   }
@@ -49,7 +49,7 @@
   block[1] = 3221225472;
   block[2] = __35__HMDLocationEventModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_18595 != -1)
   {
     dispatch_once(&properties_onceToken_18595, block);
@@ -84,49 +84,49 @@ void __35__HMDLocationEventModel_properties__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v9 isEqualToString:@"region"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if (![fieldCopy isEqualToString:@"region"])
   {
-    if (![v9 isEqualToString:@"user"])
+    if (![fieldCopy isEqualToString:@"user"])
     {
       v28.receiver = self;
       v28.super_class = HMDLocationEventModel;
-      v12 = [(HMDBackingStoreModelObject *)&v28 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+      null = [(HMDBackingStoreModelObject *)&v28 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
       goto LABEL_22;
     }
 
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"userUUID"])
     {
-      v15 = [(HMDLocationEventModel *)self userUUID];
+      userUUID = [(HMDLocationEventModel *)self userUUID];
       v29 = 0;
-      v12 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v15 ofManagedObjectType:objc_opt_class() error:&v29];
-      v11 = v29;
+      null = [HMDBackingStore cdlsFetchManagedObjectWithUUID:userUUID ofManagedObjectType:objc_opt_class() error:&v29];
+      region = v29;
 
-      if (v12)
+      if (null)
       {
-        v16 = v12;
+        v16 = null;
       }
 
       else
       {
         v21 = objc_autoreleasePoolPush();
-        v22 = self;
+        selfCopy = self;
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
           v24 = HMFGetLogIdentifier();
-          v25 = [(HMDLocationEventModel *)v22 userUUID];
+          userUUID2 = [(HMDLocationEventModel *)selfCopy userUUID];
           *buf = 138543874;
           v32 = v24;
           v33 = 2112;
-          v34 = v25;
+          v34 = userUUID2;
           v35 = 2112;
-          v36 = v11;
+          v36 = region;
           _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Unable to find MKFUser with UUID %@: %@", buf, 0x20u);
         }
 
@@ -137,7 +137,7 @@ void __35__HMDLocationEventModel_properties__block_invoke(uint64_t a1)
     }
 
 LABEL_10:
-    v12 = 0;
+    null = 0;
     goto LABEL_22;
   }
 
@@ -146,21 +146,21 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v11 = [(HMDLocationEventModel *)self region];
-  if (v11)
+  region = [(HMDLocationEventModel *)self region];
+  if (region)
   {
     v30 = 0;
-    v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:&v30];
+    null = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:region error:&v30];
     v13 = v30;
-    if (v12)
+    if (null)
     {
-      v14 = v12;
+      v14 = null;
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy2 = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -178,7 +178,7 @@ LABEL_10:
 
   else
   {
-    v12 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
 LABEL_21:
@@ -186,20 +186,20 @@ LABEL_21:
 LABEL_22:
   v26 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return null;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"region"])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([fieldCopy isEqualToString:@"region"])
   {
-    v11 = [v8 region];
-    if (v11)
+    region = [objectCopy region];
+    if (region)
     {
-      [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v11 requiringSecureCoding:1 error:0];
+      [MEMORY[0x277CCAAB0] archivedDataWithRootObject:region requiringSecureCoding:1 error:0];
     }
 
     else
@@ -211,21 +211,21 @@ LABEL_22:
 
   else
   {
-    if (![v9 isEqualToString:@"userUUID"])
+    if (![fieldCopy isEqualToString:@"userUUID"])
     {
       v17.receiver = self;
       v17.super_class = HMDLocationEventModel;
-      v15 = [(HMDBackingStoreModelObject *)&v17 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+      v15 = [(HMDBackingStoreModelObject *)&v17 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
       goto LABEL_12;
     }
 
-    v11 = [v8 user];
-    v12 = [v11 modelID];
-    v13 = v12;
+    region = [objectCopy user];
+    modelID = [region modelID];
+    v13 = modelID;
     v14 = *MEMORY[0x277CBEEE8];
-    if (v12)
+    if (modelID)
     {
-      v14 = v12;
+      v14 = modelID;
     }
 
     v15 = v14;

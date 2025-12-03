@@ -1,16 +1,16 @@
 @interface NUNICalliopeResourceManager
-+ (id)sharedInstanceWithDisplayPixelFormat:(unint64_t)a3;
-+ (void)_deallocInstance:(id)a3;
-- ($6DF29C2F86D270DB44307FB3958C5E7F)patchTextureGroupForSpheroid:(unint64_t)a3 index:(unint64_t)a4 suffix:(id)a5;
-- (NUNICalliopeResourceManager)initWithDisplayPixelFormat:(unint64_t)a3;
-- (id)_generatePipelineCshName:(id)a3;
-- (id)_generatePipelineTshName:(id)a3 pixelFormat0:(unint64_t)a4 pixelFormat1:(unint64_t)a5;
-- (id)_generatePipelineVshName:(id)a3 fshName:(id)a4 config:(unint64_t)a5 blend0:(unint64_t)a6 blend1:(unint64_t)a7 pixelFormat0:(unint64_t)a8 pixelFormat1:(unint64_t)a9;
-- (id)_provideEarthCloudsAtlasBacking:(id)a3;
++ (id)sharedInstanceWithDisplayPixelFormat:(unint64_t)format;
++ (void)_deallocInstance:(id)instance;
+- ($6DF29C2F86D270DB44307FB3958C5E7F)patchTextureGroupForSpheroid:(unint64_t)spheroid index:(unint64_t)index suffix:(id)suffix;
+- (NUNICalliopeResourceManager)initWithDisplayPixelFormat:(unint64_t)format;
+- (id)_generatePipelineCshName:(id)name;
+- (id)_generatePipelineTshName:(id)name pixelFormat0:(unint64_t)format0 pixelFormat1:(unint64_t)format1;
+- (id)_generatePipelineVshName:(id)name fshName:(id)fshName config:(unint64_t)config blend0:(unint64_t)blend0 blend1:(unint64_t)blend1 pixelFormat0:(unint64_t)format0 pixelFormat1:(unint64_t)format1;
+- (id)_provideEarthCloudsAtlasBacking:(id)backing;
 - (id)computePipelineForBloomChainDownsample;
 - (id)computePipelineForBloomChainUpsample;
-- (id)patchIndicesBufferForLod:(unint64_t)a3;
-- (id)provideAtlasBacking:(id)a3;
+- (id)patchIndicesBufferForLod:(unint64_t)lod;
+- (id)provideAtlasBacking:(id)backing;
 - (id)renderDisplayPipeline;
 - (id)renderOffscreenPipelineForAtmosphere;
 - (id)renderOffscreenPipelineForBloomDownsample;
@@ -19,11 +19,11 @@
 - (id)renderOffscreenPipelineForLocationDot;
 - (id)renderOffscreenPipelineForPost;
 - (id)renderOffscreenPipelineForSaturnRing;
-- (id)renderOffscreenPipelineForSpheroid:(unint64_t)a3 layer:(int)a4 config:(unint64_t)a5;
+- (id)renderOffscreenPipelineForSpheroid:(unint64_t)spheroid layer:(int)layer config:(unint64_t)config;
 - (id)renderOffscreenPipelineForStar;
 - (id)renderOffscreenPipelineForStarfield;
-- (id)textureGroupWithSuffix:(id)a3;
-- (unsigned)patchIndexCountForLod:(unint64_t)a3;
+- (id)textureGroupWithSuffix:(id)suffix;
+- (unsigned)patchIndexCountForLod:(unint64_t)lod;
 - (void)_asyncDeallocInstance;
 - (void)_deferredCloudDataFetchIfNeeded;
 - (void)_handleCloudCoverTextureExpired;
@@ -32,31 +32,31 @@
 - (void)dealloc;
 - (void)purgeAllCloudCoverTextures;
 - (void)removeClient;
-- (void)setPipelineConstants:(uint64_t)a3;
+- (void)setPipelineConstants:(uint64_t)constants;
 @end
 
 @implementation NUNICalliopeResourceManager
 
-+ (id)sharedInstanceWithDisplayPixelFormat:(unint64_t)a3
++ (id)sharedInstanceWithDisplayPixelFormat:(unint64_t)format
 {
-  v4 = a1;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!__sharedInstance_0)
   {
-    v5 = [[NUNICalliopeResourceManager alloc] initWithDisplayPixelFormat:a3];
+    v5 = [[NUNICalliopeResourceManager alloc] initWithDisplayPixelFormat:format];
     v6 = __sharedInstance_0;
     __sharedInstance_0 = v5;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v7 = __sharedInstance_0;
-  if (*(__sharedInstance_0 + 32) != a3)
+  if (*(__sharedInstance_0 + 32) != format)
   {
     v8 = NUNILoggingObjectForDomain(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(NUNICalliopeResourceManager *)a3 sharedInstanceWithDisplayPixelFormat:v8];
+      [(NUNICalliopeResourceManager *)format sharedInstanceWithDisplayPixelFormat:v8];
     }
 
     v7 = __sharedInstance_0;
@@ -65,9 +65,9 @@
   return v7;
 }
 
-+ (void)_deallocInstance:(id)a3
++ (void)_deallocInstance:(id)instance
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v3 = __sharedInstance_0;
   __sharedInstance_0 = 0;
@@ -75,7 +75,7 @@
   objc_sync_exit(obj);
 }
 
-- (NUNICalliopeResourceManager)initWithDisplayPixelFormat:(unint64_t)a3
+- (NUNICalliopeResourceManager)initWithDisplayPixelFormat:(unint64_t)format
 {
   v23.receiver = self;
   v23.super_class = NUNICalliopeResourceManager;
@@ -86,9 +86,9 @@
     resourceProviderKey = v4->_resourceProviderKey;
     v4->_resourceProviderKey = v5;
 
-    v7 = [MEMORY[0x277CFA798] sharedDevice];
+    mEMORY[0x277CFA798] = [MEMORY[0x277CFA798] sharedDevice];
     device = v4->_device;
-    v4->_device = v7;
+    v4->_device = mEMORY[0x277CFA798];
 
     v9 = v4->_device;
     v10 = NUNIBundle();
@@ -96,10 +96,10 @@
     library = v4->_library;
     v4->_library = v11;
 
-    v4->_displayPixelFormat = a3;
-    v13 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    v4->_displayPixelFormat = format;
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     textureGroupHashTable = v4->_textureGroupHashTable;
-    v4->_textureGroupHashTable = v13;
+    v4->_textureGroupHashTable = strongToWeakObjectsMapTable;
 
     v15 = [_TtC12NanoUniverse22AegirCloudCoverService alloc];
     LODWORD(v16) = 0.25;
@@ -111,8 +111,8 @@
     v20 = objc_opt_new();
     [(AegirCloudCoverService *)v19 setFileConverter:v20];
 
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v4 selector:sel__handleCloudCoverTextureExpired name:@"CloudCoverExpiredNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__handleCloudCoverTextureExpired name:@"CloudCoverExpiredNotification" object:0];
 
     [(NUNICalliopeResourceManager *)v4 _loadGeometry];
   }
@@ -129,9 +129,9 @@
 
 - (void)_asyncDeallocInstance
 {
-  v2 = [MEMORY[0x277CCACC8] isMainThread];
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
   v3 = objc_opt_class();
-  if (v2)
+  if (isMainThread)
   {
 
     [v3 _deallocInstance:0];
@@ -154,51 +154,51 @@
 
 - (void)removeClient
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_clients - 1;
-  v2->_clients = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_clients - 1;
+  selfCopy->_clients = v3;
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
 
-    [(NUNICalliopeResourceManager *)v2 _asyncDeallocInstance];
+    [(NUNICalliopeResourceManager *)selfCopy _asyncDeallocInstance];
   }
 }
 
-- (void)setPipelineConstants:(uint64_t)a3
+- (void)setPipelineConstants:(uint64_t)constants
 {
   v5 = objc_opt_new();
   v6 = 0;
   obj = v5;
   do
   {
-    [v5 setConstantValue:a3 type:16 atIndex:v6];
+    [v5 setConstantValue:constants type:16 atIndex:v6];
     v5 = obj;
     ++v6;
-    a3 += 2;
+    constants += 2;
   }
 
   while (v6 != 35);
-  objc_storeStrong((a1 + 968), obj);
-  v7 = *(a1 + 48);
-  *(a1 + 48) = 0;
+  objc_storeStrong((self + 968), obj);
+  v7 = *(self + 48);
+  *(self + 48) = 0;
 
-  v8 = *(a1 + 56);
-  *(a1 + 56) = 0;
+  v8 = *(self + 56);
+  *(self + 56) = 0;
 
-  v9 = *(a1 + 64);
-  *(a1 + 64) = 0;
+  v9 = *(self + 64);
+  *(self + 64) = 0;
 
-  v10 = *(a1 + 72);
-  *(a1 + 72) = 0;
+  v10 = *(self + 72);
+  *(self + 72) = 0;
 
-  v11 = *(a1 + 80);
-  *(a1 + 80) = 0;
+  v11 = *(self + 80);
+  *(self + 80) = 0;
 
   v12 = 0;
-  v13 = a1 + 112;
+  v13 = self + 112;
   v14 = 1;
   do
   {
@@ -326,111 +326,111 @@
   *&self[1]._resourceProviderKey = v41;
 }
 
-- (id)patchIndicesBufferForLod:(unint64_t)a3
+- (id)patchIndicesBufferForLod:(unint64_t)lod
 {
-  v3 = 3;
-  if (a3 < 3)
+  lodCopy = 3;
+  if (lod < 3)
   {
-    v3 = a3;
+    lodCopy = lod;
   }
 
-  return self->_patchIndicesBuffer[v3];
+  return self->_patchIndicesBuffer[lodCopy];
 }
 
-- (unsigned)patchIndexCountForLod:(unint64_t)a3
+- (unsigned)patchIndexCountForLod:(unint64_t)lod
 {
-  v3 = 3;
-  if (a3 < 3)
+  lodCopy = 3;
+  if (lod < 3)
   {
-    v3 = a3;
+    lodCopy = lod;
   }
 
-  return patchIndexCountForLod__counts[v3];
+  return patchIndexCountForLod__counts[lodCopy];
 }
 
-- ($6DF29C2F86D270DB44307FB3958C5E7F)patchTextureGroupForSpheroid:(unint64_t)a3 index:(unint64_t)a4 suffix:(id)a5
+- ($6DF29C2F86D270DB44307FB3958C5E7F)patchTextureGroupForSpheroid:(unint64_t)spheroid index:(unint64_t)index suffix:(id)suffix
 {
-  v5 = &self->_patchTextureGroupTable[a3][a4];
+  v5 = &self->_patchTextureGroupTable[spheroid][index];
   if (!v5->var0)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"p%02d-i%02d", patchTextureGroupForSpheroid_index_suffix__spheroidIndex[a3], a4];
+    index = [MEMORY[0x277CCACA8] stringWithFormat:@"p%02d-i%02d", patchTextureGroupForSpheroid_index_suffix__spheroidIndex[spheroid], index];
     v10 = MEMORY[0x277CFA7C0];
-    v11 = [v9 stringByAppendingFormat:@"-a-%@", a5];
-    v12 = [v10 textureWithProviderDelegate:self uuid:v11 streaming:1];
+    suffix = [index stringByAppendingFormat:@"-a-%@", suffix];
+    v12 = [v10 textureWithProviderDelegate:self uuid:suffix streaming:1];
     var0 = v5->var0;
     v5->var0 = v12;
 
-    v14 = [v5->var0 atlas];
-    [v14 setMaxPlaceholderSize:128];
+    atlas = [v5->var0 atlas];
+    [atlas setMaxPlaceholderSize:128];
 
-    if (patchTextureGroupForSpheroid_index_suffix__spheroidHasNormal[a3] == 1)
+    if (patchTextureGroupForSpheroid_index_suffix__spheroidHasNormal[spheroid] == 1)
     {
       v15 = MEMORY[0x277CFA7C0];
-      v16 = [v9 stringByAppendingFormat:@"-n-%@", a5];
-      v17 = [v15 textureWithProviderDelegate:self uuid:v16 streaming:1];
+      suffix2 = [index stringByAppendingFormat:@"-n-%@", suffix];
+      v17 = [v15 textureWithProviderDelegate:self uuid:suffix2 streaming:1];
       var1 = v5->var1;
       v5->var1 = v17;
 
-      v19 = [v5->var1 atlas];
-      [v19 setMaxPlaceholderSize:128];
+      atlas2 = [v5->var1 atlas];
+      [atlas2 setMaxPlaceholderSize:128];
     }
 
-    if (patchTextureGroupForSpheroid_index_suffix__spheroidHasCloud[a3] == 1)
+    if (patchTextureGroupForSpheroid_index_suffix__spheroidHasCloud[spheroid] == 1)
     {
       v20 = MEMORY[0x277CFA7C0];
-      v21 = [v9 stringByAppendingFormat:@"-e-%@", a5];
-      v22 = [v20 textureWithProviderDelegate:self uuid:v21 streaming:1];
+      suffix3 = [index stringByAppendingFormat:@"-e-%@", suffix];
+      v22 = [v20 textureWithProviderDelegate:self uuid:suffix3 streaming:1];
       var2 = v5->var2;
       v5->var2 = v22;
 
-      v24 = [v5->var2 atlas];
-      [v24 setMaxPlaceholderSize:128];
+      atlas3 = [v5->var2 atlas];
+      [atlas3 setMaxPlaceholderSize:128];
     }
 
-    if (patchTextureGroupForSpheroid_index_suffix__spheroidHasCloud[a3] == 1)
+    if (patchTextureGroupForSpheroid_index_suffix__spheroidHasCloud[spheroid] == 1)
     {
       v25 = MEMORY[0x277CFA7C0];
-      v26 = [v9 stringByAppendingFormat:@"-c-%@", a5];
-      v27 = [v25 textureWithProviderDelegate:self uuid:v26 streaming:1];
+      suffix4 = [index stringByAppendingFormat:@"-c-%@", suffix];
+      v27 = [v25 textureWithProviderDelegate:self uuid:suffix4 streaming:1];
       var3 = v5->var3;
       v5->var3 = v27;
 
-      v29 = [v5->var3 atlas];
-      [v29 setMaxPlaceholderSize:128];
+      atlas4 = [v5->var3 atlas];
+      [atlas4 setMaxPlaceholderSize:128];
     }
   }
 
   return v5;
 }
 
-- (id)textureGroupWithSuffix:(id)a3
+- (id)textureGroupWithSuffix:(id)suffix
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_textureGroupHashTable objectForKey:v4];
+  suffixCopy = suffix;
+  v5 = [(NSMapTable *)self->_textureGroupHashTable objectForKey:suffixCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(NUNICalliopeTextureGroup);
-    v6 = [MEMORY[0x277CFA7C0] nullTexture2D];
+    nullTexture2D = [MEMORY[0x277CFA7C0] nullTexture2D];
     v7 = objc_opt_new();
     for (i = 0; i != 24; ++i)
     {
       v9 = textureGroupWithSuffix__uuidGradients[i];
       if (v9)
       {
-        v10 = [v9 stringByAppendingString:v4];
-        v11 = [MEMORY[0x277CFA7C0] textureWithProviderDelegate:self uuid:v10 nullTexture:v6];
+        v10 = [v9 stringByAppendingString:suffixCopy];
+        v11 = [MEMORY[0x277CFA7C0] textureWithProviderDelegate:self uuid:v10 nullTexture:nullTexture2D];
         [v7 addObject:v11];
       }
 
       else
       {
-        [v7 addObject:v6];
+        [v7 addObject:nullTexture2D];
       }
     }
 
     [(NUNICalliopeTextureGroup *)v5 setGradients:v7];
 
-    [(NSMapTable *)self->_textureGroupHashTable setObject:v5 forKey:v4];
+    [(NSMapTable *)self->_textureGroupHashTable setObject:v5 forKey:suffixCopy];
   }
 
   return v5;
@@ -537,21 +537,21 @@
   return v3;
 }
 
-- (id)renderOffscreenPipelineForSpheroid:(unint64_t)a3 layer:(int)a4 config:(unint64_t)a5
+- (id)renderOffscreenPipelineForSpheroid:(unint64_t)spheroid layer:(int)layer config:(unint64_t)config
 {
-  v9 = self + 384 * a4 + 16 * a3 + 8 * a5;
+  v9 = self + 384 * layer + 16 * spheroid + 8 * config;
   v11 = *(v9 + 13);
   v10 = (v9 + 104);
   v12 = v11;
   if (!v12)
   {
-    v13 = renderOffscreenPipelineForSpheroid_layer_config__spheroridFshs[24 * a4 + a3];
+    v13 = renderOffscreenPipelineForSpheroid_layer_config__spheroridFshs[24 * layer + spheroid];
     if (v13)
     {
-      v14 = renderOffscreenPipelineForSpheroid_layer_config__spheroridVshs[24 * a4 + a3];
+      v14 = renderOffscreenPipelineForSpheroid_layer_config__spheroridVshs[24 * layer + spheroid];
       v15 = v13;
       v16 = v14;
-      v17 = [(NUNICalliopeResourceManager *)self _generatePipelineVshName:v16 fshName:v15 config:a5 blend0:1 blend1:1 pixelFormat0:555 pixelFormat1:10];
+      v17 = [(NUNICalliopeResourceManager *)self _generatePipelineVshName:v16 fshName:v15 config:config blend0:1 blend1:1 pixelFormat0:555 pixelFormat1:10];
       v18 = *v10;
       *v10 = v17;
 
@@ -642,54 +642,54 @@
   return v3;
 }
 
-- (id)_generatePipelineVshName:(id)a3 fshName:(id)a4 config:(unint64_t)a5 blend0:(unint64_t)a6 blend1:(unint64_t)a7 pixelFormat0:(unint64_t)a8 pixelFormat1:(unint64_t)a9
+- (id)_generatePipelineVshName:(id)name fshName:(id)fshName config:(unint64_t)config blend0:(unint64_t)blend0 blend1:(unint64_t)blend1 pixelFormat0:(unint64_t)format0 pixelFormat1:(unint64_t)format1
 {
-  v12 = a5;
-  v15 = a3;
-  v16 = a4;
-  v48 = (v12 & 3) == 1;
-  v47 = (v12 & 2) != 0;
+  configCopy = config;
+  nameCopy = name;
+  fshNameCopy = fshName;
+  v48 = (configCopy & 3) == 1;
+  v47 = (configCopy & 2) != 0;
   v17 = [(MTLFunctionConstantValues *)self->_pipelineConstants copy];
   [v17 setConstantValue:&v48 type:53 atIndex:35];
   [v17 setConstantValue:&v47 type:53 atIndex:36];
-  v45 = a7;
-  v46 = a6;
+  blend1Copy = blend1;
+  blend0Copy = blend0;
   v18 = MEMORY[0x277CFA788];
   v19 = NUNIBundle();
   v20 = [v18 archiveWithName:@"NUNICalliopeShadersCompanion" bundle:v19 device:self->_device];
 
-  v21 = [MEMORY[0x277CD6D78] functionDescriptor];
+  functionDescriptor = [MEMORY[0x277CD6D78] functionDescriptor];
   v41 = v17;
-  [v21 setConstantValues:v17];
-  [v21 setName:v15];
-  v22 = [v20 newFunctionInLibrary:self->_library withDescriptor:v21];
-  [v21 setName:v16];
+  [functionDescriptor setConstantValues:v17];
+  [functionDescriptor setName:nameCopy];
+  v22 = [v20 newFunctionInLibrary:self->_library withDescriptor:functionDescriptor];
+  [functionDescriptor setName:fshNameCopy];
   v44 = v20;
-  v23 = [v20 newFunctionInLibrary:self->_library withDescriptor:v21];
+  v23 = [v20 newFunctionInLibrary:self->_library withDescriptor:functionDescriptor];
   v24 = objc_opt_new();
-  v42 = v16;
-  v43 = v15;
-  v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@)+(%@)", v15, v16];
-  [v24 setLabel:v25];
+  v42 = fshNameCopy;
+  v43 = nameCopy;
+  fshNameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@)+(%@)", nameCopy, fshNameCopy];
+  [v24 setLabel:fshNameCopy];
 
   v40 = v22;
   [v24 setVertexFunction:v22];
   [v24 setFragmentFunction:v23];
   v26 = 0;
-  v27 = &v46;
+  v27 = &blend0Copy;
   v28 = 1;
   do
   {
     v29 = v28;
-    if (!a8)
+    if (!format0)
     {
       goto LABEL_15;
     }
 
-    v30 = [v24 colorAttachments];
-    v31 = [v30 objectAtIndexedSubscript:v26];
+    colorAttachments = [v24 colorAttachments];
+    v31 = [colorAttachments objectAtIndexedSubscript:v26];
 
-    [v31 setPixelFormat:a8];
+    [v31 setPixelFormat:format0];
     [v31 setBlendingEnabled:0];
     v32 = *v27;
     if (*v27 > 2)
@@ -746,8 +746,8 @@ LABEL_14:
 
 LABEL_15:
     v28 = 0;
-    v27 = &v45;
-    a8 = a9;
+    v27 = &blend1Copy;
+    format0 = format1;
     v26 = 1;
   }
 
@@ -763,15 +763,15 @@ LABEL_15:
   return v38;
 }
 
-- (id)_generatePipelineTshName:(id)a3 pixelFormat0:(unint64_t)a4 pixelFormat1:(unint64_t)a5
+- (id)_generatePipelineTshName:(id)name pixelFormat0:(unint64_t)format0 pixelFormat1:(unint64_t)format1
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  nameCopy = name;
   v9 = objc_opt_new();
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@)", v8];
-  [v9 setLabel:v10];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@)", nameCopy];
+  [v9 setLabel:nameCopy];
 
-  v11 = [(MTLLibrary *)self->_library newFunctionWithName:v8];
+  v11 = [(MTLLibrary *)self->_library newFunctionWithName:nameCopy];
   [v9 setTileFunction:v11];
 
   [v9 setThreadgroupSizeMatchesTileSize:0];
@@ -780,16 +780,16 @@ LABEL_15:
   do
   {
     v14 = v13;
-    if (a4)
+    if (format0)
     {
-      v15 = [v9 colorAttachments];
-      v16 = [v15 objectAtIndexedSubscript:v12];
+      colorAttachments = [v9 colorAttachments];
+      v16 = [colorAttachments objectAtIndexedSubscript:v12];
 
-      [v16 setPixelFormat:a4];
+      [v16 setPixelFormat:format0];
     }
 
     v13 = 0;
-    a4 = a5;
+    format0 = format1;
     v12 = 1;
   }
 
@@ -805,7 +805,7 @@ LABEL_15:
     {
       v23 = self->_device;
       *buf = 138412802;
-      v26 = v8;
+      v26 = nameCopy;
       v27 = 2112;
       v28 = v23;
       v29 = 2112;
@@ -819,15 +819,15 @@ LABEL_15:
   return v18;
 }
 
-- (id)_generatePipelineCshName:(id)a3
+- (id)_generatePipelineCshName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@)", v4];
-  [v5 setLabel:v6];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@)", nameCopy];
+  [v5 setLabel:nameCopy];
 
-  v7 = [(MTLLibrary *)self->_library newFunctionWithName:v4];
+  v7 = [(MTLLibrary *)self->_library newFunctionWithName:nameCopy];
   [v5 setComputeFunction:v7];
 
   device = self->_device;
@@ -841,7 +841,7 @@ LABEL_15:
     {
       v14 = self->_device;
       *buf = 138412802;
-      v17 = v4;
+      v17 = nameCopy;
       v18 = 2112;
       v19 = v14;
       v20 = 2112;
@@ -884,8 +884,8 @@ uint64_t __62__NUNICalliopeResourceManager__handleCloudCoverTextureExpired__bloc
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AegirCloudCoverService *)self->_cloudsService allCloudLevelFileNames];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allCloudLevelFileNames = [(AegirCloudCoverService *)self->_cloudsService allCloudLevelFileNames];
+  v3 = [allCloudLevelFileNames countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -897,18 +897,18 @@ uint64_t __62__NUNICalliopeResourceManager__handleCloudCoverTextureExpired__bloc
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allCloudLevelFileNames);
         }
 
         v7 = *(*(&v10 + 1) + 8 * v6);
-        v8 = [MEMORY[0x277CFA7B0] sharedInstance];
-        [v8 purge:v7];
+        mEMORY[0x277CFA7B0] = [MEMORY[0x277CFA7B0] sharedInstance];
+        [mEMORY[0x277CFA7B0] purge:v7];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allCloudLevelFileNames countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -919,10 +919,10 @@ uint64_t __62__NUNICalliopeResourceManager__handleCloudCoverTextureExpired__bloc
 
 - (void)_deferredCloudDataFetchIfNeeded
 {
-  v3 = [(AegirCloudCoverService *)self->_cloudsService canFetchData];
+  canFetchData = [(AegirCloudCoverService *)self->_cloudsService canFetchData];
   v4 = NUNILoggingObjectForDomain(0);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (canFetchData)
   {
     if (v5)
     {
@@ -949,34 +949,34 @@ uint64_t __62__NUNICalliopeResourceManager__handleCloudCoverTextureExpired__bloc
   }
 }
 
-- (id)_provideEarthCloudsAtlasBacking:(id)a3
+- (id)_provideEarthCloudsAtlasBacking:(id)backing
 {
-  v4 = a3;
+  backingCopy = backing;
   [(NUNICalliopeResourceManager *)self _deferredCloudDataFetchIfNeeded];
-  v5 = [(AegirCloudCoverService *)self->_cloudsService currentURLForCloudLevelWith:v4];
+  v5 = [(AegirCloudCoverService *)self->_cloudsService currentURLForCloudLevelWith:backingCopy];
   v6 = MEMORY[0x277CFA750];
-  v7 = [v5 path];
-  v8 = [v6 atlasBackingWithArt:v7 uuid:v4];
+  path = [v5 path];
+  v8 = [v6 atlasBackingWithArt:path uuid:backingCopy];
 
   return v8;
 }
 
-- (id)provideAtlasBacking:(id)a3
+- (id)provideAtlasBacking:(id)backing
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  backingCopy = backing;
   v5 = +[_TtC12NanoUniverse22AegirCloudCoverService cloudLevelPrefix];
-  v6 = [v4 hasPrefix:v5];
+  v6 = [backingCopy hasPrefix:v5];
 
   if (v6)
   {
-    v7 = [(NUNICalliopeResourceManager *)self _provideEarthCloudsAtlasBacking:v4];
+    v7 = [(NUNICalliopeResourceManager *)self _provideEarthCloudsAtlasBacking:backingCopy];
   }
 
   else
   {
     v8 = NUNIBundle();
-    v9 = [v8 pathForResource:v4 ofType:@"art"];
+    v9 = [v8 pathForResource:backingCopy ofType:@"art"];
 
     v10 = NUNILoggingObjectForDomain(0);
     v11 = v10;
@@ -985,20 +985,20 @@ uint64_t __62__NUNICalliopeResourceManager__handleCloudCoverTextureExpired__bloc
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412546;
-        v15 = v4;
+        v15 = backingCopy;
         v16 = 2112;
         v17 = v9;
         _os_log_impl(&dword_25B6D4000, v11, OS_LOG_TYPE_DEFAULT, "providing artwork for %@ at %@", &v14, 0x16u);
       }
 
-      v7 = [MEMORY[0x277CFA750] atlasBackingWithArt:v9 uuid:v4];
+      v7 = [MEMORY[0x277CFA750] atlasBackingWithArt:v9 uuid:backingCopy];
     }
 
     else
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(NUNICalliopeResourceManager *)v4 provideAtlasBacking:v11];
+        [(NUNICalliopeResourceManager *)backingCopy provideAtlasBacking:v11];
       }
 
       v7 = 0;

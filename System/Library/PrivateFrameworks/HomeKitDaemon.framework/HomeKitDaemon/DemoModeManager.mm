@@ -4,10 +4,10 @@
 - (NSUUID)messageTargetUUID;
 - (OS_dispatch_queue)messageReceiveQueue;
 - (_TtC13HomeKitDaemon15DemoModeManager)init;
-- (id)handleTestModeConfigRequestPayload:(id)a3 error:(id *)a4;
+- (id)handleTestModeConfigRequestPayload:(id)payload error:(id *)error;
 - (void)configure;
-- (void)handleNotification:(id)a3;
-- (void)handleRequestMessage:(id)a3;
+- (void)handleNotification:(id)notification;
+- (void)handleRequestMessage:(id)message;
 @end
 
 @implementation DemoModeManager
@@ -20,14 +20,14 @@
   return v3;
 }
 
-- (void)handleRequestMessage:(id)a3
+- (void)handleRequestMessage:(id)message
 {
-  v4 = a3;
-  v5 = self;
-  sub_22986C2C4(v4);
+  messageCopy = message;
+  selfCopy = self;
+  sub_22986C2C4(messageCopy);
 }
 
-- (void)handleNotification:(id)a3
+- (void)handleNotification:(id)notification
 {
   v4 = sub_22A4DB21C();
   v5 = *(v4 - 8);
@@ -35,7 +35,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22A4DB1DC();
-  v9 = self;
+  selfCopy = self;
   sub_22987480C(v8);
 
   (*(v5 + 8))(v8, v4);
@@ -56,7 +56,7 @@
   MEMORY[0x28223BE20](v3);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = *(&self->super.isa + OBJC_IVAR____TtC13HomeKitDaemon15DemoModeManager_homeManager);
-  v9 = self;
+  selfCopy = self;
   result = [v8 uuid];
   if (result)
   {
@@ -80,7 +80,7 @@
 - (OS_dispatch_queue)messageReceiveQueue
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC13HomeKitDaemon15DemoModeManager_homeManager);
-  v3 = self;
+  selfCopy = self;
   result = [v2 workQueue];
   if (result)
   {
@@ -100,7 +100,7 @@
 - (HAPAccessoryServerBrowser)demoAccessoryBrowser
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC13HomeKitDaemon15DemoModeManager_demoModeDataSource);
-  v3 = self;
+  selfCopy = self;
   if ([v2 isDemoModeV2EnabledAndActive])
   {
     if (qword_27D87B8A0 != -1)
@@ -121,15 +121,15 @@
 
 - (void)configure
 {
-  v2 = self;
+  selfCopy = self;
   sub_2298832E8();
 }
 
-- (id)handleTestModeConfigRequestPayload:(id)a3 error:(id *)a4
+- (id)handleTestModeConfigRequestPayload:(id)payload error:(id *)error
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87C3B0, &unk_22A576E90);
   v5 = sub_22A4DD49C();
-  v6 = self;
+  selfCopy = self;
   sub_229886DE8(v5);
 
   v7 = sub_22A4DD47C();

@@ -1,8 +1,8 @@
 @interface ISiosDocumentRecipe
-- (CGSize)backgroundSizeForSize:(CGSize)a3 scale:(double)a4;
-- (CGSize)badgeSizeForSize:(CGSize)a3 scale:(double)a4;
+- (CGSize)backgroundSizeForSize:(CGSize)size scale:(double)scale;
+- (CGSize)badgeSizeForSize:(CGSize)size scale:(double)scale;
 - (ISiosDocumentRecipe)init;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISiosDocumentRecipe
@@ -20,10 +20,10 @@
   return result;
 }
 
-- (CGSize)badgeSizeForSize:(CGSize)a3 scale:(double)a4
+- (CGSize)badgeSizeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (badgeSizeForSize_scale__onceToken != -1)
   {
     [ISiosDocumentRecipe badgeSizeForSize:scale:];
@@ -53,10 +53,10 @@ uint64_t __46__ISiosDocumentRecipe_badgeSizeForSize_scale___block_invoke()
   return [v2 addHintedRect:0.0 forSize:{0.0, 145.0, 145.0, 320.0, 320.0}];
 }
 
-- (CGSize)backgroundSizeForSize:(CGSize)a3 scale:(double)a4
+- (CGSize)backgroundSizeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (backgroundSizeForSize_scale__onceToken != -1)
   {
     [ISiosDocumentRecipe backgroundSizeForSize:scale:];
@@ -86,11 +86,11 @@ uint64_t __51__ISiosDocumentRecipe_backgroundSizeForSize_scale___block_invoke()
   return [v2 addHintedRect:0.0 forSize:{0.0, 240.0, 320.0, 320.0, 320.0}];
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  [(ISiosDocumentRecipe *)self badgeSizeForSize:a3.width scale:a3.height, a4];
+  height = size.height;
+  width = size.width;
+  [(ISiosDocumentRecipe *)self badgeSizeForSize:size.width scale:size.height, scale];
   v8 = v7;
   v10 = v9;
   v11 = objc_alloc_init(ISLayer);
@@ -112,8 +112,8 @@ uint64_t __51__ISiosDocumentRecipe_backgroundSizeForSize_scale___block_invoke()
   }
 
   v16 = MEMORY[0x1E69A8990];
-  v17 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-  v18 = [v16 imageBagWithResourcesNamed:v15 fromBundle:v17];
+  iconsetResourceBundle = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+  v18 = [v16 imageBagWithResourcesNamed:v15 fromBundle:iconsetResourceBundle];
 
   [(ISContentLayer *)v14 setContent:v18];
   [(ISLayer *)v11 addSublayer:v14];
@@ -152,8 +152,8 @@ uint64_t __51__ISiosDocumentRecipe_backgroundSizeForSize_scale___block_invoke()
     v26 = objc_alloc_init(ISContentLayer);
     [(ISLayer *)v26 setName:@"Tint layer"];
     [(ISLayer *)v26 setSize:v8, v10];
-    v27 = [MEMORY[0x1E69A8968] white];
-    [(ISContentLayer *)v26 setContent:v27];
+    white = [MEMORY[0x1E69A8968] white];
+    [(ISContentLayer *)v26 setContent:white];
 
     [(ISLayer *)v21 addSublayer:v26];
   }
@@ -181,8 +181,8 @@ uint64_t __51__ISiosDocumentRecipe_backgroundSizeForSize_scale___block_invoke()
     [(ISLayer *)v30 setSize:width, height];
     [(ISLayer *)v30 setName:@"mask layer"];
     v31 = MEMORY[0x1E69A8990];
-    v32 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
-    v33 = [v31 imageBagWithResourcesNamed:@"DocumentMask" fromBundle:v32];
+    iconsetResourceBundle2 = [MEMORY[0x1E69A8960] iconsetResourceBundle];
+    v33 = [v31 imageBagWithResourcesNamed:@"DocumentMask" fromBundle:iconsetResourceBundle2];
 
     if (v33)
     {

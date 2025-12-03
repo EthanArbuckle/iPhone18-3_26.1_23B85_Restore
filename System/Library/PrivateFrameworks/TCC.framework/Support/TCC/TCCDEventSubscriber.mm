@@ -1,28 +1,28 @@
 @interface TCCDEventSubscriber
-- (TCCDEventSubscriber)initWithToken:(unint64_t)a3 filter:(id)a4 fromPublisher:(id)a5;
+- (TCCDEventSubscriber)initWithToken:(unint64_t)token filter:(id)filter fromPublisher:(id)publisher;
 - (id)description;
-- (void)_addPendingEvent:(id)a3;
+- (void)_addPendingEvent:(id)event;
 - (void)_checkEntitlement;
 - (void)_publishPendingEvents;
-- (void)_sendEvent:(id)a3;
-- (void)publish:(id)a3;
+- (void)_sendEvent:(id)event;
+- (void)publish:(id)publish;
 @end
 
 @implementation TCCDEventSubscriber
 
-- (TCCDEventSubscriber)initWithToken:(unint64_t)a3 filter:(id)a4 fromPublisher:(id)a5
+- (TCCDEventSubscriber)initWithToken:(unint64_t)token filter:(id)filter fromPublisher:(id)publisher
 {
-  v9 = a4;
-  v10 = a5;
+  filterCopy = filter;
+  publisherCopy = publisher;
   v17.receiver = self;
   v17.super_class = TCCDEventSubscriber;
   v11 = [(TCCDEventSubscriber *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    v11->_token = a3;
-    objc_storeStrong(&v11->_filter, a4);
-    objc_storeWeak(&v12->_publisher, v10);
+    v11->_token = token;
+    objc_storeStrong(&v11->_filter, filter);
+    objc_storeWeak(&v12->_publisher, publisherCopy);
     v12->_lock._os_unfair_lock_opaque = 0;
     v12->_state = 0;
     v13 = +[NSMutableArray array];
@@ -68,11 +68,11 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_addPendingEvent:(id)a3
+- (void)_addPendingEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_pendingEvents addObject:v4];
+  [(NSMutableArray *)self->_pendingEvents addObject:eventCopy];
   if ([(NSMutableArray *)self->_pendingEvents count]>= 0x21)
   {
     [(NSMutableArray *)self->_pendingEvents removeObjectAtIndex:0];
@@ -123,29 +123,29 @@
   [(NSMutableArray *)self->_pendingEvents removeAllObjects];
 }
 
-- (void)_sendEvent:(id)a3
+- (void)_sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_publisher);
-  [WeakRetained sendEvent:v4 toSubscriber:self];
+  [WeakRetained sendEvent:eventCopy toSubscriber:self];
 }
 
-- (void)publish:(id)a3
+- (void)publish:(id)publish
 {
-  v5 = a3;
-  if ([(TCCDEventFilter *)self->_filter matches:v5])
+  publishCopy = publish;
+  if ([(TCCDEventFilter *)self->_filter matches:publishCopy])
   {
     state = self->_state;
     switch(state)
     {
       case 2:
-        [(TCCDEventSubscriber *)self _sendEvent:v5];
+        [(TCCDEventSubscriber *)self _sendEvent:publishCopy];
         break;
       case 1:
-        [(TCCDEventSubscriber *)self _addPendingEvent:v5];
+        [(TCCDEventSubscriber *)self _addPendingEvent:publishCopy];
         break;
       case 0:
-        [(TCCDEventSubscriber *)self _addPendingEvent:v5];
+        [(TCCDEventSubscriber *)self _addPendingEvent:publishCopy];
         [(TCCDEventSubscriber *)self _checkEntitlement];
         break;
     }

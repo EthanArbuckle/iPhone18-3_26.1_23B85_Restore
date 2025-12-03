@@ -1,12 +1,12 @@
 @interface ATXMagicalMomentsUpdateMonitor
 - (ATXMagicalMomentsUpdateMonitor)init;
-- (ATXMagicalMomentsUpdateMonitor)initWithLimit:(unint64_t)a3;
-- (id)predictionsForBundleId:(id)a3;
+- (ATXMagicalMomentsUpdateMonitor)initWithLimit:(unint64_t)limit;
+- (id)predictionsForBundleId:(id)id;
 - (unint64_t)mmPredictionCount;
-- (void)_setPredictions:(id)a3 expiration:(id)a4 totalPredictionCount:(unint64_t)a5;
+- (void)_setPredictions:(id)predictions expiration:(id)expiration totalPredictionCount:(unint64_t)count;
 - (void)dropCacheIfExpired;
 - (void)setupUpdateListener;
-- (void)updatePredictionsWith:(id)a3 consumer:(unint64_t)a4;
+- (void)updatePredictionsWith:(id)with consumer:(unint64_t)consumer;
 @end
 
 @implementation ATXMagicalMomentsUpdateMonitor
@@ -14,12 +14,12 @@
 - (ATXMagicalMomentsUpdateMonitor)init
 {
   v3 = +[_ATXGlobals sharedInstance];
-  v4 = [v3 maxMagicalMomentsPredictions];
+  maxMagicalMomentsPredictions = [v3 maxMagicalMomentsPredictions];
 
-  return [(ATXMagicalMomentsUpdateMonitor *)self initWithLimit:v4];
+  return [(ATXMagicalMomentsUpdateMonitor *)self initWithLimit:maxMagicalMomentsPredictions];
 }
 
-- (ATXMagicalMomentsUpdateMonitor)initWithLimit:(unint64_t)a3
+- (ATXMagicalMomentsUpdateMonitor)initWithLimit:(unint64_t)limit
 {
   v28 = *MEMORY[0x277D85DE8];
   v23.receiver = self;
@@ -32,7 +32,7 @@
     queue = v4->_queue;
     v4->_queue = v6;
 
-    v4->_limit = a3;
+    v4->_limit = limit;
     v8 = objc_alloc(MEMORY[0x277CBEBD0]);
     v9 = [v8 initWithSuiteName:*MEMORY[0x277CEBD00]];
     defaults = v4->_defaults;
@@ -87,8 +87,8 @@
   {
     if (self->_mmPredictionCount)
     {
-      v3 = [MEMORY[0x277CBEAA8] date];
-      v4 = [v3 earlierDate:self->_expiration];
+      date = [MEMORY[0x277CBEAA8] date];
+      v4 = [date earlierDate:self->_expiration];
       v5 = [v4 isEqualToDate:self->_expiration];
 
       if (v5)
@@ -115,9 +115,9 @@
   }
 }
 
-- (id)predictionsForBundleId:(id)a3
+- (id)predictionsForBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -129,10 +129,10 @@
   block[1] = 3221225472;
   block[2] = __57__ATXMagicalMomentsUpdateMonitor_predictionsForBundleId___block_invoke;
   block[3] = &unk_27859B1C0;
-  v10 = v4;
+  v10 = idCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = idCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -202,18 +202,18 @@ void __53__ATXMagicalMomentsUpdateMonitor_setupUpdateListener__block_invoke(uint
   [WeakRetained updatePredictionsWith:v5 consumer:a3];
 }
 
-- (void)updatePredictionsWith:(id)a3 consumer:(unint64_t)a4
+- (void)updatePredictionsWith:(id)with consumer:(unint64_t)consumer
 {
-  v6 = a3;
+  withCopy = with;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__ATXMagicalMomentsUpdateMonitor_updatePredictionsWith_consumer___block_invoke;
   block[3] = &unk_278599E28;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  consumerCopy = consumer;
+  v10 = withCopy;
+  v8 = withCopy;
   dispatch_async(queue, block);
 }
 
@@ -282,15 +282,15 @@ LABEL_4:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setPredictions:(id)a3 expiration:(id)a4 totalPredictionCount:(unint64_t)a5
+- (void)_setPredictions:(id)predictions expiration:(id)expiration totalPredictionCount:(unint64_t)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  predictionsCopy = predictions;
+  expirationCopy = expiration;
   dispatch_assert_queue_V2(self->_queue);
-  objc_storeStrong(&self->_predictionMap, a3);
-  objc_storeStrong(&self->_expiration, a4);
-  self->_mmPredictionCount = a5;
+  objc_storeStrong(&self->_predictionMap, predictions);
+  objc_storeStrong(&self->_expiration, expiration);
+  self->_mmPredictionCount = count;
   [(NSUserDefaults *)self->_defaults setObject:self->_expiration forKey:@"com.apple.duetexpertd.MMUpdateMonitor.ExpirationDate"];
   [(NSUserDefaults *)self->_defaults setInteger:self->_mmPredictionCount forKey:@"com.apple.duetexpertd.MMUpdateMonitor.PredictionCount"];
   v11 = __atxlog_handle_default();
@@ -299,7 +299,7 @@ LABEL_4:
     expiration = self->_expiration;
     mmPredictionCount = self->_mmPredictionCount;
     v15 = 138412546;
-    v16 = expiration;
+    expirationCopy2 = expiration;
     v17 = 2048;
     v18 = mmPredictionCount;
     _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "ATXMM: Persisted expiration date of predictions: %@. MM prediction count: %ld to NSUserDefaults", &v15, 0x16u);

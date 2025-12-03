@@ -1,33 +1,33 @@
 @interface CSVTUITrainingSession
 - (BOOL)setupPhraseSpotter;
-- (CSVTUITrainingSession)initWithUtteranceId:(int64_t)a3 sessionNumber:(int64_t)a4 Locale:(id)a5 audioSession:(id)a6 keywordDetector:(id)a7 speechRecognizer:(id)a8 speechRecognitionRequest:(id)a9 sessionDelegate:(id)a10 sessionDispatchQueue:(id)a11 zeroCounter:(id)a12 completion:(id)a13;
-- (CSVTUITrainingSession)initWithUtteranceId:(int64_t)a3 sessionNumber:(int64_t)a4 Locale:(id)a5 vtAssetConfigVersion:(id)a6 audioSession:(id)a7 keywordDetector:(id)a8 speechRecognizer:(id)a9 speechRecognitionRequest:(id)a10 sessionDelegate:(id)a11 sessionDispatchQueue:(id)a12 mhUUID:(id)a13 zeroCounter:(id)a14 completionWithResult:(id)a15;
-- (int)getTrainingAudioStatusWithVTEI:(id)a3 digitalZeroReporter:(id)a4;
+- (CSVTUITrainingSession)initWithUtteranceId:(int64_t)id sessionNumber:(int64_t)number Locale:(id)locale audioSession:(id)session keywordDetector:(id)detector speechRecognizer:(id)recognizer speechRecognitionRequest:(id)request sessionDelegate:(id)self0 sessionDispatchQueue:(id)self1 zeroCounter:(id)self2 completion:(id)self3;
+- (CSVTUITrainingSession)initWithUtteranceId:(int64_t)id sessionNumber:(int64_t)number Locale:(id)locale vtAssetConfigVersion:(id)version audioSession:(id)session keywordDetector:(id)detector speechRecognizer:(id)recognizer speechRecognitionRequest:(id)self0 sessionDelegate:(id)self1 sessionDispatchQueue:(id)self2 mhUUID:(id)self3 zeroCounter:(id)self4 completionWithResult:(id)self5;
+- (int)getTrainingAudioStatusWithVTEI:(id)i digitalZeroReporter:(id)reporter;
 - (int64_t)numSamplesInPCMBuffer;
 - (void)_registerEndPointTimeout;
-- (void)audioSessionDidStopRecording:(int64_t)a3;
+- (void)audioSessionDidStopRecording:(int64_t)recording;
 - (void)audioSessionUnsupportedAudioRoute;
-- (void)closeSessionWithCompletion:(id)a3;
-- (void)closeSessionWithStatus:(int)a3 successfully:(BOOL)a4 complete:(id)a5;
-- (void)closeSessionWithStatus:(int)a3 successfully:(BOOL)a4 voiceTriggerEventInfo:(id)a5 completeWithResult:(id)a6;
+- (void)closeSessionWithCompletion:(id)completion;
+- (void)closeSessionWithStatus:(int)status successfully:(BOOL)successfully complete:(id)complete;
+- (void)closeSessionWithStatus:(int)status successfully:(BOOL)successfully voiceTriggerEventInfo:(id)info completeWithResult:(id)result;
 - (void)didDetectBeginOfSpeech;
-- (void)didDetectEndOfSpeech:(int64_t)a3;
-- (void)feedSpeechRecognitionTrailingSamplesWithCompletedBlock:(id)a3;
+- (void)didDetectEndOfSpeech:(int64_t)speech;
+- (void)feedSpeechRecognitionTrailingSamplesWithCompletedBlock:(id)block;
 - (void)feedSpeechRecognitionWithPCMBuffer;
 - (void)finishSpeechRecognitionTask;
-- (void)handleAudioBufferForVTWithAudioInput:(id)a3 withDetectedBlock:(id)a4;
-- (void)handleAudioInput:(id)a3;
-- (void)handleMasterTimeout:(id)a3;
-- (void)logTrainingSessionCompleteWithVoiceTriggerEventInfo:(id)a3;
-- (void)pushAudioInputIntoPCMBuffer:(id)a3;
+- (void)handleAudioBufferForVTWithAudioInput:(id)input withDetectedBlock:(id)block;
+- (void)handleAudioInput:(id)input;
+- (void)handleMasterTimeout:(id)timeout;
+- (void)logTrainingSessionCompleteWithVoiceTriggerEventInfo:(id)info;
+- (void)pushAudioInputIntoPCMBuffer:(id)buffer;
 - (void)resumeTraining;
-- (void)setupSpeechRecognitionTaskWithVoiceTriggerEventInfo:(id)a3;
-- (void)speechRecognitionTask:(id)a3 didHypothesizeTranscription:(id)a4;
-- (void)startMasterTimerWithTimeout:(float)a3;
+- (void)setupSpeechRecognitionTaskWithVoiceTriggerEventInfo:(id)info;
+- (void)speechRecognitionTask:(id)task didHypothesizeTranscription:(id)transcription;
+- (void)startMasterTimerWithTimeout:(float)timeout;
 - (void)startTraining;
 - (void)stopMasterTimer;
 - (void)suspendTraining;
-- (void)trimBeginingOfPCMBufferWithVoiceTriggerEventInfo:(id)a3;
+- (void)trimBeginingOfPCMBufferWithVoiceTriggerEventInfo:(id)info;
 - (void)updateMeterAndForward;
 @end
 
@@ -54,11 +54,11 @@ void __49__CSVTUITrainingSession__registerEndPointTimeout__block_invoke(uint64_t
   [WeakRetained closeSessionWithStatus:7 successfully:0];
 }
 
-- (void)speechRecognitionTask:(id)a3 didHypothesizeTranscription:(id)a4
+- (void)speechRecognitionTask:(id)task didHypothesizeTranscription:(id)transcription
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  taskCopy = task;
+  transcriptionCopy = transcription;
   v7 = MEMORY[0x277D015D8];
   v8 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -70,9 +70,9 @@ void __49__CSVTUITrainingSession__registerEndPointTimeout__block_invoke(uint64_t
     _os_log_impl(&dword_225E12000, v8, OS_LOG_TYPE_DEFAULT, "%s %{public}s called", &v14, 0x16u);
   }
 
-  v9 = [v6 formattedString];
-  v10 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v11 = [v9 stringByTrimmingCharactersInSet:v10];
+  formattedString = [transcriptionCopy formattedString];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v11 = [formattedString stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v12 = *v7;
   if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
@@ -111,7 +111,7 @@ void __49__CSVTUITrainingSession__registerEndPointTimeout__block_invoke(uint64_t
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMasterTimeout:(id)a3
+- (void)handleMasterTimeout:(id)timeout
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D015D8];
@@ -153,7 +153,7 @@ uint64_t __45__CSVTUITrainingSession_handleMasterTimeout___block_invoke(uint64_t
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)startMasterTimerWithTimeout:(float)a3
+- (void)startMasterTimerWithTimeout:(float)timeout
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D015D8];
@@ -166,14 +166,14 @@ uint64_t __45__CSVTUITrainingSession_handleMasterTimeout___block_invoke(uint64_t
     _os_log_impl(&dword_225E12000, v5, OS_LOG_TYPE_DEFAULT, "%s %{public}s CALLED", buf, 0x16u);
   }
 
-  if (a3 != 0.0)
+  if (timeout != 0.0)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __53__CSVTUITrainingSession_startMasterTimerWithTimeout___block_invoke;
     v7[3] = &unk_278579190;
     v7[4] = self;
-    v8 = a3;
+    timeoutCopy = timeout;
     dispatch_async(MEMORY[0x277D85CD0], v7);
   }
 
@@ -206,9 +206,9 @@ uint64_t __53__CSVTUITrainingSession_startMasterTimerWithTimeout___block_invoke(
   }
 }
 
-- (void)setupSpeechRecognitionTaskWithVoiceTriggerEventInfo:(id)a3
+- (void)setupSpeechRecognitionTaskWithVoiceTriggerEventInfo:(id)info
 {
-  v13 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(MEMORY[0x277CDCEC8]);
   speechRecognitionRequest = self->_speechRecognitionRequest;
   self->_speechRecognitionRequest = v4;
@@ -221,7 +221,7 @@ uint64_t __53__CSVTUITrainingSession_startMasterTimerWithTimeout___block_invoke(
   [(SFSpeechAudioBufferRecognitionRequest *)self->_speechRecognitionRequest setTaskHint:1001];
   if (self->_speechRecognizer && self->_speechRecognitionRequest)
   {
-    v9 = [v13 mutableCopy];
+    v9 = [infoCopy mutableCopy];
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%ld] VTUISession Number:[%ld]", self->_utteranceId, self->_sessionNumber];
     [v9 setObject:@"PHS explicit training utterance" forKey:v10];
 
@@ -232,7 +232,7 @@ uint64_t __53__CSVTUITrainingSession_startMasterTimerWithTimeout___block_invoke(
   }
 }
 
-- (void)didDetectEndOfSpeech:(int64_t)a3
+- (void)didDetectEndOfSpeech:(int64_t)speech
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D015D8];
@@ -241,7 +241,7 @@ uint64_t __53__CSVTUITrainingSession_startMasterTimerWithTimeout___block_invoke(
     *buf = 136315394;
     v11 = "[CSVTUITrainingSession didDetectEndOfSpeech:]";
     v12 = 2050;
-    v13 = a3;
+    speechCopy = speech;
     _os_log_impl(&dword_225E12000, v5, OS_LOG_TYPE_DEFAULT, "%s End of speech detected with endpoint type: %{public}ld", buf, 0x16u);
   }
 
@@ -252,7 +252,7 @@ uint64_t __53__CSVTUITrainingSession_startMasterTimerWithTimeout___block_invoke(
   v8[2] = __46__CSVTUITrainingSession_didDetectEndOfSpeech___block_invoke;
   v8[3] = &unk_278578C60;
   objc_copyWeak(v9, buf);
-  v9[1] = a3;
+  v9[1] = speech;
   dispatch_async(queue, v8);
   objc_destroyWeak(v9);
   objc_destroyWeak(buf);
@@ -306,28 +306,28 @@ void __46__CSVTUITrainingSession_didDetectEndOfSpeech___block_invoke(uint64_t a1
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionDidStopRecording:(int64_t)a3
+- (void)audioSessionDidStopRecording:(int64_t)recording
 {
-  if (a3)
+  if (recording)
   {
     [(CSVTUITrainingSession *)self closeSessionWithStatus:5 successfully:0];
   }
 }
 
-- (int)getTrainingAudioStatusWithVTEI:(id)a3 digitalZeroReporter:(id)a4
+- (int)getTrainingAudioStatusWithVTEI:(id)i digitalZeroReporter:(id)reporter
 {
-  v5 = a3;
-  if ([a4 digitalZeroDetected])
+  iCopy = i;
+  if ([reporter digitalZeroDetected])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v5 objectForKey:*MEMORY[0x277D01DF8]];
-    v8 = [v7 BOOLValue];
+    v7 = [iCopy objectForKey:*MEMORY[0x277D01DF8]];
+    bOOLValue = [v7 BOOLValue];
 
-    if (v8)
+    if (bOOLValue)
     {
       v6 = 0;
     }
@@ -341,37 +341,37 @@ void __46__CSVTUITrainingSession_didDetectEndOfSpeech___block_invoke(uint64_t a1
   return v6;
 }
 
-- (void)logTrainingSessionCompleteWithVoiceTriggerEventInfo:(id)a3
+- (void)logTrainingSessionCompleteWithVoiceTriggerEventInfo:(id)info
 {
   utteranceId_low = LODWORD(self->_utteranceId);
   v5 = *MEMORY[0x277D01CF8];
-  v6 = a3;
-  v7 = [v6 objectForKey:v5];
-  v8 = [v7 unsignedIntegerValue];
+  infoCopy = info;
+  v7 = [infoCopy objectForKey:v5];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
   v9 = @"Siri";
-  if (!v8)
+  if (!unsignedIntegerValue)
   {
     v9 = @"Hey Siri";
   }
 
   v10 = v9;
 
-  v11 = [v6 objectForKey:*MEMORY[0x277D01EF0]];
+  v11 = [infoCopy objectForKey:*MEMORY[0x277D01EF0]];
   [v11 floatValue];
   v13 = v12;
 
-  v14 = [v6 objectForKey:*MEMORY[0x277D01F00]];
-  v15 = [v14 unsignedIntegerValue];
+  v14 = [infoCopy objectForKey:*MEMORY[0x277D01F00]];
+  unsignedIntegerValue2 = [v14 unsignedIntegerValue];
 
-  v16 = [v6 objectForKey:*MEMORY[0x277D01EA8]];
-  v17 = [v16 unsignedIntegerValue];
+  v16 = [infoCopy objectForKey:*MEMORY[0x277D01EA8]];
+  unsignedIntegerValue3 = [v16 unsignedIntegerValue];
 
-  v18 = [v6 objectForKey:*MEMORY[0x277D01DF8]];
+  v18 = [infoCopy objectForKey:*MEMORY[0x277D01DF8]];
 
-  v19 = [v18 BOOLValue];
-  v21 = [MEMORY[0x277D01908] sharedLogger];
+  bOOLValue = [v18 BOOLValue];
+  mEMORY[0x277D01908] = [MEMORY[0x277D01908] sharedLogger];
   LODWORD(v20) = v13;
-  [v21 logSiriSetupPHSEnrollmentUtteranceCompletedWithSiriSetupID:self->_mhUUID withPageNumber:utteranceId_low withPhId:v10 withTopScoreForUtterance:v15 withStartSampleCount:v17 withEndSampleCount:v19 withHasSpeechDetected:v20];
+  [mEMORY[0x277D01908] logSiriSetupPHSEnrollmentUtteranceCompletedWithSiriSetupID:self->_mhUUID withPageNumber:utteranceId_low withPhId:v10 withTopScoreForUtterance:unsignedIntegerValue2 withStartSampleCount:unsignedIntegerValue3 withEndSampleCount:bOOLValue withHasSpeechDetected:v20];
 }
 
 - (int64_t)numSamplesInPCMBuffer
@@ -415,10 +415,10 @@ void __46__CSVTUITrainingSession_didDetectEndOfSpeech___block_invoke(uint64_t a1
   return v5;
 }
 
-- (void)pushAudioInputIntoPCMBuffer:(id)a3
+- (void)pushAudioInputIntoPCMBuffer:(id)buffer
 {
   LODWORD(v3) = kCSVTUITrainingSessionSampleRate;
-  v5 = [SSRUtils createAVAudioPCMBufferWithNSData:a3 audioFormat:3 sampleRate:1 numOfChannel:0 isInterleaved:v3];
+  v5 = [SSRUtils createAVAudioPCMBufferWithNSData:buffer audioFormat:3 sampleRate:1 numOfChannel:0 isInterleaved:v3];
   if ([(NSMutableArray *)self->_pcmBufArray count]>= 0x3C)
   {
     [(NSMutableArray *)self->_pcmBufArray removeObjectAtIndex:0];
@@ -427,21 +427,21 @@ void __46__CSVTUITrainingSession_didDetectEndOfSpeech___block_invoke(uint64_t a1
   [(NSMutableArray *)self->_pcmBufArray addObject:v5];
 }
 
-- (void)trimBeginingOfPCMBufferWithVoiceTriggerEventInfo:(id)a3
+- (void)trimBeginingOfPCMBufferWithVoiceTriggerEventInfo:(id)info
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D01F00]];
-  v6 = [v5 unsignedIntegerValue];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D01F00]];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v29 = v4;
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277D01E78]];
-  v8 = [v7 unsignedIntegerValue];
+  v29 = infoCopy;
+  v7 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D01E78]];
+  unsignedIntegerValue2 = [v7 unsignedIntegerValue];
 
-  v9 = v6 - v8;
-  if (v8 >= v6)
+  v9 = unsignedIntegerValue - unsignedIntegerValue2;
+  if (unsignedIntegerValue2 >= unsignedIntegerValue)
   {
-    v9 = v8 - v6;
+    v9 = unsignedIntegerValue2 - unsignedIntegerValue;
   }
 
   if (v9 >= 80000)
@@ -471,8 +471,8 @@ void __46__CSVTUITrainingSession_didDetectEndOfSpeech___block_invoke(uint64_t a1
     while (1)
     {
       v14 = [(NSMutableArray *)self->_pcmBufArray objectAtIndex:--v12];
-      v15 = [v14 frameLength];
-      v13 += v15;
+      frameLength = [v14 frameLength];
+      v13 += frameLength;
       v16 = v13 - v10;
       if (v13 >= v10)
       {
@@ -489,7 +489,7 @@ void __46__CSVTUITrainingSession_didDetectEndOfSpeech___block_invoke(uint64_t a1
       }
     }
 
-    v17 = v15;
+    v17 = frameLength;
   }
 
 LABEL_13:
@@ -605,10 +605,10 @@ LABEL_13:
   }
 }
 
-- (void)feedSpeechRecognitionTrailingSamplesWithCompletedBlock:(id)a3
+- (void)feedSpeechRecognitionTrailingSamplesWithCompletedBlock:(id)block
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = self->_numTrailingSamples + [(CSVTUITrainingSession *)self numSamplesInPCMBuffer];
   self->_numTrailingSamples = v5;
   v6 = *MEMORY[0x277D015D8];
@@ -622,36 +622,36 @@ LABEL_13:
   }
 
   [(CSVTUITrainingSession *)self feedSpeechRecognitionWithPCMBuffer];
-  if (v4 && self->_numTrailingSamples >= self->_numRequiredTrailingSamples)
+  if (blockCopy && self->_numTrailingSamples >= self->_numRequiredTrailingSamples)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAudioBufferForVTWithAudioInput:(id)a3 withDetectedBlock:(id)a4
+- (void)handleAudioBufferForVTWithAudioInput:(id)input withDetectedBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(CSVTUIKeywordDetectorProtocol *)self->_keywordDetector analyzeWithBuffer:a3];
+  blockCopy = block;
+  v7 = [(CSVTUIKeywordDetectorProtocol *)self->_keywordDetector analyzeWithBuffer:input];
   v8 = [v7 mutableCopy];
 
   if (v8)
   {
     v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D01DF8]];
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
-    if (v10)
+    if (bOOLValue)
     {
       v11 = [v8 objectForKeyedSubscript:*MEMORY[0x277D01F00]];
-      v12 = [v11 unsignedIntegerValue];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
 
       v13 = [v8 objectForKeyedSubscript:*MEMORY[0x277D01EA8]];
-      v14 = [v13 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
       v15 = [v8 objectForKeyedSubscript:*MEMORY[0x277D01E78]];
-      v16 = [v15 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v15 unsignedIntegerValue];
 
       v17 = *MEMORY[0x277D015D8];
       if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -661,17 +661,17 @@ LABEL_13:
         v33 = 2114;
         v34 = *&v8;
         v35 = 2050;
-        v36 = v12;
+        v36 = unsignedIntegerValue;
         v37 = 2050;
-        v38 = v14;
+        v38 = unsignedIntegerValue2;
         v39 = 2050;
-        v40 = v16;
+        v40 = unsignedIntegerValue3;
         _os_log_impl(&dword_225E12000, v17, OS_LOG_TYPE_DEFAULT, "%s Triggered! Event info: %{public}@\n%{public}9lld %{public}9lld %{public}9lld", buf, 0x34u);
       }
 
-      if (v6)
+      if (blockCopy)
       {
-        v6[2](v6, v8);
+        blockCopy[2](blockCopy, v8);
       }
     }
 
@@ -687,13 +687,13 @@ LABEL_13:
         [v22 floatValue];
         v24 = v23;
         v25 = [v8 objectForKeyedSubscript:*MEMORY[0x277D01E78]];
-        v26 = [v25 unsignedIntegerValue];
+        unsignedIntegerValue4 = [v25 unsignedIntegerValue];
         *buf = 136315650;
         v32 = "[CSVTUITrainingSession handleAudioBufferForVTWithAudioInput:withDetectedBlock:]";
         v33 = 2050;
         v34 = v24;
         v35 = 2050;
-        v36 = v26;
+        v36 = unsignedIntegerValue4;
         _os_log_impl(&dword_225E12000, v21, OS_LOG_TYPE_DEFAULT, "%s analyzing.... score so far: %{public}5.3f (%{public}ld)", buf, 0x20u);
       }
     }
@@ -741,9 +741,9 @@ void __80__CSVTUITrainingSession_handleAudioBufferForVTWithAudioInput_withDetect
   }
 }
 
-- (void)handleAudioInput:(id)a3
+- (void)handleAudioInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -752,8 +752,8 @@ void __80__CSVTUITrainingSession_handleAudioBufferForVTWithAudioInput_withDetect
   v7[3] = &unk_278578C38;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = inputCopy;
+  v6 = inputCopy;
   dispatch_async(queue, v7);
 
   objc_destroyWeak(&v9);
@@ -970,21 +970,21 @@ uint64_t __40__CSVTUITrainingSession_suspendTraining__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)closeSessionWithStatus:(int)a3 successfully:(BOOL)a4 voiceTriggerEventInfo:(id)a5 completeWithResult:(id)a6
+- (void)closeSessionWithStatus:(int)status successfully:(BOOL)successfully voiceTriggerEventInfo:(id)info completeWithResult:(id)result
 {
-  v10 = a5;
-  v11 = a6;
+  infoCopy = info;
+  resultCopy = result;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __102__CSVTUITrainingSession_closeSessionWithStatus_successfully_voiceTriggerEventInfo_completeWithResult___block_invoke;
   v14[3] = &unk_278578BE8;
-  v17 = a3;
+  statusCopy = status;
   v14[4] = self;
-  v15 = v10;
-  v18 = a4;
-  v16 = v11;
-  v12 = v11;
-  v13 = v10;
+  v15 = infoCopy;
+  successfullyCopy = successfully;
+  v16 = resultCopy;
+  v12 = resultCopy;
+  v13 = infoCopy;
   [(CSVTUITrainingSession *)self closeSessionWithCompletion:v14];
 }
 
@@ -1060,18 +1060,18 @@ void __102__CSVTUITrainingSession_closeSessionWithStatus_successfully_voiceTrigg
   }
 }
 
-- (void)closeSessionWithStatus:(int)a3 successfully:(BOOL)a4 complete:(id)a5
+- (void)closeSessionWithStatus:(int)status successfully:(BOOL)successfully complete:(id)complete
 {
-  v8 = a5;
+  completeCopy = complete;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__CSVTUITrainingSession_closeSessionWithStatus_successfully_complete___block_invoke;
   v10[3] = &unk_278578BC0;
-  v12 = a3;
-  v13 = a4;
+  statusCopy = status;
+  successfullyCopy = successfully;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
+  v11 = completeCopy;
+  v9 = completeCopy;
   [(CSVTUITrainingSession *)self closeSessionWithCompletion:v10];
 }
 
@@ -1138,9 +1138,9 @@ uint64_t __70__CSVTUITrainingSession_closeSessionWithStatus_successfully_complet
   return result;
 }
 
-- (void)closeSessionWithCompletion:(id)a3
+- (void)closeSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -1149,8 +1149,8 @@ uint64_t __70__CSVTUITrainingSession_closeSessionWithStatus_successfully_complet
   v7[3] = &unk_278578B98;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 
   objc_destroyWeak(&v9);
@@ -1198,39 +1198,39 @@ uint64_t __38__CSVTUITrainingSession_startTraining__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CSVTUITrainingSession)initWithUtteranceId:(int64_t)a3 sessionNumber:(int64_t)a4 Locale:(id)a5 vtAssetConfigVersion:(id)a6 audioSession:(id)a7 keywordDetector:(id)a8 speechRecognizer:(id)a9 speechRecognitionRequest:(id)a10 sessionDelegate:(id)a11 sessionDispatchQueue:(id)a12 mhUUID:(id)a13 zeroCounter:(id)a14 completionWithResult:(id)a15
+- (CSVTUITrainingSession)initWithUtteranceId:(int64_t)id sessionNumber:(int64_t)number Locale:(id)locale vtAssetConfigVersion:(id)version audioSession:(id)session keywordDetector:(id)detector speechRecognizer:(id)recognizer speechRecognitionRequest:(id)self0 sessionDelegate:(id)self1 sessionDispatchQueue:(id)self2 mhUUID:(id)self3 zeroCounter:(id)self4 completionWithResult:(id)self5
 {
-  v46 = a5;
-  v38 = a6;
-  v45 = a6;
-  v39 = a7;
-  v18 = a7;
-  v40 = a8;
-  v19 = a8;
-  v43 = a9;
-  v42 = a10;
-  v20 = a11;
-  v41 = a12;
-  v21 = a13;
-  v22 = a14;
-  v23 = a15;
+  localeCopy = locale;
+  versionCopy = version;
+  versionCopy2 = version;
+  sessionCopy = session;
+  sessionCopy2 = session;
+  detectorCopy = detector;
+  detectorCopy2 = detector;
+  recognizerCopy = recognizer;
+  requestCopy = request;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  dCopy = d;
+  counterCopy = counter;
+  resultCopy = result;
   v47.receiver = self;
   v47.super_class = CSVTUITrainingSession;
   v24 = [(CSVTUITrainingSession *)&v47 init];
   v25 = v24;
   v26 = 0;
-  if (v18 && v19 && v20)
+  if (sessionCopy2 && detectorCopy2 && delegateCopy)
   {
     if (v24)
     {
       v24->_status = 1;
-      v24->_utteranceId = a3;
-      v24->_sessionNumber = a4;
-      objc_storeStrong(&v24->_locale, a5);
-      objc_storeStrong(&v25->_vtAssetConfigVersion, v38);
-      objc_storeStrong(&v25->_audioSession, v39);
-      objc_storeStrong(&v25->_speechRecognizer, a9);
-      objc_storeStrong(&v25->_speechRecognitionRequest, a10);
+      v24->_utteranceId = id;
+      v24->_sessionNumber = number;
+      objc_storeStrong(&v24->_locale, locale);
+      objc_storeStrong(&v25->_vtAssetConfigVersion, versionCopy);
+      objc_storeStrong(&v25->_audioSession, sessionCopy);
+      objc_storeStrong(&v25->_speechRecognizer, recognizer);
+      objc_storeStrong(&v25->_speechRecognitionRequest, request);
       speechRecognitionTask = v25->_speechRecognitionTask;
       v25->_speechRecognitionTask = 0;
 
@@ -1243,21 +1243,21 @@ uint64_t __38__CSVTUITrainingSession_startTraining__block_invoke(uint64_t a1)
 
       *&v25->_speechStartDetected = 0;
       *&v25->_resultReported = 0;
-      objc_storeWeak(&v25->_sessionDelegate, v20);
+      objc_storeWeak(&v25->_sessionDelegate, delegateCopy);
       trainingCompletion = v25->_trainingCompletion;
       v25->_trainingCompletion = 0;
 
-      v32 = MEMORY[0x22AA71400](v23);
+      v32 = MEMORY[0x22AA71400](resultCopy);
       trainingCompletionWithResult = v25->_trainingCompletionWithResult;
       v25->_trainingCompletionWithResult = v32;
 
-      objc_storeStrong(&v25->_queue, a12);
-      objc_storeStrong(&v25->_mhUUID, a13);
+      objc_storeStrong(&v25->_queue, queue);
+      objc_storeStrong(&v25->_mhUUID, d);
       v25->_phId = 0;
       v25->_numRequiredTrailingSamples = 0;
       v25->_numTrailingSamples = 0;
-      objc_storeStrong(&v25->_continuousZeroCounter, a14);
-      objc_storeStrong(&v25->_keywordDetector, v40);
+      objc_storeStrong(&v25->_continuousZeroCounter, counter);
+      objc_storeStrong(&v25->_keywordDetector, detectorCopy);
     }
 
     v26 = v25;
@@ -1266,35 +1266,35 @@ uint64_t __38__CSVTUITrainingSession_startTraining__block_invoke(uint64_t a1)
   return v26;
 }
 
-- (CSVTUITrainingSession)initWithUtteranceId:(int64_t)a3 sessionNumber:(int64_t)a4 Locale:(id)a5 audioSession:(id)a6 keywordDetector:(id)a7 speechRecognizer:(id)a8 speechRecognitionRequest:(id)a9 sessionDelegate:(id)a10 sessionDispatchQueue:(id)a11 zeroCounter:(id)a12 completion:(id)a13
+- (CSVTUITrainingSession)initWithUtteranceId:(int64_t)id sessionNumber:(int64_t)number Locale:(id)locale audioSession:(id)session keywordDetector:(id)detector speechRecognizer:(id)recognizer speechRecognitionRequest:(id)request sessionDelegate:(id)self0 sessionDispatchQueue:(id)self1 zeroCounter:(id)self2 completion:(id)self3
 {
-  v41 = a5;
-  obj = a6;
-  v18 = a6;
-  v37 = a7;
-  v19 = a7;
-  v40 = a8;
-  v39 = a9;
-  v20 = a10;
-  v21 = a11;
-  v38 = a12;
-  v22 = a13;
+  localeCopy = locale;
+  obj = session;
+  sessionCopy = session;
+  detectorCopy = detector;
+  detectorCopy2 = detector;
+  recognizerCopy = recognizer;
+  requestCopy = request;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  counterCopy = counter;
+  completionCopy = completion;
   v42.receiver = self;
   v42.super_class = CSVTUITrainingSession;
   v23 = [(CSVTUITrainingSession *)&v42 init];
   v24 = v23;
   v25 = 0;
-  if (v18 && v19 && v20)
+  if (sessionCopy && detectorCopy2 && delegateCopy)
   {
     if (v23)
     {
       v23->_status = 1;
-      v23->_utteranceId = a3;
-      v23->_sessionNumber = a4;
-      objc_storeStrong(&v23->_locale, a5);
+      v23->_utteranceId = id;
+      v23->_sessionNumber = number;
+      objc_storeStrong(&v23->_locale, locale);
       objc_storeStrong(&v24->_audioSession, obj);
-      objc_storeStrong(&v24->_speechRecognizer, a8);
-      objc_storeStrong(&v24->_speechRecognitionRequest, a9);
+      objc_storeStrong(&v24->_speechRecognizer, recognizer);
+      objc_storeStrong(&v24->_speechRecognitionRequest, request);
       speechRecognitionTask = v24->_speechRecognitionTask;
       v24->_speechRecognitionTask = 0;
 
@@ -1307,19 +1307,19 @@ uint64_t __38__CSVTUITrainingSession_startTraining__block_invoke(uint64_t a1)
 
       *&v24->_speechStartDetected = 0;
       *&v24->_resultReported = 0;
-      objc_storeWeak(&v24->_sessionDelegate, v20);
-      v30 = MEMORY[0x22AA71400](v22);
+      objc_storeWeak(&v24->_sessionDelegate, delegateCopy);
+      v30 = MEMORY[0x22AA71400](completionCopy);
       trainingCompletion = v24->_trainingCompletion;
       v24->_trainingCompletion = v30;
 
       trainingCompletionWithResult = v24->_trainingCompletionWithResult;
       v24->_trainingCompletionWithResult = 0;
 
-      objc_storeStrong(&v24->_queue, a11);
+      objc_storeStrong(&v24->_queue, queue);
       v24->_numRequiredTrailingSamples = 0;
       v24->_numTrailingSamples = 0;
-      objc_storeStrong(&v24->_continuousZeroCounter, a12);
-      objc_storeStrong(&v24->_keywordDetector, v37);
+      objc_storeStrong(&v24->_continuousZeroCounter, counter);
+      objc_storeStrong(&v24->_keywordDetector, detectorCopy);
     }
 
     v25 = v24;

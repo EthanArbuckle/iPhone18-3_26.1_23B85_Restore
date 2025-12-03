@@ -1,45 +1,45 @@
 @interface TSCHCDESelection
-+ (id)selectionWithChartInfo:(id)a3 rowRange:(_NSRange)a4 columnRange:(_NSRange)a5;
-- (BOOL)isEqual:(id)a3;
-- (TSCHCDESelection)initWithChartInfo:(id)a3 rowRange:(_NSRange)a4 columnRange:(_NSRange)a5;
-- (TSCHCDESelection)initWithRowRange:(_NSRange)a3 columnRange:(_NSRange)a4;
++ (id)selectionWithChartInfo:(id)info rowRange:(_NSRange)range columnRange:(_NSRange)columnRange;
+- (BOOL)isEqual:(id)equal;
+- (TSCHCDESelection)initWithChartInfo:(id)info rowRange:(_NSRange)range columnRange:(_NSRange)columnRange;
+- (TSCHCDESelection)initWithRowRange:(_NSRange)range columnRange:(_NSRange)columnRange;
 - (_NSRange)columnRange;
 - (_NSRange)rowRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (id)initFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSCHCDESelection
 
-+ (id)selectionWithChartInfo:(id)a3 rowRange:(_NSRange)a4 columnRange:(_NSRange)a5
++ (id)selectionWithChartInfo:(id)info rowRange:(_NSRange)range columnRange:(_NSRange)columnRange
 {
-  length = a5.length;
-  location = a5.location;
-  v7 = a4.length;
-  v8 = a4.location;
-  v10 = a3;
-  v11 = [a1 alloc];
-  v16 = objc_msgSend_initWithChartInfo_rowRange_columnRange_(v11, v12, v13, v14, v15, v10, v8, v7, location, length);
+  length = columnRange.length;
+  location = columnRange.location;
+  v7 = range.length;
+  v8 = range.location;
+  infoCopy = info;
+  v11 = [self alloc];
+  v16 = objc_msgSend_initWithChartInfo_rowRange_columnRange_(v11, v12, v13, v14, v15, infoCopy, v8, v7, location, length);
 
   return v16;
 }
 
-- (TSCHCDESelection)initWithChartInfo:(id)a3 rowRange:(_NSRange)a4 columnRange:(_NSRange)a5
+- (TSCHCDESelection)initWithChartInfo:(id)info rowRange:(_NSRange)range columnRange:(_NSRange)columnRange
 {
-  length = a5.length;
-  location = a5.location;
-  v7 = a4.length;
-  v8 = a4.location;
-  v11 = a3;
+  length = columnRange.length;
+  location = columnRange.location;
+  v7 = range.length;
+  v8 = range.location;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = TSCHCDESelection;
   v12 = [(TSCHCDESelection *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_info, a3);
+    objc_storeStrong(&v12->_info, info);
     v13->_rowRange.location = v8;
     v13->_rowRange.length = v7;
     v13->_columnRange.location = location;
@@ -49,12 +49,12 @@
   return v13;
 }
 
-- (TSCHCDESelection)initWithRowRange:(_NSRange)a3 columnRange:(_NSRange)a4
+- (TSCHCDESelection)initWithRowRange:(_NSRange)range columnRange:(_NSRange)columnRange
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3.length;
-  v7 = a3.location;
+  length = columnRange.length;
+  location = columnRange.location;
+  v6 = range.length;
+  v7 = range.location;
   v9.receiver = self;
   v9.super_class = TSCHCDESelection;
   result = [(TSCHCDESelection *)&v9 init];
@@ -69,7 +69,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v9 = objc_msgSend_chartInfo(self, v5, v6, v7, v8);
@@ -92,10 +92,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -118,13 +118,13 @@
   return v6;
 }
 
-- (id)initFromArchive:(const void *)a3 unarchiver:(id)a4
+- (id)initFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v7 = a4;
-  v11 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v11 = *(archive + 4);
   if ((v11 & 4) != 0)
   {
-    v12 = *(a3 + 9);
+    v12 = *(archive + 9);
   }
 
   else
@@ -134,7 +134,7 @@
 
   if ((v11 & 8) != 0)
   {
-    v13 = *(a3 + 10);
+    v13 = *(archive + 10);
   }
 
   else
@@ -144,7 +144,7 @@
 
   if ((v11 & 0x10) != 0)
   {
-    v14 = *(a3 + 11);
+    v14 = *(archive + 11);
   }
 
   else
@@ -154,7 +154,7 @@
 
   if ((v11 & 0x20) != 0)
   {
-    v15 = objc_msgSend_initWithRowRange_columnRange_(self, v6, v8, v9, v10, v12, v13, v14, *(a3 + 12));
+    v15 = objc_msgSend_initWithRowRange_columnRange_(self, v6, v8, v9, v10, v12, v13, v14, *(archive + 12));
   }
 
   else
@@ -165,13 +165,13 @@
   v16 = v15;
   if (v15)
   {
-    v17 = *(a3 + 3);
+    v17 = *(archive + 3);
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = sub_2763642B8;
     v25[3] = &unk_27A6B9620;
     v26 = v15;
-    v18 = v7;
+    v18 = unarchiverCopy;
     v20 = objc_opt_class();
     if (v17)
     {
@@ -187,43 +187,43 @@
   return v16;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v37 = a4;
+  archiverCopy = archiver;
   v10 = objc_msgSend_chartInfo(self, v6, v7, v8, v9);
 
   if (v10)
   {
     v16 = objc_msgSend_chartInfo(self, v11, v12, v13, v14);
-    *(a3 + 4) |= 1u;
-    v20 = *(a3 + 3);
+    *(archive + 4) |= 1u;
+    v20 = *(archive + 3);
     if (!v20)
     {
-      v21 = *(a3 + 1);
+      v21 = *(archive + 1);
       if (v21)
       {
         v21 = *(v21 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v20 = MEMORY[0x277C97B90](v21);
-      *(a3 + 3) = v20;
+      *(archive + 3) = v20;
     }
 
-    objc_msgSend_setWeakReference_message_(v37, v15, v17, v18, v19, v16, v20);
+    objc_msgSend_setWeakReference_message_(archiverCopy, v15, v17, v18, v19, v16, v20);
   }
 
   v22 = objc_msgSend_rowRange(self, v11, v12, v13, v14);
-  *(a3 + 4) |= 4u;
-  *(a3 + 9) = v22;
+  *(archive + 4) |= 4u;
+  *(archive + 9) = v22;
   objc_msgSend_rowRange(self, v23, v24, v25, v26);
-  *(a3 + 4) |= 8u;
-  *(a3 + 10) = v27;
+  *(archive + 4) |= 8u;
+  *(archive + 10) = v27;
   v31 = objc_msgSend_columnRange(self, v27, v28, v29, v30);
-  *(a3 + 4) |= 0x10u;
-  *(a3 + 11) = v31;
+  *(archive + 4) |= 0x10u;
+  *(archive + 11) = v31;
   objc_msgSend_columnRange(self, v32, v33, v34, v35);
-  *(a3 + 4) |= 0x20u;
-  *(a3 + 12) = v36;
+  *(archive + 4) |= 0x20u;
+  *(archive + 12) = v36;
 }
 
 - (_NSRange)rowRange

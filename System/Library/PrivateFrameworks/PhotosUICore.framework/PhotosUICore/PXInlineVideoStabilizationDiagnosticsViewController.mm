@@ -1,13 +1,13 @@
 @interface PXInlineVideoStabilizationDiagnosticsViewController
-- (PXInlineVideoStabilizationDiagnosticsViewController)initWithInputAsset:(id)a3;
+- (PXInlineVideoStabilizationDiagnosticsViewController)initWithInputAsset:(id)asset;
 - (id)_newStabilizeOperation;
 - (id)extraAlertAction;
 - (id)variantVideoDescription;
 - (void)_exportRecipe;
-- (void)_handleStabilizeOperationCompletedWithCompletionHandler:(id)a3;
+- (void)_handleStabilizeOperationCompletedWithCompletionHandler:(id)handler;
 - (void)invalidateInputAndVariantReferences;
-- (void)prepareVariantVideoForExportWithProgress:(id)a3 completion:(id)a4;
-- (void)prepareVariantVideoWithProgress:(id)a3 completion:(id)a4;
+- (void)prepareVariantVideoForExportWithProgress:(id)progress completion:(id)completion;
+- (void)prepareVariantVideoWithProgress:(id)progress completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -15,17 +15,17 @@
 
 - (id)_newStabilizeOperation
 {
-  v3 = [(PXVideoComparisonViewController *)self inputAsset];
-  v4 = [(PXVideoComparisonViewController *)self inputVideoURL];
-  if (v4)
+  inputAsset = [(PXVideoComparisonViewController *)self inputAsset];
+  inputVideoURL = [(PXVideoComparisonViewController *)self inputVideoURL];
+  if (inputVideoURL)
   {
     v34 = 0uLL;
     v35 = 0;
-    v5 = [v3 photoIrisProperties];
-    v6 = v5;
-    if (v5)
+    photoIrisProperties = [inputAsset photoIrisProperties];
+    v6 = photoIrisProperties;
+    if (photoIrisProperties)
     {
-      [v5 photoIrisStillDisplayTime];
+      [photoIrisProperties photoIrisStillDisplayTime];
     }
 
     else
@@ -50,11 +50,11 @@
     {
       memset(v30, 0, sizeof(v30));
       v29 = 0u;
-      v11 = [v3 mediaAnalysisProperties];
-      v12 = v11;
-      if (v11)
+      mediaAnalysisProperties = [inputAsset mediaAnalysisProperties];
+      v12 = mediaAnalysisProperties;
+      if (mediaAnalysisProperties)
       {
-        [v11 bestVideoTimeRange];
+        [mediaAnalysisProperties bestVideoTimeRange];
       }
 
       else
@@ -92,26 +92,26 @@
       v13 = MEMORY[0x1E69C0708];
       v14 = *MEMORY[0x1E6987608];
       v15 = objc_alloc(MEMORY[0x1E6988168]);
-      v16 = [v15 initWithURL:v4 options:MEMORY[0x1E695E0F8]];
+      v16 = [v15 initWithURL:inputVideoURL options:MEMORY[0x1E695E0F8]];
       v17 = [v13 tracksWithMediaType:v14 forAsset:v16];
-      v18 = [v17 firstObject];
-      [v18 naturalSize];
+      firstObject = [v17 firstObject];
+      [firstObject naturalSize];
       v20 = v19;
       v22 = v21;
 
-      v23 = [[PXMediaAnalysisVideoStabilizationRecipeSource alloc] initWithAsset:v3 videoDimensions:v20, v22];
+      v23 = [[PXMediaAnalysisVideoStabilizationRecipeSource alloc] initWithAsset:inputAsset videoDimensions:v20, v22];
     }
 
     else
     {
-      v23 = [[PXURLVideoStabilizationRecipeSource alloc] initWithVideoURL:v4];
+      v23 = [[PXURLVideoStabilizationRecipeSource alloc] initWithVideoURL:inputVideoURL];
     }
 
     v24 = v23;
     [(PXVideoStabilizationRecipeSource *)v23 setAllowsOnDemandPixelAnalysis:1];
     -[PXVideoStabilizationRecipeSource setAllowedAnalysisTypes:](v24, "setAllowedAnalysisTypes:", [v9 allowedAnalysisTypes]);
     v25 = objc_alloc_init(PXVideoStabilizeOperationSpec);
-    [(PXVideoProcessingOperationSpec *)v25 setInputVideoURL:v4];
+    [(PXVideoProcessingOperationSpec *)v25 setInputVideoURL:inputVideoURL];
     v29 = v34;
     *&v30[0] = v35;
     [(PXVideoStabilizeOperationSpec *)v25 setStartTime:&v29];
@@ -134,27 +134,27 @@
   return v7;
 }
 
-- (void)_handleStabilizeOperationCompletedWithCompletionHandler:(id)a3
+- (void)_handleStabilizeOperationCompletedWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
   stabilizeOperation = self->_stabilizeOperation;
-  v5 = a3;
-  v6 = [(PXVideoProcessingOperation *)stabilizeOperation result];
-  v7 = [v6 outputVideoAsset];
-  if (v7)
+  handlerCopy = handler;
+  result = [(PXVideoProcessingOperation *)stabilizeOperation result];
+  outputVideoAsset = [result outputVideoAsset];
+  if (outputVideoAsset)
   {
-    v8 = [objc_alloc(MEMORY[0x1E69880B0]) initWithAsset:v7];
-    v9 = [v6 outputVideoComposition];
-    [v8 setVideoComposition:v9];
+    v8 = [objc_alloc(MEMORY[0x1E69880B0]) initWithAsset:outputVideoAsset];
+    outputVideoComposition = [result outputVideoComposition];
+    [v8 setVideoComposition:outputVideoComposition];
 
-    v10 = [v6 outputAudioMix];
-    [v8 setAudioMix:v10];
+    outputAudioMix = [result outputAudioMix];
+    [v8 setAudioMix:outputAudioMix];
 
-    v11 = [v8 asset];
-    v12 = v11;
-    if (v11)
+    asset = [v8 asset];
+    v12 = asset;
+    if (asset)
     {
-      [v11 duration];
+      [asset duration];
     }
 
     else
@@ -167,16 +167,16 @@
     duration = v16;
     [v8 setLoopTimeRange:&duration];
 
-    v13 = 0;
+    error = 0;
   }
 
   else
   {
-    v13 = [v6 error];
+    error = [result error];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       LODWORD(duration.start.value) = 138412290;
-      *(&duration.start.value + 4) = v13;
+      *(&duration.start.value + 4) = error;
       _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "FAILED to stabilized video for diagnostics: %@", &duration, 0xCu);
     }
 
@@ -184,22 +184,22 @@
   }
 
   result = self->_result;
-  self->_result = v6;
+  self->_result = result;
 
-  v5[2](v5, v8, v13);
+  handlerCopy[2](handlerCopy, v8, error);
 }
 
 - (void)_exportRecipe
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXVideoStabilizeResult *)self->_result dictionaryRepresentation];
-  v4 = [(PXVideoComparisonViewController *)self inputVideoURL];
-  v5 = [v4 lastPathComponent];
-  v6 = [v5 stringByDeletingPathExtension];
+  dictionaryRepresentation = [(PXVideoStabilizeResult *)self->_result dictionaryRepresentation];
+  inputVideoURL = [(PXVideoComparisonViewController *)self inputVideoURL];
+  lastPathComponent = [inputVideoURL lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  if (v3)
+  if (dictionaryRepresentation)
   {
-    v7 = v6 == 0;
+    v7 = stringByDeletingPathExtension == 0;
   }
 
   else
@@ -209,23 +209,23 @@
 
   if (v7)
   {
-    v10 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Error" message:@"Unable to retrieve recipe or input video URL" preferredStyle:1];
+    temporaryDirectory = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Error" message:@"Unable to retrieve recipe or input video URL" preferredStyle:1];
     v8 = [MEMORY[0x1E69DC648] actionWithTitle:@"OK" style:0 handler:0];
-    [v10 addAction:v8];
+    [temporaryDirectory addAction:v8];
 
-    [(PXInlineVideoStabilizationDiagnosticsViewController *)self presentViewController:v10 animated:1 completion:0];
+    [(PXInlineVideoStabilizationDiagnosticsViewController *)self presentViewController:temporaryDirectory animated:1 completion:0];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v9 temporaryDirectory];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    temporaryDirectory = [defaultManager temporaryDirectory];
 
-    v11 = [v6 stringByAppendingString:@"_info"];
-    v12 = [v10 URLByAppendingPathComponent:v11];
+    v11 = [stringByDeletingPathExtension stringByAppendingString:@"_info"];
+    v12 = [temporaryDirectory URLByAppendingPathComponent:v11];
     v13 = [v12 URLByAppendingPathExtension:@"plist"];
 
-    [v3 writeToURL:v13 error:0];
+    [dictionaryRepresentation writeToURL:v13 error:0];
     v14 = objc_alloc(MEMORY[0x1E69CD9F8]);
     v17[0] = v13;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
@@ -235,38 +235,38 @@
   }
 }
 
-- (void)prepareVariantVideoForExportWithProgress:(id)a3 completion:(id)a4
+- (void)prepareVariantVideoForExportWithProgress:(id)progress completion:(id)completion
 {
-  v6 = a3;
-  v26 = a4;
-  v7 = [(PXInlineVideoStabilizationDiagnosticsViewController *)self _newStabilizeOperation];
+  progressCopy = progress;
+  completionCopy = completion;
+  _newStabilizeOperation = [(PXInlineVideoStabilizationDiagnosticsViewController *)self _newStabilizeOperation];
   exportOperation = self->_exportOperation;
-  self->_exportOperation = v7;
+  self->_exportOperation = _newStabilizeOperation;
 
-  v9 = [(PXVideoComparisonViewController *)self inputVideoURL];
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v10 temporaryDirectory];
+  inputVideoURL = [(PXVideoComparisonViewController *)self inputVideoURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
 
-  v25 = v9;
-  v12 = [v9 lastPathComponent];
-  v13 = [v12 stringByDeletingPathExtension];
+  v25 = inputVideoURL;
+  lastPathComponent = [inputVideoURL lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v14 = [v13 stringByAppendingString:@"_render"];
-  v15 = [v13 stringByAppendingString:@"_info"];
-  v16 = [v11 URLByAppendingPathComponent:v14];
+  v14 = [stringByDeletingPathExtension stringByAppendingString:@"_render"];
+  v15 = [stringByDeletingPathExtension stringByAppendingString:@"_info"];
+  v16 = [temporaryDirectory URLByAppendingPathComponent:v14];
   v17 = [v16 URLByAppendingPathExtension:@"mov"];
 
-  v18 = [v11 URLByAppendingPathComponent:v15];
+  v18 = [temporaryDirectory URLByAppendingPathComponent:v15];
   v19 = [v18 URLByAppendingPathExtension:@"plist"];
 
-  v20 = [(PXVideoProcessingOperation *)self->_exportOperation spec];
-  [v20 setOutputURL:v17];
+  spec = [(PXVideoProcessingOperation *)self->_exportOperation spec];
+  [spec setOutputURL:v17];
 
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __107__PXInlineVideoStabilizationDiagnosticsViewController_prepareVariantVideoForExportWithProgress_completion___block_invoke;
   v33[3] = &unk_1E772EBF8;
-  v21 = v6;
+  v21 = progressCopy;
   v34 = v21;
   [(PXVideoProcessingOperation *)self->_exportOperation setProgressHandler:v33];
   objc_initWeak(&location, self->_exportOperation);
@@ -277,7 +277,7 @@
   objc_copyWeak(&v31, &location);
   v22 = v19;
   v28 = v22;
-  v23 = v26;
+  v23 = completionCopy;
   v30 = v23;
   v24 = v17;
   v29 = v24;
@@ -318,19 +318,19 @@ void __107__PXInlineVideoStabilizationDiagnosticsViewController_prepareVariantVi
   px_dispatch_on_main_queue();
 }
 
-- (void)prepareVariantVideoWithProgress:(id)a3 completion:(id)a4
+- (void)prepareVariantVideoWithProgress:(id)progress completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXInlineVideoStabilizationDiagnosticsViewController *)self _newStabilizeOperation];
+  progressCopy = progress;
+  completionCopy = completion;
+  _newStabilizeOperation = [(PXInlineVideoStabilizationDiagnosticsViewController *)self _newStabilizeOperation];
   stabilizeOperation = self->_stabilizeOperation;
-  self->_stabilizeOperation = v8;
+  self->_stabilizeOperation = _newStabilizeOperation;
 
   v10 = self->_stabilizeOperation;
   if (v10)
   {
-    v11 = [(PXVideoProcessingOperation *)v10 spec];
-    [v11 setPerformStabilization:1];
+    spec = [(PXVideoProcessingOperation *)v10 spec];
+    [spec setPerformStabilization:1];
 
     objc_initWeak(&location, self);
     v17[0] = MEMORY[0x1E69E9820];
@@ -338,13 +338,13 @@ void __107__PXInlineVideoStabilizationDiagnosticsViewController_prepareVariantVi
     v17[2] = __98__PXInlineVideoStabilizationDiagnosticsViewController_prepareVariantVideoWithProgress_completion___block_invoke;
     v17[3] = &unk_1E774AA30;
     objc_copyWeak(&v19, &location);
-    v18 = v7;
+    v18 = completionCopy;
     [(PXVideoStabilizeOperation *)self->_stabilizeOperation setCompletionBlock:v17];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __98__PXInlineVideoStabilizationDiagnosticsViewController_prepareVariantVideoWithProgress_completion___block_invoke_3;
     v15 = &unk_1E772EBF8;
-    v16 = v6;
+    v16 = progressCopy;
     [(PXVideoProcessingOperation *)self->_stabilizeOperation setProgressHandler:&v12];
     [(NSOperationQueue *)self->_operationQueue addOperation:self->_stabilizeOperation, v12, v13, v14, v15];
 
@@ -397,8 +397,8 @@ void __98__PXInlineVideoStabilizationDiagnosticsViewController_prepareVariantVid
 
 - (id)variantVideoDescription
 {
-  v2 = [(PXVideoStabilizeResult *)self->_result dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(PXVideoStabilizeResult *)self->_result dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }
@@ -411,11 +411,11 @@ void __98__PXInlineVideoStabilizationDiagnosticsViewController_prepareVariantVid
   [(PXInlineVideoStabilizationDiagnosticsViewController *)self setTitle:@"Inline Stabilization"];
 }
 
-- (PXInlineVideoStabilizationDiagnosticsViewController)initWithInputAsset:(id)a3
+- (PXInlineVideoStabilizationDiagnosticsViewController)initWithInputAsset:(id)asset
 {
   v7.receiver = self;
   v7.super_class = PXInlineVideoStabilizationDiagnosticsViewController;
-  v3 = [(PXVideoComparisonViewController *)&v7 initWithInputAsset:a3];
+  v3 = [(PXVideoComparisonViewController *)&v7 initWithInputAsset:asset];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696ADC8]);

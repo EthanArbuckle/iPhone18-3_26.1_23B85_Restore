@@ -1,190 +1,190 @@
 @interface CRCarKitServiceAgent
-+ (id)_pairingIdentifierForMessagingVehicle:(id)a3;
-+ (id)_pairingIdentifierForPromptFlow:(id)a3;
-+ (unint64_t)_declineTypeForOOBPairingMessagingVehicle:(id)a3;
-+ (unint64_t)_pairingDeclineCountForIdentifier:(id)a3;
-+ (void)_incrementPairingDeclineCountForIdentifier:(id)a3;
++ (id)_pairingIdentifierForMessagingVehicle:(id)vehicle;
++ (id)_pairingIdentifierForPromptFlow:(id)flow;
++ (unint64_t)_declineTypeForOOBPairingMessagingVehicle:(id)vehicle;
++ (unint64_t)_pairingDeclineCountForIdentifier:(id)identifier;
++ (void)_incrementPairingDeclineCountForIdentifier:(id)identifier;
 - (BOOL)_currentlyConnectedVehicleSupportsMixableAudio;
-- (BOOL)_isRestricted:(id *)a3;
-- (BOOL)_requestWiFiCredentialsIfNecessaryForApprovedMessagingVehicle:(id)a3;
-- (BOOL)_sendDeviceIdentifiersForMessagingVehicle:(id)a3 pairingStatus:(unint64_t)a4;
-- (BOOL)_shouldPromptEnhancedIntegrationForStoredVehicle:(id)a3 messagingVehicle:(id)a4;
-- (BOOL)attemptConnectionWithVehicles:(id)a3;
-- (BOOL)enhancedIntegrationSupportedForPairingPromptFlow:(id)a3;
-- (BOOL)hasExistingBluetoothPairingForPairingPromptFlow:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)needsBluetoothTurnedOnForPairingPromptFlow:(id)a3;
-- (BOOL)needsWiFiTurnedOnForPairingPromptFlow:(id)a3;
-- (BOOL)postInCarNotificationForVehicle:(id)a3;
-- (BOOL)postOutOfCarNotificationForVehicle:(id)a3;
-- (BOOL)removeVehicle:(id)a3;
-- (BOOL)startSessionRequestSupportedForPairingPromptFlow:(id)a3;
-- (BOOL)supportsThemeAssetsForPairingPromptFlow:(id)a3;
+- (BOOL)_isRestricted:(id *)restricted;
+- (BOOL)_requestWiFiCredentialsIfNecessaryForApprovedMessagingVehicle:(id)vehicle;
+- (BOOL)_sendDeviceIdentifiersForMessagingVehicle:(id)vehicle pairingStatus:(unint64_t)status;
+- (BOOL)_shouldPromptEnhancedIntegrationForStoredVehicle:(id)vehicle messagingVehicle:(id)messagingVehicle;
+- (BOOL)attemptConnectionWithVehicles:(id)vehicles;
+- (BOOL)enhancedIntegrationSupportedForPairingPromptFlow:(id)flow;
+- (BOOL)hasExistingBluetoothPairingForPairingPromptFlow:(id)flow;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)needsBluetoothTurnedOnForPairingPromptFlow:(id)flow;
+- (BOOL)needsWiFiTurnedOnForPairingPromptFlow:(id)flow;
+- (BOOL)postInCarNotificationForVehicle:(id)vehicle;
+- (BOOL)postOutOfCarNotificationForVehicle:(id)vehicle;
+- (BOOL)removeVehicle:(id)vehicle;
+- (BOOL)startSessionRequestSupportedForPairingPromptFlow:(id)flow;
+- (BOOL)supportsThemeAssetsForPairingPromptFlow:(id)flow;
 - (CRCarKitMonitoringServiceAgent)monitoringService;
-- (CRCarKitServiceAgent)initWithVehicleStore:(id)a3 sessionStatus:(id)a4 bluetoothManager:(id)a5 preferences:(id)a6 connectionTimeServiceAgent:(id)a7;
+- (CRCarKitServiceAgent)initWithVehicleStore:(id)store sessionStatus:(id)status bluetoothManager:(id)manager preferences:(id)preferences connectionTimeServiceAgent:(id)agent;
 - (CRHeadUnitPairingPresenterDelegate)headUnitPairingDelegate;
 - (CRSetupPromptDirectorAgent)setupPromptDirector;
 - (CRVehicleAssetManaging)vehicleAssetManager;
-- (id)_presentedReconnectionEnableWiFiAlertForVehicle:(id)a3;
-- (id)_wirelessPairingAnalyticsDescriptionForMessagingVehicle:(id)a3 storedVehicle:(id)a4;
-- (id)accessoryRadarDescription:(id)a3;
-- (id)assetProgressForPairingPromptFlow:(id)a3;
-- (id)carKeyInfoForPairingPromptFlow:(id)a3;
+- (id)_presentedReconnectionEnableWiFiAlertForVehicle:(id)vehicle;
+- (id)_wirelessPairingAnalyticsDescriptionForMessagingVehicle:(id)vehicle storedVehicle:(id)storedVehicle;
+- (id)accessoryRadarDescription:(id)description;
+- (id)assetProgressForPairingPromptFlow:(id)flow;
+- (id)carKeyInfoForPairingPromptFlow:(id)flow;
 - (id)pairedVehiclesConnectedOnBluetooth;
-- (id)saveVehicle:(id)a3;
-- (id)storedVehicleForSession:(id)a3;
-- (id)vehicleMatchingMessagingVehicle:(id)a3 inVehicles:(id)a4;
-- (unint64_t)outOfBandPairingDeclineCountForPairingPromptFlow:(id)a3;
-- (void)_beginWiredPairingWithMessagingVehicle:(id)a3 storedVehicle:(id)a4;
-- (void)_dismissApprovalAlertForMessagingVehicle:(id)a3;
+- (id)saveVehicle:(id)vehicle;
+- (id)storedVehicleForSession:(id)session;
+- (id)vehicleMatchingMessagingVehicle:(id)vehicle inVehicles:(id)vehicles;
+- (unint64_t)outOfBandPairingDeclineCountForPairingPromptFlow:(id)flow;
+- (void)_beginWiredPairingWithMessagingVehicle:(id)vehicle storedVehicle:(id)storedVehicle;
+- (void)_dismissApprovalAlertForMessagingVehicle:(id)vehicle;
 - (void)_dismissApprovalAlerts;
-- (void)_dismissEnhancedIntegrationAlertForMessagingVehicle:(id)a3;
+- (void)_dismissEnhancedIntegrationAlertForMessagingVehicle:(id)vehicle;
 - (void)_dismissEnhancedIntegrationAlerts;
-- (void)_dismissPairingAlertForMessagingVehicle:(id)a3;
+- (void)_dismissPairingAlertForMessagingVehicle:(id)vehicle;
 - (void)_dismissPairingAlerts;
-- (void)_dismissPairingPromptFlow:(id)a3;
-- (void)_dismissReconnectionEnableWiFiAlertExceptForVehicle:(id)a3;
-- (void)_dismissReconnectionEnableWiFiAlertForVehicle:(id)a3;
-- (void)_enhancedIntegrationUpdatedForMessagingVehicle:(id)a3 status:(unint64_t)a4;
-- (void)_findWirelessPairedVehicleForAccessoryConnectionIdentifier:(unint64_t)a3 result:(id)a4;
-- (void)_findWirelessPairedVehicleForMessagingVehicle:(id)a3 result:(id)a4;
+- (void)_dismissPairingPromptFlow:(id)flow;
+- (void)_dismissReconnectionEnableWiFiAlertExceptForVehicle:(id)vehicle;
+- (void)_dismissReconnectionEnableWiFiAlertForVehicle:(id)vehicle;
+- (void)_enhancedIntegrationUpdatedForMessagingVehicle:(id)vehicle status:(unint64_t)status;
+- (void)_findWirelessPairedVehicleForAccessoryConnectionIdentifier:(unint64_t)identifier result:(id)result;
+- (void)_findWirelessPairedVehicleForMessagingVehicle:(id)vehicle result:(id)result;
 - (void)_handleCarPlayAllowedDidChange;
-- (void)_mainQueue_startSessionForHost:(id)a3 reply:(id)a4;
-- (void)_mainQueue_updateClusterAssetIdentifier:(id)a3 assetVersion:(id)a4 sdkVersion:(id)a5 forVehicle:(id)a6;
-- (void)_presentApprovalIfNecessaryForMessagingVehicle:(id)a3 storedVehicle:(id)a4;
-- (void)_presentApprovalUsingAlertsForMessagingVehicle:(id)a3;
-- (void)_presentCarPlaySetupForMessagingVehicle:(id)a3 storedVehicle:(id)a4;
-- (void)_presentEnhancedIntegrationAlertForMessagingVehicle:(id)a3;
-- (void)_presentReconnectionEnableWiFiAlertForVehicle:(id)a3;
-- (void)_presentWiredBluetoothPairingAlertForMessagingVehicle:(id)a3 storedVehicle:(id)a4;
-- (void)_saveWiFiCredentials:(id)a3 forAccessoryConnectionIdentifier:(unint64_t)a4 result:(id)a5;
-- (void)_saveWiFiCredentials:(id)a3 fromMessagingVehicle:(id)a4 forWirelessPairedVehicle:(id)a5 result:(id)a6;
-- (void)_sendCarPlayAvailabilityForMessagingVehicle:(id)a3 storedVehicle:(id)a4;
-- (void)_setVehiclePairingStatus:(unint64_t)a3 forPromptFlow:(id)a4;
+- (void)_mainQueue_startSessionForHost:(id)host reply:(id)reply;
+- (void)_mainQueue_updateClusterAssetIdentifier:(id)identifier assetVersion:(id)version sdkVersion:(id)sdkVersion forVehicle:(id)vehicle;
+- (void)_presentApprovalIfNecessaryForMessagingVehicle:(id)vehicle storedVehicle:(id)storedVehicle;
+- (void)_presentApprovalUsingAlertsForMessagingVehicle:(id)vehicle;
+- (void)_presentCarPlaySetupForMessagingVehicle:(id)vehicle storedVehicle:(id)storedVehicle;
+- (void)_presentEnhancedIntegrationAlertForMessagingVehicle:(id)vehicle;
+- (void)_presentReconnectionEnableWiFiAlertForVehicle:(id)vehicle;
+- (void)_presentWiredBluetoothPairingAlertForMessagingVehicle:(id)vehicle storedVehicle:(id)storedVehicle;
+- (void)_saveWiFiCredentials:(id)credentials forAccessoryConnectionIdentifier:(unint64_t)identifier result:(id)result;
+- (void)_saveWiFiCredentials:(id)credentials fromMessagingVehicle:(id)vehicle forWirelessPairedVehicle:(id)pairedVehicle result:(id)result;
+- (void)_sendCarPlayAvailabilityForMessagingVehicle:(id)vehicle storedVehicle:(id)storedVehicle;
+- (void)_setVehiclePairingStatus:(unint64_t)status forPromptFlow:(id)flow;
 - (void)_setupStartSessionTimerIfNeeded;
-- (void)allowsConnectionsForCertificateSerial:(id)a3 reply:(id)a4;
-- (void)allowsConnectionsForWiFiUUID:(id)a3 reply:(id)a4;
-- (void)bluetoothManager:(id)a3 didChangePowerState:(BOOL)a4;
-- (void)bluetoothManager:(id)a3 requestsConfirmationForDeviceAddress:(id)a4 name:(id)a5 numericCode:(id)a6 responseHandler:(id)a7;
-- (void)collectVehicleLogs:(id)a3;
+- (void)allowsConnectionsForCertificateSerial:(id)serial reply:(id)reply;
+- (void)allowsConnectionsForWiFiUUID:(id)d reply:(id)reply;
+- (void)bluetoothManager:(id)manager didChangePowerState:(BOOL)state;
+- (void)bluetoothManager:(id)manager requestsConfirmationForDeviceAddress:(id)address name:(id)name numericCode:(id)code responseHandler:(id)handler;
+- (void)collectVehicleLogs:(id)logs;
 - (void)dealloc;
-- (void)deviceSupportedCarPlayFeaturesWithReply:(id)a3;
-- (void)didCompletePairingPromptFlow:(id)a3;
-- (void)didFailToHeadUnitPairWithBluetoothAddress:(id)a3 error:(id)a4;
-- (void)didHeadUnitPairWithBluetoothAddress:(id)a3;
-- (void)disablesCarPlayFeatures:(unint64_t)a3 forVehicleIdentifier:(id)a4 reply:(id)a5;
-- (void)enumerateStoredVehiclesForMessagingVehicles:(id)a3 usingBlock:(id)a4;
-- (void)fetchAllVehiclesWithReply:(id)a3;
-- (void)fetchAppClipIdentifiersForPairingPromptFlow:(id)a3 completion:(id)a4;
-- (void)fetchInstrumentClusterURLsWithReply:(id)a3;
-- (void)fetchOverrideCanvasSizeWithCertificateSerialNumber:(id)a3 displays:(id)a4 reply:(id)a5;
-- (void)fetchScaledDisplaysWithCertificateSerialNumber:(id)a3 displays:(id)a4 reply:(id)a5;
-- (void)fetchScaledDisplaysWithReply:(id)a3 reply:(id)a4;
-- (void)fetchViewAreasForVehicleIdentifier:(id)a3 reply:(id)a4;
+- (void)deviceSupportedCarPlayFeaturesWithReply:(id)reply;
+- (void)didCompletePairingPromptFlow:(id)flow;
+- (void)didFailToHeadUnitPairWithBluetoothAddress:(id)address error:(id)error;
+- (void)didHeadUnitPairWithBluetoothAddress:(id)address;
+- (void)disablesCarPlayFeatures:(unint64_t)features forVehicleIdentifier:(id)identifier reply:(id)reply;
+- (void)enumerateStoredVehiclesForMessagingVehicles:(id)vehicles usingBlock:(id)block;
+- (void)fetchAllVehiclesWithReply:(id)reply;
+- (void)fetchAppClipIdentifiersForPairingPromptFlow:(id)flow completion:(id)completion;
+- (void)fetchInstrumentClusterURLsWithReply:(id)reply;
+- (void)fetchOverrideCanvasSizeWithCertificateSerialNumber:(id)number displays:(id)displays reply:(id)reply;
+- (void)fetchScaledDisplaysWithCertificateSerialNumber:(id)number displays:(id)displays reply:(id)reply;
+- (void)fetchScaledDisplaysWithReply:(id)reply reply:(id)a4;
+- (void)fetchViewAreasForVehicleIdentifier:(id)identifier reply:(id)reply;
 - (void)handleAnyMessagingConnectionsToVehicles;
-- (void)handleBluetoothClassicPairingCompletedForDeviceAddress:(id)a3 name:(id)a4 preApproved:(BOOL)a5 reply:(id)a6;
+- (void)handleBluetoothClassicPairingCompletedForDeviceAddress:(id)address name:(id)name preApproved:(BOOL)approved reply:(id)reply;
 - (void)handleCarPlayAllowedDidChange;
-- (void)handleCarPlayConnectionRequestForConnectionID:(unsigned int)a3 startSessionProperties:(id)a4 reply:(id)a5;
-- (void)handleCarPlayDiagnosticsWithDeviceScreenshotURL:(id)a3 carScreenshotURL:(id)a4 attachmentURLs:(id)a5 activeBundleIdentifier:(id)a6 reply:(id)a7;
-- (void)handleCarPlayRestrictionChangedWithReply:(id)a3;
-- (void)handleDidConnectBluetoothAddress:(id)a3 reply:(id)a4;
-- (void)handleDidConnectMessagingToVehicles:(id)a3;
-- (void)handleDidDisconnectBluetoothAddress:(id)a3 reply:(id)a4;
-- (void)handleVehicleStoreAvailabiltyDidChange:(id)a3;
-- (void)hasVehiclesWithReply:(id)a3;
-- (void)incrementOutOfBandPairingDeclineCountForPairingPromptFlow:(id)a3;
-- (void)isBluetoothInCarWithReply:(id)a3;
-- (void)isCarPlayAllowedWithReply:(id)a3;
-- (void)isEnhancedIntegrationEnabledWithCertificateSerial:(id)a3 reply:(id)a4;
-- (void)isPairedWithCertificateSerial:(id)a3 reply:(id)a4;
-- (void)isPreflightThemeAssetEnabledWithReply:(id)a3;
-- (void)notifyFoundNoMatchingAssetForVehicleIdentifier:(id)a3 nextRequiredCompatibilityVersion:(id)a4 requestDescription:(id)a5;
-- (void)pairingPromptFlow:(id)a3 didCancelWithRequiredStepsRemaining:(BOOL)a4;
-- (void)pairingPromptFlow:(id)a3 receivedAllowWhileLockedResponse:(BOOL)a4;
-- (void)pairingPromptFlow:(id)a3 receivedConnectCarPlayResponse:(BOOL)a4 turnOnWiFi:(BOOL)a5;
-- (void)pairingPromptFlow:(id)a3 receivedEnhancedIntegrationResponse:(BOOL)a4;
-- (void)pairingPromptFlow:(id)a3 receivedUseWirelessResponse:(BOOL)a4 turnOnBluetooth:(BOOL)a5 turnOnWiFi:(BOOL)a6;
-- (void)pairingPromptFlow:(id)a3 wantsToPerformPresentation:(id)a4;
-- (void)postBannerToPhone:(id)a3 notificationMessage:(id)a4 reply:(id)a5;
-- (void)postIconBannerToPhone:(id)a3 notificationMessage:(id)a4 defaultActionURL:(id)a5;
-- (void)removeVehicle:(id)a3 reply:(id)a4;
-- (void)saveVehicle:(id)a3 reply:(id)a4;
-- (void)saveViewAreas:(id)a3 forVehicleIdentifier:(id)a4 reply:(id)a5;
-- (void)saveWiFiCredentials:(id)a3 forAccessoryConnectionIdentifier:(unint64_t)a4 reply:(id)a5;
-- (void)serviceConnector:(id)a3 completedPairingForBluetoothLEIdentifier:(id)a4 name:(id)a5;
-- (void)serviceConnector:(id)a3 didConnectUnsupportedAccessoryWithBluetoothAddress:(id)a4;
-- (void)serviceConnector:(id)a3 didConnectVehicle:(id)a4;
-- (void)serviceConnector:(id)a3 didDisconnectVehicle:(id)a4;
-- (void)serviceConnector:(id)a3 didUpdateVehicle:(id)a4;
-- (void)serviceConnector:(id)a3 failedPairingForBluetoothLEIdentifier:(id)a4 name:(id)a5 error:(id)a6;
-- (void)serviceConnector:(id)a3 receivedStartSessionMessage:(id)a4 fromVehicle:(id)a5;
-- (void)serviceConnector:(id)a3 requestsPairingConfirmationForBluetoothLEIdentifier:(id)a4 name:(id)a5 numericCode:(id)a6 responseHandler:(id)a7;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)setCarPlayFeatures:(unint64_t)a3 disabled:(BOOL)a4 forVehicleIdentifier:(id)a5 reply:(id)a6;
-- (void)setCarPlaySimulatorActive:(BOOL)a3;
-- (void)setPreflightThemeAssetEnabled:(BOOL)a3 reply:(id)a4;
-- (void)setRemoteDeviceConnected:(BOOL)a3;
-- (void)setVideoDiagnosticsEnabled:(BOOL)a3 forVehicleIdentifier:(id)a4 reply:(id)a5;
-- (void)setVideoSubtitleSettings:(id)a3 forVehicleIdentifier:(id)a4 reply:(id)a5;
-- (void)startBluetoothClassicPairingForDeviceAddress:(id)a3 deviceName:(id)a4 numericCode:(id)a5 showBluetoothOnlyOption:(BOOL)a6 reply:(id)a7;
-- (void)startBluetoothLEPairingForIdentifier:(id)a3 deviceName:(id)a4 reply:(id)a5;
-- (void)stopSessionWithSessionIdentifier:(id)a3 reason:(unint64_t)a4 reply:(id)a5;
-- (void)supportedAirPlayFeaturesForVehicleIdentifier:(id)a3 reply:(id)a4;
-- (void)supportedCarPlayFeaturesForCertificateSerial:(id)a3 reply:(id)a4;
-- (void)updateIncompletePairingsMatchingMessagingVehicles:(id)a3;
-- (void)updateStoredVehicle:(id)a3 usingMessagingVehicle:(id)a4;
-- (void)vehicleIdentifierForCertificateSerial:(id)a3 reply:(id)a4;
-- (void)videoAnalyticsForVehicleIdentifier:(id)a3 reply:(id)a4;
-- (void)videoDiagnosticsEnabledForVehicleIdentifier:(id)a3 reply:(id)a4;
-- (void)videoLicensesTextForVehicleIdentifier:(id)a3 reply:(id)a4;
-- (void)videoSubtitleSettingsForVehicleIdentifier:(id)a3 reply:(id)a4;
-- (void)wantsCarPlayControlAdvertisingForUSBWithReply:(id)a3;
-- (void)wantsCarPlayControlAdvertisingForWiFiUUID:(id)a3 reply:(id)a4;
+- (void)handleCarPlayConnectionRequestForConnectionID:(unsigned int)d startSessionProperties:(id)properties reply:(id)reply;
+- (void)handleCarPlayDiagnosticsWithDeviceScreenshotURL:(id)l carScreenshotURL:(id)rL attachmentURLs:(id)ls activeBundleIdentifier:(id)identifier reply:(id)reply;
+- (void)handleCarPlayRestrictionChangedWithReply:(id)reply;
+- (void)handleDidConnectBluetoothAddress:(id)address reply:(id)reply;
+- (void)handleDidConnectMessagingToVehicles:(id)vehicles;
+- (void)handleDidDisconnectBluetoothAddress:(id)address reply:(id)reply;
+- (void)handleVehicleStoreAvailabiltyDidChange:(id)change;
+- (void)hasVehiclesWithReply:(id)reply;
+- (void)incrementOutOfBandPairingDeclineCountForPairingPromptFlow:(id)flow;
+- (void)isBluetoothInCarWithReply:(id)reply;
+- (void)isCarPlayAllowedWithReply:(id)reply;
+- (void)isEnhancedIntegrationEnabledWithCertificateSerial:(id)serial reply:(id)reply;
+- (void)isPairedWithCertificateSerial:(id)serial reply:(id)reply;
+- (void)isPreflightThemeAssetEnabledWithReply:(id)reply;
+- (void)notifyFoundNoMatchingAssetForVehicleIdentifier:(id)identifier nextRequiredCompatibilityVersion:(id)version requestDescription:(id)description;
+- (void)pairingPromptFlow:(id)flow didCancelWithRequiredStepsRemaining:(BOOL)remaining;
+- (void)pairingPromptFlow:(id)flow receivedAllowWhileLockedResponse:(BOOL)response;
+- (void)pairingPromptFlow:(id)flow receivedConnectCarPlayResponse:(BOOL)response turnOnWiFi:(BOOL)fi;
+- (void)pairingPromptFlow:(id)flow receivedEnhancedIntegrationResponse:(BOOL)response;
+- (void)pairingPromptFlow:(id)flow receivedUseWirelessResponse:(BOOL)response turnOnBluetooth:(BOOL)bluetooth turnOnWiFi:(BOOL)fi;
+- (void)pairingPromptFlow:(id)flow wantsToPerformPresentation:(id)presentation;
+- (void)postBannerToPhone:(id)phone notificationMessage:(id)message reply:(id)reply;
+- (void)postIconBannerToPhone:(id)phone notificationMessage:(id)message defaultActionURL:(id)l;
+- (void)removeVehicle:(id)vehicle reply:(id)reply;
+- (void)saveVehicle:(id)vehicle reply:(id)reply;
+- (void)saveViewAreas:(id)areas forVehicleIdentifier:(id)identifier reply:(id)reply;
+- (void)saveWiFiCredentials:(id)credentials forAccessoryConnectionIdentifier:(unint64_t)identifier reply:(id)reply;
+- (void)serviceConnector:(id)connector completedPairingForBluetoothLEIdentifier:(id)identifier name:(id)name;
+- (void)serviceConnector:(id)connector didConnectUnsupportedAccessoryWithBluetoothAddress:(id)address;
+- (void)serviceConnector:(id)connector didConnectVehicle:(id)vehicle;
+- (void)serviceConnector:(id)connector didDisconnectVehicle:(id)vehicle;
+- (void)serviceConnector:(id)connector didUpdateVehicle:(id)vehicle;
+- (void)serviceConnector:(id)connector failedPairingForBluetoothLEIdentifier:(id)identifier name:(id)name error:(id)error;
+- (void)serviceConnector:(id)connector receivedStartSessionMessage:(id)message fromVehicle:(id)vehicle;
+- (void)serviceConnector:(id)connector requestsPairingConfirmationForBluetoothLEIdentifier:(id)identifier name:(id)name numericCode:(id)code responseHandler:(id)handler;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)setCarPlayFeatures:(unint64_t)features disabled:(BOOL)disabled forVehicleIdentifier:(id)identifier reply:(id)reply;
+- (void)setCarPlaySimulatorActive:(BOOL)active;
+- (void)setPreflightThemeAssetEnabled:(BOOL)enabled reply:(id)reply;
+- (void)setRemoteDeviceConnected:(BOOL)connected;
+- (void)setVideoDiagnosticsEnabled:(BOOL)enabled forVehicleIdentifier:(id)identifier reply:(id)reply;
+- (void)setVideoSubtitleSettings:(id)settings forVehicleIdentifier:(id)identifier reply:(id)reply;
+- (void)startBluetoothClassicPairingForDeviceAddress:(id)address deviceName:(id)name numericCode:(id)code showBluetoothOnlyOption:(BOOL)option reply:(id)reply;
+- (void)startBluetoothLEPairingForIdentifier:(id)identifier deviceName:(id)name reply:(id)reply;
+- (void)stopSessionWithSessionIdentifier:(id)identifier reason:(unint64_t)reason reply:(id)reply;
+- (void)supportedAirPlayFeaturesForVehicleIdentifier:(id)identifier reply:(id)reply;
+- (void)supportedCarPlayFeaturesForCertificateSerial:(id)serial reply:(id)reply;
+- (void)updateIncompletePairingsMatchingMessagingVehicles:(id)vehicles;
+- (void)updateStoredVehicle:(id)vehicle usingMessagingVehicle:(id)messagingVehicle;
+- (void)vehicleIdentifierForCertificateSerial:(id)serial reply:(id)reply;
+- (void)videoAnalyticsForVehicleIdentifier:(id)identifier reply:(id)reply;
+- (void)videoDiagnosticsEnabledForVehicleIdentifier:(id)identifier reply:(id)reply;
+- (void)videoLicensesTextForVehicleIdentifier:(id)identifier reply:(id)reply;
+- (void)videoSubtitleSettingsForVehicleIdentifier:(id)identifier reply:(id)reply;
+- (void)wantsCarPlayControlAdvertisingForUSBWithReply:(id)reply;
+- (void)wantsCarPlayControlAdvertisingForWiFiUUID:(id)d reply:(id)reply;
 @end
 
 @implementation CRCarKitServiceAgent
 
-- (CRCarKitServiceAgent)initWithVehicleStore:(id)a3 sessionStatus:(id)a4 bluetoothManager:(id)a5 preferences:(id)a6 connectionTimeServiceAgent:(id)a7
+- (CRCarKitServiceAgent)initWithVehicleStore:(id)store sessionStatus:(id)status bluetoothManager:(id)manager preferences:(id)preferences connectionTimeServiceAgent:(id)agent
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  storeCopy = store;
+  statusCopy = status;
+  managerCopy = manager;
+  preferencesCopy = preferences;
+  agentCopy = agent;
   v44.receiver = self;
   v44.super_class = CRCarKitServiceAgent;
   v17 = [(CRCarKitServiceAgent *)&v44 init];
   v18 = v17;
   if (v17)
   {
-    [(CRCarKitServiceAgent *)v17 setVehicleStore:v12];
-    [(CRCarKitServiceAgent *)v18 setSessionStatus:v13];
-    [v13 addSessionObserver:v18];
-    v19 = [[CARMessagingServiceConnector alloc] initWithVehicleStore:v12];
+    [(CRCarKitServiceAgent *)v17 setVehicleStore:storeCopy];
+    [(CRCarKitServiceAgent *)v18 setSessionStatus:statusCopy];
+    [statusCopy addSessionObserver:v18];
+    v19 = [[CARMessagingServiceConnector alloc] initWithVehicleStore:storeCopy];
     [(CRCarKitServiceAgent *)v18 setMessagingConnector:v19];
     [(CARMessagingServiceConnector *)v19 setDelegate:v18];
-    v20 = [[CRWirelessSessionAssertionManager alloc] initWithSessionStatus:v13 connectionTimeServiceAgent:v16 messagingConnector:v19];
+    v20 = [[CRWirelessSessionAssertionManager alloc] initWithSessionStatus:statusCopy connectionTimeServiceAgent:agentCopy messagingConnector:v19];
     [(CRWirelessSessionAssertionManager *)v20 setStoredVehicleProvider:v18];
     [(CRCarKitServiceAgent *)v18 setAssertionManager:v20];
     v21 = +[CARAnalytics sharedInstance];
-    [v21 setConnectionTimeServiceAgent:v16];
+    [v21 setConnectionTimeServiceAgent:agentCopy];
 
-    [(CRCarKitServiceAgent *)v18 setBluetoothManager:v14];
-    v22 = [(CRCarKitServiceAgent *)v18 bluetoothManager];
-    [v22 addObserver:v18];
+    [(CRCarKitServiceAgent *)v18 setBluetoothManager:managerCopy];
+    bluetoothManager = [(CRCarKitServiceAgent *)v18 bluetoothManager];
+    [bluetoothManager addObserver:v18];
 
-    v23 = [(CRCarKitServiceAgent *)v18 bluetoothManager];
-    [v23 setPairingDelegate:v18];
+    bluetoothManager2 = [(CRCarKitServiceAgent *)v18 bluetoothManager];
+    [bluetoothManager2 setPairingDelegate:v18];
 
     v24 = objc_alloc_init(CARSessionRequestClient);
     [(CRCarKitServiceAgent *)v18 setSessionRequestClient:v24];
 
-    [(CRCarKitServiceAgent *)v18 setPreferencesManager:v15];
-    v25 = [(CRCarKitServiceAgent *)v18 preferencesManager];
-    [v25 setPreferencesDelegate:v18];
+    [(CRCarKitServiceAgent *)v18 setPreferencesManager:preferencesCopy];
+    preferencesManager = [(CRCarKitServiceAgent *)v18 preferencesManager];
+    [preferencesManager setPreferencesDelegate:v18];
 
-    v26 = [[CRFeaturesAvailabilityAgent alloc] initWithPreferencesManager:v15 vehicleStore:v12];
+    v26 = [[CRFeaturesAvailabilityAgent alloc] initWithPreferencesManager:preferencesCopy vehicleStore:storeCopy];
     [(CRCarKitServiceAgent *)v18 setFeaturesAvailabilityAgent:v26];
 
     v27 = objc_alloc_init(CRWiFiCarManager);
@@ -208,25 +208,25 @@
     v33 = +[NSNotificationCenter defaultCenter];
     [v33 addObserver:v18 selector:"handleVehicleStoreAvailabiltyDidChange:" name:CRVehicleStoreAvailabilityDidChangeNotification object:0];
 
-    v34 = [(CRCarKitServiceAgent *)v18 vehicleStore];
-    v35 = [v34 allStoredVehicles];
+    vehicleStore = [(CRCarKitServiceAgent *)v18 vehicleStore];
+    allStoredVehicles = [vehicleStore allStoredVehicles];
 
-    v36 = [[CRLoggingChannelManager alloc] initWithSessionStatus:v13];
+    v36 = [[CRLoggingChannelManager alloc] initWithSessionStatus:statusCopy];
     loggingChannelManager = v18->_loggingChannelManager;
     v18->_loggingChannelManager = v36;
 
-    objc_storeStrong(&v18->_connectionTimeServiceAgent, a7);
+    objc_storeStrong(&v18->_connectionTimeServiceAgent, agent);
     v38 = _os_feature_enabled_impl();
     v39 = 0;
     if (v38)
     {
-      v39 = [[CRVideoSettingsSessionController alloc] initWithSessionStatus:v13 storedVehicleProvider:v18];
+      v39 = [[CRVideoSettingsSessionController alloc] initWithSessionStatus:statusCopy storedVehicleProvider:v18];
     }
 
     videoSettingSessionController = v18->_videoSettingSessionController;
     v18->_videoSettingSessionController = v39;
 
-    v41 = [[_TtC7carkitd16CRSessionBooster alloc] initWithSessionStatus:v13];
+    v41 = [[_TtC7carkitd16CRSessionBooster alloc] initWithSessionStatus:statusCopy];
     sessionBooster = v18->_sessionBooster;
     v18->_sessionBooster = v41;
   }
@@ -244,13 +244,13 @@
   [(CRCarKitServiceAgent *)&v4 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.private.carkit"];
-  v7 = [v6 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.carkit"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CRCarKitService];
     v9 = objc_opt_class();
@@ -299,23 +299,23 @@
     v30 = [NSSet setWithObjects:v29, objc_opt_class(), 0];
     [v8 setClasses:v30 forSelector:"saveViewAreas:forVehicleIdentifier:reply:" argumentIndex:0 ofReply:0];
 
-    [v5 setExportedInterface:v8];
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedInterface:v8];
+    [connectionCopy setExportedObject:self];
     v31 = CarGeneralLogging();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v5 serviceName];
-      v33 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 processIdentifier]);
+      serviceName = [connectionCopy serviceName];
+      v33 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [connectionCopy processIdentifier]);
       *buf = 138412802;
-      v36 = v5;
+      v36 = connectionCopy;
       v37 = 2112;
-      v38 = v32;
+      v38 = serviceName;
       v39 = 2112;
       v40 = v33;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Receiving CarKit service connection %@ to service %@ from %@", buf, 0x20u);
     }
 
-    [v5 resume];
+    [connectionCopy resume];
   }
 
   else
@@ -323,17 +323,17 @@
     v8 = CarGeneralLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_1000840C8(v5);
+      sub_1000840C8(connectionCopy);
     }
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)saveVehicle:(id)a3 reply:(id)a4
+- (void)saveVehicle:(id)vehicle reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  vehicleCopy = vehicle;
+  replyCopy = reply;
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -341,7 +341,7 @@
     *buf = 67109379;
     *&buf[4] = [v9 processIdentifier];
     LOWORD(v15) = 2113;
-    *(&v15 + 2) = v6;
+    *(&v15 + 2) = vehicleCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "saveVehicle from process %i, vehicle: %{private}@", buf, 0x12u);
   }
 
@@ -357,18 +357,18 @@
   block[3] = &unk_1000DDE60;
   v13 = buf;
   block[4] = self;
-  v10 = v6;
+  v10 = vehicleCopy;
   v12 = v10;
   dispatch_sync(&_dispatch_main_q, block);
-  (*(v7 + 2))(v7, *(v15 + 40), 0);
+  (*(replyCopy + 2))(replyCopy, *(v15 + 40), 0);
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)removeVehicle:(id)a3 reply:(id)a4
+- (void)removeVehicle:(id)vehicle reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  vehicleCopy = vehicle;
+  replyCopy = reply;
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -376,7 +376,7 @@
     *buf = 67109379;
     *&buf[4] = [v9 processIdentifier];
     LOWORD(v15) = 2113;
-    *(&v15 + 2) = v6;
+    *(&v15 + 2) = vehicleCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "removeVehicle from process %i, vehicle: %{private}@", buf, 0x12u);
   }
 
@@ -390,17 +390,17 @@
   block[3] = &unk_1000DDE60;
   v13 = buf;
   block[4] = self;
-  v10 = v6;
+  v10 = vehicleCopy;
   v12 = v10;
   dispatch_sync(&_dispatch_main_q, block);
-  (*(v7 + 2))(v7, *(v15 + 24), 0);
+  (*(replyCopy + 2))(replyCopy, *(v15 + 24), 0);
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)fetchAllVehiclesWithReply:(id)a3
+- (void)fetchAllVehiclesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -421,27 +421,27 @@
   block[5] = &v6;
   block[6] = &v12;
   dispatch_sync(&_dispatch_main_q, block);
-  v4[2](v4, v13[5], v7[5]);
+  replyCopy[2](replyCopy, v13[5], v7[5]);
   _Block_object_dispose(&v6, 8);
 
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)hasVehiclesWithReply:(id)a3
+- (void)hasVehiclesWithReply:(id)reply
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100023200;
   v5[3] = &unk_1000DDEB0;
-  v6 = a3;
-  v4 = v6;
+  replyCopy = reply;
+  v4 = replyCopy;
   [(CRCarKitServiceAgent *)self fetchAllVehiclesWithReply:v5];
 }
 
-- (void)handleDidConnectBluetoothAddress:(id)a3 reply:(id)a4
+- (void)handleDidConnectBluetoothAddress:(id)address reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  replyCopy = reply;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -462,7 +462,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v6;
+    v32 = addressCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "attempting fast-reconnection with %@", buf, 0xCu);
   }
 
@@ -472,12 +472,12 @@
   block[3] = &unk_1000DDED8;
   block[4] = self;
   v12 = &v15;
-  v9 = v6;
+  v9 = addressCopy;
   v11 = v9;
   v13 = &v21;
   v14 = &v27;
   dispatch_sync(&_dispatch_main_q, block);
-  v7[2](v7, *(v28 + 24), v22[5], v16[5]);
+  replyCopy[2](replyCopy, *(v28 + 24), v22[5], v16[5]);
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v21, 8);
@@ -485,10 +485,10 @@
   _Block_object_dispose(&v27, 8);
 }
 
-- (void)handleDidDisconnectBluetoothAddress:(id)a3 reply:(id)a4
+- (void)handleDidDisconnectBluetoothAddress:(id)address reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  replyCopy = reply;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -498,18 +498,18 @@
   block[2] = sub_1000239B4;
   block[3] = &unk_1000DDF00;
   block[4] = self;
-  v8 = v6;
+  v8 = addressCopy;
   v10 = v8;
   v11 = &v12;
   dispatch_sync(&_dispatch_main_q, block);
-  (*(v7 + 2))(v7, *(v13 + 24), 0);
+  (*(replyCopy + 2))(replyCopy, *(v13 + 24), 0);
 
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)isBluetoothInCarWithReply:(id)a3
+- (void)isBluetoothInCarWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -535,14 +535,14 @@
   v5[6] = &v18;
   v5[7] = &v12;
   dispatch_sync(&_dispatch_main_q, v5);
-  v4[2](v4, *(v19 + 24), v13[5], v7[5]);
+  replyCopy[2](replyCopy, *(v19 + 24), v13[5], v7[5]);
   _Block_object_dispose(&v6, 8);
 
   _Block_object_dispose(&v12, 8);
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)handleBluetoothClassicPairingCompletedForDeviceAddress:(id)a3 name:(id)a4 preApproved:(BOOL)a5 reply:(id)a6
+- (void)handleBluetoothClassicPairingCompletedForDeviceAddress:(id)address name:(id)name preApproved:(BOOL)approved reply:(id)reply
 {
   v20[0] = 0;
   v20[1] = v20;
@@ -554,73 +554,73 @@
   v13[1] = 3221225472;
   v13[2] = sub_100023E80;
   v13[3] = &unk_1000DDF50;
-  v14 = a3;
-  v15 = a4;
-  v17 = a6;
+  addressCopy = address;
+  nameCopy = name;
+  replyCopy = reply;
   v18 = v20;
-  v16 = self;
-  v19 = a5;
-  v10 = v17;
-  v11 = v15;
-  v12 = v14;
+  selfCopy = self;
+  approvedCopy = approved;
+  v10 = replyCopy;
+  v11 = nameCopy;
+  v12 = addressCopy;
   dispatch_sync(&_dispatch_main_q, v13);
 
   _Block_object_dispose(v20, 8);
 }
 
-- (void)startBluetoothLEPairingForIdentifier:(id)a3 deviceName:(id)a4 reply:(id)a5
+- (void)startBluetoothLEPairingForIdentifier:(id)identifier deviceName:(id)name reply:(id)reply
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100024180;
   v11[3] = &unk_1000DDFA0;
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  v15 = a5;
-  v8 = v15;
-  v9 = v13;
-  v10 = v12;
+  identifierCopy = identifier;
+  nameCopy = name;
+  selfCopy = self;
+  replyCopy = reply;
+  v8 = replyCopy;
+  v9 = nameCopy;
+  v10 = identifierCopy;
   dispatch_sync(&_dispatch_main_q, v11);
 }
 
-- (void)startBluetoothClassicPairingForDeviceAddress:(id)a3 deviceName:(id)a4 numericCode:(id)a5 showBluetoothOnlyOption:(BOOL)a6 reply:(id)a7
+- (void)startBluetoothClassicPairingForDeviceAddress:(id)address deviceName:(id)name numericCode:(id)code showBluetoothOnlyOption:(BOOL)option reply:(id)reply
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100024628;
   block[3] = &unk_1000DDFC8;
-  v18 = a6;
-  v14 = a3;
-  v15 = self;
-  v16 = a5;
-  v17 = a7;
-  v10 = v16;
-  v11 = v17;
-  v12 = v14;
+  optionCopy = option;
+  addressCopy = address;
+  selfCopy = self;
+  codeCopy = code;
+  replyCopy = reply;
+  v10 = codeCopy;
+  v11 = replyCopy;
+  v12 = addressCopy;
   dispatch_sync(&_dispatch_main_q, block);
 }
 
-- (void)handleCarPlayConnectionRequestForConnectionID:(unsigned int)a3 startSessionProperties:(id)a4 reply:(id)a5
+- (void)handleCarPlayConnectionRequestForConnectionID:(unsigned int)d startSessionProperties:(id)properties reply:(id)reply
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100024B20;
   v10[3] = &unk_1000DE040;
-  v11 = a4;
-  v12 = self;
-  v13 = a5;
-  v14 = a3;
-  v8 = v13;
-  v9 = v11;
+  propertiesCopy = properties;
+  selfCopy = self;
+  replyCopy = reply;
+  dCopy = d;
+  v8 = replyCopy;
+  v9 = propertiesCopy;
   dispatch_sync(&_dispatch_main_q, v10);
 }
 
 - (void)_setupStartSessionTimerIfNeeded
 {
-  v3 = [(CRCarKitServiceAgent *)self setupPromptDirector];
+  setupPromptDirector = [(CRCarKitServiceAgent *)self setupPromptDirector];
 
-  if (v3)
+  if (setupPromptDirector)
   {
     v4 = CarPairingLogging();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -629,8 +629,8 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "startSessionTimer setup", buf, 2u);
     }
 
-    v5 = [(CRCarKitServiceAgent *)self startSessionTimer];
-    [v5 invalidate];
+    startSessionTimer = [(CRCarKitServiceAgent *)self startSessionTimer];
+    [startSessionTimer invalidate];
 
     [(CRCarKitServiceAgent *)self setStartSessionTimer:0];
     objc_initWeak(buf, self);
@@ -647,32 +647,32 @@
   }
 }
 
-- (void)postBannerToPhone:(id)a3 notificationMessage:(id)a4 reply:(id)a5
+- (void)postBannerToPhone:(id)phone notificationMessage:(id)message reply:(id)reply
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  replyCopy = reply;
+  messageCopy = message;
+  phoneCopy = phone;
   v10 = +[CARDNDManager sharedManager];
-  v11 = [v10 alertManager];
+  alertManager = [v10 alertManager];
 
-  [v11 postBannerWithTitle:v9 message:v8 destinations:3];
-  v7[2](v7);
+  [alertManager postBannerWithTitle:phoneCopy message:messageCopy destinations:3];
+  replyCopy[2](replyCopy);
 }
 
-- (void)postIconBannerToPhone:(id)a3 notificationMessage:(id)a4 defaultActionURL:(id)a5
+- (void)postIconBannerToPhone:(id)phone notificationMessage:(id)message defaultActionURL:(id)l
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  lCopy = l;
+  messageCopy = message;
+  phoneCopy = phone;
   v10 = +[CARDNDManager sharedManager];
-  v11 = [v10 alertManager];
+  alertManager = [v10 alertManager];
 
-  [v11 postIconBannerWithTitle:v9 message:v8 defaultActionURL:v7 destinations:3];
+  [alertManager postIconBannerWithTitle:phoneCopy message:messageCopy defaultActionURL:lCopy destinations:3];
 }
 
-- (void)wantsCarPlayControlAdvertisingForUSBWithReply:(id)a3
+- (void)wantsCarPlayControlAdvertisingForUSBWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -691,16 +691,16 @@
   block[5] = &v6;
   block[6] = &v12;
   dispatch_sync(&_dispatch_main_q, block);
-  v4[2](v4, *(v13 + 24), v7[5]);
+  replyCopy[2](replyCopy, *(v13 + 24), v7[5]);
   _Block_object_dispose(&v6, 8);
 
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)wantsCarPlayControlAdvertisingForWiFiUUID:(id)a3 reply:(id)a4
+- (void)wantsCarPlayControlAdvertisingForWiFiUUID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -715,22 +715,22 @@
   v9[1] = 3221225472;
   v9[2] = sub_10002600C;
   v9[3] = &unk_1000DE090;
-  v8 = v6;
+  v8 = dCopy;
   v10 = v8;
-  v11 = self;
+  selfCopy = self;
   v12 = &v14;
   v13 = &v20;
   dispatch_sync(&_dispatch_main_q, v9);
-  v7[2](v7, *(v21 + 24), v15[5]);
+  replyCopy[2](replyCopy, *(v21 + 24), v15[5]);
 
   _Block_object_dispose(&v14, 8);
   _Block_object_dispose(&v20, 8);
 }
 
-- (void)saveWiFiCredentials:(id)a3 forAccessoryConnectionIdentifier:(unint64_t)a4 reply:(id)a5
+- (void)saveWiFiCredentials:(id)credentials forAccessoryConnectionIdentifier:(unint64_t)identifier reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  credentialsCopy = credentials;
+  replyCopy = reply;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -747,7 +747,7 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v30 = a4;
+    identifierCopy = identifier;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "received WiFi credentials for connectionID %lu", buf, 0xCu);
   }
 
@@ -756,22 +756,22 @@
   block[2] = sub_100026518;
   block[3] = &unk_1000DE0E0;
   block[4] = self;
-  v11 = v8;
+  v11 = credentialsCopy;
   v13 = v11;
   v14 = &v23;
   v15 = &v17;
-  v16 = a4;
+  identifierCopy2 = identifier;
   dispatch_sync(&_dispatch_main_q, block);
-  v9[2](v9, v24[5] != 0, v18[5]);
+  replyCopy[2](replyCopy, v24[5] != 0, v18[5]);
 
   _Block_object_dispose(&v17, 8);
   _Block_object_dispose(&v23, 8);
 }
 
-- (void)allowsConnectionsForWiFiUUID:(id)a3 reply:(id)a4
+- (void)allowsConnectionsForWiFiUUID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -789,19 +789,19 @@
   v9[4] = self;
   v11 = &v13;
   v12 = &v19;
-  v8 = v6;
+  v8 = dCopy;
   v10 = v8;
   dispatch_sync(&_dispatch_main_q, v9);
-  v7[2](v7, *(v20 + 24), v14[5]);
+  replyCopy[2](replyCopy, *(v20 + 24), v14[5]);
 
   _Block_object_dispose(&v13, 8);
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)saveViewAreas:(id)a3 forVehicleIdentifier:(id)a4 reply:(id)a5
+- (void)saveViewAreas:(id)areas forVehicleIdentifier:(id)identifier reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
+  areasCopy = areas;
+  identifierCopy = identifier;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -820,26 +820,26 @@
   v13[3] = &unk_1000DE130;
   v13[4] = self;
   v17 = &v25;
-  v10 = a5;
-  v16 = v10;
-  v11 = v9;
+  replyCopy = reply;
+  v16 = replyCopy;
+  v11 = identifierCopy;
   v14 = v11;
-  v12 = v8;
+  v12 = areasCopy;
   v15 = v12;
   v18 = &v19;
   dispatch_sync(&_dispatch_main_q, v13);
-  if (v10)
+  if (replyCopy)
   {
-    (*(v10 + 2))(v10, v20[5], v26[5]);
+    (*(replyCopy + 2))(replyCopy, v20[5], v26[5]);
   }
 
   _Block_object_dispose(&v19, 8);
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)fetchViewAreasForVehicleIdentifier:(id)a3 reply:(id)a4
+- (void)fetchViewAreasForVehicleIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -858,22 +858,22 @@
   block[3] = &unk_1000DE158;
   block[4] = self;
   v12 = &v20;
-  v7 = a4;
-  v11 = v7;
-  v8 = v6;
+  replyCopy = reply;
+  v11 = replyCopy;
+  v8 = identifierCopy;
   v10 = v8;
   v13 = &v14;
   dispatch_sync(&_dispatch_main_q, block);
-  (*(v7 + 2))(v7, v15[5], v21[5]);
+  (*(replyCopy + 2))(replyCopy, v15[5], v21[5]);
 
   _Block_object_dispose(&v14, 8);
   _Block_object_dispose(&v20, 8);
 }
 
-- (void)allowsConnectionsForCertificateSerial:(id)a3 reply:(id)a4
+- (void)allowsConnectionsForCertificateSerial:(id)serial reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  serialCopy = serial;
+  replyCopy = reply;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -891,19 +891,19 @@
   v9[4] = self;
   v11 = &v13;
   v12 = &v19;
-  v8 = v6;
+  v8 = serialCopy;
   v10 = v8;
   dispatch_sync(&_dispatch_main_q, v9);
-  v7[2](v7, *(v20 + 24), v14[5]);
+  replyCopy[2](replyCopy, *(v20 + 24), v14[5]);
 
   _Block_object_dispose(&v13, 8);
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)isPairedWithCertificateSerial:(id)a3 reply:(id)a4
+- (void)isPairedWithCertificateSerial:(id)serial reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  serialCopy = serial;
+  replyCopy = reply;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -920,20 +920,20 @@
   v9[3] = &unk_1000DDA28;
   v9[4] = self;
   v11 = &v13;
-  v8 = v6;
+  v8 = serialCopy;
   v10 = v8;
   v12 = &v19;
   dispatch_sync(&_dispatch_main_q, v9);
-  v7[2](v7, *(v20 + 24), v14[5]);
+  replyCopy[2](replyCopy, *(v20 + 24), v14[5]);
 
   _Block_object_dispose(&v13, 8);
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)isEnhancedIntegrationEnabledWithCertificateSerial:(id)a3 reply:(id)a4
+- (void)isEnhancedIntegrationEnabledWithCertificateSerial:(id)serial reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  serialCopy = serial;
+  replyCopy = reply;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -950,38 +950,38 @@
   v9[3] = &unk_1000DDA28;
   v9[4] = self;
   v11 = &v13;
-  v8 = v6;
+  v8 = serialCopy;
   v10 = v8;
   v12 = &v19;
   dispatch_sync(&_dispatch_main_q, v9);
-  v7[2](v7, v20[3], v14[5]);
+  replyCopy[2](replyCopy, v20[3], v14[5]);
 
   _Block_object_dispose(&v13, 8);
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)handleCarPlayRestrictionChangedWithReply:(id)a3
+- (void)handleCarPlayRestrictionChangedWithReply:(id)reply
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100027A50;
   block[3] = &unk_1000DD480;
   block[4] = self;
-  v3 = a3;
+  replyCopy = reply;
   dispatch_sync(&_dispatch_main_q, block);
-  v3[2](v3);
+  replyCopy[2](replyCopy);
 }
 
-- (void)isCarPlayAllowedWithReply:(id)a3
+- (void)isCarPlayAllowedWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(CRCarKitServiceAgent *)self preferencesManager];
-  (*(a3 + 2))(v5, [v6 isCarPlayAllowed], 0);
+  replyCopy = reply;
+  preferencesManager = [(CRCarKitServiceAgent *)self preferencesManager];
+  (*(reply + 2))(replyCopy, [preferencesManager isCarPlayAllowed], 0);
 }
 
-- (void)deviceSupportedCarPlayFeaturesWithReply:(id)a3
+- (void)deviceSupportedCarPlayFeaturesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v8 = 0;
   v9[0] = &v8;
   v9[1] = 0x2020000000;
@@ -1000,15 +1000,15 @@
   }
 
   v6 = [NSNumber numberWithUnsignedInteger:*(v9[0] + 24)];
-  v4[2](v4, v6, 0);
+  replyCopy[2](replyCopy, v6, 0);
 
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)disablesCarPlayFeatures:(unint64_t)a3 forVehicleIdentifier:(id)a4 reply:(id)a5
+- (void)disablesCarPlayFeatures:(unint64_t)features forVehicleIdentifier:(id)identifier reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v21 = 0;
   v22[0] = &v21;
   v22[1] = 0x2020000000;
@@ -1018,9 +1018,9 @@
   v15 = sub_100027DD8;
   v16 = &unk_1000DE180;
   v19 = &v21;
-  v20 = a3;
-  v17 = self;
-  v10 = v8;
+  featuresCopy = features;
+  selfCopy = self;
+  v10 = identifierCopy;
   v18 = v10;
   dispatch_sync(&_dispatch_main_q, &v13);
   v11 = CarGeneralLogging();
@@ -1029,16 +1029,16 @@
     sub_100084478(v22);
   }
 
-  v12 = [NSNumber numberWithBool:*(v22[0] + 24), v13, v14, v15, v16, v17];
-  v9[2](v9, v12, 0);
+  selfCopy = [NSNumber numberWithBool:*(v22[0] + 24), v13, v14, v15, v16, selfCopy];
+  replyCopy[2](replyCopy, selfCopy, 0);
 
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)setCarPlayFeatures:(unint64_t)a3 disabled:(BOOL)a4 forVehicleIdentifier:(id)a5 reply:(id)a6
+- (void)setCarPlayFeatures:(unint64_t)features disabled:(BOOL)disabled forVehicleIdentifier:(id)identifier reply:(id)reply
 {
-  v10 = a5;
-  v11 = a6;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v19 = 0;
   v20[0] = &v19;
   v20[1] = 0x2020000000;
@@ -1048,10 +1048,10 @@
   block[2] = sub_100027F94;
   block[3] = &unk_1000DE1A8;
   v16 = &v19;
-  v17 = a3;
+  featuresCopy = features;
   block[4] = self;
-  v18 = a4;
-  v12 = v10;
+  disabledCopy = disabled;
+  v12 = identifierCopy;
   v15 = v12;
   dispatch_sync(&_dispatch_main_q, block);
   v13 = CarGeneralLogging();
@@ -1060,14 +1060,14 @@
     sub_10008450C(v20);
   }
 
-  (*(v11 + 2))(v11, *(v20[0] + 24), 0);
+  (*(replyCopy + 2))(replyCopy, *(v20[0] + 24), 0);
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)supportedCarPlayFeaturesForCertificateSerial:(id)a3 reply:(id)a4
+- (void)supportedCarPlayFeaturesForCertificateSerial:(id)serial reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  serialCopy = serial;
+  replyCopy = reply;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1078,7 +1078,7 @@
   block[3] = &unk_1000DDE60;
   v14 = &v15;
   block[4] = self;
-  v8 = v6;
+  v8 = serialCopy;
   v13 = v8;
   dispatch_sync(&_dispatch_main_q, block);
   v9 = CarGeneralLogging();
@@ -1091,15 +1091,15 @@
   }
 
   v11 = [NSNumber numberWithUnsignedInteger:v16[3]];
-  v7[2](v7, v11, 0);
+  replyCopy[2](replyCopy, v11, 0);
 
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)supportedAirPlayFeaturesForVehicleIdentifier:(id)a3 reply:(id)a4
+- (void)supportedAirPlayFeaturesForVehicleIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1112,7 +1112,7 @@
   block[3] = &unk_1000DDE60;
   v13 = &v14;
   block[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v12 = v8;
   dispatch_sync(&_dispatch_main_q, block);
   v9 = CarGeneralLogging();
@@ -1124,172 +1124,172 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "supportedAirPlayFeatures: %{public}@", buf, 0xCu);
   }
 
-  v7[2](v7, v15[5], 0);
+  replyCopy[2](replyCopy, v15[5], 0);
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)videoSubtitleSettingsForVehicleIdentifier:(id)a3 reply:(id)a4
+- (void)videoSubtitleSettingsForVehicleIdentifier:(id)identifier reply:(id)reply
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000285DC;
   block[3] = &unk_1000DE1D0;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  v5 = replyCopy;
+  v6 = identifierCopy;
   dispatch_sync(&_dispatch_main_q, block);
 }
 
-- (void)setVideoSubtitleSettings:(id)a3 forVehicleIdentifier:(id)a4 reply:(id)a5
+- (void)setVideoSubtitleSettings:(id)settings forVehicleIdentifier:(id)identifier reply:(id)reply
 {
-  v8 = a3;
+  settingsCopy = settings;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100028898;
   v12[3] = &unk_1000DE220;
   v12[4] = self;
-  v13 = a4;
-  v14 = v8;
-  v15 = a5;
-  v9 = v8;
-  v10 = v15;
-  v11 = v13;
+  identifierCopy = identifier;
+  v14 = settingsCopy;
+  replyCopy = reply;
+  v9 = settingsCopy;
+  v10 = replyCopy;
+  v11 = identifierCopy;
   dispatch_sync(&_dispatch_main_q, v12);
 }
 
-- (void)videoDiagnosticsEnabledForVehicleIdentifier:(id)a3 reply:(id)a4
+- (void)videoDiagnosticsEnabledForVehicleIdentifier:(id)identifier reply:(id)reply
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100028BCC;
   block[3] = &unk_1000DE1D0;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  v5 = replyCopy;
+  v6 = identifierCopy;
   dispatch_sync(&_dispatch_main_q, block);
 }
 
-- (void)setVideoDiagnosticsEnabled:(BOOL)a3 forVehicleIdentifier:(id)a4 reply:(id)a5
+- (void)setVideoDiagnosticsEnabled:(BOOL)enabled forVehicleIdentifier:(id)identifier reply:(id)reply
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100028E40;
   v9[3] = &unk_1000DE268;
   v9[4] = self;
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  v7 = v11;
-  v8 = v10;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  enabledCopy = enabled;
+  v7 = replyCopy;
+  v8 = identifierCopy;
   dispatch_sync(&_dispatch_main_q, v9);
 }
 
-- (void)videoAnalyticsForVehicleIdentifier:(id)a3 reply:(id)a4
+- (void)videoAnalyticsForVehicleIdentifier:(id)identifier reply:(id)reply
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100029194;
   block[3] = &unk_1000DE1D0;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  v5 = replyCopy;
+  v6 = identifierCopy;
   dispatch_sync(&_dispatch_main_q, block);
 }
 
-- (void)videoLicensesTextForVehicleIdentifier:(id)a3 reply:(id)a4
+- (void)videoLicensesTextForVehicleIdentifier:(id)identifier reply:(id)reply
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000293F0;
   block[3] = &unk_1000DE1D0;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  v5 = replyCopy;
+  v6 = identifierCopy;
   dispatch_sync(&_dispatch_main_q, block);
 }
 
-- (void)stopSessionWithSessionIdentifier:(id)a3 reason:(unint64_t)a4 reply:(id)a5
+- (void)stopSessionWithSessionIdentifier:(id)identifier reason:(unint64_t)reason reply:(id)reply
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100029654;
   v9[3] = &unk_1000DE308;
   v9[4] = self;
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  v7 = v10;
-  v8 = v11;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  reasonCopy = reason;
+  v7 = identifierCopy;
+  v8 = replyCopy;
   dispatch_sync(&_dispatch_main_q, v9);
 }
 
-- (void)handleCarPlayDiagnosticsWithDeviceScreenshotURL:(id)a3 carScreenshotURL:(id)a4 attachmentURLs:(id)a5 activeBundleIdentifier:(id)a6 reply:(id)a7
+- (void)handleCarPlayDiagnosticsWithDeviceScreenshotURL:(id)l carScreenshotURL:(id)rL attachmentURLs:(id)ls activeBundleIdentifier:(id)identifier reply:(id)reply
 {
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10002990C;
   v16[3] = &unk_1000DE330;
   v16[4] = self;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v11 = v21;
-  v12 = v20;
-  v13 = v19;
-  v14 = v18;
-  v15 = v17;
+  lCopy = l;
+  rLCopy = rL;
+  lsCopy = ls;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  v11 = replyCopy;
+  v12 = identifierCopy;
+  v13 = lsCopy;
+  v14 = rLCopy;
+  v15 = lCopy;
   dispatch_sync(&_dispatch_main_q, v16);
 }
 
-- (void)collectVehicleLogs:(id)a3
+- (void)collectVehicleLogs:(id)logs
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100029F0C;
   v4[3] = &unk_1000DD988;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  logsCopy = logs;
+  v3 = logsCopy;
   dispatch_sync(&_dispatch_main_q, v4);
 }
 
-- (void)fetchInstrumentClusterURLsWithReply:(id)a3
+- (void)fetchInstrumentClusterURLsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = [NSError errorWithDomain:@"com.apple.carkit" code:5 userInfo:0];
-  (*(a3 + 2))(v4, &__NSArray0__struct, v5);
+  (*(reply + 2))(replyCopy, &__NSArray0__struct, v5);
 }
 
-- (id)accessoryRadarDescription:(id)a3
+- (id)accessoryRadarDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [v3 manufacturer];
-  v6 = [v3 modelNumber];
-  v7 = [v3 firmwareRevision];
-  v8 = [v3 hardwareRevision];
-  v9 = [v3 serialNumber];
-  v10 = [v3 ppid];
+  descriptionCopy = description;
+  name = [descriptionCopy name];
+  manufacturer = [descriptionCopy manufacturer];
+  modelNumber = [descriptionCopy modelNumber];
+  firmwareRevision = [descriptionCopy firmwareRevision];
+  hardwareRevision = [descriptionCopy hardwareRevision];
+  serialNumber = [descriptionCopy serialNumber];
+  ppid = [descriptionCopy ppid];
 
-  v11 = [NSString stringWithFormat:@"Accessory Name: %@\nManufacturer: %@\nModel Number: %@\nFirmware Revision: %@\nHardware Revision: %@\nSerial Number: %@\nPPID: %@\n", v4, v5, v6, v7, v8, v9, v10];
+  v11 = [NSString stringWithFormat:@"Accessory Name: %@\nManufacturer: %@\nModel Number: %@\nFirmware Revision: %@\nHardware Revision: %@\nSerial Number: %@\nPPID: %@\n", name, manufacturer, modelNumber, firmwareRevision, hardwareRevision, serialNumber, ppid];
 
   return v11;
 }
 
-- (void)fetchScaledDisplaysWithReply:(id)a3 reply:(id)a4
+- (void)fetchScaledDisplaysWithReply:(id)reply reply:(id)a4
 {
   v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
   v7 = _os_feature_enabled_impl();
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -1297,20 +1297,20 @@
   v9[3] = &unk_1000DE380;
   v10 = v5;
   v8 = v5;
-  [CRScreenScaleHeuristics scaledDisplays:v6 withDisplayScaling:v7 reply:v9];
+  [CRScreenScaleHeuristics scaledDisplays:replyCopy withDisplayScaling:v7 reply:v9];
 }
 
-- (void)fetchOverrideCanvasSizeWithCertificateSerialNumber:(id)a3 displays:(id)a4 reply:(id)a5
+- (void)fetchOverrideCanvasSizeWithCertificateSerialNumber:(id)number displays:(id)displays reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && (-[CRCarKitServiceAgent vehicleStore](self, "vehicleStore"), v11 = objc_claimAutoreleasedReturnValue(), [v11 vehicleForCertificateSerial:v8], v12 = objc_claimAutoreleasedReturnValue(), v11, v12))
+  numberCopy = number;
+  displaysCopy = displays;
+  replyCopy = reply;
+  if (numberCopy && (-[CRCarKitServiceAgent vehicleStore](self, "vehicleStore"), v11 = objc_claimAutoreleasedReturnValue(), [v11 vehicleForCertificateSerial:numberCopy], v12 = objc_claimAutoreleasedReturnValue(), v11, v12))
   {
     [v12 displayScaleMode];
     v13 = CRCanvasSizeOverridesWithAirplayDisplays();
     v14 = 0;
-    v10[2](v10, v13, v14);
+    replyCopy[2](replyCopy, v13, v14);
   }
 
   else
@@ -1322,15 +1322,15 @@
     }
 
     v12 = [NSError errorWithDomain:@"com.apple.carkit" code:6 userInfo:0];
-    v10[2](v10, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
   }
 }
 
-- (void)fetchScaledDisplaysWithCertificateSerialNumber:(id)a3 displays:(id)a4 reply:(id)a5
+- (void)fetchScaledDisplaysWithCertificateSerialNumber:(id)number displays:(id)displays reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  numberCopy = number;
+  displaysCopy = displays;
+  replyCopy = reply;
   if (_os_feature_enabled_impl())
   {
     dispatch_assert_queue_not_V2(&_dispatch_main_q);
@@ -1346,11 +1346,11 @@
     v15[2] = sub_10002A6C4;
     v15[3] = &unk_1000DDFA0;
     v12 = v16;
-    v16[0] = v8;
+    v16[0] = numberCopy;
     v16[1] = self;
-    v17 = v9;
-    v18 = v10;
-    v13 = v10;
+    v17 = displaysCopy;
+    v18 = replyCopy;
+    v13 = replyCopy;
     dispatch_async(&_dispatch_main_q, v15);
   }
 
@@ -1361,131 +1361,131 @@
     v20[2] = sub_10002A6AC;
     v20[3] = &unk_1000DE380;
     v12 = &v21;
-    v21 = v10;
-    v14 = v10;
-    [CRScreenScaleHeuristics scaledDisplays:v9 withDisplayScaling:0 reply:v20];
+    v21 = replyCopy;
+    v14 = replyCopy;
+    [CRScreenScaleHeuristics scaledDisplays:displaysCopy withDisplayScaling:0 reply:v20];
   }
 }
 
-- (void)isPreflightThemeAssetEnabledWithReply:(id)a3
+- (void)isPreflightThemeAssetEnabledWithReply:(id)reply
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002A944;
   block[3] = &unk_1000DD960;
-  v5 = a3;
-  v3 = v5;
+  replyCopy = reply;
+  v3 = replyCopy;
   dispatch_sync(&_dispatch_main_q, block);
 }
 
-- (void)setPreflightThemeAssetEnabled:(BOOL)a3 reply:(id)a4
+- (void)setPreflightThemeAssetEnabled:(BOOL)enabled reply:(id)reply
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002AA50;
   block[3] = &unk_1000DE3A8;
-  v7 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v6 = a4;
-  v4 = v6;
+  replyCopy = reply;
+  v4 = replyCopy;
   dispatch_sync(&_dispatch_main_q, block);
 }
 
-- (void)serviceConnector:(id)a3 requestsPairingConfirmationForBluetoothLEIdentifier:(id)a4 name:(id)a5 numericCode:(id)a6 responseHandler:(id)a7
+- (void)serviceConnector:(id)connector requestsPairingConfirmationForBluetoothLEIdentifier:(id)identifier name:(id)name numericCode:(id)code responseHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  codeCopy = code;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002AD14;
   block[3] = &unk_1000DE3F8;
   block[4] = self;
-  v19 = v11;
-  v21 = v12;
-  v22 = a7;
-  v20 = v13;
-  v14 = v12;
-  v15 = v13;
-  v16 = v22;
-  v17 = v11;
+  v19 = identifierCopy;
+  v21 = nameCopy;
+  handlerCopy = handler;
+  v20 = codeCopy;
+  v14 = nameCopy;
+  v15 = codeCopy;
+  v16 = handlerCopy;
+  v17 = identifierCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)serviceConnector:(id)a3 failedPairingForBluetoothLEIdentifier:(id)a4 name:(id)a5 error:(id)a6
+- (void)serviceConnector:(id)connector failedPairingForBluetoothLEIdentifier:(id)identifier name:(id)name error:(id)error
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10002B0E4;
   v11[3] = &unk_1000DE420;
   v11[4] = self;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  identifierCopy = identifier;
+  nameCopy = name;
+  errorCopy = error;
+  v8 = errorCopy;
+  v9 = nameCopy;
+  v10 = identifierCopy;
   dispatch_async(&_dispatch_main_q, v11);
 }
 
-- (void)serviceConnector:(id)a3 completedPairingForBluetoothLEIdentifier:(id)a4 name:(id)a5
+- (void)serviceConnector:(id)connector completedPairingForBluetoothLEIdentifier:(id)identifier name:(id)name
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002B260;
   v7[3] = &unk_1000DD580;
-  v8 = a4;
-  v9 = self;
-  v6 = v8;
+  identifierCopy = identifier;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)serviceConnector:(id)a3 didConnectVehicle:(id)a4
+- (void)serviceConnector:(id)connector didConnectVehicle:(id)vehicle
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10002B358;
   v5[3] = &unk_1000DD580;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  vehicleCopy = vehicle;
+  v4 = vehicleCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)serviceConnector:(id)a3 didUpdateVehicle:(id)a4
+- (void)serviceConnector:(id)connector didUpdateVehicle:(id)vehicle
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10002B61C;
   v5[3] = &unk_1000DD580;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  vehicleCopy = vehicle;
+  v4 = vehicleCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)serviceConnector:(id)a3 receivedStartSessionMessage:(id)a4 fromVehicle:(id)a5
+- (void)serviceConnector:(id)connector receivedStartSessionMessage:(id)message fromVehicle:(id)vehicle
 {
-  v7 = a4;
-  v8 = a5;
+  messageCopy = message;
+  vehicleCopy = vehicle;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v9 = CarGeneralLogging();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v7;
+    v26 = messageCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "CarPlay connection request startSessionMessage: %@", buf, 0xCu);
   }
 
-  if (v7)
+  if (messageCopy)
   {
     v24 = 0;
     v10 = [(CRCarKitServiceAgent *)self _isRestricted:&v24];
     v11 = v24;
     if (v10)
     {
-      v12 = CarGeneralLogging();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      pPID = CarGeneralLogging();
+      if (os_log_type_enabled(pPID, OS_LOG_TYPE_ERROR))
       {
         sub_1000842B4();
       }
@@ -1494,32 +1494,32 @@
     else
     {
       v13 = +[NSMutableDictionary dictionary];
-      v14 = [v7 SSID];
-      [v13 setObject:v14 forKey:@"SSID_STR"];
+      sSID = [messageCopy SSID];
+      [v13 setObject:sSID forKey:@"SSID_STR"];
 
-      v15 = [v7 passphrase];
-      [v13 setObject:v15 forKey:@"password"];
+      passphrase = [messageCopy passphrase];
+      [v13 setObject:passphrase forKey:@"password"];
 
-      v16 = [v7 channel];
-      [v13 setObject:v16 forKey:@"CHANNEL"];
+      channel = [messageCopy channel];
+      [v13 setObject:channel forKey:@"CHANNEL"];
 
-      v17 = [v7 securityType];
-      [v13 setObject:v17 forKey:@"securityType"];
+      securityType = [messageCopy securityType];
+      [v13 setObject:securityType forKey:@"securityType"];
 
-      v12 = [v8 PPID];
-      if (v12)
+      pPID = [vehicleCopy PPID];
+      if (pPID)
       {
-        [v13 setObject:v12 forKey:@"CARPLAY_PPID"];
+        [v13 setObject:pPID forKey:@"CARPLAY_PPID"];
       }
 
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_10002B9C0;
       v19[3] = &unk_1000DE4D8;
-      v20 = v8;
-      v21 = self;
+      v20 = vehicleCopy;
+      selfCopy = self;
       v22 = v13;
-      v23 = v7;
+      v23 = messageCopy;
       v18 = v13;
       [(CRCarKitServiceAgent *)self _findWirelessPairedVehicleForMessagingVehicle:v20 result:v19];
     }
@@ -1535,21 +1535,21 @@
   }
 }
 
-- (void)serviceConnector:(id)a3 didDisconnectVehicle:(id)a4
+- (void)serviceConnector:(id)connector didDisconnectVehicle:(id)vehicle
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10002BF18;
   v5[3] = &unk_1000DD580;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  vehicleCopy = vehicle;
+  v4 = vehicleCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)serviceConnector:(id)a3 didConnectUnsupportedAccessoryWithBluetoothAddress:(id)a4
+- (void)serviceConnector:(id)connector didConnectUnsupportedAccessoryWithBluetoothAddress:(id)address
 {
-  v5 = a4;
+  addressCopy = address;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v6 = CarPairingLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1557,35 +1557,35 @@
     v9 = 141558275;
     v10 = 1752392040;
     v11 = 2113;
-    v12 = v5;
+    v12 = addressCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "connected an iAP accessory that doesn't support CarPlay: %{private, mask.hash}@", &v9, 0x16u);
   }
 
-  v7 = [(CRCarKitServiceAgent *)self currentPromptFlowController];
+  currentPromptFlowController = [(CRCarKitServiceAgent *)self currentPromptFlowController];
 
-  if (v7)
+  if (currentPromptFlowController)
   {
-    v8 = [(CRCarKitServiceAgent *)self currentPromptFlowController];
-    [v8 handleUnsupportedMessagingConnectionForDeviceIdentifier:v5];
+    currentPromptFlowController2 = [(CRCarKitServiceAgent *)self currentPromptFlowController];
+    [currentPromptFlowController2 handleUnsupportedMessagingConnectionForDeviceIdentifier:addressCopy];
   }
 }
 
-- (void)notifyFoundNoMatchingAssetForVehicleIdentifier:(id)a3 nextRequiredCompatibilityVersion:(id)a4 requestDescription:(id)a5
+- (void)notifyFoundNoMatchingAssetForVehicleIdentifier:(id)identifier nextRequiredCompatibilityVersion:(id)version requestDescription:(id)description
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  versionCopy = version;
+  descriptionCopy = description;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v11 = [(CRCarKitServiceAgent *)self currentPromptFlowController];
-  v12 = v11;
-  if (v11)
+  currentPromptFlowController = [(CRCarKitServiceAgent *)self currentPromptFlowController];
+  v12 = currentPromptFlowController;
+  if (currentPromptFlowController)
   {
-    v13 = [v11 messagingVehicle];
+    messagingVehicle = [currentPromptFlowController messagingVehicle];
     objc_opt_class();
-    v14 = [v12 userInfo];
-    if (v14 && (objc_opt_isKindOfClass() & 1) != 0)
+    userInfo = [v12 userInfo];
+    if (userInfo && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v15 = v14;
+      v15 = userInfo;
     }
 
     else
@@ -1593,22 +1593,22 @@
       v15 = 0;
     }
 
-    if (v13 && v15)
+    if (messagingVehicle && v15)
     {
-      v16 = [v15 identifier];
-      v17 = [v16 isEqual:v8];
+      identifier = [v15 identifier];
+      v17 = [identifier isEqual:identifierCopy];
 
       if (v17)
       {
         if (CRIsInternalInstall())
         {
-          v18 = [NSString stringWithFormat:@"[Internal]\nRequested asset matching:\n%@", v10];
-          v19 = v18;
-          if (v9)
+          descriptionCopy = [NSString stringWithFormat:@"[Internal]\nRequested asset matching:\n%@", descriptionCopy];
+          v19 = descriptionCopy;
+          if (versionCopy)
           {
-            v20 = [v18 stringByAppendingFormat:@"An asset is available but requires CompatibilityVersion %@", v9];
+            versionCopy = [descriptionCopy stringByAppendingFormat:@"An asset is available but requires CompatibilityVersion %@", versionCopy];
 
-            v19 = v20;
+            v19 = versionCopy;
           }
         }
 
@@ -1617,8 +1617,8 @@
           v19 = 0;
         }
 
-        v23 = [(CRCarKitServiceAgent *)self currentPromptFlowController];
-        [v23 handleFailedToFindThemeAssetForMessagingVehicle:v13 shouldOfferSoftwareUpdate:v9 != 0 description:v19];
+        currentPromptFlowController2 = [(CRCarKitServiceAgent *)self currentPromptFlowController];
+        [currentPromptFlowController2 handleFailedToFindThemeAssetForMessagingVehicle:messagingVehicle shouldOfferSoftwareUpdate:versionCopy != 0 description:v19];
       }
 
       else
@@ -1626,11 +1626,11 @@
         v21 = CarThemeAssetsLogging();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v15 identifier];
+          identifier2 = [v15 identifier];
           *buf = 138543618;
-          v25 = v8;
+          v25 = identifierCopy;
           v26 = 2114;
-          v27 = v22;
+          v27 = identifier2;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "did not find an asset for vehicle %{public}@, but ignoring since pairing with vehicle %{public}@", buf, 0x16u);
         }
       }
@@ -1657,18 +1657,18 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CarPlay restriction changed", buf, 2u);
   }
 
-  v4 = [(CRCarKitServiceAgent *)self preferencesManager];
-  v5 = [v4 isCarPlayAllowed];
+  preferencesManager = [(CRCarKitServiceAgent *)self preferencesManager];
+  isCarPlayAllowed = [preferencesManager isCarPlayAllowed];
 
-  v6 = [(CRCarKitServiceAgent *)self cachedCarPlayAllowedChangeValue];
-  v7 = v6;
-  if (!v6 || v5 != [v6 BOOLValue])
+  cachedCarPlayAllowedChangeValue = [(CRCarKitServiceAgent *)self cachedCarPlayAllowedChangeValue];
+  v7 = cachedCarPlayAllowedChangeValue;
+  if (!cachedCarPlayAllowedChangeValue || isCarPlayAllowed != [cachedCarPlayAllowedChangeValue BOOLValue])
   {
     v8 = CarGeneralLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = @"disabled";
-      if (v5)
+      if (isCarPlayAllowed)
       {
         v9 = @"enabled";
       }
@@ -1678,13 +1678,13 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CarPlay is now %@", buf, 0xCu);
     }
 
-    v10 = [NSNumber numberWithBool:v5];
+    v10 = [NSNumber numberWithBool:isCarPlayAllowed];
     [(CRCarKitServiceAgent *)self setCachedCarPlayAllowedChangeValue:v10];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.carplay.allowed-changed", 0, 0, 1u);
     +[CRVehicleStore postPairingsDidChangeNotification];
-    if (v5)
+    if (isCarPlayAllowed)
     {
       [(CRCarKitServiceAgent *)self handleAnyMessagingConnectionsToVehicles];
     }
@@ -1698,10 +1698,10 @@
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v12 = [(CRCarKitServiceAgent *)self vehicleStore];
-      v13 = [v12 allStoredVehicles];
+      vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+      allStoredVehicles = [vehicleStore allStoredVehicles];
 
-      v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [allStoredVehicles countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v14)
       {
         v15 = v14;
@@ -1713,30 +1713,30 @@
           {
             if (*v22 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(allStoredVehicles);
             }
 
             v18 = *(*(&v21 + 1) + 8 * v17);
-            v19 = [(CRCarKitServiceAgent *)self monitoringService];
-            [v19 handleUpdatedVehicle:v18 enabled:0 completion:0];
+            monitoringService = [(CRCarKitServiceAgent *)self monitoringService];
+            [monitoringService handleUpdatedVehicle:v18 enabled:0 completion:0];
 
             v17 = v17 + 1;
           }
 
           while (v15 != v17);
-          v15 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v15 = [allStoredVehicles countByEnumeratingWithState:&v21 objects:v25 count:16];
         }
 
         while (v15);
       }
 
-      v20 = [(CRCarKitServiceAgent *)self sessionRequestClient];
-      [v20 cancelRequests];
+      sessionRequestClient = [(CRCarKitServiceAgent *)self sessionRequestClient];
+      [sessionRequestClient cancelRequests];
     }
   }
 }
 
-- (void)handleVehicleStoreAvailabiltyDidChange:(id)a3
+- (void)handleVehicleStoreAvailabiltyDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1746,15 +1746,15 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)postInCarNotificationForVehicle:(id)a3
+- (BOOL)postInCarNotificationForVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [v4 carplayWiFiUUID];
-  v6 = v5;
-  if (v5)
+  vehicleCopy = vehicle;
+  carplayWiFiUUID = [vehicleCopy carplayWiFiUUID];
+  v6 = carplayWiFiUUID;
+  if (carplayWiFiUUID)
   {
     v16 = @"CARPLAY_UUID";
-    v17 = v5;
+    v17 = carplayWiFiUUID;
     v7 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v8 = CarGeneralLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1765,13 +1765,13 @@
     }
 
     kdebug_trace();
-    v9 = [(CRCarKitServiceAgent *)self wifiManager];
-    [v9 setInCar:1 carPlayUUID:v6];
+    wifiManager = [(CRCarKitServiceAgent *)self wifiManager];
+    [wifiManager setInCar:1 carPlayUUID:v6];
 
-    if ([v4 requiresBonjour])
+    if ([vehicleCopy requiresBonjour])
     {
-      v10 = [(CRCarKitServiceAgent *)self sessionRequestClient];
-      [v10 startAdvertisingCarPlayControlForWiFiUUID:v6];
+      sessionRequestClient = [(CRCarKitServiceAgent *)self sessionRequestClient];
+      [sessionRequestClient startAdvertisingCarPlayControlForWiFiUUID:v6];
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -1783,14 +1783,14 @@
   return v6 != 0;
 }
 
-- (BOOL)postOutOfCarNotificationForVehicle:(id)a3
+- (BOOL)postOutOfCarNotificationForVehicle:(id)vehicle
 {
-  v3 = [a3 carplayWiFiUUID];
-  v4 = v3;
-  if (v3)
+  carplayWiFiUUID = [vehicle carplayWiFiUUID];
+  v4 = carplayWiFiUUID;
+  if (carplayWiFiUUID)
   {
     v11 = @"CARPLAY_UUID";
-    v12 = v3;
+    v12 = carplayWiFiUUID;
     v5 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     v6 = CarGeneralLogging();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1808,26 +1808,26 @@
   return v4 != 0;
 }
 
-- (BOOL)_isRestricted:(id *)a3
+- (BOOL)_isRestricted:(id *)restricted
 {
-  v4 = [(CRCarKitServiceAgent *)self preferencesManager];
-  v5 = [v4 isCarPlayAllowed];
+  preferencesManager = [(CRCarKitServiceAgent *)self preferencesManager];
+  isCarPlayAllowed = [preferencesManager isCarPlayAllowed];
 
-  if (a3 && (v5 & 1) == 0)
+  if (restricted && (isCarPlayAllowed & 1) == 0)
   {
-    *a3 = [NSError errorWithDomain:@"com.apple.carkit" code:1 userInfo:0];
+    *restricted = [NSError errorWithDomain:@"com.apple.carkit" code:1 userInfo:0];
   }
 
-  return v5 ^ 1;
+  return isCarPlayAllowed ^ 1;
 }
 
-- (void)_findWirelessPairedVehicleForAccessoryConnectionIdentifier:(unint64_t)a3 result:(id)a4
+- (void)_findWirelessPairedVehicleForAccessoryConnectionIdentifier:(unint64_t)identifier result:(id)result
 {
-  v6 = a4;
-  if (v6)
+  resultCopy = result;
+  if (resultCopy)
   {
-    v7 = [(CRCarKitServiceAgent *)self messagingConnector];
-    v8 = [v7 vehicleAccessoryForiAPConnectionIdentifier:a3];
+    messagingConnector = [(CRCarKitServiceAgent *)self messagingConnector];
+    v8 = [messagingConnector vehicleAccessoryForiAPConnectionIdentifier:identifier];
 
     if (!v8)
     {
@@ -1838,7 +1838,7 @@
       }
 
       v10 = [NSError errorWithDomain:@"com.apple.carkit" code:3 userInfo:0];
-      (*(v6 + 2))(v6, 0, 0, v10);
+      (*(resultCopy + 2))(resultCopy, 0, 0, v10);
     }
 
     v12[0] = _NSConcreteStackBlock;
@@ -1846,55 +1846,55 @@
     v12[2] = sub_10002CBD0;
     v12[3] = &unk_1000DE500;
     v13 = v8;
-    v14 = v6;
+    v14 = resultCopy;
     v11 = v8;
     [(CRCarKitServiceAgent *)self _findWirelessPairedVehicleForMessagingVehicle:v11 result:v12];
   }
 }
 
-- (void)_findWirelessPairedVehicleForMessagingVehicle:(id)a3 result:(id)a4
+- (void)_findWirelessPairedVehicleForMessagingVehicle:(id)vehicle result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  vehicleCopy = vehicle;
+  resultCopy = result;
+  if (resultCopy)
   {
     v26 = 0;
     v8 = [(CRCarKitServiceAgent *)self _isRestricted:&v26];
     v9 = v26;
     if (v8)
     {
-      v7[2](v7, 0, v9);
+      resultCopy[2](resultCopy, 0, v9);
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    v10 = [(CRCarKitServiceAgent *)self vehicleStore];
-    v11 = [v10 allStoredVehicles];
+    vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+    allStoredVehicles = [vehicleStore allStoredVehicles];
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_10002CE88;
     v24 = &unk_1000DE528;
-    v12 = v6;
+    v12 = vehicleCopy;
     v25 = v12;
-    v13 = [v11 objectsPassingTest:&v21];
+    v13 = [allStoredVehicles objectsPassingTest:&v21];
 
-    v14 = [v13 anyObject];
-    v15 = v14;
-    if (v14 && ([v14 isPaired] & 1) != 0)
+    anyObject = [v13 anyObject];
+    v15 = anyObject;
+    if (anyObject && ([anyObject isPaired] & 1) != 0)
     {
-      v16 = [v15 bluetoothAddress];
-      if (v16)
+      bluetoothAddress = [v15 bluetoothAddress];
+      if (bluetoothAddress)
       {
 
 LABEL_13:
-        (v7)[2](v7, v15, 0);
+        (resultCopy)[2](resultCopy, v15, 0);
         goto LABEL_14;
       }
 
-      v20 = [v12 bluetoothAddress];
+      bluetoothAddress2 = [v12 bluetoothAddress];
 
-      if (v20)
+      if (bluetoothAddress2)
       {
         goto LABEL_13;
       }
@@ -1923,7 +1923,7 @@ LABEL_10:
     }
 
     v19 = [NSError errorWithDomain:@"com.apple.carkit" code:1 userInfo:0];
-    v7[2](v7, 0, v19);
+    resultCopy[2](resultCopy, 0, v19);
 
 LABEL_14:
     goto LABEL_15;
@@ -1932,33 +1932,33 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)_saveWiFiCredentials:(id)a3 forAccessoryConnectionIdentifier:(unint64_t)a4 result:(id)a5
+- (void)_saveWiFiCredentials:(id)credentials forAccessoryConnectionIdentifier:(unint64_t)identifier result:(id)result
 {
-  v8 = a3;
+  credentialsCopy = credentials;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10002CFC4;
   v11[3] = &unk_1000DE550;
-  v13 = self;
-  v14 = a5;
-  v12 = v8;
-  v9 = v8;
-  v10 = v14;
-  [(CRCarKitServiceAgent *)self _findWirelessPairedVehicleForAccessoryConnectionIdentifier:a4 result:v11];
+  selfCopy = self;
+  resultCopy = result;
+  v12 = credentialsCopy;
+  v9 = credentialsCopy;
+  v10 = resultCopy;
+  [(CRCarKitServiceAgent *)self _findWirelessPairedVehicleForAccessoryConnectionIdentifier:identifier result:v11];
 }
 
-- (void)_saveWiFiCredentials:(id)a3 fromMessagingVehicle:(id)a4 forWirelessPairedVehicle:(id)a5 result:(id)a6
+- (void)_saveWiFiCredentials:(id)credentials fromMessagingVehicle:(id)vehicle forWirelessPairedVehicle:(id)pairedVehicle result:(id)result
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 bluetoothAddress];
-  v15 = [v12 bluetoothAddress];
-  v16 = v15;
-  if (v14 && v15)
+  credentialsCopy = credentials;
+  vehicleCopy = vehicle;
+  pairedVehicleCopy = pairedVehicle;
+  resultCopy = result;
+  bluetoothAddress = [vehicleCopy bluetoothAddress];
+  bluetoothAddress2 = [pairedVehicleCopy bluetoothAddress];
+  v16 = bluetoothAddress2;
+  if (bluetoothAddress && bluetoothAddress2)
   {
-    v17 = [v15 isEqual:v14];
+    v17 = [bluetoothAddress2 isEqual:bluetoothAddress];
 
     if (v17)
     {
@@ -1971,19 +1971,19 @@ LABEL_4:
   else
   {
 
-    if (!v14)
+    if (!bluetoothAddress)
     {
       goto LABEL_4;
     }
   }
 
-  [v12 setBluetoothAddress:v14];
+  [pairedVehicleCopy setBluetoothAddress:bluetoothAddress];
   v18 = 1;
 LABEL_7:
-  v19 = [v12 carplayWiFiUUID];
-  if (v19)
+  carplayWiFiUUID = [pairedVehicleCopy carplayWiFiUUID];
+  if (carplayWiFiUUID)
   {
-    v20 = v19;
+    uUIDString = carplayWiFiUUID;
     if (!v18)
     {
       goto LABEL_15;
@@ -1993,21 +1993,21 @@ LABEL_7:
   else
   {
     v21 = +[NSUUID UUID];
-    v20 = [v21 UUIDString];
+    uUIDString = [v21 UUIDString];
 
-    [v12 setCarplayWiFiUUID:v20];
+    [pairedVehicleCopy setCarplayWiFiUUID:uUIDString];
   }
 
   v22 = CarGeneralLogging();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     v34 = 138412290;
-    v35 = v12;
+    v35 = pairedVehicleCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Saving vehicle %@ for Bluetooth address or Wi-Fi UUID update", &v34, 0xCu);
   }
 
-  v23 = [(CRCarKitServiceAgent *)self vehicleStore];
-  v24 = [v23 saveVehicle:v12];
+  vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+  v24 = [vehicleStore saveVehicle:pairedVehicleCopy];
 
   if (!v24)
   {
@@ -2017,22 +2017,22 @@ LABEL_7:
       sub_10008439C();
     }
 
-    if (!v13)
+    if (!resultCopy)
     {
       goto LABEL_35;
     }
 
 LABEL_30:
     v32 = [NSError errorWithDomain:@"com.apple.carkit" code:2 userInfo:0];
-    v13[2](v13, 0, v32);
+    resultCopy[2](resultCopy, 0, v32);
 
     goto LABEL_35;
   }
 
-  v12 = v24;
+  pairedVehicleCopy = v24;
 LABEL_15:
-  v25 = [(CRCarKitServiceAgent *)self wifiManager];
-  v26 = [v25 saveNetworkCredentials:v10 forCarPlayUUID:v20];
+  wifiManager = [(CRCarKitServiceAgent *)self wifiManager];
+  v26 = [wifiManager saveNetworkCredentials:credentialsCopy forCarPlayUUID:uUIDString];
 
   v27 = CarGeneralLogging();
   v28 = v27;
@@ -2040,10 +2040,10 @@ LABEL_15:
   {
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      sub_100084A2C(v12);
+      sub_100084A2C(pairedVehicleCopy);
     }
 
-    if (!v13)
+    if (!resultCopy)
     {
       goto LABEL_35;
     }
@@ -2054,20 +2054,20 @@ LABEL_15:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     v34 = 138412290;
-    v35 = v12;
+    v35 = pairedVehicleCopy;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "saved WiFi credentials for %@", &v34, 0xCu);
   }
 
-  if ([v11 transportType] == 2 || objc_msgSend(v11, "transportType") == 4)
+  if ([vehicleCopy transportType] == 2 || objc_msgSend(vehicleCopy, "transportType") == 4)
   {
-    v29 = [(CRCarKitServiceAgent *)self pairedVehiclesConnectedOnBluetooth];
-    v30 = [v29 containsObject:v12];
+    pairedVehiclesConnectedOnBluetooth = [(CRCarKitServiceAgent *)self pairedVehiclesConnectedOnBluetooth];
+    v30 = [pairedVehiclesConnectedOnBluetooth containsObject:pairedVehicleCopy];
 
     if (v30)
     {
       kdebug_trace();
-      [(CRCarKitServiceAgent *)self postInCarNotificationForVehicle:v12];
-      if (!v13)
+      [(CRCarKitServiceAgent *)self postInCarNotificationForVehicle:pairedVehicleCopy];
+      if (!resultCopy)
       {
         goto LABEL_35;
       }
@@ -2082,47 +2082,47 @@ LABEL_15:
     sub_100084AB8();
   }
 
-  if (v13)
+  if (resultCopy)
   {
 LABEL_34:
-    (v13)[2](v13, v20, 0);
+    (resultCopy)[2](resultCopy, uUIDString, 0);
   }
 
 LABEL_35:
 }
 
-- (void)_mainQueue_startSessionForHost:(id)a3 reply:(id)a4
+- (void)_mainQueue_startSessionForHost:(id)host reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  hostCopy = host;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v8 = CRLocalizedStringForKey();
-  [v7 setDisplayName:v8];
+  [hostCopy setDisplayName:v8];
 
-  v9 = [v7 deviceIdentifier];
-  [(CRCarKitServiceAgent *)self setLastStartSessionDeviceID:v9];
+  deviceIdentifier = [hostCopy deviceIdentifier];
+  [(CRCarKitServiceAgent *)self setLastStartSessionDeviceID:deviceIdentifier];
 
   v10 = +[NSUUID UUID];
-  v11 = [(CRCarKitServiceAgent *)self sessionRequestClient];
+  sessionRequestClient = [(CRCarKitServiceAgent *)self sessionRequestClient];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10002D624;
   v13[3] = &unk_1000DD850;
-  v14 = v6;
-  v12 = v6;
-  [v11 startSessionWithHost:v7 requestIdentifier:v10 completion:v13];
+  v14 = replyCopy;
+  v12 = replyCopy;
+  [sessionRequestClient startSessionWithHost:hostCopy requestIdentifier:v10 completion:v13];
 }
 
-- (void)_mainQueue_updateClusterAssetIdentifier:(id)a3 assetVersion:(id)a4 sdkVersion:(id)a5 forVehicle:(id)a6
+- (void)_mainQueue_updateClusterAssetIdentifier:(id)identifier assetVersion:(id)version sdkVersion:(id)sdkVersion forVehicle:(id)vehicle
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CRCarKitServiceAgent *)self vehicleAssetManager];
-  if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+  identifierCopy = identifier;
+  versionCopy = version;
+  sdkVersionCopy = sdkVersion;
+  vehicleCopy = vehicle;
+  vehicleAssetManager = [(CRCarKitServiceAgent *)self vehicleAssetManager];
+  if (vehicleAssetManager && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v14 receivedClusterAssetIdentifier:v10 assetVersion:v11 sdkVersion:v12 forVehicle:v13];
+    [vehicleAssetManager receivedClusterAssetIdentifier:identifierCopy assetVersion:versionCopy sdkVersion:sdkVersionCopy forVehicle:vehicleCopy];
   }
 
   else
@@ -2135,18 +2135,18 @@ LABEL_35:
   }
 }
 
-- (BOOL)_shouldPromptEnhancedIntegrationForStoredVehicle:(id)a3 messagingVehicle:(id)a4
+- (BOOL)_shouldPromptEnhancedIntegrationForStoredVehicle:(id)vehicle messagingVehicle:(id)messagingVehicle
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 enhancedIntegrationStatus])
+  vehicleCopy = vehicle;
+  messagingVehicleCopy = messagingVehicle;
+  if ([vehicleCopy enhancedIntegrationStatus])
   {
 LABEL_2:
     v7 = 0;
     goto LABEL_8;
   }
 
-  if (([v5 supportsEnhancedIntegration] & 1) == 0 && !objc_msgSend(v6, "supportsEnhancedIntegration"))
+  if (([vehicleCopy supportsEnhancedIntegration] & 1) == 0 && !objc_msgSend(messagingVehicleCopy, "supportsEnhancedIntegration"))
   {
     cf = 0;
     FigEndpointCopyActiveCarPlayEndpoint();
@@ -2163,7 +2163,7 @@ LABEL_2:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     buf = 138412290;
-    *buf_4 = v5;
+    *buf_4 = vehicleCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "vehicle %@ declares enhanced integration support", &buf, 0xCu);
   }
 
@@ -2175,35 +2175,35 @@ LABEL_8:
 
 - (void)handleAnyMessagingConnectionsToVehicles
 {
-  v3 = [(CRCarKitServiceAgent *)self messagingConnector];
-  v4 = [v3 connectedVehicles];
+  messagingConnector = [(CRCarKitServiceAgent *)self messagingConnector];
+  connectedVehicles = [messagingConnector connectedVehicles];
 
-  [(CRCarKitServiceAgent *)self handleDidConnectMessagingToVehicles:v4];
+  [(CRCarKitServiceAgent *)self handleDidConnectMessagingToVehicles:connectedVehicles];
 }
 
-- (void)handleDidConnectMessagingToVehicles:(id)a3
+- (void)handleDidConnectMessagingToVehicles:(id)vehicles
 {
-  v4 = a3;
+  vehiclesCopy = vehicles;
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = v4;
+    v35 = vehiclesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "handling connected vehicles: %@", buf, 0xCu);
   }
 
   if (+[CRVehicleStoreAvailability isVehicleStoreAvailable])
   {
-    v6 = [(CRCarKitServiceAgent *)self preferencesManager];
-    v7 = [v6 isCarPlayAllowed];
+    preferencesManager = [(CRCarKitServiceAgent *)self preferencesManager];
+    isCarPlayAllowed = [preferencesManager isCarPlayAllowed];
 
-    if (v7)
+    if (isCarPlayAllowed)
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v8 = v4;
+      v8 = vehiclesCopy;
       v9 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v9)
       {
@@ -2221,8 +2221,8 @@ LABEL_8:
             v13 = *(*(&v24 + 1) + 8 * i);
             if ([v13 transportType] == 1 && objc_msgSend(v13, "supportsUSBCarPlay") && (objc_msgSend(v13, "supportsCarPlayConnectionRequest") & 1) == 0)
             {
-              v14 = [(CRCarKitServiceAgent *)self sessionRequestClient];
-              [v14 startAdvertisingCarPlayControlForUSB];
+              sessionRequestClient = [(CRCarKitServiceAgent *)self sessionRequestClient];
+              [sessionRequestClient startAdvertisingCarPlayControlForUSB];
 
               DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
               CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.carplay.starting-wired-connection", 0, 0, 1u);
@@ -2257,7 +2257,7 @@ LABEL_8:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v18 = v4;
+      v18 = vehiclesCopy;
       v19 = [v18 countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v19)
       {
@@ -2289,27 +2289,27 @@ LABEL_8:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v4;
+      v35 = vehiclesCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Ignoring connect message, vehicle store isn't available, messagingVehicle: %@", buf, 0xCu);
     }
   }
 }
 
-- (id)_wirelessPairingAnalyticsDescriptionForMessagingVehicle:(id)a3 storedVehicle:(id)a4
+- (id)_wirelessPairingAnalyticsDescriptionForMessagingVehicle:(id)vehicle storedVehicle:(id)storedVehicle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 analyticsDescription];
-  v9 = [v8 mutableCopy];
+  storedVehicleCopy = storedVehicle;
+  vehicleCopy = vehicle;
+  analyticsDescription = [vehicleCopy analyticsDescription];
+  v9 = [analyticsDescription mutableCopy];
 
-  v10 = [(CRCarKitServiceAgent *)self sessionStatus];
-  v11 = [v10 currentSession];
+  sessionStatus = [(CRCarKitServiceAgent *)self sessionStatus];
+  currentSession = [sessionStatus currentSession];
 
-  v12 = [v7 PPID];
-  v13 = v12;
-  if (v12)
+  pPID = [vehicleCopy PPID];
+  v13 = pPID;
+  if (pPID)
   {
-    v14 = v12;
+    v14 = pPID;
   }
 
   else
@@ -2319,14 +2319,14 @@ LABEL_8:
 
   [v9 setObject:v14 forKeyedSubscript:@"ppid"];
 
-  v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 supportsWiredBluetoothPairing]);
+  v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [vehicleCopy supportsWiredBluetoothPairing]);
   [v9 setObject:v15 forKeyedSubscript:@"supportsOOBPairing"];
 
-  v16 = [v11 sourceVersion];
-  v17 = v16;
-  if (v16)
+  sourceVersion = [currentSession sourceVersion];
+  v17 = sourceVersion;
+  if (sourceVersion)
   {
-    v18 = v16;
+    v18 = sourceVersion;
   }
 
   else
@@ -2336,11 +2336,11 @@ LABEL_8:
 
   [v9 setObject:v18 forKeyedSubscript:@"SourceVersion"];
 
-  v19 = [v6 vehicleName];
-  v20 = v19;
-  if (v19)
+  vehicleName = [storedVehicleCopy vehicleName];
+  v20 = vehicleName;
+  if (vehicleName)
   {
-    v21 = v19;
+    v21 = vehicleName;
   }
 
   else
@@ -2350,11 +2350,11 @@ LABEL_8:
 
   [v9 setObject:v21 forKeyedSubscript:@"vehicleName"];
 
-  v22 = [v6 vehicleModelName];
-  v23 = v22;
-  if (v22)
+  vehicleModelName = [storedVehicleCopy vehicleModelName];
+  v23 = vehicleModelName;
+  if (vehicleModelName)
   {
-    v24 = v22;
+    v24 = vehicleModelName;
   }
 
   else
@@ -2364,20 +2364,20 @@ LABEL_8:
 
   [v9 setObject:v24 forKeyedSubscript:@"vehicleModel"];
 
-  v25 = [v7 transportType];
-  if ((v25 - 1) > 3)
+  transportType = [vehicleCopy transportType];
+  if ((transportType - 1) > 3)
   {
     v26 = @"unknown";
   }
 
   else
   {
-    v26 = *(&off_1000DE7A0 + (v25 - 1));
+    v26 = *(&off_1000DE7A0 + (transportType - 1));
   }
 
   [v9 setObject:v26 forKeyedSubscript:@"transportType"];
-  v27 = [v6 supportsStartSessionRequest];
-  if ([v27 BOOLValue])
+  supportsStartSessionRequest = [storedVehicleCopy supportsStartSessionRequest];
+  if ([supportsStartSessionRequest BOOLValue])
   {
     v28 = @"StartSession";
   }
@@ -2389,7 +2389,7 @@ LABEL_8:
 
   [v9 setObject:v28 forKeyedSubscript:@"sessionType"];
 
-  if ([v6 supportsBluetoothLE])
+  if ([storedVehicleCopy supportsBluetoothLE])
   {
     v29 = @"BLE";
   }
@@ -2400,11 +2400,11 @@ LABEL_8:
   }
 
   [v9 setObject:v29 forKeyedSubscript:@"bluetoothType"];
-  v30 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 supportsUSBCarPlay]);
+  v30 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [storedVehicleCopy supportsUSBCarPlay]);
   [v9 setObject:v30 forKeyedSubscript:@"supportsUSBCarPlay"];
 
-  v31 = [v11 configuration];
-  v32 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v31 supportsVehicleData]);
+  configuration = [currentSession configuration];
+  v32 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [configuration supportsVehicleData]);
   [v9 setObject:v32 forKeyedSubscript:@"nextGenCarPlaySession"];
 
   v33 = [NSDictionary dictionaryWithDictionary:v9];
@@ -2412,14 +2412,14 @@ LABEL_8:
   return v33;
 }
 
-- (void)updateIncompletePairingsMatchingMessagingVehicles:(id)a3
+- (void)updateIncompletePairingsMatchingMessagingVehicles:(id)vehicles
 {
-  v4 = a3;
+  vehiclesCopy = vehicles;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  v5 = [vehiclesCopy countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v5)
   {
     v7 = v5;
@@ -2428,64 +2428,64 @@ LABEL_8:
     *&v6 = 138412290;
     v29 = v6;
     v31 = *v36;
-    v32 = v4;
+    v32 = vehiclesCopy;
     do
     {
       for (i = 0; i != v7; i = i + 1)
       {
         if (*v36 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(vehiclesCopy);
         }
 
         v10 = *(*(&v35 + 1) + 8 * i);
-        v11 = [v10 bluetoothAddress];
-        v12 = [(CRCarKitServiceAgent *)self vehicleStore];
-        v13 = [v12 vehicleForBluetoothAddress:v11];
+        bluetoothAddress = [v10 bluetoothAddress];
+        vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+        v13 = [vehicleStore vehicleForBluetoothAddress:bluetoothAddress];
 
         if (v13)
         {
-          v14 = [v13 certificateSerialNumber];
+          certificateSerialNumber = [v13 certificateSerialNumber];
 
-          if (!v14)
+          if (!certificateSerialNumber)
           {
-            v15 = [(CRCarKitServiceAgent *)self preferencesManager];
-            v16 = [v15 isCarPlaySetupEnabled];
+            preferencesManager = [(CRCarKitServiceAgent *)self preferencesManager];
+            isCarPlaySetupEnabled = [preferencesManager isCarPlaySetupEnabled];
 
-            if (!v16)
+            if (!isCarPlaySetupEnabled)
             {
               v17 = [(CRCarKitServiceAgent *)self _wirelessPairingAnalyticsDescriptionForMessagingVehicle:v10 storedVehicle:v13];
               v18 = +[CARAnalytics sharedInstance];
               [v18 userCreatedWirelessPairingWithSource:@"Settings" payload:v17];
             }
 
-            v19 = [v10 certificateSerialNumber];
-            if (v19)
+            certificateSerialNumber2 = [v10 certificateSerialNumber];
+            if (certificateSerialNumber2)
             {
               v20 = CarGeneralLogging();
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = v29;
-                v40 = v11;
+                v40 = bluetoothAddress;
                 _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "First accessory attach for %@, adding certificateSerial", buf, 0xCu);
               }
 
-              [v13 setCertificateSerialNumber:v19];
-              v21 = [(CRCarKitServiceAgent *)self vehicleStore];
+              [v13 setCertificateSerialNumber:certificateSerialNumber2];
+              vehicleStore2 = [(CRCarKitServiceAgent *)self vehicleStore];
               v33[0] = _NSConcreteStackBlock;
               v33[1] = 3221225472;
               v34[0] = sub_10002E730;
               v34[1] = &unk_1000DE578;
               v34[2] = self;
-              v22 = [v21 saveVehicle:v13 withMergePolicy:v33];
+              v22 = [vehicleStore2 saveVehicle:v13 withMergePolicy:v33];
             }
 
-            v23 = [(CRCarKitServiceAgent *)self currentPromptFlowController];
-            v24 = v23;
-            if (v23)
+            currentPromptFlowController = [(CRCarKitServiceAgent *)self currentPromptFlowController];
+            v24 = currentPromptFlowController;
+            if (currentPromptFlowController)
             {
-              v25 = [v23 bluetoothDeviceIdentifier];
-              v26 = [v11 isEqual:v25];
+              bluetoothDeviceIdentifier = [currentPromptFlowController bluetoothDeviceIdentifier];
+              v26 = [bluetoothAddress isEqual:bluetoothDeviceIdentifier];
 
               if (v26)
               {
@@ -2512,29 +2512,29 @@ LABEL_8:
             }
 
             v8 = v31;
-            v4 = v32;
+            vehiclesCopy = v32;
           }
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v7 = [vehiclesCopy countByEnumeratingWithState:&v35 objects:v41 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)vehicleMatchingMessagingVehicle:(id)a3 inVehicles:(id)a4
+- (id)vehicleMatchingMessagingVehicle:(id)vehicle inVehicles:(id)vehicles
 {
-  v5 = a4;
-  v6 = [a3 certificateSerialNumber];
-  if (v6)
+  vehiclesCopy = vehicles;
+  certificateSerialNumber = [vehicle certificateSerialNumber];
+  if (certificateSerialNumber)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v5;
+    v7 = vehiclesCopy;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -2549,12 +2549,12 @@ LABEL_8:
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [v11 certificateSerialNumber];
-          if (v12)
+          certificateSerialNumber2 = [v11 certificateSerialNumber];
+          if (certificateSerialNumber2)
           {
-            v13 = v12;
-            v14 = [v11 certificateSerialNumber];
-            v15 = [v6 isEqualToData:v14];
+            v13 = certificateSerialNumber2;
+            certificateSerialNumber3 = [v11 certificateSerialNumber];
+            v15 = [certificateSerialNumber isEqualToData:certificateSerialNumber3];
 
             if (v15)
             {
@@ -2585,21 +2585,21 @@ LABEL_14:
   return v8;
 }
 
-- (void)enumerateStoredVehiclesForMessagingVehicles:(id)a3 usingBlock:(id)a4
+- (void)enumerateStoredVehiclesForMessagingVehicles:(id)vehicles usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  vehiclesCopy = vehicles;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v8 = [(CRCarKitServiceAgent *)self vehicleStore];
-    v9 = [v8 allStoredVehicles];
+    vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+    allStoredVehicles = [vehicleStore allStoredVehicles];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v17 = v6;
-    v10 = v6;
+    v17 = vehiclesCopy;
+    v10 = vehiclesCopy;
     v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
@@ -2615,8 +2615,8 @@ LABEL_14:
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
-          v16 = [(CRCarKitServiceAgent *)self vehicleMatchingMessagingVehicle:v15 inVehicles:v9];
-          v7[2](v7, v15, v16);
+          v16 = [(CRCarKitServiceAgent *)self vehicleMatchingMessagingVehicle:v15 inVehicles:allStoredVehicles];
+          blockCopy[2](blockCopy, v15, v16);
         }
 
         v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -2625,21 +2625,21 @@ LABEL_14:
       while (v12);
     }
 
-    v6 = v17;
+    vehiclesCopy = v17;
   }
 }
 
-- (void)updateStoredVehicle:(id)a3 usingMessagingVehicle:(id)a4
+- (void)updateStoredVehicle:(id)vehicle usingMessagingVehicle:(id)messagingVehicle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 vehicleName];
-  v9 = [v7 accessoryProtocols];
-  v10 = [NSSet setWithArray:v9];
+  vehicleCopy = vehicle;
+  messagingVehicleCopy = messagingVehicle;
+  vehicleName = [messagingVehicleCopy vehicleName];
+  accessoryProtocols = [messagingVehicleCopy accessoryProtocols];
+  v10 = [NSSet setWithArray:accessoryProtocols];
 
-  if (v8 && ([v6 vehicleName], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v8, "isEqualToString:", v11), v11, (v12 & 1) == 0))
+  if (vehicleName && ([vehicleCopy vehicleName], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(vehicleName, "isEqualToString:", v11), v11, (v12 & 1) == 0))
   {
-    [v6 setVehicleName:v8];
+    [vehicleCopy setVehicleName:vehicleName];
     v13 = 1;
   }
 
@@ -2648,20 +2648,20 @@ LABEL_14:
     v13 = 0;
   }
 
-  v14 = [v6 accessoryProtocols];
-  v15 = [v10 isEqualToSet:v14];
+  accessoryProtocols2 = [vehicleCopy accessoryProtocols];
+  v15 = [v10 isEqualToSet:accessoryProtocols2];
 
   if ((v15 & 1) == 0)
   {
-    [v6 setAccessoryProtocols:v10];
+    [vehicleCopy setAccessoryProtocols:v10];
     v13 = 1;
   }
 
-  if ([v7 transportType] != 3)
+  if ([messagingVehicleCopy transportType] != 3)
   {
-    v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 supportsCarPlayConnectionRequest]);
-    v17 = [v6 supportsStartSessionRequest];
-    v18 = [v16 isEqual:v17];
+    v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [messagingVehicleCopy supportsCarPlayConnectionRequest]);
+    supportsStartSessionRequest = [vehicleCopy supportsStartSessionRequest];
+    v18 = [v16 isEqual:supportsStartSessionRequest];
 
     if ((v18 & 1) == 0)
     {
@@ -2670,9 +2670,9 @@ LABEL_14:
       {
         if (v16)
         {
-          v20 = [v16 BOOLValue];
+          bOOLValue = [v16 BOOLValue];
           v21 = @"NO";
-          if (v20)
+          if (bOOLValue)
           {
             v21 = @"YES";
           }
@@ -2686,23 +2686,23 @@ LABEL_14:
         *buf = 138543618;
         v48 = v21;
         v49 = 2112;
-        v50 = v6;
+        v50 = vehicleCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Updating supportsStartSessionRequest to %{public}@ for %@", buf, 0x16u);
       }
 
-      [v6 setSupportsStartSessionRequest:v16];
+      [vehicleCopy setSupportsStartSessionRequest:v16];
       v13 = 1;
     }
 
-    v22 = [v6 supportsBluetoothLE];
-    if (v22 != [v7 supportsBluetoothLE])
+    supportsBluetoothLE = [vehicleCopy supportsBluetoothLE];
+    if (supportsBluetoothLE != [messagingVehicleCopy supportsBluetoothLE])
     {
       v23 = CarGeneralLogging();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v7 supportsBluetoothLE];
+        supportsBluetoothLE2 = [messagingVehicleCopy supportsBluetoothLE];
         v25 = @"NO";
-        if (v24)
+        if (supportsBluetoothLE2)
         {
           v25 = @"YES";
         }
@@ -2710,43 +2710,43 @@ LABEL_14:
         *buf = 138543618;
         v48 = v25;
         v49 = 2112;
-        v50 = v6;
+        v50 = vehicleCopy;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Updating supportsBluetoothLE to %{public}@ for %@", buf, 0x16u);
       }
 
-      [v6 setSupportsBluetoothLE:{objc_msgSend(v7, "supportsBluetoothLE")}];
+      [vehicleCopy setSupportsBluetoothLE:{objc_msgSend(messagingVehicleCopy, "supportsBluetoothLE")}];
       v13 = 1;
     }
 
-    v26 = [v6 supportsThemeAssets];
-    if (!v26)
+    supportsThemeAssets = [vehicleCopy supportsThemeAssets];
+    if (!supportsThemeAssets)
     {
       goto LABEL_25;
     }
 
-    v27 = v26;
-    v28 = [v6 supportsThemeAssets];
-    v46 = v8;
+    v27 = supportsThemeAssets;
+    supportsThemeAssets2 = [vehicleCopy supportsThemeAssets];
+    v46 = vehicleName;
     v29 = v10;
     v30 = v16;
-    v31 = self;
-    v32 = [v28 BOOLValue];
-    v33 = [v7 supportsThemeAssets];
+    selfCopy = self;
+    bOOLValue2 = [supportsThemeAssets2 BOOLValue];
+    supportsThemeAssets3 = [messagingVehicleCopy supportsThemeAssets];
 
-    v34 = v32 == v33;
-    self = v31;
+    v34 = bOOLValue2 == supportsThemeAssets3;
+    self = selfCopy;
     v16 = v30;
     v10 = v29;
-    v8 = v46;
+    vehicleName = v46;
     if (!v34)
     {
 LABEL_25:
       v35 = CarGeneralLogging();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [v7 supportsThemeAssets];
+        supportsThemeAssets4 = [messagingVehicleCopy supportsThemeAssets];
         v37 = @"NO";
-        if (v36)
+        if (supportsThemeAssets4)
         {
           v37 = @"YES";
         }
@@ -2754,33 +2754,33 @@ LABEL_25:
         *buf = 138543618;
         v48 = v37;
         v49 = 2112;
-        v50 = v6;
+        v50 = vehicleCopy;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Updating supportsThemeAssets to %{public}@ for %@", buf, 0x16u);
       }
 
-      v38 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 supportsThemeAssets]);
-      [v6 setSupportsThemeAssets:v38];
+      v38 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [messagingVehicleCopy supportsThemeAssets]);
+      [vehicleCopy setSupportsThemeAssets:v38];
 
       v13 = 1;
     }
   }
 
-  v39 = [v6 supportsUSBCarPlay];
-  if (v39 != [v7 supportsUSBCarPlay])
+  supportsUSBCarPlay = [vehicleCopy supportsUSBCarPlay];
+  if (supportsUSBCarPlay != [messagingVehicleCopy supportsUSBCarPlay])
   {
-    [v6 setSupportsUSBCarPlay:{objc_msgSend(v7, "supportsUSBCarPlay")}];
+    [vehicleCopy setSupportsUSBCarPlay:{objc_msgSend(messagingVehicleCopy, "supportsUSBCarPlay")}];
     v13 = 1;
   }
 
-  v40 = [v6 supportsWirelessCarPlay];
-  if (v40 != [v7 supportsWirelessCarPlay])
+  supportsWirelessCarPlay = [vehicleCopy supportsWirelessCarPlay];
+  if (supportsWirelessCarPlay != [messagingVehicleCopy supportsWirelessCarPlay])
   {
-    [v6 setSupportsWirelessCarPlay:{objc_msgSend(v7, "supportsWirelessCarPlay")}];
+    [vehicleCopy setSupportsWirelessCarPlay:{objc_msgSend(messagingVehicleCopy, "supportsWirelessCarPlay")}];
     v13 = 1;
   }
 
-  v41 = [(CRCarKitServiceAgent *)self _currentlyConnectedVehicleSupportsMixableAudio];
-  if (v41 == [v6 supportsMixableAudio])
+  _currentlyConnectedVehicleSupportsMixableAudio = [(CRCarKitServiceAgent *)self _currentlyConnectedVehicleSupportsMixableAudio];
+  if (_currentlyConnectedVehicleSupportsMixableAudio == [vehicleCopy supportsMixableAudio])
   {
     if ((CRIsInternalInstall() & 1) == 0)
     {
@@ -2795,7 +2795,7 @@ LABEL_25:
 
   else
   {
-    [v6 setSupportsMixableAudio:v41];
+    [vehicleCopy setSupportsMixableAudio:_currentlyConnectedVehicleSupportsMixableAudio];
     if (!CRIsInternalInstall())
     {
       goto LABEL_40;
@@ -2803,14 +2803,14 @@ LABEL_25:
   }
 
   v42 = +[NSDate date];
-  [v6 setLastConnectedDate:v42];
+  [vehicleCopy setLastConnectedDate:v42];
 
-  v43 = [v7 vehicleModelName];
-  [v6 setVehicleModelName:v43];
+  vehicleModelName = [messagingVehicleCopy vehicleModelName];
+  [vehicleCopy setVehicleModelName:vehicleModelName];
 
 LABEL_40:
-  v44 = [(CRCarKitServiceAgent *)self vehicleStore];
-  v45 = [v44 saveVehicle:v6];
+  vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+  v45 = [vehicleStore saveVehicle:vehicleCopy];
 
 LABEL_41:
 }
@@ -2822,10 +2822,10 @@ LABEL_41:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v4 = [(CRCarKitServiceAgent *)self bluetoothManager];
-  v5 = [v4 connectedBluetoothAddresses];
+  bluetoothManager = [(CRCarKitServiceAgent *)self bluetoothManager];
+  connectedBluetoothAddresses = [bluetoothManager connectedBluetoothAddresses];
 
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v39 count:16];
+  v6 = [connectedBluetoothAddresses countByEnumeratingWithState:&v32 objects:v39 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2836,12 +2836,12 @@ LABEL_41:
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedBluetoothAddresses);
         }
 
         v10 = *(*(&v32 + 1) + 8 * i);
-        v11 = [(CRCarKitServiceAgent *)self vehicleStore];
-        v12 = [v11 vehicleForBluetoothAddress:v10];
+        vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+        v12 = [vehicleStore vehicleForBluetoothAddress:v10];
 
         if (v12 && [v12 isPaired])
         {
@@ -2849,17 +2849,17 @@ LABEL_41:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v32 objects:v39 count:16];
+      v7 = [connectedBluetoothAddresses countByEnumeratingWithState:&v32 objects:v39 count:16];
     }
 
     while (v7);
   }
 
-  v13 = [(CRCarKitServiceAgent *)self messagingConnector];
-  v14 = [v13 connectedVehicles];
+  messagingConnector = [(CRCarKitServiceAgent *)self messagingConnector];
+  connectedVehicles = [messagingConnector connectedVehicles];
 
   v15 = [NSPredicate predicateWithBlock:&stru_1000DE5B8];
-  v16 = [v14 filteredSetUsingPredicate:v15];
+  v16 = [connectedVehicles filteredSetUsingPredicate:v15];
 
   v30 = 0u;
   v31 = 0u;
@@ -2881,9 +2881,9 @@ LABEL_41:
         }
 
         v22 = *(*(&v28 + 1) + 8 * j);
-        v23 = [(CRCarKitServiceAgent *)self vehicleStore];
-        v24 = [v22 bluetoothAddress];
-        v25 = [v23 vehicleForBluetoothAddress:v24];
+        vehicleStore2 = [(CRCarKitServiceAgent *)self vehicleStore];
+        bluetoothAddress = [v22 bluetoothAddress];
+        v25 = [vehicleStore2 vehicleForBluetoothAddress:bluetoothAddress];
 
         if (v25 && [v25 isPaired])
         {
@@ -2910,46 +2910,46 @@ LABEL_41:
 
 - (BOOL)_currentlyConnectedVehicleSupportsMixableAudio
 {
-  v2 = [(CRCarKitServiceAgent *)self sessionStatus];
-  v3 = [v2 currentSession];
+  sessionStatus = [(CRCarKitServiceAgent *)self sessionStatus];
+  currentSession = [sessionStatus currentSession];
 
-  if (v3)
+  if (currentSession)
   {
-    v4 = [v3 configuration];
-    v5 = [v4 supportsSiriMixable];
+    configuration = [currentSession configuration];
+    supportsSiriMixable = [configuration supportsSiriMixable];
   }
 
   else
   {
-    v5 = 0;
+    supportsSiriMixable = 0;
   }
 
-  return v5;
+  return supportsSiriMixable;
 }
 
-- (id)saveVehicle:(id)a3
+- (id)saveVehicle:(id)vehicle
 {
-  v4 = a3;
-  if (v4)
+  vehicleCopy = vehicle;
+  if (vehicleCopy)
   {
-    v5 = [(CRCarKitServiceAgent *)self vehicleStore];
-    v6 = [v4 identifier];
-    v7 = [v5 vehicleForIdentifier:v6];
+    vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+    identifier = [vehicleCopy identifier];
+    v7 = [vehicleStore vehicleForIdentifier:identifier];
 
     if (v7)
     {
-      v8 = [v7 isPaired];
+      isPaired = [v7 isPaired];
     }
 
     else
     {
-      v8 = 0;
+      isPaired = 0;
     }
 
-    v11 = [(CRCarKitServiceAgent *)self vehicleStore];
-    v9 = [v11 saveVehicle:v4];
+    vehicleStore2 = [(CRCarKitServiceAgent *)self vehicleStore];
+    v9 = [vehicleStore2 saveVehicle:vehicleCopy];
 
-    v12 = [v9 isPaired];
+    isPaired2 = [v9 isPaired];
     v13 = CarGeneralLogging();
     v14 = v13;
     if (v9)
@@ -2961,15 +2961,15 @@ LABEL_41:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Saved vehicle %@", buf, 0xCu);
       }
 
-      if (v8 != v12)
+      if (isPaired != isPaired2)
       {
         v15 = CarGeneralLogging();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v9 identifier];
-          v17 = v16;
+          identifier2 = [v9 identifier];
+          v17 = identifier2;
           v18 = @"NO";
-          if (v8)
+          if (isPaired)
           {
             v19 = @"YES";
           }
@@ -2980,10 +2980,10 @@ LABEL_41:
           }
 
           *buf = 138543874;
-          *&buf[4] = v16;
+          *&buf[4] = identifier2;
           *&buf[14] = v19;
           *&buf[12] = 2114;
-          if (v12)
+          if (isPaired2)
           {
             v18 = @"YES";
           }
@@ -3005,7 +3005,7 @@ LABEL_41:
         v23[2] = sub_10002F830;
         v23[3] = &unk_1000DE608;
         v23[4] = self;
-        v26 = v12;
+        v26 = isPaired2;
         v24 = v9;
         v25 = buf;
         dispatch_after(v20, &_dispatch_main_q, v23);
@@ -3041,25 +3041,25 @@ LABEL_41:
   return v10;
 }
 
-- (BOOL)removeVehicle:(id)a3
+- (BOOL)removeVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = CarGeneralLogging();
-  v6 = v5;
-  if (v4)
+  carplayWiFiUUID = v5;
+  if (vehicleCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v4;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Removing vehicle %@", &buf, 0xCu);
+      *(&buf + 4) = vehicleCopy;
+      _os_log_impl(&_mh_execute_header, carplayWiFiUUID, OS_LOG_TYPE_DEFAULT, "Removing vehicle %@", &buf, 0xCu);
     }
 
-    v7 = [(CRCarKitServiceAgent *)self vehicleStore];
-    v8 = [v7 removeVehicle:v4];
+    vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+    v8 = [vehicleStore removeVehicle:vehicleCopy];
 
-    v6 = [v4 carplayWiFiUUID];
-    if (v6)
+    carplayWiFiUUID = [vehicleCopy carplayWiFiUUID];
+    if (carplayWiFiUUID)
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -3072,25 +3072,25 @@ LABEL_41:
       v17 = 3221225472;
       v18 = sub_10002FED8;
       v19 = &unk_1000DE630;
-      v20 = self;
-      v21 = v4;
-      v22 = v6;
+      selfCopy = self;
+      v21 = vehicleCopy;
+      v22 = carplayWiFiUUID;
       p_buf = &buf;
       dispatch_after(v9, &_dispatch_main_q, &v16);
 
       _Block_object_dispose(&buf, 8);
     }
 
-    v10 = [v4 bluetoothAddress];
-    if (v10)
+    bluetoothAddress = [vehicleCopy bluetoothAddress];
+    if (bluetoothAddress)
     {
-      if ([v4 supportsBluetoothLE])
+      if ([vehicleCopy supportsBluetoothLE])
       {
-        v11 = [[NSUUID alloc] initWithUUIDString:v10];
-        if (v11)
+        bluetoothManager = [[NSUUID alloc] initWithUUIDString:bluetoothAddress];
+        if (bluetoothManager)
         {
-          v12 = [(CRCarKitServiceAgent *)self messagingConnector];
-          v13 = [v12 unpairWithBluetoothLEIdentifier:v11];
+          messagingConnector = [(CRCarKitServiceAgent *)self messagingConnector];
+          v13 = [messagingConnector unpairWithBluetoothLEIdentifier:bluetoothManager];
         }
 
         else
@@ -3101,8 +3101,8 @@ LABEL_41:
 
       else
       {
-        v11 = [(CRCarKitServiceAgent *)self bluetoothManager];
-        v13 = [v11 unpairWithBluetoothAddress:v10];
+        bluetoothManager = [(CRCarKitServiceAgent *)self bluetoothManager];
+        v13 = [bluetoothManager unpairWithBluetoothAddress:bluetoothAddress];
       }
     }
 
@@ -3127,14 +3127,14 @@ LABEL_41:
   return v14;
 }
 
-- (BOOL)attemptConnectionWithVehicles:(id)a3
+- (BOOL)attemptConnectionWithVehicles:(id)vehicles
 {
-  v4 = a3;
+  vehiclesCopy = vehicles;
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v41 = v4;
+    v41 = vehiclesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "attemptConnectionForVehicles %@", buf, 0xCu);
   }
 
@@ -3144,8 +3144,8 @@ LABEL_41:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v25 = v4;
-    obj = v4;
+    v25 = vehiclesCopy;
+    obj = vehiclesCopy;
     v7 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (!v7)
     {
@@ -3175,10 +3175,10 @@ LABEL_41:
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v12 = [(CRCarKitServiceAgent *)self messagingConnector];
-          v13 = [v12 connectedVehicles];
+          messagingConnector = [(CRCarKitServiceAgent *)self messagingConnector];
+          connectedVehicles = [messagingConnector connectedVehicles];
 
-          v14 = [v13 countByEnumeratingWithState:&v30 objects:v38 count:16];
+          v14 = [connectedVehicles countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (v14)
           {
             v15 = v14;
@@ -3189,7 +3189,7 @@ LABEL_13:
             {
               if (*v31 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(connectedVehicles);
               }
 
               v18 = *(*(&v30 + 1) + 8 * v17);
@@ -3203,7 +3203,7 @@ LABEL_13:
 
               if (v15 == ++v17)
               {
-                v15 = [v13 countByEnumeratingWithState:&v30 objects:v38 count:16];
+                v15 = [connectedVehicles countByEnumeratingWithState:&v30 objects:v38 count:16];
                 if (v15)
                 {
                   goto LABEL_13;
@@ -3223,8 +3223,8 @@ LABEL_13:
             v8 = v28;
             if ([v18 supportsWirelessCarPlay])
             {
-              v23 = [(CRCarKitServiceAgent *)self messagingConnector];
-              [v23 requestWiFiCredentialsFromVehicle:v18];
+              messagingConnector2 = [(CRCarKitServiceAgent *)self messagingConnector];
+              [messagingConnector2 requestWiFiCredentialsFromVehicle:v18];
             }
 
             v26 = 1;
@@ -3234,8 +3234,8 @@ LABEL_13:
           {
 LABEL_19:
 
-            v13 = [v11 bluetoothAddress];
-            if (!v13)
+            connectedVehicles = [v11 bluetoothAddress];
+            if (!connectedVehicles)
             {
 LABEL_27:
               v9 = v27;
@@ -3248,12 +3248,12 @@ LABEL_27:
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v41 = v13;
+              v41 = connectedVehicles;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "attempting Bluetooth connection to %@", buf, 0xCu);
             }
 
-            v22 = [(CRCarKitServiceAgent *)self bluetoothManager];
-            [v22 connectWithBluetoothAddress:v13];
+            bluetoothManager = [(CRCarKitServiceAgent *)self bluetoothManager];
+            [bluetoothManager connectWithBluetoothAddress:connectedVehicles];
           }
 
           v9 = v27;
@@ -3261,12 +3261,12 @@ LABEL_27:
 
         else
         {
-          v13 = CarGeneralLogging();
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+          connectedVehicles = CarGeneralLogging();
+          if (os_log_type_enabled(connectedVehicles, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
             v41 = v11;
-            _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "no WiFi credentials request necessary for %@", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, connectedVehicles, OS_LOG_TYPE_DEFAULT, "no WiFi credentials request necessary for %@", buf, 0xCu);
           }
         }
 
@@ -3281,7 +3281,7 @@ LABEL_32:
       {
 LABEL_36:
 
-        v4 = v25;
+        vehiclesCopy = v25;
         v6 = v26;
         goto LABEL_37;
       }
@@ -3294,39 +3294,39 @@ LABEL_37:
   return v6 & 1;
 }
 
-- (void)_sendCarPlayAvailabilityForMessagingVehicle:(id)a3 storedVehicle:(id)a4
+- (void)_sendCarPlayAvailabilityForMessagingVehicle:(id)vehicle storedVehicle:(id)storedVehicle
 {
-  v27 = a3;
-  v6 = a4;
-  if ([v27 supportsCarPlayConnectionRequest])
+  vehicleCopy = vehicle;
+  storedVehicleCopy = storedVehicle;
+  if ([vehicleCopy supportsCarPlayConnectionRequest])
   {
-    v7 = [(CRCarKitServiceAgent *)self preferencesManager];
-    v8 = [v7 isCarPlayAllowed];
+    preferencesManager = [(CRCarKitServiceAgent *)self preferencesManager];
+    isCarPlayAllowed = [preferencesManager isCarPlayAllowed];
 
-    if (v8)
+    if (isCarPlayAllowed)
     {
-      if (v6)
+      if (storedVehicleCopy)
       {
-        v9 = [v6 bluetoothAddress];
-        v10 = v9 != 0;
+        bluetoothAddress = [storedVehicleCopy bluetoothAddress];
+        v10 = bluetoothAddress != 0;
 
-        v11 = [v6 pairingStatus];
+        pairingStatus = [storedVehicleCopy pairingStatus];
       }
 
       else
       {
         v10 = 0;
-        v11 = 0;
+        pairingStatus = 0;
       }
 
-      v14 = [v27 transportType] == 2 || objc_msgSend(v27, "transportType") == 4;
-      if ([v27 supportsThemeAssets])
+      v14 = [vehicleCopy transportType] == 2 || objc_msgSend(vehicleCopy, "transportType") == 4;
+      if ([vehicleCopy supportsThemeAssets])
       {
-        if (v11 == 2 || ((v15 = [(CRCarKitServiceAgent *)self carPlaySimulatorActive]) == 0 ? (v12 = &__kCFBooleanFalse) : (v12 = &__kCFBooleanTrue), v6 && v15))
+        if (pairingStatus == 2 || ((v15 = [(CRCarKitServiceAgent *)self carPlaySimulatorActive]) == 0 ? (messagingConnector3 = &__kCFBooleanFalse) : (messagingConnector3 = &__kCFBooleanTrue), storedVehicleCopy && v15))
         {
-          v16 = [(CRCarKitServiceAgent *)self featuresAvailabilityAgent];
-          v17 = [v6 identifier];
-          v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", CRCarPlayFeaturesAllFerriteFeatures() & [v16 supportedCarPlayFeaturesForVehicleIdentifier:v17]);
+          featuresAvailabilityAgent = [(CRCarKitServiceAgent *)self featuresAvailabilityAgent];
+          identifier = [storedVehicleCopy identifier];
+          messagingConnector3 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", CRCarPlayFeaturesAllFerriteFeatures() & [featuresAvailabilityAgent supportedCarPlayFeaturesForVehicleIdentifier:identifier]);
         }
 
         if (v14)
@@ -3337,11 +3337,11 @@ LABEL_37:
 
       else
       {
-        v12 = 0;
+        messagingConnector3 = 0;
         if (v14)
         {
 LABEL_22:
-          if (v11)
+          if (pairingStatus)
           {
             v18 = v10;
           }
@@ -3353,9 +3353,9 @@ LABEL_22:
 
           if (v18)
           {
-            v19 = [(CRCarKitServiceAgent *)self messagingConnector];
-            v20 = v11 == 2;
-            if (v11 == 2)
+            messagingConnector = [(CRCarKitServiceAgent *)self messagingConnector];
+            v20 = pairingStatus == 2;
+            if (pairingStatus == 2)
             {
               v21 = &__kCFBooleanTrue;
             }
@@ -3366,24 +3366,24 @@ LABEL_22:
             }
 
             v22 = [NSNumber numberWithBool:v20];
-            [v19 sendWiredCarPlayAvailable:v21 wirelessCarPlayAvailable:v22 themeAssetsAvailable:v12 toVehicle:v27];
+            [messagingConnector sendWiredCarPlayAvailable:v21 wirelessCarPlayAvailable:v22 themeAssetsAvailable:messagingConnector3 toVehicle:vehicleCopy];
           }
 
           goto LABEL_35;
         }
       }
 
-      v23 = [(CRCarKitServiceAgent *)self messagingConnector];
-      v24 = v23;
+      messagingConnector2 = [(CRCarKitServiceAgent *)self messagingConnector];
+      v24 = messagingConnector2;
       if (v10)
       {
-        v25 = [NSNumber numberWithBool:v11 == 2];
-        [v24 sendWiredCarPlayAvailable:&__kCFBooleanTrue wirelessCarPlayAvailable:v25 themeAssetsAvailable:v12 toVehicle:v27];
+        v25 = [NSNumber numberWithBool:pairingStatus == 2];
+        [v24 sendWiredCarPlayAvailable:&__kCFBooleanTrue wirelessCarPlayAvailable:v25 themeAssetsAvailable:messagingConnector3 toVehicle:vehicleCopy];
       }
 
       else
       {
-        [v23 sendWiredCarPlayAvailable:&__kCFBooleanTrue wirelessCarPlayAvailable:0 themeAssetsAvailable:v12 toVehicle:v27];
+        [messagingConnector2 sendWiredCarPlayAvailable:&__kCFBooleanTrue wirelessCarPlayAvailable:0 themeAssetsAvailable:messagingConnector3 toVehicle:vehicleCopy];
       }
 
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -3392,8 +3392,8 @@ LABEL_22:
 
     else
     {
-      v12 = [(CRCarKitServiceAgent *)self messagingConnector];
-      if ([v27 supportsThemeAssets])
+      messagingConnector3 = [(CRCarKitServiceAgent *)self messagingConnector];
+      if ([vehicleCopy supportsThemeAssets])
       {
         v13 = &__kCFBooleanFalse;
       }
@@ -3403,17 +3403,17 @@ LABEL_22:
         v13 = 0;
       }
 
-      [v12 sendWiredCarPlayAvailable:&__kCFBooleanFalse wirelessCarPlayAvailable:&__kCFBooleanFalse themeAssetsAvailable:v13 toVehicle:v27];
+      [messagingConnector3 sendWiredCarPlayAvailable:&__kCFBooleanFalse wirelessCarPlayAvailable:&__kCFBooleanFalse themeAssetsAvailable:v13 toVehicle:vehicleCopy];
     }
 
 LABEL_35:
   }
 }
 
-- (BOOL)_sendDeviceIdentifiersForMessagingVehicle:(id)a3 pairingStatus:(unint64_t)a4
+- (BOOL)_sendDeviceIdentifiersForMessagingVehicle:(id)vehicle pairingStatus:(unint64_t)status
 {
-  v6 = a3;
-  if ([v6 supportsCarPlayConnectionRequest])
+  vehicleCopy = vehicle;
+  if ([vehicleCopy supportsCarPlayConnectionRequest])
   {
     goto LABEL_7;
   }
@@ -3424,10 +3424,10 @@ LABEL_35:
     sub_100084E3C();
   }
 
-  if (!-[CRCarKitServiceAgent _isRestricted:](self, "_isRestricted:", 0) && ((v8 = [v6 transportType], a4 == 2) || v8 == 1))
+  if (!-[CRCarKitServiceAgent _isRestricted:](self, "_isRestricted:", 0) && ((v8 = [vehicleCopy transportType], status == 2) || v8 == 1))
   {
-    v11 = [(CRCarKitServiceAgent *)self messagingConnector];
-    [v11 sendDeviceTransportIdentifiersToVehicle:v6];
+    messagingConnector = [(CRCarKitServiceAgent *)self messagingConnector];
+    [messagingConnector sendDeviceTransportIdentifiersToVehicle:vehicleCopy];
 
     v9 = 1;
   }
@@ -3441,13 +3441,13 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)_requestWiFiCredentialsIfNecessaryForApprovedMessagingVehicle:(id)a3
+- (BOOL)_requestWiFiCredentialsIfNecessaryForApprovedMessagingVehicle:(id)vehicle
 {
-  v4 = a3;
-  if ([v4 transportType] == 2 && objc_msgSend(v4, "supportsWirelessCarPlay") && (objc_msgSend(v4, "supportsCarPlayConnectionRequest") & 1) == 0)
+  vehicleCopy = vehicle;
+  if ([vehicleCopy transportType] == 2 && objc_msgSend(vehicleCopy, "supportsWirelessCarPlay") && (objc_msgSend(vehicleCopy, "supportsCarPlayConnectionRequest") & 1) == 0)
   {
-    v7 = [(CRCarKitServiceAgent *)self messagingConnector];
-    [v7 requestWiFiCredentialsFromVehicle:v4];
+    messagingConnector = [(CRCarKitServiceAgent *)self messagingConnector];
+    [messagingConnector requestWiFiCredentialsFromVehicle:vehicleCopy];
 
     v5 = 1;
   }
@@ -3460,37 +3460,37 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)hasExistingBluetoothPairingForPairingPromptFlow:(id)a3
+- (BOOL)hasExistingBluetoothPairingForPairingPromptFlow:(id)flow
 {
-  v3 = a3;
-  v4 = [v3 messagingVehicle];
-  v5 = [v4 bluetoothAddress];
+  flowCopy = flow;
+  messagingVehicle = [flowCopy messagingVehicle];
+  bluetoothAddress = [messagingVehicle bluetoothAddress];
 
-  if (!v5)
+  if (!bluetoothAddress)
   {
-    v6 = [v3 bluetoothDeviceIdentifier];
-    if (!v6)
+    bluetoothDeviceIdentifier = [flowCopy bluetoothDeviceIdentifier];
+    if (!bluetoothDeviceIdentifier)
     {
       v7 = 0;
       goto LABEL_5;
     }
 
-    v5 = v6;
+    bluetoothAddress = bluetoothDeviceIdentifier;
   }
 
-  v7 = [CRBluetoothManager hasPairingWithAddress:v5];
+  v7 = [CRBluetoothManager hasPairingWithAddress:bluetoothAddress];
 
 LABEL_5:
   return v7;
 }
 
-- (BOOL)startSessionRequestSupportedForPairingPromptFlow:(id)a3
+- (BOOL)startSessionRequestSupportedForPairingPromptFlow:(id)flow
 {
-  v3 = a3;
+  flowCopy = flow;
   objc_opt_class();
-  v4 = [v3 userInfo];
+  userInfo = [flowCopy userInfo];
 
-  v5 = v4;
+  v5 = userInfo;
   if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v6 = v5;
@@ -3501,20 +3501,20 @@ LABEL_5:
     v6 = 0;
   }
 
-  v7 = [v6 supportsStartSessionRequest];
-  v8 = [v7 BOOLValue];
+  supportsStartSessionRequest = [v6 supportsStartSessionRequest];
+  bOOLValue = [supportsStartSessionRequest BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)enhancedIntegrationSupportedForPairingPromptFlow:(id)a3
+- (BOOL)enhancedIntegrationSupportedForPairingPromptFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   objc_opt_class();
-  v5 = [v4 userInfo];
-  if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
+  userInfo = [flowCopy userInfo];
+  if (userInfo && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v6 = v5;
+    v6 = userInfo;
   }
 
   else
@@ -3522,38 +3522,38 @@ LABEL_5:
     v6 = 0;
   }
 
-  v7 = [v4 messagingVehicle];
-  v8 = [(CRCarKitServiceAgent *)self _shouldPromptEnhancedIntegrationForStoredVehicle:v6 messagingVehicle:v7];
+  messagingVehicle = [flowCopy messagingVehicle];
+  v8 = [(CRCarKitServiceAgent *)self _shouldPromptEnhancedIntegrationForStoredVehicle:v6 messagingVehicle:messagingVehicle];
 
   return v8;
 }
 
-- (BOOL)needsBluetoothTurnedOnForPairingPromptFlow:(id)a3
+- (BOOL)needsBluetoothTurnedOnForPairingPromptFlow:(id)flow
 {
-  v3 = [(CRCarKitServiceAgent *)self bluetoothManager];
-  v4 = [v3 isPowered];
+  bluetoothManager = [(CRCarKitServiceAgent *)self bluetoothManager];
+  isPowered = [bluetoothManager isPowered];
 
-  return v4 ^ 1;
+  return isPowered ^ 1;
 }
 
-- (BOOL)needsWiFiTurnedOnForPairingPromptFlow:(id)a3
+- (BOOL)needsWiFiTurnedOnForPairingPromptFlow:(id)flow
 {
-  v3 = [(CRCarKitServiceAgent *)self wifiManager];
-  v4 = [v3 isPowered];
+  wifiManager = [(CRCarKitServiceAgent *)self wifiManager];
+  isPowered = [wifiManager isPowered];
 
-  return v4 ^ 1;
+  return isPowered ^ 1;
 }
 
-- (BOOL)supportsThemeAssetsForPairingPromptFlow:(id)a3
+- (BOOL)supportsThemeAssetsForPairingPromptFlow:(id)flow
 {
-  v4 = a3;
-  v5 = [v4 messagingVehicle];
-  v6 = [v4 messagingVehicle];
+  flowCopy = flow;
+  messagingVehicle = [flowCopy messagingVehicle];
+  messagingVehicle2 = [flowCopy messagingVehicle];
 
-  v7 = [v6 certificateSerialNumber];
+  certificateSerialNumber = [messagingVehicle2 certificateSerialNumber];
 
-  v8 = [(CRCarKitServiceAgent *)self featuresAvailabilityAgent];
-  v9 = [v8 supportedCarPlayFeaturesForCertificateSerial:v7];
+  featuresAvailabilityAgent = [(CRCarKitServiceAgent *)self featuresAvailabilityAgent];
+  v9 = [featuresAvailabilityAgent supportedCarPlayFeaturesForCertificateSerial:certificateSerialNumber];
 
   v10 = CRCarPlayFeaturesAllFerriteFeatures() & v9;
   v11 = CRCarPlayFeaturesAllFerriteFeatures();
@@ -3567,10 +3567,10 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "features: %lu, supportsThemeAssets: %u", &v16, 0x12u);
   }
 
-  v13 = [v5 supportsThemeAssets];
+  supportsThemeAssets = [messagingVehicle supportsThemeAssets];
   if (v10 == v11)
   {
-    v14 = v13;
+    v14 = supportsThemeAssets;
   }
 
   else
@@ -3581,10 +3581,10 @@ LABEL_5:
   return v14;
 }
 
-- (unint64_t)outOfBandPairingDeclineCountForPairingPromptFlow:(id)a3
+- (unint64_t)outOfBandPairingDeclineCountForPairingPromptFlow:(id)flow
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _pairingIdentifierForPromptFlow:v3];
+  flowCopy = flow;
+  v4 = [objc_opt_class() _pairingIdentifierForPromptFlow:flowCopy];
 
   if (v4)
   {
@@ -3599,10 +3599,10 @@ LABEL_5:
   return v5;
 }
 
-- (void)incrementOutOfBandPairingDeclineCountForPairingPromptFlow:(id)a3
+- (void)incrementOutOfBandPairingDeclineCountForPairingPromptFlow:(id)flow
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _pairingIdentifierForPromptFlow:v3];
+  flowCopy = flow;
+  v4 = [objc_opt_class() _pairingIdentifierForPromptFlow:flowCopy];
 
   if (v4)
   {
@@ -3610,21 +3610,21 @@ LABEL_5:
   }
 }
 
-- (id)carKeyInfoForPairingPromptFlow:(id)a3
+- (id)carKeyInfoForPairingPromptFlow:(id)flow
 {
-  v3 = [a3 messagingVehicle];
-  v4 = [v3 digitalCarKeyInformation];
+  messagingVehicle = [flow messagingVehicle];
+  digitalCarKeyInformation = [messagingVehicle digitalCarKeyInformation];
 
-  return v4;
+  return digitalCarKeyInformation;
 }
 
-- (id)assetProgressForPairingPromptFlow:(id)a3
+- (id)assetProgressForPairingPromptFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   objc_opt_class();
-  v5 = [v4 userInfo];
+  userInfo = [flowCopy userInfo];
 
-  v6 = v5;
+  v6 = userInfo;
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v7 = v6;
@@ -3635,8 +3635,8 @@ LABEL_5:
     v7 = 0;
   }
 
-  v8 = [(CRCarKitServiceAgent *)self vehicleAssetManager];
-  v9 = [v8 assetProgressForVehicle:v7];
+  vehicleAssetManager = [(CRCarKitServiceAgent *)self vehicleAssetManager];
+  v9 = [vehicleAssetManager assetProgressForVehicle:v7];
 
   v10 = CarPairingLogging();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -3649,14 +3649,14 @@ LABEL_5:
   return v9;
 }
 
-- (void)fetchAppClipIdentifiersForPairingPromptFlow:(id)a3 completion:(id)a4
+- (void)fetchAppClipIdentifiersForPairingPromptFlow:(id)flow completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  flowCopy = flow;
   objc_opt_class();
-  v7 = [v6 userInfo];
+  userInfo = [flowCopy userInfo];
 
-  v8 = v7;
+  v8 = userInfo;
   if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v9 = v8;
@@ -3667,57 +3667,57 @@ LABEL_5:
     v9 = 0;
   }
 
-  v10 = [v9 identifier];
+  identifier = [v9 identifier];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000311F4;
   v12[3] = &unk_1000DE380;
-  v13 = v5;
-  v11 = v5;
-  [CRAppClipsDeclarationClient fetchSupportedAppClipsForPairedVehicleIdentifier:v10 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [CRAppClipsDeclarationClient fetchSupportedAppClipsForPairedVehicleIdentifier:identifier completion:v12];
 }
 
-- (void)pairingPromptFlow:(id)a3 wantsToPerformPresentation:(id)a4
+- (void)pairingPromptFlow:(id)flow wantsToPerformPresentation:(id)presentation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRCarKitServiceAgent *)self setupPromptDirector];
+  flowCopy = flow;
+  presentationCopy = presentation;
+  setupPromptDirector = [(CRCarKitServiceAgent *)self setupPromptDirector];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000314FC;
   v13[3] = &unk_1000DE680;
-  v14 = v6;
-  v15 = v7;
+  v14 = flowCopy;
+  v15 = presentationCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10003161C;
   v11[3] = &unk_1000DD348;
   v12 = v14;
   v9 = v14;
-  v10 = v7;
-  [v8 performWithPromptPresenter:v13 errorHandler:v11];
+  v10 = presentationCopy;
+  [setupPromptDirector performWithPromptPresenter:v13 errorHandler:v11];
 }
 
-- (void)_dismissPairingPromptFlow:(id)a3
+- (void)_dismissPairingPromptFlow:(id)flow
 {
-  v12 = a3;
-  v4 = [v12 bluetoothDeviceIdentifier];
-  v5 = [(CRCarKitServiceAgent *)self currentBluetoothConfirmationHandler];
-  v6 = v5;
-  if (v5 && v4)
+  flowCopy = flow;
+  bluetoothDeviceIdentifier = [flowCopy bluetoothDeviceIdentifier];
+  currentBluetoothConfirmationHandler = [(CRCarKitServiceAgent *)self currentBluetoothConfirmationHandler];
+  v6 = currentBluetoothConfirmationHandler;
+  if (currentBluetoothConfirmationHandler && bluetoothDeviceIdentifier)
   {
-    (*(v5 + 16))(v5, v4, 0);
+    (*(currentBluetoothConfirmationHandler + 16))(currentBluetoothConfirmationHandler, bluetoothDeviceIdentifier, 0);
   }
 
   [(CRCarKitServiceAgent *)self setCurrentBluetoothConfirmationHandler:0];
-  [(CRCarKitServiceAgent *)self _invokeCurrentBluetoothPairingCompletionWithDeviceIdentifier:v4 success:0 error:0];
-  if ([v12 startedFromCarKey])
+  [(CRCarKitServiceAgent *)self _invokeCurrentBluetoothPairingCompletionWithDeviceIdentifier:bluetoothDeviceIdentifier success:0 error:0];
+  if ([flowCopy startedFromCarKey])
   {
     objc_opt_class();
-    v7 = [v12 userInfo];
-    if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+    userInfo = [flowCopy userInfo];
+    if (userInfo && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v8 = v7;
+      v8 = userInfo;
     }
 
     else
@@ -3727,34 +3727,34 @@ LABEL_5:
 
     if (v8)
     {
-      v9 = [v8 isPaired];
+      isPaired = [v8 isPaired];
     }
 
     else
     {
-      v9 = 0;
+      isPaired = 0;
     }
 
-    [(CRCarKitServiceAgent *)self _delegateHeadUnitPairingDidCompletePairingFlow:v9 forBluetoothAddress:v4 error:0];
+    [(CRCarKitServiceAgent *)self _delegateHeadUnitPairingDidCompletePairingFlow:isPaired forBluetoothAddress:bluetoothDeviceIdentifier error:0];
   }
 
-  v10 = [(CRCarKitServiceAgent *)self currentPromptFlowController];
-  [v10 invalidate];
+  currentPromptFlowController = [(CRCarKitServiceAgent *)self currentPromptFlowController];
+  [currentPromptFlowController invalidate];
 
   [(CRCarKitServiceAgent *)self setCurrentPromptFlowController:0];
-  v11 = [(CRCarKitServiceAgent *)self setupPromptDirector];
-  [v11 dismissPromptPresenter];
+  setupPromptDirector = [(CRCarKitServiceAgent *)self setupPromptDirector];
+  [setupPromptDirector dismissPromptPresenter];
 }
 
-- (void)pairingPromptFlow:(id)a3 didCancelWithRequiredStepsRemaining:(BOOL)a4
+- (void)pairingPromptFlow:(id)flow didCancelWithRequiredStepsRemaining:(BOOL)remaining
 {
-  v4 = a4;
-  v6 = a3;
+  remainingCopy = remaining;
+  flowCopy = flow;
   v7 = CarPairingLogging();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
-    if (v4)
+    if (remainingCopy)
     {
       v8 = @"YES";
     }
@@ -3764,13 +3764,13 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "canceling setup prompt flow, required steps remaining: %{public}@", &v15, 0xCu);
   }
 
-  if (v4)
+  if (remainingCopy)
   {
     objc_opt_class();
-    v9 = [v6 userInfo];
-    if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+    userInfo = [flowCopy userInfo];
+    if (userInfo && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v10 = v9;
+      v10 = userInfo;
     }
 
     else
@@ -3800,7 +3800,7 @@ LABEL_5:
     }
   }
 
-  [(CRCarKitServiceAgent *)self _dismissPairingPromptFlow:v6];
+  [(CRCarKitServiceAgent *)self _dismissPairingPromptFlow:flowCopy];
   v14 = CarPairingLogging();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -3809,9 +3809,9 @@ LABEL_5:
   }
 }
 
-- (void)didCompletePairingPromptFlow:(id)a3
+- (void)didCompletePairingPromptFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v5 = CarPairingLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3819,17 +3819,17 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "completed setup prompt flow", v6, 2u);
   }
 
-  [(CRCarKitServiceAgent *)self _dismissPairingPromptFlow:v4];
+  [(CRCarKitServiceAgent *)self _dismissPairingPromptFlow:flowCopy];
 }
 
-- (void)_setVehiclePairingStatus:(unint64_t)a3 forPromptFlow:(id)a4
+- (void)_setVehiclePairingStatus:(unint64_t)status forPromptFlow:(id)flow
 {
-  v10 = a4;
+  flowCopy = flow;
   objc_opt_class();
-  v6 = [v10 userInfo];
-  if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
+  userInfo = [flowCopy userInfo];
+  if (userInfo && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v7 = v6;
+    v7 = userInfo;
   }
 
   else
@@ -3837,23 +3837,23 @@ LABEL_5:
     v7 = 0;
   }
 
-  if ([v7 pairingStatus] != a3)
+  if ([v7 pairingStatus] != status)
   {
-    [v7 setPairingStatus:a3];
-    v8 = [(CRCarKitServiceAgent *)self vehicleStore];
-    v9 = [v8 saveVehicle:v7];
+    [v7 setPairingStatus:status];
+    vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+    v9 = [vehicleStore saveVehicle:v7];
 
-    [v10 setUserInfo:v9];
+    [flowCopy setUserInfo:v9];
   }
 }
 
-- (void)pairingPromptFlow:(id)a3 receivedAllowWhileLockedResponse:(BOOL)a4
+- (void)pairingPromptFlow:(id)flow receivedAllowWhileLockedResponse:(BOOL)response
 {
-  v4 = a4;
-  v6 = a3;
+  responseCopy = response;
+  flowCopy = flow;
   v7 = CarGeneralLogging();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (responseCopy)
   {
     if (v8)
     {
@@ -3879,20 +3879,20 @@ LABEL_5:
     v9 = 1;
   }
 
-  [(CRCarKitServiceAgent *)self _setVehiclePairingStatus:v9 forPromptFlow:v6];
+  [(CRCarKitServiceAgent *)self _setVehiclePairingStatus:v9 forPromptFlow:flowCopy];
 }
 
-- (void)pairingPromptFlow:(id)a3 receivedUseWirelessResponse:(BOOL)a4 turnOnBluetooth:(BOOL)a5 turnOnWiFi:(BOOL)a6
+- (void)pairingPromptFlow:(id)flow receivedUseWirelessResponse:(BOOL)response turnOnBluetooth:(BOOL)bluetooth turnOnWiFi:(BOOL)fi
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
+  fiCopy = fi;
+  bluetoothCopy = bluetooth;
+  responseCopy = response;
+  flowCopy = flow;
   objc_opt_class();
-  v11 = [v10 userInfo];
-  if (v11 && (objc_opt_isKindOfClass() & 1) != 0)
+  userInfo = [flowCopy userInfo];
+  if (userInfo && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v12 = v11;
+    v12 = userInfo;
   }
 
   else
@@ -3900,8 +3900,8 @@ LABEL_5:
     v12 = 0;
   }
 
-  v13 = [v10 messagingVehicle];
-  if (v7)
+  messagingVehicle = [flowCopy messagingVehicle];
+  if (bluetoothCopy)
   {
     v14 = CarGeneralLogging();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -3910,11 +3910,11 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "turning on Bluetooth due to OOB pairing alert acceptance", buf, 2u);
     }
 
-    v15 = [(CRCarKitServiceAgent *)self bluetoothManager];
-    [v15 setPowered:1];
+    bluetoothManager = [(CRCarKitServiceAgent *)self bluetoothManager];
+    [bluetoothManager setPowered:1];
   }
 
-  if (v6)
+  if (fiCopy)
   {
     v16 = CarGeneralLogging();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -3923,13 +3923,13 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "turning on Wi-Fi due to OOB pairing alert acceptance", v22, 2u);
     }
 
-    v17 = [(CRCarKitServiceAgent *)self wifiManager];
-    [v17 setPowered:1];
+    wifiManager = [(CRCarKitServiceAgent *)self wifiManager];
+    [wifiManager setPowered:1];
   }
 
   v18 = CarGeneralLogging();
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (responseCopy)
   {
     if (v19)
     {
@@ -3937,8 +3937,8 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Wired BT pairing alert accepted", v21, 2u);
     }
 
-    [(CRCarKitServiceAgent *)self _setVehiclePairingStatus:2 forPromptFlow:v10];
-    [(CRCarKitServiceAgent *)self _beginWiredPairingWithMessagingVehicle:v13 storedVehicle:v12];
+    [(CRCarKitServiceAgent *)self _setVehiclePairingStatus:2 forPromptFlow:flowCopy];
+    [(CRCarKitServiceAgent *)self _beginWiredPairingWithMessagingVehicle:messagingVehicle storedVehicle:v12];
   }
 
   else
@@ -3951,16 +3951,16 @@ LABEL_5:
   }
 }
 
-- (void)pairingPromptFlow:(id)a3 receivedConnectCarPlayResponse:(BOOL)a4 turnOnWiFi:(BOOL)a5
+- (void)pairingPromptFlow:(id)flow receivedConnectCarPlayResponse:(BOOL)response turnOnWiFi:(BOOL)fi
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  fiCopy = fi;
+  responseCopy = response;
+  flowCopy = flow;
   objc_opt_class();
-  v9 = [v8 userInfo];
-  if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
+  userInfo = [flowCopy userInfo];
+  if (userInfo && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = userInfo;
   }
 
   else
@@ -3968,8 +3968,8 @@ LABEL_5:
     v10 = 0;
   }
 
-  v11 = [v8 messagingVehicle];
-  if (v5)
+  messagingVehicle = [flowCopy messagingVehicle];
+  if (fiCopy)
   {
     v12 = CarGeneralLogging();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -3978,13 +3978,13 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "turning on Wi-Fi due to connect alert acceptance", buf, 2u);
     }
 
-    v13 = [(CRCarKitServiceAgent *)self wifiManager];
-    [v13 setPowered:1];
+    wifiManager = [(CRCarKitServiceAgent *)self wifiManager];
+    [wifiManager setPowered:1];
   }
 
   v14 = CarPairingLogging();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (responseCopy)
   {
     if (v15)
     {
@@ -4010,41 +4010,41 @@ LABEL_5:
     v16 = 1;
   }
 
-  [(CRCarKitServiceAgent *)self _setVehiclePairingStatus:v16 forPromptFlow:v8];
-  v17 = [v11 supportsCarPlayConnectionRequest];
-  v18 = [v11 transportType];
-  if (v17)
+  [(CRCarKitServiceAgent *)self _setVehiclePairingStatus:v16 forPromptFlow:flowCopy];
+  supportsCarPlayConnectionRequest = [messagingVehicle supportsCarPlayConnectionRequest];
+  transportType = [messagingVehicle transportType];
+  if (supportsCarPlayConnectionRequest)
   {
-    if (v18 == 2 || [v11 transportType] == 4)
+    if (transportType == 2 || [messagingVehicle transportType] == 4)
     {
-      [(CRCarKitServiceAgent *)self _sendCarPlayAvailabilityForMessagingVehicle:v11 storedVehicle:v10];
+      [(CRCarKitServiceAgent *)self _sendCarPlayAvailabilityForMessagingVehicle:messagingVehicle storedVehicle:v10];
     }
   }
 
-  else if (v18 == 2)
+  else if (transportType == 2)
   {
-    [(CRCarKitServiceAgent *)self _sendDeviceIdentifiersForMessagingVehicle:v11 pairingStatus:v16];
+    [(CRCarKitServiceAgent *)self _sendDeviceIdentifiersForMessagingVehicle:messagingVehicle pairingStatus:v16];
     if ([v10 isPaired])
     {
-      [(CRCarKitServiceAgent *)self _requestWiFiCredentialsIfNecessaryForApprovedMessagingVehicle:v11];
+      [(CRCarKitServiceAgent *)self _requestWiFiCredentialsIfNecessaryForApprovedMessagingVehicle:messagingVehicle];
     }
   }
 
-  if (v6)
+  if (responseCopy)
   {
-    v19 = [(CRCarKitServiceAgent *)self _wirelessPairingAnalyticsDescriptionForMessagingVehicle:v11 storedVehicle:v10];
+    v19 = [(CRCarKitServiceAgent *)self _wirelessPairingAnalyticsDescriptionForMessagingVehicle:messagingVehicle storedVehicle:v10];
     v20 = +[CARAnalytics sharedInstance];
     [v20 userCreatedWirelessPairingWithSource:@"Settings" payload:v19];
   }
 }
 
-- (void)pairingPromptFlow:(id)a3 receivedEnhancedIntegrationResponse:(BOOL)a4
+- (void)pairingPromptFlow:(id)flow receivedEnhancedIntegrationResponse:(BOOL)response
 {
-  v4 = a4;
-  v6 = [a3 messagingVehicle];
+  responseCopy = response;
+  messagingVehicle = [flow messagingVehicle];
   v7 = CarGeneralLogging();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (responseCopy)
   {
     if (v8)
     {
@@ -4070,17 +4070,17 @@ LABEL_5:
     v9 = 1;
   }
 
-  [(CRCarKitServiceAgent *)self _enhancedIntegrationUpdatedForMessagingVehicle:v6 status:v9];
+  [(CRCarKitServiceAgent *)self _enhancedIntegrationUpdatedForMessagingVehicle:messagingVehicle status:v9];
 }
 
-- (void)didHeadUnitPairWithBluetoothAddress:(id)a3
+- (void)didHeadUnitPairWithBluetoothAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [(CRCarKitServiceAgent *)self currentPromptFlowController];
-  v6 = [v5 bluetoothDeviceIdentifier];
+  currentPromptFlowController = [(CRCarKitServiceAgent *)self currentPromptFlowController];
+  bluetoothDeviceIdentifier = [currentPromptFlowController bluetoothDeviceIdentifier];
 
-  if (!v6)
+  if (!bluetoothDeviceIdentifier)
   {
     v9 = CarPairingLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -4091,7 +4091,7 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  v7 = [v6 isEqual:v4];
+  v7 = [bluetoothDeviceIdentifier isEqual:addressCopy];
   v8 = CarPairingLogging();
   v9 = v8;
   if ((v7 & 1) == 0)
@@ -4103,7 +4103,7 @@ LABEL_5:
 
 LABEL_10:
 
-    [(CRCarKitServiceAgent *)self _delegateHeadUnitPairingDidCompletePairingFlow:0 forBluetoothAddress:v4 error:0];
+    [(CRCarKitServiceAgent *)self _delegateHeadUnitPairingDidCompletePairingFlow:0 forBluetoothAddress:addressCopy error:0];
     goto LABEL_11;
   }
 
@@ -4112,17 +4112,17 @@ LABEL_10:
     v10 = 141558275;
     v11 = 1752392040;
     v12 = 2113;
-    v13 = v4;
+    v13 = addressCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "head unit pairing succeeded for Bluetooth addresses %{private, mask.hash}@", &v10, 0x16u);
   }
 
 LABEL_11:
 }
 
-- (void)didFailToHeadUnitPairWithBluetoothAddress:(id)a3 error:(id)a4
+- (void)didFailToHeadUnitPairWithBluetoothAddress:(id)address error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  errorCopy = error;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v8 = CarPairingLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -4130,11 +4130,11 @@ LABEL_11:
     sub_10008510C();
   }
 
-  v9 = [(CRCarKitServiceAgent *)self currentPromptFlowController];
-  v10 = v9;
-  if (v9)
+  currentPromptFlowController = [(CRCarKitServiceAgent *)self currentPromptFlowController];
+  v10 = currentPromptFlowController;
+  if (currentPromptFlowController)
   {
-    [v9 handleCarKeyInitiatedPairingFailed];
+    [currentPromptFlowController handleCarKeyInitiatedPairingFailed];
   }
 
   else
@@ -4147,37 +4147,37 @@ LABEL_11:
   }
 }
 
-- (void)_presentApprovalIfNecessaryForMessagingVehicle:(id)a3 storedVehicle:(id)a4
+- (void)_presentApprovalIfNecessaryForMessagingVehicle:(id)vehicle storedVehicle:(id)storedVehicle
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || ![v6 pairingStatus])
+  vehicleCopy = vehicle;
+  storedVehicleCopy = storedVehicle;
+  v7 = storedVehicleCopy;
+  if (!storedVehicleCopy || ![storedVehicleCopy pairingStatus])
   {
-    v8 = [(CRCarKitServiceAgent *)self preferencesManager];
-    v9 = [v8 isCarPlaySetupEnabled];
-    v10 = [v9 BOOLValue];
+    preferencesManager = [(CRCarKitServiceAgent *)self preferencesManager];
+    isCarPlaySetupEnabled = [preferencesManager isCarPlaySetupEnabled];
+    bOOLValue = [isCarPlaySetupEnabled BOOLValue];
 
-    if (v10)
+    if (bOOLValue)
     {
-      [(CRCarKitServiceAgent *)self _presentCarPlaySetupForMessagingVehicle:v11 storedVehicle:v7];
+      [(CRCarKitServiceAgent *)self _presentCarPlaySetupForMessagingVehicle:vehicleCopy storedVehicle:v7];
     }
 
     else
     {
-      [(CRCarKitServiceAgent *)self _presentApprovalUsingAlertsForMessagingVehicle:v11];
+      [(CRCarKitServiceAgent *)self _presentApprovalUsingAlertsForMessagingVehicle:vehicleCopy];
     }
   }
 }
 
-- (void)_presentCarPlaySetupForMessagingVehicle:(id)a3 storedVehicle:(id)a4
+- (void)_presentCarPlaySetupForMessagingVehicle:(id)vehicle storedVehicle:(id)storedVehicle
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  vehicleCopy = vehicle;
+  storedVehicleCopy = storedVehicle;
+  if (storedVehicleCopy)
   {
-    v8 = v7;
-    if ([v7 pairingStatus])
+    v8 = storedVehicleCopy;
+    if ([storedVehicleCopy pairingStatus])
     {
       v9 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v8 pairingStatus] == 2);
       goto LABEL_8;
@@ -4186,7 +4186,7 @@ LABEL_11:
 
   else
   {
-    v10 = [CRVehicle vehicleForMessagingVehicle:v6];
+    v10 = [CRVehicle vehicleForMessagingVehicle:vehicleCopy];
     v8 = [(CRCarKitServiceAgent *)self saveVehicle:v10];
 
     v11 = CarPairingLogging();
@@ -4200,10 +4200,10 @@ LABEL_11:
 
   v9 = 0;
 LABEL_8:
-  v12 = [(CRCarKitServiceAgent *)self currentPromptFlowController];
-  if (v12)
+  currentPromptFlowController = [(CRCarKitServiceAgent *)self currentPromptFlowController];
+  if (currentPromptFlowController)
   {
-    v13 = v12;
+    v13 = currentPromptFlowController;
     v14 = CarPairingLogging();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -4218,29 +4218,29 @@ LABEL_8:
   [(CRPairingPromptFlowController *)v15 setPromptDelegate:self];
   [(CRCarKitServiceAgent *)self setCurrentPromptFlowController:v15];
   [(CRPairingPromptFlowController *)v15 setUserInfo:v8];
-  [(CRPairingPromptFlowController *)v15 handleConnectedMessagingVehicle:v6 pairingAccepted:v9];
+  [(CRPairingPromptFlowController *)v15 handleConnectedMessagingVehicle:vehicleCopy pairingAccepted:v9];
 }
 
-- (void)_presentApprovalUsingAlertsForMessagingVehicle:(id)a3
+- (void)_presentApprovalUsingAlertsForMessagingVehicle:(id)vehicle
 {
-  v4 = a3;
-  if ([v4 transportType] == 2 || objc_msgSend(v4, "transportType") == 4)
+  vehicleCopy = vehicle;
+  if ([vehicleCopy transportType] == 2 || objc_msgSend(vehicleCopy, "transportType") == 4)
   {
     v5 = CROutstandingWirelessVehicleApprovalAlert;
 LABEL_4:
-    v6 = [[v5 alloc] initWithMessagingVehicle:v4];
+    v6 = [[v5 alloc] initWithMessagingVehicle:vehicleCopy];
     goto LABEL_5;
   }
 
-  if ([v4 supportsUSBCarPlay])
+  if ([vehicleCopy supportsUSBCarPlay])
   {
     v5 = CROutstandingWiredVehicleApprovalAlert;
     goto LABEL_4;
   }
 
-  if ([v4 supportsWirelessCarPlay] && objc_msgSend(v4, "supportsWiredBluetoothPairing"))
+  if ([vehicleCopy supportsWirelessCarPlay] && objc_msgSend(vehicleCopy, "supportsWiredBluetoothPairing"))
   {
-    [(CRCarKitServiceAgent *)self _presentWiredBluetoothPairingAlertForMessagingVehicle:v4 storedVehicle:0];
+    [(CRCarKitServiceAgent *)self _presentWiredBluetoothPairingAlertForMessagingVehicle:vehicleCopy storedVehicle:0];
   }
 
   v6 = 0;
@@ -4249,8 +4249,8 @@ LABEL_5:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v7 = [(CRCarKitServiceAgent *)self outstandingApprovalAlerts];
-  v8 = [v7 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  outstandingApprovalAlerts = [(CRCarKitServiceAgent *)self outstandingApprovalAlerts];
+  v8 = [outstandingApprovalAlerts countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v8)
   {
     v9 = *v40;
@@ -4261,11 +4261,11 @@ LABEL_5:
       {
         if (*v40 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(outstandingApprovalAlerts);
         }
 
-        v11 = [*(*(&v39 + 1) + 8 * v10) messagingVehicle];
-        v12 = [v11 isEqual:v4];
+        messagingVehicle = [*(*(&v39 + 1) + 8 * v10) messagingVehicle];
+        v12 = [messagingVehicle isEqual:vehicleCopy];
 
         if (v12)
         {
@@ -4277,7 +4277,7 @@ LABEL_5:
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v8 = [outstandingApprovalAlerts countByEnumeratingWithState:&v39 objects:v43 count:16];
       if (v8)
       {
         continue;
@@ -4307,7 +4307,7 @@ LABEL_5:
   v30 = 0x3032000000;
   v31 = sub_100022D08;
   v32 = sub_100022D18;
-  v33 = [CRVehicle vehicleForMessagingVehicle:v4];
+  v33 = [CRVehicle vehicleForMessagingVehicle:vehicleCopy];
   v15 = [(CRCarKitServiceAgent *)self saveVehicle:v29[5]];
   v16 = v29[5];
   v29[5] = v15;
@@ -4316,14 +4316,14 @@ LABEL_5:
   v20 = 3221225472;
   v21 = sub_100033130;
   v22 = &unk_1000DE6A8;
-  v23 = self;
+  selfCopy = self;
   v17 = v13;
   v24 = v17;
   v26 = &v28;
-  v25 = v4;
+  v25 = vehicleCopy;
   v27 = v37;
   v18 = objc_retainBlock(&v19);
-  if ([v17 presentAlertWithCompletion:{v18, v19, v20, v21, v22, v23}])
+  if ([v17 presentAlertWithCompletion:{v18, v19, v20, v21, v22, selfCopy}])
   {
     (v14[2])(v14);
   }
@@ -4334,15 +4334,15 @@ LABEL_5:
 LABEL_17:
 }
 
-- (void)_dismissApprovalAlertForMessagingVehicle:(id)a3
+- (void)_dismissApprovalAlertForMessagingVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CRCarKitServiceAgent *)self outstandingApprovalAlerts];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  outstandingApprovalAlerts = [(CRCarKitServiceAgent *)self outstandingApprovalAlerts];
+  v6 = [outstandingApprovalAlerts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4353,12 +4353,12 @@ LABEL_17:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(outstandingApprovalAlerts);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 messagingVehicle];
-        v12 = [v11 isEqual:v4];
+        messagingVehicle = [v10 messagingVehicle];
+        v12 = [messagingVehicle isEqual:vehicleCopy];
 
         if (v12)
         {
@@ -4366,7 +4366,7 @@ LABEL_17:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [outstandingApprovalAlerts countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -4379,8 +4379,8 @@ LABEL_17:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CRCarKitServiceAgent *)self outstandingApprovalAlerts];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  outstandingApprovalAlerts = [(CRCarKitServiceAgent *)self outstandingApprovalAlerts];
+  v3 = [outstandingApprovalAlerts countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -4392,7 +4392,7 @@ LABEL_17:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(outstandingApprovalAlerts);
         }
 
         [*(*(&v7 + 1) + 8 * v6) dismissAlert];
@@ -4400,20 +4400,20 @@ LABEL_17:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [outstandingApprovalAlerts countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-+ (id)_pairingIdentifierForMessagingVehicle:(id)a3
++ (id)_pairingIdentifierForMessagingVehicle:(id)vehicle
 {
-  v3 = [a3 bluetoothAddress];
-  v4 = v3;
-  if (v3)
+  bluetoothAddress = [vehicle bluetoothAddress];
+  v4 = bluetoothAddress;
+  if (bluetoothAddress)
   {
-    v5 = v3;
+    v5 = bluetoothAddress;
   }
 
   else
@@ -4426,13 +4426,13 @@ LABEL_17:
   return v5;
 }
 
-+ (id)_pairingIdentifierForPromptFlow:(id)a3
++ (id)_pairingIdentifierForPromptFlow:(id)flow
 {
-  v3 = a3;
+  flowCopy = flow;
   objc_opt_class();
-  v4 = [v3 userInfo];
+  userInfo = [flowCopy userInfo];
 
-  v5 = v4;
+  v5 = userInfo;
   if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v6 = v5;
@@ -4445,8 +4445,8 @@ LABEL_17:
 
   if (v6)
   {
-    v7 = [v6 identifier];
-    v8 = [v7 UUIDString];
+    identifier = [v6 identifier];
+    uUIDString = [identifier UUIDString];
   }
 
   else
@@ -4457,23 +4457,23 @@ LABEL_17:
       sub_100085248();
     }
 
-    v8 = 0;
+    uUIDString = 0;
   }
 
-  return v8;
+  return uUIDString;
 }
 
-+ (unint64_t)_pairingDeclineCountForIdentifier:(id)a3
++ (unint64_t)_pairingDeclineCountForIdentifier:(id)identifier
 {
-  v3 = [CRVehicleStore payloadForVehicleWithIdentifier:a3];
+  v3 = [CRVehicleStore payloadForVehicleWithIdentifier:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
     v5 = CarGeneralLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [NSNumber numberWithUnsignedInteger:v4];
+      v6 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
       v8 = 138412290;
       v9 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "OOB decline count: %@", &v8, 0xCu);
@@ -4482,16 +4482,16 @@ LABEL_17:
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-+ (void)_incrementPairingDeclineCountForIdentifier:(id)a3
++ (void)_incrementPairingDeclineCountForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _pairingDeclineCountForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [self _pairingDeclineCountForIdentifier:identifierCopy];
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -4502,13 +4502,13 @@ LABEL_17:
   }
 
   v8 = [NSNumber numberWithUnsignedInteger:v5 + 1];
-  [CRVehicleStore setPayload:v8 forVehicleWithIdentifier:v4];
+  [CRVehicleStore setPayload:v8 forVehicleWithIdentifier:identifierCopy];
 }
 
-+ (unint64_t)_declineTypeForOOBPairingMessagingVehicle:(id)a3
++ (unint64_t)_declineTypeForOOBPairingMessagingVehicle:(id)vehicle
 {
-  v4 = a3;
-  if (([v4 supportsWiredBluetoothPairing] & 1) == 0)
+  vehicleCopy = vehicle;
+  if (([vehicleCopy supportsWiredBluetoothPairing] & 1) == 0)
   {
     v5 = CarGeneralLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4525,7 +4525,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if ([v4 supportsUSBCarPlay])
+  if ([vehicleCopy supportsUSBCarPlay])
   {
     v5 = CarGeneralLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4541,8 +4541,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [a1 _pairingIdentifierForMessagingVehicle:v4];
-  v10 = [a1 _pairingDeclineCountForIdentifier:v9];
+  v9 = [self _pairingIdentifierForMessagingVehicle:vehicleCopy];
+  v10 = [self _pairingDeclineCountForIdentifier:v9];
 
   if (v10 <= 2)
   {
@@ -4559,22 +4559,22 @@ LABEL_12:
   return v8;
 }
 
-- (void)_presentWiredBluetoothPairingAlertForMessagingVehicle:(id)a3 storedVehicle:(id)a4
+- (void)_presentWiredBluetoothPairingAlertForMessagingVehicle:(id)vehicle storedVehicle:(id)storedVehicle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRMessagingVehicleAlert *)[CROutstandingVehiclePairingAlert alloc] initWithMessagingVehicle:v6];
+  vehicleCopy = vehicle;
+  storedVehicleCopy = storedVehicle;
+  v8 = [(CRMessagingVehicleAlert *)[CROutstandingVehiclePairingAlert alloc] initWithMessagingVehicle:vehicleCopy];
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x3032000000;
   v27[3] = sub_100022D08;
   v27[4] = sub_100022D18;
   v28 = 0;
-  v9 = [(CRCarKitServiceAgent *)self bluetoothManager];
-  v10 = [v9 isPowered];
+  bluetoothManager = [(CRCarKitServiceAgent *)self bluetoothManager];
+  isPowered = [bluetoothManager isPowered];
 
-  [(CROutstandingVehiclePairingAlert *)v8 setShouldEnableBluetooth:v10 ^ 1];
-  v11 = [objc_opt_class() _declineTypeForOOBPairingMessagingVehicle:v6];
+  [(CROutstandingVehiclePairingAlert *)v8 setShouldEnableBluetooth:isPowered ^ 1];
+  v11 = [objc_opt_class() _declineTypeForOOBPairingMessagingVehicle:vehicleCopy];
   [(CROutstandingVehiclePairingAlert *)v8 setDeclineType:v11];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
@@ -4593,9 +4593,9 @@ LABEL_12:
   v14 = v12;
   v19 = v14;
   v23 = v11;
-  v15 = v6;
+  v15 = vehicleCopy;
   v20 = v15;
-  v16 = v7;
+  v16 = storedVehicleCopy;
   v21 = v16;
   v22 = v27;
   v17 = objc_retainBlock(v18);
@@ -4607,15 +4607,15 @@ LABEL_12:
   _Block_object_dispose(v27, 8);
 }
 
-- (void)_beginWiredPairingWithMessagingVehicle:(id)a3 storedVehicle:(id)a4
+- (void)_beginWiredPairingWithMessagingVehicle:(id)vehicle storedVehicle:(id)storedVehicle
 {
-  v6 = a3;
-  v7 = a4;
+  vehicleCopy = vehicle;
+  storedVehicleCopy = storedVehicle;
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = vehicleCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "starting wired Bluetooth pairing with %@", &buf, 0xCu);
   }
 
@@ -4626,34 +4626,34 @@ LABEL_12:
   v22 = sub_100022D18;
   v23 = os_transaction_create();
   objc_initWeak(&location, self);
-  v9 = [(CRCarKitServiceAgent *)self messagingConnector];
+  messagingConnector = [(CRCarKitServiceAgent *)self messagingConnector];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100034258;
   v12[3] = &unk_1000DE6F8;
-  v10 = v7;
+  v10 = storedVehicleCopy;
   v13 = v10;
-  v11 = v6;
+  v11 = vehicleCopy;
   v14 = v11;
   objc_copyWeak(&v17, &location);
-  v15 = self;
+  selfCopy = self;
   p_buf = &buf;
-  [v9 beginWiredBluetoothPairingWithVehicle:v11 completion:v12];
+  [messagingConnector beginWiredBluetoothPairingWithVehicle:v11 completion:v12];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)_dismissPairingAlertForMessagingVehicle:(id)a3
+- (void)_dismissPairingAlertForMessagingVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CRCarKitServiceAgent *)self outstandingPairingAlerts];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  outstandingPairingAlerts = [(CRCarKitServiceAgent *)self outstandingPairingAlerts];
+  v6 = [outstandingPairingAlerts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4664,12 +4664,12 @@ LABEL_12:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(outstandingPairingAlerts);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 messagingVehicle];
-        v12 = [v11 isEqual:v4];
+        messagingVehicle = [v10 messagingVehicle];
+        v12 = [messagingVehicle isEqual:vehicleCopy];
 
         if (v12)
         {
@@ -4677,7 +4677,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [outstandingPairingAlerts countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -4690,8 +4690,8 @@ LABEL_12:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CRCarKitServiceAgent *)self outstandingPairingAlerts];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  outstandingPairingAlerts = [(CRCarKitServiceAgent *)self outstandingPairingAlerts];
+  v3 = [outstandingPairingAlerts countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -4703,7 +4703,7 @@ LABEL_12:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(outstandingPairingAlerts);
         }
 
         [*(*(&v7 + 1) + 8 * v6) dismissAlert];
@@ -4711,16 +4711,16 @@ LABEL_12:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [outstandingPairingAlerts countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)_presentReconnectionEnableWiFiAlertForVehicle:(id)a3
+- (void)_presentReconnectionEnableWiFiAlertForVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -4728,7 +4728,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "presenting alert to ask to turn on Wi-Fi", buf, 2u);
   }
 
-  v6 = [[CRReconnectionEnableWiFiAlert alloc] initWithVehicle:v4];
+  v6 = [[CRReconnectionEnableWiFiAlert alloc] initWithVehicle:vehicleCopy];
   *buf = 0;
   v20 = buf;
   v21 = 0x3032000000;
@@ -4751,7 +4751,7 @@ LABEL_12:
   v12[4] = self;
   v9 = v7;
   v13 = v9;
-  v10 = v4;
+  v10 = vehicleCopy;
   v14 = v10;
   v15 = buf;
   v11 = objc_retainBlock(v12);
@@ -4763,15 +4763,15 @@ LABEL_12:
   _Block_object_dispose(buf, 8);
 }
 
-- (id)_presentedReconnectionEnableWiFiAlertForVehicle:(id)a3
+- (id)_presentedReconnectionEnableWiFiAlertForVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CRCarKitServiceAgent *)self outstandingEnableWiFiAlerts];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  outstandingEnableWiFiAlerts = [(CRCarKitServiceAgent *)self outstandingEnableWiFiAlerts];
+  v6 = [outstandingEnableWiFiAlerts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -4781,12 +4781,12 @@ LABEL_12:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(outstandingEnableWiFiAlerts);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 vehicle];
-        v11 = [v10 isEqual:v4];
+        vehicle = [v9 vehicle];
+        v11 = [vehicle isEqual:vehicleCopy];
 
         if (v11)
         {
@@ -4795,7 +4795,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [outstandingEnableWiFiAlerts countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -4810,11 +4810,11 @@ LABEL_11:
   return v6;
 }
 
-- (void)_dismissReconnectionEnableWiFiAlertForVehicle:(id)a3
+- (void)_dismissReconnectionEnableWiFiAlertForVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [(CRCarKitServiceAgent *)self outstandingEnableWiFiAlerts];
-  v6 = [v5 copy];
+  vehicleCopy = vehicle;
+  outstandingEnableWiFiAlerts = [(CRCarKitServiceAgent *)self outstandingEnableWiFiAlerts];
+  v6 = [outstandingEnableWiFiAlerts copy];
 
   v18 = 0u;
   v19 = 0u;
@@ -4836,14 +4836,14 @@ LABEL_11:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 vehicle];
-        v14 = [v13 isEqual:v4];
+        vehicle = [v12 vehicle];
+        v14 = [vehicle isEqual:vehicleCopy];
 
         if (v14)
         {
           [v12 dismissAlert];
-          v15 = [(CRCarKitServiceAgent *)self outstandingEnableWiFiAlerts];
-          [v15 removeObject:v12];
+          outstandingEnableWiFiAlerts2 = [(CRCarKitServiceAgent *)self outstandingEnableWiFiAlerts];
+          [outstandingEnableWiFiAlerts2 removeObject:v12];
         }
       }
 
@@ -4854,11 +4854,11 @@ LABEL_11:
   }
 }
 
-- (void)_dismissReconnectionEnableWiFiAlertExceptForVehicle:(id)a3
+- (void)_dismissReconnectionEnableWiFiAlertExceptForVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [(CRCarKitServiceAgent *)self outstandingEnableWiFiAlerts];
-  v6 = [v5 copy];
+  vehicleCopy = vehicle;
+  outstandingEnableWiFiAlerts = [(CRCarKitServiceAgent *)self outstandingEnableWiFiAlerts];
+  v6 = [outstandingEnableWiFiAlerts copy];
 
   v18 = 0u;
   v19 = 0u;
@@ -4880,14 +4880,14 @@ LABEL_11:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 vehicle];
-        v14 = [v13 isEqual:v4];
+        vehicle = [v12 vehicle];
+        v14 = [vehicle isEqual:vehicleCopy];
 
         if ((v14 & 1) == 0)
         {
           [v12 dismissAlert];
-          v15 = [(CRCarKitServiceAgent *)self outstandingEnableWiFiAlerts];
-          [v15 removeObject:v12];
+          outstandingEnableWiFiAlerts2 = [(CRCarKitServiceAgent *)self outstandingEnableWiFiAlerts];
+          [outstandingEnableWiFiAlerts2 removeObject:v12];
         }
       }
 
@@ -4898,24 +4898,24 @@ LABEL_11:
   }
 }
 
-- (void)vehicleIdentifierForCertificateSerial:(id)a3 reply:(id)a4
+- (void)vehicleIdentifierForCertificateSerial:(id)serial reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  serialCopy = serial;
+  replyCopy = reply;
   v26 = 0;
   v8 = [(CRCarKitServiceAgent *)self _isRestricted:&v26];
   v9 = v26;
   if (v8)
   {
-    v7[2](v7, 0, v9);
+    replyCopy[2](replyCopy, 0, v9);
     goto LABEL_16;
   }
 
-  if (!v6)
+  if (!serialCopy)
   {
 LABEL_15:
     v21 = [NSError errorWithDomain:NSCocoaErrorDomain code:-99 userInfo:0];
-    v7[2](v7, 0, v21);
+    replyCopy[2](replyCopy, 0, v21);
 
     goto LABEL_16;
   }
@@ -4924,10 +4924,10 @@ LABEL_15:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [(CRCarKitServiceAgent *)self vehicleStore];
-  v11 = [v10 allStoredVehicles];
+  vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+  allStoredVehicles = [vehicleStore allStoredVehicles];
 
-  v12 = [v11 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v12 = [allStoredVehicles countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (!v12)
   {
 LABEL_12:
@@ -4943,12 +4943,12 @@ LABEL_6:
   {
     if (*v23 != v14)
     {
-      objc_enumerationMutation(v11);
+      objc_enumerationMutation(allStoredVehicles);
     }
 
     v16 = *(*(&v22 + 1) + 8 * v15);
-    v17 = [v16 certificateSerialNumber];
-    v18 = [v6 isEqualToData:v17];
+    certificateSerialNumber = [v16 certificateSerialNumber];
+    v18 = [serialCopy isEqualToData:certificateSerialNumber];
 
     if (v18)
     {
@@ -4957,7 +4957,7 @@ LABEL_6:
 
     if (v13 == ++v15)
     {
-      v13 = [v11 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v13 = [allStoredVehicles countByEnumeratingWithState:&v22 objects:v27 count:16];
       if (v13)
       {
         goto LABEL_6;
@@ -4967,33 +4967,33 @@ LABEL_6:
     }
   }
 
-  v19 = [v16 identifier];
-  v20 = [v19 UUIDString];
+  identifier = [v16 identifier];
+  uUIDString = [identifier UUIDString];
 
-  if (!v20)
+  if (!uUIDString)
   {
     goto LABEL_15;
   }
 
-  (v7)[2](v7, v20, 0);
+  (replyCopy)[2](replyCopy, uUIDString, 0);
 
 LABEL_16:
 }
 
-- (void)_enhancedIntegrationUpdatedForMessagingVehicle:(id)a3 status:(unint64_t)a4
+- (void)_enhancedIntegrationUpdatedForMessagingVehicle:(id)vehicle status:(unint64_t)status
 {
-  v6 = [CRVehicle vehicleForMessagingVehicle:a3];
+  v6 = [CRVehicle vehicleForMessagingVehicle:vehicle];
   [v6 setSupportsEnhancedIntegration:1];
-  [v6 setEnhancedIntegrationStatus:a4];
-  v7 = [(CRCarKitServiceAgent *)self vehicleStore];
-  v8 = [v7 saveVehicle:v6];
+  [v6 setEnhancedIntegrationStatus:status];
+  vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+  v8 = [vehicleStore saveVehicle:v6];
 
   v9 = +[NSDistributedNotificationCenter defaultCenter];
   v10 = CREnhancedIntegrationConsentDidChangeNotification;
   v14 = CREnhancedIntegrationConsentDidChangeNotificationVehicleCertificateSerialKey;
-  v11 = [v8 certificateSerialNumber];
-  v12 = v11;
-  if (!v11)
+  certificateSerialNumber = [v8 certificateSerialNumber];
+  v12 = certificateSerialNumber;
+  if (!certificateSerialNumber)
   {
     v12 = +[NSData data];
   }
@@ -5002,14 +5002,14 @@ LABEL_16:
   v13 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   [v9 postNotificationName:v10 object:0 userInfo:v13];
 
-  if (!v11)
+  if (!certificateSerialNumber)
   {
   }
 }
 
-- (void)_presentEnhancedIntegrationAlertForMessagingVehicle:(id)a3
+- (void)_presentEnhancedIntegrationAlertForMessagingVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5017,7 +5017,7 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Presenting enhanced integration alert", buf, 2u);
   }
 
-  v6 = [(CRMessagingVehicleAlert *)[CRVehicleEnhancedIntegrationAlert alloc] initWithMessagingVehicle:v4];
+  v6 = [(CRMessagingVehicleAlert *)[CRVehicleEnhancedIntegrationAlert alloc] initWithMessagingVehicle:vehicleCopy];
   *buf = 0;
   v20 = buf;
   v21 = 0x3032000000;
@@ -5040,7 +5040,7 @@ LABEL_16:
   v12[4] = self;
   v9 = v7;
   v13 = v9;
-  v10 = v4;
+  v10 = vehicleCopy;
   v14 = v10;
   v15 = buf;
   v11 = objc_retainBlock(v12);
@@ -5052,15 +5052,15 @@ LABEL_16:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_dismissEnhancedIntegrationAlertForMessagingVehicle:(id)a3
+- (void)_dismissEnhancedIntegrationAlertForMessagingVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CRCarKitServiceAgent *)self outstandingEnhancedIntegrationAlerts];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  outstandingEnhancedIntegrationAlerts = [(CRCarKitServiceAgent *)self outstandingEnhancedIntegrationAlerts];
+  v6 = [outstandingEnhancedIntegrationAlerts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5071,12 +5071,12 @@ LABEL_16:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(outstandingEnhancedIntegrationAlerts);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 messagingVehicle];
-        v12 = [v11 isEqual:v4];
+        messagingVehicle = [v10 messagingVehicle];
+        v12 = [messagingVehicle isEqual:vehicleCopy];
 
         if (v12)
         {
@@ -5084,7 +5084,7 @@ LABEL_16:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [outstandingEnhancedIntegrationAlerts countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -5097,8 +5097,8 @@ LABEL_16:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CRCarKitServiceAgent *)self outstandingEnhancedIntegrationAlerts];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  outstandingEnhancedIntegrationAlerts = [(CRCarKitServiceAgent *)self outstandingEnhancedIntegrationAlerts];
+  v3 = [outstandingEnhancedIntegrationAlerts countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -5110,7 +5110,7 @@ LABEL_16:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(outstandingEnhancedIntegrationAlerts);
         }
 
         [*(*(&v7 + 1) + 8 * v6) dismissAlert];
@@ -5118,42 +5118,42 @@ LABEL_16:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [outstandingEnhancedIntegrationAlerts countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)bluetoothManager:(id)a3 didChangePowerState:(BOOL)a4
+- (void)bluetoothManager:(id)manager didChangePowerState:(BOOL)state
 {
-  if (a4)
+  if (state)
   {
-    v5 = [(CRCarKitServiceAgent *)self BTPowerMessagingVehicle];
-    if (v5)
+    bTPowerMessagingVehicle = [(CRCarKitServiceAgent *)self BTPowerMessagingVehicle];
+    if (bTPowerMessagingVehicle)
     {
-      v6 = v5;
-      v7 = [(CRCarKitServiceAgent *)self BTPowerStoredVehicle];
+      v6 = bTPowerMessagingVehicle;
+      bTPowerStoredVehicle = [(CRCarKitServiceAgent *)self BTPowerStoredVehicle];
 
-      if (v7)
+      if (bTPowerStoredVehicle)
       {
-        v9 = [(CRCarKitServiceAgent *)self BTPowerMessagingVehicle];
-        v8 = [(CRCarKitServiceAgent *)self BTPowerStoredVehicle];
-        [(CRCarKitServiceAgent *)self _beginWiredPairingWithMessagingVehicle:v9 storedVehicle:v8];
+        bTPowerMessagingVehicle2 = [(CRCarKitServiceAgent *)self BTPowerMessagingVehicle];
+        bTPowerStoredVehicle2 = [(CRCarKitServiceAgent *)self BTPowerStoredVehicle];
+        [(CRCarKitServiceAgent *)self _beginWiredPairingWithMessagingVehicle:bTPowerMessagingVehicle2 storedVehicle:bTPowerStoredVehicle2];
       }
     }
   }
 }
 
-- (void)bluetoothManager:(id)a3 requestsConfirmationForDeviceAddress:(id)a4 name:(id)a5 numericCode:(id)a6 responseHandler:(id)a7
+- (void)bluetoothManager:(id)manager requestsConfirmationForDeviceAddress:(id)address name:(id)name numericCode:(id)code responseHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(CRCarKitServiceAgent *)self currentPromptFlowController];
-  if (v17)
+  managerCopy = manager;
+  addressCopy = address;
+  nameCopy = name;
+  codeCopy = code;
+  handlerCopy = handler;
+  currentPromptFlowController = [(CRCarKitServiceAgent *)self currentPromptFlowController];
+  if (currentPromptFlowController)
   {
     objc_initWeak(&location, self);
     v22[0] = _NSConcreteStackBlock;
@@ -5161,9 +5161,9 @@ LABEL_16:
     v22[2] = sub_100035B7C;
     v22[3] = &unk_1000DE748;
     objc_copyWeak(&v25, &location);
-    v18 = v13;
+    v18 = addressCopy;
     v23 = v18;
-    v24 = v16;
+    v24 = handlerCopy;
     [(CRCarKitServiceAgent *)self setCurrentBluetoothConfirmationHandler:v22];
     v19 = CarPairingLogging();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -5172,7 +5172,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "showing numeric confirmation in pairing prompt flow", v21, 2u);
     }
 
-    [v17 handleBluetoothPairingConfirmationRequestForDeviceIdentifier:v18 vehicleName:v14 numericCode:v15];
+    [currentPromptFlowController handleBluetoothPairingConfirmationRequestForDeviceIdentifier:v18 vehicleName:nameCopy numericCode:codeCopy];
     objc_destroyWeak(&v25);
     objc_destroyWeak(&location);
   }
@@ -5187,11 +5187,11 @@ LABEL_16:
   }
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = [(CRCarKitServiceAgent *)self startSessionTimer];
+  startSessionTimer = [(CRCarKitServiceAgent *)self startSessionTimer];
 
-  if (v4)
+  if (startSessionTimer)
   {
     v5 = CarPairingLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -5200,21 +5200,21 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "startSessionTimer invalidate", v7, 2u);
     }
 
-    v6 = [(CRCarKitServiceAgent *)self startSessionTimer];
-    [v6 invalidate];
+    startSessionTimer2 = [(CRCarKitServiceAgent *)self startSessionTimer];
+    [startSessionTimer2 invalidate];
 
     [(CRCarKitServiceAgent *)self setStartSessionTimer:0];
   }
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = [v4 configuration];
-  v6 = [v5 deviceIdentifier];
+  disconnectCopy = disconnect;
+  configuration = [disconnectCopy configuration];
+  deviceIdentifier = [configuration deviceIdentifier];
 
-  v7 = [(CRCarKitServiceAgent *)self lastStartSessionDeviceID];
-  v8 = [v7 isEqualToString:v6];
+  lastStartSessionDeviceID = [(CRCarKitServiceAgent *)self lastStartSessionDeviceID];
+  v8 = [lastStartSessionDeviceID isEqualToString:deviceIdentifier];
 
   if (v8)
   {
@@ -5225,22 +5225,22 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "calling stoppedSessionForHostIdentifier: via last started deviceID", buf, 2u);
     }
 
-    v10 = [(CRCarKitServiceAgent *)self sessionRequestClient];
-    [v10 stoppedSessionForHostIdentifier:v6];
+    sessionRequestClient = [(CRCarKitServiceAgent *)self sessionRequestClient];
+    [sessionRequestClient stoppedSessionForHostIdentifier:deviceIdentifier];
   }
 
   else
   {
-    v11 = [(CRCarKitServiceAgent *)self vehicleStore];
-    v12 = [v4 MFiCertificateSerialNumber];
-    v10 = [v11 vehicleForCertificateSerial:v12];
+    vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+    mFiCertificateSerialNumber = [disconnectCopy MFiCertificateSerialNumber];
+    sessionRequestClient = [vehicleStore vehicleForCertificateSerial:mFiCertificateSerialNumber];
 
-    if (v10)
+    if (sessionRequestClient)
     {
-      v13 = [v10 supportsStartSessionRequest];
-      v14 = [v13 BOOLValue];
+      supportsStartSessionRequest = [sessionRequestClient supportsStartSessionRequest];
+      bOOLValue = [supportsStartSessionRequest BOOLValue];
 
-      if (v14)
+      if (bOOLValue)
       {
         v15 = CarGeneralLogging();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -5249,26 +5249,26 @@ LABEL_16:
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "calling stoppedSessionForHostIdentifier: via vehicle record", v33, 2u);
         }
 
-        v16 = [(CRCarKitServiceAgent *)self sessionRequestClient];
-        [v16 stoppedSessionForHostIdentifier:v6];
+        sessionRequestClient2 = [(CRCarKitServiceAgent *)self sessionRequestClient];
+        [sessionRequestClient2 stoppedSessionForHostIdentifier:deviceIdentifier];
       }
     }
   }
 
   if ((+[CRCarPlayPreferences hasShownEditWidgetsNotification]& 1) == 0)
   {
-    v17 = [v4 configuration];
-    v18 = [v17 lodWidgetsMode];
+    configuration2 = [disconnectCopy configuration];
+    lodWidgetsMode = [configuration2 lodWidgetsMode];
 
-    if (v18 != 1)
+    if (lodWidgetsMode != 1)
     {
-      v19 = [(CRCarKitServiceAgent *)self vehicleStore];
-      v20 = [v4 MFiCertificateSerialNumber];
-      v21 = [v19 vehicleForCertificateSerial:v20];
+      vehicleStore2 = [(CRCarKitServiceAgent *)self vehicleStore];
+      mFiCertificateSerialNumber2 = [disconnectCopy MFiCertificateSerialNumber];
+      v21 = [vehicleStore2 vehicleForCertificateSerial:mFiCertificateSerialNumber2];
 
-      v22 = [v21 identifier];
-      v23 = [v22 UUIDString];
-      v24 = [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.General/CARPLAY/vehicle/%@/widgets", v23];
+      identifier = [v21 identifier];
+      uUIDString = [identifier UUIDString];
+      v24 = [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.General/CARPLAY/vehicle/%@/widgets", uUIDString];
 
       v25 = [NSURL URLWithString:v24];
       v26 = CRLocalizedStringForKey();
@@ -5282,25 +5282,25 @@ LABEL_16:
   [(CRCarKitServiceAgent *)self setLastStartSessionDeviceID:0];
   if ([(CRCarKitServiceAgent *)self shouldDisconnectOnSessionDisconnect])
   {
-    v28 = [(CRCarKitServiceAgent *)self vehicleStore];
-    v29 = [v4 MFiCertificateSerialNumber];
-    v30 = [v28 vehicleForCertificateSerial:v29];
+    vehicleStore3 = [(CRCarKitServiceAgent *)self vehicleStore];
+    mFiCertificateSerialNumber3 = [disconnectCopy MFiCertificateSerialNumber];
+    v30 = [vehicleStore3 vehicleForCertificateSerial:mFiCertificateSerialNumber3];
 
-    v31 = [(CRCarKitServiceAgent *)self wifiManager];
-    v32 = [v30 carplayWiFiUUID];
-    [v31 disassociateFromNetworkWithCarPlayUUID:v32];
+    wifiManager = [(CRCarKitServiceAgent *)self wifiManager];
+    carplayWiFiUUID = [v30 carplayWiFiUUID];
+    [wifiManager disassociateFromNetworkWithCarPlayUUID:carplayWiFiUUID];
   }
 
   [(CRCarKitServiceAgent *)self setShouldDisconnectOnSessionDisconnect:0];
 }
 
-- (id)storedVehicleForSession:(id)a3
+- (id)storedVehicleForSession:(id)session
 {
-  v4 = [a3 MFiCertificateSerialNumber];
-  if (v4)
+  mFiCertificateSerialNumber = [session MFiCertificateSerialNumber];
+  if (mFiCertificateSerialNumber)
   {
-    v5 = [(CRCarKitServiceAgent *)self vehicleStore];
-    v6 = [v5 vehicleForCertificateSerial:v4];
+    vehicleStore = [(CRCarKitServiceAgent *)self vehicleStore];
+    v6 = [vehicleStore vehicleForCertificateSerial:mFiCertificateSerialNumber];
   }
 
   else
@@ -5311,25 +5311,25 @@ LABEL_16:
   return v6;
 }
 
-- (void)setCarPlaySimulatorActive:(BOOL)a3
+- (void)setCarPlaySimulatorActive:(BOOL)active
 {
-  if (self->_carPlaySimulatorActive != a3)
+  if (self->_carPlaySimulatorActive != active)
   {
     if (self->_carPlaySimulatorActive)
     {
-      v5 = [(CRCarKitServiceAgent *)self sessionRequestClient];
-      [v5 cancelRequests];
+      sessionRequestClient = [(CRCarKitServiceAgent *)self sessionRequestClient];
+      [sessionRequestClient cancelRequests];
     }
 
-    self->_carPlaySimulatorActive = a3;
+    self->_carPlaySimulatorActive = active;
   }
 }
 
-- (void)setRemoteDeviceConnected:(BOOL)a3
+- (void)setRemoteDeviceConnected:(BOOL)connected
 {
-  if (self->_remoteDeviceConnected != a3)
+  if (self->_remoteDeviceConnected != connected)
   {
-    self->_remoteDeviceConnected = a3;
+    self->_remoteDeviceConnected = connected;
   }
 }
 

@@ -4,7 +4,7 @@
 - (CGSize)thumbnailChromeDetailsViewButtonPadding;
 - (CGSize)thumbnailChromePadding;
 - (CGSize)thumbnailPlayButtonPadding;
-- (PXStoryConcreteLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 storyConfigurationOptions:(unint64_t)a5;
+- (PXStoryConcreteLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options storyConfigurationOptions:(unint64_t)configurationOptions;
 - (UIEdgeInsets)styleSwitcherChromeInset;
 - (UIEdgeInsets)styleSwitcherPageControlInset;
 - (UIEdgeInsets)styleSwitcherViewportInset;
@@ -96,17 +96,17 @@
   return result;
 }
 
-- (PXStoryConcreteLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 storyConfigurationOptions:(unint64_t)a5
+- (PXStoryConcreteLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options storyConfigurationOptions:(unint64_t)configurationOptions
 {
   v10 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = PXStoryConcreteLayoutSpec;
-  if ([(PXStoryConcreteLayoutSpec *)&v9 initWithExtendedTraitCollection:v7 options:a4])
+  if ([(PXStoryConcreteLayoutSpec *)&v9 initWithExtendedTraitCollection:collectionCopy options:options])
   {
-    [v7 layoutOrientation];
-    [v7 layoutOrientation];
-    [v7 contentSizeCategory];
+    [collectionCopy layoutOrientation];
+    [collectionCopy layoutOrientation];
+    [collectionCopy contentSizeCategory];
     PXPreferredContentSizeCategoryIsAccessibility();
   }
 

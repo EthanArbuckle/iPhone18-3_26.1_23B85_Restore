@@ -1,33 +1,33 @@
 @interface PSVR2FastPathKernelDriverDebugTimeSyncQueue
-- (BOOL)sample:(const __IOGCFastPathSample *)a3 getTraceProviderID:(unint64_t *)a4 queueID:(unint64_t *)a5 channel:(unsigned int *)a6 position:(unint64_t *)a7;
-- (PSVR2FastPathKernelDriverDebugTimeSyncQueue)initWithClient:(id)a3 options:(id)a4;
-- (id)getProperty:(id)a3;
-- (int)get:(unint64_t)a3 options:(unsigned int)a4 sample:(__IOGCFastPathSample *)a5;
-- (int)getDataAvailableNotification:(unsigned int *)a3;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
-- (int)sample:(const __IOGCFastPathSample *)a3 getSubsample:(unsigned int)a4 field:(unsigned int)a5 domain:(unsigned int)a6 options:(unsigned int)a7 timestamp:(unint64_t *)a8 uncertainty:(unint64_t *)a9 flags:(unsigned int *)a10;
-- (int)sampleDestroy:(__IOGCFastPathSample *)a3;
+- (BOOL)sample:(const __IOGCFastPathSample *)sample getTraceProviderID:(unint64_t *)d queueID:(unint64_t *)iD channel:(unsigned int *)channel position:(unint64_t *)position;
+- (PSVR2FastPathKernelDriverDebugTimeSyncQueue)initWithClient:(id)client options:(id)options;
+- (id)getProperty:(id)property;
+- (int)get:(unint64_t)get options:(unsigned int)options sample:(__IOGCFastPathSample *)sample;
+- (int)getDataAvailableNotification:(unsigned int *)notification;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
+- (int)sample:(const __IOGCFastPathSample *)sample getSubsample:(unsigned int)subsample field:(unsigned int)field domain:(unsigned int)domain options:(unsigned int)options timestamp:(unint64_t *)timestamp uncertainty:(unint64_t *)uncertainty flags:(unsigned int *)self0;
+- (int)sampleDestroy:(__IOGCFastPathSample *)destroy;
 - (void)dealloc;
 @end
 
 @implementation PSVR2FastPathKernelDriverDebugTimeSyncQueue
 
-- (PSVR2FastPathKernelDriverDebugTimeSyncQueue)initWithClient:(id)a3 options:(id)a4
+- (PSVR2FastPathKernelDriverDebugTimeSyncQueue)initWithClient:(id)client options:(id)options
 {
   v40.receiver = self;
   v40.super_class = PSVR2FastPathKernelDriverDebugTimeSyncQueue;
   v6 = [(PSVR2FastPathKernelDriverDebugTimeSyncQueue *)&v40 init];
   *(v6 + 1) = IOGCFastPathInputQueueInterfacePrepareObjCVtbl();
   *(v6 + 2) = IOGCFastPathSampleContainerInterfacePrepareObjCVtbl();
-  *(v6 + 3) = a3;
-  [a4 objectForKey:@"QueueChannel"];
+  *(v6 + 3) = client;
+  [options objectForKey:@"QueueChannel"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_19;
   }
 
-  v7 = sub_751C(a3);
+  v7 = sub_751C(client);
   *(v6 + 4) = v7;
   if (!v7)
   {
@@ -67,15 +67,15 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v12 unsignedLongLongValue];
+    unsignedLongLongValue = [v12 unsignedLongLongValue];
   }
 
   else
   {
-    v16 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  *(v6 + 6) = v16;
+  *(v6 + 6) = unsignedLongLongValue;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -144,9 +144,9 @@ LABEL_19:
   [(PSVR2FastPathKernelDriverDebugTimeSyncQueue *)&v6 dealloc];
 }
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v6 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v6 = CFUUIDCreateFromUUIDBytes(0, interface);
   v7 = CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0, 0, 0, 0, 0, 0, 0, 0, 0xC0u, 0, 0, 0, 0, 0, 0, 0x46u);
   if (CFEqual(v6, v7) || (v8 = CFUUIDGetConstantUUIDWithBytes(0, 0x19u, 0x43u, 0x1Bu, 0xCFu, 0xBBu, 0xEFu, 0x43u, 0x5Bu, 0x9Cu, 0x57u, 0xB3u, 0xF3u, 0x48u, 6u, 0x86u, 0x2Du), CFEqual(v6, v8)))
   {
@@ -165,7 +165,7 @@ LABEL_19:
     v9 = 16;
   }
 
-  *a4 = self + v9;
+  *outInterface = self + v9;
   CFRetain(self);
   v10 = 0;
 LABEL_5:
@@ -173,9 +173,9 @@ LABEL_5:
   return v10;
 }
 
-- (id)getProperty:(id)a3
+- (id)getProperty:(id)property
 {
-  if ([a3 isEqualToString:@"QueueID"])
+  if ([property isEqualToString:@"QueueID"])
   {
     queueID = self->_queueID;
 
@@ -184,16 +184,16 @@ LABEL_5:
 
   else
   {
-    if (a3)
+    if (property)
     {
       v12 = 0;
       client = self->_client;
       queuePort = self->_queuePort;
-      v19 = a3;
-      v9 = sub_7870(client, queuePort, [NSArray arrayWithObjects:&v19 count:1], &v12);
+      propertyCopy = property;
+      v9 = sub_7870(client, queuePort, [NSArray arrayWithObjects:&propertyCopy count:1], &v12);
       if (!v9)
       {
-        return [v12 objectForKeyedSubscript:a3];
+        return [v12 objectForKeyedSubscript:property];
       }
 
       v10 = v9;
@@ -201,9 +201,9 @@ LABEL_5:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v14 = self;
+        selfCopy = self;
         v15 = 2112;
-        v16 = a3;
+        propertyCopy2 = property;
         v17 = 1024;
         v18 = v10;
         _os_log_error_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "%@ GetProperty '%@' failed: %{mach.errno}d", buf, 0x1Cu);
@@ -214,37 +214,37 @@ LABEL_5:
   }
 }
 
-- (int)sample:(const __IOGCFastPathSample *)a3 getSubsample:(unsigned int)a4 field:(unsigned int)a5 domain:(unsigned int)a6 options:(unsigned int)a7 timestamp:(unint64_t *)a8 uncertainty:(unint64_t *)a9 flags:(unsigned int *)a10
+- (int)sample:(const __IOGCFastPathSample *)sample getSubsample:(unsigned int)subsample field:(unsigned int)field domain:(unsigned int)domain options:(unsigned int)options timestamp:(unint64_t *)timestamp uncertainty:(unint64_t *)uncertainty flags:(unsigned int *)self0
 {
   if (!dword_165EC)
   {
     mach_timebase_info(&dword_165E8);
   }
 
-  return sub_6AE4(self, a3);
+  return sub_6AE4(self, sample);
 }
 
-- (int)sampleDestroy:(__IOGCFastPathSample *)a3
+- (int)sampleDestroy:(__IOGCFastPathSample *)destroy
 {
-  a3->var0 = 0;
-  a3->var1[0] = 0;
-  a3->var1[1] = 0;
-  a3->var1[2] = -1;
+  destroy->var0 = 0;
+  destroy->var1[0] = 0;
+  destroy->var1[1] = 0;
+  destroy->var1[2] = -1;
   return 0;
 }
 
-- (BOOL)sample:(const __IOGCFastPathSample *)a3 getTraceProviderID:(unint64_t *)a4 queueID:(unint64_t *)a5 channel:(unsigned int *)a6 position:(unint64_t *)a7
+- (BOOL)sample:(const __IOGCFastPathSample *)sample getTraceProviderID:(unint64_t *)d queueID:(unint64_t *)iD channel:(unsigned int *)channel position:(unint64_t *)position
 {
-  *a4 = sub_7AB0(self->_client);
-  *a5 = self->_queueID;
-  *a6 = 255;
-  *a7 = a3->var1[2];
+  *d = sub_7AB0(self->_client);
+  *iD = self->_queueID;
+  *channel = 255;
+  *position = sample->var1[2];
   return 1;
 }
 
-- (int)getDataAvailableNotification:(unsigned int *)a3
+- (int)getDataAvailableNotification:(unsigned int *)notification
 {
-  if (!a3)
+  if (!notification)
   {
     return 0;
   }
@@ -260,20 +260,20 @@ LABEL_5:
   result = IOConnectSetNotificationPort(v7, self->_queuePort, v6, 0);
   if (!result)
   {
-    *a3 = v6;
+    *notification = v6;
   }
 
   return result;
 }
 
-- (int)get:(unint64_t)a3 options:(unsigned int)a4 sample:(__IOGCFastPathSample *)a5
+- (int)get:(unint64_t)get options:(unsigned int)options sample:(__IOGCFastPathSample *)sample
 {
   queueMemory = self->_queueMemory;
   result = IOCircularDataQueueCursorReset();
   if (!result)
   {
-    a5->var0 = &self->_IOGCFastPathSampleContainerVTBL;
-    a5->var1[0] = self;
+    sample->var0 = &self->_IOGCFastPathSampleContainerVTBL;
+    sample->var1[0] = self;
   }
 
   return result;

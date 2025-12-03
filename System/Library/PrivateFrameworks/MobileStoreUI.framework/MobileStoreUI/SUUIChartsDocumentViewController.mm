@@ -1,46 +1,46 @@
 @interface SUUIChartsDocumentViewController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
-- (SUUIChartsDocumentViewController)initWithTemplateElement:(id)a3;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
+- (SUUIChartsDocumentViewController)initWithTemplateElement:(id)element;
 - (UIEdgeInsets)_chartInsets;
 - (id)_columnViewControllers;
-- (id)_newColumnViewControllersWithReusableViewControllers:(id)a3;
+- (id)_newColumnViewControllersWithReusableViewControllers:(id)controllers;
 - (id)_resourceLoader;
 - (id)contentScrollView;
-- (int64_t)_visibleColumnCountForWidth:(double)a3;
-- (void)documentDidUpdate:(id)a3;
-- (void)documentMediaQueriesDidUpdate:(id)a3;
+- (int64_t)_visibleColumnCountForWidth:(double)width;
+- (void)documentDidUpdate:(id)update;
+- (void)documentMediaQueriesDidUpdate:(id)update;
 - (void)loadView;
-- (void)resourceLoader:(id)a3 didLoadAllForReason:(int64_t)a4;
-- (void)resourceLoaderDidBeginLoading:(id)a3;
-- (void)suui_viewWillAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)resourceLoader:(id)loader didLoadAllForReason:(int64_t)reason;
+- (void)resourceLoaderDidBeginLoading:(id)loading;
+- (void)suui_viewWillAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUIChartsDocumentViewController
 
-- (SUUIChartsDocumentViewController)initWithTemplateElement:(id)a3
+- (SUUIChartsDocumentViewController)initWithTemplateElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUIChartsDocumentViewController;
   v6 = [(SUUIChartsDocumentViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateElement, a3);
+    objc_storeStrong(&v6->_templateElement, element);
   }
 
   return v7;
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [a3 templateElement];
+  templateElement = [update templateElement];
   templateElement = self->_templateElement;
-  self->_templateElement = v4;
+  self->_templateElement = templateElement;
 
   v6 = self->_columnViewControllers;
   v7 = [(SUUIChartsDocumentViewController *)self _newColumnViewControllersWithReusableViewControllers:v6];
@@ -91,7 +91,7 @@
   }
 }
 
-- (void)documentMediaQueriesDidUpdate:(id)a3
+- (void)documentMediaQueriesDidUpdate:(id)update
 {
   v13 = *MEMORY[0x277D85DE8];
   v8 = 0u;
@@ -125,9 +125,9 @@
   }
 }
 
-- (void)suui_viewWillAppear:(BOOL)a3
+- (void)suui_viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
@@ -149,7 +149,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) suui_viewWillAppear:v3];
+        [*(*(&v11 + 1) + 8 * v9++) suui_viewWillAppear:appearCopy];
       }
 
       while (v7 != v9);
@@ -161,14 +161,14 @@
 
   v10.receiver = self;
   v10.super_class = SUUIChartsDocumentViewController;
-  [(SUUIViewController *)&v10 suui_viewWillAppear:v3];
+  [(SUUIViewController *)&v10 suui_viewWillAppear:appearCopy];
 }
 
 - (id)contentScrollView
 {
   if (self->_chartsView)
   {
-    v4 = 0;
+    contentScrollView = 0;
   }
 
   else
@@ -177,10 +177,10 @@
     v8 = v3;
     v6.receiver = self;
     v6.super_class = SUUIChartsDocumentViewController;
-    v4 = [(SUUIChartsDocumentViewController *)&v6 contentScrollView];
+    contentScrollView = [(SUUIChartsDocumentViewController *)&v6 contentScrollView];
   }
 
-  return v4;
+  return contentScrollView;
 }
 
 - (void)loadView
@@ -188,15 +188,15 @@
   v5.receiver = self;
   v5.super_class = SUUIChartsDocumentViewController;
   [(SUUIChartsDocumentViewController *)&v5 loadView];
-  v3 = [(SUUIChartsDocumentViewController *)self view];
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SUUIChartsDocumentViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  v5 = a4.width / [(SUUIChartsDocumentViewController *)self _visibleColumnCountForWidth:a3];
+  height = size.height;
+  v5 = size.width / [(SUUIChartsDocumentViewController *)self _visibleColumnCountForWidth:container];
   v6 = floorf(v5);
   v7 = height;
   result.height = v7;
@@ -204,18 +204,18 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SUUIChartColumnsView *)self->_chartsView effectView];
-  v6 = [(SUUIChartsDocumentViewController *)self navigationController];
-  v7 = [v6 navigationBar];
-  v8 = [v7 _backdropViewLayerGroupName];
-  [v5 _setGroupName:v8];
+  appearCopy = appear;
+  effectView = [(SUUIChartColumnsView *)self->_chartsView effectView];
+  navigationController = [(SUUIChartsDocumentViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  _backdropViewLayerGroupName = [navigationBar _backdropViewLayerGroupName];
+  [effectView _setGroupName:_backdropViewLayerGroupName];
 
   v9.receiver = self;
   v9.super_class = SUUIChartsDocumentViewController;
-  [(SUUIViewController *)&v9 viewWillAppear:v3];
+  [(SUUIViewController *)&v9 viewWillAppear:appearCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -229,17 +229,17 @@
 
   else
   {
-    v5 = [(SUUIChartsDocumentViewController *)self view];
+    view = [(SUUIChartsDocumentViewController *)self view];
     v6 = [SUUIChartColumnsView alloc];
-    [v5 bounds];
+    [view bounds];
     v7 = [(SUUIChartColumnsView *)v6 initWithFrame:?];
     v8 = self->_chartsView;
     self->_chartsView = v7;
 
     [(SUUIChartColumnsView *)self->_chartsView setAutoresizingMask:18];
     v9 = self->_chartsView;
-    v10 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(SUUIChartColumnsView *)v9 setBackgroundColor:v10];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(SUUIChartColumnsView *)v9 setBackgroundColor:systemBackgroundColor];
 
     v11 = self->_chartsView;
     [(SUUIChartsDocumentViewController *)self _chartInsets];
@@ -248,16 +248,16 @@
     [(SUUIChartColumnsView *)v12 frame];
     [(SUUIChartColumnsView *)v12 setNumberOfVisibleColumns:[(SUUIChartsDocumentViewController *)self _visibleColumnCountForWidth:v13]];
     v14 = self->_chartsView;
-    v15 = [(SUUIChartsDocumentViewController *)self _columnViewControllers];
-    [(SUUIChartColumnsView *)v14 setChartViewControllers:v15];
+    _columnViewControllers = [(SUUIChartsDocumentViewController *)self _columnViewControllers];
+    [(SUUIChartColumnsView *)v14 setChartViewControllers:_columnViewControllers];
 
-    v16 = [(SUUIChartColumnsView *)self->_chartsView effectView];
-    v17 = [(SUUIChartsDocumentViewController *)self navigationController];
-    v18 = [v17 navigationBar];
-    v19 = [v18 _backdropViewLayerGroupName];
-    [v16 _setGroupName:v19];
+    effectView = [(SUUIChartColumnsView *)self->_chartsView effectView];
+    navigationController = [(SUUIChartsDocumentViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    _backdropViewLayerGroupName = [navigationBar _backdropViewLayerGroupName];
+    [effectView _setGroupName:_backdropViewLayerGroupName];
 
-    [v5 addSubview:self->_chartsView];
+    [view addSubview:self->_chartsView];
   }
 
   v20.receiver = self;
@@ -265,12 +265,12 @@
   [(SUUIChartsDocumentViewController *)&v20 viewWillLayoutSubviews];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  coordinatorCopy = coordinator;
   v8 = [(SUUIChartsDocumentViewController *)self _visibleColumnCountForWidth:width];
   [(SUUIChartColumnsView *)self->_chartsView beginColumnChangeAnimationToNumberOfVisibleColumns:v8];
   [(SUUIChartColumnsView *)self->_chartsView setNumberOfVisibleColumns:v8];
@@ -284,7 +284,7 @@
   v21[1] = 3221225472;
   v21[2] = __87__SUUIChartsDocumentViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v21[3] = &unk_2798F5A88;
-  [v7 animateAlongsideTransition:v22 completion:v21];
+  [coordinatorCopy animateAlongsideTransition:v22 completion:v21];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -319,7 +319,7 @@
 
   v16.receiver = self;
   v16.super_class = SUUIChartsDocumentViewController;
-  [(SUUIChartsDocumentViewController *)&v16 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SUUIChartsDocumentViewController *)&v16 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 uint64_t __87__SUUIChartsDocumentViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -338,38 +338,38 @@ void __87__SUUIChartsDocumentViewController_viewWillTransitionToSize_withTransit
   [v2 setNeedsLayout];
 }
 
-- (void)resourceLoaderDidBeginLoading:(id)a3
+- (void)resourceLoaderDidBeginLoading:(id)loading
 {
-  v5 = a3;
-  v4 = [(SUUIChartsDocumentViewController *)self parentViewController];
-  if ([v4 conformsToProtocol:&unk_286BDF918] && (objc_opt_respondsToSelector() & 1) != 0)
+  loadingCopy = loading;
+  parentViewController = [(SUUIChartsDocumentViewController *)self parentViewController];
+  if ([parentViewController conformsToProtocol:&unk_286BDF918] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 resourceLoaderDidBeginLoading:v5];
+    [parentViewController resourceLoaderDidBeginLoading:loadingCopy];
   }
 }
 
-- (void)resourceLoader:(id)a3 didLoadAllForReason:(int64_t)a4
+- (void)resourceLoader:(id)loader didLoadAllForReason:(int64_t)reason
 {
-  v7 = a3;
-  if (a4 == 1)
+  loaderCopy = loader;
+  if (reason == 1)
   {
     [(SUUIChartsTemplateViewElement *)self->_templateElement dispatchEvent:@"visibleimagesloaded" eventAttribute:@"onvisibleimagesloaded" canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 
-  v6 = [(SUUIChartsDocumentViewController *)self parentViewController];
-  if ([v6 conformsToProtocol:&unk_286BDF918] && (objc_opt_respondsToSelector() & 1) != 0)
+  parentViewController = [(SUUIChartsDocumentViewController *)self parentViewController];
+  if ([parentViewController conformsToProtocol:&unk_286BDF918] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 resourceLoader:v7 didLoadAllForReason:a4];
+    [parentViewController resourceLoader:loaderCopy didLoadAllForReason:reason];
   }
 }
 
 - (UIEdgeInsets)_chartInsets
 {
-  v3 = [(SUUIChartsDocumentViewController *)self topLayoutGuide];
-  [v3 length];
+  topLayoutGuide = [(SUUIChartsDocumentViewController *)self topLayoutGuide];
+  [topLayoutGuide length];
   v5 = v4;
-  v6 = [(SUUIChartsDocumentViewController *)self bottomLayoutGuide];
-  [v6 length];
+  bottomLayoutGuide = [(SUUIChartsDocumentViewController *)self bottomLayoutGuide];
+  [bottomLayoutGuide length];
   v8 = v7;
 
   v9 = 0.0;
@@ -398,12 +398,12 @@ void __87__SUUIChartsDocumentViewController_viewWillTransitionToSize_withTransit
   return columnViewControllers;
 }
 
-- (id)_newColumnViewControllersWithReusableViewControllers:(id)a3
+- (id)_newColumnViewControllersWithReusableViewControllers:(id)controllers
 {
   v54 = *MEMORY[0x277D85DE8];
-  v38 = a3;
+  controllersCopy = controllers;
   v39 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v35 = [(SUUIViewController *)self clientContext];
+  clientContext = [(SUUIViewController *)self clientContext];
   [(SUUIChartColumnsView *)self->_chartsView bounds];
   v5 = v4;
   v7 = v6;
@@ -419,7 +419,7 @@ void __87__SUUIChartsDocumentViewController_viewWillTransitionToSize_withTransit
     v9 = v5 / v8;
     v10 = floorf(v9);
     v40 = *v48;
-    v37 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v41; ++i)
@@ -433,19 +433,19 @@ void __87__SUUIChartsDocumentViewController_viewWillTransitionToSize_withTransit
         v13 = [objc_alloc(SUUIPageComponentClassForComponentType(objc_msgSend(v12 "pageComponentType")))];
         if (v13)
         {
-          v14 = [v12 headerElement];
-          v15 = [v14 titleLabels];
-          v16 = [v15 firstObject];
+          headerElement = [v12 headerElement];
+          titleLabels = [headerElement titleLabels];
+          firstObject = [titleLabels firstObject];
 
-          v42 = v16;
-          v17 = [v16 text];
-          v18 = [v17 string];
+          v42 = firstObject;
+          text = [firstObject text];
+          string = [text string];
 
           v45 = 0u;
           v46 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v19 = v38;
+          v19 = controllersCopy;
           v20 = [v19 countByEnumeratingWithState:&v43 objects:v52 count:16];
           if (v20)
           {
@@ -461,8 +461,8 @@ LABEL_9:
               }
 
               v24 = *(*(&v43 + 1) + 8 * v23);
-              v25 = [v24 title];
-              v26 = [v25 isEqualToString:v18];
+              title = [v24 title];
+              v26 = [title isEqualToString:string];
 
               if (v26)
               {
@@ -483,7 +483,7 @@ LABEL_9:
 
             v28 = v24;
 
-            v27 = v37;
+            v27 = selfCopy;
             if (v28)
             {
               goto LABEL_21;
@@ -494,20 +494,20 @@ LABEL_9:
           {
 LABEL_15:
 
-            v27 = v37;
+            v27 = selfCopy;
           }
 
           v28 = [[SUUIStorePageSectionsViewController alloc] initWithLayoutStyle:0];
-          [(SUUIViewController *)v28 setClientContext:v35];
-          v29 = [(SUUIViewController *)v27 operationQueue];
-          [(SUUIViewController *)v28 setOperationQueue:v29];
+          [(SUUIViewController *)v28 setClientContext:clientContext];
+          operationQueue = [(SUUIViewController *)v27 operationQueue];
+          [(SUUIViewController *)v28 setOperationQueue:operationQueue];
 
-          v30 = [(SUUIChartsDocumentViewController *)v27 _resourceLoader];
-          [(SUUIStorePageSectionsViewController *)v28 setResourceLoader:v30];
+          _resourceLoader = [(SUUIChartsDocumentViewController *)v27 _resourceLoader];
+          [(SUUIStorePageSectionsViewController *)v28 setResourceLoader:_resourceLoader];
 
-          if (v18)
+          if (string)
           {
-            v31 = v18;
+            v31 = string;
           }
 
           else
@@ -539,15 +539,15 @@ LABEL_21:
   return v39;
 }
 
-- (int64_t)_visibleColumnCountForWidth:(double)a3
+- (int64_t)_visibleColumnCountForWidth:(double)width
 {
   v3 = 3;
-  if (a3 < 1023.0)
+  if (width < 1023.0)
   {
     v3 = 2;
   }
 
-  if (a3 < 682.0)
+  if (width < 682.0)
   {
     return 1;
   }
@@ -564,8 +564,8 @@ LABEL_21:
   if (!resourceLoader)
   {
     v4 = [SUUIResourceLoader alloc];
-    v5 = [(SUUIViewController *)self clientContext];
-    v6 = [(SUUIResourceLoader *)v4 initWithClientContext:v5];
+    clientContext = [(SUUIViewController *)self clientContext];
+    v6 = [(SUUIResourceLoader *)v4 initWithClientContext:clientContext];
     v7 = self->_resourceLoader;
     self->_resourceLoader = v6;
 

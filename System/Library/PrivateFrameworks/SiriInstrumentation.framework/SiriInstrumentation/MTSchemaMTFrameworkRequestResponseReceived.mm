@@ -1,27 +1,27 @@
 @interface MTSchemaMTFrameworkRequestResponseReceived
-- (BOOL)isEqual:(id)a3;
-- (MTSchemaMTFrameworkRequestResponseReceived)initWithDictionary:(id)a3;
-- (MTSchemaMTFrameworkRequestResponseReceived)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSchemaMTFrameworkRequestResponseReceived)initWithDictionary:(id)dictionary;
+- (MTSchemaMTFrameworkRequestResponseReceived)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasNumSentences:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasNumSentences:(BOOL)sentences;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTSchemaMTFrameworkRequestResponseReceived
 
-- (MTSchemaMTFrameworkRequestResponseReceived)initWithDictionary:(id)a3
+- (MTSchemaMTFrameworkRequestResponseReceived)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = MTSchemaMTFrameworkRequestResponseReceived;
   v5 = [(MTSchemaMTFrameworkRequestResponseReceived *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"frameworkRequestId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"frameworkRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(MTSchemaMTFrameworkRequestResponseReceived *)v5 setFrameworkRequestId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestRoute"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestRoute"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTFrameworkRequestResponseReceived setRequestRoute:](v5, "setRequestRoute:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numSentences"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numSentences"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (MTSchemaMTFrameworkRequestResponseReceived)initWithJSON:(id)a3
+- (MTSchemaMTFrameworkRequestResponseReceived)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MTSchemaMTFrameworkRequestResponseReceived *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MTSchemaMTFrameworkRequestResponseReceived *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MTSchemaMTFrameworkRequestResponseReceived *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,20 +85,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_frameworkRequestId)
   {
-    v4 = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    frameworkRequestId = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId];
+    dictionaryRepresentation = [frameworkRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"frameworkRequestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"frameworkRequestId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"frameworkRequestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"frameworkRequestId"];
     }
   }
 
@@ -106,21 +106,21 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MTSchemaMTFrameworkRequestResponseReceived numSentences](self, "numSentences")}];
-    [v3 setObject:v8 forKeyedSubscript:@"numSentences"];
+    [dictionary setObject:v8 forKeyedSubscript:@"numSentences"];
 
     has = self->_has;
   }
 
   if (has)
   {
-    v9 = [(MTSchemaMTFrameworkRequestResponseReceived *)self requestRoute];
+    requestRoute = [(MTSchemaMTFrameworkRequestResponseReceived *)self requestRoute];
     v10 = @"MTFRAMEWORKREQUESTROUTE_UNKNOWN";
-    if (v9 == 1)
+    if (requestRoute == 1)
     {
       v10 = @"MTFRAMEWORKREQUESTROUTE_NETWORK";
     }
 
-    if (v9 == 2)
+    if (requestRoute == 2)
     {
       v11 = @"MTFRAMEWORKREQUESTROUTE_ON_DEVICE";
     }
@@ -130,12 +130,12 @@
       v11 = v10;
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"requestRoute"];
+    [dictionary setObject:v11 forKeyedSubscript:@"requestRoute"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -165,30 +165,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId];
-  v6 = [v4 frameworkRequestId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  frameworkRequestId = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId];
+  frameworkRequestId2 = [equalCopy frameworkRequestId];
+  v7 = frameworkRequestId2;
+  if ((frameworkRequestId != 0) == (frameworkRequestId2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId];
-  if (v8)
+  frameworkRequestId3 = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId];
+  if (frameworkRequestId3)
   {
-    v9 = v8;
-    v10 = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId];
-    v11 = [v4 frameworkRequestId];
-    v12 = [v10 isEqual:v11];
+    v9 = frameworkRequestId3;
+    frameworkRequestId4 = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId];
+    frameworkRequestId5 = [equalCopy frameworkRequestId];
+    v12 = [frameworkRequestId4 isEqual:frameworkRequestId5];
 
     if (!v12)
     {
@@ -201,7 +201,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v14 = v4[24];
+  v14 = equalCopy[24];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -212,10 +212,10 @@ LABEL_16:
   if (*&has)
   {
     requestRoute = self->_requestRoute;
-    if (requestRoute == [v4 requestRoute])
+    if (requestRoute == [equalCopy requestRoute])
     {
       has = self->_has;
-      v14 = v4[24];
+      v14 = equalCopy[24];
       goto LABEL_12;
     }
 
@@ -232,7 +232,7 @@ LABEL_12:
   if (v16)
   {
     numSentences = self->_numSentences;
-    if (numSentences != [v4 numSentences])
+    if (numSentences != [equalCopy numSentences])
     {
       goto LABEL_16;
     }
@@ -244,14 +244,14 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId];
+  toCopy = to;
+  frameworkRequestId = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId];
 
-  if (v4)
+  if (frameworkRequestId)
   {
-    v5 = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId];
+    frameworkRequestId2 = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -262,17 +262,17 @@ LABEL_17:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasNumSentences:(BOOL)a3
+- (void)setHasNumSentences:(BOOL)sentences
 {
-  if (a3)
+  if (sentences)
   {
     v3 = 2;
   }
@@ -285,17 +285,17 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = MTSchemaMTFrameworkRequestResponseReceived;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(MTSchemaMTFrameworkRequestResponseReceived *)self frameworkRequestId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(MTSchemaMTFrameworkRequestResponseReceived *)self deleteFrameworkRequestId];
   }

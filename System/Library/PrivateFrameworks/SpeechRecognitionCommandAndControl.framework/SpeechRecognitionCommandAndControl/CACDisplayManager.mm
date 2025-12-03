@@ -1,7 +1,7 @@
 @interface CACDisplayManager
 + (id)sharedManager;
 - (BOOL)_hasModalAlert;
-- (BOOL)_hasModalAlertWithTitle:(id)a3;
+- (BOOL)_hasModalAlertWithTitle:(id)title;
 - (BOOL)anyPresentationPreventsDictation;
 - (BOOL)isDisplayingAnyContentView;
 - (BOOL)isDisplayingAnyInteractiveContentInProcess;
@@ -11,87 +11,87 @@
 - (BOOL)isDisplayingConfirmationModalAlert;
 - (BOOL)isDisplayingCorrections;
 - (BOOL)isGridAtTopLevel;
-- (BOOL)labeledElement:(id)a3 isOccludedByPictureInPictureWindow:(id)a4;
+- (BOOL)labeledElement:(id)element isOccludedByPictureInPictureWindow:(id)window;
 - (BOOL)shouldExpandToCharacters;
 - (BOOL)shouldExpandToLines;
 - (BOOL)shouldExpandToWords;
 - (BOOL)updateGridLayoutFromPreferences;
-- (BOOL)updateGridWithPortraitUpRect:(CGRect)a3 gridContainingLabel:(id)a4;
-- (BOOL)verifyElementExists:(id)a3;
+- (BOOL)updateGridWithPortraitUpRect:(CGRect)rect gridContainingLabel:(id)label;
+- (BOOL)verifyElementExists:(id)exists;
 - (CACDisplayManager)init;
 - (CACVoiceOverAnnouncer)voiceOverAnnouncer;
 - (CGPoint)defaultPortraitUpPointForGestures;
-- (CGRect)reorientedRect:(CGRect)a3;
+- (CGRect)reorientedRect:(CGRect)rect;
 - (UIView)overlayView;
 - (UIView)view;
 - (_NSRange)targetOverlayRange;
 - (id)_carScreenSceneManager;
 - (id)_defaultScreenSceneManager;
-- (id)_labeledTextSegmentElementsIncludingOnlyVisible:(BOOL)a3;
+- (id)_labeledTextSegmentElementsIncludingOnlyVisible:(BOOL)visible;
 - (id)_mainScreenSceneManager;
 - (id)_sceneForModalAlerts;
 - (id)_test_activeEditingOverlayElements;
 - (id)_uiPresentingSceneManagers;
 - (id)contextCluesPresentationManager;
 - (id)correctionPresentationManager;
-- (id)currentlyDisplayedCorrections:(id)a3;
-- (id)currentlyDisplayedOverlayLabels:(id)a3;
+- (id)currentlyDisplayedCorrections:(id)corrections;
+- (id)currentlyDisplayedOverlayLabels:(id)labels;
 - (id)customCommandEditorPresentationManager;
 - (id)dictationRecognizerModeOverlayManager;
 - (id)elementActionsPresentationManager;
 - (id)elementNamesOverlayManager;
 - (id)gestureLivePreviewPresentationOverlayManager;
-- (id)gridNumberForRect:(CGRect)a3 displayID:(unsigned int)a4;
+- (id)gridNumberForRect:(CGRect)rect displayID:(unsigned int)d;
 - (id)labeledElementsForGrid;
 - (id)labeledElementsForItemNumbers;
 - (id)labeledElementsOverlayManager;
-- (id)overlayViewForDisplayID:(unsigned int)a3;
+- (id)overlayViewForDisplayID:(unsigned int)d;
 - (unsigned)carPlayDisplayID;
-- (void)_appendCarPlayLayouts:(id)a3;
-- (void)_initializeWindowsWithScene:(id)a3;
-- (void)_processCarPlayLayoutResponse:(id)a3 forVehicleID:(id)a4;
-- (void)_showBannerViewWithText:(id)a3 type:(int64_t)a4;
+- (void)_appendCarPlayLayouts:(id)layouts;
+- (void)_initializeWindowsWithScene:(id)scene;
+- (void)_processCarPlayLayoutResponse:(id)response forVehicleID:(id)d;
+- (void)_showBannerViewWithText:(id)text type:(int64_t)type;
 - (void)_startVoiceControlServer;
-- (void)_trackModalAlert:(id)a3;
-- (void)_untrackModalAlert:(id)a3;
+- (void)_trackModalAlert:(id)alert;
+- (void)_untrackModalAlert:(id)alert;
 - (void)_updateForCurrentStatusIndicatorType;
-- (void)addPointsToLiveRecordingGesturePreviewByFingerIdentifier:(id)a3 forces:(id)a4 atTime:(double)a5;
-- (void)carPlayDidConnect:(BOOL)a3;
+- (void)addPointsToLiveRecordingGesturePreviewByFingerIdentifier:(id)identifier forces:(id)forces atTime:(double)time;
+- (void)carPlayDidConnect:(BOOL)connect;
 - (void)dealloc;
-- (void)deinitializeWindowsWithScene:(id)a3;
+- (void)deinitializeWindowsWithScene:(id)scene;
 - (void)didUpdateOrientation;
-- (void)displayMessageString:(id)a3 type:(int64_t)a4 announcementCompletion:(id)a5;
+- (void)displayMessageString:(id)string type:(int64_t)type announcementCompletion:(id)completion;
 - (void)displayReadyToUseWithLanguageMessage;
-- (void)enableStatusBarOverride:(BOOL)a3;
-- (void)hideAnyOverlayAnimated:(BOOL)a3 includeInteractiveOverlays:(BOOL)a4;
-- (void)hideAnyPresentationAnimated:(BOOL)a3 includingOutOfProcessPresentations:(BOOL)a4;
+- (void)enableStatusBarOverride:(BOOL)override;
+- (void)hideAnyOverlayAnimated:(BOOL)animated includeInteractiveOverlays:(BOOL)overlays;
+- (void)hideAnyPresentationAnimated:(BOOL)animated includingOutOfProcessPresentations:(BOOL)presentations;
 - (void)hideCorrections;
 - (void)hideDictationRecognizerModeOverlayNow;
 - (void)hideLiveRecordingGesturePreview;
-- (void)hideObsoletePresentationsIfNeededForElements:(id)a3;
-- (void)presentModalAlertWithTitle:(id)a3 description:(id)a4 button1Text:(id)a5 button1Style:(int64_t)a6 button2Text:(id)a7 button2Style:(int64_t)a8 object:(id)a9 button1Handler:(id)a10 button2Handler:(id)a11;
-- (void)presentModalAlertWithTitle:(id)a3 description:(id)a4 okButtonText:(id)a5 cancelButtonText:(id)a6 object:(id)a7 okButtonHandler:(id)a8;
+- (void)hideObsoletePresentationsIfNeededForElements:(id)elements;
+- (void)presentModalAlertWithTitle:(id)title description:(id)description button1Text:(id)text button1Style:(int64_t)style button2Text:(id)button2Text button2Style:(int64_t)button2Style object:(id)object button1Handler:(id)self0 button2Handler:(id)self1;
+- (void)presentModalAlertWithTitle:(id)title description:(id)description okButtonText:(id)text cancelButtonText:(id)buttonText object:(id)object okButtonHandler:(id)handler;
 - (void)refreshOverlays;
-- (void)removeTrackingForFingerIdentifier:(id)a3;
+- (void)removeTrackingForFingerIdentifier:(id)identifier;
 - (void)resetGrid;
 - (void)resetGridIdleTimer;
-- (void)setStatusIndicatorType:(int64_t)a3;
-- (void)showContextCluesViewWithCommands:(id)a3;
-- (void)showCorrectionsForElement:(id)a3 nBestStrings:(id)a4;
-- (void)showCustomCommandEditorWithGesture:(id)a3;
-- (void)showCustomCommandEditorWithRecordedUserActionFlow:(id)a3;
-- (void)showCustomCommandEditorWithShortcutsWorkflow:(id)a3;
-- (void)showCustomCommandEditorWithTextToInsert:(id)a3;
-- (void)showElementActionsForElement:(id)a3 usingPortraitUpRect:(CGRect)a4;
+- (void)setStatusIndicatorType:(int64_t)type;
+- (void)showContextCluesViewWithCommands:(id)commands;
+- (void)showCorrectionsForElement:(id)element nBestStrings:(id)strings;
+- (void)showCustomCommandEditorWithGesture:(id)gesture;
+- (void)showCustomCommandEditorWithRecordedUserActionFlow:(id)flow;
+- (void)showCustomCommandEditorWithShortcutsWorkflow:(id)workflow;
+- (void)showCustomCommandEditorWithTextToInsert:(id)insert;
+- (void)showElementActionsForElement:(id)element usingPortraitUpRect:(CGRect)rect;
 - (void)showLiveRecordingGesturePreview;
 - (void)showOverlayForDictiationRecognizerMode;
 - (void)speakVoiceOverDescriptionForActiveOverlayIfNeeded;
-- (void)startShowingTransientOverlayForType:(id)a3;
-- (void)systemApertureLayoutDidChange:(id)a3;
-- (void)updateGridLayoutWithNumberOfRows:(unint64_t)a3 numberOfColumns:(unint64_t)a4 shouldPreferRows:(BOOL)a5;
-- (void)updatePreferencesFromCurrentGridLayoutForRows:(BOOL)a3 forColumns:(BOOL)a4;
+- (void)startShowingTransientOverlayForType:(id)type;
+- (void)systemApertureLayoutDidChange:(id)change;
+- (void)updateGridLayoutWithNumberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns shouldPreferRows:(BOOL)preferRows;
+- (void)updatePreferencesFromCurrentGridLayoutForRows:(BOOL)rows forColumns:(BOOL)columns;
 - (void)updatePresentationForActiveOverlay;
-- (void)willProgrammaticallySelectRange:(_NSRange)a3 forElement:(id)a4;
+- (void)willProgrammaticallySelectRange:(_NSRange)range forElement:(id)element;
 @end
 
 @implementation CACDisplayManager
@@ -127,13 +127,13 @@ uint64_t __34__CACDisplayManager_sharedManager__block_invoke()
   [(CACDisplayManager *)&v3 dealloc];
 }
 
-- (void)deinitializeWindowsWithScene:(id)a3
+- (void)deinitializeWindowsWithScene:(id)scene
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 session];
-  v6 = [v5 role];
-  v7 = [v6 isEqualToString:*MEMORY[0x277D776C8]];
+  sceneCopy = scene;
+  session = [sceneCopy session];
+  role = [session role];
+  v7 = [role isEqualToString:*MEMORY[0x277D776C8]];
 
   if (v7)
   {
@@ -162,9 +162,9 @@ uint64_t __34__CACDisplayManager_sharedManager__block_invoke()
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        v15 = [v14 scene];
+        scene = [v14 scene];
 
-        if (v15 == v4)
+        if (scene == sceneCopy)
         {
           v16 = v14;
 
@@ -186,43 +186,43 @@ uint64_t __34__CACDisplayManager_sharedManager__block_invoke()
   [(NSMutableArray *)self->_sceneManagers removeObject:v11];
 }
 
-- (void)_initializeWindowsWithScene:(id)a3
+- (void)_initializeWindowsWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = MEMORY[0x277D776C8];
-  v49 = v4;
-  if (v4)
+  v49 = sceneCopy;
+  if (sceneCopy)
   {
-    v6 = [v4 session];
-    v7 = [v6 role];
-    if ([v7 isEqualToString:*MEMORY[0x277D772C8]])
+    session = [sceneCopy session];
+    role = [session role];
+    if ([role isEqualToString:*MEMORY[0x277D772C8]])
     {
     }
 
     else
     {
-      v8 = [v49 session];
-      v9 = [v8 role];
-      v10 = [v9 isEqualToString:*v5];
+      session2 = [v49 session];
+      role2 = [session2 role];
+      v10 = [role2 isEqualToString:*v5];
 
-      v4 = v49;
+      sceneCopy = v49;
       if (v10)
       {
         goto LABEL_7;
       }
 
-      v6 = [MEMORY[0x277CCACC8] callStackSymbols];
-      _CACAssertionFailed("/Library/Caches/com.apple.xbs/Sources/SpeechRecognitionCommandAndControl/CommandAndControlFramework/DisplayManager/CACDisplayManager.m", 950, "[CACDisplayManager _initializeWindowsWithScene:]", v6, @"Attempted to initialize windows on unexpected scene: %@", v11, v12, v13, v49);
+      session = [MEMORY[0x277CCACC8] callStackSymbols];
+      _CACAssertionFailed("/Library/Caches/com.apple.xbs/Sources/SpeechRecognitionCommandAndControl/CommandAndControlFramework/DisplayManager/CACDisplayManager.m", 950, "[CACDisplayManager _initializeWindowsWithScene:]", session, @"Attempted to initialize windows on unexpected scene: %@", v11, v12, v13, v49);
     }
 
-    v4 = v49;
+    sceneCopy = v49;
   }
 
 LABEL_7:
-  v14 = [v4 session];
-  v15 = [v14 role];
+  session3 = [sceneCopy session];
+  role3 = [session3 role];
   v16 = *v5;
-  v17 = [v15 isEqualToString:*v5];
+  v17 = [role3 isEqualToString:*v5];
 
   if (v17)
   {
@@ -232,10 +232,10 @@ LABEL_7:
 
   v18 = objc_alloc_init(CACSceneManager);
   [(CACSceneManager *)v18 setScene:v49];
-  v19 = [(CACSceneManager *)v18 scene];
-  v20 = [v19 screen];
-  v21 = [MEMORY[0x277D759A0] mainScreen];
-  v22 = [v20 isEqual:v21];
+  scene = [(CACSceneManager *)v18 scene];
+  screen = [scene screen];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  v22 = [screen isEqual:mainScreen];
 
   sceneManagers = self->_sceneManagers;
   if (v22)
@@ -248,16 +248,16 @@ LABEL_7:
     [(NSMutableArray *)sceneManagers addObject:v18];
   }
 
-  v24 = [v49 session];
-  v25 = [v24 role];
-  v26 = [v25 isEqualToString:v16];
+  session4 = [v49 session];
+  role4 = [session4 role];
+  v26 = [role4 isEqualToString:v16];
 
   if (v26)
   {
-    v27 = [v49 _FBSScene];
-    v28 = [v27 settings];
+    _FBSScene = [v49 _FBSScene];
+    settings = [_FBSScene settings];
 
-    [v28 safeAreaInsetsPortrait];
+    [settings safeAreaInsetsPortrait];
     v30 = v29;
     v32 = v31;
     v34 = v33;
@@ -310,9 +310,9 @@ LABEL_7:
   [(CACSceneManager *)v18 setWindow:v39];
   [(CACSceneManager *)v18 setOverlayContainerViewController:v41];
   [(CACSceneManager *)v18 setOverlayWindow:v43];
-  v44 = [v49 screen];
-  v45 = [MEMORY[0x277D759A0] mainScreen];
-  v46 = [v44 isEqual:v45];
+  screen2 = [v49 screen];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  v46 = [screen2 isEqual:mainScreen2];
 
   if (v46)
   {
@@ -344,9 +344,9 @@ LABEL_7:
     sessionStatus = v2->_sessionStatus;
     v2->_sessionStatus = v7;
 
-    v9 = [(CARSessionStatus *)v2->_sessionStatus currentSession];
-    v10 = [v9 configuration];
-    v2->_carPlayConnectedWirelessly = [v10 transportType] == 3;
+    currentSession = [(CARSessionStatus *)v2->_sessionStatus currentSession];
+    configuration = [currentSession configuration];
+    v2->_carPlayConnectedWirelessly = [configuration transportType] == 3;
 
     v11 = objc_alloc_init(MEMORY[0x277D6BBA8]);
     voiceControlStatusPublisher = v2->_voiceControlStatusPublisher;
@@ -354,8 +354,8 @@ LABEL_7:
 
     [(CACDisplayManager *)v2 _updateForCurrentStatusIndicatorType];
     [(CACDisplayManager *)v2 _startVoiceControlServer];
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v2 selector:sel_refreshOverlays name:@"CACSpokenCommandManagerStartedListening" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_refreshOverlays name:@"CACSpokenCommandManagerStartedListening" object:0];
 
     v2->_programmaticallySelectedRange = xmmword_26B405110;
     v2->_textEditingOverlaysEnabled = 0;
@@ -372,17 +372,17 @@ LABEL_7:
     return 0;
   }
 
-  v2 = [(CACDisplayManager *)self _carScreenSceneManager];
-  v3 = [v2 scene];
-  v4 = [v3 screen];
-  v5 = [v4 _integerDisplayID];
+  _carScreenSceneManager = [(CACDisplayManager *)self _carScreenSceneManager];
+  scene = [_carScreenSceneManager scene];
+  screen = [scene screen];
+  _integerDisplayID = [screen _integerDisplayID];
 
-  return v5;
+  return _integerDisplayID;
 }
 
-- (void)_appendCarPlayLayouts:(id)a3
+- (void)_appendCarPlayLayouts:(id)layouts
 {
-  v4 = [(NSDictionary *)self->_carPlayApps bs_dictionaryByAddingEntriesFromDictionary:a3];
+  v4 = [(NSDictionary *)self->_carPlayApps bs_dictionaryByAddingEntriesFromDictionary:layouts];
   carPlayApps = self->_carPlayApps;
   self->_carPlayApps = v4;
 
@@ -390,13 +390,13 @@ LABEL_7:
   [v6 forceSynchronizeRecognizersForBuiltInLMIdentifier:*MEMORY[0x277D65608]];
 }
 
-- (void)_processCarPlayLayoutResponse:(id)a3 forVehicleID:(id)a4
+- (void)_processCarPlayLayoutResponse:(id)response forVehicleID:(id)d
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v27 = a4;
-  v28 = [MEMORY[0x277CBEB38] dictionary];
-  [v5 objectForKeyedSubscript:*MEMORY[0x277CF9068]];
+  responseCopy = response;
+  dCopy = d;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [responseCopy objectForKeyedSubscript:*MEMORY[0x277CF9068]];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -449,7 +449,7 @@ LABEL_7:
                 v31[4] = self;
                 v32 = v15;
                 v16 = v15;
-                [v16 fetchApplicationIconInformationForBundleIdentifier:v14 vehicleID:v27 showBorder:0 completion:v31];
+                [v16 fetchApplicationIconInformationForBundleIdentifier:v14 vehicleID:dCopy showBorder:0 completion:v31];
 
                 goto LABEL_17;
               }
@@ -466,11 +466,11 @@ LABEL_7:
                 }
 
 LABEL_15:
-                [v28 setObject:v14 forKeyedSubscript:v19];
+                [dictionary setObject:v14 forKeyedSubscript:v19];
                 goto LABEL_16;
               }
 
-              [v28 setObject:v14 forKeyedSubscript:v17];
+              [dictionary setObject:v14 forKeyedSubscript:v17];
               if (([v17 isEqualToString:v19] & 1) == 0)
               {
                 goto LABEL_15;
@@ -505,8 +505,8 @@ LABEL_17:
   block[2] = __64__CACDisplayManager__processCarPlayLayoutResponse_forVehicleID___block_invoke_3;
   block[3] = &unk_279CEB4C0;
   block[4] = self;
-  v30 = v28;
-  v21 = v28;
+  v30 = dictionary;
+  v21 = dictionary;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -540,13 +540,13 @@ void __64__CACDisplayManager__processCarPlayLayoutResponse_forVehicleID___block_
   [v1 _appendCarPlayLayouts:v3];
 }
 
-- (void)carPlayDidConnect:(BOOL)a3
+- (void)carPlayDidConnect:(BOOL)connect
 {
-  v3 = a3;
+  connectCopy = connect;
   v56 = *MEMORY[0x277D85DE8];
-  v5 = [(CACDisplayManager *)self carPlayConnected]^ a3;
-  [(CACDisplayManager *)self setCarPlayConnected:v3];
-  if (v3)
+  v5 = [(CACDisplayManager *)self carPlayConnected]^ connect;
+  [(CACDisplayManager *)self setCarPlayConnected:connectCopy];
+  if (connectCopy)
   {
     if (v5)
     {
@@ -607,22 +607,22 @@ void __64__CACDisplayManager__processCarPlayLayoutResponse_forVehicleID___block_
       }
     }
 
-    v22 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     carPlayApps = self->_carPlayApps;
-    self->_carPlayApps = v22;
+    self->_carPlayApps = dictionary;
 
-    v24 = [MEMORY[0x277CF8A80] sharedInstance];
-    v25 = [v24 connectedVehicleAccessories];
-    v26 = [v25 anyObject];
+    mEMORY[0x277CF8A80] = [MEMORY[0x277CF8A80] sharedInstance];
+    connectedVehicleAccessories = [mEMORY[0x277CF8A80] connectedVehicleAccessories];
+    anyObject = [connectedVehicleAccessories anyObject];
 
-    if (v26)
+    if (anyObject)
     {
-      v27 = [(NSMutableArray *)v26 certificateSerialNumber];
+      certificateSerialNumber = [(NSMutableArray *)anyObject certificateSerialNumber];
       v45 = MEMORY[0x277D85DD0];
       v46 = 3221225472;
       v47 = __39__CACDisplayManager_carPlayDidConnect___block_invoke;
       v48 = &unk_279CEC450;
-      v49 = self;
+      selfCopy = self;
       CRVehicleIdentifierForCertificateSerial();
     }
 
@@ -649,14 +649,14 @@ LABEL_29:
     v32 = [CACLocaleUtilities localizedUIStringForKey:@"InfoMessage.ReturnedToPhone"];
     v33 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
     v34 = [v33 primaryStringForCommandIdentifier:@"System.WakeListeningCarPlay"];
-    v24 = [v31 stringWithValidatedFormat:v32 validFormatSpecifiers:@"%@" error:0, v34];
+    mEMORY[0x277CF8A80] = [v31 stringWithValidatedFormat:v32 validFormatSpecifiers:@"%@" error:0, v34];
 
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v26 = self->_sceneManagers;
-    v35 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v41 objects:v54 count:16];
+    anyObject = self->_sceneManagers;
+    v35 = [(NSMutableArray *)anyObject countByEnumeratingWithState:&v41 objects:v54 count:16];
     if (v35)
     {
       v36 = v35;
@@ -667,17 +667,17 @@ LABEL_29:
         {
           if (*v42 != v37)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(anyObject);
           }
 
           v39 = *(*(&v41 + 1) + 8 * j);
           if ([v39 isMainDisplayScene])
           {
-            [v39 showBannerViewWithText:v24 type:0];
+            [v39 showBannerViewWithText:mEMORY[0x277CF8A80] type:0];
           }
         }
 
-        v36 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v41 objects:v54 count:16];
+        v36 = [(NSMutableArray *)anyObject countByEnumeratingWithState:&v41 objects:v54 count:16];
       }
 
       while (v36);
@@ -734,11 +734,11 @@ uint64_t __39__CACDisplayManager_carPlayDidConnect___block_invoke_667(uint64_t a
   return [v3 invalidate];
 }
 
-- (void)willProgrammaticallySelectRange:(_NSRange)a3 forElement:(id)a4
+- (void)willProgrammaticallySelectRange:(_NSRange)range forElement:(id)element
 {
-  length = a3.length;
-  v5 = a3.location;
-  v7 = a4;
+  length = range.length;
+  v5 = range.location;
+  elementCopy = element;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -747,8 +747,8 @@ uint64_t __39__CACDisplayManager_carPlayDidConnect___block_invoke_667(uint64_t a
   objc_copyWeak(v11, &location);
   v11[1] = v5;
   v11[2] = length;
-  v10 = v7;
-  v8 = v7;
+  v10 = elementCopy;
+  v8 = elementCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(v11);
@@ -767,10 +767,10 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
   }
 }
 
-- (void)systemApertureLayoutDidChange:(id)a3
+- (void)systemApertureLayoutDidChange:(id)change
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   x = *MEMORY[0x277CBF3A0];
   y = *(MEMORY[0x277CBF3A0] + 8);
   width = *(MEMORY[0x277CBF3A0] + 16);
@@ -779,7 +779,7 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = [v4 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  v9 = [changeCopy countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v9)
   {
     v10 = v9;
@@ -790,7 +790,7 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
       {
         if (*v35 != v11)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(changeCopy);
         }
 
         [*(*(&v34 + 1) + 8 * i) CGRectValue];
@@ -828,7 +828,7 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
         }
       }
 
-      v10 = [v4 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v10 = [changeCopy countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v10);
@@ -847,25 +847,25 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
     _os_log_debug_impl(&dword_26B354000, v21, OS_LOG_TYPE_DEBUG, "System aperature changed sizes. New size: %@", buf, 0xCu);
   }
 
-  v22 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  [v22 setSystemAperatureRect:{x, y, width, height}];
+  _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+  [_mainScreenSceneManager setSystemAperatureRect:{x, y, width, height}];
 
-  v23 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  [v23 minimumSystemAperatureRect];
+  _mainScreenSceneManager2 = [(CACDisplayManager *)self _mainScreenSceneManager];
+  [_mainScreenSceneManager2 minimumSystemAperatureRect];
   v25 = v24;
 
-  v26 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  [v26 minimumSystemAperatureRect];
+  _mainScreenSceneManager3 = [(CACDisplayManager *)self _mainScreenSceneManager];
+  [_mainScreenSceneManager3 minimumSystemAperatureRect];
   v28 = v27;
 
-  v29 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  [v29 minimumSystemAperatureRect];
+  _mainScreenSceneManager4 = [(CACDisplayManager *)self _mainScreenSceneManager];
+  [_mainScreenSceneManager4 minimumSystemAperatureRect];
   IsEmpty = CGRectIsEmpty(v45);
 
   if (IsEmpty || height < v25 || (vabdd_f64(v25, height) < 2.22044605e-16 ? (v31 = width < v28) : (v31 = 0), v31))
   {
-    v32 = [(CACDisplayManager *)self _mainScreenSceneManager];
-    [v32 setMinimumSystemAperatureRect:{x, y, width, height}];
+    _mainScreenSceneManager5 = [(CACDisplayManager *)self _mainScreenSceneManager];
+    [_mainScreenSceneManager5 setMinimumSystemAperatureRect:{x, y, width, height}];
   }
 
   [(CACDisplayManager *)self refreshOverlays];
@@ -873,30 +873,30 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
 
 - (UIView)view
 {
-  v2 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  v3 = [v2 windowContainerViewController];
-  v4 = [v3 view];
+  _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+  windowContainerViewController = [_mainScreenSceneManager windowContainerViewController];
+  view = [windowContainerViewController view];
 
-  return v4;
+  return view;
 }
 
 - (UIView)overlayView
 {
-  v2 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  v3 = [v2 overlayContainerViewController];
-  v4 = [v3 view];
+  _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+  overlayContainerViewController = [_mainScreenSceneManager overlayContainerViewController];
+  view = [overlayContainerViewController view];
 
-  return v4;
+  return view;
 }
 
-- (void)_showBannerViewWithText:(id)a3 type:(int64_t)a4
+- (void)_showBannerViewWithText:(id)text type:(int64_t)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  textCopy = text;
   if ([(CACDisplayManager *)self carPlayConnected])
   {
-    v7 = [(CACDisplayManager *)self _carScreenSceneManager];
-    [(NSMutableArray *)v7 showBannerViewWithText:v6 type:a4];
+    _carScreenSceneManager = [(CACDisplayManager *)self _carScreenSceneManager];
+    [(NSMutableArray *)_carScreenSceneManager showBannerViewWithText:textCopy type:type];
   }
 
   else
@@ -905,8 +905,8 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = self->_sceneManagers;
-    v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    _carScreenSceneManager = self->_sceneManagers;
+    v8 = [(NSMutableArray *)_carScreenSceneManager countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -918,14 +918,14 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(_carScreenSceneManager);
           }
 
-          [*(*(&v12 + 1) + 8 * v11++) showBannerViewWithText:v6 type:{a4, v12}];
+          [*(*(&v12 + 1) + 8 * v11++) showBannerViewWithText:textCopy type:{type, v12}];
         }
 
         while (v9 != v11);
-        v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [(NSMutableArray *)_carScreenSceneManager countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -933,60 +933,60 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
   }
 }
 
-- (void)displayMessageString:(id)a3 type:(int64_t)a4 announcementCompletion:(id)a5
+- (void)displayMessageString:(id)string type:(int64_t)type announcementCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  stringCopy = string;
+  completionCopy = completion;
   v10 = +[CACDisplayManager sharedManager];
-  v11 = [v10 carPlayConnected];
+  carPlayConnected = [v10 carPlayConnected];
 
-  if (v11)
+  if (carPlayConnected)
   {
     v12 = CACLogGeneral();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v21 = 138412290;
-      v22 = v8;
+      v22 = stringCopy;
       _os_log_impl(&dword_26B354000, v12, OS_LOG_TYPE_INFO, "CarPlay Connected with Voice Control display message: %@", &v21, 0xCu);
     }
   }
 
   else
   {
-    if ([v8 length])
+    if ([stringCopy length])
     {
-      if ((a4 - 1) <= 2)
+      if ((type - 1) <= 2)
       {
         [(NSOperationQueue *)self->_messageDisplayOperationQueue cancelAllOperations];
       }
 
-      v13 = [[CACMessageDisplayOperation alloc] initWithMessageString:v8 type:a4];
-      v14 = [(NSOperationQueue *)self->_messageDisplayOperationQueue operations];
-      v15 = [v14 count];
+      v13 = [[CACMessageDisplayOperation alloc] initWithMessageString:stringCopy type:type];
+      operations = [(NSOperationQueue *)self->_messageDisplayOperationQueue operations];
+      v15 = [operations count];
 
       if (v15)
       {
-        v16 = [(NSOperationQueue *)self->_messageDisplayOperationQueue operations];
-        v17 = [v16 lastObject];
-        [(CACMessageDisplayOperation *)v13 addDependency:v17];
+        operations2 = [(NSOperationQueue *)self->_messageDisplayOperationQueue operations];
+        lastObject = [operations2 lastObject];
+        [(CACMessageDisplayOperation *)v13 addDependency:lastObject];
       }
 
       [(NSOperationQueue *)self->_messageDisplayOperationQueue addOperation:v13];
       IsVoiceOverRunning = UIAccessibilityIsVoiceOverRunning();
-      if (a4 != 2 && IsVoiceOverRunning)
+      if (type != 2 && IsVoiceOverRunning)
       {
-        v19 = [(CACDisplayManager *)self voiceOverAnnouncer];
-        [v19 prepareForImmediateAnnouncement];
+        voiceOverAnnouncer = [(CACDisplayManager *)self voiceOverAnnouncer];
+        [voiceOverAnnouncer prepareForImmediateAnnouncement];
 
-        v20 = [(CACDisplayManager *)self voiceOverAnnouncer];
-        [v20 announceMessage:v8 type:a4 completion:v9];
+        voiceOverAnnouncer2 = [(CACDisplayManager *)self voiceOverAnnouncer];
+        [voiceOverAnnouncer2 announceMessage:stringCopy type:type completion:completionCopy];
       }
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -996,12 +996,12 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
   v13 = [CACLocaleUtilities localizedUIStringForKey:@"AssetDownload.InstallFinished"];
   v2 = MEMORY[0x277CBEAF8];
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 bestLocaleIdentifier];
-  v5 = [v2 localeWithLocaleIdentifier:v4];
+  bestLocaleIdentifier = [v3 bestLocaleIdentifier];
+  v5 = [v2 localeWithLocaleIdentifier:bestLocaleIdentifier];
 
   v6 = +[CACPreferences sharedPreferences];
-  v7 = [v6 bestLocaleIdentifier];
-  v8 = [v5 localizedStringForLocaleIdentifier:v7];
+  bestLocaleIdentifier2 = [v6 bestLocaleIdentifier];
+  v8 = [v5 localizedStringForLocaleIdentifier:bestLocaleIdentifier2];
 
   v9 = MEMORY[0x277CCACA8];
   v10 = [CACLocaleUtilities localizedUIStringForKey:@"AssetDownload.InstallFinishedMultipleLanguagesFormat"];
@@ -1016,7 +1016,7 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
   v22 = *MEMORY[0x277D85DE8];
   if ([(CACDisplayManager *)self carPlayConnected])
   {
-    v3 = [(CACDisplayManager *)self _carScreenSceneManager];
+    _carScreenSceneManager = [(CACDisplayManager *)self _carScreenSceneManager];
   }
 
   else
@@ -1025,7 +1025,7 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v16 = self;
+    selfCopy = self;
     v4 = self->_sceneManagers;
     v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v5)
@@ -1042,10 +1042,10 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
           }
 
           v9 = *(*(&v17 + 1) + 8 * i);
-          v10 = [v9 scene];
-          v11 = [v10 screen];
-          v12 = [MEMORY[0x277D759A0] mainScreen];
-          v13 = [v11 isEqual:v12];
+          scene = [v9 scene];
+          screen = [scene screen];
+          mainScreen = [MEMORY[0x277D759A0] mainScreen];
+          v13 = [screen isEqual:mainScreen];
 
           if (v13)
           {
@@ -1065,18 +1065,18 @@ void __64__CACDisplayManager_willProgrammaticallySelectRange_forElement___block_
       }
     }
 
-    v3 = [(NSMutableArray *)v16->_sceneManagers firstObject];
+    _carScreenSceneManager = [(NSMutableArray *)selfCopy->_sceneManagers firstObject];
   }
 
-  v14 = v3;
+  v14 = _carScreenSceneManager;
 LABEL_14:
 
   return v14;
 }
 
-- (void)_trackModalAlert:(id)a3
+- (void)_trackModalAlert:(id)alert
 {
-  v7 = a3;
+  alertCopy = alert;
   os_unfair_lock_lock(&self->_modalAlertsLock);
   modalAlerts = self->_modalAlerts;
   if (!modalAlerts)
@@ -1088,15 +1088,15 @@ LABEL_14:
     modalAlerts = self->_modalAlerts;
   }
 
-  [(NSMutableSet *)modalAlerts addObject:v7];
+  [(NSMutableSet *)modalAlerts addObject:alertCopy];
   os_unfair_lock_unlock(&self->_modalAlertsLock);
 }
 
-- (void)_untrackModalAlert:(id)a3
+- (void)_untrackModalAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   os_unfair_lock_lock(&self->_modalAlertsLock);
-  [(NSMutableSet *)self->_modalAlerts removeObject:v4];
+  [(NSMutableSet *)self->_modalAlerts removeObject:alertCopy];
 
   os_unfair_lock_unlock(&self->_modalAlertsLock);
 }
@@ -1109,17 +1109,17 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)_hasModalAlertWithTitle:(id)a3
+- (BOOL)_hasModalAlertWithTitle:(id)title
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  titleCopy = title;
   os_unfair_lock_lock(&self->_modalAlertsLock);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMutableSet *)self->_modalAlerts allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allObjects = [(NSMutableSet *)self->_modalAlerts allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -1129,11 +1129,11 @@ LABEL_14:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) title];
-        v10 = [v9 isEqualToString:v4];
+        title = [*(*(&v12 + 1) + 8 * i) title];
+        v10 = [title isEqualToString:titleCopy];
 
         if (v10)
         {
@@ -1142,7 +1142,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1158,31 +1158,31 @@ LABEL_11:
   return v6;
 }
 
-- (void)presentModalAlertWithTitle:(id)a3 description:(id)a4 okButtonText:(id)a5 cancelButtonText:(id)a6 object:(id)a7 okButtonHandler:(id)a8
+- (void)presentModalAlertWithTitle:(id)title description:(id)description okButtonText:(id)text cancelButtonText:(id)buttonText object:(id)object okButtonHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  titleCopy = title;
+  descriptionCopy = description;
+  textCopy = text;
+  buttonTextCopy = buttonText;
+  objectCopy = object;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __113__CACDisplayManager_presentModalAlertWithTitle_description_okButtonText_cancelButtonText_object_okButtonHandler___block_invoke;
   block[3] = &unk_279CEC4C8;
-  v27 = v14;
-  v28 = v15;
-  v29 = self;
-  v30 = v17;
-  v32 = v18;
-  v33 = v19;
-  v31 = v16;
-  v20 = v18;
-  v21 = v19;
-  v22 = v16;
-  v23 = v17;
-  v24 = v15;
-  v25 = v14;
+  v27 = titleCopy;
+  v28 = descriptionCopy;
+  selfCopy = self;
+  v30 = buttonTextCopy;
+  v32 = objectCopy;
+  v33 = handlerCopy;
+  v31 = textCopy;
+  v20 = objectCopy;
+  v21 = handlerCopy;
+  v22 = textCopy;
+  v23 = buttonTextCopy;
+  v24 = descriptionCopy;
+  v25 = titleCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1239,36 +1239,36 @@ uint64_t __113__CACDisplayManager_presentModalAlertWithTitle_description_okButto
   return [v3 _untrackModalAlert:v4];
 }
 
-- (void)presentModalAlertWithTitle:(id)a3 description:(id)a4 button1Text:(id)a5 button1Style:(int64_t)a6 button2Text:(id)a7 button2Style:(int64_t)a8 object:(id)a9 button1Handler:(id)a10 button2Handler:(id)a11
+- (void)presentModalAlertWithTitle:(id)title description:(id)description button1Text:(id)text button1Style:(int64_t)style button2Text:(id)button2Text button2Style:(int64_t)button2Style object:(id)object button1Handler:(id)self0 button2Handler:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a7;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  titleCopy = title;
+  descriptionCopy = description;
+  textCopy = text;
+  button2TextCopy = button2Text;
+  objectCopy = object;
+  handlerCopy = handler;
+  button2HandlerCopy = button2Handler;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __147__CACDisplayManager_presentModalAlertWithTitle_description_button1Text_button1Style_button2Text_button2Style_object_button1Handler_button2Handler___block_invoke;
   v31[3] = &unk_279CEC4F0;
-  v32 = v17;
-  v33 = v18;
-  v34 = self;
-  v35 = v19;
-  v36 = v21;
-  v37 = v20;
-  v40 = a6;
-  v41 = a8;
-  v38 = v22;
-  v39 = v23;
-  v24 = v23;
-  v25 = v20;
-  v26 = v21;
-  v27 = v22;
-  v28 = v19;
-  v29 = v18;
-  v30 = v17;
+  v32 = titleCopy;
+  v33 = descriptionCopy;
+  selfCopy = self;
+  v35 = textCopy;
+  v36 = objectCopy;
+  v37 = button2TextCopy;
+  styleCopy = style;
+  button2StyleCopy = button2Style;
+  v38 = handlerCopy;
+  v39 = button2HandlerCopy;
+  v24 = button2HandlerCopy;
+  v25 = button2TextCopy;
+  v26 = objectCopy;
+  v27 = handlerCopy;
+  v28 = textCopy;
+  v29 = descriptionCopy;
+  v30 = titleCopy;
   dispatch_async(MEMORY[0x277D85CD0], v31);
 }
 
@@ -1345,19 +1345,19 @@ uint64_t __147__CACDisplayManager_presentModalAlertWithTitle_description_button1
   return [v3 _untrackModalAlert:v4];
 }
 
-- (void)startShowingTransientOverlayForType:(id)a3
+- (void)startShowingTransientOverlayForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v6 = [v5 transientOverlayType];
+  transientOverlayType = [v5 transientOverlayType];
 
-  if (!v4 && v6 || ([v6 isEqualToString:v4] & 1) == 0)
+  if (!typeCopy && transientOverlayType || ([transientOverlayType isEqualToString:typeCopy] & 1) == 0)
   {
     [(CACDisplayManager *)self hideAnyOverlay];
   }
 
   v7 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  [v7 setTransientOverlayType:v4];
+  [v7 setTransientOverlayType:typeCopy];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1367,7 +1367,7 @@ uint64_t __147__CACDisplayManager_presentModalAlertWithTitle_description_button1
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (id)overlayViewForDisplayID:(unsigned int)a3
+- (id)overlayViewForDisplayID:(unsigned int)d
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -1389,8 +1389,8 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v10 = *(*(&v14 + 1) + 8 * v9);
-      if ([(NSMutableArray *)v10 displayID]== a3)
+      _mainScreenSceneManager = *(*(&v14 + 1) + 8 * v9);
+      if ([(NSMutableArray *)_mainScreenSceneManager displayID]== d)
       {
         break;
       }
@@ -1412,34 +1412,34 @@ LABEL_3:
   {
 LABEL_9:
 
-    v10 = [(CACDisplayManager *)self _mainScreenSceneManager];
-    v5 = v10;
+    _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+    v5 = _mainScreenSceneManager;
   }
 
-  v11 = [(NSMutableArray *)v10 overlayContainerViewController];
-  v12 = [v11 view];
+  overlayContainerViewController = [(NSMutableArray *)_mainScreenSceneManager overlayContainerViewController];
+  view = [overlayContainerViewController view];
 
-  return v12;
+  return view;
 }
 
-- (BOOL)verifyElementExists:(id)a3
+- (BOOL)verifyElementExists:(id)exists
 {
-  v3 = a3;
-  [v3 centerPoint];
+  existsCopy = exists;
+  [existsCopy centerPoint];
   v5 = v4;
   v7 = v6;
-  v8 = [v3 windowContextId];
-  if (v8)
+  windowContextId = [existsCopy windowContextId];
+  if (windowContextId)
   {
-    v9 = v8;
-    v10 = [MEMORY[0x277CE6BA0] systemWideElement];
-    [v10 convertPoint:v9 fromContextId:{v5, v7}];
+    v9 = windowContextId;
+    systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+    [systemWideElement convertPoint:v9 fromContextId:{v5, v7}];
     v5 = v11;
     v7 = v12;
   }
 
   v13 = [MEMORY[0x277CE6BA0] elementAtCoordinate:0 withVisualPadding:{v5, v7}];
-  v14 = [v13 isEqual:v3];
+  v14 = [v13 isEqual:existsCopy];
 
   return v14;
 }
@@ -1470,9 +1470,9 @@ uint64_t __47__CACDisplayManager__uiPresentingSceneManagers__block_invoke(uint64
   v185 = *MEMORY[0x277D85DE8];
   dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global_699_0);
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v131 = [v3 focusedElement];
+  focusedElement = [v3 focusedElement];
 
-  v136 = [v131 selectedTextRange];
+  selectedTextRange = [focusedElement selectedTextRange];
   v5 = v4;
   v6 = v4 != 0;
   v174 = 0;
@@ -1480,13 +1480,13 @@ uint64_t __47__CACDisplayManager__uiPresentingSceneManagers__block_invoke(uint64
   v176 = 0x2020000000;
   v177 = 0;
   v7 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v8 = [v7 disambiguationHandler];
-  v9 = [v8 labeledElements];
-  v10 = [v9 count];
+  disambiguationHandler = [v7 disambiguationHandler];
+  labeledElements = [disambiguationHandler labeledElements];
+  v10 = [labeledElements count];
 
-  v11 = [MEMORY[0x277CE6BA0] systemWideElement];
-  v12 = [v11 systemApplication];
-  v13 = [v12 elementForAttribute:1513];
+  systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+  systemApplication = [systemWideElement systemApplication];
+  v13 = [systemApplication elementForAttribute:1513];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -1507,9 +1507,9 @@ uint64_t __47__CACDisplayManager__uiPresentingSceneManagers__block_invoke(uint64
   v168[5] = &v174;
   v130 = _Block_copy(v168);
   v14 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  LODWORD(v12) = [v14 isActiveOverlayType:@"NumberedElements"];
+  LODWORD(systemApplication) = [v14 isActiveOverlayType:@"NumberedElements"];
 
-  if (!v12)
+  if (!systemApplication)
   {
     v17 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
     v18 = [v17 isActiveOverlayType:@"NamedElements"];
@@ -1517,17 +1517,17 @@ uint64_t __47__CACDisplayManager__uiPresentingSceneManagers__block_invoke(uint64
     if (v18)
     {
       v19 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-      v20 = [v19 labeledScreenElementsCollection];
-      v134 = [v20 collectedElements];
+      labeledScreenElementsCollection = [v19 labeledScreenElementsCollection];
+      collectedElements = [labeledScreenElementsCollection collectedElements];
 
       v158 = 0u;
       v159 = 0u;
       v156 = 0u;
       v157 = 0u;
-      v21 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-      v22 = [v21 countByEnumeratingWithState:&v156 objects:v182 count:16];
-      obj = v21;
-      v23 = v134;
+      _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+      v22 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v156 objects:v182 count:16];
+      obj = _uiPresentingSceneManagers;
+      v23 = collectedElements;
       v135 = v22;
       if (v22)
       {
@@ -1563,12 +1563,12 @@ uint64_t __47__CACDisplayManager__uiPresentingSceneManagers__block_invoke(uint64
                   }
 
                   v30 = *(*(&v152 + 1) + 8 * i);
-                  v31 = [v24 displayID];
-                  if (v31 == [v30 displayID] && !-[CACDisplayManager labeledElement:isOccludedByPictureInPictureWindow:](self, "labeledElement:isOccludedByPictureInPictureWindow:", v30, v138))
+                  displayID = [v24 displayID];
+                  if (displayID == [v30 displayID] && !-[CACDisplayManager labeledElement:isOccludedByPictureInPictureWindow:](self, "labeledElement:isOccludedByPictureInPictureWindow:", v30, v138))
                   {
-                    v32 = [v30 displayID];
-                    v33 = [(CACDisplayManager *)self _mainScreenSceneManager];
-                    v34 = v32 == [v33 displayID];
+                    displayID2 = [v30 displayID];
+                    _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+                    v34 = displayID2 == [_mainScreenSceneManager displayID];
 
                     if (!v34 || (([v24 systemAperatureRect], Height = CGRectGetHeight(v186), objc_msgSend(v24, "minimumSystemAperatureRect"), v36 = CGRectGetHeight(v187), objc_msgSend(v24, "systemAperatureRect"), v38 = v37, v40 = v39, v42 = v41, v44 = v43, objc_msgSend(v30, "rectangle"), v190.origin.x = v45, v190.origin.y = v46, v190.size.width = v47, v190.size.height = v48, v188.origin.x = v38, v188.origin.y = v40, v188.size.width = v42, v188.size.height = v44, v49 = CGRectIntersectsRect(v188, v190), Height > v36 + 10.0) ? (v50 = v49) : (v50 = 0), !v50 || (objc_msgSend(v30, "element"), v51 = objc_claimAutoreleasedReturnValue(), v52 = -[CACDisplayManager verifyElementExists:](self, "verifyElementExists:", v51), v51, v52)))
                     {
@@ -1592,27 +1592,27 @@ uint64_t __47__CACDisplayManager__uiPresentingSceneManagers__block_invoke(uint64
             else
             {
               v54 = +[CACDisplayManager sharedManager];
-              v55 = [v54 _mainScreenSceneManager];
-              v56 = [v55 overlayWindow];
+              _mainScreenSceneManager2 = [v54 _mainScreenSceneManager];
+              overlayWindow = [_mainScreenSceneManager2 overlayWindow];
 
               [v24 systemAperatureRect];
-              v61 = CACViewRectFromPortraitUpRect(v56, v57, v58, v59, v60);
+              v61 = CACViewRectFromPortraitUpRect(overlayWindow, v57, v58, v59, v60);
               v63 = v62;
               v65 = v64;
               v67 = v66;
               [v24 minimumSystemAperatureRect];
-              v72 = CACViewRectFromPortraitUpRect(v56, v68, v69, v70, v71);
+              v72 = CACViewRectFromPortraitUpRect(overlayWindow, v68, v69, v70, v71);
               v76 = [CACSystemAperatureBorderItem borderItemsForRect:v61 minimumRect:v63, v65, v67, v72, v73, v74, v75];
               v53 = [v76 mutableCopy];
 
               [v53 addObjectsFromArray:v25];
             }
 
-            v77 = [v24 elementNamesOverlayManager];
-            [v77 showNamesForElements:v53];
+            elementNamesOverlayManager = [v24 elementNamesOverlayManager];
+            [elementNamesOverlayManager showNamesForElements:v53];
 
             ++v137;
-            v23 = v134;
+            v23 = collectedElements;
           }
 
           while (v137 != v135);
@@ -1623,7 +1623,7 @@ uint64_t __47__CACDisplayManager__uiPresentingSceneManagers__block_invoke(uint64
       }
 
       v130[2]();
-      v78 = v134;
+      _uiPresentingSceneManagers2 = collectedElements;
       goto LABEL_88;
     }
 
@@ -1636,8 +1636,8 @@ uint64_t __47__CACDisplayManager__uiPresentingSceneManagers__block_invoke(uint64
       v143 = 0uLL;
       v140 = 0uLL;
       v141 = 0uLL;
-      v78 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-      v105 = [v78 countByEnumeratingWithState:&v140 objects:v178 count:16];
+      _uiPresentingSceneManagers2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+      v105 = [_uiPresentingSceneManagers2 countByEnumeratingWithState:&v140 objects:v178 count:16];
       if (v105)
       {
         v106 = *v141;
@@ -1647,18 +1647,18 @@ uint64_t __47__CACDisplayManager__uiPresentingSceneManagers__block_invoke(uint64
           {
             if (*v141 != v106)
             {
-              objc_enumerationMutation(v78);
+              objc_enumerationMutation(_uiPresentingSceneManagers2);
             }
 
             v108 = *(*(&v140 + 1) + 8 * j);
-            v109 = [v108 labeledElementsOverlayManager];
-            [v109 hideAnimated:0 completion:0];
+            labeledElementsOverlayManager = [v108 labeledElementsOverlayManager];
+            [labeledElementsOverlayManager hideAnimated:0 completion:0];
 
-            v110 = [v108 linesEditingModeOverlayManager];
-            [v110 hideAnimated:0 completion:0];
+            linesEditingModeOverlayManager = [v108 linesEditingModeOverlayManager];
+            [linesEditingModeOverlayManager hideAnimated:0 completion:0];
           }
 
-          v105 = [v78 countByEnumeratingWithState:&v140 objects:v178 count:16];
+          v105 = [_uiPresentingSceneManagers2 countByEnumeratingWithState:&v140 objects:v178 count:16];
         }
 
         while (v105);
@@ -1671,8 +1671,8 @@ uint64_t __47__CACDisplayManager__uiPresentingSceneManagers__block_invoke(uint64
     v151 = 0uLL;
     v148 = 0uLL;
     v149 = 0uLL;
-    v81 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-    v82 = [v81 countByEnumeratingWithState:&v148 objects:v180 count:16];
+    _uiPresentingSceneManagers3 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+    v82 = [_uiPresentingSceneManagers3 countByEnumeratingWithState:&v148 objects:v180 count:16];
     if (v82)
     {
       v83 = *v149;
@@ -1682,21 +1682,21 @@ uint64_t __47__CACDisplayManager__uiPresentingSceneManagers__block_invoke(uint64
         {
           if (*v149 != v83)
           {
-            objc_enumerationMutation(v81);
+            objc_enumerationMutation(_uiPresentingSceneManagers3);
           }
 
           v85 = *(*(&v148 + 1) + 8 * k);
-          v86 = [v85 labeledGridOverlayManager];
-          v87 = [v86 currentLevel] > 1;
+          labeledGridOverlayManager = [v85 labeledGridOverlayManager];
+          v87 = [labeledGridOverlayManager currentLevel] > 1;
 
           if (v87)
           {
-            v78 = [v85 labeledGridOverlayManager];
+            _uiPresentingSceneManagers2 = [v85 labeledGridOverlayManager];
             goto LABEL_72;
           }
         }
 
-        v82 = [v81 countByEnumeratingWithState:&v148 objects:v180 count:16];
+        v82 = [_uiPresentingSceneManagers3 countByEnumeratingWithState:&v148 objects:v180 count:16];
         if (v82)
         {
           continue;
@@ -1706,15 +1706,15 @@ uint64_t __47__CACDisplayManager__uiPresentingSceneManagers__block_invoke(uint64
       }
     }
 
-    v78 = 0;
+    _uiPresentingSceneManagers2 = 0;
 LABEL_72:
 
     v146 = 0u;
     v147 = 0u;
     v144 = 0u;
     v145 = 0u;
-    v91 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-    v111 = [v91 countByEnumeratingWithState:&v144 objects:v179 count:16];
+    _uiPresentingSceneManagers4 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+    v111 = [_uiPresentingSceneManagers4 countByEnumeratingWithState:&v144 objects:v179 count:16];
     if (v111)
     {
       v112 = 0;
@@ -1725,15 +1725,15 @@ LABEL_72:
         {
           if (*v145 != v113)
           {
-            objc_enumerationMutation(v91);
+            objc_enumerationMutation(_uiPresentingSceneManagers4);
           }
 
           v115 = *(*(&v144 + 1) + 8 * m);
-          v116 = [v115 labeledGridOverlayManager];
-          v117 = v116;
-          if (!v78 || v116 == v78)
+          labeledGridOverlayManager2 = [v115 labeledGridOverlayManager];
+          v117 = labeledGridOverlayManager2;
+          if (!_uiPresentingSceneManagers2 || labeledGridOverlayManager2 == _uiPresentingSceneManagers2)
           {
-            if ([v116 isShowing])
+            if ([labeledGridOverlayManager2 isShowing])
             {
               if ([v117 needsToBeRedrawn])
               {
@@ -1751,11 +1751,11 @@ LABEL_72:
 
           else
           {
-            [v116 hide];
+            [labeledGridOverlayManager2 hide];
           }
         }
 
-        v111 = [v91 countByEnumeratingWithState:&v144 objects:v179 count:16];
+        v111 = [_uiPresentingSceneManagers4 countByEnumeratingWithState:&v144 objects:v179 count:16];
       }
 
       while (v111);
@@ -1775,27 +1775,27 @@ LABEL_72:
   v129[2]();
   if ([(CACDisplayManager *)self shouldShowTextEditingOverlayInTutorial]&& [(CACDisplayManager *)self textEditingOverlaysEnabled])
   {
-    v78 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    if (([v78 doesFocusedElementRequireSecureInput] & 1) != 0 || self->_programmaticallySelectedRange.location != v136 || self->_programmaticallySelectedRange.length != v5)
+    _uiPresentingSceneManagers2 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
+    if (([_uiPresentingSceneManagers2 doesFocusedElementRequireSecureInput] & 1) != 0 || self->_programmaticallySelectedRange.location != selectedTextRange || self->_programmaticallySelectedRange.length != v5)
     {
       goto LABEL_88;
     }
 
-    v88 = [(AXElement *)self->_programmaticallySelectedElement isEqual:v131];
+    v88 = [(AXElement *)self->_programmaticallySelectedElement isEqual:focusedElement];
 
     if (!v88)
     {
       goto LABEL_89;
     }
 
-    v89 = [v131 value];
-    v78 = [v89 substringWithRange:{v136, v5}];
+    value = [focusedElement value];
+    _uiPresentingSceneManagers2 = [value substringWithRange:{selectedTextRange, v5}];
 
-    v90 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v91 = [v78 stringByTrimmingCharactersInSet:v90];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    _uiPresentingSceneManagers4 = [_uiPresentingSceneManagers2 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-    v92 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    [v91 rangeOfCharacterFromSet:v92];
+    whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    [_uiPresentingSceneManagers4 rangeOfCharacterFromSet:whitespaceCharacterSet2];
     v94 = v93 == 0;
 
     if (v94)
@@ -1804,8 +1804,8 @@ LABEL_72:
       v163 = 0uLL;
       v160 = 0uLL;
       v161 = 0uLL;
-      v95 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-      v120 = [v95 countByEnumeratingWithState:&v160 objects:v183 count:16];
+      _uiPresentingSceneManagers5 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+      v120 = [_uiPresentingSceneManagers5 countByEnumeratingWithState:&v160 objects:v183 count:16];
       if (v120)
       {
         v121 = *v161;
@@ -1815,24 +1815,24 @@ LABEL_72:
           {
             if (*v161 != v121)
             {
-              objc_enumerationMutation(v95);
+              objc_enumerationMutation(_uiPresentingSceneManagers5);
             }
 
             v123 = *(*(&v160 + 1) + 8 * n);
-            v124 = [v123 displayID];
-            if (v124 == [v131 windowDisplayId])
+            displayID3 = [v123 displayID];
+            if (displayID3 == [focusedElement windowDisplayId])
             {
-              v125 = [v123 editingModeOverlayManager];
-              [v125 showCharactersForElement:v131 targetRange:v136 startIndex:{v5, v175[3] + 1}];
+              editingModeOverlayManager = [v123 editingModeOverlayManager];
+              [editingModeOverlayManager showCharactersForElement:focusedElement targetRange:selectedTextRange startIndex:{v5, v175[3] + 1}];
 
-              v126 = [v123 editingModeOverlayManager];
-              v127 = [v126 displayedOverlayElements];
-              v128 = [v127 count];
+              editingModeOverlayManager2 = [v123 editingModeOverlayManager];
+              displayedOverlayElements = [editingModeOverlayManager2 displayedOverlayElements];
+              v128 = [displayedOverlayElements count];
               v175[3] += v128;
             }
           }
 
-          v120 = [v95 countByEnumeratingWithState:&v160 objects:v183 count:16];
+          v120 = [_uiPresentingSceneManagers5 countByEnumeratingWithState:&v160 objects:v183 count:16];
         }
 
         while (v120);
@@ -1845,8 +1845,8 @@ LABEL_72:
       v167 = 0uLL;
       v164 = 0uLL;
       v165 = 0uLL;
-      v95 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-      v96 = [v95 countByEnumeratingWithState:&v164 objects:v184 count:16];
+      _uiPresentingSceneManagers5 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+      v96 = [_uiPresentingSceneManagers5 countByEnumeratingWithState:&v164 objects:v184 count:16];
       if (v96)
       {
         v97 = *v165;
@@ -1856,24 +1856,24 @@ LABEL_72:
           {
             if (*v165 != v97)
             {
-              objc_enumerationMutation(v95);
+              objc_enumerationMutation(_uiPresentingSceneManagers5);
             }
 
             v99 = *(*(&v164 + 1) + 8 * ii);
-            v100 = [v99 displayID];
-            if (v100 == [v131 windowDisplayId])
+            displayID4 = [v99 displayID];
+            if (displayID4 == [focusedElement windowDisplayId])
             {
-              v101 = [v99 editingModeOverlayManager];
-              [v101 showWordsForElement:v131 targetRange:v136 startIndex:{v5, v175[3] + 1}];
+              editingModeOverlayManager3 = [v99 editingModeOverlayManager];
+              [editingModeOverlayManager3 showWordsForElement:focusedElement targetRange:selectedTextRange startIndex:{v5, v175[3] + 1}];
 
-              v102 = [v99 editingModeOverlayManager];
-              v103 = [v102 displayedOverlayElements];
-              v104 = [v103 count];
+              editingModeOverlayManager4 = [v99 editingModeOverlayManager];
+              displayedOverlayElements2 = [editingModeOverlayManager4 displayedOverlayElements];
+              v104 = [displayedOverlayElements2 count];
               v175[3] += v104;
             }
           }
 
-          v96 = [v95 countByEnumeratingWithState:&v164 objects:v184 count:16];
+          v96 = [_uiPresentingSceneManagers5 countByEnumeratingWithState:&v164 objects:v184 count:16];
         }
 
         while (v96);
@@ -1893,8 +1893,8 @@ LABEL_89:
   v118 = MEMORY[0x277D85CD0];
   dispatch_async(MEMORY[0x277D85CD0], block);
 
-  v119 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v119 postNotificationName:@"SOLabeledElementsOverlayDidUpdateElementsNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SOLabeledElementsOverlayDidUpdateElementsNotification" object:0];
 
   [(CACDisplayManager *)self showOverlayForDictiationRecognizerMode];
   _Block_object_dispose(&v174, 8);
@@ -2147,8 +2147,8 @@ void __55__CACDisplayManager_updatePresentationForActiveOverlay__block_invoke_7(
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = *v14;
@@ -2158,16 +2158,16 @@ void __55__CACDisplayManager_updatePresentationForActiveOverlay__block_invoke_7(
       {
         if (*v14 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         v6 = *(*(&v13 + 1) + 8 * i);
-        v7 = [v6 linesEditingModeOverlayManager];
-        v8 = [v7 displayedOverlayElements];
-        if ([v8 count])
+        linesEditingModeOverlayManager = [v6 linesEditingModeOverlayManager];
+        displayedOverlayElements = [linesEditingModeOverlayManager displayedOverlayElements];
+        if ([displayedOverlayElements count])
         {
-          v9 = [v6 linesEditingModeOverlayManager];
-          if ([v9 overlayType] == 2)
+          linesEditingModeOverlayManager2 = [v6 linesEditingModeOverlayManager];
+          if ([linesEditingModeOverlayManager2 overlayType] == 2)
           {
 
 LABEL_15:
@@ -2175,10 +2175,10 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v10 = [v6 linesEditingModeOverlayManager];
-          v11 = [v10 overlayType];
+          linesEditingModeOverlayManager3 = [v6 linesEditingModeOverlayManager];
+          overlayType = [linesEditingModeOverlayManager3 overlayType];
 
-          if (v11 == 3)
+          if (overlayType == 3)
           {
             goto LABEL_15;
           }
@@ -2189,7 +2189,7 @@ LABEL_15:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v3)
       {
         continue;
@@ -2211,8 +2211,8 @@ LABEL_16:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = *v13;
@@ -2222,18 +2222,18 @@ LABEL_16:
       {
         if (*v13 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
-        v7 = [v6 linesEditingModeOverlayManager];
-        v8 = [v7 displayedOverlayElements];
-        if ([v8 count])
+        linesEditingModeOverlayManager = [v6 linesEditingModeOverlayManager];
+        displayedOverlayElements = [linesEditingModeOverlayManager displayedOverlayElements];
+        if ([displayedOverlayElements count])
         {
-          v9 = [v6 linesEditingModeOverlayManager];
-          v10 = [v9 overlayType];
+          linesEditingModeOverlayManager2 = [v6 linesEditingModeOverlayManager];
+          overlayType = [linesEditingModeOverlayManager2 overlayType];
 
-          if (v10 == 1)
+          if (overlayType == 1)
           {
             LOBYTE(v3) = 1;
             goto LABEL_12;
@@ -2245,7 +2245,7 @@ LABEL_16:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v3);
@@ -2263,8 +2263,8 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = *v13;
@@ -2274,18 +2274,18 @@ LABEL_12:
       {
         if (*v13 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
-        v7 = [v6 editingModeOverlayManager];
-        v8 = [v7 displayedOverlayElements];
-        if ([v8 count])
+        editingModeOverlayManager = [v6 editingModeOverlayManager];
+        displayedOverlayElements = [editingModeOverlayManager displayedOverlayElements];
+        if ([displayedOverlayElements count])
         {
-          v9 = [v6 linesEditingModeOverlayManager];
-          v10 = [v9 overlayType];
+          linesEditingModeOverlayManager = [v6 linesEditingModeOverlayManager];
+          overlayType = [linesEditingModeOverlayManager overlayType];
 
-          if (!v10)
+          if (!overlayType)
           {
             LOBYTE(v3) = 1;
             goto LABEL_12;
@@ -2297,7 +2297,7 @@ LABEL_12:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v3);
@@ -2308,25 +2308,25 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)labeledElement:(id)a3 isOccludedByPictureInPictureWindow:(id)a4
+- (BOOL)labeledElement:(id)element isOccludedByPictureInPictureWindow:(id)window
 {
-  v6 = a3;
-  if (a4)
+  elementCopy = element;
+  if (window)
   {
-    v7 = a4;
-    v8 = [v6 element];
-    v9 = [v8 windowContextId];
-    v10 = [v7 windowContextId];
+    windowCopy = window;
+    element = [elementCopy element];
+    windowContextId = [element windowContextId];
+    windowContextId2 = [windowCopy windowContextId];
 
-    if (v9 == v10)
+    if (windowContextId == windowContextId2)
     {
       LOBYTE(v11) = 0;
     }
 
     else
     {
-      v12 = [v6 element];
-      v11 = ![(CACDisplayManager *)self verifyElementExists:v12];
+      element2 = [elementCopy element];
+      v11 = ![(CACDisplayManager *)self verifyElementExists:element2];
     }
   }
 
@@ -2338,12 +2338,12 @@ LABEL_12:
   return v11;
 }
 
-- (id)gridNumberForRect:(CGRect)a3 displayID:(unsigned int)a4
+- (id)gridNumberForRect:(CGRect)rect displayID:(unsigned int)d
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v71 = *MEMORY[0x277D85DE8];
   v10 = +[CACDisplayManager sharedManager];
   [v10 reorientedRect:{x, y, width, height}];
@@ -2377,11 +2377,11 @@ LABEL_12:
         }
 
         v25 = *(*(&v63 + 1) + 8 * i);
-        if ([v25 displayID] == a4)
+        if ([v25 displayID] == d)
         {
-          v26 = [v25 labeledGridOverlayManager];
-          v27 = [v26 labeledElements];
-          v28 = [v27 count];
+          labeledGridOverlayManager = [v25 labeledGridOverlayManager];
+          labeledElements = [labeledGridOverlayManager labeledElements];
+          v28 = [labeledElements count];
 
           if (!v28)
           {
@@ -2389,8 +2389,8 @@ LABEL_12:
             do
             {
               usleep(0x186A0u);
-              v30 = [v26 labeledElements];
-              v31 = [v30 count];
+              labeledElements2 = [labeledGridOverlayManager labeledElements];
+              v31 = [labeledElements2 count];
 
               if (v31)
               {
@@ -2407,8 +2407,8 @@ LABEL_12:
           v62 = 0u;
           v59 = 0u;
           v60 = 0u;
-          v32 = [v26 labeledElements];
-          v33 = [v32 countByEnumeratingWithState:&v59 objects:v69 count:16];
+          labeledElements3 = [labeledGridOverlayManager labeledElements];
+          v33 = [labeledElements3 countByEnumeratingWithState:&v59 objects:v69 count:16];
           if (v33)
           {
             v34 = v33;
@@ -2419,7 +2419,7 @@ LABEL_13:
             {
               if (*v60 != v35)
               {
-                objc_enumerationMutation(v32);
+                objc_enumerationMutation(labeledElements3);
               }
 
               v37 = *(*(&v59 + 1) + 8 * v36);
@@ -2441,7 +2441,7 @@ LABEL_13:
 
               if (v34 == ++v36)
               {
-                v34 = [v32 countByEnumeratingWithState:&v59 objects:v69 count:16];
+                v34 = [labeledElements3 countByEnumeratingWithState:&v59 objects:v69 count:16];
                 if (v34)
                 {
                   goto LABEL_13;
@@ -2451,15 +2451,15 @@ LABEL_13:
               }
             }
 
-            v46 = [v37 label];
-            v47 = [v46 integerValue];
+            label = [v37 label];
+            integerValue = [label integerValue];
 
-            if (v47 < 1)
+            if (integerValue < 1)
             {
               goto LABEL_21;
             }
 
-            v49 = [MEMORY[0x277CCABB0] numberWithInteger:v47];
+            v49 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
             v74.x = v39 + v43 * 0.5;
             v74.y = v41 + v45 * 0.5;
             v76.origin.y = v56;
@@ -2504,26 +2504,26 @@ LABEL_28:
   return v48;
 }
 
-- (CGRect)reorientedRect:(CGRect)a3
+- (CGRect)reorientedRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 bounds];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v9 = v8;
 
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v12 = v11;
 
   v13 = width * 0.5;
   v14 = height * 0.5;
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  v16 = [v15 orientation];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  orientation = [currentDevice orientation];
 
-  if (v16 == 3)
+  if (orientation == 3)
   {
     v17 = v12 - y - v13;
     y = x - v14;
@@ -2531,10 +2531,10 @@ LABEL_28:
 
   else
   {
-    v18 = [MEMORY[0x277D75418] currentDevice];
-    v19 = [v18 orientation];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    orientation2 = [currentDevice2 orientation];
 
-    if (v19 == 4)
+    if (orientation2 == 4)
     {
       v17 = v12 - y - v13;
       v20 = v9 - x;
@@ -2542,13 +2542,13 @@ LABEL_28:
 
     else
     {
-      v21 = [MEMORY[0x277D75418] currentDevice];
-      v22 = [v21 orientation];
+      currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+      orientation3 = [currentDevice3 orientation];
 
-      if (v22 != 2)
+      if (orientation3 != 2)
       {
-        v23 = [MEMORY[0x277D75418] currentDevice];
-        [v23 orientation];
+        currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+        [currentDevice4 orientation];
 
         v17 = x;
         goto LABEL_9;
@@ -2660,9 +2660,9 @@ LABEL_7:
       if (![v4 isSynchronizingRecognizers])
       {
         v7 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-        v8 = [v7 isFetchingElements];
+        isFetchingElements = [v7 isFetchingElements];
 
-        if ((v8 & 1) == 0)
+        if ((isFetchingElements & 1) == 0)
         {
           v9[0] = MEMORY[0x277D85DD0];
           v9[1] = 3221225472;
@@ -2702,18 +2702,18 @@ uint64_t __36__CACDisplayManager_refreshOverlays__block_invoke(uint64_t a1)
   return [v2 performSelector:sel_refreshOverlays withObject:0 afterDelay:0.25];
 }
 
-- (void)hideAnyOverlayAnimated:(BOOL)a3 includeInteractiveOverlays:(BOOL)a4
+- (void)hideAnyOverlayAnimated:(BOOL)animated includeInteractiveOverlays:(BOOL)overlays
 {
-  v4 = a4;
-  v5 = a3;
+  overlaysCopy = overlays;
+  animatedCopy = animated;
   v17 = *MEMORY[0x277D85DE8];
   [(CACDisplayManager *)self setGridDidDrill:0];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v8 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2725,38 +2725,38 @@ uint64_t __36__CACDisplayManager_refreshOverlays__block_invoke(uint64_t a1)
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) hideAnyOverlayAnimated:v5 includeInteractiveOverlays:v4];
+        [*(*(&v12 + 1) + 8 * v11++) hideAnyOverlayAnimated:animatedCopy includeInteractiveOverlays:overlaysCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)hideObsoletePresentationsIfNeededForElements:(id)a3
+- (void)hideObsoletePresentationsIfNeededForElements:(id)elements
 {
-  v4 = a3;
-  v5 = [(CACDisplayManager *)self correctionPresentationManager];
-  [v5 hideIfNeededForElements:v4];
+  elementsCopy = elements;
+  correctionPresentationManager = [(CACDisplayManager *)self correctionPresentationManager];
+  [correctionPresentationManager hideIfNeededForElements:elementsCopy];
 }
 
-- (void)hideAnyPresentationAnimated:(BOOL)a3 includingOutOfProcessPresentations:(BOOL)a4
+- (void)hideAnyPresentationAnimated:(BOOL)animated includingOutOfProcessPresentations:(BOOL)presentations
 {
-  v4 = a4;
-  v5 = a3;
+  presentationsCopy = presentations;
+  animatedCopy = animated;
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v7 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2768,14 +2768,14 @@ uint64_t __36__CACDisplayManager_refreshOverlays__block_invoke(uint64_t a1)
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) hideAnyPresentationAnimated:v5 includingOutOfProcessPresentations:v4];
+        [*(*(&v11 + 1) + 8 * v10++) hideAnyPresentationAnimated:animatedCopy includingOutOfProcessPresentations:presentationsCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -2789,8 +2789,8 @@ uint64_t __36__CACDisplayManager_refreshOverlays__block_invoke(uint64_t a1)
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2802,14 +2802,14 @@ uint64_t __36__CACDisplayManager_refreshOverlays__block_invoke(uint64_t a1)
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) hideDictationRecognizerModeOverlayNow];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -2823,8 +2823,8 @@ uint64_t __36__CACDisplayManager_refreshOverlays__block_invoke(uint64_t a1)
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -2834,7 +2834,7 @@ uint64_t __36__CACDisplayManager_refreshOverlays__block_invoke(uint64_t a1)
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isDisplayingAnyContentView])
@@ -2844,7 +2844,7 @@ uint64_t __36__CACDisplayManager_refreshOverlays__block_invoke(uint64_t a1)
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -2866,8 +2866,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -2877,7 +2877,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isDisplayingAnyPresentation])
@@ -2887,7 +2887,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -2909,8 +2909,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -2920,7 +2920,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isDisplayingCorrections])
@@ -2930,7 +2930,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -2952,8 +2952,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v4 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2965,7 +2965,7 @@ LABEL_11:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         if ([*(*(&v9 + 1) + 8 * v7) isDisplayingAnyInteractiveContentInProcess])
@@ -2978,7 +2978,7 @@ LABEL_11:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v5)
       {
         continue;
@@ -2998,8 +2998,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -3009,7 +3009,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isDisplayingAnyOutOfProcessPresentation])
@@ -3019,7 +3019,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -3041,8 +3041,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -3052,7 +3052,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) anyPresentationPreventsDictation])
@@ -3062,7 +3062,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -3084,8 +3084,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -3095,7 +3095,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isDisplayingAnyOverlay])
@@ -3105,7 +3105,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -3135,8 +3135,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v4 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3148,14 +3148,14 @@ LABEL_11:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) redrawGridIfExists];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -3164,21 +3164,21 @@ LABEL_11:
   [(CACDisplayManager *)self refreshOverlays];
 }
 
-- (void)enableStatusBarOverride:(BOOL)a3
+- (void)enableStatusBarOverride:(BOOL)override
 {
   v5 = dispatch_semaphore_create(0);
-  v6 = [(CACDisplayManager *)self voiceControlStatusPublisher];
+  voiceControlStatusPublisher = [(CACDisplayManager *)self voiceControlStatusPublisher];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __45__CACDisplayManager_enableStatusBarOverride___block_invoke;
   v11 = &unk_279CEC5D8;
-  v13 = a3;
+  overrideCopy = override;
   v7 = v5;
   v12 = v7;
-  [v6 updateDataWithBlock:&v8];
+  [voiceControlStatusPublisher updateDataWithBlock:&v8];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  if (!a3)
+  if (!override)
   {
     [MEMORY[0x277CCACC8] sleepForTimeInterval:{0.25, v8, v9, v10, v11}];
   }
@@ -3200,20 +3200,20 @@ intptr_t __45__CACDisplayManager_enableStatusBarOverride___block_invoke(uint64_t
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_26B354000, a2, OS_LOG_TYPE_ERROR, "Failed to start CACVoiceControlServer %@", &v2, 0xCu);
 }
 
-- (id)currentlyDisplayedCorrections:(id)a3
+- (id)currentlyDisplayedCorrections:(id)corrections
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [(CACDisplayManager *)self correctionPresentationManager];
-  v4 = [v3 currentlyDisplayedCorrections];
-  v5 = v4;
+  correctionPresentationManager = [(CACDisplayManager *)self correctionPresentationManager];
+  currentlyDisplayedCorrections = [correctionPresentationManager currentlyDisplayedCorrections];
+  v5 = currentlyDisplayedCorrections;
   v6 = MEMORY[0x277CBEBF8];
-  if (v4)
+  if (currentlyDisplayedCorrections)
   {
-    v6 = v4;
+    v6 = currentlyDisplayedCorrections;
   }
 
   v7 = v6;
@@ -3229,10 +3229,10 @@ intptr_t __45__CACDisplayManager_enableStatusBarOverride___block_invoke(uint64_t
   return v11;
 }
 
-- (id)currentlyDisplayedOverlayLabels:(id)a3
+- (id)currentlyDisplayedOverlayLabels:(id)labels
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -3255,8 +3255,8 @@ intptr_t __45__CACDisplayManager_enableStatusBarOverride___block_invoke(uint64_t
         }
 
         v10 = *(*(&v50 + 1) + 8 * v9);
-        v11 = [*(v8 + 1776) sharedCACSpokenCommandManager];
-        v12 = [v11 isActiveOverlayType:@"NumberedElements"];
+        sharedCACSpokenCommandManager = [*(v8 + 1776) sharedCACSpokenCommandManager];
+        v12 = [sharedCACSpokenCommandManager isActiveOverlayType:@"NumberedElements"];
 
         if (v12)
         {
@@ -3264,10 +3264,10 @@ intptr_t __45__CACDisplayManager_enableStatusBarOverride___block_invoke(uint64_t
           v49 = 0u;
           v46 = 0u;
           v47 = 0u;
-          v13 = [v10 labeledElementsOverlayManager];
-          v14 = [v13 labeledElementsCopy];
+          labeledElementsOverlayManager = [v10 labeledElementsOverlayManager];
+          labeledElementsCopy = [labeledElementsOverlayManager labeledElementsCopy];
 
-          v15 = [v14 countByEnumeratingWithState:&v46 objects:v57 count:16];
+          v15 = [labeledElementsCopy countByEnumeratingWithState:&v46 objects:v57 count:16];
           if (v15)
           {
             v16 = v15;
@@ -3278,20 +3278,20 @@ intptr_t __45__CACDisplayManager_enableStatusBarOverride___block_invoke(uint64_t
               {
                 if (*v47 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(labeledElementsCopy);
                 }
 
                 v19 = *(*(&v46 + 1) + 8 * i);
-                v20 = [v19 label];
+                label = [v19 label];
 
-                if (v20)
+                if (label)
                 {
-                  v21 = [v19 numberedLabel];
-                  [v4 addObject:v21];
+                  numberedLabel = [v19 numberedLabel];
+                  [array addObject:numberedLabel];
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v46 objects:v57 count:16];
+              v16 = [labeledElementsCopy countByEnumeratingWithState:&v46 objects:v57 count:16];
             }
 
             while (v16);
@@ -3301,20 +3301,20 @@ intptr_t __45__CACDisplayManager_enableStatusBarOverride___block_invoke(uint64_t
           goto LABEL_19;
         }
 
-        v22 = [*(v8 + 1776) sharedCACSpokenCommandManager];
-        v23 = [v22 isActiveOverlayType:@"NamedElements"];
+        sharedCACSpokenCommandManager2 = [*(v8 + 1776) sharedCACSpokenCommandManager];
+        v23 = [sharedCACSpokenCommandManager2 isActiveOverlayType:@"NamedElements"];
 
         if (v23)
         {
-          v14 = [v10 elementNamesOverlayManager];
-          v24 = [v14 voiceOverDescriptions];
-          [v4 addObjectsFromArray:v24];
+          labeledElementsCopy = [v10 elementNamesOverlayManager];
+          voiceOverDescriptions = [labeledElementsCopy voiceOverDescriptions];
+          [array addObjectsFromArray:voiceOverDescriptions];
 
           goto LABEL_19;
         }
 
-        v25 = [*(v8 + 1776) sharedCACSpokenCommandManager];
-        v26 = [v25 isActiveOverlayType:@"NumberedGrid"];
+        sharedCACSpokenCommandManager3 = [*(v8 + 1776) sharedCACSpokenCommandManager];
+        v26 = [sharedCACSpokenCommandManager3 isActiveOverlayType:@"NumberedGrid"];
 
         if (v26)
         {
@@ -3322,10 +3322,10 @@ intptr_t __45__CACDisplayManager_enableStatusBarOverride___block_invoke(uint64_t
           v45 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v27 = [v10 labeledGridOverlayManager];
-          v14 = [v27 labeledElements];
+          labeledGridOverlayManager = [v10 labeledGridOverlayManager];
+          labeledElementsCopy = [labeledGridOverlayManager labeledElements];
 
-          v28 = [v14 countByEnumeratingWithState:&v42 objects:v56 count:16];
+          v28 = [labeledElementsCopy countByEnumeratingWithState:&v42 objects:v56 count:16];
           if (v28)
           {
             v29 = v28;
@@ -3336,20 +3336,20 @@ intptr_t __45__CACDisplayManager_enableStatusBarOverride___block_invoke(uint64_t
               {
                 if (*v43 != v30)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(labeledElementsCopy);
                 }
 
                 v32 = *(*(&v42 + 1) + 8 * j);
-                v33 = [v32 label];
+                label2 = [v32 label];
 
-                if (v33)
+                if (label2)
                 {
-                  v34 = [v32 label];
-                  [v4 addObject:v34];
+                  label3 = [v32 label];
+                  [array addObject:label3];
                 }
               }
 
-              v29 = [v14 countByEnumeratingWithState:&v42 objects:v56 count:16];
+              v29 = [labeledElementsCopy countByEnumeratingWithState:&v42 objects:v56 count:16];
             }
 
             while (v29);
@@ -3374,7 +3374,7 @@ LABEL_19:
   v36 = objc_alloc(MEMORY[0x277CE7D90]);
   v37 = +[CACVoiceControlServer _currentlyDisplayedOverlayLabelsCommand];
   v54 = @"result";
-  v55 = v4;
+  v55 = array;
   v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
   v39 = [v36 initWithKey:v37 payload:v38];
 
@@ -3383,31 +3383,31 @@ LABEL_19:
 
 - (void)_updateForCurrentStatusIndicatorType
 {
-  v3 = [(CACDisplayManager *)self statusIndicatorType];
-  if (v3 == 3)
+  statusIndicatorType = [(CACDisplayManager *)self statusIndicatorType];
+  if (statusIndicatorType == 3)
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = v3 == 2;
+    v4 = statusIndicatorType == 2;
   }
 
-  v5 = [(CACDisplayManager *)self voiceControlStatusPublisher];
+  voiceControlStatusPublisher = [(CACDisplayManager *)self voiceControlStatusPublisher];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__CACDisplayManager__updateForCurrentStatusIndicatorType__block_invoke;
   v6[3] = &__block_descriptor_40_e47_v16__0__STMutableVoiceControlStatusDomainData_8l;
   v6[4] = v4;
-  [v5 updateDataWithBlock:v6];
+  [voiceControlStatusPublisher updateDataWithBlock:v6];
 }
 
-- (void)setStatusIndicatorType:(int64_t)a3
+- (void)setStatusIndicatorType:(int64_t)type
 {
-  if (self->_statusIndicatorType != a3)
+  if (self->_statusIndicatorType != type)
   {
-    self->_statusIndicatorType = a3;
+    self->_statusIndicatorType = type;
     [(CACDisplayManager *)self _updateForCurrentStatusIndicatorType];
   }
 }
@@ -3452,10 +3452,10 @@ LABEL_19:
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 scene];
-        v10 = [v9 session];
-        v11 = [v10 role];
-        v12 = [v11 isEqual:v6];
+        scene = [v8 scene];
+        session = [scene session];
+        role = [session role];
+        v12 = [role isEqual:v6];
 
         if (v12)
         {
@@ -3502,10 +3502,10 @@ LABEL_11:
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
-        v7 = [v6 scene];
-        v8 = [v7 screen];
-        v9 = [MEMORY[0x277D759A0] mainScreen];
-        v10 = [v8 isEqual:v9];
+        scene = [v6 scene];
+        screen = [scene screen];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        v10 = [screen isEqual:mainScreen];
 
         if (v10)
         {
@@ -3531,30 +3531,30 @@ LABEL_11:
 
 - (CGPoint)defaultPortraitUpPointForGestures
 {
-  v2 = [(CACDisplayManager *)self _defaultScreenSceneManager];
-  v3 = [v2 labeledGridOverlayManager];
-  v4 = [v3 isShowing];
+  _defaultScreenSceneManager = [(CACDisplayManager *)self _defaultScreenSceneManager];
+  labeledGridOverlayManager = [_defaultScreenSceneManager labeledGridOverlayManager];
+  isShowing = [labeledGridOverlayManager isShowing];
 
-  if (v4)
+  if (isShowing)
   {
-    v5 = [v2 labeledGridOverlayManager];
-    [v5 portraitUpCenterPoint];
+    labeledGridOverlayManager2 = [_defaultScreenSceneManager labeledGridOverlayManager];
+    [labeledGridOverlayManager2 portraitUpCenterPoint];
     v7 = v6;
     v9 = v8;
   }
 
   else
   {
-    v5 = [v2 scene];
-    v10 = [v5 screen];
-    [v10 bounds];
+    labeledGridOverlayManager2 = [_defaultScreenSceneManager scene];
+    screen = [labeledGridOverlayManager2 screen];
+    [screen bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [v2 scene];
-    v20 = [v19 screen];
-    CACPortraitUpRectFromScreenRect(v20, v12, v14, v16, v18);
+    scene = [_defaultScreenSceneManager scene];
+    screen2 = [scene screen];
+    CACPortraitUpRectFromScreenRect(screen2, v12, v14, v16, v18);
     AX_CGRectGetCenter();
     v7 = v21;
     v9 = v22;
@@ -3569,66 +3569,66 @@ LABEL_11:
 
 - (id)labeledElementsOverlayManager
 {
-  v2 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  v3 = [v2 labeledElementsOverlayManager];
+  _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+  labeledElementsOverlayManager = [_mainScreenSceneManager labeledElementsOverlayManager];
 
-  return v3;
+  return labeledElementsOverlayManager;
 }
 
 - (id)elementNamesOverlayManager
 {
-  v2 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  v3 = [v2 elementNamesOverlayManager];
+  _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+  elementNamesOverlayManager = [_mainScreenSceneManager elementNamesOverlayManager];
 
-  return v3;
+  return elementNamesOverlayManager;
 }
 
 - (id)gestureLivePreviewPresentationOverlayManager
 {
-  v2 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  v3 = [v2 gestureLivePreviewPresentationOverlayManager];
+  _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+  gestureLivePreviewPresentationOverlayManager = [_mainScreenSceneManager gestureLivePreviewPresentationOverlayManager];
 
-  return v3;
+  return gestureLivePreviewPresentationOverlayManager;
 }
 
 - (id)elementActionsPresentationManager
 {
-  v2 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  v3 = [v2 elementActionsPresentationManager];
+  _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+  elementActionsPresentationManager = [_mainScreenSceneManager elementActionsPresentationManager];
 
-  return v3;
+  return elementActionsPresentationManager;
 }
 
 - (id)correctionPresentationManager
 {
-  v2 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  v3 = [v2 correctionPresentationManager];
+  _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+  correctionPresentationManager = [_mainScreenSceneManager correctionPresentationManager];
 
-  return v3;
+  return correctionPresentationManager;
 }
 
 - (id)customCommandEditorPresentationManager
 {
-  v2 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  v3 = [v2 customCommandEditorPresentationManager];
+  _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+  customCommandEditorPresentationManager = [_mainScreenSceneManager customCommandEditorPresentationManager];
 
-  return v3;
+  return customCommandEditorPresentationManager;
 }
 
 - (id)dictationRecognizerModeOverlayManager
 {
-  v2 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  v3 = [v2 dictationRecognizerModeOverlayManager];
+  _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+  dictationRecognizerModeOverlayManager = [_mainScreenSceneManager dictationRecognizerModeOverlayManager];
 
-  return v3;
+  return dictationRecognizerModeOverlayManager;
 }
 
 - (id)contextCluesPresentationManager
 {
-  v2 = [(CACDisplayManager *)self _mainScreenSceneManager];
-  v3 = [v2 contextCluesPresentationManager];
+  _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+  contextCluesPresentationManager = [_mainScreenSceneManager contextCluesPresentationManager];
 
-  return v3;
+  return contextCluesPresentationManager;
 }
 
 - (CACVoiceOverAnnouncer)voiceOverAnnouncer
@@ -3654,8 +3654,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v5 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3666,15 +3666,15 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) labeledElementsOverlayManager];
-        v10 = [v9 labeledElementsCopy];
-        [v3 addObjectsFromArray:v10];
+        labeledElementsOverlayManager = [*(*(&v12 + 1) + 8 * i) labeledElementsOverlayManager];
+        labeledElementsCopy = [labeledElementsOverlayManager labeledElementsCopy];
+        [v3 addObjectsFromArray:labeledElementsCopy];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -3683,14 +3683,14 @@ LABEL_11:
   return v3;
 }
 
-- (id)_labeledTextSegmentElementsIncludingOnlyVisible:(BOOL)a3
+- (id)_labeledTextSegmentElementsIncludingOnlyVisible:(BOOL)visible
 {
   v64 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   v6 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v7 = [v6 focusedElement];
+  focusedElement = [v6 focusedElement];
 
-  if (v7 && (+[CACSpokenCommandManager sharedCACSpokenCommandManager](CACSpokenCommandManager, "sharedCACSpokenCommandManager"), v8 = objc_claimAutoreleasedReturnValue(), [v8 disambiguationHandler], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
+  if (focusedElement && (+[CACSpokenCommandManager sharedCACSpokenCommandManager](CACSpokenCommandManager, "sharedCACSpokenCommandManager"), v8 = objc_claimAutoreleasedReturnValue(), [v8 disambiguationHandler], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
   {
     v59 = 0u;
     v60 = 0u;
@@ -3702,7 +3702,7 @@ LABEL_11:
     {
       v43 = *v58;
       v11 = MEMORY[0x277CBEBF8];
-      v44 = a3;
+      visibleCopy = visible;
       do
       {
         v12 = 0;
@@ -3714,18 +3714,18 @@ LABEL_11:
           }
 
           v13 = *(*(&v57 + 1) + 8 * v12);
-          v14 = [v13 editingModeOverlayManager];
-          v15 = v14;
+          editingModeOverlayManager = [v13 editingModeOverlayManager];
+          v15 = editingModeOverlayManager;
           v46 = v13;
           v47 = v12;
-          if (a3)
+          if (visible)
           {
-            [v14 displayedOverlayElements];
+            [editingModeOverlayManager displayedOverlayElements];
           }
 
           else
           {
-            [v14 overlayElementsForCommandHandling];
+            [editingModeOverlayManager overlayElementsForCommandHandling];
           }
           v16 = ;
 
@@ -3751,9 +3751,9 @@ LABEL_11:
                 v21 = *(*(&v53 + 1) + 8 * i);
                 v22 = [CACLabeledElement alloc];
                 [v21 axFrame];
-                v23 = [(CACLabeledElement *)v22 initWithElement:v7 recognitionStrings:v11 rectangle:?];
-                v24 = [v21 range];
-                v26 = [CACTextMarkerRange markerRangeWithNSRange:v24, v25];
+                v23 = [(CACLabeledElement *)v22 initWithElement:focusedElement recognitionStrings:v11 rectangle:?];
+                range = [v21 range];
+                v26 = [CACTextMarkerRange markerRangeWithNSRange:range, v25];
                 [(CACLabeledElement *)v23 setTextMarkerRange:v26];
 
                 -[CACLabeledElement setNumber:](v23, "setNumber:", [v21 number]);
@@ -3766,16 +3766,16 @@ LABEL_11:
             while (v18);
           }
 
-          v27 = [v46 linesEditingModeOverlayManager];
-          v28 = v27;
-          if (a3)
+          linesEditingModeOverlayManager = [v46 linesEditingModeOverlayManager];
+          v28 = linesEditingModeOverlayManager;
+          if (visible)
           {
-            [v27 displayedOverlayElements];
+            [linesEditingModeOverlayManager displayedOverlayElements];
           }
 
           else
           {
-            [v27 overlayElementsForCommandHandling];
+            [linesEditingModeOverlayManager overlayElementsForCommandHandling];
           }
           v29 = ;
 
@@ -3801,9 +3801,9 @@ LABEL_11:
                 v35 = *(*(&v49 + 1) + 8 * j);
                 v36 = [CACLabeledElement alloc];
                 [v35 axFrame];
-                v37 = [(CACLabeledElement *)v36 initWithElement:v7 recognitionStrings:v11 rectangle:?];
-                v38 = [v35 range];
-                v40 = [CACTextMarkerRange markerRangeWithNSRange:v38, v39];
+                v37 = [(CACLabeledElement *)v36 initWithElement:focusedElement recognitionStrings:v11 rectangle:?];
+                range2 = [v35 range];
+                v40 = [CACTextMarkerRange markerRangeWithNSRange:range2, v39];
                 [(CACLabeledElement *)v37 setTextMarkerRange:v40];
 
                 -[CACLabeledElement setNumber:](v37, "setNumber:", [v35 number]);
@@ -3817,7 +3817,7 @@ LABEL_11:
           }
 
           v12 = v47 + 1;
-          a3 = v44;
+          visible = visibleCopy;
         }
 
         while (v47 + 1 != v45);
@@ -3846,8 +3846,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v5 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3858,15 +3858,15 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) labeledGridOverlayManager];
-        v10 = [v9 labeledElements];
-        [v3 addObjectsFromArray:v10];
+        labeledGridOverlayManager = [*(*(&v12 + 1) + 8 * i) labeledGridOverlayManager];
+        labeledElements = [labeledGridOverlayManager labeledElements];
+        [v3 addObjectsFromArray:labeledElements];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -3875,16 +3875,16 @@ LABEL_11:
   return v3;
 }
 
-- (void)updateGridLayoutWithNumberOfRows:(unint64_t)a3 numberOfColumns:(unint64_t)a4 shouldPreferRows:(BOOL)a5
+- (void)updateGridLayoutWithNumberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns shouldPreferRows:(BOOL)preferRows
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __87__CACDisplayManager_updateGridLayoutWithNumberOfRows_numberOfColumns_shouldPreferRows___block_invoke;
   v5[3] = &unk_279CEC3B0;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
-  v6 = a5;
+  v5[5] = rows;
+  v5[6] = columns;
+  preferRowsCopy = preferRows;
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 
@@ -3930,8 +3930,8 @@ void __87__CACDisplayManager_updateGridLayoutWithNumberOfRows_numberOfColumns_sh
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -3943,13 +3943,13 @@ void __87__CACDisplayManager_updateGridLayoutWithNumberOfRows_numberOfColumns_sh
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         v5 |= [*(*(&v9 + 1) + 8 * i) updateGridLayoutFromPreferences];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -3963,41 +3963,41 @@ void __87__CACDisplayManager_updateGridLayoutWithNumberOfRows_numberOfColumns_sh
   return v5 & 1;
 }
 
-- (void)updatePreferencesFromCurrentGridLayoutForRows:(BOOL)a3 forColumns:(BOOL)a4
+- (void)updatePreferencesFromCurrentGridLayoutForRows:(BOOL)rows forColumns:(BOOL)columns
 {
-  v4 = a4;
-  v5 = a3;
+  columnsCopy = columns;
+  rowsCopy = rows;
   v11 = +[CACPreferences sharedPreferences];
-  [v11 setGridOverlayCustomColumnsEnabled:v4];
-  if (v4)
+  [v11 setGridOverlayCustomColumnsEnabled:columnsCopy];
+  if (columnsCopy)
   {
-    v7 = [(CACDisplayManager *)self _mainScreenSceneManager];
-    v8 = [v7 labeledGridOverlayManager];
-    [v11 setGridOverlayCustomColumnsCount:{objc_msgSend(v8, "currentNumberOfColumns")}];
+    _mainScreenSceneManager = [(CACDisplayManager *)self _mainScreenSceneManager];
+    labeledGridOverlayManager = [_mainScreenSceneManager labeledGridOverlayManager];
+    [v11 setGridOverlayCustomColumnsCount:{objc_msgSend(labeledGridOverlayManager, "currentNumberOfColumns")}];
   }
 
-  [v11 setGridOverlayCustomRowsEnabled:v5];
-  if (v5)
+  [v11 setGridOverlayCustomRowsEnabled:rowsCopy];
+  if (rowsCopy)
   {
-    v9 = [(CACDisplayManager *)self _mainScreenSceneManager];
-    v10 = [v9 labeledGridOverlayManager];
-    [v11 setGridOverlayCustomRowsCount:{objc_msgSend(v10, "currentNumberOfRows")}];
+    _mainScreenSceneManager2 = [(CACDisplayManager *)self _mainScreenSceneManager];
+    labeledGridOverlayManager2 = [_mainScreenSceneManager2 labeledGridOverlayManager];
+    [v11 setGridOverlayCustomRowsCount:{objc_msgSend(labeledGridOverlayManager2, "currentNumberOfRows")}];
   }
 }
 
-- (BOOL)updateGridWithPortraitUpRect:(CGRect)a3 gridContainingLabel:(id)a4
+- (BOOL)updateGridWithPortraitUpRect:(CGRect)rect gridContainingLabel:(id)label
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  labelCopy = label;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v24 = self;
+  selfCopy = self;
   obj = [(CACDisplayManager *)self _uiPresentingSceneManagers];
   v27 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v27)
@@ -4014,13 +4014,13 @@ void __87__CACDisplayManager_updateGridLayoutWithNumberOfRows_numberOfColumns_sh
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v11 labeledGridOverlayManager];
+        labeledGridOverlayManager = [v11 labeledGridOverlayManager];
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v13 = [v12 labeledElements];
-        v14 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        labeledElements = [labeledGridOverlayManager labeledElements];
+        v14 = [labeledElements countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v14)
         {
           v15 = v14;
@@ -4031,26 +4031,26 @@ void __87__CACDisplayManager_updateGridLayoutWithNumberOfRows_numberOfColumns_sh
             {
               if (*v29 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(labeledElements);
               }
 
-              v18 = [*(*(&v28 + 1) + 8 * j) label];
-              v19 = [v18 isEqualToString:v9];
+              label = [*(*(&v28 + 1) + 8 * j) label];
+              v19 = [label isEqualToString:labelCopy];
 
               if (v19)
               {
-                v20 = [v11 labeledGridOverlayManager];
-                [v20 setStartingNumber:1];
+                labeledGridOverlayManager2 = [v11 labeledGridOverlayManager];
+                [labeledGridOverlayManager2 setStartingNumber:1];
 
-                v21 = [v11 labeledGridOverlayManager];
-                v25 = [v21 updateOverlayWithPortraitUpRect:v9 gridContainingLabel:{x, y, width, height}];
+                labeledGridOverlayManager3 = [v11 labeledGridOverlayManager];
+                v25 = [labeledGridOverlayManager3 updateOverlayWithPortraitUpRect:labelCopy gridContainingLabel:{x, y, width, height}];
 
-                [(CACDisplayManager *)v24 setGridDidDrill:[(CACDisplayManager *)v24 gridDidDrill]^ 1];
+                [(CACDisplayManager *)selfCopy setGridDidDrill:[(CACDisplayManager *)selfCopy gridDidDrill]^ 1];
                 goto LABEL_16;
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+            v15 = [labeledElements countByEnumeratingWithState:&v28 objects:v36 count:16];
             if (v15)
             {
               continue;
@@ -4060,8 +4060,8 @@ void __87__CACDisplayManager_updateGridLayoutWithNumberOfRows_numberOfColumns_sh
           }
         }
 
-        v13 = [v11 labeledGridOverlayManager];
-        [v13 hide];
+        labeledElements = [v11 labeledGridOverlayManager];
+        [labeledElements hide];
 LABEL_16:
       }
 
@@ -4086,8 +4086,8 @@ LABEL_16:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -4099,17 +4099,17 @@ LABEL_16:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        v9 = [v8 labeledGridOverlayManager];
-        [v9 resetAndDrawAtTopLevelWithStartingNumber:v5 + 1];
+        labeledGridOverlayManager = [v8 labeledGridOverlayManager];
+        [labeledGridOverlayManager resetAndDrawAtTopLevelWithStartingNumber:v5 + 1];
 
         v5 += [v8 numberOfLabelsForGridManager];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -4123,8 +4123,8 @@ LABEL_16:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -4136,17 +4136,17 @@ LABEL_16:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
-        v7 = [*(*(&v8 + 1) + 8 * v6) labeledGridOverlayManager];
-        [v7 resetIdleTimer];
+        labeledGridOverlayManager = [*(*(&v8 + 1) + 8 * v6) labeledGridOverlayManager];
+        [labeledGridOverlayManager resetIdleTimer];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -4160,8 +4160,8 @@ LABEL_16:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CACDisplayManager *)self _uiPresentingSceneManagers];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _uiPresentingSceneManagers = [(CACDisplayManager *)self _uiPresentingSceneManagers];
+  v3 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -4172,20 +4172,20 @@ LABEL_16:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_uiPresentingSceneManagers);
         }
 
-        v7 = [*(*(&v11 + 1) + 8 * i) labeledGridOverlayManager];
-        v8 = [v7 currentLevel];
+        labeledGridOverlayManager = [*(*(&v11 + 1) + 8 * i) labeledGridOverlayManager];
+        currentLevel = [labeledGridOverlayManager currentLevel];
 
-        if (v8 > 1)
+        if (currentLevel > 1)
         {
           v9 = 0;
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [_uiPresentingSceneManagers countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -4201,40 +4201,40 @@ LABEL_11:
   return v9;
 }
 
-- (void)showElementActionsForElement:(id)a3 usingPortraitUpRect:(CGRect)a4
+- (void)showElementActionsForElement:(id)element usingPortraitUpRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  elementCopy = element;
   if ([CACElementActionsPresentationManager canShowElementActionsForElement:?])
   {
-    v9 = [(CACDisplayManager *)self elementActionsPresentationManager];
-    [v9 showElementActionsForElement:v10 usingPortraitUpRect:{x, y, width, height}];
+    elementActionsPresentationManager = [(CACDisplayManager *)self elementActionsPresentationManager];
+    [elementActionsPresentationManager showElementActionsForElement:elementCopy usingPortraitUpRect:{x, y, width, height}];
   }
 
   else
   {
-    v9 = [CACLocaleUtilities localizedUIStringForKey:@"InfoMessage.NoElementActionsAvailable"];
-    [(CACDisplayManager *)self displayMessageString:v9 type:0];
+    elementActionsPresentationManager = [CACLocaleUtilities localizedUIStringForKey:@"InfoMessage.NoElementActionsAvailable"];
+    [(CACDisplayManager *)self displayMessageString:elementActionsPresentationManager type:0];
   }
 }
 
 - (void)showOverlayForDictiationRecognizerMode
 {
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 focusedElement];
+  focusedElement = [v3 focusedElement];
 
-  if (!v4)
+  if (!focusedElement)
   {
 LABEL_8:
     v10 = MEMORY[0x277D82BB8];
-    v11 = [(CACDisplayManager *)self dictationRecognizerModeOverlayManager];
-    [v10 cancelPreviousPerformRequestsWithTarget:v11 selector:sel_showOverlayForDictiationRecognizerMode object:0];
+    dictationRecognizerModeOverlayManager = [(CACDisplayManager *)self dictationRecognizerModeOverlayManager];
+    [v10 cancelPreviousPerformRequestsWithTarget:dictationRecognizerModeOverlayManager selector:sel_showOverlayForDictiationRecognizerMode object:0];
 
-    v12 = [(CACDisplayManager *)self dictationRecognizerModeOverlayManager];
-    [v12 hideWithoutAnimation];
+    dictationRecognizerModeOverlayManager2 = [(CACDisplayManager *)self dictationRecognizerModeOverlayManager];
+    [dictationRecognizerModeOverlayManager2 hideWithoutAnimation];
     goto LABEL_9;
   }
 
@@ -4257,35 +4257,35 @@ LABEL_7:
   }
 
   v6 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v7 = [v6 currentInteractionLevel];
+  currentInteractionLevel = [v6 currentInteractionLevel];
 
-  if (v7)
+  if (currentInteractionLevel)
   {
     goto LABEL_7;
   }
 
   v8 = MEMORY[0x277D82BB8];
-  v9 = [(CACDisplayManager *)self dictationRecognizerModeOverlayManager];
-  [v8 cancelPreviousPerformRequestsWithTarget:v9 selector:sel_showOverlayForDictiationRecognizerMode object:0];
+  dictationRecognizerModeOverlayManager3 = [(CACDisplayManager *)self dictationRecognizerModeOverlayManager];
+  [v8 cancelPreviousPerformRequestsWithTarget:dictationRecognizerModeOverlayManager3 selector:sel_showOverlayForDictiationRecognizerMode object:0];
 
-  v12 = [(CACDisplayManager *)self dictationRecognizerModeOverlayManager];
-  [v12 performSelector:sel_showOverlayForDictiationRecognizerMode withObject:0 afterDelay:2.5];
+  dictationRecognizerModeOverlayManager2 = [(CACDisplayManager *)self dictationRecognizerModeOverlayManager];
+  [dictationRecognizerModeOverlayManager2 performSelector:sel_showOverlayForDictiationRecognizerMode withObject:0 afterDelay:2.5];
 LABEL_9:
 }
 
-- (void)showCorrectionsForElement:(id)a3 nBestStrings:(id)a4
+- (void)showCorrectionsForElement:(id)element nBestStrings:(id)strings
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  stringsCopy = strings;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__CACDisplayManager_showCorrectionsForElement_nBestStrings___block_invoke;
   block[3] = &unk_279CEB550;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = elementCopy;
+  v12 = stringsCopy;
+  v8 = stringsCopy;
+  v9 = elementCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -4311,11 +4311,11 @@ void __36__CACDisplayManager_hideCorrections__block_invoke(uint64_t a1)
   [v1 hideAnimated:1 completion:0];
 }
 
-- (void)showCustomCommandEditorWithGesture:(id)a3
+- (void)showCustomCommandEditorWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(CACDisplayManager *)self customCommandEditorPresentationManager];
-  v6 = [v5 showCustomCommandEditorWithGesture:v4];
+  gestureCopy = gesture;
+  customCommandEditorPresentationManager = [(CACDisplayManager *)self customCommandEditorPresentationManager];
+  v6 = [customCommandEditorPresentationManager showCustomCommandEditorWithGesture:gestureCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -4324,18 +4324,18 @@ void __36__CACDisplayManager_hideCorrections__block_invoke(uint64_t a1)
   }
 }
 
-- (void)showCustomCommandEditorWithTextToInsert:(id)a3
+- (void)showCustomCommandEditorWithTextToInsert:(id)insert
 {
-  v4 = a3;
-  v5 = [(CACDisplayManager *)self customCommandEditorPresentationManager];
-  [v5 showCustomCommandEditorWithTextToInsert:v4];
+  insertCopy = insert;
+  customCommandEditorPresentationManager = [(CACDisplayManager *)self customCommandEditorPresentationManager];
+  [customCommandEditorPresentationManager showCustomCommandEditorWithTextToInsert:insertCopy];
 }
 
-- (void)showCustomCommandEditorWithRecordedUserActionFlow:(id)a3
+- (void)showCustomCommandEditorWithRecordedUserActionFlow:(id)flow
 {
-  v4 = a3;
-  v5 = [(CACDisplayManager *)self customCommandEditorPresentationManager];
-  v6 = [v5 showCustomCommandEditorWithRecordedUserActionFlow:v4];
+  flowCopy = flow;
+  customCommandEditorPresentationManager = [(CACDisplayManager *)self customCommandEditorPresentationManager];
+  v6 = [customCommandEditorPresentationManager showCustomCommandEditorWithRecordedUserActionFlow:flowCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -4344,11 +4344,11 @@ void __36__CACDisplayManager_hideCorrections__block_invoke(uint64_t a1)
   }
 }
 
-- (void)showCustomCommandEditorWithShortcutsWorkflow:(id)a3
+- (void)showCustomCommandEditorWithShortcutsWorkflow:(id)workflow
 {
-  v4 = a3;
-  v5 = [(CACDisplayManager *)self customCommandEditorPresentationManager];
-  v6 = [v5 showCustomCommandEditorWithShortcutsWorkflow:v4];
+  workflowCopy = workflow;
+  customCommandEditorPresentationManager = [(CACDisplayManager *)self customCommandEditorPresentationManager];
+  v6 = [customCommandEditorPresentationManager showCustomCommandEditorWithShortcutsWorkflow:workflowCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -4357,11 +4357,11 @@ void __36__CACDisplayManager_hideCorrections__block_invoke(uint64_t a1)
   }
 }
 
-- (void)showContextCluesViewWithCommands:(id)a3
+- (void)showContextCluesViewWithCommands:(id)commands
 {
-  v4 = a3;
-  v5 = [(CACDisplayManager *)self contextCluesPresentationManager];
-  [v5 showWithCommands:v4];
+  commandsCopy = commands;
+  contextCluesPresentationManager = [(CACDisplayManager *)self contextCluesPresentationManager];
+  [contextCluesPresentationManager showWithCommands:commandsCopy];
 }
 
 - (void)showLiveRecordingGesturePreview
@@ -4372,29 +4372,29 @@ void __36__CACDisplayManager_hideCorrections__block_invoke(uint64_t a1)
     [(CACDisplayManager *)v3 showLiveRecordingGesturePreview];
   }
 
-  v4 = [(CACDisplayManager *)self gestureLivePreviewPresentationOverlayManager];
-  [v4 showGestureLivePreviewViewer];
+  gestureLivePreviewPresentationOverlayManager = [(CACDisplayManager *)self gestureLivePreviewPresentationOverlayManager];
+  [gestureLivePreviewPresentationOverlayManager showGestureLivePreviewViewer];
 }
 
-- (void)addPointsToLiveRecordingGesturePreviewByFingerIdentifier:(id)a3 forces:(id)a4 atTime:(double)a5
+- (void)addPointsToLiveRecordingGesturePreviewByFingerIdentifier:(id)identifier forces:(id)forces atTime:(double)time
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CACDisplayManager *)self gestureLivePreviewPresentationOverlayManager];
-  [v10 addPointsToLiveRecordingGesturePreviewByFingerIdentifier:v9 forces:v8 atTime:a5];
+  forcesCopy = forces;
+  identifierCopy = identifier;
+  gestureLivePreviewPresentationOverlayManager = [(CACDisplayManager *)self gestureLivePreviewPresentationOverlayManager];
+  [gestureLivePreviewPresentationOverlayManager addPointsToLiveRecordingGesturePreviewByFingerIdentifier:identifierCopy forces:forcesCopy atTime:time];
 }
 
-- (void)removeTrackingForFingerIdentifier:(id)a3
+- (void)removeTrackingForFingerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CACDisplayManager *)self gestureLivePreviewPresentationOverlayManager];
-  [v5 removeTrackingForFingerIdentifier:v4];
+  identifierCopy = identifier;
+  gestureLivePreviewPresentationOverlayManager = [(CACDisplayManager *)self gestureLivePreviewPresentationOverlayManager];
+  [gestureLivePreviewPresentationOverlayManager removeTrackingForFingerIdentifier:identifierCopy];
 }
 
 - (void)hideLiveRecordingGesturePreview
 {
-  v2 = [(CACDisplayManager *)self gestureLivePreviewPresentationOverlayManager];
-  [v2 hideAnimated:1 completion:&__block_literal_global_769];
+  gestureLivePreviewPresentationOverlayManager = [(CACDisplayManager *)self gestureLivePreviewPresentationOverlayManager];
+  [gestureLivePreviewPresentationOverlayManager hideAnimated:1 completion:&__block_literal_global_769];
 }
 
 void __52__CACDisplayManager_hideLiveRecordingGesturePreview__block_invoke()
@@ -4409,7 +4409,7 @@ void __52__CACDisplayManager_hideLiveRecordingGesturePreview__block_invoke()
 - (id)_test_activeEditingOverlayElements
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -4430,22 +4430,22 @@ void __52__CACDisplayManager_hideLiveRecordingGesturePreview__block_invoke()
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 linesEditingModeOverlayManager];
-        v11 = [v9 editingModeOverlayManager];
-        v12 = [v10 viewController];
+        linesEditingModeOverlayManager = [v9 linesEditingModeOverlayManager];
+        editingModeOverlayManager = [v9 editingModeOverlayManager];
+        viewController = [linesEditingModeOverlayManager viewController];
 
-        if (v12)
+        if (viewController)
         {
-          v13 = [v10 displayedOverlayElements];
-          [v3 addObjectsFromArray:v13];
+          displayedOverlayElements = [linesEditingModeOverlayManager displayedOverlayElements];
+          [array addObjectsFromArray:displayedOverlayElements];
         }
 
-        v14 = [v11 viewController];
+        viewController2 = [editingModeOverlayManager viewController];
 
-        if (v14)
+        if (viewController2)
         {
-          v15 = [v11 displayedOverlayElements];
-          [v3 addObjectsFromArray:v15];
+          displayedOverlayElements2 = [editingModeOverlayManager displayedOverlayElements];
+          [array addObjectsFromArray:displayedOverlayElements2];
         }
       }
 
@@ -4455,7 +4455,7 @@ void __52__CACDisplayManager_hideLiveRecordingGesturePreview__block_invoke()
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (_NSRange)targetOverlayRange

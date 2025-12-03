@@ -1,39 +1,39 @@
 @interface AXSpeakScreenButton
 - (UIVisualEffectView)buttonEffectView;
-- (void)setAlpha:(double)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation AXSpeakScreenButton
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v8.receiver = self;
   v8.super_class = AXSpeakScreenButton;
   [(AXSpeakScreenButton *)&v8 setEnabled:?];
   v5 = [UIBlurEffect effectWithStyle:19];
-  v6 = [UIVibrancyEffect effectForBlurEffect:v5 style:!v3];
-  v7 = [(AXSpeakScreenButton *)self buttonEffectView];
-  [v7 setEffect:v6];
+  v6 = [UIVibrancyEffect effectForBlurEffect:v5 style:!enabledCopy];
+  buttonEffectView = [(AXSpeakScreenButton *)self buttonEffectView];
+  [buttonEffectView setEffect:v6];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v11.receiver = self;
   v11.super_class = AXSpeakScreenButton;
   [(AXSpeakScreenButton *)&v11 setAlpha:?];
-  v5 = [(AXSpeakScreenButton *)self borderEffectView];
-  v6 = [v5 contentView];
-  v7 = [v6 subviews];
-  v8 = [v7 lastObject];
-  [v8 setAlpha:a3];
+  borderEffectView = [(AXSpeakScreenButton *)self borderEffectView];
+  contentView = [borderEffectView contentView];
+  subviews = [contentView subviews];
+  lastObject = [subviews lastObject];
+  [lastObject setAlpha:alpha];
 
-  v9 = [(AXSpeakScreenButton *)self borderEffectView];
-  [v9 setAlpha:a3];
+  borderEffectView2 = [(AXSpeakScreenButton *)self borderEffectView];
+  [borderEffectView2 setAlpha:alpha];
 
-  v10 = [(AXSpeakScreenButton *)self buttonEffectView];
-  [v10 setAlpha:a3];
+  buttonEffectView = [(AXSpeakScreenButton *)self buttonEffectView];
+  [buttonEffectView setAlpha:alpha];
 }
 
 - (UIVisualEffectView)buttonEffectView

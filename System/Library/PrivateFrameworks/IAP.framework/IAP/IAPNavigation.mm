@@ -1,15 +1,15 @@
 @interface IAPNavigation
 - (IAPNavigation)init;
-- (IAPNavigation)initWithDelegate:(id)a3;
+- (IAPNavigation)initWithDelegate:(id)delegate;
 - (IAPNavigationDelegate)delegate;
-- (id)_convert_xpc_array_to_NSArray:(id)a3;
+- (id)_convert_xpc_array_to_NSArray:(id)array;
 - (void)_getConnectedAccessories;
 - (void)_iap2d_server_did_die;
 - (void)_iap2d_server_did_launch;
-- (void)_updateInternalStateWithArrayOfAccessories:(id)a3;
+- (void)_updateInternalStateWithArrayOfAccessories:(id)accessories;
 - (void)dealloc;
-- (void)updateNavigationGuidanceInfo:(id)a3 forAccessory:(id)a4 withComponent:(id)a5;
-- (void)updateNavigationManeuverInfo:(id)a3 forAccessory:(id)a4 withComponent:(id)a5;
+- (void)updateNavigationGuidanceInfo:(id)info forAccessory:(id)accessory withComponent:(id)component;
+- (void)updateNavigationManeuverInfo:(id)info forAccessory:(id)accessory withComponent:(id)component;
 @end
 
 @implementation IAPNavigation
@@ -21,9 +21,9 @@
   return 0;
 }
 
-- (IAPNavigation)initWithDelegate:(id)a3
+- (IAPNavigation)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = IAPNavigation;
   v5 = [(IAPNavigation *)&v18 init];
@@ -33,21 +33,21 @@
     availableAccessories = v5->_availableAccessories;
     v5->_availableAccessories = v6;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v5->_connected = 0;
     v8 = dispatch_queue_create("com.apple.iap.navigation.processingQ", 0);
     processingQ = v5->_processingQ;
     v5->_processingQ = v8;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     localNotificationCenter = v5->_localNotificationCenter;
-    v5->_localNotificationCenter = v10;
+    v5->_localNotificationCenter = defaultCenter;
 
     [(NSNotificationCenter *)v5->_localNotificationCenter addObserver:v5 selector:sel__iap2d_server_did_launch name:@"iAP2ServerLaunch" object:0];
     [(NSNotificationCenter *)v5->_localNotificationCenter addObserver:v5 selector:sel__iap2d_server_did_die name:@"iAP2ServerDie" object:0];
-    v12 = [MEMORY[0x277CCA9A0] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"nav_frameworkShouldPollNotification"];
-    [v12 addObserver:v5 selector:sel__getConnectedAccessories name:v13 object:0];
+    [defaultCenter2 addObserver:v5 selector:sel__getConnectedAccessories name:v13 object:0];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     v5->_darwinNotificationCenter = DarwinNotifyCenter;
@@ -70,8 +70,8 @@
 - (void)dealloc
 {
   [(NSNotificationCenter *)self->_localNotificationCenter removeObserver:self];
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   CFNotificationCenterRemoveObserver(self->_darwinNotificationCenter, 0, @"kIAP2ServerLaunchedNotification", 0);
   CFNotificationCenterRemoveObserver(self->_darwinNotificationCenter, 0, @"kIAP2ServerDiedNotification", 0);
@@ -80,11 +80,11 @@
   [(IAPNavigation *)&v4 dealloc];
 }
 
-- (void)updateNavigationGuidanceInfo:(id)a3 forAccessory:(id)a4 withComponent:(id)a5
+- (void)updateNavigationGuidanceInfo:(id)info forAccessory:(id)accessory withComponent:(id)component
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  accessoryCopy = accessory;
+  componentCopy = component;
   AppBooleanValue = __debugLogEnabled___bNavigationDebug;
   if (__debugLogEnabled___bNavigationDebug == -1)
   {
@@ -94,7 +94,7 @@
 
   if (AppBooleanValue)
   {
-    NSLog(&cfstr_NavigationVoid.isa, v8, v9, v10);
+    NSLog(&cfstr_NavigationVoid.isa, infoCopy, accessoryCopy, componentCopy);
   }
 
   processingQ = self->_processingQ;
@@ -103,12 +103,12 @@
   block[2] = __73__IAPNavigation_updateNavigationGuidanceInfo_forAccessory_withComponent___block_invoke;
   block[3] = &unk_279780ED8;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v8;
-  v13 = v8;
-  v14 = v10;
-  v15 = v9;
+  v17 = accessoryCopy;
+  v18 = componentCopy;
+  v19 = infoCopy;
+  v13 = infoCopy;
+  v14 = componentCopy;
+  v15 = accessoryCopy;
   dispatch_async(processingQ, block);
 }
 
@@ -181,11 +181,11 @@ void __73__IAPNavigation_updateNavigationGuidanceInfo_forAccessory_withComponent
 LABEL_16:
 }
 
-- (void)updateNavigationManeuverInfo:(id)a3 forAccessory:(id)a4 withComponent:(id)a5
+- (void)updateNavigationManeuverInfo:(id)info forAccessory:(id)accessory withComponent:(id)component
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  accessoryCopy = accessory;
+  componentCopy = component;
   AppBooleanValue = __debugLogEnabled___bNavigationDebug;
   if (__debugLogEnabled___bNavigationDebug == -1)
   {
@@ -195,7 +195,7 @@ LABEL_16:
 
   if (AppBooleanValue)
   {
-    NSLog(&cfstr_NavigationVoid_0.isa, v8, v9, v10);
+    NSLog(&cfstr_NavigationVoid_0.isa, infoCopy, accessoryCopy, componentCopy);
   }
 
   processingQ = self->_processingQ;
@@ -204,12 +204,12 @@ LABEL_16:
   block[2] = __73__IAPNavigation_updateNavigationManeuverInfo_forAccessory_withComponent___block_invoke;
   block[3] = &unk_279780ED8;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v8;
-  v13 = v8;
-  v14 = v10;
-  v15 = v9;
+  v17 = accessoryCopy;
+  v18 = componentCopy;
+  v19 = infoCopy;
+  v13 = infoCopy;
+  v14 = componentCopy;
+  v15 = accessoryCopy;
   dispatch_async(processingQ, block);
 }
 
@@ -464,10 +464,10 @@ void __41__IAPNavigation__getConnectedAccessories__block_invoke(uint64_t a1)
 LABEL_21:
 }
 
-- (void)_updateInternalStateWithArrayOfAccessories:(id)a3
+- (void)_updateInternalStateWithArrayOfAccessories:(id)accessories
 {
   v161 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoriesCopy = accessories;
   AppBooleanValue = __debugLogEnabled___bNavigationDebug;
   if (__debugLogEnabled___bNavigationDebug == -1)
   {
@@ -487,7 +487,7 @@ LABEL_21:
 
     if (v6)
     {
-      NSLog(&cfstr_NavigationInpu.isa, v4);
+      NSLog(&cfstr_NavigationInpu.isa, accessoriesCopy);
     }
   }
 
@@ -499,7 +499,7 @@ LABEL_21:
   v149 = 0u;
   v150 = 0u;
   v151 = 0u;
-  obj = v4;
+  obj = accessoriesCopy;
   v9 = [obj countByEnumeratingWithState:&v148 objects:v160 count:16];
   v93 = v8;
   if (v9)
@@ -508,7 +508,7 @@ LABEL_21:
     v11 = 0x279780000uLL;
     v12 = *v149;
     v92 = v7;
-    v96 = self;
+    selfCopy = self;
     v97 = *v149;
     do
     {
@@ -587,16 +587,16 @@ LABEL_28:
         v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v108, "identifier")}];
         v19 = [v17 predicateWithFormat:@"identifier = %@", v18];
 
-        v20 = [(NSSet *)self->_availableAccessories allObjects];
+        allObjects = [(NSSet *)self->_availableAccessories allObjects];
         v102 = v19;
-        v21 = [v20 filteredArrayUsingPredicate:v19];
-        v22 = [v21 firstObject];
+        v21 = [allObjects filteredArrayUsingPredicate:v19];
+        firstObject = [v21 firstObject];
 
-        [v22 set_wasFoundInLastUpdate:1];
-        v23 = v22;
-        v24 = [v22 components];
-        v25 = [v108 components];
-        v26 = [v24 isEqualToSet:v25];
+        [firstObject set_wasFoundInLastUpdate:1];
+        v23 = firstObject;
+        components = [firstObject components];
+        components2 = [v108 components];
+        v26 = [components isEqualToSet:components2];
 
         v27 = __debugLogEnabled___bNavigationDebug;
         if (!v26)
@@ -620,8 +620,8 @@ LABEL_34:
           v147 = 0u;
           v144 = 0u;
           v145 = 0u;
-          v112 = [v108 components];
-          v31 = [v112 countByEnumeratingWithState:&v144 objects:v159 count:16];
+          components3 = [v108 components];
+          v31 = [components3 countByEnumeratingWithState:&v144 objects:v159 count:16];
           if (v31)
           {
             v32 = v31;
@@ -632,7 +632,7 @@ LABEL_34:
               {
                 if (*v145 != v33)
                 {
-                  objc_enumerationMutation(v112);
+                  objc_enumerationMutation(components3);
                 }
 
                 v35 = *(*(&v144 + 1) + 8 * i);
@@ -640,20 +640,20 @@ LABEL_34:
                 v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v35, "identifier")}];
                 v38 = [v36 predicateWithFormat:@"identifier = %@", v37];
 
-                v39 = [v23 components];
-                v40 = [v39 allObjects];
-                v41 = [v40 filteredArrayUsingPredicate:v38];
-                v42 = [v41 firstObject];
+                components4 = [v23 components];
+                allObjects2 = [components4 allObjects];
+                v41 = [allObjects2 filteredArrayUsingPredicate:v38];
+                firstObject2 = [v41 firstObject];
 
-                LODWORD(v40) = [v35 isEnabled];
-                if (v40 != [v42 isEnabled])
+                LODWORD(allObjects2) = [v35 isEnabled];
+                if (allObjects2 != [firstObject2 isEnabled])
                 {
-                  [v42 setIsEnabled:{objc_msgSend(v35, "isEnabled")}];
-                  [v42 set_enabledModified:1];
+                  [firstObject2 setIsEnabled:{objc_msgSend(v35, "isEnabled")}];
+                  [firstObject2 set_enabledModified:1];
                 }
               }
 
-              v32 = [v112 countByEnumeratingWithState:&v144 objects:v159 count:16];
+              v32 = [components3 countByEnumeratingWithState:&v144 objects:v159 count:16];
             }
 
             while (v32);
@@ -690,7 +690,7 @@ LABEL_45:
         [v28 addObject:v23];
 
         v29 = v108;
-        self = v96;
+        self = selfCopy;
 LABEL_46:
 
         v13 = v13 + 1;
@@ -754,8 +754,8 @@ LABEL_46:
   }
 
   availableAccessories = self->_availableAccessories;
-  v52 = [v7 allObjects];
-  [(NSSet *)availableAccessories addObjectsFromArray:v52];
+  allObjects3 = [v7 allObjects];
+  [(NSSet *)availableAccessories addObjectsFromArray:allObjects3];
 
   v138 = 0u;
   v139 = 0u;
@@ -797,8 +797,8 @@ LABEL_46:
         v135 = 0u;
         v132 = 0u;
         v133 = 0u;
-        v57 = [v54 components];
-        v58 = [v57 countByEnumeratingWithState:&v132 objects:v156 count:16];
+        components5 = [v54 components];
+        v58 = [components5 countByEnumeratingWithState:&v132 objects:v156 count:16];
         if (v58)
         {
           v59 = v58;
@@ -810,7 +810,7 @@ LABEL_46:
             {
               if (*v133 != v60)
               {
-                objc_enumerationMutation(v57);
+                objc_enumerationMutation(components5);
               }
 
               v62 = *(*(&v132 + 1) + 8 * v61);
@@ -839,7 +839,7 @@ LABEL_84:
             }
 
             while (v59 != v61);
-            v64 = [v57 countByEnumeratingWithState:&v132 objects:v156 count:16];
+            v64 = [components5 countByEnumeratingWithState:&v132 objects:v156 count:16];
             v59 = v64;
           }
 
@@ -904,8 +904,8 @@ LABEL_84:
         v125 = 0u;
         v126 = 0u;
         v127 = 0u;
-        v69 = [v68 components];
-        v70 = [v69 countByEnumeratingWithState:&v124 objects:v154 count:16];
+        components6 = [v68 components];
+        v70 = [components6 countByEnumeratingWithState:&v124 objects:v154 count:16];
         if (v70)
         {
           v71 = v70;
@@ -917,7 +917,7 @@ LABEL_84:
             {
               if (*v125 != v72)
               {
-                objc_enumerationMutation(v69);
+                objc_enumerationMutation(components6);
               }
 
               v74 = *(*(&v124 + 1) + 8 * v73);
@@ -973,7 +973,7 @@ LABEL_121:
             }
 
             while (v71 != v73);
-            v76 = [v69 countByEnumeratingWithState:&v124 objects:v154 count:16];
+            v76 = [components6 countByEnumeratingWithState:&v124 objects:v154 count:16];
             v71 = v76;
           }
 
@@ -1028,8 +1028,8 @@ LABEL_121:
         v119 = 0u;
         v116 = 0u;
         v117 = 0u;
-        v80 = [v79 components];
-        v81 = [v80 countByEnumeratingWithState:&v116 objects:v152 count:16];
+        components7 = [v79 components];
+        v81 = [components7 countByEnumeratingWithState:&v116 objects:v152 count:16];
         if (v81)
         {
           v82 = v81;
@@ -1041,7 +1041,7 @@ LABEL_121:
             {
               if (*v117 != v83)
               {
-                objc_enumerationMutation(v80);
+                objc_enumerationMutation(components7);
               }
 
               v85 = *(*(&v116 + 1) + 8 * v84);
@@ -1070,7 +1070,7 @@ LABEL_147:
             }
 
             while (v82 != v84);
-            v87 = [v80 countByEnumeratingWithState:&v116 objects:v152 count:16];
+            v87 = [components7 countByEnumeratingWithState:&v116 objects:v152 count:16];
             v82 = v87;
           }
 
@@ -1117,22 +1117,22 @@ LABEL_147:
   v91 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_convert_xpc_array_to_NSArray:(id)a3
+- (id)_convert_xpc_array_to_NSArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   if (MEMORY[0x259C17370]() != MEMORY[0x277D86440])
   {
     [IAPNavigation _convert_xpc_array_to_NSArray:];
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   applier[0] = MEMORY[0x277D85DD0];
   applier[1] = 3221225472;
   applier[2] = __47__IAPNavigation__convert_xpc_array_to_NSArray___block_invoke;
   applier[3] = &unk_279780F50;
-  v5 = v4;
+  v5 = array;
   v8 = v5;
-  xpc_array_apply(v3, applier);
+  xpc_array_apply(arrayCopy, applier);
 
   return v5;
 }

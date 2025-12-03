@@ -1,24 +1,24 @@
 @interface FPDRequest
-+ (id)UUIDForSystemExecutablePath:(id)a3;
-+ (id)fixupProcessName:(id)a3;
-+ (id)requestForXPCConnection:(id)a3;
++ (id)UUIDForSystemExecutablePath:(id)path;
++ (id)fixupProcessName:(id)name;
++ (id)requestForXPCConnection:(id)connection;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)providedExtent;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)requestedExtent;
 - ($115C4C562B26FF47E01F9F4EA65B5887)audit_token;
-- (BOOL)isPermittedToAttributeRequestingExecutable:(id)a3;
-- (FPDRequest)initWithPID:(int)a3 auditToken:(id *)a4 fromPOSIX:(BOOL)a5 withExtent:(id)a6;
-- (void)setAudit_token:(id *)a3;
+- (BOOL)isPermittedToAttributeRequestingExecutable:(id)executable;
+- (FPDRequest)initWithPID:(int)d auditToken:(id *)token fromPOSIX:(BOOL)x withExtent:(id)extent;
+- (void)setAudit_token:(id *)audit_token;
 @end
 
 @implementation FPDRequest
 
-+ (id)requestForXPCConnection:(id)a3
++ (id)requestForXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 processIdentifier];
-  if (v4)
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -26,12 +26,12 @@
     memset(v8, 0, sizeof(v8));
   }
 
-  v6 = [a1 requestForPID:v5 auditToken:v8 fromPOSIX:0 kernelFileInfo:0];
+  v6 = [self requestForPID:processIdentifier auditToken:v8 fromPOSIX:0 kernelFileInfo:0];
 
   return v6;
 }
 
-- (FPDRequest)initWithPID:(int)a3 auditToken:(id *)a4 fromPOSIX:(BOOL)a5 withExtent:(id)a6
+- (FPDRequest)initWithPID:(int)d auditToken:(id *)token fromPOSIX:(BOOL)x withExtent:(id)extent
 {
   v6 = MEMORY[0x1EEE9AC00](self);
   v8 = v7;
@@ -121,25 +121,25 @@ LABEL_17:
   return v18;
 }
 
-+ (id)fixupProcessName:(id)a3
++ (id)fixupProcessName:(id)name
 {
-  v3 = a3;
-  if ([@"com.apple.appkit.xpc.openAndSav" isEqualToString:v3])
+  nameCopy = name;
+  if ([@"com.apple.appkit.xpc.openAndSav" isEqualToString:nameCopy])
   {
     v4 = @"Open and Save Panels";
   }
 
   else
   {
-    v4 = v3;
+    v4 = nameCopy;
   }
 
   return v4;
 }
 
-- (BOOL)isPermittedToAttributeRequestingExecutable:(id)a3
+- (BOOL)isPermittedToAttributeRequestingExecutable:(id)executable
 {
-  if ([a3 hasFileProviderAttributionMDMAccess])
+  if ([executable hasFileProviderAttributionMDMAccess])
   {
     return 1;
   }
@@ -150,10 +150,10 @@ LABEL_17:
   return v4;
 }
 
-+ (id)UUIDForSystemExecutablePath:(id)a3
++ (id)UUIDForSystemExecutablePath:(id)path
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   if (hardcodedUUIDs_onceToken != -1)
   {
     +[FPDRequest UUIDForSystemExecutablePath:];
@@ -179,9 +179,9 @@ LABEL_17:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v3 hasPrefix:{v9, v13}])
+        if ([pathCopy hasPrefix:{v9, v13}])
         {
-          v10 = [v4 objectForKeyedSubscript:v9];
+          _filesIdentifier = [v4 objectForKeyedSubscript:v9];
 
           goto LABEL_16;
         }
@@ -197,21 +197,21 @@ LABEL_17:
     }
   }
 
-  if ([v3 hasPrefix:@"/var/containers/Bundle/Application/"] && objc_msgSend(v3, "hasSuffix:", @"/Files.app/Files"))
+  if ([pathCopy hasPrefix:@"/var/containers/Bundle/Application/"] && objc_msgSend(pathCopy, "hasSuffix:", @"/Files.app/Files"))
   {
-    v10 = [MEMORY[0x1E6967518] _filesIdentifier];
+    _filesIdentifier = [MEMORY[0x1E6967518] _filesIdentifier];
   }
 
   else
   {
-    v10 = 0;
+    _filesIdentifier = 0;
   }
 
 LABEL_16:
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return _filesIdentifier;
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)requestedExtent
@@ -240,10 +240,10 @@ LABEL_16:
   return self;
 }
 
-- (void)setAudit_token:(id *)a3
+- (void)setAudit_token:(id *)audit_token
 {
-  v3 = *a3->var0;
-  *&self->_audit_token.val[4] = *&a3->var0[4];
+  v3 = *audit_token->var0;
+  *&self->_audit_token.val[4] = *&audit_token->var0[4];
   *self->_audit_token.val = v3;
 }
 

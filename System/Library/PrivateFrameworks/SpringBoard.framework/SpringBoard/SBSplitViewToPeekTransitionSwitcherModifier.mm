@@ -1,36 +1,36 @@
 @interface SBSplitViewToPeekTransitionSwitcherModifier
-- (SBSplitViewToPeekTransitionSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4;
-- (void)didMoveToParentModifier:(id)a3;
+- (SBSplitViewToPeekTransitionSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBSplitViewToPeekTransitionSwitcherModifier
 
-- (SBSplitViewToPeekTransitionSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4
+- (SBSplitViewToPeekTransitionSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout
 {
-  v7 = a4;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = SBSplitViewToPeekTransitionSwitcherModifier;
-  v8 = [(SBTransitionSwitcherModifier *)&v11 initWithTransitionID:a3];
+  v8 = [(SBTransitionSwitcherModifier *)&v11 initWithTransitionID:d];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_fromAppLayout, a4);
+    objc_storeStrong(&v8->_fromAppLayout, layout);
   }
 
   return v9;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v8.receiver = self;
   v8.super_class = SBSplitViewToPeekTransitionSwitcherModifier;
   [(SBChainableModifier *)&v8 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     v5 = [(SBSplitViewToPeekTransitionSwitcherModifier *)self zOrderedItemsInAppLayout:self->_fromAppLayout];
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
 
-    v7 = [[SBSplitDisplayItemSwitcherModifier alloc] initWithDisplayItem:v6];
+    v7 = [[SBSplitDisplayItemSwitcherModifier alloc] initWithDisplayItem:firstObject];
     [(SBChainableModifier *)self addChildModifier:v7];
   }
 }

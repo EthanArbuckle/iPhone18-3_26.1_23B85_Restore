@@ -1,13 +1,13 @@
 @interface ServiceSUAccountViewController
 - (ServiceAccountPageEmbeddedParent)embeddedParent;
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4;
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success;
 @end
 
 @implementation ServiceSUAccountViewController
 
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success
 {
-  if (!a4)
+  if (!success)
   {
     [(ServiceSUAccountViewController *)self dismissAnimated:1];
   }

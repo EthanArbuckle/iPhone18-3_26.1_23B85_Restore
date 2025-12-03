@@ -1,13 +1,13 @@
 @interface ProtocolT1DataView
-+ (id)createWithData:(id)a3;
++ (id)createWithData:(id)data;
 - (ProtocolT1DataView)init;
 - (id)description;
 - (unsigned)bIFSC;
 - (unsigned)bNadValue;
 - (unsigned)bmWaitingIntegers;
-- (void)setBIFSC:(unsigned __int8)a3;
-- (void)setBNadValue:(unsigned __int8)a3;
-- (void)setBmWaitingIntegers:(unsigned __int8)a3;
+- (void)setBIFSC:(unsigned __int8)c;
+- (void)setBNadValue:(unsigned __int8)value;
+- (void)setBmWaitingIntegers:(unsigned __int8)integers;
 @end
 
 @implementation ProtocolT1DataView
@@ -36,55 +36,55 @@
 - (unsigned)bmWaitingIntegers
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{3, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{3, 1}];
 
   return v4;
 }
 
-- (void)setBmWaitingIntegers:(unsigned __int8)a3
+- (void)setBmWaitingIntegers:(unsigned __int8)integers
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:3 withBytes:{1, &v4}];
+  integersCopy = integers;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:3 withBytes:{1, &integersCopy}];
 }
 
 - (unsigned)bIFSC
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{5, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{5, 1}];
 
   return v4;
 }
 
-- (void)setBIFSC:(unsigned __int8)a3
+- (void)setBIFSC:(unsigned __int8)c
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:5 withBytes:{1, &v4}];
+  cCopy = c;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:5 withBytes:{1, &cCopy}];
 }
 
 - (unsigned)bNadValue
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{6, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{6, 1}];
 
   return v4;
 }
 
-- (void)setBNadValue:(unsigned __int8)a3
+- (void)setBNadValue:(unsigned __int8)value
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:6 withBytes:{1, &v4}];
+  valueCopy = value;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:6 withBytes:{1, &valueCopy}];
 }
 
-+ (id)createWithData:(id)a3
++ (id)createWithData:(id)data
 {
-  v3 = a3;
-  v4 = [(ProtocolDataView *)[ProtocolT1DataView alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [(ProtocolDataView *)[ProtocolT1DataView alloc] initWithData:dataCopy];
 
   return v4;
 }

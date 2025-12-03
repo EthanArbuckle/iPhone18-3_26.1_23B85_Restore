@@ -1,33 +1,33 @@
 @interface VLFVIOSessionAppBackgroundMonitor
 - (NSString)description;
-- (VLFVIOSessionAppBackgroundMonitor)initWithStateManager:(id)a3 platformController:(id)a4;
-- (void)applicationWillResignActiveNotification:(id)a3;
+- (VLFVIOSessionAppBackgroundMonitor)initWithStateManager:(id)manager platformController:(id)controller;
+- (void)applicationWillResignActiveNotification:(id)notification;
 - (void)dealloc;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
 @end
 
 @implementation VLFVIOSessionAppBackgroundMonitor
 
-- (void)applicationWillResignActiveNotification:(id)a3
+- (void)applicationWillResignActiveNotification:(id)notification
 {
   v4 = sub_100732E58();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7 = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] App backgrounded; disabling VIO", &v7, 0xCu);
   }
 
-  v5 = [(VIOSessionMonitor *)self stateManager];
-  [v5 recordSessionDisableEvent:10];
+  stateManager = [(VIOSessionMonitor *)self stateManager];
+  [stateManager recordSessionDisableEvent:10];
 
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 removeObserver:self name:UIApplicationWillResignActiveNotification object:0];
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -37,12 +37,12 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v11 = 134349056;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Navigation started; stop monitoring app background notification", &v11, 0xCu);
     }
 
-    v9 = [(VIOSessionMonitor *)self platformController];
-    [v9 unregisterObserver:self];
+    platformController = [(VIOSessionMonitor *)self platformController];
+    [platformController unregisterObserver:self];
 
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 removeObserver:self name:UIApplicationWillResignActiveNotification object:0];
@@ -55,9 +55,9 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(VIOSessionMonitor *)self isEnabled];
+  isEnabled = [(VIOSessionMonitor *)self isEnabled];
   v6 = @"NO";
-  if (v5)
+  if (isEnabled)
   {
     v6 = @"YES";
   }
@@ -75,7 +75,7 @@
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     *buf = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Disabling %@", buf, 0x16u);
@@ -86,11 +86,11 @@
   [(VLFVIOSessionAppBackgroundMonitor *)&v6 dealloc];
 }
 
-- (VLFVIOSessionAppBackgroundMonitor)initWithStateManager:(id)a3 platformController:(id)a4
+- (VLFVIOSessionAppBackgroundMonitor)initWithStateManager:(id)manager platformController:(id)controller
 {
   v20.receiver = self;
   v20.super_class = VLFVIOSessionAppBackgroundMonitor;
-  v4 = [(VIOSessionMonitor *)&v20 initWithStateManager:a3 platformController:a4];
+  v4 = [(VIOSessionMonitor *)&v20 initWithStateManager:manager platformController:controller];
   if (v4)
   {
     v5 = sub_100732E58();
@@ -105,20 +105,20 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Enabling %@", buf, 0x16u);
     }
 
-    v8 = [(VIOSessionMonitor *)v4 configuration];
-    v9 = [v8 isVLF];
+    configuration = [(VIOSessionMonitor *)v4 configuration];
+    isVLF = [configuration isVLF];
 
-    if (v9)
+    if (isVLF)
     {
-      v10 = [(VIOSessionMonitor *)v4 platformController];
-      v11 = [v10 currentSession];
+      platformController = [(VIOSessionMonitor *)v4 platformController];
+      currentSession = [platformController currentSession];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v18 = [(VIOSessionMonitor *)v4 platformController];
-        [v18 registerObserver:v4];
+        platformController2 = [(VIOSessionMonitor *)v4 platformController];
+        [platformController2 registerObserver:v4];
 
         v13 = +[NSNotificationCenter defaultCenter];
         [v13 addObserver:v4 selector:"applicationWillResignActiveNotification:" name:UIApplicationWillResignActiveNotification object:0];

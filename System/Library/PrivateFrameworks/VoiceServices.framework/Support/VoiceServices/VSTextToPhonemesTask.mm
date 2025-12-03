@@ -10,24 +10,24 @@
   v3 = VSGetLogDefault();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    instrumentMetrics = [(VSSpeechSpeakTask *)self instrumentMetrics];
     *buf = 134217984;
-    v21 = [v15 requestCreatedTimestamp];
+    requestCreatedTimestamp = [instrumentMetrics requestCreatedTimestamp];
     _os_log_debug_impl(&dword_2727E4000, v3, OS_LOG_TYPE_DEBUG, "Starting text to phonemes task %llu", buf, 0xCu);
   }
 
   [(VSSpeechSpeakTask *)self fetchVoiceAsset];
-  v4 = [(VSSpeechSpeakTask *)self voiceSelection];
+  voiceSelection = [(VSSpeechSpeakTask *)self voiceSelection];
 
-  if (v4)
+  if (voiceSelection)
   {
     v5 = MEMORY[0x277D79970];
-    v6 = [(VSSpeechSpeakTask *)self request];
-    v7 = [v6 text];
-    v8 = [(VSSpeechSpeakTask *)self voiceSelection];
-    v9 = [v8 voicePath];
+    request = [(VSSpeechSpeakTask *)self request];
+    text = [request text];
+    voiceSelection2 = [(VSSpeechSpeakTask *)self voiceSelection];
+    voicePath = [voiceSelection2 voicePath];
     v18 = 0;
-    v10 = [v5 generateTTSPhonemes:v7 voicePath:v9 phonemeSystem:-[VSTextToPhonemesTask phonemeSystem](self error:{"phonemeSystem"), &v18}];
+    v10 = [v5 generateTTSPhonemes:text voicePath:voicePath phonemeSystem:-[VSTextToPhonemesTask phonemeSystem](self error:{"phonemeSystem"), &v18}];
     v11 = v18;
 
     v19 = v10;
@@ -40,10 +40,10 @@
   v13 = VSGetLogDefault();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [(VSSpeechSpeakTask *)self instrumentMetrics];
-    v17 = [v16 requestCreatedTimestamp];
+    instrumentMetrics2 = [(VSSpeechSpeakTask *)self instrumentMetrics];
+    requestCreatedTimestamp2 = [instrumentMetrics2 requestCreatedTimestamp];
     *buf = 134217984;
-    v21 = v17;
+    requestCreatedTimestamp = requestCreatedTimestamp2;
     _os_log_debug_impl(&dword_2727E4000, v13, OS_LOG_TYPE_DEBUG, "Finished text to phonemes task %llu", buf, 0xCu);
   }
 

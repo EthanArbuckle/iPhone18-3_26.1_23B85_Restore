@@ -1,40 +1,40 @@
 @interface HUNetworkConfigurationItemListModuleController
-- (BOOL)canSelectItem:(id)a3;
-- (Class)cellClassForItem:(id)a3;
-- (HUNetworkConfigurationItemListModuleController)initWithModule:(id)a3 style:(unint64_t)a4;
-- (id)_viewControllerToPresentForNetworkConfigurationGroupItem:(id)a3;
-- (id)presentNetworkConfigurationSettingsForItem:(id)a3 animated:(BOOL)a4;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (BOOL)canSelectItem:(id)item;
+- (Class)cellClassForItem:(id)item;
+- (HUNetworkConfigurationItemListModuleController)initWithModule:(id)module style:(unint64_t)style;
+- (id)_viewControllerToPresentForNetworkConfigurationGroupItem:(id)item;
+- (id)presentNetworkConfigurationSettingsForItem:(id)item animated:(BOOL)animated;
+- (unint64_t)didSelectItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUNetworkConfigurationItemListModuleController
 
-- (HUNetworkConfigurationItemListModuleController)initWithModule:(id)a3 style:(unint64_t)a4
+- (HUNetworkConfigurationItemListModuleController)initWithModule:(id)module style:(unint64_t)style
 {
   v6.receiver = self;
   v6.super_class = HUNetworkConfigurationItemListModuleController;
-  result = [(HUItemModuleController *)&v6 initWithModule:a3];
+  result = [(HUItemModuleController *)&v6 initWithModule:module];
   if (result)
   {
-    result->_style = a4;
+    result->_style = style;
   }
 
   return result;
 }
 
-- (id)presentNetworkConfigurationSettingsForItem:(id)a3 animated:(BOOL)a4
+- (id)presentNetworkConfigurationSettingsForItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUItemModuleController *)self module];
-  v8 = [v7 isItemNetworkConfigurationGroupItem:v6];
+  animatedCopy = animated;
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v8 = [module isItemNetworkConfigurationGroupItem:itemCopy];
 
   if (v8)
   {
     v9 = objc_opt_class();
-    v10 = [v6 copy];
+    v10 = [itemCopy copy];
     if (v10)
     {
       if (objc_opt_isKindOfClass())
@@ -53,9 +53,9 @@
         goto LABEL_9;
       }
 
-      v13 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v13 handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v9, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v9, objc_opt_class()}];
     }
 
     v12 = 0;
@@ -65,24 +65,24 @@ LABEL_9:
     v16 = [HUViewControllerPresentationRequest requestWithViewController:v15];
 
     [v16 setPreferredPresentationType:1];
-    [v16 setAnimated:v4];
-    v17 = [(HUItemModuleController *)self host];
-    v18 = [v17 moduleController:self presentViewControllerForRequest:v16];
+    [v16 setAnimated:animatedCopy];
+    host = [(HUItemModuleController *)self host];
+    futureWithNoResult = [host moduleController:self presentViewControllerForRequest:v16];
 
     goto LABEL_11;
   }
 
-  v18 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 LABEL_11:
 
-  return v18;
+  return futureWithNoResult;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 isItemNetworkConfigurationGroupItem:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v6 = [module isItemNetworkConfigurationGroupItem:itemCopy];
 
   if (v6)
   {
@@ -97,20 +97,20 @@ LABEL_11:
   return v7;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v17.receiver = self;
   v17.super_class = HUNetworkConfigurationItemListModuleController;
-  v7 = a4;
-  [(HUItemModuleController *)&v17 setupCell:v6 forItem:v7];
-  v8 = [(HUItemModuleController *)self module];
-  v9 = [v8 isItemNetworkConfigurationGroupItem:v7];
+  itemCopy = item;
+  [(HUItemModuleController *)&v17 setupCell:cellCopy forItem:itemCopy];
+  module = [(HUItemModuleController *)self module];
+  v9 = [module isItemNetworkConfigurationGroupItem:itemCopy];
 
   if (v9)
   {
     v10 = objc_opt_class();
-    v11 = v6;
+    v11 = cellCopy;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -129,9 +129,9 @@ LABEL_11:
         goto LABEL_9;
       }
 
-      v14 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v14 handleFailureInFunction:v15 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v10, objc_opt_class(), v17.receiver, v17.super_class}];
+      [currentHandler handleFailureInFunction:v15 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v10, objc_opt_class(), v17.receiver, v17.super_class}];
     }
 
     v13 = 0;
@@ -145,16 +145,16 @@ LABEL_9:
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v27.receiver = self;
   v27.super_class = HUNetworkConfigurationItemListModuleController;
-  [(HUItemModuleController *)&v27 updateCell:v8 forItem:v9 animated:v5];
-  v10 = [(HUItemModuleController *)self module];
-  LODWORD(self) = [v10 isItemNetworkConfigurationGroupItem:v9];
+  [(HUItemModuleController *)&v27 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
+  module = [(HUItemModuleController *)self module];
+  LODWORD(self) = [module isItemNetworkConfigurationGroupItem:itemCopy];
 
   if (!self)
   {
@@ -162,7 +162,7 @@ LABEL_9:
   }
 
   v11 = objc_opt_class();
-  v12 = v8;
+  v12 = cellCopy;
   if (!v12)
   {
     goto LABEL_8;
@@ -181,16 +181,16 @@ LABEL_9:
   v14 = v12;
   if (!v13)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v15 handleFailureInFunction:v16 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v16 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
 
 LABEL_8:
     v14 = 0;
   }
 
   v17 = objc_opt_class();
-  v18 = v9;
+  v18 = itemCopy;
   if (v18)
   {
     if (objc_opt_isKindOfClass())
@@ -209,16 +209,16 @@ LABEL_8:
       goto LABEL_16;
     }
 
-    v21 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v21 handleFailureInFunction:v22 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v17, objc_opt_class()}];
+    [currentHandler2 handleFailureInFunction:v22 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v17, objc_opt_class()}];
   }
 
   v20 = 0;
 LABEL_16:
 
-  v23 = [v20 latestResults];
-  v24 = [v23 objectForKeyedSubscript:*MEMORY[0x277D14038]];
+  latestResults = [v20 latestResults];
+  v24 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14038]];
   if ([v24 BOOLValue])
   {
     [v14 setDisabled:1];
@@ -226,40 +226,40 @@ LABEL_16:
 
   else
   {
-    v25 = [v20 latestResults];
-    v26 = [v25 objectForKeyedSubscript:*MEMORY[0x277D14050]];
+    latestResults2 = [v20 latestResults];
+    v26 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D14050]];
     [v14 setDisabled:{objc_msgSend(v26, "BOOLValue")}];
   }
 
 LABEL_20:
 }
 
-- (BOOL)canSelectItem:(id)a3
+- (BOOL)canSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 isItemNetworkConfigurationGroupItem:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v6 = [module isItemNetworkConfigurationGroupItem:itemCopy];
 
   return v6;
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 isItemNetworkConfigurationGroupItem:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v6 = [module isItemNetworkConfigurationGroupItem:itemCopy];
 
   if (v6)
   {
-    v7 = [(HUNetworkConfigurationItemListModuleController *)self presentNetworkConfigurationSettingsForItem:v4 animated:1];
+    v7 = [(HUNetworkConfigurationItemListModuleController *)self presentNetworkConfigurationSettingsForItem:itemCopy animated:1];
   }
 
   return 0;
 }
 
-- (id)_viewControllerToPresentForNetworkConfigurationGroupItem:(id)a3
+- (id)_viewControllerToPresentForNetworkConfigurationGroupItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(HUNetworkConfigurationItemListModuleController *)self style])
   {
     NSLog(&cfstr_InvalidStyleLu.isa, [(HUNetworkConfigurationItemListModuleController *)self style]);
@@ -267,7 +267,7 @@ LABEL_20:
 
   else
   {
-    self = [[HUNetworkConfigurationSettingsViewController alloc] initWithNetworkConfigurationGroupItem:v4];
+    self = [[HUNetworkConfigurationSettingsViewController alloc] initWithNetworkConfigurationGroupItem:itemCopy];
   }
 
   return self;

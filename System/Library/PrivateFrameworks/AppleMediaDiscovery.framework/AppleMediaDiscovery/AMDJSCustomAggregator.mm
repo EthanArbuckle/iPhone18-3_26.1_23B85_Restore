@@ -1,20 +1,20 @@
 @interface AMDJSCustomAggregator
-+ (id)aggregateUsing:(id)a3 forUserId:(id)a4 andDomain:(id)a5 error:(id *)a6;
-+ (id)runBatchedSQLDescriptorsUsing:(id)a3 error:(id *)a4;
-+ (id)runCustomAggregation:(id)a3 error:(id *)a4;
++ (id)aggregateUsing:(id)using forUserId:(id)id andDomain:(id)domain error:(id *)error;
++ (id)runBatchedSQLDescriptorsUsing:(id)using error:(id *)error;
++ (id)runCustomAggregation:(id)aggregation error:(id *)error;
 @end
 
 @implementation AMDJSCustomAggregator
 
-+ (id)runCustomAggregation:(id)a3 error:(id *)a4
++ (id)runCustomAggregation:(id)aggregation error:(id *)error
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v26 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24 = a4;
-  *a4 = 0;
+  objc_storeStrong(location, aggregation);
+  errorCopy = error;
+  *error = 0;
   [AMDPerf startMonitoringEvent:@"runCustomAggregator"];
   v23 = [location[0] objectForKey:0x2852A86A8];
   v22 = [location[0] objectForKey:0x2852AB2A8];
@@ -27,7 +27,7 @@
       v18 = 0;
       if (v19)
       {
-        v6 = [v26 aggregateUsing:v19 forUserId:v22 andDomain:v23 error:v24];
+        v6 = [selfCopy aggregateUsing:v19 forUserId:v22 andDomain:v23 error:errorCopy];
         v7 = v18;
         v18 = v6;
         MEMORY[0x277D82BD8](v7);
@@ -35,20 +35,20 @@
 
       else
       {
-        v8 = [AMDTasteProfile getFeatureValueWithName:v20 inDomain:v23 error:v24];
+        v8 = [AMDTasteProfile getFeatureValueWithName:v20 inDomain:v23 error:errorCopy];
         v9 = v18;
         v18 = v8;
         MEMORY[0x277D82BD8](v9);
-        if (*v24 || !v18)
+        if (*errorCopy || !v18)
         {
-          v10 = [AMDSQLite getFeatureValueWithName:v20 inDomain:v23 withColumnName:0 skipRowset:0 error:v24];
+          v10 = [AMDSQLite getFeatureValueWithName:v20 inDomain:v23 withColumnName:0 skipRowset:0 error:errorCopy];
           v11 = v18;
           v18 = v10;
           MEMORY[0x277D82BD8](v11);
         }
       }
 
-      if (*v24)
+      if (*errorCopy)
       {
         v27 = 0;
         v21 = 1;
@@ -80,7 +80,7 @@
     {
       v15 = [AMDError allocError:15 withMessage:@"missing feature name and feature descriptor"];
       v5 = v15;
-      *v24 = v15;
+      *errorCopy = v15;
       v27 = 0;
       v21 = 1;
     }
@@ -93,7 +93,7 @@
   {
     v16 = [AMDError allocError:15 withMessage:@"domain or userId missing"];
     v4 = v16;
-    *v24 = v16;
+    *errorCopy = v16;
     v27 = 0;
     v21 = 1;
   }
@@ -107,17 +107,17 @@
   return v12;
 }
 
-+ (id)aggregateUsing:(id)a3 forUserId:(id)a4 andDomain:(id)a5 error:(id *)a6
++ (id)aggregateUsing:(id)using forUserId:(id)id andDomain:(id)domain error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, using);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, id);
   v36 = 0;
-  objc_storeStrong(&v36, a5);
-  v35 = a6;
+  objc_storeStrong(&v36, domain);
+  errorCopy = error;
   v34 = [location[0] objectForKey:@"version"];
   v33 = 0;
   if (v34 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v34 isEqualToString:AMD_CUSTOM_AGG_VERSION_1] & 1) == 0)
@@ -147,14 +147,14 @@
       v32 = [(AMDFeatureDescriptor *)v6 initWithDictionary:location[0] withUserId:v37 featureName:@"dummy"];
       if (v32)
       {
-        v39 = [v32 getFeatureData:v35];
+        v39 = [v32 getFeatureData:errorCopy];
       }
 
       else
       {
         v23 = [AMDError allocError:16 withMessage:@"Invalid V1 descriptor"];
         v7 = v23;
-        *v35 = v23;
+        *errorCopy = v23;
         v39 = 0;
       }
 
@@ -166,7 +166,7 @@
       v30 = [(AMDFeatureDescriptor *)v8 initWithDictionaryV2:location[0] withUserId:v37 featureName:@"dummy" withDomain:v36];
       if (v30)
       {
-        v29 = [v30 getFeatureData:v35];
+        v29 = [v30 getFeatureData:errorCopy];
         if (v29)
         {
           v39 = [v29 objectForKey:0x2852ABCA8];
@@ -185,7 +185,7 @@
       {
         v22 = [AMDError allocError:16 withMessage:@"Invalid V2 descriptor"];
         v9 = v22;
-        *v35 = v22;
+        *errorCopy = v22;
         v39 = 0;
         v31 = 1;
       }
@@ -196,23 +196,23 @@
       v28 = +[AMDSQLite getSharedInstance];
       if ([v28 getDb])
       {
-        v20 = [v28 getDataSchema];
-        MEMORY[0x277D82BD8](v20);
-        if (v20)
+        getDataSchema = [v28 getDataSchema];
+        MEMORY[0x277D82BD8](getDataSchema);
+        if (getDataSchema)
         {
           v17 = [AMDFetchDescriptor alloc];
           v16 = location[0];
-          v18 = [v28 getDataSchema];
+          getDataSchema2 = [v28 getDataSchema];
           v27 = [AMDFetchDescriptor initWithDict:v17 usingSchema:"initWithDict:usingSchema:error:" error:v16];
-          MEMORY[0x277D82BD8](v18);
-          if (*v35)
+          MEMORY[0x277D82BD8](getDataSchema2);
+          if (*errorCopy)
           {
             v39 = 0;
           }
 
           else
           {
-            v39 = [v28 fetchRows:v27 andPersist:0 error:v35];
+            v39 = [v28 fetchRows:v27 andPersist:0 error:errorCopy];
           }
 
           v31 = 1;
@@ -223,7 +223,7 @@
         {
           v19 = [AMDError allocError:22 withMessage:@"SQL database does not have a schema available"];
           v11 = v19;
-          *v35 = v19;
+          *errorCopy = v19;
           v39 = 0;
           v31 = 1;
         }
@@ -233,7 +233,7 @@
       {
         v21 = [AMDError allocError:22 withMessage:@"SQL database pointer is nil"];
         v10 = v21;
-        *v35 = v21;
+        *errorCopy = v21;
         v39 = 0;
         v31 = 1;
       }
@@ -244,7 +244,7 @@
 LABEL_34:
       v15 = [AMDError allocError:15 withMessage:@"Invalid version"];
       v12 = v15;
-      *v35 = v15;
+      *errorCopy = v15;
       v39 = 0;
       v31 = 1;
       break;
@@ -259,14 +259,14 @@ LABEL_34:
   return v13;
 }
 
-+ (id)runBatchedSQLDescriptorsUsing:(id)a3 error:(id *)a4
++ (id)runBatchedSQLDescriptorsUsing:(id)using error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v47 = a4;
+  objc_storeStrong(location, using);
+  errorCopy = error;
   v46 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v45 = [location[0] objectForKey:AMD_BATCHED_CUSTOM_AGG_DICT];
   if (v45)
@@ -274,9 +274,9 @@ LABEL_34:
     v43 = +[AMDSQLite getSharedInstance];
     if ([v43 getDb])
     {
-      v29 = [v43 getDataSchema];
-      MEMORY[0x277D82BD8](v29);
-      if (v29)
+      getDataSchema = [v43 getDataSchema];
+      MEMORY[0x277D82BD8](getDataSchema);
+      if (getDataSchema)
       {
         memset(__b, 0, sizeof(__b));
         obj = MEMORY[0x277D82BE0](v45);
@@ -310,22 +310,22 @@ LABEL_34:
             v37 = [v45 objectForKey:v42];
             v17 = [AMDFetchDescriptor alloc];
             v16 = v37;
-            v19 = [v43 getDataSchema];
+            getDataSchema2 = [v43 getDataSchema];
             v35 = v40;
             v18 = [AMDFetchDescriptor initWithDict:v17 usingSchema:"initWithDict:usingSchema:error:" error:v16];
             objc_storeStrong(&v40, v35);
             v36 = v18;
-            MEMORY[0x277D82BD8](v19);
+            MEMORY[0x277D82BD8](getDataSchema2);
             if (v40)
             {
               v13 = v46;
               v52 = @"error";
-              v15 = [v40 localizedDescription];
-              v53 = v15;
+              localizedDescription = [v40 localizedDescription];
+              v53 = localizedDescription;
               v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
               [v13 setValue:? forKey:?];
               MEMORY[0x277D82BD8](v14);
-              MEMORY[0x277D82BD8](v15);
+              MEMORY[0x277D82BD8](localizedDescription);
               v44 = 3;
             }
 
@@ -339,12 +339,12 @@ LABEL_34:
               {
                 v9 = v46;
                 v50 = @"error";
-                v11 = [v40 localizedDescription];
-                v51 = v11;
+                localizedDescription2 = [v40 localizedDescription];
+                v51 = localizedDescription2;
                 v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
                 [v9 setValue:? forKey:?];
                 MEMORY[0x277D82BD8](v10);
-                MEMORY[0x277D82BD8](v11);
+                MEMORY[0x277D82BD8](localizedDescription2);
                 v44 = 3;
               }
 
@@ -382,7 +382,7 @@ LABEL_34:
       {
         v28 = [AMDError allocError:22 withMessage:@"SQL database does not have a schema available"];
         v6 = v28;
-        *v47 = v28;
+        *errorCopy = v28;
         v49 = 0;
         v44 = 1;
       }
@@ -392,7 +392,7 @@ LABEL_34:
     {
       v30 = [AMDError allocError:22 withMessage:@"SQL database pointer is nil"];
       v5 = v30;
-      *v47 = v30;
+      *errorCopy = v30;
       v49 = 0;
       v44 = 1;
     }
@@ -404,7 +404,7 @@ LABEL_34:
   {
     v31 = [AMDError allocError:22 withMessage:@"batchedAggregatorDict not passed in payload"];
     v4 = v31;
-    *v47 = v31;
+    *errorCopy = v31;
     v49 = 0;
     v44 = 1;
   }

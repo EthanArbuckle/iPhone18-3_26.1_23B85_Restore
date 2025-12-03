@@ -1,14 +1,14 @@
 @interface FigCaptionLayer
 - (FigCaptionLayer)init;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)layoutSublayers;
 - (void)resetCaptions;
-- (void)setCaptionsAvoidanceMargins:(FigGeometryMargins *)a3;
-- (void)setFontName:(const char *)a3;
-- (void)setOptions:(id)a3 forKeyPath:(id)a4;
-- (void)setVideoRelativeToViewport:(CGRect)a3;
-- (void)updateDisplay:(OpaqueFigCFCaptionRenderer *)a3;
+- (void)setCaptionsAvoidanceMargins:(FigGeometryMargins *)margins;
+- (void)setFontName:(const char *)name;
+- (void)setOptions:(id)options forKeyPath:(id)path;
+- (void)setVideoRelativeToViewport:(CGRect)viewport;
+- (void)updateDisplay:(OpaqueFigCFCaptionRenderer *)display;
 @end
 
 @implementation FigCaptionLayer
@@ -119,9 +119,9 @@ LABEL_16:
   return v3;
 }
 
-- (void)setFontName:(const char *)a3
+- (void)setFontName:(const char *)name
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithCString:a3 encoding:4];
+  v4 = [MEMORY[0x1E696AEC0] stringWithCString:name encoding:4];
   if (v4)
   {
     v5 = v4;
@@ -131,9 +131,9 @@ LABEL_16:
   }
 }
 
-- (void)setVideoRelativeToViewport:(CGRect)a3
+- (void)setVideoRelativeToViewport:(CGRect)viewport
 {
-  self->_priv->videoRelativeToViewport = a3;
+  self->_priv->videoRelativeToViewport = viewport;
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(FigCaptionLayer *)self setNeedsLayout];
@@ -142,13 +142,13 @@ LABEL_16:
   [v4 commit];
 }
 
-- (void)setCaptionsAvoidanceMargins:(FigGeometryMargins *)a3
+- (void)setCaptionsAvoidanceMargins:(FigGeometryMargins *)margins
 {
   priv = self->_priv;
-  bottom = a3->bottom;
-  left = a3->left;
-  right = a3->right;
-  priv->captionsAvoidanceMargins.top = a3->top;
+  bottom = margins->bottom;
+  left = margins->left;
+  right = margins->right;
+  priv->captionsAvoidanceMargins.top = margins->top;
   priv->captionsAvoidanceMargins.bottom = bottom;
   priv->captionsAvoidanceMargins.left = left;
   priv->captionsAvoidanceMargins.right = right;
@@ -160,40 +160,40 @@ LABEL_16:
   [v8 commit];
 }
 
-- (void)setOptions:(id)a3 forKeyPath:(id)a4
+- (void)setOptions:(id)options forKeyPath:(id)path
 {
-  if ([a4 isEqualToString:@"separatedOptions"])
+  if ([path isEqualToString:@"separatedOptions"])
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     options = self->_priv->options;
-    if (v7 == a3)
+    if (null == options)
     {
 
-      [(NSMutableDictionary *)options removeObjectForKey:a4];
+      [(NSMutableDictionary *)options removeObjectForKey:path];
     }
 
     else
     {
 
-      [(NSMutableDictionary *)options setValue:a3 forKey:a4];
+      [(NSMutableDictionary *)options setValue:options forKey:path];
     }
   }
 
-  else if ([a4 isEqualToString:@"styleOptions"])
+  else if ([path isEqualToString:@"styleOptions"])
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
     renderer = self->_priv->renderer;
-    if (v9 == a3)
+    if (null2 == options)
     {
-      v11 = 0;
+      optionsCopy = 0;
     }
 
     else
     {
-      v11 = a3;
+      optionsCopy = options;
     }
 
-    FigCFCaptionRendererSetStyleOptions(renderer, v11);
+    FigCFCaptionRendererSetStyleOptions(renderer, optionsCopy);
   }
 }
 
@@ -268,12 +268,12 @@ LABEL_16:
   v8 = v7;
   v10 = v9;
   v11 = [(NSMutableArray *)self->_priv->captionElementLayers count];
-  v12 = [(FigCaptionLayer *)self contentsAreFlipped];
+  contentsAreFlipped = [(FigCaptionLayer *)self contentsAreFlipped];
   v37 = 0;
   v36 = 0;
   if (v8 != 0.0 && v10 != 0.0)
   {
-    v13 = v12;
+    v13 = contentsAreFlipped;
     priv = self->_priv;
     renderer = priv->renderer;
     x = priv->videoRelativeToViewport.origin.x;
@@ -378,7 +378,7 @@ LABEL_16:
   FigSimpleMutexUnlock();
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
   v23 = *MEMORY[0x1E69E9840];
   v22 = 0;
@@ -390,7 +390,7 @@ LABEL_16:
   }
 
   [MEMORY[0x1E6979518] setValue:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E697A020]];
-  v7 = [(NSMutableArray *)self->_priv->captionElementLayers indexOfObject:a3];
+  v7 = [(NSMutableArray *)self->_priv->captionElementLayers indexOfObject:layer];
   priv = self->_priv;
   if (priv->enableGMSpew)
   {
@@ -410,20 +410,20 @@ LABEL_16:
   }
 
   renderer = self->_priv->renderer;
-  [a3 bounds];
+  [layer bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [a3 position];
-  FigCFCaptionRendererDrawCaptionElementInContextForRectOrientation(v13, v15, v17, v19, renderer, v7, a4, [a3 contentsAreFlipped], &v22);
+  [layer position];
+  FigCFCaptionRendererDrawCaptionElementInContextForRectOrientation(v13, v15, v17, v19, renderer, v7, context, [layer contentsAreFlipped], &v22);
   [MEMORY[0x1E6979518] commit];
   FigSimpleMutexUnlock();
 }
 
-- (void)updateDisplay:(OpaqueFigCFCaptionRenderer *)a3
+- (void)updateDisplay:(OpaqueFigCFCaptionRenderer *)display
 {
-  if (self->_priv->renderer == a3)
+  if (self->_priv->renderer == display)
   {
     FigSimpleMutexLock();
     [MEMORY[0x1E6979518] begin];

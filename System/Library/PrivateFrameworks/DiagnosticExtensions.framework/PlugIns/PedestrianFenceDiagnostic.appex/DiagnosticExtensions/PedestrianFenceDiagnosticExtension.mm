@@ -1,10 +1,10 @@
 @interface PedestrianFenceDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation PedestrianFenceDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v3 = os_log_create("com.apple.locationd", "DiagnosticExtension");
   v4 = [NSURL URLWithString:@"/var/mobile/Library/Logs/locationd/MslLogger/"];
@@ -67,10 +67,10 @@ LABEL_7:
         v19 = v33;
         if (v19 || !v18)
         {
-          v25 = v3;
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+          path = v3;
+          if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
           {
-            sub_100000F94(v40, v19, &v41, v25);
+            sub_100000F94(v40, v19, &v41, path);
           }
         }
 
@@ -82,8 +82,8 @@ LABEL_7:
           v22 = v15;
           v23 = v9;
           v24 = v3;
-          v25 = [v17 path];
-          v26 = [DEAttachmentItem attachmentWithPath:v25];
+          path = [v17 path];
+          v26 = [DEAttachmentItem attachmentWithPath:path];
           [v31 addObject:v26];
 
           v3 = v24;

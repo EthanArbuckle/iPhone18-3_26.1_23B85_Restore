@@ -1,27 +1,27 @@
 @interface IMDCollaborationNoticeStore
 - (IMDCollaborationNoticeStore)init;
-- (id)deleteAllNoticesWithCollaborationIdentifier:(id)a3;
-- (id)deleteNotice:(id)a3;
-- (id)deleteNoticeWithGUIDString:(id)a3;
-- (id)noticesForURLs:(id)a3;
-- (void)deleteNoticesForURLs:(id)a3;
-- (void)saveNotice:(id)a3;
+- (id)deleteAllNoticesWithCollaborationIdentifier:(id)identifier;
+- (id)deleteNotice:(id)notice;
+- (id)deleteNoticeWithGUIDString:(id)string;
+- (id)noticesForURLs:(id)ls;
+- (void)deleteNoticesForURLs:(id)ls;
+- (void)saveNotice:(id)notice;
 @end
 
 @implementation IMDCollaborationNoticeStore
 
-- (void)saveNotice:(id)a3
+- (void)saveNotice:(id)notice
 {
-  v4 = a3;
-  v5 = self;
-  sub_22B7B9200(v4);
+  noticeCopy = notice;
+  selfCopy = self;
+  sub_22B7B9200(noticeCopy);
 }
 
-- (id)noticesForURLs:(id)a3
+- (id)noticesForURLs:(id)ls
 {
   sub_22B7DA828();
   v4 = sub_22B7DB918();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_22B7B9AFC(v4);
 
   if (v6)
@@ -38,15 +38,15 @@
   return v7;
 }
 
-- (id)deleteNotice:(id)a3
+- (id)deleteNotice:(id)notice
 {
   v5 = sub_22B6F0AD4(&qword_27D8CFC90, &unk_22B7FE140);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v21 - v7;
-  v9 = a3;
-  v10 = self;
-  v11 = [v9 guidString];
+  noticeCopy = notice;
+  selfCopy = self;
+  guidString = [noticeCopy guidString];
   v12 = sub_22B7DB6A8();
   v14 = v13;
 
@@ -66,7 +66,7 @@
   return v18;
 }
 
-- (id)deleteNoticeWithGUIDString:(id)a3
+- (id)deleteNoticeWithGUIDString:(id)string
 {
   v4 = sub_22B6F0AD4(&qword_27D8CFC90, &unk_22B7FE140);
   v5 = *(*(v4 - 8) + 64);
@@ -74,7 +74,7 @@
   v7 = &v18 - v6;
   v8 = sub_22B7DB6A8();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   sub_22B7BABDC(v8, v10, v7);
 
   v12 = sub_22B7DA828();
@@ -91,11 +91,11 @@
   return v15;
 }
 
-- (id)deleteAllNoticesWithCollaborationIdentifier:(id)a3
+- (id)deleteAllNoticesWithCollaborationIdentifier:(id)identifier
 {
   v4 = sub_22B7DB6A8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_22B7BB4EC(v4, v6);
 
   v8 = sub_22B7DB8F8();
@@ -103,11 +103,11 @@
   return v8;
 }
 
-- (void)deleteNoticesForURLs:(id)a3
+- (void)deleteNoticesForURLs:(id)ls
 {
   sub_22B7DA828();
   v4 = sub_22B7DB918();
-  v5 = self;
+  selfCopy = self;
   sub_22B7BBD60(v4);
 }
 

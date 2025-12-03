@@ -1,7 +1,7 @@
 @interface EDDataDetectionUtilities
-+ (BOOL)isRealWord:(id)a3;
-+ (id)detectOneTimeCodeWithDataDetectors:(id)a3;
-+ (id)extractOneTimeCode:(id)a3 withSubject:(id)a4;
++ (BOOL)isRealWord:(id)word;
++ (id)detectOneTimeCodeWithDataDetectors:(id)detectors;
++ (id)extractOneTimeCode:(id)code withSubject:(id)subject;
 + (id)log;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __31__EDDataDetectionUtilities_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_28 != -1)
   {
     dispatch_once(&log_onceToken_28, block);
@@ -32,23 +32,23 @@ void __31__EDDataDetectionUtilities_log__block_invoke(uint64_t a1)
   log_log_27 = v1;
 }
 
-+ (BOOL)isRealWord:(id)a3
++ (BOOL)isRealWord:(id)word
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v5 = [v4 localeIdentifier];
+  wordCopy = word;
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v6 = [v5 hasPrefix:@"en"];
+  v6 = [localeIdentifier hasPrefix:@"en"];
   v7 = +[EDLexicon english];
-  v8 = [v7 isRealWord:v3];
+  v8 = [v7 isRealWord:wordCopy];
 
   if (v8)
   {
     v9 = +[EDDataDetectionUtilities log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v3];
+      v10 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:wordCopy];
       v17 = 138543362;
       v18 = v10;
       _os_log_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEFAULT, "This current paragraph does not contain a valid code since %{public}@ is a real English word", &v17, 0xCu);
@@ -57,7 +57,7 @@ void __31__EDDataDetectionUtilities_log__block_invoke(uint64_t a1)
 
   else
   {
-    if ((v6 & 1) != 0 || (+[EDLexicon current](EDLexicon, "current"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isRealWord:v3], v12, !v13))
+    if ((v6 & 1) != 0 || (+[EDLexicon current](EDLexicon, "current"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isRealWord:wordCopy], v12, !v13))
     {
       v11 = 0;
       goto LABEL_10;
@@ -66,11 +66,11 @@ void __31__EDDataDetectionUtilities_log__block_invoke(uint64_t a1)
     v9 = +[EDDataDetectionUtilities log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:v3];
+      v14 = [MEMORY[0x1E699B858] fullyOrPartiallyRedactedStringForString:wordCopy];
       v17 = 138543618;
       v18 = v14;
       v19 = 2112;
-      v20 = v5;
+      v20 = localeIdentifier;
       _os_log_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEFAULT, "This current paragraph does not contain a valid code since %{public}@ is a real word in this language: %@", &v17, 0x16u);
     }
   }
@@ -82,12 +82,12 @@ LABEL_10:
   return v11;
 }
 
-+ (id)detectOneTimeCodeWithDataDetectors:(id)a3
++ (id)detectOneTimeCodeWithDataDetectors:(id)detectors
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v37 = v5;
-  v6 = [v5 length];
+  detectorsCopy = detectors;
+  v37 = detectorsCopy;
+  v6 = [detectorsCopy length];
   if (v6 >= 0x1F4)
   {
     v7 = 500;
@@ -102,7 +102,7 @@ LABEL_10:
   {
     v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v36 = [objc_alloc(MEMORY[0x1E6999A90]) initWithScannerType:0 passiveIntent:1];
-    [MEMORY[0x1E6999A88] scanString:v5 range:0 configuration:v7];
+    [MEMORY[0x1E6999A88] scanString:detectorsCopy range:0 configuration:v7];
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
@@ -123,30 +123,30 @@ LABEL_10:
           }
 
           v13 = *(*(&v39 + 1) + 8 * i);
-          v4 = [v13 type];
-          v14 = [v4 isEqualToString:v11];
+          type = [v13 type];
+          v14 = [type isEqualToString:v11];
 
           if (v14)
           {
-            v15 = [v13 value];
-            v16 = [v15 length] < 0xA;
+            value = [v13 value];
+            v16 = [value length] < 0xA;
 
             if (v16)
             {
-              v4 = [v13 value];
-              [v38 addObject:v4];
+              type = [v13 value];
+              [v38 addObject:type];
             }
 
             else
             {
-              v4 = +[EDDataDetectionUtilities log];
-              if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+              type = +[EDDataDetectionUtilities log];
+              if (os_log_type_enabled(type, OS_LOG_TYPE_DEFAULT))
               {
-                v17 = [v13 value];
-                v18 = [v17 length];
+                value2 = [v13 value];
+                v18 = [value2 length];
                 *buf = 134217984;
                 v44 = v18;
-                _os_log_impl(&dword_1C61EF000, v4, OS_LOG_TYPE_DEFAULT, "Skipping one-time code with length %ld", buf, 0xCu);
+                _os_log_impl(&dword_1C61EF000, type, OS_LOG_TYPE_DEFAULT, "Skipping one-time code with length %ld", buf, 0xCu);
               }
             }
           }
@@ -195,9 +195,9 @@ LABEL_10:
     }
 
     v25 = [v38 count];
-    if (v25 < 2 || (-[NSObject firstObject](v38, "firstObject"), v3 = objc_claimAutoreleasedReturnValue(), v26 = [v3 length], -[NSObject objectAtIndexedSubscript:](v38, "objectAtIndexedSubscript:", 1), v4 = objc_claimAutoreleasedReturnValue(), v26 >= -[NSObject length](v4, "length")))
+    if (v25 < 2 || (-[NSObject firstObject](v38, "firstObject"), v3 = objc_claimAutoreleasedReturnValue(), v26 = [v3 length], -[NSObject objectAtIndexedSubscript:](v38, "objectAtIndexedSubscript:", 1), type = objc_claimAutoreleasedReturnValue(), v26 >= -[NSObject length](type, "length")))
     {
-      v27 = [v38 firstObject];
+      firstObject = [v38 firstObject];
       if (v25 < 2)
       {
 LABEL_32:
@@ -205,7 +205,7 @@ LABEL_32:
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
           v31 = [v38 count];
-          v32 = [MEMORY[0x1E699B858] partiallyRedactedStringForString:v27];
+          v32 = [MEMORY[0x1E699B858] partiallyRedactedStringForString:firstObject];
           *buf = 134218242;
           v44 = v31;
           v45 = 2112;
@@ -213,7 +213,7 @@ LABEL_32:
           _os_log_impl(&dword_1C61EF000, v30, OS_LOG_TYPE_DEFAULT, "We found %lu potential One-Time Code(s) in this email, the One-Time Code to use is : %@", buf, 0x16u);
         }
 
-        v33 = v27;
+        v33 = firstObject;
         v29 = v33;
 LABEL_38:
 
@@ -224,7 +224,7 @@ LABEL_38:
 
     else
     {
-      v27 = [v38 objectAtIndexedSubscript:1];
+      firstObject = [v38 objectAtIndexedSubscript:1];
     }
 
     goto LABEL_32;
@@ -253,19 +253,19 @@ BOOL __63__EDDataDetectionUtilities_detectOneTimeCodeWithDataDetectors___block_i
   return v3;
 }
 
-+ (id)extractOneTimeCode:(id)a3 withSubject:(id)a4
++ (id)extractOneTimeCode:(id)code withSubject:(id)subject
 {
   v53 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v44 = v5;
-  v41 = v6;
-  if (v5)
+  codeCopy = code;
+  subjectCopy = subject;
+  v44 = codeCopy;
+  v41 = subjectCopy;
+  if (codeCopy)
   {
-    v7 = v5;
-    if (v6)
+    v7 = codeCopy;
+    if (subjectCopy)
     {
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v6, v5];
+      codeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", subjectCopy, codeCopy];
       goto LABEL_8;
     }
   }
@@ -281,9 +281,9 @@ BOOL __63__EDDataDetectionUtilities_detectOneTimeCodeWithDataDetectors___block_i
     v7 = v41;
   }
 
-  v8 = v7;
+  codeCopy = v7;
 LABEL_8:
-  v40 = v8;
+  v40 = codeCopy;
   v10 = [EDDataDetectionUtilities detectOneTimeCodeWithDataDetectors:?];
   v11 = v10;
   if (v10)
@@ -296,12 +296,12 @@ LABEL_8:
     v35 = +[EDOTCKeywords localizedExpressionStrings];
     if ([v35 count])
     {
-      v38 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
       v33 = [MEMORY[0x1E696AD48] characterSetWithCharactersInString:@"-"];
-      v13 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-      [v33 formUnionWithCharacterSet:v13];
+      alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+      [v33 formUnionWithCharacterSet:alphanumericCharacterSet];
 
-      v42 = [MEMORY[0x1E696AE88] scannerWithString:v5];
+      v42 = [MEMORY[0x1E696AE88] scannerWithString:codeCopy];
       v37 = 0;
       v34 = 0;
       v39 = 0;
@@ -310,11 +310,11 @@ LABEL_8:
       while (([v42 isAtEnd] & 1) == 0)
       {
         v49 = v15;
-        [v42 scanUpToCharactersFromSet:v38 intoString:&v49];
+        [v42 scanUpToCharactersFromSet:newlineCharacterSet intoString:&v49];
         v43 = v49;
 
-        v16 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v17 = [v43 stringByTrimmingCharactersInSet:v16];
+        whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v17 = [v43 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
         if ([v17 length])
         {
@@ -350,14 +350,14 @@ LABEL_8:
                       _os_log_impl(&dword_1C61EF000, v28, OS_LOG_TYPE_DEFAULT, "Mail detected a one-time code with keyword: %@", buf, 0xCu);
                     }
 
-                    v5 = v44;
+                    codeCopy = v44;
                     v37 = v37;
 
                     v12 = v37;
                     goto LABEL_45;
                   }
 
-                  v5 = v44;
+                  codeCopy = v44;
                 }
 
                 v19 = [v18 countByEnumeratingWithState:&v45 objects:v52 count:16];
@@ -371,7 +371,7 @@ LABEL_8:
             }
           }
 
-          if (-[NSObject length](v17, "length") - 4) > 5 || ([a1 isRealWord:v17])
+          if (-[NSObject length](v17, "length") - 4) > 5 || ([self isRealWord:v17])
           {
             v24 = v14;
             v14 = v17;
@@ -427,7 +427,7 @@ LABEL_45:
     else
     {
       v29 = +[EDDataDetectionUtilities log];
-      v38 = v29;
+      newlineCharacterSet = v29;
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         [EDDataDetectionUtilities extractOneTimeCode:v29 withSubject:?];

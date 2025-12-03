@@ -1,33 +1,33 @@
 @interface SMTMultiUserTRPCandidate
-- (BOOL)isEqual:(id)a3;
-- (SMTMultiUserTRPCandidate)initWithBuilder:(id)a3;
-- (SMTMultiUserTRPCandidate)initWithCoder:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (SMTMultiUserTRPCandidate)initWithBuilder:(id)builder;
+- (SMTMultiUserTRPCandidate)initWithCoder:(id)coder;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMTMultiUserTRPCandidate
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   multiUserTrpCandidateId = self->_multiUserTrpCandidateId;
-  v5 = a3;
-  [v5 encodeObject:multiUserTrpCandidateId forKey:@"multiUserTrpCandidateId"];
-  [v5 encodeObject:self->_requestId forKey:@"requestId"];
-  [v5 encodeObject:self->_trpCandidateList forKey:@"trpCandidateList"];
+  coderCopy = coder;
+  [coderCopy encodeObject:multiUserTrpCandidateId forKey:@"multiUserTrpCandidateId"];
+  [coderCopy encodeObject:self->_requestId forKey:@"requestId"];
+  [coderCopy encodeObject:self->_trpCandidateList forKey:@"trpCandidateList"];
 }
 
-- (SMTMultiUserTRPCandidate)initWithCoder:(id)a3
+- (SMTMultiUserTRPCandidate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"multiUserTrpCandidateId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"multiUserTrpCandidateId"];
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"trpCandidateList"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"trpCandidateList"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestId"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestId"];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -53,10 +53,10 @@ void __42__SMTMultiUserTRPCandidate_initWithCoder___block_invoke(void *a1, void 
   [v4 setTrpCandidateList:a1[6]];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -66,18 +66,18 @@ void __42__SMTMultiUserTRPCandidate_initWithCoder___block_invoke(void *a1, void 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SMTMultiUserTRPCandidate *)v5 multiUserTrpCandidateId];
+      v5 = equalCopy;
+      multiUserTrpCandidateId = [(SMTMultiUserTRPCandidate *)v5 multiUserTrpCandidateId];
       multiUserTrpCandidateId = self->_multiUserTrpCandidateId;
-      if (multiUserTrpCandidateId == v6 || [(NSString *)multiUserTrpCandidateId isEqual:v6])
+      if (multiUserTrpCandidateId == multiUserTrpCandidateId || [(NSString *)multiUserTrpCandidateId isEqual:multiUserTrpCandidateId])
       {
-        v8 = [(SMTMultiUserTRPCandidate *)v5 requestId];
+        requestId = [(SMTMultiUserTRPCandidate *)v5 requestId];
         requestId = self->_requestId;
-        if (requestId == v8 || [(NSString *)requestId isEqual:v8])
+        if (requestId == requestId || [(NSString *)requestId isEqual:requestId])
         {
-          v10 = [(SMTMultiUserTRPCandidate *)v5 trpCandidateList];
+          trpCandidateList = [(SMTMultiUserTRPCandidate *)v5 trpCandidateList];
           trpCandidateList = self->_trpCandidateList;
-          v12 = trpCandidateList == v10 || [(NSArray *)trpCandidateList isEqual:v10];
+          v12 = trpCandidateList == trpCandidateList || [(NSArray *)trpCandidateList isEqual:trpCandidateList];
         }
 
         else
@@ -108,7 +108,7 @@ void __42__SMTMultiUserTRPCandidate_initWithCoder___block_invoke(void *a1, void 
   return v4 ^ [(NSString *)self->_requestId hash];
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v8.receiver = self;
@@ -119,27 +119,27 @@ void __42__SMTMultiUserTRPCandidate_initWithCoder___block_invoke(void *a1, void 
   return v6;
 }
 
-- (SMTMultiUserTRPCandidate)initWithBuilder:(id)a3
+- (SMTMultiUserTRPCandidate)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v16.receiver = self;
   v16.super_class = SMTMultiUserTRPCandidate;
   v5 = [(SMTMultiUserTRPCandidate *)&v16 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = objc_alloc_init(SMTMultiUserTRPCandidateBuilder);
-    v4[2](v4, v7);
-    v8 = [(SMTMultiUserTRPCandidateBuilder *)v7 multiUserTrpCandidateId];
+    builderCopy[2](builderCopy, v7);
+    multiUserTrpCandidateId = [(SMTMultiUserTRPCandidateBuilder *)v7 multiUserTrpCandidateId];
     multiUserTrpCandidateId = v6->_multiUserTrpCandidateId;
-    v6->_multiUserTrpCandidateId = v8;
+    v6->_multiUserTrpCandidateId = multiUserTrpCandidateId;
 
-    v10 = [(SMTMultiUserTRPCandidateBuilder *)v7 requestId];
+    requestId = [(SMTMultiUserTRPCandidateBuilder *)v7 requestId];
     requestId = v6->_requestId;
-    v6->_requestId = v10;
+    v6->_requestId = requestId;
 
-    v12 = [(SMTMultiUserTRPCandidateBuilder *)v7 trpCandidateList];
-    v13 = [v12 copy];
+    trpCandidateList = [(SMTMultiUserTRPCandidateBuilder *)v7 trpCandidateList];
+    v13 = [trpCandidateList copy];
     trpCandidateList = v6->_trpCandidateList;
     v6->_trpCandidateList = v13;
   }

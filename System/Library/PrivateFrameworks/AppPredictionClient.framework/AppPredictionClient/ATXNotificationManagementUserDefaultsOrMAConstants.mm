@@ -1,7 +1,7 @@
 @interface ATXNotificationManagementUserDefaultsOrMAConstants
 - (ATXNotificationManagementUserDefaultsOrMAConstants)init;
-- (double)doubleForKey:(id)a3 defaultReturnValue:(double)a4;
-- (id)numberForKey:(id)a3 defaultReturnValue:(id)a4;
+- (double)doubleForKey:(id)key defaultReturnValue:(double)value;
+- (id)numberForKey:(id)key defaultReturnValue:(id)value;
 @end
 
 @implementation ATXNotificationManagementUserDefaultsOrMAConstants
@@ -26,11 +26,11 @@
   return v2;
 }
 
-- (id)numberForKey:(id)a3 defaultReturnValue:(id)a4
+- (id)numberForKey:(id)key defaultReturnValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSUserDefaults *)self->_defaults objectForKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  v8 = [(NSUserDefaults *)self->_defaults objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -39,7 +39,7 @@
 
   else
   {
-    v9 = [(ATXNotificationManagementMAConstants *)self->_constants numberForKey:v6];
+    v9 = [(ATXNotificationManagementMAConstants *)self->_constants numberForKey:keyCopy];
 
     if (v9)
     {
@@ -48,7 +48,7 @@
 
     else
     {
-      v8 = v7;
+      v8 = valueCopy;
     }
   }
 
@@ -57,12 +57,12 @@
   return v8;
 }
 
-- (double)doubleForKey:(id)a3 defaultReturnValue:(double)a4
+- (double)doubleForKey:(id)key defaultReturnValue:(double)value
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithDouble:a4];
-  v9 = [(ATXNotificationManagementUserDefaultsOrMAConstants *)self numberForKey:v7 defaultReturnValue:v8];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:value];
+  v9 = [(ATXNotificationManagementUserDefaultsOrMAConstants *)self numberForKey:keyCopy defaultReturnValue:v8];
 
   [v9 doubleValue];
   v11 = v10;

@@ -1,21 +1,21 @@
 @interface NTKBellonaDateComplicationView
 - (CGRect)contentFrame;
-- (CGRect)padContentFrame:(CGRect)a3;
-- (NTKBellonaDateComplicationView)initWithBackgroundView:(id)a3;
+- (CGRect)padContentFrame:(CGRect)frame;
+- (NTKBellonaDateComplicationView)initWithBackgroundView:(id)view;
 - (void)_updateLabel;
-- (void)applyPalette:(id)a3;
+- (void)applyPalette:(id)palette;
 - (void)layoutSubviews;
-- (void)setDateComplicationText:(id)a3 withDayRange:(_NSRange)a4 forDateStyle:(unint64_t)a5;
+- (void)setDateComplicationText:(id)text withDayRange:(_NSRange)range forDateStyle:(unint64_t)style;
 @end
 
 @implementation NTKBellonaDateComplicationView
 
-- (NTKBellonaDateComplicationView)initWithBackgroundView:(id)a3
+- (NTKBellonaDateComplicationView)initWithBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = NTKBellonaDateComplicationView;
-  v6 = [(NTKZeusComplicationView *)&v16 initWithBackgroundView:v5];
+  v6 = [(NTKZeusComplicationView *)&v16 initWithBackgroundView:viewCopy];
   v7 = v6;
   if (v6)
   {
@@ -23,7 +23,7 @@
     v8 = [(NTKZeusComplicationView *)v6 device:0];
     sub_1C090(v8, &v14);
 
-    objc_storeStrong(&v7->_backgroundView, a3);
+    objc_storeStrong(&v7->_backgroundView, view);
     v9 = objc_opt_new();
     label = v7->_label;
     v7->_label = v9;
@@ -38,29 +38,29 @@
   return v7;
 }
 
-- (void)applyPalette:(id)a3
+- (void)applyPalette:(id)palette
 {
   v4.receiver = self;
   v4.super_class = NTKBellonaDateComplicationView;
-  [(NTKZeusComplicationView *)&v4 applyPalette:a3];
+  [(NTKZeusComplicationView *)&v4 applyPalette:palette];
   [(NTKBellonaDateComplicationView *)self _updateLabel];
 }
 
-- (CGRect)padContentFrame:(CGRect)a3
+- (CGRect)padContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
-  v8 = [(NTKZeusComplicationView *)self device];
-  LODWORD(v7) = v7->_currentDayNumber;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
+  device = [(NTKZeusComplicationView *)self device];
+  LODWORD(selfCopy) = selfCopy->_currentDayNumber;
   v20 = 0;
   v18 = 0u;
   v19 = 0u;
-  sub_1C090(v8, &v18);
+  sub_1C090(device, &v18);
   v9 = &v18 + 1;
-  if (v7 < 10)
+  if (selfCopy < 10)
   {
     v9 = &v18;
   }
@@ -86,12 +86,12 @@
   return result;
 }
 
-- (void)setDateComplicationText:(id)a3 withDayRange:(_NSRange)a4 forDateStyle:(unint64_t)a5
+- (void)setDateComplicationText:(id)text withDayRange:(_NSRange)range forDateStyle:(unint64_t)style
 {
-  v6 = [a3 intValue];
-  if (v6 != self->_currentDayNumber)
+  intValue = [text intValue];
+  if (intValue != self->_currentDayNumber)
   {
-    self->_currentDayNumber = v6;
+    self->_currentDayNumber = intValue;
 
     [(NTKBellonaDateComplicationView *)self _updateLabel];
   }
@@ -104,20 +104,20 @@
   [(UILabel *)label setText:v4];
 
   v5 = self->_label;
-  v6 = [(NTKZeusComplicationView *)self palette];
-  v7 = [v6 beige];
-  [(UILabel *)v5 setTextColor:v7];
+  palette = [(NTKZeusComplicationView *)self palette];
+  beige = [palette beige];
+  [(UILabel *)v5 setTextColor:beige];
 
   [(NTKBellonaDateComplicationView *)self setNeedsLayout];
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(NTKZeusComplicationView *)self device];
+  device = [(NTKZeusComplicationView *)self device];
   v16 = 0;
   v14 = 0u;
   v15 = 0u;
-  sub_1C090(v3, &v14);
+  sub_1C090(device, &v14);
   [(UILabel *)self->_label sizeThatFits:CGSizeZero.width, CGSizeZero.height];
   [(NTKBellonaDateComplicationView *)self bounds];
   label = self->_label;
@@ -133,8 +133,8 @@
   [(NTKBellonaDateComplicationView *)self contentFrame];
   v9 = v8;
   v10 = self->_label;
-  v11 = [(UILabel *)v10 font];
-  [v11 capHeight];
+  font = [(UILabel *)v10 font];
+  [font capHeight];
   [(UILabel *)v10 _setFirstLineBaselineFrameOriginY:v9 + v12];
 
   v13.receiver = self;
@@ -145,11 +145,11 @@
 - (CGRect)contentFrame
 {
   [(UILabel *)self->_label sizeThatFits:CGSizeZero.width, CGSizeZero.height];
-  v3 = [(UILabel *)self->_label font];
-  [v3 capHeight];
+  font = [(UILabel *)self->_label font];
+  [font capHeight];
 
   [(NTKBellonaDateComplicationView *)self bounds];
-  v4 = [(NTKZeusComplicationView *)self device];
+  device = [(NTKZeusComplicationView *)self device];
   CLKRectCenteredIntegralRectForDevice();
   v6 = v5;
   v8 = v7;

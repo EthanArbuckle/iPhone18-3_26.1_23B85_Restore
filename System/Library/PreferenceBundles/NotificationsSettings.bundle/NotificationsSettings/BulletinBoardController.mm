@@ -1,50 +1,50 @@
 @interface BulletinBoardController
-+ (void)emitNavigationEventForSpecifier:(id)a3 viewController:(id)a4;
-- (BOOL)_shouldShowSection:(id)a3;
-- (BOOL)priorityNotificationsDetailController:(id)a3 shouldShowSection:(id)a4;
-- (BOOL)shouldAppDetailControllerBecomeActive:(id)a3;
-- (BOOL)summarizePreviewsDetailController:(id)a3 shouldShowSection:(id)a4;
++ (void)emitNavigationEventForSpecifier:(id)specifier viewController:(id)controller;
+- (BOOL)_shouldShowSection:(id)section;
+- (BOOL)priorityNotificationsDetailController:(id)controller shouldShowSection:(id)section;
+- (BOOL)shouldAppDetailControllerBecomeActive:(id)active;
+- (BOOL)summarizePreviewsDetailController:(id)controller shouldShowSection:(id)section;
 - (BulletinBoardController)init;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_alphabetizedSpecifiersFrom:(id)a3;
-- (id)_appclipsSpecifierForAppClips:(id)a3;
-- (id)_filterSuppressedSections:(id)a3;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_alphabetizedSpecifiersFrom:(id)from;
+- (id)_appclipsSpecifierForAppClips:(id)clips;
+- (id)_filterSuppressedSections:(id)sections;
 - (id)_sectionDescriptions;
 - (id)_sectionIDs;
 - (id)_sectionUIDescriptions;
-- (id)cmasAlertsTitle:(id)a3;
-- (id)cmasAlertsValue:(id)a3;
-- (id)notificationListDisplayStyleSetting:(id)a3;
-- (id)priorityNotificationSetting:(id)a3;
-- (id)scheduledDeliverySetting:(id)a3;
-- (id)screenSharingSetting:(id)a3;
-- (id)sectionsOrderedByInOutState:(id)a3;
+- (id)cmasAlertsTitle:(id)title;
+- (id)cmasAlertsValue:(id)value;
+- (id)notificationListDisplayStyleSetting:(id)setting;
+- (id)priorityNotificationSetting:(id)setting;
+- (id)scheduledDeliverySetting:(id)setting;
+- (id)screenSharingSetting:(id)setting;
+- (id)sectionsOrderedByInOutState:(id)state;
 - (id)specifiers;
-- (id)spokenNotifications:(id)a3;
-- (id)summarizationSetting:(id)a3;
-- (void)_addRegionalAlertGroupToSpecifiers:(id)a3;
-- (void)_buttonActionForApplicationSpecifier:(id)a3;
+- (id)spokenNotifications:(id)notifications;
+- (id)summarizationSetting:(id)setting;
+- (void)_addRegionalAlertGroupToSpecifiers:(id)specifiers;
+- (void)_buttonActionForApplicationSpecifier:(id)specifier;
 - (void)_clearSections;
 - (void)_loadGlobalSettings;
 - (void)_loadSections;
-- (void)_reallyLoadSections:(id)a3;
+- (void)_reallyLoadSections:(id)sections;
 - (void)_reloadSections;
-- (void)_updateStoredSectionsWithSectionInfo:(id)a3;
-- (void)appDetailControllerWillDisappear:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)_updateStoredSectionsWithSectionInfo:(id)info;
+- (void)appDetailControllerWillDisappear:(id)disappear;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)cmasPropertyChanged;
 - (void)dealloc;
 - (void)emitNavigationEventForRootController;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)profileNotification:(id)a3;
-- (void)setCmasAlertState:(id)a3 forSpecifier:(id)a4;
-- (void)setNotificationListDisplayStyleSetting:(id)a3 specifier:(id)a4;
-- (void)setShowsPreview:(id)a3 specifier:(id)a4;
-- (void)settingsGateway:(id)a3 didUpdateSectionInfo:(id)a4;
-- (void)settingsGatewayDidUpdateGlobalSettings:(id)a3;
-- (void)showPreviewsSettingsDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)profileNotification:(id)notification;
+- (void)setCmasAlertState:(id)state forSpecifier:(id)specifier;
+- (void)setNotificationListDisplayStyleSetting:(id)setting specifier:(id)specifier;
+- (void)setShowsPreview:(id)preview specifier:(id)specifier;
+- (void)settingsGateway:(id)gateway didUpdateSectionInfo:(id)info;
+- (void)settingsGatewayDidUpdateGlobalSettings:(id)settings;
+- (void)showPreviewsSettingsDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BulletinBoardController
@@ -97,36 +97,36 @@
   [(BulletinBoardController *)&v5 dealloc];
 }
 
-- (void)profileNotification:(id)a3
+- (void)profileNotification:(id)notification
 {
-  v5 = [a3 objectForKey:MCSetParametersForSettingsByTypeParamSenderPID];
-  v4 = [v5 intValue];
-  if (v4 != getpid())
+  v5 = [notification objectForKey:MCSetParametersForSettingsByTypeParamSenderPID];
+  intValue = [v5 intValue];
+  if (intValue != getpid())
   {
     [(BulletinBoardController *)self reloadSpecifiers];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = BulletinBoardController;
-  [(BulletinBoardController *)&v5 viewWillAppear:a3];
-  v4 = [(BulletinBoardController *)self table];
-  [v4 setAllowsSelectionDuringEditing:1];
+  [(BulletinBoardController *)&v5 viewWillAppear:appear];
+  table = [(BulletinBoardController *)self table];
+  [table setAllowsSelectionDuringEditing:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BulletinBoardController;
-  [(BulletinBoardController *)&v4 viewDidAppear:a3];
+  [(BulletinBoardController *)&v4 viewDidAppear:appear];
   [(BulletinBoardController *)self emitNavigationEventForRootController];
 }
 
-- (void)_addRegionalAlertGroupToSpecifiers:(id)a3
+- (void)_addRegionalAlertGroupToSpecifiers:(id)specifiers
 {
-  v9 = a3;
+  specifiersCopy = specifiers;
   if (MGGetBoolAnswer())
   {
     v13 = 0;
@@ -156,36 +156,36 @@
   }
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (qword_5C5A0)
   {
     v7.receiver = self;
     v7.super_class = BulletinBoardController;
-    [(BulletinBoardController *)&v7 handleURL:a3 withCompletion:v6];
+    [(BulletinBoardController *)&v7 handleURL:l withCompletion:completionCopy];
   }
 
   else
   {
-    [(BulletinBoardController *)self setUrlResourceDictionary:a3];
-    if (v6)
+    [(BulletinBoardController *)self setUrlResourceDictionary:l];
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (id)sectionsOrderedByInOutState:(id)a3
+- (id)sectionsOrderedByInOutState:(id)state
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  stateCopy = state;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [stateCopy count]);
   v5 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v3;
+  v6 = stateCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -236,9 +236,9 @@
   v88 = OBJC_IVAR___PSListController__specifiers;
   v4 = objc_alloc_init(NSMutableArray);
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) != 1 || _os_feature_enabled_impl())
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 || _os_feature_enabled_impl())
   {
     v7 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
     v8 = [v7 localizedStringForKey:@"NOTIFICATION_LIST_DISPLAY_STYLE_TITLE" value:&stru_4E3F0 table:@"NotificationsSettings"];
@@ -407,11 +407,11 @@ LABEL_21:
   [v52 setIdentifier:@"SIRI_GROUP_ID"];
   [v89 addObject:v52];
   v53 = +[NCSettingsGatewayController sharedInstance];
-  v54 = [v53 effectiveGlobalAnnounceSetting];
+  effectiveGlobalAnnounceSetting = [v53 effectiveGlobalAnnounceSetting];
 
   v55 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
   v56 = v55;
-  if (v54 == -1)
+  if (effectiveGlobalAnnounceSetting == -1)
   {
     v63 = [v55 localizedStringForKey:@"SIRI_SUGGESTIONS_FOOTER_TEXT" value:&stru_4E3F0 table:@"NotificationsSettings"];
     [v52 setProperty:v63 forKey:PSFooterTextGroupKey];
@@ -455,8 +455,8 @@ LABEL_21:
   v71 = SFRuntimeAbsoluteFilePathForPath();
   v72 = [v69 bundleWithPath:v71];
 
-  v73 = [v72 infoDictionary];
-  v74 = [v73 objectForKey:@"ASHasSettingsPaneDefinitionForSiriSuggestions"];
+  infoDictionary = [v72 infoDictionary];
+  v74 = [infoDictionary objectForKey:@"ASHasSettingsPaneDefinitionForSiriSuggestions"];
 
   if (v74)
   {
@@ -503,9 +503,9 @@ LABEL_32:
   return v3;
 }
 
-- (void)setShowsPreview:(id)a3 specifier:(id)a4
+- (void)setShowsPreview:(id)preview specifier:(id)specifier
 {
-  self->_globalContentPreviewSetting = [a3 integerValue];
+  self->_globalContentPreviewSetting = [preview integerValue];
   v5 = +[NCSettingsGatewayController sharedInstance];
   [v5 setEffectiveGlobalContentPreviewsSetting:self->_globalContentPreviewSetting];
 
@@ -515,9 +515,9 @@ LABEL_32:
   [(BulletinBoardController *)self reloadSpecifiers];
 }
 
-- (void)showPreviewsSettingsDidChange:(id)a3
+- (void)showPreviewsSettingsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (+[NSThread isMainThread])
   {
     [(BulletinBoardController *)self _loadGlobalSettings];
@@ -531,60 +531,60 @@ LABEL_32:
     v5[2] = sub_17744;
     v5[3] = &unk_4D0D8;
     v5[4] = self;
-    v6 = v4;
+    v6 = changeCopy;
     dispatch_async(&_dispatch_main_q, v5);
   }
 }
 
-- (void)setNotificationListDisplayStyleSetting:(id)a3 specifier:(id)a4
+- (void)setNotificationListDisplayStyleSetting:(id)setting specifier:(id)specifier
 {
-  v5 = [a3 integerValue];
+  integerValue = [setting integerValue];
   v6 = +[NCSettingsGatewayController sharedInstance];
   [v6 removeObserver:self];
 
   v7 = +[NCSettingsGatewayController sharedInstance];
-  [v7 setEffectiveGlobalNotificationListDisplayStyleSetting:v5];
+  [v7 setEffectiveGlobalNotificationListDisplayStyleSetting:integerValue];
 
   v8 = +[NCSettingsGatewayController sharedInstance];
   [v8 addObserver:self];
 }
 
-- (id)notificationListDisplayStyleSetting:(id)a3
+- (id)notificationListDisplayStyleSetting:(id)setting
 {
   v3 = +[NCSettingsGatewayController sharedInstance];
-  v4 = [v3 effectiveGlobalNotificationListDisplayStyleSetting];
+  effectiveGlobalNotificationListDisplayStyleSetting = [v3 effectiveGlobalNotificationListDisplayStyleSetting];
 
-  return [NSNumber numberWithInteger:v4];
+  return [NSNumber numberWithInteger:effectiveGlobalNotificationListDisplayStyleSetting];
 }
 
-- (id)spokenNotifications:(id)a3
+- (id)spokenNotifications:(id)notifications
 {
   v3 = +[NCSettingsGatewayController sharedInstance];
-  v4 = [v3 effectiveGlobalAnnounceSetting];
+  effectiveGlobalAnnounceSetting = [v3 effectiveGlobalAnnounceSetting];
 
-  return [NSNumber numberWithInteger:v4];
+  return [NSNumber numberWithInteger:effectiveGlobalAnnounceSetting];
 }
 
-- (id)scheduledDeliverySetting:(id)a3
+- (id)scheduledDeliverySetting:(id)setting
 {
   v3 = +[NCSettingsGatewayController sharedInstance];
-  v4 = [v3 effectiveGlobalScheduledDeliverySetting];
+  effectiveGlobalScheduledDeliverySetting = [v3 effectiveGlobalScheduledDeliverySetting];
 
   v5 = +[NCSettingsGatewayController sharedInstance];
-  v6 = [v5 effectiveGlobalScheduledDeliveryTimes];
+  effectiveGlobalScheduledDeliveryTimes = [v5 effectiveGlobalScheduledDeliveryTimes];
 
-  v7 = NCStringForScheduledDeliverySummary(v4, v6);
+  v7 = NCStringForScheduledDeliverySummary(effectiveGlobalScheduledDeliverySetting, effectiveGlobalScheduledDeliveryTimes);
 
   return v7;
 }
 
-- (id)summarizationSetting:(id)a3
+- (id)summarizationSetting:(id)setting
 {
   v3 = +[NCSettingsGatewayController sharedInstance];
-  v4 = [v3 effectiveGlobalSummarizationSetting];
+  effectiveGlobalSummarizationSetting = [v3 effectiveGlobalSummarizationSetting];
   v5 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
   v6 = v5;
-  if (v4 == &dword_0 + 2)
+  if (effectiveGlobalSummarizationSetting == &dword_0 + 2)
   {
     v7 = @"ON";
   }
@@ -599,7 +599,7 @@ LABEL_32:
   return v8;
 }
 
-- (id)screenSharingSetting:(id)a3
+- (id)screenSharingSetting:(id)setting
 {
   v3 = NCGetAllowNotificationsDuringScreenSharing();
   v4 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
@@ -619,7 +619,7 @@ LABEL_32:
   return v7;
 }
 
-- (id)priorityNotificationSetting:(id)a3
+- (id)priorityNotificationSetting:(id)setting
 {
   globalHighlightsSetting = self->_globalHighlightsSetting;
   v4 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
@@ -639,25 +639,25 @@ LABEL_32:
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = [(BulletinBoardController *)self specifierForID:@"NOTIFICATION_LIST_DISPLAY_STYLE_CELL"];
   v9 = [(BulletinBoardController *)self indexPathForSpecifier:v8];
-  v10 = [v9 isEqual:v7];
+  v10 = [v9 isEqual:pathCopy];
 
   if (v10)
   {
-    [v6 bounds];
+    [viewCopy bounds];
     v12 = v11;
-    [v6 _sectionContentInset];
+    [viewCopy _sectionContentInset];
     v14 = v13;
     v16 = v15;
-    v17 = [(BulletinBoardController *)self tableView:v6 cellForRowAtIndexPath:v7];
+    v17 = [(BulletinBoardController *)self tableView:viewCopy cellForRowAtIndexPath:pathCopy];
     if (v17)
     {
-      [v6 bounds];
+      [viewCopy bounds];
       [v17 sizeThatFits:{v12 - v14 - v16, CGRectGetHeight(v23)}];
       v19 = v18;
     }
@@ -672,7 +672,7 @@ LABEL_32:
   {
     v22.receiver = self;
     v22.super_class = BulletinBoardController;
-    [(BulletinBoardController *)&v22 tableView:v6 heightForRowAtIndexPath:v7];
+    [(BulletinBoardController *)&v22 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     v19 = v20;
   }
 
@@ -701,8 +701,8 @@ LABEL_32:
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) sectionID];
-        [v2 addObject:v8];
+        sectionID = [*(*(&v10 + 1) + 8 * i) sectionID];
+        [v2 addObject:sectionID];
       }
 
       v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -742,8 +742,8 @@ LABEL_32:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v8 = [v7 subsections];
-        v9 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        subsections = [v7 subsections];
+        v9 = [subsections countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v9)
         {
           v10 = v9;
@@ -754,7 +754,7 @@ LABEL_32:
             {
               if (*v20 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(subsections);
               }
 
               if ([*(*(&v19 + 1) + 8 * j) notificationCenterSetting] == &dword_0 + 2)
@@ -764,7 +764,7 @@ LABEL_32:
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v10 = [subsections countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v10)
             {
               continue;
@@ -777,15 +777,15 @@ LABEL_32:
         v13 = @"Subsections Not In Notification Center";
 LABEL_16:
 
-        v14 = [v7 sectionID];
-        v15 = [v7 notificationCenterSetting];
+        sectionID = [v7 sectionID];
+        notificationCenterSetting = [v7 notificationCenterSetting];
         v16 = @"Not In Notification Center";
-        if (v15 == &dword_0 + 2)
+        if (notificationCenterSetting == &dword_0 + 2)
         {
           v16 = @"In Notification Center";
         }
 
-        [v2 appendFormat:@"\t%@\t%@ / %@\n", v14, v16, v13];
+        [v2 appendFormat:@"\t%@\t%@ / %@\n", sectionID, v16, v13];
       }
 
       v4 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -826,15 +826,15 @@ LABEL_16:
         v10 = v9;
         if (v9)
         {
-          v11 = [v9 sectionID];
-          v12 = [v10 notificationCenterSetting];
+          sectionID = [v9 sectionID];
+          notificationCenterSetting = [v10 notificationCenterSetting];
           v13 = @"Not In Notification Center";
-          if (v12 == &dword_0 + 2)
+          if (notificationCenterSetting == &dword_0 + 2)
           {
             v13 = @"In Notification Center";
           }
 
-          [v3 appendFormat:@"\t%@\t%@\n", v11, v13, v15];
+          [v3 appendFormat:@"\t%@\t%@\n", sectionID, v13, v15];
         }
       }
 
@@ -855,18 +855,18 @@ LABEL_16:
   qword_5C5A0 = 0;
 }
 
-- (BOOL)_shouldShowSection:(id)a3
+- (BOOL)_shouldShowSection:(id)section
 {
-  v3 = a3;
-  if ([v3 isRestricted])
+  sectionCopy = section;
+  if ([sectionCopy isRestricted])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 sectionID];
-    if ([v5 isEqualToString:@"com.apple.gamecenter"])
+    sectionID = [sectionCopy sectionID];
+    if ([sectionID isEqualToString:@"com.apple.gamecenter"])
     {
       v6 = +[MCProfileConnection sharedConnection];
       v7 = [v6 isBoolSettingLockedDownByRestrictions:@"allowGameCenter"];
@@ -880,32 +880,32 @@ LABEL_16:
     }
   }
 
-  v8 = [v3 sectionID];
-  v9 = [APApplication applicationWithBundleIdentifier:v8];
-  v10 = [v9 isHidden];
+  sectionID2 = [sectionCopy sectionID];
+  v9 = [APApplication applicationWithBundleIdentifier:sectionID2];
+  isHidden = [v9 isHidden];
 
-  if ([v3 suppressFromSettings])
+  if ([sectionCopy suppressFromSettings])
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = v4 & (v10 ^ 1);
+    v11 = v4 & (isHidden ^ 1);
   }
 
   return v11;
 }
 
-- (id)_filterSuppressedSections:(id)a3
+- (id)_filterSuppressedSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v5 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = sectionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -936,7 +936,7 @@ LABEL_16:
   return v5;
 }
 
-- (void)_reallyLoadSections:(id)a3
+- (void)_reallyLoadSections:(id)sections
 {
   if (!qword_5C5A0)
   {
@@ -953,22 +953,22 @@ LABEL_16:
 - (void)_loadSections
 {
   v3 = +[NCSettingsGatewayController sharedInstance];
-  v4 = [v3 activeSectionInfo];
+  activeSectionInfo = [v3 activeSectionInfo];
 
-  v5 = [(BulletinBoardController *)self _filterSuppressedSections:v4];
+  v5 = [(BulletinBoardController *)self _filterSuppressedSections:activeSectionInfo];
   v6 = [(BulletinBoardController *)self sectionsOrderedByInOutState:v5];
   v7 = qword_5C5A0;
   qword_5C5A0 = v6;
 
-  [(BulletinBoardController *)self _reallyLoadSections:v4];
-  v8 = [(BulletinBoardController *)self urlResourceDictionary];
+  [(BulletinBoardController *)self _reallyLoadSections:activeSectionInfo];
+  urlResourceDictionary = [(BulletinBoardController *)self urlResourceDictionary];
 
-  if (v8)
+  if (urlResourceDictionary)
   {
-    v9 = [(BulletinBoardController *)self urlResourceDictionary];
+    urlResourceDictionary2 = [(BulletinBoardController *)self urlResourceDictionary];
     v10.receiver = self;
     v10.super_class = BulletinBoardController;
-    [(BulletinBoardController *)&v10 handleURL:v9 withCompletion:0];
+    [(BulletinBoardController *)&v10 handleURL:urlResourceDictionary2 withCompletion:0];
 
     [(BulletinBoardController *)self setUrlResourceDictionary:0];
   }
@@ -986,9 +986,9 @@ LABEL_16:
   self->_globalHighlightsSetting = [v5 effectiveGlobalHighlightsSetting];
 }
 
-- (id)_alphabetizedSpecifiersFrom:(id)a3
+- (id)_alphabetizedSpecifiersFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v5 = +[NSMutableArray array];
   v6 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
   v7 = [v6 localizedStringForKey:@"NOTIFICATION_STYLE" value:&stru_4E3F0 table:@"NotificationsSettings"];
@@ -997,9 +997,9 @@ LABEL_16:
   v38 = v5;
   v36 = v8;
   [v5 addObject:v8];
-  v39 = self;
-  v37 = v4;
-  v9 = [(BulletinBoardController *)self _sortedSections:v4];
+  selfCopy = self;
+  v37 = fromCopy;
+  v9 = [(BulletinBoardController *)self _sortedSections:fromCopy];
   v10 = +[NSMutableArray array];
   v11 = +[NSMutableArray array];
   v45 = 0u;
@@ -1038,8 +1038,8 @@ LABEL_16:
           v18 = v10;
           objc_opt_class();
           v19 = PSApplicationSpecifierForBBSection();
-          v20 = [v17 icon];
-          v21 = [v20 _bestVariantForFormat:1];
+          icon = [v17 icon];
+          v21 = [icon _bestVariantForFormat:1];
 
           v22 = [v21 uti];
           if ([v22 length])
@@ -1051,14 +1051,14 @@ LABEL_16:
           }
 
           v24 = +[MCProfileConnection sharedConnection];
-          v25 = [v17 sectionID];
-          v26 = [v24 isNotificationsModificationAllowedForBundleID:v25];
+          sectionID = [v17 sectionID];
+          v26 = [v24 isNotificationsModificationAllowedForBundleID:sectionID];
 
           if (v26)
           {
             [v19 setProperty:&__kCFBooleanTrue forKey:v42];
-            [v19 setProperty:v39 forKey:kNotificationsSettingsDetailControllerDelegate];
-            [v19 setTarget:v39];
+            [v19 setProperty:selfCopy forKey:kNotificationsSettingsDetailControllerDelegate];
+            [v19 setTarget:selfCopy];
             [v19 setButtonAction:"_buttonActionForApplicationSpecifier:"];
           }
 
@@ -1086,44 +1086,44 @@ LABEL_16:
 
   if ([v10 count])
   {
-    v27 = [(BulletinBoardController *)v39 _appclipsSpecifierForAppClips:v10];
+    v27 = [(BulletinBoardController *)selfCopy _appclipsSpecifierForAppClips:v10];
     [v38 addObject:v27];
   }
 
   [v38 addObjectsFromArray:v11];
   if (![v12 count])
   {
-    v28 = [(BulletinBoardController *)v39 emptyCell];
+    emptyCell = [(BulletinBoardController *)selfCopy emptyCell];
 
-    if (!v28)
+    if (!emptyCell)
     {
       v29 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
       v30 = [v29 localizedStringForKey:@"EMPTY" value:&stru_4E3F0 table:@"NotificationsSettings"];
-      v31 = [PSSpecifier preferenceSpecifierNamed:v30 target:v39 set:0 get:0 detail:0 cell:13 edit:0];
-      [(BulletinBoardController *)v39 setEmptyCell:v31];
+      v31 = [PSSpecifier preferenceSpecifierNamed:v30 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
+      [(BulletinBoardController *)selfCopy setEmptyCell:v31];
 
-      v32 = [(BulletinBoardController *)v39 emptyCell];
+      emptyCell2 = [(BulletinBoardController *)selfCopy emptyCell];
       v33 = [NSNumber numberWithBool:0];
-      [v32 setProperty:v33 forKey:PSEnabledKey];
+      [emptyCell2 setProperty:v33 forKey:PSEnabledKey];
     }
 
-    v34 = [(BulletinBoardController *)v39 emptyCell];
-    [v38 addObject:v34];
+    emptyCell3 = [(BulletinBoardController *)selfCopy emptyCell];
+    [v38 addObject:emptyCell3];
   }
 
   return v38;
 }
 
-- (id)_appclipsSpecifierForAppClips:(id)a3
+- (id)_appclipsSpecifierForAppClips:(id)clips
 {
-  v4 = a3;
+  clipsCopy = clips;
   v5 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
   v6 = [v5 localizedStringForKey:@"APP_CLIPS" value:&stru_4E3F0 table:@"NotificationsSettings"];
   v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
   [v7 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v7 setIdentifier:@"APP_CLIPS_ID"];
-  [v7 setProperty:v4 forKey:@"APP_CLIP_SECTION_INFOS"];
+  [v7 setProperty:clipsCopy forKey:@"APP_CLIP_SECTION_INFOS"];
 
   [v7 setProperty:@"com.apple.graphic-icon.app-clips" forKey:PSIconUTTypeIdentifierKey];
   [v7 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
@@ -1131,10 +1131,10 @@ LABEL_16:
   return v7;
 }
 
-- (void)setCmasAlertState:(id)a3 forSpecifier:(id)a4
+- (void)setCmasAlertState:(id)state forSpecifier:(id)specifier
 {
-  v19 = a3;
-  v18 = [a4 propertyForKey:@"CMAS_ALERT_TYPE"];
+  stateCopy = state;
+  v18 = [specifier propertyForKey:@"CMAS_ALERT_TYPE"];
   [(NSMutableDictionary *)self->_alertTypeKeys objectForKeyedSubscript:?];
   v20 = 0u;
   v21 = 0u;
@@ -1160,7 +1160,7 @@ LABEL_16:
         if (v12)
         {
           v13 = v12;
-          v14 = [v19 BOOLValue];
+          bOOLValue = [stateCopy BOOLValue];
           v15 = _CTServerConnectionSetCellBroadcastSettingForAlertType();
           v16 = NCLogEmergencyAlerts;
           if (os_log_type_enabled(NCLogEmergencyAlerts, OS_LOG_TYPE_DEFAULT))
@@ -1168,7 +1168,7 @@ LABEL_16:
             *buf = 138543874;
             v25 = v11;
             v26 = 1024;
-            v27 = v14;
+            v27 = bOOLValue;
             v28 = 1024;
             v29 = 0;
             _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "########### Set CMAS Type: %{public}@ to %d (is did succeed %d)", buf, 0x18u);
@@ -1198,16 +1198,16 @@ LABEL_16:
   }
 }
 
-- (id)cmasAlertsValue:(id)a3
+- (id)cmasAlertsValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"CMAS_ALERT_TYPE"];
+  valueCopy = value;
+  v5 = [valueCopy propertyForKey:@"CMAS_ALERT_TYPE"];
   v6 = [(NSMutableDictionary *)self->_alertTypeKeys objectForKeyedSubscript:v5];
   if ([v6 count])
   {
     v7 = [v6 objectAtIndexedSubscript:0];
-    v8 = [v4 propertyForKey:@"CMAS_ENABLED_BY_DEFAULT"];
-    v9 = [v8 BOOLValue];
+    v8 = [valueCopy propertyForKey:@"CMAS_ENABLED_BY_DEFAULT"];
+    bOOLValue = [v8 BOOLValue];
 
     v10 = _CTServerConnectionCreate();
     if (v10)
@@ -1237,10 +1237,10 @@ LABEL_16:
       }
 
       CFRelease(v11);
-      v9 = v9;
+      bOOLValue = bOOLValue;
     }
 
-    v16 = [NSNumber numberWithBool:v9, 0, 0, 0, 0, 0];
+    v16 = [NSNumber numberWithBool:bOOLValue, 0, 0, 0, 0, 0];
   }
 
   else
@@ -1251,14 +1251,14 @@ LABEL_16:
   return v16;
 }
 
-- (id)cmasAlertsTitle:(id)a3
+- (id)cmasAlertsTitle:(id)title
 {
-  v3 = [(BulletinBoardController *)self cmasAlertsValue:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(BulletinBoardController *)self cmasAlertsValue:title];
+  bOOLValue = [v3 BOOLValue];
 
   v5 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
   v6 = v5;
-  if (v4)
+  if (bOOLValue)
   {
     v7 = @"ON";
   }
@@ -1280,31 +1280,31 @@ LABEL_16:
   [(BulletinBoardController *)self reloadSpecifiers];
 }
 
-- (void)_buttonActionForApplicationSpecifier:(id)a3
+- (void)_buttonActionForApplicationSpecifier:(id)specifier
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_194CC;
   v14[3] = &unk_4D0D8;
-  v4 = a3;
-  v15 = v4;
-  v16 = self;
+  specifierCopy = specifier;
+  v15 = specifierCopy;
+  selfCopy = self;
   v5 = objc_retainBlock(v14);
-  v6 = [v4 propertyForKey:@"BBSECTION_INFO_KEY"];
-  v7 = [v6 sectionID];
-  v8 = [APApplication applicationWithBundleIdentifier:v7];
+  v6 = [specifierCopy propertyForKey:@"BBSECTION_INFO_KEY"];
+  sectionID = [v6 sectionID];
+  v8 = [APApplication applicationWithBundleIdentifier:sectionID];
 
   if ([v8 isLocked])
   {
-    [v4 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
-    [(BulletinBoardController *)self reloadSpecifier:v4];
+    [specifierCopy setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
+    [(BulletinBoardController *)self reloadSpecifier:specifierCopy];
     v9 = +[APGuard sharedGuard];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_19530;
     v10[3] = &unk_4D7E0;
-    v11 = v4;
-    v12 = self;
+    v11 = specifierCopy;
+    selfCopy2 = self;
     v13 = v5;
     [v9 authenticateForSubject:v8 completion:v10];
   }
@@ -1320,11 +1320,11 @@ LABEL_16:
   if (qword_5C5A0)
   {
     v3 = +[NCSettingsGatewayController sharedInstance];
-    v4 = [v3 activeSectionInfo];
+    activeSectionInfo = [v3 activeSectionInfo];
 
-    v34 = v4;
-    v5 = [(BulletinBoardController *)self _filterSuppressedSections:v4];
-    v33 = self;
+    v34 = activeSectionInfo;
+    v5 = [(BulletinBoardController *)self _filterSuppressedSections:activeSectionInfo];
+    selfCopy = self;
     v6 = [(BulletinBoardController *)self sectionsOrderedByInOutState:v5];
 
     v7 = [qword_5C5A0 count];
@@ -1358,10 +1358,10 @@ LABEL_4:
 
         v41 = v9;
         v12 = [v6 objectAtIndex:v9];
-        v13 = [v12 subsections];
-        v14 = [v13 count];
-        v15 = [v11 subsections];
-        v16 = [v15 count];
+        subsections = [v12 subsections];
+        v14 = [subsections count];
+        subsections2 = [v11 subsections];
+        v16 = [subsections2 count];
 
         if (v14 == v16)
         {
@@ -1369,8 +1369,8 @@ LABEL_4:
           v45 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v17 = [v12 subsections];
-          v18 = [v17 countByEnumeratingWithState:&v42 objects:v50 count:16];
+          subsections3 = [v12 subsections];
+          v18 = [subsections3 countByEnumeratingWithState:&v42 objects:v50 count:16];
           if (v18)
           {
             v19 = v18;
@@ -1386,12 +1386,12 @@ LABEL_4:
               {
                 if (*v43 != v21)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(subsections3);
                 }
 
                 v23 = *(*(&v42 + 1) + 8 * v22);
-                v24 = [v11 subsections];
-                v25 = [v24 objectAtIndex:v20];
+                subsections4 = [v11 subsections];
+                v25 = [subsections4 objectAtIndex:v20];
 
                 LODWORD(v23) = [v25 isEqualToSection:v23];
                 if (!v23)
@@ -1405,7 +1405,7 @@ LABEL_4:
               }
 
               while (v19 != v22);
-              v19 = [v17 countByEnumeratingWithState:&v42 objects:v50 count:16];
+              v19 = [subsections3 countByEnumeratingWithState:&v42 objects:v50 count:16];
               if (v19)
               {
                 continue;
@@ -1432,9 +1432,9 @@ LABEL_20:
           v26 = 0;
         }
 
-        v27 = [v11 sectionID];
-        v28 = [v12 sectionID];
-        if ([v27 isEqualToString:v28] && (v29 = objc_msgSend(v11, "notificationCenterSetting"), v29 == objc_msgSend(v12, "notificationCenterSetting")) && (v30 = objc_msgSend(v11, "pushSettings"), v30 == objc_msgSend(v12, "pushSettings")))
+        sectionID = [v11 sectionID];
+        sectionID2 = [v12 sectionID];
+        if ([sectionID isEqualToString:sectionID2] && (v29 = objc_msgSend(v11, "notificationCenterSetting"), v29 == objc_msgSend(v12, "notificationCenterSetting")) && (v30 = objc_msgSend(v11, "pushSettings"), v30 == objc_msgSend(v12, "pushSettings")))
         {
 
           if (v26)
@@ -1470,14 +1470,14 @@ LABEL_30:
       v32 = qword_5C5A0;
       qword_5C5A0 = v31;
 
-      [(BulletinBoardController *)v33 reloadSpecifiers];
+      [(BulletinBoardController *)selfCopy reloadSpecifiers];
     }
   }
 }
 
-- (void)_updateStoredSectionsWithSectionInfo:(id)a3
+- (void)_updateStoredSectionsWithSectionInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   if (qword_5C5A0)
   {
     v4 = [qword_5C5A0 mutableCopy];
@@ -1486,7 +1486,7 @@ LABEL_30:
     v10[1] = 3221225472;
     v10[2] = sub_19B6C;
     v10[3] = &unk_4D1D0;
-    v6 = v3;
+    v6 = infoCopy;
     v11 = v6;
     v7 = [v5 indexOfObjectPassingTest:v10];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1505,59 +1505,59 @@ LABEL_30:
   }
 }
 
-- (void)appDetailControllerWillDisappear:(id)a3
+- (void)appDetailControllerWillDisappear:(id)disappear
 {
-  v4 = [a3 specifier];
-  [(BulletinBoardController *)self reloadSpecifier:v4];
+  specifier = [disappear specifier];
+  [(BulletinBoardController *)self reloadSpecifier:specifier];
 }
 
-- (BOOL)shouldAppDetailControllerBecomeActive:(id)a3
+- (BOOL)shouldAppDetailControllerBecomeActive:(id)active
 {
-  v3 = [a3 sectionID];
+  sectionID = [active sectionID];
   v4 = qword_5C5A0;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_19CDC;
   v8[3] = &unk_4D450;
-  v9 = v3;
-  v5 = v3;
+  v9 = sectionID;
+  v5 = sectionID;
   v6 = [v4 bs_firstObjectPassingTest:v8];
   LOBYTE(v4) = v6 != 0;
 
   return v4;
 }
 
-- (BOOL)summarizePreviewsDetailController:(id)a3 shouldShowSection:(id)a4
+- (BOOL)summarizePreviewsDetailController:(id)controller shouldShowSection:(id)section
 {
-  v5 = a4;
-  LOBYTE(self) = [(BulletinBoardController *)self _shouldShowSection:v5];
-  v6 = [v5 allowsNotifications];
+  sectionCopy = section;
+  LOBYTE(self) = [(BulletinBoardController *)self _shouldShowSection:sectionCopy];
+  allowsNotifications = [sectionCopy allowsNotifications];
 
-  return self & v6;
+  return self & allowsNotifications;
 }
 
-- (BOOL)priorityNotificationsDetailController:(id)a3 shouldShowSection:(id)a4
+- (BOOL)priorityNotificationsDetailController:(id)controller shouldShowSection:(id)section
 {
-  v5 = a4;
-  LOBYTE(self) = [(BulletinBoardController *)self _shouldShowSection:v5];
-  v6 = [v5 allowsNotifications];
+  sectionCopy = section;
+  LOBYTE(self) = [(BulletinBoardController *)self _shouldShowSection:sectionCopy];
+  allowsNotifications = [sectionCopy allowsNotifications];
 
-  return self & v6;
+  return self & allowsNotifications;
 }
 
-- (void)settingsGateway:(id)a3 didUpdateSectionInfo:(id)a4
+- (void)settingsGateway:(id)gateway didUpdateSectionInfo:(id)info
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_19E9C;
   v5[3] = &unk_4D0D8;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  infoCopy = info;
+  v4 = infoCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)settingsGatewayDidUpdateGlobalSettings:(id)a3
+- (void)settingsGatewayDidUpdateGlobalSettings:(id)settings
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1567,7 +1567,7 @@ LABEL_30:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1580,50 +1580,50 @@ LABEL_30:
 - (void)emitNavigationEventForRootController
 {
   v3 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
-  v9 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
-  if (v9)
+  if (bundleURL)
   {
     v4 = [NSURL URLWithString:kNotificationSettingsDeepLinkURLString];
     v5 = [_NSLocalizedStringResource alloc];
     v6 = kNotificationsSettingsLocalizedStringsTable;
     v7 = +[NSLocale currentLocale];
-    v8 = [v5 initWithKey:@"TITLE" table:v6 locale:v7 bundleURL:v9];
+    v8 = [v5 initWithKey:@"TITLE" table:v6 locale:v7 bundleURL:bundleURL];
 
     [(BulletinBoardController *)self pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:kNotificationsSettingsGraphicIcon title:v8 localizedNavigationComponents:&__NSArray0__struct deepLink:v4];
   }
 }
 
-+ (void)emitNavigationEventForSpecifier:(id)a3 viewController:(id)a4
++ (void)emitNavigationEventForSpecifier:(id)specifier viewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  specifierCopy = specifier;
+  controllerCopy = controller;
   v7 = objc_opt_class();
   if ([v7 isSubclassOfClass:objc_opt_class()])
   {
-    v8 = v6;
-    v9 = [v5 identifier];
+    v8 = controllerCopy;
+    identifier = [specifierCopy identifier];
     v10 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
-    v11 = [v10 bundleURL];
+    bundleURL = [v10 bundleURL];
 
-    if (!v9)
+    if (!identifier)
     {
       goto LABEL_11;
     }
 
-    if (!v11)
+    if (!bundleURL)
     {
       goto LABEL_11;
     }
 
-    v12 = [v5 detailControllerClass];
-    if (v12 == objc_opt_class())
+    detailControllerClass = [specifierCopy detailControllerClass];
+    if (detailControllerClass == objc_opt_class())
     {
       goto LABEL_11;
     }
 
     v13 = [NSURL URLWithString:kNotificationSettingsDeepLinkURLString];
-    v37 = [v13 URLByAppendingPathComponent:v9];
+    v37 = [v13 URLByAppendingPathComponent:identifier];
 
     v41[0] = @"SCHEDULED_DELIVERY_ID";
     v41[1] = @"SHOW_PREVIEW_GROUP_ID";
@@ -1636,11 +1636,11 @@ LABEL_30:
     v41[4] = @"SPOKEN_NOTIFICATIONS_ID";
     v42[4] = @"SPOKEN_NOTIFICATIONS";
     v38 = [NSDictionary dictionaryWithObjects:v42 forKeys:v41 count:5];
-    v14 = [v38 objectForKeyedSubscript:v9];
+    v14 = [v38 objectForKeyedSubscript:identifier];
     v15 = [_NSLocalizedStringResource alloc];
     v16 = kNotificationsSettingsLocalizedStringsTable;
     v17 = +[NSLocale currentLocale];
-    v18 = [v15 initWithKey:@"TITLE" table:v16 locale:v17 bundleURL:v11];
+    v18 = [v15 initWithKey:@"TITLE" table:v16 locale:v17 bundleURL:bundleURL];
 
     if (v14)
     {
@@ -1648,7 +1648,7 @@ LABEL_30:
       v20 = kNotificationsSettingsLocalizedStringsTable;
       v21 = +[NSLocale currentLocale];
       v36 = v14;
-      v22 = [v19 initWithKey:v14 table:v20 locale:v21 bundleURL:v11];
+      v22 = [v19 initWithKey:v14 table:v20 locale:v21 bundleURL:bundleURL];
 
       v23 = kNotificationsSettingsGraphicIcon;
       v40 = v18;
@@ -1664,7 +1664,7 @@ LABEL_30:
     else
     {
       v29 = v37;
-      if (![objc_msgSend(v5 "detailControllerClass")])
+      if (![objc_msgSend(specifierCopy "detailControllerClass")])
       {
 LABEL_10:
 
@@ -1674,10 +1674,10 @@ LABEL_11:
 
       v36 = 0;
       v35 = [_NSLocalizedStringResource alloc];
-      v31 = [v5 name];
+      name = [specifierCopy name];
       v32 = kNotificationsSettingsLocalizedStringsTable;
       v33 = +[NSLocale currentLocale];
-      v22 = [v35 initWithKey:@"APP_NAME_IN_DEFAULT_VALUE" defaultValue:v31 table:v32 locale:v33 bundleURL:v11];
+      v22 = [v35 initWithKey:@"APP_NAME_IN_DEFAULT_VALUE" defaultValue:name table:v32 locale:v33 bundleURL:bundleURL];
 
       v34 = kNotificationsSettingsGraphicIcon;
       v39 = v18;

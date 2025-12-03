@@ -1,33 +1,33 @@
 @interface CUIKUserActivityRemindersListCategory
-- (BOOL)_isMatchForRemindersList:(id)a3;
-- (CUIKUserActivityRemindersListCategory)initWithDictionary:(id)a3;
-- (CUIKUserActivityRemindersListCategory)initWithRemindersList:(id)a3 forceLocal:(BOOL)a4;
+- (BOOL)_isMatchForRemindersList:(id)list;
+- (CUIKUserActivityRemindersListCategory)initWithDictionary:(id)dictionary;
+- (CUIKUserActivityRemindersListCategory)initWithRemindersList:(id)list forceLocal:(BOOL)local;
 - (id)dictionary;
-- (id)remindersListFromStore:(id)a3;
-- (void)updateActivity:(id)a3;
+- (id)remindersListFromStore:(id)store;
+- (void)updateActivity:(id)activity;
 @end
 
 @implementation CUIKUserActivityRemindersListCategory
 
-- (CUIKUserActivityRemindersListCategory)initWithRemindersList:(id)a3 forceLocal:(BOOL)a4
+- (CUIKUserActivityRemindersListCategory)initWithRemindersList:(id)list forceLocal:(BOOL)local
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  localCopy = local;
+  listCopy = list;
+  v7 = listCopy;
+  if (localCopy)
   {
-    v8 = 0;
+    source = 0;
   }
 
   else
   {
-    v8 = [v6 source];
+    source = [listCopy source];
   }
 
   v21.receiver = self;
   v21.super_class = CUIKUserActivityRemindersListCategory;
-  v9 = [(CUIKUserActivityWithSource *)&v21 initWithSource:v8 type:1];
-  if (!v4)
+  v9 = [(CUIKUserActivityWithSource *)&v21 initWithSource:source type:1];
+  if (!localCopy)
   {
   }
 
@@ -36,21 +36,21 @@
     goto LABEL_17;
   }
 
-  v10 = [v7 title];
+  title = [v7 title];
   title = v9->_title;
-  v9->_title = v10;
+  v9->_title = title;
 
   if (v9->_title)
   {
-    v12 = [v7 unlocalizedTitle];
-    if ([v12 isEqualToString:@"DEFAULT_TASK_CALENDAR_NAME"])
+    unlocalizedTitle = [v7 unlocalizedTitle];
+    if ([unlocalizedTitle isEqualToString:@"DEFAULT_TASK_CALENDAR_NAME"])
     {
       LOBYTE(v13) = 0;
     }
 
     else
     {
-      v13 = [v12 isEqualToString:@"Reminders"] ^ 1;
+      v13 = [unlocalizedTitle isEqualToString:@"Reminders"] ^ 1;
     }
 
     v9->_predictable = v13;
@@ -59,16 +59,16 @@
     v15 = [v14 localizedStringForKey:@"Reminder List" value:&stru_1F4AA8958 table:0];
     [(CUIKUserActivity *)v9 setActivitySubtitle:v15];
 
-    v16 = [v7 source];
-    LODWORD(v15) = -[CUIKUserActivityWithSource _supportsConsistentExternalIDAcrossDevices:](v9, "_supportsConsistentExternalIDAcrossDevices:", [v16 sourceType]);
+    source2 = [v7 source];
+    LODWORD(v15) = -[CUIKUserActivityWithSource _supportsConsistentExternalIDAcrossDevices:](v9, "_supportsConsistentExternalIDAcrossDevices:", [source2 sourceType]);
 
     if (v15)
     {
-      v17 = [v7 externalID];
+      externalID = [v7 externalID];
       externalID = v9->_externalID;
-      v9->_externalID = v17;
+      v9->_externalID = externalID;
 
-      if (!v9->_externalID && !v4)
+      if (!v9->_externalID && !localCopy)
       {
 
         goto LABEL_15;
@@ -87,19 +87,19 @@ LABEL_18:
   return v19;
 }
 
-- (CUIKUserActivityRemindersListCategory)initWithDictionary:(id)a3
+- (CUIKUserActivityRemindersListCategory)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = CUIKUserActivityRemindersListCategory;
-  v5 = [(CUIKUserActivityWithSource *)&v15 initWithDictionary:v4];
+  v5 = [(CUIKUserActivityWithSource *)&v15 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_9;
   }
 
   v14 = 0;
-  v6 = [objc_opt_class() _stringFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.title" error:&v14];
+  v6 = [objc_opt_class() _stringFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.title" error:&v14];
   title = v5->_title;
   v5->_title = v6;
 
@@ -107,7 +107,7 @@ LABEL_18:
   {
     if ([(CUIKUserActivityWithSource *)v5 _supportsConsistentExternalIDAcrossDevices])
     {
-      v9 = [objc_opt_class() _stringFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.externalID" error:&v14];
+      v9 = [objc_opt_class() _stringFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.externalID" error:&v14];
       externalID = v5->_externalID;
       v5->_externalID = v9;
 
@@ -119,7 +119,7 @@ LABEL_18:
 
     else if ([(CUIKUserActivityWithSource *)v5 _isLocalSource])
     {
-      v11 = [objc_opt_class() _stringFromDictionary:v4 key:@"com.apple.calendarUIKit.userActivity.externalID" error:0];
+      v11 = [objc_opt_class() _stringFromDictionary:dictionaryCopy key:@"com.apple.calendarUIKit.userActivity.externalID" error:0];
       v12 = v5->_externalID;
       v5->_externalID = v11;
     }
@@ -142,8 +142,8 @@ LABEL_10:
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
   v10.receiver = self;
   v10.super_class = CUIKUserActivityRemindersListCategory;
-  v4 = [(CUIKUserActivityWithSource *)&v10 dictionary];
-  v5 = [v3 initWithDictionary:v4];
+  dictionary = [(CUIKUserActivityWithSource *)&v10 dictionary];
+  v5 = [v3 initWithDictionary:dictionary];
 
   title = self->_title;
   v11 = @"com.apple.calendarUIKit.userActivity.title";
@@ -160,21 +160,21 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)_isMatchForRemindersList:(id)a3
+- (BOOL)_isMatchForRemindersList:(id)list
 {
-  v4 = a3;
-  v5 = [v4 source];
-  v6 = [(CUIKUserActivityWithSource *)self isMatchForSource:v5];
+  listCopy = list;
+  source = [listCopy source];
+  v6 = [(CUIKUserActivityWithSource *)self isMatchForSource:source];
 
-  if (v6 && ([v4 title], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", self->_title), v7, v8) && (!-[CUIKUserActivityWithSource _supportsConsistentExternalIDAcrossDevices](self, "_supportsConsistentExternalIDAcrossDevices") || (objc_msgSend(v4, "externalID"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", self->_externalID), v9, v10)))
+  if (v6 && ([listCopy title], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", self->_title), v7, v8) && (!-[CUIKUserActivityWithSource _supportsConsistentExternalIDAcrossDevices](self, "_supportsConsistentExternalIDAcrossDevices") || (objc_msgSend(listCopy, "externalID"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", self->_externalID), v9, v10)))
   {
     if ([(CUIKUserActivityWithSource *)self _isLocalSource])
     {
-      v11 = [v4 source];
-      if (-[CUIKUserActivityWithSource _supportsConsistentExternalIDAcrossDevices:](self, "_supportsConsistentExternalIDAcrossDevices:", [v11 sourceType]) && -[NSString length](self->_externalID, "length"))
+      source2 = [listCopy source];
+      if (-[CUIKUserActivityWithSource _supportsConsistentExternalIDAcrossDevices:](self, "_supportsConsistentExternalIDAcrossDevices:", [source2 sourceType]) && -[NSString length](self->_externalID, "length"))
       {
-        v12 = [v4 externalID];
-        v13 = [v12 isEqualToString:self->_externalID];
+        externalID = [listCopy externalID];
+        v13 = [externalID isEqualToString:self->_externalID];
       }
 
       else
@@ -197,16 +197,16 @@ LABEL_10:
   return v13 & 1;
 }
 
-- (id)remindersListFromStore:(id)a3
+- (id)remindersListFromStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__14;
   v13 = __Block_byref_object_dispose__14;
   v14 = 0;
-  v5 = [v4 calendarsForEntityType:1];
+  v5 = [storeCopy calendarsForEntityType:1];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__CUIKUserActivityRemindersListCategory_remindersListFromStore___block_invoke;
@@ -244,13 +244,13 @@ void __64__CUIKUserActivityRemindersListCategory_remindersListFromStore___block_
   }
 }
 
-- (void)updateActivity:(id)a3
+- (void)updateActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = CUIKUserActivityRemindersListCategory;
-  v4 = a3;
-  [(CUIKUserActivity *)&v5 updateActivity:v4];
-  [v4 _setEligibleForPrediction:{self->_predictable, v5.receiver, v5.super_class}];
+  activityCopy = activity;
+  [(CUIKUserActivity *)&v5 updateActivity:activityCopy];
+  [activityCopy _setEligibleForPrediction:{self->_predictable, v5.receiver, v5.super_class}];
 }
 
 @end

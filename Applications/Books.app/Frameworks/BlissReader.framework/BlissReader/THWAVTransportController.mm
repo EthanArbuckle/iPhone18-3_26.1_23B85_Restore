@@ -1,32 +1,32 @@
 @interface THWAVTransportController
-+ (id)transportControllerLayoutsForLayouts:(id)a3;
-+ (void)createTransportControllerForLayouts:(id)a3;
++ (id)transportControllerLayoutsForLayouts:(id)layouts;
++ (void)createTransportControllerForLayouts:(id)layouts;
 - (BOOL)isCompact;
 - (BOOL)isMuted;
 - (BOOL)movieIsAtEnd;
 - (BOOL)movieIsPlaying;
-- (CGRect)frameOfHUDFor:(id)a3;
+- (CGRect)frameOfHUDFor:(id)for;
 - (THWAudioRep)audioRep;
 - (TSKDocumentRoot)documentRoot;
 - (double)currentTime;
 - (double)duration;
 - (double)onCanvasScale;
-- (id)buttonControl:(id)a3 imageForState:(int)a4 highlighted:(BOOL)a5;
-- (id)computeLayoutGeometryForTransportLayout:(id)a3;
+- (id)buttonControl:(id)control imageForState:(int)state highlighted:(BOOL)highlighted;
+- (id)computeLayoutGeometryForTransportLayout:(id)layout;
 - (id)controlLayouts;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)movieRep;
 - (id)playButtonRep;
 - (int)controlStyle;
-- (void)buttonControl:(id)a3 didUpdateLayer:(id)a4;
-- (void)buttonControlWasPressed:(id)a3;
-- (void)changeCurrentTimeTo:(double)a3;
-- (void)control:(id)a3 repWasAdded:(id)a4;
+- (void)buttonControl:(id)control didUpdateLayer:(id)layer;
+- (void)buttonControlWasPressed:(id)pressed;
+- (void)changeCurrentTimeTo:(double)to;
+- (void)control:(id)control repWasAdded:(id)added;
 - (void)createTransportUI;
 - (void)dealloc;
-- (void)durationChanged:(double)a3;
+- (void)durationChanged:(double)changed;
 - (void)exitExpanded;
-- (void)hideTransportHUDFor:(id)a3;
+- (void)hideTransportHUDFor:(id)for;
 - (void)mediaDidPlayToEnd;
 - (void)mediaWasPressed;
 - (void)mediaWillBeRemoved;
@@ -34,25 +34,25 @@
 - (void)p_cancelExitExpandedTimer;
 - (void)pause;
 - (void)play;
-- (void)rateChanged:(double)a3;
-- (void)showTransportHUDFor:(id)a3;
+- (void)rateChanged:(double)changed;
+- (void)showTransportHUDFor:(id)for;
 - (void)stop;
-- (void)timeChanged:(double)a3;
+- (void)timeChanged:(double)changed;
 - (void)toggleMute;
 - (void)togglePlayPause;
 - (void)viewScaleDidChange;
-- (void)willExitExpandedShouldPause:(BOOL)a3;
+- (void)willExitExpandedShouldPause:(BOOL)pause;
 @end
 
 @implementation THWAVTransportController
 
-+ (void)createTransportControllerForLayouts:(id)a3
++ (void)createTransportControllerForLayouts:(id)layouts
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [layouts countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -64,7 +64,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(layouts);
         }
 
         objc_opt_class();
@@ -84,21 +84,21 @@
       }
 
       while (v5 != v7);
-      v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [layouts countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 }
 
-+ (id)transportControllerLayoutsForLayouts:(id)a3
++ (id)transportControllerLayoutsForLayouts:(id)layouts
 {
   v4 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [layouts countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -110,7 +110,7 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(layouts);
         }
 
         objc_opt_class();
@@ -158,7 +158,7 @@
       }
 
       while (v6 != v8);
-      v16 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v16 = [layouts countByEnumeratingWithState:&v18 objects:v22 count:16];
       v6 = v16;
     }
 
@@ -206,30 +206,30 @@
   return result;
 }
 
-- (void)showTransportHUDFor:(id)a3
+- (void)showTransportHUDFor:(id)for
 {
   objc_opt_class();
   [objc_msgSend(-[THWAVTransportLayout layoutController](-[THWAVTransportController transportLayout](self "transportLayout")];
   -[THWAVTransportController setCurrentHudHost:](self, "setCurrentHudHost:", [objc_msgSend(objc_msgSend(TSUDynamicCast() "layerHost")]);
-  v5 = [(THWAVTransportController *)self currentHudHost];
+  currentHudHost = [(THWAVTransportController *)self currentHudHost];
 
-  [(THHUDHosting *)v5 showHUDForVendor:a3];
+  [(THHUDHosting *)currentHudHost showHUDForVendor:for];
 }
 
-- (void)hideTransportHUDFor:(id)a3
+- (void)hideTransportHUDFor:(id)for
 {
-  v4 = [(THWAVTransportController *)self currentHudHost];
+  currentHudHost = [(THWAVTransportController *)self currentHudHost];
 
-  [(THHUDHosting *)v4 hideHUDForVendor:a3];
+  [(THHUDHosting *)currentHudHost hideHUDForVendor:for];
 }
 
-- (CGRect)frameOfHUDFor:(id)a3
+- (CGRect)frameOfHUDFor:(id)for
 {
   objc_opt_class();
   [objc_msgSend(-[THWAVTransportLayout layoutController](-[THWAVTransportController transportLayout](self "transportLayout")];
   v5 = [objc_msgSend(objc_msgSend(TSUDynamicCast() "layerHost")];
 
-  [v5 frameForHUDFromVendor:a3];
+  [v5 frameForHUDFromVendor:for];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -239,13 +239,13 @@
 
 - (void)viewScaleDidChange
 {
-  v3 = [(THWAVTransportController *)self isCompact];
-  if (v3 != [(THWAVTransportController *)self isCurrentlyCompact])
+  isCompact = [(THWAVTransportController *)self isCompact];
+  if (isCompact != [(THWAVTransportController *)self isCurrentlyCompact])
   {
-    [(THWAVTransportController *)self setIsCurrentlyCompact:v3];
-    v4 = [(THWAVTransportController *)self transportUI];
+    [(THWAVTransportController *)self setIsCurrentlyCompact:isCompact];
+    transportUI = [(THWAVTransportController *)self transportUI];
 
-    [(THWAVTransportUI *)v4 compactnessChanged];
+    [(THWAVTransportUI *)transportUI compactnessChanged];
   }
 }
 
@@ -265,9 +265,9 @@
   return v3;
 }
 
-- (void)control:(id)a3 repWasAdded:(id)a4
+- (void)control:(id)control repWasAdded:(id)added
 {
-  if (![a3 tag])
+  if (![control tag])
   {
     objc_opt_class();
     v5 = TSUDynamicCast();
@@ -327,15 +327,15 @@
   result = [(THWAVTransportController *)self audioRep];
   if (result)
   {
-    v4 = [(THWAudioRep *)[(THWAVTransportController *)self audioRep] interactiveCanvasController];
+    interactiveCanvasController = [(THWAudioRep *)[(THWAVTransportController *)self audioRep] interactiveCanvasController];
 
-    return [v4 documentRoot];
+    return [interactiveCanvasController documentRoot];
   }
 
   return result;
 }
 
-- (id)computeLayoutGeometryForTransportLayout:(id)a3
+- (id)computeLayoutGeometryForTransportLayout:(id)layout
 {
   [(THWMovieLayout *)[(THWAVTransportController *)self movieLayout] validate];
   [-[THWMovieLayout geometry](-[THWAVTransportController movieLayout](self "movieLayout")];
@@ -345,7 +345,7 @@
   return v8;
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   v4 = TSUProtocolCast();
   if (!v4 || [v4 tag])
@@ -376,23 +376,23 @@
   return v15;
 }
 
-- (id)buttonControl:(id)a3 imageForState:(int)a4 highlighted:(BOOL)a5
+- (id)buttonControl:(id)control imageForState:(int)state highlighted:(BOOL)highlighted
 {
-  v5 = a5;
+  highlightedCopy = highlighted;
   v7 = THBundle();
   v8 = @"ib_media_btn_small_pause-N";
-  if (v5)
+  if (highlightedCopy)
   {
     v8 = @"ib_media_btn_small_pause-P";
   }
 
   v9 = @"ib_media_movie_play-N";
-  if (v5)
+  if (highlightedCopy)
   {
     v9 = @"ib_media_movie_play-P";
   }
 
-  if (a4)
+  if (state)
   {
     v10 = v8;
   }
@@ -405,12 +405,12 @@
   return [TSUImage imageNamed:v10 inBundle:v7];
 }
 
-- (void)buttonControlWasPressed:(id)a3
+- (void)buttonControlWasPressed:(id)pressed
 {
-  v5 = [a3 layout];
-  if (![v5 tag])
+  layout = [pressed layout];
+  if (![layout tag])
   {
-    if ([a3 state])
+    if ([pressed state])
     {
       [(THWAVTransportController *)self pause];
     }
@@ -422,44 +422,44 @@
       [(THWAVTransportController *)self durationChanged:?];
     }
 
-    [v5 invalidateFrame];
-    v6 = [(THWAVTransportController *)self movieLayout];
+    [layout invalidateFrame];
+    movieLayout = [(THWAVTransportController *)self movieLayout];
 
-    [(THWMovieLayout *)v6 invalidate];
+    [(THWMovieLayout *)movieLayout invalidate];
   }
 }
 
-- (void)buttonControl:(id)a3 didUpdateLayer:(id)a4
+- (void)buttonControl:(id)control didUpdateLayer:(id)layer
 {
-  [a4 setMinificationFilter:kCAFilterTrilinear];
+  [layer setMinificationFilter:kCAFilterTrilinear];
 
-  [a4 setMagnificationFilter:kCAFilterTrilinear];
+  [layer setMagnificationFilter:kCAFilterTrilinear];
 }
 
-- (void)timeChanged:(double)a3
+- (void)timeChanged:(double)changed
 {
-  v4 = [(THWAVTransportController *)self transportUI];
+  transportUI = [(THWAVTransportController *)self transportUI];
 
-  [(THWAVTransportUI *)v4 timeChanged:a3];
+  [(THWAVTransportUI *)transportUI timeChanged:changed];
 }
 
-- (void)durationChanged:(double)a3
+- (void)durationChanged:(double)changed
 {
-  v4 = [(THWAVTransportController *)self transportUI];
+  transportUI = [(THWAVTransportController *)self transportUI];
 
-  [(THWAVTransportUI *)v4 durationChanged:a3];
+  [(THWAVTransportUI *)transportUI durationChanged:changed];
 }
 
-- (void)rateChanged:(double)a3
+- (void)rateChanged:(double)changed
 {
   [(THWAVTransportController *)self configurePlayButtonForRate:?];
-  [(THWAVTransportUI *)[(THWAVTransportController *)self transportUI] rateChanged:a3];
+  [(THWAVTransportUI *)[(THWAVTransportController *)self transportUI] rateChanged:changed];
   if ([(THWAVTransportController *)self isStopped])
   {
     [(THWButtonControlLayout *)[(THWAVTransportController *)self playButtonLayout] invalidateFrame];
   }
 
-  if (a3 == 0.0 && [(THWAVTransportController *)self movieIsAtEnd])
+  if (changed == 0.0 && [(THWAVTransportController *)self movieIsAtEnd])
   {
 
     [(THWAVTransportController *)self moviePlayedToEnd];
@@ -468,9 +468,9 @@
 
 - (void)mediaDidPlayToEnd
 {
-  v2 = [(THWAVTransportController *)self transportUI];
+  transportUI = [(THWAVTransportController *)self transportUI];
 
-  [(THWAVTransportUI *)v2 mediaDidPlayToEnd];
+  [(THWAVTransportUI *)transportUI mediaDidPlayToEnd];
 }
 
 - (void)mediaWillBeRemoved
@@ -491,14 +491,14 @@
   _os_activity_initiate(&dword_0, "Media Pressed", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)willExitExpandedShouldPause:(BOOL)a3
+- (void)willExitExpandedShouldPause:(BOOL)pause
 {
-  v3 = a3;
+  pauseCopy = pause;
   [(THWAVTransportController *)self p_cancelExitExpandedTimer];
   [objc_msgSend(-[THWMovieLayout info](-[THWAVTransportController movieLayout](self "movieLayout")];
   if ([(THWAVTransportUI *)[(THWAVTransportController *)self transportUI] shouldPlayOnMainCanvasWithSize:v5])
   {
-    if (v3)
+    if (pauseCopy)
     {
 
       [(THWAVTransportController *)self pause];
@@ -544,47 +544,47 @@
     return 0.0;
   }
 
-  v3 = [(THWAVTransportController *)self audioRep];
+  audioRep = [(THWAVTransportController *)self audioRep];
 
-  [(THWAudioRep *)v3 currentTime];
+  [(THWAudioRep *)audioRep currentTime];
   return result;
 }
 
 - (BOOL)movieIsPlaying
 {
-  v3 = [(THWAVTransportController *)self audioRep];
-  if (v3)
+  audioRep = [(THWAVTransportController *)self audioRep];
+  if (audioRep)
   {
-    v4 = [(THWAVTransportController *)self audioRep];
+    audioRep2 = [(THWAVTransportController *)self audioRep];
 
-    LOBYTE(v3) = [(THWAudioRep *)v4 isPlaying];
+    LOBYTE(audioRep) = [(THWAudioRep *)audioRep2 isPlaying];
   }
 
-  return v3;
+  return audioRep;
 }
 
 - (void)toggleMute
 {
-  v3 = [(THWAVTransportController *)self isMuted];
+  isMuted = [(THWAVTransportController *)self isMuted];
   if ([(THWAVTransportController *)self audioRep])
   {
-    v4 = [(THWAVTransportController *)self audioRep];
+    audioRep = [(THWAVTransportController *)self audioRep];
 
-    [(THWAudioRep *)v4 setMuted:v3 ^ 1];
+    [(THWAudioRep *)audioRep setMuted:isMuted ^ 1];
   }
 }
 
 - (BOOL)isMuted
 {
-  v3 = [(THWAVTransportController *)self audioRep];
-  if (v3)
+  audioRep = [(THWAVTransportController *)self audioRep];
+  if (audioRep)
   {
-    v4 = [(THWAVTransportController *)self audioRep];
+    audioRep2 = [(THWAVTransportController *)self audioRep];
 
-    LOBYTE(v3) = [(THWAudioRep *)v4 isMuted];
+    LOBYTE(audioRep) = [(THWAudioRep *)audioRep2 isMuted];
   }
 
-  return v3;
+  return audioRep;
 }
 
 - (void)play
@@ -648,13 +648,13 @@
   _os_activity_initiate(&dword_0, "Toggle Play Pause", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)changeCurrentTimeTo:(double)a3
+- (void)changeCurrentTimeTo:(double)to
 {
   if ([(THWAVTransportController *)self audioRep])
   {
-    v5 = [(THWAVTransportController *)self audioRep];
+    audioRep = [(THWAVTransportController *)self audioRep];
 
-    [(THWAudioRep *)v5 changeCurrentTimeTo:a3];
+    [(THWAudioRep *)audioRep changeCurrentTimeTo:to];
   }
 }
 
@@ -678,9 +678,9 @@
 
 - (int)controlStyle
 {
-  v2 = [(THWMovieLayout *)[(THWAVTransportController *)self movieLayout] movieInfo];
+  movieInfo = [(THWMovieLayout *)[(THWAVTransportController *)self movieLayout] movieInfo];
 
-  return [v2 controlStyle];
+  return [movieInfo controlStyle];
 }
 
 - (void)p_cancelExitExpandedTimer

@@ -1,6 +1,6 @@
 @interface MTRCameraAVStreamManagementClusterAudioStreamStruct
 - (MTRCameraAVStreamManagementClusterAudioStreamStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -42,32 +42,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVStreamManagementClusterAudioStreamStruct);
-  v5 = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self audioStreamID];
-  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setAudioStreamID:v5];
+  audioStreamID = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self audioStreamID];
+  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setAudioStreamID:audioStreamID];
 
-  v6 = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self streamUsage];
-  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setStreamUsage:v6];
+  streamUsage = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self streamUsage];
+  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setStreamUsage:streamUsage];
 
-  v7 = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self audioCodec];
-  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setAudioCodec:v7];
+  audioCodec = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self audioCodec];
+  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setAudioCodec:audioCodec];
 
-  v8 = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self channelCount];
-  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setChannelCount:v8];
+  channelCount = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self channelCount];
+  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setChannelCount:channelCount];
 
-  v9 = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self sampleRate];
-  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setSampleRate:v9];
+  sampleRate = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self sampleRate];
+  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setSampleRate:sampleRate];
 
-  v10 = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self bitRate];
-  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setBitRate:v10];
+  bitRate = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self bitRate];
+  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setBitRate:bitRate];
 
-  v11 = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self bitDepth];
-  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setBitDepth:v11];
+  bitDepth = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self bitDepth];
+  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setBitDepth:bitDepth];
 
-  v12 = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self referenceCount];
-  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setReferenceCount:v12];
+  referenceCount = [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)self referenceCount];
+  [(MTRCameraAVStreamManagementClusterAudioStreamStruct *)v4 setReferenceCount:referenceCount];
 
   return v4;
 }

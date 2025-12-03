@@ -1,9 +1,9 @@
 @interface BRShareCopyLinkActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)_activitySettingsImage;
 - (id)activityTitle;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation BRShareCopyLinkActivity
@@ -18,20 +18,20 @@
 
 - (id)_activitySettingsImage
 {
-  v2 = [(BRShareCopyLinkActivity *)self activitySettingsImage];
-  v3 = [v2 _applicationIconImageForFormat:0 precomposed:0];
+  activitySettingsImage = [(BRShareCopyLinkActivity *)self activitySettingsImage];
+  v3 = [activitySettingsImage _applicationIconImageForFormat:0 precomposed:0];
 
   return v3;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  itemsCopy = items;
+  v4 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -41,7 +41,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -53,7 +53,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -68,14 +68,14 @@ LABEL_11:
   return v4;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  itemsCopy = items;
+  v5 = [itemsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -86,7 +86,7 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -98,7 +98,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;

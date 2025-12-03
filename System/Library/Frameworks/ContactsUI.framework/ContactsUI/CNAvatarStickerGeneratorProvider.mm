@@ -1,6 +1,6 @@
 @interface CNAvatarStickerGeneratorProvider
 - (AVTStickerGenerator)generator;
-- (CNAvatarStickerGeneratorProvider)initWithAvatarRecord:(id)a3;
+- (CNAvatarStickerGeneratorProvider)initWithAvatarRecord:(id)record;
 @end
 
 @implementation CNAvatarStickerGeneratorProvider
@@ -28,8 +28,8 @@
 
     v5 = v4;
     _Block_object_dispose(&v18, 8);
-    v6 = [(CNAvatarStickerGeneratorProvider *)self avatarRecord];
-    v7 = [v4 avatarForRecord:v6];
+    avatarRecord = [(CNAvatarStickerGeneratorProvider *)self avatarRecord];
+    v7 = [v4 avatarForRecord:avatarRecord];
 
     v18 = 0;
     v19 = &v18;
@@ -59,16 +59,16 @@
   return generator;
 }
 
-- (CNAvatarStickerGeneratorProvider)initWithAvatarRecord:(id)a3
+- (CNAvatarStickerGeneratorProvider)initWithAvatarRecord:(id)record
 {
-  v5 = a3;
+  recordCopy = record;
   v10.receiver = self;
   v10.super_class = CNAvatarStickerGeneratorProvider;
   v6 = [(CNAvatarStickerGeneratorProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_avatarRecord, a3);
+    objc_storeStrong(&v6->_avatarRecord, record);
     v8 = v7;
   }
 

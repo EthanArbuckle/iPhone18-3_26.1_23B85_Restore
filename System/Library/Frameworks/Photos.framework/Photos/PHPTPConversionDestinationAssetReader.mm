@@ -1,6 +1,6 @@
 @interface PHPTPConversionDestinationAssetReader
-- (PHPTPConversionDestinationAssetReader)initWithDestination:(id)a3;
-- (id)dataSourcePathForDataRange:(_NSRange)a3 error:(id *)a4;
+- (PHPTPConversionDestinationAssetReader)initWithDestination:(id)destination;
+- (id)dataSourcePathForDataRange:(_NSRange)range error:(id *)error;
 - (id)path;
 @end
 
@@ -8,32 +8,32 @@
 
 - (id)path
 {
-  v4 = [(PHPTPConversionDestinationAssetReader *)self destination];
-  v5 = [v4 usesSinglePassVideoConversion];
+  destination = [(PHPTPConversionDestinationAssetReader *)self destination];
+  usesSinglePassVideoConversion = [destination usesSinglePassVideoConversion];
 
-  if (v5)
+  if (usesSinglePassVideoConversion)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = NSStringFromSelector(a2);
-    [v10 handleFailureInMethod:a2 object:self file:@"PHPTPFormatConversionManager.m" lineNumber:78 description:{@"Call to method %@ is incompatible with a wrapped single pass video conversion destination", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPTPFormatConversionManager.m" lineNumber:78 description:{@"Call to method %@ is incompatible with a wrapped single pass video conversion destination", v11}];
   }
 
-  v6 = [(PHPTPConversionDestinationAssetReader *)self destination];
-  v7 = [v6 fileURL];
-  v8 = [v7 path];
+  destination2 = [(PHPTPConversionDestinationAssetReader *)self destination];
+  fileURL = [destination2 fileURL];
+  path = [fileURL path];
 
-  return v8;
+  return path;
 }
 
-- (id)dataSourcePathForDataRange:(_NSRange)a3 error:(id *)a4
+- (id)dataSourcePathForDataRange:(_NSRange)range error:(id *)error
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   *&v28[13] = *MEMORY[0x1E69E9840];
-  v8 = [(PHPTPConversionDestinationAssetReader *)self destination];
-  v9 = [v8 usesSinglePassVideoConversion];
+  destination = [(PHPTPConversionDestinationAssetReader *)self destination];
+  usesSinglePassVideoConversion = [destination usesSinglePassVideoConversion];
 
-  if (!v9)
+  if (!usesSinglePassVideoConversion)
   {
     goto LABEL_8;
   }
@@ -52,10 +52,10 @@
   }
 
   v12 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-  v13 = [(PHPTPConversionDestinationAssetReader *)self destination];
+  destination2 = [(PHPTPConversionDestinationAssetReader *)self destination];
   v24 = 0;
-  v14 = [v13 waitForAvailabilityOfRange:location timeout:length error:{dispatch_time(0, 10000000000), &v24}];
-  v15 = v24;
+  v14 = [destination2 waitForAvailabilityOfRange:location timeout:length error:{dispatch_time(0, 10000000000), &v24}];
+  destination3 = v24;
 
   v16 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
   v17 = PLPTPGetLog();
@@ -77,9 +77,9 @@
   {
 
 LABEL_8:
-    v15 = [(PHPTPConversionDestinationAssetReader *)self destination];
-    v19 = [v15 fileURL];
-    v20 = [v19 path];
+    destination3 = [(PHPTPConversionDestinationAssetReader *)self destination];
+    fileURL = [destination3 fileURL];
+    path = [fileURL path];
 
     goto LABEL_9;
   }
@@ -88,37 +88,37 @@ LABEL_8:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v26 = v15;
+    v26 = destination3;
     _os_log_impl(&dword_19C86F000, v22, OS_LOG_TYPE_ERROR, "Wait for data availability failed %@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
-    v23 = v15;
-    v20 = 0;
-    *a4 = v15;
+    v23 = destination3;
+    path = 0;
+    *error = destination3;
   }
 
   else
   {
-    v20 = 0;
+    path = 0;
   }
 
 LABEL_9:
 
-  return v20;
+  return path;
 }
 
-- (PHPTPConversionDestinationAssetReader)initWithDestination:(id)a3
+- (PHPTPConversionDestinationAssetReader)initWithDestination:(id)destination
 {
-  v6 = a3;
-  v7 = [v6 fileURL];
-  v8 = [v7 path];
+  destinationCopy = destination;
+  fileURL = [destinationCopy fileURL];
+  path = [fileURL path];
 
-  if (!v8)
+  if (!path)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PHPTPFormatConversionManager.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHPTPFormatConversionManager.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"path"}];
 
     if (!self)
     {
@@ -131,7 +131,7 @@ LABEL_9:
   if (self)
   {
 LABEL_3:
-    objc_storeStrong(&self->_destination, a3);
+    objc_storeStrong(&self->_destination, destination);
   }
 
 LABEL_4:

@@ -1,10 +1,10 @@
 @interface SymptomsTrialManager
-- (SymptomsTrialManager)initWithTrialProjectID:(int)a3 namespaceName:(id)a4 factorName:(id)a5 queue:(id)a6;
-- (id)readParametersFromPlist:(id)a3;
-- (void)addDelegate:(id)a3;
+- (SymptomsTrialManager)initWithTrialProjectID:(int)d namespaceName:(id)name factorName:(id)factorName queue:(id)queue;
+- (id)readParametersFromPlist:(id)plist;
+- (void)addDelegate:(id)delegate;
 - (void)notifyRegisteredClientsForExperimentEnd;
-- (void)notifyRegisteredClientsForExperimentStart:(id)a3 trialExperimentIdentifiers:(id)a4;
-- (void)removeDelegate:(id)a3;
+- (void)notifyRegisteredClientsForExperimentStart:(id)start trialExperimentIdentifiers:(id)identifiers;
+- (void)removeDelegate:(id)delegate;
 - (void)subscribeToTrialUpdates;
 - (void)unsubscribeFromTrialUpdates;
 - (void)updateTreatment;
@@ -12,21 +12,21 @@
 
 @implementation SymptomsTrialManager
 
-- (SymptomsTrialManager)initWithTrialProjectID:(int)a3 namespaceName:(id)a4 factorName:(id)a5 queue:(id)a6
+- (SymptomsTrialManager)initWithTrialProjectID:(int)d namespaceName:(id)name factorName:(id)factorName queue:(id)queue
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  factorNameCopy = factorName;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = SymptomsTrialManager;
   v14 = [(SymptomsTrialManager *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    v14->_trialProjectID = a3;
-    objc_storeStrong(&v14->_trialNamespaceName, a4);
-    objc_storeStrong(&v15->_trialFactorName, a5);
-    objc_storeStrong(&v15->_queue, a6);
+    v14->_trialProjectID = d;
+    objc_storeStrong(&v14->_trialNamespaceName, name);
+    objc_storeStrong(&v15->_trialFactorName, factorName);
+    objc_storeStrong(&v15->_queue, queue);
     v16 = [MEMORY[0x277D73660] clientWithIdentifier:v15->_trialProjectID];
     trialClient = v15->_trialClient;
     v15->_trialClient = v16;
@@ -39,14 +39,14 @@
   return v15;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  if (v5)
+  if (delegateCopy)
   {
-    [(NSMutableSet *)self->_delegates addObject:v5];
+    [(NSMutableSet *)self->_delegates addObject:delegateCopy];
     if ([(NSMutableSet *)self->_delegates count]== 1)
     {
       [(SymptomsTrialManager *)self subscribeToTrialUpdates];
@@ -56,14 +56,14 @@
   objc_sync_exit(v4);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  if (v5)
+  if (delegateCopy)
   {
-    [(NSMutableSet *)self->_delegates removeObject:v5];
+    [(NSMutableSet *)self->_delegates removeObject:delegateCopy];
     if (![(NSMutableSet *)self->_delegates count])
     {
       [(SymptomsTrialManager *)self unsubscribeFromTrialUpdates];
@@ -231,25 +231,25 @@ void __47__SymptomsTrialManager_subscribeToTrialUpdates__block_invoke_3(uint64_t
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 fileValue];
-      if (v9)
+      fileValue = [v7 fileValue];
+      if (fileValue)
       {
-        v10 = v9;
-        v11 = [v8 fileValue];
-        v12 = [v11 path];
-        if (v12)
+        v10 = fileValue;
+        fileValue2 = [v8 fileValue];
+        path = [fileValue2 path];
+        if (path)
         {
-          v13 = v12;
-          v14 = [v8 fileValue];
-          v15 = [v14 path];
-          v16 = [v15 length];
+          v13 = path;
+          fileValue3 = [v8 fileValue];
+          path2 = [fileValue3 path];
+          v16 = [path2 length];
 
           if (v16)
           {
             v17 = MEMORY[0x277CBEBC0];
-            v18 = [v8 fileValue];
-            v19 = [v18 path];
-            v20 = [v17 fileURLWithPath:v19];
+            fileValue4 = [v8 fileValue];
+            path3 = [fileValue4 path];
+            v20 = [v17 fileURLWithPath:path3];
 
             v21 = otherLogHandle;
             if (v20)
@@ -264,8 +264,8 @@ void __47__SymptomsTrialManager_subscribeToTrialUpdates__block_invoke_3(uint64_t
                 _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEFAULT, "updateTreatment:%@ Valid Bundle Path (%@)", v36, 0x16u);
               }
 
-              v23 = [(SymptomsTrialManager *)self readParametersFromPlist:v20];
-              [(SymptomsTrialManager *)self notifyRegisteredClientsForExperimentStart:v23 trialExperimentIdentifiers:v3];
+              fileValue5 = [(SymptomsTrialManager *)self readParametersFromPlist:v20];
+              [(SymptomsTrialManager *)self notifyRegisteredClientsForExperimentStart:fileValue5 trialExperimentIdentifiers:v3];
             }
 
             else
@@ -279,12 +279,12 @@ LABEL_27:
 
               v33 = self->_trialNamespaceName;
               v34 = v21;
-              v23 = [v8 fileValue];
-              v35 = [v23 path];
+              fileValue5 = [v8 fileValue];
+              path4 = [fileValue5 path];
               *v36 = 138412546;
               *&v36[4] = v33;
               *&v36[12] = 2112;
-              *&v36[14] = v35;
+              *&v36[14] = path4;
               _os_log_impl(&dword_23255B000, v34, OS_LOG_TYPE_ERROR, "updateTreatment:%@ Invalid Bundle Path (%@)", v36, 0x16u);
             }
 
@@ -346,12 +346,12 @@ LABEL_23:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readParametersFromPlist:(id)a3
+- (id)readParametersFromPlist:(id)plist
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  plistCopy = plist;
   v12 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:v3 error:&v12];
+  v4 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:plistCopy error:&v12];
   v5 = v12;
   v6 = [v4 count];
   v7 = otherLogHandle;
@@ -382,7 +382,7 @@ LABEL_23:
     if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v14 = v3;
+      v14 = plistCopy;
       _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_ERROR, "unable to read contents of trialBundlePathURL: %@", buf, 0xCu);
     }
 
@@ -394,11 +394,11 @@ LABEL_23:
   return v9;
 }
 
-- (void)notifyRegisteredClientsForExperimentStart:(id)a3 trialExperimentIdentifiers:(id)a4
+- (void)notifyRegisteredClientsForExperimentStart:(id)start trialExperimentIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v16 = a4;
+  startCopy = start;
+  identifiersCopy = identifiers;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -425,8 +425,8 @@ LABEL_23:
           trialProjectID = self->_trialProjectID;
           trialNamespaceName = self->_trialNamespaceName;
           trialFactorName = self->_trialFactorName;
-          v14 = [v16 treatmentId];
-          [v10 trialExperimentWithProjectIDHasBegun:trialProjectID namespaceName:trialNamespaceName factorName:trialFactorName treatmentID:v14 trialConfiguration:v17];
+          treatmentId = [identifiersCopy treatmentId];
+          [v10 trialExperimentWithProjectIDHasBegun:trialProjectID namespaceName:trialNamespaceName factorName:trialFactorName treatmentID:treatmentId trialConfiguration:startCopy];
         }
 
         ++v9;

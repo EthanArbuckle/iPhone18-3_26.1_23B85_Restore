@@ -1,15 +1,15 @@
 @interface PGGraphLocationContinentEdge
 + (id)filter;
-- (id)initFromLocationNode:(id)a3 toContinentNode:(id)a4;
+- (id)initFromLocationNode:(id)node toContinentNode:(id)continentNode;
 @end
 
 @implementation PGGraphLocationContinentEdge
 
-- (id)initFromLocationNode:(id)a3 toContinentNode:(id)a4
+- (id)initFromLocationNode:(id)node toContinentNode:(id)continentNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphLocationContinentEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:continentNode];
 }
 
 + (id)filter

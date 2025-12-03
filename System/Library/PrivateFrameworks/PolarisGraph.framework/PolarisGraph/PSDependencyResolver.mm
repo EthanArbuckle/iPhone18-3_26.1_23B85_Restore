@@ -1,17 +1,17 @@
 @interface PSDependencyResolver
-- (PSDependencyResolver)initWithVertices:(id)a3 withParentToEdgeFetcher:(id)a4 withChildToEdgeFetcher:(id)a5;
+- (PSDependencyResolver)initWithVertices:(id)vertices withParentToEdgeFetcher:(id)fetcher withChildToEdgeFetcher:(id)edgeFetcher;
 - (void)dealloc;
-- (void)resolveWithBlock:(id)a3;
+- (void)resolveWithBlock:(id)block;
 @end
 
 @implementation PSDependencyResolver
 
-- (PSDependencyResolver)initWithVertices:(id)a3 withParentToEdgeFetcher:(id)a4 withChildToEdgeFetcher:(id)a5
+- (PSDependencyResolver)initWithVertices:(id)vertices withParentToEdgeFetcher:(id)fetcher withChildToEdgeFetcher:(id)edgeFetcher
 {
   v129 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v86 = a4;
-  v85 = a5;
+  verticesCopy = vertices;
+  fetcherCopy = fetcher;
+  edgeFetcherCopy = edgeFetcher;
   v121.receiver = self;
   v121.super_class = PSDependencyResolver;
   v9 = [(PSDependencyResolver *)&v121 init];
@@ -25,8 +25,8 @@
     v118 = 0u;
     v119 = 0u;
     v120 = 0u;
-    v76 = v8;
-    obj = v8;
+    v76 = verticesCopy;
+    obj = verticesCopy;
     v94 = [obj countByEnumeratingWithState:&v117 objects:v128 count:16];
     if (v94)
     {
@@ -45,7 +45,7 @@
           v116 = 0u;
           v113 = 0u;
           v114 = 0u;
-          v14 = v86[2](v86, v13);
+          v14 = fetcherCopy[2](fetcherCopy, v13);
           v15 = [v14 countByEnumeratingWithState:&v113 objects:v127 count:16];
           if (v15)
           {
@@ -83,7 +83,7 @@
           v112 = 0u;
           v109 = 0u;
           v110 = 0u;
-          v23 = v85[2](v85, v13);
+          v23 = edgeFetcherCopy[2](edgeFetcherCopy, v13);
           v24 = [v23 countByEnumeratingWithState:&v109 objects:v126 count:16];
           if (v24)
           {
@@ -132,9 +132,9 @@
 
     v10 = v90;
     v90->graph = v32;
-    v33 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     parentToSink = v90->parentToSink;
-    v90->parentToSink = v33;
+    v90->parentToSink = strongToStrongObjectsMapTable;
 
     v107 = 0u;
     v108 = 0u;
@@ -437,18 +437,18 @@ LABEL_83:
       while (v78);
     }
 
-    v8 = v76;
+    verticesCopy = v76;
   }
 
   v74 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (void)resolveWithBlock:(id)a3
+- (void)resolveWithBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v16 = self;
+  blockCopy = block;
+  selfCopy = self;
   graph = self->graph;
   var1 = graph->var1;
   if (var1)
@@ -462,7 +462,7 @@ LABEL_83:
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v10 = [(NSMapTable *)v16->parentToSink objectForKey:v9];
+      v10 = [(NSMapTable *)selfCopy->parentToSink objectForKey:v9];
       v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v11)
       {
@@ -478,7 +478,7 @@ LABEL_83:
               objc_enumerationMutation(v10);
             }
 
-            v4[2](v4, v9, *(*(&v17 + 1) + 8 * v14++));
+            blockCopy[2](blockCopy, v9, *(*(&v17 + 1) + 8 * v14++));
           }
 
           while (v12 != v14);

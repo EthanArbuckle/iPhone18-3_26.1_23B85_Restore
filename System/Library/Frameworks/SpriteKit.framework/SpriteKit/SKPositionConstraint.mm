@@ -1,97 +1,97 @@
 @interface SKPositionConstraint
-+ (id)constraintWithXRange:(id)a3;
-+ (id)constraintWithXRange:(id)a3 YRange:(id)a4;
-+ (id)constraintWithYRange:(id)a3;
-- (BOOL)isEqualToPositionConstraint:(id)a3;
-- (SKPositionConstraint)initWithCoder:(id)a3;
-- (SKPositionConstraint)initWithXRange:(id)a3 YRange:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)constraintWithXRange:(id)range;
++ (id)constraintWithXRange:(id)range YRange:(id)yRange;
++ (id)constraintWithYRange:(id)range;
+- (BOOL)isEqualToPositionConstraint:(id)constraint;
+- (SKPositionConstraint)initWithCoder:(id)coder;
+- (SKPositionConstraint)initWithXRange:(id)range YRange:(id)yRange;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKPositionConstraint
 
-- (SKPositionConstraint)initWithXRange:(id)a3 YRange:(id)a4
+- (SKPositionConstraint)initWithXRange:(id)range YRange:(id)yRange
 {
-  v6 = a3;
-  v7 = a4;
+  rangeCopy = range;
+  yRangeCopy = yRange;
   v11.receiver = self;
   v11.super_class = SKPositionConstraint;
   v8 = [(SKConstraint *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(SKPositionConstraint *)v8 setXRange:v6];
-    [(SKPositionConstraint *)v9 setYRange:v7];
+    [(SKPositionConstraint *)v8 setXRange:rangeCopy];
+    [(SKPositionConstraint *)v9 setYRange:yRangeCopy];
   }
 
   return v9;
 }
 
-- (SKPositionConstraint)initWithCoder:(id)a3
+- (SKPositionConstraint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SKPositionConstraint;
-  v5 = [(SKConstraint *)&v9 initWithCoder:v4];
+  v5 = [(SKConstraint *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_xRange"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_xRange"];
     [(SKPositionConstraint *)v5 setXRange:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_yRange"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_yRange"];
     [(SKPositionConstraint *)v5 setYRange:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SKPositionConstraint;
-  [(SKConstraint *)&v7 encodeWithCoder:v4];
-  v5 = [(SKPositionConstraint *)self xRange];
-  [v4 encodeObject:v5 forKey:@"_xRange"];
+  [(SKConstraint *)&v7 encodeWithCoder:coderCopy];
+  xRange = [(SKPositionConstraint *)self xRange];
+  [coderCopy encodeObject:xRange forKey:@"_xRange"];
 
-  v6 = [(SKPositionConstraint *)self yRange];
-  [v4 encodeObject:v6 forKey:@"_yRange"];
+  yRange = [(SKPositionConstraint *)self yRange];
+  [coderCopy encodeObject:yRange forKey:@"_yRange"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SKPositionConstraint;
-  v4 = [(SKConstraint *)&v8 copyWithZone:a3];
-  v5 = [(SKPositionConstraint *)self xRange];
-  [v4 setXRange:v5];
+  v4 = [(SKConstraint *)&v8 copyWithZone:zone];
+  xRange = [(SKPositionConstraint *)self xRange];
+  [v4 setXRange:xRange];
 
-  v6 = [(SKPositionConstraint *)self yRange];
-  [v4 setYRange:v6];
+  yRange = [(SKPositionConstraint *)self yRange];
+  [v4 setYRange:yRange];
 
   return v4;
 }
 
-- (BOOL)isEqualToPositionConstraint:(id)a3
+- (BOOL)isEqualToPositionConstraint:(id)constraint
 {
-  v4 = a3;
-  if (self == v4)
+  constraintCopy = constraint;
+  if (self == constraintCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v5 = [(SKPositionConstraint *)self xRange];
-    v6 = [(SKPositionConstraint *)v4 xRange];
-    v7 = [v5 isEqualToRange:v6];
+    xRange = [(SKPositionConstraint *)self xRange];
+    xRange2 = [(SKPositionConstraint *)constraintCopy xRange];
+    v7 = [xRange isEqualToRange:xRange2];
 
     if (v7)
     {
-      v8 = [(SKPositionConstraint *)self yRange];
-      v9 = [(SKPositionConstraint *)v4 yRange];
-      v10 = [v8 isEqualToRange:v9];
+      yRange = [(SKPositionConstraint *)self yRange];
+      yRange2 = [(SKPositionConstraint *)constraintCopy yRange];
+      v10 = [yRange isEqualToRange:yRange2];
     }
 
     else
@@ -103,31 +103,31 @@
   return v10;
 }
 
-+ (id)constraintWithXRange:(id)a3 YRange:(id)a4
++ (id)constraintWithXRange:(id)range YRange:(id)yRange
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithXRange:v5 YRange:v6];
+  rangeCopy = range;
+  yRangeCopy = yRange;
+  v7 = [objc_alloc(objc_opt_class()) initWithXRange:rangeCopy YRange:yRangeCopy];
 
   return v7;
 }
 
-+ (id)constraintWithXRange:(id)a3
++ (id)constraintWithXRange:(id)range
 {
-  v3 = a3;
+  rangeCopy = range;
   v4 = objc_alloc(objc_opt_class());
   v5 = +[SKRange rangeWithNoLimits];
-  v6 = [v4 initWithXRange:v3 YRange:v5];
+  v6 = [v4 initWithXRange:rangeCopy YRange:v5];
 
   return v6;
 }
 
-+ (id)constraintWithYRange:(id)a3
++ (id)constraintWithYRange:(id)range
 {
-  v3 = a3;
+  rangeCopy = range;
   v4 = objc_alloc(objc_opt_class());
   v5 = +[SKRange rangeWithNoLimits];
-  v6 = [v4 initWithXRange:v5 YRange:v3];
+  v6 = [v4 initWithXRange:v5 YRange:rangeCopy];
 
   return v6;
 }

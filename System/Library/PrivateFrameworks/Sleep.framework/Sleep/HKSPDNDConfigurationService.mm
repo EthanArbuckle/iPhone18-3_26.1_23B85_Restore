@@ -1,39 +1,39 @@
 @interface HKSPDNDConfigurationService
-+ (id)sleepFocusConfigurationServiceWithOptions:(unint64_t)a3;
-- (BOOL)_lock_updateCachedSleepFocusConfig:(id)a3 updatedSleepFocusConfig:(id)a4;
++ (id)sleepFocusConfigurationServiceWithOptions:(unint64_t)options;
+- (BOOL)_lock_updateCachedSleepFocusConfig:(id)config updatedSleepFocusConfig:(id)focusConfig;
 - (BOOL)_readGlobalConfig;
-- (BOOL)_uncachedMirrorsFocusModes:(id *)a3;
-- (BOOL)hasSleepFocusMode:(id *)a3;
-- (HKSPDNDConfigurationService)initWithModeConfigService:(id)a3 globalConfigService:(id)a4 options:(unint64_t)a5;
+- (BOOL)_uncachedMirrorsFocusModes:(id *)modes;
+- (BOOL)hasSleepFocusMode:(id *)mode;
+- (HKSPDNDConfigurationService)initWithModeConfigService:(id)service globalConfigService:(id)configService options:(unint64_t)options;
 - (HKSPSleepFocusModeBridgeDelegate)delegate;
-- (id)_sleepFocusConfiguration:(id *)a3 checkCache:(BOOL)a4;
-- (id)_uncachedModeConfiguration:(id *)a3;
-- (id)sleepFocusConfiguration:(id *)a3;
+- (id)_sleepFocusConfiguration:(id *)configuration checkCache:(BOOL)cache;
+- (id)_uncachedModeConfiguration:(id *)configuration;
+- (id)sleepFocusConfiguration:(id *)configuration;
 - (void)_checkForUpdatedSleepFocusConfig;
-- (void)_fetchUpdatedSleepFocusConfigurationWithCompletion:(id)a3;
+- (void)_fetchUpdatedSleepFocusConfigurationWithCompletion:(id)completion;
 - (void)_loadCachedSleepFocusConfig;
 - (void)_notifyDelegate;
 - (void)_startListeningToGlobalConfigService;
 - (void)_startListeningToModeConfigService;
 - (void)_stopListeningToGlobalConfigService;
 - (void)_stopListeningToModeConfigService;
-- (void)_updateCacheAndNotifyWithBlock:(id)a3;
-- (void)_updateCachedSleepFocusConfig:(id)a3;
-- (void)_withLock:(id)a3;
-- (void)globalConfigurationService:(id)a3 didReceiveUpdatedPairSyncState:(unint64_t)a4;
+- (void)_updateCacheAndNotifyWithBlock:(id)block;
+- (void)_updateCachedSleepFocusConfig:(id)config;
+- (void)_withLock:(id)lock;
+- (void)globalConfigurationService:(id)service didReceiveUpdatedPairSyncState:(unint64_t)state;
 - (void)invalidate;
-- (void)modeConfigurationService:(id)a3 didReceiveAvailableModesUpdate:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)updateCachedMirrorsFocusModes:(BOOL)a3;
-- (void)updateCachedUUID:(id)a3 state:(unint64_t)a4;
+- (void)modeConfigurationService:(id)service didReceiveAvailableModesUpdate:(id)update;
+- (void)setDelegate:(id)delegate;
+- (void)updateCachedMirrorsFocusModes:(BOOL)modes;
+- (void)updateCachedUUID:(id)d state:(unint64_t)state;
 @end
 
 @implementation HKSPDNDConfigurationService
 
-+ (id)sleepFocusConfigurationServiceWithOptions:(unint64_t)a3
++ (id)sleepFocusConfigurationServiceWithOptions:(unint64_t)options
 {
   v5 = [MEMORY[0x277D059C8] serviceForClientIdentifier:@"com.apple.sleep.sleep-mode"];
-  if ([a1 _readGlobalConfigForOptions:a3])
+  if ([self _readGlobalConfigForOptions:options])
   {
     v6 = [MEMORY[0x277D05910] serviceForClientIdentifier:@"com.apple.sleep.sleep-mode"];
   }
@@ -43,16 +43,16 @@
     v6 = 0;
   }
 
-  v7 = [[HKSPDNDConfigurationService alloc] initWithModeConfigService:v5 globalConfigService:v6 options:a3];
+  v7 = [[HKSPDNDConfigurationService alloc] initWithModeConfigService:v5 globalConfigService:v6 options:options];
 
   return v7;
 }
 
-- (HKSPDNDConfigurationService)initWithModeConfigService:(id)a3 globalConfigService:(id)a4 options:(unint64_t)a5
+- (HKSPDNDConfigurationService)initWithModeConfigService:(id)service globalConfigService:(id)configService options:(unint64_t)options
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  serviceCopy = service;
+  configServiceCopy = configService;
   v20.receiver = self;
   v20.super_class = HKSPDNDConfigurationService;
   v11 = [(HKSPDNDConfigurationService *)&v20 init];
@@ -70,13 +70,13 @@
       _os_log_impl(&dword_269A84000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] initializing...", buf, 0x16u);
     }
 
-    objc_storeStrong(&v11->_modeConfigService, a3);
-    objc_storeStrong(&v11->_globalConfigService, a4);
+    objc_storeStrong(&v11->_modeConfigService, service);
+    objc_storeStrong(&v11->_globalConfigService, configService);
     v15 = [MEMORY[0x277D2C938] serialDispatchQueueSchedulerWithName:@"com.apple.HKSPDNDConfigurationService.serial"];
     dndScheduler = v11->_dndScheduler;
     v11->_dndScheduler = v15;
 
-    v11->_options = a5;
+    v11->_options = options;
     v11->_cacheLock._os_unfair_lock_opaque = 0;
     [(HKSPDNDConfigurationService *)v11 _loadCachedSleepFocusConfig];
     v17 = v11;
@@ -86,11 +86,11 @@
   return v11;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_cacheLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }
@@ -100,14 +100,14 @@
   v18 = *MEMORY[0x277D85DE8];
   if ([(HKSPDNDConfigurationService *)self _cacheSleepFocusConfig])
   {
-    v3 = [MEMORY[0x277CBEBD0] hksp_sleepdUserDefaults];
-    v4 = [HKSPSleepFocusConfiguration readFromDefaults:v3];
+    hksp_sleepdUserDefaults = [MEMORY[0x277CBEBD0] hksp_sleepdUserDefaults];
+    v4 = [HKSPSleepFocusConfiguration readFromDefaults:hksp_sleepdUserDefaults];
 
     v5 = HKSPLogForCategory(0x13uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = v4;
       _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Loaded cached sleep focus config: %{public}@", buf, 0x16u);
@@ -117,7 +117,7 @@
     v9 = 3221225472;
     v10 = __58__HKSPDNDConfigurationService__loadCachedSleepFocusConfig__block_invoke;
     v11 = &unk_279C73B58;
-    v12 = self;
+    selfCopy2 = self;
     v13 = v4;
     v6 = v4;
     [(HKSPDNDConfigurationService *)self _withLock:&v8];
@@ -136,7 +136,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_269A84000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Checking if sleep focus config has changed...", buf, 0xCu);
     }
 
@@ -161,15 +161,15 @@ uint64_t __63__HKSPDNDConfigurationService__checkForUpdatedSleepFocusConfig__blo
   return result;
 }
 
-- (void)_fetchUpdatedSleepFocusConfigurationWithCompletion:(id)a3
+- (void)_fetchUpdatedSleepFocusConfigurationWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = HKSPLogForCategory(0x13uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_269A84000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Fetching current sleep focus config...", buf, 0xCu);
   }
 
@@ -179,8 +179,8 @@ uint64_t __63__HKSPDNDConfigurationService__checkForUpdatedSleepFocusConfig__blo
   v9[2] = __82__HKSPDNDConfigurationService__fetchUpdatedSleepFocusConfigurationWithCompletion___block_invoke;
   v9[3] = &unk_279C75688;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   [(NAScheduler *)dndScheduler performBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -223,44 +223,44 @@ void __82__HKSPDNDConfigurationService__fetchUpdatedSleepFocusConfigurationWithC
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCachedSleepFocusConfig:(id)a3
+- (void)_updateCachedSleepFocusConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__HKSPDNDConfigurationService__updateCachedSleepFocusConfig___block_invoke;
   v6[3] = &unk_279C756B0;
-  v7 = v4;
-  v5 = v4;
+  v7 = configCopy;
+  v5 = configCopy;
   [(HKSPDNDConfigurationService *)self _updateCacheAndNotifyWithBlock:v6];
 }
 
-- (void)updateCachedUUID:(id)a3 state:(unint64_t)a4
+- (void)updateCachedUUID:(id)d state:(unint64_t)state
 {
-  v6 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__HKSPDNDConfigurationService_updateCachedUUID_state___block_invoke;
   v8[3] = &unk_279C756D8;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = dCopy;
+  stateCopy = state;
+  v7 = dCopy;
   [(HKSPDNDConfigurationService *)self _updateCacheAndNotifyWithBlock:v8];
 }
 
-- (void)updateCachedMirrorsFocusModes:(BOOL)a3
+- (void)updateCachedMirrorsFocusModes:(BOOL)modes
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __61__HKSPDNDConfigurationService_updateCachedMirrorsFocusModes___block_invoke;
   v3[3] = &__block_descriptor_33_e66___HKSPSleepFocusConfiguration_16__0__HKSPSleepFocusConfiguration_8l;
-  v4 = a3;
+  modesCopy = modes;
   [(HKSPDNDConfigurationService *)self _updateCacheAndNotifyWithBlock:v3];
 }
 
-- (void)_updateCacheAndNotifyWithBlock:(id)a3
+- (void)_updateCacheAndNotifyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(HKSPDNDConfigurationService *)self _cacheSleepFocusConfig])
   {
     v8 = 0;
@@ -272,7 +272,7 @@ void __82__HKSPDNDConfigurationService__fetchUpdatedSleepFocusConfigurationWithC
     v5[2] = __62__HKSPDNDConfigurationService__updateCacheAndNotifyWithBlock___block_invoke;
     v5[3] = &unk_279C75720;
     v5[4] = self;
-    v6 = v4;
+    v6 = blockCopy;
     v7 = &v8;
     [(HKSPDNDConfigurationService *)self _withLock:v5];
     if (*(v9 + 24) == 1)
@@ -293,18 +293,18 @@ void __62__HKSPDNDConfigurationService__updateCacheAndNotifyWithBlock___block_in
   *(*(*(a1 + 48) + 8) + 24) = [*(a1 + 32) _lock_updateCachedSleepFocusConfig:v4 updatedSleepFocusConfig:v5];
 }
 
-- (BOOL)_lock_updateCachedSleepFocusConfig:(id)a3 updatedSleepFocusConfig:(id)a4
+- (BOOL)_lock_updateCachedSleepFocusConfig:(id)config updatedSleepFocusConfig:(id)focusConfig
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  focusConfigCopy = focusConfig;
   v8 = HKSPLogForCategory(0x13uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543618;
-    v16 = self;
+    selfCopy3 = self;
     v17 = 2114;
-    v18 = v7;
+    v18 = focusConfigCopy;
     _os_log_impl(&dword_269A84000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] updatedSleepFocusConfiguration: %{public}@", &v15, 0x16u);
   }
 
@@ -312,9 +312,9 @@ void __62__HKSPDNDConfigurationService__updateCacheAndNotifyWithBlock___block_in
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543618;
-    v16 = self;
+    selfCopy3 = self;
     v17 = 2114;
-    v18 = v6;
+    v18 = configCopy;
     _os_log_impl(&dword_269A84000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] cachedSleepFocusConfiguration: %{public}@", &v15, 0x16u);
   }
 
@@ -325,15 +325,15 @@ void __62__HKSPDNDConfigurationService__updateCacheAndNotifyWithBlock___block_in
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543618;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2114;
-      v18 = v7;
+      v18 = focusConfigCopy;
       _os_log_impl(&dword_269A84000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Updating cached sleep focus config: %{public}@", &v15, 0x16u);
     }
 
-    objc_storeStrong(&self->_cachedSleepFocusConfiguration, a4);
-    v12 = [MEMORY[0x277CBEBD0] hksp_sleepdUserDefaults];
-    [v7 writeToDefaults:v12];
+    objc_storeStrong(&self->_cachedSleepFocusConfiguration, focusConfig);
+    hksp_sleepdUserDefaults = [MEMORY[0x277CBEBD0] hksp_sleepdUserDefaults];
+    [focusConfigCopy writeToDefaults:hksp_sleepdUserDefaults];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -357,10 +357,10 @@ uint64_t __60__HKSPDNDConfigurationService_cachedSleepFocusConfiguration__block_
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
-  if (a3)
+  objc_storeWeak(&self->_delegate, delegate);
+  if (delegate)
   {
     [(HKSPDNDConfigurationService *)self _startListeningToModeConfigService];
     [(HKSPDNDConfigurationService *)self _startListeningToGlobalConfigService];
@@ -383,24 +383,24 @@ uint64_t __60__HKSPDNDConfigurationService_cachedSleepFocusConfiguration__block_
   return [v3 _readGlobalConfigForOptions:options];
 }
 
-- (BOOL)hasSleepFocusMode:(id *)a3
+- (BOOL)hasSleepFocusMode:(id *)mode
 {
-  v3 = [(HKSPDNDConfigurationService *)self sleepFocusConfiguration:a3];
-  v4 = [v3 hasSleepFocusMode];
+  v3 = [(HKSPDNDConfigurationService *)self sleepFocusConfiguration:mode];
+  hasSleepFocusMode = [v3 hasSleepFocusMode];
 
-  return v4;
+  return hasSleepFocusMode;
 }
 
-- (id)sleepFocusConfiguration:(id *)a3
+- (id)sleepFocusConfiguration:(id *)configuration
 {
-  v5 = [(HKSPDNDConfigurationService *)self _cacheSleepFocusConfig];
+  _cacheSleepFocusConfig = [(HKSPDNDConfigurationService *)self _cacheSleepFocusConfig];
 
-  return [(HKSPDNDConfigurationService *)self _sleepFocusConfiguration:a3 checkCache:v5];
+  return [(HKSPDNDConfigurationService *)self _sleepFocusConfiguration:configuration checkCache:_cacheSleepFocusConfig];
 }
 
-- (id)_sleepFocusConfiguration:(id *)a3 checkCache:(BOOL)a4
+- (id)_sleepFocusConfiguration:(id *)configuration checkCache:(BOOL)cache
 {
-  if (a4)
+  if (cache)
   {
     if (self)
     {
@@ -432,7 +432,7 @@ uint64_t __60__HKSPDNDConfigurationService_cachedSleepFocusConfiguration__block_
     v21 = 0;
     v7 = [(HKSPDNDConfigurationService *)self _uncachedModeConfiguration:&v21];
     v8 = v21;
-    v9 = [v7 hksp_configurationState];
+    hksp_configurationState = [v7 hksp_configurationState];
     v20 = 0;
     v10 = [(HKSPDNDConfigurationService *)self _uncachedMirrorsFocusModes:&v20];
     v11 = v20;
@@ -450,10 +450,10 @@ uint64_t __60__HKSPDNDConfigurationService_cachedSleepFocusConfiguration__block_
     v14 = v13;
     if (v14)
     {
-      if (a3)
+      if (configuration)
       {
         v15 = v14;
-        *a3 = v14;
+        *configuration = v14;
       }
 
       else
@@ -463,28 +463,28 @@ uint64_t __60__HKSPDNDConfigurationService_cachedSleepFocusConfiguration__block_
     }
 
     v16 = [HKSPSleepFocusConfiguration alloc];
-    v17 = [v7 mode];
-    v18 = [v17 identifier];
-    v5 = [(HKSPSleepFocusConfiguration *)v16 initWithUUID:v18 mirrorsFocusModes:v10 state:v9];
+    mode = [v7 mode];
+    identifier = [mode identifier];
+    v5 = [(HKSPSleepFocusConfiguration *)v16 initWithUUID:identifier mirrorsFocusModes:v10 state:hksp_configurationState];
   }
 
   return v5;
 }
 
-- (id)_uncachedModeConfiguration:(id *)a3
+- (id)_uncachedModeConfiguration:(id *)configuration
 {
-  v4 = [(HKSPDNDConfigurationService *)self modeConfigService];
-  v5 = [v4 modeConfigurationForModeIdentifier:@"com.apple.sleep.sleep-mode" error:a3];
+  modeConfigService = [(HKSPDNDConfigurationService *)self modeConfigService];
+  v5 = [modeConfigService modeConfigurationForModeIdentifier:@"com.apple.sleep.sleep-mode" error:configuration];
 
   return v5;
 }
 
-- (BOOL)_uncachedMirrorsFocusModes:(id *)a3
+- (BOOL)_uncachedMirrorsFocusModes:(id *)modes
 {
   if ([(HKSPDNDConfigurationService *)self _readGlobalConfig])
   {
-    v5 = [(HKSPDNDConfigurationService *)self globalConfigService];
-    v6 = ([v5 getPairSyncStateReturningError:a3] >> 2) & 1;
+    globalConfigService = [(HKSPDNDConfigurationService *)self globalConfigService];
+    v6 = ([globalConfigService getPairSyncStateReturningError:modes] >> 2) & 1;
   }
 
   else
@@ -502,15 +502,15 @@ uint64_t __60__HKSPDNDConfigurationService_cachedSleepFocusConfiguration__block_
   [(HKSPDNDConfigurationService *)self _stopListeningToGlobalConfigService];
 }
 
-- (void)modeConfigurationService:(id)a3 didReceiveAvailableModesUpdate:(id)a4
+- (void)modeConfigurationService:(id)service didReceiveAvailableModesUpdate:(id)update
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [a4 na_any:&__block_literal_global_13];
+  v5 = [update na_any:&__block_literal_global_13];
   v6 = HKSPLogForCategory(0x13uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 1024;
     v14 = v5;
     _os_log_impl(&dword_269A84000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] didReceiveAvailableModesUpdate - hasSleepFocus: %d", buf, 0x12u);
@@ -561,15 +561,15 @@ void __87__HKSPDNDConfigurationService_modeConfigurationService_didReceiveAvaila
   }
 }
 
-- (void)globalConfigurationService:(id)a3 didReceiveUpdatedPairSyncState:(unint64_t)a4
+- (void)globalConfigurationService:(id)service didReceiveUpdatedPairSyncState:(unint64_t)state
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = (a4 >> 2) & 1;
+  v5 = (state >> 2) & 1;
   v6 = HKSPLogForCategory(0x13uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 1024;
     v14 = v5;
     _os_log_impl(&dword_269A84000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] didReceiveUpdatedPairSyncState - mirrorsFocusModes: %d", buf, 0x12u);
@@ -602,18 +602,18 @@ void __87__HKSPDNDConfigurationService_modeConfigurationService_didReceiveAvaila
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_269A84000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Start listening for mode config updates.", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v4 = [(HKSPDNDConfigurationService *)self modeConfigService];
+  modeConfigService = [(HKSPDNDConfigurationService *)self modeConfigService];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__HKSPDNDConfigurationService__startListeningToModeConfigService__block_invoke;
   v6[3] = &unk_279C74018;
   objc_copyWeak(&v7, buf);
-  [v4 addListener:self withCompletionHandler:v6];
+  [modeConfigService addListener:self withCompletionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(buf);
@@ -657,12 +657,12 @@ void __65__HKSPDNDConfigurationService__startListeningToModeConfigService__block
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_269A84000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Stop listening for mode config updates.", &v6, 0xCu);
   }
 
-  v4 = [(HKSPDNDConfigurationService *)self modeConfigService];
-  [v4 removeListener:self];
+  modeConfigService = [(HKSPDNDConfigurationService *)self modeConfigService];
+  [modeConfigService removeListener:self];
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -676,18 +676,18 @@ void __65__HKSPDNDConfigurationService__startListeningToModeConfigService__block
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_269A84000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Start listening for global config updates.", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
-    v4 = [(HKSPDNDConfigurationService *)self globalConfigService];
+    globalConfigService = [(HKSPDNDConfigurationService *)self globalConfigService];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __67__HKSPDNDConfigurationService__startListeningToGlobalConfigService__block_invoke;
     v6[3] = &unk_279C74018;
     objc_copyWeak(&v7, buf);
-    [v4 addListener:self withCompletionHandler:v6];
+    [globalConfigService addListener:self withCompletionHandler:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(buf);
@@ -735,12 +735,12 @@ void __67__HKSPDNDConfigurationService__startListeningToGlobalConfigService__blo
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_269A84000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Stop listening for global config updates.", &v6, 0xCu);
     }
 
-    v4 = [(HKSPDNDConfigurationService *)self globalConfigService];
-    [v4 removeListener:self];
+    globalConfigService = [(HKSPDNDConfigurationService *)self globalConfigService];
+    [globalConfigService removeListener:self];
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -753,18 +753,18 @@ void __67__HKSPDNDConfigurationService__startListeningToGlobalConfigService__blo
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_269A84000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] notifying delegate", &v9, 0xCu);
   }
 
-  v4 = [(HKSPDNDConfigurationService *)self delegate];
+  delegate = [(HKSPDNDConfigurationService *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(HKSPDNDConfigurationService *)self delegate];
+    delegate2 = [(HKSPDNDConfigurationService *)self delegate];
     v7 = [(HKSPDNDConfigurationService *)self sleepFocusConfiguration:0];
-    [v6 sleepFocusModeBridge:self didUpdateSleepFocusConfiguration:v7];
+    [delegate2 sleepFocusModeBridge:self didUpdateSleepFocusConfiguration:v7];
   }
 
   v8 = *MEMORY[0x277D85DE8];

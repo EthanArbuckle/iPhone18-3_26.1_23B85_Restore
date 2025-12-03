@@ -1,10 +1,10 @@
 @interface DOCColumnInfoViewController
-- (_TtC26DocumentManagerExecutables27DOCColumnInfoViewController)initWithCoder:(id)a3;
+- (_TtC26DocumentManagerExecutables27DOCColumnInfoViewController)initWithCoder:(id)coder;
 - (_TtP26DocumentManagerExecutables34DOCBrowserContainedActionReporting_)actionReporting;
-- (id)actionContextFrom:(id)a3;
+- (id)actionContextFrom:(id)from;
 - (void)_doc_performLiveResizeSkipped_updateOverlay;
-- (void)observeEditingStateChangedWithNotification:(id)a3;
-- (void)setActionReporting:(id)a3;
+- (void)observeEditingStateChangedWithNotification:(id)notification;
+- (void)setActionReporting:(id)reporting;
 - (void)viewDidLoad;
 @end
 
@@ -18,14 +18,14 @@
   return Strong;
 }
 
-- (void)setActionReporting:(id)a3
+- (void)setActionReporting:(id)reporting
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   DOCColumnInfoViewController.actionReporting.setter();
 }
 
-- (_TtC26DocumentManagerExecutables27DOCColumnInfoViewController)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables27DOCColumnInfoViewController)initWithCoder:(id)coder
 {
   *&self->_TtC26DocumentManagerExecutables33DOCBrowserContainedViewController_opaque[OBJC_IVAR____TtC26DocumentManagerExecutables27DOCColumnInfoViewController_itemInfoViewController] = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -33,29 +33,29 @@
   return result;
 }
 
-- (void)observeEditingStateChangedWithNotification:(id)a3
+- (void)observeEditingStateChangedWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  DOCColumnInfoViewController.observeEditingStateChanged(notification:)(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  DOCColumnInfoViewController.observeEditingStateChanged(notification:)(notificationCopy);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DOCColumnInfoViewController.viewDidLoad()();
 }
 
 - (void)_doc_performLiveResizeSkipped_updateOverlay
 {
-  v2 = self;
+  selfCopy = self;
   specialized DOCColumnInfoViewController.updateOverlay(animated:)();
 }
 
-- (id)actionContextFrom:(id)a3
+- (id)actionContextFrom:(id)from
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = DOCColumnInfoViewController.actionContext(from:)();
   swift_unknownObjectRelease();
 

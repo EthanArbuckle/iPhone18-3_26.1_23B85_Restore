@@ -1,10 +1,10 @@
 @interface HUICCMenuTextView
 - (BOOL)providesOwnSeparator;
-- (HUICCMenuTextView)initWithModule:(unint64_t)a3 andDelegate:(id)a4;
+- (HUICCMenuTextView)initWithModule:(unint64_t)module andDelegate:(id)delegate;
 - (id)delegate;
-- (void)_handleTapGestureRecognizer:(id)a3;
+- (void)_handleTapGestureRecognizer:(id)recognizer;
 - (void)_showMenuViewController;
-- (void)_updateMenuItemsForViewController:(id)a3;
+- (void)_updateMenuItemsForViewController:(id)controller;
 - (void)_updatePresentedMenuViewControllerIfNecessary;
 - (void)subscribeListeners;
 - (void)unsubscribeListeners;
@@ -13,16 +13,16 @@
 
 @implementation HUICCMenuTextView
 
-- (HUICCMenuTextView)initWithModule:(unint64_t)a3 andDelegate:(id)a4
+- (HUICCMenuTextView)initWithModule:(unint64_t)module andDelegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = HUICCMenuTextView;
-  v4 = [(HUICCTextView *)&v8 initWithModule:a3 andDelegate:a4];
+  v4 = [(HUICCTextView *)&v8 initWithModule:module andDelegate:delegate];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v4 action:sel__handleTapGestureRecognizer_];
-    v6 = [(HUICCTextView *)v4 textView];
-    [v6 addGestureRecognizer:v5];
+    textView = [(HUICCTextView *)v4 textView];
+    [textView addGestureRecognizer:v5];
   }
 
   return v4;
@@ -30,9 +30,9 @@
 
 - (BOOL)providesOwnSeparator
 {
-  v3 = [(HUICCMenuTextView *)self module];
+  module = [(HUICCMenuTextView *)self module];
   result = 1;
-  if (v3 != 16 && v3 != 19)
+  if (module != 16 && module != 19)
   {
     v5.receiver = self;
     v5.super_class = HUICCMenuTextView;
@@ -44,14 +44,14 @@
 
 - (void)updateValue
 {
-  v3 = [MEMORY[0x277D12E38] sharedUtilities];
-  v4 = [v3 routingQueue];
+  mEMORY[0x277D12E38] = [MEMORY[0x277D12E38] sharedUtilities];
+  routingQueue = [mEMORY[0x277D12E38] routingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__HUICCMenuTextView_updateValue__block_invoke;
   block[3] = &unk_2796F6D90;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(routingQueue, block);
 }
 
 void __32__HUICCMenuTextView_updateValue__block_invoke(uint64_t a1)
@@ -190,9 +190,9 @@ uint64_t __32__HUICCMenuTextView_updateValue__block_invoke_2(uint64_t a1)
   return [v10 setIsLargeText:v11];
 }
 
-- (void)_handleTapGestureRecognizer:(id)a3
+- (void)_handleTapGestureRecognizer:(id)recognizer
 {
-  if ([a3 state] == 3)
+  if ([recognizer state] == 3)
   {
 
     [(HUICCMenuTextView *)self _showMenuViewController];
@@ -201,20 +201,20 @@ uint64_t __32__HUICCMenuTextView_updateValue__block_invoke_2(uint64_t a1)
 
 - (void)_showMenuViewController
 {
-  v3 = [(HUICCMenuTextView *)self delegate];
+  delegate = [(HUICCMenuTextView *)self delegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(HUICCMenuTextView *)self delegate];
-    v6 = [objc_alloc(MEMORY[0x277CFC950]) initWithAnchoringViewController:v5];
+    delegate2 = [(HUICCMenuTextView *)self delegate];
+    v6 = [objc_alloc(MEMORY[0x277CFC950]) initWithAnchoringViewController:delegate2];
     [(HUICCMenuTextView *)self setDetailTransitioningDelegate:v6];
   }
 
   v10 = objc_alloc_init(HACCMenuModuleViewController);
-  v7 = [(HUICCMenuTextView *)self delegate];
-  [(HACCMenuModuleViewController *)v10 setDelegate:v7];
+  delegate3 = [(HUICCMenuTextView *)self delegate];
+  [(HACCMenuModuleViewController *)v10 setDelegate:delegate3];
 
   [(CCUIButtonModuleViewController *)v10 setExpanded:1];
   [(CCUIMenuModuleViewController *)v10 setShouldProvideOwnPlatter:1];
@@ -223,40 +223,40 @@ uint64_t __32__HUICCMenuTextView_updateValue__block_invoke_2(uint64_t a1)
   [(HACCMenuModuleViewController *)v10 setModalPresentationStyle:4];
   [(HACCMenuModuleViewController *)v10 setTransitioningDelegate:self->_detailTransitioningDelegate];
   [(HUICCMenuTextView *)self _updateMenuItemsForViewController:v10];
-  v8 = [(HUICCMenuTextView *)self presentVCBlock];
+  presentVCBlock = [(HUICCMenuTextView *)self presentVCBlock];
 
-  if (v8)
+  if (presentVCBlock)
   {
-    v9 = [(HUICCMenuTextView *)self presentVCBlock];
-    (v9)[2](v9, v10);
+    presentVCBlock2 = [(HUICCMenuTextView *)self presentVCBlock];
+    (presentVCBlock2)[2](presentVCBlock2, v10);
   }
 }
 
-- (void)_updateMenuItemsForViewController:(id)a3
+- (void)_updateMenuItemsForViewController:(id)controller
 {
   v84[1] = *MEMORY[0x277D85DE8];
-  v48 = a3;
-  v47 = [(HUICCMenuTextView *)self delegate];
-  v49 = [v47 currentHearingDevice];
-  v4 = [(HUICCMenuTextView *)self module];
-  v5 = [MEMORY[0x277CBEB18] array];
-  v44 = [MEMORY[0x277CBEB18] array];
-  v46 = [MEMORY[0x277CBEB18] array];
+  controllerCopy = controller;
+  delegate = [(HUICCMenuTextView *)self delegate];
+  currentHearingDevice = [delegate currentHearingDevice];
+  module = [(HUICCMenuTextView *)self module];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v45 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = 0;
-  v7 = 0;
-  if (v4 > 17)
+  array4 = 0;
+  if (module > 17)
   {
-    if (v4 <= 19)
+    if (module <= 19)
     {
-      if (v4 != 18)
+      if (module != 18)
       {
-        v8 = [v49 rightSelectedStreamingProgram];
-        v9 = [v8 name];
+        rightSelectedStreamingProgram = [currentHearingDevice rightSelectedStreamingProgram];
+        name = [rightSelectedStreamingProgram name];
 
-        if (v9)
+        if (name)
         {
-          v79 = v9;
+          v79 = name;
           v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v79 count:1];
         }
 
@@ -266,23 +266,23 @@ uint64_t __32__HUICCMenuTextView_updateValue__block_invoke_2(uint64_t a1)
         }
 
         v11 = hearingLocString();
-        v30 = [v49 rightPrograms];
-        v24 = [v30 indexesOfObjectsPassingTest:&__block_literal_global_67];
+        rightPrograms = [currentHearingDevice rightPrograms];
+        v24 = [rightPrograms indexesOfObjectsPassingTest:&__block_literal_global_67];
 
-        v25 = [v49 rightPrograms];
-        v31 = [v25 objectsAtIndexes:v24];
+        rightPrograms2 = [currentHearingDevice rightPrograms];
+        v31 = [rightPrograms2 objectsAtIndexes:v24];
 LABEL_33:
-        v7 = v31;
+        array4 = v31;
         v6 = 4;
         goto LABEL_37;
       }
 
-      v20 = [v49 leftSelectedStreamingProgram];
-      v9 = [v20 name];
+      leftSelectedStreamingProgram = [currentHearingDevice leftSelectedStreamingProgram];
+      name = [leftSelectedStreamingProgram name];
 
-      if (v9)
+      if (name)
       {
-        v80 = v9;
+        v80 = name;
         v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v80 count:1];
       }
 
@@ -292,46 +292,46 @@ LABEL_33:
       }
 
       v11 = hearingLocString();
-      v27 = [v49 leftPrograms];
-      v24 = [v27 indexesOfObjectsPassingTest:&__block_literal_global_65];
+      leftPrograms = [currentHearingDevice leftPrograms];
+      v24 = [leftPrograms indexesOfObjectsPassingTest:&__block_literal_global_65];
 
-      v25 = [v49 leftPrograms];
-      v26 = [v25 objectsAtIndexes:v24];
+      rightPrograms2 = [currentHearingDevice leftPrograms];
+      v26 = [rightPrograms2 objectsAtIndexes:v24];
 LABEL_26:
-      v7 = v26;
+      array4 = v26;
       v6 = 2;
 LABEL_37:
 
       goto LABEL_38;
     }
 
-    if (v4 != 20)
+    if (module != 20)
     {
       v10 = 0;
       v11 = 0;
-      if (v4 == 21)
+      if (module == 21)
       {
         v11 = hearingLocString();
-        v7 = [MEMORY[0x277CBEB18] array];
-        [v7 addObject:&unk_286465558];
+        array4 = [MEMORY[0x277CBEB18] array];
+        [array4 addObject:&unk_286465558];
         v14 = hearingInputRouteStringForOption();
-        [v5 addObject:v14];
+        [array addObject:v14];
 
-        [v7 addObject:&unk_286465570];
+        [array4 addObject:&unk_286465570];
         v15 = hearingInputRouteStringForOption();
-        [v5 addObject:v15];
+        [array addObject:v15];
 
         objc_initWeak(&location, self);
         v72[0] = MEMORY[0x277D85DD0];
         v72[1] = 3221225472;
         v72[2] = __55__HUICCMenuTextView__updateMenuItemsForViewController___block_invoke;
         v72[3] = &unk_2796F7238;
-        v73 = v46;
+        v73 = array3;
         objc_copyWeak(&v75, &location);
-        v74 = v47;
-        [v7 enumerateObjectsUsingBlock:v72];
-        v16 = [MEMORY[0x277D12E20] sharedInstance];
-        [v16 preferredInputEar];
+        v74 = delegate;
+        [array4 enumerateObjectsUsingBlock:v72];
+        mEMORY[0x277D12E20] = [MEMORY[0x277D12E20] sharedInstance];
+        [mEMORY[0x277D12E20] preferredInputEar];
         inputOptionFromHearingEar();
         v17 = hearingInputRouteStringForOption();
         v84[0] = v17;
@@ -345,12 +345,12 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v21 = [v49 rightSelectedStreamingProgram];
-    v9 = [v21 name];
+    rightSelectedStreamingProgram2 = [currentHearingDevice rightSelectedStreamingProgram];
+    name = [rightSelectedStreamingProgram2 name];
 
-    if (v9)
+    if (name)
     {
-      v78 = v9;
+      v78 = name;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v78 count:1];
     }
 
@@ -360,25 +360,25 @@ LABEL_37:
     }
 
     v11 = hearingLocString();
-    v28 = [v49 combinedPrograms];
-    v24 = [v28 indexesOfObjectsPassingTest:&__block_literal_global_69];
+    combinedPrograms = [currentHearingDevice combinedPrograms];
+    v24 = [combinedPrograms indexesOfObjectsPassingTest:&__block_literal_global_69];
 
-    v25 = [v49 combinedPrograms];
-    v29 = [v25 objectsAtIndexes:v24];
+    rightPrograms2 = [currentHearingDevice combinedPrograms];
+    v29 = [rightPrograms2 objectsAtIndexes:v24];
 LABEL_36:
-    v7 = v29;
+    array4 = v29;
     v6 = 6;
     goto LABEL_37;
   }
 
-  if (v4 == 15)
+  if (module == 15)
   {
-    v19 = [v49 leftSelectedProgram];
-    v9 = [v19 name];
+    leftSelectedProgram = [currentHearingDevice leftSelectedProgram];
+    name = [leftSelectedProgram name];
 
-    if (v9)
+    if (name)
     {
-      v83 = v9;
+      v83 = name;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v83 count:1];
     }
 
@@ -388,22 +388,22 @@ LABEL_36:
     }
 
     v11 = hearingLocString();
-    v23 = [v49 leftPrograms];
-    v24 = [v23 indexesOfObjectsPassingTest:&__block_literal_global_0];
+    leftPrograms2 = [currentHearingDevice leftPrograms];
+    v24 = [leftPrograms2 indexesOfObjectsPassingTest:&__block_literal_global_0];
 
-    v25 = [v49 leftPrograms];
-    v26 = [v25 objectsAtIndexes:v24];
+    rightPrograms2 = [currentHearingDevice leftPrograms];
+    v26 = [rightPrograms2 objectsAtIndexes:v24];
     goto LABEL_26;
   }
 
-  if (v4 == 16)
+  if (module == 16)
   {
-    v22 = [v49 rightSelectedProgram];
-    v9 = [v22 name];
+    rightSelectedProgram = [currentHearingDevice rightSelectedProgram];
+    name = [rightSelectedProgram name];
 
-    if (v9)
+    if (name)
     {
-      v82 = v9;
+      v82 = name;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v82 count:1];
     }
 
@@ -413,25 +413,25 @@ LABEL_36:
     }
 
     v11 = hearingLocString();
-    v32 = [v49 rightPrograms];
-    v24 = [v32 indexesOfObjectsPassingTest:&__block_literal_global_61];
+    rightPrograms3 = [currentHearingDevice rightPrograms];
+    v24 = [rightPrograms3 indexesOfObjectsPassingTest:&__block_literal_global_61];
 
-    v25 = [v49 rightPrograms];
-    v31 = [v25 objectsAtIndexes:v24];
+    rightPrograms2 = [currentHearingDevice rightPrograms];
+    v31 = [rightPrograms2 objectsAtIndexes:v24];
     goto LABEL_33;
   }
 
   v10 = 0;
   v11 = 0;
-  if (v4 == 17)
+  if (module == 17)
   {
-    v12 = [v49 selectedPrograms];
-    v13 = [v12 lastObject];
-    v9 = [v13 name];
+    selectedPrograms = [currentHearingDevice selectedPrograms];
+    lastObject = [selectedPrograms lastObject];
+    name = [lastObject name];
 
-    if (v9)
+    if (name)
     {
-      v81 = v9;
+      v81 = name;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v81 count:1];
     }
 
@@ -441,45 +441,45 @@ LABEL_36:
     }
 
     v11 = hearingLocString();
-    v33 = [v49 combinedPrograms];
-    v24 = [v33 indexesOfObjectsPassingTest:&__block_literal_global_63];
+    combinedPrograms2 = [currentHearingDevice combinedPrograms];
+    v24 = [combinedPrograms2 indexesOfObjectsPassingTest:&__block_literal_global_63];
 
-    v25 = [v49 combinedPrograms];
-    v29 = [v25 objectsAtIndexes:v24];
+    rightPrograms2 = [currentHearingDevice combinedPrograms];
+    v29 = [rightPrograms2 objectsAtIndexes:v24];
     goto LABEL_36;
   }
 
 LABEL_38:
-  if ([v7 count])
+  if ([array4 count])
   {
     objc_initWeak(&location, self);
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
     v65[2] = __55__HUICCMenuTextView__updateMenuItemsForViewController___block_invoke_7;
     v65[3] = &unk_2796F72A8;
-    v66 = v5;
-    v67 = v49;
+    v66 = array;
+    v67 = currentHearingDevice;
     v71 = v6;
     objc_copyWeak(&v70, &location);
-    v68 = v47;
-    v69 = v46;
-    [v7 enumerateObjectsUsingBlock:v65];
+    v68 = delegate;
+    v69 = array3;
+    [array4 enumerateObjectsUsingBlock:v65];
 
     objc_destroyWeak(&v70);
     objc_destroyWeak(&location);
   }
 
-  if (v4 == 28)
+  if (module == 28)
   {
     v43 = hearingLocString();
 
-    v34 = [MEMORY[0x277D12E18] sharedInstance];
-    v35 = [v34 selectedComfortSound];
-    v36 = [v35 localizedName];
+    mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
+    selectedComfortSound = [mEMORY[0x277D12E18] selectedComfortSound];
+    localizedName = [selectedComfortSound localizedName];
 
-    if (v36)
+    if (localizedName)
     {
-      v77 = v36;
+      v77 = localizedName;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v77 count:1];
     }
 
@@ -488,16 +488,16 @@ LABEL_38:
       v18 = MEMORY[0x277CBEBF8];
     }
 
-    v37 = [MEMORY[0x277CBEB18] array];
-    v38 = [(HUICCMenuTextView *)self availableComfortSoundsAssets];
-    if ([v38 count])
+    array5 = [MEMORY[0x277CBEB18] array];
+    availableComfortSoundsAssets = [(HUICCMenuTextView *)self availableComfortSoundsAssets];
+    if ([availableComfortSoundsAssets count])
     {
       v63[0] = MEMORY[0x277D85DD0];
       v63[1] = 3221225472;
       v63[2] = __55__HUICCMenuTextView__updateMenuItemsForViewController___block_invoke_9;
       v63[3] = &unk_2796F72D0;
-      v64 = v37;
-      [v38 enumerateObjectsUsingBlock:v63];
+      v64 = array5;
+      [availableComfortSoundsAssets enumerateObjectsUsingBlock:v63];
     }
 
     else
@@ -505,7 +505,7 @@ LABEL_38:
       for (i = 1; i != 17; ++i)
       {
         v40 = [MEMORY[0x277D12E08] defaultComfortSoundForGroup:i];
-        [v37 hcSafeAddObject:v40];
+        [array5 hcSafeAddObject:v40];
       }
     }
 
@@ -514,13 +514,13 @@ LABEL_38:
     v56[1] = 3221225472;
     v56[2] = __55__HUICCMenuTextView__updateMenuItemsForViewController___block_invoke_10;
     v56[3] = &unk_2796F72F8;
-    v57 = v5;
-    v58 = self;
-    v59 = v44;
+    v57 = array;
+    selfCopy = self;
+    v59 = array2;
     objc_copyWeak(&v62, &location);
-    v60 = v47;
-    v61 = v46;
-    [v37 enumerateObjectsUsingBlock:v56];
+    v60 = delegate;
+    v61 = array3;
+    [array5 enumerateObjectsUsingBlock:v56];
 
     objc_destroyWeak(&v62);
     objc_destroyWeak(&location);
@@ -535,28 +535,28 @@ LABEL_38:
 
 LABEL_50:
 
-  if ([v5 count])
+  if ([array count])
   {
-    v41 = [v5 count];
-    if (v41 == [v46 count])
+    v41 = [array count];
+    if (v41 == [array3 count])
     {
-      [v48 setTitle:v11];
-      v42 = [v44 count];
+      [controllerCopy setTitle:v11];
+      v42 = [array2 count];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __55__HUICCMenuTextView__updateMenuItemsForViewController___block_invoke_12;
       v50[3] = &unk_2796F70F8;
-      v51 = v46;
+      v51 = array3;
       v55 = v42;
-      v52 = v44;
+      v52 = array2;
       v53 = v18;
       v54 = v45;
-      [v5 enumerateObjectsUsingBlock:v50];
+      [array enumerateObjectsUsingBlock:v50];
     }
   }
 
-  [v48 loadViewIfNeeded];
-  [v48 setMenuItems:v45];
+  [controllerCopy loadViewIfNeeded];
+  [controllerCopy setMenuItems:v45];
 }
 
 void __55__HUICCMenuTextView__updateMenuItemsForViewController___block_invoke(uint64_t a1, void *a2)
@@ -738,20 +738,20 @@ uint64_t __55__HUICCMenuTextView__updateMenuItemsForViewController___block_invok
 
 - (void)_updatePresentedMenuViewControllerIfNecessary
 {
-  v3 = [(HUICCMenuTextView *)self delegate];
+  delegate = [(HUICCMenuTextView *)self delegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(HUICCMenuTextView *)self delegate];
-    v5 = [v7 expandedController];
-    v6 = [v5 presentedViewController];
+    delegate2 = [(HUICCMenuTextView *)self delegate];
+    expandedController = [delegate2 expandedController];
+    presentedViewController = [expandedController presentedViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(HUICCMenuTextView *)self _updateMenuItemsForViewController:v6];
+      [(HUICCMenuTextView *)self _updateMenuItemsForViewController:presentedViewController];
     }
   }
 }
@@ -768,13 +768,13 @@ uint64_t __55__HUICCMenuTextView__updateMenuItemsForViewController___block_invok
   if ([(HUICCMenuTextView *)self module]== 28)
   {
     objc_initWeak(buf, self);
-    v4 = [MEMORY[0x277D12DE8] sharedInstance];
+    mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __39__HUICCMenuTextView_subscribeListeners__block_invoke;
     v5[3] = &unk_2796F7348;
     objc_copyWeak(&v6, buf);
-    [v4 registerListener:self forComfortSoundsModelUpdatesHandler:v5];
+    [mEMORY[0x277D12DE8] registerListener:self forComfortSoundsModelUpdatesHandler:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(buf);
@@ -816,8 +816,8 @@ void __39__HUICCMenuTextView_subscribeListeners__block_invoke_2(uint64_t a1)
 
   if ([(HUICCMenuTextView *)self module]== 28)
   {
-    v4 = [MEMORY[0x277D12DE8] sharedInstance];
-    [v4 unregisterComfortSoundsModelUpdatesHandler:self];
+    mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+    [mEMORY[0x277D12DE8] unregisterComfortSoundsModelUpdatesHandler:self];
   }
 }
 

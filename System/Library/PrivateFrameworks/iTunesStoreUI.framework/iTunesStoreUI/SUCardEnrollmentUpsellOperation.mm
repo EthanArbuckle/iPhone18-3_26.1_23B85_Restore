@@ -1,5 +1,5 @@
 @interface SUCardEnrollmentUpsellOperation
-- (SUCardEnrollmentUpsellOperation)initWithViewController:(id)a3;
+- (SUCardEnrollmentUpsellOperation)initWithViewController:(id)controller;
 - (id)_paymentSetupFeature;
 - (void)paymentSetupViewControllerDidDismiss;
 - (void)run;
@@ -7,9 +7,9 @@
 
 @implementation SUCardEnrollmentUpsellOperation
 
-- (SUCardEnrollmentUpsellOperation)initWithViewController:(id)a3
+- (SUCardEnrollmentUpsellOperation)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = SUCardEnrollmentUpsellOperation;
   v6 = [(SUCardEnrollmentUpsellOperation *)&v10 init];
@@ -19,7 +19,7 @@
     dispatchQueue = v6->_dispatchQueue;
     v6->_dispatchQueue = v7;
 
-    objc_storeStrong(&v6->_viewController, a3);
+    objc_storeStrong(&v6->_viewController, controller);
   }
 
   return v6;
@@ -28,8 +28,8 @@
 - (void)run
 {
   v60 = *MEMORY[0x1E69E9840];
-  v3 = [(SUCardEnrollmentUpsellOperation *)self _paymentSetupFeature];
-  if (v3)
+  _paymentSetupFeature = [(SUCardEnrollmentUpsellOperation *)self _paymentSetupFeature];
+  if (_paymentSetupFeature)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -37,41 +37,41 @@
     block[2] = __38__SUCardEnrollmentUpsellOperation_run__block_invoke;
     block[3] = &unk_1E81644A8;
     block[4] = self;
-    v5 = v3;
-    v56 = v5;
+    mEMORY[0x1E69D4938]5 = _paymentSetupFeature;
+    v56 = mEMORY[0x1E69D4938]5;
     dispatch_sync(dispatchQueue, block);
     v6 = objc_alloc_init(ISWeakLinkedClassForString());
-    v7 = [(SUCardEnrollmentUpsellOperation *)self referrerIdentifier];
-    [v6 setReferrerIdentifier:v7];
+    referrerIdentifier = [(SUCardEnrollmentUpsellOperation *)self referrerIdentifier];
+    [v6 setReferrerIdentifier:referrerIdentifier];
 
     v8 = objc_alloc_init(ISWeakLinkedClassForString());
     [v8 setConfiguration:v6];
-    v57 = v5;
+    v57 = mEMORY[0x1E69D4938]5;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
     [v8 setPaymentSetupFeatures:v9];
 
-    v10 = [MEMORY[0x1E69D4938] sharedConfig];
-    v11 = v10;
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    mEMORY[0x1E69D4938]2 = mEMORY[0x1E69D4938];
     if (v8)
     {
-      if (!v10)
+      if (!mEMORY[0x1E69D4938])
       {
-        v11 = [MEMORY[0x1E69D4938] sharedConfig];
+        mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
       }
 
-      v12 = [v11 shouldLog];
-      if ([v11 shouldLogToDisk])
+      shouldLog = [mEMORY[0x1E69D4938]2 shouldLog];
+      if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
       {
-        v13 = v12 | 2;
+        v13 = shouldLog | 2;
       }
 
       else
       {
-        v13 = v12;
+        v13 = shouldLog;
       }
 
-      v14 = [v11 OSLogObject];
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [mEMORY[0x1E69D4938]2 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v13 &= 2u;
       }
@@ -91,9 +91,9 @@
           goto LABEL_14;
         }
 
-        v14 = [MEMORY[0x1E696AEC0] stringWithCString:v17 encoding:{4, &v58, v49}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v17 encoding:{4, &v58, v49}];
         free(v17);
-        v47 = v14;
+        v47 = oSLogObject;
         SSFileLog();
       }
 
@@ -106,30 +106,30 @@ LABEL_14:
       v52[2] = __38__SUCardEnrollmentUpsellOperation_run__block_invoke_12;
       v52[3] = &unk_1E81644A8;
       v53 = v8;
-      v54 = self;
+      selfCopy = self;
       dispatch_async(MEMORY[0x1E69E96A0], v52);
-      v19 = [(SUCardEnrollmentUpsellOperation *)self semaphore];
-      dispatch_semaphore_wait(v19, 0xFFFFFFFFFFFFFFFFLL);
+      semaphore = [(SUCardEnrollmentUpsellOperation *)self semaphore];
+      dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL);
 
-      v20 = [MEMORY[0x1E69D4938] sharedConfig];
-      if (!v20)
+      mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+      if (!mEMORY[0x1E69D4938]3)
       {
-        v20 = [MEMORY[0x1E69D4938] sharedConfig];
+        mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
       }
 
-      v21 = [v20 shouldLog];
-      if ([v20 shouldLogToDisk])
+      shouldLog2 = [mEMORY[0x1E69D4938]3 shouldLog];
+      if ([mEMORY[0x1E69D4938]3 shouldLogToDisk])
       {
-        v22 = v21 | 2;
+        v22 = shouldLog2 | 2;
       }
 
       else
       {
-        v22 = v21;
+        v22 = shouldLog2;
       }
 
-      v23 = [v20 OSLogObject];
-      if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [mEMORY[0x1E69D4938]3 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v22 &= 2u;
       }
@@ -149,16 +149,16 @@ LABEL_14:
           goto LABEL_25;
         }
 
-        v23 = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, &v58, v49}];
+        oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, &v58, v49}];
         free(v26);
-        v48 = v23;
+        v48 = oSLogObject2;
         SSFileLog();
       }
 
 LABEL_25:
-      v27 = [(SUCardEnrollmentUpsellOperation *)self _paymentSetupFeature];
+      _paymentSetupFeature2 = [(SUCardEnrollmentUpsellOperation *)self _paymentSetupFeature];
 
-      if (v27)
+      if (_paymentSetupFeature2)
       {
         v28 = self->_dispatchQueue;
         v50[0] = MEMORY[0x1E69E9820];
@@ -166,34 +166,34 @@ LABEL_25:
         v50[2] = __38__SUCardEnrollmentUpsellOperation_run__block_invoke_14;
         v50[3] = &unk_1E81644A8;
         v50[4] = self;
-        v51 = v27;
+        v51 = _paymentSetupFeature2;
         dispatch_sync(v28, v50);
 
 LABEL_61:
-        v11 = v53;
-        v5 = v27;
+        mEMORY[0x1E69D4938]2 = v53;
+        mEMORY[0x1E69D4938]5 = _paymentSetupFeature2;
         goto LABEL_62;
       }
 
-      v40 = [MEMORY[0x1E69D4938] sharedConfig];
-      if (!v40)
+      mEMORY[0x1E69D4938]4 = [MEMORY[0x1E69D4938] sharedConfig];
+      if (!mEMORY[0x1E69D4938]4)
       {
-        v40 = [MEMORY[0x1E69D4938] sharedConfig];
+        mEMORY[0x1E69D4938]4 = [MEMORY[0x1E69D4938] sharedConfig];
       }
 
-      v41 = [v40 shouldLog];
-      if ([v40 shouldLogToDisk])
+      shouldLog3 = [mEMORY[0x1E69D4938]4 shouldLog];
+      if ([mEMORY[0x1E69D4938]4 shouldLogToDisk])
       {
-        v42 = v41 | 2;
+        v42 = shouldLog3 | 2;
       }
 
       else
       {
-        v42 = v41;
+        v42 = shouldLog3;
       }
 
-      v43 = [v40 OSLogObject];
-      if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [mEMORY[0x1E69D4938]4 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v42 &= 2u;
       }
@@ -214,7 +214,7 @@ LABEL_60:
           goto LABEL_61;
         }
 
-        v43 = [MEMORY[0x1E696AEC0] stringWithCString:v46 encoding:{4, &v58, v49}];
+        oSLogObject3 = [MEMORY[0x1E696AEC0] stringWithCString:v46 encoding:{4, &v58, v49}];
         free(v46);
         SSFileLog();
       }
@@ -222,24 +222,24 @@ LABEL_60:
       goto LABEL_60;
     }
 
-    if (!v10)
+    if (!mEMORY[0x1E69D4938])
     {
-      v11 = [MEMORY[0x1E69D4938] sharedConfig];
+      mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
     }
 
-    v34 = [v11 shouldLog];
-    if ([v11 shouldLogToDisk])
+    shouldLog4 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v35 = v34 | 2;
+      v35 = shouldLog4 | 2;
     }
 
     else
     {
-      v35 = v34;
+      v35 = shouldLog4;
     }
 
-    v36 = [v11 OSLogObject];
-    if (!os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+    oSLogObject4 = [mEMORY[0x1E69D4938]2 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
     {
       v35 &= 2u;
     }
@@ -260,7 +260,7 @@ LABEL_62:
         goto LABEL_63;
       }
 
-      v36 = [MEMORY[0x1E696AEC0] stringWithCString:v39 encoding:{4, &v58, v49}];
+      oSLogObject4 = [MEMORY[0x1E696AEC0] stringWithCString:v39 encoding:{4, &v58, v49}];
       free(v39);
       SSFileLog();
     }
@@ -268,25 +268,25 @@ LABEL_62:
     goto LABEL_62;
   }
 
-  v5 = [MEMORY[0x1E69D4938] sharedConfig];
-  if (!v5)
+  mEMORY[0x1E69D4938]5 = [MEMORY[0x1E69D4938] sharedConfig];
+  if (!mEMORY[0x1E69D4938]5)
   {
-    v5 = [MEMORY[0x1E69D4938] sharedConfig];
+    mEMORY[0x1E69D4938]5 = [MEMORY[0x1E69D4938] sharedConfig];
   }
 
-  v29 = [v5 shouldLog];
-  if ([v5 shouldLogToDisk])
+  shouldLog5 = [mEMORY[0x1E69D4938]5 shouldLog];
+  if ([mEMORY[0x1E69D4938]5 shouldLogToDisk])
   {
-    v30 = v29 | 2;
+    v30 = shouldLog5 | 2;
   }
 
   else
   {
-    v30 = v29;
+    v30 = shouldLog5;
   }
 
-  v31 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+  oSLogObject5 = [mEMORY[0x1E69D4938]5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
   {
     v30 &= 2u;
   }
@@ -304,7 +304,7 @@ LABEL_62:
 
   if (v33)
   {
-    v31 = [MEMORY[0x1E696AEC0] stringWithCString:v33 encoding:{4, &v58, v49}];
+    oSLogObject5 = [MEMORY[0x1E696AEC0] stringWithCString:v33 encoding:{4, &v58, v49}];
     free(v33);
     SSFileLog();
 LABEL_37:
@@ -483,35 +483,35 @@ LABEL_11:
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E698CAB8]);
-  v4 = [(SUCardEnrollmentUpsellOperation *)self referrerIdentifier];
-  v5 = [v3 initWithIdentifier:v4];
+  referrerIdentifier = [(SUCardEnrollmentUpsellOperation *)self referrerIdentifier];
+  v5 = [v3 initWithIdentifier:referrerIdentifier];
 
-  v6 = [v5 performPaymentSetupFeatureLookup];
+  performPaymentSetupFeatureLookup = [v5 performPaymentSetupFeatureLookup];
   v18 = 0;
-  v7 = [v6 resultWithError:&v18];
+  v7 = [performPaymentSetupFeatureLookup resultWithError:&v18];
   v8 = v18;
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E69D4938] sharedConfig];
-    if (!v9)
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    if (!mEMORY[0x1E69D4938])
     {
-      v9 = [MEMORY[0x1E69D4938] sharedConfig];
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
-    if ([v9 shouldLogToDisk])
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 &= 2u;
     }
@@ -534,7 +534,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v12 = [MEMORY[0x1E696AEC0] stringWithCString:v15 encoding:{4, &v19, v17}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v15 encoding:{4, &v19, v17}];
       free(v15);
       SSFileLog();
     }
@@ -550,25 +550,25 @@ LABEL_14:
 - (void)paymentSetupViewControllerDidDismiss
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69D4938] sharedConfig];
-  if (!v3)
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  if (!mEMORY[0x1E69D4938])
   {
-    v3 = [MEMORY[0x1E69D4938] sharedConfig];
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
-  if ([v3 shouldLogToDisk])
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E69D4938] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -586,14 +586,14 @@ LABEL_14:
 
   if (v8)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v11, v10, v11}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v11, v10, v11}];
     free(v8);
     SSFileLog();
 LABEL_11:
   }
 
-  v9 = [(SUCardEnrollmentUpsellOperation *)self semaphore];
-  dispatch_semaphore_signal(v9);
+  semaphore = [(SUCardEnrollmentUpsellOperation *)self semaphore];
+  dispatch_semaphore_signal(semaphore);
 }
 
 @end

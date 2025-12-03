@@ -1,6 +1,6 @@
 @interface CHTextInputQuery
-+ (id)queryItemStableIdentifierForStrokeGroup:(id)a3;
-- (CHTextInputQuery)initWithRecognitionSession:(id)a3;
++ (id)queryItemStableIdentifierForStrokeGroup:(id)group;
+- (CHTextInputQuery)initWithRecognitionSession:(id)session;
 - (CHTextInputQueryTargetDataSource)textInputTargetsDataSource;
 - (NSArray)availableItems;
 - (void)dealloc;
@@ -9,11 +9,11 @@
 
 @implementation CHTextInputQuery
 
-- (CHTextInputQuery)initWithRecognitionSession:(id)a3
+- (CHTextInputQuery)initWithRecognitionSession:(id)session
 {
   v22.receiver = self;
   v22.super_class = CHTextInputQuery;
-  v3 = [(CHQuery *)&v22 initWithRecognitionSession:a3];
+  v3 = [(CHQuery *)&v22 initWithRecognitionSession:session];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DEC8]);
@@ -46,14 +46,14 @@
 
 - (void)q_updateQueryResult
 {
-  v2 = self;
+  selfCopy = self;
   v207 = *MEMORY[0x1E69E9840];
   v193.receiver = self;
   v193.super_class = CHTextInputQuery;
   [(CHQuery *)&v193 q_updateQueryResult];
-  v8 = objc_msgSend_q_sessionResult(v2, v3, v4, v5, v6, v7);
+  v8 = objc_msgSend_q_sessionResult(selfCopy, v3, v4, v5, v6, v7);
   v14 = v8;
-  if (!v2)
+  if (!selfCopy)
   {
     v15 = 0;
 
@@ -84,7 +84,7 @@
   {
     v188 = *v195;
     v186 = v14;
-    v187 = v2;
+    v187 = selfCopy;
     v185 = v15;
     do
     {
@@ -117,7 +117,7 @@
           v91 = objc_msgSend_sortedArrayUsingComparator_(v98, v99, &unk_1EF1BEA70, v100, v101, v102);
         }
 
-        v103 = objc_msgSend_recognitionSession(v2, v86, v87, v88, v89, v90);
+        v103 = objc_msgSend_recognitionSession(selfCopy, v86, v87, v88, v89, v90);
         v109 = objc_msgSend_latestStrokeProvider(v103, v104, v105, v106, v107, v108);
         v113 = objc_msgSend_strokeIdentifiersForData_withStrokeProvider_(CHStrokeUtilities, v110, v91, v109, v111, v112);
 
@@ -156,7 +156,7 @@
           objc_msgSend_addObject_(v185, v53, v114, v54, v55, v56);
 
           v14 = v186;
-          v2 = v187;
+          selfCopy = v187;
         }
       }
 
@@ -176,8 +176,8 @@ LABEL_18:
   v146 = qword_1EA84DC60;
   if (os_log_type_enabled(v146, OS_LOG_TYPE_DEBUG))
   {
-    v152 = objc_msgSend_debugName(v2, v147, v148, v149, v150, v151);
-    v158 = objc_msgSend_recognitionSession(v2, v153, v154, v155, v156, v157);
+    v152 = objc_msgSend_debugName(selfCopy, v147, v148, v149, v150, v151);
+    v158 = objc_msgSend_recognitionSession(selfCopy, v153, v154, v155, v156, v157);
     v164 = objc_msgSend_strokeProviderVersion(v14, v159, v160, v161, v162, v163);
     v170 = objc_msgSend_count(v15, v165, v166, v167, v168, v169);
     *buf = 138413058;
@@ -194,7 +194,7 @@ LABEL_18:
   if (v14)
   {
     objc_msgSend_generationDuration(v14, v171, v172, v173, v174, v175);
-    if (!v2)
+    if (!selfCopy)
     {
       goto LABEL_26;
     }
@@ -203,20 +203,20 @@ LABEL_18:
   else
   {
     v192 = 0.0;
-    if (!v2)
+    if (!selfCopy)
     {
       goto LABEL_26;
     }
   }
 
-  v2->_totalDuration = v192;
-  if (v2->_availableItems != v15)
+  selfCopy->_totalDuration = v192;
+  if (selfCopy->_availableItems != v15)
   {
     v176 = objc_msgSend_copy(v15, v171, v172, v173, v174, v175);
-    availableItems = v2->_availableItems;
-    v2->_availableItems = v176;
+    availableItems = selfCopy->_availableItems;
+    selfCopy->_availableItems = v176;
 
-    objc_msgSend_q_queryResultDidChange(v2, v178, v179, v180, v181, v182);
+    objc_msgSend_q_queryResultDidChange(selfCopy, v178, v179, v180, v181, v182);
   }
 
 LABEL_26:
@@ -252,10 +252,10 @@ LABEL_26:
   return WeakRetained;
 }
 
-+ (id)queryItemStableIdentifierForStrokeGroup:(id)a3
++ (id)queryItemStableIdentifierForStrokeGroup:(id)group
 {
   v6 = MEMORY[0x1E696AD98];
-  v8 = objc_msgSend_ancestorIdentifier(a3, a2, a3, v3, v4, v5);
+  v8 = objc_msgSend_ancestorIdentifier(group, a2, group, v3, v4, v5);
 
   return objc_msgSend_numberWithInteger_(v6, v7, v8, v9, v10, v11);
 }

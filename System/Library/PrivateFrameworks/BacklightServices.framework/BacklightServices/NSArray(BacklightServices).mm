@@ -9,7 +9,7 @@
   v29[2] = *MEMORY[0x277D85DE8];
   v6 = a4;
   v7 = objc_opt_new();
-  v8 = [a1 count];
+  v8 = [self count];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __72__NSArray_BacklightServices__bls_boundedDescriptionWithMax_transformer___block_invoke;
@@ -23,16 +23,16 @@
   {
     if (v8 <= a3)
     {
-      v18 = [a1 bs_mapNoNulls:{v6, v10}];
+      v18 = [self bs_mapNoNulls:{v6, v10}];
     }
 
     else
     {
-      v11 = [a1 subarrayWithRange:{0, v10}];
+      v11 = [self subarrayWithRange:{0, v10}];
       v12 = [v11 bs_mapNoNulls:v6];
       v29[0] = @"...";
-      v13 = [a1 lastObject];
-      v14 = v6[2](v6, v13);
+      lastObject = [self lastObject];
+      v14 = v6[2](v6, lastObject);
       v15 = v14;
       v16 = @"<NULL>";
       if (v14)

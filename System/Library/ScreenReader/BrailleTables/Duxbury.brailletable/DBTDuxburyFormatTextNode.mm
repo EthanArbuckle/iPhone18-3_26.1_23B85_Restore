@@ -1,27 +1,27 @@
 @interface DBTDuxburyFormatTextNode
-+ (id)LaTeXCommandForString:(id)a3;
-- (DBTDuxburyFormatTextNode)initWithText:(id)a3;
++ (id)LaTeXCommandForString:(id)string;
+- (DBTDuxburyFormatTextNode)initWithText:(id)text;
 - (id)LaTeXRepresentation;
 - (id)description;
 @end
 
 @implementation DBTDuxburyFormatTextNode
 
-+ (id)LaTeXCommandForString:(id)a3
++ (id)LaTeXCommandForString:(id)string
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __50__DBTDuxburyFormatTextNode_LaTeXCommandForString___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = LaTeXCommandForString__onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     dispatch_once(&LaTeXCommandForString__onceToken, block);
   }
 
-  v5 = [LaTeXCommandForString__Commands objectForKeyedSubscript:v4];
+  v5 = [LaTeXCommandForString__Commands objectForKeyedSubscript:stringCopy];
 
   return v5;
 }
@@ -36,13 +36,13 @@ void __50__DBTDuxburyFormatTextNode_LaTeXCommandForString___block_invoke(uint64_
   LaTeXCommandForString__Commands = v3;
 }
 
-- (DBTDuxburyFormatTextNode)initWithText:(id)a3
+- (DBTDuxburyFormatTextNode)initWithText:(id)text
 {
   v8.receiver = self;
   v8.super_class = DBTDuxburyFormatTextNode;
-  v3 = a3;
+  textCopy = text;
   v4 = [(DBTDuxburyFormatNode *)&v8 init];
-  v5 = [v3 copy];
+  v5 = [textCopy copy];
 
   text = v4->_text;
   v4->_text = v5;

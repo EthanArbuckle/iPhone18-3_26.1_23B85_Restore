@@ -5,23 +5,23 @@
 + (MARelation)momentOfMeaning;
 + (MARelation)momentOfReliableMeaning;
 + (MARelation)parentMeaningOfMeaning;
-+ (id)_localizationKeyForMeaningLabel:(id)a3;
-+ (id)_localizedNameForLabel:(id)a3;
++ (id)_localizationKeyForMeaningLabel:(id)label;
++ (id)_localizedNameForLabel:(id)label;
 + (id)filter;
-+ (id)filterWithMeaning:(unint64_t)a3;
++ (id)filterWithMeaning:(unint64_t)meaning;
 - (BOOL)isVeryMeaningful;
 - (NSArray)localizedSynonyms;
 - (NSString)featureIdentifier;
 - (NSString)localizedName;
-- (PGGraphMeaningNode)initWithLabel:(id)a3;
+- (PGGraphMeaningNode)initWithLabel:(id)label;
 - (PGGraphMeaningNode)parentMeaningNode;
 - (PGGraphMeaningNodeCollection)collection;
 - (id)associatedNodesForRemoval;
-- (void)enumerateMomentAlternativeEdgesAndNodesUsingBlock:(id)a3;
-- (void)enumerateMomentEdgesAndNodesUsingBlock:(id)a3;
-- (void)enumerateSubmeaningsUsingBlock:(id)a3;
-- (void)traverseParentMeaningHierarchyUsingBlock:(id)a3;
-- (void)traverseSubmeaningHierarchyUsingBlock:(id)a3;
+- (void)enumerateMomentAlternativeEdgesAndNodesUsingBlock:(id)block;
+- (void)enumerateMomentEdgesAndNodesUsingBlock:(id)block;
+- (void)enumerateSubmeaningsUsingBlock:(id)block;
+- (void)traverseParentMeaningHierarchyUsingBlock:(id)block;
+- (void)traverseSubmeaningHierarchyUsingBlock:(id)block;
 @end
 
 @implementation PGGraphMeaningNode
@@ -31,8 +31,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphMeaningNode *)self label];
-  v7 = [v3 stringWithFormat:@"%@|%@", v5, v6];
+  label = [(PGGraphMeaningNode *)self label];
+  v7 = [v3 stringWithFormat:@"%@|%@", v5, label];
 
   return v7;
 }
@@ -47,14 +47,14 @@
 - (id)associatedNodesForRemoval
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(PGGraphMeaningNode *)self parentMeaningNode];
+  parentMeaningNode = [(PGGraphMeaningNode *)self parentMeaningNode];
 
-  if (v4)
+  if (parentMeaningNode)
   {
-    v5 = [(PGGraphMeaningNode *)self parentMeaningNode];
-    if (![v5 countOfEdgesWithLabel:@"MEANING" domain:700] && objc_msgSend(v5, "countOfEdgesWithLabel:domain:", @"SUBMEANING_OF", 700) == 1)
+    parentMeaningNode2 = [(PGGraphMeaningNode *)self parentMeaningNode];
+    if (![parentMeaningNode2 countOfEdgesWithLabel:@"MEANING" domain:700] && objc_msgSend(parentMeaningNode2, "countOfEdgesWithLabel:domain:", @"SUBMEANING_OF", 700) == 1)
     {
-      [v3 addObject:v5];
+      [v3 addObject:parentMeaningNode2];
     }
   }
 
@@ -74,8 +74,8 @@
 - (NSArray)localizedSynonyms
 {
   v3 = objc_opt_class();
-  v4 = [(PGGraphMeaningNode *)self label];
-  v5 = [v3 _localizationKeyForMeaningLabel:v4];
+  label = [(PGGraphMeaningNode *)self label];
+  v5 = [v3 _localizationKeyForMeaningLabel:label];
 
   v6 = [PGGraphSynonymSupportHelper localizedSynonymsForLocalizationKey:v5];
 
@@ -85,8 +85,8 @@
 - (NSString)localizedName
 {
   v3 = objc_opt_class();
-  v4 = [(PGGraphMeaningNode *)self label];
-  v5 = [v3 _localizedNameForLabel:v4];
+  label = [(PGGraphMeaningNode *)self label];
+  v5 = [v3 _localizedNameForLabel:label];
 
   return v5;
 }
@@ -101,8 +101,8 @@
 
   else
   {
-    v5 = [(PGGraphMeaningNode *)self label];
-    v6 = [PGGraph meaningForMeaningLabel:v5];
+    label = [(PGGraphMeaningNode *)self label];
+    v6 = [PGGraph meaningForMeaningLabel:label];
 
     v7 = +[PGGraph veryMeaningfulMeanings];
     v3 = [v7 containsIndex:v6];
@@ -120,41 +120,41 @@
 
 - (PGGraphMeaningNode)parentMeaningNode
 {
-  v2 = [(PGGraphMeaningNode *)self collection];
-  v3 = [v2 parentMeaningNodes];
-  v4 = [v3 anyNode];
+  collection = [(PGGraphMeaningNode *)self collection];
+  parentMeaningNodes = [collection parentMeaningNodes];
+  anyNode = [parentMeaningNodes anyNode];
 
-  return v4;
+  return anyNode;
 }
 
-- (void)traverseParentMeaningHierarchyUsingBlock:(id)a3
+- (void)traverseParentMeaningHierarchyUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PGGraphMeaningNode *)self parentMeaningNode];
+  blockCopy = block;
+  parentMeaningNode = [(PGGraphMeaningNode *)self parentMeaningNode];
   v8 = 0;
-  if (v5)
+  if (parentMeaningNode)
   {
-    v6 = v5;
+    parentMeaningNode2 = parentMeaningNode;
     do
     {
-      v7 = v6;
-      v4[2](v4, v6, &v8);
-      v6 = [v6 parentMeaningNode];
+      v7 = parentMeaningNode2;
+      blockCopy[2](blockCopy, parentMeaningNode2, &v8);
+      parentMeaningNode2 = [parentMeaningNode2 parentMeaningNode];
     }
 
-    while (v6 && !v8);
+    while (parentMeaningNode2 && !v8);
   }
 }
 
-- (void)traverseSubmeaningHierarchyUsingBlock:(id)a3
+- (void)traverseSubmeaningHierarchyUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__PGGraphMeaningNode_traverseSubmeaningHierarchyUsingBlock___block_invoke;
   v6[3] = &unk_278882BF8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(PGGraphMeaningNode *)self enumerateSubmeaningsUsingBlock:v6];
 }
 
@@ -168,15 +168,15 @@ void __60__PGGraphMeaningNode_traverseSubmeaningHierarchyUsingBlock___block_invo
   }
 }
 
-- (void)enumerateSubmeaningsUsingBlock:(id)a3
+- (void)enumerateSubmeaningsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__PGGraphMeaningNode_enumerateSubmeaningsUsingBlock___block_invoke;
   v6[3] = &unk_278882BD0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MANode *)self enumerateNeighborEdgesAndNodesThroughEdgesWithLabel:@"SUBMEANING_OF" domain:700 usingBlock:v6];
 }
 
@@ -193,15 +193,15 @@ void __53__PGGraphMeaningNode_enumerateSubmeaningsUsingBlock___block_invoke(uint
   }
 }
 
-- (void)enumerateMomentAlternativeEdgesAndNodesUsingBlock:(id)a3
+- (void)enumerateMomentAlternativeEdgesAndNodesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__PGGraphMeaningNode_enumerateMomentAlternativeEdgesAndNodesUsingBlock___block_invoke;
   v6[3] = &unk_278882BA0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MANode *)self enumerateNeighborEdgesAndNodesThroughEdgesWithLabel:@"MEANING" domain:702 usingBlock:v6];
 }
 
@@ -218,15 +218,15 @@ void __72__PGGraphMeaningNode_enumerateMomentAlternativeEdgesAndNodesUsingBlock_
   }
 }
 
-- (void)enumerateMomentEdgesAndNodesUsingBlock:(id)a3
+- (void)enumerateMomentEdgesAndNodesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__PGGraphMeaningNode_enumerateMomentEdgesAndNodesUsingBlock___block_invoke;
   v6[3] = &unk_278882B78;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MANode *)self enumerateNeighborEdgesAndNodesThroughEdgesWithLabel:@"MEANING" domain:700 usingBlock:v6];
 }
 
@@ -243,15 +243,15 @@ void __61__PGGraphMeaningNode_enumerateMomentEdgesAndNodesUsingBlock___block_inv
   }
 }
 
-- (PGGraphMeaningNode)initWithLabel:(id)a3
+- (PGGraphMeaningNode)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v9.receiver = self;
   v9.super_class = PGGraphMeaningNode;
   v5 = [(PGGraphNode *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelCopy copy];
     label = v5->_label;
     v5->_label = v6;
   }
@@ -259,9 +259,9 @@ void __61__PGGraphMeaningNode_enumerateMomentEdgesAndNodesUsingBlock___block_inv
   return v5;
 }
 
-+ (id)filterWithMeaning:(unint64_t)a3
++ (id)filterWithMeaning:(unint64_t)meaning
 {
-  v3 = PGMeaningLabelForMeaning(a3);
+  v3 = PGMeaningLabelForMeaning(meaning);
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D22C78]) initWithLabel:v3 domain:700];
@@ -279,11 +279,11 @@ void __61__PGGraphMeaningNode_enumerateMomentEdgesAndNodesUsingBlock___block_inv
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
-  v3 = [a1 eventOfReliableMeaning];
-  v10[0] = v3;
+  eventOfReliableMeaning = [self eventOfReliableMeaning];
+  v10[0] = eventOfReliableMeaning;
   v4 = +[PGGraphMomentNode filter];
-  v5 = [v4 relation];
-  v10[1] = v5;
+  relation = [v4 relation];
+  v10[1] = relation;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v7 = [v2 chain:v6];
 
@@ -296,11 +296,11 @@ void __61__PGGraphMeaningNode_enumerateMomentEdgesAndNodesUsingBlock___block_inv
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D22C90];
-  v3 = [a1 eventOfMeaning];
-  v10[0] = v3;
+  eventOfMeaning = [self eventOfMeaning];
+  v10[0] = eventOfMeaning;
   v4 = +[PGGraphMomentNode filter];
-  v5 = [v4 relation];
-  v10[1] = v5;
+  relation = [v4 relation];
+  v10[1] = relation;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v7 = [v2 chain:v6];
 
@@ -312,45 +312,45 @@ void __61__PGGraphMeaningNode_enumerateMomentEdgesAndNodesUsingBlock___block_inv
 + (MARelation)eventOfReliableMeaning
 {
   v2 = +[PGGraphMeaningEdge reliableFilter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)eventOfMeaning
 {
   v2 = +[PGGraphMeaningEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)parentMeaningOfMeaning
 {
   v2 = +[PGGraphSubmeaningOfEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)childMeaningOfMeaning
 {
   v2 = +[PGGraphSubmeaningOfEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
-+ (id)_localizationKeyForMeaningLabel:(id)a3
++ (id)_localizationKeyForMeaningLabel:(id)label
 {
   v3 = _localizationKeyForMeaningLabel__onceToken;
-  v4 = a3;
+  labelCopy = label;
   if (v3 != -1)
   {
     dispatch_once(&_localizationKeyForMeaningLabel__onceToken, &__block_literal_global_31127);
   }
 
-  v5 = [_localizationKeyForMeaningLabel__searchKeyByLabel objectForKeyedSubscript:v4];
+  v5 = [_localizationKeyForMeaningLabel__searchKeyByLabel objectForKeyedSubscript:labelCopy];
 
   return v5;
 }
@@ -417,9 +417,9 @@ void __54__PGGraphMeaningNode__localizationKeyForMeaningLabel___block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_localizedNameForLabel:(id)a3
++ (id)_localizedNameForLabel:(id)label
 {
-  v3 = [a1 _localizationKeyForMeaningLabel:a3];
+  v3 = [self _localizationKeyForMeaningLabel:label];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:v3 value:v3 table:@"Localizable"];
 

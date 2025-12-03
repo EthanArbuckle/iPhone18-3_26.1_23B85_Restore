@@ -1,34 +1,34 @@
 @interface SBFluidSwitcherGestureManagerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axItemContainerForGestureRecognizer:(id)a3;
-- (void)_handleFluidGesture:(id)a3;
-- (void)_handleWindowDragGestureRecognizer:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axItemContainerForGestureRecognizer:(id)recognizer;
+- (void)_handleFluidGesture:(id)gesture;
+- (void)_handleWindowDragGestureRecognizer:(id)recognizer;
 @end
 
 @implementation SBFluidSwitcherGestureManagerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFluidSwitcherGestureManager" hasInstanceMethod:@"_handleWindowDragGestureRecognizer:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"_itemContainerForAppLayoutIfExists:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherPanGestureRecognizer" hasInstanceMethod:@"initialTouchLeafAppLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherGestureManager" hasInstanceMethod:@"switcherContentController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherGestureManager" hasInstanceMethod:@"_handleFluidGesture:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBFluidSwitcherGestureManager" hasInstanceMethod:@"liveWindowResizeGestureRecognizer" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFluidSwitcherGestureManager" hasInstanceMethod:@"_handleWindowDragGestureRecognizer:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"_itemContainerForAppLayoutIfExists:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherPanGestureRecognizer" hasInstanceMethod:@"initialTouchLeafAppLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherGestureManager" hasInstanceMethod:@"switcherContentController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherGestureManager" hasInstanceMethod:@"_handleFluidGesture:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBFluidSwitcherGestureManager" hasInstanceMethod:@"liveWindowResizeGestureRecognizer" withFullSignature:{"@", 0}];
 }
 
-- (void)_handleWindowDragGestureRecognizer:(id)a3
+- (void)_handleWindowDragGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   v9.receiver = self;
   v9.super_class = SBFluidSwitcherGestureManagerAccessibility;
-  [(SBFluidSwitcherGestureManagerAccessibility *)&v9 _handleWindowDragGestureRecognizer:v4];
+  [(SBFluidSwitcherGestureManagerAccessibility *)&v9 _handleWindowDragGestureRecognizer:recognizerCopy];
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
   if ([v5 state] == 3)
   {
-    v6 = [(SBFluidSwitcherGestureManagerAccessibility *)self _axItemContainerForGestureRecognizer:v4];
+    v6 = [(SBFluidSwitcherGestureManagerAccessibility *)self _axItemContainerForGestureRecognizer:recognizerCopy];
     v7 = v6;
     if (v6)
     {
@@ -39,25 +39,25 @@
   }
 }
 
-- (void)_handleFluidGesture:(id)a3
+- (void)_handleFluidGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   v11.receiver = self;
   v11.super_class = SBFluidSwitcherGestureManagerAccessibility;
-  [(SBFluidSwitcherGestureManagerAccessibility *)&v11 _handleFluidGesture:v4];
+  [(SBFluidSwitcherGestureManagerAccessibility *)&v11 _handleFluidGesture:gestureCopy];
   v5 = [(SBFluidSwitcherGestureManagerAccessibility *)self safeValueForKey:@"liveWindowResizeGestureRecognizer"];
-  if (![v4 isEqual:v5])
+  if (![gestureCopy isEqual:v5])
   {
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v6 = [v4 state];
+  state = [gestureCopy state];
 
-  if (v6 == 3)
+  if (state == 3)
   {
-    v7 = [(SBFluidSwitcherGestureManagerAccessibility *)self _axItemContainerForGestureRecognizer:v4];
+    v7 = [(SBFluidSwitcherGestureManagerAccessibility *)self _axItemContainerForGestureRecognizer:gestureCopy];
     v5 = v7;
     if (v7)
     {
@@ -74,10 +74,10 @@ LABEL_5:
 LABEL_6:
 }
 
-- (id)_axItemContainerForGestureRecognizer:(id)a3
+- (id)_axItemContainerForGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
-  v4 = [v3 safeValueForKey:@"initialTouchLeafAppLayout"];
+  recognizerCopy = recognizer;
+  v4 = [recognizerCopy safeValueForKey:@"initialTouchLeafAppLayout"];
   v15 = 0;
   objc_opt_class();
   v9 = 0;

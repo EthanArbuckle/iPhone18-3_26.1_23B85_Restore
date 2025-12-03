@@ -8,15 +8,15 @@
 + (UIShape)shapeWithBezierPath:(UIBezierPath *)path;
 + (UIShape)shapeWithProvider:(id)provider;
 + (id)_contentShape;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIResolvedShape)resolvedShapeInContext:(UIShapeResolutionContext *)context;
 - (UIShape)init;
 - (UIShape)shapeByApplyingInset:(CGFloat)inset;
 - (UIShape)shapeByApplyingInsets:(UIEdgeInsets)insets;
-- (UIShape)shapeWithBezierPath:(id)a3;
-- (UIShape)shapeWithProvider:(id)a3;
-- (id)_resolvedShapeInRect:(CGRect)a3;
-- (id)_resolvedShapeInView:(id)a3;
+- (UIShape)shapeWithBezierPath:(id)path;
+- (UIShape)shapeWithProvider:(id)provider;
+- (id)_resolvedShapeInRect:(CGRect)rect;
+- (id)_resolvedShapeInView:(id)view;
 @end
 
 @implementation UIShape
@@ -260,10 +260,10 @@
   return v18;
 }
 
-- (UIShape)shapeWithBezierPath:(id)a3
+- (UIShape)shapeWithBezierPath:(id)path
 {
   v4 = objc_allocWithZone(swift_getObjCClassFromObject());
-  v5 = a3;
+  pathCopy = path;
   v6 = [v4 init];
   v7 = &v6[OBJC_IVAR___UIShape_value];
   v9 = *&v6[OBJC_IVAR___UIShape_value + 16];
@@ -273,7 +273,7 @@
   v13[1] = v9;
   *v14 = v8;
   v13[0] = v10;
-  *v7 = v5;
+  *v7 = pathCopy;
   v7[56] = 2;
   v11 = v6;
   sub_188B2040C(v13);
@@ -283,12 +283,12 @@
   return v11;
 }
 
-- (UIShape)shapeWithProvider:(id)a3
+- (UIShape)shapeWithProvider:(id)provider
 {
   ObjCClassFromObject = swift_getObjCClassFromObject();
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA940F40);
   v5 = swift_allocObject();
-  *(v5 + 16) = a3;
+  *(v5 + 16) = provider;
   v6 = objc_allocWithZone(ObjCClassFromObject);
   swift_unknownObjectRetain();
   v7 = [v6 init];
@@ -313,17 +313,17 @@
 - (UIResolvedShape)resolvedShapeInContext:(UIShapeResolutionContext *)context
 {
   v4 = context;
-  v5 = self;
+  selfCopy = self;
   v6 = sub_18922D56C(v4);
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -332,7 +332,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = UIShape.isEqual(_:)(v8);
@@ -341,22 +341,22 @@
   return v6 & 1;
 }
 
-- (id)_resolvedShapeInView:(id)a3
+- (id)_resolvedShapeInView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_18922DB94(v4);
+  viewCopy = view;
+  selfCopy = self;
+  v6 = sub_18922DB94(viewCopy);
 
   return v6;
 }
 
-- (id)_resolvedShapeInRect:(CGRect)a3
+- (id)_resolvedShapeInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_18922DD90(x, y, width, height);
 
   return v8;

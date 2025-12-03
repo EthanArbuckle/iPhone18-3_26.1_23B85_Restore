@@ -1,39 +1,39 @@
 @interface CDPRecoveryKeyValidatorProxyImpl
-- (BOOL)confirmRecoveryKey:(id)a3 error:(id *)a4;
-- (CDPRecoveryKeyValidatorProxyImpl)initWithRemoteObject:(id)a3;
-- (id)generateRecoveryKeyWithError:(id *)a3;
-- (void)confirmRecoveryKey:(id)a3 completion:(id)a4;
-- (void)generateRecoveryKey:(id)a3;
+- (BOOL)confirmRecoveryKey:(id)key error:(id *)error;
+- (CDPRecoveryKeyValidatorProxyImpl)initWithRemoteObject:(id)object;
+- (id)generateRecoveryKeyWithError:(id *)error;
+- (void)confirmRecoveryKey:(id)key completion:(id)completion;
+- (void)generateRecoveryKey:(id)key;
 @end
 
 @implementation CDPRecoveryKeyValidatorProxyImpl
 
-- (CDPRecoveryKeyValidatorProxyImpl)initWithRemoteObject:(id)a3
+- (CDPRecoveryKeyValidatorProxyImpl)initWithRemoteObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = CDPRecoveryKeyValidatorProxyImpl;
   v6 = [(CDPRecoveryKeyValidatorProxyImpl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_validator, a3);
+    objc_storeStrong(&v6->_validator, object);
   }
 
   return v7;
 }
 
-- (void)confirmRecoveryKey:(id)a3 completion:(id)a4
+- (void)confirmRecoveryKey:(id)key completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   validator = self->_validator;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__CDPRecoveryKeyValidatorProxyImpl_confirmRecoveryKey_completion___block_invoke;
   v9[3] = &unk_1E869D6C8;
-  v10 = v6;
-  v8 = v6;
-  [(CDPRecoveryKeyValidator *)validator confirmRecoveryKey:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(CDPRecoveryKeyValidator *)validator confirmRecoveryKey:key completion:v9];
 }
 
 void __66__CDPRecoveryKeyValidatorProxyImpl_confirmRecoveryKey_completion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -51,16 +51,16 @@ void __66__CDPRecoveryKeyValidatorProxyImpl_confirmRecoveryKey_completion___bloc
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)generateRecoveryKey:(id)a3
+- (void)generateRecoveryKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   validator = self->_validator;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__CDPRecoveryKeyValidatorProxyImpl_generateRecoveryKey___block_invoke;
   v7[3] = &unk_1E869DC98;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   [(CDPRecoveryKeyValidator *)validator generateRecoveryKey:v7];
 }
 
@@ -81,7 +81,7 @@ void __56__CDPRecoveryKeyValidatorProxyImpl_generateRecoveryKey___block_invoke(u
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (id)generateRecoveryKeyWithError:(id *)a3
+- (id)generateRecoveryKeyWithError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -107,9 +107,9 @@ void __56__CDPRecoveryKeyValidatorProxyImpl_generateRecoveryKey___block_invoke(u
   v11 = v7;
   [(CDPRecoveryKeyValidator *)validator generateRecoveryKey:v10];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   v8 = v21[5];
@@ -137,9 +137,9 @@ void __65__CDPRecoveryKeyValidatorProxyImpl_generateRecoveryKeyWithError___block
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)confirmRecoveryKey:(id)a3 error:(id *)a4
+- (BOOL)confirmRecoveryKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -160,11 +160,11 @@ void __65__CDPRecoveryKeyValidatorProxyImpl_generateRecoveryKeyWithError___block
   v15 = &v16;
   v9 = v7;
   v13 = v9;
-  [(CDPRecoveryKeyValidator *)validator confirmRecoveryKey:v6 completion:v12];
+  [(CDPRecoveryKeyValidator *)validator confirmRecoveryKey:keyCopy completion:v12];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   v10 = *(v23 + 24);

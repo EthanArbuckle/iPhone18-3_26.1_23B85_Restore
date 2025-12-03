@@ -1,7 +1,7 @@
 @interface MCDRadioGenresTableViewController
 - (MCDRadioGenresTableViewController)init;
 - (id)_contentManager;
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4 indexPath:(id)a5;
+- (id)contentManager:(id)manager viewControllerForItem:(id)item indexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -30,14 +30,14 @@
   v4 = [v3 localizedStringForKey:@"All Genres" value:&stru_101107168 table:@"MusicCarDisplayUI"];
   [(MCDRadioGenresTableViewController *)self setTitle:v4];
 
-  v5 = [(MCDFuseTableViewController *)self contentManager];
-  [v5 setTableCellConfigurationBlock:&stru_101098880];
+  contentManager = [(MCDFuseTableViewController *)self contentManager];
+  [contentManager setTableCellConfigurationBlock:&stru_101098880];
 }
 
-- (id)contentManager:(id)a3 viewControllerForItem:(id)a4 indexPath:(id)a5
+- (id)contentManager:(id)manager viewControllerForItem:(id)item indexPath:(id)path
 {
-  v5 = a4;
-  v6 = [[MCDContentItemTableViewController alloc] initWithSectionItem:v5 showRankedList:0 queueListForPlayback:0 radioDomain:1];
+  itemCopy = item;
+  v6 = [[MCDContentItemTableViewController alloc] initWithSectionItem:itemCopy showRankedList:0 queueListForPlayback:0 radioDomain:1];
 
   return v6;
 }
@@ -46,9 +46,9 @@
 {
   v3 = [MCDRadioGenresContentManager alloc];
   v4 = objc_opt_new();
-  v5 = [(MCDFuseTableViewController *)self playbackManager];
-  v6 = [(MCDRadioGenresTableViewController *)self traitCollection];
-  v7 = -[MCDFuseContentManager initWithDataSource:delegate:viewController:playbackManager:limitedUI:](v3, "initWithDataSource:delegate:viewController:playbackManager:limitedUI:", v4, self, self, v5, [v6 shouldLimitMusicLists]);
+  playbackManager = [(MCDFuseTableViewController *)self playbackManager];
+  traitCollection = [(MCDRadioGenresTableViewController *)self traitCollection];
+  v7 = -[MCDFuseContentManager initWithDataSource:delegate:viewController:playbackManager:limitedUI:](v3, "initWithDataSource:delegate:viewController:playbackManager:limitedUI:", v4, self, self, playbackManager, [traitCollection shouldLimitMusicLists]);
 
   return v7;
 }

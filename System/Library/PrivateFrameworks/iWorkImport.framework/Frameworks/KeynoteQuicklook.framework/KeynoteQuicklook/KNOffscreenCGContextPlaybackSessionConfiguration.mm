@@ -1,25 +1,25 @@
 @interface KNOffscreenCGContextPlaybackSessionConfiguration
 - (CGSize)boundsSize;
 - (KNOffscreenCGContextPlaybackSessionConfiguration)configurationWithUpdatedLayerScreenEnvironment;
-- (KNOffscreenCGContextPlaybackSessionConfiguration)initWithOffscreenCGContextBoundsSize:(CGSize)a3 isHDREnabled:(BOOL)a4;
+- (KNOffscreenCGContextPlaybackSessionConfiguration)initWithOffscreenCGContextBoundsSize:(CGSize)size isHDREnabled:(BOOL)enabled;
 - (id)description;
 @end
 
 @implementation KNOffscreenCGContextPlaybackSessionConfiguration
 
-- (KNOffscreenCGContextPlaybackSessionConfiguration)initWithOffscreenCGContextBoundsSize:(CGSize)a3 isHDREnabled:(BOOL)a4
+- (KNOffscreenCGContextPlaybackSessionConfiguration)initWithOffscreenCGContextBoundsSize:(CGSize)size isHDREnabled:(BOOL)enabled
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v17.receiver = self;
   v17.super_class = KNOffscreenCGContextPlaybackSessionConfiguration;
-  v7 = [(KNPlaybackSessionConfiguration *)&v17 initSuperclass];
-  v10 = v7;
-  if (v7)
+  initSuperclass = [(KNPlaybackSessionConfiguration *)&v17 initSuperclass];
+  v10 = initSuperclass;
+  if (initSuperclass)
   {
-    v7->_boundsSize.width = width;
-    v7->_boundsSize.height = height;
-    if (a4)
+    initSuperclass->_boundsSize.width = width;
+    initSuperclass->_boundsSize.height = height;
+    if (enabled)
     {
       v11 = objc_msgSend_currentCapabilities(MEMORY[0x277D801F0], v8, v9);
       isHDRCapable = objc_msgSend_isHDRCapable(v11, v12, v13);
@@ -28,7 +28,7 @@
 
     else
     {
-      objc_msgSend_setSupportsHDR_(v7, v8, 0);
+      objc_msgSend_setSupportsHDR_(initSuperclass, v8, 0);
     }
   }
 

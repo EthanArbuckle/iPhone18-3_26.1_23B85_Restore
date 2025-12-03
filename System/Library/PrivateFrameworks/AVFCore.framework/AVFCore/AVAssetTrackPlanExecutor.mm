@@ -1,32 +1,32 @@
 @interface AVAssetTrackPlanExecutor
-+ (id)executorForTrackPlan:(id)a3 segmentWritingCallbackBlock:(id)a4;
-- (AVAssetTrackPlanExecutor)initWithTrackPlan:(id)a3 segmentWritingCallbackBlock:(id)a4;
-- (id)makeFreshState:(id)a3;
-- (id)makeSegmentURLFromBaseURL:(id)a3 trackID:(int)a4 segmentIndex:(int64_t)a5;
-- (void)callWritingSegmentCallbackForTrack:(int)a3 segmentState:(id)a4 isFirstSegment:(BOOL)a5 isLastSegment:(BOOL)a6 initialHDRMetadataState:(id)a7 finalHDRMetadataGenerationStateOut:(id *)a8 error:(id *)a9;
++ (id)executorForTrackPlan:(id)plan segmentWritingCallbackBlock:(id)block;
+- (AVAssetTrackPlanExecutor)initWithTrackPlan:(id)plan segmentWritingCallbackBlock:(id)block;
+- (id)makeFreshState:(id)state;
+- (id)makeSegmentURLFromBaseURL:(id)l trackID:(int)d segmentIndex:(int64_t)index;
+- (void)callWritingSegmentCallbackForTrack:(int)track segmentState:(id)state isFirstSegment:(BOOL)segment isLastSegment:(BOOL)lastSegment initialHDRMetadataState:(id)metadataState finalHDRMetadataGenerationStateOut:(id *)out error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation AVAssetTrackPlanExecutor
 
-- (AVAssetTrackPlanExecutor)initWithTrackPlan:(id)a3 segmentWritingCallbackBlock:(id)a4
+- (AVAssetTrackPlanExecutor)initWithTrackPlan:(id)plan segmentWritingCallbackBlock:(id)block
 {
   v8.receiver = self;
   v8.super_class = AVAssetTrackPlanExecutor;
   v6 = [(AVAssetTrackPlanExecutor *)&v8 init];
   if (v6)
   {
-    v6->_trackPlan = [a3 copy];
-    v6->_writingSegmentCallbackBlock = [a4 copy];
+    v6->_trackPlan = [plan copy];
+    v6->_writingSegmentCallbackBlock = [block copy];
     v6->_writingSemaphore = dispatch_semaphore_create(0);
   }
 
   return v6;
 }
 
-+ (id)executorForTrackPlan:(id)a3 segmentWritingCallbackBlock:(id)a4
++ (id)executorForTrackPlan:(id)plan segmentWritingCallbackBlock:(id)block
 {
-  v4 = [[AVAssetTrackPlanExecutor alloc] initWithTrackPlan:a3 segmentWritingCallbackBlock:a4];
+  v4 = [[AVAssetTrackPlanExecutor alloc] initWithTrackPlan:plan segmentWritingCallbackBlock:block];
 
   return v4;
 }
@@ -44,18 +44,18 @@
   [(AVAssetTrackPlanExecutor *)&v4 dealloc];
 }
 
-- (id)makeSegmentURLFromBaseURL:(id)a3 trackID:(int)a4 segmentIndex:(int64_t)a5
+- (id)makeSegmentURLFromBaseURL:(id)l trackID:(int)d segmentIndex:(int64_t)index
 {
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Track_%d_incremental_segment_%ld.mov", -[AVAssetTrackPlanExecutor assemblyTrackID](self, "assemblyTrackID", a3, *&a4), a5];
+  index = [MEMORY[0x1E696AEC0] stringWithFormat:@"Track_%d_incremental_segment_%ld.mov", -[AVAssetTrackPlanExecutor assemblyTrackID](self, "assemblyTrackID", l, *&d), index];
 
-  return [a3 URLByAppendingPathComponent:v6];
+  return [l URLByAppendingPathComponent:index];
 }
 
-- (id)makeFreshState:(id)a3
+- (id)makeFreshState:(id)state
 {
   v29 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(AVAssetPlannerTrackState);
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -73,8 +73,8 @@
   v25 = 0u;
   v26 = 0u;
   *&v27.value = v7;
-  v8 = [(AVAssetTrackPlan *)self->_trackPlan segmentConfigurations];
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  segmentConfigurations = [(AVAssetTrackPlan *)self->_trackPlan segmentConfigurations];
+  v9 = [(NSArray *)segmentConfigurations countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -86,7 +86,7 @@
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(segmentConfigurations);
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
@@ -105,7 +105,7 @@
           }
 
           v22 = v21.start;
-          v16 = [v14 frameCount];
+          frameCount = [v14 frameCount];
         }
 
         else
@@ -120,40 +120,40 @@
             memset(&v21, 0, 24);
           }
 
-          v16 = 0;
+          frameCount = 0;
           v22 = v21.start;
         }
 
-        [v15 setSegmentURL:{-[AVAssetTrackPlanExecutor makeSegmentURLFromBaseURL:trackID:segmentIndex:](self, "makeSegmentURLFromBaseURL:trackID:segmentIndex:", a3, -[AVAssetTrackPlan assemblyTrackID](self->_trackPlan, "assemblyTrackID"), v11)}];
+        [v15 setSegmentURL:{-[AVAssetTrackPlanExecutor makeSegmentURLFromBaseURL:trackID:segmentIndex:](self, "makeSegmentURLFromBaseURL:trackID:segmentIndex:", state, -[AVAssetTrackPlan assemblyTrackID](self->_trackPlan, "assemblyTrackID"), v11)}];
         start = v27;
         duration = v22;
         CMTimeRangeMake(&v21, &start, &duration);
         [v15 setTimeRange:&v21];
         [v15 setRequiresFrameCount:{-[AVAssetTrackPlan requiresVideoCompression](self->_trackPlan, "requiresVideoCompression")}];
-        [v15 setFrameCount:v16];
+        [v15 setFrameCount:frameCount];
         [v15 setHasCompleted:0];
-        [v6 addObject:v15];
+        [array addObject:v15];
         ++v11;
         v21.start = v27;
         start = v22;
         CMTimeAdd(&v27, &v21.start, &start);
       }
 
-      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v10 = [(NSArray *)segmentConfigurations countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v10);
   }
 
-  [(AVAssetPlannerTrackState *)v18 setSegmentStates:v6];
+  [(AVAssetPlannerTrackState *)v18 setSegmentStates:array];
   return v18;
 }
 
-- (void)callWritingSegmentCallbackForTrack:(int)a3 segmentState:(id)a4 isFirstSegment:(BOOL)a5 isLastSegment:(BOOL)a6 initialHDRMetadataState:(id)a7 finalHDRMetadataGenerationStateOut:(id *)a8 error:(id *)a9
+- (void)callWritingSegmentCallbackForTrack:(int)track segmentState:(id)state isFirstSegment:(BOOL)segment isLastSegment:(BOOL)lastSegment initialHDRMetadataState:(id)metadataState finalHDRMetadataGenerationStateOut:(id *)out error:(id *)error
 {
-  v11 = a6;
-  v12 = a5;
-  v14 = *&a3;
+  lastSegmentCopy = lastSegment;
+  segmentCopy = segment;
+  v14 = *&track;
   v40[3] = *MEMORY[0x1E69E9840];
   writingSemaphore = self->_writingSemaphore;
   v31 = 0;
@@ -172,16 +172,16 @@
   {
     v17 = MEMORY[0x1E695DF90];
     v39[0] = *MEMORY[0x1E6983820];
-    v40[0] = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a4, "frameCount")}];
+    v40[0] = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(state, "frameCount")}];
     v39[1] = *MEMORY[0x1E6983738];
-    v40[1] = [MEMORY[0x1E696AD98] numberWithBool:!v12];
+    v40[1] = [MEMORY[0x1E696AD98] numberWithBool:!segmentCopy];
     v39[2] = *MEMORY[0x1E6983730];
-    v40[2] = [MEMORY[0x1E696AD98] numberWithBool:!v11];
+    v40[2] = [MEMORY[0x1E696AD98] numberWithBool:!lastSegmentCopy];
     v18 = [v17 dictionaryWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v40, v39, 3)}];
     v19 = v18;
-    if (a7)
+    if (metadataState)
     {
-      [v18 setObject:a7 forKey:*MEMORY[0x1E69836B0]];
+      [v18 setObject:metadataState forKey:*MEMORY[0x1E69836B0]];
     }
 
     v37 = @"AVVideoCompressionPropertiesKey";
@@ -195,10 +195,10 @@
     v20 = 0;
   }
 
-  v21 = [a4 segmentURL];
-  if (a4)
+  segmentURL = [state segmentURL];
+  if (state)
   {
-    [a4 timeRange];
+    [state timeRange];
   }
 
   else
@@ -213,16 +213,16 @@
   v23[5] = &v31;
   v23[6] = &v25;
   v23[4] = writingSemaphore;
-  [AVPlannedSegmentWritingRequest requestWithSegmentFileOutputURL:v21 assemblyTrackID:v14 timeRange:v24 outputSettings:v20 finishBlock:v23];
+  [AVPlannedSegmentWritingRequest requestWithSegmentFileOutputURL:segmentURL assemblyTrackID:v14 timeRange:v24 outputSettings:v20 finishBlock:v23];
   (*(self->_writingSegmentCallbackBlock + 2))();
   dispatch_semaphore_wait(writingSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v22 = v26[5];
-  if (a8)
+  if (out)
   {
-    *a8 = v26[5];
+    *out = v26[5];
   }
 
-  *a9 = v32[5];
+  *error = v32[5];
   _Block_object_dispose(&v25, 8);
   _Block_object_dispose(&v31, 8);
 }

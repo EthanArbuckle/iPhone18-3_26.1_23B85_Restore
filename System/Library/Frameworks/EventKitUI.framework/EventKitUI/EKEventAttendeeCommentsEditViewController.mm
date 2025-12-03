@@ -1,34 +1,34 @@
 @interface EKEventAttendeeCommentsEditViewController
 - (BOOL)_canEditAnyParticipantComment;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (EKEventAttendeeCommentsEditViewController)initWithEKEvent:(id)a3;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (EKEventAttendeeCommentsEditViewController)initWithEKEvent:(id)event;
 - (EKUIViewControllerNavigationDelegate)navigationDelegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_cancel;
 - (void)_createTableData;
-- (void)_done:(id)a3;
+- (void)_done:(id)_done;
 - (void)_edit;
 - (void)_localeChanged;
-- (void)_popViewControllerAnimated:(BOOL)a3;
+- (void)_popViewControllerAnimated:(BOOL)animated;
 - (void)_transitionTableViewOutOfEditingMode;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation EKEventAttendeeCommentsEditViewController
 
-- (EKEventAttendeeCommentsEditViewController)initWithEKEvent:(id)a3
+- (EKEventAttendeeCommentsEditViewController)initWithEKEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = EKEventAttendeeCommentsEditViewController;
   v6 = [(EKEventAttendeeCommentsEditViewController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_event, a3);
+    objc_storeStrong(&v6->_event, event);
     v8 = objc_alloc_init(MEMORY[0x1E696AB78]);
     headerDateFormatter = v7->_headerDateFormatter;
     v7->_headerDateFormatter = v8;
@@ -36,8 +36,8 @@
     [(NSDateFormatter *)v7->_headerDateFormatter setTimeStyle:0];
     [(NSDateFormatter *)v7->_headerDateFormatter setDateStyle:2];
     [(NSDateFormatter *)v7->_headerDateFormatter setDoesRelativeDateFormatting:1];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__localeChanged name:*MEMORY[0x1E6993308] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__localeChanged name:*MEMORY[0x1E6993308] object:0];
 
     [(EKEventAttendeeCommentsEditViewController *)v7 _createTableData];
   }
@@ -48,11 +48,11 @@
 - (void)_createTableData
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   tableData = self->_tableData;
-  self->_tableData = v3;
+  self->_tableData = array;
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v29 = CUIKCalendar();
   v35 = 0u;
   v36 = 0u;
@@ -74,41 +74,41 @@
         }
 
         v10 = *(*(&v35 + 1) + 8 * i);
-        v11 = [v10 comment];
-        v12 = [MEMORY[0x1E6993410] stringWithAutoCommentRemoved:v11];
+        comment = [v10 comment];
+        v12 = [MEMORY[0x1E6993410] stringWithAutoCommentRemoved:comment];
 
         if ([v12 length])
         {
-          v13 = [v10 commentLastModifiedDate];
+          commentLastModifiedDate = [v10 commentLastModifiedDate];
 
-          if (v13)
+          if (commentLastModifiedDate)
           {
-            v14 = [v10 commentLastModifiedDate];
-            v15 = [v29 startOfDayForDate:v14];
+            commentLastModifiedDate2 = [v10 commentLastModifiedDate];
+            array3 = [v29 startOfDayForDate:commentLastModifiedDate2];
 
-            v16 = [v5 objectForKeyedSubscript:v15];
-            if (!v16)
+            array2 = [dictionary objectForKeyedSubscript:array3];
+            if (!array2)
             {
-              v16 = [MEMORY[0x1E695DF70] array];
-              [v5 setObject:v16 forKeyedSubscript:v15];
+              array2 = [MEMORY[0x1E695DF70] array];
+              [dictionary setObject:array2 forKeyedSubscript:array3];
             }
 
-            [v16 addObject:v10];
+            [array2 addObject:v10];
           }
 
           else
           {
-            v17 = [MEMORY[0x1E695DF00] distantPast];
-            v15 = [v5 objectForKeyedSubscript:v17];
+            distantPast = [MEMORY[0x1E695DF00] distantPast];
+            array3 = [dictionary objectForKeyedSubscript:distantPast];
 
-            if (!v15)
+            if (!array3)
             {
-              v15 = [MEMORY[0x1E695DF70] array];
-              v18 = [MEMORY[0x1E695DF00] distantPast];
-              [v5 setObject:v15 forKeyedSubscript:v18];
+              array3 = [MEMORY[0x1E695DF70] array];
+              distantPast2 = [MEMORY[0x1E695DF00] distantPast];
+              [dictionary setObject:array3 forKeyedSubscript:distantPast2];
             }
 
-            [v15 addObject:v10];
+            [array3 addObject:v10];
           }
         }
       }
@@ -119,11 +119,11 @@
     while (v7);
   }
 
-  v19 = [v5 allKeys];
+  allKeys = [dictionary allKeys];
   v20 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:0 ascending:0];
   v40 = v20;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
-  v22 = [v19 sortedArrayUsingDescriptors:v21];
+  v22 = [allKeys sortedArrayUsingDescriptors:v21];
 
   v33 = 0u;
   v34 = 0u;
@@ -144,7 +144,7 @@
           objc_enumerationMutation(v23);
         }
 
-        v28 = [v5 objectForKeyedSubscript:*(*(&v31 + 1) + 8 * j)];
+        v28 = [dictionary objectForKeyedSubscript:*(*(&v31 + 1) + 8 * j)];
         [v28 sortUsingComparator:&__block_literal_global_43];
         [(NSMutableArray *)self->_tableData addObject:v28];
       }
@@ -188,29 +188,29 @@ uint64_t __61__EKEventAttendeeCommentsEditViewController__createTableData__block
   [(UITableView *)self->_tableView setDelegate:self];
   [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITableView *)self->_tableView setAllowsSelection:0];
-  v6 = [(EKEventAttendeeCommentsEditViewController *)self view];
-  [v6 addSubview:self->_tableView];
+  view = [(EKEventAttendeeCommentsEditViewController *)self view];
+  [view addSubview:self->_tableView];
 
   v22 = MEMORY[0x1E696ACD8];
-  v28 = [(UITableView *)self->_tableView leadingAnchor];
-  v29 = [(EKEventAttendeeCommentsEditViewController *)self view];
-  v27 = [v29 leadingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  leadingAnchor = [(UITableView *)self->_tableView leadingAnchor];
+  view2 = [(EKEventAttendeeCommentsEditViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v31[0] = v26;
-  v24 = [(UITableView *)self->_tableView trailingAnchor];
-  v25 = [(EKEventAttendeeCommentsEditViewController *)self view];
-  v23 = [v25 trailingAnchor];
-  v21 = [v24 constraintEqualToAnchor:v23];
+  trailingAnchor = [(UITableView *)self->_tableView trailingAnchor];
+  view3 = [(EKEventAttendeeCommentsEditViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v31[1] = v21;
-  v7 = [(UITableView *)self->_tableView topAnchor];
-  v8 = [(EKEventAttendeeCommentsEditViewController *)self view];
-  v9 = [v8 topAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  topAnchor = [(UITableView *)self->_tableView topAnchor];
+  view4 = [(EKEventAttendeeCommentsEditViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v31[2] = v10;
-  v11 = [(UITableView *)self->_tableView bottomAnchor];
-  v12 = [(EKEventAttendeeCommentsEditViewController *)self view];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  bottomAnchor = [(UITableView *)self->_tableView bottomAnchor];
+  view5 = [(EKEventAttendeeCommentsEditViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v31[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:4];
   [v22 activateConstraints:v15];
@@ -218,14 +218,14 @@ uint64_t __61__EKEventAttendeeCommentsEditViewController__createTableData__block
   if ([(EKEventAttendeeCommentsEditViewController *)self _canEditAnyParticipantComment])
   {
     v16 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:2 target:self action:sel__edit];
-    v17 = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
-    [v17 setRightBarButtonItem:v16];
+    navigationItem = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v16];
   }
 
   v18 = EventKitUIBundle();
   v19 = [v18 localizedStringForKey:@"Comments" value:&stru_1F4EF6790 table:0];
-  v20 = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
-  [v20 setTitle:v19];
+  navigationItem2 = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
+  [navigationItem2 setTitle:v19];
 }
 
 - (void)_localeChanged
@@ -242,27 +242,27 @@ uint64_t __61__EKEventAttendeeCommentsEditViewController__createTableData__block
   [(UITableView *)self->_tableView beginUpdates];
   [(UITableView *)self->_tableView endUpdates];
   v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__done_];
-  v4 = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancel];
-  v5 = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:v6];
+  navigationItem2 = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v6];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
-  v4 = a3;
+  _doneCopy = _done;
   if ([(EKEvent *)self->_event hasChanges])
   {
-    v5 = [(UIResponder *)self EKUI_editor];
+    eKUI_editor = [(UIResponder *)self EKUI_editor];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __51__EKEventAttendeeCommentsEditViewController__done___block_invoke;
     aBlock[3] = &unk_1E8441AD8;
-    v6 = v5;
+    v6 = eKUI_editor;
     v21 = v6;
-    v22 = self;
+    selfCopy = self;
     v7 = _Block_copy(aBlock);
     if ([(EKEvent *)self->_event isOrWasPartOfRecurringSeries])
     {
@@ -280,7 +280,7 @@ uint64_t __61__EKEventAttendeeCommentsEditViewController__createTableData__block
       v11[4] = self;
       v12 = v7;
       v13 = &v14;
-      v9 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:self barButtonItem:v4 forEvent:event withCompletionHandler:v11];
+      v9 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:self barButtonItem:_doneCopy forEvent:event withCompletionHandler:v11];
       v10 = v15[5];
       v15[5] = v9;
 
@@ -334,19 +334,19 @@ uint64_t __51__EKEventAttendeeCommentsEditViewController__done___block_invoke_37
   [(UITableView *)self->_tableView endUpdates];
   if ([(EKEventAttendeeCommentsEditViewController *)self _canEditAnyParticipantComment])
   {
-    v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:2 target:self action:sel__edit];
-    v4 = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
-    [v4 setRightBarButtonItem:v3];
+    navigationItem2 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:2 target:self action:sel__edit];
+    navigationItem = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:navigationItem2];
   }
 
   else
   {
-    v3 = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
-    [v3 setRightBarButtonItem:0];
+    navigationItem2 = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
   }
 
-  v5 = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:0];
+  navigationItem3 = [(EKEventAttendeeCommentsEditViewController *)self navigationItem];
+  [navigationItem3 setLeftBarButtonItem:0];
 }
 
 - (void)_cancel
@@ -361,26 +361,26 @@ uint64_t __51__EKEventAttendeeCommentsEditViewController__done___block_invoke_37
   [(EKEventAttendeeCommentsEditViewController *)self _transitionTableViewOutOfEditingMode];
 }
 
-- (void)_popViewControllerAnimated:(BOOL)a3
+- (void)_popViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(EKEventAttendeeCommentsEditViewController *)self navigationDelegate];
-  v6 = v5;
-  if (v5)
+  animatedCopy = animated;
+  navigationDelegate = [(EKEventAttendeeCommentsEditViewController *)self navigationDelegate];
+  v6 = navigationDelegate;
+  if (navigationDelegate)
   {
-    v7 = v5;
+    navigationController = navigationDelegate;
   }
 
   else
   {
-    v7 = [(EKEventAttendeeCommentsEditViewController *)self navigationController];
+    navigationController = [(EKEventAttendeeCommentsEditViewController *)self navigationController];
   }
 
-  v8 = v7;
+  v8 = navigationController;
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 popViewControllerAnimated:v3];
+    [v8 popViewControllerAnimated:animatedCopy];
   }
 }
 
@@ -473,20 +473,20 @@ LABEL_23:
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_tableData objectAtIndexedSubscript:a4];
+  v4 = [(NSMutableArray *)self->_tableData objectAtIndexedSubscript:section];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   tableData = self->_tableData;
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](tableData, "objectAtIndexedSubscript:", [v5 section]);
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](tableData, "objectAtIndexedSubscript:", [pathCopy section]);
+  v7 = [pathCopy row];
 
   v8 = [v6 objectAtIndexedSubscript:v7];
 
@@ -495,19 +495,19 @@ LABEL_23:
   return v9;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  pathCopy = path;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __92__EKEventAttendeeCommentsEditViewController_tableView_commitEditingStyle_forRowAtIndexPath___block_invoke;
   v11[3] = &unk_1E843EC38;
   v11[4] = self;
-  v12 = v8;
-  v13 = v7;
-  v9 = v7;
-  v10 = v8;
+  v12 = pathCopy;
+  v13 = viewCopy;
+  v9 = viewCopy;
+  v10 = pathCopy;
   [v9 performBatchUpdates:v11 completion:&__block_literal_global_47];
 }
 
@@ -534,40 +534,40 @@ void __92__EKEventAttendeeCommentsEditViewController_tableView_commitEditingStyl
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
   tableData = self->_tableData;
-  v6 = a4;
-  v7 = -[NSMutableArray objectAtIndexedSubscript:](tableData, "objectAtIndexedSubscript:", [v6 section]);
-  v8 = [v6 row];
+  pathCopy = path;
+  v7 = -[NSMutableArray objectAtIndexedSubscript:](tableData, "objectAtIndexedSubscript:", [pathCopy section]);
+  v8 = [pathCopy row];
 
   v9 = [v7 objectAtIndexedSubscript:v8];
 
   if ([v9 participantType] == 2)
   {
-    v10 = 0;
+    isEditable = 0;
   }
 
   else
   {
-    v10 = [(EKEvent *)self->_event isEditable];
+    isEditable = [(EKEvent *)self->_event isEditable];
   }
 
-  return v10;
+  return isEditable;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(NSMutableArray *)self->_tableData objectAtIndexedSubscript:a4];
+  v5 = [(NSMutableArray *)self->_tableData objectAtIndexedSubscript:section];
   v6 = [v5 objectAtIndexedSubscript:0];
 
-  v7 = [v6 commentLastModifiedDate];
+  commentLastModifiedDate = [v6 commentLastModifiedDate];
 
-  if (v7)
+  if (commentLastModifiedDate)
   {
     headerDateFormatter = self->_headerDateFormatter;
-    v9 = [v6 commentLastModifiedDate];
-    v10 = [(NSDateFormatter *)headerDateFormatter stringFromDate:v9];
+    commentLastModifiedDate2 = [v6 commentLastModifiedDate];
+    v10 = [(NSDateFormatter *)headerDateFormatter stringFromDate:commentLastModifiedDate2];
   }
 
   else

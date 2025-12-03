@@ -16,21 +16,21 @@
 - (uint64_t)hd_isEquivalentToDevice:()HealthDaemon
 {
   v4 = a3;
-  v5 = [a1 hd_deviceIdentifier];
-  v6 = [v4 hd_deviceIdentifier];
-  if (v5 == v6)
+  hd_deviceIdentifier = [self hd_deviceIdentifier];
+  hd_deviceIdentifier2 = [v4 hd_deviceIdentifier];
+  if (hd_deviceIdentifier == hd_deviceIdentifier2)
   {
     v10 = 1;
   }
 
   else
   {
-    v7 = [v4 hd_deviceIdentifier];
-    if (v7)
+    hd_deviceIdentifier3 = [v4 hd_deviceIdentifier];
+    if (hd_deviceIdentifier3)
     {
-      v8 = [a1 hd_deviceIdentifier];
-      v9 = [v4 hd_deviceIdentifier];
-      v10 = [v8 isEqualToString:v9];
+      hd_deviceIdentifier4 = [self hd_deviceIdentifier];
+      hd_deviceIdentifier5 = [v4 hd_deviceIdentifier];
+      v10 = [hd_deviceIdentifier4 isEqualToString:hd_deviceIdentifier5];
     }
 
     else
@@ -46,8 +46,8 @@
 {
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
-  v4 = [a1 name];
-  if ([a1 isActive])
+  name = [self name];
+  if ([self isActive])
   {
     v5 = "active";
   }
@@ -57,8 +57,8 @@
     v5 = "inactive";
   }
 
-  v6 = [a1 hd_deviceIdentifier];
-  v7 = [v2 stringWithFormat:@"<%@:%p %@ (%s) device-id:%@>", v3, a1, v4, v5, v6];
+  hd_deviceIdentifier = [self hd_deviceIdentifier];
+  v7 = [v2 stringWithFormat:@"<%@:%p %@ (%s) device-id:%@>", v3, self, name, v5, hd_deviceIdentifier];
 
   return v7;
 }

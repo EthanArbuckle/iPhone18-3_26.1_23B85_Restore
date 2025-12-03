@@ -1,43 +1,43 @@
 @interface IMReplyingRemoteDaemonProxy
 - (IMDaemonController)daemonController;
-- (IMReplyingRemoteDaemonProxy)initWithDaemonController:(id)a3 synchronousReplies:(BOOL)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (IMReplyingRemoteDaemonProxy)initWithDaemonController:(id)controller synchronousReplies:(BOOL)replies;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation IMReplyingRemoteDaemonProxy
 
-- (IMReplyingRemoteDaemonProxy)initWithDaemonController:(id)a3 synchronousReplies:(BOOL)a4
+- (IMReplyingRemoteDaemonProxy)initWithDaemonController:(id)controller synchronousReplies:(BOOL)replies
 {
   if (self)
   {
-    objc_storeWeak(&self->_daemonController, a3);
-    self->_synchronousReplies = a4;
+    objc_storeWeak(&self->_daemonController, controller);
+    self->_synchronousReplies = replies;
   }
 
   return self;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = objc_msgSend_daemonController(self, a2, a3);
-  v6 = objc_msgSend_methodSignatureForSelector_(v4, v5, a3);
+  v4 = objc_msgSend_daemonController(self, a2, selector);
+  v6 = objc_msgSend_methodSignatureForSelector_(v4, v5, selector);
 
   return v6;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v7 = objc_msgSend_daemonController(self, v5, v6);
   v10 = objc_msgSend_synchronousReplies(self, v8, v9);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_1A8359910;
   v13[3] = &unk_1E7810140;
-  v14 = v4;
-  v15 = self;
-  v11 = v4;
+  v14 = invocationCopy;
+  selfCopy = self;
+  v11 = invocationCopy;
   objc_msgSend_sendQueryWithReply_query_(v7, v12, v10, v13);
 }
 

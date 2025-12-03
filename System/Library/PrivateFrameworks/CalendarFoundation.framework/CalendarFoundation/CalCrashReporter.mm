@@ -1,12 +1,12 @@
 @interface CalCrashReporter
-+ (void)simulateCrashWithMessage:(id)a3;
++ (void)simulateCrashWithMessage:(id)message;
 @end
 
 @implementation CalCrashReporter
 
-+ (void)simulateCrashWithMessage:(id)a3
++ (void)simulateCrashWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = EKWeakLinkSymbol("SimulateCrash", 0xCuLL);
   v5 = +[CalFoundationLogSubsystem defaultCategory];
   v6 = v5;
@@ -14,18 +14,18 @@
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(CalCrashReporter *)v3 simulateCrashWithMessage:v6];
+      [(CalCrashReporter *)messageCopy simulateCrashWithMessage:v6];
     }
 
     v7 = getpid();
-    v4(v7, 516869835, v3);
+    v4(v7, 516869835, messageCopy);
   }
 
   else
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(CalCrashReporter *)v3 simulateCrashWithMessage:v6];
+      [(CalCrashReporter *)messageCopy simulateCrashWithMessage:v6];
     }
   }
 }

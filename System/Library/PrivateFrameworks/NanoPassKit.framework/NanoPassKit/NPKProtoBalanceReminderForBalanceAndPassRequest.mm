@@ -1,11 +1,11 @@
 @interface NPKProtoBalanceReminderForBalanceAndPassRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoBalanceReminderForBalanceAndPassRequest
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoBalanceReminderForBalanceAndPassRequest;
   v4 = [(NPKProtoBalanceReminderForBalanceAndPassRequest *)&v8 description];
-  v5 = [(NPKProtoBalanceReminderForBalanceAndPassRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoBalanceReminderForBalanceAndPassRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uniqueID = self->_uniqueID;
   if (uniqueID)
   {
-    [v3 setObject:uniqueID forKey:@"uniqueID"];
+    [dictionary setObject:uniqueID forKey:@"uniqueID"];
   }
 
   balanceBytes = self->_balanceBytes;
@@ -41,61 +41,61 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uniqueID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_balanceBytes)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uniqueID)
   {
-    [v4 setUniqueID:?];
-    v4 = v5;
+    [toCopy setUniqueID:?];
+    toCopy = v5;
   }
 
   if (self->_balanceBytes)
   {
     [v5 setBalanceBytes:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueID copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_balanceBytes copyWithZone:a3];
+  v8 = [(NSData *)self->_balanceBytes copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((uniqueID = self->_uniqueID, !(uniqueID | v4[2])) || -[NSString isEqual:](uniqueID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((uniqueID = self->_uniqueID, !(uniqueID | equalCopy[2])) || -[NSString isEqual:](uniqueID, "isEqual:")))
   {
     balanceBytes = self->_balanceBytes;
-    if (balanceBytes | v4[1])
+    if (balanceBytes | equalCopy[1])
     {
       v7 = [(NSData *)balanceBytes isEqual:?];
     }
@@ -114,20 +114,20 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(NPKProtoBalanceReminderForBalanceAndPassRequest *)self setUniqueID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKProtoBalanceReminderForBalanceAndPassRequest *)self setBalanceBytes:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

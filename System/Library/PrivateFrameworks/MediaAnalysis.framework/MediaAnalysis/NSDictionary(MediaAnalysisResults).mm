@@ -6,7 +6,7 @@
 
 - (void)vcp_time
 {
-  v3 = [a1 objectForKeyedSubscript:@"start"];
+  v3 = [self objectForKeyedSubscript:@"start"];
   CMTimeMakeFromDictionary(a2, v3);
 }
 

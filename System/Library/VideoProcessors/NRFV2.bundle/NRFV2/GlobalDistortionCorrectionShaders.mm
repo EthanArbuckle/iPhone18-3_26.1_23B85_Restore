@@ -1,12 +1,12 @@
 @interface GlobalDistortionCorrectionShaders
-- (GlobalDistortionCorrectionShaders)initWithMetal:(id)a3;
+- (GlobalDistortionCorrectionShaders)initWithMetal:(id)metal;
 @end
 
 @implementation GlobalDistortionCorrectionShaders
 
-- (GlobalDistortionCorrectionShaders)initWithMetal:(id)a3
+- (GlobalDistortionCorrectionShaders)initWithMetal:(id)metal
 {
-  v4 = a3;
+  metalCopy = metal;
   v26.receiver = self;
   v26.super_class = GlobalDistortionCorrectionShaders;
   v6 = [(GlobalDistortionCorrectionShaders *)&v26 init];
@@ -15,7 +15,7 @@
     goto LABEL_8;
   }
 
-  v7 = objc_msgSend_computePipelineStateFor_constants_(v4, v5, @"kernelGlobalDistortionCorrectionHWCSC", 0);
+  v7 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v5, @"kernelGlobalDistortionCorrectionHWCSC", 0);
   kernelGlobalDistortionCorrectionHWCSC = v6->_kernelGlobalDistortionCorrectionHWCSC;
   v6->_kernelGlobalDistortionCorrectionHWCSC = v7;
 
@@ -27,7 +27,7 @@ LABEL_16:
     goto LABEL_9;
   }
 
-  v10 = objc_msgSend_computePipelineStateFor_constants_(v4, v9, @"kernelGlobalDistortionCorrectionCopy", 0);
+  v10 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v9, @"kernelGlobalDistortionCorrectionCopy", 0);
   kernelGlobalDistortionCorrectionCopy = v6->_kernelGlobalDistortionCorrectionCopy;
   v6->_kernelGlobalDistortionCorrectionCopy = v10;
 
@@ -37,7 +37,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v13 = objc_msgSend_computePipelineStateFor_constants_(v4, v12, @"kernelGlobalDistortionCorrectionSWCSCtoLinearRGB", 0);
+  v13 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v12, @"kernelGlobalDistortionCorrectionSWCSCtoLinearRGB", 0);
   kernelGlobalDistortionCorrectionSWCSCtoLinearRGB = v6->_kernelGlobalDistortionCorrectionSWCSCtoLinearRGB;
   v6->_kernelGlobalDistortionCorrectionSWCSCtoLinearRGB = v13;
 
@@ -47,7 +47,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v16 = objc_msgSend_computePipelineStateFor_constants_(v4, v15, @"kernelGlobalDistortionCorrectionLinearRGB", 0);
+  v16 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v15, @"kernelGlobalDistortionCorrectionLinearRGB", 0);
   kernelGlobalDistortionCorrectionLinearRGB = v6->_kernelGlobalDistortionCorrectionLinearRGB;
   v6->_kernelGlobalDistortionCorrectionLinearRGB = v16;
 
@@ -57,7 +57,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v19 = objc_msgSend_computePipelineStateFor_constants_(v4, v18, @"kernelPack10BitY", 0);
+  v19 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v18, @"kernelPack10BitY", 0);
   kernelPack10BitY = v6->_kernelPack10BitY;
   v6->_kernelPack10BitY = v19;
 
@@ -67,7 +67,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v22 = objc_msgSend_computePipelineStateFor_constants_(v4, v21, @"kernelPack10BitCbCr", 0);
+  v22 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v21, @"kernelPack10BitCbCr", 0);
   kernelPack10BitCbCr = v6->_kernelPack10BitCbCr;
   v6->_kernelPack10BitCbCr = v22;
 

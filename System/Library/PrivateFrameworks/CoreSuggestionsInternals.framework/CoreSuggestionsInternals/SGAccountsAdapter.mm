@@ -1,19 +1,19 @@
 @interface SGAccountsAdapter
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (SGAccountsAdapter)sharedInstance;
-- (BOOL)hasCalendarAccount:(id)a3;
+- (BOOL)hasCalendarAccount:(id)account;
 - (BOOL)readCachedAccounts;
 - (SGAccountsAdapter)init;
 - (id)primaryICloudCalendarAccount;
-- (id)serverIdentifierForAccount:(id)a3;
-- (void)accountsStoreDidChange:(id)a3;
+- (id)serverIdentifierForAccount:(id)account;
+- (void)accountsStoreDidChange:(id)change;
 - (void)cancelUpdateTimer;
 - (void)dealloc;
 - (void)refreshCacheFromAccountsService;
 - (void)registerNotificationObserver;
 - (void)removeNotificationObserver;
 - (void)setCachedAccounts;
-- (void)setUpdateTimerWithDelaySeconds:(unint64_t)a3;
+- (void)setUpdateTimerWithDelaySeconds:(unint64_t)seconds;
 @end
 
 @implementation SGAccountsAdapter
@@ -32,31 +32,31 @@
 
 - (id)primaryICloudCalendarAccount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_cachedPrimaryICloudAccount;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_cachedPrimaryICloudAccount;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)serverIdentifierForAccount:(id)a3
+- (id)serverIdentifierForAccount:(id)account
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ACAccountStore *)v5->_accountStore accountWithIdentifier:v4];
+  accountCopy = account;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(ACAccountStore *)selfCopy->_accountStore accountWithIdentifier:accountCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 parentAccount];
-    if (v8)
+    parentAccount = [v6 parentAccount];
+    if (parentAccount)
     {
-      v9 = [v7 parentAccount];
-      v10 = [v9 accountType];
-      v11 = [v10 identifier];
+      parentAccount2 = [v7 parentAccount];
+      accountType = [parentAccount2 accountType];
+      identifier = [accountType identifier];
       v12 = *MEMORY[0x277CB8BA0];
-      v13 = [v11 isEqualToString:*MEMORY[0x277CB8BA0]];
+      v13 = [identifier isEqualToString:*MEMORY[0x277CB8BA0]];
 
       if (v13)
       {
@@ -67,10 +67,10 @@ LABEL_7:
       }
     }
 
-    v15 = [v7 accountType];
-    v16 = [v15 identifier];
+    accountType2 = [v7 accountType];
+    identifier2 = [accountType2 identifier];
     v17 = *MEMORY[0x277CB8C40];
-    v18 = [v16 isEqualToString:*MEMORY[0x277CB8C40]];
+    v18 = [identifier2 isEqualToString:*MEMORY[0x277CB8C40]];
 
     if (v18)
     {
@@ -78,13 +78,13 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v20 = [v7 accountProperties];
+    accountProperties = [v7 accountProperties];
     v21 = *MEMORY[0x277CB8AC8];
-    v22 = [v20 objectForKeyedSubscript:*MEMORY[0x277CB8AC8]];
+    v22 = [accountProperties objectForKeyedSubscript:*MEMORY[0x277CB8AC8]];
 
-    if (v22 || (v21 = *MEMORY[0x277CB8AD0], [v20 objectForKeyedSubscript:*MEMORY[0x277CB8AD0]], v23 = objc_claimAutoreleasedReturnValue(), v23, v23))
+    if (v22 || (v21 = *MEMORY[0x277CB8AD0], [accountProperties objectForKeyedSubscript:*MEMORY[0x277CB8AD0]], v23 = objc_claimAutoreleasedReturnValue(), v23, v23))
     {
-      v19 = [v20 objectForKeyedSubscript:v21];
+      v19 = [accountProperties objectForKeyedSubscript:v21];
     }
 
     else
@@ -100,27 +100,27 @@ LABEL_7:
 
 LABEL_13:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v19;
 }
 
-- (BOOL)hasCalendarAccount:(id)a3
+- (BOOL)hasCalendarAccount:(id)account
 {
-  v4 = self;
-  v5 = a3;
-  objc_sync_enter(v4);
-  v6 = v4->_usernamesCache;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  accountCopy = account;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_usernamesCache;
+  objc_sync_exit(selfCopy);
 
-  LOBYTE(v4) = [(NSSet *)v6 containsObject:v5];
-  return v4;
+  LOBYTE(selfCopy) = [(NSSet *)v6 containsObject:accountCopy];
+  return selfCopy;
 }
 
 - (void)removeNotificationObserver
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)dealloc
@@ -133,11 +133,11 @@ LABEL_13:
 
 - (void)registerNotificationObserver
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_accountsStoreDidChange_ name:*MEMORY[0x277CB8DB8] object:self->_accountStore];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_accountsStoreDidChange_ name:*MEMORY[0x277CB8DB8] object:self->_accountStore];
 }
 
-- (void)setUpdateTimerWithDelaySeconds:(unint64_t)a3
+- (void)setUpdateTimerWithDelaySeconds:(unint64_t)seconds
 {
   obj = self;
   objc_sync_enter(obj);
@@ -149,12 +149,12 @@ LABEL_13:
   }
 
   updateTimerSource = v4->_updateTimerSource;
-  v6 = a3;
-  if (a3)
+  secondsCopy = seconds;
+  if (seconds)
   {
-    if (a3 <= 0x225C17D04)
+    if (seconds <= 0x225C17D04)
     {
-      v7 = dispatch_time(0, (v6 * 1000000000.0));
+      v7 = dispatch_time(0, (secondsCopy * 1000000000.0));
     }
 
     else
@@ -168,7 +168,7 @@ LABEL_13:
     v7 = 0;
   }
 
-  dispatch_source_set_timer(updateTimerSource, v7, 0xFFFFFFFFFFFFFFFFLL, (v6 * 0.1 * 1000000000.0));
+  dispatch_source_set_timer(updateTimerSource, v7, 0xFFFFFFFFFFFFFFFFLL, (secondsCopy * 0.1 * 1000000000.0));
   dispatch_resume(obj->_updateTimerSource);
   obj->_updateTimerIsSet = 1;
   objc_sync_exit(obj);
@@ -215,7 +215,7 @@ LABEL_13:
   }
 
   obj = objc_opt_new();
-  v30 = self;
+  selfCopy = self;
   location = &self->_cachedPrimaryICloudAccount;
   v29 = self->_cachedPrimaryICloudAccount;
   v33 = 0u;
@@ -246,26 +246,26 @@ LABEL_13:
       }
 
       v17 = *(*(&v33 + 1) + 8 * i);
-      v18 = [v17 enabledDataclasses];
-      if (![v18 containsObject:v14])
+      enabledDataclasses = [v17 enabledDataclasses];
+      if (![enabledDataclasses containsObject:v14])
       {
         goto LABEL_14;
       }
 
-      v19 = [v17 username];
+      username = [v17 username];
 
-      if (v19)
+      if (username)
       {
-        v20 = [v17 username];
-        [obj addObject:v20];
+        username2 = [v17 username];
+        [obj addObject:username2];
 
-        v21 = [v17 parentAccount];
-        v22 = [v21 aa_isAccountClass:v15];
+        parentAccount = [v17 parentAccount];
+        v22 = [parentAccount aa_isAccountClass:v15];
 
         if (v22)
         {
           [v17 identifier];
-          v12 = v18 = v12;
+          v12 = enabledDataclasses = v12;
 LABEL_14:
 
           continue;
@@ -287,7 +287,7 @@ LABEL_19:
     _os_log_debug_impl(&dword_231E60000, v23, OS_LOG_TYPE_DEBUG, "Calendar accounts updated: %{sensitive}@", buf, 0xCu);
   }
 
-  v24 = v30;
+  v24 = selfCopy;
   objc_sync_enter(v24);
   objc_storeStrong(v24 + 1, obj);
   objc_sync_exit(v24);
@@ -313,24 +313,24 @@ LABEL_25:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountsStoreDidChange:(id)a3
+- (void)accountsStoreDidChange:(id)change
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changeCopy = change;
+  v5 = changeCopy;
+  if (changeCopy)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CB8C90]];
+    userInfo = [changeCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CB8C90]];
 
     if (v7 && [v7 isEqual:*MEMORY[0x277CB8BC8]])
     {
       v8 = sgLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [v5 userInfo];
+        userInfo2 = [v5 userInfo];
         v12 = 138412290;
-        v13 = v9;
+        v13 = userInfo2;
         _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_INFO, "Refreshing due to account change: %@", &v12, 0xCu);
       }
 
@@ -342,9 +342,9 @@ LABEL_25:
   v7 = sgLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v10 = [v5 userInfo];
+    userInfo3 = [v5 userInfo];
     v12 = 138412290;
-    v13 = v10;
+    v13 = userInfo3;
     _os_log_impl(&dword_231E60000, v7, OS_LOG_TYPE_INFO, "Filtering account change that we don't care about: %@", &v12, 0xCu);
   }
 
@@ -356,49 +356,49 @@ LABEL_10:
 - (void)setCachedAccounts
 {
   v5 = objc_opt_new();
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_cachedPrimaryICloudAccount && v3->_usernamesCache)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_cachedPrimaryICloudAccount && selfCopy->_usernamesCache)
   {
     [v5 addObject:?];
-    v4 = [(NSSet *)v3->_usernamesCache allObjects];
-    [v5 addObjectsFromArray:v4];
+    allObjects = [(NSSet *)selfCopy->_usernamesCache allObjects];
+    [v5 addObjectsFromArray:allObjects];
   }
 
   [MEMORY[0x277D02098] setUserAccountsPersistedState:v5];
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)readCachedAccounts
 {
-  v3 = [MEMORY[0x277D02098] userAccountsPersistedState];
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v3 && [v3 count])
+  userAccountsPersistedState = [MEMORY[0x277D02098] userAccountsPersistedState];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (userAccountsPersistedState && [userAccountsPersistedState count])
   {
-    v5 = [v3 firstObject];
-    cachedPrimaryICloudAccount = v4->_cachedPrimaryICloudAccount;
-    v4->_cachedPrimaryICloudAccount = v5;
+    firstObject = [userAccountsPersistedState firstObject];
+    cachedPrimaryICloudAccount = selfCopy->_cachedPrimaryICloudAccount;
+    selfCopy->_cachedPrimaryICloudAccount = firstObject;
 
     v7 = objc_alloc(MEMORY[0x277CBEB98]);
-    v8 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count") - 1}];
+    v8 = [userAccountsPersistedState subarrayWithRange:{1, objc_msgSend(userAccountsPersistedState, "count") - 1}];
     v9 = [v7 initWithArray:v8];
-    usernamesCache = v4->_usernamesCache;
-    v4->_usernamesCache = v9;
+    usernamesCache = selfCopy->_usernamesCache;
+    selfCopy->_usernamesCache = v9;
   }
 
   else
   {
-    v11 = v4->_cachedPrimaryICloudAccount;
-    v4->_cachedPrimaryICloudAccount = 0;
+    v11 = selfCopy->_cachedPrimaryICloudAccount;
+    selfCopy->_cachedPrimaryICloudAccount = 0;
 
     v12 = objc_opt_new();
-    v8 = v4->_usernamesCache;
-    v4->_usernamesCache = v12;
+    v8 = selfCopy->_usernamesCache;
+    selfCopy->_usernamesCache = v12;
   }
 
-  objc_sync_exit(v4);
-  return v3 != 0;
+  objc_sync_exit(selfCopy);
+  return userAccountsPersistedState != 0;
 }
 
 - (SGAccountsAdapter)init
@@ -483,11 +483,11 @@ void __25__SGAccountsAdapter_init__block_invoke_2(uint64_t a1)
   }
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = NSStringFromSelector(sel_primaryICloudCalendarAccount);
-  v6 = [v4 isEqualToString:v5];
+  v6 = [keyCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -496,9 +496,9 @@ void __25__SGAccountsAdapter_init__block_invoke_2(uint64_t a1)
 
   else
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS___SGAccountsAdapter;
-    v7 = objc_msgSendSuper2(&v9, sel_automaticallyNotifiesObserversForKey_, v4);
+    v7 = objc_msgSendSuper2(&v9, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v7;

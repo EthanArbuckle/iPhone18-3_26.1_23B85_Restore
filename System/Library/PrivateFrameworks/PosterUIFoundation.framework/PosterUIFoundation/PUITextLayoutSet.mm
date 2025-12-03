@@ -1,21 +1,21 @@
 @interface PUITextLayoutSet
-+ (id)supportedTextLayoutSetForRole:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)supportedTextLayoutSetForRole:(id)role;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PUITextLayoutSet)initWithBSXPCCoder:(id)a3;
-- (PUITextLayoutSet)initWithCoder:(id)a3;
-- (PUITextLayoutSet)initWithTextLayout:(unint64_t)a3;
-- (PUITextLayoutSet)initWithTextLayouts:(id)a3;
-- (PUITextLayoutSet)initWithTextLayoutsIndexSet:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)textLayoutSetByAddingTextLayout:(unint64_t)a3;
+- (PUITextLayoutSet)initWithBSXPCCoder:(id)coder;
+- (PUITextLayoutSet)initWithCoder:(id)coder;
+- (PUITextLayoutSet)initWithTextLayout:(unint64_t)layout;
+- (PUITextLayoutSet)initWithTextLayouts:(id)layouts;
+- (PUITextLayoutSet)initWithTextLayoutsIndexSet:(id)set;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)textLayoutSetByAddingTextLayout:(unint64_t)layout;
 @end
 
 @implementation PUITextLayoutSet
 
-+ (id)supportedTextLayoutSetForRole:(id)a3
++ (id)supportedTextLayoutSetForRole:(id)role
 {
-  v3 = [a3 isEqual:*MEMORY[0x1E69C5218]];
+  v3 = [role isEqual:*MEMORY[0x1E69C5218]];
   v4 = [PUITextLayoutSet alloc];
   if (v3)
   {
@@ -32,23 +32,23 @@
   return v6;
 }
 
-- (PUITextLayoutSet)initWithTextLayoutsIndexSet:(id)a3
+- (PUITextLayoutSet)initWithTextLayoutsIndexSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __48__PUITextLayoutSet_initWithTextLayoutsIndexSet___block_invoke;
   v12[3] = &unk_1E7855088;
   v14 = a2;
-  v6 = self;
-  v13 = v6;
-  [v5 enumerateIndexesUsingBlock:v12];
-  v11.receiver = v6;
+  selfCopy = self;
+  v13 = selfCopy;
+  [setCopy enumerateIndexesUsingBlock:v12];
+  v11.receiver = selfCopy;
   v11.super_class = PUITextLayoutSet;
   v7 = [(PUITextLayoutSet *)&v11 init];
   if (v7)
   {
-    v8 = [v5 mutableCopy];
+    v8 = [setCopy mutableCopy];
     titleLayoutSetStorage = v7->_titleLayoutSetStorage;
     v7->_titleLayoutSetStorage = v8;
 
@@ -69,9 +69,9 @@ BOOL __48__PUITextLayoutSet_initWithTextLayoutsIndexSet___block_invoke(uint64_t 
   return result;
 }
 
-- (PUITextLayoutSet)initWithTextLayouts:(id)a3
+- (PUITextLayoutSet)initWithTextLayouts:(id)layouts
 {
-  v5 = a3;
+  layoutsCopy = layouts;
   v12.receiver = self;
   v12.super_class = PUITextLayoutSet;
   v6 = [(PUITextLayoutSet *)&v12 init];
@@ -85,7 +85,7 @@ BOOL __48__PUITextLayoutSet_initWithTextLayoutsIndexSet___block_invoke(uint64_t 
     v9[3] = &unk_1E78550B0;
     v11 = a2;
     v10 = v7;
-    [v5 enumerateObjectsUsingBlock:v9];
+    [layoutsCopy enumerateObjectsUsingBlock:v9];
   }
 
   return v7;
@@ -103,11 +103,11 @@ void __40__PUITextLayoutSet_initWithTextLayouts___block_invoke(uint64_t a1, void
   [*(*(a1 + 32) + 8) addIndex:v3];
 }
 
-- (PUITextLayoutSet)initWithTextLayout:(unint64_t)a3
+- (PUITextLayoutSet)initWithTextLayout:(unint64_t)layout
 {
-  if (!PUITextLayoutIsValid(a3))
+  if (!PUITextLayoutIsValid(layout))
   {
-    [(PUITextLayoutSet *)a3 initWithTextLayout:a2];
+    [(PUITextLayoutSet *)layout initWithTextLayout:a2];
   }
 
   v9.receiver = self;
@@ -117,22 +117,22 @@ void __40__PUITextLayoutSet_initWithTextLayouts___block_invoke(uint64_t a1, void
   if (v6)
   {
     PUITextLayoutSetSharedInit(v6);
-    [(NSMutableIndexSet *)v7->_titleLayoutSetStorage addIndex:a3];
+    [(NSMutableIndexSet *)v7->_titleLayoutSetStorage addIndex:layout];
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (!v4)
+  equalCopy = equal;
+  p_isa = &equalCopy->super.isa;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_7;
@@ -155,21 +155,21 @@ LABEL_7:
   return v6;
 }
 
-- (id)textLayoutSetByAddingTextLayout:(unint64_t)a3
+- (id)textLayoutSetByAddingTextLayout:(unint64_t)layout
 {
-  if ([(PUITextLayoutSet *)self containsTextLayout:?]|| !PUITextLayoutIsValid(a3))
+  if ([(PUITextLayoutSet *)self containsTextLayout:?]|| !PUITextLayoutIsValid(layout))
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
     v5 = [(NSMutableIndexSet *)self->_titleLayoutSetStorage mutableCopy];
-    [v5 addIndex:a3];
-    v6 = [[PUITextLayoutSet alloc] initWithTextLayoutsIndexSet:v5];
+    [v5 addIndex:layout];
+    selfCopy = [[PUITextLayoutSet alloc] initWithTextLayoutsIndexSet:v5];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (NSString)description
@@ -187,32 +187,32 @@ LABEL_7:
   }
 
   [v3 appendArraySection:v4 withName:@"supportedTextLayouts" skipIfEmpty:1];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (PUITextLayoutSet)initWithCoder:(id)a3
+- (PUITextLayoutSet)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_titleLayoutSetStorage"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_titleLayoutSetStorage"];
 
   v6 = [(PUITextLayoutSet *)self initWithTextLayoutsIndexSet:v5];
   return v6;
 }
 
-- (PUITextLayoutSet)initWithBSXPCCoder:(id)a3
+- (PUITextLayoutSet)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_titleLayoutSetStorage"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_titleLayoutSetStorage"];
 
   v6 = [(PUITextLayoutSet *)self initWithTextLayoutsIndexSet:v5];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PUITextLayoutSet allocWithZone:a3];
+  v4 = [PUITextLayoutSet allocWithZone:zone];
   titleLayoutSetStorage = self->_titleLayoutSetStorage;
 
   return [(PUITextLayoutSet *)v4 initWithTextLayoutsIndexSet:titleLayoutSetStorage];

@@ -1,39 +1,39 @@
 @interface SXSubscriptionStatusConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 @end
 
 @implementation SXSubscriptionStatusConditionValidator
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 subscriptionStatus];
+  conditionCopy = condition;
+  contextCopy = context;
+  subscriptionStatus = [conditionCopy subscriptionStatus];
 
-  if (v7)
+  if (subscriptionStatus)
   {
-    v8 = [v5 subscriptionStatus];
-    v9 = [v8 isEqualToString:@"bundle"];
+    subscriptionStatus2 = [conditionCopy subscriptionStatus];
+    v9 = [subscriptionStatus2 isEqualToString:@"bundle"];
 
     if (v9)
     {
-      v10 = [v6 isBundleSubscriber];
+      isBundleSubscriber = [contextCopy isBundleSubscriber];
     }
 
     else
     {
-      v12 = [v5 subscriptionStatus];
-      v13 = [v12 isEqualToString:@"subscribed"];
+      subscriptionStatus3 = [conditionCopy subscriptionStatus];
+      v13 = [subscriptionStatus3 isEqualToString:@"subscribed"];
 
       if (v13)
       {
-        v10 = [v6 isChannelSubscriber];
+        isBundleSubscriber = [contextCopy isChannelSubscriber];
       }
 
       else
       {
-        v14 = [v5 subscriptionStatus];
-        v15 = [v14 isEqualToString:@"bundle_trial_eligible"];
+        subscriptionStatus4 = [conditionCopy subscriptionStatus];
+        v15 = [subscriptionStatus4 isEqualToString:@"bundle_trial_eligible"];
 
         if (!v15)
         {
@@ -41,11 +41,11 @@
           goto LABEL_10;
         }
 
-        v10 = [v6 isBundleTrialEligible];
+        isBundleSubscriber = [contextCopy isBundleTrialEligible];
       }
     }
 
-    v11 = v10;
+    v11 = isBundleSubscriber;
   }
 
   else

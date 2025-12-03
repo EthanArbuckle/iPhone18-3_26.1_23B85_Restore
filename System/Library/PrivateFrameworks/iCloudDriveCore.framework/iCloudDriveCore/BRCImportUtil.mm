@@ -1,17 +1,17 @@
 @interface BRCImportUtil
-+ (BOOL)reimportItemsBelowItemWithIdentifier:(id)a3 error:(id *)a4;
-+ (void)forceIngestionForItemID:(id)a3 completionHandler:(id)a4;
-+ (void)forceLatestVersionOnDiskForItemID:(id)a3 completionHandler:(id)a4;
-+ (void)reimportItemsBelowItemWithIdentifier:(id)a3 completionHandler:(id)a4;
-+ (void)requestModificationOfItemIdentifier:(id)a3 completionHandler:(id)a4;
++ (BOOL)reimportItemsBelowItemWithIdentifier:(id)identifier error:(id *)error;
++ (void)forceIngestionForItemID:(id)d completionHandler:(id)handler;
++ (void)forceLatestVersionOnDiskForItemID:(id)d completionHandler:(id)handler;
++ (void)reimportItemsBelowItemWithIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)requestModificationOfItemIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation BRCImportUtil
 
-+ (BOOL)reimportItemsBelowItemWithIdentifier:(id)a3 error:(id *)a4
++ (BOOL)reimportItemsBelowItemWithIdentifier:(id)identifier error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = dispatch_group_create();
   dispatch_group_enter(v6);
   v18 = 0;
@@ -27,7 +27,7 @@
   v17 = &v18;
   v7 = v6;
   v16 = v7;
-  [BRCImportUtil reimportItemsBelowItemWithIdentifier:v5 completionHandler:v15];
+  [BRCImportUtil reimportItemsBelowItemWithIdentifier:identifierCopy completionHandler:v15];
   dispatch_group_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = v19[5];
   if (v8)
@@ -40,7 +40,7 @@
       *buf = 136315906;
       v25 = "+[BRCImportUtil reimportItemsBelowItemWithIdentifier:error:]";
       v26 = 2080;
-      if (!a4)
+      if (!error)
       {
         v14 = "(ignored by caller)";
       }
@@ -54,10 +54,10 @@
     }
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   _Block_object_dispose(&v18, 8);
@@ -72,36 +72,36 @@ void __60__BRCImportUtil_reimportItemsBelowItemWithIdentifier_error___block_invo
   dispatch_group_leave(*(a1 + 32));
 }
 
-+ (void)reimportItemsBelowItemWithIdentifier:(id)a3 completionHandler:(id)a4
++ (void)reimportItemsBelowItemWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = brc_bread_crumbs();
   v8 = brc_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [BRCImportUtil reimportItemsBelowItemWithIdentifier:v5 completionHandler:?];
+    [BRCImportUtil reimportItemsBelowItemWithIdentifier:identifierCopy completionHandler:?];
   }
 
-  v9 = [MEMORY[0x277CC64A8] br_sharedProviderManager];
-  if (v9)
+  br_sharedProviderManager = [MEMORY[0x277CC64A8] br_sharedProviderManager];
+  if (br_sharedProviderManager)
   {
     v10 = MEMORY[0x277CFAF00];
     v11 = [BRCUserDefaults defaultsForMangledID:0];
-    v12 = [v11 xpcConnectionFailureRetries];
+    xpcConnectionFailureRetries = [v11 xpcConnectionFailureRetries];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __72__BRCImportUtil_reimportItemsBelowItemWithIdentifier_completionHandler___block_invoke;
     v19[3] = &unk_2785014D0;
-    v20 = v5;
-    v21 = v6;
+    v20 = identifierCopy;
+    v21 = handlerCopy;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __72__BRCImportUtil_reimportItemsBelowItemWithIdentifier_completionHandler___block_invoke_7;
     v16[3] = &unk_278504658;
-    v17 = v9;
+    v17 = br_sharedProviderManager;
     v18 = v20;
-    [v10 executeAsyncXPCWithMaxRetries:v12 completion:v19 xpcInvokeBlock:v16];
+    [v10 executeAsyncXPCWithMaxRetries:xpcConnectionFailureRetries completion:v19 xpcInvokeBlock:v16];
 
     v13 = v20;
   }
@@ -116,7 +116,7 @@ void __60__BRCImportUtil_reimportItemsBelowItemWithIdentifier_error___block_invo
     }
 
     v13 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:22];
-    (*(v6 + 2))(v6, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
   }
 }
 
@@ -169,23 +169,23 @@ void __72__BRCImportUtil_reimportItemsBelowItemWithIdentifier_completionHandler_
   [v5 reimportItemsBelowItemWithIdentifier:v4 completionHandler:v7];
 }
 
-+ (void)requestModificationOfItemIdentifier:(id)a3 completionHandler:(id)a4
++ (void)requestModificationOfItemIdentifier:(id)identifier completionHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = brc_bread_crumbs();
   v8 = brc_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [BRCImportUtil requestModificationOfItemIdentifier:v5 completionHandler:?];
+    [BRCImportUtil requestModificationOfItemIdentifier:identifierCopy completionHandler:?];
   }
 
-  v9 = [MEMORY[0x277CC64A8] br_sharedProviderManager];
-  v10 = v9;
-  if (v9)
+  br_sharedProviderManager = [MEMORY[0x277CC64A8] br_sharedProviderManager];
+  v10 = br_sharedProviderManager;
+  if (br_sharedProviderManager)
   {
-    [v9 requestModificationOfFields:1 forItemWithIdentifier:v5 options:1 completionHandler:v6];
+    [br_sharedProviderManager requestModificationOfFields:1 forItemWithIdentifier:identifierCopy options:1 completionHandler:handlerCopy];
   }
 
   else
@@ -203,17 +203,17 @@ void __72__BRCImportUtil_reimportItemsBelowItemWithIdentifier_completionHandler_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)forceIngestionForItemID:(id)a3 completionHandler:(id)a4
++ (void)forceIngestionForItemID:(id)d completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!dCopy)
   {
     +[BRCImportUtil forceIngestionForItemID:completionHandler:];
   }
 
-  v8 = [MEMORY[0x277CC6400] br_fpItemIDFromItemIdentifier:v6];
+  v8 = [MEMORY[0x277CC6400] br_fpItemIDFromItemIdentifier:dCopy];
   if (v8)
   {
     v9 = brc_bread_crumbs();
@@ -221,7 +221,7 @@ void __72__BRCImportUtil_reimportItemsBelowItemWithIdentifier_completionHandler_
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v21 = v6;
+      selfCopy = dCopy;
       v22 = 2112;
       v23 = v8;
       v24 = 2112;
@@ -231,13 +231,13 @@ void __72__BRCImportUtil_reimportItemsBelowItemWithIdentifier_completionHandler_
 
     v11 = MEMORY[0x277CFAF00];
     v12 = [BRCUserDefaults defaultsForMangledID:0];
-    v13 = [v12 xpcConnectionFailureRetries];
+    xpcConnectionFailureRetries = [v12 xpcConnectionFailureRetries];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __59__BRCImportUtil_forceIngestionForItemID_completionHandler___block_invoke;
     v18[3] = &unk_278504680;
     v19 = v8;
-    [v11 executeAsyncXPCWithMaxRetries:v13 completion:v7 xpcInvokeBlock:v18];
+    [v11 executeAsyncXPCWithMaxRetries:xpcConnectionFailureRetries completion:handlerCopy xpcInvokeBlock:v18];
 
     v14 = v19;
   }
@@ -249,16 +249,16 @@ void __72__BRCImportUtil_reimportItemsBelowItemWithIdentifier_completionHandler_
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v21 = a1;
+      selfCopy = self;
       v22 = 2112;
-      v23 = v6;
+      v23 = dCopy;
       v24 = 2112;
       v25 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ - Can't find a file provider item ID for %@%@", buf, 0x20u);
     }
 
-    v14 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:v6];
-    v7[2](v7, v14);
+    v14 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:dCopy];
+    handlerCopy[2](handlerCopy, v14);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -272,17 +272,17 @@ void __59__BRCImportUtil_forceIngestionForItemID_completionHandler___block_invok
   [v5 forceIngestionForItemID:*(a1 + 32) completionHandler:v4];
 }
 
-+ (void)forceLatestVersionOnDiskForItemID:(id)a3 completionHandler:(id)a4
++ (void)forceLatestVersionOnDiskForItemID:(id)d completionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!dCopy)
   {
     +[BRCImportUtil forceLatestVersionOnDiskForItemID:completionHandler:];
   }
 
-  v8 = [MEMORY[0x277CC6400] br_fpItemIDFromItemIdentifier:v6];
+  v8 = [MEMORY[0x277CC6400] br_fpItemIDFromItemIdentifier:dCopy];
   if (v8)
   {
     v9 = brc_bread_crumbs();
@@ -290,7 +290,7 @@ void __59__BRCImportUtil_forceIngestionForItemID_completionHandler___block_invok
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v15 = 138412802;
-      v16 = v6;
+      selfCopy = dCopy;
       v17 = 2112;
       v18 = v8;
       v19 = 2112;
@@ -298,8 +298,8 @@ void __59__BRCImportUtil_forceIngestionForItemID_completionHandler___block_invok
       _os_log_debug_impl(&dword_223E7A000, v10, OS_LOG_TYPE_DEBUG, "[DEBUG] Propagating To File System for itemIdentifier = %@ and itemID = %@%@", &v15, 0x20u);
     }
 
-    v11 = [MEMORY[0x277CC63A8] sharedConnection];
-    [v11 forceLatestVersionOnDiskForItemID:v8 completionHandler:v7];
+    mEMORY[0x277CC63A8] = [MEMORY[0x277CC63A8] sharedConnection];
+    [mEMORY[0x277CC63A8] forceLatestVersionOnDiskForItemID:v8 completionHandler:handlerCopy];
   }
 
   else
@@ -309,16 +309,16 @@ void __59__BRCImportUtil_forceIngestionForItemID_completionHandler___block_invok
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412802;
-      v16 = a1;
+      selfCopy = self;
       v17 = 2112;
-      v18 = v6;
+      v18 = dCopy;
       v19 = 2112;
       v20 = v12;
       _os_log_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ - Can't find a file provider item ID for %@%@", &v15, 0x20u);
     }
 
-    v11 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:v6];
-    v7[2](v7, 0, v11);
+    mEMORY[0x277CC63A8] = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:dCopy];
+    handlerCopy[2](handlerCopy, 0, mEMORY[0x277CC63A8]);
   }
 
   v14 = *MEMORY[0x277D85DE8];

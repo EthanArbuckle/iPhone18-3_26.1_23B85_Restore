@@ -1,5 +1,5 @@
 @interface HMDBackingStoreCacheFetchGroupInformation
-- (HMDBackingStoreCacheFetchGroupInformation)initWithGroup:(id)a3 fetchResult:(id)a4;
+- (HMDBackingStoreCacheFetchGroupInformation)initWithGroup:(id)group fetchResult:(id)result;
 - (id)mainReturningError;
 @end
 
@@ -24,17 +24,17 @@
   v11[4] = &v12;
   v11[5] = &v18;
   v3 = _Block_copy(v11);
-  v4 = [(HMDBackingStoreOperation *)self store];
-  v5 = [v4 local];
-  v6 = [(HMDBackingStoreCacheFetchGroupInformation *)self group];
-  [v5 _fetchRecordCountWithGroupID:objc_msgSend(v6 callback:{"groupID"), v3}];
+  store = [(HMDBackingStoreOperation *)self store];
+  local = [store local];
+  group = [(HMDBackingStoreCacheFetchGroupInformation *)self group];
+  [local _fetchRecordCountWithGroupID:objc_msgSend(group callback:{"groupID"), v3}];
 
-  v7 = [(HMDBackingStoreCacheFetchGroupInformation *)self fetchResult];
+  fetchResult = [(HMDBackingStoreCacheFetchGroupInformation *)self fetchResult];
 
-  if (v7)
+  if (fetchResult)
   {
-    v8 = [(HMDBackingStoreCacheFetchGroupInformation *)self fetchResult];
-    v8[2](v8, v19[3], v13[5]);
+    fetchResult2 = [(HMDBackingStoreCacheFetchGroupInformation *)self fetchResult];
+    fetchResult2[2](fetchResult2, v19[3], v13[5]);
   }
 
   v9 = v13[5];
@@ -61,18 +61,18 @@ BOOL __63__HMDBackingStoreCacheFetchGroupInformation_mainReturningError__block_i
   return v6 == 0;
 }
 
-- (HMDBackingStoreCacheFetchGroupInformation)initWithGroup:(id)a3 fetchResult:(id)a4
+- (HMDBackingStoreCacheFetchGroupInformation)initWithGroup:(id)group fetchResult:(id)result
 {
-  v7 = a3;
-  v8 = a4;
+  groupCopy = group;
+  resultCopy = result;
   v15.receiver = self;
   v15.super_class = HMDBackingStoreCacheFetchGroupInformation;
   v9 = [(HMDBackingStoreOperation *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_group, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_group, group);
+    v11 = _Block_copy(resultCopy);
     fetchResult = v10->_fetchResult;
     v10->_fetchResult = v11;
 

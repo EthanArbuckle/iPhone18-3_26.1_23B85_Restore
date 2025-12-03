@@ -1,22 +1,22 @@
 @interface IQFMapsCoreAnalyticsLogger
 + (id)BOOLeanCoreAnalyticsKeys;
-+ (id)_createCoreAnalyticsEventForLocation:(id)a3 index:(unint64_t)a4 muidsToResults:(id)a5;
-+ (id)logCoreAnalyticsEventsWithResults:(id)a3 locations:(id)a4;
++ (id)_createCoreAnalyticsEventForLocation:(id)location index:(unint64_t)index muidsToResults:(id)results;
++ (id)logCoreAnalyticsEventsWithResults:(id)results locations:(id)locations;
 @end
 
 @implementation IQFMapsCoreAnalyticsLogger
 
-+ (id)logCoreAnalyticsEventsWithResults:(id)a3 locations:(id)a4
++ (id)logCoreAnalyticsEventsWithResults:(id)results locations:(id)locations
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v27 = a4;
+  resultsCopy = results;
+  locationsCopy = locations;
   v6 = objc_opt_new();
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v7 = v5;
+  v7 = resultsCopy;
   v8 = [v7 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v8)
   {
@@ -31,8 +31,8 @@
         }
 
         v11 = *(*(&v39 + 1) + 8 * i);
-        v12 = [v11 muid];
-        v13 = [v6 objectForKey:v12];
+        muid = [v11 muid];
+        v13 = [v6 objectForKey:muid];
         v14 = [v13 mutableCopy];
 
         if (v14)
@@ -45,7 +45,7 @@
           v14 = [MEMORY[0x277CBEB18] arrayWithObject:v11];
         }
 
-        [v6 setObject:v14 forKey:v12];
+        [v6 setObject:v14 forKey:muid];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v39 objects:v43 count:16];
@@ -63,17 +63,17 @@
   v32[1] = 3221225472;
   v32[2] = __74__IQFMapsCoreAnalyticsLogger_logCoreAnalyticsEventsWithResults_locations___block_invoke;
   v32[3] = &unk_2797ACD30;
-  v36 = a1;
+  selfCopy = self;
   v16 = v6;
   v33 = v16;
   v17 = v15;
   v34 = v17;
   v35 = v37;
-  [v27 enumerateObjectsUsingBlock:v32];
+  [locationsCopy enumerateObjectsUsingBlock:v32];
   v18 = objc_opt_new();
-  v19 = [MEMORY[0x277CCAC38] processInfo];
-  v20 = [v19 environment];
-  v21 = [v20 objectForKey:@"XCTestConfigurationFilePath"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
+  v21 = [environment objectForKey:@"XCTestConfigurationFilePath"];
   v22 = v21 != 0;
 
   v28[0] = MEMORY[0x277D85DD0];
@@ -117,25 +117,25 @@ void __74__IQFMapsCoreAnalyticsLogger_logCoreAnalyticsEventsWithResults_location
   [*(a1 + 32) addObject:v4];
 }
 
-+ (id)_createCoreAnalyticsEventForLocation:(id)a3 index:(unint64_t)a4 muidsToResults:(id)a5
++ (id)_createCoreAnalyticsEventForLocation:(id)location index:(unint64_t)index muidsToResults:(id)results
 {
   v60 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  locationCopy = location;
+  resultsCopy = results;
   v9 = objc_opt_new();
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   [v9 setObject:v10 forKey:IQFMapsCoreAnalyticsFieldName_startingRank];
 
-  v11 = [MEMORY[0x277CCAC38] processInfo];
-  v12 = [v11 processName];
-  [v9 setObject:v12 forKey:IQFMapsCoreAnalyticsFieldName_client];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  [v9 setObject:processName forKey:IQFMapsCoreAnalyticsFieldName_client];
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v13 = [objc_opt_class() BOOLeanCoreAnalyticsKeys];
-  v14 = [v13 countByEnumeratingWithState:&v54 objects:v59 count:16];
+  bOOLeanCoreAnalyticsKeys = [objc_opt_class() BOOLeanCoreAnalyticsKeys];
+  v14 = [bOOLeanCoreAnalyticsKeys countByEnumeratingWithState:&v54 objects:v59 count:16];
   if (v14)
   {
     v15 = v14;
@@ -147,22 +147,22 @@ void __74__IQFMapsCoreAnalyticsLogger_logCoreAnalyticsEventsWithResults_location
       {
         if (*v55 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(bOOLeanCoreAnalyticsKeys);
         }
 
         [v9 setObject:v17 forKey:*(*(&v54 + 1) + 8 * i)];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v54 objects:v59 count:16];
+      v15 = [bOOLeanCoreAnalyticsKeys countByEnumeratingWithState:&v54 objects:v59 count:16];
     }
 
     while (v15);
   }
 
-  v49 = v7;
-  v19 = [v7 muid];
-  v48 = v8;
-  v20 = [v8 objectForKey:v19];
+  v49 = locationCopy;
+  muid = [locationCopy muid];
+  v48 = resultsCopy;
+  v20 = [resultsCopy objectForKey:muid];
 
   v52 = 0u;
   v53 = 0u;
@@ -189,47 +189,47 @@ void __74__IQFMapsCoreAnalyticsLogger_logCoreAnalyticsEventsWithResults_location
       }
 
       v27 = *(*(&v50 + 1) + 8 * j);
-      v28 = [v27 startEventDate];
-      v29 = [v28 isDateInTodayOrFuture];
+      startEventDate = [v27 startEventDate];
+      isDateInTodayOrFuture = [startEventDate isDateInTodayOrFuture];
 
-      v30 = [v27 startEventDate];
-      [v30 timeIntervalSinceNow];
+      startEventDate2 = [v27 startEventDate];
+      [startEventDate2 timeIntervalSinceNow];
       v32 = v31;
 
       v33 = v32 / 3600.0;
-      v34 = [v27 dateOfLastVisit];
-      [v34 timeIntervalSinceNow];
+      dateOfLastVisit = [v27 dateOfLastVisit];
+      [dateOfLastVisit timeIntervalSinceNow];
       v36 = v35;
 
       v37 = v36 / -3600.0;
-      v38 = [v27 resultType];
-      if (v38 <= 5)
+      resultType = [v27 resultType];
+      if (resultType <= 5)
       {
-        if (v38 <= 3)
+        if (resultType <= 3)
         {
-          if ((v38 - 2) < 2)
+          if ((resultType - 2) < 2)
           {
-            if (!v29)
+            if (!isDateInTodayOrFuture)
             {
               continue;
             }
 
-            v39 = [MEMORY[0x277CCABB0] numberWithBool:1];
+            numberOfVisits = [MEMORY[0x277CCABB0] numberWithBool:1];
             v40 = IQFMapsCoreAnalyticsFieldName_hasUpcomingFlightReservation;
             goto LABEL_37;
           }
 
-          if (v38 != 1)
+          if (resultType != 1)
           {
             continue;
           }
 
           [v9 setObject:MEMORY[0x277CBEC38] forKey:IQFMapsCoreAnalyticsFieldName_hasLifeEvent];
-          v39 = [v27 numberOfVisits];
+          numberOfVisits = [v27 numberOfVisits];
           v40 = IQFMapsCoreAnalyticsFieldName_rawLifeEventVisitCount;
           v43 = IQFMapsCoreAnalyticsFieldName_lifeEventTimeSinceLastVisit;
 LABEL_38:
-          [v9 setObject:v39 forKey:*v40];
+          [v9 setObject:numberOfVisits forKey:*v40];
 
           v44 = [MEMORY[0x277CCABB0] numberWithDouble:v37];
           [v9 setObject:v44 forKey:*v43];
@@ -238,25 +238,25 @@ LABEL_38:
           continue;
         }
 
-        if (v38 == 4)
+        if (resultType == 4)
         {
-          if (!v29)
+          if (!isDateInTodayOrFuture)
           {
             continue;
           }
 
-          v39 = [MEMORY[0x277CCABB0] numberWithBool:1];
+          numberOfVisits = [MEMORY[0x277CCABB0] numberWithBool:1];
           v40 = IQFMapsCoreAnalyticsFieldName_hasUpcomingRestaurantReservation;
         }
 
         else
         {
-          if (!v29)
+          if (!isDateInTodayOrFuture)
           {
             continue;
           }
 
-          v39 = [MEMORY[0x277CCABB0] numberWithBool:1];
+          numberOfVisits = [MEMORY[0x277CCABB0] numberWithBool:1];
           v40 = IQFMapsCoreAnalyticsFieldName_hasUpcomingHotelReservation;
         }
 
@@ -266,53 +266,53 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      if (v38 > 8)
+      if (resultType > 8)
       {
-        if (v38 != 9)
+        if (resultType != 9)
         {
-          if (v38 != 10)
+          if (resultType != 10)
           {
             continue;
           }
 
           [v9 setObject:MEMORY[0x277CBEC38] forKey:IQFMapsCoreAnalyticsFieldName_hasEntityRelevance];
-          v41 = [v27 numberOfVisits];
-          [v9 setObject:v41 forKey:IQFMapsCoreAnalyticsFieldName_decayedVisitCount];
+          numberOfVisits2 = [v27 numberOfVisits];
+          [v9 setObject:numberOfVisits2 forKey:IQFMapsCoreAnalyticsFieldName_decayedVisitCount];
 
-          v42 = [v27 numberOfVisitsGivenLocation];
-          [v9 setObject:v42 forKey:IQFMapsCoreAnalyticsFieldName_decayedVisitCountGivenCurrentLocation];
+          numberOfVisitsGivenLocation = [v27 numberOfVisitsGivenLocation];
+          [v9 setObject:numberOfVisitsGivenLocation forKey:IQFMapsCoreAnalyticsFieldName_decayedVisitCountGivenCurrentLocation];
 
-          v39 = [v27 entityRelevanceScore];
+          numberOfVisits = [v27 entityRelevanceScore];
           v40 = IQFMapsCoreAnalyticsFieldName_entityRelevanceScore;
           v43 = IQFMapsCoreAnalyticsFieldName_timeSinceLastVisit;
           goto LABEL_38;
         }
 
-        if (!v29)
+        if (!isDateInTodayOrFuture)
         {
           continue;
         }
 
-        v39 = [MEMORY[0x277CCABB0] numberWithBool:1];
+        numberOfVisits = [MEMORY[0x277CCABB0] numberWithBool:1];
         v40 = IQFMapsCoreAnalyticsFieldName_hasUpcomingGenericCalendarEvent;
         goto LABEL_37;
       }
 
-      if ((v38 - 6) < 2)
+      if ((resultType - 6) < 2)
       {
-        if (!v29)
+        if (!isDateInTodayOrFuture)
         {
           continue;
         }
 
-        v39 = [MEMORY[0x277CCABB0] numberWithBool:1];
+        numberOfVisits = [MEMORY[0x277CCABB0] numberWithBool:1];
         v40 = IQFMapsCoreAnalyticsFieldName_hasUpcomingCarReservation;
         goto LABEL_37;
       }
 
-      if (v38 == 8 && v29)
+      if (resultType == 8 && isDateInTodayOrFuture)
       {
-        v39 = [MEMORY[0x277CCABB0] numberWithBool:1];
+        numberOfVisits = [MEMORY[0x277CCABB0] numberWithBool:1];
         v40 = &IQFMapsCoreAnalyticsFieldName_hasUpcomingTicketReservation;
         goto LABEL_37;
       }

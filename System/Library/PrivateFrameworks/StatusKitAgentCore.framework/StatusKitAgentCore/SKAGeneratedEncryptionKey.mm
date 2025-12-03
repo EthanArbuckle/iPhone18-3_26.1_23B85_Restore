@@ -2,34 +2,34 @@
 + (id)logger;
 - (MPStatusKitIncomingRatchet)incomingRatchet;
 - (MPStatusKitOutgoingRatchet)outgoingRatchet;
-- (SKAGeneratedEncryptionKey)initWithCoreDataGeneratedEncryptionKey:(id)a3;
-- (SKAGeneratedEncryptionKey)initWithOriginalOutgoingRatchetState:(id)a3 dateGenerated:(id)a4;
+- (SKAGeneratedEncryptionKey)initWithCoreDataGeneratedEncryptionKey:(id)key;
+- (SKAGeneratedEncryptionKey)initWithOriginalOutgoingRatchetState:(id)state dateGenerated:(id)generated;
 @end
 
 @implementation SKAGeneratedEncryptionKey
 
-- (SKAGeneratedEncryptionKey)initWithCoreDataGeneratedEncryptionKey:(id)a3
+- (SKAGeneratedEncryptionKey)initWithCoreDataGeneratedEncryptionKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 originalOutgoingRatchetState];
-  v6 = [v4 dateGenerated];
+  keyCopy = key;
+  originalOutgoingRatchetState = [keyCopy originalOutgoingRatchetState];
+  dateGenerated = [keyCopy dateGenerated];
 
-  v7 = [(SKAGeneratedEncryptionKey *)self initWithOriginalOutgoingRatchetState:v5 dateGenerated:v6];
+  v7 = [(SKAGeneratedEncryptionKey *)self initWithOriginalOutgoingRatchetState:originalOutgoingRatchetState dateGenerated:dateGenerated];
   return v7;
 }
 
-- (SKAGeneratedEncryptionKey)initWithOriginalOutgoingRatchetState:(id)a3 dateGenerated:(id)a4
+- (SKAGeneratedEncryptionKey)initWithOriginalOutgoingRatchetState:(id)state dateGenerated:(id)generated
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  generatedCopy = generated;
   v12.receiver = self;
   v12.super_class = SKAGeneratedEncryptionKey;
   v9 = [(SKAGeneratedEncryptionKey *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_originalOutgoingRatchetState, a3);
-    objc_storeStrong(&v10->_dateGenerated, a4);
+    objc_storeStrong(&v9->_originalOutgoingRatchetState, state);
+    objc_storeStrong(&v10->_dateGenerated, generated);
   }
 
   return v10;
@@ -88,27 +88,27 @@ uint64_t __35__SKAGeneratedEncryptionKey_logger__block_invoke()
 
 - (MPStatusKitIncomingRatchet)incomingRatchet
 {
-  v2 = [(SKAGeneratedEncryptionKey *)self outgoingRatchet];
-  v3 = v2;
-  if (v2)
+  outgoingRatchet = [(SKAGeneratedEncryptionKey *)self outgoingRatchet];
+  v3 = outgoingRatchet;
+  if (outgoingRatchet)
   {
-    v4 = [v2 currentSubscriptionKeys];
-    if (v4)
+    currentSubscriptionKeys = [outgoingRatchet currentSubscriptionKeys];
+    if (currentSubscriptionKeys)
     {
       v5 = objc_alloc(MEMORY[0x277D28548]);
-      v6 = [v4 index];
-      v7 = [v4 chainKey];
-      v8 = [v4 signingKey];
+      index = [currentSubscriptionKeys index];
+      chainKey = [currentSubscriptionKeys chainKey];
+      signingKey = [currentSubscriptionKeys signingKey];
       v25 = 0;
-      v9 = [v5 initWithIndex:v6 chainKey:v7 signingKey:v8 error:&v25];
+      v9 = [v5 initWithIndex:index chainKey:chainKey signingKey:signingKey error:&v25];
     }
 
     else
     {
-      v7 = +[SKAGeneratedEncryptionKey logger];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      chainKey = +[SKAGeneratedEncryptionKey logger];
+      if (os_log_type_enabled(chainKey, OS_LOG_TYPE_ERROR))
       {
-        [(SKAGeneratedEncryptionKey(Ratchets) *)v7 incomingRatchet:v17];
+        [(SKAGeneratedEncryptionKey(Ratchets) *)chainKey incomingRatchet:v17];
       }
 
       v9 = 0;
@@ -117,10 +117,10 @@ uint64_t __35__SKAGeneratedEncryptionKey_logger__block_invoke()
 
   else
   {
-    v4 = +[SKAGeneratedEncryptionKey logger];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    currentSubscriptionKeys = +[SKAGeneratedEncryptionKey logger];
+    if (os_log_type_enabled(currentSubscriptionKeys, OS_LOG_TYPE_ERROR))
     {
-      [(SKAGeneratedEncryptionKey(Ratchets) *)v4 incomingRatchet:v10];
+      [(SKAGeneratedEncryptionKey(Ratchets) *)currentSubscriptionKeys incomingRatchet:v10];
     }
 
     v9 = 0;

@@ -1,9 +1,9 @@
 @interface NSData
 - (id)dbg_gzipDeflate;
-- (id)dbg_gzipDeflateWithLevel:(int)a3 windowBits:(int)a4 memLevel:(int)a5;
+- (id)dbg_gzipDeflateWithLevel:(int)level windowBits:(int)bits memLevel:(int)memLevel;
 - (id)dbg_gzipInflate;
 - (id)dbg_gzipInflateIfCompressed;
-- (id)dbg_gzipInflateWithWindowBits:(int)a3;
+- (id)dbg_gzipInflateWithWindowBits:(int)bits;
 @end
 
 @implementation NSData
@@ -12,15 +12,15 @@
 {
   if ([(NSData *)self dbg_isGzipped])
   {
-    v3 = [(NSData *)self dbg_gzipInflate];
+    selfCopy = [(NSData *)self dbg_gzipInflate];
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)dbg_gzipInflate
@@ -41,11 +41,11 @@
   return v7;
 }
 
-- (id)dbg_gzipInflateWithWindowBits:(int)a3
+- (id)dbg_gzipInflateWithWindowBits:(int)bits
 {
   if (![(NSData *)self length])
   {
-    v12 = self;
+    selfCopy = self;
     goto LABEL_26;
   }
 
@@ -56,7 +56,7 @@
   v27.zalloc = 0;
   v27.zfree = 0;
   v27.total_out = 0;
-  if (!inflateInit2_(&v27, a3, "1.2.12", 112))
+  if (!inflateInit2_(&v27, bits, "1.2.12", 112))
   {
     v13 = v6 >> 1;
     do
@@ -67,8 +67,8 @@
         [v7 increaseLengthBy:v13];
       }
 
-      v15 = [v7 mutableBytes];
-      v27.next_out = &v15[v27.total_out];
+      mutableBytes = [v7 mutableBytes];
+      v27.next_out = &mutableBytes[v27.total_out];
       v16 = [v7 length];
       v27.avail_out = v16 - LODWORD(v27.total_out);
       v17 = inflate(&v27, 2);
@@ -80,14 +80,14 @@
       if (!inflateEnd(&v27))
       {
         [v7 setLength:v27.total_out];
-        v12 = [NSData dataWithData:v7];
+        selfCopy = [NSData dataWithData:v7];
         v18 = DebugHierarchyGzipOSLog();
         v19 = os_signpost_id_make_with_pointer(v18, self);
         v20 = v18;
         v11 = v20;
         if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
         {
-          v21 = [(NSData *)v12 length];
+          v21 = [(NSData *)selfCopy length];
           *buf = 134217984;
           *&buf[4] = v21;
           _os_signpost_emit_with_name_impl(&dword_0, v11, OS_SIGNPOST_INTERVAL_END, v19, "Inflate", "Completed with size: %{xcode:size-in-bytes}lu", buf, 0xCu);
@@ -138,12 +138,12 @@
 LABEL_23:
   _os_signpost_emit_with_name_impl(&dword_0, v11, OS_SIGNPOST_INTERVAL_END, v9, "Inflate", "Completed with size: %{xcode:size-in-bytes}d", buf, 8u);
 LABEL_24:
-  v12 = 0;
+  selfCopy = 0;
 LABEL_25:
 
 LABEL_26:
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)dbg_gzipDeflate
@@ -164,14 +164,14 @@ LABEL_26:
   return v7;
 }
 
-- (id)dbg_gzipDeflateWithLevel:(int)a3 windowBits:(int)a4 memLevel:(int)a5
+- (id)dbg_gzipDeflateWithLevel:(int)level windowBits:(int)bits memLevel:(int)memLevel
 {
   if ([(NSData *)self length])
   {
     memset(&strm.avail_in, 0, 104);
     strm.next_in = [(NSData *)self bytes];
     strm.avail_in = [(NSData *)self length];
-    if (deflateInit2_(&strm, a3, 8, a4, a5, 0, "1.2.12", 112))
+    if (deflateInit2_(&strm, level, 8, bits, memLevel, 0, "1.2.12", 112))
     {
       v9 = DebugHierarchyGzipOSLog();
       v10 = os_signpost_id_make_with_pointer(v9, self);
@@ -184,7 +184,7 @@ LABEL_26:
         _os_signpost_emit_with_name_impl(&dword_0, v12, OS_SIGNPOST_INTERVAL_END, v10, "Deflate", "Completed with size: %{xcode:size-in-bytes}d", &v26, 8u);
       }
 
-      v13 = 0;
+      selfCopy = 0;
       v14 = v12;
     }
 
@@ -199,8 +199,8 @@ LABEL_26:
           [v14 increaseLengthBy:0x4000];
         }
 
-        v20 = [v14 mutableBytes];
-        strm.next_out = &v20[strm.total_out];
+        mutableBytes = [v14 mutableBytes];
+        strm.next_out = &mutableBytes[strm.total_out];
         v21 = [v14 length];
         strm.avail_out = v21 - LODWORD(strm.total_out);
         deflate(&strm, 4);
@@ -209,7 +209,7 @@ LABEL_26:
       while (!strm.avail_out);
       deflateEnd(&strm);
       [v14 setLength:strm.total_out];
-      v13 = [NSData dataWithData:v14];
+      selfCopy = [NSData dataWithData:v14];
       v22 = DebugHierarchyGzipOSLog();
       v23 = os_signpost_id_make_with_pointer(v22, self);
       v24 = v22;
@@ -217,7 +217,7 @@ LABEL_26:
       if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
       {
         v26 = 134217984;
-        v27 = [(NSData *)v13 length];
+        v27 = [(NSData *)selfCopy length];
         _os_signpost_emit_with_name_impl(&dword_0, v12, OS_SIGNPOST_INTERVAL_END, v23, "Deflate", "Completed with size: %{xcode:size-in-bytes}lu", &v26, 0xCu);
       }
     }
@@ -235,10 +235,10 @@ LABEL_26:
       _os_signpost_emit_with_name_impl(&dword_0, v18, OS_SIGNPOST_INTERVAL_END, v16, "Deflate", "Completed with size: %{xcode:size-in-bytes}d", &strm, 8u);
     }
 
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

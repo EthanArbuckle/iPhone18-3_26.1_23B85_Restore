@@ -1,48 +1,48 @@
 @interface TSDInfoGeometry
-+ (id)geometryFromFullTransform:(CGAffineTransform *)a3;
-+ (id)geometryFromFullTransform:(CGAffineTransform *)a3 widthValid:(BOOL)a4 heightValid:(BOOL)a5;
-+ (id)geometryFromTransform:(CGAffineTransform *)a3 withSize:(CGSize)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualExceptForPosition:(id)a3;
++ (id)geometryFromFullTransform:(CGAffineTransform *)transform;
++ (id)geometryFromFullTransform:(CGAffineTransform *)transform widthValid:(BOOL)valid heightValid:(BOOL)heightValid;
++ (id)geometryFromTransform:(CGAffineTransform *)transform withSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualExceptForPosition:(id)position;
 - (CGAffineTransform)fullTransform;
 - (CGAffineTransform)transform;
-- (CGAffineTransform)transformBasedOnPoint:(SEL)a3 centeredAtPoint:(CGPoint)a4;
-- (CGAffineTransform)transformBasedOnPoint:(SEL)a3 centeredAtPoint:(CGPoint)a4 withFlips:(CGPoint)a5;
-- (CGAffineTransform)transformBasedOnRect:(SEL)a3;
+- (CGAffineTransform)transformBasedOnPoint:(SEL)point centeredAtPoint:(CGPoint)atPoint;
+- (CGAffineTransform)transformBasedOnPoint:(SEL)point centeredAtPoint:(CGPoint)atPoint withFlips:(CGPoint)flips;
+- (CGAffineTransform)transformBasedOnRect:(SEL)rect;
 - (CGAffineTransform)transformWithoutFlips;
 - (CGPoint)center;
 - (CGPoint)position;
 - (CGRect)boundsBeforeRotation;
 - (CGRect)transformedBounds;
 - (CGSize)size;
-- (TSDInfoGeometry)geometryWithNewBounds:(CGRect)a3;
-- (TSDInfoGeometry)geometryWithParentGeometry:(id)a3;
-- (TSDInfoGeometry)initWithFullTransform:(CGAffineTransform *)a3 widthValid:(BOOL)a4 heightValid:(BOOL)a5;
-- (TSDInfoGeometry)initWithPosition:(CGPoint)a3 size:(CGSize)a4 widthValid:(BOOL)a5 heightValid:(BOOL)a6 horizontalFlip:(BOOL)a7 verticalFlip:(BOOL)a8 angle:(double)a9;
-- (TSDInfoGeometry)initWithTransform:(CGAffineTransform *)a3 size:(CGSize)a4;
-- (TSDInfoGeometry)initWithTransformedBoundsOrigin:(CGPoint)a3 size:(CGSize)a4 horizontalFlip:(BOOL)a5 verticalFlip:(BOOL)a6 angle:(double)a7;
+- (TSDInfoGeometry)geometryWithNewBounds:(CGRect)bounds;
+- (TSDInfoGeometry)geometryWithParentGeometry:(id)geometry;
+- (TSDInfoGeometry)initWithFullTransform:(CGAffineTransform *)transform widthValid:(BOOL)valid heightValid:(BOOL)heightValid;
+- (TSDInfoGeometry)initWithPosition:(CGPoint)position size:(CGSize)size widthValid:(BOOL)valid heightValid:(BOOL)heightValid horizontalFlip:(BOOL)flip verticalFlip:(BOOL)verticalFlip angle:(double)angle;
+- (TSDInfoGeometry)initWithTransform:(CGAffineTransform *)transform size:(CGSize)size;
+- (TSDInfoGeometry)initWithTransformedBoundsOrigin:(CGPoint)origin size:(CGSize)size horizontalFlip:(BOOL)flip verticalFlip:(BOOL)verticalFlip angle:(double)angle;
 - (id)description;
-- (id)geometryByAppendingGeometry:(id)a3;
-- (id)geometryByAppendingTransform:(CGAffineTransform *)a3;
-- (id)geometryRelativeToGeometry:(id)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)geometryByAppendingGeometry:(id)geometry;
+- (id)geometryByAppendingTransform:(CGAffineTransform *)transform;
+- (id)geometryRelativeToGeometry:(id)geometry;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)normalizedGeometry;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (unint64_t)hash;
 @end
 
 @implementation TSDInfoGeometry
 
-- (TSDInfoGeometry)initWithPosition:(CGPoint)a3 size:(CGSize)a4 widthValid:(BOOL)a5 heightValid:(BOOL)a6 horizontalFlip:(BOOL)a7 verticalFlip:(BOOL)a8 angle:(double)a9
+- (TSDInfoGeometry)initWithPosition:(CGPoint)position size:(CGSize)size widthValid:(BOOL)valid heightValid:(BOOL)heightValid horizontalFlip:(BOOL)flip verticalFlip:(BOOL)verticalFlip angle:(double)angle
 {
-  v9 = a8;
-  v10 = a7;
-  v11 = a6;
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
+  verticalFlipCopy = verticalFlip;
+  flipCopy = flip;
+  heightValidCopy = heightValid;
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
   v25.receiver = self;
   v25.super_class = TSDInfoGeometry;
   v18 = [(TSDInfoGeometry *)&v25 init];
@@ -53,7 +53,7 @@
     v18->mPosition.y = y;
     v18->mSize.width = width;
     v18->mSize.height = height;
-    if (v11)
+    if (heightValidCopy)
     {
       v20 = 2;
     }
@@ -63,7 +63,7 @@
       v20 = 0;
     }
 
-    if (v10)
+    if (flipCopy)
     {
       v21 = 4;
     }
@@ -73,7 +73,7 @@
       v21 = 0;
     }
 
-    if (v9)
+    if (verticalFlipCopy)
     {
       v22 = 8;
     }
@@ -83,15 +83,15 @@
       v22 = 0;
     }
 
-    *&v18->mFlags = v20 | a5 | v21 | v22 | *&v18->mFlags & 0xF0;
-    TSDNormalizeAngleInDegrees(a9);
+    *&v18->mFlags = v20 | valid | v21 | v22 | *&v18->mFlags & 0xF0;
+    TSDNormalizeAngleInDegrees(angle);
     v19->mAngle = v23;
   }
 
   return v19;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSDMutableInfoGeometry alloc];
   mFlags = self->mFlags;
@@ -104,15 +104,15 @@
   return [(TSDInfoGeometry *)v4 initWithPosition:*&mFlags & 1 size:(*&mFlags >> 1) & 1 widthValid:(*&mFlags >> 2) & 1 heightValid:(*&mFlags >> 3) & 1 horizontalFlip:x verticalFlip:y angle:width, height, mAngle];
 }
 
-- (TSDInfoGeometry)initWithTransformedBoundsOrigin:(CGPoint)a3 size:(CGSize)a4 horizontalFlip:(BOOL)a5 verticalFlip:(BOOL)a6 angle:(double)a7
+- (TSDInfoGeometry)initWithTransformedBoundsOrigin:(CGPoint)origin size:(CGSize)size horizontalFlip:(BOOL)flip verticalFlip:(BOOL)verticalFlip angle:(double)angle
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = [(TSDInfoGeometry *)self initWithPosition:1 size:1 widthValid:a5 heightValid:a6 horizontalFlip:*MEMORY[0x277CBF348] verticalFlip:*(MEMORY[0x277CBF348] + 8) angle:a4.width, a4.height, a7];
-  v10 = v9;
-  if (v9)
+  y = origin.y;
+  x = origin.x;
+  angle = [(TSDInfoGeometry *)self initWithPosition:1 size:1 widthValid:flip heightValid:verticalFlip horizontalFlip:*MEMORY[0x277CBF348] verticalFlip:*(MEMORY[0x277CBF348] + 8) angle:size.width, size.height, angle];
+  v10 = angle;
+  if (angle)
   {
-    [(TSDInfoGeometry *)v9 transformedBoundsOrigin];
+    [(TSDInfoGeometry *)angle transformedBoundsOrigin];
     v12 = TSDSubtractPoints(v10->mPosition.x, v10->mPosition.y, v11);
     v10->mPosition.x = TSDAddPoints(x, y, v12);
     v10->mPosition.y = v13;
@@ -168,16 +168,16 @@
   return result;
 }
 
-- (CGAffineTransform)transformBasedOnRect:(SEL)a3
+- (CGAffineTransform)transformBasedOnRect:(SEL)rect
 {
   if (self)
   {
     y = a4.origin.y;
     x = a4.origin.x;
-    v6 = self;
+    selfCopy = self;
     v8 = TSDCenterOfRect(a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
 
-    return [(CGAffineTransform *)v6 transformBasedOnPoint:x centeredAtPoint:y, v8, v7];
+    return [(CGAffineTransform *)selfCopy transformBasedOnPoint:x centeredAtPoint:y, v8, v7];
   }
 
   else
@@ -190,11 +190,11 @@
   return self;
 }
 
-- (CGAffineTransform)transformBasedOnPoint:(SEL)a3 centeredAtPoint:(CGPoint)a4
+- (CGAffineTransform)transformBasedOnPoint:(SEL)point centeredAtPoint:(CGPoint)atPoint
 {
   if (self)
   {
-    return [(CGAffineTransform *)self transformBasedOnPoint:1 centeredAtPoint:a4.x withFlips:a4.y, a5.x, a5.y];
+    return [(CGAffineTransform *)self transformBasedOnPoint:1 centeredAtPoint:atPoint.x withFlips:atPoint.y, a5.x, a5.y];
   }
 
   *&retstr->c = 0u;
@@ -203,16 +203,16 @@
   return self;
 }
 
-- (CGAffineTransform)transformBasedOnPoint:(SEL)a3 centeredAtPoint:(CGPoint)a4 withFlips:(CGPoint)a5
+- (CGAffineTransform)transformBasedOnPoint:(SEL)point centeredAtPoint:(CGPoint)atPoint withFlips:(CGPoint)flips
 {
   v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.x;
+  y = flips.y;
+  x = flips.x;
+  v9 = atPoint.x;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  CGAffineTransformMakeTranslation(retstr, a4.x, a4.y);
+  CGAffineTransformMakeTranslation(retstr, atPoint.x, atPoint.y);
   result = [(TSDInfoGeometry *)self angle];
   v14 = v13;
   if (v13 != 0.0 || v6 && ([(TSDInfoGeometry *)self horizontalFlip]|| (result = [(TSDInfoGeometry *)self verticalFlip], result)))
@@ -313,15 +313,15 @@
   return CGRectApplyAffineTransform(v3, &v2);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     LOBYTE(v5) = 0;
     return v5;
   }
 
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
     return v5;
@@ -333,15 +333,15 @@
     goto LABEL_7;
   }
 
-  v5 = TSDNearlyEqualPoints(self->mPosition.x, self->mPosition.y, *(a3 + 1), *(a3 + 2));
+  v5 = TSDNearlyEqualPoints(self->mPosition.x, self->mPosition.y, *(equal + 1), *(equal + 2));
   if (v5)
   {
-    v5 = TSDNearlyEqualSizes(self->mSize.width, self->mSize.height, *(a3 + 3), *(a3 + 4));
+    v5 = TSDNearlyEqualSizes(self->mSize.width, self->mSize.height, *(equal + 3), *(equal + 4));
     if (v5)
     {
-      if (((*(a3 + 40) ^ *&self->mFlags) & 0xF) == 0)
+      if (((*(equal + 40) ^ *&self->mFlags) & 0xF) == 0)
       {
-        LOBYTE(v5) = vabdd_f64(self->mAngle, *(a3 + 6)) < 0.00999999978;
+        LOBYTE(v5) = vabdd_f64(self->mAngle, *(equal + 6)) < 0.00999999978;
         return v5;
       }
 
@@ -388,32 +388,32 @@ LABEL_7:
   return (self->mAngle + (41 * (v10 + v11 + 41 * v10)) + (v10 + v11 + 41 * v10));
 }
 
-- (BOOL)isEqualExceptForPosition:(id)a3
+- (BOOL)isEqualExceptForPosition:(id)position
 {
-  if (!a3)
+  if (!position)
   {
     return 0;
   }
 
-  if (a3 == self)
+  if (position == self)
   {
     return 1;
   }
 
   objc_opt_class();
-  result = (objc_opt_isKindOfClass() & 1) != 0 && (self->mSize.width == *(a3 + 3) ? (v5 = self->mSize.height == *(a3 + 4)) : (v5 = 0), v5 && ((*(a3 + 40) ^ *&self->mFlags) & 0xF) == 0) && self->mAngle == *(a3 + 6);
+  result = (objc_opt_isKindOfClass() & 1) != 0 && (self->mSize.width == *(position + 3) ? (v5 = self->mSize.height == *(position + 4)) : (v5 = 0), v5 && ((*(position + 40) ^ *&self->mFlags) & 0xF) == 0) && self->mAngle == *(position + 6);
   return result;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __40__TSDInfoGeometry_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __40__TSDInfoGeometry_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -447,16 +447,16 @@ uint64_t __40__TSDInfoGeometry_mixingTypeWithObject___block_invoke(uint64_t a1)
   return 4;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__TSDInfoGeometry_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 TSDInfoGeometry *__52__TSDInfoGeometry_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)
@@ -535,47 +535,47 @@ TSDInfoGeometry *__52__TSDInfoGeometry_mixedObjectWithFraction_ofObject___block_
   return result;
 }
 
-+ (id)geometryFromFullTransform:(CGAffineTransform *)a3 widthValid:(BOOL)a4 heightValid:(BOOL)a5
++ (id)geometryFromFullTransform:(CGAffineTransform *)transform widthValid:(BOOL)valid heightValid:(BOOL)heightValid
 {
-  v5 = a5;
-  v6 = a4;
+  heightValidCopy = heightValid;
+  validCopy = valid;
   v8 = [TSDInfoGeometry alloc];
-  v9 = *&a3->c;
-  v11[0] = *&a3->a;
+  v9 = *&transform->c;
+  v11[0] = *&transform->a;
   v11[1] = v9;
-  v11[2] = *&a3->tx;
-  return [(TSDInfoGeometry *)v8 initWithFullTransform:v11 widthValid:v6 heightValid:v5];
+  v11[2] = *&transform->tx;
+  return [(TSDInfoGeometry *)v8 initWithFullTransform:v11 widthValid:validCopy heightValid:heightValidCopy];
 }
 
-- (TSDInfoGeometry)initWithFullTransform:(CGAffineTransform *)a3 widthValid:(BOOL)a4 heightValid:(BOOL)a5
+- (TSDInfoGeometry)initWithFullTransform:(CGAffineTransform *)transform widthValid:(BOOL)valid heightValid:(BOOL)heightValid
 {
-  v5 = a5;
-  v6 = a4;
+  heightValidCopy = heightValid;
+  validCopy = valid;
   v31.receiver = self;
   v31.super_class = TSDInfoGeometry;
   v8 = [(TSDInfoGeometry *)&v31 init];
   if (v8)
   {
-    v9 = v6;
-    v10 = v5;
-    v11 = *&a3->c;
-    *&v30.a = *&a3->a;
+    v9 = validCopy;
+    v10 = heightValidCopy;
+    v11 = *&transform->c;
+    *&v30.a = *&transform->a;
     *&v30.c = v11;
-    *&v30.tx = *&a3->tx;
+    *&v30.tx = *&transform->tx;
     v12 = 0.0;
     v13 = 0;
     *&v11 = 0;
     v32 = CGRectApplyAffineTransform(*(&v9 - 2), &v30);
     v14 = 0.0;
-    if (v6)
+    if (validCopy)
     {
-      v14 = sqrt(a3->b * a3->b + a3->a * a3->a);
+      v14 = sqrt(transform->b * transform->b + transform->a * transform->a);
     }
 
-    if (v5)
+    if (heightValidCopy)
     {
-      v12 = sqrt(a3->d * a3->d + a3->c * a3->c);
-      LOBYTE(v5) = 2;
+      v12 = sqrt(transform->d * transform->d + transform->c * transform->c);
+      LOBYTE(heightValidCopy) = 2;
     }
 
     v8->mSize.width = v14;
@@ -585,13 +585,13 @@ TSDInfoGeometry *__52__TSDInfoGeometry_mixedObjectWithFraction_ofObject___block_
     v18 = MEMORY[0x277CBF348];
     v8->mPosition.x = v17;
     v8->mPosition.y = v19;
-    v20 = TSDSubtractPoints(a3->tx + v18[1] * a3->c + a3->a * *v18, a3->ty + v18[1] * a3->d + a3->b * *v18, a3->tx + a3->c * 0.0 + a3->a * -1000.0);
+    v20 = TSDSubtractPoints(transform->tx + v18[1] * transform->c + transform->a * *v18, transform->ty + v18[1] * transform->d + transform->b * *v18, transform->tx + transform->c * 0.0 + transform->a * -1000.0);
     v22 = TSDAngleFromDelta(v20, v21) * -57.2957795;
     v8->mAngle = v22;
-    v23 = v5 | v6;
-    v24 = v5 | v6 | *&v8->mFlags & 0xFC;
+    v23 = heightValidCopy | validCopy;
+    v24 = heightValidCopy | validCopy | *&v8->mFlags & 0xFC;
     *&v8->mFlags = v23 | *&v8->mFlags & 0xFC;
-    v25 = TSDCrossPoints(a3->a, a3->c, a3->b, a3->d);
+    v25 = TSDCrossPoints(transform->a, transform->c, transform->b, transform->d);
     v26 = v25 <= 0.0;
     *&v8->mFlags = v24 & 0xF3 | (4 * (v25 > 0.0));
     v27 = v22 + -180.0;
@@ -607,56 +607,56 @@ TSDInfoGeometry *__52__TSDInfoGeometry_mixedObjectWithFraction_ofObject___block_
   return v8;
 }
 
-- (TSDInfoGeometry)initWithTransform:(CGAffineTransform *)a3 size:(CGSize)a4
+- (TSDInfoGeometry)initWithTransform:(CGAffineTransform *)transform size:(CGSize)size
 {
-  v6 = a4.width > 0.001;
-  if (a4.width <= 0.001)
+  v6 = size.width > 0.001;
+  if (size.width <= 0.001)
   {
-    a4.width = 1.0;
+    size.width = 1.0;
   }
 
-  v7 = a4.height > 0.001;
-  if (a4.height <= 0.001)
+  v7 = size.height > 0.001;
+  if (size.height <= 0.001)
   {
-    a4.height = 1.0;
+    size.height = 1.0;
   }
 
-  v8 = *&a3->c;
-  *&v12.a = *&a3->a;
+  v8 = *&transform->c;
+  *&v12.a = *&transform->a;
   *&v12.c = v8;
-  *&v12.tx = *&a3->tx;
-  CGAffineTransformScale(&v13, &v12, a4.width, a4.height);
+  *&v12.tx = *&transform->tx;
+  CGAffineTransformScale(&v13, &v12, size.width, size.height);
   v9 = *&v13.c;
-  *&a3->a = *&v13.a;
-  *&a3->c = v9;
-  *&a3->tx = *&v13.tx;
-  v10 = *&a3->c;
-  *&v13.a = *&a3->a;
+  *&transform->a = *&v13.a;
+  *&transform->c = v9;
+  *&transform->tx = *&v13.tx;
+  v10 = *&transform->c;
+  *&v13.a = *&transform->a;
   *&v13.c = v10;
-  *&v13.tx = *&a3->tx;
+  *&v13.tx = *&transform->tx;
   return [(TSDInfoGeometry *)self initWithFullTransform:&v13 widthValid:v6 heightValid:v7];
 }
 
-+ (id)geometryFromFullTransform:(CGAffineTransform *)a3
++ (id)geometryFromFullTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v5[0] = *&a3->a;
+  v3 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v3;
-  v5[2] = *&a3->tx;
+  v5[2] = *&transform->tx;
   return [TSDInfoGeometry geometryFromFullTransform:v5 widthValid:1 heightValid:1];
 }
 
-+ (id)geometryFromTransform:(CGAffineTransform *)a3 withSize:(CGSize)a4
++ (id)geometryFromTransform:(CGAffineTransform *)transform withSize:(CGSize)size
 {
-  v4 = *&a3->c;
-  *&v6.a = *&a3->a;
+  v4 = *&transform->c;
+  *&v6.a = *&transform->a;
   *&v6.c = v4;
-  *&v6.tx = *&a3->tx;
-  CGAffineTransformScale(&v7, &v6, a4.width, a4.height);
+  *&v6.tx = *&transform->tx;
+  CGAffineTransformScale(&v7, &v6, size.width, size.height);
   return [TSDInfoGeometry geometryFromFullTransform:&v7];
 }
 
-- (id)geometryByAppendingTransform:(CGAffineTransform *)a3
+- (id)geometryByAppendingTransform:(CGAffineTransform *)transform
 {
   if (self)
   {
@@ -668,20 +668,20 @@ TSDInfoGeometry *__52__TSDInfoGeometry_mixedObjectWithFraction_ofObject___block_
     memset(&t1, 0, sizeof(t1));
   }
 
-  v5 = *&a3->c;
-  *&v7.a = *&a3->a;
+  v5 = *&transform->c;
+  *&v7.a = *&transform->a;
   *&v7.c = v5;
-  *&v7.tx = *&a3->tx;
+  *&v7.tx = *&transform->tx;
   CGAffineTransformConcat(&v9, &t1, &v7);
   return [TSDInfoGeometry geometryFromFullTransform:&v9 widthValid:[(TSDInfoGeometry *)self widthValid] heightValid:[(TSDInfoGeometry *)self heightValid]];
 }
 
-- (TSDInfoGeometry)geometryWithParentGeometry:(id)a3
+- (TSDInfoGeometry)geometryWithParentGeometry:(id)geometry
 {
   if (!self)
   {
     memset(&t1, 0, sizeof(t1));
-    if (a3)
+    if (geometry)
     {
       goto LABEL_3;
     }
@@ -692,21 +692,21 @@ LABEL_5:
   }
 
   [(TSDInfoGeometry *)self fullTransform];
-  if (!a3)
+  if (!geometry)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [a3 transform];
+  [geometry transform];
 LABEL_6:
   CGAffineTransformConcat(&v8, &t1, &v6);
   return [TSDInfoGeometry geometryFromFullTransform:&v8 widthValid:[(TSDInfoGeometry *)self widthValid] heightValid:[(TSDInfoGeometry *)self heightValid]];
 }
 
-- (id)geometryByAppendingGeometry:(id)a3
+- (id)geometryByAppendingGeometry:(id)geometry
 {
-  if (!a3)
+  if (!geometry)
   {
     memset(&t1, 0, sizeof(t1));
     if (self)
@@ -719,7 +719,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [a3 fullTransform];
+  [geometry fullTransform];
   if (!self)
   {
     goto LABEL_5;
@@ -729,15 +729,15 @@ LABEL_3:
   [(TSDInfoGeometry *)self transform];
 LABEL_6:
   CGAffineTransformConcat(&v8, &t1, &v6);
-  return +[TSDInfoGeometry geometryFromFullTransform:widthValid:heightValid:](TSDInfoGeometry, "geometryFromFullTransform:widthValid:heightValid:", &v8, [a3 widthValid], objc_msgSend(a3, "heightValid"));
+  return +[TSDInfoGeometry geometryFromFullTransform:widthValid:heightValid:](TSDInfoGeometry, "geometryFromFullTransform:widthValid:heightValid:", &v8, [geometry widthValid], objc_msgSend(geometry, "heightValid"));
 }
 
-- (id)geometryRelativeToGeometry:(id)a3
+- (id)geometryRelativeToGeometry:(id)geometry
 {
   if (!self)
   {
     memset(&t1, 0, sizeof(t1));
-    if (a3)
+    if (geometry)
     {
       goto LABEL_3;
     }
@@ -748,25 +748,25 @@ LABEL_5:
   }
 
   [(TSDInfoGeometry *)self fullTransform];
-  if (!a3)
+  if (!geometry)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [a3 transform];
+  [geometry transform];
 LABEL_6:
   CGAffineTransformInvert(&v6, &v8);
   CGAffineTransformConcat(&v8, &t1, &v6);
   return [TSDInfoGeometry geometryFromFullTransform:&v8 widthValid:[(TSDInfoGeometry *)self widthValid] heightValid:[(TSDInfoGeometry *)self heightValid]];
 }
 
-- (TSDInfoGeometry)geometryWithNewBounds:(CGRect)a3
+- (TSDInfoGeometry)geometryWithNewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = [(TSDInfoGeometry *)self mutableCopy];
   [v8 setSize:{width, height}];
   [(TSDInfoGeometry *)self size];
@@ -803,9 +803,9 @@ LABEL_6:
     mAngle = v6;
   }
 
-  v7 = [[TSDInfoGeometry alloc] initWithPosition:*&self->mFlags & 1 size:(*&self->mFlags >> 1) & 1 widthValid:v5 heightValid:0 horizontalFlip:self->mPosition.x verticalFlip:self->mPosition.y angle:self->mSize.width, self->mSize.height, mAngle];
+  mAngle = [[TSDInfoGeometry alloc] initWithPosition:*&self->mFlags & 1 size:(*&self->mFlags >> 1) & 1 widthValid:v5 heightValid:0 horizontalFlip:self->mPosition.x verticalFlip:self->mPosition.y angle:self->mSize.width, self->mSize.height, mAngle];
 
-  return v7;
+  return mAngle;
 }
 
 - (id)description

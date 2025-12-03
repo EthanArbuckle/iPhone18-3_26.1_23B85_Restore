@@ -2,21 +2,21 @@
 + (id)sharedInstance;
 - (CSAdBlockerAssetDownloadMonitor)init;
 - (void)_didInstalledNewAdBlockerAsset;
-- (void)_notifyObserver:(id)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)trialAssetDownloadMonitorDelegate:(id)a3 didInstallNewAsset:(BOOL)a4 assetType:(unint64_t)a5;
+- (void)trialAssetDownloadMonitorDelegate:(id)delegate didInstallNewAsset:(BOOL)asset assetType:(unint64_t)type;
 @end
 
 @implementation CSAdBlockerAssetDownloadMonitor
 
-- (void)trialAssetDownloadMonitorDelegate:(id)a3 didInstallNewAsset:(BOOL)a4 assetType:(unint64_t)a5
+- (void)trialAssetDownloadMonitorDelegate:(id)delegate didInstallNewAsset:(BOOL)asset assetType:(unint64_t)type
 {
-  v6 = a4;
-  v8 = a3;
-  if (a5 == 4)
+  assetCopy = asset;
+  delegateCopy = delegate;
+  if (type == 4)
   {
-    if (v6)
+    if (assetCopy)
     {
       self->_lastUpdatedAssetType = 1;
       [(CSAdBlockerAssetDownloadMonitor *)self _didInstalledNewAdBlockerAsset];
@@ -31,17 +31,17 @@
       v10 = 136315394;
       v11 = "[CSAdBlockerAssetDownloadMonitor trialAssetDownloadMonitorDelegate:didInstallNewAsset:assetType:]";
       v12 = 2048;
-      v13 = a5;
+      typeCopy = type;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s ERR: Delegate received for invalid Trial assetType:%lu", &v10, 0x16u);
     }
   }
 }
 
-- (void)_notifyObserver:(id)a3
+- (void)_notifyObserver:(id)observer
 {
-  v4 = a3;
-  [(CSAdBlockerAssetDownloadMonitor *)self notifyObserver:v4];
-  [v4 CSAdBlockerAssetDownloadMonitor:self didInstallNewAsset:1 assetProviderType:self->_lastUpdatedAssetType];
+  observerCopy = observer;
+  [(CSAdBlockerAssetDownloadMonitor *)self notifyObserver:observerCopy];
+  [observerCopy CSAdBlockerAssetDownloadMonitor:self didInstallNewAsset:1 assetProviderType:self->_lastUpdatedAssetType];
 }
 
 - (void)_didInstalledNewAdBlockerAsset
@@ -79,17 +79,17 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   if (self->_notifyToken == -1)
   {
-    v4 = a3;
+    queueCopy = queue;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10012D818;
     handler[3] = &unk_1002537C0;
     handler[4] = self;
-    notify_register_dispatch([(CSAdBlockerAssetDownloadMonitor *)self _notificationKey], &self->_notifyToken, v4, handler);
+    notify_register_dispatch([(CSAdBlockerAssetDownloadMonitor *)self _notificationKey], &self->_notifyToken, queueCopy, handler);
 
     v5 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))

@@ -1,48 +1,48 @@
 @interface SYObjectChangeSet
 - (SYObjectChangeSet)init;
-- (SYObjectChangeSet)initWithChangesBetween:(id)a3 and:(id)a4;
-- (id)changesBetween:(id)a3 and:(id)a4;
-- (void)applyToStore:(id)a3;
+- (SYObjectChangeSet)initWithChangesBetween:(id)between and:(id)and;
+- (id)changesBetween:(id)between and:(id)and;
+- (void)applyToStore:(id)store;
 @end
 
 @implementation SYObjectChangeSet
 
-- (id)changesBetween:(id)a3 and:(id)a4
+- (id)changesBetween:(id)between and:(id)and
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  betweenCopy = between;
+  andCopy = and;
+  v7 = andCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (betweenCopy && andCopy)
   {
-    v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v5];
+    v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:betweenCopy];
     v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v7];
     v8 = objc_alloc_init(SYObjectChangeSet);
-    v11 = [(SYObjectChangeSet *)v8 added];
-    [v11 addObjectsFromArray:v7];
+    added = [(SYObjectChangeSet *)v8 added];
+    [added addObjectsFromArray:v7];
 
-    v12 = [(SYObjectChangeSet *)v8 added];
-    [v12 minusSet:v9];
+    added2 = [(SYObjectChangeSet *)v8 added];
+    [added2 minusSet:v9];
 
-    v13 = [(SYObjectChangeSet *)v8 deleted];
-    [v13 addObjectsFromArray:v5];
+    deleted = [(SYObjectChangeSet *)v8 deleted];
+    [deleted addObjectsFromArray:betweenCopy];
 
-    v14 = [(SYObjectChangeSet *)v8 deleted];
-    [v14 minusSet:v10];
+    deleted2 = [(SYObjectChangeSet *)v8 deleted];
+    [deleted2 minusSet:v10];
 
-    v15 = [(SYObjectChangeSet *)v8 added];
-    if ([v15 count])
+    added3 = [(SYObjectChangeSet *)v8 added];
+    if ([added3 count])
     {
-      v16 = [(SYObjectChangeSet *)v8 deleted];
-      v17 = [v16 count];
+      deleted3 = [(SYObjectChangeSet *)v8 deleted];
+      v17 = [deleted3 count];
 
       if (v17)
       {
         v35 = v10;
         v36 = v9;
         v37 = v7;
-        v38 = v5;
+        v38 = betweenCopy;
         v44 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         v43 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         v49 = 0u;
@@ -87,16 +87,16 @@
                     }
 
                     v26 = *(*(&v45 + 1) + 8 * i);
-                    v27 = [v19 syncId];
-                    v28 = [v26 syncId];
-                    v29 = [v27 isEqual:v28];
+                    syncId = [v19 syncId];
+                    syncId2 = [v26 syncId];
+                    v29 = [syncId isEqual:syncId2];
 
                     if (v29)
                     {
                       [v44 addObject:v19];
                       [v43 addObject:v26];
-                      v30 = [(SYObjectChangeSet *)v20 updated];
-                      [v30 addObject:v19];
+                      updated = [(SYObjectChangeSet *)v20 updated];
+                      [updated addObject:v19];
                     }
                   }
 
@@ -117,14 +117,14 @@
           while (v41);
         }
 
-        v31 = [(SYObjectChangeSet *)v8 added];
-        [v31 minusSet:v44];
+        added4 = [(SYObjectChangeSet *)v8 added];
+        [added4 minusSet:v44];
 
-        v32 = [(SYObjectChangeSet *)v8 deleted];
-        [v32 minusSet:v43];
+        deleted4 = [(SYObjectChangeSet *)v8 deleted];
+        [deleted4 minusSet:v43];
 
         v7 = v37;
-        v5 = v38;
+        betweenCopy = v38;
         v10 = v35;
         v9 = v36;
       }
@@ -163,41 +163,41 @@
   return v2;
 }
 
-- (SYObjectChangeSet)initWithChangesBetween:(id)a3 and:(id)a4
+- (SYObjectChangeSet)initWithChangesBetween:(id)between and:(id)and
 {
-  v6 = a3;
-  v7 = a4;
+  betweenCopy = between;
+  andCopy = and;
   v18.receiver = self;
   v18.super_class = SYObjectChangeSet;
   v8 = [(SYObjectChangeSet *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    v10 = [(SYObjectChangeSet *)v8 changesBetween:v6 and:v7];
-    v11 = [v10 added];
+    v10 = [(SYObjectChangeSet *)v8 changesBetween:betweenCopy and:andCopy];
+    added = [v10 added];
     added = v9->_added;
-    v9->_added = v11;
+    v9->_added = added;
 
-    v13 = [v10 updated];
+    updated = [v10 updated];
     updated = v9->_updated;
-    v9->_updated = v13;
+    v9->_updated = updated;
 
-    v15 = [v10 deleted];
+    deleted = [v10 deleted];
     deleted = v9->_deleted;
-    v9->_deleted = v15;
+    v9->_deleted = deleted;
   }
 
   return v9;
 }
 
-- (void)applyToStore:(id)a3
+- (void)applyToStore:(id)store
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __34__SYObjectChangeSet_applyToStore___block_invoke;
   v3[3] = &unk_1E86C9C88;
   v3[4] = self;
-  [a3 transaction:v3];
+  [store transaction:v3];
 }
 
 void __34__SYObjectChangeSet_applyToStore___block_invoke(uint64_t a1, void *a2)

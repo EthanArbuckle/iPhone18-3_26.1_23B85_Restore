@@ -1,24 +1,24 @@
 @interface HFDemoModeFaceRecognitionRecentsData
-- (HFDemoModeFaceRecognitionRecentsData)initWithPerson:(id)a3 faceCrop:(id)a4;
+- (HFDemoModeFaceRecognitionRecentsData)initWithPerson:(id)person faceCrop:(id)crop;
 @end
 
 @implementation HFDemoModeFaceRecognitionRecentsData
 
-- (HFDemoModeFaceRecognitionRecentsData)initWithPerson:(id)a3 faceCrop:(id)a4
+- (HFDemoModeFaceRecognitionRecentsData)initWithPerson:(id)person faceCrop:(id)crop
 {
-  v7 = a3;
-  v8 = a4;
+  personCopy = person;
+  cropCopy = crop;
   v14.receiver = self;
   v14.super_class = HFDemoModeFaceRecognitionRecentsData;
   v9 = [(HFDemoModeFaceRecognitionRecentsData *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_person, a3);
-    objc_storeStrong(&v10->_faceCrop, a4);
-    v11 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeStrong(&v9->_person, person);
+    objc_storeStrong(&v10->_faceCrop, crop);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v10->_uuid;
-    v10->_uuid = v11;
+    v10->_uuid = uUID;
   }
 
   return v10;

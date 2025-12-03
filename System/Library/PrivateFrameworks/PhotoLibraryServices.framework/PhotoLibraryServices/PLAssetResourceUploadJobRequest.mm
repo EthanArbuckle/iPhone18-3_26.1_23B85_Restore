@@ -1,19 +1,19 @@
 @interface PLAssetResourceUploadJobRequest
-+ (id)dataForURLRequest:(id)a3;
-+ (id)urlRequestForData:(id)a3;
++ (id)dataForURLRequest:(id)request;
++ (id)urlRequestForData:(id)data;
 @end
 
 @implementation PLAssetResourceUploadJobRequest
 
-+ (id)urlRequestForData:(id)a3
++ (id)urlRequestForData:(id)data
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
     v3 = MEMORY[0x1E696ACD0];
-    v4 = a3;
+    dataCopy = data;
     v9 = 0;
-    v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v9];
+    v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v9];
 
     v6 = v9;
     if (!v5)
@@ -36,13 +36,13 @@
   return v5;
 }
 
-+ (id)dataForURLRequest:(id)a3
++ (id)dataForURLRequest:(id)request
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (request)
   {
     v7 = 0;
-    v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v7];
+    v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:request requiringSecureCoding:1 error:&v7];
     v4 = v7;
     if (!v3)
     {

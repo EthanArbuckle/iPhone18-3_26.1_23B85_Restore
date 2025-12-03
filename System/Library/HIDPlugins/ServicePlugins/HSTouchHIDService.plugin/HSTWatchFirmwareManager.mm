@@ -1,23 +1,23 @@
 @interface HSTWatchFirmwareManager
-- (BOOL)decodeFromMap:(void *)a3;
-- (void)_handleGetWaterStateEvent:(id)a3;
-- (void)_handleSetPropertyEvent:(id)a3;
-- (void)_handleWristStateEvent:(id)a3;
+- (BOOL)decodeFromMap:(void *)map;
+- (void)_handleGetWaterStateEvent:(id)event;
+- (void)_handleSetPropertyEvent:(id)event;
+- (void)_handleWristStateEvent:(id)event;
 - (void)_restoreFirmwareState;
-- (void)encodeToMap:(void *)a3;
-- (void)handleConsume:(id)a3;
+- (void)encodeToMap:(void *)map;
+- (void)handleConsume:(id)consume;
 @end
 
 @implementation HSTWatchFirmwareManager
 
-- (void)_handleWristStateEvent:(id)a3
+- (void)_handleWristStateEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 wristState];
-  v6 = v5;
-  if (*(&self->super._state + 14) != v5)
+  eventCopy = event;
+  wristState = [eventCopy wristState];
+  v6 = wristState;
+  if (*(&self->super._state + 14) != wristState)
   {
-    *(&self->super._state + 14) = v5;
+    *(&self->super._state + 14) = wristState;
     v7 = MTLoggingPlugin();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -65,12 +65,12 @@
 
   v13.receiver = self;
   v13.super_class = HSTWatchFirmwareManager;
-  [(HSTFirmwareManager *)&v13 handleConsume:v4];
+  [(HSTFirmwareManager *)&v13 handleConsume:eventCopy];
 }
 
-- (void)_handleGetWaterStateEvent:(id)a3
+- (void)_handleGetWaterStateEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (!self->super._deviceObj)
   {
     v7 = +[NSAssertionHandler currentHandler];
@@ -104,13 +104,13 @@
   setReport<HSTPipeline::FirmwareInterface::FeatureReport::HostEvent>(self->super._deviceObj);
 }
 
-- (void)_handleSetPropertyEvent:(id)a3
+- (void)_handleSetPropertyEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 39) < 0 && v4[3] == &dword_1C)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (*(eventCopy + 39) < 0 && eventCopy[3] == &dword_1C)
   {
-    v6 = v4[2];
+    v6 = eventCopy[2];
     v7 = *v6;
     v8 = v6[1];
     v9 = v6[2];
@@ -119,7 +119,7 @@
     v12 = v11 && v9 == 0x6E45676E6964726FLL;
     if (v12 && v10 == 1701601889)
     {
-      v14 = v4[5];
+      v14 = eventCopy[5];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -129,9 +129,9 @@
         }
 
         deviceObj = self->super._deviceObj;
-        v16 = [v14 BOOLValue];
+        bOOLValue = [v14 BOOLValue];
         v17 = 0x170001025362;
-        if (v16)
+        if (bOOLValue)
         {
           v17 = 0x100170001025362;
         }
@@ -166,17 +166,17 @@
 
   v24.receiver = self;
   v24.super_class = HSTWatchFirmwareManager;
-  [(HSTFirmwareManager *)&v24 _handleSetPropertyEvent:v4];
+  [(HSTFirmwareManager *)&v24 _handleSetPropertyEvent:eventCopy];
 LABEL_14:
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -186,12 +186,12 @@ LABEL_14:
 
   if (v5)
   {
-    [(HSTWatchFirmwareManager *)self _handleWristStateEvent:v4];
+    [(HSTWatchFirmwareManager *)self _handleWristStateEvent:consumeCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = consumeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -237,15 +237,15 @@ LABEL_14:
   }
 }
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
   v5.receiver = self;
   v5.super_class = HSTWatchFirmwareManager;
   [(HSTFirmwareManager *)&v5 encodeToMap:?];
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)119,(char)114,(char)105,(char)115,(char)116,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, *(&self->super._state + 14));
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)119,(char)114,(char)105,(char)115,(char)116,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, *(&self->super._state + 14));
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
   v6.receiver = self;
   v6.super_class = HSTWatchFirmwareManager;
@@ -261,8 +261,8 @@ LABEL_14:
     return 0;
   }
 
-  *(&self->super._state + 14) = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)119,(char)114,(char)105,(char)115,(char)116,(char)83,(char)116,(char)97,(char)116,(char)101>::Key);
-  if (*a3)
+  *(&self->super._state + 14) = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)119,(char)114,(char)105,(char)115,(char)116,(char)83,(char)116,(char)97,(char)116,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTouchHIDService/HSTFirmwareManager.mm", __b);

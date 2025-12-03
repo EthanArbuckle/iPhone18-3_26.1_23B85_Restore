@@ -1,40 +1,40 @@
 @interface SPUISFreeFormResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SPUISFreeFormResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SPUISFreeFormResultBuilder)initWithResult:(id)result;
 - (id)buildDescriptions;
 @end
 
 @implementation SPUISFreeFormResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = a3;
-  v9.receiver = a1;
+  resultCopy = result;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___SPUISFreeFormResultBuilder;
-  if (objc_msgSendSuper2(&v9, sel_supportsResult_, v4))
+  if (objc_msgSendSuper2(&v9, sel_supportsResult_, resultCopy))
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v4 applicationBundleIdentifier];
-    v7 = [a1 bundleId];
-    v5 = [v6 isEqual:v7];
+    applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
+    bundleId = [self bundleId];
+    v5 = [applicationBundleIdentifier isEqual:bundleId];
   }
 
   return v5;
 }
 
-- (SPUISFreeFormResultBuilder)initWithResult:(id)a3
+- (SPUISFreeFormResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v8.receiver = self;
   v8.super_class = SPUISFreeFormResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v8 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v8 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC2750] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC2750] withType:objc_opt_class()];
     [(SPUISFreeFormResultBuilder *)v5 setFreeFormDescription:v6];
   }
 
@@ -44,27 +44,27 @@
 - (id)buildDescriptions
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SPUISFreeFormResultBuilder *)self freeFormDescription];
+  freeFormDescription = [(SPUISFreeFormResultBuilder *)self freeFormDescription];
 
-  if (v3)
+  if (freeFormDescription)
   {
     v4 = objc_opt_class();
-    v5 = [(SPUISFreeFormResultBuilder *)self freeFormDescription];
-    v11[0] = v5;
+    freeFormDescription2 = [(SPUISFreeFormResultBuilder *)self freeFormDescription];
+    v11[0] = freeFormDescription2;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-    v7 = [v4 richTextsFromStrings:v6];
+    buildDescriptions = [v4 richTextsFromStrings:v6];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SPUISFreeFormResultBuilder;
-    v7 = [(SPUISResultBuilder *)&v10 buildDescriptions];
+    buildDescriptions = [(SPUISResultBuilder *)&v10 buildDescriptions];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return buildDescriptions;
 }
 
 @end

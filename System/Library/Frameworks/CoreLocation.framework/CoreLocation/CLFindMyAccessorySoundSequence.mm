@@ -2,17 +2,17 @@
 + (id)defaultSequence;
 + (id)rangingSequence;
 + (id)shortSequence;
-- (CLFindMyAccessorySoundSequence)initWithCoder:(id)a3;
-- (CLFindMyAccessorySoundSequence)initWithType:(unint64_t)a3 encodedSequence:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addSoundBlockWithAsset:(unint64_t)a3 loopCount:(unsigned __int8)a4 duration:(unsigned __int16)a5;
+- (CLFindMyAccessorySoundSequence)initWithCoder:(id)coder;
+- (CLFindMyAccessorySoundSequence)initWithType:(unint64_t)type encodedSequence:(id)sequence;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addSoundBlockWithAsset:(unint64_t)asset loopCount:(unsigned __int8)count duration:(unsigned __int16)duration;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLFindMyAccessorySoundSequence
 
-- (CLFindMyAccessorySoundSequence)initWithType:(unint64_t)a3 encodedSequence:(id)a4
+- (CLFindMyAccessorySoundSequence)initWithType:(unint64_t)type encodedSequence:(id)sequence
 {
   v10.receiver = self;
   v10.super_class = CLFindMyAccessorySoundSequence;
@@ -20,18 +20,18 @@
   v7 = v6;
   if (v6)
   {
-    v6->_type = a3;
-    if (a4)
+    v6->_type = type;
+    if (sequence)
     {
-      v8 = a4;
+      sequenceCopy = sequence;
     }
 
     else
     {
-      v8 = objc_alloc_init(MEMORY[0x1E695DF88]);
+      sequenceCopy = objc_alloc_init(MEMORY[0x1E695DF88]);
     }
 
-    v7->_encodedSequence = v8;
+    v7->_encodedSequence = sequenceCopy;
   }
 
   return v7;
@@ -68,17 +68,17 @@
   [(CLFindMyAccessorySoundSequence *)&v3 dealloc];
 }
 
-- (void)addSoundBlockWithAsset:(unint64_t)a3 loopCount:(unsigned __int8)a4 duration:(unsigned __int16)a5
+- (void)addSoundBlockWithAsset:(unint64_t)asset loopCount:(unsigned __int8)count duration:(unsigned __int16)duration
 {
-  v8 = a4;
-  v7 = a5;
-  v6 = a3;
-  [(NSMutableData *)self->_encodedSequence appendBytes:&v6 length:1];
-  [(NSMutableData *)self->_encodedSequence appendBytes:&v8 length:1];
-  [(NSMutableData *)self->_encodedSequence appendBytes:&v7 length:2];
+  countCopy = count;
+  durationCopy = duration;
+  assetCopy = asset;
+  [(NSMutableData *)self->_encodedSequence appendBytes:&assetCopy length:1];
+  [(NSMutableData *)self->_encodedSequence appendBytes:&countCopy length:1];
+  [(NSMutableData *)self->_encodedSequence appendBytes:&durationCopy length:2];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CLFindMyAccessorySoundSequence alloc];
   type = self->_type;
@@ -87,20 +87,20 @@
   return MEMORY[0x1EEE66B58](v4, sel_initWithType_encodedSequence_);
 }
 
-- (CLFindMyAccessorySoundSequence)initWithCoder:(id)a3
+- (CLFindMyAccessorySoundSequence)initWithCoder:(id)coder
 {
-  [a3 decodeIntegerForKey:@"Type"];
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"EncodedSequence"];
+  [coder decodeIntegerForKey:@"Type"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"EncodedSequence"];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithType_encodedSequence_);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:self->_type forKey:@"Type"];
+  [coder encodeInteger:self->_type forKey:@"Type"];
   encodedSequence = self->_encodedSequence;
 
-  [a3 encodeObject:encodedSequence forKey:@"EncodedSequence"];
+  [coder encodeObject:encodedSequence forKey:@"EncodedSequence"];
 }
 
 @end

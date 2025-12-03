@@ -1,45 +1,45 @@
 @interface PKPaymentPreferencesListViewController
-- (BOOL)collectionViewIsEditingForSectionController:(id)a3;
-- (PKPaymentPreferencesListViewController)initWithPreferences:(id)a3 title:(id)a4 style:(int64_t)a5 handler:(id)a6 contactFormatValidator:(id)a7;
-- (id)_requiredKeysForContactPreference:(id)a3;
+- (BOOL)collectionViewIsEditingForSectionController:(id)controller;
+- (PKPaymentPreferencesListViewController)initWithPreferences:(id)preferences title:(id)title style:(int64_t)style handler:(id)handler contactFormatValidator:(id)validator;
+- (id)_requiredKeysForContactPreference:(id)preference;
 - (void)_endCurrentInlineEditing;
-- (void)_handleSelectedContact:(id)a3 controller:(id)a4;
-- (void)_keyboardDidShow:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_reloadEditedSection:(id)a3;
-- (void)_resetEditingContact:(id)a3 withCell:(id)a4 forRow:(unint64_t)a5;
+- (void)_handleSelectedContact:(id)contact controller:(id)controller;
+- (void)_keyboardDidShow:(id)show;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_reloadEditedSection:(id)section;
+- (void)_resetEditingContact:(id)contact withCell:(id)cell forRow:(unint64_t)row;
 - (void)_setupSectionControllers;
-- (void)_updateContactAtIndex:(unint64_t)a3 withCell:(id)a4;
+- (void)_updateContactAtIndex:(unint64_t)index withCell:(id)cell;
 - (void)_updateNavigationBarButtons;
-- (void)addressEditorViewController:(id)a3 selectedContact:(id)a4;
-- (void)addressEditorViewControllerDidCancel:(id)a3;
-- (void)addressSearcherViewController:(id)a3 selectedContact:(id)a4;
-- (void)addressSearcherViewControllerDidCancel:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
+- (void)addressEditorViewController:(id)controller selectedContact:(id)contact;
+- (void)addressEditorViewControllerDidCancel:(id)cancel;
+- (void)addressSearcherViewController:(id)controller selectedContact:(id)contact;
+- (void)addressSearcherViewControllerDidCancel:(id)cancel;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
 - (void)presentHideMyEmailAlertController;
-- (void)presentMeCardAlertControllerWithContact:(id)a3 contactKey:(id)a4 handler:(id)a5;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPreferences:(id)a3;
-- (void)showAddressEditorForContactItem:(id)a3 inSectionController:(id)a4;
-- (void)showAddressPickerForPreference:(id)a3 inSectionController:(id)a4;
-- (void)showContactsPickerForPreference:(id)a3 inSectionController:(id)a4;
-- (void)startInlineEditingForContactItem:(id)a3 inSectionController:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentMeCardAlertControllerWithContact:(id)contact contactKey:(id)key handler:(id)handler;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setPreferences:(id)preferences;
+- (void)showAddressEditorForContactItem:(id)item inSectionController:(id)controller;
+- (void)showAddressPickerForPreference:(id)preference inSectionController:(id)controller;
+- (void)showContactsPickerForPreference:(id)preference inSectionController:(id)controller;
+- (void)startInlineEditingForContactItem:(id)item inSectionController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPaymentPreferencesListViewController
 
-- (PKPaymentPreferencesListViewController)initWithPreferences:(id)a3 title:(id)a4 style:(int64_t)a5 handler:(id)a6 contactFormatValidator:(id)a7
+- (PKPaymentPreferencesListViewController)initWithPreferences:(id)preferences title:(id)title style:(int64_t)style handler:(id)handler contactFormatValidator:(id)validator
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  preferencesCopy = preferences;
+  titleCopy = title;
+  handlerCopy = handler;
+  validatorCopy = validator;
   v23.receiver = self;
   v23.super_class = PKPaymentPreferencesListViewController;
   v17 = [(PKDynamicCollectionViewController *)&v23 init];
@@ -48,14 +48,14 @@
   {
     v22.receiver = v17;
     v22.super_class = PKPaymentPreferencesListViewController;
-    [(PKPaymentPreferencesListViewController *)&v22 setTitle:v14];
-    objc_storeStrong(&v18->_preferences, a3);
-    v19 = _Block_copy(v15);
+    [(PKPaymentPreferencesListViewController *)&v22 setTitle:titleCopy];
+    objc_storeStrong(&v18->_preferences, preferences);
+    v19 = _Block_copy(handlerCopy);
     handler = v18->_handler;
     v18->_handler = v19;
 
-    objc_storeStrong(&v18->_contactFormatValidator, a7);
-    v18->_style = a5;
+    objc_storeStrong(&v18->_contactFormatValidator, validator);
+    v18->_style = style;
     [(PKPaymentPreferencesListViewController *)v18 _setupSectionControllers];
   }
 
@@ -67,16 +67,16 @@
   v4.receiver = self;
   v4.super_class = PKPaymentPreferencesListViewController;
   [(PKDynamicCollectionViewController *)&v4 viewDidLoad];
-  v3 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v3 setAllowsSelectionDuringEditing:1];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView setAllowsSelectionDuringEditing:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKPaymentPreferencesListViewController;
-  [(PKDynamicCollectionViewController *)&v8 viewDidAppear:a3];
+  [(PKDynamicCollectionViewController *)&v8 viewDidAppear:appear];
   v3 = MEMORY[0x1E69B8540];
   v4 = *MEMORY[0x1E69BB6E0];
   v5 = *MEMORY[0x1E69BABE8];
@@ -89,29 +89,29 @@
   [v3 subject:v4 sendEvent:v7];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PKPaymentPreferencesListViewController;
-  [(PKDynamicCollectionViewController *)&v6 viewWillAppear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__keyboardDidShow_ name:*MEMORY[0x1E69DDF78] object:0];
+  [(PKDynamicCollectionViewController *)&v6 viewWillAppear:appear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__keyboardDidShow_ name:*MEMORY[0x1E69DDF78] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
 
   [(PKPaymentPreferencesListViewController *)self _updateNavigationBarButtons];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = PKPaymentPreferencesListViewController;
-  [(PKPaymentPreferencesListViewController *)&v10 viewDidDisappear:a3];
+  [(PKPaymentPreferencesListViewController *)&v10 viewDidDisappear:disappear];
   [(PKPaymentPreferencesListViewController *)self setEditing:0 animated:1];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5 = MEMORY[0x1E69B8540];
   v6 = *MEMORY[0x1E69BB6E0];
@@ -128,8 +128,8 @@
 - (void)_updateNavigationBarButtons
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentPreferencesListViewController *)self navigationItem];
-  [v3 setRightBarButtonItem:0];
+  navigationItem = [(PKPaymentPreferencesListViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:0];
 
   v16 = 0u;
   v17 = 0u;
@@ -155,14 +155,14 @@
         {
           if (([v9 isReadOnly] & 1) == 0)
           {
-            v10 = [v9 preferences];
-            v11 = [v10 count];
+            preferences = [v9 preferences];
+            v11 = [preferences count];
 
             if (v11)
             {
-              v12 = [(PKPaymentPreferencesListViewController *)self navigationItem];
-              v13 = [(PKPaymentPreferencesListViewController *)self editButtonItem];
-              [v12 setRightBarButtonItem:v13];
+              navigationItem2 = [(PKPaymentPreferencesListViewController *)self navigationItem];
+              editButtonItem = [(PKPaymentPreferencesListViewController *)self editButtonItem];
+              [navigationItem2 setRightBarButtonItem:editButtonItem];
 
               goto LABEL_13;
             }
@@ -183,12 +183,12 @@
 LABEL_13:
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
   v7.receiver = self;
   v7.super_class = PKPaymentPreferencesListViewController;
-  [(PKDynamicCollectionViewController *)&v7 setEditing:a3 animated:a4];
-  if (!a3)
+  [(PKDynamicCollectionViewController *)&v7 setEditing:editing animated:animated];
+  if (!editing)
   {
     [(PKPaymentPreferencesListViewController *)self _endCurrentInlineEditing];
     editingItem = self->_editingItem;
@@ -196,9 +196,9 @@ LABEL_13:
   }
 }
 
-- (void)setPreferences:(id)a3
+- (void)setPreferences:(id)preferences
 {
-  objc_storeStrong(&self->_preferences, a3);
+  objc_storeStrong(&self->_preferences, preferences);
 
   [(PKPaymentPreferencesListViewController *)self _setupSectionControllers];
 }
@@ -297,10 +297,10 @@ void __66__PKPaymentPreferencesListViewController__setupSectionControllers__bloc
   [WeakRetained _reloadEditedSection:v3];
 }
 
-- (void)_keyboardDidShow:(id)a3
+- (void)_keyboardDidShow:(id)show
 {
-  v30 = [a3 userInfo];
-  v4 = [v30 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v4 CGRectValue];
   v6 = v5;
   v8 = v7;
@@ -310,15 +310,15 @@ void __66__PKPaymentPreferencesListViewController__setupSectionControllers__bloc
   v13 = *MEMORY[0x1E69DDCE0];
   v14 = *(MEMORY[0x1E69DDCE0] + 8);
   v15 = *(MEMORY[0x1E69DDCE0] + 24);
-  v16 = [(PKPaymentPreferencesListViewController *)self view];
-  [v16 convertRect:0 fromView:{v6, v8, v10, v12}];
+  view = [(PKPaymentPreferencesListViewController *)self view];
+  [view convertRect:0 fromView:{v6, v8, v10, v12}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
 
-  v25 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v25 frame];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView frame];
   MaxY = CGRectGetMaxY(v32);
   v33.origin.x = v18;
   v33.origin.y = v20;
@@ -326,42 +326,42 @@ void __66__PKPaymentPreferencesListViewController__setupSectionControllers__bloc
   v33.size.height = v24;
   v27 = MaxY - CGRectGetMinY(v33) + 10.0;
 
-  v28 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v28 setContentInset:{v13, v14, v27, v15}];
+  collectionView2 = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView2 setContentInset:{v13, v14, v27, v15}];
 
-  v29 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v29 setScrollIndicatorInsets:{v13, v14, v27, v15}];
+  collectionView3 = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView3 setScrollIndicatorInsets:{v13, v14, v27, v15}];
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
-  v4 = [(PKDynamicCollectionViewController *)self collectionView];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
   v5 = *MEMORY[0x1E69DDCE0];
   v6 = *(MEMORY[0x1E69DDCE0] + 8);
   v7 = *(MEMORY[0x1E69DDCE0] + 16);
   v8 = *(MEMORY[0x1E69DDCE0] + 24);
-  [v4 setContentInset:{*MEMORY[0x1E69DDCE0], v6, v7, v8}];
+  [collectionView setContentInset:{*MEMORY[0x1E69DDCE0], v6, v7, v8}];
 
-  v9 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v9 setScrollIndicatorInsets:{v5, v6, v7, v8}];
+  collectionView2 = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView2 setScrollIndicatorInsets:{v5, v6, v7, v8}];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 deselectItemAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
   v8.receiver = self;
   v8.super_class = PKPaymentPreferencesListViewController;
-  [(PKDynamicCollectionViewController *)&v8 collectionView:v7 didSelectItemAtIndexPath:v6];
+  [(PKDynamicCollectionViewController *)&v8 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
 }
 
-- (BOOL)collectionViewIsEditingForSectionController:(id)a3
+- (BOOL)collectionViewIsEditingForSectionController:(id)controller
 {
-  v3 = [(PKDynamicCollectionViewController *)self collectionView];
-  v4 = [v3 isEditing];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  isEditing = [collectionView isEditing];
 
-  return v4;
+  return isEditing;
 }
 
 - (void)presentHideMyEmailAlertController
@@ -399,34 +399,34 @@ void __75__PKPaymentPreferencesListViewController_presentHideMyEmailAlertControl
   }
 }
 
-- (void)showAddressEditorForContactItem:(id)a3 inSectionController:(id)a4
+- (void)showAddressEditorForContactItem:(id)item inSectionController:(id)controller
 {
-  v19 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_editingContactSectionController, a4);
-  objc_storeStrong(&self->_editingItem, a3);
-  v8 = [v19 contactPreference];
-  v9 = [v7 contactPreference];
-  v10 = [v9 errorsForPreference:v8];
+  itemCopy = item;
+  controllerCopy = controller;
+  objc_storeStrong(&self->_editingContactSectionController, controller);
+  objc_storeStrong(&self->_editingItem, item);
+  contactPreference = [itemCopy contactPreference];
+  contactPreference2 = [controllerCopy contactPreference];
+  v10 = [contactPreference2 errorsForPreference:contactPreference];
   v11 = [v10 count];
 
-  v12 = [(PKPaymentPreferencesListViewController *)self _requiredKeysForContactPreference:v9];
+  v12 = [(PKPaymentPreferencesListViewController *)self _requiredKeysForContactPreference:contactPreference2];
   v13 = [PKAddressEditorViewController alloc];
   v14 = v13;
   if (v11)
   {
-    v15 = [v9 errorsForPreference:v8];
-    v16 = [(PKAddressEditorViewController *)v14 initWithContact:v8 requiredKeys:v12 highlightedKeys:0 errors:v15 style:1];
+    v15 = [contactPreference2 errorsForPreference:contactPreference];
+    v16 = [(PKAddressEditorViewController *)v14 initWithContact:contactPreference requiredKeys:v12 highlightedKeys:0 errors:v15 style:1];
   }
 
   else
   {
-    v16 = [(PKAddressEditorViewController *)v13 initWithContact:v8 requiredKeys:v12 highlightedKeys:0 errors:0 style:1];
+    v16 = [(PKAddressEditorViewController *)v13 initWithContact:contactPreference requiredKeys:v12 highlightedKeys:0 errors:0 style:1];
   }
 
   [(PKAddressEditorViewController *)v16 setDelegate:self];
-  v17 = [v9 editExistingTitle];
-  [(PKAddressEditorViewController *)v16 setTitle:v17];
+  editExistingTitle = [contactPreference2 editExistingTitle];
+  [(PKAddressEditorViewController *)v16 setTitle:editExistingTitle];
 
   [(PKAddressEditorViewController *)v16 setContactFormatValidator:self->_contactFormatValidator];
   v18 = [[PKBlurredContainerNavigationController alloc] initWithRootViewController:v16];
@@ -438,16 +438,16 @@ void __75__PKPaymentPreferencesListViewController_presentHideMyEmailAlertControl
   [(PKPaymentPreferencesListViewController *)self presentViewController:v18 animated:1 completion:0];
 }
 
-- (void)showAddressPickerForPreference:(id)a3 inSectionController:(id)a4
+- (void)showAddressPickerForPreference:(id)preference inSectionController:(id)controller
 {
-  v13 = a3;
-  v6 = a4;
+  preferenceCopy = preference;
+  controllerCopy = controller;
   if (PKUIStoreDemoGatewayWithViewController(self))
   {
-    objc_storeStrong(&self->_editingContactSectionController, a4);
-    v7 = [v13 addNewTitle];
+    objc_storeStrong(&self->_editingContactSectionController, controller);
+    addNewTitle = [preferenceCopy addNewTitle];
     v8 = [[PKAddressSearcherViewController alloc] initWithStyle:1];
-    v9 = [(PKPaymentPreferencesListViewController *)self _requiredKeysForContactPreference:v13];
+    v9 = [(PKPaymentPreferencesListViewController *)self _requiredKeysForContactPreference:preferenceCopy];
     [(PKAddressSearcherViewController *)v8 setRequiredKeys:v9];
 
     [(PKAddressSearcherViewController *)v8 setDelegate:self];
@@ -458,16 +458,16 @@ void __75__PKPaymentPreferencesListViewController_presentHideMyEmailAlertControl
       [v10 setModalPresentationStyle:2];
       [MEMORY[0x1E69DD258] defaultFormSheetSize];
       [v10 setPreferredContentSize:?];
-      v11 = PKLocalizedPaymentString(v7);
+      v11 = PKLocalizedPaymentString(addNewTitle);
       [v10 setTitle:v11];
 
-      v12 = PKLocalizedPaymentString(v7);
+      v12 = PKLocalizedPaymentString(addNewTitle);
       [(PKAddressSearcherViewController *)v8 setTitle:v12];
     }
 
     else
     {
-      v12 = PKLocalizedPaymentString(v7);
+      v12 = PKLocalizedPaymentString(addNewTitle);
       [(PKAddressSearcherViewController *)v8 setHeaderTitle:v12];
     }
 
@@ -477,15 +477,15 @@ void __75__PKPaymentPreferencesListViewController_presentHideMyEmailAlertControl
   }
 }
 
-- (void)showContactsPickerForPreference:(id)a3 inSectionController:(id)a4
+- (void)showContactsPickerForPreference:(id)preference inSectionController:(id)controller
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  preferenceCopy = preference;
+  controllerCopy = controller;
   if (PKUIStoreDemoGatewayWithViewController(self))
   {
-    objc_storeStrong(&self->_editingContactSectionController, a4);
-    v8 = [v6 contactKey];
+    objc_storeStrong(&self->_editingContactSectionController, controller);
+    contactKey = [preferenceCopy contactKey];
     v9 = objc_alloc_init(getCNContactPickerViewControllerClass_0());
     if ([(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
     {
@@ -493,17 +493,17 @@ void __75__PKPaymentPreferencesListViewController_presentHideMyEmailAlertControl
     }
 
     [v9 setDelegate:self];
-    v15[0] = v8;
+    v15[0] = contactKey;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     [v9 setDisplayedPropertyKeys:v10];
 
-    if ([v8 isEqualToString:*MEMORY[0x1E695C208]])
+    if ([contactKey isEqualToString:*MEMORY[0x1E695C208]])
     {
       v11 = @"emailAddresses.@count = 1";
       v12 = @"emailAddresses.@count > 0";
     }
 
-    else if ([v8 isEqualToString:*MEMORY[0x1E695C360]])
+    else if ([contactKey isEqualToString:*MEMORY[0x1E695C360]])
     {
       v11 = @"postalAddresses.@count = 1";
       v12 = @"postalAddresses.@count > 0";
@@ -511,7 +511,7 @@ void __75__PKPaymentPreferencesListViewController_presentHideMyEmailAlertControl
 
     else
     {
-      if (![v8 isEqualToString:*MEMORY[0x1E695C330]])
+      if (![contactKey isEqualToString:*MEMORY[0x1E695C330]])
       {
 LABEL_11:
         [(PKPaymentPreferencesListViewController *)self setEditing:0];
@@ -536,16 +536,16 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)presentMeCardAlertControllerWithContact:(id)a3 contactKey:(id)a4 handler:(id)a5
+- (void)presentMeCardAlertControllerWithContact:(id)contact contactKey:(id)key handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  if ([v7 isEqualToString:*MEMORY[0x1E695C208]])
+  keyCopy = key;
+  handlerCopy = handler;
+  if ([keyCopy isEqualToString:*MEMORY[0x1E695C208]])
   {
     v9 = @"EMAIL";
   }
 
-  else if ([v7 isEqualToString:*MEMORY[0x1E695C330]])
+  else if ([keyCopy isEqualToString:*MEMORY[0x1E695C330]])
   {
     v9 = @"PHONE";
   }
@@ -569,8 +569,8 @@ LABEL_12:
   v23[1] = 3221225472;
   v23[2] = __101__PKPaymentPreferencesListViewController_presentMeCardAlertControllerWithContact_contactKey_handler___block_invoke;
   v23[3] = &unk_1E8011248;
-  v24 = v8;
-  v18 = v8;
+  v24 = handlerCopy;
+  v18 = handlerCopy;
   v19 = [v15 actionWithTitle:v17 style:2 handler:v23];
   [v14 addAction:v19];
 
@@ -582,31 +582,31 @@ LABEL_12:
   [(PKPaymentPreferencesListViewController *)self presentViewController:v14 animated:1 completion:0];
 }
 
-- (void)startInlineEditingForContactItem:(id)a3 inSectionController:(id)a4
+- (void)startInlineEditingForContactItem:(id)item inSectionController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  controllerCopy = controller;
   if (([(PKPaymentPreferencesListViewController *)self isEditing]& 1) == 0)
   {
     [(PKPaymentPreferencesListViewController *)self setEditing:1 animated:1];
   }
 
   [(PKPaymentPreferencesListViewController *)self _endCurrentInlineEditing];
-  if (v6)
+  if (itemCopy)
   {
-    v8 = [(PKPaymentPreferenceContactSectionController *)v7 contactItems];
-    v9 = [v8 indexOfObject:v6];
+    contactItems = [(PKPaymentPreferenceContactSectionController *)controllerCopy contactItems];
+    v9 = [contactItems indexOfObject:itemCopy];
   }
 
   else
   {
-    v6 = [(PKPaymentPreferenceSectionController *)v7 appendNewItemForEditing];
-    v10 = [(PKPaymentPreferenceSectionController *)v7 preference];
-    v11 = [v10 preferences];
-    v12 = [v11 lastObject];
-    v13 = [v12 isHideMyEmail];
+    itemCopy = [(PKPaymentPreferenceSectionController *)controllerCopy appendNewItemForEditing];
+    preference = [(PKPaymentPreferenceSectionController *)controllerCopy preference];
+    preferences = [preference preferences];
+    lastObject = [preferences lastObject];
+    isHideMyEmail = [lastObject isHideMyEmail];
 
-    if (v13)
+    if (isHideMyEmail)
     {
       v14 = 2;
     }
@@ -616,40 +616,40 @@ LABEL_12:
       v14 = 1;
     }
 
-    v8 = [(PKPaymentPreferenceSectionController *)v7 preference];
-    v15 = [v8 preferences];
-    if ([v15 count] == v14)
+    contactItems = [(PKPaymentPreferenceSectionController *)controllerCopy preference];
+    preferences2 = [contactItems preferences];
+    if ([preferences2 count] == v14)
     {
       v9 = 0;
     }
 
     else
     {
-      v16 = [(PKPaymentPreferenceSectionController *)v7 preference];
-      v17 = [v16 preferences];
-      v9 = [v17 count] - v14;
+      preference2 = [(PKPaymentPreferenceSectionController *)controllerCopy preference];
+      preferences3 = [preference2 preferences];
+      v9 = [preferences3 count] - v14;
     }
   }
 
-  v18 = [(PKDynamicCollectionViewController *)self sections];
-  v19 = [v18 indexOfObject:v7];
+  sections = [(PKDynamicCollectionViewController *)self sections];
+  v19 = [sections indexOfObject:controllerCopy];
 
   v25 = [MEMORY[0x1E696AC88] indexPathForItem:v9 inSection:v19];
-  v20 = [(PKDynamicCollectionViewController *)self collectionView];
-  v21 = [v20 cellForItemAtIndexPath:v25];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  v21 = [collectionView cellForItemAtIndexPath:v25];
 
   [v21 beginEditing];
   editingItem = self->_editingItem;
-  self->_editingItem = v6;
-  v23 = v6;
+  self->_editingItem = itemCopy;
+  v23 = itemCopy;
 
   editingContactSectionController = self->_editingContactSectionController;
-  self->_editingContactSectionController = v7;
+  self->_editingContactSectionController = controllerCopy;
 }
 
-- (void)_reloadEditedSection:(id)a3
+- (void)_reloadEditedSection:(id)section
 {
-  v6 = a3;
+  sectionCopy = section;
   [(PKPaymentPreferencesListViewController *)self _updateNavigationBarButtons];
   handler = self->_handler;
   if (handler)
@@ -657,17 +657,17 @@ LABEL_12:
     handler[2](handler, self, self->_preferences);
   }
 
-  v5 = [v6 sectionIdentifier];
-  [(PKDynamicCollectionViewController *)self reloadDataForSectionIdentifier:v5 animated:1];
+  sectionIdentifier = [sectionCopy sectionIdentifier];
+  [(PKDynamicCollectionViewController *)self reloadDataForSectionIdentifier:sectionIdentifier animated:1];
 }
 
-- (id)_requiredKeysForContactPreference:(id)a3
+- (id)_requiredKeysForContactPreference:(id)preference
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  preferenceCopy = preference;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v3 contactKey];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E695C360]];
+  contactKey = [preferenceCopy contactKey];
+  v6 = [contactKey isEqualToString:*MEMORY[0x1E695C360]];
 
   if (v6)
   {
@@ -677,7 +677,7 @@ LABEL_12:
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
     [v4 addObjectsFromArray:v8];
 
-    if ([v3 showPhoneticName])
+    if ([preferenceCopy showPhoneticName])
     {
       [v4 addObject:*MEMORY[0x1E69BB7D0]];
     }
@@ -688,9 +688,9 @@ LABEL_12:
   return v9;
 }
 
-- (void)_handleSelectedContact:(id)a3 controller:(id)a4
+- (void)_handleSelectedContact:(id)contact controller:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   editingContactSectionController = self->_editingContactSectionController;
   editingItem = self->_editingItem;
   v9 = *MEMORY[0x1E695C360];
@@ -699,9 +699,9 @@ LABEL_12:
   v11[2] = __76__PKPaymentPreferencesListViewController__handleSelectedContact_controller___block_invoke;
   v11[3] = &unk_1E8026DF0;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [(PKPaymentPreferenceContactSectionController *)editingContactSectionController saveContact:a3 forItem:editingItem withContactKey:v9 completion:v11];
+  v12 = controllerCopy;
+  v10 = controllerCopy;
+  [(PKPaymentPreferenceContactSectionController *)editingContactSectionController saveContact:contact forItem:editingItem withContactKey:v9 completion:v11];
 }
 
 void __76__PKPaymentPreferencesListViewController__handleSelectedContact_controller___block_invoke(uint64_t a1)
@@ -731,15 +731,15 @@ void __76__PKPaymentPreferencesListViewController__handleSelectedContact_control
 {
   if (self->_editingItem && self->_editingContactSectionController)
   {
-    v3 = [(PKDynamicCollectionViewController *)self sections];
-    v4 = [v3 indexOfObject:self->_editingContactSectionController];
+    sections = [(PKDynamicCollectionViewController *)self sections];
+    v4 = [sections indexOfObject:self->_editingContactSectionController];
 
-    v5 = [(PKPaymentPreferenceSectionController *)self->_editingContactSectionController items];
-    v6 = [v5 indexOfObject:self->_editingItem];
+    items = [(PKPaymentPreferenceSectionController *)self->_editingContactSectionController items];
+    v6 = [items indexOfObject:self->_editingItem];
 
     v9 = [MEMORY[0x1E696AC88] indexPathForItem:v6 inSection:v4];
-    v7 = [(PKDynamicCollectionViewController *)self collectionView];
-    v8 = [v7 cellForItemAtIndexPath:v9];
+    collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+    v8 = [collectionView cellForItemAtIndexPath:v9];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -749,58 +749,58 @@ void __76__PKPaymentPreferencesListViewController__handleSelectedContact_control
   }
 }
 
-- (void)_updateContactAtIndex:(unint64_t)a3 withCell:(id)a4
+- (void)_updateContactAtIndex:(unint64_t)index withCell:(id)cell
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 textFieldText];
-  [v6 endEditing];
-  v8 = [(PKPaymentPreferenceOptionListItem *)self->_editingItem preference];
-  if (v7 && [v7 length])
+  cellCopy = cell;
+  textFieldText = [cellCopy textFieldText];
+  [cellCopy endEditing];
+  preference = [(PKPaymentPreferenceOptionListItem *)self->_editingItem preference];
+  if (textFieldText && [textFieldText length])
   {
-    v9 = [(PKPaymentPreferenceContactSectionController *)self->_editingContactSectionController contactPreference];
-    v29 = [v9 contactKey];
-    v10 = [v8 mutableCopy];
-    if ([v29 isEqualToString:*MEMORY[0x1E695C208]])
+    contactPreference = [(PKPaymentPreferenceContactSectionController *)self->_editingContactSectionController contactPreference];
+    contactKey = [contactPreference contactKey];
+    v10 = [preference mutableCopy];
+    if ([contactKey isEqualToString:*MEMORY[0x1E695C208]])
     {
-      v11 = [v8 emailAddresses];
-      v12 = [v11 firstObject];
+      emailAddresses = [preference emailAddresses];
+      firstObject = [emailAddresses firstObject];
 
-      v13 = [objc_alloc(MEMORY[0x1E699B240]) initWithString:v7];
+      v13 = [objc_alloc(MEMORY[0x1E699B240]) initWithString:textFieldText];
       v14 = v13;
       if (v13)
       {
-        v15 = [v13 stringValue];
+        stringValue = [v13 stringValue];
 
-        v7 = v15;
+        textFieldText = stringValue;
       }
 
-      v7 = v7;
+      textFieldText = textFieldText;
 
-      v28 = v7;
+      v28 = textFieldText;
     }
 
-    else if ([v29 isEqualToString:*MEMORY[0x1E695C330]])
+    else if ([contactKey isEqualToString:*MEMORY[0x1E695C330]])
     {
-      v16 = [v8 phoneNumbers];
-      v12 = [v16 firstObject];
+      phoneNumbers = [preference phoneNumbers];
+      firstObject = [phoneNumbers firstObject];
 
-      v28 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v7];
+      v28 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:textFieldText];
     }
 
     else
     {
-      v12 = 0;
+      firstObject = 0;
       v28 = 0;
     }
 
     v17 = MEMORY[0x1E695CEE0];
-    v18 = [v12 label];
-    v27 = [v17 labeledValueWithLabel:v18 value:v28];
+    label = [firstObject label];
+    v27 = [v17 labeledValueWithLabel:label value:v28];
 
     v45[0] = v27;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
-    [v10 setValue:v19 forKey:v29];
+    [v10 setValue:v19 forKey:contactKey];
 
     v39 = 0;
     v40 = &v39;
@@ -808,23 +808,23 @@ void __76__PKPaymentPreferencesListViewController__handleSelectedContact_control
     v42 = __Block_byref_object_copy__73;
     v43 = __Block_byref_object_dispose__73;
     v44 = 0;
-    v20 = [v9 preferences];
+    preferences = [contactPreference preferences];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __73__PKPaymentPreferencesListViewController__updateContactAtIndex_withCell___block_invoke;
     v35[3] = &unk_1E8026E18;
     v21 = v10;
     v37 = &v39;
-    v38 = a3;
+    indexCopy = index;
     v36 = v21;
-    [v20 enumerateObjectsUsingBlock:v35];
+    [preferences enumerateObjectsUsingBlock:v35];
 
     if (v40[5])
     {
-      [(PKPaymentPreferencesListViewController *)self _resetEditingContact:v8 withCell:v6 forRow:a3];
-      v22 = [v9 indexOfContact:v40[5]];
-      v23 = [v9 selectedIndex];
-      if (v22 != 0x7FFFFFFFFFFFFFFFLL && v23 != v22)
+      [(PKPaymentPreferencesListViewController *)self _resetEditingContact:preference withCell:cellCopy forRow:index];
+      v22 = [contactPreference indexOfContact:v40[5]];
+      selectedIndex = [contactPreference selectedIndex];
+      if (v22 != 0x7FFFFFFFFFFFFFFFLL && selectedIndex != v22)
       {
         [(PKPaymentPreferenceSectionController *)self->_editingContactSectionController setSelectedIndex:v22];
         [(PKPaymentPreferencesListViewController *)self _reloadEditedSection:self->_editingContactSectionController];
@@ -839,15 +839,15 @@ void __76__PKPaymentPreferencesListViewController__handleSelectedContact_control
       aBlock[3] = &unk_1E8017530;
       aBlock[4] = self;
       v31 = v21;
-      v24 = v29;
+      v24 = contactKey;
       v32 = v24;
-      v33 = v9;
-      v34 = a3;
+      v33 = contactPreference;
+      indexCopy2 = index;
       v25 = _Block_copy(aBlock);
-      if ([v8 contactSource] == 1)
+      if ([preference contactSource] == 1)
       {
         v26 = [v25 copy];
-        [(PKPaymentPreferencesListViewController *)self presentMeCardAlertControllerWithContact:v8 contactKey:v24 handler:v26];
+        [(PKPaymentPreferencesListViewController *)self presentMeCardAlertControllerWithContact:preference contactKey:v24 handler:v26];
       }
 
       else
@@ -861,7 +861,7 @@ void __76__PKPaymentPreferencesListViewController__handleSelectedContact_control
 
   else
   {
-    [(PKPaymentPreferencesListViewController *)self _resetEditingContact:v8 withCell:v6 forRow:a3];
+    [(PKPaymentPreferencesListViewController *)self _resetEditingContact:preference withCell:cellCopy forRow:index];
   }
 }
 
@@ -929,24 +929,24 @@ uint64_t __73__PKPaymentPreferencesListViewController__updateContactAtIndex_with
   return [v10 _reloadEditedSection:v11];
 }
 
-- (void)_resetEditingContact:(id)a3 withCell:(id)a4 forRow:(unint64_t)a5
+- (void)_resetEditingContact:(id)contact withCell:(id)cell forRow:(unint64_t)row
 {
-  v8 = a4;
-  if ([a3 contactSource] == 1)
+  cellCopy = cell;
+  if ([contact contactSource] == 1)
   {
-    [v8 resetTextFieldTextFromLabel];
+    [cellCopy resetTextFieldTextFromLabel];
   }
 
   else
   {
-    [(PKPaymentPreferenceContactSectionController *)self->_editingContactSectionController deleteItem:self->_editingItem forRow:a5];
+    [(PKPaymentPreferenceContactSectionController *)self->_editingContactSectionController deleteItem:self->_editingItem forRow:row];
     [(PKPaymentPreferencesListViewController *)self _reloadEditedSection:self->_editingContactSectionController];
   }
 }
 
-- (void)addressEditorViewController:(id)a3 selectedContact:(id)a4
+- (void)addressEditorViewController:(id)controller selectedContact:(id)contact
 {
-  v6 = a3;
+  controllerCopy = controller;
   editingContactSectionController = self->_editingContactSectionController;
   editingItem = self->_editingItem;
   v9 = *MEMORY[0x1E695C360];
@@ -954,10 +954,10 @@ uint64_t __73__PKPaymentPreferencesListViewController__updateContactAtIndex_with
   v11[1] = 3221225472;
   v11[2] = __86__PKPaymentPreferencesListViewController_addressEditorViewController_selectedContact___block_invoke;
   v11[3] = &unk_1E8026DF0;
-  v12 = v6;
-  v13 = self;
-  v10 = v6;
-  [(PKPaymentPreferenceContactSectionController *)editingContactSectionController saveContact:a4 forItem:editingItem withContactKey:v9 completion:v11];
+  v12 = controllerCopy;
+  selfCopy = self;
+  v10 = controllerCopy;
+  [(PKPaymentPreferenceContactSectionController *)editingContactSectionController saveContact:contact forItem:editingItem withContactKey:v9 completion:v11];
 }
 
 void __86__PKPaymentPreferencesListViewController_addressEditorViewController_selectedContact___block_invoke(uint64_t a1, void *a2)
@@ -985,49 +985,49 @@ void __86__PKPaymentPreferencesListViewController_addressEditorViewController_se
   }
 }
 
-- (void)addressEditorViewControllerDidCancel:(id)a3
+- (void)addressEditorViewControllerDidCancel:(id)cancel
 {
-  v3 = [a3 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [cancel presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)addressSearcherViewController:(id)a3 selectedContact:(id)a4
+- (void)addressSearcherViewController:(id)controller selectedContact:(id)contact
 {
-  [(PKPaymentPreferencesListViewController *)self _handleSelectedContact:a4 controller:a3];
+  [(PKPaymentPreferencesListViewController *)self _handleSelectedContact:contact controller:controller];
 
   JUMPOUT(0x1BFB41980);
 }
 
-- (void)addressSearcherViewControllerDidCancel:(id)a3
+- (void)addressSearcherViewControllerDidCancel:(id)cancel
 {
-  v3 = [a3 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [cancel presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  [(PKPaymentPreferencesListViewController *)self _handleSelectedContact:a4 controller:a3];
+  [(PKPaymentPreferencesListViewController *)self _handleSelectedContact:contact controller:picker];
 
   JUMPOUT(0x1BFB41980);
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695CEE0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 label];
-  v10 = [v7 value];
-  v11 = [v6 labeledValueWithLabel:v9 value:v10];
+  propertyCopy = property;
+  pickerCopy = picker;
+  label = [propertyCopy label];
+  value = [propertyCopy value];
+  v11 = [v6 labeledValueWithLabel:label value:value];
 
   v12 = objc_alloc_init(MEMORY[0x1E695CF18]);
   v15[0] = v11;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v14 = [v7 key];
+  v14 = [propertyCopy key];
 
   [v12 setValue:v13 forKey:v14];
-  [(PKPaymentPreferencesListViewController *)self _handleSelectedContact:v12 controller:v8];
+  [(PKPaymentPreferencesListViewController *)self _handleSelectedContact:v12 controller:pickerCopy];
 }
 
 @end

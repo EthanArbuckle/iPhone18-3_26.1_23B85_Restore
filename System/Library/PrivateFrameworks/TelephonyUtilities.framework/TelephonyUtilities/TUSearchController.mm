@@ -2,15 +2,15 @@
 + (TUSearchController)sharedInstance;
 - (CNContactStore)contactStore;
 - (TUSearchController)init;
-- (id)_searchModuleCompletionWithModules:(id)a3 searchTerm:(id)a4 resultsClass:(Class)a5 completion:(id)a6;
-- (id)recentsModuleCompletionWithCompletion:(id)a3;
-- (id)searchModuleCompletionWithSearchTerm:(id)a3 completion:(id)a4;
+- (id)_searchModuleCompletionWithModules:(id)modules searchTerm:(id)term resultsClass:(Class)class completion:(id)completion;
+- (id)recentsModuleCompletionWithCompletion:(id)completion;
+- (id)searchModuleCompletionWithSearchTerm:(id)term completion:(id)completion;
 - (void)_cancelRecentSearches;
-- (void)_cancelSearchsForSearchTerm:(id)a3;
+- (void)_cancelSearchsForSearchTerm:(id)term;
 - (void)_clearIdsDestinations;
-- (void)_fetchIdsDestinationsIfNeeded:(id)a3 withReason:(int)a4;
-- (void)recentsWithCompletion:(id)a3;
-- (void)searchForString:(id)a3 completion:(id)a4;
+- (void)_fetchIdsDestinationsIfNeeded:(id)needed withReason:(int)reason;
+- (void)recentsWithCompletion:(id)completion;
+- (void)searchForString:(id)string completion:(id)completion;
 @end
 
 @implementation TUSearchController
@@ -46,9 +46,9 @@ uint64_t __36__TUSearchController_sharedInstance__block_invoke()
     v2->_searchQueue = v3;
 
     v2->_searchModulesLock._os_unfair_lock_opaque = 0;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     searchModules = v2->_searchModules;
-    v2->_searchModules = v5;
+    v2->_searchModules = dictionary;
   }
 
   return v2;
@@ -59,9 +59,9 @@ uint64_t __36__TUSearchController_sharedInstance__block_invoke()
   contactStore = self->_contactStore;
   if (!contactStore)
   {
-    v4 = [MEMORY[0x1E695CE18] tu_contactStore];
+    tu_contactStore = [MEMORY[0x1E695CE18] tu_contactStore];
     v5 = self->_contactStore;
-    self->_contactStore = v4;
+    self->_contactStore = tu_contactStore;
 
     contactStore = self->_contactStore;
   }
@@ -69,18 +69,18 @@ uint64_t __36__TUSearchController_sharedInstance__block_invoke()
   return contactStore;
 }
 
-- (void)recentsWithCompletion:(id)a3
+- (void)recentsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TUSearchController *)self searchQueue];
+  completionCopy = completion;
+  searchQueue = [(TUSearchController *)self searchQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__TUSearchController_recentsWithCompletion___block_invoke;
   v7[3] = &unk_1E7424E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(searchQueue, v7);
 }
 
 void __44__TUSearchController_recentsWithCompletion___block_invoke(uint64_t a1)
@@ -163,21 +163,21 @@ void __44__TUSearchController_recentsWithCompletion___block_invoke(uint64_t a1)
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)searchForString:(id)a3 completion:(id)a4
+- (void)searchForString:(id)string completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUSearchController *)self searchQueue];
+  stringCopy = string;
+  completionCopy = completion;
+  searchQueue = [(TUSearchController *)self searchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__TUSearchController_searchForString_completion___block_invoke;
   block[3] = &unk_1E7426458;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = stringCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = stringCopy;
+  dispatch_async(searchQueue, block);
 }
 
 void __49__TUSearchController_searchForString_completion___block_invoke(uint64_t a1)
@@ -262,16 +262,16 @@ void __49__TUSearchController_searchForString_completion___block_invoke(uint64_t
 - (void)_cancelRecentSearches
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(TUSearchController *)self recentsModules];
+  recentsModules = [(TUSearchController *)self recentsModules];
 
-  if (v3)
+  if (recentsModules)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(TUSearchController *)self recentsModules];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    recentsModules2 = [(TUSearchController *)self recentsModules];
+    v5 = [recentsModules2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -283,14 +283,14 @@ void __49__TUSearchController_searchForString_completion___block_invoke(uint64_t
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(recentsModules2);
           }
 
           [*(*(&v11 + 1) + 8 * v8++) cancelSearch];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [recentsModules2 countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -306,13 +306,13 @@ void __49__TUSearchController_searchForString_completion___block_invoke(uint64_t
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_cancelSearchsForSearchTerm:(id)a3
+- (void)_cancelSearchsForSearchTerm:(id)term
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  termCopy = term;
   os_unfair_lock_lock(&self->_searchModulesLock);
-  v5 = [(TUSearchController *)self searchModules];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  searchModules = [(TUSearchController *)self searchModules];
+  v6 = [searchModules objectForKeyedSubscript:termCopy];
 
   if (v6)
   {
@@ -346,8 +346,8 @@ void __49__TUSearchController_searchForString_completion___block_invoke(uint64_t
       while (v9);
     }
 
-    v12 = [(TUSearchController *)self searchModules];
-    [v12 removeObjectForKey:v4];
+    searchModules2 = [(TUSearchController *)self searchModules];
+    [searchModules2 removeObjectForKey:termCopy];
 
     v13 = +[TUIDSLookupManager sharedManager];
     [v13 cancelQueries];
@@ -360,11 +360,11 @@ void __49__TUSearchController_searchForString_completion___block_invoke(uint64_t
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_fetchIdsDestinationsIfNeeded:(id)a3 withReason:(int)a4
+- (void)_fetchIdsDestinationsIfNeeded:(id)needed withReason:(int)reason
 {
-  v11 = a3;
-  v6 = [(TUSearchController *)self searchQueue];
-  dispatch_assert_queue_V2(v6);
+  neededCopy = needed;
+  searchQueue = [(TUSearchController *)self searchQueue];
+  dispatch_assert_queue_V2(searchQueue);
 
   if (!self->_idsDestinations)
   {
@@ -373,20 +373,20 @@ void __49__TUSearchController_searchForString_completion___block_invoke(uint64_t
     self->_idsDestinations = v7;
   }
 
-  if (a4 == 1)
+  if (reason == 1)
   {
-    v9 = [v11 mutableCopy];
+    v9 = [neededCopy mutableCopy];
     [v9 minusSet:self->_idsDestinations];
   }
 
-  else if (a4)
+  else if (reason)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = v11;
+    v9 = neededCopy;
   }
 
   if ([v9 count])
@@ -400,53 +400,53 @@ void __49__TUSearchController_searchForString_completion___block_invoke(uint64_t
 
 - (void)_clearIdsDestinations
 {
-  v3 = [(TUSearchController *)self searchQueue];
-  dispatch_assert_queue_V2(v3);
+  searchQueue = [(TUSearchController *)self searchQueue];
+  dispatch_assert_queue_V2(searchQueue);
 
   idsDestinations = self->_idsDestinations;
   self->_idsDestinations = 0;
 }
 
-- (id)recentsModuleCompletionWithCompletion:(id)a3
+- (id)recentsModuleCompletionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TUSearchController *)self recentsModules];
-  v6 = [(TUSearchController *)self _searchModuleCompletionWithModules:v5 searchTerm:&stru_1F098C218 resultsClass:objc_opt_class() completion:v4];
+  completionCopy = completion;
+  recentsModules = [(TUSearchController *)self recentsModules];
+  v6 = [(TUSearchController *)self _searchModuleCompletionWithModules:recentsModules searchTerm:&stru_1F098C218 resultsClass:objc_opt_class() completion:completionCopy];
 
   return v6;
 }
 
-- (id)searchModuleCompletionWithSearchTerm:(id)a3 completion:(id)a4
+- (id)searchModuleCompletionWithSearchTerm:(id)term completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  termCopy = term;
   os_unfair_lock_lock(&self->_searchModulesLock);
-  v8 = [(TUSearchController *)self searchModules];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  searchModules = [(TUSearchController *)self searchModules];
+  v9 = [searchModules objectForKeyedSubscript:termCopy];
 
   os_unfair_lock_unlock(&self->_searchModulesLock);
-  v10 = [(TUSearchController *)self _searchModuleCompletionWithModules:v9 searchTerm:v7 resultsClass:objc_opt_class() completion:v6];
+  v10 = [(TUSearchController *)self _searchModuleCompletionWithModules:v9 searchTerm:termCopy resultsClass:objc_opt_class() completion:completionCopy];
 
   return v10;
 }
 
-- (id)_searchModuleCompletionWithModules:(id)a3 searchTerm:(id)a4 resultsClass:(Class)a5 completion:(id)a6
+- (id)_searchModuleCompletionWithModules:(id)modules searchTerm:(id)term resultsClass:(Class)class completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  modulesCopy = modules;
+  termCopy = term;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __92__TUSearchController__searchModuleCompletionWithModules_searchTerm_resultsClass_completion___block_invoke;
   aBlock[3] = &unk_1E74267B8;
   aBlock[4] = self;
-  v20 = v10;
-  v22 = v12;
-  v23 = a5;
-  v21 = v11;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v20 = modulesCopy;
+  v22 = completionCopy;
+  classCopy = class;
+  v21 = termCopy;
+  v13 = completionCopy;
+  v14 = termCopy;
+  v15 = modulesCopy;
   v16 = _Block_copy(aBlock);
   v17 = _Block_copy(v16);
 

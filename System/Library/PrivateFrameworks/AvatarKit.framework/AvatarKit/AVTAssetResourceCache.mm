@@ -1,7 +1,7 @@
 @interface AVTAssetResourceCache
 - (AVTAssetResourceCache)init;
-- (id)resourceForAsset:(id)a3;
-- (void)releaseAsset:(id)a3;
+- (id)resourceForAsset:(id)asset;
+- (void)releaseAsset:(id)asset;
 @end
 
 @implementation AVTAssetResourceCache
@@ -23,22 +23,22 @@
   return v3;
 }
 
-- (void)releaseAsset:(id)a3
+- (void)releaseAsset:(id)asset
 {
   resources = self->_resources;
-  v4 = a3;
-  [(NSMapTable *)resources removeObjectForKey:v4];
-  [v4 decrUseCount];
+  assetCopy = asset;
+  [(NSMapTable *)resources removeObjectForKey:assetCopy];
+  [assetCopy decrUseCount];
 }
 
-- (id)resourceForAsset:(id)a3
+- (id)resourceForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_resources objectForKey:v4];
+  assetCopy = asset;
+  v5 = [(NSMapTable *)self->_resources objectForKey:assetCopy];
   if (!v5)
   {
-    v5 = [v4 resourceByCachingIfNeeded:self->_policy != 1];
-    [(NSMapTable *)self->_resources setObject:v5 forKey:v4];
+    v5 = [assetCopy resourceByCachingIfNeeded:self->_policy != 1];
+    [(NSMapTable *)self->_resources setObject:v5 forKey:assetCopy];
   }
 
   return v5;

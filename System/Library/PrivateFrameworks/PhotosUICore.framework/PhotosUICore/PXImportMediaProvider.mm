@@ -1,26 +1,26 @@
 @interface PXImportMediaProvider
-- (BOOL)thumbnailExistsForModel:(id)a3;
-- (BOOL)thumbnailExistsForModel:(id)a3 atSize:(unint64_t)a4;
+- (BOOL)thumbnailExistsForModel:(id)model;
+- (BOOL)thumbnailExistsForModel:(id)model atSize:(unint64_t)size;
 - (CGSize)gridItemSize;
 - (PXImportImageCache)imageCache;
-- (PXImportMediaProvider)initWithImageFormat:(unsigned __int16)a3;
+- (PXImportMediaProvider)initWithImageFormat:(unsigned __int16)format;
 - (double)idleTimeOut;
-- (id)_newPlaceholderImageForItemWithExtension:(id)a3 size:(CGSize)a4;
-- (id)_placeholderExtensionForItem:(id)a3;
-- (id)_placeholderForItem:(id)a3 size:(unint64_t)a4;
-- (id)cachedImageForModel:(id)a3 atSize:(unint64_t)a4;
-- (int64_t)imageOfSize:(unint64_t)a3 forModel:(id)a4 localCacheOnly:(BOOL)a5 priority:(unsigned __int8)a6 completion:(id)a7;
-- (int64_t)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestCGImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestImageForImportItem:(id)a3 ofSize:(unint64_t)a4 priority:(unsigned __int8)a5 completion:(id)a6;
-- (int64_t)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)cancelImageRequest:(int64_t)a3;
+- (id)_newPlaceholderImageForItemWithExtension:(id)extension size:(CGSize)size;
+- (id)_placeholderExtensionForItem:(id)item;
+- (id)_placeholderForItem:(id)item size:(unint64_t)size;
+- (id)cachedImageForModel:(id)model atSize:(unint64_t)size;
+- (int64_t)imageOfSize:(unint64_t)size forModel:(id)model localCacheOnly:(BOOL)only priority:(unsigned __int8)priority completion:(id)completion;
+- (int64_t)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestCGImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageForImportItem:(id)item ofSize:(unint64_t)size priority:(unsigned __int8)priority completion:(id)completion;
+- (int64_t)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (void)cancelImageRequest:(int64_t)request;
 - (void)performIdleProcessingIfNecessary;
-- (void)ppt_sendMediaProviderDidProcessAsset:(id)a3;
+- (void)ppt_sendMediaProviderDidProcessAsset:(id)asset;
 - (void)sendMediaProviderThumbnailingBecameIdle;
 @end
 
@@ -29,9 +29,9 @@
 - (void)sendMediaProviderThumbnailingBecameIdle
 {
   v3 = +[PXImportSettings sharedInstance];
-  v4 = [v3 lazyLoadAllAssets];
+  lazyLoadAllAssets = [v3 lazyLoadAllAssets];
 
-  if (v4)
+  if (lazyLoadAllAssets)
   {
     v5 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -49,17 +49,17 @@ void __64__PXImportMediaProvider_sendMediaProviderThumbnailingBecameIdle__block_
   [v2 postNotificationName:@"PXImportMediaProviderThumbnailingBecameIdleNotification" object:*(a1 + 32) userInfo:0];
 }
 
-- (void)ppt_sendMediaProviderDidProcessAsset:(id)a3
+- (void)ppt_sendMediaProviderDidProcessAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__PXImportMediaProvider_ppt_sendMediaProviderDidProcessAsset___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   dispatch_async(v5, v7);
 }
 
@@ -69,16 +69,16 @@ void __62__PXImportMediaProvider_ppt_sendMediaProviderDidProcessAsset___block_in
   [v2 postNotificationName:@"PXImportMediaProviderDidProcessAssetNotification" object:*(a1 + 32) userInfo:*(a1 + 40)];
 }
 
-- (id)_placeholderForItem:(id)a3 size:(unint64_t)a4
+- (id)_placeholderForItem:(id)item size:(unint64_t)size
 {
-  v6 = [(PXImportMediaProvider *)self _placeholderExtensionForItem:a3];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v8 = [(PXImportMediaProvider *)self extensionPlaceholderCachesByRequestSize];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v6 = [(PXImportMediaProvider *)self _placeholderExtensionForItem:item];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
+  extensionPlaceholderCachesByRequestSize = [(PXImportMediaProvider *)self extensionPlaceholderCachesByRequestSize];
+  v9 = [extensionPlaceholderCachesByRequestSize objectForKeyedSubscript:v7];
 
   v10 = [v9 objectForKey:v6];
   v11 = v10;
-  if (a4 == 3)
+  if (size == 3)
   {
     v12 = 320.0;
     v13 = 320.0;
@@ -113,19 +113,19 @@ LABEL_9:
   {
     if (!self->_extensionPlaceholderCachesByRequestSize)
     {
-      v20 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       extensionPlaceholderCachesByRequestSize = self->_extensionPlaceholderCachesByRequestSize;
-      self->_extensionPlaceholderCachesByRequestSize = v20;
+      self->_extensionPlaceholderCachesByRequestSize = dictionary;
     }
 
-    v22 = [(PXImportMediaProvider *)self extensionPlaceholderCachesByRequestSize];
-    v23 = [v22 objectForKeyedSubscript:v7];
+    extensionPlaceholderCachesByRequestSize2 = [(PXImportMediaProvider *)self extensionPlaceholderCachesByRequestSize];
+    v23 = [extensionPlaceholderCachesByRequestSize2 objectForKeyedSubscript:v7];
 
     if (!v23)
     {
       v23 = objc_opt_new();
-      v24 = [(PXImportMediaProvider *)self extensionPlaceholderCachesByRequestSize];
-      [v24 setObject:v23 forKeyedSubscript:v7];
+      extensionPlaceholderCachesByRequestSize3 = [(PXImportMediaProvider *)self extensionPlaceholderCachesByRequestSize];
+      [extensionPlaceholderCachesByRequestSize3 setObject:v23 forKeyedSubscript:v7];
     }
 
     [v23 setObject:v19 forKey:v6];
@@ -146,34 +146,34 @@ LABEL_16:
   return result;
 }
 
-- (id)_placeholderExtensionForItem:(id)a3
+- (id)_placeholderExtensionForItem:(id)item
 {
-  v3 = a3;
-  if ([v3 isJpegPlusRAW])
+  itemCopy = item;
+  if ([itemCopy isJpegPlusRAW])
   {
-    v4 = @"RAW+JPG";
+    fileExtension = @"RAW+JPG";
   }
 
-  else if ([v3 isRAW])
+  else if ([itemCopy isRAW])
   {
-    v4 = @"RAW";
+    fileExtension = @"RAW";
   }
 
   else
   {
-    v4 = [v3 fileExtension];
+    fileExtension = [itemCopy fileExtension];
   }
 
-  return v4;
+  return fileExtension;
 }
 
-- (id)_newPlaceholderImageForItemWithExtension:(id)a3 size:(CGSize)a4
+- (id)_newPlaceholderImageForItemWithExtension:(id)extension size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v41[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  extensionCopy = extension;
+  v7 = extensionCopy;
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
   {
     v17 = 0;
@@ -181,7 +181,7 @@ LABEL_16:
 
   else
   {
-    v9 = v6;
+    v9 = extensionCopy;
     v10 = [(__CFString *)v9 isEqualToString:@"RAW+JPG"];
     if (v10)
     {
@@ -222,8 +222,8 @@ LABEL_16:
       v21 = *MEMORY[0x1E69DB650];
       v40[0] = v20;
       v40[1] = v21;
-      v22 = [MEMORY[0x1E69DC888] systemMidGrayColor];
-      v41[1] = v22;
+      systemMidGrayColor = [MEMORY[0x1E69DC888] systemMidGrayColor];
+      v41[1] = systemMidGrayColor;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:2];
 
       [(__CFString *)v13 sizeWithAttributes:v23];
@@ -248,8 +248,8 @@ LABEL_16:
     UIGraphicsBeginImageContextWithOptions(v42, 0, 0.0);
     v33 = *v18;
     v32 = v18[1];
-    v34 = [MEMORY[0x1E69DC888] clearColor];
-    [v34 set];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [clearColor set];
 
     v43.origin.x = v33;
     v43.origin.y = v32;
@@ -258,8 +258,8 @@ LABEL_16:
     UIRectFill(v43);
     if (v15)
     {
-      v35 = [MEMORY[0x1E69DC888] systemMidGrayColor];
-      [v35 setFill];
+      systemMidGrayColor2 = [MEMORY[0x1E69DC888] systemMidGrayColor];
+      [systemMidGrayColor2 setFill];
 
       v36 = [v15 imageWithRenderingMode:2];
 
@@ -280,9 +280,9 @@ LABEL_16:
 
 - (double)idleTimeOut
 {
-  v2 = [(PXImportMediaProvider *)self hasBeenIdle];
+  hasBeenIdle = [(PXImportMediaProvider *)self hasBeenIdle];
   result = 0.05;
-  if (!v2)
+  if (!hasBeenIdle)
   {
     return 5.0;
   }
@@ -315,60 +315,60 @@ uint64_t __57__PXImportMediaProvider_performIdleProcessingIfNecessary__block_inv
   return result;
 }
 
-- (id)cachedImageForModel:(id)a3 atSize:(unint64_t)a4
+- (id)cachedImageForModel:(id)model atSize:(unint64_t)size
 {
   v10 = 0;
-  v6 = a3;
-  v7 = [(PXImportMediaProvider *)self imageCache];
-  v8 = [v7 imageForModel:v6 ofSize:a4 allowLowerResolutions:0 foundSize:&v10];
+  modelCopy = model;
+  imageCache = [(PXImportMediaProvider *)self imageCache];
+  v8 = [imageCache imageForModel:modelCopy ofSize:size allowLowerResolutions:0 foundSize:&v10];
 
   return v8;
 }
 
-- (BOOL)thumbnailExistsForModel:(id)a3
+- (BOOL)thumbnailExistsForModel:(id)model
 {
   v8 = 0;
-  v4 = a3;
-  v5 = [(PXImportMediaProvider *)self imageCache];
-  v6 = [v5 imageForModel:v4 ofSize:3 allowLowerResolutions:1 foundSize:&v8];
+  modelCopy = model;
+  imageCache = [(PXImportMediaProvider *)self imageCache];
+  v6 = [imageCache imageForModel:modelCopy ofSize:3 allowLowerResolutions:1 foundSize:&v8];
 
   return v6 != 0;
 }
 
-- (BOOL)thumbnailExistsForModel:(id)a3 atSize:(unint64_t)a4
+- (BOOL)thumbnailExistsForModel:(id)model atSize:(unint64_t)size
 {
   v10 = 0;
-  v6 = a3;
-  v7 = [(PXImportMediaProvider *)self imageCache];
-  v8 = [v7 imageForModel:v6 ofSize:a4 allowLowerResolutions:0 foundSize:&v10];
+  modelCopy = model;
+  imageCache = [(PXImportMediaProvider *)self imageCache];
+  v8 = [imageCache imageForModel:modelCopy ofSize:size allowLowerResolutions:0 foundSize:&v10];
 
-  LOBYTE(a4) = v10 == a4;
-  return a4;
+  LOBYTE(size) = v10 == size;
+  return size;
 }
 
-- (int64_t)requestImageForImportItem:(id)a3 ofSize:(unint64_t)a4 priority:(unsigned __int8)a5 completion:(id)a6
+- (int64_t)requestImageForImportItem:(id)item ofSize:(unint64_t)size priority:(unsigned __int8)priority completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  if ([v10 isDeleted])
+  priorityCopy = priority;
+  itemCopy = item;
+  completionCopy = completion;
+  if ([itemCopy isDeleted])
   {
     v12 = 1;
   }
 
   else
   {
-    v13 = [v10 deleteSession];
-    v12 = v13 != 0;
+    deleteSession = [itemCopy deleteSession];
+    v12 = deleteSession != 0;
   }
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __78__PXImportMediaProvider_requestImageForImportItem_ofSize_priority_completion___block_invoke;
   v17[3] = &unk_1E772F828;
-  v18 = v11;
-  v14 = v11;
-  v15 = [(PXImportMediaProvider *)self imageOfSize:a4 forModel:v10 localCacheOnly:v12 priority:v7 completion:v17];
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = [(PXImportMediaProvider *)self imageOfSize:size forModel:itemCopy localCacheOnly:v12 priority:priorityCopy completion:v17];
 
   return v15;
 }
@@ -389,50 +389,50 @@ void __78__PXImportMediaProvider_requestImageForImportItem_ofSize_priority_compl
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 }
 
-- (int64_t)imageOfSize:(unint64_t)a3 forModel:(id)a4 localCacheOnly:(BOOL)a5 priority:(unsigned __int8)a6 completion:(id)a7
+- (int64_t)imageOfSize:(unint64_t)size forModel:(id)model localCacheOnly:(BOOL)only priority:(unsigned __int8)priority completion:(id)completion
 {
-  v8 = a5;
+  onlyCopy = only;
   v40 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a7;
-  v13 = [(PXImportMediaProvider *)self nextRequestID];
+  modelCopy = model;
+  completionCopy = completion;
+  nextRequestID = [(PXImportMediaProvider *)self nextRequestID];
   v14 = _importMediaProviderLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v19 = PXImportImageRequestSizeDebugDescription(a3);
-    v20 = [v11 importAsset];
-    v21 = [v20 fileName];
+    v19 = PXImportImageRequestSizeDebugDescription(size);
+    importAsset = [modelCopy importAsset];
+    fileName = [importAsset fileName];
     *buf = 136316418;
     v29 = "[PXImportMediaProvider imageOfSize:forModel:localCacheOnly:priority:completion:]";
     v30 = 2112;
-    v31 = v11;
+    v31 = modelCopy;
     v32 = 2114;
     v33 = v19;
     v34 = 1024;
-    v35 = v8;
+    v35 = onlyCopy;
     v36 = 2048;
-    v37 = v13;
+    v37 = nextRequestID;
     v38 = 2112;
-    v39 = v21;
+    v39 = fileName;
     _os_log_debug_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_DEBUG, "%s: %@ size = %{public}@ fastpath = %d (entry). Request ID = %lu for %@", buf, 0x3Au);
   }
 
-  v15 = [(PXImportMediaProvider *)self imageCache];
+  imageCache = [(PXImportMediaProvider *)self imageCache];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __81__PXImportMediaProvider_imageOfSize_forModel_localCacheOnly_priority_completion___block_invoke;
   v22[3] = &unk_1E772F800;
-  v27 = v8;
+  v27 = onlyCopy;
   v22[4] = self;
-  v23 = v11;
-  v24 = v12;
-  v25 = a3;
-  v26 = v13;
-  v16 = v12;
-  v17 = v11;
-  [v15 imageForModel:v17 ofSize:a3 allowLowerResolutions:1 completion:v22];
+  v23 = modelCopy;
+  v24 = completionCopy;
+  sizeCopy = size;
+  v26 = nextRequestID;
+  v16 = completionCopy;
+  v17 = modelCopy;
+  [imageCache imageForModel:v17 ofSize:size allowLowerResolutions:1 completion:v22];
 
-  return v13;
+  return nextRequestID;
 }
 
 void __81__PXImportMediaProvider_imageOfSize_forModel_localCacheOnly_priority_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1067,124 +1067,124 @@ void __81__PXImportMediaProvider_imageOfSize_forModel_localCacheOnly_priority_co
   return imageCache;
 }
 
-- (void)cancelImageRequest:(int64_t)a3
+- (void)cancelImageRequest:(int64_t)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [(PXImportMediaProvider *)self thumbnailRequestsByID];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  thumbnailRequestsByID = [(PXImportMediaProvider *)self thumbnailRequestsByID];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:request];
+  v7 = [thumbnailRequestsByID objectForKeyedSubscript:v6];
 
   if (v7)
   {
     v8 = _importMediaProviderLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [v7 importItem];
+      importItem = [v7 importItem];
       *buf = 136315650;
       v27 = "[PXImportMediaProvider cancelImageRequest:]";
       v28 = 2048;
-      v29 = a3;
+      requestCopy2 = request;
       v30 = 2112;
-      v31 = v18;
+      v31 = importItem;
       _os_log_debug_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "%s: Cancel request %lu for %@", buf, 0x20u);
     }
 
-    v9 = [v7 importItem];
-    v10 = [v7 requestSize];
-    [v9 removeThumbnailRequest:v7];
-    v11 = [v7 assetDataRequest];
+    importItem2 = [v7 importItem];
+    requestSize = [v7 requestSize];
+    [importItem2 removeThumbnailRequest:v7];
+    assetDataRequest = [v7 assetDataRequest];
     v12 = _importMediaProviderLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v7 importItem];
-      v19 = [v25 importAsset];
-      v20 = [v19 fileName];
+      importItem3 = [v7 importItem];
+      importAsset = [importItem3 importAsset];
+      fileName = [importAsset fileName];
       *buf = 138412546;
-      v27 = v20;
+      v27 = fileName;
       v28 = 2048;
-      v29 = v11;
+      requestCopy2 = assetDataRequest;
       _os_log_debug_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_DEBUG, "*THUMBNAIL* CANCELING: %@ <%p>", buf, 0x16u);
     }
 
-    v13 = [v9 thumbnailRequestsForRequestSize:{objc_msgSend(v7, "requestSize")}];
-    if (![v13 count] && (objc_msgSend(v11, "isCanceled") & 1) == 0)
+    v13 = [importItem2 thumbnailRequestsForRequestSize:{objc_msgSend(v7, "requestSize")}];
+    if (![v13 count] && (objc_msgSend(assetDataRequest, "isCanceled") & 1) == 0)
     {
       v14 = _importMediaProviderLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v24 = [v7 importItem];
+        importItem4 = [v7 importItem];
         *buf = 136315650;
         v27 = "[PXImportMediaProvider cancelImageRequest:]";
         v28 = 2048;
-        v29 = a3;
+        requestCopy2 = request;
         v30 = 2112;
-        v31 = v24;
+        v31 = importItem4;
         _os_log_debug_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_DEBUG, "%s: 0 thumbnail requests remaining after %lu was cancelled. Actually cancelling asset data request for %@", buf, 0x20u);
       }
 
-      [v9 removeAssetDataRequestForRequestSize:v10];
-      [v11 cancel];
+      [importItem2 removeAssetDataRequestForRequestSize:requestSize];
+      [assetDataRequest cancel];
     }
 
-    v15 = [(PXImportMediaProvider *)self thumbnailRequestsByID];
-    v16 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    [v15 setObject:0 forKeyedSubscript:v16];
+    thumbnailRequestsByID2 = [(PXImportMediaProvider *)self thumbnailRequestsByID];
+    v16 = [MEMORY[0x1E696AD98] numberWithInteger:request];
+    [thumbnailRequestsByID2 setObject:0 forKeyedSubscript:v16];
 
     v17 = _importMediaProviderLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [(PXImportMediaProvider *)self thumbnailRequestsByID];
-      v22 = [v21 count];
+      thumbnailRequestsByID3 = [(PXImportMediaProvider *)self thumbnailRequestsByID];
+      v22 = [thumbnailRequestsByID3 count];
       imageRequestsInflight = self->_imageRequestsInflight;
       *buf = 134218240;
       v27 = v22;
       v28 = 2048;
-      v29 = imageRequestsInflight;
+      requestCopy2 = imageRequestsInflight;
       _os_log_debug_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_DEBUG, "Number of thumbnail requests remaining: %lu. Num in-flight with backend: %ld", buf, 0x16u);
     }
   }
 }
 
-- (int64_t)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__PXImportMediaProvider_requestAnimatedImageForAsset_options_resultHandler___block_invoke;
   block[3] = &unk_1E774C250;
-  v9 = v5;
-  v6 = v5;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   return 0;
 }
 
-- (int64_t)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  v7 = a7;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__PXImportMediaProvider_requestLivePhotoForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
   block[3] = &unk_1E774C250;
-  v11 = v7;
-  v8 = v7;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   return 0;
 }
 
-- (int64_t)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PXImportMediaProvider *)self nextRequestID];
+  videoCopy = video;
+  handlerCopy = handler;
+  nextRequestID = [(PXImportMediaProvider *)self nextRequestID];
   v29 = *MEMORY[0x1E6978E70];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:nextRequestID];
   v30[0] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
 
-  v13 = v8;
+  v13 = videoCopy;
   if (v13)
   {
     objc_opt_class();
@@ -1193,56 +1193,56 @@ void __81__PXImportMediaProvider_imageOfSize_forModel_localCacheOnly_priority_co
       goto LABEL_3;
     }
 
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v26 = objc_opt_class();
     v25 = NSStringFromClass(v26);
-    v27 = [v13 px_descriptionForAssertionMessage];
-    [v23 handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:148 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v25, v27}];
+    px_descriptionForAssertionMessage = [v13 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:148 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v25, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
-    [v23 handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:148 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v25}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:148 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v25}];
   }
 
 LABEL_3:
-  v14 = [v13 importAsset];
-  v15 = [v13 importAsset];
-  v16 = [v15 securityScopedURL];
+  importAsset = [v13 importAsset];
+  importAsset2 = [v13 importAsset];
+  securityScopedURL = [importAsset2 securityScopedURL];
 
-  if ([v14 isMovie])
+  if ([importAsset isMovie])
   {
-    if (v16)
+    if (securityScopedURL)
     {
-      v17 = [objc_alloc(MEMORY[0x1E69880B0]) initWithURL:v16];
+      v17 = [objc_alloc(MEMORY[0x1E69880B0]) initWithURL:securityScopedURL];
       v18 = v12;
-      v19 = v9;
+      v19 = handlerCopy;
       v20 = v17;
       px_dispatch_on_main_queue();
     }
   }
 
   v21 = v12;
-  v22 = v9;
+  v22 = handlerCopy;
   px_dispatch_on_main_queue();
 }
 
-- (int64_t)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PXImportMediaProvider *)self nextRequestID];
-  v11 = v8;
+  assetCopy = asset;
+  handlerCopy = handler;
+  nextRequestID = [(PXImportMediaProvider *)self nextRequestID];
+  v11 = assetCopy;
   if (!v11)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    [v21 handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:135 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v23}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:135 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v23}];
 LABEL_6:
 
     goto LABEL_3;
@@ -1251,49 +1251,49 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = objc_opt_class();
     v23 = NSStringFromClass(v24);
-    v25 = [v11 px_descriptionForAssertionMessage];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:135 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v23, v25}];
+    px_descriptionForAssertionMessage = [v11 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:135 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v23, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
   v30[0] = *MEMORY[0x1E6978E70];
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:nextRequestID];
   v31[0] = v12;
   v30[1] = *MEMORY[0x1E6978E28];
-  v13 = [v11 uniformTypeIdentifier];
-  v31[1] = v13;
+  uniformTypeIdentifier = [v11 uniformTypeIdentifier];
+  v31[1] = uniformTypeIdentifier;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
 
-  v15 = [v11 importAsset];
-  v16 = [v15 securityScopedURL];
+  importAsset = [v11 importAsset];
+  securityScopedURL = [importAsset securityScopedURL];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__PXImportMediaProvider_requestImageURLForAsset_options_resultHandler___block_invoke;
   block[3] = &unk_1E774A0E0;
   v28 = v14;
-  v29 = v9;
-  v27 = v16;
+  v29 = handlerCopy;
+  v27 = securityScopedURL;
   v17 = v14;
-  v18 = v16;
-  v19 = v9;
+  v18 = securityScopedURL;
+  v19 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
-  return v10;
+  return nextRequestID;
 }
 
-- (int64_t)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PXImportMediaProvider *)self nextRequestID];
-  v11 = v8;
+  assetCopy = asset;
+  handlerCopy = handler;
+  nextRequestID = [(PXImportMediaProvider *)self nextRequestID];
+  v11 = assetCopy;
   if (v11)
   {
     objc_opt_class();
@@ -1302,40 +1302,40 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v30 = objc_opt_class();
     v29 = NSStringFromClass(v30);
-    v31 = [v11 px_descriptionForAssertionMessage];
-    [v27 handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v29, v31}];
+    px_descriptionForAssertionMessage = [v11 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v29, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
-    [v27 handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v29}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v29}];
   }
 
 LABEL_3:
-  v12 = [v11 importAsset];
-  v13 = [v12 metadata];
-  v14 = [v13 orientation];
+  importAsset = [v11 importAsset];
+  metadata = [importAsset metadata];
+  orientation = [metadata orientation];
 
   v38 = *MEMORY[0x1E6978E70];
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:nextRequestID];
   v39[0] = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
 
-  v17 = [v11 importAsset];
-  v18 = [v17 securityScopedURL];
+  importAsset2 = [v11 importAsset];
+  securityScopedURL = [importAsset2 securityScopedURL];
 
-  if (v18)
+  if (securityScopedURL)
   {
-    v19 = [v11 uniformTypeIdentifier];
-    v20 = [v16 px_dictionaryBySettingObject:v19 forKey:*MEMORY[0x1E6978E28]];
+    uniformTypeIdentifier = [v11 uniformTypeIdentifier];
+    v20 = [v16 px_dictionaryBySettingObject:uniformTypeIdentifier forKey:*MEMORY[0x1E6978E28]];
 
-    v21 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v18];
+    v21 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:securityScopedURL];
     v16 = v20;
   }
 
@@ -1348,27 +1348,27 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = __72__PXImportMediaProvider_requestImageDataForAsset_options_resultHandler___block_invoke;
   block[3] = &unk_1E7743030;
-  v36 = v9;
-  v37 = v14;
+  v36 = handlerCopy;
+  v37 = orientation;
   v33 = v21;
   v34 = v11;
   v35 = v16;
   v22 = v16;
   v23 = v11;
   v24 = v21;
-  v25 = v9;
+  v25 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
-  return v10;
+  return nextRequestID;
 }
 
-- (int64_t)requestCGImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestCGImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = v12;
+  height = size.height;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v15 = assetCopy;
   if (v15)
   {
     objc_opt_class();
@@ -1377,19 +1377,19 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = objc_opt_class();
     v22 = NSStringFromClass(v23);
-    v24 = [v15 px_descriptionForAssertionMessage];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:99 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v22, v24}];
+    px_descriptionForAssertionMessage = [v15 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:99 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v22, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    [v20 handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:99 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v22}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportMediaProvider.m" lineNumber:99 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v22}];
   }
 
 LABEL_3:
@@ -1411,9 +1411,9 @@ LABEL_3:
   v25[1] = 3221225472;
   v25[2] = __93__PXImportMediaProvider_requestCGImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
   v25[3] = &unk_1E772F710;
-  v26 = v14;
+  v26 = handlerCopy;
   v27 = &v28;
-  v17 = v14;
+  v17 = handlerCopy;
   v18 = [(PXImportMediaProvider *)self requestImageForImportItem:v15 ofSize:v16 completion:v25];
   v29[3] = v18;
   _Block_object_dispose(&v28, 8);
@@ -1447,20 +1447,20 @@ void __93__PXImportMediaProvider_requestCGImageForAsset_targetSize_contentMode_o
   (*(*(a1 + 40) + 16))(*(a1 + 40), [*(a1 + 32) CGImage], 0, v3);
 }
 
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a7;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __91__PXImportMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
   v17[3] = &unk_1E7743A58;
-  v18 = v13;
-  v14 = v13;
-  v15 = [(PXImportMediaProvider *)self requestCGImageForAsset:a3 targetSize:a5 contentMode:a6 options:v17 resultHandler:width, height];
+  v18 = handlerCopy;
+  v14 = handlerCopy;
+  height = [(PXImportMediaProvider *)self requestCGImageForAsset:asset targetSize:mode contentMode:options options:v17 resultHandler:width, height];
 
-  return v15;
+  return height;
 }
 
 void __91__PXImportMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -1479,7 +1479,7 @@ void __91__PXImportMediaProvider_requestImageForAsset_targetSize_contentMode_opt
   (*(*(a1 + 32) + 16))();
 }
 
-- (PXImportMediaProvider)initWithImageFormat:(unsigned __int16)a3
+- (PXImportMediaProvider)initWithImageFormat:(unsigned __int16)format
 {
   v9.receiver = self;
   v9.super_class = PXImportMediaProvider;
@@ -1487,10 +1487,10 @@ void __91__PXImportMediaProvider_requestImageForAsset_targetSize_contentMode_opt
   v5 = v4;
   if (v4)
   {
-    v4->_thumbnailImageFormat = a3;
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    v4->_thumbnailImageFormat = format;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     thumbnailRequestsByID = v5->_thumbnailRequestsByID;
-    v5->_thumbnailRequestsByID = v6;
+    v5->_thumbnailRequestsByID = dictionary;
 
     atomic_store(1u, &v5->_nextRequestID);
     v5->_lastRequestsInflight = 0x7FFFFFFFFFFFFFFFLL;

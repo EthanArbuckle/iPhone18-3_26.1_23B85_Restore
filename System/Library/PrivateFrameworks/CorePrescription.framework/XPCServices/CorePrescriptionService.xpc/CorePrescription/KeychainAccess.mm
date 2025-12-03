@@ -1,20 +1,20 @@
 @interface KeychainAccess
-- (BOOL)deleteASAKeyWithName:(id)a3 error:(id *)a4;
-- (BOOL)deleteAllASAKeysWithError:(id *)a3;
-- (KeychainAccess)initWithDeviceModel:(id)a3;
-- (id)createASAKeyWithError:(id *)a3;
-- (id)createErrorForStatus:(int)a3 fromFunction:(id)a4;
-- (id)derivePublicKeyFromPrivateKey:(id)a3 error:(id *)a4;
-- (id)insertASAKey:(id)a3 withName:(id)a4 error:(id *)a5;
+- (BOOL)deleteASAKeyWithName:(id)name error:(id *)error;
+- (BOOL)deleteAllASAKeysWithError:(id *)error;
+- (KeychainAccess)initWithDeviceModel:(id)model;
+- (id)createASAKeyWithError:(id *)error;
+- (id)createErrorForStatus:(int)status fromFunction:(id)function;
+- (id)derivePublicKeyFromPrivateKey:(id)key error:(id *)error;
+- (id)insertASAKey:(id)key withName:(id)name error:(id *)error;
 - (void)dealloc;
-- (void)fetchASAKeysWithCompletion:(id)a3;
+- (void)fetchASAKeysWithCompletion:(id)completion;
 @end
 
 @implementation KeychainAccess
 
-- (KeychainAccess)initWithDeviceModel:(id)a3
+- (KeychainAccess)initWithDeviceModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v17.receiver = self;
   v17.super_class = KeychainAccess;
   v5 = [(KeychainAccess *)&v17 init];
@@ -24,7 +24,7 @@
     log = v5->_log;
     v5->_log = v6;
 
-    v8 = [v4 copy];
+    v8 = [modelCopy copy];
     deviceModel = v5->_deviceModel;
     v5->_deviceModel = v8;
 
@@ -82,27 +82,27 @@
   [(KeychainAccess *)&v3 dealloc];
 }
 
-- (void)fetchASAKeysWithCompletion:(id)a3
+- (void)fetchASAKeysWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002E98;
   v7[3] = &unk_1000A9970;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CRXUDispatchQueue *)queue dispatchAsync:v7];
 }
 
-- (id)insertASAKey:(id)a3 withName:(id)a4 error:(id *)a5
+- (id)insertASAKey:(id)key withName:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(KeychainAccess *)self prefixedNameForName:v9];
+  keyCopy = key;
+  nameCopy = name;
+  v10 = [(KeychainAccess *)self prefixedNameForName:nameCopy];
   MutableCopy = CFDictionaryCreateMutableCopy(0, 0, self->_addQuery);
-  CFDictionarySetValue(MutableCopy, kSecValueData, v8);
+  CFDictionarySetValue(MutableCopy, kSecValueData, keyCopy);
   CFDictionarySetValue(MutableCopy, kSecAttrLabel, v10);
   v12 = [v10 dataUsingEncoding:4];
   CFDictionarySetValue(MutableCopy, kSecAttrApplicationLabel, v12);
@@ -111,10 +111,10 @@
   CFRelease(MutableCopy);
   if (v13)
   {
-    *a5 = [(KeychainAccess *)self createErrorForStatus:v13 fromFunction:@"SecItemAdd"];
+    *error = [(KeychainAccess *)self createErrorForStatus:v13 fromFunction:@"SecItemAdd"];
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
-      sub_10008062C(a5);
+      sub_10008062C(error);
     }
 
 LABEL_4:
@@ -129,10 +129,10 @@ LABEL_4:
     v16 = SecKeyCopyPublicKey(result);
     if (!v16)
     {
-      *a5 = 0;
+      *error = 0;
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
       {
-        sub_10008072C(a5);
+        sub_10008072C(error);
       }
 
       goto LABEL_4;
@@ -154,19 +154,19 @@ LABEL_4:
     v18 = 0;
   }
 
-  v14 = [[ASAKey alloc] initWithName:v9 privateKey:v8 publicKey:v18 creationDate:0];
+  v14 = [[ASAKey alloc] initWithName:nameCopy privateKey:keyCopy publicKey:v18 creationDate:0];
 
 LABEL_12:
 
   return v14;
 }
 
-- (BOOL)deleteASAKeyWithName:(id)a3 error:(id *)a4
+- (BOOL)deleteASAKeyWithName:(id)name error:(id *)error
 {
   deleteOrUpdateQuery = self->_deleteOrUpdateQuery;
-  v7 = a3;
+  nameCopy = name;
   MutableCopy = CFDictionaryCreateMutableCopy(0, 0, deleteOrUpdateQuery);
-  v9 = [(KeychainAccess *)self prefixedNameForName:v7];
+  v9 = [(KeychainAccess *)self prefixedNameForName:nameCopy];
 
   v10 = [v9 dataUsingEncoding:4];
   CFDictionarySetValue(MutableCopy, kSecAttrApplicationLabel, v10);
@@ -174,17 +174,17 @@ LABEL_12:
   CFRelease(MutableCopy);
   if (v11)
   {
-    *a4 = [(KeychainAccess *)self createErrorForStatus:v11 fromFunction:@"SecItemDelete"];
+    *error = [(KeychainAccess *)self createErrorForStatus:v11 fromFunction:@"SecItemDelete"];
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
-      sub_1000807A8(a4);
+      sub_1000807A8(error);
     }
   }
 
   return v11 == 0;
 }
 
-- (BOOL)deleteAllASAKeysWithError:(id *)a3
+- (BOOL)deleteAllASAKeysWithError:(id *)error
 {
   v5 = SecItemDelete(self->_deleteOrUpdateQuery);
   if (!v5)
@@ -204,18 +204,18 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *a3 = [(KeychainAccess *)self createErrorForStatus:v5 fromFunction:@"SecItemDelete"];
+  *error = [(KeychainAccess *)self createErrorForStatus:v5 fromFunction:@"SecItemDelete"];
   v6 = os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR);
   if (v6)
   {
-    sub_1000808AC(a3);
+    sub_1000808AC(error);
     LOBYTE(v6) = 0;
   }
 
   return v6;
 }
 
-- (id)createASAKeyWithError:(id *)a3
+- (id)createASAKeyWithError:(id *)error
 {
   error = 0;
   v5 = SecKeyCreateRandomKey(self->_createQuery, &error);
@@ -225,10 +225,10 @@ LABEL_5:
     v7 = SecKeyCopyExternalRepresentation(v5, &error);
     if (!v7)
     {
-      *a3 = error;
+      *error = error;
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
       {
-        sub_100080928(a3);
+        sub_100080928(error);
       }
     }
 
@@ -237,10 +237,10 @@ LABEL_5:
 
   else
   {
-    *a3 = error;
+    *error = error;
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
-      sub_1000809A4(a3);
+      sub_1000809A4(error);
     }
 
     v7 = 0;
@@ -249,20 +249,20 @@ LABEL_5:
   return v7;
 }
 
-- (id)derivePublicKeyFromPrivateKey:(id)a3 error:(id *)a4
+- (id)derivePublicKeyFromPrivateKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   Mutable = CFDictionaryCreateMutable(0, 0, 0, 0);
   CFDictionarySetValue(Mutable, kSecAttrKeyType, self->_keyType);
   CFDictionarySetValue(Mutable, kSecAttrKeyClass, kSecAttrKeyClassPrivate);
   error = 0;
-  v8 = SecKeyCreateWithData(v6, Mutable, &error);
+  v8 = SecKeyCreateWithData(keyCopy, Mutable, &error);
 
   CFRelease(Mutable);
   if (error)
   {
     v9 = 0;
-    *a4 = error;
+    *error = error;
     goto LABEL_11;
   }
 
@@ -290,7 +290,7 @@ LABEL_9:
   }
 
   v9 = 0;
-  *a4 = error;
+  *error = error;
 LABEL_10:
 
 LABEL_11:
@@ -298,16 +298,16 @@ LABEL_11:
   return v9;
 }
 
-- (id)createErrorForStatus:(int)a3 fromFunction:(id)a4
+- (id)createErrorForStatus:(int)status fromFunction:(id)function
 {
-  v5 = a4;
-  v6 = SecCopyErrorMessageString(a3, 0);
+  functionCopy = function;
+  v6 = SecCopyErrorMessageString(status, 0);
   v10[0] = NSLocalizedDescriptionKey;
   v10[1] = @"keychain_function";
   v11[0] = v6;
-  v11[1] = v5;
+  v11[1] = functionCopy;
   v7 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
-  v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:a3 userInfo:v7];
+  v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:v7];
 
   return v8;
 }
